@@ -1,0 +1,319 @@
+{
+  "gl": {
+    "_communities": {
+      "openstreetmapafghanistan": "OpenStreetMap Afganistán",
+      "openstreetmapafrica": "OpenStreetMap África",
+      "openstreetmapalba": "OpenStreetMap Escocia",
+      "openstreetmapargentina": "OpenStreetMap Arxentina",
+      "openstreetmapbahia": "OpenStreetMap Baía",
+      "openstreetmapbelarus": "OpenStreetMap Belarús",
+      "openstreetmapbelgium": "OpenStreetMap Bélxica",
+      "openstreetmapbenin": "OpenStreetMap Benín",
+      "openstreetmapberlin": "OpenStreetMap Berlín",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap Bosnia e Hercegovina",
+      "openstreetmapbrasilia": "OpenStreetMap Brasilia",
+      "openstreetmapcambodia": "OpenStreetMap Camboxa",
+      "openstreetmapcameroon": "OpenStreetMap Camerún",
+      "openstreetmapcanada": "OpenStreetMap Canadá",
+      "openstreetmapcatalancountries": "OpenStreetMap Países Cataláns",
+      "openstreetmapcotedivoire": "OpenStreetMap Costa do Marfil",
+      "openstreetmapcroatia": "OpenStreetMap Croacia",
+      "openstreetmapcz": "OpenStreetMap República Checa",
+      "openstreetmapde": "OpenStreetMap Alemaña",
+      "openstreetmapdenmark": "OpenStreetMap Dinamarca",
+      "openstreetmapdjibouti": "OpenStreetMap Xibutí",
+      "openstreetmapdominicanrepublic": "OpenStreetMap República Dominicana",
+      "openstreetmapegypt": "OpenStreetMap Exipto",
+      "openstreetmapethiopia": "OpenStreetMap Etiopía",
+      "openstreetmapfinland": "OpenStreetMap Finlandia",
+      "openstreetmapfrance": "OpenStreetMap Francia",
+      "openstreetmapfreemapslovakia": "OpenStreetMap Freemap Eslovaquia",
+      "openstreetmapfrenchguiana": "OpenStreetMap Güiana Francesa",
+      "openstreetmapfrenchpolynesia": "OpenStreetMap Polinesia Francesa",
+      "openstreetmapgabon": "OpenStreetMap Gabón",
+      "openstreetmapgeorgia": "OpenStreetMap Xeorxia",
+      "openstreetmapgermany": "OpenStreetMap Alemaña",
+      "openstreetmapgreece": "OpenStreetMap Grecia",
+      "openstreetmaphaiti": "OpenStreetMap Haití",
+      "openstreetmaphamburg": "OpenStreetMap Hamburgo",
+      "openstreetmaphungary": "OpenStreetMap Hungría",
+      "openstreetmapiceland": "OpenStreetMap Islandia",
+      "openstreetmapiran": "OpenStreetMap Irán",
+      "openstreetmapireland": "OpenStreetMap Irlanda",
+      "openstreetmapitaly": "OpenStreetMap Italia",
+      "openstreetmapitalylazio": "OpenStreetMap Italia-Lacio",
+      "openstreetmapitalylombardia": "OpenStreetMap Italia-Lombardía",
+      "openstreetmapitalypiemonte": "OpenStreetMap Italia-Piemonte",
+      "openstreetmapitalysouthtyrol": "OpenStreetMap Italia-Tirol do Sur",
+      "openstreetmapitalytrentino": "OpenStreetMap Italia-Trentino",
+      "openstreetmapjapan": "OpenStreetMap Xapón",
+      "openstreetmapkazakhstan": "OpenStreetMap Casaquistán",
+      "openstreetmapkenya": "OpenStreetMap Kenia",
+      "openstreetmapkorea": "OpenStreetMap Corea",
+      "openstreetmapkyrgyzstan": "OpenStreetMap Kirguizistán",
+      "openstreetmaplatinamerica": "OpenStreetMap Latinoamérica",
+      "openstreetmaplebanon": "OpenStreetMap Líbano",
+      "openstreetmaplesotho": "OpenStreetMap Lesoto",
+      "openstreetmaplibya": "OpenStreetMap Libia",
+      "openstreetmaplithuania": "OpenStreetMap Lituania",
+      "openstreetmaplombardia": "OpenStreetMap Lombardía",
+      "openstreetmapluxembourg": "OpenStreetMap Luxemburgo",
+      "openstreetmapmalawi": "OpenStreetMap Malaui",
+      "openstreetmapmalaysia": "OpenStreetMap Malaisia",
+      "openstreetmapmali": "OpenStreetMap Malí",
+      "openstreetmapmecklenburgvorpommern": "OpenStreetMap Mecklemburgo-Antepomerania",
+      "openstreetmapmexico": "OpenStreetMap México",
+      "openstreetmapmichigan": "OpenStreetMap Míchigan",
+      "openstreetmapmoldova": "OpenStreetMap Moldavia",
+      "openstreetmapmorocco": "OpenStreetMap Marrocos",
+      "openstreetmapnetherlands": "OpenStreetMap Países Baixos",
+      "openstreetmapniger": "OpenStreetMap Níxer",
+      "openstreetmapnigeria": "OpenStreetMap Nixeria",
+      "openstreetmapnorway": "OpenStreetMap Noruega",
+      "openstreetmappakistan": "OpenStreetMap Paquistán",
+      "openstreetmappanama": "OpenStreetMap Panamá",
+      "openstreetmapparaguay": "OpenStreetMap Paraguai",
+      "openstreetmapperu": "OpenStreetMap Perú",
+      "openstreetmapphilippines": "OpenStreetMap Filipinas",
+      "openstreetmappoland": "OpenStreetMap Polonia",
+      "openstreetmapreunion": "OpenStreetMap Reunión",
+      "openstreetmapriograndedosul": "OpenStreetMap Río Grande do Sur",
+      "openstreetmapromania": "OpenStreetMap Romanía",
+      "openstreetmaprussia": "OpenStreetMap Rusia",
+      "openstreetmaprwanda": "OpenStreetMap Ruanda",
+      "openstreetmapsaudiarabia": "OpenStreetMap Arabia Saudita",
+      "openstreetmapsierraleone": "OpenStreetMap Serra Leona",
+      "openstreetmapslovenia": "OpenStreetMap Eslovenia",
+      "openstreetmapsouthafrica": "OpenStreetMap Suráfrica",
+      "openstreetmapsouthsudan": "OpenStreetMap Sudán do Sur",
+      "openstreetmapsudan": "OpenStreetMap Sudán",
+      "openstreetmapsweden": "OpenStreetMap Suecia",
+      "openstreetmapswitzerland": "OpenStreetMap Suíza",
+      "openstreetmapsyria": "OpenStreetMap Siria",
+      "openstreetmaptaiwan": "OpenStreetMap Taiwán",
+      "openstreetmapthailand": "OpenStreetMap Tailandia",
+      "openstreetmapturkey": "OpenStreetMap Turquía",
+      "openstreetmapuk": "OpenStreetMap Reino Unido",
+      "openstreetmapukraine": "OpenStreetMap Ucrania",
+      "openstreetmapuruguay": "OpenStreetMap Uruguai",
+      "openstreetmapus": "OpenStreetMap Estados Unidos",
+      "openstreetmapuzbekistan": "OpenStreetMap Uzbekistán",
+      "openstreetmapwesternsahara": "OpenStreetMap Sáhara Occidental"
+    },
+    "_defaults": {
+      "aparat": {
+        "name": "{community} en Aparat",
+        "description": "Subscríbete á nosa canle de Aparat"
+      },
+      "discord": {
+        "name": "Discord de {community}",
+        "description": "Ponte en contacto con outros cartógrafos en Discord"
+      },
+      "facebook": {
+        "name": "{community} no Facebook",
+        "description": "Únete á nosa comunidade no Facebook"
+      },
+      "forum": {
+        "name": "Foro de {community}",
+        "description": "O foro oficial para {community}"
+      },
+      "github": {
+        "name": "GitHub de {community}"
+      },
+      "gitlab": {
+        "name": "GitLab de {community}"
+      },
+      "irc": {
+        "name": "{community} no IRC"
+      },
+      "linkedin": {
+        "name": "{community} no LinkedIn",
+        "description": "Únete á nosa comunidade no LinkedIn"
+      },
+      "mailinglist": {
+        "name": "Lista de correo {account}",
+        "description": "A lista de correo oficial para {community}"
+      },
+      "matrix": {
+        "name": "Chat de Matrix de {community}",
+        "description": "Únete á conversa de Matrix da nosa comunidade"
+      },
+      "meetup": {
+        "name": "Meetup de {community}"
+      },
+      "reddit": {
+        "name": "{community} en Reddit"
+      },
+      "slack": {
+        "name": "Slack de {community}"
+      },
+      "telegram": {
+        "name": "Telegram de {community}",
+        "description": "Únete á conversa da nosa comunidade no Telegram"
+      },
+      "wiki": {
+        "name": "Wikiproxecto de {community}"
+      },
+      "xmpp": {
+        "name": "XMPP de {community}"
+      },
+      "youtube": {
+        "name": "{community} en YouTube",
+        "description": "Subscríbete á nosa canle de YouTube"
+      }
+    },
+    "af-matrix": {
+      "description": "Grupo de Matrix para a comunidade de Afganistán."
+    },
+    "Bahia-telegram": {
+      "extendedDescription": "Únete á comunidade para obter máis información acerca do OpenStreetMap, facer cuestións ou participar nas nosas xuntanzas. Todos son benvidos!"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "name": "OpenStreetMappers da área da badía",
+      "description": "Mellore o OpenStreetMap na área da badía"
+    },
+    "be-matrix": {
+      "description": "Tódolos cartógrafos son benvidos!"
+    },
+    "be-meetup": {
+      "description": "Xuntanzas presenciais de tódolos interesados no OpenStreetMap",
+      "extendedDescription": "As xuntanzas presenciais son xeniais para coñecer a outros cartógrafos, facerlles cuestións e aprender moito. Son de xeito especial benvidos os novos contribuíntes!"
+    },
+    "cape-coast-youthmappers": {
+      "name": "Universidade de Cape Coast YouthMappers",
+      "description": "Séguenos no Twitter: {url}",
+      "extendedDescription": "Este é o identificador oficial do capítulo de Xoves Cartógrafos da Universidade de Cape Coast, Ghana. Encantannos os mapas, os datos abertos e axudar ás persoas vulnerábeis."
+    },
+    "cat-github": {
+      "description": "Proxectos da comunidade de OpenStreetMap Países Cataláns no GitHub"
+    },
+    "cat-wiki": {
+      "description": "Espazo de coordinación para a comunidade de OpenStreetMap na zona dos Países Cataláns: {url}"
+    },
+    "galicia-wiki": {
+      "description": "Todo o que precisas saber sobre o cartografado en Galiza: {url} (todas as ferramentas do mundo do OSM están en galego, emprégaas!)"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "name": "Xeoinquedos no Twitter",
+      "description": "Síguenos no Twitter en {url}"
+    },
+    "MapColabora-mailinglist": {
+      "description": "Lista de correo de Mapeado Colaborativo / Geoinquietos Zaragoza"
+    },
+    "MapColabora-twitter": {
+      "description": "Twitter de Mapeado Colaborativo / Xeoinquedos Zaragoza"
+    },
+    "OSM-AR-twitter": {
+      "extendedDescription": "Novas da comunidade local e do OpenStreetMap en xeral. "
+    },
+    "OSM-Facebook": {
+      "description": "Dános un Góstame no Facebook para ver novas e actualizacións sobre o OpenStreetMap"
+    },
+    "osm-gh-facebook": {
+      "extendedDescription": "Cartógrafos na comunidade de Ghana, promocionando os proxectos do OpenStreetMap e Humanitarian OpenStreetMap Team (HOT) en Ghana. Únete a nós."
+    },
+    "OSM-India-facebook": {
+      "description": "Mellore o OpenStreetMap na India",
+      "extendedDescription": "Cartografando na India? Tes cuestións e desexas contactar ca comunidade aquí? Únete a nós en {url}. Todos son benvidos!"
+    },
+    "osm-india-github": {
+      "description": "Programa connosco: {url}"
+    },
+    "OSM-india-twitter": {
+      "description": "Estamos só a un chío de distancia: {url}"
+    },
+    "OSM-japan-facebook": {
+      "description": "Cartógrafos e usuarios do OpenStreetMap no Xapón"
+    },
+    "OSM-japan-website": {
+      "description": "Cartógrafos e usuarios do OpenStreetMap no Xapón"
+    },
+    "osm-kerala-github": {
+      "description": "Programa connosco: {url}"
+    },
+    "osm-mg-facebook": {
+      "description": "Grupo do Facebook de Malgache para xente interesada no OpenStreetMap"
+    },
+    "osm-ni": {
+      "description": "Fornece servizos e información do OSM para a comunidade local en Nicaragua"
+    },
+    "OSM-Rome-meetup": {
+      "description": "Mellora o OpenStreetMap na área de Roma"
+    },
+    "OSM-SoCal": {
+      "extendedDescription": "O OpenStreetMap (OSM) Southern California é para todos aquilos interesados ​​en cartografar para traballar xuntos co OpenStreetMap. O OpenStreetMap, a Wikipedia de mapas, é un mapa de código aberto e de balde creado por máis de 1.000.000 de voluntarios en todo o mundo. Todos son benvidos. Se non coñece o OpenStreetMap, ensinarémoslle. Se ten unha idea para un proxecto de cartografado ou incluso unha andaina ou roteiro que o grupo poida facer, xenial!"
+    },
+    "OSM-Telegram": {
+      "description": "Únete no Telegram ó supergrupo global do OpenStreetMap en {url}"
+    },
+    "OSMF": {
+      "name": "Fundación OpenStreetMap",
+      "description": "OSMF é unha organización sen fins de lucro estabelecida no Reino Unido que apoia ó proxecto do OpenStreetMap"
+    },
+    "PHXGeo-twitter": {
+      "name": "Twitter de PHXGeo",
+      "description": "Séguenos no Twitter en {url}"
+    },
+    "talk-mg": {
+      "description": "Lugar para contribuíntes, comunidades e usuarios do OpenStreetMap en Madagascar para compartir e debater."
+    },
+    "uk-london-twitter": {
+      "name": "OpenStreetMap Londres no Twitter",
+      "description": "OpenStreetMap Londres no Twitter: {url}"
+    },
+    "ym-Cornell-University": {
+      "name": "Sociedade cartográfica"
+    },
+    "ym-Fourah-Bay-College": {
+      "name": "Asociación Xeográfica de Estudantes"
+    },
+    "ym-Jomo-Kenyatta-University-of-Agriculture-and-Technology": {
+      "name": "Asociación de Estudantes de Enxeñaría Xeomática"
+    },
+    "ym-Miami-University": {
+      "name": "Sociedade de Xeografía e Planificación"
+    },
+    "ym-Moi-University": {
+      "name": "Asociación de Estudantes de Xeografía"
+    },
+    "ym-Namibia-University-of-Science-and-Technology": {
+      "name": "Sociedade de Estudantes de Tecnoloxía da Xeoinformación"
+    },
+    "ym-Sherubtse-College": {
+      "name": "Sociedade xeográfica"
+    },
+    "ym-Technical-University-of-Kenya": {
+      "name": "Asociación de Estudantes de Ciencias Xeoespaciais"
+    },
+    "ym-University-of-Cape-Coast": {
+      "name": "Sociedade Geográfica UCC"
+    },
+    "ym-University-of-Central-Florida": {
+      "name": "Sociedade da Información Xeoespacial"
+    },
+    "ym-University-of-Chicago": {
+      "name": "Sociedade tobler"
+    },
+    "ym-University-of-Exeter": {
+      "extendedDescription": "Somos un equipo de entusiastas xeógrafos cun amplo coñecemento dos SIG. Apaixoanos apoiar á Sociedade da Cruz Vermella Británica con varios esforzos de axuda humanitaria. Tamén somos importantes mestres da importancia da cartografía dos datos obtidos a distancia e o xeito no que isto axuda sobre o terreo. As nosas xuntanzas que facemos (chamadas mapatóns) teñen enfoques académicos temáticos que destacan as diferentes pescudas do SIG no noso departamento de xeografía, ó mesmo tempo que funcionan coma acontecementos de concienciación sobre a empregabilidade que utilizamos para convidar a oradores a falar sobre as súas carreiras na SIG/Cruz Vermella Británica."
+    },
+    "ym-University-of-Nairobi": {
+      "name": "Asociación de Estudantes de Enxeñaría Xeoespacial"
+    },
+    "ym-University-of-Pretoria": {
+      "name": "Centro de Ciencias da Xeoinformación"
+    },
+    "ym-University-of-South-Carolina": {
+      "name": "Asociación de Estudantes de Xeografía"
+    },
+    "ym-University-of-Victoria": {
+      "name": "Sociedade de Estudantes de Xeografía"
+    },
+    "ym-Vassar-College": {
+      "name": "Cartógrafos de Hudson Valley"
+    },
+    "ym-Western-Michigan-University": {
+      "description": "Capítulo do YouthMappers na Universidade de Michigan Oeste"
+    }
+  }
+}

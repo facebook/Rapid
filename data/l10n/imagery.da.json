@@ -1,0 +1,339 @@
+{
+  "da": {
+    "imagery": {
+      "Bing": {
+        "description": "Satellit og luftfoto."
+      },
+      "EOXAT2018CLOUDLESS": {
+        "description": "Efterbehandlet Sentinel Satellite billeder",
+        "name": "eox.at 2018 skyfri"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Vilkår & tilbagemelding"
+        },
+        "name": "Esri World fotos"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Vilkår & tilbagemelding"
+        },
+        "description": "Esri arkivfotos som kan være af bedre kvalitet og mere præcise end standard-laget.",
+        "name": "Esri World fotos (Clarity) Beta"
+      },
+      "Geodatastyrelsen_Cadastral_Parcels_INSPIRE_View": {
+        "name": "SDFI matrikelkort INSPIRE visning"
+      },
+      "Geodatastyrelsen_DTK_Kort25": {
+        "name": "SDFI DTK Kort25"
+      },
+      "Geodatastyrelsen_Denmark": {
+        "name": "SDFI luftfoto"
+      },
+      "Geodatastyrelsen_Skaermkort": {
+        "name": "SDFI Skærmkort"
+      },
+      "MAPNIK": {
+        "attribution": {
+          "text": "© OpenStreetMap-bidragsydere, ODbL 1.0"
+        },
+        "description": "Standard-laget fra OpenStreetMap.",
+        "name": "OpenStreetMap (standard)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Vilkår & tilbagemelding"
+        },
+        "description": "Raster-fliser fra Mapbox med global dækning af satellit og luftfoto i høj opløsning"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap bidragsydere, CC BY-SA"
+        },
+        "name": "OSM Inspector: Adresser"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap bidragsydere, CC BY-SA"
+        },
+        "name": "OSM Inspector: Geometri"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap bidragsydere, CC BY-SA"
+        },
+        "name": "OSM Inspector: Highway"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap bidragsydere, CC BY-SA"
+        },
+        "name": "OSM Inspector: Område"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap bidragsydere, CC BY-SA"
+        },
+        "name": "OSM Inspector: Steder"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap bidragsydere, CC BY-SA"
+        }
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap bidragsydere, CC BY-SA"
+        }
+      },
+      "SDFE_Overflade_Skyggekort_40cm": {
+        "name": "SDFI overfladeskyggekort (40 cm)"
+      },
+      "SDFE_Terraen_Skyggekort_40cm": {
+        "name": "SDFI terrænskyggekort (40 cm)"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "SPW(allonie) mest nyeste luftfoto"
+      },
+      "SPW_PICC": {
+        "name": "SPW(allonie) PICC nummerisk luftfoto"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Gul = Offentlige kortdata fra US Census. Rød = Data ikke fundet i OpenStreetMap"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "Gul = Offentlige kortdata fra US Census. Rød = Data ikke fundet i OpenStreetMap"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "name": "Amerikansk skovvejs-overlag (U.S. Forest Service)"
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "Realiseret ved hjælp af Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "Realiseret ved hjælp af Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "Realiseret ved hjælp af Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "Realiseret ved hjælp af Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "Realiseret ved hjælp af Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "Realiseret ved hjælp af Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap-bidragsydere, CC by-SA 3.0"
+        },
+        "name": "Afmærkede spor: Cykling"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap-bidragsydere, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails:: Vandring"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap-bidragsydere, CC by-SA 3.0"
+        },
+        "name": "Afmærkede spor: MTB"
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap-bidragsydere, CC by-SA 3.0"
+        },
+        "name": "Afmærkede spor: Skøjtning"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap-bidragsydere, CC by-SA 3.0"
+        },
+        "name": "Afmærkede spor: Vintersport"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "© waymarkedtrails.org, OpenStreetMap-bidragsydere, CC by-SA 3.0"
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Ortofoto-lag leveret af basemap.at. \"Efterfølger\" til geoimage.at.",
+        "name": "basemap.at Ortofoto"
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "description": "Annotationslag leveret af basemap.at."
+      },
+      "eufar-balaton": {
+        "description": "1940 geotagget fotografi fra Balaton Limnological Institute.",
+        "name": "EUFAR Balaton ortofotos"
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© Göteborg Kommune, CC0"
+        },
+        "description": "Bykortet er et oversigtskort der beskriver Göteborg. Det indeholder generelle informationer omkring land, kommunikation, hydrografi, bygninger, gadenavne og husnumre, administrativ afdeligt og anden orienterende tekst.",
+        "name": "Göteborg bykort"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "name": "Japan GSI luftfoto"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "attribution": {
+          "text": "GSI Japan sømløs luftfoto"
+        },
+        "name": "GSI Japan sømløs luftfoto"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "description": "Japan GSI standardkort. Bredt dækkende",
+        "name": "Japan GSI  standardkort"
+      },
+      "kalmar-orto-2014": {
+        "attribution": {
+          "text": "© Kalmar Kommune"
+        },
+        "description": "Ortofoto for nordkysten af Kalmar Kommune 2014",
+        "name": "Kalmar nord ortofoto 2014"
+      },
+      "kalmar-orto-2016": {
+        "attribution": {
+          "text": "© Kalmar Kommune"
+        },
+        "description": "Ortofoto for sydkysten af Kalmar Kommune 2016",
+        "name": "Kalmar syd ortofoto 2016"
+      },
+      "kalmar-orto-2018": {
+        "attribution": {
+          "text": "© Kalmar Kommune"
+        },
+        "description": "Ortofotos af byområdet i Kalmar Kommune 2018",
+        "name": "Kalmar by ortofoto 2018"
+      },
+      "kelkkareitit": {
+        "description": "Kelkkareitit.fi snescooterspor fra OSM (nordisk dækkende)",
+        "name": "Nordisk snescooter-overlag (Kelkkareitit.fi)"
+      },
+      "lantmateriet-orto1960": {
+        "description": " 73% match \nMosaik af svenske ortofotos fra perioden 1955-1965. Ældre og nyere billeder kan forekomme,",
+        "name": "Lantmäteriet historisk ortofoto 1960"
+      },
+      "lantmateriet-orto1975": {
+        "description": "Mosaik af svenske ortofotos fra perioden 1970–1980. Er under udarbejdelse.",
+        "name": "Lantmäteriet historiske ortofoto 1975"
+      },
+      "lantmateriet-topowebb": {
+        "description": "Topografisk kort af Sverige 1:50.000",
+        "name": "Lantmäteriet topografisk kort"
+      },
+      "linkoping-orto": {
+        "attribution": {
+          "text": "© Linköping Kommune"
+        },
+        "description": "Ortofotos fra  Linköping Kommune 2010, open data",
+        "name": "Linköping Ortofoto"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Vilkår & tilbagemelding"
+        },
+        "description": "Viser større objekter ved høj zoom for at hjælpe dig med at finde vej.",
+        "name": "Lokaliserings-overlag"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© OpenStreetMap bidragsydere, CC BY-SA"
+        },
+        "name": "OpenPT-kort (overlag)"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© OpenStreetMap bidragsydere"
+        },
+        "description": "Offentlige GPS-spor uploadet til OpenStreetMap.",
+        "name": "OpenStreetMap GPS-spor"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© OpenStreetMap bidragsydere, CC BY-SA"
+        },
+        "name": "OpenStreetMap (tyskerstil)"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, Data ©OpenStreetMap bidragsydere"
+        },
+        "name": "QA Ingen adresse"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Fliser: skobbler Map data: OpenStreetMap bidragsydere"
+        }
+      },
+      "skoterleder": {
+        "description": "Snescooter spor",
+        "name": "Snescooterkort Sverige"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "Kort tiles af Stamen Design, under CC BY 3.0. Data af OpenStreetMap, under ODbL"
+        },
+        "name": "Stamen Terræn"
+      },
+      "stockholm-orto": {
+        "attribution": {
+          "text": "© Stockholm Kommune, CC0"
+        },
+        "name": "Stockholm Ortofoto"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Kort © Thunderforest, Data © OpenStreetMap bidragsydere"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Kort © Thunderforest, Data © OpenStreetMap bidragsydere"
+        },
+        "name": "Thunderforest Landskab"
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Kort © Thunderforest, Data © OpenStreetMap bidragsydere"
+        }
+      },
+      "trafikverket-baninfo": {
+        "description": "Svenske jernbanenet, inkl. sidespor",
+        "name": "Trafikverket jernbanenet"
+      },
+      "trafikverket-baninfo-option": {
+        "description": "Det svenske jernbanenet med flere valgmuligheder for kortlag",
+        "name": "Trafikverket jernbanenet valgmuligheder"
+      },
+      "trafikverket-vagnat": {
+        "description": "Svenske NVDB vejnet",
+        "name": "Trafikverket vejnet"
+      },
+      "trafikverket-vagnat-extra": {
+        "description": "Svenske NVDB ekstra informationer: Vejreferencenumre, trafikdæmning, rastepladser, bustop, broer, fartkontrolkamera",
+        "name": "Trafikverket vejnet ekstra"
+      },
+      "trafikverket-vagnat-option": {
+        "description": "Svenske NVDB vejnet med flere valgmuligheder for kortlag",
+        "name": "Trafikverket vejnet muligheder"
+      }
+    }
+  }
+}

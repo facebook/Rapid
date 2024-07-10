@@ -8,7 +8,7 @@ import shell from 'shelljs';
 import stringify from 'json-stringify-pretty-compact';
 import { transifexApi as api } from '@transifex/api';
 
-import { writeFileWithMeta } from './write_file_with_meta.js';
+import * as CLDR from './cldr.js';
 const localeCompare = new Intl.Collator('en').compare;
 
 
@@ -77,12 +77,10 @@ function startClean() {
   console.log(chalk.yellow(`🧼  Start clean…`));
 
   // create target folders if necessary
-  if (!fs.existsSync('dist/data'))   fs.mkdirSync('dist/data', { recursive: true });
-  if (!fs.existsSync('dist/l10n'))   fs.mkdirSync('dist/l10n', { recursive: true });
+  if (!fs.existsSync('data/l10n'))  fs.mkdirSync('data/l10n', { recursive: true });
 
   shell.rm('-f', 'data/locales.json');
-  for (const file of globSync('dist/l10n/*')) {
-    if (/en(\.min)?\.json$/.test(file)) continue;    // skip the 'en' ones
+  for (const file of globSync('data/l10n/*', { ignore: 'data/l10n/*.en.json' })) {
     shell.rm('-f', file);
   }
 }
@@ -147,7 +145,7 @@ async function getRapidLanguageStats() {
   return getCollection(iter)
     .then(vals => {
       // We want this list sorted, so that as we iterate through it, we can fallback.
-      // If this code includes a country like `zh-CN`, we will allow a fallback to `zh`.
+      // If this code includes a territory like `zh-CN`, we will allow a fallback to `zh`.
       languages_rapid = vals.map(val => val.related.language.id).sort(localeCompare);
     });
 }
@@ -312,15 +310,14 @@ async function processTranslations(resourceName, languageID, sourceCollection, t
   // Note: Replace CLDR-style underscores with BCP47-style hypens to make things easier.
   const code = language.attributes.code.replace(/_/g, '-');
 
-  // If this code includes a country like `zh-CN`, we will allow a fallback to `zh`.
-  const [langCode, countryCode] = code.split('-', 2);
+  // If this code includes a territory like `zh-CN`, we will allow a fallback to `zh`.
+  const [langCode, territoryCode] = code.split('-', 2);
   let fallbacks;
-  if (countryCode) {
+  if (territoryCode) {
     fallbacks = translationCollection.get(`l:${langCode}`);  //  Map<stringID, ResourceTranslation>
   }
 
-
-  const trunk = {};
+  const data = {};
   let count = 0;
 
   for (const [stringID, translation] of translations) {
@@ -367,7 +364,7 @@ async function processTranslations(resourceName, languageID, sourceCollection, t
 
         } else {  // Keep this translated string..
           // Walk to the leaf, extending the tree if necessary..
-          let branch = trunk;
+          let branch = data;
           for (const p of path) {
             if (!branch[p])  branch[p] = {};
             branch = branch[p];
@@ -398,7 +395,7 @@ async function processTranslations(resourceName, languageID, sourceCollection, t
         isRedundant = true;
 
       } else {  // Keep this translated string..
-        let branch = trunk;
+        let branch = data;
         for (const p of path) {
           if (!branch[p])  branch[p] = {};
           branch = branch[p];
@@ -416,11 +413,26 @@ async function processTranslations(resourceName, languageID, sourceCollection, t
     }
   }
 
+  // 'core' resource only:  Include LanguageNames and ScriptNames from CLDR
+  if (resourceName === 'core') {
+    const lNames = CLDR.languageNamesInLanguageOf(code);
+    if (Object.keys(lNames).length) {
+      data.languageNames = lNames;
+      count = count + Object.keys(lNames).length;
+    }
+
+    const sNames = CLDR.scriptNamesInLanguageOf(code);
+    if (Object.keys(sNames).length) {
+      data.scriptNames = sNames;
+      count = count + Object.keys(sNames).length;
+    }
+  }
+
   if (count > 0) {
     console.log(chalk.yellow(`✏️   Writing '${resourceName}.${code}.json'…`));
-    const data = {};
-    data[code] = trunk;
-    writeFileWithMeta(`dist/l10n/${resourceName}.${code}.json`, JSON.stringify(data, null, 2) + '\n');
+    const output = {};
+    output[code] = data;
+    fs.writeFileSync(`data/l10n/${resourceName}.${code}.json`, JSON.stringify(output, null, 2) + '\n');
   } else {
     console.log(chalk.yellow(`🔦  No meaningful translations found…`));
   }
@@ -498,7 +510,7 @@ function sortObject(obj) {
 //import JSON5 from 'json5';
 //import YAML from 'js-yaml';
 //
-//import * as languageNames from './language_names.js';
+//import * as CLDR from './cldr.js';
 //
 ////
 //// This script fetches the various language and translation files from Transifex

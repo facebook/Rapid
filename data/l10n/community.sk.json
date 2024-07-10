@@ -1,0 +1,233 @@
+{
+  "sk": {
+    "_communities": {
+      "mappingbotswana": "Mapovanie Botswany",
+      "openstreetmapafghanistan": "OpenStreetMap Afganistan",
+      "openstreetmapafrica": "OpenStreetMap Afrika",
+      "openstreetmapalbania": "OpenStreetMap Albánsko",
+      "openstreetmapargentina": "OpenStreetMap Argentína",
+      "openstreetmapasia": "OpenStreetMap Ázia",
+      "openstreetmapaustria": "OpenStreetMap Rakúsko",
+      "openstreetmapbangladesh": "OpenStreetMap Bangladéš",
+      "openstreetmapbelarus": "OpenStreetMap Bielorusko",
+      "openstreetmapbelgium": "OpenStreetMap Belgicko",
+      "openstreetmapberlin": "OpenStreetMap Berlín",
+      "openstreetmapbolivia": "OpenStreetMap Bolívia",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap Bosna a Hercegovina",
+      "openstreetmapbrasil": "OpenStreetMap Brazília",
+      "openstreetmapbremen": "OpenStreetMap Brémy",
+      "openstreetmapbulgaria": "OpenStreetMap Bulharsko",
+      "openstreetmapcambodia": "OpenStreetMap Kambodža",
+      "openstreetmapcameroon": "OpenStreetMap Kamerun",
+      "openstreetmapcanada": "OpenStreetMap Kanada",
+      "openstreetmapcatalancountries": "OpenStreetMap Katalánské územia",
+      "openstreetmapchad": "OpenStreetMap Čad",
+      "openstreetmapchile": "OpenStreetMap Čile",
+      "openstreetmapchina": "OpenStreetMap Čína",
+      "openstreetmapcolombia": "OpenStreetMap Kolumbia",
+      "openstreetmapcostarica": "OpenStreetMap Kostarika",
+      "openstreetmapcotedivoire": "OpenStreetMap Pobrežie Slonoviny",
+      "openstreetmapcroatia": "OpenStreetMap Chorvátsko",
+      "openstreetmapcuba": "OpenStreetMap Kuba",
+      "openstreetmapdenmark": "OpenStreetMap Dánsko",
+      "openstreetmapdjibouti": "OpenStreetMap Džibutsko",
+      "openstreetmapdominicanrepublic": "OpenStreetMap Dominikánska republika",
+      "openstreetmapecuador": "OpenStreetMap Ekvádor",
+      "openstreetmapespana": "OpenStreetMap Španielsko",
+      "openstreetmapethiopia": "OpenStreetMap Etiópia",
+      "openstreetmapfinland": "OpenStreetMap Fínsko",
+      "openstreetmapfrance": "OpenStreetMap Francúzsko",
+      "openstreetmapfreemapslovakia": "OpenStreetMap Freemap Slovensko",
+      "openstreetmapfrenchguiana": "OpenStreetMap Francúzska Guyana",
+      "openstreetmapfrenchpolynesia": "OpenStreetMap Francúzska Polynézia",
+      "openstreetmapgalicia": "OpenStreetMap Galícia",
+      "openstreetmapgeorgia": "OpenStreetMap Gruzínsko",
+      "openstreetmapgermany": "OpenStreetMap Nemecko",
+      "openstreetmapgreece": "OpenStreetMap Grécko",
+      "openstreetmaphungary": "OpenStreetMap Maďarsko",
+      "openstreetmapiceland": "OpenStreetMap Island",
+      "openstreetmapindonesia": "OpenStreetMap Indonézia",
+      "openstreetmapiran": "OpenStreetMap Irá",
+      "openstreetmapiraq": "OpenStreetMap Irak",
+      "openstreetmapireland": "OpenStreetMap Írsko",
+      "openstreetmapisrael": "OpenStreetMap Izrael",
+      "openstreetmapitaly": "OpenStreetMap Taliansko",
+      "openstreetmapitalylazio": "OpenStreetMap Taliansko-Lazio",
+      "openstreetmapitalylombardia": "OpenStreetMap Taliansko-Lombardia",
+      "openstreetmapitalypiemonte": "OpenStreetMap Taliansko-Piemonte",
+      "openstreetmapitalysouthtyrol": "OpenStreetMap Taliansko-Južné Tyrolsko",
+      "openstreetmapitalytrentino": "OpenStreetMap Taliansko-Trentino",
+      "openstreetmapjapan": "OpenStreetMap Japonsko",
+      "openstreetmapkazakhstan": "OpenStreetMap Kazachstan",
+      "openstreetmapkenya": "OpenStreetMap Keňa",
+      "openstreetmapkerala": "OpenStreetMap Kérala",
+      "openstreetmapkorea": "OpenStreetMap Kórea",
+      "openstreetmapkyrgyzstan": "OpenStreetMap Kirgizsko",
+      "openstreetmaplatinamerica": "OpenStreetMap Latinská Amerika",
+      "openstreetmaplebanon": "OpenStreetMap Libanon",
+      "openstreetmapliberia": "OpenStreetMap Libéria",
+      "openstreetmaplibya": "OpenStreetMap Líbya",
+      "openstreetmaplithuania": "OpenStreetMap Litva",
+      "openstreetmapluxembourg": "OpenStreetMap Luxembursko",
+      "openstreetmapmadagascar": "OpenStreetMap Madagaskar",
+      "openstreetmapmalaysia": "OpenStreetMap Malajzia",
+      "openstreetmapmauritania": "OpenStreetMap Mauritánia",
+      "openstreetmapmecklenburgvorpommern": "OpenStreetMap Meklenbursko-Predné Pomoransko",
+      "openstreetmapmexico": "OpenStreetMap Mexiko",
+      "openstreetmapmoldova": "OpenStreetMap Moldavsko",
+      "openstreetmapmongolia": "OpenStreetMap Mongolsko",
+      "openstreetmapmorocco": "OpenStreetMap Maroko",
+      "openstreetmapmyanmar": "OpenStreetMap Mjanmarsko",
+      "openstreetmapnepal": "OpenStreetMap Nepál",
+      "openstreetmapnetherlands": "OpenStreetMap Holandsko",
+      "openstreetmapnicaragua": "OpenStreetMap Nikaragua",
+      "openstreetmapnigeria": "OpenStreetMap Nigéria",
+      "openstreetmapnorway": "OpenStreetMap Nórsko",
+      "openstreetmapparaguay": "OpenStreetMap Paraguaj",
+      "openstreetmapphilippines": "OpenStreetMap Filipíny",
+      "openstreetmappoland": "OpenStreetMap Poľsko",
+      "openstreetmapportugal": "OpenStreetMap Portugalsko",
+      "openstreetmapromania": "OpenStreetMap Rumunsko",
+      "openstreetmaprussia": "OpenStreetMap Rusko",
+      "openstreetmapsaudiarabia": "OpenStreetMap Saudská Arábia",
+      "openstreetmapserbia": "OpenStreetMap Srbsko",
+      "openstreetmapseychelles": "OpenStreetMap Seychely",
+      "openstreetmapslovenia": "OpenStreetMap Slovinsko",
+      "openstreetmapsomalia": "OpenStreetMap Somálsko",
+      "openstreetmapsouthafrica": "OpenStreetMap Juhoafrická republika",
+      "openstreetmapsouthsudan": "OpenStreetMap Južný Sudán",
+      "openstreetmapsrilanka": "OpenStreetMap Srí Lanka",
+      "openstreetmapsudan": "OpenStreetMap Sudán",
+      "openstreetmapsweden": "OpenStreetMap Švédsko",
+      "openstreetmapswitzerland": "OpenStreetMap Švajčiarsko",
+      "openstreetmapsyria": "OpenStreetMap Sýria",
+      "openstreetmaptanzania": "OpenStreetMap Tanzánia",
+      "openstreetmapthailand": "OpenStreetMap Thajsko",
+      "openstreetmaptunisia": "OpenStreetMap Tunisko",
+      "openstreetmapturkey": "OpenStreetMap Turecko",
+      "openstreetmapukraine": "OpenStreetMap Ukrajina",
+      "openstreetmapuruguay": "OpenStreetMap Urugua",
+      "openstreetmapwesternsahara": "OpenStreetMap Západná Sahara"
+    },
+    "_defaults": {
+      "aparat": {
+        "name": "{community} na Aparat",
+        "description": "Prihláste sa k odberu nášho Aparat kanálu"
+      },
+      "discord": {
+        "name": "Discord {community} ",
+        "description": "Skontaktujte sa s inými mapermi cez Discord"
+      },
+      "facebook": {
+        "name": "{community} na Facebooku",
+        "description": "Pridajte se k našej komunite na Facebooku."
+      },
+      "forum": {
+        "name": "Fórum {community}",
+        "description": "Oficiálne fórum {community}"
+      },
+      "github": {
+        "name": "{community} na GitHube"
+      },
+      "gitlab": {
+        "name": "{community} na GitLabe"
+      },
+      "irc": {
+        "name": "{community} na IRC"
+      },
+      "linkedin": {
+        "name": "{community} na LinkedIn",
+        "description": "Pridajte sa k našej komunite na LinkedIn"
+      },
+      "mailinglist": {
+        "name": "Mailovacia skupina {account}",
+        "description": "Oficuálna mailovacia skupina pre {community}"
+      },
+      "matrix": {
+        "description": "Pripoj sa k Matrix chatu našej komunity"
+      },
+      "meetup": {
+        "name": "Meetup {community}"
+      },
+      "reddit": {
+        "name": "{community} na Reddite"
+      },
+      "slack": {
+        "name": "Slack {community} "
+      },
+      "telegram": {
+        "name": "Telegram {community}",
+        "description": "Pridajte sa ku komunitnému chatu na Telegramu"
+      },
+      "wiki": {
+        "name": "Wikiprojekt {community}"
+      },
+      "xmpp": {
+        "name": "XMPP {community} "
+      },
+      "youtube": {
+        "name": "{community} na YouTube",
+        "description": "Prihláste se k odberu nášho YouTube kanálu"
+      }
+    },
+    "af-matrix": {
+      "description": "Matrix skupina komunity v Afganistane "
+    },
+    "al-maptime-tirana": {
+      "description": "Spoločenské podujatia organizované popri mapovaní - Začiatočníci obzvlášť vítaní!"
+    },
+    "at-matrix": {
+      "description": "Neoficiálny Martix kanál pre Rakúsko (v nemčine)"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "name": "OpenStreetMaperi v Bay Area",
+      "description": "Vylepšite OpenStreetMap v Bay Area"
+    },
+    "bd-facebook": {
+      "extendedDescription": "Mapujete v Bangladéši? Máte otázky, chcete sa spojiť s miestnou komunitou? Pridajte sa k nám na adrese {url}. Všetci sú vítaní! "
+    },
+    "be-chapter": {
+      "description": "Pomáhame OpenStreetMap v Belgicku rásť a zlepšovať sa. "
+    },
+    "be-irc": {
+      "extendedDescription": "Pripojte sa k #{account} na irc.oftc.net (port 6667), chat je premostený s Matrix kanálom. "
+    },
+    "be-matrix": {
+      "description": "Všetci maperi sú vítaní!"
+    },
+    "czech-community": {
+      "description": "Mapový portál, webová stránka a kontakty na členov OSM v Česku"
+    },
+    "lk-facebook": {
+      "extendedDescription": "Mapujete na Srí Lanke? Máte otázky, chcete sa spojiť s miestnou komunitou? Pridajte sa k nám na {url}. Všetci sú vítaní!"
+    },
+    "lu-matrix": {
+      "description": "Matrix skupina pre Luxemburskú komunitu. Spojme komunitu!"
+    },
+    "mailinglist-sk-googlegroups": {
+      "name": "Slovenská mailovacia skupina na Google Groups",
+      "description": "Oficiálna mailovacia skupina slovenskej komunity"
+    },
+    "osm-at": {
+      "description": "Platforma pre informácie o OpenStreetMap v Rakúsku"
+    },
+    "osm-benin-facebook": {
+      "description": "Vylepšite OpenStreetMap v Benine"
+    },
+    "OSM-Facebook": {
+      "description": "Ak chcete novinky a updaty o OpenStreetMap, lajkujte nás na Facebooku"
+    },
+    "OSM-TH-CNX-meetup": {
+      "extendedDescription": "Členovia OpenStreetMap komunity sa stretávajú každých pár mesiacov v meste Chiang Mai. Spojte sa a zistite {url} kedy je naplánované ďalšie stretnutie"
+    },
+    "sk-freemap": {
+      "description": "Pokročilý mapový portál OpenStreetMap pre Slovensko a okolité regióny"
+    },
+    "uk-london-twitter": {
+      "name": "OpenStreetMap Londýn na Twitteri"
+    },
+    "ym-Abia-State-University": {
+      "extendedDescription": "AbsuMappersTeam je dobrovoľný tím nadšencov máp, ktorý na riešenie problémov využíva OpenStreetMap, GIS a ďalšie otvorené zdroje geopriestorových technológií. Je určený na reakciu na katastrofy pomocou OpenStreetMap. Je to profesionálna platforma pre mentorovanie a posilnenie postavenia pre tých, ktorí majú zanietenie pre GIS a mapovanie. Je to komunita dobrovoľníkov vytvárajúcich geopriestorové údaje, zber a mapovanie terénnych údajov. Tím bol spoluzaložený Victorom N.Sundayom (tímovým mentorom) a profesorom J.U. Ogbonnou, tímovým koordinátorom a fakultným poradcom. AbsuMapperTeam je pridruženou spoločnosťou UniiqueMappersTeam-Port Harcourt. Tím podporuje trvalý vývoj pomocou geopriestorových technológií."
+    }
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "ro": {
+    "imagery": {
+      "Bing": {
+        "description": "Imagini aeriane și de satelit."
+      },
+      "MAPNIK": {
+        "description": "Stratul OpenStreetMap implicit."
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Termeni & feedback"
+        },
+        "name": "Satelit Mapbox"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contribuitori OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspector OSM: Adrese"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contribuitori OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspector OSM: Geometrie"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contribuitori OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspector OSM: Drumuri"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contribuitori OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspector OSM: Suprafațe"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contribuitori OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspector OSM: Locuri"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contribuitori OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspector OSM: Rutare"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contribuitori OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspector OSM: Adăugare de taguri"
+      },
+      "Waymarked_Trails-Cycling": {
+        "name": "Trasee Marcate: Bicicletă"
+      },
+      "Waymarked_Trails-Hiking": {
+        "name": "Trasee Marcate: Drumeție"
+      },
+      "Waymarked_Trails-MTB": {
+        "name": "Trasee Marcate: MTB"
+      },
+      "Waymarked_Trails-Skating": {
+        "name": "Trasee Marcate: Skating"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "name": "Trasee Marcate: Sporturi de iarnă"
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Strat Orthofoto furnizat de basemap.at. \"Succesor\" al imaginilor geoimage.at.",
+        "name": "Orthofoto basemap.at "
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Termeni & Feedback"
+        },
+        "description": "Arată obiecte majore pentru a te ajuta la orientare.",
+        "name": "Acoperire Locator"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© Contribuitori OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OpenPT Map (acoperire)"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© Contribuitori OpenStreetMap"
+        },
+        "description": "Urme GPS publice încărcate la OpenStreetMap.",
+        "name": "OpenStreetMap urme GPS"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© Contribuitori OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (Stil German)"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, Date contribuitori ©OpenStreetMap"
+        },
+        "name": "QA Fără Adresă"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Plăci: skobbler Date hartă: Contribuitori OpenStreetMap"
+        }
+      },
+      "stamen-terrain-background": {
+        "name": "Teren Stamen"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Hărți © Thunderforest, Date © Contribuitori OpenStreetMap"
+        },
+        "name": "OpenCycleMap Thunderforest"
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Hărți © Thunderforest, Date © Contribuitori OpenStreetMap"
+        },
+        "name": "Peisaj Thunderforest "
+      }
+    }
+  }
+}

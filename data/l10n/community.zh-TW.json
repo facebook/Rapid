@@ -1,0 +1,1895 @@
+{
+  "zh-TW": {
+    "_communities": {
+      "freelibreopensourcesoftwarekosovaflossk": "自由與開放軟體科索沃 (FLOSSK)",
+      "geolibres": "地理自由",
+      "kiribatiwomeninmapping": "吉里巴斯女性在畫地圖",
+      "mappingbotswana": "畫波札那的地圖",
+      "maptimebogota": "波哥大地圖時間",
+      "maptimehrva": "地圖時間HRVA",
+      "openstreetmap": "開放街圖",
+      "openstreetmapaachen": "開放街圖亞琛",
+      "openstreetmapafghanistan": "開放街圖阿富汗",
+      "openstreetmapafrica": "開放街圖非洲",
+      "openstreetmapalba": "開放街圖阿爾巴",
+      "openstreetmapalbania": "開放街圖阿爾巴尼亞",
+      "openstreetmapargentina": "開放街圖阿根廷",
+      "openstreetmaparmenia": "開放街圖亞美尼亞",
+      "openstreetmapasia": "開放街圖亞洲",
+      "openstreetmapasti": "開放街圖阿斯蒂",
+      "openstreetmapaustria": "開放街圖奧地利",
+      "openstreetmapbahia": "開放街圖巴伊亞",
+      "openstreetmapbangladesh": "開放街圖孟加拉",
+      "openstreetmapbelarus": "開放街圖白羅斯",
+      "openstreetmapbelgium": "開放街圖比利時",
+      "openstreetmapbelize": "開放街圖貝里斯",
+      "openstreetmapbengaluru": "開放街圖班加羅爾",
+      "openstreetmapbenin": "開放街圖貝南",
+      "openstreetmapberlin": "開放街圖柏林",
+      "openstreetmapbivccvl": "開放街圖BI-VC-CVL",
+      "openstreetmapbochum": "開放街圖波鴻",
+      "openstreetmapbolivia": "開放街圖玻利維亞",
+      "openstreetmapbonn": "開放街圖伯恩",
+      "openstreetmapbosniaandherzegovina": "開放街圖波士尼亞與赫塞哥維納",
+      "openstreetmapbrasil": "開放街圖巴西",
+      "openstreetmapbrasilia": "開放街圖巴西利亞",
+      "openstreetmapbremen": "開放街圖不萊梅",
+      "openstreetmapbulgaria": "開放街圖保加利亞",
+      "openstreetmapburkinafaso": "開放街圖布吉納法索",
+      "openstreetmapburundi": "開放街圖蒲隆地",
+      "openstreetmapbzh": "開放街圖布列塔尼",
+      "openstreetmapcambodia": "開放街圖柬埔寨",
+      "openstreetmapcameroon": "開放街圖喀麥隆",
+      "openstreetmapcanada": "開放街圖加拿大",
+      "openstreetmapcastillayleon": "開放街圖卡斯蒂亞與萊昂 ",
+      "openstreetmapcatalancountries": "開放街圖加泰隆尼亞",
+      "openstreetmapceara": "開放街圖塞阿拉",
+      "openstreetmapchad": "開放街圖查德",
+      "openstreetmapchile": "開放街圖智利",
+      "openstreetmapchina": "開放街圖中國",
+      "openstreetmapcologne": "開放街圖科隆",
+      "openstreetmapcolombia": "開放街圖哥倫比亞",
+      "openstreetmapcomunitatvalenciana": "開放街圖瓦倫西亞社群",
+      "openstreetmapcostarica": "開放街圖哥斯大黎加",
+      "openstreetmapcotedivoire": "開放街圖象牙海岸",
+      "openstreetmapcroatia": "開放街圖克羅埃西亞",
+      "openstreetmapcuba": "開放街圖古巴",
+      "openstreetmapcuneo": "開放街圖庫內奧",
+      "openstreetmapcz": "開放街圖 CZ",
+      "openstreetmapde": "開放街圖德國",
+      "openstreetmapdeepsouth": "開放街圖美國深南部",
+      "openstreetmapdelhi": "開放街圖德里",
+      "openstreetmapdenmark": "開放街圖丹麥",
+      "openstreetmapdjibouti": "開放街圖吉布地",
+      "openstreetmapdominicanrepublic": "開放街圖多明尼加共和國",
+      "openstreetmapdresden": "開放街圖德勒斯登",
+      "openstreetmapdusseldorf": "開放街圖杜塞朵夫",
+      "openstreetmapecuador": "開放街圖厄瓜多",
+      "openstreetmapegypt": "開放街圖埃及",
+      "openstreetmaperitrea": "開放街圖厄利垂亞",
+      "openstreetmapespana": "開放街圖西班牙",
+      "openstreetmapestonia": "開放街圖愛沙尼亞",
+      "openstreetmapethiopia": "開放街圖伊索匹亞",
+      "openstreetmapfiji": "開放街圖菲濟",
+      "openstreetmapfinland": "開放街圖芬蘭",
+      "openstreetmapfrance": "開放街圖法國",
+      "openstreetmapfreemapslovakia": "開放街圖自由斯洛伐克",
+      "openstreetmapfrenchguiana": "開放街圖法屬圭亞那",
+      "openstreetmapfrenchpolynesia": "開放街圖法屬波利尼西亞",
+      "openstreetmapgabon": "開放街圖加彭",
+      "openstreetmapgalicia": "開放街圖加利西亞",
+      "openstreetmapgeorgia": "開放街圖喬治亞",
+      "openstreetmapgermany": "開放街圖德國",
+      "openstreetmapghana": "開放街圖迦納",
+      "openstreetmapgorakalwaria": "開放街圖古拉卡爾瓦里亞",
+      "openstreetmapgreece": "開放街圖希臘",
+      "openstreetmapgrenoble": "開放街圖格勒諾布爾",
+      "openstreetmapguatemala": "開放街圖瓜地馬拉",
+      "openstreetmapguinea": "開放街圖幾內亞",
+      "openstreetmaphaiti": "開放街圖海地",
+      "openstreetmaphamburg": "開放街圖漢堡",
+      "openstreetmaphonduras": "開放街圖宏都拉斯",
+      "openstreetmaphongkong": "開放街圖香港",
+      "openstreetmaphungary": "開放街圖匈牙利",
+      "openstreetmapiceland": "開放街圖冰島",
+      "openstreetmapindia": "開放街圖印度",
+      "openstreetmapindonesia": "開放街圖印尼",
+      "openstreetmapiran": "開放街圖伊朗",
+      "openstreetmapiraq": "開放街圖伊拉克",
+      "openstreetmapireland": "開放街圖愛爾蘭",
+      "openstreetmapisrael": "開放街圖以色列",
+      "openstreetmapitaly": "開放街圖義大利",
+      "openstreetmapitalylazio": "開放街圖義大利拉吉歐",
+      "openstreetmapitalylombardia": "開放街圖義大利倫巴底",
+      "openstreetmapitalypiemonte": "開放街圖義大利皮埃蒙特",
+      "openstreetmapitalysouthtyrol": "開放街圖義大利波爾察諾-上阿迪傑",
+      "openstreetmapitalytrentino": "開放街圖義大利特倫蒂諾",
+      "openstreetmapjapan": "開放街圖日本",
+      "openstreetmapkarlsruhe": "開放街圖卡爾斯魯爾",
+      "openstreetmapkazakhstan": "開放街圖哈薩克",
+      "openstreetmapkenya": "開放街圖肯亞",
+      "openstreetmapkerala": "開放街圖喀拉拉邦",
+      "openstreetmapkorea": "開放街圖韓國",
+      "openstreetmapkosovo": "開放街圖科索渥",
+      "openstreetmapkyrgyzstan": "開放街圖吉爾吉斯",
+      "openstreetmaplatinamerica": "開放街圖拉丁美洲",
+      "openstreetmaplatvia": "開放街圖拉脫維亞",
+      "openstreetmaplebanon": "開放街圖黎巴嫩",
+      "openstreetmaplesotho": "開放街圖賴索托",
+      "openstreetmapliberia": "開放街圖賴比瑞亞",
+      "openstreetmaplibya": "開放街圖利比亞",
+      "openstreetmaplithuania": "開放街圖立陶宛",
+      "openstreetmapljubljana": "開放街圖盧比安納",
+      "openstreetmaplombardia": "開放街圖倫巴底",
+      "openstreetmaplondon": "開放街圖倫敦",
+      "openstreetmapluneburg": "開放街圖呂訥堡",
+      "openstreetmapluxembourg": "開放街圖盧森堡",
+      "openstreetmapmadagascar": "開放街圖馬達加斯加",
+      "openstreetmapmadrid": "開放街圖馬德里",
+      "openstreetmapmalawi": "開放街圖馬拉威",
+      "openstreetmapmalaysia": "開放街圖馬來西亞",
+      "openstreetmapmali": "開放街圖馬利",
+      "openstreetmapmalta": "開放街圖馬爾他",
+      "openstreetmapmauritania": "開放街圖茅利塔尼亞",
+      "openstreetmapmecklenburgvorpommern": "開放街圖梅克倫堡-西波美拉尼亞",
+      "openstreetmapmexico": "開放街圖墨西哥",
+      "openstreetmapmichigan": "開放街圖密西根",
+      "openstreetmapmoldova": "開放街圖摩爾多瓦",
+      "openstreetmapmongolia": "開放街圖蒙古",
+      "openstreetmapmontenegro": "開放街圖蒙特內哥羅",
+      "openstreetmapmontrouge": "開放街圖蒙魯日",
+      "openstreetmapmorocco": "開放街圖摩洛哥",
+      "openstreetmapmunchen": "開放街圖慕尼黑",
+      "openstreetmapmyanmar": "開放街圖緬甸",
+      "openstreetmapnepal": "開放街圖尼泊爾",
+      "openstreetmapnetherlands": "開放街圖荷蘭",
+      "openstreetmapnicaragua": "開放街圖尼加拉瓜",
+      "openstreetmapniger": "開放街圖尼日",
+      "openstreetmapnigeria": "開放街圖奈及利亞",
+      "openstreetmapnorthkorea": "開放街圖北韓",
+      "openstreetmapnorway": "開放街圖挪威",
+      "openstreetmapoceania": "開放街圖大洋洲",
+      "openstreetmapohio": "開放街圖俄亥俄",
+      "openstreetmapottawa": "開放街圖渥太華",
+      "openstreetmappakistan": "開放街圖巴基斯坦",
+      "openstreetmappanama": "開放街圖巴拿馬",
+      "openstreetmapparaguay": "開放街圖巴拉圭",
+      "openstreetmapperu": "開放街圖祕魯",
+      "openstreetmapphilippines": "開放街圖菲律賓",
+      "openstreetmappiemonte": "開放街圖皮埃蒙特",
+      "openstreetmappoland": "開放街圖波蘭",
+      "openstreetmapportugal": "開放街圖葡萄牙",
+      "openstreetmaprdc": "開放街圖剛果民主共和國",
+      "openstreetmaprennes": "開放街圖雷恩",
+      "openstreetmapreunion": "開放街圖留尼旺",
+      "openstreetmapriograndedosul": "開放街圖南里奧格蘭德州",
+      "openstreetmapromania": "開放街圖羅馬尼亞",
+      "openstreetmaprussia": "開放街圖俄羅斯",
+      "openstreetmaprwanda": "開放街圖盧安達",
+      "openstreetmapsaudiarabia": "開放街圖沙烏地阿拉伯",
+      "openstreetmapsenegal": "開放街圖塞內加爾",
+      "openstreetmapserbia": "開放街圖塞爾維亞",
+      "openstreetmapseychelles": "開放街圖塞席爾",
+      "openstreetmapsierraleone": "開放街圖獅子山",
+      "openstreetmapsingapore": "開放街圖新加坡",
+      "openstreetmapslovenia": "開放街圖斯洛維尼亞",
+      "openstreetmapsomalia": "開放街圖索馬利亞",
+      "openstreetmapsouthafrica": "開放街圖南非",
+      "openstreetmapsouthsudan": "開放街圖南蘇丹",
+      "openstreetmapsrilanka": "開放街圖斯里蘭卡",
+      "openstreetmapsudan": "開放街圖蘇丹",
+      "openstreetmapsweden": "開放街圖瑞典",
+      "openstreetmapswitzerland": "開放街圖瑞士",
+      "openstreetmapsyria": "開放街圖敘利亞",
+      "openstreetmaptaiwan": "開放街圖台灣",
+      "openstreetmaptanzania": "開放街圖坦尚尼亞",
+      "openstreetmapthailand": "開放街圖泰國",
+      "openstreetmaptogo": "開放街圖東加",
+      "openstreetmaptoronto": "開放街圖多倫多",
+      "openstreetmaptunisia": "開放街圖突尼西亞",
+      "openstreetmapturin": "開放街圖杜林",
+      "openstreetmapturkey": "開放街圖土耳其",
+      "openstreetmapuganda": "開放街圖烏干達",
+      "openstreetmapuk": "開放街圖英國",
+      "openstreetmapukraine": "開放街圖烏克蘭",
+      "openstreetmapuruguay": "開放街圖烏拉圭",
+      "openstreetmapus": "開放街圖美國",
+      "openstreetmapuzbekistan": "開放街圖烏茲別克",
+      "openstreetmapvenezuela": "開放街圖委內瑞拉",
+      "openstreetmapvietnam": "開放街圖越南",
+      "openstreetmapwarszawa": "開放街圖華沙",
+      "openstreetmapwestbengal": "開放街圖西孟加拉",
+      "openstreetmapwesternsahara": "開放街圖西撒哈拉",
+      "openstreetmapzambia": "開放街圖桑比亞",
+      "openstreetmapzimbabwe": "開放街圖辛巴威",
+      "osmmainz": "開放街圖美因茨",
+      "youthmappersasu": "年輕圖客ASU"
+    },
+    "_defaults": {
+      "aparat": {
+        "name": "Aparat 上的 {community}",
+        "description": "訂閱我們的 Aparat 頻道"
+      },
+      "discord": {
+        "description": "在 Discord 與其他製圖者取得聯繫"
+      },
+      "discourse": {
+        "name": "{community} 社群論壇",
+        "description": "{community} 的官方論壇"
+      },
+      "facebook": {
+        "name": "Facebook 上的 {community}",
+        "description": "加入 Facebook 上的 {community}"
+      },
+      "forum": {
+        "name": "{community} 論壇",
+        "description": "{community} 的官方郵件論壇"
+      },
+      "github": {
+        "name": "{community} 的 GitHub"
+      },
+      "gitlab": {
+        "name": "{community} 的 GitLab"
+      },
+      "instagram": {
+        "name": "Instagram 上的 {community}",
+        "description": "在 Instagram 上追蹤我們"
+      },
+      "irc": {
+        "name": "IRC 上的 {community}",
+        "description": "在 irc.oftc.net 上加入 #{account}（連接埠 6667，或是安全連線是 6697）"
+      },
+      "linkedin": {
+        "name": "LinkedIn 上的 {community}",
+        "description": "加入 LinkedIn 上的 {community}"
+      },
+      "mailinglist": {
+        "name": "{account} 郵件論壇",
+        "description": "{community} 的官方郵件論壇"
+      },
+      "mastodon": {
+        "name": " {community} 的乳齒象",
+        "description": "{community} 的官方乳齒象社群帳號"
+      },
+      "matrix": {
+        "name": "{community} Matrix 聊天室",
+        "description": "加入社群的 Matrix 聊天室"
+      },
+      "newsletter": {
+        "name": "{community} 電子報"
+      },
+      "reddit": {
+        "name": "Reddit 上的 {community}"
+      },
+      "signal": {
+        "name": "{community} 的 Signal",
+        "description": "加入社群的 Signal 聊天室"
+      },
+      "slack": {
+        "name": "{community} 的 Slack"
+      },
+      "telegram": {
+        "name": "{community} 的 Telegram",
+        "description": "加入社群的 Telegram 聊天室"
+      },
+      "threads": {
+        "name": "Threads 上的 {community}",
+        "description": "在 Threads 追隨我們"
+      },
+      "tiktok": {
+        "name": "TikTok 上的 {community}",
+        "description": "在 TikTok 上追蹤我們"
+      },
+      "twitter": {
+        "name": "X 上的 {community}",
+        "description": "在 X 追隨我們"
+      },
+      "x": {
+        "name": "X 上的 {community}",
+        "description": "在 X 追隨我們"
+      },
+      "youtube": {
+        "name": "YouTube 上的 {community}",
+        "description": "訂閱 YouTube 頻道"
+      },
+      "zulip": {
+        "description": "加入社群的 Zulip 聊天室"
+      }
+    },
+    "af-matrix": {
+      "description": "阿富汗社群的 Matrix 群組。"
+    },
+    "al-maptime-tirana": {
+      "name": "地圖時間地拉那",
+      "description": "與畫地圖相關的社交活動-尤其歡迎新手！",
+      "extendedDescription": "Maptime 是開放給所有等級和知識程度的學習環境，提供給初學者的國際教育支援。Maptime 同時具有彈性和架構的環境，創造畫地圖的教學、工作坊，分享共同目標的進行中計畫，以及獨立/協同的工作時間。"
+    },
+    "am-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "at-matrix": {
+      "description": "澳地利非官方的德語 Matrix 頻道"
+    },
+    "at-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "Bahia-telegram": {
+      "extendedDescription": "加入社群學習更多關於開放街圖的事情，詢問問題或是參加聚會，歡迎所有人噢！"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "name": "灣區的開放街圖圖客",
+      "description": "改善在灣區的開放街圖",
+      "extendedDescription": "這個群組是為了讓灣區的 OpenStreetMap 社群成長茁壯而設立。我們的活動開放給所有人參與，開放原始碼支持者、自行車騎士、地理資訊系統 (GIS) 專家、地理藏寶者都可以。只要對地圖、地圖製作與自由地圖資料有興趣的人都歡迎加入我們的群組，以及參與我們的活動。"
+    },
+    "bd-facebook": {
+      "extendedDescription": "在孟加拉畫地圖嗎？想要問問題，想要與社群連結？請加入 {url}，所有人都歡迎噢！ "
+    },
+    "be-chapter": {
+      "description": "我們協助比利時的開放街圖成長茁壯並改善它。",
+      "extendedDescription": "如果你想要改進和茁壯比利時的地圖社群，讓更多人瘋狂的參與畫地圖，OpenStreetMap 比利時就是最好的地方了！"
+    },
+    "be-discourse": {
+      "description": "討論開放街圖在比利時事物的 Discourse"
+    },
+    "be-irc": {
+      "extendedDescription": "在 irc.oftc.net (port 6667) 上面加入 #{account} ，與 Matrix 聊天頻道互連同步"
+    },
+    "be-matrix": {
+      "description": "歡迎所有圖客！",
+      "extendedDescription": "OSM 比利時社群主要的聊天室，不用拘束盡情問新手問題吧？"
+    },
+    "be-meetup": {
+      "description": "實體聚會中見到每一位對開放街圖有興趣的人",
+      "extendedDescription": "實體的聚會是與其他圖客碰面的好機會，能夠論論問題，學到很多事情，特別是歡迎新的貢獻者。"
+    },
+    "be-newsletter": {
+      "description": "比利時社群每季發行的電子報"
+    },
+    "bg-wiki": {
+      "description": "開放街圖維基專案保加利亞頁面"
+    },
+    "bi-vc-cvl-meetup": {
+      "description": "比耶拉、韋塞利與Canavese e Valli di Lanzo的本地圖客組織",
+      "extendedDescription": "從 2018 年 2月開始聚會，通常辦在比耶拉、伊夫雷亞。"
+    },
+    "bo-facebook-group": {
+      "name": "{community} 臉書社團"
+    },
+    "bo-matrix": {
+      "description": "歡迎所有的圖客！"
+    },
+    "br-telegram": {
+      "extendedDescription": "加入社群以得知更多關於開放街圖的資訊，也可以問問題或是參與我們的會面。每個人都很歡迎加入！"
+    },
+    "br-wiki": {
+      "description": "巴西資訊與協調指南的 WikiProject 頁面"
+    },
+    "cape-coast-youthmappers": {
+      "name": "海角海岸大學年輕圖客",
+      "description": "追隨我們的 Twitter： {url} ",
+      "extendedDescription": "這是迦納 University of Cape Coast Youth Mappers 分會的官方頻道，我們愛地圖、開放資料和幫助別人。"
+    },
+    "castilla-y-leon-wiki": {
+      "description": "在卡斯蒂亞與雷恩製圖您必須知道的的所有事情：{url}"
+    },
+    "cat-github": {
+      "description": "開放街圖加泰隆尼亞社群在 GitHub 上的專案"
+    },
+    "cat-matrix": {
+      "description": "開放街圖加泰隆尼亞社群在 Matrix 上的群組"
+    },
+    "cat-twitch": {
+      "name": "{community} 的 Twitch 頻道",
+      "description": "即時編輯開放街圖，HOTosm，開放資料與 GIS"
+    },
+    "cat-wiki": {
+      "description": "開放街圖在加泰隆尼亞的社群協作空間：{url}"
+    },
+    "cd-chapter": {
+      "name": "開放街圖剛果民主共和國",
+      "description": "一條路接著下一條路，讓我們來繪製我們的國家…",
+      "extendedDescription": "我們對於 OSM 計劃相關熱情，用我們自己時間來推廣這項專案，我們力量仍小，歡迎加入我們！"
+    },
+    "Central-Pennsylvania-OSM": {
+      "name": "賓州中部 OSM",
+      "description": "位於賓州州立大學的線上製圖社群"
+    },
+    "ch-mailinglist": {
+      "name": "開放街圖瑞士郵件論壇",
+      "description": "瑞士的郵件論壇"
+    },
+    "cl-facebook": {
+      "extendedDescription": "加入社群以得知更多關於開放街圖的資訊，也可以問問題或是參與我們的會面。每個人都很歡迎加入！"
+    },
+    "cl-telegram": {
+      "extendedDescription": "加入社群以得知更多關於開放街圖的資訊，也可以問問題或是參與我們的會面。每個人都很歡迎加入！"
+    },
+    "co-facebook": {
+      "extendedDescription": "加入社群學習更多關於開放街圖的事情，歡迎所有人噢！"
+    },
+    "co-github": {
+      "description": "哥倫比亞相關的 Git 專案"
+    },
+    "co-wiki": {
+      "description": "哥倫比亞畫地圖的相關 Wiki 頁面"
+    },
+    "comunitat-valenciana-wiki": {
+      "description": "您必須知道的在瓦倫西亞製圖的所有事情：{url}"
+    },
+    "czech-community": {
+      "description": "捷克開放街圖成員的地圖入口以及聯繫地方"
+    },
+    "czech-discord": {
+      "description": "開放街圖捷克連線互連 IRC、Jabber、Matrix 與 Telegram 的空間"
+    },
+    "czech-irc": {
+      "description": "開放街圖捷克連線互連 Discord、Jabber、Matrix 與 Telegram 的空間"
+    },
+    "czech-matrix": {
+      "description": "開放街圖捷克連線互連 Discord、IRC、Jabber 與 Telegram 的空間"
+    },
+    "czech-telegram": {
+      "description": "開放街圖捷克連線互連 Discord、IRC、Jabber 與 Matrix 的空間"
+    },
+    "czech-xmpp": {
+      "description": "開放街圖捷克連線互連 Discord、IRC、Matrix 與 Telegram 的空間"
+    },
+    "de-aachen-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "de-berlin-mailinglist": {
+      "name": "柏林郵件論壇"
+    },
+    "de-berlin-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "de-berlin-xmpp": {
+      "name": "開放街圖Berlin-Brandenburg XMPP",
+      "description": "加入我們 XMPP 多使用者群組聊天：{url}"
+    },
+    "de-bochum-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "de-bonn-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "de-bremen-mailinglist": {
+      "name": "布萊梅郵件論壇"
+    },
+    "de-bremen-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "de-cologne-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "de-dresden-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "de-dusseldorf-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "de-hamburg-xmpp": {
+      "name": "開放街圖漢堡 XMPP",
+      "description": "加入我們 XMPP 多使用者群組聊天：{url}"
+    },
+    "de-karlsruhe-mailinglist": {
+      "name": "卡爾斯魯爾郵件論壇"
+    },
+    "de-karlsruhe-meetup": {
+      "description": "在卡爾斯魯爾的圖客與開放街圖使用者"
+    },
+    "de-luneburg-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "de-mainz-mailinglist": {
+      "description": "美因茨一帶的開放街圖"
+    },
+    "de-mainz-telegram": {
+      "description": "美因茨一帶的開放街圖"
+    },
+    "de-mainz-wiki": {
+      "description": "美因茨一帶的開放街圖"
+    },
+    "de-munchen-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "de-mv-mailinglist": {
+      "name": "梅克倫堡-西波美拉尼亞郵件論壇"
+    },
+    "de-ostwestfalen-lippe-mailinglist": {
+      "name": "OWL 郵件論壇",
+      "description": "這是東威斯特法倫 - 利普開放街圖社群的郵件論壇"
+    },
+    "de-stuttgart-mailinglist": {
+      "name": "斯徒加特和巴登-符騰堡邦郵件論壇",
+      "description": "這是斯徒加特和巴登-符騰堡邦地區開放街圖社群的郵件論壇"
+    },
+    "de-stuttgart-meetup": {
+      "name": "開放街圖斯徒加特聚會",
+      "description": "在斯徒加特的圖客與開放街圖使用者"
+    },
+    "de-telegram": {
+      "name": "開放街圖德奧瑞 Telegram",
+      "description": "加入開放街圖德奧瑞 Telegram 超級聊天室 {url}"
+    },
+    "de-ulm_neuulm-meetup": {
+      "name": "開放街圖烏姆、新烏姆聚會",
+      "description": "烏姆和新烏姆區域的圖客與開放街圖使用者"
+    },
+    "de-ulmeralb-meetup": {
+      "name": "開放街圖 Ulmer Alb 聚會",
+      "description": "Ulmer Alb一帶的圖客與開放街圖使用者"
+    },
+    "de-viersen-meetup": {
+      "name": "開放街圖菲爾森聚會",
+      "description": "OSM 菲爾森和門興格拉德巴赫社群與使用者聚會"
+    },
+    "de-xmpp": {
+      "name": "開放街圖德國 XMPP",
+      "description": "加入我們 XMPP 多使用者群組聊天：{url}"
+    },
+    "DF-telegram": {
+      "extendedDescription": "加入社群學習更多關於開放街圖的事情，詢問問題或是參加聚會，歡迎所有人噢！"
+    },
+    "dk-discourse": {
+      "description": "討論開放街圖在丹麥事物的 Discourse 論壇"
+    },
+    "ee-wiki": {
+      "description": "針對愛沙泥亞畫地圖相關活動的資訊"
+    },
+    "fr-35-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "fr-38-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "fr-bzh-website": {
+      "description": "說布列塔尼語的地圖"
+    },
+    "fr-chapter": {
+      "description": "我們協助法國的開放街圖成長茁壯並改善它。"
+    },
+    "fr-discord": {
+      "name": "開放街圖法國 Discord 社群"
+    },
+    "fr-matrix": {
+      "description": "OSM 法國社群的 Matrix 群組：{url} (與 Telegram 同步)"
+    },
+    "fr-montrouge-website": {
+      "description": "提供蒙魯日在地社群 OSM 服務和資訊"
+    },
+    "fr-montrouge-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "fr-telegram": {
+      "description": "OSM 法國社群的 Telegram 群組：{url}"
+    },
+    "fr-xmpp": {
+      "description": "加入 osm-fr@chat.jabberfr.org"
+    },
+    "galicia-wiki": {
+      "description": "您必須知道的在加利西亞製圖的所有事情：{url}"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "name": "在 Twitter 上的 Xeoinquedos",
+      "description": "在 {url} 於 Twitter 上追蹤我們"
+    },
+    "gb-irc": {
+      "extendedDescription": "在 irc.oftc.net (port 6667) 加入 #{account}，如果你問了問題，請耐心等候數分鐘等待回應"
+    },
+    "gb-mailinglist": {
+      "description": "Talk-gb 是大英國協 (包括北愛爾蘭) 社群的主要溝通郵件論壇 "
+    },
+    "geogeeks_perth_meetup": {
+      "name": "地理技客伯斯",
+      "description": "針對畫地圖、地理空間資料和開放原始碼有興趣的伯斯聚會群組，我們定期舉行圖客派對、演講與聚會，歡迎新手加入！"
+    },
+    "GeoPhilly": {
+      "description": "費城地區的地圖愛好者聚會",
+      "extendedDescription": "GeoPhilly 將開發者、地理學家、資料極客、開放原始碼愛好者、公民駭客與地圖愛好者聯合起來，並將我們對地圖的熱愛與他們的故事連結起來。如果你在工作中會用到地圖，或僅僅只是想要了解更多，這就是為你而辦的聚會！我們的活動旨在開放、友好、教育與社交，從歡樂時光到閃電講，甚至是工作坊都有。跟我們一起在費城建立一個多元化且激勵人心的地理空間社群！"
+    },
+    "hr-irc": {
+      "description": "在 irc.freenode.org (port 6667) 上面加入 #{account} "
+    },
+    "hr-wiki": {
+      "description": "開放街圖維基專案克羅埃西亞頁面"
+    },
+    "hu-facebook-group": {
+      "name": "{community} 臉書社團"
+    },
+    "hu-matrix": {
+      "extendedDescription": "有關地圖主題的開放街圖聊天群組，為 OSM 社群支援論壇其中之一"
+    },
+    "hu-meetup": {
+      "description": "匈牙利舉行聚會的平台"
+    },
+    "hu-mobilizon": {
+      "name": "Mobilizon 上的 {community}",
+      "description": "開放街圖匈牙利社群的未來活動"
+    },
+    "hu-tm": {
+      "name": "{community} 任務分配管理器",
+      "description": "探索匈牙利的啟動畫地圖任務"
+    },
+    "hu-website": {
+      "description": "我們協助匈牙利的開放街圖成長茁壯並改善它。"
+    },
+    "hu-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "humanitarian-osm-tr-slack": {
+      "name": "人道救援開放街圖土耳其 Slack",
+      "description": "加入人道救援開放街圖土耳其的 Slack 頻道 {url}"
+    },
+    "id-facebook": {
+      "extendedDescription": "在印尼畫地圖嗎？有問題，想要與社群互動？來 {url} 加入我們，歡迎所有人。"
+    },
+    "id-facebook-group": {
+      "name": "{community} 臉書社團",
+      "extendedDescription": "在印尼畫地圖嗎？有問題，想要與社群互動？來 {url} 加入我們，歡迎所有人。"
+    },
+    "ireland-chapter": {
+      "description": "我們協助愛爾蘭的開放街圖成長茁壯並改善它。",
+      "extendedDescription": "開放街圖愛爾蘭提供整個愛爾蘭島有關開放街圖計畫的聲音，並且與其他開放倡議的組織互動。"
+    },
+    "ireland-irc": {
+      "extendedDescription": "在 irc.oftc.net (port 6667) 加入 #{account}，如果你問了問題，請耐心等候數分鐘等待回應"
+    },
+    "ireland-matrix": {
+      "description": "OSM 愛爾蘭 IRC 頻道的 Matrix 閘口：{url}"
+    },
+    "ireland-meetup": {
+      "description": "所有對開放街圖有興趣的人的聚會。"
+    },
+    "is-chapter": {
+      "description": "我們協助冰島的開放街圖成長茁壯並改善它。"
+    },
+    "it-chapter": {
+      "description": "我們協助義大利的開放街圖成長茁壯並改善它。"
+    },
+    "it-discourse": {
+      "description": "您可以討論 OpenStreetMap 事務的論壇"
+    },
+    "ko-facebook": {
+      "description": "南韓的圖客與開放街圖使用者"
+    },
+    "ko-osm": {
+      "description": "我們協助韓國的開放街圖成長茁壯並改善它。",
+      "extendedDescription": "如果有要或是想貢獻時間給開放街圖的話，歡迎加入我們的行列，我們隨時歡迎新手加入！"
+    },
+    "kosovo-flossk": {
+      "name": "科索沃自由與開源軟體 (FLOSSK)",
+      "description": "從 2009 年開始推廣自由與開源軟體",
+      "extendedDescription": "科索沃自由與開源軟體 (FLOSSK) 2009年成立，是在普里斯提納活動的非政府組織，宗旨是支援、推廣和開發自由與開源軟體。除此之外，我們也有透過開發課程與開放標準、開放文化和開放社會，來貢獻開放與參與式知識，資訊科技在教育的應用。"
+    },
+    "kosovo-matrix": {
+      "description": "半官方的全科索沃公開群組 (與 Telegram 訊息連動)。我們歡迎從任何地方來，說任何語言的製圖者。"
+    },
+    "kosovo-telegram": {
+      "description": "半官方的全科索沃 Telegram 公開群組。我們歡迎從任何地方來，說任何語言的製圖者。"
+    },
+    "kp-wiki": {
+      "description": "{community} 畫地圖指南"
+    },
+    "latam-facebook": {
+      "description": "拉丁美洲圖客和開放街圖 Facebook"
+    },
+    "latam-matrix": {
+      "description": "在開放街圖拉丁美洲社群的成員聊天，與 Telegram 聊天室連通。"
+    },
+    "latam-telegram": {
+      "description": "在開放街圖拉丁美洲社群的成員聊天，與 Matrix 聊天室連通。"
+    },
+    "latam-wiki": {
+      "description": "您必須知道的在拉丁美洲製圖的所有事情"
+    },
+    "lk-facebook": {
+      "extendedDescription": "在斯里蘭卡畫地圖嗎？有問題，想要與社群互動？來  {url} 加入我們，歡迎所有人。"
+    },
+    "local-polynesie-mailinglist": {
+      "extendedDescription": "取得與學習有關 OSM 社群的大小事情，尋求問題的解答，協調事務以及所有有關 OSM 社群的事。所有事情都歡迎噢！"
+    },
+    "lu-github": {
+      "description": "開放街圖盧森堡社群的 GithHub 組織"
+    },
+    "lu-matrix": {
+      "description": "盧森堡社群的 Matrix 群組，整合整個社群。"
+    },
+    "madrid-uam-ym": {
+      "name": "UAM 年輕圖客",
+      "description": "馬德里自治大學的年輕圖客分會"
+    },
+    "madrid-upm-ym": {
+      "description": "馬德里技術大學的年輕圖客分會",
+      "extendedDescription": "蒙克洛亞校區在 2017 年 11 月組成的地理志工團體，差不多有從三所大學 (Complutense、CEU 與 UPM) 來的 20 位成員。大學部學生、碩士、博士學生從 Geoinquietos 獲得訓練一起合作組織 (MSF、Acción contra el Hambre…) 活動。由 UPM 正式認可為教育創新專案 (Code IE1718.0411) "
+    },
+    "madrid-wiki": {
+      "description": "您必須知道的在馬德里製圖的所有事情：{url}"
+    },
+    "mailinglist-sk-googlegroups": {
+      "name": "在 Google 群組的斯洛伐克郵件論壇",
+      "description": "斯洛伐克的官方郵件論壇"
+    },
+    "map-kibera": {
+      "description": "Map Kibera 是在肯亞活動的註冊組織",
+      "extendedDescription": "Map Kibera Trust 的任務透過用創意方式採用數位工具，來增進破碎的社群的影響力與代表性。"
+    },
+    "MapABQ": {
+      "description": "阿佈奎爾與北新墨西哥州的開放街圖使用者每月聚會",
+      "extendedDescription": "歡迎任何人加入，我們會很高興協助來開始畫地圖。聚會型式採自由型式，允許貢獻者新增阿布奎爾一帶的開放街圖資料。"
+    },
+    "MapColabora-mailinglist": {
+      "name": "協作製圖/薩拉戈薩",
+      "description": "協作製圖/薩拉戈薩的郵件論壇"
+    },
+    "MapColabora-twitter": {
+      "name": "協作製圖/薩拉戈薩地理資訊",
+      "description": "協作製圖/薩拉戈薩地理信息Twitter帳戶"
+    },
+    "mappa-mercia-group": {
+      "name": "Mappa Mercia 地方社群",
+      "description": "英格蘭中部區一帶開放街圖熱情參與者的園地",
+      "extendedDescription": "Mappa Mercia 計畫宗旨是幫忙英國英格蘭中部區開放街圖的成長，我們運行社群活動，提供訓練和支援當地組織，最終希望能夠開放他們的資料。"
+    },
+    "MappingDC-meetup": {
+      "description": "改善華府區域的開放街圖資料",
+      "extendedDescription": "我們是一群致力於改善華府區域的開放街圖的群組。我們也努力教導其他人關於 OSM 的生態系、資料分析、製圖與 GIS。我們每隔一個月聚會一次，每次僅聚焦在我們的城市中的一個地區。"
+    },
+    "MappingWR": {
+      "description": "讓滑鐵盧地區的低碳路徑更容易探索。"
+    },
+    "MapRVA": {
+      "description": "MapRVA 聚會"
+    },
+    "maptime-bogota-facebook": {
+      "name": "地圖時間波哥大",
+      "description": "我們是一群有興趣畫開放街圖波哥大與週遭地區的人。",
+      "extendedDescription": "學習在現場收集資料，然後在開放街圖上面數位化。你不需要有先備知識！你只要有心參與、學習以及好好玩。"
+    },
+    "maptime-bogota-github": {
+      "name": "地圖時間波哥大",
+      "description": "我們是一群有興趣畫開放街圖波哥大與週遭地區的人。",
+      "extendedDescription": "學習在現場收集資料，然後在開放街圖上面數位化。你不需要有先備知識！你只要有心參與、學習以及好好玩。"
+    },
+    "maptime-bogota-linkedin": {
+      "name": "地圖時間波哥大",
+      "description": "我們是一群有興趣畫開放街圖波哥大與週遭地區的人。",
+      "extendedDescription": "學習在現場收集資料，然後在開放街圖上面數位化。你不需要有先備知識！你只要有心參與、學習以及好好玩。"
+    },
+    "maptime-bogota-mastodon": {
+      "name": "地圖時間波哥大",
+      "description": "我們是一群有興趣畫開放街圖波哥大與週遭地區的人。",
+      "extendedDescription": "學習在現場收集資料，然後在開放街圖上面數位化。你不需要有先備知識！你只要有心參與、學習以及好好玩。"
+    },
+    "maptime-bogota-meetup": {
+      "name": "地圖時間波哥大",
+      "description": "我們是一群有興趣畫開放街圖波哥大與週遭地區的人。",
+      "extendedDescription": "學習在現場收集資料，然後在開放街圖上面數位化。你不需要有先備知識！你只要有心參與、學習以及好好玩。"
+    },
+    "maptime-bogota-telegram": {
+      "name": "地圖時間波哥大",
+      "description": "我們是一群有興趣畫開放街圖波哥大與週遭地區的人。",
+      "extendedDescription": "學習在現場收集資料，然後在開放街圖上面數位化。你不需要有先備知識！你只要有心參與、學習以及好好玩。"
+    },
+    "maptime-bogota-twitter": {
+      "name": "地圖時間波哥大",
+      "description": "我們是一群有興趣畫開放街圖波哥大與週遭地區的人。",
+      "extendedDescription": "學習在現場收集資料，然後在開放街圖上面數位化。你不需要有先備知識！你只要有心參與、學習以及好好玩。"
+    },
+    "maptime-bogota-website": {
+      "name": "地圖時間波哥大",
+      "description": "我們是一群有興趣畫開放街圖波哥大與週遭地區的人。",
+      "extendedDescription": "學習在現場收集資料，然後在開放街圖上面數位化。你不需要有先備知識！你只要有心參與、學習以及好好玩。"
+    },
+    "maptime-bogota-youtube": {
+      "name": "地圖時間波哥大",
+      "description": "我們是一群有興趣畫開放街圖波哥大與週遭地區的人。",
+      "extendedDescription": "學習在現場收集資料，然後在開放街圖上面數位化。你不需要有先備知識！你只要有心參與、學習以及好好玩。"
+    },
+    "Maptime-ME-meetup": {
+      "description": "緬因州波特蘭區域的圖客與開放街圖使用者",
+      "extendedDescription": "以字面來說，Maptime 是畫地圖的時間，我們的宗旨是開創一扇讓任何能製作地圖的時間和空問，大家共同學習，探索和運用製作地圖工具和技術製作地圖。"
+    },
+    "Maptime-Oceania-Slack": {
+      "description": "在 {signupUrl} 註冊"
+    },
+    "md-googlegroup": {
+      "name": "{community} Google 群組",
+      "description": "加入 {community} Google 群組"
+    },
+    "me-telegram": {
+      "description": "歡迎所有人加入！在 {signupUrl} 註冊"
+    },
+    "mm-facebook": {
+      "extendedDescription": "在緬甸畫地圖嗎？有問題，想要與社群互動？來  {url} 加入我們，歡迎所有人。"
+    },
+    "mn-facebook": {
+      "extendedDescription": "在蒙古畫地圖嗎？有問題，想要與社群互動？來 {url} 加入我們，歡迎所有人。"
+    },
+    "mt-irc": {
+      "extendedDescription": "在 irc.oftc.net (port 6667) 加入 #{account}，如果你問了問題，請耐心等候數分鐘等待回應"
+    },
+    "nl-discourse": {
+      "description": "討論開放街圖在尼德蘭事物的論壇"
+    },
+    "nl-matrix": {
+      "description": "歡迎所有的圖客！"
+    },
+    "no-irc": {
+      "description": "在挪威的圖客與開放街圖使用者、開發者與愛好者"
+    },
+    "no-matrix": {
+      "description": "與 IRC 聊天室有連結"
+    },
+    "Nottingham-OSM-pub-meetup": {
+      "name": "East Midlands (諾丁漢) 酒吧每月聚會",
+      "description": "East Midlands 圖客和使用者的社交聚會",
+      "extendedDescription": "一開始 2011 年 3 月時有一群人在諾丁罕開始聚會，後來則大多在德比，以及不時在東密德蘭的其他地方。大多是社交性質的聚會，但也是相當好詢問有關地方 OSM 或是一般性質問題。在夏季時我們通常會趁有日光時在聚會場地附近出外畫地圖，這群人有個特別興趣，就是繪製公共空間，不時會為了畫地圖而聚會。"
+    },
+    "np-facebook": {
+      "extendedDescription": "在尼泊爾畫地圖嗎？有問題，想要與社群互動？來 {url} 加入我們，歡迎所有人。"
+    },
+    "Open-Source-San-Jose-Discord": {
+      "name": "開源聖荷西的 Discord",
+      "description": "在 Discord 與其他圖客交流！註冊之後，加入 #🗺openstreetmap 頻道。"
+    },
+    "Open-Source-San-Jose-Slack": {
+      "name": "開源聖荷西的 Slack",
+      "description": "歡迎所有人加入！在 {signupUrl} 註冊，並加入 #proj-osm 頻道。"
+    },
+    "OpenCleveland-meetup": {
+      "description": "改善克里夫蘭區域的開放街圖",
+      "extendedDescription": "Open Geo Cleveland 宗旨是成為人們熱情討論和分享自由地理資料集知識的資源，特別是開放街圖的資料，以及管理、編輯和顯示地理資料的開放地理空間軟體，以及在東北伊犁洛州推廣的團體。我們同時也是 maptime 的在地社群 =)"
+    },
+    "osgeo-oceania": {
+      "name": "OSGeo 大洋洲 ",
+      "description": "我們支援大洋洲的開放街圖社群的發展。",
+      "extendedDescription": "OSGeo 大洋洲的目的是支援與茁壯大洋洲的開放地理空間社群，包括監督與管理 FOSS4G SotM 大洋洲大會。"
+    },
+    "osm-africa-eventbrite": {
+      "description": "{community} EventBrite 頁面"
+    },
+    "osm-africa-facebook-group": {
+      "name": "{community} 臉書社團"
+    },
+    "osm-africa-matrix": {
+      "description": "歡迎所有的圖客！"
+    },
+    "osm-africa-slack": {
+      "description": "歡迎所有人加入！在 {signupUrl} 註冊"
+    },
+    "OSM-AR-geolibres": {
+      "description": "Geolibres 公民組織",
+      "extendedDescription": "我們推廣創建與使用開放截取的地理資料，擁抱地理標準，以及使用自由與開放原始碼軟體。"
+    },
+    "OSM-AR-telegram": {
+      "extendedDescription": "這是社群最活躍的頻道，適合聊天和馬上解答你的問題，歡迎所有人！"
+    },
+    "OSM-AR-twitter": {
+      "extendedDescription": "一般在地社群和開放街圖消息。"
+    },
+    "OSM-AR-wiki": {
+      "description": "您必須知道在阿根庭製圖的所有事情"
+    },
+    "osm-at": {
+      "description": "開放街圖在奧地利交流資訊的平台"
+    },
+    "osm-bengaluru-matrix": {
+      "extendedDescription": "在班加羅爾的開放街圖貢獻者、使用者與新手的群組，有連接到 Telegram。"
+    },
+    "osm-bengaluru-telegram": {
+      "extendedDescription": "在班加羅爾的開放街圖貢獻者、使用者與新手的群組，有連接到 Matrix。"
+    },
+    "osm-bengaluru-wiki": {
+      "description": "開放街圖在班加羅爾"
+    },
+    "osm-benin-facebook": {
+      "description": "改善貝南的開放街圖"
+    },
+    "OSM-Central-Salish-Sea": {
+      "name": "開放街圖中薩利希海",
+      "description": "華盛頓州弗農山區域的圖客與開放街圖使用者",
+      "extendedDescription": "開放街圖是一幅由像你這樣的人所製作的世界地圖。它是由你所建構，並如同維基百科那樣自由提供給所有人的地圖。看看 osm.org 以取得更多資訊，然後在聚會上加入我們來說說地圖的故事、對 OSM 貢獻然後玩得開心！"
+    },
+    "osm-ch": {
+      "description": "開放街圖在瑞士交流資訊的平台"
+    },
+    "OSM-Chattanooga": {
+      "name": "OSM 查塔努加",
+      "description": "查塔努加的開放街圖使用者群組"
+    },
+    "OSM-Colorado": {
+      "name": "開放街圖科羅拉多",
+      "description": "在美國科羅拉多州的圖客與開放街圖使用者",
+      "extendedDescription": "開放街圖 (OpenStreetMap, OSM) 科羅拉多是一個喜歡貢獻他們的心力建立自由地圖的一群地區協作夥伴。我們鼓勵我們所有的圖客組織或建議橫跨整個州的製圖活動。會面活動可以是簡單的社交活動、OSM 基礎到進階訓練，或是社群製圖派對。"
+    },
+    "osm-de": {
+      "description": "開放街圖在德國交流資訊的平台"
+    },
+    "osm-deep-south-wiki": {
+      "description": "{community} Wiki 頁面",
+      "extendedDescription": "開放街圖美國深南部是美國東南部的在地社群。"
+    },
+    "osm-delhi-xmpp": {
+      "name": "開放街圖德里 XMPP",
+      "description": "加入我們 XMPP 群組聊天室：{url}",
+      "extendedDescription": "開放街圖德里的 XMPP 群組聊天室；不會連接到任何專屬網路。"
+    },
+    "OSM-Discord": {
+      "name": "開放街圖世界 Discord"
+    },
+    "OSM-Discourse": {
+      "name": "開放街圖社群論壇",
+      "description": "討論開放街圖的共享空間"
+    },
+    "OSM-Facebook": {
+      "description": "在 Facebook 為我們按讚，追蹤開放街圖相關的新聞和動態。"
+    },
+    "osm-fj": {
+      "description": "提供菲濟在地社群 OSM 服務和資訊"
+    },
+    "osm-gh-facebook": {
+      "extendedDescription": "迦納社群中的圖客，推廣迦納開放街圖和人道救援開放街圖計畫。加入我們吧！"
+    },
+    "osm-gh-website": {
+      "description": "提供嘉納在地社群 OSM 服務和資訊"
+    },
+    "osm-hr": {
+      "description": "開放街圖在克羅埃西亞交流資訊的平台"
+    },
+    "osm-id": {
+      "description": "提供印尼在地社群 OSM 服務和資訊"
+    },
+    "OSM-India-facebook": {
+      "description": "改善印度的開放街圖",
+      "extendedDescription": "在印度畫地圖嗎？想要問問題，想要與社群連結？請加入 {Url}，所有人都歡迎噢！"
+    },
+    "osm-india-github": {
+      "description": "和我們一起寫程式：{url}"
+    },
+    "osm-india-mastodon": {
+      "description": "在聯邦宇宙上的開放街圖印度的家"
+    },
+    "osm-india-matrix": {
+      "extendedDescription": "OSM 印度非官方的聊天室，也與 osmindia Telegram 群組同步"
+    },
+    "OSM-India-Puducherry-Facebook": {
+      "description": "FSHM Facebook 粉絲頁讓你知道社群活動",
+      "extendedDescription": "FSHM 組織跟自由軟體/硬體、科技、倡議和開放街圖的活動。FSHM Facebook 粉絲頁是最好跟他們活動保持聯繫的方式。"
+    },
+    "OSM-India-Puducherry-Matrix": {
+      "name": "自由軟體硬體運動 - Matrix",
+      "description": "FSHM Riot 小組討論、分享和更新本地治里一帶畫地圖活動",
+      "extendedDescription": "FSHM 社群成員經由 Riot.im 群組分享他們的開放街圖畫地圖狀況 / 經驗，社群也會討論與自由軟體 / 硬體、科技和行動主義。"
+    },
+    "OSM-india-twitter": {
+      "description": "我們只是喜歡 tweet：{url}"
+    },
+    "osm-india-website": {
+      "description": "印度圖客和開放街圖使用者"
+    },
+    "osm-india-wiki": {
+      "description": "您必須知道的在印度製圖的所有事情：{url}"
+    },
+    "osm-india-xmpp": {
+      "name": "開放街圖印度 XMPP",
+      "description": "加入我們的 XMPP 聊天室：{url}",
+      "extendedDescription": "印度 OSM 社群的 XMPP 聊天室；未橋接至任何專有網路。也可以透過 Matrix 的 #osm-in:poddery.com 位址加入"
+    },
+    "osm-iran-aparat": {
+      "extendedDescription": "這裡有開放街圖相關的影片資源，主要用波斯文。"
+    },
+    "osm-iran-discord": {
+      "extendedDescription": "開放街圖伊朗的 Discord 伺服器，歡迎加入！"
+    },
+    "osm-iran-telegram": {
+      "extendedDescription": "觀迎加入 Telegram 頻道  {url}，我們伊朗的開放街圖參與者也有超級群組，請到我們的頻道關於部分找到連結。"
+    },
+    "OSM-japan-facebook": {
+      "description": "日本圖客和開放街圖使用者"
+    },
+    "OSM-japan-slack": {
+      "description": "OSM 日本社群的 Slack 群組 {signupUrl}"
+    },
+    "OSM-japan-website": {
+      "description": "日本圖客和開放街圖使用者"
+    },
+    "osm-kenya": {
+      "description": "OSM 肯亞是 OSM 貢獻者與使用者的社群",
+      "extendedDescription": "OSM 肯亞是對開放街圖有興趣的個人的社群，包括國境內的組織、開發者、以及 YouthMappers 分會。"
+    },
+    "osm-kenya-facebook": {
+      "description": "OSM 肯亞是 OSM 貢獻者與使用者的社群",
+      "extendedDescription": "OSM 肯亞是對開放街圖有興趣的個人的社群，包括國境內的組織、開發者、以及 YouthMappers 分會。"
+    },
+    "OSM-Kerala-facebook": {
+      "description": "改進喀拉拉一帶的開放街圖資料",
+      "extendedDescription": "在喀拉拉畫地圖嗎？有問題，想要與社群互動？來 {url} 加入我們，歡迎所有人。"
+    },
+    "osm-kerala-github": {
+      "description": "和我們一起寫程式：{url}"
+    },
+    "osm-kerala-matrix": {
+      "description": "我們一起畫喀拉拉邦，加入我們的 Matrix 群組",
+      "extendedDescription": "OSM 喀拉拉邦非官方的聊天室，也與 osmkerala telegram 群組同步"
+    },
+    "osm-kerala-telegram": {
+      "description": "我們一起畫喀拉拉邦，加入我們的 telegram 群。{url}"
+    },
+    "osm-kerala-website": {
+      "description": "我們協助喀拉拉邦的開放街圖成長茁壯並改善它。"
+    },
+    "osm-kerala-wiki": {
+      "description": "想要更瞭解在喀拉拉邦畫地圖的事情？{url}"
+    },
+    "osm-mg-facebook": {
+      "description": "馬達加斯加對開放街圖有興趣的人參與的 Facebook 社團。"
+    },
+    "osm-michigan-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "osm-ni": {
+      "description": "提供尼加拉瓜在地社群 OSM 服務和資訊"
+    },
+    "osm-ohio-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "OSM-Ottawa-meetup": {
+      "description": "在渥太華的圖客與開放街圖使用者"
+    },
+    "OSM-PE": {
+      "description": "開放街圖社群的新聞和資源頁面"
+    },
+    "OSM-PH-telegram": {
+      "extendedDescription": "友善與相當活躍的菲律賓 OSM 圖客與友人的 Telegram 群組，可以在這邊聊天、開完笑或是快速問答。"
+    },
+    "OSM-PL-chapter": {
+      "description": "開放街圖波蘭社群的家"
+    },
+    "OSM-PL-discord": {
+      "description": "開放街圖波蘭社群主要的語音聊天場所，有相當活躍的文字頻道"
+    },
+    "OSM-PL-github": {
+      "description": "開放街圖波蘭社群的 GitHub 組織"
+    },
+    "OSM-Puducherry-Mailing-List": {
+      "name": "自由軟體硬體運動 - 郵件清單",
+      "description": "FSHM Puducherry 郵件清單用來討論在 Puducherry 的製圖與其他事情。",
+      "extendedDescription": "FSHM 會組織關於自由軟體／硬體、科技、行動與開放街圖的活動。"
+    },
+    "OSM-Rome-meetup": {
+      "description": "改善羅馬區域的開放街圖",
+      "extendedDescription": "我們是一群熱情討論和分享自由地理資料集知識的人，特別是開放街圖的資料，以及管理、編輯和顯示地理資料的開放地理空間軟體，以及在拉吉歐推廣的團體。"
+    },
+    "OSM-Seattle": {
+      "name": "開放街圖西雅圖",
+      "description": "在西雅圖的圖客與開放街圖使用者"
+    },
+    "osm-sierra-leone": {
+      "description": "我們專注在生產與使用開放資料來解決社會、經濟與社群挑戰。"
+    },
+    "OSM-SoCal": {
+      "name": "開放街圖南加州",
+      "description": "讓我們玩樂吧，並且貢獻畫洛杉磯一帶，以及學習有關畫地圖的一切！",
+      "extendedDescription": "開放街圖南加州擁抱任何對共同畫開放街圖有興趣的人。開放街圖是維基百科式運作的地圖，是全世界尺度自由開源的地圖，由全球超過 1,000,000 人的志工製作。我們歡迎所有人，如果你不大知道開放街圖，我們會教你，如果你有關於畫地圖計畫，甚至野外實察，也是很棒的事情！"
+    },
+    "OSM-South-Bay": {
+      "description": "加入線上的南灣地圖之夜",
+      "extendedDescription": "與南灣圖客相會，並且與開源聖荷西合作，每個週二晚上的線上聚會幫助在地畫地圖計畫。參加者不需要寫程式或是 GIS 的技能。"
+    },
+    "OSM-Tampa-Bay": {
+      "name": "開放街圖坦帕灣",
+      "description": "坦帕灣的圖客與開放街圖使用者",
+      "extendedDescription": "OSM 坦帕灣群組讓當地居民聚在一起，用開放街圖建立坦帕灣的準確地圖。如果您使用地圖、資料、開放原始碼、GPS、徒步旅行或是騎腳踏車等等，您將會很喜歡與 OSM 合作，所以請加入吧！我們會聚在一起，製圖並討論每月的新主題。"
+    },
+    "osm-td-facebook": {
+      "description": "改善查德的開放街圖"
+    },
+    "OSM-Telegram": {
+      "description": "加入開放街圖 Telegram 超級聊天室 {url}"
+    },
+    "OSM-TH-CNX-meetup": {
+      "name": "OSM 清邁聚會",
+      "description": "開放街圖清邁社群不定期聚會",
+      "extendedDescription": "清邁開放街圖社群每隔幾個月的時候的聚會，歡迎接洽以及找尋 {url} 下次聚會時間"
+    },
+    "osm-toronto-meetup": {
+      "description": "多倫多地區的圖客與開放街圖使用者"
+    },
+    "osm-tw": {
+      "description": "我們協助台灣的開放街圖成長茁壯並改善它。"
+    },
+    "OSM-US": {
+      "description": "我們協助美國的開放街圖成長茁壯並改善它。",
+      "extendedDescription": "我們透過舉辦年度研討會、提供社群資源、建立合作關係以及推廣來支援開放街圖。在此加入開放街圖美國：{signupUrl}",
+      "events": {
+        "mappingusa2022": {
+          "description": "加入橫跨北美洲，Wiki 與開放街圖社群的虛擬大會！",
+          "where": "線上大會"
+        }
+      }
+    },
+    "OSM-US-Slack": {
+      "description": "歡迎所有人加入！在 {signupUrl} 註冊"
+    },
+    "OSM-Utah": {
+      "name": "開放街圖猶他",
+      "description": "在鹽湖城區域的圖客與開放街圖使用者",
+      "extendedDescription": "我們可能會舉辦的活動有：學習製圖工作坊、製圖派對與戶外資料蒐集。活動將會在鹽湖城區舉辦，至少一開始是這樣。我們正在尋找經驗豐富的圖客與 OSM 新手。加入我們，一起來製圖吧！"
+    },
+    "osm-west-bengal-xmpp": {
+      "name": "開放街圖西孟加拉 XMPP",
+      "description": "加入我們的 XMPP 聊天室：{url}",
+      "extendedDescription": "OSM 西孟加拉的 XMPP 聊天室。"
+    },
+    "OSM-Wyoming": {
+      "name": "開放街圖懷俄明",
+      "description": "在懷俄明州的圖客與開放街圖使用者",
+      "extendedDescription": "開放街圖 (OpenStreetMap, OSM) 懷俄明是一個喜歡貢獻他們的心力建立自由地圖的一群地區協作夥伴。我們鼓勵我們所有的圖客組織或建議橫跨整個州的製圖活動。會面活動可以是簡單的社交活動、OSM 基礎到進階訓練，或是社群製圖派對。"
+    },
+    "osmcz-twitter": {
+      "description": "追蹤捷克開放街圖 Twitter -  包括翻譯 WeeklyOSM！"
+    },
+    "OSMF": {
+      "name": "開放街圖基金會",
+      "description": "開放街圖基金會是位於英國，支持開放街圖計劃的非營利組織",
+      "extendedDescription": "開放街圖基金會藉由募款，維持開放街圖背後的伺服器，舉行年度 State of the Map 大會，以及協調志工維持開放街圖運作，支援開放街圖計畫。你可以在這裡藉由加入開放街圖基金會成為會員：{signupUrl}"
+    },
+    "ph-facebook-group": {
+      "name": "{community} 臉書社團"
+    },
+    "PHXGeo-meetup": {
+      "description": "在亞利桑那州鳳凰城的圖客與開放街圖使用者",
+      "extendedDescription": "這是一個給住在鳳凰城，喜歡地圖、GIS、開放街圖、製圖與其他東西的群組。"
+    },
+    "PHXGeo-twitter": {
+      "description": "在 {url} 上追隨我們的 Twitter"
+    },
+    "pt-wiki": {
+      "description": "葡萄牙資訊與協調指南的 WikiProject 頁面"
+    },
+    "rs-discourse": {
+      "description": "討論開放街圖在塞爾維亞事物的論壇"
+    },
+    "rs-gitlab": {
+      "description": "在 GitLab 上面與 OSM 塞爾維亞相關的計劃"
+    },
+    "rs-osm": {
+      "description": "開放街圖在塞爾維亞交流資訊的平台"
+    },
+    "RS-telegram": {
+      "extendedDescription": "加入社群以得知更多關於開放街圖的資訊，也可以問問題或是參與我們的會面。每個人都很歡迎加入！"
+    },
+    "rs-wiki": {
+      "description": "開放街圖維基專案塞爾維亞頁面"
+    },
+    "sg-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "si-ljubljana-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "si-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "sk-freemap": {
+      "description": "斯洛伐克以及週邊區域的開放街圖工具網站"
+    },
+    "sosm": {
+      "name": "瑞士開放街圖協會",
+      "description": "瑞士開放街圖協會的創立宗旨為推廣開放街圖運動，加強與官方與業界的關係，協助瑞士開放街圖社群成員的活動，並且向其他組織代表瑞士的開放街圖社群。"
+    },
+    "talk-au": {
+      "description": "讓澳洲圖客聊天的園地"
+    },
+    "talk-bo": {
+      "extendedDescription": "在玻利維亞畫地圖嗎？想要問問題，想要與社群連結？請加入 {url}，所有人都歡迎噢！"
+    },
+    "talk-mg": {
+      "description": "馬達加斯加開放街圖貢獻者、社群和使用者分享和討論的園地"
+    },
+    "talk-nz": {
+      "description": "紐西蘭 OSM 社群聊天群"
+    },
+    "talk-pacific": {
+      "description": "莫阿納/大洋洲/太平洋一帶人民的 OSM 地區郵件論壇",
+      "extendedDescription": "我們這個郵件論壇能夠支援所有太平洋的子民，不論他們的多元背景與動機，能夠分享想法、問題、專案與其他這片海域有關的開放街圖事務。"
+    },
+    "tn-facebook-group": {
+      "name": "{community} 臉書社團"
+    },
+    "tw-slack": {
+      "description": "歡迎所有人加入！在 {signupUrl} 註冊"
+    },
+    "tw-wiki": {
+      "description": "您必須知道的在台灣製圖的所有事情：{url}"
+    },
+    "tz-website": {
+      "description": "提供坦尚尼亞在地社群 OSM 服務和資訊"
+    },
+    "ua-github": {
+      "description": "開放街圖：烏克蘭 GitHub"
+    },
+    "ua-osm": {
+      "description": "開放街圖烏克蘭的網站"
+    },
+    "ua-slack": {
+      "description": "加入開放街圖烏克蘭社群的 Slack。{signupUrl} 註冊"
+    },
+    "uk-localchapter": {
+      "description": "大英國協 (包括北愛爾蘭) 的正式地區分會。",
+      "extendedDescription": "我們透過舉辦活動、提供社群資源、建立合作關係以及推廣來支援開放街圖。在此加入開放街圖美國：{signupUrl}"
+    },
+    "uk-london-mastodon": {
+      "name": "開放街圖倫敦在 Mastodn",
+      "description": "開放街圖倫敦在 Mastodn：{url}"
+    },
+    "uk-london-twitter": {
+      "name": "開放街圖倫敦 Twitter",
+      "description": "開放街圖倫敦 Twitter：{url}"
+    },
+    "uk-london-wiki": {
+      "description": "{community} Wiki 頁面"
+    },
+    "uk-loomio": {
+      "name": "開放街圖英國的 Loomio"
+    },
+    "us-discourse": {
+      "description": "討論開放街圖在美國事物的 Discourse 論壇"
+    },
+    "us-massachusetts-mailinglist": {
+      "name": "Talk-us 麻塞諸塞州郵件論壇",
+      "description": "麻塞諸塞州 OSM 社群 email 郵件論壇"
+    },
+    "us-newyork-mailinglist": {
+      "name": "Talk-us-newyork 郵件論壇",
+      "description": "紐約州 OSM 社群 email 郵件論壇"
+    },
+    "uy-irc": {
+      "description": "在 irc.freenode.org (port 6667) 上面加入 #{account} ",
+      "extendedDescription": "在 irc.freenode.org 上面加入 #{account} "
+    },
+    "vn-mailinglist": {
+      "description": "開放街圖越南或越南語的郵件論壇"
+    },
+    "YerCizenler-TR": {
+      "description": "Yer Çizenler 畫任何與人有關的事情",
+      "extendedDescription": "Yer Çizenler 是在地 NGO 團體，屬於土耳其 OSM 社群的一份子，主要目標是在美國的測繪畫地圖社群當中，推廣使用開放地理空間資料與工具。"
+    },
+    "ym-AASTU": {
+      "description": "年輕圖客阿迪斯阿貝巴科技大學分會",
+      "extendedDescription": "地理工程學生會 (Association of Geomatics Engineering Students, AGES) 主旨為推廣 GIS 產品與服務，同時也訓練學生使用。不只要推廣學生與產業的社會化連結，還要在大學中提供新 GIS 與探勘活動，以及訓練課程的交換新點子的平台。"
+    },
+    "ym-Abia-State-University": {
+      "name": "Absu 圖客小組",
+      "description": "年輕圖客阿比亞州立大學分會",
+      "extendedDescription": "AbsuMappersTeam 是由地圖愛好者，做用開放街圖、GIS 與其他開源地理空間技術來解決問題的志工團隊組成，目標是採用開放街圖來應對災難。這個組織由專家指導，以及透過賦能平台來指導熱愛 GIS 與畫地圖的人。這是創造地理空間資料、現地探查與畫地圖的志工社群。AbsuMappersTeam 由 Victor N.Sunday (團隊指導者) 與團隊協調者與設施顧問 J.U.Ogbonna 教授共同創辦。AbsuMappersTeam 與 UniiqueMappersTeam-Port Harcourt 有相關，團隊同樣支持運用地理空間科技來永續發展。"
+    },
+    "ym-African-Methodist-Episcopal-University": {
+      "name": "AMEU 的年輕圖客分會",
+      "description": "非洲衛理公會主教大學的年輕圖客分會"
+    },
+    "ym-Ahmadu-Bello-University": {
+      "name": "ABU 地理繪圖者",
+      "description": "艾哈邁杜貝洛大學的年輕圖客分會",
+      "extendedDescription": "我們是一咩資料驅動的人道救援圖客，並且為了應對與減緩災難影響來佈署人道救援服務。我們很高興能夠透過畫地圖貢獻我們的經驗與知識，以及透過訓練與合作幫助散佈 #OpenEvangelism。"
+    },
+    "ym-Ardhi-University": {
+      "name": "ARU 圖客",
+      "description": "Ardhi 大學的年輕圖客分會",
+      "extendedDescription": "一群未來的地理空間資料顧問，我們尋求教育人們，以及提供社會意見來如何使用空間資料，不只是位置的型式，還有用來做決策的工具以及預測不同的災難與氣候變遷，也許會傷害這一代或是下一代。"
+    },
+    "ym-Arizona-State-University-facebook": {
+      "description": "年輕圖客亞歷桑那州立大學分會"
+    },
+    "ym-Arizona-State-University-twitter": {
+      "description": "年輕圖客亞歷桑那州立大學分會"
+    },
+    "ym-Asian-University-for-Women": {
+      "name": "AUW 的年輕圖客分會",
+      "description": "亞洲女子大學的年輕圖客分會",
+      "extendedDescription": "亞洲女子大學為了畢業後得到專長與創新專業，或是商業與社群領域服務導向而設立，她們將工作與生活，以及在亞洲甚至到全世界尺度推廣智慧理解與永續人類和經濟發展。"
+    },
+    "ym-Ball-State-University": {
+      "name": "伽瑪、西塔、艾普斯龍 - 艾歐塔、歐美嘉分會",
+      "description": "年輕圖客鮑爾州立大學分會",
+      "extendedDescription": "我們分會相當活躍，主要著重在社群活動、募款與田野調查。我們目前在開發更多畫地圖有關的活動，來吸引更多校園中有興趣的學生來貢獻。"
+    },
+    "ym-Busitema-University": {
+      "name": "好圖客團隊",
+      "description": "年輕圖客布斯特瑪大學分會",
+      "extendedDescription": "好團客團隊是布斯特瑪大學的一群學生，主旨是創建由有經驗圖客的社群，能幫助貢獻世界地圖。"
+    },
+    "ym-California-University-of-Pennsylvania": {
+      "name": "加州大學賓士法尼亞 GIS 社團",
+      "description": "年輕圖客加州大學賓士法尼亞分會",
+      "extendedDescription": "加州大學賓士法尼亞的 GIS 學生學習運用空間理論到真實世界上。大學的學位學程會專注在地理，同時也會運用 GIS 在緊急事件管理上。"
+    },
+    "ym-Central-Washington-University": {
+      "name": "地理社團",
+      "description": "年輕圖客中華盛頓大學分會",
+      "extendedDescription": "我們團隊的目標是希望組織年輕圖客到需要幫助的受災區進行人道救援畫地圖，而要做上述事情，我們必須跟隨全世界前輩的腳步同時也精進製圖技術。"
+    },
+    "ym-Clemson-University": {
+      "name": "克門森圖客",
+      "description": "年輕圖客分會在克門森大學",
+      "extendedDescription": "克萊門森大學的學生由地理空間技術中心支援，跨學科的地理空間科學參與者社群支援研究、教學以及推廣活動，使用能夠收集、分析與應用地理空間資料的技術。學生整合地理空間技術用到他們跨越不同學門的學術活動，以及與世界連結起來。"
+    },
+    "ym-College-of-William-and-Mary": {
+      "name": "全世界都有！",
+      "description": "威廉與瑪麗學院的年輕圖客分會",
+      "extendedDescription": "整個地圖所有的學生是由群在課堂整合的 GIS，提供學生與單位硬體、軟體與專案的地理空間分析中心進行支援工作。整個校園所有用到 GIS 學科學生，包括環境科學與政策、地理、歷史、商業、社會、生物、人類學、公共政策與海洋科學。"
+    },
+    "ym-Cornell-University": {
+      "name": "畫地圖社團",
+      "description": "年輕圖客分會在康乃爾大學",
+      "extendedDescription": "康乃爾學生與教職員使用開放資料與開源軟體來找出地區、國家與全球尺度遇到的問題。要達成目標，我們精進我們的學術與發展 GIS 與空間知識的個人目標。"
+    },
+    "ym-CURAT": {
+      "name": "年輕圖客 CURAT",
+      "description": "Centre Universitaire de Recherche et d'Application en Télédétection (CURAT)的遙感研究與應用中心（CURAT）的年輕圖客分會",
+      "extendedDescription": "我們分會目的是推廣自由畫地圖的協同使用，以及在研究與決策應用時運用開放街圖資料，幫助學生產生他們研究時自己的資料。"
+    },
+    "ym-Cuttington-University": {
+      "name": "卡丁頓大學年輕圖客",
+      "description": "年輕圖客分會在卡丁頓大學",
+      "extendedDescription": "蘇阿科科和邦縣的年輕圖客在卡丁頓大學，由來自三個不同系所的學生組成：自然資源管理學系 (DONRM)、環境科學系，以及自然科學系。自從 2017 年 2 月開始成立後，目前有 20 位學生，每個系所有 5 位學生。"
+    },
+    "ym-Dedan-Kimathi-University-of-Technology": {
+      "extendedDescription": "GDEV 是由 DEKUT GIS 群組的熱情者組成，主要幫助學生分享、介接與學生有關地理空間的事物。"
+    },
+    "ym-Dhaka-College": {
+      "name": "年輕圖客達卡大學",
+      "description": "達卡大學的年輕圖客分會",
+      "extendedDescription": "年輕圖客達卡大學藉由學生來幫忙人道救援，繪製易受災難影響的地方的地圖。年輕圖客讓一般學生有機會藉由人道救援的目的來幫助人民。這個開放地理資料可以用在教育、導航以及其他人道救援目的。祝繪圖愉快。"
+    },
+    "ym-Dhaka-University": {
+      "name": "開放街圖年輕圖客",
+      "description": "達卡大學的年輕圖客分會",
+      "extendedDescription": "達卡大學的學生能夠以人道目的來參與繪地圖是相當榮幸的事情，我們分會給予學生機會來用人道動機畫地圖來幫助人民。"
+    },
+    "ym-Eastern-University": {
+      "name": "東方大學的年輕圖客",
+      "description": "東方大學的年輕圖客分會",
+      "extendedDescription": "孟加拉東方大學的年輕圖客，成立時就在人道危機時協助人民。學生們就是世界各處其他的圖客，承諾要幫助人民，使用地圖在教育、導航和其他人道目的。"
+    },
+    "ym-Far-Eastern-University-Institute-of-Technology": {
+      "name": "年輕菲律賓電腦社 ",
+      "description": "東方科技大學的年輕圖客分會",
+      "extendedDescription": "FEU 被認為是菲律賓頂尖的大學之一，每年從任務中心畢業的學生都為國家的進步努力。FEU 持續挑戰自我，提及自身的實力，來達到不只是菲律賓的頂尖學校，同時在東亞一帶也是一流學校。"
+    },
+    "ym-Federal-School-of-Surveys": {
+      "description": "年輕圖客在聯邦測繪學校"
+    },
+    "ym-Federal-University-of-Technology-Akure": {
+      "name": "年輕圖客富他空間社團",
+      "description": "阿庫雷聯邦理工大學的年輕圖客分會",
+      "extendedDescription": "我們的任務是提昇下一代的空間領導者，活動則包括研究與遙測、GIS、氣候變遷、天文、氣象、航太工程、全球導航、機器人與太空教育的能力建造。"
+    },
+    "ym-Fourah-Bay-College": {
+      "name": "學生地理協會",
+      "description": "年輕圖客富拉灣學院分會",
+      "extendedDescription": "學生地理協會-年輕圖客是富拉灣學院的學生協會，主旨為繪製塞內加爾以及世界上易受侵害的地方，用來在救難與其他公益事項，並且進行研究與其他教育用途。分會由富有想法的年輕人構成，採用開發優先來連結彼此，並且融入以團隊進行，永續發展開發專案。"
+    },
+    "ym-General-Lansana-Conte-University": {
+      "name": "年輕圖客蘭薩納孔特將軍大學分會",
+      "description": "蘭薩納孔特將軍大學的年輕圖客分會",
+      "extendedDescription": "蘭薩納孔特將軍大學年輕圖客分會是非營利的社群，要來貢獻繪製幾內亞的地圖，以及世界其他地方。我們推廣採用 GIS 與開放資料來建造決策輔助工具，我們也在學生與在地社群間建構更為紮實的社群能量。"
+    },
+    "ym-George-Mason-University": {
+      "name": "曼森圖客",
+      "description": "年輕圖客分會在喬治曼森大學",
+      "extendedDescription": "曼森圖客學生社團是喬治曼森大學 GGS 系的人道畫地圖的學生組織，其宗旨是推廣地理技術、地理資訊科學的教育與知識，以及培養全球領導與介接專業發展，同時也建構正向、互動地理社群，以及形塑學生成為未來的領袖。"
+    },
+    "ym-Grand-Gedeh-County-Community-College": {
+      "name": "年輕圖客大吉德郡社區大學分會",
+      "description": "年輕圖客在大吉德郡社區大學的分會",
+      "extendedDescription": "Grand Gedeh Community College 年輕圖客分會的唯一目的是將賴比瑞亞還沒有在地圖上的地方畫上去。我們從 Grand Gedeh Community College 聚集年輕人，讓他們承擔讓這些地方在地理上發光。"
+    },
+    "ym-Gujarat-University": {
+      "description": "古吉拉特大學的年輕圖客分會"
+    },
+    "ym-Gulu-University": {
+      "name": "CSGU 圖客",
+      "description": "古盧大學的年輕圖客分會",
+      "extendedDescription": "CSGU 圖客是古盧大學電腦社，這個分會具有創新、熱情，以及準備好盡可能突破其他人的想像限制，來畫烏干達與世界的地圖。"
+    },
+    "ym-Heidelberg-University": {
+      "name": "海德堡災難救災圖客",
+      "description": "海德堡大學的年輕圖客分會",
+      "extendedDescription": "海德堡災難救災圖客是由學生倡議，2014 年成立的。聚集學生、學者與人道救援者的交換平台，災難救災圖客是遺失地圖的成員，在海德堡組織圖客松、工作坊與線上論壇，並且透過研究與應用支援 HOT 與遺失地圖。"
+    },
+    "ym-Ignatius-Ajuru-University-of-Education": {
+      "name": "伊格內修斯·阿朱魯教育大學圖客小組 (IMT)",
+      "description": "伊格內修斯·阿朱魯教育大學的年輕圖客分會",
+      "extendedDescription": "我們是伊格內修斯·阿朱魯教育大學的年輕圖客分會，投入群眾畫地圖來瞭解我們身處的環境以及易受災害的國家。我們是運用開放街與其他開放地理空間來源來畫地圖的志工團體。"
+    },
+    "ym-Indiana-University-of-Pennsylvania": {
+      "name": "地理空間科學社團",
+      "description": "賓州印第安那大學的年輕圖客分會"
+    },
+    "ym-Insititue-d-Enseignement-Superieur-de-Ruhengeri": {
+      "name": "魯亨蓋里應用科學研究所的年輕圖客分會",
+      "description": "魯亨蓋里理工學院的年輕圖客分會",
+      "extendedDescription": "我們是魯亨蓋里理工學院土地利用與管理以及土地測量系的學生，我們投入畫地圖活動，來創建當地社區的永續發展狀態。"
+    },
+    "ym-Institut-Suprieur-de-Management-Kolda": {
+      "name": "科爾達高級管理學院女性領袖",
+      "description": "科爾達高級管理學院女性領袖的年輕圖客分會",
+      "extendedDescription": "科爾達高級管理學院女性領袖是塞內加爾南部由全女性組成的畫地圖組織，目的是將科爾達及其週邊都畫到地圖上，並且能夠更好運用開放街圖。"
+    },
+    "ym-Institute-of-Crisis-Management-Studies": {
+      "name": "災害管理研究院年輕圖客",
+      "description": "災害管理研究院的年輕圖客分會",
+      "extendedDescription": "在災難狀況下發展災害圖客。"
+    },
+    "ym-Institute-of-Rural-Development-Planning": {
+      "name": "Mipango 年輕圖客",
+      "description": "都市計畫學院的年輕圖客分會",
+      "extendedDescription": "Mipango 年輕圖客分會是在 2017年7月3日的 IRDP 時由 Domitilla Bashemera 博士成立的，由 300 位有學士學位的學生擔任創始會員 (190 位男性與 110 位女性) 所組成。Gerald Zacharia 擔任分會會長，而 Juster Lugira 則是副會長。"
+    },
+    "ym-Institute-of-Rural-Development-Planning-Mwanza": {
+      "name": "都市計劃學院 - 湖區中心的年青圖客分會",
+      "description": "姆萬扎區鄉村計畫學院的年輕圖客分會"
+    },
+    "ym-Institute-of-Science-and-Veterinary-Medicine": {
+      "description": "科學與獸醫學院的年輕圖客分會",
+      "extendedDescription": "Dabala 科學與戰醫學院年輕圖客為非營利組織，宗旨為提倡人道救援畫地圖，以及運運開放原始碼與開放資料來創建畿內亞的決策工具。"
+    },
+    "ym-Istanbul-Technical-University": {
+      "name": "伊斯坦堡科技大學年輕圖客分會",
+      "description": "伊斯坦堡科技大學的年輕圖客分會",
+      "extendedDescription": "年輕圖客 ITU 由跨學科與科技整合的學生社群組成，目的是推廣為脆弱的人類聚落進行人道救援畫地圖，以及採用地理資訊系列與開放資料為未來城市發展與分享空間資訊。"
+    },
+    "ym-Jacksonville-State-University": {
+      "name": "傑克森維爾州立大學災難圖客小組",
+      "description": "傑克森維爾州立大學的年輕圖客分會",
+      "extendedDescription": "傑克森維爾州立大學災難圖客小組是傑克林維爾州立大學下面的計畫，宗旨為在災難發生時協助災難救助工作。這包括龍捲風、暴雨、洪水等災難。災難圖客小組能夠動員傑克哥維爾州立大學的地理科學系學生，運用所學在災難發生時協助週邊地區。我們的目標是運用學生的所以整合災難發生時的應變與復原流程"
+    },
+    "ym-Jahangirnagar-University": {
+      "name": "賈漢吉爾諾戈爾大學年輕圖客",
+      "description": "賈漢吉爾諾戈爾大學的年輕圖客分會"
+    },
+    "ym-Jomo-Kenyatta-University-of-Agriculture-and-Technology": {
+      "name": "大地工程學生協會",
+      "description": "喬莫‧肯雅塔農業與工程大學的年輕圖客分會",
+      "extendedDescription": "大地工程學生協會 (Association of Geomatics Engineering Students, AGES) 關注推廣 GIS 產業與服務，同時也訓練學生如何使用。該組織不只促進學生與專業人士間的交流，也透過在大學舉行新 GIS 與探察活動還有訓練課程提供交換新點子的平台。"
+    },
+    "ym-Kansas-State-University": {
+      "name": "伽碼西塔艾普斯隆：貝塔普西分會",
+      "description": "堪薩斯州立大學的年輕圖客分會",
+      "extendedDescription": "我們是堪塞斯州立大學 Chapter of Gamma Theta Upsilon，與年輕圖客有從屬關係。我們相當熱衷繪製 OSM 以及主導圖客松活動 \"Map for Nepal\"，在 2015 年泥泊爾大地震數位化還沒有繪製的地方。"
+    },
+    "ym-Karatina-University": {
+      "extendedDescription": "這個分會的宗旨為聚集所有的 GIS 愛好者，包括環境議題專案、野生動物專案、水域與觀光官員等等。主要的目的為提供學生彼此學習的平台，而在過程當中瞭解如何在職涯當中運用學到的 GIS 技能解決環境相關議題。"
+    },
+    "ym-Kenyatta-University": {
+      "extendedDescription": "肯亞塔大學 GIS 社團 (Kenyatta University GIS Club, KUGISC) 是在 2016 年 10 月 28 日成立的，擁有超過 200 位遍佈校園與學院的教職員。我們承諾透過培力成員的空間知識與技能，來讓他們瞭解地球。我們藉由在專案當中整合地理空間資料以及實務的田野資料收集來繪製地圖。"
+    },
+    "ym-Khulna-University": {
+      "name": "庫爾納大學年輕圖客",
+      "description": "庫爾納大學年輕圖客分會",
+      "extendedDescription": "來自不同學門的 KU 學生與職員，正體驗為 OSM 增加開放資料，來處理開發時的在地挑戰，例如糧食安全與其他主題。"
+    },
+    "ym-Kumi-University": {
+      "name": "永久年輕圖客",
+      "description": "庫米大學年輕圖客分會",
+      "extendedDescription": "這群熱情的學生組織包括理學院與資訊學院。"
+    },
+    "ym-Kwame-Nkrumah-University-of-Science-and-Technology": {
+      "name": "誇梅·恩克魯瑪科技大學年輕圖客分會",
+      "description": "誇梅·恩克魯瑪科技大學的年輕圖客分會"
+    },
+    "ym-Makerere-University": {
+      "name": "地理年輕圖客",
+      "description": "馬凱雷雷大學年輕圖客",
+      "extendedDescription": "馬凱雷雷大學地理年輕圖客是在大學裡的圖客分會，宗旨為在現實世界套用空間概念。我們統合 OSM 生態系的眾多活動，主要想要簡化資料並且讓資料在災難發生前能即時應對。我們繪製世界的地圖而且改善生活。"
+    },
+    "ym-Mbarara-University-of-Science-and-Technology": {
+      "name": "姆巴拉拉科技大學街頭圖客",
+      "description": "姆巴拉拉科技大學的年輕圖客分會",
+      "extendedDescription": "姆巴拉拉科技大學街頭圖客是在姆巴拉拉科技大學為根基的組織，成立目的為透過繪製地圖讓我們的國家與整個世界變成更好的地方。我們透過已知模式與資料探堪收集資訊，來呈現與社會現況與利益資訊。"
+    },
+    "ym-McGill-University": {
+      "name": "開放畫地圖組織麥格：麥格大學地理社群",
+      "description": "麥格大學的年輕圖客分會",
+      "extendedDescription": "麥格爾開放畫地圖社團：麥格爾大學部的地理社團 (OMG McGill)，目標是連結學生與地理空間資料和技術，讓他們在蒙特婁、在加拿大，在國外能夠成長、社群建構與在校園學習繪製地圖。"
+    },
+    "ym-Miami-University": {
+      "name": "地理與都市計畫社團",
+      "description": "邁阿密大學的年輕圖客分會",
+      "extendedDescription": "邁阿密的 GPS 社團目標是透過趣味、學習與更多關於領域的職涯與高等教育機會，與專業人才網路一同工作，創造都市規畫師與地理專家緊密結合的社群。"
+    },
+    "ym-Moi-University": {
+      "name": "地理學生社團",
+      "description": "莫伊大學的年輕圖客分會",
+      "extendedDescription": "墨伊大學地理學生協會 (Geography Students Association at Moi University, GEOSAMU) 探索、發現與專注透過年輕地理空間分析師來開發整個世界，GEOSAMU 屬於地理系的一部分。"
+    },
+    "ym-Monroe-Community-College": {
+      "name": "MCC 畫地圖公社",
+      "description": "門羅社區學院的年輕圖客分會"
+    },
+    "ym-Namibia-University-of-Science-and-Technology": {
+      "name": "地理資訊科技學生社團",
+      "description": "納米比亞科技大學的年輕圖客分會"
+    },
+    "ym-Nimba-County-Community-College": {
+      "name": "寧巴大學年輕圖客",
+      "description": "寧巴大學的年輕圖客分會"
+    },
+    "ym-Njala-University-Freetown-Campus": {
+      "name": "尼加拉自由城年輕圖客",
+      "description": "尼加拉自由城大學校區的年輕圖客分會",
+      "extendedDescription": "我們是尼加拉自由城大學校區的學生，大都在獅子山自由城亨利街的物理與電腦科學系就讀。"
+    },
+    "ym-Njala-University-Njala-Campus": {
+      "name": "尼加拉大學尼加拉校區年輕圖客",
+      "description": "尼加拉大學尼加拉校區的年輕圖客分會"
+    },
+    "ym-Ohio-Wesleyan-University": {
+      "name": "自然環境與野生動物社團",
+      "description": "俄亥俄衛斯連大學的年輕圖客分會",
+      "extendedDescription": "自然環境與野生動物社團關注校園內、德拉瓦，甚至是國家層級的環境議題！我們主持校園與社區的專案，遊覽與享受戶外生活，擔任志工，在這當中從生活各層面推廣環境保育。"
+    },
+    "ym-Oklahoma-State-University": {
+      "name": "地理社團",
+      "description": "奧克荷馬州立大學的年輕圖客分會"
+    },
+    "ym-Open-University-of-Tanzania": {
+      "name": "坦尚尼亞開放大學年輕圖客",
+      "description": "坦尚尼亞開放大學的年輕圖客分會",
+      "extendedDescription": "坦尚尼亞開放大學的年輕圖客\n\n由坦尚尼亞開放大學地理系學生與成員所成立的，而主要的目的是藉由共同與在地組織如密可可童軍 (www.msg.or.tz) 合作的專案，增進參與者的職涯與幫助年輕社群，開始與國際學院與大學由密可可童軍準備的地理研究交換計畫合作，並藉由與密可可童軍的連結，連結在地大學與其他大學有相同興趣的國際自然與環境年輕圖客 2019 (www.campsite.msg.or.tz/nature.html)\n\n我們分會即將被承認為年輕網路計畫的一員，意味著打開學生學習與進行在地研究的機會。"
+    },
+    "ym-Oregon-State-University": {
+      "name": "在奧勒岡州立大學的年輕圖客",
+      "description": "在奧勒岡州立大學的年輕圖客分會"
+    },
+    "ym-Politecnico-di-Milano": {
+      "name": "理工圖客",
+      "description": "米蘭理工大學的年輕圖客分會",
+      "extendedDescription": "理工圖客是由米蘭理工大學的學生組成的志工社團，整個團體的目標是訓練與激勵下一代的志工圖工，並且能在大學以及小學與中學當中，採用自由及開源軟體來畫地圖。"
+    },
+    "ym-Queen-Mary-University-of-London": {
+      "name": "瑪麗女王年輕圖客",
+      "description": "倫敦瑪麗女王大學的年輕圖客分會",
+      "extendedDescription": "這個分會屬於瑪麗女王地理社團活動的一部分。"
+    },
+    "ym-Rajshahi-University-of-Engineering-Technology": {
+      "name": "拉傑沙希工程技術大學年輕圖客",
+      "description": "拉傑沙希工程技術大學的年輕圖客分會",
+      "extendedDescription": "拉傑沙希工程技術大學年輕圖客是由拉傑沙希工程技術大學關注人道救援畫地圖的學生組成，他們想要分享、開發與實踐 GIS 知識。這個社團鼓勵採用開源地理空間資料，以及進行相關的解決方案來解決全世界易受災組織的問題。"
+    },
+    "ym-Sherubtse-College": {
+      "name": "地理協會",
+      "description": "舍魯布策學院年輕圖客",
+      "extendedDescription": "不丹皇家大學舍魯布策學院地理與規劃學系的地理學會，另外還有氣候變化與空間資訊中心的支援，已經做了不少國家與地方層級，提昇意識和強調重要議題的倡議。我們如今一同在學生為主，國際社團網路的年輕圖客當中「為韌性畫地圖」，為全球「幸福」做貢獻！ "
+    },
+    "ym-Sokoine-University-of-Agriculture": {
+      "name": "索科因農業大學年輕圖客",
+      "description": "索科因農業大學的年輕圖客分會",
+      "extendedDescription": "主要關注環境科學與管理的學生在地理學系下進行地理研究，而我們也會套用概念與理論展現畫地圖技能，協助、探索與捕捉不同目標下能進行的行動。"
+    },
+    "ym-St<TX_DOT>-Augustine-International-University": {
+      "name": "聖奧古斯丁國際大學年輕圖客",
+      "description": "聖奧古斯丁國際大學的年輕圖客分會"
+    },
+    "ym-St<TX_DOT>-Mawaggali-Trades-Training-Institute": {
+      "name": "瑪瓦格里圖客",
+      "description": "聖馬哇干里貿易訓練中心的年輕圖客分會",
+      "extendedDescription": "我們是喬馬亞聖馬哇干里年輕圖客分會，透過畫地圖進行不同的人道救援任務來服務人群。"
+    },
+    "ym-State-University-of-New-York-Geneseo": {
+      "name": "陽光精靈 GIS 協會",
+      "description": "紐約州立大學傑納蘇分校的年輕圖客分會",
+      "extendedDescription": "我們引起大家在紐約州立大學傑納蘇分校的校園、在地以及全球社群，對地理資訊系統跨領域與部分的重視、支援、教育、投入志工行列，以及職涯發展的機會。"
+    },
+    "ym-Stella-Maris-Polytechnic": {
+      "name": "斯特拉·馬里斯理工大學年輕圖客",
+      "description": "斯特拉·馬里斯理工大學的年輕圖客分會"
+    },
+    "ym-SUNY-at-Fredonia": {
+      "description": "紐約州立大學弗雷多尼爾學院年輕圖客",
+      "extendedDescription": "GeoVenturers 是一群在校園的學生組成的團體，希望能夠用各種地理空間技術發展的工具來服務大家，讓大家聚在一起。這個團體的指導方面目標是從學系的課程和教學帶來科學教育。我們希望我們帶來的技術，能夠幫助人們過得更好。"
+    },
+    "ym-Technical-University-of-Kenya": {
+      "name": "地理空間科學學生社團",
+      "description": "肯亞科技大學的年輕圖客分會",
+      "extendedDescription": "這個社團主要是地理資訊，由相當熱情投入的相關領域的學生組成。我們訓練成員市場上最新的技術，並且時時保持技術領先。"
+    },
+    "ym-Texas-Tech-University": {
+      "name": "德州理工大學年輕圖客",
+      "description": "德州理工大學的年輕圖客分會",
+      "extendedDescription": "身為整個網路共同創辦的分會之一，TTU 年輕圖客是由跨領域，創建開放地理資料與分析來解決全球的在地者指出的發展議題的的熱心者。分會希望能與全球其他分會交換與合作，提供德州理工學生組織自身在地資源與服務，透過畫地圖來增加校園活動的價值。"
+    },
+    "ym-The-Citadel": {
+      "name": "要塞軍校年輕圖客",
+      "description": "要塞軍校的年輕圖客分會",
+      "extendedDescription": "這個分會同時也是扶青社，屬於國際扶青網路的一員。多重成員身份，以及領導層級也表達想要參與年輕圖客，並且成為扶青社身份的年輕圖客。"
+    },
+    "ym-The-Gambia-YMCA-University-of-the-Gambia": {
+      "name": "年輕圖客連接",
+      "description": "甘比亞YMCA/甘比亞大學的年輕圖客分會",
+      "extendedDescription": "Connected YouthMappers 由年輕甘比亞組成，希望能改變和協助國家發展。"
+    },
+    "ym-The-George-Washington-University": {
+      "name": "人道救援畫地圖社團",
+      "description": "喬治‧華盛頓大學的年輕圖客分會",
+      "extendedDescription": "在領導統御與接觸關懷的使命，HMS 尋求提供援助以及透過人道地理資訊系統(GIS)專案來讓這個世界變得更好。這個共同成立在 GWU 校園的附屬分會樂於分享經驗，以及常常與 USAID、美國紅十字會，以及美國國務院在華盛頓特區一帶合作帶領學生以及服務全球社群。"
+    },
+    "ym-The-Johns-Hopkins-University-SAIS": {
+      "name": "保羅·H·尼采高級國際研究學院年輕圖客",
+      "description": "約翰‧霍普金斯大學保羅·H·尼采高級國際研究學院的年輕圖客分會",
+      "extendedDescription": "保羅‧H‧尼采高級國際研究學院年輕圖客的任務是提供學生成為受訓的人道救援圖客。而身為南亞的分會，主要是支援印太地區的人道圖客專案。"
+    },
+    "ym-The-Pennsylvania-State-University": {
+      "name": "賓州 GIS 聯盟",
+      "description": "賓州大學的年輕圖客分會",
+      "extendedDescription": "賓州 GIS 聯盟是提供主修、副修的學生，或是對 GIS 有興趣的人發展專業知識與技能的組織，進而能在專業 GIS 產業有成功的職涯。"
+    },
+    "ym-The-University-of-Zambia": {
+      "name": "年輕圖客贊比亞大學",
+      "description": "贊比亞大學的的年輕圖客分會"
+    },
+    "ym-Uganda-Christian-University-Mbale-Campus": {
+      "name": "為了生命擔任圖客",
+      "description": "烏干達基督教大學姆巴萊校區的年輕圖客分會",
+      "extendedDescription": "我們是為了生命擔任圖客！請加入我們一起畫地圖吧！這個團體與烏干達基督教大學資訊科技系合作。"
+    },
+    "ym-Uganda-Pentecostal-University": {
+      "name": "高科技年輕圖客",
+      "description": "烏干達五旬節大學的年輕圖客分會",
+      "extendedDescription": "烏干達西部新的年輕圖客分會，準備畫地圖以及運用開放街圖在發展目的來準備開放資料。"
+    },
+    "ym-Universidad-de-Antioquia": {
+      "description": "安蒂奧基亞大學的年輕圖客分會",
+      "extendedDescription": "我們是一群在我們與其他國家，以及年輕圖客網絡中，對地理空間資料、志願性製圖，以及參與式製圖有興趣的人。"
+    },
+    "ym-Universidad-de-Costa-Rica": {
+      "name": "波多黎各大學年輕圖客",
+      "description": "波多黎各大學的年輕圖客分會",
+      "extendedDescription": "哥斯大黎各年輕圖客分會由一群關注社會脈動的多樣成員組成。開放街圖允許我們在社群之內聚集、驗證以及分享對大家有益的地理資訊。"
+    },
+    "ym-Universidad-de-La-Guajira": {
+      "description": "瓜希拉大學的年輕圖客分會",
+      "extendedDescription": "Grupo Mesh 是哥倫比亞瓜希拉大學的學生組織，包括學習繪製地圖以及開放畫地圖的環境工程學程的學生。"
+    },
+    "ym-Universidad-de-Los-Andes": {
+      "description": "安地斯大學的年輕圖客分會",
+      "extendedDescription": "我們是一群採用畫地圖與空間思考的學生，藉由不同的空間、社會、政治、經濟與文化上的激盪，想要與大學和社會創建連結與整合。"
+    },
+    "ym-Universidad-de-Puerto-Rico-Rio-Piedras": {
+      "name": "波多黎各大學聖胡安波多黎各校區年輕圖客",
+      "description": "波多黎各大學聖胡安波多黎各校區的年輕圖客分會"
+    },
+    "ym-Universidad-de-San-Buenaventura": {
+      "name": "聖布埃納文圖拉年輕圖客",
+      "description": "聖布埃納文圖拉大學的年輕圖客分會",
+      "extendedDescription": "我們相當高興能參與年輕圖客的大家庭，並且透過畫地圖造就更好的世界與社群。"
+    },
+    "ym-Universidad-Distrital-Francisco-Jose-de-Caldas": {
+      "name": "波哥大年輕圖客",
+      "description": "波哥大大學的年輕圖客分會",
+      "extendedDescription": "波哥大大學是位於哥倫比亞波哥大的公立、共學、研究型大學，擁有 26,140 位學生。"
+    },
+    "ym-Universidad-Nacional-Autnoma-de-Honduras": {
+      "description": "宏都拉斯國立自治大學的年輕圖客分會"
+    },
+    "ym-Universidad-Nacional-de-Colombia": {
+      "description": "哥倫比亞國立大學的年輕圖客分會",
+      "extendedDescription": "學生一同集結來畫地圖，以及與哥倫比亞全國與全球的大學生交際，地理範圍則包括與微生物與健康學科。"
+    },
+    "ym-Universidad-Nacional-de-Ingenieria": {
+      "description": "國立工程大學的年輕圖客分會",
+      "extendedDescription": "YEKA STREET 是一群尼加拉瓜國立工程大學的學生組成，主要目的是運用知識與技能，套用許多工具與 app 來畫我們城市的地圖，貢獻在社群專案與災難應對計畫。我們想要邀請更多學生加入，增進社區的人生活品質與減少其人口受到的傷害。"
+    },
+    "ym-Universidade-Eduardo-Mondlane": {
+      "name": "莫三比克年輕圖客社群",
+      "description": "蒙德拉內大學的年輕圖客分會",
+      "extendedDescription": "我們的學生想加入莫三比克社會來創建有人道救援畫地圖的社群。社群打算繪製我們國家的物理設施與創造開放地圖資料，公共可及的公共設施，以及能在多個區域使用卻不用額外花費。"
+    },
+    "ym-Universit-de-NZrkor": {
+      "name": "年輕圖客恩澤雷科雷",
+      "description": "恩澤雷科雷大學的年輕圖客分會",
+      "extendedDescription": "年輕圖客鼓勵學生在災難或疫情發生時畫地圖，而且也允許自由製作與運用地圖資料。"
+    },
+    "ym-Universit-des-Sciences-Sociale-et-de-Gestion-de-Bamako": {
+      "name": "年輕圖客巴馬科",
+      "description": "巴馬科社會科學與管理大學的年輕圖客分會"
+    },
+    "ym-Universit-Gaston-Berger": {
+      "name": "加斯頓·伯傑大學年輕圖客",
+      "description": "加斯頓·伯傑大學的年輕圖客分會",
+      "extendedDescription": "加斯頓·伯傑大學年輕圖客是由對畫地圖有熱情的年輕學生與學者組成。我們的目標是增進學生在現地製圖能力與參與創建開放地理資料，能夠應對全世界的特別是非洲的開發挑戰。"
+    },
+    "ym-Universit-Mohammed-V-Rabat": {
+      "name": "拉巴特的布拉馬普特拉",
+      "description": "穆罕穆德五世大學拉巴特的年輕圖客分會",
+      "extendedDescription": "我們這分會視加入年輕圖客是分享我們的知識來與不同國家其他分會創建新的工作關係的機會"
+    },
+    "ym-Universitas-Negeri-Makassar": {
+      "description": "望加錫公立大學的年輕圖客分會"
+    },
+    "ym-University-Muhammadiyah-Surakarta": {
+      "description": "穆罕默迪亞.蘇拉卡爾塔大學的年輕圖客分會",
+      "extendedDescription": "SpaceTime 是穆罕默迪亞‧蘇拉爾塔大學地理機構的社群畫圖行動，由布魯斯‧曼迪‧帔塔瑪、穆斯斯‧亞卡巴與伊凡迪‧法茲創立。他們是由穆罕默迪亞‧蘇拉爾塔大學地理機構活躍學生組成。"
+    },
+    "ym-University-of-California-Davis": {
+      "name": "畫地圖社團",
+      "description": "加州大學戴維斯的年輕圖客分會"
+    },
+    "ym-University-of-Cape-Coast": {
+      "name": "海岸角大學地理社團",
+      "description": "海岸角大學的年輕圖客分會",
+      "extendedDescription": "我們是就讀海岸角大學地理暨地區計畫學習的學生。我們主要的目標是推廣學科的興趣到教室裡或是課堂之外，而我們的格言是「我們幫助地球及其棲息者。」"
+    },
+    "ym-University-of-Central-Florida": {
+      "name": "地理空間資訊社團",
+      "description": "中佛羅里達大學的年輕圖客分會",
+      "extendedDescription": "我們的使命是培育關心 GIS 應用與討論，主修社會與教育環境的人。團體與社群活動則在學年當中進行，透過社群為基礎的 GIS 專案，組織學生來當志工幫助在地與區域社群，並且教育當地中小學學生來使用 GIS 應用。"
+    },
+    "ym-University-of-Chicago": {
+      "description": "芝加哥大學的年輕圖客分會"
+    },
+    "ym-University-of-Dar-es-Salaam": {
+      "name": "達蘭沙拉大學年輕圖客",
+      "description": "達蘭沙拉大學的年輕圖客分會",
+      "extendedDescription": "達蘭沙拉大學年輕圖客的目標是運用與推廣開源資料與 GIS 技術來繪製可能易到災難侵襲的地方，並且提供緊急救助管理所需要的資源，還有連結達蘭沙拉市裡的開源與 GIS 組織，以及計畫伙伴所需要做的計畫。"
+    },
+    "ym-University-of-Energy-and-Natural-Resources": {
+      "name": "生態社團",
+      "description": "能源與自然資源大學的年輕圖客分會",
+      "extendedDescription": "喚醒大眾對惡化的自然環境與最佳化環境休憩與人類生存所需資料。"
+    },
+    "ym-University-of-Exeter": {
+      "name": "艾希特大學大學英國紅十字會遺失地圖",
+      "description": "艾希特大學的年輕圖客分會",
+      "extendedDescription": "我們是一群關注 GIS 的熱情地理人，相關熱衷支援英國紅十字會與其他人道援助活動。我們也是遙測畫地圖的重要師資，以及幫助現場的人士。我們的圖客松則強調地理系之下不同 GIS 研究的領域，藉由邀請講者談論 GIS/英國紅十字同時也喚起大眾的注意。"
+    },
+    "ym-University-of-Ghana": {
+      "name": "迦納大學年輕圖客",
+      "description": "迦納大學的年輕圖客分會",
+      "extendedDescription": "迦納大學年輕圖客由關注 GIS 與遙測知識與技能的研究生以及大學部學生組成。這個社團是充滿活力的團隊，藉由畫地圖強調社會議題與環境議題。我們主要的原則是能力建構、培力與團隊合作。"
+    },
+    "ym-University-of-Liberia-YouthMappers": {
+      "name": "賴比瑞亞大學年輕圖客",
+      "description": "賴比瑞亞大學的年輕圖客分會",
+      "extendedDescription": "賴比瑞亞大學年輕圖客屬於全球年輕圖客網絡下的分會組織，我們是非營利的學生畫地圖組織，專注繪製賴比瑞亞與全世界的發展建築。我們組織的目的是整合科技與地理空間知識，同時也創建與發展地圖；收集與分析可解決在地與全球議題的資料。我們專注支援與創建學生進行畫地圖發展興趣與技能的機會。我們的願景是共同合作，能與賴比瑞亞大學年輕圖客一同努力的統一的學生社群，共同提昇彼此的生活。"
+    },
+    "ym-University-of-Malawi": {
+      "name": "馬拉威大學領袖學院年輕圖客",
+      "description": "馬拉威大學的年輕圖客分會",
+      "extendedDescription": "馬拉威大學領袖學院年輕圖客是馬拉威大學領袖學院下的學生畫地圖組織。這個分會的學生專注繪製馬拉威發展與科技所需要的地方。"
+    },
+    "ym-University-of-Maryland-College-Park": {
+      "name": "地理社團",
+      "description": "馬里亞納大學公園校區的年輕圖客分會",
+      "extendedDescription": "馬里亞納大學公園校區地理社團的目標是接觸與鼓勵學生在校園或是社群內探索地理興趣。"
+    },
+    "ym-University-of-Mines-and-Technology": {
+      "name": "冶金與科技大學年輕圖客",
+      "description": "冶金與科技大學的年輕圖客分會",
+      "extendedDescription": "冶金與科技大學年輕圖客分會是一群追求改進現地畫地圖，創建開放地理資料，與為了全球開發挑戰分析地方地埋址的志工學生組織而成。"
+    },
+    "ym-University-of-Nairobi": {
+      "name": "地理空間工程學生聯盟",
+      "description": "奈洛比大學的年輕圖客分會",
+      "extendedDescription": "奈洛比大學的學生與在地 OSM 社群合作，如 Map Kibera 與在地事實一同學習如何開放畫地圖與貢獻都會社群所需的資料。"
+    },
+    "ym-University-of-Nigeria-Enugu-Campus": {
+      "name": "獅子圖客小組 (LMT) 埃努古校區",
+      "description": "奈吉利亞大學埃努古校區的年輕圖客分會",
+      "extendedDescription": "獅子圖客小組 (LMT) 埃努古校區屬於年輕圖客網絡的一員，目標是提供成員學習與精進他們地理資訊的能力，以及創建開放地理資料與分析的能力，還有識別在地定義的全球挑戰。獅子圖客小組 (LMT) 埃努古校區是群眾外包畫圖與開放街圖、公民科學與其他地理空間科技用在研究、訓練與回應韌性社群挑戰的地理資訊生成者的志工。我們涉入網路製圖、GIS 與遙測研究。我們對志願性地理資訊、參與式 GIS 與公民科學相當有熱情。我們主要的活動包括線上群眾外包地理製圖，現在畫地圖，訓練工作坊與中學的推廣活動，以及人道救援/災難應對的畫地圖。"
+    },
+    "ym-University-of-Nigeria-Nsukka": {
+      "name": "獅子圖客小組 (LMT) 努思卡",
+      "description": "奈吉利亞大學努思卡的年輕圖客分會",
+      "extendedDescription": "獅子圖客小組 (LMT) 屬於年輕圖客網絡的一員，目標是提供成員學習與精進他們地理資訊的能力，以及創建開放地理資料與分析的能力，還有識別在地定義的全球挑戰。獅子圖客小組 (LMT) 區是群眾外包畫圖與開放街圖、公民科學與其他地理空間科技用在研究、訓練與回應韌性社群挑戰的地理資訊生成者的志工。我們涉入網路製圖、GIS 與遙測研究。我們對志願性地理資訊、參與式 GIS 與公民科學相當有熱情。我們主要的活動包括線上群眾外包地理製圖，現在畫地圖，訓練工作坊與中學的推廣活動，以及人道救援/災難應對的畫地圖。"
+    },
+    "ym-University-of-North-Texas": {
+      "name": "北德州大學地理社團",
+      "description": "北德州大學的年輕圖客分會",
+      "extendedDescription": "地理社團是北德州大學的學生組織，歡迎所有對地理有興趣的學生。地理社團的目標是向主修與地理系學生與職員推廣地理學科的興趣。地理社團也會尋求地理學科當中代表學生的需求與願望，以及提供整個大學社群的創新點子的代表平台。"
+    },
+    "ym-University-of-Northern-Colorado": {
+      "name": "北科羅拉多大學地理與 GIS 社團",
+      "description": "北科羅拉多大學的年輕圖客分會",
+      "extendedDescription": "在北科羅拉多大學的官方地理與 GIS 社團分會，目標為學習、分享與連結週邊。#MakingSenseofTheWorld"
+    },
+    "ym-University-of-Oregon": {
+      "name": "西北繪製地圖",
+      "description": "奧勒岡大學的年輕圖客分會",
+      "extendedDescription": "西北繪製地圖著重在接觸奧勒岡大學大學生，讓他們協助人道救援與進行地理研究相關的繪圖專案。我們歡迎任何學科的學生來加入我們的畫地圖冒險。"
+    },
+    "ym-University-of-Port-Harcourt": {
+      "name": "獨特圖客小組 (UMT) 哈科特港",
+      "description": "哈科特港大學的年輕圖客分會",
+      "extendedDescription": "獨特圖客小姐 (UMT) 哈科特港是進行合作線上畫地圖，專注在訓練與培力成員最新的畫地圖技能的一群行動小姐與志工，進而專注在地關注與地理資訊相關挑戰，並且提供尼加拉三角洲與其他地方遭遇災難的應對措施。我們推廣採用開放街圖平台以及其他可及的平台，進行群眾外包的畫地圖與志願性地理資訊，來應對快速畫地圖，災難場景畫地圖，地理情報畫地圖，更新地圖與訓練。這個分會屬於校園內的人道救援開放街圖小組 (HOT) 的一員，並且有年輕圖客的小組來提供成員學習與提昇他們地理資訊技能的機會，同時也探索畫地品與地理資訊的全球機會。"
+    },
+    "ym-University-of-Pretoria": {
+      "name": "地理資訊科學中心",
+      "description": "普利托利亞大學的年輕圖客分會",
+      "extendedDescription": "畫普利托利亞地圖的學生由普利托利亞大學地理資訊科學中心來支援，提供普利托利亞大學個人與團體有關地理資訊科學研究、教育與訓練的平台，另外也鼓勵專業發展與社群介接，並且透過與南非各界的聯盟合作、教育與訓練來強化，"
+    },
+    "ym-University-of-Redlands": {
+      "name": "雷德蘭茲大學空間地理思考者",
+      "description": "雷德蘭茲大學的年輕圖客分會",
+      "extendedDescription": "藉由社會介接還有教育校園社群關於畫地圖的力量與社群服務活動的空間分析，建構成員手上工具與方法的 GIS 技能與知識。"
+    },
+    "ym-University-of-Rwanda-Huye-Campus": {
+      "name": "蘆安達年輕圖客",
+      "description": "蘆安達大學海玉校區的年輕圖客分會",
+      "extendedDescription": "根據承諾與目的來推廣畫地圖，而依據年輕圖客的公開演講資訊，我們組織地理系裡承諾要畫地圖的學生來組成校園內的分會。我們也支援指導教授 Gaspard Rwanyiziri 博士(CGIS-Rwanda 主任) 與相關課程的助教工作。"
+    },
+    "ym-University-of-South-Carolina": {
+      "name": "地理畢業生聯盟",
+      "description": "南卡羅萊那大學的年輕圖客分會",
+      "extendedDescription": "地理畢業生聯盟是全學生運作的組織，目標是藉由相關資源整合，成為學系與學生之間的中間人角色。我們想要追求地理領域與次領域的專業、學術與個人發展。"
+    },
+    "ym-University-of-Southern-California": {
+      "name": "南加大圖客",
+      "description": "南加州大學的年輕圖客分會",
+      "extendedDescription": "我們用不同角度看待這世界，我們用空間的角度看待。而擁有空間思考的力量，我們連結場所與空間來協助全球挑戰。與我們合作吧！"
+    },
+    "ym-University-of-the-Philippines-Resilience-Institute": {
+      "name": "菲律賓大學防災中心",
+      "description": "菲律賓大學防災中心的年輕圖客分會",
+      "extendedDescription": "菲律賓大學迪里曼分校防災中心是 2016 年設立，宗旨為藉由防災跨領域的研究與行動培力在地社群。透過菲徑賓大學迪里曼分校 NOAH 中心，及不同協力的組織，我們建構為 82 個省當中的 17 個，以及上傳開放街圖超過 400 萬棟建築。"
+    },
+    "ym-University-of-the-Philippines-Resilience-Institute-twitter": {
+      "name": "年輕圖客普利托利亞防災機構 Twitter"
+    },
+    "ym-University-of-the-West-Indies-Mona-Campus": {
+      "name": "圖書館推廣 - ODL",
+      "description": "西印度群島大學莫娜校區的年輕圖客分會",
+      "extendedDescription": "西印度群島大學莫娜校區圖書館與大眾互動，進行推廣與特殊專案，允許圖書館進行空間識別知識與倡議空間資料分享與連結牙買加與加勒比海地區的共同興趣。我們有防災救難與溝通需求，以及地球科學與地理資料，能夠更為服務校園與社區。特別值得一提，我們的科學圖書館能向職員與學生展示上諸事務。"
+    },
+    "ym-University-of-Victoria": {
+      "name": "地理科系社團",
+      "description": "維多利亞大學的年輕圖客分會",
+      "extendedDescription": "地理科系社團推廣與代表地理科係的社會與學術的興趣。我們透過四項目標來表述：提供地理教育與品質的討論平台；提供學生能在系間與系務會議表達的整合意見；表述反映學生利益，達成共識的地理領域集體行動；成為代表維多利亞大學與課程委員議會的學生代表。"
+    },
+    "ym-University-of-Warwick": {
+      "name": "華威商學院防災畫地圖社團",
+      "description": "華威商學院的年輕圖客分會",
+      "extendedDescription": "我們是一群來個華威商學院的熱情圖客，我們的目標是讓人們對人道救援畫地圖感到有興趣，並且瞭解他們的行動最終能對現場有意義。我們與遺失地圖與無國醫生組織英國合作，透過進行 HOT 任務畫地圖與進行工作坊。我們的圖客松如同行事曆記錄會列在遺失地圖頁面。"
+    },
+    "ym-University-of-Wyoming": {
+      "name": "伽碼西塔厄普西隆/地理社團",
+      "description": "懷俄明大學的年輕圖客分會"
+    },
+    "ym-University-of-Zimbabwe": {
+      "name": "辛巴威大學圖客",
+      "description": "辛巴威大學的年輕圖客分會",
+      "extendedDescription": "辛巴威大學圖客是使用開放街圖在開放資料繪圖與人道救援災難反應畫地圖的志工組成。團隊以開放原始碼地理空間技術能力培力成員。"
+    },
+    "ym-UW-Madison": {
+      "name": "徽章地圖",
+      "description": "威斯康辛大學麥迪遜分校的年輕圖客分會",
+      "extendedDescription": "徽章地圖是威斯康辛大學麥迪遜分校的年輕圖客分會，致力於人道救援與社群畫地圖服務。我們透過各種機會創建 GIS 資料連結志工網絡，來提供給需要的人在專案上使用。"
+    },
+    "ym-Vassar-College": {
+      "name": "哈德森谷圖客",
+      "description": "瓦薩學院的年輕圖客分會",
+      "extendedDescription": "我們的使命是為了同儕、教育者與社團組織提供跨領域平台連結地方畫圖專案，強化本地生態系，建構環境，以及社群的健康。我們也尋求在全球人道救援與開發方面貢獻地理空間技能。"
+    },
+    "ym-Villanova-University": {
+      "name": "維拉諾瓦全球繪圖員",
+      "description": "維拉諾瓦大學的年輕圖客分會",
+      "extendedDescription": "維拉諾瓦全球繪圖員依據聖奧思定準則行事 ，無私服務全球社群。而混合休閒與社會互動，不論參與學生的種族、學術主修、學生所屬組織，或是學術階級，我們仍然提供地理空間成果給那些需要的人。"
+    },
+    "ym-West-Virginia-University": {
+      "name": "地圖時間摩根敦",
+      "description": "西維吉尼亞大學的年輕圖客分會",
+      "extendedDescription": "以合作團隊方式，這個共同創辦的分會著重為專案那些感興趣的人，提供開放學習的環境。包括國際開發、緊急應變與地理資訊科學。他們可以藉由提供技術訓練與經驗，聯結初學者與專家，來建造有意義與有用的地理設施資料，同時也與全球的姐妹市聯結。"
+    },
+    "ym-Western-Michigan-University": {
+      "name": "地理社團",
+      "description": "年輕圖客分會在西密西根大學"
+    },
+    "ym-Yarmouk-University": {
+      "name": "年輕圖客分會在 YU",
+      "description": "年輕圖客分會在耶爾穆克大學",
+      "extendedDescription": "年輕圖客分會在 YU 是第一個中東與北非一帶的畫地圖團體，而這一帶有不少難民、災民以及貧民，造成危機需要而且急需人道救援畫地圖來應對這些災難。YU 圖客鼓勵採用開放資料來針對中東與北非地區所遇到的問題，來解除與開發這一帶。"
+    }
+  }
+}

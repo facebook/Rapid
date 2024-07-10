@@ -1,0 +1,76 @@
+{
+  "yue": {
+    "_communities": {
+      "mappingbotswana": "博次彎拿國製圖組",
+      "maptimehrva": "維珍尼亞咸頓道製圖組",
+      "openstreetmap": "公家街圖",
+      "openstreetmapafghanistan": "亞富汗國公家街圖組",
+      "openstreetmapafrica": "非洲公家街圖組",
+      "openstreetmapalba": "蘇格蘭公家街圖組",
+      "openstreetmapalbania": "山國公家街圖組",
+      "openstreetmapargentina": "銀國公家街圖組",
+      "openstreetmapasia": "亞洲公家街圖組",
+      "openstreetmapasti": "山城公家街圖組",
+      "openstreetmapaustria": "東國公家街圖組",
+      "openstreetmapbahia": "灣州公家街圖組",
+      "openstreetmapbangladesh": "番嘉國公家街圖組",
+      "openstreetmapbelarus": "白舟人國公家街圖組",
+      "openstreetmapbelgium": "驕人國公家街圖組",
+      "openstreetmapbenin": "怒地國公家街圖組",
+      "openstreetmapberlin": "澤城公家街圖組",
+      "openstreetmapcanada": "加拿大公家街圖組",
+      "openstreetmapchina": "中國公家街圖組",
+      "openstreetmapcuba": "古巴公家街圖組",
+      "openstreetmapdenmark": "丹麥公家街圖組",
+      "openstreetmapfrance": "法國公家街圖組",
+      "openstreetmaphongkong": "香港公家街圖組",
+      "openstreetmapiceland": "冰島公家街圖組",
+      "openstreetmapindia": "印度公家街圖組",
+      "openstreetmapindonesia": "印尼公家街圖組",
+      "openstreetmapitaly": "意大利公家街圖組",
+      "openstreetmapjapan": "日本公家街圖組",
+      "openstreetmapkorea": "韓國公家街圖組",
+      "openstreetmapmongolia": "蒙古公家街圖組",
+      "openstreetmaptaiwan": "臺灣公家街圖組",
+      "openstreetmapthailand": "泰國公家街圖組",
+      "openstreetmapuk": "英國公家街圖組",
+      "openstreetmapus": "美國公家街圖組"
+    },
+    "be-matrix": {
+      "description": "凡製圖者皆觀迎！"
+    },
+    "is-chapter": {
+      "description": "冰島之內，我哋助長兼改善公家街圖。"
+    },
+    "it-chapter": {
+      "description": "意大利之內，我哋助長兼改善公家街圖。"
+    },
+    "OSM-India-facebook": {
+      "description": "印度之內，改善公家街圖"
+    },
+    "ym-Central-Washington-University": {
+      "name": "地理學會"
+    },
+    "ym-Fourah-Bay-College": {
+      "name": "學生地理會"
+    },
+    "ym-Moi-University": {
+      "name": "地理學生會"
+    },
+    "ym-Oklahoma-State-University": {
+      "name": "地理學會"
+    },
+    "ym-Sherubtse-College": {
+      "name": "地理學會"
+    },
+    "ym-University-of-Maryland-College-Park": {
+      "name": "地理學會"
+    },
+    "ym-University-of-Victoria": {
+      "name": "地理學生會"
+    },
+    "ym-Western-Michigan-University": {
+      "name": "地理學會"
+    }
+  }
+}

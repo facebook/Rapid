@@ -1,0 +1,1189 @@
+{
+  "tr": {
+    "_communities": {
+      "openstreetmapafghanistan": "OpenStreetMap Afganistan",
+      "openstreetmapafrica": "OpenStreetMap Afrika",
+      "openstreetmapalbania": "OpenStreetMap Arnavutluk",
+      "openstreetmapargentina": "OpenStreetMap Arjantin",
+      "openstreetmaparmenia": "OpenStreetMap Ermenistan",
+      "openstreetmapasia": "OpenStreetMap Asya",
+      "openstreetmapaustria": "OpenStreetMap Avusturya",
+      "openstreetmapbangladesh": "OpenStreetMap Bangladeş",
+      "openstreetmapbelgium": "OpenStreetMap Belçika",
+      "openstreetmapbolivia": "OpenStreetMap Bolivya",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap Bosna Hersek",
+      "openstreetmapbrasil": "OpenStreetMap Brezilya",
+      "openstreetmapbrasilia": "OpenStreetMap Brezilya",
+      "openstreetmapbulgaria": "OpenStreetMap Bulgaristan",
+      "openstreetmapcambodia": "OpenStreetMap Kamboçya",
+      "openstreetmapcameroon": "OpenStreetMap Kamerun",
+      "openstreetmapcanada": "OpenStreetMap Kanada",
+      "openstreetmapcastillayleon": "OpenStreetMap Kastilya ve Leon",
+      "openstreetmapcatalancountries": "OpenStreetMap Katalan Ülkeleri",
+      "openstreetmapchad": "OpenStreetMap Çad",
+      "openstreetmapchile": "OpenStreetMap Şili",
+      "openstreetmapchina": "OpenStreetMap Çin",
+      "openstreetmapcologne": "OpenStreetMap Köln",
+      "openstreetmapcolombia": "OpenStreetMap Kolombiya",
+      "openstreetmapcomunitatvalenciana": "OpenStreetMap Valensiya Topluluğu",
+      "openstreetmapcostarica": "OpenStreetMap Kosta Rika",
+      "openstreetmapcotedivoire": "OpenStreetMap Fildişi Sahili",
+      "openstreetmapcroatia": "OpenStreetMap Hırvatistan",
+      "openstreetmapcuba": "OpenStreetMap Küba",
+      "openstreetmapcz": "OpenStreetMap Çekya",
+      "openstreetmapde": "OpenStreetMap Almanya",
+      "openstreetmapdeepsouth": "OpenStreetMap Derin Güney ",
+      "openstreetmapdenmark": "OpenStreetMap Danimarka",
+      "openstreetmapdjibouti": "OpenStreetMap Cibuti",
+      "openstreetmapdominicanrepublic": "OpenStreetMap Dominik Cumhuriyeti",
+      "openstreetmapecuador": "OpenStreetMap Ekvador",
+      "openstreetmapegypt": "OpenStreetMap Mısır",
+      "openstreetmaperitrea": "OpenStreetMap Eritre",
+      "openstreetmapespana": "OpenStreetMap İspanya",
+      "openstreetmapestonia": "OpenStreetMap Estonya",
+      "openstreetmapethiopia": "OpenStreetMap Etiyopya",
+      "openstreetmapfinland": "OpenStreetMap Finlandiya",
+      "openstreetmapfrance": "OpenStreetMap Fransa",
+      "openstreetmapfreemapslovakia": "OpenStreetMap Freemap Slovakya",
+      "openstreetmapfrenchguiana": "OpenStreetMap Fransız Guyanası",
+      "openstreetmapfrenchpolynesia": "OpenStreetMap Fransız Polinezyası",
+      "openstreetmapgalicia": "OpenStreetMap Galiçya",
+      "openstreetmapgeorgia": "OpenStreetMap Gürcistan",
+      "openstreetmapgermany": "OpenStreetMap Almanya",
+      "openstreetmapghana": "OpenStreetMap Gana",
+      "openstreetmapgreece": "OpenStreetMap Yunanistan",
+      "openstreetmapguinea": "OpenStreetMap Gine",
+      "openstreetmaphungary": "OpenStreetMap Macaristan",
+      "openstreetmapiceland": "OpenStreetMap İzlanda",
+      "openstreetmapindia": "OpenStreetMap Hindistan",
+      "openstreetmapindonesia": "OpenStreetMap Endonezya",
+      "openstreetmapiran": "OpenStreetMap İran",
+      "openstreetmapiraq": "OpenStreetMap Irak",
+      "openstreetmapireland": "OpenStreetMap İrlanda",
+      "openstreetmapisrael": "OpenStreetMap İsrail",
+      "openstreetmapitaly": "OpenStreetMap İtalya",
+      "openstreetmapitalylazio": "OpenStreetMap İtalya-Lazio",
+      "openstreetmapitalylombardia": "OpenStreetMap İtalya-Lombardiya",
+      "openstreetmapitalypiemonte": "OpenStreetMap İtalya-Piyemonte",
+      "openstreetmapitalysouthtyrol": "OpenStreetMap İtalya-Güney Tirol",
+      "openstreetmapitalytrentino": "OpenStreetMap İtalya-Trento",
+      "openstreetmapjapan": "OpenStreetMap Japonya",
+      "openstreetmapkazakhstan": "OpenStreetMap Kazakistan",
+      "openstreetmapkorea": "OpenStreetMap Kore",
+      "openstreetmapkosovo": "OpenStreetMap Kosova",
+      "openstreetmapkyrgyzstan": "OpenStreetMap Kırgızistan",
+      "openstreetmaplatinamerica": "OpenStreetMap Latin Amerika",
+      "openstreetmaplatvia": "OpenStreetMap Letonya",
+      "openstreetmaplebanon": "OpenStreetMap Lübnan",
+      "openstreetmapliberia": "OpenStreetMap Liberya",
+      "openstreetmaplithuania": "OpenStreetMap Litvanya",
+      "openstreetmapljubljana": "OpenStreetMap Lübliyana",
+      "openstreetmaplombardia": "OpenStreetMap Lombardiya",
+      "openstreetmaplondon": "OpenStreetMap Londra",
+      "openstreetmapluxembourg": "OpenStreetMap Lüksemburg",
+      "openstreetmapmadagascar": "OpenStreetMap Madagaskar",
+      "openstreetmapmalawi": "OpenStreetMap Malavi",
+      "openstreetmapmalaysia": "OpenStreetMap Malezya",
+      "openstreetmapmauritania": "OpenStreetMap Moritanya",
+      "openstreetmapmexico": "OpenStreetMap Meksika",
+      "openstreetmapmongolia": "OpenStreetMap Moğolistan",
+      "openstreetmapmorocco": "OpenStreetMap Fas",
+      "openstreetmapmunchen": "OpenStreetMap Münih",
+      "openstreetmapnetherlands": "OpenStreetMap Hollanda",
+      "openstreetmapnicaragua": "OpenStreetMap Nikaragua",
+      "openstreetmapniger": "OpenStreetMap Nijer",
+      "openstreetmapnigeria": "OpenStreetMap Nijerya",
+      "openstreetmapnorthkorea": "OpenStreetMap Kuzey Kore",
+      "openstreetmapnorway": "OpenStreetMap Norveç",
+      "openstreetmapottawa": "OpenStreetMap Ottava",
+      "openstreetmapphilippines": "OpenStreetMap Filipinler",
+      "openstreetmappiemonte": "OpenStreetMap Piyemonte",
+      "openstreetmappoland": "OpenStreetMap Polonya",
+      "openstreetmapportugal": "OpenStreetMap Portekiz",
+      "openstreetmapromania": "OpenStreetMap Romanya",
+      "openstreetmaprussia": "OpenStreetMap Rusya",
+      "openstreetmaprwanda": "OpenStreetMap Ruanda",
+      "openstreetmapsaudiarabia": "OpenStreetMap Suudi Arabistan",
+      "openstreetmapserbia": "OpenStreetMap Sırbistan",
+      "openstreetmapseychelles": "OpenStreetMap Seyşeller",
+      "openstreetmapslovenia": "OpenStreetMap Slovenya",
+      "openstreetmapsomalia": "OpenStreetMap Somali",
+      "openstreetmapsouthafrica": "OpenStreetMap Güney Afrika",
+      "openstreetmapsouthsudan": "OpenStreetMap Güney Sudan",
+      "openstreetmapsweden": "OpenStreetMap İsveç",
+      "openstreetmapswitzerland": "OpenStreetMap İsviçre",
+      "openstreetmapsyria": "OpenStreetMap Suriye",
+      "openstreetmaptaiwan": "OpenStreetMap Tayvan",
+      "openstreetmaptanzania": "OpenStreetMap Tanzanya",
+      "openstreetmapthailand": "OpenStreetMap Tayland",
+      "openstreetmaptunisia": "OpenStreetMap Tunus",
+      "openstreetmapturin": "OpenStreetMap Torino",
+      "openstreetmapturkey": "OpenStreetMap Türkiye",
+      "openstreetmapuk": "OpenStreetMap Birleşik Krallık",
+      "openstreetmapukraine": "OpenStreetMap Ukranya",
+      "openstreetmapus": "OpenStreetMap Amerika Birleşik Devletleri",
+      "openstreetmapuzbekistan": "OpenStreetMap Özbekistan",
+      "openstreetmapwarszawa": "OpenStreetMap Varşova",
+      "openstreetmapwesternsahara": "OpenStreetMap Batı Sahra",
+      "openstreetmapzambia": "OpenStreetMap Zambiya",
+      "openstreetmapzimbabwe": "OpenStreetMap Zimbabve"
+    },
+    "_defaults": {
+      "aparat": {
+        "name": "Aparat'taki [topluluk]",
+        "description": "Aparat kanalımıza abone olun"
+      },
+      "discord": {
+        "name": "{topluluk} Discord'u"
+      }
+    },
+    "al-maptime-tirana": {
+      "description": "Haritalama etrafında düzenlenen sosyal etkinlikler - yeni başlayanlar davetlidir!",
+      "extendedDescription": "Maptime, yeni başlayanlar için eğitim desteği sunan, tüm bilgi seviyeleri ve dereceleri için açık bir öğrenme ortamıdır. Maptime eşzamanlı olarak esnek ve yapılandırılmıştır, eğitimleri, atölyeleri, ortak bir hedefe sahip devam eden projeleri ve bağımsız/işbirlikçi çalışma süresini haritalamak için alan yaratır."
+    },
+    "at-matrix": {
+      "description": "Avusturya için resmi olmayan Almanca Matrix kanalı"
+    },
+    "Bahia-telegram": {
+      "extendedDescription": "OpenStreetMap hakkında daha fazlasını öğrenmek, soru sormak ve toplantılarımıza katılmak için topluluğa katılın"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "name": "Körfez Bölgesi OpenStreetMappers",
+      "description": "Körfez Bölgesi'nde OpenStreetMapp'i iyileştir",
+      "extendedDescription": "Bu grup OpenStreetMap topluluğunu burada, Körfez Bölgesinde, büyütmek için kuruldu. Etkinliklerimiz, açık kaynaklı yazılım meraklılarına, bisiklet kullanıcılarına, CBS uzmanlarına, define avcılarına varana kadar herkese açık. Haritalarla, harita yapımıyla ve özgür harita verileriyle ilgilenen herkesin, grubumuza da etkinliklerimize de katılmasından memnuniyet duyarız."
+    },
+    "be-chapter": {
+      "description": "Belçika'da Openstreetmap'i büyütmeye ve geliştirmeye yardımcı oluyoruz.",
+      "extendedDescription": "Belçika'daki haritalama topluluğunu geliştirmeye ve büyütmeye yardımcı olmak istiyorsanız, haritalama konusunda daha fazla insanı delirtmek için OpenStreetMap Belçika sizin için doğru yer!"
+    },
+    "be-matrix": {
+      "description": "Tüm haritacılar davetlidir!"
+    },
+    "be-meetup": {
+      "description": "OpenStreetMap ile ilgilenen herkesin gerçek hayat buluşmaları",
+      "extendedDescription": "Fiziksel buluşmalar, diğer haritacılar ile tanışmak, onlara sorular sormak ve çok şey öğrenmek için harikadır. Özellikle yeni katılımcılar hoş geldiniz!"
+    },
+    "bg-wiki": {
+      "description": "Bulgaristan Wikiproject sayfası"
+    },
+    "cape-coast-youthmappers": {
+      "name": "Cape Coast Üniversitesi YouthMappers",
+      "description": "Bizi Twitter'dan takip edin: {url}",
+      "extendedDescription": "Bu, Gana'daki Cape Coast Üniversitesi'nin Gençlik Haritacıları derneğinin resmi tanıtıcısıdır. Haritaları seviyoruz, verileri açıyoruz ve savunmasızlara yardımcı oluyoruz."
+    },
+    "cat-github": {
+      "description": "GitHub'da OpenStreetMap Katalan Ülkeleri topluluğundan projeler"
+    },
+    "cat-wiki": {
+      "description": "Katalan Ülkeleri çevresindeki OpenStreetMap topluluğu için koordinasyon alanı: {url}"
+    },
+    "Central-Pennsylvania-OSM": {
+      "name": "Pensilvanya Merkez OSM",
+      "description": "Pennsylvania State College dışında bulunan çevrim içi haritalama topluluğu"
+    },
+    "ch-mailinglist": {
+      "name": "Openstreetmap Schweiz/Suisse/Svizzera/Svizra E-posta listesi",
+      "description": "İsviçre için E-posta Listesi"
+    },
+    "czech-community": {
+      "description": "Çekya'daki OSM üyeler ilgili harita portalı, web sitesi ve kişiler"
+    },
+    "de-berlin-mailinglist": {
+      "name": "Berlin E-posta Listesi"
+    },
+    "de-berlin-xmpp": {
+      "name": "OpenStreetMap Berlin - Brandenburg XMPP",
+      "description": "XMPP çok kullanıcılı sohbetimize katılın : {url}"
+    },
+    "de-karlsruhe-mailinglist": {
+      "name": "Karlsruhe E-posta Listesi"
+    },
+    "de-karlsruhe-meetup": {
+      "description": "Karlsruhe bölgesindeki haritacılar ve OpenStreetMap kullanıcıları "
+    },
+    "de-mv-mailinglist": {
+      "name": "Mecklenburg-Vorpommern E-posta Listesi"
+    },
+    "de-ostwestfalen-lippe-mailinglist": {
+      "name": "OWL E-posta Listesi",
+      "description": "Bu Ostwestfalen-Lippe OSM topluluğu için bir e-posta listesidir."
+    },
+    "de-stuttgart-mailinglist": {
+      "name": "Stuttgart ve Baden-Wuerttemberg E-posta Listesi",
+      "description": "Bu  Stuttgart ve tüm Baden-Wuerttemberg OSM topluluğu için bir e-posta listesidir."
+    },
+    "de-stuttgart-meetup": {
+      "name": "OpenStreetMap Stutgar buluşması",
+      "description": "Stuttgart bölgesindeki haritacılar ve OpenStreetMap kullanıcıları "
+    },
+    "de-ulm_neuulm-meetup": {
+      "name": "OpenStreetMap Ulm Neu-Ulm Buluşması",
+      "description": "Ulm ve Neu-Ulm bölgesindeki haritacılar ve OpenStreetMap kullanıcıları "
+    },
+    "de-ulmeralb-meetup": {
+      "name": "OpenStreetMap Ulmer Alb Buluşması",
+      "description": " Ulmer Alb bölgesindeki haritacılar ve OpenStreetMap kullanıcıları "
+    },
+    "de-viersen-meetup": {
+      "name": "OpenStreetMap Viersen Buluşması",
+      "description": "OSM topluluğu ve kullanıcıları Kreis Viersen ve Mönchengladbach buluşması"
+    },
+    "DF-telegram": {
+      "extendedDescription": "OpenStreetMap hakkında daha çok şey öğrenmek, soru sormak veya toplantılarımıza katılmak için topluluğumuza katılın. Herkese açıktır!"
+    },
+    "fr-bzh-website": {
+      "description": "Breton konuşan harita"
+    },
+    "fr-chapter": {
+      "description": "Fransa'da Openstreetmap'i büyütmeye ve geliştirmeye yardımcı oluyoruz."
+    },
+    "fr-montrouge-wiki": {
+      "description": "{community} Wiki sayfası"
+    },
+    "fr-telegram": {
+      "description": "OSM Fransa topluluğu için bir Telegram grubu: {url}"
+    },
+    "fr-xmpp": {
+      "description": "osm-fr@chat.jabberfr.org'a katılın"
+    },
+    "galicia-wiki": {
+      "description": "Galiçya'da haritalama hakkında bilmeniz gereken her şey: {url}"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "name": "Geoinquests Twitter'da",
+      "description": "Bizi Twitter'da {url} adresinden takip edin"
+    },
+    "gb-irc": {
+      "extendedDescription": "irc.oftc.net (port 6667) üzerinden #{account}'a katılın,  eğer bir soru sorduysanız lütfen sabırlı olun ve birkaç dakika bekleyin."
+    },
+    "gb-mailinglist": {
+      "description": "Talk-gb Birleşik Krallık ( Kuzey İrlanda da dahil) OSM topluluğu için asıl iletişim forum listesidir"
+    },
+    "geogeeks_perth_meetup": {
+      "description": "Haritalama, jeo-uzamsal veri ve açık kaynak ile ilgilenen kişiler için Perth merkezli buluşma grubu. Düzenli olarak OSM haritalama partileri, konuşmalar ve sosyal toplantılar düzenliyoruz. Yeni başlayanlar hoş karşılanır!"
+    },
+    "GeoPhilly": {
+      "description": "Philadelphia çevresinde harita meraklıları için buluşma",
+      "extendedDescription": "GeoPhilly, geliştiricileri, coğrafyacıları, veri meraklılarını, açık kaynak meraklılarını, sivil hackerları ve harita bağımlılarını haritalara ve anlattıkları hikayelere olan ortak sevgimizde birleştiriyor. Eğer haritaları işinizin bir parçası olarak kullanıyorsanız ya da sadece daha fazlasını öğrenmek istiyorsanız, bu buluşma tam size göre! Etkinliklerimiz açık, samimi, eğitici ve sosyal olmayı amaçlıyor ve mutlu saatlerden yıldırım konuşmalarına ve hatta atölye çalışmalarına kadar çeşitlilik gösteriyor. Gelin, Philadelphia'da bizimle birlikte çeşitli, ilham verici bir jeo-uzamsal topluluk oluşturun!"
+    },
+    "hr-wiki": {
+      "description": "Hırvatistan Wikiproject sayfası"
+    },
+    "hu-facebook-group": {
+      "name": "{community} Facebook Grubu"
+    },
+    "hu-matrix": {
+      "extendedDescription": "Harita konularında OpenStreetMap sohbeti. OSM topluluk destek forumlarından biri."
+    },
+    "hu-meetup": {
+      "description": "Macaristan'da buluşmalar düzenleme platformu"
+    },
+    "ireland-chapter": {
+      "description": "İrlanda'da OpenStreetMap'in büyümesine ve iyileştirilmesine yardımcı oluyoruz.",
+      "extendedDescription": "OpenStreetMap Ireland, diğer açık girişimlerle etkileşime ek olarak, İrlanda adasındaki OpenStreetMap projesi için bir savunucu sesi sağlar."
+    },
+    "is-chapter": {
+      "description": "İzlanda'da OpenStreetMap'in büyümesine ve iyileştirilmesine yardımcı oluyoruz."
+    },
+    "it-chapter": {
+      "description": "İtalya'da OpenStreetMap'in büyümesine ve iyileştirilmesine yardımcı oluyoruz."
+    },
+    "kosovo-telegram": {
+      "description": "Yarı resmi tüm Kosova Telegram genel grubu. Tüm haritacıları, herhangi bir dilde, her yerden memnuniyetle karşılıyoruz."
+    },
+    "latam-facebook": {
+      "description": "Latin Amerika'daki Haritacılar ve OpenStreetMap kullanıcıları"
+    },
+    "latam-matrix": {
+      "description": "Diğer Latin Amerika OSM topluluğu üyeleriyle sohbet edin, Telegram sohbetiyle köprüleniyor"
+    },
+    "latam-telegram": {
+      "description": "Latinamerican OSM topluluğunun diğer üyeleriyle sohbet et, Matrix chat ile bağlandı"
+    },
+    "latam-wiki": {
+      "description": "Latin Amerika'da haritalama hakkında bilmeniz gereken her şey"
+    },
+    "mailinglist-sk-googlegroups": {
+      "description": "Slovak topluluğu için resmi e-posta listesi"
+    },
+    "map-kibera": {
+      "description": "Map Kibera, Kenyada çalışan kayıtlı bir organizasyondur.",
+      "extendedDescription": "Map Kibera Trust'ın misyonu, eylem için dijital araçların yaratıcı kullanımı vasıtasıyla ötekileştirilmiş toplulukların tanıtımı ve etkilerinin arttırılmasıdır."
+    },
+    "MapColabora-mailinglist": {
+      "description": "Mapeado Colaborativo / Geoinquietos Zaragoza email listesi"
+    },
+    "MapColabora-twitter": {
+      "description": "Mapeado Colaborativo / Geoinquietos Zaragoza Twitter Hesabı"
+    },
+    "mappa-mercia-group": {
+      "name": "Mercia Haritası yerel grubu",
+      "description": "Midland'teki OpenStreetMap meraklıları için bir ev",
+      "extendedDescription": "Mappa Mercia, İngiltere, West Midlands'de OpenStreetMap'i büyütme projesidir. Topluluk etkinlikleri düzenliyoruz, eğitim veriyoruz ve verilerini açmak isteyen yerel kuruluşları destekliyoruz."
+    },
+    "MappingDC-meetup": {
+      "name": "Haritalama DC",
+      "description": "Kolumbiya Bölgesi'inde OpenStreetMap'i geliştirin",
+      "extendedDescription": "Bizler DC bölgesinde OpenStreetMap'i  geliştirmeyi amaçlayan bir grup gönüllü haritacılarız. Aynı zamanda başkalarına da OSM ekosistemi, veri analizi, haritacılığı ve CBS hakkında öğretmeyi amaçlıyoruz. Her ay buluşmalar yapıp şehrimizin bir alanına odaklanıyoruz."
+    },
+    "MappingWR": {
+      "description": "Waterloo Bölgesi çevresinde düşük karbonlu rotaları bulmayı kolaylaştırmak."
+    },
+    "Maptime-ME-meetup": {
+      "description": "Portland, ME bölgesindeki haritacılar ve OpenStreetMap kullanıcıları ",
+      "extendedDescription": "Harita zamanı, kelimenin tam anlamıyla, harita oluşturma zamanıdır. Misyonumuz, haritalama araçlarını ve teknolojilerini kullanarak işbirlikçi öğrenme, keşif ve harita oluşturma için bir zaman ve mekan yaratarak ilgilenen herkese kartografik olasılık kapılarını açmaktır."
+    },
+    "Maptime-Oceania-Slack": {
+      "description": "{signupUrl} kaydol"
+    },
+    "no-irc": {
+      "description": "Norveç'teki haritacılar ve OpenStreetMap kullanıcıları, geliştiricileri ve meraklıları için sohbet odası"
+    },
+    "Nottingham-OSM-pub-meetup": {
+      "name": "Doğu Midlands (Nottingham) Aylık bar buluşmaları",
+      "description": "East Midlands haritacıları ve kullanıcıları için sosyal toplantı",
+      "extendedDescription": "Başlangıçta Nottingham'da ve daha yakın zamanda Derby'de ve zaman zaman East Midlands'de Mart 2011'den beri bir grup toplanıyor. Bunlar sosyal toplanmalar olmakla birlikte gelip OSM hakkında veya genel sorular sormak için harika bir yer. Yaz aylarında genellikle buluşma yerimizin yakınında bir saat boyunca biraz ışık haritalaması yapıyoruz. Grubun tamamı kamusal geçiş haklarının haritalandırılmasına özel bir ilgisi duyuyor ve zaman zaman bu amaçla haritalama toplantıları düzenliyor."
+    },
+    "OpenCleveland-meetup": {
+      "description": "Cleveland bölgesinde OpenStreetMap'i geliştirin",
+      "extendedDescription": "Open Geo Cleveland, insanların, özellikle OpenStreetMap ve coğrafi verileri yöneten, düzenleyen ve görüntüleyen Open jeo-uzamsal yazılımlar başta olmak üzere ücretsiz coğrafi veri setlerini kullanma hakkındaki bilgilerini tartışmaları ve paylaşmaları için bir kaynak olmayı ve Kuzeydoğu Ohio'da kullanımını savunan bir kaynak olmayı amaçlamaktadır. Ayrıca bir maptime derneğiyiz =)"
+    },
+    "OSM-AR-twitter": {
+      "extendedDescription": "Yerel topluluk ve OpenStreetMap hakkında genel haberler"
+    },
+    "osm-at": {
+      "description": "Avusturya'da OpenStreetMap hakkında bilgi platformu"
+    },
+    "OSM-Central-Salish-Sea": {
+      "name": "OpenStreetMap Orta Salish Denizi",
+      "description": "Washington Vernon Dağı civarındaki OpenStreetMap kullanıcıları ve haritacılar",
+      "extendedDescription": "OpenStreetMap senin gibi insanlar tarafından oluşturulan bir dünya haritasıdır. Oluşturduğun harita Wikipedia gibi ücretsizdir. Daha fazla bilgi için osm.org kontrol edebilirsin. Haritalar hakkında konuşmak, haritalar yapmak ve eğlenmek için her zaman buluşuyoruz."
+    },
+    "osm-ch": {
+      "description": "İsviçre'de OpenStreetMap hakkında bilgi platformu"
+    },
+    "OSM-Chattanooga": {
+      "description": "Chattanooga için OpenStreetMap kullanıcı grubu "
+    },
+    "OSM-Colorado": {
+      "name": "OpenStreetMap Kolorado",
+      "description": "ABD Kolorado Eyaleti OpenStreetMap kullanıcıları ve haritacılar",
+      "extendedDescription": "OpenStreetMap (OSM) Kolorado; ücretsiz haritalar oluşturma çabalarına katkıda bulunmak isteyen insanların yerel bir işbirliğidir. Tüm haritacılarımızı devlet genelinde haritalama etkinliklerini organize etmeye ve önermeye teşvik ediyoruz. Meetup etkinlikleri basit sosyal karıştırıcılar, OSM temel düzeyden ileri düzeye eğitim ve Topluluk Haritalama Partileri olabilir."
+    },
+    "osm-de": {
+      "description": "Almanya'da OpenStreetMap hakkında bilgi platformu"
+    },
+    "OSM-Facebook": {
+      "description": "OpenStreetMap ile ilgili haberler ve güncellemeler için bizi Facebook'ta beğenin."
+    },
+    "osm-gh-facebook": {
+      "extendedDescription": "Gana topluluğundaki haritacılar, Gana'daki OpenStreetMap ve Humanitarian OpenStreetMap Team (HOT) projelerini tanıtıyor. Bize katılın."
+    },
+    "osm-hr": {
+      "description": "Hırvatistan'da OpenStreetMap hakkında bilgi platformu"
+    },
+    "OSM-India-facebook": {
+      "description": "Hindistan'da OpenStreetMap'i geliştirin",
+      "extendedDescription": "Hindistan'da haritalama mı? Sorularınız var mı, buradan toplumla bağlantı kurmak mı istiyorsunuz? {Url} adresinden bize katılın. Hoşgeldiniz!"
+    },
+    "osm-india-github": {
+      "description": "Bizimle birlikte kodlayın: {url}"
+    },
+    "OSM-India-Puducherry-Facebook": {
+      "name": "Özgür Yazılım Donanım Hareketi - Facebook",
+      "description": "Topluluk etkinlikleri, aktiviteleri hakkında bilgi edinmek için FSHM Facebook sayfası",
+      "extendedDescription": "FSHM, özgür yazılım / donanım, teknoloji, aktivizm ve OpenStreetMap ile ilgili etkinlikler düzenlemektedir. FB sayfası, etkinlikleriyle iletişim kurmanın en iyi yoludur."
+    },
+    "OSM-India-Puducherry-Matrix": {
+      "name": "Özgür Yazılım Donanım Hareketi - Matrix",
+      "description": "FSHM Riot grubu, Puducherry'deki ve çevresindeki haritalama etkinliklerini, olaylarını tartışmak, paylaşmak ve güncellemek için",
+      "extendedDescription": "FSHM topluluk üyeleri kendi OSM haritalama güncellemelerini / deneyimlerini Riot.im grubu aracılığıyla paylaşıyor, bu grup aynı zamanda özgür yazılım / donanım, teknoloji ve aktivizm ile ilgili konuları tartışmak için de kullanılıyor."
+    },
+    "OSM-india-twitter": {
+      "description": "Sadece bir tweet uzağındayız: {url}"
+    },
+    "osm-india-website": {
+      "description": "Hindistan'daki Haritacılar ve OpenStreetMap kullanıcıları"
+    },
+    "osm-india-wiki": {
+      "description": "Hindistan'da haritalama hakkında bilmeniz gereken her şey: {url}"
+    },
+    "osm-iran-aparat": {
+      "extendedDescription": "OpenStreetMap ile ilgili her şey hakkında iyi bir video kaynağı. Ağırlıklı olarak Farsça."
+    },
+    "osm-iran-discord": {
+      "extendedDescription": "OpenStreetMap İran için bir Discord sunucusu. Katılmaktan çekinmeyin!"
+    },
+    "OSM-japan-facebook": {
+      "description": "Japonya'daki Mappers ve OpenStreetMap kullanıcıları"
+    },
+    "OSM-japan-slack": {
+      "description": "OSM Japonya topluluğu için gevşek bir çalışma alanı {signupUrl}"
+    },
+    "OSM-japan-website": {
+      "description": "Japonya'daki Mappers ve OpenStreetMap kullanıcıları"
+    },
+    "osm-kenya": {
+      "description": "OSM Kenya, OSM katılımcıları ve kullanıcılarından oluşan bir topluluktur",
+      "extendedDescription": "OSM, ülkedeki kuruluşlar, geliştiriciler ve YouthMappers dernekleri de dahil olmak üzere OpenStreetMap ile ilgilenen bireyler için yerel bir topluluktur."
+    },
+    "OSM-Kerala-facebook": {
+      "description": "Kerala'da OpenStreetMap'i Geliştirin",
+      "extendedDescription": "Kerala'da haritalama mı? Sorularınız var mı, buradan topluluk ile bağlantı kurmak mı istiyorsunuz? {Url} adresinden bize katılın. Hoş geldiniz!"
+    },
+    "osm-kerala-telegram": {
+      "description": "Kerala'yı birlikte haritalıyoruz. Telegram grubumuza katılın: {url}"
+    },
+    "osm-mg-facebook": {
+      "description": "OpenStreetMap ile ilgilenen insanlar için Malagasy Facebook grubu."
+    },
+    "osm-ni": {
+      "description": "Nikaraguadaki yerel topluluk için OSM servisleri ve bilgi sağla"
+    },
+    "osm-ohio-wiki": {
+      "description": "{community} Wiki sayfası"
+    },
+    "OSM-Ottawa-meetup": {
+      "description": "Ottawa bölgesindeki haritacılar ve OpenStreetMap kullanıcıları "
+    },
+    "OSM-PE": {
+      "description": "OpenStreetMap Peru topluluğu için haberler ve kaynaklar"
+    },
+    "OSM-PH-telegram": {
+      "extendedDescription": "Filipinlerdeki OSM haritacıları ve arkadaşlarının konuşma, şakalaşma ve kısa soru-cevapları için samimi ve çok aktif bir Telegram grubu."
+    },
+    "OSM-PL-github": {
+      "description": "Polonya OpenStreetMap topluluğu için GitHub organizasyonu"
+    },
+    "OSM-Puducherry-Mailing-List": {
+      "name": "Özgür Yazılım Donanım Hareketi - E-posta Listesi",
+      "description": "Puducherry'deki haritalama ve diğer şeyler hakkında görüşmek için FSHM Puducherry e-posta listesi",
+      "extendedDescription": "FSHM yazılım/donanım, teknoloji, aktivizm ve OpenStreetMap ile ilgili ücretsiz etkinlikler düzenler."
+    },
+    "OSM-Rome-meetup": {
+      "name": "Romalı Haritacılar Toplantısı",
+      "description": "Roma bölgesinde OpenStreetMap'i geliştirin",
+      "extendedDescription": "İnsanların, özellikle OpenStreetMap ve coğrafi verileri yöneten, düzenleyen ve görüntüleyen açık jeo-uzamsal yazılımlar başta olmak üzere ücretsiz coğrafi veri setlerini kullanma hakkındaki bilgileri tartışmaları ve paylaşmaları için Lazio'daki kullanımını savunan bir kaynak olmayı hedefliyoruz. "
+    },
+    "OSM-Seattle": {
+      "description": "Seattle bölgesindeki haritacılar ve OpenStreetMap kullanıcıları "
+    },
+    "OSM-SoCal": {
+      "name": "OpenStreetMap Güney Kaliforniya",
+      "description": "Biraz eğlenelim, Los Angeles'a katkıda bulunalım ve haritalama hakkında bilgi edinelim!",
+      "extendedDescription": "OpenStreetMap (OSM) Güney California, OpenStreetMap ile çalışmak için bir araya gelmek üzere haritalama ile ilgilenen herkes içindir. Haritaların Wikipedia'sı olan OpenStreetMap, dünya çapında 1.000.000'dan fazla gönüllü tarafından oluşturulan dünyanın ücretsiz bir açık kaynaklı haritasıdır. Herkese açığız. OpenStreetMap'i bilmiyorsanız size öğreteceğiz. Bir haritalama projesi hatta grubun yapabileceği bir okul gezisi fikriniz varsa, harika!"
+    },
+    "OSM-South-Bay": {
+      "name": "OSM Güney Körfezi"
+    },
+    "OSM-Tampa-Bay": {
+      "name": "OpenStreetMap Tampa Körfezi",
+      "description": "Tampa Körfezi bölgesindeki haritacılar ve OpenStreetMap kullanıcıları ",
+      "extendedDescription": "OSM Tampa Bay grubu, dünyanın ücretsiz ve düzenlenebilir haritası olan OpenStreetMap ile yerel sakinlerin bir araya gelip Tampa Bay'in kesin haritasını oluşturmak isteyenler içindir. Haritalar, veriler, açık kaynak, GPS, yürüyüş, bisiklet vb ile ilgileniyorsanız, OpenStreetMap ile çalışmayı seveceksiniz - öyleyse katılın! Ayda bir veya birkaç kez bir araya gelip yeni konuları haritalayıp konuşacağız."
+    },
+    "OSM-Telegram": {
+      "description": "{url} adresindeki OpenStreetMap Telegram global üst grubuna katıl"
+    },
+    "OSM-TH-CNX-meetup": {
+      "name": "OSM Chiang Mai Buluşması",
+      "description": "Chiang Mai'deki OpenStreetMap topluluğunun düzensiz toplantısı",
+      "extendedDescription": "OpenStreetMap topluluğunun üyeleri birkaç ayda bir Chiang Mai'de buluşuyor.  Bir dahaki  buluşmanın zamanını öğrenmek için bize katılın ve {url} ' yi kontrol edin."
+    },
+    "OSM-US": {
+      "description": "Amerika Birleşik Devletleri'nde Openstreetmap'i büyütmeye ve geliştirmeye yardımcı oluyoruz.",
+      "extendedDescription": "Yıllık konferanslar düzenleyerek, topluluk kaynakları sağlayarak, ortaklıklar kurarak ve sözcüğü yayarak OpenStreetMap'i destekliyoruz. OpenStreetMap ABD'ye buradan katılın: {signupUrl}"
+    },
+    "OSM-US-Slack": {
+      "description": "Hoşgeldiniz! {signupUrl} adresinde kaydolun"
+    },
+    "OSM-Utah": {
+      "description": "Salt Lake City bölgesindeki haritacılar ve OpenStreetMap kullanıcıları ",
+      "extendedDescription": "Aktiviteler; Harita Öğrenme atölyeleri, haritalama partileri ve dış mekanda veri toplama gibi şeyler içerebilir. Etkinlikler en azından ilk olarak SLC alanında yer alacaktır. Bizler hem tecrübeli haritacılar hem de OSM'yle yeni tanışacak insanlar arıyoruz. Bize katılın ve haritalama yapalım!"
+    },
+    "OSM-Wyoming": {
+      "description": "Wyoming eyalatindeki haritacılar ve OpenStreetMap kullanıcıları ",
+      "extendedDescription": "OpenStreetMap (OSM) Wyoming, ücretsiz haritalar oluşturma çabalarına katkıda bulunmak isteyen kişilerin yerel bir işbirliğidir. Tüm haritacılarımızı eyalet çapında haritalama etkinlikleri düzenlemeye veya önermeye teşvik ediyoruz. OSM temelinden ileri düzey eğitime veya topluluk haritalama partileri gibi buluşma etkinlikleri basit bir sosyal karıştırıcı olabilir."
+    },
+    "OSMF": {
+      "name": "OpenStreetMap Vakfı",
+      "description": "OSMF, OpenStreetMap Projesini destekleyen, İngiltere merkezli, kâr amacı gütmeyen bir kuruluştur",
+      "extendedDescription": "OSMF, OpenStreetMap projesini bağış toplayarak, OSM'ye güç sağlayan sunucuların bakımını yaparak, yıllık State of the Map konferansını düzenleyerek ve OSM'nin çalışmasını sağlayan gönüllüleri koordine ederek desteklemektedir. Buradan OSMF üyesi olarak katılarak desteğinizi gösterebilir ve OpenStreetMap'in gidişatında söz sahibi olabilirsiniz: {signupUrl}"
+    },
+    "PHXGeo-meetup": {
+      "name": "PHXGeo Buluşması",
+      "description": "Phoenix, AZ bölgesindeki haritacılar ve OpenStreetMap kullanıcıları",
+      "extendedDescription": "Bu grup, Phoenix bölgesinde haritalar, CBS, OpenStreetMap, haritacılık ve aradaki her şeyi sevenler için bir buluşma grubudur."
+    },
+    "PHXGeo-twitter": {
+      "description": "Bizi Twitter'da {url} adresinden takip edin"
+    },
+    "rs-gitlab": {
+      "description": "GitLab'da OSM Sırbistan'la ilişkili projeler koleksiyonu"
+    },
+    "rs-osm": {
+      "description": "Sırbistan'daki OpenStreetMap hakkında bilgi platformu"
+    },
+    "RS-telegram": {
+      "extendedDescription": "OpenStreetMap hakkında daha fazlasını öğrenmek, soru sormak ve toplantılarımıza katılmak için topluluğa katılın. Herkese açıktır!"
+    },
+    "rs-wiki": {
+      "description": "Sırbistan için Wikiproject sayfası"
+    },
+    "sk-freemap": {
+      "description": "Slovakya ve çevre bölgelerdeki araçları içeren OpenStreetMap harita internet sitesi"
+    },
+    "talk-au": {
+      "description": "Avustralyalı haritacıların sohbet edebileceği yer"
+    },
+    "talk-mg": {
+      "description": "Paylaşmak ve tartışmak için Madagaskar'daki OpenStreetMap katılımcıları, toplulukları ve kullanıcıları için yer."
+    },
+    "talk-nz": {
+      "description": "Yeni Zelanda'nın OpenStreetMap topluluk konuşması"
+    },
+    "talk-pacific": {
+      "extendedDescription": "Bu posta listesinin, tüm çeşitliliğimiz ve isteklerimizle Pasifik'teki tüm halkları, adalar denizimizde OpenStreetMap ile ilgili düşünceleri, soruları, projeleri ve her şeyi paylaşmak için desteklemesini istiyoruz."
+    },
+    "tn-facebook-group": {
+      "name": "{community} Facebook Grubu"
+    },
+    "tw-slack": {
+      "description": "Herkese kapımız açık! Kaydolun {signupUrl}"
+    },
+    "tw-wiki": {
+      "description": "Tayvan'da haritalama hakkında bilmeniz gereken her şey: {url}"
+    },
+    "tz-website": {
+      "description": "Tanzanya'daki yerel topluluk için OSM hizmetleri ve bilgi sağlar"
+    },
+    "ua-github": {
+      "description": "OpenStreetMap Ukrayna GitHub"
+    },
+    "ua-osm": {
+      "description": "Ukrayna'da OpenStreetMap internet sitesi"
+    },
+    "uk-localchapter": {
+      "description": "Birleşik Krallık (Kuzey İrlanda dahil) için resmi Yerel Derneği.",
+      "extendedDescription": "Etkinlikler düzenleyerek, topluluk kaynakları sağlayarak, ortaklıklar kurarak ve duyurarak OpenStreetMap'i destekliyoruz. OpenStreetMap UK'ye buradan katıl: {signupUrl}"
+    },
+    "uk-london-twitter": {
+      "name": "OpenStreetMap Londra Twitter'da",
+      "description": "OpenStreetMap Londra Twitter'da: {url}"
+    },
+    "uy-irc": {
+      "extendedDescription": "irc.freenode.org 'da #{account} 'a katılın"
+    },
+    "vn-mailinglist": {
+      "description": "Vietnam'da veya Vietnamca OpenStreetMap hakkında posta listesi"
+    },
+    "YerCizenler-TR": {
+      "name": "er Çizenler",
+      "description": "Yer Çizenler Herkes İçin Haritalama Derneği",
+      "extendedDescription": "Yer Çizenler, Türkiye OSM topluluğunun bir parçası olan ve ulusal haritalama topluluğu içinde açık jeo-uzamsal veri ve araçların kullanımını teşvik etmeyi amaçlayan yerel bir STK'dır."
+    },
+    "ym-AASTU": {
+      "name": "AASTU Gençlik Haritacıları",
+      "description": "Addis Ababa Bilim ve Teknoloji Üniversitesi'nde YouthMappers derneği",
+      "extendedDescription": "Geomatik Mühendisliği Öğrencileri Derneği (AGES), GIS ürünlerini ve hizmetlerini tanıtmayı ve aynı zamanda öğrencileri eğitmeyi amaçlamaktadır. Yalnızca öğrenciler ve pratisyen profesyoneller arasında sosyalleşmeyi teşvik etmekle kalmaz, aynı zamanda üniversitede yeni CBS ve anket etkinlikleri ve eğitim için yeni fikir alışverişi için bir platform sağlar."
+    },
+    "ym-Abia-State-University": {
+      "description": "Abia Eyalet Üniversitesi'nde YouthMappers derneği",
+      "extendedDescription": "AbsuMappersTeam OpenStreetMap, CBS ve diğer açık kaynaklı jeo-uzamsal teknolojileri kullanan gönüllü harita meraklıları ekibidir; OpenStreetMap kullanarak afet müdahalesine adanmıştır. CBS ve haritalama tutkusu olanlar için profesyonel bir rehberlik ve güçlendirme platformudur. Jeo-uzamsal veri oluşturma, saha ver, toplama ve haritalama için gönüllülerden oluşan bir topluluktur. Ekip, Victor N. Sunday (ekip akıl hocası) ve ekip koordinatörü ve fakülte danışmanı Profesör J. U. Ogbonna tarafından ortaklaşa kuruldu. AbsuMapperTeam, UniiqueMappersTeam-Port Garcourt'un bir iştirakidir. Ekip, jeo-uzamsal teknolojiyi kullanarak sürdürülebilir kalkınmayı desteklemeye hazırdır. "
+    },
+    "ym-African-Methodist-Episcopal-University": {
+      "description": "African Methodist Episcopal University'de YouthMappers derneği"
+    },
+    "ym-Ahmadu-Bello-University": {
+      "name": "ABU Geomappers (Coğrafi Haritalayacıları)",
+      "description": "Ahmadu Bello Üniversitesi'nde YouthMappers derneğ",
+      "extendedDescription": "Afet ve hafifletmeye yanıt olarak insani yardım hizmeti sunmaya kendini adamış, veriye dayalı insani yardım haritacılarından oluşan bir grubuz. Haritalamak yoluyla uzmanlığımıza ve bilgimize katkıda bulunmaktan ve eğitim ve işbirliği yoluyla #OpenEvangelism'in yayılmasına yardımcı olmaktan mutluluk duyuyoruz."
+    },
+    "ym-Ardhi-University": {
+      "name": "ARU Haritacı",
+      "description": "Ardhi Üniversitesi'nde YouthMappers derneği",
+      "extendedDescription": "Gelecekteki jeo-uzamsal veri danışmanları olarak, topluma, mekansal verileri yalnızca bir konum biçimi olarak değil, aynı zamanda bir karar alma aracı olarak nasıl kullanabilecekleri konusunda eğitmeye ve tavsiyelerde bulunmaya ve onlara veya gelecek nesillere zarar verebilecek farklı tehlikeli ve iklimsel değişiklikleri tahmin etmeye çalışıyoruz."
+    },
+    "ym-Arizona-State-University-facebook": {
+      "description": "Arizona Eyalet Üniversitesi YouthMappers bölümü"
+    },
+    "ym-Arizona-State-University-twitter": {
+      "description": "Arizona Eyalet Üniversitesi YouthMappers bölümü"
+    },
+    "ym-Asian-University-for-Women": {
+      "description": "Asya Kadınlar Üniversitesi'nde YouthMappers derneğ",
+      "extendedDescription": "Asya Kadın Üniversitesi yetenekli ve yenilikçi uzmanlar, çalıştıkları ve yaşadıkları işletmelerde ve topluluklarda servis odaklı liderler, Asyada ve dünya çapında kültürler arası anlayış ve sürdürülebilir insan ve ekonomik gelişmelerinin destekçisi olan lisans mezunu kadınlar aramaktadır."
+    },
+    "ym-Ball-State-University": {
+      "name": "Gamma Theta Upsilon - Iota Omega Bölümü",
+      "description": "Ball State Üniversitesi'nde YouthMappers derneği",
+      "extendedDescription": "Derneğimiz çok aktif bir dernektir. Öncelikle topluluk etkinliklerine, kaynak yaratmaya ve saha gezilerine odaklanıyoruz. Şu anda, kampüsten katkıda bulunmak isteyebilecek diğer öğrencileri çekmek için haritalama ile ilgili daha fazla faaliyet geliştirmeyi düşünüyoruz."
+    },
+    "ym-Busitema-University": {
+      "description": "Busitema Üniversitesi'nde YouthMappers derneği",
+      "extendedDescription": "Good mappers, Busitema Üniversitesinde bir öğrenci ekibidir. Asıl hedefi, dünya haritasına katkı yapabilecek tecrübeli haritacılardan bir topluluk oluşturmaktır."
+    },
+    "ym-California-University-of-Pennsylvania": {
+      "name": "CalU PA GIS Kulübü",
+      "description": "Pensilvanya Kaliforniya Üniversitesinde YouthMappers derneği",
+      "extendedDescription": "Cal U'daki CBS öğrencileri, mekansal teoriyi gerçek dünyaya uygulamayı öğrenirler. Üniversite lisans programı coğrafyaya ve acil durum yönetiminde GIS kullanımına odaklanmaktadır."
+    },
+    "ym-Central-Washington-University": {
+      "name": "Coğrafya Kulübü",
+      "description": "Central Washington Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "Youthmappers ile birlikte çalışma amacımız, insani yardım haritalama ihtiyacı olan alanlara yardım sağlamaktır. Bunu yaparak, dünyanın dört bir yanındaki kardeşlerimize hizmet ediyor ve kendi haritacılık becerilerimizi geliştiriyoruz."
+    },
+    "ym-Clemson-University": {
+      "name": "Clemson Haritacıları",
+      "description": "Clemson Üniversitesi'nde YouthMappers derneğ",
+      "extendedDescription": "Clemson'daki öğrenciler, jeo-uzamsal verilerin toplanmasını, analiz edilmesini ve uygulanmasını sağlayan teknolojileri kullanarak araştırma, öğretim ve sosyal yardım faaliyetlerini destekleyen disiplinler arası jeo-uzamsal bilim uygulayıcılarından oluşan bir topluluk olan Jeo-uzamsal Teknolojiler Merkezi tarafından desteklenmektedir. Öğrenciler, jeo-uzamsal teknolojileri tüm disiplinlerdeki bilimsel faaliyetlerine entegre etmekte ve dünya çapında bağlantılar kurmaktadır."
+    },
+    "ym-College-of-William-and-Mary": {
+      "name": "Haritanın her yerinde!",
+      "description": "William ve Mary Yüksekokulunda YouthMappers derneği",
+      "extendedDescription": "Haritanın her yerinde olan öğrenciler, CBS'yi müfredata entegre eden ve öğrenci ve öğretim üyelerine donanım, yazılım ve uzmanlık sağlayan bir grup olan Jeo-uzamsal Analiz Merkezi tarafından desteklenmektedir. Çevre bilimi ve politikası, jeoloji, tarih, işletme, sosyoloji, biyoloji, antropoloji, kamu politikası ve deniz bilimleri dahil olmak üzere kampüs genelinde tüm geçmişlere sahip öğrenciler CBS'yi kullanmaktadır."
+    },
+    "ym-Cornell-University": {
+      "name": "Haritalama Derneği",
+      "description": "Cornell Üniversitesinde YouthMappers Derneği",
+      "extendedDescription": "Cornell öğrencileri ve öğretim üyeleri, zorlukları yerel, ulusal ve küresel ölçeklerde ele almak için açık verileri ve açık kaynaklı yazılımları kullanır. Bunu yaparken, CBS ve mekansal okuryazarlık etrafında kendi becerilerimizi geliştirmeye yönelik akademik ve kişisel hedeflerimizi ilerletiyoruz."
+    },
+    "ym-CURAT": {
+      "description": "Felix Houphouet Boigny Üniversitesi Centre Universitaire de Recherche et d'Application en Télédétection (CURAT) YouthMappers bölümü",
+      "extendedDescription": "Bölümümüzün amacı, işbirliğine dayalı ücretsiz haritalama ve openstreetmap verilerinin araştırma alanında kullanımını ve bunların karar verme araçlarının uygulanmasında kullanılmasını teşvik etmektir. Öğrencilerin araştırmaları için kendi verilerini üretmelerine yardımcı olmak."
+    },
+    "ym-Cuttington-University": {
+      "name": "Cuttington Üniversitesi YouthMappers",
+      "description": "Cuttington Üniversitesi'nde YouthMappers derneği",
+      "extendedDescription": "Cuttington Üniversitesi, Suakoko ve Bong County'deki YouthMappers, üç farklı bölümden öğrencilerden oluşuyordu; yani Doğal Kaynaklar Yönetimi Bölümü \"DKYB\", Çevre Bilimleri Bölümü ve Doğa Bilimleri Bölümü. Derneğin 2017 Şubat'taki kurulumundan bu yana her bölümden 5 öğrenci olmak üzere 20 üyesi vardır."
+    },
+    "ym-Dedan-Kimathi-University-of-Technology": {
+      "description": "Dedan Kimathi Teknoloji Üniversitesi'nde YouthMappers derneği",
+      "extendedDescription": "GDEV, öğrencilerin jeo-uzamsal konularda paylaşım, etkileşim ve birbirlerinden öğrenmelerine yardımcı olmayı amaçlayan, DeKUT'taki hevesli bir CBS grubudur."
+    },
+    "ym-Dhaka-College": {
+      "name": "YouthMappers Daka Koleji",
+      "description": "Dhaka College'da YouthMappers derneğ",
+      "extendedDescription": "YouthMappers DhakaCollege, İnsani Yardım Eyleminin bir parçası olarak dünyanın savunmasız bölgelerinin haritalanmasına yardımcı olmak için öğrenciler tarafından geliştirilen bir yaklaşımdır. YouthMappers, öğrencilere insanlara yardım etme ve haritalamayı insani amaçlarla kullanma fırsatı vermektedir. Bu açık coğrafi veriler eğitim, navigasyon ve diğer insani amaçlar için kullanılabilir. Mutlu haritalamalar."
+    },
+    "ym-Dhaka-University": {
+      "description": "Dhaka Üniversitesi'nde YouthMappers derneği",
+      "extendedDescription": "Dakka Üniversitesi öğrencileri için insani amaçlar için haritalama yapmak büyük bir ayrıcalık. Derneğimiz öğrencilere insanlara yardım etme ve haritalamayı insani amaçlarla kullanma fırsatı vermektedir."
+    },
+    "ym-Eastern-University": {
+      "name": " Eastern University'de YouthMappers",
+      "description": "Eastern Üniversitesinde YouthMappers derneği",
+      "extendedDescription": "Bangladeş Doğu Üniversitesi'ndeki YouthMappers, insani kriz sırasında insanlara yardım etmek amacıyla oluşturuldu. Öğrencilere, dünyanın diğer haritacıları gibi, insanlara haritayı eğitim, seyir ve diğer insani amaçlarla kullanmalarında yardımcı olacakları sözü verilir. "
+    },
+    "ym-Far-Eastern-University-Institute-of-Technology": {
+      "name": "Junior Filipinler Bilgisayar Topluluğu",
+      "description": "Uzak Doğu Üniversitesi - Teknoloji Enstitüsü'nde YouthMappers derneği",
+      "extendedDescription": "FEU, Filipinler'in önde gelen üniversitelerinden biri olarak kabul edilmektedir. Misyonu, ülkenin ilerlemesine katkıda bulunan mezunlar yetiştirmeye odaklanmaktadır. Üniversite, sadece Filipinler'de değil Güney Doğu Asya bölgesinde de üst düzey bir statü elde etmek amacıyla mükemmellik çıtasını yükseltmek için sürekli olarak kendini zorlamaktadır"
+    },
+    "ym-Federal-School-of-Surveys": {
+      "description": "Federal Okul anketindeki YouthMappers derneğ"
+    },
+    "ym-Federal-University-of-Technology-Akure": {
+      "name": "YouthMappers Futa Uzay Kulübü",
+      "description": "Akure, Federal Teknoloji Üniversitesi'nde YouthMappers derneğ",
+      "extendedDescription": "Misyonumuz yeni nesil Uzay Liderleri yetiştirmektir. Faaliyetlerimiz arasında Uzaktan Algılama, CBS, İklim Değişikliği, Astronomi, Kozmoloji, Uzay Mühendisliği, Küresel Navigasyon, Robotik ve Uzay Eğitimi alanlarında araştırma ve kapasite geliştirme yer almaktadır."
+    },
+    "ym-Fourah-Bay-College": {
+      "name": "Öğrenci Coğrafya Derneği",
+      "description": "Fourah Bay Koleji'nde YouthMappers derneğ",
+      "extendedDescription": "Öğrenci Coğrafya Derneği - YouthMappers, yardım ve diğer yararlı amaçlar için Sierra Leone ve dünyanın savunmasız yerlerinin haritasını çıkarma, araştırma ve diğer eğitici çabaları yürütmek gibi ortak hedefleri olan Fourah Bay Koleji öğrencileri birliğidir. Dernek, ekip olarak sürdürülebilir kalkınma projelerini anlama ve uygulama kapasitesine sahip, gelişim odaklı, harika fikirlere sahip gençlerden oluşmaktadır."
+    },
+    "ym-General-Lansana-Conte-University": {
+      "name": "General Lansana Conte üniversitesi YouthMappers",
+      "description": "General Lansana Conte Üniversitesi'nde YouthMappers derneğ",
+      "extendedDescription": "General Lansana Conté Üniversitesi'nin YouthMappers'ı, Harita Gine'ye ve dünyanın diğer kısımlarına katkıda bulunmaya istekli, kar amacı gütmeyen bir topluluktur. Karar destek araçları oluşturmak için CBS ve açık verilerin kullanımını teşvik ediyoruz. Ayrıca öğrenciler ve yerel topluluklar arasında kapasite oluşturmak için çalışıyoruz."
+    },
+    "ym-George-Mason-University": {
+      "name": "Mason Haritacıları",
+      "description": "George Mason Üniversitesi'nde YouthMappers derneğ",
+      "extendedDescription": "Mason Haritacılar Öğrenci Topluluğu George Mason Üniversitesi GGS Bölümünde insani bir haritalama öğrenci kuruluşudur ve amacı, jeo-teknolojiler, jeo-bilgi bilimi alanlarında eğitim ve bilgiyi teşvik etmek, iyi bir küresel yönetimi teşvik etmek ve pozitif, etkileşimli coğrafi topluluk ve öğrencileri yarının liderleri olarak şekillendirmektir."
+    },
+    "ym-Grand-Gedeh-County-Community-College": {
+      "name": "Grand Gedeh County Community College'daki YouthMappers",
+      "description": "Grand Gedeh County Community College'daki YouthMappers derneğ",
+      "extendedDescription": "GGCCC'nin Gençlik Haritacılarının tek amacı, Liberya içinde ve çevresinde haritada olmayan yerleri yerleştirmektir. Büyük Gedeh Community College bünyesinde kolejden gençleri , bu yerleri coğrafi olarak göz önüne getirme görevlerini üstlenmeleri için için bir araya getiriyoruz."
+    },
+    "ym-Gujarat-University": {
+      "name": "Ahmedabad'da Sertifikalı Ticari Yatırım Üyesi",
+      "description": "Gujarat Üniversitesi'nde YouthMappers derneğ"
+    },
+    "ym-Gulu-University": {
+      "name": "CSGU Haritacıları",
+      "description": "Gulu Üniversitesi'nde YouthMappers derneğ",
+      "extendedDescription": "CSGU Haritacıları, Gulu Üniversitesi Bilgisayar Topluluğu'dur. Bu bölüm yaratıcı, tutkulu, yenilikçi ve diğer insanların hayal gücünün ötesinde Uganda'yı ve dünyayı haritalandırmaya hazırdır."
+    },
+    "ym-Heidelberg-University": {
+      "name": "afet haritacıları heidelberg",
+      "description": "Heidelberg Üniversitesi'nde YouthMappers derneğ",
+      "extendedDescription": "Afet Haritacıları Heidelberg, 2014 yılında öğrenciler, araştırmacılar ve insani yardım aktörleri arasında bir değişim platformu oluşturmak için bir öğrenci girişimi olarak kuruldu. Afet Haritacıları Kayıp Haritalar'ın bir üyesidir ve Heidelberg ve ötesinde mapathonlar, atölyeler ve web seminerleri düzenlemekte ve araştırma ve uygulamalar yoluyla HOT ve Missing Maps'i desteklemektedir."
+    },
+    "ym-Ignatius-Ajuru-University-of-Education": {
+      "description": "Ignatius Ajuru Eğitim Üniversitesi'nde Youthmappers derneğ",
+      "extendedDescription": "Ignatius Ajuru Eğitim Üniversitesi'nin, çevremizin kitle kaynaklı haritalanmasında ve dirençli toplulukların uzaktan haritalanmasında yer alan bir YouthMappers derneğiyiz. Haritalama için OpenStreetMap ve diğer açık jeo-uzamsal kaynakları kullanan bir gönüllü ekibiyiz."
+    },
+    "ym-Indiana-University-of-Pennsylvania": {
+      "name": "Jeo-uzamsal Bilim Kulübü",
+      "description": "Pennsylvania Indiana Üniversitesi'nde YouthMappers derneği"
+    },
+    "ym-Insititue-d-Enseignement-Superieur-de-Ruhengeri": {
+      "name": "INES Ruhengeri'deki YouthMappers",
+      "description": "Insititue d' Enseignement Superieur de Ruhengeri'deki YouthMappers derneği",
+      "extendedDescription": "INES-Ruhengeri'den Arazi İdaresi ve Yönetimi ve Arazi Araştırma Bölümlerinden öğrencileriz. Topluluğumuzda sürdürülebilir kalkınmaya doğru değişimler yaratan haritalama faaliyetleri yürütüyoruz."
+    },
+    "ym-Institut-Suprieur-de-Management-Kolda": {
+      "description": "Institut Supérieur de Management Kolda'daki YouthMappers derneği",
+      "extendedDescription": "Les Femmes Leaders de ISM/Kolda, Kolda'yı ve çevresini haritaya yerleştirmek ve OSM'nin nasıl kullanıldığını daha iyi anlamak isteyen güney Senegal'deki kadınlardan oluşan bir haritalama grubudur."
+    },
+    "ym-Institute-of-Crisis-Management-Studies": {
+      "name": "Kriz Yönetimi Araştırmaları Enstitüsü YouthMappers",
+      "description": "Kriz Yönetimi Çalışmaları Enstitüsü'nde YouthMappers derneği",
+      "extendedDescription": "Afet durumlarında yardımcı olacak Kriz Haritacıları geliştirmek."
+    },
+    "ym-Institute-of-Rural-Development-Planning": {
+      "name": "Mipango YouthMappers Derneği",
+      "description": "Köysel Gelişim Planlaması Enstitüsündeki YouthMappers Derneğ",
+      "extendedDescription": "Mipango YouthMappers Bölümü, IRDP'de 3 Temmuz 2017'de Dr.Domitilla Bashemera tarafından tanıtıldı. Kurucu üyeler, Dernek üyesi olarak kayıtlı 300 (190 erkek ve 110 kadın) Lisans Derecesi öğrencisiydi. Gerald Zacharia bölümün başkanı ve Juster Lugira başkan yardımcısıdır."
+    },
+    "ym-Institute-of-Rural-Development-Planning-Mwanza": {
+      "name": "Kırsal Kalkınma Planlaması Enstitüsü - Göller Bölgesi Merkezi'nde YouthMappers bölümü",
+      "description": "Mwanza Kırsal Kalkınma Planlama Enstitüsü'nde YouthMappers derneği"
+    },
+    "ym-Institute-of-Science-and-Veterinary-Medicine": {
+      "description": "Fen Bilimleri ve Veterinerlik Enstitüsü'nde YouthMappers derneğ",
+      "extendedDescription": "YouthMappers ISSMV Dabala, Gine'de karar alma araçları oluşturmak için insani haritalamayı ve açık kaynakların ve açık verilerin kullanımını teşvik etmek için çalışan, kar amacı gütmeyen bir kuruluştur."
+    },
+    "ym-Istanbul-Technical-University": {
+      "description": "İstanbul Teknik Üniversitesindeki YouthMappers derneğ",
+      "extendedDescription": "YouthMappers ITU, savunmasız yerleşim yerleri için insani haritalamayı teşvik eden disiplinler arası ve işbirliğine dayalı bir öğrenci topluluğudur ve coğrafi bilgi sistemlerini ve açık verileri kullanarak gelecekteki şehirler için stratejik ve yenilikçi mekansal bilgi geliştirmeyi ve paylaşmayı amaçlamaktadır."
+    },
+    "ym-Jacksonville-State-University": {
+      "name": "JSU Felaket Haritalama Takımı",
+      "description": "Jacksonville Eyalet Üniversitesi'nde YouthMappers derneğ",
+      "extendedDescription": "JSU Afet Haritalama Ekibi, Jacksonville Eyalet Üniversitesi'nde acil durumlarda afet müdahalesine yardımcı olmaya adanmış bir programdır. Buna kasırgalar, şiddetli fırtınalar, seller vb. dahildir. Ekibin, çevredeki ilçeler için değerli bir varlık olması ve JSU Jeoloji Bölümü öğrencilerinin, acil durum hizmetlerini desteklemek için akademik bir ortamda öğrendiklerini uygulamaları için bir kanal olması amaçlanmıştır. Amacımız, öğrenci beceri setlerini kullanırken afete müdahale ve kurtarma işlemlerini kolaylaştırmaktır."
+    },
+    "ym-Jahangirnagar-University": {
+      "name": "IRS, Jahangirnagar Üniversitesi'nde YouthMappers",
+      "description": "Jahangirnagar Üniversitesi'nde YouthMappers derneğ"
+    },
+    "ym-Jomo-Kenyatta-University-of-Agriculture-and-Technology": {
+      "name": "Geomatik Mühendisliği Öğrencileri Derneği",
+      "description": "Jomo Kenyatta Tarım ve Teknoloji Üniversitesi'nde YouthMappers derneğ",
+      "extendedDescription": "Geomatik Mühendisliği Öğrencileri Derneği (AGES), CBS ürün ve hizmetlerini tanıtmanın yanı sıra, bunların kullanımı konusunda öğrencileri eğitmeyi amaçlamaktadır. Yalnızca öğrenciler ve pratisyen profesyoneller arasında sosyalleşmeyi teşvik etmekle kalmaz, aynı zamanda üniversitede yeni CBS ve ölçme etkinlikleri ve eğitim için yeni fikir alışverişi için bir platform sağlar."
+    },
+    "ym-Kansas-State-University": {
+      "name": "Gamma Theta Upsilon: Beta Psi Derneğ",
+      "description": "Kansas Eyalet Üniversitesi'nde YouthMappers derneğ",
+      "extendedDescription": "YouthMappers'a bağlı uluslararası bir coğrafya onur topluluğu olan Gamma Theta Upsilon'un Kansas Eyalet Üniversitesi Bölümüyüz. OSM için haritalama konusunda aktif olduk ve 2015'teki depremden sonra Nepal'in haritalanmamış alanlarını dijitalleştirmek için OpenStreetMap'i kullandığımız \"Nepal için Harita\" adlı bir mapathon gerçekleştirdik."
+    },
+    "ym-Karatina-University": {
+      "name": "Doğa Kulübü Karatina Üniversitesi",
+      "description": "Karatina Üniversitendeki YouthMappers derneği",
+      "extendedDescription": "Bu dernek, tüm CBS meraklılarını bir araya getirmeyi amaçlamaktadır. Bunlara çevre uzmanları, yaban hayatı uzmanları, su ve turizm görevlileri dahildir. Temel amacı, öğrencilerin birbirlerinden öğrenebilecekleri ve bu süreçte CBS becerilerini çeşitli kariyer yollarına nasıl entegre edeceklerini anlayabilecekleri ve çevreyle ilgili çeşitli zorluklara çözümler sunabilecekleri bir platform sağlamaktır."
+    },
+    "ym-Kenyatta-University": {
+      "name": "Kenyatta Üniversitesi CBS Kulübü",
+      "description": "Kenyatta Üniversitesi'nde YouthMappers derneğ",
+      "extendedDescription": "Kenyatta Üniversitesi CBS Kulübü (KUGISC), 28 Ekim 2016'da kampüs içindeki tüm fakültelerden 200'ün üzerinde öğrenci ve personelin katılımlarıyla kurulmuştur. Üyelerimizi, Dünya'yı anlamak için gereken mekansal bilgi, beceri ve uzmanlıkla güçlendirmeye kararlıyız. Jeo-uzamsal verileri projelerine ve saha çalışması veri toplamasına dahil ederek üniversite içindeki kaynakların haritalanmasına yardımcı oluyoruz."
+    },
+    "ym-Khulna-University": {
+      "name": "Khulna Üniversitesi YouthMappers",
+      "description": "Khulna Üniversitesi'nde YouthMappers derneğ",
+      "extendedDescription": "Farklı disiplinlerden gelen KU öğrencileri ve öğretim üyeleri, gıda güvenliği ve diğer konular da dahil olmak üzere kalkınmanın yerel zorluklarını ele almak için OSM için açık veri oluşturma konusunda deneyimlidir."
+    },
+    "ym-Kumi-University": {
+      "name": "Sonsuza kadar YouthMappers",
+      "description": "Kumi Üniversitesi'nde YouthMappers derneğ",
+      "extendedDescription": "Bu enerjik öğrenci grubu, Fen ve Bilgi Teknolojileri Fakültesi bünyesinde örgütlenmektedir."
+    },
+    "ym-Kwame-Nkrumah-University-of-Science-and-Technology": {
+      "name": "Kwame Nkrumah Bilim ve Teknoloji Üniversitesi YouthMappers",
+      "description": "Kwame Nkrumah Bilim ve Teknoloji Üniversitesi'nde YouthMappers derneği"
+    },
+    "ym-Makerere-University": {
+      "name": "Coğrafi Gençlik Haritacıları",
+      "description": "Makerere Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "Geo YouthMappers, mekansal kavramı gerçek dünyaya uygulamak için değer verilen Makerere Üniversitesi tabanlı bir haritalama derneğidir. OSM ile çeşitli haritalama etkinlikleri üzerinde işbirliği yaptık. Temel amacımız, verileri basitleştirme ve çoğunlukla afete hazırlık için hazır hale getirme arzusudur. \"Dünyanın haritasını çıkarır ve hayatları değiştiririz.\""
+    },
+    "ym-Mbarara-University-of-Science-and-Technology": {
+      "name": "MUST Sokak Haritacıları",
+      "description": "Mbarara Bilim ve Teknoloji Üniversitesi'nde YouthMappers derneği",
+      "extendedDescription": "MUST Sokak Haritacıları, Mbarara Bilim ve Teknoloji Üniversitesi'nin haritalama yoluyla ülkemizi ve Dünya'yı daha iyi bir yer haline getirmeye dayanan bir YouthMappers derneğidir."
+    },
+    "ym-McGill-University": {
+      "name": "Açık haritalama McGill grubu: McGill Lisans Coğrafya Topluluğunun bir üyesi",
+      "description": "McGill Üniversitesi'nde YouthMappers derneğ",
+      "extendedDescription": "Open Mapping Group McGill: McGill Lisans Coğrafya Topluluğunun bir Üyesi (OMG McGill), Montreal'de, Kanada'da ve yurt dışında rezilyansı, topluluk oluşturmayı ve kampüste haritalama öğrenmeyi geliştiren açık jeo-uzamsal veriler ve teknolojilerle öğrencileri bağlamayı hedefler."
+    },
+    "ym-Miami-University": {
+      "name": "Coğrafya ve Planlama Topluluğu",
+      "description": "Miami Üniversitesi'nde YouthMappers derneği",
+      "extendedDescription": "Miami Üniversitesi'ndeki GPS, eğlenmek, kendi alanlarında kariyer ve yüksek öğrenim hakkında daha fazla bilgi edinmek ve gerçek bir deneyim için profesyonellerle birlikte çalışmak isteyen planlamacı ve coğrafyacılardan oluşan birbirine sıkı sıkıya bağlı bir topluluk oluşturmayı amaçlamaktadır."
+    },
+    "ym-Moi-University": {
+      "name": "Coğrafya Öğrencileri Topluluğu",
+      "description": "Moi Üniversitesi'nde YouthMappers derneğ",
+      "extendedDescription": "Moi Üniversitesi Coğrafya Öğrencileri Birliği (GEOSAMU), genç Coğrafi-Mekansal analistler aracılığıyla tüm dünyayı araştırır, keşfeder ve geliştirmeyi amaçlar. GEOSAMU, Coğrafya Bölümü'nün bir parçasıdır."
+    },
+    "ym-Monroe-Community-College": {
+      "description": "Monroe Topluluk Koleji'nde YouthMappers derneği"
+    },
+    "ym-Namibia-University-of-Science-and-Technology": {
+      "name": "Coğrafi Bilgiler Teknolojisi Öğrenci Topluluğu",
+      "description": "Namibia Bilim ve Teknoloji Üniversitesi'nde YouthMappers derneğ"
+    },
+    "ym-Nimba-County-Community-College": {
+      "name": "Nimba County Community College Genç Haritacıları",
+      "description": "Nimba County Topluluk Koleji'nde YouthMappers derneğ"
+    },
+    "ym-Njala-University-Freetown-Campus": {
+      "description": "Njala Üniversitesi, Freetown Kampüsü'nde YouthMappers derneğ",
+      "extendedDescription": "Njala Üniversitesi Freetown Kampüsü, Fizik ve Bilgisayar Bilimleri bölümünde Bilgi Teknolojisi okuyan öğrencileriz ve biz Henry Street Freetown, Sierra Leone'da bulunuyoruz."
+    },
+    "ym-Njala-University-Njala-Campus": {
+      "name": "YouthMappers Njala Üniversitesi, Njala Kampüsü",
+      "description": "Njala Üniversitesi, Njala Kampüsü'nde YouthMappers derneğ"
+    },
+    "ym-Ohio-Wesleyan-University": {
+      "name": "Çevre ve Vahşi Yaşam Kulübü",
+      "description": "Ohio Wesleyan Üniversitesi'nde YouthMappers derneğ",
+      "extendedDescription": "Çevre ve Vahşi Yaşam Kulübü kampüste, Delaware'de ve hatta ulusal düzeyde çevre sorunlarına bakıyor! Kampüs ve topluluk projeleri yaratıyor, dış mekanı keşfediyor ve tadını çıkarıyor, gönüllü oluyor ve hayatımızın her alanında çevreciliği teşvik etmeye çalışıyoruz."
+    },
+    "ym-Oklahoma-State-University": {
+      "name": "Coğrafya Kulübü",
+      "description": "Oklahoma Eyalet Üniversitesi'nde YouthMappers derneği"
+    },
+    "ym-Open-University-of-Tanzania": {
+      "name": "Tanzanya Açık Üniversitesi'nde YouthMappers",
+      "description": "Tanzanya Açık Üniversitesi'nde YouthMappers derneği",
+      "extendedDescription": "Tanzanya Açık Üniversitesi'nde Genç Haritacılar\n\nMikoko İzci Grubu (www.msg.or.tz) gibi yerel topluluk gruplarıyla ortak ve ortaklık projeleri yoluyla kariyerlerini geliştirmeye ve genç topluluğa yardım etmeye ihtiyaç duyan Tanzanya Açık Üniversitesi Coğrafya Bölümü üyeleri ve öğrencileri tarafından kurulmuş ve Mikoko İzci Grubu tarafından hazırlanan bazı programlar gibi Coğrafya Çalışmaları ile ilgili değişim programları için uluslararası kolejler ve üniversitelerle işbirliğine başlamıştır. 2019 Uluslararası Doğa ve Çevre Gençlik Kampı (www.campsite.msg.or.tz/nature.html ) aracılığıyla yerel üniversite ve aynı ilgi alanına sahip diğer üniversiteleri birbirine bağlayacak\n\nBölümümüz yakında öğrencilere yerel düzeyde çalışma ve araştırma yapma fırsatı sunacak bir gençlik ağı programı olarak tanınacaktır."
+    },
+    "ym-Politecnico-di-Milano": {
+      "description": "Milano Politeknik Üniversitesi'nde YouthMappers derneğ",
+      "extendedDescription": "PoliMappers, Milano Politeknik Üniversitesi'nde bulunan gönüllü bir öğrenci derneğidir. Grubun misyonu, gelecek nesil gönüllü haritacıları eğitmek ve motive etmek ve ilk ve orta okulların yanı sıra üniversitede ücretsiz ve açık kaynaklı yazılımları kullanarak haritalama yapmaktır."
+    },
+    "ym-Queen-Mary-University-of-London": {
+      "description": "Queen Mary Londra Üniversitesi'nde YouthMappers derneğ",
+      "extendedDescription": "Bu dernek, Queen Mary Coğrafya Topluluğu'nun faaliyetlerinin bir parçası olacaktır."
+    },
+    "ym-Rajshahi-University-of-Engineering-Technology": {
+      "name": "RUET'te YouthMappers",
+      "description": "Rajshahi Mühendislik ve Teknoloji Üniversitesi'nde YouthMappers derneğ",
+      "extendedDescription": "\"RUET'te YouthMappers\", CBS bilgilerini paylaşmak, geliştirmek ve uygulamak için Rajshahi Mühendislik ve Teknoloji Üniversitesi (RUET) öğrencilerinden oluşan insani bir haritalama grubudur. Bu grup, dünyanın en savunmasız grubuna ulaşmak için çözüm üretmek için açık kaynaklı jeo-uzamsal verileri ve platformu kullanmayı teşvik ediyor."
+    },
+    "ym-Sherubtse-College": {
+      "name": "Coğrafya Topluluğu",
+      "description": "Sherubtse Koleji'nde YouthMappers derneği",
+      "extendedDescription": "Bhutan Kraliyet Üniversitesi, Sherubtse Koleji, Coğrafya ve Planlama Bölümü Coğrafya Topluluğu, İklim Değişikliği ve Mekânsal Bilgi Merkezi'nin desteğiyle, yerel ve ulusal düzeyde farkındalık yaratmak ve önemli konuları ele almak için çeşitli çabalar göstermiştir. Şimdi de uluslararası öğrenci merkezli YouthMappers ağı ile \"Dayanıklılık için Haritalama\" konusunda el ele veriyor ve küresel bir 'Mutluluğa' katkıda bulunuyoruz!"
+    },
+    "ym-Sokoine-University-of-Agriculture": {
+      "description": "Sokoine Tarım Üniversitesi YouthMappers bölümü",
+      "extendedDescription": "Çevre bilimleri ve yönetimi öğrencileri ile Coğrafya bölümü öğrencilerinden oluşan bir bölüm olarak, kavramın daha eksiksiz bir şekilde anlaşılması ve eylem planlarının geliştirilmesi için çevresel sürdürülebilirlikle ilgili ilişkilerin, bakış açılarının ve sınırların farklı anlayışlarını kolaylaştırmak, keşfetmek ve yakalamak için sistem kavramlarına ve teorilerine dayanan haritalama tekniklerini kullanacağız."
+    },
+    "ym-St<TX_DOT>-Augustine-International-University": {
+      "name": "St Augustine Uluslararası Üniversitesi'ndeki YouthMappers",
+      "description": "St Augustine Uluslararası Üniversitesi'ndeki YouthMappers bölümü"
+    },
+    "ym-St<TX_DOT>-Mawaggali-Trades-Training-Institute": {
+      "name": "Mawaggali Haritacıları",
+      "description": "St.Mawaggali Ticaret Eğitim Enstitüsü'nde YouthMappers bölümü",
+      "extendedDescription": "Choma'daki St. Mawaggali Trades'te haritalama yoluyla hayatlara hizmet etmek için farklı insani görevlere katkıda bulunmak isteyen YouthMappers bölümüyüz."
+    },
+    "ym-State-University-of-New-York-Geneseo": {
+      "name": "SUNY Geneseo GIS Derneği",
+      "description": "New York Geneseo Eyalet Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "SUNY Geneseo, yerel topluluk ve küresel topluluk bağlamında coğrafi bilgi sistemlerinde, disiplinler ve departmanlar arasında farkındalık, destek, eğitim, gönüllülük ve kariyer geliştirme fırsatlarını yayıyoruz."
+    },
+    "ym-Stella-Maris-Polytechnic": {
+      "name": "YouthMappers-Ortaokul",
+      "description": "Stella Maris Polytechnic'te YouthMappers bölümü"
+    },
+    "ym-SUNY-at-Fredonia": {
+      "description": "Fredonia'da SUNY'de YouthMappers derneği",
+      "extendedDescription": "GeoVenturers, kampüsümüzde jeo-uzamsal teknolojileri başkalarına hizmet etmek ve insanları bir araya getirmek için bir araç olarak gören bir dizi ana dalda bir araya gelen bir grup öğrencidir. Grubun mentorluğunu Müfredat ve Öğretim Bölümü'nden Fen Eğitimi Bölümü yapıyor. İnsanların hayatlarını daha iyi hale getirmeye yardımcı olmak için becerilerimizi ortaya koyabileceğimizi umuyoruz."
+    },
+    "ym-Technical-University-of-Kenya": {
+      "name": "Jeouzamsal Bilimler Öğrenci Topluluğu",
+      "description": "Kenya Teknik Üniversitesi YouthMappers bölümü",
+      "extendedDescription": "İlgili çalışma alanlarında çok tutkulu öğrencilerin bulunduğu coğrafi bilgiye dayalı bir gruptur. Üyelerimize pazardaki yeni trendler hakkında eğitimler veriyor ve teknolojik gelişmeleri takip ediyoruz."
+    },
+    "ym-Texas-Tech-University": {
+      "name": "TTU'daki YouthMappers",
+      "description": "Teksas Teknik Üniversitesi'ndeki YouthMappers bölümü",
+      "extendedDescription": "Ağın kurucu bölümlerinden biri olan TTU YouthMappers, dünya çapında yerel olarak tanımlanmış kalkınma sorunlarını ele alan açık coğrafi veriler ve analizler oluşturmaya yardımcı olmak için disiplinler arası liderler olarak hizmet vermeye heveslidir. Bölüm, dünyanın dört bir yanındaki diğer bölümlerle fikir alışverişinde bulunmaya ve işbirliği yapmaya çalışırken, aynı zamanda Texas Tech öğrenci kuruluşlarına, haritalama yoluyla kampüs faaliyetlerine değer katacak şekilde yerel bir kaynak ve hizmet olarak kendilerini sunmaktadır."
+    },
+    "ym-The-Citadel": {
+      "name": "The Citadel'de YouthMappers",
+      "description": "The Citadel'de YouthMappers bölümü",
+      "extendedDescription": "Bu bölüm aynı zamanda Uluslararası Rotary'nin bir üyesi olan bir Rotaract Kulübüdür. Birden fazla üye ve lider, YouthMappers ile ilgilendiğini ifade etti ve Citadel Rotaract Kulübümüzü YouthMappers'a bağlamak istiyoruz."
+    },
+    "ym-The-Gambia-YMCA-University-of-the-Gambia": {
+      "name": "YouthMappers'a bağlandı",
+      "description": "Gambia YMCA / Gambia Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "Connected YouthMappers, ulusal kalkınmayı değiştirmeyi ve yardım etmeyi isteyen kendini adamış genç Gambiyalılardan oluşur."
+    },
+    "ym-The-George-Washington-University": {
+      "name": "İnsani Haritalama Derneği",
+      "description": "George Washington Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "Liderlik ve katılım modelleri olan HMS, insani Coğrafi Bilgi Sistemleri (CBS) projeleri aracılığıyla yardım sağlamayı ve dünyayı daha iyi hale getirmeyi amaçlamaktadır. GWU kampüsündeki bu kurucu bağlı bölüm, paylaşacak çok sayıda deneyime sahiptir ve öğrenci liderliğindeki çabaları genişletmek ve küresel topluma hizmet etmek için DC bölgesindeki USAID, Amerikan Kızıl Haçı ve ABD Dışişleri Bakanlığı ile sık sık doğrudan ortaklık kurmaktadır."
+    },
+    "ym-The-Johns-Hopkins-University-SAIS": {
+      "description": "SAIS, Johns Hopkins Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "SAIS Youth Mappers misyonu, Johns Hopkins Üniversitesi SAIS'teki öğrencilere son derece yetenekli insani haritacılar olma fırsatı sağlamaktır. Güney Asya Kulünü bünyesindeki bir grup olarak, ana odak noktası Hint-Pasifik Bölgesi'ndeki insani haritalama projelerini desteklemektir. "
+    },
+    "ym-The-Pennsylvania-State-University": {
+      "name": "Pensilvanya Eyalet Üniversitesi CBS Koalisyonu",
+      "description": "Pensilvanya Eyalet Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "Pensilvanya Eyalet Üniversitesi Jeo-uzamsal Bilgi Bilimi (GIS) Koalisyonu, öğrencilere profesyonel CBS endüstrisinde başarılı olmak için gerekli ek bilgi ve becerileri geliştirmek için CBS fırsatlarında uzmanlaşan, yandal yapan veya bu ilgiyi paylaşan öğrencilere sunan bir kuruluştur."
+    },
+    "ym-The-University-of-Zambia": {
+      "description": "Zambia Üniversitesi'ndeki YouthMappers bölümü"
+    },
+    "ym-Uganda-Christian-University-Mbale-Campus": {
+      "name": "Hayat Boyu Haritacılar",
+      "description": "Uganda Christian Üniversitesi Mbale Kampüsü'nde YouthMappers bölümü",
+      "extendedDescription": "Biz ömür boyu Takım Haritacılarız! Lütfen gelin ve haritalamada bize katılın!\" Bu grup UCU'daki Bilgi Teknolojisi Departmanından çalışıyor."
+    },
+    "ym-Uganda-Pentecostal-University": {
+      "name": "HiTech Gençlik Haritacıları",
+      "description": "Uganda Pentekostal Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "Batı Uganda'da yeni bir Youthmappers Bölümü. Geliştirme amacıyla OpenStreetMap ile açık verileri eşlemeye ve sağlamaya hazır."
+    },
+    "ym-Universidad-de-Antioquia": {
+      "description": "Antioquia Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "Bizler coğrafi veri, gönüllü haritacılık ve ülkemizde veya YouthMappers ağı içerisinde başkaları ile birlikte haritalamaya katılmaya ilgi duyan bir grubuz."
+    },
+    "ym-Universidad-de-Costa-Rica": {
+      "name": "Kosta Rika Üniversitesindeki YouthMappers ",
+      "description": "Kosta Rika Üniversitesindeki YouthMappers şubesi",
+      "extendedDescription": "Kosta Rika Üniversitesi YouthMappers, katılım, etkileşim ve temsil temalarına göre farklı toplulukların üyeleri tarafından sosyal eyleme dayalı olarak doğdu. OpenStreetMap, topluluklarımız içinde herkesin yararına olacak şekilde coğrafi bilgileri toplamamıza, doğrulamamıza ve paylaşmamıza olanak tanıyor."
+    },
+    "ym-Universidad-de-La-Guajira": {
+      "description": "La Guajira Üniversitesi'ndeki YouthMappers bölümü",
+      "extendedDescription": "Grupo Mesh, Kolombiya'daki La Guajira Üniversitesi'ndeki haritacılık ve açık haritalama öğrenen; Çevre Mühendisliği programından öğrenciler de dahil olmak üzere bir öğrenci organizasyonudur. "
+    },
+    "ym-Universidad-de-Los-Andes": {
+      "description": "Los Andes Üniversitesi'ndeki YouthMappers bölümü",
+      "extendedDescription": "Farklı mekansal, sosyal, politik, ekonomik ve kültürel dinamikleri ele alarak üniversite ve toplum arasında işbirliği ve entegrasyon bağları oluşturmak için, haritalama ve mekansal akıl yürütmeyi bir araç olarak kullanmayı amaçlayan bir öğrenci katılımı çemberiyiz. "
+    },
+    "ym-Universidad-de-Puerto-Rico-Rio-Piedras": {
+      "description": "Rio Piedras - Porto Riko Üniversitesi'ndeki YouthMappers bölümü"
+    },
+    "ym-Universidad-de-San-Buenaventura": {
+      "description": "San Buenaventura Üniversitesi'ndeki YouthMappers bölümü",
+      "extendedDescription": "Daha iyi bir dünya ve topluluk için YouthMappers haritasına katılmaktan mutluluk duyuyoruz."
+    },
+    "ym-Universidad-Distrital-Francisco-Jose-de-Caldas": {
+      "name": "Bogota'da YouthMappers",
+      "description": "Francisco Jose de Calda Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "Universidad Distrital Francisco José de Caldas, Bogota, Kolombiya'da bulunan ve 26.140 öğrencisi olan bir devlet, karma eğitim veren araştırma üniversitesidir."
+    },
+    "ym-Universidad-Nacional-Autnoma-de-Honduras": {
+      "description": "Honduras Ulusal Özerk Üniversitesi'nde YouthMappers bölümü"
+    },
+    "ym-Universidad-Nacional-de-Colombia": {
+      "description": "Kolombiya Ulusal Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "Öğrenciler, Kolombiya'nın ve dünyanın dört bir yanındaki üniversite öğrencilerinin haritasını çıkarmak ve onlarla ağ kurmak için bir araya geliyor. Coğrafi uzmanlıklar arasında mikrobiyoloji ve sağlık disiplinlerine bağlılık yer alıyor."
+    },
+    "ym-Universidad-Nacional-de-Ingenieria": {
+      "name": "Yeka Caddesi MGA",
+      "description": "Ulusal Mühendislik Üniversitesi YouthMappers bölümü",
+      "extendedDescription": "YEKA STREET, Nikaragua, Managua'daki Ulusal Mühendislik Üniversitesi'ndeki öğrencilerden oluşan bir çalışma ekibidir. Temel amaç bilgi ve becerilerimizi, şehirlerimizdeki alanları haritalamak ve kalkınmaya katkıda bulunmak için birçok araç ve uygulamayı kullanarak topluluk projeleri ile felaket planlarını hafifletmektir. Ülkemizdeki tüm kariyer ve üniversitelerden daha fazla öğrencinin bu amaçla bize katılması, bu şekilde yaşam düzeyinin yükseltilmesi ve nüfus kırılganlığının azaltılmasına öncülük etmek istiyoruz."
+    },
+    "ym-Universidade-Eduardo-Mondlane": {
+      "name": "Mozambik YouthMappers Topluluğu",
+      "description": "Eduardo Mondlane Üniversitesi'ndeki YouthMappers bölümü",
+      "extendedDescription": "Esnek bir insani haritalama topluluğu oluşturmak için Mozambik toplumuna katılmayı amaçlayan bir öğrenci grubuyuz. Topluluk, ülkemizin fiziksel haritasını çıkarmayı; halk tarafından erişilebilen ve ilişkili maliyetler olmadan çeşitli alanlarda kullanılabilen açık coğrafi veriler oluşturmayı amaçlamaktadır."
+    },
+    "ym-Universit-Gaston-Berger": {
+      "name": "UGB'de YouthMappers",
+      "description": "Gaston Berger Üniversitesi'ndeki YouthMappers bölümü",
+      "extendedDescription": "YouthMappers UGB haritalama konusunda tutkulu genç öğrenciler ve araştırmacılardan oluşur. Amacımız, öğrencilerin haritacılık alanındaki becerilerini geliştirmek ve dünyadaki, özellikle Afrika'daki kalkınma zorluklarına cevap veren açık coğrafi verilerin oluşturulmasına katılmaktır."
+    },
+    "ym-Universit-Mohammed-V-Rabat": {
+      "name": "Rabat'ta Brahmaputra",
+      "description": "Mohammed V Rabat Üniversitesi'ndeki YouthMappers bölümü",
+      "extendedDescription": "Bu bölüm, YouthMappers programına katılımı, bilgimizi paylaşmak ve farklı ülkelerdeki diğer bölümlerle yeni çalışma ilişkileri kurmak için bir fırsat olarak görmektedir."
+    },
+    "ym-Universitas-Negeri-Makassar": {
+      "description": "Negeri Makassar Üniversitesi YouthMappers bölümü"
+    },
+    "ym-University-Muhammadiyah-Surakarta": {
+      "name": "Uzayzaman",
+      "description": "Muhammadiyah Surakarta Üniversitesi'ndeki YouthMappers bölümü",
+      "extendedDescription": "SpaceTime, Surakarta Muhammadiyah Üniversitesi Coğrafya Fakültesi'nde yer alan bir topluluk haritasıdır. SpaceTime; Bruce Maldy Pratama, Mukhlis Akbar ve Irfandi Fauzi tarafından kuruldu. Surakarta Muhammadiyah Üniversitesi Coğrafya Fakültesi'nde halen aktif öğrencilerdir."
+    },
+    "ym-University-of-California-Davis": {
+      "name": "Haritalama Kulübü",
+      "description": "California Davis Üniversitesi'ndeki YouthMappers bölümü"
+    },
+    "ym-University-of-Cape-Coast": {
+      "name": "UCC Coğrafya Topluluğu",
+      "description": "Cape Coast Üniversitesi'ndeki YouthMappers bölümü",
+      "extendedDescription": "Cape Coast Üniversitesi Coğrafya ve Bölgesel Planlama Bölümü'nde coğrafya okuyan ve okumuş tüm öğrencileri kapsayan bir topluluğuz. Temel amacımız, sınıf içinde ve dışında disipline olan ilgiyi ve saygıyı artırmaktır. Sloganımız \"Dünyayı ve sakinlerini anlıyoruz.\""
+    },
+    "ym-University-of-Central-Florida": {
+      "name": "Jeo-uzamsal Bilgi Topluluğu",
+      "description": "Central Florida Üniversitesi'ndeki YouthMappers bölümü",
+      "extendedDescription": "Misyonumuz, CBS'nin tartışılması ve uygulanmasıyla ilgilenen tüm bölümler için sosyal ve eğitsel bir ortam sağlamaktır. Akademik yıl boyunca düzenlenen grup ve topluluk etkinlikleri, öğrencileri topluluk tabanlı CBS projelerini kullanarak ve yerel ortaokul ve lise öğrencilerini CBS kullanımı ve uygulaması konusunda eğiterek yerel ve bölgesel topluluklara yardım etmek için gönüllü olmaya teşvik etmektedir."
+    },
+    "ym-University-of-Chicago": {
+      "name": "Tobler Topluluğu",
+      "description": "Chicago Üniversitesi'nde YouthMappers bölümü"
+    },
+    "ym-University-of-Dar-es-Salaam": {
+      "name": "Darüsselam Üniversitesi'nde YouthMappers",
+      "description": "Dar es Salaam Üniversitesi'ndeki YouthMappers bölümü",
+      "extendedDescription": "Dar es Salaam Üniversitesi'ndeki YoutMappers'ların amacı, olası afet alanlarını haritalamak, acil durum yönetimi için kaynak sağlamak, üyelerini Dar es Salaam kentindeki açık kaynak ve GIS kuruluşlarıyla birleştirmek için açık kaynaklı verileri ve CBS teknolojilerini kullanmak ve teşvik etmektir ve proje ortaklarımızın gelecekteki ihtiyaçlarını karşılamaktır"
+    },
+    "ym-University-of-Energy-and-Natural-Resources": {
+      "description": "Enerji ve Doğal Kaynaklar Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "Bozulan çevre hakkında tüm vatandaşlara sağlıklı bir eğitim sağlamak ve insan yaşamı için çevrenin yenilenmesinin en üst düzeyde kullanımını sağlamak. "
+    },
+    "ym-University-of-Exeter": {
+      "name": "Exeter Üniversitesi İngiliz Kızıl Haçı Eksik Haritalar",
+      "description": "Exeter Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "Kapsamlı CBS bilgisine sahip hevesli Coğrafyacılardan oluşan bir ekibiz. İngiliz Kızıl Haç Derneği'ni çeşitli insani yardım çabalarıyla desteklemek konusunda tutkuluyuz. Ayrıca uzaktan algılanan verileri haritalamanın önemi ve bunun sahada nasıl yardımcı olduğu konusunda da önemli öğretmenleriz. Mapathonlarımız, coğrafya departmanımızdaki farklı CBS araştırmalarını vurgulayan temalı akademik odaklara sahipken, aynı zamanda konuşmacıları CBS / İngiliz Kızıl Haç kariyeri hakkında konuşmaya davet etmek için kullandığımız istihdam edilebilirlik, farkındalık etkinlikleri olarak işlev görüyor."
+    },
+    "ym-University-of-Ghana": {
+      "name": "Gana Üniversitesi YouthMappers",
+      "description": "Gana Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "UG YouthMappers, CBS ve Uzaktan Algılama konusunda bilgi ve becerilere sahip hem lisans hem de lisans öğrencilerinden oluşur. Kulüp, sosyal sorunları ele almaya ve haritalama yoluyla çevre sorunlarını hafifletmeye hazır enerjik bir ekipten oluşur. Temel ilkelerimiz kapasite geliştirme, güçlendirme ve takım çalışmasıdır."
+    },
+    "ym-University-of-Liberia-YouthMappers": {
+      "name": "Liberya Üniversitesi YouthMappers",
+      "description": "Liberya Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "Liberya Üniversitesi YouthMappers, Global YouthMappers'ın bir bölüm organizasyonudur. Liberya'nın ve genel olarak dünyanın kalkınması için haritalamaya odaklanan kar amacı gütmeyen bir öğrenci haritalama organizasyonuyuz. Bu organizasyonun amacı, harita oluşturma ve geliştirme aracı olarak teknoloji ve jeo-uzamsal bilgiyi kullanmak; yerel ve dünya çapındaki zorlukları ele alacak verileri toplamak ve analiz etmek olacaktır. Amacımız, öğrencilerin haritalama alanlarına ilgi ve beceri geliştirmelerini desteklemek ve fırsat yaratmaktır. İşbirlikçi, aktif ve başkalarının hayatlarını iyileştirmek için Liberya Üniversitesi YouthMappers ile çalışmaya istekli birleşik bir öğrenci topluluğu öngörüyoruz."
+    },
+    "ym-University-of-Malawi": {
+      "name": "Malavi Üniversitesi YouthMappers",
+      "description": "Malawi Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "Chanco Malawi YouthMappers, Malawi Üniversitesi Şansölye Koleji için öğrenci haritalama kuruluşudur. Bu bölümdeki öğrenciler, Malawi'nin gelişim ve bilim ihtiyaçları için haritalamaya odaklanıyor."
+    },
+    "ym-University-of-Maryland-College-Park": {
+      "name": "Coğrafya Kulübü",
+      "description": "Maryland Üniversitesi - College Park'ta YouthMappers bölümü",
+      "extendedDescription": "Maryland College Park Üniversitesindeki Geography Club'ın amacı, öğrencilerin kampüs ve topluluk içinde coğrafi ilgi alanlarını keşfetmeleri için onların dikkatini çekmek ve onları teşvik etmektir."
+    },
+    "ym-University-of-Mines-and-Technology": {
+      "description": "Maden ve Teknoloji Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "UMaT YouthMappers öğrencilere haritalama ve dünya çapında yerel olarak tanımlanmış gelişim zorluklarına değinen açık coğrafi veri ve analizleri yaratma alanında yeteneklerini geliştirme şansı vermeye çalışan bir gönüllü öğrenciler grubudur. "
+    },
+    "ym-University-of-Nairobi": {
+      "name": "Jeo-uzay Mühendisliği Öğrencileri Topluluğu",
+      "description": "Nairobi Üniversitesindeki YouthMappers bölümü",
+      "extendedDescription": "UN öğrencileri, açık haritalama hakkında bilgi edinmek ve kentsel topluluklarındaki ihtiyaçlar ve verilere katkıda bulunmak için yerel OSM topluluğu, Map Kibera ve GrouthTruth ile birlikte çalışıyorlar."
+    },
+    "ym-University-of-Nigeria-Enugu-Campus": {
+      "description": "Nijerya Üniversitesi, Enugu Kampüsü'ndeki YouthMappers bölümü",
+      "extendedDescription": "LionMappersTeam (LMT) Enugu Kampüsü, YouthMappers Network'ün bir üyesidir ve tek amacı üyelerine Geoinformatik alanında öğrenme ve becerilerini geliştirme ve küresel olarak yerel olarak tanımlanmış zorlukları ele alan açık coğrafi veriler ve analizler oluşturma fırsatı sunmaktır. Openstreetmap, Citizen Science ve diğer Geospatial Teknolojilerini kullanarak araştırma, eğitim ve dirençli topluluk sorunlarına yanıt vermek için Kitle Kaynaklı Haritalama ve Coğrafi Bilgi sağlama gönüllülerinden oluşan bir ekiptir. Web-Kartografi, CBS ve Uzaktan Algılama Uygulamaları ve Araştırmaları ile ilgileniyoruz Gönüllü Coğrafi Bilgi, Katılımcı CBS ve Vatandaş Bilimi konusunda tutkuluyuz Başlıca faaliyetlerimiz arasında çevrimiçi kitle kaynaklı-Kartografi, Saha Haritalama, Eğitim atölyeleri ve Liselere erişimin yanı sıra İnsani Yardım / Afet Müdahale Haritalaması yer almaktadır."
+    },
+    "ym-University-of-Nigeria-Nsukka": {
+      "description": "Nsukka, Nijerya Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "LionMappersTeam, YouthMappers Network'ün bir üyesidir ve tek amacı üyelerine haritalama bilimi alanında öğrenme ve becerilerini geliştirme ve küresel olarak yerel olarak tanımlanmış zorlukları ele alan açık coğrafi veriler ve analizler oluşturma fırsatı sunmaktır. Openstreetmap, vatandaş bilimi ve diğer jeo-uzamsal teknolojileri kullanarak araştırma, eğitim ve dirençli topluluk sorunlarına yanıt vermek için kitle kaynaklı haritalama ve coğrafi bilgi sağlama konusunda gönüllülerden oluşan bir ekiptir. CBS ve Uzaktan Algılama Uygulamaları ve Araştırmaları, Katılımcı CBS ve Vatandaş Bilimi, saha haritalama, eğitim atölyeleri ve Liselere erişim konularında faaliyet göstermekteyiz."
+    },
+    "ym-University-of-North-Texas": {
+      "name": "UNT Coğrafya Kulübü",
+      "description": "North Texas Üniversitesi'ndeki YouthMappers bölümü",
+      "extendedDescription": "The Geography Club, North Texas Üniversitesindeki coğrafyayla ilgilenen her öğrenciye açık olan bir öğrenci organizasyonudur. Geography Club'ın hedefi öğrenciler ve fakülte arasındaki paydaşlıkla birlikte, coğrafyaya, branşına ve coğrafya bölümüne ilgiyi arttırmaktır. Klüp, bunlarla birlikte, öğrencilerin coğrafya çalışmalarındaki ihtiyaçlarını ve isteklerini temsil etmeyi ve bu üniversite topluluğunun yararına yenilikçi fikirler sunulması için bir forum sağlamayı istemektedir."
+    },
+    "ym-University-of-Northern-Colorado": {
+      "name": "UNCO Coğrafya ve CBS Kulübü",
+      "description": "Northern Colorado Üniversitesi'ndeki YouthMappers bölümü",
+      "extendedDescription": "Amacımızın çevremizdekileri öğrenmek, paylaşmak ve onlarla bağlantı kurmak olduğu Kuzey Colorado Üniversitesi'ne bağlı Resmi Coğrafya ve CBS Kulübü bölümü. #DünyayıAnlamlandırma"
+    },
+    "ym-University-of-Oregon": {
+      "name": "Kuzeybatı tarafında harita",
+      "description": "Oregon Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "Map By Northwest, Oregon Üniversitesi'ndeki lisans öğrencilerini insani amaçlara yardımcı olmak ve coğrafi araştırma yapmak için haritalama projelerine dahil etmeyi amaçlamaktadır. Tüm disiplinlerden öğrencileri haritalama maceralarımızda bize katılmaya davet ediyoruz."
+    },
+    "ym-University-of-Port-Harcourt": {
+      "description": "Port Harcourt Üniversite'sindeki YouthMappers bölümü",
+      "extendedDescription": "UniqueMappersTeam(UMT)Port Harcourt, jeoinformasyon için yerel olarak tanımlanmış zorlukları ele alan açık jeo-uzamsal veriler ve analizler oluşturmak ve Nijer Delta'sındaki dayanıklı topluluklara insani haritalama hizmetleri sağlamak için üyeleri eğitmeyi ve trend harita oluşturma becerileriyle güçlendirmeyi hedefleyen; Nijerya ve başka yerlerde işbirliğine dayalı bir çevrimiçi haritalama için eylem grubu ve gönüllülerden oluşan bir ekiptir. OpenStreetMap (OSM) platformunu ve Hızlı Müdahale Haritalama, Coğrafi İstihbarat Haritalama, Haritalama güncellemeleri ve eğitim için diğer erişilebilir platformları kullanarak Crowdsoucred Haritalama ve Coğrafi bilgi gönüllülüğünü teşvik ediyoruz. Crowdsoucred Humanitarian OpenStreetMap Team'e (HOT) bağlı bir kampüs bölümüdür. Harita Oluşturma ve Jeoinformasyon alalnındaki küresel fırsatları keşfetmeleri için üyelere Jeoinformatik alanındaki becerilerini öğrenme ve geliştirme fırsatı sunan YouthMappers proje görev ekibidir."
+    },
+    "ym-University-of-Pretoria": {
+      "name": "Jeoinformasyon Bilim Dalı Merkezi",
+      "description": "Pretoria Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "Pretoria'yı haritalandıran öğrenciler, coğrafi bilgi bilimi (GISc) araştırmaları, eğitim ve öğretim, profesyonel gelişim ve toplum katılımı ile ilgilenen UP bireylerinin ve ekiplerinin mükemmelliğinin teşvik edildiği ve Güney Afrika'da ve yurtdışında işbirlikleri, eğitim ve öğretim ve ittifaklar yoluyla güçlendirildiği bir platform olan Pretoria Üniversitesi Jeoinformasyon Bilimi Merkezi tarafından desteklenmektedir."
+    },
+    "ym-University-of-Redlands": {
+      "description": "Redlands Üniversitesi'ndeki YouthMappers bölümü",
+      "extendedDescription": "Uygulamalı sosyal katılım yoluyla üyelerin CBS becerilerini ve araç ve yöntem bilgilerini geliştirmenin yanı sıra topluluk hizmeti etkinlikleri aracılığıyla kampüs topluluğunu haritalama ve mekansal analizin gücü hakkında eğitmek."
+    },
+    "ym-University-of-Rwanda-Huye-Campus": {
+      "description": "Ruanda Üniversitesi - Huye Kampüsü'ndeki YouthMappers bölümü",
+      "extendedDescription": "Haritalamayı teşvik etme taahhüdü ve amacına ve YouthMappers'ın halka açık konuşmalarından elde edilen bilgilere dayanarak, Coğrafya bölümünde, kampüsümüzün bir bölümünü bulmak için haritalamaya kendini adamış öğrenciler olarak organize ettik. Kolaylaştırıcımız Dr. Gaspard Rwanyiziri (CGIS-Ruanda Direktörü) ve çeşitli eğitmen danışmanlarımız tarafından desteklendik."
+    },
+    "ym-University-of-South-Carolina": {
+      "name": "Coğrafya Lisansüstü Öğrenci Derneği ",
+      "description": "Güney Karolina Üniversitesi YouthMappers Bölümü",
+      "extendedDescription": "GGSA, bölüm ve öğrenciler arasındaki irtibat rolünü doldurarak tüm coğrafya mezunu öğrenciler için bir savunucu ve kaynak olarak hizmet vermek üzere tasarlanmış, tamamen öğrenci tarafından işletilen bir organizasyondur. Amacımız, coğrafya alanı ve alt disiplinleri ile ilgilenen yüksek lisans öğrencilerinin mesleki, akademik ve kişisel gelişimlerini ilerletmektir."
+    },
+    "ym-University-of-Southern-California": {
+      "name": "SC haritacılar",
+      "description": "Güney Kaliforniya Üniversitesi YouthMappers Bölümü",
+      "extendedDescription": "Dünyayı farklı görüyor, onu mekansal bir mercekle inceliyoruz. Mekansal düşüncenin gücü ile, küresel zorlukların üstesinden gelmeye yardımcı olmak için yer ve mekanı birbirine bağlıyoruz. Bizimle işbirliği yapın!"
+    },
+    "ym-University-of-the-Philippines-Resilience-Institute": {
+      "name": "YouthMappers UP Resilience Enstitüsü",
+      "description": "Filipinler Dayanıklılık Enstitüsü Üniversitesi'ndeki YouthMappers bölümü",
+      "extendedDescription": "UP Dayanıklılık Enstitüsü, dayanıklılığa yönelik multidisipliner araştırma ve eylemler yoluyla yerel toplulukları güçlendirme misyonuyla 2016 yılında kuruldu. UP NOAH Merkez ve farklı kuruluşların yardımıyla, 82 ilden 17'si için bina maruziyet haritaları sağladık ve OpenStreetMap'e 4 milyondan fazla ayak izi yükledik."
+    },
+    "ym-University-of-the-Philippines-Resilience-Institute-twitter": {
+      "name": "YouthMappers UP Resilience Enstitüsü Twitter"
+    },
+    "ym-University-of-the-West-Indies-Mona-Campus": {
+      "name": "Kütüphaneler Destek Programı - ODL",
+      "description": "Mona Kampüs, Batı Hint Adaları Üniversitesi YouthMappers Bölümü",
+      "extendedDescription": "UWI, Mona Kampüs Kütüphanesi halka açık, sosyal yardım ve özel projelerde yer alır. Bu, kütüphanemize mekansal okuryazarlık için bir katalizör olma ve mekansal veri paylaşımını ve Jamaika ve Karayiplerin çıkarlarına erişim için savunuculuk yapma olanağı sağlayacaktır. Kampüsümüze ve topluluğumuza daha iyi hizmet verebilmek için afet yardımı ve iletişim ihtiyaçlarımız ve kapsamlı yer bilimi ve jeo-tehlike ihtiyaçlarımız var. Özellikle, tüm fakülte ve öğrencilere bunu sergilemek için bir Bilim Kütüphanemiz var."
+    },
+    "ym-University-of-Victoria": {
+      "name": "Coğrafya öğrencileri topluluğu ",
+      "description": "Victoria Üniversitesi YouthMappers Bölümü",
+      "extendedDescription": "SOGS, Coğrafya Bölümü bünyesinde sosyal ve akademik ilgi alanlarını desteklemeyi ve temsil etmeyi amaçlamaktadır. Bu, dört ana hedefle ifade edilir: Coğrafya içinde eğitimin kalitesi ve erişilebilirliği ile ilgili konuların tartışılması için bir forum sağlamak; bölüm toplantılarında ve bölüm komitelerinde temsil yoluyla öğrenci görüşlerinin bölüm öğretim üyelerine ifade edilmesi için bir yol sağlamak; coğrafyada öğrencilerin ilgi alanına giren ve öğrencilerin yararına olacak faaliyetler için düzenlemeler yapmak; UVSS ve Kurs Birliği Konseyi aracılığıyla kampüsteki diğer öğrenci gruplarıyla bir irtibat olarak hareket etmek."
+    },
+    "ym-University-of-Warwick": {
+      "name": "Warwick Üniversitesi Dayanıklılık Haritalama Topluluğu",
+      "description": "Warwick Üniversitesi YouthMappers Bölümü",
+      "extendedDescription": "Bizler, Warwick Üniversitesi merkezli haritalandırma heveslisi bir grubuz. Amacımız, insanları yardımsever haritacılık konusunda heyecanlandırmak ve bu aktivitenin sahadaki etkisinin anlaşılmasına yardımcı olmaktır. Missing Maps ve Sınır Tanımaya Doktorlar UK ile sıkı bir işbirliğimiz bulunmakta ve haritacılık aktivitelerimizde ve atölyelerimizde HOT görevlerine odaklanıyoruz. Haritacılık yarışmalarımız planlandıklarında Missing Maps sayfasında listelenir. "
+    },
+    "ym-University-of-Wyoming": {
+      "name": "Gamma Theta Upsilon / Coğrafya Kulübü",
+      "description": "Wyoming Üniversitesi YouthMappers Bölümü"
+    },
+    "ym-University-of-Zimbabwe": {
+      "description": " Zimbabwe Üniversitesi YouthMappers Bölümü",
+      "extendedDescription": "UzMappersTeam Zimbabwe, Açık Veri Haritalama ve İnsani Afet müdahale haritalaması için OpenStreetMap kullanan bir Gönüllüler ekibidir. Ekip, üyelerine açık kaynak jeo-uzamsal teknoloji becerileriyle güç verir."
+    },
+    "ym-UW-Madison": {
+      "description": "UW-Madison'da YouthMappers bölümü",
+      "extendedDescription": "BadgerMaps, insani yardım ve topluluk haritalama hizmetlerine adanmış bir kuruluş olan Youthmappers'ın UW kampüs bölümüdür. Gönüllü ağımızı, ihtiyaç duyan projeler için CBS verilerini oluşturma fırsatlarıyla birleştiriyoruz."
+    },
+    "ym-Vassar-College": {
+      "name": "Hudson Vadisi haritacılar",
+      "description": "Vassar Kolej YouthMappers Bölümü",
+      "extendedDescription": "Misyonumuz, yerel ekosistemlerimizi, yapılı çevremizi ve topluluğumuzun sağlığını güçlendirmeye odaklanarak yerel haritalama projelerine katılmaları için meslektaşlar, eğitimciler ve topluluk kuruluşlarıyla çok disiplinli bir platform sağlamaktır. Ayrıca küresel insani yardım ve kalkınma çabalarına jeo-uzamsal desteğe katkıda bulunmaya çalışıyoruz."
+    },
+    "ym-Villanova-University": {
+      "description": "Villanova Üniversitesi YouthMappers Bölümü",
+      "extendedDescription": "Villanova Globeplotters, Villanova'nın Augustinian özverili ilkesi üzerine küresel topluma hizmet etmek amacıyla inşa edilmiştir. Rahat sosyal etkileşim ile karıştırılarak, katılımcı öğrencilerin ırkı, akademik uzmanlık, öğrenci grubu Birliği veya üniversite kariyer seviyesi ne olursa olsun, ihtiyaç sahiplerine jeo-uzamsal sosyal yardım sağlamayı hedefliyoruz."
+    },
+    "ym-West-Virginia-University": {
+      "name": "Harita zamanı Morgantown",
+      "description": "Batı Virginia Üniversitesi YouthMappers Bölümü",
+      "extendedDescription": "İşbirlikçi bir ekip olarak çalışan bu kurucu bölüm, uluslararası kalkınma, acil durum müdahalesi ve coğrafi bilgi biliminin kesiştiği projeler üzerinde çalışmak isteyenler için açık bir öğrenme ortamı sağlamaya odaklanmaktadır. Anlamlı ve faydalı coğrafi altyapı verileri oluşturma konusunda teknik eğitim ve deneyim sağlayarak yeni başlayanları ve uzmanları bir araya getirirken, dünyanın dört bir yanındaki kardeş şehirlerle de bağlantı kuruyorlar."
+    },
+    "ym-Western-Michigan-University": {
+      "name": "Coğrafya Kulübü",
+      "description": "Batı Michigan Üniversitesi YouthMappers bölümü"
+    },
+    "ym-Yarmouk-University": {
+      "name": "YU'deki YouthMappers",
+      "description": "Yarmouk Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "YU'daki YouthMappers bölümü; mülteci, kuraklık ve yoksulluk krizlerinin arttığı, bu tür krizlerin sonuçlarını hafifletmek ve insani haritalama faaliyetlerine acil bir şekilde ihtiyaç duyulan Orta Doğu ve Kuzey Afrika bölgesindeki ilk haritalama grubudur. YU'daki haritacılar, bölgedeki hedef noktalara yardım ve kalkınma sağlamak için MENA bölgesindeki zorlukları ele almak için açık verileri kullanmaya teşvik edilmektedir."
+    }
+  }
+}

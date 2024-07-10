@@ -49,7 +49,7 @@ export class ImagerySystem extends AbstractSystem {
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._hashchange = this._hashchange.bind(this);
-    this.updateImagery = this.updateImagery.bind(this);
+    this._imageryChanged = this._imageryChanged.bind(this);
   }
 
 
@@ -204,7 +204,7 @@ export class ImagerySystem extends AbstractSystem {
 
     return this._startPromise = prerequisites
       .then(() => {
-        map.scene.on('layerchange', this.updateImagery);
+        map.scene.on('layerchange', this._imageryChanged);
         this._started = true;
       });
   }
@@ -270,11 +270,11 @@ export class ImagerySystem extends AbstractSystem {
 
 
   /**
-   *  updateImagery
+   *  _imageryChanged
    *  Called whenever the imagery changes
    *  Also used to push changes in imagery state to the urlhash
    */
-  updateImagery() {
+  _imageryChanged() {
     const baseLayer = this._baseLayer;
     if (this.context.inIntro || !baseLayer) return;
 
@@ -402,7 +402,7 @@ export class ImagerySystem extends AbstractSystem {
 
     this._baseLayer = (!fail ? source : this.getSourceByID('none'));
 
-    this.updateImagery();
+    this._imageryChanged();
     this.emit('imagerychange');
     return this;
   }
@@ -503,7 +503,7 @@ export class ImagerySystem extends AbstractSystem {
     } else {
       this._overlayLayers.set(source.id, source);
     }
-    this.updateImagery();
+    this._imageryChanged();
     this.emit('imagerychange');
   }
 
@@ -527,7 +527,7 @@ export class ImagerySystem extends AbstractSystem {
       }
     }
 
-    this.updateImagery();
+    this._imageryChanged();
     this.emit('imagerychange');
   }
 
@@ -542,7 +542,7 @@ export class ImagerySystem extends AbstractSystem {
     if (this._baseLayer) {
       const zoom = this.context.viewport.transform.zoom;
       this._baseLayer.nudge(delta, zoom);
-      this.updateImagery();
+      this._imageryChanged();
       this.emit('imagerychange');
     }
   }
@@ -561,7 +561,7 @@ export class ImagerySystem extends AbstractSystem {
 
     if (this._baseLayer) {
       this._baseLayer.offset = [setX, setY];
-      this.updateImagery();
+      this._imageryChanged();
       this.emit('imagerychange');
     }
   }

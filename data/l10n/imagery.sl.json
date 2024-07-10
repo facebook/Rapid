@@ -1,0 +1,114 @@
+{
+  "sl": {
+    "imagery": {
+      "Bing": {
+        "description": "Satelitski posnetki in posnetki iz zraka"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Pogoji uporabe in odziv"
+        },
+        "name": "Posnetki sveta Esri"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Pogoji uporabe in odziv"
+        }
+      },
+      "MAPNIK": {
+        "description": "Privzeta plast zemljevida OpenStreetMap",
+        "name": "OpenStreetMap (standardni)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Pogoji uporabe in odziv"
+        },
+        "name": "Posnetki Mapbox Satellite"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, skupnost © OpenStreetMap z dovoljenjem CC-BY-SA"
+        },
+        "name": "OSM Inspector: naslovi"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, skupnost © OpenStreetMap z dovoljenjem CC-BY-SA"
+        },
+        "name": "OSM Inspector: geometrija"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, skupnost © OpenStreetMap z dovoljenjem CC-BY-SA"
+        },
+        "name": "OSM Inspector: avtoceste"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, skupnost © OpenStreetMap z dovoljenjem CC-BY-SA"
+        },
+        "name": "OSM Inspector: območja"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, skupnost © OpenStreetMap z dovoljenjem CC-BY-SA"
+        },
+        "name": "OSM Inspector: kraji"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, skupnost © OpenStreetMap z dovoljenjem CC-BY-SA"
+        },
+        "name": "OSM Inspector: ceste"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, skupnost © OpenStreetMap z dovoljenjem CC-BY-SA"
+        },
+        "name": "OSM Inspector: oznake"
+      },
+      "Waymarked_Trails-Cycling": {
+        "name": "Waymarked Trails: kolesarjenje"
+      },
+      "Waymarked_Trails-Hiking": {
+        "name": "Waymarked Trails: pohodništvo"
+      },
+      "Waymarked_Trails-Skating": {
+        "name": "Waymarked Trails: rolkanje in rolanje"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "name": "Waymarked Trails: zimski športi"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Pogoji uporabe in odziv"
+        },
+        "description": "Pokaže glavne značilnosti v okolju za hitro orientacijo."
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "Skupnost © OpenStreetMap z dovoljenjem CC-BY-SA"
+        },
+        "name": "Zemljevid OpenPT Map (prekrivna plast)"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "Skupnost © OpenStreetMap"
+        },
+        "description": "Javne sledi GPS, poslane na OpenStreetMap",
+        "name": "Sledi GPS za OpenStreetMap"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "Skupnost © OpenStreetMap z dovoljenjem CC-BY-SA"
+        },
+        "name": "OpenStreetMap (nemški slog)"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Pole, podatki skupnost © OpenStreetMap"
+        }
+      }
+    }
+  }
+}

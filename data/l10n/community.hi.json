@@ -1,0 +1,15 @@
+{
+  "hi": {
+    "_communities": {
+      "mappingbotswana": "मैपिंग बोत्सवाना",
+      "openstreetmap": "ओपन स्ट्रीट मैप",
+      "openstreetmapafghanistan": "ओपन स्ट्रीट मैप अफ़ग़ानिस्तान ",
+      "openstreetmapafrica": "ओपन स्ट्रीट मैप अफ़्रीका",
+      "openstreetmapargentina": "ओपन स्ट्रीट मैप अर्जेंटीना",
+      "openstreetmapaustria": "ओपन स्ट्रीट मैप ऑस्ट्रिया"
+    },
+    "be-matrix": {
+      "description": "सभी मानचित्रकारों का स्वागत है"
+    }
+  }
+}

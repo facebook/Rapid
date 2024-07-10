@@ -1,0 +1,367 @@
+{
+  "ca": {
+    "_communities": {
+      "openstreetmapaachen": "OpenStreetMap Aquisgrà",
+      "openstreetmapafghanistan": "OpenStreetMap Afganistan",
+      "openstreetmapafrica": "OpenStreetMap Àfrica",
+      "openstreetmapalbania": "OpenStreetMap Albània",
+      "openstreetmapasia": "OpenStreetMap Àsia",
+      "openstreetmapaustria": "OpenStreetMap Àustria",
+      "openstreetmapbelarus": "OpenStreetMap Bielorússia",
+      "openstreetmapbelgium": "OpenStreetMap Bèlgica",
+      "openstreetmapbenin": "OpenStreetMap Benín",
+      "openstreetmapberlin": "OpenStreetMap Berlín",
+      "openstreetmapbolivia": "OpenStreetMap Bolívia",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap Bòsnia i Hercegovina",
+      "openstreetmapbulgaria": "OpenStreetMap Bulgària",
+      "openstreetmapbzh": "OpenStreetMap Bretanya",
+      "openstreetmapcambodia": "OpenStreetMap Cambodja",
+      "openstreetmapcameroon": "OpenStreetMap Camerun",
+      "openstreetmapcanada": "OpenStreetMap Canadà",
+      "openstreetmapcastillayleon": "OpenStreetMap Castella i Lleó",
+      "openstreetmapcatalancountries": "OpenStreetMap Països Catalans",
+      "openstreetmapchad": "OpenStreetMap Txad",
+      "openstreetmapchile": "OpenStreetMap Xile",
+      "openstreetmapchina": "OpenStreetMap Xina",
+      "openstreetmapcologne": "OpenStreetMap Colònia",
+      "openstreetmapcolombia": "OpenStreetMap Colòmbia",
+      "openstreetmapcotedivoire": "OpenStreetMap Costa d'Ivori",
+      "openstreetmapcroatia": "OpenStreetMap Croàcia",
+      "openstreetmapcz": "OpenStreetMap República Txeca",
+      "openstreetmapde": "OpenStreetMap Alemanya",
+      "openstreetmapdenmark": "OpenStreetMap Dinamarca",
+      "openstreetmapdominicanrepublic": "OpenStreetMap República Dominicana",
+      "openstreetmapecuador": "OpenStreetMap Equador",
+      "openstreetmapegypt": "OpenStreetMap Egipte",
+      "openstreetmapespana": "OpenStreetMap Espanya",
+      "openstreetmapestonia": "OpenStreetMap Estònia",
+      "openstreetmapethiopia": "OpenStreetMap Etiòpia",
+      "openstreetmapfinland": "OpenStreetMap Finlàndia",
+      "openstreetmapfrance": "OpenStreetMap França",
+      "openstreetmapfrenchguiana": "OpenStreetMap Guaiana Francesa",
+      "openstreetmapfrenchpolynesia": "OpenStreetMap Polinèsia Francesa",
+      "openstreetmapgalicia": "OpenStreetMap Galícia",
+      "openstreetmapgeorgia": "OpenStreetMap Geòrgia",
+      "openstreetmapgermany": "OpenStreetMap Alemanya",
+      "openstreetmapgreece": "OpenStreetMap Grècia",
+      "openstreetmaphaiti": "OpenStreetMap Haití",
+      "openstreetmaphonduras": "OpenStreetMap Hondures",
+      "openstreetmaphungary": "OpenStreetMap Hongria",
+      "openstreetmapiceland": "OpenStreetMap Islàndia",
+      "openstreetmapindia": "OpenStreetMap Índia",
+      "openstreetmapindonesia": "OpenStreetMap Indonèsia",
+      "openstreetmapireland": "OpenStreetMap Irlanda",
+      "openstreetmapitaly": "OpenStreetMap Itàlia",
+      "openstreetmapitalytrentino": "OpenStreetMap Italia-Trentino",
+      "openstreetmapjapan": "OpenStreetMap Japó",
+      "openstreetmapkorea": "OpenStreetMap Corea",
+      "openstreetmapkyrgyzstan": "OpenStreetMap Kirguizstan",
+      "openstreetmaplatinamerica": "OpenStreetMap Amèrica Llatina",
+      "openstreetmaplatvia": "OpenStreetMap Letònia",
+      "openstreetmaplebanon": "OpenStreetMap Líban",
+      "openstreetmapliberia": "OpenStreetMap Libèria",
+      "openstreetmaplibya": "OpenStreetMap Líbia",
+      "openstreetmaplithuania": "OpenStreetMap Lituània",
+      "openstreetmaplombardia": "OpenStreetMap Llombardia",
+      "openstreetmaplondon": "OpenStreetMap Londres",
+      "openstreetmapluxembourg": "OpenStreetMap Luxemburg",
+      "openstreetmapmalaysia": "OpenStreetMap Malàisia",
+      "openstreetmapmauritania": "OpenStreetMap Mauritània",
+      "openstreetmapmexico": "OpenStreetMap Mèxic",
+      "openstreetmapmoldova": "OpenStreetMap Moldàvia",
+      "openstreetmapmongolia": "OpenStreetMap Mongòlia",
+      "openstreetmapmorocco": "OpenStreetMap Marroc",
+      "openstreetmapmunchen": "OpenStreetMap Munic",
+      "openstreetmapnetherlands": "OpenStreetMap Països Baixos",
+      "openstreetmapniger": "OpenStreetMap Níger",
+      "openstreetmapnigeria": "OpenStreetMap Nigèria",
+      "openstreetmapnorway": "OpenStreetMap Noruega",
+      "openstreetmappanama": "OpenStreetMap Panamà",
+      "openstreetmapparaguay": "OpenStreetMap Paraguai",
+      "openstreetmapperu": "OpenStreetMap Perú",
+      "openstreetmapphilippines": "OpenStreetMap Filipines",
+      "openstreetmappiemonte": "OpenStreetMap Piemont",
+      "openstreetmappoland": "OpenStreetMap Polònia",
+      "openstreetmapreunion": "OpenStreetMap Illa de la Reunió",
+      "openstreetmaprussia": "OpenStreetMap Rússia",
+      "openstreetmaprwanda": "OpenStreetMap Ruanda",
+      "openstreetmapsaudiarabia": "OpenStreetMap Aràbia Saudita",
+      "openstreetmapserbia": "OpenStreetMap Sèrbia",
+      "openstreetmapslovenia": "OpenStreetMap Eslovènia",
+      "openstreetmapsomalia": "OpenStreetMap Somàlia",
+      "openstreetmapsouthafrica": "OpenStreetMap Sud-àfrica",
+      "openstreetmapsouthsudan": "OpenStreetMap Sudan del Sud",
+      "openstreetmapsweden": "OpenStreetMap Suècia",
+      "openstreetmapswitzerland": "OpenStreetMap Suïssa",
+      "openstreetmapsyria": "OpenStreetMap Síria",
+      "openstreetmaptanzania": "OpenStreetMap Tanzània",
+      "openstreetmapthailand": "OpenStreetMap Tailàndia",
+      "openstreetmaptunisia": "OpenStreetMap Tunísia",
+      "openstreetmapturkey": "OpenStreetMap Turquia",
+      "openstreetmapuk": "OpenStreetMap Regne Unit",
+      "openstreetmapukraine": "OpenStreetMap Ucraïna",
+      "openstreetmapuruguay": "OpenStreetMap Uruguai",
+      "openstreetmapus": "OpenStreetMap EUA",
+      "openstreetmapvenezuela": "OpenStreetMap Veneçuela",
+      "openstreetmapwarszawa": "OpenStreetMap Varsòvia",
+      "openstreetmapwesternsahara": "OpenStreetMap Sàhara Occidental",
+      "openstreetmapzambia": "OpenStreetMap Zàmbia",
+      "openstreetmapzimbabwe": "OpenStreetMap Zimbàbue"
+    },
+    "_defaults": {
+      "aparat": {
+        "name": "{community} a Aparat",
+        "description": "Subscriviu-vos al canal d'Aparat"
+      },
+      "discord": {
+        "name": "Discord d'{community}",
+        "description": "Estigueu en contacte amb altres mapejadors a Discord"
+      },
+      "discourse": {
+        "name": "Fòrum de la comunitat {community}",
+        "description": "El fòrum oficial per {community}",
+        "url": "https://community.openstreetmap.org/c/communities/{compte}"
+      },
+      "facebook": {
+        "name": "{community} al Facebook",
+        "description": "Uniu-vos a la comunitat al Facebook",
+        "url": "https://www.facebook.com/{compte}"
+      },
+      "forum": {
+        "name": "Fòrum d'{community}",
+        "description": "Fòrum oficial per {community}"
+      },
+      "github": {
+        "name": "GitHub d'{community}"
+      },
+      "gitlab": {
+        "name": "GitLab d'{community}"
+      },
+      "irc": {
+        "name": "{community} a l'IRC"
+      },
+      "linkedin": {
+        "name": "{community} a LinkedIn",
+        "description": "Uniu-vos a la comunitat al LinkedIn",
+        "url": "https://www.linkedin.com/company/{compte}"
+      },
+      "mailinglist": {
+        "name": "Llista de correu {account}",
+        "description": "Llista de correu oficial per {community}"
+      },
+      "mastodon": {
+        "description": "El compte oficial de Mastodon per {community}"
+      },
+      "matrix": {
+        "name": "Xat Matrix d'{community}",
+        "description": "Uniu-vos a la comunitat al xat Matrix"
+      },
+      "meetup": {
+        "name": "Meetup d'{community}",
+        "url": "https://www.meetup.com/{compte}"
+      },
+      "newsletter": {
+        "name": "Butlletí de notícies {community}"
+      },
+      "reddit": {
+        "name": "{community} a Reddit"
+      },
+      "signal": {
+        "name": "Signal de {community}",
+        "description": "Uniu-vos al nostre xat de la comunitat al Signal"
+      },
+      "slack": {
+        "name": "Slack d'{community}"
+      },
+      "telegram": {
+        "name": "Telegram d'{community}",
+        "description": "Uniu-vos a la comunitat al xat de Telegram"
+      },
+      "threads": {
+        "name": "{community} a Threads",
+        "description": "Segueix-nos a Threads"
+      },
+      "twitter": {
+        "name": "{community} a 𝕏",
+        "description": "Segueix-nos a 𝕏"
+      },
+      "wiki": {
+        "name": "WikiProject d'{community}"
+      },
+      "x": {
+        "name": "{community} a 𝕏",
+        "description": "Segueix-nos a 𝕏"
+      },
+      "xmpp": {
+        "name": "XMPP d'{community}"
+      },
+      "youtube": {
+        "name": "{community} a YouTube",
+        "description": "Subscriviu-vos al canal de YouTube"
+      },
+      "zulip": {
+        "name": "Zulip {community}",
+        "description": "Uniu-vos al nostre xat de la comunitat al Zulip"
+      }
+    },
+    "af-matrix": {
+      "description": "Grup Matrix per a la comunitat a l'Afganistan."
+    },
+    "al-maptime-tirana": {
+      "description": "Esdeveniments socials organitzats al voltant del mapeig - els principiants són benvinguts!",
+      "extendedDescription": "Maptime és un entorn d'aprenentatge obert per a tots els nivells i graus de coneixement, oferint suport educatiu intencionat per a l'iniciador. Maptime és simultàniament flexible i estructurat, creant espai per cartografiar tutorials, tallers, projectes en curs amb un objectiu compartit, i temps de treball independent/col·laboratiu."
+    },
+    "at-matrix": {
+      "description": "Canal no oficial de Matrix en alemany per a Àustria"
+    },
+    "at-wiki": {
+      "description": "Pàgina wiki {community}"
+    },
+    "Bahia-telegram": {
+      "extendedDescription": "Uniu-vos a la comunitat per aprendre més sobre OpenStreetMap, fer preguntes o participar en les nostres reunions. Tots són benvinguts!"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "description": "Millora OpenStreetMap a l'Índia"
+    },
+    "be-chapter": {
+      "description": "Ajudem a fer créixer i millorar OpenStreetMap a Bèlgica"
+    },
+    "be-discourse": {
+      "description": "Un Forum per discutir sobre OpenStreetMap a Bèlgica"
+    },
+    "bg-wiki": {
+      "description": "Pàgina Viquiprojecte per a Bulgària"
+    },
+    "bi-vc-cvl-meetup": {
+      "description": "Grup local de mapejadors a Biellese, Vercellese, Canavese i Valli di Lanzo"
+    },
+    "bo-facebook-group": {
+      "name": "Grup de Facebook {community}"
+    },
+    "bo-matrix": {
+      "description": "Tots els mapejadors són benvinguts!"
+    },
+    "cape-coast-youthmappers": {
+      "name": "Universitat de Cape Coast YouthMappers",
+      "description": "Segueix-nos a Twitter: {url}",
+      "extendedDescription": "Aquest és l'identificacdor oficial dels Joves Cartografistes de la Universitat de Cape Coast, Ghana. Ens encanten els mapes, les dades obertes i ajudar a les persones vulnerables."
+    },
+    "cat-github": {
+      "description": "Projectes de la comunitat dels Països Catalans d'OpenStreetMap a GitHub"
+    },
+    "cat-matrix": {
+      "description": "Grup de Matrix per la comunitat d'OpenStreetMap dels Països Catalans"
+    },
+    "cat-wiki": {
+      "description": "Espai de coordinació per la comunitat d'OpenStreetMap als Països Catalans: {url}"
+    },
+    "cd-chapter": {
+      "description": "D'un carrer a un altre, mapegem el nostre país..."
+    },
+    "cl-facebook": {
+      "extendedDescription": "Uniu-vos a la comunitat per aprendre més sobre OpenStreetMap, fer preguntes o participar en les nostres reunions. Tothom és benvingut!"
+    },
+    "cl-telegram": {
+      "extendedDescription": "Uniu-vos a la comunitat per aprendre més sobre OpenStreetMap, fer preguntes o participar en les nostres reunions. Tothom és benvingut!"
+    },
+    "comunitat-valenciana-wiki": {
+      "description": "Tot el que necessites conèixer sobre mapejar a la Comunitat Valenciana"
+    },
+    "de-berlin-wiki": {
+      "description": "Pàgina wiki {community}"
+    },
+    "de-bochum-wiki": {
+      "description": "Pàgina wiki {community}"
+    },
+    "de-bonn-wiki": {
+      "description": "Pàgina wiki {community}"
+    },
+    "de-bremen-mailinglist": {
+      "name": "Llista de Correu de Bremen"
+    },
+    "de-bremen-wiki": {
+      "description": "Pàgina wiki {community}"
+    },
+    "de-cologne-wiki": {
+      "description": "Pàgina wiki {community}"
+    },
+    "de-dresden-wiki": {
+      "description": "Pàgina wiki {community}"
+    },
+    "de-dusseldorf-wiki": {
+      "description": "Pàgina wiki {community}"
+    },
+    "de-karlsruhe-mailinglist": {
+      "name": "Llsita de Correu Karlsruhe"
+    },
+    "de-karlsruhe-meetup": {
+      "description": "Mapejadors i usuaris d'OpenStreetMap a l'àrea de Karlsruhe"
+    },
+    "de-luneburg-wiki": {
+      "description": "Pàgina wiki {community}"
+    },
+    "de-munchen-wiki": {
+      "description": "Pàgina wiki {community}"
+    },
+    "fr-35-wiki": {
+      "description": "Pàgina wiki {community}"
+    },
+    "fr-38-wiki": {
+      "description": "Pàgina wiki {community}"
+    },
+    "fr-montrouge-wiki": {
+      "description": "Pàgina wiki {community}"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "description": "Segueix-nos a Twitter: {url}"
+    },
+    "hu-wiki": {
+      "description": "Pàgina wiki {community}"
+    },
+    "madrid-uam-ym": {
+      "name": "YouthMappers a la UAM",
+      "description": "Secció de YouthMappers a la Universitat Autònoma de Madrid"
+    },
+    "madrid-upm-ym": {
+      "name": "Mapeig Humanitari"
+    },
+    "osm-deep-south-wiki": {
+      "description": "Pàgina wiki {community}"
+    },
+    "OSM-India-facebook": {
+      "description": "Millora OpenStreetMap a l'Índia"
+    },
+    "OSM-japan-facebook": {
+      "description": "Mapadors i usuaris d'OpenStreetMap a Japó"
+    },
+    "osm-michigan-wiki": {
+      "description": "Pàgina wiki {community}"
+    },
+    "OSM-SoCal": {
+      "name": "OpenStreetMap Califòrnia del Sud",
+      "extendedDescription": "OpenStreetMap (OSM) Califòrnia del Sud és per a tothom interessat en el mapatge que s'uneixi a treballar amb OpenStreetMap. OpenStreetMap, la Viquipèdia dels mapes, és un mapa de codi obert gratuït del món sent creat per més de 1000000 de voluntaris al voltant del món. Tothom és benvingut. Si no coneixes OpenStreetMap, t'ensenyarem. Si tens una idea d'un projecte de mapatge o fins i tot una excursió de camp que el grup pot fer, genial!"
+    },
+    "OSMF": {
+      "name": "Fundació OpenStreetMap",
+      "description": "OSMF és una fundació sense ànim de lucre establerta al Regne Unit que dona suport al projecte OpenStreetMap"
+    },
+    "PHXGeo-twitter": {
+      "description": "Segueix-nos a Twitter a {url}"
+    },
+    "uk-london-wiki": {
+      "description": "Pàgina wiki {community}"
+    },
+    "ym-University-of-Victoria": {
+      "description": "Secció de YouthMappers a la University of Victoria"
+    },
+    "ym-Vassar-College": {
+      "description": "Secció de YouthMappers al Vassar College"
+    },
+    "ym-Western-Michigan-University": {
+      "description": "Secció de YouthMappers a la Western Michigan University"
+    },
+    "ym-Yarmouk-University": {
+      "name": "YouthMappers a la YU"
+    }
+  }
+}

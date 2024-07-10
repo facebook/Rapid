@@ -1,0 +1,357 @@
+{
+  "cy": {
+    "imagery": {
+      "Bedzin-PL-aerial_image": {
+        "name": "Będzin: Orthophotomap 2013 (delwedd o'r awyr)"
+      },
+      "Bedzin-PL-buildings": {
+        "name": "Będzin: Adeiladau"
+      },
+      "Bing": {
+        "description": "Lloeren ac delweddau o'r awyr.",
+        "name": "Delweddaeth Bing Maps"
+      },
+      "Bytom-2012": {
+        "name": "Bytom: Orthophotomap 2012 (delwedd o'r awyr)"
+      },
+      "Bytom-2014": {
+        "name": "Bytom: Fotoplan 2014 (delwedd o'r awyr)"
+      },
+      "Bytom-2016": {
+        "name": "Bytom: Orthophotomap 2016 (delwedd o'r awyr)"
+      },
+      "Bytom-2018": {
+        "name": "Bytom: Orthophotomap 2018 (delwedd o'r awyr)"
+      },
+      "Bytom-2021": {
+        "name": "Bytom: Orthophotomap 2021 (delwedd o'r awyr)"
+      },
+      "Bytom-buildings": {
+        "name": "Bytom: Adeiladau"
+      },
+      "Czestochowa-2011": {
+        "name": "Częstochowa: Orthophotomap 2011 (delwedd o'r awyr)"
+      },
+      "Czestochowa-2013": {
+        "name": "Częstochowa: Orthophotomap 2013 (delwedd o'r awyr)"
+      },
+      "Czestochowa-2014": {
+        "name": "Częstochowa: Orthophotomap 2014 (delwedd o'r awyr)"
+      },
+      "Czestochowa-2015": {
+        "name": "Częstochowa: Orthophotomap 2015 (delwedd o'r awyr)"
+      },
+      "Czestochowa-2016": {
+        "name": "Częstochowa: Orthophotomap 2016 (delwedd o'r awyr)"
+      },
+      "Czestochowa-2017": {
+        "name": "Częstochowa: Orthophotomap 2017 (delwedd o'r awyr)"
+      },
+      "Czestochowa-buildings": {
+        "name": "Częstochowa: Adeiladau"
+      },
+      "DV_DHMV_II_HILL_25cm": {
+        "name": "Digitaal Vlaanderen DHV II, cysgod bryniau amlgyfeiriadol 0,25 m"
+      },
+      "DV_DHMV_II_SVF_25cm": {
+        "name": "Digitaal Vlaanderen DHV II, ffactor Skyview 0,25 m"
+      },
+      "DV_OrthoPhoto": {
+        "name": "Digitaal Vlaanderen delweddau o'r awyr mwyaf diweddar"
+      },
+      "DV_OrthoPhoto_20132015_10cm": {
+        "name": "Digitaal Vlaanderen 2013-2015 delweddau o'r awyr 10cm"
+      },
+      "DV_OrthoPhoto_Preliminary": {
+        "name": "Digitaal Vlaanderen delweddau rhagarweiniol o'r awyr "
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu gan EOX IT Services GmbH (Yn cynnwys data addas Copernicus Sentinel 2017 & 2018)"
+        },
+        "name": "eox.at 2018 heb gymylau"
+      },
+      "EOXAT2019CLOUDLESS": {
+        "name": "eox.at 2019 heb gymylau"
+      },
+      "EOXAT2020CLOUDLESS": {
+        "name": "eox.at 2020 heb gymylau"
+      },
+      "EOXAT2021CLOUDLESS": {
+        "name": "eox.at 2021 heb gymylau"
+      },
+      "EOXAT2022CLOUDLESS": {
+        "name": "eox.at 2022 heb gymylau"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Telerau ac Adborth"
+        },
+        "description": "Esri - Delweddaeth Byd",
+        "name": "Esri - Delweddaeth Byd"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Telerau ac Adborth"
+        },
+        "description": "Delweddau o archif Esri a allai fod yn fwy clir a chywir na'r haen ragosodedig.",
+        "name": "Esri - Delweddaeth Beta (Eglur)"
+      },
+      "Geodatastyrelsen_Denmark": {
+        "name": "Delweddaeth SDFI"
+      },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "name": "Geoportal 2: Orthophotomap (delweddau archif) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "name": "Geoportal 2: Orthophotomap (delweddau o'r awyr mwyaf diweddar) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "name": "Geoportal 2: Orthophotomap (delweddau o'r awyr mwyaf diweddar) (WMTS)"
+      },
+      "Geoportal2-PL-telecommunications-cable_WMS": {
+        "description": "Usługa Krajowa Integracja Uzbrojenia Terenu yw gwasanaeth sy'n cyflwyno data defnydd tir sy'n dod yn uniongyrchol o unedau ar lefel swydd. Nid yw'r wasanaeth yn cynnwys data ond yr unedau sydd â gwasanaeth WMS â pharamedrau priodol, ac sydd wedi penderfynu cynnwys eu gwasanaeth WMS yn y gwasanaeth cyfunol KrajowaIntegracjaUzbrojeniaTerenu."
+      },
+      "Geoportal2-PL-water-pipe_WMS": {
+        "description": "Usługa Krajowa Integracja Uzbrojenia Terenu yw gwasanaeth sy'n cyflwyno data defnydd tir sy'n dod yn uniongyrchol o unedau ar lefel swydd. Nid yw'r wasanaeth yn cynnwys data ond yr unedau sydd â gwasanaeth WMS â pharamedrau priodol, ac sydd wedi penderfynu cynnwys eu gwasanaeth WMS yn y gwasanaeth cyfunol KrajowaIntegracjaUzbrojeniaTerenu."
+      },
+      "Gliwice-2003": {
+        "name": "Gliwice: Orthophotomap 2003 (delwedd o'r awyr)"
+      },
+      "Gliwice-2009": {
+        "name": "Gliwice: Orthophotomap 2009 (delwedd o'r awyr)"
+      },
+      "Gliwice-2013": {
+        "name": "Gliwice: Orthophotomap 2013 (delwedd o'r awyr)"
+      },
+      "Gliwice-2017": {
+        "name": "Gliwice: Orthophotomap 2017 (delwedd o'r awyr)"
+      },
+      "Gliwice-2018": {
+        "name": "Gliwice: Orthophotomap 2018 (delwedd o'r awyr)"
+      },
+      "Gliwice-2020": {
+        "name": "Gliwice: Orthophotomap 2020 (delwedd o'r awyr)"
+      },
+      "Gliwice-2021": {
+        "name": "Gliwice: Orthophotomap 2021 (delwedd o'r awyr)"
+      },
+      "Gliwice-buildings": {
+        "name": "Gliwice: Adeiladau"
+      },
+      "LocalAuthorities_RightsOfWay": {
+        "attribution": {
+          "text": "Yn cynnwys gwybodaeth sector cyhoeddus sydd wedi'i drwyddedu o dan Drwydded Llywodraeth Agored v3.0."
+        },
+        "name": "Hawliau Tramwy Cyhoeddus"
+      },
+      "Lodz-buildings": {
+        "name": "Łódź: Adeiladau"
+      },
+      "MAPNIK": {
+        "attribution": {
+          "text": "© Cyfranwyr OpenStreetMap, ODbL 1.0"
+        },
+        "description": "Yr haen OpenStreetMap diofyn.",
+        "name": "OpenStreetMap (Safonol)"
+      },
+      "Maaamet-Estonia_Cadastre": {
+        "name": "Maa-amet Map Cadastrol"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Telerau ac Adborth"
+        },
+        "name": "Lloeren Mapbox"
+      },
+      "OSMUK-Cadastral-Parcels": {
+        "attribution": {
+          "text": "Yn cynnwys gwybodaeth sector cyhoeddus sydd wedi'i drwyddedu o dan Drwydded Llywodraeth Agored v3.0."
+        },
+        "description": "Parseli cadastrol (cofrestr tir) ag aliniwyd yn berffaith ym Mhrydain Fawr",
+        "name": "OSMUK - Parseli Cadastrol"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, cyfranwyr OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Arolygydd OSM: Cyfeiriadau"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, cyfranwyr OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Arolygydd OSM: Geometreg"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, cyfranwyr OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Arolygydd OSM: Priffyrdd"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, cyfranwyr OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Arolygydd OSM: Ardal"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, cyfranwyr OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Arolygydd OSM: Ddiddordeb"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, cyfranwyr OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Arolygydd OSM: Llwybro"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, cyfranwyr OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Arolygydd OSM: Tagio"
+      },
+      "Siemianowice_Slaskie-buildings": {
+        "name": "Siemianowice Śląskie: Adeiladau"
+      },
+      "US-TIGER-Roads-2018": {
+        "name": "Ffyrdd TIGER 2018"
+      },
+      "US-TIGER-Roads-2019": {
+        "name": "Ffyrdd TIGER 2019"
+      },
+      "US-TIGER-Roads-2020": {
+        "name": "Ffyrdd TIGER 2020"
+      },
+      "US-TIGER-Roads-2021": {
+        "name": "Ffyrdd TIGER 2021"
+      },
+      "US-TIGER-Roads-2022": {
+        "name": "Ffyrdd TIGER 2022"
+      },
+      "US-TIGER-Roads-2023": {
+        "name": "Ffyrdd TIGER 2023"
+      },
+      "UrbisAdmFRNL": {
+        "name": "UrbisAdm FR / NL"
+      },
+      "Zabrze-2011": {
+        "name": "Zabrze: Orthophotomap 2011 (delwedd o'r awyr)"
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "name": "Troshaen basemap.at"
+      },
+      "debicki-buildings": {
+        "name": "Powiat dębicki: Adeiladau"
+      },
+      "lancucki-buildings": {
+        "name": "Powiat łańcucki: Adeiladau"
+      },
+      "lubaczowski-buildings": {
+        "name": "Powiat lubaczowski: Adeiladau"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Telerau ac Adborth"
+        },
+        "description": "Dangos nodweddion allweddol i'ch helpu i gyfeirio.",
+        "name": "Troshaen Lleoli"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© Cyfranwyr OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OpenPT Map (troshaen)"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© Cyfranwyr OpenStreetMap"
+        },
+        "name": "Arllwybrau GPS OpenStreetMap"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© Cyfranwyr OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (Almaenaidd)"
+      },
+      "poznan-ortofotomapa2014": {
+        "name": "Poznań: Orthophotomap 2014 (delwedd o'r awyr)"
+      },
+      "poznan-ortofotomapa2016": {
+        "name": "Poznań: Orthophotomap 2016 (delwedd o'r awyr)"
+      },
+      "poznan-ortofotomapaBiezaca": {
+        "name": "Poznań: Orthophotomap Bieżąca (delwedd o'r awyr)"
+      },
+      "przemysl-aerial": {
+        "name": "Przemyśl: Ortophotomap (delwedd o'r awyr)"
+      },
+      "przemysl-buildings": {
+        "name": "Przemyśl: Adeiladau"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, Data cyfranwyr ©OpenStreetMap"
+        },
+        "name": "QA Dim Cyfeiriad"
+      },
+      "route500": {
+        "attribution": {
+          "text": "Teiliau © cquest@Openstreetmap Ffrainc, data © IGN, LO/OL"
+        }
+      },
+      "rzeszowski-aerial": {
+        "name": "Powiat rzeszowski: Orthophotomap (delwedd o'r awyr)"
+      },
+      "rzeszowski-buildings": {
+        "name": "Powiat rzeszowski: Adeiladau"
+      },
+      "scb-industrial": {
+        "name": "SCB - Ardaloedd Diwydiannol"
+      },
+      "scb-urban": {
+        "name": "SCB - Ardaloedd Dinesig"
+      },
+      "scb-vacation": {
+        "name": "SCB - Ardaloedd Tai Haf"
+      },
+      "skolverket-schools": {
+        "description": "Ysgolion Sweden.",
+        "name": "Skolverket - Ysgolion"
+      },
+      "sropczyce-buildings": {
+        "name": "Powiat ropczycko-sędziszowski: Adeiladau"
+      },
+      "stalowowolski-buildings": {
+        "name": "Powiat stalowowolski: Adeiladau"
+      },
+      "svk-electricity-network": {
+        "name": "SVK - Rhwydwaith Trydan"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Mapiau © Thunderforest, Data © Cyfranwyr OpenStreetMap"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Mapiau © Thunderforest, Data © Cyfranwyr OpenStreetMap"
+        }
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Mapiau © Thunderforest, Data © Cyfranwyr OpenStreetMap"
+        }
+      },
+      "wroclaw-orto2015": {
+        "name": "Wrocław: Orthophotomap 2015 (delwedd o'r awyr)"
+      },
+      "wroclaw-orto2018": {
+        "name": "Wrocław: Orthophotomap 2018 (delwedd o'r awyr)"
+      }
+    }
+  }
+}

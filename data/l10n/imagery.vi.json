@@ -1,0 +1,824 @@
+{
+  "vi": {
+    "imagery": {
+      "Bedzin-PL-aerial_image": {
+        "attribution": {
+          "text": "Giám đốc Huyện tại Będzin"
+        },
+        "name": "Będzin: bản đồ hình trực giao 2013 (không ảnh)"
+      },
+      "Bedzin-PL-buildings": {
+        "attribution": {
+          "text": "Giám đốc Huyện tại Będzin"
+        },
+        "name": "Będzin: Tòa nhà"
+      },
+      "Bing": {
+        "description": "Hình ảnh vệ tinh và không ảnh.",
+        "name": "Bing Bản đồ Không ảnh"
+      },
+      "Bytom-2012": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Bytom"
+        },
+        "name": "Bytom: bản đồ hình trực giao 2012 (không ảnh)"
+      },
+      "Bytom-2014": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Bytom"
+        },
+        "name": "Bytom: Fotoplan 2014 (không ảnh)"
+      },
+      "Bytom-buildings": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Bytom"
+        },
+        "name": "Bytom: Tòa nhà"
+      },
+      "Czestochowa-2011": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Częstochowa"
+        },
+        "name": "Częstochowa: bản đồ hình trực giao 2011 (không ảnh)"
+      },
+      "Czestochowa-2013": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Częstochowa"
+        },
+        "name": "Częstochowa: bản đồ hình trực giao 2013 (không ảnh)"
+      },
+      "Czestochowa-2014": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Częstochowa"
+        },
+        "name": "Częstochowa: bản đồ hình trực giao 2014 (không ảnh)"
+      },
+      "Czestochowa-2015": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Częstochowa"
+        },
+        "name": "Częstochowa: bản đồ hình trực giao 2015 (không ảnh)"
+      },
+      "Czestochowa-2016": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Częstochowa"
+        },
+        "name": "Częstochowa: bản đồ hình trực giao 2016 (không ảnh)"
+      },
+      "Czestochowa-2017": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Częstochowa"
+        },
+        "name": "Częstochowa: bản đồ hình trực giao 2017 (không ảnh)"
+      },
+      "Czestochowa-buildings": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Częstochowa"
+        },
+        "name": "Częstochowa: Tòa nhà"
+      },
+      "Dourados_Ortofotos": {
+        "attribution": {
+          "text": "Tòa thị chánh Dourados – GeoDourados"
+        },
+        "description": "Không hình độ phân giải cao Dourados (2018) và vài khu phố (2020).",
+        "name": "Dourados Hình trực giao"
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 không có mây – https://s2maps.eu bởi EOX IT Services GmbH (Chứa dữ liệu Copernicus Sentinel đã sửa đổi 2017 & 2018)"
+        },
+        "description": "Hình ảnh vệ tinh Sentinel được xử lý sau",
+        "name": "eox.at 2018 không có mây"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Điều khoản & Phản hồi"
+        },
+        "description": "Esri Hình ảnh Thế giới",
+        "name": "Esri Hình ảnh Thế giới"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Điều khoản & Phản hồi"
+        },
+        "description": "Hình ảnh lưu trữ Esri có thể rõ hơn và chính xác hơn lớp mặc định.",
+        "name": "Esri Hình ảnh Thế giới (Clarity) Beta"
+      },
+      "Frankfurt-am-Main-2019": {
+        "attribution": {
+          "text": "Văn phòng Khảo sát Thành phố Frankfurt am Main"
+        },
+        "description": "Không ảnh Frankfurt am Main được chụp ngày 16 tháng 4 năm 2019",
+        "name": "Không ảnh Frankfurt am Main 2019"
+      },
+      "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        },
+        "description": "Bản đồ hình trực giao có độ phân giải 10 cm trở lên. Dữ liệu được sắp xếp theo độ phân giải rồi theo độ tươi, ví dụ mảng chụp năm 2012 có độ phân giải 8 cm sẽ phủ mảng chụp năm 2019 có độ phân giải 10 cm.",
+        "name": "Geoportal 2: Bản đồ Hình trực giao Độ phân giải cao (WMS không ảnh)"
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        },
+        "description": "WMS Đánh số Địa chỉ Hợp nhất Quốc gia để tải về các hình ảnh bản đồ dựa vào dữ liệu không gian từ các hồ sơ đường sá và địa chỉ của Sổ bộ Biên giới Quốc gia.",
+        "name": "Geoportal 2: Tên đường"
+      },
+      "Geoportal2-PL-addres_points_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        },
+        "description": "WMS Đánh số Địa chỉ Hợp nhất Quốc gia để tải về các hình ảnh bản đồ dựa vào dữ liệu không gian từ các hồ sơ đường sá và địa chỉ của Sổ bộ Biên giới Quốc gia.",
+        "name": "Geoportal 2: Điểm địa chỉ"
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        },
+        "name": "Geoportal 2: Bản đồ Hình trực giao (không ảnh mới nhất) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        },
+        "name": "Geoportal 2: Bản đồ Hình trực giao (không ảnh mới nhất) (WMTS)"
+      },
+      "Geoportal2-PL-buildings_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        },
+        "name": "Geoportal 2: Hồ sơ tòa nhà WMS"
+      },
+      "Geoportal2-PL-plot_boundaries_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        },
+        "name": "Geoportal 2: Miếng đất Granice"
+      },
+      "Geoportal2-PL-prng": {
+        "attribution": {
+          "text": "Trung tâm Tài liệu Trắc địa và Bản đồ"
+        },
+        "name": "Geoportal 2: Cơ sở dữ liệu Địa danh Ba Lan"
+      },
+      "Gliwice-2013": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Gliwice"
+        },
+        "name": "Gliwice: bản đồ hình trực giao 2013 (không ảnh)"
+      },
+      "Gliwice-2017": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Gliwice"
+        },
+        "name": "Gliwice: bản đồ hình trực giao 2017 (không ảnh)"
+      },
+      "Gliwice-2018": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Gliwice"
+        },
+        "name": "Gliwice: bản đồ hình trực giao 2018 (không ảnh)"
+      },
+      "Gliwice-2020": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Gliwice"
+        },
+        "name": "Gliwice: bản đồ hình trực giao 2020 (không ảnh)"
+      },
+      "Gliwice-buildings": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Gliwice"
+        },
+        "name": "Gliwice: Tòa nhà"
+      },
+      "LSA-ATKIS_BU": {
+        "description": "Hình dạng các tòa nhà tại Sachsen-Anhalt"
+      },
+      "LSA-DOP20": {
+        "description": "Không ảnh tại bang Sachsen-Anhalt, độ phân giải 20 cm"
+      },
+      "LSA-DVG": {
+        "description": "Các biên giới hành chính liên bang, bang, huyện, xã, và phần xã dưới dạng vectơ."
+      },
+      "LocalAuthorities_RightsOfWay": {
+        "attribution": {
+          "text": "Chứa thông tin khu vực công được phát hành theo Giấy phép Chính phủ Mở v3.0."
+        },
+        "description": "Dữ liệu lối ra vào công cộng do chính quyền địa phương phát hành và rowmaps.com sưu tập",
+        "name": "Lối Ra vào Công cộng"
+      },
+      "Lodz-2015": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Łódź"
+        },
+        "name": "Łódź: bản đồ hình trực giao 2015 (không ảnh)"
+      },
+      "Lodz-2017": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Łódź"
+        },
+        "name": "Łódź: bản đồ hình trực giao 2017 (không ảnh)"
+      },
+      "Lodz-buildings": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Łódź"
+        },
+        "name": "Łódź: Tòa nhà"
+      },
+      "MAPNIK": {
+        "attribution": {
+          "text": "© những người đóng góp vào OpenStreetMap, ODbL 1.0"
+        },
+        "description": "Lớp OpenStreetMap mặc định.",
+        "name": "OpenStreetMap (Chuẩn)"
+      },
+      "Maaamet-Estonia_Cadastre": {
+        "attribution": {
+          "text": "Cơ sở Hình trực giao Địa chính Ban Đất đai"
+        },
+        "name": "Bản đồ Địa chính Ban Đất đai"
+      },
+      "Maaamet-Estonia_Ortho": {
+        "attribution": {
+          "text": "Hình trực giao Ban Đất đai"
+        },
+        "name": "Trực giao Ban Đất đai (WMS)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Điều khoản & Phản hồi"
+        },
+        "description": "Bộ mảnh raster của Mapbox chứa lớp hình ảnh chụp từ vệ tinh và trên không trung",
+        "name": "Mapbox Vệ tinh"
+      },
+      "OSIP_1ft": {
+        "attribution": {
+          "text": "Chương trình Hình ảnh Toàn tiểu bang Ohio"
+        },
+        "description": "Hình ảnh trực giao tất cả 88 quận do Chương trình Hình ảnh Toàn tiểu bang Ohio II (OSIP II) chụp với độ phân giải 1 bộ từ 2011 đến 2014."
+      },
+      "OSIP_6in": {
+        "attribution": {
+          "text": "Chương trình Hình ảnh Toàn tiểu bang Ohio"
+        },
+        "description": "Hình ảnh trực giao 40 quận do Chương trình Hình ảnh Toàn tiểu bang Ohio III (OSIP III) chụp với độ phân giải 6 inch từ 2017 đến 2018, cộng thêm hình ảnh 16 quận từ OSIP I và OSIP II từ 2010 đến 2014.",
+        "name": "Chương trình Hình ảnh Toàn tiểu bang Ohio 6 Inch"
+      },
+      "OSMUK-Cadastral-Parcels": {
+        "attribution": {
+          "text": "Chứa thông tin khu vực công được phát hành theo Giấy phép Chính phủ Mở v3.0."
+        },
+        "description": "Mảnh đất địa chính tại đảo Anh được chỉnh lại hoàn hảo",
+        "name": "OSM Anh Mảnh đất Địa chính"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, những người đóng góp vào OpenStreetMap, CC BY-SA"
+        },
+        "name": "Trình kiểm tra OSM: Địa chỉ"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, những người đóng góp vào OpenStreetMap, CC BY-SA"
+        },
+        "name": "Trình kiểm tra OSM: Hình dạng"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, những người đóng góp vào OpenStreetMap, CC BY-SA"
+        },
+        "name": "Trình kiểm tra OSM: Đường sá"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, những người đóng góp vào OpenStreetMap, CC BY-SA"
+        },
+        "name": "Trình kiểm tra OSM: Vùng"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, những người đóng góp vào OpenStreetMap, CC BY-SA"
+        },
+        "name": "Trình kiểm tra OSM: Địa điểm"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, những người đóng góp vào OpenStreetMap, CC BY-SA"
+        },
+        "name": "Trình kiểm tra OSM: Chỉ đường"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, những người đóng góp vào OpenStreetMap, CC BY-SA"
+        },
+        "name": "Trình kiểm tra OSM: Thẻ"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "SPW Wallonie không ảnh mới nhất"
+      },
+      "SPW_PICC": {
+        "name": "SPW hình ảnh số PICC Wallonie"
+      },
+      "Siemianowice_Slaskie-aerial_image": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Siemianowice Śląskie"
+        },
+        "name": "Siemianowice Śląskie: Bản đồ Hình trực giao (không ảnh)"
+      },
+      "Siemianowice_Slaskie-buildings": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Siemianowice Śląskie"
+        },
+        "name": "Siemianowice Śląskie: Tòa nhà"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Màu vàng là dữ liệu bản đồ thuộc phạm vi công cộng do Cục Thống kê Dân số Hoa Kỳ cung cấp. Màu đỏ là dữ liệu chưa xuất hiện trong OpenStreetMap.",
+        "name": "TIGER Đường sá 2018"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "Màu vàng là dữ liệu bản đồ thuộc phạm vi công cộng do Cục Thống kê Dân số Hoa Kỳ cung cấp. Màu đỏ là dữ liệu chưa xuất hiện trong OpenStreetMap.",
+        "name": "TIGER Đường sá 2019"
+      },
+      "US-TIGER-Roads-2020": {
+        "description": "Màu vàng là dữ liệu bản đồ thuộc phạm vi công cộng do Cục Thống kê Dân số Hoa Kỳ cung cấp. Màu đỏ là dữ liệu chưa xuất hiện trong OpenStreetMap.",
+        "name": "TIGER Đường sá 2020"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Màu vàng là dữ liệu bản đồ thuộc phạm vi công cộng do Cục Thống kê Dân số Hoa Kỳ cung cấp. Màu đỏ là dữ liệu chưa xuất hiện trong OpenStreetMap.",
+        "name": "TIGER Đường sá 2021"
+      },
+      "USDA-NAIP": {
+        "attribution": {
+          "text": "Bộ Nông nghiệp Hoa Kỳ"
+        },
+        "name": "Chương trình Hình ảnh Nông nghiệp Quốc gia"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Đường sá: vỏ xanh là ngõ; vỏ nâu là đường mòn.\nMặt đường: sỏi đá được tô màu nâu nhạt; nhựa là màu đen, mặt lát là màu xám; đất là màu trắng; bê tông là màu xanh lam; cỏ là màu xanh lá cây.\nTùy mùa có vạch màu trắng.",
+        "name": "Lớp phủ Đường Lâm nghiệp Hoa Kỳ"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "UrbIS®© Bruxelles thực hiện; CIRB phân phát và giữ bản quyền"
+        },
+        "name": "CIRB/CIBG không ảnh mới nhất"
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "UrbIS®© Bruxelles thực hiện; CIRB phân phát và giữ bản quyền"
+        },
+        "name": "UrbIS trực giao 2016"
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "UrbIS®© Bruxelles thực hiện; CIRB phân phát và giữ bản quyền"
+        },
+        "name": "UrbIS trực giao 2017"
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "UrbIS®© Bruxelles thực hiện; CIRB phân phát và giữ bản quyền"
+        },
+        "name": "UrbIS trực giao 2018"
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "UrbIS®© Bruxelles thực hiện; CIRB phân phát và giữ bản quyền"
+        },
+        "name": "UrbIS trực giao 2019"
+      },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "UrbIS®© Bruxelles thực hiện; CIRB phân phát và giữ bản quyền"
+        },
+        "name": "UrbIS trực giao 2020"
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "UrbIS®© Bruxelles thực hiện; CIRB phân phát và giữ bản quyền"
+        },
+        "name": "UrbisAdm Pháp"
+      },
+      "UrbisAdmFRNL": {
+        "attribution": {
+          "text": "UrbIS®© Bruxelles thực hiện; CIRB phân phát và giữ bản quyền"
+        },
+        "name": "UrbisAdm Pháp/Hà Lan"
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "UrbIS®© Bruxelles thực hiện; CIRB phân phát và giữ bản quyền"
+        },
+        "name": "UrbisAdm Hà Lan"
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, những người đóng góp vào OpenStreetMap, CC BY-SA 3.0"
+        },
+        "name": "Waymarked Trails: Xe đạp"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, những người đóng góp vào OpenStreetMap, CC BY-SA 3.0"
+        },
+        "name": "Waymarked Trails: Đường Đi bộ Dài"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, những người đóng góp vào OpenStreetMap, CC BY-SA 3.0"
+        },
+        "name": "Waymarked Trails: Xe đạp Leo núi"
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, những người đóng góp vào OpenStreetMap, CC BY-SA 3.0"
+        },
+        "name": "Waymarked Trails: Trượt băng"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, những người đóng góp vào OpenStreetMap, CC BY-SA 3.0"
+        },
+        "name": "Waymarked Trails: Thể thao Mùa đông"
+      },
+      "Zabrze-2011": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Zabrze"
+        },
+        "name": "Zabrze: bản đồ hình trực giao 2011 (không ảnh)"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "Bản đồ gốc của Áo dựa trên dữ liệu chính phủ."
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Lớp hình ảnh trực giao do basemap.at cung cấp. “Kế tiếp” hình ảnh geoimage.at.",
+        "name": "Hình ảnh trực giao basemap.at"
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "description": "Lớp phủ chú thích do basemap.at cung cấp.",
+        "name": "basemap.at Lớp phủ"
+      },
+      "cyclosm": {
+        "attribution": {
+          "text": "Kết xuất: CyclOSM (do OpenStreetMap Pháp phục vụ), dữ liệu bản đồ © những người đóng góp vào OpenStreetMap"
+        },
+        "description": "CyclOSM là kiểu bản đồ được thiết kế dành cho người đi xe đạp. Nó sử dụng dữ liệu OpenStreetMap để kết xuất bản đồ xe đạp đẹp đẽ tiện ích!"
+      },
+      "debicki-buildings": {
+        "attribution": {
+          "text": "Huyện Dębicki"
+        },
+        "name": "Huyện Dębicki: Tòa nhà"
+      },
+      "eufar-balaton": {
+        "attribution": {
+          "text": "Hình ảnh trực giao EUFAR Balaton 2010"
+        },
+        "description": "Hình chụp gắn thẻ địa lý năm 1940 do Viện nghiên cứu hồ Balaton cung cấp.",
+        "name": "EUFAR hình ảnh trực giao Balaton"
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© đô thị Göteborg, CC0"
+        },
+        "description": "Bản đồ Göteborg tả thành phố nhìn chung. Nó bao gồm thông tin tổng quát về đất đai, viễn thông, thủy văn, tòa nhà, số nhà, tên đường, phân cấp hành chính, và các nhãn định hướng khác.",
+        "name": "Bản đồ Thành phố Göteborg"
+      },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© đô thị Göteborg, CC0"
+        },
+        "description": "Dịch vụ bản đồ Web hiển thị hình ảnh bóng đồi và dốc theo mô hình độ cao 2017 của Thành phố Göteborg. Có độ phân giải 0,5 mét trên điểm ảnh.",
+        "name": "Hình bóng đồi Göteborg"
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© đô thị Göteborg, CC0"
+        },
+        "description": "Hình ảnh trực giao đô thị Gothenburg",
+        "name": "Hình trực giao Göteborg 2015"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© đô thị Göteborg, CC0"
+        },
+        "description": "Hình ảnh trực giao đô thị Göteborg",
+        "name": "Hình trực giao Göteborg 2017"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© đô thị Göteborg, CC0"
+        },
+        "description": "Hình ảnh trực giao đô thị Göteborg",
+        "name": "Hình trực giao Göteborg 2019"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "GSI Nhật Bản"
+        },
+        "description": "Hình ảnh trực giao GSI Nhật Bản từ không trung. Không hoàn toàn chiếu trực giao nhưng đúng thời hơn một tí hoặc có mức phủ đất khác với hình ảnh trực giao GSI.",
+        "name": "GSI Nhật Bản hình ảnh trên không"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "attribution": {
+          "text": "Hình ảnh liền mạch Viện Địa lý Quốc gia Nhật Bản"
+        },
+        "description": "Hình ảnh liền mạch Viện Địa lý Quốc gia Nhật Bản (GSI). Bộ sưu tập các hình ảnh mới nhất của GSI trong số nguồn hình ảnh trực giao, trên không, sau thảm họa, và những thứ khác.",
+        "name": "GSI Nhật Bản hình ảnh liền mạch"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "GIS Nhật Bản"
+        },
+        "description": "Bản đồ chuẩn GIS Nhật Bản. Có phạm vi rộng rãi.",
+        "name": "GIS Nhật Bản Bản đồ Chuẩn"
+      },
+      "kalmar-orto-2014": {
+        "attribution": {
+          "text": "© đô thị Kalmar"
+        },
+        "description": "Hình ảnh trực giao bờ biển phía bắc đô thị Kalmar năm 2014",
+        "name": "Hình trực giao Kalmar phía Bắc năm 2014"
+      },
+      "kalmar-orto-2016": {
+        "attribution": {
+          "text": "© đô thị Kalmar"
+        },
+        "description": "Hình ảnh trực giao bờ biển phía nam đô thị Kalmar năm 2016",
+        "name": "Hình trực giao Kalmar phía Nam năm 2016"
+      },
+      "kalmar-orto-2018": {
+        "attribution": {
+          "text": "© đô thị Kalmar"
+        },
+        "description": "Hình ảnh trực giao các vùng đô thị của đô thị Kalmar năm 2018",
+        "name": "Hình trực giao vùng đô thị Kalmar 2018"
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© đô thị Kalmar"
+        },
+        "description": "Hình ảnh trực giao các vùng đô thị của đô thị Kalmar năm 2020",
+        "name": "Hình trực giao vùng đô thị Kalmar 2020"
+      },
+      "kartverket-bygninger": {
+        "description": "Các tòa nhà Na Uy của INSPIRE.",
+        "name": "Kartverket Lớp phủ Tòa nhà"
+      },
+      "kelkkareitit": {
+        "description": "Đường xe máy trượt tuyết Kelkkareitit.fi từ OSM (Bắc Âu)",
+        "name": "Lớp phủ xe máy trượt tuyết Bắc Âu"
+      },
+      "lancucki-buildings": {
+        "attribution": {
+          "text": "Huyện Łańcucki"
+        },
+        "name": "Huyện Łańcucki: Tòa nhà"
+      },
+      "lantmateriet-orto1960": {
+        "description": "Hỗn hợp các hình ảnh trực giao Thụy Điển vào thời kỳ 1955–1965, có thể bao gồm các hình ảnh cũ hơn hoặc mới hơn.",
+        "name": "Lantmäteriet Hình ảnh Trực giao Lịch sử 1960"
+      },
+      "lantmateriet-orto1975": {
+        "description": "Hỗn hợp các hình ảnh trực giao Thụy Điển vào thời kỳ 1970–1980, sẽ được mở rộng.",
+        "name": "Lantmäteriet Hình ảnh Trực giao Lịch sử 1975"
+      },
+      "lantmateriet-topowebb": {
+        "description": "Bản đồ địa hình Thụy Điển tỷ lệ 1:50.000",
+        "name": "Lantmäteriet Bản đồ Địa hình"
+      },
+      "linkoping-orto": {
+        "attribution": {
+          "text": "© đô thị Linköping"
+        },
+        "description": "Hình ảnh trực giao từ đô thị Linköping năm 2010 là dữ liệu mở",
+        "name": "Hình ảnh trực giao Linköping"
+      },
+      "lubaczowski-buildings": {
+        "attribution": {
+          "text": "Huyện Lubaczowski"
+        },
+        "name": "Huyện Lubaczowski: Tòa nhà"
+      },
+      "maaamet<TX_DOT>ee-cir_ngr": {
+        "attribution": {
+          "text": "Hình trực giao Lâm nghiệp Ban Đất đai"
+        },
+        "name": "Lâm nghiệp Ban Đất đai"
+      },
+      "maaamet<TX_DOT>ee-orto": {
+        "attribution": {
+          "text": "Hình trực giao Ban Đất đai"
+        },
+        "name": "Trực giao Ban Đất đai (TMS)"
+      },
+      "maaamet<TX_DOT>ee-pohi_vr2": {
+        "attribution": {
+          "text": "Bản đồ gốc Ban Đất đai"
+        },
+        "name": "Bản đồ gốc Ban Đất đai"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Điều khoản & Phản hồi"
+        },
+        "description": "Hiển thị các mốc để giúp bạn định hướng.",
+        "name": "Lớp phủ Định hướng"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© những người đóng góp vào OpenStreetMap, CC BY-SA"
+        },
+        "name": "Bản đồ OpenPT (lớp phủ)"
+      },
+      "openrailwaymap": {
+        "attribution": {
+          "text": "Kết xuất: OpenRailwayMap, dữ liệu bản đồ © những người đóng góp vào OpenStreetMap"
+        },
+        "description": "Lớp hình phủ cơ sở hạ tầng đường sắt theo dữ liệu OpenStreetMap"
+      },
+      "openrailwaymap-maxspeeds": {
+        "attribution": {
+          "text": "Kết xuất: OpenRailwayMap, dữ liệu bản đồ © những người đóng góp vào OpenStreetMap"
+        },
+        "description": "Lớp hình phủ các tốc độ tối đa trên đường sắt theo dữ liệu OpenStreetMap",
+        "name": "OpenRailwayMap Tốc độ Tối đa"
+      },
+      "openrailwaymap-signalling": {
+        "attribution": {
+          "text": "Kết xuất: OpenRailwayMap, dữ liệu bản đồ © những người đóng góp vào OpenStreetMap"
+        },
+        "description": "Lớp hình phủ đèn báo trên đường sắt theo dữ liệu OpenStreetMap",
+        "name": "OpenRailwayMap Đèn báo"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© những người đóng góp vào OpenStreetMap"
+        },
+        "description": "Tuyến GPS công khai được tải lên OpenStreetMap",
+        "name": "Tuyến GPS OpenStreetMap"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© những người đóng góp vào OpenStreetMap, CC BY-SA"
+        },
+        "name": "OpenStreetMap (Kiểu Đức)"
+      },
+      "poznan-ortofotomapa2014": {
+        "attribution": {
+          "text": "Ban Trắc địa và Địa chính Thành phố GEOPOZ"
+        },
+        "name": "Poznań: bản đồ hình trực giao 2014 (không ảnh)"
+      },
+      "poznan-ortofotomapa2016": {
+        "attribution": {
+          "text": "Ban Trắc địa và Địa chính Thành phố GEOPOZ"
+        },
+        "name": "Poznań: bản đồ hình trực giao 2016 (không ảnh)"
+      },
+      "poznan-ortofotomapaBiezaca": {
+        "attribution": {
+          "text": "Ban Trắc địa và Địa chính Thành phố GEOPOZ"
+        },
+        "name": "Poznań: bản đồ hình trực giao hiện tại (không ảnh)"
+      },
+      "przemysl-aerial": {
+        "attribution": {
+          "text": "Thị trấn Przemyśl"
+        },
+        "name": "Przemyśl: Bản đồ Hình trực giao (không ảnh)"
+      },
+      "przemysl-buildings": {
+        "attribution": {
+          "text": "Thị trấn Przemyśl"
+        },
+        "name": "Przemyśl: Tòa nhà"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, Dữ liệu © những người đóng góp vào OpenStreetMap"
+        },
+        "name": "Bảo đảm Chất lượng: Không Địa chỉ"
+      },
+      "rzeszowski-aerial": {
+        "attribution": {
+          "text": "Huyện Rzeszowski"
+        },
+        "name": "Huyện Rzeszowski: Bản đồ Hình trực giao (không ảnh)"
+      },
+      "rzeszowski-buildings": {
+        "attribution": {
+          "text": "Huyện Rzeszowski"
+        },
+        "name": "Huyện Rzeszowski: Tòa nhà"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Hình bản đồ: skobbler Dữ liệu bản đồ: những người đóng góp vào OpenStreetMap"
+        }
+      },
+      "skoterleder": {
+        "description": "Đường xe máy trượt tuyết",
+        "name": "Bản đồ xe máy trượt tuyết Thụy Điển"
+      },
+      "sropczyce-buildings": {
+        "attribution": {
+          "text": "Huyện Ropczycko-Sędziszowski"
+        },
+        "name": "Huyện Ropczycko-Sędziszowski: Tòa nhà"
+      },
+      "stalowowolski-buildings": {
+        "attribution": {
+          "text": "Huyện Stalowowolski"
+        },
+        "name": "Huyện Stalowowolski: Tòa nhà"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "Hình bản đồ do Stamen Design cung cấp dưới CC BY 3.0. Dữ liệu do OpenStreetMap cung cấp dưới ODbL."
+        },
+        "name": "Stamen Địa hình"
+      },
+      "stockholm-orto": {
+        "attribution": {
+          "text": "© đô thị Stockholm, CC0"
+        },
+        "description": "Hình ảnh trực giao từ đô thị Stockholm năm 2018 được phát hành theo CC0",
+        "name": "Hình trực giao Stockholm"
+      },
+      "susono_shizuoka_jp_orthophoto": {
+        "attribution": {
+          "text": "Hình trực giao thành phố Susono"
+        },
+        "description": "Không ảnh do thành phố Susono phát hành như dữ liệu mở.",
+        "name": "Hình trực giao thành phố Susono"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Bản đồ © Thunderforest, dữ liệu © những người đóng góp vào OpenStreetMap"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Bản đồ © Thunderforest, dữ liệu © những người đóng góp vào OpenStreetMap"
+        },
+        "name": "Thunderforest Phong cảnh"
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Bản đồ © Thunderforest, dữ liệu © những người đóng góp vào OpenStreetMap"
+        },
+        "name": "Thunderforest Ngoài trời"
+      },
+      "trafikverket-baninfo": {
+        "attribution": {
+          "text": "© Bộ Giao thông Thụy Điển, CC0"
+        },
+        "description": "Hệ thống đường sắt Thụy Điển có cả đường tránh",
+        "name": "Hệ thống Đường sắt Bộ Giao thông Thụy Điển"
+      },
+      "trafikverket-baninfo-option": {
+        "attribution": {
+          "text": "© Bộ Giao thông Thụy Điển, CC0"
+        },
+        "description": "Hệ thống đường sắt Thụy Điển có vài lớp bản đồ để lựa chọn",
+        "name": "Hệ thống Đường sắt Bộ Giao thông Thụy Điển có tùy chọn"
+      },
+      "trafikverket-vagnat": {
+        "attribution": {
+          "text": "© Bộ Giao thông Thụy Điển, CC0"
+        },
+        "description": "Hệ thống Đường bộ NVDB Thụy Điển",
+        "name": "Hệ thống Đường bộ Bộ Giao thông Thụy Điển"
+      },
+      "trafikverket-vagnat-extra": {
+        "attribution": {
+          "text": "© Bộ Giao thông Thụy Điển, CC0"
+        },
+        "description": "Chi tiết bổ sung từ NVDB Thụy Điển: số đường, thiết bị điều hòa giao thông, trạm dừng nghỉ, trạm xe buýt, cầu, đường hầm, camera giám sát tốc độ",
+        "name": "Hệ thống Đường bộ Bộ Giao thông Thụy Điển bổ sung"
+      },
+      "trafikverket-vagnat-option": {
+        "attribution": {
+          "text": "© Bộ Giao thông Thụy Điển, CC0"
+        },
+        "description": "Hệ thống đường bộ Thụy Điển có vài lớp bản đồ để lựa chọn",
+        "name": "Hệ thống Đường bộ Bộ Giao thông Thụy Điển có tùy chọn"
+      },
+      "wroclaw-orto2015": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Wrocław"
+        },
+        "name": "Wrocław: bản đồ hình trực giao 2015 (không ảnh)"
+      },
+      "wroclaw-orto2018": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Wrocław"
+        },
+        "name": "Wrocław: bản đồ hình trực giao 2018 (không ảnh)"
+      }
+    }
+  }
+}

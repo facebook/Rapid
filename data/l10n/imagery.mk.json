@@ -1,0 +1,409 @@
+{
+  "mk": {
+    "imagery": {
+      "Bing": {
+        "description": "Сателитски и воздушни снимки"
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 безоблачно — https://s2maps.eu од EOX IT Services GmbH (содржи податоци од Copernicus Sentinel 2017 и 2018)"
+        },
+        "description": "Дообработени сателитски снимки од Sentinel.",
+        "name": "eox.at 2018 безоблачно"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Услови и мислења"
+        },
+        "name": "Светски снимки на Esri"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Услови и мислења"
+        },
+        "description": "Архивски снимки на Esri кои може да се појасни и поточни од вообичаениот слој.",
+        "name": "Светски снимки на Esri (Clarity) Бета"
+      },
+      "MAPNIK": {
+        "description": "Вообичаениот слој на OpenStreetMap.",
+        "name": "OpenStreetMap (стандардна)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Услови и мислења"
+        },
+        "name": "Mapbox Сателитски"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, учесници на OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM-инспектор: Адреси"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, учесници на OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM-инспектор: Геометрија"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, учесници на OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM-инспектор: Патишта"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, учесници на OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM-инспектор: Подрачје"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, учесници на OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM-инспектор: Места"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, учесници на OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM-инспектор: Упатување"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, учесници на OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM-инспектор: Означување"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "Најскорешни воздушни снимки од Јавната служба на Валонија (SPW )"
+      },
+      "SPW_PICC": {
+        "name": "Бројчени снимки PICC од Јавната служба на Валонија (SPW )"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Жолто = Картографски податоци од пописот на САД во јавна сопственост. Црвено = Податоци кои не е присутни на OpenStreetMap",
+        "name": "TIGER Патишта 2018"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "Жолто = Картографски податоци од пописот на САД во јавна сопственост. Црвено = Податоци кои не е присутни на OpenStreetMap",
+        "name": "TIGER Патишта 2019"
+      },
+      "USDA-NAIP": {
+        "name": "Национална програма за земјоделски снимки"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Пат: Зелена обраба = некласификувано. Кафеава обраба = козја патека. Површина: Чакал = светлокафеава полнетица, Асфалт = црно, поплочено = сиво, земја = бело, бетон = сино, трева = зелено. Сезонски = бели пруги",
+        "name": "Облога за шумски патишта на САД"
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "Остварено преку UrbIS®© на Брисел — Расподелба и авторски права CIRB"
+        },
+        "name": "UrbIS-Орто 2016"
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "Остварено преку UrbIS®© на Брисел — Расподелба и авторски права CIRB"
+        },
+        "name": "UrbIS-Орто 2017"
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "Остварено преку UrbIS®© на Брисел — Расподелба и авторски права CIRB"
+        },
+        "name": "UrbIS-орто 2018"
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "Остварено преку UrbIS®© на Брисел — Расподелба и авторски права CIRB"
+        },
+        "name": "UrbIS-Орто 2019"
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "Остварено преку UrbIS®© на Брисел — Расподелба и авторски права CIRB"
+        }
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "Остварено преку UrbIS®© на Брисел — Расподелба и авторски права CIRB"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, учесници на OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Означени патеки: Велосипедски"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, учесници на OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Означени патеки: Планинарски"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, учесници на OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Означени патеки: Планински велосипедизам"
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, учесници на OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Означени патеки: Ролшуи"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, учесници на OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Означени патеки: Зимски спортови"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "Основна карта на Австрија, според државни податоци."
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Слојот на ортоснимки е преземен од basemap.at. „Наследник“  на сликите од geoimage.at.",
+        "name": "basemap.at Ортофото"
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "description": "Прибележна облога на basemap.at.",
+        "name": "basemap.at Облога"
+      },
+      "eufar-balaton": {
+        "attribution": {
+          "text": "EUFAR Балатон ортофото 2010"
+        },
+        "description": "Геоозначени слики од Балатонскиот лимнолошки институт, 1940 г.",
+        "name": "EUFAR Балатонски ортоснимки"
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© Општина Гетеборг, CC0"
+        },
+        "description": "Градската карта дава описен преглед на Гетеборг. Содржи општи информации а земјиштето, врските, хидрографијата, градбите, адресните броеви и имињата на улиците, управната поделба и друг текст за насочување.",
+        "name": "Градска карта на Гетеборг"
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© Општина Гетеборг, CC0"
+        },
+        "description": "Ортоснимки за Општина Гетеборг"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "GSI Јапонија"
+        },
+        "description": "Воздушни снимки на GSI Јапонија. Не се наполно геометриски исправени, но се малку понови и/или со поинаков опфат од ортоснимките на истата управа.",
+        "name": "Воздушни снимки на GSI Јапонија"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "attribution": {
+          "text": "Бесшевни слики на GSI Јапонија"
+        },
+        "description": "Бесшевни слики на GSI Јапонија. Збирка од најновите ортоснимки, воздушни снимки, снимки од катастрофи и други",
+        "name": "Бесшевни слики на GSI Јапонија"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "GSI Јапонија"
+        },
+        "description": "Стандардна карта на GSI Јапонија. Широк опфат.",
+        "name": "Стандардна карта на GSI Јапонија"
+      },
+      "kalmar-orto-2014": {
+        "attribution": {
+          "text": "© Општина Калмар"
+        },
+        "description": "Ортоснимки од северниот брег на општината Калмар, 2014 г.",
+        "name": "Ортоснимки од Калмар Север 2014"
+      },
+      "kalmar-orto-2016": {
+        "attribution": {
+          "text": "© Општина Калмар"
+        },
+        "description": "Ортоснимки од јужниот брег на општината Калмар, 2016 г.",
+        "name": "Ортоснимки од Калмар Југ 2016"
+      },
+      "kalmar-orto-2018": {
+        "attribution": {
+          "text": "© Општина Калмар"
+        },
+        "description": "Ортоснимки од градските подрачја на општината Калмар, 2018 г.",
+        "name": "Градски ортоснимки од Калмар 2018"
+      },
+      "kelkkareitit": {
+        "description": "Патеки за моторни санки на Kelkkareitit.fi од OSM (Нордиски предели)",
+        "name": "Нордиска облога за моторни санки"
+      },
+      "lantmateriet-orto1960": {
+        "attribution": {
+          "text": "© Земјомерен завод на Шведска, CC0"
+        },
+        "description": "Мозаик на шведски ортоснимки од периодот 1955 – 1965 г. Може да се јават и постари или понови снимки",
+        "name": "Историски ортоснимки од Земјомерниот завод на Шведска, 1960 г."
+      },
+      "lantmateriet-orto1975": {
+        "attribution": {
+          "text": "© Земјомерен завод на Шведска, CC0"
+        },
+        "description": "Мозаик на шведски ортоснимки од периодот 1970 – 1980 г. Во изградба.",
+        "name": "Историски ортоснимки од Земјомерниот завод на Шведска, 1975 г."
+      },
+      "lantmateriet-topowebb": {
+        "attribution": {
+          "text": "© Земјомерен завод на Шведска, CC0"
+        },
+        "description": "Топографска карта на Шведска  1 : 50 000",
+        "name": "Топографска карта на Земјомерниот завод на Шведска"
+      },
+      "linkoping-orto": {
+        "attribution": {
+          "text": "© Општина Линшепинг"
+        },
+        "description": "Ортоснимки од општината Линшепинг, 2010 г., отворени податоци",
+        "name": "Лишепиншки ортоснимки"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Услови и мислења"
+        },
+        "description": "Прикажува поважни елементи за полесно снаоѓање",
+        "name": "Облога „Местонаоѓач“"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© Учесници на OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Карта OpenPT (облога)"
+      },
+      "openrailwaymap": {
+        "attribution": {
+          "text": "Испис: OpenRailwayMap, © Картог. податоци: Учесници на OpenStreetMap"
+        },
+        "description": "Обложната слика со железничка инфраструктура се заснова на податоци од OpenStreetMap"
+      },
+      "openrailwaymap-maxspeeds": {
+        "attribution": {
+          "text": "Испис: OpenRailwayMap, © Картог. податоци: Учесници на OpenStreetMap"
+        },
+        "description": "Обложната слика со дозволените брзини на пругите се заснова на податоци од OpenStreetMap",
+        "name": "OpenRailwayMap Дозволени брзини"
+      },
+      "openrailwaymap-signalling": {
+        "attribution": {
+          "text": "Испис: OpenRailwayMap, © Картог. податоци: Учесници на OpenStreetMap"
+        },
+        "description": "Обложната слика со железничка сигнализација се заснова на податоци од OpenStreetMap",
+        "name": "OpenRailwayMap Сигнализација"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© Учесници на OpenStreetMap"
+        },
+        "description": "Јавни ГПС-траги подигнати на OpenStreetMap.",
+        "name": "ГПС-траги на OpenStreetMap"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© Учесници на OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (германски стил)"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Сајмон Пул; податоци: © учесници на OpenStreetMap"
+        },
+        "name": "QA Без адреса"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Полиња: Картог. податоци на skobbler: учесници на OpenStreetMap"
+        }
+      },
+      "skoterleder": {
+        "description": "Патеки за моторни санки",
+        "name": "Карта на Шведска за моторни санки"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "Полиња од Stamen Design, под CC BY 3.0. Податоци од OpenStreetMap, под ODbL"
+        },
+        "name": "Stamen Теренска"
+      },
+      "stockholm-orto": {
+        "attribution": {
+          "text": "© Општина Стокхолм, CC0"
+        },
+        "name": "Стокхолмски ортоснимки"
+      },
+      "susono_shizuoka_jp_orthophoto": {
+        "attribution": {
+          "text": "Ортоснимки на Сусоно"
+        },
+        "description": "Воздушните фотографии објавени од градот Сусоно како отворени податоци.",
+        "name": "Ортоснимки на Сусоно"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Карти © Thunderforest, Податоци © учесници на OpenStreetMap"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "карти © Thunderforest, податоци © учесници на OpenStreetMap"
+        },
+        "name": "Thunderforest Пределна"
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Карти © Thunderforest, Податоци © учесници на OpenStreetMap"
+        },
+        "name": "Thunderforest Активности во природа"
+      },
+      "trafikverket-baninfo": {
+        "attribution": {
+          "text": "© Сообраќајна управа на Шведска, CC0"
+        },
+        "description": "Шведска железничка мрежа, вкл. споредни колосеци",
+        "name": "Железничка мрежа — Сообраќајна управа на Шведска"
+      },
+      "trafikverket-baninfo-option": {
+        "attribution": {
+          "text": "© Сообраќајна управа на Шведска, CC0"
+        },
+        "description": "Шведска железничка мрежа со неколку можности за слоеви",
+        "name": "Можности за железничка мрежа на Сообраќајната управа на Шведска"
+      },
+      "trafikverket-vagnat": {
+        "attribution": {
+          "text": "© Сообраќајна управа на Шведска, CC0"
+        },
+        "description": "Шведска патна мрежа на Националната патна база на Шведска (NVDB )",
+        "name": "Патна мрежа на Сообраќајната управа на Шведска"
+      },
+      "trafikverket-vagnat-extra": {
+        "attribution": {
+          "text": "© Сообраќајна управа на Шведска, CC0"
+        },
+        "description": "Дополнителни поединости за Националната патна база на Шведска (NVDB): Број на  автопатот, забавување на сообраќајот, одморишни места, автобуски постојки, мост, тунел, сообраќајна камера",
+        "name": "Патна мрежа на Сообраќајната управа на Шведска — екстра"
+      },
+      "trafikverket-vagnat-option": {
+        "attribution": {
+          "text": "© Сообраќајна управа на Шведска, CC0"
+        },
+        "description": "Шведска железничка мрежа на NVDB со неколку можности за слоеви",
+        "name": "Можности за патната мрежа на Сообраќајната управа на Шведска"
+      },
+      "wroclaw-orto2018": {
+        "attribution": {
+          "text": "Управа на Град Вроцлав"
+        },
+        "name": "Вроцлав: Ортофотокарта 2018 (воздушна снимка)"
+      }
+    }
+  }
+}

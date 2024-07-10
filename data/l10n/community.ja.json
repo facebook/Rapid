@@ -1,0 +1,33 @@
+{
+  "ja": {
+    "_communities": {
+      "openstreetmapafrica": "OpenStreetMap アフリカ",
+      "openstreetmapasia": "OpenStreetMap アジア",
+      "openstreetmapjapan": "OpenStreetMap 日本"
+    },
+    "_defaults": {
+      "wiki": {
+        "name": "{community} ウィキプロジェクト"
+      }
+    },
+    "ko-osm": {
+      "extendedDescription": "OpenStreetMapに貢献してみたいと思ったり興味を感じたら、気軽に参加してください。新しい参加者はいつでも歓迎します！"
+    },
+    "OSM-japan-facebook": {
+      "description": "日本のマッパーとOpenStreetMap ユーザー"
+    },
+    "OSM-japan-slack": {
+      "description": "OSM日本コミュニティ向けのSlack ワークスペース {signupUrl}"
+    },
+    "OSM-japan-website": {
+      "description": "日本のマッパーとOpenStreetMap ユーザー"
+    },
+    "osm-ohio-wiki": {
+      "description": "{community} ウィキページ"
+    },
+    "OSMF": {
+      "name": "OpenStreetMap ファウンデーション",
+      "description": "OSMF は英国に拠点を置くOpenStreetMapプロジェクトをサポートする非営利組織です"
+    }
+  }
+}

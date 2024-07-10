@@ -1,0 +1,52 @@
+{
+  "lt": {
+    "imagery": {
+      "Bing": {
+        "description": "Palydovo ir oro nuotraukos."
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Sąlygos ir atsiliepimai"
+        },
+        "name": "Esri Pasaulio Nuotraukos"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Sąlygos ir atsiliepimai"
+        }
+      },
+      "MAPNIK": {
+        "name": "OpenStreetMap (Standartinis)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Sąlygos ir atsiliepimai"
+        }
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "GSI Japonija"
+        },
+        "name": "Japonija GSI Standartinis žemėlapis"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Sąlygos ir atsiliepimai"
+        }
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© OpenStreetMap talkininkai, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (Vokiškas stilius)"
+      },
+      "trafikverket-vagnat": {
+        "description": "Švedijos NVDB kelių tinklas",
+        "name": "Trafikverket kelių tinklas"
+      },
+      "trafikverket-vagnat-option": {
+        "name": "Trafikverket kelių tinklo pasirinkimai"
+      }
+    }
+  }
+}

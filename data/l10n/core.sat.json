@@ -1,0 +1,426 @@
+{
+  "sat": {
+    "icons": {
+      "download": "ᱟᱹᱛᱩᱨ ᱟᱬᱜᱚ",
+      "information": "ᱞᱟᱹᱭ ᱥᱚᱫᱚᱨ",
+      "remove": "ᱚᱰᱚᱠ",
+      "undo": "ᱯᱟᱪᱷᱞᱟᱭ ᱢᱮ",
+      "zoom_to": "ᱡᱩᱢ ᱛᱮ",
+      "copy": "ᱱᱚᱠᱚᱞ",
+      "view_on": "{domain} ᱨᱮ ᱫᱮᱠᱷᱟᱣᱢᱮ",
+      "favorite": "ᱠᱩᱥᱤᱠᱚ",
+      "list": "ᱛᱟᱞᱠᱟ",
+      "text": "ᱚᱞ ᱠᱚ",
+      "deselect": "ᱟᱞᱚ ᱪᱚᱭᱚᱱ"
+    },
+    "toolbar": {
+      "inspect": "ᱯᱟᱱᱛᱮ",
+      "undo_redo": "ᱢᱟᱲᱟᱝ / ᱨᱩᱟᱹᱲ ᱟᱹᱜᱩ",
+      "recent": "ᱱᱤᱛᱚᱜᱼᱟ",
+      "favorites": "ᱠᱩᱥᱤᱠᱚ",
+      "add_feature": "ᱯᱷᱤᱪᱚᱨ ᱮᱢ ᱥᱮᱞᱮᱫ ᱢᱮ"
+    },
+    "modes": {
+      "add_area": {
+        "title": "ᱴᱚᱴᱷᱟ",
+        "filter_tooltip": "ᱴᱚᱴᱷᱟ"
+      },
+      "add_line": {
+        "title": "ᱜᱟᱨ",
+        "filter_tooltip": "ᱜᱟᱨ"
+      },
+      "add_point": {
+        "title": "ᱵᱤᱸᱫᱩ",
+        "filter_tooltip": "ᱵᱤᱸᱫᱩ ᱠᱚ"
+      },
+      "add_note": {
+        "title": "ᱱᱚᱴ",
+        "label": "ᱱᱚᱴ ᱥᱮᱞᱮᱫ ᱢᱮ",
+        "key": "ᱩ"
+      },
+      "add_preset": {
+        "title": "{feature} ᱥᱮᱞᱮᱫ ᱢᱮ"
+      },
+      "browse": {
+        "title": "ᱵᱨᱟᱩᱡ"
+      }
+    },
+    "operations": {
+      "add": {
+        "annotation": {
+          "note": "ᱠᱷᱟᱴᱚ ᱠᱟᱛᱷᱟ ᱥᱮᱞᱮᱫ ᱮᱱᱟ ᱾"
+        }
+      },
+      "continue": {
+        "title": "ᱞᱮᱛᱟᱲ"
+      },
+      "copy": {
+        "title": "ᱱᱚᱠᱚᱞ ᱢᱮ"
+      },
+      "paste": {
+        "title": "ᱞᱟᱴᱷᱟ"
+      },
+      "straighten": {
+        "too_bendy": {
+          "single": "ᱱᱚᱶᱟ ᱫᱚ ᱵᱟᱭ ᱥᱤᱫᱷᱟᱫ ᱜᱟᱸᱚᱜ-ᱟ  ᱪᱮᱫᱟᱜ ᱱᱚᱣᱟ ᱫᱚ ᱟᱹᱰᱤ ᱠᱟᱹᱲᱵᱝ ᱠᱟᱱᱟ ᱾",
+          "multiple": "ᱱᱚᱶᱟ ᱫᱚ ᱵᱟᱭ ᱥᱤᱫᱷᱟᱹ ᱜᱟᱸᱚᱜ-ᱟ ᱪᱮᱫᱟᱜ ᱱᱚᱶᱟ ᱫᱚ ᱟᱹᱰᱤ ᱠᱟᱹᱲᱵᱩᱝ ᱠᱟᱱᱟ ᱾"
+        }
+      },
+      "delete": {
+        "title": "ᱜᱮᱫ ᱜᱤᱰᱤ"
+      },
+      "extract": {
+        "key": "ᱯ"
+      }
+    },
+    "translate": {
+      "localized_translation_name": "ᱧᱩᱛᱩᱢ"
+    },
+    "commit": {
+      "save": "ᱞᱟᱫᱮᱢᱮ",
+      "cancel": "ᱵᱟ.ᱲᱨᱟᱹ",
+      "changes": "ᱵᱚᱫᱚᱞᱠᱚ",
+      "errors": "ᱵᱷᱩᱞᱠᱚ",
+      "warnings": "ᱪᱮᱛᱟᱣᱠᱚ",
+      "deleted": "ᱢᱮᱴᱟᱣᱮᱱᱟ"
+    },
+    "info_panels": {
+      "background": {
+        "description": "ᱵᱤᱵᱨᱚᱱ",
+        "unknown": "ᱵᱟᱝ ᱵᱟᱲᱟᱭ"
+      },
+      "history": {
+        "title": "ᱦᱤᱛᱟᱹᱞ",
+        "last_edit": "ᱢᱩᱪᱟᱹᱛ ᱥᱟᱯᱲᱟᱣ",
+        "unknown": "ᱵᱟᱝ ᱵᱟᱲᱟᱭ",
+        "note_no_history": "ᱦᱤᱛᱟᱹᱞ ᱵᱟᱹᱱᱩᱜ-ᱟ (ᱱᱟᱶᱟ ᱠᱷᱟᱴᱟᱹ ᱚᱞ)",
+        "note_comments": "ᱚᱠᱛᱟᱠᱚ"
+      },
+      "location": {
+        "title": "ᱡᱟᱭᱜᱟ",
+        "unknown_location": "ᱵᱟᱝ ᱵᱟᱲᱟᱭ ᱡᱟᱭᱜᱟ"
+      },
+      "measurement": {
+        "center": "ᱛᱟᱞᱟ ᱨᱮ",
+        "area": "ᱴᱚᱴᱷᱟ",
+        "location": "ᱡᱟᱭᱜᱟ"
+      }
+    },
+    "geometry": {
+      "relation": "ᱥᱟᱹᱜᱟᱹᱭ",
+      "note": "ᱠᱷᱟᱴᱟᱹ ᱚᱞ"
+    },
+    "geolocate": {
+      "title": "ᱤᱧᱟᱜ ᱡᱟᱭᱜᱟ ᱩᱫᱩᱜ ᱛᱤᱝ ᱢᱮ"
+    },
+    "inspector": {
+      "show_more": "ᱵᱟᱹᱲᱛᱤ ᱩᱱᱩᱫᱩᱜ",
+      "feature_type": "ᱜᱩᱱ ᱯᱨᱟᱹᱠᱟᱨ",
+      "features": "ᱜᱩᱱᱠᱚ",
+      "remove": "ᱚᱪᱚᱜ ᱢᱮ",
+      "search": "ᱥᱮᱸᱫᱽᱨᱟ",
+      "unknown": "ᱵᱟᱝ ᱵᱟᱲᱟᱭ",
+      "feature_list": "ᱥᱮᱸᱫᱽᱨᱟ ᱨᱮᱭᱟᱜ ᱜᱩᱱᱠᱚ",
+      "edit": "ᱜᱩᱱ ᱥᱟᱯᱲᱟᱣ ᱢᱮ",
+      "edit_features": "ᱜᱩᱱᱠᱚ ᱥᱟᱯᱲᱟᱣ ᱢᱮ",
+      "check": {
+        "yes": "ᱦᱮᱸ",
+        "no": "ᱵᱟᱝ"
+      },
+      "radio": {
+        "structure": {
+          "type": "ᱯᱨᱟᱹᱠᱟᱨ",
+          "default": "ᱢᱩᱞ ᱯᱷᱮᱲᱟᱛ",
+          "layer": "ᱯᱚᱨᱚᱛ"
+        }
+      },
+      "add": "ᱥᱮᱞᱮᱫ ᱢᱮ",
+      "way": "ᱦᱚᱨ",
+      "location": "ᱡᱟᱭᱜᱟ"
+    },
+    "background": {
+      "custom": "ᱠᱩᱥᱤᱭᱟᱜ",
+      "brightness": "ᱪᱷᱚᱠᱢᱚᱠ"
+    },
+    "map_data": {
+      "title": "ᱱᱚᱠᱥᱟ ᱨᱮᱭᱟᱜ ᱥᱟᱹᱠᱷᱤᱭᱟᱹᱛ",
+      "description": "ᱱᱚᱠᱥᱟ ᱨᱮᱭᱟᱜ ᱥᱟᱹᱠᱷᱤᱭᱟᱹᱛ",
+      "layers": {
+        "osm": {
+          "title": "OpenStreetMap ᱥᱟᱹᱠᱷᱤᱭᱟᱹᱛ"
+        },
+        "notes": {
+          "title": "OpenStreetMap ᱠᱷᱟᱴᱚ ᱵᱤᱪᱟᱹᱨ"
+        },
+        "maproulette": {
+          "detail_title": "ᱵᱤᱵᱨᱚᱱ",
+          "cancel": "ᱵᱟ.ᱲᱨᱟᱹ"
+        }
+      },
+      "map_features": "ᱱᱚᱠᱥᱟ ᱨᱮᱭᱟᱜ ᱜᱩᱱᱠᱚ"
+    },
+    "photo_overlays": {
+      "photo_type": {
+        "flat": {
+          "title": "ᱪᱟᱯᱲᱟ ᱪᱤᱛᱟᱹᱨᱠᱚ"
+        },
+        "panoramic": {
+          "tooltip": "᱓᱖᱐° ᱪᱤᱛᱟᱹᱨᱠᱚ"
+        }
+      },
+      "date_filter": {
+        "fromDate": {
+          "title": "ᱠᱷᱚᱱ"
+        }
+      },
+      "username_filter": {
+        "title": "ᱵᱮᱵᱷᱟᱨᱤᱡ ᱧᱩᱛᱩᱢ"
+      }
+    },
+    "feature": {
+      "boundaries": {
+        "description": "ᱜᱷᱮᱨᱟᱠᱚ"
+      },
+      "others": {
+        "description": "ᱮᱴᱟᱜ-ᱟ ᱜᱩᱱᱠᱚ"
+      }
+    },
+    "area_fill": {
+      "wireframe": {
+        "key": "ᱯᱚ"
+      }
+    },
+    "settings": {
+      "custom_data": {
+        "file": {
+          "label": "ᱨᱮᱫ ᱵᱨᱟᱩᱡ ᱢᱮ"
+        },
+        "or": "ᱵᱟᱝᱠᱷᱟᱱ",
+        "url": {
+          "placeholder": "ᱢᱤᱫ ᱴᱟᱝ url ᱟᱫᱮᱨ ᱢᱮ"
+        }
+      }
+    },
+    "preferences": {
+      "privacy": {
+        "title": "ᱱᱤᱡᱮᱨᱟᱜ ᱫᱟᱱᱟᱝ"
+      },
+      "color_selection": {
+        "default": "ᱢᱩᱞ ᱯᱷᱮᱲᱟᱛ"
+      }
+    },
+    "save": {
+      "title": "ᱥᱟᱸᱪᱟᱣ ᱢᱮ",
+      "conflict": {
+        "previous": "< ᱛᱟᱭᱚᱢ",
+        "next": "ᱤᱱᱟ ᱛᱟᱭᱚᱢ >",
+        "keep_local": "ᱤᱧ ᱫᱚᱦᱚᱭ ᱢᱮ",
+        "keep_remote": "ᱩᱱᱠᱩ-ᱟ ᱵᱮᱵᱷᱟᱨ ᱢᱮ"
+      }
+    },
+    "success": {
+      "help_link_text": "ᱵᱤᱵᱨᱚᱱ",
+      "more": "ᱵᱟᱹᱲᱛᱤ",
+      "languages": "ᱯᱟᱹᱨᱥᱤᱠᱚ: {languages}",
+      "tell_us": "ᱟᱞᱮ ᱞᱟᱹᱭ ᱟᱞᱮ ᱯᱮ!"
+    },
+    "confirm": {
+      "okay": "ᱴᱷᱤᱠ",
+      "cancel": "ᱵᱟᱹᱰᱨᱟ"
+    },
+    "splash": {
+      "start": "ᱱᱤᱛᱟᱹᱜ ᱥᱟᱯᱲᱟᱣ ᱢᱮ"
+    },
+    "rapid_feature_toggle": {
+      "esri": {
+        "remove": "ᱚᱪᱚᱜ ᱢᱮ"
+      }
+    },
+    "tag_reference": {
+      "description": "ᱵᱤᱵᱨᱚᱱ"
+    },
+    "bearing": {
+      "n": "ᱩ"
+    },
+    "QA": {
+      "osmose": {
+        "detail_title": "ᱵᱤᱵᱨᱚᱱ",
+        "elems_title": "ᱜᱩᱱᱠᱚ"
+      },
+      "keepRight": {
+        "detail_description": "ᱵᱤᱵᱨᱚᱱ",
+        "comment": "ᱚᱠᱛᱟᱭ ᱢᱮ",
+        "save_comment": "ᱚᱠᱛᱟ ᱥᱟᱸᱪᱟᱣ ᱢᱮ",
+        "error_parts": {
+          "hospital": "ᱦᱚᱥᱯᱤᱴᱟᱹᱞ",
+          "library": "ᱯᱩᱛᱷᱤ ᱚᱲᱟᱜ",
+          "theatre": "ᱛᱷᱤᱭᱮᱴᱟᱹᱨ",
+          "courthouse": "ᱱᱭᱟᱞᱚᱭ ᱚᱲᱟᱜ",
+          "bank": "ᱵᱮᱸᱠ",
+          "cinema": "ᱥᱤᱱᱮᱢᱟ",
+          "pharmacy": "ᱯᱷᱟᱨᱢᱮᱥᱤ",
+          "cafe": "ᱠᱮᱯᱷᱮ",
+          "fuel": "ᱥᱩᱱᱩᱢ"
+        }
+      }
+    },
+    "streetside": {
+      "view_on_bing": "Bing Maps ᱨᱮ ᱧᱮᱞ ᱢᱮ"
+    },
+    "mapillary_map_features": {
+      "title": "ᱱᱚᱠᱥᱟ ᱨᱮᱭᱟᱜ ᱜᱩᱱᱠᱚ"
+    },
+    "note": {
+      "note": "ᱱᱚᱴ",
+      "closed": "(ᱵᱚᱸᱫᱚ ᱢᱮᱱᱟᱜ-ᱟ)",
+      "commentTitle": "ᱚᱠᱛᱟᱠᱚ",
+      "newComment": "ᱱᱟᱶᱟ ᱚᱠᱛᱟ",
+      "comment": "ᱚᱠᱛᱟ",
+      "report": "ᱨᱤᱯᱚᱴ",
+      "new": "ᱱᱟᱶᱟ ᱱᱚᱴ"
+    },
+    "help": {
+      "title": "ᱜᱚᱲᱚ",
+      "help": {
+        "title": "ᱜᱚᱲᱚ",
+        "open_data_h": "ᱮᱦᱚᱵ ᱞᱟᱦᱟ ᱨᱮ",
+        "before_start_h": "ᱮᱦᱚᱵ ᱞᱟᱦᱟ ᱨᱮ"
+      },
+      "overview": {
+        "features_h": "ᱱᱚᱠᱥᱟ ᱨᱮᱭᱟᱜ ᱜᱩᱱᱠᱚ"
+      },
+      "editing": {
+        "select_h": "ᱵᱟᱪᱷᱟᱣ ᱢᱮ",
+        "save_h": "ᱥᱟᱸᱪᱟᱣ ᱢᱮ",
+        "upload_h": "ᱞᱟᱫᱮᱢᱮ"
+      },
+      "feature_editor": {
+        "type_h": "ᱜᱩᱱ ᱯᱨᱟᱹᱠᱟᱨ"
+      },
+      "relations": {
+        "boundary_h": "ᱜᱷᱮᱨᱟᱠᱚ"
+      },
+      "notes": {
+        "title": "ᱠᱷᱟᱴᱚ ᱵᱤᱪᱟᱹᱨ",
+        "add_note_h": "ᱠᱷᱟᱴᱚ ᱵᱤᱪᱟᱹᱨ ᱥᱮᱞᱮᱫ",
+        "save_note_h": "ᱠᱷᱟᱴᱚ ᱵᱤᱪᱟᱹᱨ ᱥᱟᱱᱪᱟᱣ"
+      },
+      "qa": {
+        "tools_h": "ᱴᱩᱞᱠᱚ"
+      }
+    },
+    "issues": {
+      "errors": {
+        "list_title": "ᱵᱷᱩᱞᱠᱚ"
+      },
+      "warnings": {
+        "list_title": "ᱪᱮᱛᱟᱣᱠᱚ"
+      },
+      "options": {
+        "what": {
+          "edited": "ᱤᱧᱟᱜ ᱥᱟᱯᱲᱟᱣᱠᱚ"
+        },
+        "where": {
+          "title": "ᱚᱠᱟᱨᱮ:"
+        }
+      }
+    },
+    "intro": {
+      "done": "ᱦᱚᱭᱮᱱᱟ",
+      "ok": "ᱴᱷᱤᱠ",
+      "welcome": {
+        "title": "ᱥᱟᱹᱜᱩᱱ ᱫᱟᱨᱟᱢ"
+      },
+      "startediting": {
+        "title": "ᱥᱟᱯᱲᱟᱣ ᱮᱦᱚᱵ ᱢᱮ",
+        "start": "ᱱᱚᱠᱥᱟ ᱛᱮᱭᱟᱨ ᱮᱦᱚᱵ ᱢᱮ!"
+      }
+    },
+    "shortcuts": {
+      "key": {
+        "delete": "ᱢᱮᱴᱟᱣ",
+        "home": "ᱚᱲᱟᱜ",
+        "menu": "ᱢᱮᱱᱩ"
+      },
+      "browsing": {
+        "help": {
+          "title": "ᱜᱚᱲᱚ"
+        }
+      },
+      "editing": {
+        "commands": {
+          "save": "ᱵᱚᱫᱚᱞᱠᱚ ᱥᱟᱺᱪᱟᱣ ᱢᱮ"
+        }
+      },
+      "tools": {
+        "title": "ᱴᱩᱞᱠᱚ"
+      }
+    },
+    "units": {
+      "north": "ᱩ",
+      "south": "ᱫ",
+      "east": "ᱯ",
+      "west": "ᱯᱚ"
+    },
+    "wikidata": {
+      "description": "ᱵᱤᱵᱨᱚᱱ"
+    },
+    "languageNames": {
+      "ab": "ᱟᱹᱵᱠᱷᱟᱡᱤᱭᱟᱹᱱ",
+      "ace": "ᱟᱠᱷᱤᱱᱤᱡᱽ",
+      "ada": "ᱟᱹᱰᱟᱱᱜᱽᱢᱮ",
+      "ady": "ᱟᱹᱰᱭᱜᱷᱮ",
+      "af": "ᱟᱯᱷᱨᱤᱠᱟᱱᱥ",
+      "agq": "ᱟᱜᱷᱮᱢ",
+      "ain": "ᱟᱭᱤᱱᱩ",
+      "ak": "ᱟᱠᱟᱱ",
+      "ale": "ᱟᱞᱮᱣᱴ",
+      "am": "ᱟᱢᱦᱟᱨᱤᱠ",
+      "an": "ᱟᱨᱟᱜᱚᱱᱤᱡᱽ",
+      "anp": "ᱟᱹᱝᱜᱤᱠᱟ",
+      "ar": "ᱚᱨᱵᱤ",
+      "ar-001": "ᱟᱫᱷᱩᱱᱤᱠ ᱢᱟᱱᱚᱠ ᱚᱨᱵᱤ",
+      "arp": "ᱟᱨᱟᱯᱟᱦᱚ",
+      "as": "ᱟᱥᱟᱢᱤᱡᱽ",
+      "de": "ᱡᱟᱨᱢᱟᱱ",
+      "de-AT": "ᱚᱥᱴᱨᱤᱭᱟ ᱡᱟᱨᱢᱟᱱ",
+      "de-CH": "ᱥᱩᱣᱤᱥ ᱦᱟᱤ ᱡᱟᱨᱢᱟᱱ",
+      "en": "ᱟᱝᱜᱽᱨᱮᱡᱤ",
+      "en-AU": "ᱚᱥᱴᱨᱮᱞᱤᱭᱟᱱ ᱟᱝᱜᱽᱨᱮᱡᱤ",
+      "en-CA": "ᱠᱟᱱᱟᱰᱤᱭᱟᱱ ᱟᱝᱜᱽᱨᱮᱡᱤ",
+      "en-GB": "ᱵᱨᱤᱴᱤᱥ ᱟᱝᱜᱽᱨᱮᱡᱤ",
+      "en-US": "ᱟᱢᱮᱨᱤᱠᱟᱱ ᱟᱝᱜᱽᱨᱮᱡᱤ",
+      "es": "ᱥᱯᱮᱱᱤᱥ",
+      "es-419": "ᱞᱮᱴᱤᱱ ᱟᱢᱮᱨᱤᱠᱟᱱ ᱥᱯᱮᱱᱤᱥ",
+      "es-ES": "ᱨᱩᱥᱤᱭᱟᱱ ᱥᱯᱮᱱᱤᱥ",
+      "es-MX": "ᱢᱮᱠᱥᱤᱠᱟᱱ ᱥᱯᱮᱱᱤᱥ",
+      "fr": "ᱯᱷᱨᱮᱧᱪ",
+      "fr-CA": "ᱠᱟᱱᱟᱰᱤᱭᱟᱱ ᱯᱷᱨᱮᱧᱪ",
+      "fr-CH": "ᱥᱩᱣᱤᱥ ᱯᱷᱨᱮᱧᱪ",
+      "hy": "ᱟᱨᱢᱮᱱᱤᱭᱟᱹᱱ",
+      "it": "ᱤᱴᱟᱞᱤᱟᱱ",
+      "ja": "ᱡᱟᱯᱟᱱᱤ",
+      "pt": "ᱯᱩᱨᱛᱜᱟᱞᱤ",
+      "pt-BR": "ᱵᱨᱟᱡᱤᱞᱤᱭᱟᱱ ᱯᱩᱨᱛᱜᱟᱞᱤ",
+      "pt-PT": "ᱭᱩᱨᱚᱯᱤᱭᱟᱱ ᱯᱩᱨᱛᱜᱟᱞᱤ",
+      "ru": "ᱨᱩᱥᱤᱭᱟᱱ",
+      "rup": "ᱟᱨᱚᱢᱟᱱᱤᱭᱟᱹᱱ",
+      "sat": "ᱥᱟᱱᱛᱟᱲᱤ",
+      "sq": "ᱟᱞᱵᱟᱱᱤᱭᱟᱹᱱ",
+      "zh": "ᱪᱟᱭᱱᱤᱡᱽ, ᱢᱟᱱᱰᱟᱨᱤᱱ",
+      "zh-Hans": "ᱟᱞᱜᱟᱣᱟᱠᱟᱱ ᱢᱟᱫᱟᱨᱤᱱ ᱪᱟᱭᱱᱤᱡᱽ",
+      "zh-Hant": "ᱴᱨᱮᱰᱤᱥᱱᱟᱞ ᱢᱟᱫᱟᱨᱤᱱ ᱪᱟᱭᱱᱤᱡᱽ"
+    },
+    "scriptNames": {
+      "Arab": "ᱟᱨᱵᱤᱠ",
+      "Cyrl": "ᱥᱤᱨᱤᱞᱤᱠ",
+      "Deva": "ᱫᱮᱣᱟᱱᱟᱜᱟᱨᱤ",
+      "Hans": "ᱥᱤᱢᱯᱞᱤᱯᱟᱭᱤᱰ ᱦᱟᱱ",
+      "Hant": "ᱴᱨᱮᱰᱤᱥᱚᱱ ᱦᱟᱱ",
+      "Latn": "ᱞᱮᱴᱤᱱ",
+      "Olck": "ᱚᱞ ᱪᱤᱠᱤ",
+      "Zxxx": "ᱵᱟᱝ ᱚᱞ ᱟᱠᱟᱱ",
+      "Zzzz": "ᱵᱟᱝ ᱩᱨᱩᱢ ᱪᱤᱠᱤ"
+    }
+  }
+}

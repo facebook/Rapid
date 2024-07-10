@@ -1,0 +1,303 @@
+{
+  "bg": {
+    "imagery": {
+      "Bing": {
+        "description": "Сателитни и аерофото изображения."
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 безоблачен - https://s2maps.eu от EOX IT Services GmbH (Съдържа модифицирани данни за Copernicus Sentinel 2017 и 2018)"
+        },
+        "description": "Последващо обработени сателитни изображения на Sentinel.",
+        "name": "eox.at 2018 безоблачен"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Условия & oбратна връзка"
+        },
+        "name": "Esri World изображения"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Условия & oбратна връзка"
+        },
+        "description": "Архивните изображения на Esri могат да бъдат по ясни и точни от изображенията по подразбиране.",
+        "name": "Esri World изображения (Clarity) Beta"
+      },
+      "MAPNIK": {
+        "description": "Стандартният OpenStreetMap слой.",
+        "name": "OpenStreetMap (Стандартен)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Условия & обратна връзка"
+        },
+        "name": "Mapbox Сателит"
+      },
+      "OSM_Inspector-Addresses": {
+        "name": "OSM Inspector: Адреси"
+      },
+      "OSM_Inspector-Geometry": {
+        "name": "OSM Inspector: Геометрия"
+      },
+      "OSM_Inspector-Highways": {
+        "name": "OSM Inspector: Пътища"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "name": "OSM Inspector: Площ"
+      },
+      "OSM_Inspector-Places": {
+        "name": "OSM Inspector: Места"
+      },
+      "OSM_Inspector-Routing": {
+        "name": "OSM Inspector: Упътвания"
+      },
+      "OSM_Inspector-Tagging": {
+        "name": "OSM Inspector: Тагове"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "Най-новите въздушни изображения на SPW(allonie)"
+      },
+      "SPW_PICC": {
+        "name": "Цифрови изображения на SPW(allonie) PICC"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Жълто = Картографски данни от преброяване на населението в САЩ. Червено = Данните не са намерени в OpenStreetMap",
+        "name": "TIGER Пътища 2017"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "Жълто = Публично достъпни картографски данни от преброяване на населението US. Червено = Данни, които не са нанесени в OpenStreetMap",
+        "name": "TIGER Пътища 2019"
+      },
+      "USDA-NAIP": {
+        "name": "Национална програма за изображения в селското стопанство"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Път: Зелено очертание = некласифициран. Кафяво очертание = track. Повърхност: чакъл = светло кафяво запълване, асфалт = черно, павиран = сиво, земен = бяло, бетон = синьо, трева = зелено. Сезонен = бели черти",
+        "name": "Слой Горски пътища в САЩ"
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "Реализирано с помощта на Брюксел UrbIS® © - Разпространение и авторски права CIRB"
+        },
+        "name": "UrbIS-Орто 2016"
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "Реализирано с помощта на Брюксел UrbIS® © - Разпространение и авторски права CIRB"
+        },
+        "name": "UrbIS-Орто 2017"
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "Реализирано с помощта на Брюксел UrbIS® © - Разпространение и авторски права CIRB"
+        },
+        "name": "UrbIS-Орто 2018"
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "Реализирано с помощта на Брюксел UrbIS® © - Разпространение и авторски права CIRB"
+        },
+        "name": "UrbIS-Орто 2019"
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "Реализирано с помощта на Брюксел UrbIS® © - Разпространение и авторски права CIRB"
+        }
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "Реализирано с помощта на Брюксел UrbIS® © - Разпространение и авторски права CIRB"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "name": "Waymarked Trails: Колоездене"
+      },
+      "Waymarked_Trails-Hiking": {
+        "name": "Waymarked Trails: Туризъм"
+      },
+      "Waymarked_Trails-MTB": {
+        "name": "Waymarked Trails: Планинско колоездене"
+      },
+      "Waymarked_Trails-Skating": {
+        "name": "Waymarked Trails: Каране на ролери"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "name": "Waymarked Trails: Зимни спортове"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "Базова карта на Австрия, на основата на държавни публични данни."
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Ортофото слой осигурен от basemap.at. \"Приемник\" на geoimage.at изображенията.",
+        "name": "basemap.at Ортофото"
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "description": "Слой с пояснения, предоставен от basemap.at.",
+        "name": "basemap.at препокрит слой"
+      },
+      "eufar-balaton": {
+        "description": "1940 географски маркирани снимки от Balaton Limnological Institute.",
+        "name": "EUFAR Балатон ортофото"
+      },
+      "gothenburg-citymap": {
+        "description": "Картата на града е обща карта, която описва Гьотеборг. Той съдържа обща информация за земя, комуникации, хидрография, сгради, адреси и имена на улици, административно деление и друг ориентационен текст.",
+        "name": "Gothenburg карта на града"
+      },
+      "gothenburg-ortho": {
+        "description": "Ортофото за община Gothenburg"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "description": "Японски GSI airphoto изображения. Не е напълно орторектифициран, но е малко по-нов и / или по-различно покрит от GSI ortho Imagery.",
+        "name": "Японски GSI аерофото изображения"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "attribution": {
+          "text": "GSI Япония снимка без видими снадки"
+        },
+        "description": "Японски GSI снимки без видими снадки. Колекцията от най-новите изображения на GSI орто, аерофото, след бедствие и други.",
+        "name": "Японски GSI снимки без видими снадки."
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "GSI Япония"
+        },
+        "description": "Japan GSI Стандартни карти. Широко покритие.",
+        "name": "Japan GSI Стандартни карти."
+      },
+      "kalmar-orto-2014": {
+        "description": "Ортофото за северното крайбрежие на община Kalmar 2014",
+        "name": "Kalmar Север ортофото 2014"
+      },
+      "kalmar-orto-2016": {
+        "description": "Ортофото за южното крайбрежие на община Kalmar 2016",
+        "name": "Kalmar юг ортофото 2016"
+      },
+      "kalmar-orto-2018": {
+        "description": "Ортофото за градските райони на община Kalmar 2018г",
+        "name": "Kalmar ортофото на градската част 2018"
+      },
+      "kelkkareitit": {
+        "description": "Kelkkareitit.fi пътеки за моторни шейни от OSM (слой Север)",
+        "name": "За моторни шейни, слой север"
+      },
+      "lantmateriet-orto1960": {
+        "description": "Мозайка от шведски ортофото от периода 1955-1965. Възможно е да се появят по-стари и по-млади снимки.",
+        "name": "Lantmäteriet Исторически ортофото 1960"
+      },
+      "lantmateriet-orto1975": {
+        "description": "Мозайка от шведски ортофото от периода 1970-1980. Изгражда се.",
+        "name": "Lantmäteriet Исторически ортофото 1975"
+      },
+      "lantmateriet-topowebb": {
+        "description": "Топографска карта на Швеция 1:50 000",
+        "name": "Топографска карта на Lantmäteriet"
+      },
+      "linkoping-orto": {
+        "description": "Ортофото снимки от община Линчепинг 2010, общодостъпни данни",
+        "name": "Linköping ортофото"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Условия & обратна връзка"
+        },
+        "description": "Показва главните обекти, за да ви помогне в ориентацията.",
+        "name": "Locator Слой"
+      },
+      "openpt_map": {
+        "name": "OpenPT Map (слой)"
+      },
+      "openrailwaymap": {
+        "attribution": {
+          "text": "Рендериране: OpenRailwayMap, © Картографски данни от помощници на OpenStreetMap"
+        },
+        "description": "Насложени изображения, показващи железопътна инфраструктура, базирана на данни на OpenStreetMap"
+      },
+      "openrailwaymap-maxspeeds": {
+        "attribution": {
+          "text": "Рендериране: OpenRailwayMap, © Картографски данни от помощници на OpenStreetMap"
+        },
+        "description": "Насложени изображения, показващи железопътна инфраструктура, базирана на данни на OpenStreetMap",
+        "name": "максимални скорости по OpenRailwayMap"
+      },
+      "openrailwaymap-signalling": {
+        "attribution": {
+          "text": "Рендериране: OpenRailwayMap, © Картографски данни от помощници на OpenStreetMap"
+        },
+        "description": "Насложени изображения, показващи железопътни сигнали въз основа на данни на OpenStreetMap",
+        "name": "Сигнализация на OpenRailwayMap"
+      },
+      "osm-gps": {
+        "description": "Публични GPS следи качени в OpenStreetMap.",
+        "name": "OpenStreetMap GPS следи"
+      },
+      "osm-mapnik-german_style": {
+        "name": "OpenStreetMap (Немски стил)"
+      },
+      "qa_no_address": {
+        "name": "QA Номер Адрес"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Тайлове: skobbler Map данни: OpenStreetMap contributors"
+        }
+      },
+      "skoterleder": {
+        "description": "Пътеки за моторни шейни",
+        "name": "Карта на пътеки за моторни шейни в Швеция"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "Картни квадрати от Stamen Design, под CC BY 3.0. Данни от OpenStreetMap, лиценз ODbL"
+        },
+        "name": "Stamen Топография"
+      },
+      "stockholm-orto": {
+        "name": "Ортофото от Stockholm"
+      },
+      "susono_shizuoka_jp_orthophoto": {
+        "attribution": {
+          "text": "Ортофото на град Susono"
+        },
+        "description": "Аерофото, публикувани от град Susono като безплатни данни.",
+        "name": "Ортофото на град Susono"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Карти © Thunderforest, Данни © OpenStreetMap contributors"
+        }
+      },
+      "tf-landscape": {
+        "name": "Thunderforest Ландшафт"
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Карти © Thunderforest, Data © помощници на OpenStreetMap"
+        }
+      },
+      "trafikverket-baninfo": {
+        "description": "Шведска железопътна мрежа, включително странични линии",
+        "name": "Железопътна мрежа на Trafikverket"
+      },
+      "trafikverket-baninfo-option": {
+        "description": "Шведска железопътна мрежа с няколко опции за слоевете на картата",
+        "name": "Опции за железопътната мрежа Trafikverket"
+      },
+      "trafikverket-vagnat": {
+        "description": "Шведска пътна мрежа NVDB",
+        "name": "Пътна мрежа на Trafikverket"
+      },
+      "trafikverket-vagnat-extra": {
+        "description": "Допълнителни детайли от шведската NVDB: справка за магистрала, съоръжение за успокояване на трафика, зона за почивка, автобусна спирка, мост, тунел, камера за скорост.",
+        "name": "Пътна мрежа Trafikverket - допълнения"
+      },
+      "trafikverket-vagnat-option": {
+        "description": "Шведска пътна мрежа NVDB с няколко опции за слоевете на картата",
+        "name": "Опции за пътната мрежа на Trafikverket"
+      },
+      "wroclaw-orto2018": {
+        "name": "Wrocław: ортофото карта 2018 (въздушно изображение)"
+      }
+    }
+  }
+}

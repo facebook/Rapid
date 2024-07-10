@@ -1,0 +1,1734 @@
+{
+  "cs": {
+    "_communities": {
+      "kiribatiwomeninmapping": "Kiribatské ženy v mapování",
+      "mappingbotswana": "Mapování Botswany",
+      "openstreetmapaachen": "OpenStreetMap Cáchy",
+      "openstreetmapafghanistan": "OpenStreetMap Afghánistán",
+      "openstreetmapafrica": "OpenStreetMap Afrika",
+      "openstreetmapalbania": "OpenStreetMap Albánie",
+      "openstreetmaparmenia": "OpenStreetMap Arménie",
+      "openstreetmapasia": "OpenStreetMap Asie",
+      "openstreetmapaustria": "OpenStreetMap Rakousko",
+      "openstreetmapbangladesh": "OpenStreetMap Bangladéš",
+      "openstreetmapbelarus": "OpenStreetMap Bělorusko",
+      "openstreetmapbelgium": "OpenStreetMap Belgie",
+      "openstreetmapbengaluru": "OpenStreetMap Bengalúru",
+      "openstreetmapberlin": "OpenStreetMap Berlín",
+      "openstreetmapbolivia": "OpenStreetMap Bolívie",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap Bosna a Hercegovina",
+      "openstreetmapbrasil": "OpenStreetMap Brazílie",
+      "openstreetmapbremen": "OpenStreetMap Brémy",
+      "openstreetmapbulgaria": "OpenStreetMap Bulharsko",
+      "openstreetmapcambodia": "OpenStreetMap Kambodža",
+      "openstreetmapcameroon": "OpenStreetMap Kamerun",
+      "openstreetmapcanada": "OpenStreetMap Kanada",
+      "openstreetmapcatalancountries": "OpenStreetMap Katalánské země",
+      "openstreetmapchad": "OpenStreetMap Čad",
+      "openstreetmapchina": "OpenStreetMap Čína",
+      "openstreetmapcologne": "OpenStreetMap Kolín nad Rýnem",
+      "openstreetmapcolombia": "OpenStreetMap Kolumbie",
+      "openstreetmapcostarica": "OpenStreetMap Kostarika",
+      "openstreetmapcotedivoire": "OpenStreetMap Pobřeží Slonoviny",
+      "openstreetmapcroatia": "OpenStreetMap Chorvatsko",
+      "openstreetmapcuba": "OpenStreetMap Kuba",
+      "openstreetmapdelhi": "OpenStreetMap Dillí",
+      "openstreetmapdenmark": "OpenStreetMap Dánsko",
+      "openstreetmapdjibouti": "OpenStreetMap Džibutsko",
+      "openstreetmapdominicanrepublic": "OpenStreetMap Dominikánská republika",
+      "openstreetmapdresden": "OpenStreetMap Drážďany",
+      "openstreetmapecuador": "OpenStreetMap Ekvádor",
+      "openstreetmapespana": "OpenStreetMap Španělsko",
+      "openstreetmapestonia": "OpenStreetMap Estonsko",
+      "openstreetmapethiopia": "OpenStreetMap Etiopie",
+      "openstreetmapfiji": "OpenStreetMap Fidži",
+      "openstreetmapfinland": "OpenStreetMap Finsko",
+      "openstreetmapfrance": "OpenStreetMap Francie",
+      "openstreetmapfreemapslovakia": "OpenStreetMap Freemap Slovensko",
+      "openstreetmapfrenchguiana": "OpenStreetMap Francouzská Guyana",
+      "openstreetmapfrenchpolynesia": "OpenStreetMap Francouzská Polynésie",
+      "openstreetmapgalicia": "OpenStreetMap Galicie",
+      "openstreetmapgeorgia": "OpenStreetMap Gruzie",
+      "openstreetmapgermany": "OpenStreetMap Německo",
+      "openstreetmapgreece": "OpenStreetMap Řecko",
+      "openstreetmaphamburg": "OpenStreetMap Hamburk",
+      "openstreetmaphungary": "OpenStreetMap Maďarsko",
+      "openstreetmapiceland": "OpenStreetMap Island",
+      "openstreetmapindia": "OpenStreetMap Indie",
+      "openstreetmapindonesia": "OpenStreetMap Indonésie",
+      "openstreetmapiran": "OpenStreetMap Írán",
+      "openstreetmapiraq": "OpenStreetMap Irák",
+      "openstreetmapireland": "OpenStreetMap Irsko",
+      "openstreetmapisrael": "OpenStreetMap Izrael",
+      "openstreetmapitaly": "OpenStreetMap Itálie",
+      "openstreetmapitalylazio": "OpenStreetMap Itálie-Lazio",
+      "openstreetmapitalylombardia": "OpenStreetMap Itálie-Lombardie",
+      "openstreetmapitalypiemonte": "OpenStreetMap Itálie-Piemont",
+      "openstreetmapitalysouthtyrol": "OpenStreetMap Itálie-Jižní Tyrolsko",
+      "openstreetmapitalytrentino": "OpenStreetMap Itálie-Trentino",
+      "openstreetmapjapan": "OpenStreetMap Japonsko",
+      "openstreetmapkazakhstan": "OpenStreetMap Kazachstán",
+      "openstreetmapkenya": "OpenStreetMap Keňa",
+      "openstreetmapkerala": "OpenStreetMap Kérala",
+      "openstreetmapkyrgyzstan": "OpenStreetMap Kyrgyzstán",
+      "openstreetmaplatinamerica": "OpenStreetMap Latinská Amerika",
+      "openstreetmaplatvia": "OpenStreetMap Lotyšsko",
+      "openstreetmaplebanon": "OpenStreetMap Libanon",
+      "openstreetmapliberia": "OpenStreetMap Libérie",
+      "openstreetmaplibya": "OpenStreetMap Libye",
+      "openstreetmaplithuania": "OpenStreetMap Litva",
+      "openstreetmapljubljana": "OpenStreetMap Lublaň",
+      "openstreetmaplombardia": "OpenStreetMap Lombardie",
+      "openstreetmaplondon": "OpenStreetMap Londýn",
+      "openstreetmapluxembourg": "OpenStreetMap Lucembursko",
+      "openstreetmapmadagascar": "OpenStreetMap Madagaskar",
+      "openstreetmapmalaysia": "OpenStreetMap Malajsie",
+      "openstreetmapmauritania": "OpenStreetMap Mauritánie",
+      "openstreetmapmecklenburgvorpommern": "OpenStreetMap Meklenburako-Přední Pomořansko",
+      "openstreetmapmexico": "OpenStreetMap Mexiko",
+      "openstreetmapmoldova": "OpenStreetMap Molavsko",
+      "openstreetmapmongolia": "OpenStreetMap Mongolsko",
+      "openstreetmapmorocco": "OpenStreetMap Maroko",
+      "openstreetmapmunchen": "OpenStreetMap Mnichov",
+      "openstreetmapnepal": "OpenStreetMap Nepál",
+      "openstreetmapnetherlands": "OpenStreetMap Nizozemsko",
+      "openstreetmapnicaragua": "OpenStreetMap Nikaragua",
+      "openstreetmapnigeria": "OpenStreetMap Nigérie",
+      "openstreetmapnorthkorea": "OpenStreetMap Severní Korea",
+      "openstreetmapnorway": "OpenStreetMap Norsko",
+      "openstreetmapoceania": "OpenStreetMap Oceánie",
+      "openstreetmappakistan": "OpenStreetMap Pákistán",
+      "openstreetmapphilippines": "OpenStreetMap Filipíny",
+      "openstreetmappiemonte": "OpenStreetMap Piemont",
+      "openstreetmappoland": "OpenStreetMap Polsko",
+      "openstreetmapportugal": "OpenStreetMap Portugalsko",
+      "openstreetmapromania": "OpenStreetMap Rumunsko",
+      "openstreetmaprussia": "OpenStreetMap Rusko",
+      "openstreetmapsaudiarabia": "OpenStreetMap Saúdská Arábie",
+      "openstreetmapserbia": "OpenStreetMap Srbsko",
+      "openstreetmapseychelles": "OpenStreetMap Seychely",
+      "openstreetmapsingapore": "OpenStreetMap Singapur",
+      "openstreetmapslovenia": "OpenStreetMap Slovinsko",
+      "openstreetmapsomalia": "OpenStreetMap Somálsko",
+      "openstreetmapsouthafrica": "OpenStreetMap Jihoafrická republika",
+      "openstreetmapsouthsudan": "OpenStreetMap Jižní Súdán",
+      "openstreetmapsrilanka": "OpenStreetMap Srí Lanka",
+      "openstreetmapsudan": "OpenStreetMap Súdán",
+      "openstreetmapsweden": "OpenStreetMap Švédsko",
+      "openstreetmapswitzerland": "OpenStreetMap Švýcarsko",
+      "openstreetmapsyria": "OpenStreetMap Sýrie",
+      "openstreetmaptaiwan": "OpenStreetMap Tchaj-wan",
+      "openstreetmaptanzania": "OpenStreetMap Tanzanie",
+      "openstreetmapthailand": "OpenStreetMap Thajsko",
+      "openstreetmaptunisia": "OpenStreetMap Tunisko",
+      "openstreetmapturin": "OpenStreetMap Turín",
+      "openstreetmapturkey": "OpenStreetMap Turecko",
+      "openstreetmapukraine": "OpenStreetMap Ukrajina",
+      "openstreetmapuzbekistan": "OpenStreetMap Uzbekistán",
+      "openstreetmapwarszawa": "OpenStreetMap Varšava",
+      "openstreetmapwestbengal": "OpenStreetMap Západní Bengálsko",
+      "openstreetmapwesternsahara": "OpenStreetMap Západní Sahara",
+      "openstreetmapzambia": "OpenStreetMap Zambie",
+      "osmmainz": "OSM Mohuč"
+    },
+    "_defaults": {
+      "aparat": {
+        "name": "{community} na Aparatu",
+        "description": "Odebírejte náš kanál na Aparatu"
+      },
+      "discord": {
+        "description": "Zůstaňte ve spojení s ostatními mapovači na Discordu"
+      },
+      "discourse": {
+        "name": "{community} Fórum komunity",
+        "description": "Oficiální diskuzní fórum komunity {community}"
+      },
+      "facebook": {
+        "name": "{community} na Facebooku",
+        "description": "Přidejte se k naší komunitě na Facebooku."
+      },
+      "forum": {
+        "name": "{community} fórum",
+        "description": "Oficiální diskuzní fórum komunity {community}"
+      },
+      "irc": {
+        "name": "{community} na IRC",
+        "description": "Připojte se k #{account} na irc.oftc.net (port 6667 ne-SSL nebo 6697 pro SSL)"
+      },
+      "linkedin": {
+        "name": "{community} na webu LinkedIn",
+        "description": "Připojte se k naší komunitě na webu LinkedIn"
+      },
+      "mailinglist": {
+        "name": "{account} mailová konference",
+        "description": "Oficiální mailová konference komunity {community}"
+      },
+      "mastodon": {
+        "name": "{community} na Mastodonu",
+        "description": "Oficiální účet na Mastodonu komunity {community}"
+      },
+      "matrix": {
+        "description": "Připojte se k chatu naší komunity na Matrixu"
+      },
+      "reddit": {
+        "name": "{community} na Redditu"
+      },
+      "signal": {
+        "description": "Připojte se k chatu naší komunity na Signalu"
+      },
+      "telegram": {
+        "description": "Přidejte se ke komunitnímu chatu na Telegramu"
+      },
+      "threads": {
+        "name": "{community} na Threads",
+        "description": "Sledujte nás na Threads"
+      },
+      "twitter": {
+        "name": "{community} na 𝕏",
+        "description": "Sledujte nás na 𝕏"
+      },
+      "wiki": {
+        "name": "{community} wikiprojekt"
+      },
+      "x": {
+        "name": "{community} na 𝕏",
+        "description": "Sledujte nás na 𝕏"
+      },
+      "youtube": {
+        "name": "{community} na YouTube",
+        "description": "Přihlaste se k odběru našeho YouTube kanálu"
+      },
+      "zulip": {
+        "description": "Připojte se k chatu naší komunity na Zulipu"
+      }
+    },
+    "af-matrix": {
+      "description": "Skupina na Matrixu pro komunitu v Afganistánu."
+    },
+    "al-maptime-tirana": {
+      "description": "Sociální události pořádané ohledně mapování - začátečníci jsou obzvlášť vítáni!",
+      "extendedDescription": "Maptime je svobodné vzdělávací prostředí pro všechny úrovně a stupně znalostí a nabízí záměrnou vzdělávací podporu pro začátečníky. Maptime je zároveň flexibilní a strukturovaný a vytváří prostor pro tutoriály mapování, workshopy, probíhající projekty se společným cílem a nezávislou/spolupráci pracovní doby."
+    },
+    "am-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "at-matrix": {
+      "description": "Neoficiální německý kanál pro Rakousko na Matrixu"
+    },
+    "at-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "Bahia-telegram": {
+      "extendedDescription": "Připojte se ke komunitě a dozvíte se více o OpenStreetMap, můžete klást otázky nebo se účastnit našich setkání. Každý je vítán!"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "description": "Vylepšete OpenStreetMap v Bay Area",
+      "extendedDescription": "Tato skupina se věnuje rozvoji komunity OpenStreetMap zde v oblasti Bay Area. Naše akce jsou přístupné všem, od nadšenců s otevřeným zdrojovým kódem, cyklistů, profesionálů GIS, geocachers a dalších. Kdokoli a každý, kdo má zájem o mapy, tvorbu map a otevřená mapová data, je vítán, aby se připojil k naší skupině a účastnil se našich akcí."
+    },
+    "bd-facebook": {
+      "extendedDescription": "Mapujete v Bangladéši? Máte otázky, chcete se zde spojit s komunitou? Připojte se k nám na adrese {url}. Všichni jsou vítáni!"
+    },
+    "be-chapter": {
+      "description": "Pomáháme OpenStreetMap v Belgii růst a zlepšovat se.",
+      "extendedDescription": "Pokud chcete pomoci zlepšovat a rozšířit mapovací komunitu v Belgii aby se ještě více lidí zbláznilo do mapování, OpenStreetMap Belgie je to správné místo pro vás!"
+    },
+    "be-discourse": {
+      "description": "Fórum k diskusi ohledně OpenStreetMap v Belgii"
+    },
+    "be-irc": {
+      "extendedDescription": "Připojte se k #{account} na irc.oftc.net (port 6667), který je přemostěn s chatovacím kanálem na Matrixu"
+    },
+    "be-matrix": {
+      "description": "Všichni mapovači jsou vítáni!",
+      "extendedDescription": "Hlavní chatovací místnost belgické komunity OSM. Neváhejte se zde zeptat na vývojářské otázky!"
+    },
+    "be-meetup": {
+      "description": "Reálná setkání všech, kteří se zajímají o OpenStreetMap",
+      "extendedDescription": "Fyzická setkání jsou skvělá na setkání s ostatními mapovači, pokládání dotazů s cílem se hodně toho naučit. Zejména noví přispěvatelé jsou vítáni!"
+    },
+    "be-newsletter": {
+      "description": "Čtvrtletní zpravodaj belgické komunity"
+    },
+    "bg-wiki": {
+      "description": "Stránka wikiprojektu pro Bulharsko"
+    },
+    "bi-vc-cvl-meetup": {
+      "description": "Lokální skupina mapovačů v Bielli, Vercellii, Canavese a Valli di Lanzo",
+      "extendedDescription": "Setkání od února 2018, obvykle in Bielli nebo Ivrei."
+    },
+    "bo-facebook-group": {
+      "name": "{community} skupina na Facebooku"
+    },
+    "bo-matrix": {
+      "description": "Všichni mapovači jsou vítáni!"
+    },
+    "br-telegram": {
+      "extendedDescription": "Připojte se ke komunitě a dozvíte se více o OpenStreetMap, můžete klást otázky nebo se účastnit našich setkání. Každý je vítán!"
+    },
+    "br-wiki": {
+      "description": "WikiProject s informacemi a koordinační podmínky pro mapování v Brazílii."
+    },
+    "cape-coast-youthmappers": {
+      "name": "YouthMappers Univerzity v Cape Coast",
+      "description": "Sledujte nás na Twitteru: {url}",
+      "extendedDescription": "Tohle je oficiální rukojeť pro zastoupení YouthMappers na University of Cape Coast v Ghaně. Milujeme mapy, otevřená data a pomoc zranitelným."
+    },
+    "castilla-y-leon-wiki": {
+      "description": "Vše, co potřebujete vědět o mapování v Castile a Leonu: {url}"
+    },
+    "cat-github": {
+      "description": "Projekty z komunity OpenStreetMap Katalánské země na GitHubu"
+    },
+    "cat-matrix": {
+      "description": "Skupina na Matrixu komunity OpenStreetMap Katalánské země"
+    },
+    "cat-twitch": {
+      "name": "Twitch kanál {community}",
+      "description": "Živá editace OSM, HOTosm, OpenData a GIS"
+    },
+    "cat-wiki": {
+      "description": "Koordinační prostor pro komunitu OpenStreetMap kolem katalánských zemí: {url}"
+    },
+    "cd-chapter": {
+      "description": "Z jedné ulice na další, pojďme zmapovat celou zemi...",
+      "extendedDescription": "Jsme nadšeni projektem OSM, sdílíme nějaký čas, abychom o projektu informovali ostatní. Stále je nás tak málo, připojte se k nám!"
+    },
+    "Central-Pennsylvania-OSM": {
+      "name": "OSM Střední Pensylvánie",
+      "description": "Online mapovací komunita založená mimo State College, PA"
+    },
+    "ch-mailinglist": {
+      "name": "Švýcarská mailová konference OpenStreetMap",
+      "description": "Mailová konference pro Švýcarsko"
+    },
+    "cl-facebook": {
+      "extendedDescription": "Připojte se ke komunitě a dozvíte se více o OpenStreetMap, můžete klást otázky nebo se účastnit našich setkání. Každý je vítán!"
+    },
+    "cl-telegram": {
+      "extendedDescription": "Připojte se ke komunitě a dozvíte se více o OpenStreetMap, můžete klást otázky nebo se účastnit našich setkání. Každý je vítán!"
+    },
+    "co-facebook": {
+      "extendedDescription": "Připojte se ke komunitě a dozvíte se více o OpenStreetMap. Každý je vítán!"
+    },
+    "co-github": {
+      "description": "Projekty Git o Kolumbii"
+    },
+    "co-wiki": {
+      "description": "Wiki stránka s dokumentací k mapování Kolumbie"
+    },
+    "comunitat-valenciana-wiki": {
+      "description": "Vše, co potřebujete vědět o mapování ve Valencijské komunitě: {url}"
+    },
+    "czech-community": {
+      "description": "Mapový portál, webové stránky a kontakty na členy OSM v Česku"
+    },
+    "czech-discord": {
+      "description": "Místnost OpenStreetMap CZ přemostěná s IRC, Matrixem a Telegramem"
+    },
+    "czech-irc": {
+      "description": "Místnost OpenStreetMap CZ přemostěná s Discordem, Matrixem a Telegramem"
+    },
+    "czech-matrix": {
+      "description": "Místnost OpenStreetMap CZ přemostěná s Discordem, IRC a Telegramem"
+    },
+    "czech-telegram": {
+      "description": "Místnost OpenStreetMap CZ přemostěná s Discordem, IRC, Jabberem a Matrixem"
+    },
+    "czech-xmpp": {
+      "description": "Místnost OpenStreetMap CZ přemostěná s Discordem, IRC, Matrixem a Telegramem"
+    },
+    "de-aachen-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "de-berlin-mailinglist": {
+      "name": "Berlínská mailová konference"
+    },
+    "de-berlin-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "de-berlin-xmpp": {
+      "name": "OpenStreetMap Berlín-Branborsko XMPP",
+      "description": "Připojte se k naší XMPP víceuživatelskému chatu: {url}"
+    },
+    "de-bochum-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "de-bonn-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "de-bremen-mailinglist": {
+      "name": "Brémská mailová konference"
+    },
+    "de-bremen-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "de-cologne-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "de-dresden-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "de-dusseldorf-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "de-hamburg-xmpp": {
+      "name": "OpenStreetMap Hamburk XMPP",
+      "description": "Připojte se k naší XMPP víceuživatelskému chatu: {url}"
+    },
+    "de-karlsruhe-mailinglist": {
+      "name": "Karlsruhská mailová konference"
+    },
+    "de-karlsruhe-meetup": {
+      "description": "Mapovači a uživatelé OpenStreetMap na území Karlsruhe"
+    },
+    "de-luneburg-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "de-mainz-mailinglist": {
+      "description": "OpenStreetMap v Mohuči a okolí"
+    },
+    "de-mainz-telegram": {
+      "description": "OpenStreetMap v Mohuči a okolí"
+    },
+    "de-mainz-wiki": {
+      "description": "OpenStreetMap v Mohuči a okolí"
+    },
+    "de-munchen-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "de-mv-mailinglist": {
+      "name": "Mailová konference Meklenburska-Předního Pomořanska"
+    },
+    "de-ostwestfalen-lippe-mailinglist": {
+      "description": "Tohle je mailová konference pro Ostwestfalen-Lippe OSM komunitu"
+    },
+    "de-stuttgart-mailinglist": {
+      "name": "Štíhradská a Bádensko-Württembergská mailová konference",
+      "description": "Tohle je mailová konference pro komunitu OSM Štíhradu a Bádensko-Württembergu"
+    },
+    "de-stuttgart-meetup": {
+      "name": "OpenStreetMap Štíhrad Meetup",
+      "description": "Mapovači a uživatelé OpenStreetMap na území Štíhradu"
+    },
+    "de-telegram": {
+      "description": "Připojte se k superskupině OpenStreetMap D-A-CH na Telegramu na {url}"
+    },
+    "de-ulm_neuulm-meetup": {
+      "name": "OpenStreetMap Ulm Nový Ulm Meetup",
+      "description": "Mapovači a uživatelé OpenStreetMap na území Ulmu a Nového Ulmu"
+    },
+    "de-ulmeralb-meetup": {
+      "description": "Mapovači a uživatelé OpenStreetMap na území Ulmer Alb"
+    },
+    "de-viersen-meetup": {
+      "description": "Komunita OSM a uživatelé setkání Kreis Virsen a Mönchengladbachu"
+    },
+    "de-xmpp": {
+      "description": "Připojte se k naší XMPP víceuživatelskému chatu: {url}"
+    },
+    "DF-telegram": {
+      "extendedDescription": "Připojte se ke komunitě a dozvíte se více o OpenStreetMap, můžete klást otázky nebo se účastnit našich setkání. Každý je vítán!"
+    },
+    "dk-discourse": {
+      "description": "Diskuzní fórum ohledně OpenStreetMap v Dánsku"
+    },
+    "ee-wiki": {
+      "description": "Informace týkající se mapování, které je specifické pro Estonsko."
+    },
+    "fr-35-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "fr-38-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "fr-bzh-website": {
+      "description": "Mapa, který je v bretonštině"
+    },
+    "fr-chapter": {
+      "description": "Pomáháme OpenStreetMap ve Francii růst a zlepšovat se."
+    },
+    "fr-matrix": {
+      "description": "Skupina pro francouzskou komunity OSM na Matrixu: {url} (přemostěná s Telegramem)"
+    },
+    "fr-montrouge-website": {
+      "description": "Ubformace OSM pro místní komunitu v Montrouge"
+    },
+    "fr-montrouge-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "fr-telegram": {
+      "description": "Skupina francouzské OSM komunity na Telegramu: {url}"
+    },
+    "fr-xmpp": {
+      "description": "Připojte se k osm-fr@chat.jabberfr.org"
+    },
+    "galicia-wiki": {
+      "description": "Vše, co potřebujete vědět o mapování v Galicii: {url}"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "name": "Xeoinquedos na Twitteru",
+      "description": "Sledujte nás na Twitteru na {url}"
+    },
+    "gb-irc": {
+      "extendedDescription": "Připojte se k #{account} na irc.oftc.net (port 6667), buďte prosím trpěliví a počkejte pár minut, pokud položíte otázku"
+    },
+    "gb-mailinglist": {
+      "description": "Talk-gb je hlavní komunikační fórum OSM komunity ve Velké Británii (včetně Severního Irska) "
+    },
+    "geogeeks_perth_meetup": {
+      "description": "Setkání založená v Perthu pro lidi se zájmem o mapování, geoprostorová data a otevřené zdroje. Pořádáme pravidelné OSM mapovací večírky, besedy a společenská setkání. Začátečníci jsou srdečně vítáni!"
+    },
+    "GeoPhilly": {
+      "description": "Seznamte se s nadšenci mapování na území Filadelfie",
+      "extendedDescription": "GeoPhilly spojuje vývojáře, geografy, geology dat, nadšence s otevřeným zdrojovým kódem, občanské hackery a mapové šílence do naší společné lásky k mapám a k příběhům, které vyprávějí. Pokud používáte mapy jako součást své práce, nebo se chcete dozvědět více, toto je setkání právě pro vás! Cílem našich akcí je být otevřený, přátelský, vzdělávající se a společenský v rozsahu od šťastných hodin přes bleskové rozhovory nebo dokonce workshopy. Pojďte s námi vytvořit rozmanitou a inspirující geoprostorovou komunitu ve Filadelfii!"
+    },
+    "hr-irc": {
+      "description": "Připojte se k #{account} na irc.freenode.org (port 6667)"
+    },
+    "hr-wiki": {
+      "description": "Stránka wikiprojektu pro Chorvatsko"
+    },
+    "hu-facebook-group": {
+      "name": "{community} skupina na Facebooku"
+    },
+    "hu-matrix": {
+      "extendedDescription": "Chat OpenStreetMap na mapová témata. Jedna z fór podpory komunity OSM."
+    },
+    "hu-meetup": {
+      "description": "Platforma pro organizování setkání v Maďarsku"
+    },
+    "hu-mobilizon": {
+      "name": "{community} na Mobilizonu",
+      "description": "Nadcházející události pro maďarskou komunitu OpenStreetMap"
+    },
+    "hu-tm": {
+      "name": "{community} Správce úloh",
+      "description": "Prozkoumejte aktivní mapovací úlohy v Maďarsku"
+    },
+    "hu-website": {
+      "description": "Pomáháme OpenStreetMap v Maďarsku růst a zlepšovat se."
+    },
+    "hu-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "humanitarian-osm-tr-slack": {
+      "name": "Humanitární OpenStreetMap Turecko Slack",
+      "description": "Připojte se k Humanitárnímu tureckému kanálu OpenStreetMap na HOTOSM Slack serveru na {url}"
+    },
+    "id-facebook": {
+      "extendedDescription": "Mapujete v Indonésii? Máte otázky, chcete se zde spojit s komunitou? Připojte se k nám na adrese {url}. Všichni jsou vítáni!"
+    },
+    "id-facebook-group": {
+      "name": "{community} skupina na Facebooku",
+      "extendedDescription": "Mapujete v Indonésii? Máte otázky, chcete se zde spojit s komunitou? Připojte se k nám na adrese {url}. Všichni jsou vítáni!"
+    },
+    "ireland-chapter": {
+      "description": "Pomáháme OpenStreetMap v Irsku růst a zlepšovat se.",
+      "extendedDescription": "OpenStreetMap Irsko poskytuje hlas obhájce pro projekty OpentreetMap na ostrově Irska kromě interakce s jinými otevřenými iniciativami."
+    },
+    "ireland-irc": {
+      "extendedDescription": "Připojte se k #{account} na irc.oftc.net (port 6667), buďte prosím trpěliví a počkejte pár minut, pokud položíte otázku"
+    },
+    "ireland-matrix": {
+      "description": "Brána Matrix pro IRC kanál OSM Irska: {url}"
+    },
+    "ireland-meetup": {
+      "description": "Setkání všech, kteří se zajímají o OpenStreetMap"
+    },
+    "is-chapter": {
+      "description": "Pomáháme OpenStreetMap na Islandu růst a zlepšovat se."
+    },
+    "it-chapter": {
+      "description": "Pomáháme OpenStreetMap v Itálii růst a zlepšovat se."
+    },
+    "it-discourse": {
+      "description": "Fórum, ve kterém můžete diskutovat o OpenStreetMap"
+    },
+    "ko-facebook": {
+      "description": "Mapovači a uživatelé OpenStreetMap v Koreji"
+    },
+    "ko-osm": {
+      "description": "Pomáháme OpenStreetMap v Koreji růst a zlepšovat se.",
+      "extendedDescription": "Pokud přispíváte nebo máte zájem přispívat do OpenStreetMap, prosím neváhejte se připojit. Jsme připraveni kdykoliv přijmout nováčky!"
+    },
+    "kosovo-flossk": {
+      "description": "Propagace FLOSS od roku 2009",
+      "extendedDescription": "Free Libre Open Source Software Kosova (FLOSSK) je nevládní organizace založená v Prištině v roce 2009 s cílem podpořit, propagovat a vyvíjet volné a otevřené zdroje softwaru. Kromě toho také přispíváme k otevřeným a participativním znalostem, vzdělávání v informačních technologií prostřednictvím otevřeného výukového softwaru a otevřených standardů, kultury a otevřené společnosti využívající svobodnou komunikaci."
+    },
+    "kosovo-matrix": {
+      "description": "Polooficiální celokosovská veřejná skupina (přemostěná s tím v Telegramu). Uvítáme všechny mapovače odkudkoli v jakémkoli jazyce."
+    },
+    "kosovo-telegram": {
+      "description": "Polooficiální celokosovská veřejná skupina na Telegramu. Uvítáme všechny mapovače odkudkoli v jakémkoli jazyce."
+    },
+    "kp-wiki": {
+      "description": "{community} průvodce mapování"
+    },
+    "latam-facebook": {
+      "description": "Mapovači OpenStreetMap na Facebooku v Latinské Americe"
+    },
+    "latam-matrix": {
+      "description": "Chatujte si s ostatními členy latinskoamerické komunity OSM, která je přemostěna s chatem na Telegramu"
+    },
+    "latam-telegram": {
+      "description": "Chatujte si s ostatními členy latinskoamerické komunity OSM, která je přemostěna s chatem na Matrixu"
+    },
+    "latam-wiki": {
+      "description": "Vše, co potřebujete vědět o mapování v Latinské Americe"
+    },
+    "lk-facebook": {
+      "extendedDescription": "Mapujete na Srí Lance? Máte otázky, chcete se zde spojit s komunitou? Připojte se k nám na adrese {url}. Všichni jsou vítáni!"
+    },
+    "local-polynesie-mailinglist": {
+      "extendedDescription": "Pokud se chcete informovat a dozvědět se o akcích komunity OSM, hledejte odpovědi na otázky, koordinaci a všeho, co může komunita OSM říci. Všichni jsou vítáni!"
+    },
+    "lu-github": {
+      "description": "Organizace GitHub pro OSM komunitu v Lucembursku!"
+    },
+    "lu-matrix": {
+      "description": "Skupina na Matrixu pro komunitu v Lucembursku. Pojďme dát komunitu dohromady!"
+    },
+    "lv-wiki": {
+      "description": "WikiProjekt Lotyšsko"
+    },
+    "madrid-uam-ym": {
+      "name": "YouthMappers na UAM",
+      "description": "Zastoupení YouthMappers na Universidad Autonoma de Madrid"
+    },
+    "madrid-upm-ym": {
+      "description": "Zastoupení YouthMappers na Universidad Politécnica de Madrid",
+      "extendedDescription": "Geo-dobrovolná skupina založená v Moncloa Campusu v listopadu 2017. Asi 20 členů ze tří univerzit (Complutense, CEU a UPM). Studenti bakalářského, magisterského a doktorandského studia spolupracují společně s organizacemi (Lékaři bez hranic, Acción contra el Hambre,...) podporovanými školiteli z Geoinquietosu. Oficiální uznání UPM jako vzdělávací inovační projekt (kód IE1718.0411)"
+    },
+    "madrid-wiki": {
+      "description": "Vše, co potřebujete vědět o mapování v Madridu: {url}"
+    },
+    "mailinglist-sk-googlegroups": {
+      "name": "Slovenská mailová konference ve Skupinách Google",
+      "description": "Oficiální mailová konference slovenské komunity"
+    },
+    "map-kibera": {
+      "description": "Map Kibera je registrovaná organizace pracující v Keni",
+      "extendedDescription": "Posláním organizace Map Kibera Trust je zvýšit vliv a zastoupení marginalizovaných komunit prostřednictvím kreativního využití digitálních nástrojů pro akci."
+    },
+    "MapABQ": {
+      "description": "Měsíční setkání uživatelů OpenStreetMap v Albuquerque a Severním Novém Mexiku",
+      "extendedDescription": "Každý se může připojit a my vám rádi pomůžeme začít s mapováním. Schůzky jsou v otevřeném formátu, aby se přispěvatelé mohli soustředit na přidávání do OpenStreetMap pro Albuquerque a okolní oblasti."
+    },
+    "MapColabora-mailinglist": {
+      "description": "Mapeado Colaborativo / Geoinquietos Zaragoza mailová konference"
+    },
+    "MapColabora-twitter": {
+      "description": "Kooperativní mapování / Twitter účet Geoinquietos Zaragoza"
+    },
+    "mappa-mercia-group": {
+      "name": "Lokální skupina Mappa Mercia",
+      "description": "Milovníci map a OpenStreetMap v Midlands",
+      "extendedDescription": "Mappa Mercia je projekt pro růst OpenStreetMap v Západní Midlands ve Spojeném království. Pořádáme akce pro komunitu, poskytujeme výcvik a podporu lokálních organizacím, kteří chtějí zpřístupnit svoje data."
+    },
+    "MappingDC-meetup": {
+      "description": "Vylepšete OpenStreetMap v oblasti DC",
+      "extendedDescription": "Jsme skupina dobrovolných mapovačů, jejichž cílem je vylepšit OpenStreetMap v oblasti DC. Naším cílem je také naučit ostatní o ekosystému OSM, analytice dat, kartografii a GIS. Scházíme se každý druhý měsíc na srazech, abychom se zaměřili na jednu oblast našeho města."
+    },
+    "MappingWR": {
+      "description": "Usnadnění nalezení nízkouhlíkových tras v regionu Waterloo."
+    },
+    "MapRVA": {
+      "description": "Setkání MapRVA"
+    },
+    "maptime-bogota-facebook": {
+      "description": "Jsme skupina lidí, kteří mají zájem zmapovat Bogotu a její okolí do OpenStreetMap.",
+      "extendedDescription": "Naučte se shromažďovat data v terénu a digitalizovat je na OpenStreetMap. Není nutné mít předchozí znalosti! Potřebujete pouze touhu účastnit se, učit se a bavit se."
+    },
+    "maptime-bogota-github": {
+      "description": "Jsme skupina lidí, kteří mají zájem zmapovat Bogotu a její okolí do OpenStreetMap.",
+      "extendedDescription": "Naučte se shromažďovat data v terénu a digitalizovat je na OpenStreetMap. Není nutné mít předchozí znalosti! Potřebujete pouze touhu účastnit se, učit se a bavit se."
+    },
+    "maptime-bogota-linkedin": {
+      "description": "Jsme skupina lidí, kteří mají zájem zmapovat Bogotu a její okolí do OpenStreetMap.",
+      "extendedDescription": "Naučte se shromažďovat data v terénu a digitalizovat je na OpenStreetMap. Není nutné mít předchozí znalosti! Potřebujete pouze touhu účastnit se, učit se a bavit se."
+    },
+    "maptime-bogota-mastodon": {
+      "description": "Jsme skupina lidí, kteří mají zájem zmapovat Bogotu a její okolí do OpenStreetMap.",
+      "extendedDescription": "Naučte se shromažďovat data v terénu a digitalizovat je na OpenStreetMap. Není nutné mít předchozí znalosti! Potřebujete pouze touhu účastnit se, učit se a bavit se."
+    },
+    "maptime-bogota-meetup": {
+      "description": "Jsme skupina lidí, kteří mají zájem zmapovat Bogotu a její okolí do OpenStreetMap.",
+      "extendedDescription": "Naučte se shromažďovat data v terénu a digitalizovat je na OpenStreetMap. Není nutné mít předchozí znalosti! Potřebujete pouze touhu účastnit se, učit se a bavit se."
+    },
+    "maptime-bogota-telegram": {
+      "description": "Jsme skupina lidí, kteří mají zájem zmapovat Bogotu a její okolí do OpenStreetMap.",
+      "extendedDescription": "Naučte se shromažďovat data v terénu a digitalizovat je na OpenStreetMap. Není nutné mít předchozí znalosti! Potřebujete pouze touhu účastnit se, učit se a bavit se."
+    },
+    "maptime-bogota-twitter": {
+      "description": "Jsme skupina lidí, kteří mají zájem zmapovat Bogotu a její okolí do OpenStreetMap.",
+      "extendedDescription": "Naučte se shromažďovat data v terénu a digitalizovat je na OpenStreetMap. Není nutné mít předchozí znalosti! Potřebujete pouze touhu účastnit se, učit se a bavit se."
+    },
+    "maptime-bogota-website": {
+      "description": "Jsme skupina lidí, kteří mají zájem zmapovat Bogotu a její okolí do OpenStreetMap.",
+      "extendedDescription": "Naučte se shromažďovat data v terénu a digitalizovat je na OpenStreetMap. Není nutné mít předchozí znalosti! Potřebujete pouze touhu účastnit se, učit se a bavit se."
+    },
+    "maptime-bogota-youtube": {
+      "description": "Jsme skupina lidí, kteří mají zájem zmapovat Bogotu a její okolí do OpenStreetMap.",
+      "extendedDescription": "Naučte se shromažďovat data v terénu a digitalizovat je na OpenStreetMap. Není nutné mít předchozí znalosti! Potřebujete pouze touhu účastnit se, učit se a bavit se."
+    },
+    "Maptime-ME-meetup": {
+      "description": "Mapovači a uživatelé OpenStreetMap, kolem Portlandu, ME",
+      "extendedDescription": "Maptime je, doslova, čas pro mapování. Naším posláním je otevírat dveře kartografické možnosti každému, kdo má zájem, vytvořením času a prostoru pro kolaborativní učení, průzkum a tvorbu map pomocí mapovacích nástrojů a technologií."
+    },
+    "Maptime-Oceania-Slack": {
+      "description": "Zaregistrujte se na {signupUrl}"
+    },
+    "md-googlegroup": {
+      "name": "{community} Skupiny Google",
+      "description": "Připojte se k {community} ve Skupinách Google"
+    },
+    "me-telegram": {
+      "description": "Všichni jsou vítáni! Zaregistrujte se na {signupUrl}"
+    },
+    "mm-facebook": {
+      "extendedDescription": "Mapujete v Myanmaru? Máte otázky, chcete se zde spojit s komunitou? Připojte se k nám na adrese {url}. Všichni jsou vítáni!"
+    },
+    "mn-facebook": {
+      "extendedDescription": "Mapujete v Mongolsku? Máte otázky, chcete se zde spojit s komunitou? Připojte se k nám na adrese {url}. Všichni jsou vítáni!"
+    },
+    "mt-irc": {
+      "extendedDescription": "Připojte se k #{account} na irc.oftc.net (port 6667), buďte prosím trpěliví a počkejte pár minut, pokud položíte otázku"
+    },
+    "nl-discourse": {
+      "description": "Fórum k diskusi ohledně OpenStreetMap v Nizozemsku"
+    },
+    "nl-matrix": {
+      "description": "Všichni mapovači jsou vítáni!"
+    },
+    "no-irc": {
+      "description": "Chatovací místnosti pro mapovače a uživatele OpenStreetMap, vývojáře a milovníky v Norsku"
+    },
+    "no-matrix": {
+      "description": "Most chatovací místnosti IRC"
+    },
+    "Nottingham-OSM-pub-meetup": {
+      "name": "Měsíční pivo ve Východní Midlands (Nottingham)",
+      "description": "Společenské setkání pro mapovače a uživatele ve Východní Midlands",
+      "extendedDescription": "Skupina se schází od března 2011, původně v Nottinghamu, nověji v Derby a čas od času jinde ve East Midlands. Jedná se o společenská setkání, ale jsou vynikajícím místem, kam přijít a zeptat se na konkrétní otázky týkající se OSM buď v této oblasti, nebo obecně. V letních měsících obvykle děláme nějaké lehké mapování na hodinu v blízkosti našeho místa setkání. Skupina jako celek má zvláštní zájem na mapování stezek s veřejným přístupem a čas od času pro tento účel pořádá schůzky."
+    },
+    "np-facebook": {
+      "extendedDescription": "Mapujete v Nepálu? Máte otázky, chcete se zde spojit s komunitou? Připojte se k nám na adrese {url}. Všichni jsou vítáni!"
+    },
+    "Open-Source-San-Jose-Discord": {
+      "description": "Zůstaňte ve spojení s ostatními mapovateli na Discordu! Po registraci se připojte ke kanálu #🗺openstreetmap."
+    },
+    "Open-Source-San-Jose-Slack": {
+      "description": "Všichni jsou vítáni! Zaregistrujte se na adrese {signupUrl} a připojte se k kanálu #proj-osm."
+    },
+    "OpenCleveland-meetup": {
+      "description": "Vylepšete OpenStreetMap na území Clevelandu",
+      "extendedDescription": "Open Geo Cleveland si klade za cíl být zdrojem pro lidi, kteří mohou diskutovat a sdílet znalosti o využívání bezplatných sad geografických dat, zejména OpenStreetMap a otevřeného geoprostorového softwaru, který spravuje, upravuje a zobrazuje geografická data a obhajuje jejich použití v severovýchodním Ohiu. Jsme také zastoupení maptime =)"
+    },
+    "osgeo-oceania": {
+      "name": "OSGeo Oceánie",
+      "description": "Podporujeme rozvoj komunity OpenStreetMap v Oceánii.",
+      "extendedDescription": "Účelem OSGeo Oceania je podporovat a rozvíjet otevřenou geoprostorovou komunitu v regionu Oceánie, včetně dohledu a správy série konferencí FOSS4G SotM Oceánie."
+    },
+    "osm-africa-eventbrite": {
+      "description": "{community} stránka EventBrite"
+    },
+    "osm-africa-facebook-group": {
+      "name": "{community} skupina na Facebooku"
+    },
+    "osm-africa-matrix": {
+      "description": "Všichni mapovači jsou vítáni!"
+    },
+    "osm-africa-slack": {
+      "description": "Všichni jsou vítaní! Přihlaste se na {signupUrl}"
+    },
+    "OSM-AR-geolibres": {
+      "description": "Občanské sdružení Geolibres",
+      "extendedDescription": "Propagujeme tvorbu a použití volně přístupných geografických dat, přijímání geografických standardů a použití volného a otevřeného zdroje dat."
+    },
+    "OSM-AR-telegram": {
+      "extendedDescription": "Toto je nejaktivnější kanál v komunitě, ideální pro chatování a okamžité získání odpovědí na vaše otázky. Každý je vítán!"
+    },
+    "OSM-AR-twitter": {
+      "extendedDescription": "Novinky od místní komunity a OpenStreetMap obecně."
+    },
+    "OSM-AR-wiki": {
+      "description": "Vše, co potřebujete vědět o mapování v Argentině."
+    },
+    "osm-at": {
+      "description": "Informační platforma pro OpenStreetMap v Rakousku"
+    },
+    "osm-bengaluru-matrix": {
+      "extendedDescription": "Skupina pro přispěvatele, uživatele a nováčky OpenStreetMap v Bengalúru. Propojeno do Telegramu."
+    },
+    "osm-bengaluru-telegram": {
+      "extendedDescription": "Skupina pro přispěvatele, uživatele a nováčky OpenStreetMap v Bengalúru. Propojeno do Matrixu."
+    },
+    "osm-bengaluru-wiki": {
+      "description": "OpenStreetMap v Bengalúru"
+    },
+    "osm-benin-facebook": {
+      "description": "Vylepšete OpenStreetMap v Beninu"
+    },
+    "OSM-Central-Salish-Sea": {
+      "description": "Mapovači a uživatelé OpenStreetMap, kolem Mount Vernon, WA",
+      "extendedDescription": "OpenStreetMap je mapa světa vytvořená lidmi, jako jste vy. Je to mapa, kterou stavíte, která je k dispozici zdarma jako wikipedie. Podívejte se na osm.org. Po celou dobu se scházíme, abychom si povídali o mapách, vytvářeli je a bavili se!"
+    },
+    "osm-ch": {
+      "description": "Informační platforma pro OpenStreetMap ve Švýcarsku"
+    },
+    "OSM-Chattanooga": {
+      "description": "Uživatelská skupina OpenStreetMap pro Chatanoogu"
+    },
+    "OSM-Colorado": {
+      "description": "Mapovači a uživatelé OpenStreetMap ve státě Colorado, USA",
+      "extendedDescription": "OpenStreetMap (OSM) Colorado je místní spolupráce lidí, kteří mají zájem přispět svým úsilím vytvářet bezplatné mapy. Vyzýváme všechny naše tvůrce map, aby organizovali nebo navrhovali mapovací události po celém státě. Setkávací aktivity mohou být jednoduché sociální mixy od základní až pokročilá školení OSM nebo strany mapující komunity."
+    },
+    "osm-de": {
+      "description": "Informační platforma pro OpenStreetMap v Německu"
+    },
+    "osm-deep-south-wiki": {
+      "description": "{community} Wiki stránka",
+      "extendedDescription": "OpenStreetMap Deep South je lokální mapovací komunita v jihovýchodních Spojených státech."
+    },
+    "osm-delhi-xmpp": {
+      "name": "OpenStreetMap Dillí XMPP",
+      "description": "Připojte se k naší XMPP místnosti: {url}",
+      "extendedDescription": "XMPP místnost pro OSM Dillí, není propojena do žádné proprietární sítě."
+    },
+    "OSM-Discord": {
+      "name": "Světový Discord OpenStreetMap"
+    },
+    "OSM-Discourse": {
+      "name": "Fórum komunity OpenStreetMap",
+      "description": "Sdílené místo pro konverzace ohledně OpenStreetMap"
+    },
+    "OSM-Facebook": {
+      "description": "Dejte naší facebookové stránce To se mi líbí, aby vám neunikly žádné novinky ze světa OpenStreetMap."
+    },
+    "osm-fj": {
+      "description": "Poskytování služeb a informací OSM pro místní komunitu ve Fidži"
+    },
+    "osm-gh-facebook": {
+      "extendedDescription": "Mapovači z komunity v Ghaně propagující OpenStreetMap a projekty Humanitárního OpenStreetMap týmu (HOT) v Ghaně. Připojte se k nám."
+    },
+    "osm-gh-website": {
+      "description": "Poskytování služeb a informací OSM pro místní komunitu v Ghaně"
+    },
+    "osm-hr": {
+      "description": "Informační platforma pro OpenStreetMap v Chorvatsku"
+    },
+    "osm-id": {
+      "description": "Poskytování služeb a informací OSM pro místní komunitu v Indonésii"
+    },
+    "OSM-India-facebook": {
+      "description": "Vylepšete OpenStreetMap v Indii",
+      "extendedDescription": "Mapujete v Indii? Máte otázky, chcete se zde spojit s komunitou? Připojte se k nám na adrese {url}. Všichni jsou vítáni!"
+    },
+    "osm-india-github": {
+      "description": "Kódujte s námi: {url}"
+    },
+    "osm-india-mastodon": {
+      "description": "Domov komunity OpenStreetMap Indie na fediverse"
+    },
+    "osm-india-matrix": {
+      "extendedDescription": "Neoficiální chatovací místnost pro OSM Indie, také přemostěna do skupiny osmindia na Telegramu"
+    },
+    "OSM-India-Puducherry-Facebook": {
+      "description": "Facebooková stránka FSHM, kde se dozvíte o komunitních akcích a aktivitách",
+      "extendedDescription": "FSHM pořádá akce týkající se svobodného softwaru/hardwaru, technologie, aktivismu a OpenStreetMap. Jeho FB stránka je nejlepší způsob, jak zůstat v kontaktu s jeho událostmi."
+    },
+    "OSM-India-Puducherry-Matrix": {
+      "description": "Skupina FSHM na Riotu pro diskuzi, sdílení a aktualizaci mapových aktivit, událostí v Puducherry a okolí",
+      "extendedDescription": "Členové komunity FSHM sdílejí své aktualizace / zkušenosti s mapováním OSM prostřednictvím skupiny Riot.im, tato skupina se také používá k diskusi o věcech souvisejících se svobodným softwarem / hardwarem, technologiemi a aktivismem."
+    },
+    "OSM-india-twitter": {
+      "description": "Zrovna jsme vytweetli: {url}"
+    },
+    "osm-india-website": {
+      "description": "Mapovači a uživatelé OpenStreetMap v Indii"
+    },
+    "osm-india-wiki": {
+      "description": "Vše, co potřebujete vědět o mapování v Indii: {url}"
+    },
+    "osm-india-xmpp": {
+      "name": "OpenStreetMap Indie XMPP",
+      "description": "Připojte se k naší XMPP místnosti: {url}",
+      "extendedDescription": "Místnost XMPP pro indickou komunitu OSM; není propojena do žádné proprietární sítě. Dostupné také od Matrix přes #osm-in:poddery.com"
+    },
+    "osm-iran-aparat": {
+      "extendedDescription": "Dobrý zdroj videí o čemkoli souvisejícím s OpenStreetMap. Hlavně v perštině."
+    },
+    "osm-iran-discord": {
+      "extendedDescription": "Discord server pro OpenStreetMap Iran. Neváhejte se připojit!"
+    },
+    "osm-iran-telegram": {
+      "extendedDescription": "Můžete se připojit k našemu telegramovému kanálu na adrese {url}. Máme také superskupinu mnoha OSMers se zájmem o Írán. Odkaz na něj najdete v biu kanálu."
+    },
+    "OSM-japan-facebook": {
+      "description": "Mapovači a uživatelé OpenStreetMap v Japonsku"
+    },
+    "OSM-japan-slack": {
+      "description": "Pracovní prostor Slack pro komunitu OSM Japonsko {signupUrl}"
+    },
+    "OSM-japan-website": {
+      "description": "Mapovači a uživatelé OpenStreetMap v Japonsku"
+    },
+    "osm-kenya": {
+      "description": "OSM Keňa je komunita přispěvatelů a uživatelů OSM",
+      "extendedDescription": "OSM je místní komunita pro jednotlivce se zájmem o OpenStreetMap, včetně organizací, vývojářů a zastoupení YouthMappers v zemi."
+    },
+    "osm-kenya-facebook": {
+      "description": "OSM Keňa je komunita přispěvatelů a uživatelů OSM",
+      "extendedDescription": "OSM je místní komunita pro jednotlivce se zájmem o OpenStreetMap, včetně organizací, vývojářů a zastoupení YouthMappers v zemi."
+    },
+    "OSM-Kerala-facebook": {
+      "description": "Vylepšete OpenStreetMap v Kérale",
+      "extendedDescription": "Mapujete v Kérale? Máte otázky, chcete se zde spojit s komunitou? Připojte se k nám na adrese {url}. Všichni jsou vítáni!"
+    },
+    "osm-kerala-github": {
+      "description": "Kódujte s námi: {url}"
+    },
+    "osm-kerala-matrix": {
+      "description": "Společně mapujeme Kéralu. Připojte se k naší skupině na Matrixu",
+      "extendedDescription": "Neoficiální chatovací místnost pro OSM Kérala, také přemostěna do skupiny osmkerala na Telegramu"
+    },
+    "osm-kerala-telegram": {
+      "description": "Společně mapujeme Kéralu. Připojte se k naší skupině na Telegramu"
+    },
+    "osm-kerala-website": {
+      "description": "Pomáháme OpenStreetMap v Kérale růst a zlepšovat se."
+    },
+    "osm-kerala-wiki": {
+      "description": "Chcete se dozvědět více o mapování v Kérale? {url}"
+    },
+    "osm-mg-facebook": {
+      "description": "Malgašská facebooková skupina pro lidi zajímající se o OpenStreetMap."
+    },
+    "osm-michigan-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "osm-ni": {
+      "description": "Poskytování služeb a informací OSM pro místní komunitu v Nikaragui"
+    },
+    "osm-ohio-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "OSM-Ottawa-meetup": {
+      "description": "Mapovači a uživatelé OpenStreetMap na území Ottawy"
+    },
+    "OSM-PE": {
+      "description": "Novinky a zdroje pro peruánskou komunitu OpenStreetMap"
+    },
+    "OSM-PH-telegram": {
+      "extendedDescription": "Přátelská a velmi aktivní skupina telegramů pro OSM mapovače a přátele na Filipínách pro malé rozhovory, lehké žertování a rychlé otázky a odpovědi."
+    },
+    "OSM-PL-chapter": {
+      "description": "Domov polské komunity OpenStreetMap"
+    },
+    "OSM-PL-discord": {
+      "description": "Hlavní místo pro hlasové chaty mezi polskou komunitou OpenStreetMap, aktivní textové kanály"
+    },
+    "OSM-PL-github": {
+      "description": "Organizace GitHub polské komunity OpenStreetMap"
+    },
+    "OSM-Puducherry-Mailing-List": {
+      "name": "Free Software Hardware Movement - Mailová konference",
+      "description": "Mailová konference FSHM Puducherry k diskuzi o mapování v Puducherry a dalších věcech.",
+      "extendedDescription": "FSHM pořádá akce týkající se svobodného softwaru/hardwaru, technologie, aktivismu a OpenStreetMap."
+    },
+    "OSM-Rome-meetup": {
+      "description": "Vylepšete OpenStreetMap na území Říma",
+      "extendedDescription": "Naším cílem je být zdrojem pro lidi, kteří mohou diskutovat a sdílet znalosti o využívání bezplatných sad geografických dat, zejména OpenStreetMap a otevřeného geoprostorového softwaru, který spravuje, upravuje a zobrazuje geografická data a obhajuje jejich použití v Laziu."
+    },
+    "OSM-Seattle": {
+      "description": "Mapovači a uživatelé OpenStreetMap na území Seattlu"
+    },
+    "osm-sierra-leone": {
+      "description": "Zaměřujeme se na vytváření a používání otevřených dat k řešení sociálních, ekonomických a komunitních problémů."
+    },
+    "OSM-SoCal": {
+      "name": "OpenStreetMap Jižní Kalifornie",
+      "description": "Pojďme se trochu pobavit, přispět něčím do Los Angeles a dozvědět se něco o mapování!",
+      "extendedDescription": "OpenStreetMap (OSM) Jižní Kalifornie je pro každého, kdo se zajímá o mapování, aby se spojil a pracoval s OpenStreetMap. OpenStreetMap, Wikipedie map, je bezplatná mapa světa s otevřeným zdrojovým kódem, kterou vytváří více než 1 000 000 dobrovolníků po celém světě. Každý je vítán. Pokud OpenStreetMap neznáte, naučíme vás to. Pokud máte nápad na projekt mapování nebo dokonce exkurzi, kterou může skupina udělat, skvělé!"
+    },
+    "OSM-South-Bay": {
+      "description": "Připojte se online k South Bay Map Nights",
+      "extendedDescription": "Seznamte se s kolegy ze South Bay Mappers a pomozte s místními mapovacími projekty na našem online setkání každou druhou úterní noc ve spolupráci s Open Source San José. Programování a dovednosti GIS nejsou vyžadovány."
+    },
+    "OSM-Tampa-Bay": {
+      "description": "Mapovači a uživatelé OpenStreetMap na území Tampa Bay",
+      "extendedDescription": "Skupina OSM Tampa Bay pro místní obyvatele, aby se sešli a vytvořili definitivní mapu Tampa Bay pomocí OpenStreetMap, bezplatné a upravitelné mapy světa. Pokud máte rádi mapy, data, open source, GPS, turistiku, cyklistiku atd., budete rádi pracovat s OpenStreetMap – tak se připojte! Zhruba jednou za měsíc se sejdeme a budeme mapovat a mluvit o nových tématech."
+    },
+    "osm-td-facebook": {
+      "description": "Vylepšete OpenStreetMap v Čadu"
+    },
+    "OSM-Telegram": {
+      "description": "Připojte se ke globální superskupině OpenStreetMap na Telegramu na {url}"
+    },
+    "OSM-TH-CNX-meetup": {
+      "description": "Nepravidelná setkání komunity OpenStreetMap ve Chiang Mai",
+      "extendedDescription": "Členové komunity OpenStreetMap se scházejí každých pár měsíců v Chiang Mai. Kontaktujte nás a podívejte se na {url}, abyste zjistili, kdy je naplánováno další setkání"
+    },
+    "osm-toronto-meetup": {
+      "description": "Mapovači a uživatelé OpenStreetMap na území Toronta"
+    },
+    "osm-tw": {
+      "description": "Pomáháme OpenStreetMap v Tchaj-wanu růst a zlepšovat se."
+    },
+    "OSM-US": {
+      "description": "Pomáháme OpenStreetMap ve Spojených Státech růst a zlepšovat se.",
+      "extendedDescription": "Podporujeme OpenStreetMap pořádáním výročních konferencí, poskytováním komunitních zdrojů, budováním partnerství a šířením informací. Připojte se k OpenStreetMap US zde: {signupUrl}",
+      "events": {
+        "mappingusa2022": {
+          "name": "Mapování USA 2022",
+          "description": "Připojte se k bezplatné virtuální konferenci na oslavu Wiki a komunit OpenStreetMap po celé Severní Americe!",
+          "where": "virtuálně"
+        }
+      }
+    },
+    "OSM-US-Slack": {
+      "description": "Všichni jsou vítaní! Přihlaste se na {signupUrl}"
+    },
+    "OSM-Utah": {
+      "description": "Mapovači a uživatelé OpenStreetMap na území Salt Lake City",
+      "extendedDescription": "Aktivity mohou zahrnovat události, jako jsou workshopy Learn To Map, mapovací večírky a sběr venkovních dat. Události se budou konat v oblasti SLC, alespoň zpočátku. Hledáme ostřílené mapovače i lidi, kteří v OSM začínají. Připojte se a pojďte dělat nějaké mapování!"
+    },
+    "osm-west-bengal-xmpp": {
+      "name": "OpenStreetMap Západní Bengálsko XMPP",
+      "description": "Připojte se k naší XMPP místnosti: {url}",
+      "extendedDescription": "XMPP místnost pro OSM Západní Bengálsko."
+    },
+    "OSM-Wyoming": {
+      "description": "Mapovači a uživatelé OpenStreetMap ve státě Wyoming",
+      "extendedDescription": "OpenStreetMap (OSM) Wyoming je místní spolupráce lidí, kteří mají zájem přispět svým úsilím vytvářet bezplatné mapy. Vyzýváme všechny naše tvůrce map, aby organizovali nebo navrhovali mapovací události po celém státě. Setkávací aktivity mohou být jednoduché sociální mixy od základní až pokročilá školení OSM nebo strany mapující komunity."
+    },
+    "osmcz-twitter": {
+      "description": "Sledujte českou komunitu na Twitteru – včetně přeloženého WeeklyOSM!"
+    },
+    "OSMF": {
+      "name": "Nadace OpenStreetMap",
+      "description": "OSMF je britská nezisková organizace, která podporuje projekt OpenStreetMap",
+      "extendedDescription": "OSMF podporuje projekt OpenStreetMap získáváním finančních prostředků, údržbou serverů, které pohání OSM, pořádáním každoroční konference State of the Map a koordinací dobrovolníků, kteří udržují OSM v chodu. Svou podporu a hlas ve směru OpenStreetMap můžete projevit tím, že se připojíte jako člen OSMF zde: {signupUrl}"
+    },
+    "ph-facebook-group": {
+      "name": "{community} skupina na Facebooku"
+    },
+    "PHXGeo-meetup": {
+      "description": "Mapovači a uživatelé OpenStreetMap na území Phoenixu v Arizoně",
+      "extendedDescription": "Toto je skupina setkání pro ty z oblasti Phoenix, kteří mají rádi mapy, GIS, OpenStreetMap, kartografii a cokoli mezi tím."
+    },
+    "PHXGeo-twitter": {
+      "description": "Sledujte nás na Twitteru na {url}"
+    },
+    "pt-wiki": {
+      "description": "WikiProject s informacemi a koordinační podmínky pro mapování v Portugalsku."
+    },
+    "rs-discourse": {
+      "description": "Fórum k diskusi ohledně OpenStreetMap v Srbsku"
+    },
+    "rs-gitlab": {
+      "description": "Sbírka projektů souvisejících s OSM Srbsko na GitLabu"
+    },
+    "rs-osm": {
+      "description": "Informační platforma pro OpenStreetMap v Srbsku"
+    },
+    "RS-telegram": {
+      "extendedDescription": "Připojte se ke komunitě a dozvíte se více o OpenStreetMap, můžete klást otázky nebo se účastnit našich setkání. Každý je vítán!"
+    },
+    "rs-wiki": {
+      "description": "Stránka wikiprojektu pro Srbsko"
+    },
+    "sg-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "si-ljubljana-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "si-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "sk-freemap": {
+      "description": "Mapový web OpenStreetMap s nástroji na Slovensku a okolních regionech"
+    },
+    "sosm": {
+      "name": "Švýcarské sdružení OpenStreetMap",
+      "description": "SOSM byl vytvořen s cílem podpořit cíle hnutí OpenStreetMap, aby posílil kontakty s úřady a průmyslem, usnadnil činnost členů komunity OSM ve Švýcarsku a zastupoval švýcarskou komunitu OSM v jiných organizacích."
+    },
+    "talk-au": {
+      "description": "Místo pro chatování australských mapovačů"
+    },
+    "talk-bo": {
+      "extendedDescription": "Mapujete v Bolívii? Máte dotazy, chcete se zde spojit s komunitou? Připojte se k nám na {url}. Všichni jsou vítáni!"
+    },
+    "talk-mg": {
+      "description": "Místo pro přispěvatele OpenStreetMap, komunity a uživatele na Madagaskaru, kde mohou sdílet a diskutovat."
+    },
+    "talk-nz": {
+      "description": "Diskuse komunity OSM na Novém Zélandu"
+    },
+    "talk-pacific": {
+      "description": "Regionální mailová konference OSM pro národy Moany/Oceánie/Pacifiku",
+      "extendedDescription": "Rádi bychom, aby tato mailová konference podporovala všechny národy Pacifiku, ve vší naší rozmanitosti a aspiracích, aby sdílely myšlenky, otázky, projekty a vše, co souvisí s OpenStreetMap v našem moři ostrovů."
+    },
+    "tn-facebook-group": {
+      "name": "{community} skupina na Facebooku"
+    },
+    "tw-slack": {
+      "description": "Všichni jsou vítaní! Přihlaste se na {signupUrl}"
+    },
+    "tw-wiki": {
+      "description": "Vše, co potřebujete vědět o mapování v Tchaj-wanu: {url}"
+    },
+    "tz-website": {
+      "description": "Poskytování služeb a informací OSM pro místní komunitu v Tanzanii"
+    },
+    "ua-github": {
+      "description": "OpenStreetMap Ukrajina GitHub"
+    },
+    "ua-osm": {
+      "description": "Web OpenStreetMap v Ukrajinštině"
+    },
+    "ua-slack": {
+      "description": "Připojte se ke komunitě OpenStreetMap Ukrajina na Slacku. Zaregistrujte se na adrese {signupUrl}"
+    },
+    "uk-localchapter": {
+      "description": "Oficiální místní zastoupení pro Spojené království (včetně Severního Irska).",
+      "extendedDescription": "Podporujeme OpenStreetMap pořádáním událostí, poskytováním komunitních zdrojů, budováním partnerství a šířením informací. Připojte se k OpenStreetMap UK zde: {signupUrl}"
+    },
+    "uk-london-mastodon": {
+      "name": "OpenStreetMap Londýn na Mastodonu",
+      "description": "OpenStreetMap Londýn na Mastodonu: {url}"
+    },
+    "uk-london-twitter": {
+      "name": "OpenStreetMap Londýn na Twitteru",
+      "description": "OpenStreetMap Londýn na Twitteru: {url}"
+    },
+    "uk-london-wiki": {
+      "description": "{community} Wiki stránka"
+    },
+    "uk-loomio": {
+      "name": "OpenStreetMap UK na Loomiu"
+    },
+    "us-discourse": {
+      "description": "Diskuzní fórum ohledně OpenStreetMap v Spojených státech"
+    },
+    "us-massachusetts-mailinglist": {
+      "name": "Mailová konference Talk-us-massachusetts",
+      "description": "Tohle je mailová konference pro Massachusettskou OSM komunitu"
+    },
+    "us-newyork-mailinglist": {
+      "name": "Mailová konference Talk-us-newyork",
+      "description": "Tohle je mailová konference pro OSM komunitu státu New York"
+    },
+    "uy-irc": {
+      "description": "Připojte se k #{account} na irc.freenode.org (port 6667)",
+      "extendedDescription": "Připojte se k #{account} na irc.freenode.org"
+    },
+    "vn-mailinglist": {
+      "description": "Mailová konference OpenStreetMap ve Vietnamu nebo ve vietnamštině"
+    },
+    "YerCizenler-TR": {
+      "description": "Sdružení Yer Çizenler Mapování pro každého",
+      "extendedDescription": "Yer Çizenler je místní nevládní organizace, která je součástí turecké komunity OSM, jejímž cílem je podporovat používání otevřených geoprostorových dat a nástrojů v rámci národní mapovací komunity."
+    },
+    "ym-AASTU": {
+      "name": "AASTU YouthMappers",
+      "description": "Zastoupení YouthMappers na Addis Ababa Science a Technology University",
+      "extendedDescription": "Asociace studentů geomatiky (AGES) se zaměřuje na propagaci produktů a služeb GIS a také na školení studentů v jejich používání. Nejenže podporuje socializaci mezi studenty a praktikujícími profesionály, ale také poskytuje platformu pro výměnu nových nápadů pro pořádání nových GIS a průzkumných akcí a školení na univerzitě."
+    },
+    "ym-Abia-State-University": {
+      "description": "Zastoupení YouthMappers na Abia State University",
+      "extendedDescription": "AbsuMappersTeam je dobrovolný tým mapových nadšenců, kteří k řešení problémů používají OpenStreetMap, GIS a další geoprostorové technologie s otevřeným zdrojovým kódem. Je určen pro reakci na katastrofy pomocí OpenStreetMap. Jedná se o profesionální platformu pro mentorování a podporu pro ty, kteří mají vášeň pro GIS a mapování. Je to komunita dobrovolníků pro tvorbu geoprostorových dat, sběr dat v terénu a mapování. Tým byl spoluzaložen Victorem N. Sundayem (mentor týmu) a profesorem J. U. Ogbonnou, koordinátorem týmu a fakulty Advisor. AbsuMapperTeam je přidruženou společností UniiqueMappersTeam-Port Harcourt. Tým podporuje udržitelný rozvoj pomocí geoprostorové technologie."
+    },
+    "ym-African-Methodist-Episcopal-University": {
+      "description": "Zastoupení YouthMappers na Africké metodistické biskupské univerzitě"
+    },
+    "ym-Ahmadu-Bello-University": {
+      "description": "Zastoupení YouthMappers na Ahmadu Bello University",
+      "extendedDescription": "Jsme skupina datových humanitárních mapovačů, kteří se věnují poskytování humanitárních služeb při reakci na katastrofy a při zmírňování následků. Jsme rádi, že můžeme přispět svými odbornostmi a znalostmi prostřednictvím mapování a pomoci šířit #OpenEvangelism prostřednictvím školení a spolupráce."
+    },
+    "ym-Ardhi-University": {
+      "description": "Zastoupení YouthMappers na Ardhi University",
+      "extendedDescription": "Jako nadcházející konzultanti geoprostorových dat se snažíme vzdělávat a poskytovat společnosti rady, jak mohou využívat prostorová data nejen jako formu umístění, ale i jako nástroj rozhodování a předvídat různé nebezpečné a klimatické změny, které mohou poškodit je nebo budoucí generace."
+    },
+    "ym-Arizona-State-University-facebook": {
+      "description": "Zastoupení YouthMappers na Arizona State University"
+    },
+    "ym-Arizona-State-University-twitter": {
+      "description": "Zastoupení YouthMappers na Arizona State University"
+    },
+    "ym-Asian-University-for-Women": {
+      "name": "YouthMappers na AUW",
+      "description": "Zastoupení YouthMappers na Asian University pro ženy",
+      "extendedDescription": "Asijská univerzita pro ženy se snaží vystudovat ženy, které budou zručnými a inovativními profesionálkami, vedoucími orientovanými na služby v podnicích a komunitách, ve kterých budou pracovat a žít, a podporovateli mezikulturního porozumění a udržitelného lidského a ekonomického rozvoje v Asii a po celém světě."
+    },
+    "ym-Ball-State-University": {
+      "name": "Zastoupení Gamma Theta Upsilon - Iota Omega",
+      "description": "Zastoupení YouthMappers na Ball State University",
+      "extendedDescription": "Naše zastoupení je velmi aktivní. Primárně se zaměřujeme na komunitní akce, fundraising a exkurze. V současné době se snažíme rozvíjet další aktivity související s mapováním, abychom přilákali další studenty z kampusu, kteří by mohli mít zájem přispět."
+    },
+    "ym-Busitema-University": {
+      "name": "Dobří mapovači",
+      "description": "Zastoupení YouthMappers na Busitema University",
+      "extendedDescription": "Dobří mapovači je tým studentů na Busitema University. Jeho hlavním cílem je vytvořit komunitu zkušených mapovačů, kteří mohou přispět k mapě světa."
+    },
+    "ym-California-University-of-Pennsylvania": {
+      "description": "Zastoupení YouthMappers na California University of Pennsylvania",
+      "extendedDescription": "Studenti GIS na Cal U se učí aplikovat prostorovou teorii na skutečný svět. Univerzitní studijní program je zaměřen na geografii a využití GIS v krizovém managementu."
+    },
+    "ym-Central-Washington-University": {
+      "name": "Geografický klub",
+      "description": "Zastoupení YouthMappers na Central Washington University (USA)",
+      "extendedDescription": "Naším cílem spojit se s Youthmappers je přinést úlevu oblastem, které potřebují humanitární mapování. Tím sloužíme našim bratrům a sestrám po celém světě a zároveň rozvíjíme naše vlastní kartografické dovednosti."
+    },
+    "ym-Clemson-University": {
+      "name": "Mapovači Clemsonu",
+      "description": "Zastoupení YouthMappers na Clemson University (JOR)",
+      "extendedDescription": "Studenti v Clemsonu jsou podporováni Centrem pro geoprostorové technologie, komunitou mezioborových praktiků geoprostorových věd, kteří podporují výzkum, výuku a osvětové aktivity využívající technologie, které umožňují sběr, analýzu a aplikaci geoprostorových dat. Studenti integrují geoprostorové technologie do svých vědeckých aktivit napříč všemi obory a budují spojení po celém světě."
+    },
+    "ym-College-of-William-and-Mary": {
+      "name": "Všechno přes mapu!",
+      "description": "Zastoupení YouthMappers na College of William and Mary",
+      "extendedDescription": "Studenti, kteří jsou po celé mapě, jsou podporováni Centrem pro geoprostorovou analýzu, skupinou integrující GIS napříč učebními osnovami a poskytující studentům a fakultě hardware, software a odborné znalosti. Studenti všech prostředí využívají GIS napříč kampusem, včetně environmentální vědy a politiky, geologie, historie, obchodu, sociologie, biologie, antropologie, veřejné politiky a námořních věd."
+    },
+    "ym-Cornell-University": {
+      "name": "Mapovací společnost",
+      "description": "Zastoupení YouthMappers na Cornell University",
+      "extendedDescription": "Studenti a učitelé Cornell používají otevřená data a software s otevřeným zdrojovým kódem k řešení problémů v místním, národním a globálním měřítku. Tím posouváme naše akademické a osobní cíle rozvoje našich vlastních dovedností v oblasti GIS a prostorové gramotnosti."
+    },
+    "ym-CURAT": {
+      "description": "Zastoupení YouthMappers v Centre Universitaire de Recherche et d'Application en Télédétection (CURAT) de l'Université Felix Houphouet Boigny",
+      "extendedDescription": "Cílem našeho zastoupení je propagovat využití kolaborativního bezplatného mapování a využití dat OpenStreetMap v oblasti výzkumu a jejich aplikaci při implementaci nástrojů pro rozhodování. Pomozte studentům vytvářet vlastní data z jejich výzkumu."
+    },
+    "ym-Cuttington-University": {
+      "name": "YouthMappers Univerzity Cuttington",
+      "description": "Zastoupení YouthMappers na Cuttington University",
+      "extendedDescription": "YouthMappers na Cuttington University, Suakoko a Bong County složeni ze studentů ze tří různých oddělení; konkrétně Katedra managementu přírodních zdrojů „DONRM“, Katedra environmentálních věd a Katedra přírodních věd. Od založení zastoupení v únoru 2017 je celkový počet studentů 20, přičemž každá katedra má 5 studentů."
+    },
+    "ym-Dedan-Kimathi-University-of-Technology": {
+      "description": "Zastoupení YouthMappers na Technologické univerzitě Dedana Kimathiho",
+      "extendedDescription": "GDEV je skupina nadšené skupiny GIS na DeKUT, jejímž cílem je pomáhat studentům sdílet, zapojovat se a učit se jeden od druhého v geoprostorových věcech"
+    },
+    "ym-Dhaka-College": {
+      "description": "Zastoupení YouthMappers na Dhaka College",
+      "extendedDescription": "YouthMappers DhakaCollege je přístup studentů, kteří v rámci Humanitární akce pomáhají mapovat zranitelné oblasti světa. YouthMappers dává studentům příležitost pomáhat lidem a využívat mapování pro humanitární účely. Tato otevřená geografická data lze použít pro vzdělávací, navigační a jiné humanitární účely. Šťastné mapování."
+    },
+    "ym-Dhaka-University": {
+      "name": "YouthMappers OpenStreetMap",
+      "description": "Zastoupení YouthMappers na Dhaka University",
+      "extendedDescription": "Je velkým privilegiem pro studenty University of Dhaka mapovat pro humanitární účely. Naše zastoupení dává studentům příležitost pomáhat lidem a používat mapování pro humanitární účely."
+    },
+    "ym-Eastern-University": {
+      "name": "YouthMappers na Východní univerzitě",
+      "description": "Zastoupení YouthMappers na Východní univerzitě",
+      "extendedDescription": "YouthMappers na Eastern University v Bangladéši byla založena s cílem pomáhat lidem během humanitární krize. Studenti, stejně jako další mapovači světa, mají slíbenou pomoc lidem při používání mapy pro vzdělávací, navigační a jiné humanitární účely."
+    },
+    "ym-Far-Eastern-University-Institute-of-Technology": {
+      "description": "Zastoupení YouthMappers na Univerzitě Dálného východu – technologický institut",
+      "extendedDescription": "FEU byla uznána jako jedna z předních univerzit na Filipínách. Jeho poslání se soustředí na produkci absolventů, kteří přispěli k rozvoji země. Univerzita se neustále snaží zvyšovat laťku excelence, aby dosáhla špičkového postavení nejen na Filipínách, ale také v regionu jihovýchodní Asie"
+    },
+    "ym-Federal-School-of-Surveys": {
+      "description": "Zastoupení YouthMappers na Fedeální škole průzkumů"
+    },
+    "ym-Federal-University-of-Technology-Akure": {
+      "description": "Zastoupení YouthMappers na Federální univerzitě technologie, Akure",
+      "extendedDescription": "Naším posláním je vychovat další generaci vesmírných vůdců. Činnosti zahrnují výzkum a budování kapacit v oblasti dálkového průzkumu Země, GIS, změny klimatu, astronomie, kosmologie, vesmírného inženýrství, globální navigace, robotiky a kosmického vzdělávání."
+    },
+    "ym-Fourah-Bay-College": {
+      "name": "Studentská geografická asociace",
+      "description": "Zastoupení YouthMappers na Fourah Bay College",
+      "extendedDescription": "Studentská geografická asociace- YouthMappers je sdružení studentů Fourah Bay College se společnými cíli zmapovat zranitelná místa v Sierra Leone a ve světě obecně pro pomocné a jiné prospěšné účely, provádět výzkum a další vzdělávací aktivity. Zastoupení se skládá z mladých lidí se skvělými nápady, orientovanými na rozvoj se schopností vzájemně se propojit, pochopit a realizovat projekty udržitelného rozvoje jako tým."
+    },
+    "ym-General-Lansana-Conte-University": {
+      "name": "YouthMappers na Univerzitě generála Lansana Conteho",
+      "description": "Zastoupení YouthMappers na Univerzitě generála Lansana Conteho",
+      "extendedDescription": "YouthMappers z Univerzity General Lansana Conté je nezisková komunita ochotná přispívat do Map Guinei a dalších částí světa. Podporujeme používání GIS a otevřených dat k vytváření nástrojů pro podporu rozhodování. Pracujeme také na budování kapacit mezi studenty a místními komunitami."
+    },
+    "ym-George-Mason-University": {
+      "name": "Mapovači Masonu",
+      "description": "Zastoupení YouthMappers na George Mason University",
+      "extendedDescription": "Studentská komunita mapovačů Masonu je humanitární mapovací studentská organizace v oddělení GGS Univerzity George Mason a jejím cílem je podporovat vzdělávání a znalosti v oblasti geotechnologií, geoinformační vědy, podporovat dobré globální správcovství a zapojit se do profesního rozvoje při budování pozitivní, interaktivní geo-komunity, stejně jako formování studentů do vůdců zítřka."
+    },
+    "ym-Grand-Gedeh-County-Community-College": {
+      "name": "YouthMappers na Grand Gedeh County Community College",
+      "description": "Zastoupení YouthMappers na Grand Gedeh County Community College",
+      "extendedDescription": "Jediným záměrem Youth Mappers GGCCC je umístit místa v Libérii a okolí, která nejsou na mapě. Shromažďujeme mladé lidi z vysoké školy v rámci Grand Gedeh Community College, aby měli povinnost sjednotit se a přivést tato místa na geografické světlo."
+    },
+    "ym-Gujarat-University": {
+      "name": "CCIM v Ahmedabadu",
+      "description": "Zastoupení YouthMappers na Gujarat University"
+    },
+    "ym-Gulu-University": {
+      "description": "Zastoupení YouthMappers na Gulu University",
+      "extendedDescription": "CSGU Mappers jsou počítačová komunita na Gulu University. Toto zastoupení je kreativní, vášnivá, inovativní a připravená zmapovat Ugandu a svět obecně, mimo představivost ostatních lidí."
+    },
+    "ym-Heidelberg-University": {
+      "name": "Disastermappers Heidelberg",
+      "description": "Zastoupení YouthMappers na Heidelberg University",
+      "extendedDescription": "Disastermappers Heidelberg byla založena v roce 2014 jako studentská iniciativa s cílem vybudovat platformu pro výměnu mezi studenty, výzkumníky a humanitárními aktéry. Disastermappers jsou členem Missing Maps a organizují mapathony, workshopy a webináře v Heidelbergu i mimo něj a podporují HOT a Missing Maps prostřednictvím výzkumu a aplikací."
+    },
+    "ym-Ignatius-Ajuru-University-of-Education": {
+      "description": "Zastoupení YouthMappers na Pedagogické univerzitě Ignáce Ajuru",
+      "extendedDescription": "Jsme zastoupení YouthMappers na Ignatius Ajuru University of Education zapojená do crowdsourcingového mapování našeho prostředí a vzdáleného mapování odolných komunit. Jsme tým dobrovolníků, kteří používají openstreetmap a další otevřené geoprostorové zdroje pro mapování."
+    },
+    "ym-Indiana-University-of-Pennsylvania": {
+      "name": "Klub geoprostorových věd",
+      "description": "Zastoupení YouthMappers na Indiana University of Pennsylvania"
+    },
+    "ym-Insititue-d-Enseignement-Superieur-de-Ruhengeri": {
+      "name": "YouthMappers na INES Ruhengeri",
+      "description": "Zastoupení YouthMappers na Insititue d' Enseignement Superieur de Ruhengeri",
+      "extendedDescription": "Jsme studenti z pozemkové správy a managementu a kateder zeměměřictví z INES-Ruhengeri. Zabýváme se mapováním aktivit, které vytvářejí změny směrem k udržitelnému rozvoji v naší komunitě."
+    },
+    "ym-Institut-Suprieur-de-Management-Kolda": {
+      "description": "Zastoupení YouthMappers na Institut Supérieur de Management Kolda",
+      "extendedDescription": "Les Femmes Leaders de ISM/Kolda je čistě ženská mapovací skupina v jižním Senegalu, která se snaží umístit Koldu a okolní vesnice na mapu a lépe pochopit, jak používat OSM."
+    },
+    "ym-Institute-of-Crisis-Management-Studies": {
+      "name": "Institut studií krizového řízení YouthMappers",
+      "description": "Zastoupení YouthMappers v Ústavu studií krizového řízení",
+      "extendedDescription": "s cílem vyvinout krizové mapovače, které vám pomohou při katastrofách."
+    },
+    "ym-Institute-of-Rural-Development-Planning": {
+      "name": "Zastoupení YouthMappers Mipango",
+      "description": "Zastoupení YouthMappers v Institutu pro plánování rozvoje venkova",
+      "extendedDescription": "Zastoupení Mipango YouthMappers založil na IRDP 3. července 2017 Dr. Domitilla Bashemera. Zakládajícími členy bylo 300 (190 mužů a 110 žen) studentů bakalářského studia, kteří byli registrováni jako členové sekce. Gerald Zacharia je prezidentem sekce a Juster Lugira je viceprezidentem."
+    },
+    "ym-Institute-of-Rural-Development-Planning-Mwanza": {
+      "name": "Zastoupení YouthMappers v Institutu pro plánování rozvoje venkova - Lake Zone Centre",
+      "description": "Zastoupení YouthMappers v Institutu pro plánování rozvoje venkova Mwanza"
+    },
+    "ym-Institute-of-Science-and-Veterinary-Medicine": {
+      "description": "Zastoupení YouthMappers v Ústavu vědy a veterinárního lékařství",
+      "extendedDescription": "YouthMappers ISSMV Dabala je nezisková organizace, která se snaží podporovat humanitární mapování a využívání otevřených zdrojů a otevřených dat k vytváření nástrojů pro rozhodování v Guineji."
+    },
+    "ym-Istanbul-Technical-University": {
+      "description": "Zastoupení YouthMappers na Istanbulské technické univerzitě",
+      "extendedDescription": "YouthMappers ITU je interdisciplinární a spolupracující studentská komunita na podporu humanitárního mapování zranitelných osad a jejím cílem je vyvíjet a sdílet strategické a inovativní prostorové informace pro budoucí města pomocí geografických informačních systémů a otevřených dat."
+    },
+    "ym-Jacksonville-State-University": {
+      "name": "Tým pro mapování katastrof JSU",
+      "description": "Zastoupení YouthMappers na Jacksonville State University",
+      "extendedDescription": "Tým pro mapování katastrof JSU je program na Jacksonville State University zaměřený na pomoc při reakci na katastrofy v dobách nouze. To zahrnuje tornáda, silné bouřky, záplavy atd. Tým má být cenným přínosem pro okolní okresy a prostředníkem pro studenty katedry geověd na JSU, aby mohli uplatnit to, co se naučili v akademickém prostředí, na podporu pohotovostních služeb. Naším cílem je zefektivnit reakce na katastrofy a operace obnovy a zároveň využít sady dovedností studentů"
+    },
+    "ym-Jahangirnagar-University": {
+      "name": "YouthMappers na IRS, Jahangirnagar University",
+      "description": "Zastoupení YouthMappers na Jahangirnagar University"
+    },
+    "ym-Jomo-Kenyatta-University-of-Agriculture-and-Technology": {
+      "name": "Sdružení studentů inženýrství geomatiky",
+      "description": "Zastoupení YouthMappers na Zemědělské a technologické univerzitě Jomo Kenyatta",
+      "extendedDescription": "Asociace studentů geomatiky (AGES) se zaměřuje na propagaci produktů a služeb GIS a také na školení studentů v jejich používání. Nejenže podporuje socializaci mezi studenty a praktikujícími profesionály, ale také poskytuje platformu pro výměnu nových nápadů pro pořádání nových GIS a průzkumných akcí a školení na univerzitě."
+    },
+    "ym-Kansas-State-University": {
+      "name": "Zastoupení Gamma Theta Upsilon: Beta Psi",
+      "description": "Zastoupení YouthMappers na Kansas State University",
+      "extendedDescription": "Jsme zastoupení Kansaské státní univerzity Gamma Theta Upsilon, mezinárodní geografická čestná společnost s příslušností k YouthMappers. Aktivně jsme se věnovali mapování pro OSM a provedli jsme mapathon s názvem „Mapa pro Nepál“, ve kterém jsme použili OpenStreetMap k digitalizaci nezmapovaných oblastí Nepálu po zemětřesení v roce 2015."
+    },
+    "ym-Karatina-University": {
+      "name": "Klub přírody Karatina univerzita",
+      "description": "Zastoupení YouthMappers na Karatina University",
+      "extendedDescription": "Toto zastoupení si klade za cíl shromáždit všechny nadšence GIS. Patří mezi ně odborníci na životní prostředí, odborníci na zvěř a rostlinstvo, vodní a turističtí průvodci. Jejím hlavním cílem je poskytnout platformu, kde se studenti mohou učit jeden od druhého, a přitom porozumět tomu, jak integrovat dovednosti GIS do svých různých profesních cest, a poskytnout řešení různých environmentálních problémů."
+    },
+    "ym-Kenyatta-University": {
+      "description": "Zastoupení YouthMappers na Kenyatta University",
+      "extendedDescription": "Kenyatta University GIS Club (KUGISC) byl založen 28. října 2016 a jeho členy je více než 200 studentů a zaměstnanců ze všech fakult v kampusu. Zavázali jsme se poskytnout členům prostorové znalosti, dovednosti a odborné znalosti potřebné k porozumění Zemi. Pomáháme při mapování zdrojů v rámci univerzity začleněním geoprostorových dat do jejich projektů a také sběrem dat z terénu."
+    },
+    "ym-Khulna-University": {
+      "name": "YouthMappers Univerzity Khulna",
+      "description": "Zastoupení YouthMappers na Khulna University",
+      "extendedDescription": "Studenti a učitelé KU z různých oborů mají zkušenosti s vytvářením otevřených dat pro OSM pro řešení místních problémů rozvoje, včetně potravinové bezpečnosti a dalších témat."
+    },
+    "ym-Kumi-University": {
+      "description": "Zastoupení YouthMappers na Kumi University",
+      "extendedDescription": "Tato energická skupina studentů organizuje v rámci Fakulty vědy a informačních technologií."
+    },
+    "ym-Kwame-Nkrumah-University-of-Science-and-Technology": {
+      "name": "Univerzita vědy a technologie Kwame Nkrumah YouthMappers",
+      "description": "Zastoupení YouthMappers na Univerzitě vědy a technologie Kwame Nkrumah"
+    },
+    "ym-Makerere-University": {
+      "description": "Zastoupení YouthMappers na Makerere univerzitě",
+      "extendedDescription": "Geo YouthMappers je mapovací zastoupení založená na Makerere University s cílem aplikovat prostorovou koncepci na skutečný svět. S OSM jsme spolupracovali na různých mapovacích akcích. Naším hlavním cílem je zjednodušit data a zpřístupnit je především pro účely připravenosti na katastrofy.“Mapujeme svět a měníme životy."
+    },
+    "ym-Mbarara-University-of-Science-and-Technology": {
+      "description": "Zastoupení YouthMappers na Univerzitě vědy a technologie Mbarara",
+      "extendedDescription": "MUST Street Mappers je zastoupení Youth Mappers na Univerzitě vědy a technologie Mbarara, která je založena na tom, aby byla naše země a celý svět lepším místem prostřednictvím mapování. Zakládáme na shromážděných informacích, abychom si všimli vzorců a dolovali data, abychom společnosti prezentovali relevantní a přínosné informace."
+    },
+    "ym-McGill-University": {
+      "name": "Otevřená mapovací skupina McGill: Člen McGillovy vysokoškolské geografické společnosti",
+      "description": "Zastoupení YouthMappers na McGill University",
+      "extendedDescription": "Otevřená mapovací komunita McGill: Člen McGill vysokoškolské geografické společnosti (OMG McGill) si klade za cíl propojit studenty s otevřenými geoprostorovými daty a technologiemi za účelem zvýšení odolnosti, budování komunity a učení prostřednictvím mapování – na akademické půdě v Montrealu v Kanadě a zahraničí."
+    },
+    "ym-Miami-University": {
+      "name": "Geografie a plánovací společnost",
+      "description": "Zastoupení YouthMappers na Miami University",
+      "extendedDescription": "Cílem GPS na Miami University je vytvořit úzce propojenou komunitu plánovačů a geografů, kteří se chtějí bavit, dozvědět se více o kariéře a vysokoškolském vzdělávání ve svém oboru, síti a spolupracovat s profesionály se skutečnými  zkušenostmi."
+    },
+    "ym-Moi-University": {
+      "name": "Geografická studentská asociace",
+      "description": "Zastoupení YouthMappers na Moi University",
+      "extendedDescription": "Asociace studentů geografie na Moi University (GEOSAMU) zkoumá, objevuje a zaměřuje se na rozvoj celého světa prostřednictvím mladých geoprostorových analytiků. GEOSAMU je součástí katedry geografie."
+    },
+    "ym-Monroe-Community-College": {
+      "name": "Mapovací společnost MCC",
+      "description": "Zastoupení YouthMappers na Monroe Community College"
+    },
+    "ym-Namibia-University-of-Science-and-Technology": {
+      "name": "Studentská společnost geoinformačních technologií",
+      "description": "Zastoupení YouthMappers na Namibijské univerzitě vědy a technologie"
+    },
+    "ym-Nimba-County-Community-College": {
+      "name": "Nimba County Community College YouthMappers",
+      "description": "Zastoupení YouthMappers na Nimba County Community College"
+    },
+    "ym-Njala-University-Freetown-Campus": {
+      "name": "YouthMappers Njaly ve Freetownu",
+      "description": "Zastoupení YouthMappers na Njala University, Freetown Campus",
+      "extendedDescription": "Jsme studenti Njala University Freetown Campus, studujeme informační technologie na katedře fyziky a informatiky. a nacházíme se v Henry Street Freetown, Sierra Leone."
+    },
+    "ym-Njala-University-Njala-Campus": {
+      "description": "Zastoupení YouthMappers na Njala University, Njala Campus"
+    },
+    "ym-Ohio-Wesleyan-University": {
+      "name": "Klub pro životní prostředí a divokou zvěř",
+      "description": "Zastoupení YouthMappers na Ohio Wesleyan University",
+      "extendedDescription": "Klub pro životní prostředí a divokou zvěř se zabývá environmentálními problémy na akademické půdě v Delaware a dokonce i na celostátní úrovni! Vytváříme kampusové a komunitní projekty, prozkoumáváme a užíváme si přírodu, vytváříme dobrovolníky a snažíme se prosazovat environmentalismus v každém aspektu našeho života."
+    },
+    "ym-Oklahoma-State-University": {
+      "name": "Geografický klub",
+      "description": "Zastoupení YouthMappers na Oklahoma State University"
+    },
+    "ym-Open-University-of-Tanzania": {
+      "name": "Sekce YouthMappers na Otevřené univerzitě v Tanzanii",
+      "description": "Zastoupení YouthMappers na Otevřené univerzitě v Tanzanii",
+      "extendedDescription": "Youth Mappers na Otevřené univerzitě v Tanzánii\n\nByla založena členy a studenty Otevřené univerzity v Tanzánii na katedře geografie, kteří potřebují především zlepšit svou kariéru a pomoci mladé komunitě prostřednictvím společných a partnerských projektů s místními komunitními skupinami, jako je Mikoko Scout Group (www.msg.or.tz ) a zahájit spolupráci s mezinárodními vysokými školami a univerzitami na výměnných programech týkajících se Geografických studií jako některé programy připravené skupinou Mikoko Scout Group, které propojí místní univerzitu a další univerzity stejného zájmu prostřednictvím Mezinárodní přírodovědného a ekologického táboru mládeže 2019 (www.campsite.msg.or.tz/nature.html)\n\nNaše zastoupení bude brzy uznána jako program sítě mládeže, který studentům otevře příležitost ke studiu a provádění výzkumných studií na místní úrovni."
+    },
+    "ym-Politecnico-di-Milano": {
+      "description": "Zastoupení YouthMappers na Politecnico di Milano",
+      "extendedDescription": "PoliMappers je dobrovolnické studentské sdružení se sídlem na Politecnico di Milano. Posláním skupiny je školit a motivovat další generaci dobrovolných mapovačů a dělat mapování pomocí svobodného a open sourcového softwaru na univerzitách, základních a středních školách."
+    },
+    "ym-Queen-Mary-University-of-London": {
+      "name": "YouthMappers královny Marie",
+      "description": "Zastoupení YouthMappers na Univerzitě královny Marie v Londýně",
+      "extendedDescription": "Toto zastoupení bude součástí aktivit Geografické komunity královny Marie."
+    },
+    "ym-Rajshahi-University-of-Engineering-Technology": {
+      "name": "YouthMappers na RUET",
+      "description": "Zastoupení YouthMappers na Rajshahi University of Engineering & Technology",
+      "extendedDescription": "„YouthMappers v RUET“ je humanitární mapovací skupina studentů Rajshahi University of Engineering & Technology (RUET), která sdílí, rozvíjí a procvičuje znalosti GIS. Tato skupina podporuje používání geoprostorových dat a platformy s otevřeným zdrojovým kódem k vytvoření řešení, které osloví nejzranitelnější skupinu na světě."
+    },
+    "ym-Sherubtse-College": {
+      "name": "Zeměpisná společnost",
+      "description": "Zastoupení YouthMappers na Sherubtse College",
+      "extendedDescription": "Geografická společnost na katedře geografie a plánování, Sherubtse College, Královská univerzita v Bhútánu, s podporou Centra pro změnu klimatu a prostorových informací, vytvořila několik úsilí o vytvoření povědomí a řešení důležitých problémů na místní a národní úrovni. Nyní se připojujeme k mezinárodní síti YouthMappers zaměřené na studenty na „Mapování pro odolnost“ a přispíváme ke globálnímu „Štěstí“!"
+    },
+    "ym-Sokoine-University-of-Agriculture": {
+      "description": "Zastoupení YouthMappers na Zemědělské univerzitě Sokoine",
+      "extendedDescription": "Zastoupení se skládá ze studentů Environmentálních věd a managementu a Geografie pod odd. Geografie a budeme používat mapovací techniky založené na systémových konceptech a teoriích, které lze použít k usnadnění, prozkoumání a zachycení různých chápání vztahů, perspektiv a hranic spojených s udržitelností životního prostředí, abychom získali celkové pochopení vymýšlet a rozvíjet akční plány."
+    },
+    "ym-St<TX_DOT>-Augustine-International-University": {
+      "name": "YouthMappers na Mezinárodní univerzitě svatého Augustina",
+      "description": "Zastoupení YouthMappers na Mezinárodní univerzitě svatého Augustina"
+    },
+    "ym-St<TX_DOT>-Mawaggali-Trades-Training-Institute": {
+      "description": "Zastoupení YouthMappers na St. Mawaggali Trades Training Institute",
+      "extendedDescription": "Jsme zastoupení YouthMappers v St. Mawaggali Trades v Chomě, která chce přispět různými humanitárními úkoly, které slouží životům prostřednictvím mapování."
+    },
+    "ym-State-University-of-New-York-Geneseo": {
+      "name": "SUNY Geneseo GIS Asociace",
+      "description": "Zastoupení YouthMappers na Státní univerzitě v New Yorku Geneseo",
+      "extendedDescription": "Šíříme povědomí, podporu, vzdělávání, dobrovolnictví a možnosti kariérního postupu v geografických informačních systémech napříč obory a odděleními v kontextu SUNY Geneseo, místní komunity a globální komunity."
+    },
+    "ym-Stella-Maris-Polytechnic": {
+      "description": "Zastoupení YouthMappers na Polytechnice Stella Maris"
+    },
+    "ym-SUNY-at-Fredonia": {
+      "description": "Zastoupení YouthMappers na SUNY ve Pretorii",
+      "extendedDescription": "GeoVenturers je skupina studentů spojujících se napříč řadou oborů v našem areálu, kteří vidí geoprostorové technologie jako nástroj, který slouží ostatním a spojuje lidi. Mentoring pro skupinu přináší přírodovědné vzdělávání z katedry kurikula a výuky. Doufáme, že dokážeme využít naše dovednosti, abychom pomohli zlepšit životy lidí."
+    },
+    "ym-Technical-University-of-Kenya": {
+      "name": "Asociace studentů geoprostorových věd",
+      "description": "Zastoupení YouthMappers na Technické univerzitě v Keni",
+      "extendedDescription": "Je to skupina založená na geografických informacích s velmi zapálenými studenty v příslušných studijních oborech. Provádíme školení členů o nových trendech na trhu a držíme krok s technologickým pokrokem"
+    },
+    "ym-Texas-Tech-University": {
+      "name": "YouthMappers na TTU",
+      "description": "Zastoupení YouthMappers na Texaské technické univerzitě",
+      "extendedDescription": "Jako jedna ze spoluzakládajících zastoupení sítě jsou TTU YouthMappers nadšení, že mohou sloužit jako interdisciplinární lídři, kteří pomáhají vytvářet otevřená geografická data a analýzy, které řeší lokálně definované rozvojové výzvy po celém světě. Tato sekce se snaží vyměňovat si a spolupracovat s ostatními pobočkami po celém světě a zároveň se nabízet jako místní zdroj a služby studentským organizacím Texas Tech způsobem, který přidává hodnotu jejich aktivitám v areálu prostřednictvím mapování."
+    },
+    "ym-The-Citadel": {
+      "name": "YouthMappers v Citedele",
+      "description": "Zastoupení YouthMappers v Citedele",
+      "extendedDescription": "Toto zastoupení je také Rotaract Club, který je přidruženou společností Rotary International. Mnoho členů i vedení vyjádřilo zájem o YouthMappers a rádi bychom připojili náš Citadel Rotaract Club k YouthMappers."
+    },
+    "ym-The-Gambia-YMCA-University-of-the-Gambia": {
+      "description": "Zastoupení YouthMappers na Gambia YMCA / University of the Gambia",
+      "extendedDescription": "Spojení YouthMappers se skládá z oddaných mladých Gambijců, kteří touží po změně a napomáhají národnímu rozvoji."
+    },
+    "ym-The-George-Washington-University": {
+      "name": "Humanitární mapovací společnost",
+      "description": "Zastoupení YouthMappers na Univerzitě George Washingtona",
+      "extendedDescription": "Modely vedení a zapojení se HMS snaží poskytovat pomoc a zlepšovat svět prostřednictvím humanitárních projektů geografických informačních systémů (GIS). Toto spoluzakládající přidružené zastoupení na kampusu GWU má spoustu zkušeností, o které se může podělit, a často přímo spolupracuje s USAID, Americkým červeným křížem a ministerstvem zahraničí USA v jejich oblasti DC rozšířit úsilí vedené studenty a sloužit celosvětové komunitě."
+    },
+    "ym-The-Johns-Hopkins-University-SAIS": {
+      "description": "Zastoupení YouthMappers na Univerzitě Johnse Hopkinse, SAIS",
+      "extendedDescription": "Posláním SAIS Youth Mappers je poskytnout studentům na Johns Hopkins University SAIS příležitost stát se vysoce kvalifikovanými humanitárními mapovači. Jako skupina v rámci Klubu jižní Asie se primárně zaměřuje na podporu projektů humanitárního mapování v indo-pacifické oblasti."
+    },
+    "ym-The-Pennsylvania-State-University": {
+      "description": "Zastoupení YouthMappers na Pennsylvania State University",
+      "extendedDescription": "Koalice Penn State Geospatial Information Science (GIS) je organizace, která nabízí studentům specializující se na GIS nebo sdílející zájem o GIS příležitosti k rozvoji doplňkových znalostí a dovedností nezbytných k úspěchu v profesionálním GIS průmyslu."
+    },
+    "ym-The-University-of-Zambia": {
+      "description": "Zastoupení YouthMappers na Univerzitě v Zambii"
+    },
+    "ym-Uganda-Christian-University-Mbale-Campus": {
+      "name": "Mapovači pro život",
+      "description": "Zastoupení YouthMappers na Kampusu křesťanské univerzity Uganda v Mbale",
+      "extendedDescription": "Jsme tým mapovačů na celý život! Prosím, přijďte a připojte se k nám, když budeme společně mapovat!\" Tato skupina pracuje z katedry informačních technologií na UCU."
+    },
+    "ym-Uganda-Pentecostal-University": {
+      "name": "HiTech YouthMappers",
+      "description": "Zastoupení YouthMappers na Ugandské letniční univerzitě",
+      "extendedDescription": "Nové zastoupení Youthmappers v západní Ugandě. Připraveno k mapování a poskytování otevřených dat pomocí OpenStreetMap pro účely vývoje."
+    },
+    "ym-Universidad-de-Antioquia": {
+      "description": "Zastoupení YouthMappers na Universidad de Antioquia",
+      "extendedDescription": "Jsme skupina, která se zajímá o geoprostorová data, dobrovolnou kartografii a podílíme se na mapování s ostatními v naší zemi a v rámci sítě YouthMappers."
+    },
+    "ym-Universidad-de-Costa-Rica": {
+      "name": "YouthMappers na Univerzitě v Costa Rice",
+      "description": "Zastoupení YouthMappers na Univerzitě v Costa Rice",
+      "extendedDescription": "YouthMappers z University of Costa Rica se zrodili na základě sociální akce členů různých komunit podle témat zapojení, interakce a reprezentace. OpenStreetMap nám umožňuje shromažďovat, ověřovat a sdílet geoinformace v rámci našich komunit ve všeobecný prospěch."
+    },
+    "ym-Universidad-de-La-Guajira": {
+      "description": "Zastoupení YouthMappers na Universidad de La Guajira",
+      "extendedDescription": "Grupo Mesh je studentská organizace na Universidad de la Guajira v Kolumbii, včetně studentů z programu Environmentální inženýrství, kteří se učí kartografii a otevřené mapování."
+    },
+    "ym-Universidad-de-Los-Andes": {
+      "description": "Zastoupení YouthMappers na Universidad de Los Andes",
+      "extendedDescription": "Jsme kruh studentské účasti, který se snaží využívat mapování a prostorové uvažování jako prostředek k vytváření vazeb spolupráce a integrace mezi univerzitou a společností tím, že řeší různé prostorové, sociální, politické , ekonomické a kulturní dynamiky."
+    },
+    "ym-Universidad-de-Puerto-Rico-Rio-Piedras": {
+      "description": "Zastoupení YouthMappers na Universidad de Puerto Rico - Rio Piedras"
+    },
+    "ym-Universidad-de-San-Buenaventura": {
+      "description": "Zastoupení YouthMappers na Universidad de San Buenaventura",
+      "extendedDescription": "Jsme rádi, že se můžeme připojit k mapování YouthMappers pro lepší svět a komunitu."
+    },
+    "ym-Universidad-Distrital-Francisco-Jose-de-Caldas": {
+      "name": "YouthMappers v Bogotě",
+      "description": "Zastoupení YouthMappers na Universidad de Distrital Francisco Jose de Caldas",
+      "extendedDescription": "Universidad Distrital Francisco José de Caldas je veřejná, koedukovaná, výzkumná univerzita se sídlem v Bogotě v Kolumbii s populací 26 140 studentů."
+    },
+    "ym-Universidad-Nacional-Autnoma-de-Honduras": {
+      "description": "Zastoupení YouthMappers na Universidad Nacional Autónoma de Honduras"
+    },
+    "ym-Universidad-Nacional-de-Colombia": {
+      "description": "Zastoupení YouthMappers na Universidad Nacional de Colombia",
+      "extendedDescription": "Studenti se spojují, aby mapovali a propojili se s univerzitními studenty po celé Kolumbii a po celém světě.  Mezi geografické speciality patří příslušnost k mikrobiologii a zdravotnickým oborům."
+    },
+    "ym-Universidad-Nacional-de-Ingenieria": {
+      "description": "Zastoupení YouthMappers na Universidad Nacional de Ingenieria",
+      "extendedDescription": "YEKA STREET je pracovní tým tvořený studenty z Universidad Nacional de Ingenieria v Managua, Nikaragua. Hlavním účelem je aplikovat naše znalosti a dovednosti pomocí mnoha nástrojů a aplikací k mapování oblastí v našich městech a přispívat k projektům rozvojové komunity a plánům zmírňovat katastrofy. Chceme jít cestou, aby se k nám v této věci přidali další studenti ze všech profesí a univerzit v naší zemi, čímž se zvýší životní úroveň a sníží se zranitelnost populace."
+    },
+    "ym-Universidade-Eduardo-Mondlane": {
+      "name": "Mládežnická komunita YouthMappers v Mozambiku",
+      "description": "Zastoupení YouthMappers na Universidade Eduardo Mondlane",
+      "extendedDescription": "Jsme studentská skupina, která se hodlá připojit k mosambické společnosti a vytvořit odolnou komunitu humanitárního mapování. Záměrem komunity je zmapovat fyzickou okupaci naší země a vytvořit otevřená geografická data, přístupná veřejnosti a využitelná v několika oblastech bez souvisejících nákladů."
+    },
+    "ym-Universit-de-NZrkor": {
+      "description": "Oddíl YouthMappers na univerzitě v N'Zérékoré",
+      "extendedDescription": "YouthMappers zapojuje studenty do mapování v případě katastrof nebo epidemií. Umožňuje také tvorbu a využívání mapových dat s volným přístupem."
+    },
+    "ym-Universit-des-Sciences-Sociale-et-de-Gestion-de-Bamako": {
+      "description": "Oddíl YouthMappers na Univerzitě sociálních věd a managementu v Bamaku"
+    },
+    "ym-Universit-Gaston-Berger": {
+      "name": "YouthMappers na UGB",
+      "description": "Zastoupení YouthMappers na Université de Gaston Berger",
+      "extendedDescription": "YouthMappers UGB tvoří mladí studenti a výzkumníci, kteří jsou nadšení do mapování. Naším cílem je zlepšit dovednosti studentů v oblasti kartografie a podílet se na vytváření otevřených geografických dat, která reagují na rozvojové výzvy po celém světě a zejména v Africe."
+    },
+    "ym-Universit-Mohammed-V-Rabat": {
+      "name": "Brahmapoutre v Rabatu",
+      "description": "Zastoupení YouthMappers na Université Mohammed V Rabat",
+      "extendedDescription": "Toto zastoupení chápe účast v programu YouthMappers jako příležitost ke sdílení našich znalostí a vytváření nových pracovních vztahů s ostatními sekcemi v různých zemích."
+    },
+    "ym-Universitas-Negeri-Makassar": {
+      "description": "Zastoupení YouthMappers na Universitas Negeri Makassar"
+    },
+    "ym-University-Muhammadiyah-Surakarta": {
+      "description": "Zastoupení YouthMappers na University Muhammadiyah Surakarta",
+      "extendedDescription": "SpaceTime je komunitní mapování na Geografické fakultě univerzity Muhammadiyah v Surakartě. SpaceTime založili Bruce Maldy Pratama, Mukhlis Akbar a Irfandi Fauzi. Jsou aktivními studenty na Geografické fakultě Muhammadijáhu Surakarty."
+    },
+    "ym-University-of-California-Davis": {
+      "name": "Mapovací klub",
+      "description": "Zastoupení YouthMappers na Kalifornské univerzitě, Davis"
+    },
+    "ym-University-of-Cape-Coast": {
+      "name": "UCC zeměpisná společnost",
+      "description": "Zastoupení YouthMappers na University of Cape Coast",
+      "extendedDescription": "Jsme společnost, která zahrnuje všechny studenty, kteří čtou geografii na katedře geografie a regionálního plánování na Univerzitě v Cape Coast. Naším hlavním cílem je podpořit zájem o disciplínu ve třídě i mimo ni. Naším heslem je „Rozumíme Zemi a jejím obyvatelům“."
+    },
+    "ym-University-of-Central-Florida": {
+      "name": "Geoprostorová informační společnost",
+      "description": "Zastoupení YouthMappers na Univerzitě Střední Floridy",
+      "extendedDescription": "Naším posláním je podporovat sociální a vzdělávací prostředí pro všechny velké společnosti, které mají zájem o diskusi a aplikaci GIS. Skupinové a komunitní akce v průběhu akademického roku organizují studenty, aby dobrovolně pomáhali místním a regionálním komunitám využíváním komunitních projektů GIS a vzděláváním místních a středních škol o používání a aplikaci GIS."
+    },
+    "ym-University-of-Chicago": {
+      "name": "Společnost Tobler",
+      "description": "Zastoupení YouthMappers na Univerzitě v Chicagu"
+    },
+    "ym-University-of-Dar-es-Salaam": {
+      "name": "YouthMappers na University of Dar es Salaam",
+      "description": "Zastoupení YouthMappers na University of Dar es Salaam",
+      "extendedDescription": "Účelem YouthMappers University of Dar es Salaam je využívat a propagovat data s otevřeným zdrojovým kódem a technologie GIS k mapování oblastí potenciálních katastrof, poskytování zdrojů pro nouzové řízení, propojování svých členů s open source a GIS organizacemi ve městě Dar es Salaam, a sloužit všem nadcházejícím potřebám našich projektových partnerů ."
+    },
+    "ym-University-of-Energy-and-Natural-Resources": {
+      "name": "Eko klub",
+      "description": "Zastoupení YouthMappers na Univerzitě energetiky a přírodních zdrojů",
+      "extendedDescription": "Poskytovat důkladné vzdělání všem občanům o zhoršujícím se prostředí a maximálně využívat obnovení prostředí k přežití člověka."
+    },
+    "ym-University-of-Exeter": {
+      "name": "Misssing Maps Exeterské univerzity Britského Červeného kříže",
+      "description": "Zastoupení YouthMappers na Exeterské univerzitě",
+      "extendedDescription": "Jsme tým nadšených geografů s komplexní znalostí GIS. Jsme nadšeni podporou britské společnosti Červeného kříže různými snahami o humanitární pomoc. Jsme také důležitými učiteli o významu mapování vzdáleně zaznamenaných dat ao tom, jak to pomáhá v terénu. Naše mapathony mají tematické akademické zaměření, které upozorňují na různý výzkum GIS v našem geografickém oddělení, a zároveň fungují jako události zvyšující povědomí o zaměstnatelnosti, které používáme k pozvání řečníků, aby hovořili o své kariéře v GIS / Britském Červeném kříži."
+    },
+    "ym-University-of-Ghana": {
+      "name": "YouthMappers Univerzity v Ghaně",
+      "description": "Zastoupení YouthMappers na Univerzitě v Ghaně",
+      "extendedDescription": "UG YouthMappers se skládá z postgraduálních i vysokoškolských studentů, kteří mají znalosti a dovednosti v oblasti GIS a dálkového průzkumu Země. Klub se skládá z energického týmu, který je připraven řešit sociální problémy a zmírňovat problémy životního prostředí prostřednictvím mapování. Našimi základními principy jsou budování kapacit, zplnomocnění a týmová práce."
+    },
+    "ym-University-of-Liberia-YouthMappers": {
+      "name": "YouthMappers Univerzity v Libérii ",
+      "description": "Zastoupení YouthMappers na Univerzitě v Libérii",
+      "extendedDescription": "YouthMappers Univerzity v Libérii je zastupitelskou organizací Global YouthMappers. Jsme nezisková studentská mapovací organizace, která se zaměřuje na mapování pro rozvoj Libérie a celého světa. Účelem této organizace je využívat technologie a geoprostorové znalosti jako prostředky pro vytváření a vývoj map; shromažďovat a analyzovat data, která budou řešit místní a celosvětové výzvy. Naším cílem je podporovat a vytvářet příležitost pro studenty rozvíjet zájem a dovednosti v oblastech mapování. Představujeme si sjednocenou studentskou komunitu, která spolupracuje, je aktivní a je ochotna spolupracovat s YouthMappers Univerzity v Libérii s cílem zlepšit životy ostatních."
+    },
+    "ym-University-of-Malawi": {
+      "name": "YouthMappers Chanco Malawi",
+      "description": "Zastoupení YouthMappers na Univerzitě v Malawi",
+      "extendedDescription": "Chanco Malawi YouthMappers je studentská mapovací organizace na University of Malawi's Chancellor College. Studenti v tomto zastoupení se zaměřují na mapování potřeb rozvoje Malawi a vědy."
+    },
+    "ym-University-of-Maryland-College-Park": {
+      "name": "Geografický klub",
+      "description": "Zastoupení YouthMappers na Marylandské univerzitě - College Park",
+      "extendedDescription": "Posláním Geografického klubu na University of Maryland College Park je zapojit a povzbudit studenty, aby prozkoumali geografické zájmy v rámci kampusu a komunity."
+    },
+    "ym-University-of-Mines-and-Technology": {
+      "description": "Zastoupení YouthMappers na Báňské a technologické univerzitě",
+      "extendedDescription": "UMaT YouthMappers je skupina dobrovolných studentů, kteří se snaží poskytnout studentům příležitost zlepšit dovednosti v oblasti mapování a vytváření otevřených geografických dat a analýz, které řeší lokálně definované rozvojové výzvy po celém světě."
+    },
+    "ym-University-of-Nairobi": {
+      "name": "Asociace studentů geoprostorového inženýrství",
+      "description": "Zastoupení YouthMappers na Univerzitě v Nairobi",
+      "extendedDescription": "Studenti OSN spolupracují s místní komunitou OSM, Map Kibera a GrouthTruth, aby se dozvěděli o otevřeném mapování a přispěli daty pro potřeby svých městských komunit."
+    },
+    "ym-University-of-Nigeria-Enugu-Campus": {
+      "description": "Zastoupení YouthMappers na Univerzitě v Nigérii, Enugu Campus",
+      "extendedDescription": "LionMappersTeam(LMT)Enugu Campus je přidruženou společností sítě YouthMappers s jediným cílem poskytnout členům příležitost učit se a zlepšovat své dovednosti v oblasti geoinformatiky a vytvářet otevřená geografická data a analýzy, které globálně řeší lokálně definované výzvy. Je to tým dobrovolníků pro davové zdroje mapování a poskytování geografických informací pomocí Openstreetmap, občanská věda a dalších geoprostorových technologií pro výzkum, školení a reakci na odolné výzvy komunity. Zabýváme se webovou kartografií, GIS a aplikacemi a výzkumem dálkového průzkumuJsme nadšení pro Dobrovolné geografické informace.Paticipační GIS a občanská věda.Mezi naše hlavní aktivity patří online kartografie, mapování terénu ,školicí workshopy a dosahy na střední školy a také Humanitární mapování reakce na katastrofy."
+    },
+    "ym-University-of-Nigeria-Nsukka": {
+      "description": "Zastoupení YouthMappers na Univerzitě v Nigérii, Nsukka",
+      "extendedDescription": "LionMappersTeam je přidruženou společností sítě YouthMappers s jediným cílem poskytnout členům příležitost učit se a zlepšovat své dovednosti v oblasti vědy mapování a vytvářet otevřená geografická data a analýzy, které globálně řeší lokálně definované výzvy. Je to tým dobrovolníků pro davové zdroje mapování a poskytování geografických informací pomocí Openstreetmap, občanské vědy a dalších geoprostorových technologií pro výzkum, školení a reakci na odolné výzvy komunity. Zabýváme se GIS a aplikacemi a výzkumem dálkového průzkumu.Paticipační GIS a občanská věda.Mezi naše hlavní aktivity patří online kartografie davového zdroje, mapování terénu ,školicí workshopy a dosahy na střední školy a také Humanitární mapování reakce na katastrofy."
+    },
+    "ym-University-of-North-Texas": {
+      "name": "UNT Geografický klub",
+      "description": "Zastoupení YouthMappers na Univerzitě v Severním Texasu",
+      "extendedDescription": "Geografický klub je studentská organizace na University of North Texas, která vítá všechny studenty, kteří se zajímají o geografii. Cílem Geografického klubu je podporovat zájem o geografii, obor a katedru geografie spolu s přátelstvím mezi studenty a učiteli. Klub se také snaží zastupovat potřeby a přání studentů v oblasti studia geografie a poskytovat fórum pro prezentaci inovativních nápadů ve prospěch univerzitní komunity."
+    },
+    "ym-University-of-Northern-Colorado": {
+      "description": "Zastoupení YouthMappers na Univerzitě v Severním Coloradu",
+      "extendedDescription": "Oficiální zastoupení Klubu geografie a GIS přidružená k Univerzitě v Severním Coloradu, kde je naším cílem učit se, sdílet a spojovat se s lidmi kolem nás. Vytvářejte smysl světa! #MakingSenseOfTheWorld"
+    },
+    "ym-University-of-Oregon": {
+      "name": "Mapa podle severozápadu",
+      "description": "Zastoupení YouthMappers na Univerzitě v Oregonu",
+      "extendedDescription": "Mapa podle severozápadu si klade za cíl zapojit vysokoškoláky na Oregonské univerzitě do mapovacích projektů na pomoc v humanitárních záležitostech a na provádění geografického výzkumu. Vyzíváme studenty ze všech oborů, aby se k nám připojili do našich mapovacích dobrodružstvích."
+    },
+    "ym-University-of-Port-Harcourt": {
+      "description": "Zastoupení YouthMappers na Univerzitě v Port Harcourt",
+      "extendedDescription": "UniqueMappersTeam(UMT)Port Harcourt  je akční skupina a tým dobrovolníků pro kolaborativní online mapování zaměřené na školení a posílení členů s dovednostmi v oblasti trendového mapování, aby mohli vytvářet otevřená geoprostorová data a analýzy, které řeší lokálně definované výzvy pro geoinformace a poskytují služby humanitárního  mapování odolným komunitám v deltě Nigeru, Nigérii a jinde.Propagujeme Crowdsoucred Mapping a dobrovolnictví v oblasti geografických informací pomocí platformy OpenStreetMap(OSM) a dalších dostupných platforem pro rychlé mapování odezvy,mapování katastrof,mapování geografické inteligence,aktualizace map a školení.Je to přidružená společnost Kampusového zastoupení Humanitarian OpenStreetMap Team(HOT).Jde o projektově-úkolový tým YouthMappers, který poskytuje členům příležitost naučit se a zlepšit své dovednosti v geoinformatice, aby mohli prozkoumat globální příležitosti v oblasti mapování a geoinformací."
+    },
+    "ym-University-of-Pretoria": {
+      "name": "Centrum geoinformačních věd",
+      "description": "Zastoupení YouthMappers na Univerzitě v Pretorii",
+      "extendedDescription": "Studenti, kteří mapují Pretorii, jsou podporováni Centrem geoinformační vědy Univerzity v Pretorii, platformou, kde je podporována excelence jednotlivců a týmů UP zapojených do výzkumu geografické informační vědy (GISc), vzdělávání a školení, profesního rozvoje a zapojení komunity je podporováno a posilováno prostřednictvím spolupráce, vzdělávání a školení a aliancí v rámci Jižní Afriky i v zahraničí."
+    },
+    "ym-University-of-Redlands": {
+      "description": "Zastoupení YouthMappers na Univerzitě v Redlands",
+      "extendedDescription": "S cílem stavět na dovednostech členů GIS a znalostech nástrojů a metod prostřednictvím aplikované sociální angažovanosti a také vzdělávat komunitu kampusu o síle mapování a prostorové analýzy prostřednictvím veřejně prospěšných akcí."
+    },
+    "ym-University-of-Rwanda-Huye-Campus": {
+      "name": "YouthMappers Rwandy",
+      "description": "Zastoupení YouthMappers na Univerzitě ve Rwandě - Huye Campus",
+      "extendedDescription": "Na základě závazku a účelu propagace mapování a informací z veřejných přednášek YouthMappers jsme jako studenti katedry geografie, kteří se zavázali k mapování, založit zastoupení našeho kampusu. Podporuje nás náš Facilitátor Dr. Gaspard Rwanyiziri (ředitel CGIS-Rwanda) a různé lektorští mentoři."
+    },
+    "ym-University-of-South-Carolina": {
+      "name": "Asociace postgraduálních studentů geografie",
+      "description": "Zastoupení YouthMappers na Univerzitě v Jižní Karolině",
+      "extendedDescription": "GGSA je plně studentská organizace navržená tak, aby sloužila jako obhájce a zdroj pro všechny absolventy geografie tím, že plní roli prostředníka mezi katedrou a studenty. Naším cílem je další odborný, akademický a osobnostní rozvoj absolventů se zájmem o oblast geografie a jejích dílčích disciplín."
+    },
+    "ym-University-of-Southern-California": {
+      "description": "Zastoupení YouthMappers na Univerzitě v Severní Kalifornii",
+      "extendedDescription": "Vidíme svět jinak: díváme se na něj prostorovou čočkou. Díky síle prostorového myšlení propojujeme místo a prostor, abychom pomohli řešit globální výzvy. Spolupracujte s námi!"
+    },
+    "ym-University-of-the-Philippines-Resilience-Institute": {
+      "name": "YouthMappers Ústavy odolnosti UP",
+      "description": "Zastoupení YouthMappers v ústavu odolnosti na University of the Philippines (PH)",
+      "extendedDescription": "Institut odolnosti UP byl založen v roce 2016 s posláním posílit místní komunity prostřednictvím multidisciplinárního výzkumu a akcí zaměřených na odolnost. Prostřednictvím centra UP NOAH a pomocí různých organizací jsme poskytli mapy expozice budov pro 17 provincií z 82 a nahráli jsme více než 4 miliony stop do OpenStreetMap."
+    },
+    "ym-University-of-the-Philippines-Resilience-Institute-twitter": {
+      "name": "YouthMappers Ústavy odolnosti UP Twitter"
+    },
+    "ym-University-of-the-West-Indies-Mona-Campus": {
+      "name": "Knihovny Outreach – ODL",
+      "description": "Zastoupení YouthMappers na University of the West Indies, Mona (JA)",
+      "extendedDescription": "UWI, Knihovna Mona Campus se zapojuje do veřejných, informačních a speciálních projektů. To naší knihovně umožní být katalyzátorem prostorové gramotnosti a obhájcem sdílení prostorových dat a přístupu k zájmům Jamajky a Karibiku. Potřebujeme pomoc při katastrofách a komunikaci a potřebujeme rozsáhlé vědy o Zemi a georizika, abychom lépe sloužili našemu kampusu a komunitě. Konkrétně máme Vědeckou knihovnu, která takové věci představí všem učitelům a studentům."
+    },
+    "ym-University-of-Victoria": {
+      "name": "Společnost studentů geografie",
+      "description": "Zastoupení YouthMappers na Univerzitě v Viktorii",
+      "extendedDescription": "SOGS se snaží podporovat a zastupovat sociální a akademické zájmy v rámci katedry geografie. To je vyjádřeno čtyřmi klíčovými cíli: Poskytnout fórum pro diskusi o otázkách týkajících se kvality a dostupnosti vzdělání v rámci geografie; poskytovat prostředky k vyjádření souhlasu studentů s názorem oddělení prostřednictvím zastupování na zasedáních oddělení a v resortních výborech; provádět opatření pro takové aktivity, které jsou ku prospěchu studentů a jsou považovány za oblast zájmu studentů v oblasti geografie; působit jako prostředník prostřednictvím UVSS a rady Course Union Council s dalšími studentskými skupinami na akademické půdě"
+    },
+    "ym-University-of-Warwick": {
+      "name": "Společnost Univerzity ve Warwicku pro mapování odolnosti",
+      "description": "Zastoupení YouthMappers na Univerzitě ve Warwicku",
+      "extendedDescription": "Jsme skupina nadšených mapovačů se sídlem na Univerzitě ve Warwicku. Naším cílem je nadchnout lidi pro humanitární mapování a pomoci jim porozumět dopadu, který má tato činnost na pole. Jsme úzce propojeni s Missing Maps a Lékaři bez hranic UK a zaměřujeme se na ŽHAVÉ úkoly v našich mapovacích aktivitách a workshopech. Naše mapathony jsou uvedeny na stránce Missing Maps, kdykoli jsou naplánovány."
+    },
+    "ym-University-of-Wyoming": {
+      "name": "Gamma Theta Upsilon/Geografický klub",
+      "description": "Zastoupení YouthMappers na Univerzitě ve Wyomingu"
+    },
+    "ym-University-of-Zimbabwe": {
+      "description": "Zastoupení YouthMappers na University of Zimbabwe (ZW)",
+      "extendedDescription": "UzMappersTeam Zimbabwe je tým dobrovolníků využívajících OpenStreetMap k mapování otevřených dat a mapování odezvy na humanitární katastrofy. Tým poskytuje svým členům dovednosti v oblasti geoprostorových technologií s otevřeným zdrojovým kódem."
+    },
+    "ym-UW-Madison": {
+      "description": "Zastoupení YouthMappers na UW-Madison",
+      "extendedDescription": "BadgerMaps je zastoupení UW v rámci Youthmappers, organizace věnující se humanitárním a komunitním mapovým službám. Propojujeme naši dobrovolnickou síť s příležitostmi k vytváření GIS dat pro projekty, které to potřebují."
+    },
+    "ym-Vassar-College": {
+      "name": "Mapovači z údolí Hudsonu",
+      "description": "Zastoupení YouthMappers na Vassar College (USA)",
+      "extendedDescription": "Naším posláním je poskytovat multidisciplinární platformu pro vrstevníky, pedagogy a komunitní organizace, aby se zapojili do místních mapovacích projektů se zaměřením na posílení našich místních ekosystémů, našeho vybudovaného prostředí a zdraví naší komunity. Snažíme se také přispět geoprostorovou podporou pro globální humanitární pomoc a rozvojové úsilí."
+    },
+    "ym-Villanova-University": {
+      "name": "Villanova Globeplotters",
+      "description": "Zastoupení YouthMappers na Villanova University (USA)",
+      "extendedDescription": "Villanova Globeplotters je postavena na Villanovově augustiniánském principu nezištné služby globální komunitě. Ve spojení s uvolněnou sociální interakcí se snažíme poskytovat geoprostorový dosah těm, kteří to potřebují, bez ohledu na rasu zúčastněných studentů, akademický obor, sdružení studentských skupin nebo úroveň kariéry na vysoké škole."
+    },
+    "ym-West-Virginia-University": {
+      "description": "Zastoupení YouthMappers na West Virginia University (USA)",
+      "extendedDescription": "Toto spoluzakládající zastoupení, která pracuje jako tým pro spolupráci, se zaměřuje na poskytování otevřeného vzdělávacího prostředí pro ty, kteří mají zájem pracovat na projektech, které protínají mezinárodní rozvoj, reakci na mimořádné události a geografickou informační vědu. Propojují začátečníky a experty poskytováním technického školení a zkušeností s budováním smysluplných a užitečných dat geografické infrastruktury a zároveň se připojují k sesterským městům po celém světě."
+    },
+    "ym-Western-Michigan-University": {
+      "name": "Geografický klub",
+      "description": "Zastoupení YouthMappers na Western Michigan University (USA)"
+    },
+    "ym-Yarmouk-University": {
+      "name": "YouthMappers na YU",
+      "description": "Zastoupení YouthMappers na Yarmouk University (JOR)",
+      "extendedDescription": "Zastoupení YouthMappers na YU je první mapovací skupinou v regionu Středního východu a severní Afriky, kde uprchlíci, sucho a chudoba narůstají krizí a naléhavě potřebují humanitární mapovací aktivity ke zmírnění následků takových krizí. Mapovači YU jsou vyzýváni, aby používali otevřená data k řešení problémů v regionu MENA s cílem přinést úlevu a rozvoj cílovým oblastem v regionu."
+    }
+  }
+}

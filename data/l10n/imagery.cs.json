@@ -1,0 +1,1093 @@
+{
+  "cs": {
+    "imagery": {
+      "Bedzin-PL-aerial_image": {
+        "name": "Będzin: letecké snímky 2013"
+      },
+      "Bedzin-PL-buildings": {
+        "name": "Będzin: Budovy"
+      },
+      "Bing": {
+        "description": "Satelitní a letecké snímky.",
+        "name": "Letecké snímky Bing"
+      },
+      "Bytom-2012": {
+        "attribution": {
+          "text": "Magistrát města Bytom"
+        },
+        "name": "Bytom: letecké snímky 2012"
+      },
+      "Bytom-2014": {
+        "attribution": {
+          "text": "Magistrát města Bytom"
+        },
+        "name": "Bytom: fotoplán 2014"
+      },
+      "Bytom-2016": {
+        "attribution": {
+          "text": "Magistrát města Bytom"
+        },
+        "name": "Bytom: letecké snímky 2016"
+      },
+      "Bytom-2018": {
+        "attribution": {
+          "text": "Magistrát města Bytom"
+        },
+        "name": "Bytom: letecké snímky 2018"
+      },
+      "Bytom-2021": {
+        "attribution": {
+          "text": "Magistrát města Bytom"
+        },
+        "name": "Bytom: letecké snímky 2021"
+      },
+      "Bytom-buildings": {
+        "attribution": {
+          "text": "Magistrát města Bytom"
+        },
+        "name": "Bytom: Budovy"
+      },
+      "Czestochowa-2011": {
+        "attribution": {
+          "text": "Magistrát města Čenstochová"
+        },
+        "name": "Čenstochová: letecké snímky 2011"
+      },
+      "Czestochowa-2013": {
+        "attribution": {
+          "text": "Magistrát města Čenstochová"
+        },
+        "name": "Čenstochová: letecké snímky 2013"
+      },
+      "Czestochowa-2014": {
+        "attribution": {
+          "text": "Magistrát města Čenstochová"
+        },
+        "name": "Čenstochová: letecké snímky 2014"
+      },
+      "Czestochowa-2015": {
+        "attribution": {
+          "text": "Magistrát města Čenstochová"
+        },
+        "name": "Čenstochová: letecké snímky 2015"
+      },
+      "Czestochowa-2016": {
+        "attribution": {
+          "text": "Magistrát města Čenstochová"
+        },
+        "name": "Čenstochová: letecké snímky 2016"
+      },
+      "Czestochowa-2017": {
+        "attribution": {
+          "text": "Magistrát města Čenstochová"
+        },
+        "name": "Čenstochová: letecké snímky 2017"
+      },
+      "Czestochowa-buildings": {
+        "attribution": {
+          "text": "Magistrát města Čenstochová"
+        },
+        "name": "Čenstochová: Budovy"
+      },
+      "DV_DHMV_II_HILL_25cm": {
+        "name": "Digitaal Vlaanderen DHV II s mnohosměrovým stínováním svahů 0,25 m"
+      },
+      "DV_DHMV_II_SVF_25cm": {
+        "name": "Digitaal Vlaanderen DHV II s faktorem zobrazení 0,25 m"
+      },
+      "DV_OrthoPhoto": {
+        "name": "Nejaktuálnější letecké snímky Digitaal Vlaanderen"
+      },
+      "DV_OrthoPhoto_20132015_10cm": {
+        "name": "10cm letecké snímky Vlámska od Digitaal Vlaanderen 2013–2015"
+      },
+      "DV_OrthoPhoto_Preliminary": {
+        "name": "Předběžné letecké snímky Digitaal Vlaanderen"
+      },
+      "Dourados_Ortofotos": {
+        "description": "Dourados (2018) a několik okresů (2020) ve vysokém rozlišení."
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 bez mraků – https://s2maps.eu – od společnosti EOX IT Services GmbH (obsahuje upravená data Copernicus Sentinel 2017 a 2018)"
+        },
+        "description": "Dodatečně upravené snímky satelitu Sentinel.",
+        "name": "eox.at 2018 bez mraků"
+      },
+      "EOXAT2019CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 bez mraků – https://s2maps.eu – od společnosti EOX IT Services GmbH (obsahuje upravená data Copernicus Sentinel 2019)"
+        },
+        "description": "Dodatečně upravené snímky satelitu Sentinel.",
+        "name": "eox.at 2019 bez mraků"
+      },
+      "EOXAT2020CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 bez mraků – https://s2maps.eu – od společnosti EOX IT Services GmbH (obsahuje upravená data Copernicus Sentinel 2020)"
+        },
+        "description": "Dodatečně upravené snímky satelitu Sentinel.",
+        "name": "eox.at 2020 bez mraků"
+      },
+      "EOXAT2021CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 bez mraků – https://s2maps.eu – od společnosti EOX IT Services GmbH (obsahuje upravená data Copernicus Sentinel 2021)"
+        },
+        "description": "Dodatečně upravené snímky satelitu Sentinel.",
+        "name": "eox.at 2021 bez mraků"
+      },
+      "EOXAT2022CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 bez mraků - https://s2maps.eu od EOX IT Services GmbH (Obsahuje upravená data z Copernicus Sentinel 2022)"
+        },
+        "description": "Následně zpracované snímky ze satelitu Sentinel.",
+        "name": "eox.at 2022 bez mraků"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Podmínky použití a zpětná vazba"
+        },
+        "description": "Světové snímky Esri",
+        "name": "Světové snímky Esri"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Podmínky použití a zpětná vazba"
+        },
+        "description": "Archivní snímky Esri, které mohou být čistší a přesnější jak výchozí vrstva.",
+        "name": "Světové snímky Esri (Clarity) Beta"
+      },
+      "Frankfurt-am-Main-2019": {
+        "attribution": {
+          "text": "Městský zeměměřický úřad Frankfurt nad Mohanem"
+        },
+        "description": "Letecké snímky města Frankfurt nad Mohanem, vyfocené 16. dubna 2019",
+        "name": "Letecký snímek Frankfurt nad Mohanem 2019"
+      },
+      "Geodatastyrelsen_Cadastral_Parcels_INSPIRE_View": {
+        "attribution": {
+          "text": "Geodatastyrelsen og Styrelsen pro Dataforsyning og Infrastruktur"
+        }
+      },
+      "Geodatastyrelsen_DTK_Kort25": {
+        "attribution": {
+          "text": "Styrelsen pro Dataforsyning og Infrastruktur"
+        }
+      },
+      "Geodatastyrelsen_Denmark": {
+        "attribution": {
+          "text": "Styrelsen pro Dataforsyning og Infrastruktur"
+        },
+        "name": "Letecké snímky SDFI"
+      },
+      "Geodatastyrelsen_Skaermkort": {
+        "attribution": {
+          "text": "Styrelsen pro Dataforsyning og Infrastruktur"
+        }
+      },
+      "Geoportal2-PL-City-boundaries_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "WMS služba vydávání polských územních jednotek včetně správních jednotek",
+        "name": "Geoportál 2: hranice města WMS"
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "Ortofotomapa s rozlišením 10 cm nebo více. Data jsou seřazena podle rozlišení a následně podle aktuálnosti, např. list z roku 2012 s rozlišením 8 cm pošle list z roku 2019 s rozlišením 10 cm.",
+        "name": "Geoportál 2: Ortofotomapa s vysokým rozlišením (letecký snímek) (WMS)"
+      },
+      "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "Ortofotomapa s rozlišením 10 cm nebo více. Data jsou seřazena podle rozlišení a následně podle aktuálnosti, např. list z roku 2012 s rozlišením 8 cm pošle list z roku 2019 s rozlišením 10 cm.",
+        "name": "Geoportál 2: Ortofotomapa s vysokým rozlišením (letecký snímek) (WMS)"
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "WMS Viewing Service Integrace národního číslování adres umožňující stahování mapových obrazů vytvořených na základě prostorových dat ze Státního registru hranic v rámci registru ulic a adres.",
+        "name": "Geoportál 2: Názvy ulic"
+      },
+      "Geoportal2-PL-addres_points_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "WMS Viewing Service Integrace národního číslování adres umožňující stahování mapových obrazů vytvořených na základě prostorových dat ze Státního registru hranic v rámci registru ulic a adres.",
+        "name": "Geoportál 2: Adresové doby"
+      },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "Prohlížecí služba (Web Map Service, WMS), která umožňující prohlížení archivního ortofota v oblasti Polska. Data poskytovaná prostřednictvím této služby jsou ortofotomapa vytvořená z leteckých snímků. Služba nabízí podporu pro rozhraní WMS 1.3.0.",
+        "name": "Geoportál 2: Ortofotomapa archivní snímky) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "Prohlížecí služba (Web Map Service, WMS), která umožňující prohlížení ortofota v oblasti Polska. Data poskytovaná prostřednictvím této služby jsou ortofotomapa vytvořená z leteckých snímků. Služba nabízí podporu pro rozhraní WMS 1.3.0.",
+        "name": "Geoportál 2: Ortofotomapa (nejnovější letecké snímky) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "Prohlížecí služba (Web Map Tile Service, WMTS), která umožňující prohlížení ortofota v oblasti Polska. Data poskytovaná prostřednictvím této služby jsou ortofotomapa vytvořená z leteckých snímků.",
+        "name": "Geoportál 2: Ortofotomapa (nejnovější letecké snímky) (WMTS)"
+      },
+      "Geoportal2-PL-boundaries-of-communes_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "WMS služba vydávání polských územních jednotek včetně správních jednotek",
+        "name": "Geoportál 2: hranice obcí WMS"
+      },
+      "Geoportal2-PL-boundaries-of-counties_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "WMS služba vydávání polských územních jednotek včetně správních jednotek",
+        "name": "Geoportál 2: hranice okresů WMS"
+      },
+      "Geoportal2-PL-boundaries-of-provinces_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "WMS služba vydávání polských územních jednotek včetně správních jednotek",
+        "name": "Geoportál 2: hranice provincií WMS"
+      },
+      "Geoportal2-PL-buildings_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "Služba Národní integrace evidence půdy je hromadná služba pro prezentaci evidenčních údajů pocházejících přímo z územních celků. Služba obsahuje pouze data těch jednotek, které mají službu WMS s odpovídajícími parametry a rozhodly se zařadit svou službu WMS do hromadné služby „KrajowaIntegracjaEwidycjiGruntow“.",
+        "name": "Geoportál 2: Stavební záznamy WMS"
+      },
+      "Geoportal2-PL-gas-pipe_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "Služba Národní integrace terénní výzbroje je hromadná služba pro prezentaci dat o inženýrských sítích pocházejících přímo od útvarů okresní úrovně. Služba obsahuje pouze data těch jednotek, které mají službu WMS s odpovídajícími parametry a rozhodly se zařadit svou službu WMS do služby KrajowaIntegracjaUzboszeniaTerenu.",
+        "name": "Geoportál 2: plynovody WMS"
+      },
+      "Geoportal2-PL-heat-pipe_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "Služba Národní integrace terénní výzbroje je hromadná služba pro prezentaci dat o inženýrských sítích pocházejících přímo od útvarů okresní úrovně. Služba obsahuje pouze data těch jednotek, které mají službu WMS s odpovídajícími parametry a rozhodly se zařadit svou službu WMS do služby KrajowaIntegracjaUzboszeniaTerenu.",
+        "name": "Geoportál 2: tepelné trubice WMS"
+      },
+      "Geoportal2-PL-plot_boundaries_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "Služba Národní integrace evidence půdy je hromadná služba pro prezentaci evidenčních údajů pocházejících přímo z územních celků. Služba obsahuje pouze data těch jednotek, které mají službu WMS s odpovídajícími parametry a rozhodly se zařadit svou službu WMS do hromadné služby „KrajowaIntegracjaEwidycjiGruntow“.",
+        "name": "Geoportál 2: Hranice pozemků"
+      },
+      "Geoportal2-PL-power-cord_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "Služba Národní integrace terénní výzbroje je hromadná služba pro prezentaci dat o inženýrských sítích pocházejících přímo od útvarů okresní úrovně. Služba obsahuje pouze data těch jednotek, které mají službu WMS s odpovídajícími parametry a rozhodly se zařadit svou službu WMS do služby KrajowaIntegracjaUzboszeniaTerenu.",
+        "name": "Geoportál 2: napájení kabel WMS"
+      },
+      "Geoportal2-PL-prng": {
+        "attribution": {
+          "text": "Ústřední geodetické a kartografické dokumentační středisko"
+        },
+        "name": "Geoportál 2: PRNG (zeměpisné názvy)"
+      },
+      "Geoportal2-PL-sewer-pipe_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "Služba Národní integrace terénní výzbroje je hromadná služba pro prezentaci dat o inženýrských sítích pocházejících přímo od útvarů okresní úrovně. Služba obsahuje pouze data těch jednotek, které mají službu WMS s odpovídajícími parametry a rozhodly se zařadit svou službu WMS do služby KrajowaIntegracjaUzboszeniaTerenu.",
+        "name": "Geoportál 2: kanalizační potrubí WMS"
+      },
+      "Geoportal2-PL-shaded_relief_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "Služba prohlížení (Web Map Service, WMS) pro zobrazení stínování DMT v mřížce 1 m x 1 m. Služba nabízí podporu rozhraní WMS 1.3.0.",
+        "name": "Geoportál 2: Stínovaný reliéf WMS"
+      },
+      "Geoportal2-PL-squares-and-housing-estates_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "WMS Viewing Service Integrace národního číslování adres umožňující stahování mapových obrazů vytvořených na základě prostorových dat ze Státního registru hranic v rámci registru ulic a adres.",
+        "name": "Geoportál 2: Náměstí a sídliště"
+      },
+      "Geoportal2-PL-state-borders_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "WMS služba vydávání polských územních jednotek včetně správních jednotek",
+        "name": "Geoportál 2: Státní hranice WMS"
+      },
+      "Geoportal2-PL-telecommunications-cable_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "Služba Národní integrace terénní výzbroje je hromadná služba pro prezentaci dat o inženýrských sítích pocházejících přímo od útvarů okresní úrovně. Služba obsahuje pouze data těch jednotek, které mají službu WMS s odpovídajícími parametry a rozhodly se zařadit svou službu WMS do služby KrajowaIntegracjaUzboszeniaTerenu.",
+        "name": "Geoportál 2: telekomunikační kabely WMS"
+      },
+      "Geoportal2-PL-water-pipe_WMS": {
+        "attribution": {
+          "text": "Ústřední úřad geodézie a kartografie"
+        },
+        "description": "Služba Národní integrace terénní výzbroje je hromadná služba pro prezentaci dat o inženýrských sítích pocházejících přímo od útvarů okresní úrovně. Služba obsahuje pouze data těch jednotek, které mají službu WMS s odpovídajícími parametry a rozhodly se zařadit svou službu WMS do služby KrajowaIntegracjaUzboszeniaTerenu.",
+        "name": "Geoportál 2: vodovodní potrubí WMS"
+      },
+      "Gliwice-2003": {
+        "attribution": {
+          "text": "Magistrát města Hlivice"
+        },
+        "name": "Hlivice: letecké snímky 2003"
+      },
+      "Gliwice-2009": {
+        "attribution": {
+          "text": "Magistrát města Hlivice"
+        },
+        "name": "Hlivice: letecké snímky 2009"
+      },
+      "Gliwice-2013": {
+        "attribution": {
+          "text": "Magistrát města Hlivice"
+        },
+        "name": "Hlivice: letecké snímky 2013"
+      },
+      "Gliwice-2017": {
+        "attribution": {
+          "text": "Magistrát města Hlivice"
+        },
+        "name": "Hlivice: letecké snímky 2017"
+      },
+      "Gliwice-2018": {
+        "attribution": {
+          "text": "Magistrát města Hlivice"
+        },
+        "name": "Hlivice: letecké snímky 2018"
+      },
+      "Gliwice-2020": {
+        "attribution": {
+          "text": "Magistrát města Hlivice"
+        },
+        "name": "Hlivice: letecké snímky 2020"
+      },
+      "Gliwice-2021": {
+        "attribution": {
+          "text": "Magistrát města Hlivice"
+        },
+        "name": "Hlivice: letecké snímky 2021"
+      },
+      "Gliwice-buildings": {
+        "attribution": {
+          "text": "Magistrát města Hlivice"
+        },
+        "name": "Hlivice: Budovy"
+      },
+      "LSA-ATKIS_BU": {
+        "description": "Tvar budov v Sasku-Anhaltsku"
+      },
+      "LSA-DOP20": {
+        "description": "Letecký snímek spolkové země Sasko-Anhaltsko, rozlišení 20 cm"
+      },
+      "LSA-DVG": {
+        "description": "Vektorový záznam administrativních hranic. Jsou uvedeny hranice spolkové země, okresu, obce a části obce."
+      },
+      "LocalAuthorities_RightsOfWay": {
+        "attribution": {
+          "text": "Obsahuje informace veřejného sektoru licencované pod licencí Open Government License v3.0."
+        },
+        "description": "Veřejná data o právech cesty zveřejněná místními úřady, shromážděna na rowmaps.com",
+        "name": "Veřejná práva cesty"
+      },
+      "Lodz-2015": {
+        "attribution": {
+          "text": "Magistrát města Lodž"
+        },
+        "name": "Lodž: letecké snímky 2015"
+      },
+      "Lodz-2017": {
+        "attribution": {
+          "text": "Magistrát města Lodž"
+        },
+        "name": "Lodž: letecké snímky 2017"
+      },
+      "Lodz-buildings": {
+        "attribution": {
+          "text": "Magistrát města Lodž"
+        },
+        "name": "Lodž: Budovy"
+      },
+      "MAPNIK": {
+        "attribution": {
+          "text": "© Přispěvatelé OpenStreetMap, ODbL 1.0"
+        },
+        "description": "Výchozí vrstva OpenStreetMap.",
+        "name": "OpenStreetMap (standardní)"
+      },
+      "Maaamet-Estonia_Cadastre": {
+        "name": "Katastrální mapy Maa-amet"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Podmínky použití & zpětná vazba"
+        },
+        "description": "Sada rastrových dlaždic poskytovaná společností Mapbox, která obsahuje globální základní mapu satelitních a leteckých snímků s vysokým rozlišením",
+        "name": "Satelitní snímky Mapbox"
+      },
+      "Naturvardsverket-protected": {
+        "description": "Švédské národní parky, přírodní rezervace a další chráněné oblasti a objekty",
+        "name": "Agentura pro ochranu životního prostředí - Chráněné oblasti"
+      },
+      "Naturvardsverket-trails": {
+        "description": "Denně aktualizované stezky v přírodních rezervacích nebo okolí zaznamenané švédskou agenturou pro ochranu životního prostředí",
+        "name": "Agentura pro ochranu životního prostředí - Stezky"
+      },
+      "OSIP": {
+        "attribution": {
+          "text": "Celostátní snímkovací program v Ohiu"
+        },
+        "description": "Ohio celostátní snímky III nejprodávanější ortoimagery každého kraje při řešení od 1 stopy do 3 palců od roku 2017 do roku 2020.",
+        "name": "Celostátní snímkovací program v Ohiu"
+      },
+      "OSIP_1ft": {
+        "attribution": {
+          "text": "Celostátní snímkovací program v Ohiu"
+        },
+        "description": "Ortosnímky Celostátního snímkovacího programu v Ohiu II všech 88 okresů v rozlišení jedné stopy v letech 2011 až 2014.",
+        "name": "Celostátní snímkovací program v Ohiu jednostopý"
+      },
+      "OSIP_6in": {
+        "attribution": {
+          "text": "Celostátní snímkovací program v Ohiu"
+        },
+        "description": "Ortosnímky Celostátního snímkovacího programu v Ohiu III 40 okresů pořízené v 6palcovém rozlišení v letech 2017 a 2018 plus snímky OSIP I a OSIP II v 16 dalších okresech od roku 2010 do roku 2014.",
+        "name": "Celostátní snímkovací program v Ohiu 6palcový"
+      },
+      "OSMUK-Cadastral-Parcels": {
+        "attribution": {
+          "text": "Obsahuje informace veřejného sektoru licencované pod licencí Open Government License v3.0."
+        },
+        "description": "Dokonale vyrovnané katastrální parcely ve Velké Británii",
+        "name": "Katastrální parcely OSMUK"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, přispěvatelé OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspektor: Adresy"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, přispěvatelé OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspektor: Geometrie"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, přispěvatelé OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspektor: Cesty"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, přispěvatelé OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspektor: Plochy"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, přispěvatelé OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspektor: Místa"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, přispěvatelé OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspektor: Navigace"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, přispěvatelé OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspektor: Značkování"
+      },
+      "OpenAerialMapMosaic": {
+        "description": "Všechny obrázky OpenAerialMap v jedné mozaikové vrstvě od Kontur.io",
+        "name": "Mozaika OpenAerialMap, od Kontur.io"
+      },
+      "Riksantikvariambetet-archaeological": {
+        "description": "Starověké a historické pozůstatky a památky",
+        "name": "Riksantikvarieämbetet - archeologická místa a památky"
+      },
+      "Riksantikvariambetet-heritage": {
+        "description": "Budovy a kostely dědictví",
+        "name": "Riksantikvarieämbetet - Budovy dědictví"
+      },
+      "Riksantikvariambetet-protected": {
+        "description": "Chráněné oblasti pro budovy dědictví a místa náboženského dědictví",
+        "name": "Riksantikvarieämbetet - Chráněná místa dědictví"
+      },
+      "Riksantikvariambetet-ruins": {
+        "description": "Zříceniny kulturně-historického zájmu",
+        "name": "Riksantikvarieämbetet - Zříceniny"
+      },
+      "SDFE_Overflade_Skyggekort_40cm": {
+        "attribution": {
+          "text": "Styrelsen pro Dataforsyning og Infrastruktur"
+        },
+        "name": "SDFI mapa povrchového stínu (40 cm)"
+      },
+      "SDFE_Terraen_Skyggekort_40cm": {
+        "attribution": {
+          "text": "Styrelsen pro Dataforsyning og Infrastruktur"
+        },
+        "name": "SDFI mapa stínového terénu (40 cm)"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "Nejaktuálnější snímky SPW(allonie)"
+      },
+      "SPW_PICC": {
+        "name": "PICC numerické snímky SPW(allonie)"
+      },
+      "Siemianowice_Slaskie-aerial_image": {
+        "attribution": {
+          "text": "Magistrát města Siemianowice Śląskie"
+        },
+        "name": "Siemianowice Śląskie: letecké snímky"
+      },
+      "Siemianowice_Slaskie-buildings": {
+        "attribution": {
+          "text": "Magistrát města Siemianowice Śląskie"
+        },
+        "name": "Siemianowice Śląskie: Budovy"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Žlutá = data z veřejně dostupné mapy z amerického sčítání lidu. Červená = data nejsou v OpenStreetMap nalezena",
+        "name": "Silnice TIGER 2018"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "Žlutá = data z veřejně dostupné mapy z amerického sčítání lidu. Červená = data nejsou v OpenStreetMap nalezena",
+        "name": "Silnice TIGER 2019"
+      },
+      "US-TIGER-Roads-2020": {
+        "description": "Žlutá = data z veřejně dostupné mapy z amerického sčítání lidu. Červená = data nejsou v OpenStreetMap nalezena",
+        "name": "Silnice TIGER 2020"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Žlutá = data z veřejně dostupné mapy z amerického sčítání lidu. Červená = data nejsou v OpenStreetMap nalezena",
+        "name": "Silnice TIGER 2021"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Žlutá = data z veřejně dostupné mapy z amerického sčítání lidu. Červená = data nejsou v OpenStreetMap nalezena",
+        "name": "Silnice TIGER 2022"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Žlutá = data z veřejně dostupné mapy z amerického sčítání lidu. Červená = data nejsou v OpenStreetMap nalezena",
+        "name": "Silnice TIGER 2023"
+      },
+      "USDA-NAIP": {
+        "attribution": {
+          "text": "Ministerstvo zemědělství USA"
+        },
+        "description": "Poslední rok 30/60cm 4pásmových DOQQ z Národního programu pro snímkování zemědělství (NAIP) pro každý stát v sousedních Spojených státech.",
+        "name": "Národní program snímkování zemědělství"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Vozovka: Zelené okraje = neklasifikovaná. Hnědé okraje = cesta. Povrch: Štěrk = světle hnědá výplň, asfalt = černá, dlažba = šedá, zemina = bílá, beton = modrá, tráva = zelená. Sezónní = bílé čáry",
+        "name": "Vrstva lesních cest USA"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Realizováno Brussels UrbIS®© - Distribuce & Copyright CIRB"
+        },
+        "name": "Nejaktuálnější letecké snímky CIRB/CIBG"
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "Realizováno Brussels UrbIS®© - Distribuce & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "Realizováno Brussels UrbIS®© - Distribuce & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "Realizováno Brussels UrbIS®© - Distribuce & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "Realizováno Brussels UrbIS®© - Distribuce & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Realizováno Brussels UrbIS®© - Distribuce & Copyright CIRB"
+        }
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "Realizováno Brussels UrbIS®© - Distribuce & Copyright CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
+        "attribution": {
+          "text": "Realizováno Brussels UrbIS®© - Distribuce & Copyright CIRB"
+        }
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "Realizováno Brussels UrbIS®© - Distribuce & Copyright CIRB"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, přispěvatelé OpenStreetMap, CC BY-SA 3.0"
+        },
+        "name": "Vyznačené cesty: Cyklistika"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, přispěvatelé OpenStreetMap, CC BY-SA 3.0"
+        },
+        "name": "Vyznačené cesty: Turistika"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, přispěvatelé OpenStreetMap, CC BY-SA 3.0"
+        },
+        "name": "Vyznačené cesty: Horská kola"
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, přispěvatelé OpenStreetMap, CC BY-SA 3.0"
+        },
+        "name": "Vyznačené cesty: Bruslení"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, přispěvatelé OpenStreetMap, CC BY-SA 3.0"
+        },
+        "name": "Vyznačené cesty: Zimní sporty"
+      },
+      "Zabrze-2011": {
+        "attribution": {
+          "text": "Magistrát města Zabrze"
+        },
+        "name": "Zabrze: letecké snímky 2011"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "Základní mapa Rakouska, založená na vládních datech."
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Vrstva ortofoto poskytnuta basemap.at. „Následník“ geoimage.at.",
+        "name": "Ortofoto basemap.at"
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "description": "Překrytí anotací poskytuje basemap.at.",
+        "name": "Překryv basemap.at"
+      },
+      "cyclosm": {
+        "attribution": {
+          "text": "Zobrazení: CyclOSM (hostováno OpenStreetMap Francie) © Mapová data přispěvatelé OpenStreetMap"
+        },
+        "description": "CyclOSM je mapový styl navržený s ohledem na cyklistiku. Využívá data OpenStreetMap k vytvoření krásné a praktické cyklistické mapy!"
+      },
+      "debicki-buildings": {
+        "attribution": {
+          "text": "Okres Debica"
+        },
+        "name": "Okres Debica: Budovy"
+      },
+      "eufar-balaton": {
+        "attribution": {
+          "text": "Ortofoto EUFAR Balaton 2010"
+        },
+        "description": "Fotografie se zeměpisnými souřadnicemi od Balaton Limnological Institute z roku 1940.",
+        "name": "Ortofoto EUFAR Balaton"
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© oblast Gothenburg, licence CC0"
+        },
+        "description": "Plán města je přehledová mapa popisující Gothenburg. Obsahuje základní informace o oblasti, komunikacích, hydrologii, budovách, adresách a názvech ulic, administrativních částech a další orientační text.",
+        "name": "Plán města Gothenburg"
+      },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© oblast Gothenburg, licence CC0"
+        },
+        "description": "Webová mapová služba představující stíny kopců a svah na základě výškového modelu města Göteborg z roku 2017. Rozlišení 0,5 metru na pixel.",
+        "name": "Stíny kopců Gothenburg"
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© oblast Gothenburg, licence CC0"
+        },
+        "description": "Letecké snímky oblasti Gothenburg",
+        "name": "Letecké snímky Gothenburg 2015"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© oblast Gothenburg, licence CC0"
+        },
+        "description": "Letecké snímky oblasti Gothenburg",
+        "name": "Letecké snímky Gothenburg 2017"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© oblast Gothenburg, licence CC0"
+        },
+        "description": "Letecké snímky oblasti Gothenburg",
+        "name": "Letecké snímky Gothenburg 2019"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© oblast Gothenburg, licence CC0"
+        },
+        "description": "Letecké snímky oblasti Gothenburg",
+        "name": "Letecké snímky Gothenburg 2021"
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© oblast Gothenburg, licence CC0"
+        },
+        "description": "Letecké snímky oblasti Gothenburg",
+        "name": "Nejnovější letecké snímky Gothenburg"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "GSI Japonsko"
+        },
+        "description": "Letecké snímky Japonska od GSI. Ne zcela vyladěné, ale trochu novější, případně  s jiným pokrytím než snímky Japonska (GSI).",
+        "name": "Letecké snímky Japonska (GSI)"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "attribution": {
+          "text": "Bezešvé fotosnímky Japonska (GSI)"
+        },
+        "description": "Bezešvé snímky japonska od GSI. Kolekce nejnovějších snímků GSI, po neštěstí a další.",
+        "name": "Bezešvé snímky Japonska (GSI)"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "GSI Japonsko"
+        },
+        "description": "Standardní mapa Japonska (GSI). Rozsáhlé pokrytí.",
+        "name": "Standardní mapa Japonska (GSI)"
+      },
+      "kalmar-orto-2014": {
+        "attribution": {
+          "text": "© oblast Kalmar"
+        },
+        "description": "Letecké snímky severního pobřeží oblasti Kalmar 2014",
+        "name": "Letecké snímky Kalmar sever 2014"
+      },
+      "kalmar-orto-2016": {
+        "attribution": {
+          "text": "© oblast Kalmar"
+        },
+        "description": "Letecké snímky jižního pobřeží oblasti Kalmar 2016",
+        "name": "Letecké snímky Kalmar jih 2016"
+      },
+      "kalmar-orto-2018": {
+        "attribution": {
+          "text": "© oblast Kalmar"
+        },
+        "description": "Letecké snímky urbanizované oblasti Kalmar 2018",
+        "name": "Letecké snímky města Kalmar 2018"
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© oblast Kalmar"
+        },
+        "description": "Letecké snímky urbanizované oblasti Kalmar 2020",
+        "name": "Letecké snímky města Kalmar 2020"
+      },
+      "kartverket-bygninger": {
+        "description": "INSPIRE stavby pro Norsko.",
+        "name": "Překryv budov Kartverket"
+      },
+      "kelkkareitit": {
+        "description": "Nordické cesty pro sněžné skůtry z OSM  – Kelkkareitit.fi",
+        "name": "Překryv nordických cest pro sněžné skůtry"
+      },
+      "lancucki-buildings": {
+        "attribution": {
+          "text": "Okres Łańcut"
+        },
+        "name": "Okres Łańcut: Budovy"
+      },
+      "lantmateriet-orto1960": {
+        "description": "Mozaika Švédských leteckých snímků z období 1955–1965. Může místy obsahovat starší, či novější snímky.",
+        "name": "Historické letecké snímky Lantmäteriet z roku 1960"
+      },
+      "lantmateriet-orto1975": {
+        "description": "Mozaika Švédských leteckých snímků z období 1970–1980. V přípravě.",
+        "name": "Historické letecké snímky Lantmäteriet z roku 1975"
+      },
+      "lantmateriet-topowebb": {
+        "attribution": {
+          "text": "© Lantmäteriet, licence CC0"
+        },
+        "description": "Topografická mapa Švédska 1:50 000",
+        "name": "Topografická mapa Lantmäteriet"
+      },
+      "linkoping-orto": {
+        "attribution": {
+          "text": "© Oblast Linköping"
+        },
+        "description": "Letecké snímky oblasti Linköping z roku 2010, otevřená data",
+        "name": "Letecké snímky Linköping"
+      },
+      "lubaczowski-buildings": {
+        "attribution": {
+          "text": "Okres Lubaczów"
+        },
+        "name": "Okres Lubaczów: Budovy"
+      },
+      "maaamet<TX_DOT>ee-cir_ngr": {
+        "name": "Lesnictví Maa-amet"
+      },
+      "maaamet<TX_DOT>ee-pohi_vr2": {
+        "name": "Základní mapy Maa-amet"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Podmínky použití a zpětná vazba"
+        },
+        "description": "Zobrazuje významné prvky, které Vám pomohou s orientací.",
+        "name": "Překryv lokátoru"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© přispěvatelé OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OpenPT Map (překryv)"
+      },
+      "openrailwaymap": {
+        "attribution": {
+          "text": "Zobrazení: OpenRailwayMap, © Mapová data přispěvatelé OpenStreetMap"
+        },
+        "description": "Překryvná vrstva zobrazuje železniční infrastrukturu podle dat OpenStreetMap"
+      },
+      "openrailwaymap-maxspeeds": {
+        "attribution": {
+          "text": "Zobrazení: OpenRailwayMap, © Mapová data přispěvatelé OpenStreetMap"
+        },
+        "description": "Překryvná vrstva zobrazuje železniční rychlostní limity podle dat OpenStreetMap",
+        "name": "Maximální rychlosti OpenRailwayMap"
+      },
+      "openrailwaymap-signalling": {
+        "attribution": {
+          "text": "Zobrazení: OpenRailwayMap, © Mapová data přispěvatelé OpenStreetMap"
+        },
+        "description": "Překryvná vrstva zobrazuje železniční návěsti podle dat OpenStreetMap",
+        "name": "Návěstidla OpenRailwayMap"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© Přispěvatelé OpenStreetMap"
+        },
+        "description": "Veřejné GPS trasy odeslané na OpenStreetMap.",
+        "name": "GPS stopy OpenStreetMap"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© Přispěvatelé OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (německý styl)"
+      },
+      "poznan-ortofotomapa2014": {
+        "attribution": {
+          "text": "Sbor geodézie a katastru města GEOPOZ"
+        },
+        "name": "Poznaň: letecké snímky 2014"
+      },
+      "poznan-ortofotomapa2016": {
+        "attribution": {
+          "text": "Sbor geodézie a katastru města GEOPOZ"
+        },
+        "name": "Poznaň: letecké snímky 2016"
+      },
+      "poznan-ortofotomapaBiezaca": {
+        "attribution": {
+          "text": "Sbor geodézie a katastru města GEOPOZ"
+        },
+        "name": "Poznaň: aktuální letecké snímky"
+      },
+      "przemysl-aerial": {
+        "attribution": {
+          "text": "Město Přemyšl"
+        },
+        "name": "Přemyšl: letecké snímky"
+      },
+      "przemysl-buildings": {
+        "attribution": {
+          "text": "Město Přemyšl"
+        },
+        "name": "Přemyšl: Budovy"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, data © přispěvatelé OpenStreetMap"
+        },
+        "name": "QA Žádná adresa"
+      },
+      "route500": {
+        "attribution": {
+          "text": "Tiles © cquest@Openstreetmap Francie, data © IGN, LO/OL"
+        },
+        "description": "Silnice klasifikované sítě (dálnice, státní, departementní)"
+      },
+      "rzeszowski-aerial": {
+        "attribution": {
+          "text": "Okres Řešov"
+        },
+        "name": "Okres Řešov: letecké snímky"
+      },
+      "rzeszowski-buildings": {
+        "attribution": {
+          "text": "Okres Řešov"
+        },
+        "name": "Okres Řešov: Budovy"
+      },
+      "scb-industrial": {
+        "attribution": {
+          "text": "© Statistika Centralbyrån, CC0"
+        },
+        "description": "Geograficky vymezené oblasti, které se vyznačují rozsáhlým a průmyslovým využitím půdy",
+        "name": "SCB - Průmyslové zóny"
+      },
+      "scb-settlements": {
+        "attribution": {
+          "text": "© Statistika Centralbyrån, CC0"
+        },
+        "description": "Sousední oblasti budov s 50-199 obyvateli a ne více než 150 metrů mezi domy",
+        "name": "SCB - Malé osady"
+      },
+      "scb-urban": {
+        "attribution": {
+          "text": "© Statistika Centralbyrån, CC0"
+        },
+        "description": "Lidské osady nejméně 200 lidí s méně než 500 metrů mezi domácnostmi",
+        "name": "SCB - Městské oblasti"
+      },
+      "scb-vacation": {
+        "attribution": {
+          "text": "© Statistika Centralbyrån, CC0"
+        },
+        "description": "Sousední oblasti, které se skládají hlavně z dovolených; Sbírka nejméně 50 rekreačních domů, kde vzdálenost mezi nimi nepřesahuje 150 metrů",
+        "name": "SCB - Oblasti domácností pro dovolenou"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Dlaždice: skobbler, mapová data: přispěvatelé OpenStreetMap"
+        }
+      },
+      "skolverket-schools": {
+        "description": "Švédské školy.",
+        "name": "Skolverket - Školy"
+      },
+      "skoterleder": {
+        "description": "Cesty pro sněžné skůtry",
+        "name": "Mapa Švédska pro sněžné skůtry"
+      },
+      "sropczyce-buildings": {
+        "attribution": {
+          "text": "Okres Ropczyce-Sędziszów"
+        },
+        "name": "Okres Ropczyce-Sędziszów: Budovy"
+      },
+      "stalowowolski-buildings": {
+        "attribution": {
+          "text": "Okres Stalowa Wola"
+        },
+        "name": "Okres Stalowa Wola: Budovy"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "Mapové dlaždice od Stamen Design pod CC BY 3.0. Data od OpenStreetMap, pod ODbL"
+        },
+        "name": "Terén Stamen"
+      },
+      "stockholm-orto": {
+        "attribution": {
+          "text": "© oblast Stockholm, licence CC0"
+        },
+        "description": "Letecké snímky oblasti Stockholmu z roku 2018, licence CC0",
+        "name": "Ortofotomapy Stockholmu"
+      },
+      "susono_shizuoka_jp_orthophoto": {
+        "attribution": {
+          "text": "Letecké snímky města Susono"
+        },
+        "description": "Letecké snímky zveřejněné Susono City jako otevřená data.",
+        "name": "Letecké snímky města Susono"
+      },
+      "svk-electricity-network": {
+        "description": "Švédská přenosová síť pro elektřinu.",
+        "name": "SVK - Elektrická síť"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Mapy © Thunderforest, data © přispěvatelé OpenStreetMap"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Mapy © Thunderforest, data © přispěvatelé OpenStreetMap"
+        }
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Mapy © Thunderforest, data © přispěvatelé OpenStreetMap"
+        }
+      },
+      "trafikverket-baninfo": {
+        "description": "Švédská železniční síť, včetně vleček",
+        "name": "Železniční síť Trafikverket"
+      },
+      "trafikverket-baninfo-option": {
+        "description": "Švédská železniční síť s několika možnostmi mapových vrstev",
+        "name": "Volby železniční sítě Trafikverket"
+      },
+      "trafikverket-vagnat": {
+        "description": "Švédská síť cest NVDB",
+        "name": "Silniční síť Trafikverket"
+      },
+      "trafikverket-vagnat-extra": {
+        "description": "Švédská detailní mapa NVDB: dálnice, zklidňování dopravy, odpočivadla, autobusové zastávky, mosty, tunely, rychlostní radary",
+        "name": "Silniční síť Trafikverket extra"
+      },
+      "trafikverket-vagnat-option": {
+        "description": "Švédská síť cest NVDB s několika možnostmi mapových vrstev",
+        "name": "Volby silniční sítě Trafikverket"
+      },
+      "wroclaw-orto2015": {
+        "attribution": {
+          "text": "Magistrát města Vratislav"
+        },
+        "name": "Vratislav: letecké snímky 2015"
+      },
+      "wroclaw-orto2018": {
+        "attribution": {
+          "text": "Magistrát města Vratislav"
+        },
+        "name": "Vratislav: letecké snímky 2018"
+      }
+    }
+  }
+}

@@ -1,0 +1,971 @@
+{
+  "zh-TW": {
+    "imagery": {
+      "Bedzin-PL-aerial_image": {
+        "name": "Będzin: Orthophotomap 2013 (空照圖)"
+      },
+      "Bedzin-PL-buildings": {
+        "name": "Będzin: 建築"
+      },
+      "Bing": {
+        "description": "衛星與空照圖",
+        "name": "Bing Maps 航照圖"
+      },
+      "Bytom-2012": {
+        "name": "Bytom: Orthophotomap 2012 (空照圖)"
+      },
+      "Bytom-2014": {
+        "name": "Bytom: Fotoplan 2014 (空照圖)"
+      },
+      "Bytom-2016": {
+        "name": "Bytom: Orthophotomap 2016（空照圖）"
+      },
+      "Bytom-2018": {
+        "name": "Bytom: Orthophotomap 2018（空照圖）"
+      },
+      "Bytom-2021": {
+        "name": "Bytom: Orthophotomap 2021（空照圖）"
+      },
+      "Bytom-buildings": {
+        "name": "Bytom: 建築"
+      },
+      "Czestochowa-2011": {
+        "name": "Częstochowa: Orthophotomap 2011 (空照圖)"
+      },
+      "Czestochowa-2013": {
+        "name": "Częstochowa: Orthophotomap 2013 (空照圖)"
+      },
+      "Czestochowa-2014": {
+        "name": "Częstochowa: Orthophotomap 2014 (空照圖)"
+      },
+      "Czestochowa-2015": {
+        "name": "Częstochowa: Orthophotomap 2015 (空照圖)"
+      },
+      "Czestochowa-2016": {
+        "name": "Częstochowa: Orthophotomap 2016 (空照圖)"
+      },
+      "Czestochowa-2017": {
+        "name": "Częstochowa: Orthophotomap 2017 (空照圖)"
+      },
+      "Czestochowa-buildings": {
+        "name": "Częstochowa：建築"
+      },
+      "DV_DHMV_II_HILL_25cm": {
+        "name": "Digitaal Vlaanderen DHV II, 0.25 公尺多方向山體陰影圖"
+      },
+      "DV_DHMV_II_SVF_25cm": {
+        "name": "Digitaal Vlaanderen DHV II, 0.25 公尺 Skyview"
+      },
+      "DV_OrthoPhoto": {
+        "name": "Digitaal Vlaanderen 最近的空照圖"
+      },
+      "DV_OrthoPhoto_20132015_10cm": {
+        "name": "Digitaal Vlaanderen 2013-2015 的 10 公分空照圖"
+      },
+      "DV_OrthoPhoto_Preliminary": {
+        "name": "Digitaal Vlaanderen 初步空照圖"
+      },
+      "Dourados_Ortofotos": {
+        "attribution": {
+          "text": "多拉杜斯市政廳 - GeoDourados"
+        },
+        "description": "多拉杜斯 (2018) 與許多行政區 (2020) 的高解析度航照圖。",
+        "name": "多拉杜斯正射影像"
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 無雲 - https://s2maps.eu by EOX IT Services GmbH (含有變動過的 Copernicus Sentinel 資料 2017 & 2018)"
+        },
+        "description": "後處理過的 Sentinel 衛星影像。",
+        "name": "eox.at 2018 無雲"
+      },
+      "EOXAT2019CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 無雲 - https://s2maps.eu by EOX IT Services GmbH (含有變動過的 Copernicus Sentinel 資料 2019)"
+        },
+        "description": "後處理過的 Sentinel 衛星影像。",
+        "name": "eox.at 2019 無雲"
+      },
+      "EOXAT2020CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 無雲 - https://s2maps.eu by EOX IT Services GmbH (含有變動過的 Copernicus Sentinel 資料 2020)"
+        },
+        "description": "後處理過的 Sentinel 衛星影像。",
+        "name": "eox.at 2020 無雲"
+      },
+      "EOXAT2021CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 無雲 - https://s2maps.eu by EOX IT Services GmbH (含有變動過的 Copernicus Sentinel 資料 2021)"
+        },
+        "description": "後處理過的 Sentinel 衛星影像。",
+        "name": "eox.at 2021 無雲"
+      },
+      "EOXAT2022CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 無雲 - https://s2maps.eu by EOX IT Services GmbH（含有變動過的 Copernicus Sentinel 資料 2022）"
+        },
+        "description": "後處理過的 Sentinel 衛星影像。",
+        "name": "eox.at 2022 無雲"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "使用條款與回饋"
+        },
+        "description": "Esri 世界衛星圖",
+        "name": "Esri 世界衛星圖"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "使用條款與意見回饋"
+        },
+        "description": "Ersi 的封存衛星圖可能比預設的圖層更清晰且更精確。",
+        "name": "Esri 世界衛星圖（清晰版）Beta"
+      },
+      "Frankfurt-am-Main-2019": {
+        "attribution": {
+          "text": "美茵河畔法蘭克福市測量局"
+        },
+        "description": "美茵河畔法蘭克福的航照圖，拍攝於2019年4月16日",
+        "name": "美茵河畔法蘭克福航照圖2019"
+      },
+      "Geodatastyrelsen_Denmark": {
+        "name": "SDFI 空照影像"
+      },
+      "Geoportal2-PL-City-boundaries_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "description": "發佈波蘭領土劃分單位，包括行政單位的 WMS 服務",
+        "name": "Geoportal 2：城市邊界 WMS"
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "description": "解析度為 10 公分或更高的正射影像。資料按解析度排序，然後才按年份排序，例如2012年的 8 公分解析度影像會優先於2019年的 10 公分解析度影像。",
+        "name": "Geoportal 2：高解析度正射影像（封存影像）(WMS)"
+      },
+      "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "description": "解析度為 10 公分或更高的正射影像。資料按解析度排序，然後才按年份排序，例如2012年的 8 公分解析度影像會優先於2019年的 10 公分解析度影像。",
+        "name": "Geoportal 2：高解析度正射影像（航照圖）(WMS)"
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "description": "整合了國家地址編號的 WMS 瀏覽服務，可以下載根據街道和地址記錄領域的國境邊防局的空間數據建立的地圖影像。",
+        "name": "Geoportal 2 街道名稱"
+      },
+      "Geoportal2-PL-addres_points_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "description": "整合了國家地址編號的 WMS 瀏覽服務，可以下載根據街道和地址記錄領域的國境邊防局的空間數據建立的地圖影像。",
+        "name": "Geoportal 2：地址點"
+      },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "description": "WMS 讓您可以檢視波蘭的封存正射影像。透過此服務提供的資料是由航照圖組成的正射影像。此服務提供對 WMS 1.3.0 介面的支援。",
+        "name": "Geoportal 2：正射影像（封存影像）（WMS）"
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "description": "WMS 讓您可以檢視波蘭的正射影像。透過此服務提供的資料是由航照圖組成的正射影像。此服務提供對 WMS 1.3.0 介面的支援。",
+        "name": "Geoportal 2：正射影像（最新航照圖）（WMS）"
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "description": "WMTS 讓您可以檢視波蘭的正射影像。透過此服務提供的資料是由航照圖組成的正射影像。",
+        "name": "Geoportal 2：正射影像（最新航照圖）（WMTS）"
+      },
+      "Geoportal2-PL-boundaries-of-communes_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "description": "發佈波蘭領土劃分單位，包括行政單位的 WMS 服務",
+        "name": "Geoportal 2：社區邊界 WMS"
+      },
+      "Geoportal2-PL-boundaries-of-counties_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "description": "發佈波蘭領土劃分單位，包括行政單位的 WMS 服務",
+        "name": "Geoportal 2：縣邊界 WMS"
+      },
+      "Geoportal2-PL-boundaries-of-provinces_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "description": "發佈波蘭領土劃分單位，包括行政單位的 WMS 服務",
+        "name": "Geoportal 2：省邊界 WMS"
+      },
+      "Geoportal2-PL-buildings_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "name": "Geoportal 2：WMS 建築物紀錄"
+      },
+      "Geoportal2-PL-gas-pipe_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "description": "國家地形武器整合服務是一項集體服務，用於展示直接來自地方級單位的公用事業資料。 該服務僅包含具有適當參數的 WMS 服務並已決定將其 WMS 服務包括在 KrajowaIntegracjaUzboszeniaTerenu 服務中的那些單位的資料。",
+        "name": "Geoportal 2：天然氣管道 WMS"
+      },
+      "Geoportal2-PL-heat-pipe_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "description": "國家地形武器整合服務是一項集體服務，用於展示直接來自地方級單位的公用事業資料。 該服務僅包含具有適當參數的 WMS 服務並已決定將其 WMS 服務包括在 KrajowaIntegracjaUzboszeniaTerenu 服務中的那些單位的資料。",
+        "name": "Geoportal 2：熱力管道 WMS"
+      },
+      "Geoportal2-PL-plot_boundaries_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        }
+      },
+      "Geoportal2-PL-power-cord_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "description": "國家地形武器整合服務是一項集體服務，用於展示直接來自地方級單位的公用事業資料。 該服務僅包含具有適當參數的 WMS 服務並已決定將其 WMS 服務包括在 KrajowaIntegracjaUzboszeniaTerenu 服務中的那些單位的資料。",
+        "name": "Geoportal 2：電纜 WMS"
+      },
+      "Geoportal2-PL-sewer-pipe_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "description": "國家地形武器整合服務是一項集體服務，用於展示直接來自地方級單位的公用事業資料。 該服務僅包含具有適當參數的 WMS 服務並已決定將其 WMS 服務包括在 KrajowaIntegracjaUzboszeniaTerenu 服務中的那些單位的資料。",
+        "name": "Geoportal 2：下水道 WMS"
+      },
+      "Geoportal2-PL-shaded_relief_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "description": "瀏覽服務（網路地圖服務，WMS），在 1 公尺 x 1 公尺 的網格中檢視 NMT 陰影。該服務支援 WMS 1.3.0 介面。",
+        "name": "Geoportal 2：地形陰影 (WMS)"
+      },
+      "Geoportal2-PL-squares-and-housing-estates_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "description": "整合了國家地址編號的 WMS 瀏覽服務，可以下載根據街道和地址記錄領域的國境邊防局的空間數據建立的地圖影像。",
+        "name": "Geoportal 2：廣場與住宅區"
+      },
+      "Geoportal2-PL-state-borders_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "description": "發佈波蘭領土劃分單位，包括行政單位的 WMS 服務",
+        "name": "Geoportal 2：州邊界 WMS"
+      },
+      "Geoportal2-PL-telecommunications-cable_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "description": "國家地形武器整合服務是一項集體服務，用於展示直接來自地方級單位的公用事業資料。 該服務僅包含具有適當參數的 WMS 服務並已決定將其 WMS 服務包括在 KrajowaIntegracjaUzboszeniaTerenu 服務中的那些單位的資料。",
+        "name": "Geoportal 2：電信電纜 WMS"
+      },
+      "Geoportal2-PL-water-pipe_WMS": {
+        "attribution": {
+          "text": "波蘭大地測量與製圖總局"
+        },
+        "description": "國家地形武器整合服務是一項集體服務，用於展示直接來自地方級單位的公用事業資料。 該服務僅包含具有適當參數的 WMS 服務並已決定將其 WMS 服務包括在 KrajowaIntegracjaUzboszeniaTerenu 服務中的那些單位的資料。",
+        "name": "Geoportal 2：水管 WMS"
+      },
+      "Gliwice-2003": {
+        "attribution": {
+          "text": "格利維採市政廳"
+        },
+        "name": "格利維採：2003年正射影像 (空照圖)"
+      },
+      "Gliwice-2009": {
+        "attribution": {
+          "text": "格利維採市政廳"
+        },
+        "name": "格利維採：2009年正射影像 (空照圖)"
+      },
+      "Gliwice-2013": {
+        "name": "Gliwice: Orthophotomap 2013 (航照圖)"
+      },
+      "Gliwice-2017": {
+        "name": "Gliwice: Orthophotomap 2017 (航照圖)"
+      },
+      "Gliwice-2018": {
+        "name": "Gliwice: Orthophotomap 2018 (航照圖)"
+      },
+      "Gliwice-2020": {
+        "name": "Gliwice: Orthophotomap 2020 (航照圖)"
+      },
+      "Gliwice-2021": {
+        "attribution": {
+          "text": "格利維採市政廳"
+        },
+        "name": "格利維採：2021年正射影像 (空照圖)"
+      },
+      "Gliwice-buildings": {
+        "name": "Gliwice：建築"
+      },
+      "LSA-ATKIS_BU": {
+        "description": "薩克森-安哈特邦建築物的形狀"
+      },
+      "LSA-DOP20": {
+        "description": "薩克森-安哈特邦的航空影像，解析度為 20 公分"
+      },
+      "LSA-DVG": {
+        "description": "行政邊界的向量紀錄。包含了邦、郡、市鎮或郡的一部分。"
+      },
+      "LocalAuthorities_RightsOfWay": {
+        "attribution": {
+          "text": "包含了以 Open Government Licence v3.0 授權的公部門資訊。"
+        },
+        "description": "地方當局發布的公共通行權資料，在 rowmaps.com 上進行了整理",
+        "name": "公共通行權"
+      },
+      "Lodz-2015": {
+        "name": "Łódź: Orthophotomap 2015 (空照圖)"
+      },
+      "Lodz-2017": {
+        "name": "Łódź: Orthophotomap 2017 (空照圖)"
+      },
+      "Lodz-buildings": {
+        "name": "Łódź：建築"
+      },
+      "MAPNIK": {
+        "attribution": {
+          "text": "© OpenStreetMap 貢獻者, ODbL 1.0"
+        },
+        "description": "預設的 OpenStreetMap 圖層",
+        "name": "OpenStreetMap（標準）"
+      },
+      "Maaamet-Estonia_Cadastre": {
+        "attribution": {
+          "text": "以正射影像為基礎的土地局地籍圖"
+        },
+        "name": "Maa-amet 地籍圖"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "使用條款與意見回饋"
+        },
+        "description": "Mapbox 提供的點陣圖磚集，包含了高解析度衛星與航空影像的全球底圖",
+        "name": "Mapbox 衛星圖"
+      },
+      "Naturvardsverket-protected": {
+        "attribution": {
+          "text": "© 瑞典環境保護局，CC0"
+        },
+        "description": "瑞典自然公園，自然保護區與其他保護區與物件",
+        "name": "環境保護局˙ - 保護區"
+      },
+      "Naturvardsverket-trails": {
+        "attribution": {
+          "text": "© 瑞典環境保護局，CC0"
+        },
+        "description": "瑞典環境保護局記錄的自然保護區內或周圍的每日更新路徑",
+        "name": "環境保護局˙ - 路徑"
+      },
+      "OSIP": {
+        "attribution": {
+          "text": "俄亥俄州全州影像計劃"
+        },
+        "description": "俄亥俄州全州影像計劃 III 2017年至2020年每個郡的最新正射影像，解析度為 1 英呎到 3 英吋。",
+        "name": "俄亥俄州全州影像計劃"
+      },
+      "OSIP_1ft": {
+        "attribution": {
+          "text": "俄亥俄州全州影像計劃"
+        },
+        "description": "2011年至2014年間以 1 英呎解析度拍攝的全部 88 個縣的俄亥俄州全州影像計劃 II 正射影像。",
+        "name": "俄亥俄州全州影像計劃 1 英呎"
+      },
+      "OSIP_6in": {
+        "attribution": {
+          "text": "俄亥俄州全州影像計劃"
+        },
+        "description": "2017年與2018年以 6 英吋解析度拍攝的 40 個縣的俄亥俄州全州影像計劃 III 正射影像，以及2010年至2014年在另外 16 個縣拍攝的 OSIP I 和 OSIP II 影像。",
+        "name": "俄亥俄州全州影像計劃 6 英吋"
+      },
+      "OSMUK-Cadastral-Parcels": {
+        "attribution": {
+          "text": "包含了以 Open Government Licence v3.0 授權的公部門資訊。"
+        },
+        "description": "在英國完全對齊的地籍（土地註冊）的地圖"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 貢獻者，CC-BY-SA"
+        },
+        "name": "OSM 檢查器：地址"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 貢獻者，CC-BY-SA"
+        },
+        "name": "OSM 檢查器：幾何"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 貢獻者，CC-BY-SA"
+        },
+        "name": "OSM 檢查器：道路"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 貢獻者，CC-BY-SA"
+        },
+        "name": "OSM 檢查器：區域"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 貢獻者，CC-BY-SA"
+        },
+        "name": "OSM 檢查器：地區"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 貢獻者，CC-BY-SA"
+        },
+        "name": "OSM 檢查器：路徑"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 貢獻者，CC-BY-SA"
+        },
+        "name": "OSM 檢查器：標籤"
+      },
+      "OpenAerialMapMosaic": {
+        "description": "一個拼貼圖層中的所有 OpenAerialMap 影像，由 Kontur.io 提供",
+        "name": "OpenAerialMap 拼貼，由 Kontur.io 提供"
+      },
+      "Riksantikvariambetet-archaeological": {
+        "attribution": {
+          "text": "© 瑞典文物管理局，CC0"
+        },
+        "description": "古代與歷史遺跡與紀念碑",
+        "name": "瑞典文物管理局 - 考古遺址與紀念碑"
+      },
+      "Riksantikvariambetet-heritage": {
+        "attribution": {
+          "text": "© 瑞典文物管理局，CC0"
+        },
+        "description": "文物建築與教堂",
+        "name": "瑞典文物管理局 - 文物建築"
+      },
+      "Riksantikvariambetet-protected": {
+        "attribution": {
+          "text": "© 瑞典文物管理局，CC0"
+        },
+        "description": "文物建築與宗教遺址保護區",
+        "name": "瑞典文物管理局 - 文物保護區"
+      },
+      "Riksantikvariambetet-ruins": {
+        "attribution": {
+          "text": "© 瑞典文物管理局，CC0"
+        },
+        "description": "文化歷史遺跡",
+        "name": "瑞典文物管理局 - 遺跡"
+      },
+      "SDFE_Overflade_Skyggekort_40cm": {
+        "name": "SDFI 表面陰影地圖（40 公分）"
+      },
+      "SDFE_Terraen_Skyggekort_40cm": {
+        "name": "SDFI 地形陰影地圖（40 公分）"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "SPW(allonie) 最新空照圖"
+      },
+      "SPW_PICC": {
+        "name": "SPW(allonie) PICC 數值圖"
+      },
+      "Siemianowice_Slaskie-aerial_image": {
+        "name": "Siemianowice Śląskie: Orthophotomap (航照圖)"
+      },
+      "Siemianowice_Slaskie-buildings": {
+        "name": "Siemianowice Śląskie：建築"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "黃 = 從美國人口普查而來的公有領域資料。紅 = 在開放街圖中找不到的資料"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "黃 = 來自美國人口普查的公有領域地圖資料。紅 = 在開放街圖上找不到的資料"
+      },
+      "US-TIGER-Roads-2020": {
+        "description": "黃 = 從美國人口普查而來的公有領域資料。紅 = 在開放街圖中找不到的資料",
+        "name": "TIGER 道路 2020"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "黃 = 從美國人口普查而來的公有領域資料。紅 = 在開放街圖中找不到的資料",
+        "name": "TIGER 道路 2021"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "黃 = 從美國人口普查而來的公有領域資料。紅 = 在開放街圖中找不到的資料",
+        "name": "TIGER 道路 2022"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "黃 = 從美國人口普查而來的公有領域資料。紅 = 在開放街圖中找不到的資料",
+        "name": "TIGER 道路 2023"
+      },
+      "USDA-NAIP": {
+        "attribution": {
+          "text": "美國農業部"
+        },
+        "description": "近年來自美國各州的國家農業影像計畫 (NAIP) 的 30/60 公分 4 頻段 DOQQ。",
+        "name": "國家農業影像計畫"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "道路：綠色外框 = 非分類道路。棕色外框 = 土路。路面：碎石路 = 亮棕色實心填滿，柏油 = 黑色，有舖面 = 灰色，地面 = 白色，水泥 = 藍色，草地 = 綠色。季節性 = 白色條紋",
+        "name": "美國森林道路覆蓋層"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "透過 Brussels UrbIS®© - 散佈與版權屬於 CIRB"
+        },
+        "name": "CIRB/CIBG 最近的空照圖"
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "透過布魯塞爾的工具 UrbIS®© - 散佈 & 版權所有 CIRB"
+        }
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "透過布魯塞爾的工具 UrbIS®© - 散佈 & 版權所有 CIRB"
+        }
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "透過 Brussels UrbIS®© - 散佈與版權 CIRB"
+        }
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "透過 Brussels UrbIS®© 實現 - CIRB 散佈與著作權"
+        }
+      },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "透過 Brussels UrbIS®© - 散佈與版權屬於 CIRB"
+        }
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "透過布魯塞爾的工具 UrbIS®© - 散佈 & 版權所有 CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
+        "attribution": {
+          "text": "透過 Brussels UrbIS®© - 散佈與版權屬於 CIRB"
+        }
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "透過布魯塞爾的工具 UrbIS®© - 散佈 & 版權所有 CIRB"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org，OpenStreetMap 貢獻者,，CC by-SA 3.0"
+        },
+        "name": "小徑標示：自行車"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org，OpenStreetMap 貢獻者,，CC by-SA 3.0"
+        },
+        "name": "小徑標示：健行"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org，OpenStreetMap 貢獻者,，CC by-SA 3.0"
+        },
+        "name": "小徑標示：MTB"
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org，OpenStreetMap 貢獻者,，CC by-SA 3.0"
+        },
+        "name": "小徑標示：溜冰"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org，OpenStreetMap 貢獻者,，CC by-SA 3.0"
+        },
+        "name": "小徑標示：冬季運動"
+      },
+      "Zabrze-2011": {
+        "name": "Zabrze: Orthophotomap 2011 (航照圖)"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "奧地利的底圖，基於政府資料。"
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "由 basemap.at 提供的 Orthofoto 圖層。geoimage.at 圖的「繼承者」。"
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "description": "由 basemap.at 提供的註釋覆蓋層。",
+        "name": "basemap.at 覆蓋層"
+      },
+      "cyclosm": {
+        "attribution": {
+          "text": "彩現：CyclOSM（由 OpenStreetMap 法國管理主機）© 地圖資料 OpenStreetMap 貢獻者"
+        },
+        "description": "CyclOSM 是一種專為騎乘自行車設計的地圖樣式。其利用 OpenStreetMap 資料來建立美觀實用的自行車地圖！"
+      },
+      "debicki-buildings": {
+        "name": "Powiat dębicki：建築"
+      },
+      "eufar-balaton": {
+        "attribution": {
+          "text": "EUFAR 巴拉頓正射影像 2010"
+        },
+        "description": "從巴拉頓湖沼學協會而來的 1940 有地理標記的照片。",
+        "name": "EUFAR 巴拉頓正射影像"
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© 哥特堡市, CC0"
+        },
+        "description": "城市地圖是描述哥特堡的概覽地圖。它包含了關於土地、通訊、水文、建築、地址號碼與街道名稱、行政區劃與其他方向文字等的一般性資訊。",
+        "name": "哥特堡城市地圖"
+      },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© 哥特堡市，CC0"
+        },
+        "description": "以2017年的哥特堡市高程模型為基礎，顯示地形陰影與坡度的網路地圖服務。解析度為每個像素 0.5 公尺。",
+        "name": "哥特堡地形陰影"
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© 哥特堡市，CC0"
+        },
+        "description": "哥特堡市的正射影像",
+        "name": "哥特堡正射影像2015"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© 哥特堡市，CC0"
+        },
+        "description": "哥特堡市的正射影像",
+        "name": "哥特堡正射影像2017"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© 哥特堡市，CC0"
+        },
+        "description": "哥特堡市的正射影像",
+        "name": "哥特堡正射影像2019"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© 哥特堡市，CC0"
+        },
+        "description": "哥特堡市的正射影像",
+        "name": "哥特堡正射影像2021"
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© 哥特堡市，CC0"
+        },
+        "description": "哥特堡市的正射影像",
+        "name": "最新哥特堡正射影像"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "GSI 日本"
+        },
+        "description": "日本 GSI 航空照片。並未完全正射，但比 GSI 正射影像新且／或覆蓋範圍不同。",
+        "name": "日本 GSI 航空照片"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "attribution": {
+          "text": "GSI 日本無縫照片"
+        },
+        "description": "日本 GSI 無縫照片影像，具有最新 GSI ortho，航空影像，災後影像等組合。",
+        "name": "日本 GSI 無縫照片影像"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "GSI 日本"
+        },
+        "description": "日本 GSI 標準地圖。涵蓋範圍大。",
+        "name": "日本 GSI 標準地圖"
+      },
+      "kalmar-orto-2014": {
+        "attribution": {
+          "text": "© 卡爾馬市"
+        },
+        "description": "來自卡爾馬市北海岸的2014年正射影像",
+        "name": "卡爾馬北海岸正射影像2014"
+      },
+      "kalmar-orto-2016": {
+        "attribution": {
+          "text": "© 卡爾馬市"
+        },
+        "description": "來自卡爾馬市南海岸的2016年正射影像",
+        "name": "卡爾馬南海岸正射影像2016"
+      },
+      "kalmar-orto-2018": {
+        "attribution": {
+          "text": "© 卡爾馬市"
+        },
+        "description": "來自卡爾馬市區的2018年正射影像",
+        "name": "卡爾馬市區正射影像2018"
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© 卡爾馬市"
+        },
+        "description": "來自卡爾馬市區的2020年正射影像",
+        "name": "卡爾馬市區正射影像2020"
+      },
+      "kartverket-bygninger": {
+        "description": "挪威的 INSPIRE 建築物。",
+        "name": "Kartverket 建築物圖層"
+      },
+      "kelkkareitit": {
+        "description": "來自 OSM 的 Kelkkareitit.fi 雪車賽道（包含北歐）",
+        "name": "北歐雪車覆蓋層"
+      },
+      "lancucki-buildings": {
+        "name": "Powiat łańcucki：建築"
+      },
+      "lantmateriet-orto1960": {
+        "description": "瑞典自1955-1965的正射影像馬賽克。可能會同時出現較舊與較新的照片。",
+        "name": "Lantmäteriet 歷史正射影像 1960"
+      },
+      "lantmateriet-orto1975": {
+        "description": "瑞典自1970-1980的正射影像馬賽克。正在建構中。",
+        "name": "Lantmäteriet 歷史正射影像 1975"
+      },
+      "lantmateriet-topowebb": {
+        "description": "瑞典的 1:50000 地形圖",
+        "name": "土地調查地形圖"
+      },
+      "linkoping-orto": {
+        "attribution": {
+          "text": "© 林雪平市"
+        },
+        "description": "來自林雪平市的2010年正射影像，開放資料",
+        "name": "林雪平正射影像"
+      },
+      "lubaczowski-buildings": {
+        "name": "Powiat lubaczowski：建築"
+      },
+      "maaamet<TX_DOT>ee-pohi_vr2": {
+        "name": "Maa-amet 基本地圖"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "使用條款與意見回饋"
+        },
+        "description": "顯示主要的圖徽以協助您定位。",
+        "name": "定位器覆蓋層"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© OpenStreetMap 貢獻者，CC-BY-SA"
+        },
+        "name": "OpenPT 地圖（覆蓋層）"
+      },
+      "openrailwaymap": {
+        "attribution": {
+          "text": "彩現：OpenRailwayMap，© 圖資：OpenStreetMap 貢獻者"
+        },
+        "description": "以 OpenStreetMap 資料為基礎的鐵道基礎設施覆蓋層"
+      },
+      "openrailwaymap-maxspeeds": {
+        "attribution": {
+          "text": "彩現：OpenRailwayMap，© 圖資：OpenStreetMap 貢獻者"
+        },
+        "description": "以 OpenStreetMap 資料為基礎的鐵道速限覆蓋層",
+        "name": "OpenRailwayMap 速限"
+      },
+      "openrailwaymap-signalling": {
+        "attribution": {
+          "text": "彩現：OpenRailwayMap，© 圖資：OpenStreetMap 貢獻者"
+        },
+        "description": "以 OpenStreetMap 資料為基礎的鐵道標誌覆蓋層",
+        "name": "OpenRailwayMap 標誌"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© OpenStreetMap 貢獻者"
+        },
+        "description": "上傳至開放街圖的公開 GPS 軌跡。",
+        "name": "OpenStreetMap GPS 軌跡"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© OpenStreetMap 貢獻者，CC-BY-SA"
+        },
+        "name": "OpenStreetMap（德國樣式）"
+      },
+      "osmse-ekonomiska": {
+        "description": "「經濟地圖」的掃描，約1950–1978年",
+        "name": "Lantmäteriet 經濟地圖 1950-1978"
+      },
+      "osmse-generalstab": {
+        "description": "「Generalstabskartan」的掃描，約1859–1979年"
+      },
+      "poznan-ortofotomapa2014": {
+        "name": "Poznań: Orthophotomap 2014 (航照圖)"
+      },
+      "poznan-ortofotomapa2016": {
+        "name": "Poznań: Orthophotomap 2016 (航照圖)"
+      },
+      "poznan-ortofotomapaBiezaca": {
+        "name": "Poznań: Orthophotomap Bieżąca (航照圖)"
+      },
+      "przemysl-aerial": {
+        "name": "Przemyśl: Ortophotomap (航照圖)"
+      },
+      "przemysl-buildings": {
+        "name": "Przemyśl：建築"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole，資料 ©OpenStreetMap 貢獻者"
+        },
+        "name": "QA 無地址"
+      },
+      "route500": {
+        "attribution": {
+          "text": "圖磚 © cquest@Openstreetmap France，資料 © IGN, LO/OL"
+        },
+        "description": "已分類網路的路線（公路、國家、部門）",
+        "name": "路線 500"
+      },
+      "rzeszowski-aerial": {
+        "name": "Powiat rzeszowski: Orthophotomap (航照圖)"
+      },
+      "rzeszowski-buildings": {
+        "name": "Powiat rzeszowski：建築"
+      },
+      "scb-industrial": {
+        "attribution": {
+          "text": "© 挪威統計局，CC0"
+        },
+        "description": "以大規模與工業用地為特徵的地理劃定區域",
+        "name": "挪威統計局 - 工業區"
+      },
+      "scb-settlements": {
+        "attribution": {
+          "text": "© 挪威統計局，CC0"
+        },
+        "description": "居民人數為 50-199 人且房屋間距不超過 150 公尺的建築物的相連區域",
+        "name": "挪威統計局 - 小型定居點"
+      },
+      "scb-urban": {
+        "attribution": {
+          "text": "© 挪威統計局，CC0"
+        },
+        "description": "居民人數為至少 200 人且房屋間距不超過 500 公尺的住宅區",
+        "name": "挪威統計局 - 都會區"
+      },
+      "scb-vacation": {
+        "attribution": {
+          "text": "© 瑞典統計局，CC0"
+        },
+        "description": "主要由別墅組成的相連區域；至少 50 間別墅的集合，它們之間的距離不超過 150 公尺",
+        "name": "挪威統計局 - 度假屋區"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© 圖磚：skobbler 圖資：OpenStreetMap 貢獻者"
+        }
+      },
+      "skolverket-schools": {
+        "attribution": {
+          "text": "© 瑞典教育局"
+        },
+        "description": "瑞典學校",
+        "name": "瑞典教育局 - 學校"
+      },
+      "skoterleder": {
+        "description": "Snowmobile 路徑",
+        "name": "Snowmobile 地圖瑞典"
+      },
+      "sropczyce-buildings": {
+        "name": "Powiat ropczycko-sędziszowski：建築"
+      },
+      "stalowowolski-buildings": {
+        "name": "Powiat stalowowolski：建築"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "Stamen Design 的圖磚，以 CC BY 3.0 授權。資料自 OpenStreetMap 處取得，以 ODbL 授權"
+        }
+      },
+      "stockholm-orto": {
+        "attribution": {
+          "text": "© 斯德哥爾摩市，CC0"
+        },
+        "description": "來自斯德哥爾摩市的2018年正射影像，CC0 授權",
+        "name": "斯德哥爾摩正射影像"
+      },
+      "susono_shizuoka_jp_orthophoto": {
+        "attribution": {
+          "text": "裾野市正射影像"
+        },
+        "description": "裾野市以開放資料形式釋出的航照圖",
+        "name": "裾野市正射影像"
+      },
+      "svk-electricity-network": {
+        "description": "瑞典電力傳輸網路。",
+        "name": "SVK - 電力網路"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "地圖 © Thunderforest，資料 © OpenStreetMap 貢獻者"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "地圖 © Thunderforest，資料 © OpenStreetMap 貢獻者"
+        }
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "地圖 © Thunderforest，資料 © OpenStreetMap 貢獻者們"
+        }
+      },
+      "trafikverket-baninfo": {
+        "description": "瑞典鐵路網，包含支線",
+        "name": "Trafikverket 鐵路網"
+      },
+      "trafikverket-baninfo-option": {
+        "description": "瑞典鐵路網，包含多個選項的圖層",
+        "name": "Trafikverket 鐵路網選項"
+      },
+      "trafikverket-vagnat": {
+        "description": "瑞典 NVDB 路網",
+        "name": "Trafikverket 路網"
+      },
+      "trafikverket-vagnat-extra": {
+        "description": "瑞典 NVDB 的額外細節：公路編號、交通寧靜區、休息區、公車站牌、橋、隧道、測速照相機",
+        "name": "Trafikverket 路網額外資訊"
+      },
+      "trafikverket-vagnat-option": {
+        "description": "Swedish NVDB 有多個選項的路網圖層",
+        "name": "Trafikverket 路網選項"
+      },
+      "wroclaw-orto2015": {
+        "name": "Wrocław: Orthophotomap 2015 (航照圖)"
+      },
+      "wroclaw-orto2018": {
+        "name": "Wrocław: Orthophotomap 2018（航照圖）"
+      }
+    }
+  }
+}

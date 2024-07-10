@@ -90,6 +90,7 @@ export class LocalizationSystem extends AbstractSystem {
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._hashchange = this._hashchange.bind(this);
+    this._localeChanged = this._localeChanged.bind(this);
     this.t = this.t.bind(this);
     this.tHtml = this.tHtml.bind(this);
     this.tAppend = this.tAppend.bind(this);
@@ -158,27 +159,7 @@ export class LocalizationSystem extends AbstractSystem {
         this._locales = results[1].locales;
 
         urlhash.on('hashchange', this._hashchange);
-
-        // Choose the preferred locales in this order:
-        //   1. any locales stored in `_preferredLocaleCodes`
-        //   2. any `locale` param was included in the url hash
-        //   3. any locales detected by the browser
-        //   4. english (always fallback)
-        const urlLocale = urlhash.initialHashParams.get('locale');
-        if (urlLocale) {
-          this._preferredLocaleCodes = urlLocale.split(',').map(s => s.trim()).filter(Boolean);
-        }
-
-        const requestedLocales = (this._preferredLocaleCodes || [])
-          .concat(utilDetect().browserLocales)   // List of locales preferred by the browser in priority order.
-          .concat(['en']);   // fallback to English since it's the only guaranteed complete language
-
-        this._currLocaleCodes = this._getSupportedLocales(requestedLocales);
-        this._currLocaleCode = this._currLocaleCodes[0];   // First is highest priority locale; the rest are fallbacks
-
-        const loadPromises = this._currLocaleCodes.map(locale => this._loadStringsAsync(locale));
-        return Promise.all(loadPromises)
-          .then(() => this._localeChanged());
+        return this.selectLocaleAsync();
       })
       .catch(e => console.error(e));  // eslint-disable-line
   }
@@ -206,10 +187,46 @@ export class LocalizationSystem extends AbstractSystem {
 
 
   /**
+   * _selectLocale
+   * Returns a Promise to select the locale.
+   * @return {Promise}  Promise resolved when the locale has been selected and strings loaded
+   */
+  selectLocaleAsync() {
+    const urlhash = this.context.systems.urlhash;
+    const urlLocale = urlhash.getParam('locale');
+    let urlLocaleCodes = [];
+    if (typeof urlLocale === 'string') {
+      urlLocaleCodes = urlLocale.split(',').map(s => s.trim()).filter(Boolean);
+    }
+
+    // Choose the preferred locales in this order:
+    //   1. Locales stored in `_preferredLocaleCodes`
+    //   2. Locales included in the url hash
+    //   3. Locales detected by the browser
+    //   4. English (always fallback)
+    const requestedLocales = (this._preferredLocaleCodes || [])
+      .concat(urlLocaleCodes)
+      .concat(utilDetect().browserLocales)   // Locales preferred by the browser in priority order.
+      .concat(['en']);                       // Fallback to English since it's the only guaranteed complete language
+
+    this._currLocaleCodes = this._getSupportedLocales(requestedLocales);
+    this._currLocaleCode = this._currLocaleCodes[0];   // First is highest priority locale; the rest are fallbacks
+
+    const loadPromises = this._currLocaleCodes.map(locale => this._loadStringsAsync(locale));
+    return Promise.all(loadPromises)
+      .then(() => this._localeChanged());
+  }
+
+
+  /**
    * _loadStringsAsync
    * Returns a Promise to load the strings for the requested locale
+   * Note that this returns a `Promise.allSettled` because some of these may
+   *   fail/reject if a particular language pack doesn't exist.
+   * (For example `core.zh-CN.min.json` exists but `imagery.zh-CC.min.json` doesn't)
+   *
    * @param  {string}   locale - locale code to load
-   * @return {Promise}  Promise resolved when all strings have been loaded
+   * @return {Promise}  Promise resolved when all string loading has settled
    */
   _loadStringsAsync(locale) {
     if (locale.toLowerCase() === 'en-us') {   // US English is the default
@@ -240,15 +257,15 @@ export class LocalizationSystem extends AbstractSystem {
       loadPromises.push(prom);
     }
 
-    return Promise.all(loadPromises);
+    return Promise.allSettled(loadPromises);
   }
 
 
   /**
    * _hashchange
    * Respond to any changes appearing in the url hash
-   * @param  currParams   Map(key -> value) of the current hash parameters
-   * @param  prevParams   Map(key -> value) of the previous hash parameters
+   * @param  {Map<key, value>}  currParams - the current hash parameters
+   * @param  {Map<key, value>}  prevParams - the previous hash parameters
    */
   _hashchange(currParams, prevParams) {
     // rtl
@@ -262,22 +279,7 @@ export class LocalizationSystem extends AbstractSystem {
     const newLocale = currParams.get('locale');
     const oldLocale = prevParams.get('locale');
     if (newLocale !== oldLocale) {
-      if (typeof newLocale === 'string') {
-        this._preferredLocaleCodes = newLocale.split(',').map(s => s.trim()).filter(Boolean);
-      } else {
-        this._preferredLocaleCodes = [];
-      }
-
-      const requestedLocales = (this._preferredLocaleCodes || [])
-        .concat(utilDetect().browserLocales)   // List of locales preferred by the browser in priority order.
-        .concat(['en']);   // fallback to English since it's the only guaranteed complete language
-
-      this._currLocaleCodes = this._getSupportedLocales(requestedLocales);
-      this._currLocaleCode = this._currLocaleCodes[0];   // First is highest priority locale; the rest are fallbacks
-
-      const loadPromises = this._currLocaleCodes.map(locale => this._loadStringsAsync(locale));
-      Promise.all(loadPromises)
-        .then(() => this._localeChanged());
+      this.selectLocaleAsync();
     }
   }
 
@@ -305,23 +307,23 @@ export class LocalizationSystem extends AbstractSystem {
   /**
    * _resolveString
    * Try to find a localized string matching the given `stringID`.
-   * This function will recurse through all `tryLocales` until a string is found.
+   * This function will recurse through all `searchLocales` until a string is found.
    * or until we run out of locales, then we will return a special "Missing translation" string.
    *
    * Note: If the `stringID` starts with an underscore, the first part is used as the "scope".
    * Otherwise, the default `core` scope will be used.
    *
-   * @param  {string}   origStringID   string identifier
-   * @param  {Object?}  replacements   token replacements and default string
-   * @param  {Array?}   tryLocales     locales to search (defaults to currentLocales)
+   * @param  {string}   origStringID  - string identifier
+   * @param  {Object?}  replacements  - token replacements and default string
+   * @param  {Array?}   searchLocales - locales to search (defaults to currentLocales)
    * @return {Object?}  result containing the localized string and chosen locale
    */
-  _resolveString(origStringID, replacements, tryLocales) {
-    if (!Array.isArray(tryLocales)) {
-      tryLocales = this._currLocaleCodes.slice(); // copy
+  _resolveString(origStringID, replacements, searchLocales) {
+    if (!Array.isArray(searchLocales)) {
+      searchLocales = this._currLocaleCodes.slice();  // copy
     }
 
-    const locale = tryLocales.shift();  // remove first one
+    const locale = searchLocales.shift();  // remove first one
 
     // US English is the default
     // Note that we don't overwrite `locale` because that `en-US` value
@@ -399,8 +401,8 @@ export class LocalizationSystem extends AbstractSystem {
     // no localized string found...
 
     // Attempt to fallback to a lower-priority language
-    if (tryLocales.length) {
-      return this._resolveString(origStringID, replacements, tryLocales);
+    if (searchLocales.length) {
+      return this._resolveString(origStringID, replacements, searchLocales);
     }
 
     // Fallback to a default value if one is specified in `replacements`
@@ -897,7 +899,7 @@ export class LocalizationSystem extends AbstractSystem {
         results.add(code);
       }
 
-      // For a locale with a country code ('es-ES'), also fallback to the base locale ('es')
+      // For a locale with a territory code `zh-CN`, also fallback to the base locale `zh`
       if (code.includes('-')) {
         const base = code.split('-')[0];
         if (this._locales[base]) {
@@ -912,36 +914,45 @@ export class LocalizationSystem extends AbstractSystem {
 
   /**
    * _localeChanged
-   * Called after all locale files have been fetched to finalize the current state
+   * Called whenever something about the locale has changed.
+   * This should happen after all locale files have been fetched.
    */
   _localeChanged() {
-    if (!this._currLocaleCode) return;
+    if (!this._currLocaleCode) {       // no current locale?  shouldn't happen, reset to defaults
+      this._currLocaleCode = 'en-US';
+      this._currLocaleCodes = ['en-US', 'en'];
+    }
 
-    const [language, culture] = this._currLocaleCode.toLowerCase().split('-', 2);
+    const [language, territory] = this._currLocaleCode.toLowerCase().split('-', 2);
     this._currLanguageCode = language;
-    this._currIsMetric = (culture !== 'us');
+    this._currIsMetric = (territory !== 'us');
 
-    // If an `rtl` param was included in the url hash, use that instead..
+    // Determine text direction
+    // If an `rtl` param is present in the urlhash, use that instead
+    //  (and push the cleaned value back to the urlhash)..
     const urlhash = this.context.systems.urlhash;
-    const urlRTL = urlhash.getParam('rtl');
+    const urlRTL = (urlhash.getParam('rtl') ?? '').toLowerCase();
 
     if (urlRTL === 'true') {
+      urlhash.setParam('rtl', 'true');
       this._currTextDirection = 'rtl';
     } else if (urlRTL === 'false') {
+      urlhash.setParam('rtl', 'false');
       this._currTextDirection = 'ltr';
     } else {
+      urlhash.setParam('rtl', null);
       const supported = this._locales[this._currLocaleCode] || this._locales[this._currLanguageCode];
       this._currTextDirection = supported && supported.rtl ? 'rtl' : 'ltr';
     }
 
     // Language and Script names will appear in the local language
-    let locale = this._currLocaleCode;
-    if (locale.toLowerCase() === 'en-us') {
-      locale = 'en';
+    let useLocale = this._currLocaleCode;
+    if (useLocale.toLowerCase() === 'en-us') {
+      useLocale = 'en';
     }
 
-    this._languageNames = this._cache[locale].core.languageNames;
-    this._scriptNames = this._cache[locale].core.scriptNames;
+    this._languageNames = this._cache[useLocale].core.languageNames;
+    this._scriptNames = this._cache[useLocale].core.scriptNames;
 
     this.emit('localechange');
   }

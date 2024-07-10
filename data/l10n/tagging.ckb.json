@@ -1,0 +1,1982 @@
+{
+  "ckb": {
+    "presets": {
+      "categories": {
+        "category-barrier": {
+          "name": "بەربەست"
+        },
+        "category-building": {
+          "name": "باڵەخانە"
+        },
+        "category-golf": {
+          "name": "گۆڵف"
+        },
+        "category-natural": {
+          "name": "سروشت"
+        },
+        "category-path": {
+          "name": "پیادەڕێ"
+        },
+        "category-playground": {
+          "name": "هەوشەنگ"
+        },
+        "category-rail": {
+          "name": "ئاسنڕێ"
+        },
+        "category-restriction": {
+          "name": "پێشگیری"
+        },
+        "category-road_major": {
+          "name": "جادە سەرەکییەکان"
+        },
+        "category-road_minor": {
+          "name": "جادە لاوەکییەکان"
+        },
+        "category-road_service": {
+          "name": "شەقامی ڕاژەگوزاری"
+        },
+        "category-utility": {
+          "name": "ڕاژەوانی گشتی"
+        },
+        "category-water": {
+          "name": "ئاو"
+        },
+        "category-waterway": {
+          "name": "ئاوەڕۆ"
+        }
+      },
+      "fields": {
+        "access": {
+          "options": {
+            "permissive": {
+              "title": "بە ڕێپێدان"
+            },
+            "private": {
+              "title": "تایبەت"
+            },
+            "unknown": {
+              "title": "نەناسراو"
+            },
+            "yes": {
+              "title": "ڕێگەدراو"
+            }
+          },
+          "types": {
+            "access": "هەموو",
+            "bicycle": "پاسکیل",
+            "foot": "پیادە",
+            "horse": "ئەسپ"
+          }
+        },
+        "access_aisle": {
+          "label": "جۆر"
+        },
+        "access_simple": {
+          "options": {
+            "customers": "تەنیا کڕیاران",
+            "no": "هیچیان",
+            "permissive": "بە ڕێپێدان",
+            "permit": "تەنیا بە ڕێپێدان",
+            "private": "تایبەت",
+            "unknown": "نەزانراو",
+            "yes": "گشتی"
+          }
+        },
+        "activity": {
+          "label": "چالاکی",
+          "options": {
+            "bicycle": "پایسکلسواری",
+            "hiking": "شاخەوانی",
+            "horse": "هەسپسواری",
+            "mtb": "پایسکسواری شاخی"
+          }
+        },
+        "addr/interpolation": {
+          "label": "جۆر",
+          "options": {
+            "all": "هەموو",
+            "alphabetic": "ئەلفوبێ"
+          }
+        },
+        "address": {
+          "label": "ناونیشان",
+          "placeholders": {
+            "city": "شار",
+            "city!vn": "شار/شارۆچکە",
+            "conscriptionnumber": "١٢٣",
+            "country": "وڵات",
+            "floor": "نهۆم",
+            "housename": "ناوی خانوو",
+            "housenumber": "١٢٣",
+            "neighbourhood": "گەڕەک",
+            "place": "شوێن",
+            "postcode": "کۆدی پۆستە",
+            "province": "پارێزگا",
+            "quarter": "کەرت",
+            "street": "شەقام",
+            "suburb": "گەڕەک",
+            "unit": "یەکە"
+          }
+        },
+        "advertising": {
+          "label": "جۆر"
+        },
+        "aerialway": {
+          "label": "جۆر"
+        },
+        "aerialway/access": {
+          "label": "دەست پێ ڕاگەیشتن",
+          "options": {
+            "both": "هەردووک",
+            "entry": "چوونەژوور",
+            "exit": "چوونەدەر"
+          }
+        },
+        "aerialway/capacity": {
+          "placeholder": "٥٠٠، ٢٥٠٠، ٥٠٠٠..."
+        },
+        "aerialway/duration": {
+          "label": "ماوە (خولەک)",
+          "placeholder": "١، ٢، ٣..."
+        },
+        "aerialway/occupancy": {
+          "placeholder": "٢، ٤، ٨..."
+        },
+        "aerialway/summer/access": {
+          "options": {
+            "both": "هەردووک",
+            "entry": "چوونەژوور",
+            "exit": "چوونەدەر"
+          }
+        },
+        "aeroway": {
+          "label": "جۆر"
+        },
+        "agrarian": {
+          "label": "بەرهەم"
+        },
+        "amenity": {
+          "label": "جۆر"
+        },
+        "animal_boarding": {
+          "label": "بۆ ئاژەڵان"
+        },
+        "animal_breeding": {
+          "label": "بۆ ئاژەڵان"
+        },
+        "animal_shelter": {
+          "label": "بۆ ئاژەڵان"
+        },
+        "archaeological_site": {
+          "label": "جۆر",
+          "options": {
+            "city": "شاری مێژوویی"
+          }
+        },
+        "architect": {
+          "label": "سازەوان"
+        },
+        "area/highway": {
+          "label": "جۆر"
+        },
+        "artist": {
+          "label": "هونەرمەند"
+        },
+        "artwork_type": {
+          "label": "جۆر",
+          "options": {
+            "bust": "نیوەپەیکەر",
+            "painting": "نیگار",
+            "sculpture": "کۆتەڵ",
+            "statue": "پەیکەر"
+          }
+        },
+        "attraction": {
+          "label": "جۆر"
+        },
+        "baby_feeding": {
+          "label": "حاندی پەرستاریی زارۆکان",
+          "options": {
+            "no": "هیچیان"
+          }
+        },
+        "barrier": {
+          "label": "جۆر",
+          "options": {
+            "chain": "زنجیر",
+            "fence": "پەرژین",
+            "gate": "دەروازە",
+            "wall": "دیوار"
+          }
+        },
+        "barrier_planter": {
+          "options": {
+            "planter": "بەڵێ",
+            "undefined": "نەخێر"
+          }
+        },
+        "basin": {
+          "label": "جۆر"
+        },
+        "bath/type": {
+          "options": {
+            "hammam": "گەرماو",
+            "hot_spring": "گڕاو",
+            "lake": "دەریاچە"
+          }
+        },
+        "beauty": {
+          "options": {
+            "cosmetics": "جوانکاری"
+          }
+        },
+        "bicycle_parking": {
+          "label": "جۆر",
+          "options": {
+            "building": "لەناو باڵەخانەیەک"
+          }
+        },
+        "bicycle_road": {
+          "label": "ڕێی پایسکیل",
+          "options": {
+            "undefined": "نەخێر",
+            "yes": "بەڵێ"
+          }
+        },
+        "bin": {
+          "label": "تەنەکی زبڵ"
+        },
+        "blind": {
+          "options": {
+            "limited": "سنووردار",
+            "no": "نەخێر",
+            "yes": "بەڵێ"
+          }
+        },
+        "board_type": {
+          "label": "جۆر",
+          "options": {
+            "art": "هونەر",
+            "history": "مێژوو",
+            "nature": "سروشت",
+            "plants": "ڕووەک",
+            "welcome_sign": "نیشانی_بەخێرهاتن"
+          }
+        },
+        "bollard": {
+          "label": "جۆر"
+        },
+        "boules": {
+          "label": "جۆر"
+        },
+        "boundary": {
+          "label": "جۆر"
+        },
+        "branch_brand": {
+          "label": "لق"
+        },
+        "bridge": {
+          "label": "جۆر",
+          "placeholder": "بنەڕەت"
+        },
+        "bridge/ref": {
+          "label": "ژمارەی پرد"
+        },
+        "bridge/support": {
+          "label": "جۆر"
+        },
+        "bridge_combo": {
+          "label": "جۆر"
+        },
+        "building": {
+          "label": "باڵەخانە",
+          "options": {
+            "church": "باڵەخانەی کڵێسا",
+            "college": "باڵەخانەی کۆلێژ",
+            "commercial": "باڵەخانەی بازرگانی",
+            "construction": "باڵەخانەکە لە بونیاتناندایە",
+            "fire_station": "باڵەخانەی ئاگرکوژێنەوە",
+            "garage": "گەراج",
+            "garages": "گەراج",
+            "hospital": "باڵەخانەی نەخۆشخانە",
+            "hotel": "باڵەخانەی میوانخانە",
+            "house": "خانوو",
+            "industrial": "باڵەخانەی پیشەسازی",
+            "kindergarten": "باڵەخانەی دایەنگە و باخچەی ساوایان",
+            "mosque": "باڵەخانەی مزگەوت",
+            "office": "باڵەخانەی نووسینگە",
+            "public": "باڵەخانەی گشتیی",
+            "residential": "باڵەخانەی نیشتەجێبوون",
+            "roof": "بنمیچ",
+            "school": "باڵەخانەی قوتابخانە",
+            "service": "باڵەخانەی ڕاژەگوزاری",
+            "stadium": "باڵەخانەی یاریگا",
+            "terrace": "ڕێزە خانوو",
+            "train_station": "باڵەخانەی وێستگەی شەمەندەفەر",
+            "university": "باڵەخانەی زانکۆ",
+            "warehouse": "کۆگا"
+          }
+        },
+        "building/flats": {
+          "label": "یەکە",
+          "placeholder": "٢، ٤، ٦، ٨..."
+        },
+        "building/levels": {
+          "label": "نهۆم",
+          "placeholder": "٢، ٤، ٦..."
+        },
+        "building/levels/underground": {
+          "label": "نهۆمی ژێرزەمینی",
+          "placeholder": "٢، ٤، ٦..."
+        },
+        "building/material": {
+          "label": "مادە"
+        },
+        "building/part": {
+          "label": "بەشێکی باڵەخانە"
+        },
+        "bunker_type": {
+          "label": "جۆر"
+        },
+        "cables": {
+          "placeholder": "١، ٢، ٣..."
+        },
+        "camera/direction": {
+          "placeholder": "٤٥، ٩٠، ١٨٠، ٢٧٠"
+        },
+        "camera/type": {
+          "label": "جۆری کامێرا",
+          "options": {
+            "dome": "قوبە",
+            "fixed": "چاککرا"
+          }
+        },
+        "capacity": {
+          "placeholder": "٥٠، ١٠٠، ٢٠٠..."
+        },
+        "capacity/caravans": {
+          "placeholder": "١٠، ٢٠، ٥٠..."
+        },
+        "capacity/disabled_parking": {
+          "placeholder": "١، ٢، ٣..."
+        },
+        "capacity/persons": {
+          "placeholder": "٥٠، ١٠٠، ٢٠٠..."
+        },
+        "capacity/tents": {
+          "placeholder": "١٠، ٢٠، ٥٠..."
+        },
+        "capacity_parking": {
+          "placeholder": "١٠، ٢٠، ٣٠..."
+        },
+        "capacity_volume": {
+          "placeholder": "٥٠، ١٠٠، ٢٠٠..."
+        },
+        "castle_type": {
+          "label": "جۆر"
+        },
+        "check_date": {
+          "label": "دوا ڕێکەوتی بەسەرداچوونەوە",
+          "placeholder": "سسسس-مم-ڕڕ"
+        },
+        "circumference": {
+          "placeholder": "١ م، ٢٠ سم، ٣٠\"..."
+        },
+        "clothes": {
+          "label": "جلوبەرگ",
+          "options": {
+            "babies": "جلوبەرگی ساوایان",
+            "children": "جلوبەرگی منداڵان",
+            "men": "جلوبەرگی پیاوان",
+            "socks": "گۆرەوی",
+            "sports": "وەرزشی",
+            "swimwear": "مەلەوانی",
+            "wedding": "جلوبەرگی زەماوەند",
+            "women": "جلوبەرگی ژنان"
+          }
+        },
+        "club": {
+          "label": "جۆر"
+        },
+        "colour": {
+          "label": "ڕەنگ"
+        },
+        "construction": {
+          "label": "جۆر"
+        },
+        "consulate": {
+          "label": "جۆر"
+        },
+        "contact/facebook": {
+          "label": "بەستەر یان ناوی بەکارهێنەری فەیسبووک"
+        },
+        "content": {
+          "label": "ناوەڕۆک"
+        },
+        "conveying": {
+          "label": "ئاڕاستەی جوولە"
+        },
+        "country": {
+          "label": "وڵات"
+        },
+        "country_flag": {
+          "label": "ئاڵای وڵات"
+        },
+        "couplings": {
+          "placeholder": "١، ٢، ٣..."
+        },
+        "covered": {
+          "label": "داپۆشراو"
+        },
+        "covered_no": {
+          "options": {
+            "no": "نەخێر",
+            "yes": "بەڵێ"
+          }
+        },
+        "craft": {
+          "label": "جۆر",
+          "options": {
+            "beekeeper": "هەنگەوان",
+            "clockmaker": "کاتژمێرچی",
+            "electrician": "کارەباچی",
+            "gardener": "باخەوان",
+            "jeweller": "زێڕنگر",
+            "painter": "نیگارکێش",
+            "photographer": "وێنەگر",
+            "photographic_laboratory": "تاقیگەی وێنەگری",
+            "plumber": "بۆڕیچی",
+            "tailor": "بەرگدوور",
+            "watchmaker": "کاتژمێرساز"
+          }
+        },
+        "crop": {
+          "label": "دانەوێڵە",
+          "options": {
+            "asparagus": "گیامارانە",
+            "barley": "جۆ",
+            "beet": "چەوەندەر",
+            "cassava": "شیرهەرد",
+            "coffee": "قاوە",
+            "cotton": "پەمۆ",
+            "cranberries": "تووەقوڵنگ",
+            "flowers": "گوڵ",
+            "grape": "ترێ",
+            "grass": "گژوگیا",
+            "hop": "گیازام",
+            "lavender": "گوڵەخەزێم",
+            "maize": "گەنمەشامی",
+            "potato": "پەتاتە",
+            "rape": "دانی شێلم",
+            "rice": "برنج",
+            "strawberry": "شلیک",
+            "sugar_beet": "چەوەندەری شەکر",
+            "sugarcane": "نەیشەکر",
+            "sunflower": "گوڵەبەڕۆژە",
+            "tea": "چای",
+            "tobacco": "تووتن",
+            "vegetable": "سەوزە",
+            "wheat": "گەنم"
+          }
+        },
+        "crossing": {
+          "label": "جۆر",
+          "options": {
+            "uncontrolled": "تەنیا سەر شەقام بۆیە کراوە"
+          }
+        },
+        "crossing/barrier": {
+          "options": {
+            "half": "نیوە",
+            "no": "نەخێر",
+            "yes": "بەڵێ"
+          }
+        },
+        "crossing_raised": {
+          "options": {
+            "table": "بەڵێ",
+            "undefined": "نەخێر"
+          }
+        },
+        "cuisine": {
+          "options": {
+            "american": "ئەمریکایی",
+            "asian": "ئاسیایی",
+            "burger": "بەرگەر",
+            "cake": "کێک",
+            "chicken": "مریشک",
+            "coffee_shop": "قاوەخانە",
+            "fish": "ماسی",
+            "ice_cream": "ساردەمەنی",
+            "juice": "میواو",
+            "kebab": "کەباب",
+            "pasta": "پاستا",
+            "pizza": "پیتزا",
+            "salad": "زەڵاتە",
+            "sandwich": "بابۆڵە",
+            "seafood": "خۆراکی دەریایی",
+            "sushi": "سوشی",
+            "vietnamese": "ڤێتنامی"
+          }
+        },
+        "currency_multi": {
+          "label": "جۆری دراو"
+        },
+        "cutting": {
+          "label": "جۆر"
+        },
+        "cycleway": {
+          "options": {
+            "no": {
+              "title": "هیچیان"
+            }
+          },
+          "types": {
+            "cycleway:left": "دەستەچەپ",
+            "cycleway:right": "دەستەڕاست"
+          }
+        },
+        "date": {
+          "label": "ڕێکەوت"
+        },
+        "delivery": {
+          "label": "گەیاندن"
+        },
+        "departures_board": {
+          "options": {
+            "no": "هیچیان",
+            "yes": "بەڵێ"
+          }
+        },
+        "depot": {
+          "label": "جۆر"
+        },
+        "depth": {
+          "label": "قوڵی (مەتر)"
+        },
+        "devices": {
+          "placeholder": "١، ٢، ٣..."
+        },
+        "diameter": {
+          "placeholder": "٥ مم، ١٠ سم، ١٥ ئینج..."
+        },
+        "diameter_crown": {
+          "placeholder": "٤ م، ٩'، ..."
+        },
+        "diet_multi": {
+          "options": {
+            "gluten_free": "بێ گلوتین",
+            "halal": "حەلال",
+            "kosher": "کۆشەر",
+            "vegetarian": "ڕووەکخۆر"
+          }
+        },
+        "diplomatic": {
+          "label": "جۆر",
+          "options": {
+            "consulate": "کونسوڵخانە"
+          }
+        },
+        "direction": {
+          "placeholder": "٤٥، ٩٠، ١٨٠، ٢٧٠"
+        },
+        "direction_point": {
+          "placeholder": "٤٥، ٩٠، ١٨٠، ٢٧٠"
+        },
+        "distance": {
+          "label": "مەودا"
+        },
+        "disused/amenity": {
+          "label": "جۆر"
+        },
+        "disused/railway": {
+          "label": "جۆر"
+        },
+        "disused/shop": {
+          "label": "جۆر"
+        },
+        "dock": {
+          "label": "جۆر"
+        },
+        "dog": {
+          "label": "سەگ",
+          "options": {
+            "no": "ڕێپێ نەدراوە",
+            "yes": "ڕێپێ دراوە"
+          }
+        },
+        "door": {
+          "label": "دەرگا"
+        },
+        "door_type": {
+          "label": "جۆر"
+        },
+        "drink_multi": {
+          "label": "خواردنەوە"
+        },
+        "drinking_water": {
+          "label": "دەخورێتەوە"
+        },
+        "drinking_water_available": {
+          "label": "ئاوی خواردنەوە بەردەستە"
+        },
+        "duration": {
+          "label": "ماوە",
+          "placeholder": "٠٠:٠٠"
+        },
+        "electrified": {
+          "options": {
+            "no": "نەخێر"
+          }
+        },
+        "embankment": {
+          "label": "جۆر"
+        },
+        "embassy": {
+          "label": "جۆر"
+        },
+        "emergency_combo": {
+          "label": "جۆر"
+        },
+        "emergency_ward_entrance": {
+          "label": "جۆر"
+        },
+        "enforcement": {
+          "label": "جۆر"
+        },
+        "entrance": {
+          "label": "جۆر",
+          "options": {
+            "emergency": "دەرچەی تەنگەتاوی",
+            "garage": "دەرگای گەراج",
+            "main": "سەرەکی",
+            "secondary": "لاوەکی",
+            "service": "ڕاژەگوزاری"
+          }
+        },
+        "expressway-US": {
+          "label": "شاڕێ"
+        },
+        "fax": {
+          "placeholder": "+٣١ ٤٢ ١٢٣ ٤٥٦٧"
+        },
+        "fence_type": {
+          "label": "جۆر"
+        },
+        "fire_hydrant/position": {
+          "options": {
+            "lane": "کەلی شەقام"
+          }
+        },
+        "fire_hydrant/type": {
+          "options": {
+            "wall": "دیوار"
+          }
+        },
+        "fire_mains": {
+          "options": {
+            "no": "نەخێر"
+          }
+        },
+        "fire_service_inlet": {
+          "options": {
+            "wall": "دیوار"
+          }
+        },
+        "fire_sprinkler": {
+          "options": {
+            "no": "نەخێر"
+          }
+        },
+        "flag/name": {
+          "label": "ناوی ئاڵا"
+        },
+        "flag/type": {
+          "label": "جۆری ئاڵا"
+        },
+        "flashing_lights": {
+          "options": {
+            "no": "نەخێر",
+            "yes": "بەڵێ"
+          }
+        },
+        "ford": {
+          "label": "جۆر"
+        },
+        "fountain": {
+          "label": "جۆر"
+        },
+        "fuel/fuel_multi": {
+          "options": {
+            "LH2": "هایدرۆجینی شل"
+          }
+        },
+        "gender": {
+          "label": "ڕەگەز",
+          "options": {
+            "female": "مێ",
+            "male": "نێر",
+            "unisex": "نێرەموک"
+          },
+          "placeholder": "نەزانراو"
+        },
+        "generator/output/electricity": {
+          "placeholder": "٥٠ مێگاوات، ١٠٠ مێگاوات، ٢٠٠ مێگاوات..."
+        },
+        "generator/source": {
+          "label": "سەرچاوە",
+          "options": {
+            "battery": "پیل",
+            "coal": "ڕەژوو",
+            "gas": "گازی سروشتی",
+            "hydro": "وزەی کارۆئاوی",
+            "nuclear": "وزەی ناوەکی",
+            "oil": "نەوت",
+            "waste": "پاشماوە",
+            "wave": "شەپۆلەوزە",
+            "wind": "با"
+          }
+        },
+        "generator/type": {
+          "label": "جۆر"
+        },
+        "government": {
+          "label": "جۆر"
+        },
+        "guest_house": {
+          "label": "جۆر"
+        },
+        "handicap": {
+          "placeholder": "١-١٨"
+        },
+        "hashtags": {
+          "placeholder": "#نموونە"
+        },
+        "hazard_boundary": {
+          "options": {
+            "nuclear": "ناوەکی / تیشکدانەوە"
+          }
+        },
+        "healthcare": {
+          "label": "جۆر",
+          "options": {
+            "blood_bank": "بانکی خوێن",
+            "clinic": "نۆڕینگە",
+            "counselling": "ناوەندی ڕاوێژکاری",
+            "dentist": "ددانساز",
+            "doctor": "پزیشک",
+            "hospital": "نەخۆشخانە",
+            "laboratory": "تاقیگەی پزیشکی",
+            "midwife": "مامان",
+            "nurse": "پەرستار",
+            "pharmacy": "دەرمانخانە",
+            "vaccination_centre": "ناوەندی کوتان"
+          }
+        },
+        "healthcare/speciality": {
+          "label": "پسپۆڕی",
+          "options": {
+            "abortion": "لەباربردن",
+            "allergology": "هەستیاری و هەناسەتەنگی",
+            "blood_check": "تاقیکردنەوەی خوێن",
+            "otolaryngology": "قوڕگ و لووت و گوێ",
+            "surgery": "نەشتەرگەری گشتیی",
+            "transplant": "نەشتەرگەری چاندن",
+            "vaccination": "کوتان"
+          }
+        },
+        "height": {
+          "label": "بەرزی (مەتر)"
+        },
+        "height_building": {
+          "label": "بەرزی باڵەخانە (مەتر)"
+        },
+        "highchair": {
+          "label": "کورسی بڵند"
+        },
+        "highway": {
+          "label": "جۆر"
+        },
+        "highway_cartpath": {
+          "label": "جۆری پیادە",
+          "options": {
+            "service": "شەقامی ڕاژەگوزاری"
+          }
+        },
+        "historic": {
+          "label": "جۆر",
+          "options": {
+            "building": "باڵەخانەی مێژوویی",
+            "castle": "قەڵا",
+            "church": "کڵیسا",
+            "city_gate": "دەروازەی شار",
+            "monument": "مۆنۆمێنت",
+            "railway": "ئاسنەڕێ"
+          }
+        },
+        "historic/civilization": {
+          "label": "شارستانیەتی مێژوویی"
+        },
+        "holding_position/type": {
+          "label": "جۆر"
+        },
+        "hoops": {
+          "placeholder": "١، ٢، ٤..."
+        },
+        "horse_riding": {
+          "options": {
+            "horse_riding": "بەڵێ",
+            "undefined": "نەخێر"
+          }
+        },
+        "iata": {
+          "label": "ژمارەی IATA فڕۆکەخانە"
+        },
+        "icao": {
+          "label": "ژمارەی ICAO فڕۆکەخانە"
+        },
+        "image": {
+          "label": "وێنە"
+        },
+        "incline_steps": {
+          "options": {
+            "down": "خوارەوە",
+            "up": "سەرەوە"
+          }
+        },
+        "indoor": {
+          "label": "ژوورەوە"
+        },
+        "indoor_type": {
+          "label": "جۆر"
+        },
+        "industrial": {
+          "label": "جۆر"
+        },
+        "information": {
+          "label": "جۆر"
+        },
+        "internet_access": {
+          "options": {
+            "no": "نەخێر",
+            "wlan": "بێتەل",
+            "yes": "بەڵێ"
+          }
+        },
+        "internet_access/fee": {
+          "label": "دەستڕاگەیشتنی ئینتەرنێت",
+          "options": {
+            "customers": "تەنیا کڕیاران",
+            "no": "بەخۆڕاییە",
+            "yes": "بە پارەیە"
+          }
+        },
+        "internet_access/ssid": {
+          "label": "ناوی وایفای"
+        },
+        "kerb/height": {
+          "label": "بەرزی"
+        },
+        "kitchen": {
+          "label": "ناندین"
+        },
+        "lamp_type": {
+          "label": "جۆر"
+        },
+        "landuse": {
+          "label": "جۆر"
+        },
+        "lanes": {
+          "placeholder": "١، ٢، ٣..."
+        },
+        "language_multi": {
+          "label": "زمان"
+        },
+        "layer": {
+          "placeholder": "٠"
+        },
+        "leaf_cycle": {
+          "options": {
+            "evergreen": "هەمیشە سەوز",
+            "mixed": "تێکەڵاو"
+          }
+        },
+        "leaf_type": {
+          "label": "جۆری گەڵا",
+          "options": {
+            "leafless": "بێ گەڵا",
+            "mixed": "تێکەڵاو",
+            "needleleaved": "گەڵای دەزوویی"
+          }
+        },
+        "leaf_type_singular": {
+          "label": "جۆری گەڵا"
+        },
+        "leisure": {
+          "label": "جۆر"
+        },
+        "length": {
+          "label": "درێژی (مەتر)"
+        },
+        "liaison": {
+          "label": "جۆر"
+        },
+        "lit": {
+          "label": "چرا"
+        },
+        "location": {
+          "label": "شوێن"
+        },
+        "location_pool": {
+          "options": {
+            "indoor": "ژوورەوە",
+            "outdoor": "دەرەوە"
+          }
+        },
+        "man_made": {
+          "label": "جۆر"
+        },
+        "manhole": {
+          "label": "جۆر"
+        },
+        "map_type": {
+          "label": "جۆر"
+        },
+        "marker": {
+          "label": "جۆر",
+          "options": {
+            "stone": {
+              "title": "بەرد"
+            }
+          }
+        },
+        "material": {
+          "label": "مادە",
+          "options": {
+            "adobe": "خشت",
+            "aluminium": "فافۆن",
+            "brick": "کەرپووچ",
+            "glass": "شووشە",
+            "iron": "ئاسن",
+            "limestone": "بەردەگەچ",
+            "marble": "مەڕمەڕ",
+            "metal": "کانزا",
+            "plastic": "پلاستیک",
+            "rock": "گاشەبەرد",
+            "sand": "لم",
+            "sandstone": "بەردەلم",
+            "soil": "خۆڵ، زەمین",
+            "steel": "پۆڵا",
+            "stone": "بەرد",
+            "wood": "دار"
+          }
+        },
+        "max_age": {
+          "label": "بەرزترین تەمەن"
+        },
+        "maxheight": {
+          "label": "زۆرترین بەرزی"
+        },
+        "maxlength": {
+          "label": "زۆرترین درێژی"
+        },
+        "maxspeed": {
+          "label": "زۆرترین خێرایی",
+          "placeholder": "٤٠، ٥٠، ٦٠..."
+        },
+        "maxspeed/advisory": {
+          "placeholder": "٤٠، ٥٠، ٦٠..."
+        },
+        "maxspeed/hgv": {
+          "label": "زۆرترین خێرایی بارهەڵگر",
+          "placeholder": "٤٠، ٥٠، ٦٠..."
+        },
+        "maxstay": {
+          "label": "ئەوپەڕی مانەوە"
+        },
+        "maxweight": {
+          "label": "قورسایی"
+        },
+        "maxwidth": {
+          "label": "زۆرترین پانی"
+        },
+        "memorial": {
+          "label": "جۆر",
+          "options": {
+            "stone": "بەرد"
+          }
+        },
+        "military_service": {
+          "options": {
+            "air_force": "هێزی ئاسمانی"
+          }
+        },
+        "minspeed": {
+          "placeholder": "٢٠، ٣٠، ٤٠..."
+        },
+        "mobile": {
+          "label": "ژمارەی مۆبایل",
+          "placeholder": "+٣١ ٤٢ ١٢٣ ٤٥٦٧"
+        },
+        "mooring": {
+          "options": {
+            "no": "نەخێر",
+            "private": "تایبەت",
+            "yes": "بەڵێ"
+          }
+        },
+        "mtb/scale": {
+          "placeholder": "٠، ١، ٢، ٣..."
+        },
+        "mtb/scale/imba": {
+          "options": {
+            "0": "⚪ ئاسانترین (بازنەی سپی)",
+            "1": "🟢 ئاسان (بازنەی کەسک)",
+            "2": "🟦 مامناوەند (چوارگۆشەی شین)"
+          },
+          "placeholder": "ئاسان، مامناوەند، گران..."
+        },
+        "mtb/scale/uphill": {
+          "placeholder": "٠، ١، ٢، ٣..."
+        },
+        "museum": {
+          "label": "جۆر"
+        },
+        "name": {
+          "label": "ناو"
+        },
+        "natural": {
+          "label": "سروشتی"
+        },
+        "network_bicycle": {
+          "options": {
+            "icn": "نێودەوڵەتی",
+            "lcn": "ناوخۆیی",
+            "ncn": "نەتەوەیی",
+            "rcn": "هەرێمی"
+          },
+          "placeholder": "ناوخۆیی، هەرێمی، نەتەوەیی، نێودەوڵەتی"
+        },
+        "network_foot": {
+          "options": {
+            "iwn": "نێودەوڵەتی",
+            "lwn": "ناوخۆیی",
+            "nwn": "نەتەوەیی",
+            "rwn": "هەرێمی"
+          },
+          "placeholder": "ناوخۆیی، هەرێمی، نەتەوەیی، نێودەوڵەتی"
+        },
+        "network_horse": {
+          "options": {
+            "ihn": "نێودەوڵەتی",
+            "lhn": "ناوخۆیی",
+            "nhn": "نەتەوەیی",
+            "rhn": "هەرێمی"
+          },
+          "placeholder": "ناوخۆیی، هەرێمی، نەتەوەیی، نێودەوڵەتی"
+        },
+        "not/name": {
+          "label": "ناوی هەڵە"
+        },
+        "note": {
+          "label": "تێبینی"
+        },
+        "oneway": {
+          "label": "یەک ئاڕاستە",
+          "options": {
+            "no": "نەخێر",
+            "yes": "بەڵێ"
+          }
+        },
+        "oneway/bicycle": {
+          "label": "یەک ئاڕاستە (پایسکیل)"
+        },
+        "oneway_yes": {
+          "options": {
+            "no": "نەخێر",
+            "yes": "بەڵێ"
+          }
+        },
+        "opening_hours": {
+          "label": "کاتژمێر"
+        },
+        "outdoor_seating": {
+          "label": "شوێنی دانیشتنی دەرەوە"
+        },
+        "par": {
+          "placeholder": "٣، ٤، ٥..."
+        },
+        "parking": {
+          "options": {
+            "lane": "کەلی قەراخ ڕێ",
+            "street_side": "ڕۆخی شەقام",
+            "surface": "ڕووپۆش"
+          }
+        },
+        "parking/side/parking": {
+          "options": {
+            "lane": "کەلی قەراخ ڕێ",
+            "street_side": "ڕۆخی شەقام"
+          }
+        },
+        "payment_multi": {
+          "label": "جۆرەکانی پارەدان"
+        },
+        "phases": {
+          "placeholder": "١، ٢، ٣..."
+        },
+        "phone": {
+          "label": "تەلەفۆن"
+        },
+        "population": {
+          "label": "دانیشتوان"
+        },
+        "population/date": {
+          "label": "ڕێکەوتی دانیشتووان"
+        },
+        "railway/signal/direction": {
+          "options": {
+            "both": "هەردووک / هەموو",
+            "forward": "بۆ پێشەوە"
+          }
+        },
+        "ref_golf_hole": {
+          "placeholder": "١-١٨"
+        },
+        "ref_road_number": {
+          "label": "ژمارەی ڕێگە"
+        },
+        "religion": {
+          "label": "ئایین"
+        },
+        "resource": {
+          "options": {
+            "gold": "زێڕ"
+          }
+        },
+        "rooms": {
+          "label": "ژوور"
+        },
+        "second_hand": {
+          "options": {
+            "no": "نەخێر",
+            "only": "تەنها",
+            "yes": "بەڵێ"
+          },
+          "placeholder": "بەڵێ، نەخێر، تەنها"
+        },
+        "service_times": {
+          "label": "کاتی ڕاژەکردن"
+        },
+        "siren/type": {
+          "options": {
+            "electronic": "کارەبایی",
+            "other": "هی تر"
+          }
+        },
+        "smoking": {
+          "label": "جگەرەکێشان",
+          "options": {
+            "no": "ڕێگەپێنەدراوە لە هەموو شوێنێک",
+            "outside": "لەدەرەوە ڕێگەپێدراوە",
+            "yes": "لە هەموو شوێنێک ڕێگەپێدراوە"
+          }
+        },
+        "social_facility_for": {
+          "options": {
+            "homeless": "بێلانە"
+          }
+        },
+        "source": {
+          "label": "سەرچاوەکان",
+          "options": {
+            "local knowledge": "زانیاری نێوخۆیی",
+            "osm notes": "تێبینییەکانی نەخشەی شەقامی کراوە"
+          }
+        },
+        "sport": {
+          "label": "وەرزشەکان"
+        },
+        "stars": {
+          "label": "ئەستێرە"
+        },
+        "start_date": {
+          "label": "رێکەوتی دەستپێکردن"
+        },
+        "step_count": {
+          "label": "ژمارەی پەیژەکان"
+        },
+        "stop": {
+          "options": {
+            "minor": "جادەی لاوەکی"
+          }
+        },
+        "structure": {
+          "options": {
+            "bridge": "پرد",
+            "tunnel": "تونێل"
+          }
+        },
+        "structure_waterway": {
+          "options": {
+            "tunnel": "تونێل"
+          }
+        },
+        "surface": {
+          "label": "ڕووپۆش",
+          "options": {
+            "metal": "ئاسن"
+          }
+        },
+        "surveillance/type": {
+          "options": {
+            "camera": "کامێرا"
+          }
+        },
+        "survey/date": {
+          "label": "دوا ڕێکەوتی چاولێکردن"
+        },
+        "takeaway": {
+          "options": {
+            "no": "نەخێر",
+            "yes": "بەڵێ"
+          }
+        },
+        "toilets/disposal": {
+          "options": {
+            "chemical": "کیمایی"
+          }
+        },
+        "tower/platforms": {
+          "placeholder": "١، ٢، ٣..."
+        },
+        "tower/type": {
+          "label": "جۆر"
+        },
+        "townhall/type": {
+          "label": "جۆر"
+        },
+        "tracktype": {
+          "options": {
+            "grade4": "زۆربەی نەرم: گڵ/لم/گیا لەگەڵ تێکەڵەیەک لە ماددەی ڕەق",
+            "grade5": "نەرم: گڵ/لم/گیا"
+          }
+        },
+        "trade": {
+          "label": "جۆر"
+        },
+        "traffic_calming": {
+          "label": "جۆر",
+          "options": {
+            "bump": "تاسە"
+          }
+        },
+        "traffic_sign": {
+          "label": "هێمای هاتوچۆ"
+        },
+        "traffic_sign/direction": {
+          "options": {
+            "backward": "پشتەوە",
+            "both": "هەردووک / هەموو",
+            "forward": "پێشەوە"
+          }
+        },
+        "traffic_signals": {
+          "label": "جۆر"
+        },
+        "traffic_signals/direction": {
+          "options": {
+            "backward": "پشتەوە",
+            "both": "هەردووک / هەموو",
+            "forward": "پێشەوە"
+          }
+        },
+        "traffic_signals/sound": {
+          "options": {
+            "no": "نەخێر",
+            "yes": "بەڵێ"
+          }
+        },
+        "traffic_signals/vibration": {
+          "label": "لەرزین"
+        },
+        "trail_visibility": {
+          "placeholder": "نایاب، باش، خراپ..."
+        },
+        "transformer": {
+          "label": "جۆر"
+        },
+        "trees": {
+          "label": "درەخت"
+        },
+        "trench": {
+          "label": "جۆر"
+        },
+        "tunnel": {
+          "label": "جۆر"
+        },
+        "tunnel_combo": {
+          "label": "جۆر"
+        },
+        "turning_circle": {
+          "label": "شێوە"
+        },
+        "two_sided": {
+          "options": {
+            "undefined": "نەخێر",
+            "yes": "بەڵێ"
+          }
+        },
+        "usage_rail": {
+          "options": {
+            "branch": "لق",
+            "industrial": "پیشەسازیی",
+            "main": "سەرەکی",
+            "military": "سەربازیی",
+            "test": "تاقیکردنەوە",
+            "tourism": "گەشتیاری"
+          }
+        },
+        "utility": {
+          "options": {
+            "gas": "گاز",
+            "oil": "نەوت",
+            "sewerage": "زێراب",
+            "street_lighting": "چرای سەرشەقام",
+            "water": "ئاو"
+          }
+        },
+        "valve": {
+          "label": "جۆر"
+        },
+        "vehicles": {
+          "options": {
+            "bus": "پاس",
+            "train": "شەمەندەفەر"
+          }
+        },
+        "vending": {
+          "options": {
+            "bread": "نان",
+            "cigarettes": "جگارە",
+            "coffee": "قاوە",
+            "condoms": "کۆندۆم",
+            "drinks": "خواردنەوە",
+            "eggs": "هێلکە",
+            "food": "خواردن",
+            "ice_cream": "چلوورە",
+            "ice_cubes": "قالبە بەفر",
+            "milk": "شیر",
+            "newspapers": "ڕۆژنامە",
+            "parking_tickets": "پلیتی گەراج",
+            "pizza": "پیتزا",
+            "public_transport_tickets": "پلیتی گواستنەوەی گشتی",
+            "stamps": "پووڵی پۆستە",
+            "sweets": "شیرنەمەنی",
+            "water": "ئاوی خواردنەوە"
+          }
+        },
+        "video_calls": {
+          "label": "پەیوەندی ڤیدیۆیی"
+        },
+        "visibility": {
+          "options": {
+            "area": "هەتا ٢٠م (٦٥پێ)",
+            "house": "هەتا ٥م (١٦پێ)",
+            "street": "٥ بۆ ٢٠م (١٦ بۆ ٦٥پێ)"
+          }
+        },
+        "volcano/status": {
+          "options": {
+            "active": "چالاک"
+          }
+        },
+        "volcano/type": {
+          "label": "جۆری گڕکان"
+        },
+        "wall": {
+          "label": "جۆر"
+        },
+        "waste": {
+          "label": "پاشماوە"
+        },
+        "water": {
+          "label": "جۆر"
+        },
+        "water_source": {
+          "label": "سەرچاوەی ئاو",
+          "options": {
+            "pond": "گۆم",
+            "river": "ڕووبار",
+            "stream": "چەم",
+            "water_tank": "تانکی ئاو"
+          }
+        },
+        "water_tank/volume": {
+          "label": "قەبارە (لیتر)",
+          "placeholder": "١٠٠٠٠، ٢٠٠٠٠، ٣٠٠٠٠..."
+        },
+        "waterway": {
+          "label": "جۆر"
+        },
+        "website": {
+          "label": "وێبگە"
+        },
+        "wetland": {
+          "label": "جۆر"
+        },
+        "wheelchair": {
+          "options": {
+            "limited": "سنووردار",
+            "no": "نەخێر",
+            "yes": "بەڵێ"
+          }
+        },
+        "wholesale": {
+          "label": "کۆفرۆش"
+        },
+        "width": {
+          "label": "پانی (مەتر)"
+        },
+        "wikidata": {
+          "label": "ویکیدراوە"
+        },
+        "wikipedia": {
+          "label": "ویکیپیدیا"
+        },
+        "windings": {
+          "placeholder": "١، ٢، ٣..."
+        },
+        "windings/auto": {
+          "options": {
+            "no": "نەخێر",
+            "yes": "بەڵێ"
+          }
+        },
+        "windings/configuration": {
+          "options": {
+            "open": "کردنەوە"
+          }
+        }
+      },
+      "presets": {
+        "address": {
+          "name": "ناونیشان"
+        },
+        "aeroway/aerodrome": {
+          "name": "فڕۆکەخانە"
+        },
+        "amenity/bank": {
+          "name": "بانک"
+        },
+        "amenity/bar": {
+          "name": "مەیخانە"
+        },
+        "amenity/bicycle_parking": {
+          "name": "گەراجی پاسکیل"
+        },
+        "amenity/bureau_de_change": {
+          "name": "گۆڕینەوەی دراو"
+        },
+        "amenity/cafe": {
+          "name": "قاوەخانە"
+        },
+        "amenity/car_rental": {
+          "name": "بەکرێدانی ئۆتۆمبێل"
+        },
+        "amenity/car_wash": {
+          "name": "شووشتنگەی ئۆتۆمبێل"
+        },
+        "amenity/casino": {
+          "name": "گازینۆ"
+        },
+        "amenity/cinema": {
+          "name": "سینەما"
+        },
+        "amenity/clinic": {
+          "name": "نۆڕینگە"
+        },
+        "amenity/clock": {
+          "name": "کاتژمێر"
+        },
+        "amenity/college": {
+          "name": "کۆلێژ"
+        },
+        "amenity/community_centre/youth_centre": {
+          "name": "ناوەندی گەنجان"
+        },
+        "amenity/courthouse": {
+          "name": "دادگا"
+        },
+        "amenity/dentist": {
+          "name": "ددانساز"
+        },
+        "amenity/doctors": {
+          "name": "پزیشک"
+        },
+        "amenity/drinking_water": {
+          "name": "ئاوی خواردنەوە"
+        },
+        "amenity/driver_training": {
+          "name": "گۆڕەپانی فێرکردنی شوفێری"
+        },
+        "amenity/fast_food": {
+          "name": "خواردنی خێرا"
+        },
+        "amenity/grave_yard": {
+          "name": "گۆڕستان"
+        },
+        "amenity/ice_cream": {
+          "name": "فرۆشگای ساردەمەنی"
+        },
+        "amenity/language_school": {
+          "name": "قوتابخانەی زمان"
+        },
+        "amenity/library": {
+          "name": "پەڕتووکخانە"
+        },
+        "amenity/music_school": {
+          "name": "قوتابخانەی مۆسیقی"
+        },
+        "amenity/nightclub": {
+          "name": "یانەی شەوانە"
+        },
+        "amenity/parking/street-side": {
+          "name": "گەراجی ڕۆخی شەقام"
+        },
+        "amenity/place_of_worship": {
+          "name": "پەرستگا"
+        },
+        "amenity/place_of_worship/buddhist": {
+          "name": "پەرستگایی بودایی"
+        },
+        "amenity/place_of_worship/hindu": {
+          "name": "پەرستگای هیندۆسی"
+        },
+        "amenity/police": {
+          "name": "پۆلیس"
+        },
+        "amenity/post_office": {
+          "name": "نووسینگەی پۆستە"
+        },
+        "amenity/restaurant": {
+          "name": "خواردنگە"
+        },
+        "amenity/restaurant/vietnamese": {
+          "name": "خواردنگەی ڤێتنامی"
+        },
+        "amenity/smoking_area": {
+          "name": "ناوەی جگەرەکێشان"
+        },
+        "amenity/social_facility/food_bank": {
+          "name": "بانکی خواردن"
+        },
+        "amenity/studio": {
+          "name": "ستۆدیۆ"
+        },
+        "amenity/telephone": {
+          "name": "تەلەفۆن"
+        },
+        "amenity/theatre": {
+          "name": "شانۆ"
+        },
+        "amenity/veterinary": {
+          "name": "ڤێتێرنەری"
+        },
+        "area": {
+          "name": "ناوە"
+        },
+        "area/footway": {
+          "name": "ناوەی پیادەڕێ"
+        },
+        "area/highway": {
+          "name": "ناوەی شەقام"
+        },
+        "attraction/train": {
+          "name": "شەمەندەفەری گەشتیاریی"
+        },
+        "barrier/city_wall": {
+          "name": "دیواری شار"
+        },
+        "barrier/entrance": {
+          "name": "چوونەژوور"
+        },
+        "barrier/fence": {
+          "name": "پەرژین"
+        },
+        "barrier/gate": {
+          "name": "دەروازە"
+        },
+        "barrier/wall": {
+          "name": "دیوار"
+        },
+        "boundary/hazard": {
+          "name": "ناوچەی مەترسیدار"
+        },
+        "bridge/support": {
+          "name": "ڕاگری پرد"
+        },
+        "building": {
+          "name": "باڵەخانە"
+        },
+        "building/church": {
+          "name": "باڵەخانەی کڵێسا"
+        },
+        "building/college": {
+          "name": "باڵەخانەی کۆلێژ"
+        },
+        "building/commercial": {
+          "name": "باڵەخانەی بازرگانی"
+        },
+        "building/construction": {
+          "name": "باڵەخانەکە لەژێر بونیاتناندایە"
+        },
+        "building/cowshed": {
+          "name": "تەویلە"
+        },
+        "building/garage": {
+          "name": "گەراج"
+        },
+        "building/ger": {
+          "name": "ڕەشماڵ (یورت)"
+        },
+        "building/grandstand": {
+          "name": "جێگای تەماشاوانان"
+        },
+        "building/greenhouse": {
+          "name": "سەوزخانە"
+        },
+        "building/hangar": {
+          "name": "پەنافڕۆکە"
+        },
+        "building/hospital": {
+          "name": "باڵەخانەی نەخۆشخانە"
+        },
+        "building/hotel": {
+          "name": "باڵەخانەی میوانخانە"
+        },
+        "building/house": {
+          "name": "خانوو"
+        },
+        "building/hut": {
+          "name": "کوخ"
+        },
+        "building/industrial": {
+          "name": "باڵەخانەی پیشەسازی"
+        },
+        "building/mosque": {
+          "name": "باڵەخانەی مزگەوت"
+        },
+        "building/office": {
+          "name": "باڵەخانەی نووسینگە"
+        },
+        "building/public": {
+          "name": "باڵەخانەی گشتیی"
+        },
+        "building/residential": {
+          "name": "باڵەخانەی نیشتەجێبوون"
+        },
+        "building/roof": {
+          "name": "بنمیچ"
+        },
+        "building/school": {
+          "name": "باڵەخانەی قوتابخانە"
+        },
+        "building/service": {
+          "name": "باڵەخانەی ڕاژەگوزاری"
+        },
+        "building/shed": {
+          "name": "حەسار"
+        },
+        "building/stadium": {
+          "name": "باڵەخانەی یاریگا"
+        },
+        "building/static_caravan": {
+          "name": "ماڵی گوازراوە"
+        },
+        "building/sty": {
+          "name": "بەرازخان"
+        },
+        "building/temple": {
+          "name": "باڵەخانەی پەرستگە"
+        },
+        "building/train_station": {
+          "name": "باڵەخانەی وێستگەی شەمەندەفەر"
+        },
+        "building/university": {
+          "name": "باڵەخانەی زانکۆ"
+        },
+        "building/warehouse": {
+          "name": "باڵەخانەی کۆگا"
+        },
+        "building_point": {
+          "name": "باڵەخانە"
+        },
+        "cemetery/grave": {
+          "name": "گۆڕ"
+        },
+        "club": {
+          "name": "یانە"
+        },
+        "club/sport": {
+          "name": "یانەی وەرزشی"
+        },
+        "craft/beekeeper": {
+          "name": "هەنگەوان"
+        },
+        "craft/blacksmith": {
+          "name": "ئاسنگەر"
+        },
+        "craft/bookbinder": {
+          "name": "چزوبەندکەر"
+        },
+        "craft/carpenter": {
+          "name": "دارتاش"
+        },
+        "craft/caterer": {
+          "name": "سوروساتچی"
+        },
+        "craft/clockmaker": {
+          "name": "کاتژمێرچی"
+        },
+        "craft/electrician": {
+          "name": "کارەباچی"
+        },
+        "craft/gardener": {
+          "name": "باخەوان"
+        },
+        "craft/glaziery": {
+          "name": "جامبڕی"
+        },
+        "craft/locksmith": {
+          "name": "کلیلساز"
+        },
+        "craft/painter": {
+          "name": "نیگارکێش"
+        },
+        "craft/photographer": {
+          "name": "وێنەگر"
+        },
+        "craft/photographic_laboratory": {
+          "name": "تاقیگەی وێنەگری"
+        },
+        "craft/plasterer": {
+          "name": "سواخدەر"
+        },
+        "craft/plumber": {
+          "name": "بۆڕیچی"
+        },
+        "craft/roofer": {
+          "name": "میچساز"
+        },
+        "craft/saddler": {
+          "name": "زیندروو"
+        },
+        "craft/sawmill": {
+          "name": "داربڕی"
+        },
+        "craft/sculptor": {
+          "name": "بەردتاش"
+        },
+        "craft/shoemaker": {
+          "name": "پینەدۆز"
+        },
+        "craft/stonemason": {
+          "name": "بەردکار"
+        },
+        "craft/tailor": {
+          "name": "بەرگدوور"
+        },
+        "craft/tiler": {
+          "name": "کاشیچی"
+        },
+        "craft/tinsmith": {
+          "name": "تەنەکەچی"
+        },
+        "craft/upholsterer": {
+          "name": "بەرگتێگر"
+        },
+        "craft/watchmaker": {
+          "name": "کاتژمێرساز"
+        },
+        "craft/winery": {
+          "name": "کارگەی مەی"
+        },
+        "embankment": {
+          "name": "لاگیرە"
+        },
+        "emergency/first_aid_kit": {
+          "name": "ساکی فریاگوزاری سەرەتایی"
+        },
+        "emergency/lifeguard": {
+          "name": "مەلەوانی ڕزگارکەر (ژینپارێز)"
+        },
+        "emergency/phone": {
+          "name": "تەلەفۆنی تەنگەتاوی"
+        },
+        "highway/construction": {
+          "name": "ڕێگە لە چاککردندایە"
+        },
+        "highway/elevator": {
+          "name": "ئاسانسەر"
+        },
+        "highway/footway": {
+          "name": "پیادەڕۆ"
+        },
+        "highway/living_street": {
+          "name": "کۆڵانی تەنگەبەر"
+        },
+        "highway/motorway": {
+          "name": "شاڕێ"
+        },
+        "highway/motorway_link": {
+          "name": "بەستەگی شاڕێ"
+        },
+        "highway/path": {
+          "name": "پیادەڕێ"
+        },
+        "highway/pedestrian_area": {
+          "name": "گۆڕەپانی پیادە"
+        },
+        "highway/pedestrian_line": {
+          "name": "ڕێی پیادە"
+        },
+        "highway/primary": {
+          "name": "شەقامی سەرەکی"
+        },
+        "highway/primary_link": {
+          "name": "لا شەقامی سەرەکی"
+        },
+        "highway/residential": {
+          "name": "کۆڵان"
+        },
+        "highway/road": {
+          "name": "ڕێگای نەزانراو"
+        },
+        "highway/secondary": {
+          "name": "شەقامی لاوەکی"
+        },
+        "highway/secondary_link": {
+          "name": "لا شەقامی لاوەکی"
+        },
+        "highway/service": {
+          "name": "شەقامی ڕاژەگوزاری"
+        },
+        "highway/service/alley": {
+          "name": "کۆڵانۆچکە"
+        },
+        "highway/services": {
+          "name": "ناوەی ڕاژەگوزاری"
+        },
+        "highway/speed_camera": {
+          "name": "کامێرای خێرایی"
+        },
+        "highway/steps": {
+          "name": "پەیژە"
+        },
+        "highway/street_lamp": {
+          "name": "چرای سەرشەقام"
+        },
+        "highway/traffic_mirror": {
+          "name": "ئاوێنەی هاتوچۆ"
+        },
+        "highway/traffic_signals": {
+          "name": "نیشانەکانی هاتوچۆ"
+        },
+        "highway/trunk": {
+          "name": "سەرەڕێ"
+        },
+        "highway/unclassified": {
+          "name": "شەقامی پۆلێننەکراو"
+        },
+        "historic": {
+          "name": "جێگەی مێژوویی"
+        },
+        "historic/castle": {
+          "name": "قەڵا"
+        },
+        "junction": {
+          "name": "یەکتربڕ"
+        },
+        "landuse/commercial": {
+          "name": "ناوچەی بارزگانی"
+        },
+        "landuse/construction": {
+          "name": "ڕووبەری بنیاتنان"
+        },
+        "landuse/grass": {
+          "name": "گژوگیا"
+        },
+        "landuse/harbour": {
+          "name": "بەندەر"
+        },
+        "landuse/industrial": {
+          "name": "ناوچەی پیشەسازی"
+        },
+        "landuse/military": {
+          "name": "ناوچەی سەربازیی"
+        },
+        "landuse/military/training_area": {
+          "name": "ناوچەی مەشقی سەربازی"
+        },
+        "landuse/religious": {
+          "name": "مەڵبەندی ئایینی"
+        },
+        "landuse/residential": {
+          "name": "ناوچەی نیشتەجێبوون"
+        },
+        "landuse/retail": {
+          "name": "گۆڕەپانی تاکفرۆشی"
+        },
+        "landuse/winter_sports": {
+          "name": "گۆڕەپانی وەرزشی زستانە"
+        },
+        "leisure/dance": {
+          "name": "هۆڵی سەماکردن"
+        },
+        "leisure/dancing_school": {
+          "name": "قوتابخانەی سەما"
+        },
+        "leisure/garden": {
+          "name": "باخچە"
+        },
+        "leisure/swimming_area": {
+          "name": "پانتایی مەلەی سروشتی"
+        },
+        "man_made/bridge": {
+          "name": "پانتایی پرد"
+        },
+        "man_made/tunnel": {
+          "name": "پانتایی تونێل"
+        },
+        "natural/water/canal": {
+          "name": "پانتایی کارێز"
+        },
+        "natural/water/river": {
+          "name": "پانتایی ڕووبار"
+        },
+        "natural/water/stream": {
+          "name": "پانتایی چەم"
+        },
+        "natural/wood": {
+          "name": "دارستان"
+        },
+        "railway/level_crossing": {
+          "name": "یەکتربڕی هێڵی ئاسنی"
+        },
+        "shop/hairdresser": {
+          "name": "سەرتاشخانە"
+        },
+        "shop/hairdresser_supply": {
+          "name": "فرۆشگای کەلوپەلی تراشین"
+        },
+        "waterway/dam": {
+          "name": "بەنداو"
+        },
+        "waterway/river": {
+          "name": "ڕووبار"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,238 @@
+{
+  "ast": {
+    "imagery": {
+      "Bing": {
+        "description": "Imáxenes aerees y de satélite."
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 ensin nubes - https://s2maps.eu por EOX IT Services GmbH (Contien datos tresformaos de Copernicus Sentinel 2017 & 2018)"
+        },
+        "description": "Imáxenes de satélite Sentinel post-procesaes.",
+        "name": "eox.at 2018 ensin nubes"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Términos y comentarios "
+        },
+        "name": "Imáxenes mundiales Esri"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Términos y comentarios "
+        },
+        "description": "Imáxenes del archivu Esri que puen se más clares y más precises que la capa predeterminada.",
+        "name": "Imáxenes mundiales Esri (Clarity) Beta"
+      },
+      "MAPNIK": {
+        "description": "La capa predeterminada d'OpenStreetMap.",
+        "name": "OpenStreetMap (Estándar)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Términos y comentarios "
+        },
+        "name": "Mapbox Satélite"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, collaboradores d'OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Direiciones"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, collaboradores d'OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Xeometría"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, collaboradores d'OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Estraes"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, collaboradores d'OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Área"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, collaboradores d'OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Llugares"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, collaboradores d'OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Rutes"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, collaboradores d'OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Etiquetáu"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "Imáxenes aérees más nueves de SPW(allonie)"
+      },
+      "SPW_PICC": {
+        "name": "Imáxenes dixitales PICC de SPW(allonie)"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Mariellu = Datos del mapa de dominiu públicu del US Census. Bermeyu = Datos que nun s'alcuentren n'OpenStreetMap",
+        "name": "Estraes TIGER 2018"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "Mariellu = Datos del mapa de dominiu públicu del US Census. Bermeyu = Datos que nun s'alcuentren n'OpenStreetMap",
+        "name": "Estraes TIGER 2019"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "name": "Capa d'estraes de U.S. Forest"
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "Fecho por mediu de Brussels UrbIS®© - Distribución & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "Fecho por mediu de Brussels UrbIS®© - Distribución & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "Fecho por mediu de Brussels UrbIS®© - Distribución & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "Fecho por mediu de Brussels UrbIS®© - Distribución & Copyright CIRB"
+        }
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "Fecho por mediu de Brussels UrbIS®© - Distribución & Copyright CIRB"
+        }
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "Fecho por mediu de Brussels UrbIS®© - Distribución & Copyright CIRB"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, Collaboradores d'OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Rutes marcaes: Ciclismu"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, Collaboradores d'OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Rutes marcaes: Escursionismu"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, Collaboradores d'OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Rutes marcaes: BTT"
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, Collaboradores d'OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Rutes marcaes: Patinaxe"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, Collaboradores d'OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Rutes marcaes: Deportes d'iviernu"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "Mapa base d 'Austria, basáu en datos gubernamentales."
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Capa d'ortofotos proporcionada por basemap.at «Socesor» de les imáxenes de geoimage.at.",
+        "name": "Ortofoto de basemap.at"
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "description": "Capa d'anotaciones proporcionada por basemap.at.",
+        "name": "Capa basemap.at"
+      },
+      "eufar-balaton": {
+        "attribution": {
+          "text": "Ortofotó EUFAR Balaton 2010"
+        }
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© conceyu de Gotemburgu, CC0"
+        },
+        "description": "El mapa de la ciudá ye un mapa de supervisión que describe Gotemburgu. Contien información xeneral sobro'l terrén, comunicaciones, hidrografía, edificios, númberos de direición y nomes de calles, divisiones alministratives y otros testos d'orientación.",
+        "name": "Mapa de la Ciudá de Gotemburgu"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "GSI Xapón"
+        }
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Términos y comentarios "
+        },
+        "description": "Amosar los elementos importantes p'ayudate a orientate.",
+        "name": "Superponer el Llocalizador"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© collaboradores d'OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OpenPT Map (superposición)"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© collaboradores d'OpenStreetMap"
+        },
+        "description": "Traces GPS públiques xubíes a OpenStreetMap.",
+        "name": "Traces GPS d'OpenStreetMap"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© collaboradores d'OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (Estilu alemán)"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, datos ©collaboradores d'OpenStreetMap"
+        },
+        "name": "QA Sin direición"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Mosicu: skobbler Información del mapa: collaboradores d'OpenStreetMap"
+        }
+      },
+      "stamen-terrain-background": {
+        "name": "Terrén Stamen"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Mapes © Thunderforest, Datos © collaboradores d'OpenStreetMap"
+        },
+        "name": "OpenCycleMap de Thunderforest"
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Mapes © Thunderforest, Datos © collaboradores d'OpenStreetMap"
+        },
+        "name": "Paisaxe de Thunderforest"
+      }
+    }
+  }
+}

@@ -24,7 +24,7 @@ export function uiLoading(context) {
 
     loadertext
       .append('h3')
-      .html(_message);
+      .text(_message);
 
     _modalSelection.select('button.close')
       .attr('class', 'hide');

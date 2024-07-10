@@ -1,0 +1,212 @@
+{
+  "lb": {
+    "imagery": {
+      "Bedzin-PL-aerial_image": {
+        "name": "Będzin: Orthophotomap 2013 (Loftbild)"
+      },
+      "Bedzin-PL-buildings": {
+        "name": "Będzin: Gebaier"
+      },
+      "Bing": {
+        "description": "Satelliten- an Loftbiller",
+        "name": "Bing Maps Loftbiller"
+      },
+      "Bytom-2012": {
+        "name": "Bytom: Orthophotomap 2012 (Loftbild)"
+      },
+      "Bytom-2014": {
+        "name": "Bytom: Fotoplan 2014 (Loftbild)"
+      },
+      "Bytom-buildings": {
+        "name": "Bytom: Gebaier"
+      },
+      "Czestochowa-2011": {
+        "name": "Częstochowa: Orthophotomap 2011 (Loftbild)"
+      },
+      "Czestochowa-2013": {
+        "name": "Częstochowa: Orthophotomap 2013 (Loftbild)"
+      },
+      "Czestochowa-2014": {
+        "name": "Częstochowa: Orthophotomap 2014 (Loftbild)"
+      },
+      "Czestochowa-2015": {
+        "name": "Częstochowa: Orthophotomap 2015 (Loftbild)"
+      },
+      "Czestochowa-2016": {
+        "name": "Częstochowa: Orthophotomap 2016 (Loftbild)"
+      },
+      "Czestochowa-2017": {
+        "name": "Częstochowa: Orthophotomap 2017 (Loftbild)"
+      },
+      "Czestochowa-buildings": {
+        "name": "Częstochowa: Gebaier"
+      },
+      "Dourados_Ortofotos": {
+        "attribution": {
+          "text": "Gemengenverwaltung vun Dourados - GeoDourados"
+        },
+        "description": "Dourados (2018) an verschidden Distrikter (2020) héich-opléisend Loftbiller."
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 Wollekenfräi- https://s2maps.eu by EOX IT Services GmbH (Enthält modifizéierten Copernicus Sentinel Daten 2017 & 2018)"
+        },
+        "description": "Nobeaarbeschten Sentinel Satellitenbiller.",
+        "name": "eox.at 2018 Wollekenfräi"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Bedéngungen & Feedback"
+        },
+        "name": "Esri Weltbiller"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Bedéngungen & Feedback"
+        },
+        "description": "Esri Archivbiller déi méi kloer an genau sinn kënnen wéi déi Standard Ebene.",
+        "name": "Esri Weltbiller (Kloerheet) Beta"
+      },
+      "Frankfurt-am-Main-2019": {
+        "attribution": {
+          "text": "Stadvermiessungsamt Frankfurt am Main"
+        },
+        "description": "Loftbiller vun Frankfurt am Main, fotograféiert den 16 Abrëll 2019",
+        "name": "Frankfurt am Main Loftbiller 2019"
+      },
+      "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        },
+        "description": "Orthophotokaart mat enger Opléisung vun 10cm oder méi. D'Daten ginn no Opléisung an Aktualitéit sortéiert, z.B. wäert en Bild aus dem Joer 2019 mat enger Opléisung vun 10cm engem Bild aus dem Joer 2012 mat enger Opléisung vun 8cm virgezunn.",
+        "name": "Geoportal 2: Héich-Opléisend Orthophotomap (Loftbild) (WMS)"
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        },
+        "description": "WMS-Unzeigedéngscht National Address Nummeréierung Integratioun, déi d'eroflueden vun Kaartenbiller erméiglecht, déi aus Geodaten vum nationalen Grenzenregëster fir Strossen an Adressen erstallt goufen.",
+        "name": "Geoportal 2 Strossennimm"
+      },
+      "Geoportal2-PL-addres_points_WMS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        },
+        "description": "WMS-Unzeigedéngscht National Address Nummeréierung Integratioun, déi d'eroflueden vun Kaartenbiller erméiglecht, déi aus Geodaten vum nationalen Grenzenregëster fir Strossen an Adressen erstallt goufen.",
+        "name": "Geoportal 2: Adresspunkten"
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        },
+        "description": "Unzeigedéngscht (Web Map Service, WMS), den d'Usiicht vun Orthofotokaarten fir Polen erméiglecht. Bei den vun dëssem Déngscht bereetgestellten Kaarten handelt es sech em Orthofotokaarten, déi aus Loftbiller erstallt goufen. Den Déngscht bidd Ënnerstëtzung fir d'Schnëttstell WMS 1.3.0.",
+        "name": "Geoportal 2: Orthophotomap (neisten Loftbiller) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        },
+        "name": "Geoportal 2: Orthophotomap (neisten Loftbiller) (WMTS)"
+      },
+      "Gliwice-2020": {
+        "name": "Gliwice: Orthophotomap 2020 (Loftbild)"
+      },
+      "Gliwice-buildings": {
+        "name": "Gliwice: Gebaier"
+      },
+      "LSA-ATKIS_BU": {
+        "description": "Grondress vun Gebaier an Sachsen-Anhalt"
+      },
+      "LSA-DOP20": {
+        "description": "Loftbiller vum Bundesland Sachsen-Anhalt, 20 cm Opléisung"
+      },
+      "LSA-DVG": {
+        "description": "Vektoriell Erfaassung vun den Verwaltungsgrenzen. Uginn sinn Grenzen vun Bundesländer, Distrikter, Municipalitéiten an Subdeeler vun Municipalitéiten."
+      },
+      "LocalAuthorities_RightsOfWay": {
+        "attribution": {
+          "text": "Enthält Öffentlech Informatiounen lizenséiert ënnert der Open Governement Licence v3.0."
+        },
+        "description": "Daten iwwert öffentlech Weerrechter, veröffentlecht vun den lokalen Authoritéiten, wéi op rowmaps.com zesummengestallt"
+      },
+      "MAPNIK": {
+        "description": "Den Standard Layer von OpenStreetMap."
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Bedéngungen & Feedback"
+        },
+        "name": "Mapbox Satellit"
+      },
+      "OSIP_1ft": {
+        "attribution": {
+          "text": "Ohio Saatswäiten Billerprogramm"
+        }
+      },
+      "OSM_Inspector-Highways": {
+        "name": "OSM Objet-Editor: Autobunnen"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "name": "OSM Objet-Editor: Beräich"
+      },
+      "OSM_Inspector-Places": {
+        "name": "OSM Objet-Editor: Plazen"
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© Gemeng Gothenburg, CC0"
+        }
+      },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© Gemeng Gothenburg, CC0"
+        }
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© Gemeng Gothenburg, CC0"
+        }
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© Gemeng Gothenburg, CC0"
+        }
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© Gemeng Gothenburg, CC0"
+        }
+      },
+      "kalmar-orto-2014": {
+        "attribution": {
+          "text": "© Gemeng Kalmar"
+        }
+      },
+      "kalmar-orto-2016": {
+        "attribution": {
+          "text": "© Gemeng Kalmar"
+        }
+      },
+      "kalmar-orto-2018": {
+        "attribution": {
+          "text": "© Gemeng Kalmar"
+        }
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© Gemeng Kalmar"
+        }
+      },
+      "linkoping-orto": {
+        "attribution": {
+          "text": "© Gemeng Linköping"
+        }
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© OpenStreetMap Matwierkender, CC-BY-SA"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,724 @@
+{
+  "pl": {
+    "imagery": {
+      "Bedzin-PL-aerial_image": {
+        "name": "Będzin: Ortofotomapa 2013 (zdjęcia lotnicze)"
+      },
+      "Bedzin-PL-buildings": {
+        "name": "Będzin: Budynki"
+      },
+      "Bing": {
+        "description": "Zdjęcia satelitarne i lotnicze Bing.",
+        "name": "Mapy Bing z lotu ptaka"
+      },
+      "Bytom-2012": {
+        "name": "Bytom: Ortofotomapa 2012 (zdjęcia lotnicze)"
+      },
+      "Bytom-2014": {
+        "name": "Bytom: Fotoplan 2014 (aerofotografia)"
+      },
+      "Bytom-2016": {
+        "name": "Bytom: Orthophotomapa 2016 (zdjęcia lotnicze)"
+      },
+      "Bytom-2018": {
+        "name": "Bytom: Orthophotomapa 2018 (zdjęcia lotnicze)"
+      },
+      "Bytom-2021": {
+        "name": "Bytom: Orthophotomapa 2021 (zdjęcia lotnicze)"
+      },
+      "Bytom-buildings": {
+        "name": "Bytom: Budynki"
+      },
+      "Czestochowa-2011": {
+        "name": "Częstochowa: Ortofotomapa 2011 (zdjęcia lotnicze)"
+      },
+      "Czestochowa-2013": {
+        "name": "Częstochowa: Ortofotomapa 2013 (zdjęcia lotnicze)"
+      },
+      "Czestochowa-2014": {
+        "name": "Częstochowa: Ortofotomapa 2014 (zdjęcia lotnicze)"
+      },
+      "Czestochowa-2015": {
+        "name": "Częstochowa: Ortofotomapa 2015 (zdjęcia lotnicze)"
+      },
+      "Czestochowa-2016": {
+        "name": "Częstochowa: Ortofotomapa 2016 (zdjęcia lotnicze)"
+      },
+      "Czestochowa-2017": {
+        "name": "Częstochowa: Ortofotomapa 2017 (zdjęcia lotnicze)"
+      },
+      "Czestochowa-buildings": {
+        "name": "Częstochowa: Budynki"
+      },
+      "DV_OrthoPhoto": {
+        "name": "Najnowsze zdjęcia lotnicze Digitaal Vlaanderen"
+      },
+      "Dourados_Ortofotos": {
+        "description": "Dourados (2018) i kilka dystryktów (2020) zdjęcia lotnicze wysokiej rozdzielczości."
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 bezchmurne – https://s2maps.eu, EOX IT Services GmbH (zawiera zmodyfikowane dane Copernicus Sentinel 2017 i 2018)"
+        },
+        "description": "Przetworzone zdjęcia satelitarne Sentinel",
+        "name": "eox.at 2018 bezchmurne"
+      },
+      "EOXAT2019CLOUDLESS": {
+        "description": "Przetworzone zdjęcia satelitarne Sentinel"
+      },
+      "EOXAT2020CLOUDLESS": {
+        "description": "Przetworzone zdjęcia satelitarne Sentinel."
+      },
+      "EOXAT2021CLOUDLESS": {
+        "description": "Przetworzone zdjęcia satelitarne Sentinel."
+      },
+      "EOXAT2022CLOUDLESS": {
+        "description": "Przetworzone zdjęcia satelitarne Sentinel."
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Warunki użytkowania i opinia"
+        },
+        "description": "Zdjęcia satelitarne i lotnicze Esri",
+        "name": "Esri (satelitarne i lotnicze)"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Warunki użytkowania i opinia"
+        },
+        "description": "Zdjęcia satelitarne i lotnicze Esri, które mogą być czytelniejsze i dokładniejsze niż standardowy podkład.",
+        "name": "Esri Beta (satelitarne i lotnicze)"
+      },
+      "Frankfurt-am-Main-2019": {
+        "description": "Zdjęcia lotnicze Frankfurtu nad Menem, sfotografowane 16 kwietnia 2019"
+      },
+      "Geoportal2-PL-City-boundaries_WMS": {
+        "name": "Geoportal 2: Granice miast WMS"
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "name": "Geoportal 2: Ortofotomapa wysokiej rozdzielczości (zdjęcia archiwalne) (WMS)"
+      },
+      "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "name": "Geoportal 2: Ortofotomapa wysokiej rozdzielczości (zdjęcia lotnicze) (WMS)"
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "name": "Geoportal 2: Nazwy ulic"
+      },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "name": "Geoportal 2: Ortofotomapa (zdjęcia archiwalne) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "name": "Geoportal 2: Ortofotomapa (najnowsze zdjęcia lotnicze) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "name": "Geoportal 2: Ortofotomapa (najnowsze zdjęcia lotnicze) (WMTS)"
+      },
+      "Geoportal2-PL-boundaries-of-communes_WMS": {
+        "name": "Geoportal 2: Granice gmin WMS"
+      },
+      "Geoportal2-PL-boundaries-of-counties_WMS": {
+        "name": "Geoportal 2: Granice powiatów WMS"
+      },
+      "Geoportal2-PL-boundaries-of-provinces_WMS": {
+        "name": "Geoportal 2: Granice województw WMS"
+      },
+      "Geoportal2-PL-gas-pipe_WMS": {
+        "name": "Geoportal 2: Sieć gazowa WMS"
+      },
+      "Geoportal2-PL-heat-pipe_WMS": {
+        "name": "Geoportal 2: Sieć ciepłownicza WMS"
+      },
+      "Geoportal2-PL-power-cord_WMS": {
+        "name": "Geoportal 2: Sieć elektroenergetyczna WMS"
+      },
+      "Geoportal2-PL-prng": {
+        "name": "Geoportal 2: PRNG (nazwy geograficzne)"
+      },
+      "Geoportal2-PL-sewer-pipe_WMS": {
+        "name": "Geoportal 2: Sieć kanalizacyjna WMS"
+      },
+      "Geoportal2-PL-shaded_relief_WMS": {
+        "name": "Geoportal 2: Cieniowanie (WMS)"
+      },
+      "Geoportal2-PL-squares-and-housing-estates_WMS": {
+        "name": "Geoportal 2: Place, skwery i osiedla"
+      },
+      "Geoportal2-PL-state-borders_WMS": {
+        "name": "Geoportal 2: Granice państwa WMS"
+      },
+      "Geoportal2-PL-telecommunications-cable_WMS": {
+        "name": "Geoportal 2: Sieć telekomunikacyjna WMS"
+      },
+      "Geoportal2-PL-water-pipe_WMS": {
+        "name": "Geoportal 2: Sieć wodociągowa WMS"
+      },
+      "Gliwice-2003": {
+        "name": "Gliwice: Ortofotomapa 2003 (zdjęcia lotnicze)"
+      },
+      "Gliwice-2009": {
+        "name": "Gliwice: Ortofotomapa 2009 (zdjęcia lotnicze)"
+      },
+      "Gliwice-2013": {
+        "name": "Gliwice: Ortofotomapa 2013 (zdjęcia lotnicze)"
+      },
+      "Gliwice-2017": {
+        "name": "Gliwice: Ortofotomapa 2017 (zdjęcia lotnicze)"
+      },
+      "Gliwice-2018": {
+        "name": "Gliwice: Ortofotomapa 2018 (zdjęcia lotnicze)"
+      },
+      "Gliwice-2020": {
+        "name": "Gliwice: Ortofotomapa 2020 (zdjęcia lotnicze)"
+      },
+      "Gliwice-2021": {
+        "name": "Gliwice: Ortofotomapa 2021 (zdjęcia lotnicze)"
+      },
+      "Gliwice-buildings": {
+        "name": "Gliwice: Budynki"
+      },
+      "LSA-ATKIS_BU": {
+        "description": "Kształty budynków w Saksonii-Anhalt"
+      },
+      "LSA-DOP20": {
+        "description": "zdjęcie lotnicze kraju związkowego Saksonia-Anhalt, rozdzielczość 20 cm"
+      },
+      "LSA-DVG": {
+        "description": "Zapis wektorowy granic administracyjnych. Podano granice kraju związkowego, powiatu, gminy i części gminy."
+      },
+      "LocalAuthorities_RightsOfWay": {
+        "attribution": {
+          "text": "Zawiera informacje z sektora publicznego na licencji Open Government Licence v3.0."
+        },
+        "description": "Dane dotyczące dróg publicznych (Public Rights of Way) udostępnione przez władze lokalne, zawarte na stronie rowmaps.com"
+      },
+      "Lodz-2015": {
+        "name": "Łódź: Ortofotomapa 2015 (zdjęcia lotnicze)"
+      },
+      "Lodz-2017": {
+        "name": "Łódź: Ortofotomapa 2017 (zdjęcia lotnicze)"
+      },
+      "Lodz-buildings": {
+        "name": "Łódź: Budynki"
+      },
+      "MAPNIK": {
+        "attribution": {
+          "text": "© Współtwórcy OpenStreetMap, ODbL 1.0"
+        },
+        "description": "Domyślny podkład OpenStreetMap"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Warunki użytkowania i opinia"
+        },
+        "description": "Zestaw rastrowych kafelków dostarczony przez Mapbox, który zawiera globalną mapę bazową ze zdjęciami satelitarnymi i lotniczymi o wysokiej rozdzielczości",
+        "name": "Mapbox (satelitarne i lotnicze)"
+      },
+      "Naturvardsverket-protected": {
+        "description": "Szwedzkie parki narodowe, rezerwaty przyrody i inne obszary i obiekty chronione",
+        "name": "Agencja Ochrony Środowiska - Obszary Chronione"
+      },
+      "Naturvardsverket-trails": {
+        "name": "Agencja Ochrony Środowiska - Szlaki"
+      },
+      "OSMUK-Cadastral-Parcels": {
+        "description": "Idealnie wyrównane działki katastralne (ewidencja gruntów) w Wielkiej Brytanii"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, autorzy OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspektor OSM: Adresy"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, autorzy OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspektor OSM: Geometria"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, autorzy OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspektor OSM: Drogi"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, autorzy OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspektor OSM: Obszary"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, autorzy OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspektor OSM: Miejsca"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, autorzy OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspektor OSM: Nawigacja"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, autorzy OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspektor OSM: Tagowanie"
+      },
+      "OpenAerialMapMosaic": {
+        "description": "Wszystkie obrazy OpenAerialMap w jednej warstwie mozaiki, autorstwa Kontur.io",
+        "name": "Mozaika OpenAerialMap autorstwa Kontur.io"
+      },
+      "Riksantikvariambetet-archaeological": {
+        "description": "Pozostałości i pomniki starożytne i historyczne"
+      },
+      "Riksantikvariambetet-heritage": {
+        "description": "Zabytkowe budynki i kościoły"
+      },
+      "Riksantikvariambetet-protected": {
+        "description": "Obszary chronione pod budynki dziedzictwa kulturowego i miejsca dziedzictwa religijnego"
+      },
+      "Riksantikvariambetet-ruins": {
+        "description": "Ruiny o znaczeniu kulturowo-historycznym"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "Najświeższe zdjęcia lotnicze SPW(allonie)"
+      },
+      "SPW_PICC": {
+        "name": "Obrazowanie numeryczne SPW(allonie) PICC"
+      },
+      "Siemianowice_Slaskie-aerial_image": {
+        "name": "Siemianowice Śląskie: Ortofotomapa (zdjęcia lotnicze)"
+      },
+      "Siemianowice_Slaskie-buildings": {
+        "name": "Siemianowice Śląskie: Budynki"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Żółty = Dane public domain od US Census. Czerwony = Brak danych w OpenStreetMap"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "Żółty = Dane public domain z US Census Bureau. Czerwony = Brak danych w OpenStreetMap"
+      },
+      "US-TIGER-Roads-2020": {
+        "description": "Kolor żółty = Dane mapowe w domenie publicznej pochodzące z US Census. Kolor czerwony = Tych danych nie ma w OpenStreetMap"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Kolor żółty = Dane mapowe w domenie publicznej pochodzące z US Census. Kolor czerwony = Tych danych nie ma w OpenStreetMap"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Kolor żółty = Dane mapowe w domenie publicznej pochodzące z US Census. Kolor czerwony = Tych danych nie ma w OpenStreetMap"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Kolor żółty = Dane mapowe w domenie publicznej pochodzące z US Census. Kolor czerwony = Tych danych nie ma w OpenStreetMap"
+      },
+      "USDA-NAIP": {
+        "attribution": {
+          "text": "Departament Rolnictwa USA"
+        },
+        "name": "Krajowy Program Obrazowania Rolnictwa"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Drogi:  Zielone obramowanie = czwartorzędna. Brązowe obramowanie = polna/leśna. Nawierzchnia: żwir = jasno-brązowe wypełnienie, asfalt = czarny, twarda = szary, grunt = biały, beton = niebieski, trawa = zielony. Dostępna sezonowo = białe paski",
+        "name": "Nakładka z drogami z U.S. Forest"
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "Zrealizowano za pomocą Brussels UrbIS®© – Dystrybucja i prawa autorskie CIRB"
+        }
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "Zrealizowano za pomocą Brussels UrbIS®© – Dystrybucja i prawa autorskie CIRB"
+        }
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "Zrealizowano za pomocą Brussels UrbIS®© – Dystrybucja i prawa autorskie CIRB"
+        }
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "Zrealizowany za pomocą Brussels UrbIS®© – Dystrybucja i prawa autorskie: CIRB"
+        }
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "Zrealizowano za pomocą Brussels UrbIS®© – Dystrybucja i prawa autorskie CIRB"
+        },
+        "name": "UrbisAdm Francja"
+      },
+      "UrbisAdmFRNL": {
+        "name": "UrbisAdm Francja/Holandia"
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "Zrealizowano za pomocą Brussels UrbIS®© – Dystrybucja i prawa autorskie CIRB"
+        },
+        "name": "UrbisAdm Holandia"
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, autorzy OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Szlaki rowerowe"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, autorzy OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Szlaki piesze"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, autorzy OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Trasy MTB"
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, autorzy OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Szlaki skaterskie"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, autorzy OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Szlaki sportów zimowych"
+      },
+      "Zabrze-2011": {
+        "name": "Zabrze: Ortofotomapa 2011 (zdjęcia lotnicze)"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "Mapa bazowa Austrii, na podstawie danych rządowych"
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Warstwa ortofotomapy dostarczana przez basemap.at. „Następca” zdjęć z serwisu geoimage.at.",
+        "name": "Ortofotomapa basemap.at"
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "description": "Nakładka z adnotacjami dostarczona przez basemap.at",
+        "name": "Nakładka basemap.at"
+      },
+      "cyclosm": {
+        "description": "CyclOSM to styl mapy zaprojektowany z myślą o jeździe na rowerze. Wykorzystuje dane OpenStreetMap do stworzenia pięknej i praktycznej mapy rowerowej!"
+      },
+      "debicki-buildings": {
+        "name": "Powiat dębicki: Budynki"
+      },
+      "eufar-balaton": {
+        "description": "Geotagowane zdjęcia z 1940 od Balaton Limnological Institute.",
+        "name": "Ortofotomapy EUFAR Balaton"
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© Gmina Göteborg, CC0"
+        },
+        "description": "Mapa miasta to mapa przeglądowa Göteborga. Zawiera ogólne informacje o gruntach, komunikacji, hydrografii, budynkach, adresach, nazwach ulic i podziale administracyjnym.",
+        "name": "Mapa Göteborga"
+      },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© Gmina Göteborg, CC0"
+        },
+        "description": "Serwis mapowy przedstawiający rzeźbę terenu metodą cieniowania na podstawie modelu wysokościowego Göteborga z 2017 roku. Rozdzielczość 0,5 metra na piksel.",
+        "name": "Göteborg – rzeźba terenu"
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© Gmina Göteborg, CC0"
+        },
+        "description": "Ortofotomapa dla gminy Göteborg",
+        "name": "Ortofotomapa Göteborga 2015"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© Gmina Göteborg, CC0"
+        },
+        "description": "Ortofoto dla gminy Göteborg",
+        "name": "Ortofotomapa Göteborga 2017"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© Gmina Göteborg, CC0"
+        },
+        "description": "Ortofoto dla gminy Göteborg",
+        "name": "Ortofotomapa Göteborga 2019"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© Gmina Göteborg, CC0"
+        },
+        "description": "Ortofoto dla gminy Göteborg",
+        "name": "Ortofotomapa Göteborga 2021"
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© Gmina Göteborg, CC0"
+        },
+        "description": "Ortofoto dla gminy Göteborg",
+        "name": "Najnowsza ortofotomapa z Göteborga"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "GSI Japonia (国土地理院)"
+        },
+        "description": "Zdjęcia lotnicze GSI (Urzędu ds. Informacji Geoprzestrzennej w Japonii). Nie w pełni zortorektyfikowane, ale trochę nowsze i różne od Ortofotomapy GSI.",
+        "name": "Japan GSI – Zdjęcia lotnicze"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "attribution": {
+          "text": "GSI Japonia (国土地理院)"
+        },
+        "description": "Ortofotomapa GSI (Urzędu ds. Informacji Geoprzestrzennej w Japonii). Zbiór najnowszych zdjęć lotniczych, ortofotomap, zdjęć pokatastroficznych i innych.",
+        "name": "Japan GSI – Ortofotomapa"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "GSI Japonia (国土地理院)"
+        },
+        "description": "Standardowa mapa japońskiego GSI. Duże pokrycie.",
+        "name": "Japan GSI – Standardowa mapa"
+      },
+      "kalmar-orto-2014": {
+        "attribution": {
+          "text": "© Urząd miasta Kalmar"
+        },
+        "description": "Ortofotografie północnego wybrzeża z urzędu miasta Kalmar 2014",
+        "name": "Ortofoto Kalmar Północ 2014"
+      },
+      "kalmar-orto-2016": {
+        "attribution": {
+          "text": "© Urząd miasta Kalmar"
+        },
+        "description": "Ortofotografie południowego wybrzeża z urzędu miasta Kalmar 2016",
+        "name": "Ortofoto Kalmar Południe 2016"
+      },
+      "kalmar-orto-2018": {
+        "attribution": {
+          "text": "© Urząd miasta Kalmar"
+        },
+        "description": "Ortofotografie obszaru miejskiego z urzędu miasta Kalmar 2018",
+        "name": "Ortofoto Kalmar Miasto 2018"
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© Gmina Kalmar"
+        },
+        "description": "Ortofotomapy dla obszarów miejskich gminy Kalmar 2020"
+      },
+      "kartverket-bygninger": {
+        "description": "Budynki INSPIRE w Norwegii"
+      },
+      "kelkkareitit": {
+        "description": "Szlaki skuterów śnieżnych Kelkkareitit.fi z OSM (kraje nordyckie)",
+        "name": "Nakładka nordycka dla skuterów śnieżnych"
+      },
+      "lancucki-buildings": {
+        "name": "Powiat łańcucki: Budynki"
+      },
+      "lantmateriet-orto1960": {
+        "description": "Mozaika szwedzkich ortofotomap z okresu 1955-1965. Mogą pojawiać się starsze i nowsze zdjęcia.",
+        "name": "Historyczne ortofotomapy Lantmäteriet 1960"
+      },
+      "lantmateriet-orto1975": {
+        "description": "Mozaika szwedzkich ortofotomap z okresu 1970-1980. W budowie.",
+        "name": "Historyczne ortofotomapy Lantmäteriet 1975"
+      },
+      "lantmateriet-topowebb": {
+        "description": "Mapa topograficzna Szwecji 1:50 000",
+        "name": "Mapa topograficzna Lantmäteriet"
+      },
+      "linkoping-orto": {
+        "attribution": {
+          "text": "© Urząd miasta Linköping"
+        },
+        "description": "Ortofotografie z urzędu miejskiego Linköpingu 2010, dane otwarte",
+        "name": "Ortofotografia Linköpingu"
+      },
+      "lubaczowski-buildings": {
+        "name": "Powiat lubaczowski: Budynki"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Warunki użytkowania i opinia"
+        },
+        "description": "Pokazuje najważniejsze obiekty pomocne w orientacji.",
+        "name": "Nakładka identyfikująca"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© autorzy OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Mapa OpenPT (nakładka)"
+      },
+      "openrailwaymap": {
+        "attribution": {
+          "text": "Wykonanie: OpenRailwayMap, © Dane mapy: autorzy OpenStreetMap"
+        },
+        "description": "Nakładka z infrastrukturą kolejową na podstawie danych OpenStreetMap"
+      },
+      "openrailwaymap-maxspeeds": {
+        "attribution": {
+          "text": "Wykonanie: OpenRailwayMap, © Dane mapy: autorzy OpenStreetMap"
+        },
+        "description": "Nakładka z ograniczeniami prędkości kolei na podstawie danych OpenStreetMap",
+        "name": "OpenRailwayMap – prędkości maksymalne"
+      },
+      "openrailwaymap-signalling": {
+        "attribution": {
+          "text": "Wykonanie: OpenRailwayMap, © Dane mapy: autorzy OpenStreetMap"
+        },
+        "description": "Nakładka z sygnałami kolejowymi na podstawie danych OpenStreetMap",
+        "name": "OpenRailwayMap – sygnalizacja"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© autorzy OpenStreetMap"
+        },
+        "description": "Publiczne ślady GPS przesłane do OpenStreetMap.",
+        "name": "Ślady GPS OpenStreetMap"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© autorzy OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (Styl niemiecki)"
+      },
+      "poznan-ortofotomapa2014": {
+        "name": "Poznań: Ortofotomapa 2014 (zdjęcia lotnicze)"
+      },
+      "poznan-ortofotomapa2016": {
+        "name": "Poznań: Ortofotomapa 2016 (zdjęcia lotnicze)"
+      },
+      "poznan-ortofotomapaBiezaca": {
+        "name": "Poznań: Ortofotomapa bieżąca (zdjęcia lotnicze)"
+      },
+      "przemysl-aerial": {
+        "name": "Przemyśl: Ortofotomapa (zdjęcia lotnicze)"
+      },
+      "przemysl-buildings": {
+        "name": "Przemyśl: Budynki"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, Dane © autorzy OpenStreetMap"
+        },
+        "name": "QA Bez Adresu"
+      },
+      "route500": {
+        "attribution": {
+          "text": "Płytki © cquest@Openstreetmap France, dane © IGN, LO/OL"
+        },
+        "description": "Trasy sieci sklasyfikowanej (autostrady, drogi krajowe, drogi departamentalne)"
+      },
+      "rzeszowski-aerial": {
+        "name": "Powiat rzeszowski: Ortofotomapa (zdjęcia lotnicze)"
+      },
+      "rzeszowski-buildings": {
+        "name": "Powiat rzeszowski: Budynki"
+      },
+      "scb-industrial": {
+        "description": "Obszary wyznaczone geograficznie, które charakteryzują się wielkoskalowym i przemysłowym użytkowaniem gruntów",
+        "name": "SCB - Strefy przemysłowe"
+      },
+      "scb-settlements": {
+        "description": "Sąsiednie obszary budynków liczących 50–199 mieszkańców i odległości między domami nie większe niż 150 metrów",
+        "name": "SCB - Małe Osiedla"
+      },
+      "scb-urban": {
+        "description": "Osiedla ludzkie liczące co najmniej 200 osób, z odległością między gospodarstwami domowymi mniejszą niż 500 metrów",
+        "name": "SCB - Obszary miejskie"
+      },
+      "scb-vacation": {
+        "description": "Przyległe obszary składające się głównie z domów wakacyjnych; zbiór co najmniej 50 domów wakacyjnych, gdzie odległość między nimi nie przekracza 150 metrów",
+        "name": "SCB – Obszary domów wakacyjnych"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Podkład: skobbler Dane mapy: autorzy OpenStreetMap"
+        }
+      },
+      "skolverket-schools": {
+        "description": "Szwedzkie szkoły.",
+        "name": "Norweska Rada Szkolna - Szkoły"
+      },
+      "skoterleder": {
+        "description": "Szlaki skuterów śnieżnych",
+        "name": "Mapa Szwecji dla skuterów śnieżnych"
+      },
+      "sropczyce-buildings": {
+        "name": "Powiat ropczycko-sędziszowski: Budynki"
+      },
+      "stalowowolski-buildings": {
+        "name": "Powiat stalowowolski: Budynki"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "Kafle mapy od Stamen Design, licencja CC BY 3.0. Dane z OpenStreetMap, licencja ODbL"
+        },
+        "name": "Stamen – Teren"
+      },
+      "stockholm-orto": {
+        "attribution": {
+          "text": "© Urząd miasta Sztokholm, CC0"
+        },
+        "description": "Ortofotografie z urzędu miejskiego Sztokholmu 2018, licencja CC0",
+        "name": "Ortofotografia Sztokholmu"
+      },
+      "susono_shizuoka_jp_orthophoto": {
+        "attribution": {
+          "text": "Ortofotomapa Susono"
+        },
+        "description": "Zdjęcia lotnicze wydane przez miasto Susono jako otwarte dane.",
+        "name": "Ortofotomapa Susono"
+      },
+      "svk-electricity-network": {
+        "description": "Szwedzka sieć elektroenergetyczna",
+        "name": "SVK - Sieć energetyczna"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Mapa © Thunderforest, dane © autorzy OpenStreetMap"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Mapa © Thunderforest, dane © autorzy OpenStreetMap"
+        },
+        "name": "Thunderforest Krajobraz"
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Mapy © Thunderforest; Data © autorzy OpenStreetMap"
+        }
+      },
+      "trafikverket-baninfo": {
+        "description": "Szwedzka sieć kolejowa, uwzględnia bocznice",
+        "name": "Sieć kolejowa Trafikverket"
+      },
+      "trafikverket-baninfo-option": {
+        "description": "Szwedzka sieć kolejowa z kilkoma wariantami warstw mapy",
+        "name": "Opcje sieci kolejowej Trafikverket"
+      },
+      "trafikverket-vagnat": {
+        "description": "Szwedzka sieć drogowa NVDB",
+        "name": "Sieć drogowa Trafikverket"
+      },
+      "trafikverket-vagnat-extra": {
+        "description": "Dodatkowe szczegóły szwedzkiej NVDB: numery dróg, uspokojenia ruchu, miejsca odpoczynku, przystanki autobusowe, mosty, tunele, fotoradary",
+        "name": "Dodatki sieci drogowej Trafikverket"
+      },
+      "trafikverket-vagnat-option": {
+        "description": "Szwedzka sieć drogowa NVDV z kilkoma wariantami warstw mapy",
+        "name": "Opcje sieci drogowej Trafikverket"
+      },
+      "wroclaw-orto2015": {
+        "name": "Wrocław: Ortofotomapa 2015 (zdjęcia lotnicze)"
+      },
+      "wroclaw-orto2018": {
+        "name": "Wrocław: Ortofotomapa 2018 (zdjęcia lotnicze)"
+      }
+    }
+  }
+}

@@ -81,7 +81,7 @@ export class UiSystem extends AbstractSystem {
         window.addEventListener('resize', () =>  this.resize());
 
         // After l10n is ready we can make these
-        this.authModal = uiLoading(context).blocking(true);
+        this.authModal = uiLoading(context).blocking(true).message(l10n.t('loading_auth'));
         this.defs = new UiDefs(context);
         this.flash = uiFlash(context);
         this.editMenu = uiEditMenu(context);
@@ -89,8 +89,6 @@ export class UiSystem extends AbstractSystem {
         this.sidebar = uiSidebar(context);
         this.photoviewer = uiPhotoViewer(context);
         this.shortcuts = uiShortcuts(context);
-
-        this.authModal.message(l10n.tHtml('loading_auth'));
 
         const osm = context.services.osm;
         if (osm) {

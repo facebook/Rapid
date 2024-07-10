@@ -1,0 +1,40 @@
+{
+  "yue": {
+    "imagery": {
+      "Bing": {
+        "description": "衞星同般空相。"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "條款同回應"
+        }
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "條款同回應"
+        }
+      },
+      "MAPNIK": {
+        "description": "預設公家街圖層",
+        "name": "公家街圖（一般）"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "條款同回應"
+        },
+        "name": "輿圖盒衛星"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "條款同回應"
+        }
+      },
+      "tf-cycle": {
+        "name": "雷林公家單車地圖"
+      },
+      "tf-landscape": {
+        "name": "雷林地勢"
+      }
+    }
+  }
+}

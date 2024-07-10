@@ -1,0 +1,118 @@
+{
+  "ar-AA": {
+    "modes": {
+      "browse": {
+        "description": ".تحرك عموديا و أفقيا أو كبر الخريطة"
+      }
+    },
+    "operations": {
+      "add": {
+        "annotation": {
+          "point": ".أضاف نقطة",
+          "vertex": ".أظاف عقدة إلى الطريق"
+        }
+      },
+      "start": {
+        "annotation": {
+          "line": ".بدأ خط",
+          "area": ".بدأ المساحة"
+        }
+      },
+      "continue": {
+        "annotation": {
+          "line": ".مواصلة خط",
+          "area": ".مواصلة مساحة"
+        }
+      },
+      "cancel_draw": {
+        "annotation": ".إلغاء الرسم"
+      },
+      "change_tags": {
+        "annotation": ".العلامات المتغيرة"
+      },
+      "orthogonalize": {
+        "title": "مربع"
+      },
+      "delete": {
+        "annotation": {
+          "point": ".حذف نقطة",
+          "vertex": ".حذف عقدة من الطريق",
+          "line": ".حذف خط",
+          "area": ".حذف مساحة",
+          "relation": ".حذف علاقة"
+        }
+      },
+      "disconnect": {
+        "title": ".غير متصل"
+      },
+      "move": {
+        "title": "نقل",
+        "annotation": {
+          "point": ".نقل نقطة",
+          "vertex": ".نقل عقدة في طريق",
+          "line": ".نقل خط",
+          "area": ".نقل مساحة"
+        }
+      },
+      "rotate": {
+        "annotation": {
+          "line": ".استدارة خط",
+          "area": ".استدارة مساحة"
+        }
+      },
+      "reverse": {
+        "title": "عكس"
+      },
+      "split": {
+        "title": "تقسيم"
+      }
+    },
+    "commit": {
+      "upload_explanation": "التغييرات التي قمتم بتحميلها ستكون مرئية على جميع الخرائط التي تستخدم بيانات خريطة الشارع المفتوح.",
+      "modified": "تم التغيير",
+      "deleted": "تم الحذف",
+      "created": "تم الإنشاء"
+    },
+    "contributors": {
+      "list": "{users} تعديلات من قبل"
+    },
+    "info_panels": {
+      "measurement": {
+        "area": "مساحة"
+      }
+    },
+    "geolocate": {
+      "title": "أظهر مكاني"
+    },
+    "inspector": {
+      "view_on_osm": "openstreetmap.org شاهد على",
+      "choose": "حدد نوع الميزة"
+    },
+    "background": {
+      "reset": "أعد للوضع السابق"
+    },
+    "save": {
+      "no_changes": ".لا تغييرات للحفظ"
+    },
+    "help": {
+      "editing": {
+        "save_h": "حفظ"
+      }
+    },
+    "intro": {
+      "graph": {
+        "city": "ثلاثة الأنهار",
+        "state": "<value for addr:state>",
+        "countrycode": "sa",
+        "name": {
+          "three-rivers": "ثلاثة الأنهار"
+        }
+      }
+    },
+    "shortcuts": {
+      "key": {
+        "delete": "حذف"
+      }
+    }
+  }
+}

@@ -1,0 +1,289 @@
+{
+  "mi": {
+    "presets": {
+      "fields": {
+        "access": {
+          "types": {
+            "bicycle": "Pahikara"
+          }
+        },
+        "address": {
+          "placeholders": {
+            "city!vn": "Tāone"
+          }
+        },
+        "aerialway/access": {
+          "options": {
+            "exit": "Putanga"
+          }
+        },
+        "aerialway/summer/access": {
+          "options": {
+            "exit": "Putanga"
+          }
+        },
+        "atm": {
+          "label": "Pūrere Pūtea"
+        },
+        "building": {
+          "label": "Whare"
+        },
+        "cuisine": {
+          "options": {
+            "coffee_shop": "Kawhe toa"
+          }
+        },
+        "cycleway": {
+          "types": {
+            "cycleway:left": "Mauī",
+            "cycleway:right": "Matau"
+          }
+        },
+        "direction_cardinal-US-CA-NZ": {
+          "options": {
+            "east": "Rāwhiti",
+            "north": "Raki",
+            "south": "Tonga",
+            "west": "Hauāuru"
+          }
+        },
+        "entrance": {
+          "options": {
+            "emergency": "Putanga Ohotata Anake",
+            "service": "Tomokanga ratonga"
+          }
+        },
+        "expressway-US": {
+          "label": "Te Ara Puaki"
+        },
+        "fire_hydrant/position": {
+          "options": {
+            "parking_lot": "Ngā Tūnga Waka"
+          }
+        },
+        "historic": {
+          "options": {
+            "church": "Hāhi"
+          }
+        },
+        "junction_line": {
+          "options": {
+            "roundabout": "Porowhawhe"
+          }
+        },
+        "maxspeed": {
+          "label": "Te pae tere"
+        },
+        "park_ride": {
+          "label": "Papawaka me te kake pahi"
+        },
+        "parking/side/orientation": {
+          "types": {
+            "parking:left:orientation": "Mauī",
+            "parking:right:orientation": "Matau"
+          }
+        },
+        "parking/side/parking": {
+          "types": {
+            "parking:left": "Mauī",
+            "parking:right": "Matau"
+          }
+        },
+        "preschool": {
+          "label": "Kura Pūhou"
+        },
+        "recycling_accepts": {
+          "options": {
+            "paper": "Pepa"
+          }
+        },
+        "structure": {
+          "options": {
+            "bridge": "Arawhiti",
+            "tunnel": "Anaroa"
+          }
+        },
+        "structure_waterway": {
+          "options": {
+            "tunnel": "Anaroa"
+          }
+        },
+        "toilets": {
+          "label": "Wharepaku"
+        },
+        "water_source": {
+          "options": {
+            "river": "Awa"
+          }
+        }
+      },
+      "presets": {
+        "amenity/atm": {
+          "name": "Pūrere Pūtea"
+        },
+        "amenity/bicycle_parking": {
+          "name": "Tūnga pahikara"
+        },
+        "amenity/bus_station": {
+          "name": "Teihana Pahi"
+        },
+        "amenity/car_rental": {
+          "name": "Ngā Tūnga Waka Rēti"
+        },
+        "amenity/cinema": {
+          "name": "Whare Pikitia"
+        },
+        "amenity/ferry_terminal": {
+          "name": "Taunga Waka Kōpiko"
+        },
+        "amenity/grave_yard": {
+          "name": "Urupā"
+        },
+        "amenity/ice_cream": {
+          "name": "Aihikirīmi toa"
+        },
+        "amenity/kindergarten": {
+          "name": "Kura Pūhou"
+        },
+        "amenity/library": {
+          "name": "Whare pukapuka"
+        },
+        "amenity/mortuary": {
+          "name": "Whare tūpāpaku"
+        },
+        "amenity/parking": {
+          "name": "Ngā Tūnga Waka"
+        },
+        "amenity/recycling": {
+          "name": "Hangarua"
+        },
+        "amenity/school": {
+          "name": "Kura"
+        },
+        "amenity/theatre": {
+          "name": "Whare Tapere"
+        },
+        "amenity/townhall": {
+          "name": "Hōro ā-Tāone"
+        },
+        "amenity/university": {
+          "name": "Whare Wānanga"
+        },
+        "amenity/waste_basket": {
+          "name": "Rapihi"
+        },
+        "building": {
+          "name": "Whare"
+        },
+        "building/church": {
+          "name": "Whare hāhi"
+        },
+        "building/entrance": {
+          "name": "Putanga"
+        },
+        "entrance": {
+          "name": "Putanga"
+        },
+        "entrance/emergency": {
+          "name": "Putanga Ohotata Anake"
+        },
+        "highway/bus_stop": {
+          "name": "Tūnga Pahi"
+        },
+        "highway/busway": {
+          "name": "Arapahi"
+        },
+        "highway/construction": {
+          "name": "Mahinga Rori"
+        },
+        "highway/living_street": {
+          "name": "Ara Wātea"
+        },
+        "highway/motorway": {
+          "name": "Te Ara Whānui"
+        },
+        "highway/motorway_junction": {
+          "name": "Putanga ki Te Ara Whānui"
+        },
+        "landuse/cemetery": {
+          "name": "Urupā"
+        },
+        "landuse/harbour": {
+          "name": "Te Taunga"
+        },
+        "landuse/retail": {
+          "name": "Ngā Toa"
+        },
+        "leisure/park": {
+          "name": "Papa Rēhia"
+        },
+        "leisure/swimming_pool": {
+          "name": "Hōpua"
+        },
+        "natural/beach": {
+          "name": "Tātahi"
+        },
+        "natural/water/river": {
+          "name": "Papa wai awa"
+        },
+        "office": {
+          "name": "Tari"
+        },
+        "place/town": {
+          "name": "Tāone"
+        },
+        "public_transport/platform/bus_point": {
+          "name": "Tūnga Pahi"
+        },
+        "public_transport/station_bus": {
+          "name": "Teihana Pahi"
+        },
+        "public_transport/station_ferry": {
+          "name": "Taunga Waka Kōpiko"
+        },
+        "public_transport/station_train": {
+          "name": "Teihana Rerewē"
+        },
+        "public_transport/stop_position_ferry": {
+          "name": "Wāpu Waka Kōpiko"
+        },
+        "railway/station": {
+          "name": "Teihana Rerewē"
+        },
+        "shop": {
+          "name": "Toa"
+        },
+        "shop/bicycle": {
+          "name": "Pahikara toa"
+        },
+        "shop/candles": {
+          "name": "Kānara toa"
+        },
+        "tourism/camp_site": {
+          "name": "Puninga"
+        },
+        "tourism/museum": {
+          "name": "Whare tongarewa"
+        },
+        "traffic_sign/maxspeed": {
+          "name": "Te pae tere"
+        },
+        "type/restriction/no_left_turn": {
+          "name": "Kāore huri mauī"
+        },
+        "type/restriction/no_right_turn": {
+          "name": "Kāore huri matau"
+        },
+        "type/restriction/only_left_turn": {
+          "name": "Huri mauī anake"
+        },
+        "type/restriction/only_right_turn": {
+          "name": "Huri matau anake"
+        },
+        "type/route/detour": {
+          "name": "Otinga"
+        }
+      }
+    }
+  }
+}

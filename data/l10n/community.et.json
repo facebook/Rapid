@@ -1,0 +1,97 @@
+{
+  "et": {
+    "_communities": {
+      "openstreetmapafghanistan": "OpenStreetMap Afganistan",
+      "openstreetmapafrica": "OpenStreetMap Aafrika",
+      "openstreetmapalbania": "OpenStreetMap Albaania",
+      "openstreetmaparmenia": "OpenStreetMap Armeenia",
+      "openstreetmapasia": "OpenStreetMap Aasia",
+      "openstreetmapbelarus": "OpenStreetMap Valgevene",
+      "openstreetmapbelgium": "OpenStreetMap Belgia",
+      "openstreetmapsingapore": "OpenStreetMap Singapuris"
+    },
+    "am-wiki": {
+      "description": "{community} viki veebileht"
+    },
+    "br-wiki": {
+      "description": "Viki leht teabe ja juhenditega kaardistamiseks Brasiilias"
+    },
+    "cape-coast-youthmappers": {
+      "description": "Jälgi meid Twitteris: {url}"
+    },
+    "co-github": {
+      "description": "Colombia-teemalised projektid Git'is"
+    },
+    "co-wiki": {
+      "description": "Colombia kaardistamis juhendi viki-leht"
+    },
+    "de-mainz-mailinglist": {
+      "description": "OpenStreetMap Mainz'is ja Umgebung'is"
+    },
+    "de-mainz-telegram": {
+      "description": "OpenStreetMap Mainz'is ja Umgebung'is"
+    },
+    "de-mainz-wiki": {
+      "description": "OpenStreetMap Mainz'is ja Umgebung'is"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "description": "Jälgi meid Twitteris aadressil {url}."
+    },
+    "maptime-bogota-facebook": {
+      "description": "Me oleme huviliste seltskond, kes soovib OpenStreetMapis kaardistada Bogotá linna ja selle ümbrust.",
+      "extendedDescription": "Õpi kuidas koguda väliandmeid ja neid digitaalsel moel OpenStreetMapi lisada. Varasem kogemus pole vajalik! Lihtsalt on oluline, et soovid osaleda, õpida ja tunda sellest rõõmu."
+    },
+    "maptime-bogota-github": {
+      "description": "Me oleme huviliste seltskond, kes soovib OpenStreetMapis kaardistada Bogotá linna ja selle ümbrust.",
+      "extendedDescription": "Õpi kuidas koguda väliandmeid ja neid digitaalsel moel OpenStreetMapi lisada. Varasem kogemus pole vajalik! Lihtsalt on oluline, et soovid osaleda, õpida ja tunda sellest rõõmu."
+    },
+    "maptime-bogota-linkedin": {
+      "description": "Me oleme huviliste seltskond, kes soovib OpenStreetMapis kaardistada Bogotá linna ja selle ümbrust.",
+      "extendedDescription": "Õpi kuidas koguda väliandmeid ja neid digitaalsel moel OpenStreetMapi lisada. Varasem kogemus pole vajalik! Lihtsalt on oluline, et soovid osaleda, õpida ja tunda sellest rõõmu."
+    },
+    "maptime-bogota-mastodon": {
+      "description": "Me oleme huviliste seltskond, kes soovib OpenStreetMapis kaardistada Bogotá linna ja selle ümbrust.",
+      "extendedDescription": "Õpi kuidas koguda väliandmeid ja neid digitaalsel moel OpenStreetMapi lisada. Varasem kogemus pole vajalik! Lihtsalt on oluline, et soovid osaleda, õpida ja tunda sellest rõõmu."
+    },
+    "maptime-bogota-telegram": {
+      "description": "Me oleme huviliste seltskond, kes soovib OpenStreetMapis kaardistada Bogotá linna ja selle ümbrust.",
+      "extendedDescription": "Õpi kuidas koguda väliandmeid ja neid digitaalsel moel OpenStreetMapi lisada. Varasem kogemus pole vajalik! Lihtsalt on oluline, et soovid osaleda, õpida ja tunda sellest rõõmu."
+    },
+    "maptime-bogota-youtube": {
+      "description": "Me oleme huviliste seltskond, kes soovib OpenStreetMapis kaardistada Bogotá linna ja selle ümbrust.",
+      "extendedDescription": "Õpi kuidas koguda väliandmeid ja neid digitaalsel moel OpenStreetMapi lisada. Varasem kogemus pole vajalik! Lihtsalt on oluline, et soovid osaleda, õpida ja tunda sellest rõõmu."
+    },
+    "nl-discourse": {
+      "description": "OpenStreetMapi Hollandi-teemaline foorum"
+    },
+    "no-matrix": {
+      "description": "Vestlussild IRC jututoaga"
+    },
+    "osm-delhi-xmpp": {
+      "description": "Liitu meie XMPP jututoaga: {url}",
+      "extendedDescription": "OSM Delhi XMPP jututuba; võrgusillad suletud võrkudega puuduvad"
+    },
+    "OSM-Facebook": {
+      "description": "Loe Facebookist meie uudiseid ja OpenStreetMapi uuenduste kohta."
+    },
+    "osm-india-xmpp": {
+      "description": "Liitu meie XMPP jututoaga: {url}"
+    },
+    "OSM-Telegram": {
+      "description": "Liitu Telegramis OpenStreetMapi üleilmse suurrühmaga aadressil {url}."
+    },
+    "osm-west-bengal-xmpp": {
+      "description": "Liitu meie XMPP jututoaga: {url}",
+      "extendedDescription": "OSM West Bengal'i XMPP jututuba"
+    },
+    "OSMF": {
+      "description": "OSMF on Suurbritannias registreeritud mittetulundusühendus, mis toetab OpenStreetMapi projekti."
+    },
+    "PHXGeo-twitter": {
+      "description": "Jälgi meid Twitteris aadressil {url}."
+    },
+    "sg-wiki": {
+      "description": "{community} viki veebileht"
+    }
+  }
+}

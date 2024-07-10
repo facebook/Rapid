@@ -1,0 +1,10 @@
+{
+  "gan": {
+    "intro": {
+      "graph": {
+        "state": "<value for addr:state>",
+        "countrycode": "cn"
+      }
+    }
+  }
+}

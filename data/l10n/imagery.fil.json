@@ -1,0 +1,15 @@
+{
+  "fil": {
+    "imagery": {
+      "gothenburg-ortho_latest": {
+        "name": "Pinakabagong Gothenburg Orthophoto"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "description": "Japan GSI airphoto Imagery. Hindi ganap na orthorectified, ngunit medyo mas bago at/o iba ang saklaw kaysa sa GSI ortho Imagery."
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "description": "Japan GSI seamless na Imagery ng larawan. Ang koleksyon ng pinakabagong mga imahe ng GSI ortho, airphoto, post disaster at iba pa."
+      }
+    }
+  }
+}

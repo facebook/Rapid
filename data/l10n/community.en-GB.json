@@ -1,0 +1,28 @@
+{
+  "en-GB": {
+    "al-maptime-tirana": {
+      "description": "Social events organised around mapping - beginners most welcome!"
+    },
+    "OSM-Colorado": {
+      "extendedDescription": "OpenStreetMap (OSM) Colorado is a local collaboration of people interested in contributing their efforts to create free maps. We encourage all of our mappers to organise or suggest mapping events throughout the state. Meetup activities can be simple social mixers, OSM basic to advanced training, or community mapping parties."
+    },
+    "OSM-India-Puducherry-Facebook": {
+      "extendedDescription": "FSHM organises events relating to free software/hardware, technology, activism and OpenStreetMap. Its FB page is the best way to keep in contact with its events."
+    },
+    "OSM-Puducherry-Mailing-List": {
+      "extendedDescription": "FSHM organises events relating to free software/hardware, technology, activism and OpenStreetMap."
+    },
+    "OSM-Wyoming": {
+      "extendedDescription": "OpenStreetMap (OSM) Wyoming is a local collaboration of people interested in contributing their efforts to create free maps. We encourage all of our mappers to organise or suggest mapping events throughout the state. Meetup activities can be simple social mixers, OSM basic to advanced training, or community mapping parties."
+    },
+    "ym-Kumi-University": {
+      "extendedDescription": "This energetic group of students organises within the faculty of Science and Information Technology."
+    },
+    "ym-University-of-Central-Florida": {
+      "extendedDescription": "Our mission is to foster a social and educational environment for all majors who are interested in the discussion and application of GIS. Group and community events throughout the academic year organise students to volunteer to help local and regional communities by using community-based GIS projects and educating local middle and high school students on the use and application of GIS."
+    },
+    "ym-University-of-Rwanda-Huye-Campus": {
+      "extendedDescription": "Based on the commitment and the purpose of promoting mapping, and the information from YouthMappers public talks, we have organised as students in Geography department who are committed in mapping to found a chapter of our Campus. We have supported by our Facilitator Dr. Gaspard Rwanyiziri (Director of CGIS-Rwanda) and various lecturer mentors."
+    }
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "da": {
+    "_communities": {
+      "openstreetmapdenmark": "OpenStreetMap Danmark"
+    },
+    "_defaults": {
+      "discord": {
+        "description": "Kom i kontakt med andre kortlæggere på Discord"
+      },
+      "irc": {
+        "name": "{community} på IRC",
+        "description": "Tilslut dig #{account} på irc.oftc.net (port 6667 for non-SSL eller 6697 for SSL)"
+      },
+      "mailinglist": {
+        "description": "Den officielle mailingliste for {community}"
+      },
+      "mastodon": {
+        "description": "Den officielle Mastodon-konto for {community}"
+      },
+      "threads": {
+        "description": "Følg os på Threads"
+      },
+      "twitter": {
+        "description": "Følg os på 𝕏"
+      },
+      "x": {
+        "description": "Følg os på 𝕏"
+      }
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "description": "Forbedr OpenStreetMap i Bay Area"
+    },
+    "be-matrix": {
+      "description": "Alle kortlæggere er velkomne!"
+    },
+    "bg-wiki": {
+      "description": "Wikiprojektside for Bulgarien"
+    },
+    "cape-coast-youthmappers": {
+      "description": "Følg os på Twitter på {url}"
+    },
+    "de-berlin-mailinglist": {
+      "name": "Berlin maillingliste"
+    },
+    "dk-discourse": {
+      "description": "Et debatforum om OpenStreetMap i Danmark"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "description": "Følg os på Twitter på {url}"
+    },
+    "Maptime-Oceania-Slack": {
+      "description": "Tilmeld dig på  {signupUrl}"
+    },
+    "Open-Source-San-Jose-Discord": {
+      "description": "Kom i kontakt med andre kortlæggere på Discord! Når du har tilmeldt dig, kan du tilslutte dig #🗺openstreetmap-kanalen."
+    },
+    "OpenCleveland-meetup": {
+      "description": "Forbedr OpenStreetMap i Cleveland området"
+    },
+    "OSM-Chattanooga": {
+      "name": "OpenStreetMap Colombia Twitter",
+      "description": "OpenStreetMap brugergruppen for Chattanooga"
+    },
+    "OSM-Discourse": {
+      "description": "Et fælles forum for samtaler om OpenStreetMap"
+    },
+    "OSM-Facebook": {
+      "description": "Like os på Facebook for nyheder og opdateringer om OpenStreetMap."
+    },
+    "OSM-india-twitter": {
+      "description": "Vi er kun et tweet væk: {url}"
+    },
+    "OSM-japan-facebook": {
+      "description": "Kortlæggere og OpenStreetMap brugere i Japan"
+    },
+    "OSM-japan-website": {
+      "description": "Kortlæggere og OpenStreetMap brugere i Japan"
+    },
+    "OSM-Kerala-facebook": {
+      "description": "Forbedr OpenStreetMap i Kerala"
+    },
+    "OSM-Rome-meetup": {
+      "description": "Forbedr OpenStreetMap i Rom området"
+    },
+    "OSMF": {
+      "description": "OSMF er en UK-baseret non-profit organisation der støtter OpenStreetMap projektet"
+    },
+    "PHXGeo-twitter": {
+      "description": "Følg os på Twitter på {url}"
+    },
+    "uk-london-mastodon": {
+      "name": "OpenStreetMap London på Mastodon"
+    }
+  }
+}

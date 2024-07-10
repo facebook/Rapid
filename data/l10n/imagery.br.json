@@ -1,0 +1,861 @@
+{
+  "br": {
+    "imagery": {
+      "Bedzin-PL-aerial_image": {
+        "attribution": {
+          "text": "Ti-distrig Będzin"
+        },
+        "name": "Będzin: Orthophotomap 2013 (skeudenn-aer)"
+      },
+      "Bedzin-PL-buildings": {
+        "attribution": {
+          "text": "Ti-distrig Będzin: Savadurioù"
+        },
+        "name": "Będzin: Savadurioù"
+      },
+      "Bing": {
+        "description": "Skeudennoù-aer.",
+        "name": "Skeudennoù-aer Bing"
+      },
+      "Bytom-2012": {
+        "attribution": {
+          "text": "Ti-kêr Bytom 2012"
+        },
+        "name": "Bytom: Orthophotomap 2012 (skeudenn-aer)"
+      },
+      "Bytom-2014": {
+        "attribution": {
+          "text": "Ti-kêr Bytom 2014"
+        },
+        "name": "Bytom: Fotoplan 2014 (skeudennoù-aer)"
+      },
+      "Bytom-2016": {
+        "attribution": {
+          "text": "Ti-kêr Bytom 2016"
+        },
+        "name": "Bytom: Orthophotomap 2016 (skeudenn-aer)"
+      },
+      "Bytom-2018": {
+        "attribution": {
+          "text": "Ti-kêr Bytom 2018"
+        },
+        "name": "Bytom: Orthophotomap 2018 (skeudenn-aer)"
+      },
+      "Bytom-2021": {
+        "attribution": {
+          "text": "Ti-kêr Bytom 2021"
+        },
+        "name": "Bytom: Orthophotomap 2021 (skeudenn-aer)"
+      },
+      "Bytom-buildings": {
+        "attribution": {
+          "text": "Savadurioù Bytom"
+        },
+        "name": "Bytom: Savadurioù"
+      },
+      "Czestochowa-2011": {
+        "attribution": {
+          "text": "Ti-kêr Częstochowa 2011"
+        },
+        "name": "Częstochowa: Orthophotomap 2011 (skeudenn-aer)"
+      },
+      "Czestochowa-2013": {
+        "attribution": {
+          "text": "Ti-kêr Częstochowa 2013"
+        },
+        "name": "Częstochowa: Orthophotomap 2013 (skeudenn-aer)"
+      },
+      "Czestochowa-2014": {
+        "attribution": {
+          "text": "Ti-kêr Częstochowa 2014"
+        },
+        "name": "Częstochowa: Orthophotomap 2014 (skeudenn-aer)"
+      },
+      "Czestochowa-2015": {
+        "attribution": {
+          "text": "Ti-kêr Częstochowa 2015"
+        },
+        "name": "Częstochowa: Orthophotomap 2015 (skeudenn-aer)"
+      },
+      "Czestochowa-2016": {
+        "attribution": {
+          "text": "Ti-kêr Częstochowa 2016"
+        },
+        "name": "Częstochowa: Orthophotomap 2016 (luc'hskeudenn tapet gant kirri-nij)"
+      },
+      "Czestochowa-2017": {
+        "attribution": {
+          "text": "Ti-kêr Częstochowa 2017"
+        },
+        "name": "Częstochowa: Orthophotomap 2017 (skeudenn-aer)"
+      },
+      "Czestochowa-buildings": {
+        "attribution": {
+          "text": "Savadurioù Częstochowa"
+        },
+        "name": "Częstochowa: Savadurioù"
+      },
+      "DV_OrthoPhoto": {
+        "name": "Skeudennoù-aer nevesañ an ajañs Digitaal Vlaanderen"
+      },
+      "DV_OrthoPhoto_20132015_10cm": {
+        "name": "Skeudennoù-aer 10cm 2013-2015 eus an ajañs Digitaal Vlaanderen"
+      },
+      "Dourados_Ortofotos": {
+        "description": "Dourados (2018) hag ur re zistrigoù (2020) skeudennoù-aer a uhel diarunusted."
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 digoumoul - https://s2maps.eu gant servijoù EOX IT GmbH (ennañ roadennoù kemmet Copernicus Sentinel 2017 & 2018)"
+        },
+        "description": "Skeudennerezh-loarell Sentinel adaozet.",
+        "name": "eox.at 2018 digoumoul"
+      },
+      "EOXAT2019CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 digoumoul - https://s2maps.eu gant servijoù EOX IT GmbH (ennañ roadennoù kemmet Copernicus Sentinel 2019)"
+        },
+        "description": "Skeudennerezh-loarell Sentinel adaozet.",
+        "name": "eox.at 2019 digoumoul"
+      },
+      "EOXAT2020CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 digoumoul - https://s2maps.eu gant servijoù EOX IT GmbH (ennañ roadennoù kemmet Copernicus Sentinel 2020)"
+        },
+        "description": "Skeudennerezh-loarell Sentinel adaozet.",
+        "name": "eox.at 2020 digoumoul"
+      },
+      "EOXAT2021CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 digoumoul - https://s2maps.eu gant servijoù EOX IT GmbH (ennañ roadennoù kemmet Copernicus Sentinel 2021)"
+        },
+        "description": "Skeudennerezh-loarell Sentinel adaozet.",
+        "name": "eox.at 2021 digoumoul"
+      },
+      "EOXAT2022CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 digoumoul - https://s2maps.eu gant servijoù EOX IT GmbH (ennañ roadennoù kemmet Copernicus Sentinel 2022)"
+        },
+        "description": "Skeudennerezh-loarell Sentinel adaozet.",
+        "name": "eox.at 2022 digoumoul"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Termenoù & Evezhiadennoù"
+        },
+        "description": "Skeudennoù-loarell Esri",
+        "name": "Skeudennoù-loarell Esri"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Termenoù & Evezhiadennoù"
+        },
+        "name": "Skeudennoù-loarell Esri (sklaeraet) beta"
+      },
+      "Frankfurt-am-Main-2019": {
+        "description": "Skeudennoù-aer Frankfurt am Main d'ar 16 Ebrel 2019",
+        "name": "Skeudenn-aer Frankfurt am Main 2019"
+      },
+      "Geodatastyrelsen_Denmark": {
+        "name": "Skeudennoù-aer SDFI"
+      },
+      "Geoportal2-PL-City-boundaries_WMS": {
+        "attribution": {
+          "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
+        },
+        "name": "Geoportal 2: bevennoù kêr WMS"
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
+        },
+        "name": "Geoportal 2: Orthophotomap a uhel diarunusted (skeudenn diell) (WMS)"
+      },
+      "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "attribution": {
+          "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
+        },
+        "name": "Geoportal 2: Orthophotomap a uhel diarunusted (skeudenn-aer) (WMS)"
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "attribution": {
+          "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
+        }
+      },
+      "Geoportal2-PL-addres_points_WMS": {
+        "attribution": {
+          "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
+        }
+      },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
+        },
+        "name": "Geoportal 2: Orthophotomap (skeudenn diell) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "attribution": {
+          "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
+        },
+        "name": "Geoportal 2: Orthophotomap (skeudenn-aer nevesañ) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "attribution": {
+          "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
+        },
+        "name": "Geoportal 2: Orthophotomap (skeudenn-aer) (WMTS)"
+      },
+      "Geoportal2-PL-boundaries-of-communes_WMS": {
+        "attribution": {
+          "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
+        },
+        "name": "Geoportal 2: harzoù kumunioù WMS"
+      },
+      "Geoportal2-PL-boundaries-of-counties_WMS": {
+        "attribution": {
+          "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
+        },
+        "name": "Geoportal 2: harzoù etrebroadel WMS"
+      },
+      "Geoportal2-PL-boundaries-of-provinces_WMS": {
+        "attribution": {
+          "text": "Geoportal2 Polonia - harzoù proviñsoù (WMS)"
+        },
+        "name": "Geoportal 2: harzoù proviñsoù WMS"
+      },
+      "Geoportal2-PL-buildings_WMS": {
+        "attribution": {
+          "text": "Geoportal2 Polonia - savadurioù"
+        }
+      },
+      "Geoportal2-PL-gas-pipe_WMS": {
+        "attribution": {
+          "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
+        },
+        "name": "Geoportal 2: gazsanioù WMS"
+      },
+      "Geoportal2-PL-heat-pipe_WMS": {
+        "attribution": {
+          "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
+        }
+      },
+      "Geoportal2-PL-plot_boundaries_WMS": {
+        "attribution": {
+          "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
+        }
+      },
+      "Geoportal2-PL-power-cord_WMS": {
+        "attribution": {
+          "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
+        }
+      },
+      "Geoportal2-PL-sewer-pipe_WMS": {
+        "attribution": {
+          "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
+        }
+      },
+      "Geoportal2-PL-shaded_relief_WMS": {
+        "attribution": {
+          "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
+        }
+      },
+      "Geoportal2-PL-squares-and-housing-estates_WMS": {
+        "attribution": {
+          "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
+        }
+      },
+      "Geoportal2-PL-state-borders_WMS": {
+        "attribution": {
+          "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
+        },
+        "name": "Geoportal 2: harzoù stadoù WMS"
+      },
+      "Geoportal2-PL-telecommunications-cable_WMS": {
+        "attribution": {
+          "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
+        },
+        "name": "Geoportal 2: funioù pellgehenterezh WMS"
+      },
+      "Geoportal2-PL-water-pipe_WMS": {
+        "attribution": {
+          "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
+        }
+      },
+      "Gliwice-2003": {
+        "attribution": {
+          "text": "Ti-kêr Gliwice 2003"
+        },
+        "name": "Gliwice: Orthophotomap 2003 (skeudenn-aer)"
+      },
+      "Gliwice-2009": {
+        "attribution": {
+          "text": "Ti-kêr Gliwice 2009"
+        },
+        "name": "Gliwice: Orthophotomap 2009 (skeudenn-aer)"
+      },
+      "Gliwice-2013": {
+        "attribution": {
+          "text": "Ti-kêr Gliwice 2013"
+        },
+        "name": "Gliwice: Orthophotomap 2013 (skeudenn-aer)"
+      },
+      "Gliwice-2017": {
+        "attribution": {
+          "text": "Ti-kêr Gliwice 2017"
+        },
+        "name": "Gliwice: Orthophotomap 2017 (skeudenn-aer)"
+      },
+      "Gliwice-2018": {
+        "attribution": {
+          "text": "Ti-kêr Gliwice 2018"
+        },
+        "name": "Gliwice: Orthophotomap 2018 (skeudenn-aer)"
+      },
+      "Gliwice-2020": {
+        "attribution": {
+          "text": "Ti-kêr Gliwice 2020"
+        },
+        "name": "Gliwice: Orthophotomap 2020 (skeudenn-aer)"
+      },
+      "Gliwice-2021": {
+        "attribution": {
+          "text": "Ti-kêr Gliwice 2021"
+        },
+        "name": "Gliwice: Orthophotomap 2021 (skeudenn-aer)"
+      },
+      "Gliwice-buildings": {
+        "attribution": {
+          "text": "Savadurioù Gliwice"
+        },
+        "name": "Gliwice: Savadurioù"
+      },
+      "LSA-ATKIS_BU": {
+        "description": "Furm savadurioù e Saks-Anhalt"
+      },
+      "LSA-DOP20": {
+        "description": "Skeudenn-aer stad Saks-Anhalt, 20cm a spister"
+      },
+      "LocalAuthorities_RightsOfWay": {
+        "attribution": {
+          "text": "Ennañ roadennoù ar gennad foran dindan an aotre-implijout Open Government Licence v3.0."
+        }
+      },
+      "Lodz-2015": {
+        "attribution": {
+          "text": "Ti-kêr Łódź 2015"
+        },
+        "name": "Łódź: Orthophotomap 2015 (skeudenn-aer)"
+      },
+      "Lodz-2017": {
+        "attribution": {
+          "text": "Ti-kêr Łódź 2017"
+        },
+        "name": "Łódź: Orthophotomap 2017 (skeudenn-aer)"
+      },
+      "Lodz-buildings": {
+        "attribution": {
+          "text": "Savadurioù Łódź"
+        },
+        "name": "Łódź: Savadurioù"
+      },
+      "MAPNIK": {
+        "attribution": {
+          "text": "© kenlabourerien OpenStreetMap, ODbL 1.0"
+        },
+        "description": "Gwiskad OpenStreetMap dre ziouer.",
+        "name": "OpenStreetMap (dre ziouer)"
+      },
+      "Maaamet-Estonia_Cadastre": {
+        "name": "Kadastr Maa-amet"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Termenoù & Evezhiadennoù"
+        },
+        "name": "Skeudennoù-loarell Mapbox"
+      },
+      "Naturvardsverket-protected": {
+        "attribution": {
+          "text": "© Naturvårdsverket (ajañs svedat gwarez an endro), CC0"
+        }
+      },
+      "Naturvardsverket-trails": {
+        "attribution": {
+          "text": "© Naturvårdsverket (ajañs svedat gwarez an endro), CC0"
+        }
+      },
+      "OSIP": {
+        "attribution": {
+          "text": "Programm skeudennerezh Ohio"
+        },
+        "description": "Programm skeudennerezh Ohio III, ortoskeudennerezh nevezañ pep kontelezh, eus 1 troadad da 3 meutad a ziarunusted eus 2017 da 2020.",
+        "name": "Programm skeudennerezh Ohio"
+      },
+      "OSIP_1ft": {
+        "attribution": {
+          "text": "Programm skeudennerezh Ohio"
+        },
+        "description": "Programm skeudennerezh Ohio II, ortoskeudennerezh an holl 88 kontelezh gant 1 troadad a ziarunusted eus 2011 da 2014.",
+        "name": "Orthophotos programm skeudennerezh Ohio, 1 troadad (war-dro 30 cm) a ziarunusted"
+      },
+      "OSIP_6in": {
+        "attribution": {
+          "text": "Programm skeudennerezh Ohio"
+        },
+        "description": "Programm skeudennerezh Ohio III, ortoskeudennerezh 40 kontelezh gant 6 meutad a ziarunusted eus 2017 ha 2018 ha skeudennerezh OSIP I ha OSIP II e 16 kontelezh all eus 2010 da 2014.",
+        "name": "Orthophotos 2010-2018 programmoù skeudennerezh Ohio I, II ha III, 6 meutad a ziarunusted"
+      },
+      "OSMUK-Cadastral-Parcels": {
+        "attribution": {
+          "text": "Ennañ roadennoù ar gennad foran dindan an aotre-implijout Open Government Licence v3.0."
+        },
+        "name": "Tachennaoueg OSMUK"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, kenlabourerien OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Enseller OSM: Chomlec'hioù"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, kenlabourerien OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Enseller OSM: Geometriezh"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, kenlabourerien OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Enseller OSM: Gourhentoù"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, kenlabourerien OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Enseller OSM: Takad"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, kenlabourerien OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Enseller OSM: Lec'hioù"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, kenlabourerien OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Enseller OSM: hentad"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, kenlabourerien OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Enseller OSM: tikedenniñ"
+      },
+      "OpenAerialMapMosaic": {
+        "name": "Marelladur OpenAerialMap gant Kontur.io"
+      },
+      "Riksantikvariambetet-ruins": {
+        "name": "Riksantikvarieämbetet - Dismantroù"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "SPW(allonie) skeudennoù-aer nevesañ"
+      },
+      "Siemianowice_Slaskie-aerial_image": {
+        "attribution": {
+          "text": "Skeudenn-aer Siemianowice Śląskie"
+        },
+        "name": "Siemianowice Śląskie: Orthophotomap (skeudenn-aer)"
+      },
+      "Siemianowice_Slaskie-buildings": {
+        "attribution": {
+          "text": "Savadurioù Siemianowice Śląskie"
+        },
+        "name": "Siemianowice Śląskie: Savadurioù"
+      },
+      "US-TIGER-Roads-2018": {
+        "name": "Hentoù TIGER 2018"
+      },
+      "US-TIGER-Roads-2019": {
+        "name": "Hentoù TIGER 2019"
+      },
+      "US-TIGER-Roads-2020": {
+        "name": "Hentoù TIGER 2020"
+      },
+      "US-TIGER-Roads-2021": {
+        "name": "Hentoù TIGER 2021"
+      },
+      "US-TIGER-Roads-2022": {
+        "name": "Hentoù TIGER 2022"
+      },
+      "US-TIGER-Roads-2023": {
+        "name": "Hentoù TIGER 2023"
+      },
+      "USDA-NAIP": {
+        "attribution": {
+          "text": "Ministrerezh al labour-douar an S.U.A."
+        }
+      },
+      "US_Forest_Service_roads_overlay": {
+        "name": "Gwiskad hentoù koadoù ar Stadoù-Unanet"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Kaset da benn gant Brussels UrbIS®© - Skignañ & Copyright CIRB"
+        },
+        "name": "CIRB/CIBG luc'hskeudennoù tapet gant kirri-nij nevesañ"
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "Kaset da benn gant Brussels UrbIS®© - Skignañ & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "Kaset da benn gant Brussels UrbIS®© - Skignañ & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "Kaset da benn gant Brussels UrbIS®© - Skignañ & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "Kaset da benn gant Brussels UrbIS®© - Skignañ & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Kaset da benn gant Brussels UrbIS®© - Skignañ & Copyright CIRB"
+        }
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "Kaset da benn gant Brussels UrbIS®© - Skignañ & Copyright CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
+        "attribution": {
+          "text": "Kaset da benn gant Brussels UrbIS®© - Skignañ & Copyright CIRB"
+        }
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "Kaset da benn gant Brussels UrbIS®© - Skignañ & Copyright CIRB"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, kenlabourerien OpenStreetMap, CC by-SA 3.0"
+        }
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, kenlabourerien OpenStreetMap, CC by-SA 3.0"
+        }
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, kenlabourerien OpenStreetMap, CC by-SA 3.0"
+        }
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, kenlabourerien OpenStreetMap, CC by-SA 3.0"
+        }
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, kenlabourerien OpenStreetMap, CC by-SA 3.0"
+        }
+      },
+      "Zabrze-2011": {
+        "attribution": {
+          "text": "Ti-kêr Zabrze 2011"
+        },
+        "name": "Zabrze: Orthophotomap 2011 (skeudenn-aer)"
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Gwiskad Orthofoto pourchaset gant basemap.at, \"warlerc'hiad\" geoimage.at imagery."
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "name": "Gwiskad basemap.at"
+      },
+      "debicki-buildings": {
+        "name": "Kontelezh Dębica: Savadurioù"
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© kumun Göteborg, CC0"
+        },
+        "name": "Kartenn Göteborg"
+      },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© kumun Göteborg, CC0"
+        }
+      },
+      "gothenburg-ortho": {
+        "description": "Orthophoto kumun Göteborg",
+        "name": "Orthophoto Göteborg 2015"
+      },
+      "gothenburg-ortho_2017": {
+        "description": "Orthophoto evit kumun Göteborg",
+        "name": "Orthophoto Göteborg 2017"
+      },
+      "gothenburg-ortho_2019": {
+        "description": "Orthophoto evit kumun Göteborg",
+        "name": "Orthophoto Göteborg 2019"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© kumun Göteborg, CC0"
+        },
+        "name": "Orthophoto Göteborg 2021"
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© kumun Göteborg, CC0"
+        },
+        "description": "Orthophoto kumun Göteborg",
+        "name": "Orthophoto Göteborg nevesañ"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "name": "Skeudenn-aer GSI Japan"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "name": "Kartenn GSI standard Japan"
+      },
+      "kalmar-orto-2014": {
+        "attribution": {
+          "text": "© kumun Kalmar"
+        },
+        "description": "Orthophotos aod norzh Kalmar 2014",
+        "name": "Orthophoto Norzh Kalmar 2014"
+      },
+      "kalmar-orto-2016": {
+        "attribution": {
+          "text": "© kumun Kalmar"
+        },
+        "description": "Orthophotos aod su Kalmar 2016",
+        "name": "Orthophoto Su Kalmar 2016"
+      },
+      "kalmar-orto-2018": {
+        "attribution": {
+          "text": "© kumun Kalmar"
+        },
+        "description": "Orthophotos takadoù kêrel Kalmar 2018",
+        "name": "Orthophoto Kalmar Meurgêr 2018"
+      },
+      "kalmar-orto-2020": {
+        "name": "Orthophoto Kalmar Meurgêr 2020"
+      },
+      "kelkkareitit": {
+        "description": "Roudoù moto-erc'h kelkkareitit.fi diwar roadennoù OSM (goloadur broioù an norzh)"
+      },
+      "lancucki-buildings": {
+        "name": "Kontelezh Łańcut: Savadurioù"
+      },
+      "lantmateriet-orto1960": {
+        "name": "Orthophoto Istorel Lantmäteriet 1960"
+      },
+      "lantmateriet-orto1975": {
+        "name": "Orthophoto Istorel Lantmäteriet 1975"
+      },
+      "lantmateriet-topowebb": {
+        "description": "Kartenn dopografek Sveden 1:50 000",
+        "name": "Kartenn dopografek Lantmäteriet"
+      },
+      "linkoping-orto": {
+        "attribution": {
+          "text": "© kumun Linköping"
+        },
+        "name": "Orthophoto Linköping"
+      },
+      "lubaczowski-buildings": {
+        "attribution": {
+          "text": "Kontelezh Lubaczów"
+        },
+        "name": "Kontelezh Lubaczów: Savadurioù"
+      },
+      "maaamet<TX_DOT>ee-cir_ngr": {
+        "attribution": {
+          "text": "Orthophotoioù koadoù ar servij font"
+        },
+        "name": "Dourioù ha koadoù servij font Estonia"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Termenoù & Evezhiadennoù"
+        },
+        "description": "Diskouez an arc'hweladurioù pennañ evit ho sikour heñchañ."
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© kenlabourerien OpenStreetMap, CC-BY-SA"
+        }
+      },
+      "openrailwaymap-maxspeeds": {
+        "name": "Bevennoù-tizh OpenRailwayMap"
+      },
+      "openrailwaymap-signalling": {
+        "name": "Panellerezh OpenRailwayMap"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© kenlabourerien OpenStreetMap"
+        },
+        "description": "Roudoù GPS foran enporzhiet da OpenStreetMap.",
+        "name": "Roudoù GPS OpenStreetMap"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© kenlabourerien OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (Stumm Alaman)"
+      },
+      "poznan-ortofotomapa2014": {
+        "attribution": {
+          "text": "Kuzul ar Geodeziezh hag ar C'hadastr-kêr GEOPOZ"
+        },
+        "name": "Poznań: Orthophotomap 2014 (skeudenn-aer)"
+      },
+      "poznan-ortofotomapa2016": {
+        "attribution": {
+          "text": "Kuzul ar Geodeziezh hag ar C'hadastr-kêr GEOPOZ"
+        },
+        "name": "Poznań: Orthophotomap 2016 (skeudenn-aer)"
+      },
+      "poznan-ortofotomapaBiezaca": {
+        "attribution": {
+          "text": "Kuzul ar Geodeziezh hag ar C'hadastr-kêr GEOPOZ"
+        },
+        "name": "Poznań: Orthophotomap Bieżąca (skeudenn-aer)"
+      },
+      "przemysl-aerial": {
+        "attribution": {
+          "text": "Kêr Przemyśl"
+        },
+        "name": "Przemyśl: Ortophotomap (skeudenn-aer)"
+      },
+      "przemysl-buildings": {
+        "attribution": {
+          "text": "Kêr Przemyśl"
+        },
+        "name": "Przemyśl: savadurioù"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, titouroù ©kenlabourerien OpenStreetMap"
+        },
+        "name": "Chomlec'h QA ebet"
+      },
+      "rzeszowski-aerial": {
+        "attribution": {
+          "text": "Kontelezh Rzeszów"
+        },
+        "name": "Powiat rzeszowski: Orthophotomap (tapet dre garr-nij)"
+      },
+      "rzeszowski-buildings": {
+        "attribution": {
+          "text": "Kontelezh Rzeszów"
+        },
+        "name": "Kontelezh Rzeszów: Savadurioù"
+      },
+      "scb-industrial": {
+        "attribution": {
+          "text": "© Statistiska Centralbyrån (Pennvurev ar Stadegoù), CC0"
+        },
+        "name": "SCB - Takadoù greantel"
+      },
+      "scb-settlements": {
+        "attribution": {
+          "text": "© Statistiska Centralbyrån (Pennvurev ar Stadegoù), CC0"
+        }
+      },
+      "scb-urban": {
+        "attribution": {
+          "text": "© Statistiska Centralbyrån (Pennvurev ar Stadegoù), CC0"
+        },
+        "name": "SCB - Takadoù kêrel"
+      },
+      "scb-vacation": {
+        "attribution": {
+          "text": "© Statistiska Centralbyrån (Pennvurev ar Stadegoù), CC0"
+        }
+      },
+      "skolverket-schools": {
+        "description": "Skolioù svedat",
+        "name": "Skolverket - Skolioù"
+      },
+      "skoterleder": {
+        "description": "Roudoù moto-erc'h",
+        "name": "Kartenn moto-erc'h Sveden"
+      },
+      "sropczyce-buildings": {
+        "attribution": {
+          "text": "Kontelezh Ropczyce-Sędziszów"
+        },
+        "name": "Kontelezh Ropczyce-Sędziszów: Savadurioù"
+      },
+      "stalowowolski-buildings": {
+        "attribution": {
+          "text": "Kontelezh Stalowa Wola"
+        },
+        "name": "Kontelezh Stalowa Wola: Savadurioù"
+      },
+      "stockholm-orto": {
+        "attribution": {
+          "text": "© kumun Stockholm, CC0"
+        },
+        "description": "Orthophotos kêr Stockholm 2018, aotre CC0",
+        "name": "Orthophoto Stockholm"
+      },
+      "susono_shizuoka_jp_orthophoto": {
+        "attribution": {
+          "text": "Orthophoto kêr Susono"
+        },
+        "name": "Orthophoto kêr Susono"
+      },
+      "svk-electricity-network": {
+        "name": "SVK - Rouedad tredan"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Kartennoù © Thunderforest, Roadennoù © kenlabourerien OpenStreetMap"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Kartennoù © Thunderforest, Roadennoù © kenlabourerien OpenStreetMap"
+        }
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Kartennoù © Thunderforest, Titouroù © OpenStreetMap contributors"
+        }
+      },
+      "trafikverket-baninfo": {
+        "name": "Rouedad hent-houarn Trafikverket"
+      },
+      "trafikverket-vagnat": {
+        "description": "Rouedad hentoù svedat NVDB",
+        "name": "Rouedad entoù Trafikverket"
+      },
+      "wroclaw-orto2015": {
+        "attribution": {
+          "text": "Ti-kêr Wrocław 2015"
+        },
+        "name": "Wrocław: Orthophotomap 2015 (skeudenn-aer)"
+      },
+      "wroclaw-orto2018": {
+        "attribution": {
+          "text": "Ti-kêr Wrocław 2018"
+        },
+        "name": "Wrocław: Orthophotomap 2018 (skeudenn-aer)"
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "ro": {
+    "_communities": {
+      "openstreetmapafghanistan": "OpenStreetMap Afganistan",
+      "openstreetmapbangladesh": "OpenStreetMap Bangladeș",
+      "openstreetmapbelgium": "OpenStreetMap Belgia",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap Bosnia și Herțegovina"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "description": "Îmbunătățește OpenStreetMap în Bay Area"
+    },
+    "cape-coast-youthmappers": {
+      "description": "Urmăriţi-ne pe Twitter : {url}"
+    }
+  }
+}

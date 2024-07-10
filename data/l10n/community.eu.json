@@ -1,0 +1,37 @@
+{
+  "eu": {
+    "be-matrix": {
+      "description": "Kartografo guztiak ongi etorriak dira!"
+    },
+    "cape-coast-youthmappers": {
+      "description": "Jarraitu gaitzazu Twitterren: {url}"
+    },
+    "czech-community": {
+      "description": "Txekiako OSM kideen mapa ataria, webgunea eta kontaktuak"
+    },
+    "osm-at": {
+      "description": "Austriako OpenStreetMap-ari buruzko informazio plataforma"
+    },
+    "OSM-India-facebook": {
+      "description": " OpenStreetMap-a hobetu Indian"
+    },
+    "OSM-India-Puducherry-Facebook": {
+      "name": "Software Hardware Libre Mugimenduak - Facebook"
+    },
+    "OSM-India-Puducherry-Matrix": {
+      "name": "Software Hardware Libre Mugimenduak - Matrix"
+    },
+    "OSM-japan-website": {
+      "description": "Japoniako Kartografo eta OpenStreetMap erabiltzaileak"
+    },
+    "OSM-US-Slack": {
+      "description": "Pertsona oro da ongi etorria! Izena eman {signupUrl}-en."
+    },
+    "PHXGeo-twitter": {
+      "description": "Jarraitu gaitzazu Twitter-en {url}-ean"
+    },
+    "talk-mg": {
+      "description": "Madagaskarren OpenStreetMap-eko eragile, komunitate eta erabiltzailek elkarbanatzeko eta eztabaidatzeko gunea"
+    }
+  }
+}

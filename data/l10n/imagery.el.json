@@ -1,0 +1,276 @@
+{
+  "el": {
+    "imagery": {
+      "Bedzin-PL-buildings": {
+        "name": "Będzin: Κτίρια"
+      },
+      "Bing": {
+        "description": "Δορυφορική και εναέρια εικόνα."
+      },
+      "Bytom-buildings": {
+        "name": "Bytom: Κτίρια"
+      },
+      "Czestochowa-buildings": {
+        "name": "Częstochowa: Κτίρια"
+      },
+      "EOXAT2018CLOUDLESS": {
+        "name": "eox.at 2018 χωρίς σύννεφα"
+      },
+      "EOXAT2019CLOUDLESS": {
+        "name": "eox.at 2019 χωρίς σύννεφα"
+      },
+      "EOXAT2020CLOUDLESS": {
+        "name": "eox.at 2020 χωρίς σύννεφα"
+      },
+      "EOXAT2021CLOUDLESS": {
+        "name": "eox.at 2021 χωρίς σύννεφα"
+      },
+      "EOXAT2022CLOUDLESS": {
+        "name": "eox.at 2022 χωρίς σύννεφα"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Όροι και Σχόλια"
+        },
+        "name": "Παγκόσμια Eικόνα Esri"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Όροι και Σχόλια"
+        },
+        "description": "Οι εικόνες του αρχείου Esri μπορούν να είναι πιο ευδιάκριτες και ακριβέστερες από το προεπιλεγμένηο επίπεδο.",
+        "name": "Παγκόσμια Eικόνα Esri (Διαύγεια) Beta"
+      },
+      "Gliwice-buildings": {
+        "name": "Gliwice: Κτίρια"
+      },
+      "Lodz-buildings": {
+        "name": "Łódź: Κτίρια"
+      },
+      "MAPNIK": {
+        "attribution": {
+          "text": "© Συνεισφέροντες OpenStreetMap, ODbL 1.0"
+        },
+        "description": "Η προεπιλεγμένη στρώση του OpenStreetMap.",
+        "name": "OpenStreetMap (Τυπικό)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Όροι και σχόλια"
+        },
+        "name": "Δορυφορική εικόνα Mapbox"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, Συνεισφέροντες OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Επιθεωρητής OSM: Διευθύνσεις"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, Συνεισφέροντες OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Επιθεωρητής OSM: Γεωμετρία"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, Συνεισφέροντες OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Επιθεωρητής OSM: Δρόμοι"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, Συνεισφέροντες OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Επιθεωρητής OSM: Περιοχή"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, Συνεισφέροντες OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Επιθεωρητής OSM: Τοποθεσίες"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, Συνεισφέροντες OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Επιθεωρητής OSM: Δρομολόγηση"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, Συνεισφέροντες OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Επιθεωρητής OSM: Προσθήκη Ετικέτας"
+      },
+      "Riksantikvariambetet-archaeological": {
+        "description": "Αρχαία και ιστορικά απομεινάρια και μνημεία"
+      },
+      "Siemianowice_Slaskie-buildings": {
+        "name": "Siemianowice Śląskie: Κτίρια"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Δρόμος: Πράσινο περίβλημα = μη ταξινομημένο. Καφέ περίβλημα = ίχνος. Επιφάνεια: χαλίκι = γεμάτο ανοιχτό καφέ, Άσφαλτος = μαύρο, πλακόστρωτο = γκρι, έδαφος = λευκό, τσιμέντο= μπλε, γρασίδι = πράσινο. Εποχιακά = λευκές μπάρες",
+        "name": "Επικάλυψη Δασικών Δρόμων των ΗΠΑ"
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, συνεισφέροντες στο OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Σηματοδοτημένες Διαδρομές: Ποδηλασία"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, συνεισφέροντες στο OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Σηματοδοτημένες Διαδρομές: Πεζοπορία"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, συνεισφέροντες στο OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Σηματοδοτημένες Διαδρομές: Ποδήλατο Βουνού"
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, συνεισφέροντες στο OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Σηματοδοτημένες Διαδρομές: Σκέϊτ"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, Συνεισφέροντες OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Σηματοδοτημένες Διαδρομές: Χειμερινά Σπορ"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "Χάρτης βάσης της Αυστρίας, βασισμένος σε κυβερνητικά δεδομένα."
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Ορθοφωτογραφική στρώση που παρέχεται από το basemap.at. \"Διάδοχος\" των εικόνων του geoimage.at.",
+        "name": "basemap.at Ορθοφωτογραφία"
+      },
+      "debicki-buildings": {
+        "name": "Powiat dębicki: Κτίρια"
+      },
+      "kartverket-bygninger": {
+        "name": "Επικάλυψη Κτιρίων Kartverket"
+      },
+      "lancucki-buildings": {
+        "name": "Powiat łańcucki: Κτίρια"
+      },
+      "lubaczowski-buildings": {
+        "name": "Powiat lubaczowski: Κτίρια"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Όροι και σχόλια"
+        },
+        "description": "Εμφάνιση σημαντικών χαρακτηριστικών για να σας βοηθήσει να προσανατολιστείτε.",
+        "name": "Επικάλυψη Εντοπισμού"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© Συνεισφέροντες OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Χάρτης OpenPT (επικάλυψη)"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© Συνεισφέροντες OpenStreetMap"
+        },
+        "description": "Δημόσια ίχνη GPS που έχουν μεταφορτωθεί στο OpenStreetMap.",
+        "name": "Ίχνη GPS OpenStreetMap"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© Συνεισφέροντες OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (Γερμανικό Στυλ)"
+      },
+      "przemysl-buildings": {
+        "name": "Przemyśl: Κτίρια"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, Δεδομένα © Συνεισφέροντες OpenStreetMap"
+        },
+        "name": "QA Καμία Διεύθυνση"
+      },
+      "rzeszowski-buildings": {
+        "name": "Powiat rzeszowski: Κτίρια"
+      },
+      "scb-industrial": {
+        "description": "Γεωγραφικά οριοθετημένες περιοχές που χαρακτηρίζονται από μεγάλης κλίμακας και βιομηχανική χρήση γης",
+        "name": "SCB - Βιομηχανικές ζώνες"
+      },
+      "scb-settlements": {
+        "description": "Συνεχείς περιοχές κτηρίων με 50-199 κατοίκους και όχι λιγότερο από 150 μέτρα απόσταση μεταξύ των σπιτιών",
+        "name": "SCB - Μικροί Οικισμοί"
+      },
+      "scb-urban": {
+        "description": "Οικισμοί με τουλάχιστον 200 κατοίκους και με λιγότερο από 500 μέτρα απόσταση μεταξύ των κατοικιών",
+        "name": "SCB - Αστικές Περιοχές"
+      },
+      "scb-vacation": {
+        "description": "Συνεχείς περιοχές που αποτελούνται κυρίως από εξοχικές κατοικίες: μια συλλογή τουλάχιστον 50 εξοχικών κατοικιών, όπου η μεταξύ τους απόσταση δεν υπερβαίνει τα 150 μέτρα",
+        "name": "SCB - Περιοχές Εξοχικών Κατοικιών"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Πλακίδια: skobbler Δεδομένα χάρτη: Συνεισφέροντες OpenStreetMap"
+        }
+      },
+      "skolverket-schools": {
+        "description": "Σουηδικά σχολεία.",
+        "name": "Skolverket - Σχολεία"
+      },
+      "sropczyce-buildings": {
+        "name": "Powiat ropczycko-sędziszowski: Κτίρια"
+      },
+      "stalowowolski-buildings": {
+        "name": "Powiat stalowowolski: Κτίρια"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "Πλακίδιια χαρτών από το Stamen Design, κάτω από CC BY 3.0. Δεδομένα από το OpenStreetMap, κάτω από ODbL"
+        },
+        "name": "Stamen Εδαφικό"
+      },
+      "stockholm-orto": {
+        "description": "Ορθοφωτογραφίες από το Δήμο Στοκχόλμης 2018, άδεια CC0"
+      },
+      "svk-electricity-network": {
+        "description": "Σουηδικό δίκτυο μεταφοράς ηλεκτρικής ενέργειας.",
+        "name": "SVK - Δίκτυο Ηλεκτρικής Ενέργειας"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Χάρτες © Thunderforest, Δεδομένα © Συνεισφέροντες OpenStreetMap"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Χάρτες © Thunderforest, Δεδομένα © Συνεισφέροντες OpenStreetMap"
+        },
+        "name": "Thunderforest Τοπίο"
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Χάρτες © Thunderforest, Δεδομένα © Συνεισφέροντες OpenStreetMap"
+        }
+      },
+      "trafikverket-baninfo": {
+        "name": "Σιδηροδρομικό Δίκτυο Trafikverket"
+      },
+      "trafikverket-baninfo-option": {
+        "name": "Επιλογές Σιδηροδρομικού Δικτύου Trafikverket"
+      },
+      "trafikverket-vagnat": {
+        "description": "Σουηδικό οδικό δίκτυο NVDB"
+      },
+      "trafikverket-vagnat-option": {
+        "name": "Επιλογές Οδικού Δικτύου Trafikverket"
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "nn": {
+    "_communities": {
+      "openstreetmapnorway": "OpenStreetMap Noreg",
+      "openstreetmappoland": "OpenStreetMap Polen",
+      "openstreetmapsweden": "OpenStreetMap Sverige"
+    },
+    "cape-coast-youthmappers": {
+      "description": "Følg oss på Twitter: {url}"
+    },
+    "Maptime-Oceania-Slack": {
+      "description": "Registrer deg på {signupUrl}"
+    }
+  }
+}

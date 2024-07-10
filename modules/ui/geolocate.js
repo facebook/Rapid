@@ -18,7 +18,7 @@ export function uiGeolocate(context) {
   const map = context.systems.map;
   const ui = context.systems.ui;
 
-  let _uiModal = uiLoading(context).message(l10n.tHtml('geolocate.locating')).blocking(true);
+  let _uiModal = uiLoading(context).blocking(true).message(l10n.t('geolocate.locating'));
   let _layer = context.scene().layers.get('map-ui');
   let _enabled = false;
   let _timeoutID;

@@ -1,0 +1,262 @@
+{
+  "ckb": {
+    "_communities": {
+      "openstreetmap": "نەخشەی شەقامی کراوە",
+      "openstreetmapafghanistan": "نەخشەی شەقامی کراوەی ئەفغانستان",
+      "openstreetmapafrica": "نەخشەی شەقامی کراوەی ئەفریقا",
+      "openstreetmapalbania": "نەخشەی شەقامی کراوەی ئەلبانیا",
+      "openstreetmapargentina": "نەخشەی شەقامی کراوەی ئەرجەنتین",
+      "openstreetmaparmenia": "نەخشەی شەقامی کراوەی ئەرمەنستان",
+      "openstreetmapasia": "نەخشەی شەقامی کراوەی ئاسیا",
+      "openstreetmapasti": "نەخشەی شەقامی کراوەی ئاستی",
+      "openstreetmapaustria": "نەخشەی شەقامی کراوەی نەمسا",
+      "openstreetmapbangladesh": "نەخشەی شەقامی کراوەی بەنگلادیش",
+      "openstreetmapbelarus": "نەخشەی شەقامی کراوەی بیلاڕووس",
+      "openstreetmapbelgium": "نەخشەی شەقامی کراوەی بەلجیکا",
+      "openstreetmapbelize": "نەخشەی شەقامی کراوەی بیلێز",
+      "openstreetmapbenin": "نەخشەی شەقامی کراوەی بێنین",
+      "openstreetmapberlin": "نەخشەی شەقامی کراوەی بەرلین",
+      "openstreetmapbolivia": "نەخشەی شەقامی کراوەی بۆلیڤیا",
+      "openstreetmapbonn": "نەخشەی شەقامی کراوەی بۆن",
+      "openstreetmapbosniaandherzegovina": "نەخشەی شەقامی کراوەی بۆسنە و هەرزیگۆڤینا",
+      "openstreetmapbrasil": "نەخشەی شەقامی کراوەی بەڕازیل",
+      "openstreetmapbulgaria": "نەخشەی شەقامی کراوەی بولگاریا",
+      "openstreetmapburkinafaso": "نەخشەی شەقامی کراوەی بۆرکینا فاسۆ",
+      "openstreetmapburundi": "نەخشەی شەقامی کراوەی بروندی",
+      "openstreetmapcambodia": "نەخشەی شەقامی کراوەی مەکبۆدیا",
+      "openstreetmapcameroon": "نەخشەی شەقامی کراوەی کامیرۆن",
+      "openstreetmapcanada": "نەخشەی شەقامی کراوەی کەنەدا",
+      "openstreetmapchad": "نەخشەی شەقامی کراوەی چاد",
+      "openstreetmapchile": "نەخشەی شەقامی کراوەی چیلی",
+      "openstreetmapchina": "نەخشەی شەقامی کراوەی چین",
+      "openstreetmapcolombia": "نەخشەی شەقامی کراوەی کۆڵۆمبیا",
+      "openstreetmapcostarica": "نەخشەی شەقامی کراوەی کۆستەریکا",
+      "openstreetmapcotedivoire": "نەخشەی شەقامی کراوەی کۆدیڤوار",
+      "openstreetmapcroatia": "نەخشەی شەقامی کراوەی کڕواتیا",
+      "openstreetmapcuba": "نەخشەی شەقامی کراوەی کوبا",
+      "openstreetmapdenmark": "نەخشەی شەقامی کراوەی دانیمارک",
+      "openstreetmapdjibouti": "نەخشەی شەقامی کراوەی جیبووتی",
+      "openstreetmapdominicanrepublic": "نەخشەی شەقامی کراوەی کۆماری دۆمینیکا",
+      "openstreetmapdusseldorf": "نەخشەی شەقامی کراوەی دۆسلدۆرف",
+      "openstreetmapecuador": "نەخشەی شەقامی کراوەی ئیکوادۆر",
+      "openstreetmapegypt": "نەخشەی شەقامی کراوەی مسر",
+      "openstreetmaperitrea": "نەخشەی شەقامی کراوەی ئەریتیریا",
+      "openstreetmapespana": "نەخشەی شەقامی کراوەی ئیسپانیا",
+      "openstreetmapestonia": "نەخشەی شەقامی کراوەی ئیستۆنیا",
+      "openstreetmapfiji": "نەخشەی شەقامی کراوەی فیجی",
+      "openstreetmapfinland": "نەخشەی شەقامی کراوەی فلەندا",
+      "openstreetmapfrance": "نەخشەی شەقامی کراوەی فەڕەنسا",
+      "openstreetmapgabon": "نەخشەی شەقامی کراوەی گابۆن",
+      "openstreetmapgeorgia": "نەخشەی شەقامی کراوەی جۆرجیا",
+      "openstreetmapgermany": "نەخشەی شەقامی کراوەی ئەڵمانیا",
+      "openstreetmapghana": "نەخشەی شەقامی کراوەی گانا",
+      "openstreetmapgreece": "نەخشەی شەقامی کراوەی یۆنان",
+      "openstreetmapguatemala": "نەخشەی شەقامی کراوەی گواتیمالا",
+      "openstreetmapguinea": "نەخشەی شەقامی کراوەی گینیا",
+      "openstreetmaphaiti": "نەخشەی شەقامی کراوەی هایتی",
+      "openstreetmaphamburg": "نەخشەی شەقامی کراوەی هامبۆرگ",
+      "openstreetmaphonduras": "نەخشەی شەقامی کراوەی هیندۆراس",
+      "openstreetmaphongkong": "نەخشەی شەقامی کراوەی هۆنگ کۆنگ",
+      "openstreetmaphungary": "نەخشەی شەقامی کراوەی هەنگاریا",
+      "openstreetmapiceland": "نەخشەی شەقامی کراوەی ئایسلەندا",
+      "openstreetmapindia": "نەخشەی شەقامی کراوەی هیندستان",
+      "openstreetmapindonesia": "نەخشەی شەقامی کراوەی ئەندەنوسیا",
+      "openstreetmapiran": "نەخشەی شەقامی کراوەی ئێران",
+      "openstreetmapiraq": "نەخشەی شەقامی کراوەی ئێراق",
+      "openstreetmapireland": "نەخشەی شەقامی کراوەی ئیرلەندا",
+      "openstreetmapisrael": "نەخشەی شەقامی کراوەی ئیسڕائل",
+      "openstreetmapitaly": "نەخشەی شەقامی کراوەی ئیتاڵیا",
+      "openstreetmapitalylazio": "نەخشەی شەقامی کراوەی ئیتاڵیا-لازیۆ",
+      "openstreetmapitalylombardia": "نەخشەی شەقامی کراوەی ئیتاڵیا-لۆمباردیا",
+      "openstreetmapitalytrentino": "نەخشەی شەقامی کراوەی ئیتاڵیا-ترینۆتۆ",
+      "openstreetmapjapan": "نەخشەی شەقامی کراوەی ژاپۆن",
+      "openstreetmapkazakhstan": "نەخشەی شەقامی کراوەی کازاخستان",
+      "openstreetmapkenya": "نەخشەی شەقامی کراوەی کینیا",
+      "openstreetmapkerala": "نەخشەی شەقامی کراوەی کێرالا",
+      "openstreetmapkorea": "نەخشەی شەقامی کراوەی کۆریا",
+      "openstreetmapkosovo": "نەخشەی شەقامی کراوەی کۆسۆڤۆ",
+      "openstreetmapkyrgyzstan": "نەخشەی شەقامی کراوەی قیڕغزستان",
+      "openstreetmaplatinamerica": "نەخشەی شەقامی کراوەی ئەمریکای لاتینی",
+      "openstreetmaplatvia": "نەخشەی شەقامی کراوەی لاتیڤیا",
+      "openstreetmaplebanon": "نەخشەی شەقامی کراوەی لوبنان",
+      "openstreetmaplesotho": "نەخشەی شەقامی کراوەی لیسۆتۆ",
+      "openstreetmapliberia": "نەخشەی شەقامی کراوەی لیبیریا",
+      "openstreetmaplibya": "نەخشەی شەقامی کراوەی لیبیا",
+      "openstreetmaplithuania": "نەخشەی شەقامی کراوەی لیتوانیا",
+      "openstreetmaplondon": "نەخشەی شەقامی کراوەی لەندەن",
+      "openstreetmapluxembourg": "نەخشەی شەقامی کراوەی لۆکسەمبۆرگ",
+      "openstreetmapmadagascar": "نەخشەی شەقامی کراوەی مەدەگەسکار",
+      "openstreetmapmadrid": "نەخشەی شەقامی کراوەی مەدرید",
+      "openstreetmapmalawi": "نەخشەی شەقامی کراوەی مالاوی",
+      "openstreetmapmalaysia": "نەخشەی شەقامی کراوەی مالیزیا",
+      "openstreetmapmali": "نەخشەی شەقامی کراوەی مالی",
+      "openstreetmapmalta": "نەخشەی شەقامی کراوەی ماڵتا",
+      "openstreetmapmexico": "نەخشەی شەقامی کراوەی مەکسیک",
+      "openstreetmapmichigan": "نەخشەی شەقامی کراوەی میشیگان",
+      "openstreetmapmorocco": "نەخشەی شەقامی کراوەی مەغریب",
+      "openstreetmapmunchen": "نەخشەی شەقامی کراوەی میونشن",
+      "openstreetmapmyanmar": "نەخشەی شەقامی کراوەی میانمار",
+      "openstreetmapnepal": "نەخشەی شەقامی کراوەی نیپال",
+      "openstreetmapnetherlands": "نەخشەی شەقامی کراوەی هۆڵەندا",
+      "openstreetmapniger": "نەخشەی شەقامی کراوەی نایجەر",
+      "openstreetmapnigeria": "نەخشەی شەقامی کراوەی نایجیریا",
+      "openstreetmapnorthkorea": "نەخشەی شەقامی کراوەی کۆریای باکوور",
+      "openstreetmapnorway": "نەخشەی شەقامی کراوەی نەرویج",
+      "openstreetmapoceania": "نەخشەی شەقامی کراوەی ئۆقیانووسیا",
+      "openstreetmapohio": "نەخشەی شەقامی کراوەی ئۆهایۆ",
+      "openstreetmapottawa": "نەخشەی شەقامی کراوەی ئۆتاوا",
+      "openstreetmappakistan": "نەخشەی شەقامی کراوەی پاکستان",
+      "openstreetmappanama": "نەخشەی شەقامی کراوەی پەنەما",
+      "openstreetmapparaguay": "نەخشەی شەقامی کراوەی پاراگوای",
+      "openstreetmapperu": "نەخشەی شەقامی کراوەی پێرو",
+      "openstreetmapphilippines": "نەخشەی شەقامی کراوەی فلیپین",
+      "openstreetmappoland": "نەخشەی شەقامی کراوەی پۆڵەندا",
+      "openstreetmapportugal": "نەخشەی شەقامی کراوەی پرتوگال",
+      "openstreetmapromania": "نەخشەی شەقامی کراوەی ڕۆمانیا",
+      "openstreetmaprussia": "نەخشەی شەقامی کراوەی ڕوسیا",
+      "openstreetmaprwanda": "نەخشەی شەقامی کراوەی ڕواندا",
+      "openstreetmapsaudiarabia": "نەخشەی شەقامی کراوەی سعودیە",
+      "openstreetmapsenegal": "نەخشەی شەقامی کراوەی سەنیگال",
+      "openstreetmapserbia": "نەخشەی شەقامی کراوەی سڕبیا",
+      "openstreetmapslovenia": "نەخشەی شەقامی کراوەی سلۆڤینیا",
+      "openstreetmapsomalia": "نەخشەی شەقامی کراوەی سۆماڵ",
+      "openstreetmapsouthafrica": "نەخشەی شەقامی کراوەی ئەفریقای باشوور",
+      "openstreetmapsouthsudan": "نەخشەی شەقامی کراوەی سودانی باشوور",
+      "openstreetmapsrilanka": "نەخشەی شەقامی کراوەی سریلانکا",
+      "openstreetmapsudan": "نەخشەی شەقامی کراوەی سودان",
+      "openstreetmapsweden": "نەخشەی شەقامی کراوەی سوێد",
+      "openstreetmapswitzerland": "نەخشەی شەقامی کراوەی سویسڕا",
+      "openstreetmapsyria": "نەخشەی شەقامی کراوەی سوریا",
+      "openstreetmaptaiwan": "نەخشەی شەقامی کراوەی تایوان",
+      "openstreetmaptanzania": "نەخشەی شەقامی کراوەی تەنزانیا",
+      "openstreetmapthailand": "نەخشەی شەقامی کراوەی تایلەند",
+      "openstreetmaptogo": "نەخشەی شەقامی کراوەی تۆگۆ",
+      "openstreetmaptoronto": "نەخشەی شەقامی کراوەی تۆرنتۆ",
+      "openstreetmaptunisia": "نەخشەی شەقامی کراوەی تونس",
+      "openstreetmapturin": "نەخشەی شەقامی کراوەی تورین",
+      "openstreetmapturkey": "نەخشەی شەقامی کراوەی تورکیا",
+      "openstreetmapuganda": "نەخشەی شەقامی کراوەی ئۆگەندا",
+      "openstreetmapuk": "نەخشەی شەقامی کراوەی شانشینی یەکگرتوو",
+      "openstreetmapukraine": "نەخشەی شەقامی کراوەی ئۆکرانیا",
+      "openstreetmapuruguay": "نەخشەی شەقامی کراوەی ئۆرۆگوای",
+      "openstreetmapus": "نەخشەی شەقامی کراوەی ویلایەتە یەکگرتووەکانی ئەمریکا",
+      "openstreetmapuzbekistan": "نەخشەی شەقامی کراوەی ئۆزبەکستان",
+      "openstreetmapvenezuela": "نەخشەی شەقامی کراوەی ڤەنزوێلا",
+      "openstreetmapvietnam": "نەخشەی شەقامی کراوەی ڤێتنام",
+      "openstreetmapzambia": "نەخشەی شەقامی کراوەی زامبیا",
+      "openstreetmapzimbabwe": "نەخشەی شەقامی کراوەی زیمبابۆی"
+    },
+    "_defaults": {
+      "discord": {
+        "name": "{community} دیسکۆرد"
+      },
+      "facebook": {
+        "name": "{community} لە فەیسبووک",
+        "description": "لەگەڵمان بن لەسەر فەیسبووک"
+      },
+      "github": {
+        "name": "{community} گیتهەب"
+      },
+      "gitlab": {
+        "name": "{community} گیتلاب"
+      },
+      "linkedin": {
+        "name": "{community} لە لینکدئین",
+        "description": "لەگەڵمان بن لەسەر لینکدئین"
+      },
+      "mastodon": {
+        "name": "{community} لەسەر ماستادۆن",
+        "description": "هەژماری فەرمی {community} لە ماستادۆن"
+      },
+      "meetup": {
+        "name": "{community} میتئەپ"
+      },
+      "reddit": {
+        "name": "{community} لە ڕێدیت"
+      },
+      "signal": {
+        "name": "{community} سیگنال",
+        "description": "لەگەڵمان بن لەسەر سیگنال"
+      },
+      "slack": {
+        "name": "{community} سلاک"
+      },
+      "telegram": {
+        "name": "{community} تێلیگرام",
+        "description": "لەگەڵمان بن لە تێلیگرام"
+      },
+      "youtube": {
+        "name": "{community} لە یوتیوب"
+      }
+    },
+    "at-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    },
+    "be-matrix": {
+      "description": "بۆ هەموو نەخشەسازان کراوەیە."
+    },
+    "bo-matrix": {
+      "description": "بۆ هەموو نەخشەسازان کراوەیە."
+    },
+    "de-aachen-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    },
+    "de-berlin-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    },
+    "de-bochum-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    },
+    "de-bonn-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    },
+    "de-bremen-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    },
+    "de-cologne-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    },
+    "de-dresden-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    },
+    "de-dusseldorf-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    },
+    "de-luneburg-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    },
+    "de-munchen-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    },
+    "fr-35-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    },
+    "fr-38-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    },
+    "fr-montrouge-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    },
+    "hu-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    },
+    "osm-deep-south-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    },
+    "osm-michigan-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    },
+    "osm-ohio-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    },
+    "si-ljubljana-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    },
+    "si-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    },
+    "uk-london-wiki": {
+      "description": "پەڕەی ویکیی {community}"
+    }
+  }
+}

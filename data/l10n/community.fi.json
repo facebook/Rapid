@@ -1,0 +1,76 @@
+{
+  "fi": {
+    "_communities": {
+      "openstreetmapafghanistan": "OpenStreetMap Afganistan",
+      "openstreetmapafrica": "OpenStreetMap Afrikka",
+      "openstreetmapargentina": "OpenStreetMap Argentiina",
+      "openstreetmapasia": "OpenStreetMap Aasia",
+      "openstreetmapaustria": "OpenStreetMap Itävalta",
+      "openstreetmapbelarus": "OpenStreetMap Valkovenäjä",
+      "openstreetmapbelgium": "OpenStreetMap Belgia",
+      "openstreetmapberlin": "OpenStreetMap Berliini",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap Bosnia ja Hertsegovina",
+      "openstreetmapcambodia": "OpenStreetMap Kambodža",
+      "openstreetmapcameroon": "OpenStreetMap Kamerun",
+      "openstreetmapcanada": "OpenStreetMap Kanada",
+      "openstreetmapchad": "OpenStreetMap Tšad",
+      "openstreetmapchina": "OpenStreetMap Kiina",
+      "openstreetmapcolombia": "OpenStreetMap Kolumbia",
+      "openstreetmapcotedivoire": "OpenStreetMap Norsunluurannikko",
+      "openstreetmapcroatia": "OpenStreetMap Kroatia",
+      "openstreetmapcuba": "OpenStreetMap Kuuba",
+      "openstreetmapdenmark": "OpenStreetMap Tanska",
+      "openstreetmapdominicanrepublic": "OpenStreetMap Dominikaaninen tasavalta",
+      "openstreetmapegypt": "OpenStreetMap Egypti",
+      "openstreetmapespana": "OpenStreetMap Espanja",
+      "openstreetmapethiopia": "OpenStreetMap Etiopia",
+      "openstreetmapfinland": "OpenStreetMap Suomi",
+      "openstreetmapfrance": "OpenStreetMap Ranska",
+      "openstreetmapgermany": "OpenStreetMap Saksa",
+      "openstreetmapgreece": "OpenStreetMap Kreikka",
+      "openstreetmaphungary": "OpenStreetMap Unkari",
+      "openstreetmapiceland": "OpenStreetMap Islanti",
+      "openstreetmapindia": "OpenStreetMap Intia",
+      "openstreetmapiraq": "OpenStreetMap Irak",
+      "openstreetmapireland": "OpenStreetMap Irlanti",
+      "openstreetmapitaly": "OpenStreetMap Italia",
+      "openstreetmapjapan": "OpenStreetMap Japani",
+      "openstreetmaplatinamerica": "OpenStreetMap Latinalainen Amerikka",
+      "openstreetmaplithuania": "OpenStreetMap Liettua",
+      "openstreetmaplondon": "OpenStreetMap Lontoo",
+      "openstreetmapmexico": "OpenStreetMap Meksiko",
+      "openstreetmapnetherlands": "OpenStreetMap Alankomaat",
+      "openstreetmapnorway": "OpenStreetMap Norja",
+      "openstreetmappoland": "OpenStreetMap Puola",
+      "openstreetmapportugal": "OpenStreetMap Portugali",
+      "openstreetmaprussia": "OpenStreetMap Venäjä",
+      "openstreetmapsweden": "OpenStreetMap Ruotsi",
+      "openstreetmapswitzerland": "OpenStreetMap Sveitsi",
+      "openstreetmapsyria": "OpenStreetMap Syyria",
+      "openstreetmapthailand": "OpenStreetMap Thaimaa",
+      "openstreetmapturkey": "OpenStreetMap Turkki",
+      "openstreetmapus": "OpenStreetMap Yhdysvallat"
+    },
+    "_defaults": {
+      "facebook": {
+        "description": "Liity yhteisöömme Facebookissa"
+      },
+      "linkedin": {
+        "description": "Liity yhteisöömme LinkedIn:ssä"
+      }
+    },
+    "OSM-Facebook": {
+      "description": "Pysy ajan tasalla tuoreimmista OpenStreetMap-uutisista tykkäämällä meistä Facebookissa."
+    },
+    "OSM-India-facebook": {
+      "description": "Paranna Intian OpenStreetMapia"
+    },
+    "OSMF": {
+      "name": "OpenStreetMap-säätiö",
+      "description": "OSMF on Iso-Britanniasta toimiva voittoa tavoittelematon, OpenStreetMapin toimintaa edistävä säätiö"
+    },
+    "PHXGeo-twitter": {
+      "description": "Seuraa Twitter-tiliämme osoitteessa {url}"
+    }
+  }
+}

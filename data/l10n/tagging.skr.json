@@ -1,0 +1,27 @@
+{
+  "skr": {
+    "presets": {
+      "fields": {
+        "access": {
+          "options": {
+            "private": {
+              "title": "نجی"
+            }
+          },
+          "types": {
+            "access": "سارے"
+          }
+        },
+        "access_aisle": {
+          "label": "قسم"
+        },
+        "access_simple": {
+          "options": {
+            "no": "کوئی وی کائنی",
+            "yes": "عوامی"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "sat": {
+    "_communities": {
+      "openstreetmapalba": "OpenStreetMap ᱟᱞᱵᱟ",
+      "openstreetmapalbania": "OpenStreetMap ᱟᱞᱵᱮᱱᱤᱭᱟ",
+      "openstreetmapargentina": "OpenStreetMap ᱟᱨᱡᱮᱱᱴᱤᱱᱟ",
+      "openstreetmapasia": "OpenStreetMap ᱮᱥᱤᱭᱟ"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "name": "ᱵᱮᱞ ᱡᱟᱭᱜᱟ OpenStreetMappers",
+      "description": "ᱵᱮᱭ ᱡᱟᱭᱜᱟ ᱨᱮ OpenStreetMap ᱵᱮᱥ ᱛᱮᱭᱟᱨ ᱯᱮ"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "bg": {
+    "Central-Pennsylvania-OSM": {
+      "name": "Централна Пенсилвания OSM"
+    },
+    "OSM-Chattanooga": {
+      "name": "OSM Чатануга",
+      "description": "OpenStreetMap потребителската група за Чатануга"
+    }
+  }
+}

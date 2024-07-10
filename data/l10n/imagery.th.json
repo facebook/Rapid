@@ -1,0 +1,267 @@
+{
+  "th": {
+    "imagery": {
+      "Bedzin-PL-aerial_image": {
+        "name": "Będzin: Orthophotomap 2013 (ภาพถ่ายทางอากาศ)"
+      },
+      "Bedzin-PL-buildings": {
+        "name": "Będzin: อาคาร"
+      },
+      "Bing": {
+        "description": "ภาพถ่ายทางดาวเทียม และอากาศ",
+        "name": "ภาพถ่ายทางอากาศ Bing Maps"
+      },
+      "Bytom-2012": {
+        "name": "Bytom: Orthophotomap 2012 (ภาพถ่ายทางอากาศ)"
+      },
+      "Bytom-2014": {
+        "name": "Bytom: Fotoplan 2014 (ภาพถ่ายทางอากาศ)"
+      },
+      "Bytom-2016": {
+        "name": "Bytom: Orthophotomap 2016 (ภาพถ่ายทางอากาศ)"
+      },
+      "Bytom-2018": {
+        "name": "Bytom: Orthophotomap 2018 (ภาพถ่ายทางอากาศ)"
+      },
+      "Bytom-2021": {
+        "name": "Bytom: Orthophotomap 2021 (ภาพถ่ายทางอากาศ)"
+      },
+      "Bytom-buildings": {
+        "name": "Bytom: อาคาร"
+      },
+      "Czestochowa-2011": {
+        "name": "Częstochowa: Orthophotomap 2011 (ภาพถ่ายทางอากาศ)"
+      },
+      "Czestochowa-2013": {
+        "name": "Częstochowa: Orthophotomap 2013 (ภาพถ่ายทางอากาศ)"
+      },
+      "Czestochowa-2014": {
+        "name": "Częstochowa: Orthophotomap 2014 (ภาพถ่ายทางอากาศ)"
+      },
+      "Czestochowa-2015": {
+        "name": "Częstochowa: Orthophotomap 2015 (ภาพถ่ายทางอากาศ)"
+      },
+      "Czestochowa-2016": {
+        "name": "Częstochowa: Orthophotomap 2016 (ภาพถ่ายทางอากาศ)"
+      },
+      "Czestochowa-2017": {
+        "name": "Częstochowa: Orthophotomap 2017 (ภาพถ่ายทางอากาศ)"
+      },
+      "Czestochowa-buildings": {
+        "name": "Częstochowa: อาคาร"
+      },
+      "DV_DHMV_II_HILL_25cm": {
+        "name": "Digitaal Vlaanderen DHV II, ภาพตกกระทบของแสงหลายทิศทาง 0.25 เมตร"
+      },
+      "DV_DHMV_II_SVF_25cm": {
+        "name": "Digitaal Vlaanderen DHV II, Skyview factor 0.25 เมตร"
+      },
+      "DV_OrthoPhoto": {
+        "name": "ภาพถ่ายทางอากาศ Digitaal Vlaanderen รุ่นล่าสุด"
+      },
+      "DV_OrthoPhoto_20132015_10cm": {
+        "name": "ภาพถ่ายทางอากาศ Digitaal Vlaanderen ช่วงปี 2013-2015 10 ซม."
+      },
+      "DV_OrthoPhoto_Preliminary": {
+        "name": "ภาพถ่ายทางอากาศเบื้องต้น Digitaal Vlaanderen"
+      },
+      "Dourados_Ortofotos": {
+        "description": "ภาพถ่ายทางอากาศความละเอียดสูงโดราโดส (2018) และอีกหลายเขต (2020)"
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu โดย EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2017 & 2018)"
+        },
+        "description": "ภาพถ่ายทางดาวเทียม Sentinel ที่ประมวลผลแล้ว"
+      },
+      "EOXAT2019CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu โดย EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2019)"
+        },
+        "description": "ภาพถ่ายทางดาวเทียม Sentinel ที่ประมวลผลแล้ว"
+      },
+      "EOXAT2020CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu โดย EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2020)"
+        },
+        "description": "ภาพถ่ายทางดาวเทียม Sentinel ที่ประมวลผลแล้ว"
+      },
+      "EOXAT2021CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu โดย EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2021)"
+        },
+        "description": "ภาพถ่ายทางดาวเทียม Sentinel ที่ประมวลผลแล้ว"
+      },
+      "EOXAT2022CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu โดย EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2022)"
+        },
+        "description": "ภาพถ่ายทางดาวเทียม Sentinel ที่ประมวลผลแล้ว"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "ข้อกำหนดและข้อเสนอแนะ"
+        }
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "ข้อกำหนดและข้อเสนอแนะ"
+        },
+        "description": "ภาพถ่ายเก็บถาวรของ Esri ที่อาจชัดเจนและแม่นยำกว่าเลเยอร์เริ่มต้น"
+      },
+      "Frankfurt-am-Main-2019": {
+        "attribution": {
+          "text": "สำนักงานสำรวจเมืองฟรังค์ฟวร์ทอัมไมน์"
+        },
+        "description": "ภาพถ่ายทางอากาศของเมืองฟรังค์ฟวร์ทอัมไมน์ ถ่ายเมื่อ 16 เมษายน 2019"
+      },
+      "Geodatastyrelsen_Denmark": {
+        "name": "ภาพถ่ายทางอากาศ SDFI"
+      },
+      "Geoportal2-PL-City-boundaries_WMS": {
+        "attribution": {
+          "text": "สำนักงานใหญ่มาตรวิทยาและการทำแผนที่โปแลนด์"
+        },
+        "description": "บริการแผนที่เว็บเผยแพร่การแบ่งเขตดินแดนของโปแลนด์ รวมถึงหน่วยธุรการ",
+        "name": "Geoportal 2: บริการแผนที่เว็บขอบเขตเมือง"
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "สำนักงานใหญ่มาตรวิทยาและการทำแผนที่โปแลนด์"
+        },
+        "description": "Orthophotomap ที่มีความละเอียด 10 ซม. ขึ้นไป ข้อมูลจะถูกจัดเรียงตามความละเอียดและจากนั้นตามความล่าสุด เช่น ภาพถ่ายจากปี 2012 ที่มีความละเอียด 8 ซม. จะบดบังภาพถ่ายจากปี 2019 ที่มีความละเอียด 10 ซม.",
+        "name": "Geoportal 2: ภาพถ่ายความละเอียดสูง Orthophotomap (ภาพถ่ายเก็บถาวร) (WMS)"
+      },
+      "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "attribution": {
+          "text": "สำนักงานใหญ่มาตรวิทยาและการทำแผนที่โปแลนด์"
+        },
+        "description": "Orthophotomap ที่มีความละเอียด 10 ซม. ขึ้นไป ข้อมูลจะถูกจัดเรียงตามความละเอียดและจากนั้นตามความล่าสุด เช่น ภาพถ่ายจากปี 2012 ที่มีความละเอียด 8 ซม. จะบดบังภาพถ่ายจากปี 2019 ที่มีความละเอียด 10 ซม.",
+        "name": "Geoportal 2: ภาพถ่ายความละเอียดสูง Orthophotomap (ภาพถ่ายทางอากาศ) (WMS)"
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "attribution": {
+          "text": "สำนักงานใหญ่มาตรวิทยาและการทำแผนที่โปแลนด์"
+        },
+        "description": "บริการดูการรวมหมายเลขที่อยู่แห่งชาติของ WMS ช่วยให้สามารถดาวน์โหลดภาพแผนที่ที่สร้างขึ้นบนพื้นฐานของข้อมูลเชิงพื้นที่จากทะเบียนเขตแดนของรัฐในด้านบันทึกถนนและที่อยู่"
+      },
+      "Geoportal2-PL-addres_points_WMS": {
+        "attribution": {
+          "text": "สำนักงานใหญ่มาตรวิทยาและการทำแผนที่โปแลนด์"
+        },
+        "description": "บริการดูการรวมหมายเลขที่อยู่แห่งชาติของ WMS ช่วยให้สามารถดาวน์โหลดภาพแผนที่ที่สร้างขึ้นบนพื้นฐานของข้อมูลเชิงพื้นที่จากทะเบียนเขตแดนของรัฐในด้านบันทึกถนนและที่อยู่"
+      },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "สำนักงานใหญ่มาตรวิทยาและการทำแผนที่โปแลนด์"
+        },
+        "description": "บริการเรียกดู (บริการแผนที่เว็บ, WMS) ช่วยให้สามารถดู orthophotomaps เก็บถาวรสำหรับโปแลนด์ ข้อมูลที่ให้ผ่านบริการนี้ประกอบขึ้นเป็น ortofotomapę ที่สร้างจากภาพถ่ายทางอากาศ บริการนี้ให้การสนับสนุนอินเทอร์เฟซ WMS 1.3.0",
+        "name": "Geoportal 2: Orthophotomap (ภาพถ่ายเก็บถาวร) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "attribution": {
+          "text": "สำนักงานใหญ่มาตรวิทยาและการทำแผนที่โปแลนด์"
+        },
+        "description": "บริการเรียกดู (บริการแผนที่เว็บ, WMS) ช่วยให้สามารถดู orthophotomaps เก็บถาวรสำหรับโปแลนด์ ข้อมูลที่ให้ผ่านบริการนี้ประกอบขึ้นเป็น ortofotomapę ที่สร้างจากภาพถ่ายทางอากาศ บริการนี้ให้การสนับสนุนอินเทอร์เฟซ WMS 1.3.0",
+        "name": "Geoportal 2: Orthophotomap (ภาพถ่ายทางอากาศรุ่นล่าสุด) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "attribution": {
+          "text": "สำนักงานใหญ่มาตรวิทยาและการทำแผนที่โปแลนด์"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-communes_WMS": {
+        "name": "Geoportal 2: บริการแผนที่เว็บขอบเขตขุมชน"
+      },
+      "Geoportal2-PL-boundaries-of-counties_WMS": {
+        "name": "Geoportal 2: บริการแผนที่เว็บขอบเขตมณฑล"
+      },
+      "Geoportal2-PL-boundaries-of-provinces_WMS": {
+        "name": "Geoportal 2: บริการแผนที่เว็บขอบเขตจังหวัด"
+      },
+      "Geoportal2-PL-water-pipe_WMS": {
+        "name": "Geoportal 2: บริการแผนที่เว็บท่อน้ำ"
+      },
+      "MAPNIK": {
+        "description": "เลเยอร์ OpenStreetMap พื้นฐาน",
+        "name": "OpenStreetMap (มาตรฐาน)"
+      },
+      "Naturvardsverket-protected": {
+        "description": "อุทยานแห่งชาติสวีเดน, พื้นที่สงวนธรรมชาติ และพื้นที่ปกป้องอื่น"
+      },
+      "Naturvardsverket-trails": {
+        "description": "ทางเดินเขาในพื้นที่สงวนธรรมชาติและรอบเคียงที่อัพเดทในทุกๆ วันโดยสำนักงานคุ้มครองสิ่งแวดล้อมแห่งสวีเดน"
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© เทศบาลกอเทนเบิร์ก, CC0"
+        }
+      },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© เทศบาลกอเทนเบิร์ก, CC0"
+        }
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© เทศบาลกอเทนเบิร์ก, CC0"
+        },
+        "description": "© ภาพถ่ายออร์โธสำหรับเทศบาลกอเทนเบิร์ก",
+        "name": "ภาพถ่ายออร์โธกอเทนเบิร์ก 2015"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© เทศบาลกอเทนเบิร์ก, CC0"
+        },
+        "description": "© ภาพถ่ายออร์โธสำหรับเทศบาลกอเทนเบิร์ก",
+        "name": "ภาพถ่ายออร์โธกอเทนเบิร์ก 2017"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© เทศบาลกอเทนเบิร์ก, CC0"
+        },
+        "description": "© ภาพถ่ายออร์โธสำหรับเทศบาลกอเทนเบิร์ก",
+        "name": "ภาพถ่ายออร์โธกอเทนเบิร์ก 2019"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© เทศบาลกอเทนเบิร์ก, CC0"
+        },
+        "description": "© ภาพถ่ายออร์โธสำหรับเทศบาลกอเทนเบิร์ก",
+        "name": "ภาพถ่ายออร์โธกอเทนเบิร์ก 2021"
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© เทศบาลกอเทนเบิร์ก, CC0"
+        },
+        "description": "© ภาพถ่ายออร์โธสำหรับเทศบาลกอเทนเบิร์ก",
+        "name": "ภาพถ่ายออร์โธกอเทนเบิร์กล่าสุด"
+      },
+      "kalmar-orto-2014": {
+        "attribution": {
+          "text": "© เทศบาลคัลมาร์"
+        },
+        "description": "ภาพถ่ายออร์โธของแนวฝั่งทางทิศเหนือของเทศบาลคัลมาร์ในปี 2014"
+      },
+      "kalmar-orto-2016": {
+        "attribution": {
+          "text": "© เทศบาลคัลมาร์"
+        }
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© เทศบาลคัลมาร์"
+        }
+      },
+      "linkoping-orto": {
+        "attribution": {
+          "text": "© เทศบาลลินเชอปิง"
+        }
+      },
+      "skolverket-schools": {
+        "description": "โรงเรียนสวีเดน",
+        "name": "กระทรวงศึกษาธิการสวีเดน - โรงเรียน"
+      }
+    }
+  }
+}

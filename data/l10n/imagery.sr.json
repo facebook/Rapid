@@ -1,0 +1,95 @@
+{
+  "sr": {
+    "imagery": {
+      "Bing": {
+        "description": "Сателитске и висинске слике.",
+        "name": "Бинг мапе сателитски снимци"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Услови коришћења и повратне информације"
+        },
+        "description": "Есри слике света",
+        "name": "Есри слике света"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Услови коришћења и повратне информације"
+        },
+        "description": "Есри архивске слике које могу бити јасније и тачније од подразумеваног слоја.",
+        "name": "Есри слике света (Clarity) бета"
+      },
+      "MAPNIK": {
+        "description": "Подразумевани Опенстритмап слој.",
+        "name": "Опенстритмап (стандардно)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Услови коришћења и повратне информације"
+        },
+        "name": "Мапбокс сателит"
+      },
+      "OSM_Inspector-Addresses": {
+        "name": "ОСМ инспектор: Адресе"
+      },
+      "OSM_Inspector-Geometry": {
+        "name": "ОСМ инспектор: Геометрија"
+      },
+      "OSM_Inspector-Highways": {
+        "name": "ОСМ инспектор: Путеви"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "name": "ОСМ инспектор: Област"
+      },
+      "OSM_Inspector-Places": {
+        "name": "ОСМ инспектор: Места"
+      },
+      "OSM_Inspector-Routing": {
+        "name": "ОСМ инспектор: Трасирање"
+      },
+      "OSM_Inspector-Tagging": {
+        "name": "ОСМ инспектор: Означавање"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Жута = подаци мапе јавног домена из пописа становништва САД. Црвена = Подаци нису пронађени у OpenStreetMap-у"
+      },
+      "USDA-NAIP": {
+        "attribution": {
+          "text": "Министарство пољопривреде Сједињених Држава"
+        }
+      },
+      "cyclosm": {
+        "description": "CyclOSM је стил мапе дизајниран са бициклизмом на уму. Користи OpenStreetMap податке за креирање прелепе и практичне бициклистичке карте!"
+      },
+      "gothenburg-citymap": {
+        "description": "Мапа града је прегледна мапа која описује Гетебург. Садржи опште информације о земљишту, комуникацијама, хидрографији, зградама,  адресама и називима улица, административној подели и другим текстом за оријентацију."
+      },
+      "kartverket-bygninger": {
+        "description": "INSPIRE зграде за Норевешку"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Услови коришћења и повратне информације"
+        }
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© OpenStreetMap доприносиоци, CC-BY-SA"
+        }
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© Опенстритмап доприносиоци"
+        }
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© Опенстритмап доприносиоци, CC-BY-SA"
+        }
+      },
+      "tf-landscape": {
+        "name": "Тандерфорест пејзаж"
+      }
+    }
+  }
+}

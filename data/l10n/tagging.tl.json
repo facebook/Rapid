@@ -1,0 +1,465 @@
+{
+  "tl": {
+    "presets": {
+      "categories": {
+        "category-barrier": {
+          "name": "Tampok ng mga Barrier"
+        },
+        "category-building": {
+          "name": "Tampok ng gusali"
+        },
+        "category-landuse": {
+          "name": "Mga tampok para sa gagamiting lupa"
+        },
+        "category-restriction": {
+          "name": "Mga tampok sa paghihigpit"
+        },
+        "category-route": {
+          "name": "Mga tampok para sa mga ruta"
+        }
+      },
+      "fields": {
+        "access": {
+          "label": "Pinapayagan ng access",
+          "options": {
+            "designated": {
+              "title": "Itinalagang"
+            },
+            "destination": {
+              "title": "Destinasyon"
+            },
+            "dismount": {
+              "title": "Bumaba"
+            },
+            "no": {
+              "title": "Bawal"
+            },
+            "permissive": {
+              "title": "mapagpahintulot"
+            },
+            "private": {
+              "title": "Pribado"
+            },
+            "yes": {
+              "title": "Pinapayagan"
+            }
+          },
+          "placeholder": "Hindi tinukoy",
+          "types": {
+            "access": "Lahat",
+            "bicycle": "Mga bisikleta",
+            "foot": "Paa",
+            "horse": "Mga kabayo",
+            "motor_vehicle": "Mga sasakyang de-motor"
+          }
+        },
+        "access_simple": {
+          "label": "Pinapayagan ng access"
+        },
+        "address": {
+          "placeholders": {
+            "block_number": "Numero ng blocke",
+            "block_number!jp": "Numero ng blocke",
+            "city": "Siyudad",
+            "city!jp": "Lungsod/Bayan/Barangay/Tokyo Special Ward",
+            "city!vn": "Lungsod/Bayan",
+            "country": "Bansa",
+            "county": "kondehan",
+            "county!jp": "distrito",
+            "district": "distrito",
+            "district!vn": "Borough/Bayan/Distrito",
+            "hamlet": "Barangay",
+            "housename": "Pangalan ng bahay",
+            "housenumber!jp": "Numero ng gusali./Numero ng lote.",
+            "neighbourhood": "Magkakapitbahay",
+            "place": "lugar",
+            "province": "Probinsya",
+            "province!jp": "Prefektyur",
+            "quarter": "Lugar",
+            "state": "estado",
+            "street": "Kalsada",
+            "subdistrict": "pangalawang distrito",
+            "subdistrict!vn": "Purok/Komunidad/Maliit na bayan",
+            "suburb": "Labas ng lungsod"
+          }
+        },
+        "admin_level": {
+          "label": "lebel ng administrator"
+        },
+        "aerialway": {
+          "label": "Uri"
+        },
+        "aerialway/access": {
+          "options": {
+            "both": "pareho",
+            "entry": "pagpasok",
+            "exit": "paglabas"
+          }
+        },
+        "aerialway/bubble": {
+          "label": "bulabok"
+        },
+        "aerialway/capacity": {
+          "label": "kapasidad (bawat oras)"
+        },
+        "aerialway/duration": {
+          "label": "durasyon (minuto)"
+        },
+        "aerialway/heating": {
+          "label": "iniinitan"
+        },
+        "aerialway/occupancy": {
+          "label": "Pagsaklaw"
+        },
+        "aerialway/summer/access": {
+          "label": "Access (tag-araw)",
+          "options": {
+            "both": "Pareho",
+            "entry": "Pagpasok",
+            "exit": "Paglabas"
+          }
+        },
+        "aeroway": {
+          "label": "Uri"
+        },
+        "amenity": {
+          "label": "Uri"
+        },
+        "animal_boarding": {
+          "label": "Para sa hayop"
+        },
+        "animal_breeding": {
+          "label": "Para sa hayop"
+        },
+        "animal_shelter": {
+          "label": "Para sa hayop"
+        },
+        "area/highway": {
+          "label": "Uri"
+        },
+        "artist": {
+          "label": "artista"
+        },
+        "artwork_type": {
+          "label": "Uri"
+        },
+        "backrest": {
+          "label": "sandalan"
+        },
+        "barrier": {
+          "label": "Uri"
+        },
+        "bath/open_air": {
+          "label": "bukas na hangin"
+        },
+        "bath/sand_bath": {
+          "label": "paligo ng buhangin"
+        },
+        "bath/type": {
+          "label": "espesyalidad"
+        },
+        "bench": {
+          "label": "bangko"
+        },
+        "bicycle_parking": {
+          "label": "Uri"
+        },
+        "bin": {
+          "label": "basurahan"
+        },
+        "blood_components": {
+          "label": "Mga bahagi ng dugo",
+          "options": {
+            "whole": "buong dugo"
+          }
+        },
+        "board_type": {
+          "label": "uri"
+        },
+        "boules": {
+          "label": "Uri"
+        },
+        "boundary": {
+          "label": "Uri"
+        },
+        "brand": {
+          "label": "tatak"
+        },
+        "bridge": {
+          "label": "Uri"
+        },
+        "building": {
+          "label": "Gusali"
+        },
+        "bunker_type": {
+          "label": "uri"
+        },
+        "cables": {
+          "label": "Mga kable"
+        },
+        "camera/direction": {
+          "label": "Direksyon (Paikot sa kanan)"
+        },
+        "camera/mount": {
+          "label": "Kamera Mount"
+        },
+        "camera/type": {
+          "label": "uri ng kamera",
+          "options": {
+            "dome": "simboryo",
+            "fixed": "nakapirmi",
+            "panning": "Angulo ng kamera"
+          }
+        },
+        "capacity": {
+          "label": "Kapasidad",
+          "placeholder": "50, 100, 200"
+        },
+        "castle_type": {
+          "label": "uri"
+        },
+        "clothes": {
+          "label": "Mga damit"
+        },
+        "club": {
+          "label": "Uri"
+        },
+        "collection_times": {
+          "label": "Mga oras ng koleksyon"
+        },
+        "communication_multi": {
+          "label": "Mga uri ng komunikasyon"
+        },
+        "construction": {
+          "label": "Uri"
+        },
+        "contact/webcam": {
+          "label": "URL ng webcam"
+        },
+        "content": {
+          "label": "Nilalaman"
+        },
+        "country": {
+          "label": "bansa"
+        },
+        "covered": {
+          "label": "sakop"
+        },
+        "craft": {
+          "label": "uri"
+        },
+        "crossing": {
+          "label": "Uri"
+        },
+        "currency_multi": {
+          "label": "Uri ng pera"
+        },
+        "cutting": {
+          "label": "Uri"
+        },
+        "cycleway": {
+          "label": "Mga linya ng bisikleta",
+          "options": {
+            "lane": {
+              "description": "isang linya ng bisikleta ay pinaghihiwalay mula sa trapiko sa pamamagitan ng isang may pinyang linya"
+            },
+            "opposite": {
+              "description": "Isang linya ng bisikleta ay nakakonekta sa parehong direksyon sa iisang linyang kalye"
+            },
+            "opposite_lane": {
+              "description": "Isang linya ng bisikleta ay nakakonekta sa kabilang direksyon ng trapiko"
+            },
+            "share_busway": {
+              "description": "Isang linya ng bisikleta ay naisama sa isang linya ng bus"
+            }
+          }
+        },
+        "date": {
+          "label": "Petsa"
+        },
+        "delivery": {
+          "label": "Paghahatid"
+        },
+        "denomination": {
+          "label": "Denominasyon"
+        },
+        "denotation": {
+          "label": "denotasyon"
+        },
+        "description": {
+          "label": "Paglalarawan"
+        },
+        "devices": {
+          "label": "Mga aparato"
+        },
+        "direction": {
+          "label": "Direksyon (Degrees Clockwise)"
+        },
+        "direction_clock": {
+          "label": "Direksyon"
+        },
+        "direction_vertex": {
+          "options": {
+            "both": "Pareho / Lahat"
+          }
+        },
+        "display": {
+          "label": "Ipakita"
+        },
+        "dock": {
+          "label": "uri"
+        },
+        "electrified": {
+          "options": {
+            "no": "Hindi",
+            "yes": "Oo (hindi tukoy)"
+          }
+        },
+        "emergency": {
+          "label": "Kagipitan"
+        },
+        "entrance": {
+          "label": "Uri"
+        },
+        "fee": {
+          "label": "Bayad"
+        },
+        "fence_type": {
+          "label": "Uri"
+        },
+        "fire_hydrant/type": {
+          "options": {
+            "wall": "Pader"
+          }
+        },
+        "fixme": {
+          "label": "Ayusin Mo Ako"
+        },
+        "ford": {
+          "label": "Uri"
+        },
+        "gender": {
+          "label": "Kasarian",
+          "options": {
+            "female": "Babae",
+            "male": "Lalaki"
+          },
+          "placeholder": "Hindi alam"
+        },
+        "generator/method": {
+          "label": "Paraan"
+        },
+        "generator/source": {
+          "label": "Pinagmulan"
+        },
+        "generator/type": {
+          "label": "Uri"
+        },
+        "government": {
+          "label": "Uri"
+        },
+        "hashtags": {
+          "placeholder": "#halimbawa"
+        },
+        "healthcare": {
+          "label": "Uri"
+        },
+        "highway": {
+          "label": "Uri"
+        },
+        "historic": {
+          "label": "Uri"
+        },
+        "incline_steps": {
+          "options": {
+            "down": "Baba",
+            "up": "Taas"
+          }
+        },
+        "industrial": {
+          "label": "Uri"
+        },
+        "information": {
+          "label": "Uri"
+        },
+        "internet_access": {
+          "options": {
+            "no": "Hindi",
+            "yes": "Oo"
+          }
+        },
+        "landuse": {
+          "label": "Uri"
+        },
+        "leisure": {
+          "label": "Uri"
+        },
+        "man_made": {
+          "label": "Uri"
+        },
+        "name": {
+          "label": "Pangalan"
+        },
+        "office": {
+          "label": "Uri"
+        },
+        "parking": {
+          "label": "Uri"
+        },
+        "piste/type": {
+          "label": "Uri"
+        },
+        "place": {
+          "label": "Uri"
+        },
+        "power": {
+          "label": "Uri"
+        },
+        "railway": {
+          "label": "Uri"
+        },
+        "relation": {
+          "label": "Uri"
+        },
+        "restriction": {
+          "label": "Uri"
+        },
+        "route": {
+          "label": "Uri"
+        },
+        "route_master": {
+          "label": "Uri"
+        },
+        "service": {
+          "label": "Uri"
+        },
+        "shelter_type": {
+          "label": "Uri"
+        },
+        "shop": {
+          "label": "Uri"
+        },
+        "tourism": {
+          "label": "Uri"
+        },
+        "trees": {
+          "label": "Mga puno"
+        },
+        "water": {
+          "label": "Uri"
+        },
+        "waterway": {
+          "label": "Uri"
+        },
+        "wetland": {
+          "label": "Uri"
+        }
+      },
+      "presets": {
+        "building": {
+          "name": "Gusali"
+        }
+      }
+    }
+  }
+}

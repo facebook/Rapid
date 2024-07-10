@@ -1,0 +1,847 @@
+{
+  "tr": {
+    "imagery": {
+      "Bedzin-PL-aerial_image": {
+        "attribution": {
+          "text": "Będzin'de Bölge Starost Ofisi"
+        },
+        "name": "Będzin: Ortofotomap 2013 (hava görüntüsü)"
+      },
+      "Bedzin-PL-buildings": {
+        "attribution": {
+          "text": "Będzin'de Starost Bölge Ofisi"
+        },
+        "name": "Będzin: Binalar"
+      },
+      "Bing": {
+        "description": "Uydu ve hava görüntüleri.",
+        "name": "Bing Haritalar Havadan Görünüm"
+      },
+      "Bytom-2012": {
+        "attribution": {
+          "text": "Bytom Kent Konseyi"
+        },
+        "name": "Bytom: Ortofotomap 2012 (uydu görüntüsü)"
+      },
+      "Bytom-2014": {
+        "attribution": {
+          "text": "Bytom Kent Konseyi"
+        },
+        "name": "Bytom: Fotoplan 2014 (uydu görüntüsü)"
+      },
+      "Bytom-2016": {
+        "attribution": {
+          "text": "Bytom Kent Konseyi"
+        },
+        "name": "Bytom: Ortofotomap 2016 (uydu görüntüsü)"
+      },
+      "Bytom-2018": {
+        "attribution": {
+          "text": "Bytom Kent Konseyi"
+        },
+        "name": "Bytom: Ortofotomap 2018 (uydu görüntüsü)"
+      },
+      "Bytom-2021": {
+        "attribution": {
+          "text": "Bytom Kent Konseyi"
+        },
+        "name": "Bytom: Ortofotomap 2021 (uydu görüntüsü)"
+      },
+      "Bytom-buildings": {
+        "attribution": {
+          "text": "Bytom Kent Konseyi"
+        },
+        "name": "Bytom Binalar"
+      },
+      "Czestochowa-2011": {
+        "attribution": {
+          "text": "Częstochowa Belediye Meclisi"
+        },
+        "name": "Częstochowa: Ortofotomap 2011 (uydu görüntüsü)"
+      },
+      "Czestochowa-2013": {
+        "attribution": {
+          "text": "Częstochowa Belediye Meclisi"
+        },
+        "name": "Częstochowa: Ortofotomap 2013 (uydu görüntüsü)"
+      },
+      "Czestochowa-2014": {
+        "attribution": {
+          "text": "Częstochowa Belediye Meclisi"
+        },
+        "name": "Częstochowa: Ortofotomap 2014 (uydu görüntüsü)"
+      },
+      "Czestochowa-2015": {
+        "attribution": {
+          "text": "Częstochowa Belediye Meclisi"
+        },
+        "name": "Częstochowa: Ortofotomap 2015 (uydu görüntüsü)"
+      },
+      "Czestochowa-2016": {
+        "attribution": {
+          "text": "Częstochowa Belediye Meclisi"
+        },
+        "name": "Częstochowa: Ortofotomap 2016 (uydu görüntüsü)"
+      },
+      "Czestochowa-2017": {
+        "attribution": {
+          "text": "Częstochowa Belediye Meclisi"
+        },
+        "name": "Częstochowa: Ortofotomap 2017 (uydu görüntüsü)"
+      },
+      "Czestochowa-buildings": {
+        "attribution": {
+          "text": "Częstochowa Belediye Meclisi"
+        },
+        "name": "Częstochowa: Binalar"
+      },
+      "Dourados_Ortofotos": {
+        "attribution": {
+          "text": "Dourados Belediye Binası - GeoDourados"
+        },
+        "description": "Dourados (2018) ve çeşitli bölgelerin (2020) yüksek çözünürlüklü uydu görüntüleri.",
+        "name": "Dourados Ortofotoları"
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 bulutsuz - https://s2maps.eu EOX IT Services GmbH tarafından (Değiştirilmiş Copernicus Sentinel 2017 ve 2018 verilerini içerir)"
+        },
+        "description": "İşlenmiş Sentinel Uydu görüntüleri",
+        "name": "eox.at 2018 bulutsuz"
+      },
+      "EOXAT2021CLOUDLESS": {
+        "description": "Sonradan işlenmiş Sentinel Uydusu görüntüleri."
+      },
+      "EOXAT2022CLOUDLESS": {
+        "description": "Sonradan işlenmiş Sentinel Uydusu görüntüleri."
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Şartlar & Geri Bildirim"
+        },
+        "description": "Esri Dünya Görüntüleri",
+        "name": "Esri Uydu Görüntüsü"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Şartlar & Geri Bildirim"
+        },
+        "description": "Esri, varsayılan katmandan daha net ve daha doğru olabilecek görüntüleri arşivler.",
+        "name": "Esri Uydu Görüntüsü (Net) Beta"
+      },
+      "Frankfurt-am-Main-2019": {
+        "attribution": {
+          "text": "Frankfurt am Main Şehir Araştırmacısı Ofisi"
+        },
+        "description": "Frankfurt am Main'in 16 Nisan 2019 tarihinde çekilen havadan görüntüsü",
+        "name": "Frankfurt am Main Havadan Fotoğraf 2019"
+      },
+      "Geoportal2-PL-City-boundaries_WMS": {
+        "attribution": {
+          "text": "Jeodezi ve Haritacılık Merkez Ofisi"
+        },
+        "description": "İdari birimler de dahil olmak üzere Polonya'nın bölgesel bölünme birimlerinin WMS hizmeti yayıncılığı",
+        "name": "Geoportal 2: Şehir sınırları WMS"
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Jeodezi ve Haritacılık Merkez Ofisi"
+        },
+        "description": "Çözünürlüğü 10 cm veya daha fazla olan ortofotomap. Veriler çözünürlüğe ve ardından güncelliğe göre sıralanır, örneğin 2012'den 8 cm çözünürlüğe sahip bir sayfa 2019'dan 10 cm çözünürlüğe sahip bir sayfa gönderir.",
+        "name": "Geoportal 2: Yüksek Çözünürlüklü Ortofoto Harita (arşiv görüntüleri) (WMS)"
+      },
+      "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "attribution": {
+          "text": "Jeodezi ve Haritacılık Merkez Ofisi"
+        },
+        "description": "Çözünürlüğü 10 cm veya daha fazla olan ortofotomap. Veriler çözünürlüğe ve ardından güncelliğe göre sıralanır, örneğin 2012'den 8 cm çözünürlüğe sahip bir sayfa 2019'dan 10 cm çözünürlüğe sahip bir sayfa gönderir.",
+        "name": "Geoportal 2: Yüksek Çözünürlüklü Ortofoto Harita (hava görüntüsü) (WMS)"
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "attribution": {
+          "text": "Jeodezi ve Haritacılık Merkez Ofisi"
+        },
+        "description": "WMS görüntüleme hizmeti Ulusal Adres Numaralandırma Entegrasyonu, sokak ve adres kayıtları için Ulusal Sınır Kaydı'ndaki uzamsal verilerden oluşturulan harita görüntülerinin indirilmesini sağlar.",
+        "name": "Geoportal 2 Sokak adları"
+      },
+      "Geoportal2-PL-addres_points_WMS": {
+        "attribution": {
+          "text": "Jeodezi ve Haritacılık Merkez Ofisi"
+        },
+        "description": "WMS görüntüleme hizmeti Ulusal Adres Numaralandırma Entegrasyonu, sokak ve adres kayıtları için Ulusal Sınır Kaydı'ndaki uzamsal verilerden oluşturulan harita görüntülerinin indirilmesini sağlar.",
+        "name": "Geoportal 2: Adres noktaları"
+      },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Jeodezi ve Haritacılık Merkez Ofisi"
+        },
+        "description": "Polonya bölgesi için arşivlenen ortofoto haritaların görüntülenmesini sağlayan görüntüleme hizmeti (Web Harita Hizmeti, WMS). Bu hizmet aracılığıyla kullanıma sunulan veriler, hava fotoğraflarından alınan ortofoto haritalardır. Hizmet, WMS 1.3.0 arayüzü için destek sunmaktadır.",
+        "name": "Geoportal 2: Ortofotomap (arşiv görüntüleri) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "attribution": {
+          "text": "Jeodezi ve Haritacılık Merkez Ofisi"
+        },
+        "description": "Polonya bölgesi için ortofoto haritaların görüntülenmesini sağlayan görüntüleme hizmeti (Web Harita Hizmeti, WMS). Bu hizmet aracılığıyla kullanıma sunulan veriler, hava fotoğraflarından alınan ortofoto haritalardır. Hizmet, WMS 1.3.0 arayüzü için destek sunmaktadır.",
+        "name": "Geoportal 2: Ortofotomap (en son hava görüntüleri) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "attribution": {
+          "text": "Jeodezi ve Haritacılık Merkez Ofisi"
+        },
+        "description": "Polonya bölgesi için ortofotoları görüntülemek için görüntüleme hizmeti (Web Map Tile Service,WMTS). Bu hizmet aracılığıyla kullanıma sunulan veriler, hava fotoğraflarından alınan ortofoto haritalardır.",
+        "name": "Geoportal 2: Ortofotomap (en son hava görüntüleri) (WMTS)"
+      },
+      "Geoportal2-PL-boundaries-of-communes_WMS": {
+        "attribution": {
+          "text": "Jeodezi ve Haritacılık Merkez Ofisi"
+        },
+        "description": "İdari birimler de dahil olmak üzere Polonya'nın bölgesel bölünme birimlerinin WMS hizmeti yayıncılığı",
+        "name": "Geoportal 2: Komün sınırları WMS"
+      },
+      "Geoportal2-PL-boundaries-of-counties_WMS": {
+        "attribution": {
+          "text": "Jeodezi ve Haritacılık Merkez Ofisi"
+        },
+        "description": "İdari birimler de dahil olmak üzere Polonya'nın bölgesel bölünme birimlerinin WMS hizmeti yayıncılığı",
+        "name": "Geoportal 2: İlçe sınırları WMS"
+      },
+      "Geoportal2-PL-boundaries-of-provinces_WMS": {
+        "attribution": {
+          "text": "Jeodezi ve Haritacılık Merkez Ofisi"
+        },
+        "description": "İdari birimler de dâhil olmak üzere Polonya bölgesel bölüm birimlerini yayınlayan WMS hizmeti",
+        "name": "Geoportal 2: İllerin sınırları WMS"
+      },
+      "Geoportal2-PL-buildings_WMS": {
+        "attribution": {
+          "text": "Jeodezi ve Haritacılık Genel Müdürlüğü"
+        }
+      },
+      "Geoportal2-PL-heat-pipe_WMS": {
+        "description": "Ulusal Arazi Güçlendirme Entegrasyonu hizmeti, doğrudan ilçe düzeyindeki birimlerden gelen arazi güçlendirme verilerinin sunumuna yönelik toplu bir hizmettir. Hizmet yalnızca uygun parametrelere sahip bir WMS hizmetine sahip olan ve WMS hizmetlerini NationalIntegrationOfTerrainEquipment toplu hizmetine dahil etmeye karar veren birimlerin verilerini içerir."
+      },
+      "Gliwice-2021": {
+        "name": "Gliwice: Ortofotoharita 2021 (hava görüntüsü)"
+      },
+      "Gliwice-buildings": {
+        "name": "Gliwice: Binalar"
+      },
+      "LSA-ATKIS_BU": {
+        "description": "Saksonya-Anhalt'daki binaların biçimleri"
+      },
+      "Lodz-buildings": {
+        "name": "Łódź: Binalar"
+      },
+      "MAPNIK": {
+        "attribution": {
+          "text": "© OpenStreetMap katılımcıları, ODbL 1.0"
+        },
+        "description": "Varsayılan OpenStreetMap katmanı.",
+        "name": "OpenStreetMap (Standart)"
+      },
+      "Maaamet-Estonia_Cadastre": {
+        "name": "Maa-amet (Estonya Harita ve Kadastro Kurulu) Haritası"
+      },
+      "Maaamet-Estonia_Ortho": {
+        "attribution": {
+          "text": " \nMaa-amet (Estonya Harita ve Kadastro Kurulu) ortofotosu"
+        },
+        "name": "Maa-amet (Estonya Harita ve Kadastro Kurulu) Orto (WMS)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Şartlar & Geri Bildirim"
+        },
+        "name": "Mapbox Uydu Görüntüsü"
+      },
+      "Naturvardsverket-protected": {
+        "description": "İsveç ulusal parkları, doğa koruma alanları ve diğer korunan nesne ve alanları",
+        "name": "Çevre Koruma Ajansı - Korunan Alanlar"
+      },
+      "Naturvardsverket-trails": {
+        "description": "İsveç Çevre Koruma Alansı tarafından kaydedilmiş durumuyla doğal koruma alanları içinde ya da etrafindaki günlük güncellenen patikalar",
+        "name": "Çevre Koruma Ajansı - Patikalar"
+      },
+      "OSIP": {
+        "attribution": {
+          "text": "Ohio Eyalet Geneli Görüntüleme Programı"
+        }
+      },
+      "OSIP_1ft": {
+        "attribution": {
+          "text": "Ohio Eyalet Görüntüleme Programı"
+        }
+      },
+      "OSIP_6in": {
+        "attribution": {
+          "text": "Ohio Eyalet Görüntüleme Programı"
+        },
+        "name": "Ohio Eyalet Görüntüleme Programı 6-inç"
+      },
+      "OSMUK-Cadastral-Parcels": {
+        "name": "OSMUK Kadastro Parselleri"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap katılımcıları, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Adresler"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap katılımcıları, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Geometri"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap katılımcıları, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Karayolları"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap katılımcıları, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Alan"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap katılımcıları, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Mekanlar"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap katılımcıları, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Rotalama"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap katılımcıları, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Etiketleme"
+      },
+      "Riksantikvariambetet-archaeological": {
+        "description": "Antik ve tarihsel kalıntılar ve anıtlar",
+        "name": "Riksantikvarieämbetet - Arkeolojik Anıtlar ve Sit Alanları"
+      },
+      "Riksantikvariambetet-heritage": {
+        "description": "Miras binalar ve kiliseler",
+        "name": "Riksantikvarieämbetet - Miras yapılar"
+      },
+      "Riksantikvariambetet-protected": {
+        "description": "Miras binalar ve dinsel miras yerleşimleri için koruma alanları",
+        "name": "Riksantikvarieämbetet - Koruma Altında Miras Bölgeleri"
+      },
+      "Riksantikvariambetet-ruins": {
+        "description": "Tarihi-kültürel ilgi konusu yıkıntılar",
+        "name": "Riksantikvarieämbetet - Yıkıntılar"
+      },
+      "SDFE_Overflade_Skyggekort_40cm": {
+        "name": "SDFI Yüzey Gölge Haritası (40 cm)"
+      },
+      "SDFE_Terraen_Skyggekort_40cm": {
+        "name": "SDFI Arazi Gölge Haritası (40 cm)"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "SPW(allonie)'nin en güncel hava görüntüleri"
+      },
+      "SPW_PICC": {
+        "name": "SPW(allonie) PICC sayısal görüntüler"
+      },
+      "Siemianowice_Slaskie-aerial_image": {
+        "name": "Siemianowice Śląskie: Orthophotomap (hava görüntüsü)"
+      },
+      "Siemianowice_Slaskie-buildings": {
+        "name": "Siemianowice Śląskie: Binalar"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Sarı = Genel kullanıma açık US Census harita verileri. Kırmızı = OpenStreetMap'te bulunmayan veriler",
+        "name": "TIGER Yolları 2018"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "Sarı = Genel kullanıma açık US Census harita verileri. Kırmızı = OpenStreetMap'te bulunmayan veriler",
+        "name": "TIGER Yolları 2019"
+      },
+      "USDA-NAIP": {
+        "attribution": {
+          "text": "ABD Tarım Bakanlığı"
+        },
+        "name": "Ulusal Tarım Görüntü Programı"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Karayolu: Yeşil kaplama = sınıflandırılmamış. Kahverengi kaplama = iz. Yüzey: çakıl = açık kahverengi dolgu, Asfalt = siyah, asfaltlanmış = gri, zemin = beyaz, beton = mavi, çimen = yeşil. Mevsimsel = beyaz çubuklar",
+        "name": "ABD Orman Yolları Yerleşimi"
+      },
+      "UrbISOrtho": {
+        "name": "CIRB/CIBG en yeni hava görüntülemesi"
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "Brussels UrbIS®© ile uygulandı - Dağıtım & Telif Hakkı CIRB"
+        }
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "Brussels UrbIS®© ile uygulandı - Dağıtım & Telif Hakkı CIRB"
+        }
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "Brussels UrbIS®© ile uygulandı - Dağıtım & Telif Hakkı CIRB"
+        }
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "Brussels UrbIS®© ile uygulandı - Dağıtım & Telif Hakkı CIRB"
+        }
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "Brussels UrbIS®© ile uygulandı - Dağıtım & Telif Hakkı CIRB"
+        }
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "Brussels UrbIS®© ile uygulandı - Dağıtım & Telif Hakkı CIRB"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap katılımcıları, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Bisiklet"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap katılımcıları, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Yürüyüş"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap katılımcıları, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Dağ Bisikleti"
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap katılımcıları, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Kaykay"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap katılımcıları, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Kış Sporları"
+      },
+      "Zabrze-2011": {
+        "name": "Zabrze: Orthophotomap 2011 (hava görüntüsü)"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "Hükümet verilerine dayanan Avusturya'nın temel haritası."
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "basemap.at - daha önce geoimage.at - tarafından sağlanan Orthofoto katmanı."
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "description": "basemap.at tarafından sağlanan ek açıklama yerleşimi ",
+        "name": "basemap.at Şablon"
+      },
+      "cyclosm": {
+        "description": "CyclOSM, bisikletçiliği düşünerek tasarlanmış bir harita türüdür. Güzel ve kullanışlı bir bisiklet haritası oluşturmak için OpenStreetMap verisini kullanır!"
+      },
+      "debicki-buildings": {
+        "attribution": {
+          "text": "Powiat ilçesi"
+        },
+        "name": "Powiat ilçesi: Binalar"
+      },
+      "eufar-balaton": {
+        "attribution": {
+          "text": "EUFAR Balaton ortofoto 2010"
+        },
+        "description": "Balaton Limnoloji Enstitüsü'nden 1940 jeo-etiketli fotoğraflama.",
+        "name": "EUFAR Balaton ortofotoları"
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "Göteborg Belediyesi, CC0"
+        },
+        "description": "Şehir haritası, Göteborg'u tanımlayan bir genel bakış haritasıdır. Arazi, iletişim, hidrografi, binalar, adres numaraları ve cadde adları, idari bölüm ve diğer yönlendirme metinleri hakkında genel bilgiler içerir.",
+        "name": "Göteborg Şehir haritası"
+      },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© Gothenburg yerel yönetimi, CC0"
+        },
+        "description": "Göteborg Şehri için 2017 yükseklik modeline dayalı olarak tepe gölgesi ve eğim sunan web haritası hizmeti. Piksel başına 0,5 metre çözünürlük."
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "Göteborg Belediyesi, CC0"
+        },
+        "description": "Göteborg belediyesi için Ortofoto",
+        "name": "Göteborg Ortofoto 2015"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© Göteborg Belediyesi, CC0"
+        },
+        "description": "Göteborg belediyesi için ortofoto",
+        "name": "Göteborg Ortofoto 2017"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© Göteborg Belediyesi, CC0"
+        },
+        "description": "Göteborg belediyesi için ortofoto",
+        "name": "Göteborg Ortofoto 2019"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© Göteborg Belediyesi, CC0"
+        },
+        "description": "Göteborg belediyesi için ortofoto",
+        "name": "Göteborg Ortofoto 2021"
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© Göteborg Belediyesi, CC0"
+        },
+        "description": "Göteborg belediyesi için ortofoto",
+        "name": "Gothenburg Ortofoto son"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "GSI Japonya"
+        },
+        "description": "Japonya GSI hava fotoğrafı görüntüleri. Tamamen ortorektifize edilmemiş, ancak biraz daha yeni ve / veya GSI ortogörüntülerinden farklı bir şekilde kaplanmıştır.",
+        "name": "Japonya GSI hava fotoğrafı görüntüleri"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "attribution": {
+          "text": "GSI Japonya kesintisiz fotoğraf"
+        },
+        "description": "Japonya GSI sorunsuz fotoğraf görüntüleri. GSI orto, hava fotoğrafı, afet sonrası ve diğerlerinin en son görüntülerinin koleksiyonu.",
+        "name": "Japonya GSI sorunsuz fotoğraf görüntüleri"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "GSI Japonya"
+        },
+        "description": "Japonya GSI Standart Haritası. Geniş kapsamlı.",
+        "name": "Japonya GSI Standart Harita"
+      },
+      "kalmar-orto-2014": {
+        "attribution": {
+          "text": "© Kalmar belediyesi"
+        },
+        "description": "Kalmar belediyesinin kuzey kesimi için ortofotolar 2014",
+        "name": "Kalmar Kuzey Ortofotosu 2014"
+      },
+      "kalmar-orto-2016": {
+        "attribution": {
+          "text": "© Kalmar belediyesi"
+        },
+        "description": "Kalmar Belediyesi'nin güney sahili için Ortofotolar 2016",
+        "name": "Kalmar Güney Ortofoto 2016"
+      },
+      "kalmar-orto-2018": {
+        "attribution": {
+          "text": "© Kalmar Belediyesi"
+        },
+        "description": "Kalmar belediyesinin kentsel alanları için Ortofotolar 2018",
+        "name": "Kalmar Kentsel Ortofoto 2018"
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© Kalmar Belediyesi"
+        },
+        "description": "Kalmar Belediyesi'nin kentsel alanları için ortofotolar 2020",
+        "name": "Kalmar Kentsel Ortofoto 2020"
+      },
+      "kartverket-bygninger": {
+        "description": "Norveç için INSPIRE binaları.",
+        "name": "Kartverket Binaları yer paylaşımı"
+      },
+      "kelkkareitit": {
+        "description": "OSM'den Kelkkareitit.fi kar arabası parkurları (İskandinav kapsamı)",
+        "name": "İskandinav kar arabası yerleşimi"
+      },
+      "lancucki-buildings": {
+        "attribution": {
+          "text": "Łańcut bölgesi"
+        },
+        "name": "Łańcut bölgesi: Binalar"
+      },
+      "lantmateriet-orto1960": {
+        "description": "1955–1965 dönemine ait İsveç ortofotolarından oluşan mozaik. Daha eski ve daha genç resimler ortaya çıkabilir.",
+        "name": "Lantmäteriet Tarihi Ortofoto 1980"
+      },
+      "lantmateriet-orto1975": {
+        "description": "1970-1980 dönemine ait İsveç ortofotoları mozaiği. Yapım aşamasındadır.",
+        "name": "Lantmäteriet Tarihi Ortofoto 1975"
+      },
+      "lantmateriet-topowebb": {
+        "description": "İsveç topografik haritası 1:50 000",
+        "name": "Lantmäteriet Topografik Haritası"
+      },
+      "linkoping-orto": {
+        "attribution": {
+          "text": "© Linköping Belediyesi"
+        },
+        "description": "Linköping belediyesinden ortofotolar 2010 , açık veri",
+        "name": "Linköping Ortofoto"
+      },
+      "lubaczowski-buildings": {
+        "attribution": {
+          "text": "Lubaczów bölgesi"
+        },
+        "name": "Lubaczów Bölgesi: Binalar"
+      },
+      "maaamet<TX_DOT>ee-cir_ngr": {
+        "attribution": {
+          "text": "Arazi İstatistik Ofisi'nden ormancılık ortofotosu"
+        },
+        "name": "Maa-amet Ormancılık"
+      },
+      "maaamet<TX_DOT>ee-orto": {
+        "attribution": {
+          "text": "Arazi İstatistik Ofisi ortofotosu"
+        },
+        "name": "Arazi Ofisi Orto (TMS)"
+      },
+      "maaamet<TX_DOT>ee-pohi_vr2": {
+        "attribution": {
+          "text": "Arazi İdaresi'nin genel haritası"
+        },
+        "name": "Maa-amet Temel Haritası"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Şartlar & Geri Bildirim"
+        },
+        "description": "Sadece önemli özellikler gösteriliyor.",
+        "name": "Yer Belirleyici Yerleşimi"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© OpenStreetMap katılımcıları, CC-BY-SA"
+        },
+        "name": "OpenPT Map (katman)"
+      },
+      "openrailwaymap": {
+        "attribution": {
+          "text": "Görselleştirme: Açık Demiryolu hartiası © Harita verisi OpenStreetMap katılımcıları"
+        },
+        "description": "OpenStreetMap verilerine dayalı demiryolu altyapısını gösteren yükleme görüntüleri"
+      },
+      "openrailwaymap-maxspeeds": {
+        "attribution": {
+          "text": "Görselleştirme: Açık Demiryolu hartiası © Harita verisi OpenStreetMap katılımcıları"
+        },
+        "description": "OpenStreetMap verilerine dayalı demiryolu hız sınırlarını gösteren yükleme görüntüleri",
+        "name": "OpenRailwayMap Maksimum Hızları"
+      },
+      "openrailwaymap-signalling": {
+        "attribution": {
+          "text": "Görselleştirme: Açık Demiryolu hartiası © Harita verisi OpenStreetMap katılımcıları"
+        },
+        "description": "OpenStreetMap verilerine dayalı demiryolu sinyallerini gösteren yükleme görüntüleri",
+        "name": "OpenRailwayMap Sinyali"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© OpenStreetMap katılımcıları"
+        },
+        "description": "OpenStreetMap'e yüklenmiş GPS izleri.",
+        "name": "OpenStreetMap GPS izleri"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© OpenStreetMap katılımcıları, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (Alman Stil)"
+      },
+      "poznan-ortofotomapa2014": {
+        "attribution": {
+          "text": "Jeodezi ve Kentsel Kadastro Yönetimi GEOPOZ"
+        },
+        "name": "Poznan: Ortofotomap 2014 (hava görüntüsü)"
+      },
+      "poznan-ortofotomapa2016": {
+        "attribution": {
+          "text": "Jeodezi ve Kentsel Kadastro Yönetimi GEOPOZ"
+        },
+        "name": "Poznan: Ortofotomap 2016 (hava görüntüsü)"
+      },
+      "poznan-ortofotomapaBiezaca": {
+        "attribution": {
+          "text": "Jeodezi ve Kentsel Kadastro Yönetimi GEOPOZ"
+        },
+        "name": "Poznań: Ortofoto Harita Akımı (hava görüntüsü)"
+      },
+      "przemysl-aerial": {
+        "attribution": {
+          "text": "Przemyśl Şehri"
+        },
+        "name": "Przemyśl: Ortofotomap (hava görüntüsü)"
+      },
+      "przemysl-buildings": {
+        "attribution": {
+          "text": "Przemyśl Şehri"
+        },
+        "name": "Przemyśl: Binalar"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, Veriler © OpenStreetMap katılımcıları"
+        },
+        "name": "Adres Yok"
+      },
+      "rzeszowski-aerial": {
+        "attribution": {
+          "text": "Rzeszow İlçesi"
+        },
+        "name": "Rzeszow İlçesi: Ortofotomap (hava görüntüsü)"
+      },
+      "rzeszowski-buildings": {
+        "attribution": {
+          "text": "Rzeszow İlçesi"
+        },
+        "name": "Rzeszow İlçesi: Binalar"
+      },
+      "scb-industrial": {
+        "attribution": {
+          "text": "© Statistics Sweden, CC0"
+        },
+        "description": "Büyük ölçekli ve endüstriyel arazi kullanımı ile karakterize edilen coğrafi olarak sınırlandırılmış alanlar",
+        "name": "SCB - Sanayi bölgeleri"
+      },
+      "scb-settlements": {
+        "attribution": {
+          "text": "© Statistics Sweden, CC0"
+        },
+        "description": "50-199 kişinin yaşadığı ve evler arasında 150 metreden fazla mesafe bulunmayan bitişik bina alanları",
+        "name": "SCB - Küçük Yerleşimler"
+      },
+      "scb-urban": {
+        "attribution": {
+          "text": "© Statistics Sweden, CC0"
+        },
+        "description": "Haneler arasında 500 metreden az mesafe bulunan en az 200 kişilik insan yerleşimleri",
+        "name": "SCB - Kentsel Alanlar"
+      },
+      "scb-vacation": {
+        "attribution": {
+          "text": "© Statistics Sweden, CC0"
+        },
+        "description": "Çoğunlukla tatil evlerinden oluşan bitişik alanlar; aralarındaki mesafenin 150 metreyi geçmediği en az 50 tatil evinden oluşan bir koleksiyon",
+        "name": "SCB - Tatil Evi Alanları"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "Harita © skobbler, Veriler © OpenStreetMap destekçileri"
+        }
+      },
+      "skolverket-schools": {
+        "description": "İsveç okulları.",
+        "name": "Ropczycko-sędziszowski bölgesi"
+      },
+      "skoterleder": {
+        "description": "Kar arabası yolları",
+        "name": "İsveç kar arabası haritası"
+      },
+      "sropczyce-buildings": {
+        "attribution": {
+          "text": "Ropczycko-sędziszowski bölgesi"
+        },
+        "name": "Ropczycko-sędziszowski bölgesi: Binalar"
+      },
+      "stalowowolski-buildings": {
+        "attribution": {
+          "text": "Stalowa Wola bölgesi"
+        },
+        "name": "Stalowa Wola bölgesi: Binalar"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "Harita karoları Stamen Design tarafından, CC BY 3.0 altında. Veriler OpenStreetMap tarafından, ODbL altında"
+        },
+        "name": "Stamen Arazi"
+      },
+      "stockholm-orto": {
+        "attribution": {
+          "text": "© Stokholm belediyesi, CC0"
+        },
+        "description": "Stockholm Belediyesi'nden ortofotolar 2018, CC0 lisansı",
+        "name": "Stokholm Ortofoto"
+      },
+      "susono_shizuoka_jp_orthophoto": {
+        "attribution": {
+          "text": "Susono ortofotosu"
+        },
+        "description": "Susono  tarafından açık veri olarak yayınlanan hava fotoğrafları.",
+        "name": "Susono şehir ortofotosu"
+      },
+      "svk-electricity-network": {
+        "description": "İsveç elektrik iletim ağı.",
+        "name": "SVK - Elektrik Şebekesi"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Harita © Thunderforest, Veriler © OpenStreetMap destekçileri"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Harita © Thunderforest, Veriler © OpenStreetMap destekçileri"
+        },
+        "name": "Thunderforest Arazi"
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "haritalar © Thunderforest, veri © OpenStreetMap katkıda bulunanlar"
+        },
+        "name": "Thunderforest Açık Hava"
+      },
+      "trafikverket-baninfo": {
+        "description": "İsveç demiryolu ağı, yan hatlar dahil",
+        "name": "Trafikverket Demiryolu Ağı"
+      },
+      "trafikverket-baninfo-option": {
+        "description": "Harita katmanları için çeşitli seçeneklere sahip İsveç demiryolu ağı",
+        "name": "Trafikverket Demiryolu Ağı Seçenekleri"
+      },
+      "trafikverket-vagnat": {
+        "description": "İsveç NVDB yol ağı",
+        "name": "Trafikverket Yol Ağı"
+      },
+      "trafikverket-vagnat-extra": {
+        "description": "İsveç NVDB ekstra ayrıntılar: Otoyol referansı, trafiği sakinleştirme, dinlenme alanı, otobüs durağı, köprü, tünel, hız kamerası",
+        "name": "Trafikverket Yol Ağı extra"
+      },
+      "trafikverket-vagnat-option": {
+        "description": "Harita katmanları için çeşitli seçeneklere sahip İsveç NVDB yol ağı",
+        "name": "Trafikverket Yol Ağı Seçenekleri"
+      },
+      "wroclaw-orto2015": {
+        "attribution": {
+          "text": "Wroclaw Belediye Binası"
+        },
+        "name": "Wroclaw: Ortofoto haritası 2015 (uydu görüntüsü)"
+      },
+      "wroclaw-orto2018": {
+        "attribution": {
+          "text": "Wroclaw Belediye Binası"
+        },
+        "name": "Wroclaw: Ortofoto haritası 2018 (havadan görüntü)"
+      }
+    }
+  }
+}

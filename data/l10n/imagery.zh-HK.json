@@ -1,0 +1,196 @@
+{
+  "zh-HK": {
+    "imagery": {
+      "Bing": {
+        "description": "衛星和航攝圖"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "條款和意見"
+        },
+        "name": "Esri world 世界航攝圖"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "條款和意見"
+        },
+        "description": "Esri 之前的航攝圖可能比預設圖層會更清楚和更準確。",
+        "name": "Esri World (Clarity) Beta 航攝圖"
+      },
+      "MAPNIK": {
+        "description": "預設的 OpenStreetMap 圖層。",
+        "name": "OpenStreetMap（標準）"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "條款和意見"
+        },
+        "name": "Mapbox 衛星圖"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 貢獻者，CC-BY-SA"
+        },
+        "name": "OSM 檢查器：地址"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 貢獻者，CC-BY-SA"
+        },
+        "name": "OSM 檢查器：幾何"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 貢獻者，CC-BY-SA"
+        },
+        "name": "OSM 檢查器：道路"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 貢獻者，CC-BY-SA"
+        },
+        "name": "OSM 檢查器：範圍"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 貢獻者，CC-BY-SA"
+        },
+        "name": "OSM 檢查器：地點"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 貢獻者，CC-BY-SA"
+        },
+        "name": "OSM 檢查器：路徑"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 貢獻者，CC-BY-SA"
+        },
+        "name": "OSM 檢查器：標籤"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "SPW(allonie) 最新空照圖"
+      },
+      "SPW_PICC": {
+        "name": "SPW(allonie) PICC 數值圖"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "name": "美國森林道路圖層"
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap 貢獻者，CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: 單車"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap 貢獻者，CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: 遠足"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap 貢獻者，CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: 越野單車"
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap 貢獻者，CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: 溜冰"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap 貢獻者，CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: 冬季運動"
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "由 basemap.at 提供的 Orthofoto 圖層。geoimage.at 的 \"繼承者\"。"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "GSI 日本"
+        }
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "attribution": {
+          "text": "GSI 日本無縫照片"
+        }
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "GSI 日本"
+        },
+        "name": "日本 GSI 標準地圖"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "條款和意見"
+        },
+        "description": "顯示主要的特徵以協助您定位。",
+        "name": "定位器覆蓋層"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© OpenStreetMap 貢獻者，CC-BY-SA"
+        },
+        "name": "OpenPT 地圖（覆蓋層）"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© OpenStreetMap 貢獻者"
+        },
+        "description": "上傳至OpenStreetMap的公開 GPS 軌跡。",
+        "name": "OpenStreetMap GPS 軌跡"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© OpenStreetMap 貢獻者，CC-BY-SA"
+        },
+        "name": "OpenStreetMap（德國格式）"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole，資料 ©OpenStreetMap 貢獻者"
+        },
+        "name": "QA 無地址"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© 區塊：skobbler 地圖資料：OpenStreetMap 貢獻者"
+        }
+      },
+      "skoterleder": {
+        "description": "Snowmobile 路徑",
+        "name": "Snowmobile 地圖瑞典"
+      },
+      "stamen-terrain-background": {
+        "name": "Stamen 地形"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "地圖 © Thunderforest，資料 © OpenStreetMap 貢獻者"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "地圖 © Thunderforest，資料 © OpenStreetMap 貢獻者"
+        }
+      },
+      "trafikverket-baninfo": {
+        "description": "瑞典鐵路網，包含支線"
+      },
+      "trafikverket-baninfo-option": {
+        "description": "包含多個選項的地圖圖層的瑞典鐵路網",
+        "name": "Trafikverket Railway Network 選項"
+      },
+      "trafikverket-vagnat": {
+        "description": "Swedish NVDB 道路網絡"
+      }
+    }
+  }
+}

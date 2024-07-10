@@ -1,0 +1,34 @@
+{
+  "lt": {
+    "cape-coast-youthmappers": {
+      "description": "Sek mus per Twitter: {url}"
+    },
+    "de-berlin-mailinglist": {
+      "name": "Berlynas Mailing List"
+    },
+    "OSM-Chattanooga": {
+      "name": "OSM Čatanuga"
+    },
+    "OSM-Colorado": {
+      "name": "OpenStreetMap Koloradas"
+    },
+    "OSM-Seattle": {
+      "name": "OpenStreetMap Siatlas"
+    },
+    "OSM-SoCal": {
+      "name": "OpenStreetMap Pietinė Kalifornija"
+    },
+    "OSM-Tampa-Bay": {
+      "name": "OpenStreetMap Tampos įlanka"
+    },
+    "OSM-Utah": {
+      "name": "OpenStreetMap Juta"
+    },
+    "OSM-Wyoming": {
+      "name": "OpenStreetMap Vajomingas"
+    },
+    "OSMF": {
+      "name": "OpenStreetMap Fondas"
+    }
+  }
+}

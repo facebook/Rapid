@@ -1,0 +1,26 @@
+{
+  "pa": {
+    "presets": {
+      "fields": {
+        "address": {
+          "placeholders": {
+            "city": "ਸ਼ਹਿਰ"
+          }
+        },
+        "cuisine": {
+          "options": {
+            "indian": "ਭਾਰਤੀ"
+          }
+        },
+        "name": {
+          "label": "ਨਾਮ"
+        }
+      },
+      "presets": {
+        "amenity/place_of_worship/muslim": {
+          "name": "ਮਸਜਿਦ\nਮਸੀਤ"
+        }
+      }
+    }
+  }
+}

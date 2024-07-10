@@ -1,0 +1,195 @@
+{
+  "lv": {
+    "_communities": {
+      "openstreetmapafghanistan": "OpenStreetMap Afganistāna",
+      "openstreetmapafrica": "OpenStreetMap Āfrika",
+      "openstreetmapalba": "OpenStreetMap Alba (Skotija)",
+      "openstreetmapalbania": "OpenStreetMap Albānija",
+      "openstreetmapargentina": "OpenStreetMap Argentīna",
+      "openstreetmaparmenia": "OpenStreetMap Armēnija",
+      "openstreetmapasia": "OpenStreetMap Āzija",
+      "openstreetmapaustria": "OpenStreetMap Austrija",
+      "openstreetmapbangladesh": "OpenStreetMap Bangladeša",
+      "openstreetmapbelarus": "OpenStreetMap Baltkrievija",
+      "openstreetmapbelgium": "OpenStreetMap Beļģija",
+      "openstreetmapbelize": "OpenStreetMap Beliza",
+      "openstreetmapbenin": "OpenStreetMap Benina",
+      "openstreetmapberlin": "OpenStreetMap Berlīne",
+      "openstreetmapbochum": "OpenStreetMap Bohuma",
+      "openstreetmapbolivia": "OpenStreetMap Bolīvija",
+      "openstreetmapbonn": "OpenStreetMap Bonna",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap Bosnija un Hercegovina",
+      "openstreetmapbrasil": "OpenStreetMap Brazīlija",
+      "openstreetmapbrasilia": "OpenStreetMap Brazilja",
+      "openstreetmapbremen": "OpenStreetMap Brēmene",
+      "openstreetmapbulgaria": "OpenStreetMap Bulgārija",
+      "openstreetmapburkinafaso": "OpenStreetMap Burkinafaso",
+      "openstreetmapcambodia": "OpenStreetMap Kambodža",
+      "openstreetmapcameroon": "OpenStreetMap Kamerūna",
+      "openstreetmapcanada": "OpenStreetMap Kanāda",
+      "openstreetmapcastillayleon": "OpenStreetMap Kastīlija un Leona",
+      "openstreetmapcatalancountries": "OpenStreetMap Katalāņu zemes",
+      "openstreetmapceara": "OpenStreetMap Seara",
+      "openstreetmapchad": "OpenStreetMap Čada",
+      "openstreetmapchile": "OpenStreetMap Čīle",
+      "openstreetmapchina": "OpenStreetMap Ķīna",
+      "openstreetmapcologne": "OpenStreetMap Ķelne",
+      "openstreetmapcolombia": "OpenStreetMap Kolumbija",
+      "openstreetmapcomunitatvalenciana": "OpenStreetMap Valensijas apgabals",
+      "openstreetmapcostarica": "OpenStreetMap Kostarika",
+      "openstreetmapcotedivoire": "OpenStreetMap Kotdivuāra",
+      "openstreetmapcroatia": "OpenStreetMap Horvātija",
+      "openstreetmapcuba": "OpenStreetMap Kuba",
+      "openstreetmapdenmark": "OpenStreetMap Dānija",
+      "openstreetmapdjibouti": "OpenStreetMap Džibuti",
+      "openstreetmapdominicanrepublic": "OpenStreetMap Dominikānas Republika",
+      "openstreetmapdresden": "OpenStreetMap Drēzdene",
+      "openstreetmapdusseldorf": "OpenStreetMap Diseldorfa",
+      "openstreetmapecuador": "OpenStreetMap Ekvadora",
+      "openstreetmapegypt": "OpenStreetMap Ēģipte"
+    },
+    "al-maptime-tirana": {
+      "name": "Maptime Tirāna",
+      "description": "Ap kartēšanu organizēti sociālie notikumi - iesācēji laipni lūgti!",
+      "extendedDescription": "Maptime ir atvērta mācību vide visiem zināšanu līmeņiem, dodot mācību atbalstu iesācējiem. Maptime ir gan elastīgs, gan strukturēts, veidojot vietu kartēšanas konsultācijām, darbnīcām, ejošiem projektiem ar vienu mērķi un neatkarīgam/sadarbīgam darba laikam."
+    },
+    "Bahia-telegram": {
+      "extendedDescription": "Pievienojies kopienai lai uzzinātu vairāk par OpenStreetMap, uzdod jautājumus vai piedalies saietos. Visi ir gaidīti!"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "name": "Līča rajona OpenStreetMappers",
+      "description": "Uzlabo OpenStreetMap Sanfrancisko līča rajonā."
+    },
+    "be-matrix": {
+      "description": "Visi kartētāji laipni aicināti!"
+    },
+    "be-meetup": {
+      "description": "Dzīvie saieti visiem, kam interesē OpenStreetMap",
+      "extendedDescription": "Fiziskie saieti ir laba vieta, kur satikt citus kartētājus, uzdot jautājumus un daudz iemācīties. It sevišķi gaidīti ir jaunie atbalstītāji!"
+    },
+    "cape-coast-youthmappers": {
+      "name": "Cape Coasta universitātes YouthMappers",
+      "description": "Seko mums Twitterī: {url}"
+    },
+    "Central-Pennsylvania-OSM": {
+      "name": "Centrālās Pensilvānijas OSM"
+    },
+    "czech-community": {
+      "description": "Kartes portāls, mājaslapa un kontakinformācija OSM biedriem Čehijā"
+    },
+    "de-berlin-mailinglist": {
+      "name": "Berlīnes e-pasta saraksts"
+    },
+    "de-ostwestfalen-lippe-mailinglist": {
+      "name": "OWL e-pasta saraksts",
+      "description": "Šis ir e-pasta saraksts Ostwestfalen-Lippe OSM kopienai"
+    },
+    "DF-telegram": {
+      "extendedDescription": "Pievienojies kopienai lai uzzinātu vairāk par OpenStreetMap, uzdod jautājumus vai piedalies saietos. Visi ir gaidīti!"
+    },
+    "GeoPhilly": {
+      "description": "Saiets karšu entuziastiem Filadelfijas apkārtnē",
+      "extendedDescription": "GeoPhilly apvieno izstrādātājus, ģeogrāfus, datu nūģus, atvērtā pirmkoda entuziastus, civilos hakerus un karšu atkarīgos kopējā karšu mīlestībā  un to izteiktajiem stāstiem. Ja tu izmanto kartes savā darbā, vai vienkārši gribi uzzināt vairāk, tad šis saiets ir priekš tevis! Mūsu pasākumu mērķis ir būt atvērtiem, draudzīgiem, izglītojošiem un sociāliem, un tie iet no laimīgām stundām līdz ātrām runām un pat darbnīcām. Nāc un izveido diversu, iedvesmojošu kopienu Filadelfijā kopā ar mums!"
+    },
+    "hu-meetup": {
+      "description": "Platforma saietu organizēšanai Ungārijā"
+    },
+    "mappa-mercia-group": {
+      "name": "Mappa Mercia vietējā grupa",
+      "description": "Mājas OpenStreetMap entuziastiem Midlendā"
+    },
+    "no-irc": {
+      "description": "Čata telpa kartētājiem un OpenStreetMap lietotājiem, izstrādātājiem un entuziastiem Norvēģijā"
+    },
+    "Nottingham-OSM-pub-meetup": {
+      "name": "Austrummidlendas (Notingemas) Ikmēneša bāra saiets",
+      "description": "Sociālais saiets priekš Austrummidlendas  kartētājiem un lietotājiem"
+    },
+    "osm-at": {
+      "description": "Platforma informācijai par OpenStreetMap Austrijā"
+    },
+    "OSM-Colorado": {
+      "name": "OpenStreetMap Kolorādo",
+      "description": "Kartētāji un OpenStreetMap lietotāji ASV Kolorādo štatā"
+    },
+    "osm-de": {
+      "description": "Platforma informācijai par OpenStreetMap Vācijā"
+    },
+    "OSM-Facebook": {
+      "description": "Spied patīk facebookā, lai saņemtu ziņas un atjauninājumus par OpenStreetMap."
+    },
+    "OSM-India-facebook": {
+      "description": "Uzlabo OpenStreetMap Indijā",
+      "extendedDescription": "Kartē indijā? Ir jautājumi, gribi sazināties ar mūsu kopienu? Pievienojies {url}. Visi ir gaidīti!"
+    },
+    "OSM-India-Puducherry-Facebook": {
+      "name": "Brīvas Programmatūras un Aparatūras Kustība - Facebook",
+      "description": "FSHM Facebook lapa, lai uzzinātu par kopienas notikumiem un  aktivitātēm",
+      "extendedDescription": "FSHM organizē saietus jebkam, kas ir saistīts ar brīvu programmatūru/aparatūru, tehnoloģiju, aktīvismu un OpenStreetMap. Facebook lapa ir labākais veids kā turēties kontaktā ar mūsu notikumiem."
+    },
+    "OSM-India-Puducherry-Matrix": {
+      "name": "Brīvas Programmatūras un Aparatūras Kustība - Matrix",
+      "description": "FSHM Riot grupa, lai diskutētu, dalītos un atjaunotu kartēšanas aktivitātes un notikumus ap Pudučerri.",
+      "extendedDescription": "FSHM kopienas biedri dalās ar saviem OSM labojumiem / pieredzi caur Riot.im grupu. Šo grupu arī izmanto lai diskutētu par brīvu aparatūru / programmatūru, tehnoloģiju un aktīvismu. "
+    },
+    "OSM-india-twitter": {
+      "description": "Mēs esam viena tvīta attālumā: {url}"
+    },
+    "OSM-japan-facebook": {
+      "description": "Kartētāji un OpenStreetMap lietotāji Japānā"
+    },
+    "OSM-japan-website": {
+      "description": "Kartētāji un OpenStreetMap lietotāji Japānā"
+    },
+    "osm-mg-facebook": {
+      "description": "Malgašu Facebook grupa cilvēkiem, kas interesējas par OpenStreetMap."
+    },
+    "OSM-PE": {
+      "description": "Jaunumi un resursi OpenStreetMap Peru kopienai"
+    },
+    "OSM-Rome-meetup": {
+      "description": "Uzlabo OpenStreetMap Romas apkārtnē",
+      "extendedDescription": "Mēs vēlamies kļūt par resursu, kurā cilvēki var diskutēt un dalīties ar zināšanām par brīvu ģeogrāfisku datu izmantošanu, it sevišķi OpenStreetMap un atvērtā koda  ģeotelpisko programmatūru, kas uztur, rediģē un parāda ģeogrāfiskos datus, un to izmantošanu Lacio."
+    },
+    "OSM-Telegram": {
+      "description": "Pievienojies OpenStreetMap Telegram globālai supergrupai šeit: {url}"
+    },
+    "OSM-TH-CNX-meetup": {
+      "name": "OSM saiets Chiang Mai",
+      "description": "Neregulārs OpenStreetMap kopienas saiets Chiang Mai",
+      "extendedDescription": "OpenStreetMap kopienas biedri satiekas ik pa pāris mēnešiem Chiang Mai. Sazienies ar mums un apskati {url} lai redzētu kad notiek nākošais saiets."
+    },
+    "OSM-US-Slack": {
+      "description": "Visi ir laipni aicināti! Piesakies {signupUrl}"
+    },
+    "OSMF": {
+      "name": "OpenStreetMap Fonds",
+      "description": "OSMF ir Lielbritānijā bāzēta bezpeļņas organizācija, kas atbalsta OpenStreetMap Projektu"
+    },
+    "PHXGeo-meetup": {
+      "name": "PHXGeo Saiets"
+    },
+    "PHXGeo-twitter": {
+      "name": "PHXGeo Twitteris",
+      "description": "Seko mums Twitterī: {url}"
+    },
+    "RS-telegram": {
+      "extendedDescription": "Pievienojies kopienai lai uzzinātu vairāk par OpenStreetMap, uzdod jautājumus vai piedalies saietos. Visi ir gaidīti!"
+    },
+    "talk-mg": {
+      "description": "Vieta, kur Madagaskaras OpenStreetMap lietotāji, kopienas un kartētāji var dalīties un diskutēt."
+    },
+    "ym-Central-Washington-University": {
+      "name": "Ģeogrāfijas Klubs"
+    },
+    "ym-Oklahoma-State-University": {
+      "name": "Ģeogrāfijas Klubs"
+    },
+    "ym-University-of-Maryland-College-Park": {
+      "name": "Ģeogrāfijas Klubs"
+    },
+    "ym-Western-Michigan-University": {
+      "name": "Ģeogrāfijas Klubs"
+    }
+  }
+}

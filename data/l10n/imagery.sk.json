@@ -1,0 +1,384 @@
+{
+  "sk": {
+    "imagery": {
+      "Bing": {
+        "description": "Satelitné a letecké zábery",
+        "name": "Bing letecké zábery"
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 bez oblakov – https://s2maps.eu – od spoločnosti EOX IT Services GmbH (obsahuje upravené dáta Copernicus Sentinel 2017 a 2018)"
+        },
+        "description": "Dodatočne upravené snímky satelitu Sentinel.",
+        "name": "eox.at 2018 bez oblakov"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Podmienky & pripomienky"
+        },
+        "description": "Esri snímky sveta",
+        "name": "Esri snímky sveta"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Podmienky a pripomienky"
+        },
+        "description": "Archív snímok Esri, ktoré môžu byť jasnejšie a presnejšie než východzia hladina.",
+        "name": "Snímky sveta Esri (Clarity) Beta"
+      },
+      "MAPNIK": {
+        "attribution": {
+          "text": "© OpenStreetMap prispievatelia, ODbL 1.0"
+        },
+        "description": "Štandardná vrstva OpenStreetMap.",
+        "name": "OpenStreetMap (Štandardná)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Podmienky & pripomienky"
+        },
+        "name": "Mapbox satelitné"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap prispievatelia, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Adresy"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap prispievatelia, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Geometria"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap prispievatelia, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Cesty"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap prispievatelia, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Plochy"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap prispievatelia, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Miesta"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap prispievatelia, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Nevigovanie"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap prispievatelia, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Označenia"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "SPW(Valónsko) najnovšie letecké snímky"
+      },
+      "SPW_PICC": {
+        "name": "SPW(Valónsko) PICC numerické snímky"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Žltá = Verejne dostupné mapové údaje od US Census. Červená = Dáta nenájdené v OpenStreetMap.",
+        "name": "Cesty TIGER 2018"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "Žltá = Verejne dostupné mapové údaje od US Census. Červená = Dáta nenájdené v OpenStreetMap.",
+        "name": "Cesty TIGER 2019"
+      },
+      "USDA-NAIP": {
+        "name": "Národný program poľnohospodárskych snímok"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Diaľnica: Zelené orámovanie = nezaradené. Hnedé orámovanie = poľná cesta. Povrch: štrk = svetlohnedá výplň, asfalt = čierna, spevnená = šedá, zem = biela, betón = modrá, tráva = zelená. Sezónne = biele pruhy",
+        "name": "Vrstva lesných ciest USA"
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "Realizované formou Bruselského UrbIS® © - Distribúcia a autorské práva CIRB"
+        }
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "Realizované formou Bruselského UrbIS® © - Distribúcia a autorské práva CIRB"
+        }
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "Realizované formou Bruselského UrbIS® © - Distribúcia a autorské práva CIRB"
+        }
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "Realizované formou Bruselského UrbIS® © - Distribúcia a autorské práva CIRB"
+        }
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "Realizované formou Bruselského UrbIS® © - Distribúcia a autorské práva CIRB"
+        }
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "Realizované formou Bruselského UrbIS® © - Distribúcia a autorské práva CIRB"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap prispievatelia, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Cyklistika"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap prispievatelia, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Turistika"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap prispievatelia, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Horské bicykle"
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap prispievatelia, CC by-SA 3.0"
+        }
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap prispievatelia, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Zimné športy"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "Základná mapa Rakúska na základe vládnych údajov."
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Letecké snímky poskytnuté od basemap.at. Nástupca záberov geoimage.at."
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "description": "Prekrytie anotácií poskytuje basemap.at.",
+        "name": "Prekrytie basemap.at"
+      },
+      "eufar-balaton": {
+        "attribution": {
+          "text": "Ortofoto EUFAR Balaton 2010"
+        },
+        "description": "Fotografie so zemepisnými súradnicami od Balaton Limnological Institute z roku 1940.",
+        "name": "Ortofoto EUFAR Balaton"
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© oblasť Gothenburg, licencia CC0"
+        },
+        "description": "Mapa mesta je prehľadná mapa, ktorá popisuje Göteborg. Obsahuje všeobecné informácie o pozemkoch, komunikáciách, hydrografii, budovách, adresných číslach a názvoch ulíc, administratívnom členení a ďalšom orientačnom texte.",
+        "name": "Mestská mapa Gothenburg"
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© Miestna správa Gothenburg, CC0"
+        },
+        "description": "Otrofotomapa od miestnej správy Gothenburg"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "GSI Japonsko"
+        },
+        "description": "Letecké snímky Japonska od GSI. Ne celkom vyladené, ale trochu novšie, prípadne s iným pokrytím než snímky Japonska (GSI).",
+        "name": "Letecké snímky Japonska (GSI)"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "attribution": {
+          "text": "Bezošvé fotosnímky Japonska (GSI)"
+        },
+        "description": "Bezošvé snímky Japonska od GSI. Kolekcia nejnovějších snímků GSI (ortofoto, letecké) po nešťastí a ďalšie.",
+        "name": "Bezošvé snímky Japonska (GSI)"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "GSI Japonsko"
+        },
+        "description": "Štandardná mapa Japonska (GSI). Rozsiahle pokrytie.",
+        "name": "Štandardná mapa Japonska (GSI)"
+      },
+      "kalmar-orto-2014": {
+        "attribution": {
+          "text": "© Miestna správa Kalmar"
+        },
+        "description": "Letecké snímky severného pobrežia oblasti Kalmar, 2014",
+        "name": "Letecké snímky Kalmar sever, 2014"
+      },
+      "kalmar-orto-2016": {
+        "attribution": {
+          "text": "© Miestna správa Kalmar"
+        },
+        "description": "Letecké snímky južného pobrežia oblasti Kalmar, 2016",
+        "name": "Letecké snímky Kalmar jh 2016"
+      },
+      "kalmar-orto-2018": {
+        "attribution": {
+          "text": "© miestna správa Kalmar"
+        },
+        "description": "Letecké snímky obývaných zón oblasti Kalmar, 2018",
+        "name": "Mestské ortofoto Kalmar, 2018"
+      },
+      "kelkkareitit": {
+        "description": "Kelkkareitit.fi - OSM mapa trás pre snežné skútre (pokrytie - Škandinávia)",
+        "name": "Prekrytie trás pre snežné s´kútre - Škandinávia"
+      },
+      "lantmateriet-orto1960": {
+        "description": "Mozaika Švédskych leteckých snímok z obdobia 1955–1965. Môže miestami obsahovať staršie aj novšie snímky.",
+        "name": "Lantmäteriet historická ortofotomapa 1960"
+      },
+      "lantmateriet-orto1975": {
+        "description": "Mozaika Švédských leteckých snímok z obdobia 1970–1980. Pripravuje sa.",
+        "name": "Historické letecké snímky Lantmäteriet z roku 1975"
+      },
+      "lantmateriet-topowebb": {
+        "description": "Topografická mapa Švédska 1:50 000",
+        "name": "Lantmäteriet topografická mapa"
+      },
+      "linkoping-orto": {
+        "attribution": {
+          "text": "© Miestna správa Linköping"
+        },
+        "description": "Letecké snímky oblasti Linköping z roku 2010, voľné dielo",
+        "name": "Ortofotomapa Linköpingu"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Podmienky & pripomienky"
+        },
+        "description": "Zobraziť hlavné objekty pre lepšiu orientáciu.",
+        "name": "Lokátorová vrstva"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© OpenStreetMap prispievatelia, CC-BY-SA"
+        },
+        "name": "OpenPT mapa (prekrytie)"
+      },
+      "openrailwaymap": {
+        "attribution": {
+          "text": "Zobrazenie: OpenRailwayMap, © Mapové údaje: přispěvatelia OpenStreetMap"
+        },
+        "description": "Prekrývajúca vrstva zobrazujúca železničnú infraštruktúru z údajov OpenStreetMap"
+      },
+      "openrailwaymap-maxspeeds": {
+        "attribution": {
+          "text": "Zobrazenie: OpenRailwayMap, © Mapové údaje prispievatelia OpenStreetMap"
+        },
+        "description": "Prekrývajúca vrstva zobrazujúca železničné rýchlostné limity z údajov OpenStreetMap",
+        "name": "Maximálne rýchlosti OpenRailwayMap"
+      },
+      "openrailwaymap-signalling": {
+        "attribution": {
+          "text": "zobrazenie: OpenRailwayMap, © mapové údaje: prispievatelia OpenStreetMap"
+        },
+        "description": "Prekrývajúca vrstva zobrazujúca železničné návestia z údajov OpenStreetMap",
+        "name": "Návestia OpenRailwayMap"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© OpenStreetMap prispievatielia"
+        },
+        "description": "Verejné GPS stopy nahrané do OpenStreetMap.",
+        "name": "OpenStreetMap GPS stopy"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© OpenStreetMap prispievatelia, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (Nemecký štýl)"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, Údaje ©OpenStreetMap prispievatelia"
+        },
+        "name": "QA bez adries"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Dlaždice: skobbler Mapové údaje: OpenStreetMap prispievatelia"
+        }
+      },
+      "skoterleder": {
+        "description": "Trasy pre snežné skútre",
+        "name": "Mapa Švédska pre snežné skútre"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "Mapové dlaždice od Stamen Design, licencia CC BY 3.0. Data od OpenStreetMap, licencia ODbL"
+        },
+        "name": "Stamen terén"
+      },
+      "stockholm-orto": {
+        "attribution": {
+          "text": "© Miestna správa Stockholm, licencia CC0"
+        },
+        "name": "Ortofoto snímky mesta Štokholm"
+      },
+      "susono_shizuoka_jp_orthophoto": {
+        "attribution": {
+          "text": "Ortofoto snímky mesta Susono"
+        },
+        "description": "Letecké fotografie zverejnené mestom Susono City ako otvorené dáta.",
+        "name": "Ortofoto snímky mesta Susono"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Mapa © Thunderforest, Údaje © OpenStreetMap prispievatelia"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Mapa © Thunderforest, Údaje © OpenStreetMap prispievatelia"
+        },
+        "name": "Thunderforest Krajina"
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Mapy © Thunderforest, Údaje © OpenStreetMap prispievatelia"
+        },
+        "name": "Outdoor mapa Thunderforest"
+      },
+      "trafikverket-baninfo": {
+        "description": "Švédská železničná sieť, včetne vlečiek",
+        "name": "Železničná sieť Trafikverket"
+      },
+      "trafikverket-baninfo-option": {
+        "description": "Švédská železničná sieť s viacerými možnosťami mapových vrstiev",
+        "name": "Voľby železničnej siete Trafikverket"
+      },
+      "trafikverket-vagnat": {
+        "description": "Švédska cestná sieť NVDB",
+        "name": "Cestná sieť Trafikverket"
+      },
+      "trafikverket-vagnat-extra": {
+        "description": "Detailná Švédska mapa NVDB: diaľnice, spomaľovanie dopravy, odpočívadlá, autobusové zastávky, mosty, tunely, radary",
+        "name": "Cestná sieť extra Trafikverket"
+      },
+      "trafikverket-vagnat-option": {
+        "description": "Švédska cestná sieť NVDB s viacerými možnosťami mapových vrstiev",
+        "name": "Možnosti cestnej siete Trafikverket"
+      },
+      "wroclaw-orto2018": {
+        "attribution": {
+          "text": "Mestský úrad Wroclaw"
+        },
+        "name": "Wroclaw: ortofotomapa 2018 (vzdušné zábery)"
+      }
+    }
+  }
+}

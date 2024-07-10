@@ -357,10 +357,7 @@ export class SaveMode extends AbstractMode {
     const context = this.context;
     const l10n = context.systems.l10n;
 
-    this._saveLoading = uiLoading(context)
-      .message(l10n.tHtml('save.uploading'))
-      .blocking(true);
-
+    this._saveLoading = uiLoading(context).blocking(true).message(l10n.t('save.uploading'));
     context.container().call(this._saveLoading);  // block input during upload
   }
 

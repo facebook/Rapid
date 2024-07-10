@@ -1,0 +1,421 @@
+{
+  "ar": {
+    "imagery": {
+      "Bing": {
+        "description": "الصور الجوية والقمر الصناعي.",
+        "name": "الصور الجوية من Bing"
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 بدون سُحب - https://s2maps.eu by EOX IT Services GmbH (يحتوي على بيانات Copernicus Sentinel المعدلة 2017 & 2018)"
+        },
+        "description": "صور القمر الصناعي Sentinel بعد المعالجة.",
+        "name": "eox.at 2018 بدون غيوم"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "الشروط والملاحظات"
+        },
+        "name": "صور العالم من ايزري"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "الشروط والملاحظات"
+        },
+        "description": "تقوم ايزري بأرشفة الصور التي قد تكون أكثر وضوحًا ودقة من الطبقة الافتراضية.",
+        "name": "صور العالم من ايزري (الواضحة) نسخة تجريبية"
+      },
+      "LSA-DOP20": {
+        "description": "صورة جوية من ولاية سكسونيا-أنهالت ، دقة 20 سم"
+      },
+      "LocalAuthorities_RightsOfWay": {
+        "attribution": {
+          "text": "يحتوي على معلومات القطاع العام المرخص لها بموجب ترخيص الحكومة المفتوحة v3.0."
+        },
+        "description": "الحقوق العامة لبيانات الطريق الصادرة عن السلطات المحلية ، كما تم تجميعها في rowmaps.com",
+        "name": "الحقوق العامة للطريق"
+      },
+      "MAPNIK": {
+        "attribution": {
+          "text": "© مساهمون خريطة الشارع المفتوحة ، ODbL 1.0"
+        },
+        "description": "الطبقة الافتراضية لخرائط الشارع المفتوحة.",
+        "name": "خرائط الشارع المفتوحة (القياسية)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "الشروط والملاحظات"
+        },
+        "name": "الأقمار الصناعية لماب بوكس"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, المساهمين في خرائط الشارع المفتوحة, CC-BY-SA"
+        },
+        "name": "مفتش خريطة الشارع المفتوحة : تدقيق العناوين"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, المساهمين في خرائط الشارع المفتوحة, CC-BY-SA"
+        },
+        "name": "مفتش خريطة الشارع المفتوحة : التدقيق الهندسي"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, المساهمين في خرائط الشارع المفتوحة, CC-BY-SA"
+        },
+        "name": "مفتش خريطة الشارع المفتوحة : تدقيق الطرق السريعة"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH ، المساهمون في OpenStreetMap ، CC-BY-SA"
+        },
+        "name": "مفتش خريطة الشارع المفتوحة : المناطق والمساحات"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH ، المساهمون في OpenStreetMap ، CC-BY-SA"
+        },
+        "name": "مفتش خريطة الشارع المفتوحة : الأماكن"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH ، المساهمون في OpenStreetMap ، CC-BY-SA"
+        },
+        "name": "مفتش خريطة الشارع المفتوحة : التوجيه"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH ، المساهمون في OpenStreetMap ، CC-BY-SA"
+        },
+        "name": "مفتش خريطة الشارع المفتوحة : الوسوم وأنواع الأشياء"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "SPW (allonie) أحدث الصور الجوية"
+      },
+      "SPW_PICC": {
+        "name": "SPW (allonie) الصور الرقمية العددية PICC"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "أصفر = بيانات خريطة المجال العام من تعداد الولايات المتحدة. أحمر = البيانات غير موجودة في OpenStreetMap",
+        "name": "طرق تايجر 2018"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "أصفر = بيانات خريطة المجال العام من تعداد الولايات المتحدة. أحمر = البيانات غير موجودة في OpenStreetMap",
+        "name": "طرق تايجر 2019"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "أصفر = بيانات خريطة المجال العام من تعداد الولايات المتحدة. أحمر = البيانات غير موجودة في OpenStreetMap"
+      },
+      "USDA-NAIP": {
+        "name": "البرنامج الوطني للصور الزراعية"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "الطريق السريع: الغلاف الأخضر = غير مصنف. غلاف بني = مسار. السطح: الحصى = ملء بني فاتح ، الأسفلت = أسود ، مرصوف = رمادي ، الأرض = أبيض ، الخرسانة = أزرق ، عشب = أخضر. موسمي = أشرطة بيضاء",
+        "name": "طبقة خريطة طرق الغابات الأمريكية"
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "تم تحقيقه عن طريق Brussels UrbIS® © - التوزيع وحقوق النشر CIRB"
+        },
+        "name": "أورثو سيتي 2016"
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "تم تحقيقه عن طريق Brussels UrbIS® © - التوزيع وحقوق النشر CIRB"
+        },
+        "name": "أورثو سيتي 2017"
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "تم تحقيقه عن طريق Brussels UrbIS® © - التوزيع وحقوق النشر CIRB"
+        },
+        "name": "أورثو سيتي 2018"
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "تم تحقيقه عن طريق Brussels UrbIS® © - التوزيع وحقوق النشر CIRB"
+        },
+        "name": "أورثو سيتي 2019"
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "تم تحقيقه عن طريق Brussels UrbIS® © - التوزيع وحقوق النشر CIRB"
+        }
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "تم تحقيقه عن طريق Brussels UrbIS® © - التوزيع وحقوق النشر CIRB"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org ، المساهمون في OpenStreetMap ، CC by-SA 3.0"
+        },
+        "name": "المسارات المعلمة: الدراجات"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org ، المساهمون في OpenStreetMap ، CC by-SA 3.0"
+        },
+        "name": "المسارات المعلمة: المشي الخلوي"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org ، المساهمون في OpenStreetMap ، CC by-SA 3.0"
+        },
+        "name": "المسارات المعلمة: للدراجات الجبلية"
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org ، المساهمون في OpenStreetMap ، CC by-SA 3.0"
+        },
+        "name": "المسارات المعلمة: التزلج"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org ، المساهمون في OpenStreetMap ، CC by-SA 3.0"
+        },
+        "name": "المسارات المعلمة: الرياضات الشتوية"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "الخريطة الأساسية للنمسا ، بناءً على البيانات الحكومية."
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "تم توفير طبقة Orthofoto بواسطة basemap.at. \"خليفة\" صور geoimage.at."
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "description": "طبقات التعليقات التوضيحية المقدمة من basemap.at.",
+        "name": "طبقة خريطة basemap.at"
+      },
+      "eufar-balaton": {
+        "attribution": {
+          "text": "يوفار بالاتون orthophoto 2010"
+        },
+        "description": "تصوير عام 1940 بعلامات جغرافية من معهد بالاتون ليمنولوجي."
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© بلدية جوتنبرج ، CC0"
+        },
+        "description": "خريطة المدينة هي خريطة عامة تصف مدينة جوتنبرج. يحتوي على معلومات عامة حول الأرض والاتصالات والهيدروغرافيا والمباني وأرقام العناوين وأسماء الشوارع والتقسيم الإداري ونصوص التوجيه الأخرى.",
+        "name": "خريطة مدينة جوتنبرج"
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© بلدية جوتنبرج ، CC0"
+        },
+        "description": "Orthophoto لبلدية جوتنبرج"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "GSI اليابان"
+        },
+        "description": "اليابان صور GSI airphoto. لم يتم تقويمه بالكامل ، ولكنه أحدث قليلاً و / أو مغطى بشكل مختلف عن GSI ortho Imagery.",
+        "name": "اليابان صور GSI airphoto"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "attribution": {
+          "text": "GSI Japan صورة سلسة"
+        },
+        "description": "اليابان GSI صور سلسة. مجموعة من أحدث صور GSI ortho و airphoto وما بعد الكوارث وغيرها.",
+        "name": "اليابان GSI صور سلسة"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "GSI اليابان"
+        },
+        "description": "خريطة اليابان GSI القياسية. مغطى على نطاق واسع.",
+        "name": "خريطة اليابان GSI القياسية"
+      },
+      "kalmar-orto-2014": {
+        "attribution": {
+          "text": "© بلدية كالمار"
+        },
+        "description": "تقويم العظام للساحل الشمالي لبلدية كالمار 2014",
+        "name": "كالمار نورث أورثوفوتو 2014"
+      },
+      "kalmar-orto-2016": {
+        "attribution": {
+          "text": "© بلدية كالمار"
+        },
+        "description": "تقويم العظام للساحل الجنوبي لبلدية كالمار 2016",
+        "name": "كالمار جنوب أورثوفوتو 2016"
+      },
+      "kalmar-orto-2018": {
+        "attribution": {
+          "text": "© بلدية كالمار"
+        },
+        "description": "تقويم العظام للمناطق الحضرية لبلدية كالمار 2018",
+        "name": "كالمار أوربان أورثوفوتو 2018"
+      },
+      "kelkkareitit": {
+        "description": "مسارات عربات الثلوج Kelkkareitit.fi من خريطة الشارع المفتوحة لاسكندنافيا",
+        "name": "تراكب عربة الجليد الاسكندنافية"
+      },
+      "lantmateriet-orto1960": {
+        "attribution": {
+          "text": "© Lantmäteriet، CC0"
+        },
+        "description": "فسيفساء لأورثوفوتو السويدية من الفترة 1955-1965. قد تظهر الصور الأقدم والأصغر سنا."
+      },
+      "lantmateriet-orto1975": {
+        "attribution": {
+          "text": "© Lantmäteriet، CC0"
+        },
+        "description": "فسيفساء من صور العظام السويدية من الفترة 1970-1980. قيد الإنشاء."
+      },
+      "lantmateriet-topowebb": {
+        "attribution": {
+          "text": "© Lantmäteriet، CC0"
+        },
+        "description": "الخريطة الطبوغرافية للسويد 1:50000",
+        "name": "خريطة Lantmäteriet الطبوغرافية"
+      },
+      "linkoping-orto": {
+        "attribution": {
+          "text": "© بلدية لينشوبينغ"
+        },
+        "description": "Orthophotos من بلدية Linköping 2010 ، البيانات المفتوحة",
+        "name": "لينشوبينغ أورثوفوتو"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "الشروط والملاحظات"
+        },
+        "description": "عرض العناصر الرئيسية لارشادك ومساعدتك",
+        "name": "محدد تراكب الطبقات"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© مساهمو خرائط الشارع المفتوحة، رخصة المشاع الإبداعي"
+        },
+        "name": "خريطة OpenPT (تراكب)"
+      },
+      "openrailwaymap": {
+        "attribution": {
+          "text": "التقديم: OpenRailwayMap ، © بيانات الخريطة المساهمون في OpenStreetMap"
+        },
+        "description": "صور تراكب توضح البنية التحتية للسكك الحديدية بناءً على بيانات OpenStreetMap",
+        "name": "خريطة السكك الحديدية المفتوحة"
+      },
+      "openrailwaymap-maxspeeds": {
+        "attribution": {
+          "text": "التقديم والعرض: OpenRailwayMap ، © بيانات الخريطة المساهمون في OpenStreetMap"
+        },
+        "description": "صور متراكبة تعرض حدود سرعة السكك الحديدية بناءً على بيانات OpenStreetMap",
+        "name": "السرعات القصوى لخرائط سكك الحديد المفتوحة"
+      },
+      "openrailwaymap-signalling": {
+        "attribution": {
+          "text": "التقديم والعرض: OpenRailwayMap ، © بيانات الخريطة المساهمون في OpenStreetMap"
+        },
+        "description": "تراكب الصور التي تعرض إشارات السكك الحديدية بناءً على بيانات OpenStreetMap",
+        "name": "إشارات خرائط سكك الحديد المفتوحة"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "مساهمو خرائط الشارع المفتوحة ©"
+        },
+        "description": "آثار مسارات جي بي إس العامة المرفوعة إلى خرائط الشارع المفتوحة.",
+        "name": "آثار مسارات جي بس إس خرائط الشارع المفتوحة"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© مساهمو خرائط الشارع المفتوحة، رخصة المشاع الإبداعي"
+        },
+        "name": "خرائط الشارع المفتوحة (النمط الألماني)"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "سايمون بول ، بيانات مساهموا خرائط الشارع المفتوحة ©."
+        },
+        "name": "ضمان الجودة: لا يوجد عنوان"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© البلاط: بيانات الخريطة Skobbler: المساهمون في OpenStreetMap"
+        },
+        "name": "سكوبلير"
+      },
+      "skoterleder": {
+        "description": "مسارات عربات الثلج",
+        "name": "خريطة السويد: الثلج"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "رسم الخرائط بواسطة Stamen Design ، بموجب CC BY 3.0. البيانات بواسطة OpenStreetMap ، ضمن ODbL"
+        },
+        "name": "ستامن تيرين"
+      },
+      "stockholm-orto": {
+        "attribution": {
+          "text": "© بلدية ستوكهولم ، CC0"
+        },
+        "name": "ستوكهولم Orthophoto"
+      },
+      "susono_shizuoka_jp_orthophoto": {
+        "attribution": {
+          "text": "مدينة سوسونو orthophoto"
+        },
+        "description": "الصور الجوية الصادرة عن مدينة سوسونو كبيانات مفتوحة.",
+        "name": "مدينة سوسونو orthophoto"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Maps © Thunderforest, Data © مساهموا خرائط الشارع المفتوحة"
+        }
+      },
+      "tf-landscape": {
+        "name": "المناظر الطبيعية الغابات"
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Maps © Thunderforest، Data © المساهمون في OpenStreetMap"
+        },
+        "name": "غابة رعدية في الهواء الطلق"
+      },
+      "trafikverket-baninfo": {
+        "attribution": {
+          "text": "© إدارة النقل السويدية ، CC0"
+        },
+        "description": "شبكة السكك الحديدية السويدية ، بما في ذلك جوانب",
+        "name": "شبكة سكة حديد Trafikverket"
+      },
+      "trafikverket-baninfo-option": {
+        "attribution": {
+          "text": "© إدارة النقل السويدية ، CC0"
+        },
+        "description": "شبكة سكك حديدية سويدية بها عدة خيارات لطبقات الخريطة",
+        "name": "خيارات شبكة سكة حديد Trafikverket"
+      },
+      "trafikverket-vagnat": {
+        "attribution": {
+          "text": "© إدارة النقل السويدية ، CC0"
+        },
+        "description": "شبكة الطرق السويدية NVDB",
+        "name": "شبكة الطرق Trafikverket"
+      },
+      "trafikverket-vagnat-extra": {
+        "attribution": {
+          "text": "© إدارة النقل السويدية ، CC0"
+        },
+        "description": "تفاصيل إضافية عن NVDB السويدية: مرجع الطريق السريع ، تهدئة حركة المرور ، منطقة الراحة ، محطة الحافلات ، الجسر ، النفق ، كاميرا السرعة",
+        "name": "شبكة الطرق Trafikverket الاضافية"
+      },
+      "trafikverket-vagnat-option": {
+        "attribution": {
+          "text": "© إدارة النقل السويدية ، CC0"
+        },
+        "description": "شبكة طرق NVDB السويدية مع العديد من الخيارات لطبقات الخريطة",
+        "name": "خيارات شبكة الطريق Trafikverket"
+      },
+      "wroclaw-orto2018": {
+        "attribution": {
+          "text": "قاعة مدينة فروتسواف"
+        },
+        "name": "Wrocław: Orthophotomap 2018 (صورة جوية)"
+      }
+    }
+  }
+}

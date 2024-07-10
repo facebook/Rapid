@@ -1,0 +1,133 @@
+{
+  "hr": {
+    "imagery": {
+      "Bing": {
+        "description": "Satelitske i zračne snimke."
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Uvjeti i povratne informacije"
+        },
+        "name": "Esri World snimke"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Uvjeti i povratne informacije"
+        }
+      },
+      "MAPNIK": {
+        "description": "Zadani OpenStreetMap sloj.",
+        "name": "OpenStreetMap (Standardni)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Uvjeti i povratne informacije"
+        }
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap doprinositelji, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Adrese"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap doprinositelji, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Geometrija"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap doprinositelji, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Ceste"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap doprinositelji, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Područja"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap doprinositelji, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Mjesta"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap doprinositelji, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Određivanje rute"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap doprinositelji, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Označavanje"
+      },
+      "Waymarked_Trails-Cycling": {
+        "name": "Waymarked Trails: Biciklizam"
+      },
+      "Waymarked_Trails-Hiking": {
+        "name": "Waymarked Trails: Planinarenje"
+      },
+      "Waymarked_Trails-Skating": {
+        "name": "Waymarked Trails: Klizanje"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "name": "Waymarked Trails: Zimski sportovi"
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Ortofoto sloj omogućen od basemap.at. \"Nasljednik\" geoimage.at snimaka.",
+        "name": "basemap.at Ortofoto"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Uvjeti i povratne informacije"
+        },
+        "description": "Prikazuje sloj glavnih elemenata za lakše orijentiranje na udaljenom prikazu.",
+        "name": "Sloj za lociranje"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© OpenStreetMap doprinositelji, CC-BY-SA"
+        },
+        "name": "OpenPT karta (preklop)"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© OpenStreetMap doprinositelji"
+        },
+        "description": "Javni GNSS tragovi postavljeni na OpenStreetMap.",
+        "name": "OpenStreetMap GNSS tragovi"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© OpenStreetMap doprinositelji, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (Njemački stil)"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, Podaci ©OpenStreetMap doprinositelji"
+        }
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Sličice: skobbler Podaci karte: OpenStreetMap doprinositelji"
+        }
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Karte © Thunderforest, Podaci © OpenStreetMap doprinositelji"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Karte © Thunderforest, Podaci © OpenStreetMap doprinositelji"
+        }
+      }
+    }
+  }
+}

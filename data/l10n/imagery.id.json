@@ -1,0 +1,48 @@
+{
+  "id": {
+    "imagery": {
+      "Bing": {
+        "description": "Citra satelit dan udara"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Ketentuan & Saran"
+        },
+        "name": "Citra satelit Esri World"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Ketentuan & Saran"
+        },
+        "description": "Arsip citra Esri mungkin lebih bersih dan lebih akurat daripada layer default."
+      },
+      "MAPNIK": {
+        "name": "OpenStreetMap (Standar)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Ketentuan & Saran"
+        },
+        "name": "Satelit Mapbox"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Kuning = Data peta publik dari sensus Amerika. Merah = Data tidak ditemukan di OpenStreetMap"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "Kuning = Data peta publik dari sensus Amerika. Merah = Data tidak ditemukan di OpenStreetMap"
+      },
+      "USDA-NAIP": {
+        "name": "Program Nasional Pemetaan Pertanian "
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Jalan tol: Berwarna hijau = tidak bisa diklasifikasikan. Berwarna coklat = jalur. Permukaan: jalan makadam = coklat muda, Aspal = hitam, trotoar=putih, beton = biru, semak = hijau. Musiman = salur putih"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "GSI Jepang"
+        },
+        "name": "Peta standar GSI Jepang"
+      }
+    }
+  }
+}

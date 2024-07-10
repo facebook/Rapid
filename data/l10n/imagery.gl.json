@@ -1,0 +1,381 @@
+{
+  "gl": {
+    "imagery": {
+      "Bing": {
+        "description": "Imaxes satelitais e aéreas."
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 sen nubes - https://s2maps.eu polo EOX IT Services GmbH (Contén os datos do Copernicus Sentinel modificados no 2017 e 2018)"
+        },
+        "description": "Imaxes satelitais post-procesadas do Sentinel",
+        "name": "eox.at 2018 sen nubes"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Termos e opinións"
+        },
+        "name": "Imaxes mundiais do Esri"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Termos e opinións"
+        },
+        "description": "Arquivo de imaxes do Esri que pode que sexan máis claras e máis precisas que a súa capa por defecto.",
+        "name": "Imaxes mundiais do Esri (Clarity) Beta"
+      },
+      "MAPNIK": {
+        "description": "Capa OpenStreetMap por defecto.",
+        "name": "OpenStreetMap (Estándar)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Termos e opinións"
+        },
+        "name": "Mapbox Satélite"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contribuíntes do OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Enderezos"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contribuíntes do OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Xeometría"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contribuíntes do OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Estradas"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contribuíntes do OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Área"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contribuíntes do OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Lugares"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contribuíntes do OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Roteiros"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contribuíntes do OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Etiquetado"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "Imaxes aéreas máis recentes do SPW(allonie)"
+      },
+      "SPW_PICC": {
+        "name": "Imaxes numéricas PICC do SPW(allonie)"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Amarelo = Datos do mapa de dominio público do Censo dos Estados Unidos. Vermello = Datos non atopados no OpenStreetMap",
+        "name": "Estradas do TIGER 2018"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "Amarelo = Datos do mapa de dominio público do censo dos EE.UU. Vermello = Datos non atopados no OpenStreetMap",
+        "name": "Estradas TIGER 2019"
+      },
+      "USDA-NAIP": {
+        "name": "Programa Nacional de Imaxes de Agricultura"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Estrada: marco verde = sen clasificar. marco marrón = pista. Superficie: grava = recheo marrón claro, asfalto = negro, pavimentado = gris, terra = branco, formigón = azul, herba/pasto = verde. Estacional = barras brancas",
+        "name": "Sobreposición de estradas forestais dos EE.UU."
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "Feito por medio do Brussels UrbIS®© - Distribución e Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "Feito por medio do Brussels UrbIS®© - Distribución e Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "Feito a través do Bruselas UrbIS® © - Distribución e Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "Feito por medio do Brussels UrbIS® © - Distribución e Copyright CIRB"
+        },
+        "name": "UrbIS-Ortofoto 2019"
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "Feito por medio do Brussels UrbIS®© - Distribución e Copyright CIRB"
+        }
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "Feito por medio do Brussels UrbIS®© - Distribución e Copyright CIRB"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, contribuíntes do OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Marcador de Pistas: Ciclismo"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, contribuíntes do OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Marcador de Pistas: Excursionismo"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, contribuíntes do OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Marcador de Pistas: MTB"
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, contribuíntes do OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Marcador de Pistas: Skate"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, contribuíntes do OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Marcadores de Pistas: Deportes de inverno"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "Mapa base de Austria, baseado nos datos gobernamentais."
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Capa ortofoto fornecida polo basemap.at  \"Sucesor\" de imaxes do geoimage.at.",
+        "name": "Ortofoto basemap.at"
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "description": "Sobreposición de anotación fornecida por basemap.at.",
+        "name": "Sobreposición basemap.at"
+      },
+      "eufar-balaton": {
+        "attribution": {
+          "text": "Ortofotos do EUFAR Balaton 2010"
+        },
+        "description": "Imaxe xeo-etiquetada do 1940 do Instituto Limnolóxico Balaton.",
+        "name": "Ortofotos do EUFAR Balaton"
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© Concello de Gotemburgo, CC0"
+        },
+        "description": "O mapa da cidade é un mapa xeral que describe Gotemburgo. Contén información xeral acerca dos terreos, comunicacións, hidrografía, edificios, números de enderezo, nomes de rúas, división administrativa e outros textos orientativos.",
+        "name": "Mapa da cidade de Gotemburgo"
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© Concello de Gotemburgo, CC0"
+        },
+        "description": "Ortofoto para o concello de Gotemburgo"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "Xapón GSI"
+        },
+        "description": "Imaxes aéreas do Xapón GSI. Non está ortorrectificado de xeito completo, pero é un chisco máis recente e/ou está cuberto de xeito diferente que as ortoimaxes do GSI.",
+        "name": "Imaxes aéreas do Xapón GSI"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "attribution": {
+          "text": "Imaxes sen ortorectificar do GSI Xapón"
+        },
+        "description": "Imaxes sen ortorectificar do GSI Xapón. A colección das últimas imaxes ortográficas, imaxe aérea, postdesastre e outros do GSI.",
+        "name": "Imaxes sen ortorectificar do GSI Xapón"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "Xapón GSI"
+        },
+        "description": "Xapón GSI Mapa Estándar. Amplamente cuberto.",
+        "name": "Mapa estándar do Xapón GSI"
+      },
+      "kalmar-orto-2014": {
+        "attribution": {
+          "text": "© Municipio de Kalmar"
+        },
+        "description": "Ortofotos da costa norte do municipio de Kalmar 2014.",
+        "name": "Ortofoto do norte de Kalmar 2014"
+      },
+      "kalmar-orto-2016": {
+        "attribution": {
+          "text": "© Municipio de Kalmar"
+        },
+        "description": "Ortofotos da costa sur do municipio de Kalmar 2016.",
+        "name": "Ortofoto do sur de Kalmar 2016"
+      },
+      "kalmar-orto-2018": {
+        "attribution": {
+          "text": "© Municipio de Kalmar"
+        },
+        "description": "Ortofotos de áreas urbás do municipio de Kalmar 2018.",
+        "name": "Ortofotos Urbás Kalmar 2018"
+      },
+      "kelkkareitit": {
+        "description": "Kelkkareitit.fi camiños de motoneve do OSM (cobertura nórdica)",
+        "name": "Capa de transparencia motoneve nórdica"
+      },
+      "lantmateriet-orto1960": {
+        "description": "Mosaico de ortofotos suecas do período 1955-1965. Pódense obter imaxes máis antigas e máis novas.",
+        "name": "Ortofotos históricas Lantmäteriet 1960"
+      },
+      "lantmateriet-orto1975": {
+        "description": "Mosaico de ortofotos suecas do período 1970-1980. Baixo construción.",
+        "name": "Lantmäteriet Ortofoto Histórica 1975"
+      },
+      "lantmateriet-topowebb": {
+        "description": "Mapa topografico de Suecia 1:50 000",
+        "name": "Mapa topográfico do Lantmäteriet"
+      },
+      "linkoping-orto": {
+        "attribution": {
+          "text": "© Municipio do Linköping"
+        },
+        "description": "Ortofotos do municipio de Linköping 2010, datos abertos",
+        "name": "Ortofotos de Linköping"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Termos e opinións"
+        },
+        "description": "Amosa os elementos importantes para axudarche a orientarte.",
+        "name": "Sobreposición do localizador"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© contribuíntes do OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Mapa OpenPT (sobreposición)"
+      },
+      "openrailwaymap": {
+        "attribution": {
+          "text": "Representación: OpenRailwayMap, Datos do mapa © Contribuíntes do OpenStreetMap"
+        },
+        "description": "Imaxes sobrepostas que amosan a infraestrutura ferroviaria baseada nos datos do OpenStreetMap"
+      },
+      "openrailwaymap-maxspeeds": {
+        "attribution": {
+          "text": "Representación: OpenRailwayMap, Datos do mapa © Contribuíntes do OpenStreetMap"
+        },
+        "description": "Imaxes sobrepostas que amosan os límites de velocidade dos ferrocarrís baseados ​​nos datos do OpenStreetMap",
+        "name": "Velocidades máximas do OpenRailwayMap"
+      },
+      "openrailwaymap-signalling": {
+        "attribution": {
+          "text": "Representación: OpenRailwayMap, Datos do mapa © Contribuíntes do OpenStreetMap"
+        },
+        "description": "Imaxess sobrepostas que amosan sinais ferroviarios baseadas nos datos do OpenStreetMap",
+        "name": "Sinalización do OpenRailwayMap"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© contribuíntes do OpenStreetMap"
+        },
+        "description": "Pistas GPS públicas subidas ó OpenStreetMap.",
+        "name": "Pistas GPS do OpenStreetMap"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© contribuíntes do OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (Estilo Alemá)"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, Datos ©contribuíntes do OpenStreetMap"
+        },
+        "name": "QA Sen Enderezos"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Teselas: skobbler Datos do mapa: contribuíntes do OpenStreetMap"
+        }
+      },
+      "skoterleder": {
+        "description": "Camiños de motoneve",
+        "name": "Mapa de motoneve Suecia"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "Teselas do mapa por Stamen Design, baixo CC BY 3.0. Datos por OpenStreetMap, baixo ODbL"
+        },
+        "name": "Terreo Stamen"
+      },
+      "stockholm-orto": {
+        "attribution": {
+          "text": "© Municipio de Estocolmo, CC0"
+        },
+        "name": "Ortofoto de Estocolmo"
+      },
+      "susono_shizuoka_jp_orthophoto": {
+        "attribution": {
+          "text": "Ortofoto da cidade de Susono"
+        },
+        "description": "Imaxes aéreas publicadas por Susono City coma datos abertos.",
+        "name": "Ortofoto da cidade de Susono"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Mapas © Thunderforest, Datos © contribuíntes do OpenStreetMap"
+        },
+        "name": "OpenCycleMap de Thunderforest"
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Mapas © Thunderforest, Datos © contribuíntes do OpenStreetMap"
+        },
+        "name": "Landscape de Thunderforest"
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Mapas © Thunderforest, Datos © contribuíntes do OpenStreetMap"
+        }
+      },
+      "trafikverket-baninfo": {
+        "description": "Rede ferroviaria de Suecia, incluíndo apeadoiros",
+        "name": "Rede ferroviaria de Trafikverket"
+      },
+      "trafikverket-baninfo-option": {
+        "description": "Rede ferroviaria de Suecia con varias capas de mapa",
+        "name": "Opcións da Rede ferroviaria de Trafikverket"
+      },
+      "trafikverket-vagnat": {
+        "description": "Rede de estradas suecas NVDB",
+        "name": "Rede de estradas Trafikverket"
+      },
+      "trafikverket-vagnat-extra": {
+        "description": "Detalles adicionais da NVDB sueca: referencia de autoestrada, redutores de tráfico, área de descanso, parada de bus, ponte, túnel, cámara de velocidade"
+      },
+      "trafikverket-vagnat-option": {
+        "description": "Rede de estradas suecas NVDB con varias opcións de capas de mapas",
+        "name": "Opcións da rede de estradas de Trafikverket"
+      },
+      "wroclaw-orto2018": {
+        "attribution": {
+          "text": "Concello de Wrocław"
+        },
+        "name": "Wrocław: Ortofoto 2018 (imaxe aérea)"
+      }
+    }
+  }
+}

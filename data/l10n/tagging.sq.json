@@ -1,0 +1,218 @@
+{
+  "sq": {
+    "presets": {
+      "fields": {
+        "access": {
+          "options": {
+            "no": {
+              "title": "I Ndaluar"
+            },
+            "private": {
+              "title": "Privat"
+            },
+            "yes": {
+              "title": "I Lejuar"
+            }
+          },
+          "types": {
+            "bicycle": "Biçikleta",
+            "foot": "Këmbë",
+            "horse": "Kuaj"
+          }
+        },
+        "address": {
+          "label": "Adresa",
+          "placeholders": {
+            "city": "Qyteti",
+            "country": "Vendi",
+            "postcode": "Kodi Postar",
+            "province": "Provinca",
+            "state": "Shteti",
+            "street": "rrugë"
+          }
+        },
+        "atm": {
+          "label": "Bankomat"
+        },
+        "bench": {
+          "label": "Stol"
+        },
+        "building": {
+          "label": "Ndërtesa"
+        },
+        "capacity": {
+          "label": "Kapaciteti"
+        },
+        "country": {
+          "label": "Vendi"
+        },
+        "cycleway": {
+          "label": "Korsi Biçikletash",
+          "options": {
+            "lane": {
+              "description": "Korsi biçikletash ndarë nga trafiku makinave me një vijë"
+            },
+            "opposite": {
+              "description": "Korsi biçikletash dydrejtimshe në një rrugë njëdrejtimshe"
+            },
+            "opposite_lane": {
+              "description": "Korsi biçikletash ne drejtim të kundërt me trafikun"
+            },
+            "share_busway": {
+              "description": "Korsi e përbashkët për biçikleta dhe autobuzë"
+            },
+            "shared_lane": {
+              "description": "Korsi biçikletash e pandarë nga trafiku makinave"
+            },
+            "track": {
+              "description": "Korsi biçikletash ndarë nga trafiku me një pengesë fizike"
+            }
+          }
+        },
+        "gender": {
+          "label": "Gjinja",
+          "options": {
+            "female": "Femër",
+            "male": "Mashkull"
+          }
+        },
+        "internet_access": {
+          "options": {
+            "yes": "Po"
+          }
+        },
+        "layer": {
+          "label": "Shtresë"
+        },
+        "location": {
+          "label": "Vendndodhja"
+        },
+        "name": {
+          "label": "Emri"
+        },
+        "network_bicycle": {
+          "options": {
+            "icn": "Ndërkombëtar",
+            "lcn": "Lokal",
+            "ncn": "Kombëtar",
+            "rcn": "Rajonal"
+          }
+        },
+        "network_foot": {
+          "options": {
+            "iwn": "Ndërkombëtar",
+            "lwn": "Lokal",
+            "nwn": "Kombëtar",
+            "rwn": "Rajonal"
+          }
+        },
+        "network_horse": {
+          "options": {
+            "ihn": "Ndërkombëtar",
+            "lhn": "Lokal",
+            "nhn": "Kombëtar",
+            "rhn": "Rajonal"
+          }
+        },
+        "piste/difficulty": {
+          "label": "Vështersia"
+        },
+        "second_hand": {
+          "options": {
+            "no": "Jo",
+            "yes": "Po"
+          }
+        },
+        "service/vehicle": {
+          "label": "Shërbimet"
+        },
+        "siren/purpose": {
+          "label": "Qëllim"
+        },
+        "smoking": {
+          "options": {
+            "no": "Nuk lejohet duhani askund",
+            "outside": "Lejuar përjashta",
+            "separated": "Në zonat ku pihet duhan, të paizoluara fizikisht",
+            "yes": "Lejuar kudo"
+          },
+          "placeholder": "Jo, Ndarë, Po..."
+        }
+      },
+      "presets": {
+        "amenity/bus_station": {
+          "name": "Stacioni i Autobusave"
+        },
+        "building/college": {
+          "name": "Ndërtesa e Kollegjit"
+        },
+        "highway/cycleway": {
+          "name": "Rrugë biçikletash"
+        },
+        "highway/elevator": {
+          "name": "Ashensor"
+        },
+        "highway/footway": {
+          "name": "Rrugë këmbësorësh"
+        },
+        "highway/secondary": {
+          "name": "Rrugë Dytësore"
+        },
+        "place/city": {
+          "name": "Qytet"
+        },
+        "power/transformer": {
+          "name": "Transformator"
+        },
+        "railway/abandoned": {
+          "name": "Hekurudhë E Braktisur"
+        },
+        "shop": {
+          "name": "Dyqan"
+        },
+        "shop/bakery": {
+          "name": "Furrë buke"
+        },
+        "shop/clothes": {
+          "name": "Dyqan Veshjesh"
+        },
+        "shop/copyshop": {
+          "name": "Fotokopje"
+        },
+        "shop/dry_cleaning": {
+          "name": "Pastrim Kimik"
+        },
+        "shop/kiosk": {
+          "name": "Kioskë"
+        },
+        "shop/kitchen": {
+          "name": "Dyqan për Aredim të Kuzhinës"
+        },
+        "shop/laundry": {
+          "name": "Lavanderi"
+        },
+        "shop/optician": {
+          "name": "Okulist"
+        },
+        "tourism/information": {
+          "name": "Informacion"
+        },
+        "tourism/information/map": {
+          "name": "Hartë"
+        },
+        "type/boundary/administrative": {
+          "name": "Kufi Administrativ"
+        },
+        "waterway/canal": {
+          "name": "Kanal"
+        },
+        "waterway/river": {
+          "name": "Lumë"
+        },
+        "waterway/waterfall": {
+          "name": "Ujëvarë"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,6730 @@
+{
+  "cy": {
+    "presets": {
+      "categories": {
+        "category-barrier": {
+          "name": "Nodweddion Rhwystr"
+        },
+        "category-building": {
+          "name": "Nodweddion Adeilad"
+        },
+        "category-golf": {
+          "name": "Nodweddion Golff"
+        },
+        "category-landuse": {
+          "name": "Nodweddion Defnydd Tir"
+        },
+        "category-natural": {
+          "name": "Nodweddion Naturiol"
+        },
+        "category-path": {
+          "name": "Llwybrau"
+        },
+        "category-playground": {
+          "name": "Offer Ardal Chwarae"
+        },
+        "category-rail": {
+          "name": "Rheilffyrdd"
+        },
+        "category-restriction": {
+          "name": "Nodweddion Cyfyngiad"
+        },
+        "category-road_major": {
+          "name": "Prif Ffyrdd"
+        },
+        "category-road_minor": {
+          "name": "Is-ffyrdd"
+        },
+        "category-road_service": {
+          "name": "Ffyrdd Gwasanaeth"
+        },
+        "category-route": {
+          "name": "Nodweddion Llwybr"
+        },
+        "category-utility": {
+          "name": "Nodweddion Iwtiliti"
+        },
+        "category-water": {
+          "name": "Nodweddion Dŵr"
+        },
+        "category-waterway": {
+          "name": "Ffyrdd Dŵr"
+        }
+      },
+      "fields": {
+        "access": {
+          "label": "Yn Caniatau Mynediad",
+          "options": {
+            "customers": {
+              "description": "Ar gyfer cwsmeriaid y lleoliad yn unig",
+              "title": "Cwsmeriaid"
+            },
+            "designated": {
+              "description": "Mynediad caniataol yn ôl arwyddion neu gyfraith leol benodol",
+              "title": "Dynodedig"
+            },
+            "destination": {
+              "description": "Mynediad i gyrraedd cyrchfan yn unig",
+              "title": "Cyrchfan"
+            },
+            "dismount": {
+              "description": "Mynediad caniataol ond rhaid i'r reidwr ddisgyn.",
+              "title": "Dewch Oddi"
+            },
+            "no": {
+              "description": "Dim mynediad i'r cyhoedd",
+              "title": "Gwaharddedig"
+            },
+            "permissive": {
+              "description": "Caniatáu mynediad hyd nes y bydd y perchennog yn diddymu'r caniatâd",
+              "title": "Caniataol"
+            },
+            "permit": {
+              "description": "Caniateir mynediad gyda thrwydded ddilys yn unig",
+              "title": "Trwydded"
+            },
+            "private": {
+              "title": "Preifat"
+            },
+            "unknown": {
+              "title": "Anhysbys"
+            },
+            "yes": {
+              "title": "Caniateir"
+            }
+          },
+          "placeholder": "Amhenodol",
+          "types": {
+            "access": "Popeth",
+            "bicycle": "Beiciau",
+            "foot": "Troed",
+            "horse": "Ceffylau",
+            "motor_vehicle": "Cerbydau"
+          }
+        },
+        "access_aisle": {
+          "label": "Math"
+        },
+        "access_simple": {
+          "label": "Mynediad Caniataol",
+          "options": {
+            "customers": "Cwsmeriaid yn unig",
+            "no": "Dim",
+            "permissive": "Caniataol",
+            "permit": "Trwydded yn unig",
+            "private": "Preifat",
+            "unknown": "Anhysbys",
+            "yes": "Cyhoeddus"
+          }
+        },
+        "activity": {
+          "label": "Gweithgaredd",
+          "options": {
+            "bicycle": "Seiclo",
+            "hiking": "Heicio",
+            "horse": "Marchogaeth",
+            "mtb": "Seiclo Mynydd",
+            "ski": "Sgïo"
+          }
+        },
+        "addr/interpolation": {
+          "label": "Math",
+          "options": {
+            "all": "Popeth",
+            "alphabetic": "Trefn yr Wyddor",
+            "even": "Eilrifau",
+            "odd": "Odrifau"
+          }
+        },
+        "address": {
+          "label": "Cyfeiriad",
+          "placeholders": {
+            "block_number": "Rhif y Bloc",
+            "block_number!jp": "Rhif y Bloc",
+            "city": "Dinas",
+            "city!cn": "Dinas / Rhaglawiaeth / Cynghrair",
+            "city!jp": "Dinas / Tref / Pentref / Ward Arbennig Tokyo",
+            "city!vn": "Dinas / Tref",
+            "country": "Gwlad",
+            "county": "Sir / Swydd",
+            "county!jp": "Ardal",
+            "district": "Ardal",
+            "district!cn": "Ardal / Swydd / Baner",
+            "district!vn": "Arrondissement / Tref / Cylch",
+            "floor": "Llawr",
+            "hamlet": "Pentrefan",
+            "housename": "Enw'r Tŷ",
+            "housenumber!jp": "Rhif Adeilad",
+            "neighbourhood": "Cymdogaeth",
+            "neighbourhood!jp": "Machi / Chōme / Aza / Koaza",
+            "place": "Lle",
+            "postcode": "Cod Post",
+            "province": "Cyffindir",
+            "province!cn": "Talaith / Bwrdeistref / AR / SAR",
+            "province!jp": "Rhaglawiaeth",
+            "quarter": "Cwarter",
+            "state": "Talaith",
+            "street": "Stryd",
+            "subdistrict": "Isardal",
+            "subdistrict!vn": "Ward / Cymuned / Treflan",
+            "suburb": "Maestref",
+            "unit": "Uned"
+          },
+          "terms": "lleoliad"
+        },
+        "admin_level": {
+          "label": "Lefel Gweinyddol"
+        },
+        "advertising": {
+          "label": "Math"
+        },
+        "aerialway": {
+          "label": "Math"
+        },
+        "aerialway/access": {
+          "label": "Mynediad",
+          "options": {
+            "both": "Y ddwy",
+            "entry": "Mynedfa",
+            "exit": "Allanfa"
+          }
+        },
+        "aerialway/bubble": {
+          "label": "Bwbl"
+        },
+        "aerialway/capacity": {
+          "label": "Nifer y ganiateir (yr awr)"
+        },
+        "aerialway/duration": {
+          "label": "Hyd (munudau)"
+        },
+        "aerialway/heating": {
+          "label": "Cynnes"
+        },
+        "aerialway/occupancy": {
+          "label": "Deiliadaeth"
+        },
+        "aerialway/summer/access": {
+          "label": "Mynediad (haf)",
+          "options": {
+            "both": "Y ddwy",
+            "entry": "Mynedfa",
+            "exit": "Allanfa"
+          }
+        },
+        "aeroway": {
+          "label": "Math"
+        },
+        "agrarian": {
+          "label": "Cynnyrch"
+        },
+        "air_conditioning": {
+          "label": "Aerdymheru",
+          "terms": "gwresogi, awyru, aircon, ac, oeri"
+        },
+        "amenity": {
+          "label": "Math"
+        },
+        "animal_boarding": {
+          "label": "Ar gyfer anifeiliaid"
+        },
+        "animal_breeding": {
+          "label": "Ar gyfer anifeiliaid"
+        },
+        "animal_shelter": {
+          "label": "Ar gyfer anifeiliaid"
+        },
+        "archaeological_site": {
+          "label": "Math",
+          "options": {
+            "baths": "Bathiau",
+            "city": "Dinas Hanesyddol",
+            "enclosure": "Clostir",
+            "fortification": "Caer",
+            "hut_circle": "Cylch Cutiau",
+            "petroglyph": "Cerfiad Carreg",
+            "roman_circus": "Syrcas Rhufeinig",
+            "roman_villa": "Fila Rufeinig",
+            "settlement": "Preswylfa Hanesyddol",
+            "tumulus": "Twmwlws"
+          }
+        },
+        "architect": {
+          "label": "Pensaernïwr",
+          "terms": "saer,pensaerniwr"
+        },
+        "area/highway": {
+          "label": "Math"
+        },
+        "artwork_type": {
+          "label": "Math",
+          "options": {
+            "bust": "Penddelw",
+            "installation": "Gosodiad Celf",
+            "mosaic": "Brithwaith",
+            "mural": "Murlun",
+            "painting": "Paentiad",
+            "relief": "Cerfwedd",
+            "sculpture": "Cerfddelw",
+            "statue": "Cerflun"
+          }
+        },
+        "athletics_pitch": {
+          "label": "Digwyddiad",
+          "options": {
+            "discus_throw": "Taflu Disgen",
+            "hammer_throw": "Taflu Morthwyl",
+            "high_jump": "Naid Uchel",
+            "javelin_throw": "Taflu Gwaywffon",
+            "long_jump": "Naid Hir",
+            "pole_vault": "Naid Bolyn",
+            "shot_put": "Taflu Maen",
+            "triple_jump": "Naid Driphlyg"
+          }
+        },
+        "athletics_track": {
+          "label": "Digwyddiad",
+          "options": {
+            "javelin_throw": "Taflu Gwaywffon",
+            "long_jump": "Naid Hir",
+            "pole_vault": "Naid Bolyn",
+            "running": "Rhedeg",
+            "sprint": "Sbrint",
+            "steeplechase": "Ras Ffos a Pherth",
+            "triple_jump": "Naid Driphlyg"
+          }
+        },
+        "atm": {
+          "label": "Peiriant Codi Arian"
+        },
+        "attraction": {
+          "label": "Math",
+          "options": {
+            "alpine_coaster": "Trên Gwyllt Alpaidd",
+            "amusement_ride": "Reid Atyniadol",
+            "animal": "Lloc Anifeiliaid",
+            "big_wheel": "Olwyn Fawr",
+            "bumper_car": "Ceir Bymper",
+            "bungee_jumping": "Naid Bwnji",
+            "carousel": "Carwsél",
+            "dark_ride": "Reid Tywyll",
+            "drop_tower": "Reid Tŵr Gollwng",
+            "kiddie_ride": "Reid Plant",
+            "log_flume": "Boncyffion",
+            "maze": "Drysfa",
+            "pirate_ship": "Reid Môr-Ladron",
+            "river_rafting": "Reid Afon",
+            "roller_coaster": "Trên Gwyllt",
+            "summer_toboggan": "Tobogan Haf",
+            "swing_carousel": "Carwsél Siglen",
+            "train": "Trên Twristiaid",
+            "water_slide": "Llithryn Dŵr"
+          }
+        },
+        "automated": {
+          "label": "Awtomatig"
+        },
+        "baby_feeding": {
+          "label": "Ardal Fwydo Babi",
+          "options": {
+            "no": "Dim",
+            "room": "Ystafell Penodedig",
+            "yes": "Safle Penodedig"
+          },
+          "terms": "bwydo,babanod,mamolaeth"
+        },
+        "baby_seat": {
+          "label": "Sedd Babi"
+        },
+        "backcountry": {
+          "label": "Cefn Gwlad",
+          "terms": "cefen,cefn,cefn gwlad,cefnwlad,gefn,gefen"
+        },
+        "backrest": {
+          "label": "Cynhalydd cefn"
+        },
+        "bar": {
+          "terms": "tafarn"
+        },
+        "barrier": {
+          "label": "Math",
+          "options": {
+            "block": "Blocyn Mawr",
+            "bollard": "Bolard",
+            "cattle_grid": "Grât Gwartheg",
+            "chain": "Cadwyn",
+            "city_wall": "Mur Dinas",
+            "cycle_barrier": "Rhwystr Seiclo",
+            "ditch": "Dyfrffos",
+            "entrance": "Mynedfa",
+            "fence": "Ffens",
+            "gate": "Gât",
+            "guard_rail": "Bar Gwarchod",
+            "hedge": "Perth",
+            "kerb": "Cwrb",
+            "kissing_gate": "Gât Mochyn",
+            "lift_gate": "Gât Braich",
+            "retaining_wall": "Wal Gynnal",
+            "stile": "Camfa",
+            "swing_gate": "Gât Siglo",
+            "toll_booth": "Bwth Toll",
+            "turnstile": "Gât Dro",
+            "wall": "Wal"
+          }
+        },
+        "barrier_planter": {
+          "label": "Rhwystr",
+          "options": {
+            "planter": "Ie",
+            "undefined": "Na"
+          }
+        },
+        "basin": {
+          "label": "Math",
+          "options": {
+            "detention": "Crynhoi",
+            "evaporation": "Anwedd",
+            "infiltration": "Ymdreiddio",
+            "retention": "Cadw"
+          }
+        },
+        "bath/open_air": {
+          "label": "Awyr Agored"
+        },
+        "bath/sand_bath": {
+          "label": "Bath Tywod"
+        },
+        "bath/type": {
+          "label": "Arbennig",
+          "options": {
+            "hot_spring": "Ffynnon Boeth",
+            "lake": "Llyn",
+            "thermal": "Bath Thermol"
+          }
+        },
+        "beauty": {
+          "label": "Gwasanaethau",
+          "options": {
+            "cosmetics": "Colur",
+            "hair_removal": "Tynnu Gwallt",
+            "nails": "Triniaeth Dwylo / Troed",
+            "skin_care": "Gofal Croen",
+            "spa": "Spa Dydd",
+            "tanning": "Stiwdio Lliw Haul",
+            "waxing": "Cwyro"
+          }
+        },
+        "bench": {
+          "label": "Mainc",
+          "terms": "fainc,bainc,bensh,bench"
+        },
+        "bicycle_parking": {
+          "label": "Math",
+          "options": {
+            "building": "Mewn Adeilad",
+            "shed": "Sied Cau"
+          }
+        },
+        "bicycle_road": {
+          "label": "Stryd Seiclo",
+          "options": {
+            "undefined": "Na",
+            "yes": "Ie"
+          }
+        },
+        "bike_ride": {
+          "label": "Beicio a Theithio",
+          "terms": "beicio a teithio"
+        },
+        "bin": {
+          "label": "Bin Sbwriel",
+          "terms": "rybish,gwastraff,litar"
+        },
+        "blind": {
+          "label": "Mynediad Pobl Ddall",
+          "options": {
+            "limited": "Cyfyng",
+            "no": "Na",
+            "yes": "Ie"
+          }
+        },
+        "blood_components": {
+          "label": "Cydrannau Gwaed",
+          "options": {
+            "platelets": "platelau",
+            "stemcells": "samplau bôn-gell",
+            "whole": "gwaed cyfan"
+          }
+        },
+        "board_type": {
+          "label": "Math",
+          "options": {
+            "art": "Celf",
+            "astronomy": "Astronomeg",
+            "geology": "Geoleg",
+            "history": "Hanes",
+            "nature": "Natur",
+            "notice": "Hysbysfwrdd",
+            "plants": "Planhigion",
+            "welcome_sign": "Arwydd Groeso",
+            "wildlife": "Bywyd Gwyllt"
+          }
+        },
+        "bollard": {
+          "label": "Math",
+          "options": {
+            "fixed": "Bolard Sefydlog",
+            "flexible": "Bolard Hyblyg",
+            "foldable": "Bolard Dulliadwy",
+            "removable": "Bolard Symudol",
+            "rising": "Bolard Codi"
+          }
+        },
+        "books": {
+          "label": "Math o Lyfrau",
+          "terms": "Llyfrau"
+        },
+        "booth": {
+          "label": "Bwth",
+          "terms": "bwth"
+        },
+        "bottle": {
+          "label": "Llenwi Potel"
+        },
+        "boules": {
+          "label": "Math"
+        },
+        "boundary": {
+          "label": "Math"
+        },
+        "branch_brand": {
+          "label": "Cangen",
+          "terms": "cainc"
+        },
+        "brand": {
+          "terms": "cwmni,sefydliad"
+        },
+        "brewery": {
+          "label": "Brandiau Cwrw"
+        },
+        "bridge": {
+          "label": "Math",
+          "placeholder": "Diofyn"
+        },
+        "bridge/ref": {
+          "label": "Rhif y Pont"
+        },
+        "bridge/support": {
+          "label": "Math"
+        },
+        "bridge_combo": {
+          "label": "Math",
+          "options": {
+            "aqueduct": "Traphont Ddŵr",
+            "boardwalk": "Llwybr Pren",
+            "movable": "Pont Symudol",
+            "viaduct": "Traphont"
+          }
+        },
+        "building": {
+          "label": "Adeilad",
+          "options": {
+            "allotment_house": "Adeilad Rhandiroedd",
+            "apartments": "Adeilad Fflatiau",
+            "barn": "Ysgubor",
+            "boathouse": "Tŷ Cwch",
+            "bungalow": "Bynglo",
+            "bunker": "Byncer",
+            "cabin": "Caban",
+            "carport": "Cysgod Car",
+            "cathedral": "Adeilad Eglwys Gadeiriol",
+            "chapel": "Adeilad Capel",
+            "church": "Adeilad Eglwys",
+            "civic": "Adeilad Dinesig",
+            "college": "Adeilad Coleg",
+            "commercial": "Adeilad Masnachol",
+            "construction": "Adeilad yn cael ei Adeiladu",
+            "cowshed": "Beudy",
+            "detached": "Tŷ Sengl",
+            "dormitory": "Dorm",
+            "farm": "Ffermdy",
+            "farm_auxiliary": "Adeilad Fferm",
+            "fire_station": "Adeilad Gorsaf Dân",
+            "garage": "Garej",
+            "garages": "Garejis",
+            "ger": "Iwrt",
+            "grandstand": "Prif Stand",
+            "greenhouse": "Tŷ Gwydr",
+            "hangar": "Adeilad Hangar",
+            "hospital": "Adeilad Ysbyty",
+            "hotel": "Adeilad Gwesty",
+            "house": "Tŷ",
+            "houseboat": "Cwch Preswyl",
+            "hut": "Cwt",
+            "industrial": "Adeilad Diwydiannol",
+            "kindergarten": "Adeilad Meithrinfa",
+            "manufacture": "Adeilad Cynhyrchu Diwydiannol",
+            "mosque": "Adeilad Mosg",
+            "office": "Adeilad Swyddfa",
+            "outbuilding": "Tŷ Allan",
+            "pavilion": "Adeilad Pafiliwn",
+            "public": "Adeilad Cyhoeddus",
+            "residential": "Adeilad Preswyl",
+            "retail": "Adeilad Adwerthu",
+            "roof": "To",
+            "ruins": "Adfeilion Adeilad",
+            "school": "Adeilad Ysgol",
+            "semidetached_house": "Tŷ Pâr",
+            "service": "Adeilad Gwasanaeth",
+            "shed": "Sied",
+            "stable": "Stabl",
+            "stadium": "Adeilad Stadiwm",
+            "static_caravan": "Tŷ Symudol",
+            "sty": "Twlc",
+            "synagogue": "Adeilad Synagog",
+            "temple": "Adeilad Teml",
+            "terrace": "Teras",
+            "train_station": "Adeilad Gorsaf Trenau",
+            "transportation": "Adeilad Cludiant",
+            "university": "Adeilad Prifysgol",
+            "warehouse": "Warws"
+          },
+          "terms": "ty,tai,siop,adeilat,stafell,ystafell,canolfan,ganolfan,chanolfan"
+        },
+        "building/colour": {
+          "label": "Lliw Adeilweb",
+          "terms": "Lliw Adeilad"
+        },
+        "building/flats": {
+          "label": "Unedau"
+        },
+        "building/levels": {
+          "label": "Lefelau",
+          "terms": "llawr"
+        },
+        "building/levels/underground": {
+          "label": "Lefelau Dan Ddaear"
+        },
+        "building/material": {
+          "label": "Deunydd"
+        },
+        "building/part": {
+          "label": "Rhan o Adeilad"
+        },
+        "building/prefabricated": {
+          "label": "Parod",
+          "terms": "prefab,prefabricated"
+        },
+        "bunker_type": {
+          "label": "Math"
+        },
+        "button_operated": {
+          "label": "Botwm Galw"
+        },
+        "cables": {
+          "label": "Cablau"
+        },
+        "cai_scale-IT": {
+          "options": {
+            "T": "T: Twristiaeth"
+          }
+        },
+        "camera/direction": {
+          "label": "Cyfeiriad (Gradd Clocwedd)"
+        },
+        "camera/mount": {
+          "label": "Mownt Camera"
+        },
+        "camera/type": {
+          "label": "Math o Gamera",
+          "options": {
+            "dome": "Cromen",
+            "fixed": "Segur",
+            "panning": "Panio"
+          }
+        },
+        "capacity": {
+          "label": "Capasiti"
+        },
+        "capacity/disabled_parking": {
+          "label": "Safleoedd Hygyrch"
+        },
+        "capacity/persons": {
+          "label": "Capasiti (Person)"
+        },
+        "capacity/tents": {
+          "label": "Capasiti (Pabell)"
+        },
+        "capacity_parking": {
+          "label": "Safle Gyfanswm"
+        },
+        "cash_in": {
+          "label": "Blaendaliadau"
+        },
+        "castle_type": {
+          "label": "Math",
+          "options": {
+            "castrum": "Caer Rhufeinaidd",
+            "defensive": "Castell Amddiffynnol",
+            "fortress": "Caer",
+            "hillfort": "Bryngaer",
+            "manor": "Maenordy",
+            "palace": "Palas",
+            "stately": "Plasty"
+          }
+        },
+        "changing_table": {
+          "label": "Lle Newid Babi"
+        },
+        "charge_fee": {
+          "label": "Swm y Tâl"
+        },
+        "charge_toll": {
+          "label": "Pris Toll"
+        },
+        "check_date": {
+          "label": "Gwiriwyd Ddiwethaf"
+        },
+        "clothes": {
+          "label": "Dillad",
+          "options": {
+            "babies": "Dillad Babanod",
+            "children": "Dillad Plant",
+            "denim": "Dillad Jîns",
+            "fur": "Dillad Ffur",
+            "hats": "Hetiau",
+            "maternity": "Dillad Mamolaeth",
+            "men": "Dillad Dynion",
+            "motorcycle": "Dillad Beic Modur",
+            "oversize": "Dillad Meintiau Mwy",
+            "socks": "Sanau",
+            "sports": "Dillad Chwaraeon",
+            "suits": "Siwtiau",
+            "swimwear": "Dillad Nofio",
+            "traditional": "Dillad Traddodiadol / Gwerin",
+            "underwear": "Iswisg",
+            "wedding": "Dillad Priodas",
+            "women": "Dillad Menywod",
+            "workwear": "Dillad Gwaith"
+          }
+        },
+        "club": {
+          "label": "Math"
+        },
+        "collection_times": {
+          "label": "Amser Casglu"
+        },
+        "collector": {
+          "label": "Eitemau",
+          "options": {
+            "coins": "Arian",
+            "stamps": "Stampiau"
+          }
+        },
+        "colour": {
+          "label": "Lliw"
+        },
+        "comment": {
+          "label": "Sylw Grŵp Newidiadau",
+          "placeholder": "Disgrifiad byr o’ch cyfraniadau (gofynnol)"
+        },
+        "communication_multi": {
+          "label": "Math o Gyfathrebu"
+        },
+        "connectivity": {
+          "label": "Cysylltiad"
+        },
+        "construction": {
+          "label": "Math"
+        },
+        "consulate": {
+          "label": "Math",
+          "options": {
+            "yes": "Conswliaeth"
+          }
+        },
+        "consulting": {
+          "label": "Arbenigedd"
+        },
+        "contact/facebook": {
+          "label": "Enw Defnyddiwr neu URL Facebook",
+          "placeholder": "https://www.facebook.com/BusnesLleol",
+          "terms": "Gweplyfr"
+        },
+        "contact/webcam": {
+          "label": "URL Cyfarfod Fideo",
+          "placeholder": "https://example.com/"
+        },
+        "content": {
+          "label": "Cynnwys"
+        },
+        "conveying": {
+          "label": "Cyfeiriad Symud",
+          "options": {
+            "backward": "Yn ôl",
+            "forward": "Ymlaen",
+            "reversible": "Gwrthdroadwy"
+          }
+        },
+        "conveying_escalator": {
+          "label": "Esgaladur"
+        },
+        "count": {
+          "label": "Nifer y Nodweddion"
+        },
+        "country": {
+          "label": "Gwlad"
+        },
+        "country_flag": {
+          "label": "Baner Gwlad"
+        },
+        "couplings": {
+          "label": "Cyplau"
+        },
+        "covered": {
+          "label": "Gorchuddwyd"
+        },
+        "covered_no": {
+          "options": {
+            "no": "Na",
+            "undefined": "Tueddol ‘Na’",
+            "yes": "Ie"
+          }
+        },
+        "craft": {
+          "label": "Math",
+          "options": {
+            "basket_maker": "Gweuwr Basgedi",
+            "beekeeper": "Gwenynwr",
+            "blacksmith": "Gofaint",
+            "boatbuilder": "Saer Cychod",
+            "bookbinder": "Rhymwr Llyfrau",
+            "brewery": "Bragdy",
+            "builder": "Adeiladwr",
+            "carpenter": "Saer",
+            "carpet_layer": "Carpedwr",
+            "caterer": "Arlwywr",
+            "chimney_sweeper": "Simneiwr",
+            "cleaning": "Gwasanaeth Glanhau",
+            "clockmaker": "Clociwr",
+            "confectionery": "Cyffeithiwr",
+            "distillery": "Distyllfa",
+            "dressmaker": "Gwniadwr",
+            "electrician": "Trydanwr",
+            "electronics_repair": "Atgyweirio Electroneg",
+            "floorer": "Lloriwr",
+            "gardener": "Garddwr",
+            "glaziery": "Gwydrwr",
+            "handicraft": "Crefft Llaw",
+            "insulation": "Ynyswr",
+            "jeweller": "Gemydd",
+            "joiner": "Cysylltwr",
+            "key_cutter": "Torrwr Goriadau",
+            "locksmith": "Gof Cloeon",
+            "metal_construction": "Metelwr",
+            "oil_mill": "Melyn Olew",
+            "painter": "Peintiwr",
+            "parquet_layer": "Lloriwr Pharce",
+            "photographer": "Ffotograffydd",
+            "photographic_laboratory": "Labordy Ffotograffiaeth",
+            "plasterer": "Plastrwr",
+            "plumber": "Plymwr",
+            "pottery": "Crochenydd",
+            "rigger": "Taclwr",
+            "roofer": "Töwr",
+            "saddler": "Cyfrwyydd",
+            "sailmaker": "Carthennwr",
+            "sawmill": "Melin Lifio",
+            "scaffolder": "Sgaffaldiwr",
+            "sculptor": "Cerflunydd",
+            "shoemaker": "Crydd",
+            "signmaker": "Gwneuthurwr Arwyddion",
+            "stonemason": "Saer Maen",
+            "tailor": "Teiliwr",
+            "tiler": "Teilsiwr",
+            "tinsmith": "Tuniwr",
+            "upholsterer": "Clustogwr",
+            "watchmaker": "Gwneuthurwr Watshis",
+            "window_construction": "Gwydrwr",
+            "winery": "Gwindy"
+          }
+        },
+        "crane/type": {
+          "label": "Math o Graen",
+          "options": {
+            "tower_crane": "Craen Tŵr",
+            "travel_lift": "Lifft Teithio"
+          }
+        },
+        "crop": {
+          "label": "Cnydau",
+          "options": {
+            "asparagus": "Asbaragws",
+            "barley": "Barlys",
+            "beet": "Betys",
+            "cassava": "Cassafa",
+            "coffee": "Coffi",
+            "cotton": "Cotwm",
+            "cranberries": "Llugaeron",
+            "fast_growing_wood": "Coppice Cylchdro Byr",
+            "flowers": "Blodau",
+            "grape": "Grawnwin",
+            "grass": "Gwair",
+            "hop": "Hopys",
+            "lavender": "Lafant",
+            "potato": "Tatws",
+            "rape": "Had Rêp",
+            "rice": "Reis",
+            "soy": "Ffa Soia",
+            "strawberry": "Mefys",
+            "sugar_beet": "Betys Siwgr",
+            "sugarcane": "Cansen Siwgr",
+            "sunflower": "Blodau Haul",
+            "tea": "Te",
+            "tobacco": "Tybaco",
+            "vegetable": "Llysiau",
+            "wheat": "Gwenith"
+          }
+        },
+        "crossing": {
+          "label": "Math",
+          "options": {
+            "traffic_signals": "Croesfan â Goleuadau Traffig",
+            "uncontrolled": "Marciau Ffordd yn unig",
+            "unmarked": "Dim Goleuadau Traffig neu Farciau Ffordd"
+          }
+        },
+        "crossing/barrier": {
+          "label": "Rhwystr Braich",
+          "options": {
+            "double_half": "Hanner Dwbl",
+            "full": "Llawn",
+            "half": "Hanner",
+            "no": "Na",
+            "yes": "Ie"
+          }
+        },
+        "crossing/bell": {
+          "label": "Cloch"
+        },
+        "crossing/island": {
+          "label": "Traffig Ynys"
+        },
+        "crossing/light": {
+          "label": "Goleuadau"
+        },
+        "crossing/markings": {
+          "label": "Marciau Croesfan",
+          "options": {
+            "no": "Dim Marciau"
+          }
+        },
+        "crossing_raised": {
+          "label": "Codi",
+          "options": {
+            "table": "Ie",
+            "undefined": "Na"
+          }
+        },
+        "cuisine": {
+          "label": "Bwydydd",
+          "options": {
+            "african": "Africanaidd",
+            "american": "Americanaidd",
+            "arab": "Arabaidd",
+            "argentinian": "Arianaidd",
+            "asian": "Asiaidd",
+            "balkan": "Balcanaidd",
+            "barbecue": "Barbeciw",
+            "bavarian": "Bafaraidd",
+            "brazilian": "Brasilaidd",
+            "breakfast": "Brecwast",
+            "brunch": "Brynsh",
+            "bubble_tea": "Te Bwbls",
+            "burger": "Byrger",
+            "cake": "Cacennau",
+            "caribbean": "Caribïaidd",
+            "chicken": "Cyw Iâr",
+            "chinese": "Tsieineaidd",
+            "coffee_shop": "Siop Goffi",
+            "curry": "Cyri",
+            "dessert": "Pwdin",
+            "donut": "Toesen",
+            "european": "Ewropeaidd",
+            "filipino": "Ffilipino",
+            "fish": "Pysgod",
+            "fish_and_chips": "Pysgod a Sglodion",
+            "french": "Ffrengig",
+            "fries": "Sglodion",
+            "frozen_yogurt": "Iogwrt Iâ",
+            "georgian": "Georgiaidd",
+            "german": "Almaenig",
+            "greek": "Groeg",
+            "grill": "Bar a Grill",
+            "hawaiian": "Hawäiaidd",
+            "ice_cream": "Hufen Iâ",
+            "indian": "Indianaidd",
+            "indonesian": "Indonesaidd",
+            "italian": "Eidalaidd",
+            "japanese": "Siapaneaidd",
+            "juice": "Sudd",
+            "kebab": "Cebab",
+            "korean": "Coreaidd",
+            "lebanese": "Libanaidd",
+            "malaysian": "Malaysianaidd",
+            "mediterranean": "Canoldirol",
+            "mexican": "Mecsicanaidd",
+            "middle_eastern": "Arabaidd",
+            "moroccan": "Morocaidd",
+            "noodle": "Nwdl",
+            "oriental": "Dwyreiniol",
+            "pancake": "Crempog",
+            "peruvian": "Periw",
+            "polish": "Gwlad Pwyl",
+            "portuguese": "Portiwgalaidd",
+            "regional": "Rhanbarthol",
+            "russian": "Rwsiaidd",
+            "sandwich": "Brechdanau",
+            "sausage": "Selsig",
+            "seafood": "Bwyd Môr",
+            "soup": "Sŵp",
+            "spanish": "Sbaen",
+            "steak_house": "Stêc",
+            "taiwanese": "Taiwan",
+            "tea": "Te",
+            "tex-mex": "Tecs-Mecs",
+            "turkish": "Twrci",
+            "ukrainian": "Wcráin",
+            "vietnamese": "Fietnam",
+            "western": "Gorllewinol"
+          },
+          "terms": "bwyd,bwydydd,ceginiaeth,coginio,cwco"
+        },
+        "currency_multi": {
+          "label": "Mathau o Arian"
+        },
+        "cutting": {
+          "label": "Math",
+          "placeholder": "Diofyn"
+        },
+        "cycle_network": {
+          "label": "Rhwydwaith"
+        },
+        "cycleway": {
+          "label": "Lonydd Beiciau",
+          "options": {
+            "lane": {
+              "title": "Lôn Beiciau Safonol"
+            },
+            "no": {
+              "description": "Dim lôn feiciau",
+              "title": "Dim"
+            },
+            "opposite": {
+              "title": "Lôn Feiciau Gwrthlif"
+            },
+            "track": {
+              "title": "Trac Seiclo"
+            }
+          },
+          "placeholder": "Lôn, Trac, Gwrthlif, …",
+          "types": {
+            "cycleway:left": "Ochr chwith",
+            "cycleway:right": "Ochr dde"
+          }
+        },
+        "date": {
+          "label": "Dyddiad"
+        },
+        "delivery": {
+          "label": "Cludiad"
+        },
+        "denomination": {
+          "label": "Enwad"
+        },
+        "denotation": {
+          "label": "Dynodiant"
+        },
+        "departures_board": {
+          "label": "Bwrdd Ymadawiadau",
+          "options": {
+            "no": "Dim",
+            "realtime": "Amser real",
+            "timetable": "Amserlen",
+            "yes": "Ie"
+          }
+        },
+        "deposit/trolley": {
+          "label": "Blaendal"
+        },
+        "depot": {
+          "label": "Math"
+        },
+        "depth": {
+          "label": "Dyfnder (metr)"
+        },
+        "description": {
+          "label": "Disgrifiad"
+        },
+        "design": {
+          "label": "Arddull"
+        },
+        "destination": {
+          "label": "Cyrchfannau"
+        },
+        "destination_waterway": {
+          "label": "Cyrchfan"
+        },
+        "devices": {
+          "label": "Dyfeisiau"
+        },
+        "diameter": {
+          "label": "Diamedr"
+        },
+        "diet_multi": {
+          "label": "Anghenion Dietegol",
+          "options": {
+            "gluten_free": "Di-Gliwten",
+            "kosher": "Cosher",
+            "lactose_free": "Di-Lactos",
+            "pescetarian": "Pysgfwytäwr",
+            "vegan": "Fegan",
+            "vegetarian": "Llysieuol"
+          }
+        },
+        "diplomatic": {
+          "label": "Math",
+          "options": {
+            "consulate": "Conswliaeth",
+            "embassy": "Llysgenhadaeth"
+          }
+        },
+        "diplomatic/services": {
+          "label": "Gwasanaethau"
+        },
+        "direction": {
+          "label": "Cyfeiriad (Gradd Clocwedd)"
+        },
+        "direction_cardinal-US-CA-NZ": {
+          "label": "Cyfeiriad",
+          "options": {
+            "east": "I'r Dwyrain",
+            "north": "I'r Gogledd",
+            "south": "I'r De",
+            "west": "I'r Gorllewin"
+          }
+        },
+        "direction_clock": {
+          "label": "Cyfeiriad",
+          "options": {
+            "anticlockwise": "Gwrthglocwedd",
+            "clockwise": "Clocwedd"
+          }
+        },
+        "direction_vertex": {
+          "options": {
+            "backward": "Yn ôl",
+            "both": "Y ddwy / Popeth",
+            "forward": "Ymlaen"
+          }
+        },
+        "display": {
+          "label": "Arddangos",
+          "options": {
+            "digital": "Digidol",
+            "sundial": "Deial Haul",
+            "unorthodox": "Anarferol"
+          }
+        },
+        "distance": {
+          "label": "Pellter"
+        },
+        "disused/amenity": {
+          "label": "Math"
+        },
+        "disused/railway": {
+          "label": "Math"
+        },
+        "disused/shop": {
+          "label": "Math"
+        },
+        "dock": {
+          "label": "Math",
+          "options": {
+            "drydock": "Doc Sych"
+          }
+        },
+        "dock/height": {
+          "label": "Taldra'r Doc (Metr)"
+        },
+        "dock/width": {
+          "label": "Lled y Doc (Metr)"
+        },
+        "dog": {
+          "label": "Cŵn",
+          "options": {
+            "leashed": "Ar Dennyn Yn Unig",
+            "no": "Ni chaniateir",
+            "unleashed": "Dim Angen Tennyn",
+            "yes": "Caniateir"
+          }
+        },
+        "door": {
+          "label": "Drws"
+        },
+        "door/height": {
+          "label": "Taldra'r Drws (Metr)"
+        },
+        "door/width": {
+          "label": "Lled y Drws (Metr)"
+        },
+        "door_type": {
+          "label": "Math"
+        },
+        "drink_multi": {
+          "label": "Diodydd"
+        },
+        "drinking_water": {
+          "label": "Yfedadwy"
+        },
+        "drinking_water_available": {
+          "label": "Dwr Yfed Ar Gael"
+        },
+        "drive_through": {
+          "label": "Gyrru Trwodd"
+        },
+        "duration": {
+          "label": "Hyd"
+        },
+        "ele": {
+          "label": "Uchder (metr)"
+        },
+        "electrified": {
+          "label": "Trydanu",
+          "options": {
+            "contact_line": "Llinell Cyswllt",
+            "no": "Na",
+            "rail": "Rheilffordd wedi'i Thrydanu",
+            "yes": "Ie (amhenodol)"
+          }
+        },
+        "email": {
+          "label": "E-bost",
+          "terms": "ebost,neges,cysylltu,nodyn"
+        },
+        "embankment": {
+          "label": "Math",
+          "placeholder": "Diofyn"
+        },
+        "embassy": {
+          "label": "Math",
+          "options": {
+            "delegation": "Llysgennad",
+            "high_commission": "Uchel Gomisiwn",
+            "yes": "Llysgenhadaeth"
+          }
+        },
+        "emergency": {
+          "label": "Argyfwng"
+        },
+        "emergency_combo": {
+          "label": "Math"
+        },
+        "emergency_ward_entrance": {
+          "label": "Math"
+        },
+        "enforcement": {
+          "label": "Math"
+        },
+        "entrance": {
+          "label": "Math",
+          "options": {
+            "emergency": "Allanfa Brys",
+            "entrance": "Mynedfa yn unig",
+            "exit": "Allanfa yn unig",
+            "garage": "Drws Garej",
+            "home": "Tŷ neu Fflat Preifat",
+            "main": "Prif",
+            "secondary": "Eilaidd",
+            "service": "Gwasanaeth",
+            "staircase": "Grisiau",
+            "yes": "Amhenodol"
+          }
+        },
+        "except": {
+          "label": "Heblaw am"
+        },
+        "expressway-US": {
+          "label": "Ffordd Gyflym"
+        },
+        "faces": {
+          "label": "Gwynebau"
+        },
+        "fax": {
+          "label": "Ffacs",
+          "placeholder": "+44 42 123 4567",
+          "terms": "facs"
+        },
+        "fee": {
+          "label": "Ffi",
+          "terms": "ffi,tal,cost,tâl,dirwy,cosb"
+        },
+        "fence_type": {
+          "label": "Math"
+        },
+        "fhrs/id-GB": {
+          "label": "ID CSHB",
+          "terms": "FHRS,food hygiene rating scheme,food hygiene rating system,food standards agency"
+        },
+        "fire_hydrant/position": {
+          "label": "Safle",
+          "options": {
+            "green": "Gwyrdd / Gwair",
+            "lane": "Lôn Ffordd",
+            "parking_lot": "Maes Parcio",
+            "sidewalk": "Palmant"
+          }
+        },
+        "fire_hydrant/type": {
+          "label": "Siâp",
+          "options": {
+            "underground": "Dan ddaear",
+            "wall": "Wal"
+          }
+        },
+        "fire_mains": {
+          "label": "Math o Rwydwaith",
+          "options": {
+            "no": "Na",
+            "yes": "Math Anhysbys"
+          }
+        },
+        "fire_service_inlet": {
+          "label": "Siâp",
+          "options": {
+            "underground": "Dan ddaear",
+            "wall": "Wal"
+          },
+          "terms": "shap,siap,shep,siep"
+        },
+        "fire_sprinkler": {
+          "options": {
+            "no": "Na",
+            "yes": "Math Anhysbys"
+          }
+        },
+        "fireplace": {
+          "label": "Lle Tân"
+        },
+        "fishing": {
+          "label": "Pysgota"
+        },
+        "fitness_station": {
+          "label": "Math o Offer"
+        },
+        "fixme": {
+          "label": "Trwsiwch Fi",
+          "terms": "help,helpa,cymorth,trwsho,trwso,trwsio"
+        },
+        "flag/name": {
+          "label": "Enw Baner"
+        },
+        "flag/type": {
+          "label": "Math o Faner"
+        },
+        "flag/wikidata": {
+          "label": "Wicidata"
+        },
+        "flashing_lights": {
+          "label": "Goleuadau Fflach",
+          "options": {
+            "always": {
+              "description": "Mae'r goleuadau wastad yn fflachio",
+              "title": "Wastad yn fflachio"
+            },
+            "no": "Na",
+            "yes": "Ie"
+          }
+        },
+        "floating": {
+          "label": "Hwylio"
+        },
+        "ford": {
+          "label": "Math",
+          "placeholder": "Diofyn"
+        },
+        "fountain": {
+          "label": "Math"
+        },
+        "from": {
+          "label": "O"
+        },
+        "fuel": {
+          "label": "Tanwydd"
+        },
+        "fuel/fuel_multi": {
+          "label": "Mathau o Danwydd",
+          "options": {
+            "e10": "E10 Petrol",
+            "e5": "E5 Petrol",
+            "e85": "E85 Petrol",
+            "octane_100": "Petrol (100 Octan)",
+            "octane_80": "Petrol (80 Octan)",
+            "octane_85": "Petrol (85 Octan)",
+            "octane_87": "Petrol (87 Octan)",
+            "octane_88": "Petrol (88 Octan)",
+            "octane_89": "Petrol (89 Octan)",
+            "octane_90": "Petrol (90 Octan)",
+            "octane_91": "Petrol (91 Octan)",
+            "octane_92": "Petrol (92 Octan)",
+            "octane_93": "Petrol (93 Octan)",
+            "octane_95": "Petrol (95 Octan)",
+            "octane_97": "Petrol (97 Octan)",
+            "octane_98": "Petrol (98 Octan)",
+            "propane": "Propan"
+          }
+        },
+        "gambling": {
+          "label": "Gemau"
+        },
+        "garden/type": {
+          "label": "Math o Ardd"
+        },
+        "gender": {
+          "label": "Rhywedd",
+          "options": {
+            "female": "Menywod",
+            "male": "Dynion",
+            "unisex": "Niwtral"
+          },
+          "placeholder": "Anhysbys",
+          "terms": "rhyw,rhywedd,dirywiol,benyw,dynes,merched,bachgen,bechgyn,merch,croten,hogyn,hogan"
+        },
+        "generator/method": {
+          "label": "Dull",
+          "options": {
+            "combustion": "Ymlosgiad",
+            "fission": "Ffisiwn",
+            "fusion": "Ymasiad",
+            "gasification": "Nwyeiddio",
+            "photovoltaic": "Ffotofoltäig",
+            "run-of-the-river": "Llif-yr-Afon",
+            "stream": "Ffrwd Lanw",
+            "thermal": "Solar Thermol",
+            "water-pumped-storage": "Storfa Bwmpio",
+            "water-storage": "Cronfa Ddŵr",
+            "wind_turbine": "Tyrbin Gwynt"
+          }
+        },
+        "generator/output/electricity": {
+          "label": "Allbwn Pŵer"
+        },
+        "generator/source": {
+          "label": "Ffynhonnell",
+          "options": {
+            "battery": "Batri",
+            "biofuel": "Biodanwydd",
+            "biogas": "Bio-nwy",
+            "biomass": "Biomas",
+            "coal": "Glo",
+            "gas": "Nwy Naturiol",
+            "gasoline": "Petrol",
+            "geothermal": "Ynni Daearwresol",
+            "hydro": "Pŵer Hydro",
+            "nuclear": "Ynni Niwclear",
+            "oil": "Olew",
+            "solar": "Solar",
+            "tidal": "Ynni'r Llanw",
+            "waste": "Gwastraff",
+            "wave": "Ynni'r Tonnau",
+            "wind": "Gwynt"
+          }
+        },
+        "generator/type": {
+          "label": "Math"
+        },
+        "genus": {
+          "label": "Genws"
+        },
+        "gnis/feature_id-US": {
+          "label": "ID Nodwedd GNIS"
+        },
+        "government": {
+          "label": "Math"
+        },
+        "group_only": {
+          "label": "Grwpiau yn unig"
+        },
+        "guest_house": {
+          "label": "Math"
+        },
+        "handrail": {
+          "label": "Gwarchodfa Llaw"
+        },
+        "hashtags": {
+          "label": "Hashnodau",
+          "placeholder": "#enghraifft"
+        },
+        "hazard_boundary": {
+          "label": "Perygl",
+          "options": {
+            "archery_range": "Saethau",
+            "avalanche": "Afalansh",
+            "biohazard": "Bioberygl",
+            "contamination": "Heintiad Cemegol",
+            "electricity": "Sioc Drydanol",
+            "hole": "Twll",
+            "minefield": "Ffrwydryn Gwaelod",
+            "nuclear": "Niwclear / Radioactif",
+            "quicksand": "Sugndraeth",
+            "shooting_range": "Ergydion Gwn"
+          }
+        },
+        "healthcare": {
+          "label": "Math",
+          "options": {
+            "alternative": "Meddygaeth Amgen",
+            "audiologist": "Awdiolegydd",
+            "birthing_centre": "Canolfan Geni",
+            "blood_bank": "Banc Gwaed",
+            "blood_donation": "Banc Rhoi Gwaed",
+            "clinic": "Clinig",
+            "community_health_worker": "Gweithiwr Iechyd Cymunedol",
+            "counselling": "Canolfan Cwnsela",
+            "dentist": "Deintydd",
+            "dialysis": "Canolfan Dialysis",
+            "doctor": "Meddyg",
+            "hospice": "Hospis",
+            "hospital": "Ysbyty",
+            "laboratory": "Labordy Meddygol",
+            "midwife": "Bydwraig",
+            "nurse": "Nyrs",
+            "occupational_therapist": "Therapydd Galwedigaethol",
+            "optometrist": "Optometrydd",
+            "pharmacy": "Fferyllfa",
+            "physiotherapist": "Ffisiotherapydd",
+            "podiatrist": "Podiatrydd",
+            "psychotherapist": "Seicotherapydd",
+            "rehabilitation": "Cyfleuster Adsefydlu",
+            "sample_collection": "Cyfleuster Casglu Sampl",
+            "speech_therapist": "Therapydd Lleferydd",
+            "vaccination_centre": "Canolfan Brechu"
+          }
+        },
+        "healthcare/speciality": {
+          "label": "Arbenigeddau",
+          "options": {
+            "abortion": "Erthyliad",
+            "acupuncture": "Aciwbigo",
+            "allergology": "Alergedd ac Asthma",
+            "anaesthetics": "Anesthesioleg",
+            "angiology": "Angioleg",
+            "anthroposophical": "Meddygaeth Anthroposofeg",
+            "applied_kinesiology": "Cinesioleg Cymhwysol",
+            "aromatherapy": "Aromatherapi",
+            "behavior": "Therapi Ymddygiad",
+            "biochemistry": "Biocemeg",
+            "biology": "Bioleg",
+            "blood_check": "Prawf Gwaed",
+            "body": "Therapi Corff",
+            "cardiology": "Cardioleg",
+            "cardiothoracic_surgery": "Llawdriniaeth Cardiothorasig",
+            "child_psychiatry": "Seiciatreg Plant a Phobl Ifanc",
+            "chiropractic": "Ciropractig",
+            "clinical_pathology": "Patholeg Glinigol",
+            "community": "Iechyd y Cyhoedd a'r Gymuned",
+            "dental_oral_maxillo_facial_surgery": "Llawdriniaeth Deintyddol, Llafar ac Ên",
+            "depth": "Seicoleg Dyfnder",
+            "dermatology": "Dermatoleg",
+            "dermatovenereology": "Dermatofenereoleg",
+            "diabetology": "Diabetoleg",
+            "diagnostic_radiology": "Radioleg Diagnostig",
+            "emergency": "Meddygaeth Frys",
+            "endocrinology": "Endocrinoleg",
+            "fertility": "Ffrwythlondeb",
+            "gastroenterology": "Gastroenteroleg",
+            "general": "Meddyg Teulu",
+            "geriatrics": "Meddygaeth Geriatreg",
+            "gynaecology": "Obstetreg a Gynaecoleg",
+            "haematology": "Hematoleg",
+            "hepatology": "Hepatoleg",
+            "herbalism": "Herbaliaeth",
+            "homeopathy": "Homeopathi",
+            "humanistic": "Seicoleg Ddyneiddiol",
+            "hydrotherapy": "Hydrotherapi",
+            "infectious_diseases": "Clefyd Heintus",
+            "intensive": "Gofal Arbennig",
+            "internal": "Meddygaeth Mewnol",
+            "naturopathy": "Naturopathi",
+            "neonatology": "Neonatoleg",
+            "nephrology": "Neffroleg",
+            "neurology": "Niwroleg",
+            "neuropsychiatry": "Niwroseiciatreg",
+            "neurosurgery": "Niwrolawdriniaeth",
+            "nuclear": "Meddygaeth Niwclear",
+            "occupational": "Meddygaeth Galwedigaethol",
+            "oncology": "Oncoleg",
+            "ophthalmology": "Offthalmoleg",
+            "orthodontics": "Orthodonteg",
+            "orthopaedics": "Llawfeddygaeth Orthopedig",
+            "osteopathy": "Osteopathi",
+            "otolaryngology": "Clust, Trwyn a Gwddf",
+            "paediatric_surgery": "Llawfeddygaeth Bediatreg",
+            "paediatrics": "Pediatreg",
+            "palliative": "Gofal Lliniarol",
+            "pathology": "Patholeg",
+            "physiatry": "Meddygaeth Gorfforol ac Adsefydlu",
+            "plastic_surgery": "Llawfeddygaeth Gosmetig",
+            "podiatry": "Podiatreg",
+            "proctology": "Llawfeddygaeth Colorefrol",
+            "psychiatry": "Seiciatreg",
+            "pulmonology": "Pulmonoleg",
+            "radiology": "Radioleg",
+            "radiotherapy": "Radiotherapi",
+            "reflexology": "Adweitheg",
+            "rheumatology": "Rhiwmatoleg",
+            "stomatology": "Stomatoleg",
+            "surgery": "Llawfeddygaeth Gyffredinol",
+            "systemic": "Therapi Systemig",
+            "traditional_chinese_medicine": "Meddygaeth Tseineaidd Traddodiadol",
+            "transplant": "Llawdriniaeth Trawsblannu",
+            "trauma": "Llawfeddygaeth Trawma",
+            "tropical": "Meddygaeth Drofannol",
+            "unani": "Meddygaeth Unani",
+            "urology": "Wroleg",
+            "vaccination": "Brechu",
+            "vascular_surgery": "Llawfeddygaeth Fasgwlaidd"
+          }
+        },
+        "heating": {
+          "label": "Cynhesu"
+        },
+        "height": {
+          "label": "Taldra (metr)"
+        },
+        "height_building": {
+          "label": "Taldra Adeilad (metr)",
+          "terms": "uchder"
+        },
+        "highchair": {
+          "label": "Cadair Uchel"
+        },
+        "highspeed": {
+          "label": "Cyflymder Uchel"
+        },
+        "highway": {
+          "label": "Math"
+        },
+        "highway_cartpath": {
+          "label": "Math o Lwybr",
+          "options": {
+            "service": "Heol Wasanaeth"
+          }
+        },
+        "historic": {
+          "label": "Math",
+          "options": {
+            "archaeological_site": "Safle Archeolegol",
+            "building": "Adeilad Hanesyddol",
+            "castle": "Castell",
+            "church": "Eglwys",
+            "city_gate": "Gât Dinas",
+            "citywalls": "Mur Dinas",
+            "fort": "Caer Hanesyddol",
+            "manor": "Maenordy",
+            "memorial": "Cofeb",
+            "milestone": "Carreg Filltir",
+            "mine": "Mwynglawdd",
+            "mine_shaft": "Siafft Mwynglawdd",
+            "monument": "Heneb",
+            "railway": "Rheilffordd",
+            "ruins": "Adfeilion",
+            "shieling": "Lluest",
+            "tomb": "Beddrod"
+          }
+        },
+        "historic/wreck/date_sunk": {
+          "label": "Dyddiad Boddi"
+        },
+        "holding_position/type": {
+          "label": "Math",
+          "options": {
+            "intermediate": "Cyffordd Tacsiffordd-Tacsiffordd",
+            "runway": "Rhedfa"
+          }
+        },
+        "horse_riding": {
+          "options": {
+            "horse_riding": "Ie",
+            "undefined": "Na"
+          }
+        },
+        "horse_scale": {
+          "placeholder": "Anodd, Peryglus..."
+        },
+        "hot_water": {
+          "label": "Dŵr Poeth"
+        },
+        "house": {
+          "label": "Math o Dŷ"
+        },
+        "iata": {
+          "label": "Cod Awyren IATA"
+        },
+        "icao": {
+          "label": "Cod Awyren ICAO"
+        },
+        "image": {
+          "label": "Delwedd",
+          "terms": "llun"
+        },
+        "incline": {
+          "label": "Gogwydd"
+        },
+        "incline_steps": {
+          "options": {
+            "down": "Lawr",
+            "up": "Lan"
+          }
+        },
+        "indoor": {
+          "label": "Dan-do"
+        },
+        "indoor_type": {
+          "label": "Math"
+        },
+        "industrial": {
+          "label": "Math"
+        },
+        "informal": {
+          "label": "Anffurfiol",
+          "terms": "ansafonol,ymlacio,ymlaciol"
+        },
+        "information": {
+          "label": "Math"
+        },
+        "inscription": {
+          "label": "Arysgrif"
+        },
+        "intermittent": {
+          "label": "Ysbeidiol"
+        },
+        "internet_access": {
+          "label": "Cysylltiad Rhyngrwyd",
+          "options": {
+            "no": "Na",
+            "terminal": "Terfynfa",
+            "wired": "Wifr",
+            "wlan": "Di-wifr",
+            "yes": "Ie"
+          }
+        },
+        "internet_access/fee": {
+          "label": "Mynediad Rhyngrwyd",
+          "options": {
+            "customers": "Cwsmeriaid yn unig",
+            "no": "Am ddim",
+            "yes": "Tâl"
+          },
+          "terms": "rhyngrwyd,internet,gwe,arlein"
+        },
+        "internet_access/ssid": {
+          "label": "Enw Rhwydwaith WiFi"
+        },
+        "interval": {
+          "label": "Amserlen"
+        },
+        "junction/ref_oneway": {
+          "label": "Rhif Cyffordd"
+        },
+        "junction_line": {
+          "label": "Cyffordd",
+          "options": {
+            "circular": "Cylch Traffig",
+            "jughandle": "Handlen Jyg",
+            "roundabout": "Cylchfan"
+          }
+        },
+        "kerb": {
+          "label": "Cwrb",
+          "options": {
+            "flush": {
+              "title": "Fflwsh"
+            },
+            "no": {
+              "title": "Dim"
+            },
+            "yes": {
+              "title": "Ie"
+            }
+          },
+          "terms": "cyrb"
+        },
+        "kerb/height": {
+          "label": "Taldra"
+        },
+        "kerb/kerb_barrier": {
+          "label": "Math"
+        },
+        "kitchen": {
+          "label": "Cegin"
+        },
+        "lamp_type": {
+          "label": "Math"
+        },
+        "landuse": {
+          "label": "Math"
+        },
+        "lanes": {
+          "label": "Lonydd"
+        },
+        "language_multi": {
+          "label": "Ieithoedd"
+        },
+        "layer": {
+          "label": "Haenen"
+        },
+        "leaf_cycle": {
+          "label": "Cylchred Dail",
+          "options": {
+            "deciduous": "Collddail",
+            "evergreen": "Bytholwyrdd",
+            "mixed": "Cymysg",
+            "semi_deciduous": "Lled-collddail",
+            "semi_evergreen": "Lled-bytholwyrdd"
+          }
+        },
+        "leaf_type": {
+          "label": "Math o Ddail",
+          "options": {
+            "broadleaved": "Llydanddail",
+            "leafless": "Di-ddail",
+            "mixed": "Cymysg",
+            "needleleaved": "Nodwydd"
+          }
+        },
+        "leaf_type_singular": {
+          "label": "Math o Ddail",
+          "terms": "dail,deilen"
+        },
+        "leisure": {
+          "label": "Math"
+        },
+        "length": {
+          "label": "Hyd (metr)"
+        },
+        "level": {
+          "label": "Lefel"
+        },
+        "level_semi": {
+          "label": "Lefelau"
+        },
+        "liaison": {
+          "label": "Math"
+        },
+        "license_classes": {
+          "label": "Dosbarthiadau Trwydded Gyrru"
+        },
+        "lifeguard": {
+          "label": "Math"
+        },
+        "lift_gate/type": {
+          "label": "Math"
+        },
+        "lit": {
+          "label": "Goleuadau"
+        },
+        "location": {
+          "label": "Lleoliad"
+        },
+        "location_pool": {
+          "options": {
+            "indoor": "Mewnol",
+            "outdoor": "Allanol",
+            "roof": "To"
+          }
+        },
+        "man_made": {
+          "label": "Math"
+        },
+        "manhole": {
+          "label": "Math"
+        },
+        "manufacturer": {
+          "label": "Gwneuthurwr"
+        },
+        "map_type": {
+          "label": "Math"
+        },
+        "mapillary": {
+          "label": "ID Delwedd Mapillary"
+        },
+        "marker": {
+          "label": "Math",
+          "options": {
+            "aerial": {
+              "description": "Cynlluniwyd i fod yn weladwy o'r awyr.",
+              "title": "Aerol"
+            },
+            "plate": {
+              "title": "Plât"
+            },
+            "stone": {
+              "title": "Carreg"
+            }
+          }
+        },
+        "material": {
+          "label": "Deunydd",
+          "options": {
+            "aluminium": "Alwminiwm",
+            "brass": "Pres",
+            "brick": "Bric",
+            "bronze": "Efydd",
+            "concrete": "Concrit",
+            "dry_stone": "Carreg Sych",
+            "glass": "Gwydr",
+            "granite": "Granit",
+            "iron": "Haearn",
+            "limestone": "Calchfaen",
+            "marble": "Marmor",
+            "metal": "Metel",
+            "plastic": "Plastig",
+            "reinforced_conrete": "Concrit Cyfnerthedig",
+            "rock": "Craig",
+            "sand": "Tywod",
+            "sandstone": "Tywodfaen",
+            "soil": "Pridd",
+            "steel": "Dur",
+            "stone": "Carreg",
+            "wood": "Pren"
+          }
+        },
+        "max_age": {
+          "label": "Oedran Uchafswm"
+        },
+        "maxheight": {
+          "label": "Terfyn Taldra"
+        },
+        "maxlength": {
+          "label": "Terfyn Hyd"
+        },
+        "maxspeed": {
+          "label": "Terfyn Cyflymder"
+        },
+        "maxspeed/advisory": {
+          "label": "Terfyn Cyflymder Cynghorol",
+          "terms": "30, 20, mya, mph"
+        },
+        "maxstay": {
+          "label": "Terfyn Amser"
+        },
+        "maxweight": {
+          "label": "Terfyn Pwysau"
+        },
+        "maxwidth": {
+          "label": "Terfyn Lled"
+        },
+        "memorial": {
+          "label": "Math",
+          "options": {
+            "blue_plaque": "Plac Glas",
+            "bust": "Penddelw",
+            "cross": "Croes",
+            "obelisk": "Obelisg",
+            "plaque": "Plac Coffa",
+            "sculpture": "Cerfddelw",
+            "statue": "Cerflun",
+            "stone": "Carreg Goffa",
+            "war_memorial": "Cofeb Ryfel"
+          }
+        },
+        "memorial/addr": {
+          "label": "Cyfeiriad yr Adeilad Agosaf"
+        },
+        "message": {
+          "label": "Neges"
+        },
+        "microbrewery": {
+          "label": "Bragdy Meicro"
+        },
+        "military_service": {
+          "label": "Gwasanaeth Milwrol",
+          "options": {
+            "air_force": "Llu Awyr",
+            "army": "Byddin",
+            "coast_guard": "Gwylwyr y Glannau",
+            "marines": "Môr-filwyr",
+            "navy": "Llynges"
+          }
+        },
+        "mimics": {
+          "label": "Dynwared",
+          "terms": "edrych fel,esgus,golwg,gwedd"
+        },
+        "min_age": {
+          "label": "Oedran Lleiafswm"
+        },
+        "minspeed": {
+          "label": "Terfyn Cyflymder Isafswm"
+        },
+        "mobile": {
+          "label": "Rhif Ffôn Symudol",
+          "placeholder": "+44 42 123 4567"
+        },
+        "mooring": {
+          "options": {
+            "commercial": "Masnachol",
+            "guest": "Gwesteion",
+            "no": "Na",
+            "private": "Preifat",
+            "yes": "Ie"
+          }
+        },
+        "mtb/scale/imba": {
+          "options": {
+            "0": "⚪ Hawsaf (cylch gwyn)",
+            "1": "🟢 Hawdd (cylch gwyrdd)",
+            "2": "🟦 Canolradd (sgwâr glas)",
+            "3": "◆ Anodd (diemwnt du)",
+            "4": "◆◆ Anodd Iawn (diemwnt du dwbl)"
+          },
+          "placeholder": "Hawdd, Canolradd, Anodd..."
+        },
+        "museum": {
+          "label": "Math"
+        },
+        "name": {
+          "label": "Enw",
+          "placeholder": "Enw cyffredin (os yw'n bodoli)",
+          "terms": "label,teitl"
+        },
+        "natural": {
+          "label": "Naturiol"
+        },
+        "network": {
+          "label": "Rhwydwaith"
+        },
+        "network/type": {
+          "label": "Math o Rwydwaith"
+        },
+        "network_bicycle": {
+          "label": "Dosbarth Rhwydwaith",
+          "options": {
+            "icn": "Rhyngwladol",
+            "lcn": "Lleol",
+            "ncn": "Cenedlaethol",
+            "rcn": "Rhanbarthol"
+          },
+          "placeholder": "Lleol, Rhanbarthol, Cenedlaethol, Rhyngwladol"
+        },
+        "network_foot": {
+          "label": "Dosbarth Rhwydwaith",
+          "options": {
+            "iwn": "Rhyngwladol",
+            "lwn": "Lleol",
+            "nwn": "Cenedlaethol",
+            "rwn": "Rhanbarthol"
+          },
+          "placeholder": "Lleol, Rhanbarthol, Cenedlaethol, Rhyngwladol"
+        },
+        "network_horse": {
+          "label": "Dosbarth Rhwydwaith",
+          "options": {
+            "ihn": "Rhyngwladol",
+            "lhn": "Lleol",
+            "nhn": "Cenedlaethol",
+            "rhn": "Rhanbarthol"
+          },
+          "placeholder": "Lleol, Rhanbarthol, Cenedlaethol, Rhyngwladol"
+        },
+        "network_road": {
+          "label": "Rhwydwaith"
+        },
+        "not/name": {
+          "label": "Enwau Anghywir"
+        },
+        "note": {
+          "label": "Nodyn"
+        },
+        "nudism": {
+          "label": "Noethlymuniaeth",
+          "options": {
+            "customary": "Arferol",
+            "designated": "Dynodedig",
+            "no": "Gwaharddedig",
+            "obligatory": "Gofynnol",
+            "permissive": "Caniataol",
+            "yes": "Caniateir"
+          }
+        },
+        "office": {
+          "label": "Math",
+          "options": {
+            "accountant": "Swyddfa Gyfrifydd",
+            "adoption_agency": "Asiantaeth Mabwysiadu",
+            "advertising_agency": "Asiantaeth Hysbysebu",
+            "architect": "Swyddfa Bensaer",
+            "association": "Swyddfa Gorff Nid-er-elw",
+            "charity": "Swyddfa Elusen",
+            "company": "Swyddfa Gorfforaethol",
+            "construction_company": "Swyddfa Gwmni Adeiladu",
+            "consulting": "Swyddfa Ymgynghoriaeth",
+            "courier": "Swyddfa Negesydd",
+            "coworking": "Ardal Gydweithio",
+            "diplomatic": "Swyddfa Llysgenhadol",
+            "educational_institution": "Sefydliad Addysgol",
+            "employment_agency": "Asiantaeth Cyflogi",
+            "energy_supplier": "Swyddfa Gyflenwr Ynni",
+            "engineer": "Swyddfa Beirianneg",
+            "estate_agent": "Swyddfa Werthwr Tai",
+            "financial": "Swyddfa Gyllid",
+            "financial_advisor": "Ymgynghorydd Ariannol",
+            "forestry": "Swyddfa Goedwigaeth",
+            "government": "Swyddfa Lywodraeth",
+            "graphic_design": "Swyddfa Ddylunio Graffeg",
+            "guide": "Swyddfa Dywysydd Teithiau",
+            "insurance": "Swyddfa Yswiriant",
+            "it": "Swyddfa Dechnoleg Gwybodaeth",
+            "lawyer": "Swyddfa Gyfraith",
+            "logistics": "Asiantaeth Anfon",
+            "moving_company": "Swyddfa Gwmni Symud",
+            "newspaper": "Swyddfa Bapur Newydd",
+            "ngo": "Swyddfa NGO",
+            "notary": "Swyddfa Notari",
+            "physician": "Meddyg",
+            "political_party": "Swyddfa Blaid Gwleidyddol",
+            "quango": "Swyddfa Gorff Quasi-Aflywodraethol",
+            "religion": "Swyddfa Grefyddol",
+            "research": "Swyddfa Ymchwil",
+            "security": "Swyddfa Ddiogelwch",
+            "surveyor": "Swyddfa Arolygydd",
+            "tax_advisor": "Swyddfa Gynghori Treth",
+            "telecommunication": "Swyddfa Delathrebu",
+            "therapist": "Swyddfa Therapydd",
+            "travel_agent": "Asiantaeth Teithio",
+            "union": "Swyddfa Undeb Llafur",
+            "water_utility": "Swyddfa Ddŵr"
+          }
+        },
+        "oneway": {
+          "label": "Unffordd",
+          "options": {
+            "no": "Na",
+            "undefined": "Tueddol ‘Na’",
+            "yes": "Ie"
+          }
+        },
+        "oneway/bicycle": {
+          "label": "Unffordd (Beiciau)"
+        },
+        "oneway_yes": {
+          "options": {
+            "no": "Na",
+            "undefined": "Efallai ‘Ie’",
+            "yes": "Ie"
+          }
+        },
+        "opening_date": {
+          "label": "Dyddiad Agor Disgwyliedig"
+        },
+        "opening_hours": {
+          "label": "Oriau",
+          "placeholder": "Anhysbys",
+          "terms": "agor"
+        },
+        "operator": {
+          "label": "Gweithredwr"
+        },
+        "operator/type": {
+          "label": "Math o Weithredwr"
+        },
+        "organic": {
+          "options": {
+            "no": "Dim",
+            "only": "Yn unig",
+            "yes": "Rhai"
+          }
+        },
+        "outdoor_seating": {
+          "label": "Seddi Allanol"
+        },
+        "parcel_pickup": {
+          "options": {
+            "no": "Na",
+            "undefined": "Efallai ‘Ie’",
+            "yes": "Ie"
+          }
+        },
+        "park_ride": {
+          "label": "Parcio a Theithio"
+        },
+        "parking": {
+          "label": "Math",
+          "options": {
+            "carports": "Cysgod Car",
+            "half_on_kerb": "Hanner Ar Gwrb",
+            "lane": "Lôn Ochr Ffordd",
+            "layby": "Cilfan",
+            "multi-storey": "Aml-lawr",
+            "on_kerb": "Ar Gwrb",
+            "rooftop": "To",
+            "sheds": "Sieds",
+            "shoulder": "Llain Galed",
+            "street_side": "Ochr Stryd",
+            "surface": "Arwynebol",
+            "underground": "Dan Ddaear"
+          }
+        },
+        "parking/side/orientation": {
+          "types": {
+            "parking:left:orientation": "Ochr chwith",
+            "parking:right:orientation": "Ochr dde"
+          }
+        },
+        "parking/side/parking": {
+          "label": "Parcio",
+          "options": {
+            "no": "Na",
+            "on_kerb": "Ar Gwrb",
+            "separate": "Mapir parcio ar wahân",
+            "shoulder": "Llain Galed",
+            "street_side": "Ochr Stryd",
+            "yes": "Ie (amhenodol)"
+          },
+          "types": {
+            "parking:left": "Ochr chwith",
+            "parking:right": "Ochr dde"
+          }
+        },
+        "parking_entrance": {
+          "label": "Math"
+        },
+        "parking_space": {
+          "label": "Math"
+        },
+        "payment_multi": {
+          "label": "Ffyrdd Talu",
+          "options": {
+            "account_cards": "Cerdyn Cyfrif",
+            "app": "Ap Symudol",
+            "cards": "Cerdyn talu",
+            "cash": "Arian",
+            "cheque": "Siec",
+            "coins": "Arian parod",
+            "contactless": "Digyswllt",
+            "credit_cards": "Cerdyn credyd",
+            "cryptocurrencies": "Crypto",
+            "debit_cards": "Cerdyn debyd",
+            "notes": "Arianodau",
+            "prepaid_ticket": "Tocyn Rhag-dalu",
+            "telephone_cards": "Cerdyn Ffôn"
+          }
+        },
+        "phases": {
+          "label": "Cymalau"
+        },
+        "phone": {
+          "label": "Rhif ffôn",
+          "placeholder": "+44 42 123 4567"
+        },
+        "pipeline": {
+          "label": "Math"
+        },
+        "piste/difficulty": {
+          "label": "Anodd",
+          "options": {
+            "advanced": "Uwch",
+            "easy": "Hawdd",
+            "extreme": "Eithafol",
+            "intermediate": "Canolradd",
+            "novice": "Sylfaenol"
+          },
+          "placeholder": "Hawdd, Canolradd, Uwch..."
+        },
+        "piste/difficulty_downhill": {
+          "options": {
+            "advanced": "Uwch (diemwnt du)",
+            "easy": "Hawdd (cylch gwyrdd)"
+          }
+        },
+        "piste/grooming": {
+          "options": {
+            "classic": "Clasurol",
+            "classic+skating": "Clasurol a Sglefrio",
+            "scooter": "Sgwter / Car Eira",
+            "skating": "Sglefrio"
+          }
+        },
+        "piste/grooming_downhill": {
+          "options": {
+            "classic": "Clasurol"
+          }
+        },
+        "piste/grooming_nordic": {
+          "options": {
+            "classic": "Clasurol",
+            "classic+skating": "Clasurol a Sglefrio",
+            "scooter": "Sgwter / Car Eira",
+            "skating": "Sglefrio"
+          }
+        },
+        "piste/type": {
+          "label": "Math",
+          "options": {
+            "connection": "Cysylltiad",
+            "playground": "Ardal Chwarae",
+            "snow_park": "Parc Eira"
+          }
+        },
+        "place": {
+          "label": "Math"
+        },
+        "plant": {
+          "label": "Planhigyn"
+        },
+        "plant/output": {
+          "options": {
+            "cold_water": "Dŵr Oer",
+            "electricity": "Trydan",
+            "hot_water": "Dŵr Poeth"
+          }
+        },
+        "plant/source": {
+          "label": "Ffynhonnell Ynni"
+        },
+        "playground": {
+          "label": "Math"
+        },
+        "playground/theme": {
+          "label": "Thema",
+          "terms": "thema,themâu,cynllun,arddull,themau"
+        },
+        "plots": {
+          "label": "Plot"
+        },
+        "polling_station": {
+          "label": "Gorsaf Bleidleisio",
+          "terms": "pleidleisio,votio,fotio"
+        },
+        "population": {
+          "label": "Poblogaeth"
+        },
+        "population/date": {
+          "label": "Dyddiad Poblogaeth"
+        },
+        "portable": {
+          "label": "Symudol"
+        },
+        "post": {
+          "label": "Cyfeiriad Danfoniadau"
+        },
+        "post_box/type": {
+          "label": "Math",
+          "terms": "teip"
+        },
+        "power": {
+          "label": "Math"
+        },
+        "preschool": {
+          "label": "Nyrseri"
+        },
+        "produce": {
+          "label": "Cynnyrch"
+        },
+        "product": {
+          "label": "Cynnyrch"
+        },
+        "public_bookcase/type": {
+          "label": "Math"
+        },
+        "pump": {
+          "options": {
+            "no": "Dim",
+            "yes": "Ie"
+          }
+        },
+        "railway": {
+          "label": "Math"
+        },
+        "railway/signal/direction": {
+          "options": {
+            "backward": "Yn ôl",
+            "both": "Y ddwy / Popeth",
+            "forward": "Ymlaen"
+          }
+        },
+        "ramp": {
+          "options": {
+            "no": "Na",
+            "yes": "Ie"
+          }
+        },
+        "recycling_accepts": {
+          "label": "Caniateir",
+          "options": {
+            "batteries": "Batris",
+            "cans": "Caniau",
+            "cardboard": "Cardfwrdd",
+            "clothes": "Dillad",
+            "cooking_oil": "Olew Coginio",
+            "engine_oil": "Olew Injan",
+            "glass": "Gwydr (wedi’i dempru, ffenestri, drychau, ayb.)",
+            "glass_bottles": "Poteli a Jariau Gwydr",
+            "green_waste": "Gwastraff Garddio",
+            "paper": "Papur",
+            "plastic": "Plastig",
+            "plastic_bottles": "Poteli Plastig",
+            "scrap_metal": "Metel Gwastraff",
+            "shoes": "Esgidiau"
+          }
+        },
+        "recycling_type": {
+          "label": "Math",
+          "options": {
+            "centre": "Canolfan"
+          }
+        },
+        "ref": {
+          "label": "Cod Cyfeiriadol"
+        },
+        "ref/FR/siret-FR": {
+          "label": "Rhif SIRET"
+        },
+        "ref/edubase-GB": {
+          "label": "Cyfeirnod Yr Adran Addysg"
+        },
+        "ref/isil": {
+          "label": "Cod ISIL"
+        },
+        "ref/linz/place_id-NZ": {
+          "label": "ID Lleoliad NZGB"
+        },
+        "ref/vatin": {
+          "label": "Rhif ID TAW",
+          "terms": "VAT"
+        },
+        "ref_aeroway_gate": {
+          "label": "Rhif y Gât"
+        },
+        "ref_disc_golf_hole": {
+          "label": "Rhif y Twll"
+        },
+        "ref_golf_hole": {
+          "label": "Rhif y Twll"
+        },
+        "ref_highway_junction": {
+          "label": "Rhif Cyffordd"
+        },
+        "ref_platform": {
+          "label": "Rhif Platfform"
+        },
+        "ref_rail": {
+          "label": "Rhif Lein"
+        },
+        "ref_road_number": {
+          "label": "Rhif Heol"
+        },
+        "ref_room_number": {
+          "label": "Rhif Ystafell"
+        },
+        "ref_route": {
+          "label": "Rhif Llwybr"
+        },
+        "ref_runway": {
+          "placeholder": "ee. 01L/19R"
+        },
+        "ref_sector": {
+          "label": "Rhif Adran"
+        },
+        "ref_stop_position": {
+          "label": "Rhif Safle"
+        },
+        "ref_taxiway": {
+          "label": "Enw Tacsiffordd",
+          "placeholder": "ee. A5"
+        },
+        "relation": {
+          "label": "Math"
+        },
+        "religion": {
+          "label": "Crefydd",
+          "options": {
+            "buddhist": "Bwdhaidd",
+            "caodaism": "Caodaidd",
+            "chinese_folk": "Crefydd Gwerin Tsieineaidd",
+            "christian": "Cristnogol",
+            "confucian": "Confuciaidd",
+            "hindu": "Hindw",
+            "jewish": "Iddew",
+            "multifaith": "Aml-grefydd",
+            "muslim": "Moslem",
+            "none": "Di-grefydd",
+            "sikh": "Sîc",
+            "spiritualist": "Ysbrydegydd",
+            "taoist": "Taoaidd",
+            "vietnamese_folk": "Crefydd Gwerin Fietnam",
+            "voodoo": "Fwdw"
+          }
+        },
+        "reservation": {
+          "options": {
+            "no": "Ni dderbynir",
+            "recommended": "Argymhellir",
+            "required": "Gofynnol",
+            "yes": "Derbynir"
+          }
+        },
+        "residential": {
+          "label": "Math"
+        },
+        "resort": {
+          "label": "Math"
+        },
+        "resource": {
+          "label": "Adnoddau",
+          "options": {
+            "aggregate": "Agreg",
+            "clay": "Clai",
+            "coal": "Glo",
+            "gold": "Aur",
+            "gravel": "Graean",
+            "iron_ore": "Haearn",
+            "limestone": "Leim",
+            "peat": "Mawn",
+            "sand": "Tywod"
+          }
+        },
+        "restriction": {
+          "label": "Math"
+        },
+        "restrictions": {
+          "label": "Cyfyngiadau Troi"
+        },
+        "roller_coaster/track": {
+          "label": "Math",
+          "options": {
+            "maintenance": {
+              "title": "Cynnal a Chadw"
+            },
+            "moving": {
+              "title": "Symud"
+            },
+            "station": {
+              "title": "Gorsaf"
+            },
+            "waiting": {
+              "title": "Aros"
+            }
+          }
+        },
+        "roof/colour": {
+          "label": "Lliw To"
+        },
+        "room": {
+          "label": "Math"
+        },
+        "rooms": {
+          "label": "Ystafelloedd"
+        },
+        "roundtrip": {
+          "label": "Yn Ffurfio Dolen"
+        },
+        "route": {
+          "label": "Math"
+        },
+        "route_master": {
+          "label": "Math"
+        },
+        "royal_cypher-GB": {
+          "label": "Seiffr Brenhinol",
+          "options": {
+            "CIIIR": "CIIIR (Siarl III)",
+            "EIIR": "EIIR (Elisabeth II)",
+            "GR": "GR (Sior V)",
+            "GVIR": "GVIR (Sior VI)",
+            "no": "Dim",
+            "scottish_crown": "Coron yr Alban"
+          }
+        },
+        "ruins": {
+          "label": "Math"
+        },
+        "rwn_ref": {
+          "label": "Cod Cerdded"
+        },
+        "salt": {
+          "label": "Halen"
+        },
+        "sample_collection": {
+          "label": "Samplau"
+        },
+        "screen": {
+          "label": "Sgriniau"
+        },
+        "scuba_diving": {
+          "label": "Gwasanaethau"
+        },
+        "seamark/beacon_isolated_danger/shape": {
+          "label": "Siâp"
+        },
+        "seamark/beacon_lateral/category": {
+          "label": "Categori",
+          "options": {
+            "danger_left": "Perygl i'r Chwith",
+            "danger_right": "Perygl i'r Dde",
+            "port": "Larbwrd",
+            "starboard": "Starbwrd",
+            "waterway_left": "Ffordd Ddŵr i'r Chwith",
+            "waterway_right": "Ffordd Ddŵr i'r Dde"
+          }
+        },
+        "seamark/beacon_lateral/colour": {
+          "label": "Lliw",
+          "options": {
+            "green": "Gwyrdd",
+            "grey": "Llwyd",
+            "red": "Coch"
+          }
+        },
+        "seamark/beacon_lateral/shape": {
+          "label": "Siâp"
+        },
+        "seamark/beacon_lateral/system": {
+          "options": {
+            "other": "Arall"
+          }
+        },
+        "seamark/buoy_lateral/category": {
+          "label": "Categori",
+          "options": {
+            "channel_left": "Sianel i'r Chwith",
+            "channel_right": "Sianel i'r Dde",
+            "danger_left": "Perygl i'r Chwith",
+            "danger_right": "Perygl i'r Dde",
+            "port": "Larbwrd",
+            "starboard": "Starbwrd",
+            "waterway_left": "Ffordd Ddŵr i'r Chwith",
+            "waterway_right": "Ffordd Ddŵr i'r Dde"
+          }
+        },
+        "seamark/buoy_lateral/colour": {
+          "label": "Lliw",
+          "options": {
+            "green": "Gwyrdd",
+            "green;red;green": "Gwyrdd-Coch-Gwyrdd",
+            "green;white;green;white": "Gwyrdd-Gwyn-Gwyrdd-Gwyn",
+            "red": "Coch",
+            "red;green;red": "Coch-Gwyrdd-Coch",
+            "red;white;red;white": "Coch-Gwyn-Coch-Gwyn",
+            "white": "Gwyn",
+            "yellow": "Melyn"
+          }
+        },
+        "seamark/buoy_lateral/shape": {
+          "label": "Siâp"
+        },
+        "seamark/buoy_lateral/system": {
+          "options": {
+            "other": "Arall"
+          }
+        },
+        "seamark/harbour/category_marina": {
+          "options": {
+            "marina": "Ie",
+            "marina_no_facilities": "Na"
+          }
+        },
+        "seamark/mooring/category": {
+          "label": "Categori"
+        },
+        "seamark/rescue_station/category": {
+          "options": {
+            "first_aid": "Cymorth Cyntaf",
+            "radio": "Gorsaf Radio"
+          }
+        },
+        "seamark/wreck/category": {
+          "label": "Categori"
+        },
+        "seasonal": {
+          "label": "Tymhorol"
+        },
+        "seats": {
+          "label": "Seddi"
+        },
+        "second_hand": {
+          "label": "Ail-law",
+          "options": {
+            "no": "Na",
+            "only": "Yn unig",
+            "yes": "Ie"
+          },
+          "placeholder": "Ie, Na, Yn unig"
+        },
+        "self_service": {
+          "label": "Hunanwasanaeth"
+        },
+        "service": {
+          "label": "Math",
+          "options": {
+            "alley": "Lôn",
+            "drive-through": "Gyrru Trwodd",
+            "emergency_access": "Mynediad Argyfwng",
+            "parking_aisle": "Eil Parcio"
+          }
+        },
+        "service/bicycle": {
+          "label": "Gwasanaethau Seiclo"
+        },
+        "service/vehicle": {
+          "label": "Gwasanaethau"
+        },
+        "service_rail": {
+          "label": "Math o Wasanaeth",
+          "options": {
+            "yard": "Iard"
+          }
+        },
+        "shelter": {
+          "label": "Cysgod"
+        },
+        "shelter_type": {
+          "label": "Math"
+        },
+        "shoes": {
+          "label": "Esgidiau"
+        },
+        "shop": {
+          "label": "Math"
+        },
+        "shower": {
+          "label": "Cawodydd"
+        },
+        "side": {
+          "label": "Ochr"
+        },
+        "siren/purpose": {
+          "label": "Pwrpas"
+        },
+        "siren/type": {
+          "label": "Math",
+          "options": {
+            "electronic": "Electronig",
+            "other": "Arall",
+            "pneumatic": "Niwmatig"
+          }
+        },
+        "site": {
+          "label": "Math"
+        },
+        "smoking": {
+          "label": "Ysmygu",
+          "options": {
+            "dedicated": "Ar gyfer ysmygwyr (ee. clwb ysmygu)",
+            "isolated": "Mewn ardaloedd ysmygu, ar wahân",
+            "no": "DIm ysmygu unrhywle",
+            "outside": "Tu allan yn unig",
+            "separated": "Mewn ardaloedd ysmygu, sydd ddim ar wahân",
+            "yes": "Caniateir ym mhobman"
+          },
+          "placeholder": "Na, Ar Wahân, Ie..."
+        },
+        "sms": {
+          "terms": "tecst,nodyn bodyn"
+        },
+        "social_facility": {
+          "label": "Math",
+          "options": {
+            "assisted_living": "Byw â Chymorth",
+            "day_care": "Meithrinfa Dydd",
+            "food_bank": "Banc Bwyd",
+            "group_home": "Tŷ Grŵp",
+            "nursing_home": "Tŷ Gofal",
+            "outreach": "Allgymorth",
+            "shelter": "Cysgod",
+            "workshop": "Gweithdy"
+          }
+        },
+        "social_facility_for": {
+          "label": "Ar gyfer",
+          "options": {
+            "abused": "Dioddefwyr Camdriniaeth",
+            "child": "Plant",
+            "dementia": "Pobl sy'n dioddef o Ddementia",
+            "disabled": "Pobl ag Anableddau",
+            "diseased": "Pobl sy'n dioddef o Glefyd",
+            "displaced": "Pobl wedi'u dadleoli gan Drychineb neu Wrthdaro",
+            "drug_addicted": "Caethiwed Cyffuriau",
+            "homeless": "Pobl Di-gartref",
+            "juvenile": "Pobl Ifanc",
+            "mental_health": "Pobl â Phroblemau Iechyd Meddwl",
+            "migrant": "Mudwyr",
+            "orphan": "Plant Amddifaid",
+            "refugee": "Ffoaduriaid",
+            "senior": "Henoed",
+            "terminally_ill": "Pobl â Salwch Angheuol",
+            "underprivileged": "Pobl Difreintiedig",
+            "unemployed": "Pobl Di-swydd",
+            "veteran": "Cyn-filwyr",
+            "victim": "Dioddefwyr Trosedd",
+            "woman": "Menywod"
+          }
+        },
+        "source": {
+          "label": "Ffynonellau",
+          "options": {
+            "aerial imagery": "Delweddau o'r awyr",
+            "local knowledge": "Gwybodaeth Leol",
+            "osm notes": "Nodiadau OpenStreetMap",
+            "streetlevel imagery": "Lluniau Lefel Stryd",
+            "survey": "Arsylwi"
+          }
+        },
+        "source/population": {
+          "label": "Ffynhonnell Poblogaeth"
+        },
+        "species": {
+          "label": "Rhywogaeth"
+        },
+        "species/wikidata": {
+          "label": "Wicidata Rhywogaeth"
+        },
+        "sport": {
+          "label": "Chwaraeon",
+          "options": {
+            "10pin": "Bowlio Deg",
+            "9pin": "Bowlio Naw",
+            "american_football": "Pêl-droed Americanaidd",
+            "athletics": "Trac & Maes",
+            "baseball": "Pêl-fas",
+            "basketball": "Pêl-fasged",
+            "beachvolleyball": "Pêl-foli Traeth",
+            "billiards": "Chwaraeon Ciw",
+            "boules": "Bowlio",
+            "bowls": "Bowlio",
+            "canoe": "Canŵ",
+            "chess": "Gwyddbwyll",
+            "climbing": "Dringo",
+            "cricket": "Criced",
+            "curling": "Cyrlio",
+            "cycling": "Seiclo",
+            "darts": "Dartiau",
+            "disc_golf": "Golff Disg",
+            "dog_racing": "Rasio Cŵn",
+            "equestrian": "Chwaraeon Ceffyl",
+            "fitness": "Ymarfer Ffitrwydd",
+            "gaelic_games": "Gemau Gaelaidd",
+            "golf": "Golff",
+            "gymnastics": "Gymnasteg",
+            "horse_racing": "Rasio Ceffyl",
+            "ice_hockey": "Hoci Iâ",
+            "ice_skating": "Sglefrio Iâ",
+            "karting": "Rasio Certi",
+            "motor": "Chwaraeon Moduro",
+            "multi": "Chwaraeon Amhenodol Eraill",
+            "netball": "Pêl-rwyd",
+            "orienteering": "Cyfeiriannu",
+            "rugby_union": "Rygbi'r Undeb",
+            "running": "Rhedeg",
+            "shooting": "Saethu",
+            "skateboard": "Sglefrfyrddio",
+            "skiing": "Sgïo",
+            "soccer": "Pêl-droed",
+            "softball": "Pêl-feddal",
+            "swimming": "Nofio",
+            "tennis": "Tenis",
+            "volleyball": "Pêl-foli",
+            "yoga": "Ioga"
+          }
+        },
+        "sport/sport_ice": {
+          "label": "Chwaraeon"
+        },
+        "sport/sport_pub": {
+          "label": "Chwaraeon",
+          "terms": "ymarfer corff,gemau,sborts"
+        },
+        "sport/sport_racing_motor": {
+          "label": "Chwaraeon"
+        },
+        "sport/sport_racing_nonmotor": {
+          "label": "Chwaraeon"
+        },
+        "stars": {
+          "label": "Sêr",
+          "terms": "ser"
+        },
+        "start_date": {
+          "label": "Dyddiad Cychwyn"
+        },
+        "static_caravans": {
+          "label": "Tai Symudol"
+        },
+        "step_count": {
+          "label": "Nifer y Grisiau"
+        },
+        "stile": {
+          "label": "Math"
+        },
+        "stop": {
+          "label": "Math o Stop",
+          "options": {
+            "all": "Pob Ffyrdd",
+            "minor": "Is-ffordd"
+          }
+        },
+        "street_cabinet": {
+          "label": "Math",
+          "terms": "teip"
+        },
+        "stroller": {
+          "options": {
+            "limited": "Cyfyngedig",
+            "no": "Na",
+            "yes": "Ie"
+          }
+        },
+        "structure": {
+          "label": "Adeiladwaith",
+          "options": {
+            "bridge": "Pont",
+            "embankment": "Arglawdd",
+            "ford": "Rhyd",
+            "tunnel": "Twnnel"
+          },
+          "placeholder": "Anhysbys"
+        },
+        "structure_power": {
+          "label": "Adeiladwaith"
+        },
+        "structure_waterway": {
+          "label": "Adeiladwaith",
+          "options": {
+            "tunnel": "Twnnel"
+          },
+          "placeholder": "Anhysbys"
+        },
+        "studio": {
+          "label": "Math"
+        },
+        "subject": {
+          "label": "Goddrych"
+        },
+        "subject/wikidata": {
+          "label": "Wicidata Gwrthrych"
+        },
+        "substance": {
+          "options": {
+            "fuel": "Tanwydd",
+            "gas": "Nwy Naturiol",
+            "hot_water": "Dŵr Poeth",
+            "rainwater": "Dŵr Glaw",
+            "water": "Dŵr Yfed"
+          }
+        },
+        "substation": {
+          "label": "Math",
+          "options": {
+            "generation": "Cynhyrchu"
+          }
+        },
+        "substation_pipeline": {
+          "label": "Math",
+          "options": {
+            "industrial": "Diwydiannol",
+            "measurement": "Mesuro"
+          }
+        },
+        "surface": {
+          "label": "Arwyneb",
+          "options": {
+            "artificial_turf": "Cae Artiffisial",
+            "asphalt": "Asffalt",
+            "compacted": "Wedi'i gywasgu",
+            "concrete": "Concrit",
+            "dirt": "Pridd",
+            "grass": "Gwair",
+            "gravel": "Graean",
+            "ground": "Tir",
+            "metal": "Metel",
+            "paved": "Palmant",
+            "salt": "Halen",
+            "sand": "Tywod",
+            "sett": "Set",
+            "unhewn_cobblestone": "Crynion",
+            "wood": "Pren",
+            "woodchips": "Sglodion Coed"
+          }
+        },
+        "surveillance/type": {
+          "options": {
+            "ALPR": "Adnabod Rhifau Cerbydau yn Awtomatig",
+            "guard": "Gwarchodwr"
+          }
+        },
+        "survey/date": {
+          "label": "Gwiriwyd Ddiwethaf"
+        },
+        "survey_point/purpose": {
+          "label": "Pwrpas",
+          "options": {
+            "both": "Y ddwy"
+          }
+        },
+        "survey_point/structure": {
+          "label": "Adeiladwaith",
+          "options": {
+            "block": "Bloc",
+            "bracket": "Braced",
+            "cairn": "Carnedd",
+            "pole": "Polyn"
+          }
+        },
+        "swimming_pool": {
+          "label": "Math",
+          "options": {
+            "kids": "Pwll Nofio Plant"
+          }
+        },
+        "switch": {
+          "label": "Math"
+        },
+        "tactile_paving": {
+          "label": "Palmant Botymog"
+        },
+        "takeaway": {
+          "label": "Tecawê",
+          "options": {
+            "no": "Na",
+            "only": "Tecawê yn unig",
+            "yes": "Ie"
+          },
+          "placeholder": "Ie, Na, Tecawê yn unig...",
+          "terms": "bwyd, bwyd i fynd"
+        },
+        "target": {
+          "label": "Targed"
+        },
+        "taxi_vehicle": {
+          "label": "Math o Gerbyd",
+          "options": {
+            "motorcar": {
+              "title": "Car modur"
+            },
+            "motorcycle": {
+              "title": "Beic modur"
+            }
+          }
+        },
+        "taxon": {
+          "label": "Tacson"
+        },
+        "tee": {
+          "label": "Lliw/Math Ti"
+        },
+        "telecom": {
+          "label": "Math",
+          "options": {
+            "data_center": "Canolfan Data",
+            "exchange": "Cyfnewidfa"
+          }
+        },
+        "telecom/medium": {
+          "label": "Cyfrwng"
+        },
+        "telescope/type": {
+          "label": "Math"
+        },
+        "tents": {
+          "label": "Pabellau"
+        },
+        "tidal": {
+          "label": "Morol",
+          "terms": "forol,môr,cefnfor,dŵr,dwr,mor"
+        },
+        "to": {
+          "label": "I"
+        },
+        "toilets": {
+          "label": "Toiledau",
+          "terms": "tŷ bach, tai bach, ty bach, lle chwech, lle 6, llefydd chwech"
+        },
+        "toilets/disposal": {
+          "options": {
+            "bucket": "Bwced",
+            "chemical": "Cemegol",
+            "flush": "Fflwsh"
+          }
+        },
+        "toilets/handwashing": {
+          "label": "Golchi Dwylo"
+        },
+        "toilets/menstrual_products": {
+          "label": "Argaeledd Cynnyrch Mislif Am Ddim",
+          "options": {
+            "limited": "Mewn rhai ciwbiclau",
+            "no": "Na",
+            "yes": "Ie, ymhob ciwbicl"
+          },
+          "terms": "mislif,pad,fislif,period,gwaed,tamponau,tampon"
+        },
+        "toilets/wheelchair": {
+          "label": "Toiled Cadair Olwyn",
+          "options": {
+            "limited": "Cyfyngedig",
+            "no": "Na",
+            "yes": "Ie"
+          }
+        },
+        "tomb": {
+          "label": "Math",
+          "options": {
+            "table": "Tabl",
+            "vault": "Cell"
+          }
+        },
+        "tourism": {
+          "label": "Math"
+        },
+        "tower/construction": {
+          "label": "Adeiladwaith"
+        },
+        "tower/platforms": {
+          "label": "Platfformau"
+        },
+        "tower/type": {
+          "label": "Math"
+        },
+        "townhall/type": {
+          "label": "Math"
+        },
+        "tracktype": {
+          "label": "Math o Drac",
+          "options": {
+            "grade5": "Meddal: pridd / tywod / gwair"
+          }
+        },
+        "trade": {
+          "label": "Math"
+        },
+        "traffic_calming": {
+          "label": "Math",
+          "options": {
+            "bump": "Bymp",
+            "chicane": "Rhwystr Igam-Ogam",
+            "choked_table": "Bwrdd Arafu Atalydd",
+            "choker": "Atalydd Traffig",
+            "cushion": "Clustog Arafu",
+            "dip": "Gostyngiad",
+            "double_dip": "Gostyngiad Dwbl",
+            "hump": "Twmpath",
+            "island": "Ynys Gostegu Traffig",
+            "mini_bumps": "Bympau Bach",
+            "rumble_strip": "Twmpathau Rhybudd",
+            "table": "Tabl"
+          }
+        },
+        "traffic_calming_road": {
+          "label": "Gostegu Traffig",
+          "terms": "tawelu,dawelu,thawelu,tabl,bwrdd,byrddau,bord,car,ceir,arafu"
+        },
+        "traffic_sign": {
+          "label": "Arwydd Draffig"
+        },
+        "traffic_sign/direction": {
+          "options": {
+            "backward": "Yn ôl",
+            "both": "Y ddwy / Popeth",
+            "forward": "Ymlaen"
+          }
+        },
+        "traffic_signals": {
+          "label": "Math"
+        },
+        "traffic_signals/direction": {
+          "options": {
+            "backward": "Yn ôl",
+            "both": "Y ddwy / Popeth",
+            "forward": "Ymlaen"
+          }
+        },
+        "traffic_signals/minimap": {
+          "label": "Map Cyffyrddadwy"
+        },
+        "traffic_signals/sound": {
+          "label": "Signal Sain",
+          "options": {
+            "no": "Na",
+            "yes": "Ie"
+          }
+        },
+        "traffic_signals/vibration": {
+          "label": "Cryndod"
+        },
+        "transformer": {
+          "label": "Math",
+          "options": {
+            "yes": "Rôl Anhysbys"
+          }
+        },
+        "trees": {
+          "label": "Coed"
+        },
+        "trench": {
+          "label": "Math"
+        },
+        "tunnel": {
+          "label": "Math",
+          "placeholder": "Diofyn"
+        },
+        "tunnel_combo": {
+          "label": "Math",
+          "options": {
+            "culvert": "Cylfer"
+          }
+        },
+        "turning_circle": {
+          "label": "Siâp"
+        },
+        "two_sided": {
+          "options": {
+            "undefined": "Na",
+            "yes": "Ie"
+          }
+        },
+        "usage_rail": {
+          "label": "Math o Ddefnydd",
+          "options": {
+            "branch": "Cangen",
+            "industrial": "Diwydiannol",
+            "military": "Milwrol",
+            "test": "Arbrofi",
+            "tourism": "Twristiaeth"
+          },
+          "terms": "defnydd"
+        },
+        "usage_waterway": {
+          "label": "Math o Ddefnydd"
+        },
+        "utility": {
+          "options": {
+            "gas": "Nwy",
+            "oil": "Olew",
+            "power": "Pŵer",
+            "sewerage": "Dŵr Gwastraff",
+            "street_lighting": "Goleuadau Stryd",
+            "water": "Dŵr"
+          }
+        },
+        "valve": {
+          "label": "Math"
+        },
+        "vehicles": {
+          "label": "Cerbydau",
+          "options": {
+            "bus": "Bws",
+            "ferry": "Fferi",
+            "monorail": "Trên-un-Gledren",
+            "subway": "Tanddaear",
+            "train": "Trên",
+            "trolleybus": "Bws Trydan"
+          }
+        },
+        "vending": {
+          "options": {
+            "bread": "Bara",
+            "cigarettes": "Sigaréts",
+            "coffee": "Coffi",
+            "condoms": "Condomau",
+            "drinks": "Diodydd",
+            "eggs": "Wyau",
+            "electronics": "Electroneg",
+            "elongated_coin": "Arian Swfenîr",
+            "excrement_bags": "Bagiau Baw",
+            "feminine_hygiene": "Cynnyrch Glanweithdra Menywod",
+            "food": "Bwyd",
+            "fuel": "Tanwydd",
+            "ice_cream": "Hufen Iâ",
+            "ice_cubes": "Ciwbiau Iâ",
+            "milk": "Llaeth",
+            "newspapers": "Papurau Newydd",
+            "parking_tickets": "Tocynnau Parcio",
+            "public_transport_tickets": "Tocynnau Trafnidiaeth Cyhoeddus",
+            "sweets": "Losin",
+            "water": "Dŵr Yfed"
+          }
+        },
+        "vhf": {
+          "label": "Sianel VHF"
+        },
+        "via": {
+          "label": "Trwy"
+        },
+        "video_calls": {
+          "label": "Galwadau Fideo"
+        },
+        "visibility": {
+          "label": "Gwelededd",
+          "options": {
+            "area": "Dros 20m (65ft)",
+            "house": "Hyd at 5m (16ft)",
+            "street": "5 i 20m (16 to 65ft)"
+          }
+        },
+        "volcano/status": {
+          "label": "Statws Folcano"
+        },
+        "volcano/type": {
+          "label": "Math o Folcano",
+          "options": {
+            "shield": "Tarian",
+            "stratovolcano": "Stratofolcano"
+          }
+        },
+        "wall": {
+          "label": "Math"
+        },
+        "waste": {
+          "label": "Gwastraff",
+          "options": {
+            "cigarettes": "Sigaréts",
+            "dog_excrement": "Baw Ci",
+            "trash": "Sbwriel"
+          }
+        },
+        "water": {
+          "label": "Math"
+        },
+        "water_source": {
+          "label": "Ffynnon Dŵr",
+          "options": {
+            "pond": "Pwll",
+            "river": "Afon",
+            "stream": "Nant",
+            "water_tank": "Tanc Dŵr"
+          }
+        },
+        "waterway": {
+          "label": "Math"
+        },
+        "website": {
+          "label": "Gwefan"
+        },
+        "website/menu": {
+          "label": "Dolen Fwydlen",
+          "terms": "bwydlen"
+        },
+        "wetland": {
+          "label": "Math",
+          "options": {
+            "bog": "Cors",
+            "fen": "Ffen",
+            "mangrove": "Mangrof",
+            "marsh": "Morfa",
+            "reedbed": "Corsle",
+            "saltmarsh": "Morfa Heli Arfordirol",
+            "swamp": "Cors",
+            "tidalflat": "Fflat Llanw",
+            "wet_meadow": "Gwaun Wlyb"
+          }
+        },
+        "wheelchair": {
+          "label": "Mynediad Cadair Olwyn",
+          "options": {
+            "limited": "Cyfyng",
+            "no": "Na",
+            "yes": "Ie"
+          }
+        },
+        "width": {
+          "label": "Lled (metr)"
+        },
+        "wikidata": {
+          "label": "Wicidata"
+        },
+        "wikimedia_commons": {
+          "label": "Tudalen Gomin Wicipedia",
+          "terms": "Delwedd:Example.jpg"
+        },
+        "wikipedia": {
+          "label": "Wicipedia",
+          "terms": "Wikipedia"
+        },
+        "windings/auto": {
+          "options": {
+            "no": "Na",
+            "undefined": "Cymryd bod Na",
+            "yes": "Ie"
+          }
+        },
+        "windings/configuration": {
+          "options": {
+            "open": "Agored",
+            "open-delta": "Delta Agored",
+            "zigzag": "Igam-Ogam"
+          }
+        }
+      },
+      "presets": {
+        "addr/interpolation": {
+          "name": "Didoli Cyfeiriadau"
+        },
+        "address": {
+          "name": "Cyfeiriad",
+          "terms": "stryd,rhif,dinas,tref"
+        },
+        "advertising": {
+          "name": "Dyfais Hysbysebu"
+        },
+        "advertising/billboard": {
+          "name": "Bwrdd Hysbysebu"
+        },
+        "advertising/board": {
+          "name": "Hysbysfwrdd"
+        },
+        "advertising/column": {
+          "name": "Colofn Hysbysebu"
+        },
+        "advertising/poster_box": {
+          "name": "Blwch Posteri"
+        },
+        "advertising/totem": {
+          "name": "Colofn Hysbysebu"
+        },
+        "aerialway": {
+          "name": "Nodwedd Ffordd Awyr"
+        },
+        "aerialway/cable_car": {
+          "name": "Car Cebl"
+        },
+        "aerialway/chair_lift": {
+          "name": "Lifft Cadair"
+        },
+        "aeroway/aerodrome": {
+          "name": "Maes Awyr"
+        },
+        "aeroway/gate": {
+          "name": "Gât Maes Awyr"
+        },
+        "aeroway/runway": {
+          "name": "Rhedfa"
+        },
+        "aeroway/taxiway": {
+          "name": "Tacsiffordd",
+          "terms": "atredfa,taxiway"
+        },
+        "aeroway/terminal": {
+          "name": "Terfynfa Maes Awyr"
+        },
+        "aeroway/windsock": {
+          "name": "Hosan Gwynt"
+        },
+        "allotments/plot": {
+          "name": "Plot Gardd Gymunedol"
+        },
+        "amenity": {
+          "name": "Amwynder"
+        },
+        "amenity/animal_shelter": {
+          "name": "Cysgod Anifeiliaid"
+        },
+        "amenity/arts_centre": {
+          "name": "Canolfan Celfyddydau"
+        },
+        "amenity/atm": {
+          "name": "Peiriant Arian Parod",
+          "terms": "ATM"
+        },
+        "amenity/bank": {
+          "name": "Banc"
+        },
+        "amenity/bar/lgbtq": {
+          "name": "Bar LHDTC+"
+        },
+        "amenity/bbq": {
+          "name": "Barbeciw"
+        },
+        "amenity/bench": {
+          "name": "Mainc"
+        },
+        "amenity/bicycle_parking": {
+          "name": "Parcio Beiciau"
+        },
+        "amenity/bicycle_parking/building": {
+          "name": "Garej Parcio Beiciau"
+        },
+        "amenity/bicycle_parking/shed": {
+          "name": "Sied Beiciau"
+        },
+        "amenity/bus_station": {
+          "name": "Gorsaf Fysiau"
+        },
+        "amenity/cafe": {
+          "name": "Caffi"
+        },
+        "amenity/cafe/bubble_tea": {
+          "name": "Caffi Te Bwbls"
+        },
+        "amenity/cafe/coffee_shop": {
+          "name": "Tŷ Coffi"
+        },
+        "amenity/car_wash": {
+          "name": "Golchi Car"
+        },
+        "amenity/charging_station": {
+          "name": "Gorsaf Wefru"
+        },
+        "amenity/childcare": {
+          "name": "Meithrinfa"
+        },
+        "amenity/cinema": {
+          "name": "Sinema"
+        },
+        "amenity/clinic": {
+          "name": "Clinig"
+        },
+        "amenity/clinic/abortion": {
+          "name": "Clinig Erthyliad"
+        },
+        "amenity/clinic/dialysis": {
+          "name": "Canolfan Dialysis"
+        },
+        "amenity/clinic/fertility": {
+          "name": "Clinig Ffrwythlondeb"
+        },
+        "amenity/clock": {
+          "name": "Cloc"
+        },
+        "amenity/clock/sundial": {
+          "name": "Deial Haul"
+        },
+        "amenity/college": {
+          "name": "Tiroedd Coleg"
+        },
+        "amenity/community_centre": {
+          "name": "Canolfan Gymunedol"
+        },
+        "amenity/community_centre/lgbtq": {
+          "name": "Canolfan Gymunedol LHDTC+"
+        },
+        "amenity/community_centre/youth_centre": {
+          "name": "Canolfan Ieuenctid"
+        },
+        "amenity/courthouse": {
+          "name": "Llys"
+        },
+        "amenity/coworking_space": {
+          "name": "Ardal Gydweithio"
+        },
+        "amenity/crematorium": {
+          "name": "Crematoriwm"
+        },
+        "amenity/dentist": {
+          "name": "Deintydd"
+        },
+        "amenity/doctors": {
+          "name": "Meddyg"
+        },
+        "amenity/doctors/allergology": {
+          "name": "Alergolegydd"
+        },
+        "amenity/doctors/cardiology": {
+          "name": "Cardiolegydd"
+        },
+        "amenity/doctors/child_psychiatry": {
+          "name": "Seiciatrydd Plant a Phobl Ifanc"
+        },
+        "amenity/doctors/dermatology": {
+          "name": "Dermatolegydd"
+        },
+        "amenity/doctors/gastroenterology": {
+          "name": "Gastroenterolegydd"
+        },
+        "amenity/doctors/gynaecology": {
+          "name": "Obstetrydd / Gynaecolegydd"
+        },
+        "amenity/dog_toilet": {
+          "name": "Toiled Ci"
+        },
+        "amenity/dojo": {
+          "name": "Dojo"
+        },
+        "amenity/dressing_room": {
+          "name": "Ystafell Newid"
+        },
+        "amenity/drinking_water": {
+          "name": "Dŵr Yfed"
+        },
+        "amenity/driving_school": {
+          "name": "Ysgol Gyrru"
+        },
+        "amenity/embassy": {
+          "name": "Llysgenhadaeth"
+        },
+        "amenity/events_venue": {
+          "name": "Lleoliad Digwyddiadau"
+        },
+        "amenity/fast_food": {
+          "name": "Bwyd Brys"
+        },
+        "amenity/fast_food/bagel": {
+          "name": "Bwyd Brys Bagel"
+        },
+        "amenity/fast_food/burger": {
+          "name": "Bwyd Brys Byrger"
+        },
+        "amenity/fast_food/cafeteria": {
+          "name": "Cantîn"
+        },
+        "amenity/fast_food/chicken": {
+          "name": "Bwyd Brys Cyw Iâr"
+        },
+        "amenity/fast_food/donut": {
+          "name": "Bwyd Brys Toesen"
+        },
+        "amenity/fast_food/fish_and_chips": {
+          "name": "Bwyd Brys Pysgod & Sglodion"
+        },
+        "amenity/fast_food/hot_dog": {
+          "name": "Bwyd Brys Hot Dog"
+        },
+        "amenity/fast_food/ice_cream": {
+          "name": "Bwyd Brys Hufen Iâ"
+        },
+        "amenity/fast_food/juice": {
+          "name": "Bwyd Brys Sudd"
+        },
+        "amenity/fast_food/kebab": {
+          "name": "Bwyd Brys Cebab"
+        },
+        "amenity/fast_food/mexican": {
+          "name": "Bwyd Brys Mecsicanaidd"
+        },
+        "amenity/fast_food/pizza": {
+          "name": "Bwyd Brys Pizza"
+        },
+        "amenity/fast_food/sandwich": {
+          "name": "Bwyd Brys Brechdan"
+        },
+        "amenity/fast_food/wings": {
+          "name": "Bwyd Brys Adenydd Cyw Iâr"
+        },
+        "amenity/ferry_terminal": {
+          "name": "Terfynfa Fferi"
+        },
+        "amenity/fire_station": {
+          "name": "Gorsaf Dân"
+        },
+        "amenity/food_court": {
+          "name": "Cwrt Bwyd"
+        },
+        "amenity/fountain": {
+          "name": "Ffynnon"
+        },
+        "amenity/fuel": {
+          "name": "Gorsaf Petrol"
+        },
+        "amenity/funeral_hall": {
+          "name": "Neuadd Gwasanaeth Angladd"
+        },
+        "amenity/gambling": {
+          "name": "Neuadd Gambl"
+        },
+        "amenity/give_box": {
+          "name": "Bocs Rhodd"
+        },
+        "amenity/grave_yard": {
+          "name": "Mynwent"
+        },
+        "amenity/grit_bin": {
+          "name": "Bin Graeanu"
+        },
+        "amenity/hookah_lounge": {
+          "name": "Lolfa Hwcah"
+        },
+        "amenity/hospital": {
+          "name": "Tiroedd Ysbyty"
+        },
+        "amenity/ice_cream": {
+          "name": "Siop Hufen Iâ"
+        },
+        "amenity/internet_cafe": {
+          "name": "Caffi Rhyngrwyd"
+        },
+        "amenity/karaoke_box": {
+          "name": "Bocs Carioci"
+        },
+        "amenity/kindergarten": {
+          "name": "Tiroedd Meithrinfa"
+        },
+        "amenity/language_school": {
+          "name": "Ysgol Iaith"
+        },
+        "amenity/lavoir": {
+          "name": "Golchdy"
+        },
+        "amenity/letter_box": {
+          "name": "Blwch Llythyrau"
+        },
+        "amenity/library": {
+          "name": "Llyfrgell"
+        },
+        "amenity/loading_dock": {
+          "name": "Doc Llwytho"
+        },
+        "amenity/love_hotel": {
+          "name": "Gwesty Rhyw"
+        },
+        "amenity/marketplace": {
+          "name": "Marchnad"
+        },
+        "amenity/motorcycle_parking": {
+          "name": "Parcio Beic Modur"
+        },
+        "amenity/music_school": {
+          "name": "Ysgol Gerddoriaeth"
+        },
+        "amenity/nightclub": {
+          "name": "Clwb Nos"
+        },
+        "amenity/nightclub/lgbtq": {
+          "name": "Clwb Nos LHDTC+"
+        },
+        "amenity/parking": {
+          "name": "Maes Parcio"
+        },
+        "amenity/parking/multi-storey": {
+          "name": "Maes Parcio Aml-lawr"
+        },
+        "amenity/parking/park_ride": {
+          "name": "Maes Parcio a Reidio"
+        },
+        "amenity/parking/street-side": {
+          "name": "Parcio Ochr Stryd"
+        },
+        "amenity/parking_space": {
+          "name": "Lle Parcio",
+          "terms": "safle parcio, man parcio, safle parco, man parco,"
+        },
+        "amenity/parking_space/disabled": {
+          "name": "Lle Parcio Hygyrch"
+        },
+        "amenity/place_of_worship": {
+          "name": "Addoldy"
+        },
+        "amenity/place_of_worship/buddhist": {
+          "name": "Teml Bwdhaidd"
+        },
+        "amenity/place_of_worship/christian": {
+          "name": "Eglwys Gristnogol",
+          "terms": "cristnogol,christnogol,iesu,crist,grist,duw"
+        },
+        "amenity/place_of_worship/christian/jehovahs_witness": {
+          "name": "Neuadd Teyrnas Tyst Jehofa",
+          "terms": "jehovah"
+        },
+        "amenity/place_of_worship/christian/la_luz_del_mundo": {
+          "name": "Teml La Luz del Mundo"
+        },
+        "amenity/place_of_worship/christian/quaker": {
+          "name": "Tŷ Cyfarfod Crynwyr"
+        },
+        "amenity/place_of_worship/hindu": {
+          "name": "Teml Hindŵaidd",
+          "terms": "hindwaidd"
+        },
+        "amenity/place_of_worship/jewish": {
+          "name": "Synagog Iddewig"
+        },
+        "amenity/place_of_worship/muslim": {
+          "name": "Mosg Islamaidd"
+        },
+        "amenity/place_of_worship/shinto": {
+          "name": "Creirfa Shinto"
+        },
+        "amenity/place_of_worship/sikh": {
+          "name": "Teml Sicaidd"
+        },
+        "amenity/place_of_worship/taoist": {
+          "name": "Teml Taoaeth"
+        },
+        "amenity/planetarium": {
+          "name": "Planedariwm"
+        },
+        "amenity/police": {
+          "name": "Heddlu"
+        },
+        "amenity/polling_station": {
+          "name": "Gorsaf Bleidleisio Parhaus"
+        },
+        "amenity/post_depot": {
+          "name": "Swyddfa Didoli Post"
+        },
+        "amenity/post_office": {
+          "name": "Swyddfa Post"
+        },
+        "amenity/prep_school": {
+          "name": "Ysgol Baratoi"
+        },
+        "amenity/prison": {
+          "name": "Tiroedd Carchar"
+        },
+        "amenity/pub": {
+          "name": "Tafarn"
+        },
+        "amenity/pub/irish": {
+          "name": "Tafarn Gwyddelig"
+        },
+        "amenity/pub/lgbtq": {
+          "name": "Tafarn LHDTC+"
+        },
+        "amenity/pub/microbrewery": {
+          "name": "Bragpyb"
+        },
+        "amenity/public_bath": {
+          "name": "Bath Cyhoeddus"
+        },
+        "amenity/public_bookcase": {
+          "name": "Blwch Llyfrau Cyhoeddus"
+        },
+        "amenity/recycling": {
+          "name": "Ailgylchu"
+        },
+        "amenity/recycling_centre": {
+          "name": "Canolfan Ailgylchu"
+        },
+        "amenity/recycling_container": {
+          "name": "Bin Ailgylchu"
+        },
+        "amenity/refugee_site": {
+          "name": "Camp Ffoaduriaid"
+        },
+        "amenity/restaurant": {
+          "name": "Bwyty"
+        },
+        "amenity/restaurant/american": {
+          "name": "Bwyty Americanaidd"
+        },
+        "amenity/restaurant/asian": {
+          "name": "Bwyty Asiaidd"
+        },
+        "amenity/restaurant/barbecue": {
+          "name": "Bwyty Barbeciw"
+        },
+        "amenity/restaurant/chinese": {
+          "name": "Bwyty Tsieineaidd"
+        },
+        "amenity/restaurant/french": {
+          "name": "Bwyty Ffrengig"
+        },
+        "amenity/restaurant/georgian": {
+          "name": "Bwyty Georgiaidd"
+        },
+        "amenity/restaurant/german": {
+          "name": "Bwyty Almaenaidd"
+        },
+        "amenity/restaurant/greek": {
+          "name": "Bwyty Groegaidd"
+        },
+        "amenity/restaurant/indian": {
+          "name": "Bwyty Indianaidd"
+        },
+        "amenity/restaurant/italian": {
+          "name": "Bwyty Eidalaidd"
+        },
+        "amenity/restaurant/japanese": {
+          "name": "Bwyty Japanaidd"
+        },
+        "amenity/restaurant/korean": {
+          "name": "Bwyty Coreaidd"
+        },
+        "amenity/restaurant/mexican": {
+          "name": "Bwyty Mecsicanaidd"
+        },
+        "amenity/restaurant/noodle": {
+          "name": "Bwyty Nwdls"
+        },
+        "amenity/restaurant/pizza": {
+          "name": "Bwyty Pizza"
+        },
+        "amenity/restaurant/ramen": {
+          "name": "Bwyty Ramen"
+        },
+        "amenity/restaurant/seafood": {
+          "name": "Bwyty Bwyd Môr"
+        },
+        "amenity/restaurant/spanish": {
+          "name": "Bwyty Sbaenaidd"
+        },
+        "amenity/restaurant/steakhouse": {
+          "name": "Tŷ Stêc",
+          "terms": "stec,stecen"
+        },
+        "amenity/restaurant/sushi": {
+          "name": "Bwyty Sushi"
+        },
+        "amenity/restaurant/thai": {
+          "name": "Bwyty Thai"
+        },
+        "amenity/restaurant/turkish": {
+          "name": "Bwyty Twrcaidd"
+        },
+        "amenity/restaurant/ukrainian": {
+          "name": "Bwyty Wcreinaidd"
+        },
+        "amenity/restaurant/vietnamese": {
+          "name": "Bwyty Fietnamaidd"
+        },
+        "amenity/school": {
+          "name": "Tiroedd Ysgol"
+        },
+        "amenity/shelter": {
+          "name": "Cysgod"
+        },
+        "amenity/shelter/gazebo": {
+          "name": "Gasebo"
+        },
+        "amenity/shelter/lean_to": {
+          "name": "Pentis"
+        },
+        "amenity/shower": {
+          "name": "Cawod"
+        },
+        "amenity/smoking_area": {
+          "name": "Ardal Ysmygu"
+        },
+        "amenity/social_centre": {
+          "name": "Canolfan Cymdeithasol"
+        },
+        "amenity/social_facility/food_bank": {
+          "name": "Banc Bwyd"
+        },
+        "amenity/social_facility/homeless_shelter": {
+          "name": "Cysgod Pobl Di-Gartref"
+        },
+        "amenity/social_facility/nursing_home": {
+          "name": "Tŷ Gofal"
+        },
+        "amenity/stripclub": {
+          "name": "Clwb Dihatryd",
+          "terms": "stripo,stripio"
+        },
+        "amenity/studio": {
+          "name": "Stiwdio"
+        },
+        "amenity/studio/audio": {
+          "name": "Stiwdio Recordio"
+        },
+        "amenity/studio/radio": {
+          "name": "Gorsaf Radio"
+        },
+        "amenity/studio/television": {
+          "name": "Gorsaf Deledu"
+        },
+        "amenity/studio/video": {
+          "name": "Gorsaf Ffilm"
+        },
+        "amenity/taxi": {
+          "name": "Safle Tacsi"
+        },
+        "amenity/telephone": {
+          "name": "Ffôn"
+        },
+        "amenity/theatre": {
+          "name": "Theatr"
+        },
+        "amenity/theatre/type/amphi": {
+          "name": "Amffitheatr"
+        },
+        "amenity/toilets": {
+          "name": "Toiledau"
+        },
+        "amenity/toilets/disposal/flush": {
+          "name": "Toiledau Fflysh"
+        },
+        "amenity/toilets/portable": {
+          "name": "Toiled Symudol"
+        },
+        "amenity/townhall": {
+          "name": "Neuadd y Dref"
+        },
+        "amenity/townhall/city": {
+          "name": "Neuadd y Dinas"
+        },
+        "amenity/toy_library": {
+          "name": "Llyfrgell Tegannau"
+        },
+        "amenity/trolley_bay": {
+          "name": "Bae Trolïau"
+        },
+        "amenity/university": {
+          "name": "Tiroedd Prifysgol"
+        },
+        "amenity/vending_machine": {
+          "name": "Peiriant Gwerthu"
+        },
+        "amenity/vending_machine/bread": {
+          "name": "Peiriant Gwerthu Bara"
+        },
+        "amenity/vending_machine/cigarettes": {
+          "name": "Peiriant Gwerthu Sigaréts"
+        },
+        "amenity/vending_machine/coffee": {
+          "name": "Peiriant Gwerthu Coffi"
+        },
+        "amenity/vending_machine/condoms": {
+          "name": "Peiriant Gwerthu Condomau"
+        },
+        "amenity/vending_machine/drinks": {
+          "name": "Peiriant Gwerthu Diodydd"
+        },
+        "amenity/vending_machine/eggs": {
+          "name": "Peiriant Gwerthu Wyau"
+        },
+        "amenity/vending_machine/electronics": {
+          "name": "Peiriant Gwerthu Electroneg"
+        },
+        "amenity/vending_machine/feminine_hygiene": {
+          "name": "Peiriant Gwerthu Cynnyrch Mislif"
+        },
+        "amenity/vending_machine/food": {
+          "name": "Peiriant Gwerthu Bwyd"
+        },
+        "amenity/vending_machine/ice_cream": {
+          "name": "Peiriant Gwerthu Hufen Iâ"
+        },
+        "amenity/vending_machine/ice_cubes": {
+          "name": "Peiriant Gwerthu Iâ"
+        },
+        "amenity/vending_machine/newspapers": {
+          "name": "Peiriant Gwerthu Papur Newydd"
+        },
+        "amenity/vending_machine/parking_tickets": {
+          "name": "Peiriant Gwerthu Tocyn Parcio"
+        },
+        "amenity/vending_machine/pizza": {
+          "name": "Peiriant Gwerthu Pizza"
+        },
+        "amenity/vending_machine/public_transport_tickets": {
+          "name": "Peiriant Gwerthu Tocyn Cludiant"
+        },
+        "amenity/vending_machine/stamps": {
+          "name": "Peiriant Gwerthu Post"
+        },
+        "amenity/veterinary": {
+          "name": "Milfeddyg"
+        },
+        "amenity/waste/dog_excrement": {
+          "name": "Bin Baw Ci"
+        },
+        "amenity/waste_basket": {
+          "name": "Bin Sbwriel"
+        },
+        "area": {
+          "name": "Ardal"
+        },
+        "area/footway": {
+          "name": "Ardal Droedffordd",
+          "terms": "troed,troetffordd,troedffordd,llwybr,palmant"
+        },
+        "area/highway": {
+          "name": "Ardal Heol",
+          "terms": "preswyl,stryd,phreswyl,heol,hewl,ffordd,lon,lôn,palmant"
+        },
+        "area/highway/traffic_island": {
+          "name": "Ardal Ynys Traffig"
+        },
+        "attraction": {
+          "name": "Atyniad"
+        },
+        "attraction/big_wheel": {
+          "name": "Olwyn Fawr"
+        },
+        "attraction/bumper_car": {
+          "name": "Ceir Bymper"
+        },
+        "attraction/bungee_jumping": {
+          "name": "Naid Bwnji"
+        },
+        "attraction/carousel": {
+          "name": "Carwsél"
+        },
+        "attraction/dark_ride": {
+          "name": "Reid Tywyll"
+        },
+        "attraction/kiddie_ride": {
+          "name": "Reid Plant"
+        },
+        "attraction/log_flume": {
+          "name": "Boncyffion"
+        },
+        "attraction/maze": {
+          "name": "Drysfa"
+        },
+        "attraction/roller_coaster": {
+          "name": "Trên Gwyllt"
+        },
+        "attraction/swing_carousel": {
+          "name": "Carwsél Siglen"
+        },
+        "attraction/train": {
+          "name": "Trên Twristiaid"
+        },
+        "attraction/water_slide": {
+          "name": "Llithryn Dŵr"
+        },
+        "barrier": {
+          "name": "Rhwystr"
+        },
+        "barrier/block": {
+          "name": "Bloc"
+        },
+        "barrier/bollard": {
+          "name": "Bolard"
+        },
+        "barrier/bollard_line": {
+          "name": "Rhes o Folardiau"
+        },
+        "barrier/bus_trap": {
+          "name": "Magl Bws"
+        },
+        "barrier/cattle_grid": {
+          "name": "Grât Gwartheg"
+        },
+        "barrier/chain": {
+          "name": "Cadwyn"
+        },
+        "barrier/city_wall": {
+          "name": "Mur Dinas"
+        },
+        "barrier/cycle_barrier": {
+          "name": "Rhwystr Seiclo"
+        },
+        "barrier/entrance": {
+          "name": "Mynedfa"
+        },
+        "barrier/fence": {
+          "name": "Ffens"
+        },
+        "barrier/gate": {
+          "name": "Gât"
+        },
+        "barrier/hedge": {
+          "name": "Perth"
+        },
+        "barrier/kerb": {
+          "name": "Cwrb"
+        },
+        "barrier/stile": {
+          "name": "Camfa"
+        },
+        "barrier/swing_gate": {
+          "name": "Gât Siglo"
+        },
+        "barrier/toll_booth": {
+          "name": "Bwth Toll"
+        },
+        "barrier/turnstile": {
+          "name": "Gât Dro"
+        },
+        "barrier/wall": {
+          "name": "Wal",
+          "terms": "Mur"
+        },
+        "barrier/wall/noise_barrier": {
+          "name": "Rhwystr Sŵn"
+        },
+        "barrier/yes": {
+          "name": "Rhwystr (Math Amhenodol)"
+        },
+        "boundary": {
+          "name": "Ffin"
+        },
+        "boundary/administrative": {
+          "name": "Ffin Gweinyddol"
+        },
+        "boundary/hazard": {
+          "name": "Ardal Beryglus"
+        },
+        "building": {
+          "name": "Adeilad"
+        },
+        "building/barn": {
+          "name": "Ysgubor"
+        },
+        "building/boathouse": {
+          "name": "Tŷ Cwch"
+        },
+        "building/bungalow": {
+          "name": "Bynglo"
+        },
+        "building/bunker": {
+          "name": "Byncer"
+        },
+        "building/cabin": {
+          "name": "Caban"
+        },
+        "building/carport": {
+          "name": "Cysgod Car",
+          "terms": "ysgubor,garej,parcio,car,ceir"
+        },
+        "building/cathedral": {
+          "name": "Adeilad Eglwys Gadeiriol",
+          "terms": "cadeiriol,chadeiriol"
+        },
+        "building/chapel": {
+          "name": "Adeilad Capel"
+        },
+        "building/church": {
+          "name": "Adeilad Eglwys"
+        },
+        "building/civic": {
+          "name": "Adeilad Dinesig"
+        },
+        "building/college": {
+          "name": "Adeilad Coleg"
+        },
+        "building/commercial": {
+          "name": "Adeilad Masnachol"
+        },
+        "building/construction": {
+          "name": "Adeilad yn cael ei Adeiladu"
+        },
+        "building/cowshed": {
+          "name": "Beudy"
+        },
+        "building/detached": {
+          "name": "Tŷ Sengl"
+        },
+        "building/dormitory": {
+          "name": "Dorm"
+        },
+        "building/entrance": {
+          "name": "Mynedfa / Allanfa"
+        },
+        "building/farm": {
+          "name": "Ffermdy"
+        },
+        "building/farm_auxiliary": {
+          "name": "Adeilad Fferm"
+        },
+        "building/fire_station": {
+          "name": "Adeilad Gorsaf Dân"
+        },
+        "building/garage": {
+          "name": "Garej"
+        },
+        "building/garages": {
+          "name": "Garejis"
+        },
+        "building/ger": {
+          "name": "Iwrt"
+        },
+        "building/grandstand": {
+          "name": "Prif Stand"
+        },
+        "building/greenhouse": {
+          "name": "Tŷ Gwydr"
+        },
+        "building/hangar": {
+          "name": "Adeilad Hangar"
+        },
+        "building/hospital": {
+          "name": "Adeilad Ysbyty"
+        },
+        "building/hotel": {
+          "name": "Adeilad Gwesty"
+        },
+        "building/house": {
+          "name": "Tŷ"
+        },
+        "building/house/terraced": {
+          "name": "Tŷ Teras"
+        },
+        "building/houseboat": {
+          "name": "Cwch Preswyl"
+        },
+        "building/hut": {
+          "name": "Cwt"
+        },
+        "building/industrial": {
+          "name": "Adeilad Diwydiannol"
+        },
+        "building/kindergarten": {
+          "name": "Adeilad Meithrinfa"
+        },
+        "building/mosque": {
+          "name": "Adeilad Mosg"
+        },
+        "building/office": {
+          "name": "Adeilad Swyddfa"
+        },
+        "building/outbuilding": {
+          "name": "Tŷ Allan"
+        },
+        "building/pavilion": {
+          "name": "Adeilad Pafiliwn"
+        },
+        "building/public": {
+          "name": "Adeilad Cyhoeddus"
+        },
+        "building/residential": {
+          "name": "Adeilad Preswyl"
+        },
+        "building/retail": {
+          "name": "Adeilad Adwerthu"
+        },
+        "building/roof": {
+          "name": "To"
+        },
+        "building/ruins": {
+          "name": "Adfeilion Adeilad"
+        },
+        "building/school": {
+          "name": "Adeilad Ysgol"
+        },
+        "building/semidetached_house": {
+          "name": "Tŷ Pâr",
+          "terms": "ty,par,dwbl,dybl,dau,dwy,cartref,teulu"
+        },
+        "building/service": {
+          "name": "Adeilad Gwasanaeth"
+        },
+        "building/shed": {
+          "name": "Sied"
+        },
+        "building/stable": {
+          "name": "Stabl"
+        },
+        "building/stadium": {
+          "name": "Adeilad Stadiwm"
+        },
+        "building/static_caravan": {
+          "name": "Tŷ Symudol"
+        },
+        "building/sty": {
+          "name": "Twlc"
+        },
+        "building/synagogue": {
+          "name": "Adeilad Synagog"
+        },
+        "building/temple": {
+          "name": "Adeilad Teml"
+        },
+        "building/terrace": {
+          "name": "Rhes Teras"
+        },
+        "building/train_station": {
+          "name": "Adeilad Gorsaf Drên"
+        },
+        "building/transportation": {
+          "name": "Adeilad Cludiant"
+        },
+        "building/university": {
+          "name": "Adeilad Prifysgol"
+        },
+        "building/warehouse": {
+          "name": "Warws"
+        },
+        "building_part": {
+          "name": "Rhan o Adeilad"
+        },
+        "building_point": {
+          "name": "Adeilad"
+        },
+        "cemetery/grave": {
+          "name": "Bedd"
+        },
+        "cemetery/sector": {
+          "name": "Adran Fynwent"
+        },
+        "club": {
+          "name": "Clwb"
+        },
+        "club/scout": {
+          "name": "Grŵp Sgowtiaid",
+          "terms": "sgout,sgowt,arweiniaid,arwain"
+        },
+        "club/sport": {
+          "name": "Clwb Chwaraeon"
+        },
+        "craft": {
+          "name": "Crefftio"
+        },
+        "craft/basket_maker": {
+          "name": "Gweuwr Basgedi"
+        },
+        "craft/beekeeper": {
+          "name": "Gwenynwr"
+        },
+        "craft/blacksmith": {
+          "name": "Gofaint"
+        },
+        "craft/boatbuilder": {
+          "name": "Saer Cychod",
+          "terms": "adeiladwr,llong,cwch"
+        },
+        "craft/bookbinder": {
+          "name": "Rhymwr Llyfrau",
+          "terms": "atgyweirio,trwsio"
+        },
+        "craft/brewery": {
+          "name": "Bragdy Crefft"
+        },
+        "craft/carpenter": {
+          "name": "Saer"
+        },
+        "craft/carpet_layer": {
+          "name": "Carpedwr"
+        },
+        "craft/caterer": {
+          "name": "Arlwywr"
+        },
+        "craft/chimney_sweeper": {
+          "name": "Simneiwr"
+        },
+        "craft/cleaning": {
+          "name": "Gwasanaeth Glanhau"
+        },
+        "craft/clockmaker": {
+          "name": "Clociwr"
+        },
+        "craft/confectionery": {
+          "name": "Cyffeithiwr"
+        },
+        "craft/distillery": {
+          "name": "Distyllfa"
+        },
+        "craft/dressmaker": {
+          "name": "Gwniadwr"
+        },
+        "craft/electrician": {
+          "name": "Trydanwr"
+        },
+        "craft/electronics_repair": {
+          "name": "Siop Atgyweirio Electroneg"
+        },
+        "craft/floorer": {
+          "name": "Lloriwr"
+        },
+        "craft/gardener": {
+          "name": "Garddwr"
+        },
+        "craft/glaziery": {
+          "name": "Gwydrwr"
+        },
+        "craft/handicraft": {
+          "name": "Gweithle Celfyddyd Dwylo"
+        },
+        "craft/hvac": {
+          "name": "Gweithle HVAC"
+        },
+        "craft/insulator": {
+          "name": "Ynyswr"
+        },
+        "craft/joiner": {
+          "name": "Cysylltwr"
+        },
+        "craft/key_cutter": {
+          "name": "Torrwr Goriadau"
+        },
+        "craft/locksmith": {
+          "name": "Gof Cloeon"
+        },
+        "craft/metal_construction": {
+          "name": "Metelwr"
+        },
+        "craft/painter": {
+          "name": "Peintiwr"
+        },
+        "craft/parquet_layer": {
+          "name": "Lloriwr Pharce"
+        },
+        "craft/photographer": {
+          "name": "Ffotograffydd"
+        },
+        "craft/photographic_laboratory": {
+          "name": "Labordy Ffotograffiaeth"
+        },
+        "craft/plasterer": {
+          "name": "Plastrwr"
+        },
+        "craft/plumber": {
+          "name": "Plymwr"
+        },
+        "craft/pottery": {
+          "name": "Crochenydd"
+        },
+        "craft/rigger": {
+          "name": "Taclwr"
+        },
+        "craft/roofer": {
+          "name": "Töwr"
+        },
+        "craft/saddler": {
+          "name": "Cyfrwyydd"
+        },
+        "craft/sailmaker": {
+          "name": "Carthennwr"
+        },
+        "craft/sawmill": {
+          "name": "Melin Lifio",
+          "terms": "llifelin,pren"
+        },
+        "craft/scaffolder": {
+          "name": "Sgaffaldiwr"
+        },
+        "craft/sculptor": {
+          "name": "Cerflunydd"
+        },
+        "craft/shoemaker": {
+          "name": "Crydd"
+        },
+        "craft/signmaker": {
+          "name": "Gwneuthurwr Arwyddion"
+        },
+        "craft/stonemason": {
+          "name": "Saer Maen",
+          "terms": "carreg,cerrig,granit"
+        },
+        "craft/tailor": {
+          "name": "Teiliwr"
+        },
+        "craft/tiler": {
+          "name": "Teilsiwr"
+        },
+        "craft/tinsmith": {
+          "name": "Tuniwr"
+        },
+        "craft/upholsterer": {
+          "name": "Clustogwr"
+        },
+        "craft/watchmaker": {
+          "name": "Gwneuthurwr Watshis"
+        },
+        "craft/window_construction": {
+          "name": "Gwydrwr",
+          "terms": "ffenestr,ffenestri,gwydr,tywod,paen"
+        },
+        "craft/winery": {
+          "name": "Gwindy"
+        },
+        "disc_golf/basket": {
+          "name": "Basged Golff Disg"
+        },
+        "disc_golf/hole": {
+          "name": "Twll Golff Disg"
+        },
+        "disc_golf/tee": {
+          "name": "Ti Golff Disg"
+        },
+        "disused/amenity": {
+          "name": "Amwynder Segur"
+        },
+        "disused/railway": {
+          "name": "Nodwedd Rheilffordd Segur"
+        },
+        "disused/shop": {
+          "name": "Siop Segur"
+        },
+        "embankment": {
+          "name": "Arglawdd"
+        },
+        "emergency": {
+          "name": "Nodwedd Argyfwng"
+        },
+        "emergency/ambulance_station": {
+          "name": "Gorsaf Ambiwlans"
+        },
+        "emergency/assembly_point": {
+          "name": "Man Ymgynnull Brys"
+        },
+        "emergency/defibrillator": {
+          "name": "Diffibriliwr"
+        },
+        "emergency/designated": {
+          "name": "Mynediad Brys Dynodedig"
+        },
+        "emergency/destination": {
+          "name": "Cyrchfan Mynediad Brys"
+        },
+        "emergency/fire_extinguisher": {
+          "name": "Diffoddydd Tân"
+        },
+        "emergency/fire_hose": {
+          "name": "Piben Tân"
+        },
+        "emergency/fire_hydrant": {
+          "name": "Hydrant Tân"
+        },
+        "emergency/first_aid_kit": {
+          "name": "Bocs Cymorth Cyntaf"
+        },
+        "emergency/landing_site": {
+          "name": "Safle Glanio Brys"
+        },
+        "emergency/lifeguard": {
+          "name": "Achubwr Bywydau"
+        },
+        "emergency/no": {
+          "name": "Dim Mynediad Argyfwng"
+        },
+        "emergency/official": {
+          "name": "Mynediad Argyfwng Swyddogol"
+        },
+        "emergency/phone": {
+          "name": "Ffôn Argyfwng"
+        },
+        "emergency/private": {
+          "name": "Mynediad Argyfwng Preifat"
+        },
+        "emergency/siren": {
+          "name": "Larwm"
+        },
+        "entrance": {
+          "name": "Mynedfa / Allanfa"
+        },
+        "entrance/emergency": {
+          "name": "Allanfa Argyfwng"
+        },
+        "entrance/main": {
+          "name": "Prif Fynedfa"
+        },
+        "ford": {
+          "name": "Rhyd",
+          "terms": "ryd"
+        },
+        "ford_line": {
+          "name": "Rhyd"
+        },
+        "golf/bunker": {
+          "name": "Bwncer Tywod",
+          "terms": "llestair,rhwystr,atalfa"
+        },
+        "golf/clubhouse": {
+          "name": "Clwb Golff"
+        },
+        "golf/driving_range": {
+          "name": "Maes Cledru"
+        },
+        "golf/fairway": {
+          "name": "Ffordd Deg"
+        },
+        "golf/green": {
+          "name": "Glaslawr Pytio"
+        },
+        "golf/hole": {
+          "name": "Twll Golff"
+        },
+        "golf/lateral_water_hazard": {
+          "name": "Rhwystr Dŵr Ochrol"
+        },
+        "golf/path": {
+          "name": "Troetffordd Golff"
+        },
+        "golf/rough": {
+          "name": "Garw"
+        },
+        "golf/tee": {
+          "name": "Llawr Tïo"
+        },
+        "golf/water_hazard": {
+          "name": "Rhwystr Dŵr"
+        },
+        "healthcare": {
+          "name": "Cyfleuster Gofal"
+        },
+        "healthcare/alternative": {
+          "name": "Meddygaeth Amgen"
+        },
+        "healthcare/alternative/acupuncture": {
+          "name": "Aciwbigo"
+        },
+        "healthcare/alternative/ayurveda": {
+          "name": "Ymarferydd Ayurveda"
+        },
+        "healthcare/alternative/chiropractic": {
+          "name": "Ceiropractydd"
+        },
+        "healthcare/alternative/naturopathy": {
+          "name": "Natur-iachäwr"
+        },
+        "healthcare/alternative/traditional_chinese_medicine": {
+          "name": "Ymarferydd Meddygaeth Tseineaidd Traddodiadol"
+        },
+        "healthcare/audiologist": {
+          "name": "Awdiolegydd"
+        },
+        "healthcare/birthing_center": {
+          "name": "Canolfan Geni"
+        },
+        "healthcare/blood_donation": {
+          "name": "Banc Rhoi Gwaed"
+        },
+        "healthcare/counselling": {
+          "name": "Canolfan Cwnsela"
+        },
+        "healthcare/dentist/orthodontics": {
+          "name": "Orthodontydd"
+        },
+        "healthcare/hospice": {
+          "name": "Hospis"
+        },
+        "healthcare/laboratory": {
+          "name": "Labordy Meddygol"
+        },
+        "healthcare/midwife": {
+          "name": "Bydwraig"
+        },
+        "healthcare/occupational_therapist": {
+          "name": "Therapydd Galwedigaethol"
+        },
+        "healthcare/optometrist": {
+          "name": "Optometrydd"
+        },
+        "healthcare/physiotherapist": {
+          "name": "Ffisiotherapydd"
+        },
+        "healthcare/podiatrist": {
+          "name": "Podiatrydd"
+        },
+        "healthcare/psychotherapist": {
+          "name": "Seicotherapydd"
+        },
+        "healthcare/rehabilitation": {
+          "name": "Cyfleuster Adsefydlu"
+        },
+        "healthcare/sample_collection": {
+          "name": "Cyfleuster Casglu Sampl"
+        },
+        "healthcare/speech_therapist": {
+          "name": "Therapydd Lleferydd"
+        },
+        "healthcare/yes": {
+          "name": "Cyfleuster Gofal (math anhysbys)"
+        },
+        "highway": {
+          "name": "Nodwedd Priffordd"
+        },
+        "highway/bridleway": {
+          "name": "Llwybr Ceffylau"
+        },
+        "highway/bus_stop": {
+          "name": "Safle Bws"
+        },
+        "highway/busway": {
+          "name": "Ffordd Bws"
+        },
+        "highway/construction": {
+          "name": "Heol yn cael ei Adeiladu"
+        },
+        "highway/corridor": {
+          "name": "Coridor Dan-do"
+        },
+        "highway/crossing": {
+          "name": "Croesfan"
+        },
+        "highway/crossing/traffic_signals": {
+          "name": "Croesfan â Goleuadau Cerddwyr"
+        },
+        "highway/crossing/uncontrolled": {
+          "name": "Croesfan â Marciau"
+        },
+        "highway/crossing/unmarked": {
+          "name": "Croesfan heb Farciau"
+        },
+        "highway/cycleway": {
+          "name": "Llwybr Seiclo"
+        },
+        "highway/cycleway/bicycle_foot": {
+          "name": "Ffordd Beiciau & Troed"
+        },
+        "highway/cycleway/crossing": {
+          "name": "Croesfan Seiclo"
+        },
+        "highway/cycleway/crossing/bicycle_foot": {
+          "name": "Croesfan Beiciau & Troed"
+        },
+        "highway/cycleway/crossing/traffic_signals": {
+          "name": "Croesfan Seiclo â Goleuadau Traffig"
+        },
+        "highway/cycleway/crossing/uncontrolled": {
+          "name": "Croesfan Seiclo â Marciau"
+        },
+        "highway/cycleway/crossing/unmarked": {
+          "name": "Croesfan Seiclo heb Farciau"
+        },
+        "highway/cycleway/moped_link-NL": {
+          "name": "Dolen Moped"
+        },
+        "highway/elevator": {
+          "name": "Lifft"
+        },
+        "highway/footway": {
+          "name": "Troedffordd",
+          "terms": "troed,troetffordd,troedffordd,llwybr,palmant"
+        },
+        "highway/footway/conveying": {
+          "name": "Troedffordd Symudol"
+        },
+        "highway/footway/crossing": {
+          "name": "Croesfan Troed"
+        },
+        "highway/footway/crossing/traffic_signals": {
+          "name": "Croesfan â Goleuadau Cerddwyr"
+        },
+        "highway/footway/crossing/uncontrolled": {
+          "name": "Croesfan â Marciau"
+        },
+        "highway/footway/crossing/unmarked": {
+          "name": "Croesfan heb Farciau"
+        },
+        "highway/footway/informal": {
+          "name": "Troedffordd Anffurfiol"
+        },
+        "highway/footway/sidewalk": {
+          "name": "Palmant"
+        },
+        "highway/footway/traffic_island": {
+          "name": "Traffig Ynys"
+        },
+        "highway/give_way": {
+          "name": "Arwydd Ildio"
+        },
+        "highway/ladder": {
+          "name": "Ysgol"
+        },
+        "highway/living_street": {
+          "name": "Stryd Fyw"
+        },
+        "highway/mini_roundabout": {
+          "name": "Cylchfan Fach"
+        },
+        "highway/motorway": {
+          "name": "Traffordd"
+        },
+        "highway/motorway_junction": {
+          "name": "Cyffordd Traffordd"
+        },
+        "highway/motorway_link": {
+          "name": "Cyswllt Traffordd",
+          "terms": "ramp,heol,stryd,hewl,ffordd,lon,lôn,dolen,cyffordd,gyffordd,chyffordd"
+        },
+        "highway/passing_place": {
+          "name": "Man Pasio"
+        },
+        "highway/path": {
+          "name": "Llwybr"
+        },
+        "highway/path/boardwalk": {
+          "name": "Llwybr Pren"
+        },
+        "highway/path/informal": {
+          "name": "Llwybr Anffurfiol"
+        },
+        "highway/pedestrian_area": {
+          "name": "Man Cerddwyr",
+          "terms": "ardal gerddwyr"
+        },
+        "highway/pedestrian_line": {
+          "name": "Stryd Gerddwyr"
+        },
+        "highway/primary": {
+          "name": "Prif Ffordd"
+        },
+        "highway/primary_link": {
+          "name": "Cyswllt Prif Ffordd",
+          "terms": "ramp,heol,stryd,hewl,ffordd,lon,lôn,dolen,cyffordd,gyffordd,chyffordd"
+        },
+        "highway/residential": {
+          "name": "Ffordd Breswyl",
+          "terms": "preswyl,stryd,phreswyl,heol,hewl,ffordd,lon,lôn"
+        },
+        "highway/rest_area": {
+          "name": "Ardal Seibiant"
+        },
+        "highway/road": {
+          "name": "Ffordd Amhenodol",
+          "terms": "stryd,heol,hewl,lon,lôn"
+        },
+        "highway/road/bridge": {
+          "name": "Pont Ffordd Anhysbys"
+        },
+        "highway/secondary": {
+          "name": "Ffordd Eilaidd",
+          "terms": "stryd,heol,hewl,ffordd,lon,lôn,ail,eilradd,a road,a"
+        },
+        "highway/secondary_link": {
+          "name": "Cyswllt Ffordd Eilaidd",
+          "terms": "ramp,heol,stryd,hewl,ffordd,lon,lôn,dolen,cyffordd,gyffordd,chyffordd"
+        },
+        "highway/service": {
+          "name": "Ffordd Wasanaeth",
+          "terms": "gwasanaeth,stryd,phreswyl,heol,hewl,ffordd,lon,lôn"
+        },
+        "highway/service/alley": {
+          "name": "Lôn"
+        },
+        "highway/service/drive-through": {
+          "name": "Gyrru Trwodd"
+        },
+        "highway/service/driveway": {
+          "name": "Tramwyfa"
+        },
+        "highway/service/emergency_access": {
+          "name": "Mynediad Brys"
+        },
+        "highway/service/parking_aisle": {
+          "name": "Eil Parcio"
+        },
+        "highway/services": {
+          "name": "Ardal Wasanaethau",
+          "terms": "gwasanaethau"
+        },
+        "highway/speed_camera": {
+          "name": "Camera Cyflymder"
+        },
+        "highway/steps": {
+          "name": "Grisiau"
+        },
+        "highway/steps/conveying": {
+          "name": "Esgaladur"
+        },
+        "highway/stop": {
+          "name": "Arwydd Stop"
+        },
+        "highway/street_lamp": {
+          "name": "Golau Stryd"
+        },
+        "highway/tertiary": {
+          "name": "Ffordd Drydyddol",
+          "terms": "stryd,heol,hewl,ffordd,lon,lôn,b road,b"
+        },
+        "highway/tertiary_link": {
+          "name": "Cyswllt Ffordd Drydyddol",
+          "terms": "ramp,heol,stryd,hewl,ffordd,lon,lôn,dolen,cyffordd,gyffordd,chyffordd"
+        },
+        "highway/track": {
+          "name": "Ffordd Fynediad / Trac",
+          "terms": "mynediad,stryd,heol,hewl,ffordd,lon,lôn"
+        },
+        "highway/traffic_mirror": {
+          "name": "Drych Traffig"
+        },
+        "highway/traffic_signals": {
+          "name": "Goleuadau Traffig"
+        },
+        "highway/trunk": {
+          "name": "Cefnffordd"
+        },
+        "highway/trunk_link": {
+          "name": "Cyswllt Cefnffordd",
+          "terms": "ramp,heol,stryd,hewl,ffordd,lon,lôn,dolen,cyffordd,gyffordd,chyffordd"
+        },
+        "highway/turning_circle": {
+          "name": "Cylch Troi"
+        },
+        "highway/unclassified": {
+          "name": "Ffordd Ddiddosbarth"
+        },
+        "historic": {
+          "name": "Safle Hanesyddol"
+        },
+        "historic/archaeological_site": {
+          "name": "Safle Archeolegol"
+        },
+        "historic/building": {
+          "name": "Adeilad Hanesyddol"
+        },
+        "historic/castle": {
+          "name": "Castell"
+        },
+        "historic/castle/fortress": {
+          "name": "Caer Hanesyddol"
+        },
+        "historic/castle/palace": {
+          "name": "Palas"
+        },
+        "historic/city_gate": {
+          "name": "Gât Dinas"
+        },
+        "historic/fort": {
+          "name": "Caer Hanesyddol"
+        },
+        "historic/manor": {
+          "name": "Maenordy"
+        },
+        "historic/memorial": {
+          "name": "Cofeb"
+        },
+        "historic/memorial/plaque": {
+          "name": "Plac Coffa"
+        },
+        "historic/monument": {
+          "name": "Heneb"
+        },
+        "historic/ruins": {
+          "name": "Adfeilion"
+        },
+        "historic/tomb": {
+          "name": "Beddrod"
+        },
+        "indoor": {
+          "name": "Nodwedd Dan-do"
+        },
+        "indoor/area": {
+          "name": "Ardal Ddan-do",
+          "terms": "dan-do,tu mewn"
+        },
+        "indoor/corridor": {
+          "name": "Coridor Dan-do"
+        },
+        "indoor/corridor_line": {
+          "name": "Coridor Dan-do"
+        },
+        "indoor/door": {
+          "name": "Drws Dan-do"
+        },
+        "indoor/elevator": {
+          "name": "Shafft Lifft Dan-do"
+        },
+        "indoor/room": {
+          "name": "Ystafell"
+        },
+        "indoor/stairs": {
+          "name": "Grisiau Dan-do"
+        },
+        "indoor/wall": {
+          "name": "Wal Dan-do"
+        },
+        "internet_access/wlan": {
+          "name": "Poethfan Wi-Fi"
+        },
+        "junction": {
+          "name": "Cyffordd"
+        },
+        "landuse": {
+          "name": "Nodwedd Defnydd Tir"
+        },
+        "landuse/allotments": {
+          "name": "Rhandiroedd Gardd"
+        },
+        "landuse/brownfield": {
+          "name": "Safle Tir Llwyd"
+        },
+        "landuse/cemetery": {
+          "name": "Mynwent"
+        },
+        "landuse/churchyard": {
+          "name": "Mynwent Eglwys"
+        },
+        "landuse/commercial": {
+          "name": "Ardal Fasnachol"
+        },
+        "landuse/construction": {
+          "name": "Man Adeiladu"
+        },
+        "landuse/education": {
+          "name": "Campws Addysg"
+        },
+        "landuse/farm": {
+          "name": "Tir Amaeth"
+        },
+        "landuse/farmland": {
+          "name": "Tir Amaeth"
+        },
+        "landuse/farmyard": {
+          "name": "Ffermdy"
+        },
+        "landuse/flowerbed": {
+          "name": "Blodau"
+        },
+        "landuse/forest": {
+          "name": "Coedwig Dan Reolaeth"
+        },
+        "landuse/grass": {
+          "name": "Gwair",
+          "terms": "gwair,glaswellt,gwyrdd,lawn"
+        },
+        "landuse/greenfield": {
+          "name": "Safle Maes Glas"
+        },
+        "landuse/harbour": {
+          "name": "Porthladd"
+        },
+        "landuse/industrial": {
+          "name": "Ystâd Diwydiannol"
+        },
+        "landuse/landfill": {
+          "name": "Safle Tirlenwi"
+        },
+        "landuse/meadow": {
+          "name": "Gwaun"
+        },
+        "landuse/military": {
+          "name": "Ardal Filwrol"
+        },
+        "landuse/military/barracks": {
+          "name": "Barics"
+        },
+        "landuse/orchard": {
+          "name": "Perllan"
+        },
+        "landuse/plant_nursery": {
+          "name": "Meithrinfa Blanhigion"
+        },
+        "landuse/pond": {
+          "name": "Pwll"
+        },
+        "landuse/quarry": {
+          "name": "Chwarel"
+        },
+        "landuse/railway": {
+          "name": "Coridor Rheilffordd"
+        },
+        "landuse/recreation_ground": {
+          "name": "Ardal Hamdden"
+        },
+        "landuse/religious": {
+          "name": "Ardal Grefyddol"
+        },
+        "landuse/reservoir": {
+          "name": "Cronfa Ddŵr"
+        },
+        "landuse/residential": {
+          "name": "Ardal Breswyl",
+          "terms": "man preswyl,tai,ty,tŷ"
+        },
+        "landuse/retail": {
+          "name": "Ardal Adwerthu"
+        },
+        "landuse/vineyard": {
+          "name": "Gwinllan"
+        },
+        "leisure": {
+          "name": "Nodwedd Hamdden"
+        },
+        "leisure/bird_hide": {
+          "name": "Cuddfan Adar"
+        },
+        "leisure/bleachers": {
+          "name": "Meinciau"
+        },
+        "leisure/common": {
+          "name": "Comin"
+        },
+        "leisure/dance": {
+          "name": "Neuadd Dawnsio"
+        },
+        "leisure/dancing_school": {
+          "name": "Ysgol Dawnsio"
+        },
+        "leisure/disc_golf_course": {
+          "name": "Cwrs Golff Disg"
+        },
+        "leisure/dog_park": {
+          "name": "Parc Cŵn"
+        },
+        "leisure/escape_game": {
+          "name": "Ystafell Ddianc"
+        },
+        "leisure/firepit": {
+          "name": "Pit Tân"
+        },
+        "leisure/fishing": {
+          "name": "Safle Pysgota"
+        },
+        "leisure/fitness_centre": {
+          "name": "Campfa"
+        },
+        "leisure/fitness_centre/yoga": {
+          "name": "Stiwdio Ioga"
+        },
+        "leisure/fitness_station/box": {
+          "name": "Bocs Ymarfer Corff"
+        },
+        "leisure/garden": {
+          "name": "Gardd"
+        },
+        "leisure/garden/botanical": {
+          "name": "Gardd Fotaneg"
+        },
+        "leisure/garden/community": {
+          "name": "Gardd Gymunedol"
+        },
+        "leisure/garden/kitchen": {
+          "name": "Gardd Gegin"
+        },
+        "leisure/garden/residential": {
+          "name": "Gardd Breswyl",
+          "terms": "preswyl,tŷ,ty,cartref,catre,front,ffrynt,ffront,iard,cefn,gefn,nôl"
+        },
+        "leisure/golf_course": {
+          "name": "Maes Golff",
+          "terms": "cwrs golff"
+        },
+        "leisure/miniature_golf": {
+          "name": "Mini Golff"
+        },
+        "leisure/nature_reserve": {
+          "name": "Gwarchodfa Natur"
+        },
+        "leisure/park": {
+          "name": "Parc"
+        },
+        "leisure/picnic_table": {
+          "name": "Bwrdd Picnic"
+        },
+        "leisure/picnic_table/chess": {
+          "name": "Bwrdd Gwyddbwyll"
+        },
+        "leisure/pitch": {
+          "name": "Cae Chwaraeon"
+        },
+        "leisure/pitch/american_football": {
+          "name": "Cae Pêl-droed Americanaidd"
+        },
+        "leisure/pitch/australian_football": {
+          "name": "Cae Pêl-droed Awstralaidd"
+        },
+        "leisure/pitch/badminton": {
+          "name": "Cwrt Badminton"
+        },
+        "leisure/pitch/baseball": {
+          "name": "Cae Pêl-fas"
+        },
+        "leisure/pitch/basketball": {
+          "name": "Cwrt Pêl-fasged"
+        },
+        "leisure/pitch/boules": {
+          "name": "Cwrt Boules / Bocce",
+          "terms": "lyonnaise,pétanque,boccia"
+        },
+        "leisure/pitch/chess": {
+          "name": "Bwrdd Gwyddbwyll Mawr"
+        },
+        "leisure/pitch/cricket": {
+          "name": "Maes Criced"
+        },
+        "leisure/pitch/futsal": {
+          "name": "Cwrt Fwtsal"
+        },
+        "leisure/pitch/gaga": {
+          "name": "Pit Gaga"
+        },
+        "leisure/pitch/netball": {
+          "name": "Cwrt Pêl-rwyd"
+        },
+        "leisure/pitch/padel": {
+          "name": "Cwrt Padel"
+        },
+        "leisure/pitch/pickleball": {
+          "name": "Cwrt Pêl-bicl"
+        },
+        "leisure/pitch/rugby_league": {
+          "name": "Cae Rygbi'r Gynghrair",
+          "terms": "cynghrair,maes"
+        },
+        "leisure/pitch/rugby_union": {
+          "name": "Cae Rygbi'r Undeb",
+          "terms": "undeb,maes,seithiau"
+        },
+        "leisure/pitch/skateboard": {
+          "name": "Parc Sglefrio"
+        },
+        "leisure/pitch/soccer": {
+          "name": "Cae Pêl-droed"
+        },
+        "leisure/pitch/softball": {
+          "name": "Cae Pêl-meddal"
+        },
+        "leisure/pitch/table_soccer": {
+          "name": "Bwrdd Foosball"
+        },
+        "leisure/pitch/table_tennis": {
+          "name": "Bwrdd Ping Pong"
+        },
+        "leisure/pitch/tennis": {
+          "name": "Cwrt Tenis"
+        },
+        "leisure/pitch/volleyball": {
+          "name": "Cwrt Pêl-foli",
+          "terms": "net"
+        },
+        "leisure/playground": {
+          "name": "Ardal Chwarae"
+        },
+        "leisure/playground/indoor": {
+          "name": "Ardal Chwarae Dan-do"
+        },
+        "leisure/resort": {
+          "name": "Cyrchfan"
+        },
+        "leisure/sports_centre/climbing": {
+          "name": "Campfa Dringo"
+        },
+        "leisure/sports_hall": {
+          "name": "Campfa"
+        },
+        "leisure/stadium": {
+          "name": "Stadiwm"
+        },
+        "leisure/swimming_pool": {
+          "name": "Pwll Nofio"
+        },
+        "leisure/track/athletics/running": {
+          "name": "Trac Rhedeg"
+        },
+        "leisure/track/cycling": {
+          "name": "Trac Seiclo"
+        },
+        "leisure/track/horse_racing": {
+          "name": "Trac Rasio Ceffyl"
+        },
+        "leisure/track/running": {
+          "name": "Trac Rhedeg"
+        },
+        "leisure/water_park": {
+          "name": "Parc Dŵr"
+        },
+        "line": {
+          "name": "Llinell"
+        },
+        "man_made": {
+          "name": "Nodwedd Synthetig"
+        },
+        "man_made/adit": {
+          "name": "Ceuffordd"
+        },
+        "man_made/antenna": {
+          "name": "Antena"
+        },
+        "man_made/beacon": {
+          "name": "Golau Fflach"
+        },
+        "man_made/beehive": {
+          "name": "Cwch Gwenyn"
+        },
+        "man_made/breakwater": {
+          "name": "Morglawdd"
+        },
+        "man_made/bridge": {
+          "name": "Ardal Bont"
+        },
+        "man_made/bunker_silo": {
+          "name": "Seilo Bwncer"
+        },
+        "man_made/cairn": {
+          "name": "Carnedd"
+        },
+        "man_made/charge_point": {
+          "name": "Man Gwefru Cerbydau Trydan",
+          "terms": "EV,cerbyd,gerbyd,cherbyd,lle,safle,charge,chargio,chargo"
+        },
+        "man_made/chimney": {
+          "name": "Simne"
+        },
+        "man_made/courtyard": {
+          "name": "Cowrtiard"
+        },
+        "man_made/crane": {
+          "name": "Craen"
+        },
+        "man_made/cross": {
+          "name": "Croes"
+        },
+        "man_made/dyke": {
+          "name": "Clawdd"
+        },
+        "man_made/embankment": {
+          "name": "Arglawdd"
+        },
+        "man_made/flagpole": {
+          "name": "Polyn Baner"
+        },
+        "man_made/groyne": {
+          "name": "Grwyn"
+        },
+        "man_made/lighthouse": {
+          "name": "Goleudy"
+        },
+        "man_made/manhole": {
+          "name": "Twll Caead"
+        },
+        "man_made/mast/communication": {
+          "name": "Mast Cyfrathrebu"
+        },
+        "man_made/mast/communication/mobile_phone": {
+          "name": "Mast Ffôn Symudol"
+        },
+        "man_made/mast/communication/radio": {
+          "name": "Mast Darlledu Radio"
+        },
+        "man_made/mast/communication/television": {
+          "name": "Mast Darlledu Teledu"
+        },
+        "man_made/mast/lighting": {
+          "name": "Mast Golau"
+        },
+        "man_made/mineshaft": {
+          "name": "Siafft Mwyngloddio"
+        },
+        "man_made/obelisk": {
+          "name": "Obelisg"
+        },
+        "man_made/observatory": {
+          "name": "Arsyllfa"
+        },
+        "man_made/petroleum_well": {
+          "name": "Ffynnon Olew"
+        },
+        "man_made/planter": {
+          "name": "Planhigyn"
+        },
+        "man_made/quay": {
+          "name": "Cei"
+        },
+        "man_made/silo": {
+          "name": "Seilo"
+        },
+        "man_made/storage_tank/water": {
+          "name": "Tanc Dŵr"
+        },
+        "man_made/street_cabinet": {
+          "name": "Cwpwrdd Stryd"
+        },
+        "man_made/telescope": {
+          "name": "Telesgop"
+        },
+        "man_made/tower": {
+          "name": "Tŵr"
+        },
+        "man_made/tower/bell_tower": {
+          "name": "Tŵr Cloch"
+        },
+        "man_made/tower/communication": {
+          "name": "Tŵr Cyfathrebu"
+        },
+        "man_made/tower/minaret": {
+          "name": "Minarét"
+        },
+        "man_made/tower/observation": {
+          "name": "Tŵr Arsylwi"
+        },
+        "man_made/tunnel": {
+          "name": "Ardal Dwnnel",
+          "terms": "twnnel"
+        },
+        "man_made/video_wall": {
+          "name": "Sgrîn Ddigidol"
+        },
+        "man_made/water_tower": {
+          "name": "Tŵr Dŵr"
+        },
+        "man_made/watermill": {
+          "name": "Melin Ddŵr"
+        },
+        "man_made/windmill": {
+          "name": "Melin Wynt"
+        },
+        "man_made/works": {
+          "name": "Ffatri"
+        },
+        "man_made/works/brewery": {
+          "name": "Bragdy Diwydiannol"
+        },
+        "man_made/yes": {
+          "name": "Nodwedd Synthetig (Math Amhenodol)"
+        },
+        "marker": {
+          "name": "Marciwr"
+        },
+        "marker/utility/power": {
+          "name": "Marciwr Pŵer"
+        },
+        "natural/bare_rock": {
+          "name": "Carreg Plaen"
+        },
+        "natural/bay": {
+          "name": "Bae"
+        },
+        "natural/beach": {
+          "name": "Traeth"
+        },
+        "natural/cape": {
+          "name": "Pentir"
+        },
+        "natural/cave_entrance": {
+          "name": "Mynedfa Ogof"
+        },
+        "natural/cliff": {
+          "name": "Clogwyn"
+        },
+        "natural/coastline": {
+          "name": "Arfordir"
+        },
+        "natural/fell": {
+          "name": "Mynydd-dir"
+        },
+        "natural/geyser": {
+          "name": "Giser"
+        },
+        "natural/glacier": {
+          "name": "Rhewlif"
+        },
+        "natural/grassland": {
+          "name": "Glaswellt",
+          "terms": "gwair,glaswellt,gwyrdd"
+        },
+        "natural/heath": {
+          "name": "Rhos"
+        },
+        "natural/hot_spring": {
+          "name": "Ffynnon Boeth"
+        },
+        "natural/mud": {
+          "name": "Mwd"
+        },
+        "natural/peak": {
+          "name": "Copa"
+        },
+        "natural/peninsula": {
+          "name": "Penrhyn"
+        },
+        "natural/reef": {
+          "name": "Rîff"
+        },
+        "natural/ridge": {
+          "name": "Cefn"
+        },
+        "natural/rock": {
+          "name": "Carreg Fawr Sownd"
+        },
+        "natural/saddle": {
+          "name": "Bwlch"
+        },
+        "natural/sand": {
+          "name": "Tywod"
+        },
+        "natural/scree": {
+          "name": "Sgri"
+        },
+        "natural/scrub": {
+          "name": "Prysgoed"
+        },
+        "natural/shingle": {
+          "name": "Cerrig Mân"
+        },
+        "natural/shrub": {
+          "name": "Llwyn"
+        },
+        "natural/spring": {
+          "name": "Ffynnon"
+        },
+        "natural/stone": {
+          "name": "Carreg Fawr Rhydd"
+        },
+        "natural/strait": {
+          "name": "Cyfyngfor"
+        },
+        "natural/tree": {
+          "name": "Coeden"
+        },
+        "natural/tree/broadleaved": {
+          "name": "Coeden Llydanddail"
+        },
+        "natural/tree/broadleaved/deciduous": {
+          "name": "Coeden Llydanddail (collddail)"
+        },
+        "natural/tree/broadleaved/evergreen": {
+          "name": "Coeden Llydanddail (bythddeiliog)"
+        },
+        "natural/tree/needleleaved": {
+          "name": "Coeden Nodwydd"
+        },
+        "natural/tree/needleleaved/deciduous": {
+          "name": "Coeden Nodwydd (collddail)"
+        },
+        "natural/tree/needleleaved/evergreen": {
+          "name": "Coeden Nodwydd (bythddeiliog)"
+        },
+        "natural/tree_row": {
+          "name": "Rhes o Goed"
+        },
+        "natural/tree_stump": {
+          "name": "Bôn Coeden"
+        },
+        "natural/valley": {
+          "name": "Cwm / Dyffryn"
+        },
+        "natural/volcano": {
+          "name": "Folcano"
+        },
+        "natural/water": {
+          "name": "Dŵr"
+        },
+        "natural/water/canal": {
+          "name": "Ardal Gamlas"
+        },
+        "natural/water/lake": {
+          "name": "Llyn"
+        },
+        "natural/water/moat": {
+          "name": "Ffos"
+        },
+        "natural/water/oxbow": {
+          "name": "Llyn Dôl Ych"
+        },
+        "natural/water/pond": {
+          "name": "Pwll"
+        },
+        "natural/water/reservoir": {
+          "name": "Cronfa Ddŵr"
+        },
+        "natural/water/river": {
+          "name": "Ardal Afon"
+        },
+        "natural/water/stream": {
+          "name": "Ardal Ffrwd"
+        },
+        "natural/water/wastewater": {
+          "name": "Basin Dŵr Gwastraff"
+        },
+        "natural/wetland": {
+          "name": "Gwlyptir"
+        },
+        "natural/wetland/fen": {
+          "name": "Ffen"
+        },
+        "natural/wetland/mangrove": {
+          "name": "Mangrof"
+        },
+        "natural/wetland/marsh": {
+          "name": "Morfa"
+        },
+        "natural/wetland/reedbed": {
+          "name": "Corsle"
+        },
+        "natural/wetland/saltmarsh": {
+          "name": "Morfa Heli Arfordirol"
+        },
+        "natural/wetland/string_bog": {
+          "name": "Cors Llinyn"
+        },
+        "natural/wetland/swamp": {
+          "name": "Cors"
+        },
+        "natural/wetland/tidalflat": {
+          "name": "Fflat Llanw"
+        },
+        "natural/wetland/wet_meadow": {
+          "name": "Gwaun Wlyb"
+        },
+        "natural/wood": {
+          "name": "Coedlan Naturiol",
+          "terms": "coedwig,coeden"
+        },
+        "noexit/yes": {
+          "name": "Dim Allanfa"
+        },
+        "office": {
+          "name": "Swyddfa"
+        },
+        "office/accountant": {
+          "name": "Swyddfa Gyfrifydd"
+        },
+        "office/administrative": {
+          "name": "Swyddfa Weinyddol"
+        },
+        "office/adoption_agency": {
+          "name": "Asiantaeth Mabwysiadu"
+        },
+        "office/advertising_agency": {
+          "name": "Asiantaeth Hysbysebu"
+        },
+        "office/architect": {
+          "name": "Swyddfa Bensaer"
+        },
+        "office/association": {
+          "name": "Swyddfa Gorff Nid-er-elw"
+        },
+        "office/bail_bond_agent-US-PH": {
+          "name": "Asiantaeth Cyfamod Mechnïaeth"
+        },
+        "office/charity": {
+          "name": "Swyddfa Elusen"
+        },
+        "office/company": {
+          "name": "Swyddfa Gorfforaethol"
+        },
+        "office/consulting": {
+          "name": "Swyddfa Ymgynghoriaeth"
+        },
+        "office/coworking": {
+          "name": "Ardal Gydweithio"
+        },
+        "office/diplomatic": {
+          "name": "Swyddfa Llysgenhadol"
+        },
+        "office/diplomatic/consulate": {
+          "name": "Conswliaeth"
+        },
+        "office/diplomatic/embassy": {
+          "name": "Llysgenhadaeth"
+        },
+        "office/diplomatic/liaison": {
+          "name": "Swyddfa Gyswllt"
+        },
+        "office/educational_institution": {
+          "name": "Sefydliad Addysgol"
+        },
+        "office/employment_agency": {
+          "name": "Asiantaeth Cyflogi"
+        },
+        "office/energy_supplier": {
+          "name": "Swyddfa Gyflenwr Ynni"
+        },
+        "office/financial": {
+          "name": "Swyddfa Gyllid"
+        },
+        "office/government": {
+          "name": "Swyddfa Lywodraeth"
+        },
+        "office/government/register_office": {
+          "name": "Swyddfa Gofrestru"
+        },
+        "office/insurance": {
+          "name": "Swyddfa Yswiriant"
+        },
+        "office/it": {
+          "name": "Swyddfa Dechnoleg Gwybodaeth"
+        },
+        "office/lawyer": {
+          "name": "Swyddfa Gyfraith"
+        },
+        "office/lawyer/notary": {
+          "name": "Swyddfa Notari"
+        },
+        "office/moving_company": {
+          "name": "Swyddfa Gwmni Symud"
+        },
+        "office/newspaper": {
+          "name": "Swyddfa Bapur Newydd"
+        },
+        "office/ngo": {
+          "name": "Swyddfa Gorff Aflywodraethol"
+        },
+        "office/notary": {
+          "name": "Swyddfa Notari"
+        },
+        "office/physician": {
+          "name": "Meddyg"
+        },
+        "office/political_party": {
+          "name": "Swyddfa Blaid Gwleidyddol"
+        },
+        "office/quango": {
+          "name": "Swyddfa Gorff Quasi-Aflywodraethol"
+        },
+        "office/religion": {
+          "name": "Swyddfa Grefyddol"
+        },
+        "office/research": {
+          "name": "Swyddfa Ymchwil"
+        },
+        "office/security": {
+          "name": "Swyddfa Ddiogelwch"
+        },
+        "office/surveyor": {
+          "name": "Swyddfa Arolygydd"
+        },
+        "office/therapist": {
+          "name": "Swyddfa Therapydd"
+        },
+        "office/travel_agent": {
+          "name": "Asiantaeth Teithio"
+        },
+        "office/union": {
+          "name": "Swyddfa Undeb Llafur"
+        },
+        "office/yes": {
+          "name": "Swyddfa (Math Amhenodol)"
+        },
+        "place": {
+          "name": "Lle"
+        },
+        "place/city": {
+          "name": "Dinas"
+        },
+        "place/city_block": {
+          "name": "Bloc Dinas"
+        },
+        "place/farm": {
+          "name": "Fferm"
+        },
+        "place/hamlet": {
+          "name": "Pentrefan"
+        },
+        "place/island": {
+          "name": "Ynys"
+        },
+        "place/islet": {
+          "name": "Ynysig"
+        },
+        "place/locality": {
+          "name": "Bro"
+        },
+        "place/neighbourhood": {
+          "name": "Cymydogaeth"
+        },
+        "place/quarter": {
+          "name": "Cwarter"
+        },
+        "place/square": {
+          "name": "Sgwâr"
+        },
+        "place/town": {
+          "name": "Tref"
+        },
+        "place/village": {
+          "name": "Pentref"
+        },
+        "playground": {
+          "name": "Offer Ardal Chwarae"
+        },
+        "playground/activitypanel": {
+          "name": "Panel Gweithgareddau Chwarae"
+        },
+        "playground/bridge": {
+          "name": "Pont Chwarae"
+        },
+        "playground/hopscotch": {
+          "name": "Pôtsh"
+        },
+        "playground/map": {
+          "name": "Map Ardal Chwarae wedi'i Baentio"
+        },
+        "playground/playhouse": {
+          "name": "Tŷ Chwarae"
+        },
+        "playground/sandpit": {
+          "name": "Pwll Tywod Chwarae"
+        },
+        "playground/seesaw": {
+          "name": "Si-So"
+        },
+        "playground/slide": {
+          "name": "Llithren"
+        },
+        "playground/swing": {
+          "name": "Siglen"
+        },
+        "playground/teenshelter": {
+          "name": "Cysgod Arddegwyr"
+        },
+        "point": {
+          "name": "Pwynt"
+        },
+        "polling_station": {
+          "name": "Gorsaf Bleidleisio Dros Dro"
+        },
+        "power": {
+          "name": "Nodwedd Pŵer"
+        },
+        "power/generator/method/photovoltaic": {
+          "name": "Panel Solar"
+        },
+        "power/generator/method/photovoltaic/building/roof": {
+          "name": "Panel Solar Canopi"
+        },
+        "power/generator/method/photovoltaic/location/roof": {
+          "name": "Panel Solar ar y To"
+        },
+        "power/line": {
+          "name": "Llinell Pŵer"
+        },
+        "power/minor_line": {
+          "name": "Islinell Pŵer"
+        },
+        "power/plant": {
+          "name": "Tiroedd Gorsaf Ynni"
+        },
+        "power/plant/source/coal": {
+          "name": "Gorsaf Ynni Glo"
+        },
+        "power/plant/source/gas": {
+          "name": "Gorsaf Ynni Nwy"
+        },
+        "power/plant/source/hydro": {
+          "name": "Gorsaf Ynni Trydan Dŵr"
+        },
+        "power/plant/source/method/photovoltaic": {
+          "name": "Ffarm Solar"
+        },
+        "power/plant/source/nuclear": {
+          "name": "Gorsaf Ynni Niwclear"
+        },
+        "power/plant/source/oil": {
+          "name": "Gorsaf Ynni Olew"
+        },
+        "power/plant/source/solar": {
+          "name": "Gorsaf Ynni Solar"
+        },
+        "power/plant/source/waste": {
+          "name": "Gorsaf Ynni Llosgi Gwastraff"
+        },
+        "power/plant/source/wind": {
+          "name": "Ffarm Gwynt"
+        },
+        "power/substation": {
+          "name": "Is-orsaf"
+        },
+        "power/transformer": {
+          "name": "Trawsnewidydd"
+        },
+        "public_transport/platform": {
+          "name": "Platfform Cludiant"
+        },
+        "public_transport/platform/bus": {
+          "name": "Platfform Bws"
+        },
+        "public_transport/platform/bus_point": {
+          "name": "Safle Bws"
+        },
+        "public_transport/platform/bus_tram_point": {
+          "name": "Safle Bws & Tram"
+        },
+        "public_transport/platform/ferry": {
+          "name": "Platfform Fferi"
+        },
+        "public_transport/platform/ferry_point": {
+          "name": "Safle / Platfform Fferi"
+        },
+        "public_transport/platform/light_rail": {
+          "name": "Platfform Rheilffordd Ysgafn"
+        },
+        "public_transport/platform/light_rail_point": {
+          "name": "Safle / Platfform Rheilffordd Ysgafn"
+        },
+        "public_transport/platform/monorail": {
+          "name": "Platfform Trên-un-Gledren"
+        },
+        "public_transport/platform/monorail_point": {
+          "name": "Safle / Platfform Trên-un-Gledren"
+        },
+        "public_transport/platform/subway": {
+          "name": "Platfform Tanlwybr"
+        },
+        "public_transport/platform/subway_point": {
+          "name": "Safle / Platfform Tanlwybr"
+        },
+        "public_transport/platform/train": {
+          "name": "Platfform Trên"
+        },
+        "public_transport/platform/train_point": {
+          "name": "Safle / Platfform Trên"
+        },
+        "public_transport/platform/tram": {
+          "name": "Platfform Tram"
+        },
+        "public_transport/platform/tram_point": {
+          "name": "Safle / Platfform Tram"
+        },
+        "public_transport/platform/trolleybus": {
+          "name": "Platfform Bws Trydan"
+        },
+        "public_transport/platform/trolleybus_point": {
+          "name": "Safle Bws Trydan"
+        },
+        "public_transport/platform_point": {
+          "name": "Gorsaf / Platfform Cludiant"
+        },
+        "public_transport/station": {
+          "name": "Gorsaf Gludiant"
+        },
+        "public_transport/station_aerialway": {
+          "name": "Gorsaf Lifft Sgïo"
+        },
+        "public_transport/station_bus": {
+          "name": "Gorsaf / Terfynfa Fysiau"
+        },
+        "public_transport/station_ferry": {
+          "name": "Terfynfa Fferi"
+        },
+        "public_transport/station_light_rail": {
+          "name": "Gorsaf Reilffordd Ysgafn"
+        },
+        "public_transport/station_monorail": {
+          "name": "Gorsaf Drên-un-Gledren"
+        },
+        "public_transport/station_subway": {
+          "name": "Gorsaf Danddaear"
+        },
+        "public_transport/station_train": {
+          "name": "Gorsaf Drên"
+        },
+        "public_transport/station_train_halt": {
+          "name": "Gorsaf Drên (Ar gais)"
+        },
+        "public_transport/station_tram": {
+          "name": "Gorsaf Dram"
+        },
+        "public_transport/station_trolleybus": {
+          "name": "Gorsaf / Terfynfa Fws Drydan"
+        },
+        "public_transport/stop_area": {
+          "name": "Ardal Safle Gludiant"
+        },
+        "public_transport/stop_position": {
+          "name": "Lleoliad Safle Gludiant"
+        },
+        "public_transport/stop_position_aerialway": {
+          "name": "Lleoliad Safle Lifft Sgïo"
+        },
+        "public_transport/stop_position_bus": {
+          "name": "Lleoliad Safle Bws"
+        },
+        "public_transport/stop_position_ferry": {
+          "name": "Lleoliad Safle Feri"
+        },
+        "public_transport/stop_position_light_rail": {
+          "name": "Lleoliad Safle Reilffordd Ysgafn"
+        },
+        "public_transport/stop_position_monorail": {
+          "name": "Lleoliad Safle Drên-un-Gledren"
+        },
+        "railway": {
+          "name": "Nodwedd Rheilffordd"
+        },
+        "railway/abandoned": {
+          "name": "Rheilffordd Adawedig",
+          "terms": "gadawedig,reilffordd,tren,hen"
+        },
+        "railway/disused": {
+          "name": "Rheilffordd Segur"
+        },
+        "railway/level_crossing": {
+          "name": "Croesfan Reilffordd-Ffordd"
+        },
+        "railway/monorail": {
+          "name": "Trac Trên-un-Gledren"
+        },
+        "railway/platform": {
+          "name": "Platfform Trên"
+        },
+        "railway/rail": {
+          "name": "Trac Trên"
+        },
+        "railway/signal": {
+          "name": "Signal Rheilffordd"
+        },
+        "railway/station": {
+          "name": "Gorsaf Drên"
+        },
+        "railway/tram_level_crossing": {
+          "name": "Croesfan Dramffordd"
+        },
+        "relation": {
+          "name": "Perthynas"
+        },
+        "shop": {
+          "name": "Siop"
+        },
+        "shop/agrarian": {
+          "name": "Siop Gynnyrch Fferm"
+        },
+        "shop/alcohol": {
+          "name": "Siop Ddiodydd Alcoholig"
+        },
+        "shop/anime": {
+          "name": "Siop Anime / Manga"
+        },
+        "shop/antiques": {
+          "name": "Siop Henebion"
+        },
+        "shop/appliance": {
+          "name": "Siop Offer"
+        },
+        "shop/art": {
+          "name": "Siop Gelf"
+        },
+        "shop/baby_goods": {
+          "name": "Siop Nwyddau Babanod"
+        },
+        "shop/bag": {
+          "name": "Siop Fagiau / Bagiau Teithio"
+        },
+        "shop/bakery": {
+          "name": "Popty"
+        },
+        "shop/bathroom_furnishing": {
+          "name": "Siop Ddodrefn Ystafell Ymolchi"
+        },
+        "shop/beauty": {
+          "name": "Siop Harddwch"
+        },
+        "shop/beauty/nails": {
+          "name": "Salon Ewinedd"
+        },
+        "shop/beauty/tanning": {
+          "name": "Salon Tanio"
+        },
+        "shop/bed": {
+          "name": "Siop Welyau / Fatresi"
+        },
+        "shop/beverages": {
+          "name": "Siop Ddiodydd"
+        },
+        "shop/bicycle": {
+          "name": "Siop Feiciau"
+        },
+        "shop/boat": {
+          "name": "Siop Gwch"
+        },
+        "shop/bookmaker": {
+          "name": "Siop Fetio"
+        },
+        "shop/books": {
+          "name": "Siop Lyfrau"
+        },
+        "shop/brewing_supplies": {
+          "name": "Siop Gynnyrch Bragdy"
+        },
+        "shop/butcher": {
+          "name": "Cigydd"
+        },
+        "shop/camera": {
+          "name": "Siop Offer Camera"
+        },
+        "shop/candles": {
+          "name": "Siop Ganhwyllau",
+          "terms": "canhwyll,canhwyllau,cannwyll,gannwyll"
+        },
+        "shop/cannabis": {
+          "name": "Siop Ganabis"
+        },
+        "shop/car": {
+          "name": "Gwerthwr Ceir"
+        },
+        "shop/car/second_hand": {
+          "name": "Gwerthwr Ceir Ail-law"
+        },
+        "shop/car_parts": {
+          "name": "Siop Rannau Car"
+        },
+        "shop/car_repair": {
+          "name": "Gweithdy Atgyweirio Ceir"
+        },
+        "shop/caravan": {
+          "name": "Gwerthwr Carafannau"
+        },
+        "shop/carpet": {
+          "name": "Siop Garped"
+        },
+        "shop/catalogue": {
+          "name": "Siop Gátalog",
+          "terms": "catalog,gatalog,cátalog,catlog,gatlog"
+        },
+        "shop/charity": {
+          "name": "Siop Elusen"
+        },
+        "shop/cheese": {
+          "name": "Siop Gaws"
+        },
+        "shop/chemist": {
+          "name": "Cemegydd"
+        },
+        "shop/chocolate": {
+          "name": "Siop Siocled"
+        },
+        "shop/clothes": {
+          "name": "Siop Ddillad"
+        },
+        "shop/clothes/second_hand": {
+          "name": "Siop Ddillad Ail-Law"
+        },
+        "shop/clothes/suits": {
+          "name": "Siop Siwtiau"
+        },
+        "shop/clothes/underwear": {
+          "name": "Siop Iswisg"
+        },
+        "shop/clothes/wedding": {
+          "name": "Siop Ddillad Priodas"
+        },
+        "shop/clothes/workwear": {
+          "name": "Siop Ddillad Gwaith"
+        },
+        "shop/coffee": {
+          "name": "Siop Goffi"
+        },
+        "shop/computer": {
+          "name": "Siop Gyfrifiaduron"
+        },
+        "shop/confectionery": {
+          "name": "Siop Losin"
+        },
+        "shop/copyshop": {
+          "name": "Siop Gopïo"
+        },
+        "shop/cosmetics": {
+          "name": "Siop Golur"
+        },
+        "shop/country_store": {
+          "name": "Siop Gynnyrch Gwledig"
+        },
+        "shop/craft": {
+          "name": "Siop Grefft"
+        },
+        "shop/curtain": {
+          "name": "Siop Len"
+        },
+        "shop/dairy": {
+          "name": "Siop Laeth"
+        },
+        "shop/department_store": {
+          "name": "Siop Adran"
+        },
+        "shop/doityourself": {
+          "name": "Siop DIY"
+        },
+        "shop/doors": {
+          "name": "Siop Ddrysau"
+        },
+        "shop/e-cigarette": {
+          "name": "Siop E-Sigaréts"
+        },
+        "shop/electronics": {
+          "name": "Siop Electroneg"
+        },
+        "shop/erotic": {
+          "name": "Siop Erotig"
+        },
+        "shop/erotic/lgbtq": {
+          "name": "Siop Erotig LHDTC+"
+        },
+        "shop/fabric": {
+          "name": "Siop Ddeunydd"
+        },
+        "shop/farm": {
+          "name": "Stondin Gynnyrch"
+        },
+        "shop/fashion": {
+          "name": "Siop Ffasiwn"
+        },
+        "shop/fishing": {
+          "name": "Siop Bysgota"
+        },
+        "shop/florist": {
+          "name": "Blodau"
+        },
+        "shop/frame": {
+          "name": "Siop Fframio"
+        },
+        "shop/frozen_food": {
+          "name": "Siop Fwyd Rhewgell"
+        },
+        "shop/fuel": {
+          "name": "Siop Danwydd"
+        },
+        "shop/funeral_directors": {
+          "name": "Trefnydd Angladdau",
+          "terms": "saer angladdau,saer angladd,marwolaeth,coffa,cofeb"
+        },
+        "shop/furniture": {
+          "name": "Siop Gelfi"
+        },
+        "shop/games": {
+          "name": "Siop Gemau Bwrdd"
+        },
+        "shop/garden_centre": {
+          "name": "Canolfan Garddio"
+        },
+        "shop/general": {
+          "name": "Siop Gyffredinol"
+        },
+        "shop/gift": {
+          "name": "Siop Roddion"
+        },
+        "shop/greengrocer": {
+          "name": "Gwerthwr Llysiau"
+        },
+        "shop/hairdresser": {
+          "name": "Triniwr Gwallt",
+          "terms": "barber,barf,gwallt,gwalltwr,hêr,barbyr"
+        },
+        "shop/hardware": {
+          "name": "Siop Galedwedd"
+        },
+        "shop/herbalist": {
+          "name": "Herbwr",
+          "terms": "herbalydd,meddygaeth,gwair,glaswellt,planhigion"
+        },
+        "shop/hifi": {
+          "name": "Siop Hifi"
+        },
+        "shop/hobby": {
+          "name": "Siop Hobi"
+        },
+        "shop/honey": {
+          "name": "Siop Fêl"
+        },
+        "shop/interior_decoration": {
+          "name": "Siop Addurno Mewnol"
+        },
+        "shop/jewelry": {
+          "name": "Siop Gemwaith"
+        },
+        "shop/kiosk": {
+          "name": "Ciosg"
+        },
+        "shop/kitchen": {
+          "name": "Siop Gegin"
+        },
+        "shop/laundry": {
+          "name": "Golchi Dillad"
+        },
+        "shop/laundry/self_service": {
+          "name": "Golchi Dillad Hunanwasanaeth"
+        },
+        "shop/leather": {
+          "name": "Siop Ledr"
+        },
+        "shop/lighting": {
+          "name": "Siop Oleuadau"
+        },
+        "shop/lottery": {
+          "name": "Siop Loteri"
+        },
+        "shop/mall": {
+          "name": "Canolfan Siopa"
+        },
+        "shop/mobile_phone": {
+          "name": "Siop Ffonau Symudol"
+        },
+        "shop/music": {
+          "name": "Siop Gerddoriaeth"
+        },
+        "shop/musical_instrument": {
+          "name": "Siop Offerynnau Cerdd"
+        },
+        "shop/newsagent": {
+          "name": "Stondin Newyddion"
+        },
+        "shop/optician": {
+          "name": "Optegydd"
+        },
+        "shop/outdoor": {
+          "name": "Siop Gynnyrch Awyr Agored"
+        },
+        "shop/paint": {
+          "name": "Siop Baent"
+        },
+        "shop/party": {
+          "name": "Siop Gynnyrch Partïon"
+        },
+        "shop/pasta": {
+          "name": "Siop Basta"
+        },
+        "shop/pawnbroker": {
+          "name": "Siop Wystlo"
+        },
+        "shop/pet": {
+          "name": "Siop Anifeiliaid Anwes"
+        },
+        "shop/photo": {
+          "name": "Siop Ffotograffiaeth"
+        },
+        "shop/pottery": {
+          "name": "Siop Grochenwaith"
+        },
+        "shop/printer_ink": {
+          "name": "Siop Incs Printeri"
+        },
+        "shop/psychic": {
+          "name": "Seicig",
+          "terms": "seicic"
+        },
+        "shop/pyrotechnics": {
+          "name": "Siop Dân Gwyllt"
+        },
+        "shop/religion": {
+          "name": "Siop Grefyddol"
+        },
+        "shop/repair": {
+          "name": "Siop Atgyweirio"
+        },
+        "shop/rice": {
+          "name": "Siop Reis"
+        },
+        "shop/seafood": {
+          "name": "Siop Fwyd Morol"
+        },
+        "shop/second_hand": {
+          "name": "Siop Ail-Law",
+          "terms": "elusen,defnyddiwyd,defnyddio,rhad"
+        },
+        "shop/shoe_repair": {
+          "name": "Siop Atgyweirio Esgidiau"
+        },
+        "shop/shoes": {
+          "name": "Siop Esgidiau"
+        },
+        "shop/spices": {
+          "name": "Siop Sbeisys"
+        },
+        "shop/sports": {
+          "name": "Siop Offer Chwaraeon"
+        },
+        "shop/supermarket": {
+          "name": "Archfarchnad"
+        },
+        "shop/tailor": {
+          "name": "Gwniadur"
+        },
+        "shop/tattoo": {
+          "name": "Parlwr Tatŵ"
+        },
+        "shop/tea": {
+          "name": "Siop De"
+        },
+        "shop/ticket": {
+          "name": "Gwerthwr Tocynnau"
+        },
+        "shop/tiles": {
+          "name": "Siop Deils"
+        },
+        "shop/tobacco": {
+          "name": "Siop Dybaco"
+        },
+        "shop/toys": {
+          "name": "Siop Degannau"
+        },
+        "shop/trade": {
+          "name": "Siop Fasnachu"
+        },
+        "shop/travel_agency": {
+          "name": "Asiantaeth Teithio"
+        },
+        "shop/trophy": {
+          "name": "Siop Dlysau"
+        },
+        "shop/tyres": {
+          "name": "Siop Deiars"
+        },
+        "shop/vacant": {
+          "name": "Siop Wag"
+        },
+        "shop/variety_store": {
+          "name": "Siop Ddisgownt"
+        },
+        "shop/video": {
+          "name": "Siop Fideos"
+        },
+        "shop/video_games": {
+          "name": "Siop Gemau Fideo"
+        },
+        "shop/water": {
+          "name": "Siop Ddŵr Yfed"
+        },
+        "shop/weapons": {
+          "name": "Siop Arfau"
+        },
+        "shop/wholesale": {
+          "name": "Siop Gyfanwerthu"
+        },
+        "shop/wigs": {
+          "name": "Siop Wigs"
+        },
+        "shop/wine": {
+          "name": "Siop Win"
+        },
+        "shop/yes": {
+          "name": "Siop (Math Amhenodol)"
+        },
+        "telecom/data_center": {
+          "name": "Canolfan Ddata"
+        },
+        "tourism": {
+          "name": "Nodwedd Twristiaeth"
+        },
+        "tourism/aquarium": {
+          "name": "Acwariwm"
+        },
+        "tourism/artwork": {
+          "name": "Gwaith Celf"
+        },
+        "tourism/artwork/bust": {
+          "name": "Penddelw"
+        },
+        "tourism/artwork/installation": {
+          "name": "Gosodiad Celf"
+        },
+        "tourism/artwork/mural": {
+          "name": "Murlun"
+        },
+        "tourism/artwork/sculpture": {
+          "name": "Cerfddelw"
+        },
+        "tourism/artwork/statue": {
+          "name": "Cerflun"
+        },
+        "tourism/attraction": {
+          "name": "Atyniad Twristiaid"
+        },
+        "tourism/camp_pitch": {
+          "name": "Lle Gwersyll"
+        },
+        "tourism/camp_site": {
+          "name": "Gwersyll"
+        },
+        "tourism/camp_site/group_only": {
+          "name": "Lle Gwersyll Grŵp"
+        },
+        "tourism/caravan_site": {
+          "name": "Parc Carafan"
+        },
+        "tourism/chalet": {
+          "name": "Tŷ Gwyliau",
+          "terms": "tŷ haf,ty haf,ty gwyliau,sialet"
+        },
+        "tourism/gallery": {
+          "name": "Oriel Celf"
+        },
+        "tourism/hotel": {
+          "name": "Gwesty",
+          "terms": "llety"
+        },
+        "tourism/information": {
+          "name": "Gwybodaeth"
+        },
+        "tourism/information/board": {
+          "name": "Bwrdd Gwybodaeth"
+        },
+        "tourism/information/board/welcome_sign": {
+          "name": "Arwydd Groeso"
+        },
+        "tourism/information/office": {
+          "name": "Canolfan Ymwelwyr"
+        },
+        "tourism/museum": {
+          "name": "Amgueddfa"
+        },
+        "tourism/museum/history": {
+          "name": "Amgueddfa Hanes"
+        },
+        "tourism/picnic_site": {
+          "name": "Safle Picnic"
+        },
+        "tourism/theme_park": {
+          "name": "Parc Thema"
+        },
+        "tourism/zoo": {
+          "name": "Sŵ"
+        },
+        "tourism/zoo/safari": {
+          "name": "Parc Safari"
+        },
+        "tourism/zoo/wildlife": {
+          "name": "Parc Bywyd Gwyllt"
+        },
+        "traffic_calming": {
+          "name": "Gostegu Traffig",
+          "terms": "tawelu,dawelu,thawelu,tabl,bwrdd,byrddau,bord,car,ceir,arafu"
+        },
+        "traffic_calming/bump": {
+          "name": "Bymp"
+        },
+        "traffic_calming/cushion": {
+          "name": "Clustog Arafu"
+        },
+        "traffic_calming/hump": {
+          "name": "Twmpath"
+        },
+        "traffic_calming/island": {
+          "name": "Ynys Gostegu Traffig",
+          "terms": "tawelu,dawelu,thawelu,tabl,bwrdd,byrddau,bord,car,ceir,arafu"
+        },
+        "traffic_calming/table": {
+          "name": "Bwrdd Arafu",
+          "terms": "bord,byrddau,fwrdd,cyflymder,cyflymdra,gyflymder,gyflymdra,glou,chyflymder,chyflymdra"
+        },
+        "traffic_calming/yes": {
+          "name": "Gostegu Traffig (Math Amhenodol)"
+        },
+        "traffic_sign": {
+          "name": "Arwydd Draffig"
+        },
+        "traffic_sign/city_limit": {
+          "name": "Arwydd Derfyn Dinas"
+        },
+        "traffic_sign/maxspeed": {
+          "name": "Arwydd Derfyn Cyflymder"
+        },
+        "traffic_sign/variable_message": {
+          "name": "Uned Negeseuon Electronig",
+          "terms": "vms,arwydd,deinamig,neges,testun"
+        },
+        "type/boundary": {
+          "name": "Ffin"
+        },
+        "type/boundary/administrative": {
+          "name": "Ffin Gweinyddol"
+        },
+        "type/destination_sign": {
+          "name": "Arwydd Gyrchfan"
+        },
+        "type/multipolygon": {
+          "name": "Amlochron"
+        },
+        "type/restriction": {
+          "name": "Rhwystr"
+        },
+        "type/restriction/no_left_turn": {
+          "name": "Dim Troad i'r Chwith"
+        },
+        "type/restriction/no_right_turn": {
+          "name": "Dim Troad i'r Dde"
+        },
+        "type/restriction/no_u_turn": {
+          "name": "Dim Tro Pedol"
+        },
+        "type/restriction/only_left_turn": {
+          "name": "Troi i’r Chwith yn Unig"
+        },
+        "type/restriction/only_right_turn": {
+          "name": "Troi i’r Dde yn Unig"
+        },
+        "type/restriction/only_straight_on": {
+          "name": "Syth Ymlaen yn Unig"
+        },
+        "type/restriction/only_u_turn": {
+          "name": "Tro Pedol yn Unig",
+          "terms": "u-turn,tro-u,troi,troad,dim ond"
+        },
+        "type/route": {
+          "name": "Ffordd",
+          "terms": "llwybr"
+        },
+        "type/route/aerialway": {
+          "name": "Ffordd Awyr"
+        },
+        "type/route/bicycle": {
+          "name": "Ffordd Seiclo"
+        },
+        "type/route/bus": {
+          "name": "Ffordd Bws"
+        },
+        "type/route/detour": {
+          "name": "Ffordd Wyriad"
+        },
+        "type/route/ferry": {
+          "name": "Ffordd Fferi"
+        },
+        "type/route/foot": {
+          "name": "Ffordd Gerdded"
+        },
+        "type/route/hiking": {
+          "name": "Ffordd Heicio"
+        },
+        "type/route/horse": {
+          "name": "Ffordd Marchogaeth"
+        },
+        "type/route/light_rail": {
+          "name": "Ffordd Rheilffordd Ysgafn"
+        },
+        "type/route/monorail": {
+          "name": "Ffordd Drên-un-Gledren"
+        },
+        "type/route/power": {
+          "name": "Llwybr Pŵer"
+        },
+        "type/route/railway": {
+          "name": "Llwybr Rheilffordd"
+        },
+        "type/route/road": {
+          "name": "Ffordd Heol"
+        },
+        "type/route/subway": {
+          "name": "Ffordd Dan Ddaear"
+        },
+        "type/route/train": {
+          "name": "Ffordd Drên"
+        },
+        "type/route/tram": {
+          "name": "Ffordd Dram"
+        },
+        "type/route/trolleybus": {
+          "name": "Ffordd Bws Trydan"
+        },
+        "type/route_master": {
+          "name": "Meistr Llwybr"
+        },
+        "type/site": {
+          "name": "Safle"
+        },
+        "type/waterway": {
+          "name": "Ffordd Ddŵr"
+        },
+        "waterway": {
+          "name": "Nodwedd Ffyrdd Dŵr"
+        },
+        "waterway/boatyard": {
+          "name": "Cei Masnachol"
+        },
+        "waterway/canal": {
+          "name": "Camlas"
+        },
+        "waterway/canal/lock": {
+          "name": "Loc Camlas"
+        },
+        "waterway/dam": {
+          "name": "Argae",
+          "terms": "dam,arglawdd,cob,sarn,argáu,cronni,gob,gronni,chob,chronni"
+        },
+        "waterway/ditch": {
+          "name": "Dyfrffos"
+        },
+        "waterway/dock": {
+          "name": "Doc Wlyb / Doc Sych"
+        },
+        "waterway/drain": {
+          "name": "Draen"
+        },
+        "waterway/fish_pass": {
+          "name": "Bwlch Pysgod"
+        },
+        "waterway/fuel": {
+          "name": "Gorsaf Danwydd Forol"
+        },
+        "waterway/lock_gate": {
+          "name": "Llifddor",
+          "terms": "canal,loc,clo"
+        },
+        "waterway/river": {
+          "name": "Afon",
+          "terms": "nant,ffrwd,llanw,ffynnon,tarddle,aber"
+        },
+        "waterway/stream": {
+          "name": "Ffrwd"
+        },
+        "waterway/stream_intermittent": {
+          "name": "Ffrwd Ysbeidiol"
+        },
+        "waterway/tidal_channel": {
+          "name": "Sianel Morol"
+        },
+        "waterway/water_point": {
+          "name": "Dŵr Yfed Morol"
+        },
+        "waterway/waterfall": {
+          "name": "Rhaeadr"
+        },
+        "waterway/weir": {
+          "name": "Cored"
+        }
+      }
+    }
+  }
+}

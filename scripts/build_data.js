@@ -8,7 +8,7 @@ import JSON5 from 'json5';
 import YAML from 'js-yaml';
 
 import { writeFileWithMeta } from './write_file_with_meta.js';
-import * as languageNames from './language_names.js';
+import * as CLDR from './cldr.js';
 const localeCompare = new Intl.Collator('en').compare;
 
 // FontAwesome icons
@@ -63,8 +63,8 @@ function buildDataAsync() {
     .then(() => {
 
       // create target folders if necessary
-      if (!fs.existsSync('dist/data'))   fs.mkdirSync('dist/data', { recursive: true });
-      if (!fs.existsSync('dist/l10n'))   fs.mkdirSync('dist/l10n', { recursive: true });
+      if (!fs.existsSync('data/l10n'))       fs.mkdirSync('data/l10n', { recursive: true });
+      if (!fs.existsSync('dist/data/l10n'))  fs.mkdirSync('dist/data/l10n', { recursive: true });
 
       // Create symlinks if necessary..  { 'target': 'source' }
       const symlinks = {
@@ -82,9 +82,8 @@ function buildDataAsync() {
       shell.rm('-f', [
         'data/languages.json',
         'data/territory_languages.json',
-        'dist/l10n/*.en.json',
-        'dist/l10n/*.min.json',
-        'dist/data/*',
+        'data/l10n/*.en.json',
+        'dist/data/**/*.json',
         'svg/fontawesome/*.svg'
       ]);
 
@@ -107,16 +106,17 @@ function buildDataAsync() {
       const territoryLanguages = { territoryLanguages: sortObject(gatherTerritoryLanguages()) };
       fs.writeFileSync('data/territory_languages.json', stringify(territoryLanguages, { maxLength: 9999 }) + '\n');
 
-      const languages = { languages: sortObject(languageNames.langNamesInNativeLang()) };
+      const languages = { languages: sortObject(CLDR.langNamesInNativeLang()) };
       fs.writeFileSync('data/languages.json', stringify(languages, { maxLength: 200 }) + '\n');
 
       writeEnJson();
 
-      for (const sourceFile of globSync('data/*.json')) {
+      // copy all files to `dist/data`
+      for (const sourceFile of globSync('data/**/*.json')) {
         const destinationFile = sourceFile.replace('data/', 'dist/data/');
         copyToDistSync(sourceFile, destinationFile);
       }
-      for (const file of globSync('dist/{data,l10n}/*.json')) {
+      for (const file of globSync('dist/data/**/*.json')) {
         minifySync(file);
       }
     })
@@ -212,15 +212,15 @@ function writeEnJson() {
     // core.yaml
     //
     const core = YAML.load(fs.readFileSync('data/core.yaml', 'utf8'));
-    core.en.languageNames = languageNames.languageNamesInLanguageOf('en');
-    core.en.scriptNames = languageNames.scriptNamesInLanguageOf('en');
-    writeFileWithMeta('dist/l10n/core.en.json', JSON.stringify(core, null, 2) + '\n');
+    core.en.languageNames = CLDR.languageNamesInLanguageOf('en');
+    core.en.scriptNames = CLDR.scriptNamesInLanguageOf('en');
+    fs.writeFileSync('data/l10n/core.en.json', JSON.stringify(core, null, 2) + '\n');
 
     //
     // community index
     //
     const community = YAML.load(fs.readFileSync('node_modules/osm-community-index/i18n/en.yaml', 'utf8'));
-    writeFileWithMeta('dist/l10n/community.en.json', JSON.stringify(community, null, 2) + '\n');
+    fs.writeFileSync('data/l10n/community.en.json', JSON.stringify(community, null, 2) + '\n');
 
     //
     // imagery
@@ -242,7 +242,7 @@ function writeEnJson() {
       }
     }
 
-    writeFileWithMeta('dist/l10n/imagery.en.json', stringify(imagery, { maxLength: 9999 }) + '\n');
+    fs.writeFileSync('data/l10n/imagery.en.json', stringify(imagery, { maxLength: 9999 }) + '\n');
 
     //
     // tagging
@@ -287,7 +287,7 @@ function writeEnJson() {
       }
     }
 
-    writeFileWithMeta('dist/l10n/tagging.en.json', JSON.stringify(tagging, null, 2) + '\n');
+    fs.writeFileSync('data/l10n/tagging.en.json', JSON.stringify(tagging, null, 2) + '\n');
 
   } catch (err) {
     console.error(chalk.red(`Error - ${err.message}`));

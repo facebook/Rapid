@@ -1,0 +1,1087 @@
+{
+  "ko": {
+    "imagery": {
+      "Bedzin-PL-aerial_image": {
+        "attribution": {
+          "text": "벵진 지역 사무소"
+        },
+        "name": "벵진: 정사이미지 지도 2013 (항공 사진)"
+      },
+      "Bedzin-PL-buildings": {
+        "attribution": {
+          "text": "벵진 지역 사무소"
+        },
+        "name": "벵진: 건물들"
+      },
+      "Bing": {
+        "description": "위성 및 항공 사진",
+        "name": "Bing 위성 지도"
+      },
+      "Bytom-2012": {
+        "attribution": {
+          "text": "바이토미아 시청"
+        },
+        "name": "비톰: 정사이미지 지도 2012 (항공 사진)"
+      },
+      "Bytom-2014": {
+        "attribution": {
+          "text": "바이토미아 시청"
+        },
+        "name": "비톰: Orthophotomap 2014 (항공 사진)"
+      },
+      "Bytom-2016": {
+        "attribution": {
+          "text": "바이토미아 시청"
+        },
+        "name": "비톰: 정사이미지 지도 2016 (항공 사진)"
+      },
+      "Bytom-2018": {
+        "attribution": {
+          "text": "바이토미아 시청"
+        },
+        "name": "비톰: 정사이미지 지도 2018 (항공 사진)"
+      },
+      "Bytom-2021": {
+        "attribution": {
+          "text": "바이토미아 시청"
+        },
+        "name": "비톰: 정사이미지 지도 2021 (항공 사진)"
+      },
+      "Bytom-buildings": {
+        "attribution": {
+          "text": "바이토미아 시청"
+        },
+        "name": "비톰: 건물들"
+      },
+      "Czestochowa-2011": {
+        "attribution": {
+          "text": "쳉스토호바 시청"
+        },
+        "name": "쳉스토호바: 정사이미지 지도 2011 (항공 사진)"
+      },
+      "Czestochowa-2013": {
+        "attribution": {
+          "text": "쳉스토호바 시청"
+        },
+        "name": "쳉스토호바: 정사이미지 지도 2013 (항공 사진)"
+      },
+      "Czestochowa-2014": {
+        "attribution": {
+          "text": "쳉스토호바 시청"
+        },
+        "name": "쳉스토호바: 정사이미지 지도 2014 (항공 사진)"
+      },
+      "Czestochowa-2015": {
+        "attribution": {
+          "text": "쳉스토호바 시청"
+        },
+        "name": "쳉스토호바: 정사이미지 지도 2015 (항공 사진)"
+      },
+      "Czestochowa-2016": {
+        "attribution": {
+          "text": "쳉스토호바 시청"
+        },
+        "name": "쳉스토호바: 정사이미지 지도 2016 (항공 사진)"
+      },
+      "Czestochowa-2017": {
+        "attribution": {
+          "text": "쳉스토호바 시청"
+        },
+        "name": "쳉스토호바: 정사이미지 지도 2017 (항공 사진)"
+      },
+      "Czestochowa-buildings": {
+        "attribution": {
+          "text": "쳉스토호바 시청"
+        },
+        "name": "쳉스토호바: 건물들"
+      },
+      "DV_DHMV_II_HILL_25cm": {
+        "name": "디지털 플라망 DHV II, 다방향 음영기복도 0.25m"
+      },
+      "DV_DHMV_II_SVF_25cm": {
+        "name": "디지털 플라망 DHV II, 스카이뷰 팩터 0.25m"
+      },
+      "DV_GRB": {
+        "name": "디지털 플라망 GRB"
+      },
+      "DV_OrthoPhoto": {
+        "name": "디지털 플라망 최신 항공 사진"
+      },
+      "DV_OrthoPhoto_20132015_10cm": {
+        "name": "디지털 플라망 2013-2015 항공 사진 10cm"
+      },
+      "DV_OrthoPhoto_Preliminary": {
+        "name": "디지털 플라망 예비 항공 사진"
+      },
+      "DV_Wegenregister": {
+        "name": "디지털 플라망 도로 등록부"
+      },
+      "Dourados_Ortofotos": {
+        "attribution": {
+          "text": "두라도스 시청 - GeoDourados"
+        },
+        "description": "도우라두스 (2018) 및 여러 지역 (2020) 고해상도 항공 이미지.",
+        "name": "두라도스 정사이미지"
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 맑음 - EOX IT Services GmbH의 https://s2maps.eu (수정된 Copernicus Sentinel 데이터 2017 및 2018 포함)"
+        },
+        "description": "후처리된 Sentinel 위성 사진.",
+        "name": "eox.at 2018 맑음"
+      },
+      "EOXAT2019CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 맑음 - EOX IT Services GmbH의 https://s2maps.eu (수정된 Copernicus Sentinel 데이터 2019 포함)"
+        },
+        "description": "후처리된 Sentinel 위성 사진.",
+        "name": "eox.at 2019 맑음"
+      },
+      "EOXAT2020CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 맑음 - EOX IT Services GmbH의 https://s2maps.eu (수정된 Copernicus Sentinel 데이터 2020 포함)"
+        },
+        "description": "후처리된 Sentinel 위성 사진.",
+        "name": "eox.at 2020 맑음"
+      },
+      "EOXAT2021CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 맑음 - EOX IT Services GmbH의 https://s2maps.eu (수정된 Copernicus Sentinel 데이터 2021 포함)"
+        },
+        "description": "후처리된 Sentinel 위성 사진.",
+        "name": "eox.at 2021 맑음"
+      },
+      "EOXAT2022CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 맑음 - EOX IT Services GmbH의 https://s2maps.eu (수정된 Copernicus Sentinel 데이터 2022 포함)"
+        },
+        "description": "후처리된 Sentinel 위성 사진.",
+        "name": "eox.at 2022 맑음"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "이용 약관"
+        },
+        "description": "Esri 전세계 항공 지도",
+        "name": "Esri 전세계 항공 지도"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "약관 & 피드백"
+        },
+        "description": "Esri archive 이미지는 기본 레이어보다 명확하고 정확할 수 있습니다.",
+        "name": "Esri 전세계 항공 지도 (고화질) Beta"
+      },
+      "Frankfurt-am-Main-2019": {
+        "attribution": {
+          "text": "도시 측량 사무소 프랑크푸르트 암 마인"
+        },
+        "description": "2019년 4월 16일에 촬영된 프랑크푸르트 암 마인 항공 사진",
+        "name": "프랑크푸르트 암 마인 항공 사진 2019"
+      },
+      "Geodatastyrelsen_Cadastral_Parcels_INSPIRE_View": {
+        "attribution": {
+          "text": "지리 데이터 기관 및 데이터 공급 및 인프라 기관"
+        },
+        "name": "SDFI 지적 필지 INSPIRE 뷰"
+      },
+      "Geodatastyrelsen_DTK_Kort25": {
+        "attribution": {
+          "text": "데이터 공급 및 인프라 위원회"
+        }
+      },
+      "Geodatastyrelsen_Denmark": {
+        "attribution": {
+          "text": "데이터 공급 및 인프라 위원회"
+        },
+        "name": "SDFI 항공 사진"
+      },
+      "Geodatastyrelsen_Skaermkort": {
+        "attribution": {
+          "text": "데이터 공급 및 인프라 위원회"
+        },
+        "name": "SDFI 스크린맵"
+      },
+      "Geoportal2-PL-City-boundaries_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "행정 단위를 포함한 폴란드의 WMS 서비스 출판 영토 구역",
+        "name": "Geoportal 2: 도시 경계 WMS"
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "해상도가 10cm 이상인 정사이미지 지도. 데이터는 해상도별로 정렬된 다음 최신순으로 정렬됩니다. 예를 들어 해상도가 8cm인 2012년 시트는 해상도가 10cm인 2019년 시트를 가리게 됩니다.",
+        "name": "Geoportal 2: 고해상도 정사이미지 지도 (과거 사진) (WMS)"
+      },
+      "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "해상도가 10cm 이상인 정사이미지 지도. 데이터는 해상도별로 정렬된 다음 최신순으로 정렬됩니다. 예를 들어 해상도가 8cm인 2012년 시트는 해상도가 10cm인 2019년 시트를 가리게 됩니다.",
+        "name": "Geoportal 2: 고해상도 정사이미지 지도 (항공 사진) (WMS)"
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "WMS 국가 주소 번호 통합 보기 서비스를 통해 거리 및 주소 기록 분야에서 국경 등록부의 공간 데이터를 기반으로 생성된 지도 이미지를 다운로드할 수 있습니다.",
+        "name": "Geoportal 2 도로명"
+      },
+      "Geoportal2-PL-addres_points_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "WMS 국가 주소 번호 통합 보기 서비스를 통해 거리 및 주소 기록 분야에서 국경 등록부의 공간 데이터를 기반으로 생성된 지도 이미지를 다운로드할 수 있습니다.",
+        "name": "Geoportal 2: 주소 포인트"
+      },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "폴란드의 보관 정사이미지 지도를 볼 수 있는 검색 서비스(웹 지도 서비스, WMS)입니다. 본 서비스를 통해 제공되는 데이터는 항공 사진으로 제작된 정사이미지 지도로 구성됩니다. 이 서비스는 WMS 1.3.0 인터페이스에 대한 지원을 제공합니다.",
+        "name": "Geoportal 2: 정사이미지 지도 (과거 사진) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "폴란드 지역의 정사이미지 지도를 볼 수 있는 보기 서비스(웹 지도 서비스, WMS)입니다. 본 서비스를 통해 제공되는 데이터는 항공 사진으로 제작된 정사이미지 지도로 구성됩니다. 이 서비스는 WMS 1.3.0 인터페이스에 대한 지원을 제공합니다.",
+        "name": "Geoportal 2: 정사이미지 지도 (최신 항공 사진) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "폴란드 지역의 정사사진 지도를 볼 수 있는 보기 서비스(WMTS)입니다. 본 서비스를 통해 제공되는 데이터는 항공 사진으로 제작된 정사사진 지도로 구성됩니다.",
+        "name": "Geoportal 2: 정사이미지 지도 (최신 항공 사진) (WMTS)"
+      },
+      "Geoportal2-PL-boundaries-of-communes_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "행정 단위를 포함한 폴란드의 WMS 서비스 출판 영토 구역",
+        "name": "Geoportal 2: 공동체 경계 WMS"
+      },
+      "Geoportal2-PL-boundaries-of-counties_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "행정 단위를 포함한 폴란드의 WMS 서비스 출판 영토 구역",
+        "name": "Geoportal 2: 국경 WMS"
+      },
+      "Geoportal2-PL-boundaries-of-provinces_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "행정 단위를 포함한 폴란드의 WMS 서비스 출판 영토 구역",
+        "name": "Geoportal 2: 지방 경계 WMS"
+      },
+      "Geoportal2-PL-buildings_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "국가토지기록통합서비스는 지구 단위에서 직접 제공되는 등록 데이터를 제공하는 종합 서비스입니다. 서비스에는 적절한 매개변수가 포함된 WMS 서비스가 있고 집단 서비스 KrajowaIntegracjaEwidencjiGruntow에 WMS 서비스를 포함하기로 결정한 엔터티의 데이터만 포함됩니다.",
+        "name": "Geoportal 2: 건축 기록 WMS"
+      },
+      "Geoportal2-PL-gas-pipe_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "지형 유틸리티 서비스의 국가 통합은 지역 수준 단위에서 직접 제공되는 토지 유틸리티 데이터를 제공하기 위한 집합 서비스입니다. 서비스에는 적절한 매개변수가 있는 WMS 서비스가 있고 집단 서비스 KrajowaIntegracjaUzbrojeniaTerenu에 WMS 서비스를 포함하기로 결정한 장치의 데이터만 포함됩니다.",
+        "name": "Geoportal 2: 가스 파이프 WMS"
+      },
+      "Geoportal2-PL-heat-pipe_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "지형 유틸리티 서비스의 국가 통합은 지역 수준 단위에서 직접 제공되는 토지 유틸리티 데이터를 제공하기 위한 집합 서비스입니다. 서비스에는 적절한 매개변수가 있는 WMS 서비스가 있고 집단 서비스 KrajowaIntegracjaUzbrojeniaTerenu에 WMS 서비스를 포함하기로 결정한 장치의 데이터만 포함됩니다.",
+        "name": "Geoportal 2: 열 파이프 WMS"
+      },
+      "Geoportal2-PL-plot_boundaries_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "국가토지기록통합서비스는 지구 단위에서 직접 제공되는 등록 데이터를 제공하는 종합 서비스입니다. 서비스에는 적절한 매개변수가 포함된 WMS 서비스가 있고 집단 서비스 KrajowaIntegracjaEwidencjiGruntow에 WMS 서비스를 포함하기로 결정한 엔터티의 데이터만 포함됩니다.",
+        "name": "Geoportal 2: 토지 경계"
+      },
+      "Geoportal2-PL-power-cord_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "지형 유틸리티 서비스의 국가 통합은 지역 수준 단위에서 직접 제공되는 토지 유틸리티 데이터를 제공하기 위한 집합 서비스입니다. 서비스에는 적절한 매개변수가 있는 WMS 서비스가 있고 집단 서비스 KrajowaIntegracjaUzbrojeniaTerenu에 WMS 서비스를 포함하기로 결정한 장치의 데이터만 포함됩니다.",
+        "name": "Geoportal 2: 전력망 WMS"
+      },
+      "Geoportal2-PL-prng": {
+        "attribution": {
+          "text": "측지 및 지도 제작 문서 중앙 센터"
+        },
+        "name": "Geoportal 2: PRNG(지역 이름)"
+      },
+      "Geoportal2-PL-sewer-pipe_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "지형 유틸리티 서비스의 국가 통합은 지역 수준 단위에서 직접 제공되는 토지 유틸리티 데이터를 제공하기 위한 집합 서비스입니다. 서비스에는 적절한 매개변수가 있는 WMS 서비스가 있고 집단 서비스 KrajowaIntegracjaUzbrojeniaTerenu에 WMS 서비스를 포함하기로 결정한 장치의 데이터만 포함됩니다.",
+        "name": "Geoportal 2: 하수관망 WMS"
+      },
+      "Geoportal2-PL-shaded_relief_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "1m x 1m 그리드에서 DTM 음영을 볼 수 있는 뷰잉 서비스(웹 맵 서비스, WMS)입니다. 이 서비스는 WMS 1.3.0 인터페이스에 대한 지원을 제공합니다.",
+        "name": "Geoportal 2: 음영 기복 (WMS)"
+      },
+      "Geoportal2-PL-squares-and-housing-estates_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "WMS 국가 주소 번호 통합 보기 서비스를 통해 거리 및 주소 기록 분야에서 국경 등록부의 공간 데이터를 기반으로 생성된 지도 이미지를 다운로드할 수 있습니다.",
+        "name": "Geoportal 2: 광장과 주택단지"
+      },
+      "Geoportal2-PL-state-borders_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "행정 단위를 포함한 폴란드의 WMS 서비스 출판 영토 구역",
+        "name": "Geoportal 2: 주 경계 WMS"
+      },
+      "Geoportal2-PL-telecommunications-cable_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "지형 유틸리티 서비스의 국가 통합은 지역 수준 단위에서 직접 제공되는 토지 유틸리티 데이터를 제공하기 위한 집합 서비스입니다. 서비스에는 적절한 매개변수가 있는 WMS 서비스가 있고 집단 서비스 KrajowaIntegracjaUzbrojeniaTerenu에 WMS 서비스를 포함하기로 결정한 장치의 데이터만 포함됩니다.",
+        "name": "Geoportal 2: 통신 케이블 WMS"
+      },
+      "Geoportal2-PL-water-pipe_WMS": {
+        "attribution": {
+          "text": "측지 및 지도 제작 본부"
+        },
+        "description": "지형 유틸리티 서비스의 국가 통합은 지역 수준 단위에서 직접 제공되는 토지 유틸리티 데이터를 제공하기 위한 집합 서비스입니다. 서비스에는 적절한 매개변수가 있는 WMS 서비스가 있고 집단 서비스 KrajowaIntegracjaUzbrojeniaTerenu에 WMS 서비스를 포함하기로 결정한 장치의 데이터만 포함됩니다.",
+        "name": "Geoportal 2: 수도망 WMS"
+      },
+      "Gliwice-2003": {
+        "attribution": {
+          "text": "글리비체 시청"
+        },
+        "name": "글리비체: 정사이미지 지도 2003 (항공 사진)"
+      },
+      "Gliwice-2009": {
+        "attribution": {
+          "text": "글리비체 시청"
+        },
+        "name": "글리비체: 정사이미지 지도 2009 (항공 사진)"
+      },
+      "Gliwice-2013": {
+        "attribution": {
+          "text": "글리비체 시청"
+        },
+        "name": "글리비체: 정사이미지 지도 2013 (항공 사진)"
+      },
+      "Gliwice-2017": {
+        "attribution": {
+          "text": "글리비체 시청"
+        },
+        "name": "글리비체: 정사이미지 지도 2017 (항공 사진)"
+      },
+      "Gliwice-2018": {
+        "attribution": {
+          "text": "글리비체 시청"
+        },
+        "name": "글리비체: 정사이미지 지도 2018 (항공 사진)"
+      },
+      "Gliwice-2020": {
+        "attribution": {
+          "text": "글리비체 시청"
+        },
+        "name": "글리비체: 정사이미지 지도 2020 (항공 사진)"
+      },
+      "Gliwice-2021": {
+        "attribution": {
+          "text": "글리비체 시청"
+        },
+        "name": "글리비체: 정사이미지 지도 2021 (항공 사진)"
+      },
+      "Gliwice-buildings": {
+        "attribution": {
+          "text": "글리비체 시청"
+        },
+        "name": "글리비체: 건물들"
+      },
+      "LSA-ATKIS_BU": {
+        "description": "작센 안할트의 건물 형태"
+      },
+      "LSA-DOP20": {
+        "description": "작센안할트의 항공 사진, 해상도 20cm"
+      },
+      "LSA-DVG": {
+        "description": "행정 경계의 벡터 기록. 연방 주, 지역, 지방 자치 단체 및 지방 자치 단체의 일부의 경계가 제공됩니다."
+      },
+      "LocalAuthorities_RightsOfWay": {
+        "attribution": {
+          "text": "Open Government License v3.0에 따라 라이센스가 부여된 공공 부문 정보를 포함합니다."
+        },
+        "description": "rowmaps.com 에서 수집된 현지 당국이 공개한 이동 경로 데이터에 대한 공공의 권리",
+        "name": "공공의 권리"
+      },
+      "Lodz-2015": {
+        "attribution": {
+          "text": "우치 시청"
+        },
+        "name": "우쯔: 정사이미지 지도 2015 (항공 이미지)"
+      },
+      "Lodz-2017": {
+        "attribution": {
+          "text": "우치 시청"
+        },
+        "name": "우쯔: 정사이미지 지도 2017 (항공 이미지)"
+      },
+      "Lodz-buildings": {
+        "attribution": {
+          "text": "우치 시청"
+        },
+        "name": "우치: 건물"
+      },
+      "MAPNIK": {
+        "attribution": {
+          "text": "© OpenStreetMap 기여자, ODbL 1.0"
+        },
+        "description": "기본 OpenStreetMap 레이어",
+        "name": "OpenStreetMap (일반)"
+      },
+      "Maaamet-Estonia_Cadastre": {
+        "attribution": {
+          "text": "정사이미지를 바탕으로 한 토지청 지적도"
+        },
+        "name": "마아메트 지적도"
+      },
+      "Maaamet-Estonia_Ortho": {
+        "attribution": {
+          "text": "토지청 정사이미지"
+        },
+        "name": "토지청 정사이미지 (WMS)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "이용 약관"
+        },
+        "description": "고해상도 위성, 항공 사진의 글로벌 기본 지도를 포함한 Mapbox 제공 래스터 타일셋",
+        "name": "Mapbox 위성 지도"
+      },
+      "Naturvardsverket-protected": {
+        "description": "스웨덴 국립공원, 자연보호구역 및 기타 보호구역 및 지물들",
+        "name": "환경 보호국 - 보호 지역"
+      },
+      "Naturvardsverket-trails": {
+        "description": "스웨덴 환경보호청이 기록한 자연보호구역 내 또는 그 주변의 매일 업데이트되는 산책로",
+        "name": "환경 보호국 - 트레일"
+      },
+      "OSIP": {
+        "attribution": {
+          "text": "오하이오 주 전역 이미지 프로그램"
+        },
+        "description": "오하이오 주 전역 이미지 프로그램 III 는 2017년부터 2020년까지 1피트에서 3인치의 해상도로 모든 카운티의 가장 최신 정사이미지입니다.",
+        "name": "미국 오하이오 주 항공 지도"
+      },
+      "OSIP_1ft": {
+        "attribution": {
+          "text": "미국 오하이오 주 항공 지도"
+        },
+        "description": "오하이오 주 전역 이미지 프로그램 II 는 2011년부터 2014년까지 88개 지역 전체를 1피트 해상도로 정사한 이미지입니다.",
+        "name": "오하이오 주 전역 이미지 프로그램 1피트"
+      },
+      "OSIP_6in": {
+        "attribution": {
+          "text": "오하이오 주 전역 이미지 프로그램"
+        },
+        "description": "2017년과 2018년에 6인치 해상도로 촬영된 40개 지역의 오하이오 주 전역 이미지 프로그램 III 정사 이미지와 2010년부터 2014년까지 16개 카운티에서 OSIP I 및 OSIP II 이미지.",
+        "name": "오하이오 주 전역 이미지 프로그램 6인치"
+      },
+      "OSMUK-Cadastral-Parcels": {
+        "attribution": {
+          "text": "Open Government License v3.0에 따라 라이센스가 부여된 공공 부문 정보를 포함합니다."
+        },
+        "description": "영국의 완벽하게 정렬된 지적(토지 등록) 구획",
+        "name": "OSMUK 지적 구획"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 기여자, CC-BY-SA"
+        },
+        "name": "OSM 검사기: 주소  "
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 기여자, CC-BY-SA"
+        },
+        "name": "OSM 검사기: Geometry"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 기여자, CC-BY-SA"
+        },
+        "name": "OSM 검사기: 고속도로"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 기여자, CC-BY-SA"
+        },
+        "name": "OSM 검사기: 지역"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 기여자, CC-BY-SA"
+        },
+        "name": "OSM 검사기: 장소"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 기여자, CC-BY-SA"
+        },
+        "name": "OSM 검사기: 경로"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap 기여자, CC-BY-SA"
+        },
+        "name": "OSM 검사기: 태그"
+      },
+      "OpenAerialMapMosaic": {
+        "description": "모든 OpenAerialMap 이미지를 하나의 모자이크 레이어에 표시합니다. Kontur.io 제공",
+        "name": "OpenAerialMap 모자이크, Kontur.io 제공"
+      },
+      "Riksantikvariambetet-archaeological": {
+        "description": "고대와 역사적 유적 및 기념물",
+        "name": "국립 유물 관리국 - 고고학 유적지 및 기념물"
+      },
+      "Riksantikvariambetet-heritage": {
+        "description": "전통 건축물과 교회",
+        "name": "국립 유물 관리국 -  역사적 건물"
+      },
+      "Riksantikvariambetet-protected": {
+        "description": "전통 건축물 및 종교유적 보호구역",
+        "name": "국가 유물 관리국 - 문화유산 보호 지역"
+      },
+      "Riksantikvariambetet-ruins": {
+        "description": "문화적, 역사적 관심이 있는 유적",
+        "name": "국립 유물 관리국 - 유적"
+      },
+      "SDFE_Overflade_Skyggekort_40cm": {
+        "attribution": {
+          "text": "데이터 공급 및 인프라 위원회"
+        },
+        "name": "SDFI 표면 그림자 맵 (40cm)"
+      },
+      "SDFE_Terraen_Skyggekort_40cm": {
+        "attribution": {
+          "text": "데이터 공급 및 인프라 위원회"
+        },
+        "name": "SDFI 지형 그림자 맵 (40cm)"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "SPW(allonie) 최신 항공사진"
+      },
+      "SPW_PICC": {
+        "name": "SPW(allonie) PICC 수치 이미지"
+      },
+      "Siemianowice_Slaskie-aerial_image": {
+        "attribution": {
+          "text": "시미아노비체 실롱스키에 시청"
+        },
+        "name": "시미아노비체 실롱스키에: 정사이미지 지도 (항공 사진)"
+      },
+      "Siemianowice_Slaskie-buildings": {
+        "attribution": {
+          "text": "시미아노비체 실롱스키에 시청"
+        },
+        "name": "시미아노비체 실롱스키에: 건물들"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "노란색 = 미국 인구조사 공용 도메인 맵 데이터. 빨간색 = OpenStreetMap에서 데이터를 찾을 수 없음",
+        "name": "TIGER 미국 도로 레이어 (2018년 기준)"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "노란색 = 미국 인구조사 공용 도메인 맵 데이터. 빨간색 = OpenStreetMap에서 데이터를 찾을 수 없음",
+        "name": "TIGER 미국 도로 레이어 (2019년 기준)"
+      },
+      "US-TIGER-Roads-2020": {
+        "description": "노란색 = 미국 인구조사 공용 도메인 맵 데이터. 빨간색 = OpenStreetMap에서 데이터를 찾을 수 없음",
+        "name": "TIGER 미국 도로 레이어 (2020년 기준)"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "노란색 = 미국 인구조사 공용 도메인 맵 데이터. 빨간색 = OpenStreetMap에서 데이터를 찾을 수 없음",
+        "name": "TIGER 미국 도로 레이어 (2021년 기준)"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "노란색 = 미국 인구조사 공용 도메인 맵 데이터. 빨간색 = OpenStreetMap에서 데이터를 찾을 수 없음",
+        "name": "TIGER 미국 도로 레이어 (2022년 기준)"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "노란색 = 미국 인구조사 공용 도메인 맵 데이터. 빨간색 = OpenStreetMap에서 데이터를 찾을 수 없음",
+        "name": "TIGER 미국 도로 레이어 (2023년 기준)"
+      },
+      "USDA-NAIP": {
+        "attribution": {
+          "text": "미국 농무부"
+        },
+        "description": "인접한 미국의 각 주에 대한 NAIP(국립 농업 이미지 프로그램)의 가장 최근 30/60cm 4밴드 디지털 정사 이미지.",
+        "name": "국가 농업 이미지 프로그램"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "도로: 녹색 = 미분류, 갈색 = 궤도. \n표면: 자갈 = 연한 갈색, 아스팔트 = 검은색, 포장됨 = 회색, 토양 = 흰색, 콘크리트 = 파란색, 잔디 = 녹색, 계절적 = 흰색 막대",
+        "name": "미국 숲길 오버레이"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Brussels UrbIS®© - 배포 및 Copyright CIRB"
+        },
+        "name": "CIRB/CIBG 최신 항공 이미지"
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "Brussels UrbIS®© - 배포 및 Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "Brussels UrbIS®© - 배포 및 Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "Brussels UrbIS®© - 배포 및 Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "Brussels UrbIS®© - 배포 및 Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Brussels UrbIS®© - 배포 및 Copyright CIRB"
+        }
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "Brussels UrbIS®© - 배포 및 Copyright CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
+        "attribution": {
+          "text": "Brussels UrbIS®© - 배포 및 Copyright CIRB"
+        }
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "Brussels UrbIS®© - 배포 및 Copyright CIRB"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap 기여자, CC by-SA 3.0"
+        },
+        "name": "도로 표지가 달린 길: 자전거"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap 기여자, CC by-SA 3.0"
+        },
+        "name": "도로 표지가 달린 길: 걷기"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap 기여자, CC by-SA 3.0"
+        },
+        "name": "도로 표지가 달린 길: 산악 자전거"
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap 기여자, CC by-SA 3.0"
+        },
+        "name": "도로 표지가 달린 길: 스케이트"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap 기여자, CC by-SA 3.0"
+        },
+        "name": "도로 표지가 달린 길: 겨울 스포츠"
+      },
+      "Zabrze-2011": {
+        "attribution": {
+          "text": "자브제 시청"
+        },
+        "name": "자브제: 정사이미지 지도 2011 (항공 사진)"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "오스트리아의 기본 지도는  정부 데이터를 기반으로합니다."
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Orthofoto 층은 basemap.at에서 제공합니다. geoimage.at 형상의 \"계승\"."
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "description": "basemap.at 에서 제공하는 주석 오버레이입니다.",
+        "name": "basemap.at 오버레이"
+      },
+      "cyclosm": {
+        "attribution": {
+          "text": "렌더링: CyclOSM (OpenStreetMap France 진행) © 지도 데이터 OpenStreetMap 기여자"
+        },
+        "description": "CyclOSM은 사이클링을 염두에 두고 설계된 지도 스타일입니다. OpenStreetMap 데이터를 활용하여 아름답고 실용적인 사이클링 지도를 만듭니다!"
+      },
+      "debicki-buildings": {
+        "attribution": {
+          "text": "뎅비차군"
+        },
+        "name": "뎅비차군: 건물들"
+      },
+      "eufar-balaton": {
+        "attribution": {
+          "text": "EUFAR 벌러톤 호 정사이미지 2010"
+        },
+        "description": "1940년 발라톤 림놀로지 연구소의 지리 태그 사진.",
+        "name": "EUFAR 벌러톤 호 정사이미지"
+      },
+      "gothenburg-citymap": {
+        "description": "도시 지도는 예테보리를 설명하는 개요 지도입니다. 토지, 통신, 수로, 건물, 주소 번호 및 거리 이름, 행정 구역 및 기타 방향 텍스트에 대한 일반적인 정보가 포함되어 있습니다.",
+        "name": "예테보리 도시 지도"
+      },
+      "gothenburg-dtm-2017": {
+        "description": "2017년 예테보리시 고도 모델을 기반으로 언덕 그늘과 경사를 표시하는 웹맵입니다. 픽셀당 0.5미터 해상도.",
+        "name": "예테보리 음영기복"
+      },
+      "gothenburg-ortho": {
+        "description": "예테보리 지방 자치단체를 위한 정사이미지",
+        "name": "예테보리 정사이미지 2015"
+      },
+      "gothenburg-ortho_2017": {
+        "description": "예테보리 지방 자치단체를 위한 정사이미지",
+        "name": "예테보리 정사이미지 2017"
+      },
+      "gothenburg-ortho_2019": {
+        "description": "예테보리 지방 자치단체를 위한 정사이미지",
+        "name": "예테보리 정사이미지 2019"
+      },
+      "gothenburg-ortho_2021": {
+        "description": "예테보리 지방 자치단체를 위한 정사이미지",
+        "name": "예테보리 정사이미지 2021"
+      },
+      "gothenburg-ortho_latest": {
+        "description": "예테보리 지방 자치단체를 위한 정사이미지",
+        "name": "예테보리 정사이미지 최신"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "일본 GSI"
+        },
+        "description": "일본 GSI 항공사진 이미지. 완전히 정사되지는 않았지만, GSI 정사 이미지보다 조금 더 새롭고/또는 다르게 커버되었습니다.",
+        "name": "일본 GSI 항공 이미지"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "attribution": {
+          "text": "일본 GSI 매끄러운 이미지"
+        },
+        "description": "일본 GSI의 매끄러운 이미지. 정사 GSI, 항공사진, 재난 이후 등 최신 이미지 모음입니다.",
+        "name": "일본 GSI 매끄러운 이미지"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "일본 국토지리원"
+        },
+        "description": "일본 GSI 표준 지도. 광범위하게 적용됩니다.",
+        "name": "일본 GSI 표준 지도"
+      },
+      "kalmar-orto-2014": {
+        "description": "칼마르 북쪽 해안 정사이미지 2016",
+        "name": "칼마르 북쪽 정사이미지 2014"
+      },
+      "kalmar-orto-2016": {
+        "description": "칼마르 남쪽 해안 정사이미지 2016",
+        "name": "칼마르 남쪽 정사이미지 2016"
+      },
+      "kalmar-orto-2018": {
+        "description": "칼마르 지방 도시 정사이미지 2018",
+        "name": "칼마르 도시 정사이미지 2018"
+      },
+      "kalmar-orto-2020": {
+        "description": "칼마르 지방 도시 정사이미지 2020",
+        "name": "칼마르 도시 정사이미지 2020"
+      },
+      "kartverket-bygninger": {
+        "description": "노르웨이를 위한 INSPIRE 건물들",
+        "name": "Kartverket 건물 오버레이"
+      },
+      "kelkkareitit": {
+        "description": "Kelkkareitit.fi OSM의 스노모빌 트레일 (북유럽 지역)",
+        "name": "북유럽 스노모빌 오버레이"
+      },
+      "lancucki-buildings": {
+        "attribution": {
+          "text": "완추트군"
+        },
+        "name": "완추트군: 건물들"
+      },
+      "lantmateriet-orto1960": {
+        "description": "1955–1965년 스웨덴 정사이미지 모자이크. 더 오래된 사진과 더 최근 사진이 존재 할 수 있습니다.",
+        "name": "란트메테리엣 역사적 정사이미지 1960"
+      },
+      "lantmateriet-orto1975": {
+        "description": "1970-1980년 스웨덴 정사이미지 모자이크. 구성중입니다.",
+        "name": "란트메테리엣 역사적 정사이미지 1975"
+      },
+      "lantmateriet-topowebb": {
+        "description": "스웨덴 지형도 1:50,000",
+        "name": "Lantmäteriet 지형도"
+      },
+      "linkoping-orto": {
+        "description": "린셰핑 정사이미지 2010, 오픈 데이터",
+        "name": "린셰핑 정사이미지"
+      },
+      "lubaczowski-buildings": {
+        "attribution": {
+          "text": "루바추프군"
+        },
+        "name": "루바추프군: 건물들"
+      },
+      "maaamet<TX_DOT>ee-cir_ngr": {
+        "attribution": {
+          "text": "토지 위원회의 임업 정사이미지"
+        },
+        "name": "마아메트 임업"
+      },
+      "maaamet<TX_DOT>ee-orto": {
+        "attribution": {
+          "text": "토지청 정사이미지"
+        },
+        "name": "토지청 정사이미지 (WMS)"
+      },
+      "maaamet<TX_DOT>ee-pohi_vr2": {
+        "attribution": {
+          "text": "토지청 주요지도"
+        },
+        "name": "토지청 기본지도"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "이용 약관"
+        },
+        "description": "당신을 돕기 위한 주요 기능을 보여줍니다.",
+        "name": "도로 오버레이"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© OpenStreetMap 기여자, CC-BY-SA"
+        },
+        "name": "OpenPT Map (오버레이)"
+      },
+      "openrailwaymap": {
+        "attribution": {
+          "text": "렌더링: OpenRailwayMap, © 지도 데이터 OpenStreetMap 기여자"
+        },
+        "description": "오픈스트리트맵 데이터에 기반한 철도 시설물을 보여주는 오버레이 이미지"
+      },
+      "openrailwaymap-maxspeeds": {
+        "attribution": {
+          "text": "렌더링: OpenRailwayMap, © 지도 데이터 OpenStreetMap 기여자"
+        },
+        "description": "오픈스트리트맵 데이터에 기반한 철도의 제한 속도를 보여주는 오버레이 이미지",
+        "name": "OpenRailwayMap 최고속도"
+      },
+      "openrailwaymap-signalling": {
+        "attribution": {
+          "text": "렌더링: OpenRailwayMap, © 지도 데이터 OpenStreetMap 기여자"
+        },
+        "description": "오픈스트리트맵 데이터에 기반한 철도 신호를 보여주는 오버레이 이미지",
+        "name": "OpenRailwayMap 신호기"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© OpenStreetMap 기여자"
+        },
+        "description": "공용 GPS 추적을 OpenStreetMap에 업로드했습니다.",
+        "name": "OpenStreetMap GPS 추적들"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© OpenStreetMap 기여자, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (독일 스타일)"
+      },
+      "osmse-ekonomiska": {
+        "description": "\"경제 지도\" 스캔 ca. 1950-1978",
+        "name": "토지측량소 경제 지도 1950-1978"
+      },
+      "osmse-generalstab": {
+        "description": "\"일반 참모지도\" 스캔 ca. 1859-1979",
+        "name": "토지측량소 참모 지도 1859-1979"
+      },
+      "poznan-ortofotomapa2014": {
+        "attribution": {
+          "text": "측지위원회 및 지방 지적 GEOPOZ"
+        },
+        "name": "포즈난: 정사이미지 지도 2014 (항공 사진)"
+      },
+      "poznan-ortofotomapa2016": {
+        "attribution": {
+          "text": "측지위원회 및 지방 지적 GEOPOZ"
+        },
+        "name": "포즈난: 정사이미지 지도 2016 (항공 사진)"
+      },
+      "poznan-ortofotomapaBiezaca": {
+        "attribution": {
+          "text": "측지위원회 및 지방 지적 GEOPOZ"
+        },
+        "name": "포즈난: 정사이미지 지도 폴란드 (항공 사진)"
+      },
+      "przemysl-aerial": {
+        "attribution": {
+          "text": "프셰미실 시"
+        },
+        "name": "프셰미실: 정사이미지 지도 (항공 사진)"
+      },
+      "przemysl-buildings": {
+        "attribution": {
+          "text": "프셰미실 시"
+        },
+        "name": "프셰미실: 건물들"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, 데이터 ©OpenStreetMap 기여자"
+        },
+        "name": "QA 주소 없음"
+      },
+      "route500": {
+        "attribution": {
+          "text": "타일 © cquest@Openstreetmap France, data © IGN, LO/OL"
+        },
+        "description": "분류된 네트워크의 경로(고속도로, 전국, 부서별)"
+      },
+      "rzeszowski-aerial": {
+        "attribution": {
+          "text": "제슈프군"
+        },
+        "name": "제슈프군: 정사이미지 지도 (항공 사진)"
+      },
+      "rzeszowski-buildings": {
+        "attribution": {
+          "text": "제슈프군"
+        },
+        "name": "제슈프군: 건물들"
+      },
+      "scb-industrial": {
+        "description": "대규모 및 공업용지의 용도를 특징으로 하는 지리적으로 구분된 지역",
+        "name": "SCB - 산업 지역"
+      },
+      "scb-settlements": {
+        "description": "거주자가 50~199명이고 주택 간 거리가 150미터 이하인 건물의 밀집지역",
+        "name": "SCB - 소규모 주거지"
+      },
+      "scb-urban": {
+        "description": "가구 간 거리가 500미터 미만이고 인구가 200명 이상인 주거지",
+        "name": "SCB - 도시 지역"
+      },
+      "scb-vacation": {
+        "description": "주로 별장으로 구성된 연속된 지역; 그들 사이의 거리가 150미터를 초과하지 않는 적어도 50개의 별장의 집합체",
+        "name": "SCB - 별장 지역"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© 타일: skobbler 지도 데이터: OpenStreetMap 기여자"
+        }
+      },
+      "skolverket-schools": {
+        "description": "스웨덴 학교.",
+        "name": "노르웨이 교육청 - 학교"
+      },
+      "skoterleder": {
+        "description": "스노모빌 경로",
+        "name": "스노모빌 지도 스웨덴"
+      },
+      "sropczyce-buildings": {
+        "attribution": {
+          "text": "로프치체셍지슈프군"
+        },
+        "name": "로프치체셍지슈프군: 건물들"
+      },
+      "stalowowolski-buildings": {
+        "attribution": {
+          "text": "스탈로바볼라군"
+        },
+        "name": "스탈로바볼라군: 건물들"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "맵타일 제공 Stamen Design, CC BY 3.0. 데이터 제공 OpenStreetMap, ODbL"
+        },
+        "name": "Stamen 지형"
+      },
+      "stockholm-orto": {
+        "description": "스톡홀름 정사이미지 2018, CC0 license",
+        "name": "스톡홀름 정사이미지"
+      },
+      "susono_shizuoka_jp_orthophoto": {
+        "attribution": {
+          "text": "스소노시 정사이미지"
+        },
+        "description": "스소노시가 오픈 데이터로 공개한 항공사진.",
+        "name": "스소노시 정사이미지"
+      },
+      "svk-electricity-network": {
+        "description": "스웨덴 송전망입니다.",
+        "name": "SVK - 송전망"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "지도 © Thunderforest, 자료 © 오픈스트리트맵 기여자"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "지도 © Thunderforest, 자료 © 오픈스트리트맵 기여자"
+        },
+        "name": "Thunderforest 풍경"
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "지도 © Thunderforest, 데이터 © OpenStreetMap 기여자"
+        },
+        "name": "Thunderforest 야외"
+      },
+      "trafikverket-baninfo": {
+        "description": "스웨덴 철도망 (저속구간 포함)",
+        "name": "Trafikverket 철도망"
+      },
+      "trafikverket-baninfo-option": {
+        "description": "지도 레이어에 대한 여러 옵션이 있는 스웨덴 철도망",
+        "name": "Trafikverket 철도망 옵션"
+      },
+      "trafikverket-vagnat": {
+        "description": "스웨덴 NVDB 도로망",
+        "name": "Trafikverket 도로망"
+      },
+      "trafikverket-vagnat-extra": {
+        "description": "스웨덴 NVDB 추가 정보: 고속도로 참조, 교통 제어, 휴게소, 버스 정류장, 다리, 터널, 과속단속 카메라",
+        "name": "Trafikverket 도로망 추가"
+      },
+      "trafikverket-vagnat-option": {
+        "description": "지도 레이어에 대한 여러 옵션이 있는 스웨덴 NVDB 도로망",
+        "name": "Trafikverket 도로망 옵션"
+      },
+      "wroclaw-orto2015": {
+        "attribution": {
+          "text": "브로츠와프 시청"
+        },
+        "name": "브로츠와프: 정사이미지 지도 2015 (항공 사진)"
+      },
+      "wroclaw-orto2018": {
+        "attribution": {
+          "text": "브로츠와프 시청"
+        },
+        "name": "브로츠와프: 정사이미지 지도 2018 (항공 사진)"
+      }
+    }
+  }
+}

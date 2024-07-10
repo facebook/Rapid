@@ -1,0 +1,793 @@
+{
+  "zh-CN": {
+    "_communities": {
+      "freelibreopensourcesoftwarekosovaflossk": "自由及开放源代码软件科索沃（FLOSSK）",
+      "kiribatiwomeninmapping": "参与绘图的基里巴斯妇女",
+      "mappingbotswana": "博茨瓦纳地图绘制",
+      "maptimebogota": "波哥大地图时间",
+      "maptimehrva": "Maptime HRVA",
+      "openstreetmapaachen": "OpenStreetMap 亚琛",
+      "openstreetmapafghanistan": "OpenStreetMap 阿富汗",
+      "openstreetmapafrica": "OpenStreetMap 非洲",
+      "openstreetmapalba": "OpenStreetMap 苏格兰",
+      "openstreetmapalbania": "OpenStreetMap 阿尔巴尼亚",
+      "openstreetmapargentina": "OpenStreetMap 阿根廷",
+      "openstreetmaparmenia": "OpenStreetMap 亚美尼亚",
+      "openstreetmapasia": "OpenStreetMap 亚洲",
+      "openstreetmapasti": "OpenStreetMap 阿斯蒂",
+      "openstreetmapaustria": "OpenStreetMap 奥地利",
+      "openstreetmapbahia": "OpenStreetMap 巴伊亚",
+      "openstreetmapbangladesh": "OpenStreetMap 孟加拉",
+      "openstreetmapbelarus": "OpenStreetMap 白俄罗斯",
+      "openstreetmapbelgium": "OpenStreetMap 比利时",
+      "openstreetmapbelize": "OpenStreetMap 伯利兹",
+      "openstreetmapbengaluru": "OpenStreetMap 班加罗尔",
+      "openstreetmapbenin": "OpenStreetMap 贝宁",
+      "openstreetmapberlin": "OpenStreetMap 柏林",
+      "openstreetmapbivccvl": "OpenStreetMap 意大利 BI-VC-CVL",
+      "openstreetmapbochum": "OpenStreetMap 波鸿",
+      "openstreetmapbolivia": "OpenStreetMap 玻利维亚",
+      "openstreetmapbonn": "OpenStreetMap 波恩",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap 波黑",
+      "openstreetmapbrasil": "OpenStreetMap 巴西",
+      "openstreetmapbrasilia": "OpenStreetMap 巴西利亚",
+      "openstreetmapbremen": "OpenStreetMap 不来梅",
+      "openstreetmapbulgaria": "OpenStreetMap 保加利亚",
+      "openstreetmapburkinafaso": "OpenStreetMap 布基纳法索",
+      "openstreetmapburundi": "OpenStreetMap 布隆迪",
+      "openstreetmapbzh": "OpenStreetMap 布列塔尼",
+      "openstreetmapcambodia": "OpenStreetMap 柬埔寨",
+      "openstreetmapcameroon": "OpenStreetMap 喀麦隆",
+      "openstreetmapcanada": "OpenStreetMap 加拿大",
+      "openstreetmapcastillayleon": "OpenStreetMap 卡斯蒂利亚和莱昂",
+      "openstreetmapcatalancountries": "OpenStreetMap 加泰罗尼亚",
+      "openstreetmapceara": "OpenStreetMap 塞阿拉",
+      "openstreetmapchad": "OpenStreetMap 乍得",
+      "openstreetmapchile": "OpenStreetMap 智利",
+      "openstreetmapchina": "OpenStreetMap 中国",
+      "openstreetmapcologne": "OpenStreetMap 科隆",
+      "openstreetmapcolombia": "OpenStreetMap 哥伦比亚",
+      "openstreetmapcomunitatvalenciana": "OpenStreetMap 巴伦西亚社区",
+      "openstreetmapcostarica": "OpenStreetMap 哥斯达黎加",
+      "openstreetmapcotedivoire": "OpenStreetMap 科特迪瓦",
+      "openstreetmapcroatia": "OpenStreetMap 克罗地亚",
+      "openstreetmapcuba": "OpenStreetMap 古巴",
+      "openstreetmapcuneo": "OpenStreetMap 库内奥",
+      "openstreetmapcz": "OpenStreetMap 捷克",
+      "openstreetmapde": "OpenStreetMap 德国",
+      "openstreetmapdeepsouth": "OpenStreetMap 美国南部诸州",
+      "openstreetmapdelhi": "OpenStreetMap 德里",
+      "openstreetmapdenmark": "OpenStreetMap 丹麦",
+      "openstreetmapdjibouti": "OpenStreetMap 吉布提",
+      "openstreetmapdominicanrepublic": "OpenStreetMap 多米尼加",
+      "openstreetmapdresden": "OpenStreetMap 德累斯顿",
+      "openstreetmapdusseldorf": "OpenStreetMap 杜塞尔多夫",
+      "openstreetmapecuador": "OpenStreetMap 厄瓜多尔",
+      "openstreetmapegypt": "OpenStreetMap 埃及",
+      "openstreetmaperitrea": "OpenStreetMap 厄立特里亚",
+      "openstreetmapespana": "OpenStreetMap 西班牙",
+      "openstreetmapestonia": "OpenStreetMap 爱沙尼亚",
+      "openstreetmapethiopia": "OpenStreetMap 埃塞俄比亚",
+      "openstreetmapfiji": "OpenStreetMap 斐济",
+      "openstreetmapfinland": "OpenStreetMap 芬兰",
+      "openstreetmapfrance": "OpenStreetMap 法国",
+      "openstreetmapfreemapslovakia": "OpenStreetMap 斯洛伐克",
+      "openstreetmapfrenchguiana": "OpenStreetMap 法属圭亚那",
+      "openstreetmapfrenchpolynesia": "OpenStreetMap 法属波利尼西亚",
+      "openstreetmapgabon": "OpenStreetMap 加蓬",
+      "openstreetmapgalicia": "OpenStreetMap 加利西亚",
+      "openstreetmapgeorgia": "OpenStreetMap 格鲁吉亚",
+      "openstreetmapgermany": "OpenStreetMap 德国",
+      "openstreetmapghana": "OpenStreetMap 加纳",
+      "openstreetmapgorakalwaria": "OpenStreetMap 古拉卡尔瓦里亚",
+      "openstreetmapgreece": "OpenStreetMap 希腊",
+      "openstreetmapgrenoble": "OpenStreetMap 格勒诺布尔",
+      "openstreetmapguatemala": "OpenStreetMap 危地马拉",
+      "openstreetmapguinea": "OpenStreetMap 几内亚",
+      "openstreetmaphaiti": "OpenStreetMap 海地",
+      "openstreetmaphamburg": "OpenStreetMap 汉堡",
+      "openstreetmaphonduras": "OpenStreetMap 洪都拉斯",
+      "openstreetmaphongkong": "OpenStreetMap 中国香港",
+      "openstreetmaphungary": "OpenStreetMap 匈牙利",
+      "openstreetmapiceland": "OpenStreetMap 冰岛",
+      "openstreetmapindia": "OpenStreetMap 印度",
+      "openstreetmapindonesia": "OpenStreetMap 印度尼西亚",
+      "openstreetmapiran": "OpenStreetMap 伊朗",
+      "openstreetmapiraq": "OpenStreetMap 伊拉克",
+      "openstreetmapireland": "OpenStreetMap 爱尔兰",
+      "openstreetmapisrael": "OpenStreetMap 以色列",
+      "openstreetmapitaly": "OpenStreetMap 意大利",
+      "openstreetmapitalylazio": "OpenStreetMap 意大利-拉齐奥",
+      "openstreetmapitalylombardia": "OpenStreetMap 意大利-伦巴第",
+      "openstreetmapitalypiemonte": "OpenStreetMap 意大利-皮埃蒙特",
+      "openstreetmapitalysouthtyrol": "OpenStreetMap 意大利-南蒂罗尔",
+      "openstreetmapitalytrentino": "OpenStreetMap 意大利-特伦蒂诺",
+      "openstreetmapjapan": "OpenStreetMap 日本",
+      "openstreetmapkarlsruhe": "OpenStreetMap 卡尔斯鲁厄",
+      "openstreetmapkazakhstan": "OpenStreetMap 哈萨克斯坦",
+      "openstreetmapkenya": "OpenStreetMap 肯尼亚",
+      "openstreetmapkerala": "OpenStreetMap 喀拉拉邦",
+      "openstreetmapkorea": "OpenStreetMap 韩国",
+      "openstreetmapkosovo": "OpenStreetMap 科索沃",
+      "openstreetmapkyrgyzstan": "OpenStreetMap 吉尔吉斯斯坦",
+      "openstreetmaplatinamerica": "OpenStreetMap 拉丁美洲",
+      "openstreetmaplatvia": "OpenStreetMap 拉脱维亚",
+      "openstreetmaplebanon": "OpenStreetMap 黎巴嫩",
+      "openstreetmaplesotho": "OpenStreetMap 莱索托",
+      "openstreetmapliberia": "OpenStreetMap 利比里亚",
+      "openstreetmaplibya": "OpenStreetMap 利比亚",
+      "openstreetmaplithuania": "OpenStreetMap 立陶宛",
+      "openstreetmapljubljana": "OpenStreetMap 卢布尔雅那",
+      "openstreetmaplombardia": "OpenStreetMap 伦巴第",
+      "openstreetmaplondon": "OpenStreetMap 伦敦",
+      "openstreetmapluneburg": "OpenStreetMap 吕纳堡",
+      "openstreetmapluxembourg": "OpenStreetMap 卢森堡",
+      "openstreetmapmadagascar": "OpenStreetMap 马达加斯加",
+      "openstreetmapmadrid": "OpenStreetMap 马德里",
+      "openstreetmapmalawi": "OpenStreetMap 马拉维",
+      "openstreetmapmalaysia": "OpenStreetMap 马来西亚",
+      "openstreetmapmali": "OpenStreetMap 马里",
+      "openstreetmapmalta": "OpenStreetMap 马耳他",
+      "openstreetmapmauritania": "OpenStreetMap 毛里塔尼亚",
+      "openstreetmapmecklenburgvorpommern": "OpenStreetMap 梅克伦堡-前波美拉尼亚",
+      "openstreetmapmexico": "OpenStreetMap 墨西哥",
+      "openstreetmapmichigan": "OpenStreetMap 密歇根洲",
+      "openstreetmapmoldova": "OpenStreetMap 摩尔多瓦",
+      "openstreetmapmongolia": "OpenStreetMap 蒙古",
+      "openstreetmapmontenegro": "OpenStreetMap 黑山",
+      "openstreetmapmontrouge": "OpenStreetMap 蒙鲁日",
+      "openstreetmapmorocco": "OpenStreetMap 摩洛哥",
+      "openstreetmapmunchen": "OpenStreetMap 慕尼黑",
+      "openstreetmapmyanmar": "OpenStreetMap 缅甸",
+      "openstreetmapnepal": "OpenStreetMap 尼泊尔",
+      "openstreetmapnetherlands": "OpenStreetMap 荷兰",
+      "openstreetmapnicaragua": "OpenStreetMap 尼加拉瓜",
+      "openstreetmapniger": "OpenStreetMap 尼日尔",
+      "openstreetmapnigeria": "OpenStreetMap 尼日利亚",
+      "openstreetmapnorthkorea": "OpenStreetMap 朝鲜",
+      "openstreetmapnorway": "OpenStreetMap 挪威",
+      "openstreetmapoceania": "OpenStreetMap 大洋洲",
+      "openstreetmapohio": "OpenStreetMap 俄亥俄",
+      "openstreetmapottawa": "OpenStreetMap 渥太华",
+      "openstreetmappakistan": "OpenStreetMap 巴基斯坦",
+      "openstreetmappanama": "OpenStreetMap 巴拿马",
+      "openstreetmapparaguay": "OpenStreetMap 巴拉圭",
+      "openstreetmapperu": "OpenStreetMap 秘鲁",
+      "openstreetmapphilippines": "OpenStreetMap 菲律宾",
+      "openstreetmappiemonte": "OpenStreetMap 皮埃蒙特",
+      "openstreetmappoland": "OpenStreetMap 波兰",
+      "openstreetmapportugal": "OpenStreetMap 葡萄牙",
+      "openstreetmaprdc": "OpenStreetMap 刚果（金）",
+      "openstreetmaprennes": "OpenStreetMap 雷恩",
+      "openstreetmapreunion": "OpenStreetMap 留尼汪岛",
+      "openstreetmapriograndedosul": "OpenStreetMap 南里奥格兰德州",
+      "openstreetmapromania": "OpenStreetMap 罗马尼亚",
+      "openstreetmaprussia": "OpenStreetMap 俄罗斯",
+      "openstreetmaprwanda": "OpenStreetMap 卢旺达",
+      "openstreetmapsaudiarabia": "OpenStreetMap 沙特阿拉伯",
+      "openstreetmapsenegal": "OpenStreetMap 塞内加尔",
+      "openstreetmapserbia": "OpenStreetMap 塞尔维亚",
+      "openstreetmapseychelles": "OpenStreetMap 塞舌尔",
+      "openstreetmapsierraleone": "OpenStreetMap 塞拉利昂",
+      "openstreetmapsingapore": "OpenStreetMap 新加坡",
+      "openstreetmapslovenia": "OpenStreetMap 斯洛文尼亚",
+      "openstreetmapsomalia": "OpenStreetMap 索马里",
+      "openstreetmapsouthafrica": "OpenStreetMap 南非",
+      "openstreetmapsouthsudan": "OpenStreetMap 南苏丹",
+      "openstreetmapsrilanka": "OpenStreetMap 斯里兰卡",
+      "openstreetmapsudan": "OpenStreetMap 苏丹",
+      "openstreetmapsweden": "OpenStreetMap 瑞典",
+      "openstreetmapswitzerland": "OpenStreetMap 瑞士",
+      "openstreetmapsyria": "OpenStreetMap 叙利亚",
+      "openstreetmaptaiwan": "OpenStreetMap 台湾",
+      "openstreetmaptanzania": "OpenStreetMap 坦桑尼亚",
+      "openstreetmapthailand": "OpenStreetMap 泰国",
+      "openstreetmaptogo": "OpenStreetMap 多哥",
+      "openstreetmaptoronto": "OpenStreetMap 多伦多",
+      "openstreetmaptunisia": "OpenStreetMap 突尼斯",
+      "openstreetmapturin": "OpenStreetMap 都灵",
+      "openstreetmapturkey": "OpenStreetMap 土耳其",
+      "openstreetmapuganda": "OpenStreetMap 乌干达",
+      "openstreetmapuk": "OpenStreetMap 英国",
+      "openstreetmapukraine": "OpenStreetMap 乌克兰",
+      "openstreetmapuruguay": "OpenStreetMap 乌拉圭",
+      "openstreetmapus": "OpenStreetMap 美国",
+      "openstreetmapuzbekistan": "OpenStreetMap 乌兹别克斯坦",
+      "openstreetmapvenezuela": "OpenStreetMap 委内瑞拉",
+      "openstreetmapvietnam": "OpenStreetMap 越南",
+      "openstreetmapwarszawa": "OpenStreetMap 华沙",
+      "openstreetmapwestbengal": "OpenStreetMap 西孟加拉",
+      "openstreetmapwesternsahara": "OpenStreetMap 西撒哈拉",
+      "openstreetmapzambia": "OpenStreetMap 赞比亚",
+      "openstreetmapzimbabwe": "OpenStreetMap 津巴布韦",
+      "youthmappersasu": "青年绘制者ASU"
+    },
+    "_defaults": {
+      "aparat": {
+        "name": "Aparat 上的 {community}",
+        "description": "订阅我们的 Aparat 频道"
+      },
+      "discord": {
+        "description": "在 Discord 上于其他 Mapper 保持联系"
+      },
+      "discourse": {
+        "name": "{community} 社区论坛",
+        "description": "{community} 的官方论坛"
+      },
+      "facebook": {
+        "name": "Facebook 上的 {community}",
+        "description": "在Facebook上加入我们的社区"
+      },
+      "forum": {
+        "name": "{community} 论坛",
+        "description": "{community} 的官方论坛"
+      },
+      "instagram": {
+        "name": "Instagram 上的 {community}",
+        "description": "在 Instagram 上关注我们"
+      },
+      "irc": {
+        "name": "IRC 上的 {community}",
+        "description": "在 irc.oftc.net 上加入 #{account} （无 SSL 端口 6667 ，或 SSL 端口 6697）"
+      },
+      "linkedin": {
+        "name": "LinkedIn 上的 {community}",
+        "description": "在LinkedIn上加入我们的社区"
+      },
+      "mailinglist": {
+        "name": "{account} 邮件列表",
+        "description": "{community} 的官方邮件列表"
+      },
+      "mastodon": {
+        "name": "Mastodon 上的 {community}",
+        "description": "{community} 的官方 Mastodon 账号"
+      },
+      "matrix": {
+        "name": "{community} Matrix 聊天室",
+        "description": "加入我们社区的 Matrix 聊天室"
+      },
+      "newsletter": {
+        "name": "{community} 电子报"
+      },
+      "reddit": {
+        "name": "Reddit 上的 {community}"
+      },
+      "signal": {
+        "name": "{community} 的 Signal",
+        "description": "在 Signal 上加入我们的社区聊天"
+      },
+      "telegram": {
+        "description": "加入我们社区的 Telegram 聊天室"
+      },
+      "threads": {
+        "name": "Threads 上的 {community}",
+        "description": "在 Threads 上关注我们"
+      },
+      "tiktok": {
+        "name": "TikTok 上的 {community}",
+        "description": "在 TikTok 上关注我们"
+      },
+      "twitter": {
+        "name": "𝕏 上的 {community}",
+        "description": "在 𝕏 上关注我们"
+      },
+      "x": {
+        "name": "𝕏 上的 {community}",
+        "description": "在 𝕏 上关注我们"
+      },
+      "youtube": {
+        "name": "YouTube 上的 {community}",
+        "description": "订阅我们的 YouTube 频道"
+      },
+      "zulip": {
+        "description": "在 Zulip 上加入我们的社区聊天"
+      }
+    },
+    "af-matrix": {
+      "description": "阿富汗社区的Martix群"
+    },
+    "al-maptime-tirana": {
+      "name": "Maptime 地拉那",
+      "description": "围绕制图组织的社交活动——最欢迎初学者！",
+      "extendedDescription": "Maptime 是一个开放的学习环境，适合各种知识水平和程度的人，并为初学者提供有意的教育支持。Maptime 是一个同时具有灵活性和结构性的环境，其为制图教程、工作坊、具有共同目标的持续项目，以及独立/协作工作时间等创造了空间。"
+    },
+    "am-wiki": {
+      "description": "{community} Wiki 页面"
+    },
+    "at-matrix": {
+      "description": "奥地利非官方的德国 Matrix 频道"
+    },
+    "at-wiki": {
+      "description": "{community} Wiki 页面"
+    },
+    "Bahia-telegram": {
+      "extendedDescription": "加入社区来了解有关 OpenStreetMap 的更多信息，提问或是参加我们的会议。欢迎每个人的到来！"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "name": "旧金山湾区 OpenStreetMap 贡献者",
+      "description": "改进位于旧金山湾区的 OpenStreetMap",
+      "extendedDescription": "该小组的目的是在旧金山湾区发展 OpenStreetMap 社区。 我们的活动向所有人开放，包括开源代码爱好者、自行车骑手、GIS 专业人员和其他所有人。 欢迎对地图、地图制作和免费地图数据感兴趣的任何人和其他所有人，加入我们的团队并参加我们的活动。"
+    },
+    "bd-facebook": {
+      "extendedDescription": "在孟加拉国绘图？有任何疑问，想要与当地的社区交流？在 {url} 加入我们。欢迎所有人！"
+    },
+    "be-chapter": {
+      "description": "我们帮助在比利时发展和改善OpenStreetMap。",
+      "extendedDescription": "如果你想帮助改善和发展比利时的制图社区，让更多的人痴狂于绘制地图，比利时OpenStreetMap就是你的理想选择！"
+    },
+    "be-discourse": {
+      "description": "讨论在比利时 OpenStreetMap 的论坛"
+    },
+    "be-irc": {
+      "extendedDescription": "在 irc.oftc.net (端口 6667)上加入 #{account} ，它已与 Matrix聊天室 频道互通"
+    },
+    "be-matrix": {
+      "description": "欢迎所有的绘图者！",
+      "extendedDescription": "比利时 OSM 社区的主要聊天室。如果您是新手，请不要犹豫害羞，随意提问！"
+    },
+    "be-meetup": {
+      "description": "与所有对 OpenStreetMap 感兴趣的人见面的线下聚会",
+      "extendedDescription": "线下聚会是结识其他绘图者的好机会，可以尽情向他们提问并学习很多东西。我们的聚会尤其欢迎新的绘图者！"
+    },
+    "be-newsletter": {
+      "description": "比利时社区每季发行的电子报"
+    },
+    "bg-wiki": {
+      "description": "OpenStreetMap 维基项目 保加利亚页面"
+    },
+    "bi-vc-cvl-meetup": {
+      "description": "位于Biellese, Vercellese和Canavese e Valli di Lanzo的本地小组",
+      "extendedDescription": "从2018二月开始集会，通常在Biella或Ivrea。"
+    },
+    "bo-facebook-group": {
+      "name": "{community} Facebook 群组"
+    },
+    "bo-matrix": {
+      "description": "欢迎所有的绘图者！"
+    },
+    "br-telegram": {
+      "extendedDescription": "加入社区以进一步了解OpenStreetMap，可以提出问题或参加我们的会面。欢迎每个人的到来！"
+    },
+    "br-wiki": {
+      "description": "提供巴西绘图信息和协调指南的维基项目。"
+    },
+    "cape-coast-youthmappers": {
+      "description": "在 Twitter 上关注我们：{url}"
+    },
+    "castilla-y-leon-wiki": {
+      "description": "在卡斯蒂利亚和莱昂绘图所需要知道的所有事情：{url}"
+    },
+    "cat-github": {
+      "description": "GitHub 上 OpenStreetMap 加泰罗尼亚社区的项目"
+    },
+    "cat-matrix": {
+      "description": "Matrix 上 OpenStreetMap 加泰罗尼亚社区的群组"
+    },
+    "cat-twitch": {
+      "name": "{community} 的 Twitch 频道",
+      "description": "OSM 实时编辑、HOTosm、开放数据和 GIS"
+    },
+    "cat-wiki": {
+      "description": "OpenStreetMap 加泰罗尼亚社区的协作空间：{url}"
+    },
+    "cd-chapter": {
+      "name": "OpenStreetMap 刚果（金）",
+      "description": "从一条路再到另一条街，让我们来绘制我们的国土……",
+      "extendedDescription": "我们对 OSM 项目充满热情，也会抽出时间让其他人了解这个项目。但我们的力量还太小，来加入我们吧！"
+    },
+    "Central-Pennsylvania-OSM": {
+      "name": "宾夕法尼亚中部 OSM",
+      "description": "来自宾夕法尼亚州立大学的在线制图社区"
+    },
+    "ch-mailinglist": {
+      "description": "瑞士的邮件列表"
+    },
+    "de-berlin-mailinglist": {
+      "name": "柏林邮件列表"
+    },
+    "de-berlin-xmpp": {
+      "name": "OpenStreetMap 柏林-勃兰登堡 XMPP",
+      "description": "加入我们的XMPP多用户聊天：{url}"
+    },
+    "de-bochum-wiki": {
+      "description": "{community} Wiki 页面"
+    },
+    "de-hamburg-xmpp": {
+      "name": "OpenStreetMap 汉堡 XMPP",
+      "description": "加入我们的XMPP多用户聊天：{url}"
+    },
+    "de-ostwestfalen-lippe-mailinglist": {
+      "name": "东威斯特伐利亚州邮件列表",
+      "description": "此为东威斯特伐利亚州 OSM 社区的邮件列表"
+    },
+    "de-stuttgart-meetup": {
+      "name": "OpenStreetMap 斯图加特聚会"
+    },
+    "de-telegram": {
+      "name": "OpenStreetMap 德语区（德国-奥地利-瑞士） Telegram",
+      "description": "加入 OpenStreetMap 德语区（德国-奥地利-瑞士） Telegram大群：{url}"
+    },
+    "de-ulm_neuulm-meetup": {
+      "name": "OpenStreetMap Ulm Neu-Ulm聚会"
+    },
+    "de-ulmeralb-meetup": {
+      "name": "OpenStreetMap Ulmer Alb聚会"
+    },
+    "de-viersen-meetup": {
+      "name": "OpenStreetMap 菲尔森聚会"
+    },
+    "de-xmpp": {
+      "name": "OpenStreetMap 德国 XMPP",
+      "description": "加入我们的XMPP多用户聊天：{url}"
+    },
+    "DF-telegram": {
+      "extendedDescription": "加入社区以了解有关 OpenStreetMap 的更多信息，在会议中提问或者参与。欢迎每个人的到来！"
+    },
+    "fr-chapter": {
+      "description": "我们帮助在法国发展和改善OpenStreetMap。"
+    },
+    "fr-telegram": {
+      "description": "OSM 法国社区的 Telegram 群组: {url}"
+    },
+    "galicia-wiki": {
+      "description": "在加利西亚绘图所需要知道的所有事情: {url}"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "name": "推特上的Xeoinquedos",
+      "description": "在 Twitter 上关注我们：{url}"
+    },
+    "gb-irc": {
+      "extendedDescription": "在 irc.oftc.net (端口 6667)上加入 #{account} ，若您想要提问需耐心等待几分钟"
+    },
+    "gb-mailinglist": {
+      "description": "Talk-gb 是英国(包括北爱尔兰) OSM 社区的主要交流论坛"
+    },
+    "GeoPhilly": {
+      "description": "费城地区地图爱好者聚会",
+      "extendedDescription": "GeoPhilly 将开发人员、地理学家、数据极客、开源代码爱好者、民间黑客和地图迷们团结在一起，共同分享我们对地图及其故事的热爱。 如果您在工作中使用地图，或者只是想了解更多信息，这就是为您提供的聚会！ 我们的活动旨在开放、友好、具有教育性和社交性。活动范围从欢乐时光到闪电演讲，甚至是研讨会。 与我们一起在费城创建一个多样化、启发性的地理空间社区！"
+    },
+    "hr-irc": {
+      "description": "在 irc.freenode.org (端口 6667)上加入 #{account} "
+    },
+    "hu-meetup": {
+      "description": "在匈牙利组织聚会的平台"
+    },
+    "hu-website": {
+      "description": "我们帮助在匈牙利发展和改善OpenStreetMap。"
+    },
+    "ireland-chapter": {
+      "description": "我们帮助在爱尔兰发展和改善OpenStreetMap。"
+    },
+    "ireland-irc": {
+      "extendedDescription": "在 irc.oftc.net (端口 6667)上加入 #{account} ，若您想要提问需耐心等待几分钟"
+    },
+    "is-chapter": {
+      "description": "我们帮助在冰岛发展和改善OpenStreetMap。"
+    },
+    "it-chapter": {
+      "description": "我们帮助在意大利发展和改善OpenStreetMap。"
+    },
+    "ko-osm": {
+      "description": "我们帮助在韩国发展和改善OpenStreetMap。"
+    },
+    "map-kibera": {
+      "description": "Map Kibera 是位于肯尼亚的注册组织",
+      "extendedDescription": "Map Kibera Trust的使命是通过创造性地使用数字化行动工具来增加边缘化社区的影响力和代表性。"
+    },
+    "MapColabora-mailinglist": {
+      "name": "协作制图 / 萨拉戈萨 Geoinquietos",
+      "description": "Mapeado Colaborativo / Geoinquietos Zaragoza 邮件列表"
+    },
+    "MapColabora-twitter": {
+      "description": "Mapeado Colaborativo / Geoinquietos Zaragoza 推特账号"
+    },
+    "mappa-mercia-group": {
+      "name": "Mappa Mercia 本地社区",
+      "description": "中部英格兰的 OpenStreetMap 爱好者的家园"
+    },
+    "MappingDC-meetup": {
+      "description": "改善华盛顿特区区域的OpenStreetMap",
+      "extendedDescription": "我们是一个志愿地图绘制者团体，我们的目标是改善华盛顿特区的 OpenStreetMap。 我们还旨在向其他人讲授 OSM 生态、数据分析、制图和 GIS。 我们每隔一个月聚会一次，关注城市的某个区域。"
+    },
+    "MappingWR": {
+      "name": "正在绘制滑铁卢地区",
+      "description": "轻松找到滑铁卢地区附近的低碳路线。"
+    },
+    "maptime-bogota-facebook": {
+      "extendedDescription": "了解如何在现场收集数据并将其数字化到 OpenStreetMap 上。 没不需要有基础知识！ 您只需乐于参与、渴望学习和并收获快乐。"
+    },
+    "maptime-bogota-github": {
+      "extendedDescription": "了解如何在现场收集数据并将其数字化到 OpenStreetMap 上。 没不需要有基础知识！ 您只需乐于参与、渴望学习和并收获快乐。"
+    },
+    "maptime-bogota-linkedin": {
+      "extendedDescription": "了解如何在现场收集数据并将其数字化到 OpenStreetMap 上。 没不需要有基础知识！ 您只需乐于参与、渴望学习和并收获快乐。"
+    },
+    "maptime-bogota-mastodon": {
+      "extendedDescription": "了解如何在现场收集数据并将其数字化到 OpenStreetMap 上。 没不需要有基础知识！ 您只需乐于参与、渴望学习和并收获快乐。"
+    },
+    "maptime-bogota-telegram": {
+      "extendedDescription": "了解如何在现场收集数据并将其数字化到 OpenStreetMap 上。 没不需要有基础知识！ 您只需乐于参与、渴望学习和并收获快乐。"
+    },
+    "maptime-bogota-youtube": {
+      "extendedDescription": "了解如何在现场收集数据并将其数字化到 OpenStreetMap 上。 没不需要有基础知识！ 您只需乐于参与、渴望学习和并收获快乐。"
+    },
+    "Maptime-ME-meetup": {
+      "name": "Maptime 缅因州",
+      "description": "位于缅因州波特兰地区的绘图者和 OpenStreetMap 用户",
+      "extendedDescription": "实际上，Maptime 是指在地图制作花费的时间。 我们的使命是通过使用制图工具和技术创建协作学习，探索和地图创建的时间和空间，为感兴趣的任何人打开制图的可能性。"
+    },
+    "Maptime-Oceania-Slack": {
+      "name": "Maptime 大洋洲 Slack",
+      "description": "在 {signupUrl} 上注册"
+    },
+    "md-googlegroup": {
+      "name": "{community} Google小组",
+      "description": "加入 {community} Google小组"
+    },
+    "mt-irc": {
+      "extendedDescription": "在 irc.oftc.net (端口 6667)上加入 #{account} ，若您想要提问需耐心等待几分钟"
+    },
+    "Nottingham-OSM-pub-meetup": {
+      "name": "东米德兰（诺丁汉）月度酒吧见面会",
+      "description": "东米德兰绘图者和用户的社交聚会",
+      "extendedDescription": "该小组自2011年3月开始举行会议，地点最初在诺丁汉，近几年在德比，或不时在东米德兰的其他地方举行。这些虽是社交聚会，但却是来询问涉及地区或只是普通的 OSM 特定问题的好地方。在夏季，我们通常会在会场附近进行一小时的小型测绘。整个团队都对关于公共优先权的测绘有着特殊的兴趣，并且不时为此而召开绘图会议。"
+    },
+    "OpenCleveland-meetup": {
+      "name": "开放克利夫兰",
+      "description": "在克利夫兰地区改进 OpenStreetMap",
+      "extendedDescription": "Open Geo 克里夫兰宗旨是成为人们讨论和分享他们关于自由地理数据集的资源库，尤其是OpenStreetMap数据集，以及管理、编辑和展示地理数据的开放地理空间软件，以及推动它们在俄亥俄洲东北部的使用。我们同时也是一个Maptime本地分会"
+    },
+    "OSM-AR-twitter": {
+      "extendedDescription": "当地社区和 OpenStreetMap 大体的新闻"
+    },
+    "osm-at": {
+      "description": "位于奥地利的 OpenStreetMap 信息平台"
+    },
+    "OSM-Central-Salish-Sea": {
+      "name": "OpenStreetMap 中央盐海",
+      "description": "位于华盛顿州弗农山地区的绘图者和 OpenStreetMap 用户",
+      "extendedDescription": "OpenStreetMap 是由您这样的人制作的世界地图。 这是您创建的地图，像维基百科一样免费赠送。 查看 osm.org 了解更多。 我们一直在开会，讨论地图，制作地图并尽享乐趣！"
+    },
+    "osm-ch": {
+      "description": "位于瑞士的 OpenStreetMap 信息平台"
+    },
+    "OSM-Chattanooga": {
+      "name": "OSM 查塔努加",
+      "description": "查塔努加的 OpenStreetMap 用户群组"
+    },
+    "OSM-Colorado": {
+      "name": "OpenStreetMap 科罗拉多州",
+      "description": "位于美国科罗拉多州的绘图者和 OpenStreetMap 用户",
+      "extendedDescription": "科罗拉多州 OpenStreetMap 是一个有志于为创建免费地图做出贡献的人们的本地协作。 我们鼓励所有制图员组织或提倡举行全州制图活动。 聚会活动可以是简单的社交混合器，从基础到高级的 OSM 技术培训、或社区绘图聚会。"
+    },
+    "osm-de": {
+      "description": "位于德国的 OpenStreetMap 信息平台"
+    },
+    "osm-delhi-xmpp": {
+      "description": "加入我们的XMPP多用户聊天：{url}"
+    },
+    "OSM-Discord": {
+      "name": "OpenStreetMap 全球 Discord"
+    },
+    "OSM-Facebook": {
+      "description": "在 Facebook 上喜欢我们并接收关于 OpenStreetMap 新闻和更新。"
+    },
+    "osm-gh-facebook": {
+      "extendedDescription": "位于加纳的绘图者社区，在加纳宣传 OpenStreetMap 以及人道主义 OpenStreetMap 团队 (HOT) 项目。加入我们。"
+    },
+    "OSM-India-facebook": {
+      "description": "改进位于印度的 OpenStreetMap",
+      "extendedDescription": "在印度绘图？有任何疑问，想要与当地的社区交流？在 {Url} 加入我们。欢迎所有人！"
+    },
+    "osm-india-github": {
+      "description": "和我们一起编程: {url}"
+    },
+    "OSM-India-Puducherry-Facebook": {
+      "name": "自由软硬件运动 (FSHM) - Facebook",
+      "description": "在 FSHM Facebook 主页上了解更多社区事件和活动",
+      "extendedDescription": "FSHM 组织与免费软硬件、技术、行动主义和 OpenStreetMap 有关的活动。 其 FaceBook 页面是与这个活动保持联系的最佳方式。"
+    },
+    "OSM-India-Puducherry-Matrix": {
+      "name": "自由软硬件运动 (FSHM) - Matrix"
+    },
+    "OSM-india-twitter": {
+      "description": "我们之间仅差一条推文：{url}"
+    },
+    "osm-india-website": {
+      "description": "位于印度的绘图者和 OpenStreetMap 用户"
+    },
+    "osm-india-wiki": {
+      "description": "在印度绘图所需要知道的所有事情: {url}"
+    },
+    "osm-india-xmpp": {
+      "description": "加入我们的XMPP多用户聊天：{url}",
+      "extendedDescription": "印度 OSM 社群的 Matrix 聊天室；未橋接至任何專有網路。也可以透過 XMPP 的 https://xmpp.link/#osm-in:poddery.com 位址加入"
+    },
+    "osm-iran-aparat": {
+      "extendedDescription": "关于OpenStreetMap相关的诸多内容的波斯语视频资源。"
+    },
+    "OSM-japan-facebook": {
+      "description": "在日本的绘图者和 OpenStreetMap 用户"
+    },
+    "OSM-japan-slack": {
+      "description": "OSM 日本社区的 Slack 工作区：{signupUrl}"
+    },
+    "OSM-japan-website": {
+      "description": "位于日本的绘图者和 OpenStreetMap 用户"
+    },
+    "osm-kenya": {
+      "description": "OSM Kenya 是 OSM 贡献者及用户的社群"
+    },
+    "OSM-Kerala-facebook": {
+      "description": "改进位于喀拉拉邦的 OpenStreetMap"
+    },
+    "osm-kerala-website": {
+      "description": "我们帮助在喀拉拉邦发展和改善OpenStreetMap。"
+    },
+    "osm-mg-facebook": {
+      "description": "为对 OpenStreetMap 感兴趣的用户准备的马达加斯加 Facebook 小组。"
+    },
+    "OSM-Ottawa-meetup": {
+      "description": "位于渥太华地区的绘图者和 OpenStreetMap 用户"
+    },
+    "OSM-PE": {
+      "description": "关于 OpenStreetMap 秘鲁社区的新闻和资源"
+    },
+    "OSM-PL-github": {
+      "description": "波兰 OpenStreetMap 社区的 GitHub 组织"
+    },
+    "OSM-Puducherry-Mailing-List": {
+      "name": "自由软硬件运动 (FSHM) - 邮件列表"
+    },
+    "OSM-Rome-meetup": {
+      "description": "在罗马地区改进 OpenStreetMap"
+    },
+    "OSM-Seattle": {
+      "name": "OpenStreetMap 西雅图"
+    },
+    "OSM-SoCal": {
+      "name": "OpenStreetMap 南加州"
+    },
+    "OSM-South-Bay": {
+      "name": "OSM 南湾"
+    },
+    "OSM-Tampa-Bay": {
+      "name": "OpenStreetMap 坦帕湾",
+      "description": "坦帕湾地区的 OpenStreetMap 贡献者和使用者"
+    },
+    "OSM-Telegram": {
+      "description": "加入 OpenStreetMap Telegram 全球大群：{url}"
+    },
+    "OSM-TH-CNX-meetup": {
+      "name": "OpenStreetMap 清迈聚会",
+      "description": "清迈OpenStreetMap社区的不定期会议",
+      "extendedDescription": "OpenStreetMap 社区的成员每隔几个月在清迈举行一次会议。请访问 {url} 以和我们取得联系，并查看下一次会议的日程安排。"
+    },
+    "osm-tw": {
+      "description": "我们帮助在台湾发展和改善OpenStreetMap。"
+    },
+    "OSM-US": {
+      "description": "我们帮助在美国发展和改善OpenStreetMap。",
+      "extendedDescription": "我们通过召开年度会议、提供社区资源、建立合伙关系以及推广来支持 OpenStreetMap。在此处加入 OpenStreetMap 美国：{signupUrl}"
+    },
+    "OSM-US-Slack": {
+      "description": "欢迎所有人加入！在 {signupUrl} 上注册。"
+    },
+    "OSM-Utah": {
+      "name": "OpenStreetMap 犹他州",
+      "description": "位于盐湖城区域的绘图者和 OpenStreetMap 用户"
+    },
+    "osm-west-bengal-xmpp": {
+      "description": "加入我们的XMPP多用户聊天：{url}"
+    },
+    "OSM-Wyoming": {
+      "name": "OpenStreetMap 怀俄明州",
+      "description": "位于怀俄明州的绘图者和 OpenStreetMap 用户"
+    },
+    "OSMF": {
+      "name": "OpenStreetMap 基金会",
+      "description": "OSMF 是总部位于英国的非营利组织，用于支持 OpenStreetMap 项目。"
+    },
+    "PHXGeo-meetup": {
+      "name": "PHXGeo会议",
+      "description": "位于亚利桑那州凤凰城地区的绘图者和 OpenStreetMap 用户"
+    },
+    "PHXGeo-twitter": {
+      "description": "在 Twitter 上关注我们：{url}"
+    },
+    "sg-wiki": {
+      "description": "{community} Wiki 页面"
+    },
+    "sk-freemap": {
+      "description": "OpenStreetMap 地图网站及工具于斯洛伐克及周边区域"
+    },
+    "talk-au": {
+      "description": "澳大利亚绘图者交流的地方"
+    },
+    "talk-mg": {
+      "description": "位于马达加斯加的 OpenStreetMap 贡献者、社区和用户分享和讨论的地方。"
+    },
+    "talk-nz": {
+      "description": "新西兰 OSM 社区讨论"
+    },
+    "ua-github": {
+      "description": "OpenStreetMap 乌克兰 GitHub"
+    },
+    "ua-osm": {
+      "description": "OpenStreetMap 网站于乌克兰"
+    },
+    "uk-london-twitter": {
+      "name": "OpenStreetMap 伦敦 Twitter 页面",
+      "description": "OpenStreetMap 伦敦 Twitter: {url}"
+    },
+    "uy-irc": {
+      "description": "在 irc.freenode.org (端口 6667)上加入 #{account} ",
+      "extendedDescription": "在 irc.freenode.org 上加入 #{account} "
+    },
+    "vn-mailinglist": {
+      "description": "OpenStreetMap 越南或越南语邮件列表"
+    },
+    "ym-Ahmadu-Bello-University": {
+      "extendedDescription": "我们是一群致力于提供人道主义服务以应对灾难和减灾的数据驱动的人道主义制图者。我们很高兴通过绘图贡献我们的专业知识和知识，并通过培训和协作帮助推广 #OpenEvangelism 。"
+    },
+    "ym-Central-Washington-University": {
+      "name": "地理俱乐部"
+    },
+    "ym-General-Lansana-Conte-University": {
+      "name": "兰萨纳·孔戴将军大学 YouthMappers",
+      "description": "兰萨纳·孔戴将军大学 YouthMappers 分会",
+      "extendedDescription": "兰萨纳·孔戴大学将军的 YouthMappers 是一个非营利性社区，愿意为几内亚地图和世界其他地区做出贡献。 我们正在促进使用GIS和开放数据来构建决策支持工具。 我们还致力于在学生和当地社区中建立能力。"
+    },
+    "ym-Heidelberg-University": {
+      "name": "海德堡灾难地图绘制者"
+    },
+    "ym-Institute-of-Science-and-Veterinary-Medicine": {
+      "description": "科学和兽医学院 YouthMappers 分会",
+      "extendedDescription": "YouthMappers ISSMV Dabala是一个非营利组织，致力于促进人道主义地图绘制以及使用开源和开放数据在几内亚建立决策工具。"
+    },
+    "ym-Karatina-University": {
+      "name": "卡蒂纳大学自然俱乐部"
+    },
+    "ym-Kwame-Nkrumah-University-of-Science-and-Technology": {
+      "name": "恩克鲁玛科技大学的 YouthMappers",
+      "description": "恩克鲁玛科技大学的 YouthMappers 分会"
+    },
+    "ym-Ohio-Wesleyan-University": {
+      "name": "环境与野生动物俱乐部"
+    },
+    "ym-Oklahoma-State-University": {
+      "name": "地理俱乐部"
+    },
+    "ym-The-Gambia-YMCA-University-of-the-Gambia": {
+      "extendedDescription": "Connected YouthMappers 由年轻甘比亚人组成，希望能改变和协助国家发展"
+    },
+    "ym-University-of-Cape-Coast": {
+      "name": "UCC地理学协会",
+      "description": "海岸角大学的 YouthMappers 分会",
+      "extendedDescription": "我们协会涵盖了开普敦大学地理与区域规划系所有正在阅读和阅读地理的学生。 我们的主要目的是提高对教室内外学科的兴趣。 我们的座右铭是“我们了解地球及其居民”。"
+    },
+    "ym-University-of-Energy-and-Natural-Resources": {
+      "description": "加纳能源与自然资源大学的 YouthMappers 分会",
+      "extendedDescription": "为所有公民提供有关不断恶化的环境的良好教育，并最大程度地利用环境的重建来维持人类的生存。"
+    },
+    "ym-University-of-Ghana": {
+      "name": "加纳大学 YouthMappers",
+      "description": "加纳大学 YouthMappers 分会",
+      "extendedDescription": "加大 YouthMappers由拥有GIS和遥感知识和技能的研究生和本科生组成。 该俱乐部由一支充满活力的团队组成，该团队随时准备通过绘图解决社会问题并缓解环境问题。 我们的基本原则是能力建设、增强和团队合作。"
+    },
+    "ym-University-of-Maryland-College-Park": {
+      "name": "地理俱乐部"
+    },
+    "ym-University-of-Mines-and-Technology": {
+      "name": "加纳矿业大学 YouthMappers",
+      "description": "加纳矿业大学 YouthMappers 分会",
+      "extendedDescription": "UMaT YouthMappers是一群学生志愿者，他们旨在为学生提供机会，以提高他们在制图领域的技能，并创建开放的地理数据和分析，以应对全球范围内本地定义的发展挑战。"
+    },
+    "ym-West-Virginia-University": {
+      "name": "Maptime 摩根敦"
+    },
+    "ym-Western-Michigan-University": {
+      "name": "地理俱乐部"
+    }
+  }
+}

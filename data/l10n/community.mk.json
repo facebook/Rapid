@@ -1,0 +1,53 @@
+{
+  "mk": {
+    "cape-coast-youthmappers": {
+      "name": "Млади картографи при Универзитетот во Кејп Коуст",
+      "description": "Следете нè на Twitter: {url}",
+      "extendedDescription": "Ова е официјалниот профил на огранокот „Млади картографи“ / Youth Mappers при Универзитетот во Кејп Коуст, Гана. Наша љубов се картите, отворените податоци и да укажуваме помош на ранливите заедници."
+    },
+    "kosovo-telegram": {
+      "description": "Полуофицијална јавна група на Telegram за цело Косово. Добредојдени се сите картографи од било каде, на било кој јазик."
+    },
+    "Nottingham-OSM-pub-meetup": {
+      "name": "Месечна пивничка средба на Источна Средна Англија (Нотингем)",
+      "description": "Друштвен собир на картографите и корисниците во Источна Средна Англија"
+    },
+    "OSM-Facebook": {
+      "description": "Новости за OpenStreetMap на Facebook."
+    },
+    "OSM-India-facebook": {
+      "description": "Подобрете го OpenStreetMap во Индија",
+      "extendedDescription": "Работите на Индија? Имате прашања и сакате да се обратите кај тамошната заедница? Повелете на {url}. Сите се добредојдени!"
+    },
+    "osm-india-github": {
+      "description": "Програмирајте со нас: {url}"
+    },
+    "OSM-India-Puducherry-Facebook": {
+      "name": "Движење за слободна машинска опрема — Facebook",
+      "description": "Страница на Facebook посветена на настани и активности на Движењето за слободна машинска опрема — FSHM"
+    },
+    "osm-india-website": {
+      "description": "Картографи и корисници на OpenStreetMap во Индија"
+    },
+    "osm-india-wiki": {
+      "description": "Сè што треба да знаете за картографската работа на Индија: {url}"
+    },
+    "osm-mg-facebook": {
+      "description": "Група на Facebook за љубители на OpenStreetMap во Мадагаскар."
+    },
+    "OSM-Telegram": {
+      "description": "Придружете ни се во светската надгрупа OpenStreetMap на Telegram на {url}"
+    },
+    "OSM-US": {
+      "description": "Го развиваме и подобруваме OpenStreetMap во САД."
+    },
+    "OSMF": {
+      "name": "Задолжбина OpenStreetMap",
+      "description": "OSMF е британска непрофитна организација која раководи со проектот OpenStreetMap"
+    },
+    "PHXGeo-twitter": {
+      "name": "PHXGeo на Twitter",
+      "description": "Следете нè на Twitter на {url}"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "lij": {
+    "help": {
+      "lines": {
+        "title": "Righe"
+      }
+    },
+    "intro": {
+      "graph": {
+        "state": "<value for addr:state>",
+        "countrycode": "it"
+      },
+      "lines": {
+        "title": "Righe"
+      },
+      "startediting": {
+        "title": "Tàca a Mudificà",
+        "save": "Nu te scurdà de sarvà regularmènte e tou mudifiche!",
+        "start": "Cumènsa a disegnà a tou màpa!"
+      }
+    },
+    "languageNames": {
+      "en": "ingleise",
+      "lij": "ligure"
+    },
+    "scriptNames": {
+      "Latn": "latin"
+    }
+  }
+}

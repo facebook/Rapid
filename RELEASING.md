@@ -18,29 +18,34 @@ The `main` branch includes all the code, but we don't check in the built assets 
 
 ```bash
 
-# Make sure your main branch is up to date
+# Make sure your main branch is up to date and all tests pass
 git checkout main
 git pull origin
-
-# Update imagery
-rm -rf package-lock.json node_modules/editor-layer-index/
-npm install
-npm run imagery
-npm run all
-git add . && git commit -m 'npm run imagery'
-
-# Update translations - (bhousel note: this won't work yet, but we will fix it soon)
-# npm run translations
-# git add . && git commit -m 'npm run translations'
+npm run test
 
 # Pick a version, see https://semver.org/ - for example: 'A.B.C' or 'A.B.C-pre.D'
+#  - We do this step first because the files in `/dist` will include this version in their metadata
 #  - Update `CHANGELOG.md`
 #  - Set release version number in `modules/core/context.js` and `package.json`
 
 # Store in environment variable for later (replace below with the actual version)
 export VERSION=rapid-A.B.C-pre.D
-
+npm run build
 git add . && git commit -m  "$VERSION"
+
+# Update imagery
+rm -rf package-lock.json node_modules/editor-layer-index/
+npm install
+npm run imagery
+npm run build
+git add . && git commit -m 'npm run imagery'
+
+# Update translations
+npm run translations
+npm run build
+git add . && git commit -m 'npm run translations'
+
+# Update main branch
 git push origin main
 
 ```

@@ -1,0 +1,57 @@
+{
+  "en-GB": {
+    "imagery": {
+      "Bedzin-PL-aerial_image": {
+        "attribution": {
+          "text": "District Starost Office in Będzin"
+        }
+      },
+      "Bedzin-PL-buildings": {
+        "attribution": {
+          "text": "District Starost Office in Będzin"
+        }
+      },
+      "Bytom-2012": {
+        "attribution": {
+          "text": "Bytom City Council"
+        }
+      },
+      "Bytom-2014": {
+        "attribution": {
+          "text": "Bytom City Council"
+        }
+      },
+      "Bytom-buildings": {
+        "attribution": {
+          "text": "Bytom City Council"
+        }
+      },
+      "Czestochowa-2011": {
+        "attribution": {
+          "text": "Częstochowa City Council"
+        }
+      },
+      "Czestochowa-2013": {
+        "attribution": {
+          "text": "Częstochowa City Council"
+        }
+      },
+      "Czestochowa-2014": {
+        "attribution": {
+          "text": "Częstochowa City Council"
+        }
+      },
+      "Czestochowa-2015": {
+        "attribution": {
+          "text": "Częstochowa City Council"
+        }
+      },
+      "Dourados_Ortofotos": {
+        "attribution": {
+          "text": "Dourados City Hall - GeoDourados"
+        },
+        "description": "Dourados (2018) and several districts (2020) high-resolution aerial imagery."
+      }
+    }
+  }
+}

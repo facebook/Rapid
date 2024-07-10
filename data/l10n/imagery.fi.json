@@ -1,0 +1,251 @@
+{
+  "fi": {
+    "imagery": {
+      "Bing": {
+        "description": "Satelliitti- ja ilmakuvat"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Käyttöehdot ja palaute"
+        },
+        "name": "Kansainväliset Esri-satelliittikuvat"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Käyttöehdot ja palaute"
+        },
+        "description": "Esrin arkistokuvat voivat olla oletustaustakuvaa selkeämpiä ja tarkempia.",
+        "name": "Kansainväliset Esri-satelliittikuvat (Clarity)"
+      },
+      "MAPNIK": {
+        "description": "OpenStreetMapin oletuskarttanäkymä",
+        "name": "OpenStreetMap (Perinteinen)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Käyttöehdot ja palaute"
+        },
+        "name": "Mapbox-satelliittikuvat"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© OpenStreetMapin tekijät, CC-BY-SA"
+        },
+        "name": "OSM-tarkastaja: Osoitteet"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMapin tekijät, CC-BY-SA"
+        },
+        "name": "OSM tarkastaja: Geometria"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© OpenStreetMapin tekijät, CC-BY-SA"
+        },
+        "name": "OSM Tarkastajat: Valtatiet"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© OpenStreetMapin tekijät, CC-BY-SA"
+        },
+        "name": "OSM Tarkastajat: Alueet"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© OpenStreetMapin tekijät, CC-BY-SA"
+        },
+        "name": "OSM Tarkastajat: Paikat"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© OpenStreetMapin tekijät, CC-BY-SA"
+        },
+        "name": "OSM Tarkastajat: Reitit"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© OpenStreetMapin tekijät, CC-BY-SA"
+        },
+        "name": "OSM Tarkastajat: Tagit"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Valtatie: Vihreä kehys = luokittelematon. Ruskea kehys = track. Pinta: gravel = vaaleanruskea täyttö, asfaltti = musta, pinnoitettu = harmaa, ground =white, concrete = blue, grass = green. Seasonal = white bars"
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMapin tekijät, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Pyöräily"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMapin tekijät, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Vaellus"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMapin tekijät, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Maastopyöräily"
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMapin tekijät, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Luistelu"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMapin tekijät, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Talviurheilu"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "Itävallan taustakartta, Itävallan hallinnon tietoihin pohjautuva."
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "name": "basemap.at-ortokuva"
+      },
+      "kalmar-orto-2014": {
+        "description": "Ortokuvat Kalmarin kunnan pohjoisrannikosta vuodelta 2014",
+        "name": "Pohjois-Kalmarin ortokuva 2014"
+      },
+      "kalmar-orto-2016": {
+        "description": "Ortokuvat Kalmarin kunnan etelärannikosta vuodelta 2016",
+        "name": "Etelä-Kalmarin ortokuva 2016"
+      },
+      "kalmar-orto-2018": {
+        "description": "Ortokuvat Kalmarin kunnan taajama-alueista vuodelta 2018",
+        "name": "Kalmarin taajaman ortokuva 2018"
+      },
+      "kelkkareitit": {
+        "description": "Kelkkareitit.fi-moottorikelkkareitit Pohjoismaissa",
+        "name": "Pohjoismaiset moottorikelkkareitit"
+      },
+      "lantmateriet-orto1960": {
+        "attribution": {
+          "text": "© Ruotsin maanmittauslaitos, CC0"
+        },
+        "description": "Mosaiikkiortokuva Ruotsista vuosilta 1955–1965. Aineistossa saattaa olla myös uudempia ja vanhempia kuvia.",
+        "name": "Ruotsin maanmittauslaitoksen historiallinen ortokuva 1960"
+      },
+      "lantmateriet-orto1975": {
+        "attribution": {
+          "text": "© Ruotsin maanmittauslaitos, CC0"
+        },
+        "description": "Mosaiikkiortokuva Ruotsista vuosilta 1970–1980, keskeneräinen",
+        "name": "Ruotsin maanmittauslaitoksen historiallinen ortokuva 1975"
+      },
+      "lantmateriet-topowebb": {
+        "attribution": {
+          "text": "© Ruotsin maanmittauslaitos, CC0"
+        }
+      },
+      "linkoping-orto": {
+        "description": "Avoimen datan ortokuvat Linköpingin kunnasta vuodelta 2010",
+        "name": "Linköpingin ortokuva"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Käyttöehdot ja palaute"
+        },
+        "description": "Näyttää merkittävimmät karttakohteet kauas loitonnettaessa",
+        "name": "Karkean sijainnin lisänäkymä"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© OpenStreetMapin tekijät, CC-BY-SA"
+        },
+        "name": "OpenPT-kartta (lisäkartta)"
+      },
+      "openrailwaymap-maxspeeds": {
+        "name": "OpenRailwayMap nopeusrajoitukset"
+      },
+      "openrailwaymap-signalling": {
+        "name": "OpenRailwayMap opasteet"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© OpenStreetMapin tekijät"
+        },
+        "description": "OpenStreetMapiin tallennetut julkiset GPS-jäljet",
+        "name": "OpenStreetMapin GPS-jäljet"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© OpenStreetMapin tekijät, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (saksalainen tyyli)"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, aineisto ©OpenStreetMapin tekijät"
+        },
+        "name": "QA Ei osoitetta"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Karttakuvat: skobbler Kartta-aineisto: OpenStreetMapin tekijät"
+        }
+      },
+      "skoterleder": {
+        "description": "Moottorikelkkareitit",
+        "name": "Ruotsin moottorikelkkareitit"
+      },
+      "stamen-terrain-background": {
+        "name": "Stamen-maastokartta"
+      },
+      "stockholm-orto": {
+        "attribution": {
+          "text": "© Tukholman kunta, CC0"
+        },
+        "name": "Tukholman ortokuva"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Kartat © Thunderforest, Aineisto © OpenStreetMapin tekijät"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Kartat © Thunderforest, Aineisto © OpenStreetMapin tekijät"
+        },
+        "name": "Thunderforest-maisema"
+      },
+      "trafikverket-baninfo": {
+        "attribution": {
+          "text": "© Liikennevirasto, CC0"
+        },
+        "description": "Ruotsin rataverkko sivuraiteineen",
+        "name": "Liikenneviraston rataverkko"
+      },
+      "trafikverket-baninfo-option": {
+        "description": "Ruotsin rataverkko mukautettavilla asetusvalinnoilla",
+        "name": "Ruotsin liikenneviraston rataverkon asetukset"
+      },
+      "trafikverket-vagnat": {
+        "attribution": {
+          "text": "© Ruotsin liikennevirasto, CC0"
+        },
+        "description": "Ruotsin kansallinen tiestötietokanta",
+        "name": "Ruotsin liikenneviraston tieverkko"
+      },
+      "trafikverket-vagnat-extra": {
+        "attribution": {
+          "text": "© Ruotsin liikennevirasto, CC0"
+        },
+        "description": "Ruotsin kansallinen tiestötietokanta laajennettuna: valtatienumerointi, hidasteet, pysähdysalueet, linja-autopysäkit, sillat, tunnelit ja liikenteenvalvontakamerat",
+        "name": "Ruotsin liikenneviraston laajennettu tieverkko"
+      },
+      "trafikverket-vagnat-option": {
+        "attribution": {
+          "text": "© Ruotsin liikennevirasto, CC0"
+        },
+        "description": "Ruotsin kansallinen tiestötietokanta mukautettavilla asetusvalinnoilla",
+        "name": "Ruotsin liikenneviraston tieverkon asetukset"
+      }
+    }
+  }
+}

@@ -1,0 +1,241 @@
+{
+  "ca": {
+    "imagery": {
+      "Bing": {
+        "description": "Imatges aèries i de satèl·lit.",
+        "name": "Imatges aèries de Bing"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Termes i comentaris"
+        },
+        "description": "Imatges aèries d'Esri",
+        "name": "Imatges aèries d'Esri"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Termes i comentaris"
+        },
+        "description": " L'arxiu Esri pot ser més clar i acurat que la capa per defecte.",
+        "name": "Imatges aèries d'Esri (Claredat) Beta"
+      },
+      "MAPNIK": {
+        "attribution": {
+          "text": "© col·laboradors d'OpenStreetMap, ODbL 1.0"
+        },
+        "description": "La capa d'OpenStreetMap predeterminada.",
+        "name": "OpenStreetMap (Estàndard)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Termes i comentaris"
+        },
+        "name": "Satèl·lit Mapbox "
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, col·laboradors d'OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspector OSM: Adreces"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, col·laboradors d'OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspector OSM: Geometria"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, col·laboradors d'OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspector OSM: Carreteres"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, col·laboradors d'OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspector OSM: Àrea"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, col·laboradors d'OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspector OSM: Llocs"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, col·laboradors d'OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspector OSM: Planificació de ruta"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, col·laboradors d'OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Inspector OSM: Etiquetatge"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "imatgeria aèria més recent de SPW (Valònia)"
+      },
+      "SPW_PICC": {
+        "name": "imatgeria numèrica PICC de SPW (Valònia)"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Groc = Dades de mapa de domini públic del Cens dels EUA. Vermell = No es troben dades a OpenStreetMap",
+        "name": "Carreteres TIGER 2018"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Carretera: Contorn verd = sense classificar. Contorn marró = pista. Superfície: grava = emplenat marró clar, Asfalt = negre, pavimentat = gris, terra = blanc, ciment = blau, gespa = verd. Estacional = franges blanques",
+        "name": "Capa superposada dels Camins Forestals dels EUA"
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "Realitzat gràcies a Brussels UrbIS®© - Distribució i copyright CIRB"
+        }
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "Realitzat gràcies a Brussels UrbIS®© - Distribució i copyright CIRB"
+        }
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "Realitzat gràcies a Brussels UrbIS®© - Distribució i copyright CIRB"
+        }
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "Realitzat gràcies a Brussels UrbIS®© - Distribució i copyright CIRB"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, col·laboradors d'OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Ciclisme"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, col·laboradors d'OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Senderisme"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, col·laboradors d'OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Ciclisme de Muntanya"
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, col·laboradors d'OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Patinatge"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, col·laboradors d'OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Esports d'hivern"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "Mapa base d'Àustria, basat en dades governamentals."
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Capa d'ortofoto proveïda per basemap.at. \"Successora\" de la imatgeria de geoimage.at.",
+        "name": "Ortofoto basemap.at "
+      },
+      "kelkkareitit": {
+        "description": "Camins de motoneu de Kelkkareitit.fi des d'OSM (àrea nòrdica de cobertura)",
+        "name": "capa nòrdica de motoneu"
+      },
+      "lantmateriet-orto1960": {
+        "description": "Mosaic d'ortofotos sueques del període 1955-1965. Poden coincidir imatges antigues i noves.",
+        "name": "Ortofoto històrica de Lantmäteriet 1960"
+      },
+      "lantmateriet-orto1975": {
+        "description": "Mosaic d'ortofotos sueques del període 1970-1980. Es troba en construcció.",
+        "name": "Ortofoto històrica de Lantmäteriet 1975"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Termes i comentaris"
+        },
+        "description": "Visualitza característiques importants per a ajudar a orientar-vos.",
+        "name": "Localitzador superposat"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© col·laboradors d'OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OpenPT Map (superposat)"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© col·laboradors d'OpenStreetMap"
+        },
+        "description": "Traces GPS públiques pujades a OpenStreetMap.",
+        "name": "Traces GPS d'OpenStreetMap"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© col·laboradors d'OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (Estil alemany)"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, Dades ©OpenStreetMap col·laboradors"
+        },
+        "name": "QA Sense adreça"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Tessel·les: skobbler Dades del mapa: col·laboradors d'OpenStreetMap"
+        }
+      },
+      "skoterleder": {
+        "description": "Camins de motoneu",
+        "name": "Mapa de motoneu de Suècia"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "Tessel·les del mapa de Stamen Design, sota CC BY 3.0. Dades d'OpenStreetMap, sota ODbL"
+        }
+      },
+      "stockholm-orto": {
+        "name": "Ortofotografia d'Estocolm"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Mapes © Thunderforest, Dades © col·laboradors d'OpenStreetMap"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Mapes © Thunderforest, Dades © col·laboradors d'OpenStreetMap"
+        }
+      },
+      "trafikverket-baninfo": {
+        "description": "Xarxa ferroviària sueca, incloses les vies auxiliars",
+        "name": "Xarxa ferroviària de Trafikverket"
+      },
+      "trafikverket-baninfo-option": {
+        "description": "Xarxa ferroviària sueca amb diverses opcions per a capes de mapes",
+        "name": "Opcions de la xarxa ferroviària de Trafikverket"
+      },
+      "trafikverket-vagnat": {
+        "description": "Xarxa viària sueca de NVDB",
+        "name": "Xarxa viària de Trafikverket"
+      },
+      "trafikverket-vagnat-extra": {
+        "description": "Detalls addicionals del NVDB suec: referències d'autopistes, reductors de velocitat, àrees de descans, parades d'autobús, ponts, túnels, càmeres de velocitat",
+        "name": "Xarxa viària extra de Trafikverket"
+      },
+      "trafikverket-vagnat-option": {
+        "description": "Xarxa de carreteres sueca de NVDB amb diverses opcions per a capes de mapes",
+        "name": "Opcions de la xarxa viària de Trafikverket"
+      }
+    }
+  }
+}

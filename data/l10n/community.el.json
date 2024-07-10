@@ -1,0 +1,528 @@
+{
+  "el": {
+    "_communities": {
+      "mappingbotswana": "Mapping Μποτσουάνα",
+      "openstreetmapaachen": "OpenStreetMap Άαχεν",
+      "openstreetmapafghanistan": "OpenStreetMap Αφγανιστάν",
+      "openstreetmapafrica": "OpenStreetMap Αφρική",
+      "openstreetmapalba": "OpenStreetMap Άλμπα",
+      "openstreetmapalbania": "OpenStreetMap Αλβανία",
+      "openstreetmapargentina": "OpenStreetMap Αργεντινή",
+      "openstreetmaparmenia": "OpenStreetMap Αρμενία",
+      "openstreetmapasia": "OpenStreetMap Ασία",
+      "openstreetmapasti": "OpenStreetMap Άστι",
+      "openstreetmapaustria": "OpenStreetMap Αυστρία",
+      "openstreetmapbahia": "OpenStreetMap Μπαΐα",
+      "openstreetmapbangladesh": "OpenStreetMap Μπαγκλαντές",
+      "openstreetmapbelarus": "OpenStreetMap Λευκορωσία",
+      "openstreetmapbelgium": "OpenStreetMap Βέλγιο",
+      "openstreetmapbelize": "OpenStreetMap Μπελίζ",
+      "openstreetmapbengaluru": "OpenStreetMap Μπανγκαλόρ",
+      "openstreetmapbenin": "OpenStreetMap Μπενίν",
+      "openstreetmapberlin": "OpenStreetMap Βερολίνο",
+      "openstreetmapbochum": "OpenStreetMap Μπόχουμ",
+      "openstreetmapbolivia": "OpenStreetMap Βολιβία",
+      "openstreetmapbonn": "OpenStreetMap Βόννη",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap Βοσνία και Ερζεγοβίνη",
+      "openstreetmapbrasil": "OpenStreetMap Βραζιλία",
+      "openstreetmapbrasilia": "OpenStreetMap Μπραζίλια",
+      "openstreetmapbremen": "OpenStreetMap Βρέμη",
+      "openstreetmapbulgaria": "OpenStreetMap Βουλγαρία",
+      "openstreetmapburkinafaso": "OpenStreetMap Μπουρκίνα Φάσο",
+      "openstreetmapburundi": "OpenStreetMap Μπουρούντι",
+      "openstreetmapbzh": "OpenStreetMap BZH (Βρετάνη)",
+      "openstreetmapcambodia": "OpenStreetMap Καμπότζη",
+      "openstreetmapcameroon": "OpenStreetMap Καμερούν",
+      "openstreetmapcanada": "OpenStreetMap Καναδάς",
+      "openstreetmapcastillayleon": "OpenStreetMap Καστίλλη και Λεόν",
+      "openstreetmapcatalancountries": "OpenStreetMap Καταλανικές χώρες",
+      "openstreetmapchad": "OpenStreetMap Τσαντ",
+      "openstreetmapchile": "OpenStreetMap Χιλή",
+      "openstreetmapchina": "OpenStreetMap Κίνα",
+      "openstreetmapcologne": "OpenStreetMap Κολωνία",
+      "openstreetmapcolombia": "OpenStreetMap Κολομβία",
+      "openstreetmapcomunitatvalenciana": "OpenStreetMap Βαλενθιανική Κοινότητα",
+      "openstreetmapcostarica": "OpenStreetMap Κόστα Ρίκα",
+      "openstreetmapcotedivoire": "OpenStreetMap Ακτή Ελεφαντοστού",
+      "openstreetmapcroatia": "OpenStreetMap Κροατία",
+      "openstreetmapcuba": "OpenStreetMap Κούβα",
+      "openstreetmapcuneo": "OpenStreetMap Κούνεο",
+      "openstreetmapcz": "OpenStreetMap CZ (Τσεχία)",
+      "openstreetmapde": "OpenStreetMap DE (Γερμανία)",
+      "openstreetmapdenmark": "OpenStreetMap Δανία",
+      "openstreetmapdjibouti": "OpenStreetMap Τζιμπουτί",
+      "openstreetmapdominicanrepublic": "OpenStreetMap Δομινικανή Δημοκρατία",
+      "openstreetmapdresden": "OpenStreetMap Δρέσδη",
+      "openstreetmapdusseldorf": "OpenStreetMap Ντύσσελντορφ",
+      "openstreetmapecuador": "OpenStreetMap Εκουαδόρ",
+      "openstreetmapegypt": "OpenStreetMap Αίγυπτος",
+      "openstreetmaperitrea": "OpenStreetMap Ερυθραία",
+      "openstreetmapespana": "OpenStreetMap Ισπανία",
+      "openstreetmapestonia": "OpenStreetMap Εσθονία",
+      "openstreetmapethiopia": "OpenStreetMap Αιθιοπία",
+      "openstreetmapfiji": "OpenStreetMap Φίτζι",
+      "openstreetmapfinland": "OpenStreetMap Φινλανδία",
+      "openstreetmapfrance": "OpenStreetMap Γαλλία",
+      "openstreetmapfreemapslovakia": "OpenStreetMap Freemap Σλοβακία",
+      "openstreetmapfrenchguiana": "OpenStreetMap Γαλλική Γουιάνα",
+      "openstreetmapfrenchpolynesia": "OpenStreetMap Γαλλική Πολυνησία",
+      "openstreetmapgabon": "OpenStreetMap Γκαμπόν",
+      "openstreetmapgalicia": "OpenStreetMap Γαλικία",
+      "openstreetmapgeorgia": "OpenStreetMap Γεωργία",
+      "openstreetmapgermany": "OpenStreetMap Γερμανία",
+      "openstreetmapghana": "OpenStreetMap Γκάνα",
+      "openstreetmapgreece": "OpenStreetMap Ελλάδα",
+      "openstreetmapguatemala": "OpenStreetMap Γουατεμάλα",
+      "openstreetmapguinea": "OpenStreetMap Γουινέα",
+      "openstreetmaphaiti": "OpenStreetMap Αϊτή",
+      "openstreetmaphamburg": "OpenStreetMap Αμβούργο",
+      "openstreetmaphonduras": "OpenStreetMap Ονδούρα",
+      "openstreetmaphongkong": "OpenStreetMap Χονγκ Κονγκ",
+      "openstreetmaphungary": "OpenStreetMap Ουγγαρία",
+      "openstreetmapiceland": "OpenStreetMap Ισλανδία",
+      "openstreetmapindia": "OpenStreetMap Ινδία",
+      "openstreetmapindonesia": "OpenStreetMap Ινδονησία",
+      "openstreetmapiran": "OpenStreetMap Ιράν",
+      "openstreetmapiraq": "OpenStreetMap Ιράκ",
+      "openstreetmapireland": "OpenStreetMap Ιρλανδία",
+      "openstreetmapisrael": "OpenStreetMap Ισραήλ",
+      "openstreetmapitaly": "OpenStreetMap Ιταλία",
+      "openstreetmapitalylazio": "OpenStreetMap Ιταλία-Λάτσιο",
+      "openstreetmapitalylombardia": "OpenStreetMap Ιταλία-Λομβαρδία",
+      "openstreetmapitalypiemonte": "OpenStreetMap Ιταλία-Πιεμόντε",
+      "openstreetmapitalysouthtyrol": "OpenStreetMap Ιταλία-Νότιο Τιρόλο",
+      "openstreetmapitalytrentino": "OpenStreetMap Ιταλία-Τρεντίνο",
+      "openstreetmapjapan": "OpenStreetMap Ιαπωνία",
+      "openstreetmapkarlsruhe": "OpenStreetMap Καρλσρούη",
+      "openstreetmapkazakhstan": "OpenStreetMap Καζακστάν",
+      "openstreetmapkenya": "OpenStreetMap Κένυα",
+      "openstreetmapkerala": "OpenStreetMap Κεράλα",
+      "openstreetmapkorea": "OpenStreetMap Κορέα",
+      "openstreetmapkosovo": "OpenStreetMap Κοσσυφοπέδιο",
+      "openstreetmapkyrgyzstan": "OpenStreetMap Κιργιζιστάν",
+      "openstreetmaplatinamerica": "OpenStreetMap Λατινική Αμερική",
+      "openstreetmaplatvia": "OpenStreetMap Λετονία",
+      "openstreetmaplebanon": "OpenStreetMap Λίβανος",
+      "openstreetmaplesotho": "OpenStreetMap Λεσότο",
+      "openstreetmapliberia": "OpenStreetMap Λιβερία",
+      "openstreetmaplibya": "OpenStreetMap Λιβύη",
+      "openstreetmaplithuania": "OpenStreetMap Λιθουανία",
+      "openstreetmapljubljana": "OpenStreetMap Λιουμπλιάνα",
+      "openstreetmaplombardia": "OpenStreetMap Λομβαρδία",
+      "openstreetmaplondon": "OpenStreetMap Λονδίνο",
+      "openstreetmapluxembourg": "OpenStreetMap Λουξεμβούργο",
+      "openstreetmapmadagascar": "OpenStreetMap Μαδαγασκάρη",
+      "openstreetmapmadrid": "OpenStreetMap Μαδρίτη",
+      "openstreetmapmalawi": "OpenStreetMap Μαλάουι",
+      "openstreetmapmalaysia": "OpenStreetMap Μαλαισία",
+      "openstreetmapmali": "OpenStreetMap Μάλι",
+      "openstreetmapmalta": "OpenStreetMap Μάλτα",
+      "openstreetmapmauritania": "OpenStreetMap Μαυριτανία",
+      "openstreetmapmecklenburgvorpommern": "OpenStreetMap Μεκλεμβούργο-Δυτική Πομερανία",
+      "openstreetmapmexico": "OpenStreetMap Μεξικό",
+      "openstreetmapmichigan": "OpenStreetMap Μίτσιγκαν",
+      "openstreetmapmoldova": "OpenStreetMap Μολδαβία",
+      "openstreetmapmongolia": "OpenStreetMap Μογγολία",
+      "openstreetmapmontenegro": "OpenStreetMap Μαυροβούνιο",
+      "openstreetmapmorocco": "OpenStreetMap Μαρόκο",
+      "openstreetmapmunchen": "OpenStreetMap Μόναχο",
+      "openstreetmapmyanmar": "OpenStreetMap Μιανμάρ",
+      "openstreetmapnepal": "OpenStreetMap Νεπάλ",
+      "openstreetmapnetherlands": "OpenStreetMap Ολλανδία",
+      "openstreetmapnicaragua": "OpenStreetMap Νικαράγουα",
+      "openstreetmapniger": "OpenStreetMap Νίγηρας",
+      "openstreetmapnigeria": "OpenStreetMap Νιγηρία",
+      "openstreetmapnorthkorea": "OpenStreetMap Βόρεια Κορέα",
+      "openstreetmapnorway": "OpenStreetMap Νορβηγία",
+      "openstreetmapoceania": "OpenStreetMap Ωκεανία",
+      "openstreetmapohio": "OpenStreetMap Οχάιο",
+      "openstreetmapottawa": "OpenStreetMap Οτάβα",
+      "openstreetmappakistan": "OpenStreetMap Πακιστάν",
+      "openstreetmappanama": "OpenStreetMap Παναμάς",
+      "openstreetmapparaguay": "OpenStreetMap Παραγουάη",
+      "openstreetmapperu": "OpenStreetMap Περού",
+      "openstreetmapphilippines": "OpenStreetMap Φιλιππίνες",
+      "openstreetmappiemonte": "OpenStreetMap Πεδεμόντιο",
+      "openstreetmappoland": "OpenStreetMap Πολωνία",
+      "openstreetmapportugal": "OpenStreetMap Πορτογαλία",
+      "openstreetmaprdc": "OpenStreetMap RDC (Κονγκό)",
+      "openstreetmapriograndedosul": "OpenStreetMap Ρίο Γκράντε ντο Σουλ",
+      "openstreetmapromania": "OpenStreetMap Ρουμανία",
+      "openstreetmaprussia": "OpenStreetMap Ρωσία",
+      "openstreetmaprwanda": "OpenStreetMap Ρουάντα",
+      "openstreetmapsaudiarabia": "OpenStreetMap Σαουδική Αραβία",
+      "openstreetmapsenegal": "OpenStreetMap Σενεγάλη",
+      "openstreetmapserbia": "OpenStreetMap Σερβία",
+      "openstreetmapseychelles": "OpenStreetMap Σεϋχέλλες",
+      "openstreetmapsierraleone": "OpenStreetMap Σιέρρα Λεόνε",
+      "openstreetmapslovenia": "OpenStreetMap Σλοβενία",
+      "openstreetmapsomalia": "OpenStreetMap Σομαλία",
+      "openstreetmapsouthafrica": "OpenStreetMap Νότια Αφρική",
+      "openstreetmapsouthsudan": "OpenStreetMap Νότιο Σουδάν",
+      "openstreetmapsrilanka": "OpenStreetMap Σρι Λάνκα",
+      "openstreetmapsudan": "OpenStreetMap Σουδάν",
+      "openstreetmapsweden": "OpenStreetMap Σουηδία",
+      "openstreetmapswitzerland": "OpenStreetMap Ελβετία",
+      "openstreetmapsyria": "OpenStreetMap Συρία",
+      "openstreetmaptaiwan": "OpenStreetMap Ταϊβάν",
+      "openstreetmaptanzania": "OpenStreetMap Τανζανία",
+      "openstreetmapthailand": "OpenStreetMap Ταϊλάνδη",
+      "openstreetmaptogo": "OpenStreetMap Τόγκο",
+      "openstreetmaptoronto": "OpenStreetMap Τορόντο",
+      "openstreetmaptunisia": "OpenStreetMap Τυνησία",
+      "openstreetmapturin": "OpenStreetMap Τορίνο",
+      "openstreetmapturkey": "OpenStreetMap Τουρκία",
+      "openstreetmapuganda": "OpenStreetMap Ουγκάντα",
+      "openstreetmapuk": "OpenStreetMap Ηνωμένο Βασίλειο",
+      "openstreetmapukraine": "OpenStreetMap Ουκρανία",
+      "openstreetmapuruguay": "OpenStreetMap Ουρουγουάη",
+      "openstreetmapus": "OpenStreetMap Ηνωμένες Πολιτείες",
+      "openstreetmapuzbekistan": "OpenStreetMap Ουζμπεκιστάν",
+      "openstreetmapvenezuela": "OpenStreetMap Βενεζουέλα",
+      "openstreetmapvietnam": "OpenStreetMap Βιετνάμ",
+      "openstreetmapwesternsahara": "OpenStreetMap Δυτική Σαχάρα",
+      "openstreetmapzambia": "OpenStreetMap Ζάμπια",
+      "openstreetmapzimbabwe": "OpenStreetMap Ζιμπάμπουε",
+      "osmmainz": "OSM Μάιντς"
+    },
+    "_defaults": {
+      "aparat": {
+        "name": "{community} στο Aparat",
+        "description": "Εγγραφείτε στο κανάλι μας στο Aparat"
+      },
+      "discord": {
+        "description": "Ελάτε σε επαφή με άλλους χαρτογράφους στο Discord"
+      },
+      "discourse": {
+        "name": "{community} Φόρουμ Κοινότητας",
+        "description": "Το επίσημο φόρουμ για {community}"
+      },
+      "facebook": {
+        "name": "{community} στο Facebook",
+        "description": "Γίνετε μέλος της κοινότητάς μας στο Facebook"
+      },
+      "forum": {
+        "description": "Το επίσημο forum του {community}"
+      },
+      "irc": {
+        "name": "{community} στο IRC"
+      },
+      "linkedin": {
+        "name": "{community} στο LinkedIn",
+        "description": "Γίνετε μέλος της κοινότητάς μας στο LinkedIn"
+      },
+      "mailinglist": {
+        "name": "{account} Λίστα Ταχυδρομείου",
+        "description": "Η επίσημη λίστα αλληλογραφίας για {community}"
+      },
+      "mastodon": {
+        "name": "{community} στο Mastodon",
+        "description": "Ο επίσημος λογαριασμός στο Mastodon της κοινότητας {community}"
+      },
+      "matrix": {
+        "description": "Γίνετε μέλος της κοινότητάς μας στο Matrix chat"
+      },
+      "newsletter": {
+        "name": "{community} ενημερωτικό δελτίο"
+      },
+      "reddit": {
+        "name": "{community} στο Reddit"
+      },
+      "threads": {
+        "name": "{community} στο Threads",
+        "description": "Ακολουθήστε μας στο Threads"
+      },
+      "twitter": {
+        "name": "{community} στο 𝕏",
+        "description": "Ακολουθήστε μας στο 𝕏"
+      },
+      "x": {
+        "name": "{community} στο 𝕏",
+        "description": "Ακολουθήστε μας στο 𝕏"
+      },
+      "youtube": {
+        "name": "{community} στο YouTube",
+        "description": "Εγγραφείτε στο κανάλι μας στο YouTube"
+      }
+    },
+    "af-matrix": {
+      "description": "Ομάδα Matrix για την κοινότητα στο Αφγανιστάν."
+    },
+    "al-maptime-tirana": {
+      "description": "Στις κοινωνικές εκδηλώσεις οργανωμένες γύρω από τη χαρτογράφηση - οι αρχάριοι είναι περισσότερο ευπρόσδεκτοι!"
+    },
+    "at-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "be-discourse": {
+      "description": "Ένα Forum για συζήτηση του OpenStreetMap στο Βέλγιο"
+    },
+    "be-matrix": {
+      "description": "Όλοι οι χαρτογράφοι είναι ευπρόσδεκτοι!",
+      "extendedDescription": "Κύριο chatroom της βελγικής κοινότητας OSM. Μη διστάσετε να κάνετε ερωτήσεις για αρχάριους εδώ!"
+    },
+    "bg-wiki": {
+      "description": "Σελίδα Wikiproject για Βουλγαρία"
+    },
+    "bo-facebook-group": {
+      "name": "{community} Ομάδα Facebook"
+    },
+    "cape-coast-youthmappers": {
+      "name": "Πανεπιστήμιο του Cape Coast YouthMappers",
+      "description": "Ακολουθήστε μας στο Twitter: {url}"
+    },
+    "castilla-y-leon-wiki": {
+      "description": "Όλα όσα χρειάζεται να ξέρετε για την χαρτογράφηση στην Καστίλλη και Λεόν: {url}"
+    },
+    "cat-twitch": {
+      "name": "Κανάλι Twitch για {community}"
+    },
+    "comunitat-valenciana-wiki": {
+      "description": "Όλα όσα χρειάζεται να ξέρετε για την χαρτογράφηση στην Βαλενθιανική Κοινότητα: {url}"
+    },
+    "de-aachen-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "de-berlin-mailinglist": {
+      "name": "Κατάλογος Αλληλογραφίας Βερολίνου"
+    },
+    "de-berlin-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "de-bochum-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "de-bonn-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "de-bremen-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "de-cologne-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "de-dresden-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "de-dusseldorf-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "de-hamburg-xmpp": {
+      "name": "OpenStreetMap Αμβούργο XMPP"
+    },
+    "de-luneburg-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "de-munchen-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "fr-35-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "fr-38-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "fr-bzh-website": {
+      "description": "Ο χάρτης όπου μιλά Βρετονικά"
+    },
+    "fr-montrouge-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "galicia-wiki": {
+      "description": "Όλα όσα χρειάζεται να ξέρετε για την χαρτογράφηση στην Γαλικία: {url}"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "name": "Xeoinquedos στο Twitter",
+      "description": "Ακολουθήστε μας στο Twitter στο {url}"
+    },
+    "hr-wiki": {
+      "description": "Σελίδα Wikiproject για Κροατία"
+    },
+    "hu-facebook-group": {
+      "name": "{community} Ομάδα Facebook"
+    },
+    "hu-meetup": {
+      "description": "Η πλατφόρμα για τη διοργάνωση συναντήσεων στην Ουγγαρία"
+    },
+    "hu-mobilizon": {
+      "name": "{community} στο Mobilizon"
+    },
+    "hu-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "id-facebook-group": {
+      "name": "{community} Ομάδα Facebook"
+    },
+    "is-chapter": {
+      "description": "Βοηθάμε την ανάπτυξη και τη βελτίωση του OpenStreetMap στην Ισλανδία"
+    },
+    "kp-wiki": {
+      "description": "{community} Οδηγός Χαρτογράφησης"
+    },
+    "lv-wiki": {
+      "description": "WikiProject Λετονία"
+    },
+    "madrid-wiki": {
+      "description": "Όλα όσα χρειάζεται να ξέρετε για την χαρτογράφηση στην Μαδρίτη: {url}"
+    },
+    "Maptime-Oceania-Slack": {
+      "description": "Εγγραφείτε στο {signupUrl}"
+    },
+    "md-googlegroup": {
+      "name": "{community} Ομάδα Facebook"
+    },
+    "no-irc": {
+      "description": "Χώρος συζήτησης για τους ζαρτογράφους και τους χρήστες του OpenStreetMap, τους προγραμματιστές και τους λάτρεις στην Νορβηγία"
+    },
+    "osm-africa-eventbrite": {
+      "description": "{community} σελίδα EventBrite"
+    },
+    "osm-africa-facebook-group": {
+      "name": "{community} Ομάδα Facebook"
+    },
+    "osm-at": {
+      "description": "Η πλατφόρμα για πληροφορίες σχετικά με το OpenStreetMap στην Αυστρία"
+    },
+    "osm-bengaluru-matrix": {
+      "extendedDescription": "Ομάδα για τους συνεισφέροντες, χρήστες και αρχάριους του OpenStreetMap στη Μπανγκαλόρ. Γεφυρωμένο με το Telegram."
+    },
+    "osm-bengaluru-telegram": {
+      "extendedDescription": "Ομάδα για τους συνεισφέροντες, χρήστες και αρχάριους του OpenStreetMap στη Μπανγκαλόρ. Γεφυρωμένο με το Matrix."
+    },
+    "osm-bengaluru-wiki": {
+      "description": "OpenStreetMap στη Μπανγκαλόρ"
+    },
+    "osm-benin-facebook": {
+      "description": "Βελτίωση του OpenStreetMap στο Μπενίν"
+    },
+    "osm-ch": {
+      "description": "Η πλατφόρμα για πληροφορίες σχετικά με το OpenStreetMap στην Ελβετία"
+    },
+    "OSM-Chattanooga": {
+      "name": "OSM Τσαττανούγκα",
+      "description": "Η ομάδα χρηστών του OpenStreetMap για την Τσαττανούγκα"
+    },
+    "OSM-Colorado": {
+      "name": "OpenStreetMap Κολοράντο",
+      "description": "Χαρτογράφοι και χρήστες του OpenStreetMap στην πολιτεία του Κολοράντο, ΗΠΑ"
+    },
+    "osm-de": {
+      "description": "Η πλατφόρμα για πληροφορίες σχετικά με το OpenStreetMap στη Γερμανία"
+    },
+    "osm-deep-south-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "OSM-Discourse": {
+      "name": "Φόρουμ Κοινότητας OpenStreetMap",
+      "description": "Ένας κοινόχρηστος χώρος για συζητήσεις σχετικά με το OpenStreetMap"
+    },
+    "osm-gh-facebook": {
+      "extendedDescription": "Χαρτογράφοι στην κοινότητα της Γκάνα, προωθούν εργασίες του OpenStreetMap και της Ανθρωπιστικής Ομάδας OpenStreetMap (HOT) στην Γκάνα. Ελάτε μαζί μας."
+    },
+    "osm-hr": {
+      "description": "Η πλατφόρμα για πληροφορίες σχετικά με το OpenStreetMap στην Κροατία"
+    },
+    "OSM-India-facebook": {
+      "description": "Βελτιώστε το OpenStreetMap στην Ινδία",
+      "extendedDescription": "Χαρτογράφηση στην Ινδία; Έχετε ερωτήσεις, θέλετε να συνδεθείτε με την κοινότητα εδώ; Ελάτε μαζί μας στο {url}. Είναι όλοι ευπρόσδεκτοι!"
+    },
+    "osm-india-github": {
+      "description": "Προγραμματίστε μαζί μας: {url}"
+    },
+    "osm-india-mastodon": {
+      "description": "Αρχική της κοινότητας OpenStreetMap Ινδίας στο fediverse"
+    },
+    "OSM-India-Puducherry-Facebook": {
+      "name": "Κίνημα Ελεύθερου Λογισμικού & Υλικού - Facebook",
+      "description": "Η FSHM Facebook σελίδα για να ξέρετε για εκδηλώσεις & δραστηριότητες της κοινότητας",
+      "extendedDescription": "Η FSHM διοργανώνει εκδηλώσεις σχετικές με την τεχνολογία ελεύθερου λογισμικού / υλικού, τον ακτιβισμό και το OpenStreetMap. Η σελίδα στο FB είναι ο καλύτερος τρόπος για να διατηρείτε επαφή με τα γεγονότα της."
+    },
+    "OSM-India-Puducherry-Matrix": {
+      "name": "Κίνημα Ελεύθερου Λογισμικού & Υλικού - Matrix"
+    },
+    "OSM-india-twitter": {
+      "description": "Είμαστε απλά ένα tweet μακριά: {url}"
+    },
+    "osm-india-wiki": {
+      "description": "Όλα όσα χρειάζεται να ξέρετε για την χαρτογράφηση στην Ινδία: {url}"
+    },
+    "OSM-japan-facebook": {
+      "description": "Χαρτογράφοι και χρήστες του OpenStreetMap στην Ιαπωνία"
+    },
+    "OSM-japan-website": {
+      "description": "Χαρτογράφοι και χρήστες του OpenStreetMap στην Ιαπωνία"
+    },
+    "osm-kerala-github": {
+      "description": "Προγραμματίστε μαζί μας: {url}"
+    },
+    "osm-mg-facebook": {
+      "description": "Ομάδα Facebook Μαδαγασκαριανών για άτομα που ενδιαφέρονται για το OpenStreetMap"
+    },
+    "osm-michigan-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "osm-ohio-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "OSM-US": {
+      "events": {
+        "mappingusa2022": {
+          "where": "εικονικά"
+        }
+      }
+    },
+    "OSM-US-Slack": {
+      "description": "Όλοι είναι ευπρόσδεκτοι! Εγγραφείτε στο {signupUrl}"
+    },
+    "OSMF": {
+      "name": "Ίδρυμα OpenStreetMap"
+    },
+    "ph-facebook-group": {
+      "name": "{community} Ομάδα Facebook"
+    },
+    "PHXGeo-twitter": {
+      "description": "Ακολουθήστε μας στο Twitter στο {url}"
+    },
+    "rs-discourse": {
+      "description": "Ένα Forum για συζήτηση του OpenStreetMap στη Σερβία"
+    },
+    "rs-osm": {
+      "description": "Η πλατφόρμα για πληροφορίες σχετικά με το OpenStreetMap στη Σερβία"
+    },
+    "rs-wiki": {
+      "description": "Σελίδα Wikiproject για Σερβία"
+    },
+    "si-ljubljana-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "si-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "talk-mg": {
+      "description": "Τοποθεσία για τους συνδρομητές του OpenStreetMap, τις κοινότητες και τους χρήστες στη Μαδαγασκάρη για συμμετοχή και συζήτηση."
+    },
+    "tn-facebook-group": {
+      "name": "{community} Ομάδα Facebook"
+    },
+    "tw-wiki": {
+      "description": "Όλα όσα χρειάζεται να ξέρετε για την χαρτογράφηση στην Ταϊβάν: {url}"
+    },
+    "ua-github": {
+      "description": "OpenStreetMap Ουκρανία GitHub"
+    },
+    "ua-osm": {
+      "description": "Ιστότοπος του OpenStreetMap στην Ουκρανία"
+    },
+    "uk-london-mastodon": {
+      "name": "OpenStreetMap London στο Mastodon",
+      "description": "OpenStreetMap London στο Mastodon: {url}"
+    },
+    "uk-london-twitter": {
+      "name": "OpenStreetMap Λονδίνο στο Twitter",
+      "description": "OpenStreetMap Λονδίνο στο Twitter: {url}"
+    },
+    "uk-london-wiki": {
+      "description": "{community} Wiki σελίδα"
+    }
+  }
+}

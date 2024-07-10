@@ -1,0 +1,386 @@
+{
+  "hu": {
+    "_communities": {
+      "openstreetmapafghanistan": "OpenStreetMap Afganisztán",
+      "openstreetmapafrica": "OpenStreetMap Afrika",
+      "openstreetmapalbania": "OpenStreetMap Albánia",
+      "openstreetmapargentina": "OpenStreetMap Argentína",
+      "openstreetmaparmenia": "OpenStreetMap Örményország",
+      "openstreetmapasia": "OpenStreetMap Ázsia",
+      "openstreetmapaustria": "OpenStreetMap Ausztria",
+      "openstreetmapbangladesh": "OpenStreetMap Banglades",
+      "openstreetmapbelarus": "OpenStreetMap Fehéroroszország",
+      "openstreetmapbolivia": "OpenStreetMap Bolívia",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap Bosznia-Hercegovina",
+      "openstreetmapbrasil": "OpenStreetMap Brazília",
+      "openstreetmapbrasilia": "OpenStreetMap Brazíliaváros",
+      "openstreetmapbremen": "OpenStreetMap Bréma",
+      "openstreetmapbulgaria": "OpenStreetMap Bulgária",
+      "openstreetmapcambodia": "OpenStreetMap Kambodzsa",
+      "openstreetmapcameroon": "OpenStreetMap Kamerun",
+      "openstreetmapcanada": "OpenStreetMap Kanada",
+      "openstreetmapchad": "OpenStreetMap Csád",
+      "openstreetmapchina": "OpenStreetMap Kína",
+      "openstreetmapcologne": "OpenStreetMap Köln",
+      "openstreetmapcolombia": "OpenStreetMap Kolumbia",
+      "openstreetmapcroatia": "OpenStreetMap Horvátország",
+      "openstreetmapcuba": "OpenStreetMap Kuba",
+      "openstreetmapdenmark": "OpenStreetMap Dánia",
+      "openstreetmapdjibouti": "OpenStreetMap Dzsibuti",
+      "openstreetmapdominicanrepublic": "OpenStreetMap Dominikai Köztársaság",
+      "openstreetmapdresden": "OpenStreetMap Drezda",
+      "openstreetmapegypt": "OpenStreetMap Egyiptom",
+      "openstreetmapespana": "OpenStreetMap Spanyolország",
+      "openstreetmapestonia": "OpenStreetMap Észtország",
+      "openstreetmapethiopia": "OpenStreetMap Etiópia",
+      "openstreetmapfiji": "OpenStreetMap Fidzsi-szigetek",
+      "openstreetmapfinland": "OpenStreetMap Finnország",
+      "openstreetmapfrance": "OpenStreetMap Franciaország",
+      "openstreetmapfreemapslovakia": "OpenStreetMap Freemap Szlovákia",
+      "openstreetmapfrenchguiana": "OpenStreetMap Francia Guiana",
+      "openstreetmapfrenchpolynesia": "OpenStreetMap Francia Polinézia",
+      "openstreetmapgermany": "OpenStreetMap Németország",
+      "openstreetmapghana": "OpenStreetMap Ghána",
+      "openstreetmapgreece": "OpenStreetMap Görögország",
+      "openstreetmaphongkong": "OpenStreetMap Hongkong",
+      "openstreetmaphungary": "OpenStreetMap Magyarország",
+      "openstreetmapiceland": "OpenStreetMap Izland",
+      "openstreetmapindonesia": "OpenStreetMap Indonézia",
+      "openstreetmapiran": "OpenStreetMap Irán",
+      "openstreetmapiraq": "OpenStreetMap Irak",
+      "openstreetmapireland": "OpenStreetMap Írország",
+      "openstreetmapisrael": "OpenStreetMap Izrael",
+      "openstreetmapitaly": "OpenStreetMap Olaszország",
+      "openstreetmapjapan": "OpenStreetMap Japán",
+      "openstreetmapkazakhstan": "OpenStreetMap Kazahsztán",
+      "openstreetmapkosovo": "OpenStreetMap Koszovó",
+      "openstreetmapkyrgyzstan": "OpenStreetMap Kirgizisztán",
+      "openstreetmaplatvia": "OpenStreetMap Lettország",
+      "openstreetmaplebanon": "OpenStreetMap Libanon",
+      "openstreetmapliberia": "OpenStreetMap Libéria",
+      "openstreetmaplibya": "OpenStreetMap Líbia",
+      "openstreetmaplithuania": "OpenStreetMap Litvánia",
+      "openstreetmapluxembourg": "OpenStreetMap Luxemburg",
+      "openstreetmapmadagascar": "OpenStreetMap Madagaszkár",
+      "openstreetmapmalaysia": "OpenStreetMap Malajzia",
+      "openstreetmapmalta": "OpenStreetMap Málta",
+      "openstreetmapmauritania": "OpenStreetMap Mauritánia",
+      "openstreetmapmexico": "OpenStreetMap Mexikó",
+      "openstreetmapmongolia": "OpenStreetMap Mongólia",
+      "openstreetmapmorocco": "OpenStreetMap Marokkó",
+      "openstreetmapnepal": "OpenStreetMap Nepál",
+      "openstreetmapnetherlands": "OpenStreetMap Hollandia",
+      "openstreetmapnigeria": "OpenStreetMap Nigéria",
+      "openstreetmapnorthkorea": "OpenStreetMap Észak-Korea",
+      "openstreetmapnorway": "OpenStreetMap Norvégia",
+      "openstreetmapoceania": "OpenStreetMap Óceánia",
+      "openstreetmappakistan": "OpenStreetMap Pakisztán",
+      "openstreetmapphilippines": "OpenStreetMap Fülöp-szigetek",
+      "openstreetmappoland": "OpenStreetMap Lengyelország",
+      "openstreetmapportugal": "OpenStreetMap Portugália",
+      "openstreetmapromania": "OpenStreetMap Románia",
+      "openstreetmaprussia": "OpenStreetMap Oroszország",
+      "openstreetmaprwanda": "OpenStreetMap Ruanda",
+      "openstreetmapsaudiarabia": "OpenStreetMap Szaúd-Arábia",
+      "openstreetmapsenegal": "OpenStreetMap Szenegál",
+      "openstreetmapserbia": "OpenStreetMap Szerbia",
+      "openstreetmapseychelles": "OpenStreetMap Seychelle-szigetek",
+      "openstreetmapslovenia": "OpenStreetMap Szlovénia",
+      "openstreetmapsomalia": "OpenStreetMap Szomália",
+      "openstreetmapsouthafrica": "OpenStreetMap Dél-afrikai Köztársaság",
+      "openstreetmapsouthsudan": "OpenStreetMap Dél-Szudán",
+      "openstreetmapsudan": "OpenStreetMap Szudán",
+      "openstreetmapsweden": "OpenStreetMap Svédország",
+      "openstreetmapswitzerland": "OpenStreetMap Svájc",
+      "openstreetmapsyria": "OpenStreetMap Szíria",
+      "openstreetmaptaiwan": "OpenStreetMap Tajvan",
+      "openstreetmaptanzania": "OpenStreetMap Tanzánia",
+      "openstreetmapthailand": "OpenStreetMap Thaiföld",
+      "openstreetmaptunisia": "OpenStreetMap Tunézia",
+      "openstreetmapturin": "OpenStreetMap Torino",
+      "openstreetmapturkey": "OpenStreetMap Törökország",
+      "openstreetmapukraine": "OpenStreetMap Ukrajna",
+      "openstreetmapuzbekistan": "OpenStreetMap Üzbegisztán",
+      "openstreetmapvietnam": "OpenStreetMap Vietnám",
+      "openstreetmapwarszawa": "OpenStreetMap Varsó",
+      "openstreetmapwesternsahara": "OpenStreetMap Nyugat-Szahara"
+    },
+    "_defaults": {
+      "discord": {
+        "description": "Lépj kapcsolatba más térképezőkkel a Discordon"
+      },
+      "discourse": {
+        "name": "{community} Közösségi fórum",
+        "description": "{community} hivatalos fóruma"
+      },
+      "facebook": {
+        "name": "{community} a Facebookon",
+        "description": "Csatlakozz közösségünkhöz a Facebookon!"
+      },
+      "forum": {
+        "name": "{community} Fórum",
+        "description": "{community} hivatalos fóruma"
+      },
+      "irc": {
+        "name": "{community} IRC-n"
+      },
+      "linkedin": {
+        "name": "{community} a LinkedIn-en",
+        "description": "Csatlakozz a közösségünkhöz LinkedIn-en"
+      },
+      "mastodon": {
+        "description": "{community} hivatalos Mastodon-fiókja"
+      },
+      "newsletter": {
+        "name": "{community} hírlevele"
+      },
+      "reddit": {
+        "name": "{community} a Redditen"
+      },
+      "signal": {
+        "description": "Csatlakozz a közösséghez Signalon"
+      },
+      "twitter": {
+        "name": "{community} az 𝕏-en"
+      },
+      "youtube": {
+        "description": "Iratkozz fel a YouTube csatornánkra!"
+      },
+      "zulip": {
+        "description": "Csatlakozz közösségünk chatjéhez Zulipon"
+      }
+    },
+    "at-wiki": {
+      "description": "{community} Wiki oldal"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "name": "A San Francisco-öböl környéki (Bay Area) OpenStreetMap szerkesztők",
+      "description": "Az OpenStreetMap tökéletesítése a San Francisco-öböl környékén",
+      "extendedDescription": "Ez a csoport az itteni, öbölkörnyéki OpenStreetMap-közösség gyarapításával foglalkozik. Rendezvényeink mindenki számára nyitottak a nyílt forráskódú szoftverek híveitől kezdve a kerékpárosokon, térinformatikusokon és geocaching-játékosokon át bárki másig. Örömmel látunk mindenkit, akit érdekelnek a térképek, a térképészet és a nyílt térképadatok, hogy csatlakozzék csoportunkhoz és részt vegyen a rendezvényeinken."
+    },
+    "be-matrix": {
+      "extendedDescription": "A belga OSM közösség fő csevegőszobája. Ne habozz, ha kezdő kérdéseket szeretnél feltenni!"
+    },
+    "be-newsletter": {
+      "description": "A belga közösség negyedéves hírlevele"
+    },
+    "bo-facebook-group": {
+      "name": "{community} Facebook-csoport"
+    },
+    "bo-matrix": {
+      "description": "Minden térképezőt szívesen látunk!"
+    },
+    "cape-coast-youthmappers": {
+      "description": "Kövess minket Twitteren: {url}"
+    },
+    "Central-Pennsylvania-OSM": {
+      "name": "Közép-Pennsylvania OSM",
+      "description": "A Pennsylvania State College főiskolából kinövő online térképészközösség"
+    },
+    "comunitat-valenciana-wiki": {
+      "description": "Minden, amit a térképezésről tudni kell Valenciában: {url}"
+    },
+    "de-berlin-mailinglist": {
+      "name": "Berlin levelezőlista"
+    },
+    "de-berlin-wiki": {
+      "description": "{community} Wiki oldal"
+    },
+    "de-bochum-wiki": {
+      "description": "{community} Wiki oldal"
+    },
+    "de-bonn-wiki": {
+      "description": "{community} Wiki oldal"
+    },
+    "de-bremen-mailinglist": {
+      "name": "Bréma levelezőlista"
+    },
+    "de-bremen-wiki": {
+      "description": "{community} Wiki oldal"
+    },
+    "de-cologne-wiki": {
+      "description": "{community} Wiki oldal"
+    },
+    "de-dresden-wiki": {
+      "description": "{community} Wiki oldal"
+    },
+    "de-dusseldorf-wiki": {
+      "description": "{community} Wiki oldal"
+    },
+    "de-karlsruhe-mailinglist": {
+      "name": "Karlsruhe levelezőlista"
+    },
+    "de-luneburg-wiki": {
+      "description": "{community} Wiki oldal"
+    },
+    "de-munchen-wiki": {
+      "description": "{community} Wiki oldal"
+    },
+    "ee-wiki": {
+      "description": "Az Észtországra jellemző térképezési tevékenységgel kapcsolatos információk."
+    },
+    "fr-35-wiki": {
+      "description": "{community} Wiki oldal"
+    },
+    "fr-38-wiki": {
+      "description": "{community} Wiki oldal"
+    },
+    "fr-discord": {
+      "name": "Discord OpenStreetMap közösség Franciaországban"
+    },
+    "fr-montrouge-wiki": {
+      "description": "{community} Wiki oldal"
+    },
+    "GeoPhilly": {
+      "description": "Térképrajongók találkozója Philadelphia térségében"
+    },
+    "hu-facebook-group": {
+      "name": "{community} Facebook-csoport"
+    },
+    "hu-meetup": {
+      "description": "A találkozók szervezéséhez használt platform Magyarországon"
+    },
+    "hu-mobilizon": {
+      "description": "Az OpenStreetMap Magyarország közelgő eseményei"
+    },
+    "hu-tm": {
+      "description": "Aktív térképezési feladatok Magyarországon"
+    },
+    "hu-website": {
+      "description": "OpenStreetMap bővítés és fejlesztés Magyarországon"
+    },
+    "hu-wiki": {
+      "description": "{community} Wiki oldal"
+    },
+    "id-facebook-group": {
+      "name": "{community} Facebook csoport",
+      "extendedDescription": "Térképezés Indonéziában? Kérdése van, szeretne kapcsolatba lépni az itteni közösséggel? Csatlakozzon hozzánk a {url} oldalon. Mindenkit szeretettel várunk!"
+    },
+    "ireland-meetup": {
+      "description": "Találkozók mindazok számára, akiket érdekel az OpenStreetMap"
+    },
+    "madrid-wiki": {
+      "description": "Minden, amit Madrid térképezéséről tudni kell: {url}"
+    },
+    "MapABQ": {
+      "description": "Az OpenStreetMap felhasználók havi találkozója Albuquerque-ben és Észak Új-Mexikóban",
+      "extendedDescription": "Bárki csatlakozhat, és szívesen segítünk a térképezésben. A találkozók nyílt formában zajlanak, hogy a résztvevők az OpenStreetMap Albuquerque és környéke térképének bővítésére koncentrálhassanak."
+    },
+    "maptime-bogota-meetup": {
+      "extendedDescription": "Tanuljon meg adatokat gyűjteni a terepen és digitalizálni az OpenStreetMap térképre. Előzetes tudás nem szükséges! Csak a részvétel, a tanulás és a szórakozás iránti vágy kell."
+    },
+    "maptime-bogota-twitter": {
+      "description": "Érdeklődők egy csoportja vagyunk, hogy Bogotát és környékét feltérképezzük az OpenStreetMapben.",
+      "extendedDescription": "Tanuljon meg adatokat gyűjteni a terepen és digitalizálni az OpenStreetMap térképre. Előzetes tudás nem szükséges! Csak a részvétel, a tanulás és a szórakozás iránti vágy kell."
+    },
+    "maptime-bogota-website": {
+      "description": "Érdeklődők egy csoportja vagyunk, hogy Bogotát és környékét feltérképezzük az OpenStreetMapben.",
+      "extendedDescription": "Tanuljon meg adatokat gyűjteni a terepen és digitalizálni az OpenStreetMap térképre. Előzetes tudás nem szükséges! Csak a részvétel, a tanulás és a szórakozás iránti vágy kell."
+    },
+    "nl-matrix": {
+      "description": "Minden térképezőt szívesen látunk!"
+    },
+    "osm-africa-eventbrite": {
+      "description": "{community} EventBrite oldal"
+    },
+    "osm-africa-facebook-group": {
+      "name": "{community} Facebook csoport"
+    },
+    "osm-africa-matrix": {
+      "description": "Minden térképezőt szívesen látunk!"
+    },
+    "osm-africa-slack": {
+      "description": "Mindenkit szeretettel várunk! Jelentkezzen ezen az oldalon: {signupUrl}"
+    },
+    "OSM-AR-telegram": {
+      "extendedDescription": "Ez a közösség legaktívabb csatornája, ideális a csevegéshez és a kérdések azonnali megválaszolásához. Mindenkit szeretettel várunk!"
+    },
+    "OSM-AR-wiki": {
+      "description": "Minden, amit az argentin térképezésről tudni kell."
+    },
+    "osm-deep-south-wiki": {
+      "description": "{community} Wiki-oldal"
+    },
+    "OSM-Facebook": {
+      "description": "A OpenStreetMappel kapcsolatos hírekért és frissítésekért kedvelj minket Facebookon."
+    },
+    "osm-india-github": {
+      "description": "Kódolj velünk: {url}"
+    },
+    "osm-india-website": {
+      "description": "Térképészek és OpenStreetMap felhasználók Indiában"
+    },
+    "osm-india-wiki": {
+      "description": "Minden, amit tudnod kell az indiai térképezésről: {url}"
+    },
+    "OSM-japan-facebook": {
+      "description": "Térképészek és OpenStreetMap felhasználók Japánban"
+    },
+    "OSM-japan-website": {
+      "description": "Térképészek és OpenStreetMap felhasználók Japánban"
+    },
+    "osm-kenya-facebook": {
+      "description": "Az OSM Kenya az OSM közreműködők és felhasználók közössége."
+    },
+    "osm-kerala-website": {
+      "description": "Segítünk az OpenStreetMap bővítésében és fejlesztésében Keralában."
+    },
+    "osm-michigan-wiki": {
+      "description": "{community} Wiki oldal"
+    },
+    "OSM-SoCal": {
+      "name": "OpenStreetMap Dél-Kalifornia"
+    },
+    "OSM-Telegram": {
+      "description": "Csatlakozz az OpenStreetMap Telegram globális szupercsoporthoz itt: {url}"
+    },
+    "osm-toronto-meetup": {
+      "description": "Térképezők és OpenStreetMap felhasználók Toronto területén"
+    },
+    "osm-tw": {
+      "description": "Segítünk az OpenStreetMap bővítésében és fejlesztésében Tajvanon."
+    },
+    "OSMF": {
+      "name": "OpenStreetMap Alapítvány",
+      "description": "Az OSMF az OpenStreetMap projektet segítő angol nonprofit szervezet"
+    },
+    "ph-facebook-group": {
+      "name": "{community} Facebook csoport"
+    },
+    "PHXGeo-twitter": {
+      "description": "Kövess minket Twitteren: {url}"
+    },
+    "tn-facebook-group": {
+      "name": "{community} Facebook csoport"
+    },
+    "tw-slack": {
+      "description": "Mindenkit szeretettel várunk! Jelentkezzen ezen az oldalon: {signupUrl}"
+    },
+    "tw-wiki": {
+      "description": "Minden, amit a tajvani térképezésről tudni kell: {url}"
+    },
+    "tz-website": {
+      "description": "OSM szolgáltatásokat és információkat nyújt a helyi közösség számára Tanzániában."
+    },
+    "ua-github": {
+      "description": "OpenStreetMap Ukrajna GitHub"
+    },
+    "ua-osm": {
+      "description": "OpenStreetMap weboldal Ukrajnában"
+    },
+    "uk-london-wiki": {
+      "description": "{community} Wiki oldal"
+    },
+    "us-massachusetts-mailinglist": {
+      "name": "Talk-us-massachusetts levelezőlista",
+      "description": "E-mail levelezőlista a massachusettsi OSM közösség számára"
+    },
+    "us-newyork-mailinglist": {
+      "name": "Talk-us-newyork levelezőlista",
+      "description": "E-mail levelezőlista a New York állambeli OSM közösség számára"
+    },
+    "vn-mailinglist": {
+      "description": "Levelezőlista az OpenStreetMap-ről Vietnámban vagy vietnámi nyelven"
+    }
+  }
+}

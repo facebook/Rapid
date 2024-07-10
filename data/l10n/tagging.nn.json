@@ -1,0 +1,696 @@
+{
+  "nn": {
+    "presets": {
+      "fields": {
+        "access": {
+          "options": {
+            "destination": {
+              "title": "Destinasjon"
+            },
+            "private": {
+              "title": "Privat"
+            }
+          },
+          "placeholder": "Ikkje spesifisert",
+          "types": {
+            "access": "Alle",
+            "bicycle": "Syklar",
+            "foot": "Fot",
+            "horse": "Hestar",
+            "motor_vehicle": "Motorkøyretøy"
+          }
+        },
+        "access_simple": {
+          "options": {
+            "no": "Ingen",
+            "private": "Privat",
+            "yes": "Offentleg"
+          }
+        },
+        "addr/interpolation": {
+          "options": {
+            "all": "Alle",
+            "alphabetic": "Alfabetisk"
+          }
+        },
+        "address": {
+          "label": "Addresse",
+          "placeholders": {
+            "block_number": "Blokknummer",
+            "block_number!jp": "Blokknummer",
+            "city": "By",
+            "city!vn": "By/bygd",
+            "country": "Land",
+            "county": "Fylke",
+            "district": "Distrikt",
+            "floor": "Etasje",
+            "hamlet": "Grend",
+            "housename": "Husnamn",
+            "neighbourhood": "Grannelag",
+            "place": "Plass",
+            "postcode": "Postnummer",
+            "province": "Landsdel",
+            "province!jp": "Prefektur",
+            "state": "Stat",
+            "street": "Gate/Veg",
+            "subdistrict": "Underdistrikt",
+            "suburb": "Drabantby",
+            "unit": "Eining"
+          }
+        },
+        "admin_level": {
+          "label": "Administrasjonsnivå"
+        },
+        "aerialway/access": {
+          "label": "Tilgang",
+          "options": {
+            "both": "Begge",
+            "entry": "Oppføring",
+            "exit": "Utgang"
+          }
+        },
+        "aerialway/bubble": {
+          "label": "Boble"
+        },
+        "aerialway/summer/access": {
+          "options": {
+            "both": "Begge",
+            "entry": "Oppføring",
+            "exit": "Avslutt"
+          }
+        },
+        "agrarian": {
+          "label": "Produkts"
+        },
+        "air_conditioning": {
+          "label": "Luftkondisjonering"
+        },
+        "animal_boarding": {
+          "label": "For dyr"
+        },
+        "animal_breeding": {
+          "label": "For dyr"
+        },
+        "animal_shelter": {
+          "label": "For dyr"
+        },
+        "architect": {
+          "label": "Arkitekt"
+        },
+        "artwork_type": {
+          "options": {
+            "sculpture": "Skulptur"
+          }
+        },
+        "athletics_pitch": {
+          "label": "Hending"
+        },
+        "atm": {
+          "label": "MInibank"
+        },
+        "attraction": {
+          "options": {
+            "carousel": "Karusell"
+          }
+        },
+        "automated": {
+          "label": "Automatisert"
+        },
+        "baby_feeding": {
+          "options": {
+            "no": "Ingen"
+          }
+        },
+        "barrier": {
+          "options": {
+            "entrance": "Inngang",
+            "wall": "Vegg"
+          }
+        },
+        "barrier_planter": {
+          "options": {
+            "planter": "Ja",
+            "undefined": "Nei"
+          }
+        },
+        "bath/open_air": {
+          "label": "Utandørs"
+        },
+        "beauty": {
+          "label": "Tenester"
+        },
+        "bench": {
+          "label": "Benk"
+        },
+        "bicycle_road": {
+          "options": {
+            "undefined": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "bin": {
+          "label": "Søppeldunk"
+        },
+        "blind": {
+          "options": {
+            "limited": "Avgrensa",
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "board_type": {
+          "options": {
+            "astronomy": "Astronomi",
+            "geology": "Geologi",
+            "history": "Historie",
+            "nature": "Natur"
+          }
+        },
+        "bridge": {
+          "placeholder": "Standard"
+        },
+        "building": {
+          "label": "Bygning",
+          "options": {
+            "school": "Skulebugning"
+          }
+        },
+        "cables": {
+          "label": "Kablar"
+        },
+        "clothes": {
+          "label": "Klede"
+        },
+        "colour": {
+          "label": "Farge"
+        },
+        "consulate": {
+          "options": {
+            "yes": "Konsulat"
+          }
+        },
+        "contact/webcam": {
+          "label": "Nettkamera-URL"
+        },
+        "content": {
+          "label": "Innhald"
+        },
+        "conveying": {
+          "label": "Bevegelseretning",
+          "options": {
+            "backward": "Bakover",
+            "forward": "Framover",
+            "reversible": "Reversibel"
+          }
+        },
+        "country": {
+          "label": "Land"
+        },
+        "couplings": {
+          "label": "Samankoplingar"
+        },
+        "covered_no": {
+          "options": {
+            "yes": "Ja"
+          }
+        },
+        "craft": {
+          "options": {
+            "tailor": "Skreddar",
+            "watchmaker": "Klokkemakar",
+            "winery": "Vinprodusent"
+          }
+        },
+        "crop": {
+          "label": "Avlingar",
+          "options": {
+            "coffee": "Kaffi",
+            "tea": "Te",
+            "vegetable": "Grønsaker",
+            "wheat": "Kveite"
+          }
+        },
+        "cuisine": {
+          "options": {
+            "fish": "Fisk",
+            "french": "Fransk",
+            "georgian": "Georgisk",
+            "german": "Tysk",
+            "greek": "Gresk",
+            "juice": "Jus"
+          }
+        },
+        "cutting": {
+          "placeholder": "Standard"
+        },
+        "cycle_network": {
+          "label": "Nettverk"
+        },
+        "cycleway": {
+          "label": "Sykkelvegar",
+          "options": {
+            "lane": {
+              "description": "Ein sykkelveg er skilt frå biltrafikk med ei måla linje"
+            }
+          }
+        },
+        "dance/style": {
+          "label": "Dansestilar"
+        },
+        "date": {
+          "label": "Dato"
+        },
+        "departures_board": {
+          "options": {
+            "no": "Ingen",
+            "realtime": "Sanntid",
+            "yes": "Ja"
+          }
+        },
+        "description": {
+          "label": "Skildring"
+        },
+        "design": {
+          "label": "Utforming"
+        },
+        "devices": {
+          "label": "Einingar"
+        },
+        "diplomatic/services": {
+          "label": "Tenseter"
+        },
+        "direction_clock": {
+          "label": "Retningar",
+          "options": {
+            "anticlockwise": "Mot urvisaren",
+            "clockwise": "Med urvisaren"
+          }
+        },
+        "direction_vertex": {
+          "options": {
+            "backward": "bakover",
+            "both": "Begge/Alle",
+            "forward": "Framover"
+          }
+        },
+        "distance": {
+          "label": "Strekning"
+        },
+        "dog": {
+          "label": "Hundar",
+          "options": {
+            "no": "Ikkje tillate",
+            "yes": "Tillate"
+          }
+        },
+        "door": {
+          "label": "Dør"
+        },
+        "duration": {
+          "label": "Varigheit"
+        },
+        "email": {
+          "label": "E-post"
+        },
+        "embankment": {
+          "placeholder": "Standard"
+        },
+        "emergency": {
+          "label": "Krisesituasjon"
+        },
+        "entrance": {
+          "options": {
+            "emergency": "Naudutgang"
+          }
+        },
+        "except": {
+          "label": "Unntak"
+        },
+        "fax": {
+          "label": "Faks"
+        },
+        "fee": {
+          "label": "Avgift"
+        },
+        "fire_hydrant/pressure": {
+          "label": "Trykk (bar)"
+        },
+        "fire_hydrant/type": {
+          "label": "Form",
+          "options": {
+            "wall": "Vegg"
+          }
+        },
+        "fireplace": {
+          "label": "Eldstad"
+        },
+        "fishing": {
+          "label": "Fiske"
+        },
+        "fitness_station": {
+          "label": "Utstyrstype"
+        },
+        "ford": {
+          "placeholder": "Standard"
+        },
+        "from": {
+          "label": "Frå"
+        },
+        "fuel": {
+          "label": "Drivstoff"
+        },
+        "gender": {
+          "label": "Kjønn",
+          "options": {
+            "female": "Kvinne",
+            "male": "Mann"
+          },
+          "placeholder": "Ukjent"
+        },
+        "generator/method": {
+          "label": "Metode"
+        },
+        "generator/output/electricity": {
+          "label": "Utgangseffekt"
+        },
+        "generator/source": {
+          "label": "Kjelde"
+        },
+        "handicap": {
+          "label": "Funksjonshemming"
+        },
+        "healthcare/speciality": {
+          "label": "Spesialitetar"
+        },
+        "height": {
+          "label": "Høgde (meter)"
+        },
+        "height_building": {
+          "label": "Bygningshøgde (meter)"
+        },
+        "highspeed": {
+          "label": "Høgfart"
+        },
+        "horse_riding": {
+          "options": {
+            "horse_riding": "Ja",
+            "undefined": "Nei"
+          }
+        },
+        "horse_scale": {
+          "placeholder": "Vanskeleg, farleg…"
+        },
+        "incline_steps": {
+          "options": {
+            "down": "ned",
+            "up": "Opp"
+          }
+        },
+        "indoor": {
+          "label": "Innandørs"
+        },
+        "inscription": {
+          "label": "Innskrift"
+        },
+        "internet_access": {
+          "options": {
+            "no": "Nei",
+            "wired": "Kabla",
+            "yes": "Ja"
+          }
+        },
+        "interval": {
+          "label": "Intervall"
+        },
+        "kerb/height": {
+          "label": "Høgde"
+        },
+        "kitchen": {
+          "label": "Kjøkken"
+        },
+        "lanes": {
+          "label": "Køyrefelt"
+        },
+        "language_multi": {
+          "label": "Språk"
+        },
+        "layer": {
+          "label": "lag"
+        },
+        "location": {
+          "label": "Plassering"
+        },
+        "location_pool": {
+          "options": {
+            "indoor": "Innandørs",
+            "outdoor": "Utandørs",
+            "roof": "Hustak"
+          }
+        },
+        "lock": {
+          "label": "Lås"
+        },
+        "maxspeed": {
+          "label": "Fartsgrense"
+        },
+        "mooring": {
+          "options": {
+            "guest": "Gjestar",
+            "private": "Privat"
+          }
+        },
+        "name": {
+          "label": "Namn"
+        },
+        "network": {
+          "label": "Nettverk"
+        },
+        "network_bicycle": {
+          "options": {
+            "icn": "Internasjonalt",
+            "lcn": "Lokalt",
+            "ncn": "Nasjonalt",
+            "rcn": "Regionalt"
+          },
+          "placeholder": "Lokalt, regionalt, nasjonalt, internasjonalt"
+        },
+        "network_foot": {
+          "options": {
+            "iwn": "Internasjonalt",
+            "lwn": "Lokalt",
+            "nwn": "Nasjonalt",
+            "rwn": "Regionalt"
+          },
+          "placeholder": "Lokalt, regionalt, nasjonalt, internasjonalt"
+        },
+        "network_horse": {
+          "options": {
+            "ihn": "Internasjonalt",
+            "lhn": "Lokalt",
+            "nhn": "Nasjonalt",
+            "rhn": "Regionalt"
+          },
+          "placeholder": "Lokalt, regionalt, nasjonalt, internasjonalt"
+        },
+        "network_road": {
+          "label": "Nettverk"
+        },
+        "note": {
+          "label": "Merknad"
+        },
+        "oneway": {
+          "options": {
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "oneway_yes": {
+          "options": {
+            "yes": "Ja"
+          }
+        },
+        "opening_date": {
+          "label": "Forventa opningsdato"
+        },
+        "opening_hours": {
+          "label": "Timar",
+          "placeholder": "Ukjend"
+        },
+        "operator": {
+          "label": "Driftsleiar"
+        },
+        "operator/type": {
+          "label": "Driftsleiartype"
+        },
+        "organic": {
+          "options": {
+            "no": "Ingen"
+          }
+        },
+        "outdoor_seating": {
+          "label": "Utandørsservering"
+        },
+        "park_ride": {
+          "label": "Innfartsparkering"
+        },
+        "parking": {
+          "options": {
+            "carports": "Biloppstillingsplassar under tak"
+          }
+        },
+        "phone": {
+          "label": "Telefon"
+        },
+        "piste/difficulty": {
+          "label": "Vanskegrad",
+          "options": {
+            "advanced": "Avansert",
+            "easy": "Lett",
+            "expert": "Ekspert",
+            "extreme": "Ekstrem",
+            "intermediate": "Mellomstadium",
+            "novice": "Nybegynnar"
+          },
+          "placeholder": "Lett, mellomstadium, avansert…"
+        },
+        "pump": {
+          "options": {
+            "no": "Ingen"
+          }
+        },
+        "railway/signal/direction": {
+          "options": {
+            "both": "Begge/Alle"
+          }
+        },
+        "scuba_diving": {
+          "label": "Tenester"
+        },
+        "seamark/beacon_isolated_danger/shape": {
+          "label": "Form"
+        },
+        "seamark/beacon_lateral/category": {
+          "label": "Kategori"
+        },
+        "seamark/beacon_lateral/colour": {
+          "label": "Farge",
+          "options": {
+            "green": "Grøn",
+            "grey": "Grå",
+            "red": "Raud"
+          }
+        },
+        "seamark/beacon_lateral/shape": {
+          "label": "Form"
+        },
+        "seamark/beacon_lateral/system": {
+          "options": {
+            "other": "Anna"
+          }
+        },
+        "seamark/buoy_lateral/category": {
+          "label": "Kategori"
+        },
+        "seamark/buoy_lateral/colour": {
+          "label": "Farge",
+          "options": {
+            "green": "Grøn",
+            "green;red;green": "Grøn-raud-grøn",
+            "green;white;green;white": "Grøn-kvit-grøn-kvit",
+            "red": "Raud",
+            "red;green;red": "Raud-grøn-raud",
+            "red;white;red;white": "Raud-kvit-raud-kvit",
+            "white": "Kvit",
+            "yellow": "Gul"
+          }
+        },
+        "seamark/buoy_lateral/shape": {
+          "label": "Form"
+        },
+        "seamark/buoy_lateral/system": {
+          "options": {
+            "other": "Anna"
+          }
+        },
+        "seamark/mooring/category": {
+          "label": "Kategori"
+        },
+        "seamark/type": {
+          "label": "Sjømerke"
+        },
+        "seamark/wreck/category": {
+          "label": "Kategori"
+        },
+        "seasonal": {
+          "label": "Sesongavhengig"
+        },
+        "second_hand": {
+          "options": {
+            "no": "Nei",
+            "only": "berre",
+            "yes": "Ja"
+          }
+        },
+        "self_service": {
+          "label": "Sjølvbetening"
+        },
+        "service/vehicle": {
+          "label": "Tenester"
+        },
+        "service_rail": {
+          "label": "Tenestetype"
+        },
+        "siren/type": {
+          "options": {
+            "electronic": "Elektronikk",
+            "other": "Anna"
+          }
+        },
+        "smoking": {
+          "label": "Røyking"
+        },
+        "surveillance/type": {
+          "options": {
+            "camera": "Kamera"
+          }
+        },
+        "traffic_sign/direction": {
+          "options": {
+            "both": "Begge/Alle"
+          }
+        },
+        "traffic_signals/direction": {
+          "options": {
+            "both": "Begge/Alle"
+          }
+        },
+        "tunnel": {
+          "placeholder": "Standard"
+        }
+      },
+      "presets": {
+        "amenity/atm": {
+          "name": "Minibank"
+        },
+        "amenity/dentist": {
+          "name": "Tannlege"
+        },
+        "amenity/driving_school": {
+          "name": "Køyreskule"
+        },
+        "amenity/language_school": {
+          "name": "Språkskule"
+        },
+        "attraction/carousel": {
+          "name": "Karusell"
+        },
+        "leisure/dancing_school": {
+          "name": "Danseskule"
+        },
+        "waterway/river": {
+          "name": "Elv"
+        }
+      }
+    }
+  }
+}

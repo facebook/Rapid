@@ -1,0 +1,1576 @@
+{
+  "lv": {
+    "icons": {
+      "download": "lejupielādēt",
+      "remove": "noņemt ",
+      "undo": "atsaukt",
+      "zoom_to": "pietuvināt uz",
+      "copy": "kopēt",
+      "view_on": "skatīties uz [domain]",
+      "visit_website": "apmeklēt mājaslapu",
+      "favorite": "miļākais",
+      "list": "saraksts",
+      "text": "teksts"
+    },
+    "toolbar": {
+      "recent": "Nesenais",
+      "favorites": "Miļākie",
+      "add_feature": "Pievienot objektu"
+    },
+    "modes": {
+      "add_area": {
+        "title": "Apgabals",
+        "filter_tooltip": "apgabali"
+      },
+      "add_line": {
+        "title": "Līnija",
+        "filter_tooltip": "līnijas"
+      },
+      "add_point": {
+        "title": "Punkts"
+      },
+      "add_note": {
+        "title": "Piezīme",
+        "label": "Pievienot piezīmi",
+        "description": "Atradi kļūdu? Pabrīdini citus kartētājus par to."
+      },
+      "add_preset": {
+        "title": "Pievienot {feature}"
+      },
+      "browse": {
+        "title": "Pārlūkot",
+        "description": "Pārlūko karti."
+      },
+      "drag_node": {
+        "connected_to_hidden": "Šo nevar rediģēt, jo tas ir pievienots paslēptam objektam."
+      }
+    },
+    "operations": {
+      "add": {
+        "annotation": {
+          "point": "Punkts pievienots.",
+          "vertex": "Mezgls pievienots līnijai.",
+          "relation": "Relācija pievienota.",
+          "note": "Pievienota piezīme."
+        }
+      },
+      "start": {
+        "annotation": {
+          "line": "Līnija iesākta.",
+          "area": "Apgabals iesākts."
+        }
+      },
+      "continue": {
+        "title": "Turpināt ",
+        "description": "Turpināt šo līniju.",
+        "not_eligible": "Nevienu līniju nevar šeit turpināt.",
+        "annotation": {
+          "line": "Līnija turpināta.",
+          "area": "Apgabals turpināts."
+        }
+      },
+      "cancel_draw": {
+        "annotation": "Zīmēšana atcelta."
+      },
+      "change_tags": {
+        "annotation": "Apzīmējumi mainīti."
+      },
+      "copy": {
+        "title": "Kopēt"
+      },
+      "paste": {
+        "title": "Ielīmēt"
+      },
+      "circularize": {
+        "title": "Pārveidot par apļveida"
+      },
+      "orthogonalize": {
+        "title": "Kvadrāts"
+      },
+      "straighten": {
+        "title": "Iztaisnot",
+        "description": {
+          "points": "Iztaisnot šos punktus.",
+          "line": "Iztaisnot šo līniju.",
+          "lines": "Iztaisnot šīs līnijas."
+        }
+      },
+      "delete": {
+        "title": "Dzēst",
+        "description": {
+          "single": "Dzēst šo objektu neatgriezeniski.",
+          "multiple": "Dzēst šos objektus neatgriezeniski."
+        },
+        "annotation": {
+          "point": "Punkts dzēsts.",
+          "vertex": "Mezgls dzests.",
+          "line": "Līnija dzēsta.",
+          "area": "Apgabals dzēsts.",
+          "relation": "Relācija dzēsta."
+        },
+        "too_large": {
+          "single": "Šo objektu nevar dzēst, jo tas nav pietiekami redzams.",
+          "multiple": "Šos objektus nevar dzēst, jo tie nav pietiekami redzami."
+        },
+        "incomplete_relation": {
+          "single": "Šo objektu nevar dzēst, jo tas nav pilnībā lejuplādēts.",
+          "multiple": "Šos objektus nevar dzēst, jo tie nav pilnībā lejupielādēti."
+        },
+        "part_of_relation": {
+          "single": "Šo objektu nevar dzēst jo tā ir daļa no lielākas relācijas. Tev tas ir jānoņem no šīs relācijas vispirms.",
+          "multiple": "Šos objektu nevar dzēst jo tā ir daļa no lielākas relācijas. Tev tie ir jānoņem no šīs relācijas vispirms."
+        },
+        "connected_to_hidden": {
+          "single": "Šo objektu nevar dzēst, jo tas ir pievienots paslēptam objektam.",
+          "multiple": "Šos objektus nevar dzēst, jo daži no tiem ir pievienoti paslēptiem objektiem."
+        },
+        "has_wikidata_tag": {
+          "single": "Šo objektu nevar dzēst, jo tam ir pievienots Vikidatu apzīmējums.",
+          "multiple": "Šos objektus nevar dzēst, jo dažiem no tiem ir pievienoti Vikidatu apzīmējumi."
+        }
+      },
+      "downgrade": {
+        "description": {
+          "building_address": "Dzēst visus apzīmējumus, kas nav adreses vai ēkas.",
+          "building": "Dzēst visus apzīmējumus, kas nav ēkas.",
+          "address": "Dzēst visus apzīmējumus, kas nav adreses.",
+          "generic": "Noņemt apzīmējumus."
+        },
+        "has_wikidata_tag": {
+          "single": "Šo objektu nevar pazemināt, jo tam ir pievienots Vikidatu apzīmējums.",
+          "multiple": "Šos objektus nevar pazemināt, jo dažiem no tiem ir pievienoti Vikidatu apzīmējumi."
+        }
+      },
+      "connect": {
+        "annotation": {
+          "from_vertex": {
+            "to_point": "Pievienoja līniju punktam.",
+            "to_vertex": "Pievienoja līniju citai."
+          }
+        },
+        "relation": "Šos objektus nevar savienot, jo tiem ir konfliktējošas relāciju lomas.",
+        "restriction": "Šos objektus nevar savienot, jo tas bojātu \"{relation}\" relāciju."
+      },
+      "disconnect": {
+        "title": "Atvienot",
+        "not_connected": "Šeit nav pietiekami daudz līniju/laukumu, lai tos atvienotu.",
+        "connected_to_hidden": "Šo nevar atvienot, jo tas ir pievienots pie paslēpta objekta.",
+        "relation": "Šo nevar atvienot, jo tas savienojas ar relācijas locekļiem."
+      },
+      "merge": {
+        "title": "Sapludināt",
+        "description": "Apvienot šos objektus.",
+        "not_eligible": "Šos objektus nevar apvienot.",
+        "relation": "Šos objektus nevar apvienot, jo tiem ir konfliktējošas relāciju lomas.",
+        "incomplete_relation": "Šos objektus nevar apvienot, jo vismaz viens nav pilnībā lejupielādēts.",
+        "conflicting_tags": "Šos objektu nevar apvienot, jo vairākiem to apzīmējumiem ir nesaskaņotas vērtības."
+      },
+      "move": {
+        "title": "Pārvietot",
+        "description": {
+          "single": "Pārvieto šo objektu uz citu vietu.",
+          "multiple": "Pārvieto šos objektus uz citu vietu."
+        },
+        "annotation": {
+          "point": "Punkts pārvietots.",
+          "vertex": "Mezgls pārvietots.",
+          "line": "Līnija pārvietota.",
+          "area": "Apgabals pārvietots."
+        },
+        "incomplete_relation": {
+          "single": "Šo objektu nevar pārvietot kamēr tas nav lejupielādēts pilnībā.",
+          "multiple": "Šos objektus nevar pārvietot jo tie nav pilnībā lejupielādēti."
+        },
+        "too_large": {
+          "single": "Šo objektu nevar pārvietot jo tas nav pietiekami redzams.",
+          "multiple": "Šos objektus nevar pārvietot jo tie nav pietiekami redzami."
+        },
+        "connected_to_hidden": {
+          "single": "Šo objektu nevar pārvietot, jo tas ir pievienots paslēptam objektam.",
+          "multiple": "Šos objektus nevar pārvietot jo daži no tiem ir pievienoti paslēptiem objektiem."
+        }
+      },
+      "rotate": {
+        "title": "Pagriezt",
+        "description": {
+          "single": "Pagriezt šo objektu ap tā centru.",
+          "multiple": "Pagriezt šos objektus ap to centra punktu."
+        },
+        "annotation": {
+          "line": "Līnija pagriezta.",
+          "area": "Apgabals pagriezts."
+        },
+        "incomplete_relation": {
+          "single": "Šo objektu nevar pagriezt, jo tas nav pilnībā lejuplādēts.",
+          "multiple": "Šos objektus nevar pagriezt, jo tie nav pilnībā lejupielādēti."
+        },
+        "too_large": {
+          "single": "Šo objektu nevar pagriezt, jo tas nav pietiekami redzams.",
+          "multiple": "Šos objektus nevar pagriezt, jo tie nav pietiekami redzami."
+        },
+        "connected_to_hidden": {
+          "multiple": "Šos objektus nevar pagriezt, jo daži no tiem ir pievienoti pie paslēptiem objektiem."
+        }
+      },
+      "reverse": {
+        "title": "Mainīt virzienu"
+      },
+      "split": {
+        "title": "Sadalīt",
+        "not_eligible": "Līnijas nevar sadalīt to sākumā vai beigās."
+      },
+      "restriction": {
+        "annotation": {
+          "create": "Pievienoja pagriezienu aizliegumu",
+          "delete": "Izdzēsa pagriezienu aizliegumu"
+        }
+      }
+    },
+    "restriction": {
+      "controls": {
+        "distance": "Attālums",
+        "distance_up_to": "Līdz pat {distance}",
+        "via": "Ar"
+      },
+      "help": {
+        "indirect": "(netiešs)",
+        "from": "NO",
+        "via": "AR",
+        "to": "UZ"
+      }
+    },
+    "undo": {
+      "tooltip": "Atcelt: {action}",
+      "nothing": "Nav nekā, ko atcelt"
+    },
+    "redo": {
+      "tooltip": "Atgriezt: {action}",
+      "nothing": "Nav nekā, ko atsaukt"
+    },
+    "translate": {
+      "localized_translation_language": "Izvelties valodu",
+      "localized_translation_name": "Vārds"
+    },
+    "zoom_in_edit": "Pietuvini lai labotu",
+    "login": "Ienākt",
+    "logout": "Iziet",
+    "loading_auth": "Savienojas ar OpenStreetMap...",
+    "report_a_bug": "Ziņot par kļūdu",
+    "help_translate": "Palīdzi tulkot",
+    "osm_api_status": {
+      "retry": "Mēģināt vēlreiz"
+    },
+    "commit": {
+      "title": "Augšupielādē uz OpenStreetMap",
+      "upload_explanation": "Izmaiņas, kuras jūs augšupielādējat būs pieejamas visās kartēs, kuras izmanto OpenStreetMap datus.",
+      "upload_explanation_with_user": "Izmaiņas, kuras jūs augšupielādējat kā {user}, būs pieejamas visās kartēs, kuras izmanto OpenStreetMap datus.",
+      "request_review": "Es vēlos lai kāds pārbauda manus labojumus.",
+      "request_review_info": "Neesi pārliecināts? Pieaicini pieredzējušu kartētāju, kas pārbaudīs tavus labojumus pēc to publicēšanas.",
+      "save": "Augšupielādēt",
+      "cancel": "Atcelt",
+      "changes": "Izmaiņas",
+      "download_changes": "Lejupielādēt osmChange failu",
+      "errors": "Kļūdas",
+      "warnings": "Brīdinājumi",
+      "modified": "Mainīts",
+      "deleted": "Dzēsts",
+      "created": "Izveidots",
+      "about_changeset_comments": "Par izmaiņu komentāriem",
+      "google_warning": "Tu pieminēji Google šajā komentārā. Atceries ka kopēšana no Google Kartēm ir stingri aizliegta. "
+    },
+    "contributors": {
+      "list": "Rediģēja {users}"
+    },
+    "info_panels": {
+      "background": {
+        "title": "Fons",
+        "zoom": "Tuvinājums",
+        "vintage": "Uzņemšanas datums",
+        "source": "Avots",
+        "description": "Apraksts",
+        "resolution": "Izšķirtspēja",
+        "accuracy": "Precizitāte",
+        "unknown": "Nezināms",
+        "show_tiles": "Rādīt Kvadrātus",
+        "hide_tiles": "Paslēpt Kvadrātus"
+      },
+      "history": {
+        "title": "Vēsture",
+        "no_history": "Nav vēstures (jauns objekts)",
+        "version": "Versija",
+        "last_edit": "Pēdējais labojums",
+        "edited_by": "Laboja",
+        "changeset": "Izmaiņas",
+        "unknown": "Nezināms",
+        "note_no_history": "Nav vēstures (Jauna piezīme)",
+        "note_comments": "Komentāri",
+        "note_created_date": "Izveidošanas datums",
+        "note_created_user": "Izveidoja",
+        "note_link_text": "Piezīme no openstreetmap.org"
+      },
+      "location": {
+        "title": "Atrašanās vieta",
+        "unknown_location": "Nezināma atrašanās vieta"
+      },
+      "measurement": {
+        "title": "Mērvienība",
+        "geometry": "Ģeometrija",
+        "center": "Centrs",
+        "perimeter": "Perimetrs",
+        "length": "Garums",
+        "distance": "Attālums",
+        "area": "Platība",
+        "location": "Atrašanās vieta",
+        "metric": "Metriskā",
+        "imperial": "Imperiālā"
+      }
+    },
+    "geometry": {
+      "point": "punkts",
+      "relation": "relācija",
+      "note": "piezīme"
+    },
+    "geocoder": {
+      "search": "Meklēt pasaulē...",
+      "no_results_worldwide": "Nav rezultātu"
+    },
+    "geolocate": {
+      "title": "Parādīt manu atrašanās vietu",
+      "locating": "Nosakām atrašanās vietu, uzgaidiet..."
+    },
+    "inspector": {
+      "show_more": "Rādīt vairāk",
+      "view_on_osm": "Apskatīt openstreetmap.org",
+      "feature_type": "Objekta Veids",
+      "tags": "Apzīmējumi",
+      "relations": "Relācijas",
+      "new_relation": "Jauna relācija...",
+      "role": "Loma",
+      "choose": "Izvēlieties objekta tipu",
+      "remove": "Noņemt ",
+      "search": "Meklēt",
+      "unknown": "Nezināms",
+      "incomplete": "<nav lejuplādēts>",
+      "feature_list": "Meklēt objektus",
+      "edit": "Rediģēt objektu",
+      "check": {
+        "yes": "Jā",
+        "no": "Nē"
+      },
+      "radio": {
+        "structure": {
+          "type": "Tips",
+          "default": "Noklusējuma",
+          "layer": "Slānis"
+        }
+      },
+      "add": "Pievienot",
+      "none": "Nav",
+      "relation": "Relācija",
+      "location": "Atrašanās vieta",
+      "add_fields": "Pievienot lauku:"
+    },
+    "background": {
+      "title": "Fons",
+      "backgrounds": "Foni",
+      "none": "Nav",
+      "best_imagery": "Labākais zināmais attēlu avots šai vietai",
+      "switch": "Pārslēgties atpakaļ uz šo fonu",
+      "custom": "Pielāgots",
+      "overlays": "Pārklāji",
+      "reset": "Atiestatīt",
+      "display_options": "Displeja iespējas",
+      "brightness": "Spilgtums",
+      "contrast": "Kontrasts",
+      "saturation": "Piesātinājums",
+      "sharpness": "Asums",
+      "minimap": {
+        "description": "Rādīt Mini Karti",
+        "tooltip": "Parādīt attālinātu skatu lai palīdzētu atrast pašlaik redzamo vietu."
+      },
+      "offset": "Velc jebkur zemāk esošajā pelēkajā reģionā lai regulētu attēlu nobīdi, vai ievadi nobīdes attālumu numerātiski."
+    },
+    "map_data": {
+      "title": "Kartes Dati",
+      "description": "Kartes Dati",
+      "data_layers": "Datu slāņi",
+      "layers": {
+        "osm": {
+          "tooltip": "Kartes dati no OpenStreetMap"
+        },
+        "notes": {
+          "tooltip": "Piezīmju dati no OpenSteetMap"
+        },
+        "maproulette": {
+          "detail_title": "Detaļas",
+          "cancel": "Atcelt"
+        },
+        "custom": {
+          "tooltip": "Pārvelc un iemet datu failu šajā lapā, vai nospied pogu lai uzstādītu",
+          "title": "Pielāgoti Karšu Dati",
+          "zoom": "Pietuvināt līdz datiem"
+        }
+      },
+      "map_features": "Kartes Objekti",
+      "autohidden": "Šie objekti tika automātiski paslēpti, jo pārāk daudz būtu parādijušies uz ekrāna. Pietuvini karti, lai tos parādītu.",
+      "osmhidden": "Šie objekti tika automātiski paslēpti jo OpenStreetMap slānis ir paslēpts."
+    },
+    "feature": {
+      "points": {
+        "description": "Punkti",
+        "tooltip": "Intereses Punkti"
+      },
+      "service_roads": {
+        "description": "Servisa ceļi"
+      },
+      "paths": {
+        "description": "Takas"
+      },
+      "buildings": {
+        "description": "Ēkas"
+      },
+      "landuse": {
+        "description": "Zemes Izmantojuma Veidi"
+      },
+      "boundaries": {
+        "description": "Robežas",
+        "tooltip": "Administratīvās Robežas"
+      },
+      "water": {
+        "description": "Ūdens veidi"
+      },
+      "rail": {
+        "description": "Dzelzceļu veidi",
+        "tooltip": "Dzelzceļi"
+      },
+      "power": {
+        "description": "Elektroenerģijas veidi"
+      },
+      "others": {
+        "tooltip": "Viss pārējais"
+      }
+    },
+    "area_fill": {
+      "wireframe": {
+        "description": "Bez Pildījuma (Līnijattēls)",
+        "tooltip": "Iespējojot līnijattēla režīmu ir iespējams padarīt fona attēlu redzamību labāku. "
+      },
+      "partial": {
+        "description": "Daļējs Pildījums",
+        "tooltip": "Laukumi tiek zīmēti ar krāsas pildījumu tikai apkārt to malām. (Ieteicams iesācējiem)"
+      },
+      "full": {
+        "description": "Pilnīgs Pildījums",
+        "tooltip": "Laukumi tiek zīmēti pilnībā piepildīti."
+      }
+    },
+    "settings": {
+      "custom_background": {
+        "tooltip": "Rediģēt pielāgoto fonu",
+        "template": {
+          "placeholder": "Ievadi url veidni"
+        }
+      },
+      "custom_data": {
+        "tooltip": "Rediģēt pielāgoto datu slāni",
+        "file": {
+          "label": "Pārlūkot datnes"
+        },
+        "or": "Vai",
+        "url": {
+          "placeholder": "Ievadi url"
+        }
+      }
+    },
+    "preferences": {
+      "color_selection": {
+        "default": "Noklusējuma"
+      }
+    },
+    "restore": {
+      "heading": "Jums ir nesaglabātas izmaiņas"
+    },
+    "save": {
+      "title": "Saglabāt",
+      "help": "Pārbaudi savas izmaiņas un augšupielādē tās uz OpenStreetMap, padarot tās redzamas citiem lietotājiem.",
+      "no_changes": "Nav izmaiņu, ko saglabāt.",
+      "error": "Saglabāšanas laikā radās kļūdas",
+      "status_code": "Serveris atgrieza statusa kodu {code}",
+      "unknown_error_details": "Pārliecienies vai tev ir interneta pieslēgums.",
+      "uploading": "Augšupielādē izmaiņas uz OpenStreetMap...",
+      "conflict_progress": "Pārbaudam konfliktus: {num} no {total}",
+      "unsaved_changes": "Jums ir nesaglabātas izmaiņas",
+      "conflict": {
+        "header": "Salabot konfliktējošo rediģējumu",
+        "count": "Konfliktē {num} no {total}",
+        "previous": "< Iepriekšējais",
+        "next": "Nākošais >",
+        "keep_local": "Paturēt manu",
+        "keep_remote": "Izmantot viņu",
+        "restore": "Atjaunot",
+        "delete": "Atstāt izdzēstu",
+        "download_changes": "Vai lejupielādē osmChange failu",
+        "done": "Visi konflikti salaboti"
+      }
+    },
+    "merge_remote_changes": {
+      "conflict": {
+        "deleted": "Šo objektu izdzēsa {user}.",
+        "location": "Šo objektu pārvietoji gan tu, gan {user}.",
+        "nodelist": "Mezglus pārveidoji gan tu, gan {user}.",
+        "memberlist": "Relāciju locekļus redigēja gan jūs, gan arī {user}."
+      }
+    },
+    "success": {
+      "help_link_text": "Detaļas",
+      "view_on_osm": "Apskatīt izmaiņas OSM",
+      "like_osm": "Patīk OpenStreetMap? Sazinies ar citiem:",
+      "more": "Vairāk",
+      "events": "Notikumi",
+      "languages": "Valodas: {languages}",
+      "tell_us": "Pastāsti mums!"
+    },
+    "confirm": {
+      "okay": "Labi",
+      "cancel": "Atcelt"
+    },
+    "source_switch": {
+      "lose_changes": "Jums ir nesaglabātas izmaiņas. Tās tiks zaudētas mainot karšu serveri. Vai tiešām vēlaties mainīt karšu serveri?"
+    },
+    "rapid_feature_inspector": {
+      "tags": "Apzīmējumi"
+    },
+    "rapid_feature_toggle": {
+      "esri": {
+        "remove": "Noņemt "
+      }
+    },
+    "tag_reference": {
+      "description": "Apraksts",
+      "on_wiki": "{tag} wiki.osm.org",
+      "used_with": "izmantots kopā ar {type}"
+    },
+    "QA": {
+      "osmose": {
+        "detail_title": "Detaļas"
+      },
+      "keepRight": {
+        "detail_description": "Apraksts",
+        "comment": "Komentēt",
+        "comment_placeholder": "Ieraksti komentāru, kuru dalīt ar citiem lietotājiem.",
+        "close_comment": "Aizvērt un komentēt",
+        "error_parts": {
+          "highway": "lielceļš",
+          "railway": "dzelzceļš",
+          "waterway": "ūdensceļš",
+          "cycleway": "veloceliņš",
+          "cycleway_footpath": "veloceliņš/ietve",
+          "riverbank": "upmala",
+          "pub": "krogs",
+          "restaurant": "restorāns",
+          "school": "skola",
+          "university": "universitāte/augstskola",
+          "hospital": "slimnīca",
+          "library": "bibliotēka",
+          "theatre": "teātris",
+          "courthouse": "tiesas nams",
+          "bank": "banka",
+          "cinema": "kinoteātris",
+          "pharmacy": "aptieka",
+          "cafe": "kafejnīca",
+          "fast_food": "ātrās uzkodas",
+          "fuel": "degviela",
+          "from": "no",
+          "to": "līdz"
+        },
+        "errorTypes": {
+          "<60>": {
+            "title": "Novecojis apzīmējums"
+          },
+          "<70>": {
+            "title": "Trūkst apzīmējuma"
+          },
+          "<71>": {
+            "description": "{var1} nav apzīmējumu."
+          },
+          "<90>": {
+            "title": "Autoceļš bez atsauces apzīmējuma"
+          },
+          "<150>": {
+            "title": "Dzelzceļa pārbrauktuve bez apzīmējuma"
+          },
+          "<220>": {
+            "title": "Kļūda apzīmējuma nosaukumā"
+          },
+          "<300>": {
+            "title": "Nav norādīts maksimālais ātrums (maxspeed)"
+          },
+          "<400>": {
+            "title": "Ģeometriska problēma"
+          }
+        }
+      }
+    },
+    "streetside": {
+      "tooltip": "Ielas līmeņa attēli no Microsoft",
+      "view_on_bing": "Skatīt Bing kartēs",
+      "hires": "Augsta izšķirtspēja"
+    },
+    "mapillary_images": {
+      "tooltip": "Ielas līmeņa attēli no Mapillary"
+    },
+    "mapillary_map_features": {
+      "title": "Kartes Objekti",
+      "construction": {
+        "flat": {
+          "crosswalk_plain": "parasta pāreja",
+          "driveway": "piebraucamais ceļš"
+        }
+      },
+      "object": {
+        "bench": "sols",
+        "bike_rack": "divriteņu novietne",
+        "billboard": "reklāmas dēlis",
+        "catch_basin": "sateces baseins",
+        "cctv_camera": "videonovērošanas kamera",
+        "fire_hydrant": "ugunsdzēsības hidrants",
+        "mailbox": "pastkaste",
+        "parking_meter": "stāvvietas skaitītājs",
+        "phone_booth": "tālruņa būdiņa",
+        "sign": {
+          "advertisement": "reklāmas afiša",
+          "information": "informatīva zīme",
+          "other": "cita veida zīme",
+          "store": "veikala izkārtne",
+          "traffic_sign": {
+            "back": "ceļa zīme - aizmugure",
+            "direction_front": "ceļa zīme - priekšpuse",
+            "front": "ceļa zīme - priekšpuse"
+          }
+        },
+        "support": {
+          "pole": "stabs",
+          "traffic_sign_frame": "ceļa zīmes rāmis"
+        },
+        "traffic_cone": "ceļa konuss",
+        "traffic_light": {
+          "cyclists": "riteņbraucēju luksofors",
+          "general_horizontal": "līmenisks luksofors",
+          "general_upright": "garenisks luksofors",
+          "other": "luksofors",
+          "pedestrians": "gājēju luksofors"
+        },
+        "trash_can": "atkritumu urna"
+      }
+    },
+    "mapillary": {
+      "view_on_mapillary": "Skatīt šo attēlu Mapillary"
+    },
+    "note": {
+      "note": "Piezīme",
+      "title": "Rediģēt piezīmi",
+      "anonymous": "anonīms",
+      "closed": "(Aizvērts)",
+      "commentTitle": "Komentāri",
+      "status": {
+        "opened": "atvērts {when}",
+        "reopened": "atkārtoti atvērts {when}",
+        "commented": "komentēts {when}",
+        "closed": "aizvērts {when}"
+      },
+      "newComment": "Jauns komentārs",
+      "inputPlaceholder": "Ieraksti komentāru, kuru dalīt ar citiem lietotājiem.",
+      "close": "Aizvērt Piezīmi",
+      "open": "Atkārtoti atvērt Piezīmi",
+      "comment": "Komentēt",
+      "close_comment": "Aizvērt un komentēt",
+      "open_comment": "Atkārtoti atvērt un komentēt",
+      "report": "Ziņot",
+      "new": "Jauna piezīme",
+      "newDescription": "Izskaidro problēmu.",
+      "save": "Saglabāt piezīmi",
+      "login": "Tev ir jāieiet lai rediģētu vai komentētu uz šīs piezīmes.",
+      "upload_explanation": "Tavi komentāri būs publiski redzami visiem OpenStreetMap lietotājiem.",
+      "upload_explanation_with_user": "Tavi komentāri kā {user} būs publiski redzami visiem OpenStreetMap lietotājiem."
+    },
+    "help": {
+      "title": "Palīdzība",
+      "help": {
+        "title": "Palīdzība",
+        "open_data_h": "Atvērti dati",
+        "before_start_h": "Pirms tu sāc",
+        "open_source_h": "Atvērta Pirmkoda"
+      },
+      "overview": {
+        "title": "Pārskats",
+        "navigation_h": "Navigācija",
+        "features_h": "Kartes Objekti"
+      },
+      "editing": {
+        "title": "Rediģēšana un saglabāšana",
+        "select_h": "Izvēle",
+        "save_h": "Saglabāšana",
+        "upload_h": "Augšupielādēt",
+        "backups_h": "Automātiska rezerves kopija",
+        "keyboard_h": "Klavietūras Īsinājumtaustiņi"
+      },
+      "feature_editor": {
+        "title": "Objektu Redaktors",
+        "type_h": "Objekta Veids",
+        "tags_h": "Apzīmējumi"
+      },
+      "points": {
+        "title": "Punkti",
+        "add_point_h": "Punktu pievienošana",
+        "move_point_h": "Punktu pārvietošana",
+        "delete_point_h": "Punktu dzēšana"
+      },
+      "lines": {
+        "title": "Līnijas",
+        "add_line_h": "Līniju pievienošana",
+        "modify_line_h": "Līniju rediģēšana",
+        "connect_line_h": "Līniju savienošana",
+        "disconnect_line_h": "Līniju atvienošana",
+        "move_line_h": "Līniju pārvietošana",
+        "delete_line_h": "Līniju dzēšana"
+      },
+      "areas": {
+        "title": "Apgabali",
+        "point_or_area_h": "Punkti vai laukumi?",
+        "add_area_h": "Laukumu pievienošana",
+        "square_area_h": "Taisnlenķa stūri",
+        "modify_area_h": "Laukumu rediģēšana",
+        "delete_area_h": "Laukumu dzēšana"
+      },
+      "relations": {
+        "title": "Relācijas",
+        "edit_relation_h": "Relāciju rediģēšana",
+        "maintain_relation_h": "Relāciju uzturēšana",
+        "relation_types_h": "Relāciju veidi",
+        "multipolygon_h": "Multipoligoni",
+        "turn_restriction_h": "Pagriezienu aizliegumi",
+        "boundary_h": "Robežas"
+      },
+      "notes": {
+        "title": "Piezīmes",
+        "add_note_h": "Piezīmju pievienošana",
+        "update_note_h": "Aizvēršana, Atkārtota atvēršana un komentēšana",
+        "save_note_h": "Piezīmju saglabāšana"
+      },
+      "imagery": {
+        "title": "Fona attēlojums",
+        "sources_h": "Attēlu avoti",
+        "offsets_h": "Pieregulē Fona Nobīdi"
+      },
+      "streetlevel": {
+        "title": "Ielas līmeņa attēli",
+        "using_h": "Ielas līmeņa attēlu izmantošana"
+      },
+      "gps": {
+        "title": "GPS Treki",
+        "using_h": "GPS Treku izmantošana",
+        "tracing": "GPS Treks netiek nosūtīts uz OpenStreetMap - labākais veids, kā to izmantot ir zīmējot uz kartes, izmantojot to kā gidu priekš jauniem objektiem, ko tu pievieno."
+      },
+      "qa": {
+        "tools_h": "Rīki"
+      },
+      "field": {
+        "restrictions": {
+          "title": "Pagriezienu Aizliegumu Palīdzība",
+          "about": {
+            "title": "Par"
+          },
+          "inspecting": {
+            "title": "Pārbaudīšana"
+          },
+          "modifying": {
+            "title": "Rediģēšana"
+          },
+          "tips": {
+            "title": "Padomi"
+          }
+        }
+      }
+    },
+    "issues": {
+      "errors": {
+        "list_title": "Kļūdas"
+      },
+      "warnings": {
+        "list_title": "Brīdinājumi"
+      },
+      "missing_tag": {
+        "title": "Trūkstoši apzīmējumi"
+      },
+      "outdated_tags": {
+        "title": "Novecojuši apzīmējumi"
+      },
+      "private_data": {
+        "title": "Privāta informācija"
+      },
+      "impossible_oneway": {
+        "title": "Neiespējami vienvirziena objekti",
+        "highway": {
+          "start": {
+            "reference": "Vienvirziena ceļiem jābūt pieejamiem caur citiem ceļiem."
+          }
+        }
+      },
+      "fix": {
+        "add_a_bridge": {
+          "title": "Pievienot tiltu",
+          "annotation": "Tilts pievienots."
+        },
+        "add_a_tunnel": {
+          "title": "Pievienot tuneli",
+          "annotation": "Tunelis pievienots."
+        },
+        "move_tags": {
+          "title": "Pārvietot apzīmējumus",
+          "annotation": "Apzīmējumi pārvietoti."
+        },
+        "remove_tag": {
+          "title": "Noņemt apzīmējumu",
+          "annotation": "Apzīmējums noņemts."
+        },
+        "remove_tags": {
+          "title": "Dzēst apzīmējumus."
+        },
+        "tag_as_disconnected": {
+          "title": "Atzīmēt kā atvienotu",
+          "annotation": "Ļoti tuvu esoši objekti atzīmēti kā atvienoti."
+        },
+        "tag_this_as_higher": {
+          "title": "Atzīmēt kā augstāk esošu"
+        },
+        "tag_this_as_lower": {
+          "title": "Atzīmēt kā zemāk esošu"
+        },
+        "upgrade_tags": {
+          "title": "Atjaunināt apzīmējumus",
+          "annotation": "Vecie apzīmējumi atjaunināti."
+        }
+      }
+    },
+    "intro": {
+      "done": "pabeigts",
+      "ok": "Labi",
+      "graph": {
+        "state": "<value for addr:state>",
+        "countrycode": "lv",
+        "name": {
+          "armitage-street": "Brīvības iela",
+          "pizza-hut": "Čilli pica",
+          "portage-avenue": "Gaujas iela",
+          "portage-river": "Gaujas upe"
+        }
+      },
+      "welcome": {
+        "title": "Laipni lūdzam"
+      },
+      "navigation": {
+        "title": "Navigācija"
+      },
+      "points": {
+        "title": "Punkti"
+      },
+      "areas": {
+        "title": "Apgabali"
+      },
+      "lines": {
+        "title": "Līnijas"
+      },
+      "buildings": {
+        "title": "Ēkas",
+        "done_square": "Redzi kā ēkas stūri tika automātiski ievirzīti vietā? Iemācīsimies vēl vienu parocīgu triku."
+      },
+      "startediting": {
+        "title": "Sākt rediģēt",
+        "save": "Neizmirstiet regulāri saglabāt izmaiņas!",
+        "start": "Sāc kartēt!"
+      }
+    },
+    "shortcuts": {
+      "title": "Klavietūras Īsinājumtaustiņi",
+      "tooltip": "Rādīt īsinājumtaustiņu ekrānu.",
+      "key": {
+        "delete": "Dzēst"
+      },
+      "browsing": {
+        "navigation": {
+          "title": "Navigācija"
+        },
+        "help": {
+          "title": "Palīdzība"
+        },
+        "selecting": {
+          "lasso": "Uzzīmēt izvēlnes laso ap objektiem",
+          "search": "Atrast objektus, kas atbilst meklētajam tekstam"
+        }
+      },
+      "editing": {
+        "commands": {
+          "copy": "Kopēt izvēlētos objektus",
+          "paste": "Ielīmēt kopētos objektus"
+        },
+        "operations": {
+          "merge": "Apvienot (apkopot) izvēlētos objektus",
+          "move": "Pārvietot izvēlētos objektus",
+          "rotate": "Pagriezt izvēlētos objektus",
+          "delete": "Dzēst izvēlētos objektus"
+        }
+      },
+      "tools": {
+        "title": "Rīki",
+        "info": {
+          "title": "Informācija"
+        }
+      }
+    },
+    "wikidata": {
+      "description": "Apraksts"
+    },
+    "languageNames": {
+      "aa": "afāru",
+      "ab": "abhāzu",
+      "ace": "ačinu",
+      "ach": "ačolu",
+      "ada": "adangmu",
+      "ady": "adigu",
+      "ae": "avesta",
+      "af": "afrikandu",
+      "afh": "afrihili",
+      "agq": "aghemu",
+      "ain": "ainu",
+      "ak": "akanu",
+      "akk": "akadiešu",
+      "ale": "aleutu",
+      "alt": "dienvidaltajiešu",
+      "am": "amharu",
+      "an": "aragoniešu",
+      "ang": "senangļu",
+      "ann": "obolo",
+      "anp": "angika",
+      "ar": "arābu",
+      "ar-001": "mūsdienu standarta arābu",
+      "arc": "aramiešu",
+      "arn": "araukāņu",
+      "arp": "arapahu",
+      "ars": "ņedžu arābu",
+      "arw": "aravaku",
+      "as": "asamiešu",
+      "asa": "asu",
+      "ast": "astūriešu",
+      "atj": "atikameku",
+      "av": "avāru",
+      "awa": "avadhu",
+      "ay": "aimaru",
+      "az": "azerbaidžāņu",
+      "az-Arab": "dienvidazerbaidžāņu",
+      "ba": "baškīru",
+      "bal": "beludžu",
+      "ban": "baliešu",
+      "bas": "basu",
+      "bax": "bamumu",
+      "bbj": "gomalu",
+      "be": "baltkrievu",
+      "bej": "bedžu",
+      "bem": "bembu",
+      "bez": "bena",
+      "bfd": "bafutu",
+      "bg": "bulgāru",
+      "bgc": "harjanvi",
+      "bgn": "rietumbeludžu",
+      "bho": "bhodžpūru",
+      "bi": "bišlamā",
+      "bik": "bikolu",
+      "bin": "binu",
+      "bkm": "komu",
+      "bla": "siksiku",
+      "bm": "bambaru",
+      "bn": "bengāļu",
+      "bo": "tibetiešu",
+      "br": "bretoņu",
+      "bra": "bradžiešu",
+      "brx": "bodo",
+      "bs": "bosniešu",
+      "bss": "nkosi",
+      "bua": "burjatu",
+      "bug": "bugu",
+      "bum": "bulu",
+      "byn": "bilinu",
+      "byv": "medumbu",
+      "ca": "katalāņu",
+      "cad": "kadu",
+      "car": "karību",
+      "cay": "kajuga",
+      "cch": "atsamu",
+      "ccp": "čakmu",
+      "ce": "čečenu",
+      "ceb": "sebuāņu",
+      "cgg": "kiga",
+      "ch": "čamorru",
+      "chb": "čibču",
+      "chg": "džagatajs",
+      "chk": "čūku",
+      "chm": "mariešu",
+      "chn": "činuku žargons",
+      "cho": "čoktavu",
+      "chp": "čipevaianu",
+      "chr": "čiroku",
+      "chy": "šejenu",
+      "ckb": "centrālkurdu",
+      "clc": "čilkotīnu",
+      "co": "korsikāņu",
+      "cop": "koptu",
+      "cr": "krī",
+      "crg": "mičifu",
+      "crh": "Krimas tatāru",
+      "crj": "dienvidaustrumu krī",
+      "crk": "līdzenumu krī",
+      "crl": "ziemeļaustrumu krī",
+      "crm": "mūsu krī",
+      "crr": "Karolīnas algonkinu",
+      "crs": "franciskā kreoliskā valoda (Seišelu salas)",
+      "cs": "čehu",
+      "csb": "kašubu",
+      "csw": "purvu krī",
+      "cu": "baznīcslāvu",
+      "cv": "čuvašu",
+      "cy": "velsiešu",
+      "da": "dāņu",
+      "dak": "dakotu",
+      "dar": "dargu",
+      "dav": "taitu",
+      "de": "vācu",
+      "de-CH": "augšvācu (Šveice)",
+      "del": "delavēru",
+      "den": "sleivu",
+      "dgr": "dogribu",
+      "din": "dinku",
+      "dje": "zarmu",
+      "doi": "dogru",
+      "dsb": "lejassorbu",
+      "dua": "dualu",
+      "dum": "vidusholandiešu",
+      "dv": "maldīviešu",
+      "dyo": "diola-fonjī",
+      "dyu": "diūlu",
+      "dz": "dzongke",
+      "dzg": "dazu",
+      "ebu": "kjembu",
+      "ee": "evu",
+      "efi": "efiku",
+      "egy": "ēģiptiešu",
+      "eka": "ekadžuku",
+      "el": "grieķu",
+      "elx": "elamiešu",
+      "en": "angļu",
+      "en-GB": "angļu (Lielbritānija)",
+      "enm": "vidusangļu",
+      "eo": "esperanto",
+      "es": "spāņu",
+      "et": "igauņu",
+      "eu": "basku",
+      "ewo": "evondu",
+      "fa": "persiešu",
+      "fa-AF": "darī",
+      "fan": "fangu",
+      "fat": "fantu",
+      "ff": "fulu",
+      "fi": "somu",
+      "fil": "filipīniešu",
+      "fj": "fidžiešu",
+      "fo": "fēru",
+      "fon": "fonu",
+      "fr": "franču",
+      "frc": "kadžūnu franču",
+      "frm": "vidusfranču",
+      "fro": "senfranču",
+      "frr": "ziemeļfrīzu",
+      "frs": "austrumfrīzu",
+      "fur": "friūlu",
+      "fy": "rietumfrīzu",
+      "ga": "īru",
+      "gaa": "ga",
+      "gag": "gagauzu",
+      "gay": "gajo",
+      "gba": "gbaju",
+      "gd": "skotu gēlu",
+      "gez": "gēzu",
+      "gil": "kiribatiešu",
+      "gl": "galisiešu",
+      "gmh": "vidusaugšvācu",
+      "gn": "gvaranu",
+      "goh": "senaugšvācu",
+      "gon": "gondu valodas",
+      "gor": "gorontalu",
+      "got": "gotu",
+      "grb": "grebo",
+      "grc": "sengrieķu",
+      "gsw": "Šveices vācu",
+      "gu": "gudžaratu",
+      "guz": "gusii",
+      "gv": "meniešu",
+      "gwi": "kučinu",
+      "ha": "hausu",
+      "hai": "haidu",
+      "haw": "havajiešu",
+      "hax": "dienvidhaidu",
+      "he": "ivrits",
+      "hi": "hindi",
+      "hil": "hiligainonu",
+      "hit": "hetu",
+      "hmn": "hmongu",
+      "ho": "hirimotu",
+      "hr": "horvātu",
+      "hsb": "augšsorbu",
+      "ht": "haitiešu",
+      "hu": "ungāru",
+      "hup": "hupu",
+      "hur": "halkomelenu",
+      "hy": "armēņu",
+      "hz": "hereru",
+      "ia": "interlingva",
+      "iba": "ibanu",
+      "ibb": "ibibio",
+      "id": "indonēziešu",
+      "ie": "interlingve",
+      "ig": "igbo",
+      "ii": "Sičuaņas ji",
+      "ik": "inupiaku",
+      "ikt": "Rietumkanādas inuītu",
+      "ilo": "iloku",
+      "inh": "ingušu",
+      "io": "ido",
+      "is": "islandiešu",
+      "it": "itāļu",
+      "iu": "inuītu",
+      "ja": "japāņu",
+      "jbo": "ložbans",
+      "jgo": "ngomba",
+      "jmc": "mačamu",
+      "jpr": "jūdpersiešu",
+      "jrb": "jūdarābu",
+      "jv": "javiešu",
+      "ka": "gruzīnu",
+      "kaa": "karakalpaku",
+      "kab": "kabilu",
+      "kac": "kačinu",
+      "kaj": "kadži",
+      "kam": "kambu",
+      "kaw": "kāvi",
+      "kbd": "kabardiešu",
+      "kbl": "kaņembu",
+      "kcg": "katabu",
+      "kde": "makonde",
+      "kea": "kaboverdiešu",
+      "kfo": "koru",
+      "kg": "kongu",
+      "kgp": "kaingangs",
+      "kha": "khasu",
+      "kho": "hotaniešu",
+      "khq": "koiračiinī",
+      "ki": "kikuju",
+      "kj": "kvaņamu",
+      "kk": "kazahu",
+      "kkj": "kako",
+      "kl": "grenlandiešu",
+      "kln": "kalendžīnu",
+      "km": "khmeru",
+      "kmb": "kimbundu",
+      "kn": "kannadu",
+      "ko": "korejiešu",
+      "koi": "komiešu-permiešu",
+      "kok": "konkanu",
+      "kos": "kosrājiešu",
+      "kpe": "kpellu",
+      "kr": "kanuru",
+      "krc": "karačaju un balkāru",
+      "krl": "karēļu",
+      "kru": "kuruhu",
+      "ks": "kašmiriešu",
+      "ksb": "šambalu",
+      "ksf": "bafiju",
+      "ksh": "Ķelnes vācu",
+      "ku": "kurdu",
+      "kum": "kumiku",
+      "kut": "kutenaju",
+      "kv": "komiešu",
+      "kw": "korniešu",
+      "kwk": "kvakvala",
+      "ky": "kirgīzu",
+      "la": "latīņu",
+      "lad": "ladino",
+      "lag": "langi",
+      "lah": "landu",
+      "lam": "lambu",
+      "lb": "luksemburgiešu",
+      "lez": "lezgīnu",
+      "lg": "gandu",
+      "li": "limburgiešu",
+      "lil": "lilluetu",
+      "lkt": "lakotu",
+      "ln": "lingala",
+      "lo": "laosiešu",
+      "lol": "mongu",
+      "lou": "Luiziānas kreolu",
+      "loz": "lozu",
+      "lrc": "ziemeļluru",
+      "lsm": "sāmia",
+      "lt": "lietuviešu",
+      "lu": "lubakatanga",
+      "lua": "lubalulva",
+      "lui": "luisenu",
+      "lun": "lundu",
+      "luo": "luo",
+      "lus": "lušeju",
+      "luy": "luhju",
+      "lv": "latviešu",
+      "mad": "maduriešu",
+      "maf": "mafu",
+      "mag": "magahiešu",
+      "mai": "maithili",
+      "mak": "makasaru",
+      "man": "mandingu",
+      "mas": "masaju",
+      "mde": "mabu",
+      "mdf": "mokšu",
+      "mdr": "mandaru",
+      "men": "mendu",
+      "mer": "meru",
+      "mfe": "Maurīcijas kreolu",
+      "mg": "malagasu",
+      "mga": "vidusīru",
+      "mgh": "makua",
+      "mgo": "metu",
+      "mh": "māršaliešu",
+      "mi": "maoru",
+      "mic": "mikmaku",
+      "min": "minangkabavu",
+      "mk": "maķedoniešu",
+      "ml": "malajalu",
+      "mn": "mongoļu",
+      "mnc": "mandžūru",
+      "mni": "manipūru",
+      "moe": "motanju",
+      "moh": "mohauku",
+      "mos": "mosu",
+      "mr": "marathu",
+      "ms": "malajiešu",
+      "mt": "maltiešu",
+      "mua": "mundangu",
+      "mus": "krīku",
+      "mwl": "mirandiešu",
+      "mwr": "marvaru",
+      "my": "birmiešu",
+      "mye": "mjenu",
+      "myv": "erzju",
+      "mzn": "mazanderāņu",
+      "na": "nauruiešu",
+      "nap": "neapoliešu",
+      "naq": "nama",
+      "nb": "norvēģu bukmols",
+      "nd": "ziemeļndebelu",
+      "nds": "lejasvācu",
+      "nds-NL": "lejassakšu",
+      "ne": "nepāliešu",
+      "new": "nevaru",
+      "ng": "ndongu",
+      "nia": "njasu",
+      "niu": "niuāņu",
+      "nl": "holandiešu",
+      "nl-BE": "flāmu",
+      "nmg": "kvasio",
+      "nn": "jaunnorvēģu",
+      "nnh": "ngjembūnu",
+      "no": "norvēģu",
+      "nog": "nogaju",
+      "non": "sennorvēģu",
+      "nqo": "nko",
+      "nr": "dienvidndebelu",
+      "nso": "ziemeļsotu",
+      "nus": "nueru",
+      "nv": "navahu",
+      "nwc": "klasiskā nevaru",
+      "ny": "čičeva",
+      "nym": "ņamvezu",
+      "nyn": "ņankolu",
+      "nyo": "ņoru",
+      "nzi": "nzemu",
+      "oc": "oksitāņu",
+      "oj": "odžibvu",
+      "ojb": "ziemeļrietumu odžibvu",
+      "ojc": "centrālā odžibvu",
+      "ojs": "odži-krī",
+      "ojw": "rietumodžibvu",
+      "oka": "okanaganu",
+      "om": "oromu",
+      "or": "oriju",
+      "os": "osetīnu",
+      "osa": "važāžu",
+      "ota": "turku osmaņu",
+      "pa": "pandžabu",
+      "pag": "pangasinanu",
+      "pal": "pehlevi",
+      "pam": "pampanganu",
+      "pap": "papjamento",
+      "pau": "palaviešu",
+      "pcm": "Nigērijas pidžinvaloda",
+      "peo": "senpersu",
+      "phn": "feniķiešu",
+      "pi": "pāli",
+      "pis": "pidžinvaloda",
+      "pl": "poļu",
+      "pon": "ponapiešu",
+      "pqm": "malisetu-pasamakvodi",
+      "prg": "prūšu",
+      "pro": "senprovansiešu",
+      "ps": "puštu",
+      "pt": "portugāļu",
+      "qu": "kečvu",
+      "quc": "kiče",
+      "raj": "radžastāņu",
+      "rap": "rapanuju",
+      "rar": "rarotongiešu",
+      "rhg": "rohindžu",
+      "rm": "retoromāņu",
+      "rn": "rundu",
+      "ro": "rumāņu",
+      "ro-MD": "moldāvu",
+      "rof": "rombo",
+      "rom": "čigānu",
+      "ru": "krievu",
+      "rup": "aromūnu",
+      "rw": "kiņaruanda",
+      "rwk": "ruanda",
+      "sa": "sanskrits",
+      "sad": "sandavu",
+      "sah": "jakutu",
+      "sam": "Samārijas aramiešu",
+      "saq": "samburu",
+      "sas": "sasaku",
+      "sat": "santalu",
+      "sba": "ngambeju",
+      "sbp": "sangu",
+      "sc": "sardīniešu",
+      "scn": "sicīliešu",
+      "sco": "skotu",
+      "sd": "sindhu",
+      "sdh": "dienvidkurdu",
+      "se": "ziemeļsāmu",
+      "see": "seneku",
+      "seh": "senu",
+      "sel": "selkupu",
+      "ses": "koiraboro senni",
+      "sg": "sango",
+      "sga": "senīru",
+      "sh": "serbu–horvātu",
+      "shi": "šilhu",
+      "shn": "šanu",
+      "shu": "Čadas arābu",
+      "si": "singāļu",
+      "sid": "sidamu",
+      "sk": "slovāku",
+      "sl": "slovēņu",
+      "slh": "dienvidlušucīdu",
+      "sm": "samoāņu",
+      "sma": "dienvidsāmu",
+      "smj": "Luleo sāmu",
+      "smn": "Inari sāmu",
+      "sms": "skoltsāmu",
+      "sn": "šonu",
+      "snk": "soninku",
+      "so": "somāļu",
+      "sog": "sogdiešu",
+      "sq": "albāņu",
+      "sr": "serbu",
+      "srn": "sranantogo",
+      "srr": "serēru",
+      "ss": "svatu",
+      "ssy": "saho",
+      "st": "dienvidsotu",
+      "str": "šauruma sališu",
+      "su": "zundu",
+      "suk": "sukumu",
+      "sus": "susu",
+      "sux": "šumeru",
+      "sv": "zviedru",
+      "sw": "svahili",
+      "sw-CD": "svahili (Kongo)",
+      "swb": "komoru",
+      "syc": "klasiskā sīriešu",
+      "syr": "sīriešu",
+      "ta": "tamilu",
+      "tce": "dienvidtutčonu",
+      "te": "telugu",
+      "tem": "temnu",
+      "teo": "teso",
+      "ter": "tereno",
+      "tet": "tetumu",
+      "tg": "tadžiku",
+      "tgx": "tagišu",
+      "th": "taju",
+      "tht": "tahltanu",
+      "ti": "tigrinja",
+      "tig": "tigru",
+      "tiv": "tivu",
+      "tk": "turkmēņu",
+      "tkl": "tokelaviešu",
+      "tl": "tagalu",
+      "tlh": "klingoņu",
+      "tli": "tlinkitu",
+      "tmh": "tuaregu",
+      "tn": "cvanu",
+      "to": "tongiešu",
+      "tog": "Njasas tongu",
+      "tok": "tokiponu",
+      "tpi": "tokpisins",
+      "tr": "turku",
+      "trv": "taroko",
+      "ts": "congu",
+      "tsi": "cimšiāņu",
+      "tt": "tatāru",
+      "ttm": "ziemeļu tučonu",
+      "tum": "tumbuku",
+      "tvl": "tuvaliešu",
+      "tw": "tvī",
+      "twq": "tasavaku",
+      "ty": "taitiešu",
+      "tyv": "tuviešu",
+      "tzm": "Centrālmarokas tamazīts",
+      "udm": "udmurtu",
+      "ug": "uiguru",
+      "uga": "ugaritiešu",
+      "uk": "ukraiņu",
+      "umb": "umbundu",
+      "ur": "urdu",
+      "uz": "uzbeku",
+      "vai": "vaju",
+      "ve": "vendu",
+      "vi": "vjetnamiešu",
+      "vo": "volapiks",
+      "vot": "votu",
+      "vun": "vundžo",
+      "wa": "valoņu",
+      "wae": "Vallisas vācu",
+      "wal": "valamu",
+      "war": "varaju",
+      "was": "vašo",
+      "wbp": "varlpirī",
+      "wo": "volofu",
+      "wuu": "vu ķīniešu",
+      "xal": "kalmiku",
+      "xh": "khosu",
+      "xog": "sogu",
+      "yao": "jao",
+      "yap": "japiešu",
+      "yav": "janbaņu",
+      "ybb": "jembu",
+      "yi": "jidišs",
+      "yo": "jorubu",
+      "yrl": "njengatu",
+      "yue": "ķīniešu (kantoniešu)",
+      "za": "džuanu",
+      "zap": "sapoteku",
+      "zbl": "blissimbolika",
+      "zen": "zenagu",
+      "zgh": "standarta tamazigtu (Maroka)",
+      "zh": "ķīniešu (mandarīnu)",
+      "zh-Hans": "ķīniešu vienkāršotā (mandarīnu)",
+      "zh-Hant": "ķīniešu tradicionālā (mandarīnu)",
+      "zu": "zulu",
+      "zun": "zunju",
+      "zza": "zazaki"
+    },
+    "scriptNames": {
+      "Adlm": "adlama",
+      "Arab": "arābu",
+      "Aran": "nastaliku",
+      "Armi": "aramiešu",
+      "Armn": "armēņu",
+      "Bali": "baliešu",
+      "Beng": "bengāļu",
+      "Bopo": "bopomofo",
+      "Brah": "brahmi",
+      "Brai": "Braila raksts",
+      "Cakm": "čakmu",
+      "Cans": "vienotā Kanādas aborigēnu zilbju rakstība",
+      "Cher": "irokēzu",
+      "Copt": "koptu",
+      "Cyrl": "kirilica",
+      "Cyrs": "senslāvu",
+      "Deva": "dēvanāgari",
+      "Egyd": "demotiskais raksts",
+      "Egyh": "hierātiskais raksts",
+      "Egyp": "ēģiptiešu hieroglifi",
+      "Ethi": "etiopiešu",
+      "Geor": "gruzīnu",
+      "Goth": "gotu",
+      "Grek": "grieķu",
+      "Gujr": "gudžaratu",
+      "Guru": "pandžabu",
+      "Hanb": "haņu ar bopomofo",
+      "Hang": "hangils",
+      "Hani": "haņu",
+      "Hans": "haņu vienkāršotā",
+      "Hant": "haņu tradicionālā",
+      "Hebr": "ivrits",
+      "Hira": "hiragana",
+      "Hrkt": "japāņu zilbju alfabēts",
+      "Hung": "senungāru",
+      "Ital": "vecitāļu",
+      "Jamo": "jamo",
+      "Java": "javiešu",
+      "Jpan": "japāņu",
+      "Kana": "katakana",
+      "Khmr": "khmeru",
+      "Knda": "kannadu",
+      "Kore": "korejiešu",
+      "Laoo": "laosiešu",
+      "Latn": "latīņu",
+      "Lina": "lineārā A",
+      "Linb": "lineārā B",
+      "Lydi": "līdiešu",
+      "Maya": "maiju",
+      "Mlym": "malajalu",
+      "Mong": "mongoļu",
+      "Moon": "Mūna raksts",
+      "Mtei": "meitei-majeku",
+      "Mymr": "birmiešu",
+      "Nkoo": "nko",
+      "Ogam": "ogamiskais raksts",
+      "Olck": "olčiki",
+      "Orya": "oriju",
+      "Osma": "osmaņu turku",
+      "Phnx": "feniķiešu",
+      "Rohg": "hanifi",
+      "Roro": "rongorongo",
+      "Runr": "rūnu raksts",
+      "Samr": "samariešu",
+      "Sinh": "singāļu",
+      "Sund": "zundu",
+      "Syrc": "sīriešu",
+      "Syrj": "rietumsīriešu",
+      "Syrn": "austrumsīriešu",
+      "Taml": "tamilu",
+      "Telu": "telugu",
+      "Tfng": "tifinagu",
+      "Tglg": "tagalu",
+      "Thaa": "tāna",
+      "Thai": "taju",
+      "Tibt": "tibetiešu",
+      "Vaii": "vaju",
+      "Xpeo": "senperiešu",
+      "Xsux": "šumeru-akadiešu ķīļraksts",
+      "Yiii": "ji",
+      "Zinh": "mantotā",
+      "Zmth": "matemātiskais pieraksts",
+      "Zsye": "emocijzīmes",
+      "Zsym": "simboli",
+      "Zxxx": "bez rakstības",
+      "Zyyy": "vispārējā",
+      "Zzzz": "nezināma rakstība"
+    }
+  }
+}

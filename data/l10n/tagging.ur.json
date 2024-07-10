@@ -1,0 +1,881 @@
+{
+  "ur": {
+    "presets": {
+      "fields": {
+        "access": {
+          "label": "داخلہ برائے:",
+          "options": {
+            "designated": {
+              "description": "مقامی اشاروں یا خاص مقامی قوانین کی بنیاد پر رسائی کی اجازت"
+            },
+            "destination": {
+              "description": "محض منزل کی رسائی تک کیلئے اجازت"
+            },
+            "no": {
+              "description": "سرعام رسائی ممنوعہ ہے"
+            },
+            "permit": {
+              "description": "رسائی بذریعہ درست اجازت نامہ"
+            },
+            "yes": {
+              "description": "رسائی بذریعہ قانون، رسائی برائے راہ"
+            }
+          },
+          "terms": "رسائی برائے:",
+          "types": {
+            "access": "تمام",
+            "bicycle": "سائیکل",
+            "foot": "پیدل",
+            "horse": "گھوڑے",
+            "motor_vehicle": "گاڑیاں"
+          }
+        },
+        "access_simple": {
+          "label": "داخلہ برائے:"
+        },
+        "addr/interpolation": {
+          "label": "قسم",
+          "options": {
+            "all": "تمام",
+            "alphabetic": "الفبائی"
+          }
+        },
+        "address": {
+          "label": "پتہ",
+          "placeholders": {
+            "block_number!jp": "بلاک نمبر",
+            "city": "شہر",
+            "city!vn": "نگر",
+            "conscriptionnumber": "۱۲۳",
+            "country": "ملک",
+            "county": "کاؤنٹی",
+            "county!jp": "ضلع",
+            "district": "ضلع",
+            "floor": "منزل",
+            "hamlet": "بستی",
+            "housenumber": "۱۲۳",
+            "housenumber!jp": "مکان نمبر",
+            "neighbourhood": "محلہ",
+            "place": "جگہ",
+            "postcode": "رمز ڈاک",
+            "province": "صوبہ",
+            "state": "ریاست",
+            "street": "گلی",
+            "subdistrict": "ذیلی ضلع",
+            "suburb": "مضافات"
+          }
+        },
+        "aerialway/access": {
+          "options": {
+            "entry": "داخلہ",
+            "exit": "خارج"
+          }
+        },
+        "aerialway/capacity": {
+          "label": "گنجائش (فی گھنٹہ)"
+        },
+        "archaeological_site": {
+          "options": {
+            "baths": "حمامات",
+            "city": "تاریخی شہر",
+            "settlement": "تاریخی بستی"
+          }
+        },
+        "atm": {
+          "label": "اے ٹی ایم"
+        },
+        "attraction": {
+          "label": "قسم"
+        },
+        "barrier": {
+          "options": {
+            "toll_booth": "ٹول پلازہ",
+            "wall": "دیوار"
+          }
+        },
+        "bath/type": {
+          "options": {
+            "lake": "جھیل"
+          }
+        },
+        "board_type": {
+          "options": {
+            "history": "تاریخ",
+            "plants": "نباتات"
+          }
+        },
+        "building": {
+          "label": "عمارت",
+          "options": {
+            "bungalow": "بنگلہ",
+            "church": "گرجا گھر",
+            "house": "گھر",
+            "mosque": "مسجد عمارت",
+            "office": "دفاتر عمارت",
+            "roof": "چھت",
+            "stable": "اسطبل",
+            "synagogue": "یہودی مسجد"
+          }
+        },
+        "building/levels": {
+          "label": "منزلیں"
+        },
+        "capacity": {
+          "label": "گنجائش"
+        },
+        "capacity_parking": {
+          "label": "کل گنجائس"
+        },
+        "castle_type": {
+          "options": {
+            "palace": "محل"
+          }
+        },
+        "charge_toll": {
+          "label": "ٹول رقم"
+        },
+        "clothes": {
+          "options": {
+            "socks": "جرابیں"
+          }
+        },
+        "craft": {
+          "options": {
+            "gardener": "مالی",
+            "tailor": "درزی"
+          }
+        },
+        "crop": {
+          "options": {
+            "coffee": "کافی",
+            "flowers": "پھول",
+            "grape": "انگور",
+            "grass": "گھاس",
+            "potato": "آلو",
+            "rice": "چاول",
+            "tea": "پتی",
+            "tobacco": "تنباکو",
+            "vegetable": "سبزی",
+            "wheat": "گندم"
+          }
+        },
+        "cuisine": {
+          "options": {
+            "american": "امریکی",
+            "asian": "ایشیائی",
+            "burger": "برگر",
+            "cake": "کیک",
+            "chicken": "مرغ",
+            "chinese": "چینی",
+            "dessert": "میٹھا",
+            "donut": "ڈونٹ",
+            "french": "فرانسیسی",
+            "german": "جرمن",
+            "greek": "یونانی",
+            "indian": "بھارتی",
+            "indonesian": "انڈونیشیائی",
+            "italian": "اطالوی",
+            "japanese": "جاپانی",
+            "juice": "رس",
+            "kebab": "جاپانی",
+            "korean": "کوریائی",
+            "lebanese": "لبنانی",
+            "malaysian": "ملائیشیائی",
+            "pasta": "پاستا",
+            "pizza": "پیزا",
+            "polish": "پولش",
+            "portuguese": "پرتگالی",
+            "russian": "روسی",
+            "salad": "سالاد",
+            "spanish": "ہسپانوی",
+            "sushi": "سوشی",
+            "taiwanese": "تائوانی",
+            "thai": "تھائی",
+            "turkish": "ترکش",
+            "ukrainian": "یوکرائنی",
+            "vietnamese": "ویتنامی"
+          }
+        },
+        "date": {
+          "label": "تاریخ"
+        },
+        "denomination": {
+          "label": "فرقہ",
+          "terms": "ذات"
+        },
+        "description": {
+          "label": "تفصیل"
+        },
+        "destination_waterway": {
+          "label": "منزل"
+        },
+        "diet_multi": {
+          "options": {
+            "halal": "حلال",
+            "kosher": "کوشر",
+            "vegan": "ویگن",
+            "vegetarian": "سبز"
+          }
+        },
+        "distance": {
+          "label": "فاصلہ"
+        },
+        "email": {
+          "label": "ای میل",
+          "placeholder": "misaal@misaal.com"
+        },
+        "embassy": {
+          "options": {
+            "yes": "سفارت خانہ"
+          }
+        },
+        "fax": {
+          "label": "فیکس"
+        },
+        "fire_hydrant/type": {
+          "options": {
+            "wall": "دیوار"
+          }
+        },
+        "fuel": {
+          "label": "تیل"
+        },
+        "gender": {
+          "label": "جنس",
+          "options": {
+            "female": "عورت",
+            "male": "مرد"
+          }
+        },
+        "generator/source": {
+          "options": {
+            "coal": "کوئلہ",
+            "diesel": "ڈیزل",
+            "oil": "تیل"
+          }
+        },
+        "healthcare": {
+          "options": {
+            "hospital": "ہسپتال"
+          }
+        },
+        "healthcare/speciality": {
+          "options": {
+            "vaccination": "ٹیکا کاری"
+          }
+        },
+        "historic": {
+          "options": {
+            "castle": "قلعہ",
+            "church": "گرجا",
+            "railway": "ریلوے"
+          }
+        },
+        "horse_riding": {
+          "options": {
+            "horse_riding": "جی ہاں",
+            "undefined": "نہیں"
+          }
+        },
+        "hot_water": {
+          "label": "گرم پانی"
+        },
+        "image": {
+          "label": "تصویر"
+        },
+        "internet_access": {
+          "options": {
+            "no": "نہیں",
+            "yes": "جی ہاں"
+          }
+        },
+        "junction_line": {
+          "options": {
+            "roundabout": "چورنگی"
+          }
+        },
+        "language_multi": {
+          "label": "زبانیں"
+        },
+        "material": {
+          "options": {
+            "brick": "اینٹ",
+            "glass": "شیشہ",
+            "iron": "لوہا",
+            "plastic": "پلاسٹک",
+            "sand": "ریت",
+            "soil": "مٹی",
+            "wood": "لکڑ"
+          }
+        },
+        "maxspeed": {
+          "label": "حدِ رفتار",
+          "terms": "رفتار کی حد"
+        },
+        "maxspeed/hgv": {
+          "label": "حدِ رفتار برائے LTV"
+        },
+        "memorial": {
+          "options": {
+            "statue": "مجسمہ"
+          }
+        },
+        "name": {
+          "label": "نام",
+          "placeholder": "سرعام نام (جو ہو)"
+        },
+        "office": {
+          "options": {
+            "financial": "مالی دفتر",
+            "government": "سرکاری دفتر",
+            "political_party": "سیاسی جماعت کا دفتر",
+            "religion": "دینی دفتر"
+          }
+        },
+        "oneway": {
+          "label": "یکطرفہ سڑک",
+          "options": {
+            "no": "نہیں",
+            "yes": "جی ہاں"
+          }
+        },
+        "oneway_yes": {
+          "options": {
+            "no": "نہیں",
+            "yes": "جی ہاں"
+          }
+        },
+        "operator": {
+          "label": "انتظامیہ"
+        },
+        "payment_multi": {
+          "options": {
+            "alipay": "ایلی پئے",
+            "apple_pay": "ایپل پئے",
+            "google_pay": "گوگل پئے",
+            "paypal": "پئے پال",
+            "visa": "ویزہ",
+            "visa_debit": "ویزہ ڈیبٹ",
+            "visa_electron": "ویزہ الیکٹران",
+            "wechat": "وی چیٹ پئے"
+          }
+        },
+        "phone": {
+          "label": "ٹیلی فون"
+        },
+        "piste/difficulty": {
+          "label": "دشواری"
+        },
+        "plant/output": {
+          "options": {
+            "electricity": "بجلی"
+          }
+        },
+        "population": {
+          "label": "کل آبادی"
+        },
+        "product": {
+          "label": "اشیا"
+        },
+        "recycling_accepts": {
+          "options": {
+            "shoes": "جوتے"
+          }
+        },
+        "religion": {
+          "label": "مذہب",
+          "options": {
+            "bahai": "بہائی",
+            "buddhist": "بدھ",
+            "christian": "مسیحی",
+            "hindu": "ہندو",
+            "jain": "جین",
+            "jewish": "یہودی",
+            "muslim": "مسلم",
+            "none": "لامذہب",
+            "sikh": "سکھ"
+          },
+          "terms": "دین, دھرم"
+        },
+        "resource": {
+          "options": {
+            "coal": "کوئلہ",
+            "sand": "ریت"
+          }
+        },
+        "roof/colour": {
+          "label": "چھت کا رنگ"
+        },
+        "seamark/beacon_lateral/colour": {
+          "label": "رنگ",
+          "options": {
+            "green": "سبز",
+            "red": "سرخ"
+          }
+        },
+        "seamark/buoy_lateral/colour": {
+          "label": "رنگ",
+          "options": {
+            "green": "سبز",
+            "white": "صفید",
+            "yellow": "پیلا"
+          }
+        },
+        "service_times": {
+          "label": "اوقاتِ عبادات"
+        },
+        "smoking": {
+          "options": {
+            "no": "تمباکو نوشی منع ہے"
+          }
+        },
+        "source": {
+          "label": "ذرائع"
+        },
+        "sport": {
+          "options": {
+            "badminton": "بیڈمنٹن",
+            "baseball": "بیس بال",
+            "basketball": "باسکٹ بال",
+            "chess": "شطرنج",
+            "cricket": "کرکٹ",
+            "golf": "گولف",
+            "soccer": "فٹ بال",
+            "swimming": "تیراکی",
+            "table_tennis": "ٹیبل ٹینس",
+            "tennis": "ٹینس"
+          }
+        },
+        "sport/sport_ice": {
+          "label": "کھیل"
+        },
+        "sport/sport_pub": {
+          "label": "کھیل"
+        },
+        "sport/sport_racing_motor": {
+          "label": "کھیل"
+        },
+        "sport/sport_racing_nonmotor": {
+          "label": "کھیل"
+        },
+        "start_date": {
+          "label": "تاریخِ آغاز"
+        },
+        "structure": {
+          "label": "ساخت",
+          "options": {
+            "bridge": "پل\nپُل"
+          },
+          "placeholder": "نامعلوم"
+        },
+        "structure_power": {
+          "label": "ساخت"
+        },
+        "structure_waterway": {
+          "label": "ساخت"
+        },
+        "substance": {
+          "options": {
+            "rainwater": "بارش کا پانی",
+            "water": "پینے والا پانی"
+          }
+        },
+        "surface": {
+          "options": {
+            "dirt": "مٹی",
+            "grass": "گھاس",
+            "sand": "ریت",
+            "wood": "لکڑ"
+          }
+        },
+        "surveillance/type": {
+          "options": {
+            "camera": "کیمرہ",
+            "guard": "چوکیدار"
+          }
+        },
+        "survey_point/structure": {
+          "label": "ساخت"
+        },
+        "toilets": {
+          "label": "بیوت الخلا\nبیوت الخلاء\nبیت الخلا\nبیت الخلاء"
+        },
+        "toilets/disposal": {
+          "options": {
+            "bucket": "بالٹی"
+          }
+        },
+        "traffic_sign": {
+          "label": "اشارہ"
+        },
+        "trees": {
+          "label": "درخت"
+        },
+        "usage_rail": {
+          "options": {
+            "tourism": "سیاحت"
+          }
+        },
+        "utility": {
+          "options": {
+            "gas": "گیس",
+            "oil": "تیل",
+            "power": "بجلی",
+            "water": "پانی"
+          }
+        },
+        "vehicles": {
+          "options": {
+            "bus": "بس",
+            "train": "ریل گاڑی"
+          }
+        },
+        "vending": {
+          "options": {
+            "drinks": "مشروب",
+            "eggs": "انڈے",
+            "food": "خوراک",
+            "fuel": "تیل",
+            "milk": "دودھ",
+            "newspapers": "اخبارات",
+            "pizza": "پیزا"
+          }
+        },
+        "water_source": {
+          "options": {
+            "river": "دریا"
+          }
+        },
+        "website": {
+          "label": "ویب سائیٹ",
+          "placeholder": "https://misaal.com",
+          "terms": "ویبسائٹ,ویب سائٹ,سیبسائیٹ,ویبسایٹ,ویب سایٹ"
+        },
+        "website/menu": {
+          "placeholder": "https://misaal.com"
+        },
+        "wikidata": {
+          "label": "ویکی ڈیٹا"
+        },
+        "wikipedia": {
+          "label": "ویکی پیڈیا"
+        }
+      },
+      "presets": {
+        "address": {
+          "name": "پتہ"
+        },
+        "aeroway/aerodrome": {
+          "name": "ہوائی اڈہ",
+          "terms": "ہوائی اڈا,ائیر پورت,ائیرپورت,ائرپورٹ"
+        },
+        "amenity": {
+          "name": "سہولت\nمقصد"
+        },
+        "amenity/atm": {
+          "name": "ای ٹی ایم\nATM"
+        },
+        "amenity/bank": {
+          "name": "بینک"
+        },
+        "amenity/bus_station": {
+          "name": "بس اسٹیشن\nبس سٹیشن"
+        },
+        "amenity/casino": {
+          "name": "قمار خانہ"
+        },
+        "amenity/cinema": {
+          "name": "سنیمہ\nسنیما"
+        },
+        "amenity/clock": {
+          "name": "گھڑی"
+        },
+        "amenity/doctors": {
+          "name": "ڈاکٹر"
+        },
+        "amenity/drinking_water": {
+          "name": "پینے والا پانی",
+          "terms": "پانی,پینا"
+        },
+        "amenity/embassy": {
+          "name": "صفارت خانہ"
+        },
+        "amenity/fountain": {
+          "name": "چشمہ"
+        },
+        "amenity/grave_yard": {
+          "name": "قبرستان\nگورستان"
+        },
+        "amenity/library": {
+          "name": "کتاب گھر\nکتب خانہ\nدارالکتب\nدار الکتب\nلائبریری"
+        },
+        "amenity/place_of_worship": {
+          "name": "عبادت گاہ",
+          "terms": "عبادت خانہ"
+        },
+        "amenity/place_of_worship/christian": {
+          "name": "عیسائی گرجا\nمسیحی گرجا",
+          "terms": "گرجا,عیسائی گرجا,مسیحی گرجا"
+        },
+        "amenity/place_of_worship/hindu": {
+          "name": "مندر\nہندو عبادت گاہ\nہندو مندر",
+          "terms": "ہندو عبادت گاہ,ہندو مندر"
+        },
+        "amenity/place_of_worship/jewish": {
+          "name": "یہودی مسجد\nیہودی عبادت گاہ",
+          "terms": "یہودی عبادت گاہ"
+        },
+        "amenity/place_of_worship/muslim": {
+          "name": "مسجد"
+        },
+        "amenity/place_of_worship/sikh": {
+          "name": "گرودوارہ\nگوردوارہ\nگرودوارہ\nسکھ عبادت گاہ",
+          "terms": "گوردوارہ,گرودوارہ,سکھ عبادت گاہ"
+        },
+        "amenity/place_of_worship/taoist": {
+          "name": "تاؤ مندر"
+        },
+        "amenity/police": {
+          "name": "پلیس\nپولیس"
+        },
+        "amenity/post_office": {
+          "name": "ڈاک خانہ"
+        },
+        "amenity/telephone": {
+          "name": "ٹیلی فون"
+        },
+        "barrier/toll_booth": {
+          "name": "ٹول پلازہ"
+        },
+        "boundary": {
+          "name": "حدود\nسرحد"
+        },
+        "boundary/administrative": {
+          "name": "انتظامی حدود",
+          "terms": "انتظامی سرحد"
+        },
+        "building": {
+          "name": "عمارت"
+        },
+        "building/bungalow": {
+          "name": "بنگلہ"
+        },
+        "building/church": {
+          "name": "گرجا گھر"
+        },
+        "building/house": {
+          "name": "گھر"
+        },
+        "building/hut": {
+          "name": "جھونپڑی",
+          "terms": "تھگلی,جھگی"
+        },
+        "building/mosque": {
+          "name": "مسجد عمارت"
+        },
+        "building/office": {
+          "name": "دفاتر عمارت",
+          "terms": "دفتر, دفاتر"
+        },
+        "building/roof": {
+          "name": "چھت"
+        },
+        "building/stable": {
+          "name": "اسطبل",
+          "terms": "استبل"
+        },
+        "building_point": {
+          "name": "عمارت\nمکان"
+        },
+        "cemetery/grave": {
+          "name": "قبر"
+        },
+        "craft/carpenter": {
+          "name": "بڑھئی"
+        },
+        "highway/motorway": {
+          "name": "موٹروے"
+        },
+        "highway/speed_camera": {
+          "name": "کیمرہ برائے رفتار"
+        },
+        "highway/traffic_signals": {
+          "name": "ٹریفک اشارے\nاشارے\nاشارہ\nٹریفک اشارہ"
+        },
+        "historic": {
+          "name": "تاریخی مقام"
+        },
+        "historic/castle": {
+          "name": "قلعہ"
+        },
+        "historic/castle/stately": {
+          "name": "شاتو\nشیٹو\nشاٹو"
+        },
+        "landuse/cemetery": {
+          "name": "قبرستان"
+        },
+        "landuse/grass": {
+          "name": "گھاس"
+        },
+        "landuse/railway": {
+          "name": "ریل راہداری",
+          "terms": "ریلوے راہداری"
+        },
+        "landuse/residential": {
+          "name": "رہائشی علاقہ"
+        },
+        "leisure/garden": {
+          "name": "باغ\nگارڈن"
+        },
+        "leisure/park": {
+          "name": "پارک"
+        },
+        "leisure/pitch/cricket": {
+          "name": "کرکٹ میدان",
+          "terms": "کریکٹ میدان"
+        },
+        "leisure/stadium": {
+          "name": "اسٹیڈیم"
+        },
+        "line": {
+          "name": "لکیر"
+        },
+        "man_made/chimney": {
+          "name": "چمنی"
+        },
+        "man_made/tower": {
+          "name": "برج"
+        },
+        "man_made/tower/minaret": {
+          "name": "مینار",
+          "terms": "مینارت"
+        },
+        "man_made/water_well": {
+          "name": "پانی کا کنوا"
+        },
+        "military/office": {
+          "name": "فوجی دفتر"
+        },
+        "natural/beach": {
+          "name": "ساحل"
+        },
+        "natural/mud": {
+          "name": "کیچڑ"
+        },
+        "natural/tree": {
+          "name": "درخت"
+        },
+        "natural/valley": {
+          "name": "وادی"
+        },
+        "natural/water": {
+          "name": "پانی"
+        },
+        "natural/water/lake": {
+          "name": "جھیل"
+        },
+        "office": {
+          "name": "دفتر"
+        },
+        "office/administrative": {
+          "name": "انتظامی دفتر"
+        },
+        "office/government": {
+          "name": "سرکاری دفتر"
+        },
+        "office/insurance": {
+          "name": "بیمہ دفتر"
+        },
+        "office/political_party": {
+          "name": "سیاسی جماعت کا دفتر",
+          "terms": "دفتر برائے سیاسی جماعت"
+        },
+        "office/yes": {
+          "name": "دفتر (نامعلوم)"
+        },
+        "place": {
+          "name": "جگہ"
+        },
+        "place/city": {
+          "name": "شہر"
+        },
+        "place/farm": {
+          "name": "کھیت"
+        },
+        "place/island": {
+          "name": "جزیرہ"
+        },
+        "place/neighbourhood": {
+          "name": "محلہ",
+          "terms": "پڑوس"
+        },
+        "place/plot": {
+          "name": "زمین"
+        },
+        "place/suburb": {
+          "name": "مضافت"
+        },
+        "place/town": {
+          "name": "قصبہ"
+        },
+        "place/village": {
+          "name": "گاؤں"
+        },
+        "playground/swing": {
+          "name": "جھولا"
+        },
+        "public_transport/station_bus": {
+          "name": "بس اڈہ"
+        },
+        "public_transport/station_train": {
+          "name": "ٹرین اسٹیشن"
+        },
+        "public_transport/station_tram": {
+          "name": "ٹرام اسٹیشن"
+        },
+        "relation": {
+          "name": "تعلق"
+        },
+        "shop": {
+          "name": "دکان\nدوکان"
+        },
+        "shop/mall": {
+          "name": "مال"
+        },
+        "shop/tailor": {
+          "name": "درزی"
+        },
+        "shop/weapons": {
+          "name": "بندوقوں والی دکان",
+          "terms": "بندوقوں کی دکان,بندوق کی دوکان,بندوق کی دکان,بندوقوں والی دکان,بندوق والی دکان"
+        },
+        "tourism/artwork/statue": {
+          "name": "مجسمہ"
+        },
+        "tourism/hotel": {
+          "name": "ہوٹل"
+        },
+        "tourism/museum": {
+          "name": "عجائب گھر"
+        },
+        "type/boundary": {
+          "name": "حدود"
+        },
+        "type/boundary/administrative": {
+          "name": "انتظامی حدود",
+          "terms": "انتظامی سرحد"
+        },
+        "type/route": {
+          "name": "راہ"
+        },
+        "waterway/dam": {
+          "name": "ڈیم"
+        },
+        "waterway/river": {
+          "name": "دریا",
+          "terms": "ندی,نہر"
+        }
+      }
+    }
+  }
+}

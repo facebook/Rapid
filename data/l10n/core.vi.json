@@ -1,0 +1,3434 @@
+{
+  "vi": {
+    "icons": {
+      "download": "tải về",
+      "information": "thông tin",
+      "remove": "xóa",
+      "undo": "hoàn tác",
+      "zoom_to": "phóng vừa",
+      "copy": "sao chép",
+      "view_on": "xem tại {domain}",
+      "visit_website": "mở trang Web",
+      "favorite": "ưa thích",
+      "list": "danh sách",
+      "text": "văn bản",
+      "deselect": "bỏ chọn"
+    },
+    "toolbar": {
+      "inspect": "Kiểm tra",
+      "undo_redo": "Hoàn tác / Làm lại",
+      "recent": "Gần đây",
+      "favorites": "Ưa thích",
+      "add_feature": "Thêm Đối tượng"
+    },
+    "title": {
+      "labeled_and_more": "{labeled} và {count} nữa"
+    },
+    "modes": {
+      "add_area": {
+        "title": "Vùng",
+        "filter_tooltip": "vùng"
+      },
+      "add_line": {
+        "title": "Đường",
+        "filter_tooltip": "đường kẻ"
+      },
+      "add_point": {
+        "title": "Điểm",
+        "filter_tooltip": "điểm"
+      },
+      "add_note": {
+        "title": "Ghi chú",
+        "label": "Thêm Ghi chú",
+        "description": "Nhận ra khuyết điểm? Hãy báo cho người khác biết.",
+        "key": "U"
+      },
+      "add_preset": {
+        "title": "Thêm {feature}"
+      },
+      "browse": {
+        "title": "Xem",
+        "description": "Di chuyển và thu phóng bản đồ."
+      },
+      "drag_node": {
+        "connected_to_hidden": "Không thể sửa đổi đối tượng này vì nó nối liền với một đối tượng ẩn."
+      }
+    },
+    "operations": {
+      "add": {
+        "annotation": {
+          "point": "thêm địa điểm",
+          "vertex": "thêm nốt vào lối",
+          "relation": "thêm quan hệ",
+          "note": "đăng ghi chú"
+        }
+      },
+      "start": {
+        "annotation": {
+          "line": "bắt đầu vẽ đường kẻ",
+          "area": "bắt đầu vẽ vùng"
+        }
+      },
+      "continue": {
+        "title": "Vẽ tiếp",
+        "description": "Vẽ tiếp đường kẻ này.",
+        "not_eligible": "Không thể vẽ tiếp đường kẻ nào từ chỗ này.",
+        "multiple": "Có thể vẽ tiếp hơn một đường kẻ từ chỗ này. Hãy chọn một đường kẻ để vẽ tiếp.",
+        "annotation": {
+          "line": "vẽ tiếp đường kẻ",
+          "area": "vẽ tiếp vùng"
+        }
+      },
+      "cancel_draw": {
+        "annotation": "hủy vẽ đối tượng"
+      },
+      "change_role": {
+        "annotation": "thay đổi vai trò của {n} thành viên quan hệ"
+      },
+      "change_tags": {
+        "annotation": "thay đổi thẻ"
+      },
+      "copy": {
+        "title": "Chép",
+        "description": "Sao chép (các) đối tượng này vào bảng tạm để dán sau.",
+        "annotation": "sao chép {n} đối tượng",
+        "too_large": "Không thể sao chép (các) đối tượng này vì chỉ có thấy được một phần rất nhỏ."
+      },
+      "paste": {
+        "title": "Dán",
+        "description": "Thêm {n} bản sao đối tượng vào đây từ bảng tạm.",
+        "annotation": "dán {n} đối tượng",
+        "nothing_copied": "Không sao chép đối tượng nào."
+      },
+      "circularize": {
+        "title": "Làm Tròn",
+        "description": {
+          "single": "Làm tròn đối tượng này.",
+          "multiple": "Làm tròn các đối tượng này."
+        },
+        "annotation": {
+          "feature": "làm tròn {n} đối tượng"
+        },
+        "multiple_blockers": {
+          "multiple": "Không thể làm tròn các đối tượng này vì nhiều lý do."
+        },
+        "not_closed": {
+          "single": "Không thể làm tròn một đối tượng không phải là đa giác kín.",
+          "multiple": "Không thể làm tròn các đối tượng không phải là đa giác kín."
+        },
+        "too_large": {
+          "single": "Không thể làm tròn đối tượng này vì chỉ có thấy được một phần rất nhỏ.",
+          "multiple": "Không thể làm tròn các đối tượng này vì chỉ có thấy được một phần rất nhỏ."
+        },
+        "connected_to_hidden": {
+          "single": "Không thể làm tròn đối tượng này vì nó nối liền với một đối tượng ẩn.",
+          "multiple": "Không thể làm tròn các đối tượng này vì một số nối liền với đối tượng ẩn."
+        },
+        "not_downloaded": {
+          "single": "Không thể làm tròn đối tượng này vì nó chưa được tải về hoàn toàn.",
+          "multiple": "Không thể làm tròn các đối tượng này vì một số chưa được tải về hoàn toàn."
+        },
+        "already_circular": {
+          "single": "Không thể làm đối tượng này tròn hơn.",
+          "multiple": "Không thể làm các đối tượng này tròn hơn."
+        }
+      },
+      "orthogonalize": {
+        "title": "Làm Vuông góc",
+        "description": {
+          "corner": {
+            "single": "Làm vuông góc này.",
+            "multiple": "Làm vuông góc một đối tượng."
+          },
+          "feature": {
+            "single": "Làm vuông góc đối tượng này.",
+            "multiple": "Làm vuông góc các đối tượng này."
+          }
+        },
+        "key": "L",
+        "annotation": {
+          "corner": "làm vuông {n} góc",
+          "feature": "làm vuông các góc của {n} đối tượng"
+        },
+        "multiple_blockers": {
+          "multiple": "Không thể làm vuông đối tượng này vì nhiều lý do."
+        },
+        "end_vertex": {
+          "single": "Điểm cuối không có góc mà làm vuông được.",
+          "multiple": "Các điểm cuối không có góc mà làm vuông được."
+        },
+        "square_enough": {
+          "single": "Không thể làm đối tượng này vuông vuông hơn.",
+          "multiple": "Không thể làm các đối tượng này vuông vuông hơn."
+        },
+        "not_squarish": {
+          "single": "Không thể làm vuông một đối tượng không phải vuông vuông.",
+          "multiple": "Không thể làm vuông các đối tượng không phải vuông vuông."
+        },
+        "too_large": {
+          "single": "Không thể làm vuông đối tượng này vì chỉ có thấy được một phần rất nhỏ.",
+          "multiple": "Không thể làm vuông các đối tượng này vì chỉ có thấy được một phần rất nhỏ."
+        },
+        "connected_to_hidden": {
+          "single": "Không thể làm vuông đối tượng này vì nó nối liền với một đối tượng ẩn.",
+          "multiple": "Không thể làm vuông các đối tượng này vì một số nối liền với đối tượng ẩn."
+        },
+        "not_downloaded": {
+          "single": "Không thể làm vuông đối tượng này vì nó chưa được tải về hoàn toàn.",
+          "multiple": "Không thể làm vuông các đối tượng này vì một số chưa được tải về hoàn toàn."
+        }
+      },
+      "straighten": {
+        "title": "Làm thẳng",
+        "description": {
+          "points": "Làm thẳng hàng điểm này.",
+          "line": "Làm thẳng đường kẻ này.",
+          "lines": "Làm thẳng các đường kẻ này."
+        },
+        "annotation": {
+          "point": "làm thẳng {n} điểm",
+          "line": "làm thẳng {n} đường kẻ"
+        },
+        "too_bendy": {
+          "single": "Không thể làm thẳng đường kẻ này vì nó ngoằn ngoèo quá mức.",
+          "multiple": "Không thể làm thẳng các đường kẻ này vì chúng ngoằn ngoèo quá mức."
+        },
+        "connected_to_hidden": {
+          "single": "Không thể làm thẳng đối tượng này vì nó nối liền với một đối tượng ẩn.",
+          "multiple": "Không thể làm thẳng các đối tượng này vì một số nối liền với đối tượng ẩn."
+        },
+        "not_downloaded": {
+          "single": "Không thể làm thẳng đối tượng này vì nó chưa được tải về hoàn toàn.",
+          "multiple": "Không thể làm thẳng các đối tượng này vì một số chưa được tải về hoàn toàn."
+        },
+        "straight_enough": {
+          "single": "Không thể làm đối tượng này thẳng hơn.",
+          "multiple": "Không thể làm các đối tượng này thẳng hơn."
+        },
+        "too_large": {
+          "single": "Không thể làm thẳng đối tượng này vì chỉ có thấy được một phần rất nhỏ.",
+          "multiple": "Không thể làm thẳng các đối tượng này vì chỉ có thấy được một phần rất nhỏ."
+        }
+      },
+      "delete": {
+        "title": "Xóa",
+        "description": {
+          "single": "Xóa đối tượng này vĩnh viễn.",
+          "multiple": "Xóa các đối tượng này vĩnh viễn."
+        },
+        "annotation": {
+          "point": "xóa địa điểm",
+          "vertex": "xóa nốt khỏi lối",
+          "line": "xóa đường kẻ",
+          "area": "xóa vùng",
+          "relation": "xóa quan hệ",
+          "feature": "xóa {n} đối tượng"
+        },
+        "too_large": {
+          "single": "Không thể xóa đối tượng này vì chỉ có thấy được một phần rất nhỏ.",
+          "multiple": "Không thể xóa các đối tượng này vì chỉ có thấy được một phần rất nhỏ."
+        },
+        "incomplete_relation": {
+          "single": "Không thể xóa đối tượng này vì nó chưa được tải về hoàn toàn.",
+          "multiple": "Không thể xóa các đối tượng này vì chúng chưa được tải về hoàn toàn."
+        },
+        "part_of_relation": {
+          "single": "Không thể xóa đối tượng này vì nó trực thuộc một quan hệ lớn hơn. Bạn phải gỡ nó khỏi quan hệ trước tiên.",
+          "multiple": "Không thể xóa các đối tượng này vì chúng trực thuộc các quan hệ lớn hơn. Bạn phải gỡ chúng khỏi các quan hệ trước tiên."
+        },
+        "connected_to_hidden": {
+          "single": "Không thể xóa đối tượng này vì nó nối liền với một đối tượng ẩn.",
+          "multiple": "Không thể xóa các đối tượng này vì một số nối liền với đối tượng ẩn."
+        },
+        "not_downloaded": {
+          "single": "Không thể xóa đối tượng này vì nó chưa được tải về hoàn toàn.",
+          "multiple": "Không thể xóa các đối tượng này vì một số chưa được tải về hoàn toàn."
+        },
+        "has_wikidata_tag": {
+          "single": "Không thể xóa đối tượng này vì nó có thẻ Wikidata.",
+          "multiple": "Không thể xóa các đối tượng này vì một số có thẻ Wikidata."
+        }
+      },
+      "downgrade": {
+        "title": "Đơn giản hóa",
+        "description": {
+          "building_address": "Xóa các thẻ không có liên quan đến địa chỉ hoặc tòa nhà.",
+          "building": "Xóa các thẻ không có liên quan đến tòa nhà.",
+          "address": "Xóa các thẻ không có liên quan đến địa chỉ.",
+          "generic": "xóa các thẻ"
+        },
+        "annotation": {
+          "building": "đơn giản hóa {n} đối tượng thành (các) tòa nhà bình thường",
+          "address": "đơn giản hóa {n} đối tượng thành (các) địa chỉ",
+          "generic": "đơn giản hóa {n} đối tượng"
+        },
+        "has_wikidata_tag": {
+          "single": "Không thể đơn giản hóa đối tượng này vì nó có thẻ Wikidata.",
+          "multiple": "Không thể đơn giản hóa các đối tượng này vì một số có thẻ Wikidata."
+        }
+      },
+      "add_member": {
+        "annotation": "thêm {n} thành viên vào quan hệ"
+      },
+      "delete_member": {
+        "annotation": "gỡ {n} thành viên khỏi quan hệ"
+      },
+      "reorder_members": {
+        "annotation": "sắp xếp lại các thành viên quan hệ"
+      },
+      "connect": {
+        "annotation": {
+          "from_vertex": {
+            "to_point": "nối liền lối với địa điểm",
+            "to_vertex": "nối liền lối với lối khác",
+            "to_line": "nối liền lối với đường kẻ",
+            "to_area": "nối liền lối với vùng",
+            "to_adjacent_vertex": "gộp các điểm liên tiếp trong lối",
+            "to_sibling_vertex": "nối liền lối với chính mình"
+          },
+          "from_point": {
+            "to_point": "gộp địa điểm với địa điểm khác",
+            "to_vertex": "gộp địa điểm với điểm trong lối",
+            "to_line": "di chuyển địa điểm sang đường kẻ",
+            "to_area": "di chuyển địa điểm sang vùng"
+          }
+        },
+        "relation": "Không thể nối liền các đối tượng này vì có vai trò quan hệ xung đột.",
+        "restriction": "Không thể nối liền các đối tượng này vì sẽ làm hư một quan hệ “{relation}”."
+      },
+      "disconnect": {
+        "title": "Tháo gỡ",
+        "description": {
+          "no_points": {
+            "single_way": {
+              "line": "Gỡ đường kẻ này khỏi các đối tượng khác.",
+              "area": "Gỡ vùng này khỏi các đối tượng khác."
+            },
+            "multiple_ways": {
+              "conjoined": "Gỡ các đối tượng này khỏi nhau.",
+              "separate": "Gỡ các đối tượng này khỏi tất cả các đối tượng khác."
+            }
+          },
+          "single_point": {
+            "no_ways": "Gỡ các đối tượng tại điểm này.",
+            "single_way": {
+              "line": "Gỡ đường kẻ được chọn tại điểm này.",
+              "area": "Gỡ vùng được chọn tại điểm này."
+            },
+            "multiple_ways": "Gỡ các đối tượng được chọn tại điểm này."
+          },
+          "multiple_points": {
+            "no_ways": "Gỡ các đối tượng tại các điểm này.",
+            "single_way": {
+              "line": "Gỡ đường kẻ được chọn tại các điểm này.",
+              "area": "Gỡ vùng được chọn tại các điểm này."
+            },
+            "multiple_ways": "Gỡ các đối tượng được chọn tại các điểm này."
+          }
+        },
+        "key": "T",
+        "annotation": {
+          "features": "tháo gỡ đối tượng",
+          "from_each_other": "gỡ các đối tượng khỏi nhau"
+        },
+        "too_large": {
+          "single": "Không thể tháo gỡ đối tượng này vì chỉ có thấy được một phần rất nhỏ.",
+          "multiple": "Không thể gỡ các đối tượng này vì chỉ có thấy được một phần rất nhỏ."
+        },
+        "not_connected": "Không có đủ đường kẻ hoặc vùng ở đây để tháo gỡ.",
+        "not_downloaded": "Không thể tháo gỡ đối tượng này vì nó chưa được tải về hoàn toàn.",
+        "connected_to_hidden": "Không thể tháo gỡ đối tượng này vì nó nối liền với một đối tượng ẩn.",
+        "relation": "Không thể tháo gỡ đối tượng này vì nó nối liền các thành viên của một quan hệ."
+      },
+      "merge": {
+        "title": "Gộp",
+        "description": "Gộp các đối tượng này.",
+        "key": "G",
+        "annotation": "gộp {n} đối tượng",
+        "not_eligible": "Không thể gộp các đối tượng này.",
+        "not_adjacent": "Không thể gộp các đối tượng này vì chúng không nối liền với nhau.",
+        "damage_relation": "Không thể gộp các đối tượng này vì sẽ làm hư một quan hệ “{relation}”.",
+        "relation": "Không thể gộp các đối tượng này vì có vai trò quan hệ xung đột.",
+        "incomplete_relation": "Không thể gộp vì một trong số đối tượng này chưa được tải về hoàn toàn.",
+        "conflicting_tags": "Không thể gộp các đối tượng này vì một số thẻ có giá trị xung đột.",
+        "conflicting_relations": "Không thể gộp các đối tượng này vì thuộc về các quan hệ xung đột.",
+        "paths_intersect": "Không thể gộp các đối tượng này vì lối kết quả sẽ tự giao điểm.",
+        "too_many_vertices": "Không thể gộp các đối tượng này vì lối kết quả sẽ có quá nhiều điểm."
+      },
+      "move": {
+        "title": "Di chuyển",
+        "description": {
+          "single": "Di chuyển đối tượng này sang chỗ khác.",
+          "multiple": "Di chuyển các đối tượng này sang chỗ khác."
+        },
+        "key": "D",
+        "annotation": {
+          "point": "di chuyển địa điểm",
+          "vertex": "di chuyển nốt trong lối",
+          "line": "di chuyển đường kẻ",
+          "area": "di chuyển vùng",
+          "relation": "di chuyển quan hệ",
+          "feature": "di chuyển {n} đối tượng"
+        },
+        "incomplete_relation": {
+          "single": "Không thể di chuyển đối tượng này vì nó chưa được tải về hoàn toàn.",
+          "multiple": "Không thể di chuyển các đối tượng này vì chúng chưa được tải về hoàn toàn."
+        },
+        "too_large": {
+          "single": "Không thể di chuyển đối tượng này vì chỉ có thấy được một phần rất nhỏ.",
+          "multiple": "Không thể di chuyển các đối tượng này vì chỉ có thấy được một phần rất nhỏ."
+        },
+        "connected_to_hidden": {
+          "single": "Không thể di chuyển đối tượng này vì nó nối liền với một đối tượng ẩn.",
+          "multiple": "Không thể di chuyển các đối tượng này vì một số nối liền với đối tượng ẩn."
+        },
+        "not_downloaded": {
+          "single": "Không thể di chuyển đối tượng này vì nó chưa được tải về hoàn toàn.",
+          "multiple": "Không thể di chuyển các đối tượng này vì một số chưa được tải về hoàn toàn."
+        }
+      },
+      "reflect": {
+        "title": {
+          "long": "Lật qua Trục Dài",
+          "short": "Lật qua Trục Ngắn"
+        },
+        "description": {
+          "long": {
+            "single": "Lật đối tượng này qua trục dài.",
+            "multiple": "Lật các đối tượng này qua trục dài."
+          },
+          "short": {
+            "single": "Lật đối tượng này qua trục ngắn.",
+            "multiple": "Lật các đối tượng này qua trục ngắn."
+          }
+        },
+        "key": {
+          "long": "I",
+          "short": "N"
+        },
+        "annotation": {
+          "long": {
+            "feature": "lật {n} đối tượng qua trục dài"
+          },
+          "short": {
+            "feature": "lật {n} đối tượng qua trục ngắn"
+          }
+        },
+        "incomplete_relation": {
+          "single": "Không thể lật đối tượng này vì nó chưa được tải về hoàn toàn.",
+          "multiple": "Không thể lật các đối tượng này vì chúng chưa được tải về hoàn toàn."
+        },
+        "too_large": {
+          "single": "Không thể lật đối tượng này vì chỉ có thấy được một phần rất nhỏ.",
+          "multiple": "Không thể lật các đối tượng này vì chỉ có thấy được một phần rất nhỏ."
+        },
+        "connected_to_hidden": {
+          "single": "Không thể lật đối tượng này vì nó nối liền với một đối tượng ẩn.",
+          "multiple": "Không thể lật các đối tượng này vì một số nối liền với đối tượng ẩn."
+        },
+        "not_downloaded": {
+          "single": "Không thể lật đối đối tượng này vì nó chưa được tải về hoàn toàn.",
+          "multiple": "Không thể lật đối các đối tượng này vì một số chưa được tải về hoàn toàn."
+        }
+      },
+      "rotate": {
+        "title": "Xoay",
+        "description": {
+          "single": "Xoay đối tượng này quanh điểm trung tâm.",
+          "multiple": "Xoay các đối tượng này quanh điểm trung tâm."
+        },
+        "key": "X",
+        "annotation": {
+          "line": "xoay đường kẻ",
+          "area": "xoay vùng",
+          "relation": "xoay quan hệ",
+          "feature": "xoay {n} đối tượng"
+        },
+        "incomplete_relation": {
+          "single": "Không thể xoay đối tượng này vì nó chưa được tải về hoàn toàn.",
+          "multiple": "Không thể xoay các đối tượng này vì chúng chưa được tải về hoàn toàn."
+        },
+        "too_large": {
+          "single": "Không thể xoay đối tượng này vì chỉ có thấy được một phần rất nhỏ.",
+          "multiple": "Không thể xoay các đối tượng này vì chỉ có thấy được một phần rất nhỏ."
+        },
+        "connected_to_hidden": {
+          "single": "Không thể xoay đối tượng này vì nó nối liền với một đối tượng ẩn.",
+          "multiple": "Không thể xoay các đối tượng này vì một số nối liền với đối tượng ẩn."
+        },
+        "not_downloaded": {
+          "single": "Không thể xoay đối tượng này vì nó chưa được tải về hoàn toàn.",
+          "multiple": "Không thể xoay các đối tượng này vì một số chưa được tải về hoàn toàn."
+        }
+      },
+      "reverse": {
+        "title": "Đảo ngược",
+        "description": {
+          "point": "Đảo ngược hướng điểm này.",
+          "points": "Đảo ngược hướng các điểm này.",
+          "line": "Đảo ngược chiều đường kẻ này.",
+          "lines": "Đảo ngược chiều các đường kẻ này.",
+          "features": "Đảo ngược các đối tượng này."
+        },
+        "annotation": {
+          "point": "đảo ngược hướng {n} địa điểm",
+          "line": "đảo ngược chiều {n} đường kẻ",
+          "feature": "đảo ngược chiều {n} đối tượng"
+        }
+      },
+      "scale": {
+        "annotation": {
+          "down": {
+            "feature": "giảm kích thước {n} đối tượng"
+          },
+          "up": {
+            "feature": "tăng kích thước {n} đối tượng"
+          }
+        },
+        "too_small": {
+          "single": "Không thể giảm kích thước đối tượng này vì nó sẽ nhỏ quá mức.",
+          "multiple": "Không thể giảm kích thước các đối tượng này vì chúng sẽ nhỏ quá mức."
+        },
+        "too_large": {
+          "single": "Không thể thay đổi kích thước đối tượng này vì chỉ có thấy được một phần rất nhỏ.",
+          "multiple": "Không thể thay đổi kích thước các đối tượng này vì chỉ có thấy được một phần rất nhỏ."
+        },
+        "connected_to_hidden": {
+          "single": "Không thể thay đổi kích thước đối tượng này vì nó nối liền với một đối tượng ẩn.",
+          "multiple": "Không thể thay đổi kích thước các đối tượng này vì một số nối liền với đối tượng ẩn."
+        },
+        "not_downloaded": {
+          "single": "Không thể thay đổi kích thước đối tượng này vì nó chưa được tải về hoàn toàn.",
+          "multiple": "Không thể thay đổi kích thước đối các đối tượng này vì một số chưa được tải về hoàn toàn."
+        }
+      },
+      "split": {
+        "title": "Chia cắt",
+        "description": {
+          "line": {
+            "single": {
+              "single_node": "Cắt đôi đường kẻ này tại điểm này.",
+              "multiple_node": "Cắt đôi đường kẻ này tại các điểm này."
+            }
+          },
+          "area": {
+            "single": {
+              "single_node": "Cắt đôi đường biên vùng này tại điểm này.",
+              "multiple_node": "Cắt đôi đường biên vùng này tại các điểm này."
+            },
+            "multiple": {
+              "single_node": "Cắt đôi các đường biên vùng này tại điểm này.",
+              "multiple_node": "Cắt đôi các đường biên vùng này tại các điểm này."
+            }
+          },
+          "feature": {
+            "multiple": {
+              "single_node": "Cắt đôi các đối tượng này tại điểm này.",
+              "multiple_node": "Cắt đôi các đối tượng này tại các điểm này."
+            }
+          }
+        },
+        "key": "C",
+        "annotation": {
+          "line": "cắt đôi {n} đường kẻ",
+          "area": "cắt đôi {n} vùng",
+          "feature": "cắt đôi {n} đối tượng"
+        },
+        "not_eligible": "Không thể cắt đôi đường kẻ vào đầu hoặc cuối đường.",
+        "connected_to_hidden": "Không thể chia cắt đối tượng này vì nó nối liền với một đối tượng ẩn."
+      },
+      "restriction": {
+        "annotation": {
+          "create": "thêm hạn chế rẽ",
+          "delete": "bỏ hạn chế rẽ"
+        }
+      },
+      "extract": {
+        "title": "Rút trích",
+        "key": "R",
+        "description": {
+          "vertex": {
+            "single": "Rút trích điểm này từ các đường kẻ hoặc vùng đang nối liền.",
+            "multiple": "Rút trích các điểm này từ các đường kẻ hoặc vùng đang nối liền."
+          },
+          "line": {
+            "single": "Rút trích điểm từ đường kẻ này.",
+            "multiple": "Rút trích các điểm từ các đường kẻ này."
+          },
+          "area": {
+            "single": "Rút trích điểm từ vùng này.",
+            "multiple": "Rút trích các điểm từ các vùng này."
+          },
+          "feature": {
+            "multiple": "Rút trích các điểm từ các đối tượng này."
+          }
+        },
+        "annotation": "trích {n} địa điểm",
+        "too_large": {
+          "single": "Không thể rút trích điểm vì chỉ có thấy được một phần rất nhỏ của đối tượng này.",
+          "multiple": "Không thể rút trích các điểm vì chỉ có thấy được một phần rất nhỏ của các đối tượng này."
+        },
+        "connected_to_hidden": {
+          "single": "Không thể rút trích điểm này vì nó nối liền với một đối tượng ẩn.",
+          "multiple": "Không thể rút trích các điểm khỏi các đối tượng này vì một số nối liền với đối tượng ẩn."
+        }
+      },
+      "cycle_highway_tag": {
+        "key": "G"
+      }
+    },
+    "restriction": {
+      "controls": {
+        "distance": "Tầm xa",
+        "distance_up_to": "Cho tới {distance}",
+        "via": "Theo",
+        "via_node_only": "Chỉ nốt",
+        "via_up_to_one": "Cho tới 1 lối",
+        "via_up_to_two": "Cho tới 2 lối"
+      },
+      "help": {
+        "indirect": "(gián tiếp)",
+        "turn": {
+          "no_left_turn": "CẤM Rẽ Trái {indirect}",
+          "no_right_turn": "CẤM Rẽ Phải {indirect}",
+          "no_u_turn": "CẤM Quay ngược {indirect}",
+          "no_straight_on": "CẤM Chạy thẳng {indirect}",
+          "only_left_turn": "CHỈ Rẽ Trái {indirect}",
+          "only_right_turn": "CHỈ Rẽ Phải {indirect}",
+          "only_u_turn": "CHỈ Quay ngược {indirect}",
+          "only_straight_on": "CHỈ Chạy thẳng {indirect}",
+          "allowed_left_turn": "Cho phép Rẽ Trái {indirect}",
+          "allowed_right_turn": "Cho phép Rẽ Phải {indirect}",
+          "allowed_u_turn": "Cho phép Quay ngược {indirect}",
+          "allowed_straight_on": "Cho phép Chạy thẳng {indirect}"
+        },
+        "from": "TỪ",
+        "via": "THEO",
+        "to": "ĐẾN",
+        "select_from": "Nhấn chuột để chọn khúc đường {from}",
+        "select_from_name": "Nhấn chuột để chọn {from} {fromName}",
+        "toggle": "Nhấn chuột cho “{turn}”"
+      }
+    },
+    "undo": {
+      "title": "Hoàn tác",
+      "tooltip": "Hoàn tác việc {action}.",
+      "nothing": "Không có gì để hoàn tác."
+    },
+    "redo": {
+      "title": "Làm lại",
+      "tooltip": "Làm lại việc {action}.",
+      "nothing": "Không có gì để làm lại."
+    },
+    "translate": {
+      "translate": "Thêm tên đa ngôn ngữ",
+      "localized_translation_label": "Tên Đa ngôn ngữ",
+      "localized_translation_language": "Chọn ngôn ngữ",
+      "localized_translation_name": "Tên"
+    },
+    "zoom_in_edit": "Phóng to để sửa đổi",
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất",
+    "loading_auth": "Đang kết nối với OpenStreetMap…",
+    "report_a_bug": "Báo cáo lỗi",
+    "help_translate": "Hợp tác biên dịch",
+    "sidebar": {
+      "key": "Q",
+      "tooltip": "Bật/tắt thanh bên."
+    },
+    "feature_info": {
+      "hidden_warning": "{count} đối tượng ẩn"
+    },
+    "osm_api_status": {
+      "message": {
+        "error": "Không thể kết nối với API OpenStreetMap. Các sửa đổi của bạn vẫn được lưu tạm trên máy bạn. Hãy kiểm tra kết nối mạng.",
+        "offline": "API OpenStreetMap đang tạm thời ngừng hoạt động. Các sửa đổi của bạn vẫn được lưu tạm trên máy bạn. Hãy chốc nữa trở lại.",
+        "readonly": "API OpenStreetMap hiện đang ở chế độ chỉ được xem. Bạn có thể tiếp tục sửa đổi nhưng phải chờ đợi để lưu các thay đổi.",
+        "local_storage_full": "Bạn đã thực hiện quá nhiều thay đổi để sao lưu dự phòng. Xin hãy lưu các thay đổi ngay bây giờ để chắc chắn."
+      },
+      "retry": "Thử lại"
+    },
+    "commit": {
+      "title": "Đăng lên OpenStreetMap",
+      "upload_explanation": "Các thay đổi bạn đăng lên sẽ xuất hiện trên tất cả các bản đồ sử dụng dữ liệu OpenStreetMap.",
+      "upload_explanation_with_user": "Các thay đổi bạn đăng lên dưới tên {user} sẽ xuất hiện trên tất cả các bản đồ sử dụng dữ liệu OpenStreetMap.",
+      "request_review": "Tôi muốn ai đó xem lại những thay đổi này.",
+      "request_review_info": "Có thắc mắc? Mời người có kinh nghiệm xem lại sau khi bạn đăng các thay đổi lên bản đồ trực tiếp.",
+      "save": "Đăng lên",
+      "cancel": "Hủy bỏ",
+      "changes": "Thay đổi",
+      "download_changes": "Tải về tập tin osmChange",
+      "errors": "Lỗi",
+      "warnings": "Cảnh báo",
+      "modified": "Đã Thay đổi",
+      "deleted": "Đã Xóa",
+      "created": "Đã Tạo",
+      "outstanding_errors_message": "Trước tiên, xin vui lòng giải quyết {count} lỗi còn lại.",
+      "comment_needed_message": "Xin vui lòng tóm lược bộ sửa đổi trước tiên.",
+      "about_changeset_comments": "Nên tóm lược sửa đổi như thế nào?",
+      "about_changeset_comments_link": "//wiki.openstreetmap.org/wiki/Good_changeset_comments?setlang=vi",
+      "google_warning": "Bạn đã đề cập đến Google trong lời tóm lược này. Chú ý cấm sao chép từ Google Maps.",
+      "google_warning_link": "https://www.openstreetmap.org/copyright/vi"
+    },
+    "contributors": {
+      "list": "Đóng góp bởi {users}",
+      "truncated_list": "Đóng góp bởi {users} và {count} người khác"
+    },
+    "info_panels": {
+      "selected": "{n} được chọn",
+      "background": {
+        "title": "Hình nền",
+        "zoom": "Mức thu phóng",
+        "vintage": "Lúc chụp",
+        "source": "Nguồn",
+        "description": "Miêu tả",
+        "resolution": "Độ phân giải",
+        "accuracy": "Độ chính xác",
+        "unknown": "Không rõ",
+        "show_tiles": "Hiện các Mảnh",
+        "hide_tiles": "Ẩn các Mảnh"
+      },
+      "history": {
+        "key": "L",
+        "title": "Lịch sử",
+        "no_history": "Không có Lịch sử (Đối tượng Mới Tạo)",
+        "version": "Phiên bản",
+        "last_edit": "Sửa đổi Cuối cùng",
+        "edited_by": "Người Sửa đổi",
+        "changeset": "Bộ thay đổi",
+        "unknown": "Không rõ",
+        "note_no_history": "Không có Lịch sử (Ghi chú Mới Tạo)",
+        "note_comments": "Nhận xét",
+        "note_created_date": "Ngày Tạo",
+        "note_created_user": "Người Tạo",
+        "note_link_text": "Ghi chú tại openstreetmap.org"
+      },
+      "location": {
+        "key": "V",
+        "title": "Vị trí",
+        "unknown_location": "Vị trí Không rõ"
+      },
+      "measurement": {
+        "title": "Đo lường",
+        "geometry": "Hình",
+        "closed_line": "đường kẻ đóng",
+        "closed_area": "vùng đóng",
+        "center": "Tâm",
+        "perimeter": "Chu vi",
+        "length": "Chiều dài",
+        "distance": "Tầm xa",
+        "area": "Diện tích",
+        "centroid": "Trọng tâm",
+        "location": "Vị trí",
+        "metric": "Hệ mét",
+        "imperial": "Hệ Anh",
+        "node_count": "Số nốt"
+      }
+    },
+    "geometry": {
+      "point": "điểm",
+      "vertex": "đỉnh",
+      "line": "đường kẻ",
+      "area": "vùng",
+      "relation": "quan hệ",
+      "note": "ghi chú"
+    },
+    "geocoder": {
+      "search": "Tìm kiếm trên toàn thế giới…",
+      "no_results_worldwide": "Không tìm thấy kết quả"
+    },
+    "geolocate": {
+      "key": "J",
+      "title": "Nhảy tới Vị trí của Tôi",
+      "locating": "Đang tải, vui lòng chờ đợi…",
+      "location_unavailable": "Vị trí của bạn không có sẵn."
+    },
+    "inspector": {
+      "zoom_to": {
+        "key": "P",
+        "title": "Phóng vừa Lựa chọn",
+        "no_selection": "Không có gì để phóng vừa."
+      },
+      "show_more": "Xem thêm",
+      "view_on_osm": "Xem tại openstreetmap.org",
+      "view_on_osmose": "Xem tại osmose.openstreetmap.fr",
+      "view_on_keepRight": "Xem tại keepright.at",
+      "feature_type": "Thể loại Đối tượng",
+      "fields": "Thuộc tính",
+      "tags": "Thẻ",
+      "members": "Các thành viên",
+      "relations": "Các quan hệ",
+      "features": "Đối tượng",
+      "add_to_relation": "Thêm vào quan hệ",
+      "new_relation": "Quan hệ mới…",
+      "choose_relation": "Chọn quan hệ mẹ",
+      "role": "Vai trò",
+      "multiple_roles": "Nhiều Vai trò",
+      "choose": "Chọn thể loại đối tượng",
+      "results": "{n} kết quả cho {search}",
+      "no_documentation_key": "Không có tài liệu.",
+      "wiki_reference": "Tra cứu tài liệu",
+      "wiki_en_reference": "Tra cứu tài liệu tiếng Anh",
+      "key_value": "chìa khóa=giá trị",
+      "multiple_values": "Nhiều Giá trị",
+      "multiple_types": "Nhiều Thể loại",
+      "unshared_value_tooltip": "không khớp hẳn đối với các đối tượng",
+      "hidden_preset": {
+        "manual": "{features} đang ẩn. Hiển thị chúng trong hộp Dữ liệu Bản đồ.",
+        "zoom": "{features} đang ẩn. Phóng to để hiển thị chúng."
+      },
+      "back_tooltip": "Thay loại đối tượng",
+      "remove": "Xóa",
+      "search": "Tìm kiếm",
+      "unknown": "Không rõ",
+      "incomplete": "<chưa tải về>",
+      "feature_list": "Tìm kiếm đối tượng",
+      "edit": "Sửa đối tượng",
+      "edit_features": "Sửa các đối tượng",
+      "check": {
+        "yes": "Có",
+        "no": "Không",
+        "reverser": "Thay đổi Chiều hướng"
+      },
+      "radio": {
+        "structure": {
+          "type": "Kiểu",
+          "default": "Bình thường",
+          "layer": "Lớp"
+        }
+      },
+      "add": "Thêm",
+      "none": "Không có",
+      "node": "Nốt",
+      "way": "Lối",
+      "relation": "Quan hệ",
+      "location": "Vị trí",
+      "add_fields": "Thêm thuộc tính:",
+      "lock": {
+        "suggestion": "Thuộc tính “{label}” đang khóa vì đối tượng này có thẻ Wikidata. Bạn có thể xóa thẻ này hoặc sửa các thẻ khác trong phần “Thẻ”."
+      },
+      "display_name": {
+        "from_to": "từ {from} đến {to}",
+        "from_to_via": "từ {from} đến {to} qua {via}",
+        "network_direction": "{network} về hướng {direction}",
+        "network_from_to": "{network} từ {from} đến {to}",
+        "network_from_to_via": "{network} từ {from} đến {to} qua {via}",
+        "ref_direction": "{ref} về hướng {direction}",
+        "ref_from_to": "{ref} từ {from} đến {to}",
+        "ref_from_to_via": "{ref} từ {from} đến {to} qua {via}",
+        "network_ref_direction": "{network} {ref} về hướng {direction}",
+        "network_ref_from_to": "{network} {ref} từ {from} đến {to}",
+        "network_ref_from_to_via": "{network} {ref} từ {from} đến {to} qua {via}"
+      }
+    },
+    "background": {
+      "title": "Hình nền",
+      "description": "Tùy chọn Hình nền",
+      "backgrounds": "Hình nền",
+      "none": "Không có",
+      "best_imagery": "Nguồn hình ảnh hữu ích nhất đối với nơi này",
+      "switch": "Quay về hình nền này",
+      "custom": "Tùy biến",
+      "overlays": "Lớp phủ",
+      "imagery_problem_faq": "Báo cáo Vấn đề Hình ảnh",
+      "reset": "đặt lại",
+      "reset_all": "Đặt lại Tất cả",
+      "display_options": "Tùy chọn Hiển thị",
+      "brightness": "Độ sáng",
+      "contrast": "Độ tương phản",
+      "saturation": "Độ bão hòa",
+      "sharpness": "Độ nét",
+      "minimap": {
+        "description": "Hiện bản đồ nhỏ",
+        "tooltip": "Mở một bản đồ thu nhỏ định vị trí đang được sửa đổi."
+      },
+      "panel": {
+        "description": "Hiện Bảng Hình nền",
+        "tooltip": "Xem thông tin nâng cao về hình nền."
+      },
+      "location_panel": {
+        "description": "Hiện Bảng Vị trí",
+        "tooltip": "Hiển thị tọa độ và các chi tiết về vùng."
+      },
+      "fix_misalignment": "Độ lệch của Hình ảnh",
+      "offset": "Kéo thả chuột ở vùng màu xám bên dưới để chỉnh độ lệch hình ảnh, hoặc nhập độ lệch được đo bằng mét."
+    },
+    "map_data": {
+      "title": "Dữ liệu Bản đồ",
+      "description": "Dữ liệu Bản đồ",
+      "data_layers": "Các Lớp Dữ liệu",
+      "layers": {
+        "osm": {
+          "tooltip": "Dữ liệu từ OpenStreetMap",
+          "title": "Dữ liệu OpenStreetMap"
+        },
+        "notes": {
+          "tooltip": "Dữ liệu ghi chú từ OpenStreetMap",
+          "title": "Ghi chú OpenStreetMap"
+        },
+        "maproulette": {
+          "detail_title": "Chi tiết",
+          "cancel": "Hủy bỏ"
+        },
+        "keepRight": {
+          "tooltip": "Vấn đề dữ liệu do keepright.at phát hiện",
+          "title": "Vấn đề KeepRight"
+        },
+        "improveOSM": {
+          "tooltip": "Dữ liệu bị thiếu do improveosm.org phát hiện",
+          "title": "Vấn đề ImproveOSM"
+        },
+        "osmose": {
+          "tooltip": "Vấn đề dữ liệu do osmose.openstreetmap.fr phát hiện",
+          "title": "Vấn đề Osmose"
+        },
+        "custom": {
+          "tooltip": "Kéo thả một tập tin dữ liệu vào trang hoặc bấm nút để thiết lập",
+          "title": "Dữ liệu bản đồ tùy biến",
+          "zoom": "Phóng vừa dữ liệu"
+        },
+        "rapid": {
+          "key": "X"
+        }
+      },
+      "history_panel": {
+        "title": "Hiện Bảng Lịch sử",
+        "tooltip": "Hiển thị chi tiết phiên bản về lựa chọn."
+      },
+      "measurement_panel": {
+        "title": "Hiện Bảng Đo lường",
+        "tooltip": "Hiển thị các giá trị hình học về lựa chọn."
+      },
+      "style_options": "Tùy chọn Kiểu Hiển thị",
+      "highlight_edits": {
+        "key": "M"
+      },
+      "map_features": "Đối tượng Bản đồ",
+      "autohidden": "Các đối tượng này đã được ẩn tự động để tránh hiển thị quá nhiều đối tượng một lúc. Bạn có thể phóng to để sửa đổi chúng.",
+      "osmhidden": "Các đối tượng này được ẩn tự động vì lớp OpenStreetMap đang ẩn."
+    },
+    "visual_diff": {
+      "highlight_edits": {
+        "description": "Tô màu các thay đổi",
+        "tooltip": "Tô màu các đối tượng được sửa đổi"
+      }
+    },
+    "photo_overlays": {
+      "title": "Lớp phủ Hình ảnh",
+      "traffic_signs": {
+        "title": "Bảng giao thông"
+      },
+      "photo_type": {
+        "flat": {
+          "title": "Hình chụp Một chiều",
+          "tooltip": "Hình ảnh chuẩn"
+        },
+        "panoramic": {
+          "title": "Hình chụp Toàn cảnh",
+          "tooltip": "Hình ảnh 360°"
+        }
+      },
+      "date_filter": {
+        "fromDate": {
+          "title": "Từ",
+          "tooltip": "Hiện các hình chụp sau lúc này"
+        },
+        "toDate": {
+          "title": "Đến",
+          "tooltip": "Hiện các hình chụp trước lúc này"
+        }
+      },
+      "username_filter": {
+        "title": "Tên người dùng",
+        "tooltip": "Chỉ hiện các hình do người dùng này chụp"
+      }
+    },
+    "feature": {
+      "points": {
+        "description": "Địa điểm",
+        "tooltip": "Địa điểm quan tâm"
+      },
+      "traffic_roads": {
+        "description": "Đường giao thông",
+        "tooltip": "Đường cao tốc, đường sá, v.v."
+      },
+      "service_roads": {
+        "description": "Ngõ ngách",
+        "tooltip": "Ngách, lối trong bãi đậu xe, đường gom, v.v."
+      },
+      "paths": {
+        "description": "Đường mòn",
+        "tooltip": "Vỉa hè, đường dạo, đường xe đạp, v.v."
+      },
+      "buildings": {
+        "description": "Tòa nhà",
+        "tooltip": "Tòa nhà, nhà trú, ga ra, v.v."
+      },
+      "building_parts": {
+        "description": "Phần tòa nhà",
+        "tooltip": "Phần tòa nhà 3D và mái nhà"
+      },
+      "indoor": {
+        "description": "Trong nhà",
+        "tooltip": "Phòng, hành lang, cầu thang, v.v."
+      },
+      "landuse": {
+        "description": "Phân vùng sử dụng đất",
+        "tooltip": "Rừng trồng cây, nông nghiệp, công viên, dân cư, thương mại, v.v."
+      },
+      "boundaries": {
+        "description": "Biên giới",
+        "tooltip": "Biên giới hành chính"
+      },
+      "water": {
+        "description": "Nước",
+        "tooltip": "Đường sông, hồ, ao, lưu vực, v.v."
+      },
+      "rail": {
+        "description": "Đường sắt",
+        "tooltip": "Đường sắt"
+      },
+      "pistes": {
+        "description": "Đường mòn thể thao mùa đông",
+        "tooltip": "Dốc trượt tuyết, đường xe trượt tuyết, đường trượt băng, v.v."
+      },
+      "aerialways": {
+        "description": "Trên không",
+        "tooltip": "Ghế cáp treo, xe cáp treo nhỏ, đu dây, v.v."
+      },
+      "power": {
+        "description": "Điện năng",
+        "tooltip": "Đường dây điện, nhà máy điện, trạm điện phụ, v.v."
+      },
+      "past_future": {
+        "description": "Quá khứ & tương lai",
+        "tooltip": "Đề nghị, đang xây, bỏ hoang, phá hủy, v.v."
+      },
+      "others": {
+        "description": "Các đối tượng khác",
+        "tooltip": "Những gì khác"
+      }
+    },
+    "area_fill": {
+      "wireframe": {
+        "description": "Không tô (khung lưới)",
+        "tooltip": "Chế độ khung lưới cho phép thấy rõ hình ảnh nền.",
+        "key": "K"
+      },
+      "partial": {
+        "description": "Tô mép",
+        "tooltip": "Các vùng chỉ được tô màu vào mép (được khuyến khích cho những người mới bắt đầu vẽ bản đồ)."
+      },
+      "full": {
+        "description": "Tô hẳn",
+        "tooltip": "Các vùng được tô màu hoàn toàn."
+      }
+    },
+    "settings": {
+      "custom_background": {
+        "tooltip": "Sửa hình nền tùy biến",
+        "header": "Tùy chọn Hình nền Tùy biến",
+        "instructions": {
+          "info": "Nhập định dạng URL của mảnh bản đồ bên dưới.",
+          "wms": {
+            "tokens_label": "Các dấu hiệu WMS được hỗ trợ:",
+            "tokens": {
+              "proj": "`{proj}`: phép chiếu có tiền tố “EPSG” (chỉ sử dụng `EPSG:3857`)",
+              "wkid": "`{wkid}`: phép chiếu trừ tiền tố “EPSG” (chỉ sử dụng `3857`)",
+              "dimensions": "`{width}`, `{height}`: chiều rộng và chiều cao của hình ảnh bằng điểm ảnh (chỉ sử dụng `256`)",
+              "bbox": " `{bbox}`: hộp bao quanh theo định dạng `XTốiThiểu,YTốiThiểu,XTốiĐa,YTốiĐa`"
+            }
+          },
+          "tms": {
+            "tokens_label": " Các dấu hiệu TMS được hỗ trợ:",
+            "tokens": {
+              "xyz": "`{zoom}` hoặc `{z}`, `{x}`, `{y}`: định dạng mảnh Z/X/Y",
+              "flipped_y": " `{-y}` hoặc `{ty}`: tọa độ Y kiểu TMS ngược",
+              "switch": "`{switch:a,b,c}`: luân phiên các máy chủ DNS",
+              "quadtile": " `{u}`: định dạng quadtile (Bing)",
+              "scale_factor": "`{@2x}` hoặc `{r}`: tỷ lệ độ phân giải"
+            }
+          }
+        },
+        "template": {
+          "placeholder": "Nhập định dạng URL"
+        }
+      },
+      "custom_data": {
+        "tooltip": "Sửa lớp dữ liệu tùy biến",
+        "header": "Thiết lập Dữ liệu Bản đồ Tùy biến",
+        "file": {
+          "label": "Duyệt tập tin"
+        },
+        "or": "Hoặc",
+        "url": {
+          "placeholder": "Nhập URL"
+        }
+      }
+    },
+    "preferences": {
+      "title": "Tùy chọn",
+      "description": "Tùy chọn",
+      "key": "Y",
+      "privacy": {
+        "title": "Quyền riêng tư",
+        "third_party_icons": {
+          "description": "Hiện các biểu trưng bên thứ ba",
+          "tooltip": "Tự động tải các hình biểu trưng từ trang bên thứ ba như Wikimedia Commons, Facebook, hoặc Twitter."
+        }
+      },
+      "color_selection": {
+        "default": "Bình thường"
+      }
+    },
+    "restore": {
+      "heading": "Bạn có Thay đổi Chưa lưu",
+      "description": "Bạn có muốn khôi phục các thay đổi chưa lưu từ phiên làm việc trước đây không?",
+      "restore": "Phục hồi các thay đổi của tôi",
+      "reset": "Vứt bỏ các thay đổi của tôi"
+    },
+    "save": {
+      "title": "Lưu",
+      "help": "Hãy xem lại các thay đổi của bạn và đăng các thay đổi lên OpenStreetMap để cho mọi người xem.",
+      "no_changes": "Không có thay đổi nào để lưu.",
+      "error": "Đã xuất hiện lỗi khi lưu",
+      "status_code": "Máy chủ phản hồi với mã lỗi {code}",
+      "unknown_error_details": "Xin vui lòng chắc chắn rằng bạn được kết nối với Internet.",
+      "uploading": "Đang đăng các thay đổi lên OpenStreetMap…",
+      "conflict_progress": "Đang kiểm tra mâu thuẫn: {num} trên {total}",
+      "unsaved_changes": "Bạn có Thay đổi Chưa lưu",
+      "conflict": {
+        "header": "Giải quyết sửa đổi mâu thuẫn",
+        "count": "Mâu thuẫn {num} trong {total}",
+        "previous": "◄ Trước",
+        "next": "Sau ►",
+        "keep_local": "Giữ của tôi",
+        "keep_remote": "Lấy của họ",
+        "restore": "Khôi phục",
+        "delete": "Không Khôi phục",
+        "download_changes": "Hoặc tải về tập tin osmChange",
+        "done": "Đã hoàn tất giải quyết các mâu thuẫn!",
+        "help": "Một người khác đã thay đổi cùng một số đối tượng với bạn trên bản đồ. Nhấn chuột vào mỗi mục bên dưới để xem chi tiết về sự mâu thuẫn và quyết định giữ thay đổi của bạn hoặc của người kia."
+      }
+    },
+    "merge_remote_changes": {
+      "conflict": {
+        "deleted": "{user} đã xóa đối tượng này.",
+        "location": "Bạn và {user} đều đã di chuyển đối tượng này.",
+        "nodelist": "Bạn và {user} đều đã thay đổi các nốt của đối tượng này.",
+        "memberlist": "Bạn và {user} đều đã thay đổi các thành viên của quan hệ này."
+      }
+    },
+    "success": {
+      "just_edited": "Bạn vừa sửa đổi OpenStreetMap!",
+      "thank_you": "Cảm ơn bạn đã cải thiện bản đồ!",
+      "thank_you_location": "Cảm ơn bạn đã cải thiện bản đồ {where}.",
+      "help_link_text": "Chi tiết",
+      "help_link_url": "https://wiki.openstreetmap.org/wiki/Vi:FAQ?setlang=vi#T.C3.B4i_v.E1.BB.ABa_thay_.C4.91.E1.BB.95i_b.E1.BA.A3n_.C4.91.E1.BB.93._L.C3.A0m_sao_xem_.C4.91.C6.B0.E1.BB.A3c_c.C3.A1c_thay_.C4.91.E1.BB.95i_c.E1.BB.A7a_t.C3.B4i.3F",
+      "view_on_osm": "Xem các Thay đổi tại OSM",
+      "like_osm": "Bạn có ham mê OpenStreetMap chưa? Hãy liên hệ với cộng đồng:",
+      "more": "Thêm nữa",
+      "events": "Sự kiện",
+      "languages": "Ngôn ngữ: {languages}",
+      "missing": "Danh sách này thiếu gì không?",
+      "tell_us": "Báo cho chúng tôi biết!"
+    },
+    "confirm": {
+      "cancel": "Hủy bỏ"
+    },
+    "splash": {
+      "start": "Tiến hành sửa đổi"
+    },
+    "source_switch": {
+      "live": "thật",
+      "lose_changes": "Bạn có các thay đổi chưa lưu. Các thay đổi này sẽ bị mất khi bạn đổi máy chủ bản đồ. Bạn có chắc chắn muốn đổi máy chủ?",
+      "dev": "thử"
+    },
+    "rapid_feature_inspector": {
+      "tags": "Thẻ",
+      "option_ignore": {
+        "key": "T"
+      }
+    },
+    "rapid_feature_toggle": {
+      "esri": {
+        "remove": "Xóa"
+      }
+    },
+    "tag_reference": {
+      "description": "Mô tả",
+      "on_wiki": "{tag} tại wiki.osm.org",
+      "used_with": "được sử dụng với {type}"
+    },
+    "zoom": {
+      "in": "Phóng to",
+      "out": "Thu nhỏ",
+      "disabled": {
+        "in": "Không thể phóng to hơn.",
+        "out": "Không thể thu nhỏ hơn."
+      }
+    },
+    "bearing": {
+      "n": "U"
+    },
+    "cannot_zoom": "Không thể thu nhỏ hơn trong chế độ hiện tại.",
+    "full_screen": "Bật/tắt Chế độ Toàn màn hình",
+    "self_intersection": {
+      "error": {
+        "lines": "Đường kẻ không thể tự giao điểm.",
+        "areas": "Vùng không thể tự giao điểm."
+      }
+    },
+    "QA": {
+      "osmose": {
+        "title": "Vấn đề Osmose",
+        "detail_title": "Chi tiết",
+        "elems_title": "Đối tượng",
+        "fix_title": "Gợi ý Sửa chữa",
+        "trap_title": "Lỗi Thường Gặp"
+      },
+      "improveOSM": {
+        "title": "Sự dò ImproveOSM",
+        "geometry_types": {
+          "path": "lối",
+          "parking": "bãi đậu xe",
+          "road": "đường sá",
+          "both": "đường sá và bãi đậu xe"
+        },
+        "directions": {
+          "east": "đông",
+          "north": "bắc",
+          "northeast": "đông bắc",
+          "northwest": "tây bắc",
+          "south": "nam",
+          "southeast": "đông nam",
+          "southwest": "tây nam",
+          "west": "tây"
+        },
+        "error_types": {
+          "ow": {
+            "title": "Đường Thiếu Thẻ Một chiều",
+            "description": "Trong số {num_trips} chuyến đi được ghi lại trên đoạn {highway} này, {percentage}% đi từ {from_node} đến {to_node}. Thẻ “oneway” (đường một chiều) có thể bị thiếu."
+          },
+          "mr": {
+            "title": "Thiếu Đối tượng",
+            "description": "Số {num_trips} chuyến đi được ghi lại trong khu vực này gợi ý rằng một {geometry_type} tồn tại tại đây nhưng chưa được thêm vào bản đồ.",
+            "description_alt": "Dữ liệu bên thứ ba gợi ý rằng một {geometry_type} tồn tại tại đây nhưng chưa được thêm vào bản đồ."
+          },
+          "tr": {
+            "title": "Thiếu Hạn chế Rẽ",
+            "description": "Trong số {num_trips} chuyến đi về hướng {travel_direction} được ghi lại, {num_passed} chuyến đi rẽ từ {from_way} đến {to_way} tại {junction}. Một hạn chế rẽ “{turn_restriction}” có thể bị thiếu."
+          }
+        }
+      },
+      "keepRight": {
+        "detail_description": "Miêu tả",
+        "comment": "Nhận xét",
+        "comment_placeholder": "Để lại nhận xét cho người dùng khác.",
+        "close": "Đóng (Đã Sửa Vấn đề)",
+        "ignore": "Gạt bỏ (Báo động Giả)",
+        "save_comment": "Đăng Nhận xét",
+        "close_comment": "Giải quyết và Nhận xét",
+        "ignore_comment": "Gạt bỏ và Nhận xét",
+        "error_parts": {
+          "this_node": "nốt này",
+          "this_way": "lối này",
+          "this_relation": "quan hệ này",
+          "this_oneway": "đường một chiều này",
+          "this_highway": "con đường này",
+          "this_railway": "đường sắt này",
+          "this_waterway": "đường thủy này",
+          "this_cycleway": "đường xe đạp này",
+          "this_cycleway_footpath": "đường xe đạp / đường dạo này",
+          "this_riverbank": "bờ sông này",
+          "this_crossing": "lối băng qua đường này",
+          "this_railway_crossing": "điểm giao đường sắt này",
+          "this_bridge": "cầu này",
+          "this_tunnel": "đường hầm này",
+          "this_boundary": "biên giới này",
+          "this_turn_restriction": "hạn chế rẽ này",
+          "this_roundabout": "đường vòng này",
+          "this_mini_roundabout": "đường vòng nhỏ này",
+          "this_track": "đường gom này",
+          "this_feature": "đối tượng này",
+          "highway": "đường",
+          "railway": "đường sắt",
+          "waterway": "đường thủy",
+          "cycleway": "đường xe đạp",
+          "cycleway_footpath": "đường xe đạp/dạo",
+          "riverbank": "bờ sông",
+          "place_of_worship": "nơi thờ phụng",
+          "pub": "quán rượu pub",
+          "restaurant": "nhà hàng",
+          "school": "trường học",
+          "university": "trường đại học",
+          "hospital": "bệnh viện",
+          "library": "thư viện",
+          "theatre": "nhà hát",
+          "courthouse": "tòa án",
+          "bank": "ngân hàng",
+          "cinema": "rạp phim",
+          "pharmacy": "nhà thuốc",
+          "cafe": "quán cà phê",
+          "fast_food": "nhà hàng ăn nhanh",
+          "fuel": "xăng",
+          "from": "từ",
+          "to": "đến",
+          "left_hand": "bên trái",
+          "right_hand": "bên phải"
+        },
+        "errorTypes": {
+          "<20>": {
+            "title": "Nhiều nốt cùng chỗ",
+            "description": "Có hơn một nốt ở cùng vị trí này. Các số nốt: {var1}."
+          },
+          "<30>": {
+            "title": "Vùng không đóng",
+            "description": "{var1} được đánh thẻ “{var2}” nên phải là đường vòng đóng."
+          },
+          "<40>": {
+            "title": "Đường một chiều không thể xảy ra",
+            "description": "Nốt đầu {var1} của {var2} không nối liền với lối nào khác."
+          },
+          "<41>": {
+            "description": "Nốt cuối {var1} của {var2} không nối liền với lối nào khác."
+          },
+          "<42>": {
+            "description": "Người ta không thể đi đến {var1} vì mọi lối dẫn từ nó đều là đường một chiều."
+          },
+          "<43>": {
+            "description": "Người ta không thể đi đâu từ {var1} vì mọi lối dẫn đến nó đều là đường một chiều."
+          },
+          "<50>": {
+            "title": "Gần như giao lộ",
+            "description": "{var1} rất gần nhưng không nối liền với lối {var2}."
+          },
+          "<60>": {
+            "title": "Thẻ phản đối",
+            "description": "{var1} có thẻ “{var2}” bị phản đối. Vui lòng thay thế nó bằng “{var3}”."
+          },
+          "<70>": {
+            "title": "Thẻ bị thiếu",
+            "description": "{var1} có thẻ trống: “{var2}”."
+          },
+          "<71>": {
+            "description": "{var1} không có thẻ nào."
+          },
+          "<72>": {
+            "description": "{var1} không phải trực thuộc lối nào và không có thẻ nào."
+          },
+          "<73>": {
+            "description": "{var1} có thẻ “{var2}” nhưng không có thẻ “highway”."
+          },
+          "<74>": {
+            "description": "{var1} có thẻ trống: “{var2}”."
+          },
+          "<75>": {
+            "description": "{var1} có tên “{var2}” nhưng không có thẻ nào khác."
+          },
+          "<90>": {
+            "title": "Đường cao tốc thiếu thẻ số tuyến",
+            "description": "{var1} có thẻ đường cao tốc nên phải có thẻ “ref”, “nat_ref”, hoặc “int_ref”."
+          },
+          "<100>": {
+            "title": "Nơi thờ phụng thiếu tôn giáo",
+            "description": "{var1} có thẻ nơi thờ phụng nên phải có thẻ “religion” (tôn giáo)."
+          },
+          "<110>": {
+            "title": "Địa điểm quan tâm thiếu tên",
+            "description": "{var1} có thẻ “{var2}” nên phải có thẻ “name” (tên)."
+          },
+          "<120>": {
+            "title": "Lối không có nốt",
+            "description": "{var1} chỉ có một nốt."
+          },
+          "<130>": {
+            "title": "Lối không nối liền",
+            "description": "{var1} bị cách ly khỏi bản đồ."
+          },
+          "<150>": {
+            "title": "Điểm giao đường sắt không có thẻ",
+            "description": "{var1} giữa con đường và đường sắt phải có thẻ “railway=crossing” hoặc “railway=level_crossing”."
+          },
+          "<160>": {
+            "title": "Lớp đường sắt mâu thuẫn",
+            "description": "Các lối giao lộ tại {var1} trực thuộc lớp khác (ví dụ đường hầm hoặc cầu)."
+          },
+          "<170>": {
+            "title": "Đối tượng có thẻ FIXME",
+            "description": "{var1} có thẻ “FIXME” (cần sửa): “{var2}”."
+          },
+          "<180>": {
+            "title": "Quan hệ không có kiểu",
+            "description": "{var1} thiếu thẻ “type”."
+          },
+          "<190>": {
+            "title": "Cắt ngang mà không có giao điểm",
+            "description": "{var1} cắt ngang với {var2} {var3} nhưng không có nốt giao điểm, cầu, hoặc đường hầm."
+          },
+          "<200>": {
+            "title": "Lối trùng nhau",
+            "description": "{var1} trùng khớp với {var2} {var3}."
+          },
+          "<210>": {
+            "title": "Lối tự giao điểm",
+            "description": "Có lỗi không rõ về lối tự giao điểm."
+          },
+          "<211>": {
+            "description": "{var1} bao gồm hơn một nốt hơn một lần: {var2}. Điều này không nhất thiết phải là lỗi."
+          },
+          "<212>": {
+            "description": "{var1} chỉ có hai nốt khác nhau và bao gồm một trong số nốt đó hơn một lần."
+          },
+          "<220>": {
+            "title": "Thẻ sai chính tả",
+            "description": "{var1} có thẻ “{var2}” là “{var3}” có vẻ giống “{var4}”."
+          },
+          "<221>": {
+            "description": "{var1} có thẻ “{var2}” đáng ngờ."
+          },
+          "<230>": {
+            "title": "Lớp mâu thuẫn",
+            "description": "{var1} nối liền các lối trực thuộc lớp khác nhau."
+          },
+          "<231>": {
+            "description": "{var1} nối liền các lối trực thuộc lớp khác nhau: {var2}.",
+            "layer": "(lớp: {layer})"
+          },
+          "<232>": {
+            "description": "{var1} có thẻ “layer={var2}”. Điều này không nhất thiết phải là lỗi nhưng có vẻ lạ."
+          },
+          "<270>": {
+            "title": "Giao điểm đường cao tốc bất thường",
+            "description": "{var1} là giao điểm của một đường cao tốc và một con đường không phải là “motorway” (đường cao tốc), “motorway_link” (nhánh ra vào đường cao tốc), “trunk” (xa lộ), “rest_area” (trạm dừng nghỉ), hoặc “construction” (đường đang xây dựng). Chỉ cho phép giao với lối “service” (ngách) hoặc “unclassified” (đường nhỏ) nếu có “access=no” hay “access=private”, hoặc nó dẫn đến khu vực dịch vụ cho đường cao tốc, hoặc nó có thẻ “service=parking_aisle”."
+          },
+          "<280>": {
+            "title": "Vấn đề biên giới",
+            "description": "Biên giới này có lỗi không rõ."
+          },
+          "<281>": {
+            "title": "Biên giới thiếu tên",
+            "description": "{var1} không có tên."
+          },
+          "<282>": {
+            "title": "Biên giới thiếu cấp hành chính",
+            "description": "Biên giới {var1} có thẻ “admin_level” (cấp hành chính) không số. Đừng có pha trộn các cấp hành chính (chẳng hạn “6;7”). Luôn sử dụng số thấp nhất (quan trọng nhất) đối với các biên giới có liên quan."
+          },
+          "<283>": {
+            "title": "Biên giới không phải là đường vòng đóng",
+            "description": "Biên giới {var1} không phải là đường vòng đóng."
+          },
+          "<284>": {
+            "title": "Biên giới bị chia cắt",
+            "description": "Biên giới {var1} bị chia cắt tại đây."
+          },
+          "<285>": {
+            "title": "Cấp hành chính của biên giới quá cao",
+            "description": "{var1} có thẻ “admin_level={var1}” nhưng trực thuộc một quan hệ có số cấp hành chính thấp hơn, tức cấp quan trọng hơn. Lối phải có số cấp hành chính thấp nhất đối với các quan hệ chứa lối này."
+          },
+          "<290>": {
+            "title": "Vấn đề hạn chế",
+            "description": "Hạn chế này có lỗi không rõ."
+          },
+          "<291>": {
+            "title": "Hạn chế thiếu kiểu",
+            "description": "{var1} có kiểu hạn chế bất ngờ."
+          },
+          "<292>": {
+            "title": "Hạn chế thiếu lối “từ”",
+            "description": "{var1} cần đúng một thành viên “from” (từ) nhưng lại có {var1} cái."
+          },
+          "<293>": {
+            "title": "Hạn chế thiếu lối “đến”",
+            "description": "{var1} cần đúng một thành viên “to” (đến) nhưng lại có {var1} cái."
+          },
+          "<294>": {
+            "title": "Hạn chế có thành viên “từ” hoặc “đến” không phải lối",
+            "description": "Các thành viên “from” (từ) và “to” (đến) của {var1} đều phải là lối. {var2}."
+          },
+          "<295>": {
+            "title": "Hạn chế có thành viên “qua” không phải điểm cuối",
+            "description": "{var1} có nốt “via” (qua) {var2} không phải là thành viên đầu hoặc cuối của lối “{var3}” {var4}."
+          },
+          "<296>": {
+            "title": "Góc hạn chế bất thường",
+            "description": "{var1} có kiểu hạn chế “{var1}” nhưng các lối tạo thành góc {var2} độ. Có lẽ hạn chế có kiểu không chính xác?"
+          },
+          "<297>": {
+            "title": "Lối “đến” có hướng sai",
+            "description": "{var1} theo hướng không hợp với lối “to” (đến) {var2}."
+          },
+          "<298>": {
+            "title": "Hạn chế dư – đường một chiều",
+            "description": "{var1} có thể dư thừa. Đã cấm đi vào vì thẻ “oneway” (đường một chiều) của {var2}."
+          },
+          "<300>": {
+            "title": "Thiếu tốc độ tối đa",
+            "description": "{var1} thiếu thẻ “maxspeed” (tốc độ tối cao) và là đường cao tốc, xa lộ, đường chính, hoặc đường lớn."
+          },
+          "<310>": {
+            "title": "Vấn đề đường vòng",
+            "description": "Đường vòng này có lỗi không rõ."
+          },
+          "<311>": {
+            "title": "Đường vòng không đóng",
+            "description": "{var1} là một phần của đường vòng nhưng không phải là đường vòng đóng. (Các đường phân làn nối liền với đường vòng không nên có thẻ đường vòng)."
+          },
+          "<312>": {
+            "title": "Đường vòng sai hướng",
+            "description": "Nếu {var1} ở quốc gia lái xe {var2} thì nó ngược chiều."
+          },
+          "<313>": {
+            "title": "Đường vòng không có đủ giao điểm",
+            "description": "{var1} chỉ nối liền với {var2} đường khác. Đường vòng thường nối liền với 3 đường trở lên."
+          },
+          "<320>": {
+            "title": "Nối liền nhánh ra vào một cách sai",
+            "description": "{var1} có thẻ “{var2}” nhưng không nối liền với lối “{var3}” hoặc “{var4}” nào khác."
+          },
+          "<350>": {
+            "title": "Thẻ cầu sai",
+            "description": "{var1} thiếu thẻ khớp với các lối chung quanh cho biết mục đích chủ yếu của cầu này. Nên có một trong các thẻ sau: {var2}."
+          },
+          "<360>": {
+            "title": "Thẻ tên địa phương bị thiếu",
+            "description": "Tốt nhất là {var1} có thẻ “name:XX={var2}” cho biết rằng tên thông dụng là “{var2}” trong ngôn ngữ địa phương XX."
+          },
+          "<370>": {
+            "title": "Địa điểm giống hệt",
+            "description": "{var1} có cùng thẻ với lối chung quanh {var2} {var3}, có lẽ không cần các thẻ này.",
+            "including_the_name": "(bao gồm tên {name})"
+          },
+          "<380>": {
+            "title": "Đối tượng không vật chất có thẻ thể thao",
+            "description": "{var1} có thẻ “{var2}” nhưng không có thẻ vật chất, chẳng hạn “leisure” (giải trí), “building” (tòa nhà), “amenity” (tiện nghi), “highway” (đường)."
+          },
+          "<390>": {
+            "title": "Thiếu loại đường mòn",
+            "description": "{var1} thiếu thẻ “tracktype” (loại đường mòn)."
+          },
+          "<400>": {
+            "title": "Vấn đề hình học",
+            "description": "Có vấn đề không rõ về hình học tại đây."
+          },
+          "<401>": {
+            "title": "Hạn chế rẽ bị thiếu",
+            "description": "Các lối {var1} và {var2} nối liền tạo thành một góc rất nhọn tại đây, và không có thẻ “oneway” (đường một chiều) hoặc hạn chế cấm rẽ."
+          },
+          "<402>": {
+            "title": "Góc không thể xảy ra",
+            "description": "{var1} đột ngột cong lại thành góc rất nhọn tại đây."
+          },
+          "<410>": {
+            "title": "Vấn đề trang Web",
+            "description": "Trang Web hoặc địa chỉ URL liên lạc có lỗi không rõ."
+          },
+          "<411>": {
+            "description": "Địa chỉ URL của {var1} có thể lỗi thời: {var2} trả về mã trạng thái HTTP {var3}."
+          },
+          "<412>": {
+            "description": "Địa chỉ URL của {var1} có thể lỗi thời: {var2} chứa văn bản đáng ngờ “{var3}”."
+          },
+          "<413>": {
+            "description": "Địa chỉ URL của {var1} có thể lỗi thời: {var2} không chứa các từ khóa “{var3}”."
+          }
+        }
+      }
+    },
+    "streetside": {
+      "tooltip": "Hình ảnh Streetside của Microsoft",
+      "report": "Báo cáo lo ngại riêng tư trong hình",
+      "view_on_bing": "Xem tại Bản đồ Bing",
+      "hires": "Độ phân giải cao"
+    },
+    "mapillary_images": {
+      "tooltip": "Hình ảnh cấp phố do Mapillary cung cấp"
+    },
+    "mapillary_map_features": {
+      "title": "Các thể loại đối tượng",
+      "tooltip": "Đối tượng bản đồ do Mapillary cung cấp",
+      "construction": {
+        "barrier": {
+          "temporary": "chướng ngại tạm"
+        },
+        "flat": {
+          "crosswalk_plain": "vạch qua đường đơn giản",
+          "driveway": "lối đi vào nhà"
+        }
+      },
+      "marking": {
+        "discrete": {
+          "arrow": {
+            "left": "vạch mũi tên chỉ hướng (trái)",
+            "right": "vạch mũi tên chỉ hướng (phải)",
+            "split_left_or_straight": "vạch mũi tên chỉ hướng (trái hoặc thẳng)",
+            "split_right_or_straight": "vạch mũi tên chỉ hướng (phải hoặc thẳng)",
+            "straight": "vạch mũi tên chỉ hướng (thẳng)"
+          },
+          "crosswalk_zebra": "vạch băng qua đường",
+          "give_way_row": "vạch nhường đường (hàng)",
+          "give_way_single": "vạch nhường đường (đơn)",
+          "other_marking": "vạch khác trên mặt đường",
+          "stop_line": "vạch dừng xe",
+          "symbol": {
+            "bicycle": "vạch ký hiệu xe đạp"
+          },
+          "text": "vạch chữ"
+        }
+      },
+      "object": {
+        "banner": "biểu ngữ",
+        "bench": "băng ghế",
+        "bike_rack": "giá đậu xe đạp",
+        "billboard": "bảng quảng cáo",
+        "catch_basin": "nắp cống thoát nước",
+        "cctv_camera": "camera quan sát",
+        "fire_hydrant": "trụ cứu hỏa",
+        "junction_box": "vạch mắt võng",
+        "mailbox": "thùng thư",
+        "manhole": "hố ga",
+        "parking_meter": "máy thu tiền đậu xe",
+        "phone_booth": "trạm điện thoại",
+        "sign": {
+          "advertisement": "quảng cáo",
+          "information": "bảng thông tin",
+          "other": "bảng khác",
+          "store": "bảng hiệu tiệm",
+          "traffic_sign": {
+            "back": "mặt trái bảng giáo thông",
+            "direction_front": "mặt phải bảng giáo thông",
+            "front": "mặt phải bảng giáo thông"
+          }
+        },
+        "street_light": "đèn đường",
+        "support": {
+          "pole": "cột",
+          "traffic_sign_frame": "cột bảng giao thông",
+          "utility_pole": "cột điện"
+        },
+        "traffic_cone": "cọc tiêu giao thông",
+        "traffic_light": {
+          "cyclists": "đèn giao thông cho người đi xe đạp",
+          "general_horizontal": "đèn giao thông ngang",
+          "general_single": "đèn giao thông đơn độc",
+          "general_upright": "đèn giao thông dọc",
+          "other": "đèn giao thông",
+          "pedestrians": "đèn giao thông cho người đi bộ"
+        },
+        "trash_can": "thùng rác",
+        "water_valve": "van nước"
+      }
+    },
+    "mapillary": {
+      "signs": {
+        "tooltip": "Bảng giao thông do Mapillary cung cấp"
+      },
+      "view_on_mapillary": "Xem hình này trên Mapillary"
+    },
+    "kartaview_images": {
+      "tooltip": "Hình ảnh cấp phố do KartaView cung cấp"
+    },
+    "kartaview": {
+      "view_on_kartaview": "Xem hình này trên KartaView"
+    },
+    "note": {
+      "note": "Ghi chú",
+      "title": "Sửa ghi chú",
+      "anonymous": "vô danh",
+      "closed": "(Giải quyết)",
+      "commentTitle": "Nhận xét",
+      "status": {
+        "opened": "tạo {when}",
+        "reopened": "mở lại {when}",
+        "commented": "nhận xét {when}",
+        "closed": "giải quyết {when}"
+      },
+      "newComment": "Nhận xét Mới",
+      "inputPlaceholder": "Để lại nhận xét cho người dùng khác.",
+      "close": "Giải quyết Ghi chú",
+      "open": "Mở lại Ghi chú",
+      "comment": "Nhận xét",
+      "close_comment": "Giải quyết và Nhận xét",
+      "open_comment": "Mở lại và Nhận xét",
+      "report": "Báo cáo",
+      "new": "Ghi chú Mới",
+      "newDescription": "Miêu tả khuyết điểm.",
+      "save": "Lưu Ghi chú",
+      "login": "Bạn phải đăng nhập để thay đổi hoặc nhận xét về ghi chú này.",
+      "upload_explanation": "Lời nhận xét của bạn sẽ xuất hiện để mọi người dùng OpenStreetMap xem.",
+      "upload_explanation_with_user": "Lời nhận xét bạn đăng lên dưới tên {user} sẽ xuất hiện để mọi người dùng OpenStreetMap xem."
+    },
+    "help": {
+      "title": "Trợ giúp",
+      "help": {
+        "title": "Trợ giúp",
+        "open_data_h": "Dữ liệu Mở",
+        "open_data": "Các sửa đổi của bạn trên bản đồ này sẽ xuất hiện cho mọi người dùng OpenStreetMap. Bạn có thể vẽ những gì mình nhớ lại, nhìn thấy trực tiếp ngoài đường, hoặc nhìn thấy trong không ảnh (hình chụp từ không trung) hay hình ảnh cấp phố. Chú ý [cấm sao chép](https://www.openstreetmap.org/copyright) từ các nguồn thương mại, chẳng hạn như Google Maps.",
+        "before_start_h": "Trước khi bắt đầu",
+        "open_source_h": "Mã nguồn mở"
+      },
+      "overview": {
+        "title": "Giới thiệu",
+        "navigation_h": "Điều hướng",
+        "features_h": "Các Thể loại Đối tượng",
+        "features": "Từ *đối tượng* chỉ những gì xuất hiện trên bản đồ, chẳng hạn con đường, tòa nhà, và địa điểm. Bạn có thể vẽ tất cả những vật tĩnh và cụ thể là một đối tượng trong OpenStreetMap. Mỗi đối tượng thực tế ứng với một *địa điểm*, *đường kẻ*, hoặc *vùng* trên bản đồ.",
+        "nodes_ways": "Trong OpenStreetMap, các địa điểm đôi khi được gọi *nốt* (node), và các đường kẻ và vùng đôi khi được gọi *lối* (way)."
+      },
+      "editing": {
+        "title": "Sửa & Lưu",
+        "select_h": "Lựa chọn",
+        "select_space": "Cũng có thể bấm thanh khoảng cách `{space}` thay vì nhấn chuột trái để chọn hoặc vẽ.",
+        "multiselect_h": "Chọn nhiều",
+        "multiselect": "Chọn nhiều đối tượng để sửa đổi chúng cùng một lúc nhanh chóng.",
+        "undo_redo_h": "Hoàn tác & Làm lại",
+        "undo_redo": "Các sửa đổi của bạn được lưu trữ tạm thời trên máy của bạn cho đến lúc tải nó lên máy chủ OpenStreetMap. Hoàn tác các thay đổi không muốn dùng nút {undo_icon} **{undo}**, và làm lại các thay đổi đã được hoàn tác dùng nút {redo_icon} **{redo}**.",
+        "save_h": "Lưu",
+        "save": "Bấm {save_icon} **{save}** để hoàn thành bộ thay đổi của bạn và tải nó lên OpenStreetMap. Hãy nhớ lưu các thay đổi thường xuyên!",
+        "upload_h": "Tải lên",
+        "upload": "Nhập [lời tóm lược sửa đổi](https://wiki.openstreetmap.org/wiki/Good_changeset_comments). Sau đó, bấm **{upload}** để đăng các thay đổi vào OpenStreetMap. Các thay đổi sẽ xuất hiện ngay trên bản đồ chính để cho mọi người xem.",
+        "backups_h": "Sao lưu Tự động",
+        "keyboard_h": "Phím tắt",
+        "keyboard": "Bấm phím `{shortcuts_key}` để xem danh sách các phím tắt."
+      },
+      "feature_editor": {
+        "title": "Trình kiểm tra Đối tượng",
+        "intro": "*Trình kiểm tra đối tượng* xuất hiện bên cạnh bản đồ, bảng này cho phép xem và sửa đổi tất cả các thông tin về đối tượng được chọn.",
+        "definitions": "Cờ ngang ở đầu thanh bên cho biết loại đối tượng. Phần giữa của biểu mẫu có các *thuộc tính* của đối tượng, chẳng hạn như tên và địa chỉ.",
+        "type_h": "Thể loại Đối tượng",
+        "type": "Bấm vào một thể loại để định rõ loại đối tượng. Tất cả những gì cụ thể có thể được thêm vào OpenStreetMap, nên bạn có thể chọn từ hàng ngàn thể loại.",
+        "type_picker": "Danh sách thể loại liệt kê các thể loại thông dụng như công viên, bệnh viện, nhà hàng, đường giao thông, và tòa nhà. Tìm kiếm thể loại, kể cả những thể loại hiếm hơn, trong hộp tìm kiếm ở đầu thanh bên. Bấm nút {inspect} **Thông tin** bên cạnh một thể loại để tìm hiểu thêm về nó.",
+        "fields_h": "Thuộc tính",
+        "fields_all_fields": "Phần “{fields}” chứa tất cả các thuộc tính thường gặp của đối tượng. Trong OpenStreetMap, tất cả các thẻ là tùy chọn, nên có thể để trống thuộc tính nào không chắc chắn.",
+        "fields_example": "Mỗi thể loại đối tượng có các thuộc tính riêng của nó. Thí dụ đường giao thông có thuộc tính về mặt đường và tốc độ tối đa, trong khi nhà hàng có thuộc tính về ẩm thực và giờ mở cửa.",
+        "fields_add_field": "Mở trình đơn “Thêm thuộc tính” để bổ sung thêm thuộc tính, chẳng hạn lời miêu tả, tên bài Wikipedia, và khả năng truy cập bằng xe lăn.",
+        "tags_h": "Thẻ",
+        "tags_all_tags": "Mở rộng phần “{tags}” ở cuối trình kiểm tra để sửa đổi bất cứ *thẻ* nào của đối tượng được chọn. Thẻ là đôi *chìa khóa* và *giá trị*. Mỗi thuộc tính ứng của đối tượng với ít nhất một thẻ.",
+        "tags_resources": "Sửa đổi thẻ của đối tượng là một tác vụ hơi nâng cao. Trước khi sửa đổi thẻ, tra cứu các tài nguyên như [OpenStreetMap Wiki](https://wiki.openstreetmap.org/wiki/Vi:Main_Page?uselang=vi) hoặc [Taginfo](https://taginfo.openstreetmap.org/) để biết về các chìa khóa và giá trị thông dụng."
+      },
+      "points": {
+        "title": "Địa điểm",
+        "intro": "*Địa điểm* tương ứng với các nơi như cửa hàng, nhà hàng, đài tưởng niệm. Địa điểm chỉ ra một vị trí cụ thể và mô tả những gì thấy được tại vị trí đó.",
+        "add_point_h": "Đặt Địa điểm",
+        "add_point": "Để đặt một địa điểm, bấm nút {point_icon} **{point}** trên thanh công cụ bên trên bản đồ, hoặc bấm phím tắt `1`.",
+        "move_point_h": "Di chuyển Địa điểm",
+        "delete_point_h": "Xóa Địa điểm",
+        "delete_point": "Đôi khi cần xóa các đối tượng không tồn tại trên thực tế. Khi xóa đối tượng khỏi OpenStreetMap, nó được loại bỏ khỏi bản đồ công cộng, nên bạn phải chắc chắn rằng nó không còn tồn tại trước khi xóa nó khỏi bản đồ."
+      },
+      "lines": {
+        "title": "Đường kẻ",
+        "intro": "*Đường kẻ* tương ứng với đường tâm của chẳng hạn các đường sá, đường sắt, dòng sông.",
+        "add_line_h": "Vẽ Đường kẻ",
+        "add_line": "Để vẽ một đường kẻ, bấm nút {line_icon} **{line}** trên thanh công cụ bên trên bản đồ, hoặc bấm phím tắt `2`.",
+        "add_line_finish": "Để kết thúc đường kẻ, nhấn chuột hay chạm lần nữa vào nốt cuối cùng hoặc bấm `{return}`.",
+        "modify_line_h": "Điều chỉnh Đường kẻ",
+        "modify_line_dragnode": "Nhiều khi bạn sẽ gặp đường kẻ không chính xác, thí dụ một con đường không hợp với hình nền. Để điều chỉnh một đường kẻ, trước tiên chọn nó. Tất cả các nốt trên đường sẽ được đánh dấu với hình chấm nhỏ. Kéo các nốt đến các vị trí đúng.",
+        "connect_line_h": "Nối liền Đường kẻ",
+        "connect_line": "Để bảo đảm sự chính xác của bản đồ, và để cho các ứng dụng có thể chỉ đường, xin chú ý nối liền các đường ở những giao lộ trên thực tế.",
+        "connect_line_display": "Các giao lộ được đánh dấu trên bản đồ với hình chấm màu xám. Nếu điểm đầu hoặc cuối đường chưa được nối liền với đối tượng nào, nó được đánh dấu với hình tròn màu trắng lớn hơn.",
+        "connect_line_tag": "Nếu bạn biết rằng giao lộ có đèn giao thông, chọn nốt giao lộ và chọn thể loại “Đèn giao thông” trong trình kiểm tra. Nếu có vạch qua đường, cộng thêm nốt trên đường gần giao lộ và chọn thể loại “Vạch qua đường”.",
+        "disconnect_line_h": "Tháo gỡ Đường kẻ",
+        "move_line_h": "Di chuyển Đường kẻ",
+        "delete_line_h": "Xóa Đường kẻ",
+        "delete_line": "Bạn có thể xóa một đường kẻ hoàn toàn không chính xác, thí dụ một con đường không ứng với con đường thật. Xin vui lòng cẩn thận khi xóa đối tượng: bạn có thể đang xem hình nền lỗi thời. Mặc dù một con đường hình như giả tưởng, nó có thể tồn tại trên thực tế nhưng được xây sau khi hình ảnh được chụp."
+      },
+      "areas": {
+        "title": "Vùng",
+        "intro": "*Vùng* cho biết hình dạng của các đa giác như hồ nước, tòa nhà, và khu vực dân cư. Vẽ đường viền của vùng theo đường viền trên thực tế, thí dụ theo các tường ngoài của một tòa nhà.",
+        "point_or_area_h": "Địa điểm hoặc Vùng?",
+        "point_or_area": "Nhiều thể loại đối tượng có thể là địa điểm hoặc vùng. Bạn nên vẽ tòa nhà hoặc cơ ngơi là vùng nếu có thể. Đặt một địa điểm ở trong vùng tòa nhà để tượng trưng cho một kinh doanh chỉ chiếm một phần của tòa nhà.",
+        "add_area_h": "Vẽ Vùng",
+        "add_area_command": "Để vẽ một vùng, bấm nút  {area_icon} **{area}** trên thanh công cụ bên trên bản đồ, hoặc bấm phím tắt `3`.",
+        "add_area_finish": "Để kết thúc vùng, nhấn chuột hay chạm lần nữa vào nốt đầu tiên hay cuối cùng hoặc bấm `{return}`.",
+        "square_area_h": "Góc vuông",
+        "modify_area_h": "Điều chỉnh Vùng",
+        "modify_area_dragnode": "Nhiều khi bạn sẽ gặp vùng không chính xác, thí dụ một tòa nhà không hợp với hình nền. Để điều chỉnh một vùng, trước tiên chọn nó. Tất cả các nốt trên vùng sẽ được đánh dấu với hình chấm nhỏ. Kéo các nốt đến các vị trí đúng.",
+        "delete_area_h": "Xóa Vùng",
+        "delete_area": "Bạn có thể xóa một vùng hoàn toàn không chính xác, thí dụ một tòa nhà không ứng với tòa nhà thật. Xin vui lòng cẩn thận khi xóa đối tượng: bạn có thể đang xem hình nền lỗi thời. Mặc dù một tòa nhà hình như giả tưởng, nó có thể tồn tại trên thực tế nhưng được xây sau khi hình ảnh được chụp."
+      },
+      "relations": {
+        "title": "Quan hệ",
+        "intro": "*Quan hệ* là một kiểu đối tượng đặc biệt trong OpenStreetMap nhằm mục đích nhóm lại nhiều đối tượng khác. Các đối tượng thuộc về một quan hệ là các *thành viên* của quan hệ, và mỗi thành viên có thể có một *vai trò* trong quan hệ.",
+        "edit_relation_h": "Sửa đổi Quan hệ",
+        "edit_relation": "Bạn có thể mở rộng phần “{relations}” ở cuối thanh bên để xem đối tượng được chọn có trực thuộc quan hệ nào hay không. Nếu có, bạn có thể chọn và sửa đổi nó.",
+        "edit_relation_add": "Để xếp một đối tượng vào một quan hệ, chọn đối tượng rồi bấm nút {plus} **Thêm** trong phần “{relations}” của trình kiểm tra. Bạn có thể chọn quan hệ từ một danh sách quan hệ lân cận hoặc tạo một quan hệ mới dùng mục “{new_relation}”.",
+        "edit_relation_delete": "Bạn cũng có thể bấm nút {delete_icon} **{delete}** để tháo gỡ đối tượng được chọn khỏi một quan hệ. Nếu bạn gỡ tất cả các thành viên khỏi một quan hệ, quan hệ đó sẽ được xóa tự động.",
+        "maintain_relation_h": "Bảo quản Quan hệ",
+        "relation_types_h": "Các Thể loại Quan hệ",
+        "multipolygon_h": "Tổ hợp Đa giác",
+        "multipolygon": "Quan hệ *tổ hợp đa giác* là nhóm một hay nhiều vùng *bên ngoài* và một hay nhiều vùng bên trong. Các vùng bên ngoài định rõ đường viền ngoài của đa giác, còn các vùng bên trong định rõ các vùng con hoặc lỗ thủng bên trong đa giác.",
+        "turn_restriction_h": "Hạn chế Rẽ",
+        "turn_restriction": "Quan hệ *hạn chế rẽ* nhóm lại các quãng đường chịu ảnh hưởng của một hạn chế rẽ, các quãng đường này nối liền tại một giao lộ. Một hạn chế rẽ có một đường `from` (**từ**), một nốt hoặc đường `via` (**qua**), và một đường `to` (**đến**).",
+        "turn_restriction_field": "Để sửa đổi một hạn chế rẽ, chọn giao lộ giữa hai con đường trở lên. Trình kiểm tra sẽ hiển thị bản đồ nhỏ của giao lộ cho thuộc tính “{turn_restrictions}”.",
+        "route_h": "Tuyến đường",
+        "route": "Quan hệ *tuyến đường* nhóm lại một hay nhiều đường kẻ thành một tuyến đường trong mạng lưới, chẳng hạn tuyến buýt, tuyến đường sắt, hoặc tuyến đường xe hơi.",
+        "route_add": "Để xếp một đối tượng vào một quan hệ tuyến đường, chọn đối tượng và bấm nút {plus} **Thêm** trong phần “{relations}” của trình kiểm tra. Bạn có thể chọn quan hệ từ một danh sách quan hệ lân cận hoặc tạo một quan hệ mới dùng mục “Quan hệ mới…”.",
+        "boundary_h": "Biên giới",
+        "boundary": "Quan hệ *biên giới* nhóm lại một hay nhiều đường kẻ thành biên giới của một đơn vị hành chính.",
+        "boundary_add": "Để xếp một đối tượng vào một quan hệ biên giới, chọn đối tượng và bấm nút {plus} **Thêm** trong phần “{relations}” của trình kiểm tra. Bạn có thể chọn quan hệ từ một danh sách quan hệ lân cận hoặc tạo một quan hệ mới dùng mục “Quan hệ mới…”."
+      },
+      "operations": {
+        "title": "Tác vụ",
+        "intro_2": "Mỗi tác vụ có phím tắt khác nhau. Phần nhiều tác vụ có thể được áp dụng vào nhiều đối tượng cùng lúc.",
+        "straighten": "{straighten_icon} **{straighten}** loại bỏ các chỗ đường cong hoặc sắp xếp các điểm thành hàng điểm gọn gàng.",
+        "orthogonalize": "{orthogonalize_icon} **{orthogonalize}** làm gọn các góc vùng và đường kẻ thành góc vuông 90°. Bạn có thể làm vuông một góc cụ thể hoặc các góc của cả một đối tượng.",
+        "circularize": "{circularize_icon} **{circularize}** làm tròn vùng hoặc đường kẻ đóng.",
+        "move": "{move_icon} **{move}** cho phép kéo đối tượng sang vị trí khác trên bản đồ.",
+        "rotate": "{rotate_icon} **{rotate}** cho phép xoay đối tượng chung quanh trung điểm.",
+        "reflect": "{reflect_short_icon} **{reflect_short}** và {reflect_long_icon} **{reflect_long}** đối xứng đối tượng qua trục ngắn và dài.",
+        "continue": "{continue_icon} **{continue}** kéo dài đường kẻ từ điểm cuối sang điểm mới.",
+        "reverse": "{reverse_icon} **{reverse}** đảo ngược đối tượng. Một số loại đối tượng có hướng, ví dụ con đường một chiều, bảng giao thông, đường thủy, và vách đá.",
+        "disconnect": "{disconnect_icon} **{disconnect}** tách đường kẻ và vùng khỏi nhau. Bạn có thể tháo gỡ cả đối tượng hoặc chỉ một điểm của đối tượng.",
+        "merge": "{merge_icon} **{merge}** hợp nhất nhiều đối tượng thành một đối tượng. Bạn có thể gộp các vùng để tạo ra tổ hợp đa giác, gộp các đường kẻ thành đường kẻ dài hơn, và gộp các điểm vào đối tượng khác để chuyển các thẻ sang đối tượng kia.",
+        "split": "{split_icon} **{split}** chia đường kẻ tại điểm được chọn. Nếu chọn đường kẻ cụ thể thì chỉ cắt đôi các đường kẻ đó.",
+        "extract": "{extract_icon} **{extract}** rút trích điểm khỏi đường kẻ, tòa nhà, hoặc vùng khác.",
+        "delete": "{delete_icon} **{delete}** loại bỏ đối tượng khỏi bản đồ. Những gì không tồn tại trên thực tế nên được xóa.",
+        "downgrade": "{downgrade_icon} **{downgrade}** loại bỏ phần nhiều thẻ, ngoại trừ các thẻ tòa nhà và địa chỉ. Tác vụ này có ích khi tiệm đóng cửa trong khi tòa nhà vẫn còn.",
+        "copy_paste": "{copy_icon} **{copy}** và {paste_icon} **{paste}** cho phép nhân bản đối tượng."
+      },
+      "notes": {
+        "title": "Ghi chú",
+        "intro": "Lời *ghi chú* báo động cho người dùng khác rằng một đối tượng nào đó cần được sửa chữa hoặc một địa điểm cần được chú ý. Một lời ghi chú ứng với một địa điểm cụ thể trên bản đồ. Để xem các ghi chú đã tồn tại hoặc đăng ghi chú mới, mở bảng {data_icon} **{map_data}** và bật lớp {osm_notes}.",
+        "add_note_h": "Đăng Ghi chú",
+        "add_note": "Để tạo ghi chú mới, bấm nút {note_icon} **{note}** trên thanh công cụ bên trên bản đồ hoặc bấm phím tắt `{add_note_key}`.",
+        "update_note_h": "Giải quyết, Mở lại, và Nhận xét",
+        "update_note": "Bạn có thể cập nhật ghi chú bằng cách giải quyết, mở lại, hoặc đăng lời nhận xét. Đánh dấu giải quyết đối với lời ghi chú nếu khuyết điểm đã được khắc phục. Mở lại ghi chú nếu khuyết điểm vẫn chưa được khắc phục.",
+        "save_note_h": "Đăng Ghi chú",
+        "save_note": "Bạn phải đăng mỗi một thay đổi ghi chú bằng cách bấm nút bên dưới các lời nhận xét về ghi chú. Lưu ý rằng việc đăng bộ thay đổi lên OpenStreetMap sẽ **không** bao gồm các thay đổi ghi chú."
+      },
+      "imagery": {
+        "title": "Hình nền",
+        "intro": "Hình nền đằng sau bản đồ là tài nguyên quan trọng trong việc vẽ bản đồ. Hình nền có thể là không ảnh được chụp từ vệ tinh, máy bay, và máy bay không người lái, hoặc quét từ sách bản đồ lịch sử, hoặc lấy từ cơ sở dữ liệu mở.",
+        "sources_h": "Nguồn Hình ảnh",
+        "choosing": "Để chọn nguồn hình ảnh để vẽ theo, mở bảng {layers_icon} **{background_settings}* ở bên phải của bản đồ.",
+        "sources": "Theo mặc định, chương trình này hiển thị lớp hình trên không của [Bản đồ Bing](http://www.bing.com/maps/) hoặc lớp hình chất lượng tốt nhất theo địa phương. Tùy theo vị trí đang xem, một số nguồn hình ảnh cũng có sẵn. Vì nhiều khi một trong số nguồn này có thể mới hoặc rõ hơn, bạn nên thử mọi nguồn hình ảnh trước khi sửa đổi.",
+        "offsets_h": "Điều chỉnh Độ lệch của Hình ảnh",
+        "offset": "Hình ảnh đôi khi bị chệch đối với dữ liệu bản đồ vì dịch vụ hình ảnh có lỗi. Nếu bạn nhận thấy nhiều con đường bị chệch đối với hình nền, bạn không nhất thiết phải di chuyển các đường này để trùng hợp với hình ảnh. Thay vì di chuyển các con đường, hãy chỉnh lại hình ảnh để phù hợp với dữ liệu tồn tại bằng cách mở rộng phần “{imagery_offset}” ở cuối hộp Tùy chọn Hình nền."
+      },
+      "streetlevel": {
+        "title": "Hình ảnh Cấp phố",
+        "using_h": "Sử dụng Hình ảnh Cấp phố",
+        "using": "Để sử dụng hình ảnh cấp phố trong việc vẽ bản đồ, bấm nút {data_icon} **{map_data}** ở bên phải của bản đồ và bật/tắt các lớp phủ hình ảnh có sẵn.",
+        "photos": "Khi lớp phủ hình ảnh được kích hoạt, bản đồ hiển thị đường kẻ theo đường đi của các máy chụp hình. Nếu phóng to đủ mức, mỗi vị trí chụp hình được đánh dấu bằng hình tròn. Nếu phóng to hơn, một hình nón cho biết hương nhìn vào lúc chụp hình.",
+        "viewer": "Khi bạn chọn một vị trí hình, khung hình chụp xuất hiện ở góc dưới bên trái của bản đồ. Khung này có nút để bước tới lui trong chuỗi hình ảnh. Nó cũng cho biết tên người chụp hình, ngày giờ chụp hình, liên kết xem hình gốc tại trang dịch vụ hình ảnh cấp phố."
+      },
+      "gps": {
+        "title": "Tuyến GPS",
+        "intro": "Các tuyến GPS (Hệ thống định vị toàn cầu) là nguồn dữ liệu tin tưởng nhất trong dự án OpenStreetMap. Chương trình này hỗ trợ các tập tin *.gpx*, *.geojson*, và *.kml* trên thiết bị của bạn. Bạn có thể thu tuyến GPS dùng điện thoại thông minh, đồng hồ thể thao, hoặc thiết bị GPS khác.",
+        "survey": "Để biết cách khảo sát dùng thiết bị GPS, xem “[Lập bản đồ dùng điện thoại thông minh, thiết bị GPS, hoặc tờ giấy](http://learnosm.org/en/mobile-mapping/)”.",
+        "using_h": "Sử dụng Tuyến GPS",
+        "using": "Để sử dụng một tuyến GPS trong việc vẽ bản đồ, kéo thả tập tin GPS vào chương trình vẽ bản đồ này. Nếu chương trình nhận ra tuyến đường, tuyến đường sẽ được tô màu hồng sẫm trên bản đồ. Mở bảng {data_icon} **{map_data}** ở bên phải của bản đồ để bật, tắt, hoặc thu phóng vừa dữ liệu GPS do bạn thu thập.",
+        "tracing": "Tuyến đường GPX không được tải trực tiếp lên OpenStreetMap. Cách tốt nhất để sử dụng nó là vạch đường mới theo nó trên bản đồ.",
+        "upload": "Bạn cũng có thể [tải dữ liệu GPS của bạn lên OpenStreetMap](https://www.openstreetmap.org/trace/create) để cho người khác sử dụng."
+      },
+      "qa": {
+        "title": "Bảo đảm chất lượng",
+        "intro": "Các *bảo đảm chất lượng* có thể nhận ra các thẻ sai, con đường không nối liền, và vấn đề khác trong OpenStreetMap để bạn sửa chữa. Để xem các vấn đề bảo đảm chất lượng hiện tại, mở bảng {data_icon} **{map_data}** ở bên phải của bản đồ và bật một lớp bảo đảm chất lượng cụ thể.",
+        "tools_h": "Công cụ",
+        "tools": "Hiện tại các công cụ [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/vi/), và [Osmose](https://osmose.openstreetmap.fr/) được hỗ trợ.",
+        "issues_h": "Xử lý Vấn đề",
+        "issues": "Một vấn đề bảo đảm chất lượng được xử lý giống như một ghi chú. Bấm vào ghim để xem các chi tiết trong thanh bên. Mỗi công cụ có khả năng khác nhau, nhưng nói chung bạn có thể nhận xét hoặc đánh dấu giải quyết vấn đề."
+      },
+      "field": {
+        "restrictions": {
+          "title": "Trợ giúp về Hạn chế Rẽ",
+          "about": {
+            "title": "Giới thiệu",
+            "about": "Hộp này cho phép kiểm tra và thay đổi các hạn chế rẽ. Nó hiển thị mô hình của giao lộ được chọn, bao gồm các đường sá nối liền.",
+            "from_via_to": "Một hạn chế rẽ luôn có: một **lối TỪ**, một **lối ĐẾN**; và một **nốt THEO** hoặc một **lối THEO** trở lên.",
+            "maxdist": "Con trượt “{distField}” điều khiển tầm xa tìm kiếm các đường sá nối liền.",
+            "maxvia": "Con trượt “{viaField}” điều khiển số lối theo được bao gồm khi tìm đường sá. (Mẹo vặt: càng đơn giản càng tốt.)"
+          },
+          "inspecting": {
+            "title": "Kiểm tra",
+            "about": "Rê chuột lên khúc **TỪ** nào đó để xem nó có hạn chế rẽ hay không. Mỗi khúc có thể đi **ĐẾN** sẽ được tô màu cho biết nó có hạn chế rẽ hay không.",
+            "from_shadow": "{fromShadow} **TỪ khúc**",
+            "allow_shadow": "{allowShadow} **Cho phép ĐẾN**",
+            "restrict_shadow": "{restrictShadow} **Cấm ĐẾN**",
+            "only_shadow": "{onlyShadow} **Chỉ ĐẾN**",
+            "restricted": "“Cấm” có nghĩa hạn chế rẽ, ví dụ “Cấm Rẽ Trái”.",
+            "only": "“Chỉ” có nghĩa rằng một xe đi đường này chỉ được phép tiếp tục theo lối đó, ví dụ “Chỉ Chạy thẳng”."
+          },
+          "modifying": {
+            "title": "Thay đổi",
+            "about": "Để thay đổi hạn chế rẽ, nhấn chuột vào một khúc **TỪ** ban đầu để chọn nó. Khúc được chọn sẽ chớp chớp, và tất cả các nơi có thể đi **ĐẾN** sẽ xuất hiện hình rẽ.",
+            "indicators": "Sau đó, nhấn chuột vào hình rẽ để luân chuyển giữa “Cho phép”, “Cấm”, và “Chỉ”.",
+            "allow_turn": "{allowTurn} **Cho phép ĐẾN**",
+            "restrict_turn": "{restrictTurn} **Cấm ĐẾN**",
+            "only_turn": "{onlyTurn} **Chỉ ĐẾN**"
+          },
+          "tips": {
+            "title": "Mẹo vặt",
+            "simple": "**Nên tạo hạn chế càng đơn giản càng tốt.**",
+            "simple_example": "Ví dụ đừng nên tạo hạn chế có lối theo nếu nốt theo đã được.",
+            "indirect": "**Một số hạn chế có vẻ mờ nhạt và đề chữ “(gián tiếp)”.**",
+            "indirect_example": "Các hạn chế này tồn tại vì một hạn chế lân cận. Chẳng hạn một hạn chế “Chỉ Chạy thẳng” sẽ gây các hạn chế “Cấm Rẽ” gián tiếp đối với các lối khác đi ngang giao lộ.",
+            "indirect_noedit": "Bạn không thể sửa đổi các hạn chế gián tiếp. Thay thế, sửa đổi hạn chế trực tiếp lân cận."
+          }
+        }
+      }
+    },
+    "issues": {
+      "title": "Vấn đề",
+      "key": "E",
+      "list_title": "Vấn đề",
+      "errors": {
+        "list_title": "Lỗi"
+      },
+      "warnings": {
+        "list_title": "Cảnh báo"
+      },
+      "rules": {
+        "title": "Quy tắc"
+      },
+      "user_resolved_issues": "Số vấn đề bạn đã khắc phục",
+      "warnings_and_errors": "Cảnh báo và lỗi",
+      "no_issues": {
+        "message": {
+          "everything": "Tất cả đâu vào đấy",
+          "everything_in_view": "Tất cả đâu vào đấy trong khu vực đang xem",
+          "edits": "Các sửa đổi của bạn đâu vào đấy",
+          "edits_in_view": "Các sửa đổi của bạn trong khu vực đang xem là đâu vào đấy",
+          "no_edits": "Bạn chưa sửa đổi gì"
+        },
+        "hidden_issues": {
+          "none": "Các vấn đề nhận ra sẽ xuất hiện tại đây",
+          "elsewhere": "{count} vấn đề ngoài khu vực đang xem",
+          "everything_else": "{count} vấn đề đối với đối tượng khác",
+          "everything_else_elsewhere": "{count} vấn đề ngoài khu vực đang xem đối với đối tượng khác",
+          "disabled_rules": "{count} vấn đề trái quy tắc đang tắt",
+          "disabled_rules_elsewhere": "{count} vấn đề ngoài khu vực đang xem trái quy tắc đang tắt",
+          "ignored_issues": "{count} vấn đề được bỏ qua",
+          "ignored_issues_elsewhere": "{count} vấn đề được bỏ qua ngoài khu vực đang xem"
+        }
+      },
+      "options": {
+        "what": {
+          "title": "Kiểm tra:",
+          "edited": "Sửa đổi của Tôi",
+          "all": "Tất cả"
+        },
+        "where": {
+          "title": "Trong:",
+          "visible": "Khu vực Đang xem",
+          "all": "Khắp mọi nơi"
+        }
+      },
+      "suggested": "Các thay đổi được gợi ý:",
+      "enable_all": "Bật Tất cả",
+      "disable_all": "Tắt Tất cả",
+      "reset_ignored": "Đặt lại Vấn đề Bỏ qua",
+      "fix_one": {
+        "title": "khắc phục"
+      },
+      "fix_all": {
+        "title": "Khắc phục Tất cả",
+        "annotation": "khắc phục nhiều vấn đề kiểm tra"
+      },
+      "almost_junction": {
+        "title": "Gần như giao lộ",
+        "tip": "Tìm các đối tượng có thể cần nối liền với đối tượng gần",
+        "message": "{feature} rất gần {feature2} nhưng không nối liền",
+        "self": {
+          "message": "{feature} có hai điểm cuối gần nhau nhưng không nối liền"
+        },
+        "highway-highway": {
+          "reference": "Các đường giao nhau đáng lẽ phải có một giao điểm nối liền."
+        }
+      },
+      "area_as_point": {
+        "message": "{feature} nên là vùng, chứ không phải điểm"
+      },
+      "close_nodes": {
+        "title": "Điểm rất gần nhau",
+        "tip": "Tìm các điểm thừa hoặc chụm lại",
+        "message": "Hai điểm trong {way} rất gần nhau",
+        "reference": "Các điểm thừa trong lối nên được gộp lại hoặc làm rẽ ra.",
+        "detached": {
+          "message": "{feature} quá gần {feature2}",
+          "reference": "Các điểm riêng không nên trùng nhau ở cùng vị trí."
+        }
+      },
+      "crossing_ways": {
+        "message": "{feature} đi ngang {feature2}",
+        "tip": "Tìm các đối tượng xuyên qua nhau một cách không chính xác",
+        "building-building": {
+          "reference": "Các tòa nhà không nên giao nhau, ngoại trừ có lớp khác nhau."
+        },
+        "building-highway": {
+          "reference": "Con đường xuyên qua tòa nhà đáng lẽ phải là cầu hay đường hầm hoặc có lớp khác với tòa nhà."
+        },
+        "building-railway": {
+          "reference": "Đường sắt xuyên qua tòa nhà đáng lẽ phải là cầu hay đường hầm hoặc có lớp khác với tòa nhà."
+        },
+        "building-waterway": {
+          "reference": "Đường thủy xuyên qua tòa nhà đáng lẽ phải là đường hầm hoặc có lớp khác với tòa nhà."
+        },
+        "highway-highway": {
+          "reference": "Con đường đi ngang con đường khác đáng lẽ phải là cầu hay đường hầm hoặc có điểm giao."
+        },
+        "highway-railway": {
+          "reference": "Con đường đi ngang đường sắt đáng lẽ phải là cầu hay đường hầm hoặc có điểm giao đường sắt."
+        },
+        "highway-waterway": {
+          "reference": "Con đường đi ngang đường thủy đáng lẽ phải là cầu hay đường hầm hoặc có nơi lội qua sông."
+        },
+        "railway-railway": {
+          "reference": "Đường sắt đi ngang đường sắt khác đáng lẽ phải nối liền hoặc là cầu hay đường hầm."
+        },
+        "railway-waterway": {
+          "reference": "Đường sắt đi ngang đường thủy đáng lẽ phải là cầu hoặc đường hầm."
+        },
+        "waterway-waterway": {
+          "reference": "Đường thủy chảy ngang đường thủy khác đáng lẽ phải nối liền hoặc là đường hầm."
+        },
+        "tunnel-tunnel": {
+          "reference": "Các đường hầm đi ngang nhau nên có lớp khác nhau."
+        },
+        "tunnel-tunnel_connectable": {
+          "reference": "Các đường hầm đi ngang nhau nên nối liền hoặc có lớp khác nhau."
+        },
+        "bridge-bridge": {
+          "reference": "Các cầu đi ngang nhau nên có lớp khác nhau."
+        },
+        "bridge-bridge_connectable": {
+          "reference": "Các cầu đi ngang nhau nên nối liền hoặc có lớp khác nhau."
+        },
+        "indoor-indoor": {
+          "reference": "Các đối tượng trong nhà xuyên qua nhau nên có lầu khác nhau."
+        },
+        "indoor-indoor_connectable": {
+          "reference": "Các đối tượng trong nhà xuyên qua nhau nên nối liền hoặc có lầu khác nhau."
+        }
+      },
+      "disconnected_way": {
+        "title": "Lối không nối liền",
+        "tip": "Tìm các con đường, đường mòn, và tuyến phà không thuộc mạng giao thông",
+        "routable": {
+          "message": "{count} lối đi bị cô lập cùng nhau"
+        }
+      },
+      "fixme_tag": {
+        "message": "{feature} có yêu cầu sửa chữa",
+        "reference": "Thẻ “fixme” cho biết rằng một người sửa đổi về trước đã yêu cầu trợ giúp về một đối tượng cụ thể."
+      },
+      "generic_name": {
+        "message": "{feature} có tên nghi ngờ “{name}”",
+        "message_language": "{feature} có tên nghi ngờ “{name}” trong {language}",
+        "reference": "Tên đáng lè phải phản ánh tên gọi trên thực tế, thí dụ tên ghi trên bảng hiệu."
+      },
+      "help_request": {
+        "title": "Yêu cầu trợ giúp",
+        "tip": "Tìm các đối tượng mà người ta yêu cầu trợ giúp"
+      },
+      "incompatible_source": {
+        "title": "Nguồn gốc nghi ngờ",
+        "tip": "Tìm các đối tượng có thẻ nguồn nghi ngờ",
+        "feature": {
+          "message": "{feature} dẫn nguồn “{value}”"
+        },
+        "reference": {
+          "amap": "Các dịch vụ của Amap thuộc quyền sở hữu nên được cấm dùng làm nguồn.",
+          "baidu": "Các dịch vụ của Bách Độ (Baidu) thuộc quyền sở hữu nên được cấm dùng làm nguồn.",
+          "google": "Các dịch vụ của Google thuộc quyền sở hữu nên được cấm dùng làm nguồn."
+        }
+      },
+      "invalid_format": {
+        "title": "Định dạng không hợp lệ",
+        "tip": "Tìm các thẻ có định dạng bất ngờ",
+        "email": {
+          "message": "{feature} có địa chỉ thư điện tử không hợp lệ",
+          "message_multi": "{feature} có nhiều địa chỉ thư điện tử không hợp lệ",
+          "reference": "Địa chỉ thư điện tử phải tuân theo định dạng “người@example.com”."
+        }
+      },
+      "line_as_area": {
+        "message": "{feature} nên là đường kẻ, chứ không phải vùng"
+      },
+      "line_as_point": {
+        "message": "{feature} nên là đường kẻ, chứ không phải điểm"
+      },
+      "mismatched_geometry": {
+        "title": "Kiểu đối tượng bất ngờ",
+        "tip": "Tìm các đối tượng có thẻ xung đột với hình dạng",
+        "reference": "Phần nhiều thể loại đối tượng ứng với kiểu đối tượng cụ thể."
+      },
+      "missing_role": {
+        "title": "Vai trò bị thiếu",
+        "message": "{member} không có vai trò trong {relation}",
+        "tip": "Tìm các thành viên quan hệ thiếu vai trò hoặc có vai trò không chính xác",
+        "multipolygon": {
+          "reference": "Các thành viên tổ hợp đa giác phải có vai trò bên trong (inner) hoặc bên ngoài (outer)."
+        }
+      },
+      "missing_tag": {
+        "title": "Thẻ bị thiếu",
+        "tip": "Tìm các đối tượng thiếu thẻ bản chất",
+        "reference": "Đối tượng phải có thẻ xác định nó là gì.",
+        "any": {
+          "message": "{feature} thiếu thẻ"
+        },
+        "descriptive": {
+          "message": "{feature} thiếu thẻ bản chất"
+        },
+        "relation_type": {
+          "message": "{feature} thiếu kiểu quan hệ"
+        }
+      },
+      "old_multipolygon": {
+        "message": "{multipolygon} có các thẻ không đúng chỗ",
+        "reference": "Tổ hợp đa giác đáng lẽ phải được đặt thẻ vào quan hệ chứ không phải lối bên ngoài."
+      },
+      "outdated_tags": {
+        "title": "Thẻ lỗi thời",
+        "message": "{feature} có thẻ lỗi thời",
+        "tip": "Tìm các đối tượng có thẻ bị phản đối cần được cập nhật",
+        "reference": "Lâu ngày một số thẻ thay đổi vì nhiều lý do, nên cập nhật đối tượng để sử dụng thẻ mới.",
+        "incomplete": {
+          "message": "{feature} chưa đặt thẻ đầy đủ",
+          "reference": "Một số đối tượng cần thêm thẻ."
+        },
+        "noncanonical_brand": {
+          "message": "{feature} hình như có thẻ không chuẩn đối với loại đối tượng phổ biến này",
+          "message_incomplete": "{feature} hình như chưa đặt thẻ đầy đủ đối với loại đối tượng phổ biến này",
+          "reference": "Một số loại đối tượng, chẳng hạng chuỗi cửa hàng hoặc bưu điện, đáng lẽ phải có một số thẻ chung."
+        }
+      },
+      "point_as_area": {
+        "message": "{feature} nên là điểm, chứ không phải vùng"
+      },
+      "point_as_line": {
+        "message": "{feature} nên là điểm, chứ không phải đường kẻ"
+      },
+      "point_as_vertex": {
+        "message": "{feature} đáng lẽ phải là điểm riêng do các thẻ",
+        "reference": "Thể loại đối tượng nào đó không nên thuộc đường kẻ hoặc vùng."
+      },
+      "private_data": {
+        "title": "Thông tin riêng tư",
+        "tip": "Tìm các đối tượng có thể chứa thông tin riêng tư",
+        "reference": "Không nên cung cấp dữ liệu nhạy cảm như số điện thoại cá nhân.",
+        "contact": {
+          "message": "{feature} có thể có thông tin liên lạc riêng tư trong các thẻ"
+        }
+      },
+      "suspicious_name": {
+        "title": "Tên nghi ngờ",
+        "tip": "Tìm các đối tượng có tên chung hoặc nghi ngờ"
+      },
+      "tag_suggests_area": {
+        "message": "{feature} đáng lẽ phải là vùng đóng theo thẻ “{tag}”",
+        "reference": "Vùng phải có điểm cuối nối lại."
+      },
+      "unknown_road": {
+        "message": "{feature} thiếu cấp đường",
+        "reference": "Con đường thiếu cấp có thể được ẩn trên bản đồ hoặc bỏ qua khi chỉ đường."
+      },
+      "impossible_oneway": {
+        "title": "Đường một chiều không thể xảy ra",
+        "tip": "Tìm các đối tượng một chiều gây vấn đề chỉ đường",
+        "waterway": {
+          "connected": {
+            "start": {
+              "message": "{feature} chảy ngược từ một đường thủy nối liền"
+            },
+            "end": {
+              "message": "{feature} chảy ngược vào một đường thủy nối liền"
+            },
+            "reference": "Khúc đường thủy nối liền phải chảy cùng hướng."
+          }
+        },
+        "highway": {
+          "start": {
+            "message": "Không thể tới {feature} từ đường nào",
+            "reference": "Phải có thể tới được con đường một chiều qua con đường khác."
+          },
+          "end": {
+            "message": "{feature} không có lối thoát",
+            "reference": "Con đường một chiều phải dẫn đến con đường khác."
+          }
+        }
+      },
+      "unclosed_multipolygon_part": {
+        "message": "{feature} có phần không đóng",
+        "reference": "Tất cả các phần bên trong và bên ngoài của tổ hợp đa giác đều phải có điểm cuối nối lại."
+      },
+      "unsquare_way": {
+        "title": "Góc không vuông (cho tới {val}°)",
+        "message": "{feature} có góc không vuông",
+        "tip": "Tìm các đối tượng có góc không vuông có thể được vẽ sơ qua",
+        "buildings": {
+          "reference": "Nhiều khi những tòa nhà có góc không vuông được vẽ một cách sơ qua, không chính xác."
+        }
+      },
+      "vertex_as_point": {
+        "reference": "Thể loại đối tượng nào đó không nên là điểm riêng."
+      },
+      "fix": {
+        "add_a_bridge": {
+          "title": "Thêm cầu",
+          "annotation": "thêm cầu"
+        },
+        "add_a_tunnel": {
+          "title": "Thêm đường hầm",
+          "annotation": "thêm đường hầm"
+        },
+        "address_the_concern": {
+          "title": "Khắc phục vấn đề"
+        },
+        "connect_almost_junction": {
+          "annotation": "nối liền các đối tượng rất gần nhau"
+        },
+        "connect_crossing_features": {
+          "annotation": "nối liền các đối tượng giao nhau"
+        },
+        "connect_endpoints": {
+          "title": "Nối liền các điểm cuối",
+          "annotation": "nối liền các điểm cuối của một lối"
+        },
+        "connect_feature": {
+          "title": "Nối liền đối tượng này"
+        },
+        "connect_features": {
+          "title": "Nơi liền các đối tượng này"
+        },
+        "connect_using_ford": {
+          "title": "Nối liền bằng nơi lội qua sông"
+        },
+        "continue_from_start": {
+          "title": "Vẽ tiếp từ điểm đầu"
+        },
+        "continue_from_end": {
+          "title": "Vẽ tiếp từ điểm cuối"
+        },
+        "convert_to_line": {
+          "title": "Chuyển đổi vùng này thành đường kẻ",
+          "annotation": "chuyển đổi vùng thành đường kẻ"
+        },
+        "delete_feature": {
+          "title": "Xóa đối tượng này"
+        },
+        "extract_point": {
+          "title": "Rút trích điểm này"
+        },
+        "ignore_issue": {
+          "title": "Bỏ qua vấn đề này"
+        },
+        "merge_close_vertices": {
+          "annotation": "gộp các điểm rất gần nhau trong lối"
+        },
+        "merge_points": {
+          "title": "Gộp các điểm này"
+        },
+        "move_points_apart": {
+          "title": "Trải ra các điểm này"
+        },
+        "move_tags": {
+          "title": "Di chuyển các thẻ",
+          "annotation": "di chuyển thẻ"
+        },
+        "remove_from_relation": {
+          "title": "Gỡ khỏi quan hệ"
+        },
+        "remove_generic_name": {
+          "annotation": "xóa tên chung"
+        },
+        "remove_mistaken_name": {
+          "annotation": "xóa tên sai"
+        },
+        "remove_private_info": {
+          "annotation": "xóa thông tin riêng tư"
+        },
+        "remove_proprietary_data": {
+          "title": "Xóa dữ liệu nào đó thuộc quyền sở hữu"
+        },
+        "remove_tag": {
+          "title": "Xóa thẻ",
+          "annotation": "xóa thẻ"
+        },
+        "remove_tags": {
+          "title": "Xóa các thẻ"
+        },
+        "remove_the_name": {
+          "title": "Xóa tên"
+        },
+        "reposition_features": {
+          "title": "Di chuyển các đối tượng"
+        },
+        "reverse_feature": {
+          "title": "Đảo ngược đối tượng này"
+        },
+        "select_preset": {
+          "title": "Chọn thể loại đối tượng"
+        },
+        "select_road_type": {
+          "title": "Chọn loại đường sá"
+        },
+        "set_as_inner": {
+          "title": "Đặt là cạnh bên trong"
+        },
+        "set_as_outer": {
+          "title": "Đặt là cạnh bên ngoài"
+        },
+        "square_feature": {
+          "title": "Làm vuông đối tượng này"
+        },
+        "tag_as_disconnected": {
+          "title": "Đặt thẻ xác nhận không nối liền",
+          "annotation": "đặt thẻ xác nhận rằng các đối tượng rất gần nhau không phải nối liền"
+        },
+        "tag_as_not": {
+          "title": "Đặt thẻ phân biệt “{name}” khác",
+          "annotation": "Đặt thẻ “không phải” (not:)"
+        },
+        "tag_as_unsquare": {
+          "title": "Đặt thẻ xác nhận không có góc vuông",
+          "annotation": "đặt thẻ xác nhận rằng lối có góc không vuông"
+        },
+        "tag_this_as_higher": {
+          "title": "Đặt thẻ đối tượng này là cao hơn"
+        },
+        "tag_this_as_lower": {
+          "title": "Đặt thẻ đối tượng này là thấp hơn"
+        },
+        "upgrade_tags": {
+          "title": "Cập nhật các thẻ",
+          "annotation": "cập nhật thẻ lỗi thời"
+        },
+        "use_different_layers": {
+          "title": "Phân biệt các lớp khác nhau"
+        },
+        "use_different_layers_or_levels": {
+          "title": "Phân biệt các lớp hoặc lầu khác nhau"
+        },
+        "use_different_levels": {
+          "title": "Phân biệt các lầu khác nhau"
+        }
+      }
+    },
+    "intro": {
+      "done": "xong",
+      "graph": {
+        "city": "<value for addr:city>",
+        "district": "Yên Phong",
+        "hamlet": "Nguyệt Cầu",
+        "postcode": "221572",
+        "province": "Bắc Ninh",
+        "state": "<value for addr:state>",
+        "subdistrict": "Tam Giang",
+        "countrycode": "vn",
+        "name": {
+          "1st-avenue": "Ngõ 1",
+          "2nd-avenue": "Ngõ 2",
+          "4th-avenue": "Ngõ 4",
+          "5th-avenue": "Ngõ 5",
+          "6th-avenue": "Ngõ 6",
+          "6th-street": "Ngũ Đại Hồ",
+          "7th-avenue": "Ngõ 7",
+          "8th-avenue": "Ngõ 8",
+          "9th-avenue": "Ngõ 9",
+          "10th-avenue": "Ngõ 10",
+          "11th-avenue": "Ngõ 11",
+          "12th-avenue": "Ngõ 12",
+          "access-point-employment": "Văn phòng Giới thiệu Việc làm Tương lai",
+          "adams-street": "Đệ Nhị",
+          "andrews-elementary-school": "Trường Tiểu học Trần Hưng Đạo",
+          "andrews-street": "Trần Hưng Đạo",
+          "armitage-street": "Mỹ Hòa",
+          "barrows-school": "Trường Hoa Thịnh Đốn",
+          "battle-street": "Thắng Lợi",
+          "bennett-street": "Tam Giác",
+          "bowman-park": "Công viên Cộng đồng",
+          "collins-drive": "Kiến Thức",
+          "conrail-railroad": "Bắc Bình – Nam Hòa",
+          "conservation-park": "Công viên Bảo tồn",
+          "constantine-street": "Ngọc Lân",
+          "cushman-street": "Cận Đông",
+          "dollar-tree": "Tiết kiệm",
+          "douglas-avenue": "Cựu Kim Sơn",
+          "east-street": "Đông Phương",
+          "elm-street": "Đu Đủ",
+          "flower-street": "Bông Hoa",
+          "foster-street": "Hậu Trường",
+          "french-street": "Đọc Lập",
+          "garden-street": "Vườn Hoa",
+          "gem-pawnbroker": "Vân Vân",
+          "golden-finch-framing": "Khung tranh Phượng hoàng",
+          "grant-avenue": "Phú Quốc",
+          "hoffman-pond": "Hồ Cạn",
+          "hoffman-street": "Liên Giang",
+          "hook-avenue": "Liên Hệ",
+          "jefferson-street": "Tự Do",
+          "kelsey-street": "Tây Nguyên",
+          "lafayette-park": "Công viên Tưởng niệm",
+          "las-coffee-cafe": "Cà phê Mỹ Châu",
+          "lincoln-avenue": "Hòa Bình",
+          "lowrys-books": "Văn Chương",
+          "lynns-garage": "Tiệm sửa xe ABC",
+          "main-street-barbell": "Cử tạ Tam Giang",
+          "main-street-cafe": "Cà phê Ngon lành",
+          "main-street-fitness": "Thể dục Tam Giang",
+          "main-street": "Thương mại",
+          "maple-street": "Thích Hợp",
+          "marina-park": "Công viên Bến Thông Hải",
+          "market-street": "Chợ",
+          "memory-isle-park": "Công viên Ngọc Lâm",
+          "memory-isle": "Đảo Ngọc Lâm",
+          "michigan-avenue": "Yên Phong",
+          "middle-street": "Trung Lập",
+          "millard-street": "Cửa Sông",
+          "moore-street": "Đoàn Kết",
+          "morris-avenue": "Tân Anh",
+          "mural-mall": "Đường dạo Tranh tường",
+          "paisanos-bar-and-grill": "Bánh cuốn Tây Hồ",
+          "paisley-emporium": "Tái Hồi",
+          "paparazzi-tattoo": "Xăm Xăm",
+          "pealer-street": "Mạc Tư Khoa",
+          "pine-street": "Cây Thông",
+          "pizza-hut": "Phở Tàu Bay",
+          "portage-avenue": "Hương Giang",
+          "portage-river": "Sông Hương",
+          "preferred-insurance-services": "Bảo hiểm Nguyễn Văn Lưu",
+          "railroad-drive": "Xe Lửa",
+          "river-city-appliance": "Đồ Gia dụng Tam Giang",
+          "river-drive": "Ngọc Ngà",
+          "river-road": "Thủy Triều",
+          "river-street": "Bến Tàu",
+          "riverside-cemetery": "Nghĩa địa Ven sông",
+          "riverwalk-trail": "Đường mòn Dọc sông",
+          "riviera-theatre": "Rạp phim Tam Giang",
+          "rocky-river": "Sông Đá",
+          "saint-joseph-river": "Sông Thông Hải",
+          "scidmore-park-petting-zoo": "Vườn thú Tam Giang",
+          "scidmore-park": "Công viên Tam Giang",
+          "scouter-park": "Công viên Ngọc Ngà",
+          "sherwin-williams": "Màu sắc",
+          "south-street": "Nam Phương",
+          "southern-michigan-bank": "Ngân hàng Bắc Ninh",
+          "spring-street": "Xuân Lộc",
+          "sturgeon-river-road": "Tứ Giang",
+          "three-rivers-city-hall": "Tòa thị chính Tam Giang",
+          "three-rivers-elementary-school": "Trường Tiểu học Tam Giang",
+          "three-rivers-fire-department": "Đoàn Cứu hỏa Tam Giang",
+          "three-rivers-high-school": "Trường Trung học phổ thông Tam Giang",
+          "three-rivers-middle-school": "Trường Trung học cơ sở Tam Giang",
+          "three-rivers-municipal-airport": "Sân bay Tam Giang",
+          "three-rivers-post-office": "Bưu điện Tam Giang",
+          "three-rivers-public-library": "Thư viện Tam Giang",
+          "three-rivers": "Tam Giang",
+          "unique-jewelry": "Kim Châu",
+          "walnut-street": "Hạch Đào",
+          "washington-street": "Hoa Thịnh Đốn",
+          "water-street": "Trường Sa",
+          "west-street": "Tây Phương",
+          "wheeler-street": "Cần Cù",
+          "william-towing": "Dũng Kéo Xe",
+          "willow-drive": "Cây Liễu",
+          "wood-street": "Hai Bà Trưng",
+          "world-fare": "Bốn Phương"
+        }
+      },
+      "welcome": {
+        "title": "Chào mừng",
+        "welcome": "Chào mừng, trình hướng dẫn này sẽ dạy căn bản sửa đổi OpenStreetMap.",
+        "practice": "Tất cả những dữ liệu trong trình hướng dẫn này chỉ để tập thôi. Các thay đổi của bạn sẽ bị hủy bỏ khi thoát trình hướng dẫn này.",
+        "words": "Trình hướng dẫn này sẽ định nghĩa các thuật ngữ và khái niệm mới. Các thuật ngữ mới được *in nghiêng*.",
+        "chapters": "Nếu muốn bỏ qua hoặc lặp lại phần nào, bấm các nút bên dưới. Hãy bắt đầu! **Bấm “{next}” để tiếp tục.**"
+      },
+      "navigation": {
+        "title": "Điều hướng",
+        "map_info": "Phần bản đồ chính hiển thị dữ liệu OpenStreetMap trên lớp hình nền.",
+        "features": "Từ *đối tượng* chỉ những gì xuất hiện trên bản đồ. Bạn có thể vẽ bất cứ vật tĩnh và cụ thể là một đối tượng trong OpenStreetMap.",
+        "points_lines_areas": "Các đối tượng bản đồ được vẽ dưới dạng *địa điểm, đường kẻ, hoặc vùng*.",
+        "nodes_ways": "Trong OpenStreetMap, các địa điểm đôi khi được gọi *nốt*, và các đường kẻ và vùng đôi khi được gọi *lối*.",
+        "selected_townhall": "Được rồi, địa điểm đã được chọn. Các đối tượng chớp chớp khi được chọn.",
+        "editor_townhall": "Khi nào đối tượng được chọn, *trình kiểm tra* “Sửa đối tượng” xuất hiện ở thanh bên.",
+        "preset_townhall": "Cờ ngang ở đầu thanh bên cho biết loại đối tượng. Địa điểm này là một {preset}.",
+        "fields_townhall": "Phần giữa của trình kiểm tra có các *thuộc tính* của đối tượng, chẳng hạn tên và địa chỉ.",
+        "close_townhall": "**Để đóng trình kiểm tra, bấm nút {button} ở góc phải bên trên hoặc bấm phím Esc.**",
+        "search_street": "Bạn có thể tìm kiếm các đối tượng theo tên trong khu vực đang xem hoặc toàn thế giới. **Tìm “{name}”.**",
+        "choose_street": "**Chọn {name} trong danh sách để chọn nó.**",
+        "selected_street": "Được rồi, {name} được chọn.",
+        "street_different_fields": "Các thuộc tính của con đường khác với các thuộc tính của tòa thị chính.",
+        "editor_street": "Khi con đường này được chọn, trình kiểm tra chứa các thuộc tính như “{field1}” và “{field2}”. **Đóng trình kiểm tra bằng cách bấm nút {button} hoặc bấm phím `{esc}`.**",
+        "play": "Thử thám hiểm bản đồ và chọn những đối tượng khác để biết thêm về các loại đối tượng thường được đóng góp vào OpenStreetMap. **Khi nào sẵn sàng đi tiếp đến phần sau, bấm “{next}”.**"
+      },
+      "points": {
+        "title": "Địa điểm",
+        "points_info": "*Địa điểm* có thể ứng với tiệm quán, nhà hàng, đài tưởng niệm.",
+        "add_point": "Một địa điểm chỉ ra và mô tả một vị trí. **Bấm nút {point_icon} {point} để thêm một địa điểm mới.**",
+        "search_cafe": "Có đủ thứ địa điểm. Bạn vừa đặt địa điểm ứng với một quán cà phê. **Tìm “{preset}”.**",
+        "choose_cafe": "**Chọn {preset} từ danh sách.**",
+        "feature_editor": "Địa điểm hiện là một quán cà phê. Bây giờ bạn có thể cung cấp thêm chi tiết về địa điểm này trong trình kiểm tra.",
+        "fields_info": "Trong OpenStreetMap, tất cả các thẻ là tùy chọn, nên có thể để trống thuộc tính nào không chắc chắn.",
+        "add_name": "Hãy giả bộ quen với quán này và biết tên của nó. **Định rõ tên của quán cà phê.**",
+        "add_close": "Trình kiểm tra sẽ tự động ghi nhớ các thay đổi của bạn. **Sau khi định rõ tên, bấm nút {button} hoặc `{esc}` để đóng trình kiểm tra.**",
+        "reselect": "Nhiều khi một địa điểm đã tồn tại nhưng không chính xác hoặc không tròn vẹn. Bạn có thể sửa đổi địa điểm đã tồn tại. **Chọn địa điểm mà bạn vừa tạo ra.**",
+        "update": "Hãy bổ sung thêm chi tiết về quán này. Bạn có thể thay đổi tên của nó, định rõ nền ẩm thực, hoặc định rõ địa chỉ. **Thay đổi chi tiết của quán cà phê.**",
+        "update_close": "**Sau khi cập nhật quán cà phê xong, bấm nút {button} hoặc `{esc}` để đóng trình kiểm tra.**",
+        "delete": "Đôi khi cần xóa các đối tượng không tồn tại trên thực tế.{br}Khi xóa đối tượng khỏi OpenStreetMap, nó được loại bỏ khỏi bản đồ công cộng, nên bạn phải chắc chắn rằng nó không còn tồn tại trước khi xóa nó khỏi bản đồ. **Bấm nút {delete_icon} {delete} để xóa địa điểm này.**",
+        "undo": "Bạn có thể lúc nào hoàn tác thay đổi nào cho tới khi lưu các thay đổi vào OpenStreetMap. **Bấm nút  {undo_icon} {undo} để cho địa điểm trở lại.**",
+        "play": "Giờ đây bạn đã biết cách tạo và sửa đổi địa điểm, hãy thử tạo vài điểm nữa! **Khi nào sẵn sàng đi tiếp đến phần sau, bấm “{next}”.**"
+      },
+      "areas": {
+        "title": "Vùng",
+        "add_playground": "Các vùng cho biết hình dạng của hồ nước, tòa nhà, và khu vực dân cư.{br}Bạn có thể cung cấp nhiều chi tiết hơn dùng vùng so với địa điểm. **Bấm nút {area_icon} {area} để bắt đầu vẽ vùng mới.**",
+        "start_playground": "Hãy vẽ một vùng để thêm sân chơi này vào bản đồ. Để vẽ vùng, đặt các *nốt* theo đường biên của vùng.",
+        "starting_node_click": "**Nhấn chuột hoặc bấm `{space}` để đặt nốt đầu tiên vào một góc của sân chơi.**",
+        "finish_area_click": "Kết thúc vùng bằng cách bấm `{return}` hoặc nhấn chuột lần nữa vào nốt đầu tiên hoặc cuối cùng.",
+        "finish_playground": "**Vẽ xong vùng ứng với sân chơi.**",
+        "search_playground": "**Tìm “{preset}”.**",
+        "choose_playground": "**Chọn {preset} từ danh sách.**",
+        "add_field": "Sân chơi này không có tên chính thức, nên bạn sẽ để trống hộp  {name}.{br}Thay thế, hãy bổ sung chi tiết về sân chơi trong hộp {description}. **Mở trình đơn “Thêm thuộc tính”.**",
+        "choose_field": "**Chọn {field} từ danh sách.**",
+        "retry_add_field": "Bạn không chọn thuộc tính {field}. Hãy thử lại.",
+        "describe_playground": "**Thêm lời miêu tả rồi bấm nút {button} để đóng trình kiểm tra.**",
+        "play": "Tuyệt vời! Hãy thử vẽ vài vùng nữa và thử những loại vùng khác để thêm vào OpenStreetMap. **Khi nào sẵn sàng đi tiếp đến phần sau, bấm “{next}”.**"
+      },
+      "lines": {
+        "title": "Đường kẻ",
+        "add_line": "*Đường kẻ* tương ứng với chẳng hạn các đường sá, đường sắt, dòng sông. **Bấm nút {line_icon} {line} để bắt đầu vẽ đường mới.**",
+        "missing_road": "Con đường này bị thiếu. Hãy thêm nó vào bản đồ!",
+        "line_draw_info": "Trong OpenStreetMap, chúng ta vẽ các đường kẻ theo giữa đường. Bạn có thể kéo vào thu phóng bản đồ nếu cần trong khi vẽ đường.",
+        "start_line": "**Nhấn chuột vào phía trên của con đường bị thiếu để bắt đầu vẽ đường kẻ mới.**",
+        "intersect": "Tiếp tục vẽ đường kẻ bằng cách đặt thêm nốt dọc đường.{br}Tương tự với nhiều loại đường kẻ, các đường bộ kết hợp nhau thành một mạng lớn hơn. Để cho các ứng dụng chỉ đường có thể hoạt động chính xác, xin chú ý nối liền các đường ở những giao lộ trên thực tế. **Đặt một giao điểm trên đường {name} để nối hai đường kẻ.**",
+        "retry_intersect": "Con đường phải giao với đường {name}. Hãy thử lại!",
+        "continue_line": "Tiếp tục vẽ đường kẻ mới theo con đường. Hãy nhớ rằng bạn có thể lúc nào kéo và thu phóng bản đồ.",
+        "finish_line_click": "Sau khi vẽ xong xuôi, nhấn chuột lần nữa vào nốt cuối cùng hoặc bấm `{return}`.",
+        "finish_road": "**Hoàn tất việc vẽ con đường.**",
+        "choose_category_road": "**Chọn {category} từ danh sách.**",
+        "choose_preset_residential": "Có nhiều kiểu con đường; kiểu phổ biến nhất là con đường nhỏ dân cư. **Chọn kiểu con đường là {preset}.**",
+        "retry_preset_residential": "Bạn không chọn kiểu {preset}. **Bấm nút này để thử lần nữa.**",
+        "name_road": "**Đặt tên cho con đường rồi bấm nút {button} hoặc `{esc}` để đóng trình kiểm tra.**",
+        "did_name_road": "Được rồi, hãy tập thay đổi hình dạng đường kẻ.",
+        "update_line": "Đôi khi cần thay đổi hình dạng của một đường kẻ đã tồn tại. Đây có con đường không chính xác.",
+        "add_node": "Bạn có thể đặt thêm nốt vào đường kẻ này để làm cho nó chính xác hơn. Một cách đặt nốt là nhấn đúp vào đường kẻ tại vị trí muốn đặt nốt. **Nhấn đúp vào đường kẻ để đặt nốt mới.**",
+        "drag_to_intersection": "**Kéo điểm cuối đến giao điểm của các con đường này.**",
+        "spot_looks_good": "Nơi này có vẻ đúng.",
+        "finish_drag_endpoint": "**Thả nút chuột để kết thúc tác vụ di chuyển.**",
+        "finish_drag_endpoint_touch": "**Thả nốt để kết thúc tác vụ di chuyển.**",
+        "start_drag_midpoint": "Có các hình mũi tên nhỏ *nửa đường* giữa các nốt. Bạn cũng có thể tạo nốt mới bằng cách kéo một mũi tên nửa đường đến vị trí khác. **Kéo mũi tên nửa đường để tạo nốt mới dọc theo con đường.**",
+        "continue_drag_midpoint": "Đường kẻ này có vẻ đẹp hơn nhỉ? Hãy tiếp tục chỉnh lại đường kẻ này cho đến khi nó trùng khớp với con đường. **Khi nào đường kẻ được hoàn thiện xong xuôi, bấm {ok}.**",
+        "delete_lines": "Bạn nên xóa các con đường không ứng với con đường thật.{br}Đây có một {street} được chính phủ thiết kế mà không bao giờ xây dựng. Chúng ta có thể xóa các đường kẻ thừa để cải thiện bản đồ.",
+        "split_street": "Con đường thật cuối cùng là {street1}, nên phải *chia đôi* {street2} tại giao lộ này và xóa quãng đường về phía bắc.",
+        "split_intersection": "**Bấm nút {split_icon} {split} để cắt đôi {street}.**",
+        "retry_split": "Bạn không bấm nút {split_icon} {split}. Hãy thử lại.",
+        "did_split_multi": "OK, {street1} hiện đường cắt đôi. Hãy xóa quãng đường ở phía bắc. **Chọn phần bên trên của {street2}.**",
+        "did_split_single": "**Chọn phần bên trên của {street2}.**",
+        "multi_select": "{selected} đã được chọn. Hãy chọn {other1} cùng lúc.",
+        "add_to_selection_click": "Để chọn nhiều đối tượng cùng lúc, nhấn chuột trái trong khi bấm giữ Shift. **Bấm giữ Shift và nhấn chuột vào {other2}.**",
+        "multi_select_success": "Hay quá! Cả hai đường kẻ được chọn để xóa.",
+        "multi_delete": "**Bấm nút {delete_icon} {delete} để xóa các đường kẻ dư.**",
+        "retry_delete": "Bạn không bấm nút {delete_icon} {delete}. Hãy thử lại.",
+        "play": "Hay quá! Hãy tiếp tục tập sửa đổi vài đường kẻ nữa. **Khi nào sẵn sàng đi tiếp đến phần sau, bấm “{next}”.**"
+      },
+      "buildings": {
+        "title": "Tòa nhà",
+        "start_building": "Hãy thêm căn nhà này vào bản đồ.{br}Vẽ vùng theo các tường bên ngoài tòa nhà.",
+        "building_corner_click": "**Nhấn chuột hoặc bấm {space}` để đặt nốt đầu tiên vào một góc của tòa nhà.**",
+        "continue_building": "Tiếp tục đặt thêm nốt để vẽ tất cả tòa nhà. Nhớ có thể phóng to để nhìn rõ khi vẽ vùng.",
+        "finish_building": "**Hoàn thành tòa nhà.**",
+        "retry_building": "Hình như bạn vướng mắc khi đặt nốt vào các góc tòa nhà. Hãy thử lại.",
+        "choose_category_building": "**Chọn {category} từ danh sách.**",
+        "choose_preset_house": "Có nhiều kiểu tòa nhà; tòa nhà này rõ ràng là nhà ở.{br}Nếu bạn không chắc chắn nó là kiểu nào, bạn có thể chọn kiểu Tòa nhà bình thường không sao. **Chọn kiểu {preset}.**",
+        "square_building": "Hãy làm căn nhà này đẹp đẽ hơn. **Bấm nút {orthogonalize_icon} {orthogonalize} để làm gọn hình dạng của tòa nhà.**",
+        "retry_square": "Bạn không bấm nút {orthogonalize_icon} {orthogonalize}. Hãy thử lại.",
+        "done_square": "Để ý tòa nhà có vẻ gọn gàng hơn. Hãy xem một công cụ tiện ích nũa.",
+        "add_tank": "Bể nước này có hình dạng vòng tròn. **Bấm nút {area_icon} {area} để thêm vùng mới.**",
+        "start_tank": "Đừng lo, bạn không cần phải vẽ hình tròn hoàn hảo. Chỉ việc vẽ một vùng thô có vài nốt trên đường biên của bể nước.",
+        "tank_edge_click": "**Nhấn chuột hoặc bấm `{space}` để đặt nốt đầu tiên vào đường biên của bể nước.**",
+        "continue_tank": "Đặt thêm vài nốt nữa chung quanh bể nước. Hình tròn sẽ bao gồm các nốt mà bạn đang đặt.",
+        "finish_tank": "**Hoàn thành bể nước.**",
+        "search_tank": "**Tìm “{preset}”.**",
+        "choose_tank": "**Chọn {preset} từ danh sách.**",
+        "circle_tank": "**Bấm nút {circularize_icon} {circularize} để làm tròn bể nước.**",
+        "retry_circle": "Bạn không bấm nút {circularize_icon} {circularize}. Hãy thử lại.",
+        "play": "Tuyệt vời! Hãy thử vẽ vài tòa nhà nữa và thử những tác vụ trong trình đơn sửa đổi. **Khi nào sẵn sàng đi tiếp đến phần sau, bấm “{next}”.**"
+      },
+      "startediting": {
+        "title": "Bắt đầu Sửa đổi",
+        "help": "Bạn sẵn sàng sửa đổi OpenStreetMap!{br}Lúc nào muốn được hướng dẫn lại hoặc xem thêm tài liệu, chỉ việc bấm nút {help_icon} {help} hoặc phím `{help_key}`.",
+        "shortcuts": "Để xem danh sách các tác vụ cùng với phím tắt, bấm phím `{shortcuts_key}`.",
+        "save": "Hãy nhớ lưu các thay đổi của bạn thường xuyên!",
+        "start": "Hãy bắt đầu vẽ bản đồ!"
+      }
+    },
+    "shortcuts": {
+      "title": "Phím tắt",
+      "tooltip": "Xem bảng phím tắt.",
+      "key": {
+        "menu": "Trình đơn",
+        "space": "Dấu cách"
+      },
+      "gesture": {
+        "drag": "kéo"
+      },
+      "or": "–hoặc–",
+      "browsing": {
+        "title": "Xem",
+        "navigation": {
+          "title": "Điều hướng",
+          "pan": "Di chuyển bản đồ"
+        },
+        "help": {
+          "title": "Trợ giúp",
+          "help": "Xem tài liệu trợ giúp",
+          "keyboard": "Xem bảng phím tắt này"
+        },
+        "display_options": {
+          "title": "Tùy chọn xem",
+          "background": "Bật/tắt bảng hình nền",
+          "map_data": "Bật/tắt bảng dữ liệu bản đồ",
+          "issues": "Bật/tắt bảng vấn đề kiểm tra",
+          "preferences": "Bật/tắt bảng tùy chọn người dùng",
+          "sidebar": "Bật/tắt thanh bên",
+          "wireframe": "Bật/tắt chế độ khung lưới",
+          "osm_data": "Bật/tắt dữ liệu OpenStreetMap",
+          "highlight_edits": "Tô màu các sửa đổi chưa lưu"
+        },
+        "selecting": {
+          "title": "Chọn đối tượng",
+          "select_one": "Chọn một đối tượng",
+          "select_multi": "Chọn nhiều đối tượng cùng lúc",
+          "lasso": "Vẽ vùng chọn chung quanh các đối tượng",
+          "search": "Tìm kiếm đối tượng theo tên"
+        },
+        "with_selected": {
+          "title": "Trong khi đối tượng được chọn",
+          "edit_menu": "Bật/tắt trình đơn sửa đổi"
+        },
+        "vertex_selected": {
+          "title": "Trong khi nốt được chọn",
+          "first": "Chọn nốt đầu tiên trong lối",
+          "last": "Chọn nốt cuối cùng trong lối",
+          "change_parent": "Luân chuyển qua các lối nối nhau tại nốt",
+          "parent": "Chọn lối chứa"
+        },
+        "way_selected": {
+          "title": "Trong khi lối được chọn",
+          "child": "Chọn các nốt nối liền"
+        }
+      },
+      "editing": {
+        "title": "Sửa",
+        "drawing": {
+          "title": "Vẽ",
+          "add_point": "Chế độ “thêm địa điểm”",
+          "add_line": "Chế độ “thêm đường kẻ”",
+          "add_area": "Chế độ “thêm vùng”",
+          "add_note": "Chế độ tạo ghi chú",
+          "place_point": "Đặt địa điểm hoặc tạo ghi chú",
+          "disable_snap": "Giữ xuống để tránh nối liền với đối tượng khác khi đặt địa điểm hoặc nốt",
+          "stop_line": "Kết thúc vẽ đường kẻ hoặc vùng"
+        },
+        "commands": {
+          "title": "Lệnh",
+          "copy": "Sao chép các đối tượng được chọn",
+          "paste": "Dán các đối tượng đã sao chép",
+          "undo": "Hoàn tác thao tác cuối cùng",
+          "redo": "Làm lại thao tác cuối cùng",
+          "save": "Lưu các thay đổi"
+        },
+        "operations": {
+          "continue_line": "Vẽ tiếp đường kẻ từ điểm cuối được chọn",
+          "merge": "Gộp các đối tượng được chọn",
+          "disconnect": "Tháo gỡ các đối tượng được chọn",
+          "extract": "Rút trích địa điểm từ đối tượng",
+          "split": "Cắt đôi các đối tượng tại các điểm được chọn",
+          "reverse": "Đảo ngược chiều các đối tượng được chọn",
+          "move": "Di chuyển các đối tượng được chọn",
+          "rotate": "Xoay đối tượng được chọn",
+          "orthogonalize": "Làm vuông góc lối hoặc vùng được chọn",
+          "straighten": "Làm thẳng đường kẻ hoặc hàng điểm",
+          "circularize": "Làm tròn vùng hoặc đường kẻ đóng",
+          "reflect_long": "Lật đối tượng qua trục dài",
+          "reflect_short": "Lật đối tượng qua trục ngắn",
+          "delete": "Xóa đối tượng hay nốt được chọn"
+        }
+      },
+      "tools": {
+        "title": "Công cụ",
+        "info": {
+          "title": "Thông tin",
+          "all": "Bật/tắt tất cả các bảng thông tin",
+          "background": "Bật/tắt bảng hình nền",
+          "history": "Bật/tắt bảng lịch sử",
+          "location": "Bật/tắt bảng vị trí",
+          "measurement": "Bật/tắt bảng đo lường"
+        }
+      }
+    },
+    "units": {
+      "feet": "{quantity} bộ",
+      "miles": "{quantity} dặm",
+      "square_feet": "{quantity} bộ vuông",
+      "square_miles": "{quantity} dặm vuông",
+      "acres": "{quantity} mẫu Anh",
+      "north": "B",
+      "south": "N",
+      "east": "Đ",
+      "west": "T",
+      "year_month_day": "YYYY-MM-DD (Năm-Tháng-Ngày)"
+    },
+    "wikidata": {
+      "identifier": "Mã số",
+      "label": "Nhãn",
+      "description": "Miêu tả"
+    },
+    "languageNames": {
+      "aa": "Tiếng Afar",
+      "ab": "Tiếng Abkhazia",
+      "ace": "Tiếng Achinese",
+      "ach": "Tiếng Acoli",
+      "ada": "Tiếng Adangme",
+      "ady": "Tiếng Adyghe",
+      "ae": "Tiếng Avestan",
+      "af": "Tiếng Afrikaans",
+      "afh": "Tiếng Afrihili",
+      "agq": "Tiếng Aghem",
+      "ain": "Tiếng Ainu",
+      "ak": "Tiếng Akan",
+      "akk": "Tiếng Akkadia",
+      "akz": "Tiếng Alabama",
+      "ale": "Tiếng Aleut",
+      "aln": "Tiếng Gheg Albani",
+      "alt": "Tiếng Altai Miền Nam",
+      "am": "Tiếng Amharic",
+      "an": "Tiếng Aragon",
+      "ang": "Tiếng Anh cổ",
+      "ann": "Tiếng Obolo",
+      "anp": "Tiếng Angika",
+      "ar": "Tiếng Ả Rập",
+      "ar-001": "Tiếng Ả Rập Hiện đại",
+      "arc": "Tiếng Aramaic",
+      "arn": "Tiếng Mapuche",
+      "aro": "Tiếng Araona",
+      "arp": "Tiếng Arapaho",
+      "arq": "Tiếng Ả Rập Algeria",
+      "ars": "Tiếng Ả Rập Najdi",
+      "arw": "Tiếng Arawak",
+      "arz": "Tiếng Ả Rập Ai Cập",
+      "as": "Tiếng Assam",
+      "asa": "Tiếng Asu",
+      "ast": "Tiếng Asturias",
+      "atj": "Tiếng Atikamekw",
+      "av": "Tiếng Avaric",
+      "awa": "Tiếng Awadhi",
+      "ay": "Tiếng Aymara",
+      "az": "Tiếng Azerbaijan",
+      "ba": "Tiếng Bashkir",
+      "bal": "Tiếng Baluchi",
+      "ban": "Tiếng Bali",
+      "bar": "Tiếng Bavaria",
+      "bas": "Tiếng Basaa",
+      "bax": "Tiếng Bamun",
+      "bbc": "Tiếng Batak Toba",
+      "bbj": "Tiếng Ghomala",
+      "be": "Tiếng Belarus",
+      "bej": "Tiếng Beja",
+      "bem": "Tiếng Bemba",
+      "bew": "Tiếng Betawi",
+      "bez": "Tiếng Bena",
+      "bfd": "Tiếng Bafut",
+      "bfq": "Tiếng Badaga",
+      "bg": "Tiếng Bulgaria",
+      "bgc": "Tiếng Haryana",
+      "bgn": "Tiếng Tây Balochi",
+      "bho": "Tiếng Bhojpuri",
+      "bi": "Tiếng Bislama",
+      "bik": "Tiếng Bikol",
+      "bin": "Tiếng Bini",
+      "bjn": "Tiếng Banjar",
+      "bkm": "Tiếng Kom",
+      "bla": "Tiếng Siksika",
+      "bm": "Tiếng Bambara",
+      "bn": "Tiếng Bangla",
+      "bo": "Tiếng Tây Tạng",
+      "bpy": "Tiếng Bishnupriya",
+      "bqi": "Tiếng Bakhtiari",
+      "br": "Tiếng Breton",
+      "bra": "Tiếng Braj",
+      "brh": "Tiếng Brahui",
+      "brx": "Tiếng Bodo",
+      "bs": "Tiếng Bosnia",
+      "bss": "Tiếng Akoose",
+      "bua": "Tiếng Buriat",
+      "bug": "Tiếng Bugin",
+      "bum": "Tiếng Bulu",
+      "byn": "Tiếng Blin",
+      "byv": "Tiếng Medumba",
+      "ca": "Tiếng Catalan",
+      "cad": "Tiếng Caddo",
+      "car": "Tiếng Carib",
+      "cay": "Tiếng Cayuga",
+      "cch": "Tiếng Atsam",
+      "ccp": "Tiếng Chakma",
+      "ce": "Tiếng Chechen",
+      "ceb": "Tiếng Cebuano",
+      "cgg": "Tiếng Chiga",
+      "ch": "Tiếng Chamorro",
+      "chb": "Tiếng Chibcha",
+      "chg": "Tiếng Chagatai",
+      "chk": "Tiếng Chuuk",
+      "chm": "Tiếng Mari",
+      "chn": "Biệt ngữ Chinook",
+      "cho": "Tiếng Choctaw",
+      "chp": "Tiếng Chipewyan",
+      "chr": "Tiếng Cherokee",
+      "chy": "Tiếng Cheyenne",
+      "ckb": "Tiếng Kurd Miền Trung",
+      "clc": "Tiếng Chilcotin",
+      "co": "Tiếng Corsica",
+      "cop": "Tiếng Coptic",
+      "cps": "Tiếng Capiznon",
+      "cr": "Tiếng Cree",
+      "crg": "Tiếng Michif",
+      "crh": "Tiếng Thổ Nhĩ Kỳ Crimean",
+      "crj": "Tiếng Cree Đông Nam",
+      "crk": "Tiếng Plains Cree",
+      "crl": "Tiếng Cree Đông Bắc",
+      "crm": "Tiếng Moose Cree",
+      "crr": "Tiếng Carolina Algonquian",
+      "crs": "Tiếng Pháp Seselwa Creole",
+      "cs": "Tiếng Séc",
+      "csb": "Tiếng Kashubia",
+      "csw": "Tiếng Swampy Cree",
+      "cu": "Tiếng Slavơ Nhà thờ",
+      "cv": "Tiếng Chuvash",
+      "cy": "Tiếng Wales",
+      "da": "Tiếng Đan Mạch",
+      "dak": "Tiếng Dakota",
+      "dar": "Tiếng Dargwa",
+      "dav": "Tiếng Taita",
+      "de": "Tiếng Đức",
+      "de-CH": "Tiếng Thượng Giéc-man (Thụy Sĩ)",
+      "del": "Tiếng Delaware",
+      "den": "Tiếng Slave",
+      "dgr": "Tiếng Dogrib",
+      "din": "Tiếng Dinka",
+      "dje": "Tiếng Zarma",
+      "doi": "Tiếng Dogri",
+      "dsb": "Tiếng Hạ Sorbia",
+      "dtp": "Tiếng Dusun Miền Trung",
+      "dua": "Tiếng Duala",
+      "dum": "Tiếng Hà Lan Trung cổ",
+      "dv": "Tiếng Divehi",
+      "dyo": "Tiếng Jola-Fonyi",
+      "dyu": "Tiếng Dyula",
+      "dz": "Tiếng Dzongkha",
+      "dzg": "Tiếng Dazaga",
+      "ebu": "Tiếng Embu",
+      "ee": "Tiếng Ewe",
+      "efi": "Tiếng Efik",
+      "egl": "Tiếng Emilia",
+      "egy": "Tiếng Ai Cập cổ",
+      "eka": "Tiếng Ekajuk",
+      "el": "Tiếng Hy Lạp",
+      "elx": "Tiếng Elamite",
+      "en": "Tiếng Anh",
+      "en-GB": "Tiếng Anh (Anh)",
+      "en-US": "Tiếng Anh (Mỹ)",
+      "enm": "Tiếng Anh Trung cổ",
+      "eo": "Tiếng Quốc Tế Ngữ",
+      "es": "Tiếng Tây Ban Nha",
+      "es-419": "Tiếng Tây Ban Nha (Mỹ La tinh)",
+      "es-ES": "Tiếng Tây Ban Nha (Châu Âu)",
+      "esu": "Tiếng Yupik Miền Trung",
+      "et": "Tiếng Estonia",
+      "eu": "Tiếng Basque",
+      "ewo": "Tiếng Ewondo",
+      "ext": "Tiếng Extremadura",
+      "fa": "Tiếng Ba Tư",
+      "fa-AF": "Tiếng Dari",
+      "fan": "Tiếng Fang",
+      "fat": "Tiếng Fanti",
+      "ff": "Tiếng Fulah",
+      "fi": "Tiếng Phần Lan",
+      "fil": "Tiếng Philippines",
+      "fj": "Tiếng Fiji",
+      "fo": "Tiếng Faroe",
+      "fon": "Tiếng Fon",
+      "fr": "Tiếng Pháp",
+      "frc": "Tiếng Pháp Cajun",
+      "frm": "Tiếng Pháp Trung cổ",
+      "fro": "Tiếng Pháp cổ",
+      "frp": "Tiếng Arpitan",
+      "frr": "Tiếng Frisia Miền Bắc",
+      "frs": "Tiếng Frisian Miền Đông",
+      "fur": "Tiếng Friulian",
+      "fy": "Tiếng Frisia",
+      "ga": "Tiếng Ireland",
+      "gaa": "Tiếng Ga",
+      "gag": "Tiếng Gagauz",
+      "gan": "Tiếng Cám",
+      "gay": "Tiếng Gayo",
+      "gba": "Tiếng Gbaya",
+      "gd": "Tiếng Gael Scotland",
+      "gez": "Tiếng Geez",
+      "gil": "Tiếng Gilbert",
+      "gl": "Tiếng Galician",
+      "glk": "Tiếng Gilaki",
+      "gmh": "Tiếng Thượng Giéc-man Trung cổ",
+      "gn": "Tiếng Guarani",
+      "goh": "Tiếng Thượng Giéc-man cổ",
+      "gom": "Tiếng Goan Konkani",
+      "gon": "Tiếng Gondi",
+      "gor": "Tiếng Gorontalo",
+      "got": "Tiếng Gô-tích",
+      "grb": "Tiếng Grebo",
+      "grc": "Tiếng Hy Lạp cổ",
+      "gsw": "Tiếng Đức (Thụy Sĩ)",
+      "gu": "Tiếng Gujarati",
+      "gur": "Tiếng Frafra",
+      "guz": "Tiếng Gusii",
+      "gv": "Tiếng Manx",
+      "gwi": "Tiếng Gwichʼin",
+      "ha": "Tiếng Hausa",
+      "hai": "Tiếng Haida",
+      "hak": "Tiếng Khách Gia",
+      "haw": "Tiếng Hawaii",
+      "hax": "Tiếng Haida miền Nam",
+      "he": "Tiếng Do Thái",
+      "hi": "Tiếng Hindi",
+      "hif": "Tiếng Fiji Hindi",
+      "hil": "Tiếng Hiligaynon",
+      "hit": "Tiếng Hittite",
+      "hmn": "Tiếng H’Mông",
+      "ho": "Tiếng Hiri Motu",
+      "hr": "Tiếng Croatia",
+      "hsb": "Tiếng Thượng Sorbia",
+      "hsn": "Tiếng Tương",
+      "ht": "Tiếng Haiti",
+      "hu": "Tiếng Hungary",
+      "hup": "Tiếng Hupa",
+      "hur": "Tiếng Halkomelem",
+      "hy": "Tiếng Armenia",
+      "hz": "Tiếng Herero",
+      "ia": "Tiếng Khoa Học Quốc Tế",
+      "iba": "Tiếng Iban",
+      "ibb": "Tiếng Ibibio",
+      "id": "Tiếng Indonesia",
+      "ie": "Tiếng Interlingue",
+      "ig": "Tiếng Igbo",
+      "ii": "Tiếng Di Tứ Xuyên",
+      "ik": "Tiếng Inupiaq",
+      "ikt": "Tiếng Inuktitut miền Tây Canada",
+      "ilo": "Tiếng Iloko",
+      "inh": "Tiếng Ingush",
+      "io": "Tiếng Ido",
+      "is": "Tiếng Iceland",
+      "it": "Tiếng Italy",
+      "iu": "Tiếng Inuktitut",
+      "izh": "Tiếng Ingria",
+      "ja": "Tiếng Nhật",
+      "jam": "Tiếng Anh Jamaica Creole",
+      "jbo": "Tiếng Lojban",
+      "jgo": "Tiếng Ngomba",
+      "jmc": "Tiếng Machame",
+      "jpr": "Tiếng Judeo-Ba Tư",
+      "jrb": "Tiếng Judeo-Ả Rập",
+      "jut": "Tiếng Jutish",
+      "jv": "Tiếng Java",
+      "ka": "Tiếng Georgia",
+      "kaa": "Tiếng Kara-Kalpak",
+      "kab": "Tiếng Kabyle",
+      "kac": "Tiếng Kachin",
+      "kaj": "Tiếng Jju",
+      "kam": "Tiếng Kamba",
+      "kaw": "Tiếng Kawi",
+      "kbd": "Tiếng Kabardian",
+      "kbl": "Tiếng Kanembu",
+      "kcg": "Tiếng Tyap",
+      "kde": "Tiếng Makonde",
+      "kea": "Tiếng Kabuverdianu",
+      "kfo": "Tiếng Koro",
+      "kg": "Tiếng Kongo",
+      "kgp": "Tiếng Kaingang",
+      "kha": "Tiếng Khasi",
+      "kho": "Tiếng Khotan",
+      "khq": "Tiếng Koyra Chiini",
+      "ki": "Tiếng Kikuyu",
+      "kj": "Tiếng Kuanyama",
+      "kk": "Tiếng Kazakh",
+      "kkj": "Tiếng Kako",
+      "kl": "Tiếng Kalaallisut",
+      "kln": "Tiếng Kalenjin",
+      "km": "Tiếng Khmer",
+      "kmb": "Tiếng Kimbundu",
+      "kn": "Tiếng Kannada",
+      "ko": "Tiếng Hàn",
+      "koi": "Tiếng Komi-Permyak",
+      "kok": "Tiếng Konkani",
+      "kos": "Tiếng Kosrae",
+      "kpe": "Tiếng Kpelle",
+      "kr": "Tiếng Kanuri",
+      "krc": "Tiếng Karachay-Balkar",
+      "krl": "Tiếng Karelian",
+      "kru": "Tiếng Kurukh",
+      "ks": "Tiếng Kashmir",
+      "ksb": "Tiếng Shambala",
+      "ksf": "Tiếng Bafia",
+      "ksh": "Tiếng Cologne",
+      "ku": "Tiếng Kurd",
+      "kum": "Tiếng Kumyk",
+      "kut": "Tiếng Kutenai",
+      "kv": "Tiếng Komi",
+      "kw": "Tiếng Cornwall",
+      "kwk": "Tiếng Kwakʼwala",
+      "ky": "Tiếng Kyrgyz",
+      "la": "Tiếng La-tinh",
+      "lad": "Tiếng Ladino",
+      "lag": "Tiếng Langi",
+      "lah": "Tiếng Lahnda",
+      "lam": "Tiếng Lamba",
+      "lb": "Tiếng Luxembourg",
+      "lez": "Tiếng Lezghian",
+      "lg": "Tiếng Ganda",
+      "li": "Tiếng Limburg",
+      "lil": "Tiếng Lillooet",
+      "lkt": "Tiếng Lakota",
+      "lmo": "Tiếng Lombard",
+      "ln": "Tiếng Lingala",
+      "lo": "Tiếng Lào",
+      "lol": "Tiếng Mongo",
+      "lou": "Tiếng Creole Louisiana",
+      "loz": "Tiếng Lozi",
+      "lrc": "Tiếng Bắc Luri",
+      "lsm": "Tiếng Saamia",
+      "lt": "Tiếng Litva",
+      "lu": "Tiếng Luba-Katanga",
+      "lua": "Tiếng Luba-Lulua",
+      "lui": "Tiếng Luiseno",
+      "lun": "Tiếng Lunda",
+      "luo": "Tiếng Luo",
+      "lus": "Tiếng Lushai",
+      "luy": "Tiếng Luyia",
+      "lv": "Tiếng Latvia",
+      "mad": "Tiếng Madura",
+      "maf": "Tiếng Mafa",
+      "mag": "Tiếng Magahi",
+      "mai": "Tiếng Maithili",
+      "mak": "Tiếng Makasar",
+      "man": "Tiếng Mandingo",
+      "mas": "Tiếng Masai",
+      "mde": "Tiếng Maba",
+      "mdf": "Tiếng Moksha",
+      "mdr": "Tiếng Mandar",
+      "men": "Tiếng Mende",
+      "mer": "Tiếng Meru",
+      "mfe": "Tiếng Morisyen",
+      "mg": "Tiếng Malagasy",
+      "mga": "Tiếng Ai-len Trung cổ",
+      "mgh": "Tiếng Makhuwa-Meetto",
+      "mgo": "Tiếng Meta’",
+      "mh": "Tiếng Marshall",
+      "mi": "Tiếng Māori",
+      "mic": "Tiếng Micmac",
+      "min": "Tiếng Minangkabau",
+      "mk": "Tiếng Macedonia",
+      "ml": "Tiếng Malayalam",
+      "mn": "Tiếng Mông Cổ",
+      "mnc": "Tiếng Mãn Châu",
+      "mni": "Tiếng Manipuri",
+      "moe": "Tiếng Innu-aimun",
+      "moh": "Tiếng Mohawk",
+      "mos": "Tiếng Mossi",
+      "mr": "Tiếng Marathi",
+      "ms": "Tiếng Mã Lai",
+      "mt": "Tiếng Malta",
+      "mua": "Tiếng Mundang",
+      "mus": "Tiếng Creek",
+      "mwl": "Tiếng Miranda",
+      "mwr": "Tiếng Marwari",
+      "my": "Tiếng Miến Điện",
+      "mye": "Tiếng Myene",
+      "myv": "Tiếng Erzya",
+      "mzn": "Tiếng Mazanderani",
+      "na": "Tiếng Nauru",
+      "nan": "Tiếng Mân Nam",
+      "nap": "Tiếng Napoli",
+      "naq": "Tiếng Nama",
+      "nb": "Tiếng Na Uy (Bokmål)",
+      "nd": "Tiếng Ndebele Miền Bắc",
+      "nds": "Tiếng Hạ Giéc-man",
+      "nds-NL": "Tiếng Hạ Saxon",
+      "ne": "Tiếng Nepal",
+      "new": "Tiếng Newari",
+      "ng": "Tiếng Ndonga",
+      "nia": "Tiếng Nias",
+      "niu": "Tiếng Niuean",
+      "njo": "Tiếng Ao Naga",
+      "nl": "Tiếng Hà Lan",
+      "nl-BE": "Tiếng Flemish",
+      "nmg": "Tiếng Kwasio",
+      "nn": "Tiếng Na Uy (Nynorsk)",
+      "nnh": "Tiếng Ngiemboon",
+      "no": "Tiếng Na Uy",
+      "nog": "Tiếng Nogai",
+      "non": "Tiếng Na Uy cổ",
+      "nqo": "Tiếng N’Ko",
+      "nr": "Tiếng Ndebele Miền Nam",
+      "nso": "Tiếng Sotho Miền Bắc",
+      "nus": "Tiếng Nuer",
+      "nv": "Tiếng Navajo",
+      "nwc": "Tiếng Newari cổ",
+      "ny": "Tiếng Nyanja",
+      "nym": "Tiếng Nyamwezi",
+      "nyn": "Tiếng Nyankole",
+      "nyo": "Tiếng Nyoro",
+      "nzi": "Tiếng Nzima",
+      "oc": "Tiếng Occitan",
+      "oj": "Tiếng Ojibwa",
+      "ojb": "Tiếng Ojibwe Tây Bắc",
+      "ojc": "Tiếng Ojibwe miền Trung",
+      "ojs": "Tiếng Oji-Cree",
+      "ojw": "Tiếng Ojibwe miền Tây",
+      "oka": "Tiếng Okanagan",
+      "om": "Tiếng Oromo",
+      "or": "Tiếng Odia",
+      "os": "Tiếng Ossetic",
+      "osa": "Tiếng Osage",
+      "ota": "Tiếng Thổ Nhĩ Kỳ Ottoman",
+      "pa": "Tiếng Punjab",
+      "pag": "Tiếng Pangasinan",
+      "pal": "Tiếng Pahlavi",
+      "pam": "Tiếng Pampanga",
+      "pap": "Tiếng Papiamento",
+      "pau": "Tiếng Palauan",
+      "pcm": "Tiếng Nigeria Pidgin",
+      "peo": "Tiếng Ba Tư cổ",
+      "phn": "Tiếng Phoenicia",
+      "pi": "Tiếng Pali",
+      "pis": "Tiếng Pijin",
+      "pl": "Tiếng Ba Lan",
+      "pon": "Tiếng Pohnpeian",
+      "pqm": "Tiếng Maliseet-Passamaquoddy",
+      "prg": "Tiếng Prussia",
+      "pro": "Tiếng Provençal cổ",
+      "ps": "Tiếng Pashto",
+      "pt": "Tiếng Bồ Đào Nha",
+      "pt-PT": "Tiếng Bồ Đào Nha (Châu Âu)",
+      "qu": "Tiếng Quechua",
+      "quc": "Tiếng Kʼicheʼ",
+      "qug": "Tiếng Quechua ở Cao nguyên Chimborazo",
+      "raj": "Tiếng Rajasthani",
+      "rap": "Tiếng Rapanui",
+      "rar": "Tiếng Rarotongan",
+      "rhg": "Tiếng Rohingya",
+      "rm": "Tiếng Romansh",
+      "rn": "Tiếng Rundi",
+      "ro": "Tiếng Romania",
+      "ro-MD": "Tiếng Moldova",
+      "rof": "Tiếng Rombo",
+      "rom": "Tiếng Romany",
+      "ru": "Tiếng Nga",
+      "rup": "Tiếng Aromania",
+      "rw": "Tiếng Kinyarwanda",
+      "rwk": "Tiếng Rwa",
+      "sa": "Tiếng Phạn",
+      "sad": "Tiếng Sandawe",
+      "sah": "Tiếng Sakha",
+      "sam": "Tiếng Samaritan Aramaic",
+      "saq": "Tiếng Samburu",
+      "sas": "Tiếng Sasak",
+      "sat": "Tiếng Santali",
+      "sba": "Tiếng Ngambay",
+      "sbp": "Tiếng Sangu",
+      "sc": "Tiếng Sardinia",
+      "scn": "Tiếng Sicilia",
+      "sco": "Tiếng Scots",
+      "sd": "Tiếng Sindhi",
+      "sdh": "Tiếng Kurd Miền Nam",
+      "se": "Tiếng Sami Miền Bắc",
+      "see": "Tiếng Seneca",
+      "seh": "Tiếng Sena",
+      "sel": "Tiếng Selkup",
+      "ses": "Tiếng Koyraboro Senni",
+      "sg": "Tiếng Sango",
+      "sga": "Tiếng Ai-len cổ",
+      "sh": "Tiếng Serbo-Croatia",
+      "shi": "Tiếng Tachelhit",
+      "shn": "Tiếng Shan",
+      "shu": "Tiếng Ả-Rập Chad",
+      "si": "Tiếng Sinhala",
+      "sid": "Tiếng Sidamo",
+      "sk": "Tiếng Slovak",
+      "sl": "Tiếng Slovenia",
+      "slh": "Tiếng Lushootseed miền Nam",
+      "sm": "Tiếng Samoa",
+      "sma": "Tiếng Sami Miền Nam",
+      "smj": "Tiếng Lule Sami",
+      "smn": "Tiếng Inari Sami",
+      "sms": "Tiếng Skolt Sami",
+      "sn": "Tiếng Shona",
+      "snk": "Tiếng Soninke",
+      "so": "Tiếng Somali",
+      "sog": "Tiếng Sogdien",
+      "sq": "Tiếng Albania",
+      "sr": "Tiếng Serbia",
+      "srn": "Tiếng Sranan Tongo",
+      "srr": "Tiếng Serer",
+      "ss": "Tiếng Swati",
+      "ssy": "Tiếng Saho",
+      "st": "Tiếng Sotho Miền Nam",
+      "str": "Tiếng Straits Salish",
+      "su": "Tiếng Sunda",
+      "suk": "Tiếng Sukuma",
+      "sus": "Tiếng Susu",
+      "sux": "Tiếng Sumeria",
+      "sv": "Tiếng Thụy Điển",
+      "sw": "Tiếng Swahili",
+      "sw-CD": "Tiếng Swahili Congo",
+      "swb": "Tiếng Cômo",
+      "syc": "Tiếng Syriac cổ",
+      "syr": "Tiếng Syriac",
+      "ta": "Tiếng Tamil",
+      "tce": "Tiếng Tutchone miền Nam",
+      "te": "Tiếng Telugu",
+      "tem": "Tiếng Timne",
+      "teo": "Tiếng Teso",
+      "ter": "Tiếng Tereno",
+      "tet": "Tiếng Tetum",
+      "tg": "Tiếng Tajik",
+      "tgx": "Tiếng Tagish",
+      "th": "Tiếng Thái",
+      "tht": "Tiếng Tahltan",
+      "ti": "Tiếng Tigrinya",
+      "tig": "Tiếng Tigre",
+      "tiv": "Tiếng Tiv",
+      "tk": "Tiếng Turkmen",
+      "tkl": "Tiếng Tokelau",
+      "tl": "Tiếng Tagalog",
+      "tlh": "Tiếng Klingon",
+      "tli": "Tiếng Tlingit",
+      "tmh": "Tiếng Tamashek",
+      "tn": "Tiếng Tswana",
+      "to": "Tiếng Tonga",
+      "tog": "Tiếng Nyasa Tonga",
+      "tok": "Tiếng Toki Pona",
+      "tpi": "Tiếng Tok Pisin",
+      "tr": "Tiếng Thổ Nhĩ Kỳ",
+      "trv": "Tiếng Taroko",
+      "ts": "Tiếng Tsonga",
+      "tsi": "Tiếng Tsimshian",
+      "tt": "Tiếng Tatar",
+      "ttm": "Tiếng Tutchone miền Bắc",
+      "tum": "Tiếng Tumbuka",
+      "tvl": "Tiếng Tuvalu",
+      "tw": "Tiếng Twi",
+      "twq": "Tiếng Tasawaq",
+      "ty": "Tiếng Tahiti",
+      "tyv": "Tiếng Tuvinian",
+      "tzm": "Tiếng Tamazight Miền Trung Ma-rốc",
+      "udm": "Tiếng Udmurt",
+      "ug": "Tiếng Uyghur",
+      "uga": "Tiếng Ugaritic",
+      "uk": "Tiếng Ukraina",
+      "umb": "Tiếng Umbundu",
+      "ur": "Tiếng Urdu",
+      "uz": "Tiếng Uzbek",
+      "vai": "Tiếng Vai",
+      "ve": "Tiếng Venda",
+      "vi": "Tiếng Việt",
+      "vo": "Tiếng Volapük",
+      "vot": "Tiếng Votic",
+      "vun": "Tiếng Vunjo",
+      "wa": "Tiếng Walloon",
+      "wae": "Tiếng Walser",
+      "wal": "Tiếng Walamo",
+      "war": "Tiếng Waray",
+      "was": "Tiếng Washo",
+      "wbp": "Tiếng Warlpiri",
+      "wo": "Tiếng Wolof",
+      "wuu": "Tiếng Ngô",
+      "xal": "Tiếng Kalmyk",
+      "xh": "Tiếng Xhosa",
+      "xog": "Tiếng Soga",
+      "yao": "Tiếng Yao",
+      "yap": "Tiếng Yap",
+      "yav": "Tiếng Yangben",
+      "ybb": "Tiếng Yemba",
+      "yi": "Tiếng Yiddish",
+      "yo": "Tiếng Yoruba",
+      "yrl": "Tiếng Nheengatu",
+      "yue": "Tiếng Trung (Tiếng Quảng Đông)",
+      "za": "Tiếng Choang",
+      "zap": "Tiếng Zapotec",
+      "zbl": "Ký hiệu Blissymbols",
+      "zen": "Tiếng Zenaga",
+      "zgh": "Tiếng Tamazight Chuẩn của Ma-rốc",
+      "zh": "Tiếng Trung (Phổ thông)",
+      "zh-Hans": "Tiếng Trung Phổ thông (Giản thể)",
+      "zh-Hant": "Tiếng Trung Phổ thông (Phồn thể)",
+      "zu": "Tiếng Zulu",
+      "zun": "Tiếng Zuni",
+      "zza": "Tiếng Zaza"
+    },
+    "scriptNames": {
+      "Adlm": "Chữ Adlam",
+      "Afak": "Chữ Afaka",
+      "Arab": "Chữ Ả Rập",
+      "Aran": "Chữ Nastaliq",
+      "Armi": "Chữ Imperial Aramaic",
+      "Armn": "Chữ Armenia",
+      "Avst": "Chữ Avestan",
+      "Bali": "Chữ Bali",
+      "Bamu": "Chữ Bamum",
+      "Bass": "Chữ Bassa Vah",
+      "Batk": "Chữ Batak",
+      "Beng": "Chữ Bangla",
+      "Blis": "Chữ Blissymbols",
+      "Bopo": "Chữ Bopomofo",
+      "Brah": "Chữ Brahmi",
+      "Brai": "Chữ nổi Braille",
+      "Bugi": "Chữ Bugin",
+      "Buhd": "Chữ Buhid",
+      "Cakm": "Chữ Chakma",
+      "Cans": "Âm tiết Thổ dân Canada Hợp nhất",
+      "Cari": "Chữ Caria",
+      "Cham": "Chữ Chăm",
+      "Cher": "Chữ Cherokee",
+      "Cirt": "Chữ Cirth",
+      "Copt": "Chữ Coptic",
+      "Cprt": "Chứ Síp",
+      "Cyrl": "Chữ Kirin",
+      "Cyrs": "Chữ Kirin Slavơ Nhà thờ cổ",
+      "Deva": "Chữ Devanagari",
+      "Dsrt": "Chữ Deseret",
+      "Dupl": "Chữ tốc ký Duployan",
+      "Egyd": "Chữ Ai Cập bình dân",
+      "Egyh": "Chữ Ai Cập thày tu",
+      "Egyp": "Chữ tượng hình Ai Cập",
+      "Ethi": "Chữ Ethiopia",
+      "Geok": "Chữ Khutsuri Georgia",
+      "Geor": "Chữ Georgia",
+      "Glag": "Chữ Glagolitic",
+      "Goth": "Chữ Gô-tích",
+      "Gran": "Chữ Grantha",
+      "Grek": "Chữ Hy Lạp",
+      "Gujr": "Chữ Gujarati",
+      "Guru": "Chữ Gurmukhi",
+      "Hanb": "Chữ Hán có chú âm",
+      "Hang": "Chữ Hàn",
+      "Hani": "Chữ Hán",
+      "Hano": "Chữ Hanunoo",
+      "Hans": "Chữ Hán giản thể",
+      "Hant": "Chữ Hán phồn thể",
+      "Hebr": "Chữ Do Thái",
+      "Hira": "Chữ Hiragana",
+      "Hluw": "Chữ tượng hình Anatolia",
+      "Hmng": "Chữ Pahawh Hmong",
+      "Hrkt": "Bảng ký hiệu âm tiết Tiếng Nhật",
+      "Hung": "Chữ Hungary cổ",
+      "Inds": "Chữ Indus",
+      "Ital": "Chữ Italic cổ",
+      "Jamo": "Chữ Jamo",
+      "Java": "Chữ Java",
+      "Jpan": "Chữ Nhật Bản",
+      "Jurc": "Chữ Jurchen",
+      "Kali": "Chữ Kayah Li",
+      "Kana": "Chữ Katakana",
+      "Khar": "Chữ Kharoshthi",
+      "Khmr": "Chữ Khơ-me",
+      "Khoj": "Chữ Khojki",
+      "Knda": "Chữ Kannada",
+      "Kore": "Chữ Hàn Quốc",
+      "Kpel": "Chữ Kpelle",
+      "Kthi": "Chữ Kaithi",
+      "Lana": "Chữ Lanna",
+      "Laoo": "Chữ Lào",
+      "Latf": "Chữ La-tinh Fraktur",
+      "Latg": "Chữ La-tinh Xcốt-len",
+      "Latn": "Chữ La tinh",
+      "Lepc": "Chữ Lepcha",
+      "Limb": "Chữ Limbu",
+      "Lina": "Chữ Linear A",
+      "Linb": "Chữ Linear B",
+      "Lisu": "Chữ Fraser",
+      "Loma": "Chữ Loma",
+      "Lyci": "Chữ Lycia",
+      "Lydi": "Chữ Lydia",
+      "Mand": "Chữ Mandaean",
+      "Mani": "Chữ Manichaean",
+      "Maya": "Chữ tượng hình Maya",
+      "Mend": "Chữ Mende",
+      "Merc": "Chữ Meroitic Nét thảo",
+      "Mero": "Chữ Meroitic",
+      "Mlym": "Chữ Malayalam",
+      "Mong": "Chữ Mông Cổ",
+      "Moon": "Chữ nổi Moon",
+      "Mroo": "Chữ Mro",
+      "Mtei": "Chữ Meitei Mayek",
+      "Mymr": "Chữ Myanmar",
+      "Narb": "Chữ Bắc Ả Rập cổ",
+      "Nbat": "Chữ Nabataean",
+      "Nkgb": "Chữ Naxi Geba",
+      "Nkoo": "Chữ N’Ko",
+      "Nshu": "Chữ Nüshu",
+      "Ogam": "Chữ Ogham",
+      "Olck": "Chữ Ol Chiki",
+      "Orkh": "Chữ Orkhon",
+      "Orya": "Chữ Odia",
+      "Osma": "Chữ Osmanya",
+      "Palm": "Chữ Palmyrene",
+      "Perm": "Chữ Permic cổ",
+      "Phag": "Chữ Phags-pa",
+      "Phli": "Chữ Pahlavi Văn bia",
+      "Phlp": "Chữ Pahlavi Thánh ca",
+      "Phlv": "Chữ Pahlavi Sách",
+      "Phnx": "Chữ Phoenicia",
+      "Plrd": "Ngữ âm Pollard",
+      "Prti": "Chữ Parthia Văn bia",
+      "Qaag": "Chữ Zawgyi",
+      "Rjng": "Chữ Rejang",
+      "Rohg": "Chữ Hanifi",
+      "Roro": "Chữ Rongorongo",
+      "Runr": "Chữ Runic",
+      "Samr": "Chữ Samaritan",
+      "Sara": "Chữ Sarati",
+      "Sarb": "Chữ Nam Ả Rập cổ",
+      "Saur": "Chữ Saurashtra",
+      "Sgnw": "Chữ viết Ký hiệu",
+      "Shaw": "Chữ Shavian",
+      "Shrd": "Chữ Sharada",
+      "Sind": "Chữ Khudawadi",
+      "Sinh": "Chữ Sinhala",
+      "Sora": "Chữ Sora Sompeng",
+      "Sund": "Chữ Xu-đăng",
+      "Sylo": "Chữ Syloti Nagri",
+      "Syrc": "Chữ Syria",
+      "Syre": "Chữ Estrangelo Syriac",
+      "Syrj": "Chữ Tây Syria",
+      "Syrn": "Chữ Đông Syria",
+      "Tagb": "Chữ Tagbanwa",
+      "Takr": "Chữ Takri",
+      "Tale": "Chữ Thái Na",
+      "Talu": "Chữ Thái Lặc mới",
+      "Taml": "Chữ Tamil",
+      "Tang": "Chữ Tangut",
+      "Tavt": "Chữ Thái Việt",
+      "Telu": "Chữ Telugu",
+      "Teng": "Chữ Tengwar",
+      "Tfng": "Chữ Tifinagh",
+      "Tglg": "Chữ Tagalog",
+      "Thaa": "Chữ Thaana",
+      "Thai": "Chữ Thái",
+      "Tibt": "Chữ Tây Tạng",
+      "Tirh": "Chữ Tirhuta",
+      "Ugar": "Chữ Ugarit",
+      "Vaii": "Chữ Vai",
+      "Visp": "Tiếng nói Nhìn thấy được",
+      "Wara": "Chữ Varang Kshiti",
+      "Wole": "Chữ Woleai",
+      "Xpeo": "Chữ Ba Tư cổ",
+      "Xsux": "Chữ hình nêm Sumero-Akkadian",
+      "Yiii": "Chữ Di",
+      "Zinh": "Chữ Kế thừa",
+      "Zmth": "Ký hiệu Toán học",
+      "Zsye": "Biểu tượng",
+      "Zsym": "Ký hiệu",
+      "Zxxx": "Chưa có chữ viết",
+      "Zyyy": "Chung",
+      "Zzzz": "Chữ viết không xác định"
+    }
+  }
+}

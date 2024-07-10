@@ -1,0 +1,1045 @@
+{
+  "fr": {
+    "imagery": {
+      "Bedzin-PL-aerial_image": {
+        "attribution": {
+          "text": "Bureau de district à Będzin"
+        },
+        "name": "Orthophotos 2013 (photos aériennes) de Będzin"
+      },
+      "Bedzin-PL-buildings": {
+        "attribution": {
+          "text": "Będzin - bâtiments"
+        },
+        "name": "Będzin - bâtiments"
+      },
+      "Bing": {
+        "description": "Images satellite et aérienne.",
+        "name": "Images satellite Bing"
+      },
+      "Bytom-2012": {
+        "attribution": {
+          "text": "Municipalité de Bytom 2012"
+        },
+        "name": "Orthophotos 2012 (photos aériennes) de Bytom"
+      },
+      "Bytom-2014": {
+        "attribution": {
+          "text": "Municipalité de Bytom 2014"
+        },
+        "name": "Orthophotos 2014 (photos aériennes) de Bytom"
+      },
+      "Bytom-2016": {
+        "attribution": {
+          "text": "Municipalité de Bytom 2016"
+        },
+        "name": "Orthophotos 2016 (photos aériennes) de Bytom"
+      },
+      "Bytom-2018": {
+        "attribution": {
+          "text": "Municipalité de Bytom 2018"
+        },
+        "name": "Orthophotos 2018 (photos aériennes) de Bytom"
+      },
+      "Bytom-2021": {
+        "attribution": {
+          "text": "Municipalité de Bytom 2021"
+        },
+        "name": "Orthophotos 2021 (photos aériennes) de Bytom"
+      },
+      "Bytom-buildings": {
+        "attribution": {
+          "text": "Bytom - bâtiments"
+        },
+        "name": "Bytom - bâtiments"
+      },
+      "Czestochowa-2011": {
+        "attribution": {
+          "text": "Municipalité de Częstochowa 2011"
+        },
+        "name": "Orthophotos 2011 (photos aériennes) de Częstochowa"
+      },
+      "Czestochowa-2013": {
+        "attribution": {
+          "text": "Municipalité de Częstochowa 2013"
+        },
+        "name": "Orthophotos 2013 (photos aériennes) de Częstochowa"
+      },
+      "Czestochowa-2014": {
+        "attribution": {
+          "text": "Municipalité de Częstochowa 2014"
+        },
+        "name": "Orthophotos 2014 (photos aériennes) de Częstochowa"
+      },
+      "Czestochowa-2015": {
+        "attribution": {
+          "text": "Municipalité de Częstochowa 2015"
+        },
+        "name": "Orthophotos 2015 (photos aériennes) de Częstochowa"
+      },
+      "Czestochowa-2016": {
+        "attribution": {
+          "text": "Municipalité de Częstochowa 2016"
+        },
+        "name": "Orthophotos 2016 (photos aériennes) de Częstochowa"
+      },
+      "Czestochowa-2017": {
+        "attribution": {
+          "text": "Municipalité de Częstochowa 2017"
+        },
+        "name": "Orthophotos 2017 (photos aériennes) de Częstochowa"
+      },
+      "Czestochowa-buildings": {
+        "attribution": {
+          "text": "Bâtiments de Częstochowa"
+        },
+        "name": "Bâtiments de Częstochowa"
+      },
+      "DV_OrthoPhoto": {
+        "name": "Images aériennes les plus récentes de l'agence Digitaal Vlaanderen"
+      },
+      "DV_OrthoPhoto_20132015_10cm": {
+        "name": "Images aériennes 10cm  2013-2015 de l'agence Digitaal Vlaanderen"
+      },
+      "DV_OrthoPhoto_Preliminary": {
+        "name": "Images satellite préliminaires Digitaal Vlaanderen"
+      },
+      "Dourados_Ortofotos": {
+        "attribution": {
+          "text": "Mairie de Dourados - GeoDourados"
+        },
+        "description": "Images satellite haute résolution de Douranos (2018 + certains secteurs 2020)",
+        "name": "Orthophotos de Dourados"
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 sans nuages — https://s2maps.eu par EOX IT Services GmbH (contient des données Copernicus Sentinel modifiées de 2017 et de 2018)"
+        },
+        "description": "Imagerie satellite Sentinel retravaillée",
+        "name": "eox.at 2018 sans nuages"
+      },
+      "EOXAT2019CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 sans nuages — https://s2maps.eu par EOX IT Services GmbH (contient des données Copernicus Sentinel modifiées de 2019)"
+        },
+        "description": "Imagerie satellite Sentinel retravaillée",
+        "name": "eox.at 2019 sans nuages"
+      },
+      "EOXAT2020CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 sans nuages — https://s2maps.eu par EOX IT Services GmbH (contient des données Copernicus Sentinel modifiées de 2020)"
+        },
+        "description": "Imagerie satellite Sentinel retravaillée",
+        "name": "eox.at 2020 sans nuages"
+      },
+      "EOXAT2021CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 sans nuages — https://s2maps.eu par EOX IT Services GmbH (contient des données Copernicus Sentinel modifiées de 2021)"
+        },
+        "description": "Imagerie satellite Sentinel retravaillée",
+        "name": "eox.at 2020 sans nuages"
+      },
+      "EOXAT2022CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 sans nuages — https://s2maps.eu par EOX IT Services GmbH (contient des données Copernicus Sentinel modifiées de 2022)"
+        },
+        "description": "Imagerie satellite Sentinel retravaillée.",
+        "name": "eox.at 2022 sans nuages"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Termes & commentaires"
+        },
+        "description": "Images Satellite Esri",
+        "name": "Images satellite Esri"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Termes & commentaires"
+        },
+        "description": "Images Esri archivées qui peuvent être plus propres et plus précises que la couche par défaut mais souvent assez anciennes",
+        "name": "Images satellite Esri (clarifiées) bêta"
+      },
+      "Frankfurt-am-Main-2019": {
+        "attribution": {
+          "text": "Bureau d'arpentage de la ville de Francfort-sur-le-Main"
+        },
+        "description": "Images satellite de Francfort-sur-le-Main prises le 16 avril 2019",
+        "name": "Images satellite 2019 de Francfort-sur-le-Main"
+      },
+      "Geodatastyrelsen_Denmark": {
+        "name": "Images aériennes SDFI"
+      },
+      "Geoportal2-PL-City-boundaries_WMS": {
+        "name": "Geoportal 2: limites municipales WMS"
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "name": "Geoportal 2: orthophotos haute résolution WMS (photos d'archives)"
+      },
+      "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "attribution": {
+          "text": "Bureau Principal de Géodésie et de Cartographie de Pologne"
+        },
+        "description": "Orthophotoplan avec une résolution de 10 cm ou plus. Les données sont triées par résolution puis par date, par exemple une feuille de 2012 avec une résolution de 8 cm l'emporte sur une feuille de 2019 avec une résolution de 10 cm.",
+        "name": "Geoportal 2 - orthophotos haute résolution WMS (photos aériennes)"
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "attribution": {
+          "text": "Geoportal 2 Pologne - rues WMS"
+        },
+        "description": "Le service de navigation WMS Intégration Nationale de la Numérotation des Adresses permet de télécharger des images cartographiques créées sur la base de données spatiales du Registre National des Frontières dans le domaine des enregistrements de rues et d’adresses.",
+        "name": "Geoportal 2 - rues WMS"
+      },
+      "Geoportal2-PL-addres_points_WMS": {
+        "attribution": {
+          "text": "Geoportal 2 Pologne - adresses WMS"
+        },
+        "description": "Le service de navigation WMS Intégration Nationale de la Numérotation des Adresses permet de télécharger des images cartographiques créées sur la base de données spatiales du Registre National des Frontières dans le domaine des enregistrements de rues et d’adresses.",
+        "name": "Geoportal 2 - module des adresses WMS"
+      },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "name": "Geoportal 2: Orthophotomap (photos d'archive) WMS"
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "attribution": {
+          "text": "Bureau Principal de Géodésie et de Cartographie de Pologne"
+        },
+        "description": "Web Map Service (WMS) vous permet de visualiser des orthophotos en Pologne. Les données fournies par ce service sont un orthophotoplan constitué de photos aériennes. Le service prend en charge l'interface WMS 1.3.0.",
+        "name": "Geoportal 2 - orthophotos (photos aériennes les plus récentes) WMS"
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "attribution": {
+          "text": "Bureau Principal de Géodésie et de Cartographie de Pologne"
+        },
+        "description": "Service de navigation (Web Map Tile Service, WMTS) qui permet de parcourir les orthophotos de la Pologne. Les données fournies par ce service sont un orthophotoplan constitué de photos aériennes.",
+        "name": "Geoportal 2 - orthophotos (photos aériennes les plus récentes) WMTS"
+      },
+      "Geoportal2-PL-boundaries-of-communes_WMS": {
+        "attribution": {
+          "text": "Bureau Principal de Géodésie et de Cartographie de Pologne"
+        },
+        "name": "Geoportal 2: frontières de communes WMS"
+      },
+      "Geoportal2-PL-boundaries-of-counties_WMS": {
+        "attribution": {
+          "text": "Bureau Principal de Géodésie et de Cartographie de Pologne"
+        },
+        "name": "Geoportal 2: frontières de contés WMS"
+      },
+      "Geoportal2-PL-boundaries-of-provinces_WMS": {
+        "attribution": {
+          "text": "Bureau Principal de Géodésie et de Cartographie de Pologne"
+        },
+        "name": "Geoportal 2: frontières de provinces WMS"
+      },
+      "Geoportal2-PL-buildings_WMS": {
+        "attribution": {
+          "text": "Geoportal 2 Pologne - bâtiments WMS"
+        },
+        "description": "Le service national d'intégration du cadastre est un service collectif de présentation des données cadastrales provenant directement des unités de niveau poviat. Le service ne contient que les données des unités qui disposent du service WMS avec les paramètres appropriés et qui ont décidé d'inclure leur service WMS dans le service d'intégration nationale des registres fonciers.",
+        "name": "Geoportal 2 - bâtiments WMS"
+      },
+      "Geoportal2-PL-gas-pipe_WMS": {
+        "attribution": {
+          "text": "Bureau Principal de Géodésie et de Cartographie de Pologne"
+        },
+        "name": "Geoportal 2: gazoducs WMS"
+      },
+      "Geoportal2-PL-heat-pipe_WMS": {
+        "attribution": {
+          "text": "Bureau Principal de Géodésie et de Cartographie de Pologne"
+        },
+        "name": "Geoportal 2: caloducs WMS"
+      },
+      "Geoportal2-PL-plot_boundaries_WMS": {
+        "attribution": {
+          "text": "Geoportal 2 Pologne - limites parcellaires WMS"
+        },
+        "description": "Le service national d'intégration du cadastre est un service collectif de présentation des données cadastrales provenant directement des unités de niveau poviat. Le service ne contient que les données des unités qui disposent du service WMS avec les paramètres appropriés et qui ont décidé d'inclure leur service WMS dans le service d'intégration nationale des registres fonciers.",
+        "name": "Geoportal 2 - limites parcellaires WMS"
+      },
+      "Geoportal2-PL-power-cord_WMS": {
+        "name": "Geoportal 2: câble électrique WMS"
+      },
+      "Geoportal2-PL-prng": {
+        "attribution": {
+          "text": "Centre de documentation géodésique et cartographique d'Ośrodek"
+        },
+        "name": "Geoportal 2 - PNRG (noms des lieux)"
+      },
+      "Geoportal2-PL-sewer-pipe_WMS": {
+        "name": "Geoportal 2: canalisations d'égout WMS"
+      },
+      "Geoportal2-PL-shaded_relief_WMS": {
+        "name": "Geoportal 2 : relief ombragé (WMS)"
+      },
+      "Geoportal2-PL-squares-and-housing-estates_WMS": {
+        "name": "Geoportal 2 : parcs et lotissements"
+      },
+      "Geoportal2-PL-state-borders_WMS": {
+        "attribution": {
+          "text": "Bureau Principal de Géodésie et de Cartographie de Pologne"
+        },
+        "name": "Geoportal 2: frontières d'états WMS"
+      },
+      "Geoportal2-PL-telecommunications-cable_WMS": {
+        "name": "Geoportal 2: câbles de télécommunication WMS"
+      },
+      "Geoportal2-PL-water-pipe_WMS": {
+        "name": "Geoportal 2: conduites d'eau WMS"
+      },
+      "Gliwice-2003": {
+        "attribution": {
+          "text": "Municipalité de Gliwice 2003"
+        },
+        "name": "Orthophotos 2003 (photos aériennes) de Gliwice"
+      },
+      "Gliwice-2009": {
+        "attribution": {
+          "text": "Municipalité de Gliwice 2009"
+        },
+        "name": "Orthophotos 2009 (photos aériennes) de Gliwice"
+      },
+      "Gliwice-2013": {
+        "attribution": {
+          "text": "Municipalité de Gliwice 2013"
+        },
+        "name": "Orthophotos 2013 (photos aériennes) de Gliwice"
+      },
+      "Gliwice-2017": {
+        "attribution": {
+          "text": "Municipalité de Gliwice 2017"
+        },
+        "name": "Orthophotos 2017 (photos aériennes) de Gliwice"
+      },
+      "Gliwice-2018": {
+        "attribution": {
+          "text": "Municipalité de Gliwice 2018"
+        },
+        "name": "Orthophotos 2018 (photos aériennes) de Gliwice"
+      },
+      "Gliwice-2020": {
+        "attribution": {
+          "text": "Municipalité de Gliwice 2020"
+        },
+        "name": "Orthophotos 2020 (photos aériennes) de Gliwice"
+      },
+      "Gliwice-2021": {
+        "attribution": {
+          "text": "Municipalité de Gliwice 2021"
+        },
+        "name": "Orthophotos 2021 (photos aériennes) de Gliwice"
+      },
+      "Gliwice-buildings": {
+        "attribution": {
+          "text": "Gliwice bâtiments"
+        },
+        "name": "Gliwice - bâtiments"
+      },
+      "LSA-ATKIS_BU": {
+        "description": "Forme des bâtiments de Saxe-Anhalt",
+        "name": "Bâtiments - Office National de la Topographie et de la Géoinformation de Saxe-Anhalt"
+      },
+      "LSA-DOP20": {
+        "description": "Photos aériennes de l'Etat de Saxe-Anhalt, résolution de 20 cm",
+        "name": "Orthophotos 20 cm - Office National de la Topographie et de la Géoinformation de Saxe-Anhalt"
+      },
+      "LSA-DVG": {
+        "description": "Enregistrement vectoriel des limites administratives. Les limites de l'État fédéral, des districts, des municipalités et des quartiers des municipalités sont indiquées.",
+        "name": "Limites administratives - Office National de la Topographie et de la Géoinformation de Saxe-Anhalt"
+      },
+      "LocalAuthorities_RightsOfWay": {
+        "attribution": {
+          "text": "Contient des informations du secteur public sous la licence Open Government License v3.0."
+        },
+        "description": "Données sur les droits de passage publics publiées par les autorités locales, telles que rassemblées sur rowmaps.com",
+        "name": "Droits de passage publics"
+      },
+      "Lodz-2015": {
+        "attribution": {
+          "text": "Municipalité de Łódź 2015"
+        },
+        "name": "Orthophotos 2015 (photos aériennes) de Łódź"
+      },
+      "Lodz-2017": {
+        "attribution": {
+          "text": "Municipalité de Łódź 2017"
+        },
+        "name": "Orthophotos 2017 (photos aériennes) de Łódź"
+      },
+      "Lodz-buildings": {
+        "attribution": {
+          "text": "Łódź - bâtiments"
+        },
+        "name": "Łódź - bâtiments"
+      },
+      "MAPNIK": {
+        "attribution": {
+          "text": "© contributeurs OpenStreetMap, ODbL 1.0"
+        },
+        "description": "Couche OpenStreetMap par défaut"
+      },
+      "Maaamet-Estonia_Cadastre": {
+        "attribution": {
+          "text": "Carte cadastrale du Service Foncier d'Estonie basée sur des orthophotos"
+        },
+        "name": "Cadastre du Service Foncier d'Estonie"
+      },
+      "Maaamet-Estonia_Ortho": {
+        "attribution": {
+          "text": "Orthophotos du Service Foncier d'Estonie"
+        },
+        "name": "Orthophotos (WMS) du Service Foncier d'Estonie"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Termes et commentaires"
+        },
+        "description": "Mapbox fournit des ensembles de tuiles matricielles qui incluent une cartographie globale à haute résolution d'imagerie aérienne et satellite",
+        "name": "Images satellite Mapbox "
+      },
+      "Naturvardsverket-protected": {
+        "description": "Parcs naturels suédois, réserves naturelles et autres zones protégées et objets",
+        "name": "Agence de Protection de l'Environnement - Zones Protégées"
+      },
+      "Naturvardsverket-trails": {
+        "description": "Pistes mises à jour quotidiennement, dans ou autour de réserves naturelles, telles qu'enregistrées par l'Agence de Protection de l'Environnement suédoise",
+        "name": "Agence de Protection de l'Environnement - Pistes"
+      },
+      "OSIP": {
+        "attribution": {
+          "text": "Programme d'imagerie de l'Ohio"
+        },
+        "description": "Orthophotos les plus récentes du programme III d'imagerie de tous les comtés de l'Ohio capturées à une résolution de 30 cm à 8 cm de 2017 à 2020.",
+        "name": "Programme d'imagerie de l'Ohio"
+      },
+      "OSIP_1ft": {
+        "attribution": {
+          "text": "Programme d'imagerie de l'Ohio"
+        },
+        "description": "Orthophotos du programme II d'imagerie de 88 comtés de l'Ohio capturées à une résolution de 30 cm de 2011 à 2014.",
+        "name": "Orthophotos du programme d'imagerie de l'Ohio, résolution 30 cm"
+      },
+      "OSIP_6in": {
+        "attribution": {
+          "text": "Programme d'imagerie de l'Ohio"
+        },
+        "description": "Orthophotos du programme III d'imagerie de 40 comtés de l'Ohio capturées à une résolution de 6 pouces en 2017 et 2018 et orthophotos des programmes I et II d'imagerie de 16 autres comtés capturées entre 2010 et 2014.",
+        "name": "Orthophotos 2010-2018 des programmes I, II et III d'imagerie de l'Ohio, résolution 6 pouces"
+      },
+      "OSMUK-Cadastral-Parcels": {
+        "attribution": {
+          "text": "Contient des informations du secteur public sous licence Open Government License v3.0."
+        },
+        "description": "Parcelles cadastrales parfaitement alignées de Grande-Bretagne",
+        "name": "OSMUK parcelles cadastrales"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contributeurs OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM inspector : Adresses"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contributeurs OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Géométrie"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contributeurs OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Autoroutes"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contributeurs OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Surface"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contributeurs OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector : Lieux"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contributeurs OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Itinéraire"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, contributeurs OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Étiqueter"
+      },
+      "OpenAerialMapMosaic": {
+        "description": "Toutes les images OpenAerialMap dans une mosaïque, par Kontur.io",
+        "name": "Mosaïque OpenAerialMap, par Kontur.io"
+      },
+      "Riksantikvariambetet-archaeological": {
+        "description": "Ruines et monuments anciens et historiques",
+        "name": "Riksantikvarieämbetet - Sites archéologiques et monuments"
+      },
+      "Riksantikvariambetet-heritage": {
+        "description": "Bâtiments historiques et églises",
+        "name": "Riksantikvarieämbetet - Bâtiments historiques"
+      },
+      "Riksantikvariambetet-protected": {
+        "description": "Zones protégées pour les bâtiments historiques et édifices religieux",
+        "name": "Riksantikvarieämbetet - Zones historiques protégées"
+      },
+      "Riksantikvariambetet-ruins": {
+        "description": "Ruines d'intérêt historique et culturel",
+        "name": "Riksantikvarieämbetet - Ruines"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "Imagerie aérienne SPW(allonie) la plus récente"
+      },
+      "SPW_PICC": {
+        "name": "Imagerie numérique PICC SPW(allonie)"
+      },
+      "Siemianowice_Slaskie-aerial_image": {
+        "attribution": {
+          "text": "Municipalité de Siemianowice Śląskie"
+        },
+        "name": "Orthophotos (photos aériennes) de Siemianowice Śląskie"
+      },
+      "Siemianowice_Slaskie-buildings": {
+        "attribution": {
+          "text": "Bâtiments de Siemianowice Śląskie"
+        },
+        "name": "Siemianowice Śląskie - bâtiments"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Jaune = Données de cartes dans le domaine public du recensement américain. Rouge = Données introuvables sur OpenStreetMap"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "Jaune = données cartographiques du domaine public issues du recensement américain. Rouge = données non présentes dans OpenStreetMap"
+      },
+      "US-TIGER-Roads-2020": {
+        "description": "Jaune = données cartographiques du domaine public provenant du recensement américain (US Census). Rouge = données introuvables dans OpenStreetMap",
+        "name": "US TIGER Roads 2020"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Jaune = données cartographiques du domaine public provenant du recensement américain. Rouge = données introuvables dans OpenStreetMap",
+        "name": "Routes TIGER 2021"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Jaune = données cartographiques du domaine public provenant du recensement américain. Rouge = données introuvables dans OpenStreetMap",
+        "name": "Routes TIGER 2022"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Jaune = données cartographiques du domaine public provenant du recensement américain (US Census). Rouge = données introuvables dans OpenStreetMap",
+        "name": "Routes TIGER 2023"
+      },
+      "USDA-NAIP": {
+        "attribution": {
+          "text": "Département de l'Agriculture des États-Unis"
+        },
+        "description": "Orthophotos 4 bandes 30/60 cm les plus récentes du Programme d'Imagerie de l'Agriculture Fédérale (NAIP en anglais) des États-Unis.",
+        "name": "Programme d'imagerie national pour l'agriculture"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Voies : en vert route non classifiée, en marron piste. Surface : les graviers sont représentés par un remplissage marron, l'asphalte par du noir, les pavés par du gris, la terre par du blanc, le béton par du bleu, l'herbe par du vert. Les voies saisonnières ont des barres blanches.",
+        "name": "Surcouche des routes forestières états-uniennes"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Réalisé avec Brussels UrbIS®© - Distribution & Copyright CIRB"
+        },
+        "name": "Photos aériennes les plus récentes de l'agence CIRB/CIBG "
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "Réalisé avec Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "Réalisé avec Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "Réalisé avec Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "Réalisé avec Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Réalisé avec Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "Réalisé avec Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
+        "attribution": {
+          "text": "Réalisé avec Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "Réalisé avec Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, contributeurs OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Vélo"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, contributeurs OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Randonnée"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, contributeurs OpenStreetMap, CC by-SA 3.0"
+        }
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, contributeurs OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Patinage"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, contributeurs OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Sports d'hiver"
+      },
+      "Zabrze-2011": {
+        "attribution": {
+          "text": "Municipalité de Zabrze 2011"
+        },
+        "name": "Orthophotos 2011 (photos aériennes) de Zabrze"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "Carte de base de l'Autriche, basée sur des données gouvernementales."
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Couche d'orthophotos fournie par basemap.at, \"successeur\" de geoimage.at.",
+        "name": "Orthophotos basemap.at"
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "description": "Surcouche d'annotations fournie par basemap.at.",
+        "name": "Surcouche basemap.at"
+      },
+      "cyclosm": {
+        "attribution": {
+          "text": "Rendu : CyclOSM (hébergé par OpenStreetMap France) © Les Contributeurs d'OpenStreetMap"
+        },
+        "description": "CyclOSM est une cartographie conçue pour le cyclisme. Elle exploite les données OpenStreetMap pour créer une carte dédiée au vélo magnifique et pratique !"
+      },
+      "debicki-buildings": {
+        "attribution": {
+          "text": "District de Dębica"
+        },
+        "name": "District de Dębica : Bâtiments"
+      },
+      "eufar-balaton": {
+        "attribution": {
+          "text": "Orthophotos EUFAR Balaton 2010"
+        },
+        "description": "Photographies géo-référencées de 1940 de Balaton Limnological Institute.",
+        "name": "Orthophotos EUFAR Balaton"
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© Municipalité de Göteborg, CC0"
+        },
+        "description": "La carte décrit de manière globale la ville de Göteborg. Elle contient des informations générales sur le terrain, les communications, l'hydrographie, les bâtiments, les adresses et les noms de rues, les divisions administratives.",
+        "name": "Carte de la ville de Göteborg"
+      },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© municipalité de Göteborg, CC0"
+        },
+        "description": "Web Map Service (WMS) présentant l'ombrage et la pente basés sur le modèle d'élévation 2017 pour la ville de Göteborg. Résolution 0,5 mètre par pixel.",
+        "name": "Göteborg en relief avec ombrage"
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© Municipalité de Göteborg, CC0"
+        },
+        "description": "Orthophotos de la municipalité de Göteborg",
+        "name": "Orthophotos 2015 de Göteborg"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© Municipalité de Göteborg, CC0"
+        },
+        "description": "Orthophotos de la municipalité de Göteborg",
+        "name": "Orthophotos 2017 de Göteborg"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© Municipalité de Göteborg, CC0"
+        },
+        "description": "Orthophotos de la municipalité de Göteborg",
+        "name": "Orthophotos 2019 de Göteborg"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© Municipalité de Göteborg, CC0"
+        },
+        "description": "Orthophoto pour la municipalité de Göteborg",
+        "name": "Orthophoto de Göteborg 2021"
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© Municipalité de Göteborg, CC0"
+        },
+        "description": "Orthophoto pour la municipalité de Göteborg",
+        "name": "Orthophoto de Göteborg (dernière version)"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "GSI Japon"
+        },
+        "description": "Imagerie ortho GSI du Japon. Pas totalement ortho-rectifiée, mais un peu plus récente et avec une couverture différente de l'imagerie ortho GSI.",
+        "name": "Imagerie ortho GSI aérienne du Japon"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "attribution": {
+          "text": "Intégration des photos GSI du Japon"
+        },
+        "description": "Imagerie de photos intégrées GSI du Japon. La collection des dernières imageries ortho GSI, aériennes, post-catastrophe et d'autres.",
+        "name": "Imagerie intégrée GSI du Japon"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "GSI Japon"
+        },
+        "description": "Carte GSI standard du Japon. Bonne couverture.",
+        "name": "Carte GSI standard du Japon"
+      },
+      "kalmar-orto-2014": {
+        "attribution": {
+          "text": "© Municipalité de Kalmar"
+        },
+        "description": "Orthophotos 2014 pour la côte nord de la municipalité de Kalmar",
+        "name": "Orthophotos 2014 de Kalmar (nord)"
+      },
+      "kalmar-orto-2016": {
+        "attribution": {
+          "text": "© Municipalité de Kalmar"
+        },
+        "description": "Orthophotos 2016 pour la côte sud de la municipalité de Kalmar",
+        "name": "Orthophotos 2016 de Kalmar (sud)"
+      },
+      "kalmar-orto-2018": {
+        "attribution": {
+          "text": "© Municipalité de Kalmar"
+        },
+        "description": "Orthophotos 2018 des zones urbaines de la municipalité de Kalmar",
+        "name": "Orthophotos 2018 de Kalmar (urbain)"
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© Municipalité de Kalmar"
+        },
+        "description": "Orthophotos 2020 des zones urbaines de la municipalité de Kalmar",
+        "name": "Orthophotos 2020 de Kalmar (urbain)"
+      },
+      "kartverket-bygninger": {
+        "description": "INSPIRE - bâtiments en Norvège.",
+        "name": "Kartverket - bâtiments"
+      },
+      "kelkkareitit": {
+        "description": "Chemins motoneige de Kelkkareitit.fi depuis les données OSM (couverture nordique)",
+        "name": "Surcouche motoneige nordique"
+      },
+      "lancucki-buildings": {
+        "attribution": {
+          "text": "District de Łańcut"
+        },
+        "name": "District de Łańcut : Bâtiments"
+      },
+      "lantmateriet-orto1960": {
+        "description": "Mosaïque d'orthophotos suédoises entre 1955 et 1965. Des photos plus ou moins vieilles peuvent apparaître.",
+        "name": "Ortophotos historiques Lantmäteriet 1960"
+      },
+      "lantmateriet-orto1975": {
+        "description": "Mosaïque d'orthophotos suédoises entre 1970 et 1980. Encore incomplète.",
+        "name": "Ortophotos historiques Lantmäteriet 1975"
+      },
+      "lantmateriet-topowebb": {
+        "description": "Carte topographique de la Suède 1:50 000",
+        "name": "Carte topographique Lantmäteriet"
+      },
+      "linkoping-orto": {
+        "attribution": {
+          "text": "© municipalité de Linköping"
+        },
+        "description": "Orthophotos de la municipalité de Linköping 2010, données ouvertes",
+        "name": "Orthophotos de Linköping"
+      },
+      "lubaczowski-buildings": {
+        "attribution": {
+          "text": "District de Lubaczów"
+        },
+        "name": "District de Lubaczów : Bâtiments"
+      },
+      "maaamet<TX_DOT>ee-cir_ngr": {
+        "attribution": {
+          "text": "Orthophotos forestières du Service Foncier"
+        },
+        "name": "Eaux et Forêts du Service Foncier d'Estonie"
+      },
+      "maaamet<TX_DOT>ee-orto": {
+        "attribution": {
+          "text": "Orthophotos du Service Foncier d'Estonie"
+        },
+        "name": "Orthophotos (TMS) du Service Foncier d'Estonie"
+      },
+      "maaamet<TX_DOT>ee-pohi_vr2": {
+        "attribution": {
+          "text": "Carte principale du Service Foncier d'Estonie"
+        },
+        "name": "Carte basique du Service Foncier d'Estonie"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Termes & commentaires"
+        },
+        "description": "Montrer les fonctionnalités majeures pour vous aider à vous orienter.",
+        "name": "Couche localisateur"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© contributeurs OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OpenPT Map (couche)"
+      },
+      "openrailwaymap": {
+        "attribution": {
+          "text": "Rendu : OpenRailwayMap, © données : contributeurs OpenStreetMap"
+        },
+        "description": "Surcouche d'imagerie montrant l'infrastructure des voies ferrées dans les données OpenStreetMap"
+      },
+      "openrailwaymap-maxspeeds": {
+        "attribution": {
+          "text": "Rendu : OpenRailwayMap, © données : contributeurs OpenStreetMap"
+        },
+        "description": "Surcouche d'imagerie montrant les limites de vitesse des voies ferrées à partir des données OpenStreetMap",
+        "name": "Vitesses maximums autorisées basées sur OpenRailwayMap"
+      },
+      "openrailwaymap-signalling": {
+        "attribution": {
+          "text": "Rendu : OpenRailwayMap, © données : contributeurs OpenStreetMap"
+        },
+        "description": "Surcouche d'imagerie montrant la signalisation ferrée à partir des données OpenStreetMap",
+        "name": "Signalisation ferroviaire basée sur OpenRailwayMap"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© contributeurs OpenStreetMap"
+        },
+        "description": "Traces GPS publiques téléchargés sur OpenStreetMap",
+        "name": "Traces GPS OpenStreetMap"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© contributeurs OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (style allemand)"
+      },
+      "osmse-ekonomiska": {
+        "description": "Numérisation de « Economic maps » de 1950-1978",
+        "name": "Carte économique (historique) de Lantmäteriet entre 1950 et 1978"
+      },
+      "poznan-ortofotomapa2014": {
+        "attribution": {
+          "text": "Conseil de géodésie et cadastre municipal GEOPOZ de Poznań"
+        },
+        "name": "Orthophotos 2014 (photos aériennes) de Poznań"
+      },
+      "poznan-ortofotomapa2016": {
+        "attribution": {
+          "text": "Conseil de géodésie et cadastre municipal GEOPOZ de Poznań"
+        },
+        "name": "Orthophotos 2016 (photos aériennes) de Poznań"
+      },
+      "poznan-ortofotomapaBiezaca": {
+        "attribution": {
+          "text": "Conseil de géodésie et cadastre municipal GEOPOZ de Poznań"
+        },
+        "name": "Orthophotos récentes (photos aériennes) de Poznań"
+      },
+      "przemysl-aerial": {
+        "attribution": {
+          "text": "Municipalité de Przemyśl"
+        },
+        "name": "Orthophotos (photos aériennes) de Przemyśl"
+      },
+      "przemysl-buildings": {
+        "attribution": {
+          "text": "Municipalité de Przemyśl"
+        },
+        "name": "Les bâtiments de Przemyśl"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, données © contributeurs OpenStreetMap"
+        },
+        "name": "Pas d'adresse QA"
+      },
+      "route500": {
+        "attribution": {
+          "text": "Tuiles © cquest@Openstreetmap France, données © IGN, LO/OL"
+        },
+        "description": "Routes du réseau classifié (autoroutes, nationales, départementales)"
+      },
+      "rzeszowski-aerial": {
+        "attribution": {
+          "text": "District de Rzeszów"
+        },
+        "name": "Orthophotos (photos aériennes) du powiat de Rzeszów"
+      },
+      "rzeszowski-buildings": {
+        "attribution": {
+          "text": "District de Rzeszów"
+        },
+        "name": "District de Rzeszów : Bâtiments"
+      },
+      "scb-industrial": {
+        "attribution": {
+          "text": "© Bureau central des statistiques, CC0"
+        },
+        "description": "Zones géographiquement délimitées caractérisées par une utilisation industrielle des terres de grande ampleur",
+        "name": "SCB - Zones industrielles"
+      },
+      "scb-settlements": {
+        "attribution": {
+          "text": "© Bureau central des statistiques, CC0"
+        },
+        "description": "Zones contiguës de bâtiments de 50 à 199 habitants et pas plus de 150 mètres entre les maisons",
+        "name": "SCB - Mini zones urbaines"
+      },
+      "scb-urban": {
+        "attribution": {
+          "text": "© Bureau central des statistiques, CC0"
+        },
+        "description": "Zones urbaines d'au moins 200 personnes avec moins de 500 mètres entre les habitations",
+        "name": "SCB - Zones urbaines"
+      },
+      "scb-vacation": {
+        "attribution": {
+          "text": "© Bureau central des statistiques, CC0"
+        },
+        "description": "Zones contiguës composées principalement de résidences secondaires ; une collection d'au moins 50 habitations, la distance entre elles ne dépasse pas 150 mètres",
+        "name": "SCB - Zones de résidences secondaires"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Tuile: données skobbler Map : contributeurs OpenStreetMap"
+        }
+      },
+      "skolverket-schools": {
+        "description": "Écoles suédoises.",
+        "name": "Skolverket - Écoles"
+      },
+      "skoterleder": {
+        "description": "Chemins motoneige",
+        "name": "Carte motoneige en Suède"
+      },
+      "sropczyce-buildings": {
+        "attribution": {
+          "text": "District de Ropczyce-Sędziszów"
+        },
+        "name": "District de Ropczyce-Sędziszów : Bâtiments"
+      },
+      "stalowowolski-buildings": {
+        "attribution": {
+          "text": "District de Stalowa Wola"
+        },
+        "name": "District de Stalowa Wola : Bâtiments"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "Tuiles par Stamen Design, sous CC-BY 3.0. Données par OpenStreetMap, sous ODbL"
+        }
+      },
+      "stockholm-orto": {
+        "attribution": {
+          "text": "© Municipalité de Stockholm, CC0"
+        },
+        "description": "Orthophotos de la municipalité de Stockholm 2018, licence CC0",
+        "name": "Orthophotos de Stockholm"
+      },
+      "susono_shizuoka_jp_orthophoto": {
+        "attribution": {
+          "text": "Orthophotos de la ville de Susono"
+        },
+        "description": "Les photos aériennes ont été publiées en données ouvertes par la Ville de Susono.",
+        "name": "Orthophotos de la ville de Susono"
+      },
+      "svk-electricity-network": {
+        "description": "Réseau suédois de transport d'électricité.",
+        "name": "SVK - Réseau électrique"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Maps © Thunderforest, data © contributeurs OpenStreetMap"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Cartes © Thunderforest, données © contributeurs OpenStreetMap"
+        }
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Cartes © Thunderforest, données © contributeurs OpenStreetMap"
+        }
+      },
+      "trafikverket-baninfo": {
+        "description": "Réseau ferroviaire suédois, y compris les embranchements",
+        "name": "Réseau ferroviaire Trafikverket"
+      },
+      "trafikverket-baninfo-option": {
+        "description": "Réseau ferroviaire suédois avec plusieurs possibilités pour les couches",
+        "name": "Options pour le réseau ferroviaire Trafikverket"
+      },
+      "trafikverket-vagnat": {
+        "description": "Réseau routier suédois NVDB",
+        "name": "Réseau routier Trafikverket"
+      },
+      "trafikverket-vagnat-extra": {
+        "description": "Détails supplémentaires pour la NVDB suédoise : numérotation des routes, ralentisseurs, aires de repos, arrêts de bus, tunnels, radars",
+        "name": "Suppléments au réseau routier Trafikverket"
+      },
+      "trafikverket-vagnat-option": {
+        "description": "Réseau routier de la NVDB suédoise avec plusieurs possibilités pour les couches",
+        "name": "Options pour le réseau routier Trafikverket"
+      },
+      "wroclaw-orto2015": {
+        "attribution": {
+          "text": "Municipalité de Wrocław 2015"
+        },
+        "name": "Orthophotos 2015 (photos aériennes) du Wrocław"
+      },
+      "wroclaw-orto2018": {
+        "attribution": {
+          "text": "Municipalité de Wrocław 2018"
+        },
+        "name": "Orthophotos 2018 (photos aériennes) du Wrocław"
+      }
+    }
+  }
+}

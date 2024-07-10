@@ -1,0 +1,1353 @@
+{
+  "ga": {
+    "presets": {
+      "categories": {
+        "category-path": {
+          "name": "Cosáin"
+        },
+        "category-rail": {
+          "name": "Ráillí"
+        }
+      },
+      "fields": {
+        "access": {
+          "options": {
+            "designated": {
+              "description": "Tá rochtain cheadaithe de réir comharthaí nó dlíthe áitiúla áirithe"
+            },
+            "destination": {
+              "description": "Ní cheadaítear rochtain ach chun an ceann scríbe a sroicheadh.",
+              "title": "Ceann Scríbe"
+            },
+            "no": {
+              "description": "Ní cheadaítear rochtain don phobal",
+              "title": "Coiscthe"
+            },
+            "permissive": {
+              "title": "Ceadaitheach"
+            },
+            "permit": {
+              "description": "Ceadaítear rochtain le ceadúnas bailí"
+            },
+            "private": {
+              "title": "Príobháideach"
+            },
+            "yes": {
+              "title": "Ceadaithe"
+            }
+          },
+          "types": {
+            "access": "Uile",
+            "bicycle": "Rothair",
+            "foot": "Ag Siúl",
+            "horse": "Capaill"
+          }
+        },
+        "addr/interpolation": {
+          "options": {
+            "even": "Ré-uimhir",
+            "odd": "Corr-uimhir"
+          }
+        },
+        "address": {
+          "label": "Seoladh",
+          "placeholders": {
+            "city": "Cathair",
+            "city!vn": "Cathair/Baile",
+            "country": "Tír",
+            "county": "Contae",
+            "county!jp": "Ceantar",
+            "district": "Ceantar",
+            "floor": "Urlár",
+            "hamlet": "Gráig",
+            "housename": "Ainm an tí",
+            "housenumber!jp": "Uimhir an Foirgnimh/an Lota",
+            "postcode": "Cód Poist",
+            "province": "Cúige",
+            "province!jp": "Maoracht",
+            "state": "Stát",
+            "street": "Sráid",
+            "subdistrict": "Fócheantar",
+            "suburb": "Bruachbhaile"
+          }
+        },
+        "aeroway": {
+          "label": "Cineál"
+        },
+        "amenity": {
+          "label": "Cineál"
+        },
+        "artist": {
+          "label": "Ealaíontóir"
+        },
+        "artwork_type": {
+          "label": "Cineál"
+        },
+        "atm": {
+          "label": "Meaisín Bainc"
+        },
+        "attraction": {
+          "options": {
+            "train": "Traein Turasóireachta"
+          }
+        },
+        "barrier": {
+          "label": "Cineál",
+          "options": {
+            "toll_booth": "Both Dola"
+          }
+        },
+        "bicycle_parking": {
+          "label": "Cineál"
+        },
+        "board_type": {
+          "options": {
+            "welcome_sign": "Comhartha Fáilte"
+          }
+        },
+        "boundary": {
+          "label": "Cineál"
+        },
+        "building": {
+          "label": "Foirgneamh",
+          "options": {
+            "train_station": "Foirgneamh Stáisiún Traenach"
+          }
+        },
+        "capacity": {
+          "label": "Toilleadh"
+        },
+        "charge_toll": {
+          "label": "Táille Dola"
+        },
+        "construction": {
+          "label": "Cineál"
+        },
+        "contact/facebook": {
+          "label": "Ainm Úsáideora Facebook nó URL"
+        },
+        "country": {
+          "label": "Tír"
+        },
+        "crossing": {
+          "label": "Cineál",
+          "options": {
+            "traffic_signals": "Crosaire le soilse tráchta",
+            "unmarked": "Gan marcanna bóthair nó soilse tráchta"
+          }
+        },
+        "cuisine": {
+          "label": "Bianna"
+        },
+        "cycleway": {
+          "label": "Lánaí Rothair",
+          "options": {
+            "share_busway": {
+              "description": "Lána rothar roinnte le lána bus",
+              "title": "Lána rothar roinnte le bus"
+            },
+            "shared_lane": {
+              "description": "Raon Rothar gan bacainn idir an raon rothar agus an trácht ar an mbóthar"
+            },
+            "track": {
+              "description": "Tá bacainn fhisiceach idir an raon rothar agus an bóthar",
+              "title": "Raon Rothar"
+            }
+          }
+        },
+        "description": {
+          "label": "Cur Síos"
+        },
+        "emergency": {
+          "label": "Éigeandáil"
+        },
+        "entrance": {
+          "label": "Cineál"
+        },
+        "fax": {
+          "label": "Facs"
+        },
+        "fee": {
+          "label": "Táille"
+        },
+        "fire_hydrant/type": {
+          "label": "Cruth"
+        },
+        "gauge": {
+          "label": "Leithead"
+        },
+        "generator/method": {
+          "label": "Modh"
+        },
+        "generator/source": {
+          "label": "Foinse"
+        },
+        "generator/type": {
+          "label": "Cineál"
+        },
+        "highway": {
+          "label": "Cineál"
+        },
+        "historic": {
+          "label": "Cineál",
+          "options": {
+            "archaeological_site": "Láithreán Seandálaíochta",
+            "bomb_crater": "Cráitéar Buama",
+            "boundary_stone": "Cloch Theorann",
+            "building": "Foirgneamh Stairiúil",
+            "castle": "Caisleán",
+            "church": "Eaglais",
+            "city_gate": "Geata Cathrach",
+            "citywalls": "Balla Cathrach",
+            "monument": "Leacht",
+            "railway": "Iarnród",
+            "ruins": "Foghraigh",
+            "tomb": "Tuama",
+            "wreck": "Long Bhriste"
+          }
+        },
+        "holding_position/type": {
+          "options": {
+            "ILS": "Córas Tuirlingthe le hIonstraimí",
+            "runway": "Rúidbhealach"
+          }
+        },
+        "horse_scale": {
+          "options": {
+            "impossible": "Ní féidir le capaill taisteal ar an mbealach/droichead seo. Tá sé róchaol, níl a dhóthain taca ann, nó tá constaicí ar nós dréimirí ann. Dainséir don saol."
+          }
+        },
+        "image": {
+          "label": "Íomhá",
+          "terms": "grianghraf,pictiúr"
+        },
+        "incline": {
+          "label": "Fána"
+        },
+        "incline_steps": {
+          "options": {
+            "down": "Síos",
+            "up": "Suas"
+          }
+        },
+        "internet_access": {
+          "options": {
+            "terminal": "Teirminéal",
+            "wired": "Sreangtha"
+          }
+        },
+        "junction_line": {
+          "label": "Acomhal",
+          "options": {
+            "circular": "Timpeallán",
+            "roundabout": "Timpeallán"
+          }
+        },
+        "kerb": {
+          "label": "Colbha"
+        },
+        "kerb/height": {
+          "label": "Airde"
+        },
+        "kitchen": {
+          "label": "Cistin"
+        },
+        "landuse": {
+          "label": "Cineál"
+        },
+        "lanes": {
+          "label": "Lánaí"
+        },
+        "language_multi": {
+          "label": "Teangacha"
+        },
+        "layer": {
+          "label": "Sraith"
+        },
+        "leisure": {
+          "label": "Cineál"
+        },
+        "location": {
+          "label": "Suíomh"
+        },
+        "man_made": {
+          "label": "Cineál"
+        },
+        "material": {
+          "options": {
+            "soil": "Ithir",
+            "steel": "Cruach",
+            "stone": "Cloch",
+            "wood": "Adhmad"
+          }
+        },
+        "maxspeed": {
+          "label": "Luasteorainn"
+        },
+        "memorial": {
+          "options": {
+            "statue": "Dealbh"
+          }
+        },
+        "name": {
+          "label": "Ainm"
+        },
+        "natural": {
+          "label": "Nádúrtha"
+        },
+        "network": {
+          "label": "Líonra"
+        },
+        "note": {
+          "label": "Nóta"
+        },
+        "office": {
+          "label": "Cineál"
+        },
+        "opening_hours": {
+          "label": "Uaireanta"
+        },
+        "operator": {
+          "label": "Oibritheoir"
+        },
+        "parking": {
+          "label": "Cineál"
+        },
+        "payment_multi": {
+          "options": {
+            "app": "Aip Fóin",
+            "cards": "Cárta Íocaíochta",
+            "cash": "Airgead",
+            "cheque": "Seic",
+            "coins": "Boinn",
+            "contactless": "Íocaíocht gan tadhaill",
+            "credit_cards": "Cárta Creidmheasa",
+            "cryptocurrencies": "Criptea-airgeadra ",
+            "debit_cards": "Cárta Dochair"
+          }
+        },
+        "phone": {
+          "label": "Teileafón"
+        },
+        "place": {
+          "label": "Cineál"
+        },
+        "population": {
+          "label": "Daonra"
+        },
+        "population/date": {
+          "placeholder": "BBBB-MM-LL"
+        },
+        "power": {
+          "label": "Cineál"
+        },
+        "railway": {
+          "label": "Cineál"
+        },
+        "ref_road_number": {
+          "label": "Uimhir Bóthair"
+        },
+        "ref_runway": {
+          "label": "Uimhir an Rúidbhealaigh",
+          "placeholder": "m.sh. 01L/19R"
+        },
+        "ref_stop_position": {
+          "label": "Uimhir Stop"
+        },
+        "ref_taxiway": {
+          "label": "Ainm an Bhealaigh Innealta",
+          "placeholder": "m.sh. A5"
+        },
+        "relation": {
+          "label": "Cineál"
+        },
+        "religion": {
+          "label": "Creideamh",
+          "options": {
+            "buddhist": "Búdaí",
+            "christian": "Críostaí",
+            "confucian": "Confúiceach",
+            "hindu": "Hiondúch",
+            "jain": "Jaineach",
+            "jewish": "Giúdach",
+            "multifaith": "Ilchreidmheach",
+            "muslim": "Moslamach",
+            "none": "Neamhreiligiúnach",
+            "pagan": "Págánach",
+            "shinto": "Sinteochas",
+            "sikh": "Suíceach",
+            "spiritualist": "Spioradálaí",
+            "taoist": "Taoch",
+            "unitarian_universalist": "Úinitéireach Uilíochúil",
+            "voodoo": "Vúdú"
+          },
+          "terms": "reiligiún"
+        },
+        "reservation": {
+          "label": "Áirithintí",
+          "options": {
+            "no": "Ní ghlactar leo",
+            "recommended": "Molta",
+            "required": "Riachtanach ",
+            "yes": "Glactar leo"
+          }
+        },
+        "residential": {
+          "label": "Cineál"
+        },
+        "resort": {
+          "label": "Cineál"
+        },
+        "resource": {
+          "label": "Acmhainní",
+          "options": {
+            "clay": "Cré",
+            "coal": "Gual",
+            "gold": "Ór",
+            "gravel": "Gairbhéal",
+            "iron_ore": "Amhiarann",
+            "limestone": "Aolchloch",
+            "peat": "Móin",
+            "sand": "Gaineamh"
+          }
+        },
+        "restriction": {
+          "label": "Cineál"
+        },
+        "restrictions": {
+          "label": "Srianta Casaidh"
+        },
+        "roof/colour": {
+          "label": "Dath an Dín"
+        },
+        "room": {
+          "label": "Cineál"
+        },
+        "rooms": {
+          "label": "Seomraí"
+        },
+        "roundtrip": {
+          "label": "Déanann sé lúb"
+        },
+        "route": {
+          "label": "Cineál"
+        },
+        "route_master": {
+          "label": "Cineál"
+        },
+        "ruins": {
+          "label": "Cineál"
+        },
+        "service": {
+          "label": "Cineál"
+        },
+        "shelter": {
+          "label": "Scáthlán"
+        },
+        "shelter_type": {
+          "label": "Cineál"
+        },
+        "shop": {
+          "label": "Cineál"
+        },
+        "source": {
+          "label": "Foinsí"
+        },
+        "sport": {
+          "label": "Spóirt",
+          "options": {
+            "american_football": "Peil Mheiriceánach",
+            "badminton": "Badmantan",
+            "baseball": "Daorchluiche",
+            "basketball": "Cispheil",
+            "beachvolleyball": "Eitpheil Trá",
+            "bowls": "Bollaí",
+            "canoe": "Canúáil",
+            "climbing": "Dreapadóireacht",
+            "cricket": "Cruicéad",
+            "curling": "Curláil",
+            "cycling": "Rothaíocht",
+            "dog_racing": "Rásaíocht Chon",
+            "equestrian": "Spóirt Eachaíochta",
+            "fitness": "Traenáil Chorpacmhainne",
+            "free_flying": "Parafaoileoireacht / Faoileoireacht Foluana",
+            "gaelic_games": "Cluichí Gaelacha",
+            "golf": "Gailf",
+            "gymnastics": "Gleacaíocht",
+            "handball": "Liathróid Láimhe Foirne",
+            "horse_racing": "Rásaíocht Chapall",
+            "ice_hockey": "Haca Oighir",
+            "ice_skating": "Scátáil Oighir",
+            "karting": "Rásaíocht Cairtíní",
+            "motocross": "Rásaíocht Gluaisrothair Thrastíre",
+            "motor": "Mótarspóirt",
+            "multi": "Spóirt Eile",
+            "netball": "Líonpheil",
+            "pelota": "Peileota",
+            "rugby_union": "Rugbaí",
+            "running": "Reathaíocht",
+            "scuba_diving": "Scúbadóireacht",
+            "shooting": "Lámhach",
+            "skateboard": "Clárscátáil",
+            "skiing": "Sciáil",
+            "soccer": "Sacar",
+            "softball": "Bogliathróid",
+            "swimming": "Snámh",
+            "table_tennis": "Leadóg Bhoird",
+            "tennis": "Leadóg",
+            "volleyball": "Eitpheil"
+          }
+        },
+        "sport/sport_ice": {
+          "label": "Spóirt"
+        },
+        "sport/sport_pub": {
+          "label": "Spóirt"
+        },
+        "sport/sport_racing_motor": {
+          "label": "Spóirt"
+        },
+        "sport/sport_racing_nonmotor": {
+          "label": "Spóirt"
+        },
+        "stars": {
+          "label": "Réaltaí"
+        },
+        "start_date": {
+          "placeholder": "BBBB-MM-LL"
+        },
+        "static_caravans": {
+          "label": "Tithe Soghluaiste"
+        },
+        "stile": {
+          "label": "Cineál"
+        },
+        "stop": {
+          "label": "Cineál Stop",
+          "options": {
+            "all": "Gach Bealach",
+            "minor": "Mionbhóthar"
+          }
+        },
+        "street_cabinet": {
+          "label": "Cineál"
+        },
+        "structure": {
+          "label": "Struchtúr",
+          "options": {
+            "bridge": "Droichead",
+            "cutting": "Caidhséar",
+            "embankment": "Claífort",
+            "ford": "Áth",
+            "tunnel": "Tollán"
+          },
+          "placeholder": "Anaithnid"
+        },
+        "structure_power": {
+          "label": "Struchtúr",
+          "options": {
+            "lattice": "Laitís",
+            "solid": "Soladach",
+            "tubular": "Feadánach"
+          }
+        },
+        "structure_waterway": {
+          "label": "Struchtúr",
+          "options": {
+            "tunnel": "Tollán"
+          },
+          "placeholder": "Anaithnid"
+        },
+        "studio": {
+          "label": "Cineál"
+        },
+        "substance": {
+          "options": {
+            "fuel": "Breosla",
+            "gas": "Gás Nádúrtha",
+            "hot_water": "Uisce Te",
+            "oil": "Amhola",
+            "rainwater": "Uisce Fearthainne",
+            "sewage": "Camras",
+            "water": "Uisce Óil"
+          }
+        },
+        "substation": {
+          "label": "Cineál",
+          "options": {
+            "distribution": "Dáileadh Réigiúnach",
+            "minor_distribution": "Dáileadh Áitiúil"
+          }
+        },
+        "surface": {
+          "label": "Dromchla",
+          "options": {
+            "asphalt": "Asfalt",
+            "compacted": "Dlúite",
+            "concrete": "Coincréit",
+            "dirt": "Ithir",
+            "grass": "Féar",
+            "gravel": "Gairbhéal",
+            "ground": "Talamh",
+            "metal": "Miotal",
+            "paved": "Pábháil",
+            "paving_stones": "Clocha Phábhála",
+            "salt": "Salann",
+            "sand": "Gaineamh",
+            "sett": "Seit",
+            "wood": "Adhmad"
+          }
+        },
+        "surveillance/type": {
+          "options": {
+            "ALPR": "Léitheoir Uimhirphláta Uathoibríoch",
+            "camera": "Ceamara",
+            "guard": "Garda"
+          }
+        },
+        "surveillance/zone": {
+          "label": "Crios Faireachas"
+        },
+        "toilets": {
+          "label": "Leithris"
+        },
+        "toll": {
+          "label": "Dola"
+        },
+        "tourism": {
+          "label": "Cineál"
+        },
+        "tracktype": {
+          "options": {
+            "grade2": "Soladach den chuid is mó: gairbhéal nó cloch le hábhar bog measctha isteach ",
+            "grade4": "Bog den chuid is mó: ithir/gaineamh/féar le hábhar crua measctha isteach"
+          }
+        },
+        "traffic_calming": {
+          "options": {
+            "bump": "Uchtóg Mhoillithe",
+            "chicane": "Siceán Tráchta",
+            "cushion": "Tulóg Mhoillithe",
+            "dip": "Log",
+            "double_dip": "Dhá Log",
+            "hump": "Uchtóg Mhoillithe",
+            "mini_bumps": "Uchtóga Mhoillithe Beaga",
+            "rumble_strip": "Stiall Tormáin"
+          }
+        },
+        "traffic_sign": {
+          "label": "Comhartha Tráchta"
+        },
+        "traffic_sign/direction": {
+          "label": "An treo a bhaineann sé leis",
+          "options": {
+            "backward": "Siar",
+            "both": "Gach",
+            "forward": "Ar Aghaidh"
+          }
+        },
+        "traffic_signals": {
+          "label": "Cineál"
+        },
+        "traffic_signals/arrow": {
+          "label": "Saighead Tadhaill"
+        },
+        "traffic_signals/countdown": {
+          "label": "Amadóir Comhaireamh Síos"
+        },
+        "traffic_signals/direction": {
+          "label": "An treo a bhaineann sé leis",
+          "options": {
+            "backward": "Siar",
+            "both": "Gach",
+            "forward": "Ar Aghaidh"
+          }
+        },
+        "traffic_signals/minimap": {
+          "label": "Léarscáil Tadhaill"
+        },
+        "trees": {
+          "label": "Crainn"
+        },
+        "trench": {
+          "label": "Cineál"
+        },
+        "trolley_wire": {
+          "label": " Cáblaí Lasnairde Bus Tralaí"
+        },
+        "tunnel": {
+          "label": "Cineál",
+          "placeholder": "Réamhshocruithe"
+        },
+        "tunnel_combo": {
+          "label": "Cineál"
+        },
+        "turning_circle": {
+          "label": "Cruth"
+        },
+        "two_sided": {
+          "label": "Déshleasach"
+        },
+        "utility": {
+          "options": {
+            "gas": "Gás",
+            "oil": "Ola",
+            "power": "Cumhacht",
+            "sewerage": "Fuíolluisce",
+            "street_lighting": "Soilsiú Sráide",
+            "water": "Uisce"
+          }
+        },
+        "utility_semi": {
+          "label": "Fóntais"
+        },
+        "valve": {
+          "label": "Cineál"
+        },
+        "vehicles": {
+          "label": "Feithiclí",
+          "options": {
+            "ferry": "Bád Farantóireachta",
+            "light_rail": "Iarnród Éadrom",
+            "monorail": "Iarnród Aonráille",
+            "subway": "Meitreo",
+            "train": "Traein",
+            "trolleybus": "Bus Tralaí"
+          }
+        },
+        "vending": {
+          "label": "Cineál Earraí",
+          "options": {
+            "bread": "Arán",
+            "cigarettes": "Toitíní",
+            "coffee": "Caife",
+            "condoms": "Coiscíní",
+            "drinks": "Deochanna",
+            "eggs": "Uibheacha",
+            "electronics": "Leictreonaic",
+            "feminine_hygiene": "Táirgí Sláinteachas Ban",
+            "food": "Bia",
+            "fuel": "Breosla",
+            "ice_cream": "Uachtar Reoite",
+            "ice_cubes": "Ciúbanna Oighir",
+            "milk": "Bainne",
+            "newspapers": "Nuachtáin",
+            "parking_tickets": "Ticéid Pháirceála",
+            "pizza": "Píotsa",
+            "public_transport_tickets": "Ticéid don Chóras Iompar Poiblí",
+            "stamps": "Stampaí Poist",
+            "sweets": "Milseáin",
+            "water": "Uisce Óil"
+          }
+        },
+        "video_calls": {
+          "label": "Físghlaonna"
+        },
+        "visibility": {
+          "label": "Léargas",
+          "options": {
+            "area": "Níos mó ná 20m (65ft)",
+            "house": "Suas go dtí 5m (16ft)",
+            "street": "5 go 20m (16 go 65ft)"
+          }
+        },
+        "volcano/status": {
+          "label": "Stádas an Bolcáin",
+          "options": {
+            "active": "Beo",
+            "dormant": "Suanach",
+            "extinct": "Marbh"
+          }
+        },
+        "volcano/type": {
+          "label": "Cineál Bolcáin",
+          "options": {
+            "scoria": "Scóiria",
+            "shield": "Sciathbholcán",
+            "stratovolcano": "Stratabholcán"
+          }
+        },
+        "voltage": {
+          "label": "Voltas"
+        },
+        "voltage/primary": {
+          "label": "Príomhvoltas"
+        },
+        "voltage/secondary": {
+          "label": "Fovoltas"
+        },
+        "voltage/tertiary": {
+          "label": "Voltas treasnach"
+        },
+        "wall": {
+          "label": "Cineál"
+        },
+        "waste": {
+          "label": "Dramhaíl",
+          "options": {
+            "cigarettes": "Toitíní",
+            "trash": "Bruscar"
+          }
+        },
+        "water": {
+          "label": "Cineál"
+        },
+        "waterway": {
+          "label": "Cineál"
+        },
+        "website": {
+          "label": "Suíomh Gréasáin",
+          "placeholder": "https://sampla.com"
+        },
+        "wetland": {
+          "label": "Cineál"
+        },
+        "wikipedia": {
+          "label": "Vicipéid"
+        }
+      },
+      "presets": {
+        "address": {
+          "name": "Seoladh"
+        },
+        "aeroway/aerodrome": {
+          "name": "Aerfort"
+        },
+        "aeroway/hangar": {
+          "name": "Haingear"
+        },
+        "aeroway/helipad": {
+          "name": "Héileapad"
+        },
+        "aeroway/runway": {
+          "name": "Rúidbhealach"
+        },
+        "aeroway/taxiway": {
+          "name": "Bealach Innealta"
+        },
+        "amenity": {
+          "name": "Áis"
+        },
+        "amenity/atm": {
+          "name": "Meaisín Bainc"
+        },
+        "amenity/bank": {
+          "name": "Banc"
+        },
+        "amenity/bar": {
+          "name": "Teach Tábhairne\nBeár\nTeach Ósta"
+        },
+        "amenity/bench": {
+          "name": "Binse"
+        },
+        "amenity/bus_station": {
+          "name": "Stáisiún / Críochfort Bus"
+        },
+        "amenity/cafe": {
+          "name": "Caifé"
+        },
+        "amenity/childcare": {
+          "name": "Naíonra\nNaíscoil\nNaíolann\nCreis\nCrèche"
+        },
+        "amenity/cinema": {
+          "name": "Pictiúrlann"
+        },
+        "amenity/community_centre": {
+          "name": "Ionad Pobail"
+        },
+        "amenity/courthouse": {
+          "name": "Teach Cúirte"
+        },
+        "amenity/embassy": {
+          "name": "Ambasáid"
+        },
+        "amenity/fountain": {
+          "name": "Scairdeán\nFuarán"
+        },
+        "amenity/grave_yard": {
+          "name": "Reilig"
+        },
+        "amenity/library": {
+          "name": "Leabharlann"
+        },
+        "amenity/marketplace": {
+          "name": "Margadh\nÁit an Mhargaidh"
+        },
+        "amenity/parking_entrance": {
+          "name": "Slí Isteach/Amach Garáiste Páirceála"
+        },
+        "amenity/police": {
+          "name": "Póilíní\nGardaí"
+        },
+        "amenity/pub": {
+          "name": "Teach Tábhairne\nPub"
+        },
+        "amenity/restaurant": {
+          "name": "Bialann"
+        },
+        "amenity/school": {
+          "name": "Fearann Scoile"
+        },
+        "amenity/shelter": {
+          "name": "Scáthlán\nFoscadán"
+        },
+        "amenity/telephone": {
+          "name": "Teileafón\nFón"
+        },
+        "amenity/theatre": {
+          "name": "Amharclann"
+        },
+        "amenity/toilets": {
+          "name": "Leithris\nLeithreas"
+        },
+        "amenity/university": {
+          "name": "Fearann Ollscoile"
+        },
+        "area": {
+          "name": "Limistéar\nCrios\nCeantar\nLáthair"
+        },
+        "attraction/train": {
+          "name": "Traein Turasóireachta"
+        },
+        "barrier": {
+          "name": "Bacainn"
+        },
+        "barrier/bollard": {
+          "name": "Mullard"
+        },
+        "barrier/ditch": {
+          "name": "Díog\nClais\nTrinse"
+        },
+        "barrier/entrance": {
+          "name": "Slí Isteach\nBealach Isteach"
+        },
+        "barrier/fence": {
+          "name": "Claí"
+        },
+        "barrier/gate": {
+          "name": "Geata"
+        },
+        "barrier/hedge": {
+          "name": "Fál"
+        },
+        "barrier/stile": {
+          "name": "Dreapa\nStrapa\nCéim"
+        },
+        "barrier/toll_booth": {
+          "name": "Both Dola"
+        },
+        "barrier/wall": {
+          "name": "Balla"
+        },
+        "building": {
+          "name": "Foirgneamh"
+        },
+        "building/entrance": {
+          "name": "Slí Isteach/Amach\nBealach Isteach/Amach\nSlí Isteach/Slí Amach\nBealach Isteach/Bealach Amach"
+        },
+        "building/garage": {
+          "name": "Garáiste"
+        },
+        "building/school": {
+          "name": "Foirgneamh Scoile"
+        },
+        "building/train_station": {
+          "name": "Foirgneamh Stáisiún Traenach"
+        },
+        "building/university": {
+          "name": "Foirgneamh Ollscoile"
+        },
+        "highway/bus_stop": {
+          "name": "Stad bus"
+        },
+        "highway/crossing/traffic_signals": {
+          "name": "Crosaire le soilse coisithe"
+        },
+        "highway/cycleway/crossing/traffic_signals": {
+          "name": "Crosaire rothair le soilse tráchta"
+        },
+        "highway/footway/crossing/traffic_signals": {
+          "name": "Crosaire le soilse coisithe"
+        },
+        "highway/give_way": {
+          "name": "Comhartha Géill Slí"
+        },
+        "highway/mini_roundabout": {
+          "name": "Miontimpeallán"
+        },
+        "highway/motorway": {
+          "name": "Mótarbhealach"
+        },
+        "highway/motorway_junction": {
+          "name": "Slí Amach / Acomhal Mótarbhealaigh"
+        },
+        "highway/path": {
+          "name": "Cosán\nConair\nSlí"
+        },
+        "highway/pedestrian_line": {
+          "name": "Sráid Choisithe"
+        },
+        "highway/service/alley": {
+          "name": "Lána\nCaolsráid"
+        },
+        "highway/service/drive-through": {
+          "name": "Carrsheirbhíse"
+        },
+        "highway/service/driveway": {
+          "name": "Cabhsa\nCabhsán"
+        },
+        "highway/steps": {
+          "name": "Céimeanna"
+        },
+        "highway/stop": {
+          "name": "Comhartha Stop"
+        },
+        "highway/street_lamp": {
+          "name": "Solas sráide"
+        },
+        "historic/castle": {
+          "name": "Caisleán"
+        },
+        "historic/memorial": {
+          "name": "Leacht Cuimhneacháin\nLeac Chuimhneacháin"
+        },
+        "historic/monument": {
+          "name": "Leacht"
+        },
+        "historic/ruins": {
+          "name": "Fothrach\nBallóga"
+        },
+        "landuse/cemetery": {
+          "name": "Reilig"
+        },
+        "landuse/farm": {
+          "name": "Talamh Feirme\nTalamh Feilme"
+        },
+        "landuse/farmyard": {
+          "name": "Clós Feirme\nClós Feilme"
+        },
+        "landuse/grass": {
+          "name": "Féar"
+        },
+        "landuse/meadow": {
+          "name": "Cluain\nMóinéar"
+        },
+        "landuse/military/training_area": {
+          "name": "Limistéar Oiliúna Míleata"
+        },
+        "landuse/orchard": {
+          "name": "Úllord"
+        },
+        "landuse/quarry": {
+          "name": "Cairéal"
+        },
+        "landuse/vineyard": {
+          "name": "Fíonghort"
+        },
+        "leisure/garden": {
+          "name": "Gairdín\nGarraí"
+        },
+        "leisure/marina": {
+          "name": "Mairíne"
+        },
+        "leisure/park": {
+          "name": "Páirc"
+        },
+        "leisure/playground": {
+          "name": "Áit Súgartha\nClós Súgartha"
+        },
+        "leisure/slipway": {
+          "name": "Fánán\nSlip\nSleamhnán"
+        },
+        "leisure/stadium": {
+          "name": "Staid"
+        },
+        "line": {
+          "name": "Líne"
+        },
+        "man_made/lighthouse": {
+          "name": "Teach Solais"
+        },
+        "man_made/pier": {
+          "name": "Cé"
+        },
+        "man_made/pipeline": {
+          "name": "Píblíne"
+        },
+        "man_made/tower": {
+          "name": "Túr"
+        },
+        "natural/bay": {
+          "name": "Bá"
+        },
+        "natural/beach": {
+          "name": "Trá"
+        },
+        "natural/cliff": {
+          "name": "Aill"
+        },
+        "natural/coastline": {
+          "name": "Imeallbhord"
+        },
+        "natural/glacier": {
+          "name": "Oighearshruth"
+        },
+        "natural/grassland": {
+          "name": "Talamh Féaraigh\nFéarthalamh\nFéarach"
+        },
+        "natural/heath": {
+          "name": "Móinteach\nFraochmhá"
+        },
+        "natural/peak": {
+          "name": "Binn"
+        },
+        "natural/spring": {
+          "name": "Tobar\nFuinse Uisce\nFuarán"
+        },
+        "natural/tree": {
+          "name": "Crann"
+        },
+        "natural/water": {
+          "name": "Uisce\nDobhar"
+        },
+        "natural/water/lake": {
+          "name": "Loch"
+        },
+        "natural/water/pond": {
+          "name": "Lochán\nLinn"
+        },
+        "natural/water/reservoir": {
+          "name": "Taiscumar"
+        },
+        "natural/wetland": {
+          "name": "Bogach"
+        },
+        "office": {
+          "name": "Oifig"
+        },
+        "place": {
+          "name": "Áit"
+        },
+        "place/city": {
+          "name": "Cathair"
+        },
+        "place/hamlet": {
+          "name": "Gráig\nSráidbhaile"
+        },
+        "place/island": {
+          "name": "Oileán"
+        },
+        "place/town": {
+          "name": "Baile"
+        },
+        "place/village": {
+          "name": "Sráidbhaile"
+        },
+        "point": {
+          "name": "Pointe"
+        },
+        "public_transport/platform/bus_point": {
+          "name": "Stad bus"
+        },
+        "public_transport/platform/bus_tram_point": {
+          "name": "Stad Tram & Bus"
+        },
+        "public_transport/platform/subway": {
+          "name": "Ardán Meitreo"
+        },
+        "public_transport/platform/subway_point": {
+          "name": "Stad / Ardán Meitreo"
+        },
+        "public_transport/platform/train": {
+          "name": "Ardán Traenach"
+        },
+        "public_transport/platform/tram": {
+          "name": "Ardán Tram"
+        },
+        "public_transport/platform/tram_point": {
+          "name": "Stad / Ardán Tram"
+        },
+        "public_transport/platform/trolleybus_point": {
+          "name": "Stad bus tralaí"
+        },
+        "public_transport/station_subway": {
+          "name": "Stáisiún Meitreo"
+        },
+        "public_transport/station_train": {
+          "name": "Stáisiún Traenach"
+        },
+        "public_transport/station_train_halt": {
+          "name": "Stáisiún Traenach (Stad ar iarratas)"
+        },
+        "public_transport/station_tram": {
+          "name": "Stáisiún Tram"
+        },
+        "public_transport/stop_position_subway": {
+          "name": "Áit Stoptha Meitreo"
+        },
+        "public_transport/stop_position_tram": {
+          "name": "Áit Stoptha Tram"
+        },
+        "railway/funicular": {
+          "name": "Ráille Iarnróid Cáblach"
+        },
+        "railway/halt": {
+          "name": "Stáisiún Traenach (Stad ar iarratas)"
+        },
+        "railway/narrow_gauge": {
+          "name": "Iarnród Caol\nRian Caol"
+        },
+        "railway/platform": {
+          "name": "Ardán Traenach"
+        },
+        "railway/rail": {
+          "name": "Ráille Traenach"
+        },
+        "railway/rail/highspeed": {
+          "name": "Ráille Thraein Ardluais"
+        },
+        "railway/signal": {
+          "name": "Comhartha Iarnróid"
+        },
+        "railway/station": {
+          "name": "Stáisiún Traenach"
+        },
+        "railway/subway": {
+          "name": "Ráille Meitreo"
+        },
+        "railway/subway_entrance": {
+          "name": "Bealach Isteach Meitreo"
+        },
+        "railway/tram": {
+          "name": "Tramrian"
+        },
+        "railway/tram_crossing": {
+          "name": "Crosaire Tram-Cosán"
+        },
+        "railway/tram_level_crossing": {
+          "name": "Crosaire Tram-Bóthar"
+        },
+        "relation": {
+          "name": "Nasc"
+        },
+        "shop": {
+          "name": "Siopa"
+        },
+        "shop/books": {
+          "name": "Siopa Leabhair"
+        },
+        "shop/boutique": {
+          "name": "Búitíc\nBoutique"
+        },
+        "shop/butcher": {
+          "name": "Búistéir\nSiopa Búistéara"
+        },
+        "shop/chemist": {
+          "name": "Cógaslann\nSiopa Poitigéara"
+        },
+        "shop/deli": {
+          "name": "Deilí\nDelicatessen"
+        },
+        "shop/florist": {
+          "name": "Siopa Bláthanna"
+        },
+        "shop/greengrocer": {
+          "name": "Siopa Glasraí"
+        },
+        "shop/hairdresser": {
+          "name": "Gruagaire\nSiopa Gruagaire"
+        },
+        "shop/kiosk": {
+          "name": "Both\nStainnín"
+        },
+        "shop/mall": {
+          "name": "Ionad Siopadóireachta"
+        },
+        "shop/newsagent": {
+          "name": "Seastán Nuachtán"
+        },
+        "shop/optician": {
+          "name": "Radharceolaí"
+        },
+        "shop/supermarket": {
+          "name": "Ollmhargadh"
+        },
+        "tourism/artwork": {
+          "name": "Obair Ealaíne\nSaothar Ealaíne"
+        },
+        "tourism/hostel": {
+          "name": "Brú"
+        },
+        "tourism/hotel": {
+          "name": "Óstán\nÓstlann"
+        },
+        "tourism/information": {
+          "name": "Eolas"
+        },
+        "tourism/information/board/welcome_sign": {
+          "name": "Comhartha Fáilte"
+        },
+        "tourism/motel": {
+          "name": "Óstán Cois Bóthair\nÓstán"
+        },
+        "tourism/museum": {
+          "name": "Músaem"
+        },
+        "tourism/viewpoint": {
+          "name": "Pointe Radhairc"
+        },
+        "tourism/zoo": {
+          "name": "Zú\nGairdín Ainmhithe"
+        },
+        "traffic_sign": {
+          "name": "Comhartha Bóthair"
+        },
+        "traffic_sign/maxspeed": {
+          "name": "Comhartha Teorainn Luais"
+        },
+        "type/boundary": {
+          "name": "Teorainn"
+        },
+        "type/destination_sign": {
+          "name": "Comhartha Ceann Scríbe"
+        },
+        "type/multipolygon": {
+          "name": "Ilpholagán"
+        },
+        "type/restriction": {
+          "name": "Srian"
+        },
+        "type/route": {
+          "name": "Bealach\nSlí"
+        },
+        "type/route/subway": {
+          "name": "Líne Meitreo"
+        },
+        "type/route/train": {
+          "name": "Líne Traenach"
+        },
+        "type/route/tram": {
+          "name": "Bealach Tram\nSlí Tram"
+        },
+        "waterway/canal": {
+          "name": "Canáil"
+        },
+        "waterway/dam": {
+          "name": "Damba"
+        },
+        "waterway/drain": {
+          "name": "Draein"
+        },
+        "waterway/river": {
+          "name": "Abhainn"
+        },
+        "waterway/stream": {
+          "name": "Sruth"
+        },
+        "waterway/weir": {
+          "name": "Cora"
+        }
+      }
+    }
+  }
+}

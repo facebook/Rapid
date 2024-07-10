@@ -1,0 +1,19 @@
+{
+  "ast": {
+    "Bahia-telegram": {
+      "extendedDescription": "Xúnite a la comunidá pa saber más sobro OpenStreetMap, facer entrugues o participar nos nuesos alcuentros. ¡Tol mundu ye bienveníu!"
+    },
+    "de-berlin-mailinglist": {
+      "name": "Llista de corréu de Berlín"
+    },
+    "de-ostwestfalen-lippe-mailinglist": {
+      "name": "Llista de corréu OWL"
+    },
+    "DF-telegram": {
+      "extendedDescription": "Xúnite a la comunidá pa saber más sobro OpenStreetMap, facer entrugues o participar nos nuesos alcuentros. ¡Tol mundu ye bienveníu!"
+    },
+    "OSM-india-twitter": {
+      "description": "Tamos a solo un tweet: {url}"
+    }
+  }
+}

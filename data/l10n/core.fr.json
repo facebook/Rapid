@@ -1,0 +1,3551 @@
+{
+  "fr": {
+    "icons": {
+      "download": "télécharger",
+      "remove": "supprimer",
+      "undo": "annuler",
+      "zoom_to": "zoomer dessus",
+      "copy": "copier",
+      "view_on": "voir sur {domain}",
+      "visit_website": "visiter le site",
+      "favorite": "favori",
+      "list": "liste",
+      "text": "texte",
+      "deselect": "désélectionner"
+    },
+    "toolbar": {
+      "inspect": "Inspecter",
+      "undo_redo": "Annuler / Rétablir",
+      "recent": "Récents",
+      "favorites": "Favoris",
+      "add_feature": "Ajouter un élément"
+    },
+    "title": {
+      "format": {
+        "changes": "({changements}) {base}",
+        "changes_context": "({changements}) {base} – {contexte}"
+      },
+      "labeled_and_more": {
+        "one": "{labeled} et {count} de plus",
+        "many": "{labeled} et {count} de plus",
+        "other": "{labeled} et {count} de plus"
+      }
+    },
+    "modes": {
+      "add_area": {
+        "title": "Surface",
+        "filter_tooltip": "surfaces"
+      },
+      "add_line": {
+        "title": "Ligne",
+        "filter_tooltip": "lignes"
+      },
+      "add_note": {
+        "label": "Ajouter une note",
+        "description": "Vous avez repéré une erreur ? Faites-le savoir aux autres cartographes."
+      },
+      "add_preset": {
+        "title": "Ajouter {feature}"
+      },
+      "browse": {
+        "title": "Naviguer",
+        "description": "Naviguer ou zoomer sur la carte."
+      },
+      "drag_node": {
+        "connected_to_hidden": "Cet élément ne peut être modifié parce qu'il est connecté à un élément caché."
+      }
+    },
+    "operations": {
+      "add": {
+        "annotation": {
+          "point": "Point ajouté.",
+          "vertex": "Nœud ajouté à une ligne.",
+          "relation": "Relation ajoutée.",
+          "note": "Note ajoutée."
+        }
+      },
+      "start": {
+        "annotation": {
+          "line": "Ligne créée.",
+          "area": "Surface créée."
+        }
+      },
+      "continue": {
+        "title": "Poursuivre",
+        "description": "Poursuivre cette ligne.",
+        "not_eligible": "Aucune ligne ne peut être poursuivie ici.",
+        "multiple": "Plusieurs lignes peuvent être poursuivies ici. Sélectionnez celle désirée puis appuyez sur la touche MAJ + clic droit sur le nœud pour pouvoir continuer celle-ci.",
+        "annotation": {
+          "line": "poursuite d'une ligne.",
+          "area": "poursuite d'un polygone."
+        }
+      },
+      "cancel_draw": {
+        "annotation": "Modification annulée."
+      },
+      "change_role": {
+        "annotation": {
+          "one": "Rôle d'un membre de la relation modifié.",
+          "many": "Rôles de {n} membres de la relation modifiés.",
+          "other": "Rôles de {n} membres de la relation modifiés."
+        }
+      },
+      "change_tags": {
+        "annotation": "Attributs modifiés."
+      },
+      "copy": {
+        "title": "Copier",
+        "description": {
+          "one": "Choisir cet élément pour le copier/coller.",
+          "many": "Choisir ces éléments pour le copier/coller.",
+          "other": "Choisir ces éléments pour le copier/coller."
+        },
+        "annotation": {
+          "one": "L'élément a été copié",
+          "many": "{n} éléments ont été copiés.",
+          "other": "{n} éléments ont été copiés."
+        },
+        "too_large": {
+          "one": "Cet élément ne peut être copié car il n'est actuellement pas suffisamment visible.",
+          "many": "Ces éléments ne peuvent être copiés car ils sont actuellement trop peu visibles.",
+          "other": "Ces éléments ne peuvent être copiés car ils sont actuellement trop peu visibles."
+        }
+      },
+      "paste": {
+        "title": "Coller",
+        "description": {
+          "one": "Ajouter un élément dupliqué ici.",
+          "many": "Ajouter {n} éléments dupliqués ici.",
+          "other": "Ajouter {n} éléments dupliqués ici."
+        },
+        "annotation": {
+          "one": "L'élément a été collé.",
+          "many": "Les {n} éléments ont été collés.",
+          "other": "Les {n} éléments ont été collés."
+        },
+        "nothing_copied": "Aucun élément n'a été copié."
+      },
+      "circularize": {
+        "title": "Arrondir",
+        "description": {
+          "single": "Arrondir cet élément.",
+          "multiple": "Arrondir ces éléments."
+        },
+        "annotation": {
+          "feature": {
+            "one": "L'élément a été arrondi.",
+            "many": "{n} éléments ont été arrondis.",
+            "other": "{n} éléments ont été arrondis."
+          }
+        },
+        "multiple_blockers": {
+          "multiple": "Ces éléments ne peuvent être arrondis pour plusieurs raisons."
+        },
+        "not_closed": {
+          "single": "Cet élément ne peut être arrondi car il ne s'agit pas d'une boucle.",
+          "multiple": "Ces éléments ne peuvent être arrondis car ce ne sont pas des boucles."
+        },
+        "too_large": {
+          "single": "Cet élément ne peut être arrondi car il n'est pas assez visible.",
+          "multiple": "Ces éléments ne peuvent être arrondis car ils ne sont pas assez visibles."
+        },
+        "connected_to_hidden": {
+          "single": "Cet élément ne peut être arrondi car il est connecté à un objet masqué.",
+          "multiple": "Ces éléments ne peuvent être arrondis car certains d'entre eux sont connectés à des objets masqués."
+        },
+        "not_downloaded": {
+          "single": "Cet élément ne peut être arrondi car il n'a pas été complètement téléchargé.",
+          "multiple": "Ces éléments ne peuvent être arrondis car ils n'ont pas été complètement téléchargés."
+        },
+        "already_circular": {
+          "single": "Cet élément ne peut être arrondi davantage qu'actuellement.",
+          "multiple": "Ces éléments ne peuvent être arrondis davantage qu'actuellement."
+        }
+      },
+      "orthogonalize": {
+        "title": "Carré",
+        "description": {
+          "corner": {
+            "single": "Rendre ce coin orthogonal",
+            "multiple": "Rendre ces coins orthogonaux"
+          },
+          "feature": {
+            "single": "Rendre cet élément orthogonal",
+            "multiple": "Rendre ces éléments orthogonaux"
+          }
+        },
+        "annotation": {
+          "corner": {
+            "one": "Le coin a été rendu orthogonal.",
+            "many": "{n} coins rendus orthogonaux.",
+            "other": "{n} coins rendus orthogonaux."
+          },
+          "feature": {
+            "one": "Un élément rendu orthogonal.",
+            "many": "{n} éléments rendus orthogonaux.",
+            "other": "{n} éléments rendus orthogonaux."
+          }
+        },
+        "multiple_blockers": {
+          "multiple": "Cet élément ne peut être orthogonalisé pour plusieurs raisons."
+        },
+        "end_vertex": {
+          "single": "Cet élément ne peut être orthogonalisé car c'est une extrémité.",
+          "multiple": "Ces éléments ne peuvent être orthogonalisés car ce sont des extrémités."
+        },
+        "square_enough": {
+          "single": "Cet élément ne peut pas être plus orthogonal qu'il ne l'est déjà.",
+          "multiple": "Ces éléments ne peuvent pas être plus orthogonaux qu'ils ne le sont déjà."
+        },
+        "not_squarish": {
+          "single": "Cet élément ne peut être orthogonalisé car il n'a pas une forme carrée.",
+          "multiple": "Ces éléments ne peuvent être orthogonalisés car ils n'ont pas une forme carrée."
+        },
+        "too_large": {
+          "single": "Cet élément ne peut être rendu orthogonal car il n'est pas assez visible.",
+          "multiple": "Ces éléments ne peuvent être rendus orthogonaux car ils ne sont pas assez visibles."
+        },
+        "connected_to_hidden": {
+          "single": "Cet élément ne peut être rendu orthogonal car il est connecté à un objet masqué.",
+          "multiple": "Ces éléments ne peuvent être rendus orthogonaux car certains d'entre eux sont connectés à des objets masqués."
+        },
+        "not_downloaded": {
+          "single": "Cet élément ne peut être rendu orthogonal car il n'a pas été complètement téléchargé.",
+          "multiple": "Ces éléments ne peuvent être rendus orthogonaux car ils n'ont pas été complètement téléchargés."
+        }
+      },
+      "straighten": {
+        "title": "Redresser",
+        "description": {
+          "points": "Aligner ces points.",
+          "line": "Redresser cette ligne.",
+          "lines": "Redresser ces lignes."
+        },
+        "annotation": {
+          "point": {
+            "one": "Un point aligné.",
+            "many": "{n} points alignés.",
+            "other": "{n} points alignés."
+          },
+          "line": {
+            "one": "Une ligne redressée.",
+            "many": "{n} lignes redressées.",
+            "other": "{n} lignes redressées."
+          }
+        },
+        "too_bendy": {
+          "single": "Ne peut pas être redressée car elle courbe trop.",
+          "multiple": "Ne peuvent pas être redressées car elles courbent trop."
+        },
+        "connected_to_hidden": {
+          "single": "Cette ligne ne peut pas être redressée car elle est connectée à un élément caché.",
+          "multiple": "Ces lignes ne peuvent pas être redressées car certaines sont connectées à des éléments cachés."
+        },
+        "not_downloaded": {
+          "single": "Cette ligne ne peut pas être redressée car une partie n'a pas été téléchargée.",
+          "multiple": "Ces lignes ne peuvent pas être redressées car une partie n'a pas été téléchargée."
+        },
+        "straight_enough": {
+          "single": "Impossible de rendre l'élément plus droit qu'il ne l'est déjà.",
+          "multiple": "Impossible de rendre ces éléments plus droits qu'ils ne le sont déjà."
+        },
+        "too_large": {
+          "single": "Cette ligne ne peut pas être alignée car elle n'est pas suffisamment visible.",
+          "multiple": "Ces lignes ne peuvent pas être redressées car elles ne sont pas toutes assez visibles."
+        }
+      },
+      "delete": {
+        "title": "Supprimer",
+        "description": {
+          "single": "Supprimer cet élément définitivement.",
+          "multiple": "Supprimer ces éléments définitivement."
+        },
+        "annotation": {
+          "point": "suppression d'un point.",
+          "vertex": "suppression d'un nœud d'une ligne.",
+          "line": "suppression d'une ligne.",
+          "area": "suppression d'un polygone.",
+          "relation": "suppression d'une relation.",
+          "feature": {
+            "one": "Un élément supprimé.",
+            "many": "{n} éléments supprimés.",
+            "other": "{n} éléments supprimés."
+          }
+        },
+        "too_large": {
+          "single": "Cet élément ne peut pas être supprimé car il n'est pas suffisamment visible.",
+          "multiple": "Ces éléments ne peuvent pas être supprimés car ils ne sont pas suffisamment visibles."
+        },
+        "incomplete_relation": {
+          "single": "Cet élément ne peut pas être supprimé car il n'a pas été téléchargé entièrement.",
+          "multiple": "Ces éléments ne peuvent pas être supprimés car ils n'ont pas été téléchargé entièrement."
+        },
+        "part_of_relation": {
+          "single": "Cet élément ne peut pas être supprimé car c'est un membre d'une relation plus grande. La relation doit être supprimé en premier.",
+          "multiple": "Ces éléments ne peuvent pas être supprimés ceux sont des membres de relations plus grandes. Les relations doivent être supprimées en premier."
+        },
+        "connected_to_hidden": {
+          "single": "Cet élément ne peut pas être supprimé car il est lié à un autre élément non visible.",
+          "multiple": "Ces éléments ne peuvent pas être supprimés car ils sont connectés à d'autres éléments non visibles."
+        },
+        "not_downloaded": {
+          "single": "Cet élément ne peut pas être supprimé car une partie n'est pas encore téléchargée.",
+          "multiple": "Ces éléments ne peuvent pas être supprimés car une partie n'est pas encore téléchargée."
+        },
+        "has_wikidata_tag": {
+          "single": "Cet élément ne peut pas être supprimé car il a un attribut Wikidata.",
+          "multiple": "Ces éléments ne peuvent être supprimés car certains ont un attribut Wikidata."
+        }
+      },
+      "downgrade": {
+        "title": "Déclasser",
+        "description": {
+          "building_address": "Supprimer tous les attributs qui ne sont ni pour une adresse ni pour un bâtiment.",
+          "building": "Supprimer tous les attributs qui ne sont pas pour un bâtiment.",
+          "address": "Supprimer tous les attributs qui ne sont pas pour une adresse.",
+          "generic": "Supprimer les attributs."
+        },
+        "annotation": {
+          "building": {
+            "one": "Un élément déclassé en bâtiment de base.",
+            "many": "{n} éléments déclassés en bâtiments de base.",
+            "other": "{n} éléments déclassés en bâtiments de base."
+          },
+          "address": {
+            "one": "Un élément déclassé en adresse.",
+            "many": "{n} éléments déclassés en adresses.",
+            "other": "{n} éléments déclassés en adresses."
+          },
+          "generic": {
+            "one": "Un élément déclassé.",
+            "many": "{n} éléments déclassés.",
+            "other": "{n} éléments déclassés."
+          }
+        },
+        "has_wikidata_tag": {
+          "single": "Cet élément ne peut pas être déclassé car il a un attribut Wikidata.",
+          "multiple": "Ces éléments ne peuvent être déclassés car certains on un attribut Wikidata."
+        }
+      },
+      "add_member": {
+        "annotation": {
+          "one": "Un membre ajouté à une relation.",
+          "many": "{n} membres ajoutés à une relation.",
+          "other": "{n} membres ajoutés à une relation."
+        }
+      },
+      "delete_member": {
+        "annotation": {
+          "one": "Un membre ôté d'une relation.",
+          "many": "{n} membres ôtés d'une relation.",
+          "other": "{n} membres ôtés d'une relation."
+        }
+      },
+      "reorder_members": {
+        "annotation": "Membres d'une relation réordonnés"
+      },
+      "connect": {
+        "annotation": {
+          "from_vertex": {
+            "to_point": "Chemin connecté à un point.",
+            "to_vertex": "Chemin connecté à un autre.",
+            "to_line": "Chemin connecté à une ligne.",
+            "to_area": "Chemin connecté à une surface.",
+            "to_adjacent_vertex": "Points adjacents d'un chemin fusionnés",
+            "to_sibling_vertex": "Chemin connecté à lui-même."
+          },
+          "from_point": {
+            "to_point": "Point fusionné avec un autre.",
+            "to_vertex": "Point fusionné avec un point sur un chemin.",
+            "to_line": "Point déplacé sur un ligne.",
+            "to_area": "Point déplacé sur une surface."
+          }
+        },
+        "relation": "Ces éléments ne peuvent être connectés car ils ont des rôles de relations conflictuels.",
+        "restriction": "Ces éléments ne peuvent être connectés car cela endommagerait une relation « {relation} »."
+      },
+      "disconnect": {
+        "title": "Séparer",
+        "description": {
+          "no_points": {
+            "single_way": {
+              "line": "Séparer cette ligne des autres éléments.",
+              "area": "Séparer cette zone des autres éléments."
+            },
+            "multiple_ways": {
+              "conjoined": "Séparer ces éléments les uns des autres.",
+              "separate": "Séparer ces éléments de tout le reste."
+            }
+          },
+          "single_point": {
+            "no_ways": "Séparer l’élément à ce point.",
+            "single_way": {
+              "line": "Séparer la ligne sélectionnée à ce point.",
+              "area": "Séparer la zone sélectionnée à ce point."
+            },
+            "multiple_ways": "Séparer les éléments sélectionnés à ce point."
+          },
+          "multiple_points": {
+            "no_ways": "Séparer les éléments à ces points.",
+            "single_way": {
+              "line": "Séparer les lignes sélectionnées à ces points.",
+              "area": "Séparer la zone sélectionnée à ces points."
+            },
+            "multiple_ways": "Séparer les éléments sélectionnés à ces points."
+          }
+        },
+        "annotation": {
+          "features": "Éléments séparés.",
+          "from_each_other": "Éléments séparés les uns des autres."
+        },
+        "too_large": {
+          "single": "Cet élément ne peut être séparé car trop peu est actuellement visible.",
+          "multiple": "Ces éléments ne peuvent être séparés parce qu'ils ne sont pas tous suffisamment visibles."
+        },
+        "not_connected": "Il n'y a pas ici de lignes/polygones à déconnecter.",
+        "not_downloaded": "Cet élément ne peut être séparé car une partie n'est pas encore téléchargée.",
+        "connected_to_hidden": "Ceci ne peut être déconnecté parce que c'est connecté à un élément caché.",
+        "relation": "Ceci ne peut être déconnecté parce que cela connecte les membres d'une relation."
+      },
+      "merge": {
+        "title": "Fusionner",
+        "description": "Fusionner ces éléments",
+        "annotation": {
+          "one": "Un élément a été fusionné.",
+          "many": "{n} éléments ont été fusionnés.",
+          "other": "{n} éléments ont été fusionnés."
+        },
+        "not_eligible": "Ces éléments ne peuvent pas être fusionnés.",
+        "not_adjacent": "Ces éléments ne peuvent être fusionnés car leurs extrémités ne sont pas connectés.",
+        "damage_relation": "Ces éléments ne peuvent pas être fusionnés car cela détériorerait une relation \"{relation}\"",
+        "relation": "Ces éléments ne peuvent être fusionnés car leurs rôles sont incompatibles dans une relation.",
+        "incomplete_relation": "Ces éléments ne peuvent pas être fusionnés parce qu'au moins l'un d'entre eux n'a pas été complètement téléchargé.",
+        "conflicting_tags": "Ces éléments ne peuvent être fusionnés car certains de leurs attributs ont des valeurs conflictuelles.",
+        "conflicting_relations": "Ces éléments ne peuvent pas être fusionnés car ils appartiennent à des relations en conflit.",
+        "paths_intersect": "Ces éléments ne peuvent être fusionnés car le chemin qui en résulterait se croiserait lui-même.",
+        "too_many_vertices": "Ces éléments ne peuvent être fusionnés parce que le chemin qui en résulterait aurait trop de points."
+      },
+      "move": {
+        "title": "Déplacer",
+        "description": {
+          "single": "Déplacer cet élément a un autre emplacement.",
+          "multiple": "Déplacer ces éléments à un autre emplacement."
+        },
+        "annotation": {
+          "point": "déplacement d'un point .",
+          "vertex": "déplacement d'un nœud d'une ligne.",
+          "line": "déplacement d'une ligne.",
+          "area": "déplacement d'un polygone.",
+          "relation": "Relation déplacée.",
+          "feature": {
+            "one": "Un élément déplacé.",
+            "many": "{n} éléments déplacés.",
+            "other": "{n} éléments déplacés."
+          }
+        },
+        "incomplete_relation": {
+          "single": "Cet élément ne peut pas être déplacé car il n'est pas téléchargé totalement.",
+          "multiple": "Ces éléments ne peuvent pas être déplacés car ils ne sont pas téléchargés totalement."
+        },
+        "too_large": {
+          "single": "Cet élément ne peut pas être déplacé car il n'est pas suffisamment visible actuellement.",
+          "multiple": "Ces éléments ne peuvent pas être déplacés car ils ne sont pas suffisamment visibles actuellement."
+        },
+        "connected_to_hidden": {
+          "single": "Cet élément ne peut pas être déplacé car il est connecté à un élément invisible.",
+          "multiple": "Ces éléments ne peuvent pas être déplacés car ils sont connectés à des éléments invisibles."
+        },
+        "not_downloaded": {
+          "single": "Cet élément ne peut pas être déplacé car une partie n'est pas encore téléchargée.",
+          "multiple": "Ces éléments ne peuvent pas être déplacés car une partie n'est pas encore téléchargée."
+        }
+      },
+      "reflect": {
+        "title": {
+          "long": "Retourner Long",
+          "short": "Retourner Court"
+        },
+        "description": {
+          "long": {
+            "single": "Retourner cet élément le long de son bord long.",
+            "multiple": "Retourner ces éléments le long de leurs bords longs."
+          },
+          "short": {
+            "single": "Retourner cet élément le long de son bord court.",
+            "multiple": "Retourner ces éléments le long de leurs bords courts."
+          }
+        },
+        "annotation": {
+          "long": {
+            "feature": {
+              "one": "L'élément a été retourné le long de son bord long.",
+              "many": "{n} éléments ont été retournés le long de leur bord long.",
+              "other": "{n} éléments ont été retournés le long de leur bord long."
+            }
+          },
+          "short": {
+            "feature": {
+              "one": "L'élément a été retourné le long de son bord court.",
+              "many": "{n} éléments ont été retournés le long de leur bord court.",
+              "other": "{n} éléments ont été retournés le long de leur bord court."
+            }
+          }
+        },
+        "incomplete_relation": {
+          "single": "Cet élément ne peut pas être retourné car il n'a pas été téléchargé entièrement.",
+          "multiple": "Ces éléments ne peuvent pas être retournés car ils n'ont pas été téléchargés entièrement."
+        },
+        "too_large": {
+          "single": "Cet élément ne peut pas être retourné car il n'est pas suffisamment visible.",
+          "multiple": "Ces éléments ne peuvent pas être retournés car ils ne sont pas suffisamment visibles."
+        },
+        "connected_to_hidden": {
+          "single": "Cet élément ne peut pas être retourné car il est connecté à un élément caché.",
+          "multiple": "Ces éléments ne peuvent pas être retournés car ils sont connectés à des éléments cachés."
+        },
+        "not_downloaded": {
+          "single": "Cet élément ne peut pas être retourné car une partie n'est pas encore téléchargée.",
+          "multiple": "Ces éléments ne peuvent pas être retournés car une partie n'est pas encore téléchargée."
+        }
+      },
+      "rotate": {
+        "title": "Rotation",
+        "description": {
+          "single": "Tourner cet élément autour de son point central.",
+          "multiple": "Tourner ces éléments autour de leurs points centraux."
+        },
+        "annotation": {
+          "line": "ligne pivotée.",
+          "area": "polygone pivoté.",
+          "relation": "Relation pivotée.",
+          "feature": {
+            "one": "Un élément pivoté.",
+            "many": "{n} éléments pivotés.",
+            "other": "{n} éléments pivotés."
+          }
+        },
+        "incomplete_relation": {
+          "single": "Cet élément ne peut pas être tourné car il n'est pas téléchargé totalement.",
+          "multiple": "Ces éléments ne peuvent pas être tournés car ils ne sont pas téléchargés totalement."
+        },
+        "too_large": {
+          "single": "Cet élément ne peut pas être tourné car il n'est pas suffisamment visible actuellement.",
+          "multiple": "Ces éléments ne peuvent pas être tournés car ils ne sont pas suffisamment visibles actuellement."
+        },
+        "connected_to_hidden": {
+          "single": "Cet élément ne peut pas être tourné car il est connecté à un élément non visible.",
+          "multiple": "Ces éléments ne peut pas être tournés car ils sont connectés à des éléments non visibles."
+        },
+        "not_downloaded": {
+          "single": "Cet élément ne peut pas être tourné car une partie n'est pas encore téléchargée.",
+          "multiple": "Ces éléments ne peuvent pas être tournés car une partie n'est pas encore téléchargée."
+        }
+      },
+      "reverse": {
+        "title": "Inverser",
+        "description": {
+          "point": "Inverser la direction de ce point.",
+          "points": "Inverser la direction de ces points",
+          "line": "Faire aller cette ligne dans l'autre sens.",
+          "lines": "Faire aller ces lignes dans l'autre sens.",
+          "features": "Inverser la direction de ces éléments."
+        },
+        "annotation": {
+          "point": {
+            "one": "Un point inversé.",
+            "many": "{n} points inversés.",
+            "other": "{n} points inversés."
+          },
+          "line": {
+            "one": "Une ligne inversée.",
+            "many": "{n} lignes inversées.",
+            "other": "{n} lignes inversées."
+          },
+          "feature": {
+            "one": "Un élément inversé.",
+            "many": "{n} éléments inversés.",
+            "other": "{n} éléments inversés."
+          }
+        }
+      },
+      "scale": {
+        "annotation": {
+          "down": {
+            "feature": {
+              "one": "Un élément réduit.",
+              "many": "{n} éléments réduits.",
+              "other": "{n} éléments réduits."
+            }
+          },
+          "up": {
+            "feature": {
+              "one": "Un élément agrandi.",
+              "many": "{n} éléments agrandis.",
+              "other": "{n} éléments agrandis."
+            }
+          }
+        },
+        "too_small": {
+          "single": "Cet élément ne peut pas être réduit car il deviendrait trop petit.",
+          "multiple": "Ces éléments ne peuvent pas être réduits car ils deviendraient trop petits."
+        },
+        "too_large": {
+          "single": "Cet élément ne peut pas être mis à l'échelle car il n'est pas suffisamment visible actuellement.",
+          "multiple": "Ces éléments ne peuvent pas être mis à l'échelle car ils ne sont pas suffisamment visibles actuellement."
+        },
+        "connected_to_hidden": {
+          "single": "Cet élément ne peut pas être mis à  l’échelle car il est lié à un autre élément non visible.",
+          "multiple": "Ces éléments ne peuvent pas être mis à l'échelle car ils sont connectés a d’autres éléments non visibles. "
+        },
+        "not_downloaded": {
+          "single": "Cet élément ne peut pas être mis à l’échelle car une partie n’est pas encore téléchargée.",
+          "multiple": "Ces éléments ne peuvent pas être agrandis car une partie d'entre eux n'a pas été téléchargé."
+        }
+      },
+      "split": {
+        "title": "Couper",
+        "description": {
+          "line": {
+            "single": {
+              "single_node": "Couper cette ligne en deux à ce point.",
+              "multiple_node": "Couper cette ligne à ces points."
+            }
+          },
+          "area": {
+            "single": {
+              "single_node": "Couper la bordure de cette région en deux à ce point.",
+              "multiple_node": "Couper la bordure de cette région à ces points."
+            },
+            "multiple": {
+              "single_node": "Couper les bordures de ces régions à ce point.",
+              "multiple_node": "Couper les bordures de ces régions à ces points."
+            }
+          },
+          "feature": {
+            "multiple": {
+              "single_node": "Couper ces éléments à ce point.",
+              "multiple_node": "Couper ces éléments à ces points."
+            }
+          }
+        },
+        "annotation": {
+          "line": {
+            "one": "Une ligne coupée.",
+            "many": "{n} lignes coupées.",
+            "other": "{n} lignes coupées."
+          },
+          "area": {
+            "one": "Une région coupée.",
+            "many": "{n} régions coupées.",
+            "other": "{n} régions coupées."
+          },
+          "feature": {
+            "one": "Un élément coupé.",
+            "many": "{n} éléments coupés.",
+            "other": "{n} éléments coupés."
+          }
+        },
+        "not_eligible": "Les lignes ne peuvent pas être coupées à leurs extrémités.",
+        "connected_to_hidden": "Ceci ne peut être scindé parce que c'est connecté à un élément caché."
+      },
+      "restriction": {
+        "annotation": {
+          "create": "interdiction de tourner ajoutée.",
+          "delete": "interdiction de tourner supprimée."
+        }
+      },
+      "extract": {
+        "title": "Extraire",
+        "description": {
+          "vertex": {
+            "single": "Extraire ce point des lignes ou polygones parents.",
+            "multiple": "Extraire ces points des éléments parents."
+          },
+          "line": {
+            "single": "Extraire un nœud de cette ligne.",
+            "multiple": "Extraire des nœuds de ces lignes."
+          },
+          "area": {
+            "single": "Extraire un point de ce polygone.",
+            "multiple": "Extraire des nœuds de ces zones."
+          },
+          "feature": {
+            "multiple": "Extraire des nœuds de ces éléments."
+          }
+        },
+        "annotation": {
+          "one": "Un point extrait.",
+          "many": "{n} points extraits.",
+          "other": "{n} points extraits."
+        },
+        "too_large": {
+          "single": "Un nœud ne peut pas être extrait car cet élément n'est pas suffisamment visible.",
+          "multiple": "Les nœuds ne peuvent être extraits car les éléments ne sont pas tous suffisamment visibles."
+        },
+        "connected_to_hidden": {
+          "single": "Ce nœud ne peut pas être extrait car il est connecté à un élément caché.",
+          "multiple": "Des nœuds ne peuvent pas être extraits car certains sont connectés à des éléments cachés."
+        }
+      }
+    },
+    "restriction": {
+      "controls": {
+        "distance_up_to": "Jusqu'à {distance}",
+        "via_node_only": "Nœud uniquement",
+        "via_up_to_one": "Jusqu'à 1 voie",
+        "via_up_to_two": "Jusqu'à 2 voies"
+      },
+      "help": {
+        "turn": {
+          "no_left_turn": "Interdiction de tourner à gauche {indirect}",
+          "no_right_turn": "Interdiction de tourner à droite {indirect}",
+          "no_u_turn": "Interdiction de faire demi-tour {indirect}",
+          "no_straight_on": "Interdiction d'aller tout droit {indirect}",
+          "only_left_turn": "Obligation de tourner à gauche {indirect}",
+          "only_right_turn": "Obligation de tourner à droit {indirect}",
+          "only_u_turn": "Obligation de faire demi-tour {indirect}",
+          "only_straight_on": "Obligation d'aller tout droit {indirect}",
+          "allowed_left_turn": "Permission de tourner à gauche {indirect}",
+          "allowed_right_turn": "Permission de tourner à droite {indirect}",
+          "allowed_u_turn": "Permission de faire demi-tour {indirect}",
+          "allowed_straight_on": "Permission d'aller tout droit {indirect}"
+        },
+        "from": "DEPUIS",
+        "to": "VERS",
+        "select_from": "Cliquez pour sélectionner un segment {from}",
+        "select_from_name": "Cliquez pour sélectionner {from} {fromName}",
+        "toggle": "Cliquez pour « {turn} »"
+      }
+    },
+    "undo": {
+      "title": "Annuler",
+      "tooltip": "Annuler : {action}",
+      "nothing": "Rien à annuler."
+    },
+    "redo": {
+      "title": "Refaire",
+      "tooltip": "Rétablir : {action}",
+      "nothing": "Rien à rétablir."
+    },
+    "translate": {
+      "translate": "Ajouter un nom dans une autre langue",
+      "localized_translation_label": "Nom multilingue",
+      "localized_translation_language": "Choisir une langue",
+      "localized_translation_name": "Nom",
+      "language_and_code": "{language} ({code}) "
+    },
+    "zoom_in_edit": " Zoomer pour Modifier ",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "loading_auth": "Connexion à OpenStreetMap…",
+    "report_a_bug": "Rapporter un bug",
+    "help_translate": "Aider à traduire",
+    "sidebar": {
+      "tooltip": "Afficher/cacher la barre latérale."
+    },
+    "feature_info": {
+      "hidden_warning": {
+        "one": "{count} élément caché",
+        "many": "{count} éléments cachés",
+        "other": "{count} éléments cachés"
+      }
+    },
+    "osm_api_status": {
+      "message": {
+        "error": "Impossible d'atteindre l'API OpenStreetMap. Vos éditions sont stockées localement. Vérifiez votre connexion réseau.",
+        "offline": "L'API OpenStreetMap est hors ligne. Vos éditions sont stockées localement. Veuillez revenir ici ultérieurement.",
+        "readonly": "L'API OpenStreetMap est actuellement en lecture seule. Vous pouvez continuer à éditer, mais vous devez attendre pour enregistrer vos modifications.",
+        "local_storage_full": "Vous avez fait trop de modifications pour revenir en arrière jusqu'à la première. Merci de sauvegardez dès que possible."
+      },
+      "retry": "Réessayer"
+    },
+    "commit": {
+      "title": "Envoyer vers OpenStreetMap",
+      "upload_explanation": "Les modifications envoyées seront visibles sur toutes les cartes qui utilisent les données d'OpenStreetMap.",
+      "upload_explanation_with_user": "Les modifications envoyées en tant que {user} seront visibles sur toutes les cartes qui utilisent les données d'OpenStreetMap.",
+      "request_review": "Je souhaite que quelqu'un vérifie mes modifications",
+      "request_review_info": "Vous avez des doutes ? Demandez à un cartographe expérimenté de vérifier votre travail une fois qu'il est publié.",
+      "save": "Envoyer",
+      "cancel": "Annuler",
+      "changes": "Changements",
+      "download_changes": "Télécharger le fichier osmChange",
+      "errors": "Erreurs",
+      "warnings": "Attention",
+      "modified": "Modifié",
+      "deleted": "Supprimé",
+      "created": "Créé",
+      "outstanding_errors_message": "Résolvez d'abord toutes les erreurs. Il en reste {count}.",
+      "comment_needed_message": "Ajoutez d'abord un commentaire pour le groupe de modifications.",
+      "about_changeset_comments": "À propos des commentaires de groupe de modifications",
+      "about_changeset_comments_link": "//wiki.openstreetmap.org/wiki/FR:Bons_commentaires_de_groupe_de_modifications",
+      "google_warning": "Vous avez mentionné Google dans ce commentaire : rappelez-vous que copier depuis Google Maps est strictement interdit."
+    },
+    "contributors": {
+      "list": "Modifications de {users}",
+      "truncated_list": {
+        "one": "Modifications de {users} et de {count} autre",
+        "many": "Modifications de {users} et de {count} autres",
+        "other": "Modifications de {users} et de {count} autres"
+      }
+    },
+    "info_panels": {
+      "selected": {
+        "one": "{n} dans la sélection",
+        "many": "{n} dans la sélection",
+        "other": "{n} dans la sélection"
+      },
+      "background": {
+        "title": "Fond",
+        "resolution": "Résolution",
+        "accuracy": "Précision",
+        "unknown": "Inconnu",
+        "show_tiles": "Afficher la couche",
+        "hide_tiles": "Masquer le couche"
+      },
+      "history": {
+        "title": "Historique",
+        "no_history": "Pas d'historique (Nouvel élément)",
+        "last_edit": "Dernière modification",
+        "edited_by": "Edité par",
+        "changeset": "Groupe de modification",
+        "unknown": "Inconnu",
+        "note_no_history": "Pas d'historique (nouvelle note)",
+        "note_comments": "Commentaires",
+        "note_created_date": "Date de création",
+        "note_created_user": "Crée par",
+        "note_link_text": "Note sur openstreetmap.org"
+      },
+      "location": {
+        "title": "Emplacement",
+        "unknown_location": "Emplacement inconnu"
+      },
+      "measurement": {
+        "title": "Mesures",
+        "geometry": "Geométrie",
+        "closed_line": "ligne fermée",
+        "closed_area": "polygone fermé",
+        "center": "Centre",
+        "perimeter": "Périmètre",
+        "length": "Longueur",
+        "area": "Superficie",
+        "centroid": "Centroïde",
+        "location": "Emplacement",
+        "metric": "Métrique",
+        "imperial": "Anglo-saxon",
+        "node_count": "Nombre de points"
+      }
+    },
+    "geometry": {
+      "vertex": "sommet",
+      "line": "ligne",
+      "area": "polygone"
+    },
+    "geocoder": {
+      "search": "Rechercher dans le monde entier…",
+      "no_results_worldwide": "Aucun résultat trouvé"
+    },
+    "geolocate": {
+      "title": "Me localiser",
+      "locating": "Localisation, veuillez patienter…",
+      "location_unavailable": "Votre localisation n'est pas disponible."
+    },
+    "inspector": {
+      "zoom_to": {
+        "title": "Zoomer sur la sélection",
+        "no_selection": "Aucun élément vers lequel zoomer."
+      },
+      "show_more": "Plus d'informations",
+      "view_on_osm": "Consulter sur openstreetmap.org",
+      "view_on_osmose": "Voir sur osmose.openstreetmap.fr",
+      "view_on_keepRight": "Voir sur keepright.at",
+      "feature_type": "Type d'élément",
+      "fields": "Champs",
+      "tags": "Attributs",
+      "members": "Membres",
+      "features": "Éléments",
+      "add_to_relation": "Ajouter à une relation",
+      "new_relation": "Nouvelle relation…",
+      "choose_relation": "Sélectionnez une relation parente",
+      "role": "Rôle",
+      "multiple_roles": "Plusieurs rôles",
+      "choose": "Que souhaitez-vous ajouter ?",
+      "results": {
+        "one": "{n} résultat pour {search}",
+        "many": "{n} résultats pour {search}",
+        "other": "{n} résultats pour {search}"
+      },
+      "no_documentation_key": "Aucune documentation disponible.",
+      "wiki_reference": "Voir la documentation",
+      "wiki_en_reference": "Voir la documentation en anglais",
+      "key_value": "clé=valeur",
+      "multiple_values": "Plusieur valeurs",
+      "multiple_types": "Plusieurs types",
+      "unshared_value_tooltip": "non partagé par tous les éléments",
+      "hidden_preset": {
+        "manual": "{features} sont cachés. Activez-les dans le panneau de données de carte.",
+        "zoom": "{features} sont cachés. Zoomez pour les afficher."
+      },
+      "back_tooltip": "Changer le type d'élément",
+      "remove": "Supprimer",
+      "search": "Rechercher",
+      "unknown": "Inconnu",
+      "incomplete": "<non téléchargé>",
+      "feature_list": "Rechercher des objets",
+      "edit": "Modifier l'élément",
+      "edit_features": "Modifier les éléments",
+      "check": {
+        "yes": "Oui",
+        "no": "Non",
+        "reverser": "Changer la direction"
+      },
+      "radio": {
+        "structure": {
+          "default": "Par défaut",
+          "layer": "Couche"
+        }
+      },
+      "add": "Ajouter",
+      "none": "Aucun",
+      "node": "Nœud",
+      "way": "Chemin",
+      "location": "Endroit",
+      "add_fields": "Ajouter un attribut :",
+      "lock": {
+        "suggestion": "Le champ « {label} » est verrouillé car il y a un attribut Wikidata. Vous pouvez l'effacer ou l'éditer dans la section « Attributs »."
+      },
+      "display_name": {
+        "network": " {network}",
+        "from_to": "de {from} à {to}",
+        "from_to_via": "de {from} à {to} via {via}",
+        "network_from_to": "{network} de {from} à {to}",
+        "network_from_to_via": "{network} de {from} à {to} via {via}",
+        "ref_from_to": "{ref} de {from} à {to}",
+        "ref_from_to_via": "{ref} de {from} à {to} via {via}",
+        "network_ref_from_to": "{network} {ref} de {from} à {to}",
+        "network_ref_from_to_via": "{network} {ref} de {from} à {to} via {via}"
+      }
+    },
+    "background": {
+      "title": "Fond de carte",
+      "description": "Paramètres du fond de carte",
+      "backgrounds": "Fond de carte",
+      "none": "Aucun",
+      "best_imagery": "Meilleur fond de carte connu pour cet endroit",
+      "switch": "Revenir à cet arrière-plan",
+      "custom": "Personnalisé",
+      "overlays": "Calques",
+      "imagery_problem_faq": "Signaler un problème d'imagerie",
+      "reset": "réinitialiser",
+      "reset_all": "Tout réinitialiser",
+      "display_options": "Options d'affichage",
+      "brightness": "Luminosité",
+      "contrast": "Contraste",
+      "sharpness": "Finesse",
+      "minimap": {
+        "description": "Afficher la petite carte",
+        "tooltip": "Montre une carte de vue d'ensemble pour aider à localiser la zone actuellement affichée."
+      },
+      "panel": {
+        "description": "Afficher le panneau de fond de carte",
+        "tooltip": "Afficher les informations avancées sur le fond."
+      },
+      "location_panel": {
+        "description": "Afficher le panneau de localisation",
+        "tooltip": "Afficher les coordonnées et les détails régionaux."
+      },
+      "fix_misalignment": "Décalage d'image",
+      "offset": "« Glissez » partout dans la zone grise ci-dessous pour ajuster le décalage d'image, ou saisissez les valeurs de décalage en mètres."
+    },
+    "map_data": {
+      "title": "Données cartographiques",
+      "description": "Données cartographiques",
+      "data_layers": "Calques de données",
+      "layers": {
+        "osm": {
+          "tooltip": "Données de cartes d'OpenStreetMap",
+          "title": "Données OpenStreetMap"
+        },
+        "notes": {
+          "tooltip": "Données des notes d'OpenStreetMap",
+          "title": "Notes OpenStreetMap"
+        },
+        "maproulette": {
+          "detail_title": "Détails",
+          "cancel": "Annuler"
+        },
+        "keepRight": {
+          "tooltip": "Anomalies détectées par keepright.at",
+          "title": "Problèmes KeepRight"
+        },
+        "improveOSM": {
+          "tooltip": "Données manquantes détectées par improveosm.org",
+          "title": "Problèmes ImproveOSM"
+        },
+        "osmose": {
+          "tooltip": "Anomalies détectées par osmose.openstreetmap.fr",
+          "title": "Signalements Osmose"
+        },
+        "custom": {
+          "tooltip": "Faîtes glisser-déposer un fichier de données sur la page, ou cliquez sur le bouton pour les paramétrer",
+          "title": "Données de carte personnalisées",
+          "zoom": "Zoomer sur les données"
+        }
+      },
+      "history_panel": {
+        "title": "Afficher le panneau d'historique",
+        "tooltip": "Affiche les détails de version pour la sélection."
+      },
+      "measurement_panel": {
+        "title": "Afficher le panneau de mesure",
+        "tooltip": "Afficher la géométrie de la sélection."
+      },
+      "style_options": "Options de style",
+      "map_features": "Éléments de la carte",
+      "autohidden": "Ces éléments ont été automatiquement cachés parce qu'un trop grand nombre d'entre eux seraient affichés à l'écran. Vous pouvez zoomer pour les modifier.",
+      "osmhidden": "Ces éléments ont été automatiquement cachés parce que le calque OpenStreetMap est caché."
+    },
+    "visual_diff": {
+      "highlight_edits": {
+        "description": "Souligner les modifications",
+        "tooltip": "Créer un halo autour des éléments modifiés"
+      }
+    },
+    "photo_overlays": {
+      "title": "Couches photo",
+      "traffic_signs": {
+        "title": "Signalisation routière"
+      },
+      "photo_type": {
+        "flat": {
+          "title": "Photos planes",
+          "tooltip": "Photos traditionnelles"
+        },
+        "panoramic": {
+          "title": "Photos panoramiques",
+          "tooltip": "Photos à 360°"
+        }
+      },
+      "date_filter": {
+        "fromDate": {
+          "title": "De",
+          "tooltip": "Afficher les photos prises après cette date"
+        },
+        "toDate": {
+          "title": "Vers",
+          "tooltip": "Afficher les photos prises avant cette date"
+        }
+      },
+      "username_filter": {
+        "title": "Nom d'utilisateur",
+        "tooltip": "Afficher uniquement les photos de cet utilisateur"
+      }
+    },
+    "feature": {
+      "points": {
+        "tooltip": "Points d'intérêt"
+      },
+      "traffic_roads": {
+        "description": "Voies de circulation",
+        "tooltip": "Voies, Rues, etc."
+      },
+      "service_roads": {
+        "description": "Route d'accès",
+        "tooltip": "Voies de service, Allées de stationnement, Chemins, etc."
+      },
+      "paths": {
+        "description": "Chemins",
+        "tooltip": "Trottoirs, Chemins piétonniers, Pistes cyclables, etc."
+      },
+      "buildings": {
+        "description": "Bâtiments",
+        "tooltip": "Bâtiments, Abris, Garages, etc."
+      },
+      "building_parts": {
+        "description": "Parties de bâtiments",
+        "tooltip": "Composants des toits et des bâtiments en 3D"
+      },
+      "indoor": {
+        "description": "Éléments intérieurs",
+        "tooltip": "Pièces, couloirs, escaliers, etc."
+      },
+      "landuse": {
+        "description": "Utilisations des sols",
+        "tooltip": "Forêts, Terres arables, Parcs, Zone résidentielle, Zone commerciale, etc."
+      },
+      "boundaries": {
+        "description": "Frontières",
+        "tooltip": "Limites administratives"
+      },
+      "water": {
+        "description": "Éléments aquatiques",
+        "tooltip": "Rivières, Lacs, Étangs, Bassins, etc."
+      },
+      "rail": {
+        "description": "Éléments ferroviaires",
+        "tooltip": "Voies ferrées"
+      },
+      "pistes": {
+        "description": "Pistes d'hiver",
+        "tooltip": "Pistes de ski, de luge, de patin à glace, etc."
+      },
+      "aerialways": {
+        "description": "Éléments aériens",
+        "tooltip": "Télésièges, télécabine, tyroliennes, etc."
+      },
+      "power": {
+        "description": "Éléments électriques",
+        "tooltip": "Lignes électriques, Centrales électriques, Postes électriques, etc."
+      },
+      "past_future": {
+        "description": "Éléments passés et futurs",
+        "tooltip": "Proposé, Construction, Abandonné, Démoli, etc."
+      },
+      "others": {
+        "description": "Autres éléments",
+        "tooltip": "Autres"
+      }
+    },
+    "area_fill": {
+      "wireframe": {
+        "description": "Pas de remplissage (Filaire)",
+        "tooltip": "Activer le mode filaire facilite la vue de l'imagerie aérienne."
+      },
+      "partial": {
+        "description": "Remplissage partiel",
+        "tooltip": "Les zones sont dessinées avec un remplissage seulement autour de leurs bords intérieurs. (recommandé pour les cartographes débutants)"
+      },
+      "full": {
+        "description": "Remplissage complet",
+        "tooltip": "Les zones sont dessinées complètement remplies."
+      }
+    },
+    "settings": {
+      "custom_background": {
+        "tooltip": "Modifier le fond personnalisé",
+        "header": "Paramètres du fond personnalisé",
+        "instructions": {
+          "info": "Saisissez l'URL d'un modèle de tuile ci-dessous.",
+          "wms": {
+            "tokens_label": "Symboles pris en charges pour le WMS :",
+            "tokens": {
+              "proj": "`{proj}` : la projection demandée (`EPSG:3857` uniquement)",
+              "wkid": "`{wkid}` : comme proj, mais sans l'EPSG (`3857` uniquement)",
+              "dimensions": "`{width}`, `{height}` : les dimensions de l'image demandée (`256` uniquement)",
+              "bbox": "`{bbox}` : le cadre demandé (p. ex. `minX,minY,maxX,maxY`)"
+            }
+          },
+          "tms": {
+            "tokens_label": "Symboles pris en charges pour le TMS :",
+            "tokens": {
+              "xyz": "`{zoom}` ou `{z}`, `{x}`, `{y}` : coordonnées Z/X/Y de la tuile",
+              "flipped_y": "`{-y}` ou `{ty}` : coordonnées Y inverses dans le style TMS",
+              "switch": "`{switch:a,b,c}` : multiplexage des serveurs DNS",
+              "quadtile": "`{u}` : schéma quadtile (Bing)",
+              "scale_factor": "`{@2x}` ou `{r}` : facteur de résolution d'échelle"
+            }
+          }
+        },
+        "template": {
+          "placeholder": "Saisissez l'URL d'un modèle"
+        }
+      },
+      "custom_data": {
+        "tooltip": "Modifier la couche de données personnalisée",
+        "header": "Paramètres des données de carte personnalisées",
+        "file": {
+          "label": "Naviguer dans les fichiers"
+        },
+        "or": "Ou",
+        "url": {
+          "placeholder": "Saisissez une URL"
+        }
+      }
+    },
+    "preferences": {
+      "title": "Préférences",
+      "description": "Préférences",
+      "privacy": {
+        "title": "Vie privée",
+        "third_party_icons": {
+          "description": "Afficher les icônes tierces",
+          "tooltip": "Décochez cette case pour éviter de charger des icônes à partir de sites tiers tels que Wikimedia Commons, Facebook, ou Twitter."
+        }
+      },
+      "color_selection": {
+        "default": "Par défaut"
+      }
+    },
+    "restore": {
+      "heading": "Vous avez des modifications non enregistrées",
+      "description": "Vous avez des modifications non sauvegardées d'une session précédente. Souhaitez-vous restaurer ces changements ?",
+      "restore": "Restaurer mes modifications",
+      "reset": "Abandonner mes modifications"
+    },
+    "save": {
+      "title": "Sauvegarder…",
+      "help": "Vérifiez vos modifications avant de pouvoir les envoyer sur OpenStreetMap afin qu'elles soient visibles par les autres contributeurs.",
+      "no_changes": "Aucune modification à sauvegarder",
+      "error": "Des erreurs sont survenues en tentant de sauvegarder",
+      "status_code": "Le serveur a renvoyé le code de statut {code}",
+      "unknown_error_details": "Veuillez vérifier que votre ordinateur est connecté au réseau.",
+      "uploading": "Envoi des modifications vers OpenStreetMap…",
+      "conflict_progress": "Détection des conflits : {num} de {total}",
+      "unsaved_changes": "Vous avez des modifications non enregistrées",
+      "conflict": {
+        "header": "Résoudre les modifications conflictuelles",
+        "count": "Conflit {num} de {total}",
+        "previous": "Précédent",
+        "next": "Suivant",
+        "keep_local": "Garder la mienne",
+        "keep_remote": "Utiliser la leur",
+        "restore": "Restaurer",
+        "delete": "Laisser la suppression",
+        "download_changes": "Ou télécharger le fichier osmChange",
+        "done": "Tous les conflits sont résolus !",
+        "help": "Un autre utilisateur a modifié certains éléments de la carte que vous aviez changés.\nCliquez sur chaque élément ci-dessous pour obtenir plus de détails sur le conflit et choisissez si vous souhaitez conserver vos modifications ou celles de l'autre utilisateur."
+      }
+    },
+    "merge_remote_changes": {
+      "conflict": {
+        "deleted": "Cet élément a été supprimé par {user}.",
+        "location": "Cet élément a été déplacé à la fois par vous et {user}.",
+        "nodelist": "Les nœuds ont été changés à la fois par vous et {user}",
+        "memberlist": "Les membres de la relation  ont été changés à la fois par vous et {user}"
+      }
+    },
+    "success": {
+      "just_edited": "Vous avez participé à OpenStreetMap !",
+      "thank_you": "Merci d'avoir amélioré la carte.",
+      "thank_you_location": "Merci d'avoir amélioré la carte autour de {where}.",
+      "thank_you_where": {
+        "separator": " en "
+      },
+      "help_link_text": "Détails",
+      "help_link_url": "https://wiki.openstreetmap.org/wiki/FR:FAQ#Je_viens_juste_de_faire_quelques_changements_sur_la_carte._Comment_puis-je_les_voir_.3F",
+      "view_on_osm": "Voir les changements sur OSM",
+      "like_osm": "Vous aimez OpenStreetMap ? Retrouvez d'autres contributeurs :",
+      "more": "Plus",
+      "events": "Événements",
+      "languages": "Langues : {languages}",
+      "missing": "Quelque-chose manque-t-il dans cette liste ?",
+      "tell_us": "Dîtes-nous en plus !"
+    },
+    "confirm": {
+      "cancel": "Annuler"
+    },
+    "splash": {
+      "start": "Modifier maintenant"
+    },
+    "source_switch": {
+      "lose_changes": "Vos dernières modifications n'ont pas été sauvées. Si vous changez de serveur de carte, celles-ci seront perdues. Êtes-vous sûr de vouloir changer de serveur de carte ?"
+    },
+    "rapid_feature_inspector": {
+      "tags": "Attributs"
+    },
+    "rapid_feature_toggle": {
+      "esri": {
+        "remove": "Supprimer"
+      }
+    },
+    "tag_reference": {
+      "on_wiki": "{tag} sur wiki.osm.org",
+      "used_with": "Utilisé avec {type}"
+    },
+    "zoom": {
+      "in": "Zoomer",
+      "out": "Dézoomer",
+      "disabled": {
+        "in": "Impossible de zoomer plus.",
+        "out": "Impossible de dézommer plus."
+      }
+    },
+    "cannot_zoom": "Impossible de zoomer plus en arrière dans ce mode.",
+    "full_screen": "Afficher/cacher le plein écran",
+    "self_intersection": {
+      "error": {
+        "lines": "Les lignes ne peuvent pas se croiser elles-mêmes.",
+        "areas": "Les aires ne peuvent pas se croiser elles-mêmes."
+      }
+    },
+    "QA": {
+      "osmose": {
+        "title": "Signalement Osmose",
+        "detail_title": "Détails",
+        "elems_title": "Éléments",
+        "fix_title": "Guides de correction",
+        "trap_title": "Erreurs fréquentes"
+      },
+      "improveOSM": {
+        "title": "Détections ImproveOSM",
+        "geometry_types": {
+          "path": "chemins",
+          "road": "routes",
+          "both": "routes et parking"
+        },
+        "directions": {
+          "east": "est",
+          "north": "nord",
+          "northeast": "nord-est",
+          "northwest": "nord-ouest",
+          "south": "sud",
+          "southeast": "sud-est",
+          "southwest": "sud-ouest",
+          "west": "ouest"
+        },
+        "error_types": {
+          "ow": {
+            "title": "Sens unique manquant",
+            "description": "Le long de cette section de {highway}, {percentage} % des {num_trips} trajets enregistrés vont de {from_node} à {to_node}. Il se pourrait qu'il manque un attribut de sens-unique."
+          },
+          "mr": {
+            "title": "Géométrie manquante",
+            "description": "{num_trips} trajets enregistrés dans cette région suggèrent qu'il y a des {geometry_type} ici.",
+            "description_alt": "Des données d'une source tierce suggèrent qu'il y a des {geometry_type} non cartographiés ici."
+          },
+          "tr": {
+            "title": "Interdiction de tourner manquante",
+            "description": "{num_passed} des {num_trips} trajets enregistrés (vers {travel_direction}) ont tourné de {from_way} vers {to_way} au niveau de {junction}. Il pourrait y avoir une interdiction de tourner « {turn_restriction} » manquante."
+          }
+        }
+      },
+      "keepRight": {
+        "comment": "Commentaire",
+        "comment_placeholder": "Saisissez un commentaire à partager avec d'autres utilisateurs.",
+        "close": "Fermer (signalement corrigé)",
+        "ignore": "Supprimer (faux positif)",
+        "save_comment": "Enregistrer le commentaire",
+        "close_comment": "Fermer et commenter",
+        "ignore_comment": "Supprimer et commenter",
+        "error_parts": {
+          "this_node": "ce nœud",
+          "this_way": "ce chemin",
+          "this_relation": "cette relation",
+          "this_oneway": "ce sens unique",
+          "this_highway": "cette route",
+          "this_railway": "cette voie ferrée",
+          "this_waterway": "ce cours d'eau",
+          "this_cycleway": "cette voie cyclable",
+          "this_cycleway_footpath": "cette voie cyclable/chemin piéton",
+          "this_riverbank": "cette berge",
+          "this_crossing": "cette intersection",
+          "this_railway_crossing": "ce passage à niveau",
+          "this_bridge": "ce pont",
+          "this_tunnel": "ce tunnel",
+          "this_boundary": "cette frontière",
+          "this_turn_restriction": "cette interdiction de tourner",
+          "this_roundabout": "ce rond-point",
+          "this_mini_roundabout": "ce mini rond-point",
+          "this_track": "cette piste",
+          "this_feature": "cet élément",
+          "highway": "route",
+          "railway": "voie ferrée",
+          "waterway": "cours d'eau",
+          "cycleway": "voie cyclable",
+          "cycleway_footpath": "voie cyclable/chemin piéton",
+          "riverbank": "berge",
+          "place_of_worship": "lieu de culte",
+          "school": "école",
+          "university": "université",
+          "hospital": "hôpital",
+          "library": "bibliothèque",
+          "theatre": "théâtre",
+          "courthouse": "tribunal",
+          "bank": "banque",
+          "cinema": "cinéma",
+          "pharmacy": "pharmacie",
+          "cafe": "café",
+          "fuel": "carburant",
+          "from": "de",
+          "to": "à",
+          "left_hand": "à gauche",
+          "right_hand": "à droite"
+        },
+        "errorTypes": {
+          "<20>": {
+            "title": "multiple nœuds au même endroit",
+            "description": "Il y a plus d'un nœud à cet endroit. ID des nœuds : {var1}."
+          },
+          "<30>": {
+            "title": "polygone non fermé",
+            "description": "{var1} est cartographié avec « {var2} » et devrait former une boucle."
+          },
+          "<40>": {
+            "title": "sens unique impossible",
+            "description": "Le premier nœud {var1} de {var2} n'est pas connecté à un autre chemin."
+          },
+          "<41>": {
+            "description": "Le dernier nœud {var1} de {var2} n'est pas connecté à un autre chemin."
+          },
+          "<42>": {
+            "description": "On ne peut pas atteindre {var1} car tous les chemins qui en proviennent sont en sens unique."
+          },
+          "<43>": {
+            "description": "On ne peut pas partir de {var1} car tous les chemins qui y arrivent sont en sens unique."
+          },
+          "<50>": {
+            "title": "Jonction imparfaite",
+            "description": "{var1} est très proche mais n'est pas connecté au chemin {var2}."
+          },
+          "<60>": {
+            "title": "Attribut obsolète",
+            "description": "{var1} utilise l'attribut obsolète « {var2} ». Utilisez « {var3} » à la place."
+          },
+          "<70>": {
+            "title": "Attribut manquant",
+            "description": "{var1} a un attribut vide : « {var2} »"
+          },
+          "<71>": {
+            "description": "{var1} n'a pas d'attribut."
+          },
+          "<72>": {
+            "description": "{var1} n'appartient à aucun chemin et n'a pas d'attribut."
+          },
+          "<73>": {
+            "description": "{var1} a l'attribut « {var2} » mais pas d'attribut « highway »."
+          },
+          "<74>": {
+            "description": "{var1} a un attribut vide : « {var2} »"
+          },
+          "<75>": {
+            "description": "{var1} a un nom « {var2} » mais aucun autre attribut."
+          },
+          "<90>": {
+            "title": "Autoroute sans attribut ref",
+            "description": "{var1} est cartographié comme une autoroute et a donc besoin d'un attribut « ref », « nat_ref » ou « int_ref »."
+          },
+          "<100>": {
+            "title": "Lieu de culte dans religion",
+            "description": "{var1} est cartographié comme un lieu de culte et a donc besoin d'un attribut religion."
+          },
+          "<110>": {
+            "title": "Point d'intérêt sans nom",
+            "description": "{var1} est cartographié comme un « {var2} » et a donc besoin d'un attribut de nom."
+          },
+          "<120>": {
+            "title": "Chemin sans nœud",
+            "description": "{var1} n'a qu'un seul nœud."
+          },
+          "<130>": {
+            "title": "Chemin déconnecté",
+            "description": "{var1} n'est pas connecté au reste de la carte."
+          },
+          "<150>": {
+            "title": "Intersection de chemin de fer sans attribut",
+            "description": "{var1} entre une voie ferrée et une route doit être cartographié avec « railway=crossing » ou « railway=level_crossing »."
+          },
+          "<160>": {
+            "title": "Conflit de superposition (couches) de voies ferrées",
+            "description": "Il y a des chemins sur différentes couches (p. ex. un tunnel ou un pont) qui se rejoignent sur {var1}"
+          },
+          "<170>": {
+            "title": "Élément possédant un attribut FIXME",
+            "description": "{var1} a un attribut FIXME : {var2}"
+          },
+          "<180>": {
+            "title": "Relation sans type",
+            "description": "{var1} n'a pas d'attribut « type »."
+          },
+          "<190>": {
+            "title": "Intersection sans jonction",
+            "description": "{var1} croise l'élément {var2} {var3} mais il n'y a pas de nœud de jonction, de pont ni de tunnel."
+          },
+          "<200>": {
+            "title": "Chevauchement de chemins",
+            "description": "{var1} chevauche {var2} {var3}."
+          },
+          "<210>": {
+            "title": "Chemin se croisant lui-même",
+            "description": "Il y a un problème non spécifié avec des chemins qui se croisent eux-mêmes."
+          },
+          "<211>": {
+            "description": "{var1} contient plus d'un nœud plusieurs fois. Les nœuds en question sont {var2}. Il peut ne pas s'agir d'une erreur."
+          },
+          "<212>": {
+            "description": "{var1} n'a que deux nœuds et en contient un plus d'une fois."
+          },
+          "<220>": {
+            "title": "Attribut mal orthographié",
+            "description": "{var1} est cartographié avec « {var2} » où « {var3} » ressemble à « {var4} »."
+          },
+          "<221>": {
+            "description": "{var1} a un attribut suspect « {var2} »."
+          },
+          "<230>": {
+            "title": "Conflit de couche",
+            "description": "{var1} est une jonction entre chemins sur plusieurs couches."
+          },
+          "<231>": {
+            "description": "{var1} est une jonction entre chemins sur plusieurs couches : {var2}.",
+            "layer": "(couche : {layer})"
+          },
+          "<232>": {
+            "description": "{var1} est cartographié avec « layer={var2} ». Ce n'est peut-être pas une erreur, mais c'est bizarre."
+          },
+          "<270>": {
+            "title": "Connexion à une autoroute inhabituelle",
+            "description": "{var1} est une jonction entre une autoroute et une route d'un type autre qu'une autoroute, une route d'accès à une autoroute, une voie rapide, une aire de repos et une voie en construction. Les connections aux routes de type « service » ou « unclassified » ne sont valides qu'avec « access=no/private » ou si elles mènent à une aire de repos ou s'il s'agit de « service=parking_aisle »."
+          },
+          "<280>": {
+            "title": "Problème de frontière",
+            "description": "Il y a un problème non spécifié avec cette frontière."
+          },
+          "<281>": {
+            "title": "La frontière n'a pas de nom",
+            "description": "{var1} n'a pas de nom."
+          },
+          "<282>": {
+            "title": "Frontière sans niveau administratif",
+            "description": "La frontière de {var1} n'a pas de admin_level numérique valide. Ne mélangez pas les niveau (p. ex. « 6;7 »). Cartographiez toujours l'admin_level le plus petit sur toutes les frontières."
+          },
+          "<283>": {
+            "title": "La frontière n'est pas une boucle fermée",
+            "description": "La frontière de {var1} n'est pas fermée."
+          },
+          "<284>": {
+            "title": "La frontière est divisée",
+            "description": "La frontière de {var1} est divisée ici."
+          },
+          "<285>": {
+            "title": "Admin_level de la frontière trop élevé",
+            "description": "{var1} a « admin_level={var1} » mais appartient à une relation avec un plus petit « admin_level » (c.-à-d. une plus grande priorité) ; elle devrait avoir le plus petit admin_level de toutes les relations."
+          },
+          "<290>": {
+            "title": "Problème de restriction",
+            "description": "Il y a un problème non spécifié avec cette restriction."
+          },
+          "<291>": {
+            "title": "Restriction sans type",
+            "description": "{var1} a un type de restriction non reconnu."
+          },
+          "<292>": {
+            "title": "Restriction sans chemin « from »",
+            "description": "{var1} a {var2} membres « from », mais ne devrait en avoir qu'un."
+          },
+          "<293>": {
+            "title": "Restriction sans chemin « to »",
+            "description": "{var1} a {var2} membres «to», mais ne devrait en avoir qu'un."
+          },
+          "<294>": {
+            "title": "Le chemin « from » ou « to » de la restriction n'est pas un chemin",
+            "description": "{var1} a des membres « from » ou « to » qui devraient être des chemins. {var2}."
+          },
+          "<295>": {
+            "title": "Le « via » de la restriction n'est pas un point d'arrêt",
+            "description": "{var1} a un « via » (nœud {var2}) qui n'est ni le premier ni le dernier nœud de « {var3} » (chemin {var4})."
+          },
+          "<296>": {
+            "title": "Angle inhabituel pour une restriction",
+            "description": "\\var1} a le type de restriction « {var2} » mais l'angle est de {var3} degrés. Peut-être le type de restriction n'est-il pas approprié ?"
+          },
+          "<297>": {
+            "title": "Mauvaise direction du chemin « to »",
+            "description": "{var1} ne correspond pas à la direction du chemin « to » {var2}."
+          },
+          "<298>": {
+            "title": "Restriction redondante — sens unique",
+            "description": "{var1} est peut-être redondant. Arrivée déjà interdite par l'attribut de sens unique sur {var2}."
+          },
+          "<300>": {
+            "title": "Vitesse maximale manquante",
+            "description": "{var1} n'a pas d'attribut « maxspeed » et est cartographiée comme une autoroute, une voie rapide, primaire ou secondaire."
+          },
+          "<310>": {
+            "title": "Problème de rond-point",
+            "description": "Il y a un problème non spécifié avec ce rond-point."
+          },
+          "<311>": {
+            "title": "Le rond-point n'est pas une boucle fermée",
+            "description": "{var1} fait partie d'un rond-point mais n'est pas une boucle fermée (les chemins approchant d'un rond-point ne doivent pas être cartographiés comme des rond-points)."
+          },
+          "<312>": {
+            "title": "Mauvaise direction du rond-point",
+            "description": "Si {var1} est dans un pays où la conduite est à {var2}, alors son orientation est dans le mauvais sens."
+          },
+          "<313>": {
+            "title": "Rond-point faiblement connecté",
+            "description": "{var1} n'a que {var2} autres chemins qui s'y connectent. Les rond-points en ont typiquement 3 ou plus."
+          },
+          "<320>": {
+            "title": "Connexion incorrecte",
+            "description": "{var1} est cartographié comme « {var2} » mais n'a pas de connexion à un autre « {var3} » ou « {var4} »."
+          },
+          "<350>": {
+            "title": "Attribut de pont incorrect",
+            "description": "{var1} n'a pas d'attribut commun avec les chemins qu l'entourent et qui montre le rôle de ce pont. Il devrait avoir l'un de ces attributs : {var2}."
+          },
+          "<360>": {
+            "title": "Attribut de nom régionalisé manquant",
+            "description": "Il serait bien que {var1} ait un attribut de nom régionalisé « name:XX={var2} » où XX montrerait la langue de son nom courant « {var2} »."
+          },
+          "<370>": {
+            "title": "Point en double",
+            "description": "{var1} a des attributs en commun avec le chemin {var2} {var3} qui l'entoure et a l'air redondant.",
+            "including_the_name": "(dont le nom {name})"
+          },
+          "<380>": {
+            "title": "Utilisation non physique de l'attribut sport",
+            "description": "{var1} est cartographié comme « {var2} » mais n'a pas d'attribut physique (p. ex. « leisure », « building », « amenity » ou « highway »)."
+          },
+          "<390>": {
+            "title": "Type de piste manquant",
+            "description": "{var1} n'a pas d'attribut « tracktype »."
+          },
+          "<400>": {
+            "title": "Problème de géométrie",
+            "description": "Il y a un problème de géométrie non spécifié ici."
+          },
+          "<401>": {
+            "title": "Interdiction de tourner manquante",
+            "description": "Les chemins {var1} et {var2} se rejoignent avec un angle très aigu ici et il n'y a pas d'attribut de sens unique ou d'interdiction de tourner pour empêcher de tourner ici."
+          },
+          "<402>": {
+            "title": "Angle impossible",
+            "description": "{var1} fait un angle très aigu ici."
+          },
+          "<410>": {
+            "title": "Problème de site web",
+            "description": "Il y a une problème non spécifié avec un site web ou une URL."
+          },
+          "<411>": {
+            "description": "{var1} peut avoir une ancienne URL : {var2} a renvoyé le code d'erreur HTTP {var3}."
+          },
+          "<412>": {
+            "description": "{var1} peut avoir une ancienne URL : {var2} contient le texte suspect « {var3} »."
+          },
+          "<413>": {
+            "description": "{var1} peut avoir une ancienne URL : {var2} ne contient pas les mots-clefs « {var3} »."
+          }
+        }
+      }
+    },
+    "streetside": {
+      "tooltip": "Photos Streetside de Microsoft",
+      "report": "Signaler un problème relatif à la vie privée sur cette image",
+      "view_on_bing": "Consulter sur Bing Maps",
+      "hires": "Haute résolution"
+    },
+    "mapillary_images": {
+      "tooltip": "Photos de rue depuis Mapillary"
+    },
+    "mapillary_map_features": {
+      "title": "Éléments de la carte",
+      "tooltip": "Éléments de la carte de Mapillary",
+      "construction": {
+        "barrier": {
+          "temporary": "Obstacle temporaire"
+        },
+        "flat": {
+          "crosswalk_plain": "passage piéton uni",
+          "driveway": "allée"
+        }
+      },
+      "marking": {
+        "discrete": {
+          "arrow": {
+            "left": "marquage au sol - flèche (tournez à gauche)",
+            "right": "marquage au sol - flèche (tournez à droite)",
+            "split_left_or_straight": "Marquage au sol -  flèche continuez tout droit ou tournez à gauche",
+            "split_right_or_straight": "Marquage au sol - flèche continuez tout droit ou tournez à droite",
+            "straight": "marquage au sol - flèche (continuez tout droit)"
+          },
+          "crosswalk_zebra": "marquage au sol - passage piéton",
+          "give_way_row": "Marquage au sol : cédez-le-passage",
+          "give_way_single": "Marquage au sol : cédez-le-passage",
+          "other_marking": "marquage au sol - autre",
+          "stop_line": "Marquage au sol - ligne de stop",
+          "symbol": {
+            "bicycle": "Marquage au sol - Réservé aux cyclistes"
+          },
+          "text": "marquage au sol - texte"
+        }
+      },
+      "object": {
+        "banner": "bannière",
+        "bench": "banc",
+        "bike_rack": "arceau à vélo",
+        "billboard": "Panneau publicitaire",
+        "catch_basin": "bassin de rétention",
+        "cctv_camera": "caméra de surveillance",
+        "fire_hydrant": "borne incendie",
+        "junction_box": "Boîte de dérivation",
+        "mailbox": "boîte aux lettres",
+        "manhole": "Bouche d'égout",
+        "parking_meter": "parcmètre",
+        "phone_booth": "Cabine téléphonique",
+        "sign": {
+          "advertisement": "Publicité",
+          "information": "Panneau d'information",
+          "other": "autre signe",
+          "store": "enseigne",
+          "traffic_sign": {
+            "back": "panneau de signalisation - vers l'arrière",
+            "direction_front": "panneau de signalisation - vers l'avant",
+            "front": "panneau de signalisation - vers l'avant"
+          }
+        },
+        "street_light": "lampadaire",
+        "support": {
+          "pole": "poteau",
+          "traffic_sign_frame": "Panneau de signalisation",
+          "utility_pole": "Poteau utilitaire"
+        },
+        "traffic_cone": "cône de signalisation",
+        "traffic_light": {
+          "cyclists": "feux tricolores pour cyclistes",
+          "general_horizontal": "feux tricolores horizontaux",
+          "general_single": "feux tricolore simples",
+          "general_upright": "feux tricolores verticaux",
+          "other": "feux tricolores",
+          "pedestrians": "Feux tricolores pour piétons"
+        },
+        "trash_can": "poubelle",
+        "water_valve": "robinet d'adduction d'eau"
+      }
+    },
+    "mapillary": {
+      "signs": {
+        "tooltip": "Signalisation routière de Mapillary"
+      },
+      "view_on_mapillary": "Voir cette image sur Mapillary"
+    },
+    "kartaview_images": {
+      "tooltip": "Photos horizontales de KartaView"
+    },
+    "kartaview": {
+      "view_on_kartaview": "Voir cette  photo sur KartaView"
+    },
+    "note": {
+      "title": "Modifier la note",
+      "anonymous": "anonyme",
+      "closed": "(Fermée)",
+      "commentTitle": "Commentaires",
+      "status": {
+        "opened": "ouverte {when}",
+        "reopened": "réouverte {when}",
+        "commented": "commentée {when}",
+        "closed": "fermée {when}"
+      },
+      "newComment": "Nouveau commentaire",
+      "inputPlaceholder": "Saisissez un commentaire à partager avec d'autres utilisateurs.",
+      "close": "Fermer la note",
+      "open": "Ré-ouvrir la note",
+      "comment": "Commentaire",
+      "close_comment": "Commenter et fermer",
+      "open_comment": "Commenter et ré-ouvrir",
+      "report": "Signaler",
+      "new": "Nouvelle note",
+      "newDescription": "Décrivez le problème.",
+      "save": "Enregistrer la note",
+      "login": "Vous devez vous connecter pour modifier la note ou la commenter.",
+      "upload_explanation": "Vos commentaires seront visibles publiquement par les utilisateurs d'OpenStreetMap.",
+      "upload_explanation_with_user": "Vous commentaires en tant que {user} seront visibles publiquement par tous les utilisateurs d'OpenStreetMap."
+    },
+    "help": {
+      "title": "Aide",
+      "help": {
+        "title": "Aide",
+        "open_data_h": "Données libres",
+        "open_data": "Les modifications que vous faites sur cette carte seront visibles par tous les utilisateurs d'OpenStreetMap. Vos modifications peuvent se baser sur vos connaissances personnelles, des enquêtes de terrain, des photos aériennes ou des photos prises depuis la rue. Copier des informations de sources commerciales telles que Google Maps [est strictement interdit](https://www.openstreetmap.org/copyright).",
+        "before_start_h": "Avant de commencer",
+        "open_source_h": "Open source"
+      },
+      "overview": {
+        "title": "Présentation",
+        "features_h": "Éléments de la carte.",
+        "features": "Nous utilisons le mot *élément* pour décrire les objets qui apparaissent sur la carte, telles que les routes, batiments ou points d'intérêts. Quoi que ce soit dans le monde réel peut être représenté par un élément dans OpenStreetMap. Les éléments de la carte y sont représentés par des *point*, *lignes* ou *polygones*.",
+        "nodes_ways": "Dans OpenStreetMap, les points sont parfois appelés des *nœuds*, et les lignes et polygones des *chemins*."
+      },
+      "editing": {
+        "title": "Modifier et sauvegarder",
+        "select_h": "Sélectionner",
+        "select_space": "La barre `{space}` permet aussi de sélectionner et de dessiner à la place du clic gauche.",
+        "multiselect_h": "Sélection multiple",
+        "multiselect": "Sélectionner plusieurs éléments en même temps vous permet de les modifier rapidement d'un seul coup.",
+        "undo_redo_h": "Annuler & Rétablir",
+        "undo_redo": "Vos modifications sont enregistrées localement dans votre navigateur tant que vous ne les envoyez pas sur les serveurs d'OpenStreetMap. Vous pouvez annuler vos action en appuyant sur le bouton {undo_icon} **{undo}** et les refaire en appuyant sur le bouton {redo_icon} **{redo}**.",
+        "save_h": "Sauvegarder",
+        "save": "Cliquez sur {save_icon} **{save}** pour envoyer vos modifications à OpenStreetMap. Enregistrez fréquemment !",
+        "upload_h": "Téléverser",
+        "upload": "Avant d'envoyer vos changements, vous devez saisir un [commentaire de groupe de modifications](https://wiki.openstreetmap.org/wiki/FR:Bons_commentaires_de_groupe_de_modifications). Ensuite cliquez sur **{upload}** pour envoyer vos changements à OpenStreetMap, où ils seront ajoutés à la carte et rendus visibles pour tout le monde.",
+        "backups_h": "Sauvegarde automatique",
+        "keyboard_h": "Raccourcis clavier",
+        "keyboard": "Vous pouvez voir une liste de raccourcis clavier en appuyant sur la touche `{shortcuts_key}`."
+      },
+      "feature_editor": {
+        "title": "Éditeur d'élément",
+        "intro": "*L'éditeur d'élément* apparaît à côté de la carte et permet de voir et de modifier les informations relatives à l'élément sélectionné.",
+        "definitions": "La première section indique le type d'élément. La seconde contient les *champs* qui indiquent les attributs de l'élément, comme son nom ou son adresse.",
+        "type_h": "Type d'élément",
+        "type": "Vous pouvez cliquer sur le type d'un élément pour le changer pour un autre type. Tout ce qui existe dans le monde réel peut être ajouté dans OpenStreetMap, il y a donc de milliers de types possibles.",
+        "type_picker": "Le sélectionneur de type affiche les types d'éléments les plus fréquents, tels que les parcs, hôpitaux, restaurants, routes et bâtiments. Vous pouvez tout chercher en tapant ce que vous voulez dans le champ de recherche. Vous pouvez aussi cliquer sur l'icône {inspect} **Info** à côté du type de l'élément pour en apprendre plus.",
+        "fields_h": "Champs",
+        "fields_all_fields": "La section « {fields} » contient tous les détails de l'élément que vous pouvez éditer. Dans OpenStreetMap, tous les champs sont optionnels, aussi, si vous n'êtes pas sûr de votre saisie, vous pouvez laisser un champ vide.",
+        "fields_example": "Chaque type d’élément affichera des champs différents. Par exemple, une route peut afficher des champs pour le type de surface et la limitation de vitesse et un restaurant peut afficher des champs pour le type de nourriture servie et ses horaires d'ouverture.",
+        "fields_add_field": "Vous pouvez aussi cliquer sur le menu déroulant « Ajouter un champ » pour ajouter des informations telles qu'une description, un lien Wikipédia, un accès handicapé, etc.",
+        "tags_h": "Attributs",
+        "tags_all_tags": "En dessous de la partie contenant les champs, vous pouvez développer la section « {tags} » pour modifier les *attributs* OpenStreetMap de l’élément sélectionné. Chaque attribut se présente sous la forme d'un couple *clef*: *valeur*. Ce format de données est utilisé pour définir tous les éléments enregistrés dans OpenStreetMap.",
+        "tags_resources": "Vous aurez besoin d'un niveau de connaissance intermédiaire sur OpenStreetMap pour modifier les attributs d'un élément. Vous devriez consulter des ressources comme le [Wiki d’OpenStreetMap](https://wiki.openstreetmap.org/wiki/Main_Page) ou [Taginfo](https://taginfo.openstreetmap.org/) pour en apprendre plus sur les pratiques de tagging acceptées dans OpenStreetMap."
+      },
+      "points": {
+        "intro": "Les *points* peuvent être utilisés pour représenter des éléments comme des magasins, restaurants ou monuments. Ils indiquent une position précise et décrivent ce qu'il y a à cet endroit. ",
+        "add_point_h": "Ajouter des Points",
+        "add_point": "Pour ajouter un point, cliquez sur le bouton {point_icon} **{point}** de la barre d'outils au-dessus de la carte, ou utilisez le raccourci clavier en pressant la touche `1`.",
+        "move_point_h": "Déplacer des Points",
+        "delete_point_h": "Supprimer des Points ",
+        "delete_point": "Vous pouvez supprimer des éléments qui n'existent pas dans le monde réel. Supprimer un élément d'OpenStreetMap l'efface de la carte que tout le monde utilise, aussi vous devez être absolument sûr que cet élément n'existe pas sur le terrain avant de le supprimer."
+      },
+      "lines": {
+        "title": "Lignes",
+        "intro": "Les *lignes* sont utilisées pour représenter des éléments comme des routes, des voies ferrées ou des rivières. Les lignes doivent être dessinées au centre de l'élément qu'elles représentent.",
+        "add_line_h": "Ajouter des Lignes",
+        "add_line": "Pour ajouter une ligne, cliquez sur le bouton {line_icon} **{line}** de la barre d'outils au-dessus de la carte, ou utilisez le raccourci clavier en pressant la touche `2`.",
+        "add_line_finish": "Pour terminer une ligne, cliquez ou tapez à nouveau sur le dernier nœud, ou pressez la touche `{return}`.",
+        "modify_line_h": "Modifier des Lignes",
+        "modify_line_dragnode": "Souvent, vous verrez que les lignes ne sont pas formées correctement, par exemple une route qui ne correspond pas à l'imagerie affichée en fond. Pour ajuster la forme d'une ligne, commencez par la sélectionner. Tous les nœuds de la ligne apparaîtront comme des petits cercles. Vous pourrez alors les déplacer.",
+        "connect_line_h": "Connecter des lignes",
+        "connect_line": "Il est important que les routes soient connectées correctement pour la carte, et essentiel pour la navigation.",
+        "connect_line_display": "Les connexions entre plusieurs routes sont matérialisées avec des cercles gris. Les points d'une ligne qui ne sont connectés à rien apparaissent comme des cercles blancs, plus grands.",
+        "connect_line_tag": "Si le croisement a un feu de signalisation ou un passage pour piétons, vous pouvez l'ajouter en sélectionnant le nœud de connexion et en utilisant l'éditeur d'élément pour choisir le type d'élément correct.",
+        "disconnect_line_h": "Séparer des lignes",
+        "move_line_h": "Déplacer des Lignes",
+        "delete_line_h": "Supprimer des lignes",
+        "delete_line": "Si une ligne est entièrement erronée, comme une route qui n'existe pas, vous pouvez l'effacer. Faites attention en supprimant des éléments car l'imagerie que vous utilisez n'est pas forcément à jour, et une route nouvellement construite peut être manquante sur des images trop anciennes."
+      },
+      "areas": {
+        "title": "Polygones",
+        "intro": "Les *polygones* sont utilisés pour montrer les délimitations d'éléments comme des lacs, des bâtiments et des zones résidentielles. Les polygones doivent être dessinés le long du bord des éléments qu'ils représentent, par exemple autour du pied d'un bâtiment.",
+        "point_or_area_h": "Des points ou un polygone ?",
+        "point_or_area": "De nombreux éléments peuvent être représentés par des points ou des polygones. Vous devriez cartographier les bâtiments et les contours de propriétés avec des polygones lorsque c'est possible. Placez des points à l'intérieur d'un bâtiment pour représenter des entreprises, des équipements et d'autres éléments se trouvant à l'intérieur.",
+        "add_area_h": "Ajouter des polygones",
+        "add_area_command": "Pour ajouter un polygone, appuyez sur le bouton {area_icon} **{area}** de la barre d'outils au-dessus de la carte, ou utilisez le raccourci clavier `3`.",
+        "add_area_finish": "Pour terminer un polygone, pressez la touche `{return}` ou cliquez / appuyez une seconde fois sur le premier ou le dernier nœud.",
+        "square_area_h": "Rendre une forme orthogonale",
+        "modify_area_h": "Modifier des polygones",
+        "modify_area_dragnode": "Souvent, vous verrez que les polygones ne sont pas formés correctement, par exemple un bâtiment qui ne correspond pas à l'imagerie utilisée en fond. Pour ajuster la forme d'un polygone, commencez par le sélectionner. Tous les nœuds du polygone apparaîtront comme des petits cercles. Vous pourrez alors les déplacer.",
+        "delete_area_h": "Supprimer des polygones",
+        "delete_area": "Si un polygone est entièrement erroné, comme un bâtiment qui n'existe pas, vous pouvez l'effacer. Faites attention en supprimant des éléments car l'imagerie que vous utilisez n'est pas forcément à jour, et un bâtiment nouvellement construit peut être manquant sur des images trop anciennes."
+      },
+      "relations": {
+        "intro": "Une *relation* est un élément spécial dans OpenStreetMap qui regroupe ensemble d'autres éléments. Les éléments qui appartiennent à une relation sont appelés *membres*, et chacun de ces membres peut avoir un *rôle* dans la relation.",
+        "edit_relation_h": "Modifier des Relations",
+        "edit_relation": "En bas de l'éditeur d'éléments, vous pouvez agrandir la section « {relations} » pour voir si l'élément sélectionné est membre d'une ou plusieurs relations. Vous pouvez alors cliquer sur la relation pour la sélectionner et l'éditer.",
+        "edit_relation_add": "Pour ajouter un membre à une relation, sélectionnez l'élément, puis cliquez sur le bouton d'ajout {plus} dans la section « {relations} » de l'éditeur d'élément. Vous pouvez sélectionner une relation parmi celles existantes à proximité, ou choisir l'option « {new_relation} ».",
+        "edit_relation_delete": "Vous pouvez également cliquer sur {delete_icon} **{delete}** pour supprimer un élément d'une relation. Si vous supprimez tous les éléments d'une relation, celle-ci sera automatiquement supprimée.",
+        "maintain_relation_h": "Maintenir des Relations",
+        "relation_types_h": "Types de Relation",
+        "multipolygon_h": "Multipolygones",
+        "multipolygon": "Une relation *multipolygone* est un groupe d'un ou plusieurs éléments *extérieurs* et d'un ou plusieurs éléments intérieurs. Les éléments extérieurs définissent les bords extérieurs du multipolygone, et les éléments intérieurs définissent les sous-polygones ou les trous à l'intérieur du multipolygone.",
+        "turn_restriction_h": "Interdictions de tourner",
+        "turn_restriction": "Une relation *interdiction de tourner* est un groupe formé de plusieurs segments de routes à une intersection. Elle comporte une route *depuis*, un nœud ou des routes *via*, et une route *vers*.",
+        "turn_restriction_field": "Pour modifier les interdictions de tourner, sélectionnez un nœud où se croisent au moins deux routes. L'éditeur d'élément affichera alors un champ spécial « {turn_restrictions} » contenant un modèle de l'intersection.",
+        "route_h": "Itinéraires",
+        "route": "Une relation *itinéraire* est un groupe d'une ou plusieurs lignes formant ensemble un réseau, comme un itinéraire de bus, un itinéraire ferroviaire, ou un itinéraire routier.",
+        "route_add": "Pour ajouter un élément à une relation itinéraire, sélectionnez cet élément et descendez jusqu'à la section « {relations} » de l'éditeur, puis cliquez sur le bouton d'ajout {plus} pour l'intégrer à une relation existante à proximité ou à une nouvelle relation.",
+        "boundary_h": "Frontières",
+        "boundary": "Une relation *frontière* est un groupe d'une ou plusieurs lignes formant ensemble une frontière administrative.",
+        "boundary_add": "Pour ajouter un élément à une relation frontière, sélectionnez cet élément et descendez jusqu'à la section « {relations} » de l'éditeur d'éléments, puis cliquez sur le bouton d'ajout {plus} pour ajouter cet élément à une relation existante proche ou à une nouvelle relation."
+      },
+      "operations": {
+        "title": "Opérations",
+        "intro_2": "Chaque opération a son propre raccourci clavier. La plupart des opérations peuvent être appliquées à plusieurs éléments à la fois.",
+        "straighten": "{straighten_icon} **{straighten}** retire les courbures des lignes. Il peut aussi aligner les ensembles de points en rangées ordonnées.",
+        "orthogonalize": "{orthogonalize_icon} **{orthogonalize}** rend les angles des régions et des lignes orthogonaux. Vous pouvez rendre orthogonaux des angles individuels ou des éléments entiers.",
+        "circularize": "{circularize_icon} **{circularize}** transforme les régions et les lignes cycliques en cercles.",
+        "move": "{move_icon} **{move}** permet de déplacer des éléments sur la carte.",
+        "rotate": "{rotate_icon} **{rotate}** permet de faire pivoter des éléments autour de leur point central.",
+        "reflect": "{reflect_short_icon} **{reflect_short}** et {reflect_long_icon} **{reflect_long}** retourne un élément selon son bord court ou long.",
+        "continue": "{continue_icon} **{continue}** permet d'étendre des lignes existantes à partir de leurs extrémités.",
+        "reverse": "{reverse_icon} **{reverse}** inverse la direction des éléments. La direction est utile pour les choses telles que les routes à sens unique, la signalisation routière, les cours d'eau ou encore les falaises.",
+        "disconnect": "{disconnect_icon} **{disconnect}** sépare des lignes et des régions connectées. Vous pouvez séparer des éléments entiers ou juste des points sélectionnés.",
+        "merge": "{merge_icon} **{merge}** fusionne de multiples éléments en un seul. Vous pouvez fusionner des régions pour créer des polygones, fusionner des lignes pour créer des lignes plus longues, et fusionner des points avec n'importe quel élément pour en transférer les tags.",
+        "split": "{split_icon} **{split}** découpe des lignes aux points sélectionnés. Si des lignes spécifiques sont aussi sélectionnées, seules ces dernières sont découpées.",
+        "extract": "{extract_icon} **{extract}** extrait les attributs d'un point d'une ligne en les mettant dans un nouveau nœud. Fonctionnement identique pour les surfaces.",
+        "delete": "{delete_icon} **{delete}** retire des éléments de la carte. Tout ce qui n'existe pas dans le monde réel devrait être retiré.",
+        "downgrade": "{downgrade_icon} **{downgrade}** retire la plupart des tags sauf les informations de bâtiment et l'adresse. C'est utile lorsque des commerces ferment tout en laissant les bâtiments tels quels.",
+        "copy_paste": "{copy_icon} **{copy}** et {paste_icon} **{paste}** permettent de dupliquer des éléments."
+      },
+      "notes": {
+        "intro": "Les *notes* sont utilisées pour prévenir les utilisateurs qu'un élément requiert une correction ou une attention particulière. Les notes marquent un emplacement précis sur la carte. Pour voir les notes existantes ou en ajouter de nouvelles, ouvrez le panneau {data_icon} **{map_data}** et activez la couche {osm_notes}.",
+        "add_note_h": "Ajout de notes",
+        "add_note": "Pour ajouter une note, cliquez sur le bouton {note_icon} **{note}** dans la barre d'outils au dessus de la carte ou appuyez sur la touche raccourci `{add_note_key}`.",
+        "update_note_h": "Fermer, réouvrir et commenter",
+        "update_note": "On peut mettre à jour une note existante en la fermant, en la rouvrant ou en lui ajoutant un commentaire. Fermer la note indique que le problème a été résolu. La réouvrir indique que le problème de départ n'est pas résolu.",
+        "save_note_h": "Enregistrer ses notes",
+        "save_note": "Vous devez sauvegarder chaque modification de note individuellement en cliquant sur les boutons sous les commentaires. Les modifications que vous apportez aux notes ne font **pas** partie des groupes de modifications que vous envoyez à OpenStreetMap."
+      },
+      "imagery": {
+        "title": "Fond de carte",
+        "intro": "Le fond de carte qui apparaît sous les données est un élément important pour cartographier. Il peut s'agir de photos aériennes émanant de satellites, d'avions, et de drones, ou de cartes historiques scannées, ou encore de toute autre source de données libre.",
+        "sources_h": "Sources des images",
+        "choosing": "Pour voir quelles sources sont disponibles à l'édition, ouvrez le volet {layers_icon} **{background_settings}** sur le côté de la carte.",
+        "sources": "Par défaut, le fond de carte sélectionné est soit les images satellites [Bing Maps](https://www.bing.com/maps/) soit la meilleure imagerie satellitaire connue pour cet endroit. Mais d'autres fonds de carte peuvent être disponibles. Certains peuvent être plus récents ou avoir une meilleure résolution donc vérifiez régulièrement quel est le meilleure fond à utiliser pour cartographier. N'oubliez pas de décaler les cartes si elles ne se superposent pas correctement avec les objets déjà présents à l'écran.",
+        "offsets_h": "Ajustement du fond de carte",
+        "offset": "L'imagerie est parfois légèrement décalée par rapport aux données précises de la carte. Si vous constatez que de nombreuses routes ou de nombreux bâtiments sont décalés par rapport au fond de carte, c'est peut-être que l'imagerie n'est pas correctement alignée. Plutôt que de déplacer à tort les éléments de la carte, vous pouvez ajuster le fond de carte en utilisant la section \"{imagery_offset}\" en bas du panneau Fond de carte."
+      },
+      "streetlevel": {
+        "title": "Photos de la rue",
+        "using_h": "Utiliser des photos de la rue.",
+        "using": "Pour utiliser les photos horizontales, cliquez sur le {data_icon} **{map_data}** sur le bord de la carte puis activer ou désactiver les couches photo disponibles.",
+        "photos": "Lorsque cela est activé, la couche des photos montre une ligne là où des photos horizontales sont disponibles. Aux niveaux de zoom élevés, un cercle marque l'emplacement de chaque photo et aux zooms encore plus élevés, un cône indique la direction de l'appareil photo lorsque la photo a été prise.",
+        "viewer": "Lorsque vous sélectionnez l'un des emplacements de la photo, un visualiseur de photos apparaît dans le coin inférieur de la carte. La visionneuse de photos contient des commandes pour avancer et reculer dans la séquence d'images. Elle indique également le nom d'utilisateur de la personne qui a pris la photo, la date à laquelle elle a été prise et un lien pour visualiser l'image sur le site d’origine."
+      },
+      "gps": {
+        "title": "Traces GPS",
+        "intro": "Les traces GPS collectées sont une source précieuse de données pour OpenStreetMap. Cet éditeur accepte les fichiers aux formats *.gpx*, .kml, *.geojson* et *.json*. Vous pouvez collecter des traces GPS à partir d'un smartphone, d'une montre connectée ou de tout appareil muni d'une puce GPS.",
+        "survey": "Pour plus d'information sur la conduite d'étude de terrain au GPS, vous pouvez lire [Cartographier avec un smartphone, un GPS ou sur papier](http://learnosm.org/fr/mobile-mapping/).",
+        "using_h": "Utilisation des traces GPS",
+        "using": "Pour utiliser un tracé GPS, faites glisser le fichier correspondant dans l'éditeur. S'il est reconnu, il apparaîtra en violet sur la carte. Cliquez sur le {data_icon} **{map_data}**sur le bord de la carte puis sur la rubrique \"données de carte personnalisées\" pour montrer, cacher ou vous centrer sur vos données GPS.",
+        "tracing": "La trace GPS n'est pas envoyée à OpenStreetMap. Le meilleur moyen de l'utiliser est de dessiner sur la carte en s'en servant de modèle.",
+        "upload": "Vous pouvez aussi [mettre vos données GPS sur OpenStreetMap](https://www.openstreetmap.org/trace/create) pour que d'autres utilisateurs puissent les utiliser."
+      },
+      "qa": {
+        "title": "Assurance qualité",
+        "intro": "Les automates signalant des problèmes de qualité peuvent trouver des attributs incorrects, des chemins déconnectés et d'autres problèmes dans OpenStreetMap que vous pouvez ensuite corriger. Pour visualiser les problèmes de qualité existants, cliquez sur le panneau {data_icon} **{map_data}** et activer le ou les automates de qualité désirés.",
+        "tools_h": "Outils",
+        "tools": "Les outils suivants sont pris en charge actuellement: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) et [Osmose](https://osmose.openstreetmap.fr/).",
+        "issues_h": "Gérer les problèmes",
+        "issues": "L'utilisation des automates signalant des problèmes de qualité est similaire à celle des notes. Sélectionnez dans  la barre latérale un automate de qualité pour afficher tous les problèmes que cet automate à repérer. Chaque automate a ses propres fonctionnalités mais généralement vous pouvez, pour chaque problème, laisser un commentaire ou le fermer."
+      },
+      "field": {
+        "restrictions": {
+          "title": "Aide des interdictions de tourner",
+          "about": {
+            "title": "À propos",
+            "about": "Ce champ vous permet d'inspecter et de modifier les interdictions de tourner. Il affiche un modèle de l'intersection sélectionnée avec les routes connectées proches.",
+            "from_via_to": "Une interdiction de tourner contient toujours : un **chemin DEPUIS**, un **chemin VERS**, et soit un **nœud VIA**, soit un ou plusieurs **chemins VIA**.",
+            "maxdist": "Le curseur « {distField} » contrôle la distance jusqu'à laquelle chercher des routes connectées supplémentaires.",
+            "maxvia": "Le curseur « {viaField} » ajuste le nombre de chemins via à inclure dans la recherche. (Astuce : plus c'est simple, mieux c'est)"
+          },
+          "inspecting": {
+            "title": "Inspecter",
+            "about": "Survolez avec le curseur un segment **DEPUIS** pour voir s'il est soumis à des interdictions de tourner. Toutes les destinations possibles **VERS** seront ombrées et montreront si une restriction existe.",
+            "from_shadow": "{fromShadow} **DEPUIS le segment**",
+            "allow_shadow": "{allowShadow} **VERS autorisé**",
+            "restrict_shadow": "{restrictShadow} **VERS interdit**",
+            "only_shadow": "{onlyShadow} **VERS uniquement**",
+            "restricted": "« Interdit » signifie qu'il y a une interdiction de tourner, par exemple « Interdit de tourner à gauche ».",
+            "only": "« Uniquement » signifie qu'un véhicule empruntant ce chemin n'a pas d'autre choix de direction, par exemple « Direction obligatoire »."
+          },
+          "modifying": {
+            "title": "Modifier",
+            "about": "Pour modifier les interdictions de tourner, commencez par cliquer sur l'un des segments **DEPUIS** pour le sélectionner. Celui-ci va clignoter, et toutes les directions possibles **VERS** vont apparaître avec un symbole.",
+            "indicators": "Puis cliquez sur un symbole de direction pour le basculer entre « autorisé », « interdit », et « uniquement ».",
+            "allow_turn": "{allowTurn} **VERS autorisé**",
+            "restrict_turn": "{restrictTurn} **VERS interdit**",
+            "only_turn": "{onlyTurn} **VERS uniquement**"
+          },
+          "tips": {
+            "title": "Astuces",
+            "simple": "**Privilégiez les restrictions simples plutôt que les complexes.**",
+            "simple_example": "Par exemple, évitez de créer une restriction par un chemin via si un simple nœud via est suffisant.",
+            "indirect": "**Certaines interdictions affichent le texte « (indirect) » et sont dessinées en transparence.**",
+            "indirect_example": "Ces interdictions existent à cause d'une autre restriction proche. Par exemple, une restriction « Obligation d'aller tout droit » créera indirectement des restrictions « Interdiction de tourner » pour tous les autres chemins de l'intersection.",
+            "indirect_noedit": "Vous ne pouvez pas modifier les interdictions indirectes. À la place, modifiez la restriction directe la plus proche."
+          }
+        }
+      }
+    },
+    "issues": {
+      "title": "Problèmes",
+      "list_title": "Problèmes",
+      "errors": {
+        "list_title": "Erreurs"
+      },
+      "warnings": {
+        "list_title": "Avertissements"
+      },
+      "rules": {
+        "title": "Règles"
+      },
+      "user_resolved_issues": "Problèmes résolus par vos modifications",
+      "warnings_and_errors": "Avertissements et erreurs",
+      "no_issues": {
+        "message": {
+          "everything": "Tout a l'air correct",
+          "everything_in_view": "Tout ce qui est visible a l'air correct",
+          "edits": "Vos modifications ont l'air correctes",
+          "edits_in_view": "Vos modifications visibles ont l'air correctes",
+          "no_edits": "Vous n'avez pas encore de modification"
+        },
+        "hidden_issues": {
+          "none": "Les problèmes détectés apparaîtront ici",
+          "elsewhere": "Problèmes ailleurs : {count}",
+          "everything_else": "Problèmes avec tout le reste : {count}",
+          "everything_else_elsewhere": "Problèmes ailleurs avec tout le reste : {count}",
+          "disabled_rules": "Problèmes pour des règles désactivées : {count}",
+          "disabled_rules_elsewhere": "Problèmes ailleurs pour des règles désactivées : {count}",
+          "ignored_issues": "Problèmes ignorés : {count}",
+          "ignored_issues_elsewhere": "Problèmes ailleurs ignorés : {count}"
+        }
+      },
+      "options": {
+        "what": {
+          "title": "Vérifications :",
+          "edited": "Mes modifications",
+          "all": "Tout"
+        },
+        "where": {
+          "title": "Où :",
+          "visible": "Visibles",
+          "all": "Partout"
+        }
+      },
+      "suggested": "Corrections suggérées :",
+      "enable_all": "Tout activer",
+      "disable_all": "Tout désactiver",
+      "reset_ignored": "Remettre à zéro les problèmes ignorés",
+      "fix_one": {
+        "title": "corriger"
+      },
+      "fix_all": {
+        "title": "Tout corriger",
+        "annotation": "Plusieurs problèmes de validation corrigés."
+      },
+      "almost_junction": {
+        "title": "Jonctions imparfaites",
+        "tip": "Trouver des éléments qui devrait sans doute être connectés à d'autres éléments proches",
+        "message": "{feature} est très proche mais n'est pas connecté à {feature2}",
+        "self": {
+          "message": "{feature} se termine très proche de lui-même mais sans connexion"
+        },
+        "highway-highway": {
+          "reference": "Les routes qui se croisent devraient partager un point de jonction."
+        }
+      },
+      "area_as_point": {
+        "message": "{feature} devrait être une zone, et non un point"
+      },
+      "close_nodes": {
+        "title": "Points très proches",
+        "tip": "Trouver des paquets de points redondants",
+        "message": "Deux points de {way} sont très proches",
+        "reference": "Les points redondants sur une ligne devraient être fusionnés ou déplacés.",
+        "detached": {
+          "message": "{feature} est trop près de {feature2}",
+          "reference": "Des points séparés ne devraient pas partager le même emplacement."
+        }
+      },
+      "crossing_ways": {
+        "message": "{feature} croise {feature2}",
+        "tip": "Trouver des éléments qui en croisent d'autres de manière incorrecte",
+        "building-building": {
+          "reference": "Les bâtiments ne devraient pas se recouper, sauf sur des couches différentes."
+        },
+        "building-highway": {
+          "reference": "Les routes qui croisent des bâtiments devraient utiliser des ponts, des tunnels, des couvertures ou des couches différentes."
+        },
+        "building-railway": {
+          "reference": "Les voies de chemin de fer qui croisent des bâtiments devraient utiliser des ponts, des tunnels ou des couches différentes."
+        },
+        "building-waterway": {
+          "reference": "Les cours d'eau qui croisent des bâtiments devraient utiliser des tunnels ou d'autres couches."
+        },
+        "highway-highway": {
+          "reference": "Les routes qui se croisent devraient utiliser des ponts, des tunnels ou des intersections."
+        },
+        "highway-railway": {
+          "reference": "Les routes qui croisent des voies de chemin de fer devraient utiliser des ponts, des tunnels ou des passages à niveau."
+        },
+        "highway-waterway": {
+          "reference": "Les routes qui croisent des cours d'eau devraient utiliser des ponts, des tunnels ou des gués."
+        },
+        "railway-railway": {
+          "reference": "Les voies de chemin de fer qui se croisent devrait être connectées (ou utilisez un pont ou un tunnel)."
+        },
+        "railway-waterway": {
+          "reference": "Les voies de chemin de fer qui croisent des cours d'eau devraient utiliser des ponts ou des tunnels."
+        },
+        "waterway-waterway": {
+          "reference": "Les cours d'eau qui se croisent devraient être connectés, ou utiliser des tunnels."
+        },
+        "tunnel-tunnel": {
+          "reference": "Les tunnels qui se croisent devraient utiliser des couches différentes."
+        },
+        "tunnel-tunnel_connectable": {
+          "reference": "Les tunnels qui se croisent devraient être connectés ou utiliser des couches différentes."
+        },
+        "bridge-bridge": {
+          "reference": "Les ponts qui se croisent devraient utiliser des couches différentes."
+        },
+        "bridge-bridge_connectable": {
+          "reference": "Les ponts qui se croisent devraient être connectés ou utiliser des couches différentes."
+        },
+        "indoor-indoor": {
+          "reference": "Les éléments intérieurs se croisant doivent utiliser des niveaux différents."
+        },
+        "indoor-indoor_connectable": {
+          "reference": "Les éléments intérieurs se croisant devraient être connectés ou utiliser des niveaux différents"
+        }
+      },
+      "disconnected_way": {
+        "title": "Lignes déconnectés",
+        "tip": "Trouver des routes, des chemins et des trajets de ferry non routables",
+        "routable": {
+          "message": {
+            "one": "{highway} est déconnecté des autres routes et chemins",
+            "many": "{count} éléments de type route ne sont pas connectés au reste du réseau routier.",
+            "other": "{count} éléments de type route ne sont pas connectés au reste du réseau routier."
+          }
+        }
+      },
+      "fixme_tag": {
+        "message": "{feature} a une demande de correction",
+        "reference": "L'attribut « fixme » indique que le cartographe demande de l'aide pour cet élément."
+      },
+      "generic_name": {
+        "message": "{feature} possède le nom suspect « {name} »",
+        "message_language": "{feature} possède le nom suspect « ‭{name} » en {language}",
+        "reference": "Les noms devraient être le nom réel de l'élément sur le terrain."
+      },
+      "help_request": {
+        "title": "Demandes d'aide",
+        "tip": "Trouver des éléments pour lesquels d'autres demandent de l'aide"
+      },
+      "incompatible_source": {
+        "title": "Sources suspectes",
+        "tip": "Trouver des éléments avec un attribut source suspect",
+        "feature": {
+          "message": "{feature} indique \"{value}\" comme source de données"
+        },
+        "reference": {
+          "amap": "Les données provenant de Amap sont protégées et ne doivent pas être utilisées comme références.",
+          "baidu": "Les données provenant de Baidu sont protégées et ne doivent pas être utilisées comme références.",
+          "google": "Les données provenant de Google sont protégées et ne doivent pas être utilisées comme références."
+        }
+      },
+      "invalid_format": {
+        "title": "Format invalide",
+        "tip": "Trouver des attributs avec des formats inattendus",
+        "email": {
+          "message": "{feature} a une adresse de courriel invalide",
+          "message_multi": "{feature} a plusieurs adresses de courriel invalides",
+          "reference": "Les adresses de courriel doivent ressembler à « utilisateur@exemple.com »."
+        }
+      },
+      "line_as_area": {
+        "message": "{feature} devrait être une ligne, pas une surface"
+      },
+      "line_as_point": {
+        "message": "{feature} devrait être sur une ligne, pas un point isolé"
+      },
+      "mismatched_geometry": {
+        "title": "Géométrie invalide",
+        "tip": "Trouver des éléments dont les attributs entrent en conflit avec sa géométrie",
+        "reference": "Les attributs possibles sur un élément dépendent du type de géométrie de celui-ci (noeud, chemin, surface)."
+      },
+      "missing_role": {
+        "title": "Rôles manquants",
+        "message": "{member} n'a pas de rôle dans {relation}",
+        "tip": "Trouver des relations avec des membres dont le rôle manque ou est incorrect",
+        "multipolygon": {
+          "reference": "Les membres du multipolygone doivent avoir un rôle intérieur ou extérieur."
+        }
+      },
+      "missing_tag": {
+        "title": "Attributs manquants",
+        "tip": "Trouver des éléments sans attribut descriptifs",
+        "reference": "Les éléments doivent avoir un attribut qui définit ce qu'ils sont.",
+        "any": {
+          "message": "{feature} n'a pas d'attribut"
+        },
+        "descriptive": {
+          "message": "{feature} n'a aucun attribut descriptif"
+        },
+        "relation_type": {
+          "message": "{feature} est une relation sans type"
+        }
+      },
+      "old_multipolygon": {
+        "message": "{multipolygon} a des attributs mal placés",
+        "reference": "Les attributs des multipolygones devraient se trouver sur leur relation, pas sur leur ligne extérieure."
+      },
+      "outdated_tags": {
+        "title": "Attributs obsolètes",
+        "message": "{feature} utilise des attributs obsolètes",
+        "tip": "Trouver des éléments avec des attributs obsolètes qui peuvent être mis à jour",
+        "reference": "Certains attributs changent au fil du temps et devraient être remplacés.",
+        "incomplete": {
+          "message": "{feature} a des attributs incomplets",
+          "reference": "Certains éléments devraient avoir des attributs supplémentaires."
+        },
+        "noncanonical_brand": {
+          "message": "{feature} semble être un élément fréquent avec des attributs non standards",
+          "message_incomplete": "{feature} semble être un élément fréquent avec des attributs incomplets",
+          "reference": "Certains éléments, par exemple les chaînes de magasins ou les bureaux de poste, sont censés avoir certains attributs identiques."
+        }
+      },
+      "point_as_area": {
+        "message": "{feature} devrait être un point, pas une surface"
+      },
+      "point_as_line": {
+        "message": "{feature} devrait être un point, pas une ligne"
+      },
+      "point_as_vertex": {
+        "message": "{feature} devrait être un point seul d'après ses attributs",
+        "reference": "Certains éléments ne devraient pas faire partie d'une ligne ou d'une surface."
+      },
+      "private_data": {
+        "title": "Informations privées",
+        "tip": "Trouver des éléments qui peuvent contenir des informations personnelles",
+        "reference": "Les données sensibles comme les numéros de téléphones personnels ne devraient pas être renseignées.",
+        "contact": {
+          "message": "{feature} pourrait contenir des attributs avec des informations de contact privées"
+        }
+      },
+      "suspicious_name": {
+        "title": "Noms suspects",
+        "tip": "Trouver des éléments avec des noms génériques ou suspects"
+      },
+      "tag_suggests_area": {
+        "message": "{feature} devrait être un polygone fermé d'après l'attribut « {tag} »",
+        "reference": "Les polygones doivent avoir deux points connectés."
+      },
+      "unknown_road": {
+        "message": "{feature} n'a pas de classification",
+        "reference": "Les routes sans type spécifique peuvent ne pas apparaître sur les cartes ou pour le routage."
+      },
+      "impossible_oneway": {
+        "title": "Sens-uniques impossibles",
+        "tip": "Trouver des problèmes de routage avec les éléments en sens-unique",
+        "waterway": {
+          "connected": {
+            "start": {
+              "message": "{feature} s'éloigne d'un cours d'eau auquel il est connecté"
+            },
+            "end": {
+              "message": "{feature} coule à contre-courant d'un cours d'eau connnecté"
+            },
+            "reference": "Les segments de cours d'eau devraient tous couler dans la même direction."
+          }
+        },
+        "highway": {
+          "start": {
+            "message": "{feature} est inatteignable",
+            "reference": "Les routes en sens-unique doivent être accessible depuis d'autres routes."
+          },
+          "end": {
+            "message": "{feature} n'a pas de sortie",
+            "reference": "Les routes en sens-unique doivent rejoindre d'autres routes."
+          }
+        }
+      },
+      "unclosed_multipolygon_part": {
+        "message": "{feature} a une partie non fermée",
+        "reference": "Toutes les parties internes et externes d'un multipolygone doivent se rejoindre à leurs extrémités."
+      },
+      "unsquare_way": {
+        "title": "Coins non orthogonaux (jusqu'à {val}°)",
+        "message": "{feature} a des coins non orthogonaux",
+        "tip": "Trouver des élément avec des coins non orthogonaux qui peuvent être améliorés",
+        "buildings": {
+          "reference": "Les bâtiments avec des coins non orthogonaux peuvent souvent être améliorés."
+        }
+      },
+      "vertex_as_point": {
+        "reference": "Certains éléments de devraient pas être des points seuls"
+      },
+      "fix": {
+        "add_a_bridge": {
+          "title": "Ajouter un pont",
+          "annotation": "Pont ajouté."
+        },
+        "add_a_tunnel": {
+          "title": "Ajouter un tunnel",
+          "annotation": "Tunnel ajouté."
+        },
+        "address_the_concern": {
+          "title": "Traiter le problème"
+        },
+        "connect_almost_junction": {
+          "annotation": "Éléments très proches et connectés."
+        },
+        "connect_crossing_features": {
+          "annotation": "Éléments connectés et se croisant."
+        },
+        "connect_endpoints": {
+          "title": "Connecter le bout",
+          "annotation": "Bouts de la ligne connectés."
+        },
+        "connect_feature": {
+          "title": "Connecter cet élément"
+        },
+        "connect_features": {
+          "title": "Connecter les éléments"
+        },
+        "connect_using_crossing": {
+          "title": "Connecter avec un passage piéton"
+        },
+        "connect_using_ford": {
+          "title": "Connecter avec un gué"
+        },
+        "continue_from_start": {
+          "title": "Continuer le dessin du début"
+        },
+        "continue_from_end": {
+          "title": "Continuer le dessin de la fin"
+        },
+        "convert_to_line": {
+          "title": "Convertir ceci en ligne",
+          "annotation": "Surface convertie en ligne."
+        },
+        "delete_feature": {
+          "title": "Supprimer cet élément"
+        },
+        "extract_point": {
+          "title": "Extraire ce point"
+        },
+        "ignore_issue": {
+          "title": "Ignorer ce problème"
+        },
+        "merge_close_vertices": {
+          "annotation": "Points très proches sur une ligne fusionnés."
+        },
+        "merge_points": {
+          "title": "Fusionner ces points"
+        },
+        "move_points_apart": {
+          "title": "Déplacer ces points"
+        },
+        "move_tags": {
+          "title": "Déplacer les attributs",
+          "annotation": "Attributs déplacés."
+        },
+        "remove_from_relation": {
+          "title": "Supprimer de la relation"
+        },
+        "remove_generic_name": {
+          "annotation": "Nom générique supprimé."
+        },
+        "remove_mistaken_name": {
+          "annotation": "Nom erroné supprimé"
+        },
+        "remove_private_info": {
+          "annotation": "Informations privées supprimées"
+        },
+        "remove_proprietary_data": {
+          "title": "Supprimer les données non-libres"
+        },
+        "remove_tag": {
+          "title": "Supprimer l'attribut",
+          "annotation": "Attribut supprimé."
+        },
+        "remove_tags": {
+          "title": "Supprimer les attributs"
+        },
+        "remove_the_name": {
+          "title": "Supprimer le nom"
+        },
+        "reposition_features": {
+          "title": "Repositionner l'élément"
+        },
+        "reverse_feature": {
+          "title": "Inverser cet élément"
+        },
+        "select_preset": {
+          "title": "Choisir un type d'élément"
+        },
+        "select_road_type": {
+          "title": "Choisir un type de route"
+        },
+        "set_as_inner": {
+          "title": "Indiquer comme intérieur"
+        },
+        "set_as_outer": {
+          "title": "Indiquer comme extérieur"
+        },
+        "square_feature": {
+          "title": "Orthogonaliser cet élément"
+        },
+        "tag_as_disconnected": {
+          "title": "Indiquer qu'ils sont déconnectés",
+          "annotation": "Éléments très proches cartographiés comme étant déconnectés."
+        },
+        "tag_as_not": {
+          "title": "Le marquer comme différent de \"{name}\"",
+          "annotation": "Non ajouté: attribut"
+        },
+        "tag_as_unsquare": {
+          "title": "Marquer comme physiquement non orthogonal",
+          "annotation": "Marqué comme ayant des coins non orthogonaux."
+        },
+        "tag_this_as_higher": {
+          "title": "Utiliser une valeur plus élevée"
+        },
+        "tag_this_as_lower": {
+          "title": "Utiliser une valeur plus faible"
+        },
+        "upgrade_tags": {
+          "title": "Mettre à jour les attributs",
+          "annotation": "Ancien attribut mis à jour."
+        },
+        "use_different_layers": {
+          "title": "Utiliser des couches différentes"
+        },
+        "use_different_layers_or_levels": {
+          "title": "Utiliser des couches ou des niveaux différents"
+        },
+        "use_different_levels": {
+          "title": "Utiliser des niveaux différents"
+        }
+      }
+    },
+    "intro": {
+      "done": "fait",
+      "graph": {
+        "city": "Trois-Rivières",
+        "postcode": "96300",
+        "state": "<value for addr:state>",
+        "countrycode": "fr",
+        "name": {
+          "1st-avenue": "Rue des Chats",
+          "2nd-avenue": "Rue des Chiens",
+          "4th-avenue": "Rue des Souris",
+          "5th-avenue": "Rue des Canards",
+          "6th-avenue": "Rue des Truites",
+          "6th-street": "Rue des Mouettes",
+          "7th-avenue": "Rue des Baleines",
+          "8th-avenue": "Rue des Grenouilles",
+          "9th-avenue": "Rue des Salamandres",
+          "10th-avenue": "Rue des Plaines",
+          "11th-avenue": "Rue des Montagnes",
+          "12th-avenue": "Rue des Nuages",
+          "access-point-employment": "Agence Point Emploi",
+          "adams-street": "Rue Victor Hugo",
+          "andrews-elementary-school": "École primaire Jean Moulin",
+          "andrews-street": "Rue Stendhal",
+          "armitage-street": "Rue Honoré de Balzac",
+          "barrows-school": "École Marguerite Yourcenar",
+          "battle-street": "Rue Léon Tolstoï",
+          "bennett-street": "Rue Jonathan Swift",
+          "bowman-park": "Parc Mark Twain",
+          "collins-drive": "Allée Edgar Allan Poe",
+          "conrail-railroad": "Voie ferrée SNCF",
+          "conservation-park": "Parc de conservation",
+          "constantine-street": "Rue William Shakespeare",
+          "cushman-street": "Rue Marcel Proust",
+          "dollar-tree": "Emmaüs Coup de Main",
+          "douglas-avenue": "Avenue Ovide",
+          "east-street": "Rue de la Chine",
+          "elm-street": "Rue de l'Orme",
+          "flower-street": "Rue des Fleurs",
+          "foster-street": "Rue Vladimir Nabokov",
+          "french-street": "Rue de la France",
+          "gem-pawnbroker": "Comptoir de l'Or",
+          "golden-finch-framing": "Les Cadres du Pinson Doré",
+          "grant-avenue": "Avenue Doris Lessing",
+          "hoffman-pond": "Étang Ernest Hemingway",
+          "hoffman-street": "Rue Ernest Hemingway",
+          "hook-avenue": "Avenue James Joyce",
+          "jefferson-street": "Rue Franz Kafka",
+          "kelsey-street": "Rue Gustave Flaubert",
+          "lafayette-park": "Parc Lafayette",
+          "las-coffee-cafe": "Café de Los Angeles",
+          "lincoln-avenue": "Avenue Lincoln",
+          "lowrys-books": "L'oiseau lecteur",
+          "lynns-garage": "Garage Marcel",
+          "main-street-barbell": "Club Muscle",
+          "main-street-cafe": "Café de la Grande Rue",
+          "main-street-fitness": "Club Gym",
+          "main-street": "Grande Rue",
+          "maple-street": "Rue des Érables",
+          "marina-park": "Parc Marina",
+          "market-street": "Rue du Marché",
+          "memory-isle-park": "Parc de l'île du Souvenir",
+          "memory-isle": "Île du Souvenir",
+          "michigan-avenue": "Avenue de la Mer",
+          "middle-street": "Rue Centrale",
+          "millard-street": "Rue Denis Diderot",
+          "moore-street": "Rue Charles Dickens",
+          "morris-avenue": "Avenue Miguel de Cervantes",
+          "mural-mall": "Voie de la Fresque",
+          "paisanos-bar-and-grill": "Bar et Grill Paisano",
+          "paisley-emporium": "Bon-à-Manger",
+          "paparazzi-tattoo": "Star Tattoo",
+          "pealer-street": "Rue Emily Brontë",
+          "pine-street": "Rue des Pins",
+          "pizza-hut": "La bonne Franquette",
+          "portage-avenue": "Avenue de la Portage",
+          "portage-river": "La Portage",
+          "preferred-insurance-services": "Assurance Plus-Mieux",
+          "railroad-drive": "Allée du Chemin de Fer",
+          "river-city-appliance": "Rivière Digitale",
+          "river-drive": "Allée de la Rivière",
+          "river-road": "Route de la Rivière",
+          "river-street": "Rue de la Rivière",
+          "riverside-cemetery": "Cimetière de la Rivière",
+          "riverwalk-trail": "Sentier des bords de rivières",
+          "riviera-theatre": "Théatre Riviera",
+          "rocky-river": "La Rocheuse",
+          "saint-joseph-river": "La Josèpe",
+          "scidmore-park-petting-zoo": "Parc animalier Scidmore",
+          "scidmore-park": "Parc Eliza Ruhamah Scidmore",
+          "scouter-park": "Parc de l'Éclaireur",
+          "sherwin-williams": "Scherwin-Williams",
+          "south-street": "Rue de la Méditerranée",
+          "southern-michigan-bank": "Crédit des Rivières",
+          "spring-street": "Rue de la Source",
+          "sturgeon-river-road": "Route de la Carpe",
+          "three-rivers-city-hall": "Hôtel de Ville",
+          "three-rivers-elementary-school": "École primaire Jules Ferry",
+          "three-rivers-fire-department": "Centre de secours",
+          "three-rivers-high-school": "Lycée Marie Curie",
+          "three-rivers-middle-school": "Collège Louise Michel",
+          "three-rivers-municipal-airport": "Aéroport Hélène Boucher",
+          "three-rivers-post-office": "La Poste - Trois-Rivières",
+          "three-rivers-public-library": "Bibliothèque Léonard de Vinci",
+          "three-rivers": "Trois-Rivières",
+          "unique-jewelry": "Joaillerie Chaussin",
+          "walnut-street": "Rue du Noyer",
+          "washington-street": "Rue William Faulkner",
+          "water-street": "Rue Johann Wolfgang von Goethe",
+          "west-street": "Rue de l'Atlantique",
+          "wheeler-street": "Rue Murasaki Shikibu",
+          "william-towing": "Dépannage Guillaume",
+          "willow-drive": "Allée du Saule",
+          "wood-street": "Rue du Bois",
+          "world-fare": "Cuisines du Monde"
+        }
+      },
+      "welcome": {
+        "title": "Accueil",
+        "welcome": "Bienvenue ! Cette visite guidée va vous enseigner les bases de l'édition sur OpenStreetMap.",
+        "practice": "Les données de ce tutoriel sont à votre disposition pour votre entraînement, les modifications apportées ne seront pas sauvegardées.",
+        "words": "Cette visite guidée va vous présenter de nouveaux mots et concepts. Lorsque ce sera le cas, ils seront en *italique*.",
+        "chapters": "Vous pouvez utiliser les boutons ci-dessous pour passer des chapitres ou en redémarrer un si vous êtes bloqué. C'est parti ! **Appuyez sur '{next}' pour poursuivre.**"
+      },
+      "navigation": {
+        "map_info": "La partie principale de la carte montre les données OpenStreetMap superposées à un arrière-plan.",
+        "features": "Le mot *élément* est utilisé pour décrire ce qui apparaît sur la carte. Un objet dans le monde réel peut être cartographié comme un élément sur OpenStreetMap.",
+        "points_lines_areas": "Les éléments cartographiques sont représentés par des *points*, des *lignes* et des *polygones*.",
+        "nodes_ways": "Dans OpenStreetMap, les points sont parfois appelés des *nœuds* (en anglais *nodes*), et les lignes et polygones des *chemins* (en anglais *ways*).",
+        "selected_townhall": "Bien ! Le point est maintenant sélectionné. Les éléments sélectionnés sont entourés d'un effet lumineux.",
+        "editor_townhall": "Quand un élément est sélectionné, l'*éditeur d'élément* est affiché à côté de la carte.",
+        "preset_townhall": "La partie supérieure de l'éditeur d'élément affiche le type d’élément. Ce point est de type {preset}.",
+        "fields_townhall": "La partie intermédiaire  de l'éditeur d'élément contient les attributs de l'élément, comme son nom ou son adresse.",
+        "close_townhall": "**Fermer l'éditeur d'élément en cliquant sur la {button} croix dans le coin supérieur ou avec la touche `{esc}`.**",
+        "search_street": "Vous pouvez chercher des éléments dans la vue courante ou dans le monde entier. **Cherchez « {name} »**",
+        "choose_street": "**Choisissez la {name} dans la liste pour la sélectionner.**",
+        "selected_street": "Bien ! La *{name}* est maintenant sélectionnée.",
+        "street_different_fields": "Les champs affichés pour une rue sont différents des champs qui étaient affichés pour la mairie.",
+        "editor_street": "Pour la rue sélectionnée, l'éditeur d'éléments affiche des champs comme « {field1} » et « {field2} ». **Fermez l'éditeur d'éléments en cliquant sur la {button} croix ou avec la touche `{esc}`.**",
+        "play": "Essayez d'explorer la carte et de sélectionner d'autres éléments pour voir les types de choses peuvent être ajoutées à OpenStreetMap. **Pour passer au chapitre suivant, cliquez sur « {next} ».**"
+      },
+      "points": {
+        "points_info": "Les *points* peuvent être utilisés pour représenter des éléments comme les magasins, les restaurants, ou les monuments.",
+        "add_point": "Ils indiquent une position précise, et décrivent ce qui s'y trouve. **Cliquez sur le bouton {point_icon} {point} pour ajouter un nouveau point.**",
+        "search_cafe": "Beaucoup d'éléments peuvent être représentés, chacun par un point. Le point que vous venez d'ajouter est un café. **Cherchez « {preset} »**",
+        "choose_cafe": "**Choisissez « {preset} » dans la liste.**",
+        "feature_editor": "Le point est maintenant marqué comme un café. En utilisant l'éditeur d'élément, vous pouvez ajouter d'autres informations sur ce café.",
+        "fields_info": "Dans OpenStreetMap, tous les champs sont optionnels, aussi, si vous n'êtes pas sûr de votre saisie, vous pouvez laisser un champ vide.",
+        "add_name": "Supposons que vous connaissiez ce café et son nom. **Ajoutez un nom pour le café.**",
+        "add_close": "L'éditeur d'élément se rappellera automatiquement de toutes vos modifications. **Après avoir ajouté le nom, cliquez sur la {button} croix ou appuyez sur `{esc}` pour fermer l'éditeur d'élément.**",
+        "reselect": "Souvent des points existent déjà mais ils peuvent parfois contenir des erreurs ou être incomplets. Vous pouvez modifier ces points. **Cliquez sur le café que vous venez de créer.**",
+        "update": "Ajoutons des détails sur ce café. Vous pouvez modifier le nom, préciser le type de cuisine ou son adresse. **Modifiez les informations du café**",
+        "update_close": "**Lorsque vous avez terminé vos modifications, cliquez sur la {button} croix ou appuyez sur `{esc}` pour fermer l'éditeur d'élément.**",
+        "delete": "Vous pouvez supprimer des éléments qui n'existent pas dans le monde réel.\nSupprimer un élément d'OpenStreetMap l'efface de la carte que tout le monde utilise, donc soyez absolument certain que cet élément n'existe plus sur le terrain avant de le supprimer. **Cliquez sur le bouton {delete_icon} {delete} pour supprimer le point.**",
+        "undo": "Il est toujours possible d'annuler des changements tant que rien n'a été sauvegardé sur OpenStreetMap. **Cliquez sur le bouton {undo_icon} {undo} pour faire revenir le point.**",
+        "play": "Maintenant que vous savez comment créer et modifier des points, vous pouvez vous entraîner avec quelques points supplémentaires ! **Pour passer au chapitre suivant, cliquez sur « {next} ».**"
+      },
+      "areas": {
+        "title": "Polygones",
+        "add_playground": "Les *polygones* sont utilisés pour montrer les limites d'éléments comme les lacs, les bâtiments, et les zones résidentielles.\nIls peuvent aussi être utilisés pour cartographier finement plusieurs éléments qui seraient normalement représentés par des points. **Cliquez sur le bouton {area_icon} {area} pour ajouter un nouveau polygone.**",
+        "start_playground": "Ajoutons cette aire de jeux sur la carte en traçant un polygone. Les polygones sont tracés en plaçant des *nœuds* le long du bord extérieur de l'élément.",
+        "starting_node_click": "**Cliquez ou appuyez sur `{space}` pour placer un nœud de départ sur l'un des coins de l'aire de jeux.**",
+        "finish_area_click": "Terminez le polygone en appuyant sur `{return}`, ou en cliquant à nouveau sur le premier ou le dernier nœud.",
+        "finish_playground": "**Terminez de tracer un polygone pour l'aire de jeux.**",
+        "search_playground": "**Cherchez « {preset} ».**",
+        "choose_playground": "**Choisissez « {preset} » dans la liste.**",
+        "add_field": "L'aire de jeux n'a pas de nom officiel, donc le champ {name} sera laissé vide.\nÀ la place, ajoutons des détails supplémentaires sur l'aire de jeux dans le champ {description}. **Ouvrez la liste Ajouter un attribut.**",
+        "choose_field": "**Choisissez « {field} » dans la liste.**",
+        "retry_add_field": "Vous n'avez pas sélectionné le champ {field}. Essayez encore.",
+        "describe_playground": "**Ajoutez une description, puis cliquez le bouton {button} pour fermer l'éditeur d'éléments.**",
+        "play": "Bravo ! Essayez de dessiner quelques polygones supplémentaires et regardez d'autres types de polygones que vous pouvez ajouter à OpenStreetMap. **Pour passer au chapitre suivant, cliquez sur « {next} ».**"
+      },
+      "lines": {
+        "title": "Lignes",
+        "add_line": "Les *lignes* sont utilisées pour représenter des éléments tels que des routes, voies ferrées et rivières. **Cliquez le bouton {line_icon} {line} pour ajouter une nouvelle ligne.**",
+        "missing_road": "Voici une route qui manque. Ajoutons-la !",
+        "line_draw_info": "Dans OpenStreetMap, les lignes doivent être tracées au centre de la route. Vous pouvez déplacer et zoomer la carte si nécessaire.",
+        "start_line": "**Commencez une nouvelle ligne en cliquant sur l'extrémité supérieure de la route manquante.**",
+        "intersect": "Continuez à dessiner la ligne en plaçant d'autres nœuds le long de la route.\nLes routes ainsi que les chemins et routes de ferries doivent être correctement connectés au reste du réseau pour que les applications de navigation fonctionnent. **Placez un nœud d'intersection sur {name} pour connecter les deux lignes.**",
+        "retry_intersect": "La nouvelle route doit croiser la ligne {name}. Essayez à nouveau !",
+        "continue_line": "Continuez de tracer la ligne de la nouvelle route. N'oubliez pas que vous pouvez déplacer et zoomer la carte si besoin.",
+        "finish_line_click": "Quand vous avez terminé, cliquez sur le dernier nœud ou appuyez sur `{return}`.",
+        "finish_road": "**Terminez de tracer la route.**",
+        "choose_category_road": "**Choisissez « {category} » dans la liste**",
+        "choose_preset_residential": "Il existe de nombreux types de routes, mais celle-ci est une route résidentielle. **Choisissez le type {preset}.**",
+        "retry_preset_residential": "Vous n'avez pas sélectionné le type {preset}. **Cliquez ici pour choisir à nouveau**",
+        "name_road": "**Donnez un nom à cette route, puis cliquez sur la croix {button} ou appuyez sur la touche `{esc}` pour fermer l'éditeur d'éléments.**",
+        "did_name_road": "C'est parfait ! Maintenant, nous allons apprendre à mettre à jour le tracé d'une ligne.",
+        "update_line": "Il sera parfois nécessaire de changer le tracé d'une ligne existante. Regardons cette route qui peut être améliorée.",
+        "add_node": "Nous pouvons ajouter des nœuds à cette ligne pour améliorer son tracé. Une manière est de double-cliquer sur la ligne à l'endroit où vous souhaitez ajouter un nœud. **Double-cliquez sur la ligne pour créer un nouveau nœud.**",
+        "drag_to_intersection": "**Déplacez l'extrémité jusqu'à l'endroit où les routes devraient s'intersecter.**",
+        "spot_looks_good": "Cet endroit convient bien.",
+        "finish_drag_endpoint": "**Relâchez le bouton de la souris pour finir le déplacement.**",
+        "finish_drag_endpoint_touch": "**Lâchez le nœud pour finir de le faire glisser.**",
+        "start_drag_midpoint": "Un petit triangle est dessiné au *milieu* entre deux nœuds. Un autre moyen de créer un nœud est de déplacer ce triangle vers un autre endroit. **Déplacez le triangle pour créer un nouveau nœud le long de la route.**",
+        "continue_drag_midpoint": "Cette ligne semble être bien mieux ! Continuez d'ajuster cette ligne jusqu'à ce que sa trajectoire corresponde à celle de la route. **Lorsque vous avez terminé, cliquez sur {ok}.**",
+        "delete_lines": "Vous pouvez supprimer une ligne si la route correspondante n'existe pas dans le monde réel.{br} Ici, la ligne *{street}* est une construction envisagée à un moment par la ville mais elle n'a jamais été réalisée. Nous pouvons améliorer cette partie de la carte en supprimant les parties incorrectes.",
+        "split_street": "La route se termine réellement à {street1}, nous allons donc *séparer* {street2} au niveau de cette intersection et supprimer tout le reste.",
+        "split_intersection": "**Cliquez sur le bouton {split_icon} {split} pour diviser la ligne {street}.**",
+        "retry_split": "Vous n'avez pas cliqué sur le bouton {split_icon} {split}. Réessayez.",
+        "did_split_multi": "Bravo ! La ligne {street1} est maintenant divisée en deux parties. La partie supérieure peut être supprimée. **Cliquez sur la partie supérieure de {street2}.**",
+        "did_split_single": "**Sélectionnez la partie supérieure de {street2}.**",
+        "multi_select": "La {selected} est sélectionnée. Sélectionnez aussi la {other1}.",
+        "add_to_selection_click": "Vous pouvez cliquer en maintenant la touche `{shift}` enfoncée pour sélectionner plusieurs choses. **Cliquez avec `{shift}` sur {other2}.**",
+        "multi_select_success": "Parfait ! Les deux lignes à supprimer sont maintenant sélectionnées.",
+        "multi_delete": "**Cliquez sur le bouton {delete_icon} {delete} pour supprimer les lignes en trop.**",
+        "retry_delete": "Vous n'avez pas cliqué sur le bouton {delete_icon} {delete}. Réessayez.",
+        "play": "Super ! Utilisez ce que vous avez appris dans ce chapitre pour vous entraîner à modifier d'autres lignes. **Pour passer au chapitre suivant, cliquez sur « {next} ».**"
+      },
+      "buildings": {
+        "title": "Bâtiments",
+        "start_building": "Ajoutons cette maison sur la carte, en traçant son contour.\nIl faut tracer les bâtiments sur leur empreinte au sol, aussi précisément que possible.",
+        "building_corner_click": "**Cliquez ou appuyez sur `{space}` pour placer un nœud de départ sur l'un des coins du bâtiment.**",
+        "continue_building": "Ajoutez d'autres nœuds pour tracer le contour du bâtiment. Rappelez-vous que vous pouvez zoomer pour voir plus de détails.",
+        "finish_building": "**Finissez de tracer le bâtiment.**",
+        "retry_building": "Quelques difficultés pour placer les points aux coins du bâtiment ? Réessayez !",
+        "choose_category_building": "**Choisissez « {category} » dans la liste.**",
+        "choose_preset_house": "Les types de bâtiments possibles sont très variés, mais celui-ci est une maison.{br}Lorsque vous avez un doute, choisissez simplement le type générique « Bâtiment ». **Choisissez le type « {preset} »**",
+        "square_building": "La maison sera encore mieux tracée si les coins sont des angles droits. **Cliquez sur le bouton {orthogonalize_icon} {orthogonalize} pour ajuster automatiquement la forme du bâtiment avec des angles droits.**",
+        "retry_square": "Vous n'avez pas cliqué sur le bouton {orthogonalize_icon} {orthogonalize}. Réessayez.",
+        "done_square": "Voilà ! Les coins du bâtiment sont correctement positionnés. Voyons une autre astuce très utile…",
+        "add_tank": "Nous allons maintenant tracer ce réservoir cylindrique. **Cliquez sur le bouton {area_icon} {area} pour ajouter un nouveau polygone.**",
+        "start_tank": "Ne vous inquiétez pas, vous n'aurez pas besoin de tracer un cercle parfait. Tracez simplement un polygone à l'intérieur du réservoir qui en touche les bords.",
+        "tank_edge_click": "**Cliquez ou appuyez sur `{space}` pour placer un nœud de départ sur le bord du réservoir.**",
+        "continue_tank": "Ajoutez quelques nœuds supplémentaires le long du bord. Le cercle sera créé à l'extérieur des nœuds que vous dessinez.",
+        "finish_tank": "**Finissez de tracer le réservoir.**",
+        "search_tank": "**Cherchez « {preset} »**",
+        "choose_tank": "**Choisissez « {preset} » dans la liste.**",
+        "circle_tank": "**Cliquez sur le bouton {circularize_icon} {circularize} pour ajuster la forme du réservoir et former automatiquement un cercle.**",
+        "retry_circle": "Vous n'avez pas cliqué sur le bouton {circularize_icon} {circularize}. Réessayez.",
+        "play": "Bravo ! Entraînez-vous à tracer quelques bâtiments supplémentaires, et essayez quelques-unes des autres commandes du menu d'édition. **Pour passer au chapitre suivant, cliquez sur « {next} ».**"
+      },
+      "startediting": {
+        "title": "Sortir du tutoriel et contribuer",
+        "help": "Vous êtes maintenant prêt pour contribuer à OpenStreetMap !\nVous pouvez recommencer ce tutoriel à tout moment ou lire plus de documentation en cliquant sur le bouton {help_icon} {help} ou en appuyant sur la touche « `{help_key}` ».",
+        "shortcuts": "Vous pouvez voir une liste des commandes avec leurs raccourcis claviers en appuyant sur la touche `{shortcuts_key}`.",
+        "save": "N'oubliez pas de sauver régulièrement vos modifications !",
+        "start": "Commencer à cartographier !"
+      }
+    },
+    "shortcuts": {
+      "title": "Raccourcis clavier",
+      "tooltip": "Afficher la page de raccourcis clavier",
+      "key": {
+        "backspace": "Retour",
+        "delete": "Suppr",
+        "del": "Suppr",
+        "end": "Fin",
+        "enter": "Entrée",
+        "esc": "Échap",
+        "home": "Début",
+        "option": "Opt",
+        "pgdn": "Pg.Préc",
+        "pgup": "Pg.Suiv",
+        "return": "Retour",
+        "shift": "Maj",
+        "space": "Espace"
+      },
+      "gesture": {
+        "drag": "glisser"
+      },
+      "or": "-ou-",
+      "browsing": {
+        "title": "Navigation",
+        "navigation": {
+          "pan": "Déplacer la vue"
+        },
+        "help": {
+          "title": "Aide",
+          "help": "Afficher l'aide et la documentation",
+          "keyboard": "Afficher les raccourcis clavier"
+        },
+        "display_options": {
+          "title": "Afficher les options",
+          "background": "Afficher/cacher le panneau d'imagerie",
+          "map_data": "Afficher/cacher le panneau de données",
+          "issues": "Afficher/cacher le panneau de validation des problèmes",
+          "preferences": "Afficher/cacher le panneau de préférences utilisateur",
+          "sidebar": "Afficher/cacher barre latérale",
+          "wireframe": "Afficher/cacher le mode filaire",
+          "osm_data": "Basculer la couche des données OpenStreetMap",
+          "highlight_edits": "Souligner les modifications non enregistrées"
+        },
+        "selecting": {
+          "title": "Sélection",
+          "select_one": "Sélectionner un seul élément",
+          "select_multi": "Sélectionner plusieurs éléments",
+          "lasso": "Dessiner une sélection englobante autour des éléments",
+          "search": "Trouver des éléments correspondant à la recherche."
+        },
+        "with_selected": {
+          "title": "Avec les éléments sélectionnés",
+          "edit_menu": "Afficher/cacher le menu d'édition"
+        },
+        "vertex_selected": {
+          "title": "Avec le nœud sélectionné",
+          "first": "Aller au premier nœud",
+          "last": "Aller au dernier nœud",
+          "change_parent": "Basculer sur une ligne connectée",
+          "parent": "Sélectionner la ligne parente"
+        },
+        "way_selected": {
+          "title": "Avec la ligne sélectionnée",
+          "child": "Sélectionner les nœuds enfants"
+        }
+      },
+      "editing": {
+        "title": "Édition",
+        "drawing": {
+          "title": "Tracés",
+          "add_point": "Mode 'Ajouter un point'",
+          "add_line": "Mode 'Ajouter une ligne'",
+          "add_area": "Mode 'Ajouter un polygone'",
+          "add_note": "Mode 'Ajouter une note'",
+          "place_point": "Placer un point ou une note",
+          "disable_snap": "Désactiver l'attraction des points à proximité",
+          "stop_line": "Terminer de tracer une ligne ou un polygone"
+        },
+        "commands": {
+          "title": "Commandes",
+          "copy": "Copier les éléments sélectionnés",
+          "paste": "Coller les éléments copiés",
+          "undo": "Annuler la dernière action",
+          "redo": "Rétablir la dernière action",
+          "save": "Enregistrer les modifications"
+        },
+        "operations": {
+          "continue_line": "Poursuivre une ligne au point terminal sélectionné",
+          "merge": "Fusionner les éléments sélectionnés",
+          "disconnect": "Déconnecter les éléments sélectionnés",
+          "extract": "Extraire un point d'un élément",
+          "split": "Couper les lignes aux points sélectionnés",
+          "reverse": "Inverser la sélection",
+          "move": "Déplacer les éléments sélectionnés",
+          "rotate": "Tourner les éléments sélectionnés",
+          "orthogonalize": "Rendre les coins d'une ligne ou d'une surface orthogonaux",
+          "straighten": "Aligner des points ou les points d'une ligne",
+          "circularize": "Rendre circulaire une ligne fermée ou un polygone",
+          "reflect_long": "Retourner les éléments le long de leur bord long.",
+          "reflect_short": "Retourner les éléments le long de leur bord court.",
+          "delete": "Supprimer les éléments sélectionnés"
+        }
+      },
+      "tools": {
+        "title": "Outils",
+        "info": {
+          "all": "Afficher/cacher le panneau général",
+          "background": "Afficher/cacher le panneau fond",
+          "history": "Afficher/cacher le panneau d'historique",
+          "location": "Afficher/cacher le panneau de localisation",
+          "measurement": "Afficher/cacher le panneau de mesure"
+        }
+      }
+    },
+    "units": {
+      "feet": "{quantity} pieds",
+      "miles": "{quantity} miles",
+      "square_feet": "{quantity} pieds carrés",
+      "square_miles": "{quantity} miles carrés",
+      "acres": "{quantity} acres",
+      "west": "O",
+      "year_month_day": "AAAA-MM-JJ"
+    },
+    "wikidata": {
+      "identifier": "Identifiant",
+      "label": "Étiquette"
+    },
+    "languageNames": {
+      "aa": "afar",
+      "ab": "abkhaze",
+      "ace": "aceh",
+      "ach": "acoli",
+      "ada": "adangme",
+      "ady": "adyguéen",
+      "ae": "avestique",
+      "aeb": "arabe tunisien",
+      "af": "afrikaans",
+      "afh": "afrihili",
+      "agq": "aghem",
+      "ain": "aïnou",
+      "ak": "akan",
+      "akk": "akkadien",
+      "akz": "alabama",
+      "ale": "aléoute",
+      "aln": "guègue",
+      "alt": "altaï du Sud",
+      "am": "amharique",
+      "an": "aragonais",
+      "ang": "ancien anglais",
+      "ann": "obolo",
+      "anp": "angika",
+      "ar": "arabe",
+      "ar-001": "arabe standard moderne",
+      "arc": "araméen",
+      "arn": "mapuche",
+      "aro": "araona",
+      "arp": "arapaho",
+      "arq": "arabe algérien",
+      "ars": "arabe najdi",
+      "arw": "arawak",
+      "ary": "arabe marocain",
+      "arz": "arabe égyptien",
+      "as": "assamais",
+      "asa": "asu",
+      "ast": "asturien",
+      "atj": "atikamekw",
+      "av": "avar",
+      "avk": "kotava",
+      "awa": "awadhi",
+      "ay": "aymara",
+      "az": "azerbaïdjanais",
+      "ba": "bachkir",
+      "bal": "baloutchi",
+      "ban": "balinais",
+      "bar": "bavarois",
+      "bas": "bassa",
+      "bax": "bamoun",
+      "bbc": "batak toba",
+      "bbj": "ghomalaʼ",
+      "be": "biélorusse",
+      "bej": "bedja",
+      "bem": "bemba",
+      "bew": "betawi",
+      "bez": "bena",
+      "bfd": "bafut",
+      "bfq": "badaga",
+      "bg": "bulgare",
+      "bgc": "haryanvi",
+      "bgn": "baloutchi occidental",
+      "bho": "bhodjpouri",
+      "bi": "bichelamar",
+      "bik": "bikol",
+      "bin": "bini",
+      "bjn": "banjar",
+      "bkm": "kom",
+      "bla": "siksika",
+      "bm": "bambara",
+      "bn": "bengali",
+      "bo": "tibétain",
+      "bpy": "bishnupriya",
+      "bqi": "bakhtiari",
+      "br": "breton",
+      "bra": "braj",
+      "brh": "brahoui",
+      "brx": "bodo",
+      "bs": "bosniaque",
+      "bss": "akoose",
+      "bua": "bouriate",
+      "bug": "bugi",
+      "bum": "boulou",
+      "byn": "blin",
+      "byv": "médumba",
+      "ca": "catalan",
+      "cad": "caddo",
+      "car": "caribe",
+      "cay": "cayuga",
+      "cch": "atsam",
+      "ccp": "changma kodha",
+      "ce": "tchétchène",
+      "ceb": "cebuano",
+      "cgg": "kiga",
+      "ch": "chamorro",
+      "chb": "chibcha",
+      "chg": "tchaghataï",
+      "chk": "chuuk",
+      "chm": "mari",
+      "chn": "jargon chinook",
+      "cho": "choctaw",
+      "chp": "chipewyan",
+      "chr": "cherokee",
+      "chy": "cheyenne",
+      "ckb": "kurde sorani",
+      "clc": "chilcotin",
+      "co": "corse",
+      "cop": "copte",
+      "cps": "capiznon",
+      "cr": "cree",
+      "crg": "mitchif",
+      "crh": "tatar de Crimée",
+      "crj": "cri de l’Est (dialecte du Sud)",
+      "crk": "cri des plaines",
+      "crl": "cri de l’Est (dialecte du Nord)",
+      "crm": "cri de Moose",
+      "crr": "algonquin de Caroline",
+      "crs": "créole seychellois",
+      "cs": "tchèque",
+      "csb": "kachoube",
+      "csw": "cri des marais",
+      "cu": "slavon d’église",
+      "cv": "tchouvache",
+      "cy": "gallois",
+      "da": "danois",
+      "dak": "dakota",
+      "dar": "dargwa",
+      "dav": "taita",
+      "de": "allemand",
+      "de-AT": "allemand autrichien",
+      "de-CH": "allemand suisse",
+      "del": "delaware",
+      "den": "esclave",
+      "dgr": "dogrib",
+      "din": "dinka",
+      "dje": "zarma",
+      "doi": "dogri",
+      "dsb": "bas-sorabe",
+      "dtp": "dusun central",
+      "dua": "douala",
+      "dum": "moyen néerlandais",
+      "dv": "maldivien",
+      "dyo": "diola-fogny",
+      "dyu": "dioula",
+      "dz": "dzongkha",
+      "dzg": "dazaga",
+      "ebu": "embu",
+      "ee": "éwé",
+      "efi": "éfik",
+      "egl": "émilien",
+      "egy": "égyptien ancien",
+      "eka": "ékadjouk",
+      "el": "grec",
+      "elx": "élamite",
+      "en": "anglais",
+      "en-AU": "anglais australien",
+      "en-CA": "anglais canadien",
+      "en-GB": "anglais britannique",
+      "en-US": "anglais américain",
+      "enm": "moyen anglais",
+      "eo": "espéranto",
+      "es": "espagnol",
+      "es-419": "espagnol d’Amérique latine",
+      "es-ES": "espagnol d’Espagne",
+      "es-MX": "espagnol du Mexique",
+      "esu": "youpik central",
+      "et": "estonien",
+      "eu": "basque",
+      "ewo": "éwondo",
+      "ext": "estrémègne",
+      "fa": "persan",
+      "fa-AF": "dari",
+      "fan": "fang",
+      "fat": "fanti",
+      "ff": "peul",
+      "fi": "finnois",
+      "fil": "filipino",
+      "fit": "finnois tornédalien",
+      "fj": "fidjien",
+      "fo": "féroïen",
+      "fon": "fon",
+      "fr": "français",
+      "fr-CA": "français canadien",
+      "fr-CH": "français suisse",
+      "frc": "français cadien",
+      "frm": "moyen français",
+      "fro": "ancien français",
+      "frp": "francoprovençal",
+      "frr": "frison septentrional",
+      "frs": "frison oriental",
+      "fur": "frioulan",
+      "fy": "frison occidental",
+      "ga": "irlandais",
+      "gaa": "ga",
+      "gag": "gagaouze",
+      "gan": "gan",
+      "gay": "gayo",
+      "gba": "gbaya",
+      "gbz": "dari zoroastrien",
+      "gd": "gaélique écossais",
+      "gez": "guèze",
+      "gil": "gilbertin",
+      "gl": "galicien",
+      "glk": "gilaki",
+      "gmh": "moyen haut-allemand",
+      "gn": "guarani",
+      "goh": "ancien haut allemand",
+      "gom": "konkani de Goa",
+      "gon": "gondi",
+      "gor": "gorontalo",
+      "got": "gotique",
+      "grb": "grebo",
+      "grc": "grec ancien",
+      "gsw": "suisse allemand",
+      "gu": "goudjarati",
+      "guc": "wayuu",
+      "gur": "gurenne",
+      "guz": "gusii",
+      "gv": "mannois",
+      "gwi": "gwichʼin",
+      "ha": "haoussa",
+      "hai": "haïda",
+      "hak": "hakka",
+      "haw": "hawaïen",
+      "hax": "haïda du Sud",
+      "he": "hébreu",
+      "hi": "hindi",
+      "hif": "hindi fidjien",
+      "hil": "hiligaynon",
+      "hit": "hittite",
+      "hmn": "hmong",
+      "ho": "hiri motu",
+      "hr": "croate",
+      "hsb": "haut-sorabe",
+      "hsn": "xiang",
+      "ht": "créole haïtien",
+      "hu": "hongrois",
+      "hup": "hupa",
+      "hur": "halkomelem",
+      "hy": "arménien",
+      "hz": "héréro",
+      "ia": "interlingua",
+      "iba": "iban",
+      "ibb": "ibibio",
+      "id": "indonésien",
+      "ie": "interlingue",
+      "ig": "igbo",
+      "ii": "yi du Sichuan",
+      "ik": "inupiaq",
+      "ikt": "inuktitut de l’Ouest canadien",
+      "ilo": "ilocano",
+      "inh": "ingouche",
+      "io": "ido",
+      "is": "islandais",
+      "it": "italien",
+      "iu": "inuktitut",
+      "izh": "ingrien",
+      "ja": "japonais",
+      "jam": "créole jamaïcain",
+      "jbo": "lojban",
+      "jgo": "ngomba",
+      "jmc": "matchamé",
+      "jpr": "judéo-persan",
+      "jrb": "judéo-arabe",
+      "jut": "jute",
+      "jv": "javanais",
+      "ka": "géorgien",
+      "kaa": "karakalpak",
+      "kab": "kabyle",
+      "kac": "kachin",
+      "kaj": "jju",
+      "kam": "kamba",
+      "kaw": "kawi",
+      "kbd": "kabarde",
+      "kbl": "kanembou",
+      "kcg": "tyap",
+      "kde": "makondé",
+      "kea": "capverdien",
+      "ken": "kényang",
+      "kfo": "koro",
+      "kg": "kikongo",
+      "kgp": "caingangue",
+      "kha": "khasi",
+      "kho": "khotanais",
+      "khq": "koyra chiini",
+      "khw": "khowar",
+      "ki": "kikuyu",
+      "kiu": "kirmanjki",
+      "kj": "kuanyama",
+      "kk": "kazakh",
+      "kkj": "kako",
+      "kl": "groenlandais",
+      "kln": "kalendjin",
+      "km": "khmer",
+      "kmb": "kimboundou",
+      "kn": "kannada",
+      "ko": "coréen",
+      "koi": "komi-permiak",
+      "kok": "konkani",
+      "kos": "kosraéen",
+      "kpe": "kpellé",
+      "kr": "kanouri",
+      "krc": "karatchaï balkar",
+      "kri": "krio",
+      "krj": "kinaray-a",
+      "krl": "carélien",
+      "kru": "kouroukh",
+      "ks": "cachemiri",
+      "ksb": "shambala",
+      "ksf": "bafia",
+      "ksh": "kölsch",
+      "ku": "kurde",
+      "kum": "koumyk",
+      "kut": "kutenai",
+      "kv": "komi",
+      "kw": "cornique",
+      "kwk": "kwak’wala",
+      "ky": "kirghize",
+      "la": "latin",
+      "lad": "ladino",
+      "lag": "langi",
+      "lah": "lahnda",
+      "lam": "lamba",
+      "lb": "luxembourgeois",
+      "lez": "lezghien",
+      "lfn": "lingua franca nova",
+      "lg": "ganda",
+      "li": "limbourgeois",
+      "lij": "ligure",
+      "lil": "lillooet",
+      "liv": "livonien",
+      "lkt": "lakota",
+      "lmo": "lombard",
+      "ln": "lingala",
+      "lo": "lao",
+      "lol": "mongo",
+      "lou": "créole louisianais",
+      "loz": "lozi",
+      "lrc": "lori du Nord",
+      "lsm": "samia",
+      "lt": "lituanien",
+      "ltg": "latgalien",
+      "lu": "luba-katanga (kiluba)",
+      "lua": "luba-kasaï (ciluba)",
+      "lui": "luiseño",
+      "lun": "lunda",
+      "luo": "luo",
+      "lus": "lushaï",
+      "luy": "luyia",
+      "lv": "letton",
+      "lzh": "chinois littéraire",
+      "lzz": "laze",
+      "mad": "madurais",
+      "maf": "mafa",
+      "mag": "magahi",
+      "mai": "maïthili",
+      "mak": "makassar",
+      "man": "mandingue",
+      "mas": "maasaï",
+      "mde": "maba",
+      "mdf": "mokcha",
+      "mdr": "mandar",
+      "men": "mendé",
+      "mer": "meru",
+      "mfe": "créole mauricien",
+      "mg": "malgache",
+      "mga": "moyen irlandais",
+      "mgh": "makua",
+      "mgo": "metaʼ",
+      "mh": "marshallais",
+      "mi": "maori",
+      "mic": "micmac",
+      "min": "minangkabau",
+      "mk": "macédonien",
+      "ml": "malayalam",
+      "mn": "mongol",
+      "mnc": "mandchou",
+      "mni": "manipuri",
+      "moe": "innu-aimun",
+      "moh": "mohawk",
+      "mos": "moré",
+      "mr": "marathi",
+      "mrj": "mari occidental",
+      "ms": "malais",
+      "mt": "maltais",
+      "mua": "moundang",
+      "mus": "creek",
+      "mwl": "mirandais",
+      "mwr": "marwarî",
+      "mwv": "mentawaï",
+      "my": "birman",
+      "mye": "myènè",
+      "myv": "erzya",
+      "mzn": "mazandérani",
+      "na": "nauruan",
+      "nan": "minnan",
+      "nap": "napolitain",
+      "naq": "nama",
+      "nb": "norvégien bokmål",
+      "nd": "ndébélé du Nord",
+      "nds": "bas-allemand",
+      "nds-NL": "bas-saxon néerlandais",
+      "ne": "népalais",
+      "new": "newari",
+      "ng": "ndonga",
+      "nia": "niha",
+      "niu": "niuéen",
+      "njo": "ao",
+      "nl": "néerlandais",
+      "nl-BE": "flamand",
+      "nmg": "ngoumba",
+      "nn": "norvégien nynorsk",
+      "nnh": "ngiemboon",
+      "no": "norvégien",
+      "nog": "nogaï",
+      "non": "vieux norrois",
+      "nov": "novial",
+      "nqo": "n’ko",
+      "nr": "ndébélé du Sud",
+      "nso": "sotho du Nord",
+      "nus": "nuer",
+      "nv": "navajo",
+      "nwc": "newarî classique",
+      "ny": "chewa",
+      "nym": "nyamwezi",
+      "nyn": "nyankolé",
+      "nyo": "nyoro",
+      "nzi": "nzema",
+      "oc": "occitan",
+      "oj": "ojibwa",
+      "ojb": "ojibwé du Nord-Ouest",
+      "ojc": "ojibwé central",
+      "ojs": "oji-cri",
+      "ojw": "ojibwé occidental",
+      "oka": "colville-okanagan",
+      "om": "oromo",
+      "or": "odia",
+      "os": "ossète",
+      "osa": "osage",
+      "ota": "turc ottoman",
+      "pa": "pendjabi",
+      "pag": "pangasinan",
+      "pal": "pahlavi",
+      "pam": "pampangan",
+      "pap": "papiamento",
+      "pau": "palau",
+      "pcd": "picard",
+      "pcm": "pidgin nigérian",
+      "pdc": "pennsilfaanisch",
+      "pdt": "bas-prussien",
+      "peo": "persan ancien",
+      "pfl": "allemand palatin",
+      "phn": "phénicien",
+      "pi": "pali",
+      "pis": "pijin",
+      "pl": "polonais",
+      "pms": "piémontais",
+      "pnt": "pontique",
+      "pon": "pohnpei",
+      "pqm": "malécite-passamaquoddy",
+      "prg": "prussien",
+      "pro": "provençal ancien",
+      "ps": "pachto",
+      "pt": "portugais",
+      "pt-BR": "portugais brésilien",
+      "pt-PT": "portugais européen",
+      "qu": "quechua",
+      "quc": "quiché",
+      "qug": "quichua du Haut-Chimborazo",
+      "raj": "rajasthani",
+      "rap": "rapanui",
+      "rar": "rarotongien",
+      "rgn": "romagnol",
+      "rhg": "rohingya",
+      "rif": "rifain",
+      "rm": "romanche",
+      "rn": "roundi",
+      "ro": "roumain",
+      "ro-MD": "moldave",
+      "rof": "rombo",
+      "rom": "romani",
+      "rtm": "rotuman",
+      "ru": "russe",
+      "rue": "ruthène",
+      "rug": "roviana",
+      "rup": "aroumain",
+      "rw": "kinyarwanda",
+      "rwk": "rwa",
+      "sa": "sanskrit",
+      "sad": "sandawe",
+      "sah": "iakoute",
+      "sam": "araméen samaritain",
+      "saq": "samburu",
+      "sas": "sasak",
+      "sat": "santali",
+      "saz": "saurashtra",
+      "sba": "ngambay",
+      "sbp": "isangu",
+      "sc": "sarde",
+      "scn": "sicilien",
+      "sco": "écossais",
+      "sd": "sindhi",
+      "sdc": "sarde sassarais",
+      "sdh": "kurde du Sud",
+      "se": "same du Nord",
+      "see": "seneca",
+      "seh": "cisena",
+      "sei": "séri",
+      "sel": "selkoupe",
+      "ses": "koyraboro senni",
+      "sg": "sango",
+      "sga": "ancien irlandais",
+      "sgs": "samogitien",
+      "sh": "serbo-croate",
+      "shi": "chleuh",
+      "shn": "shan",
+      "shu": "arabe tchadien",
+      "si": "cingalais",
+      "sid": "sidamo",
+      "sk": "slovaque",
+      "sl": "slovène",
+      "slh": "lushootseed du Sud",
+      "sli": "bas-silésien",
+      "sly": "sélayar",
+      "sm": "samoan",
+      "sma": "same du Sud",
+      "smj": "same de Lule",
+      "smn": "same d’Inari",
+      "sms": "same skolt",
+      "sn": "shona",
+      "snk": "soninké",
+      "so": "somali",
+      "sog": "sogdien",
+      "sq": "albanais",
+      "sr": "serbe",
+      "srn": "sranan tongo",
+      "srr": "sérère",
+      "ss": "swati",
+      "ssy": "saho",
+      "st": "sotho du Sud",
+      "stq": "saterlandais",
+      "str": "salish des détroits",
+      "su": "soundanais",
+      "suk": "soukouma",
+      "sus": "soussou",
+      "sux": "sumérien",
+      "sv": "suédois",
+      "sw": "swahili",
+      "sw-CD": "swahili du Congo",
+      "swb": "comorien",
+      "syc": "syriaque classique",
+      "syr": "syriaque",
+      "szl": "silésien",
+      "ta": "tamoul",
+      "tce": "tutchone du Sud",
+      "tcy": "toulou",
+      "te": "télougou",
+      "tem": "timné",
+      "teo": "teso",
+      "ter": "tereno",
+      "tet": "tétoum",
+      "tg": "tadjik",
+      "tgx": "tagish",
+      "th": "thaï",
+      "tht": "tahltan",
+      "ti": "tigrigna",
+      "tig": "tigré",
+      "tiv": "tiv",
+      "tk": "turkmène",
+      "tkl": "tokelau",
+      "tkr": "tsakhour",
+      "tl": "tagalog",
+      "tlh": "klingon",
+      "tli": "tlingit",
+      "tly": "talysh",
+      "tmh": "tamacheq",
+      "tn": "tswana",
+      "to": "tongien",
+      "tog": "tonga nyasa",
+      "tok": "toki pona",
+      "tpi": "tok pisin",
+      "tr": "turc",
+      "tru": "touroyo",
+      "trv": "taroko",
+      "ts": "tsonga",
+      "tsd": "tsakonien",
+      "tsi": "tsimshian",
+      "tt": "tatar",
+      "ttm": "tutchone du Nord",
+      "ttt": "tati caucasien",
+      "tum": "tumbuka",
+      "tvl": "tuvalu",
+      "tw": "twi",
+      "twq": "tasawaq",
+      "ty": "tahitien",
+      "tyv": "touvain",
+      "tzm": "amazighe de l’Atlas central",
+      "udm": "oudmourte",
+      "ug": "ouïghour",
+      "uga": "ougaritique",
+      "uk": "ukrainien",
+      "umb": "umbundu",
+      "ur": "ourdou",
+      "uz": "ouzbek",
+      "vai": "vaï",
+      "ve": "venda",
+      "vec": "vénitien",
+      "vep": "vepse",
+      "vi": "vietnamien",
+      "vls": "flamand occidental",
+      "vmf": "franconien du Main",
+      "vo": "volapük",
+      "vot": "vote",
+      "vro": "võro",
+      "vun": "vunjo",
+      "wa": "wallon",
+      "wae": "walser",
+      "wal": "walamo",
+      "war": "waray",
+      "was": "washo",
+      "wbp": "warlpiri",
+      "wo": "wolof",
+      "wuu": "wu",
+      "xal": "kalmouk",
+      "xh": "xhosa",
+      "xmf": "mingrélien",
+      "xog": "soga",
+      "yao": "yao",
+      "yap": "yapois",
+      "yav": "yangben",
+      "ybb": "yemba",
+      "yi": "yiddish",
+      "yo": "yoruba",
+      "yrl": "nheengatou",
+      "yue": "chinois cantonais",
+      "za": "zhuang",
+      "zap": "zapotèque",
+      "zbl": "symboles Bliss",
+      "zea": "zélandais",
+      "zen": "zenaga",
+      "zgh": "amazighe standard marocain",
+      "zh": "chinois mandarin",
+      "zh-Hans": "mandarin simplifié",
+      "zh-Hant": "mandarin traditionnel",
+      "zu": "zoulou",
+      "zun": "zuñi",
+      "zza": "zazaki"
+    },
+    "scriptNames": {
+      "Adlm": "adlam",
+      "Arab": "arabe",
+      "Aran": "nastaliq",
+      "Armi": "araméen impérial",
+      "Armn": "arménien",
+      "Avst": "avestique",
+      "Bali": "balinais",
+      "Batk": "batak",
+      "Beng": "bengali",
+      "Blis": "symboles Bliss",
+      "Bopo": "bopomofo",
+      "Brah": "brâhmî",
+      "Brai": "braille",
+      "Bugi": "bouguis",
+      "Buhd": "bouhide",
+      "Cakm": "chakma",
+      "Cans": "syllabaire autochtone canadien unifié",
+      "Cari": "carien",
+      "Cham": "cham",
+      "Cher": "cherokee",
+      "Cirt": "cirth",
+      "Copt": "copte",
+      "Cprt": "syllabaire chypriote",
+      "Cyrl": "cyrillique",
+      "Cyrs": "cyrillique (variante slavonne)",
+      "Deva": "dévanagari",
+      "Dsrt": "déséret",
+      "Egyd": "démotique égyptien",
+      "Egyh": "hiératique égyptien",
+      "Egyp": "hiéroglyphes égyptiens",
+      "Elym": "élymaïque",
+      "Ethi": "éthiopique",
+      "Geok": "géorgien khoutsouri",
+      "Geor": "géorgien",
+      "Glag": "glagolitique",
+      "Goth": "gotique",
+      "Grek": "grec",
+      "Gujr": "goudjarâtî",
+      "Guru": "gourmoukhî",
+      "Hanb": "han avec bopomofo",
+      "Hang": "hangûl",
+      "Hani": "sinogrammes",
+      "Hano": "hanounóo",
+      "Hans": "sinogrammes simplifiés",
+      "Hant": "sinogrammes traditionnels",
+      "Hebr": "hébreu",
+      "Hira": "hiragana",
+      "Hmng": "pahawh hmong",
+      "Hmnp": "nyiakeng puachue hmong",
+      "Hrkt": "katakana ou hiragana",
+      "Hung": "ancien hongrois",
+      "Inds": "indus",
+      "Ital": "ancien italique",
+      "Jamo": "jamo",
+      "Java": "javanais",
+      "Jpan": "japonais",
+      "Kali": "kayah li",
+      "Kana": "katakana",
+      "Khar": "kharochthî",
+      "Khmr": "khmer",
+      "Knda": "kannara",
+      "Kore": "coréen",
+      "Kthi": "kaithî",
+      "Lana": "lanna",
+      "Laoo": "lao",
+      "Latf": "latin (variante brisée)",
+      "Latg": "latin (variante gaélique)",
+      "Latn": "latin",
+      "Lepc": "lepcha",
+      "Limb": "limbou",
+      "Lina": "linéaire A",
+      "Linb": "linéaire B",
+      "Lyci": "lycien",
+      "Lydi": "lydien",
+      "Mand": "mandéen",
+      "Mani": "manichéen",
+      "Maya": "hiéroglyphes mayas",
+      "Mero": "méroïtique",
+      "Mlym": "malayalam",
+      "Mong": "mongol",
+      "Moon": "moon",
+      "Mtei": "meitei mayek",
+      "Mymr": "birman",
+      "Nand": "nandinagari",
+      "Nkoo": "n’ko",
+      "Ogam": "ogam",
+      "Olck": "ol-chiki",
+      "Orkh": "orkhon",
+      "Orya": "odia",
+      "Osma": "osmanais",
+      "Perm": "ancien permien",
+      "Phag": "phags pa",
+      "Phli": "pehlevi des inscriptions",
+      "Phlp": "pehlevi des psautiers",
+      "Phlv": "pehlevi des livres",
+      "Phnx": "phénicien",
+      "Plrd": "phonétique de Pollard",
+      "Prti": "parthe des inscriptions",
+      "Qaag": "zawgyi",
+      "Rjng": "rejang",
+      "Rohg": "hanifi",
+      "Roro": "rongorongo",
+      "Runr": "runique",
+      "Samr": "samaritain",
+      "Sara": "sarati",
+      "Saur": "saurashtra",
+      "Sgnw": "écriture des signes",
+      "Shaw": "shavien",
+      "Sinh": "cingalais",
+      "Sund": "sundanais",
+      "Sylo": "sylotî nâgrî",
+      "Syrc": "syriaque",
+      "Syre": "syriaque estranghélo",
+      "Syrj": "syriaque occidental",
+      "Syrn": "syriaque oriental",
+      "Tagb": "tagbanoua",
+      "Tale": "taï-le",
+      "Talu": "nouveau taï-lue",
+      "Taml": "tamoul",
+      "Tavt": "taï viêt",
+      "Telu": "télougou",
+      "Teng": "tengwar",
+      "Tfng": "tifinagh",
+      "Tglg": "tagal",
+      "Thaa": "thâna",
+      "Thai": "thaï",
+      "Tibt": "tibétain",
+      "Ugar": "ougaritique",
+      "Vaii": "vaï",
+      "Visp": "parole visible",
+      "Wcho": "wantcho",
+      "Xpeo": "cunéiforme persépolitain",
+      "Xsux": "cunéiforme suméro-akkadien",
+      "Yiii": "yi",
+      "Zinh": "hérité",
+      "Zmth": "notation mathématique",
+      "Zsye": "emoji",
+      "Zsym": "symboles",
+      "Zxxx": "non écrit",
+      "Zyyy": "commun",
+      "Zzzz": "écriture inconnue"
+    }
+  }
+}

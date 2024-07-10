@@ -1,0 +1,312 @@
+{
+  "be": {
+    "_communities": {
+      "freelibreopensourcesoftwarekosovaflossk": "Бясплатнае праграмнае забеспячэнне Лібрэ ад Kosova",
+      "geolibres": "ГеаЛібрэс",
+      "kiribatiwomeninmapping": "Жанчыны Кірыбаці ў картаграфаванні",
+      "mappingbotswana": "Картаграфаванне Батсваны",
+      "openstreetmapaachen": "OpenStreetMap Ахен",
+      "openstreetmapafghanistan": "OpenStreetMap Афганістан",
+      "openstreetmapafrica": "OpenStreetMap Афрыка",
+      "openstreetmapalba": "OpenStreetMap Альба",
+      "openstreetmapalbania": "OpenStreetMap Албанія",
+      "openstreetmapargentina": "OpenStreetMap Аргенціна",
+      "openstreetmaparmenia": "OpenStreetMap Арменія",
+      "openstreetmapasia": "OpenStreetMap Азія",
+      "openstreetmapasti": "OpenStreetMap Асці",
+      "openstreetmapaustria": "OpenStreetMap Аўстрыя",
+      "openstreetmapbahia": "OpenStreetMap Баія",
+      "openstreetmapbangladesh": "OpenStreetMap Бангладэш",
+      "openstreetmapbelarus": "OpenStreetMap Беларусь",
+      "openstreetmapbelgium": "OpenStreetMap Бельгія",
+      "openstreetmapbelize": "OpenStreetMap Беліз",
+      "openstreetmapbenin": "OpenStreetMap Бенін",
+      "openstreetmapberlin": "OpenStreetMap Берлін",
+      "openstreetmapbochum": "OpenStreetMap Бохум",
+      "openstreetmapbolivia": "OpenStreetMap Балівія",
+      "openstreetmapbonn": "OpenStreetMap Бон",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap Боснія і Герцагавіна",
+      "openstreetmapbrasil": "OpenStreetMap Бразілія",
+      "openstreetmapbrasilia": "OpenStreetMap Бразілія",
+      "openstreetmapbremen": "OpenStreetMap Брэмен",
+      "openstreetmapbulgaria": "OpenStreetMap Балгарыя",
+      "openstreetmapburkinafaso": "OpenStreetMap Буркіна Фасо",
+      "openstreetmapburundi": "OpenStreetMap Бурундзі",
+      "openstreetmapbzh": "OpenStreetMap Брэтань",
+      "openstreetmapcambodia": "OpenStreetMap Камбоджа",
+      "openstreetmapcameroon": "OpenStreetMap Камерун",
+      "openstreetmapcanada": "OpenStreetMap Канада",
+      "openstreetmapcastillayleon": "OpenStreetMap Кастылія і Леон",
+      "openstreetmapcatalancountries": "OpenStreetMap Каталонскіх земляў",
+      "openstreetmapceara": "OpenStreetMap Сеара",
+      "openstreetmapchad": "OpenStreetMap Чад",
+      "openstreetmapchile": "OpenStreetMap Чылі",
+      "openstreetmapchina": "OpenStreetMap Кітай",
+      "openstreetmapcologne": "OpenStreetMap Кёльн",
+      "openstreetmapcolombia": "OpenStreetMap Калумбія",
+      "openstreetmapcomunitatvalenciana": "OpenStreetMap Валенсія",
+      "openstreetmapcostarica": "OpenStreetMap Коста-Рыка",
+      "openstreetmapcotedivoire": "OpenStreetMap Кот д’Івуар",
+      "openstreetmapcroatia": "OpenStreetMap Харватыя",
+      "openstreetmapcuba": "OpenStreetMap Куба",
+      "openstreetmapcuneo": "OpenStreetMap Кунэа",
+      "openstreetmapcz": "OpenStreetMap Чэхія",
+      "openstreetmapde": "OpenStreetMap Нямеччына",
+      "openstreetmapdeepsouth": "OpenStreetMap Глыбокі Поўдзень (ЗША)",
+      "openstreetmapdenmark": "OpenStreetMap Данія",
+      "openstreetmapdjibouti": "OpenStreetMap Джыбуці",
+      "openstreetmapdominicanrepublic": "OpenStreetMap Дамініканская Рэспубліка",
+      "openstreetmapdresden": "OpenStreetMap Дрэздэн",
+      "openstreetmapdusseldorf": "OpenStreetMap Дзюсельдорф",
+      "openstreetmapecuador": "OpenStreetMap Эквадор",
+      "openstreetmapegypt": "OpenStreetMap Егіпет",
+      "openstreetmaperitrea": "OpenStreetMap Эрытрэя",
+      "openstreetmapespana": "OpenStreetMap Іспанія",
+      "openstreetmapestonia": "OpenStreetMap Эстонія",
+      "openstreetmapethiopia": "OpenStreetMap Эфіопія",
+      "openstreetmapfiji": "OpenStreetMap Фіджы",
+      "openstreetmapfinland": "OpenStreetMap Фінляндыя",
+      "openstreetmapfrance": "OpenStreetMap Францыя",
+      "openstreetmapfreemapslovakia": "OpenStreetMap Славакія",
+      "openstreetmapfrenchguiana": "OpenStreetMap Французская Гвіяна",
+      "openstreetmapfrenchpolynesia": "OpenStreetMap Французска Палінезія",
+      "openstreetmapgabon": "OpenStreetMap Габон",
+      "openstreetmapgalicia": "OpenStreetMap Галісія",
+      "openstreetmapgeorgia": "OpenStreetMap Грузія",
+      "openstreetmapgermany": "OpenStreetMap Германія",
+      "openstreetmapghana": "OpenStreetMap Гана",
+      "openstreetmapgorakalwaria": "OpenStreetMap Гура Кальварыя",
+      "openstreetmapgreece": "OpenStreetMap Грэцыя",
+      "openstreetmapgrenoble": "OpenStreetMap Грэнобль",
+      "openstreetmapguatemala": "OpenStreetMap Гватэмала",
+      "openstreetmapguinea": "OpenStreetMap Гвінея",
+      "openstreetmaphaiti": "OpenStreetMap Гаіці",
+      "openstreetmaphamburg": "OpenStreetMap Гамбург",
+      "openstreetmaphonduras": "OpenStreetMap Гандурас",
+      "openstreetmaphongkong": "OpenStreetMap Ганконг",
+      "openstreetmaphungary": "OpenStreetMap Венгрыя",
+      "openstreetmapiceland": "OpenStreetMap Ісладыя",
+      "openstreetmapindia": "OpenStreetMap Індыя",
+      "openstreetmapindonesia": "OpenStreetMap Інданезія",
+      "openstreetmapiran": "OpenStreetMap Іран",
+      "openstreetmapiraq": "OpenStreetMap Ірак",
+      "openstreetmapireland": "OpenStreetMap Ірландыя",
+      "openstreetmapisrael": "OpenStreetMap Ізраіль",
+      "openstreetmapitaly": "OpenStreetMap Італія",
+      "openstreetmapitalylazio": "OpenStreetMap Лацыа",
+      "openstreetmapitalylombardia": "OpenStreetMap Ламбардыя",
+      "openstreetmapitalypiemonte": "OpenStreetMap П’емонт",
+      "openstreetmapitalysouthtyrol": "OpenStreetMap Паўднёвы Тыроль",
+      "openstreetmapitalytrentino": "OpenStreetMap Трэнта",
+      "openstreetmapjapan": "OpenStreetMap Японія",
+      "openstreetmapkarlsruhe": "OpenStreetMap Карлсруэ",
+      "openstreetmapkazakhstan": "OpenStreetMap Казахстан",
+      "openstreetmapkenya": "OpenStreetMap Кенія",
+      "openstreetmapkerala": "OpenStreetMap Керала",
+      "openstreetmapkorea": "OpenStreetMap Карэя",
+      "openstreetmapkosovo": "OpenStreetMap Косава",
+      "openstreetmapkyrgyzstan": "OpenStreetMap Кыргызстан",
+      "openstreetmaplatinamerica": "OpenStreetMap Лацінская Амерыка",
+      "openstreetmaplatvia": "OpenStreetMap Латвія",
+      "openstreetmaplebanon": "OpenStreetMap Ліван",
+      "openstreetmaplesotho": "OpenStreetMap Лесота",
+      "openstreetmapliberia": "OpenStreetMap Ліберыя",
+      "openstreetmaplibya": "OpenStreetMap Лівія",
+      "openstreetmaplithuania": "OpenStreetMap Літва",
+      "openstreetmapljubljana": "OpenStreetMap Любляна",
+      "openstreetmaplombardia": "OpenStreetMap Ламбардыя",
+      "openstreetmaplondon": "OpenStreetMap Лондан",
+      "openstreetmapluneburg": "OpenStreetMap Люнебург",
+      "openstreetmapluxembourg": "OpenStreetMap Люксембург",
+      "openstreetmapmadagascar": "OpenStreetMap Мадагаскар",
+      "openstreetmapmadrid": "OpenStreetMap Мадрыд",
+      "openstreetmapmalawi": "OpenStreetMap Малаві",
+      "openstreetmapmalaysia": "OpenStreetMap Малайзія",
+      "openstreetmapmali": "OpenStreetMap Малі",
+      "openstreetmapmalta": "OpenStreetMap Мальта",
+      "openstreetmapmauritania": "OpenStreetMap Маўрытанія",
+      "openstreetmapmecklenburgvorpommern": "OpenStreetMap Мекленбург-Пярэдняя Памеранія",
+      "openstreetmapmexico": "OpenStreetMap Мексіка",
+      "openstreetmapmichigan": "OpenStreetMap Мічыган",
+      "openstreetmapmoldova": "OpenStreetMap Малдова",
+      "openstreetmapmongolia": "OpenStreetMap Манголія",
+      "openstreetmapmontrouge": "OpenStreetMap Манруж",
+      "openstreetmapmorocco": "OpenStreetMap Марока",
+      "openstreetmapmunchen": "OpenStreetMap Мюнхен",
+      "openstreetmapmyanmar": "OpenStreetMap М’янма",
+      "openstreetmapnepal": "OpenStreetMap Непал",
+      "openstreetmapnetherlands": "OpenStreetMap Нідэрланды",
+      "openstreetmapnicaragua": "OpenStreetMap Нікарагуа",
+      "openstreetmapniger": "OpenStreetMap Нігер",
+      "openstreetmapnigeria": "OpenStreetMap Нігерыя",
+      "openstreetmapnorthkorea": "OpenStreetMap Паўночная Карэя",
+      "openstreetmapnorway": "OpenStreetMap Нарвегія",
+      "openstreetmapoceania": "OpenStreetMap Акіянія",
+      "openstreetmapohio": "OpenStreetMap Агая",
+      "openstreetmapottawa": "OpenStreetMap Атава",
+      "openstreetmappakistan": "OpenStreetMap Пакістан",
+      "openstreetmappanama": "OpenStreetMap Панама",
+      "openstreetmapparaguay": "OpenStreetMap Парагвай",
+      "openstreetmapperu": "OpenStreetMap Перу",
+      "openstreetmapphilippines": "OpenStreetMap Філіпіны",
+      "openstreetmappiemonte": "OpenStreetMap П’емонт",
+      "openstreetmappoland": "OpenStreetMap Польшча",
+      "openstreetmapportugal": "OpenStreetMap Партугалія",
+      "openstreetmaprdc": "OpenStreetMap Дэмакратычная Рэспубліка Конга",
+      "openstreetmaprennes": "OpenStreetMap Рэн",
+      "openstreetmapreunion": "OpenStreetMap Рэюньён",
+      "openstreetmapriograndedosul": "OpenStreetMap Рыу-Гранды-ду-Сул",
+      "openstreetmapromania": "OpenStreetMap Румынія",
+      "openstreetmaprussia": "OpenStreetMap Расія",
+      "openstreetmaprwanda": "OpenStreetMap Руанда",
+      "openstreetmapsaudiarabia": "OpenStreetMap Саудаўская Аравія",
+      "openstreetmapsenegal": "OpenStreetMap Сенегал",
+      "openstreetmapserbia": "OpenStreetMap Сербія",
+      "openstreetmapseychelles": "OpenStreetMap Сейшэлы",
+      "openstreetmapsierraleone": "OpenStreetMap Сьера Леонэ",
+      "openstreetmapslovenia": "OpenStreetMap Славенія",
+      "openstreetmapsomalia": "OpenStreetMap Самалі",
+      "openstreetmapsouthafrica": "OpenStreetMap Паўднёвая Афрыка",
+      "openstreetmapsouthsudan": "OpenStreetMap Паўднёвы Судан",
+      "openstreetmapsrilanka": "OpenStreetMap Шры-Ланка",
+      "openstreetmapsudan": "OpenStreetMap Судан",
+      "openstreetmapsweden": "OpenStreetMap Швецыя",
+      "openstreetmapswitzerland": "OpenStreetMap Швейцарыя",
+      "openstreetmapsyria": "OpenStreetMap Сірыя",
+      "openstreetmaptaiwan": "OpenStreetMap Тайван",
+      "openstreetmaptanzania": "OpenStreetMap Танзанія",
+      "openstreetmapthailand": "OpenStreetMap Тайланд",
+      "openstreetmaptogo": "OpenStreetMap Тога",
+      "openstreetmaptoronto": "OpenStreetMap Таронта",
+      "openstreetmaptunisia": "OpenStreetMap Туніс",
+      "openstreetmapturin": "OpenStreetMap Турын",
+      "openstreetmapturkey": "OpenStreetMap Турцыя",
+      "openstreetmapuganda": "OpenStreetMap Уганда",
+      "openstreetmapuk": "OpenStreetMap Злучанае Каралеўства",
+      "openstreetmapukraine": "OpenStreetMap Украіна",
+      "openstreetmapuruguay": "OpenStreetMap Уругвай",
+      "openstreetmapus": "OpenStreetMap Злучаныя Штаты Амерыкі",
+      "openstreetmapuzbekistan": "OpenStreetMap Узбекістан",
+      "openstreetmapvenezuela": "OpenStreetMap Венесуэла",
+      "openstreetmapvietnam": "OpenStreetMap В’етнам",
+      "openstreetmapwarszawa": "OpenStreetMap Варшава",
+      "openstreetmapwesternsahara": "OpenStreetMap Заходняя Сахара",
+      "openstreetmapzambia": "OpenStreetMap Замбія",
+      "openstreetmapzimbabwe": "OpenStreetMap Зімбабвэ"
+    },
+    "_defaults": {
+      "aparat": {
+        "name": "{супольнасць} у Апарат",
+        "description": "Падпішыцеся да нашага Апарат-каналу",
+        "url": "https://aparat.com/{акаўнт}"
+      },
+      "discord": {
+        "name": "{супольнасць} Discord",
+        "description": "Узаемадзейнічайце з іншымі картографамі ў Discord",
+        "url": "https://discord.gg/{акаўнт}"
+      },
+      "discourse": {
+        "name": "{супольнасць} Форум Супольнасці",
+        "description": "Афіцыйны форум {супольнасць}",
+        "url": "https://community.openstreetmap.org/c/communities/{акаўнт}"
+      },
+      "facebook": {
+        "name": "{супольнасць} у Facebook",
+        "description": "Далучайцеся да нашай суполкі ў Facebook",
+        "url": "https://www.facebook.com/{акаўнт}"
+      },
+      "forum": {
+        "name": "{супольнасць} Форум",
+        "description": "Афіцыйны форум для {супольнасць}"
+      },
+      "github": {
+        "name": "{супольнасць} GitHub",
+        "url": "https://github.com/{акаўнт}"
+      },
+      "gitlab": {
+        "name": "{супольнасць} GitLab",
+        "url": "https://gitlab.com/{акаўнт}"
+      },
+      "group": {
+        "name": "{супольнасць}"
+      },
+      "irc": {
+        "name": "{супольнасць} у IRC",
+        "description": "Далучайцеся, #{акаўнт}, праз  irc.oftc.net (порт6667 для non-SSL або 6697 для SSL)",
+        "url": "https://webchat.oftc.net/?channels={акаўнт}"
+      },
+      "linkedin": {
+        "name": "{супольнасць} у LinkedIn",
+        "description": "Далучайцеся да суполкі ў LinkedIn"
+      },
+      "mailinglist": {
+        "name": "{account} Спіс рассылкі",
+        "description": "Афіцыйны спіс рассылкі для {community}"
+      },
+      "mastodon": {
+        "name": "{community} на Mastodon",
+        "description": "Афіцыйны акаўнт Mastodon для {community}"
+      },
+      "matrix": {
+        "name": "{community} гутарка Matrix",
+        "description": "Далучайцеся да нашай гутарцы ў Matrix "
+      },
+      "newsletter": {
+        "name": "{community} Інфармацыйны веснік"
+      },
+      "reddit": {
+        "name": "{community} у Reddit"
+      },
+      "signal": {
+        "description": "Далучайцеся да гутарцы супольнасці ў Signal"
+      },
+      "telegram": {
+        "description": "Далучайцеся да гутарцы супольнасці ў Telegram"
+      },
+      "threads": {
+        "name": "{community} у Threads",
+        "description": "Падпішыцеся на нас у Threads"
+      },
+      "twitter": {
+        "name": "{community} у 𝕏",
+        "description": "Падпішыцеся на нас у 𝕏"
+      },
+      "wiki": {
+        "name": "{community} ВікіПраект"
+      },
+      "x": {
+        "name": "{community} у 𝕏",
+        "description": "Падпішыцеся на нас у 𝕏"
+      },
+      "youtube": {
+        "name": "community} у YouTube",
+        "description": "Пішыцеся на наш YouTube-канал"
+      },
+      "zulip": {
+        "description": "Далучыцеся да гутарцы супольнасці ў Zulip"
+      }
+    },
+    "af-matrix": {
+      "description": "Група Matrix для супольнасці ў Афганістане."
+    },
+    "al-maptime-tirana": {
+      "name": "Maptime Тырана",
+      "description": "Грамадскія мерапрыемствы, зарганізаваныя дзеля картаграфіі — навічкі вітаюцца!",
+      "extendedDescription": "Maptime — гэта адкрытае навучальнае асяроддзе для ўсіх узроўняў і ступеняў ведаў, якая прадугледжвае мэтавую адукацыйную падтрымку пачаткоўцам. Maptime адначасова гнуткі і структураваны, ствараючы прастору для навучальных дапаможнікаў па картаграфіі, семінараў, бягучых праектаў з агульнай мэтай і самастойнай/сумеснай працы."
+    },
+    "at-matrix": {
+      "description": "Неафіцыйны нямецкі канал Matrix для Аўстрыі"
+    },
+    "at-wiki": {
+      "description": "{community} старонка Вікіпедыі"
+    },
+    "Bahia-telegram": {
+      "extendedDescription": "Далучайцеся да супольнасці, каб даведвацца больш пра OpenStreetMap, задаваць пытанні або ўдзельнічаць у нашых сустрэчах. Сардэчна запрашаем усіх!"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "name": "Картографы OpenStreetMap з вобласці заліву",
+      "description": "Палепшыце OpenStreetMap у вобласці заліву",
+      "extendedDescription": "Гэтая група займаецца пашырэннем супольнасці OpenStreetMap тут, у раёне заліву. Нашыя мерапрыемствы адкрытыя для ўсіх: ад энтузіястаў з адкрытым зыходным кодам, раварыстаў, адмыслоўцаў па ГІС, збіральнікаў геаграфічных звестак ды не толькі. Усе, хто цікавіцца мапамі, складаннем мапаў і бясплатнымі картаграфічнымі данымі, могуць далучыцца да нашай групы, а таксама наведваць нашыя мерапрыемствы."
+    }
+  }
+}

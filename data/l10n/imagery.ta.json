@@ -1,0 +1,114 @@
+{
+  "ta": {
+    "imagery": {
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "நிபந்தனைகள் & கருத்துகள்"
+        }
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "நிபந்தனைகள் & கருத்துகள்"
+        }
+      },
+      "MAPNIK": {
+        "name": "OpenStreetMap (வழக்கமான)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "நிபந்தனைகள் & கருத்துகள்"
+        }
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap பங்களிப்பாளர்கள், CC-BY-SA"
+        }
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap பங்களிப்பாளர்கள், CC-BY-SA"
+        }
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap பங்களிப்பாளர்கள், CC-BY-SA"
+        }
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap பங்களிப்பாளர்கள், CC-BY-SA"
+        }
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap பங்களிப்பாளர்கள், CC-BY-SA"
+        }
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap பங்களிப்பாளர்கள், CC-BY-SA"
+        }
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap பங்களிப்பாளர்கள், CC-BY-SA"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap பங்களிப்பாளர்கள், CC by-SA 3.0"
+        }
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap பங்களிப்பாளர்கள், CC by-SA 3.0"
+        }
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap பங்களிப்பாளர்கள், CC by-SA 3.0"
+        }
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap பங்களிப்பாளர்கள், CC by-SA 3.0"
+        }
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap பங்களிப்பாளர்கள், CC by-SA 3.0"
+        }
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "GSI சப்பான்"
+        }
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "நிபந்தனைகள் & கருத்துகள்"
+        }
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© OpenStreetMap பங்களிப்பாளர்கள், CC by-SA"
+        }
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© OpenStreetMap பங்களிப்பாளர்கள்"
+        }
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© OpenStreetMap பங்களிப்பாளர்கள், CC-BY-SA"
+        }
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "சைமன் பூலே, தரவு ©OpenStreetMap பங்களிப்பாளர்கள்"
+        }
+      }
+    }
+  }
+}

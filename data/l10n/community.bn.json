@@ -1,0 +1,19 @@
+{
+  "bn": {
+    "_communities": {
+      "openstreetmapafghanistan": "OpenStreetMap আফগানিস্তান",
+      "openstreetmapafrica": "OpenStreetMap আফ্রিকা",
+      "openstreetmapalba": "OpenStreetMap আলবা",
+      "openstreetmapalbania": "OpenStreetMap আলবেনিয়া",
+      "openstreetmapargentina": "OpenStreetMap আর্জেন্টিনা",
+      "openstreetmapasia": "OpenStreetMap এশিয়া",
+      "openstreetmapasti": "OpenStreetMap আসতি",
+      "openstreetmapaustria": "OpenStreetMap অস্ট্রিয়া",
+      "openstreetmapbahia": "OpenStreetMap বাহাই",
+      "openstreetmapbangladesh": "OpenStreetMap বাংলাদেশ"
+    },
+    "cape-coast-youthmappers": {
+      "description": "টুইটারে আমাদের অনুসরণ করুন: {url}"
+    }
+  }
+}

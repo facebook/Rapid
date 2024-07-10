@@ -1,0 +1,332 @@
+{
+  "lv": {
+    "imagery": {
+      "Bing": {
+        "description": "Satelītu un aerofotoattēli.",
+        "name": "Bing Maps aerofoto"
+      },
+      "Czestochowa-buildings": {
+        "name": "Čenstohova: ēkas"
+      },
+      "EOXAT2018CLOUDLESS": {
+        "description": "Apstrādāti Sentinel Satalītattēli.",
+        "name": "eox.at 2018 bez-mākoņu"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Noteikumi un atsauksmes"
+        },
+        "name": "Esri pasaules attēli"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Noteikumi un atsauksmes"
+        },
+        "description": "Esri arhīvu attēli kas var būt skaidrāki un precīzāki nekā noklusējuma slānis.",
+        "name": "Esri pasaules attēli (Skaidrība) Beta"
+      },
+      "MAPNIK": {
+        "description": "Noklusējuma OpenStreetMap slānis.",
+        "name": "OpenStreetMap (Standarta)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Noteikumi un atsauksmes"
+        },
+        "name": "MapBox Satelīts"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap ieguldītāji, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Adreses"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap ieguldītāji, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Ģeometrija"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap ieguldītāji, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Lielceļi"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap ieguldītāji, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Platības"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap ieguldītāji, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Vietas"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap ieguldītāji, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Maršrutēšana"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap ieguldītāji, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Tagošana"
+      },
+      "Riksantikvariambetet-heritage": {
+        "description": "Vēsturiskā mantojuma ēkas un dievnami",
+        "name": "Riksantikvarieämbetet - Vēst. mantojuma ēkas"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "SPW(allonie) vissjaunākie aerofotoattēli."
+      },
+      "SPW_PICC": {
+        "name": "SPW(allonie) PICC skaitliskā attēlošana"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Dzeltens = Publiska domēna kartes dati no ASV tautskaites. Sarkans = Dati, kas nav atrodami OpenStreetMap",
+        "name": "TIGER Ceļi 2018"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "Dzeltens = Publiska domēna kartes dati no ASV tautskaites. Sarkans = Dati, kas nav atrodami OpenStreetMap",
+        "name": "TIGER Ceļi 2019"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Šoseja: Zaļa apmale = neklasificēts. Brūna apmale = trase. Virsma: grants = gaiši brūns pildījums, Asfalts = melns, Bruģēts = pelēks, betons = zils, zāle = zaļš. Sezonāli = baltas strīpas.",
+        "name": "ASV Meža Ceļu Pārklājums"
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "Realizēts, izmantojot  UrbIS®© - Izplatīšana & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "Realizēts, izmantojot  UrbIS®© - Izplatīšana & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "Realizēts, izmantojot  UrbIS®© - Izplatīšana & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "Realizēts, izmantojot  Brussels UrbIS®© - Izplatīšana & Autortiesības CIRB"
+        }
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "Realizēts, izmantojot  UrbIS®© - Izplatīšana & Copyright CIRB"
+        }
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "Realizēts, izmantojot  UrbIS®© - Izplatīšana & Copyright CIRB"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap ieguldītāji, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Riteņbraukšana"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap ieguldītāji, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Pārgājieni"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap ieguldītāji, CC by-SA 3.0"
+        }
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap ieguldītāji, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Slidošana"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap ieguldītāji, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Ziemas Sports"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "Austrijas pamatkarte, bāzēta uz valdības datiem."
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Ortofoto slāni nodrošina basemap.at. \"Pēctecis\" geoimage.at attēlošanai.",
+        "name": "basemap.at Ortofoto"
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "name": "basemap.at Pārklājs"
+      },
+      "eufar-balaton": {
+        "attribution": {
+          "text": "EUFAR Balton ortofoto 2010"
+        },
+        "description": "1940. gada ģeotagota fotogrāfēšana no Balatonas Limnoloģiskā Institūta",
+        "name": "EUFAR Balaton ortofotogrāfijas"
+      },
+      "gothenburg-citymap": {
+        "name": "Gēteborgas pilsētas karte"
+      },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© Gēterborgas pašvaldība, CC0"
+        }
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "GSI Japāna"
+        },
+        "name": "Japānas GSI gaisa-foto attēli"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "attribution": {
+          "text": "GSI Japānas bezšuvju foto"
+        }
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "GSI Japāna"
+        },
+        "description": "Japānas GSI Standarta Karte. Plaši pārklāta.",
+        "name": "Japānas GSI Standarta karte"
+      },
+      "kalmar-orto-2014": {
+        "attribution": {
+          "text": "© Kalmaras pašvaldība"
+        },
+        "description": "Kalmāras pašlavaldības ziemeļu krasta ortofoto 2014",
+        "name": "Kalmāras Ziemeļu Ortofoto 2014"
+      },
+      "kalmar-orto-2016": {
+        "attribution": {
+          "text": "© Kalmaras pašvaldība"
+        },
+        "description": "Kalmāras pašvaldības dienvidu krasta ortofoto 2016",
+        "name": "Kalmāras Dienvidu Ortofoto 2016"
+      },
+      "kalmar-orto-2018": {
+        "attribution": {
+          "text": "© Kalmaras pašvaldība"
+        },
+        "description": "Urbāno vietu ortofoto no Kalmaras pašvaldības 2018",
+        "name": "Kalmāras Dienvidu Ortofoto 2018"
+      },
+      "kelkkareitit": {
+        "description": "Kelkkareitit.fi sniegamotociklu takas no OSM (Nordisks pārklājums)",
+        "name": "Nordisko sniega motociklu pārklājums"
+      },
+      "lantmateriet-orto1960": {
+        "description": "Zviedru ortofoto mozaīka no 1955-1965. gadu perioda. Vecāki un jaunāki attēli var būt redzami.",
+        "name": "Lantmäteriet Vēsturiskie Ortofoto 1960"
+      },
+      "lantmateriet-orto1975": {
+        "description": "Zviedru ortofoto mozaīka no 1970-1980. gadu perioda. Vēl tiek pielabots.",
+        "name": "Lantmäteriet Vēsturiskie Ortofoto 1975"
+      },
+      "lantmateriet-topowebb": {
+        "description": "Zviedrijas topogrāfiskā karte 1:50 000",
+        "name": "Lantmäteriet Topogrāfiskā Karte"
+      },
+      "linkoping-orto": {
+        "attribution": {
+          "text": "© Linköpingas pašvaldība"
+        },
+        "description": "Ortofoto no Linköpingas pašvaldības 2010, atvēŗtie dati",
+        "name": "Linköpingas Ortofoto"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Noteikumi un atsauksmes"
+        },
+        "description": "Parāda galvenos objektus, kas palīdz jums orientēties.",
+        "name": "Lokātora Pārklājs"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© OpenStreetMap ieguldītāji, CC-BY-SA"
+        },
+        "name": "OpenPT Map (pārklājs)"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© OpenStreetMap ieguldītāji"
+        },
+        "description": "Publiskas GPS trases, augšupielādētas uz OpenStreetMap.",
+        "name": "OpenStreetMap GPS trases"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© OpenStreetMap ieguldītāji, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (Vācijas Izskata)"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, Dati ©OpenStreetMap ieguldītāji"
+        },
+        "name": "QA Nav Adrese"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Kvādrāti: skobbler Kartes dati: OpenStreetMap ieguldītāji"
+        }
+      },
+      "skoterleder": {
+        "description": "Sniega motociklu takas",
+        "name": "Sniega motociklu karte Zviedrijā"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "Kartes kvadrāti no Stamen Design, zem CC BY 3.0. Dati no OpenStreetMap, zem ODbL"
+        }
+      },
+      "stockholm-orto": {
+        "attribution": {
+          "text": "© Stokholmas pašvaldība, CC0"
+        },
+        "name": "Stokholmas Ortofoto"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Kartes © Thunderforest, Dati ©OpenStreetMap ieguldītāji"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Kartes © Thunderforest, Dati ©OpenStreetMap ieguldītāji"
+        }
+      },
+      "trafikverket-baninfo": {
+        "description": "Zviedrijas dzelzceļa tīkls, ieskaitot brauktuves.",
+        "name": "Trafikverket Dzelzceļa Tīkls"
+      },
+      "trafikverket-baninfo-option": {
+        "description": "Zviedrijas dzelzceļa tīkls ar vairākām karšu slāņu iespējām",
+        "name": "Trafikverket Dzelzceļa Tīkla opcijas"
+      },
+      "trafikverket-vagnat": {
+        "description": "Zviedru NVDB ceļu tīkls",
+        "name": "Trafikverket Ceļu Tīkls"
+      },
+      "trafikverket-vagnat-extra": {
+        "description": "Zviedru NVDB papildu detaļas: Automaģistrāles atsauces, satiksmes, atpūtas pieturas, tilti, tuneļi, fotoradari  ",
+        "name": "Trafikverket Ceļu Tīkls Extra"
+      },
+      "trafikverket-vagnat-option": {
+        "description": "Zviedrijas NVDB ceļu tīkls ar vairākām karšu slāņu iespējām",
+        "name": "Trafikverket Ceļu Tīkla opcijas"
+      }
+    }
+  }
+}

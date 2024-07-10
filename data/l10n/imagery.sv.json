@@ -1,0 +1,1115 @@
+{
+  "sv": {
+    "imagery": {
+      "Bedzin-PL-aerial_image": {
+        "attribution": {
+          "text": "Poviat Starosty i Będzin"
+        },
+        "name": "Będzin: Orthophotomap 2013 (flygbild)"
+      },
+      "Bedzin-PL-buildings": {
+        "attribution": {
+          "text": "Poviat Starosty i Będzin"
+        },
+        "name": "Będzin: Byggnader"
+      },
+      "Bing": {
+        "description": "Satellit- eller flygfoton.",
+        "name": "Bing-flygfoto"
+      },
+      "Bytom-2012": {
+        "attribution": {
+          "text": "Bytoms stadshus"
+        },
+        "name": "Bytom: Orthophotomap 2012 (flygbild)"
+      },
+      "Bytom-2014": {
+        "attribution": {
+          "text": "Bytoms stadshus"
+        },
+        "name": "Bytom: Fotoplan 2014 (flygbild)"
+      },
+      "Bytom-2016": {
+        "attribution": {
+          "text": "Bytoms stadshus"
+        },
+        "name": "Bytom: Orthophotomap 2016 (flygbild)"
+      },
+      "Bytom-2018": {
+        "attribution": {
+          "text": "Bytoms stadshus"
+        },
+        "name": "Bytom: Orthophotomap 2018 (flygbild)"
+      },
+      "Bytom-2021": {
+        "attribution": {
+          "text": "Bytoms stadshus"
+        },
+        "name": "Bytom: Orthophotomap 2021 (flygbild)"
+      },
+      "Bytom-buildings": {
+        "attribution": {
+          "text": "Bytoms stadshus"
+        },
+        "name": "Bytom: Byggnader"
+      },
+      "Czestochowa-2011": {
+        "attribution": {
+          "text": "Częstochowa stadshus"
+        },
+        "name": "Częstochowa: Orthophotomap 2011 (flygbild)"
+      },
+      "Czestochowa-2013": {
+        "attribution": {
+          "text": "Częstochowa stadshus"
+        },
+        "name": "Częstochowa: Ortofotokarta 2013 (flygfoto)"
+      },
+      "Czestochowa-2014": {
+        "attribution": {
+          "text": "Częstochowa stadshus"
+        },
+        "name": "Częstochowa: Ortophotomap 2014 (flygfoto)"
+      },
+      "Czestochowa-2015": {
+        "attribution": {
+          "text": "Częstochowa stadshus"
+        },
+        "name": "Częstochowa: Orthophotomap 2015 (flygbild)"
+      },
+      "Czestochowa-2016": {
+        "attribution": {
+          "text": "Częstochowa stadshus"
+        },
+        "name": "Częstochowa: Ortofotokarta 2016 (flygfoto)"
+      },
+      "Czestochowa-2017": {
+        "attribution": {
+          "text": "Częstochowa stadshus"
+        },
+        "name": "Częstochowa: Ortofotokarta 2017 (flygfoto)"
+      },
+      "Czestochowa-buildings": {
+        "attribution": {
+          "text": "Częstochowa stadshus"
+        },
+        "name": "Częstochowa: Byggnader"
+      },
+      "DV_DHMV_II_HILL_25cm": {
+        "attribution": {
+          "text": "© Digitala Flandern"
+        },
+        "name": "Digitala Flandern DHV II, multiriktad skuggningsbild 0,25 m"
+      },
+      "DV_DHMV_II_SVF_25cm": {
+        "attribution": {
+          "text": "© Digitala Flandern"
+        },
+        "name": "Digitala FlandernDHV II, Skyview factor 0,25 m"
+      },
+      "DV_GRB": {
+        "attribution": {
+          "text": "© Digitala Flandern"
+        },
+        "name": "Digitala Flandern GRB"
+      },
+      "DV_OrthoPhoto": {
+        "attribution": {
+          "text": "© Digitala Flandern"
+        },
+        "name": "Digitala Flanderns mest aktuella flygfoton"
+      },
+      "DV_OrthoPhoto_20132015_10cm": {
+        "attribution": {
+          "text": "© Digitala Flandern"
+        },
+        "name": "Digitala Flandern 2013–2015 flygfoton 10 cm"
+      },
+      "DV_OrthoPhoto_Preliminary": {
+        "attribution": {
+          "text": "© Digitala Flandern"
+        },
+        "name": "Digitala Flanderns preliminära flygfoton"
+      },
+      "DV_Wegenregister": {
+        "attribution": {
+          "text": "© Digitala Flandern"
+        },
+        "name": "Flanderns digitala vägregister"
+      },
+      "Dourados_Ortofotos": {
+        "attribution": {
+          "text": "Stadshuset i Dourados - GeoDourado"
+        },
+        "description": "Dourados (2018) och flera distrikt (2020) högupplösta flygbilder.",
+        "name": "Dourados ortofoton"
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu av EOX IT Services GmbH (Innehåller modifierad data från Copernicus Sentinel 2017 & 2018)"
+        },
+        "description": "Efterbearbetade Sentinel-satellitbilder."
+      },
+      "EOXAT2019CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu av EOX IT Services GmbH (Innehåller modifierad data från Copernicus Sentinel 2019)"
+        },
+        "description": "Efterbearbetade Sentinel-satellitbilder."
+      },
+      "EOXAT2020CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu av EOX IT Services GmbH (Innehåller modifierad data från Copernicus Sentinel 2020)"
+        },
+        "description": "Efterbearbetade Sentinel-satellitbilder."
+      },
+      "EOXAT2021CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu av EOX IT Services GmbH (Innehåller modifierad data från Copernicus Sentinel 2021)"
+        },
+        "description": "Efterbearbetade Sentinel-satellitbilder."
+      },
+      "EOXAT2022CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu av EOX IT Services GmbH (Innehåller modifierad data från Copernicus Sentinel 2022)"
+        },
+        "description": "Efterbearbetade Sentinel-satellitbilder."
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Villkor & återkoppling"
+        },
+        "description": "Esri världsflygfoto",
+        "name": "Esri världsflygfoto"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Villkor & återkoppling"
+        },
+        "description": "Arkivbilder från Esri som kan vara tydligare och mer korrekta än det normala lagret.",
+        "name": "Esri världsflygfoto (Clarity) Beta"
+      },
+      "Frankfurt-am-Main-2019": {
+        "attribution": {
+          "text": "Stadsmäterikontoret Frankfurt am Main"
+        },
+        "description": "Flygbilder över Frankfurt am Main, fotograferade den 16 april 2019",
+        "name": "Frankfurt am Main flygfoto 2019"
+      },
+      "Geodatastyrelsen_Cadastral_Parcels_INSPIRE_View": {
+        "attribution": {
+          "text": "Geodatamyndigheten och Myndigheten för dataförsörjning och infrastruktur"
+        },
+        "name": "SDFI Fastighetsgränser INSPIRE-vy"
+      },
+      "Geodatastyrelsen_DTK_Kort25": {
+        "attribution": {
+          "text": "Myndigheten för dataförsörjning och infrastruktur"
+        }
+      },
+      "Geodatastyrelsen_Denmark": {
+        "attribution": {
+          "text": "Myndigheten för dataförsörjning och infrastruktur"
+        },
+        "name": "SDFI Flygfoto"
+      },
+      "Geodatastyrelsen_Skaermkort": {
+        "attribution": {
+          "text": "Myndigheten för dataförsörjning och infrastruktur"
+        },
+        "name": "SDFI Skärmkarta"
+      },
+      "Geoportal2-PL-City-boundaries_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "WMS-tjänstepublicering Polska territoriella divisionsenheter, inklusive administrativa enheter",
+        "name": "Geoportal 2: Stadsgränser WMS"
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "Ortofotomap med en upplösning på 10 cm eller mer. Uppgifterna sorteras efter upplösning och sedan enligt nyheter, t.ex. skickar ett ark från 2012 med en upplösning på 8 cm ett ark från 2019 med en upplösning på 10 cm.",
+        "name": "Geoportal 2: Högupplöst ortofotokarta (arkivbilder) (WMS)"
+      },
+      "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "Ortofotomap med en upplösning på 10 cm eller mer. Uppgifterna sorteras efter upplösning och sedan enligt nyheter, t.ex. skickar ett ark från 2012 med en upplösning på 8 cm ett ark från 2019 med en upplösning på 10 cm.",
+        "name": "Geoportal 2: Orthophotomap med hög upplösning (flygbild) (WMS)"
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "WMS-surfningstjänst National Address Numbering Integration möjliggör nedladdning av kartbilder skapade på grundval av rumsliga data från det statliga gränsregistret inom gatu- och adressposter.",
+        "name": "Geoportal 2 Gatunamn"
+      },
+      "Geoportal2-PL-addres_points_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "WMS-surfningstjänst National Address Numbering Integration möjliggör nedladdning av kartbilder skapade på grundval av rumsliga data från det statliga gränsregistret inom gatu- och adressposter.",
+        "name": "Geoportal 2: Adresspunkter"
+      },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "Visningstjänst (Web Map Service, WMS) som möjliggör visning av arkivortofotokartor för Polens territorium. Data som tillhandahålls av denna tjänst är en ortofotokarta gjord av flygfoton. Tjänsten erbjuder stöd för WMS 1.3.0-gränssnittet.",
+        "name": "Geoportal 2: Ortofotokarta (arkivbilder) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "Bläddringstjänst (Web Map Service, WMS) som låter dig se ortofoton för området i Polen. Uppgifterna som tillhandahålls genom denna tjänst är en ortofotokarta gjord av flygfoton. Tjänsten erbjuder stöd för WMS 1.3.0-gränssnittet.",
+        "name": "Geoportal 2: Orthophotomap (senaste flygbild) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "Bläddringstjänst (Web Map Tile Service, WMTS) som gör det möjligt att bläddra i ortofoton för Polens område. Data som tillhandahålls genom denna tjänst är en ortofotokarta gjord av flygfoton.",
+        "name": "Geoportal 2: Ortofotokarta (senaste flygbilder) (WMTS)"
+      },
+      "Geoportal2-PL-boundaries-of-communes_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "WMS-tjänstepublicering Polska territoriella divisionsenheter, inklusive administrativa enheter",
+        "name": "Geoportal 2: Kommungränser WMS"
+      },
+      "Geoportal2-PL-boundaries-of-counties_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "WMS-tjänstepublicering Polska territoriella divisionsenheter, inklusive administrativa enheter",
+        "name": "Geoportal 2: Länsgränser WMS"
+      },
+      "Geoportal2-PL-boundaries-of-provinces_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "WMS-tjänstepublicering Polska territoriella divisionsenheter, inklusive administrativa enheter",
+        "name": "Geoportal 2: Provinsgränser WMS"
+      },
+      "Geoportal2-PL-buildings_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "Tjänsten National Integration of Land Records är en samlad tjänst för presentation av registreringsdata direkt från enheter på distriktsnivå. Tjänsten innehåller endast data från de enheter som har WMS-tjänsten med lämpliga parametrar och har beslutat att inkludera sin WMS-tjänst i kollektivtjänst Nationell integration av fastighetsregistret.",
+        "name": "Geoportal 2: Byggnadsregister-WMS"
+      },
+      "Geoportal2-PL-gas-pipe_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "Integrationstjänsten för nationell marknytta är en samlad tjänst för att presentera markförsörjningsdata som kommer direkt från enheter på distriktsnivå. Tjänsten innehåller endast data från de enheter som har en WMS-tjänst med lämpliga parametrar och som har beslutat att inkludera sin WMS-tjänst i kollektivtjänsten Nationell integration av vapenterritorium.",
+        "name": "Geoportal 2: gasledningar WMS"
+      },
+      "Geoportal2-PL-heat-pipe_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "Integrationstjänsten för nationell marknytta är en samlad tjänst för att presentera markförsörjningsdata som kommer direkt från enheter på distriktsnivå. Tjänsten innehåller endast data från de enheter som har en WMS-tjänst med lämpliga parametrar och som har beslutat att inkludera sin WMS-tjänst i kollektivtjänsten Nationell integration av vapenterritorium.",
+        "name": "Geoportal 2: värmerör WMS"
+      },
+      "Geoportal2-PL-plot_boundaries_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "Tjänsten National Integration of Land Records är en samlad tjänst för presentation av registreringsdata direkt från enheter på distriktsnivå. Tjänsten innehåller endast data från de enheter som har WMS-tjänsten med lämpliga parametrar och har beslutat att inkludera sin WMS-tjänst i kollektivtjänst Nationell integration av fastighetsregistret.",
+        "name": "Geoportal 2: Plottgränser"
+      },
+      "Geoportal2-PL-power-cord_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "Integrationstjänsten för nationell marknytta är en samlad tjänst för att presentera markförsörjningsdata som kommer direkt från enheter på distriktsnivå. Tjänsten innehåller endast data från de enheter som har en WMS-tjänst med lämpliga parametrar och som har beslutat att inkludera sin WMS-tjänst i kollektivtjänsten Nationell integration av vapenterritorium.",
+        "name": "Geoportal 2: elnät WMS"
+      },
+      "Geoportal2-PL-prng": {
+        "attribution": {
+          "text": "Centralt geodetiskt och kartografiskt dokumentationscenter"
+        },
+        "name": "Geoportal 2: PRNG (geografiska namn)"
+      },
+      "Geoportal2-PL-sewer-pipe_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "Integrationstjänsten för nationell marknytta är en samlad tjänst för att presentera markförsörjningsdata som kommer direkt från enheter på distriktsnivå. Tjänsten innehåller endast data från de enheter som har en WMS-tjänst med lämpliga parametrar och som har beslutat att inkludera sin WMS-tjänst i kollektivtjänsten Nationell integration av vapenterritorium.",
+        "name": "Geoportal 2: avloppsrör WMS"
+      },
+      "Geoportal2-PL-shaded_relief_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "Visningstjänst (Web Map Service, WMS) för att se NMT-skuggning i ett rutnät på 1m x 1m. Tjänsten erbjuder stöd för WMS 1.3.0-gränssnittet.",
+        "name": "Geoportal 2: Skuggad relief (WMS)"
+      },
+      "Geoportal2-PL-squares-and-housing-estates_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "WMS-surfningstjänst National Address Numbering Integration möjliggör nedladdning av kartbilder skapade på grundval av rumsliga data från det statliga gränsregistret inom gatu- och adressposter.",
+        "name": "Geoportal 2: Torg och bostadsområden"
+      },
+      "Geoportal2-PL-state-borders_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "WMS-tjänstepublicering Polska territoriella divisionsenheter, inklusive administrativa enheter",
+        "name": "Geoportal 2: Statsgränser WMS"
+      },
+      "Geoportal2-PL-telecommunications-cable_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "Integrationstjänsten för nationell marknytta är en samlad tjänst för att presentera markförsörjningsdata som kommer direkt från enheter på distriktsnivå. Tjänsten innehåller endast data från de enheter som har en WMS-tjänst med lämpliga parametrar och som har beslutat att inkludera sin WMS-tjänst i kollektivtjänsten Nationell integration av vapenterritorium.",
+        "name": "Geoportal 2: telekablar WMS"
+      },
+      "Geoportal2-PL-water-pipe_WMS": {
+        "attribution": {
+          "text": "Huvudkontoret för geodesi och kartografi"
+        },
+        "description": "Integrationstjänsten för nationell marknytta är en samlad tjänst för att presentera markförsörjningsdata som kommer direkt från enheter på distriktsnivå. Tjänsten innehåller endast data från de enheter som har en WMS-tjänst med lämpliga parametrar och som har beslutat att inkludera sin WMS-tjänst i kollektivtjänsten Nationell integration av vapenterritorium.",
+        "name": "Geoportal 2: vattenledningar WMS"
+      },
+      "Gliwice-2003": {
+        "attribution": {
+          "text": "Gliwice stadshus"
+        },
+        "name": "Gliwice: Ortophotomap 2003 (flygfoto)"
+      },
+      "Gliwice-2009": {
+        "attribution": {
+          "text": "Gliwice stadshus"
+        },
+        "name": "Gliwice: Ortophotomap 2009 (flygfoto)"
+      },
+      "Gliwice-2013": {
+        "attribution": {
+          "text": "Gliwice stadshus"
+        },
+        "name": "Gliwice: Ortophotomap 2013 (flygfoto)"
+      },
+      "Gliwice-2017": {
+        "attribution": {
+          "text": "Gliwice stadshus"
+        },
+        "name": "Gliwice: Ortophotomap 2017 (flygfoto)"
+      },
+      "Gliwice-2018": {
+        "attribution": {
+          "text": "Gliwice stadshus"
+        },
+        "name": "Gliwice: Ortophotomap 2018 (flygfoto)"
+      },
+      "Gliwice-2020": {
+        "attribution": {
+          "text": "Gliwice stadshus"
+        },
+        "name": "Gliwice: Ortophotomap 2020 (flygfoto)"
+      },
+      "Gliwice-2021": {
+        "attribution": {
+          "text": "Gliwice stadshus"
+        },
+        "name": "Gliwice: Ortophotomap 2021 (flygfoto)"
+      },
+      "Gliwice-buildings": {
+        "attribution": {
+          "text": "Gliwice stadshus"
+        },
+        "name": "Gliwice: Byggnader"
+      },
+      "LSA-ATKIS_BU": {
+        "description": "Form av byggnader i Sachsen-Anhalt"
+      },
+      "LSA-DOP20": {
+        "description": "flygfoton över delstaten Sachsen-Anhalt, 20 cm upplösning"
+      },
+      "LSA-DVG": {
+        "description": "Vektordata över administrativa gränser. Gränserna för förbundsstaten, distriktet, kommunen och delar av kommunen ges."
+      },
+      "LocalAuthorities_RightsOfWay": {
+        "attribution": {
+          "text": "Innehåller information från den offentliga sektorn licensierad under Open Government License v3.0."
+        },
+        "description": "Allmän rättigheter till väg-data släppt av lokala myndigheter, insamlat från rowmaps.com",
+        "name": "Allmänna rättigheter till väg"
+      },
+      "Lodz-2015": {
+        "attribution": {
+          "text": "Stadskontoret i Łódź"
+        },
+        "name": "Łódź: Ortofotokarta 2015 (flygfoto)"
+      },
+      "Lodz-2017": {
+        "attribution": {
+          "text": "Stadskontoret i Łódź"
+        },
+        "name": "Łódź: Ortophotomap 2017 (flygfoto)"
+      },
+      "Lodz-buildings": {
+        "attribution": {
+          "text": "Stadskontoret i Łódź"
+        },
+        "name": "Łódź: Byggnader"
+      },
+      "MAPNIK": {
+        "attribution": {
+          "text": "© OpenStreetMaps bidragsgivare, ODbL 1.0"
+        },
+        "description": "Standardlagret på OpenStreetMap.",
+        "name": "OpenStreetMap (standard)"
+      },
+      "Maaamet-Estonia_Cadastre": {
+        "attribution": {
+          "text": "Matrikelkarta över markförvaltningen baserad på ortofoto"
+        },
+        "name": "Markförvaltningens matrikelkarta"
+      },
+      "Maaamet-Estonia_Ortho": {
+        "attribution": {
+          "text": "Ortofoto från markförvaltningen"
+        },
+        "name": "Markförvaltningens ortho (WMS)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Villkor & återkoppling"
+        },
+        "description": "Mapbox-tillhållna rasterkartrutor som inkluderar en global baskarta med högupplösta satellit- och flygbilder",
+        "name": "Mapbox satellit"
+      },
+      "Naturvardsverket-protected": {
+        "description": "Sveriges nationalparker, naturreservat och andra skyddade områden och objekt",
+        "name": "Naturvårdsverket - Skyddad natur"
+      },
+      "Naturvardsverket-trails": {
+        "description": "Leder i anslutning till svenska naturreservat och andra skyddade områden från Naturvårdsverket, uppdateras dagligen",
+        "name": "Naturvårdsverket - Leder"
+      },
+      "OSIP": {
+        "description": "Ohio Statewide Imagery Program III mest aktuella ortobilder i varje county med upplösningar från 1 fot till 3 tum från 2017 till 2020."
+      },
+      "OSIP_1ft": {
+        "description": "Ohio Statewide Imagery Program II ortobilder av alla 88 counties med 1-tums upplösning från 2011 till 2014.",
+        "name": "Ohio Statewide Imagery Program 1-fot"
+      },
+      "OSIP_6in": {
+        "description": "Ohio Statewide Imagery Program III ortobilder av 40 counties  tagna med 6-tums upplösning 2017 och 2018, plus OSIP I- och OSIP II-bilder i ytterligare 16 counties från 2010 till 2014.",
+        "name": "Ohio Statewide Imagery Program 6 tum"
+      },
+      "OSMUK-Cadastral-Parcels": {
+        "attribution": {
+          "text": "Innehåller information från den offentliga sektorn licensierad under Open Government License v3.0."
+        },
+        "description": "Perfekt justerade kataster (fastighetsregistret) i Storbritannien"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMaps bidragsgivare, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Adresser"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMaps bidragsgivare, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Geometri"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMaps bidragsgivare, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Vägar"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMaps bidragsgivare, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Områden"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMaps bidragsgivare, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Platser"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMaps bidragsgivare, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Rutter"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMaps bidragsgivare, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Taggning"
+      },
+      "OpenAerialMapMosaic": {
+        "description": "Alla OpenAerialMap-bilder i ett mosaiklager, av Kontur.io",
+        "name": "OpenAerialMap Mosaic, av Kontur.io"
+      },
+      "Riksantikvariambetet-archaeological": {
+        "description": "Fornlämningar och övriga kulturhistoriska lämningar i Sverige, både på land och i vatten.",
+        "name": "Riksantikvarieämbetet - Fornlämningar"
+      },
+      "Riksantikvariambetet-heritage": {
+        "description": "Bebyggelseregistret innehåller uppgifter om Sveriges byggda kulturarv som byggnadsminnen och kyrkor, allt från traditionella timmerhus till modern bebyggelse.",
+        "name": "Riksantikvarieämbetet - Byggnadsminnen"
+      },
+      "Riksantikvariambetet-protected": {
+        "description": "Skyddsområdesytor för statliga och enskilda byggnadsminnen i Sverige",
+        "name": "Riksantikvarieämbetet - Skyddsområden för byggnadsminnen"
+      },
+      "Riksantikvariambetet-ruins": {
+        "description": "Ruiner av kulturhistoriskt värde",
+        "name": "Riksantikvarieämbetet - Ruiner"
+      },
+      "SDFE_Overflade_Skyggekort_40cm": {
+        "attribution": {
+          "text": "Myndigheten för dataförsörjning och infrastruktur"
+        },
+        "name": "SDFI Surface Skuggkarta (40 cm)"
+      },
+      "SDFE_Terraen_Skyggekort_40cm": {
+        "attribution": {
+          "text": "Myndigheten för dataförsörjning och infrastruktur"
+        },
+        "name": "SDFI Terrain Skuggkarta (40 cm)"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "SPW(allonie) mest aktuella flygfoton"
+      },
+      "SPW_PICC": {
+        "name": "SPW(allonie) PICC numerisk bild"
+      },
+      "Siemianowice_Slaskie-aerial_image": {
+        "attribution": {
+          "text": "Siemianowice Śląskie stadshus"
+        },
+        "name": "Siemianowice Śląskie: Ortofotomap (flygbild)"
+      },
+      "Siemianowice_Slaskie-buildings": {
+        "attribution": {
+          "text": "Siemianowice Śląskie stadshus"
+        },
+        "name": "Siemianowice Śląskie: Byggnader"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Gul = Fritt tillgänglig kartdata (public domain) från US Census. Röd = Data ej hittad på OpenStreetMap"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "Gul = Fritt tillgänglig kartdata (public domain) från US Census. Röd = Data ej hittad i OpenStreetMap"
+      },
+      "US-TIGER-Roads-2020": {
+        "description": "Gul = Fritt tillgänglig kartdata (public domain) från US Census. Röd = Data ej hittad i OpenStreetMap"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Gul = Fritt tillgänglig kartdata (public domain) från US Census. Röd = Data ej hittad i OpenStreetMap"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Gul = Fritt tillgänglig kartdata (public domain) från US Census. Röd = Data ej hittad i OpenStreetMap"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Gul = Fritt tillgänglig kartdata (public domain) från US Census. Röd = Data ej hittad i OpenStreetMap"
+      },
+      "USDA-NAIP": {
+        "attribution": {
+          "text": "USA:s jordbruksdepartement"
+        },
+        "description": "Det senaste året av 30/60 cm 4-band DOQQs från National Agriculture Imagery Program (NAIP) för varje stat i USA."
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Väg: Grön ram = oklassificerad. Brun ram = bruksväg. Underlag: grus = ljusbrun fyllning, asfalt = svart, belagd = grå, mark = vit, betong = blå, gräs = grön. Säsongsöppen = vita streck",
+        "name": "Bildlager för Skogsvägar i USA"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Realiserad med hjälp från Bryssel UrbIS®© – Distribution & Upphovsrätt CIRB"
+        },
+        "name": "CIRB/CIBG mest aktuella flygfoton"
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "Realiserad med hjälp från Bryssel UrbIS®© – Distribution & Upphovsrätt CIRB"
+        }
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "Realiserad med hjälp från Bryssel UrbIS®© – Distribution & Upphovsrätt CIRB"
+        }
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "Realiserad med hjälp från Bryssel UrbIS®© – Distribution & Upphovsrätt CIRB"
+        }
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "Realiserad med hjälp från Bryssel UrbIS®© – Distribution & Upphovsrätt CIRB"
+        }
+      },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Realiserad med hjälp från Bryssel UrbIS®© – Distribution & Upphovsrätt CIRB"
+        }
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "Realiserad med hjälp från Bryssel UrbIS®© – Distribution & Upphovsrätt CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
+        "attribution": {
+          "text": "Realiserad med hjälp från Bryssel UrbIS®© – Distribution & Upphovsrätt CIRB"
+        }
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "Realiserad med hjälp från Bryssel UrbIS®© – Distribution & Upphovsrätt CIRB"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMaps bidragsgivare, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Cykel"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMaps bidragsgivare, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Vandring"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMaps bidragsgivare, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Mountainbike"
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMaps bidragsgivare, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Inline skating"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMaps bidragsgivare, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Vintersport"
+      },
+      "Zabrze-2011": {
+        "attribution": {
+          "text": "Zabrze stadshus"
+        },
+        "name": "Zabrze: Ortophotomap 2011 (flygfoto)"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "Baskarta över Österrike, baserad på offentlig data."
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Ortofoto-lager tillhandahållen av basemap.at. \"Efterträdare\" till geoimage.at imagery.",
+        "name": "basemap.at ortofoto"
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "description": "Noteringsöverdrag tillhandahållen av basemap.at.",
+        "name": "basemap.at Överdrag"
+      },
+      "cyclosm": {
+        "attribution": {
+          "text": "Rendering: CyclOSM (tillhandahållet av OpenStreetMap Frankrike) © Kartdata OpenStreetMaps bidragsgivare"
+        },
+        "description": "CyclOSM är en kartstil särskilt utformad för cykling. Den använder OpenStreetMap-data för att skapa snygga och praktiska cykelkartor! "
+      },
+      "debicki-buildings": {
+        "name": "Dębica poviat: Byggnader"
+      },
+      "eufar-balaton": {
+        "attribution": {
+          "text": "EUFAR Balaton ortofoto 2010"
+        },
+        "description": "1940 geo-taggat fotografi från Balaton Limnological Institute.",
+        "name": "EUFAR Balaton ortofoton"
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© Göteborgs Stad, CC0"
+        },
+        "description": "Stadskartan är en översiktlig karta som beskriver Göteborg. Den innehåller generell information om mark, kommunikation, hydrografi, byggnader, adressnummer och gatunamn, administrativ indelning och övrig orienterande text.",
+        "name": "Göteborg Stadskarta"
+      },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© Göteborgs Stad, CC0"
+        },
+        "description": "Webbkartstjänst som visar terrängskuggning och lutning baserad på höjdmodellen 2017 för Göteborgs Stad. Upplösning 0,5 meter per pixel.",
+        "name": "Göteborg terrängmodell"
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© Göteborgs Stad, CC0"
+        },
+        "description": "Flygfoto för Göteborgs Stad",
+        "name": "Göteborg Ortofoto 2015"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© Göteborgs Stad, CC0"
+        },
+        "description": "Flygfoto för Göteborgs Stad",
+        "name": "Göteborg Ortofoto 2017"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© Göteborgs Stad, CC0"
+        },
+        "description": "Flygfoto för Göteborgs Stad",
+        "name": "Göteborg Ortofoto 2019"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© Göteborgs Stad, CC0"
+        },
+        "description": "Flygfoto för Göteborgs Stad",
+        "name": "Göteborg Ortofoto 2021"
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© Göteborgs Stad, CC0"
+        },
+        "description": "Flygfoto för Göteborgs Stad",
+        "name": "Göteborg Ortofoto senaste"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "description": "Japan GSI- flygfoton. Inte fullständigt Ortofotoeserade, men lite nyare och/eller annan täckningsgrad än  GSI ortho-flygfoton.",
+        "name": "Japan GSI- flygfoton"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "attribution": {
+          "text": "GSI Japan sömlössa foton"
+        },
+        "description": "Japan GSI sömlösa flygfoton. Samlingen med senaste bilderna från GSI ortho, flygfoton, katastroffoton m.m.",
+        "name": "Japan GSI sömlösa flygfoton"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "description": "Japan GSI standardkarta. Stor täckning.",
+        "name": "Japan GSI standardkarta"
+      },
+      "kalmar-orto-2014": {
+        "attribution": {
+          "text": "© Kalmar kommun"
+        },
+        "description": "Flygfoton över den norra kusten av Kalmar kommun 2014",
+        "name": "Kalmar norra, flygfoton 2014"
+      },
+      "kalmar-orto-2016": {
+        "attribution": {
+          "text": "© Kalmar kommun"
+        },
+        "description": "Flygfoton över den södra kusten av Kalmar kommun 2016",
+        "name": "Kalmar södra, flygfoton 2016"
+      },
+      "kalmar-orto-2018": {
+        "attribution": {
+          "text": "© Kalmar kommun"
+        },
+        "description": "Flygfoton över tätorter i Kalmar kommun 2018",
+        "name": "Kalmar tätort, flygfoton 2018"
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© Kalmar kommun"
+        },
+        "description": "Ortofoton över tätorter i Kalmar kommun 2020",
+        "name": "Kalmar Ortofoto 2020"
+      },
+      "kartverket-bygninger": {
+        "description": "INSPIRE byggnader i Norge.",
+        "name": "Kartverket Byggnader"
+      },
+      "kelkkareitit": {
+        "description": "Kelkkareitit.fi snöskoterleder från OSM (Nordisk täckning)",
+        "name": "Bildlager med nordiska skoterleder"
+      },
+      "lancucki-buildings": {
+        "attribution": {
+          "text": "Łańcut-distriktet"
+        },
+        "name": "Łańcut-distriktet: Byggnader"
+      },
+      "lantmateriet-orto1960": {
+        "description": "Mosaik av svenska ortofoton från perioden 1955–1965. Äldre och yngre bilder kan förekomma.",
+        "name": "Lantmäteriets historiska ortofoton 1960"
+      },
+      "lantmateriet-orto1975": {
+        "description": "Mosaik av svenska ortofoton från perioden 1970–1980. Är under uppbyggnad.",
+        "name": "Lantmäteriets historiska ortofoton 1975"
+      },
+      "lantmateriet-topowebb": {
+        "description": "Topografisk karta över Sverige 1:50 000",
+        "name": "Lantmäteriets topografiska karta"
+      },
+      "linkoping-orto": {
+        "attribution": {
+          "text": "© Linköpings kommun"
+        },
+        "description": "Flygfoton från Linköpings kommun 2010, allmänt tillgängligt",
+        "name": "Flygfoton Linköping"
+      },
+      "lubaczowski-buildings": {
+        "attribution": {
+          "text": "Lubaczów-distriktet"
+        },
+        "name": "Lubaczów-distriktet: Byggnader"
+      },
+      "maaamet<TX_DOT>ee-cir_ngr": {
+        "attribution": {
+          "text": "Skogsbruketsflygfoton från markförvaltningen"
+        },
+        "name": "Markförvaltningen skogsbruk"
+      },
+      "maaamet<TX_DOT>ee-orto": {
+        "attribution": {
+          "text": "Ortofoto från markförvaltningen"
+        },
+        "name": "Markförvaltningens ortho (TMS)"
+      },
+      "maaamet<TX_DOT>ee-pohi_vr2": {
+        "attribution": {
+          "text": "Markförvaltningens huvudkarta"
+        },
+        "name": "Markförvaltningens grundkarta"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Villkor & återkoppling"
+        },
+        "description": "Visa de viktigaste objekten för att hjälpa dig att orientera dig. ",
+        "name": "Bildlager för lokalisering"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© OpenStreetMaps bidragsgivare, CC-BY-SA"
+        },
+        "name": "OpenPT-karta (bildlager)"
+      },
+      "openrailwaymap": {
+        "attribution": {
+          "text": "Visning: OpenRailwayMap, © Kartdata OpenStreetMaps bidragsgivare"
+        },
+        "description": "Bildlager som visar järnvägsinfrastruktur baserat på data från OpenStreetMap"
+      },
+      "openrailwaymap-maxspeeds": {
+        "attribution": {
+          "text": "Visning: OpenRailwayMap, © Kartdata OpenStreetMaps bidragsgivare"
+        },
+        "description": "Bildlager som visar hastighetsgränser för järnväg baserat på data från OpenStreetMap",
+        "name": "OpenRailwayMap hastighetsgränser"
+      },
+      "openrailwaymap-signalling": {
+        "attribution": {
+          "text": "Visning: OpenRailwayMap, © Kartdata OpenStreetMaps bidragsgivare"
+        },
+        "description": "Bildlager som visar järnvägssignaler baserat på data från OpenStreetMap",
+        "name": "OpenRailwayMap signaler"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© OpenStreetMaps bidragsgivare"
+        },
+        "description": "Publika GPS-spår uppladdade till OpenStreetMap.",
+        "name": "GPS-spår på OpenStreetMap"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© OpenStreetMaps bidragsgivare, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (Tysk stil)"
+      },
+      "osmse-ekonomiska": {
+        "description": "Inskanning av \"Ekonomiska kartan\" ca. 1859–1979",
+        "name": "Lantmäteriets Ekonomiska karta 1950–1978"
+      },
+      "osmse-generalstab": {
+        "description": "Inskanning av \"Generalstabskartan\" ca. 1859–1979"
+      },
+      "poznan-ortofotomapa2014": {
+        "attribution": {
+          "text": "Styrelsen för geodesi och stadsregistret GEOPOZ"
+        },
+        "name": "Poznań: Ortophotomap 2014 (flygfoto)"
+      },
+      "poznan-ortofotomapa2016": {
+        "attribution": {
+          "text": "Styrelsen för geodesi och stadsregistret GEOPOZ"
+        },
+        "name": "Poznań: Ortophotomap 2016 (flygfoto)"
+      },
+      "poznan-ortofotomapaBiezaca": {
+        "attribution": {
+          "text": "Styrelsen för geodesi och stadsregistret GEOPOZ"
+        },
+        "name": "Poznań: Aktuell ortofotokarta (flygfoto)"
+      },
+      "przemysl-aerial": {
+        "attribution": {
+          "text": "Staden Przemyśl"
+        },
+        "name": "Przemyśl: Ortophotomap (flygbild)"
+      },
+      "przemysl-buildings": {
+        "attribution": {
+          "text": "Staden Przemyśl"
+        },
+        "name": "Przemyśl: Byggnader"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, Data ©OpenStreetMaps bidragsgivare"
+        },
+        "name": "QA Ingen adress"
+      },
+      "route500": {
+        "attribution": {
+          "text": "Tiles © cquest@Openstreetmap Frankrike, data © IGN, LO/OL"
+        },
+        "description": "Rutter för det klassificerade nätet (motorvägar, riksvägar, länsvägar)"
+      },
+      "rzeszowski-aerial": {
+        "attribution": {
+          "text": "Rzeszów-distriktet"
+        },
+        "name": "Rzeszów-distriktet: Ortofotokarta (flygfoto)"
+      },
+      "rzeszowski-buildings": {
+        "attribution": {
+          "text": "Rzeszów-distriktet"
+        },
+        "name": "Rzeszów-distriktet: Byggnader"
+      },
+      "scb-industrial": {
+        "description": "Geografiskt avgränsade områden som kännetecknas av storskalig och industriell markanvändning",
+        "name": "SCB - Verksamhetsområden"
+      },
+      "scb-settlements": {
+        "description": "Sammanhängande byggnadsområden med 50-199 invånare och högst 150 meter mellan husen",
+        "name": "SCB - Småorter"
+      },
+      "scb-urban": {
+        "description": "Mänskliga bosättningar på minst 200 personer med mindre än 500 meter mellan hushållen",
+        "name": "SCB - Tätorter"
+      },
+      "scb-vacation": {
+        "description": "Sammanhängande områden som huvudsakligen består av fritidshus; en samling av minst 50 fritidshus, där avståndet mellan dem inte överstiger 150 meter",
+        "name": "SCB - Fritidshusområden"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Plattor: skobbler Kartdata: OpenStreetMaps bidragsgivare"
+        }
+      },
+      "skolverket-schools": {
+        "description": "Svenska skolor.",
+        "name": "Skolverket - Skolor"
+      },
+      "skoterleder": {
+        "description": "Snöskoterleder",
+        "name": "Snöskoterkarta, Sverige"
+      },
+      "sropczyce-buildings": {
+        "attribution": {
+          "text": "Ropczyce-Sędziszów-distriktet"
+        },
+        "name": "Ropczycko-Sędziszów-distriktet: Byggnader"
+      },
+      "stalowowolski-buildings": {
+        "attribution": {
+          "text": "Stalowa Wola-distriktet"
+        },
+        "name": "Stalowa Wola-distriktet: Byggnader"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "Kartplattor av Stamen Design, under CC BY 3.0. Data från OpenStreetMap, under ODbL "
+        },
+        "name": "Stamen terräng"
+      },
+      "stockholm-orto": {
+        "attribution": {
+          "text": "© Stockholms kommun, CC0"
+        },
+        "description": "Ortofoton från Stockholms stad 2018, CC0-licens",
+        "name": "Flygfoton Stockholm"
+      },
+      "susono_shizuoka_jp_orthophoto": {
+        "attribution": {
+          "text": "Flygfoton Susono city"
+        },
+        "description": "Flygfotona släppta av Susono City som öppen data.",
+        "name": "Flygfoton Susono City"
+      },
+      "svk-electricity-network": {
+        "description": "Svenskt transmissionsnät för el.",
+        "name": "SVK - Elnätverk"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Kartor © Thunderforest, Data © OpenStreetMaps bidragsgivare"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Kartor © Thunderforest, Data © OpenStreetMaps bidragsgivare"
+        },
+        "name": "Thunderforest landskap"
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Kartor © Thunderforest, Data © OpenStreetMaps bidragsgivare"
+        },
+        "name": "Thunderforest utomhus"
+      },
+      "trafikverket-baninfo": {
+        "description": "Svenska järnvägsnätverket, inklusive sidospår",
+        "name": "Trafikverkets järnvägsnätverk"
+      },
+      "trafikverket-baninfo-option": {
+        "description": "Svenska järnvägsnätverket med flera kartlager att välja",
+        "name": "Trafikverkets järnvägsdatabas anpassningsbar"
+      },
+      "trafikverket-vagnat": {
+        "description": "Svenska nationella vägdatabasen, NVDB",
+        "name": "Trafikverkets vägnätverk"
+      },
+      "trafikverket-vagnat-extra": {
+        "description": "Svenska nationella vägdatabasen, NVDB, med extra detaljer: Vägreferenser, hastighetsdämpare, busshållplatser, broar, tunnlar, fartkameror.",
+        "name": "Trafikverkets vägnätverk extra"
+      },
+      "trafikverket-vagnat-option": {
+        "description": "Svenska nationella vägdatabasen, NVDB, med flera kartlager att välja",
+        "name": "Trafikverkets vägdatabas anpassningsbar"
+      },
+      "wroclaw-orto2015": {
+        "attribution": {
+          "text": "Wrocławs stadshus"
+        },
+        "name": "Wrocław: Orthophotomap 2015 (flygbild)"
+      },
+      "wroclaw-orto2018": {
+        "attribution": {
+          "text": "Wrocław stadshus"
+        },
+        "name": "Wrocław: Flygfoton 2018"
+      }
+    }
+  }
+}

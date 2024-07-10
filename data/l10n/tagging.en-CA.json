@@ -1,0 +1,101 @@
+{
+  "en-CA": {
+    "presets": {
+      "fields": {
+        "air_conditioning": {
+          "terms": "AC, A/C"
+        },
+        "backcountry": {
+          "terms": "Boonies"
+        },
+        "bin": {
+          "label": "Garbage Bin",
+          "terms": "Garbage can, trash can, bin, garbage, trash"
+        },
+        "building/levels": {
+          "terms": "Stories"
+        },
+        "charge_fee": {
+          "placeholder": "1 EUR, 5 USD, 10 CAD…"
+        },
+        "colour": {
+          "label": "Colour"
+        },
+        "contact/webcam": {
+          "placeholder": "https://example.com/"
+        },
+        "drive_through": {
+          "terms": "Drive-Through, Drive Through, Drive Thru, Drive-Thru"
+        },
+        "ele": {
+          "terms": "altitude,height,"
+        },
+        "frequency": {
+          "terms": "hertz,hz"
+        },
+        "internet_access/ssid": {
+          "terms": "SSID,"
+        },
+        "junction_line": {
+          "terms": "Intersection"
+        },
+        "payment_multi": {
+          "terms": "Payment Methods"
+        },
+        "phone": {
+          "terms": "Phone, Phone Number"
+        },
+        "recycling_type": {
+          "options": {
+            "centre": "Centre"
+          },
+          "placeholder": "Container, Centre"
+        },
+        "roof/colour": {
+          "label": "Roof Colour"
+        },
+        "seamark/beacon_lateral/colour": {
+          "label": "Colour"
+        },
+        "seamark/buoy_lateral/colour": {
+          "label": "Colour"
+        },
+        "tee": {
+          "label": "Tee Colour/Type"
+        }
+      },
+      "presets": {
+        "amenity/arts_centre": {
+          "name": "Arts Centre"
+        },
+        "amenity/community_centre": {
+          "name": "Community Centre"
+        },
+        "amenity/community_centre/lgbtq": {
+          "name": "LGBTQ+ Community Centre"
+        },
+        "amenity/community_centre/youth_centre": {
+          "name": "Youth Centre"
+        },
+        "amenity/conference_centre": {
+          "name": "Convention Centre"
+        },
+        "amenity/dive_centre": {
+          "name": "Dive Centre"
+        },
+        "amenity/exhibition_centre": {
+          "name": "Exposition Centre"
+        },
+        "amenity/payment_centre": {
+          "name": "Payment Centre"
+        },
+        "amenity/toilets": {
+          "name": "Washroom\nBathroom"
+        },
+        "place/neighbourhood": {
+          "name": "Neighbourhood"
+        }
+      }
+    }
+  }
+}

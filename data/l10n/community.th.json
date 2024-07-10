@@ -1,0 +1,817 @@
+{
+  "th": {
+    "_communities": {
+      "openstreetmapaachen": "OpenStreetMap อาเคิน",
+      "openstreetmapafghanistan": "OpenStreetMap อัฟกานิสถาน",
+      "openstreetmapafrica": "OpenStreetMap แอฟริกา",
+      "openstreetmapalba": "OpenStreetMap อัลบา",
+      "openstreetmapalbania": "OpenStreetMap แอลเบเนีย",
+      "openstreetmapargentina": "OpenStreetMap อาร์เจนตินา",
+      "openstreetmaparmenia": "OpenStreetMap อาร์เมเนีย",
+      "openstreetmapasia": "OpenStreetMap เอเชีย",
+      "openstreetmapasti": "OpenStreetMap อัสติ",
+      "openstreetmapaustria": "OpenStreetMap ออสเตรีย",
+      "openstreetmapbahia": "OpenStreetMap บาเยีย",
+      "openstreetmapbangladesh": "OpenStreetMap บังกลาเทศ",
+      "openstreetmapbelarus": "OpenStreetMap เบลารุส",
+      "openstreetmapbelgium": "OpenStreetMap เบลเยียม",
+      "openstreetmapbelize": "OpenStreetMap เบลีซ",
+      "openstreetmapbengaluru": "OpenStreetMap เบงคลูรู",
+      "openstreetmapbenin": "OpenStreetMap เบนิน",
+      "openstreetmapberlin": "OpenStreetMap เบอร์ลิน",
+      "openstreetmapbivccvl": "OpenStreetMap บีเยลลา เวอร์เชลลี และคานาเวเซ่",
+      "openstreetmapbochum": "OpenStreetMap โบคุม",
+      "openstreetmapbolivia": "OpenStreetMap โบลิเวีย",
+      "openstreetmapbonn": "OpenStreetMap บ็อน",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap บอสเนียและเฮอร์เซโกวีนา",
+      "openstreetmapbrasil": "OpenStreetMap บราซิล",
+      "openstreetmapbrasilia": "OpenStreetMap บราซิเลีย",
+      "openstreetmapbremen": "OpenStreetMap เบรเมิน",
+      "openstreetmapbulgaria": "OpenStreetMap บัลแกเรีย",
+      "openstreetmapburkinafaso": "OpenStreetMap บูร์กินาฟาโซ",
+      "openstreetmapburundi": "OpenStreetMap บุรุนดี",
+      "openstreetmapbzh": "OpenStreetMap เบรอตาญ",
+      "openstreetmapcambodia": "OpenStreetMap กัมพูชา",
+      "openstreetmapcameroon": "OpenStreetMap แคเมอรูน",
+      "openstreetmapcanada": "OpenStreetMap แคนาดา",
+      "openstreetmapcastillayleon": "OpenStreetMap กัสติยาและเลออน",
+      "openstreetmapcatalancountries": "OpenStreetMap ประเทศกาตาลา",
+      "openstreetmapceara": "OpenStreetMap เซอารา",
+      "openstreetmapchad": "OpenStreetMap ชาด",
+      "openstreetmapchile": "OpenStreetMap ชิลี",
+      "openstreetmapchina": "OpenStreetMap จีน",
+      "openstreetmapcologne": "OpenStreetMap โคโลญ",
+      "openstreetmapcolombia": "OpenStreetMap โคลอมเบีย",
+      "openstreetmapcomunitatvalenciana": "OpenStreetMap วาเล็นซิอา กมมูนิตาด",
+      "openstreetmapcostarica": "OpenStreetMap คอสตาริกา",
+      "openstreetmapcotedivoire": "OpenStreetMap โกตดิวัวร์",
+      "openstreetmapcroatia": "OpenStreetMap โครเอเชีย",
+      "openstreetmapcuba": "OpenStreetMap คิวบา",
+      "openstreetmapcuneo": "OpenStreetMap กูนีโอ",
+      "openstreetmapcz": "OpenStreetMap เช็ก",
+      "openstreetmapdeepsouth": "OpenStreetMap ดีปเซาท์",
+      "openstreetmapdelhi": "OpenStreetMap เดลี",
+      "openstreetmapdenmark": "OpenStreetMap เดนมาร์ก",
+      "openstreetmapdjibouti": "OpenStreetMap จิบูตี",
+      "openstreetmapdominicanrepublic": "OpenStreetMap สาธารณรัฐโดมินิกัน",
+      "openstreetmapdresden": "OpenStreetMap เดรสเดิน",
+      "openstreetmapdusseldorf": "OpenStreetMap ดึสเซิลดอร์ฟ",
+      "openstreetmapecuador": "OpenStreetMap เอกวาดอร์",
+      "openstreetmapegypt": "OpenStreetMap อียิปต์",
+      "openstreetmaperitrea": "OpenStreetMap เอริเทรีย",
+      "openstreetmapespana": "OpenStreetMap สเปน",
+      "openstreetmapestonia": "OpenStreetMap เอสโตเนีย",
+      "openstreetmapethiopia": "OpenStreetMap เอธิโอเปีย",
+      "openstreetmapfiji": "OpenStreetMap ฟิจิ",
+      "openstreetmapfinland": "OpenStreetMap ฟินแลนด์",
+      "openstreetmapfrance": "OpenStreetMap ฝรั่งเศส",
+      "openstreetmapfreemapslovakia": "OpenStreetMap ฟรีแมพสโลวาเกีย",
+      "openstreetmapfrenchguiana": "OpenStreetMap เฟรนช์เกียนา",
+      "openstreetmapfrenchpolynesia": "OpenStreetMap เฟรนช์พอลินีเชีย",
+      "openstreetmapgabon": "OpenStreetMap กาบอง",
+      "openstreetmapgalicia": "OpenStreetMap กาลิเซีย",
+      "openstreetmapgeorgia": "OpenStreetMap จอร์เจีย",
+      "openstreetmapgermany": "OpenStreetMap เยอรมันนี",
+      "openstreetmapghana": "OpenStreetMap กานา",
+      "openstreetmapgorakalwaria": "OpenStreetMap กูราคัลวารี",
+      "openstreetmapgreece": "OpenStreetMap กรีซ",
+      "openstreetmapgrenoble": "OpenStreetMap เกรอนอบล์",
+      "openstreetmapguatemala": "OpenStreetMap กัวเตมาลา",
+      "openstreetmapguinea": "OpenStreetMap กินี",
+      "openstreetmaphaiti": "OpenStreetMap เฮติ",
+      "openstreetmaphamburg": "OpenStreetMap ฮัมบวร์ค",
+      "openstreetmaphonduras": "OpenStreetMap ฮอนดูรัส",
+      "openstreetmaphongkong": "OpenStreetMap ฮ่องกง",
+      "openstreetmaphungary": "OpenStreetMap ฮังการี",
+      "openstreetmapiceland": "OpenStreetMap ไอซ์แลนด์",
+      "openstreetmapindia": "OpenStreetMap อินเดีย",
+      "openstreetmapindonesia": "OpenStreetMap อินโดนีเซีย",
+      "openstreetmapiran": "OpenStreetMap อิหร่าน",
+      "openstreetmapiraq": "OpenStreetMap อิรัก",
+      "openstreetmapireland": "OpenStreetMap ไอร์แลนด์",
+      "openstreetmapisrael": "OpenStreetMap อิสราเอล",
+      "openstreetmapitaly": "OpenStreetMap อิตาลี",
+      "openstreetmapitalylazio": "OpenStreetMap อิตาลี-ลัตซีโย",
+      "openstreetmapitalylombardia": "OpenStreetMap อิตาลี-ลอมบาร์เดีย",
+      "openstreetmapitalypiemonte": "OpenStreetMap อิตาลี-ปีเยมอนเต",
+      "openstreetmapitalysouthtyrol": "OpenStreetMap อิตาลี-ติโรลใต้",
+      "openstreetmapitalytrentino": "OpenStreetMap อิตาลี-เตรนตีโน",
+      "openstreetmapjapan": "OpenStreetMap ญี่ปุ่น",
+      "openstreetmapkarlsruhe": "OpenStreetMap คาลส์รูเออ",
+      "openstreetmapkazakhstan": "OpenStreetMap คาซัคสถาน",
+      "openstreetmapkenya": "OpenStreetMap เคนยา",
+      "openstreetmapkerala": "OpenStreetMap เกรละ",
+      "openstreetmapkorea": "OpenStreetMap เกาหลี",
+      "openstreetmapkosovo": "OpenStreetMap คอซอวอ",
+      "openstreetmapkyrgyzstan": "OpenStreetMap คีร์กีซสถาน",
+      "openstreetmaplatinamerica": "OpenStreetMap ลาตินอเมริกา",
+      "openstreetmaplatvia": "OpenStreetMap ลัตเวีย",
+      "openstreetmaplebanon": "OpenStreetMap เลบานอน",
+      "openstreetmaplesotho": "OpenStreetMap เลโซโท",
+      "openstreetmapliberia": "OpenStreetMap ไลบีเรีย",
+      "openstreetmaplibya": "OpenStreetMap ลิเบีย",
+      "openstreetmaplithuania": "OpenStreetMap ลิทัวเนีย",
+      "openstreetmapljubljana": "OpenStreetMap ลูบลิยานา",
+      "openstreetmaplombardia": "OpenStreetMap ลอมบาร์เดีย",
+      "openstreetmaplondon": "OpenStreetMap ลอนดอน",
+      "openstreetmapluneburg": "OpenStreetMap ลือเนอบวร์ค",
+      "openstreetmapluxembourg": "OpenStreetMap ลักเซมเบิร์ก",
+      "openstreetmapmadagascar": "OpenStreetMap มาดากัสการ์",
+      "openstreetmapmadrid": "OpenStreetMap มาดริด",
+      "openstreetmapmalawi": "OpenStreetMap มาลาวี",
+      "openstreetmapmalaysia": "OpenStreetMap มาเลเซีย",
+      "openstreetmapmali": "OpenStreetMap มาลี",
+      "openstreetmapmalta": "OpenStreetMap มอลตา",
+      "openstreetmapmauritania": "OpenStreetMap มอริเตเนีย",
+      "openstreetmapmecklenburgvorpommern": "OpenStreetMap เมคเลินบวร์ค-พอวอมเมิร์น",
+      "openstreetmapmexico": "OpenStreetMap เม็กซิโก",
+      "openstreetmapmichigan": "OpenStreetMap มิชิแกน",
+      "openstreetmapmoldova": "OpenStreetMap มอลโดวา",
+      "openstreetmapmongolia": "OpenStreetMap มองโกเลีย",
+      "openstreetmapmontenegro": "OpenStreetMap มอนเตเนโกร",
+      "openstreetmapmontrouge": "OpenStreetMap มงรูฌ",
+      "openstreetmapmorocco": "OpenStreetMap โมร็อกโก",
+      "openstreetmapmunchen": "OpenStreetMap มึนเชิน",
+      "openstreetmapmyanmar": "OpenStreetMap พม่า",
+      "openstreetmapnepal": "OpenStreetMap เนปาล",
+      "openstreetmapnetherlands": "OpenStreetMap เนเธอร์แลนด์",
+      "openstreetmapnicaragua": "OpenStreetMap นิการากัว",
+      "openstreetmapniger": "OpenStreetMap ไนเจอร์",
+      "openstreetmapnigeria": "OpenStreetMap ไนจีเรีย",
+      "openstreetmapnorthkorea": "OpenStreetMap เกาหลีเหนือ",
+      "openstreetmapnorway": "OpenStreetMap นอร์เวย์",
+      "openstreetmapoceania": "OpenStreetMap โอเชียเนีย",
+      "openstreetmapohio": "OpenStreetMap โอไฮโอ",
+      "openstreetmapottawa": "OpenStreetMap ออตตาวา",
+      "openstreetmappakistan": "OpenStreetMap ปากีสถาน",
+      "openstreetmappanama": "OpenStreetMap ปานามา",
+      "openstreetmapparaguay": "OpenStreetMap ปารากวัย",
+      "openstreetmapperu": "OpenStreetMap เปรู",
+      "openstreetmapphilippines": "OpenStreetMap ฟิลิปปินส์",
+      "openstreetmappiemonte": "OpenStreetMap ปีเยมอนเต",
+      "openstreetmappoland": "OpenStreetMap โปแลนด์",
+      "openstreetmapportugal": "OpenStreetMap โปรตุเกส",
+      "openstreetmaprdc": "OpenStreetMap สาธารณรัฐประชาธิปไตยคองโก",
+      "openstreetmaprennes": "OpenStreetMap แรน",
+      "openstreetmapreunion": "OpenStreetMap เรอูว์นียง",
+      "openstreetmapriograndedosul": "OpenStreetMap ฮิวกรังจีดูซูว",
+      "openstreetmapromania": "OpenStreetMap โรมาเนีย",
+      "openstreetmaprussia": "OpenStreetMap รัสเซีย",
+      "openstreetmaprwanda": "OpenStreetMap รวันดา",
+      "openstreetmapsaudiarabia": "OpenStreetMap ซาอุดีอาระเบีย",
+      "openstreetmapsenegal": "OpenStreetMap เซเนกัล",
+      "openstreetmapserbia": "OpenStreetMap เซอร์เบีย",
+      "openstreetmapseychelles": "OpenStreetMap เซเชลส์",
+      "openstreetmapsierraleone": "OpenStreetMap เซียร์ราลีโอน",
+      "openstreetmapsingapore": "OpenStreetMap สิงคโปร์",
+      "openstreetmapslovenia": "OpenStreetMap สโลวีเนีย",
+      "openstreetmapsomalia": "OpenStreetMap โซมาเลีย",
+      "openstreetmapsouthafrica": "OpenStreetMap แอฟริกาใต้",
+      "openstreetmapsouthsudan": "OpenStreetMap ซูดานใต้",
+      "openstreetmapsrilanka": "OpenStreetMap ศรีลังกา",
+      "openstreetmapsudan": "OpenStreetMap ซูดาน",
+      "openstreetmapsweden": "OpenStreetMap สวีเดน",
+      "openstreetmapswitzerland": "OpenStreetMap สวิตเซอร์แลนด์",
+      "openstreetmapsyria": "OpenStreetMap ซีเรีย",
+      "openstreetmaptaiwan": "OpenStreetMap ไต้หวัน",
+      "openstreetmaptanzania": "OpenStreetMap แทนซาเนีย",
+      "openstreetmapthailand": "OpenStreetMap ไทย",
+      "openstreetmaptogo": "OpenStreetMap โตโก",
+      "openstreetmaptoronto": "OpenStreetMap โทรอนโต",
+      "openstreetmaptunisia": "OpenStreetMap ตูนิเซีย",
+      "openstreetmapturin": "OpenStreetMap ตูริน",
+      "openstreetmapturkey": "OpenStreetMap ตุรกี",
+      "openstreetmapuganda": "OpenStreetMap ยูกันดา",
+      "openstreetmapuk": "OpenStreetMap สหราชอาณาจักร",
+      "openstreetmapukraine": "OpenStreetMap ยูเครน",
+      "openstreetmapuruguay": "OpenStreetMap อุรุกวัย",
+      "openstreetmapus": "OpenStreetMap สหรัฐ",
+      "openstreetmapuzbekistan": "OpenStreetMap อุซเบกิสถาน",
+      "openstreetmapvenezuela": "OpenStreetMap เวเนซุเอลา",
+      "openstreetmapvietnam": "OpenStreetMap เวียดนาม",
+      "openstreetmapwarszawa": "OpenStreetMap วอร์ซอ",
+      "openstreetmapwestbengal": "OpenStreetMap เบงกอลตะวันตก",
+      "openstreetmapwesternsahara": "OpenStreetMap เวสเทิร์นสะฮารา",
+      "openstreetmapzambia": "OpenStreetMap แซมเบีย",
+      "openstreetmapzimbabwe": "OpenStreetMap ซิมบับเว",
+      "osmmainz": "OSM ไมนทซ์"
+    },
+    "_defaults": {
+      "aparat": {
+        "name": "{community} บน Aparat",
+        "description": "ติดตามช่องทาง Aparat ของเรา"
+      },
+      "discord": {
+        "name": "ดิสคอร์ด {community}",
+        "description": "ติดต่อกับผู้ทำแผนที่คนอื่นๆ บนดิสคอร์ด"
+      },
+      "discourse": {
+        "name": "{community} ฟอรัมชุมชน",
+        "description": "ฟอรัมอย่างเป็นทางการสำหรับ {community}"
+      },
+      "facebook": {
+        "name": "{community} บน Facebook",
+        "description": "เข้าร่วมชุมชนของเราบน Facebook"
+      },
+      "forum": {
+        "name": "ฟอรัม {community}",
+        "description": "ฟอรัมอย่างเป็นทางการสำหรับ {community}"
+      },
+      "instagram": {
+        "name": "I{community} บน Instagram",
+        "description": "ติดตามเราบน Instagram"
+      },
+      "irc": {
+        "name": "{community} บน IRC",
+        "description": "เข้าร่วม #{account} ทาง irc.oftc.net (port 6667 สำหรับ non-SSL หรือ 6697 สำหรับ SSL)"
+      },
+      "linkedin": {
+        "name": "{community} บน LinkedIn",
+        "description": "เข้าร่วมชุมชนของเราบน LinkedIn"
+      },
+      "mailinglist": {
+        "name": "จดหมายข่าว {account}",
+        "description": "จดหมายข้าวอย่างเป็นทางการสำหรับ {community}"
+      },
+      "mastodon": {
+        "name": "{community} บน Mastodon",
+        "description": "บัญชี Mastodon อย่างเป็นทางการสำหรับ {community}"
+      },
+      "matrix": {
+        "description": "เข้าร่วมชุมชน Matrix chat ของเรา"
+      },
+      "newsletter": {
+        "name": "จดหมายข่าว {community}"
+      },
+      "reddit": {
+        "name": "{community} บน Reddit"
+      },
+      "signal": {
+        "description": "เข้าร่วมแชทชุมชนของเราบน Signal"
+      },
+      "telegram": {
+        "description": "เข้าร่วมแชทชุมชนของเราบน Telegram"
+      },
+      "threads": {
+        "name": "{community} บน Threads",
+        "description": "ติดตามเราบน Threads"
+      },
+      "tiktok": {
+        "name": "{community} บน TikTok",
+        "description": "ติดตามเราบน TikTok"
+      },
+      "twitter": {
+        "name": "{community} บน 𝕏",
+        "description": "ติดตามเราบน 𝕏"
+      },
+      "x": {
+        "name": "{community} บน 𝕏",
+        "description": "ติดตามเราบน 𝕏"
+      },
+      "youtube": {
+        "name": "{community} บน YouTube",
+        "description": "ติดตามช่องของเราบน YouTube"
+      },
+      "zulip": {
+        "description": "เข้าร่วมแชทชุมชนของเราบน Zulip"
+      }
+    },
+    "af-matrix": {
+      "description": "กลุ่ม Matrix สำหรับชุมชนในอัฟกานิสถาน."
+    },
+    "al-maptime-tirana": {
+      "description": "กิจกรรมทางสังคมที่จัดขึ้นเกี่ยวกับการทำแผนที่ - ต้อนรับผู้เริ่มต้นมากที่สุด!",
+      "extendedDescription": "Maptime นั้นเป็นแหล่งการเรียนรู้เปิดสำหรับความรู้ในทุกระดับความรู้ ให้การสนับสนุนด้านการศึกษานานาชาติสำหรับผู้เริ่มต้น Maptime มีความยืดหยุ่นแต่มีมั่นคงพร้อมๆ กัน สร้างพื้นที่สำหรับการสอนการทำแผนที่ เวิร์กช็อป โครงการต่อเนื่องที่มีเป้าหมายร่วมกัน และเวลาทำงานอิสระ/ทำงานร่วมกัน"
+    },
+    "am-wiki": {
+      "description": "หน้าวิกิของ {community}"
+    },
+    "at-matrix": {
+      "description": "ช่อง Matrix ภาษาเยอรมันอย่างไม่เป็นทางการสำหรับออสเตรีย"
+    },
+    "at-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "Bahia-telegram": {
+      "extendedDescription": "เข้าร่วมชุมชนเพื่อเรียนรู้เกี่ยวกับ OpenStreetMap เพิ่มเติม ถามคำถาม หรือมีส่วนร่วมในการประชุมของเรา เราต้อนรับทุกคน!"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "name": "OpenStreetMappers ในเบย์เอเรีย",
+      "description": "พัฒนา OpenStreetMap ในเบย์เอเรีย",
+      "extendedDescription": "กลุ่มนี้นั้นเกี่ยวกับการเติบโตของชุมชน OpenStreetMap ที่นี่ใน Bay Area กิจกรรมของเราเปิดกว้างสำหรับทุกคน ตั้งแต่ผู้ที่ชื่นชอบโอเพ่นซอร์ส นักปั่นจักรยาน ผู้เชี่ยวชาญด้าน GIS นัก geocacher และอื่นๆ ทุกคนและทุกคนที่สนใจเกี่ยวกับแผนที่ การทำแผนที่ และข้อมูลแผนที่ฟรี สามารถเข้าร่วมกลุ่มของเราและเข้าร่วมกิจกรรมของเราได้"
+    },
+    "bd-facebook": {
+      "extendedDescription": "ทำแผนที่ในบังคลาเทศ? หากมีคำถาม ต้องการที่จะมีปฏิสัมพันธ์กับชุมชนที่นี่? สามารถเข้าร่วมกับเราได้ที่ {url} เรายินดีต้อนรับทุกคน!"
+    },
+    "be-chapter": {
+      "description": "เราช่วยกันพัฒนาและปรับปรุง OpenStreetMap ในเบลเยียม",
+      "extendedDescription": "หากคุณต้องการช่วยปรับปรุงและขยายชุมชนการทำแผนที่ในเบลเยียม เพื่อทำให้ผู้คนคลั่งไคล้การทำแผนที่มากยิ่งขึ้น OpenStreetMap เบลเยียม นั้นเป็นสถานที่ที่เหมาะสำหรับคุณ!"
+    },
+    "be-discourse": {
+      "description": "ฟอรัมเพื่อการหารือเกี่ยวกับ OpenStreetMap ในเบลเยียม"
+    },
+    "be-irc": {
+      "extendedDescription": "เข้าร่วม #{account} บน irc.oftc.net (port 6667) ซึ่งเชื่อมโยงกับช่องแชท Matrix"
+    },
+    "be-matrix": {
+      "description": "ยินดีต้อนรับนักทำแผนที่ทุกท่าน!",
+      "extendedDescription": "ห้องสนทนาหลักของชุมชน Belgian OSM อย่าลังเลที่จะถามคำถามสำหรับผู้เริ่มต้นที่นี่!"
+    },
+    "be-meetup": {
+      "description": "การพบปะในชีวิตจริงของผู้คนที่สนใจ OpenStreetMap",
+      "extendedDescription": "การพบปะในชีวิตจริงเป็นสิ่งที่ดีในการพบปะกับนักทำแผนที่คนอื่นๆ ถามคำถามและเรียนรู้สิ่งต่างๆ มากมาย ยินดีต้อนรับผู้ร่วมให้ข้อมูลใหม่โดยเฉพาะ!"
+    },
+    "be-newsletter": {
+      "description": "จดหมายข่าวรายไตรมาสของชุมชนเบลเยียม"
+    },
+    "bg-wiki": {
+      "description": "หน้า Wikiproject สำหรับบัลแกเรีย"
+    },
+    "bi-vc-cvl-meetup": {
+      "description": "กลุ่มท้องถิ่นสำหรับผู้ทำแผนที่ใน Biellese, Vercellese, Canavese e Valli di Lanzo",
+      "extendedDescription": "พบปะกันมาตั้งแต่เดือนกุมภาพันธ์ 2018 โดยปกติจะอยู่ที่ Biella หรือ Ivrea"
+    },
+    "bo-matrix": {
+      "description": "ยินดีต้อนรับนักทำแผนที่ทุกท่าน!"
+    },
+    "br-telegram": {
+      "extendedDescription": "เข้าร่วมชุมชนเพื่อเรียนรู้เพิ่มเติมเกี่ยวกับ OpenStreetMap ถามคำถามหรือเข้าร่วมการประชุมของเรา เราต้อนรับทุกคน!"
+    },
+    "br-wiki": {
+      "description": "WikiProject กับข้อมูลและแนวทางการประสานงานสำหรับการทำแผนที่ในประเทศบราซิล"
+    },
+    "cape-coast-youthmappers": {
+      "name": "YouthMappers มหาวิทยาลัยเคปโคสต์",
+      "description": "ติดตามเราบน Twitter ได้ที่: {url}",
+      "extendedDescription": "นี่คือ handle อย่างเป็นทางการสำหรับ Youth Mappers chapter ของมหาวิทยาลัย Cape Coast ประเทศกานา เราชอบแผนที่ เปิดเผยข้อมูล และช่วยเหลือผู้ที่ต้องการ"
+    },
+    "castilla-y-leon-wiki": {
+      "description": "ทุกสิ่งที่คุณต้องรู้เกี่ยวกับการทำแผนที่ในแคว้นคาสตีลและเลออน: {url}"
+    },
+    "cat-github": {
+      "description": "โครงการจากชุมชน OpenStreetMap แคว้นกาตาลุญญาบน GitHub"
+    },
+    "cat-matrix": {
+      "description": "กลุ่ม Matrix สำหรับชุมชน OpenStreetMap แคว้นกาตาลุญญา"
+    },
+    "cat-twitch": {
+      "name": "ช่อง Twitch ของ {community}",
+      "description": "การแก้ไขแบบสด OSM, HOTosm, OpenData และ GIS"
+    },
+    "cat-wiki": {
+      "description": "พื้นที่ประสานงานสำหรับชุมชน OpenStreetMap แคว้นกาตาลุญญา: {url}"
+    },
+    "cd-chapter": {
+      "description": "จากถนนหนึ่งไปยังอีกถนนหนึ่ง มาทำแผนที่ประเทศของเรากันเถอะ...",
+      "extendedDescription": "เราหลงใหลเกี่ยวกับโครงการ OSM โดยแบ่งปันเวลาบางส่วนของเราเพื่อทำให้โครงการเป็นที่รู้จักแก่ผู้อื่นให้มากขึ้น พวกเรายังมีขนาดเล็กเกินไป เข้าร่วมกับเรา!"
+    },
+    "Central-Pennsylvania-OSM": {
+      "description": "ชุมชนการทำแผนที่ออนไลน์จาก State College, PA"
+    },
+    "ch-mailinglist": {
+      "name": "รายชื่อผู้รับจดหมาย Openstreetmap Schweiz/Suisse/Svizzera/Svizra",
+      "description": "รายชื่อผู้รับจดหมายสำหรับสวิตเซอร์แลนด์"
+    },
+    "cl-facebook": {
+      "extendedDescription": "เข้าร่วมชุมชนเพื่อเรียนรู้เพิ่มเติมเกี่ยวกับ OpenStreetMap ถามคำถามหรือเข้าร่วมการประชุมของเรา เราต้อนรับทุกคน!"
+    },
+    "cl-telegram": {
+      "extendedDescription": "เข้าร่วมชุมชนเพื่อเรียนรู้เพิ่มเติมเกี่ยวกับ OpenStreetMap ถามคำถามหรือเข้าร่วมการประชุมของเรา เราต้อนรับทุกคน!"
+    },
+    "co-facebook": {
+      "extendedDescription": "เข้าร่วมชุมชนเพื่อเรียนรู้เพิ่มเติมเกี่ยวกับ OpenStreetMap เราต้อนรับทุกคน!"
+    },
+    "co-github": {
+      "description": "โครงการ Git เกี่ยวกับประเทศโคลอมเบีย"
+    },
+    "co-wiki": {
+      "description": "หน้าวิกิและคำอธิบายในการอธิบายการทำแผนที่ในประเทศโคลอมเบีย"
+    },
+    "comunitat-valenciana-wiki": {
+      "description": "ทุกสิ่งที่คุณต้องรู้เกี่ยวกับการทำแผนที่ในชุมชนบาเลนเซีย: {url}"
+    },
+    "czech-community": {
+      "description": "Map portal, เว็บไซต์ และสัญญาสำหรับสมาชิก OSM ในสาธารณรัฐเช็ก"
+    },
+    "czech-discord": {
+      "description": "ห้อง OpenStreetMap CZ เชื่อมต่อกับ IRC, Jabber, Matrix และ Telegram"
+    },
+    "czech-irc": {
+      "description": "ห้อง OpenStreetMap CZ เชื่อมต่อกับ Discord, Jabber, Matrix และ Telegram"
+    },
+    "czech-matrix": {
+      "description": "ห้อง OpenStreetMap CZ เชื่อมต่อกับ Discord, IRC, Jabber และ Telegram"
+    },
+    "czech-telegram": {
+      "description": "ห้อง OpenStreetMap CZ เชื่อมต่อกับ Discord, IRC, Jabber และ Matrix"
+    },
+    "czech-xmpp": {
+      "description": "ห้อง OpenStreetMap CZ เชื่อมต่อกับ Discord, IRC, Matrix และ Telegram"
+    },
+    "de-aachen-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "de-berlin-mailinglist": {
+      "name": "รายชื่อผู้รับจดหมายเบอร์ลิน"
+    },
+    "de-berlin-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "de-berlin-xmpp": {
+      "description": "เข้าร่วม XMPP Multi-User Chat ของเราได้ที่: {url}"
+    },
+    "de-bochum-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "de-bonn-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "de-bremen-mailinglist": {
+      "name": "รายชื่อผู้รับจดหมายเบรเมิน"
+    },
+    "de-bremen-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "de-cologne-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "de-dresden-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "de-dusseldorf-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "de-hamburg-xmpp": {
+      "description": "เข้าร่วม XMPP Multi-User Chat ของเราได้ที่: {url}"
+    },
+    "de-karlsruhe-mailinglist": {
+      "name": "รายชื่อผู้รับจดหมายของคาร์ลสรูเออ"
+    },
+    "de-karlsruhe-meetup": {
+      "description": "นักเขียนทำแผนที่ และผู้ใช้ OpenStreetMap ในพื้นที่คาร์ลสรูเออ"
+    },
+    "de-luneburg-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "de-mainz-mailinglist": {
+      "description": "OpenStreetMap ในไมนซ์ และพื้นที่รอบเคียง"
+    },
+    "de-mainz-telegram": {
+      "description": "OpenStreetMap ในไมนซ์ และพื้นที่รอบเคียง"
+    },
+    "de-mainz-wiki": {
+      "description": "OpenStreetMap ในไมนซ์ และพื้นที่รอบเคียง"
+    },
+    "de-munchen-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "de-mv-mailinglist": {
+      "name": "รายชื่อผู้รับจดหมายเมคเลนบูร์ก-ฟอร์พอมเมิร์น"
+    },
+    "de-ostwestfalen-lippe-mailinglist": {
+      "name": "รายชื่อผู้รับจดหมาย OWL",
+      "description": "นี่คือรายชื่อผู้รับจดหมายสำหรับชุมชน Ostwestfalen-Lippe OSM"
+    },
+    "de-stuttgart-mailinglist": {
+      "name": "รายชื่อผู้รับจดหมายของสตุตการ์ตและบาเดน-เวือร์ทเทมแบร์ก",
+      "description": "นี่คือรายชื่อส่งจดหมายสำหรับชุมชน OSM ของสตุตการ์ต และบาเดน-เวือร์ทเทมแบร์ก"
+    },
+    "de-stuttgart-meetup": {
+      "name": "การพบปะ OpenStreetMap สตุตการ์ต",
+      "description": "นักเขียนทำแผนที่ และผู้ใช้ OpenStreetMap ในพื้นที่สตุตการ์ต"
+    },
+    "de-telegram": {
+      "description": "เข้าร่วม OpenStreetMap D-A-CH Telegram supergroup ได้ที่ {url}"
+    },
+    "de-ulm_neuulm-meetup": {
+      "name": "การพบปะ OpenStreetMap Ulm Neu-Ulm",
+      "description": "นักเขียนทำแผนที่ และผู้ใช้ OpenStreetMap ในพื้นที่ Ulm และ Neu-Ulm"
+    },
+    "de-ulmeralb-meetup": {
+      "name": "การพบปะ OpenStreetMap Ulmer Alb",
+      "description": "นักเขียนทำแผนที่ และผู้ใช้ OpenStreetMap ในพื้นที่ Ulmer Alb"
+    },
+    "de-viersen-meetup": {
+      "name": "การพบปะ OpenStreetMap Viersen",
+      "description": "การพบปะของชุมชน OSM และผู้ใช้ใน Kreis Viersen และ Mönchengladbach"
+    },
+    "de-xmpp": {
+      "description": "เข้าร่วม XMPP Multi-User Chat ของเราได้ที่: {url}"
+    },
+    "DF-telegram": {
+      "extendedDescription": "เข้าร่วมชุมชนเพื่อเรียนรู้เพิ่มเติมเกี่ยวกับ OpenStreetMap ถามคำถามหรือเข้าร่วมการประชุมของเรา เราต้อนรับทุกคน!"
+    },
+    "dk-discourse": {
+      "description": "ฟอรัมสนทนาเกี่ยวกับ OpenStreetMap ในเดนมาร์ก"
+    },
+    "ee-wiki": {
+      "description": "ข้อมูลเฉพาะที่เกี่ยวข้องกับกิจกรรมการทำแผนที่เอสโตเนีย"
+    },
+    "fr-35-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "fr-38-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "fr-bzh-website": {
+      "description": "แผนที่ซึ่งพูดภาษาเบรอตง"
+    },
+    "fr-chapter": {
+      "description": "เราช่วยกันพัฒนาและปรับปรุง OpenStreetMap ในฝรั่งเศส"
+    },
+    "fr-matrix": {
+      "description": "กลุ่ม Matrix สำหรับชุมชน OSM France: {url} (bridged กับ Telegram)"
+    },
+    "fr-montrouge-website": {
+      "description": "ข้อมูล OSM สำหรับชุมชนในมองโตรจ"
+    },
+    "fr-montrouge-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "fr-telegram": {
+      "description": "กลุ่ม Telegram สำหนับชุมชน OSM ฝรั่งเศส: {url}"
+    },
+    "fr-xmpp": {
+      "description": "เข้าร่วม osm-fr@chat.jabberfr.org"
+    },
+    "galicia-wiki": {
+      "description": "ทุกสิ่งที่คุณต้องรู้เกี่ยวกับการทำแผนที่ในกาลิเซีย: {url}"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "name": "Xeoinquedos บน Twitter",
+      "description": "ติดตามเราบน Twitter ได้ที่: {url}"
+    },
+    "gb-irc": {
+      "extendedDescription": "เข้าร่วม #{account} บน irc.oftc.net (port 6667), และโปรดรอสักครู่หากคุณมีคำถาม"
+    },
+    "gb-mailinglist": {
+      "description": "Talk-gb นั้นเป็นฟอรัมสนทนาหลักสำหรับชุมชน OSM สหราชอาณาจักร (และไอร์แลนด์เหนือ) "
+    },
+    "geogeeks_perth_meetup": {
+      "description": "กลุ่มพบปะในเมืองเพิร์ธสำหรับผู้ที่สนใจการทำแผนที่ ข้อมูลเชิงพื้นที่ และช้อมูลเปิด เราจัดงานปาร์ตี้ การพูดคุย และการพบปะทางสังคมของ OSM เป็นประจำ เรายินดีต้อนรับผู้เริ่มต้น!"
+    },
+    "GeoPhilly": {
+      "description": "การพบปะสำหรับผู้ที่ชื่นชอบแผนที่ในพื้นที่ฟิลาเดลเฟีย",
+      "extendedDescription": "GeoPhilly นั้นได้รวบรวมนักพัฒนา นักภูมิศาสตร์ ผู้สนใจข้อมูล ผู้คลั่งไคล้ข้อมูลเปิด แฮ็กเกอร์พลเรือน และผู้ติดแผนที่ด้วยความรักที่มีต่อแผนที่และเรื่องราวที่พวกเขาบอกเล่า หากคุณใช้แผนที่เป็นส่วนหนึ่งของงานหรือเพียงแค่ต้องการเรียนรู้เพิ่มเติม นี่คืองานพบปะสำหรับคุณ! กิจกรรมของเรามีเป้าหมายที่จะเปิดกว้าง เป็นมิตร ให้การศึกษาและสังคม โดยมีตั้งแต่ช่วงเวลาแห่งความสุขไปจนถึงการพูดคุยแบบสายฟ้าแลบหรือแม้แต่เวิร์กช็อป มาสร้างชุมชนภูมิสารสนเทศที่มีความหลากหลายและสร้างแรงบันดาลใจในฟิลาเดลเฟียไปกับเรา!"
+    },
+    "hr-irc": {
+      "description": "เข้าร่วม #{account} บน irc.freenode.org (port 6667)"
+    },
+    "hr-wiki": {
+      "description": "หน้า Wikiproject สำหรับโครเอเชีย"
+    },
+    "hu-matrix": {
+      "extendedDescription": "แชท OpenStreetMap ในหัวข้อแผนที่ หนึ่งในฟอรัมสนับสนุนชุมชน OSM"
+    },
+    "hu-meetup": {
+      "description": "แพลตฟอร์มสำหรับการจัดพบปะในฮังการี"
+    },
+    "hu-mobilizon": {
+      "name": "{community} บน Mobilizon",
+      "description": "กิจกรรมที่จะกำลังจะเกิดขึ้นสำหรับชุมชน OpenStreetMap ฮังการี"
+    },
+    "hu-tm": {
+      "name": "แผนงานสำหรับ {community}",
+      "description": "สำรวจแผนงานการทำแผนที่ที่กำลังดำเนินอยู่ในฮังการี"
+    },
+    "hu-website": {
+      "description": "เราช่วยพัฒนาและปรับปรุง OpenStreetMap ในฮังการี"
+    },
+    "hu-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "humanitarian-osm-tr-slack": {
+      "description": "เข้าร่วมช่องสนทนา Humanitarian OpenStreetMap Turkey บน HOTOSM's Slack server ได้ที่ {url}"
+    },
+    "id-facebook": {
+      "extendedDescription": "ทำแผนที่ในอินโดนีเซีย? หากมีคำถาม ต้องการที่จะมีปฏิสัมพันธ์กับชุมชนที่นี่? สามารถเข้าร่วมกับเราได้ที่ {url} เรายินดีต้อนรับทุกคน!"
+    },
+    "id-facebook-group": {
+      "extendedDescription": "ทำแผนที่ในอินโดนีเซีย? หากมีคำถาม ต้องการที่จะมีปฏิสัมพันธ์กับชุมชนที่นี่? สามารถเข้าร่วมกับเราได้ที่ {url} เรายินดีต้อนรับทุกคน!"
+    },
+    "ireland-chapter": {
+      "description": "เราช่วยกันพัฒนาและปรับปรุง OpenStreetMap ในไอร์แลนด์",
+      "extendedDescription": "OpenStreetMap Ireland ช่วยให้การสนับสนุนโครงการ OpenStreetMap บนเกาะไอร์แลนด์ นอกเหนือจากการมีปฏิสัมพันธ์กับโครงการริเริ่มแบบเปิดอื่นๆ"
+    },
+    "ireland-irc": {
+      "extendedDescription": "เข้าร่วม #{account} บน irc.oftc.net (port 6667), และโปรดรอสักครู่หากคุณมีคำถาม"
+    },
+    "ireland-matrix": {
+      "description": "Matrix gateway สำหรับช่องการสนทนา OSM ไอร์แลนด์ IRC: {url}"
+    },
+    "ireland-meetup": {
+      "description": "การพบปะในชีวิตจริงของผู้คนที่สนใจ OpenStreetMap"
+    },
+    "is-chapter": {
+      "description": "เราช่วยกันพัฒนาและปรับปรุง OpenStreetMap ในไอร์แลนด์"
+    },
+    "it-chapter": {
+      "description": "เราช่วยกันพัฒนาและปรับปรุง OpenStreetMap ในอิตาลี"
+    },
+    "ko-facebook": {
+      "description": "นักเขียนทำแผนที่ และผู้ใช้ OpenStreetMap ในเกาหลี"
+    },
+    "ko-osm": {
+      "description": "เราช่วยกันพัฒนาและปรับปรุง OpenStreetMap ในเกาหลี",
+      "extendedDescription": "หากคุณกำลังมีส่วนร่วม หรือสนใจที่จะมีส่วนร่วมกับ OpenStreetMap โปรดอย่าลังเลที่จะเข้าร่วมกับเรา เราพร้อมเปิดรับมือใหม่ทุกเมื่อ!"
+    },
+    "kosovo-flossk": {
+      "description": "ส่งเสริม FLOSS มาตั้งแต่ 2009",
+      "extendedDescription": "Free Libre Open Source Software Kosova (FLOSSK) เป็นองค์กรพัฒนาเอกชนที่ตั้งอยู่ในพริชตีนา ก่อตั้งขึ้นในปี 2009 เพื่อสนับสนุน ส่งเสริม และพัฒนาซอฟต์แวร์ฟรีและโอเพ่นซอร์ส นอกจากนี้ เรายังสนับสนุนความรู้แบบเปิดและมีส่วนร่วม การศึกษาด้านเทคโนโลยีสารสนเทศผ่านบทเรียนแบบเปิด มาตรฐานแบบเปิด วัฒนธรรมและสังคมแบบเปิดโดยใช้การสื่อสารอย่างเสรี"
+    },
+    "kosovo-matrix": {
+      "description": "กลุ่มสาธารณะกึ่งทางการของโคโซโวทั้งหมด (เชื่อมโยงกับกลุ่มใน Telegram) เรายินดีต้อนรับผู้ทำแผนที่ทุกคนจากทุกที่ในทุกภาษา"
+    },
+    "kosovo-telegram": {
+      "description": "กลุ่ม Telegram สาธารณะ  กึ่งทางการของโคโซโวทั้งหมด เรายินดีต้อนรับผู้ทำแผนที่ทุกคนจากทุกที่ในทุกภาษา"
+    },
+    "kp-wiki": {
+      "description": "แนวทางการทำแผนที่ของ {community}"
+    },
+    "latam-facebook": {
+      "description": "นักทำแผนที่ และผู้ใช้ OpenStreetMap บน Facebook ในลาตินอเมริกา"
+    },
+    "latam-matrix": {
+      "description": "พูดคุยกับสมาชิกในชุมชน OSM ลาตินอเมริกันบน Telegram"
+    },
+    "latam-telegram": {
+      "description": "พูดคุยกับสมาชิกในชุมชน OSM ลาตินอเมริกันบน Matrix"
+    },
+    "latam-wiki": {
+      "description": "ทุกอย่างที่คุณต้องรู้เกี่ยวกับการทำแผนที่ในลาตินอเมริกา"
+    },
+    "lk-facebook": {
+      "extendedDescription": "ทำแผนที่ในศรีลังกา? หากมีคำถาม หรืออยากมีส่วนร่วมกับชุมชนที่นี่ สามารถเข้าร่วมได้ที่ {url} เราต้อนรับทุก ๆ คน!"
+    },
+    "local-polynesie-mailinglist": {
+      "extendedDescription": "เพื่อการแจ้งให้ทราบและสอนเกี่ยวกับกิจกรรมของชุมชน OSM, หาคำตอบของคำถามที่มี ประสานงาน และทุก ๆ อย่างที่ชุมชน OSM อยากจะบอก เราต้อนรับทุกคน!"
+    },
+    "lu-github": {
+      "description": "GitHub Organization สำหรับชุมชน OSM ในลักเซมเบิร์ก!"
+    },
+    "lu-matrix": {
+      "description": "กลุ่มแชท Matrix สำหรับชุมชนในลักเซมเบิร์ก มาสร้างชุมชนกันเถอะ!"
+    },
+    "lv-wiki": {
+      "description": "WikiProject ลัตเวีย"
+    },
+    "madrid-uam-ym": {
+      "name": "YouthMappers ที่ UAM",
+      "description": "YouthMappers สาขาที่มหาวิทยาลัยออโตโนมาเดมาดริด "
+    },
+    "madrid-upm-ym": {
+      "description": "YouthMappers สาขาที่มหาวิทยาลัยสารพัดช่างแห่งมาดริด",
+      "extendedDescription": "กลุ่มอาสาสมัครเชิงภูมิศาสตร์ ที่ก่อตั้งขึ้นในวิทยาเขตมอนโคลอาในเดือนพฤศจิกายน 2017 โดยมีสมาชิคราว 20 คนจาก 3 มหาวิทยาลัย  (Complutense, CEU และ UPM)  นักศึกษาระดับปริญญาตรี โท และเอกได้ร่วมกันก่อตั้งขึ้นมา (MSF, Acción contra el Hambre,...) สนับสนุนโดยผู้ฝึกสอนจาก Geoinquietos UPM และได้รับการยอมรับอย่างเป็นทางการให้เป็นโครงการนวัตกรรมทางการศึกษา (รหัส IE1718.0411) "
+    },
+    "madrid-wiki": {
+      "description": "ทุกสิ่งที่คุณต้องรู้เกี่ยวกับการทำแผนที่ในมาดริด: {url}"
+    },
+    "mailinglist-sk-googlegroups": {
+      "name": "Slovak mailing list บน Google Groups",
+      "description": "mailing list อย่างเป็นทางการสำหรับชุมชนสโลวัก"
+    },
+    "map-kibera": {
+      "description": "Map Kibera นั้นเป็นองค์การจดทะเบียนในเคนยา",
+      "extendedDescription": "ภารกิจของ Map Kibera Trust คือการเพิ่มอิทธิพลและการเป็นตัวแทนของชุมชนชายขอบผ่านการใช้เครื่องมือดิจิทัลดำเนินการอย่างสร้างสรรค์"
+    },
+    "MapABQ": {
+      "description": "การพบปะรายเดือนของผู้ใช้ OpenStreetMap ในแอลบูเคอร์คี และนิวเม็กซิโกเหนือ",
+      "extendedDescription": "เราต้อนรับทุก ๆ คนในการเข้าร่วม เรายินดีที่จะช่วยเหลือคุณในการเริ่มทำแผนที่ การพบปะนั้นเป็นรูปแบบเปิดให้ผู้ที่มีส่วนร่วมในการโฟกัสไปยัง OpenStreetMap สำหรับพื้นที่แอลบูเคอร์คี และนิวเม็กซิโกเหนือ"
+    },
+    "MapColabora-twitter": {
+      "description": "บัญชีทวิตเตอร์ของ Mapeado Colaborativo / Geoinquietos Zaragoza"
+    },
+    "mappa-mercia-group": {
+      "name": "กลุ่มท้องถิ่น Mappa Mercia ",
+      "description": "บ้านสำหรับผู้ที่สนใจ OpenStreetMap ในมิดแลนส์",
+      "extendedDescription": "Mappa Mercia นั้นเป็นโปรเจคในการเสริมสร้าง OpenStreetMap ใน ภาคมิดแลนส์ตะวันตกของอังกฤษ พวกเราจัดกิจกรรมชุมชน ให้การฝึกอบรม และสนับสนุนองค์กรท้องถิ่นที่ต้องการเปิดข้อมูล"
+    },
+    "MappingDC-meetup": {
+      "description": "ปรับปรุง OpenStreetMap ในพื้นที่ดี.ซี.",
+      "extendedDescription": "พวกเราคือกลุ่มของนักทำแผนที่อาสาสมัคร โดยมีเป้าหมายในการพัฒนา OpenStreetMap ในพื้นที่ดี.ซี. เรายังมีเป้าหมายในการสอนผู้อื่นเกี่ยวกับระบบของ OSM, การวิเคราห์ข้อมูล, การทำแผนที่ และ GIS พวกเราจะรวมตัวกันในทุก ๆ เดือนเพื่อพบปะและโฟกัสในพื้นที่หนึ่งของเมืองของเรา"
+    },
+    "MappingWR": {
+      "description": "หาเส้นทางคาร์บอนต่ำรอบ ๆ พื้นที่วอเตอร์ลู "
+    },
+    "MapRVA": {
+      "description": "การพบปะ MapRVA"
+    },
+    "maptime-bogota-facebook": {
+      "description": "พวกเราเป็นกลุ่มของผู้คนที่สนใจในการทำแผนที่โบโกตา และพื้นที่โดยรอบไปยัง OpenStreetMap.",
+      "extendedDescription": "เรียนรู้วิธีการรวบรวมข้อมูลจากภาคสนามและแปลงเป็น้อมูลดิจิทัลลงไปใน OpenStreetMap คุณไม่จำเป็นต้องมีความรู้ภูมิหลังมาก่อน คุณแค่ต้องมีความอยากที่จะมีส่วนร่วม เรียนรู้ และมีความสนุก"
+    },
+    "maptime-bogota-github": {
+      "description": "พวกเราเป็นกลุ่มของผู้ที่สวนใจในการทำแผนที่โบโกตา และพื้นที่รอบเคียงไปยัง OpenStreetMap",
+      "extendedDescription": "เรียนรู้วิธีการรวบรวมข้อมูลจากภาคสนามและแปลงเป็น้อมูลดิจิทัลลงไปใน OpenStreetMap คุณไม่จำเป็นต้องมีความรู้ภูมิหลังมาก่อน คุณแค่ต้องมีความอยากที่จะมีส่วนร่วม เรียนรู้ และมีความสนุก"
+    },
+    "maptime-bogota-linkedin": {
+      "description": "พวกเราเป็นกลุ่มของผู้ที่สวนใจในการทำแผนที่โบโกตา และพื้นที่รอบเคียงไปยัง OpenStreetMap",
+      "extendedDescription": "เรียนรู้วิธีการรวบรวมข้อมูลจากภาคสนามและแปลงเป็น้อมูลดิจิทัลลงไปใน OpenStreetMap คุณไม่จำเป็นต้องมีความรู้ภูมิหลังมาก่อน คุณแค่ต้องมีความอยากที่จะมีส่วนร่วม เรียนรู้ และมีความสนุก"
+    },
+    "maptime-bogota-mastodon": {
+      "description": "พวกเราเป็นกลุ่มของผู้ที่สวนใจในการทำแผนที่โบโกตา และพื้นที่รอบเคียงไปยัง OpenStreetMap",
+      "extendedDescription": "เรียนรู้วิธีการรวบรวมข้อมูลจากภาคสนามและแปลงเป็น้อมูลดิจิทัลลงไปใน OpenStreetMap คุณไม่จำเป็นต้องมีความรู้ภูมิหลังมาก่อน คุณแค่ต้องมีความอยากที่จะมีส่วนร่วม เรียนรู้ และมีความสนุก"
+    },
+    "maptime-bogota-meetup": {
+      "description": "พวกเราเป็นกลุ่มของผู้ที่สวนใจในการทำแผนที่โบโกตา และพื้นที่รอบเคียงไปยัง OpenStreetMap",
+      "extendedDescription": "เรียนรู้วิธีการรวบรวมข้อมูลจากภาคสนามและแปลงเป็น้อมูลดิจิทัลลงไปใน OpenStreetMap คุณไม่จำเป็นต้องมีความรู้ภูมิหลังมาก่อน คุณแค่ต้องมีความอยากที่จะมีส่วนร่วม เรียนรู้ และมีความสนุก"
+    },
+    "maptime-bogota-telegram": {
+      "description": "พวกเราเป็นกลุ่มของผู้ที่สวนใจในการทำแผนที่โบโกตา และพื้นที่รอบเคียงไปยัง OpenStreetMap",
+      "extendedDescription": "เรียนรู้วิธีการรวบรวมข้อมูลจากภาคสนามและแปลงเป็น้อมูลดิจิทัลลงไปใน OpenStreetMap คุณไม่จำเป็นต้องมีความรู้ภูมิหลังมาก่อน คุณแค่ต้องมีความอยากที่จะมีส่วนร่วม เรียนรู้ และมีความสนุก"
+    },
+    "maptime-bogota-twitter": {
+      "description": "พวกเราเป็นกลุ่มของผู้ที่สวนใจในการทำแผนที่โบโกตา และพื้นที่รอบเคียงไปยัง OpenStreetMap",
+      "extendedDescription": "เรียนรู้วิธีการรวบรวมข้อมูลจากภาคสนามและแปลงเป็น้อมูลดิจิทัลลงไปใน OpenStreetMap คุณไม่จำเป็นต้องมีความรู้ภูมิหลังมาก่อน คุณแค่ต้องมีความอยากที่จะมีส่วนร่วม เรียนรู้ และมีความสนุก"
+    },
+    "maptime-bogota-website": {
+      "description": "พวกเราเป็นกลุ่มของผู้ที่สวนใจในการทำแผนที่โบโกตา และพื้นที่รอบเคียงไปยัง OpenStreetMap",
+      "extendedDescription": "เรียนรู้วิธีการรวบรวมข้อมูลจากภาคสนามและแปลงเป็น้อมูลดิจิทัลลงไปใน OpenStreetMap คุณไม่จำเป็นต้องมีความรู้ภูมิหลังมาก่อน คุณแค่ต้องมีความอยากที่จะมีส่วนร่วม เรียนรู้ และมีความสนุก"
+    },
+    "maptime-bogota-youtube": {
+      "description": "พวกเราเป็นกลุ่มของผู้ที่สวนใจในการทำแผนที่โบโกตา และพื้นที่รอบเคียงไปยัง OpenStreetMap",
+      "extendedDescription": "เรียนรู้วิธีการรวบรวมข้อมูลจากภาคสนามและแปลงเป็น้อมูลดิจิทัลลงไปใน OpenStreetMap คุณไม่จำเป็นต้องมีความรู้ภูมิหลังมาก่อน คุณแค่ต้องมีความอยากที่จะมีส่วนร่วม เรียนรู้ และมีความสนุก"
+    },
+    "Maptime-ME-meetup": {
+      "description": "นักทำแผนที่และผู้ใช้ OpenStreetMap ในบริเวณพอร์ตแลนด์, รัฐเมน"
+    },
+    "OSM-Colorado": {
+      "name": "OpenStreetMap โคโลราโด"
+    },
+    "osm-deep-south-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "osm-michigan-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "osm-ohio-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "OSM-Seattle": {
+      "name": "OpenStreetMap ซีแอตเทิล"
+    },
+    "OSM-US": {
+      "events": {
+        "mappingusa2022": {
+          "where": " เสมือน"
+        }
+      }
+    },
+    "OSM-Utah": {
+      "name": "OpenStreetMap ยูทาห์"
+    },
+    "OSM-Wyoming": {
+      "name": "OpenStreetMap ไวโอมิง"
+    },
+    "OSMF": {
+      "name": "มูลนิธิ OpenStreetMap"
+    },
+    "PHXGeo-meetup": {
+      "name": "งามพบปะของ PHXGeo"
+    },
+    "PHXGeo-twitter": {
+      "name": "ทวิตเตอร์ของ PHXGeo"
+    },
+    "si-ljubljana-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "si-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "uk-london-wiki": {
+      "description": "หน้า wiki สำหรับ {community}"
+    },
+    "ym-California-University-of-Pennsylvania": {
+      "name": "สโมสร CalU PA GIS"
+    },
+    "ym-Central-Washington-University": {
+      "name": "สโมสรภูมิศาสตร์"
+    },
+    "ym-UW-Madison": {
+      "description": "สาขา YouthMappers chapter แห่ง UW-Madison",
+      "extendedDescription": "BadgerMaps เป็นสาขา Youthmappersของวิทยาเขต UW ซึ่งเป็นองค์กรมนุษยธรรมเพื่อบริการแผนที่ด้านมนุษยธรรมและชุมชน เราเชื่อมโยงเครือข่ายอาสาสมัครของเรากับโอกาสในการสร้างข้อมูล GIS สำหรับโครงการที่ต้องการ"
+    },
+    "ym-Vassar-College": {
+      "description": "สาขา YouthMappers chapter แห่งวิทยาลัยวาสซาร์",
+      "extendedDescription": "ภารกิจของเราคือการจัดหาแพลตฟอร์มที่มีหลากหลายสาขาวิชาสำหรับเพื่อนร่วมงาน นักการศึกษา และองค์กรชุมชนเพื่อมีส่วนร่วมในโครงการทำแผนที่ท้องถิ่นโดยมุ่งเน้นที่การเสริมสร้างระบบนิเวศในท้องถิ่น สภาพแวดล้อมที่เราสร้างขึ้น และสุขภาพของชุมชนของเรา นอกจากนี้เรายังพยายามที่จะสนับสนุนภูมิสารสนเทศสำหรับความช่วยเหลือด้านมนุษยธรรมทั่วโลกและความพยายามในการพัฒนา"
+    },
+    "ym-Villanova-University": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยวิลลาโนวา",
+      "extendedDescription": "Villanova Globeplotters ก่อตั้งขึ้นบนหลักการออกัสติเนียนของวิลลาโนวาที่ว่าด้วยการบริการที่ไม่เห็นแก่ตัวต่อประชาคมโลก เมื่อผสมผสานกับการมีปฏิสัมพันธ์ทางสังคมที่ผ่อนคลาย เรามุ่งมั่นที่จะมอบการเข้าถึงเชิงพื้นที่แก่ผู้ที่ต้องการโดยไม่คำนึงถึงเชื้อชาติ, วิชาเอก, สมาคมกลุ่มนักศึกษา หรือระดับอาชีพในวิทยาลัยของนักเรียนที่เข้าร่วม   "
+    },
+    "ym-West-Virginia-University": {
+      "name": "Maptime มอร์แกนทาวน์",
+      "description": "สาขา YouthMappers chapter แห่งมหาวิทยาลัยเวสต์เวอร์จิเนีย",
+      "extendedDescription": "ทีมผู้ร่วมก่อตั้งนี้ทำงานเป็นทีมที่ทำงานร่วมกัน โดยมุ่งเน้นไปที่การจัดเตรียมสภาพแวดล้อมการเรียนรู้แบบเปิดสำหรับผู้ที่สนใจทำงานในโครงการที่เกี่ยวพันกับการพัฒนาระหว่างประเทศ การตอบสนองต่อเหตุฉุกเฉิน และวิทยาการสารสนเทศทางภูมิศาสตร์ โดยเชื่อมโยงผู้ใช้สมัครเล่นและผู้เชี่ยวชาญโดยให้การฝึกอบรมด้านเทคนิคและประสบการณ์ในการสร้างข้อมูลโครงสร้างพื้นฐานทางภูมิศาสตร์ที่มีความหมายและมีประโยชน์ ขณะเดียวกันก็เชื่อมต่อกับเมืองพี่เมืองน้องทั่วโลก"
+    },
+    "ym-Western-Michigan-University": {
+      "name": "ชมรมภูมิศาสตร์",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยมิชิแกนตะวันตก"
+    },
+    "ym-Yarmouk-University": {
+      "name": "YouthMappers แห่ง YU",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยยัรมูก",
+      "extendedDescription": "สโมสร YouthMappers ที่ YU นั้นเป้นกลุ่มทำแผนที่ในตะวันออกกลางและแอฟริกาเหนือ ในพื้นที่ที่มีผู้ลี้ภัย ภาวะภัยแล้ง และความยากจนเพิ่มขึ้นอย่างต่อเนื่อง และต้องการกิจกรรมแผนที่มนุษยธรรมในการต่อกรกับผลกระทบที่เกิดขึ้น นักเขียนแผนที่ YU นั้นสนับสนุนในการใช้ข้อมูลเปิดเพื่อจัดการกับความท้าทายในภูมิภาค MENA เพื่อนำการบรรเทาทุกข์และการพัฒนาไปยังพื้นที่เป้าหมายภายในภูมิภาค"
+    }
+  }
+}

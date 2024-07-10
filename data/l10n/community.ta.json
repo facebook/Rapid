@@ -1,0 +1,37 @@
+{
+  "ta": {
+    "_communities": {
+      "mappingbotswana": "விவரணையாக்கம் பாட்ஸ்வானா",
+      "openstreetmapafghanistan": "OpenStreetMap ஆப்கானிஸ்தான்",
+      "openstreetmapafrica": "OpenStreetMap அஃப்ரிகா",
+      "openstreetmapalba": "OpenStreetMap ஆல்பா",
+      "openstreetmapbangladesh": "OpenStreetMap பங்களாதேஷ்",
+      "openstreetmapbivccvl": "OpenStreetMap பிஐ-விசி-சிவிஎல்",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap பாஸ்னிய மற்றும் ஹற்ட்ஸொகோவின",
+      "openstreetmapbzh": "OpenStreetMap பிட்ஸெட்ஹேச்",
+      "openstreetmapcastillayleon": "OpenStreetMap காஸ்டிலா ஒய் லியான்"
+    },
+    "OSM-Colorado": {
+      "name": "OpenStreetMap கொலராடோ"
+    },
+    "OSM-India-facebook": {
+      "description": "OpenStreetMapஐ இந்தியாவில் மேம்படுத்துக",
+      "extendedDescription": "இந்தியாவின் கூட்டாசிரியர் வரைபட கலையில் பங்கு பெற விருப்பமா? ஏதேனும் கேள்விகள்/சந்தேகங்கள் உள்ளனவா? உங்கள் அருகாமையில் உள்ள OSM சமுகதில் இணைய விருபம்மா? இந்த உரலியை சொடுக்கவும். {url} "
+    },
+    "OSM-India-Puducherry-Facebook": {
+      "name": "இலவசம் சாஃப்ட்வேற் மற்றும் ஹார்ட்வேற் இயக்கம் - ஃபேஸ்புக் "
+    },
+    "OSM-India-Puducherry-Matrix": {
+      "name": "இலவசம் சாஃப்ட்வேற் மற்றும் ஹார்ட்வேற் இயக்கம் - மேட்ரிக்ஸ்"
+    },
+    "OSM-Seattle": {
+      "name": "OpenStreetMap சியாட்டில்"
+    },
+    "OSM-Wyoming": {
+      "name": "OpenStreetMap வொயோமிங்"
+    },
+    "OSMF": {
+      "name": "OpenStreetMap அறக்கட்டளை"
+    }
+  }
+}

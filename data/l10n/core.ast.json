@@ -1,0 +1,1352 @@
+{
+  "ast": {
+    "modes": {
+      "add_area": {
+        "title": "Área"
+      },
+      "add_line": {
+        "title": "Llinia"
+      },
+      "add_point": {
+        "title": "Puntu"
+      },
+      "browse": {
+        "title": "Navegar",
+        "description": "Mover y ampliar el mapa."
+      },
+      "drag_node": {
+        "connected_to_hidden": "Nun puede editase porque ta coneutao a una carauterística tapecida."
+      }
+    },
+    "operations": {
+      "add": {
+        "annotation": {
+          "point": "Amestáu un puntu.",
+          "vertex": "Amestáu un noyu a una vía",
+          "relation": "Amestada una rellación."
+        }
+      },
+      "start": {
+        "annotation": {
+          "line": "Aniciada una llinia.",
+          "area": "Aniciáu un área."
+        }
+      },
+      "continue": {
+        "title": "Siguir",
+        "description": "Siguir esta llinia",
+        "not_eligible": "Equí nun pue siguise llinia denguna.",
+        "annotation": {
+          "line": "Continuada una llinia.",
+          "area": "Continuáu un área."
+        }
+      },
+      "cancel_draw": {
+        "annotation": "Dibuxu encaboxáu."
+      },
+      "change_tags": {
+        "annotation": "Etiquetes camudaes."
+      },
+      "circularize": {
+        "title": "Poner en círculu"
+      },
+      "orthogonalize": {
+        "title": "Escuadrar"
+      },
+      "straighten": {
+        "title": "Enderechar"
+      },
+      "delete": {
+        "title": "Desaniciar",
+        "description": {
+          "single": "Desaniciar permanentemente esti oxetu.",
+          "multiple": "Desaniciar permanentemente estos oxetos"
+        },
+        "annotation": {
+          "point": "Desaniciáu un puntu.",
+          "vertex": "Desaniciáu un nuedu d'una vía.",
+          "line": "Desaniciada una llinia.",
+          "area": "Dresaniciáu un área.",
+          "relation": "Desaniciada una rellación."
+        },
+        "too_large": {
+          "single": "Nun pué desaniciase esta carauterística porque nun se ve abondo d'ella",
+          "multiple": "Nun pueden desaniciase estes carauterístiques porque nun se ve abondo d'elles"
+        },
+        "incomplete_relation": {
+          "single": "Esti oxetu nun pué desaniciase porque nun se descargó completamente.",
+          "multiple": "Estos oxetos nun pueden desaniciase porque nun se descargaron completamente."
+        },
+        "part_of_relation": {
+          "single": "Esti oxetu nun pué desaniciase porque ye parte d'una rellación mayor. Primero tienes de quitalu de la rellación.",
+          "multiple": "Estos oxetos nun pueden desaniciase porque son parte de rellaciones mayores. Primero tienes de quitalos de les rellaciones."
+        },
+        "connected_to_hidden": {
+          "single": "Esti oxetu nun pué desaniciase porque ta coneutáu con un elementu tapecíu.",
+          "multiple": "Estos oxetos nun pueden desaniciase porque tán coneutaos con elementos tapecíos."
+        }
+      },
+      "disconnect": {
+        "title": "Desconeutar",
+        "not_connected": "Equí nun hai bastantes llinies/árees que desconectar.",
+        "connected_to_hidden": "Nun pue desconeutase porque ta coneutao a una carauterística tapecida.",
+        "relation": "Nun pue desconeutase porque coneuta miembros d'una rellación."
+      },
+      "merge": {
+        "title": "Entemecer",
+        "description": "Mecer estes carauterístiques.",
+        "not_eligible": "Eses carauterístiques nun puen amestase",
+        "not_adjacent": "Estos oxetos nun pueden fusionase porque los sos estremos nun tán coneutaos.",
+        "incomplete_relation": "Estes carauterístiques nun puen entemecese porque polo menos una nun se descargó completamente.",
+        "conflicting_tags": "Eses carauterístiques nun puen mecese porque  dalgún valor de les etiquetes fai conflictu."
+      },
+      "move": {
+        "title": "Mover",
+        "description": {
+          "single": "Mover esti oxetu a un llugar distintu.",
+          "multiple": "Mover estos oxetos a un llugar distintu."
+        },
+        "annotation": {
+          "point": "Movíu un puntu.",
+          "vertex": "Movíu un nuedu d'una vía.",
+          "line": "Movida una llinia.",
+          "area": "Movíu un área."
+        },
+        "incomplete_relation": {
+          "single": "Esta carauterística nun puede movese porque nun se descargó completamente.",
+          "multiple": "Estes carauterístiques nun pueden movese porque nun se descargaron completamente."
+        },
+        "too_large": {
+          "single": "Nun pué movese esta carauterística porque nun se ve abondo d'ella",
+          "multiple": "Nun pueden movese estes carauterístiques porque nun se ve abondo d'elles"
+        },
+        "connected_to_hidden": {
+          "single": "Nun pué movese esta carauterística porque ta coneutada con una carauterística tapecida.",
+          "multiple": "Nun pueden movese estes carauterístiques porque dalgunes tán coneutaes con carauterístiques tapecíes."
+        }
+      },
+      "rotate": {
+        "title": "Xirar",
+        "description": {
+          "single": "Xirar esti elementu alredor del so puntu central.",
+          "multiple": "Xirar estos elementos alredor del so puntu central."
+        },
+        "annotation": {
+          "line": "Xirada una llinia.",
+          "area": "Xiráu un área."
+        },
+        "incomplete_relation": {
+          "single": "Esti elementu nun puede xirase porque non se descargó dafechu.",
+          "multiple": "Estos elementos nun pueden xirase porque nun se descargaron dafechu."
+        },
+        "too_large": {
+          "single": "Esti elementu nun puede xirase porque nun se ve bastante d'el.",
+          "multiple": "Estos elementos nun pueden xirase porque nun se ve bastante d'ellos."
+        },
+        "connected_to_hidden": {
+          "single": "Esti elementu nun puede xirase porque ta conectáu con un elementu tapecíu.",
+          "multiple": "Estos elementos nun pueden xirase porque dellos tán conectaos con elementos tapecíos."
+        }
+      },
+      "reverse": {
+        "title": "Invertir"
+      },
+      "split": {
+        "title": "Dixebrar",
+        "not_eligible": "Les llinies nun pueden partise al principiu o al final.",
+        "connected_to_hidden": "Nun puede partise porque ta coneutao con una carauterística tapecida."
+      },
+      "restriction": {
+        "annotation": {
+          "create": "Amestada una torga de xiru",
+          "delete": "Desaniciada una torga de xiru"
+        }
+      }
+    },
+    "undo": {
+      "tooltip": "Desfacer: {action}",
+      "nothing": "Ren que desfacer."
+    },
+    "redo": {
+      "tooltip": "Refacer: {action}",
+      "nothing": "Ren pa refacer."
+    },
+    "translate": {
+      "localized_translation_language": "Escoyer idioma",
+      "localized_translation_name": "Nome"
+    },
+    "zoom_in_edit": "Averar pa editar",
+    "loading_auth": "Coneutando con OpenStreetMap...",
+    "report_a_bug": "Informar d'un fallu",
+    "help_translate": "Ayudar a traducir",
+    "commit": {
+      "title": "Xubir a OpenStreetMap",
+      "upload_explanation": "Los cambios que xuba tarán visibles en tolos mapes qu'usen los datos d'OpenStreetMap.",
+      "upload_explanation_with_user": "Los cambios que xubas como {user} tarán visibles en tolos mapes qu'usen datos d'OpenStreetMap.",
+      "request_review": "Prestaríame que dalguién revise les mios ediciones.",
+      "save": "Xubir",
+      "cancel": "Encaboxar",
+      "download_changes": "Descargar ficheru osmChange",
+      "warnings": "Avisos",
+      "modified": "Camudáu",
+      "deleted": "Desaniciáu",
+      "created": "Creáu",
+      "about_changeset_comments": "Tocante a los comentarios del conxuntu de cambios",
+      "google_warning": "Mentasti a Google nesti comentariu: alcuérdate de que copiar de Google Maps ta torgao estrictamente."
+    },
+    "contributors": {
+      "list": "Ediciones de {users}"
+    },
+    "info_panels": {
+      "background": {
+        "title": "Fondu",
+        "zoom": "Ampliación",
+        "vintage": "Antigüedá",
+        "source": "Fonte",
+        "description": "Descripción",
+        "resolution": "Resolución",
+        "accuracy": "Precisión",
+        "unknown": "Desconocíu",
+        "show_tiles": "Amostrar teseles",
+        "hide_tiles": "Tapecer teseles"
+      },
+      "history": {
+        "title": "Historial",
+        "version": "Versión",
+        "last_edit": "Última edición",
+        "edited_by": "Editao por",
+        "changeset": "Conxuntu de cambios",
+        "unknown": "Desconocíu"
+      },
+      "location": {
+        "title": "Llocalización",
+        "unknown_location": "Llocalización desconocida"
+      },
+      "measurement": {
+        "title": "Midíes",
+        "geometry": "Xeometría",
+        "center": "Centru",
+        "perimeter": "Perímetru",
+        "length": "Llonxitú",
+        "area": "Área",
+        "centroid": "Centroide",
+        "location": "Llocalización",
+        "metric": "Métricu"
+      }
+    },
+    "geometry": {
+      "point": "puntu",
+      "vertex": "vértice",
+      "line": "llinia",
+      "area": "área",
+      "relation": "rellación"
+    },
+    "geocoder": {
+      "search": "Buscar en tol mundu...",
+      "no_results_worldwide": "Nun s'alcontraron resultaos"
+    },
+    "geolocate": {
+      "title": "Amosar el mio allugamientu",
+      "locating": "Llocalizando, aguarda..."
+    },
+    "inspector": {
+      "show_more": "Ver más",
+      "view_on_osm": "Ver en openstreetmap.org",
+      "new_relation": "Nueva rellación...",
+      "role": "Rol",
+      "choose": "Seleicione un tipu de carauterística",
+      "remove": "Desaniciar",
+      "search": "Guetar",
+      "unknown": "Desconocíu",
+      "incomplete": "<non descargao>",
+      "feature_list": "Buscar carauterístiques",
+      "edit": "Editar carauterística",
+      "check": {
+        "yes": "Si",
+        "no": "Non",
+        "reverser": "Cambiar direición"
+      },
+      "radio": {
+        "structure": {
+          "type": "Tipu",
+          "default": "Predeterminao",
+          "layer": "Capa"
+        }
+      },
+      "add": "Amestar",
+      "none": "Dengún",
+      "node": "Nuedu",
+      "way": "Vía",
+      "relation": "Rellación",
+      "location": "Allugamientu",
+      "add_fields": "Amestar campu:"
+    },
+    "background": {
+      "title": "Fondu",
+      "none": "Dengún",
+      "best_imagery": "La meyor fonte d'imáxenes pa esti lugar",
+      "switch": "Volver a esti fondu",
+      "custom": "Personalizáu",
+      "reset": "reaniciar",
+      "minimap": {
+        "tooltip": "Amuesa un mapa alloñáu p'ayudar a alcontrar l'área que se ve actualmente."
+      }
+    },
+    "map_data": {
+      "title": "Datos del mapa",
+      "description": "Datos del mapa",
+      "data_layers": "Capes de datos",
+      "layers": {
+        "osm": {
+          "tooltip": "Datos del mapa dende OpenStreetMap"
+        },
+        "maproulette": {
+          "detail_title": "Detalles",
+          "cancel": "Encaboxar"
+        }
+      },
+      "map_features": "Elementos del mapa",
+      "autohidden": "Estos elementos tapeciéronse automáticamente porque s'amosaríen demasiaos en pantalla. Puedes averate pa editalos.",
+      "osmhidden": "Estes carauterístiques tapeciéronse automáticamente porque la capa d'OpenStreetMap ta tapecida."
+    },
+    "feature": {
+      "points": {
+        "description": "Puntos",
+        "tooltip": "Puntos d'interés"
+      },
+      "traffic_roads": {
+        "description": "Carreteres con tráficu",
+        "tooltip": "Carreteres, cais, etc."
+      },
+      "service_roads": {
+        "description": "Carreteres de serviciu",
+        "tooltip": "Víes de serviciu, pasiellos d'aparcamientu, pistes, etc."
+      },
+      "paths": {
+        "description": "Caminos",
+        "tooltip": "Aceres, siendes peatonales, víes ciclistes, etc."
+      },
+      "buildings": {
+        "description": "Edificios",
+        "tooltip": "Edificios, refuxos, garaxes, etc."
+      },
+      "landuse": {
+        "description": "Tipos d'usu del terrén",
+        "tooltip": "Viesques, cultivos, parques, residencial, comercial, etc."
+      },
+      "boundaries": {
+        "description": "Llendes",
+        "tooltip": "Llendes alministratives"
+      },
+      "water": {
+        "description": "Elementos acuáticos",
+        "tooltip": "Rios, llagos, banzaos, cuenques, etc."
+      },
+      "rail": {
+        "description": "Elementos ferroviarios",
+        "tooltip": "Ferrocarriles"
+      },
+      "power": {
+        "description": "Elementos d'enerxía",
+        "tooltip": "Llinies eléctriques, plantes de xeneración, subestaciones, etc."
+      },
+      "past_future": {
+        "tooltip": "Propuesto, en construcción, abandonao, valtao, etc."
+      },
+      "others": {
+        "tooltip": "Tolo demás"
+      }
+    },
+    "area_fill": {
+      "wireframe": {
+        "description": "Sin rellenu (alambre)",
+        "tooltip": "Activar el mou d'alambre facilita ver les imaxes de fondu."
+      },
+      "partial": {
+        "description": "Rellenu parcial",
+        "tooltip": "Les árees dibúxense col rellenu sólo alredor de los berbesos internos. (Recomendao pa mapeadores principiantes)"
+      },
+      "full": {
+        "description": "Rellenu completu",
+        "tooltip": "Les árees dibúxense col rellenu completu"
+      }
+    },
+    "preferences": {
+      "color_selection": {
+        "default": "Predeterminao"
+      }
+    },
+    "restore": {
+      "heading": "Tien cambios ensin guardar"
+    },
+    "save": {
+      "title": "Guardar",
+      "no_changes": "Nun hai cambios que guardar.",
+      "error": "Hebo errores al intentar guardar",
+      "status_code": "El sirvidor devolvió'l códigu d'estáu {code}",
+      "unknown_error_details": "Comprueba que tienes conexón a internet.",
+      "uploading": "Xubiendo los cambios a OpenStreetMap",
+      "unsaved_changes": "Tien cambios ensin guardar",
+      "conflict": {
+        "header": "Iguar conflictos d'edición",
+        "count": "Conflictu {num} de {total}",
+        "previous": "< Anterior",
+        "next": "Siguiente >",
+        "keep_local": "Caltener lo mio",
+        "keep_remote": "Usar lo ayeno",
+        "restore": "Restaurar",
+        "delete": "Dexar desaniciao",
+        "download_changes": "O descargar un ficheru osmChange",
+        "done": "¡Iguaos tolos conflictos!"
+      }
+    },
+    "success": {
+      "help_link_text": "Detalles"
+    },
+    "confirm": {
+      "okay": "Aceutar",
+      "cancel": "Encaboxar"
+    },
+    "source_switch": {
+      "live": "en vivo",
+      "lose_changes": "Tien cambios ensin guardar. Camudar el sirvidor de mapes descartarálos. ¿Ta seguru de que quier intercambiar de sirvidores?"
+    },
+    "rapid_feature_toggle": {
+      "esri": {
+        "remove": "Desaniciar"
+      }
+    },
+    "tag_reference": {
+      "description": "Descripción",
+      "on_wiki": "{tag} en wiki.osm.org",
+      "used_with": "usada con {type}"
+    },
+    "cannot_zoom": "Nun puede alloñase más nel mou actual.",
+    "full_screen": "Conmutar pantalla completa",
+    "QA": {
+      "osmose": {
+        "detail_title": "Detalles"
+      },
+      "keepRight": {
+        "detail_description": "Descripción"
+      }
+    },
+    "mapillary_images": {
+      "tooltip": "Fotos a nivel de rúa de Mapillary"
+    },
+    "mapillary_map_features": {
+      "title": "Elementos del mapa"
+    },
+    "mapillary": {
+      "view_on_mapillary": "Ver esta imaxe'n Mapillary"
+    },
+    "help": {
+      "title": "Ayuda",
+      "help": {
+        "title": "Ayuda",
+        "open_source_h": "Códigu abiertu"
+      },
+      "overview": {
+        "navigation_h": "Navegación",
+        "features_h": "Elementos del mapa"
+      },
+      "editing": {
+        "save_h": "Guardar",
+        "upload_h": "Xubir"
+      },
+      "points": {
+        "title": "Puntos"
+      },
+      "lines": {
+        "title": "Llinies"
+      },
+      "areas": {
+        "title": "Árees"
+      },
+      "relations": {
+        "boundary_h": "Llendes"
+      },
+      "qa": {
+        "tools_h": "Ferramientes"
+      }
+    },
+    "issues": {
+      "warnings": {
+        "list_title": "Avisos"
+      }
+    },
+    "intro": {
+      "done": "fecho",
+      "ok": "Aceutar",
+      "graph": {
+        "state": "<value for addr:state>",
+        "countrycode": "es",
+        "name": {
+          "1st-avenue": "1ª Avenida",
+          "2nd-avenue": "2ª Avenida",
+          "4th-avenue": "4ª Avenida",
+          "5th-avenue": "5ª Avenida",
+          "6th-avenue": "6ª Avenida",
+          "6th-street": "Calle 6ª",
+          "7th-avenue": "7ª Avenida",
+          "8th-avenue": "8ª Avenida",
+          "9th-avenue": "9ª Avenida",
+          "10th-avenue": "10ª Avenida",
+          "11th-avenue": "11ª Avenida",
+          "12th-avenue": "12 Avenida"
+        }
+      },
+      "welcome": {
+        "title": "Bienveníos"
+      },
+      "navigation": {
+        "title": "Navegacion"
+      },
+      "points": {
+        "title": "Puntos"
+      },
+      "areas": {
+        "title": "Árees"
+      },
+      "lines": {
+        "title": "Llinies"
+      },
+      "buildings": {
+        "title": "Edificios"
+      },
+      "startediting": {
+        "title": "Principiar la edición",
+        "save": "¡Nun escaeza guardar los cambios de mou regular!",
+        "start": "¡Principie a facer mapes!"
+      }
+    },
+    "shortcuts": {
+      "tooltip": "Ver la pantalla d'atayos de tecláu.",
+      "key": {
+        "backspace": "Borrar atrás",
+        "delete": "Borrar",
+        "return": "Intro",
+        "shift": "Mayús",
+        "space": "Espaciu"
+      },
+      "browsing": {
+        "navigation": {
+          "title": "Navegación"
+        },
+        "help": {
+          "title": "Ayuda"
+        }
+      },
+      "editing": {
+        "title": "Editar",
+        "drawing": {
+          "title": "Dibuxar",
+          "add_point": "Mou «amestar puntu»",
+          "add_line": "Mou «amestar llinia»",
+          "add_area": "Mou «amestar área»"
+        },
+        "commands": {
+          "title": "Comandos",
+          "save": "Guardar los cambios"
+        }
+      },
+      "tools": {
+        "title": "Ferramientes",
+        "info": {
+          "title": "Información"
+        }
+      }
+    },
+    "wikidata": {
+      "description": "Descripción"
+    },
+    "languageNames": {
+      "aa": "afar",
+      "ab": "abkhazianu",
+      "ace": "achinés",
+      "ach": "acoli",
+      "ada": "adangme",
+      "ady": "adyghe",
+      "ae": "avestanín",
+      "aeb": "árabe de Túnez",
+      "af": "afrikaans",
+      "afh": "afrihili",
+      "agq": "aghem",
+      "ain": "ainu",
+      "ak": "akan",
+      "akk": "acadianu",
+      "akz": "alabama",
+      "ale": "aleut",
+      "aln": "gheg d’Albania",
+      "alt": "altai del sur",
+      "am": "amháricu",
+      "an": "aragonés",
+      "ang": "inglés antiguu",
+      "anp": "angika",
+      "ar": "árabe",
+      "ar-001": "árabe estándar modernu",
+      "arc": "araméu",
+      "arn": "mapuche",
+      "aro": "araona",
+      "arp": "arapaho",
+      "arq": "árabe d’Arxelia",
+      "arw": "arawak",
+      "ary": "árabe de Marruecos",
+      "arz": "árabe d’Exiptu",
+      "as": "asamés",
+      "asa": "asu",
+      "ast": "asturianu",
+      "av": "aváricu",
+      "avk": "kotava",
+      "awa": "awadhi",
+      "ay": "aymara",
+      "az": "azerbaixanu",
+      "ba": "bashkir",
+      "bal": "baluchi",
+      "ban": "balinés",
+      "bar": "bávaru",
+      "bas": "basaa",
+      "bax": "bamun",
+      "bbc": "batak toba",
+      "bbj": "ghomala",
+      "be": "bielorrusu",
+      "bej": "beja",
+      "bem": "bemba",
+      "bew": "betawi",
+      "bez": "bena",
+      "bfd": "bafut",
+      "bfq": "badaga",
+      "bg": "búlgaru",
+      "bgn": "balochi occidental",
+      "bho": "bhojpuri",
+      "bi": "bislama",
+      "bik": "bikol",
+      "bin": "bini",
+      "bjn": "banjar",
+      "bkm": "kom",
+      "bla": "siksika",
+      "bm": "bambara",
+      "bn": "bengalín",
+      "bo": "tibetanu",
+      "bpy": "bishnupriya",
+      "bqi": "bakhtiari",
+      "br": "bretón",
+      "bra": "braj",
+      "brh": "brahui",
+      "brx": "bodo",
+      "bs": "bosniu",
+      "bss": "akoose",
+      "bua": "buriat",
+      "bug": "buginés",
+      "bum": "bulu",
+      "byn": "blin",
+      "byv": "medumba",
+      "ca": "catalán",
+      "cad": "caddo",
+      "car": "caribe",
+      "cay": "cayuga",
+      "cch": "atsam",
+      "ce": "chechenu",
+      "ceb": "cebuanu",
+      "cgg": "chiga",
+      "ch": "chamorro",
+      "chb": "chibcha",
+      "chg": "chagatai",
+      "chk": "chuukés",
+      "chm": "mari",
+      "chn": "xíriga chinook",
+      "cho": "choctaw",
+      "chp": "chipewyanu",
+      "chr": "cheroqui",
+      "chy": "cheyenne",
+      "ckb": "kurdu central",
+      "co": "corsu",
+      "cop": "cópticu",
+      "cps": "capiznon",
+      "cr": "cree",
+      "crh": "turcu de Crimea",
+      "crs": "francés criollu seselwa",
+      "cs": "checu",
+      "csb": "kashubianu",
+      "cu": "eslávicu eclesiásticu",
+      "cv": "chuvash",
+      "cy": "galés",
+      "da": "danés",
+      "dak": "dakota",
+      "dar": "dargwa",
+      "dav": "taita",
+      "de": "alemán",
+      "de-AT": "alemán d’Austria",
+      "de-CH": "altualemán de Suiza",
+      "del": "delaware",
+      "den": "slave",
+      "dgr": "dogrib",
+      "din": "dinka",
+      "dje": "zarma",
+      "doi": "dogri",
+      "dsb": "baxu sorbiu",
+      "dtp": "dusun central",
+      "dua": "duala",
+      "dum": "neerlandés mediu",
+      "dv": "divehi",
+      "dyo": "jola-fonyi",
+      "dyu": "dyula",
+      "dz": "dzongkha",
+      "dzg": "dazaga",
+      "ebu": "embú",
+      "ee": "ewe",
+      "efi": "efik",
+      "egl": "emilianu",
+      "egy": "exipciu antiguu",
+      "eka": "ekajuk",
+      "el": "griegu",
+      "elx": "elamita",
+      "en": "inglés",
+      "en-AU": "inglés d’Australia",
+      "en-CA": "inglés de Canadá",
+      "en-GB": "inglés de Gran Bretaña",
+      "en-US": "inglés d’Estaos Xuníos",
+      "enm": "inglés mediu",
+      "eo": "esperanto",
+      "es": "español",
+      "es-419": "español d’América Llatina",
+      "es-ES": "español européu",
+      "es-MX": "español de Méxicu",
+      "esu": "yupik central",
+      "et": "estoniu",
+      "eu": "vascu",
+      "ewo": "ewondo",
+      "ext": "estremeñu",
+      "fa": "persa",
+      "fan": "fang",
+      "fat": "fanti",
+      "ff": "fulah",
+      "fi": "finlandés",
+      "fil": "filipín",
+      "fit": "finlandés de Tornedalen",
+      "fj": "fixanu",
+      "fo": "feroés",
+      "fon": "fon",
+      "fr": "francés",
+      "fr-CA": "francés de Canadá",
+      "fr-CH": "francés de Suiza",
+      "frc": "francés cajun",
+      "frm": "francés mediu",
+      "fro": "francés antiguu",
+      "frp": "arpitanu",
+      "frr": "frisón del norte",
+      "frs": "frisón oriental",
+      "fur": "friulianu",
+      "fy": "frisón occidental",
+      "ga": "irlandés",
+      "gaa": "ga",
+      "gag": "gagauz",
+      "gan": "chinu gan",
+      "gay": "gayo",
+      "gba": "gbaya",
+      "gbz": "dari zoroastrianu",
+      "gd": "gaélicu escocés",
+      "gez": "geez",
+      "gil": "gilbertés",
+      "gl": "gallegu",
+      "glk": "gilaki",
+      "gmh": "altualemán mediu",
+      "gn": "guaraní",
+      "goh": "altualemán antiguu",
+      "gom": "goan konkani",
+      "gon": "gondi",
+      "gor": "gorontalo",
+      "got": "góticu",
+      "grb": "grebo",
+      "grc": "griegu antiguu",
+      "gsw": "alemán de Suiza",
+      "gu": "guyaratí",
+      "guc": "wayuu",
+      "gur": "frafra",
+      "guz": "gusii",
+      "gv": "manés",
+      "gwi": "gwichʼin",
+      "ha": "ḥausa",
+      "hai": "haida",
+      "hak": "chinu hakka",
+      "haw": "hawaianu",
+      "he": "hebréu",
+      "hi": "hindi",
+      "hif": "hindi de Fiji",
+      "hil": "hiligaynon",
+      "hit": "hitita",
+      "hmn": "hmong",
+      "ho": "hiri motu",
+      "hr": "croata",
+      "hsb": "altu sorbiu",
+      "hsn": "chinu xiang",
+      "ht": "haitianu",
+      "hu": "húngaru",
+      "hup": "hupa",
+      "hy": "armeniu",
+      "hz": "herero",
+      "ia": "interlingua",
+      "iba": "iban",
+      "ibb": "ibibio",
+      "id": "indonesiu",
+      "ie": "interlingue",
+      "ig": "igbo",
+      "ii": "yi de Sichuán",
+      "ik": "inupiaq",
+      "ilo": "iloko",
+      "inh": "ingush",
+      "io": "ido",
+      "is": "islandés",
+      "it": "italianu",
+      "iu": "inuktitut",
+      "izh": "ingrianu",
+      "ja": "xaponés",
+      "jam": "inglés criollu xamaicanu",
+      "jbo": "lojban",
+      "jgo": "ngomba",
+      "jmc": "machame",
+      "jpr": "xudeo-persa",
+      "jrb": "xudeo-árabe",
+      "jut": "jutlandés",
+      "jv": "xavanés",
+      "ka": "xeorxanu",
+      "kaa": "kara-kalpak",
+      "kab": "kabileñu",
+      "kac": "kachin",
+      "kaj": "jju",
+      "kam": "kamba",
+      "kaw": "kawi",
+      "kbd": "kabardianu",
+      "kbl": "kanembu",
+      "kcg": "tyap",
+      "kde": "makonde",
+      "kea": "cabuverdianu",
+      "ken": "kenyang",
+      "kfo": "koro",
+      "kg": "kongo",
+      "kgp": "kaingang",
+      "kha": "khasi",
+      "kho": "khotanés",
+      "khq": "koyra chiini",
+      "khw": "khowar",
+      "ki": "kikuyu",
+      "kiu": "kirmanjki",
+      "kj": "kuanyama",
+      "kk": "kazaquistanín",
+      "kkj": "kako",
+      "kl": "kalaallisut",
+      "kln": "kalenjin",
+      "km": "ḥemer",
+      "kmb": "kimbundu",
+      "kn": "canarés",
+      "ko": "coreanu",
+      "koi": "komi-permyak",
+      "kok": "konkani",
+      "kos": "kosraeanu",
+      "kpe": "kpelle",
+      "kr": "kanuri",
+      "krc": "karachay-balkar",
+      "kri": "krio",
+      "krj": "kinaray-a",
+      "krl": "karelianu",
+      "kru": "kurukh",
+      "ks": "cachemirés",
+      "ksb": "shambala",
+      "ksf": "bafia",
+      "ksh": "colonianu",
+      "ku": "curdu",
+      "kum": "kumyk",
+      "kut": "kutenai",
+      "kv": "komi",
+      "kw": "córnicu",
+      "ky": "kirguistanín",
+      "la": "llatín",
+      "lad": "ladino",
+      "lag": "langi",
+      "lah": "lahnda",
+      "lam": "lamba",
+      "lb": "luxemburgués",
+      "lez": "lezghianu",
+      "lfn": "lingua franca nova",
+      "lg": "ganda",
+      "li": "limburgués",
+      "lij": "ligurianu",
+      "liv": "livonianu",
+      "lkt": "lakota",
+      "lmo": "lombardu",
+      "ln": "lingala",
+      "lo": "laosianu",
+      "lol": "mongo",
+      "loz": "lozi",
+      "lrc": "luri del norte",
+      "lt": "lituanu",
+      "ltg": "latgalianu",
+      "lu": "luba-katanga",
+      "lua": "luba-lulua",
+      "lui": "luiseno",
+      "lun": "lunda",
+      "luo": "luo",
+      "lus": "mizo",
+      "luy": "luyia",
+      "lv": "letón",
+      "lzh": "chinu lliterariu",
+      "lzz": "laz",
+      "mad": "madurés",
+      "maf": "mafa",
+      "mag": "magahi",
+      "mai": "maithili",
+      "mak": "makasar",
+      "man": "mandingo",
+      "mas": "masái",
+      "mde": "maba",
+      "mdf": "moksha",
+      "mdr": "mandar",
+      "men": "mende",
+      "mer": "meru",
+      "mfe": "morisyen",
+      "mg": "malgaxe",
+      "mga": "írlandés mediu",
+      "mgh": "makhuwa-meetto",
+      "mgo": "meta’",
+      "mh": "marshallés",
+      "mi": "maorí",
+      "mic": "micmac",
+      "min": "minangkabau",
+      "mk": "macedoniu",
+      "ml": "malayalam",
+      "mn": "mongol",
+      "mnc": "manchú",
+      "mni": "manipuri",
+      "moh": "mohawk",
+      "mos": "mossi",
+      "mr": "marathi",
+      "mrj": "mari occidental",
+      "ms": "malayu",
+      "mt": "maltés",
+      "mua": "mundang",
+      "mus": "creek",
+      "mwl": "mirandés",
+      "mwr": "marwari",
+      "mwv": "mentawai",
+      "my": "birmanu",
+      "mye": "myene",
+      "myv": "erzya",
+      "mzn": "mazanderani",
+      "na": "nauru",
+      "nan": "chinu min nan",
+      "nap": "napolitanu",
+      "naq": "nama",
+      "nb": "noruegu Bokmål",
+      "nd": "ndebele del norte",
+      "nds": "baxu alemán",
+      "nds-NL": "baxu saxón",
+      "ne": "nepalés",
+      "new": "newari",
+      "ng": "ndonga",
+      "nia": "nias",
+      "niu": "niueanu",
+      "njo": "ao naga",
+      "nl": "neerlandés",
+      "nl-BE": "flamencu",
+      "nmg": "kwasio",
+      "nn": "noruegu Nynorsk",
+      "nnh": "ngiemboon",
+      "no": "noruegu",
+      "nog": "nogai",
+      "non": "noruegu antiguu",
+      "nov": "novial",
+      "nqo": "n’ko",
+      "nr": "ndebele del sur",
+      "nso": "sotho del norte",
+      "nus": "nuer",
+      "nv": "navajo",
+      "nwc": "newari clásicu",
+      "ny": "nyanja",
+      "nym": "nyamwezi",
+      "nyn": "nyankole",
+      "nyo": "nyoro",
+      "nzi": "nzima",
+      "oc": "occitanu",
+      "oj": "ojibwa",
+      "om": "oromo",
+      "or": "oriya",
+      "os": "oséticu",
+      "osa": "osage",
+      "ota": "turcu otomanu",
+      "pa": "punyabí",
+      "pag": "pangasinan",
+      "pal": "pahlavi",
+      "pam": "pampanga",
+      "pap": "papiamento",
+      "pau": "palauanu",
+      "pcd": "pícaru",
+      "pcm": "nixerianu simplificáu",
+      "pdc": "alemán de Pennsylvania",
+      "pdt": "plautdietsch",
+      "peo": "persa antiguu",
+      "pfl": "alemán palatinu",
+      "phn": "feniciu",
+      "pi": "pali",
+      "pl": "polacu",
+      "pms": "piamontés",
+      "pnt": "pónticu",
+      "pon": "pohnpeianu",
+      "prg": "prusianu",
+      "pro": "provenzal antiguu",
+      "ps": "pashtu",
+      "pt": "portugués",
+      "pt-BR": "portugués del Brasil",
+      "pt-PT": "portugués européu",
+      "qu": "quechua",
+      "quc": "kʼicheʼ",
+      "qug": "quichua del altiplanu de Chimborazo",
+      "raj": "rajasthanín",
+      "rap": "rapanui",
+      "rar": "rarotonganu",
+      "rgn": "romañol",
+      "rif": "rifianu",
+      "rm": "romanche",
+      "rn": "rundi",
+      "ro": "rumanu",
+      "ro-MD": "moldavu",
+      "rof": "rombo",
+      "rom": "romaní",
+      "rtm": "rotumanu",
+      "ru": "rusu",
+      "rue": "rusyn",
+      "rug": "roviana",
+      "rup": "aromanianu",
+      "rw": "kinyarwanda",
+      "rwk": "rwa",
+      "sa": "sánscritu",
+      "sad": "sandavés",
+      "sah": "sakha",
+      "sam": "araméu samaritanu",
+      "saq": "samburu",
+      "sas": "sasak",
+      "sat": "santali",
+      "saz": "saurashtra",
+      "sba": "ngambay",
+      "sbp": "sangu",
+      "sc": "sardu",
+      "scn": "sicilianu",
+      "sco": "scots",
+      "sd": "sindhi",
+      "sdc": "sardu sassarés",
+      "sdh": "kurdu del sur",
+      "se": "sami del norte",
+      "see": "séneca",
+      "seh": "sena",
+      "sei": "seri",
+      "sel": "selkup",
+      "ses": "koyraboro senni",
+      "sg": "sango",
+      "sga": "irlandés antiguu",
+      "sgs": "samogitianu",
+      "sh": "serbo-croata",
+      "shi": "tachelhit",
+      "shn": "shan",
+      "shu": "árabe chadianu",
+      "si": "cingalés",
+      "sid": "sidamo",
+      "sk": "eslovacu",
+      "sl": "eslovenu",
+      "sli": "baxu silesianu",
+      "sly": "selayarés",
+      "sm": "samoanu",
+      "sma": "sami del sur",
+      "smj": "lule sami",
+      "smn": "inari sami",
+      "sms": "skolt sami",
+      "sn": "shona",
+      "snk": "soninke",
+      "so": "somalín",
+      "sog": "sogdianu",
+      "sq": "albanu",
+      "sr": "serbiu",
+      "srn": "sranan tongo",
+      "srr": "serer",
+      "ss": "swati",
+      "ssy": "saho",
+      "st": "sotho del sur",
+      "stq": "frisón de Saterland",
+      "su": "sondanés",
+      "suk": "sukuma",
+      "sus": "susu",
+      "sux": "sumeriu",
+      "sv": "suecu",
+      "sw": "suaḥili",
+      "sw-CD": "suaḥili del Congu",
+      "swb": "comorianu",
+      "syc": "siriacu clásicu",
+      "syr": "siriacu",
+      "szl": "silesianu",
+      "ta": "tamil",
+      "tcy": "tulu",
+      "te": "telugu",
+      "tem": "timne",
+      "teo": "teso",
+      "ter": "terena",
+      "tet": "tetum",
+      "tg": "taxiquistanín",
+      "th": "tailandés",
+      "ti": "tigrinya",
+      "tig": "tigre",
+      "tiv": "tiv",
+      "tk": "turcomanu",
+      "tkl": "tokelau",
+      "tkr": "tsakhur",
+      "tl": "tagalog",
+      "tlh": "klingon",
+      "tli": "tlingit",
+      "tly": "talixín",
+      "tmh": "tamashek",
+      "tn": "tswana",
+      "to": "tonganu",
+      "tog": "tonga nyasa",
+      "tpi": "tok pisin",
+      "tr": "turcu",
+      "tru": "turoyo",
+      "trv": "taroko",
+      "ts": "tsonga",
+      "tsd": "tsakoniu",
+      "tsi": "tsimshian",
+      "tt": "tártaru",
+      "ttt": "tati musulmán",
+      "tum": "tumbuka",
+      "tvl": "tuvalu",
+      "tw": "twi",
+      "twq": "tasawaq",
+      "ty": "tahitianu",
+      "tyv": "tuvinianu",
+      "tzm": "tamazight del Atles central",
+      "udm": "udmurt",
+      "ug": "uigur",
+      "uga": "ugaríticu",
+      "uk": "ucraín",
+      "umb": "umbundu",
+      "ur": "urdu",
+      "uz": "uzbequistanín",
+      "vai": "vai",
+      "ve": "venda",
+      "vec": "venecianu",
+      "vep": "vepsiu",
+      "vi": "vietnamín",
+      "vls": "flamencu occidental",
+      "vmf": "franconianu del Main",
+      "vo": "volapük",
+      "vot": "vóticu",
+      "vro": "voro",
+      "vun": "vunjo",
+      "wa": "valón",
+      "wae": "walser",
+      "wal": "wolaytta",
+      "war": "waray",
+      "was": "washo",
+      "wbp": "warlpiri",
+      "wo": "wolof",
+      "wuu": "chinu wu",
+      "xal": "calmuco",
+      "xh": "xhosa",
+      "xmf": "mingrelianu",
+      "xog": "soga",
+      "yao": "yao",
+      "yap": "yapés",
+      "yav": "yangben",
+      "ybb": "yemba",
+      "yi": "yiddish",
+      "yo": "yoruba",
+      "yrl": "nheengatu",
+      "yue": "cantonés",
+      "za": "zhuang",
+      "zap": "zapoteca",
+      "zbl": "simbólicu Bliss",
+      "zea": "zeelandés",
+      "zen": "zenaga",
+      "zgh": "tamazight estándar de Marruecos",
+      "zh": "chinu",
+      "zh-Hans": "chinu simplificáu",
+      "zh-Hant": "chinu tradicional",
+      "zu": "zulú",
+      "zun": "zuni",
+      "zza": "zaza"
+    },
+    "scriptNames": {
+      "Adlm": "adlm",
+      "Afak": "afaka",
+      "Aghb": "cáucaso-albanés",
+      "Ahom": "ahom",
+      "Arab": "árabe",
+      "Armi": "aramaicu imperial",
+      "Armn": "armeniu",
+      "Avst": "avésticu",
+      "Bali": "balinés",
+      "Bamu": "bamum",
+      "Bass": "bassa vah",
+      "Batk": "batak",
+      "Beng": "bengalín",
+      "Bhks": "bhks",
+      "Blis": "símbolos de Bliss",
+      "Bopo": "bopomofo",
+      "Brah": "brahmi",
+      "Brai": "braille",
+      "Bugi": "lontara",
+      "Buhd": "buhid",
+      "Cakm": "chakma",
+      "Cans": "silábicu unificáu de los nativos canadienses",
+      "Cari": "cariu",
+      "Cham": "cham",
+      "Cher": "cheroki",
+      "Cirt": "cirth",
+      "Copt": "coptu",
+      "Cprt": "xipriota",
+      "Cyrl": "cirílicu",
+      "Cyrs": "eslavónicu cirílicu eclesiásticu antiguu",
+      "Deva": "devanagari",
+      "Dsrt": "alfabetu Deseret",
+      "Dupl": "taquigrafía Duployé",
+      "Egyd": "demóticu exipcianu",
+      "Egyh": "hieráticu exipcianu",
+      "Egyp": "xeroglíficos exipcianos",
+      "Elba": "elbasan",
+      "Ethi": "etíope",
+      "Geok": "khutsuri xeorxanu",
+      "Geor": "xeorxanu",
+      "Glag": "glagolíticu",
+      "Goth": "góticu",
+      "Gran": "grantha",
+      "Grek": "griegu",
+      "Gujr": "guyarati",
+      "Guru": "gurmukhi",
+      "Hanb": "hanb",
+      "Hang": "hangul",
+      "Hani": "han",
+      "Hano": "hanunó’o",
+      "Hans": "han simplificáu",
+      "Hant": "han tradicional",
+      "Hatr": "hatranu",
+      "Hebr": "hebréu",
+      "Hira": "ḥiragana",
+      "Hluw": "xeroglíficos anatolios",
+      "Hmng": "pahawh hmong",
+      "Hrkt": "silabarios xaponeses",
+      "Hung": "húngaru antiguu",
+      "Inds": "indus",
+      "Ital": "itálicu antiguu",
+      "Jamo": "jamo",
+      "Java": "xavanés",
+      "Jpan": "xaponés",
+      "Jurc": "jurchen",
+      "Kali": "kayah li",
+      "Kana": "katakana",
+      "Khar": "kharoshthi",
+      "Khmr": "ḥemer",
+      "Khoj": "khojki",
+      "Knda": "canarés",
+      "Kore": "coreanu",
+      "Kpel": "kpelle",
+      "Kthi": "kaithi",
+      "Lana": "lanna",
+      "Laoo": "laosianu",
+      "Latf": "fraktur llatín",
+      "Latg": "gaélicu llatín",
+      "Latn": "llatín",
+      "Lepc": "lepcha",
+      "Limb": "limbu",
+      "Lina": "llinial A",
+      "Linb": "llinial B",
+      "Lisu": "alfabetu de Fraser",
+      "Loma": "loma",
+      "Lyci": "liciu",
+      "Lydi": "lidiu",
+      "Mahj": "mahajani",
+      "Mand": "mandéu",
+      "Mani": "maniquéu",
+      "Marc": "marc",
+      "Maya": "xeroglíficos mayes",
+      "Mend": "mende",
+      "Merc": "meroíticu en cursiva",
+      "Mero": "meroíticu",
+      "Mlym": "malayalam",
+      "Modi": "modi",
+      "Mong": "mongol",
+      "Moon": "tipos Moon",
+      "Mroo": "mro",
+      "Mtei": "meitei mayek",
+      "Mult": "multani",
+      "Mymr": "birmanu",
+      "Narb": "árabe del norte antiguu",
+      "Nbat": "nabatéu",
+      "Newa": "newa",
+      "Nkgb": "geba del naxi",
+      "Nkoo": "n’ko",
+      "Nshu": "nüshu",
+      "Ogam": "ogham",
+      "Olck": "ol chiki",
+      "Orkh": "orkhon",
+      "Orya": "oriya",
+      "Osge": "osge",
+      "Osma": "osmanya",
+      "Palm": "palmirenu",
+      "Pauc": "pau cin hau",
+      "Perm": "pérmicu antiguu",
+      "Phag": "escritura ‘Phags-pa",
+      "Phli": "pahlavi d’inscripciones",
+      "Phlp": "pahlavi de salteriu",
+      "Phlv": "pahlavi de llibros",
+      "Phnx": "feniciu",
+      "Plrd": "fonéticu de Pollard",
+      "Prti": "partu d’inscripciones",
+      "Rjng": "rejang",
+      "Roro": "rongorongo",
+      "Runr": "runes",
+      "Samr": "samaritanu",
+      "Sara": "sarati",
+      "Sarb": "árabe del sur antiguu",
+      "Saur": "saurashtra",
+      "Sgnw": "escritura de signos",
+      "Shaw": "shavianu",
+      "Shrd": "sharada",
+      "Sidd": "siddham",
+      "Sind": "khudabadi",
+      "Sinh": "cingalés",
+      "Sora": "sora sompeng",
+      "Sund": "sondanés",
+      "Sylo": "syloti nagri",
+      "Syrc": "siriacu",
+      "Syre": "siriacu estrangelo",
+      "Syrj": "siriacu occidental",
+      "Syrn": "siriacu oriental",
+      "Tagb": "tagbanwa",
+      "Takr": "takri",
+      "Tale": "tai le",
+      "Talu": "tai lue nuevu",
+      "Taml": "tamil",
+      "Tang": "tangut",
+      "Tavt": "tai viet",
+      "Telu": "telugu",
+      "Teng": "tengwar",
+      "Tfng": "tifinagh",
+      "Tglg": "tagalog",
+      "Thaa": "thaana",
+      "Thai": "tailandés",
+      "Tibt": "tibetanu",
+      "Tirh": "tirhuta",
+      "Ugar": "ugaríticu",
+      "Vaii": "vai",
+      "Visp": "fala visible",
+      "Wara": "varang kshiti",
+      "Wole": "woleai",
+      "Xpeo": "persa antiguu",
+      "Xsux": "cuneiforme sumeriu acadiu",
+      "Yiii": "yi",
+      "Zinh": "heredáu",
+      "Zmth": "escritura matemática",
+      "Zsye": "emoji",
+      "Zsym": "símbolos",
+      "Zxxx": "non escritu",
+      "Zyyy": "común",
+      "Zzzz": "escritura desconocida"
+    }
+  }
+}

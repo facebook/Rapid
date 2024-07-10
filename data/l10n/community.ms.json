@@ -1,0 +1,104 @@
+{
+  "ms": {
+    "_communities": {
+      "openstreetmapafrica": "OpenStreetMap Afrika",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap Bosnia dan Herzegovina",
+      "openstreetmapcambodia": "OpenStreetMap Kemboja",
+      "openstreetmapcanada": "OpenStreetMap Kanada",
+      "openstreetmapegypt": "OpenStreetMap Mesir",
+      "openstreetmaprussia": "OpenStreetMap Rusia",
+      "openstreetmapsaudiarabia": "OpenStreetMap Arab Saudi",
+      "openstreetmapsingapore": "OpenStreetMap Singapura",
+      "openstreetmapsouthsudan": "OpenStreetMap Sudan Selatan"
+    },
+    "_defaults": {
+      "meetup": {
+        "name": "Meetup {community}"
+      },
+      "newsletter": {
+        "name": "Newsletter {community}"
+      },
+      "reddit": {
+        "name": "{community} di Reddit"
+      },
+      "signal": {
+        "name": "Signal {community}",
+        "description": "Sertai perbualan komuniti kami di Signal"
+      },
+      "slack": {
+        "name": "Slack {community}"
+      },
+      "telegram": {
+        "name": "Telegram {community}",
+        "description": "Sertai perbualan komuniti Telegram kami "
+      },
+      "threads": {
+        "name": "{community} di Threads",
+        "description": "Ikuti kami di Threads"
+      },
+      "twitter": {
+        "name": "{community} di 𝕏",
+        "description": "Ikuti kami di 𝕏"
+      },
+      "wiki": {
+        "name": "WikiProject {community}"
+      },
+      "x": {
+        "name": "{community} di 𝕏",
+        "description": "Ikuti kami di 𝕏"
+      },
+      "xmpp": {
+        "name": "XMPP {community}"
+      },
+      "youtube": {
+        "name": "{community} di YouTube",
+        "description": "Langgan saluran YouTube kami"
+      },
+      "zulip": {
+        "name": "Zulip {community}",
+        "description": "Sertai perbualan komuniti kami di Zulip"
+      }
+    },
+    "af-matrix": {
+      "description": "Group MATRIK bagi komuniti di Afghanistan."
+    },
+    "al-maptime-tirana": {
+      "description": "Majlis bersosial dianjurkan berkenaan pemetaan - peserta baru dialu-alukan!",
+      "extendedDescription": "Maptime ialah persekitaran pembelajaran terbuka untuk setiap peringkat, menawarkan bantuan pendidikan untuk pemula. Maptime yang fleksibel dan berstruktur sesuai untuk mewujudkan ruang untuk tutorial, bengkel, projek berterusan untuk suatu objektif, serta masa untuk bekerja secara bersendirian/kolaboratif dalam bidang pemetaan."
+    },
+    "am-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "at-matrix": {
+      "description": "Saluran tidak rasmi Matrix Bahasa Jerman untuk Austria"
+    },
+    "at-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "Bahia-telegram": {
+      "extendedDescription": "Sertai komuniti untuk ketahui lebih lanjut tentang OpenStreetMap, bertanya soalan atau mengambil bahagian dalam mesyuarat kami. Semua orang dialu-alukan!"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "name": "OpenStreetMappers Bay Area",
+      "description": "Tambahbaik OpenStreetMap di Bay Area",
+      "extendedDescription": "Kumpulan ini ialah mengenai memperkembangkan komuniti OpenStreetMap di Kawasan Teluk ini. Acara-acara kami adalah terbuka kepada sesiapa sahaja, dari peminat sumber terbuka, penunggang basikal, profesional GIS, pengcache geo, dan sebagainya. Sesiapa sahaja dan semua orang yang berminat dalam peta, membuat peta, dan data peta percuma adalah dialu-alukan untuk menyertai kumpulan kami serta menghadiri acara-acara kami."
+    },
+    "bd-facebook": {
+      "extendedDescription": "Memeta di Bangladesh? Ada soalan atau ingin berkenalan dengan komuniti di sini? Sertai kami di {url}. Semua orang dialu-alukan!"
+    },
+    "Central-Pennsylvania-OSM": {
+      "name": "OSM Pennsylvania Pusat",
+      "description": "Komuniti pemetaan atas talian yang berpusat di luar State College, PA"
+    },
+    "GeoPhilly": {
+      "description": "Pertemuan untuk peminat-peminat peta di kawasan Philadelphia",
+      "extendedDescription": "GeoPhilly menyatukan pemaju, ahli geografi, gek data, peminat sumber terbuka, penggodam awam dan kaki peta dalam perkongsian minat kita tentang peta dan cerita-cerita yang dikongsi sama. Jika anda menggunakan peta sebagai sebahagian dari kerja anda atau hanya untuk mempelajari dengan lebih lanjut, ini ialah pertemuan untuk anda! Acara kami bertujuan untuk menjadi terbuka, mesra, berpendidikan dan bersosial dan berjulat dari jam gembira kepada ceramah kilat atau malah bengkel. Datanglah untuk mencipta komuniti yang berpelbagai, berinspirasi di Philadelphia dengan kami!"
+    },
+    "OSM-Chattanooga": {
+      "description": "Kumpulan pengguna OpenStreetMap bagi Chattanooga"
+    },
+    "OSM-US-Slack": {
+      "description": "Semua dialu-alukan hadir! Daftar di {signupUrl}"
+    }
+  }
+}

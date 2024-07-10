@@ -1,0 +1,26 @@
+{
+  "fil": {
+    "_communities": {
+      "mappingbotswana": "Pagmamapa sa Botswana",
+      "openstreetmapafghanistan": "OpenStreetMap Apganistan",
+      "openstreetmapafrica": "OpenStreetMap Aprika",
+      "openstreetmapargentina": "OpenStreetMap Arhentina",
+      "openstreetmaparmenia": "OpenStreetMap Armenya",
+      "openstreetmapasia": "OpenStreetMap Asya",
+      "openstreetmapaustria": "OpenStreetMap Awstrya",
+      "openstreetmapbelgium": "OpenStreetMap Belhika",
+      "openstreetmapbolivia": "OpenStreetMap Bolibya",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap Bosnia at Herzegovina",
+      "openstreetmapbrasil": "OpenStreetMap Brazil",
+      "openstreetmapbulgaria": "OpenStreetMap Bulgarya",
+      "openstreetmapcambodia": "OpenStreetMap Kambodya",
+      "openstreetmapcanada": "OpenStreetMap Kanada",
+      "openstreetmapcatalancountries": "OpenStreetMap Bansa ng Catalan",
+      "openstreetmapchile": "OpenStreetMap Tsile",
+      "openstreetmapchina": "OpenStreetMap Tsina",
+      "openstreetmapcologne": "OpenStreetMap Kolon",
+      "openstreetmapcolombia": "OpenStreetMap Kolombya",
+      "openstreetmapcostarica": "OpenStreetMap Kosta Rika"
+    }
+  }
+}

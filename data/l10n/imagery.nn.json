@@ -1,0 +1,9 @@
+{
+  "nn": {
+    "imagery": {
+      "MAPNIK": {
+        "name": "OpenStreetMap (standard)"
+      }
+    }
+  }
+}

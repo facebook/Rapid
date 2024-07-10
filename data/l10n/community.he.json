@@ -1,0 +1,1390 @@
+{
+  "he": {
+    "_communities": {
+      "freelibreopensourcesoftwarekosovaflossk": "תוכנה חופשית בקוד פתוח קוסובו (FLOSSK)",
+      "kiribatiwomeninmapping": "נשים מקיריבטי במיפוי",
+      "mappingbotswana": "מיפוי בוטסואנה",
+      "openstreetmapaachen": "OpenStreetMap אאכן",
+      "openstreetmapafghanistan": "OpenStreetMap אפגניסטן",
+      "openstreetmapafrica": "OpenStreetMap אפריקה",
+      "openstreetmapalba": "OpenStreetMap אלבה",
+      "openstreetmapalbania": "OpenStreetMap אלבניה",
+      "openstreetmapargentina": "OpenStreetMap ארגנטינה",
+      "openstreetmaparmenia": "OpenStreetMap ארמניה",
+      "openstreetmapasia": "OpenStreetMap אסיה",
+      "openstreetmapasti": "OpenStreetMap אסטי",
+      "openstreetmapaustria": "OpenStreetMap אוסטריה",
+      "openstreetmapbahia": "OpenStreetMap באהיה",
+      "openstreetmapbangladesh": "OpenStreetMap בנגלדש",
+      "openstreetmapbelarus": "OpenStreetMap בלרוס",
+      "openstreetmapbelgium": "OpenStreetMap בלגיה",
+      "openstreetmapbelize": "OpenStreetMap בליז",
+      "openstreetmapbenin": "OpenStreetMap בנין",
+      "openstreetmapberlin": "OpenStreetMap ברלין",
+      "openstreetmapbivccvl": "OpenStreetMap ביאלה-קנבסה-ורצ׳לי",
+      "openstreetmapbochum": "OpenStreetMap בוכום",
+      "openstreetmapbolivia": "OpenStreetMap בוליביה",
+      "openstreetmapbonn": "OpenStreetMap בון",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap בוסניה והרצגובינה",
+      "openstreetmapbrasil": "OpenStreetMap ברזיל",
+      "openstreetmapbrasilia": "OpenStreetMap ברזיליה",
+      "openstreetmapbremen": "OpenStreetMap ברמן",
+      "openstreetmapbulgaria": "OpenStreetMap בולגריה",
+      "openstreetmapburkinafaso": "OpenStreetMap בורקיה פאסו",
+      "openstreetmapburundi": "OpenStreetMap בורונדי",
+      "openstreetmapbzh": "OpenStreetMap לאזורים הברטוניים",
+      "openstreetmapcambodia": "OpenStreetMap קמבודיה",
+      "openstreetmapcameroon": "OpenStreetMap קמרון",
+      "openstreetmapcanada": "OpenStreetMap קנדה",
+      "openstreetmapcastillayleon": "OpenStreetMap קסטיליה ולאון",
+      "openstreetmapcatalancountries": "OpenStreetMap הארצות הקטלאניות",
+      "openstreetmapceara": "OpenStreetMap סיארה",
+      "openstreetmapchad": "OpenStreetMap צ׳אד",
+      "openstreetmapchile": "OpenStreetMap צ׳ילה",
+      "openstreetmapchina": "OpenStreetMap סין",
+      "openstreetmapcologne": "OpenStreetMap קלן",
+      "openstreetmapcolombia": "OpenStreetMap קולומביה",
+      "openstreetmapcomunitatvalenciana": "OpenStreetMap הקהילה האוטונומית ולנסיה",
+      "openstreetmapcostarica": "OpenStreetMap קוסטה ריקה",
+      "openstreetmapcotedivoire": "OpenStreetMap קוט דיוואר (חוף השנהב)",
+      "openstreetmapcroatia": "OpenStreetMap קרואטיה",
+      "openstreetmapcuba": "OpenStreetMap קובה",
+      "openstreetmapcuneo": "OpenStreetMap קונאו",
+      "openstreetmapcz": "OpenStreetMap צ׳כיה",
+      "openstreetmapde": "OpenStreetMap גרמניה",
+      "openstreetmapdeepsouth": "OpenStreetMap הדרום העמוק",
+      "openstreetmapdenmark": "OpenStreetMap דנמרק",
+      "openstreetmapdjibouti": "OpenStreetMap ג׳יבוטי",
+      "openstreetmapdominicanrepublic": "OpenStreetMap הרפובליקה הדומיניקנית",
+      "openstreetmapdresden": "OpenStreetMap דרזדן",
+      "openstreetmapdusseldorf": "OpenStreetMap דיסלדורף",
+      "openstreetmapecuador": "OpenStreetMap אקוודור",
+      "openstreetmapegypt": "OpenStreetMap מצרים",
+      "openstreetmaperitrea": "OpenStreetMap אריתראה",
+      "openstreetmapespana": "OpenStreetMap ספרד",
+      "openstreetmapestonia": "OpenStreetMap אסטוניה",
+      "openstreetmapethiopia": "OpenStreetMap אתיופיה",
+      "openstreetmapfiji": "OpenStreetMap פיג׳י",
+      "openstreetmapfinland": "OpenStreetMap פינלנד",
+      "openstreetmapfrance": "OpenStreetMap צרפת",
+      "openstreetmapfreemapslovakia": "OpenStreetMap של Freemap סלובקיה",
+      "openstreetmapfrenchguiana": "OpenStreetMap גיאנה הצרפתית",
+      "openstreetmapfrenchpolynesia": "OpenStreetMap פולינזיה הצרפתית",
+      "openstreetmapgabon": "OpenStreetMap גבון",
+      "openstreetmapgalicia": "OpenStreetMap גליסיה",
+      "openstreetmapgeorgia": "OpenStreetMap גאורגיה",
+      "openstreetmapgermany": "OpenStreetMap גרמניה",
+      "openstreetmapghana": "OpenStreetMap גאנה",
+      "openstreetmapgorakalwaria": "OpenStreetMap גורה קלוואריה",
+      "openstreetmapgreece": "OpenStreetMap יוון",
+      "openstreetmapgrenoble": "OpenStreetMap גרנובל",
+      "openstreetmapguatemala": "OpenStreetMap גואטמלה",
+      "openstreetmapguinea": "OpenStreetMap גינאה",
+      "openstreetmaphaiti": "OpenStreetMap האיטי",
+      "openstreetmaphamburg": "OpenStreetMap המבורג",
+      "openstreetmaphonduras": "OpenStreetMap הונדורס",
+      "openstreetmaphongkong": "OpenStreetMap הונג קונג",
+      "openstreetmaphungary": "OpenStreetMap הונגריה",
+      "openstreetmapiceland": "OpenStreetMap איסלנד",
+      "openstreetmapindia": "OpenStreetMap הודו",
+      "openstreetmapindonesia": "OpenStreetMap אינדונזיה",
+      "openstreetmapiran": "OpenStreetMap איראן",
+      "openstreetmapiraq": "OpenStreetMap עיראק",
+      "openstreetmapireland": "OpenStreetMap אירלנד",
+      "openstreetmapisrael": "OpenStreetMap ישראל",
+      "openstreetmapitaly": "OpenStreetMap איטליה",
+      "openstreetmapitalylazio": "OpenStreetMap איטליה-לאציו",
+      "openstreetmapitalylombardia": "OpenStreetMap איטליה-לומברדיה",
+      "openstreetmapitalypiemonte": "OpenStreetMap איטליה-פיימונטה",
+      "openstreetmapitalysouthtyrol": "OpenStreetMap איטליה-דרום טירול",
+      "openstreetmapitalytrentino": "OpenStreetMap איטליה-טרנטינו",
+      "openstreetmapjapan": "OpenStreetMap יפן",
+      "openstreetmapkarlsruhe": "OpenStreetMap קרלסרוהה",
+      "openstreetmapkazakhstan": "OpenStreetMap קזחסטן",
+      "openstreetmapkenya": "OpenStreetMap קניה",
+      "openstreetmapkerala": "OpenStreetMap קרלה",
+      "openstreetmapkorea": "OpenStreetMap קוריאה",
+      "openstreetmapkosovo": "OpenStreetMap קוסובו",
+      "openstreetmapkyrgyzstan": "OpenStreetMap קירגיסטן",
+      "openstreetmaplatinamerica": "OpenStreetMap אמריקה הלטינית",
+      "openstreetmaplatvia": "OpenStreetMap לטביה",
+      "openstreetmaplebanon": "OpenStreetMap לבנון",
+      "openstreetmaplesotho": "OpenStreetMap לסוטו",
+      "openstreetmapliberia": "OpenStreetMap ליבריה",
+      "openstreetmaplibya": "OpenStreetMap לוב",
+      "openstreetmaplithuania": "OpenStreetMap ליטא",
+      "openstreetmapljubljana": "OpenStreetMap ליובליאנה",
+      "openstreetmaplombardia": "OpenStreetMap לומברדיה",
+      "openstreetmaplondon": "OpenStreetMap לונדון",
+      "openstreetmapluneburg": "OpenStreetMap לינבורג",
+      "openstreetmapluxembourg": "OpenStreetMap לוקסמבורג",
+      "openstreetmapmadagascar": "OpenStreetMap מדגסקר",
+      "openstreetmapmadrid": "OpenStreetMap מדריד",
+      "openstreetmapmalawi": "OpenStreetMap מלאווי",
+      "openstreetmapmalaysia": "OpenStreetMap מלזיה",
+      "openstreetmapmali": "OpenStreetMap מאלי",
+      "openstreetmapmalta": "OpenStreetMap מלטה",
+      "openstreetmapmauritania": "OpenStreetMap מאוריטניה",
+      "openstreetmapmecklenburgvorpommern": "OpenStreetMap מקלנבורג-מערב פומרניה",
+      "openstreetmapmexico": "OpenStreetMap מקסיקו",
+      "openstreetmapmichigan": "OpenStreetMap מישיגן",
+      "openstreetmapmoldova": "OpenStreetMap מולדובה",
+      "openstreetmapmongolia": "OpenStreetMap מונגוליה",
+      "openstreetmapmontenegro": "OpenStreetMap מונטנגרו",
+      "openstreetmapmontrouge": "OpenStreetMap מונרוז׳",
+      "openstreetmapmorocco": "OpenStreetMap מרוקו",
+      "openstreetmapmunchen": "OpenStreetMap מינכן",
+      "openstreetmapmyanmar": "OpenStreetMap מיאנמר",
+      "openstreetmapnepal": "OpenStreetMap נפאל",
+      "openstreetmapnetherlands": "OpenStreetMap הולנד",
+      "openstreetmapnicaragua": "OpenStreetMap ניקרגואה",
+      "openstreetmapniger": "OpenStreetMap ניז׳ר",
+      "openstreetmapnigeria": "OpenStreetMap ניגריה",
+      "openstreetmapnorthkorea": "OpenStreetMap קוריאה הצפונית",
+      "openstreetmapnorway": "OpenStreetMap נורווגיה",
+      "openstreetmapoceania": "OpenStreetMap אוקיאניה",
+      "openstreetmapohio": "OpenStreetMap אוהיו",
+      "openstreetmapottawa": "OpenStreetMap אוטווה",
+      "openstreetmappakistan": "OpenStreetMap פקיסטן",
+      "openstreetmappanama": "OpenStreetMap פנמה",
+      "openstreetmapparaguay": "OpenStreetMap פרגוואי",
+      "openstreetmapperu": "OpenStreetMap פרו",
+      "openstreetmapphilippines": "OpenStreetMap הפיליפינים",
+      "openstreetmappiemonte": "OpenStreetMap פיימונטה",
+      "openstreetmappoland": "OpenStreetMap פולין",
+      "openstreetmapportugal": "OpenStreetMap פורטוגל",
+      "openstreetmaprdc": "OpenStreetMap הרפובליקה הדמוקרטית של קונגו",
+      "openstreetmaprennes": "OpenStreetMap רן",
+      "openstreetmapreunion": "OpenStreetMap ראוניון",
+      "openstreetmapriograndedosul": "OpenStreetMap ריו גראנדה דו סול",
+      "openstreetmapromania": "OpenStreetMap רומניה",
+      "openstreetmaprussia": "OpenStreetMap רוסיה",
+      "openstreetmaprwanda": "OpenStreetMap רואנדה",
+      "openstreetmapsaudiarabia": "OpenStreetMap ערב הסעודית",
+      "openstreetmapsenegal": "OpenStreetMap סנגל",
+      "openstreetmapserbia": "OpenStreetMap סרביה",
+      "openstreetmapseychelles": "OpenStreetMap איי סיישל",
+      "openstreetmapsierraleone": "OpenStreetMap סיירה לאון",
+      "openstreetmapslovenia": "OpenStreetMap סלובניה",
+      "openstreetmapsomalia": "OpenStreetMap סומליה",
+      "openstreetmapsouthafrica": "OpenStreetMap דרום אפריקה",
+      "openstreetmapsouthsudan": "OpenStreetMap דרום סודאן",
+      "openstreetmapsrilanka": "OpenStreetMap סרי לנקה",
+      "openstreetmapsudan": "OpenStreetMap סודאן",
+      "openstreetmapsweden": "OpenStreetMap שוודיה",
+      "openstreetmapswitzerland": "OpenStreetMap שווייץ",
+      "openstreetmapsyria": "OpenStreetMap סוריה",
+      "openstreetmaptaiwan": "OpenStreetMap טאיוואן",
+      "openstreetmaptanzania": "OpenStreetMap טנזניה",
+      "openstreetmapthailand": "OpenStreetMap תאילנד",
+      "openstreetmaptogo": "OpenStreetMap טוגו",
+      "openstreetmaptoronto": "OpenStreetMap טורונטו",
+      "openstreetmaptunisia": "OpenStreetMap תוניסיה",
+      "openstreetmapturin": "OpenStreetMap טורינו",
+      "openstreetmapturkey": "OpenStreetMap טורקיה",
+      "openstreetmapuganda": "OpenStreetMap אוגנדה",
+      "openstreetmapuk": "OpenStreetMap אנגליה",
+      "openstreetmapukraine": "OpenStreetMap אוקראינה",
+      "openstreetmapuruguay": "OpenStreetMap אורוגוואי",
+      "openstreetmapus": "OpenStreetMap ארה״ב",
+      "openstreetmapuzbekistan": "OpenStreetMap אוזבקיסטן",
+      "openstreetmapvenezuela": "OpenStreetMap ונצואלה",
+      "openstreetmapvietnam": "OpenStreetMap וייטנאם",
+      "openstreetmapwarszawa": "OpenStreetMap ורשה",
+      "openstreetmapwesternsahara": "OpenStreetMap סהרה המערבית",
+      "openstreetmapzambia": "OpenStreetMap זמביה",
+      "openstreetmapzimbabwe": "OpenStreetMap זימבבואה",
+      "youthmappersasu": "YouthMappersASU (ממפים צעירים מאוניברסיטת אריזונה)"
+    },
+    "_defaults": {
+      "aparat": {
+        "name": "{community} ב־Aparat",
+        "description": "מוזמנים להירשם לערוץ ה־Aparat שלנו"
+      },
+      "discord": {
+        "name": "ה־Discord של {community}",
+        "description": "יצירת קשר עם ממפים אחרים דרך Discord"
+      },
+      "discourse": {
+        "name": "פורום קהילת {community}",
+        "description": "הפורום הרשמי של {community}"
+      },
+      "facebook": {
+        "name": "{community} בפייסבוק",
+        "description": "מזמינים אותך להצטרף לקהילה שלנו בפייסבוק"
+      },
+      "forum": {
+        "name": "הפורום של {community}",
+        "description": "הפורום הרשמי של {community}"
+      },
+      "github": {
+        "name": "ה־GitHub של {community}"
+      },
+      "gitlab": {
+        "name": "ה־GitLab של {community}"
+      },
+      "irc": {
+        "name": "{community} ב־IRC",
+        "description": "ניתן להצטרף ל־‎#{account} תחת irc.oftc.net (פתחה 6667 בלי SSL או 6697 עם SSL)"
+      },
+      "linkedin": {
+        "name": "{community} ב־LinkedIn",
+        "description": "מזמינים אותך להצטרף לקהילה שלנו ב־LinkedIn"
+      },
+      "mailinglist": {
+        "name": "רשימת הדיוור של {account}",
+        "description": "רשימת הדיוור הרשמי של {community}"
+      },
+      "mastodon": {
+        "name": "{community} ב־Mastodon",
+        "description": "חשבון המסטודון הרשמי של {community}"
+      },
+      "matrix": {
+        "name": "ערוץ ה־Matrix של {community}",
+        "description": "ניתן להצטרף לערוץ ה־Matrix של הקהילה שלנו"
+      },
+      "meetup": {
+        "name": "קבוצת ה־Meetup של {community}"
+      },
+      "newsletter": {
+        "name": "רשימת הדיוור של {community}"
+      },
+      "reddit": {
+        "name": "{community} ב־Reddit"
+      },
+      "signal": {
+        "name": "ה־Signal של {community}",
+        "description": "מזמינים אותך להצטרף לצ׳אט הקהילתי שלנו ב־Signal"
+      },
+      "slack": {
+        "name": "ה־Slack של {community}"
+      },
+      "telegram": {
+        "name": "הטלגרם של {community}",
+        "description": "מזמינים אותך להצטרף לקבוצה בטלגרם"
+      },
+      "threads": {
+        "name": "{community} ב־Threads",
+        "description": "ניתן לעקוב אחרינו ב־Threads"
+      },
+      "twitter": {
+        "name": "{community} ב־𝕏",
+        "description": "ניתן לעקוב אחרינו ב־𝕏"
+      },
+      "wiki": {
+        "name": "ויקי־מיזם של {community}"
+      },
+      "x": {
+        "name": "{community} ב־𝕏",
+        "description": "ניתן לעקוב אחרינו ב־𝕏"
+      },
+      "xmpp": {
+        "name": "ה־XMPP של {community} "
+      },
+      "youtube": {
+        "name": "{community} ב־YouTube",
+        "description": "מזמינים אותך להירשם לערוץ ה־YouTube שלנו"
+      },
+      "zulip": {
+        "name": "ה־Zulip של {community}",
+        "description": "מזמינים אותך להצטרף לצ׳אט הקהילתי שלנו ב־Zulip"
+      }
+    },
+    "aberdeen-discord": {
+      "name": "ה־Discord של OSM ABZ (אברדין)"
+    },
+    "af-matrix": {
+      "description": "קבוצת Matrix לקהילה האפגניסטנית"
+    },
+    "al-maptime-tirana": {
+      "name": "Maptime טירנה",
+      "description": "אירועים חברתיים שמתגבשים סביב מיפוי - מתחילים מוזמנים בהחלט!",
+      "extendedDescription": "Maptime היא סביבת למידה פתוחה לכל רמות ודרגות הידע, המציעה תמיכה חינוכית המיועדת למתחילים. Maptime היא גמישה ובנויה היטב בו זמנית, לטובת יצירת מקום להדרכות, סדנאות ומיזמים בנושאי מיפוי עם מטרה משותפת וזמן עבודה עצמאי/שיתופי."
+    },
+    "at-matrix": {
+      "description": "ערוץ Matrix גרמני בלתי רשמי לאוסטריה"
+    },
+    "at-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
+    "Bahia-telegram": {
+      "extendedDescription": "ניתן להצטרף לקהילה שלנו כדי ללמוד עוד על OpenStreetMap, לשאול שאלות או להשתתף במפגשים שלנו. כולם מוזמנים!"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "name": "ממפי OpenStreetMap באזור מפרץ סן פרנסיסקו",
+      "description": "שיפור OpenStreetMap באזור מפרץ סן פרנסיסקו",
+      "extendedDescription": "מטרת הקבוצה הזו היא להגדיל את קהילת OpenStreetMap כאן באזור מפרץ סן פרנסיסקו. האירועים שלנו פתוחים לכולם, החל מחובבי קוד פתוח, רוכבי אופניים, מומחי GIS, אוצרי נתונים גאוגרפיים והרבה מעבר לזה. כולם וכל מי שמעוניין במפות, יצירת מפות ונתוני מפות חופשיים מוזמנים להצטרף לקבוצה שלנו ולהשתתף באירועים שלנו."
+    },
+    "bd-facebook": {
+      "extendedDescription": "מעניין אותך מיפוי בבנגלדש? יש לך שאלות? אולי ליצור קשר עם הקהילה המקומית? ניתן להצטרף אלינו ב־{url}. כולם מוזמנים!"
+    },
+    "be-chapter": {
+      "description": "אנו מסייעים לפתח ולטפח את OpenStreetMap בבלגיה.",
+      "extendedDescription": "אם מעניין אותך לסייע בפיתוח ובטיפוח קהילת המיפוי בבלגיה, כדי להמשיך ולעודד אנשים להשתגע על מיפוי, OpenStreetMap בלגיה היא המקום המתאים עבורך!"
+    },
+    "be-discourse": {
+      "description": "פורום לדיונים על OpenStreetMap בבלגיה"
+    },
+    "be-irc": {
+      "extendedDescription": "ניתן להצטרף ל־‎#{account} תחת irc.oftc.net (פתחה 6667), הוא מקושר לערוץ הצ׳אט ב־Matrix"
+    },
+    "be-matrix": {
+      "description": "כל הממפים מוזמנים!",
+      "extendedDescription": "חדר הצ׳אט העיקרי של קהילת OSM הבלגית. לא להסס לשאול כאן שאלות של מתחילים!"
+    },
+    "be-meetup": {
+      "description": "מפגשים פנים אל פנים של כל מי שמעוניין ב־OpenStreetMap.",
+      "extendedDescription": "מפגשים בחיים האמתיים מהווים דרך נפלאה לפגוש ממפים אחרים, לשאול אותם שאלות וללמוד הרבה. מתנדבים חדשים מוזמנים במיוחד!"
+    },
+    "be-newsletter": {
+      "description": "דיוור רבעוני של הקהילה הבלגית"
+    },
+    "bg-wiki": {
+      "description": "עמוד Wikiproject לבולגריה"
+    },
+    "bi-vc-cvl-meetup": {
+      "extendedDescription": "נפגשים מאז פברואר 2018, בדרך כלל בביאלה או באיווריאה"
+    },
+    "bo-facebook-group": {
+      "name": "קבוצת הפייסבוק של {community}"
+    },
+    "bo-matrix": {
+      "description": "כל הממפים מוזמנים!"
+    },
+    "br-telegram": {
+      "extendedDescription": "ניתן להצטרף לקהילה וללמוד עוד על OpenStreetMap, לשאול שאלות או להשתתף במפגשים שלנו. כולם מוזמנים!"
+    },
+    "cape-coast-youthmappers": {
+      "name": "הממפים הצעירים של אוניברסיטת קייפ קוסט",
+      "description": "ניתן לעקוב אחרינו בטוויטר: {url}",
+      "extendedDescription": "זה הכינוי הרשמי של אגף הממפים הצעירים באוניברסיטת קייפ קוסט, גאנה. אנו אוהבים מפות, נתונים פתוחים וגם לעזור לחלשים."
+    },
+    "cat-github": {
+      "description": "מיזמים מקהילת OpenStreetMap של הארצות הקטלאניות ב־GitHub"
+    },
+    "cat-wiki": {
+      "description": "מתחם תיאום של קהילת OpenStreetMap ברחבי הארצות הקטלאניות: {url}"
+    },
+    "cd-chapter": {
+      "name": "OpenStreetMap הרפובליקה הדמוקרטית של קונגו",
+      "description": "מרחוב למשנהו, נמפה את מדינתנו…"
+    },
+    "Central-Pennsylvania-OSM": {
+      "name": "OSM מרכז פנסילבניה",
+      "description": "קהילת מיפוי מקוון שבסיסה הוא בסטייט קולג׳, פנסילבניה"
+    },
+    "ch-mailinglist": {
+      "name": "קבוצת הדיוור של Openstreetmap שווייץ/שוויץ/שוייץ/שויץ/שווייצריה בכל השפות המקומיות",
+      "description": "OpenStreetMap שוויץ רשימת תפוצה"
+    },
+    "czech-community": {
+      "description": "פורטל המפה, האתר ופרטי הקשר של חברי OSM בצ׳כיה"
+    },
+    "de-aachen-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
+    "de-berlin-mailinglist": {
+      "name": "קבוצת הדיוור של ברלין"
+    },
+    "de-berlin-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
+    "de-berlin-xmpp": {
+      "name": "ה־XMPP של OpenStreetMap ברלין-ברנדנבורג ",
+      "description": "ניתן להצטרף לקבוצת הצ׳אט מרובת המשתתפים שלנו ב־XMPP:‏ {url}"
+    },
+    "de-bochum-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
+    "de-bonn-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
+    "de-bremen-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
+    "de-cologne-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
+    "de-dresden-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
+    "de-dusseldorf-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
+    "de-hamburg-xmpp": {
+      "name": "OpenStreetMap המבורג ב־XMPP",
+      "description": "ניתן להצטרף לקבוצת הצ׳אט מרובת המשתתפים שלנו ב־XMPP:‏ {url}"
+    },
+    "de-karlsruhe-mailinglist": {
+      "name": "קבוצת הדיוור של קרלסרוהה"
+    },
+    "de-karlsruhe-meetup": {
+      "description": "ממפים ומשתמשים ב־OpenStreetMap באזור קרלסרוהה"
+    },
+    "de-luneburg-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
+    "de-munchen-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
+    "de-mv-mailinglist": {
+      "name": "קבוצת הדיוור של מקלנבורג-מערב פומרניה"
+    },
+    "de-ostwestfalen-lippe-mailinglist": {
+      "name": "קבוצת הדיוור OWL",
+      "description": "זאת רשימת הדיוור לקהילת OSM במזרח וסטפליה-ליפה"
+    },
+    "de-stuttgart-mailinglist": {
+      "name": "קבוצת הדיוור של שטוטגרט ובאדן-וירטמברג",
+      "description": "זו קבוצת הדיוור לקהילת OSM בשטוטגרט ובכל באדן-וירטמברג"
+    },
+    "de-stuttgart-meetup": {
+      "name": "קבוצת המפגשים של OpenStreetMap שטוטגרט",
+      "description": "ממפים ומשתמשים ב־OpenStreetMap באזור שטוטגרט"
+    },
+    "de-telegram": {
+      "name": "הטלגרם של גרמניה, אוסטריה ושווייץ OpenStreetMap",
+      "description": "ניתן להצטרף לקבוצת העל של OpenStreetMap גרמניה, אוסטריה ושווייץ בטלגרם בכתובת {url}"
+    },
+    "de-ulm_neuulm-meetup": {
+      "name": "קבוצת המפגשים של OpenStreetMap אולם ונוי-אולם",
+      "description": "ממפים ומשתמשים ב־OpenStreetMap באזור אולם ונוי-אולם"
+    },
+    "de-ulmeralb-meetup": {
+      "name": "קבוצת המפגשים של OpenStreetMap אולמר אלב",
+      "description": "ממפי ומשתמשי OpenStreetMap באזור אולמר אלב"
+    },
+    "de-viersen-meetup": {
+      "name": "קבוצת המפגשים של OpenStreetMap וירסן",
+      "description": "קהילה ומפגש משתמשי OSM במחוז וירסן ובמנשנגלדבך"
+    },
+    "de-xmpp": {
+      "name": "OpenStreetMap גרמניה ב־XMPP",
+      "description": "ניתן להצטרף לקבוצת הצ׳אט מרובת המשתתפים שלנו ב־XMPP:‏ {url}"
+    },
+    "DF-telegram": {
+      "extendedDescription": "ניתן להצטרף לקהילה וללמוד עוד על OpenStreetMap, לשאול שאלות או להשתתף במפגשים שלנו. כולם מוזמנים!"
+    },
+    "fr-38-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
+    "fr-bzh-website": {
+      "description": "המפה שדוברת ברטון"
+    },
+    "fr-chapter": {
+      "description": "אנו מסייעים לפתח ולטפח את OpenStreetMap בצרפת."
+    },
+    "fr-montrouge-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
+    "fr-telegram": {
+      "description": "קבוצת טלגרם לקהילת OSM צרפת: {url}"
+    },
+    "fr-xmpp": {
+      "description": "ניתן להצטרף אל osm-fr@chat.jabberfr.org"
+    },
+    "galicia-wiki": {
+      "description": "כל מה שצריך לדעת על מיפוי בגליסיה: {url}"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "description": "ניתן לעקוב אחרינו בטוויטר בכתובת {url}"
+    },
+    "gb-mailinglist": {
+      "description": "Talk-gb היא קבוצת הדיוור הרשמית של קהילת OSM של הממלכה המאוחדת (כולל צפון אירלנד)"
+    },
+    "GeoPhilly": {
+      "description": "קבוצת מפגשים לחובבי מפות באזור פילדלפיה",
+      "extendedDescription": "GeoPhilly היא קבוצה של מפתחים, מומחי גאוגרפיה, גיקים של מידע, חובבי קוד פתוח, האקרים אזרחיים ומכורי מפות שמתאגדים סביב אהבתם המשותפת למפות ולסיפורים שהן מספרות. אם מפות משמשות אותך כחלק מהעבודה שלך או שפשוט מעניין אותך לדעת יותר, המפגש הזה מיועד לך! האירועים שלנו מתוכננים להיות פתוחים, ידידותיים, חינוכיים וחברתיים, החל מהרמת כוסית דרך הרצאות בזק ואפילו סדנאות. מזמינים אותך ליצור קהילה גאו־‏מרחבית מגוונת ומעוררת השראה בפילדלפיה ביחד אתנו!"
+    },
+    "hr-irc": {
+      "description": "ניתן להצטרף ל־‎#{account} ב־irc.freenode.org (פתחה 6667)"
+    },
+    "hr-wiki": {
+      "description": "עמוד Wikiproject לקרואטיה"
+    },
+    "hu-facebook-group": {
+      "name": "קבוצת הפייסבוק של {community}"
+    },
+    "hu-matrix": {
+      "extendedDescription": "שיחה בנושאי מפות סביב OpenStreetMap. אחד מפורומי התמיכה של קהילת OSM."
+    },
+    "hu-meetup": {
+      "description": "הפלטפורמה לכינוס מפגשים בהונגריה"
+    },
+    "hu-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
+    "id-facebook-group": {
+      "name": "קבוצת הפייסבוק של {community}"
+    },
+    "ireland-chapter": {
+      "description": "אנו מסייעים לפתח ולטפח את OpenStreetMap באירלנד.",
+      "extendedDescription": "OpenStreetMap אירלנד מהווה שופר למיזם OpenStreetMap באי האירי, תוך שיתוף פעולה עם יוזמות פתוחות נוספות."
+    },
+    "is-chapter": {
+      "description": "אנו מסייעים לפתח ולטפח את OpenStreetMap באיסלנד."
+    },
+    "it-chapter": {
+      "description": "אנו מסייעים לפתח ולטפח את OpenStreetMap באיטליה."
+    },
+    "ko-facebook": {
+      "description": "ממפי ומשתמשי OpenStreetMap בקוריאה"
+    },
+    "kosovo-telegram": {
+      "description": "קבוצת טלגרם ציבורית חצי רשמית לכלל קוסובו. אנו מזמינים את כל הממפים מכל מקום ובכל שפה."
+    },
+    "latam-facebook": {
+      "description": "ממפים ומשתמשים ב־OpenStreetMap באמריקה הלטינית בפייסבוק"
+    },
+    "latam-matrix": {
+      "description": "ניתן לשוחח עם חברים נוספים בקהילת OpenStreetMap של אמריקה הלטינית דרך טלגרם."
+    },
+    "latam-telegram": {
+      "description": "ניתן לשוחח עם חברים נוספים בקהילת OpenStreetMap של אמריקה הלטינית, מגושר לערוץ ב־Matrix"
+    },
+    "latam-wiki": {
+      "description": "כל מה שצריך לדעת על מיפוי באמריקה הלטינית {url}"
+    },
+    "madrid-wiki": {
+      "description": "כל מה שצריך לדעת על מיפוי במדריד: {url}"
+    },
+    "mailinglist-sk-googlegroups": {
+      "name": "רשימת הדיוור הסלובקית ב־Google Groups",
+      "description": "רשימת הדיוור הרשמית של הקהילה הסלובקית"
+    },
+    "map-kibera": {
+      "description": "מיפוי קיברה (Map Kibera) הוא ארגון רשום שפועל בקניה"
+    },
+    "MapColabora-mailinglist": {
+      "name": "מיפוי שיתופי / ממפי סרגוסה",
+      "description": "מיפוי שיתופי / רשימת הדיוור של ממפי סרגוסה"
+    },
+    "MapColabora-twitter": {
+      "name": "מיפוי שיתופי / ממפי סרגוסה",
+      "description": "מיפוי שיתופי / חשבון הטוויטר של ממפי סרגוסה"
+    },
+    "mappa-mercia-group": {
+      "name": "הקבוצה המקומית Mappa Mercia",
+      "description": "בית לחובבי OpenStreetMap במידלנדס",
+      "extendedDescription": "מיזם Mappa Mercia מיועד לטפל את OpenStreetMap במערב המידלנדס, אנגליה. אנו מגבשים אירועים קהילתיים, מספקים הכשרה ותומכים בארגונים מקומיים שרוצים לפתוח את הנתונים שלהם."
+    },
+    "MappingDC-meetup": {
+      "description": "שיפור OpenStreetMap באיזור DC",
+      "extendedDescription": "אנחנו קבוצה של ממפים מתנדבים שחותרים לשפר את OpenStreetMap באיזור DC. אנו גם מוכוונים ללמד אחרים על המערכת שעוטפת את OSM, ניתוח הנתונים, רישום מפות ומערכות גאו אינפורמציה. אנו נפגשים אחת לחודשיים כדי להתמקד באזור אחד בעיר שלנו."
+    },
+    "MappingWR": {
+      "description": "מסייעים בהנגשת המסלולים מופחתי הפחמן באזור ווטרלו."
+    },
+    "Maptime-ME-meetup": {
+      "description": "ממפים ומשתמשי OpenStreetMap סביב פורטלנד, מיין",
+      "extendedDescription": "Maptime כשמו כן הוא, זמן ליצירת מפות. המטרה שלנו היא לפתוח את הדלת לאפשרויות מגוונות ליצירת מפות לכל מי שמעוניין על ידי יצירת מקום ללמידה שיתופית, חקירה ויצירת מפות באמצעות כלים וטכנולוגיות למיפוי."
+    },
+    "Maptime-Oceania-Slack": {
+      "name": "ה־Slack של Maptime אוסיאניה",
+      "description": "ניתן להירשם בכתובת {signupUrl}"
+    },
+    "nl-matrix": {
+      "description": "כל הממפים מוזמנים!"
+    },
+    "no-irc": {
+      "description": "חדר צ׳אט לממפי, משתמשי, מפתחי וחובבי OpenStreetMap בנורווגיה"
+    },
+    "Nottingham-OSM-pub-meetup": {
+      "name": "קבוצת המפגשים החודשיים של מזרח המידלנדס (נוטינגהם)",
+      "description": "מפגשים חברתיים לממפי ומשתמשי מזרח המידלנדס",
+      "extendedDescription": "הקבוצה עורכת מפגשים מאז מרץ 2011, בהתחלה בנוטינגהם ובהמשך בדרבי ומדי פעם בפעם במקומות אחרים במזרח המידלנדס. מדובר במפגשים חברתיים אך הם גם מקום נפלא לבוא ולשאול שאלות על OSM, או נקודתית על האזור או באופן כללי. בחודשי הקיץ אנחנו בדרך כלל עורכים פעילות מיפוי קליל למשך כשעה בקרבת מקום המפגש. לקבוצה ככלל יש עניין מיוחד בזכויות מיפוי ציבורי של דרכים ומדי פעם מתקיימות גם פגישות למטרה זו."
+    },
+    "np-facebook": {
+      "extendedDescription": "מעניין אותך מיפוי בנפאל? יש לך שאלות? אולי ליצור קשר עם הקהילה המקומית? ניתן להצטרף אלינו ב־{url}. כולם מוזמנים!"
+    },
+    "OpenCleveland-meetup": {
+      "name": "קליבלנד פתוחה",
+      "description": "שיפור OpenStreetMap באזור קליבלנד",
+      "extendedDescription": "Open Geo קליבנד מכוונים להוות משאב לשיחות בין אנשים ולשתף מידע על שימוש בנתונים גאוגרפיים חופשיים ובמיוחד OpenStreetMap ותכניות לניהול גאו־מרחבי שמנהלות, עורכות ומציגות נתונים גאוגרפיים וקידום השימוש בהן לטובת צפון מזרח אוהיו, אנו גם סניף של maptime =)."
+    },
+    "osm-africa-facebook-group": {
+      "name": "קבוצת הפייסבוק של {community}"
+    },
+    "osm-africa-matrix": {
+      "description": "כל הממפים מוזמנים!"
+    },
+    "osm-africa-slack": {
+      "description": "כולם מוזמנים! ניתן להירשם בכתובת {signupUrl}"
+    },
+    "OSM-AR-twitter": {
+      "extendedDescription": "חדשות מהקהילה המקומית ומ־OpenStreetMap באופן כללי."
+    },
+    "osm-at": {
+      "description": "מאגר למידע על OpenStreetMap באוסטריה"
+    },
+    "osm-benin-facebook": {
+      "description": "שיפור OpenStreetMap בבנין"
+    },
+    "OSM-Central-Salish-Sea": {
+      "name": "OpenStreetMap מרכז ים סאליש",
+      "description": "ממפים ומשתמשי OpenStreetMap סביב מאונט ורנון, וירג׳יניה",
+      "extendedDescription": "OpenStreetMap היא מפת העולם שנוצרת על ידי אנשים כמוך. זו מפה בהרכבתך, שמוגשת לציבור בחינם כמו ויקיפדיה. כדאי לבקר ב־osm.org למידע נוסף. אנו נפגשים כל הזמן ומדברים על מפות, ממפים ונהנים!"
+    },
+    "osm-ch": {
+      "description": "הפלטפורמה למידע על OpenStreetMap בשווייץ"
+    },
+    "OSM-Chattanooga": {
+      "name": "OSM צ׳טנוגה",
+      "description": "קבוצת משתמשי OpenStreetMap בצ׳טנוגה"
+    },
+    "OSM-Colorado": {
+      "name": "OpenStreetMap קולורדו",
+      "description": "ממפים ומשתמשים ב־OpenStreetMap במדינת קולורדו, ארה״ב",
+      "extendedDescription": "OpenStreetMap (OSM) קולורדו היא שיתוף פעולה מקומי בין אנשים שמתעניינים ברתימת מאמציהם ליצירת מפות חופשיות. אנו מעודדים את כל הממפים לארגן או להציע אירועי מיפוי בכל רחבי המדינה. פעילויות במפגשים יכול להיות סתם מפגש חברתי, תרגול OSM ממתחילים ועד מתקדמים או מסיבות מיפוי קהילתיות."
+    },
+    "osm-de": {
+      "description": "הפלטפורמה למידע על OpenStreetMap בגרמניה"
+    },
+    "osm-deep-south-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
+    "OSM-Discord": {
+      "name": "ה־Discord של OpenStreetMap העולמי"
+    },
+    "OSM-Discourse": {
+      "name": "פורום הקהילה של OpenStreetMap",
+      "description": "מקום משותף לדיונים על OpenStreetMap"
+    },
+    "OSM-Facebook": {
+      "description": "ניתן לעשות לנו ‚לייק’ בפייסבוק כדי לקבל חדשות ועדכונים על OpenStreetMap."
+    },
+    "osm-fj": {
+      "description": "אספקת שירותי OSM ומידע לקהילה המקומית בפיג׳י"
+    },
+    "osm-gh-facebook": {
+      "extendedDescription": "ממפים בקהילת גאנה, מקדמים את OpenStreetMap ואת מיזמי צוות OpenStreetMap ההומניטרי (HOT) בגאנה. אפשר להצטרף אלינו."
+    },
+    "osm-gh-website": {
+      "description": "אספקת שירותי OSM ומידע לקהילה המקומית בגאנה"
+    },
+    "osm-hr": {
+      "description": "הפלטפורמה למידע על OpenStreetMap בקרואטיה"
+    },
+    "osm-id": {
+      "description": "אספקת שירותי OSM ומידע לקהילה המקומית באינדונזיה"
+    },
+    "OSM-India-facebook": {
+      "description": "שיפור OpenStreetMap בהודו",
+      "extendedDescription": "מעניין אותך מיפוי בהודו? יש לך שאלות? אולי ליצור קשר עם הקהילה המקומית? ניתן להצטרף אלינו ב־{url}. כולם מוזמנים!"
+    },
+    "osm-india-github": {
+      "description": "לפתח אתנו קוד דרך {url}"
+    },
+    "osm-india-matrix": {
+      "extendedDescription": "חדר שיחה בלתי רשמי ל־OSM הודו, מקושר גם לקבוצת הטלגרם osmindia."
+    },
+    "OSM-India-Puducherry-Facebook": {
+      "name": "תנועת החומרה והתכנה החופשית - פייסבוק",
+      "description": "עמוד הפייסבוק של FSHM נועד לעדכון על אירועים ופעילויות של הקהילה",
+      "extendedDescription": "FSHM מארגנים אירועים שקשורים לתכנה/חומרה פתוחים, טכנולוגיה, מעורבות חברתית ו־OpenStreetMap. עמוד הפייסבוק הוא הדרך הטוב ביותר לשמור על קשר בנוגע לאירועים."
+    },
+    "OSM-India-Puducherry-Matrix": {
+      "name": "תנועת החומרה והתוכנה החופשית - Matrix",
+      "description": "קבוצת ה־Riot של FSHM מיועדת לדיונים, שיתוף ועדכון פעילויות מיפוי ואירועים בתוך ומסביב לפודוצ׳רי.",
+      "extendedDescription": "חברי קהילת FSHM משתפים עדכונים / חוויות על המיפוי שלהם עם OSM דרך קבוצה ב־Riot.im, קבוצה זה גם משמשת לדיונים בנוגע תכנה / חומרה חופשיים, טכנולוגיה ומעורבות חברתית."
+    },
+    "OSM-india-twitter": {
+      "description": "אנחנו במרחק ציוץ: {url}"
+    },
+    "osm-india-website": {
+      "description": "ממפי ומשתמשי OpenStreetMap בהודו"
+    },
+    "osm-india-wiki": {
+      "description": "כל מה שצריך לדעת על מיפוי בהודו {url}"
+    },
+    "osm-iran-aparat": {
+      "extendedDescription": "משאב טוב של סרטונים על כל מה שקשור ב־OpenStreetMap. בעיקר בפרסית."
+    },
+    "osm-iran-discord": {
+      "extendedDescription": "שרת Discord ל־OpenStreetMap איראן. מזמינים אותך להצטרף בכיף!"
+    },
+    "osm-iran-telegram": {
+      "extendedDescription": "מזמינים אותך להצטרף לערוץ הטלגרם שלנו בכתובת {url}. יש לנו גם קבוצת על של משתמשי OSM רבים שמתעניינים באיראן. ניתן למצוא את הקישור אליה בביוגרפיה של הערוץ."
+    },
+    "OSM-japan-facebook": {
+      "description": "ממפי ומשתמשי OpenStreetMap ביפן"
+    },
+    "OSM-japan-slack": {
+      "description": "מרחב עבודה ב־Slack עבור קהילת OSM היפנית {signupUrl}"
+    },
+    "OSM-japan-website": {
+      "description": "ממפי ומשתמשי OpenStreetMap ביפן"
+    },
+    "osm-kenya": {
+      "description": "OSM קניה היא קהילה של מתנדבים ומשתמשים ב־OSM",
+      "extendedDescription": "OSM היא קהילה מקומית עבור עצמאיים שמתעניינים ב־OpenStreetMap כולל ארגונים, מפתחים וקבוצות ממפים צעירים מקומיות ברחבי המדינה."
+    },
+    "osm-kenya-facebook": {
+      "description": "OSM קניה היא קהילה של מתנדבים ומשתמשים ב־OSM",
+      "extendedDescription": "OSM היא קהילה מקומית עבור עצמאיים שמתעניינים ב־OpenStreetMap כולל ארגונים, מפתחים וקבוצות ממפים צעירים מקומיות ברחבי המדינה."
+    },
+    "OSM-Kerala-facebook": {
+      "description": "שיפור OpenStreetMap בנקראלה",
+      "extendedDescription": "מעניין אותך מיפוי בקרלה? יש לך שאלות? אולי ליצור קשר עם הקהילה המקומית? ניתן להצטרף אלינו ב־{url}. כולם מוזמנים!"
+    },
+    "osm-kerala-github": {
+      "description": "לפתח אתנו קוד דרך {url}"
+    },
+    "osm-kerala-matrix": {
+      "description": "אנחנו ממפים את קרלה ביחד. מזמינים אותך להצטרף לקבוצת ה־Matrix שלנו",
+      "extendedDescription": "חדר שיחה בלתי רשמי ל־OSM קרלה, מקושר גם לקבוצת הטלגרם osmindia."
+    },
+    "osm-kerala-telegram": {
+      "description": "אנחנו ממפים את קרלה ביחד. מזמינים אותך להצטרף לקבוצת הטלגרם שלנו. {url}"
+    },
+    "osm-kerala-website": {
+      "description": "אנו מסייעים לפתח ולטפח את OpenStreetMap בקרלה."
+    },
+    "osm-kerala-wiki": {
+      "description": "מעניין אותך לדעת יותר על המיפוי בקרלה? {url}"
+    },
+    "osm-mg-facebook": {
+      "description": "קבוצת פייסבוק במלגשי לאנשים שמתעניינים ב־OpenStreetMap."
+    },
+    "osm-michigan-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
+    "osm-ni": {
+      "name": "MapaNica.net ",
+      "description": "אספקת שירותים ומידע על OSM עבור הקהילה המקומית בניקרגואה"
+    },
+    "osm-ohio-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
+    "OSM-Ottawa-meetup": {
+      "description": "ממפים ומשתמשים ב־OpenStreetMap באזור אוטווה"
+    },
+    "OSM-PE": {
+      "description": "חדשות ומשאבים לקהילת OpenStreetMap פרו"
+    },
+    "OSM-PH-telegram": {
+      "extendedDescription": "קבוצת טלגרם ידידותית ופעילה מאוד לממפי OSM וחברים בפיליפינים לשיחות חולין, בדיחות דעת ושאלות ותשובות קצרות."
+    },
+    "OSM-PL-chapter": {
+      "description": "הבית של קהילת OpenStreetMap הפולנית"
+    },
+    "OSM-PL-discord": {
+      "description": "המקום העיקרי לשיחות קוליות בקרב קהילת OpenStreetMap הפולנית, ערוצי טקסט פעילים"
+    },
+    "OSM-PL-github": {
+      "description": "ארגון GitHub לקהילת OpenStreetMap הפולנית"
+    },
+    "OSM-Puducherry-Mailing-List": {
+      "name": "Free Software Hardware Movement - רשימת תפוצה",
+      "description": "קבוצת הדיוור פודוצ׳רי של FSHM לדיונים על מיפוי בפודוצ׳רי ונושאים נוספים.",
+      "extendedDescription": "FSHM מארגנים אירועים שקשורים לתכנה/חומרה פתוחים, טכנולוגיה, מעורבות חברתית ו־OpenStreetMap."
+    },
+    "OSM-Rome-meetup": {
+      "name": "מפגש המיפוי של רומא - Incontro Mappatori Romani",
+      "description": "שיפור OpenStreetMap באזור רומא",
+      "extendedDescription": "אנו מכוונים להוות משאב לשיחות בין אנשים ולשתף מידע על שימוש בנתונים גאוגרפיים חופשיים ובמיוחד OpenStreetMap ותכניות לניהול גאו־מרחבי שמנהלות, עורכות ומציגות נתונים גאוגרפיים וקידום השימוש בהן לטובת לאציו."
+    },
+    "OSM-Seattle": {
+      "name": "OpenStreetMap סיאטל",
+      "description": "ממפים ומשתמשים ב־OpenStreetMap באזור סיאטל"
+    },
+    "osm-sierra-leone": {
+      "description": "אנו מתמקדים ביצירה ובשימוש בנתונים פתוחים כדי לפתוח אתגרים חברתיים, כלכליים וקהילתיים."
+    },
+    "OSM-SoCal": {
+      "name": "OpenStreetMap דרום קליפורניה",
+      "description": "בואו נהנה, נתרום משהו ללוס אנג׳לס ונלמד על מיפוי!",
+      "extendedDescription": "OpenStreetMap (OSM) דרום קליפורניה היא קבוצה שמיועדת לכל מי שמעניין אות להיפגש ולעבוד יחד על OpenStreetMap.‏  OpenStreetMap, הוויקיפדיה של המפות, מפה חופשית של העולם שנוצרת על ידי למעלה ממיליון משתתפים מכל רחבי העולם.  כולם מוזמנים.  אם עוד אין לך היכרות עם OpenStreetMap, אנו נלמד אותך. אם יש לך רעיון למיזם מיפוי או אפילו סיור שטח עם הקבוצה, מעולה!"
+    },
+    "OSM-South-Bay": {
+      "name": "OSM סאות׳ ביי"
+    },
+    "OSM-Tampa-Bay": {
+      "name": "OpenStreetMap מפרץ טמפה",
+      "description": "ממפים ומשתמשים ב־OpenStreetMap באזור מפרץ טמפה",
+      "extendedDescription": "קבוצת OSM בטמפה ביי למפגשים ולבניית המפה המכריעה של טמפה ביי על ידי תושבים מקומיים עם OpenStreetMap, מפת העולם החופשית גם לעריכה. אם תחומי העניין הבאים מרתקים אותך: מפות, נתונים, קוד פתוח, GPS, טיולים בטבע, רכיבה על אופניים וכו׳, ירתק אותך לעבוד עם OpenStreetMap - אז למה שלא להצטרף אלינו? אנו נפגשים, ממפים ומדברים על נושאים חדשים בערך פעם בחודש."
+    },
+    "osm-td-facebook": {
+      "description": "שיפור OpenStreetMap בצ׳אד"
+    },
+    "OSM-Telegram": {
+      "description": "ניתן להצטרף לקבוצת העל הגלובלית של OpenStreetMap בטלגרם בכתובת {url}"
+    },
+    "OSM-TH-CNX-meetup": {
+      "name": "מפגשי OSM צ׳אנג מאי",
+      "description": "מפגשים בתדירות בלתי קבועה של קהילת OpenStreetMap של צ׳אנג מאי",
+      "extendedDescription": "חברי קהילת OpenStreetMap נפגשים מדי מספר חודשים בצ׳אנג מאי. ניתן ליצור אתם קשר ולבקר בכתובת {url} כדי לראות מתי מתקיים המפגש הבא."
+    },
+    "osm-toronto-meetup": {
+      "description": "ממפים ומשתמשים ב־OpenStreetMap באזור טורונטו"
+    },
+    "OSM-US": {
+      "description": "אנו מסייעים להצמיח ולשפר את OpenStreetMap בארצות הברית.",
+      "extendedDescription": "אנו תומכים ב־OpenStreetMap על ידי אירוח של כנסים שנתיים, אספקת משאבים קהילתיים, בניית שותפויות והפצה ברבים. ניתן להצטרף ל־OpenStreetMap ארה״ב כאן: {signupUrl}",
+      "events": {
+        "mappingusa2022": {
+          "name": "מיפוי ארה״ב 2022"
+        }
+      }
+    },
+    "OSM-US-Slack": {
+      "description": "כולם מוזמנים! ניתן להירשם בכתובת {signupUrl}"
+    },
+    "OSM-Utah": {
+      "name": "OpenStreetMap יוטה",
+      "description": "ממפים ומשתמשים ב־OpenStreetMap באזור סולט לייק סיטי",
+      "extendedDescription": "פעילויות עשויות לכלול דברים כגון סדנאות הדרכה למיפוי, מסיבות מיפוי ואיסוף נתונים באוויר הפתוח. האירועים מתקיימים באזור סולט לייק סיטי, לפחות בתחילת הדרך. אנו מחפשים ממפים מנוסים לצד מתחילים ב־OSM. מזמינים אותך להצטרף אלינו ופשוט למפות!"
+    },
+    "OSM-Wyoming": {
+      "name": "OpenStreetMap ויומינג",
+      "description": "ממפים ומשתמשים ב־OpenStreetMap במדינת ויומינג",
+      "extendedDescription": "OpenStreetMap (OSM) ויומינג היא שיתוף פעולה מקומי בין אנשים שמתעניינים ברתימת מאמציהם ליצירת מפות חופשיות. אנו מעודדים את כל הממפים לארגן או להציע אירועי מיפוי בכל רחבי המדינה. פעילויות במפגשים יכול להיות סתם מפגש חברתי, תרגול OSM ממתחילים ועד מתקדמים או מסיבות מיפוי קהילתיות."
+    },
+    "osmcz-twitter": {
+      "description": "ניתן לעקוב אחר הקהילה הצ׳כית בטוויטר - כולל ה־WeeklyOSM המתורגם!"
+    },
+    "OSMF": {
+      "name": "קרן OpenStreetMap",
+      "description": "OSMF הוא ארגון בריטי ללא מטרות רווח שתומך במיזם OpenStreetMap"
+    },
+    "ph-facebook-group": {
+      "name": "קבוצת הפייסבוק של {community}"
+    },
+    "PHXGeo-meetup": {
+      "name": "קבוצת המפגשים של PHXGeo",
+      "description": "ממפי ומשתמשי OpenStreetMap באזור פיניקס, אריזונה",
+      "extendedDescription": "זו קבוצת מפגשים לאלו מאזור פיניקס שאוהבים מיפוי, נתונים גאוגרפיים, OpenStreetMap, חיבור מפות וכל מה שביניהם."
+    },
+    "PHXGeo-twitter": {
+      "name": "הטוויטר של PHXGeo",
+      "description": "ניתן לעקוב אחרינו בטוויטר בכתובת {url}"
+    },
+    "rs-gitlab": {
+      "description": "אוסף של מיזמים שקשורים ל־OSM סרביה ב־GitLab"
+    },
+    "rs-osm": {
+      "description": "הפלטפורמה למידע על OpenStreetMap בסרביה"
+    },
+    "RS-telegram": {
+      "extendedDescription": "ניתן להצטרף לקהילה וללמוד עוד על OpenStreetMap, לשאול שאלות או להשתתף במפגשים שלנו. כולם מוזמנים!"
+    },
+    "rs-wiki": {
+      "description": "עמוד Wikiproject לקרואטיה"
+    },
+    "si-github": {
+      "description": "ה־GitHub של {community}"
+    },
+    "si-ljubljana-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
+    "si-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
+    "sk-freemap": {
+      "description": "האתר של מפת OpenStreetMap עם כלים בסלובקיה והאזורים העוטפים"
+    },
+    "talk-au": {
+      "description": "מקום לשיחות בין ממפים אוסטרליים"
+    },
+    "talk-bo": {
+      "extendedDescription": "מעניין אותך מיפוי בבוליביה? יש לך שאלות? אולי ליצור קשר עם הקהילה המקומית? ניתן להצטרף אלינו ב־{url}. כולם מוזמנים!"
+    },
+    "talk-mg": {
+      "description": "מקום לתורמים, קהילות ומשתמשי OpenStreetMap במדגסקר לשתף ולדון זה עם זה."
+    },
+    "talk-nz": {
+      "description": "השיח הקהילתי של OSM ניו־זילנד"
+    },
+    "tn-facebook-group": {
+      "name": "קבוצת הפייסבוק של {community}"
+    },
+    "tw-slack": {
+      "description": "כולם מוזמנים! ניתן להירשם בכתובת {signupUrl}"
+    },
+    "ua-github": {
+      "description": "ה־GitHub של OpenStreetMap אוקראינה"
+    },
+    "ua-osm": {
+      "description": "האתר של OpenStreetMap באוקראינה"
+    },
+    "ua-slack": {
+      "description": "ניתן להצטרף לקהילה של OpenStreetMap אוקראינה ב־Slack. הרשמה דרך {signupUrl}"
+    },
+    "uk-localchapter": {
+      "description": "הקבוצה המקומית של הממלכה המאוחדת (כולל צפון אירלנד)",
+      "extendedDescription": "אנו תומכים ב־OpenStreetMap על ידי אירוח כנסים, אספקת משאבים קהילתיים, בניית שותפויות והפצה ברבים. ניתן להצטרף ל־OpenStreetMap הממלכה המאוחדת כאן: {signupUrl}"
+    },
+    "uk-london-twitter": {
+      "name": "הטוויטר של OpenStreetMap לונדון",
+      "description": "הטוויטר של OpenStreetMap לונדון: {url}"
+    },
+    "uk-london-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
+    "uy-irc": {
+      "description": "ניתן להצטרף ל־‎#{account} ב־irc.freenode.org (פתחה 6667)",
+      "extendedDescription": "ניתן להצטרף ל־‎#{account} תחת irc.freenode.org"
+    },
+    "ym-AASTU": {
+      "name": "ממפים צערים בAASTU",
+      "description": "ממפים צעירים אוניברסיטת Addis Ababa Science and Technology University"
+    },
+    "ym-Abia-State-University": {
+      "description": "ממפים צעירים בAbia State University"
+    },
+    "ym-African-Methodist-Episcopal-University": {
+      "name": "ממפים צעירים-AMEU",
+      "description": "ממפים צעירים African Methodist Episcopal University"
+    },
+    "ym-Ahmadu-Bello-University": {
+      "description": "ממפים צעירים אוניברסיטת אהמדו באלו"
+    },
+    "ym-Ardhi-University": {
+      "name": "ממפים ARU",
+      "description": "ממפים צעירים אוניברסיטת ארדהי"
+    },
+    "ym-Asian-University-for-Women": {
+      "name": "ממפים צעירים AUW",
+      "description": "ממפים צעירים אוניברסיטת אסיה לנשים"
+    },
+    "ym-Ball-State-University": {
+      "description": "ממפים צעירים אוניברסיטת בל סטיית"
+    },
+    "ym-Busitema-University": {
+      "name": "ממפים טובים",
+      "description": "ממפים צעירים אוניברסיטת בוסיטמה"
+    },
+    "ym-California-University-of-Pennsylvania": {
+      "name": "מועדון GIS CalU PA ",
+      "description": "ממפים צעירים אוניברסיטת קליפורניה של פנסילבניה"
+    },
+    "ym-Central-Washington-University": {
+      "name": "מועדון גיאוגרפיה",
+      "description": "ממפים צעירים אוניברסיטת מרכז וושינגטון"
+    },
+    "ym-Clemson-University": {
+      "name": "ממפי קלמסון",
+      "description": "ממפים צעירים באוניברסיטת קלמסון"
+    },
+    "ym-College-of-William-and-Mary": {
+      "name": "בכל רחבי המפה!",
+      "description": "ממפים צעירים ב College of William and Mary"
+    },
+    "ym-Cornell-University": {
+      "name": "ארגון מיפוי",
+      "description": "ממפים צעירים באוניברסיטת קורנל",
+      "extendedDescription": "הסטודנטים והפקולטה בקורנל משתמשים בנתונים פתוחים ובקוד פתוח כדי לענות על אתרים בקנה מידה מקומי, ארצי ובינלאומי. מטרת העשייה היא לקדם את היעדים האקדמיים והאישיים שלנו בפיתוח מיומנויות משלנו סביב גאו-אינפורמטיקה (GIS) ובקיאות מרחבית."
+    },
+    "ym-Cuttington-University": {
+      "name": "ממפים צעירים אוניברסיטת קטינגטון",
+      "description": "ממפים צעירים אוניברסיטת קטינגטון"
+    },
+    "ym-Dedan-Kimathi-University-of-Technology": {
+      "description": "ממפים צעירים אוניברסיטת קימאת'י לטכנולוגיה"
+    },
+    "ym-Dhaka-College": {
+      "name": "ממפים צעירים בDaka College",
+      "description": "ממפים צעירים בDaka College"
+    },
+    "ym-Dhaka-University": {
+      "name": "ממפים צעירים OSM",
+      "description": "ממפים צעירים אוניברסיטת דהאקא"
+    },
+    "ym-Eastern-University": {
+      "name": "ממפים צעירים  Eastern University",
+      "description": "ממפים צעירים  Eastern University"
+    },
+    "ym-Far-Eastern-University-Institute-of-Technology": {
+      "name": "אגודת המחשבים לנוער בפיליפינים",
+      "description": "ממפים צעירים  Far Eastern University -Institute of Technology"
+    },
+    "ym-Federal-School-of-Surveys": {
+      "description": "ממפים צעירים ב Federal School of Surveys"
+    },
+    "ym-Federal-University-of-Technology-Akure": {
+      "name": "ממפים צעירים בFuta Space Club",
+      "description": "ממפים צעירים בFederal University of Technology, Akure"
+    },
+    "ym-Fourah-Bay-College": {
+      "name": "ארגון מיפוי סטודנטים",
+      "description": "ממפים צעירים בFourah Bay College"
+    },
+    "ym-General-Lansana-Conte-University": {
+      "name": "ממפים צעירים בGeneral Lansana Conte University",
+      "description": "ממפים צעירים בGeneral Lansana Conte University"
+    },
+    "ym-George-Mason-University": {
+      "name": "ממפי Mason University",
+      "description": "ממפים צעירים בGeorge Mason University\n"
+    },
+    "ym-Grand-Gedeh-County-Community-College": {
+      "name": "ממפים צעירים Grand Gedeh County Community College",
+      "description": "ממפים צעירים Grand Gedeh County Community College"
+    },
+    "ym-Gujarat-University": {
+      "name": "CCIM באחמדאבד",
+      "description": "ממפים צעירים אוניברסיטת גוג'ארת"
+    },
+    "ym-Gulu-University": {
+      "name": "ממפים בCSGU",
+      "description": "ממפים צעירים בCSGU"
+    },
+    "ym-Heidelberg-University": {
+      "name": "ממפי אסונות היידלברג",
+      "description": "ממפים צעירים היידלברג"
+    },
+    "ym-Ignatius-Ajuru-University-of-Education": {
+      "description": "ממפים צעירים בIgnatius Ajuru University of Education"
+    },
+    "ym-Indiana-University-of-Pennsylvania": {
+      "name": "מועדון מדי גאוספציאלי",
+      "description": "ממפים צעירים אוניברסיטת אינדיאנה של פנסילבניה"
+    },
+    "ym-Insititue-d-Enseignement-Superieur-de-Ruhengeri": {
+      "name": "ממפים צעירים INES Ruhengeri",
+      "description": "ממפים צעירים בInsititue d' Enseignement Superieur de Ruhengeri"
+    },
+    "ym-Institut-Suprieur-de-Management-Kolda": {
+      "name": "הנהגה נשית של ISM/קולדה",
+      "description": "ממפים צעירים בInstitut Supérieur de Management Kolda"
+    },
+    "ym-Institute-of-Crisis-Management-Studies": {
+      "name": "ממפים צעירים ב Institute of Crisis Management Studies",
+      "description": "ממפים צעירים ב Institute of Crisis Management Studies",
+      "extendedDescription": "כדי לפתח מיפוי חירום לסיוע במקרי חירום."
+    },
+    "ym-Institute-of-Rural-Development-Planning": {
+      "name": "ממפים צעירים מיפאנגו",
+      "description": "ממפים צעירים בInstitute of Rural Development Planning"
+    },
+    "ym-Institute-of-Rural-Development-Planning-Mwanza": {
+      "description": "ממפים צעירים בInstitute of Rural Development Planning Mwanza"
+    },
+    "ym-Institute-of-Science-and-Veterinary-Medicine": {
+      "name": "ממפים צעירים-ISSMV Dalaba",
+      "description": "ממפים צעירים ב Institute of Science and Veterinary Medicine"
+    },
+    "ym-Istanbul-Technical-University": {
+      "name": "ממפים צעירים ITU",
+      "description": "ממפים צעירים אוניברסיטה טכנולוגית איסטנבול"
+    },
+    "ym-Jacksonville-State-University": {
+      "description": " ממפים צעירים אוניברסיטת ג'קסוןוויל"
+    },
+    "ym-Jahangirnagar-University": {
+      "name": "ממפים צעירים אוניברסיטת IRS ג'הנגרינגר",
+      "description": "ממפים צעירים אוניברסיטת ג'הנגרינגר"
+    },
+    "ym-Jomo-Kenyatta-University-of-Agriculture-and-Technology": {
+      "description": "ממפים צעירים אוניברסיטת ג'ומו קניטה חקלאות ואנרגיה"
+    },
+    "ym-Kansas-State-University": {
+      "description": "ממפים צעירים אוניברסיטת קנסס סטיית"
+    },
+    "ym-Karatina-University": {
+      "name": "מועדון הטבע באוניברסיטת קרטינה",
+      "description": "ממפים צעירים אוניברסיטת קטרינה"
+    },
+    "ym-Kenyatta-University": {
+      "name": "אוניברסיטת קניטה מועדון GIS",
+      "description": "ממפים צעירים אוניברסיטת קניטה"
+    },
+    "ym-Khulna-University": {
+      "name": "ממפים צעירים אוניברסיטת חולנה",
+      "description": "ממפים צעירים אוניברסיטת קונלה"
+    },
+    "ym-Kumi-University": {
+      "name": "ממפים צעירים Ever Last",
+      "description": "ממפים צעירים אוניברסיטת קומי"
+    },
+    "ym-Kwame-Nkrumah-University-of-Science-and-Technology": {
+      "name": "ממפים צעירים ב Kwame Nkrumah University of Science and Technology",
+      "description": "ממפים צעירים אוניברסיטת מדע וטכנולוגיה קוונה נקרומה"
+    },
+    "ym-Makerere-University": {
+      "name": "ממפים צעירים גאו",
+      "description": "ממפים צעירים אוניברסיטת מקרירי"
+    },
+    "ym-Mbarara-University-of-Science-and-Technology": {
+      "name": "ממפים MUST Street",
+      "description": "ממפים צעירים אוניברסיטת מדע וטכנולוגיה מבארארא"
+    },
+    "ym-McGill-University": {
+      "description": "ממפים צעירים אוניברסיטת מקגיל"
+    },
+    "ym-Miami-University": {
+      "description": "ממפים צעירים אוניברסיטת מיאמי"
+    },
+    "ym-Moi-University": {
+      "name": "ארגון הסטודנטים לגאוגרפיה",
+      "description": "ממפים צעירים אוניברסיטת מוי"
+    },
+    "ym-Monroe-Community-College": {
+      "description": "ממפים צעירים מכללת מונרו"
+    },
+    "ym-Namibia-University-of-Science-and-Technology": {
+      "description": "ממפים צעירים אוניברסיטת נמיביה למדע וטכנולוגיה"
+    },
+    "ym-Nimba-County-Community-College": {
+      "description": "ממפים צעירים Nimba County Community College"
+    },
+    "ym-Njala-University-Freetown-Campus": {
+      "description": "ממפים צעירים אוניברסיטת נג'אלה, קמפוס פריטאון"
+    },
+    "ym-Njala-University-Njala-Campus": {
+      "name": "ממפים צעירים אוניברסיטת נג'אלה, קמפוס נג'אלה",
+      "description": "ממפים צעירים אוניברסיטת נג'אלה, קמפוס נג'אלה"
+    },
+    "ym-Ohio-Wesleyan-University": {
+      "description": "ממפים צעירים אוניברסיטת אוהיו ווסליין"
+    },
+    "ym-Oklahoma-State-University": {
+      "name": "מועדון גיאוגרפיה",
+      "description": "ממפים צעירים אוניברסיטת אוקלוהומה"
+    },
+    "ym-Open-University-of-Tanzania": {
+      "name": "ממפים צעירים אוניברסיטה פתוחה טנזניה",
+      "description": "פרק ממפים צעירים אוניברסיטת טנזניה"
+    },
+    "ym-Politecnico-di-Milano": {
+      "description": "ממפים צעירים Politecnico di Milano"
+    },
+    "ym-Queen-Mary-University-of-London": {
+      "description": "ממפים צעירים ב Queen Mary University of London"
+    },
+    "ym-Rajshahi-University-of-Engineering-Technology": {
+      "name": "ממפים צעירים RUET",
+      "description": "ממפים צעירים בRajshahi University of Engineering & Technology"
+    },
+    "ym-Sherubtse-College": {
+      "name": "ארגון מיפוי",
+      "description": "ממפים צעירים בSherubtse College"
+    },
+    "ym-Sokoine-University-of-Agriculture": {
+      "name": "ממפים צעירים SMCoSE",
+      "description": "ממפים צעירים בSokoine University of Agriculture"
+    },
+    "ym-St<TX_DOT>-Augustine-International-University": {
+      "name": "ממפים צעירים בSt Augustine International University",
+      "description": "ממפים צעירים בSt Augustine International University"
+    },
+    "ym-St<TX_DOT>-Mawaggali-Trades-Training-Institute": {
+      "description": "ממפים צעירים בSt. Mawaggali Trades Training Institute"
+    },
+    "ym-State-University-of-New-York-Geneseo": {
+      "description": "ממפים צעירים ב State University of New York Geneseo"
+    },
+    "ym-Stella-Maris-Polytechnic": {
+      "name": "ממפים צעירים-SMP",
+      "description": "ממפים צעירים בStella Maris Polytechnic"
+    },
+    "ym-SUNY-at-Fredonia": {
+      "description": "ממפים צעירים בSUNY at Fredonia"
+    },
+    "ym-Technical-University-of-Kenya": {
+      "description": "ממפים צעירים בTechnical University of Kenya"
+    },
+    "ym-Texas-Tech-University": {
+      "name": "ממפים צעירים TTU",
+      "description": "ממפים צעירים Texas Tech University"
+    },
+    "ym-The-Citadel": {
+      "name": "ממפים צעירים בסיטדל",
+      "description": "ממפים צעירים בסיטדל"
+    },
+    "ym-The-Gambia-YMCA-University-of-the-Gambia": {
+      "name": "ממפים צעירים מחוברים",
+      "description": "ממפים צעירים ב Gambia YMCA / University of the Gambia"
+    },
+    "ym-The-George-Washington-University": {
+      "name": "ארגון מיפוי הומניטרי",
+      "description": "ממפים צעירים בThe George Washington University"
+    },
+    "ym-The-Johns-Hopkins-University-SAIS": {
+      "name": "ממפים צעירים SAIS",
+      "description": "ממפים צעירים בThe Johns Hopkins University, SAIS"
+    },
+    "ym-The-Pennsylvania-State-University": {
+      "description": "ממפים צעירים Pennsylvania State University"
+    },
+    "ym-The-University-of-Zambia": {
+      "name": "ממפים צעירים UNZA",
+      "description": "ממפים צעירים ב University of Zambia"
+    },
+    "ym-Uganda-Christian-University-Mbale-Campus": {
+      "name": "ממפים לחיים",
+      "description": "ממפים צעירים ב Uganda Christian University Mbale Campus"
+    },
+    "ym-Uganda-Pentecostal-University": {
+      "description": "ממפים צעירים Uganda Christian University Mbale Campus"
+    },
+    "ym-Universidad-de-La-Guajira": {
+      "description": "ממפים צעירים בUniversidad de La Guajira"
+    },
+    "ym-Universidad-de-Los-Andes": {
+      "description": "ממפים צעירים בUniversidad de Los Andes"
+    },
+    "ym-Universidad-de-Puerto-Rico-Rio-Piedras": {
+      "name": "ממפים צעירים UPR"
+    },
+    "ym-Universidad-de-San-Buenaventura": {
+      "name": "ממפים צעירים San Buenaventura",
+      "description": "ממפים צעירים San Buenaventura"
+    },
+    "ym-Universidad-Distrital-Francisco-Jose-de-Caldas": {
+      "name": "ממפים צעירים בוגוטה",
+      "description": "ממפים צעירים Universidad Distrital Francisco Jose de Caldas"
+    },
+    "ym-Universidad-Nacional-Autnoma-de-Honduras": {
+      "description": "ממפים צעירים Universidad Nacional Autónoma de Honduras"
+    },
+    "ym-Universidad-Nacional-de-Colombia": {
+      "description": "ממפים צעירים Universidad Nacional de Colombia"
+    },
+    "ym-Universidad-Nacional-de-Ingenieria": {
+      "description": "ממפים צעירים Universidad Nacional de Ingenieria"
+    },
+    "ym-Universidade-Eduardo-Mondlane": {
+      "description": "ממפים צעירים בUniversidade Eduardo Mondlane"
+    },
+    "ym-Universit-Gaston-Berger": {
+      "name": "ממפים צעירים UGB",
+      "description": "ממפים צעירים בUniversité Gaston Berger"
+    },
+    "ym-Universit-Mohammed-V-Rabat": {
+      "name": "בראהמאפוטרה ורבאט",
+      "description": "ממפים צעירים בUniversité Mohammed V Rabat"
+    },
+    "ym-Universitas-Negeri-Makassar": {
+      "description": "ממפים צעירים בUniversitas Negeri Makassar"
+    },
+    "ym-University-Muhammadiyah-Surakarta": {
+      "name": "זמן-חלל",
+      "description": "ממפים צעירים בUniversity Muhammadiyah Surakarta"
+    },
+    "ym-University-of-California-Davis": {
+      "name": "מועדון המיפוי",
+      "description": "ממפים צעירים UC Davis"
+    },
+    "ym-University-of-Cape-Coast": {
+      "description": "ממפים צעירים ב University of Cape Coast"
+    },
+    "ym-University-of-Central-Florida": {
+      "name": "אגודת המידע הגאומרחבי",
+      "description": "ממפים צעירים בUniversity of Central Florida"
+    },
+    "ym-University-of-Chicago": {
+      "description": "ממפים צעירים ב University of Chicago"
+    },
+    "ym-University-of-Dar-es-Salaam": {
+      "name": "ממפים צעירים בUniversity of Dar es Salaam",
+      "description": "ממפים צעירים בUniversity of Dar es Salaam"
+    },
+    "ym-University-of-Energy-and-Natural-Resources": {
+      "description": "ממפים צעירים בUniversity of Energy and Natural Resources"
+    },
+    "ym-University-of-Exeter": {
+      "description": "ממפים צעירים ב University of Exeter"
+    },
+    "ym-University-of-Ghana": {
+      "name": "הממפים הצעירים של University of Ghana",
+      "description": "ממפים צעירים ב University of Ghana"
+    },
+    "ym-University-of-Liberia-YouthMappers": {
+      "name": "הממפים הצעירים של University of Liberia",
+      "description": "ממפים צעירים בt University of Liberia "
+    },
+    "ym-University-of-Malawi": {
+      "name": "ממפים צעירים Chanco Malawi ",
+      "description": "ממפים צעירים ב  University of Malawi"
+    },
+    "ym-University-of-Maryland-College-Park": {
+      "name": "מועדון גיאוגרפיה",
+      "description": "ממפים צעירים בUniversity of Maryland - College Park"
+    },
+    "ym-University-of-Mines-and-Technology": {
+      "name": "ממפים צעירים ב University of Mines and Technology",
+      "description": "ממפים צעירים ב University of  Mines and Technology"
+    },
+    "ym-University-of-Nairobi": {
+      "description": "ממפים צעירים ב University of Nairobi"
+    },
+    "ym-University-of-Nigeria-Enugu-Campus": {
+      "description": "ממפים צעירים בUniversity of Nigeria, Enugu Campus"
+    },
+    "ym-University-of-Nigeria-Nsukka": {
+      "description": "ממפים צעירים בNigeria, Nsukka"
+    },
+    "ym-University-of-North-Texas": {
+      "name": "מועדון גיאוגרפיה UNT",
+      "description": "ממפים צעירים ב  University of North Texas"
+    },
+    "ym-University-of-Northern-Colorado": {
+      "description": "ממפים צעירים ב University of Northern Colorado"
+    },
+    "ym-University-of-Oregon": {
+      "name": "מפה ע\"י צפון מערב",
+      "description": "ממפים צעירים ב University of Oregon"
+    },
+    "ym-University-of-Port-Harcourt": {
+      "description": "ממפים צעירים ב University of Port Harcourt"
+    },
+    "ym-University-of-Pretoria": {
+      "name": "מרכז למדעי גיאואינפורמציה",
+      "description": "ממפים צעירים ב University of Pretoria"
+    },
+    "ym-University-of-Redlands": {
+      "description": "ממפים צעירים בUniversity of Redlands"
+    },
+    "ym-University-of-Rwanda-Huye-Campus": {
+      "name": "ממפים צעירים רוואנדה",
+      "description": "ממפים צעירים ב University of Rwanda - Huye Campus"
+    },
+    "ym-University-of-South-Carolina": {
+      "description": "ממפים צעירים ב University of Southern Carolina"
+    },
+    "ym-University-of-Southern-California": {
+      "name": "ממפים SC",
+      "description": "ממפים צעירים בUniversity of Southern California"
+    },
+    "ym-University-of-the-Philippines-Resilience-Institute": {
+      "name": "ממפים צעירים ב University of the Philippines Resilience Institute",
+      "description": "ממפים צעירים ב University of the Philippines Resilience Institute"
+    },
+    "ym-University-of-the-West-Indies-Mona-Campus": {
+      "description": "ממפים צעירים בUniversity of the West Indies, Mona Campus"
+    },
+    "ym-University-of-Victoria": {
+      "name": "ארגון סטודנטים ממפים",
+      "description": "ממפים צעירים ב University of Victoria"
+    },
+    "ym-University-of-Warwick": {
+      "description": "ממפים צעירים ב University of Warwick"
+    },
+    "ym-University-of-Wyoming": {
+      "description": "ממפים צעירים ב University of Wyoming"
+    },
+    "ym-UW-Madison": {
+      "name": "מפות בדג'ר",
+      "description": "ממפים צעירים בUW-Madison"
+    },
+    "ym-Vassar-College": {
+      "name": "ממפי עמק הדסון",
+      "description": "ממפים צעירים בVasar College"
+    },
+    "ym-Villanova-University": {
+      "description": "ממפים צעירים Villanova University"
+    },
+    "ym-West-Virginia-University": {
+      "description": "ממפים צעירים בWest Virginia University"
+    },
+    "ym-Western-Michigan-University": {
+      "name": "מועדון גיאוגרפיה",
+      "description": "ממפים צעירים בWestern Michigan University"
+    },
+    "ym-Yarmouk-University": {
+      "name": "ממפים צעירים YU",
+      "description": "ממפים צעירים בYarmouk University"
+    }
+  }
+}

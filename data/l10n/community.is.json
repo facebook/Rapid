@@ -1,0 +1,75 @@
+{
+  "is": {
+    "Bahia-telegram": {
+      "extendedDescription": "Gakktu til liðs við teymið til að læra meira um OpenStreetMap, spyrja spurninga eða taka þátt í fundum. Allir eru velkomnir!"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "description": "Bætum OpenStreetMap-gögn á Bay Area"
+    },
+    "cape-coast-youthmappers": {
+      "description": "Fylgstu með okkur á Twitter: {url}"
+    },
+    "de-berlin-mailinglist": {
+      "name": "Berlín-póstlistinn"
+    },
+    "de-ostwestfalen-lippe-mailinglist": {
+      "name": "OWL-póstlistinn"
+    },
+    "DF-telegram": {
+      "extendedDescription": "Gakktu til liðs við teymið til að læra meira um OpenStreetMap, spyrja spurninga eða taka þátt í fundum. Allir eru velkomnir!"
+    },
+    "Maptime-ME-meetup": {
+      "description": "Kortagerðarfólk og notendur OpenStreetMap í kringum Portland, ME"
+    },
+    "OpenCleveland-meetup": {
+      "description": "Bætum OpenStreetMap-gögn á Cleveland-svæðinu"
+    },
+    "OSM-Central-Salish-Sea": {
+      "description": "Kortagerðarfólk og notendur OpenStreetMap í kringum Mount Vernon, WA",
+      "extendedDescription": "OpenStreetMap er landakort af heiminum gert af fólki eins og þér. Kort sem þú byggir upp, sem er öllum frjálst, rétt eins og Wikipedia. Skoðaðu osm.org til að sjá nánari upplýsingar. Við hittumst mjög oft til að tala um kort, gera kort, og skemmta okkur!"
+    },
+    "OSM-Chattanooga": {
+      "description": "Notendur OpenStreetMap í Chattanooga"
+    },
+    "OSM-Colorado": {
+      "description": "Kortagerðarfólk og notendur OpenStreetMap í Colorado-fylki, BNA"
+    },
+    "OSM-India-facebook": {
+      "description": "Bætum OpenStreetMap-gögn á Indlandi"
+    },
+    "OSM-japan-facebook": {
+      "description": "Kortagerðarfólk og notendur OpenStreetMap í Japan"
+    },
+    "OSM-Seattle": {
+      "description": "Kortagerðarfólk og notendur OpenStreetMap á Seattle-svæðinu"
+    },
+    "OSM-SoCal": {
+      "description": "Skemmtum okkur, gerum eitthvað fyrir Los Angeles, og lærum í leiðinni um kortagerð!"
+    },
+    "OSM-Tampa-Bay": {
+      "description": "Kortagerðarfólk og notendur OpenStreetMap á Tampa Bay-svæðinu"
+    },
+    "OSM-US": {
+      "description": "Við hjálpum til við að auka og bæta OpenStreetMap-gögn í Bandaríkjunum"
+    },
+    "OSM-US-Slack": {
+      "description": "Allir velkomnir! Skráðu þig á {signupUrl}"
+    },
+    "OSM-Utah": {
+      "description": "Kortagerðarfólk og notendur OpenStreetMap á Salt Lake City-svæðinu"
+    },
+    "OSM-Wyoming": {
+      "description": "Kortagerðarfólk og notendur OpenStreetMap í Wyoming-fylki, BNA"
+    },
+    "OSMF": {
+      "name": "OpenStreetMap sjálfseignarstofnunin"
+    },
+    "PHXGeo-meetup": {
+      "description": "Kortagerðarfólk og notendur OpenStreetMap á Phoenix, AZ-svæðinu"
+    },
+    "PHXGeo-twitter": {
+      "name": "Twitter-hópur PHXGeo",
+      "description": "Fylgstu með okkur á Twitter á {url}"
+    }
+  }
+}

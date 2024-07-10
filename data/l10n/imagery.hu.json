@@ -1,0 +1,402 @@
+{
+  "hu": {
+    "imagery": {
+      "Bedzin-PL-buildings": {
+        "name": "Będzin: épületek"
+      },
+      "Bing": {
+        "description": "Műholdképek és légifelvételek",
+        "name": "Bing légitérkép"
+      },
+      "Bytom-buildings": {
+        "name": "Bytom: épületek"
+      },
+      "Dourados_Ortofotos": {
+        "description": "Dourados (2018) és néhány kerület  (2020) nagy felbontású légi fényképen."
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 felhőtlen – https://s2maps.eu készítette: EOX IT Services GmbH (Módosított 2017-es és 2018-as Copernicus Sentinel adatokat tartalmaz)"
+        },
+        "description": "Utófeldolgozott Sentinel műholdas légifelvétel.",
+        "name": "eox.at 2018 felhőtlen"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Feltételek és visszajelzés"
+        },
+        "name": "Esri World felvételek"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Feltételek és visszajelzés"
+        },
+        "description": "Az Esri archív felvételek élesebbek és pontosabbak lehetnek, mint az alapértelmezett réteg.",
+        "name": "Esri World felvételek (Clarity) béta"
+      },
+      "Frankfurt-am-Main-2019": {
+        "name": "Frankfurt am Main légifotó 2019"
+      },
+      "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "description": "Ortofotótérkép legalább 10 cm-es felbontással. Az adatok felbontás, majd aktualitás szerint vannak rendezve."
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "description": "WMS megtekintési szolgáltatás lengyel nemzeti címszámozási integrációban, amely lehetővé teszi a Nemzeti Határnyilvántartás térbeli adataiból létrehozott térképi képek letöltését az utca- és címnyilvántartásokhoz."
+      },
+      "Geoportal2-PL-addres_points_WMS": {
+        "description": "WMS megtekintési szolgáltatás lengyel nemzeti címszámozási integrációban, amely lehetővé teszi a Nemzeti Határnyilvántartás térbeli adataiból létrehozott térképi képek letöltését az utca- és címnyilvántartásokhoz."
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "description": "Lengyelország területére vonatkozó ortofotótérképek megtekintését lehetővé tevő szolgáltatás (Web Map Service, WMS). Az e szolgáltatás révén rendelkezésre bocsátott adatok légi felvételekből készült ortofotótérképek. A szolgáltatás támogatja a WMS 1.3.0 interfészt."
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "description": "Lengyelország területére vonatkozó ortofotók megtekintésére szolgáló szolgáltatás (Web Map Tile Service,WMTS). Az e szolgáltatás révén rendelkezésre bocsátott adatok légi felvételekből készült ortofotótérképek."
+      },
+      "Geoportal2-PL-buildings_WMS": {
+        "description": "A Lengyel Nemzeti Földnyilvántartási Integrációs szolgáltatás közvetlenül a megyei szintű egységektől származó földnyilvántartási adatok bemutatására szolgáló összevont szolgáltatás. A szolgáltatás csak azon egységek adatait tartalmazza, amelyeknek létezik  megfelelő paraméterekkel rendelkező WMS-szolgáltatása, és úgy döntöttek, hogy WMS-szolgáltatásukat bevonják a NationalIntegrationGroundEvidence összesített szolgáltatásba."
+      },
+      "Geoportal2-PL-plot_boundaries_WMS": {
+        "description": "A Lengyel Nemzeti Földnyilvántartási Integrációs szolgáltatás közvetlenül a megyei szintű egységektől származó földnyilvántartási adatok bemutatására szolgáló összevont szolgáltatás. A szolgáltatás csak azon egységek adatait tartalmazza, amelyeknek létezik megfelelő paraméterekkel rendelkező WMS-szolgáltatása, és úgy döntöttek, hogy WMS-szolgáltatásukat bevonják a NationalIntegrationGroundEvidence összesített szolgáltatásba."
+      },
+      "LSA-ATKIS_BU": {
+        "description": "Az épületek alakja Szász-Anhalt tartományban"
+      },
+      "LSA-DOP20": {
+        "description": "Szász-Anhalt tartomány légi felvétele, 20 cm-es felbontás"
+      },
+      "LSA-DVG": {
+        "description": "A közigazgatási határok vektoros rögzítése. A szövetségi állam, a járás, a település és a településrészek határait adják meg. "
+      },
+      "LocalAuthorities_RightsOfWay": {
+        "attribution": {
+          "text": "Az Open Government Licence v3.0 licenc alatt engedélyezett közszektorbeli információkat tartalmaz."
+        },
+        "description": "A rowmaps.com oldalon összeállított, a helyi hatóságok által kiadott, közhasználatú úthasználati jogokra vonatkozó adatok.",
+        "name": "Közhasználatú útjogok"
+      },
+      "Lodz-buildings": {
+        "name": "Łódź: épületek"
+      },
+      "MAPNIK": {
+        "attribution": {
+          "text": "© OpenStreetMap közreműködők, ODbL 1.0"
+        },
+        "description": "Alapértelmezett OpenStreetMap-réteg:",
+        "name": "OpenStreetMap (standard)"
+      },
+      "Maaamet-Estonia_Cadastre": {
+        "attribution": {
+          "text": "Kataszteri térkép az észt földhivataltól"
+        },
+        "name": "Földkataszteri térkép"
+      },
+      "Maaamet-Estonia_Ortho": {
+        "name": "Földhivatali ortográfia (WMS)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Feltételek és visszajelzés"
+        },
+        "name": "Mapbox műholdképek"
+      },
+      "OSIP_6in": {
+        "description": "Ohio Statewide Imagery Program III ortoképek 40 megyéről, amelyeket 2017-ben és 2018-ban 6 hüvelykes felbontással rögzítettek, valamint OSIP I és OSIP II képek további 16 megyében 2010 és 2014 között."
+      },
+      "OSMUK-Cadastral-Parcels": {
+        "attribution": {
+          "text": "Az Open Government Licence v3.0 licenc alatt engedélyezett közszektorbeli információkat tartalmaz."
+        }
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap-közreműködők, CC-BY-SA"
+        },
+        "name": "OSM Inspector: címek ellenőrzése"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap-közreműködők, CC-BY-SA"
+        },
+        "name": "OSM Inspector: geometriai ellenőrzés"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap-közreműködők, CC-BY-SA"
+        },
+        "name": "OSM Inspector: utak ellenőrzése"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap-közreműködők, CC-BY-SA"
+        },
+        "name": "OSM Inspector: terület ellenőrzése"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap-közreműködők, CC-BY-SA"
+        },
+        "name": "OSM Inspector: helyek ellenőrzése"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap-közreműködők, CC-BY-SA"
+        },
+        "name": "OSM Inspector: útvonalvezetés ellenőrzése"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap-közreműködők, CC-BY-SA"
+        },
+        "name": "OSM Inspector: címkézés ellenőrzése"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "SPW(allonie) legfrissebb légifelvétel"
+      },
+      "SPW_PICC": {
+        "name": "SPW(allonie) PICC numerikus felvétel"
+      },
+      "Siemianowice_Slaskie-buildings": {
+        "name": "Siemianowice Śląskie: épületek"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Sárga = Közkincsű térképadatok az USA népszámlálási irodájától. Vörös = Az adatok nem találhatók meg az OpenStreetMapben."
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "Sárga = Közkincsű térképadatok az USA népszámlálási irodájától. Vörös = Az adatok nem találhatók meg az OpenStreetMapben."
+      },
+      "US-TIGER-Roads-2020": {
+        "description": "Sárga = Az amerikai népszámlálási hivatal nyilvános térképadatai. Piros = Az OpenStreetMapban nem található adat."
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Sárga = Az amerikai népszámlálási hivatal nyilvános térképadatai. Piros = Az OpenStreetMapban nem található adat."
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Utak: Zöld keret = besorolatlan. Barna keret = földút. Felület: murva = halvány barna kitöltés, aszfalt = fekete, kikövezett = szürke, föld = fehér, beton = kék, fű = zöld. Évszakos = fehér sávok",
+        "name": "U.S.A. erdei útjainak rétege"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Megvalósult a brüsszeli UrbIS®© segítségével - Distribution & Copyright CIRB"
+        },
+        "name": "CIRB/CIBG legfrissebb légi felvételek"
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "Készítette a brüsszeli UrbIS®© - Disztribúció és szerzői jogok: CIRB"
+        }
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "Készítette a brüsszeli UrbIS®© - Disztribúció és szerzői jogok: CIRB"
+        }
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "Készítette a brüsszeli UrbIS®© - Disztribúció és szerzői jogok: CIRB"
+        }
+      },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Megvalósult a brüsszeli UrbIS®© segítségével - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "Készítette a brüsszeli UrbIS®© - Disztribúció és szerzői jogok: CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
+        "attribution": {
+          "text": "Megvalósult a brüsszeli UrbIS®© segítségével - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "Készítette a brüsszeli UrbIS®© - Disztribúció és szerzői jogok: CIRB"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap-közreműködők, CC by-SA 3.0"
+        },
+        "name": "Jelzett turistautak: kerékpározás"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap-közreműködők, CC by-SA 3.0"
+        },
+        "name": "Jelzett turistautak: túrázás"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap-közreműködők, CC by-SA 3.0"
+        },
+        "name": "Jelzett turistautak: mountain bike"
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap-közreműködők, CC by-SA 3.0"
+        },
+        "name": "Jelzett turistautak: korcsolya"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap-közreműködők, CC by-SA 3.0"
+        },
+        "name": "Jelzett turistautak: téli sportok"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "Ausztria alaptérképe, kormányzati adatok alapján."
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "A basemap.at által biztosított ortofotóréteg; a geoimage.at felvételeinek utódja",
+        "name": "basemap.at ortofotó"
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "description": "A megnevezéseket a basemap.at biztosítja.",
+        "name": "basemap.at térképelőtér"
+      },
+      "cyclosm": {
+        "description": "A CyclOSM egy olyan térképstílus, amelyet a kerékpározást szem előtt tartva terveztek. Az OpenStreetMap adatait kihasználva gyönyörű és praktikus kerékpáros térképet hoz létre!"
+      },
+      "eufar-balaton": {
+        "description": "1940-es geokódolt fényképek a Balatoni Limnológiai Kutatóintézettől.",
+        "name": "EUFAR Balaton ortofotók"
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© Göteborg település, CC0"
+        },
+        "description": "A várostérkép egy áttekintő térkép, amely leírja Göteborgot. Általános információkat tartalmaz a területről, a kommunikációról, a vízrajzról, az épületekről, a házszámokról és utcanevekről, a közigazgatási felosztásról és egyéb tájékozódási szövegekről.",
+        "name": "Göteborg várostérkép"
+      },
+      "gothenburg-dtm-2017": {
+        "description": "Göteborg város 2017-es magassági modellje alapján a domborzatot és lejtést bemutató webes térképszolgáltatás. Felbontás 0,5 méter per pixel."
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© Göteborg település, CC0"
+        },
+        "description": "Göteborg település ortofotója"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "GSI Japán"
+        },
+        "description": "Japán GSI légi felvétel. Nem teljesen igazított. Valamivel újabb és más lefedettséget mutat, mint a GSI ortofotó.",
+        "name": "Japán GSI légifotó"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "GSI Japán"
+        },
+        "description": "Japán GSI standard térkép. Nagyrészt mindent lefed.",
+        "name": "Japán GSI standard térkép."
+      },
+      "kartverket-bygninger": {
+        "description": "INSPIRE épületek Norvégiában."
+      },
+      "kelkkareitit": {
+        "description": "Kelkkareitit.fi motoros szán nyomvonalak az OSM-ről (skandináv lefedettség)",
+        "name": "Skandináv motorosszánréteg"
+      },
+      "lantmateriet-orto1960": {
+        "description": "Svéd ortofotók 1955-1965 között. Egyes képek ennél régebbiek vagy újabbak lehetnek.",
+        "name": "Lantmäteriet történelmi ortofotó, 1960"
+      },
+      "lantmateriet-orto1975": {
+        "description": "Svéd ortofotók mozaikja 1970-1980 között. Feltöltés alatt.",
+        "name": "Lantmäteriet történelmi ortofotó, 1975"
+      },
+      "lantmateriet-topowebb": {
+        "description": "Svédország 1:50 000-es topográfiai térképe",
+        "name": "Lantmäteriet topográfiai térkép"
+      },
+      "linkoping-orto": {
+        "description": "2010-es ortofotók Linköping községből, nyílt adat",
+        "name": "Linköping ortofotó"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Feltételek és visszajelzés"
+        },
+        "description": "Megmutatja a tájékozódást segítő fontosabb elemeket.",
+        "name": "Helymeghatározó réteg"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© OpenStreetMap-közreműködők, CC-BY-SA"
+        },
+        "name": "OpenPT Map (réteg) – tömegközlekedés"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© OpenStreetMap-közreműködők"
+        },
+        "description": "Az OpenStreetMapre feltöltött nyilvános GPS-nyomvonalak",
+        "name": "OpenStreetMap GPS-nyomvonalak"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© OpenStreetMap-közreműködők, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (német stílusú)"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, adatok: ©OpenStreetMap-közreműködők"
+        },
+        "name": "Minőségbiztosítás: nincs cím"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Csempék: skobbler Map, adatok: OpenStreetMap-közreműködők"
+        }
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "Térképcsempék a Stamen Design által, CC BY 3.0 szerint, adatok OpenStreetMap, ODbL alatt."
+        },
+        "name": "Stamen Terrain (terep)"
+      },
+      "stockholm-orto": {
+        "name": "Stockholm ortofotó"
+      },
+      "susono_shizuoka_jp_orthophoto": {
+        "description": "Susono városa által nyílt adatként közzétett légi felvételek."
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Térképek: © Thunderforest, adatok: © OpenStreetMap-közreműködők"
+        },
+        "name": "Thunderforest OpenCycleMap (kerékpárostérkép)"
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Térképek: © Thunderforest, adatok: © OpenStreetMap contributors"
+        },
+        "name": "Thunderforest Landscape (táj)"
+      },
+      "trafikverket-baninfo": {
+        "description": "Svéd vasúthálózat, mellékvágányokkal együtt",
+        "name": "Trafikverket vasúthálózat"
+      },
+      "trafikverket-baninfo-option": {
+        "description": "Svéd vasúthálózat néhány térkép felület opcióval.",
+        "name": "Trafikverket vasúthálózat opciók"
+      },
+      "trafikverket-vagnat": {
+        "description": "Svéd NVDB úthálózat",
+        "name": "Trafikverket úthálózat"
+      },
+      "trafikverket-vagnat-extra": {
+        "description": "Svéd NVDB extra részletek: közút referencia, forgalomcsillapító, pihenőhely, buszmegálló, híd, alagút, traffipax",
+        "name": "Trafikverket úthálózat extra"
+      },
+      "trafikverket-vagnat-option": {
+        "description": "Svéd NVDB úthálózat néhány térkép felület opcióval.",
+        "name": "Trafikverket úthálózat opciók"
+      }
+    }
+  }
+}

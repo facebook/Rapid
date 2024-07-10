@@ -1,0 +1,753 @@
+{
+  "eo": {
+    "imagery": {
+      "Bedzin-PL-aerial_image": {
+        "attribution": {
+          "text": "Ofico de la distriktestro en Będzin"
+        },
+        "name": "Będzin: ortfotmapo 2013 (aera fotaro)"
+      },
+      "Bedzin-PL-buildings": {
+        "attribution": {
+          "text": "Ofico de la distriktestro en Będzin"
+        },
+        "name": "Będzin: konstruaĵoj"
+      },
+      "Bing": {
+        "description": "Satelita kaj aera fotaroj.",
+        "name": "Aera fotaro de Bing"
+      },
+      "Bytom-2012": {
+        "attribution": {
+          "text": "Magistrato de la urbo Bytom"
+        },
+        "name": "Bytom: ortfotmapo 2012 (aera fotaro)"
+      },
+      "Bytom-2014": {
+        "attribution": {
+          "text": "Magistrato de la urbo Bytom"
+        },
+        "name": "Bytom: fotplano 2014 (aera fotaro)"
+      },
+      "Bytom-buildings": {
+        "attribution": {
+          "text": "Magistrato de la urbo Bytom"
+        },
+        "name": "Bytom: konstruaĵoj"
+      },
+      "Czestochowa-2011": {
+        "attribution": {
+          "text": "Magistrato de la urbo Częstochowa"
+        },
+        "name": "Częstochowa: ortfotmapo 2011 (aera fotaro)"
+      },
+      "Czestochowa-2013": {
+        "attribution": {
+          "text": "Magistrato de la urbo Częstochowa"
+        },
+        "name": "Częstochowa: ortfotmapo 2013 (aera fotaro)"
+      },
+      "Czestochowa-2014": {
+        "attribution": {
+          "text": "Magistrato de la urbo Częstochowa"
+        },
+        "name": "Częstochowa: ortfotmapo 2014 (aera fotaro)"
+      },
+      "Czestochowa-2015": {
+        "attribution": {
+          "text": "Magistrato de la urbo Częstochowa"
+        },
+        "name": "Częstochowa: ortfotmapo 2015 (aera fotaro)"
+      },
+      "Czestochowa-2016": {
+        "attribution": {
+          "text": "Magistrato de la urbo Częstochowa"
+        },
+        "name": "Częstochowa: ortfotmapo 2016 (aera fotaro)"
+      },
+      "Czestochowa-2017": {
+        "attribution": {
+          "text": "Magistrato de la urbo Częstochowa"
+        },
+        "name": "Częstochowa: ortfotmapo 2017 (aera fotaro)"
+      },
+      "Czestochowa-buildings": {
+        "attribution": {
+          "text": "Magistrato de la urbo Częstochowa"
+        },
+        "name": "Częstochowa: konstruaĵoj"
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel‑2 sennuba fotaro de EOX IT Services GmbH (enhavas modifitajn datumojn (2017‑2018) de Copernicus)"
+        },
+        "description": "Pritraktita fotaro de la satelito Sentinel‑2.",
+        "name": "eox.at 2018 sennuba"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Kondiĉoj kaj rimarkoj"
+        },
+        "name": "Tutmonda fotaro de Esri"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Kondiĉoj kaj rimarkoj"
+        },
+        "description": "Arĥivita fotaro de Esri, kiu povas esti pli klara kaj akurata ol la norma tavolo.",
+        "name": "Tutmonda fotaro de Esri (pli klara) Beta"
+      },
+      "Frankfurt-am-Main-2019": {
+        "attribution": {
+          "text": "Geodezia ofico de la urbo Frankfurto ĉe Majno"
+        },
+        "description": "Aera fotaro pri Frankfurto ĉe Majno, farita je 2019-04-16.",
+        "name": "Frankfurto ĉe Majno: aerfotaro 2019"
+      },
+      "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        },
+        "description": "Ortfotmapo je distingivo 10 cm aŭ pli bona. Datumoj ordigitaj unue laŭ distingivo (kvalito) kaj sekve laŭ aktualeco; ekzemplo: fotaro de 2012 je distingivo 8 cm estos montrata anstataŭ fotaro de 2019 je distingivo 10 cm.",
+        "name": "Geoportal 2: altkvalita ortfotmapo (aera fotaro) (WMS)"
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        },
+        "description": "WMS-foliumilo de Ŝtata Integrado de Adresa Numerado «Krajowa Integracja Numeracji Adresowej» ebliganta akiri mapbildojn kreitajn el spacaj datumojn pri stratoj kaj adresoj el Ŝtata Registro de Limoj «Państwowy Rejestr Granic».",
+        "name": "Geoportal 2: stratnomoj"
+      },
+      "Geoportal2-PL-addres_points_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        },
+        "description": "WMS-foliumilo de Ŝtata Integrado de Adresa Numerado «Krajowa Integracja Numeracji Adresowej» ebliganta akiri mapbildojn kreitajn el spacaj datumojn pri stratoj kaj adresoj el Ŝtata Registro de Limoj «Państwowy Rejestr Granic».",
+        "name": "Geoportal 2: adresoj"
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        },
+        "description": "WMS-foliumilo por ortfotmapoj de la areo de Polujo. Datumoj liverataj per tiu ĉi servo kreas ortfotmapon faritan el aeraj fotoj. La servo subtenas la interfacon WMS 1.3.0.",
+        "name": "Geoportal 2: ortfotmapo (plej aktuala aera fotaro) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        },
+        "description": "Foliumilo WMTS por ortfotmapoj de la areo de Polujo. Datumoj liverataj per tiu ĉi servo kreas ortfotmapon faritan el aeraj fotoj.",
+        "name": "Geoportal 2: ortfotmapo (plej aktuala aera fotaro) (WMTS)"
+      },
+      "Geoportal2-PL-buildings_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        },
+        "description": "La servo Ŝtata Integrado de Registroj de Terpecoj «Krajowa Integracja Ewidencji Gruntów» kunigas datumojn liveratajn de distrikt‑nivelaj administrunuoj. La servo enhavas datumojn de nur tiuj administrunuoj, kiuj disponas ĝustan WMS‑servon kaj decidiĝis pri ampleksi siajn datumojn al la kuniga registro.",
+        "name": "Geoportal 2: registro de konstruaĵoj"
+      },
+      "Geoportal2-PL-plot_boundaries_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        },
+        "description": "La servo Ŝtata Integrado de Registroj de Terpecoj «Krajowa Integracja Ewidencji Gruntów» kunigas datumojn liveratajn de distrikt‑nivelaj administrunuoj. La servo enhavas datumojn de nur tiuj administrunuoj, kiuj disponas ĝustan WMS‑servon kaj decidiĝis pri ampleksi siajn datumojn al la kuniga registro.",
+        "name": "Geoportal 2: limoj de terpecoj"
+      },
+      "Geoportal2-PL-prng": {
+        "attribution": {
+          "text": "Ĉefa ofico de dokumentaro geodezia kaj kartografia en Polujo"
+        },
+        "name": "Geoportal 2: registro de geografiaj nomoj"
+      },
+      "Gliwice-2013": {
+        "attribution": {
+          "text": "Magistrato de la urbo Gliwice"
+        },
+        "name": "Gliwice: ortfotmapo 2013 (aera fotaro)"
+      },
+      "Gliwice-2017": {
+        "attribution": {
+          "text": "Magistrato de la urbo Gliwice"
+        },
+        "name": "Gliwice: ortfotmapo 2017 (aera fotaro)"
+      },
+      "Gliwice-2018": {
+        "attribution": {
+          "text": "Magistrato de la urbo Gliwice"
+        },
+        "name": "Gliwice: ortfotmapo 2018 (aera fotaro)"
+      },
+      "Gliwice-2020": {
+        "attribution": {
+          "text": "Magistrato de la urbo Gliwice"
+        },
+        "name": "Gliwice: ortfotmapo 2020 (aera fotaro)"
+      },
+      "Gliwice-buildings": {
+        "attribution": {
+          "text": "Magistrato de la urbo Gliwice"
+        },
+        "name": "Gliwice: konstruaĵoj"
+      },
+      "LSA-ATKIS_BU": {
+        "description": "Konstruaĵoj en Saksujo-Anhalto"
+      },
+      "LSA-DOP20": {
+        "description": "Aera fotaro de Saksujo-Anhalto je distingivo 20 cm."
+      },
+      "LSA-DVG": {
+        "description": "Vektora registro de administraj limoj. Liveras limojn de federaciaj landoj, distriktoj, komunumoj kaj partojn de komunumoj."
+      },
+      "LocalAuthorities_RightsOfWay": {
+        "attribution": {
+          "text": "Enhavas datumojn de la publika sektoro eldonitajn laŭ la permesilo Open Government Licence v3.0."
+        },
+        "description": "Datumoj pri alipermesoj de malĉefaj vojoj liverataj de lokaj aŭtoritatoj kaj kolektitaj de rowmaps.com.",
+        "name": "Alirpermesoj de vojoj"
+      },
+      "Lodz-2015": {
+        "attribution": {
+          "text": "Magistrato de la urbo Lodzo"
+        },
+        "name": "Lodzo: ortfotmapo 2015 (aera fotaro)"
+      },
+      "Lodz-2017": {
+        "attribution": {
+          "text": "Magistrato de la urbo Lodzo"
+        },
+        "name": "Lodzo: ortfotmapo 2017 (aera fotaro)"
+      },
+      "Lodz-buildings": {
+        "attribution": {
+          "text": "Magistrato de la urbo Lodzo"
+        },
+        "name": "Lodzo: konstruaĵoj"
+      },
+      "MAPNIK": {
+        "attribution": {
+          "text": "© OpenStreetMap-kontribuantoj, ODbL 1.0"
+        },
+        "description": "Norma map-tavolo de OpenStreetMap.",
+        "name": "OpenStreetMap (norma mapo)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Kondiĉoj kaj rimarkoj"
+        }
+      },
+      "OSIP_1ft": {
+        "attribution": {
+          "text": "Fotara programo de subŝtato Ohio (OSIP)"
+        },
+        "description": "Fotara programo de la subŝtato Ohio (OSIP), 2-a versio: aera fotaro de ĉiuj 88 kantonoj je distingivo 1 futo (30 cm) farita dum la jaroj 2011-2014."
+      },
+      "OSIP_6in": {
+        "attribution": {
+          "text": "Fotara programo de subŝtato Ohio (OSIP)"
+        },
+        "description": "Fotara programo de la subŝtato Ohio (OSIP), 3-a versio: aera fotaro de 40 kantonoj je distingivo 6 coloj (15 cm) farita dum la jaroj 2017/2018; kaj ankaŭ fotaro de OSIP v1 k OSIP v2 de 16 pliaj kantonoj farita dum la jaroj 2010-2014.",
+        "name": "Fotara programo de subŝtato Ohio (15 cm)"
+      },
+      "OSMUK-Cadastral-Parcels": {
+        "attribution": {
+          "text": "Enhavas datumojn de la publika sektoro eldonitajn laŭ la permesilo Open Government Licence v3.0."
+        },
+        "description": "Perfekte alĝustigita mapo de terpecoj en Britujo",
+        "name": "Parceloj OSMUK"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, kontribuintoj de OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: adresoj"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, kontribuintoj de OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: geometrio"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, kontribuintoj de OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: vojoj"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, kontribuintoj de OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: areoj"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, kontribuintoj de OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: lokoj"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, kontribuintoj de OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: voj-difinado"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, kontribuintoj de OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: etikedado"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "Plej aktuala aera fotaro de SPW(allonie)"
+      },
+      "SPW_PICC": {
+        "name": "Cifereca fotaro de PICC SPW(allonie)"
+      },
+      "Siemianowice_Slaskie-aerial_image": {
+        "attribution": {
+          "text": "Magistrato de la urbo Siemianowice Śląskie"
+        },
+        "name": "Siemianowice Śląskie: ortfotmapo (aera fotaro)"
+      },
+      "Siemianowice_Slaskie-buildings": {
+        "attribution": {
+          "text": "Magistrato de la urbo Siemianowice Śląskie"
+        },
+        "name": "Siemianowice Śląskie: konstruaĵoj"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Flave = publikaj map-datumoj de Usona popolnombrado. Ruĝe = datumoj ne trovitaj en OpenStreetMap"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "Flave = publikaj map-datumoj de Usona popolnombrado. Ruĝe = datumoj ne trovitaj en OpenStreetMap"
+      },
+      "US-TIGER-Roads-2020": {
+        "description": "Flave = publikaj map-datumoj de Usona popolnombrado. Ruĝe = datumoj ne trovitaj en OpenStreetMap"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Flave = publikaj map-datumoj de Usona popolnombrado. Ruĝe = datumoj ne trovitaj en OpenStreetMap"
+      },
+      "USDA-NAIP": {
+        "attribution": {
+          "text": "Usona Ministerio de Terkulturo"
+        }
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Vojo: verda rando = neklasifikita, bruna rando = kampa vojo. Pavimo: helbruna plenigo = sablego, nigra = asfalto, griza = pavimita, blanka = tera, blua = betono, verda = herbo. Blankaj strioj = sezona vojo.",
+        "name": "Surtavolo de kultiv-arbaraj vojoj"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Farita per rimedoj de Brussels UrbIS®© – distribuo kaj kopirajto al CIRB"
+        },
+        "name": "CIRB/CIBG plej aktuala aera fotaro"
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "Farita per rimedoj de Brussels UrbIS®© – distribuo kaj kopirajto al CIRB"
+        }
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "Farita per rimedoj de Brussels UrbIS®© – distribuo kaj kopirajto al CIRB"
+        }
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "Farita per rimedoj de Brussels UrbIS®© – distribuo kaj kopirajto al CIRB"
+        }
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "Farita per rimedoj de Brussels UrbIS®© – distribuo kaj kopirajto al CIRB"
+        }
+      },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Farita per rimedoj de Brussels UrbIS®© – distribuo kaj kopirajto al CIRB"
+        }
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "Farita per rimedoj de Brussels UrbIS®© - distribuo kaj kopirajto al CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
+        "attribution": {
+          "text": "Farita per rimedoj de Brussels UrbIS®© – distribuo kaj kopirajto al CIRB"
+        }
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "Farita per rimedoj de Brussels UrbIS®© - distribuo kaj kopirajto al CIRB"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, kontribuintoj de OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: biciklado"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, kontribuintoj de OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: marŝado"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, kontribuintoj de OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: mont-biciklado"
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, kontribuintoj de OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: rulglitado"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, kontribuintoj de OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: vintraj sportoj"
+      },
+      "Zabrze-2011": {
+        "attribution": {
+          "text": "Magistrato de la urbo Zabrze"
+        },
+        "name": "Zabrze: ortfotmapo 2011 (aera fotaro)"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "Mapo de Aŭstrujo bazita sur registaraj datumoj."
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Ortofota tavolo liverata de basemap.at, anstataŭanto de fotaro geoimage.at.",
+        "name": "basemap.at ortofoto"
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "description": "Surtavolo de notoj de basemap.at.",
+        "name": "basemap.at surtavolo"
+      },
+      "cyclosm": {
+        "attribution": {
+          "text": "Bildigado: CyclOSM (retgastigo de OpenStreetMap France), © map-datumoj: OpenStreetMap-kontribuintoj"
+        },
+        "description": "CyclOSM estas map-stilo projektita ĉefe por biciklado. Ĝi uzas OpenStreetMap-datumojn por krei belan kaj praktikan mapon por biciklistoj!"
+      },
+      "debicki-buildings": {
+        "attribution": {
+          "text": "Distrikto Dębica"
+        },
+        "name": "Distrikto Dębica: konstruaĵoj"
+      },
+      "eufar-balaton": {
+        "description": "Geografi-etikedita fotaro de 1940 de Balatona Instituto de Limnologio",
+        "name": "EUFAR Balaton aera fotaro"
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© komunumo Göteborg, CC0"
+        },
+        "description": "Maldetala mapo de la urbo Göteborg. Ĝi enhavas ĉefajn informojn pri tero, transporto, akvofluoj, konstruaĵoj, adresoj, nomoj de stratoj, administra divido kaj aliajn orientiĝajn tekstojn.",
+        "name": "Mapo de urbo Göteborg"
+      },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© komunumo Göteborg, CC0"
+        },
+        "description": "Reta mapo montranta altreliefon kaj deklivecon surbaze de la altituda modelo de Göteborg el 2017. Distingivo po 0,5 m en rastrumero.",
+        "name": "Altreliefo de Göteborg"
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© komunumo Göteborg, CC0"
+        },
+        "description": "Ortfotmapo pri la komunumo Göteborg",
+        "name": "Ortfotmapo Göteborg 2015"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© komunumo Göteborg, CC0"
+        },
+        "description": "Ortfotmapo pri la komunumo Göteborg",
+        "name": "Ortfotmapo Göteborg 2017"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© komunumo Göteborg, CC0"
+        },
+        "description": "Ortfotmapo pri la komunumo Göteborg",
+        "name": "Ortfotmapo Göteborg 2019"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "GSI Japanujo"
+        },
+        "description": "Ortfotmapo de GSI Japanujo. Ne tute geometrie korektita, sed iomete pli aktuala aŭ kovranta aliajn terenojn ol fotaro de GSI.",
+        "name": "Aera fotaro GSI Japanujo (nekorektita)"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "attribution": {
+          "text": "GSI Japanujo unuforma fotaro"
+        },
+        "description": "Senkunliga (unuforma) fotaro de GSI Japanujo. Kolekto de la plej aktualaj aeraj fotoj de GSI post la kataklismo kaj aliaj.",
+        "name": "Unuforma fotaro GSI Japanujo"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "GSI Japanujo"
+        },
+        "description": "Norma mapo de GSI Japanujo, larĝa map-atingo.",
+        "name": "Norma mapo GSI Japanujo"
+      },
+      "kalmar-orto-2014": {
+        "attribution": {
+          "text": "© komunumo Kalmar"
+        },
+        "description": "Ortfotmapo pri la norda marbordo de la komunumo Kalmar, 2014",
+        "name": "Ortfotmapo Kalmar (nordo) 2014"
+      },
+      "kalmar-orto-2016": {
+        "attribution": {
+          "text": "© komunumo Kalmar"
+        },
+        "description": "Ortfotmapo pri la suda marbordo de la komunumo Kalmar, 2016",
+        "name": "Ortfotmapo Kalmar (sudo) 2016"
+      },
+      "kalmar-orto-2018": {
+        "attribution": {
+          "text": "© komunumo Kalmar"
+        },
+        "description": "Ortfotmapo pri urba areo de la komunumo Kalmar, 2018",
+        "name": "Ortfotmapo Kalmar (urbo) 2018"
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© komunumo Kalmar"
+        },
+        "description": "Ortfotmapo pri urba areo de la komunumo Kalmar, 2020",
+        "name": "Ortfotmapo Kalmar (urbo) 2020"
+      },
+      "kartverket-bygninger": {
+        "description": "INSPIRE: konstruaĵoj en Norvegujo.",
+        "name": "Kartverket: konstruaĵa surtavolo"
+      },
+      "kelkkareitit": {
+        "description": "Motorsledaj kursoj el OSM en Nordlandoj (Kelkkareitit.fi)",
+        "name": "Nordlanda motorsleda surtavolo"
+      },
+      "lancucki-buildings": {
+        "attribution": {
+          "text": "Distrikto Łańcut"
+        },
+        "name": "Distrikto Łańcut: konstruaĵoj"
+      },
+      "lantmateriet-orto1960": {
+        "description": "Kunmetaĵo de Sveda ortfotmapo de jaroj 1955–1965. Pli novaj kaj pli malnovaj fotoj povas esti miksitaj.",
+        "name": "Lantmäteriet historia ortfotmapo 1960"
+      },
+      "lantmateriet-orto1975": {
+        "description": "Kunmetaĵo de Sveda ortfotmapo de jaroj 1970–1980. Estos plivastigita.",
+        "name": "Lantmäteriet historia ortfotmapo 1975"
+      },
+      "lantmateriet-topowebb": {
+        "description": "Topografia mapo de Svedujo 1:50 000",
+        "name": "Lantmäteriet topografia mapo"
+      },
+      "linkoping-orto": {
+        "attribution": {
+          "text": "© komunumo Linköping"
+        },
+        "description": "Ortfotmapo de la komunumo Linköping, malfermaj datumoj, 2010",
+        "name": "Ortfotmapo Linköping"
+      },
+      "lubaczowski-buildings": {
+        "attribution": {
+          "text": "Distrikto Lubaczów"
+        },
+        "name": "Distrikto Lubaczów: konstruaĵoj"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Kondiĉoj kaj rimarkoj"
+        },
+        "description": "Montras gravajn objektojn por helpi al vi orientiĝi.",
+        "name": "Orientiga surtavolo"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© OpenStreetMap-kontribuintoj, CC BY-SA"
+        },
+        "name": "OpenPT-mapo (surtavolo)"
+      },
+      "openrailwaymap": {
+        "attribution": {
+          "text": "Bildigado: OpenRailwayMap, © map-datumoj: OpenStreetMap-kontribuintoj"
+        },
+        "description": "Surtavolo montranta fervojan infrastrukturon surbaze de datumoj OpenStreetMap"
+      },
+      "openrailwaymap-maxspeeds": {
+        "attribution": {
+          "text": "Bildigado: OpenRailwayMap, © map-datumoj: OpenStreetMap-kontribuintoj"
+        },
+        "description": "Surtavolo montranta fervojajn rapidlimojn surbaze de datumoj OpenStreetMap",
+        "name": "OpenRailwayMap: rapidlimojn"
+      },
+      "openrailwaymap-signalling": {
+        "attribution": {
+          "text": "Bildigado: OpenRailwayMap, © map-datumoj: OpenStreetMap-kontribuintoj"
+        },
+        "description": "Surtavolo montranta fervojajn signalojn surbaze de datumoj OpenStreetMap",
+        "name": "OpenRailwayMap: signaloj"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© OpenStreetMap-kontribuintoj"
+        },
+        "description": "Publikaj GPS-spuroj alŝutitaj al OpenStreetMap.",
+        "name": "OpenStreetMap GPS-spuroj"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© OpenStreetMap-kontribuintoj, CC BY-SA"
+        },
+        "name": "OpenStreetMap (germana stilo)"
+      },
+      "poznan-ortofotomapa2014": {
+        "attribution": {
+          "text": "Ofico de geodezio kaj urba katastro en Poznano GEOPOZ"
+        },
+        "name": "Poznano: ortfotmapo 2014 (aera fotaro)"
+      },
+      "poznan-ortofotomapa2016": {
+        "attribution": {
+          "text": "Ofico de geodezio kaj urba katastro en Poznano GEOPOZ"
+        },
+        "name": "Poznano: ortfotmapo 2016 (aera fotaro)"
+      },
+      "poznan-ortofotomapaBiezaca": {
+        "attribution": {
+          "text": "Ofico de geodezio kaj urba katastro en Poznano GEOPOZ"
+        },
+        "name": "Poznano: plej aktuala ortfotmapo (aera fotaro)"
+      },
+      "przemysl-aerial": {
+        "attribution": {
+          "text": "urbo Przemyśl"
+        },
+        "name": "Przemyśl: ortfotmapo (aera fotaro)"
+      },
+      "przemysl-buildings": {
+        "attribution": {
+          "text": "urbo Przemyśl"
+        },
+        "name": "Przemyśl: konstruaĵoj"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon POOLE, Datumoj © kontribuintoj de OpenStreetMap"
+        }
+      },
+      "rzeszowski-aerial": {
+        "attribution": {
+          "text": "Distrikto Rzeszów"
+        },
+        "name": "Distrikto Rzeszów: ortfotmapo (aera fotaro)"
+      },
+      "rzeszowski-buildings": {
+        "attribution": {
+          "text": "Distrikto Rzeszów"
+        },
+        "name": "Distrikto Rzeszów: konstruaĵoj"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Kaheloj: skobbler map-datumoj: kontribuintoj de OpenStreetMap"
+        }
+      },
+      "skoterleder": {
+        "description": "Mapo de motorsledaj kursoj",
+        "name": "Motorsledaj kursoj en Svedujo"
+      },
+      "sropczyce-buildings": {
+        "attribution": {
+          "text": "Distrikto Ropczyce-Sędziszów"
+        },
+        "name": "Distrikto Ropczyce-Sędziszów: konstruaĵoj"
+      },
+      "stalowowolski-buildings": {
+        "attribution": {
+          "text": "Distrikto Stalowa Wola"
+        },
+        "name": "Distrikto Stalowa Wola: konstruaĵoj"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "Map-kaheloj de Stamen Design, laŭ CC BY 3.0. Datumoj de OpenStreetMap, laŭ ODbL"
+        }
+      },
+      "stockholm-orto": {
+        "attribution": {
+          "text": "© komunumo Stokholmo, CC0"
+        },
+        "description": "Ortfotmapo de la komunumo Stokholmo, permesilo CC0, 2018",
+        "name": "Ortfotmapo Stokholmo"
+      },
+      "susono_shizuoka_jp_orthophoto": {
+        "attribution": {
+          "text": "Ortfotmapo Susono"
+        },
+        "description": "Aerfotaro publikigitaj de la urbo Susono kiel malfermaj datumoj.",
+        "name": "Ortfotmapo Susono"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Mapoj: © Thunderforest, datumoj: © kontribuintoj de OpenStreetMap"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Mapoj: © Thunderforest, datumoj: © kontribuintoj de OpenStreetMap"
+        }
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Mapoj: © Thunderforest, datumoj: © kontribuintoj de OpenStreetMap"
+        }
+      },
+      "trafikverket-baninfo": {
+        "description": "Sveda fervoja reto (kun kromtrakoj)",
+        "name": "Trafikverket fervoja reto"
+      },
+      "trafikverket-baninfo-option": {
+        "description": "Sveda fervoja reto kun agordeblaj surtavoloj",
+        "name": "Agordoj pri Trafikverket fervoja reto"
+      },
+      "trafikverket-vagnat": {
+        "description": "Sveda voja reto de NVDB",
+        "name": "Trafikverket voja reto"
+      },
+      "trafikverket-vagnat-extra": {
+        "description": "Pliaj objektoj de Sveda NVDB: numeroj de aŭtovojoj, trafik-trankviligejoj, servejoj, pontoj, tuneloj, rapid-kontroliloj",
+        "name": "Trafikverket voja reto - detaloj"
+      },
+      "trafikverket-vagnat-option": {
+        "description": "Sveda voja reto de NVDB kun agordeblaj surtavoloj",
+        "name": "Agordoj pri Trafikverket voja reto"
+      },
+      "wroclaw-orto2015": {
+        "attribution": {
+          "text": "Magistrato de la urbo Vroclavo"
+        },
+        "name": "Vroclavo: ortfotmapo 2015 (aera fotaro)"
+      },
+      "wroclaw-orto2018": {
+        "attribution": {
+          "text": "Magistrato de la urbo Vroclavo"
+        },
+        "name": "Vroclavo: ortfotmapo 2018 (aera fotaro)"
+      }
+    }
+  }
+}

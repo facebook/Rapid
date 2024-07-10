@@ -1,0 +1,169 @@
+{
+  "ja": {
+    "imagery": {
+      "Bing": {
+        "description": "衛星・航空写真。撮影日付はCtrl+Shift+Bで現れる右下のパネルで確認可能。比較的新しい箇所が多いが位置ズレやゆがみ（特に高低差のある場所）に注意。日本では位置精度は概して国土地理院のものが高い。"
+      },
+      "EOXAT2018CLOUDLESS": {
+        "description": "後処理済みのSentinel 衛星画像(日本では低解像度)"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "規約 & フィードバック"
+        }
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "規約 & フィードバック"
+        },
+        "description": "おそらくEsriデフォルトのレイヤより明瞭で正確、しかしやや古いEsriアーカイブ画像。（日本での違いは不明）",
+        "name": "Esri World Imagery(精細版)ベータ"
+      },
+      "MAPNIK": {
+        "description": "OpenStreetMap標準レイヤーです。",
+        "name": "OpenStreetMap (標準)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "規約＆フィードバック"
+        },
+        "description": "Mapboxが提供する、世界各地の衛星画像と航空画像のベースマップをまとめたラスタータイルセット",
+        "name": "Mapbox衛星画像"
+      },
+      "OSM_Inspector-Addresses": {
+        "name": "OSM Inspector: 住所"
+      },
+      "OSM_Inspector-Geometry": {
+        "name": "OSM Inspector: ジオメトリ"
+      },
+      "OSM_Inspector-Highways": {
+        "name": "OSM Inspector: 道路"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "name": "OSM Inspector: エリア"
+      },
+      "OSM_Inspector-Places": {
+        "name": "OSM Inspector: 場所"
+      },
+      "OSM_Inspector-Routing": {
+        "name": "OSM Inspector: ルーティング"
+      },
+      "OSM_Inspector-Tagging": {
+        "name": "OSM Inspector: タグ付け"
+      },
+      "OpenAerialMapMosaic": {
+        "description": "Kontur.ioによる、OpenAerialMapの全画像を1つにしたモザイクレイヤー"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "SPW(allonie) 最新航空画像"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "黄 = US Censusからのパブリックドメインの地図データ。赤 = penStreetMapに無いデータ。"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Highway: 緑枠 = unclassified.ブラウン枠 = track. Surface: gravel = ライトブラウン, Asphalt = 黒, paved = グレイ, ground =白, concrete = 青, grass = 緑. Seasonal = 白棒"
+      },
+      "UrbISOrtho2016": {
+        "name": "UrbIS-オルソ 2016"
+      },
+      "UrbISOrtho2017": {
+        "name": "UrbIS-オルソ 2017"
+      },
+      "Waymarked_Trails-Cycling": {
+        "name": "Waymarked Trails: サイクリング"
+      },
+      "Waymarked_Trails-Hiking": {
+        "name": "Waymarked Trails: ハイキング"
+      },
+      "Waymarked_Trails-Skating": {
+        "name": "Waymarked Trails: スケート"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "name": "Waymarked Trails: 冬季スポーツ"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "オーストリアのベースマップ、政府データに基づく。"
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "basemap.at が提供するオルソ写真レイヤ。geoimage.at 画像の「後継」。"
+      },
+      "cyclosm": {
+        "description": "CyclOSMは、サイクリングを意識してデザインされた地図スタイルです。OpenStreetMapのデータを活用し、綺麗で実用的なサイクリング用マップを作成しています。"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "国土地理院 簡易空中写真"
+        },
+        "description": "航空レーザー測量点検用写真をつなぎ合わせたもので、地理院シームレス画像の一部ではあるが、撮影時期やカバー範囲が少し異なる部分もあるため代替として有用な場合がある。",
+        "name": "国土地理院 簡易空中写真"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "attribution": {
+          "text": "国土地理院 シームレス写真"
+        },
+        "description": "国土地理院のシームレス写真。電子国土基本図(オルソ画像), 東日本大震災後正射画像, 森林(国有林)の空中写真(林野庁), 簡易空中写真, 国土画像情報, からそれぞれ最新の写真を組合せたもの。",
+        "name": "国土地理院 全国最新写真(シームレス)"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "国土地理院 標準地図"
+        },
+        "description": "ズームレベル5～18の日本全国とその周辺地域をカバー。地図画像なのでトレースしやすく、概してBingより位置精度が高いが、やや古い場合がある。",
+        "name": "国土地理院 標準地図"
+      },
+      "kelkkareitit": {
+        "name": "Nordic snowmobile オーバーレイ"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "規約 & フィードバック"
+        },
+        "description": "背景画像上に低ズームでも主要な地物を表示します。",
+        "name": "地物簡略表示（低ズーム時）"
+      },
+      "openpt_map": {
+        "name": "OpenPT Map (オーバーレイ)"
+      },
+      "openrailwaymap": {
+        "attribution": {
+          "text": "レンダリング: OpenRailwayMap, © Map data OpenStreetMap contributors"
+        },
+        "description": "OpenStreetMapデータをベースに鉄道インフラを表示するオーバーレイ画像"
+      },
+      "openrailwaymap-maxspeeds": {
+        "attribution": {
+          "text": "レンダリング: OpenRailwayMap, © Map data OpenStreetMap contributors"
+        },
+        "description": "OpenStreetMapデータをベースに鉄道の速度制限を表示するオーバーレイ画像",
+        "name": "OpenRailwayMap 最高速度"
+      },
+      "openrailwaymap-signalling": {
+        "attribution": {
+          "text": "レンダリング: OpenRailwayMap, © Map data OpenStreetMap contributors"
+        },
+        "description": "OpenStreetMapデータをベースに鉄道信号機を表示するオーバーレイ画像",
+        "name": "OpenRailwayMap 鉄道信号機"
+      },
+      "osm-gps": {
+        "description": "OpenStreetMapにアップロードされた公開GPSトレースです。",
+        "name": "OpenStreetMap GPSトレース"
+      },
+      "osm-mapnik-german_style": {
+        "name": "OpenStreetMap (ドイツスタイル)"
+      },
+      "stamen-terrain-background": {
+        "name": "Stamen 地形図"
+      },
+      "susono_shizuoka_jp_orthophoto": {
+        "attribution": {
+          "text": "裾野市オルソ写真"
+        },
+        "description": "裾野市によりオープンデータとして公開されている航空写真",
+        "name": "裾野市オルソ写真"
+      },
+      "tf-outdoors": {
+        "name": "Thunderforest アウトドア"
+      }
+    }
+  }
+}

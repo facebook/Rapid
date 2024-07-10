@@ -45,7 +45,7 @@ export class PhotoSystem extends AbstractSystem {
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._hashchange = this._hashchange.bind(this);
-    this._updateHash = this._updateHash.bind(this);
+    this._photoChanged = this._photoChanged.bind(this);
   }
 
 
@@ -90,7 +90,7 @@ export class PhotoSystem extends AbstractSystem {
 
     return this._startPromise = prerequisites
       .then(() => {
-        map.scene.on('layerchange', this._updateHash);
+        map.scene.on('layerchange', this._photoChanged);
         this._started = true;
       });
   }
@@ -171,10 +171,10 @@ export class PhotoSystem extends AbstractSystem {
 
 
   /**
-   * _updateHash
+   * _photoChanged
    * Push changes in photo viewer state to the urlhash
    */
-  _updateHash() {
+  _photoChanged() {
     const urlhash = this.context.systems.urlhash;
     const scene = this.context.scene();
 
@@ -319,7 +319,7 @@ export class PhotoSystem extends AbstractSystem {
         .then(() => service.showViewer());
     }
 
-    this._updateHash();
+    this._photoChanged();
     this.emit('photochange');
   }
 
@@ -369,7 +369,7 @@ export class PhotoSystem extends AbstractSystem {
     }
 
     if (didChange) {
-      this._updateHash();
+      this._photoChanged();
       this.emit('photochange');
     }
   }
@@ -391,7 +391,7 @@ export class PhotoSystem extends AbstractSystem {
       }
     }
     this._usernames = val;
-    this._updateHash();
+    this._photoChanged();
     this.emit('photochange');
   }
 

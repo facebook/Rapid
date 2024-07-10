@@ -1,0 +1,140 @@
+{
+  "ms": {
+    "imagery": {
+      "Bing": {
+        "description": "Imejan satelit dan udara."
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Terma & Maklum Balas"
+        }
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Terma & Maklum Balas"
+        }
+      },
+      "MAPNIK": {
+        "description": "Lapisan OpenStreetMap tersedia."
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Terma & Maklum Balas"
+        }
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, penyumbang-penyumbang OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Alamat"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, penyumbang-penyumbang OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Geometri"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, penyumbang-penyumbang OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Lebuh Raya"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, penyumbang-penyumbang OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Kawasan"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, penyumbang-penyumbang OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Tempat"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, penyumbang-penyumbang OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Penghalaan"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, penyumbang-penyumbang OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Inspector: Penandaan"
+      },
+      "Waymarked_Trails-Cycling": {
+        "name": "Waymarked Trails: Berbasikal"
+      },
+      "Waymarked_Trails-Hiking": {
+        "name": "Waymarked Trails: Mendaki"
+      },
+      "Waymarked_Trails-MTB": {
+        "name": "Waymarked Trails: Basikal bukit (MTB)"
+      },
+      "Waymarked_Trails-Skating": {
+        "name": "Waymarked Trails: Luncur"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "name": "Waymarked Trails: Sukan Musim Sejuk"
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Lapisan Ortofoto disediakan oleh basemap.at. \"Pengganti\" imejan geoimage.at.",
+        "name": "Orthofoto basemap.at"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Terma & Maklum Balas"
+        },
+        "description": "Menunjukkan ciri-ciri utama untuk menolong mengorientasi anda.",
+        "name": "Lapisan Penunjuk"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© Penyumbang-penyumbang OpenStreetMap, CC-BY-SA"
+        },
+        "name": "Peta OpenPT (lapisan)"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© Penyumbang-penyumbang OpenStreetMap"
+        },
+        "description": "Jejak GPS awam dimuat naik ke OpenStreetMap",
+        "name": "Jejak GPS OpenStreetMap"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© Penyumbang-penyumbang OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (Gaya Jerman)"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, Data © penyumbang-penyumbang OpenStreetMap"
+        },
+        "name": "QA Tiada Alamat"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Tiles: data Peta skobbler: penyumbang-penyumbang OpenStreetMap"
+        }
+      },
+      "stamen-terrain-background": {
+        "name": "Rupa Bumi Stamen"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Peta © Thunderforest, Data © penyumbang-penyumbang OpenStreetMap"
+        },
+        "name": "OpenCycleMap Thunderforest"
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Peta © Thunderforest, Data © penyumbang-penyumbang OpenStreetMap"
+        },
+        "name": "Landskap Thunderforest"
+      }
+    }
+  }
+}

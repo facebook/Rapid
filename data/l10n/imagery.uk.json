@@ -1,0 +1,1086 @@
+{
+  "uk": {
+    "imagery": {
+      "Bedzin-PL-aerial_image": {
+        "attribution": {
+          "text": "Старостати в повіті Бендзин"
+        },
+        "name": "Бендзин: Ортофотомапа 2013 (аерофото)"
+      },
+      "Bedzin-PL-buildings": {
+        "attribution": {
+          "text": "Старостати в повіті Бендзин"
+        },
+        "name": "Бендзин: Будинки"
+      },
+      "Bing": {
+        "description": "Супутникові та аерофотознімки.",
+        "name": "Bing Maps, аерофото"
+      },
+      "Bytom-2012": {
+        "attribution": {
+          "text": "Уряд міста Битом"
+        },
+        "name": "Битом: Ортофотомапа 2012 (аерофото)"
+      },
+      "Bytom-2014": {
+        "attribution": {
+          "text": "Уряд міста Битом"
+        },
+        "name": "Битом: Фотоплан 2014 (аерофото)"
+      },
+      "Bytom-2016": {
+        "attribution": {
+          "text": "Уряд міста Битом"
+        },
+        "name": "Битом: Ортофотомапа 2016 (аерофото)"
+      },
+      "Bytom-2018": {
+        "attribution": {
+          "text": "Уряд міста Битом"
+        },
+        "name": "Битом: Ортофотомапа 2018 (аерофото)"
+      },
+      "Bytom-2021": {
+        "attribution": {
+          "text": "Уряд міста Битом"
+        },
+        "name": "Битом: Ортофотомапа 2021 (аерофото)"
+      },
+      "Bytom-buildings": {
+        "attribution": {
+          "text": "Уряд міста Битом"
+        },
+        "name": "Битом: Будинки"
+      },
+      "Czestochowa-2011": {
+        "attribution": {
+          "text": "Уряд міста Ченстохова"
+        },
+        "name": "Ченстохова: Ортофотомапа 2011 (аерофото)"
+      },
+      "Czestochowa-2013": {
+        "attribution": {
+          "text": "Уряд міста Ченстохова"
+        },
+        "name": "Ченстохова: Ортофотомапа 2013 (аерофото)"
+      },
+      "Czestochowa-2014": {
+        "attribution": {
+          "text": "Уряд міста Ченстохова"
+        },
+        "name": "Ченстохова: Ортофотомапа 2014 (аерофото)"
+      },
+      "Czestochowa-2015": {
+        "attribution": {
+          "text": "Уряд міста Ченстохова"
+        },
+        "name": "Ченстохова: Ортофотомапа 2015 (аерофото)"
+      },
+      "Czestochowa-2016": {
+        "attribution": {
+          "text": "Уряд міста Ченстохова"
+        },
+        "name": "Ченстохова: Ортофотомапа 2016 (аерофото)"
+      },
+      "Czestochowa-2017": {
+        "attribution": {
+          "text": "Уряд міста Ченстохова"
+        },
+        "name": "Ченстохова: Ортофотомапа 2017 (аерофото)"
+      },
+      "Czestochowa-buildings": {
+        "attribution": {
+          "text": "Уряд міста Ченстохова"
+        },
+        "name": "Ченстохова: Будинки"
+      },
+      "DV_DHMV_II_HILL_25cm": {
+        "name": "Digitaal Vlaanderen Цифрова модель висот Фландрії II, багатонапрямне відтінення 0,25 м"
+      },
+      "DV_DHMV_II_SVF_25cm": {
+        "name": "Digitaal Vlaanderen Цифрова модель висот Фландрії II, коефіцієнт Skyview 0,25 м"
+      },
+      "DV_OrthoPhoto": {
+        "name": "Свіжі аерофотознімки Фландрії від Digitaal Vlaanderen"
+      },
+      "DV_OrthoPhoto_20132015_10cm": {
+        "name": "Аерофотознімки Фландрії від Digitaal Vlaanderen, 2013-2015"
+      },
+      "DV_OrthoPhoto_Preliminary": {
+        "name": "Попередні аерофотознімки Фландрії від Digitaal Vlaanderen"
+      },
+      "DV_Wegenregister": {
+        "name": "Digitaal Vlaanderen Реєстр маршрутів"
+      },
+      "Dourados_Ortofotos": {
+        "attribution": {
+          "text": "Префектура Дорадус - GeoDourados"
+        },
+        "description": "Дорадус (2018) та інші райони (2020), аерофото у високій роздільній здатності.",
+        "name": "Дорадус, ортофото"
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 безхмарні знімки - https://s2maps.eu від EOX IT Services GmbH (Містить модифіковані дані Copernicus Sentinel 2017 та 2018)"
+        },
+        "description": "Оброблені супутникові знімки Sentinel.",
+        "name": "eox.at 2018 без хмар"
+      },
+      "EOXAT2019CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 безхмарні знімки - https://s2maps.eu від EOX IT Services GmbH (Містить модифіковані дані Copernicus Sentinel 2019)"
+        },
+        "description": "Оброблені супутникові знімки Sentinel.",
+        "name": "eox.at 2019 без хмар"
+      },
+      "EOXAT2020CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 безхмарні знімки - https://s2maps.eu від EOX IT Services GmbH (Містить модифіковані дані Copernicus Sentinel 2020)"
+        },
+        "description": "Оброблені супутникові знімки Sentinel.",
+        "name": "eox.at 2020 без хмар"
+      },
+      "EOXAT2021CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 безхмарні знімки - https://s2maps.eu від EOX IT Services GmbH (Містить модифіковані дані Copernicus Sentinel 2021)"
+        },
+        "description": "Оброблені супутникові знімки Sentinel.",
+        "name": "eox.at 2021 без хмар"
+      },
+      "EOXAT2022CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 безхмарні знімки - https://s2maps.eu від EOX IT Services GmbH (Містить модифіковані дані Copernicus Sentinel 2022)"
+        },
+        "description": "Оброблені супутникові знімки Sentinel.",
+        "name": "eox.at 2022 без хмар"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Умови використання та Відгуки"
+        },
+        "description": "Знімки Esri",
+        "name": "Esri, знімки світу"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Умови використання та Відгуки"
+        },
+        "description": "Архівні знімки Esri які можуть бути чіткішими та більш точними ніж знімки зі звичайного шару.",
+        "name": "Esri, знімки світу (очищені) бета"
+      },
+      "Frankfurt-am-Main-2019": {
+        "attribution": {
+          "text": "Міська геодезична служба, Франкфурт-на-Майні"
+        },
+        "description": "Аерофото Франкфурта-на-Майні, від 16 квітня 2019",
+        "name": "Франкфурт-на-Майні, аерофото, 2019"
+      },
+      "Geodatastyrelsen_Cadastral_Parcels_INSPIRE_View": {
+        "attribution": {
+          "text": "Агентство геоданих та Агентство з питань постачання даних та інфраструктури"
+        },
+        "name": "Кадастрові ділянки SDFI у вигляді INSPIRE"
+      },
+      "Geodatastyrelsen_DTK_Kort25": {
+        "attribution": {
+          "text": "Агенство з питань постачання даних та інфраструктури"
+        }
+      },
+      "Geodatastyrelsen_Denmark": {
+        "attribution": {
+          "text": "Агенство з питань постачання даних та інфраструктури"
+        },
+        "name": "SDFI, Аерофото"
+      },
+      "Geodatastyrelsen_Skaermkort": {
+        "attribution": {
+          "text": "Агенство з питань постачання даних та інфраструктури"
+        },
+        "name": "SDFI, Екранна мапа"
+      },
+      "Geoportal2-PL-City-boundaries_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Сервіс WMS, що показує польські територіальні одиниці, включно з адміністративними одиницями",
+        "name": "Geoportal 2: межі міст WMS"
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Ортофотомапа з роздільною здатністю 10 см або більше. Дані впорядковані за роздільною здатністю та актуальністю, наприклад, аркуш 2012 року з роздільною здатністю 8 см перекриває аркуш 2019 року з роздільною здатністю 10 см.",
+        "name": "Geoportal 2: Ортофото (архів) з високою роздільною здатністю (WMS)"
+      },
+      "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Ортофотомапа з роздільною здатністю 10 см або більше. Дані впорядковані за роздільною здатністю та актуальністю, наприклад, аркуш 2012 року з роздільною здатністю 8 см перекриває аркуш 2019 року з роздільною здатністю 10 см.",
+        "name": "Geoportal 2: Ортофото з високою роздільною здатністю (WMS)"
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Служба перегляду WMS Національна інтеграція нумерації адрес дозволяє завантажувати зображення мапи, створені на основі просторових даних з Державного реєстру кордонів у з розділу адресних записів.",
+        "name": "Geoportal 2: Назви вулиць"
+      },
+      "Geoportal2-PL-addres_points_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Служба перегляду WMS Національна інтеграція нумерації адрес дозволяє завантажувати зображення мапи, створені на основі просторових даних з Державного реєстру кордонів у з розділу адресних записів.",
+        "name": "Geoportal 2: Адреси"
+      },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Сервіс перегляду (Web Map Service, WMS), що дозволяє переглядати ортофото Польщі. Дані, що надаються за допомогою цієї послуги, є ортофотомапами, зробленими з аерофотознімків. Сервіс підтримує WMS 1.3.0.",
+        "name": "Geoportal 2: Ортофото (архів) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Сервіс перегляду (Web Map Service, WMS), що дозволяє переглядати ортофото Польщі. Дані, що надаються за допомогою цієї послуги, є ортофотомапами, зробленими з аерофотознімків. Сервіс підтримує WMS 1.3.0.",
+        "name": "Geoportal 2: Ортофото (найсвіжіші) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Сервіс перегляду (Web Map Tile Service – WMTS), що дозволяє переглядати ортофото Польщі. Дані, що надаються за допомогою цієї послуги, є ортофотомапами, зробленими з аерофотознімків.",
+        "name": "Geoportal 2: Ортофото (найсвіжіші) (WMTS)"
+      },
+      "Geoportal2-PL-boundaries-of-communes_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Сервіс WMS, що показує польські територіальні одиниці, включно з адміністративними одиницями",
+        "name": "Geoportal 2: межі громад WMS"
+      },
+      "Geoportal2-PL-boundaries-of-counties_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Сервіс WMS, що показує польські територіальні одиниці, включно з адміністративними одиницями",
+        "name": "Geoportal 2: межі округів WMS"
+      },
+      "Geoportal2-PL-boundaries-of-provinces_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Сервіс WMS, що показує польські територіальні одиниці, включно з адміністративними одиницями",
+        "name": "Geoportal 2: межі провінцій WMS"
+      },
+      "Geoportal2-PL-buildings_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Служба національної інтеграції земельного реєстру - це служба представлення реєстраційних даних, що надходять безпосередньо від підрозділів районного рівня. Послуга містить лише дані тих підрозділів, які мають сервіс WMS з відповідними параметрами і вирішили включити свою службу WMS до спільного сервісу національного реєстру.",
+        "name": "Geoportal 2: Земельний реєстр, WMS"
+      },
+      "Geoportal2-PL-gas-pipe_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Служба «Krajowa Integracja Uzbrojenia Terenu» — це колективна служба для представлення даних про комунальні послуги, що надходять безпосередньо від підрозділів повітового рівня. Сервіс містить лише дані тих підрозділів, які мають сервіс WMS з відповідними параметрами та вирішили включити свій сервіс WMS до сервісу Krajowa Integracja Uzbrojenia Terenu.",
+        "name": "Geoportal 2: газопроводи WMS"
+      },
+      "Geoportal2-PL-heat-pipe_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Служба «Krajowa Integracja Uzbrojenia Terenu» — це колективна служба для представлення даних про комунальні послуги, що надходять безпосередньо від підрозділів повітового рівня. Сервіс містить лише дані тих підрозділів, які мають сервіс WMS з відповідними параметрами та вирішили включити свій сервіс WMS до сервісу Krajowa Integracja Uzbrojenia Terenu.",
+        "name": "Geoportal 2: тепломережі WMS"
+      },
+      "Geoportal2-PL-plot_boundaries_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Служба національної інтеграції земельного реєстру - це служба представлення реєстраційних даних, що надходять безпосередньо від підрозділів районного рівня. Послуга містить лише дані тих підрозділів, які мають сервіс WMS з відповідними параметрами і вирішили включити свою службу WMS до спільного сервісу національного реєстру.",
+        "name": "Geoportal 2: Межі кадастрових ділянок"
+      },
+      "Geoportal2-PL-power-cord_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Служба «Krajowa Integracja Uzbrojenia Terenu» — це колективна служба для представлення даних про комунальні послуги, що надходять безпосередньо від підрозділів повітового рівня. Сервіс містить лише дані тих підрозділів, які мають сервіс WMS з відповідними параметрами та вирішили включити свій сервіс WMS до сервісу Krajowa Integracja Uzbrojenia Terenu.",
+        "name": "Geoportal 2: електропостачання WMS"
+      },
+      "Geoportal2-PL-prng": {
+        "attribution": {
+          "text": "Центральний орган геодезичної та картографічної документації"
+        },
+        "name": "Geoportal 2: PRNG (топоніми)"
+      },
+      "Geoportal2-PL-sewer-pipe_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Служба «Krajowa Integracja Uzbrojenia Terenu» — це колективна служба для представлення даних про комунальні послуги, що надходять безпосередньо від підрозділів повітового рівня. Сервіс містить лише дані тих підрозділів, які мають сервіс WMS з відповідними параметрами та вирішили включити свій сервіс WMS до сервісу Krajowa Integracja Uzbrojenia Terenu.",
+        "name": "Geoportal 2: каналізація та водовідведення WMS"
+      },
+      "Geoportal2-PL-shaded_relief_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Служба перегляду (WMS) для перегляду затінення DMT у сітці 1м×1м. Сервіс пропонує підтримку інтерфейсу WMS 1.3.0.",
+        "name": "Geoportal 2: Затінений рельєф WMS"
+      },
+      "Geoportal2-PL-squares-and-housing-estates_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Служба перегляду WMS Національна інтеграція нумерації адрес дозволяє завантажувати зображення мапи, створені на основі просторових даних з Державного реєстру кордонів у з розділу адресних записів.",
+        "name": "Geoportal 2: Сквери та житлові масиви"
+      },
+      "Geoportal2-PL-state-borders_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Сервіс WMS, що показує польські територіальні одиниці, включно з адміністративними одиницями",
+        "name": "Geoportal 2: державні кордони WMS"
+      },
+      "Geoportal2-PL-telecommunications-cable_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Служба «Krajowa Integracja Uzbrojenia Terenu» — це колективна служба для представлення даних про комунальні послуги, що надходять безпосередньо від підрозділів повітового рівня. Сервіс містить лише дані тих підрозділів, які мають сервіс WMS з відповідними параметрами та вирішили включити свій сервіс WMS до сервісу Krajowa Integracja Uzbrojenia Terenu.",
+        "name": "Geoportal 2: телекомунікаційні мережі WMS"
+      },
+      "Geoportal2-PL-water-pipe_WMS": {
+        "attribution": {
+          "text": "Головне управління геодезії та картографії"
+        },
+        "description": "Служба «Krajowa Integracja Uzbrojenia Terenu» — це колективна служба для представлення даних про комунальні послуги, що надходять безпосередньо від підрозділів повітового рівня. Сервіс містить лише дані тих підрозділів, які мають сервіс WMS з відповідними параметрами та вирішили включити свій сервіс WMS до сервісу Krajowa Integracja Uzbrojenia Terenu.",
+        "name": "Geoportal 2: водопостачання WMS"
+      },
+      "Gliwice-2003": {
+        "attribution": {
+          "text": "Уряд міста Глівіце"
+        },
+        "name": "Глівіце: Ортофотомапа 2003 (аерофото)"
+      },
+      "Gliwice-2009": {
+        "attribution": {
+          "text": "Уряд міста Глівіце"
+        },
+        "name": "Глівіце: Ортофотомапа 2009 (аерофото)"
+      },
+      "Gliwice-2013": {
+        "attribution": {
+          "text": "Уряд міста Глівіце"
+        },
+        "name": "Глівіце: Ортофотомапа 2013 (аерофото)"
+      },
+      "Gliwice-2017": {
+        "attribution": {
+          "text": "Уряд міста Глівіце"
+        },
+        "name": "Глівіце: Ортофотомапа 2017 (аерофото)"
+      },
+      "Gliwice-2018": {
+        "attribution": {
+          "text": "Уряд міста Глівіце"
+        },
+        "name": "Глівіце: Ортофотомапа 2018 (аерофото)"
+      },
+      "Gliwice-2020": {
+        "attribution": {
+          "text": "Уряд міста Глівіце"
+        },
+        "name": "Глівіце: Ортофотомапа 2020 (аерофото)"
+      },
+      "Gliwice-2021": {
+        "attribution": {
+          "text": "Уряд міста Глівіце"
+        },
+        "name": "Глівіце: Ортофотомапа 2021 (аерофото)"
+      },
+      "Gliwice-buildings": {
+        "attribution": {
+          "text": "Уряд міста Глівіце"
+        },
+        "name": "Глівіце: Будинки"
+      },
+      "LSA-ATKIS_BU": {
+        "description": "Контури будівель Саксонія-Ангальт"
+      },
+      "LSA-DOP20": {
+        "description": "аерофото землі Саксонія-Ангальт, 20см"
+      },
+      "LSA-DVG": {
+        "description": "Адміністративні межі (векторні дані) федеральної землі, районів, муніципалітетів та складових муніципалітетів."
+      },
+      "LocalAuthorities_RightsOfWay": {
+        "attribution": {
+          "text": "Містить інформацію про державний сектор, ліцензія Open Government Licence v3.0."
+        },
+        "description": "Дані про дозволи на пересування, опубліковані місцевими органами влади, зібрані на сайті rowmaps.com",
+        "name": "Дозволи на пересування"
+      },
+      "Lodz-2015": {
+        "attribution": {
+          "text": "Уряд міста Лодзь"
+        },
+        "name": "Лодзь: Ортофотомапа 2015 (аерофото)"
+      },
+      "Lodz-2017": {
+        "attribution": {
+          "text": "Уряд міста Лодзь"
+        },
+        "name": "Лодзь: Ортофотомапа 2017 (аерофото)"
+      },
+      "Lodz-buildings": {
+        "attribution": {
+          "text": "Уряд міста Лодзь"
+        },
+        "name": "Лодзь: Будинки"
+      },
+      "MAPNIK": {
+        "attribution": {
+          "text": "© Учасники OpenStreetMap, ODbL 1.0"
+        },
+        "description": "Типовий шар OpenStreetMap.",
+        "name": "OpenStreetMap (Стандартний)"
+      },
+      "Maaamet-Estonia_Cadastre": {
+        "attribution": {
+          "text": "Maa-amet, земельна рада кадастрова карта на основі ортофото"
+        },
+        "name": "Maa-amet Кадастрова мапа"
+      },
+      "Maaamet-Estonia_Ortho": {
+        "attribution": {
+          "text": "Maa-amet ортофото"
+        }
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Умови використання та Відгуки"
+        },
+        "description": "Набір растрових тайлів, наданий Mapbox, який включає глобальне покриття супутниковими та аерофотознімками високої роздільної здатності",
+        "name": "Mapbox, супутникові знімки "
+      },
+      "Naturvardsverket-protected": {
+        "description": "Шведські національні парки, природні заповідники та інші природоохоронні території та обʼєкти",
+        "name": "Агентство з охорони навколишнього середовища – природоохоронні території"
+      },
+      "Naturvardsverket-trails": {
+        "description": "Щоденно оновлювані маршрути в природних заповідниках або навколо них згідно з даними Шведського агентства з охорони навколишнього середовища",
+        "name": "Агентство з охорони навколишнього середовища – туристичні маршрути"
+      },
+      "OSIP": {
+        "attribution": {
+          "text": "Програма знімання штату Огайо"
+        },
+        "description": "Програма створення зображень штату Огайо III із роздільною здатністю від 1 фута до 3 дюймів впродовж 2017-2020 років.",
+        "name": "Програма знімання штату Огайо"
+      },
+      "OSIP_1ft": {
+        "attribution": {
+          "text": "Програма знімання штату Огайо"
+        },
+        "description": "Ортофото 88 округів Огайо були зроблені в рамках Програми створення зображень штату Огайо II із роздільною здатністю 1 фут впродовж 2011-2014 років.",
+        "name": "Програма знімання штату Огайо, 1 фут"
+      },
+      "OSIP_6in": {
+        "attribution": {
+          "text": "Програма знімання штату Огайо"
+        },
+        "description": "Ортофото 40 округів Огайо були зроблені в рамках Програми створення зображень штату Огайо III із роздільною здатністю 6 дюймів у 2017-2018 роках, а також знімки OSIP I та OSIP II ще 16 округів зроблені впродовж 2010-2014 років.",
+        "name": "Програма знімання штату Огайо, 6 дюймів"
+      },
+      "OSMUK-Cadastral-Parcels": {
+        "attribution": {
+          "text": "Містить інформацію про державний сектор, ліцензія Open Government Licence v3.0."
+        },
+        "description": "Ідеально вирівняні кадастрові ділянки (земельні реєстри) у Великобританії",
+        "name": "OSMUK Кадастрові ділянки"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, Учасники OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Інспектор: Адреси"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, Учасники OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Інспектор: Геометрія"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, Учасники OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Інспектор: Дороги"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, Учасники OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Інспектор: Полігони"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, Учасники OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Інспектор: Місця"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, Учасники OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Інспектор: Маршрути"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, Учасники OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OSM Інспектор: Теґи"
+      },
+      "OpenAerialMapMosaic": {
+        "description": "Всі знімки OpenAerialMap у вигляді мозаїки підготовленої Kontur.io",
+        "name": "OpenAerialMap Mosaic, від Kontur.io"
+      },
+      "Riksantikvariambetet-archaeological": {
+        "description": "Старовинні та історичні памʼятки та монументи",
+        "name": "Riksantikvariämbetet – Старовинні та історичні памʼятки та монументи"
+      },
+      "Riksantikvariambetet-heritage": {
+        "description": "Історичні будівлі та церкви",
+        "name": "Riksantikvariämbetet – Історичні будівлі "
+      },
+      "Riksantikvariambetet-protected": {
+        "description": "Охоронні зони для будівель історичної спадщини та об’єктів релігійної спадщини",
+        "name": "Riksantikvarieämbetet – Охоронювані території"
+      },
+      "Riksantikvariambetet-ruins": {
+        "description": "Руїни що мають культурно-історичний інтерес",
+        "name": "Riksantikvariämbetet – Руїни"
+      },
+      "SDFE_Overflade_Skyggekort_40cm": {
+        "attribution": {
+          "text": "Агенство з питань постачання даних та інфраструктури"
+        },
+        "name": "SDFI, Мапа відтінення поверхні (40 см)"
+      },
+      "SDFE_Terraen_Skyggekort_40cm": {
+        "attribution": {
+          "text": "Агенство з питань постачання даних та інфраструктури"
+        },
+        "name": "SDFI, Мапа відтінення рельєфу (40 см)"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "SPW (allonie) найновіші аерофотознімки"
+      },
+      "SPW_PICC": {
+        "name": "SPW (allonie) числові зображення PICC"
+      },
+      "Siemianowice_Slaskie-aerial_image": {
+        "attribution": {
+          "text": "Уряд міста Семяновиці-Шльонські"
+        },
+        "name": "Семяновиці-Шльонські: Ортофотомапа (аерофото)"
+      },
+      "Siemianowice_Slaskie-buildings": {
+        "attribution": {
+          "text": "Уряд міста Семяновиці-Шльонські"
+        },
+        "name": "Семяновиці-Шльонські: Будинки"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Жовтий = Дані, що розповсюджуються US Census на умовах суспільного надбання. Червоний = Дані, відсутні в OpenStreetMap"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "Жовтий = Дані, що розповсюджуються US Census на умовах суспільного надбання. Червоний = Дані, відсутні в OpenStreetMap"
+      },
+      "US-TIGER-Roads-2020": {
+        "description": "Жовтий = Дані, що розповсюджуються US Census на умовах суспільного надбання. Червоний = Дані, відсутні в OpenStreetMap"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Жовтий = Дані, що розповсюджуються US Census на умовах суспільного надбання. Червоний = Дані, відсутні в OpenStreetMap"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Жовтий = Дані, що розповсюджуються US Census на умовах суспільного надбання. Червоний = Дані, відсутні в OpenStreetMap"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Жовтий = Дані, що розповсюджуються US Census на умовах суспільного надбання. Червоний = Дані, відсутні в OpenStreetMap"
+      },
+      "USDA-NAIP": {
+        "attribution": {
+          "text": "Міністерство сільського господарства США"
+        },
+        "description": "Свіжі знімки 30/60 см 4-смугові DOQQ від Національної програми землеробства (NAIP) для кожного штату в суміжних штатах, Сполучені Штати.",
+        "name": "NAIP, Знімки Національної програми землеробства"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Дороги: Зелений контур = unclassified. Коричневий контур = track. Покриття: gravel = світло-коричневе заповнення, asphalt = чорне, paved = сіре, ground = біле, concrete = синє, grass = зелене. Seasonal = білі смуги",
+        "name": "U.S. Forest Roads, додатковий шар"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Випущено за допомоги Brussels UrbIS®© - Distribution & Copyright CIRB"
+        },
+        "name": "CIRB/CIBG найсвіжіші аерофото"
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "Випущено за допомоги Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "Випущено за допомоги Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "Випущено за допомоги Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "Випущено за допомоги Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Випущено за допомоги Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "Випущено за допомоги Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
+        "attribution": {
+          "text": "Випущено за допомоги Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "Випущено за допомоги Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, Учасники OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Велосипед"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, Учасники OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Піший туризм"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, Учасники OpenStreetMap, CC by-SA 3.0"
+        }
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, Учасники OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Ковзани"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, Учасники OpenStreetMap, CC by-SA 3.0"
+        },
+        "name": "Waymarked Trails: Зимові вид спорту"
+      },
+      "Zabrze-2011": {
+        "attribution": {
+          "text": "Уряд міста Забже"
+        },
+        "name": "Забже: Ортофотомапа 2011 (аерофото)"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "Мапа Австрії, на основі урядових даних."
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Шар ортофото надається basemap.at. \"Наступник\" знімків від geoimage.at.",
+        "name": "basemap.at Ортофото"
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "description": "Шар з підписами від  basemap.at.",
+        "name": "basemap.at - допоміжний шар"
+      },
+      "cyclosm": {
+        "attribution": {
+          "text": "Візуалізація: ЦиклОСМ, за підтримки OpenStreetMap France. © Дані мапи: Учасники OpenStreetMap"
+        },
+        "description": "ЦіклОСМ – стиль створений з прицілом на велосипедистів. Він використовує дані OpenStreetMap для створення чудової та практичної веломапи!",
+        "name": "ЦиклОСМ"
+      },
+      "debicki-buildings": {
+        "attribution": {
+          "text": "Дембицький повіт"
+        },
+        "name": "Дембицький повіт: Будинки"
+      },
+      "eufar-balaton": {
+        "attribution": {
+          "text": "EUFAR Балатон ортофото 2010"
+        },
+        "description": "1940 р. геотеговані фотографії Балатонського лімнологічного інституту.",
+        "name": "EUFAR Балатон ортофото"
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© Муніципалітет Гетеборга, CC0"
+        },
+        "description": "Мапа міста - це оглядова мапа, яка зображує Гетеборг. Вона містить загальну інформацію про землю, комунікації, гідрографію, будинки, адресні номери та назви вулиць, адміністративний поділ та інший орієнтаційний текст.",
+        "name": "Мапа міста Гетеборг"
+      },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© Муніципалітет Гетеборга, CC0"
+        },
+        "description": "Мапа, що представляє рельєф на основі моделі висоти міста Гетеборг 2017 Роздільна здатність 0,5 метра на піксель.",
+        "name": "Рельєф, Гетеборг"
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© Муніципалітет Гетеборга, CC0"
+        },
+        "description": "Ортофото муніципалітету Гетеборга",
+        "name": "Ортофото, Гетеборг 2015"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© Муніципалітет Гетеборга, CC0"
+        },
+        "description": "Ортофото муніципалітету Гетеборга",
+        "name": "Ортофото, Гетеборг 2017"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© Муніципалітет Гетеборга, CC0"
+        },
+        "description": "Ортофото муніципалітету Гетеборга",
+        "name": "Ортофото, Гетеборг 2019"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© Муніципалітет Гетеборга, CC0"
+        },
+        "description": "Ортофото муніципалітету Гетеборга",
+        "name": "Ортофото, Гетеборг 2021"
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© Муніципалітет Гетеборга, CC0"
+        },
+        "description": "Ортофото муніципалітету Гетеборга",
+        "name": "Гетеборг ортофото, найсвіжіші"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "description": "Japan GSI аерофотознімки. Не повністю орторектифіковані, але трохи новіші та/або з різним покриттям, ніж GSI ортознімки.",
+        "name": "Japan GSI аерофотознімки"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "attribution": {
+          "text": "GSI Japan безшовні фото"
+        },
+        "description": "GSI Japan безшовні фото - збірка останніх знімків від GSI: орто, аерофто, знімки з місць катастроф та інше.",
+        "name": "GSI Japan безшовні фото"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "description": "Japan GSI Стандартна мапа. Велике покриття.",
+        "name": "Japan GSI Стандартна мапа."
+      },
+      "kalmar-orto-2014": {
+        "description": "Ортофото північного узбережжя муніципалітету Кальмар, 2014 рік"
+      },
+      "kalmar-orto-2016": {
+        "description": "Ортофото південного узбережжя муніципалітету Кальмар, 2016 рік"
+      },
+      "kalmar-orto-2018": {
+        "description": "Ортофото міських районів муніципалітету Кальмар, 2018 рік"
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© муніципалітет Кальмар"
+        },
+        "description": "Ортофото для міських районів муніципалітету Кальмар 2020"
+      },
+      "kartverket-bygninger": {
+        "description": "INSPIRE будинки в Норвегії.",
+        "name": "Допоміжний шар з будинками, Kartverket"
+      },
+      "kelkkareitit": {
+        "description": "Kelkkareitit.fi – траси для снігоходів з даних OSM (Скандинавія)",
+        "name": "Скандинавія, траси для снігоходів"
+      },
+      "lancucki-buildings": {
+        "attribution": {
+          "text": "Ланьцутський повіт"
+        },
+        "name": "Ланьцутський повіт: Будинки"
+      },
+      "lantmateriet-orto1960": {
+        "description": "Мозаїка Шведських ортофото за період 1955-1965 рр. Можуть траплятись як старі так і нові зображення.",
+        "name": "Lantmäteriet Історичні ортофото 1960"
+      },
+      "lantmateriet-orto1975": {
+        "description": "Мозаїка Шведських ортофото за період 1970-1980 рр. Можуть траплятись як старі так і нові зображення.",
+        "name": "Lantmäteriet Історичні ортофото 1975"
+      },
+      "lantmateriet-topowebb": {
+        "description": "Топомапа Швеції 1:50 000",
+        "name": "Lantmäteriet топомапа"
+      },
+      "linkoping-orto": {
+        "description": "Ортофото муніципалітету Лінчепінг, 2010 р., відкриті дані",
+        "name": "Лінчепінг ортофото"
+      },
+      "lubaczowski-buildings": {
+        "attribution": {
+          "text": "Любачівський повіт"
+        },
+        "name": "Любачівський повіт: Будинки"
+      },
+      "maaamet<TX_DOT>ee-cir_ngr": {
+        "attribution": {
+          "text": "Maa-amet ортофото Земельного управління"
+        },
+        "name": "Maa-amet Лісництва"
+      },
+      "maaamet<TX_DOT>ee-orto": {
+        "attribution": {
+          "text": "Maa-amet ортофото"
+        }
+      },
+      "maaamet<TX_DOT>ee-pohi_vr2": {
+        "attribution": {
+          "text": "Maa-amet базова мапа"
+        },
+        "name": "Maa-amet Базова мапа"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Умови використання та Відгуки"
+        },
+        "description": "Показуються основні обʼєкти, щоб допомогти зорієнтуватись.",
+        "name": "Визначення локації"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© Учасники OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OpenPT мапа (допоміжний шар)"
+      },
+      "openrailwaymap": {
+        "attribution": {
+          "text": "Візуалізація: OpenRailwayMap, © Дані мапи: Учасники OpenStreetMap"
+        },
+        "description": "Допоміжний шар з інфраструктурою залізниці, створений з даних OpenStreetMap"
+      },
+      "openrailwaymap-maxspeeds": {
+        "attribution": {
+          "text": "Візуалізація: OpenRailwayMap, © Дані мапи: Учасники OpenStreetMap"
+        },
+        "description": "Допоміжний шар з зазначенням швидкісних обмежень на залізниці, створений з даних OpenStreetMap",
+        "name": "OpenRailwayMap Макс. швидкість"
+      },
+      "openrailwaymap-signalling": {
+        "attribution": {
+          "text": "Візуалізація: OpenRailwayMap, © Дані мапи: Учасники OpenStreetMap"
+        },
+        "description": "Допоміжний шар з семафорами на залізниці, створений з даних OpenStreetMap",
+        "name": "OpenRailwayMap Семафори"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© Учасники OpenStreetMap"
+        },
+        "description": "Публічні треки GPS завантажені до OpenStreetMap.",
+        "name": "OpenStreetMap GPS треки"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© Учасники OpenStreetMap, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (Німецький стиль)"
+      },
+      "osmse-ekonomiska": {
+        "description": "Скан  \"Economic maps\" прибл. 1950-1978"
+      },
+      "osmse-generalstab": {
+        "description": "Скан of \"Generalstabskartan\" прибл. 1859–1979"
+      },
+      "poznan-ortofotomapa2014": {
+        "attribution": {
+          "text": "Управління геодезії та міського кадастру GEOPOZ"
+        },
+        "name": "Познань: Ортофотомапа 2014 (аерофото)"
+      },
+      "poznan-ortofotomapa2016": {
+        "attribution": {
+          "text": "Управління геодезії та міського кадастру GEOPOZ"
+        },
+        "name": "Познань: Ортофотомапа 2016 (аерофото)"
+      },
+      "poznan-ortofotomapaBiezaca": {
+        "attribution": {
+          "text": "Управління геодезії та міського кадастру GEOPOZ"
+        },
+        "name": "Познань: Ортофотомапа Бежице (аерофото)"
+      },
+      "przemysl-aerial": {
+        "attribution": {
+          "text": "Місто Перемишль"
+        },
+        "name": "Перемишль: Ортофотомапа (аерофото)"
+      },
+      "przemysl-buildings": {
+        "attribution": {
+          "text": "Місто Перемишль"
+        },
+        "name": "Перемишль: Будинки"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, Дані © Учасники OpenStreetMap"
+        },
+        "name": "QA, Немає адрес"
+      },
+      "route500": {
+        "attribution": {
+          "text": "Тайли © cquest@Openstreetmap France, дані © IGN, LO/OL"
+        },
+        "description": "Маршрути класифікованої мережі (шосе, національні, відомчі)"
+      },
+      "rzeszowski-aerial": {
+        "attribution": {
+          "text": "Жешовський повіт"
+        },
+        "name": "Жешувський повіт: Ортофотомапа (аерофото)"
+      },
+      "rzeszowski-buildings": {
+        "attribution": {
+          "text": "Жешовський повіт"
+        },
+        "name": "Жешовський повіт: Будинки"
+      },
+      "scb-industrial": {
+        "description": "Географічно відмежовані території, які характеризуються великомасштабним і промисловим землекористуванням",
+        "name": "SCB – Індустріальні зони"
+      },
+      "scb-settlements": {
+        "description": "Території забудови з кількістю мешканців 50-199 і відстань між будинками не більше 150 метрів.",
+        "name": "SCB – Невеличкі поселення"
+      },
+      "scb-urban": {
+        "description": "Поселення, щонайменше 200 осіб, з менш ніж 500 метрами між домогосподарствами",
+        "name": "SCB – Урбанізовані території"
+      },
+      "scb-vacation": {
+        "description": "Території, які складаються переважно з будинків відпочинку; сукупність не менше 50 будинків відпочинку, відстань між якими не перевищує 150 метрів",
+        "name": "SCB – Дачі"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Тайли: skobbler Дані: Учасники OpenStreetMap"
+        }
+      },
+      "skolverket-schools": {
+        "description": "Школи Швеції.",
+        "name": "Skolverket – Школи"
+      },
+      "skoterleder": {
+        "description": "Маршрути для снігоходів",
+        "name": "Маршрути для снігоходів Швеція"
+      },
+      "sropczyce-buildings": {
+        "attribution": {
+          "text": "Ропчицько-Сендзішовський повіт"
+        },
+        "name": "Ропчицько-Сендзішовський повіт: Будинки"
+      },
+      "stalowowolski-buildings": {
+        "attribution": {
+          "text": "Стальововольський повіт"
+        },
+        "name": "Стальововольський повіт: Будинки"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "Тайли мапи від Stamen Design, CC BY 3.0. Дані OpenStreetMap, ODbL."
+        }
+      },
+      "stockholm-orto": {
+        "description": "Ортофото від муніципалітету Стокгольма 2018, ліцензія CC0",
+        "name": "Стокгольм ортофото"
+      },
+      "susono_shizuoka_jp_orthophoto": {
+        "attribution": {
+          "text": "місто Сусоно, ортофото"
+        },
+        "description": "Аерофотознімки, опубліковані містом Сусоно як відкриті дані.",
+        "name": "місто Сусоно, ортофото"
+      },
+      "svk-electricity-network": {
+        "description": "Шведська мережа передачі електроенергії.",
+        "name": "SVK – Електромережі"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Мапи © Thunderforest, Дані © Учасники OpenStreetMap"
+        }
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Мапи © Thunderforest, Дані © Учасники OpenStreetMap"
+        }
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Мапи © Thunderforest, Дані © Учасники OpenStreetMap"
+        }
+      },
+      "trafikverket-baninfo": {
+        "description": "Шведська залізнична мережа, у тому числі переїзди",
+        "name": "Trafikverket Залізниця"
+      },
+      "trafikverket-baninfo-option": {
+        "description": "Шведська залізнична мережа з декількома варіантами шарів мапи",
+        "name": "Trafikverket Залізниця, додатково"
+      },
+      "trafikverket-vagnat": {
+        "description": "Дорожня мережа Швеції NVDB",
+        "name": "Trafikverket Дорожня мережа"
+      },
+      "trafikverket-vagnat-extra": {
+        "description": "Додаткові дані NVDB Швеція: номери автострад, засоби регулювання швидкості, зони відпочинку, автобусні зупинки, мости та тунелі, камери фіксації швидкості",
+        "name": "Trafikverket Дорожня мережа, з доповненнями"
+      },
+      "trafikverket-vagnat-option": {
+        "description": "Дорожня мережа Швеції NVDB з кількома варіантами шарів мапи",
+        "name": "Trafikverket Дорожня мережа, додатково"
+      },
+      "wroclaw-orto2015": {
+        "attribution": {
+          "text": "Уряд міста Вроцлав"
+        },
+        "name": "Вроцлав: Ортофотомапа 2015 (аерофото)"
+      },
+      "wroclaw-orto2018": {
+        "attribution": {
+          "text": "Уряд міста Вроцлав"
+        },
+        "name": "Вроцлав: Ортофотомапа 2018 (аерофото)"
+      }
+    }
+  }
+}
