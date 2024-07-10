@@ -25,7 +25,7 @@ describe('DataLoaderSystem', () => {
 
   describe('#getDataAsync', () => {
     it('returns a promise resolved if we already have the data', () => {
-      _dataloader._cachedData.test = { hello: 'world' };
+      _dataloader._cache.test = { hello: 'world' };
 
       const prom = _dataloader.getDataAsync('test');
       expect(prom).to.be.an.instanceof(Promise);

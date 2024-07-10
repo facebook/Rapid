@@ -5,7 +5,7 @@ import { utilFetchResponse } from '../util/index.js';
 /**
  * `DataLoaderSystem` fetches data in JSON files.
  * This allows us to deploy Rapid in a way that the data it needs can be fetched at runtime.
- * It provides a method `get` that returns a Promise that resolves when the data is available.
+ * It provides a method `getDataAsync` returning a Promise that resolves when the data is available.
  *
  * Properties available:
  *   `fileMap`   `Map` of resourceID to url
@@ -46,19 +46,19 @@ export class DataLoaderSystem extends AbstractSystem {
     fileMap.set('wmf_sitematrix', 'https://cdn.jsdelivr.net/npm/wmf-sitematrix@0.1/wikipedia.min.json');
 
     this.fileMap = fileMap;
-    this._cachedData = {};
+    this._cache = {};
     this._inflight = {};
 
     // Mock data for testing, prevents the data from being fetched.
     // Not sure how I feel about this :-/
     if (window.mocha) {
-      const c = this._cachedData;
+      const c = this._cache;
       c.address_formats = { addressFormats: [{ format: [['housenumber', 'street'], ['city', 'postcode']] }]};
       c.deprecated = [{ old: { highway: 'no' } }, { old: { highway: 'ford' }, replace: { ford: '*' } } ];
       c.discarded = {};
       c.imagery = { imagery: [] };
       c.languages = { languages: { de: { nativeName: 'Deutsch' }, en: { nativeName: 'English' } } };
-      c.locales = { en: { rtl: false, pct: 1 } };
+      c.locales = { en: { rtl: false } };
       c.phone_formats = { phoneFormats: {}};
       c.preset_categories = {};
       c.preset_defaults = {};
@@ -109,17 +109,21 @@ export class DataLoaderSystem extends AbstractSystem {
   }
 
 
-  // Returns a Promise to fetch data
-  // (resolved with the data if we have it already)
-  getDataAsync(fileID) {
-    if (this._cachedData[fileID]) {
-      return Promise.resolve(this._cachedData[fileID]);
+  /**
+   * getDataAsync
+   * Returns a Promise to fetch the data identified by the key.
+   * @param  {string}  key - identifier for the data, should be found in the fileMap.
+   * @return {Promise} Promise resolved with the data
+   */
+  getDataAsync(key) {
+    if (this._cache[key]) {
+      return Promise.resolve(this._cache[key]);
     }
 
-    const file = this.fileMap.get(fileID);
+    const file = this.fileMap.get(key);
     const url = file && this.context.asset(file);
     if (!url) {
-      return Promise.reject(`Unknown data file for "${fileID}"`);
+      return Promise.reject(`Unknown data file for "${key}"`);
     }
 
     let prom = this._inflight[url];
@@ -129,9 +133,9 @@ export class DataLoaderSystem extends AbstractSystem {
         .then(result => {
           delete this._inflight[url];
           if (!result) {
-            throw new Error(`No data loaded for "${fileID}"`);
+            throw new Error(`No data loaded for "${key}"`);
           }
-          this._cachedData[fileID] = result;
+          this._cache[key] = result;
           return result;
         })
         .catch(err => {
