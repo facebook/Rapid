@@ -4965,6 +4965,9 @@
         "leisure/pitch/field_hockey": {
           "terms": "field hockey pitch, campo de hóquei em campo, hóquei em campo, hóquei sobre a grama"
         },
+        "leisure/pitch/funnel_ball": {
+          "name": "Campo de funil de bola"
+        },
         "leisure/pitch/futsal": {
           "name": "Quadra de Futsal",
           "terms": "quadra de futebol de salão, futebol de salão, futsal"
@@ -5314,6 +5317,15 @@
         "man_made/street_cabinet": {
           "name": "Armário de rua",
           "terms": "Armário de rua"
+        },
+        "man_made/street_cabinet/traffic_control": {
+          "name": "Painel do sistema de controle de tráfego"
+        },
+        "man_made/street_cabinet/traffic_monitoring": {
+          "name": "Painel de monitoramento de tráfego"
+        },
+        "man_made/street_cabinet/transport_management": {
+          "name": "Painel de gerenciamento de transporte"
         },
         "man_made/surveillance": {
           "name": "Câmera de Segurança",

@@ -5878,6 +5878,12 @@
         "shop/hobby": {
           "name": "Hobbybutikk"
         },
+        "shop/honey": {
+          "name": "Honningbutikk"
+        },
+        "shop/houseware": {
+          "name": "Kjøkkenutstyrbutikk"
+        },
         "shop/hunting": {
           "name": "Jaktbutikk"
         },

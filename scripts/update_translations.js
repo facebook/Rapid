@@ -395,6 +395,7 @@ async function processTranslations(resourceName, languageID, sourceCollection, t
         isRedundant = true;
 
       } else {  // Keep this translated string..
+        // Walk to the leaf, extending the tree if necessary..
         let branch = data;
         for (const p of path) {
           if (!branch[p])  branch[p] = {};
@@ -413,18 +414,39 @@ async function processTranslations(resourceName, languageID, sourceCollection, t
     }
   }
 
-  // 'core' resource only:  Include LanguageNames and ScriptNames from CLDR
+
+  // 'core' resource only:  Include LanguageNames and ScriptNames from CLDR.
+  // As above, we'll include some logic to check for redundancy between these strings
+  // and whatever strings are present in the fallback language (if any) and in English.
   if (resourceName === 'core') {
-    const lNames = CLDR.languageNamesInLanguageOf(code);
-    if (Object.keys(lNames).length) {
-      data.languageNames = lNames;
-      count = count + Object.keys(lNames).length;
+    const langNames = CLDR.languageNamesInLanguageOf(code);
+    const langNamesEn = CLDR.languageNamesInLanguageOf('en');
+    // If this code includes a territory like `zh-CN`, we will allow a fallback to `zh`.
+    let langNamesFallback = {};
+    if (territoryCode) {
+      langNamesFallback = CLDR.languageNamesInLanguageOf(langCode);
     }
 
-    const sNames = CLDR.scriptNamesInLanguageOf(code);
-    if (Object.keys(sNames).length) {
-      data.scriptNames = sNames;
-      count = count + Object.keys(sNames).length;
+    for (const [key, name] of Object.entries(langNames)) {
+      if (name === langNamesFallback[key] || name === langNamesEn[key]) continue;  // redundant
+      if (!data.languageNames)  data.languageNames = {};
+      data.languageNames[key] = name;
+      count++;
+    }
+
+    const scriptNames = CLDR.scriptNamesInLanguageOf(code);
+    const scriptNamesEn = CLDR.scriptNamesInLanguageOf('en');
+    // If this code includes a territory like `zh-CN`, we will allow a fallback to `zh`.
+    let scriptNamesFallback = {};
+    if (territoryCode) {
+      scriptNamesFallback = CLDR.scriptNamesInLanguageOf(langCode);
+    }
+
+    for (const [key, name] of Object.entries(scriptNames)) {
+      if (name === scriptNamesFallback[key] || name === scriptNamesEn[key]) continue;  // redundant
+      if (!data.scriptNames)  data.scriptNames = {};
+      data.scriptNames[key] = name;
+      count++;
     }
   }
 

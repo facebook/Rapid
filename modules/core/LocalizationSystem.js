@@ -40,6 +40,8 @@ export class LocalizationSystem extends AbstractSystem {
     this._currLanguageCode = 'en';
     this._currTextDirection = 'ltr';
     this._currIsMetric = false;
+    this._currLanguageNames = {};
+    this._currScriptNames = {};
 
 
     // `_languages`
@@ -85,8 +87,6 @@ export class LocalizationSystem extends AbstractSystem {
     // }
     this._cache = {};
 
-    this._languageNames = {};
-    this._scriptNames = {};
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._hashchange = this._hashchange.bind(this);
@@ -103,8 +103,8 @@ export class LocalizationSystem extends AbstractSystem {
   languageCode()   { return this._currLanguageCode;  }
   textDirection()  { return this._currTextDirection; }
   isMetric()       { return this._currIsMetric;      }
-  languageNames()  { return this._languageNames;     }
-  scriptNames()    { return this._scriptNames;       }
+  languageNames()  { return this._currLanguageNames; }
+  scriptNames()    { return this._currScriptNames;   }
   isRTL()          { return this._currTextDirection === 'rtl'; }
 
   /**
@@ -229,7 +229,7 @@ export class LocalizationSystem extends AbstractSystem {
    * @return {Promise}  Promise resolved when all string loading has settled
    */
   _loadStringsAsync(locale) {
-    if (locale.toLowerCase() === 'en-us') {   // US English is the default
+    if (locale.toLowerCase() === 'en-us') {  // `en-US` strings are stored as `en`
       locale = 'en';
     }
 
@@ -247,7 +247,7 @@ export class LocalizationSystem extends AbstractSystem {
     for (const scope of this._scopes) {
       const key = `l10n_${scope}_${locale}`;
       if (!fileMap.has(key)) {
-        fileMap.set(key, `l10n/${scope}.${locale}.min.json`);
+        fileMap.set(key, `data/l10n/${scope}.${locale}.min.json`);
       }
       const prom = dataloader.getDataAsync(key)
         .then(data => {
@@ -325,11 +325,10 @@ export class LocalizationSystem extends AbstractSystem {
 
     const locale = searchLocales.shift();  // remove first one
 
-    // US English is the default
     // Note that we don't overwrite `locale` because that `en-US` value
     // might be used later by the pluralRule or number formatter.
     let tryLocale = locale;
-    if (locale.toLowerCase() === 'en-us') {
+    if (locale.toLowerCase() === 'en-us') {  // `en-US` strings are stored as `en`
       tryLocale = 'en';
     }
 
@@ -510,9 +509,9 @@ export class LocalizationSystem extends AbstractSystem {
    * @return {string}   the language string to display (e.g. "Deutsch (de)")
    */
   languageName(code, options) {
-    if (this._languageNames[code]) {      // name in locale language
+    if (this._currLanguageNames[code]) {      // name in locale language
       // e.g. "German"
-      return this._languageNames[code];
+      return this._currLanguageNames[code];
     }
 
     // sometimes we only want the local name
@@ -527,11 +526,11 @@ export class LocalizationSystem extends AbstractSystem {
       } else if (langInfo.base && langInfo.script) {
         const base = langInfo.base;  // the code of the language this is based on
 
-        if (this._languageNames[base]) {   // base language name in locale language
+        if (this._currLanguageNames[base]) {   // base language name in locale language
           const scriptCode = langInfo.script;
-          const script = this._scriptNames[scriptCode] || scriptCode;
+          const script = this._currScriptNames[scriptCode] || scriptCode;
           // e.g. "Serbian (Cyrillic)"
-          return this.t('translate.language_and_code', { language: this._languageNames[base], code: script });
+          return this.t('translate.language_and_code', { language: this._currLanguageNames[base], code: script });
 
         } else if (this._languages[base] && this._languages[base].nativeName) {
           // e.g. "српски (sr-Cyrl)"
@@ -539,6 +538,7 @@ export class LocalizationSystem extends AbstractSystem {
         }
       }
     }
+
     return code;  // if not found, use the code
   }
 
@@ -555,10 +555,10 @@ export class LocalizationSystem extends AbstractSystem {
     const code = this._currLanguageCode.toLowerCase();
 
     const route = tags.route;
-    let name = tags[`name:${code}`] ?? tags.name ?? '';
+    const name = tags[`name:${code}`] ?? tags.name ?? '';
 
     // Gather the properties we may use to construct a display name
-    let props = {
+    const props = {
       name: name,
       direction: tags.direction,
       from: tags.from,
@@ -923,9 +923,9 @@ export class LocalizationSystem extends AbstractSystem {
       this._currLocaleCodes = ['en-US', 'en'];
     }
 
-    const [language, territory] = this._currLocaleCode.toLowerCase().split('-', 2);
-    this._currLanguageCode = language;
-    this._currIsMetric = (territory !== 'us');
+    const [languageCode, territoryCode] = this._currLocaleCode.toLowerCase().split('-', 2);
+    this._currLanguageCode = languageCode;
+    this._currIsMetric = (territoryCode !== 'us');
 
     // Determine text direction
     // If an `rtl` param is present in the urlhash, use that instead
@@ -946,13 +946,21 @@ export class LocalizationSystem extends AbstractSystem {
     }
 
     // Language and Script names will appear in the local language
-    let useLocale = this._currLocaleCode;
-    if (useLocale.toLowerCase() === 'en-us') {
-      useLocale = 'en';
+    // Like other strings, these names follow fallback rules, e.g. `zh-CN` -> `zh` -> `en`
+    let currLocale = this._currLocaleCode;
+    if (currLocale.toLowerCase() === 'en-us') {  // `en-US` strings are stored as `en`
+      currLocale = 'en';
     }
 
-    this._languageNames = this._cache[useLocale].core.languageNames;
-    this._scriptNames = this._cache[useLocale].core.scriptNames;
+    const langNamesCurr = this._cache[currLocale].core.languageNames ?? {};
+    const langNamesLang = this._cache[languageCode].core.languageNames ?? {};
+    const langNamesEn = this._cache.en.core.languageNames ?? {};
+    this._currLanguageNames = Object.assign({}, langNamesEn, langNamesLang, langNamesCurr);
+
+    const scriptNamesCurr = this._cache[currLocale].core.scriptNames ?? {};
+    const scriptNamesLang = this._cache[languageCode].core.scriptNames ?? {};
+    const scriptNamesEn = this._cache.en.core.scriptNames ?? {};
+    this._currScriptNames = Object.assign({}, scriptNamesEn, scriptNamesLang, scriptNamesCurr);
 
     this.emit('localechange');
   }
