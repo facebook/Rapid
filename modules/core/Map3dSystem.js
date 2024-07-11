@@ -79,6 +79,7 @@ export class Map3dSystem extends AbstractSystem {
         urlhash.on('hashchange', this._hashchange);
 
         const toggleKey = uiCmd('⌘' + l10n.t('background.3dmap.key'));
+        context.keybinding().off(toggleKey);
         context.keybinding().on(toggleKey, this.toggle);
       });
   }

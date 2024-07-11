@@ -27,6 +27,7 @@ export function uiZoomToSelection(context) {
       .call(uiIcon('#rapid-icon-framed-dot', 'light'))
       .call(tooltip);
 
+    context.keybinding().off(shortcutKey);
     context.keybinding().on(shortcutKey, onClick);
     context.on('modechange', onModeChange);
 

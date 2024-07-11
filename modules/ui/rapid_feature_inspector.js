@@ -332,9 +332,11 @@ export function uiRapidFeatureInspector(context, keybinding) {
   };
 
   if (keybinding) {
-    keybinding()
-      .on(l10n.t('rapid_feature_inspector.option_accept.key'), onAcceptFeature)
-      .on(l10n.t('rapid_feature_inspector.option_ignore.key'), onIgnoreFeature);
+    const acceptKey = l10n.t('rapid_feature_inspector.option_accept.key');
+    const ignoreKey = l10n.t('rapid_feature_inspector.option_ignore.key');
+    keybinding().off([acceptKey, ignoreKey]);
+    keybinding().on(acceptKey, onAcceptFeature);
+    keybinding().on(ignoreKey, onIgnoreFeature);
   }
 
   return rapidInspector;

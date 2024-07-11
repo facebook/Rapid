@@ -407,7 +407,9 @@ export function uiMapInMap(context) {
 
     updateMinimap();
 
-    context.keybinding().on(l10n.t('background.minimap.key'), toggle);
+    const key = l10n.t('background.minimap.key');
+    context.keybinding().off(key);
+    context.keybinding().on(key, toggle);
   }
 
   return mapInMap;

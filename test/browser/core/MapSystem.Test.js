@@ -5,6 +5,7 @@ describe('MapSystem', () => {
     constructor() { }
     initAsync()   { return Promise.resolve(); }
     on()          { return this; }
+    off()         { return this; }
   }
 
   class MockStorageSystem {

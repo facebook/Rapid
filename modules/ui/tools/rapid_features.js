@@ -103,6 +103,7 @@ export function uiToolRapidFeatures(context) {
 
 
   tool.install = (selection) => {
+    context.keybinding().off(rapidFeaturesToggleKey);
     context.keybinding()
       .on(rapidFeaturesToggleKey, d3_event => {
         d3_event.preventDefault();

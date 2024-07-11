@@ -83,13 +83,15 @@ export function uiZoom(context) {
     });
 
     utilKeybinding.plusKeys.forEach(key => {
-      context.keybinding().on([key], zoomIn);
-      context.keybinding().on([uiCmd('⌥' + key)], zoomInFurther);
+      context.keybinding().off([key, uiCmd('⌥' + key)]);
+      context.keybinding().on(key, zoomIn);
+      context.keybinding().on(uiCmd('⌥' + key), zoomInFurther);
     });
 
     utilKeybinding.minusKeys.forEach(key => {
-      context.keybinding().on([key], zoomOut);
-      context.keybinding().on([uiCmd('⌥' + key)], zoomOutFurther);
+      context.keybinding().off([key, uiCmd('⌥' + key)]);
+      context.keybinding().on(key, zoomOut);
+      context.keybinding().on(uiCmd('⌥' + key), zoomOutFurther);
     });
 
     function updateButtonStates() {

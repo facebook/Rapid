@@ -126,8 +126,8 @@ export function uiPane(context, id) {
       .call(pane.renderContent);
 
     if (_key) {
-      context.keybinding()
-        .on(_key, pane.togglePane);
+      context.keybinding().off(_key);
+      context.keybinding().on(_key, pane.togglePane);
     }
   };
 

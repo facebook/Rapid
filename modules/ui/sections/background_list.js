@@ -535,10 +535,10 @@ export function uiSectionBackgroundList(context) {
   }
 
   /*
-   * previousBackground
+   * prevBackground
    * Step to the previous background in the list
    */
-  function previousBackground() {
+  function prevBackground() {
     stepBackground(-1);
   }
 
@@ -562,10 +562,17 @@ export function uiSectionBackgroundList(context) {
   imagery.on('imagerychange', renderIfVisible);
   map.on('draw', deferredOnMapDraw);
 
+  const swapBackgroundKey = uiCmd('⌘' + l10n.t('background.key'));
+  const nextBackgroundKey = l10n.t('background.next_background.key');
+  const prevBackgroundKey = l10n.t('background.previous_background.key');
+
   context.keybinding()
-    .on(uiCmd('⌘' + l10n.t('background.key')), swapBackground)
-    .on(l10n.t('background.next_background.key'), nextBackground)
-    .on(l10n.t('background.previous_background.key'), previousBackground);
+    .off([swapBackgroundKey, nextBackgroundKey, prevBackgroundKey]);
+
+  context.keybinding()
+    .on(swapBackgroundKey, swapBackground)
+    .on(nextBackgroundKey, nextBackground)
+    .on(prevBackgroundKey, prevBackground);
 
   return section;
 }

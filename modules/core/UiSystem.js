@@ -43,7 +43,7 @@ export class UiSystem extends AbstractSystem {
     this.photoviewer = null;
     this.shortcuts = null;
 
-    this._didRender = false;
+    this._firstRender = true;
     this._needWidth = {};
     this._startPromise = null;
     this._initPromise = null;
@@ -85,7 +85,7 @@ export class UiSystem extends AbstractSystem {
         this.defs = new UiDefs(context);
         this.flash = uiFlash(context);
         this.editMenu = uiEditMenu(context);
-        // this.info = uiInfo(context);
+        this.info = uiInfo(context);
         this.sidebar = uiSidebar(context);
         this.photoviewer = uiPhotoViewer(context);
         this.shortcuts = uiShortcuts(context);
@@ -141,8 +141,11 @@ export class UiSystem extends AbstractSystem {
 
     // Render one time
     const container = this.context.container();
+
+    // Note that `!container.empty()` means that the container selection exists.
+    // It probably is an empty div at this point (we will now fill it with things).
     if (!container.empty()) {
-      this.render(container);
+      container.call(this.render);
     }
 
     this._started = true;
@@ -168,13 +171,10 @@ export class UiSystem extends AbstractSystem {
 
   /**
    * render
+   * Renders the Rapid user interface into the container.
+   * @param container - d3-selection to the container we are rendering Rapid in
    */
   render(container) {
-// this is a bit non-standard for how our ui components usually render, but for now
-// we'll guard so that this code can only happen one time to set everything up..
-if (this._didRender) return;  // one time only
-this.didRender = true;
-
     const context = this.context;
     const l10n = context.systems.l10n;
 
@@ -189,35 +189,38 @@ this.didRender = true;
     const map = context.systems.map;
     map.pause();  // don't draw until we've set zoom/lat/long
 
-    container
+    container.selectAll('#rapid-defs')
+      .data([0])
+      .enter()
       .append('svg')
       .attr('id', 'rapid-defs')
       .call(this.defs.render);
 
     // Sidebar
-    container
+    container.selectAll('.sidebar')
+      .data([0])
+      .enter()
       .append('div')
       .attr('class', 'sidebar')
       .call(this.sidebar);
 
-    // Now that the sidebar has been insantiated, it's safe to bind the keypress handlers
-// bhousel - todo: not sure why this is here - the sidebar should be responsible for this
-    context.keybinding()
-      .on([l10n.t('sidebar.key'), '`', '²', '@'], this.sidebar.toggle);   // iD#5663, iD#6864 - common QWERTY, AZERTY
 
-    const content = container
+    // main-content
+    const contentEnter = container.selectAll('.main-content')
+      .data([0])
+      .enter()
       .append('div')
       .attr('class', 'main-content active');
 
     // The map
-    content
+    contentEnter
       .append('div')
       .attr('class', 'main-map')
-      .attr('dir', 'ltr')
+      // .attr('dir', 'ltr')
       .call(map.render);
 
     // Top toolbar
-    content
+    contentEnter
       .append('div')
       .attr('class', 'top-toolbar-wrap')
       .append('div')
@@ -226,7 +229,7 @@ this.didRender = true;
 
 
     // Over Map
-    const overMap = content
+    const overMapEnter = contentEnter
       .append('div')
       .attr('class', 'over-map');
 
@@ -234,44 +237,44 @@ this.didRender = true;
     // pressing, even if it's not targeted. This conflicts with long-pressing
     // to show the edit menu. We add a selectable offscreen element as the first
     // child to trick Safari into not showing the selection UI.
-    overMap
+    overMapEnter
       .append('div')
       .attr('class', 'select-trap')
       .text('t');
 
-    overMap
+    overMapEnter
       .call(uiMapInMap(context));
 
-    overMap
+    overMapEnter
       .call(uiMap3dViewer(context));
 
-    overMap
+    overMapEnter
       .append('div')
       .attr('class', 'spinner')
       .call(uiSpinner(context));
 
 
     // Map controls
-    const controls = overMap
+    const controlsEnter = overMapEnter
       .append('div')
       .attr('class', 'map-controls');
 
-    controls
+    controlsEnter
       .append('div')
       .attr('class', 'map-control bearing')
       .call(uiBearing(context));
 
-    controls
+    controlsEnter
       .append('div')
       .attr('class', 'map-control zoombuttons')
       .call(uiZoom(context));
 
-    controls
+    controlsEnter
       .append('div')
       .attr('class', 'map-control zoom-to-selection')
       .call(uiZoomToSelection(context));
 
-    controls
+    controlsEnter
       .append('div')
       .attr('class', 'map-control geolocate')
       .call(uiGeolocate(context));
@@ -279,86 +282,91 @@ this.didRender = true;
 
     // Panes
     // This should happen after map is initialized, as some require surface()
-    const panes = overMap
+    overMapEnter
       .append('div')
-      .attr('class', 'map-panes');
+      .attr('class', 'map-panes')
+      .each((d, i, nodes) => {
+        const selection = d3_select(nodes[i]);
 
-    const uiPanes = [
-      uiPaneBackground(context),
-      uiPaneMapData(context),
-      uiPaneIssues(context),
-      uiPanePreferences(context),
-      uiPaneHelp(context)
-    ];
+        // Instantiate the panes
+        const uiPanes = [
+          uiPaneBackground(context),
+          uiPaneMapData(context),
+          uiPaneIssues(context),
+          uiPanePreferences(context),
+          uiPaneHelp(context)
+        ];
 
-    for (const component of uiPanes) {
-      controls
-        .append('div')
-        .attr('class', `map-control map-pane-control ${component.id}-control`)
-        .call(component.renderToggleButton);
+        // For each pane, create the buttons to toggle the panes,
+        // and perform a single render to append it to the map-panes div
+        for (const component of uiPanes) {
+          controlsEnter
+            .append('div')
+            .attr('class', `map-control map-pane-control ${component.id}-control`)
+            .call(component.renderToggleButton);
 
-      panes
-        .call(component.renderPane);
-    }
+          selection
+            .call(component.renderPane);
+        }
+      });
 
 
     // Info Panels
-    this.info = uiInfo(context);
-    overMap
+    overMapEnter
       .call(this.info);
 
-    overMap
+    overMapEnter
       .append('div')
       .attr('class', 'photoviewer')
       .classed('al', true)       // 'al'=left,  'ar'=right
       .classed('hide', true)
       .call(this.photoviewer);
 
-    overMap
+    overMapEnter
       .append('div')
       .attr('class', 'attribution-wrap')
       .attr('dir', 'ltr')
       .call(uiAttribution(context));
 
     // Footer
-    let about = content
+    let aboutEnter = contentEnter
       .append('div')
       .attr('class', 'map-footer');
 
-    about
+    aboutEnter
       .append('div')
       .attr('class', 'api-status')
       .call(uiStatus(context));
 
-    let footer = about
+    let footerEnter = aboutEnter
       .append('div')
       .attr('class', 'map-footer-bar fillD');
 
-    footer
+    footerEnter
       .append('div')
       .attr('class', 'flash-wrap footer-hide');
 
-    let footerWrap = footer
+    let footerWrapEnter = footerEnter
       .append('div')
       .attr('class', 'main-footer-wrap footer-show');
 
-    footerWrap
+    footerWrapEnter
       .append('div')
       .attr('class', 'scale-block')
       .call(uiScale(context));
 
-    let aboutList = footerWrap
+    let aboutListEnter = footerWrapEnter
       .append('div')
       .attr('class', 'info-block')
       .append('ul')
       .attr('class', 'map-footer-list');
 
-    aboutList
+    aboutListEnter
       .append('li')
       .attr('class', 'user-list')
       .call(uiContributors(context));
 
-    aboutList
+    aboutListEnter
       .append('li')
       .attr('class', 'fb-road-license')
       .attr('tabindex', -1)
@@ -366,26 +374,26 @@ this.didRender = true;
 
     const apiConnections = context.apiConnections;
     if (apiConnections && apiConnections.length > 1) {
-      aboutList
+      aboutListEnter
         .append('li')
         .attr('class', 'source-switch')
         .call(uiSourceSwitch(context).keys(apiConnections));
     }
 
-    aboutList
+    aboutListEnter
       .append('li')
       .attr('class', 'issues-info')
       .call(uiIssuesInfo(context));
 
-//    aboutList
+//    aboutListEnter
 //      .append('li')
 //      .attr('class', 'feature-warning')
 //      .call(uiFeatureInfo(context));
 
-    const issueLinks = aboutList
+    const issueLinksEnter = aboutListEnter
       .append('li');
 
-    issueLinks
+    issueLinksEnter
       .append('button')
       .attr('class', 'bugnub')
       .attr('tabindex', -1)
@@ -393,20 +401,20 @@ this.didRender = true;
       .call(uiIcon('#rapid-icon-bug', 'bugnub'))
       .call(uiTooltip(context).title(l10n.t('report_a_bug')).placement('top'));
 
-    issueLinks
+    issueLinksEnter
       .append('a')
       .attr('target', '_blank')
       .attr('href', 'https://github.com/facebook/Rapid/blob/main/CONTRIBUTING.md#translations')
       .call(uiIcon('#rapid-icon-translate', 'light'))
       .call(uiTooltip(context).title(l10n.t('help_translate')).placement('top'));
 
-    aboutList
+    aboutListEnter
       .append('li')
       .attr('class', 'version')
       .call(uiVersion(context));
 
     if (!context.embed()) {
-      aboutList
+      aboutListEnter
         .call(uiAccount(context));
     }
 
@@ -419,26 +427,31 @@ this.didRender = true;
     this.resize();
     map.resume();
 
-    context.enter('browse');
 
+    // On first render only, enter browse mode and show a startup screen.
+    if (this._firstRender) {
+      context.enter('browse');
 
-    // What to show first?
-    const editor = context.systems.editor;
-    const storage = context.systems.storage;
-    const urlhash = context.systems.urlhash;
+      // What to show first?
+      const editor = context.systems.editor;
+      const storage = context.systems.storage;
+      const urlhash = context.systems.urlhash;
 
-    const startWalkthrough = urlhash.initialHashParams.get('walkthrough') === 'true';
-    const sawPrivacyVersion = parseInt(storage.getItem('sawPrivacyVersion'), 10) || 0;
-    const sawWhatsNewVersion = parseInt(storage.getItem('sawWhatsNewVersion'), 10) || 0;
+      const startWalkthrough = urlhash.initialHashParams.get('walkthrough') === 'true';
+      const sawPrivacyVersion = parseInt(storage.getItem('sawPrivacyVersion'), 10) || 0;
+      const sawWhatsNewVersion = parseInt(storage.getItem('sawWhatsNewVersion'), 10) || 0;
 
-    if (startWalkthrough) {
-      container.call(uiIntro(context));          // Jump right into walkthrough..
-    } else if (editor.canRestoreBackup) {
-      container.call(uiRestore(context));        // Offer to restore backup edits..
-    } else if (sawPrivacyVersion !== context.privacyVersion) {
-      container.call(uiSplash(context));         // Show "Welcome to Rapid" / Privacy Policy
-    } else if (sawWhatsNewVersion !== context.whatsNewVersion) {
-      container.call(uiWhatsNew(context));       // Show "Whats New"
+      if (startWalkthrough) {
+        container.call(uiIntro(context));     // Jump right into walkthrough..
+      } else if (editor.canRestoreBackup) {
+        container.call(uiRestore(context));   // Offer to restore backup edits..
+      } else if (sawPrivacyVersion !== context.privacyVersion) {
+        container.call(uiSplash(context));    // Show "Welcome to Rapid" / Privacy Policy
+      } else if (sawWhatsNewVersion !== context.whatsNewVersion) {
+        container.call(uiWhatsNew(context));  // Show "Whats New"
+      }
+
+      this._firstRender = false;
     }
   }
 

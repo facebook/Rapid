@@ -262,8 +262,10 @@ export function uiShortcuts(context) {
   function shortcuts(selection) {
     _selection = selection;  // capture parent
 
-    context.keybinding()
-      .on([l10n.t('shortcuts.toggle.key'), '?'], () => shortcuts.toggle());
+    // reset keybinding
+    const keys = [l10n.t('shortcuts.toggle.key'), '?'];
+    context.keybinding().off(keys);
+    context.keybinding().on(keys, shortcuts.toggle);
   }
 
 

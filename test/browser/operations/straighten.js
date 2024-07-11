@@ -22,7 +22,6 @@ describe('operationStraighten', () => {
       };
     }
     hasHiddenConnections()  { return false; }
-    keyBinding()            { return false; }
   }
 
   const context = new MockContext();

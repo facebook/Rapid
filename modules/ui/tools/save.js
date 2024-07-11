@@ -124,6 +124,7 @@ export function uiToolSave(context) {
 
     updateCount();
 
+    context.keybinding().off(key, true /* capture */);
     context.keybinding().on(key, save, true /* capture */);
     editor.on('stablechange', updateCount);
     context.on('modechange', updateDisabled);

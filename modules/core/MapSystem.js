@@ -102,7 +102,10 @@ export class MapSystem extends AbstractSystem {
         this._toggleFillMode = storage.getItem('area-fill-toggle') || 'partial';  // the previous *non-wireframe* fill mode
 
         const wireframeKey = l10n.t('area_fill.wireframe.key');
+        const toggleOsmKey = uiCmd('⌥' + wireframeKey);
         const highlightEditsKey = l10n.t('map_data.highlight_edits.key');
+
+        context.keybinding().off([wireframeKey, toggleOsmKey, highlightEditsKey]);
 
         context.keybinding()
           .on(wireframeKey, e => {
@@ -110,7 +113,7 @@ export class MapSystem extends AbstractSystem {
             e.stopPropagation();
             this.wireframeMode = !this.wireframeMode;
           })
-          .on(uiCmd('⌥' + wireframeKey), e => {
+          .on(toggleOsmKey, e => {
             e.preventDefault();
             e.stopPropagation();
 

@@ -58,8 +58,9 @@ export function uiFeatureList(context) {
 //    context.systems.map
 //     .on('drawn.feature-list', mapDrawn);
 
-    context.keybinding()
-      .on(uiCmd('⌘F'), focusSearch);
+    const key = uiCmd('⌘F');
+    context.keybinding().off(key);
+    context.keybinding().on(key, focusSearch);
 
 
     function focusSearch(d3_event) {

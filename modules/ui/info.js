@@ -137,24 +137,26 @@ export function uiInfo(context) {
     render();
 
     // bind ⌘I to show/hide all panels
-    context.keybinding()
-      .on(uiCmd('⌘' + l10n.t('info_panels.key')), e => {
-        e.stopImmediatePropagation();
-        e.preventDefault();
-        info.toggle();
-      });
+    const keyAll = uiCmd('⌘' + l10n.t('info_panels.key'));
+    context.keybinding().off(keyAll);
+    context.keybinding().on(keyAll, e => {
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      info.toggle();
+    });
 
     // bind keys to show/hide individual panels
     panelIDs.forEach(k => {
       const key = l10n.t(`info_panels.${k}.key`, { default: null });
       if (!key) return;
 
-      context.keybinding()
-        .on(uiCmd('⌘⇧' + key), e => {
-          e.stopImmediatePropagation();
-          e.preventDefault();
-          info.toggle(k);
-        });
+      const keyOne = uiCmd('⌘⇧' + key);
+      context.keybinding().off(keyOne);
+      context.keybinding().on(keyOne, e => {
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        info.toggle(k);
+      });
     });
   }
 

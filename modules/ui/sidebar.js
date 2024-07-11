@@ -437,6 +437,10 @@ export function uiSidebar(context) {
             }
             sidebar.toggle();
         });
+
+        const keys = [l10n.t('sidebar.key'), '`', '²', '@'];  // iD#5663, iD#6864 - common QWERTY, AZERTY
+        context.keybinding().off(keys);
+        context.keybinding().on(keys, sidebar.toggle);
     }
 
     sidebar.showPresetList = function() {};

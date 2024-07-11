@@ -94,6 +94,7 @@ export function uiToolNotes(context) {
     _selection = selection;
     debouncedUpdate = debounce(update, 500, { leading: true, trailing: true });
 
+    context.keybinding().off(mode.key);
     context.keybinding().on(mode.key, () => {
       if (!notesEditable()) return;
 

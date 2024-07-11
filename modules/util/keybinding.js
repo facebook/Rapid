@@ -152,7 +152,7 @@ export function utilKeybinding(namespace) {
         };
         testBindings(d3_event, false);
 
-    return keybinding;
+        return keybinding;
     };
 
     // Add one or more keycode bindings.

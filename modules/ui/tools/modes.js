@@ -113,6 +113,7 @@ export function uiToolDrawModes(context) {
     debouncedUpdate = debounce(update, 500, { leading: true, trailing: true });
 
     modes.forEach(d => {
+      context.keybinding().off(d.key);
       context.keybinding().on(d.key, () => {
         if (!context.editable()) return;
 

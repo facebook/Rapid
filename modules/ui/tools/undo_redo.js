@@ -115,6 +115,7 @@ export function uiToolUndoRedo(context) {
     debouncedUpdate = debounce(update, 500, { leading: true, trailing: true });
 
     for (const command of commands) {
+      context.keybinding().off(command.key);
       context.keybinding().on(command.key, d3_event => {
         d3_event.preventDefault();
         if (context.editable()) command.action();
