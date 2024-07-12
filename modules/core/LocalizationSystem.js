@@ -268,10 +268,18 @@ export class LocalizationSystem extends AbstractSystem {
    * @param  {Map<key, value>}  prevParams - the previous hash parameters
    */
   _hashchange(currParams, prevParams) {
+    const urlhash = this.context.systems.urlhash;
+
     // rtl
     const newRTL = currParams.get('rtl');
     const oldRTL = prevParams.get('rtl');
     if (newRTL !== oldRTL) {
+      let cleaned = null;
+      if (typeof newRTL === 'string') {
+        cleaned = newRTL.trim().toLowerCase();
+        if (cleaned !== 'true' && cleaned !== 'false') cleaned = null;
+      }
+      urlhash.setParam('rtl', cleaned);
       this._localeChanged();
     }
 
@@ -279,6 +287,12 @@ export class LocalizationSystem extends AbstractSystem {
     const newLocale = currParams.get('locale');
     const oldLocale = prevParams.get('locale');
     if (newLocale !== oldLocale) {
+      let cleaned = [];
+      if (typeof newLocale === 'string') {
+        const requested = newLocale.split(',').map(s => s.trim()).filter(Boolean);
+        cleaned = this._getSupportedLocales(requested);
+      }
+      urlhash.setParam('locale', cleaned.length ? cleaned.join(',') : null);
       this.selectLocaleAsync();
     }
   }
@@ -882,28 +896,38 @@ export class LocalizationSystem extends AbstractSystem {
   /**
    * _getSupportedLocales
    * Returns the locales from `requestedLocales` that are actually supported
-   * @param  {Array|Set}  requestedLocales - locale codes to consider, in priority order
+   * In here we also correct the capitalization/hyphenation to make the locales look like BCP47.
+   * @param  {Array|Set}  requested - locale codes to consider, in priority order
    * @return {Array}      The locales that we can actually support
    */
-  _getSupportedLocales(requestedLocales) {
+  _getSupportedLocales(requested) {
     const results = new Set();
 
-    for (const locale of requestedLocales) {
+    for (const locale of requested) {
       if (!locale) continue;
 
       // Note: Replace CLDR-style underscores with BCP47-style hypens to make things easier.
-      const code = locale.replace(/_/g, '-');
+      let fullCode = locale.replace(/_/g, '-');
 
-      // If it's in the list, or 'en-US', it's supported
-      if (this._locales[code] || code === 'en-US') {
-        results.add(code);
+      // Split it apart, fix capitalization, put back together
+      let [languageCode, territoryCode] = fullCode.split('-', 2);
+      languageCode = languageCode.toLowerCase();
+      fullCode = languageCode;
+
+      if (territoryCode) {
+        territoryCode = territoryCode.toUpperCase();
+        fullCode = fullCode + '-' + territoryCode;
+      }
+
+      // If it's in the locales list, or 'en-US', it's supported
+      if (this._locales[fullCode] || fullCode === 'en-US') {
+        results.add(fullCode);
       }
 
       // For a locale with a territory code `zh-CN`, also fallback to the base locale `zh`
-      if (code.includes('-')) {
-        const base = code.split('-')[0];
-        if (this._locales[base]) {
-          results.add(base);
+      if (territoryCode) {
+        if (this._locales[languageCode]) {
+          results.add(languageCode);
         }
       }
     }
@@ -929,18 +953,13 @@ export class LocalizationSystem extends AbstractSystem {
 
     // Determine text direction
     // If an `rtl` param is present in the urlhash, use that instead
-    //  (and push the cleaned value back to the urlhash)..
     const urlhash = this.context.systems.urlhash;
-    const urlRTL = (urlhash.getParam('rtl') ?? '').toLowerCase();
-
+    const urlRTL = urlhash.getParam('rtl');
     if (urlRTL === 'true') {
-      urlhash.setParam('rtl', 'true');
       this._currTextDirection = 'rtl';
     } else if (urlRTL === 'false') {
-      urlhash.setParam('rtl', 'false');
       this._currTextDirection = 'ltr';
     } else {
-      urlhash.setParam('rtl', null);
       const supported = this._locales[this._currLocaleCode] || this._locales[this._currLanguageCode];
       this._currTextDirection = supported && supported.rtl ? 'rtl' : 'ltr';
     }
