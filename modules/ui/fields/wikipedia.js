@@ -8,7 +8,7 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util/index.js';
 
 
 export function uiFieldWikipedia(context, uifield) {
-  const dataloader = context.systems.dataloader;
+  const assets = context.systems.assets;
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const wikipedia = context.services.wikipedia;
@@ -22,7 +22,7 @@ export function uiFieldWikipedia(context, uifield) {
   let _tags;
 
   let _dataWikipedia = [];
-  dataloader.getDataAsync('wmf_sitematrix')
+  assets.getDataAsync('wmf_sitematrix')
     .then(d => {
       _dataWikipedia = d;
       if (_tags) updateForTags(_tags);

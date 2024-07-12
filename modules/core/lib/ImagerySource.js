@@ -641,8 +641,8 @@ export class ImagerySourceEsriWayback extends ImagerySourceEsri {
 
     return this._initPromise = new Promise(resolve => {
       const context = this.context;
-      const dataloader = context.systems.dataloader;
-      dataloader.getDataAsync('wayback')
+      const assets = context.systems.assets;
+      assets.getDataAsync('wayback')
         .then(data => Wayback.setWaybackConfigData(data.wayback))
         .then(() => {
           // `getWaybackItems` returns a `Promise` that resolves to a list of `WaybackItem` for all

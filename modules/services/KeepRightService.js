@@ -83,8 +83,8 @@ export class KeepRightService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
-    const dataloader = this.context.systems.dataloader;
-    return dataloader.getDataAsync('qa_data')
+    const assets = this.context.systems.assets;
+    return assets.getDataAsync('qa_data')
       .then(data => {
         this._krData = data.keepRight;
         this._started = true;

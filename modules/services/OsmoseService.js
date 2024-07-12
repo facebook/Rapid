@@ -57,8 +57,8 @@ export class OsmoseService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
-    const dataloader = this.context.systems.dataloader;
-    return dataloader.getDataAsync('qa_data')
+    const assets = this.context.systems.assets;
+    return assets.getDataAsync('qa_data')
       .then(d => {
         this._osmoseData.icons = d.osmose.icons;
         this._osmoseData.types = Object.keys(d.osmose.icons)

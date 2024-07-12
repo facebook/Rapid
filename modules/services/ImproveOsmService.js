@@ -66,8 +66,8 @@ export class ImproveOsmService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
-    const dataloader = this.context.systems.dataloader;
-    return dataloader.getDataAsync('qa_data')
+    const assets = this.context.systems.assets;
+    return assets.getDataAsync('qa_data')
       .then(data => {
         this._impOsmData = data.improveOSM;
         this._started = true;

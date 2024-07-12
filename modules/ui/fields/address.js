@@ -10,7 +10,7 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util/index.js';
 
 
 export function uiFieldAddress(context, uifield) {
-  const dataloader = context.systems.dataloader;
+  const assets = context.systems.assets;
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const dispatch = d3_dispatch('change');
@@ -28,7 +28,7 @@ export function uiFieldAddress(context, uifield) {
     ]
   }];
 
-  dataloader.getDataAsync('address_formats')
+  assets.getDataAsync('address_formats')
     .then(d => {
       _addressFormats = d.addressFormats;
       if (!_selection.empty()) {

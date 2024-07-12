@@ -17,7 +17,7 @@ import { EventEmitter } from '@pixi/utils';
  * `initAsync()` - Called one time after all systems are constructed.
  *   Systems may check at init time that their dependencies are met.
  *   They may chain onto other system `initAsync` promises in order to establish a dependency graph.
- *   (for example, if `DataLoaderSystem` must be initialized and ready
+ *   (for example, if `AssetSystem` must be initialized and ready
  *    so that the `ImagerySystem` can start fetching its imagery index)
  *   `initAsync` is also a good place to set up event listeners.
  *   After 'init', the component should mostly be able to function normally.

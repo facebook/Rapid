@@ -10,7 +10,7 @@ import { utilRebind } from '../util/rebind.js';
 let _oci = null;
 
 export function uiSuccess(context) {
-  const dataloader = context.systems.dataloader;
+  const assets = context.systems.assets;
   const locations = context.systems.locations;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
@@ -26,9 +26,9 @@ export function uiSuccess(context) {
 
   function getCommunityIndexAsync() {
     return Promise.all([
-        dataloader.getDataAsync('oci_features'),
-        dataloader.getDataAsync('oci_resources'),
-        dataloader.getDataAsync('oci_defaults')
+        assets.getDataAsync('oci_features'),
+        assets.getDataAsync('oci_resources'),
+        assets.getDataAsync('oci_defaults')
       ])
       .then(vals => {
         if (_oci) return _oci;

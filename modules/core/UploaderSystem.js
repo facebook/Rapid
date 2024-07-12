@@ -34,7 +34,7 @@ export class UploaderSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'uploader';
-    this.dependencies = new Set(['dataloader', 'editor', 'l10n']);
+    this.dependencies = new Set(['assets', 'editor', 'l10n']);
 
     this.changeset = null;    // uiCommit will create it
 
@@ -72,11 +72,11 @@ export class UploaderSystem extends AbstractSystem {
       }
     }
 
-    const dataloader = this.context.systems.dataloader;
-    const prerequisites = dataloader.initAsync();
+    const assets = this.context.systems.assets;
+    const prerequisites = assets.initAsync();
 
     return this._initPromise = prerequisites
-      .then(() => dataloader.getDataAsync('discarded'))
+      .then(() => assets.getDataAsync('discarded'))
       .then(d => this._discardTags = d);
   }
 

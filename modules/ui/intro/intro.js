@@ -41,7 +41,7 @@ const chapterFlow = [
 
 
 export function uiIntro(context, skipToRapid) {
-  const dataloader = context.systems.dataloader;
+  const assets = context.systems.assets;
   const editor = context.systems.editor;
   const imagery = context.systems.imagery;
   const l10n = context.systems.l10n;
@@ -70,8 +70,8 @@ export function uiIntro(context, skipToRapid) {
    */
   function intro(selection) {
     Promise.all([
-      dataloader.getDataAsync('intro_rapid_graph'),
-      dataloader.getDataAsync('intro_graph')
+      assets.getDataAsync('intro_rapid_graph'),
+      assets.getDataAsync('intro_graph')
     ])
     .then(values => {
       const rapidData = values[0].introRapidGraph;

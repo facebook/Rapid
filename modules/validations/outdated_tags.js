@@ -14,7 +14,7 @@ const pathVals = new Set([
 
 export function validationOutdatedTags(context) {
   const type = 'outdated_tags';
-  const dataloader = context.systems.dataloader;
+  const assets = context.systems.assets;
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const presets = context.systems.presets;
@@ -23,7 +23,7 @@ export function validationOutdatedTags(context) {
   let _dataDeprecated;
 
   // fetch deprecated tags
-  dataloader.getDataAsync('deprecated')
+  assets.getDataAsync('deprecated')
     .then(d => _dataDeprecated = d)
     .catch(() => { /* ignore */ })
     .finally(() => _waitingForDeprecated = false);

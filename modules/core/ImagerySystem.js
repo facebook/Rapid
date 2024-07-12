@@ -31,7 +31,7 @@ export class ImagerySystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'imagery';
-    this.dependencies = new Set(['dataloader', 'editor', 'l10n', 'map', 'urlhash']);
+    this.dependencies = new Set(['assets', 'editor', 'l10n', 'map', 'urlhash']);
 
     this._initPromise = null;
     this._imageryIndex = null;
@@ -68,21 +68,21 @@ export class ImagerySystem extends AbstractSystem {
     }
 
     const context = this.context;
-    const dataloader = context.systems.dataloader;
+    const assets = context.systems.assets;
     const map = context.systems.map;
     const storage = context.systems.storage;
     const urlhash = context.systems.urlhash;
 
     const prerequisites = Promise.all([
       map.initAsync(),   // ImagerySystem should listen for hashchange after MapSystem
-      dataloader.initAsync(),
+      assets.initAsync(),
       storage.initAsync(),
       urlhash.initAsync()
     ]);
 
     return this._initPromise = prerequisites
       .then(() => urlhash.on('hashchange', this._hashchange))
-      .then(() => dataloader.getDataAsync('imagery'))
+      .then(() => assets.getDataAsync('imagery'))
       .then(data => this._initImageryIndex(data))
       .then(() => this._initWaybackAsync());
       // .catch(e => {

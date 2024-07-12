@@ -53,7 +53,7 @@ export class NsiService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed initialization
    */
   initAsync() {
-    // Add the sources to the dataloader so we can start downloading data.
+    // Add the sources to the assets filemap so we can start downloading data.
     const sources = {
       'nsi_data': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/nsi.min.json',
       'nsi_dissolved': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/dissolved.min.json',
@@ -64,8 +64,8 @@ export class NsiService extends AbstractSystem {
       'nsi_trees': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/trees.min.json'
     };
 
-    const dataloader = this.context.systems.dataloader;
-    const fileMap = dataloader.fileMap;
+    const assets = this.context.systems.assets;
+    const fileMap = assets.fileMap;
     for (const [k, url] of Object.entries(sources)) {
       if (!fileMap.has(k)) {
         fileMap.set(k, url);
@@ -343,12 +343,12 @@ export class NsiService extends AbstractSystem {
   // _loadNsiPresetsAsync()
   //  Returns a Promise fulfilled when the presets have been downloaded and merged into Rapid.
   _loadNsiPresetsAsync() {
-    const dataloader = this.context.systems.dataloader;
+    const assets = this.context.systems.assets;
 
     return (
       Promise.all([
-        dataloader.getDataAsync('nsi_presets'),
-        dataloader.getDataAsync('nsi_features')
+        assets.getDataAsync('nsi_presets'),
+        assets.getDataAsync('nsi_features')
       ])
       .then(vals => {
         // Add `suggestion=true` to all the nsi presets
@@ -366,14 +366,14 @@ export class NsiService extends AbstractSystem {
   //  Returns a Promise fulfilled when the other data have been downloaded and processed
   //
   _loadNsiDataAsync() {
-    const dataloader = this.context.systems.dataloader;
+    const assets = this.context.systems.assets;
 
     return (
       Promise.all([
-        dataloader.getDataAsync('nsi_data'),
-        dataloader.getDataAsync('nsi_dissolved'),
-        dataloader.getDataAsync('nsi_replacements'),
-        dataloader.getDataAsync('nsi_trees')
+        assets.getDataAsync('nsi_data'),
+        assets.getDataAsync('nsi_dissolved'),
+        assets.getDataAsync('nsi_replacements'),
+        assets.getDataAsync('nsi_trees')
       ])
       .then(vals => {
         this._nsi = {
@@ -394,7 +394,7 @@ export class NsiService extends AbstractSystem {
 // old - built in matcher will set up its own locationindex by resolving all the locationSets one-by-one
         // matcher.buildLocationIndex(this._nsi.data, locationSystem.loco());
 
-// new - Use Rapid's locationSystem instead of redoing that work
+// new - Use Rapid's LocationSystem instead of redoing that work
 // It has already processed the presets at this point
 
 // We need to monkeypatch a few of the collections that the NSI matcher depends on.

@@ -3,14 +3,14 @@ import { utilFetchResponse } from '../util/index.js';
 
 
 /**
- * `DataLoaderSystem` fetches data in JSON files.
+ * `AssetSystem` fetches data in JSON files.
  * This allows us to deploy Rapid in a way that the data it needs can be fetched at runtime.
  * It provides a method `getDataAsync` returning a Promise that resolves when the data is available.
  *
  * Properties available:
  *   `fileMap`   `Map` of resourceID to url
  */
-export class DataLoaderSystem extends AbstractSystem {
+export class AssetSystem extends AbstractSystem {
 
   /**
    * @constructor
@@ -18,7 +18,7 @@ export class DataLoaderSystem extends AbstractSystem {
    */
   constructor(context) {
     super(context);
-    this.id = 'dataloader';
+    this.id = 'assets';
     this.dependencies = new Set();
 
     const fileMap  = new Map();

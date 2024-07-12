@@ -22,7 +22,7 @@ export class PresetSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'presets';
-    this.dependencies = new Set(['dataloader', 'l10n', 'locations', 'storage', 'urlhash']);
+    this.dependencies = new Set(['assets', 'l10n', 'locations', 'storage', 'urlhash']);
     this.geometries = ['point', 'vertex', 'line', 'area', 'relation'];
 
     // Create geometry fallbacks
@@ -73,10 +73,10 @@ export class PresetSystem extends AbstractSystem {
       }
     }
 
-    const dataloader = this.context.systems.dataloader;
+    const assets = this.context.systems.assets;
     const urlhash = this.context.systems.urlhash;
     const prerequisites = Promise.all([
-      dataloader.initAsync(),
+      assets.initAsync(),
       urlhash.initAsync()
     ]);
 
@@ -91,11 +91,11 @@ export class PresetSystem extends AbstractSystem {
 
         // Fetch the preset data
         return Promise.all([
-          dataloader.getDataAsync('preset_categories'),
-          dataloader.getDataAsync('preset_defaults'),
-          dataloader.getDataAsync('preset_presets'),
-          dataloader.getDataAsync('preset_fields'),
-          dataloader.getDataAsync('preset_overrides')   // customizations to merge in after the id-tagging-schema
+          assets.getDataAsync('preset_categories'),
+          assets.getDataAsync('preset_defaults'),
+          assets.getDataAsync('preset_presets'),
+          assets.getDataAsync('preset_fields'),
+          assets.getDataAsync('preset_overrides')   // customizations to merge in after the id-tagging-schema
         ]);
       })
       .then(vals => {

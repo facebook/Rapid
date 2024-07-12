@@ -46,16 +46,16 @@ describe('ValidationSystem', () => {
     constructor()   {
       this.viewport = new Rapid.sdk.Viewport();
       this.systems = {
-        dataloader: new Rapid.DataLoaderSystem(this),
-        editor:     new Rapid.EditSystem(this),
-        imagery:    new MockImagerySystem(),
-        l10n:       new MockLocalizationSystem(),
-        map:        new MockSystem(),
-        photos:     new MockPhotoSystem(),
-        presets:    new MockSystem(),
-        rapid:      new MockSystem(),
-        storage:    new MockStorageSystem(),
-        urlhash:    new MockUrlSystem()
+        assets:   new Rapid.AssetSystem(this),
+        editor:   new Rapid.EditSystem(this),
+        imagery:  new MockImagerySystem(),
+        l10n:     new MockLocalizationSystem(),
+        map:      new MockSystem(),
+        photos:   new MockPhotoSystem(),
+        presets:  new MockSystem(),
+        rapid:    new MockSystem(),
+        storage:  new MockStorageSystem(),
+        urlhash:  new MockUrlSystem()
       };
     }
     scene()       { return { layers: new Map() }; }

@@ -26,9 +26,9 @@ describe('uiFieldWikipedia', () => {
         wikidata:    new MockWikidataService(this)
       };
       this.systems = {
-        dataloader:  new Rapid.DataLoaderSystem(this),
-        editor:      new MockEditSystem(this),
-        l10n:        new MockLocalizationSystem(this)
+        assets:  new Rapid.AssetSystem(this),
+        editor:  new MockEditSystem(this),
+        l10n:    new MockLocalizationSystem(this)
       };
     }
     cleanTagKey(val)    { return val; }

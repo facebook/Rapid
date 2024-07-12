@@ -9,13 +9,13 @@ import { utilDetect } from '../../util/index.js';
 
 
 export function uiSectionChanges(context) {
-  const dataloader = context.systems.dataloader;
+  const assets = context.systems.assets;
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   let detected = utilDetect();
 
   let _discardTags = {};
-  dataloader.getDataAsync('discarded')
+  assets.getDataAsync('discarded')
     .then(d => _discardTags = d)
     .catch(() => { /* ignore */ });
 

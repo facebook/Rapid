@@ -10,7 +10,7 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util/index.js';
 
 
 export function uiSectionRawTagEditor(context, id) {
-  const dataloader = context.systems.dataloader;
+  const assets = context.systems.assets;
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const storage = context.systems.storage;
@@ -32,7 +32,7 @@ export function uiSectionRawTagEditor(context, id) {
 
 
   let _discardKeys = new Set();
-  dataloader.getDataAsync('discarded')
+  assets.getDataAsync('discarded')
     .then(data => _discardKeys = new Set(Object.keys(data)));
 
   let _tagView = storage.getItem('raw-tag-editor-view') || 'list';   // 'list, 'text'

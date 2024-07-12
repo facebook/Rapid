@@ -1,7 +1,7 @@
 export * from './lib/index.js';
 
 import { AbstractSystem } from './AbstractSystem.js';
-import { DataLoaderSystem } from './DataLoaderSystem.js';
+import { AssetSystem } from './AssetSystem.js';
 import { EditSystem } from './EditSystem.js';
 import { FilterSystem } from './FilterSystem.js';
 import { ImagerySystem } from './ImagerySystem.js';
@@ -21,7 +21,7 @@ import { ValidationSystem } from './ValidationSystem.js';
 
 export {
   AbstractSystem,
-  DataLoaderSystem,
+  AssetSystem,
   EditSystem,
   FilterSystem,
   ImagerySystem,
@@ -45,7 +45,7 @@ export const systems = {
   available: new Map()   // Map (id -> System constructor)
 };
 
-systems.available.set('dataloader', DataLoaderSystem);
+systems.available.set('assets', AssetSystem);
 systems.available.set('editor', EditSystem);
 systems.available.set('filters', FilterSystem);
 systems.available.set('imagery', ImagerySystem);

@@ -19,7 +19,7 @@ export class LocalizationSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'l10n';
-    this.dependencies = new Set(['dataloader', 'presets', 'urlhash']);
+    this.dependencies = new Set(['assets', 'presets', 'urlhash']);
 
     // These are the different language packs that can be loaded..
     this._scopes = new Set(['core', 'tagging', 'imagery', 'community']);
@@ -140,18 +140,18 @@ export class LocalizationSystem extends AbstractSystem {
       }
     }
 
-    const dataloader = this.context.systems.dataloader;
+    const assets = this.context.systems.assets;
     const urlhash = this.context.systems.urlhash;
     const prerequisites = Promise.all([
-      dataloader.initAsync(),
+      assets.initAsync(),
       urlhash.initAsync()
     ]);
 
     return this._initPromise = prerequisites
       .then(() => {
         return Promise.all([
-          dataloader.getDataAsync('languages'),
-          dataloader.getDataAsync('locales')
+          assets.getDataAsync('languages'),
+          assets.getDataAsync('locales')
         ]);
       })
       .then(results => {
@@ -240,8 +240,8 @@ export class LocalizationSystem extends AbstractSystem {
       cache[locale] = {};
     }
 
-    const dataloader = this.context.systems.dataloader;
-    const fileMap = dataloader.fileMap;
+    const assets = this.context.systems.assets;
+    const fileMap = assets.fileMap;
     const loadPromises = [];
 
     for (const scope of this._scopes) {
@@ -249,7 +249,7 @@ export class LocalizationSystem extends AbstractSystem {
       if (!fileMap.has(key)) {
         fileMap.set(key, `data/l10n/${scope}.${locale}.min.json`);
       }
-      const prom = dataloader.getDataAsync(key)
+      const prom = assets.getDataAsync(key)
         .then(data => {
           cache[locale][scope] = data[locale];
         });

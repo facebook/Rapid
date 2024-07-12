@@ -33,7 +33,7 @@ export class StyleSystem extends AbstractSystem {
     super(context);
     this.id = 'styles';
     this.context = context;
-    this.dependencies = new Set(['dataloader']);
+    this.dependencies = new Set(['assets']);
     this.autoStart = true;
 
     // Experiment, see Rapid#1230

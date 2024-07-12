@@ -12,7 +12,7 @@ import { uiModal } from './modal.js';
  *   - We have an updated privacy policy to tell them about
  */
 export function uiSplash(context) {
-  const dataloader = context.systems.dataloader;
+  const assets = context.systems.assets;
   const l10n = context.systems.l10n;
   const storage = context.systems.storage;
 
@@ -23,7 +23,7 @@ export function uiSplash(context) {
     storage.setItem('sawPrivacyVersion', context.privacyVersion);
 
     // prefetch intro graph data now, while user is looking at the splash screen
-    dataloader.getDataAsync('intro_graph');
+    assets.getDataAsync('intro_graph');
 
     const modal = uiModal(selection);
     modal.select('.modal')

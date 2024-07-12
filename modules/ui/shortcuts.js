@@ -25,7 +25,7 @@ import { utilDetect } from '../util/detect.js';
 //
 
 export function uiShortcuts(context) {
-  const dataloader = context.systems.dataloader;
+  const assets = context.systems.assets;
   const l10n = context.systems.l10n;
 
   const detected = utilDetect();
@@ -280,7 +280,7 @@ export function uiShortcuts(context) {
     }
     _modal = uiModal(_selection);
 
-    dataloader.getDataAsync('shortcuts')
+    assets.getDataAsync('shortcuts')
       .then(data => {
         _dataShortcuts = data.shortcuts;
         render();

@@ -19,6 +19,7 @@ export {
 
 
 export function uiFieldCombo(context, uifield) {
+  const assets = context.systems.assets;
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const dispatch = d3_dispatch('change');
@@ -46,8 +47,7 @@ export function uiFieldCombo(context, uifield) {
 
     // initialize deprecated tags array
     var _dataDeprecated = [];
-    const dataloader = context.systems.dataloader;
-    dataloader.getDataAsync('deprecated')
+    assets.getDataAsync('deprecated')
       .then(function(d) { _dataDeprecated = d; })
       .catch(e => console.error(e));  // eslint-disable-line
 
