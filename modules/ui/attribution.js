@@ -45,7 +45,7 @@ export function uiAttribution(context) {
             .attr('target', '_blank');
         }
 
-        const terms_text = l10n.t(`imagery.${d.idtx}.attribution.text`, { default: d.terms_text || d.id || d.name });
+        const terms_text = l10n.t(`_imagery.imagery.${d.idtx}.attribution.text`, { default: d.terms_text || d.id || d.name });
 
         if (d.icon && !d.overlay) {
           attribution

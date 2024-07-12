@@ -60,11 +60,11 @@ export class ImagerySource {
   }
 
   get name() {
-    return this.context.systems.l10n.t(`imagery.${this._idtx}.name`, { default: this._name });
+    return this.context.systems.l10n.t(`_imagery.imagery.${this._idtx}.name`, { default: this._name });
   }
 
   get description() {
-    return this.context.systems.l10n.t(`imagery.${this._idtx}.description`, { default: this._description });
+    return this.context.systems.l10n.t(`_imagery.imagery.${this._idtx}.description`, { default: this._description });
   }
 
   get imageryUsed() {

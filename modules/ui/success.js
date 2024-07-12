@@ -170,7 +170,7 @@ export function uiSuccess(context) {
           if (!area) return;
 
           // Resolve strings
-          const localize = (stringID) => l10n.t(`community.${stringID}`);
+          const localize = (stringID) => l10n.t(`_community.${stringID}`);
           resource.resolved = resolveStrings(resource, oci.defaults, localize);
 
           communities.push({
@@ -347,7 +347,7 @@ export function uiSuccess(context) {
         .text(d => {
           let name = d.name;
           if (d.i18n && d.id) {
-            name = l10n.t(`community.${communityID}.events.${d.id}.name`, { default: name });
+            name = l10n.t(`_community.${communityID}.events.${d.id}.name`, { default: name });
           }
           return name;
         });
@@ -371,7 +371,7 @@ export function uiSuccess(context) {
         .text(d => {
           let where = d.where;
           if (d.i18n && d.id) {
-            where = l10n.t(`community.${communityID}.events.${d.id}.where`, { default: where });
+            where = l10n.t(`_community.${communityID}.events.${d.id}.where`, { default: where });
           }
           return where;
         });
@@ -382,7 +382,7 @@ export function uiSuccess(context) {
         .text(d => {
           let description = d.description;
           if (d.i18n && d.id) {
-            description = l10n.t(`community.${communityID}.events.${d.id}.description`, { default: description });
+            description = l10n.t(`_community.${communityID}.events.${d.id}.description`, { default: description });
           }
           return description;
         });
