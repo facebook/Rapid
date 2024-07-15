@@ -53,25 +53,6 @@ export class NsiService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed initialization
    */
   initAsync() {
-    // Add the sources to the assets filemap so we can start downloading data.
-    const sources = {
-      'nsi_data': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/nsi.min.json',
-      'nsi_dissolved': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/dissolved.min.json',
-      'nsi_features': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/featureCollection.min.json',
-      'nsi_generics': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/genericWords.min.json',
-      'nsi_presets': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/presets/nsi-id-presets.min.json',
-      'nsi_replacements': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/replacements.min.json',
-      'nsi_trees': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/trees.min.json'
-    };
-
-    const assets = this.context.systems.assets;
-    const fileMap = assets.fileMap;
-    for (const [k, url] of Object.entries(sources)) {
-      if (!fileMap.has(k)) {
-        fileMap.set(k, url);
-      }
-    }
-
     const presets = this.context.systems.presets;
     return presets.initAsync()
       .then(() => this._loadNsiPresetsAsync())

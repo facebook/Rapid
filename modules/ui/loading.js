@@ -4,6 +4,8 @@ import { uiModal } from './modal.js';
 
 
 export function uiLoading(context) {
+  const assets = context.systems.assets;
+
   let _modalSelection = d3_select(null);
   let _message = '';
   let _blocking = false;
@@ -20,7 +22,7 @@ export function uiLoading(context) {
     loadertext
       .append('img')
       .attr('class', 'loader')
-      .attr('src', context.asset('img/loader-white.gif'));
+      .attr('src', assets.getAssetURL('img/loader-white.gif'));
 
     loadertext
       .append('h3')

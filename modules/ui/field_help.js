@@ -9,7 +9,9 @@
 //// It borrows some code from uiHelp
 //
 //export function uiFieldHelp(context, fieldName) {
+//    const assets = context.systems.assets;
 //    const l10n = context.systems.l10n;
+//
 //    var fieldHelp = {};
 //    var _inspector = d3_select(null);
 //    var _wrap = d3_select(null);
@@ -125,13 +127,13 @@
 //            content
 //                .insert('img', 'p.from_shadow')
 //                .attr('class', 'field-help-image cf')
-//                .attr('src', context.asset('img/tr_inspect.gif'));
+//                .attr('src', assets.getAssetURL('img/tr_inspect.gif'));
 //
 //        } else if (d.key === 'help.field.restrictions.modifying') {
 //            content
 //                .insert('img', 'p.allow_turn')
 //                .attr('class', 'field-help-image cf')
-//                .attr('src', context.asset('img/tr_modify.gif'));
+//                .attr('src', assets.getAssetURL('img/tr_modify.gif'));
 //        }
 //    }
 //

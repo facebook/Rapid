@@ -15,10 +15,88 @@ describe('AssetSystem', () => {
   });
 
 
-  describe('#fileMap', () => {
-    it('gets the fileMap', () => {
-      const fileMap = _assets.fileMap;
-      expect(fileMap).to.be.an.instanceof(Map);
+  describe('#origin', () => {
+    it('sets and gets origin', () => {
+      expect(_assets.origin).to.eql('latest');
+
+      _assets.origin = 'local';
+      expect(_assets.origin).to.eql('local');
+    });
+  });
+
+
+  describe('#filePath', () => {
+    it('sets and gets filePath', () => {
+      expect(_assets.filePath).to.eql('');
+
+      _assets.filePath = 'test/';
+      expect(_assets.filePath).to.eql('test/');
+    });
+  });
+
+
+  describe('#fileReplacements', () => {
+    const TESTMAP = { 'test/img/loader.gif': '/assets/test/img/loader-b66184b5c4afbccc25f.gif' };
+
+    it('sets and gets fileReplacements', () => {
+      expect(_assets.fileReplacements).to.be.an('object').that.is.empty;
+
+      _assets.fileReplacements = TESTMAP;
+      expect(_assets.fileReplacements).to.eql(TESTMAP);
+    });
+  });
+
+
+  describe('#sources', () => {
+    it('gets the sources', () => {
+      const sources = _assets.sources;
+      expect(sources).to.be.an('object').that.has.all.keys(['latest', 'local']);
+    });
+  });
+
+
+  describe('#getAssetURL', () => {
+    const TESTMAP = { 'test/img/loader.gif': '/assets/test/img/loader-b66184b5c4afbccc25f.gif' };
+
+    beforeEach(() => {
+      _assets.filePath = 'test/';
+      _assets.fileReplacements = TESTMAP;
+    });
+
+    it('ignores absolute urls', () => {
+      expect(_assets.getAssetURL('HTTP://hello')).to.eql('HTTP://hello');
+      expect(_assets.getAssetURL('https://world')).to.eql('https://world');
+    });
+
+    it('looks first in fileReplacements', () => {
+      expect(_assets.getAssetURL('img/loader.gif')).to.eql('/assets/test/img/loader-b66184b5c4afbccc25f.gif');
+    });
+
+    it('falls back to prepending assetPath', () => {
+      expect(_assets.getAssetURL('img/spinner.gif')).to.eql('test/img/spinner.gif');
+    });
+  });
+
+
+  describe('#getDataURL', () => {
+    it('ignores absolute urls', () => {
+      expect(_assets.getDataURL('HTTP://hello')).to.eql('HTTP://hello');
+      expect(_assets.getDataURL('https://world')).to.eql('https://world');
+    });
+
+    it('throws if origin is invalid', () => {
+      _assets.origin = 'nope';
+      expect(() => _assets.getDataURL('intro_graph')).to.throw(/Unknown origin/);
+    });
+
+    it('throws if key is invalid', () => {
+      _assets.origin = 'latest';
+      expect(() => _assets.getDataURL('nope')).to.throw(/Unknown asset key/);
+    });
+
+    it('returns the URL if the key is valid', () => {
+      _assets.origin = 'latest';
+      expect(_assets.getDataURL('intro_graph')).to.eql('data/intro_graph.min.json');
     });
   });
 
@@ -44,7 +122,7 @@ describe('AssetSystem', () => {
           done(new Error(`We were not supposed to get data but did: ${data}`));
         })
         .catch(err => {
-          expect(/^Unknown data file/.test(err)).to.be.true;
+          expect(/^Unknown asset/.test(err)).to.be.true;
           done();
         });
     });
@@ -60,7 +138,7 @@ describe('AssetSystem', () => {
       expect(prom).to.be.an.instanceof(Promise);
       return prom
         .then(data => {
-          expect(data).to.be.a('object');
+          expect(data).to.be.an('object');
           expect(data.value).to.eql('success');
           fetchMock.resetHistory();
         });

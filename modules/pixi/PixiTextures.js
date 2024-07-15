@@ -19,6 +19,8 @@ export class PixiTextures {
     this.context = context;
     this.loaded = false;
 
+    const assets = context.systems.assets;
+
     // We store textures in 3 atlases, each one is for holding similar sized things.
     // Each "atlas" manages its own store of "BaseTextures" - real textures that upload to the GPU.
     // This helps pack them efficiently and avoids swapping frequently as WebGL draws the scene.
@@ -46,7 +48,7 @@ export class PixiTextures {
     ];
     let patternBundle = {};
     for (const k of PATTERNS) {
-      patternBundle[k] = context.asset(`img/pattern/${k}.png`);
+      patternBundle[k] = assets.getAssetURL(`img/pattern/${k}.png`);
     }
     Assets.addBundle('patterns', patternBundle);
 

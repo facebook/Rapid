@@ -11,6 +11,7 @@ import { uiModal } from './modal.js';
  *   - They do not have backup changes to restore
  */
 export function uiWhatsNew(context) {
+  const assets = context.systems.assets;
   const l10n = context.systems.l10n;
   const storage = context.systems.storage;
 
@@ -51,12 +52,12 @@ export function uiWhatsNew(context) {
       .attr('loop', '')
       .attr('playsinline', '')
       .attr('disablepictureinpicture', '')
-      .attr('poster', context.asset('img/rapid-v23-rotation.jpg'))
-      .attr('src', context.asset('img/rapid-v23-rotation.mp4'))
+      .attr('poster', assets.getAssetURL('img/rapid-v23-rotation.jpg'))
+      .attr('src', assets.getAssetURL('img/rapid-v23-rotation.mp4'))
       .attr('autoplay', '');
 //      .append('img')
 //      .attr('class', 'whatsnew-image')
-//      .attr('src', context.asset('img/rapid-v22-splash.jpg'));
+//      .attr('src', assets.getAssetURL('img/rapid-v22-splash.jpg'));
 
     const checkbox = mainSection
       .append('div')

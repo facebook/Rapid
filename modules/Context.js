@@ -45,8 +45,8 @@ export class Context extends EventEmitter {
     this.maxCharsForRelationRole = 255;
 
     // Assets
-    this.assetPath = '';
-    this.assetMap = {};
+    this.assetPath = null;
+    this.assetMap = null;
 
     // Viewport (was: Projection)
     this.viewport = new Viewport();
@@ -120,6 +120,16 @@ export class Context extends EventEmitter {
     for (const [id, System] of systems.available) {
       this.systems[id] = new System(this);
     }
+
+    // AssetSystem
+    const assets = this.systems.assets;
+    if (this.assetPath) {
+      assets.filePath = this.assetPath;
+    }
+    if (this.assetMap) {
+      assets.fileReplacements = this.assetMap;
+    }
+    this.asset = (val) => assets.getAssetURL(val);
 
     // LocalizationSystem
     const l10n = this.systems.l10n;
@@ -470,19 +480,6 @@ export class Context extends EventEmitter {
     if (val === undefined) return this._embed;
     this._embed = val;
     return this;
-  }
-
-
-  // Assets
-  asset(val) {
-    if (/^http(s)?:\/\//i.test(val)) return val;
-    const filename = `${this.assetPath}${val}`;
-    return this.assetMap[filename] || filename;
-  }
-
-  imagePath(val) {
-    console.error('deprecated: do not call context.imagePath anymore');   // eslint-disable-line no-console
-    return this.asset(`img/${val}`);
   }
 
 }

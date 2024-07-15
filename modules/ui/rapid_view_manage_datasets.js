@@ -9,6 +9,7 @@ import { utilKeybinding, utilNoAuto, utilRebind } from '../util/index.js';
 
 
 export function uiRapidViewManageDatasets(context, parentModal) {
+  const assets = context.systems.assets;
   const l10n = context.systems.l10n;
   const rapid = context.systems.rapid;
   const dispatch = d3_dispatch('done');
@@ -255,7 +256,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       status
         .append('img')
         .attr('class', 'rapid-view-manage-datasets-spinner')
-        .attr('src', context.asset('img/loader-black.gif'));
+        .attr('src', assets.getAssetURL('img/loader-black.gif'));
 
       esri.startAsync()
         .then(() => esri.loadDatasetsAsync())
