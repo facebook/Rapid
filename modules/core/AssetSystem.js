@@ -27,44 +27,53 @@ export class AssetSystem extends AbstractSystem {
     this.sources = {
       local: {
         'address_formats': 'data/address_formats.min.json',
-        'deprecated': 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/deprecated.min.json',
-        'discarded': 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/discarded.min.json',
         'imagery': 'data/imagery.min.json',
         'intro_graph': 'data/intro_graph.min.json',
         'intro_rapid_graph': 'data/intro_rapid_graph.min.json',
         'languages': 'data/languages.min.json',
         'locales': 'data/locales.min.json',
-        'nsi_data': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/nsi.min.json',
-        'nsi_dissolved': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/dissolved.min.json',
-        'nsi_features': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/featureCollection.min.json',
-        'nsi_generics': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/genericWords.min.json',
-        'nsi_presets': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/presets/nsi-id-presets.min.json',
-        'nsi_replacements': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/replacements.min.json',
-        'nsi_trees': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/trees.min.json',
-        'oci_defaults': 'https://cdn.jsdelivr.net/npm/osm-community-index@5.7/dist/defaults.min.json',
-        'oci_features': 'https://cdn.jsdelivr.net/npm/osm-community-index@5.7/dist/featureCollection.min.json',
-        'oci_resources': 'https://cdn.jsdelivr.net/npm/osm-community-index@5.7/dist/resources.min.json',
         'phone_formats': 'data/phone_formats.min.json',
-        'preset_categories': 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/preset_categories.min.json',
-        'preset_defaults': 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/preset_defaults.min.json',
-        'preset_fields': 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/fields.min.json',
-        'preset_presets': 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/presets.min.json',
-        'preset_overrides': 'data/preset_overrides.min.json',
         'qa_data': 'data/qa_data.min.json',
         'shortcuts': 'data/shortcuts.min.json',
         'territory_languages': 'data/territory_languages.min.json',
         'wayback': 'data/wayback.min.json',
-        'wmf_sitematrix': 'https://cdn.jsdelivr.net/npm/wmf-sitematrix@0.1/wikipedia.min.json'
+
+        'nsi_data': 'data/modules/name-suggestion-index/nsi.min.json',
+        'nsi_dissolved': 'data/modules/name-suggestion-index/dissolved.min.json',
+        'nsi_features': 'data/modules/name-suggestion-index/featureCollection.min.json',
+        'nsi_generics': 'data/modules/name-suggestion-index/genericWords.min.json',
+        'nsi_presets': 'data/modules/name-suggestion-index/presets/nsi-id-presets.min.json',
+        'nsi_replacements': 'data/modules/name-suggestion-index/replacements.min.json',
+        'nsi_trees': 'data/modules/name-suggestion-index/trees.min.json',
+
+        'oci_defaults': 'data/modules/osm-community-index/defaults.min.json',
+        'oci_features': 'data/modules/osm-community-index/featureCollection.min.json',
+        'oci_resources': 'data/modules/osm-community-index/resources.min.json',
+
+        'tagging_deprecated': 'data/modules/id-tagging-schema/deprecated.min.json',
+        'tagging_discarded': 'data/modules/id-tagging-schema/discarded.min.json',
+        'tagging_preset_categories': 'data/modules/id-tagging-schema/preset_categories.min.json',
+        'tagging_preset_defaults': 'data/modules/id-tagging-schema/preset_defaults.min.json',
+        'tagging_preset_fields': 'data/modules/id-tagging-schema/fields.min.json',
+        'tagging_preset_presets': 'data/modules/id-tagging-schema/presets.min.json',
+        'tagging_preset_overrides': 'data/preset_overrides.min.json',
+
+        'wmf_sitematrix': 'data/modules/wmf-sitematrix/wikipedia.min.json'
       },
+
       latest: {
         'address_formats': 'data/address_formats.min.json',
-        'deprecated': 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/deprecated.min.json',
-        'discarded': 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/discarded.min.json',
         'imagery': 'data/imagery.min.json',
         'intro_graph': 'data/intro_graph.min.json',
         'intro_rapid_graph': 'data/intro_rapid_graph.min.json',
         'languages': 'data/languages.min.json',
         'locales': 'data/locales.min.json',
+        'phone_formats': 'data/phone_formats.min.json',
+        'qa_data': 'data/qa_data.min.json',
+        'shortcuts': 'data/shortcuts.min.json',
+        'territory_languages': 'data/territory_languages.min.json',
+        'wayback': 'data/wayback.min.json',
+
         'nsi_data': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/nsi.min.json',
         'nsi_dissolved': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/dissolved.min.json',
         'nsi_features': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/featureCollection.min.json',
@@ -72,19 +81,19 @@ export class AssetSystem extends AbstractSystem {
         'nsi_presets': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/presets/nsi-id-presets.min.json',
         'nsi_replacements': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/replacements.min.json',
         'nsi_trees': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/trees.min.json',
+
         'oci_defaults': 'https://cdn.jsdelivr.net/npm/osm-community-index@5.7/dist/defaults.min.json',
         'oci_features': 'https://cdn.jsdelivr.net/npm/osm-community-index@5.7/dist/featureCollection.min.json',
         'oci_resources': 'https://cdn.jsdelivr.net/npm/osm-community-index@5.7/dist/resources.min.json',
-        'phone_formats': 'data/phone_formats.min.json',
-        'preset_categories': 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/preset_categories.min.json',
-        'preset_defaults': 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/preset_defaults.min.json',
-        'preset_fields': 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/fields.min.json',
-        'preset_presets': 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/presets.min.json',
-        'preset_overrides': 'data/preset_overrides.min.json',
-        'qa_data': 'data/qa_data.min.json',
-        'shortcuts': 'data/shortcuts.min.json',
-        'territory_languages': 'data/territory_languages.min.json',
-        'wayback': 'data/wayback.min.json',
+
+        'tagging_deprecated': 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/deprecated.min.json',
+        'tagging_discarded': 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/discarded.min.json',
+        'tagging_preset_categories': 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/preset_categories.min.json',
+        'tagging_preset_defaults': 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/preset_defaults.min.json',
+        'tagging_preset_fields': 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/fields.min.json',
+        'tagging_preset_presets': 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/presets.min.json',
+        'tagging_preset_overrides': 'data/preset_overrides.min.json',
+
         'wmf_sitematrix': 'https://cdn.jsdelivr.net/npm/wmf-sitematrix@0.1/wikipedia.min.json'
       }
     };
@@ -115,20 +124,20 @@ export class AssetSystem extends AbstractSystem {
     if (window.mocha) {
       const c = this._cache;
       c.address_formats = { addressFormats: [{ format: [['housenumber', 'street'], ['city', 'postcode'] ] }] };
-      c.deprecated = [{ old: { highway: 'no' } }, { old: { highway: 'ford' }, replace: { ford: '*' } }];
-      c.discarded = {};
       c.imagery = { imagery: [] };
       c.languages = { languages: { de: { nativeName: 'Deutsch' }, en: { nativeName: 'English' } } };
       c.locales = { locales: { en: { rtl: false } } };
       c.phone_formats = { phoneFormats: {} };
-      c.preset_categories = {};
-      c.preset_defaults = {};
-      c.preset_fields = {};
-      c.preset_presets = {};
-      c.preset_overrides = {};
       c.qa_data = { improveOSM: {}, keepRight: {}, osmose: {} };
       c.shortcuts = { shortcuts: [] };
       c.territory_languages = { territoryLanguages: {} };
+      c.tagging_deprecated = [{ old: { highway: 'no' } }, { old: { highway: 'ford' }, replace: { ford: '*' } }];
+      c.tagging_discarded = {};
+      c.tagging_preset_categories = {};
+      c.tagging_preset_defaults = {};
+      c.tagging_preset_fields = {};
+      c.tagging_preset_presets = {};
+      c.tagging_preset_overrides = {};
       c.wmf_sitematrix = [ ['English', 'English', 'en'], ['German', 'Deutsch', 'de'] ];
     }
   }

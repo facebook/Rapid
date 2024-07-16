@@ -61,11 +61,6 @@ function buildDataAsync() {
 
   return _buildPromise = Promise.resolve(true)
     .then(() => {
-
-      // create target folders if necessary
-      if (!fs.existsSync('data/l10n'))       fs.mkdirSync('data/l10n', { recursive: true });
-      if (!fs.existsSync('dist/data/l10n'))  fs.mkdirSync('dist/data/l10n', { recursive: true });
-
       // Create symlinks if necessary..  { 'target': 'source' }
       const symlinks = {
         img: 'dist/img'
@@ -79,13 +74,21 @@ function buildDataAsync() {
       }
 
       // Start clean
-      shell.rm('-f', [
+      shell.rm('-rf', [
         'data/languages.json',
         'data/territory_languages.json',
         'data/l10n/*.en.json',
+        'data/modules',
         'dist/data/**/*.json',
+        'dist/data/modules',
         'svg/fontawesome/*.svg'
       ]);
+
+      // Create target folders if necessary
+      if (!fs.existsSync('data/l10n'))          fs.mkdirSync('data/l10n', { recursive: true });
+      if (!fs.existsSync('data/modules'))       fs.mkdirSync('data/modules', { recursive: true });
+      if (!fs.existsSync('dist/data/l10n'))     fs.mkdirSync('dist/data/l10n', { recursive: true });
+      if (!fs.existsSync('dist/data/modules'))  fs.mkdirSync('dist/data/modules', { recursive: true });
 
       // Gather icons from various places that we need assembled into a spritesheet.
       // Start with icons we want to use in the UI that aren't tied to other data.
@@ -99,9 +102,10 @@ function buildDataAsync() {
         'fas-th-list',
         'fas-user-cog'
       ]);
+
       gatherQAIssueIcons(icons);
       gatherPresetIcons(icons);
-      writeIcons(icons)
+      writeIcons(icons);
 
       const territoryLanguages = { territoryLanguages: sortObject(gatherTerritoryLanguages()) };
       fs.writeFileSync('data/territory_languages.json', stringify(territoryLanguages, { maxLength: 9999 }) + '\n');
@@ -109,16 +113,20 @@ function buildDataAsync() {
       const languages = { languages: sortObject(CLDR.langNamesInNativeLang()) };
       fs.writeFileSync('data/languages.json', stringify(languages, { maxLength: 200 }) + '\n');
 
+      copyModuleData();
       writeEnJson();
 
-      // copy all files to `dist/data`
-      for (const sourceFile of globSync('data/**/*.json')) {
+      // copy `data/` files to `dist/data/` and stamp with metadata
+      // (skip module data, it's already copied and we don't want to modify it anyway)
+      for (const sourceFile of globSync('data/**/*.json', { ignore: 'data/modules/**/*.json' })) {
         const destinationFile = sourceFile.replace('data/', 'dist/data/');
         copyToDistSync(sourceFile, destinationFile);
       }
+
       for (const file of globSync('dist/data/**/*.json')) {
         minifySync(file);
       }
+
     })
     .then(() => {
       console.timeEnd(END);
@@ -201,6 +209,49 @@ function gatherTerritoryLanguages() {
   }
 
   return territoryLanguages;
+}
+
+
+// copyModuleData
+// Copies the data from various modules.  We distribute copies of these files
+// for situations where Rapid can not fetch the latest files from the CDN.
+function copyModuleData() {
+  try {
+    // tagging
+    for (const file of ['deprecated', 'discarded', 'fields', 'preset_categories', 'preset_defaults', 'presets']) {
+      const source = `node_modules/@openstreetmap/id-tagging-schema/dist/${file}.json`;
+      const destination = `data/modules/id-tagging-schema/${file}.json`;
+      fs.cpSync(source, destination, { recursive: true });
+    }
+
+    // name-suggestion-index
+    for (const file of ['nsi', 'dissolved', 'featureCollection', 'genericWords', 'presets/nsi-id-presets', 'replacements', 'trees']) {
+      const source = `node_modules/name-suggestion-index/dist/${file}.json`;
+      const destination = `data/modules/name-suggestion-index/${file}.json`;
+      fs.cpSync(source, destination, { recursive: true });
+    }
+
+    // osm-community-index
+    for (const file of ['defaults', 'featureCollection', 'resources']) {
+      const source = `node_modules/osm-community-index/dist/${file}.json`;
+      const destination = `data/modules/osm-community-index/${file}.json`;
+      fs.cpSync(source, destination, { recursive: true });
+    }
+
+    // wmf-sitematrix
+    for (const file of ['wikipedia']) {
+      const source = `node_modules/wmf-sitematrix/${file}.json`;
+      const destination = `data/modules/wmf-sitematrix/${file}.json`;
+      fs.cpSync(source, destination, { recursive: true });
+    }
+
+    // copy these to dist/data/modules also
+    fs.cpSync('data/modules', 'dist/data/modules', { recursive: true });
+
+  } catch (err) {
+    console.error(chalk.red(`Error - ${err.message}`));
+    process.exit(1);
+  }
 }
 
 

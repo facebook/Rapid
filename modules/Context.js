@@ -45,6 +45,7 @@ export class Context extends EventEmitter {
     this.maxCharsForRelationRole = 255;
 
     // Assets
+    this.assetOrigin = null;
     this.assetPath = null;
     this.assetMap = null;
 
@@ -123,12 +124,9 @@ export class Context extends EventEmitter {
 
     // AssetSystem
     const assets = this.systems.assets;
-    if (this.assetPath) {
-      assets.filePath = this.assetPath;
-    }
-    if (this.assetMap) {
-      assets.fileReplacements = this.assetMap;
-    }
+    if (this.assetOrigin)  assets.origin = this.assetOrigin;
+    if (this.assetPath)    assets.filePath = this.assetPath;
+    if (this.assetMap)     assets.fileReplacements = this.assetMap;
     this.asset = (val) => assets.getAssetURL(val);
 
     // LocalizationSystem

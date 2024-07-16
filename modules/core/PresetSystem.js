@@ -91,11 +91,11 @@ export class PresetSystem extends AbstractSystem {
 
         // Fetch the preset data
         return Promise.all([
-          assets.getDataAsync('preset_categories'),
-          assets.getDataAsync('preset_defaults'),
-          assets.getDataAsync('preset_presets'),
-          assets.getDataAsync('preset_fields'),
-          assets.getDataAsync('preset_overrides')   // customizations to merge in after the id-tagging-schema
+          assets.getDataAsync('tagging_preset_categories'),
+          assets.getDataAsync('tagging_preset_defaults'),
+          assets.getDataAsync('tagging_preset_presets'),
+          assets.getDataAsync('tagging_preset_fields'),
+          assets.getDataAsync('tagging_preset_overrides')   // customizations to merge in after the id-tagging-schema
         ]);
       })
       .then(vals => {

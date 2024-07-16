@@ -10,6 +10,7 @@ transifex.auth
 coverage/
 node_modules/
 
+/data/modules/
 /dist/index-copy.html
 /dist/*.js
 /dist/*.css

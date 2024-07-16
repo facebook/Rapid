@@ -135,7 +135,8 @@
     "shx": "^0.3.4",
     "sinon": "^18.0.0",
     "static-server": "^3.0.0",
-    "svg-sprite": "2.0.4"
+    "svg-sprite": "2.0.4",
+    "wmf-sitematrix": "^0.1.5"
   },
   "engines": {
     "node": ">=18.18"
