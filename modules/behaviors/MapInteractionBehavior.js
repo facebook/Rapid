@@ -5,7 +5,9 @@ import { osmNode } from '../osm/node.js';
 
 const NEAR_TOLERANCE = 1;
 const FAR_TOLERANCE = 4;
-
+const MIN_Z = 2;
+const MAX_Z = 24;
+const ROTATION_THRESHOLD = 0.01;
 
 /**
  * `MapInteractionBehavior` listens to pointer events and converts those into zoom/pan map interactions
@@ -32,6 +34,10 @@ export class MapInteractionBehavior extends AbstractBehavior {
 
     this._lastPoint = null;
     this._lastAngle = null;
+    this.activeTouches = {};
+    this._initialPinchDistance = null;
+    this._initialScale = null;
+    this.previousMode = this.context.mode?.id;
 
     // Make sure the event handlers have `this` bound correctly
     this._click = this._click.bind(this);
@@ -196,7 +202,24 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointerdown(e) {
-    if (this.lastDown) return;   // a pointer is already down
+    if (this._isPaneOpen()) {
+      return; // Ignore move events if any pane is open
+    }
+    const currentMode = this.context.mode.id;
+    if (this.previousMode !== currentMode) {
+      this._resetTouchStates();
+      this.previousMode = currentMode;
+    }
+    this.activeTouches[e.pointerId] = { x: e.global.x, y: e.global.y, clientX: e.clientX, clientY: e.clientY };
+    if (Object.keys(this.activeTouches).length === 2) {
+      if (!this._initialPinchDistance) {
+        this._initialPinchDistance = this._getDistanceBetweenTouches();
+      }
+      const touchPoints = Object.values(this.activeTouches);
+      this._initialAngle = Math.atan2(touchPoints[1].clientY - touchPoints[0].clientY, touchPoints[1].clientX - touchPoints[0].clientX);
+    }
+    // Update the pinch state or any other gesture recognition logic
+    this._updatePinchState();
 
     const context = this.context;
     const map = context.systems.map;
@@ -231,6 +254,33 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointermove(e) {
+    if (this._isPaneOpen()) {
+      return; // Ignore move events if any pane is open
+    }
+    this.activeTouches[e.pointerId] = { x: e.global.x, y: e.global.y, clientX: e.clientX, clientY: e.clientY };
+    if (Object.keys(this.activeTouches).length === 2) {
+      const touchPoints = Object.values(this.activeTouches);
+      const currentDistance = this._getDistanceBetweenTouches();
+      const currentAngle = Math.atan2(touchPoints[1].clientY - touchPoints[0].clientY, touchPoints[1].clientX - touchPoints[0].clientX);
+      const angleDelta = currentAngle - this._initialAngle;
+      const scaleChange = currentDistance / this._initialPinchDistance;
+      const currentZoom = this.context.viewport.transform.zoom;
+      const dampingFactor = currentZoom > 16 ? 0.25 : (currentZoom / 16) * 0.1 + 0.25;
+      const adjustedScaleChange = 1 + (scaleChange - 1) * dampingFactor;
+      const newZoom = currentZoom * adjustedScaleChange;
+      const clampedZoom = Math.max(MIN_Z, Math.min(newZoom, MAX_Z));
+      this.context.systems.map.zoom(clampedZoom);  // Directly call map.zoom with the new zoom level
+      this._initialPinchDistance = currentDistance;
+      this._initialAngle = currentAngle;
+      if (Math.abs(angleDelta) > ROTATION_THRESHOLD) {
+        const context = this.context;
+        const map = context.systems.map;
+        const viewport = context.viewport;
+        const t = viewport.transform.props;
+        map.transform({ x: t.x, y: t.y, k: t.k, r: t.r + angleDelta });
+      }
+    }
+
     const context = this.context;
     const map = context.systems.map;
     const eventManager = map.renderer.events;
@@ -290,9 +340,12 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointerup(e) {
-    const down = this.lastDown;
-    const up = this._getEventData(e);
-    if (!down || down.id !== up.id) return;   // not down, or different pointer
+    delete this.activeTouches[e.pointerId];
+    if (Object.keys(this.activeTouches).length === 0) {
+      this._initialPinchDistance = null;
+      this._initialAngle = null;
+    }
+    this._updatePinchState();
 
     this.lastDown = null;
     this.gesture = null;
@@ -314,13 +367,75 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * Handler for pointercancel events.
    * @param  `e`  A Pixi FederatedPointerEvent
    */
-  _pointercancel() {
-    // Here we can throw away the down data to prepare for another `pointerdown`.
-    // After pointercancel, there should be no more `pointermove` or `pointerup` events.
-    this.lastDown = null;
-    this.gesture = null;
-    this._lastPoint = null;
-    this._lastAngle = null;
+  _pointercancel(e) {
+    delete this.activeTouches[e.pointerId];
+    if (Object.keys(this.activeTouches).length === 0) {
+      this._initialPinchDistance = null;
+      this._initialAngle = null;
+    }
+    this._updatePinchState();
+    // Reset interaction states if necessary
+    if (Object.keys(this.activeTouches).length === 0) {
+      this.lastDown = null;
+      this.gesture = null;
+      this._lastPoint = null;
+      this._lastAngle = null;
+    }
+  }
+
+
+  /**
+   * _pinchStart
+   * Handler for the start of a pinch gesture. Initializes the pinch distance and scale.
+   * @param {Event} e - The event object containing touch points.
+   */
+  _pinchStart(e) {
+    const dist = this._getDistanceBetweenTouches(e);
+    this._initialPinchDistance = dist;
+    this._initialScale = this.context.viewport.transform.scale; // Capture the scale at the start of the pinch
+  }
+
+
+  /**
+   * _pinchMove
+   * Handler for the movement during a pinch gesture. Calculates and applies the new scale based on the change in distance between touches.
+   * @param {Event} e - The event object containing touch points.
+   */
+  _pinchMove(e) {
+    if (this._initialPinchDistance) {
+        const currentZoom = this.context.viewport.transform.zoom;
+        const clampedZoom = Math.max(MIN_Z, Math.min(currentZoom, MAX_Z));
+        this.context.systems.map.zoom(clampedZoom);
+    }
+  }
+
+
+  /**
+   * _pinchEnd
+   * Handler for the end of a pinch gesture. Logs the final scale and resets initial values.
+   * @param {Event} e - The event object that signifies the end of the touch.
+   */
+  _pinchEnd(e) {
+    this._initialPinchDistance = null;
+    this._initialScale = null;
+  }
+
+
+  /**
+   * _getDistanceBetweenTouches
+   * Calculates the distance between two touch points.
+   * @param {Event} e - The event object containing touch points.
+   * @return {number} The distance between the two touch points.
+   */
+  _getDistanceBetweenTouches() {
+    const touchPoints = Object.values(this.activeTouches);
+    if (touchPoints.length === 2) {
+      // Use clientX and clientY for calculating distance to avoid issues with element transformations
+      const [first, second] = touchPoints;
+      const distance = Math.hypot(first.clientX - second.clientX, first.clientY - second.clientY);
+      return distance;
+    }
+    return 0;  // Ensure a number is always returned
   }
 
 
@@ -362,4 +477,50 @@ export class MapInteractionBehavior extends AbstractBehavior {
     }
   }
 
+
+  /**
+   * _updatePinchState
+   * Updates the pinch state by recalculating the scale change.
+   */
+  _updatePinchState() {
+    const touchPoints = Object.values(this.activeTouches);
+    if (touchPoints.length === 2) {
+      const [first, second] = touchPoints;
+      const currentDistance = Math.hypot(first.x - second.x, first.y - second.y);
+      const currentZoom = this.context.viewport.transform.zoom;
+      const clampedZoom = Math.max(MIN_Z, Math.min(currentZoom, MAX_Z));
+      this.context.systems.map.zoom(clampedZoom);
+      this._initialPinchDistance = currentDistance; // Update the initial distance for the next move event
+    }
+  }
+
+
+  /**
+   * _resetTouchStates
+   * Resets the touch-related states to their initial values.
+   */
+  _resetTouchStates() {
+    this.activeTouches = {};
+    this._initialPinchDistance = null;
+    this._initialAngle = null;
+    this.gesture = null;
+  }
+
+
+  /**
+   * _isPaneOpen
+   * Checks if any of the specified panes within the '.map-panes' container are open.
+   * @returns {boolean} True if any of the specified panes are open, otherwise false.
+   */
+  _isPaneOpen() {
+    // Check if the user is on a mobile device
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+    if (!isMobile) {
+      return false;
+    }
+    const isOpen = this.context.container().select('.map-panes')
+    .selectAll('.issues-pane.shown, .map-data-pane.shown, .preferences-pane.shown, .background-pane.shown, .help-pane.shown').size() > 0;
+
+    return isOpen;
+  }
 }

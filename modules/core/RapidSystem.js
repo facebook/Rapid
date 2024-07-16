@@ -110,6 +110,19 @@ export class RapidSystem extends AbstractSystem {
           label: l10n.t('rapid_feature_toggle.msBuildings.label'),
           license_markdown: l10n.t('rapid_feature_toggle.msBuildings.license_markdown')
         });
+
+        this._datasets.set('metaFootways', {
+          id: 'metaFootways',
+          beta: true,
+          added: true,         // whether it should appear in the list
+          enabled: false,      // whether the user has checked it on
+          conflated: true,
+          service: 'mapwithai',
+          color: RAPID_MAGENTA,
+          dataUsed: ['mapwithai', 'Meta Footways'],
+          label: l10n.t('rapid_feature_toggle.metaFootways.label'),
+          license_markdown: l10n.t('rapid_feature_toggle.metaFootways.license_markdown')
+        });
       });
   }
 

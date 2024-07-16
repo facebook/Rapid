@@ -1,6 +1,6 @@
 {
   "name": "@rapideditor/rapid",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "An AI-enhanced editor for OpenStreetMap",
   "repository": "github:facebook/Rapid",
   "homepage": "https://rapideditor.org",
@@ -148,6 +148,6 @@
     "> 0.2%, last 3 major versions, Firefox ESR, maintained node versions"
   ],
   "volta": {
-    "node": "18.18"
+    "node": "18.19.1"
   }
 }
