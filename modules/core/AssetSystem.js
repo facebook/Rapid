@@ -150,7 +150,7 @@ export class AssetSystem extends AbstractSystem {
       c.languages = { languages: { de: { nativeName: 'Deutsch' }, en: { nativeName: 'English' } } };
       c.locales = { locales: { en: { rtl: false } } };
       c.phone_formats = { phoneFormats: {} };
-      c.qa_data = { improveOSM: {}, keepRight: {}, osmose: {} };
+      c.qa_data = { keepRight: {}, osmose: {} };
       c.shortcuts = { shortcuts: [] };
       c.territory_languages = { territoryLanguages: {} };
       c.tagging_deprecated = [{ old: { highway: 'no' } }, { old: { highway: 'ford' }, replace: { ford: '*' } }];
