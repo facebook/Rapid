@@ -52,12 +52,12 @@ export function uiWhatsNew(context) {
       .attr('loop', '')
       .attr('playsinline', '')
       .attr('disablepictureinpicture', '')
-      .attr('poster', assets.getAssetURL('img/rapid-v23-rotation.jpg'))
-      .attr('src', assets.getAssetURL('img/rapid-v23-rotation.mp4'))
+      .attr('poster', assets.getFileURL('img/rapid-v23-rotation.jpg'))
+      .attr('src', assets.getFileURL('img/rapid-v23-rotation.mp4'))
       .attr('autoplay', '');
 //      .append('img')
 //      .attr('class', 'whatsnew-image')
-//      .attr('src', assets.getAssetURL('img/rapid-v22-splash.jpg'));
+//      .attr('src', assets.getFileURL('img/rapid-v22-splash.jpg'));
 
     const checkbox = mainSection
       .append('div')

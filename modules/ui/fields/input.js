@@ -28,7 +28,7 @@ export function uiFieldText(context, uifield) {
   let _phoneFormats = {};
 
   if (uifield.type === 'tel') {
-    assets.getDataAsync('phone_formats')
+    assets.loadAssetAsync('phone_formats')
       .then(d => {
         _phoneFormats = d.phoneFormats;
         updatePhonePlaceholder();

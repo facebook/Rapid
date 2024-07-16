@@ -32,7 +32,7 @@ export function uiSectionRawTagEditor(context, id) {
 
 
   let _discardKeys = new Set();
-  assets.getDataAsync('tagging_discarded')
+  assets.loadAssetAsync('tagging_discarded')
     .then(data => _discardKeys = new Set(Object.keys(data)));
 
   let _tagView = storage.getItem('raw-tag-editor-view') || 'list';   // 'list, 'text'

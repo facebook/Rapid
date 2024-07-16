@@ -280,7 +280,7 @@ export function uiShortcuts(context) {
     }
     _modal = uiModal(_selection);
 
-    assets.getDataAsync('shortcuts')
+    assets.loadAssetAsync('shortcuts')
       .then(data => {
         _dataShortcuts = data.shortcuts;
         render();

@@ -328,8 +328,8 @@ export class NsiService extends AbstractSystem {
 
     return (
       Promise.all([
-        assets.getDataAsync('nsi_presets'),
-        assets.getDataAsync('nsi_features')
+        assets.loadAssetAsync('nsi_presets'),
+        assets.loadAssetAsync('nsi_features')
       ])
       .then(vals => {
         // Add `suggestion=true` to all the nsi presets
@@ -351,10 +351,10 @@ export class NsiService extends AbstractSystem {
 
     return (
       Promise.all([
-        assets.getDataAsync('nsi_data'),
-        assets.getDataAsync('nsi_dissolved'),
-        assets.getDataAsync('nsi_replacements'),
-        assets.getDataAsync('nsi_trees')
+        assets.loadAssetAsync('nsi_data'),
+        assets.loadAssetAsync('nsi_dissolved'),
+        assets.loadAssetAsync('nsi_replacements'),
+        assets.loadAssetAsync('nsi_trees')
       ])
       .then(vals => {
         this._nsi = {

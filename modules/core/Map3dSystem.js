@@ -6,8 +6,6 @@ import throttle from 'lodash-es/throttle.js';
 import { AbstractSystem } from './AbstractSystem.js';
 import { uiCmd } from '../ui/cmd.js';
 
-const MAPLIBRE_JS = 'https://cdn.jsdelivr.net/npm/maplibre-gl@3/dist/maplibre-gl.min.js';
-const MAPLIBRE_CSS = 'https://cdn.jsdelivr.net/npm/maplibre-gl@3/dist/maplibre-gl.min.css';
 const SELECTION_COLOR = '#01d4fa';
 
 
@@ -241,6 +239,8 @@ export class Map3dSystem extends AbstractSystem {
     if (this._loadPromise) return this._loadPromise;
 
     return this._loadPromise = new Promise((resolve, reject) => {
+      const assets = this.context.systems.assets;
+
       let count = 0;
       const loaded = () => {
         if (++count === 2) resolve();
@@ -255,7 +255,7 @@ export class Map3dSystem extends AbstractSystem {
         .attr('id', 'rapideditor-maplibre-css')
         .attr('rel', 'stylesheet')
         .attr('crossorigin', 'anonymous')
-        .attr('href', MAPLIBRE_CSS)
+        .attr('href', assets.getAssetURL('maplibre_css'))
         .on('load', loaded)
         .on('error', reject);
 
@@ -265,7 +265,7 @@ export class Map3dSystem extends AbstractSystem {
         .append('script')
         .attr('id', 'rapideditor-maplibre-js')
         .attr('crossorigin', 'anonymous')
-        .attr('src', MAPLIBRE_JS)
+        .attr('src', assets.getAssetURL('maplibre_js'))
         .on('load', loaded)
         .on('error', reject);
     });

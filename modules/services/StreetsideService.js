@@ -7,9 +7,6 @@ import RBush from 'rbush';
 import { AbstractSystem } from '../core/AbstractSystem.js';
 import { utilFetchResponse } from '../util/index.js';
 
-const PANNELLUM_JS = 'https://cdn.jsdelivr.net/npm/pannellum@2/build/pannellum.min.js';
-const PANNELLUM_CSS = 'https://cdn.jsdelivr.net/npm/pannellum@2/build/pannellum.min.css';
-
 const TILEZOOM = 16.5;
 
 
@@ -573,6 +570,8 @@ export class StreetsideService extends AbstractSystem {
     if (this._loadPromise) return this._loadPromise;
 
     return this._loadPromise = new Promise((resolve, reject) => {
+      const assets = this.context.systems.assets;
+
       let count = 0;
       const loaded = () => {
         if (++count === 2) resolve();
@@ -587,7 +586,7 @@ export class StreetsideService extends AbstractSystem {
         .attr('id', 'rapideditor-pannellum-css')
         .attr('rel', 'stylesheet')
         .attr('crossorigin', 'anonymous')
-        .attr('href', PANNELLUM_CSS)
+        .attr('href', assets.getAssetURL('pannellum_css'))
         .on('load', loaded)
         .on('error', reject);
 
@@ -597,7 +596,7 @@ export class StreetsideService extends AbstractSystem {
         .append('script')
         .attr('id', 'rapideditor-pannellum-js')
         .attr('crossorigin', 'anonymous')
-        .attr('src', PANNELLUM_JS)
+        .attr('src', assets.getAssetURL('pannellum_js'))
         .on('load', loaded)
         .on('error', reject);
     });

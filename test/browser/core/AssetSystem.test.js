@@ -55,7 +55,7 @@ describe('AssetSystem', () => {
   });
 
 
-  describe('#getAssetURL', () => {
+  describe('#getFileURL', () => {
     const TESTMAP = { 'test/img/loader.gif': '/assets/test/img/loader-b66184b5c4afbccc25f.gif' };
 
     beforeEach(() => {
@@ -63,49 +63,49 @@ describe('AssetSystem', () => {
       _assets.fileReplacements = TESTMAP;
     });
 
-    it('ignores absolute urls', () => {
+    it('ignores urls', () => {
+      expect(_assets.getFileURL('HTTP://hello')).to.eql('HTTP://hello');
+      expect(_assets.getFileURL('https://world')).to.eql('https://world');
+    });
+
+    it('looks first in fileReplacements', () => {
+      expect(_assets.getFileURL('img/loader.gif')).to.eql('/assets/test/img/loader-b66184b5c4afbccc25f.gif');
+    });
+
+    it('falls back to prepending assetPath', () => {
+      expect(_assets.getFileURL('img/spinner.gif')).to.eql('test/img/spinner.gif');
+    });
+  });
+
+
+  describe('#getAssetURL', () => {
+    it('ignores urls', () => {
       expect(_assets.getAssetURL('HTTP://hello')).to.eql('HTTP://hello');
       expect(_assets.getAssetURL('https://world')).to.eql('https://world');
     });
 
-    it('looks first in fileReplacements', () => {
-      expect(_assets.getAssetURL('img/loader.gif')).to.eql('/assets/test/img/loader-b66184b5c4afbccc25f.gif');
-    });
-
-    it('falls back to prepending assetPath', () => {
-      expect(_assets.getAssetURL('img/spinner.gif')).to.eql('test/img/spinner.gif');
-    });
-  });
-
-
-  describe('#getDataURL', () => {
-    it('ignores absolute urls', () => {
-      expect(_assets.getDataURL('HTTP://hello')).to.eql('HTTP://hello');
-      expect(_assets.getDataURL('https://world')).to.eql('https://world');
-    });
-
     it('throws if origin is invalid', () => {
       _assets.origin = 'nope';
-      expect(() => _assets.getDataURL('intro_graph')).to.throw(/Unknown origin/);
+      expect(() => _assets.getAssetURL('intro_graph')).to.throw(/Unknown origin/);
     });
 
     it('throws if key is invalid', () => {
       _assets.origin = 'latest';
-      expect(() => _assets.getDataURL('nope')).to.throw(/Unknown asset key/);
+      expect(() => _assets.getAssetURL('nope')).to.throw(/Unknown asset key/);
     });
 
     it('returns the URL if the key is valid', () => {
       _assets.origin = 'latest';
-      expect(_assets.getDataURL('intro_graph')).to.eql('data/intro_graph.min.json');
+      expect(_assets.getAssetURL('intro_graph')).to.eql('data/intro_graph.min.json');
     });
   });
 
 
-  describe('#getDataAsync', () => {
+  describe('#loadAssetAsync', () => {
     it('returns a promise resolved if we already have the data', () => {
       _assets._cache.test = { hello: 'world' };
 
-      const prom = _assets.getDataAsync('test');
+      const prom = _assets.loadAssetAsync('test');
       expect(prom).to.be.an.instanceof(Promise);
       return prom
         .then(data => {
@@ -115,7 +115,7 @@ describe('AssetSystem', () => {
     });
 
     it('returns a promise rejected if we can not get the data', done => {
-      const prom = _assets.getDataAsync('wat');
+      const prom = _assets.loadAssetAsync('wat');
       expect(prom).to.be.an.instanceof(Promise);
       prom
         .then(data => {
@@ -134,7 +134,7 @@ describe('AssetSystem', () => {
         headers: { 'Content-Type': 'application/json' }
       });
 
-      const prom = _assets.getDataAsync('intro_graph');
+      const prom = _assets.loadAssetAsync('intro_graph');
       expect(prom).to.be.an.instanceof(Promise);
       return prom
         .then(data => {

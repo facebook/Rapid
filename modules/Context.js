@@ -127,7 +127,6 @@ export class Context extends EventEmitter {
     if (this.assetOrigin)  assets.origin = this.assetOrigin;
     if (this.assetPath)    assets.filePath = this.assetPath;
     if (this.assetMap)     assets.fileReplacements = this.assetMap;
-    this.asset = (val) => assets.getAssetURL(val);
 
     // LocalizationSystem
     const l10n = this.systems.l10n;

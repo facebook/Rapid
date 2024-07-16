@@ -256,7 +256,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       status
         .append('img')
         .attr('class', 'rapid-view-manage-datasets-spinner')
-        .attr('src', assets.getAssetURL('img/loader-black.gif'));
+        .attr('src', assets.getFileURL('img/loader-black.gif'));
 
       esri.startAsync()
         .then(() => esri.loadDatasetsAsync())

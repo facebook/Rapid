@@ -76,7 +76,7 @@ export class UploaderSystem extends AbstractSystem {
     const prerequisites = assets.initAsync();
 
     return this._initPromise = prerequisites
-      .then(() => assets.getDataAsync('tagging_discarded'))
+      .then(() => assets.loadAssetAsync('tagging_discarded'))
       .then(d => this._discardTags = d);
   }
 

@@ -26,9 +26,9 @@ export function uiSuccess(context) {
 
   function getCommunityIndexAsync() {
     return Promise.all([
-        assets.getDataAsync('oci_features'),
-        assets.getDataAsync('oci_resources'),
-        assets.getDataAsync('oci_defaults')
+        assets.loadAssetAsync('oci_features'),
+        assets.loadAssetAsync('oci_resources'),
+        assets.loadAssetAsync('oci_defaults')
       ])
       .then(vals => {
         if (_oci) return _oci;

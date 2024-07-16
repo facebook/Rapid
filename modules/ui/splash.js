@@ -23,7 +23,7 @@ export function uiSplash(context) {
     storage.setItem('sawPrivacyVersion', context.privacyVersion);
 
     // prefetch intro graph data now, while user is looking at the splash screen
-    assets.getDataAsync('intro_graph');
+    assets.loadAssetAsync('intro_graph');
 
     const modal = uiModal(selection);
     modal.select('.modal')

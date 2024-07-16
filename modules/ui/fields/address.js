@@ -28,7 +28,7 @@ export function uiFieldAddress(context, uifield) {
     ]
   }];
 
-  assets.getDataAsync('address_formats')
+  assets.loadAssetAsync('address_formats')
     .then(d => {
       _addressFormats = d.addressFormats;
       if (!_selection.empty()) {

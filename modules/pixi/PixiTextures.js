@@ -48,7 +48,7 @@ export class PixiTextures {
     ];
     let patternBundle = {};
     for (const k of PATTERNS) {
-      patternBundle[k] = assets.getAssetURL(`img/pattern/${k}.png`);
+      patternBundle[k] = assets.getFileURL(`img/pattern/${k}.png`);
     }
     Assets.addBundle('patterns', patternBundle);
 

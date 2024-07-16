@@ -15,7 +15,7 @@ export function uiSectionChanges(context) {
   let detected = utilDetect();
 
   let _discardTags = {};
-  assets.getDataAsync('tagging_discarded')
+  assets.loadAssetAsync('tagging_discarded')
     .then(d => _discardTags = d)
     .catch(() => { /* ignore */ });
 

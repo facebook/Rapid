@@ -29,12 +29,12 @@ export function uiFieldLocalized(context, uifield) {
     // be available the first time through, so things like the fetchers and
     // the language() function will not work immediately.
 
-    assets.getDataAsync('languages')
+    assets.loadAssetAsync('languages')
         .then(loadLanguagesArray)
         .catch(e => console.error(e));  // eslint-disable-line
 
     var _territoryLanguages = {};
-    assets.getDataAsync('territory_languages')
+    assets.loadAssetAsync('territory_languages')
         .then(data => _territoryLanguages = data.territoryLanguages)
         .catch(e => console.error(e));  // eslint-disable-line
 

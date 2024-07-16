@@ -118,12 +118,12 @@ function buildDataAsync() {
 
       // copy `data/` files to `dist/data/` and stamp with metadata
       // (skip module data, it's already copied and we don't want to modify it anyway)
-      for (const sourceFile of globSync('data/**/*.json', { ignore: 'data/modules/**/*.json' })) {
+      for (const sourceFile of globSync('data/**/*.json', { ignore: 'data/modules/**' })) {
         const destinationFile = sourceFile.replace('data/', 'dist/data/');
         copyToDistSync(sourceFile, destinationFile);
       }
 
-      for (const file of globSync('dist/data/**/*.json')) {
+      for (const file of globSync('dist/data/**/*.json', { ignore: 'dist/data/modules/**' })) {
         minifySync(file);
       }
 
@@ -217,35 +217,56 @@ function gatherTerritoryLanguages() {
 // for situations where Rapid can not fetch the latest files from the CDN.
 function copyModuleData() {
   try {
-    // tagging
+    // id-tagging-schema
     for (const file of ['deprecated', 'discarded', 'fields', 'preset_categories', 'preset_defaults', 'presets']) {
-      const source = `node_modules/@openstreetmap/id-tagging-schema/dist/${file}.json`;
-      const destination = `data/modules/id-tagging-schema/${file}.json`;
+      const source = `node_modules/@openstreetmap/id-tagging-schema/dist/${file}.min.json`;
+      const destination = `data/modules/id-tagging-schema/${file}.min.json`;
       fs.cpSync(source, destination, { recursive: true });
     }
 
     // name-suggestion-index
     for (const file of ['nsi', 'dissolved', 'featureCollection', 'genericWords', 'presets/nsi-id-presets', 'replacements', 'trees']) {
-      const source = `node_modules/name-suggestion-index/dist/${file}.json`;
-      const destination = `data/modules/name-suggestion-index/${file}.json`;
+      const source = `node_modules/name-suggestion-index/dist/${file}.min.json`;
+      const destination = `data/modules/name-suggestion-index/${file}.min.json`;
       fs.cpSync(source, destination, { recursive: true });
     }
 
     // osm-community-index
     for (const file of ['defaults', 'featureCollection', 'resources']) {
-      const source = `node_modules/osm-community-index/dist/${file}.json`;
-      const destination = `data/modules/osm-community-index/${file}.json`;
+      const source = `node_modules/osm-community-index/dist/${file}.min.json`;
+      const destination = `data/modules/osm-community-index/${file}.min.json`;
       fs.cpSync(source, destination, { recursive: true });
     }
 
     // wmf-sitematrix
     for (const file of ['wikipedia']) {
-      const source = `node_modules/wmf-sitematrix/${file}.json`;
-      const destination = `data/modules/wmf-sitematrix/${file}.json`;
+      const source = `node_modules/wmf-sitematrix/${file}.min.json`;
+      const destination = `data/modules/wmf-sitematrix/${file}.min.json`;
       fs.cpSync(source, destination, { recursive: true });
     }
 
-    // copy these to dist/data/modules also
+    // mapillary-js
+    {
+      const source = 'node_modules/mapillary-js/dist';
+      const destination = 'data/modules/mapillary-js';
+      fs.cpSync(source, destination, { recursive: true });
+    }
+
+    // maplibre-gl
+    {
+      const source = 'node_modules/maplibre-gl/dist';
+      const destination = 'data/modules/maplibre-gl';
+      fs.cpSync(source, destination, { recursive: true });
+    }
+
+    // pannellum
+    {
+      const source = 'node_modules/pannellum/build';
+      const destination = 'data/modules/pannellum';
+      fs.cpSync(source, destination, { recursive: true });
+    }
+
+    // copy all of these to dist/data/modules also
     fs.cpSync('data/modules', 'dist/data/modules', { recursive: true });
 
   } catch (err) {

@@ -53,7 +53,7 @@ export class UiDefs {
       .attr('class', d => `spritesheet spritesheet-${d}`)
       .each((d, i, nodes) => {
         const group = d3_select(nodes[i]);
-        const url = assets.getAssetURL(`img/${d}-sprite.svg`);
+        const url = assets.getFileURL(`img/${d}-sprite.svg`);
         fetch(url)
           .then(utilFetchResponse)
           .then(svg => group.call(this._spritesheetLoaded, d, svg))

@@ -7,9 +7,6 @@ import RBush from 'rbush';
 import { AbstractSystem } from '../core/AbstractSystem.js';
 import { utilFetchResponse } from '../util/index.js';
 
-const MAPILLARY_JS = 'https://cdn.jsdelivr.net/npm/mapillary-js@4/dist/mapillary.min.js';
-const MAPILLARY_CSS = 'https://cdn.jsdelivr.net/npm/mapillary-js@4/dist/mapillary.min.css';
-
 const accessToken = 'MLY|3376030635833192|f13ab0bdf6b2f7b99e0d8bd5868e1d88';
 const apiUrl = 'https://graph.mapillary.com/';
 const baseTileUrl = 'https://tiles.mapillary.com/maps/vtp';
@@ -688,6 +685,8 @@ get viewerShowing()         { return this._showing; }
     if (this._loadPromise) return this._loadPromise;
 
     return this._loadPromise = new Promise((resolve, reject) => {
+      const assets = this.context.systems.assets;
+
       let count = 0;
       const loaded = () => {
         if (++count === 2) resolve();
@@ -702,7 +701,7 @@ get viewerShowing()         { return this._showing; }
         .attr('id', 'rapideditor-mapillary-css')
         .attr('rel', 'stylesheet')
         .attr('crossorigin', 'anonymous')
-        .attr('href', MAPILLARY_CSS)
+        .attr('href', assets.getAssetURL('mapillary_css'))
         .on('load', loaded)
         .on('error', reject);
 
@@ -712,7 +711,7 @@ get viewerShowing()         { return this._showing; }
         .append('script')
         .attr('id', 'rapideditor-mapillary-js')
         .attr('crossorigin', 'anonymous')
-        .attr('src', MAPILLARY_JS)
+        .attr('src', assets.getAssetURL('mapillary_js'))
         .on('load', loaded)
         .on('error', reject);
     });

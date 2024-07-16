@@ -22,7 +22,7 @@ export function uiFieldWikipedia(context, uifield) {
   let _tags;
 
   let _dataWikipedia = [];
-  assets.getDataAsync('wmf_sitematrix')
+  assets.loadAssetAsync('wmf_sitematrix')
     .then(d => {
       _dataWikipedia = d;
       if (_tags) updateForTags(_tags);

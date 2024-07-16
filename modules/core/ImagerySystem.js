@@ -82,7 +82,7 @@ export class ImagerySystem extends AbstractSystem {
 
     return this._initPromise = prerequisites
       .then(() => urlhash.on('hashchange', this._hashchange))
-      .then(() => assets.getDataAsync('imagery'))
+      .then(() => assets.loadAssetAsync('imagery'))
       .then(data => this._initImageryIndex(data))
       .then(() => this._initWaybackAsync());
       // .catch(e => {

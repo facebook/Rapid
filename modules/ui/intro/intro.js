@@ -70,8 +70,8 @@ export function uiIntro(context, skipToRapid) {
    */
   function intro(selection) {
     Promise.all([
-      assets.getDataAsync('intro_rapid_graph'),
-      assets.getDataAsync('intro_graph')
+      assets.loadAssetAsync('intro_rapid_graph'),
+      assets.loadAssetAsync('intro_graph')
     ])
     .then(values => {
       const rapidData = values[0].introRapidGraph;

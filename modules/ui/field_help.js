@@ -127,13 +127,13 @@
 //            content
 //                .insert('img', 'p.from_shadow')
 //                .attr('class', 'field-help-image cf')
-//                .attr('src', assets.getAssetURL('img/tr_inspect.gif'));
+//                .attr('src', assets.getFileURL('img/tr_inspect.gif'));
 //
 //        } else if (d.key === 'help.field.restrictions.modifying') {
 //            content
 //                .insert('img', 'p.allow_turn')
 //                .attr('class', 'field-help-image cf')
-//                .attr('src', assets.getAssetURL('img/tr_modify.gif'));
+//                .attr('src', assets.getFileURL('img/tr_modify.gif'));
 //        }
 //    }
 //

@@ -47,7 +47,7 @@ export function uiFieldCombo(context, uifield) {
 
     // initialize deprecated tags array
     var _dataDeprecated = [];
-    assets.getDataAsync('tagging_deprecated')
+    assets.loadAssetAsync('tagging_deprecated')
       .then(function(d) { _dataDeprecated = d; })
       .catch(e => console.error(e));  // eslint-disable-line
 

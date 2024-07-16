@@ -150,8 +150,8 @@ export class LocalizationSystem extends AbstractSystem {
     return this._initPromise = prerequisites
       .then(() => {
         return Promise.all([
-          assets.getDataAsync('languages'),
-          assets.getDataAsync('locales')
+          assets.loadAssetAsync('languages'),
+          assets.loadAssetAsync('locales')
         ]);
       })
       .then(results => {
@@ -254,7 +254,7 @@ export class LocalizationSystem extends AbstractSystem {
       if (!sources[key]) {
         sources[key] = `data/l10n/${scope}.${locale}.min.json`;
       }
-      const prom = assets.getDataAsync(key)
+      const prom = assets.loadAssetAsync(key)
         .then(data => {
           cache[locale][scope] = data[locale];
         });

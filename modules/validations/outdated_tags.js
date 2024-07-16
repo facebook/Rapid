@@ -23,7 +23,7 @@ export function validationOutdatedTags(context) {
   let _dataDeprecated;
 
   // fetch deprecated tags
-  assets.getDataAsync('tagging_deprecated')
+  assets.loadAssetAsync('tagging_deprecated')
     .then(d => _dataDeprecated = d)
     .catch(() => { /* ignore */ })
     .finally(() => _waitingForDeprecated = false);
