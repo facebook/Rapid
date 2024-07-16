@@ -37,16 +37,40 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [2.3.2](https://github.com/facebook/Rapid/releases/tag/rapid-v2.3.2)
+#### 2024-Jul-16
+
+#### :sparkles: Usability & Accessibility
+* [#1434] Allow toggling Rapid features from the Map Data panel
+
+#### :bug: Bugfixes:
+* [#1441] Enabling 3D Map moves the map to Null Island
+* [#1445] Loading Esri Wayback config file from S3 is blocked in some regions
+* [#1436], [#1446] Allow viewing hidden challenges if MapRoulette challenge ID is provided
+* [#1071], [#1137], [#1440]  Don't cancel multiselection when <kbd>Shift</kbd>-clicking on an empty part of the map
+* [#1431] Don't allow Context to init twice
+
+[#1071]: https://github.com/facebook/Rapid/issues/1071
+[#1137]: https://github.com/facebook/Rapid/issues/1137
+[#1431]: https://github.com/facebook/Rapid/issues/1431
+[#1434]: https://github.com/facebook/Rapid/issues/1434
+[#1436]: https://github.com/facebook/Rapid/issues/1436
+[#1440]: https://github.com/facebook/Rapid/issues/1440
+[#1441]: https://github.com/facebook/Rapid/issues/1441
+[#1445]: https://github.com/facebook/Rapid/issues/1445
+[#1446]: https://github.com/facebook/Rapid/issues/1446
+
+
 # [2.3.1](https://github.com/facebook/Rapid/releases/tag/rapid-v2.3.1)
 #### 2024-May-12
 
 #### :bug: Bugfixes:
 * Various issues with MapRoulette integration:
-* [#1412] Network activity causing performance issues
-* [#1413] Some Maproulette tasks showing up as missing
-* [#1415] `#maproulette` hashtag being applied even when no MapRoulette tasks completed
-* [#1418] Should not show markers for tasks/challenges not-yet-enabled
-* [#1420] Comments shouldn't be required, also should use default comment and sources attached to the challenge
+  * [#1412] Network activity causing performance issues
+  * [#1413] Some Maproulette tasks showing up as missing
+  * [#1415] `#maproulette` hashtag being applied even when no MapRoulette tasks completed
+  * [#1418] Should not show markers for tasks/challenges not-yet-enabled
+  * [#1420] Comments shouldn't be required, also should use default comment and sources attached to the challenge
 
 [#1412]: https://github.com/facebook/Rapid/issues/1412
 [#1413]: https://github.com/facebook/Rapid/issues/1413
