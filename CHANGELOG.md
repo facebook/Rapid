@@ -42,16 +42,22 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 
 #### :sparkles: Usability & Accessibility
 * [#1434] Allow toggling Rapid features from the Map Data panel
+* [#893], [#1353], [#1457] Improve pinch zooming on mobile browsers
 
 #### :bug: Bugfixes:
-* [#1441] Enabling 3D Map moves the map to Null Island
-* [#1445] Loading Esri Wayback config file from S3 is blocked in some regions
+* [#1427], [#1428] Check for valid MapRoulette API token
 * [#1436], [#1446] Allow viewing hidden challenges if MapRoulette challenge ID is provided
+* [#1441] Enabling 3D Map moves the map to Null Island
 * [#1071], [#1137], [#1440]  Don't cancel multiselection when <kbd>Shift</kbd>-clicking on an empty part of the map
 * [#1431] Don't allow Context to init twice
+* [#1445] Loading Esri Wayback config file from S3 is blocked in some regions
 
+[#893]: https://github.com/facebook/Rapid/issues/893
 [#1071]: https://github.com/facebook/Rapid/issues/1071
 [#1137]: https://github.com/facebook/Rapid/issues/1137
+[#1353]: https://github.com/facebook/Rapid/issues/1353
+[#1427]: https://github.com/facebook/Rapid/issues/1427
+[#1428]: https://github.com/facebook/Rapid/issues/1428
 [#1431]: https://github.com/facebook/Rapid/issues/1431
 [#1434]: https://github.com/facebook/Rapid/issues/1434
 [#1436]: https://github.com/facebook/Rapid/issues/1436
@@ -59,6 +65,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#1441]: https://github.com/facebook/Rapid/issues/1441
 [#1445]: https://github.com/facebook/Rapid/issues/1445
 [#1446]: https://github.com/facebook/Rapid/issues/1446
+[#1457]: https://github.com/facebook/Rapid/issues/1457
 
 
 # [2.3.1](https://github.com/facebook/Rapid/releases/tag/rapid-v2.3.1)
