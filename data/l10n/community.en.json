@@ -55,6 +55,7 @@
       "openstreetmapcroatia": "OpenStreetMap Croatia",
       "openstreetmapcuba": "OpenStreetMap Cuba",
       "openstreetmapcuneo": "OpenStreetMap Cuneo",
+      "openstreetmapcyprus": "OpenStreetMap Cyprus",
       "openstreetmapcz": "OpenStreetMap CZ",
       "openstreetmapde": "OpenStreetMap DE",
       "openstreetmapdeepsouth": "OpenStreetMap Deep South",
@@ -938,6 +939,10 @@
     "OSM-AR-wiki": {
       "description": "Everything you need to know about mapping in Argentina."
     },
+    "osm-asia-facebook": {
+      "description": "OpenStreetMap Asia Facebook Group",
+      "extendedDescription": "A group for integrated mapping support for Asia. We especially want to be a place for mappers without a local community to share information and collaborate on solving problems in their areas that they otherwise wouldn't be able to address because of the lack of a local community."
+    },
     "osm-at": {
       "description": "The platform for information on OpenStreetMap in Austria"
     },
@@ -1187,8 +1192,8 @@
     },
     "OSM-Utah": {
       "name": "OpenStreetMap Utah",
-      "description": "Mappers and OpenStreetMap users in the Salt Lake City area",
-      "extendedDescription": "Activities may include things like Learn To Map workshops, mapping parties and outdoor data collection. The events will take place in the SLC area, at least initially.  We are looking for seasoned mappers as well as people new to OSM. Join and let's do some mapping!"
+      "description": "Your OSM Mapping Community for the Salt Lake City area",
+      "extendedDescription": "We meet monthly in Salt Lake City, usually on the second Wednesday of the month. All are welcome!"
     },
     "osm-west-bengal-xmpp": {
       "name": "OpenStreetMap West Bengal XMPP",
