@@ -63,7 +63,6 @@
     "@openstreetmap/id-tagging-schema": "~6.6.0",
     "@pixi/core": "^7.4.2",
     "@pixi/display": "^7.4.2",
-    "@pixi/events": "^7.4.2",
     "@pixi/graphics": "^7.4.2",
     "@pixi/settings": "^7.4.2",
     "@pixi/utils": "^7.4.2",
