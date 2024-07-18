@@ -526,8 +526,8 @@ const hitStyle = {
   color: 0x0,
   width: 24,
   alpha: 1.0,
-  join: PIXI.LINE_JOIN.BEVEL,
-  cap: PIXI.LINE_CAP.BUTT
+  join: 'bevel',
+  cap: 'butt'
 };
 const bufferdata = lineToPoly(feature.geometry.flatOuter, hitStyle);
 if (!bufferdata.inner) continue;
@@ -908,7 +908,7 @@ this.placeRopeLabel(feature, labelObj, coords);
       } else if (label.type === 'rope') {
         const labelObj = options.labelObj;  // a PIXI.Sprite, or PIXI.Text
         const points = options.coords.map(([x,y]) => new PIXI.Point(x, y));
-        const rope = new PIXI.SimpleRope(labelObj.texture, points);
+        const rope = new PIXI.MeshRope(labelObj.texture, points);
         rope.name = labelID;
         rope.autoUpdate = false;
         rope.sortableChildren = false;

@@ -71,7 +71,7 @@ export function lineToPoly(flatPoints, lineStyle = {}) {
   const graphicsGeometry = { closePointEps: EPSILON, indices: [], points: [], uvs: [] };
 
   // Pixi will do the work for us.
-  PIXI.graphicsUtils.buildLine(graphicsData, graphicsGeometry);
+  PIXI.buildLine(graphicsData, graphicsGeometry);
 
 
   // The `graphicsGeometry` now contains the points as they would be drawn (as a strip of triangles).
@@ -350,11 +350,11 @@ export function flatCoordsToPoints(coords) {
  */
 export function getLineCapEnum(str) {
   if (str === 'butt') {
-    return PIXI.LINE_CAP.BUTT;
+    return getLineCapEnum('butt');
   } else if (str === 'square') {
-    return PIXI.LINE_CAP.SQUARE;
+    return getLineCapEnum('square');
   } else {
-    return PIXI.LINE_CAP.ROUND;
+    return getLineCapEnum('round');
   }
 }
 
@@ -367,11 +367,11 @@ export function getLineCapEnum(str) {
  */
 export function getLineJoinEnum(str) {
   if (str === 'bevel') {
-    return PIXI.LINE_JOIN.BEVEL;
+    return getLineCapEnum('bevel');
   } else if (str === 'miter') {
-    return PIXI.LINE_JOIN.MITER;
+    return getLineCapEnum('miter');
   } else {
-    return PIXI.LINE_JOIN.ROUND;
+    return getLineCapEnum('round');
   }
 }
 

@@ -97,7 +97,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
     // Now render any extras, like gridlines in square bounding boxes or arbitrary WKT polygons/multipolys.
     const gridLines = this.createGridLines(lines);
-    const gridStyle = { stroke: { width: 0.5, color: 0x0ffff, alpha: 0.5, cap: PIXI.LINE_CAP.ROUND }};
+    const gridStyle = { stroke: { width: 0.5, color: 0x0ffff, alpha: 0.5, cap: 'round' }};
     this.renderLines(frame, viewport, zoom, gridLines, gridStyle);
   }
 
@@ -177,7 +177,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
     const polygonStyle = {
       fill: { color: CUSTOM_COLOR, alpha: 0.3, },
-      stroke: { width: 2, color: CUSTOM_COLOR, alpha: 1, cap: PIXI.LINE_CAP.ROUND },
+      stroke: { width: 2, color: CUSTOM_COLOR, alpha: 1, cap: 'round' },
       labelTint: CUSTOM_COLOR
     };
 
@@ -233,7 +233,7 @@ export class PixiLayerCustomData extends AbstractLayer {
     const parentContainer = this.scene.groups.get('basemap');
 
     const lineStyle = styleOverride || {
-      stroke: { width: 2, color: CUSTOM_COLOR, alpha: 1, cap: PIXI.LINE_CAP.ROUND },
+      stroke: { width: 2, color: CUSTOM_COLOR, alpha: 1, cap: 'round' },
       labelTint: CUSTOM_COLOR
     };
 
