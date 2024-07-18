@@ -106,7 +106,7 @@ export class PixiLayerGeoScribble extends AbstractLayer {
   getLineStyle(styleOverride, line) {
     // Start with the default style object.
     const lineStyle = styleOverride || {
-      stroke: { width: 2, color: CUSTOM_COLOR, alpha: 1, cap: PIXI.LINE_CAP.ROUND },
+      stroke: { width: 2, color: CUSTOM_COLOR, alpha: 1, cap: 'round' },
       labelTint: CUSTOM_COLOR
     };
 

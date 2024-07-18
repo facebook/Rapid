@@ -185,8 +185,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
           color: 0x0,
           width: 16,  // px
           alpha: 1.0,
-          join: PIXI.LINE_JOIN.BEVEL,
-          cap: PIXI.LINE_CAP.BUTT
+          join: 'bevel',
+          cap: 'butt'
         };
 
         this._bufferdata = lineToPoly(this.geometry.flatOuter, bufferStyle);
@@ -360,8 +360,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
             alpha: 1,
             alignment: 0,  // inside (will do the right thing even for holes, as they are wound correctly)
             color: 0x000000,
-            cap: PIXI.LINE_CAP.BUTT,
-            join: PIXI.LINE_JOIN.BEVEL,
+            cap: 'butt',
+            join: 'bevel',
             width: PARTIALFILLWIDTH,
             texture: PIXI.Texture.WHITE
           });

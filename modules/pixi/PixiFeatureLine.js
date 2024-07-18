@@ -283,8 +283,8 @@ export class PixiFeatureLine extends AbstractFeature {
       color: 0x0,
       width: hitWidth + 10,
       alpha: 1.0,
-      join: PIXI.LINE_JOIN.BEVEL,
-      cap: PIXI.LINE_CAP.BUTT
+      join: 'bevel',
+      cap: 'butt'
     };
 
     this._bufferdata = lineToPoly(this.geometry.flatOuter, hitStyle);
