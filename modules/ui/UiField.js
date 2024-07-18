@@ -8,6 +8,7 @@ import { uiTooltip } from './tooltip.js';
 import { uiFields } from './fields/index.js';
 import { uiTagReference } from './tag_reference.js';
 import { utilRebind, utilTotalExtent } from '../util/index.js';
+import { LANGUAGE_SUFFIX_REGEX } from './fields/localized.js';
 
 
 /**
@@ -135,6 +136,7 @@ export class UiField {
 
   tagsContainFieldKey() {
     return this.keys.some(key => {
+
       if (this.type === 'multiCombo') {
         for (const tagKey in this._tags) {
           if (tagKey.indexOf(key) === 0) {
@@ -142,9 +144,18 @@ export class UiField {
           }
         }
         return false;
-      } else {
-        return this._tags[key] !== undefined;
+
+      } else if (this.type === 'localized') {
+        for (const tagKey in this._tags) {
+          // Matches 'key:<code>', where <code> is a BCP47 locale code.
+          const match = tagKey.match(LANGUAGE_SUFFIX_REGEX);
+          if (match && match[1] === this.key && match[2]) {
+            return true;
+          }
+        }
       }
+
+      return this._tags[key] !== undefined;
     });
   }
 

@@ -11,6 +11,12 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util/index.js';
 var _languagesArray = [];
 
 
+// Matches 'key:<code>', where <code> is a BCP47 locale code.
+// Motivation is to avoid matching on similarly formatted tags that are
+//  not for languages, e.g. name:left, name:source, etc. - iD#9124, iD#10333
+export const LANGUAGE_SUFFIX_REGEX = /^(.*):([a-z]{2,3}(?:-[A-Z][a-z]{3})?(?:-[A-Z]{2})?)$/;
+
+
 export function uiFieldLocalized(context, uifield) {
   const assets = context.systems.assets;
   const editor = context.systems.editor;
@@ -127,11 +133,7 @@ export function uiFieldLocalized(context, uifield) {
         var existingLangs = new Set(existingLangsOrdered.filter(Boolean));
 
         for (var k in tags) {
-            // matches for field:<code>, where <code> is a BCP 47 locale code
-            // motivation is to avoid matching on similarly formatted tags that are
-            // not for languages, e.g. name:left, name:source, etc.
-            // https://github.com/openstreetmap/iD/pull/9124
-            var m = k.match(/^(.*):([a-z]{2,3}(?:-[A-Z][a-z]{3})?(?:-[A-Z]{2})?)$/);
+            var m = k.match(LANGUAGE_SUFFIX_REGEX);
             if (m && m[1] === uifield.key && m[2]) {
                 var item = { lang: m[2], value: tags[k] };
                 if (existingLangs.has(item.lang)) {
@@ -145,7 +147,7 @@ export function uiFieldLocalized(context, uifield) {
         }
 
         // Don't remove items based on deleted tags, since this makes the UI
-        // disappear unexpectedly when clearing values - #8164
+        // disappear unexpectedly when clearing values - iD#8164
         _multilingual.forEach(function(item) {
             if (item.lang && existingLangs.has(item.lang)) {
                 item.value = '';
@@ -276,7 +278,7 @@ export function uiFieldLocalized(context, uifield) {
     function changeLang(d3_event, d) {
         var tags = {};
 
-        // make sure unrecognized suffixes are lowercase - #7156
+        // make sure unrecognized suffixes are lowercase - iD#7156
         var lang = utilGetSetValue(d3_select(this)).toLowerCase();
 
         var language = _languagesArray.find(function(d) {
