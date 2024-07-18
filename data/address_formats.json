@@ -248,6 +248,15 @@
         ["neighbourhood", "district", "city"],
         ["postcode", "province"]
       ]
+    },
+    {
+      "countryCodes": ["th"],
+      "format": [
+        ["housenumber", "place"],
+        ["street"],
+        ["subdistrict", "district"],
+        ["province", "postcode"]
+      ]
     }
   ]
 }
