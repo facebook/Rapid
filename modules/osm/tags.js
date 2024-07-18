@@ -59,6 +59,7 @@ export var osmAreaKeysExceptions = {
         station: true,
         traverser: true,
         turntable: true,
+        ventilation_shaft: true,
         wash: true
     },
     traffic_calming: {
