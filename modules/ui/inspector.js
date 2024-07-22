@@ -30,7 +30,7 @@ export function uiInspector(context) {
   let presetPane = d3_select(null);
   let editorPane = d3_select(null);
   let _selection;
-  let _state = 'select';
+  let _state = 'select';    // can be 'hide', 'hover', or 'select'
   let _entityIDs;
   let _newFeature = false;
 

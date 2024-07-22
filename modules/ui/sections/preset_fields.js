@@ -18,7 +18,7 @@ export function uiSectionPresetFields(context) {
 
   const dispatch = d3_dispatch('change', 'revert');
   const formFields = uiFormFields(context);
-  let _state;
+  let _state;    // can be 'hide', 'hover', or 'select'
   let _uifields;
   let _presets = [];
   let _tags;

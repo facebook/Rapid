@@ -41,7 +41,7 @@ export function uiSectionRawTagEditor(context, id) {
   let _didFocus = false;
   let _showBlank = false;
   let _pendingChange = null;
-  let _state;
+  let _state;    // can be 'hide', 'hover', or 'select'
   let _presets;
   let _tags;
   let _entityIDs;

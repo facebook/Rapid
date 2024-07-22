@@ -177,16 +177,17 @@ export class UiSystem extends AbstractSystem {
   render(container) {
     const context = this.context;
     const l10n = context.systems.l10n;
+    const lang = l10n.localeCode();
+    const map = context.systems.map;
 
     container
-      .attr('lang', l10n.localeCode())
+      .attr('lang', lang)
       .attr('dir', l10n.textDirection());
 
     // setup fullscreen keybindings (no button shown at this time)
     container
       .call(uiFullScreen(context));
 
-    const map = context.systems.map;
     map.pause();  // don't draw until we've set zoom/lat/long
 
     container.selectAll('#rapid-defs')
@@ -197,18 +198,26 @@ export class UiSystem extends AbstractSystem {
       .call(this.defs.render);
 
     // Sidebar
-    container.selectAll('.sidebar')
-      .data([0])
-      .enter()
+    const sidebar = container.selectAll('.sidebar')
+      .data([lang]);
+
+    sidebar.exit()
+      .remove();
+
+    sidebar.enter()
       .append('div')
       .attr('class', 'sidebar')
       .call(this.sidebar);
 
 
     // main-content
-    const contentEnter = container.selectAll('.main-content')
-      .data([0])
-      .enter()
+    const content = container.selectAll('.main-content')
+      .data([lang]);
+
+    content.exit()
+      .remove();
+
+    const contentEnter = content.enter()
       .append('div')
       .attr('class', 'main-content active');
 

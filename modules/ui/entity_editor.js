@@ -40,7 +40,7 @@ export function uiEntityEditor(context) {
   ];
 
   let _selection = null;
-  let _state = 'select';
+  let _state = 'select';    // can be 'hide', 'hover', or 'select'
   let _modified = false;
   let _startGraph;
   let _entityIDs = [];
