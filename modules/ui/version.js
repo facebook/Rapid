@@ -46,7 +46,7 @@ export function uiVersion(context) {
         .call(uiTooltip(context)
           .title(l10n.t('version.whats_new', { version: currVersion }))
           .placement('top')
-          .scrollContainer(context.container().select('.main-footer-wrap'))
+          .scrollContainer(context.container().select('.map-footer-wrap'))
         );
     }
   };

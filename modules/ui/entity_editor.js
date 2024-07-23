@@ -40,7 +40,7 @@ export function uiEntityEditor(context) {
   ];
 
   let _selection = null;
-  let _state = 'select';    // can be 'hide', 'hover', or 'select'
+  let _state = '';          // can be 'hide', 'hover', or 'select'
   let _modified = false;
   let _startGraph;
   let _entityIDs = [];
@@ -90,7 +90,7 @@ export function uiEntityEditor(context) {
       .merge(headerEnter);
 
     header.selectAll('h3')
-      .html(_entityIDs.length === 1 ? l10n.tHtml('inspector.edit') : l10n.tHtml('rapid_multiselect'));
+      .html(_entityIDs.length === 1 ? l10n.t('inspector.edit') : l10n.t('rapid_multiselect'));
 
     header.selectAll('.preset-reset')
       .on('click', function() { dispatch.call('choose', this, _selectedPresets); });
@@ -149,9 +149,9 @@ export function uiEntityEditor(context) {
     // could be reselecting after something like dragging a node
     _startGraph = editor.staging.graph;
 
-    if (val && _entityIDs && utilArrayIdentical(_entityIDs, val)) return entityEditor;  // exit early if no change
+    if (Array.isArray(val) && utilArrayIdentical(_entityIDs, val)) return entityEditor;  // exit early if no change
 
-    _entityIDs = val;
+    _entityIDs = val ?? [];
 
     _loadActivePresets(true);
 

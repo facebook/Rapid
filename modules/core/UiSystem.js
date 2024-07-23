@@ -198,15 +198,7 @@ export class UiSystem extends AbstractSystem {
       .call(this.defs.render);
 
     // Sidebar
-    const sidebar = container.selectAll('.sidebar')
-      .data([lang]);
-
-    sidebar.exit()
-      .remove();
-
-    sidebar.enter()
-      .append('div')
-      .attr('class', 'sidebar')
+    container
       .call(this.sidebar);
 
 
@@ -353,11 +345,11 @@ export class UiSystem extends AbstractSystem {
 
     footerEnter
       .append('div')
-      .attr('class', 'flash-wrap footer-hide');
+      .attr('class', 'flash-wrap map-footer-hide');
 
     let footerWrapEnter = footerEnter
       .append('div')
-      .attr('class', 'main-footer-wrap footer-show');
+      .attr('class', 'map-footer-wrap map-footer-show');
 
     footerWrapEnter
       .append('div')

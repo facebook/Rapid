@@ -13,12 +13,12 @@ export function uiFlash(context) {
             _flashTimer.stop();
         }
 
-        context.container().select('.main-footer-wrap')
-            .classed('footer-hide', true)
-            .classed('footer-show', false);
+        context.container().select('.map-footer-wrap')
+            .classed('map-footer-hide', true)
+            .classed('map-footer-show', false);
         context.container().select('.flash-wrap')
-            .classed('footer-hide', false)
-            .classed('footer-show', true);
+            .classed('map-footer-hide', false)
+            .classed('map-footer-show', true);
 
         var content = context.container().select('.flash-wrap').selectAll('.flash-content')
             .data([0]);
@@ -69,12 +69,12 @@ export function uiFlash(context) {
 
         _flashTimer = d3_timeout(function() {
             _flashTimer = null;
-            context.container().select('.main-footer-wrap')
-                .classed('footer-hide', false)
-                .classed('footer-show', true);
+            context.container().select('.map-footer-wrap')
+                .classed('map-footer-hide', false)
+                .classed('map-footer-show', true);
             context.container().select('.flash-wrap')
-                .classed('footer-hide', true)
-                .classed('footer-show', false);
+                .classed('map-footer-hide', true)
+                .classed('map-footer-show', false);
         }, _duration);
 
         return content;

@@ -59,12 +59,12 @@ export function uiNoteEditor(context) {
             .call(noteComments.note(_note))
             .call(noteSaveSection);
 
-        var footer = selection.selectAll('.footer')
+        var footer = selection.selectAll('.sidebar-footer')
             .data([0]);
 
         footer.enter()
             .append('div')
-            .attr('class', 'footer')
+            .attr('class', 'sidebar-footer')
             .merge(footer)
             .call(uiViewOnOSM(context).what(_note))
             .call(uiNoteReport(context).note(_note));

@@ -15,7 +15,7 @@ describe('uiFlash', () => {
       .append('div')
       .attr('class', 'flash-wrap')
       .append('div')
-      .attr('class', 'main-footer-wrap');
+      .attr('class', 'map-footer-wrap');
   });
 
   afterEach(() => {
@@ -26,9 +26,9 @@ describe('uiFlash', () => {
   it('flash is shown', () => {
     Rapid.uiFlash(context).duration(10)();
     const flashWrap = d3.selectAll('.flash-wrap');
-    const footerWrap = d3.selectAll('.main-footer-wrap');
-    expect(flashWrap.classed('footer-show')).to.be.ok;
-    expect(footerWrap.classed('footer-hide')).to.be.ok;
+    const footerWrap = d3.selectAll('.map-footer-wrap');
+    expect(flashWrap.classed('map-footer-show')).to.be.ok;
+    expect(footerWrap.classed('map-footer-hide')).to.be.ok;
   });
 
   it('flash goes away', done => {
@@ -36,9 +36,9 @@ describe('uiFlash', () => {
     window.setTimeout(() => {
       d3.timerFlush();
       const flashWrap = d3.selectAll('.flash-wrap');
-      const footerWrap = d3.selectAll('.main-footer-wrap');
-      expect(flashWrap.classed('footer-hide')).to.be.ok;
-      expect(footerWrap.classed('footer-show')).to.be.ok;
+      const footerWrap = d3.selectAll('.map-footer-wrap');
+      expect(flashWrap.classed('map-footer-hide')).to.be.ok;
+      expect(footerWrap.classed('map-footer-show')).to.be.ok;
       done();
     }, 20);
   });

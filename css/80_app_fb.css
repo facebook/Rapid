@@ -194,133 +194,126 @@ button.bugnub {
 
 
 /* Sidebar - Rapid Inspector */
-.rapid-inspector > div {
-    /* background: #222; */
-    /* color: #ddd; */
-}
-
-.rapid-inspector svg.logo-rapid {
-    height: 35px;
+.rapid-inspector {
+  display: flex;
+  flex: 1 1 0px;
+  flex-flow: column nowrap;
 }
 
 .rapid-inspector .header {
-    /* background: #222; */
-    /* color: #fff; */
-    background: #f6f6f6;
-    color: #333;
-    border-bottom: 1px solid #aaaa;
+  flex: 0 0 0px;
+  background: #f6f6f6;
+  color: #333;
+  border-bottom: 1px solid #aaaa;
 }
 .rapid-inspector .header h3 {
-    display: flex;
+  display: flex;
 }
-
+.rapid-inspector .header svg.logo-rapid {
+  height: 35px;
+}
 .rapid-inspector .header button.rapid-inspector-close {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background: transparent;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: transparent;
 }
 .ideditor[dir='rtl'] .rapid-inspector .header button.rapid-inspector-close {
-    right: unset;
-    left: 0;
+  right: unset;
+  left: 0;
 }
 .rapid-inspector .header button.rapid-inspector-close svg {
-    color: #da26d3;
+  color: #da26d3;
 }
 .rapid-inspector .header button.rapid-inspector-close:hover {
-    background: #8885;
+  background: #8885;
 }
+
 
 .rapid-inspector .tooltip .popover-inner {
-    border: 1px solid #aaaa;
-}
-
-.rapid-inspector-fadein .rapid-inspector .body {
-    animation: fadein 0s .25s forwards;
+  border: 1px solid #aaaa;
 }
 
 .rapid-inspector .body {
-    /* background: #222; */
-    /* color: #ddd; */
-    background: #f6f6f6;
-    color: #333;
-    padding: 20px;
-    opacity: 1;
-}
+  display: flex;
+  flex: 1 1 0px;
+  flex-flow: column nowrap;
 
-@keyframes fadein {
-    from  { opacity: 0 }
-    to    { opacity: 1 }
+  background: #f6f6f6;
+  color: #333;
+  padding: 20px;
+  opacity: 1;
 }
-
 
 .rapid-inspector .body p {
-    padding: 20px 0;
+  padding: 20px 0;
 }
 
 .rapid-inspector .feature-info {
-    display: flex;
-    padding: 5px 10px;
-    border-radius: 5px 5px 0 0;
-    border: 1px solid #333;
+  display: flex;
+  padding: 5px 10px;
+  border-radius: 5px 5px 0 0;
+  border: 1px solid #333;
 }
 
 .rapid-inspector .feature-info .dataset-label {
-    flex: 1;
-    font-size: 14px;
-    font-weight: bold;
+  flex: 1;
+  font-size: 14px;
+  font-weight: bold;
 }
 .rapid-inspector .feature-info .dataset-beta {
-    font-size: 13px;
+  font-size: 13px;
 }
 
 .rapid-inspector .tag-info {
-    padding: 7px;
-    background: #444;
-    color: #ddd;
-    border-radius: 0 0 5px 5px;
-    border: 1px transparent;
+  padding: 7px;
+  background: #444;
+  color: #ddd;
+  border-radius: 0 0 5px 5px;
+  border: 1px transparent;
 }
 .rapid-inspector .tag-bag {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-flow: row wrap;
 }
 .rapid-inspector .tag-heading {
-    margin-right: 5px;
-    padding-left: 3px;
+  margin-right: 5px;
+  padding-left: 3px;
 }
 .rapid-inspector .tag-info .tag-entry {
-    flex: 0 1 auto;
-    display: flex;
-    border: 1px solid #aaaa;
-    border-radius: 5px;
-    font-size: smaller;
-    font-weight: 300;
-    margin: 0 3px;
+  display: flex;
+  flex: 0 1 auto;
+
+  border: 1px solid #aaaa;
+  border-radius: 5px;
+  font-size: smaller;
+  font-weight: 300;
+  margin: 0 3px;
 }
 .rapid-inspector .tag-key,
 .rapid-inspector .tag-value {
-    flex: 0 1 auto;
-    padding: 0px 3px;
+  flex: 0 1 auto;
+  padding: 0px 3px;
 }
 .rapid-inspector .tag-key {
-    font-weight: bold;
-    font-size: unset;
+  font-weight: bold;
+  font-size: unset;
 }
 
 .rapid-inspector-choices {
-    display: flex;
-    flex-flow: column nowrap;
-    text-align: center;
-    background: linear-gradient(to top left, #ccc, #eee 90%);
-    border-radius: 5px;
+  display: flex;
+  flex-flow: column nowrap;
+  text-align: center;
+
+  background: linear-gradient(to top left, #ccc, #eee 90%);
+  border-radius: 5px;
 }
 
 .rapid-inspector-choice .choice-wrap {
-    display: flex;
-    flex: 1;
-    margin: 10px;
-    height: 50px;
+  display: flex;
+  flex: 1;
+  margin: 10px;
+  height: 50px;
 }
 
 .rapid-inspector-choice .choice-wrap > button {

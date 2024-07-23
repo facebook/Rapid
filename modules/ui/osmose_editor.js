@@ -53,12 +53,12 @@ export function uiOsmoseEditor(context) {
       .call(qaDetails.issue(_qaItem))
       .call(osmoseSaveSection);
 
-    const footer = selection.selectAll('.footer')
+    const footer = selection.selectAll('.sidebar-footer')
       .data([0]);
 
     footer.enter()
       .append('div')
-      .attr('class', 'footer')
+      .attr('class', 'sidebar-footer')
       .merge(footer)
       .call(uiViewOnOsmose(context).what(_qaItem));
   }

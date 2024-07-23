@@ -48,45 +48,61 @@ export function uiSidebar(context) {
 
   const minWidth = 240;
 
+  let _featureListWrap = d3_select(null);
+  let _inspectorWrap = d3_select(null);
   let _custom;
+  let _sbar;
+  let _resizer;
+  let downPointerId, lastClientX, containerLocGetter;
 
 
   function sidebar(selection) {
+    const dir = l10n.textDirection();
     let sidebarWidth;
     let containerWidth;
     let dragOffset;
 
-    // Set the initial width constraints
-    selection
-      .style('min-width', `${minWidth}px`)
-      .style('max-width', '400px')
-      .style('width', '33.3333%');
+    // add .sidebar
+    _sbar = selection.selectAll('.sidebar')
+      .data([dir]);
 
-    let resizer = selection
+    _sbar.exit()
+      .remove();
+
+    const sbarEnter = _sbar.enter()
+      .append('div')
+      .attr('class', 'sidebar');
+
+    _sbar = _sbar.merge(sbarEnter);
+
+
+    // add .sidebar-resizer
+    _resizer = selection.selectAll('.sidebar-resizer')
+      .data([0]);
+
+    const resizerEnter = _resizer.enter()
       .append('div')
       .attr('class', 'sidebar-resizer')
-      .on('pointerdown.sidebar-resizer', _pointerdown);
+      .on('pointerdown.sidebar-resizer', _pointerdown)
+      .on('dblclick', e => {
+        e.preventDefault();
+        if (e.sourceEvent) {
+          e.sourceEvent.preventDefault();
+        }
+        sidebar.toggle();  // toggle sidebar when double-clicking the resizer
+      });
 
-    let downPointerId, lastClientX, containerLocGetter;
+    _resizer = _resizer.merge(resizerEnter);
 
-    let featureListWrap = selection
+
+    // add sidebar contents: feature list pane and inspector
+    _featureListWrap = _sbar
       .append('div')
       .attr('class', 'feature-list-pane')
       .call(uiFeatureList(context));
 
-    let inspectorWrap = selection
-      .append('div')
-      .attr('class', 'inspector-hidden inspector-wrap');
-
-
-    // toggle the sidebar collapse when double-clicking the resizer
-    resizer.on('dblclick', function(d3_event) {
-      d3_event.preventDefault();
-      if (d3_event.sourceEvent) {
-        d3_event.sourceEvent.preventDefault();
-      }
-      sidebar.toggle();
-    });
+    // _inspectorWrap = _sbar
+      // .call(inspector);
 
     const keys = [l10n.t('sidebar.key'), '`', '²', '@'];  // iD#5663, iD#6864 - common QWERTY, AZERTY
     context.keybinding().off(keys);
@@ -95,40 +111,33 @@ export function uiSidebar(context) {
 
     /**
      * _hover
-     * Hovers over the given "targets"
+     * Hovers over the given map data
      * @param  {Array}  targets - Array of data to target, but only the first one is used currently
      */
     function _hover(targets) {
       const graph = editor.staging.graph;
       let datum = targets && targets.length && targets[0];
 
-      if (datum && datum.__featurehash__) {   // hovering on data
-        sidebar
-          .show(dataEditor.datum(datum));
-
-        selection.selectAll('.sidebar-component')
+      if (datum?.__featurehash__) {   // hovering on data
+        sidebar.show(dataEditor.datum(datum));
+        _sbar.selectAll('.sidebar-component')
           .classed('inspector-hover', true);
 
-      } else if (datum && datum.__fbid__) {   // hovering on Rapid data
-        sidebar
-          .show(rapidInspector.datum(datum));
-
-        selection.selectAll('.sidebar-component')
-          .classed('inspector-hover', true)
-          .classed('rapid-inspector-fadein', true);
+      } else if (datum?.__fbid__) {   // hovering on Rapid data
+        sidebar.show(rapidInspector.datum(datum));
+        _sbar.selectAll('.sidebar-component')
+          .classed('inspector-hover', true);
 
       } else if (datum instanceof osmNote) {
         if (context.mode?.id === 'drag-note') return;
 
-        let osm = context.services.osm;
-        if (osm) {
-          datum = osm.getNote(datum.id);   // marker may contain stale data - get latest
+        const service = context.services.osm;
+        if (service) {
+          datum = service.getNote(datum.id);   // marker may contain stale data - get latest
         }
 
-        sidebar
-          .show(noteEditor.note(datum));
-
-        selection.selectAll('.sidebar-component')
+        sidebar.show(noteEditor.note(datum));
+        _sbar.selectAll('.sidebar-component')
           .classed('inspector-hover', true);
 
       } else if (datum instanceof QAItem) {
@@ -148,18 +157,17 @@ export function uiSidebar(context) {
         }
 
         if (sidebarComponent) {
-          sidebar
-            .show(sidebarComponent.error(datum));
+          sidebar.show(sidebarComponent.error(datum));
         }
 
-        selection.selectAll('.sidebar-component')
+        _sbar.selectAll('.sidebar-component')
           .classed('inspector-hover', true);
 
       } else if (!_custom && (datum instanceof osmEntity) && graph.hasEntity(datum)) {
-        featureListWrap
+        _featureListWrap
           .classed('inspector-hidden', true);
 
-        inspectorWrap
+        _inspectorWrap
           .classed('inspector-hidden', false)
           .classed('inspector-hover', true);
 
@@ -169,13 +177,13 @@ export function uiSidebar(context) {
             .entityIDs([datum.id])
             .newFeature(false);
 
-          inspectorWrap
+          _sbar
             .call(inspector);
         }
 
       } else if (!_custom) {
-        featureListWrap.classed('inspector-hidden', false);
-        inspectorWrap.classed('inspector-hidden', true);
+        _featureListWrap.classed('inspector-hidden', false);
+        _inspectorWrap.classed('inspector-hidden', true);
         inspector.state('hide');
 
       } else {
@@ -200,7 +208,7 @@ export function uiSidebar(context) {
      * @return `true` if the sidebar is intersecting the Extent, `false` if not
      */
     sidebar.intersects = function(wgs84Extent) {
-      const rect = selection.node().getBoundingClientRect();
+      const rect = _sbar.node().getBoundingClientRect();
       return wgs84Extent.intersects(new Extent(
         context.viewport.unproject([0, rect.height]),
         context.viewport.unproject([rect.width, 0])
@@ -220,16 +228,17 @@ export function uiSidebar(context) {
       if (ids && ids.length) {
         const graph = editor.staging.graph;
         const entity = ids.length === 1 && graph.entity(ids[0]);
-        if (entity && newFeature && selection.classed('collapsed')) {
+
+        if (entity && newFeature && _sbar.classed('collapsed')) {
           // uncollapse the sidebar
           const extent = entity.extent(graph);
           sidebar.expand(sidebar.intersects(extent));
         }
 
-        featureListWrap
+        _featureListWrap
           .classed('inspector-hidden', true);
 
-        inspectorWrap
+        _inspectorWrap
           .classed('inspector-hidden', false)
           .classed('inspector-hover', false);
 
@@ -240,13 +249,14 @@ export function uiSidebar(context) {
           .entityIDs(ids)
           .newFeature(newFeature);
 
-        inspectorWrap
-          .call(inspector);
-
       } else {
         inspector
+          .entityIDs([])
           .state('hide');
       }
+
+      _sbar
+        .call(inspector);
     };
 
 
@@ -275,11 +285,11 @@ export function uiSidebar(context) {
      * (except for the OSM editing "inspector", which is special)
      */
     sidebar.show = function(renderFn) {
-      featureListWrap.classed('inspector-hidden', true);
-      inspectorWrap.classed('inspector-hidden', true);
+      _featureListWrap.classed('inspector-hidden', true);
+      _inspectorWrap.classed('inspector-hidden', true);
 
       if (_custom)  _custom.remove();
-      _custom = selection
+      _custom = _sbar
         .append('div')
         .attr('class', 'sidebar-component')
         .call(renderFn);
@@ -291,8 +301,8 @@ export function uiSidebar(context) {
      * Removes all "custom" content in the sidebar
      */
     sidebar.hide = function() {
-      featureListWrap.classed('inspector-hidden', false);
-      inspectorWrap.classed('inspector-hidden', true);
+      _featureListWrap.classed('inspector-hidden', false);
+      _inspectorWrap.classed('inspector-hidden', true);
 
       if (_custom)  _custom.remove();
       _custom = null;
@@ -304,7 +314,7 @@ export function uiSidebar(context) {
      * Expands the sidebar
      */
     sidebar.expand = function(moveMap) {
-      if (selection.classed('collapsed')) {
+      if (_sbar.classed('collapsed')) {
         sidebar.toggle(moveMap);
       }
     };
@@ -315,7 +325,7 @@ export function uiSidebar(context) {
      * Collapses the sidebar
      */
     sidebar.collapse = function(moveMap) {
-      if (!selection.classed('collapsed')) {
+      if (!_sbar.classed('collapsed')) {
         sidebar.toggle(moveMap);
       }
     };
@@ -329,16 +339,16 @@ export function uiSidebar(context) {
       // Don't allow sidebar to toggle when the user is in the walkthrough.
       if (context.inIntro) return;
 
-      const isCollapsed = selection.classed('collapsed');
+      const isCollapsed = _sbar.classed('collapsed');
       const isCollapsing = !isCollapsed;
       const isRTL = l10n.isRTL();
       const scaleX = isRTL ? 0 : 1;
       const xMarginProperty = isRTL ? 'margin-right' : 'margin-left';
 
-      sidebarWidth = selection.node().getBoundingClientRect().width;
+      sidebarWidth = _sbar.node().getBoundingClientRect().width;
 
       // switch from % to px
-      selection.style('width', `${sidebarWidth}px`);
+      _sbar.style('width', `${sidebarWidth}px`);
 
       let startMargin, endMargin, lastMargin;
       if (isCollapsing) {
@@ -351,10 +361,10 @@ export function uiSidebar(context) {
 
       if (!isCollapsing) {
         // unhide the sidebar's content before it transitions onscreen
-        selection.classed('collapsed', isCollapsing);
+        _sbar.classed('collapsed', isCollapsing);
       }
 
-      selection
+      _sbar
         .transition()
         .style(xMarginProperty, endMargin + 'px')
         .tween('panner', function() {
@@ -368,13 +378,13 @@ export function uiSidebar(context) {
         .on('end', function() {
           if (isCollapsing) {
             // hide the sidebar's content after it transitions offscreen
-            selection.classed('collapsed', isCollapsing);
+            _sbar.classed('collapsed', isCollapsing);
           }
           // switch back from px to %
           if (!isCollapsing) {
             const containerWidth = container.node().getBoundingClientRect().width;
             const widthPct = (sidebarWidth / containerWidth) * 100;
-            selection
+            _sbar
               .style(xMarginProperty, null)
               .style('width', widthPct + '%');
           }
@@ -394,16 +404,16 @@ export function uiSidebar(context) {
       containerLocGetter = utilFastMouse(container.node());
 
       // offset from edge of sidebar-resizer
-      dragOffset = utilFastMouse(resizer.node())(d3_event)[0] - 1;
+      dragOffset = utilFastMouse(_resizer.node())(d3_event)[0] - 1;
 
-      sidebarWidth = selection.node().getBoundingClientRect().width;
+      sidebarWidth = _sbar.node().getBoundingClientRect().width;
       containerWidth = container.node().getBoundingClientRect().width;
       const widthPct = (sidebarWidth / containerWidth) * 100;
-      selection
+      _sbar
         .style('width', `${widthPct}%`)    // lock in current width
         .style('max-width', '85%');        // but allow larger widths
 
-      resizer.classed('dragging', true);
+      _resizer.classed('dragging', true);
 
       d3_select(window)
         .on('touchmove.sidebar-resizer', function(d3_event) {
@@ -431,14 +441,14 @@ export function uiSidebar(context) {
       const x = containerLocGetter(d3_event)[0] - dragOffset;
       sidebarWidth = isRTL ? containerWidth - x : x;
 
-      const isCollapsed = selection.classed('collapsed');
+      const isCollapsed = _sbar.classed('collapsed');
       const shouldCollapse = sidebarWidth < minWidth;
 
-      selection.classed('collapsed', shouldCollapse);
+      _sbar.classed('collapsed', shouldCollapse);
 
       if (shouldCollapse) {
         if (!isCollapsed) {
-          selection
+          _sbar
             .style(xMarginProperty, '-400px')
             .style('width', '400px');
 
@@ -447,7 +457,7 @@ export function uiSidebar(context) {
 
       } else {
         const widthPct = (sidebarWidth / containerWidth) * 100;
-        selection
+        _sbar
           .style(xMarginProperty, null)
           .style('width', widthPct + '%');
 
@@ -465,15 +475,13 @@ export function uiSidebar(context) {
 
       downPointerId = null;
 
-      resizer.classed('dragging', false);
+      _resizer.classed('dragging', false);
 
       d3_select(window)
         .on('touchmove.sidebar-resizer', null)
         .on('pointermove.sidebar-resizer', null)
         .on('pointerup.sidebar-resizer pointercancel.sidebar-resizer', null);
     }
-
-
   }
 
   sidebar.showPresetList = function() {};

@@ -59,12 +59,12 @@ export function uiMapRouletteEditor(context) {
       .call(maprouletteSaveSection)
       .call(commentSaveSection);
 
-    const footer = selection.selectAll('.footer')
+    const footer = selection.selectAll('.sidebar-footer')
       .data([0]);
 
     footer.enter()
       .append('div')
-      .attr('class', 'footer')
+      .attr('class', 'sidebar-footer')
       .merge(footer)
       .call(uiViewOnMapRoulette(context).task(_qaItem));
   }

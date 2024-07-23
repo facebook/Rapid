@@ -1042,7 +1042,7 @@
         },
         "maproulette": {
           "tooltip": "Tasks from maproulette.org",
-          "title": "MapRoulette Tasks",
+          "title": "MapRoulette Task",
           "loading_task_details": "Loading Task Details...",
           "detail_title": "Details",
           "id_title": "Challenge Id / Task Id",
@@ -1535,7 +1535,7 @@
         "trap_title": "Common Mistakes"
       },
       "keepRight": {
-        "title": "KeepRight",
+        "title": "KeepRight Issue",
         "detail_description": "Description",
         "comment": "Comment",
         "comment_placeholder": "Enter a comment to share with other users.",
