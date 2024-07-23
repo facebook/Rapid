@@ -26,12 +26,13 @@ export function uiInspector(context) {
   const presetList = uiPresetList(context);
   const entityEditor = uiEntityEditor(context);
 
-  let wrap = d3_select(null);
-  let presetPane = d3_select(null);
-  let editorPane = d3_select(null);
   let _selection;
-  let _state = 'select';    // can be 'hide', 'hover', or 'select'
-  let _entityIDs;
+  let _paneWrap = d3_select(null);
+  let _presetPane = d3_select(null);
+  let _editorPane = d3_select(null);
+
+  let _state = '';       // can be 'hide', 'hover', or 'select'
+  let _entityIDs = [];
   let _newFeature = false;
 
   // Add or replace merge handler
@@ -44,7 +45,7 @@ export function uiInspector(context) {
   // refresh this component and its children. Rapid#1311
   function _onMerge(newIDs) {
     if (!(newIDs instanceof Set)) return;
-    if (!(Array.isArray(_entityIDs))) return;
+    if (!_entityIDs.length) return;
 
     let needsRedraw = false;
     for (const entityID of _entityIDs) {
@@ -81,24 +82,40 @@ export function uiInspector(context) {
       .entityIDs(_entityIDs)
       .on('choose', selected => inspector.showPresetList(selected, true));  // true = animate in
 
-    wrap = _selection.selectAll('.panewrap')
+    // inspector-wrap
+    let inspectorWrap = _selection.selectAll('.inspector-wrap')
       .data([0]);
 
-    let enter = wrap.enter()
+    const inspectorWrapEnter = inspectorWrap.enter()
+      .append('div')
+      .attr('class', 'inspector-wrap inspector-hidden');
+
+    inspectorWrap = inspectorWrap.merge(inspectorWrapEnter);
+
+    inspectorWrap
+      .classed('inspector-hidden', !_entityIDs.length)
+
+
+    // panewrap
+    _paneWrap = inspectorWrap.selectAll('.panewrap')
+      .data([0]);
+
+    const paneWrapEnter = _paneWrap.enter()
       .append('div')
       .attr('class', 'panewrap');
 
-    enter
+    paneWrapEnter
       .append('div')
       .attr('class', 'preset-list-pane pane');
 
-    enter
+    paneWrapEnter
       .append('div')
       .attr('class', 'entity-editor-pane pane');
 
-    wrap = wrap.merge(enter);
-    presetPane = wrap.selectAll('.preset-list-pane');
-    editorPane = wrap.selectAll('.entity-editor-pane');
+    _paneWrap = _paneWrap.merge(paneWrapEnter);
+
+    _presetPane = _paneWrap.selectAll('.preset-list-pane');
+    _editorPane = _paneWrap.selectAll('.entity-editor-pane');
 
     if (_shouldDefaultToPresetList()) {
       inspector.showPresetList();
@@ -106,18 +123,20 @@ export function uiInspector(context) {
       inspector.showEntityEditor();
     }
 
-    let footer = _selection.selectAll('.footer')
-      .data([0]);
+    const entityID = graph.hasEntity(_entityIDs.length === 1 && _entityIDs[0]);
+    let footer = inspectorWrap.selectAll('.sidebar-footer')
+      .data([entityID]);
+
+    footer.exit()
+      .remove();
 
     footer = footer.enter()
       .append('div')
-      .attr('class', 'footer')
+      .attr('class', 'sidebar-footer')
       .merge(footer);
 
     footer
-      .call(uiViewOnOSM(context)
-        .what(graph.hasEntity(_entityIDs.length === 1 && _entityIDs[0]))
-      );
+      .call(uiViewOnOSM(context).what(entityID));
 
 
     function _shouldDefaultToPresetList() {
@@ -159,15 +178,15 @@ export function uiInspector(context) {
   // Show the preset list , optionally with given selected array, and optionally with a slide-in animation
   //
   inspector.showPresetList = function(selected, animate) {
-    presetPane.classed('hide', false);
+    _presetPane.classed('hide', false);
 
     if (animate) {
-      wrap.transition()
+      _paneWrap.transition()
         .styleTween('right', () => d3_interpolate('0%', '-100%'))
-        .on('end', () => editorPane.classed('hide', true));
+        .on('end', () => _editorPane.classed('hide', true));
     } else {
-      wrap.style('right', '-100%');
-      editorPane.classed('hide', true);
+      _paneWrap.style('right', '-100%');
+      _editorPane.classed('hide', true);
     }
 
     if (Array.isArray(selected)) {
@@ -175,7 +194,7 @@ export function uiInspector(context) {
     }
 
     // render preset list, focus on input field in some situations
-    presetPane
+    _presetPane
       .call(presetList.autofocus(_newFeature || animate));
   };
 
@@ -184,22 +203,22 @@ export function uiInspector(context) {
   // Show the entity editor, optionally with the given presets, optionally with slide-in animation
   //
   inspector.showEntityEditor = function(presets, animate) {
-    editorPane.classed('hide', false);
+    _editorPane.classed('hide', false);
 
     if (animate) {
-      wrap.transition()
+      _paneWrap.transition()
         .styleTween('right', () => d3_interpolate('-100%', '0%'))
-        .on('end', () => presetPane.classed('hide', true));
+        .on('end', () => _presetPane.classed('hide', true));
     } else {
-      wrap.style('right', '0%');
-      presetPane.classed('hide', true);
+      _paneWrap.style('right', '0%');
+      _presetPane.classed('hide', true);
     }
 
     if (Array.isArray(presets)) {
       entityEditor.presets(presets);
     }
 
-    editorPane
+    _editorPane
       .call(entityEditor);
   };
 
@@ -213,7 +232,7 @@ export function uiInspector(context) {
       inspector.showPresetList();
     } else {
       const choice = preset ? [preset] : null;
-      const input = presetPane.select('.preset-search-input').node();
+      const input = _presetPane.select('.preset-search-input').node();
       input.value = '';
       inspector.showEntityEditor(choice, true);  // true = animate
     }
@@ -234,7 +253,7 @@ export function uiInspector(context) {
 
   inspector.entityIDs = function(val) {
     if (!arguments.length) return _entityIDs;
-    _entityIDs = val;
+    _entityIDs = val ?? [];
     return inspector;
   };
 

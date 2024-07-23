@@ -2,6 +2,7 @@
 ------------------------------------------------------- */
 /* the root element of Rapid */
 .ideditor {
+  display: flex;
   height: 100%;
   width: 100%;
   margin: 0;
@@ -28,28 +29,12 @@
   -ms-content-zooming: none;
 }
 
+.ideditor[dir='ltr'] { flex-flow: row nowrap; }
+.ideditor[dir='rtl'] { flex-flow: row-reverse nowrap; }
+
 .ideditor div {
   /* disable pinch-to-zoom of the UI on touch devices */
   touch-action: pan-x pan-y;
-}
-
-.main-content {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  height: 100%;
-  touch-action: none;
-}
-
-.main-content.active {
-  filter: none !important;
-  transition-duration: 200ms;
-}
-
-.main-content.inactive {
-  filter: grayscale(80%) brightness(80%);
-  transition-duration: 200ms;
 }
 
 #rapid-defs {
@@ -58,6 +43,7 @@
   width: 0;
   height: 0;
 }
+
 
 div, textarea, label, input, form, span, ul, li, ol, a, button, h1, h2, h3, h4, h5, p, img {
   box-sizing: border-box;
@@ -504,25 +490,47 @@ button.disabled .icon.operation use,
 }
 
 
+/* Main Content
+------------------------------------------------------- */
+.main-content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-flow: column nowrap;
+
+  position: relative;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.main-content.active {
+  filter: none !important;
+  transition-duration: 200ms;
+}
+.main-content.inactive {
+  filter: grayscale(80%) brightness(80%);
+  transition-duration: 200ms;
+}
+
+
 /* Toolbar / Persistent UI Elements
 ------------------------------------------------------- */
 .top-toolbar-wrap {
-    position: relative;
-    z-index: 101;
+  position: relative;
+  z-index: 101;
 }
 .top-toolbar {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    padding: 10px 0 0 0;
-    overflow-x: auto;
-    overflow-y: hidden;
-    height: 100%;
-    width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  padding: 10px 0 0 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: 100%;
+  width: 100%;
 
-    /* hide scrollbar but allow scrolling */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE, Edge */
+  /* hide scrollbar but allow scrolling */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE, Edge */
 }
 
 
@@ -677,236 +685,224 @@ button.add-note svg.icon {
     margin-left: 1px;
 }
 
+
 /* Header for modals / panes
 ------------------------------------------------------- */
 .header {
-    border-bottom: 1px solid #ccc;
-    padding: 20px 40px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 auto;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+
+  border-bottom: 1px solid #ccc;
+  padding: 20px 40px;
+  position: relative;
 }
 
 .header h3 {
-    text-align: center;
-    margin-bottom: 0;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    padding: 0;
+  text-align: center;
+  margin-bottom: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 0;
 }
 
 .header button,
 .modal > button {
-    border-radius: 0;
-    width: 40px;
-    text-align: center;
-    overflow: hidden;
+  border-radius: 0;
+  width: 40px;
+  text-align: center;
+  overflow: hidden;
 }
 
 .header button {
-    position: relative;
-    height: 100%;
+  position: relative;
+  height: 100%;
 }
 
 .field-help-title button.close,
 .sidebar .header button.close,
 .preset-list-pane .header button.preset-choose {
-    position: absolute;
-    right: 0;
-    top: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 .ideditor[dir='rtl'] .field-help-title button.close,
 .ideditor[dir='rtl'] .sidebar .header button.close,
 .ideditor[dir='rtl'] .preset-list-pane .header button.preset-choose {
-    left: 0;
-    right: auto;
+  left: 0;
+  right: auto;
 }
 
 .entity-editor-pane .header button.preset-choose {
-    position: absolute;
-    left: 0;
-    top: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 .ideditor[dir='rtl'] .entity-editor-pane .header button.preset-choose {
-    left: auto;
-    right: 0;
+  left: auto;
+  right: 0;
 }
 
 .preset-choose {
-    font-size: 16px;
-    line-height: 1.25;
-    font-weight: bold;
+  font-size: 16px;
+  line-height: 1.25;
+  font-weight: bold;
 }
 
 .modal > button {
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 59px;
-    z-index: 50;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 59px;
+  z-index: 50;
 }
 .ideditor[dir='rtl'] .modal > button {
-    left: 0;
-    right: unset;
+  left: 0;
+  right: unset;
 }
 
-.footer {
-    position: absolute;
-    bottom: 0;
-    margin: 0;
-    padding: 0 15px;
-    border-top: 1px solid #ccc;
-    background-color: #f6f6f6;
-    width: 100%;
-    height: 2.5em;
-    z-index: 1;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    list-style: none;
-    display: flex;
+.sidebar-footer {
+  display: flex;
+  flex: 0 0 0px;
+  flex-flow: column nowrap;
+
+  padding: 3px 15px;
+  border-top: 1px solid #ccc;
+  background-color: #f6f6f6;
 }
 
-.footer > a {
-    justify-content: center;
-}
 
 /* Hide/Toggle collapsible sections (aka Disclosure)
 ------------------------------------------------------- */
 .hide-toggle .icon.pre-text {
-    vertical-align: middle;
-    width: 16px;
-    height: 16px;
-    margin-top: -3px;
+  vertical-align: middle;
+  width: 16px;
+  height: 16px;
+  margin-top: -3px;
 }
 
 a:visited.hide-toggle,
 a.hide-toggle {
-    display: inline-block;
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 5px;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
 
 /* Sidebar / Inspector
 ------------------------------------------------------- */
 .sidebar {
-    position: relative;
-    float: left;
-    height: 100%;
-    z-index: 10;
-    background: #f6f6f6;
-    -ms-user-select: element;
-    border: 0px solid #ccc;
-    border-right-width: 1px;
-}
-.ideditor[dir='rtl'] .sidebar {
-    float: right;
-    border-right-width: 0px;
-    border-left-width: 1px;
+  display: flex;
+  flex: 0 0 400px;
+  flex-flow: column nowrap;
+  min-width: 240px;
+
+  z-index: 10;
+  background: #f6f6f6;
+  -ms-user-select: element;
+  border: 1px solid #ccc;
 }
 
 .sidebar-resizer {
-    position: absolute;
-    top: 0;
-    right: -10px;
-    width: 10px;
-    height: 100%;
-    cursor: col-resize;
-    /* disable drag-to-select */
-    user-select: none;
-}
-.ideditor[dir='rtl'] .sidebar-resizer {
-    right: auto;
-    left: -6px;
+  flex: 0 0 10px;
+
+  cursor: col-resize;
+  user-select: none;
+  background-color: #f00;
 }
 
-.sidebar.collapsed > *:not(.sidebar-resizer) {
-    display: none;
-}
-.sidebar.collapsed .sidebar-resizer {
+/*.sidebar-resizer {*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    right: -10px;*/
+/*    width: 10px;*/
+/*    height: 100%;*/
+/*    cursor: col-resize;*/
+    /* disable drag-to-select */
+/*    user-select: none;*/
+/*}*/
+/*.ideditor[dir='rtl'] .sidebar-resizer {*/
+/*    right: auto;*/
+/*    left: -6px;*/
+/*}*/
+
+/*.sidebar.collapsed > *:not(.sidebar-resizer) {*/
+/*    display: none;*/
+/*}*/
+/*.sidebar.collapsed .sidebar-resizer {*/
     /* make target wider to avoid the user accidentally resizing window */
-    width: 10px;
-    right: -10px;
-}
-.ideditor[dir='rtl'] .sidebar.collapsed .sidebar-resizer {
-    left: -10px;
-}
+/*    width: 10px;*/
+/*    right: -10px;*/
+/*}*/
+/*.ideditor[dir='rtl'] .sidebar.collapsed .sidebar-resizer {*/
+/*    left: -10px;*/
+/*}*/
 
 .sidebar-component {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex: 1 1 0px;
+  flex-flow: column nowrap;
 }
 
 .sidebar-component .body {
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
 }
 
 .panewrap {
-    position: absolute;
-    width: 200%;
-    height: 100%;
-    right: -100%;
+  display: flex;
+  flex: 1 1 0px;
+  flex-flow: ;
+  width: 200%;
+  height: 100%;
+  right: -100%;
 }
 
 .pane {
-    position: absolute;
-    width: 50%;
-    top: 0;
-    bottom: 2.5em;
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-flow: column nowrap;
+  width: 50%;
 }
 
-.pane:first-child {
-    left: 0;
-}
+.pane:first-child { left: 0;  }
+.pane:last-child  { right: 0; }
 
-.pane:last-child {
-    right: 0;
-}
 .feature-list-pane {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
 }
 
 .inspector-wrap {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+
+  position: relative;
+  overflow: hidden;
 }
 
 .inspector-hidden {
-    display: none;
+  display: none;
 }
 
 .inspector-body {
-    overflow-y: scroll;
-    overflow-x: hidden;
-    position: relative;
-    height: 100%;
-    flex: 1 1 100%;
+  flex: 1 1 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
+  height: 100%;
 }
 .entity-editor {
-    padding: 20px;
+  padding: 20px;
 }
-/* preserve extra space at bottom of inspector to allow for dropdown options - #5280 */
+
+/* preserve extra space at bottom of inspector to allow for dropdown options - iD#5280 */
 .entity-editor > div:last-child {
-    margin-bottom: 150px;
+  margin-bottom: 150px;
 }
 
 .sidebar .search-header {
@@ -3998,11 +3994,11 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
     border: 1px solid #ccc;
 }
 
-/* scrollbars only when necessary*/
-.inspector-hover div {
-    overflow-x: hidden;
-    overflow-y: auto;
-}
+/* scrollbars only when necessary */
+/*.inspector-hover div {*/
+/*  overflow-x: hidden;*/
+/*  overflow-y: auto;*/
+/*}*/
 
 /* hide and remove from layout */
 .inspector-hidden,
@@ -4015,8 +4011,9 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 .inspector-hover .form-field-input-radio label.remove .icon,
 .inspector-hover .add-row,
 .inspector-hover .section-entity-issues .issue-container .issue-fix-list,
-.inspector-hover .section-entity-issues .issue-container .issue-info-button {
-    display: none;
+.inspector-hover .section-entity-issues .issue-container .issue-info-button,
+.inspector-hover .sidebar-footer {
+  display: none;
 }
 
 /* hide but preserve in layout */
@@ -4026,9 +4023,8 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 .inspector-hover .hide-toggle:before,
 .inspector-hover .more-fields,
 .inspector-hover .field-label button,
-.inspector-hover .tag-row button,
-.inspector-hover .footer * {
-    opacity: 0;
+.inspector-hover .tag-row button {
+  opacity: 0;
 }
 
 /* Unstyle the active entity issue on hover */
@@ -4403,7 +4399,7 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
     position: relative;
 }
 
-.main-footer-wrap,
+.map-footer-wrap,
 .flash-wrap {
     display: flex;
     flex: 0 0 100%;
@@ -4415,12 +4411,12 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
     left: 0;
 }
 
-.footer-show {
+.map-footer-show {
     bottom: 0px;
     transition: bottom 75ms linear;
 }
 
-.footer-hide {
+.map-footer-hide {
     bottom: -100%;
     transition: bottom 75ms linear;
 }
