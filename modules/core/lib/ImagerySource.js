@@ -40,6 +40,7 @@ export class ImagerySource {
     this.tileSize = src.tileSize || 256;
     this.type = src.type;
     this.zoomExtent = src.zoomExtent || [0, 22];
+    this.zoomRange = src.zoomRange || 5;
 
     this.isBlocked = false;
     this.offset = [0, 0];

@@ -158,6 +158,10 @@ for (const [sourceID, source] of sources) {
     ];
   }
 
+  if (source.zoomRange) {
+    item.zoomRange = source.zoomRange;
+  }
+
   if (extent.polygon) {
     item.polygon = extent.polygon;
   } else if (extent.bbox) {
