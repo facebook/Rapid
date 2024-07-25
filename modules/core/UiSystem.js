@@ -11,7 +11,7 @@ import {
   uiInfo, uiIntro, uiIssuesInfo, uiLoading, uiMapInMap,
   uiMap3dViewer, uiPhotoViewer, uiRapidServiceLicense,
   uiSplash, uiRestore, uiScale, uiShortcuts,
-  uiSidebar, uiSourceSwitch, uiSpinner, uiStatus, uiTooltip,
+  UiSidebar, uiSourceSwitch, uiSpinner, uiStatus, uiTooltip,
   uiTopToolbar, uiVersion, uiWhatsNew, uiZoom, uiZoomToSelection
 } from '../ui/index.js';
 
@@ -86,7 +86,7 @@ export class UiSystem extends AbstractSystem {
         this.flash = uiFlash(context);
         this.editMenu = uiEditMenu(context);
         this.info = uiInfo(context);
-        this.sidebar = uiSidebar(context);
+        this.sidebar = new UiSidebar(context);
         this.photoviewer = uiPhotoViewer(context);
         this.shortcuts = uiShortcuts(context);
 
@@ -199,7 +199,7 @@ export class UiSystem extends AbstractSystem {
 
     // Sidebar
     container
-      .call(this.sidebar);
+      .call(this.sidebar.render);
 
 
     // main-content

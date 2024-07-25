@@ -90,7 +90,7 @@ export function uiEntityEditor(context) {
       .merge(headerEnter);
 
     header.selectAll('h3')
-      .html(_entityIDs.length === 1 ? l10n.t('inspector.edit') : l10n.t('rapid_multiselect'));
+      .text(_entityIDs.length === 1 ? l10n.t('inspector.edit') : l10n.t('rapid_multiselect'));
 
     header.selectAll('.preset-reset')
       .on('click', function() { dispatch.call('choose', this, _selectedPresets); });
