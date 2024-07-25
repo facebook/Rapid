@@ -217,7 +217,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     // Apply effectiveZoom style adjustments
     // This is where we adjust the actual texture and anchor properties
     //
-    if (zoom < 10) {  // Hide container and everything under it
+    if (zoom < 16) {  // Hide container and everything under it
       this.lod = 0;   // off
       this.visible = false;
 
