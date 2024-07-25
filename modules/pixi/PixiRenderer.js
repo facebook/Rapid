@@ -417,7 +417,12 @@ export class PixiRenderer extends EventEmitter {
 
       // We'll need to resize pixi too, but this is expensive, so will be done later.
       // The Pixi resize is queued in `_app` so that it might be done by `_draw`.
+      this._appPending = true;  // needs occasional renders during/after resizing
     }
+
+    // exception: skip temporary transform while the user is resizing the sidebar.
+    const isResizing = context.container().selectAll('.sidebar-resizer').classed('dragging');
+    if (isResizing) return;
 
     // Here we calculate a temporary CSS transform that includes
     // whatever user interaction has occurred between full redraws.
@@ -428,6 +433,7 @@ export class PixiRenderer extends EventEmitter {
     const hasChanges = this._isTransformed || (
       tPrev.x !== tCurr.x || tPrev.y !== tCurr.y || tPrev.k !== tCurr.k || tPrev.r !== tCurr.r
     );
+
     if (hasChanges) {
       // Before, supersurface's transform-origin was "top left", now it is "center".
       // So we need to shift the coordinates back to top-left to make the math correct.

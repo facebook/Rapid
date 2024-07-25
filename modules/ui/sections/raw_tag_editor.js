@@ -44,7 +44,7 @@ export function uiSectionRawTagEditor(context, id) {
   let _state;    // can be 'hide', 'hover', or 'select'
   let _presets;
   let _tags;
-  let _entityIDs;
+  let _entityIDs = [];
 
 
   function renderDisclosureContent(wrap) {
@@ -226,7 +226,7 @@ export function uiSectionRawTagEditor(context, id) {
         row.select('input.key');      // propagate bound data
         row.select('input.value');    // propagate bound data
 
-        if (_entityIDs && taginfo && _state !== 'hover') {
+        if (_entityIDs.length && taginfo && _state !== 'hover') {
           addComboboxes(row);
         }
 
@@ -383,6 +383,7 @@ export function uiSectionRawTagEditor(context, id) {
     const value = row.select('input.value');  // propagate bound data
 
     if (isReadOnlyTag(d)) return;
+    if (!_entityIDs.length) return;
 
     if (isMultiValueTag(d)) {
       value.call(uiCombobox(context, 'tag-value')
