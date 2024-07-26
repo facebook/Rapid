@@ -5,15 +5,15 @@ import { uiSection } from '../section.js';
 
 
 export function uiSectionBackgroundDisplayOptions(context) {
+  const imagery = context.systems.imagery;
   const l10n = context.systems.l10n;
-  const storageSystem = context.systems.storage;
-  const imagerySystem = context.systems.imagery;
+  const storage = context.systems.storage;
 
   const section = uiSection(context, 'background-display-options')
     .label(l10n.t('background.display_options'))
     .disclosureContent(renderDisclosureContent);
 
-  let _storedOpacity = storageSystem.getItem('background-opacity');
+  let _storedOpacity = storage.getItem('background-opacity');
   const MINVAL = 0;
   const MAXVAL = 3;
   const settings = ['brightness', 'contrast', 'saturation', 'sharpness'];
@@ -32,14 +32,14 @@ export function uiSectionBackgroundDisplayOptions(context) {
 
     _options[d] = val;
     if (d === 'brightness') {
-      storageSystem.setItem('background-opacity', val);
-      imagerySystem.brightness = val;
+      storage.setItem('background-opacity', val);
+      imagery.brightness = val;
     } else if (d === 'contrast') {
-      imagerySystem.contrast = val;
+      imagery.contrast = val;
     } else if (d === 'saturation') {
-      imagerySystem.saturation = val;
+      imagery.saturation = val;
     } else if (d === 'sharpness') {
-      imagerySystem.sharpness = val;
+      imagery.sharpness = val;
     }
     section.reRender();
   }
@@ -119,7 +119,7 @@ export function uiSectionBackgroundDisplayOptions(context) {
 
     // first time only, set brightness if needed
     if (containerEnter.size() && _options.brightness !== 1) {
-      imagerySystem.brightness = _options.brightness;
+      imagery.brightness = _options.brightness;
     }
   }
 

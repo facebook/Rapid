@@ -74,8 +74,8 @@ export function uiNoteComments(context) {
 
 
   function replaceAvatars(selection) {
-    const storageSystem = context.systems.storage;
-    const showThirdPartyIcons = storageSystem.getItem('preferences.privacy.thirdpartyicons') ?? 'true';
+    const storage = context.systems.storage;
+    const showThirdPartyIcons = storage.getItem('preferences.privacy.thirdpartyicons') ?? 'true';
     const osm = context.services.osm;
     if (showThirdPartyIcons !== 'true' || !osm) return;
 

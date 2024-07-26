@@ -1,5 +1,5 @@
 import { select as d3_select } from 'd3-selection';
-import { vecAdd } from '@rapid-sdk/math';
+import { vecAdd, vecRotate } from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
 import { utilDetect } from '../util/detect.js';
@@ -486,6 +486,9 @@ export class UiSystem extends AbstractSystem {
 
     // When adjusting the sidebar width, pan the map so it stays centered on the same location.
     if (offset !== undefined) {
+      //const t = context.viewport.transform;              // Add rotation - because `map.pan()` will try to cancel
+      //const [dx, dy] = vecRotate(offset, t.r, [0, 0]);   // it out, and we want the pan applied in screen coords.
+      //map.pan([dx, dy]);
       map.pan(offset);
     }
 

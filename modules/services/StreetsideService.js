@@ -769,9 +769,9 @@ export class StreetsideService extends AbstractSystem {
     this._connectSequences();
 
     if (selectBubbleID) {
-      const photoSystem = this.context.systems.photos;
-      photoSystem.selectPhoto();                              // deselect
-      photoSystem.selectPhoto('streetside', selectBubbleID);  // reselect
+      const photos = this.context.systems.photos;
+      photos.selectPhoto();                              // deselect
+      photos.selectPhoto('streetside', selectBubbleID);  // reselect
     }
 
     this.context.deferredRedraw();

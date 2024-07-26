@@ -7,7 +7,7 @@ import { uiSection } from '../section.js';
 
 export function uiSectionBackgroundOffset(context) {
   const l10n = context.systems.l10n;
-  const imagerySystem = context.systems.imagery;
+  const imagery = context.systems.imagery;
 
   const section = uiSection(context, 'background-offset')
     .label(l10n.t('background.fix_misalignment'))
@@ -22,7 +22,7 @@ export function uiSectionBackgroundOffset(context) {
 
 
   function updateValue() {
-    const meters = geoOffsetToMeters(imagerySystem.offset);
+    const meters = geoOffsetToMeters(imagery.offset);
     const x = +meters[0].toFixed(2);
     const y = +meters[1].toFixed(2);
 
@@ -37,13 +37,13 @@ export function uiSectionBackgroundOffset(context) {
 
 
   function resetOffset() {
-    imagerySystem.offset = [0, 0];
+    imagery.offset = [0, 0];
     updateValue();
   }
 
 
   function nudge(d) {
-    imagerySystem.nudge(d);
+    imagery.nudge(d);
     updateValue();
   }
 
@@ -64,7 +64,7 @@ export function uiSectionBackgroundOffset(context) {
       return;
     }
 
-    imagerySystem.offset = geoMetersToOffset(val);
+    imagery.offset = geoMetersToOffset(val);
     updateValue();
   }
 
@@ -162,7 +162,7 @@ export function uiSectionBackgroundOffset(context) {
     updateValue();
   }
 
-  imagerySystem.on('imagerychange', updateValue);
+  imagery.on('imagerychange', updateValue);
 
   return section;
 }

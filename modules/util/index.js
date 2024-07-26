@@ -1,5 +1,4 @@
 export { utilDetect } from './detect.js';
-export { utilFastMouse } from './util.js';
 export { utilFetchResponse, FetchError } from './fetch_response.js';
 export { utilFunctor } from './util.js';
 export { utilGetDimensions } from './dimensions.js';

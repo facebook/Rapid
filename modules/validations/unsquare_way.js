@@ -55,8 +55,8 @@ export function validationUnsquareWay(context) {
 
 
     // user-configurable square threshold
-    const storageSystem = context.systems.storage;
-    const storedDegreeThreshold = storageSystem.getItem('validate-square-degrees');
+    const storage = context.systems.storage;
+    const storedDegreeThreshold = storage.getItem('validate-square-degrees');
     const degreeThreshold = isNaN(storedDegreeThreshold) ? DEFAULT_DEG_THRESHOLD : parseFloat(storedDegreeThreshold);
 
     const points = nodes.map(node => context.viewport.project(node.loc));
