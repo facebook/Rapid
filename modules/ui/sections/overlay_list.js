@@ -51,7 +51,6 @@ export function uiSectionOverlayList(context) {
     _overlayList = container.enter()
       .append('ul')
       .attr('class', 'layer-list layer-overlay-list')
-      .attr('dir', 'auto')
       .merge(container);
 
     _overlayList
