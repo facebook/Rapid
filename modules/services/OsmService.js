@@ -931,9 +931,9 @@ export class OsmService extends AbstractSystem {
     if (cache.loaded.has(tile.id) || cache.inflight[tile.id]) return;
 
     // Exit if this tile covers a blocked region (all corners are blocked)
-    const locationSystem = this.context.systems.locations;
+    const locations = this.context.systems.locations;
     const corners = tile.wgs84Extent.polygon().slice(0, 4);
-    const tileBlocked = corners.every(loc => locationSystem.blocksAt(loc).length);
+    const tileBlocked = corners.every(loc => locations.blocksAt(loc).length);
     if (tileBlocked) {
       cache.loaded.add(tile.id);   // don't try again
       return;
@@ -1032,9 +1032,9 @@ export class OsmService extends AbstractSystem {
       if (cache.loaded.has(tile.id) || cache.inflight[tile.id]) continue;
 
       // Skip if this tile covers a blocked region (all corners are blocked)
-      const locationSystem = this.context.systems.locations;
+      const locations = this.context.systems.locations;
       const corners = tile.wgs84Extent.polygon().slice(0, 4);
-      const tileBlocked = corners.every(loc => locationSystem.blocksAt(loc).length);
+      const tileBlocked = corners.every(loc => locations.blocksAt(loc).length);
       if (tileBlocked) {
         cache.loaded.add(tile.id);   // don't try again
         continue;

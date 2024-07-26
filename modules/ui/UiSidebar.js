@@ -1,6 +1,5 @@
 import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
-import { select as d3_select } from 'd3-selection';
-import { Extent } from '@rapid-sdk/math';
+import { Extent, vecLength } from '@rapid-sdk/math';
 import { utilArrayIdentical } from '@rapid-sdk/util';
 import _throttle from 'lodash-es/throttle.js';
 
@@ -13,10 +12,11 @@ import { uiMapRouletteEditor } from './maproulette_editor.js';
 import { uiOsmoseEditor } from './osmose_editor.js';
 import { uiNoteEditor } from './note_editor.js';
 import { uiRapidFeatureInspector } from './rapid_feature_inspector.js';
-import { utilFastMouse } from '../util/index.js';
 
 
-const minWidth = 240;  // needs to match the min-width in our css file
+const NEAR_TOLERANCE = 4;
+const MIN_WIDTH = 240;
+const DEFAULT_WIDTH = 400;  // needs to match the flex-basis in our css file
 
 
 /**
@@ -61,9 +61,11 @@ export class UiSidebar {
     this.$inspector = null;
 
     this._startPointerID = null;
-    this._startClientX = null;
+    this._startCoord = null;
     this._startWidth = null;
-    this._lastClientX = null;
+    this._lastCoord = null;
+    this._lastWidth = null;
+    this._expandWidth = DEFAULT_WIDTH;
     this._containerLocGetter = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
@@ -71,7 +73,6 @@ export class UiSidebar {
     this.render = this.render.bind(this);
     this.toggle = this.toggle.bind(this);
     this._hover = this._hover.bind(this);
-    this._dblclick = this._dblclick.bind(this);
     this._pointerup = this._pointerup.bind(this);
     this._pointermove = this._pointermove.bind(this);
     this._pointerdown = this._pointerdown.bind(this);
@@ -102,7 +103,12 @@ export class UiSidebar {
 
     const context = this.context;
     const l10n = context.systems.l10n;
+    const storage = context.systems.storage;
+
     const dir = l10n.textDirection();
+    const preferCollapsed = (storage.getItem('sidebar.collapsed') === 'true');
+    const storedWidth = +(storage.getItem('sidebar.width') || DEFAULT_WIDTH);
+    this._expandWidth = Math.max(MIN_WIDTH, storedWidth);
 
     // add .sidebar
     let $sidebar = $parent.selectAll('.sidebar')
@@ -113,7 +119,9 @@ export class UiSidebar {
 
     const $$sidebar = $sidebar.enter()
       .append('div')
-      .attr('class', 'sidebar');
+      .attr('class', 'sidebar')
+      .classed('collapsed', preferCollapsed)
+      .style('flex-basis', `${this._expandWidth}px`);
 
     this.$sidebar = $sidebar = $sidebar.merge($$sidebar);
 
@@ -126,7 +134,6 @@ export class UiSidebar {
       .append('div')
       .attr('class', 'sidebar-resizer')
       .each((d, i, nodes) => {
-        nodes[i].addEventListener('dblclick', this._dblclick);
         nodes[i].addEventListener('pointerdown', this._pointerdown);
       });
 
@@ -411,81 +418,62 @@ export class UiSidebar {
    * Toggles the sidebar between expanded/collapsed states
    */
   toggle(moveMap) {
-    const context = this.context;
-    const $container = context.container();
-    const l10n = context.systems.l10n;
+    const $sidebar = this.$sidebar;
+    const $resizer = this.$resizer;
+    if (!$sidebar || !$resizer) return;  // called too early?
 
     // Don't allow sidebar to toggle when the user is in the walkthrough.
+    const context = this.context;
     if (context.inIntro) return;
 
-    const $sidebar = this.$sidebar;
-    if (!$sidebar) return;  // called too early?
+    const ui = context.systems.ui;
 
-    const isCollapsed = $sidebar.classed('collapsed');
-    const isCollapsing = !isCollapsed;
-//    const isRTL = l10n.isRTL();
-//    const scaleX = isRTL ? 0 : 1;
-//    const xMarginProperty = isRTL ? 'margin-right' : 'margin-left';
-//
-//    sidebarWidth = sidebar.node().getBoundingClientRect().width;
-//
-//    // switch from % to px
-//    sidebar.style('width', `${sidebarWidth}px`);
-//
-//    let startMargin, endMargin, lastMargin;
-//    if (isCollapsing) {
-//      startMargin = lastMargin = 0;
-//      endMargin = -sidebarWidth;
-//    } else {
-//      startMargin = lastMargin = -sidebarWidth;
-//      endMargin = 0;
-//    }
-//
-//    if (!isCollapsing) {
-//      // unhide the sidebar's content before it transitions onscreen
-//      sidebar.classed('collapsed', isCollapsing);
-//    }
-//
-//    sidebar
-//      .transition()
-//      .style(xMarginProperty, endMargin + 'px')
-//      .tween('panner', () => {
-//        let i = d3_interpolateNumber(startMargin, endMargin);
-//        return function(t) {
-//          let dx = lastMargin - Math.round(i(t));
-//          lastMargin = lastMargin - dx;
-//          ui.resize(moveMap ? undefined : [dx * scaleX, 0]);
-//        };
-//      })
-//      .on('end', () => {
-//        if (isCollapsing) {
-//          // hide the sidebar's content after it transitions offscreen
-//          sidebar.classed('collapsed', isCollapsing);
-//        }
-//        // switch back from px to %
-//        if (!isCollapsing) {
-//          const containerWidth = container.node().getBoundingClientRect().width;
-//          const widthPct = (sidebarWidth / containerWidth) * 100;
-//          sidebar
-//            .style(xMarginProperty, null)
-//            .style('width', widthPct + '%');
-//        }
-//      });
-  }
+    // We get the "preferred" expended width from `flex-basis`.
+    // When the sidebar is shown, this is the width that flexbox will use.
+    // When the sidebar is hidden (display: none), it is ignored.
+    const expandWidth = this._expandWidth || DEFAULT_WIDTH;
+    const startCollapsed = $sidebar.classed('collapsed');
+    const startWidth = startCollapsed ? 0 : expandWidth;
+    const endCollapsed = !startCollapsed;
+    const endWidth = endCollapsed ? 0 : expandWidth;
+    const lerp = d3_interpolateNumber(startWidth, endWidth);
 
+    this._startWidth = startWidth;
+    this._lastWidth = startWidth;
 
-  /**
-   * _dblclick
-   * Handler for dblclick events on the resizer.
-   * Toggle sidebar when double-clicking the resizer
-   * @param {MouseEvent}  e - the dblclick event
-   */
-  _dblclick(e) {
-    e.preventDefault();
-    if (e.sourceEvent) {
-      e.sourceEvent.preventDefault();
-    }
-    this.toggle();
+    $sidebar
+      .transition()
+      .tween('sidebar.toggler', () => {
+        return t => {
+          const setWidth = Math.round(lerp(t));
+
+          $sidebar
+            .classed('collapsing', setWidth < MIN_WIDTH)
+            .style('flex-basis', `${setWidth}px`);
+
+          const dx = setWidth - this._lastWidth;
+          ui.resize([-dx / 2, 0]);   // keep the map centered on the same spot
+          this._lastWidth = setWidth;
+        };
+      })
+      .on('start', () => {
+        $resizer.classed('dragging', true);
+
+        $sidebar
+          .classed('collapsing', startWidth < MIN_WIDTH)
+          .classed('collapsed', false)
+          .style('flex-basis', `${startWidth}px`);
+      })
+      .on('end interrupt', () => {
+        $resizer.classed('dragging', false);
+
+        $sidebar
+          .classed('collapsing', false)
+          .classed('collapsed', endCollapsed)
+          .style('flex-basis', `${expandWidth}px`);  // done resize, put expanded width back here
+
+        this._storePreferences();
+      });
   }
 
 
@@ -502,15 +490,22 @@ export class UiSidebar {
     const $sidebar = this.$sidebar;
     const $resizer = this.$resizer;
 
-    const startWidth = $sidebar.node().getBoundingClientRect().width;
+    const expandWidth = this._expandWidth || DEFAULT_WIDTH;
+    const startCollapsed = $sidebar.classed('collapsed');
+    const startWidth = startCollapsed ? 0 : expandWidth;
 
     this._startPointerID = e.pointerId || 'mouse';
-    this._startClientX = e.clientX;
+    this._startCoord = [e.clientX, e.clientY];
     this._startWidth = startWidth;
-    this._lastClientX = e.clientX;
+    this._lastCoord = [e.clientX, e.clientY];
+    this._lastWidth = startWidth;
 
-    $sidebar.style('flex-basis', `${startWidth}px`);
     $resizer.classed('dragging', true);
+
+    $sidebar
+      .classed('collapsed', false)
+      .classed('collapsing', startWidth < MIN_WIDTH)
+      .style('flex-basis', `${startWidth}px`);
 
     window.addEventListener('pointermove', this._pointermove);
     window.addEventListener('pointerup', this._pointerup);
@@ -532,49 +527,20 @@ export class UiSidebar {
 
     const context = this.context;
     const ui = context.systems.ui;
-//    const container = context.container();
-    const $sidebar = this.$sidebar;
 
-    const dx = e.clientX - this._startClientX;
-    const setWidth = this._startWidth + dx;
-    $sidebar.style('flex-basis', `${setWidth}px`);
+    const dx = e.clientX - this._lastCoord[0];
+    const setWidth = this._lastWidth + dx;
 
-    const panx = e.clientX - this._lastClientX;
-    this._lastClientX = e.clientX;
-    ui.resize([-panx, 0]);   // keep the map centered on the same spot
+    this.$sidebar
+      .classed('collapsing', setWidth < MIN_WIDTH)
+      .style('flex-basis', `${setWidth}px`);
 
+    if (dx) {
+      ui.resize([-dx / 2, 0]);   // keep the map centered on the same spot
+    }
 
-// todo
-//    const isCollapsed = sidebar.classed('collapsed');
-//    const shouldCollapse = setWidth < minWidth;
-//
-//    if (shouldCollapse && !isCollapsed) {
-//      sidebar.classed('collapsed', true);
-//    } else if (!shouldCollapse && isCollapsed) {
-//      sidebar.classed('collapsed', false);
-//    }
-
-//todont
-//    sidebar.classed('collapsed', shouldCollapse);
-//
-//    if (shouldCollapse) {
-//      if (!isCollapsed) {
-//        sidebar.style('flex-basis', '0px');
-//        // ui.resize([(sidebarWidth - dx) * scaleX, 0]);
-//      }
-//
-//    } else {
-//      const widthPct = (sidebarWidth / containerWidth) * 100;
-//      sidebar
-//        .style(xMarginProperty, null)
-//        .style('width', widthPct + '%');
-//
-//      if (isCollapsed) {
-//        // ui.resize([-sidebarWidth * scaleX, 0]);
-//      } else {
-//        // ui.resize([-dx * scaleX, 0]);
-//      }
-//    }
+    this._lastCoord = [e.clientX, e.clientY];
+    this._lastWidth = setWidth;
   }
 
 
@@ -587,17 +553,43 @@ export class UiSidebar {
     if (this._startPointerID !== (e.pointerId || 'mouse')) return;   // not down, or different pointer
 
     this._startPointerID = null;
-    this.$resizer.classed('dragging', false);
-
     window.removeEventListener('pointermove', this._pointermove);
     window.removeEventListener('pointerup', this._pointerup);
     window.removeEventListener('pointercancel', this._pointerup);
     window.removeEventListener('touchmove', this._eventCancel, { passive: false });
 
-//    d3_select(window)
-//      .on('touchmove.sidebar-resizer', null)
-//      .on('pointermove.sidebar-resizer', null)
-//      .on('pointerup.sidebar-resizer pointercancel.sidebar-resizer', null);
+    const $sidebar = this.$sidebar;
+    const $resizer = this.$resizer;
+
+    const endWidth = this._lastWidth;
+    const endCollapsed = endWidth < MIN_WIDTH;
+
+    // We'll lock in the "preferred" expended width in `flex-basis`.
+    // If the user collapsed the sidebar by dragging, assume that they
+    // would want to expand it back to its original size.
+    const expandWidth = endCollapsed ? this._expandWidth : endWidth;
+    this._expandWidth = expandWidth;
+
+    $resizer.classed('dragging', false);
+
+    $sidebar
+      .classed('collapsing', false)
+      .classed('collapsed', endCollapsed)
+      .style('flex-basis', `${expandWidth}px`);  // done resize, put expanded width back here
+
+    if (endCollapsed && endWidth) {
+      const ui = this.context.systems.ui;
+      ui.resize([-endWidth / 2, 0]);   // keep the map centered on the same spot
+    }
+
+    const startCoord = this._startCoord;
+    const endCoord = [e.clientX ?? startCoord[0], e.clientY ?? endCoord[0]];
+    const dist = vecLength(startCoord, endCoord);
+    if (dist < NEAR_TOLERANCE) {  // this was a click, not a drag
+      this.toggle();              // run the toggle transition
+    } else {
+      this._storePreferences();
+    }
   }
 
 
@@ -608,5 +600,22 @@ export class UiSidebar {
    */
   _eventCancel(e) {
     e.preventDefault();
+  }
+
+
+  /**
+   * _storePreferences
+   * Store the sidebar preferences
+   */
+  _storePreferences() {
+    const $sidebar = this.$sidebar;
+    if (!$sidebar) return;  // called too early?
+
+    const preferCollapsed = $sidebar.classed('collapsed') ? 'true' : 'false';
+    const preferWidth = this._expandWidth;
+
+    const storage = this.context.systems.storage;
+    storage.setItem('sidebar.collapsed', preferCollapsed);
+    storage.setItem('sidebar.width', preferWidth);
   }
 }
