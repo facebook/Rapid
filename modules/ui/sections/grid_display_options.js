@@ -34,7 +34,6 @@ export function uiSectionGridDisplayOptions(context) {
     let gridList = container.enter()
       .append('ul')
       .attr('class', 'layer-list layer-grid-list')
-      .attr('dir', 'auto')
       .merge(container);
 
     let gridItems = gridList.selectAll('li')
