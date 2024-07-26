@@ -3,6 +3,8 @@
 /* the root element of Rapid */
 .ideditor {
   display: flex;
+  flex-flow: row nowrap;
+
   height: 100%;
   width: 100%;
   margin: 0;
@@ -29,9 +31,6 @@
   -ms-user-select: none;
   -ms-content-zooming: none;
 }
-
-.ideditor[dir='ltr'] { flex-flow: row nowrap; }
-.ideditor[dir='rtl'] { flex-flow: row-reverse nowrap; }
 
 .ideditor div {
   /* disable pinch-to-zoom of the UI on touch devices */

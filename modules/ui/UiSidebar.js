@@ -530,9 +530,11 @@ export class UiSidebar {
     e.preventDefault();
 
     const context = this.context;
+    const l10n = context.systems.l10n;
     const ui = context.systems.ui;
+    const scaleX = l10n.isRTL() ? -1 : 1;
 
-    const dx = e.clientX - this._lastCoord[0];
+    const dx = (e.clientX - this._lastCoord[0]) * scaleX;
     const setWidth = this._lastWidth + dx;
 
     this.$sidebar
@@ -582,8 +584,12 @@ export class UiSidebar {
       .style('flex-basis', `${expandWidth}px`);  // done resize, put expanded width back here
 
     if (endCollapsed && endWidth) {
-      const ui = this.context.systems.ui;
-      ui.resize([-endWidth / 2, 0]);   // keep the map centered on the same spot
+      const context = this.context;
+      const l10n = context.systems.l10n;
+      const ui = context.systems.ui;
+      const scaleX = l10n.isRTL() ? -1 : 1;
+      const dx = endWidth * scaleX;
+      ui.resize([-dx / 2, 0]);   // keep the map centered on the same spot
     }
 
     const startCoord = this._startCoord;
