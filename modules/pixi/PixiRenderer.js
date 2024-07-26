@@ -429,7 +429,7 @@ export class PixiRenderer extends EventEmitter {
     }
 
     // exception: skip temporary transform while the user is resizing the sidebar.
-    const isResizing = context.container().selectAll('.sidebar-resizer').classed('dragging');
+    const isResizing = context.container().selectAll('.sidebar-resizer.dragging').size();
     if (isResizing) return;
 
     // Here we calculate a temporary CSS transform that includes

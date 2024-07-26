@@ -691,7 +691,7 @@ button.add-note svg.icon {
 ------------------------------------------------------- */
 .header {
   display: flex;
-  flex: 0 0 auto;
+  flex: 0 0 0px;
   align-items: center;
   justify-content: center;
 
@@ -763,16 +763,6 @@ button.add-note svg.icon {
   right: unset;
 }
 
-.sidebar-footer {
-  display: flex;
-  flex: 0 0 0px;
-  flex-flow: column nowrap;
-
-  padding: 3px 15px;
-  border-top: 1px solid #ccc;
-  background-color: #f6f6f6;
-}
-
 
 /* Hide/Toggle collapsible sections (aka Disclosure)
 ------------------------------------------------------- */
@@ -802,52 +792,51 @@ a.hide-toggle {
   z-index: 10;
   background: #f6f6f6;
   -ms-user-select: element;
-  border: 1px solid #ccc;
+  overflow: hidden;
 }
 
-.sidebar-resizer {
+.resizer {
+  display: flex;
   flex: 0 0 15px;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
 
   z-index: 10;
   cursor: col-resize;
   user-select: none;
-  background-color: #f00;
+  background-color: #fff;
+  border-width: 0 1px;
+  border-color: #ccc;
+  border-style: solid;
 }
 
-/* collapsing; the sidebar has been set to a width that is too small,
+.resizer-handle {
+  width: 4px;
+  height: 10%;
+  background-color: #ccc;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .resizer:hover {
+    background-color: #ececec;
+  }
+  .resizer-handle:hover {
+    background-color: #bcbcbc;
+  }
+}
+
+
+/* .collapsing: the sidebar has been set to a width that is too small,
   set some opacity and hide the child contents */
 .sidebar.collapsing { opacity: 0.5 }
 .sidebar.collapsing > * { display: none; }
 
-/* collapsed; the sidebar is hidden completely */
+/* .collapsed: the sidebar is hidden completely */
 .sidebar.collapsed { display: none; }
 
-/*.sidebar-resizer {*/
-/*    position: absolute;*/
-/*    top: 0;*/
-/*    right: -10px;*/
-/*    width: 10px;*/
-/*    height: 100%;*/
-/*    cursor: col-resize;*/
-    /* disable drag-to-select */
-/*    user-select: none;*/
-/*}*/
-/*.ideditor[dir='rtl'] .sidebar-resizer {*/
-/*    right: auto;*/
-/*    left: -6px;*/
-/*}*/
-
-/*.sidebar.collapsed > *:not(.sidebar-resizer) {*/
-/*    display: none;*/
-/*}*/
-/*.sidebar.collapsed .sidebar-resizer {*/
-    /* make target wider to avoid the user accidentally resizing window */
-/*    width: 10px;*/
-/*    right: -10px;*/
-/*}*/
-/*.ideditor[dir='rtl'] .sidebar.collapsed .sidebar-resizer {*/
-/*    left: -10px;*/
-/*}*/
 
 .sidebar-component {
   display: flex;
@@ -863,31 +852,15 @@ a.hide-toggle {
   position: relative;
 }
 
-.panewrap {
-  display: flex;
-  flex: 1 1 0px;
-  flex-flow: ;
-  width: 200%;
-  height: 100%;
-  right: -100%;
-}
-
-.pane {
-  display: flex;
-  flex-flow: column nowrap;
-  width: 50%;
-}
-
-.pane:first-child { left: 0;  }
-.pane:last-child  { right: 0; }
-
 .feature-list-pane {
   display: flex;
+  flex: 1 0 0px;
   flex-flow: column nowrap;
 }
 
 .inspector-wrap {
   display: flex;
+  flex: 1 0 0px;
   flex-flow: column nowrap;
 
   position: relative;
@@ -898,13 +871,31 @@ a.hide-toggle {
   display: none;
 }
 
+.panewrap {
+  display: flex;
+  flex: 1 0 0px;
+  flex-flow: row nowrap;
+
+  position: relative;
+  width: 200%;
+}
+
+.pane {
+  display: flex;
+  flex: 0 0 50%;
+  flex-flow: column nowrap;
+}
+
 .inspector-body {
-  flex: 1 1 100%;
+  display: flex;
+  flex: 1 1 0px;
+  flex-flow: column nowrap;
+
+  position: relative;
   overflow-y: scroll;
   overflow-x: hidden;
-  position: relative;
-  height: 100%;
 }
+
 .entity-editor {
   padding: 20px;
 }
@@ -915,37 +906,47 @@ a.hide-toggle {
 }
 
 .sidebar .search-header {
-    position: relative;
-    overflow: hidden;
-    flex: 0 0 auto;
+  flex: 0 0 auto;
+  position: relative;
+  overflow: hidden;
 }
 .sidebar .search-header .icon {
-    display: inline-block;
-    position: absolute;
-    left: 10px;
-    height: 100%;
-    pointer-events: none;
+  display: inline-block;
+  position: absolute;
+  left: 10px;
+  height: 100%;
+  pointer-events: none;
 }
 .ideditor[dir='rtl'] .sidebar .search-header .icon {
-    left: auto;
-    right: 10px;
+  left: auto;
+  right: 10px;
 }
 
 .sidebar .search-header input {
-    width: 100%;
-    padding: 0 10px;
-    height: 3em;
-    border-radius: 0;
-    border-width: 0;
-    border-bottom-width: 1px;
-    text-indent: 30px;
-    font-size: 18px;
-    font-weight: bold;
+  width: 100%;
+  padding: 0 10px;
+  height: 3em;
+  border-radius: 0;
+  border-width: 0;
+  border-bottom-width: 1px;
+  text-indent: 30px;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .section:not(:last-child),
 .map-pane .section {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
+}
+
+.sidebar-footer {
+  display: flex;
+  flex: 0 0 0px;
+  flex-flow: column nowrap;
+
+  padding: 3px 15px;
+  border-top: 1px solid #ccc;
+  background-color: #f6f6f6;
 }
 
 
