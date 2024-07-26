@@ -1,5 +1,3 @@
-import { interpolate as d3_interpolate } from 'd3-interpolate';
-
 import { uiEntityEditor } from './entity_editor.js';
 import { uiPresetList } from './preset_list.js';
 import { uiViewOnOSM } from './view_on_osm.js';
@@ -208,15 +206,15 @@ export class UiInspector {
     const $editorPane = this.$editorPane;
     if (!$paneWrap || !$presetPane || !$editorPane) return false;  // called too early?
 
-    $presetPane.classed('hide', false);
+    const context = this.context;
+    const l10n = context.systems.l10n;
+    const isRTL = l10n.isRTL();
+    const prop = isRTL ? 'margin-right' : 'margin-left';
 
     if (animate) {
-      $paneWrap.transition()
-        .styleTween('right', () => d3_interpolate('0%', '-100%'))
-        .on('end', () => $editorPane.classed('hide', true));
+      $paneWrap.transition().style(prop, '0%');
     } else {
-      $paneWrap.style('right', '-100%');
-      $editorPane.classed('hide', true);
+      $paneWrap.style(prop, '0%');
     }
 
     if (Array.isArray(selected)) {
@@ -243,15 +241,15 @@ export class UiInspector {
     const $editorPane = this.$editorPane;
     if (!$paneWrap || !$presetPane || !$editorPane) return false;  // called too early?
 
-    $editorPane.classed('hide', false);
+    const context = this.context;
+    const l10n = context.systems.l10n;
+    const isRTL = l10n.isRTL();
+    const prop = isRTL ? 'margin-right' : 'margin-left';
 
     if (animate) {
-      $paneWrap.transition()
-        .styleTween('right', () => d3_interpolate('-100%', '0%'))
-        .on('end', () => $presetPane.classed('hide', true));
+      $paneWrap.transition().style(prop, '-100%');
     } else {
-      $paneWrap.style('right', '0%');
-      $presetPane.classed('hide', true);
+      $paneWrap.style(prop, '-100%');
     }
 
     if (Array.isArray(presets)) {

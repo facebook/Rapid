@@ -28,7 +28,7 @@ const DEFAULT_WIDTH = 400;  // needs to match the flex-basis in our css file
  *
  * @example
  *  <div class='sidebar'>
- *    <div class='sidebar-resizer'/>     // The resizer handle
+ *    <div class='resizer'/>             // The resizer
  *    <div class='feature-list-pane'/>   // Feature list / search component
  *    <div class='inspector-wrap'/>      // Inspector - the components for working with OSM
  *    <div class='sidebar-component'/>   // Custom UI - everything else (Notes, Rapid, QA Icons, Save, etc)
@@ -126,16 +126,20 @@ export class UiSidebar {
     this.$sidebar = $sidebar = $sidebar.merge($$sidebar);
 
 
-    // add .sidebar-resizer
-    let $resizer = $parent.selectAll('.sidebar-resizer')
+    // add .resizer
+    let $resizer = $parent.selectAll('.resizer')
       .data([0]);
 
     const $$resizer = $resizer.enter()
       .append('div')
-      .attr('class', 'sidebar-resizer')
+      .attr('class', 'resizer')
       .each((d, i, nodes) => {
         nodes[i].addEventListener('pointerdown', this._pointerdown);
       });
+
+    $$resizer
+      .append('div')
+      .attr('class', 'resizer-handle');
 
     this.$resizer = $resizer = $resizer.merge($$resizer);
 
