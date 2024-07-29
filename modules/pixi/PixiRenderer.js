@@ -73,6 +73,7 @@ export class PixiRenderer extends EventEmitter {
     settings.AUTO_GENERATE_MIPMAPS = false;
     // Asynchronously initialize the PixiJS application
     this.initPixiApp();
+<<<<<<< HEAD
 
 // todo - we should stop doing this.. Access to pixi app should be via an instance of PixiRenderer
 // so we can have multiple Pixi renderers - this will make the minimap less hacky & enable restriction editor
@@ -91,6 +92,27 @@ export class PixiRenderer extends EventEmitter {
     });
 
   }
+
+
+
+// todo - we should stop doing this.. Access to pixi app should be via an instance of PixiRenderer
+// so we can have multiple Pixi renderers - this will make the minimap less hacky & enable restriction editor
+    context.pixi = this.pixi;
+
+    // Prepare a basic bitmap font that we can use for things like debug messages
+    BitmapFont.install({
+        name: 'TitleFont',
+        textStyle: {
+            fontFamily: 'Arial',
+            fontSize: 12,
+            strokeThickness: 2,
+            fill: 'purple'
+        },
+        chars: BitmapFont.ALPHANUMERIC // Assuming you still specify characters
+    });
+
+  }
+
 
 
   async initPixiApp() {
