@@ -55,7 +55,6 @@ export class UiSidebar {
     // D3 selections
     this.$parent = null;
     this.$sidebar = null;
-    this.$resizer = null;
     this.$custom = null;
     this.$featureList = null;
     this.$inspector = null;
@@ -66,7 +65,6 @@ export class UiSidebar {
     this._lastCoord = null;
     this._lastWidth = null;
     this._expandWidth = DEFAULT_WIDTH;
-    this._containerLocGetter = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
@@ -141,7 +139,7 @@ export class UiSidebar {
       .append('div')
       .attr('class', 'resizer-handle');
 
-    this.$resizer = $resizer = $resizer.merge($$resizer);
+    $resizer = $resizer.merge($$resizer);
 
 
     // add sidebar contents: feature list pane and inspector
@@ -423,14 +421,14 @@ export class UiSidebar {
    */
   toggle(moveMap) {
     const $sidebar = this.$sidebar;
-    const $resizer = this.$resizer;
-    if (!$sidebar || !$resizer) return;  // called too early?
+    if (!$sidebar) return;  // called too early?
 
     // Don't allow sidebar to toggle when the user is in the walkthrough.
     const context = this.context;
     if (context.inIntro) return;
 
     const ui = context.systems.ui;
+    const $container = context.container();
 
     // We get the "preferred" expended width from `flex-basis`.
     // When the sidebar is shown, this is the width that flexbox will use.
@@ -456,12 +454,13 @@ export class UiSidebar {
             .style('flex-basis', `${setWidth}px`);
 
           const dx = setWidth - this._lastWidth;
-          ui.resize([-dx / 2, 0]);   // keep the map centered on the same spot
+          // ui.resize([-dx / 2, 0]);   // keep the map centered on the same spot
+          ui.resize();
           this._lastWidth = setWidth;
         };
       })
       .on('start', () => {
-        $resizer.classed('dragging', true);
+        $container.classed('resizing', true);
 
         $sidebar
           .classed('collapsing', startWidth < MIN_WIDTH)
@@ -469,7 +468,7 @@ export class UiSidebar {
           .style('flex-basis', `${startWidth}px`);
       })
       .on('end interrupt', () => {
-        $resizer.classed('dragging', false);
+        $container.classed('resizing', false);
 
         $sidebar
           .classed('collapsing', false)
@@ -492,7 +491,7 @@ export class UiSidebar {
     if ('button' in e && e.button !== 0) return;
 
     const $sidebar = this.$sidebar;
-    const $resizer = this.$resizer;
+    const $container = this.context.container();
 
     const expandWidth = this._expandWidth || DEFAULT_WIDTH;
     const startCollapsed = $sidebar.classed('collapsed');
@@ -504,7 +503,7 @@ export class UiSidebar {
     this._lastCoord = [e.clientX, e.clientY];
     this._lastWidth = startWidth;
 
-    $resizer.classed('dragging', true);
+    $container.classed('resizing', true);
 
     $sidebar
       .classed('collapsed', false)
@@ -542,7 +541,8 @@ export class UiSidebar {
       .style('flex-basis', `${setWidth}px`);
 
     if (dx) {
-      ui.resize([-dx / 2, 0]);   // keep the map centered on the same spot
+//      ui.resize([-dx / 2, 0]);   // keep the map centered on the same spot
+      ui.resize();
     }
 
     this._lastCoord = [e.clientX, e.clientY];
@@ -565,7 +565,7 @@ export class UiSidebar {
     window.removeEventListener('touchmove', this._eventCancel, { passive: false });
 
     const $sidebar = this.$sidebar;
-    const $resizer = this.$resizer;
+    const $container = this.context.container();
 
     const endWidth = this._lastWidth;
     const endCollapsed = endWidth < MIN_WIDTH;
@@ -576,7 +576,7 @@ export class UiSidebar {
     const expandWidth = endCollapsed ? this._expandWidth : endWidth;
     this._expandWidth = expandWidth;
 
-    $resizer.classed('dragging', false);
+    $container.classed('resizing', false);
 
     $sidebar
       .classed('collapsing', false)
@@ -589,7 +589,8 @@ export class UiSidebar {
       const ui = context.systems.ui;
       const scaleX = l10n.isRTL() ? -1 : 1;
       const dx = endWidth * scaleX;
-      ui.resize([-dx / 2, 0]);   // keep the map centered on the same spot
+      // ui.resize([-dx / 2, 0]);   // keep the map centered on the same spot
+      ui.resize();
     }
 
     const startCoord = this._startCoord;

@@ -47,6 +47,7 @@ export class UiSystem extends AbstractSystem {
     this._needWidth = {};
     this._startPromise = null;
     this._initPromise = null;
+    this._resizeTimeout = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
@@ -78,7 +79,7 @@ export class UiSystem extends AbstractSystem {
 
     return this._initPromise = prerequisites
       .then(() => {
-        window.addEventListener('resize', () =>  this.resize());
+        window.addEventListener('resize', this.resize);
 
         // After l10n is ready we can make these
         this.authModal = uiLoading(context).blocking(true).message(l10n.t('loading_auth'));
@@ -472,25 +473,40 @@ export class UiSystem extends AbstractSystem {
 //  }
 
 
-  resize(offset) {
+  /*
+   * resize
+   * Handler for resize events on the window.
+   * Note that this can just be called with no event to recheck the dimensions.
+   * @param {Event}  e? - the resize event (if any)
+   */
+  resize(e) {
     const context = this.context;
-    const container = context.container();
     const map = context.systems.map;
     const viewport = context.viewport;
+    const $container = context.container();
+
+    // This is an actual resize event - class the container as resizing.
+    if (e) {
+      window.clearTimeout(this._resizeTimeout);
+      $container.classed('resizing', true);
+      this._resizeTimeout = window.setTimeout(() => {
+        $container.classed('resizing', false);  // no resizes for 750ms
+      }, 750);
+    }
 
     // Recalc dimensions of map and sidebar.. (`true` = force recalc)
     // This will call `getBoundingClientRect` and trigger reflow,
     //  but the values will be cached for later use.
-    let dims = utilGetDimensions(container.select('.main-content'), true);
-    utilGetDimensions(container.select('.sidebar'), true);
+    let dims = utilGetDimensions($container.select('.main-content'), true);
+    utilGetDimensions($container.select('.sidebar'), true);
 
-    // When adjusting the sidebar width, pan the map so it stays centered on the same location.
-    if (offset !== undefined) {
-      //const t = context.viewport.transform;              // Add rotation - because `map.pan()` will try to cancel
-      //const [dx, dy] = vecRotate(offset, t.r, [0, 0]);   // it out, and we want the pan applied in screen coords.
-      //map.pan([dx, dy]);
-      map.pan(offset);
-    }
+//    // When adjusting the sidebar width, pan the map so it stays centered on the same location.
+//    if (offset !== undefined) {
+//      //const t = context.viewport.transform;              // Add rotation - because `map.pan()` will try to cancel
+//      //const [dx, dy] = vecRotate(offset, t.r, [0, 0]);   // it out, and we want the pan applied in screen coords.
+//      //map.pan([dx, dy]);
+//      map.pan(offset);
+//    }
 
 // experiment:
 // Previously, the map surfaces were anchored to the top left of the main-map.
@@ -515,9 +531,14 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
   }
 
 
-  // Call checkOverflow when resizing or whenever the contents change.
-  // I think this was to make button labels in the top bar disappear
-  // when more buttons are added than the screen has available width
+  /**
+   * checkOverflow
+   * Call checkOverflow when resizing or whenever the contents change.
+   * I think this was to make button labels in the top bar disappear
+   * when more buttons are added than the screen has available width
+   * @param {string}   selector - selector to select the thing to check
+   * @param {boolean}  reset - `true` to reset whatever data we have cached
+   */
   checkOverflow(selector, reset) {
     if (reset) {
       delete this._needWidth[selector];
@@ -542,6 +563,11 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
   }
 
 
+  /**
+   * togglePanes
+   * If no `showPane` is passed, all panes are hidden.
+   * @param {d3-selection} showPane? - A d3-selection to the pane to show
+   */
   togglePanes(showPane) {
     const context = this.context;
     const l10n = context.systems.l10n;
@@ -569,6 +595,7 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
       showPane
         .classed('shown', true)
         .classed('hide', false);
+
       if (hidePanes.empty()) {
         showPane
           .style(side, '-500px')
@@ -579,6 +606,7 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
         showPane
           .style(side, '0px');
       }
+
     } else {
       hidePanes
         .classed('shown', true)

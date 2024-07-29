@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { EventEmitter } from '@pixi/utils';
-import { TAU, Viewport, numWrap, vecEqual, vecLength, vecRotate, vecSubtract } from '@rapid-sdk/math';
+import { TAU, Viewport, numWrap, vecAdd, vecEqual, vecLength, vecRotate, vecScale, vecSubtract } from '@rapid-sdk/math';
 
 import { osmNote, QAItem } from '../osm/index.js';
 import { PixiEvents } from './PixiEvents.js';
@@ -58,11 +58,13 @@ export class PixiRenderer extends EventEmitter {
     this._timeToNextRender = 0;   // milliseconds of time to defer rendering
     this._appPending = false;
     this._drawPending = false;
+    this._resizePending = false;
 
     // Properties used to manage the scene transform
     this.pixiViewport = new Viewport();
     this._prevTransform = { x: 0, y: 0, k: 256 / Math.PI, r: 0 };    // transform at time of last draw
-    this._isTransformed = false;     // is the supersurface transformed?
+    this._drift = [0, 0];
+    this._isTempTransformed = false;     // is the supersurface transformed?
     this._transformEase = null;
 
     // Make sure callbacks have `this` bound correctly
@@ -89,7 +91,7 @@ export class PixiRenderer extends EventEmitter {
         click: true,
         wheel: false
       },
-      resizeTo: supersurface.node(),
+      // resizeTo: supersurface.node(),
       resolution: window.devicePixelRatio,
       sharedLoader: true,
       sharedTicker: true,
@@ -408,29 +410,32 @@ export class PixiRenderer extends EventEmitter {
       this._appPending = true;  // needs occasional renders during/after easing
     }
 
-    // Determine if the visible dimensions have changed.
-    const pixiDims = pixiViewport.dimensions;
+    // If the user is currently resizing, don't try changing the dimensions just yet
+    const isResizing = context.container().classed('resizing');
+
+    // Determine if the dimensions have changed.
     const mapDims = mapViewport.dimensions;
+    const canvasDims = [this.pixi.screen.width, this.pixi.screen.height];
 
-    if (!vecEqual(pixiDims, mapDims)) {
-      pixiViewport.dimensions = mapDims;
+    // We can account for any change in the map dimensions in the temporary transform.
+    // `[dw, dh]` introduces a translation to keep the map centered on the same spot
+    //  while the user is resizing, until the redraw happens later with the new dimensions.
+    // (x0.5 because the map grows/shrinks from the middle, so we only need to pan half this distance)
+    // let [dw, dh] = [0, 0];
 
-      // Resize supersurface and overlay to cover the screen dimensions
-      const ssnode = this.supersurface.node();
-      ssnode.style.width = `${mapDims[0]}px`;
-      ssnode.style.height = `${mapDims[1]}px`;
-      const onode = this.overlay.node();
-      onode.style.width = `${mapDims[0]}px`;
-      onode.style.height = `${mapDims[1]}px`;
-
-      // We'll need to resize pixi too, but this is expensive, so will be done later.
-      // The Pixi resize is queued in `_app` so that it might be done by `_draw`.
-      this._appPending = true;  // needs occasional renders during/after resizing
+    // Allow the pixi dimensions to change, but only after the user is finished resizing..
+    if (!vecEqual(mapDims, canvasDims)) {
+      this._drift = vecScale(vecSubtract(mapDims, canvasDims), 0.5);
+      console.log(`TFORM mapDims = ${mapDims}, canvasDims = ${canvasDims}, drift = ${this._drift}`);
+    // if ((dw || dh) && !isResizing) {
+      if (!isResizing) {
+        pixiViewport.dimensions = mapDims;
+        this._appPending = true;
+      }
     }
 
-    // exception: skip temporary transform while the user is resizing the sidebar.
-    const isResizing = context.container().selectAll('.sidebar-resizer.dragging').size();
-    if (isResizing) return;
+    const [dw, dh] = this._drift;
+
 
     // Here we calculate a temporary CSS transform that includes
     // whatever user interaction has occurred between full redraws.
@@ -438,11 +443,11 @@ export class PixiRenderer extends EventEmitter {
     const tCurr = mapViewport.transform.props;
     const tPrev = this._prevTransform;
 
-    const hasChanges = this._isTransformed || (
+    const hasChanges = this._isTempTransformed || (
       tPrev.x !== tCurr.x || tPrev.y !== tCurr.y || tPrev.k !== tCurr.k || tPrev.r !== tCurr.r
     );
 
-    if (hasChanges) {
+    if (dw || dh || hasChanges) {
       // Before, supersurface's transform-origin was "top left", now it is "center".
       // So we need to shift the coordinates back to top-left to make the math correct.
       const center = mapViewport.center();
@@ -454,10 +459,11 @@ export class PixiRenderer extends EventEmitter {
       const dr = tCurr.r - tPrev.r;
 
       [dx, dy] = vecRotate([dx, dy], tCurr.r, [0, 0]);
+      [dx, dy] = vecAdd([dx, dy], [dw, dh]);
 
       utilSetTransform(this.supersurface, dx, dy, scale, dr);
       utilSetTransform(this.overlay, -dx, -dy, 1, -dr);
-      this._isTransformed = true;
+      this._isTempTransformed = true;
       this.emit('move');
     }
   }
@@ -483,14 +489,43 @@ export class PixiRenderer extends EventEmitter {
     // (`_tform` is called immediately before `_app`)
     const mapTransform = mapViewport.transform;
     const pixiTransform = pixiViewport.transform;
-    const mapCenter = mapViewport.center();
 
-    // Determine if the visible dimensions have changed.
+
+    // Resize Pixi canvas if needed
     const pixiDims = pixiViewport.dimensions;
-    const currDims = [this.pixi.screen.width, this.pixi.screen.height];
-    if (!vecEqual(currDims, pixiDims)) {
-      this.pixi.queueResize();
+    const canvasDims = [this.pixi.screen.width, this.pixi.screen.height];
+    if (!vecEqual(pixiDims, canvasDims)) {
+      const [w, h] = pixiDims;
+      // Resize supersurface and overlay to cover the screen dimensions.
+      const ssnode = this.supersurface.node();
+      ssnode.style.width = `${w}px`;
+      ssnode.style.height = `${h}px`;
+      const onode = this.overlay.node();
+      onode.style.width = `${w}px`;
+      onode.style.height = `${h}px`;
+
+      // Resize pixi canvas
+      this.pixi.renderer.resize(w, h);
+      this._drift = [0, 0];
     }
+console.log(`  APP pixiDims = ${pixiDims}, canvasDims = ${canvasDims}`);
+
+//    // Determine if the pixi canvas dimensions need to be changed.
+//    const pixiDims = pixiViewport.dimensions;
+//    const currDims = [this.pixi.screen.width, this.pixi.screen.height];
+//    if (!vecEqual(currDims, pixiDims)) {
+//      // this.pixi.queueResize();
+//      // this.pixi.resize();
+//      this._resizePending = true;
+////
+////      // Resize supersurface and overlay to cover the screen dimensions.
+////      const ssnode = this.supersurface.node();
+////      ssnode.style.width = `${pixiDims[0]}px`;
+////      ssnode.style.height = `${pixiDims[1]}px`;
+////      const onode = this.overlay.node();
+////      onode.style.width = `${pixiDims[0]}px`;
+////      onode.style.height = `${pixiDims[1]}px`;
+//    }
 
     // Determine "offset"
     // We try to avoid reprojecting the pixi geometries unless zoom has changed, or map has translated very far.
@@ -515,6 +550,7 @@ export class PixiRenderer extends EventEmitter {
 
     // The `stage` should be positioned so that `[0,0]` is at the center of the viewport,
     // and this is the pivot point for map rotation.
+    const mapCenter = pixiViewport.center();
     this.stage.pivot.set(0, 0);
     this.stage.position.set(mapCenter[0], mapCenter[1]);
     this.stage.rotation = mapTransform.r;
@@ -540,18 +576,51 @@ export class PixiRenderer extends EventEmitter {
    * Where it converts Pixi geometries into WebGL instructions.
    */
   _draw() {
+    const context = this.context;
+    const mapViewport = context.viewport;
+    const pixiViewport = this.pixiViewport;
+
+//    // Account for any difference in the map dimensions in the temporary transform.
+//    // Pixi dimensions are allowed to drift from the actual map dimensions
+//    // but they will catch up whenever the resizing is settled.
+//    const mapDims = mapViewport.dimensions;
+//    const pixiDims = pixiViewport.dimensions;
+//    const canvasDims = [this.pixi.screen.width, this.pixi.screen.height];
+//    let [w, h] = pixiDims;
+//    let [dw, dh] = vecScale(vecSubtract(pixiDims, mapDims), 0.5);
+//
+//    // Determine if the pixi canvas dimensions should be changed.
+//    if (!vecEqual(canvasDims, pixiDims)) {
+//      // Resize supersurface and overlay to cover the screen dimensions.
+//      const ssnode = this.supersurface.node();
+//      ssnode.style.width = `${w}px`;
+//      ssnode.style.height = `${h}px`;
+//      const onode = this.overlay.node();
+//      onode.style.width = `${w}px`;
+//      onode.style.height = `${h}px`;
+//
+//      // Resize pixi canvas
+//      this.pixi.renderer.resize(w, h);
+//      dw = 0;
+//      dh = 0;
+//    }
+
+// const [dw, dh] = [0, 0];
+    const [dw, dh] = this._drift;
+
     // Let's go!
     this.pixi.render();
 
-    this._prevTransform = this.context.viewport.transform.props;
-    this._timeToNextRender = THROTTLE;
-
-    if (this._isTransformed) {
-      utilSetTransform(this.supersurface, 0, 0, 1, 0);
-      utilSetTransform(this.overlay, 0, 0, 1, 0);
-      this._isTransformed = false;
+    if (dw || dh || this._isTempTransformed) {
+      utilSetTransform(this.supersurface, dw, dh, 1, 0);
+      utilSetTransform(this.overlay, -dw, -dh, 1, 0);
+      this._isTempTransformed = false;
       this.emit('move');
     }
+
+    // this._prevDimensions = pixiDims;
+    this._prevTransform = mapViewport.transform.props;
+    this._timeToNextRender = THROTTLE;
 
     this._drawPending = false;
     this.emit('draw');
