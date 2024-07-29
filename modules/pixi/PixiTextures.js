@@ -1,4 +1,4 @@
-import { Assets, Graphics, Rectangle, SVGResource, Texture, FORMATS, MSAA_QUALITY, TYPES } from 'pixi.js';
+import { Assets, Graphics, Rectangle, ImageSource, Texture, MSAA_QUALITY } from 'pixi.js';
 import { AtlasAllocator } from '@rapideditor/pixi-texture-allocator';
 
 
@@ -233,8 +233,8 @@ export class PixiTextures {
 
     const baseTexture = renderTexture.baseTexture;
 
-    if (baseTexture.format !== FORMATS.RGBA) return;       // we could handle other values
-    if (baseTexture.type !== TYPES.UNSIGNED_BYTE) return;  // but probably don't need to.
+    if (baseTexture.format !== 'RGBA6408') return;       // we could handle other values
+    if (baseTexture.type !== '5121') return;  // but probably don't need to.
 
     const framebuffer = baseTexture.framebuffer;
     // If we can't get framebuffer, just return the rendertexture
@@ -290,7 +290,7 @@ export class PixiTextures {
 
     const size = 32;
     const options = { autoLoad: false, height: size, width: size };
-    const resource = new SVGResource(svgString, options);
+    const resource = new ImageSource(svgString, options);
 
     resource.load().then(() => {
       this.allocate('symbol', textureID, size, size, resource.source);
