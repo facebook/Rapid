@@ -60,6 +60,7 @@
     "@pixi/events": "7.4.0",
     "@pixi/display": "^7.4.2",
     "@pixi/graphics": "^7.4.2",
+    "@pixi/settings": "^7.4.2",
     "@rapid-sdk/math": "~1.0.0-pre.2",
     "@rapid-sdk/util": "~1.0.0-pre.2",
     "@rapideditor/country-coder": "~5.3.0",
