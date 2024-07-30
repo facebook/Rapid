@@ -54,6 +54,7 @@ export class PixiRenderer extends EventEmitter {
     this.supersurface = supersurface;
     this.surface = surface;
     this.overlay = overlay;
+    this.initialized = false;
 
     this._frame = 0;              // counter that increments
     this._timeToNextRender = 0;   // milliseconds of time to defer rendering
@@ -80,15 +81,15 @@ export class PixiRenderer extends EventEmitter {
     context.pixi = this.pixi;
 
     // Prepare a basic bitmap font that we can use for things like debug messages
-    BitmapFont.install({
-        name: 'TitleFont',
-        textStyle: {
-            fontFamily: 'Arial',
-            fontSize: 12,
-            strokeThickness: 2,
-            fill: 'purple'
-        },
-        chars: BitmapFont.ALPHANUMERIC // Assuming you still specify characters
+    BitmapFont.install('debug', {
+      fill: 0xffffff,
+      fontSize: 14,
+      stroke: 0x333333,
+      strokeThickness: 2
+    },{
+      chars: PIXI.BitmapFont.ASCII,
+      padding: 0,
+      resolution: 2
     });
 
   }
@@ -150,6 +151,7 @@ export class PixiRenderer extends EventEmitter {
     this.setupStage();
     this.setupTicker();
     this.setupScenesAndEvents();
+    this.initialized = true;
   }
   setupStage() {
     // Setup the stage

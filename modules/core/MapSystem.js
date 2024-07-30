@@ -64,6 +64,7 @@ export class MapSystem extends AbstractSystem {
     this.render = this.render.bind(this);
     this.immediateRedraw = this.immediateRedraw.bind(this);
     this.deferredRedraw = this.deferredRedraw.bind(this);
+    this._renderer = new PixiRenderer(context, this.supersurface, this.surface, this.overlay);
   }
 
 
@@ -93,7 +94,8 @@ export class MapSystem extends AbstractSystem {
 
     const prerequisites = Promise.all([
       storage.initAsync(),
-      l10n.initAsync()
+      l10n.initAsync(),
+      this._renderer.initPixiApp()
     ]);
 
     return this._initPromise = prerequisites
