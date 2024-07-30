@@ -80,7 +80,7 @@ export class PixiScene extends EventEmitter {
       'ui'
     ].forEach((groupID, i) => {
       const container = new PIXI.Container();
-      container.name = groupID;
+      container.label = groupID;
       container.sortableChildren = true;
       container.zIndex = i;
       this.renderer.origin.addChild(container);

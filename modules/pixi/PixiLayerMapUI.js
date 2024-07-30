@@ -31,7 +31,7 @@ export class PixiLayerMapUI extends AbstractLayer {
 
 // todo: I'm adjusting the container nesting, this will need to be revisited
 const container = new PIXI.Container();
-container.name = layerID;
+container.label= layerID;
 container.sortableChildren = true;
 this.container = container;
 
@@ -47,7 +47,7 @@ groupContainer.addChild(container);
     this._geolocationData = null;
     this._geolocationDirty = false;
     const geolocationContainer = new PIXI.Container();
-    geolocationContainer.name = 'geolocation';
+    geolocationContainer.label= 'geolocation';
     geolocationContainer.eventMode = 'none';
     geolocationContainer.sortableChildren = false;
     geolocationContainer.visible = false;
@@ -55,7 +55,7 @@ groupContainer.addChild(container);
 
     // TILE DEBUGGING
     const tileDebugContainer = new PIXI.Container();
-    tileDebugContainer.name = 'tile-debug';
+    tileDebugContainer.label= 'tile-debug';
     tileDebugContainer.eventMode = 'none';
     tileDebugContainer.sortableChildren = false;
     tileDebugContainer.visible = false;
@@ -63,7 +63,7 @@ groupContainer.addChild(container);
 
     // SELECTED
     const selectedContainer = new PIXI.Container();
-    selectedContainer.name = 'selected';
+    selectedContainer.label= 'selected';
     selectedContainer.sortableChildren = true;
     selectedContainer.visible = true;
     this.selectedContainer = selectedContainer;
@@ -74,7 +74,7 @@ groupContainer.addChild(container);
     this._lassoLineGraphics = new PIXI.Graphics();
     this._lassoFillGraphics = new PIXI.Graphics();
     const lassoContainer = new PIXI.Container();
-    lassoContainer.name = 'lasso';
+    lassoContainer.label= 'lasso';
     lassoContainer.eventMode = 'none';
     lassoContainer.sortableChildren = false;
     lassoContainer.visible = true;
