@@ -516,7 +516,7 @@ export class PixiLayerOsm extends AbstractLayer {
       let levelContainer = lineContainer.getChildByName(level);
       if (!levelContainer) {
         levelContainer = new PIXI.Container();
-        levelContainer.name = level.toString();
+        levelContainer.label= level.toString();
         levelContainer.sortableChildren = true;
         levelContainer.zIndex = level;
         lineContainer.addChild(levelContainer);

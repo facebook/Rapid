@@ -258,7 +258,7 @@ export class PixiLayerRapid extends AbstractLayer {
     let areasContainer = basemapContainer.getChildByName(areasID);
     if (!areasContainer) {
       areasContainer = new PIXI.Container();
-      areasContainer.name = areasID;
+      areasContainer.label= areasID;
       areasContainer.sortableChildren = true;
       basemapContainer.addChild(areasContainer);
     }
@@ -266,7 +266,7 @@ export class PixiLayerRapid extends AbstractLayer {
     let linesContainer = basemapContainer.getChildByName(linesID);
     if (!linesContainer) {
       linesContainer = new PIXI.Container();
-      linesContainer.name = linesID;
+      linesContainer.label= linesID;
       linesContainer.sortableChildren = true;
       basemapContainer.addChild(linesContainer);
     }

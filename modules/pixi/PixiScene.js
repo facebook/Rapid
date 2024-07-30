@@ -80,7 +80,7 @@ export class PixiScene extends EventEmitter {
       'ui'            // Misc UI draw above everything (select lasso, geocoding circle, debug shapes)
     ].forEach((groupID, i) => {
       const container = new PIXI.Container();
-      container.name = groupID;
+      container.label = groupID;
       container.sortableChildren = true;
       container.zIndex = i;
       this.renderer.origin.addChild(container);

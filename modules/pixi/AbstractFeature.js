@@ -43,7 +43,7 @@ export class AbstractFeature {
     this.container = container;
 
     container.__feature__ = this;   // Link the container back to `this`
-    container.name = featureID;
+    container.label = featureID;
     container.sortableChildren = false;
     container.visible = true;
 

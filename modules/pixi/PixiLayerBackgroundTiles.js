@@ -368,7 +368,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     let sourceContainer = groupContainer.getChildByName(sourceID);
     if (!sourceContainer) {
       sourceContainer = new PIXI.Container();
-      sourceContainer.name = sourceID;
+      sourceContainer.label= sourceID;
       sourceContainer.eventMode = 'none';
       sourceContainer.sortableChildren = true;
       groupContainer.addChild(sourceContainer);

@@ -66,19 +66,19 @@ export class PixiLayerLabels extends AbstractLayer {
     groupContainer.eventMode = 'none';
 
     const labelOriginContainer = new PIXI.Container();
-    labelOriginContainer.name = 'labelorigin';
+    labelOriginContainer.label= 'labelorigin';
     labelOriginContainer.eventMode = 'none';
     this.labelOriginContainer = labelOriginContainer;
 
     const debugContainer = new PIXI.Container();  //PIXI.ParticleContainer(50000);
-    debugContainer.name = 'debug';
+    debugContainer.label= 'debug';
     debugContainer.eventMode = 'none';
     debugContainer.roundPixels = false;
     debugContainer.sortableChildren = false;
     this.debugContainer = debugContainer;
 
     const labelContainer = new PIXI.Container();
-    labelContainer.name = 'labels';
+    labelContainer.label= 'labels';
     labelContainer.eventMode = 'none';
     labelContainer.sortableChildren = true;
     this.labelContainer = labelContainer;
