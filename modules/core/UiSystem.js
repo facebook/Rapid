@@ -1,9 +1,8 @@
 import { select as d3_select } from 'd3-selection';
-import { vecAdd, vecRotate } from '@rapid-sdk/math';
+import { vecAdd } from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
 import { utilDetect } from '../util/detect.js';
-import { utilGetDimensions } from '../util/dimensions.js';
 
 import {
   uiAccount, uiAttribution, uiBearing, uiContributors, UiDefs, uiEditMenu,
@@ -48,6 +47,8 @@ export class UiSystem extends AbstractSystem {
     this._startPromise = null;
     this._initPromise = null;
     this._resizeTimeout = null;
+
+    this._mapRect = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
@@ -141,12 +142,9 @@ export class UiSystem extends AbstractSystem {
     if (this._startPromise) return this._startPromise;
 
     // Render one time
-    const container = this.context.container();
-
-    // Note that `!container.empty()` means that the container selection exists.
-    // It probably is an empty div at this point (we will now fill it with things).
-    if (!container.empty()) {
-      container.call(this.render);
+    const $container = this.context.container();
+    if ($container.size()) {
+      $container.call(this.render);
     }
 
     this._started = true;
@@ -161,9 +159,9 @@ export class UiSystem extends AbstractSystem {
    */
   resetAsync() {
     // don't leave stale state in the inspector
-    const container = this.context.container();
-    if (!container.empty()) {
-      container.select('.inspector-wrap *').remove();
+    const $container = this.context.container();
+    if ($container.size()) {
+      $container.select('.inspector-wrap *').remove();
     }
 
     return Promise.resolve();
@@ -490,23 +488,32 @@ export class UiSystem extends AbstractSystem {
       window.clearTimeout(this._resizeTimeout);
       $container.classed('resizing', true);
       this._resizeTimeout = window.setTimeout(() => {
-        $container.classed('resizing', false);  // no resizes for 750ms
-      }, 750);
+        $container.classed('resizing', false);
+      }, 400);  // if no resizes for 400ms, remove class
     }
 
-    // Recalc dimensions of map and sidebar.. (`true` = force recalc)
-    // This will call `getBoundingClientRect` and trigger reflow,
-    //  but the values will be cached for later use.
-    let dims = utilGetDimensions($container.select('.main-content'), true);
-    utilGetDimensions($container.select('.sidebar'), true);
+    const $content = $container.selectAll('.main-content');
+    if (!$content.size()) return;  // called too early?
 
-//    // When adjusting the sidebar width, pan the map so it stays centered on the same location.
-//    if (offset !== undefined) {
-//      //const t = context.viewport.transform;              // Add rotation - because `map.pan()` will try to cancel
-//      //const [dx, dy] = vecRotate(offset, t.r, [0, 0]);   // it out, and we want the pan applied in screen coords.
-//      //map.pan([dx, dy]);
-//      map.pan(offset);
-//    }
+    const curr = this._copyRect($content.node().getBoundingClientRect());
+    const prev = this._mapRect || curr;
+    this._mapRect = curr;
+
+    // Determine how the map is getting resized
+    // (we do prev-curr because we want negative values to pan with)
+    const dtop = prev.top - curr.top;
+    const dright = prev.right - curr.right;
+    const dbottom = prev.bottom - curr.bottom;
+    const dleft = prev.left - curr.left;
+
+    // Un-pan map to keep it centered in the same spot.
+    // (div/2 because the map grows/shrinks from the middle, so we only need to pan half this distance)
+    const [dw, dh] = [dleft + dright, dtop + dbottom];
+    if (dw || dh) {
+      map.pan([dw / 2, dh / 2]);
+    }
+
+    let dims = [curr.width, curr.height];
 
 // experiment:
 // Previously, the map surfaces were anchored to the top left of the main-map.
@@ -720,6 +727,24 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
     link.searchParams.append('version', this.context.version);
 
     window.open(link.toString(), '_blank');
+  }
+
+
+  /**
+   * _copyRect
+   * ClientRects are immutable, so copy them to an Object in case we need to trim the height/width.
+   * @param   {DOMRect}  src -  rectangle (or something that looks like one)
+   * @returns  Object containing the copied properties
+   */
+  _copyRect(src) {
+    return {
+      left: src.left,
+      top: src.top,
+      right: src.right,
+      bottom: src.bottom,
+      width: src.width,
+      height: src.height
+    };
   }
 
 }
