@@ -447,14 +447,12 @@ export class UiSidebar {
       .transition()
       .tween('sidebar.toggler', () => {
         return t => {
-          const setWidth = Math.round(lerp(t));
+          const setWidth = lerp(t);
 
           $sidebar
             .classed('collapsing', setWidth < MIN_WIDTH)
             .style('flex-basis', `${setWidth}px`);
 
-          const dx = setWidth - this._lastWidth;
-          // ui.resize([-dx / 2, 0]);   // keep the map centered on the same spot
           ui.resize();
           this._lastWidth = setWidth;
         };
@@ -475,6 +473,7 @@ export class UiSidebar {
           .classed('collapsed', endCollapsed)
           .style('flex-basis', `${expandWidth}px`);  // done resize, put expanded width back here
 
+        ui.resize();
         this._storePreferences();
       });
   }
@@ -536,12 +535,11 @@ export class UiSidebar {
     const dx = (e.clientX - this._lastCoord[0]) * scaleX;
     const setWidth = this._lastWidth + dx;
 
-    this.$sidebar
-      .classed('collapsing', setWidth < MIN_WIDTH)
-      .style('flex-basis', `${setWidth}px`);
-
     if (dx) {
-//      ui.resize([-dx / 2, 0]);   // keep the map centered on the same spot
+      this.$sidebar
+        .classed('collapsing', setWidth < MIN_WIDTH)
+        .style('flex-basis', `${setWidth}px`);
+
       ui.resize();
     }
 
@@ -564,8 +562,11 @@ export class UiSidebar {
     window.removeEventListener('pointercancel', this._pointerup);
     window.removeEventListener('touchmove', this._eventCancel, { passive: false });
 
+    const context = this.context;
+    const ui = context.systems.ui;
+
     const $sidebar = this.$sidebar;
-    const $container = this.context.container();
+    const $container = context.container();
 
     const endWidth = this._lastWidth;
     const endCollapsed = endWidth < MIN_WIDTH;
@@ -583,22 +584,13 @@ export class UiSidebar {
       .classed('collapsed', endCollapsed)
       .style('flex-basis', `${expandWidth}px`);  // done resize, put expanded width back here
 
-    if (endCollapsed && endWidth) {
-      const context = this.context;
-      const l10n = context.systems.l10n;
-      const ui = context.systems.ui;
-      const scaleX = l10n.isRTL() ? -1 : 1;
-      const dx = endWidth * scaleX;
-      // ui.resize([-dx / 2, 0]);   // keep the map centered on the same spot
-      ui.resize();
-    }
-
     const startCoord = this._startCoord;
     const endCoord = [e.clientX ?? startCoord[0], e.clientY ?? endCoord[0]];
     const dist = vecLength(startCoord, endCoord);
     if (dist < NEAR_TOLERANCE) {  // this was a click, not a drag
       this.toggle();              // run the toggle transition
     } else {
+      ui.resize();
       this._storePreferences();
     }
   }
