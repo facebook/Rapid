@@ -485,24 +485,6 @@ export class PixiRenderer extends EventEmitter {
     const mapTransform = mapViewport.transform;
     const pixiTransform = pixiViewport.transform;
 
-    // Resize Pixi canvas if needed
-    const pixiDims = pixiViewport.dimensions;
-    const canvasDims = [this.pixi.screen.width, this.pixi.screen.height];
-    if (!vecEqual(pixiDims, canvasDims)) {
-      const [w, h] = pixiDims;
-
-      // Resize supersurface and overlay to cover the screen dimensions.
-      const ssnode = this.supersurface.node();
-      ssnode.style.width = `${w}px`;
-      ssnode.style.height = `${h}px`;
-      const onode = this.overlay.node();
-      onode.style.width = `${w}px`;
-      onode.style.height = `${h}px`;
-
-      // Resize pixi canvas
-      this.pixi.renderer.resize(w, h);
-    }
-
     // Determine "offset"
     // We try to avoid reprojecting the pixi geometries unless zoom has changed, or map has translated very far.
     // If the user is just panning, we can leave the geometries alone and add an offset translation to the origin.
@@ -548,10 +530,27 @@ export class PixiRenderer extends EventEmitter {
 
   /**
    * _draw
-   * The "Pixi" part of the drawing
+   * The "Pixi" part of the drawing.
    * Where it converts Pixi geometries into WebGL instructions.
    */
   _draw() {
+    // Resize Pixi canvas if needed..
+    // It will clear the canvas, so do this immediately before we render.
+    const pixiDims = this.pixiViewport.dimensions;
+    const canvasDims = [this.pixi.screen.width, this.pixi.screen.height];
+    if (!vecEqual(pixiDims, canvasDims)) {
+      const [w, h] = pixiDims;
+      // Resize supersurface and overlay to cover the screen dimensions.
+      const ssnode = this.supersurface.node();
+      ssnode.style.width = `${w}px`;
+      ssnode.style.height = `${h}px`;
+      const onode = this.overlay.node();
+      onode.style.width = `${w}px`;
+      onode.style.height = `${h}px`;
+      // Resize pixi canvas
+      this.pixi.renderer.resize(w, h);
+    }
+
     // Let's go!
     this.pixi.render();
 
@@ -572,7 +571,10 @@ export class PixiRenderer extends EventEmitter {
   }
 
 
-  /* renders some debug shapes */
+  /**
+   * _renderDebug
+   * Render some debug shapes (usually commented out)
+   */
   _renderDebug() {
     const context = this.context;
     const mapViewport = context.viewport;
