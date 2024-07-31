@@ -755,10 +755,6 @@
     "report_a_bug": "Report a bug",
     "help_translate": "Help translate",
     "example": "Example:",
-    "sidebar": {
-      "key": "`",
-      "tooltip": "Toggle the sidebar."
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} hidden feature",
@@ -881,6 +877,8 @@
       "location_unavailable": "Your location is unavailable."
     },
     "inspector": {
+      "key": "`",
+      "tooltip": "Toggle the feature inspector.",
       "zoom_to": {
         "key": "Z",
         "title": "Zoom To Selection",
@@ -2002,7 +2000,7 @@
       "editing": {
         "title": "Editing & Saving",
         "select_h": "Select",
-        "select_left_click": "{mouse_left_icon} Left-click or {onefinger_tap_icon} tap a feature to select it. This will highlight it with a pulsing glow and display further details about it in the sidebar.",
+        "select_left_click": "{mouse_left_icon} Left-click or {onefinger_tap_icon} tap a feature to select it. This will highlight it with a pulsing glow and display further details about it in the feature inspector.",
         "select_right_click": "{mouse_right_icon} Right-click or {onefinger_tap_and_hold_icon} long-press a feature to display the edit menu, which provides operations such as copy, rotate, and delete.",
         "select_space": "The `{space}` key can also be used instead of left-click when selecting and drawing.",
         "multiselect_h": "Multiselect",
@@ -2182,7 +2180,7 @@
         "tools_h": "Tools",
         "tools": "The following tools are currently supported: [KeepRight](https://www.keepright.at/) and [Osmose](https://osmose.openstreetmap.fr/).",
         "issues_h": "Handling Issues",
-        "issues": "Handling Q/A issues is similar to handling notes. Select a marker to view the issue details in the sidebar. Each tool has its own capabilities, but generally you can comment and/or close an issue."
+        "issues": "Handling Q/A issues is similar to handling notes. Select a marker to view the issue details in the feature inspector. Each tool has its own capabilities, but generally you can comment and/or close an issue."
       },
       "field": {
         "restrictions": {
@@ -3139,7 +3137,7 @@
           "issues": "Toggle validation issues pane",
           "preferences": "Toggle user preferences pane",
           "fullscreen": "Toggle full screen mode",
-          "sidebar": "Toggle sidebar",
+          "inspector": "Toggle feature inspector",
           "wireframe": "Toggle wireframe mode",
           "osm_data": "Toggle OpenStreetMap data",
           "rapid_features_data": "Toggle Rapid Features",
