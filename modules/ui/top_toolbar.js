@@ -1,13 +1,12 @@
 import { select as d3_select } from 'd3-selection';
 
 import {
-  uiToolRapidFeatures, uiToolDrawModes, uiToolNotes, uiToolSave,
-  uiToolSidebarToggle, uiToolUndoRedo, uiToolDownloadOsc
+  uiToolRapidFeatures, uiToolDrawModes, uiToolNotes,
+  uiToolSave, uiToolUndoRedo, uiToolDownloadOsc
 } from './tools/index.js';
 
 
 export function uiTopToolbar(context) {
-  const sidebarToggle = uiToolSidebarToggle(context);
   const rapidFeatures = uiToolRapidFeatures(context);
   const modes = uiToolDrawModes(context);
   const notes = uiToolNotes(context);
@@ -22,7 +21,7 @@ export function uiTopToolbar(context) {
 
 
   function update(selection) {
-    let tools = [sidebarToggle, 'spacer', modes, rapidFeatures];
+    const tools = ['spacer', modes, rapidFeatures];
 
     if (notesEnabled()) {
       tools.push('spacer', notes);

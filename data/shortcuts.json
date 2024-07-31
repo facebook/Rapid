@@ -91,8 +91,8 @@
               "text": "shortcuts.browsing.display_options.fullscreen"
             },
             {
-              "shortcuts": ["sidebar.key", "`", "²"],
-              "text": "shortcuts.browsing.display_options.sidebar"
+              "shortcuts": ["inspector.key", "`", "²"],
+              "text": "shortcuts.browsing.display_options.inspector"
             },
             {
               "shortcuts": ["area_fill.wireframe.key"],

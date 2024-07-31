@@ -12,6 +12,7 @@ import { uiMapRouletteEditor } from './maproulette_editor.js';
 import { uiOsmoseEditor } from './osmose_editor.js';
 import { uiNoteEditor } from './note_editor.js';
 import { uiRapidFeatureInspector } from './rapid_feature_inspector.js';
+import { uiTooltip } from './tooltip.js';
 
 
 const NEAR_TOLERANCE = 4;
@@ -51,10 +52,12 @@ export class UiSidebar {
     this.KeepRightEditor = uiKeepRightEditor(context);
     this.OsmoseEditor = uiOsmoseEditor(context);
     this.MapRouletteEditor = uiMapRouletteEditor(context);
+    this.Tooltip = uiTooltip(context);
 
     // D3 selections
     this.$parent = null;
     this.$sidebar = null;
+    this.$resizer = null;
     this.$custom = null;
     this.$featureList = null;
     this.$inspector = null;
@@ -104,8 +107,8 @@ export class UiSidebar {
     const storage = context.systems.storage;
 
     const dir = l10n.textDirection();
-    const preferCollapsed = (storage.getItem('sidebar.collapsed') === 'true');
-    const storedWidth = +(storage.getItem('sidebar.width') || DEFAULT_WIDTH);
+    const preferCollapsed = (storage.getItem('inspector.collapsed') === 'true');
+    const storedWidth = +(storage.getItem('inspector.width') || DEFAULT_WIDTH);
     this._expandWidth = Math.max(MIN_WIDTH, storedWidth);
 
     // add .sidebar
@@ -139,7 +142,12 @@ export class UiSidebar {
       .append('div')
       .attr('class', 'resizer-handle');
 
-    $resizer = $resizer.merge($$resizer);
+    this.$resizer = $resizer = $resizer.merge($$resizer)
+      .call(this.Tooltip
+        .placement(dir === 'rtl' ? 'right' : 'left')  // place on the sidebar side (i.e. don't cover the map)
+        .title(l10n.t('inspector.tooltip'))
+        .shortcut(l10n.t('inspector.key'))
+      );
 
 
     // add sidebar contents: feature list pane and inspector
@@ -155,7 +163,7 @@ export class UiSidebar {
     this.$inspector = $sidebar.select('.inspector-wrap');
 
 // figure out a better way to rebind this if locale changes
-    const keys = [l10n.t('sidebar.key'), '`', '²', '@'];  // iD#5663, iD#6864 - common QWERTY, AZERTY
+    const keys = [l10n.t('inspector.key'), '`', '²', '@'];  // iD#5663, iD#6864 - common QWERTY, AZERTY
     context.keybinding().off(keys);
     context.keybinding().on(keys, this.toggle);
   }
@@ -445,7 +453,7 @@ export class UiSidebar {
 
     $sidebar
       .transition()
-      .tween('sidebar.toggler', () => {
+      .tween('inspector.toggler', () => {
         return t => {
           const setWidth = lerp(t);
 
@@ -489,8 +497,8 @@ export class UiSidebar {
 
     if ('button' in e && e.button !== 0) return;
 
-    const $sidebar = this.$sidebar;
     const $container = this.context.container();
+    const $sidebar = this.$sidebar;
 
     const expandWidth = this._expandWidth || DEFAULT_WIDTH;
     const startCollapsed = $sidebar.classed('collapsed');
@@ -502,6 +510,7 @@ export class UiSidebar {
     this._lastCoord = [e.clientX, e.clientY];
     this._lastWidth = startWidth;
 
+    this.Tooltip.hide();
     $container.classed('resizing', true);
 
     $sidebar
@@ -618,7 +627,7 @@ export class UiSidebar {
     const preferWidth = this._expandWidth;
 
     const storage = this.context.systems.storage;
-    storage.setItem('sidebar.collapsed', preferCollapsed);
-    storage.setItem('sidebar.width', preferWidth);
+    storage.setItem('inspector.collapsed', preferCollapsed);
+    storage.setItem('inspector.width', preferWidth);
   }
 }
