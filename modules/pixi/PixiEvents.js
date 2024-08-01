@@ -95,7 +95,7 @@ export class PixiEvents extends EventEmitter {
     const supersurface = renderer.supersurface.node();
     supersurface.addEventListener('wheel', this._wheel, { passive: false });  // false allows preventDefault
 
-    const view = renderer.pixi.view;
+    const view = renderer.pixi.canvas;
     view.addEventListener('pointerover', this._pointerover);
     view.addEventListener('pointerout', this._pointerout);
 
@@ -128,7 +128,7 @@ export class PixiEvents extends EventEmitter {
     const supersurface = renderer.supersurface.node();
     supersurface.removeEventListener('wheel', this._wheel);
 
-    const view = renderer.pixi.view;
+    const view = renderer.pixi.canvas;
     view.removeEventListener('pointerover', this._pointerover);
     view.removeEventListener('pointerout', this._pointerout);
 
@@ -157,7 +157,7 @@ export class PixiEvents extends EventEmitter {
     // We don't know when that event will be, next time user happens to shake the mouse?
     // So we'll also set it directly on the canvas so it locks in now
     const path = this.context.assetPath;
-    const view = this.renderer.pixi.view;
+    const view = this.renderer.pixi.canvas;
 
     const cursors = {
       areaCursor: `url(${path}img/cursor-select-area.png), pointer`,

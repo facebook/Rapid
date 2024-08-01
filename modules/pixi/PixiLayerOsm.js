@@ -33,12 +33,12 @@ export class PixiLayerOsm extends AbstractLayer {
 //    this._saveCannedData = false;
 
     const areas = new PIXI.Container();
-    areas.name = `${this.layerID}-areas`;
+    areas.label = `${this.layerID}-areas`;
     areas.sortableChildren = true;
     this.areaContainer = areas;
 
     const lines = new PIXI.Container();
-    lines.name = `${this.layerID}-lines`;
+    lines.label = `${this.layerID}-lines`;
     lines.sortableChildren = true;
     this.lineContainer = lines;
 

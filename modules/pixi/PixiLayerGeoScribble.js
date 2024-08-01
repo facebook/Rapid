@@ -26,7 +26,7 @@ export class PixiLayerGeoScribble extends AbstractLayer {
     super(scene, layerID);
 
     const geoscribbles = new PIXI.Container();
-    geoscribbles.name = `${this.layerID}-geoscribbles`;
+    geoscribbles.label = `${this.layerID}-geoscribbles`;
     geoscribbles.sortableChildren = false;
     geoscribbles.interactiveChildren = true;
     this.scribblesContainer = geoscribbles;
