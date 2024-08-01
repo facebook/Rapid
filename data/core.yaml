@@ -42,9 +42,8 @@ en:
       filter_tooltip: points
     add_note:
       title: Note
-      label: Add Note
       description: "Spotted an issue? Let other mappers know."
-      key: N
+      key: 'N'
     add_preset:
       title: "Add {feature}"
     browse:

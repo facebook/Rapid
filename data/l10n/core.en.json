@@ -51,7 +51,6 @@
       },
       "add_note": {
         "title": "Note",
-        "label": "Add Note",
         "description": "Spotted an issue? Let other mappers know.",
         "key": "N"
       },

@@ -628,24 +628,16 @@ button.save .count {
 
 .help-pane svg.icon.add-note,
 button.add-note svg.icon {
-    height: 15px;
-    width: 15px;
-    color: rgba(0,0,0,0.25);
-    stroke: #333;
-    stroke-width: 60px;
-    margin-top: 3px;
-}
-button.add-note svg.icon {
-    margin-left: unset;
-    margin-right: 4px;
-}
-.ideditor[dir='rtl'] button.add-note svg.icon {
-    margin-left: 4px;
-    margin-right: unset;
+  height: 15px;
+  width: 15px;
+  color: rgba(0,0,0,0.25);
+  stroke: #333;
+  stroke-width: 60px;
 }
 .help-pane svg.icon.add-note {
-    margin-left: 3px;
-    margin-right: 3px;
+  margin-left: 3px;
+  margin-right: 3px;
+  margin-top: 3px;
 }
 
 .spinner {

@@ -109,7 +109,7 @@ export function helpHtml(context, id, replacements) {
       point: l10n.t('modes.add_point.title'),
       line: l10n.t('modes.add_line.title'),
       area: l10n.t('modes.add_area.title'),
-      note: l10n.t('modes.add_note.label'),
+      note: l10n.t('modes.add_note.title'),
 
       circularize: l10n.t('operations.circularize.title'),
       continue: l10n.t('operations.continue.title'),

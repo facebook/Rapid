@@ -1,33 +1,18 @@
 import { select as d3_select } from 'd3-selection';
 
-import {
-  uiToolRapidFeatures, uiToolDrawModes, uiToolNotes,
-  uiToolSave, uiToolUndoRedo, uiToolDownloadOsc
-} from './tools/index.js';
+import { uiToolRapidFeatures, uiToolDrawModes, uiToolSave, uiToolUndoRedo, uiToolDownloadOsc } from './tools/index.js';
 
 
 export function uiTopToolbar(context) {
   const rapidFeatures = uiToolRapidFeatures(context);
   const modes = uiToolDrawModes(context);
-  const notes = uiToolNotes(context);
   const undoRedo = uiToolUndoRedo(context);
   const save = uiToolSave(context);
   const downloadOsc = uiToolDownloadOsc(context);
 
 
-  function notesEnabled() {
-    return context.scene().layers.get('notes')?.enabled;
-  }
-
-
   function update(selection) {
-    const tools = ['spacer', modes, rapidFeatures];
-
-    if (notesEnabled()) {
-      tools.push('spacer', notes);
-    }
-
-    tools.push('spacer', undoRedo, save);
+    const tools = ['spacer', modes, rapidFeatures, 'spacer', undoRedo, save];
 
     // Undocumented feature 'support_download_osc'
     const hash = context.systems.urlhash.initialHashParams;

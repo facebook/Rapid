@@ -50,6 +50,9 @@ export function uiToolRapidFeatures(context) {
   }
 
 
+  /**
+   * render
+   */
   function render() {
     if (!$wrap) return;  // called too early?
 
