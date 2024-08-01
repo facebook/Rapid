@@ -99,19 +99,24 @@
               "text": "shortcuts.browsing.display_options.wireframe"
             },
             {
-              "modifiers": ["⌥"],
-              "shortcuts": ["area_fill.wireframe.key"],
+              "modifiers": ["⇧"],
+              "shortcuts": ["map_data.layers.osm.key"],
               "text": "shortcuts.browsing.display_options.osm_data"
+            },
+            {
+              "modifiers": ["⇧"],
+              "shortcuts": ["map_data.layers.notes.key"],
+              "text": "shortcuts.browsing.display_options.osm_notes"
+            },
+            {
+              "modifiers": ["⇧"],
+              "shortcuts": ["map_data.layers.rapid.key"],
+              "text": "shortcuts.browsing.display_options.rapid_features_data",
+              "rapid": true
             },
             {
               "shortcuts": ["map_data.highlight_edits.key"],
               "text": "shortcuts.browsing.display_options.highlight_edits"
-            },
-            {
-              "modifiers": ["⇧"],
-              "shortcuts": [ "map_data.layers.rapid.key"],
-              "text": "shortcuts.browsing.display_options.rapid_features_data",
-              "rapid": true
             }
           ]
         },

@@ -1032,11 +1032,18 @@
       "layers": {
         "osm": {
           "tooltip": "Map data from OpenStreetMap",
-          "title": "OpenStreetMap Data"
+          "title": "OpenStreetMap Data",
+          "key": "O"
         },
         "notes": {
           "tooltip": "Note data from OpenStreetMap",
-          "title": "OpenStreetMap Notes"
+          "title": "OpenStreetMap Notes",
+          "key": "N"
+        },
+        "rapid": {
+          "tooltip": "Suggested features detected from machine learning and open data that can be used to improve OpenStreetMap",
+          "title": "Rapid Features",
+          "key": "R"
         },
         "maproulette": {
           "tooltip": "Tasks from maproulette.org",
@@ -1072,11 +1079,6 @@
           "tooltip": "Drag and drop a data file onto the page, or click the button to setup",
           "title": "Custom Map Data",
           "zoom": "Zoom to data"
-        },
-        "rapid": {
-          "tooltip": "Suggested features detected from machine learning and open data that can be used to improve OpenStreetMap",
-          "title": "Rapid Features",
-          "key": "R"
         }
       },
       "fill_area": "Fill Areas",
@@ -3140,7 +3142,8 @@
           "inspector": "Toggle feature inspector",
           "wireframe": "Toggle wireframe mode",
           "osm_data": "Toggle OpenStreetMap data",
-          "rapid_features_data": "Toggle Rapid Features",
+          "osm_notes": "Toggle OpenStreetMap notes",
+          "rapid_features_data": "Toggle Rapid features",
           "highlight_edits": "Highlight unsaved edits"
         },
         "selecting": {

@@ -141,28 +141,12 @@ export function uiSectionDataLayers(context) {
     let labelEnter = liEnter
       .append('label')
       .each((d, i, nodes) => {
-        const selection = d3_select(nodes[i]);
-        if (d.id === 'osm') {
-          selection
-            .call(uiTooltip(context)
-              .title(l10n.t(`map_data.layers.osm.tooltip`))
-              .shortcut(uiCmd('⌥' + l10n.t('area_fill.wireframe.key')))
-              .placement('bottom')
-            );
-        } else if (d.id === 'rapid') {
-          selection
-            .call(uiTooltip(context)
-              .title(l10n.t(`map_data.layers.rapid.tooltip`))
-              .shortcut(uiCmd('⇧' + l10n.t('map_data.layers.rapid.key')))
-              .placement('bottom')
-            );
-        } else {
-          selection
-            .call(uiTooltip(context)
-              .title(l10n.t(`map_data.layers.${d.id}.tooltip`))
-              .placement('bottom')
-            );
-        }
+        d3_select(nodes[i])
+          .call(uiTooltip(context)
+            .title(l10n.t(`map_data.layers.${d.id}.tooltip`))
+            .shortcut(uiCmd('⇧' + l10n.t(`map_data.layers.${d.id}.key`)))
+            .placement('bottom')
+          );
       });
 
     labelEnter

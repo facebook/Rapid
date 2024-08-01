@@ -102,7 +102,8 @@ export class MapSystem extends AbstractSystem {
         this._toggleFillMode = storage.getItem('area-fill-toggle') || 'partial';  // the previous *non-wireframe* fill mode
 
         const wireframeKey = l10n.t('area_fill.wireframe.key');
-        const toggleOsmKey = uiCmd('⌥' + wireframeKey);
+        const toggleOsmKey = uiCmd('⇧' + l10n.t('map_data.layers.osm.key'));
+        const toggleNotesKey = uiCmd('⇧' + l10n.t('map_data.layers.notes.key'));
         const highlightEditsKey = l10n.t('map_data.highlight_edits.key');
 
         context.keybinding().off([wireframeKey, toggleOsmKey, highlightEditsKey]);
@@ -117,12 +118,17 @@ export class MapSystem extends AbstractSystem {
             e.preventDefault();
             e.stopPropagation();
 
-            // Don't allow layer changes while drawing - iD#6584
+            // Don't disappear the OSM data while drawing - iD#6584
             const mode = context.mode;
             if (mode && /^draw/.test(mode.id)) return;
 
             this.scene.toggleLayers('osm');
             context.enter('browse');
+          })
+          .on(toggleNotesKey, e => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.scene.toggleLayers('notes');
           })
           .on(highlightEditsKey, e => {
             e.preventDefault();
