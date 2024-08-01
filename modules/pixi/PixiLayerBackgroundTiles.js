@@ -268,7 +268,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
             debugContainer.addChild(tile.debug);
 
             const label = new PIXI.BitmapText(tileID, { fontName: 'debug' });
-            label.name = `label-${tileID}`;
+            label.label = `label-${tileID}`;
             label.tint = DEBUGCOLOR;
             label.position.set(2, 2);
             tile.debug.addChild(label);
