@@ -32,12 +32,10 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
 
     const datasets = this.context.systems.rapid.datasets;
     for (const [key, dataset] of datasets.entries()) {
-      console.log(key);
       if (dataset.overlay) {
         this._overlaysDefined = true;
       }
     }
-
 
     const basemapContainer = this.scene.groups.get('basemap');
     basemapContainer.addChild(overlays);
@@ -62,7 +60,6 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
     parentContainer.removeChildren();
 
     for (const [key, dataset] of datasets.entries()) {
-      console.log(key);
       if (dataset.overlay && dataset.enabled) {
         const customColor = new PIXI.Color(dataset.color);
         const overlay = dataset.overlay;
@@ -94,17 +91,17 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
         : (d.geometry.type === 'MultiPoint') ? d.geometry.coordinates : [];
 
       for (let i = 0; i < parts.length; ++i) {
-        const coords = parts[i];
+        const loc = parts[i];
 
-          const xyCoords = viewport.project(coords);
-          const feature = new PIXI.Graphics().
-          beginFill(color, 0.05).
-          drawCircle(0, 0, 40).
-          endFill();
+        const point = viewport.project(loc);
+        const feature = new PIXI.Graphics()
+          .beginFill(color, 0.05)
+          .drawCircle(0, 0, 40)
+          .endFill();
 
-          feature.x = xyCoords[0];
-          feature.y = xyCoords[1];
-          parentContainer.addChild(feature);
+        feature.x = point[0];
+        feature.y = point[1];
+        parentContainer.addChild(feature);
       }
     }
   }
@@ -112,46 +109,13 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
 
   /**
    * hasData
-   * Return true if there is no overlay data to display
+   * Return true if there is overlay data to display.
    * @return {boolean}  `true` if there is a vector tile template or geojson to display
    */
   hasData() {
     return this._overlaysDefined;
   }
 
-  /**
-   * _ensureIDs
-   * After loading GeoJSON data, check the Features and make sure they have unique IDs.
-   * This function modifies the GeoJSON features in place and then returns it.
-   * @param  {Object}  geojson - A GeoJSON Feature or FeatureCollection
-   * @return {Object}  The GeoJSON, but with IDs added
-   */
-  _ensureIDs(geojson) {
-    if (!geojson) return null;
-
-    for (const feature of geojsonFeatures(geojson)) {
-      this._ensureFeatureID(feature);
-    }
-    return geojson;
-  }
-
-
-  /**
-   * _ensureFeatureID
-   * Ensure that this GeoJSON Feature has a unique ID.
-   * This function modifies the GeoJSON Feature in place and then returns it.
-   * @param  {Object}  A GeoJSON feature
-   * @return {Object}  The GeoJSON Feature, but with an ID added
-   */
-  _ensureFeatureID(feature) {
-    if (!feature) return;
-
-    const vtService = this.context.services.vectortile;
-    const featureID = vtService.getNextID();
-    feature.id = featureID;
-    feature.__featurehash__ = featureID;
-    return feature;
-  }
 
   /**
    * _clear
