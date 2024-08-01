@@ -9,16 +9,19 @@ import { uiTooltip } from '../tooltip.js';
 export function uiToolRapidFeatures(context) {
   const l10n = context.systems.l10n;
   const map = context.systems.map;
+  const ui = context.systems.ui;
   const urlhash = context.systems.urlhash;
 
   const toggleKeyDispatcher = d3_dispatch('ai_feature_toggle');
   const rapidFeaturesToggleKey = uiCmd('⇧' + l10n.t('map_data.layers.rapid.key'));
-  const datasetDialog = uiRapidFeatureToggleDialog(context, rapidFeaturesToggleKey, toggleKeyDispatcher);
-  const powerUserDialog = uiRapidPowerUserFeaturesDialog(context);
 
-  let _wrap;
+  // Create child components
+  const DatasetDialog = uiRapidFeatureToggleDialog(context, rapidFeaturesToggleKey, toggleKeyDispatcher);
+  const PowerUserDialog = uiRapidPowerUserFeaturesDialog(context);
 
-  let tool = {
+  let $wrap = null;
+
+  const tool = {
     id: 'rapid_features',
     label: l10n.t('toolbar.rapid_features')
   };
@@ -38,28 +41,29 @@ export function uiToolRapidFeatures(context) {
 
 
   function showFeatureToggleDialog() {
-    context.container().call(datasetDialog);
+    context.container().call(DatasetDialog);
   }
 
 
   function showPowerUserFeaturesDialog() {
-    context.container().call(powerUserDialog);
+    context.container().call(PowerUserDialog);
   }
 
 
-  function update() {
-    if (!_wrap) return;
+  function render() {
+    if (!$wrap) return;  // called too early?
 
     const isPowerUser = urlhash.getParam('poweruser') === 'true';
+    const isNarrow = context.container().selectAll('.top-toolbar.narrow').size();
 
-    _wrap
+    $wrap
       .attr('class', isPowerUser ? 'joined' : null);
 
-    let rapidButton = _wrap.selectAll('.rapid-features')
+    let $rapidButton = $wrap.selectAll('.rapid-features')
       .data([0]);
 
     // enter
-    let rapidButtonEnter = rapidButton.enter()
+    let $$rapidButton = $rapidButton.enter()
       .append('button')
       .attr('class', 'bar-button rapid-features')
       .attr('tabindex', -1)
@@ -70,24 +74,28 @@ export function uiToolRapidFeatures(context) {
         .shortcut(rapidFeaturesToggleKey)
       );
 
-    rapidButtonEnter
+    $$rapidButton
       .append('svg')
       .attr('class', 'logo-rapid')
       .append('use')
       .attr('xlink:href', '#rapid-logo-rapid-wordmark');
 
     // update
-    rapidButton.merge(rapidButtonEnter)
+    $rapidButton = $rapidButton.merge($$rapidButton)
       .classed('layer-off', !layerEnabled());
 
+    $rapidButton
+      .selectAll('.logo-rapid use')
+      .attr('xlink:href',  isNarrow ? '#rapid-logo-rapid' : '#rapid-logo-rapid-wordmark' );
 
-    let powerUserButton = _wrap.selectAll('.rapid-poweruser-features')
+
+    let $powerUserButton = $wrap.selectAll('.rapid-poweruser-features')
       .data(isPowerUser ? [0] : []);
 
-    powerUserButton.exit()
+    $powerUserButton.exit()
       .remove();
 
-    powerUserButton.enter()
+    $powerUserButton.enter()
       .append('button')
       .attr('class', 'bar-button rapid-poweruser-features')
       .attr('tabindex', -1)
@@ -102,7 +110,7 @@ export function uiToolRapidFeatures(context) {
 
 
 
-  tool.install = (selection) => {
+  tool.install = ($parent) => {
     context.keybinding().off(rapidFeaturesToggleKey);
     context.keybinding()
       .on(rapidFeaturesToggleKey, d3_event => {
@@ -111,24 +119,26 @@ export function uiToolRapidFeatures(context) {
         toggleFeatures();
       });
 
-    urlhash.on('hashchange', update);
-    map.scene.on('layerchange', update);
-    context.on('modechange', update);
+    ui.on('uichange', render);
+    urlhash.on('hashchange', render);
+    map.scene.on('layerchange', render);
+    context.on('modechange', render);
 
-    _wrap = selection
+    $wrap = $parent
       .append('div')
       .style('display', 'flex');
 
-    update();
+    render();
   };
 
 
   tool.uninstall = function () {
     context.keybinding().off(rapidFeaturesToggleKey);
-    urlhash.off('hashchange', update);
-    map.scene.off('layerchange', update);
-    context.off('modechange', update);
-    _wrap = null;
+    ui.off('uichange', render);
+    urlhash.off('hashchange', render);
+    map.scene.off('layerchange', render);
+    context.off('modechange', render);
+    $wrap = null;
   };
 
   return tool;

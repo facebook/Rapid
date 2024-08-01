@@ -1,63 +1,68 @@
 /* possibly existed before and was removed? */
 svg.icon.icon-30 {
-    width: 30px;
-    height: 30px;
+  width: 30px;
+  height: 30px;
 }
 
 svg.logo-rapid,
 .icon.rapid {
-    fill: #333;
-    color: #da26d3;
+  fill: #333;
+  color: #da26d3;
 }
 
 svg.logo-rapid.dark,
 .dark .icon.rapid,
 .icon.rapid.dark {
-    fill: #eee;
-    color: #da26d3;
+  fill: #eee;
+  color: #da26d3;
 }
 
 /* beta badge */
 .beta {
-    display: inline-block;
-    text-align: center;
-    font-weight: bold;
-    color: #eee;
-    margin: 0 10px;
-    width: 1.8em;
-    height: 1.8em;
-    border: 1px solid #909;
-    border-radius: 5px;
-    background: rgb(203,16,237);
-    background: linear-gradient(0deg, rgba(108,1,167,1) 6%, rgba(203,16,237,1) 50%, rgb(229, 140, 253) 90%, rgb(201, 42, 251) 100%);
-    cursor: default;
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+  color: #eee;
+  margin: 0 10px;
+  width: 1.8em;
+  height: 1.8em;
+  border: 1px solid #909;
+  border-radius: 5px;
+  background: rgb(203,16,237);
+  background: linear-gradient(0deg, rgba(108,1,167,1) 6%, rgba(203,16,237,1) 50%, rgb(229, 140, 253) 90%, rgb(201, 42, 251) 100%);
+  cursor: default;
 }
 .beta:before {
-    content: '\03b2';  /* β */
+  content: '\03b2';  /* β */
 }
 
 
 /* Toolbar buttons */
 button.rapid-features svg.logo-rapid {
-    width: 60px;
-    height: 16px;
+  width: 60px;
+  height: 16px;
 }
+.top-toolbar.narrow button.rapid-features svg.logo-rapid {
+  width: 22px;
+  height: 22px;
+}
+
 button.rapid-poweruser-features .beta {
-    font-size: 1.2em;
-    margin: 0;
+  font-size: 1.2em;
+  margin: 0;
 }
 button.rapid-features.layer-off use {
-    fill: rgba(0,0,0,.4);
-    color: rgba(0,0,0,.4);
+  fill: rgba(0,0,0,.4);
+  color: rgba(0,0,0,.4);
 }
 
 .fb-road-license a {
-    padding: 2px 4px 4px 4px;
-    border-radius: 2px;
+  padding: 2px 4px 4px 4px;
+  border-radius: 2px;
 }
 
 button.bugnub {
-    margin-right: 2px;
+  margin-right: 2px;
 }
 
 /* bug nub */

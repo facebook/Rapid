@@ -20,7 +20,10 @@ import {
 
 
 /**
- * `UiSystem` maintains the user interface
+ * `UiSystem` maintains the user interface.
+ *
+ * Events available:
+ *   `uichange`  Fires on any change in the ui (such as resize)
  */
 export class UiSystem extends AbstractSystem {
 
@@ -523,11 +526,12 @@ const overscan = 50;
 dims = vecAdd(dims, [overscan * 2, overscan * 2]);
 
     viewport.dimensions = dims;
-    this.photoviewer.onMapResize();
 
     // check if header or footer have overflowed
     this.checkOverflow('.top-toolbar');
     this.checkOverflow('.map-footer-bar');
+
+    this.emit('uichange');
 
 // this was for the restrictions editor?
 // or any other component that needs to know when resizing is happening

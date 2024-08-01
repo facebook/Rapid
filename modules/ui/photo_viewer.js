@@ -7,7 +7,8 @@ import { utilGetDimensions, utilRebind } from '../util/index.js';
 
 
 export function uiPhotoViewer(context) {
-  let dispatch = d3_dispatch('resize');
+  const ui = context.systems.ui;
+  const dispatch = d3_dispatch('resize');
 
 
   function photoviewer(selection) {
@@ -22,6 +23,7 @@ export function uiPhotoViewer(context) {
       })
       .append('div')
       .call(uiIcon('#rapid-icon-close'));
+
 
     function preventDefault(d3_event) {
       d3_event.preventDefault();
@@ -110,7 +112,7 @@ export function uiPhotoViewer(context) {
   }
 
 
-  photoviewer.onMapResize = function() {
+  function _onMapResize() {
     const photoviewer = context.container().select('.photoviewer');
     const content = context.container().select('.main-content');
     const mapDimensions = utilGetDimensions(content, true);
@@ -129,7 +131,9 @@ export function uiPhotoViewer(context) {
 
       dispatch.call('resize', photoviewer, setPhotoDimensions);
     }
-  };
+  }
+
+  ui.on('uichange', _onMapResize);
 
   return utilRebind(photoviewer, dispatch, 'on');
 }
