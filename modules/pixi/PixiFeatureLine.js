@@ -36,13 +36,13 @@ export class PixiFeatureLine extends AbstractFeature {
     this._bufferdata = null;
 
     const casing = new PIXI.Graphics();
-    casing.name = 'casing';
+    casing.label = 'casing';
     casing.eventMode = 'none';
     casing.sortableChildren = false;
     this.casing = casing;
 
     const stroke = new PIXI.Graphics();
-    stroke.name = 'stroke';
+    stroke.label = 'stroke';
     stroke.eventMode = 'none';
     stroke.sortableChildren = false;
     this.stroke = stroke;
@@ -143,7 +143,7 @@ export class PixiFeatureLine extends AbstractFeature {
         // Create line marker container, if necessary
         if (!lineMarkers) {
           lineMarkers = new PIXI.Container();
-          lineMarkers.name = 'lineMarkers';
+          lineMarkers.label = 'lineMarkers';
           lineMarkers.eventMode = 'none';
           lineMarkers.sortableChildren = false;
           lineMarkers.roundPixels = false;
@@ -323,7 +323,7 @@ export class PixiFeatureLine extends AbstractFeature {
     if (showSelect) {
       if (!this.halo) {
         this.halo = new PIXI.Graphics();
-        this.halo.name = `${this.id}-halo`;
+        this.halo.label = `${this.id}-halo`;
         const mapUIContainer = this.scene.layers.get('map-ui').container;
         mapUIContainer.addChild(this.halo);
       }
