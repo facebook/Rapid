@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { Application, BitmapFont} from 'pixi.js';
+import { Application, BitmapFont } from 'pixi.js';
 import { settings } from '@pixi/settings';
 import { EventEmitter } from '@pixi/utils';
 import { TAU, Viewport, numWrap, vecEqual, vecLength, vecRotate, vecScale, vecSubtract } from '@rapid-sdk/math';
@@ -84,17 +84,16 @@ export class PixiRenderer extends EventEmitter {
     context.pixi = this.pixi;
 
     // Prepare a basic bitmap font that we can use for things like debug messages
-    BitmapFont.install('debug', {
-      fill: 0xffffff,
-      fontSize: 14,
-      stroke: 0x333333,
-      strokeThickness: 2
-    },{
-      chars: PIXI.BitmapFont.ASCII,
-      padding: 0,
-      resolution: 2
-    });
-
+    // BitmapFont.install('debug', {
+    //   fill: 0xffffff,
+    //   fontSize: 14,
+    //   stroke: 0x333333,
+    //   strokeThickness: 2
+    // },{
+    //   chars: BitmapFont.ASCII,
+    //   padding: 0,
+    //   resolution: 2
+    // });
   }
 
 
@@ -135,7 +134,7 @@ export class PixiRenderer extends EventEmitter {
       resolution: window.devicePixelRatio,
       sharedLoader: true,
       sharedTicker: true,
-      view: this.surface.node()
+      canvas: this.surface.node()
     });
 
     window.__PIXI_DEVTOOLS__ = {
@@ -151,11 +150,15 @@ export class PixiRenderer extends EventEmitter {
     globalThis.__PIXI_APP__ = this.pixi;
 
     // Setup the stage, ticker, and other components after initialization
-    this.setupStage();
-    this.setupTicker();
-    this.setupScenesAndEvents();
+    // await this.pixi.init();
+    await this.setupStage();
+    await this.setupTicker();
+    await this.setupScenesAndEvents();
+
     this.initialized = true;
   }
+
+
   setupStage() {
     // Setup the stage
     // The `stage` should be positioned so that `[0,0]` is at the center of the viewport,
@@ -181,6 +184,10 @@ export class PixiRenderer extends EventEmitter {
 
 
   setupTicker() {
+    if (!this.pixi || !this.pixi.ticker) {
+        return;
+    }
+
     const ticker = this.pixi.ticker;
     const defaultListener = ticker._head.next;
     ticker.remove(defaultListener.fn, defaultListener.context);
@@ -631,7 +638,7 @@ export class PixiRenderer extends EventEmitter {
       debug1.beginFill(0xffffff, 1);
       debug1.drawCircle(0, 0, 20);
       debug1.endFill();
-      debug1.name = 'center_stage';
+      debug1.label = 'center_stage';
       debug1.eventMode = 'none';
       debug1.sortableChildren = false;
       debug1.zIndex = 101;
@@ -646,7 +653,7 @@ export class PixiRenderer extends EventEmitter {
       debug2.beginFill(0xff6666, 1);
       debug2.drawCircle(0, 0, 15);
       debug2.endFill();
-      debug2.name = 'center_screen';
+      debug2.label = 'center_screen';
       debug2.eventMode = 'none';
       debug2.sortableChildren = false;
       debug2.zIndex = 102;
