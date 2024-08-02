@@ -295,6 +295,7 @@ export class PixiTextures {
     resource.load().then(() => {
       this.allocate('symbol', textureID, size, size, resource.source);
       this._svgIcons.delete(textureID);
+      this.context.deferredRedraw();
     });
   }
 
