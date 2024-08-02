@@ -159,7 +159,7 @@ export class DragNodeMode extends AbstractMode {
   /**
    * _refreshEntities
    *  Gets the latest version the drag node from the graph after any modifications.
-   *  Updates `selectedData` collection to include the draw way
+   *  Updates `selectedData` collection to include the dragging node
    */
   _refreshEntities() {
     const context = this.context;

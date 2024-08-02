@@ -2,6 +2,7 @@ import { vecLength } from '@rapid-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior.js';
 import { osmNode } from '../osm/node.js';
+import { osmNote } from '../osm/note.js';
 import { utilDetect } from '../util/detect.js';
 
 const NEAR_TOLERANCE = 1;
@@ -111,10 +112,14 @@ export class DragBehavior extends AbstractBehavior {
     if (e.pointerType === 'mouse' && e.button !== 0) return;   // drag with left button only (if a mouse)
 
     const down = this._getEventData(e);
-    const isNode = down.target?.data instanceof osmNode;
-    const isMidpoint = down.target?.data?.type === 'midpoint';
-    const isDraggableTarget = (isNode || isMidpoint) && down.target?.layerID === 'osm';
-    if (!isDraggableTarget) return;
+    const target = down.target;
+    if (!target?.data) return;
+
+    const isNote = target.data instanceof osmNote;
+    const isNode = target.data instanceof osmNode && target.layerID === 'osm';       // not 'rapid'
+    const isMidpoint = target.data.type === 'midpoint' && target.layerID === 'osm';  // not 'rapid'
+
+    if (!(isNote || isNode || isMidpoint)) return;
 
     this.lastDown = down;
     this.lastMove = null;
@@ -168,13 +173,21 @@ export class DragBehavior extends AbstractBehavior {
         this.dragTarget = target;
         target.feature.active = true;
 
+        // What are we dragging?
         const data = target.data;
+        const isNote = data instanceof osmNote;
+        const isNode = data instanceof osmNode;
         const isMidpoint = (data.type === 'midpoint');
 
         // If the current selection includes a parent of the dragged item,
         //  reselect those same feature(s) after the drag completes.
         // (The user is reshaping a line or area by dragging vertices or midpoints.)
-        const parentWays = (isMidpoint ? [data.way] : graph.parentWays(data));
+        let parentWays = [];
+        if (isMidpoint) {
+          parentWays = [data.way];
+        } else if (isNode) {
+          parentWays = graph.parentWays(data);
+        }
 
         // Gather all parentIDs - include both ways and relations (such as multipolygons)
         const parentIDs = new Set();
@@ -189,12 +202,14 @@ export class DragBehavior extends AbstractBehavior {
         const selectionIncludesParent = selectedIDs.some(selectedID => parentIDs.has(selectedID));
         const reselectIDs = selectionIncludesParent ? selectedIDs.slice() : [];
 
-        // Enter Drag Node mode
-        if (isMidpoint) {
+        // Enter the correct mode
+        if (isNode) {
+          context.enter('drag-node', { nodeID: data.id, reselectIDs: reselectIDs });
+        } else if (isNote) {
+          context.enter('drag-note', { noteID: data.id });
+        } else if (isMidpoint) {
           const midpoint = { loc: data.loc, edge: [ data.a.id, data.b.id ] };
           context.enter('drag-node', { midpoint: midpoint, reselectIDs: reselectIDs });
-        } else {
-          context.enter('drag-node', { nodeID: data.id, reselectIDs: reselectIDs });
         }
 
         this.emit('start', down);
