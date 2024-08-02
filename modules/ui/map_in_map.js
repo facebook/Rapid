@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { Application } from 'pixi.js';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 import { HALF_PI, Viewport, geoZoomToScale, numClamp, vecAdd, vecInterp, vecSubtract } from '@rapid-sdk/math';
 
@@ -290,23 +291,24 @@ export function uiMapInMap(context) {
      * _initMiniPixi
      * Create a separate Pixi application for the minimap
      */
-    function _initMiniPixi() {
+    async function _initMiniPixi() {
       if (!_supersurface || !_surface)  return;   // called too early?
 
-      _miniPixi = new PIXI.Application({
+      _miniPixi= new Application();
+      await _miniPixi.init({
         antialias: true,
         autoDensity: true,
         autoStart: false,   // don't start the ticker yet
+        resolution: window.devicePixelRatio,
+        sharedLoader: true,
+        sharedTicker: false,
+        view: _surface.node(),
         events: {
           move: false,
           globalMove: false,
           click: true,
           wheel: false
         },
-        resolution: window.devicePixelRatio,
-        sharedLoader: true,
-        sharedTicker: false,
-        view: _surface.node()
       });
 
       // hardcoded dimensions for now
@@ -326,7 +328,7 @@ export function uiMapInMap(context) {
 
       // Setup the stage..
       const stage = _miniPixi.stage;
-      stage.name = 'minimap-stage';
+      stage.label = 'minimap-stage';
       stage.eventMode = 'none';
       stage.sortableChildren = false;
 
@@ -351,7 +353,7 @@ export function uiMapInMap(context) {
 
       // Group Container
       const groupContainer = new PIXI.Container();
-      groupContainer.name = 'background';
+      groupContainer.label = 'background';
       stage.addChild(groupContainer);
       miniScene.groups.set('background', groupContainer);
 
