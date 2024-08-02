@@ -90,23 +90,36 @@ export class PixiEvents extends EventEmitter {
 
     const renderer = this.renderer;
 
-    // Attach wheel to supersurface so that content on the overlay (like the edit menu)
-    // doesn't receive the wheel events and prevent panning and zooming.
-    const supersurface = renderer.supersurface.node();
-    supersurface.addEventListener('wheel', this._wheel, { passive: false });  // false allows preventDefault
+    // Check if supersurface is properly initialized
+    const supersurface = renderer.supersurface ? renderer.supersurface.node() : null;
+    if (supersurface) {
+      supersurface.addEventListener('wheel', this._wheel, { passive: false });
+    } else {
+      console.error('Supersurface is not initialized');
+    }
 
-    const view = renderer.pixi.canvas;
-    view.addEventListener('pointerover', this._pointerover);
-    view.addEventListener('pointerout', this._pointerout);
+    // Check if view is properly initialized
+    const view = renderer.pixi ? renderer.pixi.canvas : null;
+    if (view) {
+      view.addEventListener('pointerover', this._pointerover);
+      view.addEventListener('pointerout', this._pointerout);
+    } else {
+      console.error('View (canvas) is not initialized');
+    }
 
-    const stage = renderer.pixi.stage;
-    stage.addEventListener('click', this._click);
-    stage.addEventListener('rightclick', this._click);   // pixi has a special 'rightclick' event
-    stage.addEventListener('pointerdown', this._pointerdown);
-    stage.addEventListener('pointermove', this._pointermove);
-    stage.addEventListener('pointerup', this._pointerup);
-    stage.addEventListener('pointerupoutside', this._pointercancel);  // if up outide, just cancel
-    stage.addEventListener('pointercancel', this._pointercancel);
+    // Check if stage is properly initialized
+    const stage = renderer.pixi ? renderer.pixi.stage : null;
+    if (stage) {
+      stage.addEventListener('click', this._click);
+      stage.addEventListener('rightclick', this._click);
+      stage.addEventListener('pointerdown', this._pointerdown);
+      stage.addEventListener('pointermove', this._pointermove);
+      stage.addEventListener('pointerup', this._pointerup);
+      stage.addEventListener('pointerupoutside', this._pointercancel);
+      stage.addEventListener('pointercancel', this._pointercancel);
+    } else {
+      console.error('Stage is not initialized');
+    }
   }
 
 
