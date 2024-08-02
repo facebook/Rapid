@@ -144,10 +144,8 @@ export class OsmoseService extends AbstractSystem {
 
             // Filter out unsupported issue types (some are too specific or advanced)
             if (itemType in this._osmoseData.icons) {
-              let loc = issue.geometry.coordinates; // lon, lat
-              loc = this._preventCoincident(loc);
-
-              let d = new QAItem(loc, this, itemType, id, { item });
+              const loc = this._preventCoincident(issue.geometry.coordinates);
+              const d = new QAItem(this, itemType, id, { loc: loc, item: item });
 
               // Assigning `elems` here prevents UI detail requests
               if (item === 8300 || item === 8360) {

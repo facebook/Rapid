@@ -3,7 +3,7 @@ import { geoBounds as d3_geoBounds } from 'd3-geo';
 import { Extent } from '@rapid-sdk/math';
 
 import { AbstractMode } from './AbstractMode.js';
-import { osmNote, QAItem } from '../osm/index.js';
+import { QAItem } from '../osm/index.js';
 import { uiOsmoseEditor } from '../ui/osmose_editor.js';
 import { uiDataEditor } from '../ui/data_editor.js';
 import { uiKeepRightEditor } from '../ui/keepRight_editor.js';
@@ -91,14 +91,14 @@ export class SelectMode extends AbstractMode {
 
  // The update handlers feel like they should live with the noteEditor/errorEditor, not here
     // Selected a note...
-    if (datum instanceof osmNote) {
+    if (datum instanceof QAItem && datum.service === 'osm') {
       sidebarContent = uiNoteEditor(context).note(datum);
       sidebarContent
         .on('change', () => {
           context.systems.map.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
           const osm = context.services.osm;
           const note = osm?.getNote(datumID);
-          if (!(note instanceof osmNote)) return;   // or - go to browse mode
+          if (!(note instanceof QAItem)) return;   // or - go to browse mode
           context.systems.ui.sidebar.show(sidebarContent.note(note));
           this._selectedData.set(datumID, note);  // update selectedData after a change happens?
         });

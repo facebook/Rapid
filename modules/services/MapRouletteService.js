@@ -188,12 +188,10 @@ export class MapRouletteService extends AbstractSystem {
 
           task.id = taskID;               // force to string
           task.parentId = challengeID;    // force to string
-
-          let loc = [task.point.lng, task.point.lat];
-          loc = this._preventCoincident(loc);
+          task.loc = this._preventCoincident([task.point.lng, task.point.lat]);
 
           // save the task
-          const d = new QAItem(loc, this, null, taskID, task);
+          const d = new QAItem(this, null, taskID, task);
           cache.tasks.set(taskID, d);
           cache.rbush.insert(this._encodeIssueRbush(d));
         }

@@ -61,7 +61,7 @@ export class DragNoteMode extends AbstractMode {
     const point = context.behaviors.drag.lastDown.coord.map;
     this._clickLoc = context.viewport.unproject(point);
 
-    context.enableBehaviors(['hover', 'drag', 'mapNudge']);
+    context.enableBehaviors(['drag', 'mapNudge']);
     context.behaviors.mapNudge.allow();
 
     context.behaviors.drag
@@ -111,8 +111,9 @@ export class DragNoteMode extends AbstractMode {
     if (!this.dragNote) return;
 
     const context = this.context;
-    const osm = context.services.osm;
     const locations = context.systems.locations;
+    const map = context.systems.map;
+    const osm = context.services.osm;
     const viewport = context.viewport;
     const point = eventData.coord.map;
 
@@ -131,9 +132,13 @@ export class DragNoteMode extends AbstractMode {
       return;
     }
 
-    this.dragNote = this.dragNote.move(loc);
+    this.dragNote = this.dragNote.update({ loc: loc });
     osm.replaceNote(this.dragNote);
     this._selectedData.set(this.dragNote.id, this.dragNote);
+
+    // Force a redraw - there is no event for notes that would tell the map to redraw.
+    // (unlike with dragging osm features around, where editsystem emits `stagingchanged` events)
+    map.immediateRedraw();
   }
 
 

@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import { EventEmitter } from '@pixi/utils';
 import { TAU, Viewport, numWrap, vecEqual, vecLength, vecRotate, vecScale, vecSubtract } from '@rapid-sdk/math';
 
-import { osmNote, QAItem } from '../osm/index.js';
+import { QAItem } from '../osm/index.js';
 import { PixiEvents } from './PixiEvents.js';
 import { PixiScene } from './PixiScene.js';
 import { PixiTextures } from './PixiTextures.js';
@@ -183,11 +183,11 @@ export class PixiRenderer extends EventEmitter {
       let layerID = null;
 
       // hacky - improve?
-      if (datum instanceof osmNote) {
-        layerID = 'notes';
-      } else if (datum instanceof QAItem) {
-        layerID = datum.service; // 'keepRight', 'osmose', 'maproulette'
-      } else if (datum.__fbid__) {           // a Rapid feature
+      if (datum instanceof QAItem) {       // in most cases the `service` is the layerID
+        const serviceID = datum.service;   // 'keepright', 'osmose', etc.
+        layerID = serviceID === 'osm' ? 'notes' : serviceID;
+        if (layerID === 'osm') layerID = 'notes';
+      } else if (datum.__fbid__) {      // a Rapid feature
         layerID = 'rapid';
       } else if (datum.__featurehash__) {  // custom data
         layerID = 'custom-data';

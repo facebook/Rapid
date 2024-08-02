@@ -1,5 +1,5 @@
 import { AbstractMode } from './AbstractMode.js';
-import { osmNote } from '../osm/note.js';
+import { QAItem } from '../osm/qa_item.js';
 
 const DEBUG = false;
 
@@ -78,7 +78,8 @@ export class AddNoteMode extends AbstractMode {
 
     if (!osm) return;
 
-    const note = osmNote({ loc: loc, status: 'open', comments: [] });
+    // pass `null` to generate a new noteID
+    const note = new QAItem(osm, null, null, { loc: loc, status: 'open', comments: [] });
     osm.replaceNote(note);
 
     const selection = new Map().set(note.id, note);

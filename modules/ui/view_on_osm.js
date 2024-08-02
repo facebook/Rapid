@@ -1,18 +1,18 @@
-import { osmEntity, osmNote } from '../osm/index.js';
+import { osmEntity, QAItem } from '../osm/index.js';
 import { uiIcon } from './icon.js';
 
 
 export function uiViewOnOSM(context) {
   const l10n = context.systems.l10n;
   const osm = context.services.osm;
-  let _what;   // an osmEntity or osmNote
+  let _what;   // an osmEntity or QAItem (OSM Note)
 
 
   function viewOnOSM(selection) {
     let url;
     if (osm && _what instanceof osmEntity && !_what.isNew()) {
       url = osm.entityURL(_what);
-    } else if (osm && _what instanceof osmNote && !_what.isNew()) {
+    } else if (osm && _what instanceof QAItem && !_what.isNew()) {
       url = osm.noteURL(_what);
     }
 

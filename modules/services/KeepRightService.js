@@ -234,16 +234,17 @@ export class KeepRightService extends AbstractSystem {
               coincident = this._cache.rtree.search(bbox).length;
             } while (coincident);
 
-            let d = new QAItem(loc, this, itemType, id, {
-              comment,
-              description,
-              whichType,
-              parentIssueType,
+            const d = new QAItem(this, itemType, id, {
+              loc: loc,
+              comment: comment,
+              description: description,
+              whichType: whichType,
+              parentIssueType: parentIssueType,
               severity: whichTemplate.severity || 'error',
-              objectId,
-              objectType,
-              schema,
-              title
+              objectId: objectId,
+              objectType: objectType,
+              schema: schema,
+              title: title
             });
 
             d.replacements = this._tokenReplacements(d);

@@ -4,7 +4,7 @@ import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
 import { AbstractUiPanel } from './AbstractUiPanel.js';
-import { osmNote } from '../../osm/index.js';
+import { QAItem } from '../../osm/index.js';
 
 
 // using WGS84 authalic radius (6371007.1809 m)
@@ -116,8 +116,9 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     const selectedIDs = context.selectedIDs();
     const selectedData = context.selectedData();
     const [selectedItem] = selectedData.values();  // first item
+    const isNote = (selectedItem instanceof QAItem && selectedItem.service === 'osm');
 
-    if (selectedData.size === 1 && (selectedItem instanceof osmNote)) {   // selected 1 OSM Note
+    if (selectedData.size === 1 && isNote) {   // selected 1 OSM Note
       const note = selectedItem;
       heading = l10n.t('note.note') + ' ' + note.id;
       location = note.loc;

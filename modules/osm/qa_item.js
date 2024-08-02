@@ -1,8 +1,7 @@
 
 export class QAItem {
-  constructor(loc, service, itemType, id, props) {
+  constructor(service, itemType, id, props) {
     // Store required properties
-    this.loc = loc;
     this.service = service.id;
     this.itemType = itemType;
 
@@ -28,14 +27,18 @@ export class QAItem {
   }
 
 
+  isNew() {
+    return parseInt(this.id, 10) < 0;
+  }
+
+
   // Replace props in place
   update(props) {
     // You can't override this initial information
-    const { loc, service, itemType, id } = this;
+    const { service, itemType, id } = this;
 
     Object.keys(props).forEach(prop => this[prop] = props[prop]);
 
-    this.loc = loc;
     this.service = service;
     this.itemType = itemType;
     this.id = id;

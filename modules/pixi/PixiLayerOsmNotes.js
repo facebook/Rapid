@@ -78,20 +78,36 @@ export class PixiLayerOsmNotes extends AbstractLayer {
     if (!service?.started) return;
 
     const parentContainer = this.scene.groups.get('qa');
-    const items = service.getNotes();
+    const notes = service.getNotes();
 
-    for (const d of items) {
-      const featureID = `${this.layerID}-${d.id}`;
+    for (const note of notes) {
+      const featureID = `${this.layerID}-${note.id}`;
+      const version = note.v || 0;
+
+      // Create feature if necessary..
       let feature = this.features.get(featureID);
-
       if (!feature) {
+        feature = new PixiFeaturePoint(this, featureID);
+        feature.parentContainer = parentContainer;
+      }
+
+      // If data has changed, replace it..
+      if (feature.v !== version) {
+        feature.v = version;
+        feature.geometry.setCoords(note.loc);
+        feature.setData(note.id, note);
+      }
+
+      this.syncFeatureClasses(feature);
+
+      if (feature.dirty) {
         let color = 0xff3300;  // open (red)
         let iconName = 'rapid-icon-close';
-        if (d.status === 'closed') {
+        if (note.status === 'closed') {
           color = 0x55dd00;  // closed (green)
           iconName = 'rapid-icon-apply';
         }
-        if (d.isNew()) {
+        if (note.isNew()) {
           color = 0xffee00;  // new (yellow)
           iconName = 'rapid-icon-plus';
         }
@@ -104,14 +120,9 @@ export class PixiLayerOsmNotes extends AbstractLayer {
           anchor: { y: 0.65 }
         };
 
-        feature = new PixiFeaturePoint(this, featureID);
-        feature.geometry.setCoords(d.loc);
         feature.style = style;
-        feature.parentContainer = parentContainer;
-        feature.setData(d.id, d);
       }
 
-      this.syncFeatureClasses(feature);
       feature.update(viewport, zoom);
       this.retainFeature(feature, frame);
     }

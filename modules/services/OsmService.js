@@ -6,7 +6,7 @@ import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem.js';
 import { JXON } from '../util/jxon.js';
-import { osmEntity, osmNode, osmNote, osmRelation, osmWay } from '../osm/index.js';
+import { osmEntity, osmNode, osmRelation, osmWay, QAItem } from '../osm/index.js';
 import { utilFetchResponse } from '../util/index.js';
 
 
@@ -1049,6 +1049,7 @@ export class OsmService extends AbstractSystem {
             that._noteCache.loaded.add(tile.id);
           }
           // deferLoadUsers();
+          that.context.deferredRedraw();
           that.emit('loadedNotes');
         },
         options
@@ -1063,6 +1064,8 @@ export class OsmService extends AbstractSystem {
     const gotNote = (err, results) => {
       if (callback) {
         callback(err, { data: results });
+        this.context.deferredRedraw();
+        this.emit('loadedNotes');
       }
     };
 
@@ -1097,6 +1100,8 @@ export class OsmService extends AbstractSystem {
         if (err) {
           return callback(err);
         } else {
+          this.context.deferredRedraw();
+          this.emit('loadedNotes');
           return callback(null, results.data[0]);
         }
       }, options);
@@ -1165,6 +1170,8 @@ export class OsmService extends AbstractSystem {
         if (err) {
           return callback(err);
         } else {
+          this.context.deferredRedraw();
+          this.emit('loadedNotes');
           return callback(null, results.data[0]);
         }
       }, options);
@@ -1208,7 +1215,7 @@ export class OsmService extends AbstractSystem {
         } else if (k === 'note') {
           target.note = {};
           for (const id of Object.keys(v)) {
-            target.note[id] = osmNote(source.note[id]);   // copy notes
+            target.note[id] = source.note[id].update({});  // copy note
           }
         } else {
           target[k] = JSON.parse(JSON.stringify(v));   // clone deep
@@ -1313,7 +1320,7 @@ export class OsmService extends AbstractSystem {
 
   // remove a single note from the cache
   removeNote(note) {
-    if (!(note instanceof osmNote) || !note.id) return;
+    if (!(note instanceof QAItem) || !note.id) return;
 
     delete this._noteCache.note[note.id];
     this._updateRtree(this._encodeNoteRtree(note), false);  // false = remove
@@ -1322,7 +1329,7 @@ export class OsmService extends AbstractSystem {
 
   // replace a single note in the cache
   replaceNote(note) {
-    if (!(note instanceof osmNote) || !note.id) return;
+    if (!(note instanceof QAItem) || !note.id) return;
 
     this._noteCache.note[note.id] = note;
     this._updateRtree(this._encodeNoteRtree(note), true);  // true = replace
@@ -1762,7 +1769,7 @@ export class OsmService extends AbstractSystem {
       }
     }
 
-    const note = new osmNote(props);
+    const note = new QAItem(this, null, props.id, props);
     const item = this._encodeNoteRtree(note);
     this._noteCache.note[note.id] = note;
     this._noteCache.rtree.insert(item);

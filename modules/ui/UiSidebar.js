@@ -3,7 +3,7 @@ import { Extent, vecLength } from '@rapid-sdk/math';
 import { utilArrayIdentical } from '@rapid-sdk/util';
 import _throttle from 'lodash-es/throttle.js';
 
-import { osmEntity, osmNote, QAItem } from '../osm/index.js';
+import { osmEntity, QAItem } from '../osm/index.js';
 import { uiDataEditor } from './data_editor.js';
 import { uiFeatureList } from './feature_list.js';
 import { UiInspector } from './UiInspector.js';
@@ -197,7 +197,7 @@ export class UiSidebar {
       $sidebar.selectAll('.sidebar-component')
         .classed('inspector-hover', true);
 
-    } else if (datum instanceof osmNote) {
+    } else if (datum instanceof QAItem && datum.service === 'osm') {
       if (context.mode?.id === 'drag-note') return;
 
       const service = context.services.osm;
@@ -209,7 +209,7 @@ export class UiSidebar {
       $sidebar.selectAll('.sidebar-component')
         .classed('inspector-hover', true);
 
-    } else if (datum instanceof QAItem) {
+    } else if (datum instanceof QAItem && datum.service !== 'osm') {
       const service = context.services[datum.service];
       let Component;
 

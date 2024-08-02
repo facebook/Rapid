@@ -666,10 +666,10 @@ describe('OsmService', () => {
       });
 
       it('sets/gets a note', () => {
-        const note = Rapid.osmNote({ id: 1, loc: [0, 0] });
-        const note2 = Rapid.osmNote({ id: 2, loc: [0, 0] });
+        const note = new Rapid.QAItem(_osm, null, '1', { loc: [0, 0] });
+        const note2 = new Rapid.QAItem(_osm, null, '2', { loc: [0, 0] });
         const obj = {
-          note: { note: { 1: note, 2: note2 } }
+          note: { note: { '1': note, '2': note2 } }
         };
         _osm.caches(obj);
         expect(_osm.caches().note.note[note.id]).to.eql(note);
@@ -677,10 +677,10 @@ describe('OsmService', () => {
       });
 
       it('sets/gets a user', () => {
-        const user = { id: 1, display_name: 'Name' };
-        const user2 = { id: 2, display_name: 'Name' };
+        const user = { id: '1', display_name: 'Name' };
+        const user2 = { id: '2', display_name: 'Name' };
         const obj = {
-          user: { user: { 1: user, 2: user2 } }
+          user: { user: { '1': user, '2': user2 } }
         };
         _osm.caches(obj);
         expect(_osm.caches().user.user[user.id]).to.eql(user);
@@ -754,22 +754,22 @@ describe('OsmService', () => {
 
   describe('#getNote', () => {
     it('returns a note', () => {
-      const note = Rapid.osmNote({ id: 1, loc: [0, 0] });
+      const note = new Rapid.QAItem(_osm, null, '1', { loc: [0, 0] });
       const obj = {
-        note: { note: { 1: note } }
+        note: { note: { '1': note } }
       };
       _osm.caches(obj);
-      const result = _osm.getNote(1);
+      const result = _osm.getNote('1');
       expect(result).to.deep.equal(note);
     });
   });
 
   describe('#removeNote', () => {
     it('removes a note that is new', () => {
-      const note = Rapid.osmNote({ id: -1, loc: [0, 0] });
+      const note = new Rapid.QAItem(_osm, null, '-1', { loc: [0, 0] });
       _osm.replaceNote(note);
       _osm.removeNote(note);
-      const result = _osm.getNote(-1);
+      const result = _osm.getNote('-1');
       expect(result).to.eql(undefined);
     });
   });
@@ -777,10 +777,10 @@ describe('OsmService', () => {
 
   describe('#replaceNote', () => {
     it('returns a new note', () => {
-      const note = Rapid.osmNote({ id: 2, loc: [0, 0] });
+      const note = new Rapid.QAItem(_osm, null, '2', { loc: [0, 0] });
       const result = _osm.replaceNote(note);
-      expect(result.id).to.eql(2);
-      expect(_osm.caches().note.note[2]).to.eql(note);
+      expect(result.id).to.eql('2');
+      expect(_osm.caches().note.note['2']).to.eql(note);
       const rtree = _osm.caches().note.rtree;
       const result_rtree = rtree.search({ 'minX': -1, 'minY': -1, 'maxX': 1, 'maxY': 1 });
       expect(result_rtree.length).to.eql(1);
@@ -788,7 +788,7 @@ describe('OsmService', () => {
     });
 
     it('replaces a note', () => {
-      const note = Rapid.osmNote({ id: 2, loc: [0, 0] });
+      const note = new Rapid.QAItem(_osm, null, '2', { loc: [0, 0] });
       _osm.replaceNote(note);
       note.status = 'closed';
       const result = _osm.replaceNote(note);
