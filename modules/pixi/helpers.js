@@ -385,6 +385,6 @@ export function getDebugBBox(x, y, width, height, color, alpha, name) {
   sprite.height = height;
   sprite.tint = color || 0xffff33;  // yellow
   sprite.alpha = alpha || 0.75;
-  if (name) sprite.name = name;
+  if (name) sprite.label = name;
   return sprite;
 }

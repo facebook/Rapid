@@ -442,7 +442,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
     if (showSelect) {
       if (!this.halo) {
         this.halo = new PIXI.Graphics();
-        this.halo.name = `${this.id}-halo`;
+        this.halo.label = `${this.id}-halo`;
         const mapUIContainer = this.scene.layers.get('map-ui').container;
         mapUIContainer.addChild(this.halo);
       }

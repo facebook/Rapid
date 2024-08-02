@@ -35,14 +35,14 @@ export class PixiFeaturePoint extends AbstractFeature {
     this._isCircular = false;   // set true to use a circular halo and hit area
 
     const marker = new PIXI.Sprite();
-    marker.name = 'marker';
+    marker.label = 'marker';
     marker.eventMode = 'none';
     marker.sortableChildren = false;
     marker.visible = true;
     this.marker = marker;
 
     const icon = new PIXI.Sprite();
-    icon.name = 'icon';
+    icon.label = 'icon';
     icon.eventMode = 'none';
     icon.sortableChildren = false;
     icon.visible = false;
@@ -171,7 +171,7 @@ export class PixiFeaturePoint extends AbstractFeature {
       // Ensure viewfield container exists
       if (!this.viewfields) {
         this.viewfields = new PIXI.Container();
-        this.viewfields.name = 'viewfields';
+        this.viewfields.label = 'viewfields';
         this.viewfields.eventMode = 'none';
         this.viewfields.sortableChildren = false;
         this.viewfields.visible = true;
@@ -341,7 +341,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     if (showSelect) {
       if (!this.halo) {
         this.halo = new PIXI.Graphics();
-        this.halo.name = `${this.id}-halo`;
+        this.halo.label = `${this.id}-halo`;
         const mapUIContainer = this.scene.layers.get('map-ui').container;
         mapUIContainer.addChild(this.halo);
       }

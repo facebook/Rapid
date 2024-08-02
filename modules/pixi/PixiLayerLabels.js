@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { BitmapFont } from 'pixi.js';
 import RBush from 'rbush';
 import { HALF_PI, TAU, numWrap, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@rapid-sdk/math';
 
@@ -14,8 +15,7 @@ const TEXT_NORMAL = {
   fontSize: 11,
   fontWeight: 600,
   lineJoin: 'round',
-  stroke: 0xffffff,
-  strokeThickness: 2.7
+  stroke:({width:2.7, color:'0xffffff'})
 };
 
 const TEXT_ITALIC = {
@@ -25,8 +25,7 @@ const TEXT_ITALIC = {
   fontStyle: 'italic',
   fontWeight: 600,
   lineJoin: 'round',
-  stroke: 0xffffff,
-  strokeThickness: 2.7
+  stroke:({width:2.7, color:'0xffffff'})
 };
 
 
@@ -108,7 +107,7 @@ export class PixiLayerLabels extends AbstractLayer {
     this._labelOffset = new PIXI.Point();
 
     // For ascii-only labels, we can use PIXI.BitmapText to avoid generating label textures
-    PIXI.BitmapFont.from('label-normal', TEXT_NORMAL, { chars: PIXI.BitmapFont.ASCII, padding: 0, resolution: 2 });
+    // BitmapFont.install('label-normal', TEXT_NORMAL, { chars: BitmapFont.ASCII, padding: 0, resolution: 2 });
     // not actually used
     // PIXI.BitmapFont.from('label-italic', TEXT_ITALIC, { chars: PIXI.BitmapFont.ASCII, padding: 0, resolution: 2 });
 
@@ -340,7 +339,7 @@ export class PixiLayerLabels extends AbstractLayer {
     }
 
     const sprite = new PIXI.Sprite(texture);
-    sprite.name = str;
+    sprite.label = str;
     sprite.anchor.set(0.5, 0.5);   // middle, middle
     return sprite;
   }
@@ -453,7 +452,7 @@ export class PixiLayerLabels extends AbstractLayer {
       if (/^[\x20-\x7E]*$/.test(feature.label)) {   // is it in the printable ASCII range?
         labelObj = new PIXI.BitmapText(feature.label, { fontName: 'label-normal' });
         labelObj.updateText();           // force update it so its texture is ready to be reused on a sprite
-        labelObj.name = feature.label;
+        labelObj.label = feature.label;
         // labelObj.anchor.set(0.5, 0.5);   // middle, middle
         labelObj.anchor.set(0.5, 1);     // middle, bottom  - why??
       } else {
@@ -909,7 +908,7 @@ this.placeRopeLabel(feature, labelObj, coords);
         const labelObj = options.labelObj;  // a PIXI.Sprite, or PIXI.Text
         const points = options.coords.map(([x,y]) => new PIXI.Point(x, y));
         const rope = new PIXI.MeshRope(labelObj.texture, points);
-        rope.name = labelID;
+        rope.label = labelID;
         rope.autoUpdate = false;
         rope.sortableChildren = false;
         rope.tint = options.tint || 0xffffff;

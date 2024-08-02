@@ -216,10 +216,9 @@ groupContainer.addChild(container);
         const BLUE = 0xe60ff;
 
         const locatorAura = new PIXI.Graphics()
-          .beginFill(BLUE, 0.4)
-          .drawCircle(x, y, r)
-          .endFill();
-        locatorAura.name = 'aura';
+          .fill({color: BLUE, alpha: 0.4})
+          .circle(x, y, r);
+        locatorAura.label = 'aura';
         this.geolocationContainer.addChild(locatorAura);
 
         // Show a viewfield for the heading if we have it
@@ -228,17 +227,16 @@ groupContainer.addChild(container);
           const locatorHeading = new PIXI.Sprite(textures.get('viewfieldDark'));
           locatorHeading.anchor.set(0.5, 1);  // middle, top
           locatorHeading.angle = d.heading;
-          locatorHeading.name = 'heading';
+          locatorHeading.label = 'heading';
           locatorHeading.position.set(x, y);
           this.geolocationContainer.addChild(locatorHeading);
         }
 
         const locatorPosition = new PIXI.Graphics()
-          .lineStyle(1.5, 0xffffff, 1.0)
-          .beginFill(BLUE, 1.0)
-          .drawCircle(x, y, 6.5)
-          .endFill();
-        locatorPosition.name = 'position';
+          .setStrokeStyle(1.5, 0xffffff, 1.0)
+          .fill({color: BLUE, alpha: 1.0})
+          .circle(x, y, 6.5);
+        locatorPosition.label = 'position';
         this.geolocationContainer.addChild(locatorPosition);
 
         this.geolocationContainer.visible = true;
