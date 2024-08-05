@@ -217,12 +217,11 @@ export class UiInspector {
       $paneWrap.style(prop, '0%');
     }
 
-    if (Array.isArray(selected)) {
-      this.PresetList.selected(selected);
-    }
-
-    // Put key focus on search field in some situations
-    this.PresetList.autofocus(this._newFeature || animate);
+    // Update the state of the PresetList before showing it.
+    this.PresetList
+      .entityIDs(this._entityIDs)
+      .selected(selected || [])
+      .autofocus(this._newFeature || animate);
 
     $presetPane
       .call(this.PresetList);
@@ -252,9 +251,13 @@ export class UiInspector {
       $paneWrap.style(prop, '-100%');
     }
 
+    // Update the state of the EntityEditor before showing it.
     if (Array.isArray(presets)) {
       this.EntityEditor.presets(presets);
     }
+    this.EntityEditor
+      .state(this._state)
+      .entityIDs(this._entityIDs);
 
     $editorPane
       .call(this.EntityEditor);
