@@ -287,7 +287,7 @@ export class UiSidebar {
    * @param  {Array}    ids - ids to select (expected to be OSM IDs)
    * @param  {boolean}  newFeature - true if it's a new feature, passed to the inspector
    */
-  select(ids, newFeature) {
+  select(ids, newFeature = false) {
     this.hide();
 
     const $sidebar = this.$sidebar;
