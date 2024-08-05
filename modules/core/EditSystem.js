@@ -135,11 +135,9 @@ export class EditSystem extends AbstractSystem {
 
         // Setup event handlers
         window.addEventListener('beforeunload', e => {
-          if (this._history.length > 1) {  // user did something
-            e.preventDefault();
-            this.saveBackup();
-            return (e.returnValue = '');  // show browser prompt
-          }
+          e.preventDefault();
+          this.saveBackup();
+          return (e.returnValue = '');  // show browser prompt
         });
 
         window.addEventListener('unload', () => this._mutex.unlock());
