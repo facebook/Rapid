@@ -11,13 +11,6 @@ export function uiSectionReactContainer(context) {
   const map = context.systems.map;
   let reRenderCount = 0;
 
-  const section = uiSection(context, 'react-container')
-    .label('A React Component')
-    .disclosureContent(renderContent);
-
-  const chooseBackground = (source) => {
-    imagery.baseLayerSource(source);
-  };
 
   const renderContent = (selection) => {
     const sources = imagery
@@ -28,11 +21,24 @@ export function uiSectionReactContainer(context) {
       .append('div')
       .attr('id', 'react-component');
 
-    ReactDom.render(
-      <ReactComponent reRenderCount={reRenderCount} sources={sources} selectSourceHandler={chooseBackground}/>,
-      document.getElementById('react-component')
+    const componentContainer = document.getElementById('react-component')
+
+    const containerRoot = ReactDom.createRoot(componentContainer);
+
+    containerRoot.render(
+      <ReactComponent reRenderCount={reRenderCount} sources={sources} selectSourceHandler={chooseBackground}/>
     );
+      
   };
+  
+  const section = uiSection(context, 'react-container')
+    .label('A React Component')
+    .disclosureContent(renderContent);
+
+  const chooseBackground = (source) => {
+    imagery.baseLayerSource(source);
+  };
+
 
 
   map

@@ -4,7 +4,7 @@ import { uiSectionBackgroundList } from '../sections/background_list.js';
 import { uiSectionBackgroundOffset } from '../sections/background_offset.js';
 import { uiSectionGridDisplayOptions } from '../sections/grid_display_options.js';
 import { uiSectionOverlayList } from '../sections/overlay_list.js';
-// import { uiSectionReactContainer } from '../sections/react_container.jsx';
+import { uiSectionReactContainer } from '../sections/react_container.jsx';
 
 
 export function uiPaneBackground(context) {
@@ -17,7 +17,7 @@ export function uiPaneBackground(context) {
     .iconName('rapid-icon-layers')
     .sections([
       uiSectionBackgroundList(context),
-      // uiSectionReactContainer(context),
+      uiSectionReactContainer(context),
       uiSectionOverlayList(context),
       uiSectionGridDisplayOptions(context),
       uiSectionBackgroundDisplayOptions(context),
