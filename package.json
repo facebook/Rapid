@@ -78,7 +78,7 @@
     "osm-auth": "2.5.0",
     "pbf": "^3.2.1",
     "pixi-filters": "^6.0.4",
-    "pixi.js": "^8.2.5",
+    "pixi.js": "^8.3.1",
     "pmtiles": "^3.0.6",
     "polyclip-ts": "~0.16.5",
     "prop-types": "^15.8.1",
