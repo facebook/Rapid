@@ -4,6 +4,7 @@ import { PixiFeaturePoint } from './PixiFeaturePoint.js';
 
 const MINZOOM = 12;
 const STREETSIDE_TEAL = 0xfffc4;
+const STREETSIDE_SELECTED = 0xffee00;
 
 const LINESTYLE = {
   casing: { alpha: 0 },  // disable
@@ -44,12 +45,11 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
 
 
   /**
-   * _handleBearingCHange
+   * _handleBearingChange
    * Handle the user dragging inside of a panoramic photo.
    */
   _handleBearingChange() {
     const service = this.context.services.streetside;
-
     this._viewerYawAngle = service._pannellumViewer.getYaw();
   }
 
@@ -86,11 +86,16 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
   }
 
 
+  /**
+   * filterImages
+   * @param  {Array<image>}  images - all images
+   * @return {Array<image>}  images with filtering applied
+   */
   filterImages(images) {
-    const photoSystem = this.context.systems.photos;
-    const fromDate = photoSystem.fromDate;
-    const toDate = photoSystem.toDate;
-    const usernames = photoSystem.usernames;
+    const photos = this.context.systems.photos;
+    const fromDate = photos.fromDate;
+    const toDate = photos.toDate;
+    const usernames = photos.usernames;
 
     if (fromDate) {
       const fromTimestamp = new Date(fromDate).getTime();
@@ -107,11 +112,16 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
   }
 
 
+  /**
+   * filterSequences
+   * @param  {Array<sequence>}  sequences - all sequences
+   * @return {Array<sequence>}  sequences with filtering applied
+   */
   filterSequences(sequences) {
-    const photoSystem = this.context.systems.photos;
-    const fromDate = photoSystem.fromDate;
-    const toDate = photoSystem.toDate;
-    const usernames = photoSystem.usernames;
+    const photos = this.context.systems.photos;
+    const fromDate = photos.fromDate;
+    const toDate = photos.toDate;
+    const usernames = photos.usernames;
 
     if (fromDate) {
       const fromTimestamp = new Date(fromDate).getTime();
@@ -136,10 +146,6 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
    */
   renderMarkers(frame, viewport, zoom) {
     const service = this.context.services.streetside;
-
-    //We want the active image, which may or may not be the selected image.
-    const activeIDs = this._classHasData.get('active') ?? new Set();
-
     if (!service?.started) return;
 
     const parentContainer = this.scene.groups.get('streetview');
@@ -183,29 +189,38 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
       let feature = this.features.get(featureID);
 
       if (!feature) {
-        const style = Object.assign({}, MARKERSTYLE);
-        if (Number.isFinite(photo.ca)) {
-          style.viewfieldAngles = [photo.ca];   // ca = camera angle
-        }
-        if (photo.isPano) {
-          style.viewfieldName = 'pano';
-        }
-
         feature = new PixiFeaturePoint(this, featureID);
         feature.geometry.setCoords(photo.loc);
-        feature.style = style;
         feature.parentContainer = parentContainer;
         feature.setData(dataID, photo);
       }
-      if (activeIDs.has(photo.id)) {
-        feature.drawing = true;
-        feature.style.viewfieldAngles = [photo.ca + this._viewerYawAngle];
-        feature.style.viewfieldName = 'viewfield';
-      } else  {
-        feature.drawing = false;
-        feature.style.viewfieldName = photo.isPano ? 'pano' : 'viewfield';
-      }
+
       this.syncFeatureClasses(feature);
+
+      if (feature.dirty) {
+        const style = Object.assign({}, MARKERSTYLE);
+
+        if (feature.active) {
+          style.viewfieldAngles = [photo.ca + this._viewerYawAngle];
+          style.viewfieldName = 'viewfield';
+          style.viewfieldTint = STREETSIDE_SELECTED;
+          style.markerTint = STREETSIDE_SELECTED;
+          style.scale = 2.0;
+        } else {
+          if (Number.isFinite(photo.ca)) {
+            style.viewfieldAngles = [photo.ca];   // ca = camera angle
+          } else {
+            style.viewfieldAngles = [];
+          }
+          style.viewfieldName = photo.isPano ? 'pano' : 'viewfield';
+          style.viewfieldTint = STREETSIDE_TEAL;
+          style.markerTint = STREETSIDE_TEAL;
+          style.scale = 1.0;
+        }
+
+        feature.style = style;
+      }
+
       feature.update(viewport, zoom);
       this.retainFeature(feature, frame);
     }

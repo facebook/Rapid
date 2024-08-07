@@ -179,11 +179,11 @@ export class AbstractLayer {
     if (!dataID) return;
 
     const classList = this._dataHasClass.get(dataID) ?? new Set();
-    feature.selected = classList.has('selected');
-    feature.hovered = classList.has('hovered');
+    feature.active = classList.has('active');
     feature.drawing = classList.has('drawing');
-    feature.active = classList.has('drawing');
     feature.highlighted = classList.has('highlighted');
+    feature.hovered = classList.has('hovered');
+    feature.selected = classList.has('selected');
   }
 
 
