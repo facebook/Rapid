@@ -130,7 +130,7 @@ export class StreetsideService extends AbstractSystem {
         // continue emitting events for a few seconds, in case viewer has inertia.
         const t = d3_timer(elapsed => {
           this.emit('viewerChanged');
-          if (elapsed > 2000) {
+          if (elapsed > 5000) {
             t.stop();
           }
         });
