@@ -302,7 +302,7 @@ export function uiMapInMap(context) {
         resolution: window.devicePixelRatio,
         sharedLoader: true,
         sharedTicker: false,
-        view: _surface.node(),
+        canvas: _surface.node(),
         events: {
           move: false,
           globalMove: false,
