@@ -266,7 +266,6 @@ export class MapRouletteService extends AbstractSystem {
   }
 
 
-
   /**
    * loadTaskDetailAsync
    * @param   task
@@ -294,7 +293,6 @@ export class MapRouletteService extends AbstractSystem {
    * @param   callback
    */
   postUpdate(task, callback) {
-    const context = this.context;
     const cache = this._cache;
 
     // A comment is optional, but if we have one, POST it..

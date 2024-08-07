@@ -1,6 +1,6 @@
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 import { Tiler } from '@rapid-sdk/math';
-import { utilArrayUnion, utilQsString } from '@rapid-sdk/util';
+import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem.js';
@@ -66,56 +66,58 @@ export class KartaviewService extends AbstractSystem {
    */
   startAsync() {
     if (this._startPromise) return this._startPromise;
+
     const context = this.context;
+    const ui = context.systems.ui;
 
     // add osc-wrapper
-    let wrap = context.container().select('.photoviewer').selectAll('.osc-wrapper')
+    const $wrap = context.container().select('.photoviewer').selectAll('.osc-wrapper')
       .data([0]);
 
-    let wrapEnter = wrap.enter()
+    const $$wrap = $wrap.enter()
       .append('div')
       .attr('class', 'photo-wrapper osc-wrapper')
       .classed('hide', true)
       .call(this._imgZoom.on('zoom', this._zoomPan))
       .on('dblclick.zoom', null);
 
-    wrapEnter
+    $$wrap
       .append('div')
       .attr('class', 'photo-attribution fillD');
 
-    let controlsEnter = wrapEnter
+    const $$controls = $$wrap
       .append('div')
       .attr('class', 'photo-controls-wrap')
       .append('div')
       .attr('class', 'photo-controls');
 
-    controlsEnter
+    $$controls
       .append('button')
       .on('click.back', () => this._step(-1))
-      .html('◄');
+      .text('◄');
 
-    controlsEnter
+    $$controls
       .append('button')
       .on('click.rotate-ccw', () => this._rotate(-90))
-      .html('⤿');
+      .text('⤿');
 
-    controlsEnter
+    $$controls
       .append('button')
       .on('click.rotate-cw', () => this._rotate(90))
-      .html('⤾');
+      .text('⤾');
 
-    controlsEnter
+    $$controls
       .append('button')
       .on('click.forward', () => this._step(1))
-      .html('►');
+      .text('►');
 
-    wrapEnter
+    $$wrap
       .append('div')
       .attr('class', 'osc-image-wrap');
 
 
     // Register viewer resize handler
-    context.systems.ui.photoviewer.on('resize.kartaview', dimensions => {
+    ui.photoviewer.on('resize.kartaview', dimensions => {
       this._imgZoom = d3_zoom()
         .extent([[0, 0], dimensions])
         .translateExtent([[0, 0], dimensions])
@@ -175,7 +177,7 @@ export class KartaviewService extends AbstractSystem {
    */
   getSequences() {
     const extent = this.context.viewport.visibleExtent();
-    let sequenceIDs = new Set();
+    const sequenceIDs = new Set();
 
     // Gather sequences for images in viewport
     for (const box of this._cache.rtree.search(extent.bbox())) {
@@ -185,7 +187,7 @@ export class KartaviewService extends AbstractSystem {
     }
 
     // Make GeoJSON LineStrings from those sequences..
-    let lineStrings = [];
+    const lineStrings = [];
     for (const sequenceID of sequenceIDs) {
       const sequence = this._cache.sequences.get(sequenceID);
       const images = sequence?.images ?? [];   // note that `images` may be a sparse array
@@ -238,17 +240,17 @@ export class KartaviewService extends AbstractSystem {
    * Shows the photo viewer, and hides all other photo viewers
    */
   showViewer() {
-    let viewer = this.context.container().select('.photoviewer')
+    const $viewerContainer = this.context.container().select('.photoviewer')
       .classed('hide', false);
 
-    let isHidden = viewer.selectAll('.photo-wrapper.osc-wrapper.hide').size();
+    const isHidden = $viewerContainer.selectAll('.photo-wrapper.osc-wrapper.hide').size();
 
     if (isHidden) {
-      viewer
+      $viewerContainer
         .selectAll('.photo-wrapper:not(.osc-wrapper)')
         .classed('hide', true);
 
-      viewer
+      $viewerContainer
         .selectAll('.photo-wrapper.osc-wrapper')
         .classed('hide', false);
     }
@@ -264,18 +266,14 @@ export class KartaviewService extends AbstractSystem {
     const context = this.context;
     context.systems.photos.selectPhoto(null);
 
-    let viewer = context.container().select('.photoviewer');
-    if (!viewer.empty()) viewer.datum(null);
+    const $viewerContainer = context.container().select('.photoviewer');
+    if (!$viewerContainer.empty()) $viewerContainer.datum(null);
 
-    viewer
+    $viewerContainer
       .classed('hide', true)
       .selectAll('.photo-wrapper')
       .classed('hide', true);
 
-    context.container().selectAll('.viewfield-group, .sequence, .icon-sign')
-      .classed('currentView', false);
-
-    this.setStyles(context, null, true);
     this.emit('imageChanged');
   }
 
@@ -294,13 +292,8 @@ export class KartaviewService extends AbstractSystem {
     const context = this.context;
     if (!context.container()) return;
 
-    let viewer = context.container().select('.photoviewer');
-    if (!viewer.empty()) viewer.datum(d);
-
-    this.setStyles(context, null, true);
-
-    context.container().selectAll('.icon-sign')
-      .classed('currentView', false);
+    const $viewerContainer = context.container().select('.photoviewer');
+    if (!$viewerContainer.empty()) $viewerContainer.datum(d);
 
     // It's possible we could be trying to show a photo that hasn't been fetched yet
     // (e.g. if we are starting up with a photoID specified in the url hash)
@@ -309,16 +302,16 @@ export class KartaviewService extends AbstractSystem {
     }
     if (!d) return Promise.resolve();
 
-    let wrap = context.container().select('.photoviewer .osc-wrapper');
-    let imageWrap = wrap.selectAll('.osc-image-wrap');
-    let attribution = wrap.selectAll('.photo-attribution').html('');
+    const $wrap = context.container().select('.photoviewer .osc-wrapper');
+    const $imageWrap = $wrap.selectAll('.osc-image-wrap');
+    const $attribution = $wrap.selectAll('.photo-attribution').html('');  // clear DOM content
 
-    wrap
+    $wrap
       .transition()
       .duration(100)
       .call(this._imgZoom.transform, d3_zoomIdentity);
 
-    imageWrap
+    $imageWrap
       .selectAll('.osc-image')
       .remove();
 
@@ -326,24 +319,24 @@ export class KartaviewService extends AbstractSystem {
       const sequence = this._cache.sequences.get(d.sequenceID);
       const r = sequence?.rotation ?? 0;
 
-      imageWrap
+      $imageWrap
         .append('img')
         .attr('class', 'osc-image')
         .attr('src', `${KARTAVIEW_API}/${d.storageNum}/files/photo/${d.imagePath}`)
         .style('transform', `rotate(${r}deg)`);
 
       if (d.captured_at) {
-        attribution
+        $attribution
           .append('span')
           .attr('class', 'captured_at')
           .text(_localeDateString(d.captured_at));
 
-        attribution
+        $attribution
           .append('span')
           .text('|');
       }
 
-      attribution
+      $attribution
         .append('a')
         .attr('class', 'image-link')
         .attr('target', '_blank')
@@ -362,63 +355,6 @@ export class KartaviewService extends AbstractSystem {
 
       const localeCode = context.systems.l10n.localeCode();
       return d.toLocaleDateString(localeCode, options);
-    }
-  }
-
-
-  // NOTE: the setStyles() functions all dont work right now since the WebGL rewrite.
-  // They depended on selecting svg stuff from the container - see #740
-
-  // Updates the currently highlighted sequence and selected bubble.
-  // Reset is only necessary when interacting with the viewport because
-  // this implicitly changes the currently selected bubble/sequence
-  setStyles(context, hovered, reset) {
-    if (reset) {  // reset all layers
-      context.container().selectAll('.viewfield-group')
-        .classed('highlighted', false)
-        .classed('hovered', false)
-        .classed('currentView', false);
-
-      context.container().selectAll('.sequence')
-        .classed('highlighted', false)
-        .classed('currentView', false);
-    }
-
-    let hoveredImageID = hovered?.id;
-    let hoveredSequenceID = hovered?.sequenceID;
-    let hoveredSequence = hoveredSequenceID && this._cache.sequences.get(hoveredSequenceID);
-    let hoveredImageIDs = (hoveredSequence && hoveredSequence.images.map(function (d) { return d.id; })) || [];
-
-    let viewer = context.container().select('.photoviewer');
-    let selected = viewer.empty() ? undefined : viewer.datum();
-    let selectedImageID = selected?.id;
-    let selectedSequenceID = selected?.sequenceID;
-    let selectedSequence = selectedSequenceID && this._cache.sequences.get(selectedSequenceID);
-    let selectedImageIDs = (selectedSequence && selectedSequence.images.map(function (d) { return d.id; })) || [];
-
-    // highlight sibling viewfields on either the selected or the hovered sequences
-    let highlightedImageIDs = utilArrayUnion(hoveredImageIDs, selectedImageIDs);
-
-    context.container().selectAll('.layer-kartaview .viewfield-group')
-      .classed('highlighted', function(d) { return highlightedImageIDs.indexOf(d.id) !== -1; })
-      .classed('hovered', function(d) { return d.id === hoveredImageID; })
-      .classed('currentView', function(d) { return d.id === selectedImageID; });
-
-    context.container().selectAll('.layer-kartaview .sequence')
-      .classed('highlighted', function(d) { return d.properties.id === hoveredSequenceID; })
-      .classed('currentView', function(d) { return d.properties.id === selectedSequenceID; });
-
-    // update viewfields if needed
-    context.container().selectAll('.layer-kartaview .viewfield-group .viewfield')
-      .attr('d', viewfieldPath);
-
-    function viewfieldPath() {
-      let d = this.parentNode.__data__;
-      if (d.isPano && d.id !== selectedImageID) {
-        return 'M 8,13 m -10,0 a 10,10 0 1,0 20,0 a 10,10 0 1,0 -20,0';
-      } else {
-        return 'M 6,9 C 8,8.4 8,8.4 10,9 L 16,-2 C 12,-5 4,-5 0,-2 z';
-      }
     }
   }
 
@@ -447,127 +383,132 @@ export class KartaviewService extends AbstractSystem {
    * @param  {Tile} tile - tile object
    */
   _loadNextTilePage(currZoom, tile) {
-  const bbox = tile.wgs84Extent.bbox();
-  const maxPages = this._maxPageAtZoom(currZoom);
-  const nextPage = this._cache.nextPage.get(tile.id) ?? 1;
+    const bbox = tile.wgs84Extent.bbox();
+    const maxPages = this._maxPageAtZoom(currZoom);
+    const nextPage = this._cache.nextPage.get(tile.id) ?? 1;
 
-  if (nextPage > maxPages) return;
+    if (nextPage > maxPages) return;
 
-  const k = `${tile.id},${nextPage}`;
-  if (this._cache.loaded.has(k) || this._cache.inflight.has(k)) return;
+    const k = `${tile.id},${nextPage}`;
+    if (this._cache.loaded.has(k) || this._cache.inflight.has(k)) return;
 
-  const params = utilQsString({
-    ipp: MAXRESULTS,
-    page: nextPage,
-    bbTopLeft: [bbox.maxY, bbox.minX].join(','),
-    bbBottomRight: [bbox.minY, bbox.maxX].join(','),
-  }, true);
+    const params = utilQsString({
+      ipp: MAXRESULTS,
+      page: nextPage,
+      bbTopLeft: [bbox.maxY, bbox.minX].join(','),
+      bbBottomRight: [bbox.minY, bbox.maxX].join(','),
+    }, true);
 
-  const controller = new AbortController();
-  const options = {
-    method: 'POST',
-    signal: controller.signal,
-    body: params,
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-  };
-  const url = `${KARTAVIEW_API}/1.0/list/nearby-photos/`;
+    const controller = new AbortController();
+    const options = {
+      method: 'POST',
+      signal: controller.signal,
+      body: params,
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    };
+    const url = `${KARTAVIEW_API}/1.0/list/nearby-photos/`;
 
-  fetch(url, options)
-    .then(utilFetchResponse)
-    .then(sequenceData => {
-      this._cache.loaded.add(k);
-      if (!sequenceData || !sequenceData.currentPageItems || !sequenceData.currentPageItems.length) {
-        throw new Error('No Data');
-      }
-      // Extract the sequence IDs from the data
-      const sequenceIDs = sequenceData.currentPageItems.map(image => image.sequence_id);
+    fetch(url, options)
+      .then(utilFetchResponse)
+      .then(sequenceData => {
+        this._cache.loaded.add(k);
+        if (!sequenceData || !sequenceData.currentPageItems || !sequenceData.currentPageItems.length) {
+          throw new Error('No Data');
+        }
+        // Extract the sequence IDs from the data
+        const sequenceIDs = sequenceData.currentPageItems.map(image => image.sequence_id);
 
-      // Fetch images for each sequence
-      sequenceIDs.forEach(sequenceID => {
-        this._fetchImagesForSequence(sequenceID);
+        // Fetch images for each sequence
+        sequenceIDs.forEach(sequenceID => {
+          this._fetchImagesForSequence(sequenceID);
+        });
+
+        if (sequenceData.currentPageItems.length === MAXRESULTS) {
+          this._cache.nextPage.set(tile.id, nextPage + 1);
+          this._loadNextTilePage(currZoom, tile);
+        } else {
+          this._cache.nextPage.set(tile.id, Infinity);
+        }
+
+        this.context.deferredRedraw();
+        this.emit('loadedData');
+      })
+      .catch(err => {
+        if (err.name === 'AbortError') return;
+        if (err instanceof Error) console.error(err);  // eslint-disable-line no-console
+      })
+      .finally(() => {
+        this._cache.inflight.delete(k);
       });
 
-      if (sequenceData.currentPageItems.length === MAXRESULTS) {
-        this._cache.nextPage.set(tile.id, nextPage + 1);
-        this._loadNextTilePage(currZoom, tile);
-      } else {
-        this._cache.nextPage.set(tile.id, Infinity);
-      }
-
-      this.context.deferredRedraw();
-      this.emit('loadedData');
-    })
-    .catch(err => {
-      if (err.name === 'AbortError') return;
-      if (err instanceof Error) console.error(err);  // eslint-disable-line no-console
-    })
-    .finally(() => {
-      this._cache.inflight.delete(k);
-    });
-
-  this._cache.inflight.set(k, { promise: null, controller: controller });
-}
-
-_fetchImagesForSequence(sequenceID) {
-  if (!sequenceID) {
-    console.error('Invalid sequenceID:', sequenceID);   // eslint-disable-line no-console
-    return; // Abort the operation if sequenceID is not defined
+    this._cache.inflight.set(k, { promise: null, controller: controller });
   }
 
-  if (this.fetchedSequences.has(sequenceID)) {
-    return; // Sequence already fetched
-  }
 
-  // Add the sequence to the fetched set to avoid duplicate fetching
-  this.fetchedSequences.add(sequenceID);
-  const controller = new AbortController();
-  const sequenceUrl = `${OPENSTREETCAM_API}/2.0/photo/?sequenceId=${sequenceID}`;
-  const sequenceOptions = {
-    method: 'GET',
-    signal: controller.signal,
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-  };
-  fetch(sequenceUrl, sequenceOptions)
-    .then(utilFetchResponse)
-    .then(data => {
-      if (data && data.result && data.result.data) {
-        // Process and cache the images
-        const imageBoxes = data.result.data.map(image => {
-          const loc = [+image.lng, +image.lat];
-          const d = {
-            id: image.id,
-            loc: loc,
-            ca: +image.heading,
-            captured_at: (image.shotDate || image.dateAdded),
-            storageNum: image.storage,
-            imagePath: image.filepathLTh,
-            sequenceID: image.sequenceId,
-            sequenceIndex: +image.sequenceIndex
-          };
-          this._cache.images.set(image.id, d);
+  /**
+   * _fetchImagesForSequence
+   */
+  _fetchImagesForSequence(sequenceID) {
+    if (!sequenceID) {
+      console.error('Invalid sequenceID:', sequenceID);   // eslint-disable-line no-console
+      return; // Abort the operation if sequenceID is not defined
+    }
 
-          // Cache sequence info
-          let sequence = this._cache.sequences.get(d.sequenceID);
-          if (!sequence) {
-            sequence = { rotation: 0, images: [], v: 0 };
-            this._cache.sequences.set(d.sequenceID, sequence);
-          }
+    if (this.fetchedSequences.has(sequenceID)) {
+      return; // Sequence already fetched
+    }
 
-          // Add image to sequence - note that `images` may be a sparse array
-          sequence.images[d.sequenceIndex] = d;
-          sequence.v++;
+    // Add the sequence to the fetched set to avoid duplicate fetching
+    this.fetchedSequences.add(sequenceID);
+    const controller = new AbortController();
+    const sequenceUrl = `${OPENSTREETCAM_API}/2.0/photo/?sequenceId=${sequenceID}`;
+    const sequenceOptions = {
+      method: 'GET',
+      signal: controller.signal,
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    };
 
-          return {
-            minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d
-          };
-        }).filter(Boolean);
+    fetch(sequenceUrl, sequenceOptions)
+      .then(utilFetchResponse)
+      .then(data => {
+        if (data && data.result && data.result.data) {
+          // Process and cache the images
+          const imageBoxes = data.result.data.map(image => {
+            const loc = [+image.lng, +image.lat];
+            const d = {
+              id: image.id,
+              loc: loc,
+              ca: +image.heading,
+              captured_at: (image.shotDate || image.dateAdded),
+              storageNum: image.storage,
+              imagePath: image.filepathLTh,
+              sequenceID: image.sequenceId,
+              sequenceIndex: +image.sequenceIndex
+            };
+            this._cache.images.set(image.id, d);
 
-        this._cache.rtree.load(imageBoxes);
-      }
-    })
-    .catch(err => {
-      if (err instanceof Error) console.error(err);  // eslint-disable-line no-console
-    });
+            // Cache sequence info
+            let sequence = this._cache.sequences.get(d.sequenceID);
+            if (!sequence) {
+              sequence = { rotation: 0, images: [], v: 0 };
+              this._cache.sequences.set(d.sequenceID, sequence);
+            }
+
+            // Add image to sequence - note that `images` may be a sparse array
+            sequence.images[d.sequenceIndex] = d;
+            sequence.v++;
+
+            return {
+              minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d
+            };
+          }).filter(Boolean);
+
+          this._cache.rtree.load(imageBoxes);
+        }
+      })
+      .catch(err => {
+        if (err instanceof Error) console.error(err);  // eslint-disable-line no-console
+      });
   }
 
 
@@ -604,14 +545,14 @@ _fetchImagesForSequence(sequenceID) {
     if (r < -180) r += 360;
     sequence.rotation = r;
 
-    let wrap = this.context.container().select('.photoviewer .osc-wrapper');
+    const $wrap = this.context.container().select('.photoviewer .osc-wrapper');
 
-    wrap
+    $wrap
       .transition()
       .duration(100)
       .call(this._imgZoom.transform, d3_zoomIdentity);
 
-    wrap.selectAll('.osc-image')
+    $wrap.selectAll('.osc-image')
       .transition()
       .duration(100)
       .style('transform', `rotate(${r}deg)`);
@@ -635,8 +576,12 @@ _fetchImagesForSequence(sequenceID) {
     if (!nextImage) return;
 
     const context = this.context;
-    context.systems.map.centerEase(nextImage.loc);
-    context.systems.photos.selectPhoto('kartaview', nextImage.id);
+    const map = context.systems.map;
+    const photos = context.systems.photos;
+
+    map.centerEase(nextImage.loc);
+    photos.selectPhoto('kartaview', nextImage.id);
+
     this.emit('imageChanged');
   }
 }
