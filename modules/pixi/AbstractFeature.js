@@ -53,7 +53,6 @@ export class AbstractFeature {
 
     // By default, make the Feature interactive
     this._allowInteraction = true;
-    this._active = false;
     container.eventMode = 'static';
 
     this.v = -1;
@@ -69,10 +68,12 @@ export class AbstractFeature {
     this._dataID = null;
     this._data = null;
 
-    this._selected = false;
+    // pseudo "classes"
+    this._active = false;
+    this._drawing = false;
     this._highlighted = false;
     this._hovered = false;
-    this._drawing = false;
+    this._selected = false;
 
     // We will manage our own bounds for now because we can probably do this
     // faster than Pixi's built in bounds calculations.

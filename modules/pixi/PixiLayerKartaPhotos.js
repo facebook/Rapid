@@ -67,9 +67,9 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
 
 
   filterImages(images) {
-    const photoSystem = this.context.systems.photos;
-    const fromDate = photoSystem.fromDate;
-    const toDate = photoSystem.toDate;
+    const photos = this.context.systems.photos;
+    const fromDate = photos.fromDate;
+    const toDate = photos.toDate;
 
     if (fromDate) {
       const fromTimestamp = new Date(fromDate).getTime();
@@ -84,9 +84,9 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
 
 
   filterSequences(sequences) {
-    const photoSystem = this.context.systems.photos;
-    const fromDate = photoSystem.fromDate;
-    const toDate = photoSystem.toDate;
+    const photos = this.context.systems.photos;
+    const fromDate = photos.fromDate;
+    const toDate = photos.toDate;
 
     if (fromDate) {
       const fromTimestamp = new Date(fromDate).getTime();
