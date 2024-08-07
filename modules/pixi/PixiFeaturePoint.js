@@ -160,8 +160,9 @@ export class PixiFeaturePoint extends AbstractFeature {
 
     // Update viewfields, if any..
     const vfAngles = style.viewfieldAngles || [];
+    let vfTexture = PIXI.Texture.EMPTY;
     if (vfAngles.length > 0) {  // Should have viewfields
-      const vfTexture = style.viewfieldTexture || textureManager.get(style.viewfieldName) || PIXI.Texture.WHITE;
+      vfTexture = style.viewfieldTexture || textureManager.get(style.viewfieldName) || PIXI.Texture.WHITE;
 
       // Sort markers with viewfields above markers without viewfields
       this.container.zIndex = -latitude + 1000;
@@ -198,10 +199,13 @@ export class PixiFeaturePoint extends AbstractFeature {
       this.viewfields.rotation = bearing;
 
       // Update viewfield angles and style
+      const scale = style.scale || 1;
+      const xScale = scale * (style.fovWidth || 1);
+      const yScale = scale * (style.fovLength || 1);
       for (let i = 0; i < vfAngles.length; i++) {
         const vfSprite = this.viewfields.getChildAt(i);
         vfSprite.tint = style.viewfieldTint || 0x333333;
-        vfSprite.scale.set((style.scale || 1) * style.fovWidth || 1, (style.scale || 1) * style.fovLength || 1);
+        vfSprite.scale.set(xScale, yScale);
         vfSprite.angle = vfAngles[i];
       }
 
@@ -258,7 +262,10 @@ export class PixiFeaturePoint extends AbstractFeature {
     }
 
     // If we are waiting on a texure to load, stay dirty.
-    this._styleDirty = (marker.texture === PIXI.Texture.EMPTY || icon.texture === PIXI.Texture.EMPTY);
+    const missingMarker = marker.visible && marker.texture === PIXI.Texture.EMPTY;
+    const missingIcon = icon.visible && icon.texture === PIXI.Texture.EMPTY;
+    const missingViewfields = this.viewfields && vfTexture === PIXI.Texture.EMPTY;
+    this._styleDirty = (missingMarker || missingIcon || missingViewfields);
   }
 
 
