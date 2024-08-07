@@ -19,6 +19,7 @@ const TILEZOOM = 14;
 
 /**
  * `MapillaryService`
+ *
  * Events available:
  *   `imageChanged`
  *   `bearingChanged`
@@ -42,18 +43,19 @@ export class MapillaryService extends AbstractSystem {
     this._showing = null;
     this._mlyActiveImage = null;
     this._mlyCache = {};
-    this._mlyIsFallback = false;
     this._mlyHighlightedDetection = null;
     this._mlyShowFeatureDetections = false;
     this._mlyShowSignDetections = false;
-    this._mlyViewer = null;
-    this._mlyViewerFilter = ['all'];
-    this._keydown = this._keydown.bind(this);
-    this.navigateForward = this.navigateForward.bind(this);
-    this.navigateBackward = this.navigateBackward.bind(this);
 
+    this._viewer = null;
+    this._viewerFilter = ['all'];
+    this._keydown = this._keydown.bind(this);
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
     this._lastv = null;
+
+    // Make sure the event handlers have `this` bound correctly
+    this.navigateForward = this.navigateForward.bind(this);
+    this.navigateBackward = this.navigateBackward.bind(this);
   }
 
 
@@ -71,18 +73,19 @@ export class MapillaryService extends AbstractSystem {
 
     if (
       (activeElement !== 'BODY' && !mapillaryViewerClass) ||
-      !this.viewerShowing      ||
+      !this.viewerShowing ||
       !this.context.systems.photos._currLayerID?.startsWith('mapillary')
     ) {
       return;
     }
 
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
-        this.navigateBackward();
-      } else if (e.key === 'ArrowUp' || e.key === 'ArrowRight') {
-        this.navigateForward();
-      }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+      this.navigateBackward();
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowRight') {
+      this.navigateForward();
+    }
   }
+
 
   /**
    * initAsync
@@ -218,8 +221,8 @@ export class MapillaryService extends AbstractSystem {
    * Remove highlghted detections from the Mapillary viewer
    */
   resetTags() {
-    if (this._mlyViewer && !this._mlyIsFallback) {
-      this._mlyViewer.getComponent('tag').removeAll();
+    if (this._viewer) {
+      this._viewer.getComponent('tag').removeAll();
     }
   }
 
@@ -235,6 +238,7 @@ export class MapillaryService extends AbstractSystem {
       this.resetTags();
     }
   }
+
 
   /**
    * showSignDetections
@@ -255,11 +259,11 @@ export class MapillaryService extends AbstractSystem {
    * The filters settings are stored in the PhotoSystem
    */
   filterViewer() {
-    const photoSystem = this.context.systems.photos;
-    const showsPano = photoSystem.showsPanoramic;
-    const showsFlat = photoSystem.showsFlat;
-    const fromDate = photoSystem.fromDate;
-    const toDate = photoSystem.toDate;
+    const photos = this.context.systems.photos;
+    const showsPano = photos.showsPanoramic;
+    const showsFlat = photos.showsFlat;
+    const fromDate = photos.fromDate;
+    const toDate = photos.toDate;
     const filter = ['all'];
 
     if (!showsPano) filter.push([ '!=', 'cameraType', 'spherical' ]);
@@ -271,32 +275,35 @@ export class MapillaryService extends AbstractSystem {
       filter.push(['>=', 'capturedAt', new Date(toDate).getTime()]);
     }
 
-    if (this._mlyViewer) {
-      this._mlyViewer.setFilter(filter);
+    if (this._viewer) {
+      this._viewer.setFilter(filter);
     }
-    this._mlyViewerFilter = filter;
+    this._viewerFilter = filter;
 
     return filter;
   }
 
-navigateForward() {
-  const next = window.mapillary.NavigationDirection.Next;
-  this._navigate(next);
-}
 
-navigateBackward() {
-  const prev = window.mapillary.NavigationDirection.Prev;
-  this._navigate(prev);
-}
+  navigateForward() {
+    const next = window.mapillary.NavigationDirection.Next;
+    this._navigate(next);
+  }
+
+  navigateBackward() {
+    const prev = window.mapillary.NavigationDirection.Prev;
+    this._navigate(prev);
+  }
 
   _navigate(dir) {
-    this._mlyViewer.moveDir(dir).catch(
+    this._viewer.moveDir(dir).catch(
       error => { //errs out if end of sequence reached, just don't print anything
       },
     );
-}
+  }
 
-get viewerShowing()         { return this._showing; }
+  get viewerShowing()  {
+    return this._showing;
+  }
 
 
   /**
@@ -309,7 +316,7 @@ get viewerShowing()         { return this._showing; }
 
     const isHidden = wrap.selectAll('.photo-wrapper.mly-wrapper.hide').size();
 
-    if (isHidden && this._mlyViewer) {
+    if (isHidden && this._viewer) {
       wrap
         .selectAll('.photo-wrapper:not(.mly-wrapper)')
         .classed('hide', true);
@@ -320,7 +327,7 @@ get viewerShowing()         { return this._showing; }
 
       this._showing = true;
 
-      this._mlyViewer.resize();
+      this._viewer.resize();
     }
   }
 
@@ -330,12 +337,13 @@ get viewerShowing()         { return this._showing; }
    * Hides the photo viewer and clears the currently selected image
    */
   hideViewer() {
-    this._mlyActiveImage = null;
     const context = this.context;
     context.systems.photos.selectPhoto(null);
 
-    if (!this._mlyIsFallback && this._mlyViewer) {
-      this._mlyViewer.getComponent('sequence').stop();
+    this._mlyActiveImage = null;
+
+    if (this._viewer) {
+      this._viewer.getComponent('sequence').stop();
     }
 
     const viewer = context.container().select('.photoviewer');
@@ -348,7 +356,7 @@ get viewerShowing()         { return this._showing; }
 
     this._showing = false;
 
-    this.setStyles(context, null);
+    // this.setStyles(context, null);
     this.emit('imageChanged');
   }
 
@@ -374,7 +382,7 @@ get viewerShowing()         { return this._showing; }
 
     return this.startAsync()
       .then(() => {
-        return this._mlyViewer
+        return this._viewer
           .moveTo(imageID)
           .catch(err => console.error('mly3', err));   // eslint-disable-line no-console
       });
@@ -429,10 +437,11 @@ get viewerShowing()         { return this._showing; }
 
 
   // Get detections for the current image and shows them in the image viewer
-  updateDetections(imageID, url) {
-    if (!this._mlyViewer || this._mlyIsFallback) return;
+  _updateDetections(imageID) {
+    if (!this._viewer) return;
     if (!imageID) return;
 
+    const url = `${apiUrl}/${imageID}/detections?access_token=${accessToken}&fields=id,image,geometry,value`;
     const cache = this._mlyCache.image_detections;
     let detections = cache.forImageID[imageID];
 
@@ -460,7 +469,7 @@ get viewerShowing()         { return this._showing; }
 
   // Create a tag for each detection and shows it in the image viewer
   _showDetections(detections) {
-    const tagComponent = this._mlyViewer.getComponent('tag');
+    const tagComponent = this._viewer.getComponent('tag');
     for (const data of detections) {
       const tag = this._makeTag(data);
       if (tag) {
@@ -722,48 +731,37 @@ get viewerShowing()         { return this._showing; }
   _initViewer() {
     const mapillary = window.mapillary;
     if (!mapillary) throw new Error('mapillary not loaded');
+    if (!mapillary.isSupported()) throw new Error ('mapillary not supported');
 
     const context = this.context;
+    const map = context.systems.map;
+    const photos = context.systems.photos;
+    const ui = context.systems.ui;
 
     const opts = {
       accessToken: accessToken,
       component: {
         cover: false,
-        bearing: {size: mapillary.ComponentSize.Standard},
+        bearing: { size: mapillary.ComponentSize.Standard },
         keyboard: false,
         tag: true
       },
-      container: 'rapideditor-mly',
+      container: 'rapideditor-mly'
     };
 
-    // Disable components requiring WebGL support
-    if (!mapillary.isSupported() && mapillary.isFallbackSupported()) {
-      this._mlyIsFallback = true;
-      opts.component = {
-        cover: false,
-        direction: false,
-        imagePlane: false,
-        keyboard: false,
-        mouse: false,
-        sequence: false,
-        tag: false,
-        image: true,        // fallback
-        navigation: true    // fallback
-      };
-    }
 
     // imageChanged: called after the viewer has changed images and is ready.
     const imageChanged = (node) => {
       this.resetTags();
       const image = node.image;
       this.setActiveImage(image);
-      this.setStyles(context, null);
+      // this.setStyles(context, null);
       const loc = [image.originalLngLat.lng, image.originalLngLat.lat];
-      context.systems.map.centerEase(loc);
-      context.systems.photos.selectPhoto('mapillary', image.id);
+      map.centerEase(loc);
+      photos.selectPhoto('mapillary', image.id);
 
       if (this._mlyShowFeatureDetections || this._mlyShowSignDetections) {
-        this.updateDetections(image.id, `${apiUrl}/${image.id}/detections?access_token=${accessToken}&fields=id,image,geometry,value`);
+        this._updateDetections(image.id);
       }
       this.emit('imageChanged');
     };
@@ -771,28 +769,27 @@ get viewerShowing()         { return this._showing; }
     // bearingChanged: called when the bearing changes in the image viewer.
     const bearingChanged = (e) => {
       this.emit('bearingChanged', e);
-      this.context.systems.map.immediateRedraw();
+      map.immediateRedraw();
     };
 
-    const fovChange = (e) => {
+    const fovChanged = (e) => {
       this.emit('fovChanged', e);
     };
 
-    this._mlyViewer = new mapillary.Viewer(opts);
-    this._mlyViewer.on('image', imageChanged);
-    this._mlyViewer.on('bearing', bearingChanged);
-    this._mlyViewer.on('fov', fovChange);
+    this._viewer = new mapillary.Viewer(opts);
+    this._viewer.on('image', imageChanged);
+    this._viewer.on('bearing', bearingChanged);
+    this._viewer.on('fov', fovChanged);
 
 
-      if (this._mlyViewerFilter) {
-      this._mlyViewer.setFilter(this._mlyViewerFilter);
+    if (this._viewerFilter) {
+      this._viewer.setFilter(this._viewerFilter);
     }
 
     // Register viewer resize handler
-    context.systems.ui.photoviewer.on('resize.mapillary', () => {
-      if (this._mlyViewer) this._mlyViewer.resize();
+    ui.photoviewer.on('resize.mapillary', () => {
+      if (this._viewer) this._viewer.resize();
     });
   }
-
 
 }
