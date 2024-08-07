@@ -300,7 +300,10 @@ export class SelectBehavior extends AbstractBehavior {
     this._cancelLongPress();
 
     const context = this.context;
-    const eventManager = context.systems.map.renderer.events;
+    const map = context.systems.map;
+    const photos = context.systems.photos;
+
+    const eventManager = map.renderer.events;
 
     const modifiers = eventManager.modifierKeys;
     const isMac = utilDetect().os === 'mac';
@@ -320,7 +323,7 @@ export class SelectBehavior extends AbstractBehavior {
 
     // If we're clicking on something real, we want to pause doubleclick zooms
     if (data) {
-      const behavior = this.context.behaviors.mapInteraction;
+      const behavior = context.behaviors.mapInteraction;
       behavior.doubleClickEnabled = false;
       window.setTimeout(() => behavior.doubleClickEnabled = true, 500);
     }
@@ -334,7 +337,6 @@ export class SelectBehavior extends AbstractBehavior {
 
     // Clicked on nothing
     if (!data) {
-      context.systems.photos.selectPhoto(null);
       if (context.mode?.id !== 'browse' && !this._multiSelection.size && !isMultiselect) {
         context.enter('browse');
       }
@@ -363,7 +365,6 @@ export class SelectBehavior extends AbstractBehavior {
           // e.g. in the walkthrough
           context.enter('select-osm', { selection: { osm: [dataID] }} );
         }
-
       } else {
         if (selectedIDs.includes(dataID)) {   // already in the selectedIDs..
           if (!this._showsMenu) {
@@ -375,18 +376,15 @@ export class SelectBehavior extends AbstractBehavior {
           context.enter('select-osm', { selection: { osm: selectedIDs }} );
         }
       }
+      return;
     }
 
     // Clicked on a photo, so open / refresh the viewer's pic
     if (data.captured_at) {
       // Determine the layer that was clicked on, obtain its service.
       const layerID = target.layerID;
-      context.systems.map.centerEase(data.loc);
-      context.systems.photos.selectPhoto(layerID, dataID);
-//      // No mode change event here, just manually tell the renderer to select it, for now
-//      const scene = context.scene();
-//      scene.clearClass('selected');
-//      scene.classData(layerID, dataID, 'selected');
+      map.centerEase(data.loc);
+      photos.selectPhoto(layerID, dataID);
     }
 
     // Clicked on a Mapillary object detection or traffic sign..
@@ -395,15 +393,15 @@ export class SelectBehavior extends AbstractBehavior {
       const service = context.services.mapillary;
       if (!service?.started) return;
 
-      context.systems.map.centerEase(event.loc);
-      const selectedImageID = service.getActiveImage() && service.getActiveImage().id;
+      map.centerEase(event.loc);
+      const selectedImageID = service.getActiveImage()?.id;
 
       service.getDetectionsAsync(dataID)
         .then(detections => {
           if (!detections.length) return;
 
           const imageID = detections[0].image.id;
-          context.systems.photos.selectPhoto('mapillary', imageID);
+          photos.selectPhoto('mapillary', imageID);
   //todo: check on the asyncness of this code
   //          service.highlightDetection(detections[0]);
         });
