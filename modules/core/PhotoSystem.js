@@ -25,6 +25,8 @@ export class PhotoSystem extends AbstractSystem {
     this.dependencies = new Set(['map', 'urlhash']);
 
     this._LAYERIDS = ['streetside', 'mapillary', 'mapillary-map-features', 'mapillary-signs', 'kartaview'];
+
+    // These are the English layer names that will appear in the changeset tag if the layer is used.
     this._LAYERNAMES = {
       'streetside': 'Bing Streetside',
       'mapillary': 'Mapillary',
@@ -32,6 +34,7 @@ export class PhotoSystem extends AbstractSystem {
       'mapillary-signs': 'Mapillary Street Signs',
       'kartaview': 'KartaView'
     };
+
     this._PHOTOTYPES = ['flat', 'panoramic'];
     this._DATEFILTERS = ['fromDate', 'toDate'];
     this._shownPhotoTypes = new Set(this._PHOTOTYPES);
@@ -209,7 +212,9 @@ export class PhotoSystem extends AbstractSystem {
 
   /**
    * photosUsed
-   * @return  {Array}  Array of single element for the photo layer currently enabled
+   * Called by the EditSystem to gather the sources being used to make an edit.
+   * We return the English name of the active photo layer, it will be included in the user's changeset.
+   * @return  {Array<string>}  Array of single element with the English name of the layer currently visible
    */
   photosUsed() {
     const layerID = this._currLayerID;
@@ -275,41 +280,32 @@ export class PhotoSystem extends AbstractSystem {
   /**
    * selectPhoto
    * Pass `null` or `undefined` to de-select the layer and photo
-   * @param   layerID  The layerID to select
-   * @param   photoID  The photoID to select
+   * @param {string}  layerID - The layerID to select
+   * @param {string}  photoID - The photoID to select
    */
   selectPhoto(layerID = null, photoID = null) {
     if (layerID === this._currLayerID && photoID === this._currPhotoID) return;  // nothing to do
 
-    if (layerID !== null) {
-      this._currLayerID = layerID;
-    }
-    const oldPhotoID = this._currPhotoID;
+    this._currLayerID = layerID;
     this._currPhotoID = photoID;
 
     const context = this.context;
     const scene = context.scene();
 
-    // renderer is not yet listening to photochange, so just manually tell the renderer to select-style it, for now
-    // 'Active' may stay resident if the user clicks off the image onto an OSM entity
-    // in which case we still may want to draw the image point differently.
-//    scene.clearClass('selected');
-    scene.unclassData(layerID, oldPhotoID, 'selected');
-    scene.unclassData(layerID, oldPhotoID, 'active');
-
-    // Leave the 'active' class on the photo in the case where we clicked on something besides a photo.
-    if (layerID !== null && photoID !== null) {
-      scene.clearClass('active');
+    // Clear out any existing display classes
+    for (const oldLayerID of this._LAYERIDS) {
+      const oldLayer = scene.layers.get(oldLayerID);
+      oldLayer?.clearClass('selected');
+      oldLayer?.clearClass('active');
     }
 
     if (layerID && photoID) {
       const service = context.services[layerID];
-      if (!service) return null;
+      if (!service) return;
 
       // If we're selecting a photo then make sure its layer is enabled too.
       scene.enableLayers(layerID);
 
-      // renderer is not yet listening to photochange, so just manually tell the renderer to select-style it, for now
       scene.classData(layerID, photoID, 'selected');
       scene.classData(layerID, photoID, 'active');
 

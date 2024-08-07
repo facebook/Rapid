@@ -305,8 +305,10 @@ export class ImagerySystem extends AbstractSystem {
 
 
   /**
-   *  imageryUsed
-   *  @return  {Array}  Array of imagery layers currently enabled
+   * imageryUsed
+   * Called by the EditSystem to gather the sources being used to make an edit.
+   * We return the English name of any active imagery layers, it will be included in the user's changeset.
+   * @return  {Array<string>}  Array of the names of imagery layers currently visible
    */
   imageryUsed() {
     const result = new Set();
