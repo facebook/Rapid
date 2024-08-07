@@ -6,7 +6,7 @@ import { utilDetect } from '../util/detect.js';
 
 import {
   uiAccount, uiAttribution, uiBearing, uiContributors, UiDefs, uiEditMenu,
-  uiFeatureInfo, uiFlash, uiFullScreen, uiGeolocate, uiIcon,
+  /* uiFeatureInfo,*/ uiFlash, uiFullScreen, uiGeolocate, uiIcon,
   uiInfo, uiIntro, uiIssuesInfo, uiLoading, uiMapInMap,
   uiMap3dViewer, uiPhotoViewer, uiRapidServiceLicense,
   uiSplash, uiRestore, uiScale, uiShortcuts,

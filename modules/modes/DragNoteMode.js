@@ -39,7 +39,6 @@ export class DragNoteMode extends AbstractMode {
    */
   enter(options = {}) {
     const context = this.context;
-    const l10n = context.systems.l10n;
     const osm = context.services.osm;
     if (!osm) return;
 

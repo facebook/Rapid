@@ -191,7 +191,6 @@ export class Map3dSystem extends AbstractSystem {
   set visible(val) {
     const context = this.context;
     const urlhash = context.systems.urlhash;
-    const isVisible = this.visible;
 
     if (val) {   // show it
       urlhash.setParam('map3d', 'true');
@@ -211,12 +210,12 @@ export class Map3dSystem extends AbstractSystem {
 
       // Expect the MapLibre container to exist already, it's created by `map3d_viewer.js`
       // If it doesn't exist, this will return a null selection, and that's ok too.
-      const mlcontainer = context.container().select(`#${this.containerID}`);
-      mlcontainer
+      const $mlcontainer = context.container().select(`#${this.containerID}`);
+      $mlcontainer
         .transition()
         .duration(200)
         .style('opacity', '0')
-        .on('end', () => mlcontainer.style('display', 'none'));
+        .on('end', () => $mlcontainer.style('display', 'none'));
     }
   }
 
@@ -246,9 +245,9 @@ export class Map3dSystem extends AbstractSystem {
         if (++count === 2) resolve();
       };
 
-      const head = d3_select('head');
+      const $head = d3_select('head');
 
-      head.selectAll('#rapideditor-maplibre-css')
+      $head.selectAll('#rapideditor-maplibre-css')
         .data([0])
         .enter()
         .append('link')
@@ -259,7 +258,7 @@ export class Map3dSystem extends AbstractSystem {
         .on('load', loaded)
         .on('error', reject);
 
-      head.selectAll('#rapideditor-maplibre-js')
+      $head.selectAll('#rapideditor-maplibre-js')
         .data([0])
         .enter()
         .append('script')

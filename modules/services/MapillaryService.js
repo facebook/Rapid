@@ -106,19 +106,19 @@ export class MapillaryService extends AbstractSystem {
     if (this._startPromise) return this._startPromise;
 
     const context = this.context;
+    const map = context.systems.map;
+    const eventManager = map.renderer.events;
 
     // add mly-wrapper
-    const wrap = context.container().select('.photoviewer')
+    context.container().select('.photoviewer')
       .selectAll('.mly-wrapper')
-      .data([0]);
-
-    wrap.enter()
+      .data([0])
+      .enter()
       .append('div')
       .attr('id', 'rapideditor-mly')
       .attr('class', 'photo-wrapper mly-wrapper')
       .classed('hide', true);
 
-    const eventManager = this.context.systems.map.renderer.events;
     eventManager.on('keydown', this._keydown);
 
     return this._startPromise = this._loadAssetsAsync()
@@ -311,17 +311,17 @@ export class MapillaryService extends AbstractSystem {
    * Shows the photo viewer, and hides all other photo viewers
    */
   showViewer() {
-    const wrap = this.context.container().select('.photoviewer')
+    const $viewerContainer = this.context.container().select('.photoviewer')
       .classed('hide', false);
 
-    const isHidden = wrap.selectAll('.photo-wrapper.mly-wrapper.hide').size();
+    const isHidden = $viewerContainer.selectAll('.photo-wrapper.mly-wrapper.hide').size();
 
     if (isHidden && this._viewer) {
-      wrap
+      $viewerContainer
         .selectAll('.photo-wrapper:not(.mly-wrapper)')
         .classed('hide', true);
 
-      wrap
+      $viewerContainer
         .selectAll('.photo-wrapper.mly-wrapper')
         .classed('hide', false);
 
@@ -346,17 +346,15 @@ export class MapillaryService extends AbstractSystem {
       this._viewer.getComponent('sequence').stop();
     }
 
-    const viewer = context.container().select('.photoviewer');
-    if (!viewer.empty()) viewer.datum(null);
+    const $viewerContainer = context.container().select('.photoviewer');
+    if (!$viewerContainer.empty()) $viewerContainer.datum(null);
 
-    viewer
+    $viewerContainer
       .classed('hide', true)
       .selectAll('.photo-wrapper')
       .classed('hide', true);
 
     this._showing = false;
-
-    // this.setStyles(context, null);
     this.emit('imageChanged');
   }
 
@@ -414,25 +412,6 @@ export class MapillaryService extends AbstractSystem {
     } else {
       this._mlyActiveImage = null;
     }
-  }
-
-
-  // NOTE: the setStyles() functions all dont work right now since the WebGL rewrite.
-  // They depended on selecting svg stuff from the container - see #740
-
-  // Update the currently highlighted sequence and selected bubble.
-  setStyles(context, hovered) {
-    const hoveredImageID = hovered?.id;
-    const hoveredSequenceID = hovered?.sequenceID;
-    const selectedSequenceID = this._mlyActiveImage && this._mlyActiveImage.sequenceID;
-
-    context.container().selectAll('.layer-mapillary .viewfield-group')
-      .classed('highlighted', function(d) { return (d.sequenceID === selectedSequenceID) || (d.id === hoveredImageID); })
-      .classed('hovered', function(d) { return d.id === hoveredImageID; });
-
-    context.container().selectAll('.layer-mapillary .sequence')
-      .classed('highlighted', function(d) { return d.properties.id === hoveredSequenceID; })
-      .classed('currentView', function(d) { return d.properties.id === selectedSequenceID; });
   }
 
 
@@ -701,9 +680,9 @@ export class MapillaryService extends AbstractSystem {
         if (++count === 2) resolve();
       };
 
-      const head = d3_select('head');
+      const $head = d3_select('head');
 
-      head.selectAll('#rapideditor-mapillary-css')
+      $head.selectAll('#rapideditor-mapillary-css')
         .data([0])
         .enter()
         .append('link')
@@ -714,7 +693,7 @@ export class MapillaryService extends AbstractSystem {
         .on('load', loaded)
         .on('error', reject);
 
-      head.selectAll('#rapideditor-mapillary-js')
+      $head.selectAll('#rapideditor-mapillary-js')
         .data([0])
         .enter()
         .append('script')
@@ -731,7 +710,7 @@ export class MapillaryService extends AbstractSystem {
   _initViewer() {
     const mapillary = window.mapillary;
     if (!mapillary) throw new Error('mapillary not loaded');
-    if (!mapillary.isSupported()) throw new Error ('mapillary not supported');
+    if (!mapillary.isSupported()) throw new Error('mapillary not supported');
 
     const context = this.context;
     const map = context.systems.map;
@@ -755,7 +734,7 @@ export class MapillaryService extends AbstractSystem {
       this.resetTags();
       const image = node.image;
       this.setActiveImage(image);
-      // this.setStyles(context, null);
+
       const loc = [image.originalLngLat.lng, image.originalLngLat.lat];
       map.centerEase(loc);
       photos.selectPhoto('mapillary', image.id);
@@ -780,7 +759,6 @@ export class MapillaryService extends AbstractSystem {
     this._viewer.on('image', imageChanged);
     this._viewer.on('bearing', bearingChanged);
     this._viewer.on('fov', fovChanged);
-
 
     if (this._viewerFilter) {
       this._viewer.setFilter(this._viewerFilter);
