@@ -149,13 +149,13 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
     if (!service?.started) return;
 
     const parentContainer = this.scene.groups.get('streetview');
-    const images = service.getImages();
-    const sequences = service.getSequences();
+    let images = service.getImages();
+    let sequences = service.getSequences();
 
-    const sequenceData = this.filterSequences(sequences);
-    const photoData = this.filterImages(images);
+    sequences = this.filterSequences(sequences);
+    images = this.filterImages(images);
 
-    for (const sequence of sequenceData) {
+    for (const sequence of sequences) {
       const dataID =  sequence.id;
       const featureID = `${this.layerID}-sequence-${dataID}`;
       const sequenceVersion = sequence.v || 0;
@@ -183,16 +183,16 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
     }
 
 
-    for (const photo of photoData) {
-      const dataID = photo.id;
+    for (const d of images) {
+      const dataID = d.id;
       const featureID = `${this.layerID}-photo-${dataID}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
-        feature.geometry.setCoords(photo.loc);
+        feature.geometry.setCoords(d.loc);
         feature.parentContainer = parentContainer;
-        feature.setData(dataID, photo);
+        feature.setData(dataID, d);
       }
 
       this.syncFeatureClasses(feature);
@@ -200,19 +200,20 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
       if (feature.dirty) {
         const style = Object.assign({}, MARKERSTYLE);
 
-        if (feature.active) {
-          style.viewfieldAngles = [photo.ca + this._viewerYawAngle];
+        if (feature.active) {  // active style
+          style.viewfieldAngles = [d.ca + this._viewerYawAngle];
           style.viewfieldName = 'viewfield';
           style.viewfieldTint = STREETSIDE_SELECTED;
           style.markerTint = STREETSIDE_SELECTED;
           style.scale = 2.0;
-        } else {
-          if (Number.isFinite(photo.ca)) {
-            style.viewfieldAngles = [photo.ca];   // ca = camera angle
+
+        } else {  // default style
+          if (Number.isFinite(d.ca)) {
+            style.viewfieldAngles = [d.ca];   // ca = camera angle
           } else {
             style.viewfieldAngles = [];
           }
-          style.viewfieldName = photo.isPano ? 'pano' : 'viewfield';
+          style.viewfieldName = d.isPano ? 'pano' : 'viewfield';
           style.viewfieldTint = STREETSIDE_TEAL;
           style.markerTint = STREETSIDE_TEAL;
           style.scale = 1.0;

@@ -379,27 +379,24 @@ export class SelectBehavior extends AbstractBehavior {
       return;
     }
 
-    // Clicked on a photo, so open / refresh the viewer's pic
-    if (data.captured_at) {
-      // Determine the layer that was clicked on, obtain its service.
+    // Clicked on a photo..
+    if (data.type === 'photo') {
       const layerID = target.layerID;
       map.centerEase(data.loc);
       photos.selectPhoto(layerID, dataID);
+      return;
     }
 
     // Clicked on a Mapillary object detection or traffic sign..
     // Open the Mapillary viewer with an image showing that object/sign
-    if (data.first_seen_at) {
+    if (data.type === 'detection') {
       const service = context.services.mapillary;
       if (!service?.started) return;
 
-      map.centerEase(event.loc);
-      const selectedImageID = service.getActiveImage()?.id;
-
+      map.centerEase(data.loc);
       service.getDetectionsAsync(dataID)
         .then(detections => {
           if (!detections.length) return;
-
           const imageID = detections[0].image.id;
           photos.selectPhoto('mapillary', imageID);
   //todo: check on the asyncness of this code

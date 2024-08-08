@@ -573,6 +573,7 @@ export class MapillaryService extends AbstractSystem {
 
         const loc = feature.geometry.coordinates;
         const d = {
+          type: 'photo',
           id: feature.properties.id.toString(),
           loc: loc,
           captured_at: feature.properties.captured_at,
@@ -615,6 +616,7 @@ export class MapillaryService extends AbstractSystem {
 
         const loc = feature.geometry.coordinates;
         const d = {
+          type: 'detection',
           id: feature.properties.id,
           loc: loc,
           first_seen_at: feature.properties.first_seen_at,
@@ -637,6 +639,7 @@ export class MapillaryService extends AbstractSystem {
         const loc = feature.geometry.coordinates;
 
         const d = {
+          type: 'detection',
           id: feature.properties.id,
           loc: loc,
           first_seen_at: feature.properties.first_seen_at,

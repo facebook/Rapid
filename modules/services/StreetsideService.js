@@ -688,6 +688,7 @@ export class StreetsideService extends AbstractSystem {
 
       const loc = [bubble.lo, bubble.la];
       const bubbleData = {
+        type: 'photo',
         loc: loc,
         id: bubbleID,
         ca: bubble.he,
@@ -807,7 +808,12 @@ export class StreetsideService extends AbstractSystem {
       if (cache.unattachedBubbles.has(currBubbleID)) {
         const sequenceNum = this._nextSequenceID++;
         const sequenceID = `s${sequenceNum}`;
-        const sequence = { id: sequenceID, v: 0, bubbleIDs: [currBubbleID] };
+        const sequence = {
+          type: 'sequence',
+          id: sequenceID,
+          v: 0,
+          bubbleIDs: [currBubbleID]
+        };
         cache.sequences.set(sequenceID, sequence);
         _updateCaches(sequenceID, currBubbleID);
 

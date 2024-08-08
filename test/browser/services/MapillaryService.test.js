@@ -53,46 +53,46 @@ describe('MapillaryService', () => {
   describe('#getData', () => {
     it('returns images in the visible map area', () => {
       const data = [
-        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '0', loc: [10,0], ca: 90 } },
-        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '1', loc: [10,0], ca: 90 } },
-        { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { id: '2', loc: [10,1], ca: 90 } }
+        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { type: 'photo', id: '0', loc: [10,0], ca: 90 } },
+        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { type: 'photo', id: '1', loc: [10,0], ca: 90 } },
+        { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { type: 'photo', id: '2', loc: [10,1], ca: 90 } }
       ];
 
       _mapillary._mlyCache.images.rtree.load(data);
       const result = _mapillary.getData('images');
       expect(result).to.deep.eql([
-        { id: '0', loc: [10,0], ca: 90 },
-        { id: '1', loc: [10,0], ca: 90 }
+        { type: 'photo', id: '0', loc: [10,0], ca: 90 },
+        { type: 'photo', id: '1', loc: [10,0], ca: 90 }
       ]);
     });
 
     it('returns map features in the visible map area', () => {
       const data = [
-        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '0', loc: [10,0] } },
-        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '1', loc: [10,0] } },
-        { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { id: '2', loc: [10,1] } }
+        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { type: 'photo', id: '0', loc: [10,0] } },
+        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { type: 'photo', id: '1', loc: [10,0] } },
+        { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { type: 'photo', id: '2', loc: [10,1] } }
       ];
 
       _mapillary._mlyCache.points.rtree.load(data);
       const result = _mapillary.getData('points');
       expect(result).to.deep.eql([
-        { id: '0', loc: [10,0] },
-        { id: '1', loc: [10,0] }
+        { type: 'photo', id: '0', loc: [10,0] },
+        { type: 'photo', id: '1', loc: [10,0] }
       ]);
     });
 
     it('returns signs in the visible map area', () => {
       const data = [
-        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '0', loc: [10,0] } },
-        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '1', loc: [10,0] } },
-        { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { id: '2', loc: [10,1] } }
+        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { type: 'detection', id: '0', loc: [10,0] } },
+        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { type: 'detection', id: '1', loc: [10,0] } },
+        { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { type: 'detection', id: '2', loc: [10,1] } }
       ];
 
       _mapillary._mlyCache.signs.rtree.load(data);
       const result = _mapillary.getData('signs');
       expect(result).to.deep.eql([
-        { id: '0', loc: [10,0] },
-        { id: '1', loc: [10,0] }
+        { type: 'detection', id: '0', loc: [10,0] },
+        { type: 'detection', id: '1', loc: [10,0] }
       ]);
     });
   });
@@ -101,9 +101,9 @@ describe('MapillaryService', () => {
   describe('#getSequences', () => {
     it('returns sequence linestrings in the visible map area', () => {
       const data = [
-        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '0', loc: [10,0], ca: 90, sequenceID: '-' } },
-        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '1', loc: [10,0], ca: 90, sequenceID: '-' } },
-        { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { id: '2', loc: [10,1], ca: 90, sequenceID: '-' } }
+        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { type: 'photo', id: '0', loc: [10,0], ca: 90, sequenceID: '-' } },
+        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { type: 'photo', id: '1', loc: [10,0], ca: 90, sequenceID: '-' } },
+        { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { type: 'photo', id: '2', loc: [10,1], ca: 90, sequenceID: '-' } }
       ];
 
       _mapillary._mlyCache.images.rtree.load(data);
