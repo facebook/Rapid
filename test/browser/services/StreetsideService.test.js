@@ -121,9 +121,9 @@ describe('StreetsideService', () => {
   describe('#getImages', () => {
     it('returns images in the visible map area', () => {
       const bubbles = [
-        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '1', loc: [10, 0], ca: 90, pr: undefined, ne: '2', isPano: true } },
-        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '2', loc: [10, 0], ca: 90, pr: '1', ne: '3', isPano: true } },
-        { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { id: '3', loc: [10, 1], ca: 90, pr: '2', ne: undefined, isPano: true } }
+        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { type: 'photo', id: '1', loc: [10, 0], ca: 90, pr: undefined, ne: '2', isPano: true } },
+        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { type: 'photo', id: '2', loc: [10, 0], ca: 90, pr: '1', ne: '3', isPano: true } },
+        { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { type: 'photo', id: '3', loc: [10, 1], ca: 90, pr: '2', ne: undefined, isPano: true } }
       ];
 
       const cache = _streetside._cache;
@@ -131,8 +131,8 @@ describe('StreetsideService', () => {
 
       const result = _streetside.getImages();
       expect(result).to.deep.eql([
-        { id: '1', loc: [10, 0], ca: 90, pr: undefined, ne: '2', isPano: true },
-        { id: '2', loc: [10, 0], ca: 90, pr: '1', ne: '3', isPano: true }
+        { type: 'photo', id: '1', loc: [10, 0], ca: 90, pr: undefined, ne: '2', isPano: true },
+        { type: 'photo', id: '2', loc: [10, 0], ca: 90, pr: '1', ne: '3', isPano: true }
       ]);
     });
   });
@@ -141,12 +141,13 @@ describe('StreetsideService', () => {
   describe('#getSequences', () => {
     it('returns sequence linestrings in the visible map area', () => {
       const bubbles = [
-        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '1', loc: [10, 0], ca: 90, pr: undefined, ne: '2', isPano: true } },
-        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '2', loc: [10, 0], ca: 90, pr: '1', ne: '3', isPano: true } },
-        { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { id: '3', loc: [10, 1], ca: 90, pr: '2', ne: undefined, isPano: true } }
+        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { type: 'photo', id: '1', loc: [10, 0], ca: 90, pr: undefined, ne: '2', isPano: true } },
+        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { type: 'photo', id: '2', loc: [10, 0], ca: 90, pr: '1', ne: '3', isPano: true } },
+        { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { type: 'photo', id: '3', loc: [10, 1], ca: 90, pr: '2', ne: undefined, isPano: true } }
       ];
 
       const sequence = {
+        type: 'sequence',
         id: 's1',
         v: 1,
         bubbleIDs: bubbles.map(d => d.data.id),

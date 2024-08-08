@@ -4,6 +4,7 @@ import { PixiFeaturePoint } from './PixiFeaturePoint.js';
 
 const MINZOOM = 12;
 const KARTA_BLUE = 0x20c4ff;
+const KARTA_SELECTED = 0xffee00;
 
 const LINESTYLE = {
   casing: { alpha: 0 },  // disable
@@ -66,10 +67,26 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
   }
 
 
+  /**
+   * filterImages
+   * @param  {Array<image>}  images - all images
+   * @return {Array<image>}  images with filtering applied
+   */
   filterImages(images) {
     const photos = this.context.systems.photos;
     const fromDate = photos.fromDate;
     const toDate = photos.toDate;
+    const usernames = photos.usernames;
+    const showFlatPhotos = photos.showsPhotoType('flat');
+    const showPanoramicPhotos = photos.showsPhotoType('panoramic');
+
+    if (!showFlatPhotos && !showPanoramicPhotos) {
+      return [];
+    } else if (showPanoramicPhotos && !showFlatPhotos) {
+      images = images.filter(i => i.isPano);
+    } else if (!showPanoramicPhotos && showFlatPhotos){
+      images = images.filter(i => !i.isPano);
+    }
 
     if (fromDate) {
       const fromTimestamp = new Date(fromDate).getTime();
@@ -79,14 +96,36 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
       const toTimestamp = new Date(toDate).getTime();
       images = images.filter(i => new Date(i.captured_at).getTime() <= toTimestamp);
     }
+    if (usernames) {
+      images = images.filter(i => usernames.includes(i.captured_by));
+    }
+
     return images;
   }
 
 
+  /**
+   * filterSequences
+   * Each sequence is represented as a GeoJSON LineString.
+   * @param  {Array<sequence>}  sequences - all sequences
+   * @return {Array<sequence>}  sequences with filtering applied
+   */
   filterSequences(sequences) {
     const photos = this.context.systems.photos;
     const fromDate = photos.fromDate;
     const toDate = photos.toDate;
+    const usernames = photos.usernames;
+
+    const showFlatPhotos = photos.showsPhotoType('flat');
+    const showPanoramicPhotos = photos.showsPhotoType('panoramic');
+
+    if (!showFlatPhotos && !showPanoramicPhotos) {
+      return [];
+    } else if (showPanoramicPhotos && !showFlatPhotos) {
+      sequences = sequences.filter(s => s.properties.isPano);
+    } else if (!showPanoramicPhotos && showFlatPhotos){
+      sequences =  sequences.filter(s => !s.properties.isPano);
+    }
 
     if (fromDate) {
       const fromTimestamp = new Date(fromDate).getTime();
@@ -96,6 +135,10 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
       const toTimestamp = new Date(toDate).getTime();
       sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() <= toTimestamp);
     }
+    if (usernames) {
+      sequences = sequences.filter(s => usernames.includes(s.properties.captured_by));
+    }
+
     return sequences;
   }
 
@@ -111,13 +154,13 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
     if (!service?.started) return;
 
     const parentContainer = this.scene.groups.get('streetview');
-    const images = service.getImages();
-    const sequences = service.getSequences();
+    let images = service.getImages();
+    let sequences = service.getSequences();
 
-    const sequenceData = this.filterSequences(sequences);
-    const photoData = this.filterImages(images);
+    sequences = this.filterSequences(sequences);
+    images = this.filterImages(images);
 
-    for (const d of sequenceData) {
+    for (const d of sequences) {
       const featureID = `${this.layerID}-sequence-${d.properties.id}`;
       const sequenceVersion = d.properties.v || 0;
       let feature = this.features.get(featureID);
@@ -129,7 +172,7 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
         feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
       }
 
-      // If linestring data has changed, replace it.
+      // If sequence data has changed, replace it.
       if (feature.v !== sequenceVersion) {
         feature.v = sequenceVersion;
         feature.geometry.setCoords(d.coordinates);
@@ -141,22 +184,13 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
       this.retainFeature(feature, frame);
     }
 
-    for (const d of photoData) {
+    for (const d of images) {
       const featureID = `${this.layerID}-photo-${d.id}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
-        const style = Object.assign({}, MARKERSTYLE);
-        if (Number.isFinite(d.ca)) {
-          style.viewfieldAngles = [d.ca];   // ca = camera angle
-        }
-        if (d.isPano) {
-          style.viewfieldName = 'pano';
-        }
-
         feature = new PixiFeaturePoint(this, featureID);
         feature.geometry.setCoords(d.loc);
-        feature.style = style;
         feature.parentContainer = parentContainer;
         feature.setData(d.id, d);
 
@@ -166,6 +200,41 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
       }
 
       this.syncFeatureClasses(feature);
+
+      if (feature.dirty) {
+        const style = Object.assign({}, MARKERSTYLE);
+// todo handle pano
+        if (feature.active) {  // active style
+          // style.viewfieldAngles = [this._viewerCompassAngle];
+          if (Number.isFinite(d.ca)) {
+            style.viewfieldAngles = [d.ca];   // ca = camera angle
+          } else {
+            style.viewfieldAngles = [];
+          }
+          style.viewfieldName = 'viewfield';
+          style.viewfieldTint = KARTA_SELECTED;
+          style.markerTint = KARTA_SELECTED;
+          style.scale = 2.0;
+          //style.fovWidth = fovWidthInterp(this._viewerZoom);
+          //style.fovLength = fovLengthInterp(this._viewerZoom);
+
+        } else {  // default style
+          if (Number.isFinite(d.ca)) {
+            style.viewfieldAngles = [d.ca];   // ca = camera angle
+          } else {
+            style.viewfieldAngles = [];
+          }
+          style.viewfieldName = d.isPano ? 'pano' : 'viewfield';
+          style.viewfieldTint = KARTA_BLUE;
+          style.markerTint = KARTA_BLUE;
+          style.scale = 1.0;
+          //style.fovWidth = 1;
+          //style.fovLength = 1;
+        }
+
+        feature.style = style;
+      }
+
       feature.update(viewport, zoom);
       this.retainFeature(feature, frame);
     }

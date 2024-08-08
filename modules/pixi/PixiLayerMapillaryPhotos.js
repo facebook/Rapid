@@ -140,14 +140,18 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
       images = images.filter(i => new Date(i.captured_at).getTime() <= toTimestamp);
     }
     if (usernames) {
-      images = images.filter(i => usernames.indexOf(i.captured_by) !== -1);
+      images = images.filter(i => usernames.includes(i.captured_by));
     }
+
     return images;
   }
 
 
   /**
    * filterSequences
+   * Note - a 'sequence' is now an Array of Linestrings, post Rapid#776
+   * This is because we can get multiple linestrings for sequences that cross a tile boundary.
+   * We just look at the first item in the array to determine whether to keep/filter the sequence.
    * @param  {Array<sequence>}  sequences - all sequences
    * @return {Array<sequence>}  sequences with filtering applied
    */
@@ -157,21 +161,17 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     const toDate = photos.toDate;
     const usernames = photos.usernames;
 
-
     const showFlatPhotos = photos.showsPhotoType('flat');
     const showPanoramicPhotos = photos.showsPhotoType('panoramic');
 
     if (!showFlatPhotos && !showPanoramicPhotos) {
       return [];
     } else if (showPanoramicPhotos && !showFlatPhotos) {
-      sequences = sequences.filter(seq => seq[0].properties.is_pano);
+      sequences = sequences.filter(s => s[0].properties.is_pano);
     } else if (!showPanoramicPhotos && showFlatPhotos){
-      sequences =  sequences.filter(seq => !seq[0].properties.is_pano);
+      sequences =  sequences.filter(s => !s[0].properties.is_pano);
     }
 
-    // note - Sequences now contains an Array of Linestrings, post Rapid#776
-    // This is because we can get multiple linestrings for sequences that cross a tile boundary.
-    // We just look at the first item in the array to determine whether to keep/filter the sequence.
     if (fromDate) {
       const fromTimestamp = new Date(fromDate).getTime();
       sequences = sequences.filter(s => new Date(s[0].properties.captured_at).getTime() >= fromTimestamp);
@@ -183,6 +183,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     if (usernames) {
       sequences = sequences.filter(s => usernames.includes(s[0].properties.captured_by));
     }
+
     return sequences;
   }
 
@@ -201,14 +202,14 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     // const showViewfields = (zoom >= MINVIEWFIELDZOOM);
 
     const parentContainer = this.scene.groups.get('streetview');
-    const sequences = service.getSequences();
-    const images = service.getData('images');
+    let sequences = service.getSequences();
+    let images = service.getData('images');
 
-    const sequenceData = this.filterSequences(sequences);
-    const photoData = this.filterImages(images);
+    sequences = this.filterSequences(sequences);
+    images = this.filterImages(images);
 
     // render sequences
-    for (const lineStrings of sequenceData) {
+    for (const lineStrings of sequences) {
       for (let i = 0; i < lineStrings.length; ++i) {
         const d = lineStrings[i];
         const sequenceID = d.properties.id;
@@ -231,7 +232,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     }
 
     // render markers
-    for (const d of photoData) {
+    for (const d of images) {
       const featureID = `${this.layerID}-photo-${d.id}`;
       let feature = this.features.get(featureID);
 
