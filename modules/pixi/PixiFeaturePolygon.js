@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { Mesh, MeshSimple } from 'pixi.js';
 import { DashLine } from '@rapideditor/pixi-dashed-line';
 import { GlowFilter } from 'pixi-filters';
 import { /* geomRotatePoints,*/ vecEqual, vecLength /*, vecSubtract */ } from '@rapid-sdk/math';
@@ -37,20 +38,20 @@ export class PixiFeaturePolygon extends AbstractFeature {
     this._ssrdata = null;
 
     const lowRes = new PIXI.Sprite();
-    lowRes.name = 'lowRes';
+    lowRes.label = 'lowRes';
     lowRes.anchor.set(0.5, 0.5);  // middle, middle
     lowRes.visible = false;
     lowRes.eventMode = 'static';
     this.lowRes = lowRes;
 
     const fill = new PIXI.Graphics();
-    fill.name = 'fill';
+    fill.label = 'fill';
     fill.eventMode = 'static';
     fill.sortableChildren = false;
     this.fill = fill;
 
     const stroke = new PIXI.Graphics();
-    stroke.name = 'stroke';
+    stroke.label = 'stroke';
     stroke.eventMode = 'none';
     stroke.sortableChildren = false;
     this.stroke = stroke;
@@ -61,8 +62,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
     // So we'll create the mask graphic and then copy its attributes into a mesh
     // which _does_ hit test properly.
     // (Ignore the default MeshMaterial - it won't be drawn anyway, it's a mask.)
-    const mask = new PIXI.Mesh(null, new PIXI.MeshMaterial(PIXI.Texture.WHITE));
-    mask.name = 'mask';
+    const mask = new Mesh(null, new MeshSimple(PIXI.Texture.WHITE));
+    mask.label = 'mask';
     mask.eventMode = 'static';
     mask.visible = false;
     this.mask = mask;
@@ -185,8 +186,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
           color: 0x0,
           width: 16,  // px
           alpha: 1.0,
-          join: PIXI.LINE_JOIN.BEVEL,
-          cap: PIXI.LINE_CAP.BUTT
+          join: 'bevel',
+          cap: 'butt'
         };
 
         this._bufferdata = lineToPoly(this.geometry.flatOuter, bufferStyle);
@@ -296,7 +297,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
       if (!dash) {  // Solid lines
         this.stroke
         .clear()
-        .lineStyle({
+        .setStrokeStyle({
           alpha: 1,
           width: lineWidth,
           color: color
@@ -351,7 +352,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
         shape.holes.forEach(hole => this.fill.drawShape(hole));
         this.fill.endHole();
       }
-      this.fill.endFill();
+      this.fill.fill();
 
       if (doPartialFill) {   // mask around the inside edges of the fill with a line
         const maskSource = new PIXI.Graphics()
@@ -360,8 +361,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
             alpha: 1,
             alignment: 0,  // inside (will do the right thing even for holes, as they are wound correctly)
             color: 0x000000,
-            cap: PIXI.LINE_CAP.BUTT,
-            join: PIXI.LINE_JOIN.BEVEL,
+            cap: 'butt',
+            join: 'bevel',
             width: PARTIALFILLWIDTH,
             texture: PIXI.Texture.WHITE
           });
@@ -441,7 +442,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
     if (showSelect) {
       if (!this.halo) {
         this.halo = new PIXI.Graphics();
-        this.halo.name = `${this.id}-halo`;
+        this.halo.label = `${this.id}-halo`;
         const mapUIContainer = this.scene.layers.get('map-ui').container;
         mapUIContainer.addChild(this.halo);
       }

@@ -108,7 +108,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     // Doing this in 2 passes to avoid affecting `.children` while iterating over it.
     const toDestroy = new Set();
     for (const sourceContainer of groupContainer.children) {
-      const sourceID = sourceContainer.name;
+      const sourceID = sourceContainer.label;
       if (!showSources.has(sourceID)) {
         toDestroy.add(sourceID);
       }
@@ -198,7 +198,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
       const tileName = `${sourceID}-${tileID}`;
       const sprite = new PIXI.Sprite();
-      sprite.name = tileName;
+      sprite.label = tileName;
       sprite.anchor.set(0, 1);    // left, bottom
       sprite.zIndex = tile.xyz[2];   // draw zoomed tiles above unzoomed tiles
       sprite.alpha = source.alpha;
@@ -220,7 +220,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
         const w = tile.image.naturalWidth;
         const h = tile.image.naturalHeight;
-        tile.sprite.texture = textureManager.allocate('tile', tile.sprite.name, w, h, tile.image);
+        tile.sprite.texture = textureManager.allocate('tile', tile.sprite.label, w, h, tile.image);
 
         tile.loaded = true;
         tile.image = null;  // image is copied to the atlas, we can free it
@@ -261,13 +261,13 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
           // Display debug tile info
           if (!tile.debug) {
             tile.debug = new PIXI.Graphics();
-            tile.debug.name = `debug-${tileID}`;
+            tile.debug.label = `debug-${tileID}`;
             tile.debug.eventMode = 'none';
             tile.debug.sortableChildren = false;
             debugContainer.addChild(tile.debug);
 
             const label = new PIXI.BitmapText(tileID, { fontName: 'debug' });
-            label.name = `label-${tileID}`;
+            label.label = `label-${tileID}`;
             label.tint = DEBUGCOLOR;
             label.position.set(2, 2);
             tile.debug.addChild(label);
@@ -299,7 +299,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     // Doing this in 2 passes to avoid affecting `.children` while iterating over it.
     const toDestroy = new Set();
     for (const sourceContainer of groupContainer.children) {
-      const sourceID = sourceContainer.name;
+      const sourceID = sourceContainer.label;
       toDestroy.add(sourceID);
     }
 
@@ -341,7 +341,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     if (tile.sprite) {
       tile.sprite.texture = null;
       if (tile.loaded) {
-        textureManager.free('tile', tile.sprite.name);
+        textureManager.free('tile', tile.sprite.label);
       }
       tile.sprite.destroy({ children: true, texture: false, baseTexture: false });
     }
@@ -367,7 +367,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     let sourceContainer = groupContainer.getChildByName(sourceID);
     if (!sourceContainer) {
       sourceContainer = new PIXI.Container();
-      sourceContainer.name = sourceID;
+      sourceContainer.label= sourceID;
       sourceContainer.eventMode = 'none';
       sourceContainer.sortableChildren = true;
       groupContainer.addChild(sourceContainer);
@@ -409,7 +409,10 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
     } else if (this.filters.sharpness < 1) {
       const blurFactor = d3_interpolateNumber(1, 8)(1 - this.filters.sharpness);
-      this.blurFilter = new PIXI.filters.BlurFilter(blurFactor, 4);
+      this.blurFilter = new PIXI.BlurFilter({
+        blur: blurFactor,
+        quality: 4
+      });
       sourceContainer.filters.push(this.blurFilter);
     }
   }

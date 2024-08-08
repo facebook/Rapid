@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { BitmapFont } from 'pixi.js';
 import RBush from 'rbush';
 import { HALF_PI, TAU, numWrap, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@rapid-sdk/math';
 
@@ -14,8 +15,7 @@ const TEXT_NORMAL = {
   fontSize: 11,
   fontWeight: 600,
   lineJoin: 'round',
-  stroke: 0xffffff,
-  strokeThickness: 2.7
+  stroke:({width:2.7, color:'0xffffff'})
 };
 
 const TEXT_ITALIC = {
@@ -25,8 +25,7 @@ const TEXT_ITALIC = {
   fontStyle: 'italic',
   fontWeight: 600,
   lineJoin: 'round',
-  stroke: 0xffffff,
-  strokeThickness: 2.7
+  stroke:({width:2.7, color:'0xffffff'})
 };
 
 
@@ -66,19 +65,19 @@ export class PixiLayerLabels extends AbstractLayer {
     groupContainer.eventMode = 'none';
 
     const labelOriginContainer = new PIXI.Container();
-    labelOriginContainer.name = 'labelorigin';
+    labelOriginContainer.label= 'labelorigin';
     labelOriginContainer.eventMode = 'none';
     this.labelOriginContainer = labelOriginContainer;
 
     const debugContainer = new PIXI.Container();  //PIXI.ParticleContainer(50000);
-    debugContainer.name = 'debug';
+    debugContainer.label= 'debug';
     debugContainer.eventMode = 'none';
     debugContainer.roundPixels = false;
     debugContainer.sortableChildren = false;
     this.debugContainer = debugContainer;
 
     const labelContainer = new PIXI.Container();
-    labelContainer.name = 'labels';
+    labelContainer.label= 'labels';
     labelContainer.eventMode = 'none';
     labelContainer.sortableChildren = true;
     this.labelContainer = labelContainer;
@@ -108,7 +107,7 @@ export class PixiLayerLabels extends AbstractLayer {
     this._labelOffset = new PIXI.Point();
 
     // For ascii-only labels, we can use PIXI.BitmapText to avoid generating label textures
-    PIXI.BitmapFont.from('label-normal', TEXT_NORMAL, { chars: PIXI.BitmapFont.ASCII, padding: 0, resolution: 2 });
+    // BitmapFont.install('label-normal', TEXT_NORMAL, { chars: BitmapFont.ASCII, padding: 0, resolution: 2 });
     // not actually used
     // PIXI.BitmapFont.from('label-italic', TEXT_ITALIC, { chars: PIXI.BitmapFont.ASCII, padding: 0, resolution: 2 });
 
@@ -340,7 +339,7 @@ export class PixiLayerLabels extends AbstractLayer {
     }
 
     const sprite = new PIXI.Sprite(texture);
-    sprite.name = str;
+    sprite.label = str;
     sprite.anchor.set(0.5, 0.5);   // middle, middle
     return sprite;
   }
@@ -453,7 +452,7 @@ export class PixiLayerLabels extends AbstractLayer {
       if (/^[\x20-\x7E]*$/.test(feature.label)) {   // is it in the printable ASCII range?
         labelObj = new PIXI.BitmapText(feature.label, { fontName: 'label-normal' });
         labelObj.updateText();           // force update it so its texture is ready to be reused on a sprite
-        labelObj.name = feature.label;
+        labelObj.label = feature.label;
         // labelObj.anchor.set(0.5, 0.5);   // middle, middle
         labelObj.anchor.set(0.5, 1);     // middle, bottom  - why??
       } else {
@@ -526,8 +525,8 @@ const hitStyle = {
   color: 0x0,
   width: 24,
   alpha: 1.0,
-  join: PIXI.LINE_JOIN.BEVEL,
-  cap: PIXI.LINE_CAP.BUTT
+  join: 'bevel',
+  cap: 'butt'
 };
 const bufferdata = lineToPoly(feature.geometry.flatOuter, hitStyle);
 if (!bufferdata.inner) continue;
@@ -908,8 +907,8 @@ this.placeRopeLabel(feature, labelObj, coords);
       } else if (label.type === 'rope') {
         const labelObj = options.labelObj;  // a PIXI.Sprite, or PIXI.Text
         const points = options.coords.map(([x,y]) => new PIXI.Point(x, y));
-        const rope = new PIXI.SimpleRope(labelObj.texture, points);
-        rope.name = labelID;
+        const rope = new PIXI.MeshRope(labelObj.texture, points);
+        rope.label = labelID;
         rope.autoUpdate = false;
         rope.sortableChildren = false;
         rope.tint = options.tint || 0xffffff;

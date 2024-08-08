@@ -1,4 +1,6 @@
 import * as PIXI from 'pixi.js';
+import { Application, BitmapFont } from 'pixi.js';
+import { settings } from '@pixi/settings';
 import { EventEmitter } from '@pixi/utils';
 import { TAU, Viewport, numWrap, vecEqual, vecLength, vecRotate, vecScale, vecSubtract } from '@rapid-sdk/math';
 
@@ -53,6 +55,7 @@ export class PixiRenderer extends EventEmitter {
     this.supersurface = supersurface;
     this.surface = surface;
     this.overlay = overlay;
+    this.initialized = false;
 
     this._frame = 0;              // counter that increments
     this._timeToNextRender = 0;   // milliseconds of time to defer rendering
@@ -71,15 +74,21 @@ export class PixiRenderer extends EventEmitter {
     this._onModeChange = this._onModeChange.bind(this);
 
     // Disable mipmapping, we always want textures near the resolution they are at.
-    PIXI.BaseTexture.defaultOptions.mipmap = PIXI.MIPMAP_MODES.OFF;
+    settings.AUTO_GENERATE_MIPMAPS = false;
 
-    // Prefer WebGL2, though browsers still may give us a WebGL1 context, see #493, #568
-    // Can also swap the commented lines below to force WebGL1 context for testing.
-    PIXI.settings.PREFER_ENV = PIXI.ENV.WEBGL2;
-    // PIXI.settings.PREFER_ENV = PIXI.ENV.WEBGL;
+    // Asynchronously initialize the PixiJS application
+    this._pixiReadyPromise = this._initPixiAsync();
+  }
 
-    // Create a Pixi application rendering to the given surface `canvas`
-    this.pixi = new PIXI.Application({
+
+  /**
+   * _initPixiAsync
+   * @return {Promise}  promise settled when pixi is ready
+   */
+  _initPixiAsync() {
+    this.pixi = new Application();
+
+    return this.pixi.init({
       antialias: true,
       autoDensity: true,
       autoStart: false,        // don't start the ticker yet
@@ -93,82 +102,74 @@ export class PixiRenderer extends EventEmitter {
       resolution: window.devicePixelRatio,
       sharedLoader: true,
       sharedTicker: true,
-      view: surface.node()
+      canvas: this.surface.node()
+    })
+    .then(() => {
+      // todo - we should stop doing this.. Access to pixi app should be via an instance of PixiRenderer
+      // so we can have multiple Pixi renderers - this will make the minimap less hacky & enable restriction editor
+      this.context.pixi = this.pixi;
+
+      // Prepare a basic bitmap font that we can use for things like debug messages
+      // BitmapFont.install('debug', {
+      //   fill: 0xffffff,
+      //   fontSize: 14,
+      //   stroke: 0x333333,
+      //   strokeThickness: 2
+      // },{
+      //   chars: BitmapFont.ASCII,
+      //   padding: 0,
+      //   resolution: 2
+      // });
+
+      // Register Pixi with the pixi-inspector extension if it is installed
+      // https://github.com/bfanger/pixi-inspector
+      globalThis.__PIXI_APP__ = this.pixi;
+
+      // Setup the stage
+      // The `stage` should be positioned so that `[0,0]` is at the center of the viewport,
+      // and this is the pivot point for map rotation.
+      const stage = this.pixi.stage;
+      stage.label = 'stage';
+      stage.sortableChildren = true;
+      stage.eventMode = 'static';
+      // Add a big hit area to `stage` so that clicks on nothing will generate events
+      stage.hitArea = new PIXI.Rectangle(-10000000, -10000000, 20000000, 20000000);
+      this.stage = stage;
+
+      // The `origin` returns `[0,0]` back to the `[top,left]` coordinate of the viewport,
+      // so `project/unproject` continues to work.
+      // This also includes the `offset` which includes any panning that the user has done.
+      const origin = new PIXI.Container();
+      origin.label = 'origin';
+      origin.sortableChildren = true;
+      origin.eventMode = 'passive';
+      stage.addChild(origin);
+      this.origin = origin;
+
+      // Setup the ticker
+      const ticker = this.pixi.ticker;
+      const defaultListener = ticker._head.next;
+      ticker.remove(defaultListener.fn, defaultListener.context);
+      ticker.add(this._tick, this);
+      ticker.start();
+
+      this.scene = new PixiScene(this);
+      this.events = new PixiEvents(this);
+
+      // Texture Manager should only be created once
+      // This is because it will start loading assets and Pixi's asset loader is not reentrant.
+      // (it causes test failures if we create a bunch of these)
+      if (!_sharedTextures) {
+          _sharedTextures = new PixiTextures(this.context);
+      }
+      this.textures = _sharedTextures;
+
+      // Setup event listeners for mode and hover changes
+      this.context.on('modechange', this._onModeChange);
+      this.context.behaviors.hover.on('hoverchange', this._onHoverChange);
+
+      this.initialized = true;
     });
-
-    window.__PIXI_DEVTOOLS__ = {
-      pixi: PIXI,
-      app: this.pixi,
-      // If you are not using a pixi app, you can pass the renderer and stage directly
-      // renderer: myRenderer,
-      // stage: myStage,
-    };
-
-    // Register Pixi with the pixi-inspector extension if it is installed
-    // https://github.com/bfanger/pixi-inspector
-    globalThis.__PIXI_APP__ = this.pixi;
-
-// todo - we should stop doing this.. Access to pixi app should be via an instance of PixiRenderer
-// so we can have multiple Pixi renderers - this will make the minimap less hacky & enable restriction editor
-    context.pixi = this.pixi;
-
-    // Prepare a basic bitmap font that we can use for things like debug messages
-    PIXI.BitmapFont.from('debug', {
-      fill: 0xffffff,
-      fontSize: 14,
-      stroke: 0x333333,
-      strokeThickness: 2
-    },{
-      chars: PIXI.BitmapFont.ASCII,
-      padding: 0,
-      resolution: 2
-    });
-
-    // Setup the Ticker
-    // Replace the default Ticker listener (which just renders the scene each frame)
-    // with our own listener that gathers statistics and renders only as needed
-    const ticker = this.pixi.ticker;
-    const defaultListener = ticker._head.next;
-    ticker.remove(defaultListener.fn, defaultListener.context);
-    ticker.add(this._tick, this);
-    ticker.start();
-
-    // Setup the stage
-    // The `stage` should be positioned so that `[0,0]` is at the center of the viewport,
-    // and this is the pivot point for map rotation.
-    const stage = this.pixi.stage;
-    stage.name = 'stage';
-    stage.sortableChildren = true;
-    stage.eventMode = 'static';
-    // Add a big hit area to `stage` so that clicks on nothing will generate events
-    stage.hitArea = new PIXI.Rectangle(-10000000, -10000000, 20000000, 20000000);
-    this.stage = stage;
-
-    // The `origin` returns `[0,0]` back to the `[top,left]` coordinate of the viewport,
-    // so `project/unproject` continues to work.
-    // This also includes the `offset` which includes any panning that the user has done.
-    const origin = new PIXI.Container();
-    origin.name = 'origin';
-    origin.sortableChildren = true;
-    origin.eventMode = 'passive';
-    stage.addChild(origin);
-    this.origin = origin;
-
-    // Setup other classes
-    this.scene = new PixiScene(this);
-    this.events = new PixiEvents(this);
-
-    // Texture Manager should only be created once
-    // This is because it will start loading assets and Pixi's asset loader is not reentrant.
-    // (it causes test failures if we create a bunch of these)
-    if (!_sharedTextures) {
-      _sharedTextures = new PixiTextures(context);
-    }
-    this.textures = _sharedTextures;
-
-    // Event listeners to respond to any changes in selection or hover
-    context.on('modechange', this._onModeChange);
-    context.behaviors.hover.on('hoverchange', this._onHoverChange);
   }
 
 
@@ -596,7 +597,7 @@ export class PixiRenderer extends EventEmitter {
       debug1.beginFill(0xffffff, 1);
       debug1.drawCircle(0, 0, 20);
       debug1.endFill();
-      debug1.name = 'center_stage';
+      debug1.label = 'center_stage';
       debug1.eventMode = 'none';
       debug1.sortableChildren = false;
       debug1.zIndex = 101;
@@ -611,7 +612,7 @@ export class PixiRenderer extends EventEmitter {
       debug2.beginFill(0xff6666, 1);
       debug2.drawCircle(0, 0, 15);
       debug2.endFill();
-      debug2.name = 'center_screen';
+      debug2.label = 'center_screen';
       debug2.eventMode = 'none';
       debug2.sortableChildren = false;
       debug2.zIndex = 102;
