@@ -115,12 +115,20 @@ export class UrlHashSystem extends AbstractSystem {
     if (this._startPromise) return this._startPromise;
 
     const context = this.context;
+    const imagery = context.systems.imagery;
     const editor = context.systems.editor;
     const l10n = context.systems.l10n;
+    const photos = context.systems.photos;
+    const map = context.systems.map;
+    const ui = context.systems.ui;
 
     const prerequisites = Promise.all([
+      imagery.startAsync(),
+      editor.startAsync(),
       l10n.startAsync(),
-      editor.startAsync()
+      map.startAsync(),
+      photos.startAsync(),
+      ui.startAsync()
     ]);
 
     return this._startPromise = prerequisites
