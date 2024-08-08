@@ -222,236 +222,246 @@ export class UiSystem extends AbstractSystem {
       // .attr('dir', 'ltr')
       .call(map.render);
 
-    // Top toolbar
-    contentEnter
-      .append('div')
-      .attr('class', 'top-toolbar-wrap')
-      .append('div')
-      .attr('class', 'top-toolbar fillD')
-      .call(uiTopToolbar(context));
+
+    // bhousel aug 8, I feel a bit bad about this
+    (map._pixiReadyPromise || Promise.reject())
+      .then(() => {
+
+        // Top toolbar
+        contentEnter
+          .append('div')
+          .attr('class', 'top-toolbar-wrap')
+          .append('div')
+          .attr('class', 'top-toolbar fillD')
+          .call(uiTopToolbar(context));
 
 
-    // Over Map
-    const overMapEnter = contentEnter
-      .append('div')
-      .attr('class', 'over-map');
+        // Over Map
+        const overMapEnter = contentEnter
+          .append('div')
+          .attr('class', 'over-map');
 
-    // HACK: Mobile Safari 14 likes to select anything selectable when long-
-    // pressing, even if it's not targeted. This conflicts with long-pressing
-    // to show the edit menu. We add a selectable offscreen element as the first
-    // child to trick Safari into not showing the selection UI.
-    overMapEnter
-      .append('div')
-      .attr('class', 'select-trap')
-      .text('t');
+        // HACK: Mobile Safari 14 likes to select anything selectable when long-
+        // pressing, even if it's not targeted. This conflicts with long-pressing
+        // to show the edit menu. We add a selectable offscreen element as the first
+        // child to trick Safari into not showing the selection UI.
+        overMapEnter
+          .append('div')
+          .attr('class', 'select-trap')
+          .text('t');
 
-    overMapEnter
-      .call(uiMapInMap(context));
+        overMapEnter
+          .call(uiMapInMap(context));
 
-    overMapEnter
-      .call(uiMap3dViewer(context));
+        overMapEnter
+          .call(uiMap3dViewer(context));
 
-    overMapEnter
-      .append('div')
-      .attr('class', 'spinner')
-      .call(uiSpinner(context));
-
-
-    // Map controls
-    const controlsEnter = overMapEnter
-      .append('div')
-      .attr('class', 'map-controls');
-
-    controlsEnter
-      .append('div')
-      .attr('class', 'map-control bearing')
-      .call(uiBearing(context));
-
-    controlsEnter
-      .append('div')
-      .attr('class', 'map-control zoombuttons')
-      .call(uiZoom(context));
-
-    controlsEnter
-      .append('div')
-      .attr('class', 'map-control zoom-to-selection')
-      .call(uiZoomToSelection(context));
-
-    controlsEnter
-      .append('div')
-      .attr('class', 'map-control geolocate')
-      .call(uiGeolocate(context));
+        overMapEnter
+          .append('div')
+          .attr('class', 'spinner')
+          .call(uiSpinner(context));
 
 
-    // Panes
-    // This should happen after map is initialized, as some require surface()
-    overMapEnter
-      .append('div')
-      .attr('class', 'map-panes')
-      .each((d, i, nodes) => {
-        const selection = d3_select(nodes[i]);
+        // Map controls
+        const controlsEnter = overMapEnter
+          .append('div')
+          .attr('class', 'map-controls');
 
-        // Instantiate the panes
-        const uiPanes = [
-          uiPaneBackground(context),
-          uiPaneMapData(context),
-          uiPaneIssues(context),
-          uiPanePreferences(context),
-          uiPaneHelp(context)
-        ];
+        controlsEnter
+          .append('div')
+          .attr('class', 'map-control bearing')
+          .call(uiBearing(context));
 
-        // For each pane, create the buttons to toggle the panes,
-        // and perform a single render to append it to the map-panes div
-        for (const component of uiPanes) {
-          controlsEnter
-            .append('div')
-            .attr('class', `map-control map-pane-control ${component.id}-control`)
-            .call(component.renderToggleButton);
+        controlsEnter
+          .append('div')
+          .attr('class', 'map-control zoombuttons')
+          .call(uiZoom(context));
 
-          selection
-            .call(component.renderPane);
+        controlsEnter
+          .append('div')
+          .attr('class', 'map-control zoom-to-selection')
+          .call(uiZoomToSelection(context));
+
+        controlsEnter
+          .append('div')
+          .attr('class', 'map-control geolocate')
+          .call(uiGeolocate(context));
+
+
+        // Panes
+        // This should happen after map is initialized, as some require surface()
+        overMapEnter
+          .append('div')
+          .attr('class', 'map-panes')
+          .each((d, i, nodes) => {
+            const selection = d3_select(nodes[i]);
+
+            // Instantiate the panes
+            const uiPanes = [
+              uiPaneBackground(context),
+              uiPaneMapData(context),
+              uiPaneIssues(context),
+              uiPanePreferences(context),
+              uiPaneHelp(context)
+            ];
+
+            // For each pane, create the buttons to toggle the panes,
+            // and perform a single render to append it to the map-panes div
+            for (const component of uiPanes) {
+              controlsEnter
+                .append('div')
+                .attr('class', `map-control map-pane-control ${component.id}-control`)
+                .call(component.renderToggleButton);
+
+              selection
+                .call(component.renderPane);
+            }
+          });
+
+
+        // Info Panels
+        overMapEnter
+          .call(this.info);
+
+        overMapEnter
+          .append('div')
+          .attr('class', 'photoviewer')
+          .classed('al', true)       // 'al'=left,  'ar'=right
+          .classed('hide', true)
+          .call(this.photoviewer);
+
+        overMapEnter
+          .append('div')
+          .attr('class', 'attribution-wrap')
+          .attr('dir', 'ltr')
+          .call(uiAttribution(context));
+
+        // Footer
+        let aboutEnter = contentEnter
+          .append('div')
+          .attr('class', 'map-footer');
+
+        aboutEnter
+          .append('div')
+          .attr('class', 'api-status')
+          .call(uiStatus(context));
+
+        let footerEnter = aboutEnter
+          .append('div')
+          .attr('class', 'map-footer-bar fillD');
+
+        footerEnter
+          .append('div')
+          .attr('class', 'flash-wrap footer-hide');
+
+        let footerWrapEnter = footerEnter
+          .append('div')
+          .attr('class', 'main-footer-wrap footer-show');
+
+        footerWrapEnter
+          .append('div')
+          .attr('class', 'scale-block')
+          .call(uiScale(context));
+
+        let aboutListEnter = footerWrapEnter
+          .append('div')
+          .attr('class', 'info-block')
+          .append('ul')
+          .attr('class', 'map-footer-list');
+
+        aboutListEnter
+          .append('li')
+          .attr('class', 'user-list')
+          .call(uiContributors(context));
+
+        aboutListEnter
+          .append('li')
+          .attr('class', 'fb-road-license')
+          .attr('tabindex', -1)
+          .call(uiRapidServiceLicense(context));
+
+        const apiConnections = context.apiConnections;
+        if (apiConnections && apiConnections.length > 1) {
+          aboutListEnter
+            .append('li')
+            .attr('class', 'source-switch')
+            .call(uiSourceSwitch(context).keys(apiConnections));
         }
+
+        aboutListEnter
+          .append('li')
+          .attr('class', 'issues-info')
+          .call(uiIssuesInfo(context));
+
+    //    aboutListEnter
+    //      .append('li')
+    //      .attr('class', 'feature-warning')
+    //      .call(uiFeatureInfo(context));
+
+        const issueLinksEnter = aboutListEnter
+          .append('li');
+
+        issueLinksEnter
+          .append('button')
+          .attr('class', 'bugnub')
+          .attr('tabindex', -1)
+          .on('click', this._clickBugLink)
+          .call(uiIcon('#rapid-icon-bug', 'bugnub'))
+          .call(uiTooltip(context).title(l10n.t('report_a_bug')).placement('top'));
+
+        issueLinksEnter
+          .append('a')
+          .attr('target', '_blank')
+          .attr('href', 'https://github.com/facebook/Rapid/blob/main/CONTRIBUTING.md#translations')
+          .call(uiIcon('#rapid-icon-translate', 'light'))
+          .call(uiTooltip(context).title(l10n.t('help_translate')).placement('top'));
+
+        aboutListEnter
+          .append('li')
+          .attr('class', 'version')
+          .call(uiVersion(context));
+
+        if (!context.embed()) {
+          aboutListEnter
+            .call(uiAccount(context));
+        }
+
+        container
+          .call(this.shortcuts);
+
+        // Setup map dimensions, and allow rendering..
+        // This should happen after .main-content and toolbars exist.
+        this.resize();
+        map.resume();
+
+
+        // On first render only, enter browse mode and show a startup screen.
+        if (this._firstRender) {
+          context.enter('browse');
+
+          // What to show first?
+          const editor = context.systems.editor;
+          const storage = context.systems.storage;
+          const urlhash = context.systems.urlhash;
+
+          const startWalkthrough = urlhash.initialHashParams.get('walkthrough') === 'true';
+          const sawPrivacyVersion = parseInt(storage.getItem('sawPrivacyVersion'), 10) || 0;
+          const sawWhatsNewVersion = parseInt(storage.getItem('sawWhatsNewVersion'), 10) || 0;
+
+          if (startWalkthrough) {
+            container.call(uiIntro(context));     // Jump right into walkthrough..
+          } else if (editor.canRestoreBackup) {
+            container.call(uiRestore(context));   // Offer to restore backup edits..
+          } else if (sawPrivacyVersion !== context.privacyVersion) {
+            container.call(uiSplash(context));    // Show "Welcome to Rapid" / Privacy Policy
+          } else if (sawWhatsNewVersion !== context.whatsNewVersion) {
+            container.call(uiWhatsNew(context));  // Show "Whats New"
+          }
+
+          this._firstRender = false;
+        }
+
       });
-
-
-    // Info Panels
-    overMapEnter
-      .call(this.info);
-
-    overMapEnter
-      .call(this.photoviewer.render);
-
-    overMapEnter
-      .append('div')
-      .attr('class', 'attribution-wrap')
-      .attr('dir', 'ltr')
-      .call(uiAttribution(context));
-
-    // Footer
-    let aboutEnter = contentEnter
-      .append('div')
-      .attr('class', 'map-footer');
-
-    aboutEnter
-      .append('div')
-      .attr('class', 'api-status')
-      .call(uiStatus(context));
-
-    let footerEnter = aboutEnter
-      .append('div')
-      .attr('class', 'map-footer-bar fillD');
-
-    footerEnter
-      .append('div')
-      .attr('class', 'flash-wrap map-footer-hide');
-
-    let footerWrapEnter = footerEnter
-      .append('div')
-      .attr('class', 'map-footer-wrap map-footer-show');
-
-    footerWrapEnter
-      .append('div')
-      .attr('class', 'scale-block')
-      .call(uiScale(context));
-
-    let aboutListEnter = footerWrapEnter
-      .append('div')
-      .attr('class', 'info-block')
-      .append('ul')
-      .attr('class', 'map-footer-list');
-
-    aboutListEnter
-      .append('li')
-      .attr('class', 'user-list')
-      .call(uiContributors(context));
-
-    aboutListEnter
-      .append('li')
-      .attr('class', 'fb-road-license')
-      .attr('tabindex', -1)
-      .call(uiRapidServiceLicense(context));
-
-    const apiConnections = context.apiConnections;
-    if (apiConnections && apiConnections.length > 1) {
-      aboutListEnter
-        .append('li')
-        .attr('class', 'source-switch')
-        .call(uiSourceSwitch(context).keys(apiConnections));
-    }
-
-    aboutListEnter
-      .append('li')
-      .attr('class', 'issues-info')
-      .call(uiIssuesInfo(context));
-
-//    aboutListEnter
-//      .append('li')
-//      .attr('class', 'feature-warning')
-//      .call(uiFeatureInfo(context));
-
-    const issueLinksEnter = aboutListEnter
-      .append('li');
-
-    issueLinksEnter
-      .append('button')
-      .attr('class', 'bugnub')
-      .attr('tabindex', -1)
-      .on('click', this._clickBugLink)
-      .call(uiIcon('#rapid-icon-bug', 'bugnub'))
-      .call(uiTooltip(context).title(l10n.t('report_a_bug')).placement('top'));
-
-    issueLinksEnter
-      .append('a')
-      .attr('target', '_blank')
-      .attr('href', 'https://github.com/facebook/Rapid/blob/main/CONTRIBUTING.md#translations')
-      .call(uiIcon('#rapid-icon-translate', 'light'))
-      .call(uiTooltip(context).title(l10n.t('help_translate')).placement('top'));
-
-    aboutListEnter
-      .append('li')
-      .attr('class', 'version')
-      .call(uiVersion(context));
-
-    if (!context.embed()) {
-      aboutListEnter
-        .call(uiAccount(context));
-    }
-
-    container
-      .call(this.shortcuts);
-
-
-    // Setup map dimensions, and allow rendering..
-    // This should happen after .main-content and toolbars exist.
-    this.resize();
-    map.resume();
-
-
-    // On first render only, enter browse mode and show a startup screen.
-    if (this._firstRender) {
-      context.enter('browse');
-
-      // What to show first?
-      const editor = context.systems.editor;
-      const storage = context.systems.storage;
-      const urlhash = context.systems.urlhash;
-
-      const startWalkthrough = urlhash.initialHashParams.get('walkthrough') === 'true';
-      const sawPrivacyVersion = parseInt(storage.getItem('sawPrivacyVersion'), 10) || 0;
-      const sawWhatsNewVersion = parseInt(storage.getItem('sawWhatsNewVersion'), 10) || 0;
-
-      if (startWalkthrough) {
-        container.call(uiIntro(context));     // Jump right into walkthrough..
-      } else if (editor.canRestoreBackup) {
-        container.call(uiRestore(context));   // Offer to restore backup edits..
-      } else if (sawPrivacyVersion !== context.privacyVersion) {
-        container.call(uiSplash(context));    // Show "Welcome to Rapid" / Privacy Policy
-      } else if (sawWhatsNewVersion !== context.whatsNewVersion) {
-        container.call(uiWhatsNew(context));  // Show "Whats New"
-      }
-
-      this._firstRender = false;
-    }
   }
 
 

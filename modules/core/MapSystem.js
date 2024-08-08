@@ -56,6 +56,8 @@ export class MapSystem extends AbstractSystem {
 
     this._renderer = null;
     this._initPromise = null;
+    this._startPromise = null;
+    this._pixiReadyPromise = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
@@ -64,7 +66,6 @@ export class MapSystem extends AbstractSystem {
     this.render = this.render.bind(this);
     this.immediateRedraw = this.immediateRedraw.bind(this);
     this.deferredRedraw = this.deferredRedraw.bind(this);
-    this._renderer = new PixiRenderer(context, this.supersurface, this.surface, this.overlay);
   }
 
 
@@ -94,8 +95,7 @@ export class MapSystem extends AbstractSystem {
 
     const prerequisites = Promise.all([
       storage.initAsync(),
-      l10n.initAsync(),
-      this._renderer.initPixiApp()
+      l10n.initAsync()
     ]);
 
     return this._initPromise = prerequisites
@@ -146,8 +146,16 @@ export class MapSystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
-    this._started = true;
-    return Promise.resolve();
+    if (this._startPromise) return this._startPromise;
+
+    const ui = this.context.systems.ui;
+    const prerequisites = ui.startAsync();  // UI must be started before we resolve
+
+    return this._startPromise = prerequisites
+      .then(() => {
+        this._started = true;
+        return this._pixiReadyPromise || Promise.reject();
+      });
   }
 
 
@@ -227,96 +235,100 @@ export class MapSystem extends AbstractSystem {
       .append('div')
       .attr('class', 'overlay');
 
-    if (!this._renderer) {
-      this._renderer = new PixiRenderer(context, this.supersurface, this.surface, this.overlay);
-
-      // Forward the 'move' and 'draw' events from PixiRenderer
-      this._renderer
-        .on('move', () => this.emit('move'))
-        .on('draw', () => {
-          this._updateHash();
-          this.emit('draw', { full: true });  // pass {full: true} for legacy receivers
-        });
-    }
+    if (this._renderer) return;  // we created it already
 
 
-    // Setup events that cause the map to redraw...
-    const editor = context.systems.editor;
-    const filters = context.systems.filters;
-    const imagery = context.systems.imagery;
-    const photos = context.systems.photos;
-    const styles = context.systems.styles;
-    const scene = this._renderer.scene;
+    this._renderer = new PixiRenderer(context, this.supersurface, this.surface, this.overlay);
 
-    editor
-      .on('merge', entityIDs => {
-        if (entityIDs) {
-          scene.dirtyData('osm', entityIDs);
+    this._pixiReadyPromise = (this._renderer._pixiReadyPromise || Promise.reject())
+      .then(() => {
+        // Forward the 'move' and 'draw' events from PixiRenderer
+        this._renderer
+          .on('move', () => this.emit('move'))
+          .on('draw', () => {
+            this._updateHash();
+            this.emit('draw', { full: true });  // pass {full: true} for legacy receivers
+          });
+
+        // Setup events that cause the map to redraw...
+        const editor = context.systems.editor;
+        const filters = context.systems.filters;
+        const imagery = context.systems.imagery;
+        const photos = context.systems.photos;
+        const styles = context.systems.styles;
+        const scene = this._renderer.scene;
+
+        editor
+          .on('merge', entityIDs => {
+            if (entityIDs) {
+              scene.dirtyData('osm', entityIDs);
+            }
+            this.deferredRedraw();
+          })
+          .on('stagingchange', difference => {
+            // todo - maybe only do this if difference.didChange.geometry?
+            const complete = difference.complete();
+            for (const entity of complete.values()) {
+              if (entity) {      // may be undefined if entity was deleted
+                entity.touch();  // bump .v in place, rendering code will pick it up as dirty
+                filters.clearEntity(entity);  // clear feature filter cache
+              }
+            }
+            this.immediateRedraw();
+          })
+          .on('historyjump', (prevIndex, currIndex) => {
+            // This code occurs when jumping to a different edit because of a undo/redo/restore, etc.
+            const prevEdit = editor.history[prevIndex];
+            const currEdit = editor.history[currIndex];
+
+            // Counterintuitively, when undoing, we might want the metadata from the _next_ edit (located at prevIndex).
+            // If that edit exists (it might not if we are restoring) use that one, otherwise just use the current edit
+            const didUndo = (currIndex === prevIndex - 1);
+            const edit = (didUndo && prevEdit) ?? currEdit;
+
+            // Reposition the map if we've jumped to a different place.
+            const t0 = context.viewport.transform.props;
+            const t1 = edit.transform;
+            if (t1 && (t0.x !== t1.x || t0.y !== t1.y || t0.k !== t1.k || t0.r !== t1.r)) {
+              this.transformEase(t1);
+            }
+
+            // Switch to select mode if the edit contains selected ids.
+            // Note: draw modes need to do a little extra work to survive this,
+            //  so they have their own `historyjump` listeners.
+            const modeID = context.mode?.id;
+            if (/^draw/.test(modeID)) return;
+
+            // For now these IDs are assumed to be OSM ids.
+            // Check that they are actually in the stable graph.
+            const graph = edit.graph;
+            const checkIDs = edit.selectedIDs ?? [];
+            const selectedIDs = checkIDs.filter(entityID => graph.hasEntity(entityID));
+            if (selectedIDs.length) {
+              context.enter('select-osm', { selection: { osm: selectedIDs }} );
+            } else {
+              context.enter('browse');
+            }
+          });
+
+        filters
+          .on('filterchange', () => {
+            scene.dirtyLayers('osm');
+            this.immediateRedraw();
+          });
+
+        context.on('modechange', this.immediateRedraw);
+        imagery.on('imagerychange', this.immediateRedraw);
+        photos.on('photochange', this.immediateRedraw);
+        scene.on('layerchange', this.immediateRedraw);
+        styles.on('stylechange', this.immediateRedraw);
+
+        const osm = context.services.osm;
+        if (osm) {
+          osm.on('authchange', this.immediateRedraw);
         }
-        this.deferredRedraw();
-      })
-      .on('stagingchange', difference => {
-        // todo - maybe only do this if difference.didChange.geometry?
-        const complete = difference.complete();
-        for (const entity of complete.values()) {
-          if (entity) {      // may be undefined if entity was deleted
-            entity.touch();  // bump .v in place, rendering code will pick it up as dirty
-            filters.clearEntity(entity);  // clear feature filter cache
-          }
-        }
-        this.immediateRedraw();
-      })
-      .on('historyjump', (prevIndex, currIndex) => {
-        // This code occurs when jumping to a different edit because of a undo/redo/restore, etc.
-        const prevEdit = editor.history[prevIndex];
-        const currEdit = editor.history[currIndex];
 
-        // Counterintuitively, when undoing, we might want the metadata from the _next_ edit (located at prevIndex).
-        // If that edit exists (it might not if we are restoring) use that one, otherwise just use the current edit
-        const didUndo = (currIndex === prevIndex - 1);
-        const edit = (didUndo && prevEdit) ?? currEdit;
-
-        // Reposition the map if we've jumped to a different place.
-        const t0 = context.viewport.transform.props;
-        const t1 = edit.transform;
-        if (t1 && (t0.x !== t1.x || t0.y !== t1.y || t0.k !== t1.k || t0.r !== t1.r)) {
-          this.transformEase(t1);
-        }
-
-        // Switch to select mode if the edit contains selected ids.
-        // Note: draw modes need to do a little extra work to survive this,
-        //  so they have their own `historyjump` listeners.
-        const modeID = context.mode?.id;
-        if (/^draw/.test(modeID)) return;
-
-        // For now these IDs are assumed to be OSM ids.
-        // Check that they are actually in the stable graph.
-        const graph = edit.graph;
-        const checkIDs = edit.selectedIDs ?? [];
-        const selectedIDs = checkIDs.filter(entityID => graph.hasEntity(entityID));
-        if (selectedIDs.length) {
-          context.enter('select-osm', { selection: { osm: selectedIDs }} );
-        } else {
-          context.enter('browse');
-        }
       });
-
-    filters
-      .on('filterchange', () => {
-        scene.dirtyLayers('osm');
-        this.immediateRedraw();
-      });
-
-    context.on('modechange', this.immediateRedraw);
-    imagery.on('imagerychange', this.immediateRedraw);
-    photos.on('photochange', this.immediateRedraw);
-    scene.on('layerchange', this.immediateRedraw);
-    styles.on('stylechange', this.immediateRedraw);
-
-    const osm = context.services.osm;
-    if (osm) {
-      osm.on('authchange', this.immediateRedraw);
-    }
   }
 
 

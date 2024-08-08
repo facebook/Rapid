@@ -72,52 +72,20 @@ export class PixiRenderer extends EventEmitter {
 
     // Disable mipmapping, we always want textures near the resolution they are at.
     settings.AUTO_GENERATE_MIPMAPS = false;
+
     // Asynchronously initialize the PixiJS application
-    this.initPixiApp();
-<<<<<<< HEAD
-
-// todo - we should stop doing this.. Access to pixi app should be via an instance of PixiRenderer
-// so we can have multiple Pixi renderers - this will make the minimap less hacky & enable restriction editor
-    context.pixi = this.pixi;
-
-    // Prepare a basic bitmap font that we can use for things like debug messages
-    // BitmapFont.install('debug', {
-    //   fill: 0xffffff,
-    //   fontSize: 14,
-    //   stroke: 0x333333,
-    //   strokeThickness: 2
-    // },{
-    //   chars: BitmapFont.ASCII,
-    //   padding: 0,
-    //   resolution: 2
-    // });
+    this._pixiReadyPromise = this._initPixiAsync();
   }
 
 
-
-// todo - we should stop doing this.. Access to pixi app should be via an instance of PixiRenderer
-// so we can have multiple Pixi renderers - this will make the minimap less hacky & enable restriction editor
-    context.pixi = this.pixi;
-
-    // Prepare a basic bitmap font that we can use for things like debug messages
-    BitmapFont.install({
-        name: 'TitleFont',
-        textStyle: {
-            fontFamily: 'Arial',
-            fontSize: 12,
-            strokeThickness: 2,
-            fill: 'purple'
-        },
-        chars: BitmapFont.ALPHANUMERIC // Assuming you still specify characters
-    });
-
-  }
-
-
-
-  async initPixiApp() {
+  /**
+   * _initPixiAsync
+   * @return {Promise}  promise settled when pixi is ready
+   */
+  _initPixiAsync() {
     this.pixi = new Application();
-    await this.pixi.init({
+
+    return this.pixi.init({
       antialias: true,
       autoDensity: true,
       autoStart: false,        // don't start the ticker yet
@@ -132,78 +100,66 @@ export class PixiRenderer extends EventEmitter {
       sharedLoader: true,
       sharedTicker: true,
       canvas: this.surface.node()
-    });
+    })
+    .then(() => {
+      // todo - we should stop doing this.. Access to pixi app should be via an instance of PixiRenderer
+      // so we can have multiple Pixi renderers - this will make the minimap less hacky & enable restriction editor
+      this.context.pixi = this.pixi;
 
-    window.__PIXI_DEVTOOLS__ = {
-      pixi: PIXI,
-      app: this.pixi,
-      // If you are not using a pixi app, you can pass the renderer and stage directly
-      // renderer: myRenderer,
-      // stage: myStage,
-    };
+      // Prepare a basic bitmap font that we can use for things like debug messages
+      // BitmapFont.install('debug', {
+      //   fill: 0xffffff,
+      //   fontSize: 14,
+      //   stroke: 0x333333,
+      //   strokeThickness: 2
+      // },{
+      //   chars: BitmapFont.ASCII,
+      //   padding: 0,
+      //   resolution: 2
+      // });
 
-    // Register Pixi with the pixi-inspector extension if it is installed
-    // https://github.com/bfanger/pixi-inspector
-    globalThis.__PIXI_APP__ = this.pixi;
+      // Register Pixi with the pixi-inspector extension if it is installed
+      // https://github.com/bfanger/pixi-inspector
+      globalThis.__PIXI_APP__ = this.pixi;
 
-    // Setup the stage, ticker, and other components after initialization
-    // await this.pixi.init();
-    await this.setupStage();
-    await this.setupTicker();
-    await this.setupScenesAndEvents();
+      // Setup the stage
+      // The `stage` should be positioned so that `[0,0]` is at the center of the viewport,
+      // and this is the pivot point for map rotation.
+      const stage = this.pixi.stage;
+      stage.label = 'stage';
+      stage.sortableChildren = true;
+      stage.eventMode = 'static';
+      // Add a big hit area to `stage` so that clicks on nothing will generate events
+      stage.hitArea = new PIXI.Rectangle(-10000000, -10000000, 20000000, 20000000);
+      this.stage = stage;
 
-    this.initialized = true;
-  }
+      // The `origin` returns `[0,0]` back to the `[top,left]` coordinate of the viewport,
+      // so `project/unproject` continues to work.
+      // This also includes the `offset` which includes any panning that the user has done.
+      const origin = new PIXI.Container();
+      origin.label = 'origin';
+      origin.sortableChildren = true;
+      origin.eventMode = 'passive';
+      stage.addChild(origin);
+      this.origin = origin;
 
+      // Setup the ticker
+      const ticker = this.pixi.ticker;
+      const defaultListener = ticker._head.next;
+      ticker.remove(defaultListener.fn, defaultListener.context);
+      ticker.add(this._tick, this);
+      ticker.start();
 
-  setupStage() {
-    // Setup the stage
-    // The `stage` should be positioned so that `[0,0]` is at the center of the viewport,
-    // and this is the pivot point for map rotation.
-    const stage = this.pixi.stage;
-    stage.label = 'stage';
-    stage.sortableChildren = true;
-    stage.eventMode = 'static';
-    // Add a big hit area to `stage` so that clicks on nothing will generate events
-    stage.hitArea = new PIXI.Rectangle(-10000000, -10000000, 20000000, 20000000);
-    this.stage = stage;
+      this.scene = new PixiScene(this);
+      this.events = new PixiEvents(this);
 
-    // The `origin` returns `[0,0]` back to the `[top,left]` coordinate of the viewport,
-    // so `project/unproject` continues to work.
-    // This also includes the `offset` which includes any panning that the user has done.
-    const origin = new PIXI.Container();
-    origin.label = 'origin';
-    origin.sortableChildren = true;
-    origin.eventMode = 'passive';
-    stage.addChild(origin);
-    this.origin = origin;
-  }
-
-
-  setupTicker() {
-    if (!this.pixi || !this.pixi.ticker) {
-        return;
-    }
-
-    const ticker = this.pixi.ticker;
-    const defaultListener = ticker._head.next;
-    ticker.remove(defaultListener.fn, defaultListener.context);
-    ticker.add(this._tick, this);
-    ticker.start();
-  }
-
-
-  setupScenesAndEvents() {
-    this.scene = new PixiScene(this);
-    this.events = new PixiEvents(this);
-
-    // Texture Manager should only be created once
-    // This is because it will start loading assets and Pixi's asset loader is not reentrant.
-    // (it causes test failures if we create a bunch of these)
-    if (!_sharedTextures) {
+      // Texture Manager should only be created once
+      // This is because it will start loading assets and Pixi's asset loader is not reentrant.
+      // (it causes test failures if we create a bunch of these)
+      if (!_sharedTextures) {
         _sharedTextures = new PixiTextures(this.context);
-    }
-    this.textures = _sharedTextures;
+      }
+      this.textures = _sharedTextures;
   }
 
 
