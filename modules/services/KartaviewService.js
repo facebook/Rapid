@@ -449,7 +449,7 @@ export class KartaviewService extends AbstractSystem {
           // It also uses 'snake_case' instead of 'camelCase'.
           image.loc = loc;
           image.ca = +d.heading;
-          image.isPano = false;  // todo
+          image.isPano = (d.field_of_view === '360');
           image.captured_at = (d.shot_date || d.date_added);
           image.sequenceIndex = +d.sequence_index;
           image.captured_by = d.username;
@@ -546,7 +546,7 @@ export class KartaviewService extends AbstractSystem {
         // It also uses 'camelCase' instead of 'snake_case'.
         image.loc = loc;
         image.ca = +d.heading;
-        image.isPano = false;  // todo
+        image.isPano = (d.fieldOfView === '360');
         image.captured_at = (d.shotDate || d.dateAdded);
         image.sequenceIndex = +d.sequenceIndex;
         image.imageUrl = d.imageProcUrl;
