@@ -367,19 +367,19 @@ export class AbstractFeature {
    * @param  parentID  `String` dataID of the parent (e.g. 'r123')
    * @param  childID   `String` dataID of the child (e.g. 'w123')
    */
-   addChildData(parentID, childID) {
-     this.layer.addChildData(parentID, childID);
-     this.dirty = true;
-   }
+  addChildData(parentID, childID) {
+    this.layer.addChildData(parentID, childID);
+    this.dirty = true;
+  }
 
   /**
    * clearChildData
    * Removes all child dataIDs for the given parent dataID
    * @param  parentID  `String` dataID of the parent (e.g. 'r123')
    */
-   clearChildData(parentID) {
-     this.layer.clearChildData(parentID);
-     this.dirty = true;
-   }
+  clearChildData(parentID) {
+    this.layer.clearChildData(parentID);
+    this.dirty = true;
+  }
 
 }

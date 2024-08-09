@@ -37,14 +37,12 @@ describe('MapillaryService', () => {
 
 
   describe('#resetAsync', () => {
-    it('resets cache and selected image', () => {
+    it('resets cache', () => {
       _mapillary._mlyCache.images.forImageID.foo = { id: 'foo' };
-      _mapillary._mlyActiveImage = 'foo';
 
       return _mapillary.resetAsync()
         .then(() => {
           expect(_mapillary._mlyCache.images.forImageID).to.not.have.property('foo');
-          expect(_mapillary._mlyActiveImage).to.be.null;
         });
     });
   });
@@ -166,16 +164,6 @@ describe('MapillaryService', () => {
         expect(fetchMock.calls().length).to.eql(0);   // no tile requests of any kind
         done();
       }, 20);
-    });
-  });
-
-
-
-  describe('#setActiveImage', () => {
-    it('gets and sets the selected image', () => {
-      const image = { id: 'baz', originalLngLat: { lng: 10, lat: 0 }};
-      _mapillary.setActiveImage(image);
-      expect(_mapillary.getActiveImage().id).to.eql(image.id);
     });
   });
 

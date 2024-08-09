@@ -12,8 +12,8 @@ const MAPILLARY_SELECTED = 0xffee00;
 const MAPILLARY_ZOOM = { min: 0, max: 3 };
 
 //Fully zoomed in = FOV width of 0.5 and length of 2
-const fovWidthInterp = d3_scaleLinear([MAPILLARY_ZOOM.min, MAPILLARY_ZOOM.max], [1, 0.5], );
-const fovLengthInterp = d3_scaleLinear([MAPILLARY_ZOOM.min, MAPILLARY_ZOOM.max],[1, 2]);
+const fovWidthInterp = d3_scaleLinear([MAPILLARY_ZOOM.min, MAPILLARY_ZOOM.max], [1, 0.5]);
+const fovLengthInterp = d3_scaleLinear([MAPILLARY_ZOOM.min, MAPILLARY_ZOOM.max], [1, 2]);
 
 const LINESTYLE = {
   casing: { alpha: 0 },  // disable
@@ -42,8 +42,8 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
   constructor(scene, layerID) {
     super(scene, layerID);
 
-    this._viewerCompassAngle = null;
-    this._viewerZoom = MAPILLARY_ZOOM.min; //no zoom
+    this._viewerBearing = null;
+    this._viewerZoom = MAPILLARY_ZOOM.min;  // no zoom
 
     // Make sure the event handlers have `this` bound correctly
     this._bearingchanged = this._bearingchanged.bind(this);
@@ -53,6 +53,10 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
       const service = this.context.services.mapillary;
       service.on('bearingChanged', this._bearingchanged);
       service.on('fovChanged', this._fovchanged);
+      service.on('imageChanged', () => {
+        this._viewerBearing = null;
+        this._viewerZoom = MAPILLARY_ZOOM.min;  // no zoom
+      });
     }
   }
 
@@ -62,7 +66,8 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
    * Called whenever the viewer's compass bearing has changed (user pans around)
    */
   _bearingchanged(e) {
-    this._viewerCompassAngle = e.bearing;
+    this._viewerBearing = e.bearing;
+    this._dirtyActiveImage();
   }
 
 
@@ -71,10 +76,37 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
    * Called whenever the viewer's field of view has changed (user zooms/unzooms)
    */
   _fovchanged(e) {
-    const viewer = e?.target?.viewer;
+    const viewer = e?.target;
     if (!viewer) return;
 
-    viewer.getZoom().then(val => this._viewerZoom = val);
+    viewer.getZoom().then(val => {
+      this._viewerZoom = val;
+      this._dirtyActiveImage();
+    });
+  }
+
+
+  /**
+   * _dirtyActiveImage
+   * If we are interacting with the viewer (zooming / panning),
+   * dirty the active image so its view cone gets redrawn
+   */
+  _dirtyActiveImage() {
+    const context = this.context;
+    const map = context.systems.map;
+    const photos = context.systems.photos;
+
+    const currPhotoID = photos.currPhotoID;
+    if (!currPhotoID) return;  // shouldn't happen, the user is zooming/panning an image
+
+    // Dirty the feature(s) for this image so they will be redrawn.
+    const featureIDs = this._dataHasFeature.get(currPhotoID) ?? new Set();
+    for (const featureID of featureIDs) {
+      const feature = this.features.get(featureID);
+      if (!feature) continue;
+      feature._styleDirty = true;
+    }
+    map.immediateRedraw();
   }
 
 
@@ -253,7 +285,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
         const style = Object.assign({}, MARKERSTYLE);
 
         if (feature.active) {  // active style
-          style.viewfieldAngles = [this._viewerCompassAngle];
+          style.viewfieldAngles = [this._viewerBearing ?? d.ca];
           style.viewfieldName = 'viewfield';
           style.viewfieldTint = MAPILLARY_SELECTED;
           style.markerTint = MAPILLARY_SELECTED;

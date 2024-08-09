@@ -1,3 +1,5 @@
+import { scaleLinear as d3_scaleLinear } from 'd3-scale';
+
 import { AbstractLayer } from './AbstractLayer.js';
 import { PixiFeatureLine } from './PixiFeatureLine.js';
 import { PixiFeaturePoint } from './PixiFeaturePoint.js';
@@ -5,6 +7,9 @@ import { PixiFeaturePoint } from './PixiFeaturePoint.js';
 const MINZOOM = 12;
 const STREETSIDE_TEAL = 0xfffc4;
 const STREETSIDE_SELECTED = 0xffee00;
+
+const fovWidthInterp = d3_scaleLinear([90, 0], [1.25, 0.75]);
+const fovLengthInterp = d3_scaleLinear([90, 0], [0.5, 2]);
 
 const LINESTYLE = {
   casing: { alpha: 0 },  // disable
@@ -33,24 +38,40 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
   constructor(scene, layerID) {
     super(scene, layerID);
 
-    this._handleBearingChange = this._handleBearingChange.bind(this);
-    this._viewerYawAngle = 0;
+    // Make sure the event handlers have `this` bound correctly
+    this._viewerchanged = this._viewerchanged.bind(this);
 
     if (this.supported) {
       const service = this.context.services.streetside;
-      service.on('viewerChanged', this._handleBearingChange);
+      service.on('viewerChanged', this._viewerchanged);
     }
   }
 
 
 
   /**
-   * _handleBearingChange
+   * _viewerchanged
    * Handle the user dragging inside of a panoramic photo.
    */
-  _handleBearingChange() {
-    const service = this.context.services.streetside;
-    this._viewerYawAngle = service._pannellumViewer.getYaw();
+  _viewerchanged() {
+    // const service = this.context.services.streetside;
+    // this._viewerYaw = service._pannellumViewer.getYaw();
+
+    const context = this.context;
+    const map = context.systems.map;
+    const photos = context.systems.photos;
+
+    const currPhotoID = photos.currPhotoID;
+    if (!currPhotoID) return;  // shouldn't happen, the user is zooming/panning an image
+
+    // Dirty the feature(s) for this image so they will be redrawn.
+    const featureIDs = this._dataHasFeature.get(currPhotoID) ?? new Set();
+    for (const featureID of featureIDs) {
+      const feature = this.features.get(featureID);
+      if (!feature) continue;
+      feature._styleDirty = true;
+    }
+    map.immediateRedraw();
   }
 
 
@@ -200,12 +221,18 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
       if (feature.dirty) {
         const style = Object.assign({}, MARKERSTYLE);
 
+        const viewer = service._pannellumViewer;
+        const yaw = viewer?.getYaw() ?? 0;
+        const fov = viewer?.getHfov() ?? 45;
+
         if (feature.active) {  // active style
-          style.viewfieldAngles = [d.ca + this._viewerYawAngle];
+          style.viewfieldAngles = [d.ca + yaw];
           style.viewfieldName = 'viewfield';
           style.viewfieldTint = STREETSIDE_SELECTED;
           style.markerTint = STREETSIDE_SELECTED;
           style.scale = 2.0;
+          style.fovWidth = fovWidthInterp(fov);
+          style.fovLength = fovLengthInterp(fov);
 
         } else {  // default style
           if (Number.isFinite(d.ca)) {
@@ -217,6 +244,8 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
           style.viewfieldTint = STREETSIDE_TEAL;
           style.markerTint = STREETSIDE_TEAL;
           style.scale = 1.0;
+          style.fovWidth = 1;
+          style.fovLength = 1;
         }
 
         feature.style = style;
