@@ -41,7 +41,6 @@ export class MapillaryService extends AbstractSystem {
     this._startPromise = null;
 
     this._showing = null;
-    this._mlyActiveImage = null;
     this._mlyCache = {};
     this._mlyHighlightedDetection = null;
     this._mlyShowFeatureDetections = false;
@@ -150,7 +149,6 @@ export class MapillaryService extends AbstractSystem {
       requests: { loaded: {}, inflight: {} }
     };
 
-    this._mlyActiveImage = null;
     this._lastv = null;
 
     return Promise.resolve();
@@ -340,8 +338,6 @@ export class MapillaryService extends AbstractSystem {
     const context = this.context;
     context.systems.photos.selectPhoto(null);
 
-    this._mlyActiveImage = null;
-
     if (this._viewer) {
       this._viewer.getComponent('sequence').stop();
     }
@@ -387,31 +383,9 @@ export class MapillaryService extends AbstractSystem {
   }
 
 
-  // Return the currently displayed image
-  getActiveImage() {
-    return this._mlyActiveImage;
-  }
-
-
   // Return a list of detection objects for the given id
   getDetectionsAsync(id) {
     return this._loadDataAsync(`${apiUrl}/${id}/detections?access_token=${accessToken}&fields=id,value,image`);
-  }
-
-
-  // Set the currently visible image
-  setActiveImage(image) {
-    if (image) {
-      this._mlyActiveImage = {
-        ca: image.originalCompassAngle,
-        id: image.id,
-        loc: [image.originalLngLat.lng, image.originalLngLat.lat],
-        isPano: image.cameraType === 'spherical',
-        sequenceID: image.sequenceID
-      };
-    } else {
-      this._mlyActiveImage = null;
-    }
   }
 
 
@@ -736,7 +710,6 @@ export class MapillaryService extends AbstractSystem {
     const imageChanged = (node) => {
       this.resetTags();
       const image = node.image;
-      this.setActiveImage(image);
 
       const loc = [image.originalLngLat.lng, image.originalLngLat.lat];
       map.centerEase(loc);
@@ -751,7 +724,6 @@ export class MapillaryService extends AbstractSystem {
     // bearingChanged: called when the bearing changes in the image viewer.
     const bearingChanged = (e) => {
       this.emit('bearingChanged', e);
-      map.immediateRedraw();
     };
 
     const fovChanged = (e) => {

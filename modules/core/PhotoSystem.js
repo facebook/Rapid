@@ -276,6 +276,24 @@ export class PhotoSystem extends AbstractSystem {
     return this._usernames;
   }
 
+  /**
+   * currLayerID
+   * @return  {string} The current layerID
+   * @readonly
+   */
+  get currLayerID() {
+    return this._currLayerID;
+  }
+
+  /**
+   * currPhotoID
+   * @return  {string} The current photoID
+   * @readonly
+   */
+  get currPhotoID() {
+    return this._currPhotoID;
+  }
+
 
   /**
    * selectPhoto

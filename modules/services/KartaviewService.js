@@ -573,7 +573,7 @@ export class KartaviewService extends AbstractSystem {
         cache.rtree.remove(box, (a, b) => a.data.id === b.data.id);
         cache.rtree.insert(box);
 
-        this.context.deferredRedraw();
+        context.deferredRedraw();
         this.emit('loadedData');
 
         return image;
