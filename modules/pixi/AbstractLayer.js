@@ -179,6 +179,16 @@ export class AbstractLayer {
     if (!dataID) return;
 
     const classList = this._dataHasClass.get(dataID) ?? new Set();
+
+    //
+    // Trying to document all the supported pseudo-classes here:
+    //
+    // 'active':  prevents events from firing, e.g. when dragging
+    // 'drawing':  removes the hitarea, and avoids hover, e.g. it prevents snapping
+    // 'highlighted':  adds a blue glowfilter
+    // 'hovered':  adds a yellow glowfilter
+    // 'selected':  adds a dashed line halo
+
     feature.active = classList.has('active');
     feature.drawing = classList.has('drawing');
     feature.highlighted = classList.has('highlighted');

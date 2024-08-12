@@ -208,7 +208,7 @@ export class AbstractFeature {
 
 
   /**
-   * isInteractive
+   * active
    * Whether the Feature is currently being interacted with
    */
   get active() {
