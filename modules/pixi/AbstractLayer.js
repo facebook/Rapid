@@ -188,27 +188,6 @@ export class AbstractLayer {
 
 
   /**
-   * isDrawing
-   * @param dataId 'String' dataID (e.g. 'w-123')
-   * @returns true or false
-   */
-  isDrawing(dataID) {
-    const classList = this._dataHasClass.get(dataID);
-    return classList?.has('drawing');
-  }
-
-  /**
-   * isHovered
-   * @param dataId 'String' dataID (e.g. 'w-123')
-   * @returns true or false
-   */
-  isHovered(dataID) {
-    const classList = this._dataHasClass.get(dataID);
-    return classList?.has('hovered');
-  }
-
-
-  /**
    * bindData
    * Adds (or replaces) a data binding from featureID to a dataID
    * @param  featureID  `String` featureID  (e.g. 'osm-w-123-fill')
