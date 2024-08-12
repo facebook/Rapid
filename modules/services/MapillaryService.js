@@ -42,7 +42,7 @@ export class MapillaryService extends AbstractSystem {
     this._startPromise = null;
 
     this._showing = null;
-    this._mlyCache = {};
+    this._cache = {};
     this._mlyHighlightedDetection = null;
     this._mlyShowFeatureDetections = false;
     this._mlyShowSignDetections = false;
@@ -137,11 +137,11 @@ export class MapillaryService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed resetting
    */
   resetAsync() {
-    if (this._mlyCache.requests) {
-      Object.values(this._mlyCache.requests.inflight).forEach(function(request) { request.abort(); });
+    if (this._cache.requests) {
+      Object.values(this._cache.requests.inflight).forEach(function(request) { request.abort(); });
     }
 
-    this._mlyCache = {
+    this._cache = {
       images: { rtree: new RBush(), forImageID: {} },
       signs:  { rtree: new RBush() },
       points: { rtree: new RBush() },
@@ -166,7 +166,7 @@ export class MapillaryService extends AbstractSystem {
     if (!['images', 'signs', 'points'].includes(datasetID)) return [];
 
     const extent = this.context.viewport.visibleExtent();
-    const cache = this._mlyCache[datasetID];
+    const cache = this._cache[datasetID];
     return cache.rtree.search(extent.bbox()).map(d => d.data);
   }
 
@@ -174,16 +174,16 @@ export class MapillaryService extends AbstractSystem {
   /**
    * getSequences
    * Get already loaded sequence data that appears in the current map view
-   * @return  {Array}
+   * @return  {Array<FeatureCollection>}
    */
   getSequences() {
     const extent = this.context.viewport.visibleExtent();
     let result = new Map();  // Map(sequenceID -> Array of LineStrings)
 
-    for (const box of this._mlyCache.images.rtree.search(extent.bbox())) {
+    for (const box of this._cache.images.rtree.search(extent.bbox())) {
       const sequenceID = box.data.sequenceID;
       if (!sequenceID) continue;  // no sequence for this image
-      const sequence = this._mlyCache.sequences.get(sequenceID);
+      const sequence = this._cache.sequences.get(sequenceID);
       if (!sequence) continue;  // sequence not ready
 
       if (!result.has(sequenceID)) {
@@ -396,7 +396,7 @@ export class MapillaryService extends AbstractSystem {
     if (!imageID) return;
 
     const url = `${apiUrl}/${imageID}/detections?access_token=${accessToken}&fields=id,image,geometry,value`;
-    const cache = this._mlyCache.image_detections;
+    const cache = this._cache.image_detections;
     let detections = cache.forImageID[imageID];
 
     if (detections) {
@@ -484,7 +484,7 @@ export class MapillaryService extends AbstractSystem {
   _loadTile(datasetID, tile) {
     if (!['images', 'signs', 'points'].includes(datasetID)) return;
 
-    const cache = this._mlyCache.requests;
+    const cache = this._cache.requests;
     const tileID = `${tile.id}-${datasetID}`;
     if (cache.loaded[tileID] || cache.inflight[tileID]) return;
 
@@ -537,7 +537,7 @@ export class MapillaryService extends AbstractSystem {
     const vectorTile = new VectorTile(new Protobuf(buffer));
 
     if (vectorTile.layers.hasOwnProperty('image')) {
-      const cache = this._mlyCache.images;
+      const cache = this._cache.images;
       const layer = vectorTile.layers.image;
       let boxes = [];
 
@@ -563,25 +563,31 @@ export class MapillaryService extends AbstractSystem {
     }
 
     if (vectorTile.layers.hasOwnProperty('sequence')) {
-      const cache = this._mlyCache.sequences;
+      const cache = this._cache.sequences;
       const layer = vectorTile.layers.sequence;
 
       for (let i = 0; i < layer.length; i++) {
-        const feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
-        if (!feature) continue;
-        const sequenceID = feature.properties.id;
+        const geojson = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
+        if (!geojson) continue;
+        const sequenceID = geojson.properties.id;
 
-        let lineStrings = cache.get(sequenceID);
-        if (!lineStrings) {
-          lineStrings = [];
-          cache.set(sequenceID, lineStrings);
+        let sequence = cache.get(sequenceID);
+        if (!sequence) {
+          sequence = {
+            type: 'FeatureCollection',
+            id: sequenceID,     // not strictly spec, but should be
+            v: 0,
+            features: []
+          };
+          cache.set(sequenceID, sequence);
         }
-        lineStrings.push(feature);
+        sequence.features.push(geojson);
+        sequence.v++;
       }
     }
 
     if (vectorTile.layers.hasOwnProperty('point')) {
-      const cache = this._mlyCache.points;
+      const cache = this._cache.points;
       const layer = vectorTile.layers.point;
       let boxes = [];
 
@@ -605,7 +611,7 @@ export class MapillaryService extends AbstractSystem {
     }
 
     if (vectorTile.layers.hasOwnProperty('traffic_sign')) {
-      const cache = this._mlyCache.signs;
+      const cache = this._cache.signs;
       const layer = vectorTile.layers.traffic_sign;
       let boxes = [];
 
