@@ -204,7 +204,7 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
       if (feature.dirty) {
         const style = Object.assign({}, MARKERSTYLE);
 // todo handle pano
-        if (feature.active) {  // active style
+        if (feature.selectphoto) {  // selected photo style
           // style.viewfieldAngles = [this._viewerCompassAngle ?? d.ca];
           if (Number.isFinite(d.ca)) {
             style.viewfieldAngles = [d.ca];   // ca = camera angle

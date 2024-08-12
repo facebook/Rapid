@@ -314,7 +314,7 @@ export class PhotoSystem extends AbstractSystem {
     for (const oldLayerID of this._LAYERIDS) {
       const oldLayer = scene.layers.get(oldLayerID);
       oldLayer?.clearClass('selected');
-      oldLayer?.clearClass('active');
+      oldLayer?.clearClass('selectphoto');
     }
 
     if (layerID && photoID) {
@@ -325,7 +325,7 @@ export class PhotoSystem extends AbstractSystem {
       scene.enableLayers(layerID);
 
       scene.classData(layerID, photoID, 'selected');
-      scene.classData(layerID, photoID, 'active');
+      scene.classData(layerID, photoID, 'selectphoto');
 
       // Try to show the viewer with the image selected..
       service.startAsync()

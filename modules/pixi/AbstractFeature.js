@@ -18,15 +18,19 @@ import { PixiGeometry } from './PixiGeometry.js';
  *   `dataID`            Data bound to this Feature (like `__data__` from the D3.js days)
  *   `visible`           `true` if the Feature is visible (`false` if it is culled)
  *   `allowInteraction`  `true` if the Feature is allowed to be interactive (emits Pixi events)
- *   `active`            `true` if the Feature is currently being interacted with (dragged, etc)
  *   `dirty`             `true` if the Feature needs to be rebuilt
- *   `selected`          `true` if the Feature is selected
- *   `highlighted`       `true` if the Feature is highlighted
- *   `hovered`           `true` if the Feature is hovered
  *   `v`                 Version of the Feature, can be used to detect changes
  *   `lod`               Level of detail for the Feature last time it was styled (0 = off, 1 = simplified, 2 = full)
  *   `halo`              A PIXI.DisplayObject() that contains the graphics for the Feature's halo (if it has one)
  *   `sceneBounds`       PIXI.Rectangle() where 0,0 is the origin of the scene
+ *
+ * PseudoClasses:
+ *   `active`
+ *   `drawing`
+ *   `highlighted`
+ *   `hovered`
+ *   `selected`
+ *   `selectphoto`
  */
 export class AbstractFeature {
 
@@ -68,12 +72,13 @@ export class AbstractFeature {
     this._dataID = null;
     this._data = null;
 
-    // pseudo "classes"
+    // pseudoclasses, @see `AbstractLayer.syncFeatureClasses()`
     this._active = false;
     this._drawing = false;
     this._highlighted = false;
     this._hovered = false;
     this._selected = false;
+    this._selectphoto = false;
 
     // We will manage our own bounds for now because we can probably do this
     // faster than Pixi's built in bounds calculations.
@@ -191,6 +196,21 @@ export class AbstractFeature {
 
 
   /**
+   * dirty
+   * Whether the Feature needs to be rebuilt
+   */
+  get dirty() {
+    // The labeling code will decide what to do with the `_labelDirty` flag
+    return this.geometry.dirty || this._styleDirty;
+  }
+  set dirty(val) {
+    this.geometry.dirty = val;
+    this._styleDirty = val;
+    this._labelDirty = val;
+  }
+
+
+  /**
    * allowInteraction
    * Whether the Feature is allowed to be interactive
    */
@@ -209,7 +229,8 @@ export class AbstractFeature {
 
   /**
    * active
-   * Whether the Feature is currently being interacted with
+   * @see `AbstractLayer.syncFeatureClasses()`
+   * @param `true` to apply the 'active' pseudoclass
    */
   get active() {
     return this._active;
@@ -225,52 +246,24 @@ export class AbstractFeature {
 
 
   /**
-   * dirty
-   * Whether the Feature needs to be rebuilt
+   * drawing
+   * @see `AbstractLayer.syncFeatureClasses()`
+   * @param  val  `true` to apply the 'drawing' pseudoclass
    */
-  get dirty() {
-    // The labeling code will decide what to do with the `_labelDirty` flag
-    return this.geometry.dirty || this._styleDirty;
+  get drawing() {
+    return this._drawing;
   }
-  set dirty(val) {
-    this.geometry.dirty = val;
-    this._styleDirty = val;
-    this._labelDirty = val;
-  }
-
-
-  /**
-   * hovered
-   * @param  val  `true` to make the Feature hovered
-   */
-  get hovered() {
-    return this._hovered;
-  }
-  set hovered(val) {
-    if (val === this._hovered) return;  // no change
-    this._hovered = val;
+  set drawing(val) {
+    if (val === this._drawing) return;  // no change
+    this._drawing = val;
     this._styleDirty = true;
-  }
-
-
-  /**
-   * selected
-   * @param  val  `true` to make the Feature selected
-   */
-  get selected() {
-    return this._selected;
-  }
-  set selected(val) {
-    if (val === this._selected) return;  // no change
-    this._selected = val;
-    this._styleDirty = true;
-    this._labelDirty = true;
   }
 
 
   /**
    * highlighted
-   * @param  val  `true` to make the Feature highlighted
+   * @see `AbstractLayer.syncFeatureClasses()`
+   * @param  val  `true` to apply the 'highlighted' pseudoclass
    */
   get highlighted() {
     return this._highlighted;
@@ -284,16 +277,49 @@ export class AbstractFeature {
 
 
   /**
-   * drawing
-   * @param  val  `true` to make the Feature drawing
+   * hovered
+   * @see `AbstractLayer.syncFeatureClasses()`
+   * @param  val  `true` to apply the 'hovered' pseudoclass
    */
-  get drawing() {
-    return this._drawing;
+  get hovered() {
+    return this._hovered;
   }
-  set drawing(val) {
-    if (val === this._drawing) return;  // no change
-    this._drawing = val;
+  set hovered(val) {
+    if (val === this._hovered) return;  // no change
+    this._hovered = val;
     this._styleDirty = true;
+  }
+
+
+  /**
+   * selected
+   * @see `AbstractLayer.syncFeatureClasses()`
+   * @param  val  `true` to apply the 'selected' pseudoclass
+   */
+  get selected() {
+    return this._selected;
+  }
+  set selected(val) {
+    if (val === this._selected) return;  // no change
+    this._selected = val;
+    this._styleDirty = true;
+    this._labelDirty = true;
+  }
+
+
+  /**
+   * selectphoto
+   * @see `AbstractLayer.syncFeatureClasses()`
+   * @param  val  `true` to apply the 'selectphoto' pseudoclass
+   */
+  get selectphoto() {
+    return this._selectphoto;
+  }
+  set selectphoto(val) {
+    if (val === this._selectphoto) return;  // no change
+    this._selectphoto = val;
+    this._styleDirty = true;
+    this._labelDirty = true;
   }
 
 

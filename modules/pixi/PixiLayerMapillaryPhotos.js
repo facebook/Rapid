@@ -284,7 +284,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
       if (feature.dirty) {
         const style = Object.assign({}, MARKERSTYLE);
 
-        if (feature.active) {  // active style
+        if (feature.selectphoto) {  // selected photo style
           style.viewfieldAngles = [this._viewerBearing ?? d.ca];
           style.viewfieldName = 'viewfield';
           style.viewfieldTint = MAPILLARY_SELECTED;
