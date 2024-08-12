@@ -8,7 +8,7 @@ const MINZOOM = 12;
 const STREETSIDE_TEAL = 0xfffc4;
 const STREETSIDE_SELECTED = 0xffee00;
 
-const fovWidthInterp = d3_scaleLinear([90, 0], [1.25, 0.75]);
+const fovWidthInterp = d3_scaleLinear([90, 0], [1.25, 0.85]);
 const fovLengthInterp = d3_scaleLinear([90, 0], [0.5, 2]);
 
 const LINESTYLE = {
@@ -225,7 +225,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
         const yaw = viewer?.getYaw() ?? 0;
         const fov = viewer?.getHfov() ?? 45;
 
-        if (feature.active) {  // active style
+        if (feature.selectphoto) {  // selected photo style
           style.viewfieldAngles = [d.ca + yaw];
           style.viewfieldName = 'viewfield';
           style.viewfieldTint = STREETSIDE_SELECTED;

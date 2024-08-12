@@ -188,12 +188,14 @@ export class AbstractLayer {
     // 'highlighted':  adds a blue glowfilter
     // 'hovered':  adds a yellow glowfilter
     // 'selected':  adds a dashed line halo
+    // 'selectphoto':  styling for the currently selected photo
 
     feature.active = classList.has('active');
     feature.drawing = classList.has('drawing');
     feature.highlighted = classList.has('highlighted');
     feature.hovered = classList.has('hovered');
     feature.selected = classList.has('selected');
+    feature.selectphoto = classList.has('selectphoto');
   }
 
 

@@ -186,7 +186,7 @@ export class PixiFeaturePoint extends AbstractFeature {
           vfSprite.anchor.set(0.5, 0.5);  // middle, middle
 
           // Make the active photo image pop out at the user
-          if (this.active) {
+          if (this.selectphoto) {
             this.container.zIndex = 99000;
           }
 
@@ -273,8 +273,8 @@ export class PixiFeaturePoint extends AbstractFeature {
   updateHitArea() {
     if (!this.visible) return;
 
-    //Fix for bug #648: If we're drawing, we don't need to hit ourselves.
-    if (this._drawing) {
+    // Fix for Rapid#648: If we're drawing, we don't need to hit ourselves.
+    if (this.drawing) {
       this.container.hitArea = null;
       return;
     }
