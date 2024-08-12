@@ -173,11 +173,11 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
 
   /**
    * filterSequences
-   * Note - a 'sequence' is now an Array of Linestrings, post Rapid#776
-   * This is because we can get multiple linestrings for sequences that cross a tile boundary.
-   * We just look at the first item in the array to determine whether to keep/filter the sequence.
-   * @param  {Array<sequence>}  sequences - all sequences
-   * @return {Array<sequence>}  sequences with filtering applied
+   * Note - a 'sequence' is now a FeatureCollection containing a LineString or MultiLineString, post Rapid#776
+   * This is because we can get multiple linestrings for sequences that cross a vector tile boundary.
+   * We just look at the first item in the features Array to determine whether to keep/filter the sequence.
+   * @param  {Array<FeatureCollection>}  sequences - all sequences
+   * @return {Array<FeatureCollection>}  sequences with filtering applied
    */
   filterSequences(sequences) {
     const photos = this.context.systems.photos;
@@ -191,21 +191,21 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     if (!showFlatPhotos && !showPanoramicPhotos) {
       return [];
     } else if (showPanoramicPhotos && !showFlatPhotos) {
-      sequences = sequences.filter(s => s[0].properties.is_pano);
+      sequences = sequences.filter(s => s.features[0].properties.is_pano);
     } else if (!showPanoramicPhotos && showFlatPhotos){
-      sequences =  sequences.filter(s => !s[0].properties.is_pano);
+      sequences =  sequences.filter(s => !s.features[0].properties.is_pano);
     }
 
     if (fromDate) {
       const fromTimestamp = new Date(fromDate).getTime();
-      sequences = sequences.filter(s => new Date(s[0].properties.captured_at).getTime() >= fromTimestamp);
+      sequences = sequences.filter(s => new Date(s.features[0].properties.captured_at).getTime() >= fromTimestamp);
     }
     if (toDate) {
       const toTimestamp = new Date(toDate).getTime();
-      sequences = sequences.filter(s => new Date(s[0].properties.captured_at).getTime() <= toTimestamp);
+      sequences = sequences.filter(s => new Date(s.features[0].properties.captured_at).getTime() <= toTimestamp);
     }
     if (usernames) {
-      sequences = sequences.filter(s => usernames.includes(s[0].properties.captured_by));
+      sequences = sequences.filter(s => usernames.includes(s.features[0].properties.captured_by));
     }
 
     return sequences;
@@ -232,26 +232,39 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     sequences = this.filterSequences(sequences);
     images = this.filterImages(images);
 
-    // render sequences
-    for (const lineStrings of sequences) {
-      for (let i = 0; i < lineStrings.length; ++i) {
-        const d = lineStrings[i];
-        const sequenceID = d.properties.id;
-        const featureID = `${this.layerID}-sequence-${sequenceID}-${i}`;
-        let feature = this.features.get(featureID);
+    // render sequences, they are actually FeatureCollections
+    for (const fc of sequences) {
+      const sequenceID = fc.id;
+      const version = fc.v || 0;
 
-        if (!feature) {
-          feature = new PixiFeatureLine(this, featureID);
-          feature.geometry.setCoords(d.geometry.coordinates);
-          feature.style = LINESTYLE;
-          feature.parentContainer = parentContainer;
-          feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
-          feature.setData(sequenceID, d);
+      for (let i = 0; i < fc.features.length; ++i) {
+        const d = fc.features[i];
+        const parts = (d.geometry.type === 'LineString') ? [d.geometry.coordinates]
+          : (d.geometry.type === 'MultiLineString') ? d.geometry.coordinates : [];
+
+        for (let j = 0; j < parts.length; ++j) {
+          const coords = parts[j];
+          const featureID = `${this.layerID}-sequence-${sequenceID}-${i}-${j}`;
+          let feature = this.features.get(featureID);
+
+          if (!feature) {
+            feature = new PixiFeatureLine(this, featureID);
+            feature.style = LINESTYLE;
+            feature.parentContainer = parentContainer;
+            feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
+          }
+
+          // If data has changed.. Replace it.
+          if (feature.v !== version) {
+            feature.v = version;
+            feature.geometry.setCoords(coords);
+            feature.setData(sequenceID, d);
+          }
+
+          this.syncFeatureClasses(feature);
+          feature.update(viewport, zoom);
+          this.retainFeature(feature, frame);
         }
-
-        this.syncFeatureClasses(feature);
-        feature.update(viewport, zoom);
-        this.retainFeature(feature, frame);
       }
     }
 
