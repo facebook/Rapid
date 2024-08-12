@@ -89,15 +89,13 @@
 }
 
 .photo-attribution a,
-.photo-attribution a:visited,
 .photo-attribution span {
-    padding: 4px 2px;
-    color: #fff;
+  padding: 4px 2px;
 }
 
 /* markers and sequences */
 .viewfield-group {
-    pointer-events: none;
+  pointer-events: none;
 }
 .ideditor.mode-browse .viewfield-group,
 .ideditor.mode-select .viewfield-group,
@@ -264,15 +262,6 @@
     text-align: right;
 }
 
-.ms-wrapper .photo-attribution a:active {
-    color: #0fffc4;
-}
-@media (hover: hover) {
-    .ms-wrapper .photo-attribution a:hover {
-        color: #0fffc4;
-    }
-}
-
 .ms-wrapper .pnlm-compass.pnlm-control {
     width: 26px;
     height: 26px;
@@ -345,14 +334,6 @@ label.streetside-hires {
     background-repeat: no-repeat;
 }
 
-.osc-wrapper .photo-attribution a:active {
-    color: #20c4ff;
-}
-@media (hover: hover) {
-    .osc-wrapper .photo-attribution a:hover {
-        color: #20c4ff;
-    }
-}
 
 .osc-image-wrap {
     width: 100%;
