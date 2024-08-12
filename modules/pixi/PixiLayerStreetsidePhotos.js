@@ -8,8 +8,8 @@ const MINZOOM = 12;
 const STREETSIDE_TEAL = 0xfffc4;
 const STREETSIDE_SELECTED = 0xffee00;
 
-const fovWidthInterp = d3_scaleLinear([90, 0], [1.25, 0.85]);
-const fovLengthInterp = d3_scaleLinear([90, 0], [0.5, 2]);
+const fovWidthInterp = d3_scaleLinear([90, 10], [1.3, 0.7]);
+const fovLengthInterp = d3_scaleLinear([90, 10], [0.7, 1.5]);
 
 const LINESTYLE = {
   casing: { alpha: 0 },  // disable
@@ -39,24 +39,22 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
     super(scene, layerID);
 
     // Make sure the event handlers have `this` bound correctly
-    this._viewerchanged = this._viewerchanged.bind(this);
+    this._dirtyCurrentPhoto = this._dirtyCurrentPhoto.bind(this);
 
     if (this.supported) {
       const service = this.context.services.streetside;
-      service.on('viewerChanged', this._viewerchanged);
+      service.on('bearingChanged', this._dirtyCurrentPhoto);
+      service.on('fovChanged', this._dirtyCurrentPhoto);
     }
   }
 
 
-
   /**
-   * _viewerchanged
-   * Handle the user dragging inside of a panoramic photo.
+   * _dirtyCurrentPhoto
+   * If we are interacting with the viewer (zooming / panning),
+   * dirty the current photo so its view cone gets redrawn
    */
-  _viewerchanged() {
-    // const service = this.context.services.streetside;
-    // this._viewerYaw = service._pannellumViewer.getYaw();
-
+  _dirtyCurrentPhoto() {
     const context = this.context;
     const map = context.systems.map;
     const photos = context.systems.photos;
@@ -221,7 +219,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
       if (feature.dirty) {
         const style = Object.assign({}, MARKERSTYLE);
 
-        const viewer = service._pannellumViewer;
+        const viewer = service._viewer;
         const yaw = viewer?.getYaw() ?? 0;
         const fov = viewer?.getHfov() ?? 45;
 

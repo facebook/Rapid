@@ -21,8 +21,9 @@ const TILEZOOM = 14;
  * `MapillaryService`
  *
  * Events available:
- *   `imageChanged`
- *   `bearingChanged`
+ *   `imageChanged`   - fired when a new image is visible in the viewer
+ *   `bearingChanged` - fired when the viewer has been panned, receives the bearing value in degrees.
+ *   `fovChanged`     - fired when the viewer has been zoomed, receives the fov value in degrees.
  *   `loadedImages`
  *   `loadedSigns`
  *   `loadedMapFeatures`
@@ -721,13 +722,14 @@ export class MapillaryService extends AbstractSystem {
       this.emit('imageChanged');
     };
 
-    // bearingChanged: called when the bearing changes in the image viewer.
     const bearingChanged = (e) => {
-      this.emit('bearingChanged', e);
+      this.emit('bearingChanged', e.bearing);
     };
 
-    const fovChanged = (e) => {
-      this.emit('fovChanged', e);
+    const fovChanged = () => {
+      this._viewer.getFieldOfView().then(fov => {
+        this.emit('fovChanged', fov);
+      });
     };
 
     this._viewer = new mapillary.Viewer(opts);
