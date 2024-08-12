@@ -1,5 +1,4 @@
 import { select as d3_select } from 'd3-selection';
-import { timer as d3_timer } from 'd3-timer';
 import { Extent, Tiler, geoMetersToLat, geoMetersToLon, geomRotatePoints, geomPointInPolygon, vecLength } from '@rapid-sdk/math';
 import { utilQsString, utilUniqueString } from '@rapid-sdk/util';
 import RBush from 'rbush';
@@ -14,9 +13,10 @@ const TILEZOOM = 16.5;
  * `StreetsideService`
  *
  * Events available:
- *   `imageChanged`
+ *   `imageChanged`   - fired when a new image is visible in the viewer
+ *   `bearingChanged` - fired when the viewer has been panned, receives the bearing value in degrees.
+ *   `fovChanged`     - fired when the viewer has been zoomed, receives the fov value in degrees.
  *   'loadedData'
- *   'viewerChanged'
  */
 export class StreetsideService extends AbstractSystem {
 
@@ -36,20 +36,21 @@ export class StreetsideService extends AbstractSystem {
     this._resolution = 512;    // higher numbers are slower - 512, 1024, 2048, 4096
     this._currScene = 0;
     this._cache = {};
-    this._pannellumViewer = null;
+    this._viewer = null;
     this._nextSequenceID = 0;
     this._waitingForPhotoID = null;
 
     this._sceneOptions = {
+      type: 'cubemap',
+      cubeMap: [],
       showFullscreenCtrl: false,
       autoLoad: true,
       compass: true,
-      yaw: 0,
-      hfov: 45,      // default field of view degrees
-      minHfov: 10,   // zoom in degrees:  20, 10, 5
-      maxHfov: 90,   // zoom out degrees
-      type: 'cubemap',
-      cubeMap: []
+      friction: 1,    // don't keep moving after interaction stops
+      minHfov: 10,    // zoom in degrees:  20, 10, 5
+      maxHfov: 90,    // zoom out degrees
+      hfov: 45,       // default field of view degrees
+      yaw: 0          // default compass angle
     };
 
     this._keydown = this._keydown.bind(this);
@@ -76,7 +77,7 @@ export class StreetsideService extends AbstractSystem {
     if (
       activeElement !== 'BODY' ||
       !this.viewerShowing ||
-      !this.context.systems.photos._currLayerID?.startsWith('streetside')
+      this.context.systems.photos._currLayerID !== 'streetside'
     ) return;
 
     if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
@@ -106,44 +107,21 @@ export class StreetsideService extends AbstractSystem {
     if (this._startPromise) return this._startPromise;
 
     const context = this.context;
-    const map = context.systems.map;
+    const eventManager = context.systems.map.renderer.events;
     const ui = context.systems.ui;
 
     // create ms-wrapper, a photo wrapper class
     let $wrap = context.container().select('.photoviewer').selectAll('.ms-wrapper')
       .data([0]);
 
-    // inject ms-wrapper into the photoviewer div
-    // (used by all to house each custom photo viewer)
     const $$wrap = $wrap.enter()
       .append('div')
       .attr('class', 'photo-wrapper ms-wrapper')
       .classed('hide', true);
 
-    // inject div to support streetside viewer (pannellum) and attribution line
     $$wrap
       .append('div')
       .attr('id', 'rapideditor-viewer-streetside')
-      .on('pointerdown.streetside', () => {
-        d3_select(window)
-          .on('pointermove.streetside', () => {
-            this.emit('viewerChanged');
-            map.immediateRedraw();
-          }, true);
-      })
-      .on('pointerup.streetside pointercancel.streetside', () => {
-        d3_select(window)
-          .on('pointermove.streetside', null);
-
-        // continue emitting events for a few seconds, in case viewer has inertia.
-        const t = d3_timer(elapsed => {
-          this.emit('viewerChanged');
-          map.immediateRedraw();
-          if (elapsed > 5000) {
-            t.stop();
-          }
-        });
-      })
       .append('div')
       .attr('class', 'photo-attribution fillD');
 
@@ -170,10 +148,9 @@ export class StreetsideService extends AbstractSystem {
 
     // Register viewer resize handler
     ui.photoviewer.on('resize.streetside', () => {
-      if (this._pannellumViewer) this._pannellumViewer.resize();
+      if (this._viewer) this._viewer.resize();
     });
 
-    const eventManager = this.context.systems.map.renderer.events;
     eventManager.on('keydown', this._keydown);
 
     return this._startPromise = this._loadAssetsAsync()
@@ -392,9 +369,9 @@ export class StreetsideService extends AbstractSystem {
         $wrap.call(this._setupCanvas);
 
         const viewstate = {
-          yaw: this._pannellumViewer.getYaw(),
-          pitch: this._pannellumViewer.getPitch(),
-          hfov: this._pannellumViewer.getHfov()
+          yaw: this._viewer.getYaw(),
+          pitch: this._viewer.getPitch(),
+          hfov: this._viewer.getHfov()
         };
 
         this._sceneOptions = Object.assign(this._sceneOptions, viewstate);
@@ -487,20 +464,20 @@ export class StreetsideService extends AbstractSystem {
 
     return this._loadFacesAsync(faces)
       .then(() => {
-        if (!this._pannellumViewer) {
+        if (!this._viewer) {
           this._initViewer();
         } else {
           // make a new scene
           this._currScene++;
           let sceneID = this._currScene.toString();
-          this._pannellumViewer
+          this._viewer
             .addScene(sceneID, this._sceneOptions)
             .loadScene(sceneID);
 
           // remove previous scene
           if (this._currScene > 2) {
             sceneID = (this._currScene - 1).toString();
-            this._pannellumViewer
+            this._viewer
               .removeScene(sceneID);
           }
         }
@@ -556,7 +533,7 @@ export class StreetsideService extends AbstractSystem {
    */
   _initViewer() {
     if (!window.pannellum) throw new Error('pannellum not loaded');
-    if (this._pannellumViewer) return;  // already initted
+    if (this._viewer) return;  // already initted
 
     this._currScene++;
     const sceneID = this._currScene.toString();
@@ -566,7 +543,30 @@ export class StreetsideService extends AbstractSystem {
     };
     options.scenes[sceneID] = this._sceneOptions;
 
-    this._pannellumViewer = window.pannellum.viewer('rapideditor-viewer-streetside', options);
+
+    const imageChanged = () => {
+      this.emit('imageChanged');
+    };
+
+    const fovChanged = () => {
+      this.emit('fovChanged', this._viewer.getHfov());
+    };
+
+    this._viewer = window.pannellum.viewer('rapideditor-viewer-streetside', options);
+    this._viewer.on('load', imageChanged);
+    this._viewer.on('zoomchange', fovChanged);
+
+    this.context.container().select('#rapideditor-viewer-streetside')
+      .on('pointerdown.streetside', () => {
+        d3_select(window)
+          .on('pointermove.streetside', () => {
+            this.emit('bearingChanged', this._viewer.getYaw());
+          });
+      })
+      .on('pointerup.streetside pointercancel.streetside', () => {
+        d3_select(window)
+          .on('pointermove.streetside', null);
+      });
   }
 
 
@@ -582,7 +582,7 @@ export class StreetsideService extends AbstractSystem {
     if (!selected) return;
 
     let nextID = (stepBy === 1 ? selected.ne : selected.pr);
-    const yaw = this._pannellumViewer.getYaw();
+    const yaw = this._viewer.getYaw();
     this._sceneOptions.yaw = yaw;
 
     const ca = selected.ca + yaw;
