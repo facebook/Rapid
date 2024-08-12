@@ -211,19 +211,27 @@ export class PixiRenderer extends EventEmitter {
    * Respond to any change in hover
    */
   _onHoverChange(eventData) {
+    const context = this.context;
+    const scene = this.scene;
+    const ui = context.systems.ui;
+
     const target = eventData.target;
-    const layerID = target?.layerID;
+    const layer = target?.layer;
     const dataID = target?.dataID;
 
     const hoverData = target?.data;
-    const modeID = this.context.mode?.id;
+    const modeID = context.mode?.id;
     if (modeID !== 'select' && modeID !== 'select-osm') {
-      this.context.systems.ui.sidebar.hover(hoverData ? [hoverData] : []);
+      ui.sidebar.hover(hoverData ? [hoverData] : []);
     }
 
-    this.scene.clearClass('hovered');
-    if (layerID && dataID) {
-      this.scene.classData(layerID, dataID, 'hovered');
+    scene.clearClass('hovered');
+    if (layer && dataID) {
+      // Only set hover class if this target isn't currently drawing
+      const drawingIDs = layer._classHasData.get('drawing') ?? new Set();
+      if (!drawingIDs.has(dataID)) {
+        scene.classData(layer.id, dataID, 'hovered');
+      }
     }
 
     this.render();
