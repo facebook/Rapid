@@ -188,8 +188,12 @@ export class KartaviewService extends AbstractSystem {
     const lineStrings = [];
     for (const sequenceID of sequenceIDs) {
       const sequence = this._cache.sequences.get(sequenceID);
+      if (!sequence) continue;
+
       const images = sequence?.images ?? [];   // note that `images` may be a sparse array
       if (!images.length) continue;
+
+      const first = images.find(i => i);  // find any image
 
       lineStrings.push({
         type: 'LineString',
@@ -197,11 +201,11 @@ export class KartaviewService extends AbstractSystem {
           type: 'sequence',
           id: sequenceID,
           v:  sequence.v,
-          isPano:      images[0]?.isPano,
-          captured_at: images[0]?.captured_at,
-          captured_by: images[0]?.captured_by
+          isPano:      first.isPano,
+          captured_at: first.captured_at,
+          captured_by: first.captured_by
         },
-        coordinates: images.map(image => image.loc).filter(Boolean)
+        coordinates: images.map(i => i.loc).filter(Boolean)
       });
     }
 

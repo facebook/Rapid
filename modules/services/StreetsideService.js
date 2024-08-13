@@ -817,7 +817,8 @@ export class StreetsideService extends AbstractSystem {
           type: 'sequence',
           id: sequenceID,
           v: 0,
-          bubbleIDs: [currBubbleID]
+          bubbleIDs: [currBubbleID],
+          isPano: true
         };
         cache.sequences.set(sequenceID, sequence);
         _updateCaches(sequenceID, currBubbleID);

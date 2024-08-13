@@ -142,32 +142,27 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
   filterImages(images) {
     const photos = this.context.systems.photos;
     const fromDate = photos.fromDate;
+    const fromTimestamp = fromDate && new Date(fromDate).getTime();
     const toDate = photos.toDate;
+    const toTimestamp = toDate && new Date(toDate).getTime();
     const usernames = photos.usernames;
     const showFlatPhotos = photos.showsPhotoType('flat');
     const showPanoramicPhotos = photos.showsPhotoType('panoramic');
 
-    if (!showFlatPhotos && !showPanoramicPhotos) {
-      return [];
-    } else if (showPanoramicPhotos && !showFlatPhotos) {
-      images = images.filter(i => i.isPano);
-    } else if (!showPanoramicPhotos && showFlatPhotos){
-      images = images.filter(i => !i.isPano);
-    }
+    return images.filter(image => {
+      if (image.id === photos.currPhotoID) return true;  // always show current image - Rapid#1512
 
-    if (fromDate) {
-      const fromTimestamp = new Date(fromDate).getTime();
-      images = images.filter(i => new Date(i.captured_at).getTime() >= fromTimestamp);
-    }
-    if (toDate) {
-      const toTimestamp = new Date(toDate).getTime();
-      images = images.filter(i => new Date(i.captured_at).getTime() <= toTimestamp);
-    }
-    if (usernames) {
-      images = images.filter(i => usernames.includes(i.captured_by));
-    }
+      if (!showFlatPhotos && !image.isPano) return false;
+      if (!showPanoramicPhotos && image.isPano) return false;
 
-    return images;
+      const imageTimestamp = new Date(image.captured_at).getTime();
+      if (fromTimestamp && fromTimestamp > imageTimestamp) return false;
+      if (toTimestamp && toTimestamp < imageTimestamp) return false;
+
+      if (usernames && !usernames.includes(image.captured_by)) return false;
+
+      return true;
+    });
   }
 
 
@@ -182,33 +177,27 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
   filterSequences(sequences) {
     const photos = this.context.systems.photos;
     const fromDate = photos.fromDate;
+    const fromTimestamp = fromDate && new Date(fromDate).getTime();
     const toDate = photos.toDate;
+    const toTimestamp = toDate && new Date(toDate).getTime();
     const usernames = photos.usernames;
-
     const showFlatPhotos = photos.showsPhotoType('flat');
     const showPanoramicPhotos = photos.showsPhotoType('panoramic');
 
-    if (!showFlatPhotos && !showPanoramicPhotos) {
-      return [];
-    } else if (showPanoramicPhotos && !showFlatPhotos) {
-      sequences = sequences.filter(s => s.features[0].properties.is_pano);
-    } else if (!showPanoramicPhotos && showFlatPhotos){
-      sequences =  sequences.filter(s => !s.features[0].properties.is_pano);
-    }
+    return sequences.filter(sequence => {
+      const seq = sequence.features[0];  // Can contain multiple GeoJSON features, use the first one
+      if (!seq) return false;
+      if (!showFlatPhotos && !seq.properties.is_pano) return false;
+      if (!showPanoramicPhotos && seq.properties.is_pano) return false;
 
-    if (fromDate) {
-      const fromTimestamp = new Date(fromDate).getTime();
-      sequences = sequences.filter(s => new Date(s.features[0].properties.captured_at).getTime() >= fromTimestamp);
-    }
-    if (toDate) {
-      const toTimestamp = new Date(toDate).getTime();
-      sequences = sequences.filter(s => new Date(s.features[0].properties.captured_at).getTime() <= toTimestamp);
-    }
-    if (usernames) {
-      sequences = sequences.filter(s => usernames.includes(s.features[0].properties.captured_by));
-    }
+      const sequenceTimestamp = new Date(seq.properties.captured_at).getTime();
+      if (fromTimestamp && fromTimestamp > sequenceTimestamp) return false;
+      if (toTimestamp && toTimestamp < sequenceTimestamp) return false;
 
-    return sequences;
+      if (usernames && !usernames.includes(seq.properties.captured_by)) return false;
+
+      return true;
+    });
   }
 
 
