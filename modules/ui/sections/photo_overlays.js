@@ -112,9 +112,9 @@ export function uiSectionPhotoOverlays(context) {
 
     let liEnter = li.enter()
       .append('li')
-      .attr('class', function (d) {
-        var classes = 'list-item-photos list-item-' + d.id;
-        if (d.id === 'mapillary-signs' || d.id === 'mapillary-map-features') {
+      .attr('class', d => {
+        let classes = `list-item-photos list-item-${d.id}`;
+        if (d.id === 'mapillary-signs' || d.id === 'mapillary-detections') {
           classes += ' indented';
         }
         return classes;
@@ -123,11 +123,7 @@ export function uiSectionPhotoOverlays(context) {
     let labelEnter = liEnter
       .append('label')
       .each((d, i, nodes) => {
-        let stringID;
-        if (d.id === 'mapillary-signs') stringID = 'mapillary.signs.tooltip';
-        else if (d.id === 'mapillary') stringID = 'mapillary_images.tooltip';
-        else if (d.id === 'kartaview') stringID = 'kartaview_images.tooltip';
-        else stringID = d.id.replace(/-/g, '_') + '.tooltip';
+        const stringID = d.id.replace(/-/g, '_') + '.tooltip';
         d3_select(nodes[i])
           .call(uiTooltip(context)
             .title(l10n.t(stringID))
@@ -143,9 +139,8 @@ export function uiSectionPhotoOverlays(context) {
     labelEnter
       .append('span')
       .text(d => {
-        let stringID = d.id;
-        if (stringID === 'mapillary-signs') stringID = 'photo_overlays.traffic_signs';
-        return l10n.t(stringID.replace(/-/g, '_') + '.title');
+        const stringID = d.id.replace(/-/g, '_') + '.title';
+        return l10n.t(stringID);
       });
 
     // Update

@@ -82,7 +82,7 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
     const service = this.context.services.mapillary;
     if (!service?.started) return;
 
-    const parentContainer = this.scene.groups.get('points');
+    const parentContainer = this.scene.groups.get('qa');
 
     let items = service.getData('signs');
     items = this.filterDetections(items);
@@ -99,7 +99,6 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
         feature.style = style;
         feature.parentContainer = parentContainer;
         feature.setData(d.id, d);
-
         // const marker = feature.marker;
         // const ICONSIZE = 24;
         // marker.width = ICONSIZE;
@@ -115,22 +114,17 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
 
   /**
    * render
-   * Draw any data we have, and schedule fetching more of it to cover the view
+   * Render any data we have, and schedule fetching more of it to cover the view
    * @param  frame      Integer frame being rendered
    * @param  viewport   Pixi viewport to use for rendering
    * @param  zoom       Effective zoom to use for rendering
    */
   render(frame, viewport, zoom) {
     const service = this.context.services.mapillary;
+    if (!this.enabled || !service?.started || zoom < MINZOOM) return;
 
-    if (this.enabled && service?.started && zoom >= MINZOOM) {
-      service.loadTiles('signs');
-      service.showSignDetections(true);
-      this.renderMarkers(frame, viewport, zoom);
-
-    } else {
-      service?.showSignDetections(false);
-    }
+    service.loadTiles('signs');
+    this.renderMarkers(frame, viewport, zoom);
   }
 
 }

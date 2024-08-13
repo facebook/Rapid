@@ -42,7 +42,7 @@ of Rapid (e.g. `https://mapwith.ai/rapid`), the following parameters are availab
   _Example:_ `offset=-10,5`
 * __`photo_overlay`__ - The street-level photo overlay layers to enable.<br/>
   _Example:_ `photo_overlay=streetside,mapillary,kartaview`<br/>
-  _Available values:_ `streetside` (Microsoft Bing), `mapillary`, `mapillary-signs`, `mapillary-map-features`, `kartaview`
+  _Available values:_ `streetside` (Microsoft Bing), `mapillary`, `mapillary-signs`, `mapillary-detections`, `kartaview`
 * __`photo_dates`__ - The range of capture dates by which to filter street-level photos. Dates are given in YYYY-MM-DD format and separated by `_`. One-sided ranges are supported.<br/>
   _Example:_ `photo_dates=2019-01-01_2020-12-31`, `photo_dates=2019-01-01_`, `photo_dates=_2020-12-31`<br/>
 * __`photo_username`__ - The Mapillary or KartaView username by which to filter street-level photos. Multiple comma-separated usernames are supported.<br/>
