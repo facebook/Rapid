@@ -1105,9 +1105,6 @@
     },
     "photo_overlays": {
       "title": "Photo Overlays",
-      "traffic_signs": {
-        "title": "Traffic Signs"
-      },
       "photo_type": {
         "flat": {
           "title": "Flat Photos",
@@ -1849,18 +1846,24 @@
       }
     },
     "streetside": {
-      "tooltip": "Streetside photos from Microsoft",
       "title": "Bing Streetside",
+      "tooltip": "Streetside photos from Microsoft",
       "report": "Report a privacy concern with this image",
       "view_on_bing": "View on Bing Maps",
       "hires": "High resolution"
     },
-    "mapillary_images": {
-      "tooltip": "Street-level photos from Mapillary"
+    "mapillary": {
+      "title": "Mapillary",
+      "tooltip": "Street-level photos from Mapillary",
+      "view_on_mapillary": "View this image on Mapillary"
     },
-    "mapillary_map_features": {
-      "title": "Map Features",
-      "tooltip": "Map features from Mapillary",
+    "mapillary_signs": {
+      "title": "Traffic Signs",
+      "tooltip": "Detected traffic signs in Mapillary photos"
+    },
+    "mapillary_detections": {
+      "title": "Detected Objects",
+      "tooltip": "Detected objects in Mapillary photos",
       "construction": {
         "barrier": {
           "temporary": "temporary barrier"
@@ -1933,18 +1936,9 @@
         "water_valve": "water valve"
       }
     },
-    "mapillary": {
-      "title": "Mapillary",
-      "signs": {
-        "tooltip": "Traffic signs from Mapillary"
-      },
-      "view_on_mapillary": "View this image on Mapillary"
-    },
-    "kartaview_images": {
-      "tooltip": "Street-level photos from KartaView"
-    },
     "kartaview": {
       "title": "KartaView",
+      "tooltip": "Street-level photos from KartaView",
       "view_on_kartaview": "View this image on KartaView"
     },
     "note": {

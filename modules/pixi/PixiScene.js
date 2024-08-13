@@ -7,7 +7,7 @@ import { PixiLayerEditBlocks } from './PixiLayerEditBlocks.js';
 import { PixiLayerKartaPhotos } from './PixiLayerKartaPhotos.js';
 import { PixiLayerKeepRight } from './PixiLayerKeepRight.js';
 import { PixiLayerLabels } from './PixiLayerLabels.js';
-import { PixiLayerMapillaryFeatures } from './PixiLayerMapillaryFeatures.js';
+import { PixiLayerMapillaryDetections } from './PixiLayerMapillaryDetections.js';
 import { PixiLayerMapillaryPhotos } from './PixiLayerMapillaryPhotos.js';
 import { PixiLayerMapillarySigns } from './PixiLayerMapillarySigns.js';
 import { PixiLayerMapRoulette } from './PixiLayerMapRoulette.js';
@@ -70,14 +70,14 @@ export class PixiScene extends EventEmitter {
     // Groups are pre-established Containers that the Layers can add
     // their Features to, so that the scene can be sorted reasonably.
     [
-      'background',
-      'basemap',
-      'points',
-      'streetview',
-      'qa',
-      'labels',
-      'blocks',
-      'ui'
+      'background',   // Background imagery
+      'basemap',      // Editable basemap (OSM/Rapid)
+      'points',       // Editable points (OSM/Rapid)
+      'streetview',   // Streetview imagery, sequences
+      'qa',           // Q/A items, issues, notes
+      'labels',       // Text labels
+      'blocks',       // Blocked out regions
+      'ui'            // Misc UI draw above everything (select lasso, geocoding circle, debug shapes)
     ].forEach((groupID, i) => {
       const container = new PIXI.Container();
       container.name = groupID;
@@ -95,8 +95,7 @@ export class PixiScene extends EventEmitter {
       new PixiLayerRapid(this, 'rapid'),
       new PixiLayerRapidOverlay(this, 'rapid-overlay'),
 
-
-      new PixiLayerMapillaryFeatures(this, 'mapillary-map-features'),
+      new PixiLayerMapillaryDetections(this, 'mapillary-detections'),
       new PixiLayerMapillarySigns(this, 'mapillary-signs'),
 
       new PixiLayerCustomData(this, 'custom-data'),

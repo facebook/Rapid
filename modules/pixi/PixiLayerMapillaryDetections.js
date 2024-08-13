@@ -5,10 +5,10 @@ const MINZOOM = 12;
 
 
 /**
- * PixiLayerMapillaryFeatures
+ * PixiLayerMapillaryDetections
  * @class
  */
-export class PixiLayerMapillaryFeatures extends AbstractLayer {
+export class PixiLayerMapillaryDetections extends AbstractLayer {
 
   /**
    * @constructor
@@ -52,23 +52,25 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
   }
 
 
+  /**
+   * filterDetections
+   * @param  {Array<detection>}  detections - all detections
+   * @return {Array<detection>}  detections with filtering applied
+   */
   filterDetections(detections) {
     const photos = this.context.systems.photos;
     const fromDate = photos.fromDate;
+    const fromTimestamp = fromDate && new Date(fromDate).getTime();
     const toDate = photos.toDate;
+    const toTimestamp = toDate && new Date(toDate).getTime();
 
-    if (fromDate) {
-      const fromTimestamp = new Date(fromDate).getTime();
-      detections = detections
-        .filter(detection => new Date(detection.last_seen_at).getTime() >= fromTimestamp);
-    }
-    if (toDate) {
-      const toTimestamp = new Date(toDate).getTime();
-      detections = detections
-        .filter(detection => new Date(detection.first_seen_at).getTime() >= toTimestamp);
-    }
+    return detections.filter(detection => {
+      const detectionTimestamp = new Date(detection.first_seen_at).getTime();
+      if (fromTimestamp && fromTimestamp > detectionTimestamp) return false;
+      if (toTimestamp && toTimestamp < detectionTimestamp) return false;
 
-    return detections;
+      return true;
+    });
   }
 
 
@@ -82,9 +84,9 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
     const service = this.context.services.mapillary;
     if (!service?.started) return;
 
-    const parentContainer = this.scene.groups.get('points');
+    const parentContainer = this.scene.groups.get('qa');
 
-    let items = service.getData('points');
+    let items = service.getData('detections');
     items = this.filterDetections(items);
 
     for (const d of items) {
@@ -121,15 +123,10 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
    */
   render(frame, viewport, zoom) {
     const service = this.context.services.mapillary;
+    if (!this.enabled || !service?.started || zoom < MINZOOM) return;
 
-    if (this.enabled && service?.started && zoom >= MINZOOM) {
-      service.loadTiles('points');
-      service.showFeatureDetections(true);
-      this.renderMarkers(frame, viewport, zoom);
-
-    } else {
-      service?.showFeatureDetections(false);
-    }
+    service.loadTiles('detections');
+    this.renderMarkers(frame, viewport, zoom);
   }
 
 }

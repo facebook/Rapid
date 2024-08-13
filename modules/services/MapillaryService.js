@@ -11,7 +11,7 @@ const accessToken = 'MLY|3376030635833192|f13ab0bdf6b2f7b99e0d8bd5868e1d88';
 const apiUrl = 'https://graph.mapillary.com/';
 const baseTileUrl = 'https://tiles.mapillary.com/maps/vtp';
 const imageTileUrl = `${baseTileUrl}/mly1_public/2/{z}/{x}/{y}?access_token=${accessToken}`;
-const mapFeatureTileUrl = `${baseTileUrl}/mly_map_feature_point/2/{z}/{x}/{y}?access_token=${accessToken}`;
+const detectionTileUrl = `${baseTileUrl}/mly_map_feature_point/2/{z}/{x}/{y}?access_token=${accessToken}`;
 const trafficSignTileUrl = `${baseTileUrl}/mly_map_feature_traffic_sign/2/{z}/{x}/{y}?access_token=${accessToken}`;
 
 const TILEZOOM = 14;
@@ -26,7 +26,7 @@ const TILEZOOM = 14;
  *   `fovChanged`     - fired when the viewer has been zoomed, receives the fov value in degrees.
  *   `loadedImages`
  *   `loadedSigns`
- *   `loadedMapFeatures`
+ *   `loadedDetections`
  */
 export class MapillaryService extends AbstractSystem {
 
@@ -44,14 +44,11 @@ export class MapillaryService extends AbstractSystem {
     this._showing = null;
     this._cache = {};
     this._mlyHighlightedDetection = null;
-    this._mlyShowFeatureDetections = false;
-    this._mlyShowSignDetections = false;
 
     this._viewer = null;
     this._viewerFilter = ['all'];
     this._keydown = this._keydown.bind(this);
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
-    this._lastv = null;
 
     // Make sure the event handlers have `this` bound correctly
     this.navigateForward = this.navigateForward.bind(this);
@@ -137,20 +134,21 @@ export class MapillaryService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed resetting
    */
   resetAsync() {
-    if (this._cache.requests) {
-      Object.values(this._cache.requests.inflight).forEach(function(request) { request.abort(); });
+    if (this._cache?.inflight) {
+      for (const req of this._cache.inflight.values()) {
+        req.controller.abort();
+      }
     }
 
     this._cache = {
-      images: { rtree: new RBush(), forImageID: {} },
-      signs:  { rtree: new RBush() },
-      points: { rtree: new RBush() },
-      sequences: new Map(),    // Map(sequenceID -> Array of LineStrings)
+      images:       { lastv: null, data: new Map(), rtree: new RBush() },
+      signs:        { lastv: null, data: new Map(), rtree: new RBush() },
+      detections:   { lastv: null, data: new Map(), rtree: new RBush() },
+      sequences:    { data: new Map() } ,      // Map<sequenceID, Array of LineStrings>
       image_detections: { forImageID: {} },
-      requests: { loaded: {}, inflight: {} }
+      inflight: new Map(),  // Map<url, {tileID, promise, controller}>
+      loaded:   new Set()   // Set<url>
     };
-
-    this._lastv = null;
 
     return Promise.resolve();
   }
@@ -159,11 +157,11 @@ export class MapillaryService extends AbstractSystem {
   /**
    * getData
    * Get already loaded data that appears in the current map view
-   * @param   {string}  datasetID - one of 'images', 'signs', or 'points'
+   * @param   {string}  datasetID - one of 'images', 'signs', or 'detections'
    * @return  {Array}
    */
   getData(datasetID) {
-    if (!['images', 'signs', 'points'].includes(datasetID)) return [];
+    if (!['images', 'signs', 'detections'].includes(datasetID)) return [];
 
     const extent = this.context.viewport.visibleExtent();
     const cache = this._cache[datasetID];
@@ -183,7 +181,7 @@ export class MapillaryService extends AbstractSystem {
     for (const box of this._cache.images.rtree.search(extent.bbox())) {
       const sequenceID = box.data.sequenceID;
       if (!sequenceID) continue;  // no sequence for this image
-      const sequence = this._cache.sequences.get(sequenceID);
+      const sequence = this._cache.sequences.data.get(sequenceID);
       if (!sequence) continue;  // sequence not ready
 
       if (!result.has(sequenceID)) {
@@ -198,19 +196,30 @@ export class MapillaryService extends AbstractSystem {
   /**
    * loadTiles
    * Schedule any data requests needed to cover the current map view
-   * @param   {string}  datasetID - one of 'images', 'signs', or 'points'
+   * @param   {string}  datasetID - one of 'images', 'signs', or 'detections'
    */
   loadTiles(datasetID) {
-    if (!['images', 'signs', 'points'].includes(datasetID)) return;
+    if (!['images', 'signs', 'detections'].includes(datasetID)) return;
 
+    // exit early if the view is unchanged since the last time we loaded tiles
     const viewport = this.context.viewport;
-    if (this._lastv === viewport.v) return;  // exit early if the view is unchanged
-    this._lastv = viewport.v;
+    if (this._cache[datasetID].lastv === viewport.v) return;
+    this._cache[datasetID].lastv = viewport.v;
 
     // Determine the tiles needed to cover the view..
     const tiles = this._tiler.getTiles(viewport).tiles;
+
+    // Abort inflight requests that are no longer needed..
+    for (const req of this._cache.inflight.values()) {
+      if (!req.tileID) continue;
+      const needed = tiles.find(tile => tile.id === req.tileID);
+      if (!needed) {
+        req.controller.abort();
+      }
+    }
+
     for (const tile of tiles) {
-      this._loadTile(datasetID, tile);
+      this._loadTileAsync(datasetID, tile);
     }
   }
 
@@ -227,28 +236,19 @@ export class MapillaryService extends AbstractSystem {
 
 
   /**
-   * showFeatureDetections
-   * Show highlghted detections in the Mapillary viewer
-   * @param  {Boolean}  `true` to show them, `false` to hide them
+   * shouldShowDetections
+   * Determine whether detections should be shown in the mapillary viewer.
+   * @return {Boolean}  `true` if they should be shown, `false` if not
    */
-  showFeatureDetections(value) {
-    this._mlyShowFeatureDetections = value;
-    if (!this._mlyShowFeatureDetections && !this._mlyShowSignDetections) {
-      this.resetTags();
-    }
-  }
+  shouldShowDetections() {
+    const scene = this.context.scene();
 
-
-  /**
-   * showSignDetections
-   * Show highlghted traffic signs in the Mapillary viewer
-   * @param  {Boolean}  `true` to show them, `false` to hide them
-   */
-  showSignDetections(value) {
-    this._mlyShowSignDetections = value;
-    if (!this._mlyShowFeatureDetections && !this._mlyShowSignDetections) {
-      this.resetTags();
-    }
+    // are either of these layers enabled?
+    const layerIDs = ['mapillary-detections', 'mapillary-signs'];
+    return layerIDs.some(layerID => {
+      const layer = scene.layers.get(layerID);
+      return layer && layer.enabled;
+    });
   }
 
 
@@ -432,7 +432,7 @@ export class MapillaryService extends AbstractSystem {
     }
   }
 
-    // Create a Mapillary JS tag object
+  // Create a Mapillary JS tag object
   _makeTag(data) {
     const valueParts = data.value.split('--');
     if (!valueParts.length) return;
@@ -480,21 +480,22 @@ export class MapillaryService extends AbstractSystem {
   }
 
 
-  // Load all data for the specified type from one vector tile
-  _loadTile(datasetID, tile) {
-    if (!['images', 'signs', 'points'].includes(datasetID)) return;
-
-    const cache = this._cache.requests;
-    const tileID = `${tile.id}-${datasetID}`;
-    if (cache.loaded[tileID] || cache.inflight[tileID]) return;
-
-    const controller = new AbortController();
-    cache.inflight[tileID] = controller;
+  /**
+   * _loadTileAsync
+   * Load a tile of data for the given dataset
+   * @param  {string} datasetID - one of 'images', 'signs', or 'detections'
+   * @param  {Tile}   tile - a tile object
+   * @return {Promise}  Promise settled when the request is completed
+   */
+  _loadTileAsync(datasetID, tile) {
+    if (!['images', 'signs', 'detections'].includes(datasetID)) {
+      return Promise.resolve();  // nothing to do
+    }
 
     let url = {
       images: imageTileUrl,
       signs: trafficSignTileUrl,
-      points: mapFeatureTileUrl
+      detections: detectionTileUrl
     }[datasetID];
 
     url = url
@@ -502,38 +503,63 @@ export class MapillaryService extends AbstractSystem {
       .replace('{y}', tile.xyz[1])
       .replace('{z}', tile.xyz[2]);
 
-    fetch(url, { signal: controller.signal })
+    const cache = this._cache;
+
+    if (cache.loaded.has(url)) {
+      return Promise.resolve();  // already done
+    }
+
+    let req = cache.inflight.get(url);
+    if (req) {
+      return req.promise;
+    } else {
+      req = {
+        tileID: tile.id,
+        controller: new AbortController()
+      };
+    }
+
+    const prom = fetch(url, { signal: req.controller.signal })
       .then(utilFetchResponse)
       .then(buffer => {
-        cache.loaded[tileID] = true;
+        cache.loaded.add(url);
         if (!buffer) {
           throw new Error('No Data');
         }
 
-        this._loadTileDataToCache(buffer, tile);
+        this._processTile(buffer, tile);
 
         this.context.deferredRedraw();
         if (datasetID === 'images') {
           this.emit('loadedImages');
         } else if (datasetID === 'signs') {
           this.emit('loadedSigns');
-        } else if (datasetID === 'points') {
-          this.emit('loadedMapFeatures');
+        } else if (datasetID === 'detections') {
+          this.emit('loadedDetections');
         }
       })
       .catch(err => {
         if (err.name === 'AbortError') return;          // ok
         if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
-        cache.loaded[tileID] = true;  // don't retry
+        cache.loaded.add(url);  // don't retry
       })
       .finally(() => {
-        delete cache.inflight[tileID];
+        cache.inflight.delete(url);
       });
+
+    req.promise = prom;
+    cache.inflight.set(url, req);
+    return prom;
   }
 
 
-  // Load the data from the vector tile into cache
-  _loadTileDataToCache(buffer, tile) {
+  /**
+   * _processTile
+   * Process vector tile data
+   * @param  {ArrayBuffer}  buffer
+   * @param  {Tile}         tile - a tile object
+   */
+  _processTile(buffer, tile) {
     const vectorTile = new VectorTile(new Protobuf(buffer));
 
     if (vectorTile.layers.hasOwnProperty('image')) {
@@ -544,20 +570,23 @@ export class MapillaryService extends AbstractSystem {
       for (let i = 0; i < layer.length; i++) {
         const feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
         if (!feature) continue;
-        if (cache.forImageID[feature.properties.id] !== undefined) continue;  // seen already
 
+        const photoID = feature.properties.id.toString();
+        if (cache.data.has(photoID)) continue;  // seen already
+
+        const sequenceID = feature.properties.sequence_id.toString();
         const loc = feature.geometry.coordinates;
-        const d = {
+        const photo = {
           type: 'photo',
-          id: feature.properties.id.toString(),
+          id: photoID,
           loc: loc,
           captured_at: feature.properties.captured_at,
           ca: feature.properties.compass_angle,
           isPano: feature.properties.is_pano,
-          sequenceID: feature.properties.sequence_id,
+          sequenceID: sequenceID
         };
-        cache.forImageID[d.id] = d;
-        boxes.push({ minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d });
+        cache.data.set(photoID, photo);
+        boxes.push({ minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: photo });
       }
       cache.rtree.load(boxes);
     }
@@ -567,11 +596,11 @@ export class MapillaryService extends AbstractSystem {
       const layer = vectorTile.layers.sequence;
 
       for (let i = 0; i < layer.length; i++) {
-        const geojson = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
-        if (!geojson) continue;
-        const sequenceID = geojson.properties.id.toString();
+        const feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
+        if (!feature) continue;
 
-        let sequence = cache.get(sequenceID);
+        const sequenceID = feature.properties.id.toString();
+        let sequence = cache.data.get(sequenceID);
         if (!sequence) {
           sequence = {
             type: 'FeatureCollection',
@@ -579,15 +608,15 @@ export class MapillaryService extends AbstractSystem {
             v: 0,
             features: []
           };
-          cache.set(sequenceID, sequence);
+          cache.data.set(sequenceID, sequence);
         }
-        sequence.features.push(geojson);
+        sequence.features.push(feature);
         sequence.v++;
       }
     }
 
     if (vectorTile.layers.hasOwnProperty('point')) {
-      const cache = this._cache.points;
+      const cache = this._cache.detections;
       const layer = vectorTile.layers.point;
       let boxes = [];
 
@@ -595,39 +624,48 @@ export class MapillaryService extends AbstractSystem {
         const feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
         if (!feature) continue;
 
+        const detectionID = feature.properties.id.toString();
+        if (cache.data.has(detectionID)) continue;  // seen already
+
         const loc = feature.geometry.coordinates;
-        const d = {
+        const detection = {
           type: 'detection',
-          id: feature.properties.id,
+          id: detectionID,
           loc: loc,
           first_seen_at: feature.properties.first_seen_at,
           last_seen_at: feature.properties.last_seen_at,
           value: feature.properties.value
         };
-
-        boxes.push({ minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d });
+        cache.data.set(detectionID, detection);
+        boxes.push({ minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: detection });
       }
       cache.rtree.load(boxes);
     }
 
     if (vectorTile.layers.hasOwnProperty('traffic_sign')) {
+      // signs are also detections, but stored in a different cache
       const cache = this._cache.signs;
       const layer = vectorTile.layers.traffic_sign;
       let boxes = [];
 
       for (let i = 0; i < layer.length; i++) {
         const feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
-        const loc = feature.geometry.coordinates;
+        if (!feature) continue;
 
-        const d = {
+        const detectionID = feature.properties.id.toString();
+        if (cache.data.has(detectionID)) continue;  // seen already
+
+        const loc = feature.geometry.coordinates;
+        const detection = {
           type: 'detection',
-          id: feature.properties.id,
+          id: detectionID,
           loc: loc,
           first_seen_at: feature.properties.first_seen_at,
           last_seen_at: feature.properties.last_seen_at,
           value: feature.properties.value
         };
-        boxes.push({ minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d });
+        cache.data.set(detectionID, detection);
+        boxes.push({ minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: detection });
       }
       cache.rtree.load(boxes);
     }
@@ -722,7 +760,7 @@ export class MapillaryService extends AbstractSystem {
       map.centerEase(loc);
       photos.selectPhoto('mapillary', image.id);
 
-      if (this._mlyShowFeatureDetections || this._mlyShowSignDetections) {
+      if (this.shouldShowDetections()) {
         this._updateDetections(image.id);
       }
       this.emit('imageChanged');

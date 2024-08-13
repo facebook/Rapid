@@ -24,14 +24,14 @@ export class PhotoSystem extends AbstractSystem {
     this.id = 'photos';
     this.dependencies = new Set(['map', 'urlhash']);
 
-    this._LAYERIDS = ['streetside', 'mapillary', 'mapillary-map-features', 'mapillary-signs', 'kartaview'];
+    this._LAYERIDS = ['streetside', 'mapillary', 'mapillary-detections', 'mapillary-signs', 'kartaview'];
 
     // These are the English layer names that will appear in the changeset tag if the layer is used.
     this._LAYERNAMES = {
       'streetside': 'Bing Streetside',
       'mapillary': 'Mapillary',
-      'mapillary-map-features': 'Mapillary Map Features',
-      'mapillary-signs': 'Mapillary Street Signs',
+      'mapillary-detections': 'Mapillary Detected Objects',
+      'mapillary-signs': 'Mapillary Traffic Signs',
       'kartaview': 'KartaView'
     };
 
