@@ -569,7 +569,7 @@ export class MapillaryService extends AbstractSystem {
       for (let i = 0; i < layer.length; i++) {
         const geojson = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
         if (!geojson) continue;
-        const sequenceID = geojson.properties.id;
+        const sequenceID = geojson.properties.id.toString();
 
         let sequence = cache.get(sequenceID);
         if (!sequence) {
