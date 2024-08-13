@@ -327,7 +327,7 @@ export class PixiLayerLabels extends AbstractLayer {
       const [w, h] = [text.canvas.width - (pad * 4), text.canvas.height];
       const data = text.context.getImageData(x, y, w, h);
 
-      texture = textureManager.allocate('text', str, w, h, data);
+      texture = textureManager.allocate('text', textureID, w, h, data);
 
       // These textures are overscaled, but `orig` Rectangle stores the original width/height
       // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
