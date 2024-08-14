@@ -27,8 +27,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
 
   /**
    * @constructor
-   * @param  layer       The Layer that owns this Feature
-   * @param  featureID   Unique string to use for the name of this Feature
+   * @param  {Layer}   layer     - The Layer that owns this Feature
+   * @param  {string}  featureID - Unique string to use for the name of this Feature
    */
   constructor(layer, featureID) {
     super(layer, featureID);
@@ -109,8 +109,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
 
   /**
    * update
-   * @param  viewport  Pixi viewport to use for rendering
-   * @param  zoom      Effective zoom to use for rendering
+   * @param  {Viewport}  viewport - Pixi viewport to use for rendering
+   * @param  {number}    zoom     - Effective zoom to use for rendering
    */
   update(viewport, zoom) {
     if (!this.dirty) return;  // nothing to do
@@ -414,9 +414,9 @@ export class PixiFeaturePolygon extends AbstractFeature {
    */
   updateHalo() {
     const wireframeMode = this.context.systems.map.wireframeMode;
-    const showHover = (this.visible && this.hovered);
-    const showSelect = (this.visible && this.selected);
-    const showHighlight = (this.visible && this.highlighted);
+    const showHover = (this.visible && this._classes.has('hover'));
+    const showSelect = (this.visible && this._classes.has('select'));
+    const showHighlight = (this.visible && this._classes.has('highlight'));
 
     // Hover
     if (showHover) {
@@ -473,10 +473,10 @@ export class PixiFeaturePolygon extends AbstractFeature {
 
   /**
    * style
-   * @param  obj  Style `Object` (contents depends on the Feature type)
+   * @param {Object} obj - Style `Object` (contents depends on the Feature type)
    *
-   * 'point' - see `PixiFeaturePoint.js`
-   * 'line'/'polygon' - see `StyleSystem.js`
+   * 'point' - @see `PixiFeaturePoint.js`
+   * 'line'/'polygon' - @see `StyleSystem.js`
    */
   get style() {
     return this._style;

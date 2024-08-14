@@ -79,25 +79,28 @@ export function geojsonExtent(geojson) {
 export function utilHighlightEntities(entityIDs, highlighted, context) {
   const editor = context.systems.editor;
   const map = context.systems.map;
+
   const scene = map.scene;
   if (!scene) return;  // called too soon?
 
+  const layer = scene.layers.get('osm');
+
   if (highlighted) {
     for (const entityID of entityIDs) {
-      scene.classData('osm', entityID, 'highlighted');
+      layer.setClass('highlight', entityID);
 
       // When highlighting a relation, try to highlight its members.
       if (entityID[0] === 'r') {
         const relation = editor.staging.graph.hasEntity(entityID);
         if (!relation) continue;
         for (const member of relation.members) {
-          scene.classData('osm', member.id, 'highlighted');
+          layer.setClass('highlight', member.id);
         }
       }
     }
 
   } else {
-    scene.clearClass('highlighted');
+    layer.clearClass('highlight');
   }
 
   map.immediateRedraw();

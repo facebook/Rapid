@@ -90,8 +90,7 @@ export class PixiGeometry {
 
   /**
    * update
-   * @param  viewport  Pixi viewport to use for rendering
-   * @param  zoom      Effective zoom to use for rendering
+   * @param  {Viewport}  viewport - Pixi viewport to use for rendering
    */
   update(viewport) {
     if (!this.dirty || !this.origCoords || !this.origExtent) return;  // nothing to do
@@ -253,7 +252,7 @@ export class PixiGeometry {
 
   /**
    * setCoords
-   * @param  data  Geometry `Array` (contents depends on the Feature type)
+   * @param {Array<*>} data - Geometry `Array` (contents depends on the Feature type)
    *
    * 'point' - Single wgs84 coordinate
    *    [lon, lat]
@@ -296,8 +295,8 @@ export class PixiGeometry {
   /**
    * _inferType
    * Determines what kind of geometry we were passed.
-   * @param  arr  Geometry `Array` (contents depends on the Feature type)
-   * @return  'point', 'line', 'polygon' or null
+   * @param   {Array<*>}  arr - Geometry `Array` (contents depends on the Feature type)
+   * @return  {string?}   'point', 'line', 'polygon' or null
    */
   _inferType(data) {
     const a = Array.isArray(data) && data[0];
@@ -311,6 +310,5 @@ export class PixiGeometry {
 
     return null;
   }
-
 
 }
