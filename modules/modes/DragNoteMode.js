@@ -51,10 +51,6 @@ export class DragNoteMode extends AbstractMode {
     this._startLoc = note.loc;
     this._selectedData.set(this.dragNote.id, this.dragNote);
 
-    // Set the 'drawing' class so that the dragNote won't emit events
-    const scene = context.scene();
-    scene.classData('notes', this.dragNote.id, 'drawing');
-
     // `_clickLoc` is used later to calculate a drag offset,
     // to correct for where "on the pin" the user grabbed the target.
     const point = context.behaviors.drag.lastDown.coord.map;
@@ -88,9 +84,6 @@ export class DragNoteMode extends AbstractMode {
     this._selectedData.clear();
 
     const context = this.context;
-
-    context.scene().clearClass('drawing');
-
     context.behaviors.drag
       .off('move', this._move)
       .off('end', this._end)

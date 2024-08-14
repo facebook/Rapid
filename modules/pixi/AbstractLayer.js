@@ -11,25 +11,26 @@ function asSet(vals) {
  * It creates a container to hold the Layer data.
  *
  * Notes on identifiers:
- *  - `layerID` - A unique identifier for the layer, for example 'osm'
- *  - `featureID` - A unique identifier for the feature, for example 'osm-w-123-fill'
- *  - `dataID` - A feature may have data bound to it, for example OSM identifier like 'w-123'
- *  - `classID` - A class identifier like 'hovered' or 'selected'
+ * All identifiers should be strings, to avoid JavaScript comparison surprises (e.g. `'0' !== 0`)
+ *   `layerID`     A unique identifier for the layer, for example 'osm'
+ *   `featureID`   A unique identifier for the feature, for example 'osm-w-123-fill'
+ *   `dataID`      A feature may have data bound to it, for example OSM identifier like 'w-123'
+ *   `classID`     A pseudoclass identifier like 'hover' or 'select'
  *
  * Properties you can access:
- *   `id`           Unique string to use for the name of this Layer
- *   `supported`    Is this Layer supported? (i.e. do we even show it in lists?)
- *   `zIndex`       Where this Layer sits compared to other Layers
- *   `enabled`      Whether the the user has chosen to see the Layer
- *   `features`     `Map(featureID -> Feature)` of all features on this Layer
- *   `retained`     `Map(featureID -> Integer frame)` last seen
+ *   `id`          Unique string to use for the name of this Layer
+ *   `supported`   Is this Layer supported? (i.e. do we even show it in lists?)
+ *   `zIndex`      Where this Layer sits compared to other Layers
+ *   `enabled`     Whether the the user has chosen to see the Layer
+ *   `features`    `Map<featureID, Feature>` of all features on this Layer
+ *   `retained`    `Map<featureID, Integer frame>` last seen
  */
 export class AbstractLayer {
 
   /**
    * @constructor
-   * @param  scene     The Scene that owns this Layer
-   * @param  layerID   Unique string to use for the name of this Layer
+   * @param  {PixiScene}  scene   - The Scene that owns this Layer
+   * @param  {string}     layerID - Unique string to use for the name of this Layer
    */
   constructor(scene, layerID) {
     this.scene = scene;
@@ -40,28 +41,26 @@ export class AbstractLayer {
     this._enabled = false;  // Whether the user has chosen to see the layer
 
     // Collection of Features on this Layer
-    this.features = new Map();     // Map (featureID -> Feature)
-    this.retained = new Map();     // Map (featureID -> frame last seen)
+    this.features = new Map();     // Map<featureID, Feature>
+    this.retained = new Map();     // Map<featureID, frame last seen>
 
     // Feature <-> Data
     // These lookups capture which features are bound to which data.
-    this._featureHasData = new Map();    // Map (featureID -> dataID)
-    this._dataHasFeature = new Map();    // Map (dataID -> Set(featureID))
+    this._featureHasData = new Map();    // Map<featureID, dataID>
+    this._dataHasFeature = new Map();    // Map<dataID, Set<featureID>>
 
     // Parent Data <-> Child Data
     // We establish a parent-child data hierarchy (like what the DOM used to do for us)
     // For example, we need this to know which ways make up a multipolygon relation.
-    this._parentHasChildren = new Map();  // Map (parent dataID -> Set(child dataID))
-    this._childHasParents = new Map();    // Map (child dataID -> Set(parent dataID))
+    this._parentHasChildren = new Map();  // Map<parent dataID, Set<child dataID>>
+    this._childHasParents = new Map();    // Map<child dataID, Set<parent dataID>>
 
     // Data <-> Class
     // Data classes are strings (like what CSS classes used to do for us)
-    // Currently supported "selected", "hovered", "drawing"
-    // Can set other ones but it won't do anything (but won't break anything either)
     // Counterintuitively, the Layer needs to be the source of truth for these data classes,
-    // because a Feature can be "selected" or "drawing" even before it has been created, or after destroyed
-    this._dataHasClass = new Map();     // Map (dataID -> Set(classID))
-    this._classHasData = new Map();     // Map (classID -> Set(dataID))
+    // because a Feature can be 'selected' or 'drawing' even before it has been created, or after destroyed
+    this._dataHasClass = new Map();     // Map<dataID, Set<classID>>
+    this._classHasData = new Map();     // Map<classID, Set<dataID>>
   }
 
 
@@ -92,9 +91,9 @@ export class AbstractLayer {
    * render
    * Every Layer should have a render function that manages the Features in view.
    * Override in a subclass with needed logic. It will be passed:
-   * @param  frame      Integer frame being rendered
-   * @param  viewport   Pixi viewport to use for rendering
-   * @param  zoom       Effective zoom to use for rendering
+   * @param  {number}    frame    - Integer frame being rendered
+   * @param  {Viewport}  viewport - Pixi viewport to use for rendering
+   * @param  {number}    zoom     - Effective zoom to use for rendering
    * @abstract
    */
   render() {
@@ -104,7 +103,7 @@ export class AbstractLayer {
   /**
    * cull
    * Make invisible any Features that were not seen during the current frame
-   * @param  frame   Integer frame being rendered
+   * @param  {number}  frame - Integer frame being rendered
    */
   cull(frame) {
     for (const [featureID, feature] of this.features) {
@@ -125,7 +124,7 @@ export class AbstractLayer {
   /**
    * addFeature
    * Add a feature to the layer cache.
-   * @param  feature  A Feature derived from `AbstractFeature` (point, line, multipolygon)
+   * @param  {Feature} feature - A Feature derived from `AbstractFeature` (point, line, multipolygon)
    */
   addFeature(feature) {
     this.features.set(feature.id, feature);
@@ -135,7 +134,7 @@ export class AbstractLayer {
   /**
    * removeFeature
    * Remove a Feature from the layer cache.
-   * @param  feature  A Feature derived from `AbstractFeature` (point, line, multipolygon)
+   * @param  {Feature} feature - A Feature derived from `AbstractFeature` (point, line, multipolygon)
    */
   removeFeature(feature) {
     this.unbindData(feature.id);
@@ -148,8 +147,8 @@ export class AbstractLayer {
    * retainFeature
    * Retain the feature for the given frame.
    * Features that are not retained may be automatically culled (made invisible) or removed.
-   * @param  feature   A Feature derived from `AbstractFeature` (point, line, multipolygon)
-   * @param  frame     Integer frame being rendered
+   * @param  {Feature}  feature - A Feature derived from `AbstractFeature` (point, line, multipolygon)
+   * @param  {number}   frame   - Integer frame being rendered
    */
   retainFeature(feature, frame) {
     if (feature.lod > 0) {
@@ -163,47 +162,10 @@ export class AbstractLayer {
 
 
   /**
-   * syncFeatureClasses
-   * Set the feature's various state properties (e.g. selected, hovered, etc.)
-   * Counterintuitively, the Layer needs to be the source of truth for these properties,
-   * because a Feature can be "selected" or "drawing" even before it has been created.
-   *
-   * Setting these state properties may dirty the feature if the it causes the state to change.
-   * Therefore this should be called after the Feature has been created but before any updates happen.
-   *
-   * @param  feature   A Feature derived from `AbstractFeature` (point, line, multipolygon)
-   */
-  syncFeatureClasses(feature) {
-    const featureID = feature.id;
-    const dataID = this._featureHasData.get(featureID);
-    if (!dataID) return;
-
-    const classList = this._dataHasClass.get(dataID) ?? new Set();
-
-    //
-    // Trying to document all the supported pseudo-classes here:
-    //
-    // 'active':  prevents events from firing, e.g. when dragging
-    // 'drawing':  removes the hitarea, and avoids hover, e.g. it prevents snapping
-    // 'highlighted':  adds a blue glowfilter
-    // 'hovered':  adds a yellow glowfilter
-    // 'selected':  adds a dashed line halo
-    // 'selectphoto':  styling for the currently selected photo
-
-    feature.active = classList.has('active');
-    feature.drawing = classList.has('drawing');
-    feature.highlighted = classList.has('highlighted');
-    feature.hovered = classList.has('hovered');
-    feature.selected = classList.has('selected');
-    feature.selectphoto = classList.has('selectphoto');
-  }
-
-
-  /**
    * bindData
    * Adds (or replaces) a data binding from featureID to a dataID
-   * @param  featureID  `String` featureID  (e.g. 'osm-w-123-fill')
-   * @param  dataID     `String` dataID     (e.g. 'w-123')
+   * @param  {string}  featureID - featureID  (e.g. 'osm-w-123-fill')
+   * @param  {string}  dataID    - dataID     (e.g. 'w-123')
    */
   bindData(featureID, dataID) {
     this.unbindData(featureID);
@@ -222,7 +184,7 @@ export class AbstractLayer {
   /**
    * unbindData
    * Removes the data binding for a given featureID
-   * @param  featureID  `String` featureID  (e.g. 'osm-w-123-fill')
+   * @param  {string} featureID - featureID  (e.g. 'osm-w-123-fill')
    */
   unbindData(featureID) {
     const dataID = this._featureHasData.get(featureID);
@@ -249,8 +211,8 @@ export class AbstractLayer {
   /**
    * addChildData
    * Adds a mapping from parent data to child data.
-   * @param  parentID  `String` dataID of the parent (e.g. 'r123')
-   * @param  childID   `String` dataID of the child (e.g. 'w123')
+   * @param  {string}  parentID - dataID of the parent (e.g. 'r123')
+   * @param  {string}  childID  - dataID of the child (e.g. 'w123')
    */
   addChildData(parentID, childID) {
     let childIDs = this._parentHasChildren.get(parentID);
@@ -272,8 +234,8 @@ export class AbstractLayer {
   /**
    * removeChildData
    * Removes mapping from parent data to child data.
-   * @param  parentID  `String` dataID (e.g. 'r123')
-   * @param  childID   `String` dataID to remove as a child (e.g. 'w1')
+   * @param  {string} parentID - dataID (e.g. 'r123')
+   * @param  {string} childID  - dataID to remove as a child (e.g. 'w1')
    */
   removeChildData(parentID, childID) {
     let childIDs = this._parentHasChildren.get(parentID);
@@ -300,7 +262,7 @@ export class AbstractLayer {
   /**
    * clearChildData
    * Removes all child dataIDs for the given parent dataID
-   * @param  parentID  `String` dataID (e.g. 'r123')
+   * @param  {string}  parentID - dataID (e.g. 'r123')
    */
   clearChildData(parentID) {
     const childIDs = this._parentHasChildren.get(parentID) ?? new Set();
@@ -313,9 +275,9 @@ export class AbstractLayer {
   /**
    * getSelfAndDescendants
    * Recursively get a result `Set` including the given dataID and all dataIDs in the child hierarchy.
-   * @param   dataID   `String` dataID (e.g. 'r123')
-   * @param   result?  `Set` containing the results (e.g. ['r123','w123','n123'])
-   * @return  `Set` including the dataID and all dataIDs in the child hierarchy
+   * @param  {string}       dataID  - dataID (e.g. 'r123')
+   * @param  {Set<string>}  result? - `Set` containing the results (e.g. ['r123','w123','n123'])
+   * @return {Set<string>}  `Set` including the dataID and all dataIDs in the child hierarchy
    */
   getSelfAndDescendants(dataID, result) {
     if (result instanceof Set) {
@@ -338,9 +300,9 @@ export class AbstractLayer {
   /**
    * getSelfAndAncestors
    * Recursively get a result `Set` including the given dataID and all dataIDs in the parent hierarchy
-   * @param   dataID   `String` dataID (e.g. 'n123')
-   * @param   result?  `Set` containing the results (e.g. ['n123','w123','r123'])
-   * @return  `Set` including the dataID and all dataIDs in the parent hierarchy
+   * @param  {string}       dataID  - dataID (e.g. 'n123')
+   * @param  {Set<string>}  result? - `Set` containing the results (e.g. ['n123','w123','r123'])
+   * @return {Set<string>}  `Set` including the dataID and all dataIDs in the parent hierarchy
    */
   getSelfAndAncestors(dataID, result) {
     if (result instanceof Set) {
@@ -363,9 +325,9 @@ export class AbstractLayer {
   /**
    * getSelfAndSiblings
    * Get a result `Set` including the dataID and all sibling dataIDs in the parent-child hierarchy
-   * @param   dataID   `String` dataID (e.g. 'n123')
-   * @param   result?  `Set` containing the results (e.g. ['n121','n122','n123','n124'])
-   * @return  `Set` including the dataID and all dataIDs adjacent in the parent-child hierarchy
+   * @param  {string}        dataID  - `String` dataID (e.g. 'n123')
+   * @param  {Set<string>}   result? - `Set` containing the results (e.g. ['n121','n122','n123','n124'])
+   * @return {Set<string>}  `Set` including the dataID and all dataIDs adjacent in the parent-child hierarchy
    */
   getSelfAndSiblings(dataID, result) {
     if (result instanceof Set) {
@@ -387,12 +349,12 @@ export class AbstractLayer {
 
 
   /**
-   * classData
-   * Sets a dataID as being classed a certain way (e.g. 'hovered')
-   * @param  dataID   `String` dataID (e.g. 'r123')
-   * @param  classID  `String` classID (e.g. 'hovered')
+   * setClass
+   * Sets a dataID as being classed a certain way (e.g. 'hover')
+   * @param  {string}  classID - classID to set (e.g. 'hover')
+   * @param  {string}  dataID  - dataID (e.g. 'r123')
    */
-  classData(dataID, classID) {
+  setClass(classID, dataID) {
     let classIDs = this._dataHasClass.get(dataID);
     if (!classIDs) {
       classIDs = new Set();
@@ -410,12 +372,12 @@ export class AbstractLayer {
 
 
   /**
-   * unclassData
-   * Unsets a dataID from being classed a certain way (e.g. 'hovered')
-   * @param  dataID   `String` dataID (e.g. 'r123')
-   * @param  classID  `String` classID (e.g. 'hovered')
+   * unsetClass
+   * Unsets a dataID from being classed a certain way (e.g. 'hover')
+   * @param  {string}  classID - classID to unset (e.g. 'hover')
+   * @param  {string}  dataID  - dataID (e.g. 'r123')
    */
-  unclassData(dataID, classID) {
+  unsetClass(classID, dataID) {
     let classIDs = this._dataHasClass.get(dataID);
     if (classIDs) {
       classIDs.delete(classID);
@@ -437,13 +399,64 @@ export class AbstractLayer {
   /**
    * clearClass
    * Clear out all uses of the given classID.
-   * @param  classID   `String` classID (e.g. 'hovered')
+   * @param  {string}  classID  - classID to clear (e.g. 'hover')
    */
   clearClass(classID) {
     const dataIDs = this._classHasData.get(classID) ?? new Set();
     for (const dataID of dataIDs) {
-      this.unclassData(dataID, classID);
+      this.unsetClass(classID, dataID);
     }
+  }
+
+
+  /**
+   * getDataWithClass
+   * Returns the dataIDs that are currently classed with the given classID
+   * @param  {string}      classID - classID to check (e.g. 'hover')
+   * @return {Set<string>} dataIDs the dataIDs that currently have this classID set
+   */
+  getDataWithClass(classID) {
+    const dataIDs = this._classHasData.get(classID) ?? new Set();
+    return new Set(dataIDs);  // copy
+  }
+
+
+  /**
+   * syncFeatureClasses
+   * This updates the feature's classes (e.g. 'select', 'hover', etc.) to match the Layer classes.
+   *
+   * Counterintuitively, the Layer needs to be the source of truth for these classes,
+   * because a Feature can be 'selected' or 'drawing' even before it has been created, or after destroyed.
+   *
+   * Syncing these classes will dirty the feature if the it causes a change.
+   * Therefore this should be called after the Feature has been created, but before any updates happen.
+   *
+   * @param  {Feature} feature - A Feature derived from `AbstractFeature` (point, line, multipolygon)
+   */
+  syncFeatureClasses(feature) {
+    const featureID = feature.id;
+    const dataID = this._featureHasData.get(featureID);
+    if (!dataID) return;
+
+    const layerClasses = this._dataHasClass.get(dataID) ?? new Set();
+    const featureClasses = feature._classes;
+
+    for (const classID of featureClasses) {
+      if (layerClasses.has(classID)) continue;  // no change
+      feature.unsetClass(classID);              // remove extra class from feature
+    }
+    for (const classID of layerClasses) {
+      if (featureClasses.has(classID)) continue;  // no change
+      feature.setClass(classID);                  // add missing class to feature
+    }
+
+    // Trying to document all the supported pseudoclasses here:
+    //
+    // 'drawing':  removes the hitarea, and avoids hover, e.g. it prevents snapping
+    // 'highlight':  adds a blue glowfilter
+    // 'hover':  adds a yellow glowfilter
+    // 'select':  adds a dashed line halo
+    // 'selectphoto':  styling for the currently selected photo
   }
 
 
@@ -462,7 +475,7 @@ export class AbstractLayer {
    * dirtyFeatures
    * Mark specific features features as `dirty`
    * During the next "app" pass, dirty features will be rebuilt.
-   * @param  featureIDs  A `Set` or `Array` of featureIDs, or single `String` featureID
+   * @param {Set<string>|Array<string>|string}  featureIDs - A `Set` or `Array` of featureIDs, or single `String` featureID
    */
   dirtyFeatures(featureIDs) {
     for (const featureID of asSet(featureIDs)) {   // coax ids into a Set
@@ -477,7 +490,7 @@ export class AbstractLayer {
    * dirtyData
    * Mark any features bound to a given dataID as `dirty`
    * During the next "app" pass, dirty features will be rebuilt.
-   * @param  dataIDs  A `Set` or `Array` of dataIDs, or single `String` dataID
+   * @param {Set<string>|Array<string>|string}  dataIDs - A `Set` or `Array` of dataIDs, or single `String` dataID
    */
   dirtyData(dataIDs) {
     for (const dataID of asSet(dataIDs)) {   // coax ids into a Set

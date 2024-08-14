@@ -54,6 +54,7 @@ export class DragNodeMode extends AbstractMode {
     const editor = context.systems.editor;
     const filters = context.systems.filters;
     const l10n = context.systems.l10n;
+    const map = context.systems.map;
     const ui = context.systems.ui;
 
     this._reselectIDs = options.reselectIDs ?? [];
@@ -99,12 +100,12 @@ export class DragNodeMode extends AbstractMode {
 
     this.dragNode = entity;
     this._startLoc = entity.loc;
+    this._selectedData.set(entity.id, entity);
 
-    // Set the 'drawing' class so that the dragNode and any parent ways won't emit events
-    const scene = context.scene();
-    scene.classData('osm', this.dragNode.id, 'drawing');
+    const layer = map.scene.layers.get('osm');
+    layer.setClass('drawing', this.dragNode.id);
     for (const parent of graph.parentWays(this.dragNode)) {
-      scene.classData('osm', parent.id, 'drawing');
+      layer.setClass('drawing', parent.id);
     }
 
     // `_clickLoc` is used later to calculate a drag offset,
@@ -143,8 +144,9 @@ export class DragNodeMode extends AbstractMode {
     this._selectedData.clear();
 
     const context = this.context;
-
-    context.scene().clearClass('drawing');
+    const map = context.systems.map;
+    const layer = map.scene.layers.get('osm');
+    layer.clearClass('drawing');
 
     context.behaviors.drag
       .off('move', this._move)

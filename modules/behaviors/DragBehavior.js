@@ -80,8 +80,7 @@ export class DragBehavior extends AbstractBehavior {
     const target = this.dragTarget;
 
     if (eventData && target) {
-      target.layer.unclassData(target.dataID, 'active');
-      target.feature.active = false;
+      target.feature.allowInteraction = true;
       this.dragTarget = null;
       this.emit('cancel', eventData);
     }
@@ -174,8 +173,7 @@ export class DragBehavior extends AbstractBehavior {
         // This lets us catch events for what other objects it passes over as the user drags it.
         const target = Object.assign({}, down.target);  // shallow copy
         this.dragTarget = target;
-        target.layer.classData(target.dataID, 'active');
-        target.feature.active = true;
+        target.feature.allowInteraction = false;
 
         // What are we dragging?
         const data = target.data;
@@ -244,14 +242,12 @@ export class DragBehavior extends AbstractBehavior {
       }
     }
 
-
     this.lastDown = null;
     this.lastMove = null;
 
     const target = this.dragTarget;
     if (target) {
-      target.layer.unclassData(target.dataID, 'active');
-      target.feature.active = false;
+      target.feature.allowInteraction = true;
       this.dragTarget = null;
       this.emit('end', up);
     }
@@ -273,8 +269,7 @@ export class DragBehavior extends AbstractBehavior {
 
     const target = this.dragTarget;
     if (target) {
-      target.layer.unclassData(target.dataID, 'active');
-      target.feature.active = false;
+      target.feature.allowInteraction = true;
       this.dragTarget = null;
       this.emit('cancel', cancel);
     }

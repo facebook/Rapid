@@ -22,8 +22,8 @@ export class PixiFeaturePoint extends AbstractFeature {
 
   /**
    * @constructor
-   * @param  layer       The Layer that owns this Feature
-   * @param  featureID   Unique string to use for the name of this Feature
+   * @param  {Layer}   layer     - The Layer that owns this Feature
+   * @param  {string}  featureID - Unique string to use for the name of this Feature
    */
   constructor(layer, featureID) {
     super(layer, featureID);
@@ -69,8 +69,8 @@ export class PixiFeaturePoint extends AbstractFeature {
 
   /**
    * update
-   * @param  viewport  Pixi viewport to use for rendering
-   * @param  zoom      Effective zoom to use for rendering
+   * @param  {Viewport}  viewport - Pixi viewport to use for rendering
+   * @param  {number}    zoom     - Effective zoom to use for rendering
    */
   update(viewport, zoom) {
     if (!this.dirty) return;  // nothing to do
@@ -93,8 +93,8 @@ export class PixiFeaturePoint extends AbstractFeature {
 
   /**
    * updateGeometry
-   * @param  viewport   Pixi viewport to use for rendering
-   * @param  zoom       Effective zoom to use for rendering
+   * @param  {Viewport}  viewport - Pixi viewport to use for rendering
+   * @param  {number}    zoom     - Effective zoom to use for rendering
    */
   updateGeometry(viewport, zoom) {
     if (!this.geometry.dirty) return;
@@ -114,7 +114,8 @@ export class PixiFeaturePoint extends AbstractFeature {
 
   /**
    * updateStyle
-   * @param  zoom  Effective zoom to use for rendering
+   * @param  {Viewport}  viewport - Pixi viewport to use for rendering
+   * @param  {number}    zoom     - Effective zoom to use for rendering
    */
   updateStyle(viewport, zoom) {
     if (!this._styleDirty) return;
@@ -186,7 +187,7 @@ export class PixiFeaturePoint extends AbstractFeature {
           vfSprite.anchor.set(0.5, 0.5);  // middle, middle
 
           // Make the active photo image pop out at the user
-          if (this.selectphoto) {
+          if (this._classes.has('selectphoto')) {
             this.container.zIndex = 99000;
           }
 
@@ -274,7 +275,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     if (!this.visible) return;
 
     // Fix for Rapid#648: If we're drawing, we don't need to hit ourselves.
-    if (this.drawing) {
+    if (this._classes.has('drawing')) {
       this.container.hitArea = null;
       return;
     }
@@ -312,9 +313,9 @@ export class PixiFeaturePoint extends AbstractFeature {
    * Show/Hide halo (requires `this.container.hitArea` to be already set up by `updateHitArea` as a supported shape)
    */
   updateHalo() {
-    const showHover = (this.visible && this.hovered);
-    const showSelect = (this.visible && this.selected && !this.virtual);
-    const showHighlight = (this.visible && this.highlighted);
+    const showHover = (this.visible && this._classes.has('hover'));
+    const showSelect = (this.visible && this._classes.has('select') && !this.virtual);
+    const showHighlight = (this.visible && this._classes.has('highlight'));
 
     // Hover
     if (showHover) {
@@ -374,10 +375,10 @@ export class PixiFeaturePoint extends AbstractFeature {
 
   /**
    * style
-   * @param  obj  Style `Object` (contents depends on the Feature type)
+   * @param {Object} obj - Style `Object` (contents depends on the Feature type)
    *
-   * 'point' - see `PixiFeaturePoint.js`
-   * 'line'/'polygon' - see `StyleSystem.js`
+   * 'point' - @see `PixiFeaturePoint.js`
+   * 'line'/'polygon' - @see `StyleSystem.js`
    */
   get style() {
     return this._style;

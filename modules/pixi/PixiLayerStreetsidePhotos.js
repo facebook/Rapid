@@ -233,7 +233,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
         const yaw = viewer?.getYaw() ?? 0;
         const fov = viewer?.getHfov() ?? 45;
 
-        if (feature.selectphoto) {  // selected photo style
+        if (feature.hasClass('selectphoto')) {  // selected photo style
           style.viewfieldAngles = [d.ca + yaw];
           style.viewfieldName = 'viewfield';
           style.viewfieldTint = STREETSIDE_SELECTED;

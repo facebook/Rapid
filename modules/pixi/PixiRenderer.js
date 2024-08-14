@@ -177,7 +177,7 @@ export class PixiRenderer extends EventEmitter {
    * Respond to any change in selection (called on mode change)
    */
   _onModeChange(mode) {
-    this.scene.clearClass('selected');
+    this.scene.clearClass('select');
 
     for (const [datumID, datum] of this.context.selectedData()) {
       let layerID = null;
@@ -191,14 +191,14 @@ export class PixiRenderer extends EventEmitter {
         layerID = 'rapid';
       } else if (datum.__featurehash__) {  // custom data
         layerID = 'custom-data';
-      } else if (mode.id === 'select-osm') {   // an OSM feature
+      } else if (mode.id === 'select-osm' || mode.id === 'drag-node') {   // an OSM feature
         layerID = 'osm';
       } else {
         // other selectable things (photos?) - we will not select-style them for now :(
       }
 
       if (layerID) {
-        this.scene.classData(layerID, datumID, 'selected');
+        this.scene.setClass('select', layerID, datumID);
       }
     }
 
@@ -225,12 +225,12 @@ export class PixiRenderer extends EventEmitter {
       ui.sidebar.hover(hoverData ? [hoverData] : []);
     }
 
-    scene.clearClass('hovered');
+    scene.clearClass('hover');
     if (layer && dataID) {
       // Only set hover class if this target isn't currently drawing
-      const drawingIDs = layer._classHasData.get('drawing') ?? new Set();
+      const drawingIDs = layer.getDataWithClass('drawing');
       if (!drawingIDs.has(dataID)) {
-        scene.classData(layer.id, dataID, 'hovered');
+        layer.setClass('hover', dataID);
       }
     }
 

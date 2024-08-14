@@ -41,7 +41,7 @@ function asSet(vals) {
  *  - `layerID` - A unique identifier for the layer, for example 'osm'
  *  - `featureID` - A unique identifier for the feature, for example 'osm-w-123-fill'
  *  - `dataID` - A feature may have data bound to it, for example OSM identifier like 'w-123'
- *  - `classID` - A class identifier like 'hovered' or 'selected'
+ *  - `classID` - A pseudoclass identifier like 'hover' or 'select'
  *
  * Properties you can access:
  *   `groups`     `Map (groupID -> PIXI.Container)` of all groups
@@ -236,33 +236,33 @@ export class PixiScene extends EventEmitter {
 
 
   /**
-   * classData
-   * Sets a dataID as being classed a certain way (e.g. 'hovered')
+   * setClass
+   * Sets a dataID as being classed a certain way (e.g. 'hover')
+   * @param  classID  `String` classID (e.g. 'hover')
    * @param  layerID  `String` layerID (e.g. 'osm')
    * @param  dataID   `String` dataID (e.g. 'r123')
-   * @param  classID  `String` classID (e.g. 'hovered')
    */
-  classData(layerID, dataID, classID) {
-    this.layers.get(layerID)?.classData(dataID, classID);
+  setClass(classID, layerID, dataID) {
+    this.layers.get(layerID)?.setClass(classID, dataID);
   }
 
 
   /**
-   * unclassData
-   * Unsets a dataID from being classed a certain way (e.g. 'hovered')
+   * unsetClass
+   * Unsets a dataID from being classed a certain way (e.g. 'hover')
+   * @param  classID  `String` classID (e.g. 'hover')
    * @param  layerID  `String` layerID (e.g. 'osm')
    * @param  dataID   `String` dataID (e.g. 'r123')
-   * @param  classID  `String` classID (e.g. 'hovered')
    */
-  unclassData(layerID, dataID, classID) {
-    this.layers.get(layerID)?.unclassData(dataID, classID);
+  unsetClass(classID, layerID, dataID) {
+    this.layers.get(layerID)?.unsetClass(classID, dataID);
   }
 
 
   /**
    * clearClass
    * Clear out all uses of the given classID across all layers.
-   * @param  classID   `String` classID (e.g. 'hovered')
+   * @param  classID   `String` classID (e.g. 'hover')
    */
   clearClass(classID) {
     for (const layer of this.layers.values()) {

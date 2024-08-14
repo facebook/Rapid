@@ -26,8 +26,8 @@ export class PixiFeatureLine extends AbstractFeature {
 
   /**
    * @constructor
-   * @param  layer       The Layer that owns this Feature
-   * @param  featureID   Unique string to use for the name of this Feature
+   * @param  {Layer}   layer     - The Layer that owns this Feature
+   * @param  {string}  featureID - Unique string to use for the name of this Feature
    */
   constructor(layer, featureID) {
     super(layer, featureID);
@@ -72,8 +72,8 @@ export class PixiFeatureLine extends AbstractFeature {
 
   /**
    * update
-   * @param  viewport  Pixi viewport to use for rendering
-   * @param  zoom      Effective zoom to use for rendering
+   * @param  {Viewport}  viewport - Pixi viewport to use for rendering
+   * @param  {number}    zoom     - Effective zoom to use for rendering
    */
   update(viewport, zoom) {
     if (!this.dirty) return;  // nothing to do
@@ -272,7 +272,7 @@ export class PixiFeatureLine extends AbstractFeature {
 
 //    // Fix for Rapid#648: If we're drawing, we don't need to hit ourselves.
     // bhousel 3/23 sometimes we do!
-//    if (this.drawing) {
+//    if (this._classes.has('drawing')) {
 //      this.container.hitArea = null;
 //      return;
 //    }
@@ -297,9 +297,9 @@ export class PixiFeatureLine extends AbstractFeature {
    * Show/Hide halo (expects `this._bufferdata` to be already set up by `updateHitArea` as a PIXI.Polygon)
    */
   updateHalo() {
-    const showHover = (this.visible && this.hovered);
-    const showSelect = (this.visible && this.selected);
-    const showHighlight = (this.visible && this.highlighted);
+    const showHover = (this.visible && this._classes.has('hover'));
+    const showSelect = (this.visible && this._classes.has('select'));
+    const showHighlight = (this.visible && this._classes.has('highlight'));
     // Hover
     if (showHover) {
       if (!this.container.filters) {
@@ -356,10 +356,10 @@ export class PixiFeatureLine extends AbstractFeature {
 
   /**
    * style
-   * @param  obj  Style `Object` (contents depends on the Feature type)
+   * @param {Object} obj - Style `Object` (contents depends on the Feature type)
    *
-   * 'point' - see `PixiFeaturePoint.js`
-   * 'line'/'polygon' - see `StyleSystem.js`
+   * 'point' - @see `PixiFeaturePoint.js`
+   * 'line'/'polygon' - @see `StyleSystem.js`
    */
   get style() {
     return this._style;

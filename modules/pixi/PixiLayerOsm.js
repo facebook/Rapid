@@ -188,9 +188,9 @@ export class PixiLayerOsm extends AbstractLayer {
     // and parent-child data links have been established.
 
     // Gather ids related for the selected/hovered/drawing features.
-    const selectedIDs = this._classHasData.get('selected') ?? new Set();
-    const hoveredIDs = this._classHasData.get('hovered') ?? new Set();
-    const drawingIDs = this._classHasData.get('drawing') ?? new Set();
+    const selectedIDs = this.getDataWithClass('select');
+    const hoveredIDs = this.getDataWithClass('hover');
+    const drawingIDs = this.getDataWithClass('drawing');
     const dataIDs = new Set([...selectedIDs, ...hoveredIDs, ...drawingIDs]);
 
     // Experiment: avoid showing child vertices/midpoints for too small parents
