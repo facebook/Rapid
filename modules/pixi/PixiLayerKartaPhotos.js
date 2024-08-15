@@ -4,7 +4,8 @@ import { PixiFeaturePoint } from './PixiFeaturePoint.js';
 
 const MINZOOM = 12;
 const KARTA_BLUE = 0x20c4ff;
-const KARTA_SELECTED = 0xffee00;
+const HIGHLIGHTED = 0xffbb33;
+const SELECTED = 0xffee00;
 
 const LINESTYLE = {
   casing: { alpha: 0 },  // disable
@@ -12,10 +13,13 @@ const LINESTYLE = {
 };
 
 const MARKERSTYLE = {
-  markerName: 'mediumCircle',
-  markerTint: KARTA_BLUE,
+  markerName:    'mediumCircle',
+  markerTint:    KARTA_BLUE,
   viewfieldName: 'viewfield',
-  viewfieldTint: KARTA_BLUE
+  viewfieldTint: KARTA_BLUE,
+  scale:         1.0,
+  fovWidth:      1,
+  fovLength:     1
 };
 
 
@@ -189,34 +193,29 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
       this.syncFeatureClasses(feature);
 
       if (feature.dirty) {
+        // Start with default style, and apply adjustments
         const style = Object.assign({}, MARKERSTYLE);
+
 // todo handle pano
         if (feature.hasClass('selectphoto')) {  // selected photo style
           // style.viewfieldAngles = [this._viewerCompassAngle ?? d.ca];
-          if (Number.isFinite(d.ca)) {
-            style.viewfieldAngles = [d.ca];   // ca = camera angle
-          } else {
-            style.viewfieldAngles = [];
-          }
+          style.viewfieldAngles = Number.isFinite(d.ca) ? [d.ca] : [];
           style.viewfieldName = 'viewfield';
-          style.viewfieldTint = KARTA_SELECTED;
-          style.markerTint = KARTA_SELECTED;
+          style.viewfieldTint = SELECTED;
+          style.markerTint = SELECTED;
           style.scale = 2.0;
           //style.fovWidth = fovWidthInterp(this._viewerZoom);
           //style.fovLength = fovLengthInterp(this._viewerZoom);
 
-        } else {  // default style
-          if (Number.isFinite(d.ca)) {
-            style.viewfieldAngles = [d.ca];   // ca = camera angle
-          } else {
-            style.viewfieldAngles = [];
-          }
+        } else {
+          style.viewfieldAngles = Number.isFinite(d.ca) ? [d.ca] : [];  // ca = camera angle
           style.viewfieldName = d.isPano ? 'pano' : 'viewfield';
-          style.viewfieldTint = KARTA_BLUE;
-          style.markerTint = KARTA_BLUE;
-          style.scale = 1.0;
-          //style.fovWidth = 1;
-          //style.fovLength = 1;
+
+          if (feature.hasClass('highlightphoto')) {  // highlighted photo style
+            style.viewfieldTint = HIGHLIGHTED;
+            style.markerTint = HIGHLIGHTED;
+            style.scale = 1.3;
+          }
         }
 
         feature.style = style;

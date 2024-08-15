@@ -1,5 +1,5 @@
 import { select as d3_select } from 'd3-selection';
-import { Tiler } from '@rapid-sdk/math';
+import { Tiler, geoSphericalDistance } from '@rapid-sdk/math';
 import { VectorTile } from '@mapbox/vector-tile';
 import Protobuf from 'pbf';
 import RBush from 'rbush';
@@ -43,7 +43,6 @@ export class MapillaryService extends AbstractSystem {
 
     this._showing = null;
     this._cache = {};
-    this._mlyHighlightedDetection = null;
 
     this._viewer = null;
     this._viewerFilter = ['all'];
@@ -148,6 +147,42 @@ export class MapillaryService extends AbstractSystem {
     };
 
     return Promise.resolve();
+  }
+
+
+  /**
+   * getImage
+   * Return an image from the cache.
+   * @param   {string}  imageID - imageID to get
+   * @return  {Object?} The image, or `undefined` if not found
+   */
+  getImage(imageID) {
+    return this._cache.images.data.get(imageID);
+  }
+
+
+  /**
+   * getSequence
+   * Return a sequence from the cache.
+   * @param   {string}  sequenceID - sequenceID to get
+   * @return  {Object?} The sequence, or `undefined` if not found
+   */
+  getSequence(sequenceID) {
+    return this._cache.sequences.data.get(sequenceID);
+  }
+
+
+  /**
+   * getDetection
+   * Return a detection from the cache.
+   * @param   {string}  detectionID - detectionID to get
+   * @return  {Object?} The detection, or `undefined` if not found
+   */
+  getDetection(detectionID) {
+    // Check both 'detections' and 'signs' caches
+    let detection = this._cache.detections.data.get(detectionID);
+    if (detection) return detection;
+    return this._cache.signs.data.get(detectionID);
   }
 
 
@@ -353,15 +388,6 @@ export class MapillaryService extends AbstractSystem {
   }
 
 
-  // Highlight the detection in the viewer that is related to the clicked map feature
-  highlightDetection(detection) {
-    if (detection) {
-      this._mlyHighlightedDetection = detection.id;
-    }
-    return this;
-  }
-
-
   /**
    * selectImageAsync
    * Note:  most code should call `PhotoSystem.selectPhoto(layerID, photoID)` instead.
@@ -381,9 +407,24 @@ export class MapillaryService extends AbstractSystem {
   }
 
 
-  // Return a list of detection objects for the given id
-  getDetectionsAsync(id) {
-    return this._loadDataAsync(`${apiUrl}/${id}/detections?access_token=${accessToken}&fields=id,value,image`);
+  /**
+   * selectDetectionAsync
+   * Note:  most code should call `PhotoSystem.selectDetection(layerID, photoID)` instead.
+   * That will manage the state of what the user clicked on, and then call this function.
+   * @param  {string} detectionID - the id of the detection to select
+   * @return {Promise} Promise that always resolves (we should change this to resolve after the image is ready)
+   */
+  selectDetectionAsync(detectionID) {
+    if (!detectionID) return Promise.resolve();  // do nothing
+
+    return this.startAsync()
+      .then(() => this._loadDetectionAsync(detectionID));
+//todo
+//      .then(() => {
+//        return this._viewer
+//          .moveTo(imageID)
+//          .catch(err => console.error('mly3', err));   // eslint-disable-line no-console
+//      });
   }
 
 
@@ -418,6 +459,7 @@ export class MapillaryService extends AbstractSystem {
     }
   }
 
+
   // Create a tag for each detection and shows it in the image viewer
   _showDetections(detections) {
     const tagComponent = this._viewer.getComponent('tag');
@@ -429,6 +471,7 @@ export class MapillaryService extends AbstractSystem {
     }
   }
 
+
   // Create a Mapillary JS tag object
   _makeTag(data) {
     const valueParts = data.value.split('--');
@@ -438,7 +481,11 @@ export class MapillaryService extends AbstractSystem {
     let text;
     let color = 0xffffff;
 
-    if (this._mlyHighlightedDetection === data.id) {
+    const context = this.context;
+    const photos = context.systems.photos;
+    const currDetectionID = photos.currDetectionID;
+
+    if (currDetectionID === data.id) {
       color = 0xffff00;
       text = valueParts[1];
       if (text === 'flat' || text === 'discrete' || text === 'sign') {
@@ -446,7 +493,6 @@ export class MapillaryService extends AbstractSystem {
       }
       text = text.replace(/-/g, ' ');
       text = text.charAt(0).toUpperCase() + text.slice(1);
-      this._mlyHighlightedDetection = null;
     }
 
     const decodedGeometry = window.atob(data.geometry);
@@ -479,7 +525,9 @@ export class MapillaryService extends AbstractSystem {
 
   /**
    * _loadTileAsync
-   * Load a tile of data for the given dataset
+   * Load a vector tile of data for the given dataset.
+   * This uses `https://tiles.mapillary.com/maps/vtp/mly1_public/2/{z}/{x}/{y}?access_token=XXX`
+   * @see    https://www.mapillary.com/developer/api-documentation#vector-tiles
    * @param  {string} datasetID - one of 'images', 'signs', or 'detections'
    * @param  {Tile}   tile - a tile object
    * @return {Promise}  Promise settled when the request is completed
@@ -553,6 +601,7 @@ export class MapillaryService extends AbstractSystem {
   /**
    * _processTile
    * Process vector tile data
+   * @see    https://www.mapillary.com/developer/api-documentation#vector-tiles
    * @param  {ArrayBuffer}  buffer
    * @param  {Tile}         tile - a tile object
    */
@@ -612,60 +661,132 @@ export class MapillaryService extends AbstractSystem {
       }
     }
 
-    if (vectorTile.layers.hasOwnProperty('point')) {
-      const cache = this._cache.detections;
-      const layer = vectorTile.layers.point;
+    // 'point' and 'traffic_sign' are both detection layers.
+    // We treat them the same, but their data gets stored in different caches.
+    // (This allows the user to toggle them on/off independently of each other)
+    for (const type of ['point', 'traffic_sign']) {
+      if (!vectorTile.layers.hasOwnProperty(type)) continue;
+
+      const cache = (type === 'traffic_sign') ? this._cache.signs : this._cache.detections;
+      const layer = vectorTile.layers[type];
       let boxes = [];
 
       for (let i = 0; i < layer.length; i++) {
         const feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
         if (!feature) continue;
 
+        // Cache detection, create if needed..
         const detectionID = feature.properties.id.toString();
-        if (cache.data.has(detectionID)) continue;  // seen already
+        let detection = cache.data.get(detectionID);
+        if (!detection) {
+          detection = {
+            type: 'detection',
+            id: detectionID
+          };
+          cache.data.set(detectionID, detection);
+        }
 
+        // Fill in detection details..
+        // Note that this API _does not_ give us `images` or `aligned_direction`
         const loc = feature.geometry.coordinates;
-        const detection = {
-          type: 'detection',
-          id: detectionID,
-          loc: loc,
-          first_seen_at: feature.properties.first_seen_at,
-          last_seen_at: feature.properties.last_seen_at,
-          value: feature.properties.value
-        };
-        cache.data.set(detectionID, detection);
-        boxes.push({ minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: detection });
+        detection.loc = loc;
+        detection.first_seen_at = feature.properties.first_seen_at;
+        detection.last_seen_at = feature.properties.last_seen_at;
+        detection.value = feature.properties.value;
+
+        // Add to rtree, replacing existing if needed.
+        const box = { minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: detection };
+        cache.rtree.remove(box, (a, b) => a.data.id === b.data.id);
+        boxes.push(box);
       }
       cache.rtree.load(boxes);
     }
+  }
 
-    if (vectorTile.layers.hasOwnProperty('traffic_sign')) {
-      // signs are also detections, but stored in a different cache
-      const cache = this._cache.signs;
-      const layer = vectorTile.layers.traffic_sign;
-      let boxes = [];
 
-      for (let i = 0; i < layer.length; i++) {
-        const feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
-        if (!feature) continue;
-
-        const detectionID = feature.properties.id.toString();
-        if (cache.data.has(detectionID)) continue;  // seen already
-
-        const loc = feature.geometry.coordinates;
-        const detection = {
-          type: 'detection',
-          id: detectionID,
-          loc: loc,
-          first_seen_at: feature.properties.first_seen_at,
-          last_seen_at: feature.properties.last_seen_at,
-          value: feature.properties.value
-        };
-        cache.data.set(detectionID, detection);
-        boxes.push({ minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: detection });
-      }
-      cache.rtree.load(boxes);
+  /**
+   * _loadDetectionAsync
+   * Get the details for a given detected feature (object or sign)
+   * This uses `https://graph.mapillary.com/<map_feature_id>`
+   * This API call gives us 2 things the tile API does not: `images` and `aligned_direction`
+   * @see    https://www.mapillary.com/developer/api-documentation#map-feature
+   * @param  {string}   detectionID - the detection to load
+   * @return {Promise}  Promise settled when the detection details when completed
+   */
+  _loadDetectionAsync(detectionID) {
+    // Is data is cached already and includes the `images` Array?  If so, resolve immediately.
+    let detection = this._cache.detections.data.get(detectionID);
+    if (detection?.imageIDs) {
+      return Promise.resolve(detection);
     }
+    detection = this._cache.signs.data.get(detectionID);
+    if (detection?.imageIDs) {
+      return Promise.resolve(detection);
+    }
+
+    // Not cached, load it..
+    const fields = 'id,geometry,aligned_direction,first_seen_at,last_seen_at,object_value,object_type,images';
+    const url = `${apiUrl}/${detectionID}?access_token=${accessToken}&fields=${fields}`;
+
+    return fetch(url)
+      .then(utilFetchResponse)
+      .then(response => {
+        if (!response) {
+          throw new Error('No Data');
+        }
+
+        const type = response.object_type;  // Seems to be 'mvd_fast' or 'trafficsign' ??
+        const cache = (type === 'trafficsign') ? this._cache.signs : this._cache.detections;
+
+        // Fill in detection details, create if needed..
+        const detectionID = response.id.toString();
+        let detection = cache.data.get(detectionID);
+        if (!detection) {
+          detection = {
+            type: 'detection',
+            id: detectionID
+          };
+        }
+
+        // Fill in detection details..
+        // Note that this API _does_ give us `images` and `aligned_direction`
+        const loc = response.geometry.coordinates;
+        detection.loc = loc;
+        detection.first_seen_at = response.first_seen_at;
+        detection.last_seen_at = response.last_seen_at;
+        detection.value = response.object_value;
+        detection.aligned_direction = response.aligned_direction;
+
+        // Gather imageIDs and try to choose the nearest one as the best.
+        const imageIDs = [];
+        let minDist = Infinity;
+        let bestImageID = null;
+
+        for (const image of response.images?.data ?? []) {
+          imageIDs.push(image.id);
+          const dist = geoSphericalDistance(loc, image.geometry.coordinates);
+          if (dist < minDist) {
+            minDist = dist;
+            bestImageID = image.id;
+          }
+        }
+
+        detection.imageIDs = imageIDs;
+        detection.bestImageID = bestImageID;
+
+        cache.data.set(detectionID, detection);
+
+        // Add to rtree, replacing existing if needed.
+        const box = { minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: detection };
+        cache.rtree.remove(box, (a, b) => a.data.id === b.data.id);
+        cache.rtree.insert(box);
+
+        this.context.immediateRedraw();
+        return detection;
+      })
+      .catch(err => {
+        if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
+      });
   }
 
 

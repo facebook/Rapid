@@ -428,6 +428,10 @@ export class PhotoSystem extends AbstractSystem {
       oldLayer?.clearClass('select');
       oldLayer?.clearClass('selectdetection');
     }
+    for (const oldLayerID of this.photoLayerIDs) {
+      const oldLayer = scene.layers.get(oldLayerID);
+      oldLayer?.clearClass('highlightphoto');
+    }
 
     // Apply the new selection..
     if (detectionID && this.detectionLayerIDs.includes(layerID)) {
@@ -439,16 +443,25 @@ export class PhotoSystem extends AbstractSystem {
       this._currDetectionID = detectionID;
 
       // If we're selecting a detection then make sure its layer is enabled too.
-      scene.enableLayers(photoLayerID);
       scene.enableLayers(layerID);
       scene.setClass('select', layerID, detectionID);
       scene.setClass('selectdetection', layerID, detectionID);
 
-// coming soon
-//      // Try to show the viewer with an appropriate image selected..
-//      service.startAsync()
-//        .then(() => service.selectDetectionAsync(detectionID))
-//        .then(() => service.showViewer());
+      // Try to highlight any photos that show this detection,
+      // And try to select a photo in the viewer that shows it.
+      service.startAsync()
+        .then(() => service.selectDetectionAsync(detectionID))
+        .then(detection => {
+          if (detection.id !== this._currDetectionID) return;  // exit if something else is now selected
+
+          for (const photoID of detection.imageIDs ?? []) {
+            scene.setClass('highlightphoto', photoLayerID, photoID);
+          }
+
+          if (detection.bestImageID) {
+            this.selectPhoto(photoLayerID, detection.bestImageID);
+          }
+        });
     }
 
     this._photoChanged();

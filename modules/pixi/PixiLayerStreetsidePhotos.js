@@ -6,7 +6,8 @@ import { PixiFeaturePoint } from './PixiFeaturePoint.js';
 
 const MINZOOM = 12;
 const STREETSIDE_TEAL = 0xfffc4;
-const STREETSIDE_SELECTED = 0xffee00;
+const HIGHLIGHTED = 0xffbb33;
+const SELECTED = 0xffee00;
 
 const fovWidthInterp = d3_scaleLinear([90, 10], [1.3, 0.7]);
 const fovLengthInterp = d3_scaleLinear([90, 10], [0.7, 1.5]);
@@ -17,10 +18,13 @@ const LINESTYLE = {
 };
 
 const MARKERSTYLE = {
-  markerName: 'mediumCircle',
-  markerTint: STREETSIDE_TEAL,
+  markerName:    'mediumCircle',
+  markerTint:    STREETSIDE_TEAL,
   viewfieldName: 'viewfield',
-  viewfieldTint: STREETSIDE_TEAL
+  viewfieldTint: STREETSIDE_TEAL,
+  scale:         1.0,
+  fovWidth:      1,
+  fovLength:     1
 };
 
 
@@ -227,33 +231,31 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
       this.syncFeatureClasses(feature);
 
       if (feature.dirty) {
+        // Start with default style, and apply adjustments
         const style = Object.assign({}, MARKERSTYLE);
 
-        const viewer = service._viewer;
-        const yaw = viewer?.getYaw() ?? 0;
-        const fov = viewer?.getHfov() ?? 45;
-
         if (feature.hasClass('selectphoto')) {  // selected photo style
+          const viewer = service._viewer;
+          const yaw = viewer?.getYaw() ?? 0;
+          const fov = viewer?.getHfov() ?? 45;
+
           style.viewfieldAngles = [d.ca + yaw];
           style.viewfieldName = 'viewfield';
-          style.viewfieldTint = STREETSIDE_SELECTED;
-          style.markerTint = STREETSIDE_SELECTED;
+          style.viewfieldTint = SELECTED;
+          style.markerTint = SELECTED;
           style.scale = 2.0;
           style.fovWidth = fovWidthInterp(fov);
           style.fovLength = fovLengthInterp(fov);
 
-        } else {  // default style
-          if (Number.isFinite(d.ca)) {
-            style.viewfieldAngles = [d.ca];   // ca = camera angle
-          } else {
-            style.viewfieldAngles = [];
-          }
+        } else {
+          style.viewfieldAngles = Number.isFinite(d.ca) ? [d.ca] : [];  // ca = camera angle
           style.viewfieldName = d.isPano ? 'pano' : 'viewfield';
-          style.viewfieldTint = STREETSIDE_TEAL;
-          style.markerTint = STREETSIDE_TEAL;
-          style.scale = 1.0;
-          style.fovWidth = 1;
-          style.fovLength = 1;
+
+          if (feature.hasClass('highlightphoto')) {  // highlighted photo style
+            style.viewfieldTint = HIGHLIGHTED;
+            style.markerTint = HIGHLIGHTED;
+            style.scale = 1.3;
+          }
         }
 
         feature.style = style;
