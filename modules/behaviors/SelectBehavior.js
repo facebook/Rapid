@@ -394,18 +394,6 @@ export class SelectBehavior extends AbstractBehavior {
       map.centerEase(data.loc);
       photos.selectDetection(layerID, dataID);
       return;
-//      const service = context.services.mapillary;
-//      if (!service?.started) return;
-//
-//      map.centerEase(data.loc);
-//      service.getDetectionsAsync(dataID)
-//        .then(detections => {
-//          if (!detections.length) return;
-//          const imageID = detections[0].image.id;
-//          photos.selectPhoto('mapillary', imageID);
-//  //todo: check on the asyncness of this code
-//  //          service.highlightDetection(detections[0]);
-//        });
     }
   }
 

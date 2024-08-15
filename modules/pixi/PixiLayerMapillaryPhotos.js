@@ -6,7 +6,8 @@ import { PixiFeaturePoint } from './PixiFeaturePoint.js';
 
 const MINZOOM = 12;
 const MAPILLARY_GREEN = 0x05CB63;
-const MAPILLARY_SELECTED = 0xffee00;
+const HIGHLIGHTED = 0xffbb33;
+const SELECTED = 0xffee00;
 
 const fovWidthInterp = d3_scaleLinear([90, 10], [1.3, 0.7]);
 const fovLengthInterp = d3_scaleLinear([90, 10], [0.7, 1.5]);
@@ -17,10 +18,13 @@ const LINESTYLE = {
 };
 
 const MARKERSTYLE = {
-  markerName: 'mediumCircle',
-  markerTint: MAPILLARY_GREEN,
+  markerName:    'mediumCircle',
+  markerTint:    MAPILLARY_GREEN,
   viewfieldName: 'viewfield',
-  viewfieldTint: MAPILLARY_GREEN
+  viewfieldTint: MAPILLARY_GREEN,
+  scale:         1.0,
+  fovWidth:      1,
+  fovLength:     1
 };
 
 
@@ -276,29 +280,27 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
       this.syncFeatureClasses(feature);
 
       if (feature.dirty) {
+        // Start with default style, and apply adjustments
         const style = Object.assign({}, MARKERSTYLE);
 
         if (feature.hasClass('selectphoto')) {  // selected photo style
           style.viewfieldAngles = [this._viewerBearing ?? d.ca];
           style.viewfieldName = 'viewfield';
-          style.viewfieldTint = MAPILLARY_SELECTED;
-          style.markerTint = MAPILLARY_SELECTED;
+          style.viewfieldTint = SELECTED;
+          style.markerTint = SELECTED;
           style.scale = 2.0;
           style.fovWidth = fovWidthInterp(this._viewerFov ?? 55);
           style.fovLength = fovLengthInterp(this._viewerFov ?? 55);
 
-        } else {  // default style
-          if (Number.isFinite(d.ca)) {
-            style.viewfieldAngles = [d.ca];   // ca = camera angle
-          } else {
-            style.viewfieldAngles = [];
-          }
+        } else {
+          style.viewfieldAngles = Number.isFinite(d.ca) ? [d.ca] : [];  // ca = camera angle
           style.viewfieldName = d.isPano ? 'pano' : 'viewfield';
-          style.viewfieldTint = MAPILLARY_GREEN;
-          style.markerTint = MAPILLARY_GREEN;
-          style.scale = 1.0;
-          style.fovWidth = 1;
-          style.fovLength = 1;
+
+          if (feature.hasClass('highlightphoto')) {  // highlighted photo style
+            style.viewfieldTint = HIGHLIGHTED;
+            style.markerTint = HIGHLIGHTED;
+            style.scale = 1.3;
+          }
         }
 
         feature.style = style;
