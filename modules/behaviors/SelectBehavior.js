@@ -390,18 +390,22 @@ export class SelectBehavior extends AbstractBehavior {
     // Clicked on a Mapillary object detection or traffic sign..
     // Open the Mapillary viewer with an image showing that object/sign
     if (data.type === 'detection') {
-      const service = context.services.mapillary;
-      if (!service?.started) return;
-
+      const layerID = target.layerID;
       map.centerEase(data.loc);
-      service.getDetectionsAsync(dataID)
-        .then(detections => {
-          if (!detections.length) return;
-          const imageID = detections[0].image.id;
-          photos.selectPhoto('mapillary', imageID);
-  //todo: check on the asyncness of this code
-  //          service.highlightDetection(detections[0]);
-        });
+      photos.selectDetection(layerID, dataID);
+      return;
+//      const service = context.services.mapillary;
+//      if (!service?.started) return;
+//
+//      map.centerEase(data.loc);
+//      service.getDetectionsAsync(dataID)
+//        .then(detections => {
+//          if (!detections.length) return;
+//          const imageID = detections[0].image.id;
+//          photos.selectPhoto('mapillary', imageID);
+//  //todo: check on the asyncness of this code
+//  //          service.highlightDetection(detections[0]);
+//        });
     }
   }
 

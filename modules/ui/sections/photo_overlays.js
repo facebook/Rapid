@@ -84,9 +84,10 @@ export function uiSectionPhotoOverlays(context) {
 
 
   function drawPhotoItems(selection) {
-    const photoKeys = photos.overlayLayerIDs;
-    const photoLayers = photoKeys.map(layerID => scene.layers.get(layerID)).filter(Boolean);
-    const data = photoLayers.filter(layer => layer.supported);
+    const allLayerIDs = photos.layerIDs;
+    const detectionLayerIDs = photos.detectionLayerIDs;
+    const layers = allLayerIDs.map(layerID => scene.layers.get(layerID)).filter(Boolean);
+    const data = layers.filter(layer => layer.supported);
 
     function layerSupported(d) {
       return d && d.supported;
@@ -114,7 +115,7 @@ export function uiSectionPhotoOverlays(context) {
       .append('li')
       .attr('class', d => {
         let classes = `list-item-photos list-item-${d.id}`;
-        if (d.id === 'mapillary-signs' || d.id === 'mapillary-detections') {
+        if (detectionLayerIDs.includes(d.id)) {
           classes += ' indented';
         }
         return classes;
@@ -153,7 +154,7 @@ export function uiSectionPhotoOverlays(context) {
 
 
   function drawPhotoTypeItems(selection) {
-    const photoTypes = photos.allPhotoTypes;
+    const photoTypes = photos.photoTypes;
 
     function typeEnabled(d) {
       return photos.showsPhotoType(d);

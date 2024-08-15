@@ -70,15 +70,14 @@ export class StreetsideService extends AbstractSystem {
    * @param  `e`  A DOM KeyboardEvent
    */
   _keydown(e) {
+    // Ignore keypresses unless we actually have a streetside photo showing
+    const photos = this.context.systems.photos;
+    if (!this.viewerShowing || photos.currPhotoLayerID !== 'streetside') return;
+
     // Only allow key navigation if the user doesn't have something
     // more important focused - like a input, textarea, menu, etc.
-    // and only allow key nav if we're showing the viewer!
     const activeElement = document.activeElement?.tagName ?? 'BODY';
-    if (
-      activeElement !== 'BODY' ||
-      !this.viewerShowing ||
-      this.context.systems.photos._currLayerID !== 'streetside'
-    ) return;
+    if (activeElement !== 'BODY') return;
 
     if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
       this._step(-1);

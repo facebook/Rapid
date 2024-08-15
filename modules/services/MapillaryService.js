@@ -62,19 +62,16 @@ export class MapillaryService extends AbstractSystem {
    * @param  `e`  A DOM KeyboardEvent
    */
   _keydown(e) {
+    // Ignore keypresses unless we actually have a Mapillary photo showing
+    const photos = this.context.systems.photos;
+    if (!this.viewerShowing || photos.currPhotoLayerID !== 'mapillary') return;
+
     // Only allow key navigation if the user doesn't have something
     // more important focused - like a input, textarea, menu, etc.
     // and only allow key nav if we're showing the viewer and have the body or the map clicked
     const activeElement = document.activeElement?.tagName ?? 'BODY';
     const mapillaryViewerClass = document.activeElement?.className.startsWith('mapillary');
-
-    if (
-      (activeElement !== 'BODY' && !mapillaryViewerClass) ||
-      !this.viewerShowing ||
-      !this.context.systems.photos._currLayerID?.startsWith('mapillary')
-    ) {
-      return;
-    }
+    if (activeElement !== 'BODY' && !mapillaryViewerClass) return;
 
     if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
       this.navigateBackward();
