@@ -149,31 +149,27 @@ export class PhotoSystem extends AbstractSystem {
 
     // photo
     // support opening a specific photo via a URL parameter, e.g. `photo=mapillary/<photoID>`
-    const newPhoto = currParams.get('photo');
-    const oldPhoto = prevParams.get('photo');
+    const newPhoto = currParams.get('photo') || '';
+    const oldPhoto = prevParams.get('photo') || '';
     if (newPhoto !== oldPhoto) {
-      if (typeof newPhoto === 'string') {
-        const [layerID, photoID] = newPhoto.split('/', 2).filter(Boolean);
-        if (layerID && photoID) {
-          this.selectPhoto(layerID, photoID);
-        } else {
-          this.selectPhoto();  // deselect it
-        }
+      const [layerID, photoID] = newPhoto.split('/', 2).filter(Boolean);
+      if (layerID && photoID) {
+        this.selectPhoto(layerID, photoID);
+      } else {
+        this.selectPhoto();  // deselect it
       }
     }
 
     // detections
     // support opening a specific detection via a URL parameter, e.g. `detection=mapillary-detections/<detectionID>`
-    const newDetection = currParams.get('detection');
-    const oldDetection = prevParams.get('detection');
+    const newDetection = currParams.get('detection') || '';
+    const oldDetection = prevParams.get('detection') || '';
     if (newDetection !== oldDetection) {
-      if (typeof newDetection === 'string') {
-        const [layerID, detectionID] = newDetection.split('/', 2).filter(Boolean);
-        if (layerID && detectionID) {
-          this.selectDetection(layerID, detectionID);
-        } else {
-          this.selectDetection();  // deselect it
-        }
+      const [layerID, detectionID] = newDetection.split('/', 2).filter(Boolean);
+      if (layerID && detectionID) {
+        this.selectDetection(layerID, detectionID);
+      } else {
+        this.selectDetection();  // deselect it
       }
     }
 
@@ -375,7 +371,8 @@ export class PhotoSystem extends AbstractSystem {
     if (layerID === this._currPhotoLayerID && photoID === this._currPhotoID) return;  // nothing to do
 
     const context = this.context;
-    const scene = context.scene();
+    const map = context.systems.map;
+    const scene = map.scene;
 
     // Clear out any existing selection..
     this._currPhotoLayerID = null;
@@ -400,6 +397,13 @@ export class PhotoSystem extends AbstractSystem {
       // Try to show the viewer with the image selected..
       service.startAsync()
         .then(() => service.selectImageAsync(photoID))
+        .then(photo => {
+          if (!photo) return;
+          if (photo.id !== this._currPhotoID) return;  // exit if something else is now selected
+          if (this._currDetectionID) return;  // don't adjust the map if a detection is already selected
+
+          map.centerEase(photo.loc);
+        })
         .then(() => service.showViewer());
     }
 
@@ -418,7 +422,8 @@ export class PhotoSystem extends AbstractSystem {
     if (layerID === this._currDetectionLayerID && detectionID === this._currDetectionID) return;  // nothing to do
 
     const context = this.context;
-    const scene = context.scene();
+    const map = context.systems.map;
+    const scene = map.scene;
 
     // Clear out any existing selection..
     this._currDetectionLayerID = null;
@@ -452,7 +457,10 @@ export class PhotoSystem extends AbstractSystem {
       service.startAsync()
         .then(() => service.selectDetectionAsync(detectionID))
         .then(detection => {
+          if (!detection) return;
           if (detection.id !== this._currDetectionID) return;  // exit if something else is now selected
+
+          map.centerEase(detection.loc);
 
           for (const photoID of detection.imageIDs ?? []) {
             scene.setClass('highlightphoto', photoLayerID, photoID);

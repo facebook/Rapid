@@ -302,7 +302,6 @@ export class SelectBehavior extends AbstractBehavior {
     const context = this.context;
     const map = context.systems.map;
     const photos = context.systems.photos;
-
     const eventManager = map.renderer.events;
 
     const modifiers = eventManager.modifierKeys;
@@ -382,16 +381,13 @@ export class SelectBehavior extends AbstractBehavior {
     // Clicked on a photo..
     if (data.type === 'photo') {
       const layerID = target.layerID;
-      map.centerEase(data.loc);
       photos.selectPhoto(layerID, dataID);
       return;
     }
 
-    // Clicked on a Mapillary object detection or traffic sign..
-    // Open the Mapillary viewer with an image showing that object/sign
+    // Clicked on an object detection / traffic sign..
     if (data.type === 'detection') {
       const layerID = target.layerID;
-      map.centerEase(data.loc);
       photos.selectDetection(layerID, dataID);
       return;
     }
