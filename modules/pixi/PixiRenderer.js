@@ -193,6 +193,12 @@ export class PixiRenderer extends EventEmitter {
         layerID = 'custom-data';
       } else if (mode.id === 'select-osm' || mode.id === 'drag-node') {   // an OSM feature
         layerID = 'osm';
+      } else if (datum.type === 'detection') {   // A detection (object or sign)
+        if (datum.service === 'mapillary' && datum.object_type === 'point') {
+          layerID = 'mapillary-detections';
+        } else if (datum.service === 'mapillary' && datum.object_type === 'traffic_sign') {
+          layerID = 'mapillary-signs';
+        }
       } else {
         // other selectable things (photos?) - we will not select-style them for now :(
       }
