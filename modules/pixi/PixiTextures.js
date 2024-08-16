@@ -321,7 +321,7 @@ export class PixiTextures {
 
     const viewfield = new Graphics()            //   [-2,26]  ,---,  [2,26]
       .lineStyle(1, 0x444444)                   //           /     \
-      .beginFill(0xffffff, 0.75)                //          /       \
+      .beginFill(0xffffff, 1)                   //          /       \
       .moveTo(-2, 26)                           //         /         \
       .lineTo(2, 26)                            //        /           \
       .lineTo(12, 4)                            //       /             \
@@ -331,7 +331,7 @@ export class PixiTextures {
 
     const viewfieldDark = new Graphics()
       .lineStyle(1, 0xcccccc)        // same viewfield, but outline light gray
-      .beginFill(0x333333, 0.75)     // and fill dark gray (not intended to be tinted)
+      .beginFill(0x333333, 1)        // and fill dark gray (not intended to be tinted)
       .moveTo(-2, 26)
       .lineTo(2, 26)
       .lineTo(12, 4)
@@ -356,13 +356,13 @@ export class PixiTextures {
 
     const pano = new Graphics()    // just a full circle - for panoramic / 360° images
       .lineStyle(1, 0x444444)
-      .beginFill(0xffffff, 0.75)
+      .beginFill(0xffffff, 1)
       .drawCircle(0, 0, 20)
       .endFill();
 
     const panoDark = new Graphics()
       .lineStyle(1, 0xcccccc)
-      .beginFill(0x333333, 0.75)
+      .beginFill(0x333333, 1)
       .drawCircle(0, 0, 20)
       .endFill();
 

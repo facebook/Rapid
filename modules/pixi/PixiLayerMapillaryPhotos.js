@@ -5,27 +5,29 @@ import { PixiFeatureLine } from './PixiFeatureLine.js';
 import { PixiFeaturePoint } from './PixiFeaturePoint.js';
 
 const MINZOOM = 12;
-const MAPILLARY_GREEN = 0x05CB63;
-const HIGHLIGHTED = 0xffbb33;
+const MAPILLARY_GREEN = 0x05cb63;
 const SELECTED = 0xffee00;
+
+const LINESTYLE = {
+  casing: { alpha: 0 },  // disable
+  stroke: { alpha: 0.7, width: 4, color: MAPILLARY_GREEN }
+};
+
+const MARKERSTYLE = {
+  markerAlpha:     0.8,
+  markerName:      'mediumCircle',
+  markerTint:      MAPILLARY_GREEN,
+  viewfieldAlpha:  0.7,
+  viewfieldName:   'viewfield',
+  viewfieldTint:   MAPILLARY_GREEN,
+  scale:           1.0,
+  fovWidth:        1,
+  fovLength:       1
+};
 
 const fovWidthInterp = d3_scaleLinear([90, 10], [1.3, 0.7]);
 const fovLengthInterp = d3_scaleLinear([90, 10], [0.7, 1.5]);
 
-const LINESTYLE = {
-  casing: { alpha: 0 },  // disable
-  stroke: { alpha: 0.9, width: 4, color: MAPILLARY_GREEN }
-};
-
-const MARKERSTYLE = {
-  markerName:    'mediumCircle',
-  markerTint:    MAPILLARY_GREEN,
-  viewfieldName: 'viewfield',
-  viewfieldTint: MAPILLARY_GREEN,
-  scale:         1.0,
-  fovWidth:      1,
-  fovLength:     1
-};
 
 
 /**
@@ -286,6 +288,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
         if (feature.hasClass('selectphoto')) {  // selected photo style
           style.viewfieldAngles = [this._viewerBearing ?? d.ca];
           style.viewfieldName = 'viewfield';
+          style.viewfieldAlpha = 1;
           style.viewfieldTint = SELECTED;
           style.markerTint = SELECTED;
           style.scale = 2.0;
@@ -297,9 +300,8 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
           style.viewfieldName = d.isPano ? 'pano' : 'viewfield';
 
           if (feature.hasClass('highlightphoto')) {  // highlighted photo style
-            style.viewfieldTint = HIGHLIGHTED;
-            style.markerTint = HIGHLIGHTED;
-            style.scale = 1.3;
+            style.viewfieldTint = SELECTED;
+            style.markerTint = SELECTED;
           }
         }
 

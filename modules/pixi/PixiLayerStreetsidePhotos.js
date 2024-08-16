@@ -5,27 +5,29 @@ import { PixiFeatureLine } from './PixiFeatureLine.js';
 import { PixiFeaturePoint } from './PixiFeaturePoint.js';
 
 const MINZOOM = 12;
-const STREETSIDE_TEAL = 0xfffc4;
-const HIGHLIGHTED = 0xffbb33;
+const STREETSIDE_TEAL = 0x0fffc4;
 const SELECTED = 0xffee00;
+
+const LINESTYLE = {
+  casing: { alpha: 0 },  // disable
+  stroke: { alpha: 0.7, width: 4, color: STREETSIDE_TEAL }
+};
+
+const MARKERSTYLE = {
+  markerAlpha:     0.8,
+  markerName:      'mediumCircle',
+  markerTint:      STREETSIDE_TEAL,
+  viewfieldAlpha:  0.7,
+  viewfieldName:   'viewfield',
+  viewfieldTint:   STREETSIDE_TEAL,
+  scale:           1.0,
+  fovWidth:        1,
+  fovLength:       1
+};
 
 const fovWidthInterp = d3_scaleLinear([90, 10], [1.3, 0.7]);
 const fovLengthInterp = d3_scaleLinear([90, 10], [0.7, 1.5]);
 
-const LINESTYLE = {
-  casing: { alpha: 0 },  // disable
-  stroke: { alpha: 0.9, width: 4, color: STREETSIDE_TEAL }
-};
-
-const MARKERSTYLE = {
-  markerName:    'mediumCircle',
-  markerTint:    STREETSIDE_TEAL,
-  viewfieldName: 'viewfield',
-  viewfieldTint: STREETSIDE_TEAL,
-  scale:         1.0,
-  fovWidth:      1,
-  fovLength:     1
-};
 
 
 /**
@@ -188,6 +190,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
     sequences = this.filterSequences(sequences);
     images = this.filterImages(images);
 
+    // render sequences
     for (const sequence of sequences) {
       const dataID =  sequence.id;
       const featureID = `${this.layerID}-sequence-${dataID}`;
@@ -215,7 +218,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
       this.retainFeature(feature, frame);
     }
 
-
+    // render markers
     for (const d of images) {
       const dataID = d.id;
       const featureID = `${this.layerID}-photo-${dataID}`;
@@ -241,6 +244,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
 
           style.viewfieldAngles = [d.ca + yaw];
           style.viewfieldName = 'viewfield';
+          style.viewfieldAlpha = 1;
           style.viewfieldTint = SELECTED;
           style.markerTint = SELECTED;
           style.scale = 2.0;
@@ -252,9 +256,8 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
           style.viewfieldName = d.isPano ? 'pano' : 'viewfield';
 
           if (feature.hasClass('highlightphoto')) {  // highlighted photo style
-            style.viewfieldTint = HIGHLIGHTED;
-            style.markerTint = HIGHLIGHTED;
-            style.scale = 1.3;
+            style.viewfieldTint = SELECTED;
+            style.markerTint = SELECTED;
           }
         }
 

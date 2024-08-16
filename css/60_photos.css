@@ -171,31 +171,6 @@
 }
 
 
-/* Streetside Image Layer */
-.layer-streetside-images {
-    pointer-events: none;
-}
-.layer-streetside-images .viewfield-group * {
-    fill: #0fffc4;
-}
-.layer-streetside-images .sequence {
-    stroke: #0fffc4;
-    stroke-opacity: 0.85;  /* bump opacity - only one per road */
-}
-
-
-/* Mapillary Image Layer */
-.layer-mapillary {
-    pointer-events: none;
-}
-.layer-mapillary .viewfield-group * {
-    fill: #55ff22;
-}
-.layer-mapillary .sequence {
-    stroke: #55ff22;
-}
-
-
 /* Mapillary Traffic Signs and Map Features Layers */
 .layer-mapillary-detections {
     pointer-events: none;
@@ -228,18 +203,6 @@
 }
 .layer-mapillary-detections .icon-detected.currentView rect {
     outline: 3px solid rgba(255, 238, 0, 1);
-}
-
-
-/* KartaView Image Layer */
-.layer-kartaview {
-    pointer-events: none;
-}
-.layer-kartaview .viewfield-group * {
-    fill: #20c4ff;
-}
-.layer-kartaview .sequence {
-    stroke: #20c4ff;
 }
 
 

@@ -187,7 +187,7 @@ export class PixiFeaturePoint extends AbstractFeature {
           vfSprite.anchor.set(0.5, 0.5);  // middle, middle
 
           // Make the active photo image pop out at the user
-          if (this._classes.has('selectphoto')) {
+          if (this._classes.has('selectphoto') || this._classes.has('highlightphoto')) {
             this.container.zIndex = 99000;
           }
 
@@ -205,6 +205,7 @@ export class PixiFeaturePoint extends AbstractFeature {
       const yScale = scale * (style.fovLength || 1);
       for (let i = 0; i < vfAngles.length; i++) {
         const vfSprite = this.viewfields.getChildAt(i);
+        vfSprite.alpha = style.viewfieldAlpha ?? 1;
         vfSprite.tint = style.viewfieldTint || 0x333333;
         vfSprite.scale.set(xScale, yScale);
         vfSprite.angle = vfAngles[i];
@@ -399,6 +400,7 @@ const STYLE_DEFAULTS = {
   markerAlpha: 1,
   markerName: 'smallCircle',
   markerTint: 0xffffff,
+  viewfieldAlpha: 0.75,
   viewfieldAngles: [],
   viewfieldName: 'viewfield',
   viewfieldTint: 0xffffff
