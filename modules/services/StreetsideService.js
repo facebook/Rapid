@@ -314,7 +314,7 @@ export class StreetsideService extends AbstractSystem {
    * Note:  most code should call `PhotoSystem.selectPhoto(layerID, photoID)` instead.
    * That will manage the state of what the user clicked on, and then call this function.
    * @param  {string} imageID - the id of the image to select
-   * @return {Promise} Promise that always resolves (we should change this to resolve after the image is ready)
+   * @return {Promise} Promise that resolves to the image after it has been selected
    */
   selectImageAsync(bubbleID) {
     let d = this._cache.bubbles.get(bubbleID);
@@ -480,6 +480,8 @@ export class StreetsideService extends AbstractSystem {
               .removeScene(sceneID);
           }
         }
+
+        return d; // pass the image to anything that chains off this Promise
       });
   }
 
@@ -576,6 +578,8 @@ export class StreetsideService extends AbstractSystem {
    */
   _step(stepBy) {
     const context = this.context;
+    const photos = context.systems.photos;
+
     const $viewerContainer = context.container().select('.photoviewer');
     const selected = $viewerContainer.empty() ? undefined : $viewerContainer.datum();
     if (!selected) return;
@@ -640,8 +644,7 @@ export class StreetsideService extends AbstractSystem {
     const nextBubble = this._cache.bubbles.get(nextID);
     if (!nextBubble) return;
 
-    context.systems.map.centerEase(nextBubble.loc);
-    context.systems.photos.selectPhoto('streetside', nextBubble.id);
+    photos.selectPhoto('streetside', nextBubble.id);
     this.emit('imageChanged');
   }
 

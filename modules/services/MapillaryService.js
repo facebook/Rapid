@@ -393,17 +393,26 @@ export class MapillaryService extends AbstractSystem {
    * Note:  most code should call `PhotoSystem.selectPhoto(layerID, photoID)` instead.
    * That will manage the state of what the user clicked on, and then call this function.
    * @param  {string} imageID - the id of the image to select
-   * @return {Promise} Promise that always resolves (we should change this to resolve after the image is ready)
+   * @return {Promise} Promise that resolves to the image after it has been selected
    */
   selectImageAsync(imageID) {
     if (!imageID) return Promise.resolve();  // do nothing
 
     return this.startAsync()
-      .then(() => {
-        return this._viewer
-          .moveTo(imageID)
-          .catch(err => console.error('mly3', err));   // eslint-disable-line no-console
-      });
+      .then(() => this._viewer.moveTo(imageID))
+      .then(mlyImage => {
+        const cache = this._cache.images;
+
+        return this._cacheImage(cache, {
+          id:          mlyImage.id.toString(),
+          loc:        [mlyImage.originalLngLat.lng, mlyImage.originalLngLat.lat],
+          sequenceID:  mlyImage.sequenceId.toString(),
+          captured_at: mlyImage.capturedAt,
+          captured_by: mlyImage.creatorUsername,
+          ca:          mlyImage.originalCompassAngle
+        });
+      })
+      .catch(err => console.error('mly3', err));   // eslint-disable-line no-console
   }
 
 
@@ -412,19 +421,13 @@ export class MapillaryService extends AbstractSystem {
    * Note:  most code should call `PhotoSystem.selectDetection(layerID, photoID)` instead.
    * That will manage the state of what the user clicked on, and then call this function.
    * @param  {string} detectionID - the id of the detection to select
-   * @return {Promise} Promise that always resolves (we should change this to resolve after the image is ready)
+   * @return {Promise} Promise that resolves to the detection after it has been selected
    */
   selectDetectionAsync(detectionID) {
     if (!detectionID) return Promise.resolve();  // do nothing
 
     return this.startAsync()
       .then(() => this._loadDetectionAsync(detectionID));
-//todo
-//      .then(() => {
-//        return this._viewer
-//          .moveTo(imageID)
-//          .catch(err => console.error('mly3', err));   // eslint-disable-line no-console
-//      });
   }
 
 
@@ -611,30 +614,20 @@ export class MapillaryService extends AbstractSystem {
     if (vectorTile.layers.hasOwnProperty('image')) {
       const cache = this._cache.images;
       const layer = vectorTile.layers.image;
-      let boxes = [];
 
       for (let i = 0; i < layer.length; i++) {
         const feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
         if (!feature) continue;
 
-        const photoID = feature.properties.id.toString();
-        if (cache.data.has(photoID)) continue;  // seen already
-
-        const sequenceID = feature.properties.sequence_id.toString();
-        const loc = feature.geometry.coordinates;
-        const photo = {
-          type: 'photo',
-          id: photoID,
-          loc: loc,
+        this._cacheImage(cache, {
+          id:          feature.properties.id.toString(),
+          loc:         feature.geometry.coordinates,
+          sequenceID:  feature.properties.sequence_id.toString(),
           captured_at: feature.properties.captured_at,
-          ca: feature.properties.compass_angle,
-          isPano: feature.properties.is_pano,
-          sequenceID: sequenceID
-        };
-        cache.data.set(photoID, photo);
-        boxes.push({ minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: photo });
+          ca:          feature.properties.compass_angle,
+          isPano:      feature.properties.is_pano,
+        });
       }
-      cache.rtree.load(boxes);
     }
 
     if (vectorTile.layers.hasOwnProperty('sequence')) {
@@ -669,37 +662,20 @@ export class MapillaryService extends AbstractSystem {
 
       const cache = (type === 'traffic_sign') ? this._cache.signs : this._cache.detections;
       const layer = vectorTile.layers[type];
-      let boxes = [];
 
       for (let i = 0; i < layer.length; i++) {
         const feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
         if (!feature) continue;
 
-        // Cache detection, create if needed..
-        const detectionID = feature.properties.id.toString();
-        let detection = cache.data.get(detectionID);
-        if (!detection) {
-          detection = {
-            type: 'detection',
-            id: detectionID
-          };
-          cache.data.set(detectionID, detection);
-        }
-
-        // Fill in detection details..
-        // Note that this API _does not_ give us `images` or `aligned_direction`
-        const loc = feature.geometry.coordinates;
-        detection.loc = loc;
-        detection.first_seen_at = feature.properties.first_seen_at;
-        detection.last_seen_at = feature.properties.last_seen_at;
-        detection.value = feature.properties.value;
-
-        // Add to rtree, replacing existing if needed.
-        const box = { minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: detection };
-        cache.rtree.remove(box, (a, b) => a.data.id === b.data.id);
-        boxes.push(box);
+        // Note that the tile API _does not_ give us `images` or `aligned_direction`
+        this._cacheDetection(cache, {
+          id:            feature.properties.id.toString(),
+          loc:           feature.geometry.coordinates,
+          first_seen_at: feature.properties.first_seen_at,
+          last_seen_at:  feature.properties.last_seen_at,
+          value:         feature.properties.value
+        });
       }
-      cache.rtree.load(boxes);
     }
   }
 
@@ -738,26 +714,8 @@ export class MapillaryService extends AbstractSystem {
         const type = response.object_type;  // Seems to be 'mvd_fast' or 'trafficsign' ??
         const cache = (type === 'trafficsign') ? this._cache.signs : this._cache.detections;
 
-        // Fill in detection details, create if needed..
-        const detectionID = response.id.toString();
-        let detection = cache.data.get(detectionID);
-        if (!detection) {
-          detection = {
-            type: 'detection',
-            id: detectionID
-          };
-        }
-
-        // Fill in detection details..
-        // Note that this API _does_ give us `images` and `aligned_direction`
-        const loc = response.geometry.coordinates;
-        detection.loc = loc;
-        detection.first_seen_at = response.first_seen_at;
-        detection.last_seen_at = response.last_seen_at;
-        detection.value = response.object_value;
-        detection.aligned_direction = response.aligned_direction;
-
         // Gather imageIDs and try to choose the nearest one as the best.
+        const loc = response.geometry.coordinates;
         const imageIDs = [];
         let minDist = Infinity;
         let bestImageID = null;
@@ -771,15 +729,17 @@ export class MapillaryService extends AbstractSystem {
           }
         }
 
-        detection.imageIDs = imageIDs;
-        detection.bestImageID = bestImageID;
-
-        cache.data.set(detectionID, detection);
-
-        // Add to rtree, replacing existing if needed.
-        const box = { minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: detection };
-        cache.rtree.remove(box, (a, b) => a.data.id === b.data.id);
-        cache.rtree.insert(box);
+        // Note that the graph API _does_ give us `images` and `aligned_direction`
+        const detection = this._cacheDetection(cache, {
+          id:                 response.id.toString(),
+          loc:                loc,
+          first_seen_at:      response.first_seen_at,
+          last_seen_at:       response.last_seen_at,
+          value:              response.object_value,
+          aligned_direction:  response.aligned_direcction,
+          imageIDs:           imageIDs,
+          bestImageID:        bestImageID
+        });
 
         this.context.immediateRedraw();
         return detection;
@@ -873,9 +833,6 @@ export class MapillaryService extends AbstractSystem {
     const imageChanged = (node) => {
       this.resetTags();
       const image = node.image;
-
-      const loc = [image.originalLngLat.lng, image.originalLngLat.lat];
-      map.centerEase(loc);
       photos.selectPhoto('mapillary', image.id);
 
       if (this.shouldShowDetections()) {
@@ -907,6 +864,73 @@ export class MapillaryService extends AbstractSystem {
     ui.photoviewer.on('resize.mapillary', () => {
       if (this._viewer) this._viewer.resize();
     });
+  }
+
+
+  /**
+   * _cacheImage
+   * Store the given image in the caches
+   * @param  {Object}  cache - the cache to use
+   * @param  {Object}  props - the image properties
+   * @return {Object}  The image
+   */
+  _cacheImage(cache, props) {
+    let image = cache.data.get(props.id);
+    if (!image) {
+      image = {
+        type: 'photo',
+        id: props.id,
+        loc: props.loc
+      };
+
+      cache.data.set(image.id, image);
+
+      const [x, y] = props.loc;
+      cache.rtree.insert({ minX: x, minY: y, maxX: x, maxY: y, data: image });
+    }
+
+    // Update whatever additional props we were passed..
+    if (props.sequenceID)   image.sequenceID  = props.sequenceID;
+    if (props.captured_at)  image.captured_at = props.captured_at;
+    if (props.captured_by)  image.captured_by = props.captured_by;
+    if (props.ca)           image.ca          = props.ca;
+    if (props.isPano)       image.isPano      = props.isPano;
+
+    return image;
+  }
+
+
+  /**
+   * _cacheDetection
+   * Store the given detection in the caches
+   * @param  {Object}  cache - the cache to use
+   * @param  {Object}  props - the detection properties
+   * @return {Object}  The detection
+   */
+  _cacheDetection(cache, props) {
+    let detection = cache.data.get(props.id);
+    if (!detection) {
+      detection = {
+        type: 'detection',
+        id: props.id,
+        loc: props.loc
+      };
+
+      cache.data.set(detection.id, detection);
+
+      const [x, y] = props.loc;
+      cache.rtree.insert({ minX: x, minY: y, maxX: x, maxY: y, data: detection });
+    }
+
+    // Update whatever additional props we were passed..
+    if (props.first_seen_at)      detection.first_seen_at      = props.first_seen_at;
+    if (props.last_seen_at)       detection.last_seen_at       = props.last_seen_at;
+    if (props.value)              detection.value              = props.value;
+    if (props.aligned_direction)  detection.aligned_direction  = props.aligned_direction;
+    if (props.imageIDs)           detection.imageIDs           = props.imageIDs;
+    if (props.bestImageID)        detection.bestImageID        = props.bestImageID;
+
+    return detection;
   }
 
 }

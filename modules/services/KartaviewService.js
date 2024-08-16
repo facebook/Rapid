@@ -288,7 +288,7 @@ export class KartaviewService extends AbstractSystem {
    * Note:  most code should call `PhotoSystem.selectPhoto(layerID, photoID)` instead.
    * That will manage the state of what the user clicked on, and then call this function.
    * @param  {string} imageID - the id of the image to select
-   * @return {Promise} Promise that always resolves (we should change this to resolve after the image is ready)
+   * @return {Promise} Promise that resolves to the image after it has been selected
    */
   selectImageAsync(imageID) {
     if (!imageID) return Promise.resolve();  // do nothing
@@ -355,6 +355,8 @@ export class KartaviewService extends AbstractSystem {
           .attr('target', '_blank')
           .attr('href', `https://kartaview.org/details/${image.sequenceID}/${image.sequenceIndex}/track-info`)
           .text('kartaview.org');
+
+        return image;  // pass the image to anything that chains off this Promise
       });
 
 
@@ -651,11 +653,7 @@ export class KartaviewService extends AbstractSystem {
     const nextImage = sequence.images[nextIndex];
     if (!nextImage) return;
 
-    const context = this.context;
-    const map = context.systems.map;
-    const photos = context.systems.photos;
-
-    map.centerEase(nextImage.loc);
+    const photos = this.context.systems.photos;
     photos.selectPhoto('kartaview', nextImage.id);
 
     this.emit('imageChanged');
