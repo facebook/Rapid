@@ -3,23 +3,24 @@ import { PixiFeatureLine } from './PixiFeatureLine.js';
 import { PixiFeaturePoint } from './PixiFeaturePoint.js';
 
 const MINZOOM = 12;
-const KARTA_BLUE = 0x20c4ff;
-const HIGHLIGHTED = 0xffbb33;
+const KARTAVIEW_BLUE = 0x20c4ff;
 const SELECTED = 0xffee00;
 
 const LINESTYLE = {
   casing: { alpha: 0 },  // disable
-  stroke: { alpha: 0.9, width: 4, color: KARTA_BLUE }
+  stroke: { alpha: 0.7, width: 4, color: KARTAVIEW_BLUE }
 };
 
 const MARKERSTYLE = {
-  markerName:    'mediumCircle',
-  markerTint:    KARTA_BLUE,
-  viewfieldName: 'viewfield',
-  viewfieldTint: KARTA_BLUE,
-  scale:         1.0,
-  fovWidth:      1,
-  fovLength:     1
+  markerAlpha:     0.8,
+  markerName:      'mediumCircle',
+  markerTint:      KARTAVIEW_BLUE,
+  viewfieldAlpha:  0.7,
+  viewfieldName:   'viewfield',
+  viewfieldTint:   KARTAVIEW_BLUE,
+  scale:           1.0,
+  fovWidth:        1,
+  fovLength:       1
 };
 
 
@@ -151,6 +152,7 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
     sequences = this.filterSequences(sequences);
     images = this.filterImages(images);
 
+    // render sequences
     for (const d of sequences) {
       const featureID = `${this.layerID}-sequence-${d.properties.id}`;
       const sequenceVersion = d.properties.v || 0;
@@ -175,6 +177,7 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
       this.retainFeature(feature, frame);
     }
 
+    // render markers
     for (const d of images) {
       const featureID = `${this.layerID}-photo-${d.id}`;
       let feature = this.features.get(featureID);
@@ -201,6 +204,7 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
           // style.viewfieldAngles = [this._viewerCompassAngle ?? d.ca];
           style.viewfieldAngles = Number.isFinite(d.ca) ? [d.ca] : [];
           style.viewfieldName = 'viewfield';
+          style.viewfieldAlpha = 1;
           style.viewfieldTint = SELECTED;
           style.markerTint = SELECTED;
           style.scale = 2.0;
@@ -212,9 +216,8 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
           style.viewfieldName = d.isPano ? 'pano' : 'viewfield';
 
           if (feature.hasClass('highlightphoto')) {  // highlighted photo style
-            style.viewfieldTint = HIGHLIGHTED;
-            style.markerTint = HIGHLIGHTED;
-            style.scale = 1.3;
+            style.viewfieldTint = SELECTED;
+            style.markerTint = SELECTED;
           }
         }
 
