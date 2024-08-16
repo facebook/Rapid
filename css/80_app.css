@@ -2868,6 +2868,10 @@ img.tag-reference-wiki-image {
   display: none;
 }
 
+.qa-details-item span {
+  padding: 0 5px;
+}
+
 .note-save .new-comment-input,
 .qa-save .new-comment-input {
   width: 100%;

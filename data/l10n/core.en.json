@@ -912,6 +912,7 @@
       "key_value": "key=value",
       "multiple_values": "Multiple Values",
       "multiple_types": "Multiple Types",
+      "details": "Details",
       "unshared_value_tooltip": "not shared by all features",
       "hidden_preset": {
         "manual": "{features} are hidden. Enable them in the Map Data pane.",
@@ -965,7 +966,9 @@
         "network_ref_direction": "{network} {ref} {direction}",
         "network_ref_from_to": "{network} {ref} from {from} to {to}",
         "network_ref_from_to_via": "{network} {ref} from {from} to {to} via {via}"
-      }
+      },
+      "first_seen": "First Seen",
+      "last_seen": "Last Seen"
     },
     "background": {
       "title": "Background",
@@ -1859,81 +1862,82 @@
     },
     "mapillary_signs": {
       "title": "Traffic Signs",
-      "tooltip": "Detected traffic signs in Mapillary photos"
+      "tooltip": "Detected traffic signs in Mapillary photos",
+      "traffic_sign": "Traffic Sign"
     },
     "mapillary_detections": {
       "title": "Detected Objects",
       "tooltip": "Detected objects in Mapillary photos",
       "construction": {
         "barrier": {
-          "temporary": "temporary barrier"
+          "temporary": "Temporary Barrier"
         },
         "flat": {
-          "crosswalk_plain": "plain crosswalk",
-          "driveway": "driveway"
+          "crosswalk_plain": "Crosswalk - Plain",
+          "driveway": "Driveway"
         }
       },
       "marking": {
         "discrete": {
           "arrow": {
-            "left": "lane marking - arrow (left)",
-            "right": "lane marking - arrow (right)",
-            "split_left_or_straight": "lane marking - arrow (split left or straight)",
-            "split_right_or_straight": "lane marking - arrow (split right or straight)",
-            "straight": "lane marking - arrow (straight)"
+            "left": "Lane Marking - Arrow (Left)",
+            "right": "Lane Marking - Arrow (Right)",
+            "split-left-or-straight": "Lane Marking - Arrow (Split Left or Straight)",
+            "split-right-or-straight": "Lane Marking - Arrow (Split Right or Straight)",
+            "straight": "Lane Marking - Arrow (Straight)"
           },
-          "crosswalk_zebra": "lane marking - crosswalk",
-          "give_way_row": "lane marking - give way (row)",
-          "give_way_single": "lane marking - give way (single)",
-          "other_marking": "lane marking - other",
-          "stop_line": "lane marking - stop line",
+          "crosswalk-zebra": "Lane Marking - Crosswalk",
+          "give-way-row": "Lane Marking - Give Way (Row)",
+          "give-way-single": "Lane Marking - Give Way (Single)",
+          "other-marking": "Lane Marking - Other",
+          "stop-line": "Lane Marking - Stop Line",
           "symbol": {
-            "bicycle": "lane marking - symbol (bicycle)"
+            "bicycle": "Lane Marking - Symbol (Bicycle)"
           },
-          "text": "lane marking - text"
+          "text": "Lane Marking - Text"
         }
       },
       "object": {
-        "banner": "banner",
-        "bench": "bench",
-        "bike_rack": "bike rack",
-        "billboard": "billboard",
-        "catch_basin": "catch basin",
-        "cctv_camera": "CCTV camera",
-        "fire_hydrant": "fire hydrant",
-        "junction_box": "junction box",
-        "mailbox": "mailbox",
-        "manhole": "manhole",
-        "parking_meter": "parking meter",
-        "phone_booth": "phone booth",
+        "banner": "Banner",
+        "bench": "Bench",
+        "bike-rack": "Bike Rack",
+        "billboard": "Billboard",
+        "catch-basin": "Catch Basin",
+        "cctv-camera": "CCTV Camera",
+        "fire-hydrant": "Fire Hydrant",
+        "junction-box": "Junction Box",
+        "mailbox": "Mailbox",
+        "manhole": "Manhole",
+        "parking-meter": "Parking Meter",
+        "phone-booth": "Phone Booth",
         "sign": {
-          "advertisement": "advertisement",
-          "information": "information sign",
-          "other": "other sign",
-          "store": "shop sign",
-          "traffic_sign": {
-            "back": "traffic sign - back",
-            "direction_front": "traffic sign - front",
-            "front": "traffic sign - front"
+          "advertisement": "Signage - Advertisement",
+          "information": "Signage - Information",
+          "other": "Signage - Other",
+          "store": "Signage - Store",
+          "traffic-sign": {
+            "back": "Traffic Sign - Back",
+            "direction-front": "Traffic Sign - Front",
+            "front": "Traffic Sign - Front"
           }
         },
-        "street_light": "street light",
+        "street-light": "Street Light",
         "support": {
-          "pole": "pole",
-          "traffic_sign_frame": "traffic sign frame",
-          "utility_pole": "utility pole"
+          "pole": "Pole",
+          "traffic-sign-frame": "Traffic Sign Frame",
+          "utility-pole": "Utility Pole"
         },
-        "traffic_cone": "traffic cone",
-        "traffic_light": {
-          "cyclists": "cyclist traffic light",
-          "general_horizontal": "horizontal traffic light",
-          "general_single": "single traffic light",
-          "general_upright": "vertical traffic light",
-          "other": "traffic light",
-          "pedestrians": "pedestrian traffic light"
+        "traffic-cone": "Traffic Cone",
+        "traffic-light": {
+          "cyclists": "Traffic Light - Cyclists",
+          "general-horizontal": "Traffic Light - General (Horizontal)",
+          "general-single": "Traffic Light - General (Single)",
+          "general-upright": "Traffic Light - General (Upright)",
+          "other": "Traffic Light - Other",
+          "pedestrians": "Traffic Light - Pedestrians"
         },
-        "trash_can": "trash can",
-        "water_valve": "water valve"
+        "trash-can": "Trash Can",
+        "water-valve": "Water Valve"
       }
     },
     "kartaview": {

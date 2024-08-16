@@ -6,6 +6,7 @@ import { AbstractMode } from './AbstractMode.js';
 import { QAItem } from '../osm/index.js';
 import { uiOsmoseEditor } from '../ui/osmose_editor.js';
 import { uiDataEditor } from '../ui/data_editor.js';
+import { uiDetectionInspector } from '../ui/detection_inspector.js';
 import { uiKeepRightEditor } from '../ui/keepRight_editor.js';
 import { uiNoteEditor } from '../ui/note_editor.js';
 import { uiMapRouletteEditor } from '../ui/maproulette_editor.js';
@@ -138,10 +139,13 @@ export class SelectMode extends AbstractMode {
           context.systems.ui.sidebar.show(sidebarContent.error(error));
           this._selectedData.set(datumID, error);  // update selectedData after a change happens?
         });
-      // Selected custom data (e.g. gpx track)...
+
+    } else if (datum.type === 'detection') {
+      sidebarContent = uiDetectionInspector(context).datum(datum);
+
+    // Selected custom data (e.g. gpx track)...
     } else if (datum.__featurehash__) {
-      const dataEditor = uiDataEditor(context).datum(datum);
-      sidebarContent = dataEditor;
+      sidebarContent = uiDataEditor(context).datum(datum);
 
     // Selected Rapid feature...
     } else if (datum.__fbid__) {
@@ -149,7 +153,6 @@ export class SelectMode extends AbstractMode {
       const rapidInspector = uiRapidFeatureInspector(context, this.keybinding).datum(datum);
       sidebarContent = rapidInspector;
     }
-
 
     // Todo: build a sidebar UI for:
     //  multi selections - (support merge between types) or

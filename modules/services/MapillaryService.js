@@ -643,6 +643,7 @@ export class MapillaryService extends AbstractSystem {
         if (!sequence) {
           sequence = {
             type: 'FeatureCollection',
+            service: 'mapillary',
             id: sequenceID,     // not strictly spec, but should be
             v: 0,
             features: []
@@ -673,7 +674,8 @@ export class MapillaryService extends AbstractSystem {
           loc:           feature.geometry.coordinates,
           first_seen_at: feature.properties.first_seen_at,
           last_seen_at:  feature.properties.last_seen_at,
-          value:         feature.properties.value
+          value:         feature.properties.value,
+          object_type:   type
         });
       }
     }
@@ -738,7 +740,8 @@ export class MapillaryService extends AbstractSystem {
           value:              response.object_value,
           aligned_direction:  response.aligned_direcction,
           imageIDs:           imageIDs,
-          bestImageID:        bestImageID
+          bestImageID:        bestImageID,
+          object_type:        (response.object_type === 'trafficsign') ? 'traffic_sign' : 'point'
         });
 
         this.context.immediateRedraw();
@@ -813,7 +816,6 @@ export class MapillaryService extends AbstractSystem {
     if (!mapillary.isSupported()) throw new Error('mapillary not supported');
 
     const context = this.context;
-    const map = context.systems.map;
     const photos = context.systems.photos;
     const ui = context.systems.ui;
 
@@ -878,9 +880,10 @@ export class MapillaryService extends AbstractSystem {
     let image = cache.data.get(props.id);
     if (!image) {
       image = {
-        type: 'photo',
-        id: props.id,
-        loc: props.loc
+        type:    'photo',
+        service: 'mapillary',
+        id:      props.id,
+        loc:     props.loc
       };
 
       cache.data.set(image.id, image);
@@ -911,9 +914,11 @@ export class MapillaryService extends AbstractSystem {
     let detection = cache.data.get(props.id);
     if (!detection) {
       detection = {
-        type: 'detection',
-        id: props.id,
-        loc: props.loc
+        type:        'detection',
+        service:     'mapillary',
+        id:          props.id,
+        loc:         props.loc,
+        object_type: props.object_type   // 'point' or 'traffic_sign'
       };
 
       cache.data.set(detection.id, detection);

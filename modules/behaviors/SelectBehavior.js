@@ -388,7 +388,7 @@ export class SelectBehavior extends AbstractBehavior {
     // Clicked on an object detection / traffic sign..
     if (data.type === 'detection') {
       const layerID = target.layerID;
-      photos.selectDetection(layerID, dataID);
+      photos.selectDetection(layerID, dataID);   // will enter select mode
       return;
     }
   }

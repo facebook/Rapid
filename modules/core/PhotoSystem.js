@@ -460,6 +460,10 @@ export class PhotoSystem extends AbstractSystem {
           if (!detection) return;
           if (detection.id !== this._currDetectionID) return;  // exit if something else is now selected
 
+          // Enter select mode here
+          const selection = new Map().set(detection.id, detection);
+          context.enter('select', { selection: selection });
+
           map.centerEase(detection.loc);
 
           for (const photoID of detection.imageIDs ?? []) {
