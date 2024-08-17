@@ -147,7 +147,7 @@ export class KartaviewService extends AbstractSystem {
       nextPage:  new Map(),   // Map(tileID, Number)
       images:    new Map(),   // Map(imageID, image data)
       sequences: new Map(),   // Map(sequenceID, sequence data)
-      rtree:     new RBush()
+      rbush:     new RBush()
     };
 
     this._selectedImage = null;
@@ -164,7 +164,7 @@ export class KartaviewService extends AbstractSystem {
    */
   getImages() {
     const extent = this.context.viewport.visibleExtent();
-    return this._cache.rtree.search(extent.bbox()).map(d => d.data);
+    return this._cache.rbush.search(extent.bbox()).map(d => d.data);
   }
 
 
@@ -178,7 +178,7 @@ export class KartaviewService extends AbstractSystem {
     const sequenceIDs = new Set();
 
     // Gather sequences for images in viewport
-    for (const box of this._cache.rtree.search(extent.bbox())) {
+    for (const box of this._cache.rbush.search(extent.bbox())) {
       if (box.data.sequenceID) {
         sequenceIDs.add(box.data.sequenceID);
       }
@@ -477,13 +477,13 @@ export class KartaviewService extends AbstractSystem {
           sequence.images[image.sequenceIndex] = image;
           sequence.v++;
 
-          // Add to rtree, replacing existing if needed.
+          // Add to rbush, replacing existing if needed.
           const box = { minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: image };
-          cache.rtree.remove(box, (a, b) => a.data.id === b.data.id);
+          cache.rbush.remove(box, (a, b) => a.data.id === b.data.id);
           boxes.push(box);
         }
 
-        cache.rtree.load(boxes);  // bulk load
+        cache.rbush.load(boxes);  // bulk load
 
         context.deferredRedraw();
         this.emit('loadedData');
@@ -574,10 +574,10 @@ export class KartaviewService extends AbstractSystem {
         sequence.images[image.sequenceIndex] = image;
         sequence.v++;
 
-        // Add to rtree, replacing existing if needed.
+        // Add to rbush, replacing existing if needed.
         const box = { minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: image };
-        cache.rtree.remove(box, (a, b) => a.data.id === b.data.id);
-        cache.rtree.insert(box);
+        cache.rbush.remove(box, (a, b) => a.data.id === b.data.id);
+        cache.rbush.insert(box);
 
         context.deferredRedraw();
         this.emit('loadedData');

@@ -65,7 +65,7 @@ describe('MapillaryService', () => {
       for (const d of data) {
         cache.images.data.set(d.id, d);
       }
-      cache.images.rtree.load(boxes);
+      cache.images.rbush.load(boxes);
 
       const result = _mapillary.getData('images');
       expect(result).to.deep.eql([data[0], data[1]]);
@@ -88,7 +88,7 @@ describe('MapillaryService', () => {
       for (const d of data) {
         cache.detections.data.set(d.id, d);
       }
-      cache.detections.rtree.load(boxes);
+      cache.detections.rbush.load(boxes);
 
       const result = _mapillary.getData('detections');
       expect(result).to.deep.eql([data[0], data[1]]);
@@ -112,7 +112,7 @@ describe('MapillaryService', () => {
       for (const d of data) {
         cache.signs.data.set(d.id, d);
       }
-      cache.signs.rtree.load(boxes);
+      cache.signs.rbush.load(boxes);
 
       const result = _mapillary.getData('signs');
       expect(result).to.deep.eql([data[0], data[1]]);
@@ -153,7 +153,7 @@ describe('MapillaryService', () => {
       for (const d of data) {
         cache.images.data.set(d.id, d);
       }
-      cache.images.rtree.load(boxes);
+      cache.images.rbush.load(boxes);
       cache.sequences.data.set(sequence.id, sequence);
 
       const result = _mapillary.getSequences();

@@ -1,5 +1,5 @@
 import { Color } from 'pixi.js';
-import { Extent, Tiler, vecAdd } from '@rapid-sdk/math';
+import { Tiler, vecSubtract } from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 import { marked } from 'marked';
 import RBush from 'rbush';
@@ -85,7 +85,7 @@ export class OsmoseService extends AbstractSystem {
       inflightTile: {},
       inflightPost: {},
       closed: {},
-      rtree: new RBush()
+      rbush: new RBush()
     };
 
     this._lastv = null;
@@ -101,7 +101,7 @@ export class OsmoseService extends AbstractSystem {
    */
   getData() {
     const extent = this.context.viewport.visibleExtent();
-    return this._cache.rtree.search(extent.bbox()).map(d => d.data);
+    return this._cache.rbush.search(extent.bbox()).map(d => d.data);
   }
 
 
@@ -144,7 +144,7 @@ export class OsmoseService extends AbstractSystem {
 
             // Filter out unsupported issue types (some are too specific or advanced)
             if (itemType in this._osmoseData.icons) {
-              const loc = this._preventCoincident(issue.geometry.coordinates);
+              const loc = this._preventCoincident(this._cache.rbush, issue.geometry.coordinates);
               const d = new QAItem(this, itemType, id, { loc: loc, item: item });
 
               // Assigning `elems` here prevents UI detail requests
@@ -153,7 +153,7 @@ export class OsmoseService extends AbstractSystem {
               }
 
               this._cache.issues.set(d.id, d);
-              this._cache.rtree.insert(this._encodeIssueRtree(d));
+              this._cache.rbush.insert(this._encodeIssueRBush(d));
             }
           }
 
@@ -293,7 +293,7 @@ export class OsmoseService extends AbstractSystem {
     if (!(item instanceof QAItem) || !item.id) return;
 
     this._cache.issues.set(item.id, item);
-    this._updateRtree(this._encodeIssueRtree(item), true); // true = replace
+    this._updateRBush(this._encodeIssueRBush(item), true); // true = replace
     return item;
   }
 
@@ -307,7 +307,7 @@ export class OsmoseService extends AbstractSystem {
     if (!(item instanceof QAItem) || !item.id) return;
 
     this._cache.isseus.delete(item.id);
-    this._updateRtree(this._encodeIssueRtree(item), false); // false = remove
+    this._updateRBush(this._encodeIssueRBush(item), false); // false = remove
   }
 
 
@@ -348,30 +348,34 @@ export class OsmoseService extends AbstractSystem {
     });
   }
 
-  _encodeIssueRtree(d) {
+  _encodeIssueRBush(d) {
     return { minX: d.loc[0], minY: d.loc[1], maxX: d.loc[0], maxY: d.loc[1], data: d };
   }
 
-  // Replace or remove QAItem from rtree
-  _updateRtree(item, replace) {
-    this._cache.rtree.remove(item, (a, b) => a.data.id === b.data.id);
+  // Replace or remove QAItem from the RBush spatial cache
+  _updateRBush(item, replace) {
+    this._cache.rbush.remove(item, (a, b) => a.data.id === b.data.id);
     if (replace) {
-      this._cache.rtree.insert(item);
+      this._cache.rbush.insert(item);
     }
   }
 
-  // Issues shouldn't obscure each other
-  _preventCoincident(loc) {
-    let coincident = false;
-    do {
-      // first time, move marker up. after that, move marker right.
-      let delta = coincident ? [0.00001, 0] : [0, 0.00001];
-      loc = vecAdd(loc, delta);
-      const bbox = new Extent(loc).bbox();
-      coincident = this._cache.rtree.search(bbox).length;
-    } while (coincident);
 
-    return loc;
+  /**
+   * _preventCoincident
+   * This checks if the cache already has something at that location, and if so, moves down slightly.
+   * @param   {RBush}          rbush - the spatial cache to check
+   * @param   {Array<number>}  loc   - original [longitude,latitude] coordinate
+   * @return  {Array<number>}  Adjusted [longitude,latitude] coordinate
+   */
+  _preventCoincident(rbush, loc) {
+    for (let dy = 0; ; dy++) {
+      loc = vecSubtract(loc, [0, dy * 0.00001]);
+      const box = { minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1] };
+      if (!rbush.collides(box)) {
+        return loc;
+      }
+    }
   }
 
 

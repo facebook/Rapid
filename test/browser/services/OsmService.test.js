@@ -465,7 +465,7 @@ describe('OsmService', () => {
       expect(_osm.isDataLoaded([-74.0444216, 40.6694299])).to.be.false;
 
       const bbox = { minX: -75, minY: 40, maxX: -74, maxY: 41, id: 'fake' };
-      _osm._tileCache.rtree.insert(bbox);
+      _osm._tileCache.rbush.insert(bbox);
 
       expect(_osm.isDataLoaded([-74.0444216, 40.6694299])).to.be.true;
     });
@@ -650,8 +650,8 @@ describe('OsmService', () => {
   describe('#caches', () => {
     it('loads reset caches', () => {
       const caches = _osm.caches();
-      expect(caches.tile).to.have.all.keys(['lastv','toLoad','loaded','inflight','seen','rtree']);
-      expect(caches.note).to.have.all.keys(['lastv','toLoad','loaded','inflight','inflightPost','note','closed','rtree']);
+      expect(caches.tile).to.have.all.keys(['lastv','toLoad','loaded','inflight','seen','rbush']);
+      expect(caches.note).to.have.all.keys(['lastv','toLoad','loaded','inflight','inflightPost','note','closed','rbush']);
       expect(caches.user).to.have.all.keys(['toLoad','user']);
     });
 
@@ -742,7 +742,7 @@ describe('OsmService', () => {
         { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { key: '2', loc: [10,1] } }
       ];
 
-      _osm.caches('get').note.rtree.load(notes);
+      _osm.caches('get').note.rbush.load(notes);
       const result = _osm.getNotes();
       expect(result).to.deep.eql([
         { key: '0', loc: [10,0] },
@@ -781,10 +781,10 @@ describe('OsmService', () => {
       const result = _osm.replaceNote(note);
       expect(result.id).to.eql('2');
       expect(_osm.caches().note.note['2']).to.eql(note);
-      const rtree = _osm.caches().note.rtree;
-      const result_rtree = rtree.search({ 'minX': -1, 'minY': -1, 'maxX': 1, 'maxY': 1 });
-      expect(result_rtree.length).to.eql(1);
-      expect(result_rtree[0].data).to.eql(note);
+      const rbush = _osm.caches().note.rbush;
+      const result_rbush = rbush.search({ 'minX': -1, 'minY': -1, 'maxX': 1, 'maxY': 1 });
+      expect(result_rbush.length).to.eql(1);
+      expect(result_rbush[0].data).to.eql(note);
     });
 
     it('replaces a note', () => {
@@ -794,10 +794,10 @@ describe('OsmService', () => {
       const result = _osm.replaceNote(note);
       expect(result.status).to.eql('closed');
 
-      const rtree = _osm.caches().note.rtree;
-      const result_rtree = rtree.search({ 'minX': -1, 'minY': -1, 'maxX': 1, 'maxY': 1 });
-      expect(result_rtree.length).to.eql(1);
-      expect(result_rtree[0].data.status).to.eql('closed');
+      const rbush = _osm.caches().note.rbush;
+      const result_rbush = rbush.search({ 'minX': -1, 'minY': -1, 'maxX': 1, 'maxY': 1 });
+      expect(result_rbush.length).to.eql(1);
+      expect(result_rbush[0].data.status).to.eql('closed');
     });
   });
 
