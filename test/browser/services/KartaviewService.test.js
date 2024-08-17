@@ -163,7 +163,7 @@ describe('KartaviewService', () => {
         { minX: 10, minY: 1, maxX: 10, maxY: 1, data: photos[2] }
       ];
 
-      _kartaview._cache.rtree.load(boxes);
+      _kartaview._cache.rbush.load(boxes);
 
       const result = _kartaview.getImages();
       expect(result).to.deep.eql([photos[0], photos[1]]);
@@ -194,7 +194,7 @@ describe('KartaviewService', () => {
         { minX: 10, minY: 1, maxX: 10, maxY: 1, data: photos[2] }
       ];
 
-      _kartaview._cache.rtree.load(boxes);
+      _kartaview._cache.rbush.load(boxes);
       _kartaview._cache.sequences = new Map().set(sequence.id, sequence);
       const result = _kartaview.getSequences();
 

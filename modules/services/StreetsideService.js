@@ -174,7 +174,7 @@ export class StreetsideService extends AbstractSystem {
     }
 
     this._cache = {
-      rtree:     new RBush(),
+      rbush:     new RBush(),
       inflight:  new Map(),   // Map(tileID -> {Promise, AbortController})
       loaded:    new Set(),   // Set(tileID)
       bubbles:   new Map(),   // Map(bubbleID -> bubble data)
@@ -197,7 +197,7 @@ export class StreetsideService extends AbstractSystem {
    */
   getImages() {
     const extent = this.context.viewport.visibleExtent();
-    return this._cache.rtree.search(extent.bbox()).map(d => d.data);
+    return this._cache.rbush.search(extent.bbox()).map(d => d.data);
   }
 
 
@@ -212,7 +212,7 @@ export class StreetsideService extends AbstractSystem {
     const result = new Map();  // Map(sequenceID -> sequence)
 
     // Gather sequences for the bubbles in viewport
-    for (const box of cache.rtree.search(extent.bbox())) {
+    for (const box of cache.rbush.search(extent.bbox())) {
       const bubbleID = box.data.id;
       const sequenceIDs = cache.bubbleHasSequences.get(bubbleID) ?? [];
       for (const sequenceID of sequenceIDs) {
@@ -623,7 +623,7 @@ export class StreetsideService extends AbstractSystem {
 
     // find nearest other bubble in the search polygon
     let minDist = Infinity;
-    this._cache.rtree.search(extent.bbox())
+    this._cache.rbush.search(extent.bbox())
       .forEach(d => {
         if (d.data.id === selected.id) return;
         if (!geomPointInPolygon(d.data.loc, poly)) return;
@@ -715,7 +715,7 @@ export class StreetsideService extends AbstractSystem {
 
     }).filter(Boolean);
 
-    this._cache.rtree.load(boxes);
+    this._cache.rbush.load(boxes);
     this._connectSequences();
 
     if (selectBubbleID) {

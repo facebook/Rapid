@@ -127,7 +127,7 @@ describe('StreetsideService', () => {
       ];
 
       const cache = _streetside._cache;
-      cache.rtree.load(bubbles);
+      cache.rbush.load(bubbles);
 
       const result = _streetside.getImages();
       expect(result).to.deep.eql([
@@ -155,7 +155,7 @@ describe('StreetsideService', () => {
       };
 
       const cache = _streetside._cache;
-      cache.rtree.load(bubbles);
+      cache.rbush.load(bubbles);
       cache.sequences.set('s1', sequence);
       cache.bubbleHasSequences.set('1', ['s1']);
       cache.bubbleHasSequences.set('2', ['s1']);

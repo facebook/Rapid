@@ -74,7 +74,7 @@ export class GeoScribbleService extends AbstractSystem {
       shapes: {},
       loadedTile: {},
       inflightTile: {},
-      rtree: new RBush()
+      rbush: new RBush()
     };
 
     return Promise.resolve();
@@ -88,7 +88,7 @@ export class GeoScribbleService extends AbstractSystem {
    */
   getData() {
     const extent = this.context.viewport.visibleExtent();
-    return this._cache.rtree.search(extent.bbox()).map(d => d.data);
+    return this._cache.rbush.search(extent.bbox()).map(d => d.data);
   }
 
 
@@ -143,7 +143,7 @@ export class GeoScribbleService extends AbstractSystem {
 
             const box = geojsonExtent(shape).bbox();
             box.data = shape;
-            cache.rtree.insert(box);
+            cache.rbush.insert(box);
           }
 
           this.context.deferredRedraw();

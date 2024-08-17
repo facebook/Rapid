@@ -1,4 +1,4 @@
-import { Extent, Tiler, vecAdd} from '@rapid-sdk/math';
+import { Tiler, vecSubtract } from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
@@ -108,7 +108,7 @@ export class KeepRightService extends AbstractSystem {
       inflightTile: {},
       inflightPost: {},
       closed: {},
-      rtree: new RBush()
+      rbush: new RBush()
     };
 
     this._lastv = null;
@@ -124,7 +124,7 @@ export class KeepRightService extends AbstractSystem {
    */
   getData() {
     const extent = this.context.viewport.visibleExtent();
-    return this._cache.rtree.search(extent.bbox()).map(d => d.data);
+    return this._cache.rbush.search(extent.bbox()).map(d => d.data);
   }
 
 
@@ -223,16 +223,7 @@ export class KeepRightService extends AbstractSystem {
                 break;
             }
 
-            // move markers slightly so it doesn't obscure the geometry,
-            // then move markers away from other coincident markers
-            let coincident = false;
-            do {
-              // first time, move marker up. after that, move marker right.
-              let delta = coincident ? [0.00001, 0] : [0, 0.00001];
-              loc = vecAdd(loc, delta);
-              let bbox = new Extent(loc).bbox();
-              coincident = this._cache.rtree.search(bbox).length;
-            } while (coincident);
+            loc = this._preventCoincident(this._cache.rbush, loc);
 
             const d = new QAItem(this, itemType, id, {
               loc: loc,
@@ -250,7 +241,7 @@ export class KeepRightService extends AbstractSystem {
             d.replacements = this._tokenReplacements(d);
 
             this._cache.data[id] = d;
-            this._cache.rtree.insert(this._encodeIssueRtree(d));
+            this._cache.rbush.insert(this._encodeIssueRBush(d));
           }
 
           this.context.deferredRedraw();
@@ -348,7 +339,7 @@ export class KeepRightService extends AbstractSystem {
     if (!(item instanceof QAItem) || !item.id) return null;
 
     this._cache.data[item.id] = item;
-    this._updateRtree(this._encodeIssueRtree(item), true); // true = replace
+    this._updateRBush(this._encodeIssueRBush(item), true); // true = replace
     return item;
   }
 
@@ -362,7 +353,7 @@ export class KeepRightService extends AbstractSystem {
     if (!(item instanceof QAItem) || !item.id) return;
 
     delete this._cache.data[item.id];
-    this._updateRtree(this._encodeIssueRtree(item), false); // false = remove
+    this._updateRBush(this._encodeIssueRBush(item), false); // false = remove
   }
 
 
@@ -404,17 +395,35 @@ export class KeepRightService extends AbstractSystem {
     });
   }
 
-  _encodeIssueRtree(d) {
+  _encodeIssueRBush(d) {
     return { minX: d.loc[0], minY: d.loc[1], maxX: d.loc[0], maxY: d.loc[1], data: d };
   }
 
 
-  // Replace or remove QAItem from rtree
-  _updateRtree(item, replace) {
-    this._cache.rtree.remove(item, (a, b) => a.data.id === b.data.id);
+  // Replace or remove QAItem from rbush
+  _updateRBush(item, replace) {
+    this._cache.rbush.remove(item, (a, b) => a.data.id === b.data.id);
 
     if (replace) {
-      this._cache.rtree.insert(item);
+      this._cache.rbush.insert(item);
+    }
+  }
+
+
+  /**
+   * _preventCoincident
+   * This checks if the cache already has something at that location, and if so, moves down slightly.
+   * @param   {RBush}          rbush - the spatial cache to check
+   * @param   {Array<number>}  loc   - original [longitude,latitude] coordinate
+   * @return  {Array<number>}  Adjusted [longitude,latitude] coordinate
+   */
+  _preventCoincident(rbush, loc) {
+    for (let dy = 0; ; dy++) {
+      loc = vecSubtract(loc, [0, dy * 0.00001]);
+      const box = { minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1] };
+      if (!rbush.collides(box)) {
+        return loc;
+      }
     }
   }
 

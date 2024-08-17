@@ -1,5 +1,5 @@
 import { select as d3_select } from 'd3-selection';
-import { Tiler, geoSphericalDistance } from '@rapid-sdk/math';
+import { Tiler, geoSphericalDistance, vecSubtract } from '@rapid-sdk/math';
 import { VectorTile } from '@mapbox/vector-tile';
 import Protobuf from 'pbf';
 import RBush from 'rbush';
@@ -137,9 +137,9 @@ export class MapillaryService extends AbstractSystem {
     }
 
     this._cache = {
-      images:       { lastv: null, data: new Map(), rtree: new RBush() },
-      signs:        { lastv: null, data: new Map(), rtree: new RBush() },
-      detections:   { lastv: null, data: new Map(), rtree: new RBush() },
+      images:       { lastv: null, data: new Map(), rbush: new RBush() },
+      signs:        { lastv: null, data: new Map(), rbush: new RBush() },
+      detections:   { lastv: null, data: new Map(), rbush: new RBush() },
       sequences:    { data: new Map() } ,      // Map<sequenceID, Array of LineStrings>
       image_detections: { forImageID: {} },
       inflight: new Map(),  // Map<url, {tileID, promise, controller}>
@@ -197,7 +197,7 @@ export class MapillaryService extends AbstractSystem {
 
     const extent = this.context.viewport.visibleExtent();
     const cache = this._cache[datasetID];
-    return cache.rtree.search(extent.bbox()).map(d => d.data);
+    return cache.rbush.search(extent.bbox()).map(d => d.data);
   }
 
 
@@ -210,7 +210,7 @@ export class MapillaryService extends AbstractSystem {
     const extent = this.context.viewport.visibleExtent();
     let result = new Map();  // Map(sequenceID -> Array of LineStrings)
 
-    for (const box of this._cache.images.rtree.search(extent.bbox())) {
+    for (const box of this._cache.images.rbush.search(extent.bbox())) {
       const sequenceID = box.data.sequenceID;
       if (!sequenceID) continue;  // no sequence for this image
       const sequence = this._cache.sequences.data.get(sequenceID);
@@ -889,7 +889,7 @@ export class MapillaryService extends AbstractSystem {
       cache.data.set(image.id, image);
 
       const [x, y] = props.loc;
-      cache.rtree.insert({ minX: x, minY: y, maxX: x, maxY: y, data: image });
+      cache.rbush.insert({ minX: x, minY: y, maxX: x, maxY: y, data: image });
     }
 
     // Update whatever additional props we were passed..
@@ -913,18 +913,19 @@ export class MapillaryService extends AbstractSystem {
   _cacheDetection(cache, props) {
     let detection = cache.data.get(props.id);
     if (!detection) {
+      const loc = this._preventCoincident(cache.rbush, props.loc);
       detection = {
         type:        'detection',
         service:     'mapillary',
         id:          props.id,
-        loc:         props.loc,
-        object_type: props.object_type   // 'point' or 'traffic_sign'
+        object_type: props.object_type,   // 'point' or 'traffic_sign'
+        loc:         loc
       };
 
       cache.data.set(detection.id, detection);
 
-      const [x, y] = props.loc;
-      cache.rtree.insert({ minX: x, minY: y, maxX: x, maxY: y, data: detection });
+      const [x, y] = loc;
+      cache.rbush.insert({ minX: x, minY: y, maxX: x, maxY: y, data: detection });
     }
 
     // Update whatever additional props we were passed..
@@ -936,6 +937,24 @@ export class MapillaryService extends AbstractSystem {
     if (props.bestImageID)        detection.bestImageID        = props.bestImageID;
 
     return detection;
+  }
+
+
+  /**
+   * _preventCoincident
+   * This checks if the cache already has something at that location, and if so, moves down slightly.
+   * @param   {RBush}          rbush - the spatial cache to check
+   * @param   {Array<number>}  loc   - original [longitude,latitude] coordinate
+   * @return  {Array<number>}  Adjusted [longitude,latitude] coordinate
+   */
+  _preventCoincident(rbush, loc) {
+    for (let dy = 0; ; dy++) {
+      loc = vecSubtract(loc, [0, dy * 0.00001]);
+      const box = { minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1] };
+      if (!rbush.collides(box)) {
+        return loc;
+      }
+    }
   }
 
 }

@@ -1,4 +1,4 @@
-import { Extent, Tiler, vecAdd } from '@rapid-sdk/math';
+import { Tiler, vecSubtract } from '@rapid-sdk/math';
 import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem';
@@ -188,12 +188,12 @@ export class MapRouletteService extends AbstractSystem {
 
           task.id = taskID;               // force to string
           task.parentId = challengeID;    // force to string
-          task.loc = this._preventCoincident([task.point.lng, task.point.lat]);
+          task.loc = this._preventCoincident(cache.rbush, [task.point.lng, task.point.lat]);
 
           // save the task
           const d = new QAItem(this, null, taskID, task);
           cache.tasks.set(taskID, d);
-          cache.rbush.insert(this._encodeIssueRbush(d));
+          cache.rbush.insert(this._encodeIssueRBush(d));
         }
 
         this.loadChallenges();   // call this sometimes
@@ -407,7 +407,7 @@ export class MapRouletteService extends AbstractSystem {
     if (!(task instanceof QAItem) || !task.id) return;
 
     this._cache.tasks.set(task.id, task);
-    this._updateRbush(this._encodeIssueRbush(task), true); // true = replace
+    this._updateRBush(this._encodeIssueRBush(task), true); // true = replace
     return task;
   }
 
@@ -420,7 +420,7 @@ export class MapRouletteService extends AbstractSystem {
   removeTask(task) {
     if (!(task instanceof QAItem) || !task.id) return;
     this._cache.tasks.delete(task.id);
-    this._updateRbush(this._encodeIssueRbush(task), false);
+    this._updateRBush(this._encodeIssueRBush(task), false);
   }
 
 
@@ -458,13 +458,13 @@ export class MapRouletteService extends AbstractSystem {
   }
 
 
-  _encodeIssueRbush(d) {
+  _encodeIssueRBush(d) {
     return { minX: d.loc[0], minY: d.loc[1], maxX: d.loc[0], maxY: d.loc[1], data: d };
   }
 
 
   // Replace or remove Task from rbush
-  _updateRbush(task, replace) {
+  _updateRBush(task, replace) {
     this._cache.rbush.remove(task, (a, b) => a.data.id === b.data.id);
     if (replace) {
       this._cache.rbush.insert(task);
@@ -472,17 +472,20 @@ export class MapRouletteService extends AbstractSystem {
   }
 
 
-  // Markers shouldn't obscure each other
-  _preventCoincident(loc) {
-    let coincident = false;
-    do {
-      // first time, move marker up. after that, move marker right.
-      let delta = coincident ? [0.00001, 0] : [0, 0.00001];
-      loc = vecAdd(loc, delta);
-      const bbox = new Extent(loc).bbox();
-      coincident = this._cache.rbush.search(bbox).length;
-    } while (coincident);
-
-    return loc;
+  /**
+   * _preventCoincident
+   * This checks if the cache already has something at that location, and if so, moves down slightly.
+   * @param   {RBush}          rbush - the spatial cache to check
+   * @param   {Array<number>}  loc   - original [longitude,latitude] coordinate
+   * @return  {Array<number>}  Adjusted [longitude,latitude] coordinate
+   */
+  _preventCoincident(rbush, loc) {
+    for (let dy = 0; ; dy++) {
+      loc = vecSubtract(loc, [0, dy * 0.00001]);
+      const box = { minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1] };
+      if (!rbush.collides(box)) {
+        return loc;
+      }
+    }
   }
 }
