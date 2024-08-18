@@ -402,6 +402,18 @@ export class PixiTextures {
       .closePath()
       .endFill();
 
+    const xlargeSquare = new Graphics()   // used as an "unknown" street sign
+      .lineStyle(2, 0x444444)
+      .beginFill(0xffffff, 1)
+      .drawRect(-12, -12, 24, 24)
+      .endFill();
+
+    const largeSquare = new Graphics()    // suitable to display an icon inside
+      .lineStyle(1, 0x444444)
+      .beginFill(0xffffff, 1)
+      .drawRect(-8, -8, 16, 16)
+      .endFill();
+
     const largeCircle = new Graphics()    // suitable to display an icon inside
       .lineStyle(1, 0x444444)
       .beginFill(0xffffff, 1)
@@ -430,6 +442,8 @@ export class PixiTextures {
 
     this.graphicToTexture('pin', pin, options);
     this.graphicToTexture('boldPin', boldPin, options);
+    this.graphicToTexture('xlargeSquare', xlargeSquare, options);
+    this.graphicToTexture('largeSquare', largeSquare, options);
     this.graphicToTexture('largeCircle', largeCircle, options);
     this.graphicToTexture('mediumCircle', mediumCircle, options);
     this.graphicToTexture('smallCircle', smallCircle, options);

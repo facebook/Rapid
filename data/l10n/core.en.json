@@ -814,7 +814,6 @@
         "description": "Description",
         "resolution": "Resolution",
         "accuracy": "Accuracy",
-        "unknown": "Unknown",
         "show_tiles": "Show Tiles",
         "hide_tiles": "Hide Tiles"
       },
@@ -826,7 +825,6 @@
         "last_edit": "Last Edit",
         "edited_by": "Edited By",
         "changeset": "Changeset",
-        "unknown": "Unknown",
         "link_text": "History on openstreetmap.org",
         "note_no_history": "No History (New Note)",
         "note_comments": "Comments",
@@ -912,13 +910,14 @@
       "key_value": "key=value",
       "multiple_values": "Multiple Values",
       "multiple_types": "Multiple Types",
-      "details": "Details",
       "unshared_value_tooltip": "not shared by all features",
       "hidden_preset": {
         "manual": "{features} are hidden. Enable them in the Map Data pane.",
         "zoom": "{features} are hidden. Zoom in to enable them."
       },
       "back_tooltip": "Change feature type",
+      "type": "Type",
+      "details": "Details",
       "remove": "Remove",
       "search": "Search",
       "unknown": "Unknown",
@@ -933,7 +932,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Type",
           "default": "Default",
           "layer": "Layer"
         }
@@ -1858,6 +1856,7 @@
     "mapillary": {
       "title": "Mapillary",
       "tooltip": "Street-level photos from Mapillary",
+      "detection": "Mapillary Detection",
       "view_on_mapillary": "View this image on Mapillary"
     },
     "mapillary_signs": {

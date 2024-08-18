@@ -116,7 +116,7 @@ export class UiPanelBackground extends AbstractUiPanel {
         .append('li')
         .text(l10n.t('background.wayback.date') + ':')
         .append('span')
-        .text(source.date || l10n.t('info_panels.background.unknown'));
+        .text(source.date || l10n.t('inspector.unknown'));
     }
 
     // Add list items for all the imagery metadata
@@ -205,7 +205,7 @@ export class UiPanelBackground extends AbstractUiPanel {
 
       // update vintage
       const vintage = result.vintage;
-      this._metadata.vintage = vintage?.range || l10n.t('info_panels.background.unknown');
+      this._metadata.vintage = vintage?.range || l10n.t('inspector.unknown');
       selection.selectAll('.background-info-list-vintage')
         .classed('hide', false)
         .selectAll('.background-info-span-vintage')

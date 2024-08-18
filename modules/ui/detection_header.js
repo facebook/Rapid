@@ -1,5 +1,3 @@
-import { Color } from 'pixi.js';
-
 import { uiIcon } from './icon.js';
 
 
@@ -17,11 +15,17 @@ export function uiDetectionHeader(context) {
     }
   }
 
+  function addIcon($selection) {
+    // Some values we don't have icons for, check first - Rapid#1518
+    const iconName = $selection.datum().value;
+    const hasIcon = context.container().selectAll(`#rapid-defs #${iconName}`).size();
+
+    $selection
+      .call(uiIcon(hasIcon ? `#${iconName}` : '#fas-question'));
+  }
+
 
   function render(selection) {
-    let iconFill = 0xffffff;
-    const mapillary = context.services.mapillary;
-
     const $header = selection.selectAll('.qa-header')
       .data(_detection ? [_detection] : [], d => d.key);
 
@@ -37,7 +41,7 @@ export function uiDetectionHeader(context) {
       .attr('class', 'qa-header-icon')
       .append('div')
       .attr('class', d => `qaItem ${d.service}`)
-      .call(uiIcon(`#${_detection.value}`));
+      .call(addIcon);
 
     $$header
       .append('div')

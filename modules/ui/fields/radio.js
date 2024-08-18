@@ -129,7 +129,7 @@ export function uiFieldRadio(context, uifield) {
             .append('div')
             .attr('class', 'label structure-label-type')
             .attr('for', 'preset-input-' + selected)
-            .html(l10n.tHtml('inspector.radio.structure.type'));
+            .text(l10n.t('inspector.type'));
 
         typeEnter
             .append('div')

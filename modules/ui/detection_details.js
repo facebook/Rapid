@@ -35,6 +35,18 @@ export function uiDetectionDetails(context) {
       .append('h3')
       .text(l10n.t('inspector.details') + ':');
 
+    const $$type = $$description
+      .attr('class', 'qa-details-item')
+      .append('div');
+
+    $$type
+      .append('strong')
+      .text(l10n.t('inspector.type') + ':');
+
+    $$type
+      .append('span')
+      .text(d => d.value);
+
     const $$firstseen = $$description
       .attr('class', 'qa-details-item')
       .append('div');

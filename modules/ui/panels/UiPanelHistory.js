@@ -239,7 +239,7 @@ export class UiPanelHistory extends AbstractUiPanel {
     const context = this.context;
     const l10n = context.systems.l10n;
 
-    if (!timestamp) return l10n.t('info_panels.history.unknown');
+    if (!timestamp) return l10n.t('inspector.unknown');
 
     const options = {
       day: 'numeric', month: 'short', year: 'numeric',
@@ -247,7 +247,7 @@ export class UiPanelHistory extends AbstractUiPanel {
     };
 
     const d = new Date(timestamp);
-    if (isNaN(d.getTime())) return l10n.t('info_panels.history.unknown');
+    if (isNaN(d.getTime())) return l10n.t('inspector.unknown');
 
     const localeCode = context.systems.l10n.localeCode();
     return d.toLocaleString(localeCode, options);
@@ -267,7 +267,7 @@ export class UiPanelHistory extends AbstractUiPanel {
     if (!userName) {
       selection
         .append('span')
-        .text(l10n.t('info_panels.history.unknown'));
+        .text(l10n.t('inspector.unknown'));
       return;
     }
 
@@ -312,7 +312,7 @@ export class UiPanelHistory extends AbstractUiPanel {
     if (!changeset) {
       selection
         .append('span')
-        .text(l10n.t('info_panels.history.unknown'));
+        .text(l10n.t('inspector.unknown'));
       return;
     }
 
