@@ -79,9 +79,11 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   renderMarkers(frame, viewport, zoom) {
-    const service = this.context.services.mapillary;
+    const context = this.context;
+    const service = context.services.mapillary;
     if (!service?.started) return;
 
+    const container = context.container();
     const parentContainer = this.scene.groups.get('qa');
 
     let items = service.getData('signs');
@@ -92,7 +94,20 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
       let feature = this.features.get(featureID);
 
       if (!feature) {
-        const style = { markerName: d.value };
+        // Some values we don't have icons for, check first - Rapid#1518
+        const hasIcon = container.selectAll(`#rapid-defs #${d.value}`).size();
+
+        let style;
+        if (hasIcon) {
+          style = {
+            markerName: d.value
+          };
+        } else {
+          style = {
+            markerName: 'xlargeSquare',
+            iconName:   'fas-question'
+          };
+        }
 
         feature = new PixiFeaturePoint(this, featureID);
         feature.geometry.setCoords(d.loc);

@@ -98,6 +98,7 @@ function buildDataAsync() {
         'fas-i-cursor',
         'fas-lock',
         'fas-palette',
+        'fas-question',
         'fas-star',
         'fas-th-list',
         'fas-user-cog'

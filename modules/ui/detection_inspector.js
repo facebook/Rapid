@@ -5,7 +5,6 @@ import { uiDetectionHeader } from './detection_header.js';
 
 export function uiDetectionInspector(context) {
   const l10n = context.systems.l10n;
-  const mapillary = context.services.mapillary;  // only mapillary for now
   const DetectionDetails = uiDetectionDetails(context);
   const DetectionHeader = uiDetectionHeader(context);
 
@@ -27,7 +26,7 @@ export function uiDetectionInspector(context) {
 
     $$header
       .append('h3')
-      .text('Mapillary Detection');
+      .text(l10n.t('mapillary.detection'));
 
 
     let $body = selection.selectAll('.body')
