@@ -24,7 +24,7 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
     this._enabled = true;
 
     const overlays = new PIXI.Container();
-    overlays.name = `${this.layerID}`;
+    overlays.label = `${this.layerID}`;
     overlays.sortableChildren = false;
     overlays.interactiveChildren = true;
     this.overlaysContainer = overlays;

@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { Mesh, MeshSimple } from 'pixi.js';
+import { Mesh, Geometry, Shader, Texture } from 'pixi.js';
 import { DashLine } from '@rapideditor/pixi-dashed-line';
 import { GlowFilter } from 'pixi-filters';
 import { /* geomRotatePoints,*/ vecEqual, vecLength /*, vecSubtract */ } from '@rapid-sdk/math';
@@ -41,6 +41,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
     lowRes.label = 'lowRes';
     lowRes.anchor.set(0.5, 0.5);  // middle, middle
     lowRes.visible = false;
+    lowRes.interactive = false;
     lowRes.eventMode = 'static';
     this.lowRes = lowRes;
 
@@ -62,13 +63,20 @@ export class PixiFeaturePolygon extends AbstractFeature {
     // So we'll create the mask graphic and then copy its attributes into a mesh
     // which _does_ hit test properly.
     // (Ignore the default MeshMaterial - it won't be drawn anyway, it's a mask.)
-    const mask = new Mesh(null, new MeshSimple(PIXI.Texture.WHITE));
-    mask.label = 'mask';
-    mask.eventMode = 'static';
-    mask.visible = false;
-    this.mask = mask;
-
-    this.container.addChild(lowRes, fill, stroke, mask);
+    // Correctly instantiate Geometry and Mesh with a Texture
+    const geometry = new Geometry()
+    .addAttribute('aVertexPosition', [0, 0, 100, 0, 50, 100], 2)
+    .addIndex([0, 1, 2]);
+    // Setup the texture
+    const texture = Texture.WHITE;
+    // Assuming the new Mesh constructor uses a configuration object
+    const mesh = new Mesh({
+        geometry: geometry,
+        texture: texture
+    });
+    mesh.label = 'mask';
+    mesh.visible = false;
+    this.mask = mesh;
 
     // Debug SSR
     // const debugSSR = new PIXI.Graphics();
@@ -375,10 +383,11 @@ export class PixiFeaturePolygon extends AbstractFeature {
         // Compute the mask's geometry, then copy its attributes into the mesh's geometry
         // This lets us use the Mesh as the mask and properly hit test against it.
         maskSource.geometry.updateBatches(true);
+        // Example of updating mask geometry
         this.mask.geometry = new PIXI.Geometry()
-          .addAttribute('aVertexPosition', maskSource.geometry.points, 2)
-          .addAttribute('aTextureCoord', maskSource.geometry.uvs, 2)
-          .addIndex(maskSource.geometry.indices);
+          .addAttribute('aVertexPosition', maskSource.geometry.getBuffer('aVertexPosition').data, 2)
+          .addAttribute('aTextureCoord', maskSource.geometry.getBuffer('aTextureCoord').data, 2)
+          .addIndex(maskSource.geometry.getIndex().data);
 
         this.mask.visible = true;
         this.fill.mask = this.mask;

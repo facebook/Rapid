@@ -391,7 +391,7 @@ export class PixiLayerLabels extends AbstractLayer {
       // To work in a coordinate system that is consistent, remove the label offset.
       // If we didn't do this, as the user pans or rotates the map, the objects that leave
       // and re-enter the scene would end up with different coordinates each time!
-      const fRect = sourceObject.getBounds();
+      const fRect = sourceObject.getBounds().rectangle;
       fRect.x -= this._labelOffset.x;
       fRect.y -= this._labelOffset.y;
 
@@ -450,8 +450,11 @@ export class PixiLayerLabels extends AbstractLayer {
 
       let labelObj;
       if (/^[\x20-\x7E]*$/.test(feature.label)) {   // is it in the printable ASCII range?
-        labelObj = new PIXI.BitmapText(feature.label, { fontName: 'label-normal' });
-        labelObj.updateText();           // force update it so its texture is ready to be reused on a sprite
+        labelObj = new PIXI.BitmapText({
+          text: feature.label,
+          style: { fontName: 'label-normal' }
+        });
+        // labelObj.updateText();           // force update it so its texture is ready to be reused on a sprite
         labelObj.label = feature.label;
         // labelObj.anchor.set(0.5, 0.5);   // middle, middle
         labelObj.anchor.set(0.5, 1);     // middle, bottom  - why??
