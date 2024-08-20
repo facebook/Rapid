@@ -95,7 +95,7 @@ export class PixiEvents extends EventEmitter {
     const supersurface = renderer.supersurface.node();
     supersurface.addEventListener('wheel', this._wheel, { passive: false });  // false allows preventDefault
 
-    const view = renderer.pixi.view;
+    const view = renderer.pixi.canvas;
     view.addEventListener('pointerover', this._pointerover);
     view.addEventListener('pointerout', this._pointerout);
 
