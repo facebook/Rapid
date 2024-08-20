@@ -160,7 +160,7 @@ export class AbstractFeature {
   set parentContainer(val) {
     const currParent = this.container.parent;
     if (val && val !== currParent) {   // put this feature under a different parent container
-      this.container.setParent(val);
+      this.container.parent = val;
     } else if (!val && currParent) {   // remove this feature from its parent container
       currParent.removeChild(this.container);
     }
