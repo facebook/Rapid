@@ -320,8 +320,8 @@ export class UiSystem extends AbstractSystem {
 
     overMapEnter
       .append('div')
-      .attr('class', 'photoviewer')
-      .classed('al', true)       // 'al'=left,  'ar'=right
+      .attr('class', 'photoviewer nineslice')
+      .attr('dir', 'ltr')
       .classed('hide', true)
       .call(this.photoviewer);
 

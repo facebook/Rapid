@@ -1857,6 +1857,7 @@
       "title": "Mapillary",
       "tooltip": "Street-level photos from Mapillary",
       "detection": "Mapillary Detection",
+      "show_detections": "Show Detections",
       "view_on_mapillary": "View this image on Mapillary"
     },
     "mapillary_signs": {

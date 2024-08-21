@@ -110,7 +110,8 @@ export class StreetsideService extends AbstractSystem {
     const ui = context.systems.ui;
 
     // create ms-wrapper, a photo wrapper class
-    let $wrap = context.container().select('.photoviewer').selectAll('.ms-wrapper')
+    let $wrap = context.container().select('.photoviewer .middle-middle')
+      .selectAll('.ms-wrapper')
       .data([0]);
 
     const $$wrap = $wrap.enter()
@@ -120,10 +121,22 @@ export class StreetsideService extends AbstractSystem {
 
     $$wrap
       .append('div')
-      .attr('id', 'rapideditor-viewer-streetside')
-      .append('div')
-      .attr('class', 'photo-attribution fillD');
+      .attr('id', 'rapideditor-viewer-streetside');
 
+    // add photo-footer
+    const $$footer = $$wrap
+      .append('div')
+      .attr('class', 'photo-footer');
+
+    $$footer
+      .append('div')
+      .attr('class', 'photo-options');
+
+    $$footer
+      .append('div')
+      .attr('class', 'photo-attribution');
+
+    // add photo-controls
     const $$controls = $$wrap
       .append('div')
       .attr('class', 'photo-controls-wrap')
@@ -317,6 +330,7 @@ export class StreetsideService extends AbstractSystem {
    * @return {Promise} Promise that resolves to the image after it has been selected
    */
   selectImageAsync(bubbleID) {
+    this._updateAttribution(null);  // reset
     let d = this._cache.bubbles.get(bubbleID);
 
     const context = this.context;
@@ -328,8 +342,6 @@ export class StreetsideService extends AbstractSystem {
     }
 
     const $wrap = context.container().select('.photoviewer .ms-wrapper');
-    const $attribution = $wrap.selectAll('.photo-attribution').html('');  // clear DOM content
-
     $wrap.selectAll('.pnlm-load-box')   // display "loading.."
       .style('display', 'block')
       .style('transform', 'translate(-50%, -50%)');
@@ -343,93 +355,94 @@ export class StreetsideService extends AbstractSystem {
 
     this._sceneOptions.northOffset = d.ca;
 
-    const $line1 = $attribution
-      .append('div')
-      .attr('class', 'attribution-row');
-
-    const hiresDomID = utilUniqueString('streetside-hires');
-
-    // Add hires checkbox
-    const $label = $line1
-      .append('label')
-      .attr('for', hiresDomID)
-      .attr('class', 'streetside-hires');
-
-    $label
-      .append('input')
-      .attr('type', 'checkbox')
-      .attr('id', hiresDomID)
-      .property('checked', this._hires)
-      .on('click', d3_event => {
-        d3_event.stopPropagation();
-
-        this._hires = !this._hires;
-        this._resolution = this._hires ? 1024 : 512;
-        $wrap.call(this._setupCanvas);
-
-        const viewstate = {
-          yaw: this._viewer.getYaw(),
-          pitch: this._viewer.getPitch(),
-          hfov: this._viewer.getHfov()
-        };
-
-        this._sceneOptions = Object.assign(this._sceneOptions, viewstate);
-        context.systems.photos.selectPhoto();                    // deselect
-        context.systems.photos.selectPhoto('streetside', d.id);  // reselect
-      });
-
-    $label
-      .append('span')
-      .text(l10n.t('streetside.hires'));
-
-
-    const $captureInfo = $line1
-      .append('div')
-      .attr('class', 'attribution-capture-info');
-
-    // Add capture date
-    if (d.captured_by) {
-      const yyyy = (new Date()).getFullYear();
-
-      $captureInfo
-        .append('a')
-        .attr('class', 'captured_by')
-        .attr('target', '_blank')
-        .attr('href', 'https://www.microsoft.com/en-us/maps/streetside')
-        .text(`© ${yyyy} Microsoft`);
-
-      $captureInfo
-        .append('span')
-        .text('|');
-    }
-
-    if (d.captured_at) {
-      $captureInfo
-        .append('span')
-        .attr('class', 'captured_at')
-        .text(this._localeDateString(d.captured_at));
-    }
-
-    // Add image links
-    const $line2 = $attribution
-      .append('div')
-      .attr('class', 'attribution-row');
-
-    $line2
-      .append('a')
-      .attr('class', 'image-view-link')
-      .attr('target', '_blank')
-      .attr('href', 'https://www.bing.com/maps?cp=' + d.loc[1] + '~' + d.loc[0] +
-        '&lvl=17&dir=' + d.ca + '&style=x&v=2&sV=1')
-      .text(l10n.t('streetside.view_on_bing'));
-
-    $line2
-      .append('a')
-      .attr('class', 'image-report-link')
-      .attr('target', '_blank')
-      .attr('href', 'https://www.bing.com/maps/privacyreport/streetsideprivacyreport?bubbleid=' +
-        encodeURIComponent(d.id) + '&focus=photo&lat=' + d.loc[1] + '&lng=' + d.loc[0] + '&z=17')
-      .text(l10n.t('streetside.report'));
+this._updateAttribution(bubbleID);
+//    const $line1 = $attribution
+//      .append('div')
+//      .attr('class', 'attribution-row');
+//
+//    const hiresDomID = utilUniqueString('streetside-hires');
+//
+//    // Add hires checkbox
+//    const $label = $line1
+//      .append('label')
+//      .attr('for', hiresDomID)
+//      .attr('class', 'streetside-hires');
+//
+//    $label
+//      .append('input')
+//      .attr('type', 'checkbox')
+//      .attr('id', hiresDomID)
+//      .property('checked', this._hires)
+//      .on('click', d3_event => {
+//        d3_event.stopPropagation();
+//
+//        this._hires = !this._hires;
+//        this._resolution = this._hires ? 1024 : 512;
+//        $wrap.call(this._setupCanvas);
+//
+//        const viewstate = {
+//          yaw: this._viewer.getYaw(),
+//          pitch: this._viewer.getPitch(),
+//          hfov: this._viewer.getHfov()
+//        };
+//
+//        this._sceneOptions = Object.assign(this._sceneOptions, viewstate);
+//        context.systems.photos.selectPhoto();                    // deselect
+//        context.systems.photos.selectPhoto('streetside', d.id);  // reselect
+//      });
+//
+//    $label
+//      .append('span')
+//      .text(l10n.t('streetside.hires'));
+//
+//
+//    const $captureInfo = $line1
+//      .append('div')
+//      .attr('class', 'attribution-capture-info');
+//
+//    // Add capture date
+//    if (d.captured_by) {
+//      const yyyy = (new Date()).getFullYear();
+//
+//      $captureInfo
+//        .append('a')
+//        .attr('class', 'captured_by')
+//        .attr('target', '_blank')
+//        .attr('href', 'https://www.microsoft.com/en-us/maps/streetside')
+//        .text(`© ${yyyy} Microsoft`);
+//
+//      $captureInfo
+//        .append('span')
+//        .text('|');
+//    }
+//
+//    if (d.captured_at) {
+//      $captureInfo
+//        .append('span')
+//        .attr('class', 'captured_at')
+//        .text(this._localeDateString(d.captured_at));
+//    }
+//
+//    // Add image links
+//    const $line2 = $attribution
+//      .append('div')
+//      .attr('class', 'attribution-row');
+//
+//    $line2
+//      .append('a')
+//      .attr('class', 'image-view-link')
+//      .attr('target', '_blank')
+//      .attr('href', 'https://www.bing.com/maps?cp=' + d.loc[1] + '~' + d.loc[0] +
+//        '&lvl=17&dir=' + d.ca + '&style=x&v=2&sV=1')
+//      .text(l10n.t('streetside.view_on_bing'));
+//
+//    $line2
+//      .append('a')
+//      .attr('class', 'image-report-link')
+//      .attr('target', '_blank')
+//      .attr('href', 'https://www.bing.com/maps/privacyreport/streetsideprivacyreport?bubbleid=' +
+//        encodeURIComponent(d.id) + '&focus=photo&lat=' + d.loc[1] + '&lng=' + d.loc[0] + '&z=17')
+//      .text(l10n.t('streetside.report'));
 
 
     const streetsideImagesApi = 'https://ecn.t0.tiles.virtualearth.net/tiles/';
@@ -483,6 +496,61 @@ export class StreetsideService extends AbstractSystem {
 
         return d; // pass the image to anything that chains off this Promise
       });
+  }
+
+
+  /**
+   * _updateAttribution
+   * Update the photo attribution section of the image viewer
+   * @param  {string} bubbleID - the new bubbleID
+   */
+  _updateAttribution(bubbleID) {
+    const context = this.context;
+    const $viewerContainer = context.container().select('.photoviewer');
+    const $attribution = $viewerContainer.selectAll('.photo-attribution').html('');  // clear DOM content
+
+    const image = this._cache.bubbles.get(bubbleID);
+    if (!image) return;
+
+    if (image.captured_by) {
+      $attribution
+        .append('span')
+        .attr('class', 'captured_by')
+        .text(image.captured_by);
+
+      $attribution
+        .append('span')
+        .text('|');
+    }
+
+    if (image.captured_at) {
+      $attribution
+        .append('span')
+        .attr('class', 'captured_at')
+        .text(_localeDateString(image.captured_at));
+
+      $attribution
+        .append('span')
+        .text('|');
+    }
+
+    $attribution
+      .append('a')
+      .attr('class', 'image-link')
+      .attr('target', '_blank')
+      .attr('href', `https://www.bing.com/maps?cp=${image.loc[1]}~${image.loc[0]}&lvl=17&dir=${image.ca}&style=x&v=2&sV=1`)
+      .text('bing.com');
+
+
+    function _localeDateString(s) {
+      if (!s) return null;
+      const options = { day: 'numeric', month: 'short', year: 'numeric' };
+      const d = new Date(s);
+      if (isNaN(d.getTime())) return null;
+
+      const localeCode = context.systems.l10n.localeCode();
+      return d.toLocaleDateString(localeCode, options);
+    }
   }
 
 

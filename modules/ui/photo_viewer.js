@@ -3,16 +3,23 @@ import { select as d3_select } from 'd3-selection';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { uiIcon } from './icon.js';
-import { utilGetDimensions, utilRebind } from '../util/index.js';
+import { utilRebind } from '../util/index.js';
 
 
 export function uiPhotoViewer(context) {
+  const l10n = context.systems.l10n;
   const ui = context.systems.ui;
   const dispatch = d3_dispatch('resize');
+  const [minH, minW] = [240, 320];
 
 
-  function photoviewer(selection) {
-    selection
+  function photoviewer($selection) {
+    const isRTL = l10n.isRTL();
+
+    // Close 'X' button
+    $selection.selectAll('.thumb-hide')
+      .data([0])
+      .enter()
       .append('button')
       .attr('class', 'thumb-hide')
       .on('click', () => {
@@ -24,114 +31,155 @@ export function uiPhotoViewer(context) {
       .append('div')
       .call(uiIcon('#rapid-icon-close'));
 
+    // Construct the nineslice grid
+    for (const y of ['top', 'middle', 'bottom']) {
+      for (const x of ['left', 'middle', 'right']) {
+        const k = `${y}-${x}`;
 
-    function preventDefault(d3_event) {
-      d3_event.preventDefault();
+        // enter
+        $selection
+          .selectAll(`.${k}`)
+          .data([0])
+          .enter()
+          .append('div')
+          .attr('class', k)
+          .on('touchstart touchdown touchend', e => e.preventDefault());
+
+        // update - apply the appropriate resizing behaviors
+        const $cell = $selection
+          .selectAll(`.${k}`);
+
+        if (k === 'top-left' && isRTL) {
+          $cell
+            .style('cursor', 'nwse-resize')
+            .on('pointerdown', buildResizer(k));
+
+        } else if (k === 'top-middle') {
+          $cell
+            .style('cursor', 'ns-resize')
+            .on('pointerdown', buildResizer(k));
+
+        } else if (k === 'top-right' && !isRTL) {
+          $cell
+            .style('cursor', 'nesw-resize')
+            .on('pointerdown', buildResizer(k));
+
+        } else if (k === 'middle-left' && isRTL) {
+          $cell
+            .style('cursor', 'ew-resize')
+            .on('pointerdown', buildResizer(k));
+
+        } else if (k === 'middle-right' && !isRTL) {
+          $cell
+            .style('cursor', 'ew-resize')
+            .on('pointerdown', buildResizer(k));
+
+        } else {
+          $cell
+            .style('cursor', null)
+            .on('pointerdown', null);
+        }
+      }
     }
 
-    selection
-      .append('button')
-      .attr('class', 'resize-handle-xy')
-      .on('touchstart touchdown touchend', preventDefault)
-      .on('pointerdown', buildResizeListener(selection, 'resize', { resizeOnX: true, resizeOnY: true }) );
-
-    selection
-      .append('button')
-      .attr('class', 'resize-handle-x')
-      .on('touchstart touchdown touchend', preventDefault)
-      .on('pointerdown', buildResizeListener(selection, 'resize', { resizeOnX: true }) );
-
-    selection
-      .append('button')
-      .attr('class', 'resize-handle-y')
-      .on('touchstart touchdown touchend', preventDefault)
-      .on('pointerdown', buildResizeListener(selection, 'resize', { resizeOnY: true }) );
 
 
-    function buildResizeListener(target, eventName, options) {
-      const resizeOnX = !!options.resizeOnX;
-      const resizeOnY = !!options.resizeOnY;
-      const minHeight = options.minHeight || 240;
-      const minWidth = options.minWidth || 320;
+    function buildResizer(k) {
+
+      // For now, the target is the photoviewer div we were passed in $selection..
+      const $target = $selection;
+
       let pointerId;
-      let startX;
-      let startY;
-      let startWidth;
-      let startHeight;
+      let startX, startY, rectW, rectH;
 
-      function startResize(d3_event) {
-        if (pointerId !== (d3_event.pointerId || 'mouse')) return;
+      function _pointerdown(e) {
+        e.preventDefault();
+        e.stopPropagation();
 
-        d3_event.preventDefault();
-        d3_event.stopPropagation();
+        pointerId = e.pointerId || 'mouse';
+        startX = e.clientX;
+        startY = e.clientY;
 
-        const dims = context.viewport.dimensions;
-        if (resizeOnX) {
-          const maxWidth = dims[0];
-          const newWidth = numClamp((startWidth + d3_event.clientX - startX), minWidth, maxWidth);
-          target.style('width', newWidth + 'px');
-        }
-        if (resizeOnY) {
-          const maxHeight = dims[1] - 90;  // preserve space at top/bottom of map
-          const newHeight = numClamp((startHeight + startY - d3_event.clientY), minHeight, maxHeight);
-          target.style('height', newHeight + 'px');
-        }
-
-        dispatch.call(eventName, target, utilGetDimensions(target, true));
-      }
-
-      function stopResize(d3_event) {
-        if (pointerId !== (d3_event.pointerId || 'mouse')) return;
-
-        d3_event.preventDefault();
-        d3_event.stopPropagation();
-
-        // remove all the listeners we added
-        d3_select(window)
-          .on('.' + eventName, null);
-      }
-
-      return function initResize(d3_event) {
-        d3_event.preventDefault();
-        d3_event.stopPropagation();
-
-        pointerId = d3_event.pointerId || 'mouse';
-        startX = d3_event.clientX;
-        startY = d3_event.clientY;
-
-        const targetRect = target.node().getBoundingClientRect();
-        startWidth = targetRect.width;
-        startHeight = targetRect.height;
+        const rect = $target.node().getBoundingClientRect();
+        rectW = rect.width;
+        rectH = rect.height;
 
         d3_select(window)
-          .on('pointermove.' + eventName, startResize, false)
-          .on('pointerup.' + eventName, stopResize, false)
-          .on('pointercancel.' + eventName, stopResize, false);
-      };
+          .on('pointermove.resize', _pointermove)
+          .on('pointerup.resize pointercancel.resize', _pointerup);
+      }
+
+
+      function _pointermove(e) {
+        if (pointerId !== (e.pointerId || 'mouse')) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const $content = context.container().selectAll('.main-content');
+        const mapRect = $content.node().getBoundingClientRect();
+        const [maxW, maxH] = [mapRect.width - 45, mapRect.height - 105];  // allow for toolbars
+
+        let [w, h] = [rectW, rectH];
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+
+        if (/left/.test(k))   w -= dx;
+        if (/right/.test(k))  w += dx;
+        if (/top/.test(k))    h -= dy;
+
+        w = numClamp(w, minW, maxW);
+        h = numClamp(h, minH, maxH);
+
+        $target
+          .style('width', `${w}px`)
+          .style('height', `${h}px`);
+
+        dispatch.call('resize', $target, [w, h]);
+      }
+
+
+      function _pointerup(e) {
+        if (pointerId !== (e.pointerId || 'mouse')) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        d3_select(window)
+          .on('pointermove.resize pointerup.resize pointercancel.resize', null);
+      }
+
+
+      return _pointerdown;
     }
   }
 
 
   function _onMapResize() {
-    const photoviewer = context.container().select('.photoviewer');
-    const content = context.container().select('.main-content');
-    const mapDimensions = utilGetDimensions(content, true);
-    // shrink photo viewer if it is too big
-    // (-90 preserves space at top and bottom of map used by menus)
-    const photoDimensions = utilGetDimensions(photoviewer, true);
-    if (photoDimensions[0] > mapDimensions[0] || photoDimensions[1] > (mapDimensions[1] - 90)) {
-      const setPhotoDimensions = [
-        Math.min(photoDimensions[0], mapDimensions[0]),
-        Math.min(photoDimensions[1], mapDimensions[1] - 90),
-      ];
+    const $container = context.container();
 
-      photoviewer
-        .style('width', setPhotoDimensions[0] + 'px')
-        .style('height', setPhotoDimensions[1] + 'px');
+    const $content = $container.selectAll('.main-content');
+    const $viewer = $container.selectAll('.photoviewer');
+    if (!$content.size() || !$viewer.size()) return;  // called too early?
 
-      dispatch.call('resize', photoviewer, setPhotoDimensions);
+    const mapRect = $content.node().getBoundingClientRect();
+    const viewerRect = $viewer.node().getBoundingClientRect();
+    const [maxW, maxH] = [mapRect.width - 45, mapRect.height - 105];  // allow for toolbars
+    const [w, h] = [viewerRect.width, viewerRect.height];
+    if (w === 0 || h === 0) return;   // viewer is hidden
+
+    const w2 = numClamp(w, minW, maxW);
+    const h2 = numClamp(h, minH, maxH);
+
+    if (w !== w2 || h !== h2) {
+      $viewer
+        .style('width', `${w2}px`)
+        .style('height', `${h2}px`);
+
+      dispatch.call('resize', $viewer, [w2, h2]);
     }
   }
+
 
   ui.on('uichange', _onMapResize);
 
