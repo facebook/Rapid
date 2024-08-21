@@ -287,7 +287,8 @@ export class PixiFeatureLine extends AbstractFeature {
       cap: 'butt'
     };
 
-    this._bufferdata = lineToPoly(this.geometry.flatOuter, hitStyle);
+// todo: figure out pixi v8 linebuilder works
+//    this._bufferdata = lineToPoly(this.geometry.flatOuter, hitStyle);
     this.container.hitArea = new PIXI.Polygon(this._bufferdata.perimeter);
   }
 

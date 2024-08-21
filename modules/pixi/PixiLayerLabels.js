@@ -276,7 +276,8 @@ export class PixiLayerLabels extends AbstractLayer {
       // Points first, then lines (so line labels can avoid point labels)
       this.labelPoints(points);
       this.labelLines(lines);
-      this.labelPolygons(polygons);
+// todo: figure out pixi v8 linebuilder works
+//      this.labelPolygons(polygons);
 
       this.renderObjects();
 

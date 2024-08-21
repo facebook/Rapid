@@ -55,7 +55,6 @@
     "translations": "dotenvx run --quiet -- node scripts/update_translations.js"
   },
   "dependencies": {
-    "@esbuild/darwin-arm64": "^0.23.0",
     "@mapbox/geojson-area": "^0.2.2",
     "@mapbox/geojson-rewind": "^0.5.2",
     "@mapbox/polylabel": "1.0.2",
@@ -92,7 +91,7 @@
     "pannellum": "^2.5.6",
     "pbf": "^4.0.1",
     "pixi-filters": "^6.0.4",
-    "pixi.js": "^8.3.2",
+    "pixi.js": "8.3.3",
     "pmtiles": "^3.0.7",
     "polyclip-ts": "~0.16.5",
     "prop-types": "^15.8.1",
@@ -100,6 +99,9 @@
     "which-polygon": "2.2.1",
     "wkt": "^0.1.1",
     "wmf-sitematrix": "^0.1.5"
+  },
+  "optionalDependencies": {
+    "@esbuild/darwin-arm64": "^0.23.0"
   },
   "devDependencies": {
     "@dotenvx/dotenvx": "^1.14.0",

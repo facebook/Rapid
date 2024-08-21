@@ -64,15 +64,22 @@ export class PixiFeaturePolygon extends AbstractFeature {
     // which _does_ hit test properly.
     // (Ignore the default MeshMaterial - it won't be drawn anyway, it's a mask.)
     // Correctly instantiate Geometry and Mesh with a Texture
-    const geometry = new Geometry()
-    .addAttribute('aVertexPosition', [0, 0, 100, 0, 50, 100], 2)
-    .addIndex([0, 1, 2]);
+//pixi v7
+    // const geometry = new Geometry()
+    //   .addAttribute('aVertexPosition', [0, 0, 100, 0, 50, 100], 2)
+    //   .addIndex([0, 1, 2]);
+//pixi v8
+    const geometry = new Geometry({
+      attributes: { aPosition: [0, 0, 100, 0, 50, 100] },
+      indexBuffer: [0, 1, 2]
+    });
+
     // Setup the texture
     const texture = Texture.WHITE;
     // Assuming the new Mesh constructor uses a configuration object
     const mesh = new Mesh({
-        geometry: geometry,
-        texture: texture
+      geometry: geometry,
+      texture: texture
     });
     mesh.label = 'mask';
     mesh.visible = false;
@@ -198,7 +205,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
           cap: 'butt'
         };
 
-        this._bufferdata = lineToPoly(this.geometry.flatOuter, bufferStyle);
+// todo: figure out pixi v8 linebuilder works
+//        this._bufferdata = lineToPoly(this.geometry.flatOuter, bufferStyle);
       }
     }
 
@@ -310,23 +318,37 @@ export class PixiFeaturePolygon extends AbstractFeature {
           width: lineWidth,
           color: color
         })
-        .drawShape(shape.outer);
+// pixi v8
+        .poly(this.geometry.flatOuter);
+// pixi v7
+        // .drawShape(shape.outer);
 
-        shape.holes.forEach(hole => this.stroke.drawShape(hole));
+// pixi v8
+        if (this.geometry.flatHoles) {
+          for (const holepoly of this.geometry.flatHoles) {
+            this.stroke.beginHole();
+            this.stroke.poly(holepoly);
+            this.stroke.endHole();
+          }
+        }
+
+// pixi v7
+//        shape.holes.forEach(hole => this.stroke.drawShape(hole));
 
       } else {   // Dashed lines
-        const DASH_STYLE = {
-          alpha: 1.0,
-          dash: dash,
-          width: lineWidth, // px
-          color: color
-        };
-        this.stroke.clear();
-        const dl = new DashLine(this.stroke, DASH_STYLE);
-        const coords = flatCoordsToPoints(shape.outer.points);
-        dl.drawPolygon(coords);
-
-        shape.holes.forEach(hole => dl.drawPolygon(flatCoordsToPoints(hole.points)));
+// pixi v7
+//        const DASH_STYLE = {
+//          alpha: 1.0,
+//          dash: dash,
+//          width: lineWidth, // px
+//          color: color
+//        };
+//        this.stroke.clear();
+//        const dl = new DashLine(this.stroke, DASH_STYLE);
+//        const coords = flatCoordsToPoints(shape.outer.points);
+//        dl.drawPolygon(coords);
+//
+//        shape.holes.forEach(hole => dl.drawPolygon(flatCoordsToPoints(hole.points)));
       }
     }
 
@@ -383,11 +405,22 @@ export class PixiFeaturePolygon extends AbstractFeature {
         // Compute the mask's geometry, then copy its attributes into the mesh's geometry
         // This lets us use the Mesh as the mask and properly hit test against it.
         maskSource.geometry.updateBatches(true);
-        // Example of updating mask geometry
-        this.mask.geometry = new PIXI.Geometry()
-          .addAttribute('aVertexPosition', maskSource.geometry.getBuffer('aVertexPosition').data, 2)
-          .addAttribute('aTextureCoord', maskSource.geometry.getBuffer('aTextureCoord').data, 2)
-          .addIndex(maskSource.geometry.getIndex().data);
+
+// pixi v7
+//        // Example of updating mask geometry
+//        this.mask.geometry = new PIXI.Geometry()
+//          .addAttribute('aVertexPosition', maskSource.geometry.getBuffer('aVertexPosition').data, 2)
+//          .addAttribute('aTextureCoord', maskSource.geometry.getBuffer('aTextureCoord').data, 2)
+//          .addIndex(maskSource.geometry.getIndex().data);
+
+// pixi v8
+        this.mask.geometry = new PIXI.Geometry({
+          attributes: {
+            aPosition: maskSource.geometry.getBuffer('aVertexPosition').data,
+            aUv: maskSource.geometry.getBuffer('aTextureCoord').data
+          },
+          indexBuffer: maskSource.geometry.getIndex().data
+        });
 
         this.mask.visible = true;
         this.fill.mask = this.mask;
