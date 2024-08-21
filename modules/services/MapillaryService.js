@@ -37,6 +37,7 @@ export class MapillaryService extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'mapillary';
+    this.autoStart = false;
 
     this._loadPromise = null;
     this._startPromise = null;
@@ -103,7 +104,7 @@ export class MapillaryService extends AbstractSystem {
     const eventManager = map.renderer.events;
 
     // add mly-wrapper
-    context.container().select('.photoviewer')
+    const $$wrap = context.container().select('.photoviewer .middle-middle')
       .selectAll('.mly-wrapper')
       .data([0])
       .enter()
@@ -111,6 +112,20 @@ export class MapillaryService extends AbstractSystem {
       .attr('id', 'rapideditor-mly')
       .attr('class', 'photo-wrapper mly-wrapper')
       .classed('hide', true);
+
+    // add photo-footer
+    const $$footer = $$wrap
+      .append('div')
+      .attr('class', 'photo-footer');
+
+    $$footer
+      .append('div')
+      .attr('class', 'photo-options');
+
+    $$footer
+      .append('div')
+      .attr('class', 'photo-attribution');
+
 
     eventManager.on('keydown', this._keydown);
 
@@ -396,6 +411,7 @@ export class MapillaryService extends AbstractSystem {
    * @return {Promise} Promise that resolves to the image after it has been selected
    */
   selectImageAsync(imageID) {
+    this._updateAttribution(null);  // reset
     if (!imageID) return Promise.resolve();  // do nothing
 
     return this.startAsync()
@@ -413,6 +429,61 @@ export class MapillaryService extends AbstractSystem {
         });
       })
       .catch(err => console.error('mly3', err));   // eslint-disable-line no-console
+  }
+
+
+  /**
+   * _updateAttribution
+   * Update the photo attribution section of the image viewer
+   * @param  {string} imageID - the new imageID
+   */
+  _updateAttribution(imageID) {
+    const context = this.context;
+    const $viewerContainer = context.container().select('.photoviewer');
+    const $attribution = $viewerContainer.selectAll('.photo-attribution').html('');  // clear DOM content
+
+    const image = this._cache.images.data.get(imageID);
+    if (!image) return;
+
+    if (image.captured_by) {
+      $attribution
+        .append('span')
+        .attr('class', 'captured_by')
+        .text(image.captured_by);
+
+      $attribution
+        .append('span')
+        .text('|');
+    }
+
+    if (image.captured_at) {
+      $attribution
+        .append('span')
+        .attr('class', 'captured_at')
+        .text(_localeDateString(image.captured_at));
+
+      $attribution
+        .append('span')
+        .text('|');
+    }
+
+    $attribution
+      .append('a')
+      .attr('class', 'image-link')
+      .attr('target', '_blank')
+      .attr('href', `https://www.mapillary.com/app/?pKey=${imageID}&focus=photo`)
+      .text('mapillary.com');
+
+
+    function _localeDateString(s) {
+      if (!s) return null;
+      const options = { day: 'numeric', month: 'short', year: 'numeric' };
+      const d = new Date(s);
+      if (isNaN(d.getTime())) return null;
+
+      const localeCode = context.systems.l10n.localeCode();
+      return d.toLocaleDateString(localeCode, options);
+    }
   }
 
 
@@ -822,10 +893,12 @@ export class MapillaryService extends AbstractSystem {
     const opts = {
       accessToken: accessToken,
       component: {
+        attribution: false,  // we will manage this ourselves
         cover: false,
-        bearing: { size: mapillary.ComponentSize.Standard },
         keyboard: false,
-        tag: true
+        tag: true,
+        bearing: { size: mapillary.ComponentSize.Automatic },
+        zoom: { size: mapillary.ComponentSize.Automatic }
       },
       container: 'rapideditor-mly'
     };
@@ -836,6 +909,7 @@ export class MapillaryService extends AbstractSystem {
       this.resetTags();
       const image = node.image;
       photos.selectPhoto('mapillary', image.id);
+      this._updateAttribution(image.id);
 
       if (this.shouldShowDetections()) {
         this._updateDetections(image.id);

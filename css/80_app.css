@@ -275,7 +275,7 @@ table.tags, table.tags td, table.tags th {
   color: #333;
 }
 .fillD {
-  background: rgba(0,0,0,.5);
+  background: rgba(0,0,0,.6);
   color: #fff;
 }
 .fillD2 {
@@ -285,8 +285,6 @@ table.tags, table.tags td, table.tags th {
 
 .fl { float: left;}
 .fr { float: right;}
-.al { left: 0; }
-.ar { right: 0; }
 
 a.hide,
 button.hide,
@@ -512,12 +510,18 @@ button.disabled .icon.operation use,
 }
 
 
+
+
+
 /* Toolbar / Persistent UI Elements
 ------------------------------------------------------- */
 .top-toolbar-wrap {
+  flex: 0 0 0px;
+
   position: relative;
   z-index: 101;
 }
+
 .top-toolbar {
   display: flex;
   flex-flow: row nowrap;
@@ -2915,36 +2919,37 @@ img.tag-reference-wiki-image {
 /* Over Map
 ------------------------------------------------------- */
 .over-map {
-    position: relative;
-    height: 100%;
-    pointer-events: none;
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: flex-end;
-    overflow: hidden;
+  display: flex;
+  flex: 1 1 0px;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+
+  position: relative;
+  pointer-events: none;
 }
 .over-map > * {
-    pointer-events: auto;
-    z-index: 5;
+  pointer-events: auto;
+  z-index: 5;
 }
 /* offscreen this without hiding it */
 .over-map .select-trap {
-    position: absolute;
-    right: -1000%;
-    opacity: 0;
+  position: absolute;
+  right: -1000%;
+  opacity: 0;
 }
 
 /* Map Controls
 ------------------------------------------------------- */
 .map-controls {
+  display: flex;
+  flex-direction: column;
+
   right: 0;
   top: 0;
   width: 40px;
   position: absolute;
   z-index: 100;
   bottom: 0;
-  display: flex;
-  flex-direction: column;
   padding: 5px 0;
   pointer-events: none;
 }
@@ -3818,52 +3823,52 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 /* Side Panes - Background / Map Data / Help
 ------------------------------------------------------- */
 .map-panes {
-    flex: 0 1 auto;
-    position: relative;
-    height: 100%;
-    max-width: 100%;
+  flex: 0 1 auto;
+  position: absolute;
+  height: 100%;
+  max-width: 100%;
 }
 .map-pane {
-    position: relative;
-    top: 0;
-    width: 400px;
-    max-width: 100%;
-    height: 100%;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
+  position: relative;
+  top: 0;
+  width: 400px;
+  max-width: 100%;
+  height: 100%;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
 }
 
 .map-pane.help-pane {
-    width: 600px;
+  width: 600px;
 }
 
 .pane-heading {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    border-bottom: 1px solid #ccc;
-    flex: 0 0 auto;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  flex: 0 0 auto;
 }
 
 .pane-heading h2 {
-    margin: 14px 20px;
+  margin: 14px 20px;
 }
 
 .pane-heading button {
-    width: 40px;
-    border-radius: 0;
+  width: 40px;
+  border-radius: 0;
 }
 
 .pane-content {
-    height: 100%;
-    padding: 10px 50px 20px 20px;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    position: relative;
+  height: 100%;
+  padding: 10px 50px 20px 20px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position: relative;
 }
 .ideditor[dir='rtl'] .pane-content {
-    padding: 10px 20px 20px 50px;
+  padding: 10px 20px 20px 50px;
 }
 
 
@@ -4388,43 +4393,45 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 /* Map Footer
 ------------------------------------------------------- */
 .map-footer {
-    width: 100%;
-    position: relative;
-    border-radius: 0;
-    pointer-events: none;
-    display: flex;
-    flex-direction: column;
-    -ms-user-select: element;
-    flex: 0 0 auto;
+  display: flex;
+  flex: 0 0 0px;
+  flex-direction: column;
+
+  width: 100%;
+  position: relative;
+  border-radius: 0;
+  pointer-events: none;
+  -ms-user-select: element;
 }
 
 .map-footer-bar {
-    pointer-events: all;
-    display: block;
-    height: 2.5em;
-    position: relative;
+  pointer-events: all;
+  display: block;
+  height: 2.5em;
+  position: relative;
 }
 
 .map-footer-wrap,
 .flash-wrap {
-    display: flex;
-    flex: 0 0 100%;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    height: 100%;
-    position: absolute;
-    right: 0;
-    left: 0;
+  display: flex;
+  flex: 0 0 100%;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 100%;
 }
 
 .map-footer-show {
-    bottom: 0px;
-    transition: bottom 75ms linear;
+  bottom: 0px;
+  transition: bottom 75ms linear;
 }
 
 .map-footer-hide {
-    bottom: -100%;
-    transition: bottom 75ms linear;
+  bottom: -100%;
+  transition: bottom 75ms linear;
 }
 
 
@@ -5609,4 +5616,175 @@ li.hide + li.version .badge .tooltip .popover-arrow {
 .ideditor.inIntro .wrap-form-field-min_age,
 .ideditor.inIntro .wrap-form-field-max_age {
   display: none;
+}
+
+
+/* Nine Slice - A grid with resize handles around it:
+
+   top-left |   top-middle  | top-right
+------------+---------------+------------
+middle-left | middle-middle | middle-right
+------------+---------------+------------
+bottom-left | bottom-middle | bottom-right
+
+ ------------------------------------------------------------ */
+.nineslice {
+  display: grid;
+  grid-template-columns: 25px 1fr 25px;
+  grid-template-rows: 25px 1fr 25px;
+}
+
+.nineslice .top-left {
+  grid-row: 1;
+  grid-column: 1;
+}
+.nineslice .top-middle {
+  grid-row: 1;
+  grid-column: 2;
+}
+.nineslice .top-right {
+  grid-row: 1;
+  grid-column: 3;
+}
+.nineslice .middle-left {
+  grid-row: 2;
+  grid-column: 1;
+}
+.nineslice .middle-middle {
+  grid-row: 2;
+  grid-column: 2;
+}
+.nineslice .middle-right {
+  grid-row: 2;
+  grid-column: 3;
+}
+.nineslice .bottom-left {
+  grid-row: 3;
+  grid-column: 1;
+}
+.nineslice .bottom-middle {
+  grid-row: 3;
+  grid-column: 2;
+}
+.nineslice .bottom-right {
+  grid-row: 3;
+  grid-column: 3;
+}
+
+
+/* Photo Viewer
+ ----------------------------------------------------- */
+.photoviewer {
+  flex: 0 0 auto;
+
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin: 5px;
+  width: 500px;
+  height: 370px;
+}
+.ideditor[dir='rtl'] .photoviewer {
+  left: unset;
+  right: 0;
+}
+
+.photoviewer button.thumb-hide {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 0;
+  padding: 5px;
+  z-index: 50;
+}
+.ideditor[dir='rtl'] .photoviewer button.thumb-hide {
+  right: unset;
+  left: 5px;
+}
+
+
+/*
+  Wrapper for a viewer
+  absolute position within the middle-middle section of the nineframe,
+  inset reserves space around it to allow the user plenty of space to resize.
+ */
+.photo-wrapper {
+  position: absolute;
+  inset: 10px;
+  outline: 5px solid #fff;
+  overflow: hidden;
+}
+
+.photo-footer {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  z-index: 10;
+}
+
+.photo-options {
+  display: flex;
+  flex: 0 0 auto;
+  padding: 2px 5px;
+}
+
+.photo-attribution {
+  display: flex;
+  flex: 0 0 auto;
+  padding: 2px 5px;
+}
+
+.photo-attribution a,
+.photo-attribution span {
+  padding: 0 2px;
+}
+
+
+/* photo-controls (step forward, back, rotate) */
+.photo-controls-wrap {
+  position: absolute;
+  top: 10px;
+  width: 100%;
+  text-align: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.photo-controls {
+  display: inline-block;
+  z-index: 10;
+  pointer-events: initial;
+}
+
+.photo-controls button,
+.photo-controls button:focus {
+  height: 18px;
+  width: 18px;
+  background: rgba(0,0,0,0.65);
+  color: #eee;
+  border-radius: 0;
+}
+.photo-controls button:first-of-type {
+  border-radius: 3px 0 0 3px;
+}
+.photo-controls button:last-of-type {
+  border-radius: 0 3px 3px 0;
+}
+.photo-controls button:active {
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+}
+@media (hover: hover) {
+  .photo-controls button:hover {
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+  }
 }

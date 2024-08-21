@@ -69,7 +69,8 @@ export class KartaviewService extends AbstractSystem {
     const ui = context.systems.ui;
 
     // add osc-wrapper
-    const $wrap = context.container().select('.photoviewer').selectAll('.osc-wrapper')
+    const $wrap = context.container().select('.photoviewer .middle-middle')
+      .selectAll('.osc-wrapper')
       .data([0]);
 
     const $$wrap = $wrap.enter()
@@ -79,9 +80,19 @@ export class KartaviewService extends AbstractSystem {
       .call(this._imgZoom.on('zoom', this._zoomPan))
       .on('dblclick.zoom', null);
 
-    $$wrap
+    // add photo-footer
+    const $$footer = $$wrap
       .append('div')
-      .attr('class', 'photo-attribution fillD');
+      .attr('class', 'photo-footer');
+
+    $$footer
+      .append('div')
+      .attr('class', 'photo-options');
+
+    $$footer
+      .append('div')
+      .attr('class', 'photo-attribution');
+
 
     const $$controls = $$wrap
       .append('div')
@@ -291,6 +302,7 @@ export class KartaviewService extends AbstractSystem {
    * @return {Promise} Promise that resolves to the image after it has been selected
    */
   selectImageAsync(imageID) {
+    this._updateAttribution(null);  // reset
     if (!imageID) return Promise.resolve();  // do nothing
 
     const context = this.context;
@@ -306,7 +318,6 @@ export class KartaviewService extends AbstractSystem {
 
         const $wrap = $viewerContainer.selectAll('.osc-wrapper');
         const $imageWrap = $wrap.selectAll('.osc-image-wrap');
-        const $attribution = $wrap.selectAll('.photo-attribution').html('');  // clear DOM content
 
         $wrap
           .transition()
@@ -326,38 +337,54 @@ export class KartaviewService extends AbstractSystem {
           .attr('src', image.imageUrl)
           .style('transform', `rotate(${r}deg)`);
 
-
-        if (image.captured_by) {
-          $attribution
-            .append('span')
-            .attr('class', 'captured_by')
-            .text(image.captured_by);
-
-          $attribution
-            .append('span')
-            .text('|');
-        }
-
-        if (image.captured_at) {
-          $attribution
-            .append('span')
-            .attr('class', 'captured_at')
-            .text(_localeDateString(image.captured_at));
-
-          $attribution
-            .append('span')
-            .text('|');
-        }
-
-        $attribution
-          .append('a')
-          .attr('class', 'image-link')
-          .attr('target', '_blank')
-          .attr('href', `https://kartaview.org/details/${image.sequenceID}/${image.sequenceIndex}/track-info`)
-          .text('kartaview.org');
+        this._updateAttribution(image.id);
 
         return image;  // pass the image to anything that chains off this Promise
       });
+  }
+
+
+  /**
+   * _updateAttribution
+   * Update the photo attribution section of the image viewer
+   * @param  {string} imageID - the new imageID
+   */
+  _updateAttribution(imageID) {
+    const context = this.context;
+    const $viewerContainer = context.container().select('.photoviewer');
+    const $attribution = $viewerContainer.selectAll('.photo-attribution').html('');  // clear DOM content
+
+    const image = this._cache.images.get(imageID);
+    if (!image) return;
+
+    if (image.captured_by) {
+      $attribution
+        .append('span')
+        .attr('class', 'captured_by')
+        .text(image.captured_by);
+
+      $attribution
+        .append('span')
+        .text('|');
+    }
+
+    if (image.captured_at) {
+      $attribution
+        .append('span')
+        .attr('class', 'captured_at')
+        .text(_localeDateString(image.captured_at));
+
+      $attribution
+        .append('span')
+        .text('|');
+    }
+
+    $attribution
+      .append('a')
+      .attr('class', 'image-link')
+      .attr('target', '_blank')
+      .attr('href', `https://kartaview.org/details/${image.sequenceID}/${image.sequenceIndex}/track-info`)
+      .text('kartaview.org');
 
 
     function _localeDateString(s) {
