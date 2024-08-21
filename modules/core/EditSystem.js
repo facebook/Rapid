@@ -1130,6 +1130,19 @@ export class EditSystem extends AbstractSystem {
         }
 
         const graph = new Graph(prevGraph).load(entities);
+
+        for (const entityID of item.deleted ?? []){
+          if (entityID[0] === 'w') {
+            const prevWay = prevGraph._local.entities.get(entityID);
+            if (prevWay){
+              // This way existed in the previous edit step, but does not exist anymore.
+              // Update parent ways to reflect this.
+              graph._updateCalculated(prevWay, undefined);
+            }
+          }
+        }
+
+
         prevGraph = graph;
 
         const sources = {};
