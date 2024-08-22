@@ -4,6 +4,7 @@ import { utilQsString, utilUniqueString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem.js';
+import { uiIcon } from '../ui/icon.js';
 import { utilFetchResponse } from '../util/index.js';
 
 const TILEZOOM = 16.5;
@@ -110,21 +111,21 @@ export class StreetsideService extends AbstractSystem {
     const ui = context.systems.ui;
 
     // create ms-wrapper, a photo wrapper class
-    let $wrap = context.container().select('.photoviewer .middle-middle')
+    let $wrapper = context.container().select('.photoviewer .middle-middle')
       .selectAll('.ms-wrapper')
       .data([0]);
 
-    const $$wrap = $wrap.enter()
+    const $$wrapper = $wrapper.enter()
       .append('div')
       .attr('class', 'photo-wrapper ms-wrapper')
       .classed('hide', true);
 
-    $$wrap
+    $$wrapper
       .append('div')
       .attr('id', 'rapideditor-viewer-streetside');
 
-    // add photo-footer
-    const $$footer = $$wrap
+    // add .photo-footer
+    const $$footer = $$wrapper
       .append('div')
       .attr('class', 'photo-footer');
 
@@ -136,8 +137,8 @@ export class StreetsideService extends AbstractSystem {
       .append('div')
       .attr('class', 'photo-attribution');
 
-    // add photo-controls
-    const $$controls = $$wrap
+    // add .photo-controls
+    const $$controls = $$wrapper
       .append('div')
       .attr('class', 'photo-controls-wrap')
       .append('div')
@@ -146,16 +147,16 @@ export class StreetsideService extends AbstractSystem {
     $$controls
       .append('button')
       .on('click.back', () => this._step(-1))
-      .html('◄');
+      .call(uiIcon('#fas-backward-step'));
 
     $$controls
       .append('button')
       .on('click.forward', () => this._step(1))
-      .html('►');
+      .call(uiIcon('#fas-forward-step'));
 
 
     // create working canvas for stitching together images
-    $wrap = $wrap.merge($$wrap)
+    $wrapper = $wrapper.merge($$wrapper)
       .call(this._setupCanvas);
 
     // Register viewer resize handler
@@ -222,19 +223,19 @@ export class StreetsideService extends AbstractSystem {
   getSequences() {
     const cache = this._cache;
     const extent = this.context.viewport.visibleExtent();
-    const result = new Map();  // Map(sequenceID -> sequence)
+    const results = new Map();  // Map(sequenceID -> sequence)
 
     // Gather sequences for the bubbles in viewport
     for (const box of cache.rbush.search(extent.bbox())) {
       const bubbleID = box.data.id;
       const sequenceIDs = cache.bubbleHasSequences.get(bubbleID) ?? [];
       for (const sequenceID of sequenceIDs) {
-        if (!result.has(sequenceID)) {
-          result.set(sequenceID, cache.sequences.get(sequenceID));
+        if (!results.has(sequenceID)) {
+          results.set(sequenceID, cache.sequences.get(sequenceID));
         }
       }
     }
-    return [...result.values()];
+    return [...results.values()];
   }
 
 
@@ -281,19 +282,19 @@ export class StreetsideService extends AbstractSystem {
    * Shows the photo viewer, and hides all other photo viewers
    */
   showViewer() {
-    const $viewerContainer = this.context.container().select('.photoviewer')
+    const $viewer = this.context.container().select('.photoviewer')
       .classed('hide', false);
 
-    const isHidden = $viewerContainer.selectAll('.photo-wrapper.ms-wrapper.hide').size();
+    const isHidden = $viewer.selectAll('.photo-wrapper.ms-wrapper.hide').size();
 
     if (isHidden) {
-      $viewerContainer
+      $viewer
         .selectAll('.photo-wrapper:not(.ms-wrapper)')
         .classed('hide', true);
 
       this._showing = true;
 
-      $viewerContainer
+      $viewer
         .selectAll('.photo-wrapper.ms-wrapper')
         .classed('hide', false);
     }
@@ -308,10 +309,8 @@ export class StreetsideService extends AbstractSystem {
     const context = this.context;
     context.systems.photos.selectPhoto(null);
 
-    const $viewerContainer = context.container().select('.photoviewer');
-    if (!$viewerContainer.empty()) $viewerContainer.datum(null);
-
-    $viewerContainer
+    const $viewer = context.container().select('.photoviewer');
+    $viewer
       .classed('hide', true)
       .selectAll('.photo-wrapper')
       .classed('hide', true);
@@ -336,13 +335,9 @@ export class StreetsideService extends AbstractSystem {
     const context = this.context;
     const l10n = context.systems.l10n;
 
-    const $viewerContainer = context.container().select('.photoviewer');
-    if (!$viewerContainer.empty()) {
-      $viewerContainer.datum(d);
-    }
-
-    const $wrap = context.container().select('.photoviewer .ms-wrapper');
-    $wrap.selectAll('.pnlm-load-box')   // display "loading.."
+    const $viewer = context.container().select('.photoviewer');
+    const $wrapper = context.container().select('.photoviewer .ms-wrapper');
+    $wrapper.selectAll('.pnlm-load-box')   // display "loading.."
       .style('display', 'block')
       .style('transform', 'translate(-50%, -50%)');
 
@@ -378,7 +373,7 @@ this._updateAttribution(bubbleID);
 //
 //        this._hires = !this._hires;
 //        this._resolution = this._hires ? 1024 : 512;
-//        $wrap.call(this._setupCanvas);
+//        $wrapper.call(this._setupCanvas);
 //
 //        const viewstate = {
 //          yaw: this._viewer.getYaw(),
@@ -506,8 +501,8 @@ this._updateAttribution(bubbleID);
    */
   _updateAttribution(bubbleID) {
     const context = this.context;
-    const $viewerContainer = context.container().select('.photoviewer');
-    const $attribution = $viewerContainer.selectAll('.photo-attribution').html('');  // clear DOM content
+    const $viewer = context.container().select('.photoviewer');
+    const $attribution = $viewer.selectAll('.photo-attribution').html('&nbsp;');  // clear DOM content
 
     const image = this._cache.bubbles.get(bubbleID);
     if (!image) return;
@@ -648,8 +643,8 @@ this._updateAttribution(bubbleID);
     const context = this.context;
     const photos = context.systems.photos;
 
-    const $viewerContainer = context.container().select('.photoviewer');
-    const selected = $viewerContainer.empty() ? undefined : $viewerContainer.datum();
+    const currBubbleID = photos.currPhotoID;
+    const selected = this._cache.bubbles.get(currBubbleID);
     if (!selected) return;
 
     let nextID = (stepBy === 1 ? selected.ne : selected.pr);
