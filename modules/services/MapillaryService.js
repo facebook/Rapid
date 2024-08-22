@@ -409,8 +409,10 @@ export class MapillaryService extends AbstractSystem {
    * @return {Promise} Promise that resolves to the image after it has been selected
    */
   selectImageAsync(imageID) {
-    this._updateAttribution(null);  // reset
-    if (!imageID) return Promise.resolve();  // do nothing
+    if (!imageID) {
+      this._updatePhotoFooter(null);  // reset
+      return Promise.resolve();  // do nothing
+    }
 
     return this.startAsync()
       .then(() => this._viewer.moveTo(imageID))
@@ -431,14 +433,14 @@ export class MapillaryService extends AbstractSystem {
 
 
   /**
-   * _updateAttribution
+   * _updatePhotoFooter
    * Update the photo attribution section of the image viewer
    * @param  {string} imageID - the new imageID
    */
-  _updateAttribution(imageID) {
+  _updatePhotoFooter(imageID) {
     const context = this.context;
-    const $viewer = context.container().select('.photoviewer');
-    const $attribution = $viewer.selectAll('.photo-attribution').html('&nbsp;');  // clear DOM content
+    const $wrapper = context.container().select('.photoviewer .mly-wrapper');
+    const $attribution = $wrapper.selectAll('.photo-attribution').html('&nbsp;');  // clear DOM content
 
     const image = this._cache.images.data.get(imageID);
     if (!image) return;
@@ -907,7 +909,7 @@ export class MapillaryService extends AbstractSystem {
       this.resetTags();
       const image = node.image;
       photos.selectPhoto('mapillary', image.id);
-      this._updateAttribution(image.id);
+      this._updatePhotoFooter(image.id);
 
       if (this.shouldShowDetections()) {
         this._updateDetections(image.id);

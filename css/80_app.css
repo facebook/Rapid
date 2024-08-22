@@ -5747,6 +5747,17 @@ bottom-left | bottom-middle | bottom-right
   padding: 0 2px;
 }
 
+.photo-options label {
+  cursor: pointer;
+}
+.photo-options span {
+  margin: 0 5px;
+}
+.photo-options input[type="checkbox"] {
+  margin: 0 5px;
+  vertical-align: text-bottom;
+}
+
 
 /* photo-controls (step forward, back, rotate) */
 .photo-controls-wrap {
@@ -5824,19 +5835,6 @@ bottom-left | bottom-middle | bottom-right
   top: 60px;
   background-size: contain;
   background-repeat: no-repeat no-repeat;
-}
-
-label.streetside-hires {
-  cursor: pointer;
-}
-.streetside-hires span {
-  margin-top: 2px;
-}
-.streetside-hires input[type="checkbox"] {
-  float: left;
-  width: 12px;
-  height: 12px;
-  margin: 0 5px;
 }
 
 

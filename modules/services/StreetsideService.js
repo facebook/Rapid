@@ -1,6 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 import { Extent, Tiler, geoMetersToLat, geoMetersToLon, geomRotatePoints, geomPointInPolygon, vecLength } from '@rapid-sdk/math';
-import { utilQsString, utilUniqueString } from '@rapid-sdk/util';
+import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem.js';
@@ -329,13 +329,15 @@ export class StreetsideService extends AbstractSystem {
    * @return {Promise} Promise that resolves to the image after it has been selected
    */
   selectImageAsync(bubbleID) {
-    this._updateAttribution(null);  // reset
-    let d = this._cache.bubbles.get(bubbleID);
+    if (!bubbleID) {
+      this._updatePhotoFooter(null);  // reset
+      return Promise.resolve();  // do nothing
+    }
+
+    let bubble = this._cache.bubbles.get(bubbleID);
 
     const context = this.context;
-    const l10n = context.systems.l10n;
 
-    const $viewer = context.container().select('.photoviewer');
     const $wrapper = context.container().select('.photoviewer .ms-wrapper');
     $wrapper.selectAll('.pnlm-load-box')   // display "loading.."
       .style('display', 'block')
@@ -343,106 +345,18 @@ export class StreetsideService extends AbstractSystem {
 
     // It's possible we could be trying to show a photo that hasn't been fetched yet
     // (e.g. if we are starting up with a photoID specified in the url hash)
-    if (bubbleID && !d) {
+    if (bubbleID && !bubble) {
       this._waitingForPhotoID = bubbleID;
     }
-    if (!d) return Promise.resolve();
+    if (!bubble) return Promise.resolve();
 
-    this._sceneOptions.northOffset = d.ca;
+    this._sceneOptions.northOffset = bubble.ca;
 
-this._updateAttribution(bubbleID);
-//    const $line1 = $attribution
-//      .append('div')
-//      .attr('class', 'attribution-row');
-//
-//    const hiresDomID = utilUniqueString('streetside-hires');
-//
-//    // Add hires checkbox
-//    const $label = $line1
-//      .append('label')
-//      .attr('for', hiresDomID)
-//      .attr('class', 'streetside-hires');
-//
-//    $label
-//      .append('input')
-//      .attr('type', 'checkbox')
-//      .attr('id', hiresDomID)
-//      .property('checked', this._hires)
-//      .on('click', d3_event => {
-//        d3_event.stopPropagation();
-//
-//        this._hires = !this._hires;
-//        this._resolution = this._hires ? 1024 : 512;
-//        $wrapper.call(this._setupCanvas);
-//
-//        const viewstate = {
-//          yaw: this._viewer.getYaw(),
-//          pitch: this._viewer.getPitch(),
-//          hfov: this._viewer.getHfov()
-//        };
-//
-//        this._sceneOptions = Object.assign(this._sceneOptions, viewstate);
-//        context.systems.photos.selectPhoto();                    // deselect
-//        context.systems.photos.selectPhoto('streetside', d.id);  // reselect
-//      });
-//
-//    $label
-//      .append('span')
-//      .text(l10n.t('streetside.hires'));
-//
-//
-//    const $captureInfo = $line1
-//      .append('div')
-//      .attr('class', 'attribution-capture-info');
-//
-//    // Add capture date
-//    if (d.captured_by) {
-//      const yyyy = (new Date()).getFullYear();
-//
-//      $captureInfo
-//        .append('a')
-//        .attr('class', 'captured_by')
-//        .attr('target', '_blank')
-//        .attr('href', 'https://www.microsoft.com/en-us/maps/streetside')
-//        .text(`© ${yyyy} Microsoft`);
-//
-//      $captureInfo
-//        .append('span')
-//        .text('|');
-//    }
-//
-//    if (d.captured_at) {
-//      $captureInfo
-//        .append('span')
-//        .attr('class', 'captured_at')
-//        .text(this._localeDateString(d.captured_at));
-//    }
-//
-//    // Add image links
-//    const $line2 = $attribution
-//      .append('div')
-//      .attr('class', 'attribution-row');
-//
-//    $line2
-//      .append('a')
-//      .attr('class', 'image-view-link')
-//      .attr('target', '_blank')
-//      .attr('href', 'https://www.bing.com/maps?cp=' + d.loc[1] + '~' + d.loc[0] +
-//        '&lvl=17&dir=' + d.ca + '&style=x&v=2&sV=1')
-//      .text(l10n.t('streetside.view_on_bing'));
-//
-//    $line2
-//      .append('a')
-//      .attr('class', 'image-report-link')
-//      .attr('target', '_blank')
-//      .attr('href', 'https://www.bing.com/maps/privacyreport/streetsideprivacyreport?bubbleid=' +
-//        encodeURIComponent(d.id) + '&focus=photo&lat=' + d.loc[1] + '&lng=' + d.loc[0] + '&z=17')
-//      .text(l10n.t('streetside.report'));
-
+    this._updatePhotoFooter(bubbleID);
 
     const streetsideImagesApi = 'https://ecn.t0.tiles.virtualearth.net/tiles/';
 
-    const asNumber = parseInt(d.id, 10);
+    const asNumber = parseInt(bubbleID, 10);
     let bubbleIdQuadKey = asNumber.toString(4);
     const paddingNeeded = 16 - bubbleIdQuadKey.length;
     for (let i = 0; i < paddingNeeded; i++) {
@@ -489,20 +403,70 @@ this._updateAttribution(bubbleID);
           }
         }
 
-        return d; // pass the image to anything that chains off this Promise
+        return bubble; // pass the image to anything that chains off this Promise
       });
   }
 
 
   /**
-   * _updateAttribution
+   * _updatePhotoFooter
    * Update the photo attribution section of the image viewer
    * @param  {string} bubbleID - the new bubbleID
    */
-  _updateAttribution(bubbleID) {
+  _updatePhotoFooter(bubbleID) {
     const context = this.context;
-    const $viewer = context.container().select('.photoviewer');
-    const $attribution = $viewer.selectAll('.photo-attribution').html('&nbsp;');  // clear DOM content
+    const l10n = context.systems.l10n;
+    const photos = context.systems.photos;
+    const $wrapper = context.container().select('.photoviewer .ms-wrapper');
+
+    // Options Section
+    const $options = $wrapper.selectAll('.photo-options');
+
+    // .hires checkbox
+    let $label = $options.selectAll('.hires')
+      .data([0]);
+
+    // enter
+    const $$label = $label.enter()
+      .append('label')
+      .attr('for', 'ms-hires-input')
+      .attr('class', 'hires');
+
+    $$label
+      .append('input')
+      .attr('type', 'checkbox')
+      .attr('id', 'ms-hires-input')
+      .on('click', e => {
+        e.stopPropagation();
+
+        this._hires = !this._hires;
+        this._resolution = this._hires ? 1024 : 512;
+        $wrapper.call(this._setupCanvas);
+
+        const viewstate = {
+          yaw: this._viewer.getYaw(),
+          pitch: this._viewer.getPitch(),
+          hfov: this._viewer.getHfov()
+        };
+
+        this._sceneOptions = Object.assign(this._sceneOptions, viewstate);
+        this.selectImageAsync(photos.currPhotoID);  // reselect
+      });
+
+    $$label
+      .append('span');
+
+    // update
+    $label = $label.merge($$label);
+    $label.selectAll('#ms-hires-input')
+      .property('checked', this._hires);
+
+    $label.selectAll('span')
+      .text(l10n.t('photos.hires'));
+
+
+    // Attribution Section
+    const $attribution = $wrapper.selectAll('.photo-attribution').html('&nbsp;');  // clear DOM content
 
     const image = this._cache.bubbles.get(bubbleID);
     if (!image) return;
