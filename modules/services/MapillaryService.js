@@ -937,7 +937,7 @@ export class MapillaryService extends AbstractSystem {
     }
 
     // Register viewer resize handler
-    ui.photoviewer.on('resize.mapillary', () => {
+    ui.photoviewer.on('resize', () => {
       if (this._viewer) this._viewer.resize();
     });
   }

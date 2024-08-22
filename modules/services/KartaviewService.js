@@ -126,7 +126,7 @@ export class KartaviewService extends AbstractSystem {
 
 
     // Register viewer resize handler
-    ui.photoviewer.on('resize.kartaview', dimensions => {
+    ui.photoviewer.on('resize', dimensions => {
       this._imgZoom = d3_zoom()
         .extent([[0, 0], dimensions])
         .translateExtent([[0, 0], dimensions])
