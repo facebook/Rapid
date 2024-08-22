@@ -37,6 +37,7 @@ export class KartaviewService extends AbstractSystem {
       .translateExtent([[0, 0], [320, 240]])
       .scaleExtent([1, 15]);
 
+    this._hires = false;
     this._cache = {};
     this._startPromise = null;
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
@@ -299,8 +300,10 @@ export class KartaviewService extends AbstractSystem {
    * @return {Promise} Promise that resolves to the image after it has been selected
    */
   selectImageAsync(imageID) {
-    this._updateAttribution(null);  // reset
-    if (!imageID) return Promise.resolve();  // do nothing
+    if (!imageID) {
+      this._updatePhotoFooter(null);  // reset
+      return Promise.resolve();  // do nothing
+    }
 
     const context = this.context;
     const cache = this._cache;
@@ -308,8 +311,7 @@ export class KartaviewService extends AbstractSystem {
     return this.startAsync()
       .then(() => this._loadImageAsync(imageID))
       .then(image => {
-        const $viewer = context.container().select('.photoviewer');
-        const $wrapper = $viewer.selectAll('.osc-wrapper');
+        const $wrapper = context.container().select('.photoviewer .osc-wrapper');
         const $imageWrap = $wrapper.selectAll('.osc-image-wrap');
 
         $wrapper
@@ -327,10 +329,10 @@ export class KartaviewService extends AbstractSystem {
         $imageWrap
           .append('img')
           .attr('class', 'osc-image')
-          .attr('src', image.imageUrl)
+          .attr('src', this._hires ? image.imageHighUrl : image.imageMedUrl)
           .style('transform', `rotate(${r}deg)`);
 
-        this._updateAttribution(image.id);
+        this._updatePhotoFooter(image.id);
 
         return image;  // pass the image to anything that chains off this Promise
       });
@@ -338,14 +340,54 @@ export class KartaviewService extends AbstractSystem {
 
 
   /**
-   * _updateAttribution
+   * _updatePhotoFooter
    * Update the photo attribution section of the image viewer
    * @param  {string} imageID - the new imageID
    */
-  _updateAttribution(imageID) {
+  _updatePhotoFooter(imageID) {
     const context = this.context;
-    const $viewer = context.container().select('.photoviewer');
-    const $attribution = $viewer.selectAll('.photo-attribution').html('&nbsp;');  // clear DOM content
+    const l10n = context.systems.l10n;
+    const photos = context.systems.photos;
+    const $wrapper = context.container().select('.photoviewer .osc-wrapper');
+
+    // Options Section
+    const $options = $wrapper.selectAll('.photo-options');
+
+    // .hires checkbox
+    let $label = $options.selectAll('.hires')
+      .data([0]);
+
+    // enter
+    const $$label = $label.enter()
+      .append('label')
+      .attr('for', 'osc-hires-input')
+      .attr('class', 'hires');
+
+    $$label
+      .append('input')
+      .attr('type', 'checkbox')
+      .attr('id', 'osc-hires-input')
+      .on('click', e => {
+        e.stopPropagation();
+
+        this._hires = !this._hires;
+        this.selectImageAsync(photos.currPhotoID);  // reselect
+      });
+
+    $$label
+      .append('span');
+
+    // update
+    $label = $label.merge($$label);
+    $label.selectAll('#osc-hires-input')
+      .property('checked', this._hires);
+
+    $label.selectAll('span')
+      .text(l10n.t('photos.hires'));
+
+
+    // Attribution Section
+    const $attribution = $wrapper.selectAll('.photo-attribution').html('&nbsp;');  // clear DOM content
 
     const image = this._cache.images.get(imageID);
     if (!image) return;
@@ -453,32 +495,22 @@ export class KartaviewService extends AbstractSystem {
         if (!data.length) return;
 
         // Process and cache the images
-        const boxes = [];
         for (const d of data) {
-          const imageID = d.id;
-          const sequenceID = d.sequence_id;
+          const imageID = d.id.toString();
+          const sequenceID = d.sequence_id.toString();
 
-          // Cache image, create if needed
-          const loc = [+d.lng, +d.lat];
-          let image = cache.images.get(imageID);
-          if (!image) {
-            image = {
-              type: 'photo',
-              id: imageID,
-              sequenceID: sequenceID
-            };
-            cache.images.set(imageID, image);
-          }
-
-          // Fill in image details
-          // Note that this API call gives us the `username`, but not the `imageUrl`.
+          // Note that this API call gives us the `username`, but not the image urls.
           // It also uses 'snake_case' instead of 'camelCase'.
-          image.loc = loc;
-          image.ca = +d.heading;
-          image.isPano = (d.field_of_view === '360');
-          image.captured_at = (d.shot_date || d.date_added);
-          image.sequenceIndex = +d.sequence_index;
-          image.captured_by = d.username;
+          const image = this._cacheImage(cache, {
+            id:            imageID,
+            sequenceID:    sequenceID,
+            loc:           [+d.lng, +d.lat],
+            ca:            +d.heading,
+            isPano:        (d.field_of_view === '360'),
+            captured_by:   d.username,
+            captured_at:   (d.shot_date || d.date_added),
+            sequenceIndex: +d.sequence_index
+          });
 
           // Cache sequence, create if needed
           let sequence = cache.sequences.get(sequenceID);
@@ -496,14 +528,7 @@ export class KartaviewService extends AbstractSystem {
           // Add image to sequence - note that `sequence.images` may be a sparse array.
           sequence.images[image.sequenceIndex] = image;
           sequence.v++;
-
-          // Add to rbush, replacing existing if needed.
-          const box = { minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: image };
-          cache.rbush.remove(box, (a, b) => a.data.id === b.data.id);
-          boxes.push(box);
         }
-
-        cache.rbush.load(boxes);  // bulk load
 
         context.deferredRedraw();
         this.emit('loadedData');
@@ -543,7 +568,7 @@ export class KartaviewService extends AbstractSystem {
 
     // If the image is already cached with an imageUrl, we can just resolve.
     const image = cache.images.get(imageID);
-    if (image?.imageUrl) return Promise.resolve(image);  // fetched it already
+    if (image?.imageLowUrl) return Promise.resolve(image);  // fetched it already
 
     const url = `${OPENSTREETCAM_API}/2.0/photo/${imageID}`;
 
@@ -553,29 +578,22 @@ export class KartaviewService extends AbstractSystem {
         const d = response?.result?.data;
         if (!d) throw new Error(`Image ${imageID} not found`);
 
-        const sequenceID = d.sequenceId;
+        const sequenceID = d.sequenceId.toString();
 
-        // Cache image, create if needed
-        const loc = [+d.lng, +d.lat];
-        let image = cache.images.get(imageID);
-        if (!image) {
-          image = {
-            type: 'photo',
-            id: imageID,
-            sequenceID: sequenceID
-          };
-          cache.images.set(imageID, image);
-        }
-
-        // Fill in image details
-        // Note that this API call gives us the `imageUrl`, but not the `username`.
+        // Note that this API call gives us the image urls, but not the `username`.
         // It also uses 'camelCase' instead of 'snake_case'.
-        image.loc = loc;
-        image.ca = +d.heading;
-        image.isPano = (d.fieldOfView === '360');
-        image.captured_at = (d.shotDate || d.dateAdded);
-        image.sequenceIndex = +d.sequenceIndex;
-        image.imageUrl = d.imageProcUrl;
+        const image = this._cacheImage(cache, {
+          id:            imageID,
+          sequenceID:    sequenceID,
+          loc:           [+d.lng, +d.lat],
+          ca:            +d.heading,
+          isPano:        (d.fieldOfView === '360'),
+          captured_at:   (d.shotDate || d.dateAdded),
+          sequenceIndex: +d.sequenceIndex,
+          imageLowUrl:   d.imageThUrl,     // thumbnail
+          imageMedUrl:   d.imageLthUrl,    // large thumbnail
+          imageHighUrl:  d.imageProcUrl    // full resolution
+        });
 
         // Cache sequence, create if needed
         let sequence = cache.sequences.get(sequenceID);
@@ -593,11 +611,6 @@ export class KartaviewService extends AbstractSystem {
         // Add image to sequence - note that `sequence.images` may be a sparse array.
         sequence.images[image.sequenceIndex] = image;
         sequence.v++;
-
-        // Add to rbush, replacing existing if needed.
-        const box = { minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: image };
-        cache.rbush.remove(box, (a, b) => a.data.id === b.data.id);
-        cache.rbush.insert(box);
 
         context.deferredRedraw();
         this.emit('loadedData');
@@ -683,5 +696,43 @@ export class KartaviewService extends AbstractSystem {
 
     this.emit('imageChanged');
   }
-}
 
+
+  /**
+   * _cacheImage
+   * Store the given image in the caches
+   * @param  {Object}  cache - the cache to use
+   * @param  {Object}  props - the image properties
+   * @return {Object}  The image
+   */
+  _cacheImage(cache, props) {
+    let image = cache.images.get(props.id);
+    if (!image) {
+      image = {
+        type:    'photo',
+        service: 'kartaview',
+        id:      props.id,
+        loc:     props.loc
+      };
+
+      cache.images.set(image.id, image);
+
+      const [x, y] = props.loc;
+      cache.rbush.insert({ minX: x, minY: y, maxX: x, maxY: y, data: image });
+    }
+
+    // Update whatever additional props we were passed..
+    if (props.sequenceID)     image.sequenceID     = props.sequenceID;
+    if (props.sequenceIndex)  image.sequenceIndex  = props.sequenceIndex;
+    if (props.captured_at)    image.captured_at    = props.captured_at;
+    if (props.captured_by)    image.captured_by    = props.captured_by;
+    if (props.ca)             image.ca             = props.ca;
+    if (props.isPano)         image.isPano         = props.isPano;
+    if (props.imageLowUrl)    image.imageLowUrl    = props.imageLowUrl;   // thumbnail
+    if (props.imageMedUrl)    image.imageMedUrl    = props.imageMedUrl;   // large thumbnail
+    if (props.imageHighUrl)   image.imageHighUrl   = props.imageHighUrl;  // full resolution
+
+    return image;
+  }
+
+}

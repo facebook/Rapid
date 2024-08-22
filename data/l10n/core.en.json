@@ -1846,19 +1846,19 @@
         }
       }
     },
+    "photos": {
+      "hires": "High resolution"
+    },
     "streetside": {
       "title": "Bing Streetside",
-      "tooltip": "Streetside photos from Microsoft",
-      "report": "Report a privacy concern with this image",
-      "view_on_bing": "View on Bing Maps",
-      "hires": "High resolution"
+      "tooltip": "Streetside photos from Microsoft"
     },
     "mapillary": {
       "title": "Mapillary",
       "tooltip": "Street-level photos from Mapillary",
       "detection": "Mapillary Detection",
       "show_detections": "Show Detections",
-      "view_on_mapillary": "View this image on Mapillary"
+      "view_on_mapillary": "View on Mapillary"
     },
     "mapillary_signs": {
       "title": "Traffic Signs",
@@ -1942,8 +1942,7 @@
     },
     "kartaview": {
       "title": "KartaView",
-      "tooltip": "Street-level photos from KartaView",
-      "view_on_kartaview": "View this image on KartaView"
+      "tooltip": "Street-level photos from KartaView"
     },
     "note": {
       "note": "Note",
