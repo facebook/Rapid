@@ -159,7 +159,7 @@ export class StreetsideService extends AbstractSystem {
       .call(this._setupCanvas);
 
     // Register viewer resize handler
-    ui.photoviewer.on('resize.streetside', () => {
+    ui.photoviewer.on('resize', () => {
       if (this._viewer) this._viewer.resize();
     });
 

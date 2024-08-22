@@ -8,7 +8,7 @@ import {
   uiAccount, uiAttribution, uiBearing, uiContributors, UiDefs, uiEditMenu,
   /* uiFeatureInfo,*/ uiFlash, uiFullScreen, uiGeolocate, uiIcon,
   uiInfo, uiIntro, uiIssuesInfo, uiLoading, uiMapInMap,
-  uiMap3dViewer, uiPhotoViewer, uiRapidServiceLicense,
+  uiMap3dViewer, UiPhotoViewer, uiRapidServiceLicense,
   uiSplash, uiRestore, uiScale, uiShortcuts,
   UiSidebar, uiSourceSwitch, uiSpinner, uiStatus, uiTooltip,
   uiTopToolbar, uiVersion, uiWhatsNew, uiZoom, uiZoomToSelection
@@ -92,7 +92,7 @@ export class UiSystem extends AbstractSystem {
         this.editMenu = uiEditMenu(context);
         this.info = uiInfo(context);
         this.sidebar = new UiSidebar(context);
-        this.photoviewer = uiPhotoViewer(context);
+        this.photoviewer = new UiPhotoViewer(context);
         this.shortcuts = uiShortcuts(context);
 
         const osm = context.services.osm;
@@ -319,11 +319,7 @@ export class UiSystem extends AbstractSystem {
       .call(this.info);
 
     overMapEnter
-      .append('div')
-      .attr('class', 'photoviewer nineslice')
-      .attr('dir', 'ltr')
-      .classed('hide', true)
-      .call(this.photoviewer);
+      .call(this.photoviewer.render);
 
     overMapEnter
       .append('div')

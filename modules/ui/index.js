@@ -49,7 +49,7 @@ export { uiOsmoseDetails } from './osmose_details.js';
 export { uiOsmoseEditor } from './osmose_editor.js';
 export { uiOsmoseHeader } from './osmose_header.js';
 export { uiPane } from './pane.js';
-export { uiPhotoViewer } from './photo_viewer.js';
+export { UiPhotoViewer } from './UiPhotoViewer.js';
 export { uiPopover } from './popover.js';
 export { uiPresetIcon } from './preset_icon.js';
 export { uiPresetList } from './preset_list.js';
