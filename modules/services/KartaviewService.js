@@ -4,6 +4,7 @@ import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem.js';
+import { uiIcon } from '../ui/icon.js';
 import { utilFetchResponse, utilSetTransform } from '../util/index.js';
 
 
@@ -37,7 +38,6 @@ export class KartaviewService extends AbstractSystem {
       .scaleExtent([1, 15]);
 
     this._cache = {};
-    this._selectedImage = null;
     this._startPromise = null;
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
     this._lastv = null;
@@ -69,19 +69,19 @@ export class KartaviewService extends AbstractSystem {
     const ui = context.systems.ui;
 
     // add osc-wrapper
-    const $wrap = context.container().select('.photoviewer .middle-middle')
+    const $wrapper = context.container().select('.photoviewer .middle-middle')
       .selectAll('.osc-wrapper')
       .data([0]);
 
-    const $$wrap = $wrap.enter()
+    const $$wrapper = $wrapper.enter()
       .append('div')
       .attr('class', 'photo-wrapper osc-wrapper')
       .classed('hide', true)
       .call(this._imgZoom.on('zoom', this._zoomPan))
       .on('dblclick.zoom', null);
 
-    // add photo-footer
-    const $$footer = $$wrap
+    // add .photo-footer
+    const $$footer = $$wrapper
       .append('div')
       .attr('class', 'photo-footer');
 
@@ -94,7 +94,8 @@ export class KartaviewService extends AbstractSystem {
       .attr('class', 'photo-attribution');
 
 
-    const $$controls = $$wrap
+    // add .photo-controls
+    const $$controls = $$wrapper
       .append('div')
       .attr('class', 'photo-controls-wrap')
       .append('div')
@@ -103,24 +104,24 @@ export class KartaviewService extends AbstractSystem {
     $$controls
       .append('button')
       .on('click.back', () => this._step(-1))
-      .text('◄');
+      .call(uiIcon('#fas-backward-step'));
 
     $$controls
       .append('button')
       .on('click.rotate-ccw', () => this._rotate(-90))
-      .text('⤿');
+      .call(uiIcon('#fas-arrow-rotate-left'));
 
     $$controls
       .append('button')
       .on('click.rotate-cw', () => this._rotate(90))
-      .text('⤾');
+      .call(uiIcon('#fas-arrow-rotate-right'));
 
     $$controls
       .append('button')
       .on('click.forward', () => this._step(1))
-      .text('►');
+      .call(uiIcon('#fas-forward-step'));
 
-    $$wrap
+    $$wrapper
       .append('div')
       .attr('class', 'osc-image-wrap');
 
@@ -161,7 +162,6 @@ export class KartaviewService extends AbstractSystem {
       rbush:     new RBush()
     };
 
-    this._selectedImage = null;
     this._lastv = null;
 
     return Promise.resolve();
@@ -256,17 +256,17 @@ export class KartaviewService extends AbstractSystem {
    * Shows the photo viewer, and hides all other photo viewers
    */
   showViewer() {
-    const $viewerContainer = this.context.container().select('.photoviewer')
+    const $viewer = this.context.container().select('.photoviewer')
       .classed('hide', false);
 
-    const isHidden = $viewerContainer.selectAll('.photo-wrapper.osc-wrapper.hide').size();
+    const isHidden = $viewer.selectAll('.photo-wrapper.osc-wrapper.hide').size();
 
     if (isHidden) {
-      $viewerContainer
+      $viewer
         .selectAll('.photo-wrapper:not(.osc-wrapper)')
         .classed('hide', true);
 
-      $viewerContainer
+      $viewer
         .selectAll('.photo-wrapper.osc-wrapper')
         .classed('hide', false);
     }
@@ -278,14 +278,11 @@ export class KartaviewService extends AbstractSystem {
    * Hides the photo viewer and clears the currently selected image
    */
   hideViewer() {
-    this._selectedImage = null;
     const context = this.context;
     context.systems.photos.selectPhoto(null);
 
-    const $viewerContainer = context.container().select('.photoviewer');
-    if (!$viewerContainer.empty()) $viewerContainer.datum(null);
-
-    $viewerContainer
+    const $viewer = context.container().select('.photoviewer');
+    $viewer
       .classed('hide', true)
       .selectAll('.photo-wrapper')
       .classed('hide', true);
@@ -311,15 +308,11 @@ export class KartaviewService extends AbstractSystem {
     return this.startAsync()
       .then(() => this._loadImageAsync(imageID))
       .then(image => {
-        this._selectedImage = image;
+        const $viewer = context.container().select('.photoviewer');
+        const $wrapper = $viewer.selectAll('.osc-wrapper');
+        const $imageWrap = $wrapper.selectAll('.osc-image-wrap');
 
-        const $viewerContainer = context.container().select('.photoviewer');
-        if (!$viewerContainer.empty()) $viewerContainer.datum(image);
-
-        const $wrap = $viewerContainer.selectAll('.osc-wrapper');
-        const $imageWrap = $wrap.selectAll('.osc-image-wrap');
-
-        $wrap
+        $wrapper
           .transition()
           .duration(100)
           .call(this._imgZoom.transform, d3_zoomIdentity);
@@ -351,8 +344,8 @@ export class KartaviewService extends AbstractSystem {
    */
   _updateAttribution(imageID) {
     const context = this.context;
-    const $viewerContainer = context.container().select('.photoviewer');
-    const $attribution = $viewerContainer.selectAll('.photo-attribution').html('');  // clear DOM content
+    const $viewer = context.container().select('.photoviewer');
+    const $attribution = $viewer.selectAll('.photo-attribution').html('&nbsp;');  // clear DOM content
 
     const image = this._cache.images.get(imageID);
     if (!image) return;
@@ -637,10 +630,13 @@ export class KartaviewService extends AbstractSystem {
    * @param  {Number}  deg - degrees to rotate
    */
   _rotate(deg) {
-    if (!this._selectedImage) return;
+    const context = this.context;
+    const photos = context.systems.photos;
 
-    const sequenceID = this._selectedImage.sequenceID;
-    const sequence = this._cache.sequences.get(sequenceID);
+    const image = this._cache.images.get(photos.currPhotoID);
+    if (!image) return;
+
+    const sequence = this._cache.sequences.get(image.sequenceID);
     if (!sequence) return;
 
     let r = sequence.rotation || 0;
@@ -650,14 +646,14 @@ export class KartaviewService extends AbstractSystem {
     if (r < -180) r += 360;
     sequence.rotation = r;
 
-    const $wrap = this.context.container().select('.photoviewer .osc-wrapper');
+    const $wrapper = context.container().select('.photoviewer .osc-wrapper');
 
-    $wrap
+    $wrapper
       .transition()
       .duration(100)
       .call(this._imgZoom.transform, d3_zoomIdentity);
 
-    $wrap.selectAll('.osc-image')
+    $wrapper.selectAll('.osc-image')
       .transition()
       .duration(100)
       .style('transform', `rotate(${r}deg)`);
@@ -670,17 +666,19 @@ export class KartaviewService extends AbstractSystem {
    * @param  {Number}  stepBy - number to step by, either +1 or -1
    */
   _step(stepBy) {
-    if (!this._selectedImage) return;
+    const context = this.context;
+    const photos = context.systems.photos;
 
-    const sequenceID = this._selectedImage.sequenceID;
-    const sequence = this._cache.sequences.get(sequenceID);
+    const image = this._cache.images.get(photos.currPhotoID);
+    if (!image) return;
+
+    const sequence = this._cache.sequences.get(image.sequenceID);
     if (!sequence) return;
 
-    const nextIndex = this._selectedImage.sequenceIndex + stepBy;
+    const nextIndex = image.sequenceIndex + stepBy;
     const nextImage = sequence.images[nextIndex];
     if (!nextImage) return;
 
-    const photos = this.context.systems.photos;
     photos.selectPhoto('kartaview', nextImage.id);
 
     this.emit('imageChanged');

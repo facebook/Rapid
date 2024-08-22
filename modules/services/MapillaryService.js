@@ -104,17 +104,17 @@ export class MapillaryService extends AbstractSystem {
     const eventManager = map.renderer.events;
 
     // add mly-wrapper
-    const $$wrap = context.container().select('.photoviewer .middle-middle')
+    const $$wrapper = context.container().select('.photoviewer .middle-middle')
       .selectAll('.mly-wrapper')
       .data([0])
       .enter()
       .append('div')
-      .attr('id', 'rapideditor-mly')
       .attr('class', 'photo-wrapper mly-wrapper')
+      .attr('id', 'rapideditor-mly')
       .classed('hide', true);
 
-    // add photo-footer
-    const $$footer = $$wrap
+    // add .photo-footer
+    const $$footer = $$wrapper
       .append('div')
       .attr('class', 'photo-footer');
 
@@ -223,7 +223,7 @@ export class MapillaryService extends AbstractSystem {
    */
   getSequences() {
     const extent = this.context.viewport.visibleExtent();
-    let result = new Map();  // Map(sequenceID -> Array of LineStrings)
+    const results = new Map();  // Map(sequenceID -> Array of LineStrings)
 
     for (const box of this._cache.images.rbush.search(extent.bbox())) {
       const sequenceID = box.data.sequenceID;
@@ -231,12 +231,12 @@ export class MapillaryService extends AbstractSystem {
       const sequence = this._cache.sequences.data.get(sequenceID);
       if (!sequence) continue;  // sequence not ready
 
-      if (!result.has(sequenceID)) {
-        result.set(sequenceID, sequence);
+      if (!results.has(sequenceID)) {
+        results.set(sequenceID, sequence);
       }
     }
 
-    return [...result.values()];
+    return [...results.values()];
   }
 
 
@@ -357,17 +357,17 @@ export class MapillaryService extends AbstractSystem {
    * Shows the photo viewer, and hides all other photo viewers
    */
   showViewer() {
-    const $viewerContainer = this.context.container().select('.photoviewer')
+    const $viewer = this.context.container().select('.photoviewer')
       .classed('hide', false);
 
-    const isHidden = $viewerContainer.selectAll('.photo-wrapper.mly-wrapper.hide').size();
+    const isHidden = $viewer.selectAll('.photo-wrapper.mly-wrapper.hide').size();
 
     if (isHidden && this._viewer) {
-      $viewerContainer
+      $viewer
         .selectAll('.photo-wrapper:not(.mly-wrapper)')
         .classed('hide', true);
 
-      $viewerContainer
+      $viewer
         .selectAll('.photo-wrapper.mly-wrapper')
         .classed('hide', false);
 
@@ -390,10 +390,8 @@ export class MapillaryService extends AbstractSystem {
       this._viewer.getComponent('sequence').stop();
     }
 
-    const $viewerContainer = context.container().select('.photoviewer');
-    if (!$viewerContainer.empty()) $viewerContainer.datum(null);
-
-    $viewerContainer
+    const $viewer = context.container().select('.photoviewer');
+    $viewer
       .classed('hide', true)
       .selectAll('.photo-wrapper')
       .classed('hide', true);
@@ -439,8 +437,8 @@ export class MapillaryService extends AbstractSystem {
    */
   _updateAttribution(imageID) {
     const context = this.context;
-    const $viewerContainer = context.container().select('.photoviewer');
-    const $attribution = $viewerContainer.selectAll('.photo-attribution').html('');  // clear DOM content
+    const $viewer = context.container().select('.photoviewer');
+    const $attribution = $viewer.selectAll('.photo-attribution').html('&nbsp;');  // clear DOM content
 
     const image = this._cache.images.data.get(imageID);
     if (!image) return;
