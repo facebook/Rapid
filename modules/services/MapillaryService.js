@@ -241,6 +241,62 @@ export class MapillaryService extends AbstractSystem {
 
 
   /**
+   * getDetectionPresetID
+   * Convert a detection type to a preset id.  This is just a big lookup for now.
+   * @param   {string}  detectionType - the type of detection  (e.g. 'object--manhole')
+   * @return  {string}  the presetID to use for this detection type (e.g. 'man_made/manhole')
+   */
+  getDetectionPresetID(detectionType) {
+    const lookup = {
+      'construction--barrier--temporary':                  'highway/construction',          // Temporary Barrier
+      'construction--flat--crosswalk-plain':               'highway/footway',               // Crosswalk - Plain
+      'construction--flat--driveway':                      'highway/service/driveway',      // Driveway
+      'marking--discrete--arrow--left':                    'traffic_sign',                  // Lane Marking - Arrow (Left)
+      'marking--discrete--arrow--right':                   'traffic_sign',                  // Lane Marking - Arrow (Right)
+      'marking--discrete--arrow--split-left-or-straight':  'traffic_sign',                  // Lane Marking - Arrow (Split Left or Straight)
+      'marking--discrete--arrow--split-right-or-straight': 'traffic_sign',                  // Lane Marking - Arrow (Split Right or Straight)
+      'marking--discrete--arrow--straight':                'traffic_sign',                  // Lane Marking - Arrow (Straight)
+      'marking--discrete--crosswalk-zebra':                'highway/footway',               // Lane Marking - Crosswalk
+      'marking--discrete--give-way-row':                   'highway/give_way',              // Lane Marking - Give Way (Row)
+      'marking--discrete--give-way-single':                'highway/give_way',              // Lane Marking - Give Way (Single)
+      'marking--discrete--other-marking':                  'traffic_sign',                  // Lane Marking - Other
+      'marking--discrete--stop-line':                      'highway/stop',                  // Lane Marking - Stop Line
+      'marking--discrete--symbol--bicycle':                'cycleway/asl',                  // Lane Marking - Symbol (Bicycle)
+      'marking--discrete--text':                           'tourism/information',           // Lane Marking - Text
+      'object--banner':                                    'advertising',                   // Banner
+      'object--bench':                                     'amenity/bench',                 // Bench
+      'object--bike-rack':                                 'amenity/bicycle_parking',       // Bike Rack
+      'object--catch-basin':                               'man_made/manhole/drain',        // Catch Basin
+      'object--cctv-camera':                               'man_made/surveillance/camera',  // CCTV Camera
+      'object--fire-hydrant':                              'emergency/fire_hydrant',        // Fire Hydrant
+      'object--junction-box':                              'man_made/street_cabinet',       // Junction Box
+      'object--mailbox':                                   'amenity/letter_box',            // Mailbox
+      'object--manhole':                                   'man_made/manhole',              // Manhole
+      'object--parking-meter':                             'amenity/parking/street-side',   // Parking Meter
+      'object--phone-booth':                               'amenity/telephone',             // Phone Booth
+      'object--sign--advertisement':                       'advertising/billboard',         // Signage - Advertisement
+      'object--sign--information':                         'tourism/information/board',     // Signage - Information
+      'object--sign--store':                               'advertising',                   // Signage - Store
+      'object--street-light':                              'highway/street_lamp',           // Street Light
+      'object--support--pole':                             'man_made/mast',                 // Pole
+      'object--support--traffic-sign-frame':               'man_made/mast',                 // Traffic Sign Frame
+      'object--support--utility-pole':                     'man_made/utility_pole',         // Utility Pole
+      'object--traffic-cone':                              'highway/construction',          // Traffic Cone
+      'object--traffic-light--cyclists':                   'cycleway/asl',                  // Traffic Light - Cyclists
+      'object--traffic-light--general-horizontal':         'highway/traffic_signals',       // Traffic Light - General (Horizontal)
+      'object--traffic-light--general-single':             'highway/traffic_signals',       // Traffic Light - General (Single)
+      'object--traffic-light--general-upright':            'highway/traffic_signals',       // Traffic Light - General (Upright)
+      'object--traffic-light--other':                      'highway/traffic_signals',       // Traffic Light - Other
+      'object--traffic-light--pedestrians':                'highway/traffic_signals',       // Traffic Light - Pedestrians
+      'object--trash-can':                                 'amenity/waste_baset',           // Trash Can
+      'object--water-valve':                               'man_made/water_tap'             // Water Valve
+    };
+
+    return lookup[detectionType];
+  }
+
+
+  /**
    * loadTiles
    * Schedule any data requests needed to cover the current map view
    * @param   {string}  datasetID - one of 'images', 'signs', or 'detections'

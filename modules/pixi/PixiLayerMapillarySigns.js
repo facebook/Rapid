@@ -105,7 +105,8 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
         } else {
           style = {
             markerName: 'xlargeSquare',
-            iconName:   'fas-question'
+            iconName: 'fas-question',
+            iconSize: 16
           };
         }
 

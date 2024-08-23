@@ -2,6 +2,8 @@ import { AbstractLayer } from './AbstractLayer.js';
 import { PixiFeaturePoint } from './PixiFeaturePoint.js';
 
 const MINZOOM = 12;
+const MAPILLARY_GREEN = 0x05cb63;
+const SELECTED = 0xffee00;
 
 
 /**
@@ -81,7 +83,10 @@ export class PixiLayerMapillaryDetections extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   renderMarkers(frame, viewport, zoom) {
-    const service = this.context.services.mapillary;
+    const context = this.context;
+    const presets = context.systems.presets;
+
+    const service = context.services.mapillary;
     if (!service?.started) return;
 
     const parentContainer = this.scene.groups.get('qa');
@@ -94,20 +99,30 @@ export class PixiLayerMapillaryDetections extends AbstractLayer {
       let feature = this.features.get(featureID);
 
       if (!feature) {
-        const style = { markerName: d.value };
-
         feature = new PixiFeaturePoint(this, featureID);
         feature.geometry.setCoords(d.loc);
-        feature.style = style;
         feature.parentContainer = parentContainer;
         feature.setData(d.id, d);
-        // const marker = feature.marker;
-        // const ICONSIZE = 24;
-        // marker.width = ICONSIZE;
-        // marker.height = ICONSIZE;
       }
 
       this.syncFeatureClasses(feature);
+
+      if (feature.dirty) {
+        const isSelected = feature.hasClass('selectdetection');
+        const presetID = service.getDetectionPresetID(d.value);
+        const preset = presetID && presets.item(presetID);
+
+        const style = {
+          markerName: 'xlargeCircle',
+          markerTint: '#000000',
+          iconName: preset?.icon || 'fas-question',
+          iconSize: 16,
+          iconTint: isSelected ? SELECTED : MAPILLARY_GREEN
+        };
+
+        feature.style = style;
+      }
+
       feature.update(viewport, zoom);
       this.retainFeature(feature, frame);
     }

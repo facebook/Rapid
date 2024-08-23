@@ -18,7 +18,7 @@ export class UiDefs {
     this.parent = d3_select(null);
 
     this.spritesheetIDs = [
-      'rapid', 'maki', 'temaki', 'fa', 'roentgen', 'community', 'mapillary-object', 'mapillary'
+      'rapid', 'maki', 'temaki', 'fa', 'roentgen', 'community', /*'mapillary-object',*/ 'mapillary'
     ];
 
     // Ensure methods used as callbacks always have `this` bound correctly.
