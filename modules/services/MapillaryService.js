@@ -418,8 +418,7 @@ export class MapillaryService extends AbstractSystem {
       .then(() => this._viewer.moveTo(imageID))
       .then(mlyImage => {
         const cache = this._cache.images;
-
-        return this._cacheImage(cache, {
+        const image = this._cacheImage(cache, {
           id:          mlyImage.id.toString(),
           loc:        [mlyImage.originalLngLat.lng, mlyImage.originalLngLat.lat],
           sequenceID:  mlyImage.sequenceId.toString(),
@@ -427,6 +426,14 @@ export class MapillaryService extends AbstractSystem {
           captured_by: mlyImage.creatorUsername,
           ca:          mlyImage.originalCompassAngle
         });
+
+// this.resetTags();
+        this._updatePhotoFooter(imageID);
+//      if (this.shouldShowDetections()) {
+//        this._updateDetections(image.id);
+//      }
+
+        return image;  // pass the image to anything that chains off this Promise
       })
       .catch(err => console.error('mly3', err));   // eslint-disable-line no-console
   }
@@ -906,14 +913,14 @@ export class MapillaryService extends AbstractSystem {
 
     // imageChanged: called after the viewer has changed images and is ready.
     const imageChanged = (node) => {
-      this.resetTags();
-      const image = node.image;
-      photos.selectPhoto('mapillary', image.id);
-      this._updatePhotoFooter(image.id);
-
-      if (this.shouldShowDetections()) {
-        this._updateDetections(image.id);
+      // Tell the PhotoSystem about the new selected image, if necessary.
+      // This will happen if something in the viewer triggered the change,
+      // for example if the user clicked an arrow or navigation button in the viewer.
+      const imageID = node.image.id.toString();
+      if (photos.currPhotoID !== imageID) {
+        photos.selectPhoto('mapillary', imageID);
       }
+
       this.emit('imageChanged');
     };
 
