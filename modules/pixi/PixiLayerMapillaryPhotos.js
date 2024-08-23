@@ -300,6 +300,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
           style.viewfieldName = d.isPano ? 'pano' : 'viewfield';
 
           if (feature.hasClass('highlightphoto')) {  // highlighted photo style
+            style.viewfieldAlpha = 1;
             style.viewfieldTint = SELECTED;
             style.markerTint = SELECTED;
           }

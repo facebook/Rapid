@@ -149,9 +149,9 @@ export class PixiFeaturePoint extends AbstractFeature {
     if (style.iconTexture || style.iconName) {
       icon.texture = style.iconTexture || textureManager.get(style.iconName);
       icon.anchor.set(style.anchor?.x || 0.5, style.anchor?.y || 0.5);   // middle, middle by default, can be overridden in layer code
-      const ICONSIZE = 11;
-      icon.width = ICONSIZE;
-      icon.height = ICONSIZE;
+      const iconSize = style.iconSize || 11;
+      icon.width = iconSize;
+      icon.height = iconSize;
       icon.alpha = style.iconAlpha ?? 1;
       icon.tint = style.iconTint;
       icon.visible = true;
@@ -396,6 +396,7 @@ const STYLE_DEFAULTS = {
   iconAlpha: 1,
   iconName: '',
   iconTint: 0x111111,
+  iconSize: 11,
   labelTint: 0xeeeeee,
   markerAlpha: 1,
   markerName: 'smallCircle',

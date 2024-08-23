@@ -3,6 +3,7 @@ import { uiIcon } from './icon.js';
 
 export function uiDetectionHeader(context) {
   const l10n = context.systems.l10n;
+  const presets = context.systems.presets;
   let _detection;
 
 
@@ -16,8 +17,20 @@ export function uiDetectionHeader(context) {
   }
 
   function addIcon($selection) {
+    const d = $selection.datum();
+    if (!d) return;
+
+    let iconName;
+    if (d.object_type === 'traffic_sign') {
+      iconName = d.value;
+    } else {
+      const service = context.services[d.service];
+      const presetID = service && service.getDetectionPresetID(d.value);
+      const preset = presetID && presets.item(presetID);
+      iconName = preset?.icon || 'fas-question';
+    }
+
     // Some values we don't have icons for, check first - Rapid#1518
-    const iconName = $selection.datum().value;
     const hasIcon = context.container().selectAll(`#rapid-defs #${iconName}`).size();
 
     $selection

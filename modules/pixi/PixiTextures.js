@@ -414,6 +414,12 @@ export class PixiTextures {
       .drawRect(-8, -8, 16, 16)
       .endFill();
 
+    const xlargeCircle = new Graphics()   // used as an "unknown" detection
+      .lineStyle(2, 0x444444)
+      .beginFill(0xffffff, 1)
+      .drawCircle(0, 0, 12)
+      .endFill();
+
     const largeCircle = new Graphics()    // suitable to display an icon inside
       .lineStyle(1, 0x444444)
       .beginFill(0xffffff, 1)
@@ -444,6 +450,7 @@ export class PixiTextures {
     this.graphicToTexture('boldPin', boldPin, options);
     this.graphicToTexture('xlargeSquare', xlargeSquare, options);
     this.graphicToTexture('largeSquare', largeSquare, options);
+    this.graphicToTexture('xlargeCircle', xlargeCircle, options);
     this.graphicToTexture('largeCircle', largeCircle, options);
     this.graphicToTexture('mediumCircle', mediumCircle, options);
     this.graphicToTexture('smallCircle', smallCircle, options);

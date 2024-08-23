@@ -189,7 +189,9 @@ export class SelectMode extends AbstractMode {
     }
 
     this._selectedData.clear();
+
     this.context.systems.ui.sidebar.hide();
+    this.context.systems.photos.selectDetection(null);
   }
 
 }
