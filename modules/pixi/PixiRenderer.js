@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { Application, BitmapFont } from 'pixi.js';
 import { settings } from '@pixi/settings';
-import { EventEmitter } from '@pixi/utils';
 import { TAU, Viewport, numWrap, vecEqual, vecLength, vecRotate, vecScale, vecSubtract } from '@rapid-sdk/math';
 
 import { PixiEvents } from './PixiEvents.js';
@@ -35,7 +34,7 @@ const THROTTLE = 250;  // throttled rendering milliseconds (for now)
  *   `move`      Fires after the map's transform has changed (can fire frequently)
  *               ('move' is mostly for when you want to update some content that floats over the map)
  */
-export class PixiRenderer extends EventEmitter {
+export class PixiRenderer extends PIXI.EventEmitter {
 
   /**
    * Create a Pixi application rendering to the given canvas.

@@ -1,4 +1,4 @@
-import { EventEmitter } from '@pixi/utils';
+import { EventEmitter } from 'pixi.js';
 import { vecRotate } from '@rapid-sdk/math';
 
 import { utilDetect } from '../util/detect.js';

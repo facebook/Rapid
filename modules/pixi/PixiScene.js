@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { EventEmitter } from '@pixi/utils';
+import { EventEmitter } from 'pixi.js';
 
 import { PixiLayerBackgroundTiles } from './PixiLayerBackgroundTiles.js';
 import { PixiLayerCustomData } from './PixiLayerCustomData.js';
