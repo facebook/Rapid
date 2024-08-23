@@ -321,7 +321,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
 // pixi v8
         .poly(this.geometry.flatOuter);
 // pixi v7
-        // .drawShape(shape.outer);
+        // .poly(shape.outer);
 
 // pixi v8
         if (this.geometry.flatHoles) {
@@ -333,7 +333,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
         }
 
 // pixi v7
-//        shape.holes.forEach(hole => this.stroke.drawShape(hole));
+//        shape.holes.forEach(hole => this.stroke.poly(hole));
 
       } else {   // Dashed lines
 // pixi v7
@@ -367,27 +367,25 @@ export class PixiFeaturePolygon extends AbstractFeature {
     }
 
     if (shape && this.fill.visible) {
-      this.fill
-        .clear()
-        .beginTextureFill({
-          alpha: alpha,
-          color: color,
-          texture: texture,
-          matrix: textureMatrix
-        })
-        .drawShape(shape.outer);
-
+      this.fill.clear();
+      // Draw the outer shape and apply fill
+      this.fill.poly(shape.outer).fill({
+        color: color,
+        alpha: alpha,
+        texture: texture, // Optional: include only if texture is used
+        matrix: textureMatrix // Optional: include only if texture is used
+      });
+      // Handle holes in the shape
       if (shape.holes.length) {
-        this.fill.beginHole();
-        shape.holes.forEach(hole => this.fill.drawShape(hole));
-        this.fill.endHole();
+        shape.holes.forEach(hole => {
+          this.fill.poly(hole).cut(); // Use cut to create holes
+        });
       }
-      this.fill.fill();
-
-      if (doPartialFill) {   // mask around the inside edges of the fill with a line
+      if (doPartialFill) {
+        // Mask around the inside edges of the fill with a line
         const maskSource = new PIXI.Graphics()
           .clear()
-          .lineTextureStyle({
+          .strokeStyle({
             alpha: 1,
             alignment: 0,  // inside (will do the right thing even for holes, as they are wound correctly)
             color: 0x000000,
@@ -396,16 +394,14 @@ export class PixiFeaturePolygon extends AbstractFeature {
             width: PARTIALFILLWIDTH,
             texture: PIXI.Texture.WHITE
           });
-
-        maskSource.drawShape(shape.outer);
+        maskSource.poly(shape.outer);
         if (shape.holes.length) {
-          shape.holes.forEach(hole => maskSource.drawShape(hole));
+          shape.holes.forEach(hole => {
+            maskSource.poly(hole).cut();
+          });
         }
-
-        // Compute the mask's geometry, then copy its attributes into the mesh's geometry
-        // This lets us use the Mesh as the mask and properly hit test against it.
-        maskSource.geometry.updateBatches(true);
-
+        // Update the mask's geometry
+        this.mask.geometry = maskSource.geometry;
 // pixi v7
 //        // Example of updating mask geometry
 //        this.mask.geometry = new PIXI.Geometry()
@@ -414,18 +410,9 @@ export class PixiFeaturePolygon extends AbstractFeature {
 //          .addIndex(maskSource.geometry.getIndex().data);
 
 // pixi v8
-        this.mask.geometry = new PIXI.Geometry({
-          attributes: {
-            aPosition: maskSource.geometry.getBuffer('aVertexPosition').data,
-            aUv: maskSource.geometry.getBuffer('aTextureCoord').data
-          },
-          indexBuffer: maskSource.geometry.getIndex().data
-        });
-
         this.mask.visible = true;
         this.fill.mask = this.mask;
-
-      } else {  // full fill - no mask
+      } else {  // Full fill - no mask
         this.mask.visible = false;
         this.fill.mask = null;
       }
@@ -444,7 +431,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
     // this.debugSSR
     //   .clear()
     //   .lineStyle({ alpha: 1, width: 2, color: 0x00ff00 })
-    //   .drawShape(new PIXI.Polygon(ssrflat));
+    //   .poly(new PIXI.Polygon(ssrflat));
 
     this._styleDirty = false;
     this.updateHalo();
