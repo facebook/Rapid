@@ -1,3 +1,5 @@
+import { Extent } from '@rapid-sdk/math';
+
 import { AbstractSystem } from './AbstractSystem.js';
 
 
@@ -368,7 +370,7 @@ export class PhotoSystem extends AbstractSystem {
    * @param {string}  photoID? - The photoID to select
    */
   selectPhoto(layerID = null, photoID = null) {
-    if (layerID === this._currPhotoLayerID && photoID === this._currPhotoID) return;  // nothing to do
+    if (layerID === this._currPhotoLayerID && photoID === this._currPhotoID) return;  // no change
 
     const context = this.context;
     const map = context.systems.map;
@@ -377,10 +379,7 @@ export class PhotoSystem extends AbstractSystem {
     // Clear out any existing selection..
     this._currPhotoLayerID = null;
     this._currPhotoID = null;
-    for (const oldLayerID of this.photoLayerIDs) {
-      const oldLayer = scene.layers.get(oldLayerID);
-      oldLayer?.clearClass('selectphoto');
-    }
+    scene.clearClass('selectphoto');
 
     // Apply the new selection..
     if (photoID && this.photoLayerIDs.includes(layerID)) {
@@ -414,12 +413,12 @@ export class PhotoSystem extends AbstractSystem {
 
   /**
    * selectDetection
-   * Pass falsy valuse to deselect the layer and detection.
+   * Pass falsy values to deselect the layer and detection.
    * @param {string}  layerID?     - The layerID to select
    * @param {string}  detectionID? - The detectionID to select
    */
   selectDetection(layerID = null, detectionID = null) {
-    if (layerID === this._currDetectionLayerID && detectionID === this._currDetectionID) return;  // nothing to do
+    if (layerID === this._currDetectionLayerID && detectionID === this._currDetectionID) return;  // no change
 
     const context = this.context;
     const map = context.systems.map;
@@ -428,15 +427,8 @@ export class PhotoSystem extends AbstractSystem {
     // Clear out any existing selection..
     this._currDetectionLayerID = null;
     this._currDetectionID = null;
-    for (const oldLayerID of this.detectionLayerIDs) {
-      const oldLayer = scene.layers.get(oldLayerID);
-      oldLayer?.clearClass('select');
-      oldLayer?.clearClass('selectdetection');
-    }
-    for (const oldLayerID of this.photoLayerIDs) {
-      const oldLayer = scene.layers.get(oldLayerID);
-      oldLayer?.clearClass('highlightphoto');
-    }
+    scene.clearClass('selectdetection');
+    scene.clearClass('highlightphoto');
 
     // Apply the new selection..
     if (detectionID && this.detectionLayerIDs.includes(layerID)) {
@@ -449,7 +441,6 @@ export class PhotoSystem extends AbstractSystem {
 
       // If we're selecting a detection then make sure its layer is enabled too.
       scene.enableLayers(layerID);
-      scene.setClass('select', layerID, detectionID);
       scene.setClass('selectdetection', layerID, detectionID);
 
       // Try to highlight any photos that show this detection,
@@ -460,19 +451,31 @@ export class PhotoSystem extends AbstractSystem {
           if (!detection) return;
           if (detection.id !== this._currDetectionID) return;  // exit if something else is now selected
 
-          // Enter select mode here
-          const selection = new Map().set(detection.id, detection);
-          context.enter('select', { selection: selection });
+          // We will try to move the map to show both the detection and the best photo (if any)
+          const extent = new Extent(detection.loc);
 
-          map.centerEase(detection.loc);
-
-          for (const photoID of detection.imageIDs ?? []) {
-            scene.setClass('highlightphoto', photoLayerID, photoID);
+          // Select the best image (if any)
+          const bestImageID = detection.bestImageID;
+          if (bestImageID) {
+            this.selectPhoto(photoLayerID, bestImageID);
           }
 
-          if (detection.bestImageID) {
-            this.selectPhoto(photoLayerID, detection.bestImageID);
+          // Highlight any images that show this detection..
+          for (const imageID of detection.imageIDs ?? []) {
+            scene.setClass('highlightphoto', photoLayerID, imageID);
+
+            if (imageID === bestImageID) {
+              const loc = service.getImage(imageID)?.loc;
+              if (loc) {
+                extent.extendSelf(loc);
+              }
+            }
           }
+
+          // Need to zoom out a little to see both things?
+          const needZoom = map.trimmedExtentZoom(extent) - 0.5;  // little extra so the things aren't at the map edges
+          const currZoom = context.viewport.transform.zoom;
+          map.centerZoomEase(extent.center(), Math.min(needZoom, currZoom));
         });
     }
 

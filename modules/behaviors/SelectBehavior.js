@@ -345,8 +345,9 @@ export class SelectBehavior extends AbstractBehavior {
     // Clicked a non-OSM feature..
     if (
       data.__fbid__ ||            // Clicked a Rapid feature..
-      data.__featurehash__ ||     // Clicked Custom Data (e.g. gpx track)
-      data instanceof QAItem      // Clicked a QA Item (OSM Note, KeepRight, Osmose, Maproulette)...
+      data.__featurehash__ ||     // Clicked Custom Data (e.g. gpx track)..
+      data instanceof QAItem ||   // Clicked a QA Item (OSM Note, KeepRight, Osmose, Maproulette)..
+      data.type === 'detection'   // Clicked on an object detection / traffic sign..
     ) {
       const selection = new Map().set(dataID, data);
       context.enter('select', { selection: selection });
@@ -379,16 +380,10 @@ export class SelectBehavior extends AbstractBehavior {
     }
 
     // Clicked on a photo..
+    // (this highlights the photo but does not actually alter the selection)
     if (data.type === 'photo') {
       const layerID = target.layerID;
       photos.selectPhoto(layerID, dataID);
-      return;
-    }
-
-    // Clicked on an object detection / traffic sign..
-    if (data.type === 'detection') {
-      const layerID = target.layerID;
-      photos.selectDetection(layerID, dataID);   // will enter select mode
       return;
     }
   }
