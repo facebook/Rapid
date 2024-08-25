@@ -45,13 +45,11 @@ export class SelectOsmMode extends AbstractMode {
     this._keydown = this._keydown.bind(this);
     this._hover = this._hover.bind(this);
     this._merge = this._merge.bind(this);
-
     this._firstVertex = this._firstVertex.bind(this);
     this._focusNextParent = this._focusNextParent.bind(this);
     this._lastVertex = this._lastVertex.bind(this);
     this._nextVertex = this._nextVertex.bind(this);
     this._previousVertex = this._previousVertex.bind(this);
-    this._hover = this._hover.bind(this);
   }
 
 
@@ -72,6 +70,7 @@ export class SelectOsmMode extends AbstractMode {
     const hover = context.behaviors.hover;
     const locations = context.systems.locations;
     const map = context.systems.map;
+    const scene = map.scene;
     const ui = context.systems.ui;
     const urlhash = context.systems.urlhash;
     const eventManager = map.renderer.events;
@@ -107,7 +106,15 @@ export class SelectOsmMode extends AbstractMode {
     context.enableBehaviors(['hover', 'select', 'drag', 'mapInteraction', 'lasso', 'paste']);
     ui.closeEditMenu();
 
-    this.extent = utilTotalExtent(entityIDs, graph);  // Compute the total extent of selected items
+    // Compute the total extent of selected items
+    this.extent = utilTotalExtent(entityIDs, graph);
+
+    // Handle select style class
+    scene.clearClass('select');
+    for (const entityID of entityIDs) {
+      scene.setClass('select', 'osm', entityID);
+    }
+
     urlhash.setParam('id', entityIDs.join(','));      // Put entityIDs into the url hash
     filters.forceVisible(entityIDs);                  // Exclude entityIDs from being filtered
     this._setupOperations(entityIDs);                 // Determine available operations on the edit menu
@@ -147,6 +154,7 @@ export class SelectOsmMode extends AbstractMode {
     const hover = context.behaviors.hover;
     const l10n = context.systems.l10n;
     const map = context.systems.map;
+    const scene = map.scene;
     const ui = context.systems.ui;
     const urlhash = context.systems.urlhash;
     const eventManager = map.renderer.events;
@@ -183,6 +191,7 @@ export class SelectOsmMode extends AbstractMode {
     }
     this.operations = [];
 
+    scene.clearClass('select');
     ui.closeEditMenu();
     ui.sidebar.hide();
     urlhash.setParam('id', null);

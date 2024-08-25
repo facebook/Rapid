@@ -2,7 +2,6 @@ import * as PIXI from 'pixi.js';
 import { EventEmitter } from '@pixi/utils';
 import { TAU, Viewport, numWrap, vecEqual, vecLength, vecRotate, vecScale, vecSubtract } from '@rapid-sdk/math';
 
-import { QAItem } from '../osm/index.js';
 import { PixiEvents } from './PixiEvents.js';
 import { PixiScene } from './PixiScene.js';
 import { PixiTextures } from './PixiTextures.js';
@@ -68,7 +67,6 @@ export class PixiRenderer extends EventEmitter {
     // Make sure callbacks have `this` bound correctly
     this._tick = this._tick.bind(this);
     this._onHoverChange = this._onHoverChange.bind(this);
-    this._onModeChange = this._onModeChange.bind(this);
 
     // Disable mipmapping, we always want textures near the resolution they are at.
     PIXI.BaseTexture.defaultOptions.mipmap = PIXI.MIPMAP_MODES.OFF;
@@ -167,48 +165,7 @@ export class PixiRenderer extends EventEmitter {
     this.textures = _sharedTextures;
 
     // Event listeners to respond to any changes in selection or hover
-    context.on('modechange', this._onModeChange);
     context.behaviors.hover.on('hoverchange', this._onHoverChange);
-  }
-
-
-  /**
-   * _onModeChange
-   * Respond to any change in selection (called on mode change)
-   */
-  _onModeChange(mode) {
-    this.scene.clearClass('select');
-
-    for (const [datumID, datum] of this.context.selectedData()) {
-      let layerID = null;
-
-      // hacky - improve?
-      if (datum instanceof QAItem) {       // in most cases the `service` is the layerID
-        const serviceID = datum.service;   // 'keepright', 'osmose', etc.
-        layerID = serviceID === 'osm' ? 'notes' : serviceID;
-        if (layerID === 'osm') layerID = 'notes';
-      } else if (datum.__fbid__) {      // a Rapid feature
-        layerID = 'rapid';
-      } else if (datum.__featurehash__) {  // custom data
-        layerID = 'custom-data';
-      } else if (mode.id === 'select-osm' || mode.id === 'drag-node') {   // an OSM feature
-        layerID = 'osm';
-      } else if (datum.type === 'detection') {   // A detection (object or sign)
-        if (datum.service === 'mapillary' && datum.object_type === 'point') {
-          layerID = 'mapillary-detections';
-        } else if (datum.service === 'mapillary' && datum.object_type === 'traffic_sign') {
-          layerID = 'mapillary-signs';
-        }
-      } else {
-        // other selectable things (photos?) - we will not select-style them for now :(
-      }
-
-      if (layerID) {
-        this.scene.setClass('select', layerID, datumID);
-      }
-    }
-
-    this.render();
   }
 
 

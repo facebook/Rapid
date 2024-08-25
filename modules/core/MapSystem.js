@@ -305,6 +305,7 @@ export class MapSystem extends AbstractSystem {
         this.immediateRedraw();
       });
 
+    context.on('modechange', this.immediateRedraw);
     imagery.on('imagerychange', this.immediateRedraw);
     photos.on('photochange', this.immediateRedraw);
     scene.on('layerchange', this.immediateRedraw);

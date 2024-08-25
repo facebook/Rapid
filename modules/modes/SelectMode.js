@@ -58,14 +58,15 @@ export class SelectMode extends AbstractMode {
     this._active = true;
 
     const context = this.context;
-    context.enableBehaviors(['hover', 'select', 'drag', 'mapInteraction', 'lasso', 'paste']);
-
+    const map = context.systems.map;
+    const photos = context.systems.photos;
+    const scene = map.scene;
     const sidebar = context.systems.ui.sidebar;
-    let sidebarContent = null;
+
+    context.enableBehaviors(['hover', 'select', 'drag', 'mapInteraction', 'lasso', 'paste']);
 
     // Compute the total extent of selected items
     this.extent = new Extent();
-
     for (const datum of selection.values()) {
       let other;
 
@@ -89,18 +90,47 @@ export class SelectMode extends AbstractMode {
       }
     }
 
+    // Handle select style class
+    scene.clearClass('select');
+    for (const datum of selection.values()) {
+      let layerID = null;
 
- // The update handlers feel like they should live with the noteEditor/errorEditor, not here
+      // hacky - improve?
+      if (datum instanceof QAItem) {       // in most cases the `service` is the layerID
+        const serviceID = datum.service;   // 'keepright', 'osmose', etc.
+        layerID = serviceID === 'osm' ? 'notes' : serviceID;
+        if (layerID === 'osm') layerID = 'notes';
+      } else if (datum.__fbid__) {      // a Rapid feature
+        layerID = 'rapid';
+      } else if (datum.__featurehash__) {  // custom data
+        layerID = 'custom-data';
+      } else if (datum.type === 'detection') {   // A detection (object or sign)
+        if (datum.service === 'mapillary' && datum.object_type === 'point') {
+          layerID = 'mapillary-detections';
+        } else if (datum.service === 'mapillary' && datum.object_type === 'traffic_sign') {
+          layerID = 'mapillary-signs';
+        }
+      }
+
+      if (layerID) {
+        scene.setClass('select', layerID, datumID);
+      }
+    }
+
+
+    // What was selected?
+ // The update handlers feel like they should live with the sidebar content components, not here
+    let sidebarContent = null;
     // Selected a note...
     if (datum instanceof QAItem && datum.service === 'osm') {
       sidebarContent = uiNoteEditor(context).note(datum);
       sidebarContent
         .on('change', () => {
-          context.systems.map.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
+          map.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
           const osm = context.services.osm;
           const note = osm?.getNote(datumID);
           if (!(note instanceof QAItem)) return;   // or - go to browse mode
-          context.systems.ui.sidebar.show(sidebarContent.note(note));
+          sidebar.show(sidebarContent.note(note));
           this._selectedData.set(datumID, note);  // update selectedData after a change happens?
         });
 
@@ -108,11 +138,11 @@ export class SelectMode extends AbstractMode {
       sidebarContent = uiKeepRightEditor(context).error(datum);
       sidebarContent
         .on('change', () => {
-          context.systems.map.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
+          map.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
           const keepright = context.services.keepRight;
           const error = keepright?.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
-          context.systems.ui.sidebar.show(sidebarContent.error(error));
+          sidebar.show(sidebarContent.error(error));
           this._selectedData.set(datumID, error);  // update selectedData after a change happens?
         });
 
@@ -120,11 +150,11 @@ export class SelectMode extends AbstractMode {
       sidebarContent = uiOsmoseEditor(context).error(datum);
       sidebarContent
         .on('change', () => {
-          context.systems.map.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
+          map.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
           const osmose = context.services.osmose;
           const error = osmose?.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
-          context.systems.ui.sidebar.show(sidebarContent.error(error));
+          sidebar.show(sidebarContent.error(error));
           this._selectedData.set(datumID, error);  // update selectedData after a change happens?
         });
 
@@ -132,16 +162,20 @@ export class SelectMode extends AbstractMode {
       sidebarContent = uiMapRouletteEditor(context).error(datum);
       sidebarContent
         .on('change', () => {
-          context.systems.map.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
+          map.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
           const maproulette = context.services.maproulette;
           const error = maproulette?.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
-          context.systems.ui.sidebar.show(sidebarContent.error(error));
+          sidebar.show(sidebarContent.error(error));
           this._selectedData.set(datumID, error);  // update selectedData after a change happens?
         });
 
     } else if (datum.type === 'detection') {
       sidebarContent = uiDetectionInspector(context).datum(datum);
+      const serviceID = datum.service;
+      const type = (datum.object_type === 'traffic_sign') ? 'signs' : 'detections';
+      const layerID = `${serviceID}-${type}`;    // e.g. 'mapillary-signs' or 'mapillary-detections'
+      photos.selectDetection(layerID, datum.id);
 
     // Selected custom data (e.g. gpx track)...
     } else if (datum.__featurehash__) {
@@ -177,6 +211,11 @@ export class SelectMode extends AbstractMode {
     if (!this._active) return;
     this._active = false;
 
+    const context = this.context;
+    const photos = context.systems.photos;
+    const scene = context.systems.map.scene;
+    const sidebar = context.systems.ui.sidebar;
+
     this.extent = null;
 
     if (this.keybinding) {
@@ -190,8 +229,9 @@ export class SelectMode extends AbstractMode {
 
     this._selectedData.clear();
 
-    this.context.systems.ui.sidebar.hide();
-    this.context.systems.photos.selectDetection(null);
+    scene.clearClass('select');
+    sidebar.hide();
+    photos.selectDetection(null);
   }
 
 }
