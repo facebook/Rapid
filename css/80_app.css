@@ -5839,14 +5839,6 @@ bottom-left | bottom-middle | bottom-right
 
 
 /* Mapillary viewer */
-#rapideditor-mly .domRenderer .TagSymbol {
-  font-size: 10px;
-  background-color: rgba(0,0,0,0.4);
-  padding: 0 4px;
-  border-radius: 4px;
-  top: -25px;
-}
-
 .mapillary-viewer .mapillary-dom {
   bottom: 15px;  /* raise up slightly to leave space for photo-footer */
 }
@@ -5862,6 +5854,13 @@ bottom-left | bottom-middle | bottom-right
   border-left-style: solid;
   border-bottom-style: solid;
 }
+
+.mly-wrapper .mapillary-tag-symbol {
+  font-size: 10px;
+  background-color: rgba(0,0,0,0.4);
+  margin-top: -30px;
+}
+
 
 /* Kartaview (OpenStreetCam) viewer */
 .osc-wrapper {
