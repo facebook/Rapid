@@ -273,7 +273,7 @@ export class MapillaryService extends AbstractSystem {
     const lookup = {
       'construction--barrier--temporary':                  'highway/construction',          // Temporary Barrier
       'construction--flat--crosswalk-plain':               'highway/footway',               // Crosswalk - Plain
-      'construction--flat--driveway':                      'highway/service/driveway',      // Driveway
+      'construction--flat--driveway':                      'amenity/parking/street-side',   // Driveway
       'marking--discrete--arrow--left':                    'traffic_sign',                  // Lane Marking - Arrow (Left)
       'marking--discrete--arrow--right':                   'traffic_sign',                  // Lane Marking - Arrow (Right)
       'marking--discrete--arrow--split-left-or-straight':  'traffic_sign',                  // Lane Marking - Arrow (Split Left or Straight)
