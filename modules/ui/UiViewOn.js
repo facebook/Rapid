@@ -69,6 +69,6 @@ export class UiViewOn {
       .attr('href', d => d);
 
     $viewon.selectAll('span')
-      .text(l10n.t(stringID));
+      .text(stringID ? l10n.t(stringID) : '');
   }
 }

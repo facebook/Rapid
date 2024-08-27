@@ -4,16 +4,19 @@ import { AbstractSystem } from './AbstractSystem.js';
 
 
 /**
- * `PhotoSystem` maintains the state of the photo viewer
+ * `PhotoSystem` maintains the state of the photo viewer.
  *
  * Properties available:
- *   `allPhotoTypes`     List of all available photo types ('flat', 'panoramic')
- *   `fromDate`          Current fromDate filter value
- *   `toDate`            Current toDate filter value
- *   `usernames`         Current usernames filter value
+ *   `fromDate`              Current fromDate filter value
+ *   `toDate`                Current toDate filter value
+ *   `usernames`             Current usernames filter value
+ *   `currPhotoID`           Current PhotoID
+ *   `currPhotoLayerID`      Current Photo LayerID
+ *   `currDetectionID`       Current DetectionID
+ *   `currDetectionLayerID`  Current Detection LayerID
  *
  * Events available:
- *   `photochange`       Fires on any change in photo display or filtering options
+ *   `photochange`   Fires on any change in selected photo, detection, or filtering options
  */
 export class PhotoSystem extends AbstractSystem {
 
@@ -24,7 +27,7 @@ export class PhotoSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'photos';
-    this.dependencies = new Set(['map', 'urlhash']);
+    this.dependencies = new Set(['map', 'urlhash', 'ui']);
 
     this._currPhotoLayerID = null;
     this._currPhotoID = null;
@@ -41,6 +44,7 @@ export class PhotoSystem extends AbstractSystem {
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._hashchange = this._hashchange.bind(this);
+    this._layerchange = this._layerchange.bind(this);
     this._photoChanged = this._photoChanged.bind(this);
   }
 
@@ -86,7 +90,7 @@ export class PhotoSystem extends AbstractSystem {
 
     return this._startPromise = prerequisites
       .then(() => {
-        map.scene.on('layerchange', this._photoChanged);
+        map.scene.on('layerchange', this._layerchange);
         this._started = true;
       });
   }
@@ -158,7 +162,7 @@ export class PhotoSystem extends AbstractSystem {
       if (layerID && photoID) {
         this.selectPhoto(layerID, photoID);
       } else {
-        this.selectPhoto();  // deselect it
+        this.selectPhoto();  // deselect
       }
     }
 
@@ -171,10 +175,52 @@ export class PhotoSystem extends AbstractSystem {
       if (layerID && detectionID) {
         this.selectDetection(layerID, detectionID);
       } else {
-        this.selectDetection();  // deselect it
+        this.selectDetection();  // deselect
+      }
+    }
+  }
+
+
+  /**
+   * _layerchange
+   * Respond to any changes in the layers that are enabled
+   */
+  _layerchange() {
+    const context = this.context;
+    const scene = context.scene();
+
+    // Update detections
+    // If there is a currently selected detection, return to browse mode.
+    for (const layerID of this.detectionLayerIDs) {
+      const layer = scene.layers.get(layerID);
+      if (!layer.enabled && this._currDetectionLayerID === layerID) {
+        context.enter('browse');
+        this.selectDetection();  // deselect
       }
     }
 
+    // Update photos
+    // If there is a current photo layer, refresh it by calling `selectPhoto` again.
+    // (Maybe the detections layers changed, and we need to redraw the viewer
+    // to remove the highlighting or make the segmentations appear or disappear)
+    let enabledCount = 0;
+    for (const layerID of this.photoLayerIDs) {
+      const layer = scene.layers.get(layerID);
+      if (layer.enabled) {
+        enabledCount++;
+      }
+      if (layerID === this._currPhotoLayerID) {
+        if (layer.enabled) {
+          this.selectPhoto(this._currPhotoLayerID, this._currPhotoID);  // keep selection
+        } else {
+          this.selectPhoto();  // deselect
+        }
+      }
+    }
+
+    if (!enabledCount) {  // no photo layers enabled, hide the viewer
+      this.hideViewer();
+    }
   }
 
 
@@ -183,8 +229,9 @@ export class PhotoSystem extends AbstractSystem {
    * Push changes in photo viewer state to the urlhash
    */
   _photoChanged() {
-    const urlhash = this.context.systems.urlhash;
-    const scene = this.context.scene();
+    const context = this.context;
+    const urlhash = context.systems.urlhash;
+    const scene = context.scene();
 
     // photo_overlay
     let enabledIDs = [];
@@ -219,6 +266,8 @@ export class PhotoSystem extends AbstractSystem {
       detectionString = `${this._currDetectionLayerID}/${this._currDetectionID}`;
     }
     urlhash.setParam('detection', detectionString);
+
+    this.emit('photochange');
   }
 
 
@@ -374,6 +423,14 @@ export class PhotoSystem extends AbstractSystem {
     const map = context.systems.map;
     const scene = map.scene;
 
+    const didChange = (this._currPhotoLayerID !== layerID || this._currPhotoID !== photoID);
+
+    // If we're selecting a photo then make sure its layer is enabled too.
+    if (this.photoLayerIDs.includes(layerID) && !this.isLayerEnabled(layerID)) {
+      scene.enableLayers(layerID);
+      return;  // exit to avoid infinite loop, we will be right back in here via `_layerchange` handler.
+    }
+
     // Clear out any existing selection..
     this._currPhotoLayerID = null;
     this._currPhotoID = null;
@@ -386,26 +443,23 @@ export class PhotoSystem extends AbstractSystem {
 
       this._currPhotoLayerID = layerID;
       this._currPhotoID = photoID;
-
-      // If we're selecting a photo then make sure its layer is enabled too.
-      scene.enableLayers(layerID);
       scene.setClass('selectphoto', layerID, photoID);
 
       // Try to show the viewer with the image selected..
-      service.startAsync()
-        .then(() => service.selectImageAsync(photoID))
+      service.selectImageAsync(photoID)
         .then(photo => {
           if (!photo) return;
           if (photo.id !== this._currPhotoID) return;  // exit if something else is now selected
           if (this._currDetectionID) return;  // don't adjust the map if a detection is already selected
 
-          map.centerEase(photo.loc);
+          if (didChange) {
+            map.centerEase(photo.loc);
+          }
         })
-        .then(() => service.showViewer());
+        .then(() => this.showViewer());
     }
 
     this._photoChanged();
-    this.emit('photochange');
   }
 
 
@@ -441,19 +495,18 @@ export class PhotoSystem extends AbstractSystem {
 
       // Try to highlight any photos that show this detection,
       // And try to select a photo in the viewer that shows it.
-      service.startAsync()
-        .then(() => service.selectDetectionAsync(detectionID))
+      service.selectDetectionAsync(detectionID)
         .then(detection => {
           if (!detection) return;
           if (detection.id !== this._currDetectionID) return;  // exit if something else is now selected
 
-          // Handle the situation where we want to select thia detection,
+          // Handle the situation where we want to select a detection,
           // but we haven't properly entered SelectMode yet.
           // This can happen if the detection arrived in the URL hash.
           if (!context.selectedData().has(detection.id)) {
             const selection = new Map().set(detection.id, detection);
             context.enter('select', { selection: selection });
-            return;  // bail out - entering select mode will bring us right back in here.
+            return;  // exit to avoid infinite loop - entering select mode will bring us right back in here.
           }
 
           // Highlight any images that show this detection..
@@ -491,10 +544,14 @@ export class PhotoSystem extends AbstractSystem {
           // Select the best photo (if any)
           this.selectPhoto(photoLayerID, bestPhotoID);
         });
+
+    // If there is now no detection selected, we should still refresh the viewer,
+    // in case it needs to replace any detection highlights or segmentations..
+    } else {
+      this.selectPhoto(this._currPhotoLayerID, this._currPhotoID);  // keep selection
     }
 
     this._photoChanged();
-    this.emit('photochange');
   }
 
 
@@ -544,7 +601,6 @@ export class PhotoSystem extends AbstractSystem {
 
     if (didChange) {
       this._photoChanged();
-      this.emit('photochange');
     }
   }
 
@@ -566,7 +622,6 @@ export class PhotoSystem extends AbstractSystem {
     }
     this._filterUsernames = val;
     this._photoChanged();
-    this.emit('photochange');
   }
 
 
@@ -583,23 +638,71 @@ export class PhotoSystem extends AbstractSystem {
     } else {
       this._filterPhotoTypes.add(which);
     }
-    this.emit('photochange');
+    this._photoChanged();
   }
 
 
-  _showsLayer(layerID) {
+  /**
+   * isLayerEnabled
+   * Is the given layerID enabled?
+   * @param  {string}   layerID - the layerID to check
+   * @return {boolean}  `true` if enabled, `false` if not
+   */
+  isLayerEnabled(layerID) {
     const layer = this.context.scene().layers.get(layerID);
     return layer?.enabled;
   }
 
+
+  /**
+   * showViewer
+   * Show the photo viewer
+   */
+  showViewer() {
+    const context = this.context;
+    const layerID = this._currPhotoLayerID;
+    const photoID = this._currPhotoID;
+    if (!layerID || !photoID) return;   // nothing to show
+
+    const service = context.services[layerID];
+    service?.showViewer();
+  }
+
+
+  /**
+   * hideViewer
+   * Hide the photo viewer.  If the viewer was showing a photo, deselect the photo.
+   */
+  hideViewer() {
+    for (const layerID of this.photoLayerIDs) {
+      if (layerID === this._currPhotoLayerID) {
+        this.selectPhoto();  // deselect
+      }
+      const service = this.context.services[layerID];
+      service?.hideViewer();
+    }
+  }
+
+
+  /**
+   * isViewerShowing
+   * @return {boolean} `true` if showing, `false` if not
+   */
+  isViewerShowing() {
+    // viewer exists and is not hidden
+    const $viewer = this.context.container().selectAll('.photoviewer');
+    return $viewer.size() && !$viewer.classed('hide');
+  }
+
+
   shouldFilterByDate() {
-    return this._showsLayer('mapillary') || this._showsLayer('kartaview') || this._showsLayer('streetside');
+    return this.isLayerEnabled('mapillary') || this.isLayerEnabled('kartaview') || this.isLayerEnabled('streetside');
   }
   shouldFilterByPhotoType() {
-    return this._showsLayer('mapillary') || (this._showsLayer('streetside') && this._showsLayer('kartaview'));
+    return this.isLayerEnabled('mapillary') || (this.isLayerEnabled('streetside') && this.isLayerEnabled('kartaview'));
   }
   shouldFilterByUsername() {
-    return !this._showsLayer('mapillary') && this._showsLayer('kartaview') && !this._showsLayer('streetside');
+    return !this.isLayerEnabled('mapillary') && this.isLayerEnabled('kartaview') && !this.isLayerEnabled('streetside');
   }
   showsPhotoType(val) {
     if (!this.shouldFilterByPhotoType()) return true;

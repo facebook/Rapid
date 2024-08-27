@@ -59,12 +59,6 @@ export function uiSectionPhotoOverlays(context) {
   }
 
 
-  function showsLayer(layerID) {
-    const layer = scene.layers.get(layerID);
-    return layer && layer.enabled;
-  }
-
-
   function setLayer(layerID, val) {
     // Don't allow layer changes while drawing - iD#6584
     const mode = context.mode;
@@ -79,7 +73,7 @@ export function uiSectionPhotoOverlays(context) {
 
 
   function toggleLayer(layerID) {
-    setLayer(layerID, !showsLayer(layerID));
+    setLayer(layerID, !photos.isLayerEnabled(layerID));
   }
 
 
@@ -277,7 +271,8 @@ export function uiSectionPhotoOverlays(context) {
       .classed('active', filterEnabled);
   }
 
-  scene.on('layerchange', renderIfVisible);
+  // Add or replace event handlers
+  photos.off('photochange', renderIfVisible);
   photos.on('photochange', renderIfVisible);
 
   return section;
