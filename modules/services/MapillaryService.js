@@ -505,7 +505,10 @@ export class MapillaryService extends AbstractSystem {
 
           return Promise.resolve(image);  // pass the image to anything that chains off this Promise
         })
-        .catch(err => console.error('mly3', err));   // eslint-disable-line no-console
+        .catch(err => {
+          if (err.name === 'CancelMapillaryError') return;  // we tried to move to the same image twice, ignore
+          console.error('mly3', err);   // eslint-disable-line no-console
+        });
       }
   }
 
