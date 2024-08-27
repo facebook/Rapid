@@ -5,7 +5,7 @@ import { uiIcon } from './icon.js';
 import { uiNoteComments } from './note_comments.js';
 import { uiNoteHeader } from './note_header.js';
 import { uiNoteReport } from './note_report.js';
-import { uiViewOnOSM } from './view_on_osm.js';
+import { UiViewOn } from './UiViewOn.js';
 import { utilNoAuto, utilRebind } from '../util/index.js';
 
 
@@ -14,6 +14,7 @@ export function uiNoteEditor(context) {
   const dispatch = d3_dispatch('change');
   const noteComments = uiNoteComments(context);
   const noteHeader = uiNoteHeader(context);
+  const ViewOn = new UiViewOn(context);
 
   var _note;
   var _newNote;
@@ -59,15 +60,18 @@ export function uiNoteEditor(context) {
             .call(noteComments.note(_note))
             .call(noteSaveSection);
 
-        var footer = selection.selectAll('.sidebar-footer')
-            .data([0]);
+        ViewOn.stringID = 'inspector.view_on_osm';
+        ViewOn.url = osm?.noteURL(_note);
 
-        footer.enter()
-            .append('div')
-            .attr('class', 'sidebar-footer')
-            .merge(footer)
-            .call(uiViewOnOSM(context).what(_note))
-            .call(uiNoteReport(context).note(_note));
+        const $footer = selection.selectAll('.sidebar-footer')
+          .data([0]);
+
+        $footer.enter()
+          .append('div')
+          .attr('class', 'sidebar-footer')
+          .merge($footer)
+          .call(ViewOn.render)
+          .call(uiNoteReport(context).note(_note));
 
 
         // rerender the note editor on any auth change

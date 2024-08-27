@@ -837,6 +837,7 @@ a.hide-toggle {
   display: flex;
   flex: 1 1 0px;
   flex-flow: column nowrap;
+  overflow: hidden;
 }
 
 .sidebar-component .body {

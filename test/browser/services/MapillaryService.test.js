@@ -31,7 +31,7 @@ describe('MapillaryService', () => {
       expect(cache).to.have.property('signs');
       expect(cache).to.have.property('detections');
       expect(cache).to.have.property('sequences');
-      expect(cache).to.have.property('image_detections');
+      expect(cache).to.have.property('segmentations');
     });
   });
 
@@ -164,7 +164,7 @@ describe('MapillaryService', () => {
 
   describe('#loadTiles', () => {
     it('fires loadedImages when image tiles are loaded', done => {
-      fetchMock.mock(new RegExp('/mly1_public/'), {
+      fetchMock.mock(new RegExp('/mly1_computed_public/'), {
         body: '{"data":[]}',
         status: 200,
         headers: { 'Content-Type': 'application/json' }
@@ -181,7 +181,7 @@ describe('MapillaryService', () => {
 
     it('does not load tiles around Null Island', done => {
       const spy = sinon.spy();
-      fetchMock.mock(new RegExp('/mly1_public/'), {
+      fetchMock.mock(new RegExp('/mly1_computed_public/'), {
         body: '{"data":[]}',
         status: 200,
         headers: { 'Content-Type': 'application/json' }

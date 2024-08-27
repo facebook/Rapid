@@ -168,6 +168,27 @@ export class MapillaryService extends AbstractSystem {
 
 
   /**
+   * imageURL
+   * Returns the url to view an image on Mapillary
+   * @param   {string}  imageID - the imageID to link to
+   * @return  {string}  The url
+   */
+  imageURL(imageID) {
+    const scene = this.context.scene();
+
+    // are either of these layers enabled?
+    const detectionsLayer = scene.layers.get('mapillary-detections');
+    const signsLayer = scene.layers.get('mapillary-signs');
+
+    let extras = '';
+    if (detectionsLayer?.enabled)  extras += '&mapFeature=all';
+    if (signsLayer?.enabled)       extras += '&trafficSign=all';
+
+    return `https://www.mapillary.com/app/?pKey=${imageID}&focus=photo${extras}`;
+  }
+
+
+  /**
    * getImage
    * Return an image from the cache.
    * @param   {string}  imageID - imageID to get
@@ -561,7 +582,7 @@ export class MapillaryService extends AbstractSystem {
       .append('a')
       .attr('class', 'image-link')
       .attr('target', '_blank')
-      .attr('href', `https://www.mapillary.com/app/?pKey=${imageID}&focus=photo`)
+      .attr('href', this.imageURL(imageID))
       .text('mapillary.com');
 
 

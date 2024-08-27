@@ -53,6 +53,7 @@ describe('MapSystem', () => {
     }
     container()   { return _container; }
     keybinding()  { return new MockSystem(); }
+    on()          { return this; }
   }
 
 

@@ -4,7 +4,7 @@ import { select as d3_select } from 'd3-selection';
 import { uiIcon } from './icon.js';
 import { uiKeepRightDetails } from './keepRight_details.js';
 import { uiKeepRightHeader } from './keepRight_header.js';
-import { uiViewOnKeepRight } from './view_on_keepRight.js';
+import { UiViewOn } from './UiViewOn.js';
 import { utilNoAuto, utilRebind } from '../util/index.js';
 
 
@@ -14,6 +14,7 @@ export function uiKeepRightEditor(context) {
   const dispatch = d3_dispatch('change');
   const qaDetails = uiKeepRightDetails(context);
   const qaHeader = uiKeepRightHeader(context);
+  const ViewOn = new UiViewOn(context);
 
   let _qaItem;
 
@@ -56,14 +57,17 @@ export function uiKeepRightEditor(context) {
       .call(keepRightSaveSection);
 
 
-    const footer = selection.selectAll('.sidebar-footer')
+    ViewOn.stringID = 'inspector.view_on_keepRight';
+    ViewOn.url = keepright.issueURL(_qaItem);
+
+    const $footer = selection.selectAll('.sidebar-footer')
       .data([0]);
 
-    footer.enter()
+    $footer.enter()
       .append('div')
       .attr('class', 'sidebar-footer')
-      .merge(footer)
-      .call(uiViewOnKeepRight(context).issue(_qaItem));
+      .merge($footer)
+      .call(ViewOn.render);
   }
 
 
