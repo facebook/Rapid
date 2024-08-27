@@ -469,8 +469,8 @@ export class MapillaryService extends AbstractSystem {
       return Promise.resolve();  // do nothing
     }
 
-    // We are already showing this image, this means we won't get events like imagechanged or moveend
-    // We will have to update segmentations here
+    // We are already showing this image, this means we won't get events like imagechanged or moveend.
+    // We will need to update segmentations here..
     if (this._selectedImageID === imageID) {
       const image = this._cache.images.data.get(imageID);
 

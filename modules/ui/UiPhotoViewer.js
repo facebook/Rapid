@@ -87,6 +87,7 @@ export class UiPhotoViewer extends EventEmitter {
 
     const context = this.context;
     const l10n = context.systems.l10n;
+    const photos = context.systems.photos;
     const isRTL = l10n.isRTL();
 
     // add .photoviewer
@@ -103,12 +104,7 @@ export class UiPhotoViewer extends EventEmitter {
     $$viewer
       .append('button')
       .attr('class', 'thumb-hide')
-      .on('click', () => {
-        for (const serviceID of ['mapillary', 'kartaview', 'streetside']) {
-          const service = context.services[serviceID];
-          service?.hideViewer();
-        }
-      })
+      .on('click', () => photos.hideViewer())
       .append('div')
       .call(uiIcon('#rapid-icon-close'));
 
