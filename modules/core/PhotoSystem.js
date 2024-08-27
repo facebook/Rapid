@@ -370,8 +370,6 @@ export class PhotoSystem extends AbstractSystem {
    * @param {string}  photoID? - The photoID to select
    */
   selectPhoto(layerID = null, photoID = null) {
-    if (layerID === this._currPhotoLayerID && photoID === this._currPhotoID) return;  // no change
-
     const context = this.context;
     const map = context.systems.map;
     const scene = map.scene;
@@ -418,8 +416,6 @@ export class PhotoSystem extends AbstractSystem {
    * @param {string}  detectionID? - The detectionID to select
    */
   selectDetection(layerID = null, detectionID = null) {
-    if (layerID === this._currDetectionLayerID && detectionID === this._currDetectionID) return;  // no change
-
     const context = this.context;
     const map = context.systems.map;
     const scene = map.scene;
@@ -451,31 +447,49 @@ export class PhotoSystem extends AbstractSystem {
           if (!detection) return;
           if (detection.id !== this._currDetectionID) return;  // exit if something else is now selected
 
-          // We will try to move the map to show both the detection and the best photo (if any)
-          const extent = new Extent(detection.loc);
-
-          // Select the best image (if any)
-          const bestImageID = detection.bestImageID;
-          if (bestImageID) {
-            this.selectPhoto(photoLayerID, bestImageID);
+          // Handle the situation where we want to select thia detection,
+          // but we haven't properly entered SelectMode yet.
+          // This can happen if the detection arrived in the URL hash.
+          if (!context.selectedData().has(detection.id)) {
+            const selection = new Map().set(detection.id, detection);
+            context.enter('select', { selection: selection });
+            return;  // bail out - entering select mode will bring us right back in here.
           }
 
           // Highlight any images that show this detection..
-          for (const imageID of detection.imageIDs ?? []) {
-            scene.setClass('highlightphoto', photoLayerID, imageID);
-
-            if (imageID === bestImageID) {
-              const loc = service.getImage(imageID)?.loc;
-              if (loc) {
-                extent.extendSelf(loc);
-              }
-            }
+          const highlightPhotoIDs = detection.imageIDs ?? [];
+          for (const photoID of highlightPhotoIDs) {
+            scene.setClass('highlightphoto', photoLayerID, photoID);
           }
 
-          // Need to zoom out a little to see both things?
-          const needZoom = map.trimmedExtentZoom(extent) - 0.5;  // little extra so the things aren't at the map edges
-          const currZoom = context.viewport.transform.zoom;
-          map.centerZoomEase(extent.center(), Math.min(needZoom, currZoom));
+          // Try to select a photo that shows this detection..
+          // - If the current photo already shows it, keep it selected
+          // - Otherwise choose the "best" photo suggested by the detection
+          // - Otherwise no selected photo.
+          let bestPhotoID;
+          if (this._currPhotoLayerID === photoLayerID && highlightPhotoIDs.includes(this._currPhotoID)) {
+            bestPhotoID = this._currPhotoID;
+          } else {
+            bestPhotoID = detection.bestImageID;
+          }
+
+          // If we are changing the selected photo to a new photo,
+          // Try to adjust the map to show both the detection and the best photo (if any)
+          if (!this._currPhotoID || this._currPhotoID !== bestPhotoID) {
+            const extent = new Extent(detection.loc);
+            const bestPhoto = service.getImage(bestPhotoID);
+            if (bestPhoto?.loc) {
+              extent.extendSelf(bestPhoto.loc);
+            }
+
+            // Need to zoom out a little to see both things?
+            const needZoom = map.trimmedExtentZoom(extent) - 0.5;  // little extra so the things aren't at the map edges
+            const currZoom = context.viewport.transform.zoom;
+            map.centerZoomEase(extent.center(), Math.min(needZoom, currZoom));
+          }
+
+          // Select the best photo (if any)
+          this.selectPhoto(photoLayerID, bestPhotoID);
         });
     }
 

@@ -43,6 +43,7 @@ export class MapillaryService extends AbstractSystem {
     this._startPromise = null;
 
     this._showing = null;
+    this._selectedImageID = null;
     this._cache = {};
 
     this._viewer = null;
@@ -152,11 +153,11 @@ export class MapillaryService extends AbstractSystem {
     }
 
     this._cache = {
-      images:       { lastv: null, data: new Map(), rbush: new RBush() },
-      signs:        { lastv: null, data: new Map(), rbush: new RBush() },
-      detections:   { lastv: null, data: new Map(), rbush: new RBush() },
-      sequences:    { data: new Map() } ,      // Map<sequenceID, Array of LineStrings>
-      image_detections: { forImageID: {} },
+      images:        { lastv: null, data: new Map(), rbush: new RBush() },
+      signs:         { lastv: null, data: new Map(), rbush: new RBush() },
+      detections:    { lastv: null, data: new Map(), rbush: new RBush() },
+      sequences:     { data: new Map() },   // Map<sequenceID, Array<LineStrings>>
+      segmentations: { data: new Map() },
       inflight: new Map(),  // Map<url, {tileID, promise, controller}>
       loaded:   new Set()   // Set<url>
     };
@@ -288,7 +289,7 @@ export class MapillaryService extends AbstractSystem {
       'object--traffic-light--general-upright':            'highway/traffic_signals',       // Traffic Light - General (Upright)
       'object--traffic-light--other':                      'highway/traffic_signals',       // Traffic Light - Other
       'object--traffic-light--pedestrians':                'highway/traffic_signals',       // Traffic Light - Pedestrians
-      'object--trash-can':                                 'amenity/waste_baset',           // Trash Can
+      'object--trash-can':                                 'amenity/waste_basket',          // Trash Can
       'object--water-valve':                               'man_made/water_tap'             // Water Valve
     };
 
@@ -324,34 +325,6 @@ export class MapillaryService extends AbstractSystem {
     for (const tile of tiles) {
       this._loadTileAsync(datasetID, tile);
     }
-  }
-
-
-  /**
-   * resetTags
-   * Remove highlghted detections from the Mapillary viewer
-   */
-  resetTags() {
-    if (this._viewer) {
-      this._viewer.getComponent('tag').removeAll();
-    }
-  }
-
-
-  /**
-   * shouldShowDetections
-   * Determine whether detections should be shown in the mapillary viewer.
-   * @return {Boolean}  `true` if they should be shown, `false` if not
-   */
-  shouldShowDetections() {
-    const scene = this.context.scene();
-
-    // are either of these layers enabled?
-    const layerIDs = ['mapillary-detections', 'mapillary-signs'];
-    return layerIDs.some(layerID => {
-      const layer = scene.layers.get(layerID);
-      return layer && layer.enabled;
-    });
   }
 
 
@@ -453,6 +426,7 @@ export class MapillaryService extends AbstractSystem {
       .classed('hide', true);
 
     this._showing = false;
+    this._selectedImageID = null;
     this.emit('imageChanged');
   }
 
@@ -460,36 +434,86 @@ export class MapillaryService extends AbstractSystem {
   /**
    * selectImageAsync
    * Note:  most code should call `PhotoSystem.selectPhoto(layerID, photoID)` instead.
-   * That will manage the state of what the user clicked on, and then call this function.
+   * PhotoSystem will manage the state of what the user clicked on, and then call this function.
+   *
    * @param  {string} imageID - the id of the image to select
    * @return {Promise} Promise that resolves to the image after it has been selected
    */
   selectImageAsync(imageID) {
+    this._clearSegmentations();
+
     if (!imageID) {
       this._updatePhotoFooter(null);  // reset
       return Promise.resolve();  // do nothing
     }
 
+    // We are already showing this image, this means we won't get events like imagechanged or moveend
+    // We will have to update segmentations here
+    if (this._selectedImageID === imageID) {
+      const image = this._cache.images.data.get(imageID);
+
+      if (this._shouldShowSegmentations()) {
+        return this._loadImageSegmentationsAsync(image)
+          .then(segmentationIDs => this._showSegmentations(segmentationIDs))
+          .catch(err => console.error('mly3', err))   // eslint-disable-line no-console
+          .then(() => Promise.resolve(image));
+      } else {
+        return Promise.resolve(image);
+      }
+
+    } else {  // switch image
+
+      return this.startAsync()
+        .then(() => this._viewer.moveTo(imageID))
+        .then(mlyImage => {
+          const cache = this._cache.images;
+          const image = this._cacheImage(cache, {
+            id:          mlyImage.id.toString(),
+            loc:        [mlyImage.originalLngLat.lng, mlyImage.originalLngLat.lat],
+            sequenceID:  mlyImage.sequenceId.toString(),
+            captured_at: mlyImage.capturedAt,
+            captured_by: mlyImage.creatorUsername,
+            ca:          mlyImage.originalCompassAngle
+          });
+
+          this._selectedImageID = imageID;
+          this._updatePhotoFooter(imageID);
+
+          return Promise.resolve(image);  // pass the image to anything that chains off this Promise
+        })
+        .catch(err => console.error('mly3', err));   // eslint-disable-line no-console
+      }
+  }
+
+
+  /**
+   * selectDetectionAsync
+   * Note:  most code should call `PhotoSystem.selectDetection(layerID, photoID)` instead.
+   * PhotoSystem will manage the state of what the user clicked on, and then call this function.
+   *
+   * `selectPhotoAsync` will probably happen immediately after this resolves,
+   *  as the PhotoSystem attempts to select the photo that best shows this detection.
+   *
+   * @param  {string} detectionID - the id of the detection to select
+   * @return {Promise} Promise that resolves to the detection after it has been selected
+   */
+  selectDetectionAsync(detectionID) {
+    this._clearSegmentations();
+    if (!detectionID) {
+      return Promise.resolve();  // do nothing
+    }
+
     return this.startAsync()
-      .then(() => this._viewer.moveTo(imageID))
-      .then(mlyImage => {
-        const cache = this._cache.images;
-        const image = this._cacheImage(cache, {
-          id:          mlyImage.id.toString(),
-          loc:        [mlyImage.originalLngLat.lng, mlyImage.originalLngLat.lat],
-          sequenceID:  mlyImage.sequenceId.toString(),
-          captured_at: mlyImage.capturedAt,
-          captured_by: mlyImage.creatorUsername,
-          ca:          mlyImage.originalCompassAngle
-        });
-
-// this.resetTags();
-        this._updatePhotoFooter(imageID);
-//      if (this.shouldShowDetections()) {
-//        this._updateDetections(image.id);
-//      }
-
-        return image;  // pass the image to anything that chains off this Promise
+      .then(() => this._loadDetectionAsync(detectionID))
+      .then(detection => {
+        // optionally, load segmentations..
+        if (this._shouldShowSegmentations()) {
+          return this._loadDetectionSegmentationsAsync(detection)
+            .catch(err => console.error('mly3', err))   // eslint-disable-line no-console
+            .then(() => Promise.resolve(detection));
+        } else {
+          return Promise.resolve(detection);  // pass the detection to anything that chains off this Promise
+        }
       })
       .catch(err => console.error('mly3', err));   // eslint-disable-line no-console
   }
@@ -551,56 +575,47 @@ export class MapillaryService extends AbstractSystem {
 
 
   /**
-   * selectDetectionAsync
-   * Note:  most code should call `PhotoSystem.selectDetection(layerID, photoID)` instead.
-   * That will manage the state of what the user clicked on, and then call this function.
-   * @param  {string} detectionID - the id of the detection to select
-   * @return {Promise} Promise that resolves to the detection after it has been selected
+   * _shouldShowSegmentations
+   * Determine whether segmentations should be shown in the mapillary viewer.
+   * @return {Boolean}  `true` if they should be shown, `false` if not
    */
-  selectDetectionAsync(detectionID) {
-    if (!detectionID) return Promise.resolve();  // do nothing
+  _shouldShowSegmentations() {
+    const scene = this.context.scene();
 
-    return this.startAsync()
-      .then(() => this._loadDetectionAsync(detectionID));
+    // are either of these layers enabled?
+    const layerIDs = ['mapillary-detections', 'mapillary-signs'];
+    return layerIDs.some(layerID => {
+      const layer = scene.layers.get(layerID);
+      return layer && layer.enabled;
+    });
   }
 
 
-  // Get detections for the current image and shows them in the image viewer
-  _updateDetections(imageID) {
-    if (!this._viewer) return;
-    if (!imageID) return;
-
-    const url = `${apiUrl}/${imageID}/detections?access_token=${accessToken}&fields=id,image,geometry,value`;
-    const cache = this._cache.image_detections;
-    let detections = cache.forImageID[imageID];
-
-    if (detections) {
-      this._showDetections(detections);
-    } else {
-      this._loadDataAsync(url)
-        .then(results => {
-          for (const result of results) {
-            if (!cache.forImageID[imageID]) {
-              cache.forImageID[imageID] = [];
-            }
-            cache.forImageID[imageID].push({
-              id: result.id,
-              geometry: result.geometry,
-              image_id: imageID,
-              value: result.value
-            });
-          }
-
-          this._showDetections(cache.forImageID[imageID] || []);
-        });
-    }
+  /**
+   * _clearSegmentations
+   * Remove all segmentations (aka "tags") from Mapillary viewer.
+   */
+  _clearSegmentations() {
+    if (!this._viewer) return;   // called too early?
+    this._viewer.getComponent('tag').removeAll();
   }
 
 
-  // Create a tag for each detection and shows it in the image viewer
-  _showDetections(detections) {
+  /**
+   * _showSegmentations
+   * Segmentations are called "tags" in the Mapillary viewer.
+   * Here we are create a tag for each segmentationID found in the current image.
+   * @param  {Set<string>} segmentationIDs - the segmentation ids to show
+   */
+  _showSegmentations(segmentationIDs) {
+    if (!this._viewer) return;  // called too early?
+
+    this._clearSegmentations();
+
     const tagComponent = this._viewer.getComponent('tag');
-    for (const data of detections) {
+    for (const segmentationID of segmentationIDs) {
+      const data = this._cache.segmentations.data.get(segmentationID);
+      if (!data) continue;
       const tag = this._makeTag(data);
       if (tag) {
         tagComponent.add([tag]);
@@ -609,20 +624,25 @@ export class MapillaryService extends AbstractSystem {
   }
 
 
-  // Create a Mapillary JS tag object
-  _makeTag(data) {
-    const valueParts = data.value.split('--');
+  /**
+   * _makeTag
+   * Segmentations are called "tags" in the Mapillary viewer.
+   * Here we create a single tag for the given segmentation.
+   * @param  {Object} segmentation - the segmentation to make a tag for
+   */
+  _makeTag(segmentation) {
+    const valueParts = segmentation.value.split('--');
     if (!valueParts.length) return;
 
-    let tag;
     let text;
-    let color = 0xffffff;
+    let color = 0x05cb63;  // mapillary green
+    // let color = 0xffffff;
 
     const context = this.context;
     const photos = context.systems.photos;
     const currDetectionID = photos.currDetectionID;
 
-    if (currDetectionID === data.id) {
+    if (currDetectionID === segmentation.detectionID) {
       color = 0xffff00;
       text = valueParts[1];
       if (text === 'flat' || text === 'discrete' || text === 'sign') {
@@ -632,27 +652,16 @@ export class MapillaryService extends AbstractSystem {
       text = text.charAt(0).toUpperCase() + text.slice(1);
     }
 
-    const decodedGeometry = window.atob(data.geometry);
-    let uintArray = new Uint8Array(decodedGeometry.length);
-    for (let i = 0; i < decodedGeometry.length; i++) {
-      uintArray[i] = decodedGeometry.charCodeAt(i);
-    }
-    const tile = new VectorTile(new Protobuf(uintArray.buffer));
-    const layer = tile.layers['mpy-or'];
-    const geometries = layer.feature(0).loadGeometry();
-    const polygon = geometries
-      .map(ring => ring.map(point => [point.x / layer.extent, point.y / layer.extent]));
-
-    const mapillary = window.mapillary;
-    tag = new mapillary.OutlineTag(
-      data.id,
-      new mapillary.PolygonGeometry(polygon[0]), {
+    const tag = new window.mapillary.OutlineTag(
+      segmentation.id,
+      segmentation.geometry,
+      {
         text: text,
         textColor: color,
         lineColor: color,
-        lineWidth: 2,
+        lineWidth: 3,
         fillColor: color,
-        fillOpacity: 0.3,
+        fillOpacity: 0.5,
       }
     );
 
@@ -823,7 +832,7 @@ export class MapillaryService extends AbstractSystem {
    * This API call gives us 2 things the tile API does not: `images` and `aligned_direction`
    * @see    https://www.mapillary.com/developer/api-documentation#map-feature
    * @param  {string}   detectionID - the detection to load
-   * @return {Promise}  Promise settled when the detection details when completed
+   * @return {Promise}  Promise settled with the detection details
    */
   _loadDetectionAsync(detectionID) {
     // Is data is cached already and includes the `images` Array?  If so, resolve immediately.
@@ -872,7 +881,7 @@ export class MapillaryService extends AbstractSystem {
           first_seen_at:      response.first_seen_at,
           last_seen_at:       response.last_seen_at,
           value:              response.object_value,
-          aligned_direction:  response.aligned_direcction,
+          aligned_direction:  response.aligned_direction,
           imageIDs:           imageIDs,
           bestImageID:        bestImageID,
           object_type:        (response.object_type === 'trafficsign') ? 'traffic_sign' : 'point'
@@ -887,15 +896,109 @@ export class MapillaryService extends AbstractSystem {
   }
 
 
-  // Get data from the API
-  _loadDataAsync(url) {
+  /**
+   * _loadImageSegmentationsAsync
+   * Get all segmentation data for the given image.
+   * It is nuts to me that we can not get the actual detected object ID from this API.
+   * To workaround that limitation, we will just call the same api from `selectDetectionAsync` too.
+   * This uses `https://graph.mapillary.com/<image_id>/detections`
+   * @see    https://www.mapillary.com/developer/api-documentation#detection
+   * @param  {Object}   image - the image to get segmentation data for
+   * @return {Promise}  Promise settled with the segmentation details
+   */
+  _loadImageSegmentationsAsync(image) {
+    if (image.segmentationIDs) {
+      return Promise.resolve(image.segmentationIDs);
+    }
+
+    // Not cached, load it..
+    const imageID = image.id;
+    const fields = 'id,created_at,geometry,image,value';
+    const url = `${apiUrl}/${imageID}/detections?access_token=${accessToken}&fields=${fields}`;
+
     return fetch(url)
       .then(utilFetchResponse)
-      .then(result => {
-        return result?.data || [];
+      .then(response => {
+        if (!response) {
+          throw new Error('No Data');
+        }
+
+        const cache = this._cache.segmentations;
+        image.segmentationIDs = new Set();
+
+        for (const d of response.data || []) {
+          const segmentationID = d.id.toString();
+
+          this._cacheSegmentation(cache, {
+            id:          segmentationID,
+            imageID:     imageID,
+            // detectionID:    can't be done!?
+            geometry:    d.geometry,
+            created_at:  d.created_at,
+            value:       d.value
+          });
+
+          // Add segmentation to image..
+          image.segmentationIDs.add(segmentationID);
+        }
+
+        return image.segmentationIDs;
       })
       .catch(err => {
-        if (err.name === 'AbortError') return;          // ok
+        if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
+      });
+  }
+
+
+  /**
+   * _loadDetectionSegmentationsAsync
+   * Get all segmentation data for the given detection.
+   * Basically it's the same as `_loadImageSegmentationsAsync`, but using the detectionID instead.
+   * because for some reason the API doesn't give the detectionID when called with the imageID.
+   * This uses `https://graph.mapillary.com/<image_id>/detections`
+   * @see    https://www.mapillary.com/developer/api-documentation#detection
+   * @param  {Object}   detection - the detection to get segmentation data for
+   * @return {Promise}  Promise settled with the segmentation details
+   */
+  _loadDetectionSegmentationsAsync(detection) {
+    if (detection.segmentationIDs) {
+      return Promise.resolve(detection.segmentationIDs);
+    }
+
+    // Not cached, load it..
+    const detectionID = detection.id;
+    const fields = 'id,created_at,geometry,image,value';
+    const url = `${apiUrl}/${detectionID}/detections?access_token=${accessToken}&fields=${fields}`;
+
+    return fetch(url)
+      .then(utilFetchResponse)
+      .then(response => {
+        if (!response) {
+          throw new Error('No Data');
+        }
+
+        const cache = this._cache.segmentations;
+        detection.segmentationIDs = new Set();
+
+        for (const d of response.data || []) {
+          const segmentationID = d.id.toString();
+
+          this._cacheSegmentation(cache, {
+            id:           segmentationID,
+            detectionID:  detectionID,
+            imageID:      d.image.id.toString(),
+            geometry:     d.geometry,
+            created_at:   d.created_at,
+            value:        d.value
+          });
+
+          // Add segmentation to detection..
+          detection.segmentationIDs.add(segmentationID);
+        }
+
+        return detection.segmentationIDs;
+      })
+      .catch(err => {
         if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
       });
   }
@@ -976,7 +1079,6 @@ export class MapillaryService extends AbstractSystem {
       if (photos.currPhotoID !== imageID) {
         photos.selectPhoto('mapillary', imageID);
       }
-
       this.emit('imageChanged');
     };
 
@@ -990,10 +1092,22 @@ export class MapillaryService extends AbstractSystem {
       });
     };
 
+    const moveEnd = (e) => {
+      const imageID = photos.currPhotoID;
+      const image = this._cache.images.data.get(imageID);
+
+      if (image && this._shouldShowSegmentations()) {
+        this._loadImageSegmentationsAsync(image)
+          .then(segmentationIDs => this._showSegmentations(segmentationIDs))
+          .catch(err => console.error('mly3', err));   // eslint-disable-line no-console
+      }
+    };
+
     this._viewer = new mapillary.Viewer(opts);
     this._viewer.on('image', imageChanged);
     this._viewer.on('bearing', bearingChanged);
     this._viewer.on('fov', fovChanged);
+    this._viewer.on('moveend', moveEnd);
 
     if (this._viewerFilter) {
       this._viewer.setFilter(this._viewerFilter);
@@ -1074,6 +1188,47 @@ export class MapillaryService extends AbstractSystem {
     if (props.bestImageID)        detection.bestImageID        = props.bestImageID;
 
     return detection;
+  }
+
+
+  /**
+   * _cacheSegmentation
+   * Store the given segmentation in the caches
+   * @param  {Object}  cache - the cache to use
+   * @param  {Object}  props - the segmentation properties
+   * @return {Object}  The segmentation
+   */
+  _cacheSegmentation(cache, props) {
+    let segmentation = cache.data.get(props.id);
+    if (!segmentation) {
+      // Convert encoded geometry into a polygon..
+      const decodedGeometry = window.atob(props.geometry);
+      let arr = new Uint8Array(decodedGeometry.length);
+      for (let i = 0; i < decodedGeometry.length; i++) {
+        arr[i] = decodedGeometry.charCodeAt(i);
+      }
+      const tile = new VectorTile(new Protobuf(arr.buffer));
+      const layer = tile.layers['mpy-or'];
+      const geometries = layer.feature(0).loadGeometry();
+      const polygon = geometries
+        .map(ring => ring.map(point => [point.x / layer.extent, point.y / layer.extent]));
+      const geometry = new window.mapillary.PolygonGeometry(polygon[0]);
+
+      segmentation = {
+        id:        props.id,
+        imageID:   props.imageID,
+        geometry:  geometry,
+        value:     props.value
+      };
+
+      cache.data.set(segmentation.id, segmentation);
+    }
+
+    // Update whatever additional props we were passed..
+    if (props.created_at)   segmentation.created_at   = props.created_at;
+    if (props.detectionID)  segmentation.detectionID  = props.detectionID;
+
+    return segmentation;
   }
 
 
