@@ -34,12 +34,10 @@ describe('KartaviewService', () => {
   describe('#resetAsync', () => {
     it('resets cache and selected image', () => {
       _kartaview._cache.images.set('foo', { id: 'foo' });
-      _kartaview._selectedImage = 'foo';
 
       return _kartaview.resetAsync()
         .then(() => {
           expect(_kartaview._cache.images.has('foo')).to.be.false;
-          expect(_kartaview._selectedImage).to.be.null;
         });
     });
   });

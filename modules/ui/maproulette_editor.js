@@ -2,10 +2,9 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
 import { uiIcon } from './icon.js';
-
 import { uiMapRouletteDetails } from './maproulette_details.js';
 import { uiMapRouletteHeader } from './maproulette_header.js';
-import { uiViewOnMapRoulette } from './view_on_maproulette.js';
+import { UiViewOn } from './UiViewOn.js';
 import { utilNoAuto, utilRebind } from '../util/index.js';
 
 
@@ -15,6 +14,7 @@ export function uiMapRouletteEditor(context) {
   const dispatch = d3_dispatch('change');
   const mapRouletteDetails = uiMapRouletteDetails(context);
   const mapRouletteHeader = uiMapRouletteHeader(context);
+  const ViewOn = new UiViewOn(context);
 
   let _qaItem;
   let _actionTaken;
@@ -59,14 +59,18 @@ export function uiMapRouletteEditor(context) {
       .call(maprouletteSaveSection)
       .call(commentSaveSection);
 
-    const footer = selection.selectAll('.sidebar-footer')
+
+    ViewOn.stringID = 'inspector.view_on_maproulette';
+    ViewOn.url = (maproulette && _qaItem) ? maproulette.itemURL(_qaItem) : '';
+
+    const $footer = selection.selectAll('.sidebar-footer')
       .data([0]);
 
-    footer.enter()
+    $footer.enter()
       .append('div')
       .attr('class', 'sidebar-footer')
-      .merge(footer)
-      .call(uiViewOnMapRoulette(context).task(_qaItem));
+      .merge($footer)
+      .call(ViewOn.render);
   }
 
   function getMapRouletteApiKey(context, callback) {

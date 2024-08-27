@@ -3,7 +3,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { uiOsmoseDetails } from './osmose_details.js';
 import { uiOsmoseHeader } from './osmose_header.js';
 import { uiIcon } from './icon.js';
-import { uiViewOnOsmose } from './view_on_osmose.js';
+import { UiViewOn } from './UiViewOn.js';
 import { utilRebind } from '../util/index.js';
 
 
@@ -13,6 +13,7 @@ export function uiOsmoseEditor(context) {
   const dispatch = d3_dispatch('change');
   const qaDetails = uiOsmoseDetails(context);
   const qaHeader = uiOsmoseHeader(context);
+  const ViewOn = new UiViewOn(context);
   let _qaItem;
 
 
@@ -53,14 +54,17 @@ export function uiOsmoseEditor(context) {
       .call(qaDetails.issue(_qaItem))
       .call(osmoseSaveSection);
 
-    const footer = selection.selectAll('.sidebar-footer')
+    ViewOn.stringID = 'inspector.view_on_osmose';
+    ViewOn.url = osmose.itemURL(_qaItem);
+
+    const $footer = selection.selectAll('.sidebar-footer')
       .data([0]);
 
-    footer.enter()
+    $footer.enter()
       .append('div')
       .attr('class', 'sidebar-footer')
-      .merge(footer)
-      .call(uiViewOnOsmose(context).what(_qaItem));
+      .merge($footer)
+      .call(ViewOn.render);
   }
 
   function osmoseSaveSection(selection) {
