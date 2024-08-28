@@ -722,14 +722,12 @@ describe('OsmService', () => {
         headers: { 'Content-Type': 'text/xml' }
       });
 
-      _osm.on('loadedNotes', spy);
-      _osm.loadNotes({ /*no options*/ });
-
-      window.setTimeout(() => {
-        // was: calledOnce, now called multiple times as we fetch margin tiles
-        expect(spy.called).to.be.ok;
+      _osm.on('loadedNotes', () => {
+        expect(fetchMock.calls()).to.have.lengthOf.at.least(1);
         done();
-      }, 50);
+      });
+
+      _osm.loadNotes({ /*no options*/ });
     });
   });
 
