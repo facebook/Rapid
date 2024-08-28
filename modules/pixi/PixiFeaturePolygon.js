@@ -324,11 +324,10 @@ export class PixiFeaturePolygon extends AbstractFeature {
         // .poly(shape.outer);
 
 // pixi v8
-        if (this.geometry.flatHoles) {
+        if (this.geometry.holes) {
           for (const holepoly of this.geometry.flatHoles) {
-            this.stroke.beginHole();
             this.stroke.poly(holepoly);
-            this.stroke.endHole();
+            this.stroke.cut();
           }
         }
 
@@ -385,7 +384,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
         // Mask around the inside edges of the fill with a line
         const maskSource = new PIXI.Graphics()
           .clear()
-          .strokeStyle({
+          .setStrokeStyle({
             alpha: 1,
             alignment: 0,  // inside (will do the right thing even for holes, as they are wound correctly)
             color: 0x000000,
@@ -401,7 +400,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
           });
         }
         // Update the mask's geometry
-        this.mask.geometry = maskSource.geometry;
+        this.mask.geometry = maskSource.context;
 // pixi v7
 //        // Example of updating mask geometry
 //        this.mask.geometry = new PIXI.Geometry()
