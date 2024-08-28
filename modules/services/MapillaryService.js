@@ -812,10 +812,10 @@ export class MapillaryService extends AbstractSystem {
         let sequence = cache.data.get(sequenceID);
         if (!sequence) {
           sequence = {
-            type: 'FeatureCollection',
-            service: 'mapillary',
-            id: sequenceID,     // not strictly spec, but should be
-            v: 0,
+            type:     'FeatureCollection',
+            service:  'mapillary',
+            id:       sequenceID,     // not strictly spec, but should be
+            v:        0,
             features: []
           };
           cache.data.set(sequenceID, sequence);
@@ -1176,11 +1176,14 @@ export class MapillaryService extends AbstractSystem {
       cache.rbush.insert({ minX: x, minY: y, maxX: x, maxY: y, data: image });
     }
 
+    // Allow 0, but not things like NaN, null, Infinity
+    const caIsNumber = (!isNaN(props.ca) && isFinite(props.ca));
+
     // Update whatever additional props we were passed..
     if (props.sequenceID)   image.sequenceID  = props.sequenceID;
     if (props.captured_at)  image.captured_at = props.captured_at;
     if (props.captured_by)  image.captured_by = props.captured_by;
-    if (props.ca)           image.ca          = props.ca;
+    if (caIsNumber)         image.ca          = props.ca;
     if (props.isPano)       image.isPano      = props.isPano;
 
     return image;
@@ -1212,13 +1215,16 @@ export class MapillaryService extends AbstractSystem {
       cache.rbush.insert({ minX: x, minY: y, maxX: x, maxY: y, data: detection });
     }
 
+    // Allow 0, but not things like NaN, null, Infinity
+    const dirIsNumber = (!isNaN(props.aligned_direction) && isFinite(props.aligned_direction));
+
     // Update whatever additional props we were passed..
-    if (props.first_seen_at)      detection.first_seen_at      = props.first_seen_at;
-    if (props.last_seen_at)       detection.last_seen_at       = props.last_seen_at;
-    if (props.value)              detection.value              = props.value;
-    if (props.aligned_direction)  detection.aligned_direction  = props.aligned_direction;
-    if (props.imageIDs)           detection.imageIDs           = props.imageIDs;
-    if (props.bestImageID)        detection.bestImageID        = props.bestImageID;
+    if (props.first_seen_at)  detection.first_seen_at      = props.first_seen_at;
+    if (props.last_seen_at)   detection.last_seen_at       = props.last_seen_at;
+    if (props.value)          detection.value              = props.value;
+    if (dirIsNumber)          detection.aligned_direction  = props.aligned_direction;
+    if (props.imageIDs)       detection.imageIDs           = props.imageIDs;
+    if (props.bestImageID)    detection.bestImageID        = props.bestImageID;
 
     return detection;
   }

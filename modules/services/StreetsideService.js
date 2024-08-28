@@ -722,15 +722,16 @@ export class StreetsideService extends AbstractSystem {
 
       const loc = [bubble.lo, bubble.la];
       const bubbleData = {
-        type: 'photo',
-        loc: loc,
-        id: bubbleID,
-        ca: bubble.he,
-        captured_at: bubble.cd,
-        captured_by: 'microsoft',
-        pr: bubble.pr?.toString(),  // previous
-        ne: bubble.ne?.toString(),  // next
-        isPano: true
+        type:         'photo',
+        service:      'streetside',
+        loc:          loc,
+        id:           bubbleID,
+        ca:           bubble.he,
+        captured_at:  bubble.cd,
+        captured_by:  'microsoft',
+        pr:           bubble.pr?.toString(),  // previous
+        ne:           bubble.ne?.toString(),  // next
+        isPano:       true
       };
 
       cache.bubbles.set(bubbleID, bubbleData);
@@ -843,11 +844,12 @@ export class StreetsideService extends AbstractSystem {
         const sequenceNum = this._nextSequenceID++;
         const sequenceID = `s${sequenceNum}`;
         const sequence = {
-          type: 'sequence',
-          id: sequenceID,
-          v: 0,
-          bubbleIDs: [currBubbleID],
-          isPano: true
+          type:       'sequence',
+          service:    'streetside',
+          id:         sequenceID,
+          v:          0,
+          bubbleIDs:  [currBubbleID],
+          isPano:     true
         };
         cache.sequences.set(sequenceID, sequence);
         _updateCaches(sequenceID, currBubbleID);

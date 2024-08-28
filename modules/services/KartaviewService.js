@@ -502,14 +502,14 @@ export class KartaviewService extends AbstractSystem {
           // Note that this API call gives us the `username`, but not the image urls.
           // It also uses 'snake_case' instead of 'camelCase'.
           const image = this._cacheImage(cache, {
-            id:            imageID,
-            sequenceID:    sequenceID,
-            loc:           [+d.lng, +d.lat],
-            ca:            +d.heading,
-            isPano:        (d.field_of_view === '360'),
-            captured_by:   d.username,
-            captured_at:   (d.shot_date || d.date_added),
-            sequenceIndex: +d.sequence_index
+            id:             imageID,
+            sequenceID:     sequenceID,
+            loc:            [+d.lng, +d.lat],
+            ca:             parseFloat(d.heading ?? d.headers),
+            isPano:         (d.field_of_view === '360'),
+            captured_by:    d.username,
+            captured_at:    (d.shot_date ?? d.date_added),
+            sequenceIndex:  parseInt(d.sequence_index, 10)
           });
 
           // Cache sequence, create if needed
@@ -583,16 +583,16 @@ export class KartaviewService extends AbstractSystem {
         // Note that this API call gives us the image urls, but not the `username`.
         // It also uses 'camelCase' instead of 'snake_case'.
         const image = this._cacheImage(cache, {
-          id:            imageID,
-          sequenceID:    sequenceID,
-          loc:           [+d.lng, +d.lat],
-          ca:            +d.heading,
-          isPano:        (d.fieldOfView === '360'),
-          captured_at:   (d.shotDate || d.dateAdded),
-          sequenceIndex: +d.sequenceIndex,
-          imageLowUrl:   d.imageThUrl,     // thumbnail
-          imageMedUrl:   d.imageLthUrl,    // large thumbnail
-          imageHighUrl:  d.imageProcUrl    // full resolution
+          id:             imageID,
+          sequenceID:     sequenceID,
+          loc:            [+d.lng, +d.lat],
+          ca:             parseFloat(d.heading ?? d.headers),
+          isPano:         (d.fieldOfView === '360'),
+          captured_at:    (d.shotDate ?? d.dateAdded),
+          sequenceIndex:  parseInt(d.sequenceIndex, 10),
+          imageLowUrl:    d.imageThUrl,     // thumbnail
+          imageMedUrl:    d.imageLthUrl,    // large thumbnail
+          imageHighUrl:   d.imageProcUrl    // full resolution
         });
 
         // Cache sequence, create if needed
@@ -721,12 +721,15 @@ export class KartaviewService extends AbstractSystem {
       cache.rbush.insert({ minX: x, minY: y, maxX: x, maxY: y, data: image });
     }
 
+    // Allow 0, but not things like NaN, null, Infinity
+    const caIsNumber = (!isNaN(props.ca) && isFinite(props.ca));
+
     // Update whatever additional props we were passed..
     if (props.sequenceID)     image.sequenceID     = props.sequenceID;
     if (props.sequenceIndex)  image.sequenceIndex  = props.sequenceIndex;
     if (props.captured_at)    image.captured_at    = props.captured_at;
     if (props.captured_by)    image.captured_by    = props.captured_by;
-    if (props.ca)             image.ca             = props.ca;
+    if (caIsNumber)           image.ca             = props.ca;
     if (props.isPano)         image.isPano         = props.isPano;
     if (props.imageLowUrl)    image.imageLowUrl    = props.imageLowUrl;   // thumbnail
     if (props.imageMedUrl)    image.imageMedUrl    = props.imageMedUrl;   // large thumbnail
