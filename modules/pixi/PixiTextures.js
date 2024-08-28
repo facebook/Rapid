@@ -292,11 +292,16 @@ export class PixiTextures {
     const options = { autoLoad: false, height: size, width: size };
     const resource = new ImageSource(svgString, options);
 
-    resource.load().then(() => {
-      this.allocate('symbol', textureID, size, size, resource.source);
-      this._svgIcons.delete(textureID);
-      this.context.deferredRedraw();
-    });
+    // v7 code
+    // resource.load().then(() => {
+    //   this.allocate('symbol', textureID, size, size, resource.source);
+    //   this._svgIcons.delete(textureID);
+    //   this.context.deferredRedraw();
+    // });
+
+    this.allocate('symbol', textureID, size, size, resource.source);
+    this._svgIcons.delete(textureID);
+    this.context.deferredRedraw();
   }
 
 
