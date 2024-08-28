@@ -1168,6 +1168,14 @@
       "metadataLayerItemID": "dba9ecf3b0d54a8a824f6a1d993c6ad8",
       "layerIdentifier": "WB_2018_R07"
     },
+    "32553": {
+      "itemID": "33ad336639c24e7b879de1e81cdfa667",
+      "itemTitle": "World Imagery (Wayback 2024-08-15)",
+      "itemURL": "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/32553/{level}/{row}/{col}",
+      "metadataLayerUrl": "https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata_2024_r08/MapServer",
+      "metadataLayerItemID": "4be2d30c33fa4d5cb3884ebe53c2a74b",
+      "layerIdentifier": "WB_2024_R08"
+    },
     "32645": {
       "itemID": "ba2a36fa89ab4b5494b2995dcd037ec4",
       "itemTitle": "World Imagery (Wayback 2020-05-20)",

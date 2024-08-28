@@ -47,7 +47,6 @@ const discard = [
   /^OpenStreetMap-turistautak$/,          // 'OpenStreetMap (turistautak)'
 
   /^cyclosm$/,                            // 'CyclOSM'
-  /^geoscribble$/,                        // 'GeoScribble' overlays (we built a service for this instead)
   /^hike_n_bike$/,                        // 'Hike & Bike'
   /^landsat$/,                            // 'Landsat'
   /^skobbler$/,                           // 'Skobbler'
@@ -61,6 +60,7 @@ const discard = [
   /^openseamap$/,
   /^opensnowmap-overlay$/,
 
+  /^geoscribble/,              // 'GeoScribble' overlays (we built a service for this instead)
   /^osmim-/,                   // low zoom osmim imagery
   /^US-TIGER-Roads-201\d/,     // older than 2020
   /^Waymarked_Trails/,         // Waymarked Trails *
