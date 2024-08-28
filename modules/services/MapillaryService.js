@@ -470,7 +470,7 @@ export class MapillaryService extends AbstractSystem {
     }
 
     // We are already showing this image, this means we won't get events like imagechanged or moveend.
-    // We will need to update segmentations here..
+    // This means we will need to update segmentations here..
     if (this._selectedImageID === imageID) {
       const image = this._cache.images.data.get(imageID);
 
@@ -688,7 +688,7 @@ export class MapillaryService extends AbstractSystem {
         lineColor: color,
         lineWidth: 3,
         fillColor: color,
-        fillOpacity: 0.5,
+        fillOpacity: 0.4
       }
     );
 
@@ -1127,6 +1127,8 @@ export class MapillaryService extends AbstractSystem {
       const imageID = photos.currPhotoID;
       const image = this._cache.images.data.get(imageID);
 
+      // If we update the segmentations before the viewer is finished moving,
+      // they end up drawn in the wrong place!
       if (image && this._shouldShowSegmentations()) {
         this._loadImageSegmentationsAsync(image)
           .then(segmentationIDs => this._showSegmentations(segmentationIDs))
