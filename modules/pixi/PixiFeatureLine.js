@@ -3,7 +3,7 @@ import { DashLine } from '@rapideditor/pixi-dashed-line';
 import { GlowFilter } from 'pixi-filters';
 
 import { AbstractFeature } from './AbstractFeature.js';
-import { getLineCapEnum, getLineJoinEnum, getLineSegments, lineToPoly } from './helpers.js';
+import { getLineSegments, lineToPoly } from './helpers.js';
 
 const ONEWAY_SPACING = 35;
 const SIDED_SPACING = 30;
@@ -238,16 +238,16 @@ export class PixiFeatureLine extends AbstractFeature {
           color: style[which].color,
           width: width,
           alpha: style[which].alpha || 1.0,
-          join: getLineJoinEnum(style[which].join),
-          cap:  getLineCapEnum(style[which].cap),
+          join: style[which].join,
+          cap:  style[which].cap,
         });
       } else {
         g = g.lineStyle({
           color: style[which].color,
           width: width,
           alpha: style[which].alpha || 1.0,
-          join: getLineJoinEnum(style[which].join),
-          cap:  getLineCapEnum(style[which].cap),
+          join: style[which].join,
+          cap:  style[which].cap,
         });
       }
 
@@ -289,7 +289,7 @@ export class PixiFeatureLine extends AbstractFeature {
 
 // todo: figure out pixi v8 linebuilder works
 //    this._bufferdata = lineToPoly(this.geometry.flatOuter, hitStyle);
-    this.container.hitArea = new PIXI.Polygon(this._bufferdata.perimeter);
+//    this.container.hitArea = new PIXI.Polygon(this._bufferdata.perimeter);
   }
 
 

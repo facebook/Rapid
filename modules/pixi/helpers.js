@@ -341,41 +341,6 @@ export function flatCoordsToPoints(coords) {
 }
 
 
-
-/**
- * getLineCapEnum
- * see https://pixijs.download/dev/docs/PIXI.html#LINE_CAP
- * @param   {string}   str - One of 'butt', 'square', or 'round' (default)
- * @returns {nummber}  The corresponding PIXI enum value
- */
-export function getLineCapEnum(str) {
-  if (str === 'butt') {
-    return getLineCapEnum('butt');
-  } else if (str === 'square') {
-    return getLineCapEnum('square');
-  } else {
-    return getLineCapEnum('round');
-  }
-}
-
-
-/**
- * getLineJoinEnum
- * see https://pixijs.download/dev/docs/PIXI.html#LINE_JOIN
- * @param   {string}   str - One of 'bevel', 'miter', or 'round' (default)
- * @returns {nummber}  The corresponding PIXI enum value
- */
-export function getLineJoinEnum(str) {
-  if (str === 'bevel') {
-    return getLineCapEnum('bevel');
-  } else if (str === 'miter') {
-    return getLineCapEnum('miter');
-  } else {
-    return getLineCapEnum('round');
-  }
-}
-
-
 export function getDebugBBox(x, y, width, height, color, alpha, name) {
   const sprite = new PIXI.Sprite(PIXI.Texture.WHITE);
   sprite.eventMode = 'none';
