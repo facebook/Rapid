@@ -956,7 +956,7 @@ export class MapillaryService extends AbstractSystem {
         for (const d of response.data || []) {
           const segmentationID = d.id.toString();
 
-          this._cacheSegmentation(cache, {
+          const segmentation = this._cacheSegmentation(cache, {
             id:          segmentationID,
             imageID:     imageID,
             // detectionID:    can't be done!?
@@ -966,7 +966,9 @@ export class MapillaryService extends AbstractSystem {
           });
 
           // Add segmentation to image..
-          image.segmentationIDs.add(segmentationID);
+          if (segmentation) {
+            image.segmentationIDs.add(segmentationID);
+          }
         }
 
         return image.segmentationIDs;
@@ -1010,7 +1012,7 @@ export class MapillaryService extends AbstractSystem {
         for (const d of response.data || []) {
           const segmentationID = d.id.toString();
 
-          this._cacheSegmentation(cache, {
+          const segmentation = this._cacheSegmentation(cache, {
             id:           segmentationID,
             detectionID:  detectionID,
             imageID:      d.image.id.toString(),
@@ -1020,7 +1022,9 @@ export class MapillaryService extends AbstractSystem {
           });
 
           // Add segmentation to detection..
-          detection.segmentationIDs.add(segmentationID);
+          if (segmentation) {
+            detection.segmentationIDs.add(segmentationID);
+          }
         }
 
         return detection.segmentationIDs;
@@ -1223,9 +1227,15 @@ export class MapillaryService extends AbstractSystem {
    * Store the given segmentation in the caches
    * @param  {Object}  cache - the cache to use
    * @param  {Object}  props - the segmentation properties
-   * @return {Object}  The segmentation
+   * @return {Object?} The segmentation data, or `null` if we are skipping it (see below)
    */
   _cacheSegmentation(cache, props) {
+    // Note: not all segmentations are ones we can work with.
+    // For now, we'll only keep the ones that correspond to the known object detections and traffic_signs.
+    const isDetection = this.getDetectionPresetID(props.value);
+    const isTrafficSign = /^(regulatory|information|warning|complementary)/.test(props.value);
+    if (!isDetection && !isTrafficSign) return null;
+
     let segmentation = cache.data.get(props.id);
     if (!segmentation) {
       // Convert encoded geometry into a polygon..
