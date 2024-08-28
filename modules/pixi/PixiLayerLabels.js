@@ -317,14 +317,17 @@ export class PixiLayerLabels extends AbstractLayer {
       // Generate the Text
       const text = new PIXI.Text(str, textStyle);
       text.resolution = 2;
-      text.updateText(false);  // force update it so the texture is prepared
+      // text.!updateText(false);  // force update it so the texture is prepared
 
       // Copy the texture data into the atlas.
       // Also remove x-padding, as this will only end up pushing the label away from the pin.
       // (We are mostly interested in y-padding diacritics, see Rapid#653)
       // Note: Whatever padding we set before got doubled because resolution = 2
       const [x, y] = [pad * 2, 0];
-      const [w, h] = [text.canvas.width - (pad * 4), text.canvas.height];
+
+      //v8 - pixi doesn't have a canvas for text anymore, so these widths and heights might not be quite right 
+      // i.e. do we need to round them?
+      const [w, h] = [text.width - (pad * 4), text.height];
       const data = text.context.getImageData(x, y, w, h);
 
       texture = textureManager.allocate('text', textureID, w, h, data);
