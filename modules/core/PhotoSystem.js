@@ -474,6 +474,12 @@ export class PhotoSystem extends AbstractSystem {
     const map = context.systems.map;
     const scene = map.scene;
 
+    // If we're selecting a detection then make sure its layer is enabled too.
+    if (this.detectionLayerIDs.includes(layerID) && !this.isLayerEnabled(layerID)) {
+      scene.enableLayers(layerID);
+      return;  // exit to avoid infinite loop, we will be right back in here via `_layerchange` handler.
+    }
+
     // Clear out any existing selection..
     this._currDetectionLayerID = null;
     this._currDetectionID = null;
@@ -488,9 +494,6 @@ export class PhotoSystem extends AbstractSystem {
 
       this._currDetectionLayerID = layerID;
       this._currDetectionID = detectionID;
-
-      // If we're selecting a detection then make sure its layer is enabled too.
-      scene.enableLayers(layerID);
       scene.setClass('selectdetection', layerID, detectionID);
 
       // Try to highlight any photos that show this detection,
