@@ -111,23 +111,24 @@ export class RapidSystem extends AbstractSystem {
           license_markdown: l10n.t('rapid_feature_toggle.msBuildings.license_markdown')
         });
 
-        this._datasets.set('metaFootways', {
-          id: 'metaFootways',
-          beta: true,
-          added: true,         // whether it should appear in the list
-          enabled: false,      // whether the user has checked it on
-          conflated: true,
-          service: 'mapwithai',
-          overlay: {
-            url: 'https://external.xx.fbcdn.net/maps/vtp/rapid_overlay_footways/1/{z}/{x}/{y}/',
-            minZoom: 1,
-            maxZoom: 15,
-          },
-          color: RAPID_MAGENTA,
-          dataUsed: ['mapwithai', 'Meta Footways'],
-          label: l10n.t('rapid_feature_toggle.metaFootways.label'),
-          license_markdown: l10n.t('rapid_feature_toggle.metaFootways.license_markdown')
-        });
+// bhousel 8/29/24, not yet
+//        this._datasets.set('metaFootways', {
+//          id: 'metaFootways',
+//          beta: true,
+//          added: true,         // whether it should appear in the list
+//          enabled: false,      // whether the user has checked it on
+//          conflated: true,
+//          service: 'mapwithai',
+//          overlay: {
+//            url: 'https://external.xx.fbcdn.net/maps/vtp/rapid_overlay_footways/1/{z}/{x}/{y}/',
+//            minZoom: 1,
+//            maxZoom: 15,
+//          },
+//          color: RAPID_MAGENTA,
+//          dataUsed: ['mapwithai', 'Meta Footways'],
+//          label: l10n.t('rapid_feature_toggle.metaFootways.label'),
+//          license_markdown: l10n.t('rapid_feature_toggle.metaFootways.license_markdown')
+//        });
       });
   }
 
