@@ -407,11 +407,13 @@ async function processTranslations(resourceName, languageID, sourceCollection, t
       }
     }
 
-    // Only remove the redundant translations from the Rapid 'core' resource, not the iD projects
-    if (resourceName === 'core' && isRedundant) {
-      console.log(chalk.yellow(`🔪   Removing redundant '${languageID}' translation…`));
-      await saveWithRetry(translation, { strings: null });
-    }
+// We won't remove redundant strings from Transifex after all, because many translators
+// fill in every string, and use this signal to try to get their language 100% complete.
+//    // Only remove the redundant translations from the Rapid 'core' resource, not the iD projects
+//    if (resourceName === 'core' && isRedundant) {
+//      console.log(chalk.yellow(`🔪   Removing redundant '${languageID}' translation…`));
+//      await saveWithRetry(translation, { strings: null });
+//    }
   }
 
 
