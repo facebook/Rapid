@@ -17,60 +17,62 @@ export function uiWhatsNew(context) {
 
 
   return function render(selection) {
-    const modal = uiModal(selection);
+    const $modal = uiModal(selection);
 
-    modal.select('.modal')
+    $modal.select('.modal')
       .attr('class', 'modal rapid-modal modal-whatsnew');
 
-    const content = modal.select('.content');
-    content
+    const $content = $modal.select('.content');
+    $content
       .append('div')
       .attr('class', 'modal-section')
       .append('h2')
-      .html(l10n.t('whats_new.welcome', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }));
+      .html(l10n.t('whats_new.welcome_v24', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }));
 
 
-    const markdown = l10n.t('whats_new.text') + '\n\n';
+    const markdown = l10n.t('whats_new.text_v24') + '\n\n';
 
-    const mainSection = content
+    const $mainSection = $content
       .append('div')
       .attr('class', 'modal-section');
 
-    mainSection
+    $mainSection
       .append('div')
       .attr('class', 'whatsnew-text')
       .html(marked.parse(markdown));
 
-    mainSection
+    $mainSection
       .append('div')
       .attr('class', 'whatsnew-images')
-      .append('video')
+// if an image:
+      .append('img')
       .attr('class', 'whatsnew-image')
-      .attr('width', '660')
-      .attr('muted', '')
-      .attr('controls', '')
-      .attr('loop', '')
-      .attr('playsinline', '')
-      .attr('disablepictureinpicture', '')
-      .attr('poster', assets.getFileURL('img/rapid-v23-rotation.jpg'))
-      .attr('src', assets.getFileURL('img/rapid-v23-rotation.mp4'))
-      .attr('autoplay', '');
-//      .append('img')
+      .attr('src', assets.getFileURL('img/rapid-v24-mapillary.gif'));
+// if a video:
+//      .append('video')
 //      .attr('class', 'whatsnew-image')
-//      .attr('src', assets.getFileURL('img/rapid-v22-splash.jpg'));
+//      .attr('width', '660')
+//      .attr('muted', '')
+//      .attr('controls', '')
+//      .attr('loop', '')
+//      .attr('playsinline', '')
+//      .attr('disablepictureinpicture', '')
+//      .attr('poster', assets.getFileURL('img/rapid-v23-rotation.jpg'))
+//      .attr('src', assets.getFileURL('img/rapid-v23-rotation.mp4'))
+//      .attr('autoplay', '');
 
-    const checkbox = mainSection
+    const $checkbox = $mainSection
       .append('div')
       .attr('class', 'rapid-checkbox whatsnew-dontshow')
       .append('label')
       .attr('class', 'rapid-checkbox-label');
 
-    checkbox
+    $checkbox
       .append('span')
       .attr('class', 'rapid-checkbox-text')
       .text(l10n.t('whats_new.dontshowagain'));
 
-    checkbox
+    $checkbox
       .append('input')
       .attr('type', 'checkbox')
       .attr('class', 'rapid-feature-checkbox')
@@ -82,25 +84,25 @@ export function uiWhatsNew(context) {
         }
       });
 
-    checkbox
+    $checkbox
       .append('div')
       .attr('class', 'rapid-checkbox-custom');
 
 
     // outbound links should open in new tab
-    content.selectAll('a')
+    $content.selectAll('a')
       .attr('target', '_blank');
 
 
-    const buttonWrap = content
+    const $buttonWrap = $content
       .append('div')
       .attr('class', 'modal-section buttons');
 
-    buttonWrap
+    $buttonWrap
       .append('button')
       .attr('class', 'button ok-button action')
       .text(l10n.t('confirm.okay'))
-      .on('click', modal.close)
+      .on('click', $modal.close)
       .node()
       .focus();
   };

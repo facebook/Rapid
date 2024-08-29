@@ -1390,8 +1390,10 @@
       "start": "Edit now"
     },
     "whats_new": {
-      "welcome": "Welcome to {rapidicon} v2.3!",
-      "text": "🌸 **Happy Spring 2024!**  We've added support for GeoScribble field notes, Esri Wayback Imagery, and completing MapRoulette tasks right from within Rapid. And, you can now rotate the map to make editing easier!\n\nFor all the details check out our [changelog](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new) and [issue tracker](https://github.com/facebook/Rapid/issues) on GitHub. Happy Mapping! 👍",
+      "welcome_v23": "Welcome to {rapidicon} v2.3!",
+      "text_v23": "🌸 **Happy Spring 2024!**  We've added support for GeoScribble field notes, Esri Wayback Imagery, and completing MapRoulette tasks right from within Rapid. And, you can now rotate the map to make editing easier!\n\nFor all the details check out our [changelog](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new) and [issue tracker](https://github.com/facebook/Rapid/issues) on GitHub. Happy Mapping! 👍",
+      "welcome_v24": "Welcome to {rapidicon} v2.4!",
+      "text_v24": "🌞 **Happy Summer 2024!**  This release improves Rapid's text localization, and makes it easier to work with streetlevel data like Mapillary. Now you can inspect detected objects, such as traffic signs, crosswalks, bike racks, and more!\n\nFor all the details check out our [changelog](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new) and [issue tracker](https://github.com/facebook/Rapid/issues) on GitHub. Happy Mapping! 👍",
       "dontshowagain": "Hide this screen until the next version"
     },
     "source_switch": {
