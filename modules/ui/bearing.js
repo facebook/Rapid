@@ -9,7 +9,7 @@ export function uiBearing(context) {
   const map = context.systems.map;
   const viewport = context.viewport;
 
-  const tooltip = uiTooltip(context);
+  const Tooltip = uiTooltip(context);
   let _selection;
 
   // reset event handler
@@ -26,11 +26,11 @@ export function uiBearing(context) {
   function render() {
     if (!_selection) return;  // called too early
 
-    let button = _selection.selectAll('button.bearing')
+    let $button = _selection.selectAll('button.bearing')
       .data([0]);
 
     // enter
-    const buttonEnter = button.enter()
+    const $$button = $button.enter()
       .append('button')
       .attr('class', 'bearing')
       .on('click', e => {
@@ -41,26 +41,27 @@ export function uiBearing(context) {
         }
       });
 
-    buttonEnter
+    $$button
       .append('div')
       .attr('class', 'bearing_n')
       .text(l10n.t('bearing.n'));  // the letter 'N'
 
-    buttonEnter.call(tooltip
+    $$button.call(Tooltip
       .placement(l10n.isRTL() ? 'right' : 'left')
       .title(l10n.t('bearing.reset_bearing'))
       .shortcut('⇧ ')  // hack, we will replace the space with the arrow keys icon
     );
 
-    buttonEnter
+    $$button
       .call(uiIcon('#rapid-icon-compass', 'light'));
 
 
     // update
-    button = button.merge(buttonEnter);
+    $button = $button.merge($$button);
 
     // Insert a better keyhint
-    button.selectAll('.tooltip-keyhint')
+    Tooltip.updateContent();  // call this first, in order to be able to select the keyhint
+    $button.selectAll('.tooltip-keyhint')
       .selectAll('.rotate-the-map')
       .data([0])
       .enter()
@@ -68,10 +69,10 @@ export function uiBearing(context) {
       .attr('class', 'rotate-the-map')
       .text(l10n.t('bearing.rotate_the_map'));
 
-    button.selectAll('.tooltip-keys > kbd.shortcut:last-of-type')
+    $button.selectAll('.tooltip-keys > kbd.shortcut:last-of-type')
       .classed('hide', true);  // remove the space
 
-    button.selectAll('.tooltip-keys')
+    $button.selectAll('.tooltip-keys')
       .call(uiIcon('#rapid-interaction-keyboard-arrows-left-right', 'operation'));
 
 
@@ -80,13 +81,13 @@ export function uiBearing(context) {
 
     // Translate the 'N' around opposite of the compass pointer
     const npos = vecRotate([0, 8], rot, [0, 0]);
-    button.selectAll('.bearing_n')
+    $button.selectAll('.bearing_n')
       .style('transform', `translate(${npos[0]}px, ${npos[1]}px)`);
 
     // Select direct descendant compass icon only (not the tooltip-keys icon!)...
     // Because `d3.selectAll` uses `element.querySelectorAll`, `:scope` refers to self
     // see https://developer.mozilla.org/en-US/docs/Web/CSS/:scope
-    button.selectAll(':scope > .icon use')
+    $button.selectAll(':scope > .icon use')
       .style('transform-origin', isNorthUp ? null : 'center')
       .style('transform', isNorthUp ? null : `rotate(${rot}rad)`);
   }
