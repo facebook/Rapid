@@ -33,9 +33,110 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 ###### New and Changed Fields
 
 [#xxxx]: https://github.com/facebook/Rapid/issues/xxxx
-[iD#xxxx]: https://github.com/openstreetmap/iD/issues/xxxx
+[iD#xxxxx]: https://github.com/openstreetmap/iD/issues/xxxxx
+[id-tagging-schema#xxxx]: https://github.com/openstreetmap/id-tagging-schema/issues/xxxx
 [@xxxx]: https://github.com/xxxx
 -->
+
+# [2.4.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.4.0)
+#### 2024-Sep-?? (Coming soon)
+
+#### :camera: Street-Level
+* [#1526] Streetview Imagery bug-bash:
+  * [#1509] KartaView imagery was not working
+  * [#1510] Support KartaView 360° photos
+  * [#1511] Mapillary sequence lines were missing
+  * [#1512] Always show the selected photo, even if filtering rules would hide it
+  * [#1513] Some Mapillary data missing if multiple layers were selected (photos, signs, objects)
+  * [#1514] Highlight photos that show a Mapillary detection, improve choice of photo and map positioning
+  * [#1515] Allow Mapillary signs and detections to be selected via the URL hash
+  * [#1516] Avoid Mapillary detections from overlapping
+  * [#1517] Allow Mapillary signs and detections to be selected by clicking on them, show detail in sidebar
+  * [#1518] Show placeholder icons for Mapillary signs and detections not in known list
+  * [#1521] Add "high resolution" toggle for KartaView photos
+  * [#1502] Restore Mapillary segmentation display in viewer, include text and highlighting
+
+#### :bug: Bugfixes
+* [#1486] Fix: When changing a feature from line to area or vice versa, preset list not updated
+* [#1503] Fix: When adding a new note, allow user to drag the note to where it belongs
+* [#1505] Fix: Icons briefly not visible when drawn the first time
+* [#1525] Fix: Mapbox Imagery access tokens
+* [iD#10323], [iD#10333] Fix: Name field hidden even if localized name tags exist
+
+#### :sparkles: Usability & Accessibility
+* [#1472] MapRoulette Improvements:
+  * [#1419] Support curly-brace "mustache" templates in challenge instructions
+  * [#1423] Support form field templating in challenge instructions
+* [#1400] New shortcuts for toggling layers:
+  * <kbd>Shift</kbd>+<kbd>O</kbd> Toggle OSM Data
+  * <kbd>Shift</kbd>+<kbd>N</kbd> Toggle OSM Notes
+  * <kbd>Shift</kbd>+<kbd>R</kbd> Toggle Rapid Data
+* [#1468] Fix viewpoint jumpiness after resizing the sidebar
+* [#1479] Remember user's preference for sidebar width
+* [#1497] Add a larger sidebar resize handle (click will toggle), remove "Inspect" toggle sidebar button
+* [#1500] When shrinking buttons on narrow screens, shrink the Rapid button too
+
+#### :earth_asia: Localization
+* [#206], [#1490] Get translation working again
+* [iD#10291], [iD#10332] Add Thailand Address format
+
+#### :hammer: Development
+* [#1437] Add experimental support for Rapid datasets to render a coverage heatmap at low zooms
+* [#1404], [#1439] Create example page for Rapid embedded in iframe
+* [#1482] Allow Rapid to work in Sandbox (no CDN)
+* [#1471], [#1477] Add option to change the image transparency
+* [#1478], [#1483] Remove ImproveOSM, service has been shut down
+* [#1481], [#1496] Allow customizible zoom range for imagary sources
+
+#### :popcorn: OSM:
+* [iD#10278], [id-tagging-schema#1263] Add support for `railway=ventilation_shaft`
+* [iD#10283], Add support for `waterway=flowline`
+
+[#206]: https://github.com/facebook/Rapid/issues/206
+[#1400]: https://github.com/facebook/Rapid/issues/1400
+[#1404]: https://github.com/facebook/Rapid/issues/1404
+[#1419]: https://github.com/facebook/Rapid/issues/1419
+[#1423]: https://github.com/facebook/Rapid/issues/1423
+[#1437]: https://github.com/facebook/Rapid/issues/1437
+[#1439]: https://github.com/facebook/Rapid/issues/1439
+[#1468]: https://github.com/facebook/Rapid/issues/1468
+[#1471]: https://github.com/facebook/Rapid/issues/1471
+[#1472]: https://github.com/facebook/Rapid/issues/1472
+[#1477]: https://github.com/facebook/Rapid/issues/1477
+[#1478]: https://github.com/facebook/Rapid/issues/1478
+[#1479]: https://github.com/facebook/Rapid/issues/1479
+[#1481]: https://github.com/facebook/Rapid/issues/1481
+[#1482]: https://github.com/facebook/Rapid/issues/1482
+[#1483]: https://github.com/facebook/Rapid/issues/1483
+[#1486]: https://github.com/facebook/Rapid/issues/1486
+[#1490]: https://github.com/facebook/Rapid/issues/1490
+[#1496]: https://github.com/facebook/Rapid/issues/1496
+[#1497]: https://github.com/facebook/Rapid/issues/1497
+[#1500]: https://github.com/facebook/Rapid/issues/1500
+[#1502]: https://github.com/facebook/Rapid/issues/1502
+[#1503]: https://github.com/facebook/Rapid/issues/1503
+[#1505]: https://github.com/facebook/Rapid/issues/1505
+[#1509]: https://github.com/facebook/Rapid/issues/1509
+[#1510]: https://github.com/facebook/Rapid/issues/1510
+[#1511]: https://github.com/facebook/Rapid/issues/1511
+[#1512]: https://github.com/facebook/Rapid/issues/1512
+[#1513]: https://github.com/facebook/Rapid/issues/1513
+[#1514]: https://github.com/facebook/Rapid/issues/1514
+[#1515]: https://github.com/facebook/Rapid/issues/1515
+[#1516]: https://github.com/facebook/Rapid/issues/1516
+[#1517]: https://github.com/facebook/Rapid/issues/1517
+[#1518]: https://github.com/facebook/Rapid/issues/1518
+[#1521]: https://github.com/facebook/Rapid/issues/1521
+[#1525]: https://github.com/facebook/Rapid/issues/1525
+[#1526]: https://github.com/facebook/Rapid/issues/1526
+[iD#10323]: https://github.com/openstreetmap/iD/issues/10323
+[iD#10333]: https://github.com/openstreetmap/iD/issues/10333
+[iD#10291]: https://github.com/openstreetmap/iD/issues/10291
+[iD#10332]: https://github.com/openstreetmap/iD/issues/10332
+[iD#10278]: https://github.com/openstreetmap/iD/issues/10278
+[iD#10283]: https://github.com/openstreetmap/iD/issues/10283
+[id-tagging-schema#1263]: https://github.com/openstreetmap/id-tagging-schema/issues/1263
+
 
 # [2.3.2](https://github.com/facebook/Rapid/releases/tag/rapid-v2.3.2)
 #### 2024-Jul-16
