@@ -20,7 +20,8 @@ You can adjust the URLs elsewhere in this file if you want to limit Rapid to a s
 -->
     <meta charset='utf-8'>
     <title>Rapid</title>
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@rapideditor/rapid@2/dist/rapid.css'>
+    <link rel='stylesheet' href='../../rapid.css'>   <!-- local development -->
+    <!-- <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@rapideditor/rapid@2/dist/rapid.css'> -->   <!-- CDN -->
     <link rel='icon' type='image/svg' href='https://cdn.jsdelivr.net/npm/@rapideditor/rapid@2/dist/img/rapid_favicon.svg'>
 
     <meta name='viewport' content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'/>
@@ -50,10 +51,9 @@ You can adjust the URLs elsewhere in this file if you want to limit Rapid to a s
       newScript.onload = checkScript;
       newScript.onerror = checkScript;
 
-// at some point, replace this with the cdn link
-newScript.src = '../../rapid.js';
-//      newScript.src = 'https://cdn.jsdelivr.net/npm/@rapideditor/rapid@2/dist/rapid.js';         // debug
-//      newScript.src = 'https://cdn.jsdelivr.net/npm/@rapideditor/rapid@2/dist/rapid.min.js';   // production
+      newScript.src = '../../rapid.js';                                                          // local development
+//      newScript.src = 'https://cdn.jsdelivr.net/npm/@rapideditor/rapid@2/dist/rapid.js';       // CDN debug
+//      newScript.src = 'https://cdn.jsdelivr.net/npm/@rapideditor/rapid@2/dist/rapid.min.js';   // CDN production
 
       document.getElementsByTagName('head')[0].appendChild(newScript);
 
@@ -65,7 +65,8 @@ newScript.src = '../../rapid.js';
         } else {
           const context = new Rapid.Context();
           context.containerNode = container;
-          context.assetPath = 'https://cdn.jsdelivr.net/npm/@rapideditor/rapid@2/dist/';
+          context.assetPath = '../../';                                                       // local development
+          // context.assetPath = 'https://cdn.jsdelivr.net/npm/@rapideditor/rapid@2/dist/';   // CDN
           context.buildID = '';
           context.buildSHA = '';
           context.buildDate = '';
