@@ -35,7 +35,7 @@ of Rapid (e.g. `https://mapwith.ai/rapid`), the following parameters are availab
   _Example:_ `id=n1207480649`
 * __`locale`__ - A code specifying the localization to use, affecting the language, layout, and keyboard shortcuts. Multiple codes may be specified in order of preference. The first valid code will be the locale, while the rest will be used as fallbacks if certain text hasn't been translated. The default locale preferences are set by the browser.<br/>
   _Example:_ `locale=ja`, `locale=pt-BR`, `locale=nl,fr,de`<br/>
-  _Available values:_ Any of the [supported locales](https://github.com/facebook/rapid/tree/main/dist/locales).
+  _Available values:_ Any of the [supported locales](https://github.com/facebook/Rapid/blob/main/data/locales.json).
 * __`map`__ - A slash-separated `zoom/latitude/longitude`.<br/>
   _Example:_ `map=20.00/38.90085/-77.02271`
 * __`offset`__ - Background imagery alignment offset in meters, formatted as `east,north`.<br/>
@@ -47,9 +47,12 @@ of Rapid (e.g. `https://mapwith.ai/rapid`), the following parameters are availab
   _Example:_ `photo_dates=2019-01-01_2020-12-31`, `photo_dates=2019-01-01_`, `photo_dates=_2020-12-31`<br/>
 * __`photo_username`__ - The Mapillary or KartaView username by which to filter street-level photos. Multiple comma-separated usernames are supported.<br/>
   _Example:_ `photo_user=quincylvania`, `photo_user=quincylvania,chrisbeddow`<br/>
-* __`photo`__ - The service and ID of the street-level photo to show.<br/>
-  _Example:_ `photo=streetside/718514589`<br/>
-  _Available prefixes:_ `streetside/`, `mapillary/`, `kartaview/`
+* __`photo`__ - The layer and ID of the photo to show.<br/>
+  _Example:_ `photo=mapillary/1157313301398079`<br/>
+  _Available prefixes:_ `streetside`, `mapillary`, `kartaview`
+* __`detection`__ - The layer and ID of the detection to show.<br/>
+  _Example:_ `mapillary-signs/481941836449560`<br/>
+  _Available prefixes:_ `mapillary-detections`, `mapillary-signs`
 * __`presets`__ - A comma-separated list of preset IDs. These will be the only presets the user may select.<br/>
   _Example:_ `presets=building,highway/residential,highway/unclassified`
 * __`rtl=true`__ - Force Rapid into right-to-left mode (useful for testing).
@@ -121,6 +124,9 @@ Optional properties:
 For more details about the `Rapid.fileFetcher.cache().imagery` structure, see
 [`update_imagery.js`](https://github.com/facebook/rapid/blob/main/scripts/update_imagery.js).
 
+
+<!--
+Everything in here has changed and needs to be rewritten
 
 ### Presets
 
@@ -235,3 +241,5 @@ A "name" field must be included:
     "placeholder": "Common name (if any)"
 }
 ```
+
+-->
