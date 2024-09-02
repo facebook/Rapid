@@ -109,13 +109,6 @@ for (const [sourceID, source] of sources) {
     item.tileSize = 512;
   }
 
-//  if (sourceID === 'Mapbox') {
-//    item.template = item.template.replace('.jpg', '@2x.jpg');
-//    item.tileSize = 512;
-//  } else if (sourceID === 'mapbox_locator_overlay') {
-//    item.template = item.template.replace('{y}', '{y}{@2x}');
-//  }
-
   // Some WMS sources are supported, check projection
   if (source.type === 'wms') {
     const projection = source.available_projections && supportedWMSProjections.find(p => source.available_projections.indexOf(p) !== -1);

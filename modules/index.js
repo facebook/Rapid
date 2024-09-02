@@ -37,6 +37,8 @@ export const sdk = {
   geoSphericalDistance: SDKMATH.geoSphericalDistance,
   geoZoomToScale: SDKMATH.geoZoomToScale,
   vecLength: SDKMATH.vecLength,
+  utilAesDecrypt: SDKUTIL.utilAesDecrypt,
+  utilAesEncrypt: SDKUTIL.utilAesEncrypt,
   utilQsString: SDKUTIL.utilQsString,
   utilStringQs: SDKUTIL.utilStringQs
 };
