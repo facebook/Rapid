@@ -462,11 +462,15 @@ export class PixiLayerLabels extends AbstractLayer {
         labelObj.label = feature.label;
         // labelObj.anchor.set(0.5, 0.5);   // middle, middle
         labelObj.anchor.set(0.5, 1);     // middle, bottom  - why??
-      } else {
-        labelObj = this.getLabelSprite(feature.label, 'normal');
       }
+      // TODO: Figure out how to extract image data from text to use the texture allocator
+      // else {
+      //   labelObj = this.getLabelSprite(feature.label, 'normal');
+      // }
 
-      this.placeTextLabel(feature, labelObj);
+      if (labelObj) {
+        this.placeTextLabel(feature, labelObj);
+      }
     }
   }
 
@@ -499,9 +503,10 @@ export class PixiLayerLabels extends AbstractLayer {
       if (!feature.container.visible || !feature.container.renderable) continue;    // not visible
       if (feature.geometry.width < 40 && feature.geometry.height < 40) continue;    // too small
 
-      const labelObj = this.getLabelSprite(feature.label, 'normal');
+      // TODO: Fix getLabelSprite after v8 upgrade
+      // const labelObj = this.getLabelSprite(feature.label, 'normal');
 
-      this.placeRopeLabel(feature, labelObj, feature.geometry.coords);
+      // this.placeRopeLabel(feature, labelObj, feature.geometry.coords);
     }
   }
 
@@ -524,7 +529,8 @@ export class PixiLayerLabels extends AbstractLayer {
       if (!feature.container.visible || !feature.container.renderable) continue;    // not visible
       if (feature.geometry.width < 600 && feature.geometry.height < 600) continue;  // too small
 
-      const labelObj = this.getLabelSprite(feature.label, 'italic');
+      // TODO: Fix getLabelSprite after v8 upgrade
+      // const labelObj = this.getLabelSprite(feature.label, 'italic');
 
 // precompute a line buffer in geometry maybe?
 const hitStyle = {
@@ -541,7 +547,7 @@ let coords = new Array(bufferdata.inner.length / 2);  // un-flatten :(
 for (let i = 0; i < bufferdata.inner.length / 2; ++i) {
   coords[i] = [ bufferdata.inner[(i * 2)], bufferdata.inner[(i * 2) + 1] ];
 }
-this.placeRopeLabel(feature, labelObj, coords);
+// this.placeRopeLabel(feature, labelObj, coords);
 
     }
   }
