@@ -405,7 +405,7 @@ export class ImagerySourceEsri extends ImagerySource {
   getMetadata(loc, tileCoord, callback) {
     const tileID = tileCoord.slice(0, 3).join('/');
     const zoom = Math.min(tileCoord[2], this.zoomExtent[1]);
-    const unknown = this.context.systems.l10n.t('info_panels.background.unknown');
+    const unknown = this.context.systems.l10n.t('inspector.unknown');
 
     if (this._inflight[tileID]) return;
 
@@ -743,7 +743,7 @@ export class ImagerySourceEsriWayback extends ImagerySourceEsri {
 
     Wayback.getMetadata(point, zoom, current.releaseNum)
       .then(data => {
-        const unknown = this.context.systems.l10n.t('info_panels.background.unknown');
+        const unknown = this.context.systems.l10n.t('inspector.unknown');
         const captureDate = new Date(data.date).toISOString().split('T')[0];
         const vintage = {
           start: captureDate,
