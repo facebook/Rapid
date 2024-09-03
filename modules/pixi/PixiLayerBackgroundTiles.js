@@ -169,6 +169,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       if (source.isLocatorOverlay() && maxZoom > 17) continue;   // overlay is blurry if zoomed in this far
 
       const result = this._tiler
+        .tileSize(tileSize)
         .skipNullIsland(!!source.overlay)
         .zoomRange(tryZoom)
         .getTiles(this.isMinimap ? viewport : context.viewport);  // minimap passes in its own viewport
