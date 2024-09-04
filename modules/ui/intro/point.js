@@ -99,9 +99,10 @@ export function uiIntroPoint(context, curtain) {
       _onModeChange = () => resolve(searchPresetAsync);
       _onStableChange = (difference) => {
         const created = difference.created();
-        if (created.length === 1) {
-          _pointID = created[0].id;
-        }
+        if (created.length !== 1) return;
+        const entity = created[0];
+        if (entity.geometry(difference._head) !== 'point') return;
+        _pointID = created[0].id;
       };
 
       const textID = (context.lastPointerType === 'mouse') ? 'place_point' : 'place_point_touch';
