@@ -28,17 +28,8 @@ export const d3 = {
   timerFlush: D3.timerFlush
 };
 
-// Reexport the sdk things that our tests use too
+// Reexport the sdk as a single `sdk` namespace.
+// (This works because we know there are no name conflicts)
 import * as SDKMATH from '@rapid-sdk/math';
 import * as SDKUTIL from '@rapid-sdk/util';
-export const sdk = {
-  Extent: SDKMATH.Extent,
-  Viewport: SDKMATH.Viewport,
-  geoSphericalDistance: SDKMATH.geoSphericalDistance,
-  geoZoomToScale: SDKMATH.geoZoomToScale,
-  vecLength: SDKMATH.vecLength,
-  utilAesDecrypt: SDKUTIL.utilAesDecrypt,
-  utilAesEncrypt: SDKUTIL.utilAesEncrypt,
-  utilQsString: SDKUTIL.utilQsString,
-  utilStringQs: SDKUTIL.utilStringQs
-};
+export const sdk = { ...SDKMATH, ...SDKUTIL };

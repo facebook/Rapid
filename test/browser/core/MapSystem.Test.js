@@ -49,7 +49,7 @@ describe('MapSystem', () => {
         urlhash: new MockSystem(),
         styles:  new MockSystem()
       };
-      this.viewport = new sdk.Viewport(undefined, [100, 100]);
+      this.viewport = new Rapid.sdk.Viewport(undefined, [100, 100]);
     }
     container()   { return _container; }
     keybinding()  { return new MockSystem(); }
@@ -145,27 +145,27 @@ describe('MapSystem', () => {
       let extent;
 
       // get
-      extent = new sdk.Extent(_mapSystem.extent());
+      extent = new Rapid.sdk.Extent(_mapSystem.extent());
       expect(extent.min[0]).to.be.closeTo(-17.5, 0.1);
       expect(extent.min[1]).to.be.closeTo(-17.3, 0.1);
       expect(extent.max[0]).to.be.closeTo(17.5, 0.1);
       expect(extent.max[1]).to.be.closeTo(17.3, 0.1);
 
       // set
-      _mapSystem.extent( new sdk.Extent([10, 1], [30, 1]) );
+      _mapSystem.extent( new Rapid.sdk.Extent([10, 1], [30, 1]) );
 
       // get
-      extent = new sdk.Extent(_mapSystem.extent());
+      extent = new Rapid.sdk.Extent(_mapSystem.extent());
       expect(extent.min[0]).to.be.closeTo(10, 0.1);
       expect(extent.min[1]).to.be.closeTo(-9, 0.1);
       expect(extent.max[0]).to.be.closeTo(30, 0.1);
       expect(extent.max[1]).to.be.closeTo(11, 0.1);
 
       // set
-      _mapSystem.extent( new sdk.Extent([-1, -40], [1, -20]) );
+      _mapSystem.extent( new Rapid.sdk.Extent([-1, -40], [1, -20]) );
 
       // get
-      extent = new sdk.Extent(_mapSystem.extent());
+      extent = new Rapid.sdk.Extent(_mapSystem.extent());
       expect(extent.min[0]).to.be.closeTo(-11.6, 0.1);
       expect(extent.min[1]).to.be.closeTo(-39.5, 0.1);
       expect(extent.max[0]).to.be.closeTo(11.6, 0.1);

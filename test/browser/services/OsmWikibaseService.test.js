@@ -9,7 +9,7 @@ describe('OsmWikibaseService', () => {
 
 
   function parseQueryString(url) {
-    return sdk.utilStringQs(url.substring(url.indexOf('?')));
+    return Rapid.sdk.utilStringQs(url.substring(url.indexOf('?')));
   }
 
   function keyData() {
