@@ -283,7 +283,9 @@ export class PixiFeaturePoint extends AbstractFeature {
 
     // Recalculate hitArea, grow it if too small
     const MINSIZE = 20;
-    const rect = this.marker.getLocalBounds().clone();
+    // In v8, getLocalBounds now returns a Bounds, not a Rectangle. 
+    // The Rectangle is wrapped within the bounds object.
+    const rect = this.marker.getLocalBounds().rectangle.clone();
 
     if (this._isCircular) {
       let radius = rect.width / 2;
