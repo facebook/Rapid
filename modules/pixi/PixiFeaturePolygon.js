@@ -345,9 +345,9 @@ export class PixiFeaturePolygon extends AbstractFeature {
 //        this.stroke.clear();
 //        const dl = new DashLine(this.stroke, DASH_STYLE);
 //        const coords = flatCoordsToPoints(shape.outer.points);
-//        dl.drawPolygon(coords);
+//        dl.polygon(coords);
 //
-//        shape.holes.forEach(hole => dl.drawPolygon(flatCoordsToPoints(hole.points)));
+//        shape.holes.forEach(hole => dl.polygon(flatCoordsToPoints(hole.points)));
       }
     }
 
@@ -485,9 +485,9 @@ export class PixiFeaturePolygon extends AbstractFeature {
       this.halo.clear();
       const dl = new DashLine(this.halo, HALO_STYLE);
       if (this._bufferdata) {
-        dl.drawPolygon(this._bufferdata.outer);
+        dl.polygon(this._bufferdata.outer);
         if (wireframeMode) {
-          dl.drawPolygon(this._bufferdata.inner);
+          dl.polygon(this._bufferdata.inner);
         }
       }
 

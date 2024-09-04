@@ -207,7 +207,6 @@ export class PixiFeatureLine extends AbstractFeature {
     if (this.stroke.renderable) {
       updateGraphic('stroke', this.stroke, this.geometry.coords, style, wireframeMode);
     }
-
     this.updateHalo();
 
 
