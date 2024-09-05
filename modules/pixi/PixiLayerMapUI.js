@@ -187,7 +187,7 @@ groupContainer.addChild(container);
       if (this._lassoPolygonData?.length > 0) {
         const projectedCoords = this._lassoPolygonData.map(coord => viewport.project(coord));
         new DashLine(this._lassoLineGraphics, LASSO_STYLE).polygon(projectedCoords.flat());
-        this._lassoFillGraphics.fill({color:0xaaaaaa, alpha:0.5}).poly(projectedCoords.flat());
+        this._lassoFillGraphics.poly(projectedCoords.flat()).fill({color: 0xaaaaaa, width: 0.5 });
       }
     }
   }
