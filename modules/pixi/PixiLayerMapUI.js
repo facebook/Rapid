@@ -187,7 +187,7 @@ groupContainer.addChild(container);
       if (this._lassoPolygonData?.length > 0) {
         const projectedCoords = this._lassoPolygonData.map(coord => viewport.project(coord));
         new DashLine(this._lassoLineGraphics, LASSO_STYLE).polygon(projectedCoords.flat());
-        this._lassoFillGraphics.beginFill(0xaaaaaa, 0.5).drawPolygon(projectedCoords.flat()).endFill();
+        this._lassoFillGraphics.fill({color:0xaaaaaa, alpha:0.5}).poly(projectedCoords.flat());
       }
     }
   }
@@ -233,7 +233,7 @@ groupContainer.addChild(container);
         }
 
         const locatorPosition = new PIXI.Graphics()
-          .setStrokeStyle(1.5, 0xffffff, 1.0)
+          .stroke(1.5, 0xffffff, 1.0)
           .fill({color: BLUE, alpha: 1.0})
           .circle(x, y, 6.5);
         locatorPosition.label = 'position';

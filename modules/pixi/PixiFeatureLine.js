@@ -340,10 +340,10 @@ export class PixiFeatureLine extends AbstractFeature {
       const dl = new DashLine(this.halo, HALO_STYLE);
       if (this._bufferdata) {
         if (this._bufferdata.outer && this._bufferdata.inner) {
-          dl.drawPolygon(this._bufferdata.outer);
-          dl.drawPolygon(this._bufferdata.inner);
+          dl.poly(this._bufferdata.outer);
+          dl.poly(this._bufferdata.inner);
         } else {
-          dl.drawPolygon(this._bufferdata.perimeter);
+          dl.poly(this._bufferdata.perimeter);
         }
       }
     } else {

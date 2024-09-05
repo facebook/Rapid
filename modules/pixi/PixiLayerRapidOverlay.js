@@ -95,9 +95,8 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
 
         const point = viewport.project(loc);
         const feature = new PIXI.Graphics()
-          .beginFill(color, 0.05)
-          .drawCircle(0, 0, 40)
-          .endFill();
+          .fill({color, alpha:0.05})
+          .circle(0, 0, 40);
 
         feature.x = point[0];
         feature.y = point[1];

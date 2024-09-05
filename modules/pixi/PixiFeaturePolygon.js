@@ -313,7 +313,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
       if (!dash) {  // Solid lines
         this.stroke
         .clear()
-        .setStrokeStyle({
+        .stroke({
           alpha: 1,
           width: lineWidth,
           color: color
@@ -384,7 +384,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
         // Mask around the inside edges of the fill with a line
         const maskSource = new PIXI.Graphics()
           .clear()
-          .setStrokeStyle({
+          .stroke({
             alpha: 1,
             alignment: 0,  // inside (will do the right thing even for holes, as they are wound correctly)
             color: 0x000000,

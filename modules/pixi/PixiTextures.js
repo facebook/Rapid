@@ -381,7 +381,7 @@ export class PixiTextures {
     // Markers
     //
     const pin = new Graphics()                   //              [0,-23]
-      .setStrokeStyle(1, 0x444444)               //              _,-+-,_
+      .stroke(1, 0x444444)                       //              _,-+-,_
       .fill({color: 0xffffff, alpha: 1})         //            /'       `\
       .moveTo(0, 0)                              //           :           :
       .bezierCurveTo(-2,-2, -8,-10, -8,-15)      // [-8,-15]  :           :  [8,-15]
@@ -392,7 +392,7 @@ export class PixiTextures {
                                                  //                `+`        |
                                                  //               [0,0]       +-- +x
     const boldPin = new Graphics()
-      .setStrokeStyle(1.5, 0x666666)        // same pin, bolder line stroke
+      .stroke(1.5, 0x666666)                     // same pin, bolder line stroke
       .fill({color: 0xdddddd, alpha: 1})
       .moveTo(0, 0)
       .bezierCurveTo(-2,-2, -8,-10, -8,-15)
@@ -420,22 +420,22 @@ export class PixiTextures {
       .endFill();
 
     const largeCircle = new Graphics()    // suitable to display an icon inside
-      .setStrokeStyle(1, 0x444444)
+      .stroke(1, 0x444444)
       .fill({color:0xffffff, alpha: 1})
       .circle(0, 0, 8);
 
     const mediumCircle = new Graphics()   // suitable for a streetview photo marker
-      .setStrokeStyle(1, 0x444444)
+      .stroke(1, 0x444444)
       .fill({color:0xffffff, alpha: 1})
       .circle(0, 0, 6);
 
     const smallCircle = new Graphics()    // suitable for a plain vertex
-      .setStrokeStyle(1, 0x444444)
+      .stroke(1, 0x444444)
       .fill({color:0xffffff, alpha: 1})
       .circle(0, 0, 4.5);
 
     const taggedCircle = new Graphics()   // a small circle with a dot inside
-      .setStrokeStyle(1, 0x444444)
+      .stroke(1, 0x444444)
       .fill({color:0xffffff, alpha: 1})
       .circle(0, 0, 4.5)
       .fill({color: 0x000000, alpha: 1})
@@ -454,7 +454,7 @@ export class PixiTextures {
 
     // KeepRight
     const keepright = new Graphics()
-      .setStrokeStyle(1, 0x333333)
+      .stroke(1, 0x333333)
       .fill({color: 0xffffff})
       .moveTo(15, 6.5)
       .lineTo(10.8, 6.5)
@@ -474,7 +474,7 @@ export class PixiTextures {
 
     // OSM note
     const osmnote = new Graphics()
-      .setStrokeStyle(1.5, 0x333333)
+      .stroke(1.5, 0x333333)
       .fill({color:0xffffff, alpha: 1})
       .moveTo(17.5, 0)
       .lineTo(2.5,0)
@@ -492,7 +492,7 @@ export class PixiTextures {
       .closePath();
 
     const osmose = new Graphics()
-      .setStrokeStyle(1, 0x333333)
+      .stroke(1, 0x333333)
       .fill({color: 0xffffff})
       .poly([16,3, 4,3, 1,6, 1,17, 4,20, 7,20, 10,27, 13,20, 16,20, 19,17.033, 19,6])
       .closePath();
@@ -506,17 +506,17 @@ export class PixiTextures {
     // Line markers
     //
     const midpoint = new Graphics()           // [-3, 4]  ._                +y
-      .setStrokeStyle(1, 0x444444)            //          | "-._             |
+      .stroke(1, 0x444444)                    //          | "-._             |
       .fill({color:0xffffff, alpha: 1})       //          |    _:>  [7,0]    +-- +x
       .poly([-3,4, 7,0, -3,-4]);              //          |_,-"
                                               // [-3,-4]  '
 
     const oneway = new Graphics()
-      .setStrokeStyle(0xffffff, 1)
+      .stroke(0xffffff, 1)
       .poly([5,3, 0,3, 0,2, 5,2, 5,0, 10,2.5, 5,5]);
 
     const sided = new Graphics()
-      .setStrokeStyle(0xffffff, 1)
+      .stroke(0xffffff, 1)
       .poly([0,5, 5,0, 0,-5]);
 
     this.graphicToTexture('midpoint', midpoint, options);
@@ -530,17 +530,17 @@ export class PixiTextures {
     // They are all sized to 10x10 (would look fine scaled down but not up)
     //
     const lowresSquare = new Graphics()
-      .setStrokeStyle(1, 0xffffff)
+      .stroke(1, 0xffffff)
       .fill({color:0xffffff, alpha: 0.6})
       .rect(-5, -5, 10, 10);
 
     const lowresEll = new Graphics()
-      .setStrokeStyle(1, 0xffffff)
+      .stroke(1, 0xffffff)
       .fill({color:0xffffff, alpha: 0.6})
       .poly([-5,-5, 5,-5, 5,5, 1,5, 1,1, -5,1, -5,-5]);
 
     const lowresCircle = new Graphics()
-      .setStrokeStyle(1, 0xffffff)
+      .stroke(1, 0xffffff)
       .fill({color:0xffffff, alpha: 0.6})
       .circle(0, 0, 5);
 
@@ -553,17 +553,17 @@ export class PixiTextures {
     // For wireframe mode rendering (no fills at all)
     //
     const lowresUnfilledSquare = new Graphics()
-      .setStrokeStyle(1, 0xffffff)
+      .stroke(1, 0xffffff)
       .fill({color: 0, alpha: 0})
       .rect(-5, -5, 10, 10);
 
     const lowresUnfilledEll = new Graphics()
-      .setStrokeStyle(1, 0xffffff)
+      .stroke(1, 0xffffff)
       .fill({color: 0, alpha: 0})
       .poly([-5,-5, 5,-5, 5,5, 1,5, 1,1, -5,1, -5,-5]);
 
     const lowresUnfilledCircle = new Graphics()
-      .setStrokeStyle(1, 0xffffff)
+      .stroke(1, 0xffffff)
       .fill({color: 0, alpha: 0})
       .circle(0, 0, 5);
 

@@ -325,7 +325,7 @@ export class PixiLayerLabels extends AbstractLayer {
       // Note: Whatever padding we set before got doubled because resolution = 2
       const [x, y] = [pad * 2, 0];
 
-      //v8 - pixi doesn't have a canvas for text anymore, so these widths and heights might not be quite right 
+      //v8 - pixi doesn't have a canvas for text anymore, so these widths and heights might not be quite right
       // i.e. do we need to round them?
       const [w, h] = [text.width - (pad * 4), text.height];
       const data = text.context.getImageData(x, y, w, h);
@@ -388,7 +388,7 @@ export class PixiLayerLabels extends AbstractLayer {
     // Adds the given display object as an avoidance
     function _avoidObject(sourceObject) {
       if (!sourceObject.visible || !sourceObject.renderable) return;
-      const featureID = sourceObject.name;
+      const featureID = sourceObject.label;
       if (this._avoidBoxes.has(featureID)) return;  // we've processed this avoidance already
 
       // The rectangle is in global/screen coordinates (where [0,0] is top left).
@@ -486,7 +486,7 @@ export class PixiLayerLabels extends AbstractLayer {
     // It might be a level container with a name like "1", "-1", or just a name like "lines"
     // If `parseInt` fails, just sort the label above everything.
     function level(feature) {
-      const lvl = parseInt(feature.container.parent.name, 10);
+      const lvl = parseInt(feature.container.parent.label, 10);
       return isNaN(lvl) ? 999 : lvl;
     }
 

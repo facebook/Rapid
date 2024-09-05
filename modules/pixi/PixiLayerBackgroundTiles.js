@@ -305,7 +305,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
           tile.debug
             .clear()
             .lineStyle(2, DEBUGCOLOR)
-            .drawRect(0, 0, size, size);
+            .rect(0, 0, size, size);
         }
 
       } else {   // tile not needed, can destroy it
