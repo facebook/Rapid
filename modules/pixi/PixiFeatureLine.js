@@ -231,6 +231,14 @@ export class PixiFeatureLine extends AbstractFeature {
       let g = graphic.clear();
       if (style[which].alpha === 0) return;
 
+      points.forEach(([x, y], i) => {
+        if (i === 0) {
+          g.moveTo(x, y);
+        } else {
+          g.lineTo(x, y);
+        }
+      });
+
       if (style[which].dash) {
         g = new DashLine(g, {
           dash: style[which].dash,
@@ -241,7 +249,7 @@ export class PixiFeatureLine extends AbstractFeature {
           cap:  style[which].cap,
         });
       } else {
-        g = g.lineStyle({
+        g = g.stroke({
           color: style[which].color,
           width: width,
           alpha: style[which].alpha || 1.0,
@@ -250,13 +258,6 @@ export class PixiFeatureLine extends AbstractFeature {
         });
       }
 
-      points.forEach(([x, y], i) => {
-        if (i === 0) {
-          g.moveTo(x, y);
-        } else {
-          g.lineTo(x, y);
-        }
-      });
     }
 
   }
