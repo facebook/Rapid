@@ -85,9 +85,12 @@ export class PixiFeaturePolygon extends AbstractFeature {
     mesh.visible = false;
     this.mask = mesh;
 
+    // TODO Pixi v8: figure out why the fill is blowing stuff up. 
+    this.container.addChild(lowRes, stroke, mesh); //(lowRes, fill, stroke, mesh);
+
     // Debug SSR
     // const debugSSR = new PIXI.Graphics();
-    // debugSSR.name = 'ssr';
+    // debugSSR.label = 'ssr';
     // debugSSR.eventMode = 'none';
     // debugSSR.sortableChildren = false;
     // this.debugSSR = debugSSR;
@@ -313,15 +316,12 @@ export class PixiFeaturePolygon extends AbstractFeature {
       if (!dash) {  // Solid lines
         this.stroke
         .clear()
+        .poly(this.geometry.flatOuter)
         .stroke({
           alpha: 1,
           width: lineWidth,
           color: color
-        })
-// pixi v8
-        .poly(this.geometry.flatOuter);
-// pixi v7
-        // .poly(shape.outer);
+        });
 
 // pixi v8
         if (this.geometry.holes) {
@@ -383,22 +383,23 @@ export class PixiFeaturePolygon extends AbstractFeature {
       if (doPartialFill) {
         // Mask around the inside edges of the fill with a line
         const maskSource = new PIXI.Graphics()
-          .clear()
-          .stroke({
-            alpha: 1,
-            alignment: 0,  // inside (will do the right thing even for holes, as they are wound correctly)
-            color: 0x000000,
-            cap: 'butt',
-            join: 'bevel',
-            width: PARTIALFILLWIDTH,
-            texture: PIXI.Texture.WHITE
-          });
+          .clear();
+
         maskSource.poly(shape.outer);
         if (shape.holes.length) {
           shape.holes.forEach(hole => {
             maskSource.poly(hole).cut();
           });
         }
+        maskSource.stroke({
+          alpha: 1,
+          alignment: 0,  // inside (will do the right thing even for holes, as they are wound correctly)
+          color: 0x000000,
+          cap: 'butt',
+          join: 'bevel',
+          width: PARTIALFILLWIDTH,
+          texture: PIXI.Texture.WHITE
+        });
         // Update the mask's geometry
         this.mask.geometry = maskSource.context;
 // pixi v7
