@@ -97,7 +97,7 @@ export class PixiFeatureLine extends AbstractFeature {
       this.sceneBounds.width = w;
       this.sceneBounds.height = h;
 
-      this.updateHitArea();
+      this.updateHitArea(this.geometry.coords);
     }
 
     //
@@ -264,7 +264,7 @@ export class PixiFeatureLine extends AbstractFeature {
 
 
 // experiment
-  updateHitArea() {
+  updateHitArea(coords) {
     if (!this.geometry.flatOuter) {
       this.container.hitArea = null;
       return;   // no points?
@@ -287,11 +287,30 @@ export class PixiFeatureLine extends AbstractFeature {
       cap: 'butt'
     };
 
-// todo: figure out pixi v8 linebuilder works
+    let hitGraphic = new PIXI.Graphics();
+
+    coords.forEach(([x, y], i) => {
+      if (i === 0) {
+        hitGraphic.moveTo(x, y);
+      } else {
+        hitGraphic.lineTo(x, y);
+      }
+    });
+
+    // let hitGeometry = new PIXI.Graphics(this.casing.context);
+    hitGraphic.stroke(hitStyle);
+
+    let gEvent = hitGraphic.context;
+    this.container.hitArea = {
+      contains(x, y) {
+        return gEvent.containsPoint({ x, y });
+      },
+    };
+
+// todo: figure out pixi v8 linebuilder works in case the hit-test code above doensn't pan out
 //    this._bufferdata = lineToPoly(this.geometry.flatOuter, hitStyle);
 //    this.container.hitArea = new PIXI.Polygon(this._bufferdata.perimeter);
   }
-
 
   /**
    * updateHalo
