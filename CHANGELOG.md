@@ -33,6 +33,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 ###### New and Changed Fields
 
 [#xxxx]: https://github.com/facebook/Rapid/issues/xxxx
+[rapid-sdk#xxx]: https://github.com/rapideditor/rapid-sdk/issues/xxx
 [iD#xxxxx]: https://github.com/openstreetmap/iD/issues/xxxxx
 [id-tagging-schema#xxxx]: https://github.com/openstreetmap/id-tagging-schema/issues/xxxx
 [@xxxx]: https://github.com/xxxx
@@ -61,6 +62,8 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 * [#1503] Fix: When adding a new note, allow user to drag the note to where it belongs
 * [#1505] Fix: Icons briefly not visible when drawn the first time
 * [#1525] Fix: Mapbox Imagery access tokens
+* [#1527], [#1408] Fix: Issues where Extent is not revealed correctly in walkthrough
+* [#1533], [rapid-sdk#281] Fix: Tile coverage calculation on rotated viewports
 * [iD#10323], [iD#10333] Fix: Name field hidden even if localized name tags exist
 
 #### :sparkles: Usability & Accessibility
@@ -95,6 +98,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#206]: https://github.com/facebook/Rapid/issues/206
 [#1400]: https://github.com/facebook/Rapid/issues/1400
 [#1404]: https://github.com/facebook/Rapid/issues/1404
+[#1408]: https://github.com/facebook/Rapid/issues/1408
 [#1419]: https://github.com/facebook/Rapid/issues/1419
 [#1423]: https://github.com/facebook/Rapid/issues/1423
 [#1437]: https://github.com/facebook/Rapid/issues/1437
@@ -129,6 +133,8 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#1521]: https://github.com/facebook/Rapid/issues/1521
 [#1525]: https://github.com/facebook/Rapid/issues/1525
 [#1526]: https://github.com/facebook/Rapid/issues/1526
+[#1527]: https://github.com/facebook/Rapid/issues/1527
+[#1533]: https://github.com/facebook/Rapid/issues/1533
 [iD#10323]: https://github.com/openstreetmap/iD/issues/10323
 [iD#10333]: https://github.com/openstreetmap/iD/issues/10333
 [iD#10291]: https://github.com/openstreetmap/iD/issues/10291
@@ -136,6 +142,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [iD#10278]: https://github.com/openstreetmap/iD/issues/10278
 [iD#10283]: https://github.com/openstreetmap/iD/issues/10283
 [id-tagging-schema#1263]: https://github.com/openstreetmap/id-tagging-schema/issues/1263
+[rapid-sdk#281]: https://github.com/rapideditor/rapid-sdk/issues/281
 
 
 # [2.3.2](https://github.com/facebook/Rapid/releases/tag/rapid-v2.3.2)
