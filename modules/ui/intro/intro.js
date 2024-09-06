@@ -147,16 +147,13 @@ export function uiIntro(context, skipToRapid) {
       label: 'Rapid Walkthrough'
     });
 
-    // Show sidebar and disable the sidebar resizing button
-    ui.sidebar.expand();
-    context.container().selectAll('button.sidebar-toggle').classed('disabled', true);
-
     // Setup imagery
     const introSource = imagery.getSourceByID(INTRO_IMAGERY) || imagery.getSourceByID('Bing');
     imagery.baseLayerSource(introSource);
     _original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
     imagery.brightness = 1;
 
+    ui.sidebar.expand(false);   // false = no animation
     _curtain = new UiCurtain(context);
     selection.call(_curtain.enable);
 
@@ -273,7 +270,6 @@ export function uiIntro(context, skipToRapid) {
 
     _curtain.disable();
     _navwrap.remove();
-    context.container().selectAll('button.sidebar-toggle').classed('disabled', false);
 
     // Restore Map State
     for (const [layerID, layer] of context.scene().layers) {

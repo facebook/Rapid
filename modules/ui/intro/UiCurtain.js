@@ -1,6 +1,7 @@
 import { Extent, numClamp, vecAdd } from '@rapid-sdk/math';
 import { easeLinear as d3_easeLinear } from 'd3-ease';
 import { select as d3_select } from 'd3-selection';
+import * as Polyclip from 'polyclip-ts';
 
 import { uiToggle } from '../toggle.js';
 
@@ -20,17 +21,16 @@ export class UiCurtain {
     this._enabled = false;
 
     this._revealOptions = null;
-    this._containerRect = null;     // The container rectangle covers the entire Rapid application
-    this._mapRect = null;           // The map rectangle is the div in which the map will be drawn
-    this._supersurfaceRect = null;  // The supersurface contains the drawing canvas, may be expanded/rotated
-    this._revealRect = null;        // The hole in the curtain being revealed
+    this._revealPolygon = [];       // The hole in the curtain being revealed
 
     this._darknessDirty = true;     // need to recompute the darkness?
     this._tooltipDirty = true;      // need to recompute the tooltip?
     this._inTransition = false;
 
-    this._curtain = d3_select(null);
-    this._tooltip = d3_select(null);
+    // d3 selections
+    this.$parent = null;
+    this.$curtain = null;
+    this.$tooltip = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
@@ -43,48 +43,48 @@ export class UiCurtain {
 
   /**
    * enable
-   * Creates curtain and adds it as a child of the given d3 selection, and registers event handlers
-   * @param  `selection`  A d3-selection to a `div` that the curtain should render itself into
+   * Accepts a parent selection, and renders the content under it.
+   * (The parent selection is required the first time, but can be inferred on subsequent renders)
+   * @param {d3-selection} $parent - A d3-selection to a HTMLEement that this component should render itself into
    */
-  enable(selection) {
+  enable($parent = this.$parent) {
+    if ($parent) {
+      this.$parent = $parent;
+    } else {
+      return;   // no parent - called too early?
+    }
+
     if (this._enabled) return;
     this._enabled = true;
 
     this._revealOptions = null;
-    this._containerRect = null;
-    this._mapRect = null;
-    this._supersurfaceRect = null;
-    this._revealRect = null;
+    this._revealPolygon = [];
 
     this._darknessDirty = true;
     this._tooltipDirty = true;
     this._inTransition = false;
 
-    this._curtain = selection
+    this.$curtain = $parent
       .append('svg')
       .attr('class', 'curtain')
       .style('top', 0)
       .style('left', 0);
 
-    this._tooltip = selection
+    this.$tooltip = $parent
       .append('div')
       .attr('class', 'tooltip');
 
-    this._tooltip
+    this.$tooltip
       .append('div')
       .attr('class', 'popover-arrow');
 
-    this._tooltip
+    this.$tooltip
       .append('div')
       .attr('class', 'popover-inner');
 
-// bhousel todo
-// I think if the use resizes the sidebar, it will affect the size of mainmap
-// and the math of things will be wrong.  We might need to build some UiSystem
-// resize event instead of just listening to the `window` resize event.
     // register event handlers
-    d3_select(window).on('resize.curtain', this.resize);
     this.context.systems.map.on('move', this.redraw);
+    this.context.systems.ui.on('uichange', this.resize);
 
     this.resize();   // get the width/height
   }
@@ -98,21 +98,18 @@ export class UiCurtain {
     if (!this._enabled) return;
     this._enabled = false;
 
-    this._curtain.remove();
-    this._curtain = d3_select(null);
+    this.$curtain.remove();
+    this.$curtain = null;
 
-    this._tooltip.remove();
-    this._tooltip = d3_select(null);
+    this.$tooltip.remove();
+    this.$tooltip = null;
 
     this._revealOptions = null;
-    this._containerRect = null;
-    this._mapRect = null;
-    this._supersurfaceRect = null;
-    this._revealRect = null;
+    this._revealPolygon = [];
 
     // unregister event handlers
-    d3_select(window).on('resize.curtain', null);
     this.context.systems.map.off('move', this.redraw);
+    this.context.systems.ui.off('uichange', this.resize);
   }
 
 
@@ -121,24 +118,11 @@ export class UiCurtain {
    * Recalculate the dimensions of container and map rectangles and redraw everything
    */
   resize() {
-    const container = this.context.container();
-    const containerNode = container.node();
-    this._containerRect = this._copyRect(containerNode.getBoundingClientRect());
+    if (!this.$curtain) return;  // called too early?
 
-    const mapNode = container.select('.main-map').node();
-    this._mapRect = this._copyRect(mapNode.getBoundingClientRect());
-
-    const supersurfaceNode = container.select('.main-map > .supersurface').node();
-    this._supersurfaceRect = this._copyRect(supersurfaceNode.getBoundingClientRect());
-
-    const [w, h] = [this._containerRect.width, this._containerRect.height];
-    this._curtain
-      .attr('width', w)
-      .attr('height', h);
-
-    this._revealRect = null;
+    this._revealPolygon = [];
     this._darknessDirty = true;
-    this._curtain.selectAll('path').interrupt();
+    this.$curtain.selectAll('path').interrupt();
     this._inTransition = false;
     this.redraw();
   }
@@ -171,16 +155,17 @@ export class UiCurtain {
    * @param  {function}  [opts.buttonCallback]  the callback for the button
    */
   reveal(opts = {}) {
-    this._revealOptions = Object.assign({}, opts, { duration: 250 });
+    if (!this.$tooltip) return;  // called too early?
 
-    this._revealRect = null;
+    this._revealOptions = Object.assign({}, opts, { duration: 250 });
+    this._revealPolygon = [];
     this._darknessDirty = true;
     this._tooltipDirty = true;
 
     this.redrawDarkness(this._revealOptions.duration);
     this.redrawTooltip();
 
-    return this._tooltip;
+    return this.$tooltip;
   }
 
 
@@ -196,101 +181,117 @@ export class UiCurtain {
 
   /**
    * redrawDarkness
-   * Recalculates the curtain path and the `_revealRect` hole being revealed.
+   * Recalculates the curtain path and the `_revealPolygon` hole being revealed.
    *
    * This is only done one time, unless there is a revealExtent that needs
    *  to be reprojected whenver the map moves
    */
   redrawDarkness(duration = 0) {
     if (!this._darknessDirty) return;  // nothing to do
+    if (!this.$curtain) return;   // called too early
 
-    const container = this._containerRect;
-    const mainmap = this._mapRect;
-    const supersurface = this._supersurfaceRect;
-    if (!container || !mainmap || !supersurface) return;   // called too early
+    const context = this.context;
+    const $container = context.container();
+    const containerNode = $container.node();
+    const containerRect = this._copyRect(containerNode.getBoundingClientRect());
+
+    const mapNode = $container.select('.main-map').node();
+    const mapRect = this._copyRect(mapNode.getBoundingClientRect());
 
     const opts = this._revealOptions;
-    const padding = opts?.revealPadding ?? 0;
-    let reveal;   // reveal rectangle
-    let clampTo;
+    this._revealPolygon = [];
 
     // Determine what to reveal in the hole..
     if (opts) {
 
       // An Extent in lon/lat coords
       if (opts.revealExtent instanceof Extent) {
-        // Watch out, we can't project min/max directly (because Y is flipped).
-        // Construct topLeft, bottomRight corners and project those.
-        // `true` = consider rotation and project to screen coordinates, not surface coordinates
         const view = this.context.viewport;
-        let min = view.project([opts.revealExtent.min[0], opts.revealExtent.max[1]], true);  // topLeft
-        let max = view.project([opts.revealExtent.max[0], opts.revealExtent.min[1]], true);  // bottomRight
 
-        // Convert map coords on the supersurface to global coords in the container
-        min = vecAdd(min, [supersurface.left, supersurface.top]);
-        max = vecAdd(max, [supersurface.left, supersurface.top]);
+        // Add 50px overscan experiment, see UISystem.js
+        // Maybe find a nicer way to include overscan and view padding into places like this.
+        const origin = [mapRect.left - 50, mapRect.top - 50];
+        // Normally `view.project` projects lng/lat coordinates to map coordinates.
+        // `true` = consider rotation and project to coordinates on the surface instead
+        const extentPolygon = opts.revealExtent.polygon().map(point => vecAdd(origin, view.project(point, true)));
 
-        // For extent reveals, clamp the dimensions to just the portion that fits in the map mainmap..
-        // (otherwise we could pan a point off the map but still reveal a square of sidebar)
-        clampTo = mainmap;
+        // Note: padding not supported for revealExtent
+        // (If you want it padded, just request a larger extent)
 
-        reveal = {
-          left:   min[0],
-          top:    min[1],
-          right:  max[0],
-          bottom: max[1],
-          width:  max[0] - min[0],
-          height: max[1] - min[1]
-        };
+        // For extent reveals, clip the polygon to include only the portion that fits in the map..
+        // (otherwise we could pan the reveal off the map but still reveal a square of sidebar)
+        // trim away from toolbars
+        mapRect.top += 72;
+        mapRect.botom -= 30;
+
+        const mapPolygon = [
+          [mapRect.left, mapRect.top],
+          [mapRect.left, mapRect.bottom],
+          [mapRect.right, mapRect.bottom],
+          [mapRect.right, mapRect.top],
+          [mapRect.left, mapRect.top]
+        ];
+
+        const clipped = Polyclip.intersection([extentPolygon], [mapPolygon]);
+        if (clipped?.length) {
+          this._revealPolygon = clipped[0][0];  // Polyclip returns a multipolygon
+        }
 
       // A D3-selector selector or a DOMElement (in screen coordinates)
       } else {
         if (opts.revealSelector && !opts.revealNode) {   // d3-select an element
           opts.revealNode = d3_select(opts.revealSelector).node();
         }
-        if (opts.revealNode instanceof Element) {   // calculate rect in screen coords
-          clampTo = container;
-          reveal = this._copyRect(opts.revealNode.getBoundingClientRect());
+        if (opts.revealNode instanceof Element) {
+          const rect = this._copyRect(opts.revealNode.getBoundingClientRect());
+
+          // Include padding..
+          const padding = opts?.revealPadding ?? 0;
+          rect.left -= padding;
+          rect.top -= padding;
+          rect.right += padding;
+          rect.bottom += padding;
+
+          this._revealPolygon = [
+            [rect.left, rect.top],
+            [rect.left, rect.bottom],
+            [rect.right, rect.bottom],
+            [rect.right, rect.top],
+            [rect.left, rect.top]
+          ];
         }
-      }
-
-      if (reveal) {
-        // apply clamp and padding
-        reveal.left   = numClamp(reveal.left - padding, clampTo.left, clampTo.right);
-        reveal.top    = numClamp(reveal.top - padding, clampTo.top, clampTo.bottom);
-        reveal.right  = numClamp(reveal.right + padding, clampTo.left, clampTo.right);
-        reveal.bottom = numClamp(reveal.bottom + padding, clampTo.top, clampTo.bottom);
-        reveal.width = reveal.right - reveal.left;
-        reveal.height = reveal.bottom - reveal.top;
-
-        this._revealRect = reveal;
       }
     }
 
     // calculate path
     // cover container in darkness
-    const c = container;
-    const r = reveal;
-    let path = `M${c.left},${c.top} L${c.left},${c.bottom} L${c.right},${c.bottom}, L${c.right},${c.top} Z`;
-    if (r) {   // cut out a hole
-      path += ` M${r.left},${r.top} L${r.left},${r.bottom} L${r.right},${r.bottom}, L${r.right},${r.top} Z`;
+    const cr = containerRect;
+    let path = `M${cr.left},${cr.top} L${cr.left},${cr.bottom} L${cr.right},${cr.bottom}, L${cr.right},${cr.top} Z`;
+
+    if (this._revealPolygon.length) {   // cut out the hole
+      const polygon = this._revealPolygon;
+      path += ` M${polygon[0]} `;
+      for (let i = 1; i < polygon.length - 1; i++) {   // can skip the last one, 'Z' will close it
+        path += `L${polygon[i]} `;
+      }
+      path += 'Z';
     }
 
-    let darkness = this._curtain.selectAll('path')
+    let $darkness = this.$curtain.selectAll('path')
       .data([0])
       .interrupt();
 
-    let enter = darkness.enter()
+    // enter
+    const $$darkness = $darkness.enter()
       .append('path')
-      .attr('x', 0)
-      .attr('y', 0)
       .attr('class', 'curtain-darkness');
 
-    let update = darkness.merge(enter);
+    // update
+    $darkness = $darkness.merge($$darkness);
 
     if (duration > 0) {
       this._inTransition = true;
-      update = update
+      $darkness = $darkness
         .transition()
         .duration(duration)
         .ease(d3_easeLinear)
@@ -300,11 +301,11 @@ export class UiCurtain {
       this._inTransition = false;
     }
 
-    update
+    $darkness
       .attr('d', path);
 
     // We don't need to recompute the darkness again, unless there is
-    // a `revealExtent` that needs to be reprojected on every map move.
+    // a `revealExtent` that needs to be recalculated on every map move.
     this._darknessDirty = opts?.revealExtent;
   }
 
@@ -315,24 +316,35 @@ export class UiCurtain {
    * Contents are only updated once, but placement recalculates whenever this is called.
    */
   redrawTooltip() {
-    const container = this._containerRect;
-    if (!container) return;   // called too early
+    if (!this.$tooltip) return;   // called too early
+
+    const context = this.context;
+    const isRTL = context.systems.l10n.isRTL();
+
+    const $container = context.container();
+    const containerNode = $container.node();
+    const containerRect = this._copyRect(containerNode.getBoundingClientRect());
 
     const opts = this._revealOptions;
-    let reveal;   // reveal rectangle
+    let reveal;   // bounding box of the thing being revealed
 
     // Determine the reveal rectangle to use to determine the tooltip placement...
-    // It can be specified separately, but it defaults to the already calculated `this._revealRect`
+    // It can be specified separately, but it defaults to the already calculated `this._revealPolygon`
     if (opts) {
       if (opts.tipSelector && !opts.tipNode) {   // d3-select an element
         opts.tipNode = d3_select(opts.tipSelector).node();
       }
-
-      if (opts.tipNode instanceof Element) {   // calculate rect in screen coords
+      if (opts.tipNode instanceof Element) {   // get rect from the tipNode
         reveal = this._copyRect(opts.tipNode.getBoundingClientRect());
       }
-      if (!reveal && this._revealRect) {
-        reveal = this._copyRect(this._revealRect);
+      if (!reveal && this._revealPolygon.length) {  // convert existing reveal polygon to rectangle bounds
+        reveal = { left: Infinity, top: Infinity, right: -Infinity, bottom: -Infinity };
+        for (const [x, y] of this._revealPolygon) {
+          reveal.left = Math.min(reveal.left, x);
+          reveal.top = Math.min(reveal.top, y);
+          reveal.right = Math.max(reveal.right, x);
+          reveal.bottom = Math.max(reveal.bottom, y);
+        }
       }
     }
 
@@ -359,13 +371,13 @@ export class UiCurtain {
           html += `<div class="button-section"><button href="#" class="button action">${opts.buttonText}</button></div>`;
         }
 
-        this._tooltip
+        this.$tooltip
           .attr('class', klass)
           .selectAll('.popover-inner')
           .html(html);
 
         if (opts.buttonText && opts.buttonCallback) {
-          this._tooltip.selectAll('button.action')
+          this.$tooltip.selectAll('button.action')
             .on('click', e => {
               e.preventDefault();
               opts.buttonCallback();
@@ -377,15 +389,15 @@ export class UiCurtain {
 
       // Determine the size the tooltip wants to be.
       const ARROW = 5;  // allow extra space for the arrow
-      let tip = this._copyRect(this._tooltip.node().getBoundingClientRect());
+      const tip = this._copyRect(this.$tooltip.node().getBoundingClientRect());
       let placement, tipX, tipY;
 
-      // Clamp reveal box to container
-      reveal.left   = numClamp(reveal.left, container.left, container.right);
-      reveal.top    = numClamp(reveal.top, container.top, container.bottom);
-      reveal.right  = numClamp(reveal.right, container.left, container.right);
-      reveal.bottom = numClamp(reveal.bottom, container.top, container.bottom);
-      reveal.width = reveal.right - reveal.left;
+      // Clamp reveal rectangle to container and update width/height..
+      reveal.left   = numClamp(reveal.left,   containerRect.left, containerRect.right);
+      reveal.top    = numClamp(reveal.top,    containerRect.top,  containerRect.bottom);
+      reveal.right  = numClamp(reveal.right,  containerRect.left, containerRect.right);
+      reveal.bottom = numClamp(reveal.bottom, containerRect.top,  containerRect.bottom);
+      reveal.width  = reveal.right - reveal.left;
       reveal.height = reveal.bottom - reveal.top;
 
       // Determine tooltip placement..
@@ -394,7 +406,7 @@ export class UiCurtain {
         tipX = reveal.left + (reveal.width / 2) - (tip.width / 2);
         tipY = reveal.bottom;
 
-      } else if (reveal.top > container.height - 140) {  // reveal near bottom of view, tooltip above it..
+      } else if (reveal.top > containerRect.height - 140) {  // reveal near bottom of view, tooltip above it..
         placement = 'top';
         tipX = reveal.left + (reveal.width / 2) - (tip.width / 2);
         tipY = reveal.top - tip.height;
@@ -402,7 +414,7 @@ export class UiCurtain {
       } else {   // tooltip to the side of the reveal..
         tipY = reveal.top + (reveal.height / 2) - (tip.height / 2);
 
-        if (this.context.systems.l10n.textDirection() === 'rtl') {
+        if (isRTL) {
           if (reveal.left - tip.width - ARROW < 70) {
             placement = 'right';
             tipX = reveal.right + ARROW;
@@ -411,7 +423,7 @@ export class UiCurtain {
             tipX = reveal.left - tip.width - ARROW;
           }
         } else {
-          if (reveal.right + ARROW + tip.width > container.width - 70) {
+          if (reveal.right + ARROW + tip.width > containerRect.width - 70) {
             placement = 'left';
             tipX = reveal.left - tip.width - ARROW;
           } else {
@@ -421,11 +433,11 @@ export class UiCurtain {
         }
       }
 
-//      if (opts.duration !== 0 || !this._tooltip.classed(placement)) {
-//        this._tooltip.call(uiToggle(true));
+//      if (opts.duration !== 0 || !this.$tooltip.classed(placement)) {
+//        this.$tooltip.call(uiToggle(true));
 //      }
 
-      this._tooltip
+      this.$tooltip
         .style('left', `${tipX}px`)
         .style('top', `${tipY}px`)
         .attr('class', klass + ' ' + placement);
@@ -436,15 +448,15 @@ export class UiCurtain {
       if (placement === 'left' || placement === 'right') {
         if (tipY < 60) {
           shiftY = 60 - tipY;
-        } else if (tipY + tip.height > container.height - 100) {
-          shiftY = container.height - tipY - tip.height - 100;
+        } else if (tipY + tip.height > containerRect.height - 100) {
+          shiftY = containerRect.height - tipY - tip.height - 100;
         }
       }
-      this._tooltip.selectAll('.popover-inner')
+      this.$tooltip.selectAll('.popover-inner')
         .style('top', `${shiftY}px`);
 
     } else {
-      this._tooltip.classed('in', false).call(uiToggle(false));
+      this.$tooltip.classed('in', false).call(uiToggle(false));
       this._tooltipDirty = false;
     }
   }
@@ -452,12 +464,14 @@ export class UiCurtain {
 
   /**
    * _copyRect
-   * ClientRects are immutable, so copy them to an Object in case we need to trim the height/width.
-   * @param    src   Source `DOMRect` (or something that looks like one)
-   * @returns  Object containing the copied properties
+   * ClientRects are immutable, so copy them to an Object in case we need to pad/trim them.
+   * @param   {DOMRect}  src - rectangle (or something that looks like one)
+   * @returns {Object}  Object containing the copied properties
    */
   _copyRect(src) {
     return {
+      x: src.x,
+      y: src.y,
       left: src.left,
       top: src.top,
       right: src.right,

@@ -398,13 +398,14 @@ export class UiSidebar {
   /**
    * expand
    * Expands the sidebar
+   * @param  {boolean}  animate? - whether to animate the pane
    */
-  expand(moveMap) {
+  expand(animate) {
     const $sidebar = this.$sidebar;
     if (!$sidebar) return;  // called too early?
 
     if ($sidebar.classed('collapsed')) {
-      this.toggle(moveMap);
+      this.toggle(animate);
     }
   }
 
@@ -412,13 +413,14 @@ export class UiSidebar {
   /**
    * collapse
    * Collapses the sidebar
+   * @param  {boolean}  animate? - whether to animate the pane
    */
-  collapse(moveMap) {
+  collapse(animate) {
     const $sidebar = this.$sidebar;
     if (!$sidebar) return;  // called too early?
 
     if (!$sidebar.classed('collapsed')) {
-      this.toggle(moveMap);
+      this.toggle(animate);
     }
   }
 
@@ -426,15 +428,13 @@ export class UiSidebar {
   /**
    * toggle
    * Toggles the sidebar between expanded/collapsed states
+   * @param  {boolean}  animate? - whether to animate the pane
    */
-  toggle(moveMap) {
+  toggle(animate = true) {
     const $sidebar = this.$sidebar;
     if (!$sidebar) return;  // called too early?
 
-    // Don't allow sidebar to toggle when the user is in the walkthrough.
     const context = this.context;
-    if (context.inIntro) return;
-
     const ui = context.systems.ui;
     const $container = context.container();
 
@@ -451,39 +451,52 @@ export class UiSidebar {
     this._startWidth = startWidth;
     this._lastWidth = startWidth;
 
-    $sidebar
-      .transition()
-      .tween('inspector.toggler', () => {
-        return t => {
-          const setWidth = lerp(t);
+    if (animate) {
+      $sidebar
+        .transition()
+        .tween('inspector.toggler', () => {
+          return t => {
+            const setWidth = lerp(t);
+
+            $sidebar
+              .classed('collapsing', setWidth < MIN_WIDTH)
+              .style('flex-basis', `${setWidth}px`);
+
+            ui.resize();
+            this._lastWidth = setWidth;
+          };
+        })
+        .on('start', () => {
+          $container.classed('resizing', true);
 
           $sidebar
-            .classed('collapsing', setWidth < MIN_WIDTH)
-            .style('flex-basis', `${setWidth}px`);
+            .classed('collapsing', startWidth < MIN_WIDTH)
+            .classed('collapsed', false)
+            .style('flex-basis', `${startWidth}px`);
+        })
+        .on('end interrupt', () => {
+          $container.classed('resizing', false);
+
+          $sidebar
+            .classed('collapsing', false)
+            .classed('collapsed', endCollapsed)
+            .style('flex-basis', `${expandWidth}px`);  // done resize, put expanded width back here
 
           ui.resize();
-          this._lastWidth = setWidth;
-        };
-      })
-      .on('start', () => {
-        $container.classed('resizing', true);
+          this._storePreferences();
+        });
 
-        $sidebar
-          .classed('collapsing', startWidth < MIN_WIDTH)
-          .classed('collapsed', false)
-          .style('flex-basis', `${startWidth}px`);
-      })
-      .on('end interrupt', () => {
-        $container.classed('resizing', false);
+    } else {  // no animation
+      $container.classed('resizing', false);
 
-        $sidebar
-          .classed('collapsing', false)
-          .classed('collapsed', endCollapsed)
-          .style('flex-basis', `${expandWidth}px`);  // done resize, put expanded width back here
+      $sidebar
+        .classed('collapsing', false)
+        .classed('collapsed', endCollapsed)
+        .style('flex-basis', `${expandWidth}px`);  // done resize, put expanded width back here
 
-        ui.resize();
-        this._storePreferences();
-      });
+      ui.resize();
+      this._storePreferences();
+    }
   }
 
 
