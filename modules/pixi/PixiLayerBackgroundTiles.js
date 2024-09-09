@@ -220,9 +220,11 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
         this._failed.delete(tile.url);
         if (!tile.sprite || !tile.image) return;  // it's possible that the tile isn't needed anymore and got pruned
 
-        const texture = PIXI.Texture.from(tile.image);
-        tile.sprite.texture = texture;
-        tile.sprite.texture = textureManager.allocate('tile', tile.sprite.label, tile.image);
+        // const texture = PIXI.Texture.from(tile.image);
+//        tile.sprite.texture = texture;
+        const w = tile.image.naturalWidth;
+        const h = tile.image.naturalHeight;
+        tile.sprite.texture = textureManager.allocate('tile', tile.sprite.label, w, h, tile.image);
 
         tile.loaded = true;
         tile.image = null;  // image is copied to the atlas, we can free it
