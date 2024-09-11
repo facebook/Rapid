@@ -513,7 +513,7 @@ export class PhotoSystem extends AbstractSystem {
           }
 
           // Highlight any images that show this detection..
-          const highlightPhotoIDs = detection.imageIDs ?? [];
+          const highlightPhotoIDs = (detection.images ?? []).map(image => image.id);
           for (const photoID of highlightPhotoIDs) {
             scene.setClass('highlightphoto', photoLayerID, photoID);
           }
@@ -531,7 +531,8 @@ export class PhotoSystem extends AbstractSystem {
 
           // If we are changing the selected photo to a new photo,
           // Try to adjust the map to show both the detection and the best photo (if any)
-          if (!this._currPhotoID || this._currPhotoID !== bestPhotoID) {
+          // (note: make sure the detection actually has a location, see Rapid#1557)
+          if (detection.loc && (!this._currPhotoID || this._currPhotoID !== bestPhotoID)) {
             const extent = new Extent(detection.loc);
             const bestPhoto = service.getImage(bestPhotoID);
             if (bestPhoto?.loc) {

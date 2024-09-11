@@ -863,12 +863,11 @@ export class MapillaryService extends AbstractSystem {
    */
   _loadDetectionAsync(detectionID) {
     // Is data is cached already and includes the `images` Array?  If so, resolve immediately.
-    let detection = this._cache.detections.data.get(detectionID);
-    if (detection?.imageIDs) {
-      return Promise.resolve(detection);
-    }
-    detection = this._cache.signs.data.get(detectionID);
-    if (detection?.imageIDs) {
+    const detection =
+      this._cache.detections.data.get(detectionID) ||
+      this._cache.signs.data.get(detectionID);
+
+    if (Array.isArray(detection?.images)) {
       return Promise.resolve(detection);
     }
 
@@ -886,32 +885,17 @@ export class MapillaryService extends AbstractSystem {
         const type = response.object_type;  // Seems to be 'mvd_fast' or 'trafficsign' ??
         const cache = (type === 'trafficsign') ? this._cache.signs : this._cache.detections;
 
-        // Gather imageIDs and try to choose the nearest one as the best.
-        const loc = response.geometry.coordinates;
-        const imageIDs = [];
-        let minDist = Infinity;
-        let bestImageID = null;
-
-        for (const image of response.images?.data ?? []) {
-          imageIDs.push(image.id);
-          const dist = geoSphericalDistance(loc, image.geometry.coordinates);
-          if (dist < minDist) {
-            minDist = dist;
-            bestImageID = image.id;
-          }
-        }
-
         // Note that the graph API _does_ give us `images` and `aligned_direction`
+        // (but sometimes not `geometry`!? see Rapid#1557)
         const detection = this._cacheDetection(cache, {
           id:                 response.id.toString(),
-          loc:                loc,
+          loc:                response.geometry?.coordinates,
+          images:             response.images?.data,
           first_seen_at:      response.first_seen_at,
           last_seen_at:       response.last_seen_at,
           value:              response.object_value,
           aligned_direction:  response.aligned_direction,
-          imageIDs:           imageIDs,
-          bestImageID:        bestImageID,
-          object_type:        (response.object_type === 'trafficsign') ? 'traffic_sign' : 'point'
+          object_type:        (type === 'trafficsign') ? 'traffic_sign' : 'point'
         });
 
         this.context.immediateRedraw();
@@ -1200,31 +1184,51 @@ export class MapillaryService extends AbstractSystem {
   _cacheDetection(cache, props) {
     let detection = cache.data.get(props.id);
     if (!detection) {
-      const loc = this._preventCoincident(cache.rbush, props.loc);
       detection = {
         type:        'detection',
         service:     'mapillary',
         id:          props.id,
-        object_type: props.object_type,   // 'point' or 'traffic_sign'
-        loc:         loc
+        object_type: props.object_type   // 'point' or 'traffic_sign'
       };
 
       cache.data.set(detection.id, detection);
+    }
+
+    // If we haven't locked in the location yet, try here..
+    // (see Rapid#1557 - sometimes we don't have this!)
+    if (!detection.loc && props.loc) {
+      const loc = this._preventCoincident(cache.rbush, props.loc);
+      detection.loc = loc;
 
       const [x, y] = loc;
       cache.rbush.insert({ minX: x, minY: y, maxX: x, maxY: y, data: detection });
     }
 
+    // Update whatever additional props we were passed..
     // Allow 0, but not things like NaN, null, Infinity
     const dirIsNumber = (!isNaN(props.aligned_direction) && isFinite(props.aligned_direction));
 
-    // Update whatever additional props we were passed..
+    if (props.images)         detection.images             = props.images;
     if (props.first_seen_at)  detection.first_seen_at      = props.first_seen_at;
     if (props.last_seen_at)   detection.last_seen_at       = props.last_seen_at;
     if (props.value)          detection.value              = props.value;
     if (dirIsNumber)          detection.aligned_direction  = props.aligned_direction;
-    if (props.imageIDs)       detection.imageIDs           = props.imageIDs;
-    if (props.bestImageID)    detection.bestImageID        = props.bestImageID;
+
+    // If we haven't locked in the bestImageID yet, try here..
+    // This requires a location and an Array of images..
+    if (!detection.bestImageID && detection.loc && detection.images) {
+      let minDist = Infinity;
+      let bestImageID = null;
+
+      for (const image of detection.images) {
+        const dist = geoSphericalDistance(detection.loc, image.geometry.coordinates);
+        if (dist < minDist) {
+          minDist = dist;
+          bestImageID = image.id;
+        }
+      }
+      detection.bestImageID = bestImageID;
+     }
 
     return detection;
   }
