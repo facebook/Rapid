@@ -42,6 +42,9 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 # [2.4.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.4.0)
 #### 2024-Sep-?? (Coming soon)
 
+:mega: Shout out to [Major League Hacking](https://mlh.io/) fellow [@cubeydice] for building a Rapid DevTool extension for Chrome!
+You can check it out here: https://github.com/rapideditor/rapid-devtools .
+
 #### :camera: Street-Level
 * [#1526] Streetview Imagery bug-bash:
   * [#1509] KartaView imagery was not working
@@ -143,6 +146,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [iD#10283]: https://github.com/openstreetmap/iD/issues/10283
 [id-tagging-schema#1263]: https://github.com/openstreetmap/id-tagging-schema/issues/1263
 [rapid-sdk#281]: https://github.com/rapideditor/rapid-sdk/issues/281
+[@cubeydice]: https://github.com/cubeydice
 
 
 # [2.3.2](https://github.com/facebook/Rapid/releases/tag/rapid-v2.3.2)
