@@ -28,8 +28,8 @@ describe('MapillaryService', () => {
     it('initializes cache', () => {
       const cache = _mapillary._cache;
       expect(cache).to.have.property('images');
-      expect(cache).to.have.property('signs');
       expect(cache).to.have.property('detections');
+      expect(cache).to.have.property('signs');
       expect(cache).to.have.property('sequences');
       expect(cache).to.have.property('segmentations');
     });
@@ -74,9 +74,9 @@ describe('MapillaryService', () => {
 
     it('returns detections in the visible map area', () => {
       const data = [
-        { type: 'detection', id: 'detect0', loc: [10,0] },
-        { type: 'detection', id: 'detect1', loc: [10,0] },
-        { type: 'detection', id: 'detect2', loc: [10,1] }
+        { type: 'detection', id: 'detect0', loc: [10,0], object_type: 'point' },
+        { type: 'detection', id: 'detect1', loc: [10,0], object_type: 'point' },
+        { type: 'detection', id: 'detect2', loc: [10,1], object_type: 'point' }
       ];
       const boxes = [
         { minX: 10, minY: 0, maxX: 10, maxY: 0, data: data[0] },
@@ -96,11 +96,10 @@ describe('MapillaryService', () => {
 
 
     it('returns signs in the visible map area', () => {
-      // signs are also detections, but stored in a different cache
       const data = [
-        { type: 'detection', id: 'sign0', loc: [10,0] },
-        { type: 'detection', id: 'sign1', loc: [10,0] },
-        { type: 'detection', id: 'sign2', loc: [10,1] }
+        { type: 'detection', id: 'sign0', loc: [10,0], object_type: 'traffic_sign' },
+        { type: 'detection', id: 'sign1', loc: [10,0], object_type: 'traffic_sign' },
+        { type: 'detection', id: 'sign2', loc: [10,1], object_type: 'traffic_sign' }
       ];
       const boxes = [
         { minX: 10, minY: 0, maxX: 10, maxY: 0, data: data[0] },
@@ -108,11 +107,12 @@ describe('MapillaryService', () => {
         { minX: 10, minY: 1, maxX: 10, maxY: 1, data: data[2] }
       ];
 
+      // signs are now also stored in the detections cache
       const cache = _mapillary._cache;
       for (const d of data) {
-        cache.signs.data.set(d.id, d);
+        cache.detections.data.set(d.id, d);
       }
-      cache.signs.rbush.load(boxes);
+      cache.detections.rbush.load(boxes);
 
       const result = _mapillary.getData('signs');
       expect(result).to.deep.eql([data[0], data[1]]);

@@ -155,8 +155,8 @@ export class MapillaryService extends AbstractSystem {
 
     this._cache = {
       images:        { lastv: null, data: new Map(), rbush: new RBush() },
-      signs:         { lastv: null, data: new Map(), rbush: new RBush() },
       detections:    { lastv: null, data: new Map(), rbush: new RBush() },
+      signs:         { lastv: null  /* signs are now stored in `detections` cache */ },
       sequences:     { data: new Map() },   // Map<sequenceID, Array<LineStrings>>
       segmentations: { data: new Map() },
       inflight: new Map(),  // Map<url, {tileID, promise, controller}>
@@ -217,10 +217,7 @@ export class MapillaryService extends AbstractSystem {
    * @return  {Object?} The detection, or `undefined` if not found
    */
   getDetection(detectionID) {
-    // Check both 'detections' and 'signs' caches
-    let detection = this._cache.detections.data.get(detectionID);
-    if (detection) return detection;
-    return this._cache.signs.data.get(detectionID);
+    return this._cache.detections.data.get(detectionID);
   }
 
 
@@ -234,8 +231,16 @@ export class MapillaryService extends AbstractSystem {
     if (!['images', 'signs', 'detections'].includes(datasetID)) return [];
 
     const extent = this.context.viewport.visibleExtent();
-    const cache = this._cache[datasetID];
-    return cache.rbush.search(extent.bbox()).map(d => d.data);
+    if (datasetID === 'images') {
+      return this._cache.images.rbush.search(extent.bbox())
+        .map(d => d.data);
+
+    } else {  // both signs and detections are now stored in the `detections` cache
+      const type = (datasetID === 'signs') ? 'traffic_sign' : 'point';
+      return this._cache.detections.rbush.search(extent.bbox())
+        .map(d => d.data)
+        .filter(d => d.object_type === type);
+    }
   }
 
 
@@ -826,12 +831,11 @@ export class MapillaryService extends AbstractSystem {
     }
 
     // 'point' and 'traffic_sign' are both detection layers.
-    // We treat them the same, but their data gets stored in different caches.
-    // (This allows the user to toggle them on/off independently of each other)
+    // Both of these are stored in the `detections` cache.
     for (const type of ['point', 'traffic_sign']) {
       if (!vectorTile.layers.hasOwnProperty(type)) continue;
 
-      const cache = (type === 'traffic_sign') ? this._cache.signs : this._cache.detections;
+      const cache = this._cache.detections;
       const layer = vectorTile.layers[type];
 
       for (let i = 0; i < layer.length; i++) {
@@ -863,10 +867,7 @@ export class MapillaryService extends AbstractSystem {
    */
   _loadDetectionAsync(detectionID) {
     // Is data is cached already and includes the `images` Array?  If so, resolve immediately.
-    const detection =
-      this._cache.detections.data.get(detectionID) ||
-      this._cache.signs.data.get(detectionID);
-
+    const detection = this._cache.detections.data.get(detectionID);
     if (Array.isArray(detection?.images)) {
       return Promise.resolve(detection);
     }
@@ -882,8 +883,9 @@ export class MapillaryService extends AbstractSystem {
           throw new Error('No Data');
         }
 
-        const type = response.object_type;  // Seems to be 'mvd_fast' or 'trafficsign' ??
-        const cache = (type === 'trafficsign') ? this._cache.signs : this._cache.detections;
+        // `response.object_type` seems to be 'mvd_fast' or 'trafficsign' ??
+        const type = (response.object_type === 'trafficsign') ? 'traffic_sign' : 'point';
+        const cache = this._cache.detections;
 
         // Note that the graph API _does_ give us `images` and `aligned_direction`
         // (but sometimes not `geometry`!? see Rapid#1557)
@@ -895,7 +897,7 @@ export class MapillaryService extends AbstractSystem {
           last_seen_at:       response.last_seen_at,
           value:              response.object_value,
           aligned_direction:  response.aligned_direction,
-          object_type:        (type === 'trafficsign') ? 'traffic_sign' : 'point'
+          object_type:        type
         });
 
         this.context.immediateRedraw();
