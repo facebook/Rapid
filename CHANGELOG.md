@@ -54,7 +54,7 @@ You can check it out here: https://github.com/rapideditor/rapid-devtools .
   * [#1513] Some Mapillary data missing if multiple layers were selected (photos, signs, objects)
   * [#1514] Highlight photos that show a Mapillary detection, improve choice of photo and map positioning
   * [#1515] Allow Mapillary signs and detections to be selected via the URL hash
-  * [#1516] Avoid Mapillary detections from overlapping
+  * [#1516], [#1538] Avoid Mapillary detections from overlapping
   * [#1517] Allow Mapillary signs and detections to be selected by clicking on them, show detail in sidebar
   * [#1518] Show placeholder icons for Mapillary signs and detections not in known list
   * [#1521] Add "high resolution" toggle for KartaView photos
@@ -141,6 +141,7 @@ You can check it out here: https://github.com/rapideditor/rapid-devtools .
 [#1526]: https://github.com/facebook/Rapid/issues/1526
 [#1527]: https://github.com/facebook/Rapid/issues/1527
 [#1533]: https://github.com/facebook/Rapid/issues/1533
+[#1538]: https://github.com/facebook/Rapid/issues/1538
 [#1558]: https://github.com/facebook/Rapid/issues/1558
 [iD#10323]: https://github.com/openstreetmap/iD/issues/10323
 [iD#10333]: https://github.com/openstreetmap/iD/issues/10333
