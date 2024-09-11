@@ -94,6 +94,9 @@ You can check it out here: https://github.com/rapideditor/rapid-devtools .
 * [#1478], [#1483] Remove ImproveOSM, service has been shut down
 * [#1481], [#1496] Allow customizible zoom range for imagary sources
 
+#### :mortar_board: Walkthrough / Help
+* [#1558] In Help text, mention that Notes Layer is not enabled by default
+
 #### :popcorn: OSM:
 * [iD#10278], [id-tagging-schema#1263] Add support for `railway=ventilation_shaft`
 * [iD#10283], Add support for `waterway=flowline`
@@ -138,6 +141,7 @@ You can check it out here: https://github.com/rapideditor/rapid-devtools .
 [#1526]: https://github.com/facebook/Rapid/issues/1526
 [#1527]: https://github.com/facebook/Rapid/issues/1527
 [#1533]: https://github.com/facebook/Rapid/issues/1533
+[#1558]: https://github.com/facebook/Rapid/issues/1558
 [iD#10323]: https://github.com/openstreetmap/iD/issues/10323
 [iD#10333]: https://github.com/openstreetmap/iD/issues/10333
 [iD#10291]: https://github.com/openstreetmap/iD/issues/10291
