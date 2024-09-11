@@ -168,6 +168,7 @@ export function uiPaneHelp(context) {
     ]],
     ['notes', [
       'intro',
+      'show_notes',
       'add_note_h',
       'add_note',
       'place_note',

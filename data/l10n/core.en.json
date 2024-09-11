@@ -2133,7 +2133,8 @@
       },
       "notes": {
         "title": "Notes",
-        "intro": "*Notes* are used to alert other users that a feature requires fixing or attention. Notes mark a specific location on the map. To view existing notes or add new ones, open the {data_icon} **{map_data}** panel and enable the {osm_notes} layer.",
+        "intro": "*Notes* are used to alert other users that a feature requires fixing or attention. Notes mark a specific location on the map. The notes layer is not enabled by default.",
+        "show_notes": "To enable the notes layer, open the {data_icon} **{map_data}** panel and click the checkbox for {osm_notes}, or press `{shift}`+`{toggle_notes_key}`.",
         "add_note_h": "Adding Notes",
         "add_note": "To add a new note, press the {note_icon} **{note}** button on the toolbar above the map, or press the shortcut key `{add_note_key}`.",
         "place_note": "Next, place the new note on the map. With a mouse, position the cursor where the note should go and {mouse_left_icon} left-click. On a touchscreen, {onefinger_tap_icon} tap the location.",

@@ -100,6 +100,7 @@ export function helpHtml(context, id, replacements) {
       add_note_key: l10n.t('modes.add_note.key'),
       help_key: l10n.t('help.key'),
       shortcuts_key: l10n.t('shortcuts.toggle.key'),
+      toggle_notes_key: l10n.t('map_data.layers.notes.key'),
 
       // reference localized UI labels directly so that they'll always match
       save: l10n.t('save.title'),
