@@ -364,6 +364,7 @@ export class PixiFeatureLine extends AbstractFeature {
         } else {
           dl.poly(this._bufferdata.perimeter);
         }
+        dl.setStrokeStyle(HALO_STYLE);
       }
     } else {
       if (this.halo) {

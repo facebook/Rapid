@@ -491,6 +491,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
           dl.polygon(this._bufferdata.inner);
         }
       }
+      dl.setStrokeStyle(HALO_STYLE);
 
     } else {
       if (this.halo) {

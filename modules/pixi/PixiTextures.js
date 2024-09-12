@@ -24,10 +24,18 @@ export class PixiTextures {
     // We store textures in 3 atlases, each one is for holding similar sized things.
     // Each "atlas" manages its own store of "BaseTextures" - real textures that upload to the GPU.
     // This helps pack them efficiently and avoids swapping frequently as WebGL draws the scene.
+
+    // The new atlas allocator REQUIRES the renderer to be passed in so it can optimize the upload 
+    // pipeline depending on whether we're using a webGL or webGPU renderer type. 
+    
+    // TODO pixi v8 - we need to stop hard-coding the texture allocator to always use webGL
+    // (see AtlasSource.ts::optimizeAtlasUploads() for the hard-coding kludge I had to do)
+    const renderer = context.pixi.renderer;
+
     this._atlas = {
       symbol: new AtlasAllocator(),  // small graphics - markers, pins, symbols
       text: new AtlasAllocator(),    // text labels
-      tile: new AtlasAllocator()     // 256 or 512px square imagery tiles
+      tile: new AtlasAllocator(renderer)     // 256 or 512px square imagery tiles
     };
 
     // All the named textures we know about.

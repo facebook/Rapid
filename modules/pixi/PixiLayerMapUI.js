@@ -186,7 +186,7 @@ groupContainer.addChild(container);
       // Render the data only as long as we have something meaningful.
       if (this._lassoPolygonData?.length > 0) {
         const projectedCoords = this._lassoPolygonData.map(coord => viewport.project(coord));
-        new DashLine(this._lassoLineGraphics, LASSO_STYLE).polygon(projectedCoords.flat());
+        new DashLine(this._lassoLineGraphics, LASSO_STYLE).polygon(projectedCoords.flat()).setStrokeStyle(LASSO_STYLE);
         this._lassoFillGraphics.poly(projectedCoords.flat()).fill({color: 0xaaaaaa, width: 0.5 });
       }
     }
