@@ -1,0 +1,21 @@
+{
+  "_meta": {
+    "version": "2.4.0",
+    "generated": "2024-09-13T20:55:09.658Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.hi.json",
+    "hash": "cf4dc8e580320a8008d13a2be0deff6c"
+  },
+  "hi": {
+    "_communities": {
+      "mappingbotswana": "मैपिंग बोत्सवाना",
+      "openstreetmap": "ओपन स्ट्रीट मैप",
+      "openstreetmapafghanistan": "ओपन स्ट्रीट मैप अफ़ग़ानिस्तान ",
+      "openstreetmapafrica": "ओपन स्ट्रीट मैप अफ़्रीका",
+      "openstreetmapargentina": "ओपन स्ट्रीट मैप अर्जेंटीना",
+      "openstreetmapaustria": "ओपन स्ट्रीट मैप ऑस्ट्रिया"
+    },
+    "be-matrix": {
+      "description": "सभी मानचित्रकारों का स्वागत है"
+    }
+  }
+}

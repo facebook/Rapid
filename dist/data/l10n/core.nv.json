@@ -1,0 +1,13 @@
+{
+  "_meta": {
+    "version": "2.4.0",
+    "generated": "2024-09-13T20:55:09.524Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.nv.json",
+    "hash": "50ca4e2ff4ec4b07cdf0155bd7c6daea"
+  },
+  "nv": {
+    "languageNames": {
+      "nv": "Diné Bizaad"
+    }
+  }
+}

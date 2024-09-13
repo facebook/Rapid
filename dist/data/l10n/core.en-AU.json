@@ -1,0 +1,100 @@
+{
+  "_meta": {
+    "version": "2.4.0",
+    "generated": "2024-09-13T20:55:09.590Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.en-AU.json",
+    "hash": "fda239486745f03d5293a66a2e035bf7"
+  },
+  "en-AU": {
+    "icons": {
+      "favorite": "favourite"
+    },
+    "toolbar": {
+      "favorites": "Favourites"
+    },
+    "operations": {
+      "circularize": {
+        "title": "Circularise"
+      },
+      "rotate": {
+        "description": {
+          "single": "Rotate this feature around its centre point.",
+          "multiple": "Rotate these features around their centre point."
+        }
+      }
+    },
+    "info_panels": {
+      "measurement": {
+        "center": "Centre"
+      }
+    },
+    "feature": {
+      "paths": {
+        "tooltip": "Footpaths, Walkways, Cycleways, etc."
+      },
+      "aerialways": {
+        "tooltip": "Chair Lifts, Gondolas, Flying Foxes, etc."
+      }
+    },
+    "QA": {
+      "keepRight": {
+        "errorTypes": {
+          "<291>": {
+            "description": "{var1} has an unrecognised restriction type."
+          }
+        }
+      }
+    },
+    "help": {
+      "lines": {
+        "intro": "*Lines* are used to represent features such as roads, railroads, and rivers. Lines should be drawn down the centre of the feature that they represent.",
+        "connect_line_tag": "If you know that the connection has traffic signals or pedestrian crossings, you can add them by selecting the connecting node and using the feature editor to select the correct feature's type."
+      },
+      "operations": {
+        "rotate": "{rotate_icon} **{rotate}** lets you swivel features around their centre points."
+      },
+      "gps": {
+        "using": "To use a GPS trace for mapping, drag and drop the data file onto the map editor. If it's recognised, it will be drawn on the map as a bright purple line. Open the {data_icon} **{map_data}** panel on the side of the map to enable, disable, or zoom to your GPS data."
+      },
+      "field": {
+        "restrictions": {
+          "inspecting": {
+            "about": "Hover over any **FROM** segment to see whether it has any turn restrictions. Each possible **TO** destination will be drawn with a coloured shadow showing whether a restriction exists."
+          }
+        }
+      }
+    },
+    "intro": {
+      "graph": {
+        "name": {
+          "andrews-elementary-school": "Andrews Primary School",
+          "three-rivers-elementary-school": "Three Rivers Primary School",
+          "three-rivers-fire-department": "Three Rivers Fire Station",
+          "three-rivers-middle-school": "Three Rivers High School"
+        }
+      },
+      "lines": {
+        "line_draw_info": "In OpenStreetMap, lines should be drawn down the centre of the road. You can drag and zoom the map while drawing if necessary."
+      }
+    },
+    "shortcuts": {
+      "editing": {
+        "operations": {
+          "circularize": "Circularise a closed line or area"
+        }
+      }
+    },
+    "languageNames": {
+      "bla": "Siksika",
+      "bn": "Bengali",
+      "ckb": "Kurdish (Central)",
+      "en-US": "United States English",
+      "mus": "Creek",
+      "nds-NL": "West Low German",
+      "ro-MD": "Moldovan"
+    },
+    "scriptNames": {
+      "Beng": "Bengali"
+    }
+  }
+}

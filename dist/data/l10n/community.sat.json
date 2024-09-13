@@ -1,0 +1,20 @@
+{
+  "_meta": {
+    "version": "2.4.0",
+    "generated": "2024-09-13T20:55:09.640Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.sat.json",
+    "hash": "eafa4ca46a644623957d9edcab788059"
+  },
+  "sat": {
+    "_communities": {
+      "openstreetmapalba": "OpenStreetMap ᱟᱞᱵᱟ",
+      "openstreetmapalbania": "OpenStreetMap ᱟᱞᱵᱮᱱᱤᱭᱟ",
+      "openstreetmapargentina": "OpenStreetMap ᱟᱨᱡᱮᱱᱴᱤᱱᱟ",
+      "openstreetmapasia": "OpenStreetMap ᱮᱥᱤᱭᱟ"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "name": "ᱵᱮᱞ ᱡᱟᱭᱜᱟ OpenStreetMappers",
+      "description": "ᱵᱮᱭ ᱡᱟᱭᱜᱟ ᱨᱮ OpenStreetMap ᱵᱮᱥ ᱛᱮᱭᱟᱨ ᱯᱮ"
+    }
+  }
+}

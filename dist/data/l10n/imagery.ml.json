@@ -1,0 +1,15 @@
+{
+  "_meta": {
+    "version": "2.4.0",
+    "generated": "2024-09-13T20:55:09.453Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/imagery.ml.json",
+    "hash": "6d6503347e8f272950bfd7f6ca7e70fd"
+  },
+  "ml": {
+    "imagery": {
+      "Bing": {
+        "description": "ഉപഗ്രഹവും ആകാശനിരീക്ഷണങ്ങളും"
+      }
+    }
+  }
+}

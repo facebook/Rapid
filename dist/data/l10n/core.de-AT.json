@@ -1,0 +1,29 @@
+{
+  "_meta": {
+    "version": "2.4.0",
+    "generated": "2024-09-13T20:55:09.597Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.de-AT.json",
+    "hash": "a103d5a38dcfa5d61feada2c0d2961ad"
+  },
+  "de-AT": {
+    "intro": {
+      "graph": {
+        "countrycode": "at"
+      }
+    },
+    "languageNames": {
+      "ar-001": "modernes Hocharabisch",
+      "car": "karibische Sprache",
+      "chb": "Chibcha-Sprache",
+      "del": "Delawarisch",
+      "fur": "Friulanisch",
+      "haw": "Hawaiianisch",
+      "hmn": "Miao-Sprache",
+      "mus": "Muskogee-Sprache",
+      "niu": "Niueanisch",
+      "pag": "Pangasinensisch",
+      "sh": "Serbokroatisch",
+      "szl": "Schlesisch"
+    }
+  }
+}

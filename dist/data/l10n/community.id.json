@@ -1,0 +1,13 @@
+{
+  "_meta": {
+    "version": "2.4.0",
+    "generated": "2024-09-13T20:55:09.657Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.id.json",
+    "hash": "b8b7e447f66ced68dd72e056ffa5519e"
+  },
+  "id": {
+    "id-facebook": {
+      "extendedDescription": "Memetakan di Indonesia? Ada pertanyaan, atau ingin terhubung dengan komunitas disini? Bergabunglah dengan kami di {url}. Semua dipersilakan!"
+    }
+  }
+}

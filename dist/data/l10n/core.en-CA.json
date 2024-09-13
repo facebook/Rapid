@@ -1,0 +1,20 @@
+{
+  "_meta": {
+    "version": "2.4.0",
+    "generated": "2024-09-13T20:55:09.590Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.en-CA.json",
+    "hash": "400d9e4a2363a9862303ea1beb648cea"
+  },
+  "en-CA": {
+    "toolbar": {
+      "favorites": "Favourites"
+    },
+    "languageNames": {
+      "ar-001": "Arabic (Modern Standard)",
+      "bn": "Bengali",
+      "mfe": "Mauritian Creole",
+      "nds-NL": "West Low German",
+      "ro-MD": "Moldovan"
+    }
+  }
+}
