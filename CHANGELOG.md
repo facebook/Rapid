@@ -40,7 +40,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 -->
 
 # [2.4.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.4.0)
-#### 2024-Sep-?? (Coming soon)
+#### 2024-Sep-13
 
 :mega: Shout out to [Major League Hacking](https://mlh.io/) fellow [@cubeydice] for building a Rapid DevTool extension for Chrome!
 You can check it out here: https://github.com/rapideditor/rapid-devtools .
