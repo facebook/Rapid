@@ -15,8 +15,6 @@ import { uiIntroStartEditing } from './start_editing.js';
 import { uiIntroRapid } from './rapid.js';
 
 
-const INTRO_IMAGERY = 'EsriWorldImageryClarity';
-
 const chapterUi = {
   welcome: uiIntroWelcome,
   navigation: uiIntroNavigation,
@@ -148,7 +146,7 @@ export function uiIntro(context, skipToRapid) {
     });
 
     // Setup imagery
-    const introSource = imagery.getSourceByID(INTRO_IMAGERY) || imagery.getSourceByID('Bing');
+    const introSource = imagery.getSourceByID('Bing');
     imagery.baseLayerSource(introSource);
     _original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
     imagery.brightness = 1;
