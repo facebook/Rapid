@@ -39,7 +39,6 @@
       },
       "add_note": {
         "title": "Ghi chú",
-        "label": "Thêm Ghi chú",
         "description": "Nhận ra khuyết điểm? Hãy báo cho người khác biết.",
         "key": "U"
       },
@@ -632,10 +631,6 @@
     "loading_auth": "Đang kết nối với OpenStreetMap…",
     "report_a_bug": "Báo cáo lỗi",
     "help_translate": "Hợp tác biên dịch",
-    "sidebar": {
-      "key": "Q",
-      "tooltip": "Bật/tắt thanh bên."
-    },
     "feature_info": {
       "hidden_warning": "{count} đối tượng ẩn"
     },
@@ -684,7 +679,6 @@
         "description": "Miêu tả",
         "resolution": "Độ phân giải",
         "accuracy": "Độ chính xác",
-        "unknown": "Không rõ",
         "show_tiles": "Hiện các Mảnh",
         "hide_tiles": "Ẩn các Mảnh"
       },
@@ -696,7 +690,6 @@
         "last_edit": "Sửa đổi Cuối cùng",
         "edited_by": "Người Sửa đổi",
         "changeset": "Bộ thay đổi",
-        "unknown": "Không rõ",
         "note_no_history": "Không có Lịch sử (Ghi chú Mới Tạo)",
         "note_comments": "Nhận xét",
         "note_created_date": "Ngày Tạo",
@@ -744,6 +737,7 @@
       "location_unavailable": "Vị trí của bạn không có sẵn."
     },
     "inspector": {
+      "key": "Q",
       "zoom_to": {
         "key": "P",
         "title": "Phóng vừa Lựa chọn",
@@ -778,13 +772,13 @@
         "zoom": "{features} đang ẩn. Phóng to để hiển thị chúng."
       },
       "back_tooltip": "Thay loại đối tượng",
+      "type": "Kiểu",
+      "details": "Chi tiết",
       "remove": "Xóa",
       "search": "Tìm kiếm",
       "unknown": "Không rõ",
       "incomplete": "<chưa tải về>",
       "feature_list": "Tìm kiếm đối tượng",
-      "edit": "Sửa đối tượng",
-      "edit_features": "Sửa các đối tượng",
       "check": {
         "yes": "Có",
         "no": "Không",
@@ -792,7 +786,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Kiểu",
           "default": "Bình thường",
           "layer": "Lớp"
         }
@@ -864,7 +857,11 @@
         },
         "notes": {
           "tooltip": "Dữ liệu ghi chú từ OpenStreetMap",
-          "title": "Ghi chú OpenStreetMap"
+          "title": "Ghi chú OpenStreetMap",
+          "key": "B"
+        },
+        "rapid": {
+          "key": "X"
         },
         "maproulette": {
           "detail_title": "Chi tiết",
@@ -874,10 +871,6 @@
           "tooltip": "Vấn đề dữ liệu do keepright.at phát hiện",
           "title": "Vấn đề KeepRight"
         },
-        "improveOSM": {
-          "tooltip": "Dữ liệu bị thiếu do improveosm.org phát hiện",
-          "title": "Vấn đề ImproveOSM"
-        },
         "osmose": {
           "tooltip": "Vấn đề dữ liệu do osmose.openstreetmap.fr phát hiện",
           "title": "Vấn đề Osmose"
@@ -886,9 +879,6 @@
           "tooltip": "Kéo thả một tập tin dữ liệu vào trang hoặc bấm nút để thiết lập",
           "title": "Dữ liệu bản đồ tùy biến",
           "zoom": "Phóng vừa dữ liệu"
-        },
-        "rapid": {
-          "key": "X"
         }
       },
       "history_panel": {
@@ -915,9 +905,6 @@
     },
     "photo_overlays": {
       "title": "Lớp phủ Hình ảnh",
-      "traffic_signs": {
-        "title": "Bảng giao thông"
-      },
       "photo_type": {
         "flat": {
           "title": "Hình chụp Một chiều",
@@ -1186,40 +1173,6 @@
         "elems_title": "Đối tượng",
         "fix_title": "Gợi ý Sửa chữa",
         "trap_title": "Lỗi Thường Gặp"
-      },
-      "improveOSM": {
-        "title": "Sự dò ImproveOSM",
-        "geometry_types": {
-          "path": "lối",
-          "parking": "bãi đậu xe",
-          "road": "đường sá",
-          "both": "đường sá và bãi đậu xe"
-        },
-        "directions": {
-          "east": "đông",
-          "north": "bắc",
-          "northeast": "đông bắc",
-          "northwest": "tây bắc",
-          "south": "nam",
-          "southeast": "đông nam",
-          "southwest": "tây nam",
-          "west": "tây"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Đường Thiếu Thẻ Một chiều",
-            "description": "Trong số {num_trips} chuyến đi được ghi lại trên đoạn {highway} này, {percentage}% đi từ {from_node} đến {to_node}. Thẻ “oneway” (đường một chiều) có thể bị thiếu."
-          },
-          "mr": {
-            "title": "Thiếu Đối tượng",
-            "description": "Số {num_trips} chuyến đi được ghi lại trong khu vực này gợi ý rằng một {geometry_type} tồn tại tại đây nhưng chưa được thêm vào bản đồ.",
-            "description_alt": "Dữ liệu bên thứ ba gợi ý rằng một {geometry_type} tồn tại tại đây nhưng chưa được thêm vào bản đồ."
-          },
-          "tr": {
-            "title": "Thiếu Hạn chế Rẽ",
-            "description": "Trong số {num_trips} chuyến đi về hướng {travel_direction} được ghi lại, {num_passed} chuyến đi rẽ từ {from_way} đến {to_way} tại {junction}. Một hạn chế rẽ “{turn_restriction}” có thể bị thiếu."
-          }
-        }
       },
       "keepRight": {
         "detail_description": "Miêu tả",
@@ -1535,101 +1488,20 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Hình ảnh Streetside của Microsoft",
-      "report": "Báo cáo lo ngại riêng tư trong hình",
-      "view_on_bing": "Xem tại Bản đồ Bing",
+    "photos": {
       "hires": "Độ phân giải cao"
     },
-    "mapillary_images": {
-      "tooltip": "Hình ảnh cấp phố do Mapillary cung cấp"
-    },
-    "mapillary_map_features": {
-      "title": "Các thể loại đối tượng",
-      "tooltip": "Đối tượng bản đồ do Mapillary cung cấp",
-      "construction": {
-        "barrier": {
-          "temporary": "chướng ngại tạm"
-        },
-        "flat": {
-          "crosswalk_plain": "vạch qua đường đơn giản",
-          "driveway": "lối đi vào nhà"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "vạch mũi tên chỉ hướng (trái)",
-            "right": "vạch mũi tên chỉ hướng (phải)",
-            "split_left_or_straight": "vạch mũi tên chỉ hướng (trái hoặc thẳng)",
-            "split_right_or_straight": "vạch mũi tên chỉ hướng (phải hoặc thẳng)",
-            "straight": "vạch mũi tên chỉ hướng (thẳng)"
-          },
-          "crosswalk_zebra": "vạch băng qua đường",
-          "give_way_row": "vạch nhường đường (hàng)",
-          "give_way_single": "vạch nhường đường (đơn)",
-          "other_marking": "vạch khác trên mặt đường",
-          "stop_line": "vạch dừng xe",
-          "symbol": {
-            "bicycle": "vạch ký hiệu xe đạp"
-          },
-          "text": "vạch chữ"
-        }
-      },
-      "object": {
-        "banner": "biểu ngữ",
-        "bench": "băng ghế",
-        "bike_rack": "giá đậu xe đạp",
-        "billboard": "bảng quảng cáo",
-        "catch_basin": "nắp cống thoát nước",
-        "cctv_camera": "camera quan sát",
-        "fire_hydrant": "trụ cứu hỏa",
-        "junction_box": "vạch mắt võng",
-        "mailbox": "thùng thư",
-        "manhole": "hố ga",
-        "parking_meter": "máy thu tiền đậu xe",
-        "phone_booth": "trạm điện thoại",
-        "sign": {
-          "advertisement": "quảng cáo",
-          "information": "bảng thông tin",
-          "other": "bảng khác",
-          "store": "bảng hiệu tiệm",
-          "traffic_sign": {
-            "back": "mặt trái bảng giáo thông",
-            "direction_front": "mặt phải bảng giáo thông",
-            "front": "mặt phải bảng giáo thông"
-          }
-        },
-        "street_light": "đèn đường",
-        "support": {
-          "pole": "cột",
-          "traffic_sign_frame": "cột bảng giao thông",
-          "utility_pole": "cột điện"
-        },
-        "traffic_cone": "cọc tiêu giao thông",
-        "traffic_light": {
-          "cyclists": "đèn giao thông cho người đi xe đạp",
-          "general_horizontal": "đèn giao thông ngang",
-          "general_single": "đèn giao thông đơn độc",
-          "general_upright": "đèn giao thông dọc",
-          "other": "đèn giao thông",
-          "pedestrians": "đèn giao thông cho người đi bộ"
-        },
-        "trash_can": "thùng rác",
-        "water_valve": "van nước"
-      }
+    "streetside": {
+      "tooltip": "Hình ảnh Streetside của Microsoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Bảng giao thông do Mapillary cung cấp"
-      },
-      "view_on_mapillary": "Xem hình này trên Mapillary"
+      "tooltip": "Hình ảnh cấp phố do Mapillary cung cấp"
     },
-    "kartaview_images": {
-      "tooltip": "Hình ảnh cấp phố do KartaView cung cấp"
+    "mapillary_signs": {
+      "title": "Bảng giao thông"
     },
     "kartaview": {
-      "view_on_kartaview": "Xem hình này trên KartaView"
+      "tooltip": "Hình ảnh cấp phố do KartaView cung cấp"
     },
     "note": {
       "note": "Ghi chú",
@@ -1787,7 +1659,6 @@
       },
       "notes": {
         "title": "Ghi chú",
-        "intro": "Lời *ghi chú* báo động cho người dùng khác rằng một đối tượng nào đó cần được sửa chữa hoặc một địa điểm cần được chú ý. Một lời ghi chú ứng với một địa điểm cụ thể trên bản đồ. Để xem các ghi chú đã tồn tại hoặc đăng ghi chú mới, mở bảng {data_icon} **{map_data}** và bật lớp {osm_notes}.",
         "add_note_h": "Đăng Ghi chú",
         "add_note": "Để tạo ghi chú mới, bấm nút {note_icon} **{note}** trên thanh công cụ bên trên bản đồ hoặc bấm phím tắt `{add_note_key}`.",
         "update_note_h": "Giải quyết, Mở lại, và Nhận xét",
@@ -1824,9 +1695,7 @@
         "title": "Bảo đảm chất lượng",
         "intro": "Các *bảo đảm chất lượng* có thể nhận ra các thẻ sai, con đường không nối liền, và vấn đề khác trong OpenStreetMap để bạn sửa chữa. Để xem các vấn đề bảo đảm chất lượng hiện tại, mở bảng {data_icon} **{map_data}** ở bên phải của bản đồ và bật một lớp bảo đảm chất lượng cụ thể.",
         "tools_h": "Công cụ",
-        "tools": "Hiện tại các công cụ [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/vi/), và [Osmose](https://osmose.openstreetmap.fr/) được hỗ trợ.",
-        "issues_h": "Xử lý Vấn đề",
-        "issues": "Một vấn đề bảo đảm chất lượng được xử lý giống như một ghi chú. Bấm vào ghim để xem các chi tiết trong thanh bên. Mỗi công cụ có khả năng khác nhau, nhưng nói chung bạn có thể nhận xét hoặc đánh dấu giải quyết vấn đề."
+        "issues_h": "Xử lý Vấn đề"
       },
       "field": {
         "restrictions": {
@@ -2580,7 +2449,6 @@
           "map_data": "Bật/tắt bảng dữ liệu bản đồ",
           "issues": "Bật/tắt bảng vấn đề kiểm tra",
           "preferences": "Bật/tắt bảng tùy chọn người dùng",
-          "sidebar": "Bật/tắt thanh bên",
           "wireframe": "Bật/tắt chế độ khung lưới",
           "osm_data": "Bật/tắt dữ liệu OpenStreetMap",
           "highlight_edits": "Tô màu các sửa đổi chưa lưu"

@@ -41,7 +41,6 @@
       },
       "add_note": {
         "title": "Pastaba",
-        "label": "Pridėti pastabą",
         "description": "Pastebėjote problemą? Praneškite apie ją kitiems žymėtojams."
       },
       "add_preset": {
@@ -412,9 +411,6 @@
     "loading_auth": "Jungiamasi prie OpenStreetMap...",
     "report_a_bug": "Pranešti apie klaidą",
     "help_translate": "Padėkite versti",
-    "sidebar": {
-      "tooltip": "Perjungti skydelį."
-    },
     "commit": {
       "title": "Įkelti į OpenStreetMap",
       "upload_explanation": "Jūsų įkeliami pakeitimai bus matomi visuose žemėlapiuose, naudojančiuose OpenStreetMap duomenis.",
@@ -444,8 +440,7 @@
         "source": "Šaltinis",
         "description": "Aprašymas",
         "resolution": "Rezoliucija",
-        "accuracy": "Tikslumas",
-        "unknown": "Nežinoma"
+        "accuracy": "Tikslumas"
       },
       "history": {
         "title": "Istorija",
@@ -453,7 +448,6 @@
         "last_edit": "Paskutinis keitimas",
         "edited_by": "Redagavo ",
         "changeset": "Pakeitimai",
-        "unknown": "Nežinoma",
         "note_no_history": "Jokios istorijos (Nauja pastaba)",
         "note_comments": "Komentarai",
         "note_created_date": "Sukurimo data",
@@ -513,12 +507,13 @@
       "no_documentation_key": "Nėra jokios dokumentacijos.",
       "wiki_reference": "Rodyti dokumentaciją",
       "wiki_en_reference": "Rodyti dokumentaciją anglų kalba",
+      "type": "Tipas",
+      "details": "Detalės",
       "remove": "Pašalinti",
       "search": "Ieškoti",
       "unknown": "Nežinoma",
       "incomplete": "<neatsiųsta>",
       "feature_list": "Ieškoti objektų",
-      "edit": "Keisti objektą",
       "check": {
         "yes": "Taip",
         "no": "Ne",
@@ -526,7 +521,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Tipas",
           "default": "Numatytasis",
           "layer": "Sluoksnis"
         }
@@ -568,7 +562,8 @@
           "tooltip": "Žemėlapio duomenys iš OpenStreetMap"
         },
         "notes": {
-          "tooltip": "Pastabos duomenys iš OpenStreetMap"
+          "tooltip": "Pastabos duomenys iš OpenStreetMap",
+          "key": "Š"
         },
         "maproulette": {
           "detail_title": "Detalės",
@@ -592,9 +587,6 @@
       }
     },
     "photo_overlays": {
-      "traffic_signs": {
-        "title": "Eismo ženklai"
-      },
       "photo_type": {
         "flat": {
           "tooltip": "Tradicinės nuotraukos"
@@ -806,20 +798,17 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Gatvės nuotraukos iš Microsoft",
-      "report": "Pranešti privatumo rūpestį su šiuo paveiksliuku",
-      "view_on_bing": "Peržiūrėti per Bing Maps",
+    "photos": {
       "hires": "Aukšta rezoliucija"
     },
-    "mapillary_images": {
-      "tooltip": "Gatvės lygio nuotraukos iš Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Žemėlapio savybės"
+    "streetside": {
+      "tooltip": "Gatvės nuotraukos iš Microsoft"
     },
     "mapillary": {
-      "view_on_mapillary": "Žiūrėti šią nuotrauką per Mapillary"
+      "tooltip": "Gatvės lygio nuotraukos iš Mapillary"
+    },
+    "mapillary_signs": {
+      "title": "Eismo ženklai"
     },
     "note": {
       "note": "Pastaba",

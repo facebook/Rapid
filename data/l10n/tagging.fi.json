@@ -97,6 +97,7 @@
             }
           },
           "placeholder": "ei määritelty",
+          "terms": "Pääsy sallittu",
           "types": {
             "access": "Kaikki",
             "bicycle": "Pyöräily",
@@ -118,7 +119,8 @@
             "private": "vain yksityiseen käyttöön",
             "unknown": "ei tiedossa",
             "yes": "sallittu yleisesti"
-          }
+          },
+          "terms": "Pääsy sallittu"
         },
         "activity": {
           "label": "Aktiivisuus",
@@ -169,7 +171,8 @@
             "subdistrict!vn": "Osasto/yhteisö/kylä",
             "suburb": "Lähiö",
             "unit": "Rappu"
-          }
+          },
+          "terms": "Osoite"
         },
         "admin_level": {
           "label": "Hallinnointitaso"
@@ -219,7 +222,12 @@
           "label": "Tuotteet"
         },
         "air_conditioning": {
-          "label": "Ilmastointi"
+          "label": "Ilmastointi",
+          "terms": "Ilmastointi"
+        },
+        "alt_name": {
+          "label": "Vaihtoehtoinen nimi",
+          "terms": "Vaihtoehtoinen nimi"
         },
         "amenity": {
           "label": "Tyyppi"
@@ -243,14 +251,25 @@
             "megalith": "Megaliitti",
             "necropolis": "Nekropoli",
             "petroglyph": "Kalliopiirros",
+            "roman_circus": "Roomalainen sirkus",
+            "roman_villa": "Roomalainen huvila",
             "settlement": "Historiallinen asutusalue"
           }
         },
         "architect": {
-          "label": "Arkkitehti"
+          "label": "Arkkitehti",
+          "terms": "Arkkitehti"
         },
         "area/highway": {
           "label": "Tyyppi"
+        },
+        "armrest": {
+          "label": "Käsinojat",
+          "options": {
+            "no": "Ei käsinojia",
+            "undefined": "Tuntematon",
+            "yes": "Yksi tai useampi käsinoja"
+          }
         },
         "artist": {
           "label": "Taiteilija"
@@ -270,7 +289,8 @@
           }
         },
         "ascent": {
-          "label": "Nousu yhteensä"
+          "label": "Nousu yhteensä",
+          "terms": "Nousu yhteensä"
         },
         "athletics_pitch": {
           "label": "Laji",
@@ -293,6 +313,7 @@
             "pole_vault": "seiväshyppy",
             "running": "juoksu",
             "sprint": "Pikajuoksu",
+            "steeplechase": "Estejuoksu\n<br>",
             "triple_jump": "kolmiloikka"
           }
         },
@@ -302,6 +323,7 @@
         "attraction": {
           "label": "Tyyppi",
           "options": {
+            "alpine_coaster": "Alppirata",
             "amusement_ride": "Huvipuistolaite",
             "animal": "Eläinalue",
             "big_wheel": "Maailmanpyörä",
@@ -310,6 +332,7 @@
             "carousel": "Karuselli",
             "dark_ride": "Kummitusjuna",
             "drop_tower": "Vapaapudotus",
+            "kiddie_ride": "Lasten rata",
             "log_flume": "Tukkijoki",
             "maze": "sokkelo",
             "pirate_ship": "Merirosvolaivalaite",
@@ -328,16 +351,22 @@
             "no": "Ei",
             "room": "Oma huone",
             "yes": "Merkitty alue"
-          }
+          },
+          "terms": "Lastenhoitotila"
         },
         "baby_seat": {
           "label": "Vauvanistuin"
+        },
+        "backcountry": {
+          "label": "Syrjäseutu",
+          "terms": "Syrjäseutu"
         },
         "backrest": {
           "label": "Selkänoja"
         },
         "bar": {
-          "label": "Baari"
+          "label": "Baari",
+          "terms": "Baari"
         },
         "barrier": {
           "label": "Tyyppi",
@@ -427,13 +456,15 @@
           "options": {
             "undefined": "ei",
             "yes": "kyllä"
-          }
+          },
+          "terms": "Pyörätie"
         },
         "bike_ride": {
           "label": "Polkupyörien liityntäpysäköinti"
         },
         "bin": {
-          "label": "Jäteastia"
+          "label": "Jäteastia",
+          "terms": "Roskis, jäteastia"
         },
         "blind": {
           "label": "Näkövammaisten esteettömyys",
@@ -441,7 +472,8 @@
             "limited": "Osittain",
             "no": "Ei",
             "yes": "Kyllä"
-          }
+          },
+          "terms": "Pääsy näkövammaisille, pääsy sokeille"
         },
         "blood_components": {
           "label": "Veren osat",
@@ -477,13 +509,16 @@
           }
         },
         "books": {
-          "label": "Kirjatyypit"
+          "label": "Kirjatyypit",
+          "terms": "Kirjan tyypit"
         },
         "booth": {
-          "label": "Koppi"
+          "label": "Koppi",
+          "terms": "Koppi"
         },
         "bottle": {
-          "label": "Pullontäyttö"
+          "label": "Pullontäyttö",
+          "terms": "Pullon täyttö"
         },
         "boules": {
           "label": "Tyyppi"
@@ -492,30 +527,43 @@
           "label": "Tyyppi"
         },
         "branch_brand": {
-          "label": "Haara"
+          "label": "Haara",
+          "terms": "Haara, osasto"
         },
         "brand": {
-          "label": "Brändi"
+          "label": "Brändi",
+          "terms": "Brändi"
         },
         "brewery": {
-          "label": "Myytävät olutmerkit"
+          "label": "Myytävät olutmerkit",
+          "terms": "Myytävät olutbrändit"
         },
         "bridge": {
           "label": "Tyyppi",
           "placeholder": "Oletus"
         },
         "bridge/ref": {
-          "label": "Sillan tunnus"
+          "label": "Sillan tunnus",
+          "terms": "Sillan numero"
         },
         "bridge/support": {
           "label": "Tukirakenne"
         },
         "bridge_combo": {
-          "label": "Tyyppi"
+          "label": "Tyyppi",
+          "options": {
+            "aqueduct": "Akvedukti",
+            "boardwalk": "pitkospuut",
+            "cantilever": "kaarisilta",
+            "covered": "katettu silta",
+            "movable": "liikuteltava silta",
+            "viaduct": "maasilta"
+          }
         },
         "building": {
           "label": "Rakennus",
           "options": {
+            "allotment_house": "siirtolapuutarhamökki",
             "apartments": "kerrostalo",
             "barn": "Lato",
             "boathouse": "Venevaja",
@@ -571,25 +619,34 @@
             "transportation": "matkustajaterminaali",
             "university": "yliopisto",
             "warehouse": "Varasto"
-          }
+          },
+          "terms": "Rakennus"
         },
         "building/colour": {
-          "label": "Julkisivun väri"
+          "label": "Julkisivun väri",
+          "terms": "Julkisivun väri"
         },
         "building/flats": {
           "label": "Asuntoja"
         },
         "building/levels": {
-          "label": "Kerroslukumäärä"
+          "label": "Kerroslukumäärä",
+          "terms": "Kerrokset"
         },
         "building/levels/underground": {
-          "label": "Maanalaiset kerrokset"
+          "label": "Maanalaiset kerrokset",
+          "terms": "Maanalaiset kerrokset"
         },
         "building/material": {
-          "label": "Materiaali"
+          "label": "Materiaali",
+          "terms": "Materiaali"
         },
         "building/part": {
           "label": "Rakennuksen osa"
+        },
+        "building/prefabricated": {
+          "label": "Esivalmistettu",
+          "terms": "Esivalmistettu, esirakennettu"
         },
         "bunker_type": {
           "label": "Tyyppi"
@@ -601,6 +658,7 @@
           "label": "Kaapelit"
         },
         "cai_scale-IT": {
+          "label": "Vaellusreitin vaikeusaste (Italian Alpine Club)",
           "options": {
             "E": "E: Patikoitsijolle",
             "EAI": "EAI: Patikointi lumisissa olosuhteissa",
@@ -628,6 +686,9 @@
           "placeholder": "5, 10, 20, 100...",
           "terms": "Kapasiteetti"
         },
+        "capacity/caravans": {
+          "label": "Kapasiteetti (asuntoauto / asuntovaunu)"
+        },
         "capacity/disabled_parking": {
           "label": "Liikkumisesteisten paikat"
         },
@@ -645,6 +706,13 @@
         "capacity_volume": {
           "label": "Tilavuus (kuutiometreissä)"
         },
+        "caravans": {
+          "label": "asuntoauto / asuntovaunu",
+          "terms": "Matkailuauto / matkailuvaunu, Asuntoauto / asuntovaunu"
+        },
+        "cash_in": {
+          "label": "rahan tallettaminen"
+        },
         "castle_type": {
           "label": "Tyyppi",
           "options": {
@@ -658,11 +726,13 @@
           }
         },
         "changing_table": {
-          "label": "Vaipanvaihtopöytä"
+          "label": "Vaipanvaihtopöytä",
+          "terms": "Vaipanvaihtopöytä"
         },
         "charge_fee": {
           "label": "Hinta",
-          "placeholder": "1 EUR, 5 USD, 10 JPY..."
+          "placeholder": "1 EUR, 5 USD, 10 JPY...",
+          "terms": "Maksun suuruus"
         },
         "charge_toll": {
           "label": "Hinta",
@@ -670,7 +740,8 @@
           "terms": "Tullin määrä, Tullimaksun määrä, Tullausmaksun summa, Tullaussumma"
         },
         "check_date": {
-          "label": "Tarkistettu viimeksi"
+          "label": "Tarkistettu viimeksi",
+          "terms": "Viimeksi tarkistettu"
         },
         "circumference": {
           "label": "Ympärysmitta (rinnan korkeudelta)",
@@ -688,6 +759,7 @@
             "maternity": "Äitiysvaatteita",
             "men": "Miesten vaatteita",
             "motorcycle": "Moottoripyörävaatteita",
+            "oversize": "suuret vaatekoot",
             "socks": "sukkia",
             "sports": "urheiluvaatteita",
             "suits": "pukuja",
@@ -704,7 +776,8 @@
           "label": "Tyyppi"
         },
         "collection_times": {
-          "label": "Tyhjennysajat"
+          "label": "Tyhjennysajat",
+          "terms": "Keräysajat, keräysaikataulu"
         },
         "collector": {
           "label": "Tavarat",
@@ -732,7 +805,10 @@
           "label": "Tyyppi"
         },
         "consulate": {
-          "label": "Tyyppi"
+          "label": "Tyyppi",
+          "options": {
+            "yes": "Konsulaatti"
+          }
         },
         "consulting": {
           "label": "Erikoisala"
@@ -741,7 +817,8 @@
           "label": "Facebook käyttäjätunnus tai URL"
         },
         "contact/webcam": {
-          "label": "Kameran verkko-osoite"
+          "label": "Kameran verkko-osoite",
+          "placeholder": "http://esimerkki.com/"
         },
         "content": {
           "label": "Sisältö"
@@ -783,25 +860,56 @@
         "craft": {
           "label": "Tyyppi",
           "options": {
+            "agricultural_engines": "Maatalouskoneiden mekaanikko",
+            "basket_maker": "Korivalmistaja",
             "beekeeper": "Mehiläistarha",
             "blacksmith": "Rautaseppä",
+            "boatbuilder": "Veneenrakentaja",
             "bookbinder": "Kirjasitomo",
             "brewery": "Olutpanimo",
+            "builder": "Rakentaja",
             "carpenter": "Puuseppä",
+            "carpet_layer": "Mattoasennus",
             "caterer": "Pitopalvelu",
             "chimney_sweeper": "Nuohooja",
             "cleaning": "Siivouspalvelu",
             "clockmaker": "Kelloseppä",
             "confectionery": "Makeiskonditoria\nkonditoria",
+            "distillery": "Tislaamo",
+            "dressmaker": "Ompelija",
+            "electrician": "Sähköasentaja",
+            "electronics_repair": "Elektroniikan korjaaja",
+            "floorer": "Lattia-asentaja",
+            "gardener": "Puutarhuri",
+            "glaziery": "Lasittaja",
+            "handicraft": "Käsityöt",
+            "hvac": "lämmitys-, ilmanvaihto- ja ilmastointi",
+            "insulation": "Sähköeristäjä",
             "jeweller": "Kultaseppä",
+            "joiner": "Puuseppä",
+            "key_cutter": "Avainsuutari",
             "locksmith": "Lukkoseppä",
+            "metal_construction": "Metallirakentaja",
+            "oil_mill": "Öljymylly",
             "painter": "Maalari",
+            "parquet_layer": "Parkettiasentaja",
             "photographer": "Valokuvaaja",
             "photographic_laboratory": "Valokuvakehittämö",
+            "plasterer": "Rappaaja",
             "plumber": "Putkimies",
+            "roofer": "Katontekijä",
+            "saddler": "Satulaseppä",
+            "sailmaker": "Purjeentekijä",
             "sawmill": "Saha\nSahalaitos",
+            "sculptor": "Kuvanveistäjä",
             "shoemaker": "Suutari",
-            "tailor": "Räätäli"
+            "signmaker": "Kylttivalmistaja",
+            "tailor": "Räätäli",
+            "tinsmith": "Tinaseppä",
+            "upholsterer": "Verhoilija",
+            "watchmaker": "Kelloseppä",
+            "window_construction": "Ikkunanvalmistaja",
+            "winery": "Viinitila"
           }
         },
         "crane/type": {
@@ -902,25 +1010,34 @@
           "options": {
             "african": "Afrikkalainen",
             "american": "amerikkalainen",
+            "arab": "arabialainen",
+            "argentinian": "argentiinalainen",
             "asian": "aasialainen",
+            "balkan": "balkanilainen",
             "brazilian": "Brasilialainen",
             "breakfast": "Aamupala",
+            "brunch": "brunssi",
             "bubble_tea": "Pallerotee",
             "burger": "hampurilaiset",
             "cake": "Kakku",
+            "caribbean": "karibialainen",
             "chicken": "kana",
             "chinese": "kiinalainen",
             "coffee_shop": "kahvila",
+            "curry": "curry",
             "dessert": "Jälkiruoka",
+            "diner": "illallinen",
             "donut": "Donitsi",
             "european": "Eurooppalainen",
             "filipino": "filippiiniläinen",
             "fish": "Kala",
             "french": "ranskalainen",
             "fries": "Ranskanperunat",
+            "frozen_yogurt": "jääjogurtti",
             "georgian": "georgialainen",
             "german": "saksalainen",
             "greek": "kreikkalainen",
+            "hawaiian": "hawajilainen",
             "hot_dog": "Nakkisämpylä",
             "ice_cream": "jäätelö",
             "indian": "intialainen",
@@ -932,10 +1049,16 @@
             "korean": "korealainen",
             "lebanese": "libanonilainen",
             "malaysian": "malesialainen",
+            "mediterranean": "välimerellinen",
             "mexican": "meksikolainen",
+            "middle_eastern": "lähi-itä",
+            "moroccan": "marokkolainen",
             "noodle": "Nuudeli",
+            "oriental": "itämainen",
             "pancake": "Pannukakku",
             "pasta": "pasta",
+            "pastry": "leivonnainen",
+            "persian": "persialainen",
             "peruvian": "perulainen",
             "pizza": "pitsa",
             "polish": "puolalainen",
@@ -956,7 +1079,8 @@
             "thai": "thaimaalainen",
             "turkish": "turkkilainen",
             "ukrainian": "ukrainalainen",
-            "vietnamese": "vietnamilainen"
+            "vietnamese": "vietnamilainen",
+            "wings": "kanansiivet"
           }
         },
         "currency_multi": {
@@ -1398,6 +1522,7 @@
             "HGV_diesel": "raskaan liikenteen diesel",
             "LH2": "Nestemäinen typpi",
             "adblue": "AdBlue / AUS 23",
+            "adblue:canister": "AdBlue / AUS 32 (myydään kanistereissa)",
             "cng": "Paineistettu maakaasu",
             "diesel": "Dieselöljy",
             "e10": "E10-bensiini",
@@ -1478,6 +1603,9 @@
         "generator/type": {
           "label": "Tyyppi"
         },
+        "genus": {
+          "label": "Suku"
+        },
         "geyser/height": {
           "label": "Purkautumiskorkeus"
         },
@@ -1528,13 +1656,17 @@
           "label": "Tyyppi",
           "options": {
             "alternative": "Vaihtoehtolääketiede",
+            "audiologist": "Audiologi",
             "birthing_centre": "synnytysosasto",
+            "blood_bank": "Veripankki",
             "blood_donation": "verenluovutus",
             "clinic": "terveyskeskus",
             "dentist": "hammaslääkäri",
+            "dialysis": "Dialyysi",
             "doctor": "Lääkäri",
             "hospice": "Saattokoti",
             "hospital": "Sairaala",
+            "laboratory": "Lääketieteellinen laboratorio",
             "midwife": "Kätilö",
             "nurse": "Hoitaja",
             "occupational_therapist": "Toimintaterapeutti",
@@ -1653,6 +1785,8 @@
             "railway": "Rautatie",
             "ruins": "Rauniot",
             "tomb": "Hauta",
+            "wayside_cross": "Tienvarsiristi",
+            "wayside_shrine": "Tienvarsialttari",
             "wreck": "hylky"
           }
         },
@@ -1679,6 +1813,7 @@
           "label": "Koritelineet"
         },
         "horse_riding": {
+          "label": "Ratsastuskeskus",
           "options": {
             "horse_riding": "Kyllä",
             "undefined": "Ei"
@@ -1706,7 +1841,8 @@
           "label": "ICAO-lentoasemakoodi"
         },
         "image": {
-          "label": "Kuva"
+          "label": "Kuva",
+          "placeholder": "https://esimerkki.com/kuva.jpg"
         },
         "incline": {
           "label": "Kaltevuus"
@@ -1775,7 +1911,21 @@
           }
         },
         "kerb": {
-          "label": "Reunakiveyksen muoto"
+          "label": "Reunakiveyksen muoto",
+          "options": {
+            "lowered": {
+              "title": "Madallettu"
+            },
+            "no": {
+              "title": "Ei"
+            },
+            "raised": {
+              "title": "Korotettu"
+            },
+            "yes": {
+              "title": "Kyllä"
+            }
+          }
         },
         "kerb/height": {
           "label": "Korkeus"
@@ -1856,6 +2006,9 @@
         "lifeguard": {
           "label": "Tyyppi"
         },
+        "lifeguard_check": {
+          "label": "Hengenpelastaja"
+        },
         "lift_gate/type": {
           "label": "Tyyppi",
           "options": {
@@ -1910,7 +2063,12 @@
           "label": "Mapillary-kuvatunniste"
         },
         "marker": {
-          "label": "Tyyppi"
+          "label": "Tyyppi",
+          "options": {
+            "pedestal": {
+              "title": "Jalusta"
+            }
+          }
         },
         "material": {
           "label": "Materiaali",
@@ -1927,7 +2085,6 @@
             "marble": "marmori",
             "metal": "metalli",
             "plastic": "muovi",
-            "reinforced_conrete": "teräsbetoni",
             "rock": "kivi",
             "sand": "hiekka",
             "soil": "maa",
@@ -2126,6 +2283,7 @@
             "it": "Informaatioteknologian toimisto",
             "lawyer": "Lakitoimisto",
             "moving_company": "Muuttoyhtiön toimisto",
+            "newspaper": "Sanomalehden toimitus",
             "political_party": "Puoluetoimisto",
             "private_investigator": "Yksityisetsivän toimisto",
             "religion": "Uskonnollinen toimisto",
@@ -2207,7 +2365,7 @@
         },
         "park_ride": {
           "label": "Liityntäpysäköinti",
-          "terms": "parkkipaikka, autoparkki"
+          "terms": "liityntäpysäköinti, julkinen liikenne, parkkipaikka"
         },
         "parking": {
           "label": "Tyyppi",
@@ -2276,21 +2434,24 @@
             "credit_cards": "Luottokortti",
             "cryptocurrencies": "Kryptovaluutta",
             "debit_cards": "Pankkikortti",
+            "electronic_purses": "Digitaalinen lompakko",
             "mastercard_contactless": "Mastercard contactless",
             "notes": "Setelit",
             "prepaid_ticket": "Prepaid lippu",
             "wechat": "WeChat pay"
-          }
+          },
+          "terms": "maksutavat, maksutapoja, maksaminen"
         },
         "phases": {
           "label": "Vaiheet"
         },
         "phone": {
           "label": "Puhelinnumero",
-          "placeholder": "+358 40 123 4567"
+          "placeholder": "+358 40 123 4567",
+          "terms": "puhelin, matkapuhelin, kännykkä"
         },
         "picnic_table": {
-          "label": "Piknik-pöytä",
+          "label": "piknikpöytä",
           "terms": "pöytä"
         },
         "pipeline": {
@@ -2301,6 +2462,7 @@
           "options": {
             "advanced": "Vaikea",
             "easy": "Helppo",
+            "expert": "Ammattilainen",
             "extreme": "Äärimmäinen",
             "freeride": "Vapaalasku",
             "intermediate": "Keskivaikea",
@@ -2318,7 +2480,26 @@
           },
           "placeholder": "Helppo, keskivaikea, vaikea..."
         },
+        "piste/difficulty_nordic": {
+          "options": {
+            "advanced": "Vaikea - Kapeita, jyrkkiä tai jäisiä kohtia, tiukkoja käännöksiä",
+            "easy": "Helppo - Matalia mäkiä, lyhyitä jyrkkiä osuuksia",
+            "expert": "Ammattilainen - Vaarallista maastoa ympärillä",
+            "intermediate": "Keskivaikea - Jyrkkiä nousuja",
+            "novice": "Erittäin helppo - Tasainen, ei vaadi kokemusta"
+          },
+          "placeholder": "Helppo, Keskivaikea, Vaikea..."
+        },
         "piste/difficulty_skitour": {
+          "options": {
+            "advanced": "Vaikea - S: 40-45° kaltevuus",
+            "easy": "Helppo - S: 30-35° kaltevuus",
+            "expert": "Ammattilainen - S: 45-50° kaltevuus",
+            "extreme": "Äärimmäinen - EX: >55° kaltevuus",
+            "freeride": "Vapaalasku - AS: 50-55° kaltevuus",
+            "intermediate": "Keskiaikea - ZS: 35-40° kaltevuus",
+            "novice": "Erittäin helppo - L: <30° kaltevuus"
+          },
           "placeholder": "Helppo, keskivaikea, vaikea..."
         },
         "piste/grooming": {
@@ -2569,12 +2750,22 @@
           "label": "Uskonto",
           "options": {
             "buddhist": "Buddhalaisuus",
+            "caodaism": "Caodaismi",
+            "chinese_folk": "Kiinalainen kansanuskonto",
             "christian": "Kristinusko",
+            "confucian": "Kungfutselainen",
+            "jain": "Jainalaisuus",
             "jewish": "Juutalainen",
+            "multifaith": "Moniuskoisuus",
             "muslim": "Muslimi",
             "none": "Ei uskonnollinen",
             "pagan": "Pakana",
-            "shinto": "Šintolaisuus"
+            "shinto": "Šintolaisuus",
+            "sikh": "Sikhi",
+            "spiritualist": "Spiritualismi",
+            "taoist": "Taolaisuus",
+            "unitarian_universalist": "Unitaariuniversalismi",
+            "vietnamese_folk": "Vietnamilainen kansanuskonto"
           }
         },
         "reservation": {
@@ -2596,6 +2787,7 @@
         "resource": {
           "label": "Luonnonvarat",
           "options": {
+            "aggregate": "Aggregaatti",
             "clay": "savi",
             "coal": "kivihiili",
             "gold": "kulta",
@@ -2638,6 +2830,9 @@
             "station": {
               "description": "Radan osa, jossa vaunu pysähtyy ottamaan ja luovuttamaan matkustajia",
               "title": "Asema"
+            },
+            "waiting": {
+              "title": "Jonotus"
             }
           }
         },
@@ -2662,6 +2857,11 @@
         },
         "route_master": {
           "label": "Tyyppi"
+        },
+        "royal_cypher-GB": {
+          "options": {
+            "no": "Ei"
+          }
         },
         "ruins": {
           "label": "Tyyppi"
@@ -2751,8 +2951,28 @@
             "other": "Muu"
           }
         },
+        "seamark/harbour/category_marina": {
+          "options": {
+            "marina": "Kyllä",
+            "marina_no_facilities": "Ei"
+          }
+        },
         "seamark/mooring/category": {
           "label": "Luokka"
+        },
+        "seamark/rescue_station/category": {
+          "options": {
+            "aircraft": "Ilma-alus",
+            "first_aid": "Ensiapu",
+            "hovercraft": "Ilmatyynyalus",
+            "lifeboat": "Pelastusvene (maalla)",
+            "lifeboat_on_mooring": "Pelastusvene (kiinnityspaikalla)",
+            "radio": "Radioasema",
+            "refuge_intertidal": "Välivesiturvapaikka",
+            "refuge_shipwrecked": "Haaksirikon turvapaikka",
+            "seaplane": "Vesitaso",
+            "tug": "Pelastushinaaja"
+          }
         },
         "seamark/type": {
           "label": "Merimerkintä"
@@ -2823,8 +3043,14 @@
         "shop": {
           "label": "Tyyppi"
         },
+        "short_name": {
+          "label": "Lyhyt nimi"
+        },
         "shower": {
           "label": "Suihkut"
+        },
+        "side": {
+          "label": "Puoli"
         },
         "siren/purpose": {
           "label": "Käyttötarkoitus"
@@ -2875,7 +3101,11 @@
           "options": {
             "assisted_living": "Palvelutalo",
             "day_care": "Päivähoito",
-            "food_bank": "Ruokapankki"
+            "food_bank": "Ruokapankki",
+            "group_home": "Ryhmäkoti",
+            "nursing_home": "Hoitokoti",
+            "shelter": "Suoja",
+            "workshop": "Työpaja"
           }
         },
         "social_facility_for": {
@@ -3158,6 +3388,12 @@
         },
         "taxi_vehicle": {
           "options": {
+            "cycle_rickshaw": {
+              "title": "Pyöräriksa"
+            },
+            "motorcar": {
+              "title": "Auto"
+            },
             "motorcycle": {
               "title": "Moottoripyörä"
             }
@@ -3225,7 +3461,10 @@
           "options": {
             "columbarium": "Uurnaholvi",
             "crypt": "Krypta",
-            "pyramid": "Pyramidi"
+            "mausoleum": "Mausoleumi",
+            "pyramid": "Pyramidi",
+            "sarcophagus": "Sarkofagi",
+            "war_grave": "Yksittäinen sotahauta"
           }
         },
         "tourism": {
@@ -3286,6 +3525,9 @@
             "both": "molemmat/kaikki",
             "forward": "eteenpäin"
           }
+        },
+        "traffic_signals/minimap": {
+          "label": "Kohokartta"
         },
         "traffic_signals/sound": {
           "label": "Äänisignaali",
@@ -3355,9 +3597,12 @@
         },
         "utility": {
           "options": {
+            "gas": "Kaasu",
             "oil": "Öljy",
+            "power": "Virta",
             "sewerage": "Jätevesi",
             "street_lighting": "Katuvalaistus",
+            "telecom": "Teleoperaattori",
             "water": "Vesi"
           }
         },
@@ -3496,7 +3741,9 @@
         "wetland": {
           "label": "Tyyppi",
           "options": {
-            "swamp": "suo"
+            "reedbed": "Kaislikko",
+            "swamp": "suo",
+            "wet_meadow": "Kostea niitty"
           }
         },
         "wheelchair": {
@@ -3896,6 +4143,9 @@
         "amenity/doctors/urology": {
           "name": "Urologi"
         },
+        "amenity/dog_toilet": {
+          "name": "Koiravessa"
+        },
         "amenity/dojo": {
           "name": "Japanilaisten itsepuolustuslajien harjoittelupaikka",
           "terms": "taistelulaji, taistelu, itsepuolustus, laji, lajit, urheilu, kamppailu, kamppailulaji, itsepuolustuslaji, taekwondo, taekwon-do, judo, karate, taiji, jujutsu, aikido, kravmaga, krav maga, hapkido"
@@ -4024,6 +4274,9 @@
         "amenity/library": {
           "name": "Kirjasto",
           "terms": "kirjasto, kirjalainaamo, kirjanlainaus, kirjan lainaus, kirja, kirjan lainaaminen"
+        },
+        "amenity/library_dropoff": {
+          "name": "Kirjojen palautuslaatikko"
         },
         "amenity/loading_dock": {
           "name": "Lastauslaituri"
@@ -4352,6 +4605,9 @@
         "amenity/social_facility/nursing_home": {
           "name": "Hoitokoti"
         },
+        "amenity/stripclub": {
+          "name": "Strippi-klubi"
+        },
         "amenity/studio/audio": {
           "name": "Nauhoitusstudio"
         },
@@ -4496,7 +4752,7 @@
           "terms": "koira, koirankakka, kakka, kakkaroskis, roskis"
         },
         "amenity/waste_basket": {
-          "name": "Roskakori",
+          "name": "roskakori",
           "terms": "roska-astia, roskis, roskapönttö, jäte-astia, roska, jäte, jätteet"
         },
         "amenity/waste_disposal": {

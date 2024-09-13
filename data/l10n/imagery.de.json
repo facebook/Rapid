@@ -127,6 +127,9 @@
         "description": "Esri Archiv-Bilder (kann klarer und genauer als Esri Weltbilder sein)",
         "name": "Esri Weltbilder (Klarheit) Beta"
       },
+      "FOMI_2011_2014": {
+        "description": "Staatliche Orthofotos mit einer Auflösung von 40 cm/Pixel für das gesamte Land. Diese Ebene sollte in Ermangelung einer genaueren Referenz als Ausrichtungsbasis verwendet werden. Bilder im WEBP-Format, JOSM benötigt ein Webp-Plugin für sie."
+      },
       "Frankfurt-am-Main-2019": {
         "description": "Luftbild von Frankfurt am Main, aufgenommen am 16. April 2019"
       },
@@ -296,6 +299,13 @@
         },
         "description": "Täglich aktualisierte Wanderwege in oder um Naturschutzgebiete, die von der schwedischen Naturschutzbehörde erfasst werden",
         "name": "Schwedische Naturschutzbehörde - Wanderwege"
+      },
+      "ODOT_TIMS_Road_Inventory": {
+        "attribution": {
+          "text": "Ohio Verkehrsministerium"
+        },
+        "description": "Ohio Verkehrsministerium (ODOT) - Transportinformationskartensystem (TIMS) Straßeninventar veröffentlicht im Juni 2024.",
+        "name": "ODOT Straßeninventar"
       },
       "OSIP": {
         "description": "Ohio Statewide Imagery Program III aktuellste Orthobilder für jedes County mit einer Auflösung von 1 Fuß bis 3 Zoll von 2017 bis 2020."
@@ -529,6 +539,13 @@
         },
         "description": "1940 geo-tagged Fotos vom limnologischen Balaton Institut",
         "name": "EUFAR Balaton Orthofoto"
+      },
+      "geoscribble-latest": {
+        "attribution": {
+          "text": "GeoScribble Mitwirkende"
+        },
+        "description": "Skizzierte Aufzeichnungen von Every Door, höchstens drei Wochen alt",
+        "name": "Aktuelle GeoScribble Aufzeichnungen"
       },
       "gothenburg-citymap": {
         "attribution": {

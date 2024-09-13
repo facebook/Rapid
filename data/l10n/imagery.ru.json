@@ -70,6 +70,9 @@
         "description": "Архивная подложка Esri, может быть чище и аккуратнее, чем актуальная.",
         "name": "Всемирные снимки Esri (Clarity)"
       },
+      "Frankfurt-am-Main-2019": {
+        "description": "Аэрофотосъемка Франкфурта-на-Майне от 16 апреля 2019"
+      },
       "MAPNIK": {
         "description": "Слой OpenStreetMap по умолчанию.",
         "name": "OpenStreetMap (стандартный)"
@@ -79,6 +82,11 @@
           "text": "Условия и обратная связь"
         },
         "name": "Спутниковые снимки Mapbox"
+      },
+      "ODOT_TIMS_Road_Inventory": {
+        "attribution": {
+          "text": "Министерство транспорта штата Огайо"
+        }
       },
       "OSM_Inspector-Addresses": {
         "attribution": {
@@ -126,6 +134,9 @@
         "description": "Все изображения из OpenAerialMap на одном растровом слое, от Kontur.io",
         "name": "OpenAerialMap Mosaic, от Kontur.io"
       },
+      "Riksantikvariambetet-archaeological": {
+        "description": "Древние и исторические останки и монументы"
+      },
       "SPW_ORTHO_LAST": {
         "name": "Самые свежие аэрофото SPW(allonie)"
       },
@@ -137,6 +148,11 @@
       },
       "US-TIGER-Roads-2019": {
         "description": "Жёлтым = общедоступные картографические данные от US Census. Красным = данные, отсутствующие в OpenStreetMap"
+      },
+      "USDA-NAIP": {
+        "attribution": {
+          "text": "Министерство сельского хозяйства США"
+        }
       },
       "US_Forest_Service_roads_overlay": {
         "description": "Дороги: зелёный контур = без классификации; коричневый = просёлочные. Покрытие: гравий = светло-коричневый цвет; асфальт = чёрный; другое покрытие = серый; земля = белый; бетон = синий; трава = зелёный. Сезонные дороги = белые штрихи",

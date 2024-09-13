@@ -384,10 +384,10 @@
           "label": "Capacidade"
         },
         "capacity/disabled_parking": {
-          "label": "Espazos dispoñibles"
+          "label": "Prazas para mobilidade reducida"
         },
         "capacity_parking": {
-          "label": "Espazos totais"
+          "label": "Prazas totais"
         },
         "castle_type": {
           "label": "Tipo"

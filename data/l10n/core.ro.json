@@ -33,7 +33,6 @@
       },
       "add_note": {
         "title": "Notiță",
-        "label": "Adaugă o notiță",
         "description": "Ați găsit o problemă? Anunțați alți cartografi."
       },
       "add_preset": {
@@ -251,9 +250,6 @@
     "loading_auth": "Conectare la OpenStreetMap..",
     "report_a_bug": "Raportează o greșeală",
     "help_translate": "Ajută la traducere",
-    "sidebar": {
-      "tooltip": "Comutați bara laterală."
-    },
     "commit": {
       "title": "Încarcă în OpenStreetMap",
       "upload_explanation": "Modificările aduse de dumneavoastră vor fi vizibile pe toate hărțile bazate pe OpenStreetMap.",
@@ -276,7 +272,6 @@
       "background": {
         "title": "Fundal",
         "description": "Descriere",
-        "unknown": "Necunoscut",
         "show_tiles": "Arată Plăci",
         "hide_tiles": "Ascunde Plăci"
       },
@@ -285,8 +280,7 @@
         "version": "Versiune",
         "last_edit": "Ultima editare",
         "edited_by": "Editat de",
-        "changeset": "Schimbări",
-        "unknown": "Necunoscut"
+        "changeset": "Schimbări"
       },
       "location": {
         "title": "Locație",
@@ -330,11 +324,12 @@
       },
       "no_documentation_key": "Nu este disponibilă documentația.",
       "back_tooltip": "Schimbă tipul obiectului",
+      "type": "Tip",
+      "details": "Detalii",
       "remove": "Şterge",
       "search": "Caută",
       "unknown": "Necunoscut",
       "feature_list": "Caută obiecte",
-      "edit": "Editează obiect",
       "check": {
         "yes": "Da",
         "no": "Nu",
@@ -342,7 +337,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Tip",
           "default": "Implicit",
           "layer": "Strat"
         }
@@ -487,12 +481,6 @@
       "keepRight": {
         "detail_description": "Descriere"
       }
-    },
-    "mapillary_map_features": {
-      "title": "Funcționalitățile Hărții"
-    },
-    "mapillary": {
-      "view_on_mapillary": "Vezi această imagine pe Mapillary"
     },
     "note": {
       "note": "Notiță"

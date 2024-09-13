@@ -39,8 +39,7 @@
         "filter_tooltip": "punkt"
       },
       "add_note": {
-        "title": "Merknad",
-        "label": "Legg til merknad"
+        "title": "Merknad"
       }
     },
     "operations": {
@@ -135,8 +134,7 @@
         "source": "Kjelde",
         "description": "Skildring",
         "resolution": "Oppløysing",
-        "accuracy": "Nøyaktigheit",
-        "unknown": "Ukjend"
+        "accuracy": "Nøyaktigheit"
       },
       "history": {
         "title": "Historikk",
@@ -144,7 +142,6 @@
         "version": "Versjon",
         "last_edit": "Siste redigering",
         "edited_by": "Redigert av",
-        "unknown": "Ukjend",
         "note_comments": "Kommentarar",
         "note_created_date": "Dato laga",
         "note_created_user": "Laga av"
@@ -169,6 +166,7 @@
     "inspector": {
       "members": "Medlemmar",
       "features": "Funksjonar",
+      "details": "Detaljar",
       "search": "Søk",
       "unknown": "Ukjend",
       "check": {
@@ -200,11 +198,6 @@
           "detail_title": "Detaljar",
           "cancel": "Avbryt"
         }
-      }
-    },
-    "photo_overlays": {
-      "traffic_signs": {
-        "title": "Traffikkskilt"
       }
     },
     "feature": {
@@ -250,18 +243,6 @@
         "detail_title": "Detaljar",
         "elems_title": "Funksjonar"
       },
-      "improveOSM": {
-        "directions": {
-          "east": "aust",
-          "north": "nord",
-          "northeast": "nordaust",
-          "northwest": "nordvest",
-          "south": "sør",
-          "southeast": "søraust",
-          "southwest": "sørvest",
-          "west": "vest"
-        }
-      },
       "keepRight": {
         "detail_description": "Skildring",
         "comment": "Kommentar",
@@ -270,6 +251,9 @@
           "to": "til"
         }
       }
+    },
+    "mapillary_signs": {
+      "title": "Traffikkskilt"
     },
     "note": {
       "note": "Merknad",

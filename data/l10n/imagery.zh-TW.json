@@ -18,13 +18,13 @@
         "name": "Bytom: Fotoplan 2014 (空照圖)"
       },
       "Bytom-2016": {
-        "name": "Bytom: Orthophotomap 2016（空照圖）"
+        "name": "Bytom: Orthophotomap 2016 (空照圖)"
       },
       "Bytom-2018": {
-        "name": "Bytom: Orthophotomap 2018（空照圖）"
+        "name": "Bytom: Orthophotomap 2018 (空照圖)"
       },
       "Bytom-2021": {
-        "name": "Bytom: Orthophotomap 2021（空照圖）"
+        "name": "Bytom: Orthophotomap 2021 (空照圖)"
       },
       "Bytom-buildings": {
         "name": "Bytom: 建築"
@@ -102,7 +102,7 @@
       },
       "EOXAT2022CLOUDLESS": {
         "attribution": {
-          "text": "Sentinel-2 無雲 - https://s2maps.eu by EOX IT Services GmbH（含有變動過的 Copernicus Sentinel 資料 2022）"
+          "text": "Sentinel-2 無雲 - https://s2maps.eu by EOX IT Services GmbH (含有變動過的 Copernicus Sentinel 資料 2022)"
         },
         "description": "後處理過的 Sentinel 衛星影像。",
         "name": "eox.at 2022 無雲"
@@ -118,8 +118,12 @@
         "attribution": {
           "text": "使用條款與意見回饋"
         },
-        "description": "Ersi 的封存衛星圖可能比預設的圖層更清晰且更精確。",
-        "name": "Esri 世界衛星圖（清晰版）Beta"
+        "description": "Ersi 的資料影像可能比預設的圖層更清晰且更精確。",
+        "name": "Esri 世界衛星圖 (清晰版)Beta"
+      },
+      "FOMI_2011_2014": {
+        "description": "基於政府的正射影像，解析度為 40 公分/畫素，適用於整個國家。由於缺乏更準確的參照，該圖層應用作對齊基礎。WEBP 格式的影像，JOSM 需要 webp 外掛程式。",
+        "name": "FÖMI 正射影像 2011-2014 (WEBP)"
       },
       "Frankfurt-am-Main-2019": {
         "attribution": {
@@ -143,14 +147,14 @@
           "text": "波蘭大地測量與製圖總局"
         },
         "description": "解析度為 10 公分或更高的正射影像。資料按解析度排序，然後才按年份排序，例如2012年的 8 公分解析度影像會優先於2019年的 10 公分解析度影像。",
-        "name": "Geoportal 2：高解析度正射影像（封存影像）(WMS)"
+        "name": "Geoportal 2：高解析度正射影像 (資料影像) (WMS)"
       },
       "Geoportal2-PL-HighResolution-aerial_image_WMS": {
         "attribution": {
           "text": "波蘭大地測量與製圖總局"
         },
         "description": "解析度為 10 公分或更高的正射影像。資料按解析度排序，然後才按年份排序，例如2012年的 8 公分解析度影像會優先於2019年的 10 公分解析度影像。",
-        "name": "Geoportal 2：高解析度正射影像（航照圖）(WMS)"
+        "name": "Geoportal 2：高解析度正射影像 (航照圖) (WMS)"
       },
       "Geoportal2-PL-Streets_WMS": {
         "attribution": {
@@ -171,21 +175,21 @@
           "text": "波蘭大地測量與製圖總局"
         },
         "description": "WMS 讓您可以檢視波蘭的封存正射影像。透過此服務提供的資料是由航照圖組成的正射影像。此服務提供對 WMS 1.3.0 介面的支援。",
-        "name": "Geoportal 2：正射影像（封存影像）（WMS）"
+        "name": "Geoportal 2：正射影像 (資料影像) (WMS)"
       },
       "Geoportal2-PL-aerial_image_WMS": {
         "attribution": {
           "text": "波蘭大地測量與製圖總局"
         },
         "description": "WMS 讓您可以檢視波蘭的正射影像。透過此服務提供的資料是由航照圖組成的正射影像。此服務提供對 WMS 1.3.0 介面的支援。",
-        "name": "Geoportal 2：正射影像（最新航照圖）（WMS）"
+        "name": "Geoportal 2：正射影像 (最新航照圖) (WMS)"
       },
       "Geoportal2-PL-aerial_image_WMTS": {
         "attribution": {
           "text": "波蘭大地測量與製圖總局"
         },
         "description": "WMTS 讓您可以檢視波蘭的正射影像。透過此服務提供的資料是由航照圖組成的正射影像。",
-        "name": "Geoportal 2：正射影像（最新航照圖）（WMTS）"
+        "name": "Geoportal 2：正射影像 (最新航照圖) (WMTS)"
       },
       "Geoportal2-PL-boundaries-of-communes_WMS": {
         "attribution": {
@@ -251,7 +255,7 @@
         "attribution": {
           "text": "波蘭大地測量與製圖總局"
         },
-        "description": "瀏覽服務（網路地圖服務，WMS），在 1 公尺 x 1 公尺 的網格中檢視 NMT 陰影。該服務支援 WMS 1.3.0 介面。",
+        "description": "瀏覽服務 (網路地圖服務，WMS)，在 1 公尺 x 1 公尺 的網格中檢視 NMT 陰影。該服務支援 WMS 1.3.0 介面。",
         "name": "Geoportal 2：地形陰影 (WMS)"
       },
       "Geoportal2-PL-squares-and-housing-estates_WMS": {
@@ -345,7 +349,7 @@
           "text": "© OpenStreetMap 貢獻者, ODbL 1.0"
         },
         "description": "預設的 OpenStreetMap 圖層",
-        "name": "OpenStreetMap（標準）"
+        "name": "OpenStreetMap (標準)"
       },
       "Maaamet-Estonia_Cadastre": {
         "attribution": {
@@ -374,6 +378,13 @@
         "description": "瑞典環境保護局記錄的自然保護區內或周圍的每日更新路徑",
         "name": "環境保護局˙ - 路徑"
       },
+      "ODOT_TIMS_Road_Inventory": {
+        "attribution": {
+          "text": "俄亥俄州交通部"
+        },
+        "description": "俄亥俄州交通部 (ODOT) - 2024年6月發佈的交通資訊地圖系統 (TIMS) 道路清單。",
+        "name": "ODOT 道路清單"
+      },
       "OSIP": {
         "attribution": {
           "text": "俄亥俄州全州影像計劃"
@@ -399,7 +410,7 @@
         "attribution": {
           "text": "包含了以 Open Government Licence v3.0 授權的公部門資訊。"
         },
-        "description": "在英國完全對齊的地籍（土地註冊）的地圖"
+        "description": "在英國完全對齊的地籍 (土地註冊) 的地圖"
       },
       "OSM_Inspector-Addresses": {
         "attribution": {
@@ -476,10 +487,10 @@
         "name": "瑞典文物管理局 - 遺跡"
       },
       "SDFE_Overflade_Skyggekort_40cm": {
-        "name": "SDFI 表面陰影地圖（40 公分）"
+        "name": "SDFI 表面陰影地圖 (40 公分)"
       },
       "SDFE_Terraen_Skyggekort_40cm": {
-        "name": "SDFI 地形陰影地圖（40 公分）"
+        "name": "SDFI 地形陰影地圖 (40 公分)"
       },
       "SPW_ORTHO_LAST": {
         "name": "SPW(allonie) 最新空照圖"
@@ -617,7 +628,7 @@
       },
       "cyclosm": {
         "attribution": {
-          "text": "彩現：CyclOSM（由 OpenStreetMap 法國管理主機）© 地圖資料 OpenStreetMap 貢獻者"
+          "text": "彩現：CyclOSM (由 OpenStreetMap 法國管理主機) © 地圖資料 OpenStreetMap 貢獻者"
         },
         "description": "CyclOSM 是一種專為騎乘自行車設計的地圖樣式。其利用 OpenStreetMap 資料來建立美觀實用的自行車地圖！"
       },
@@ -630,6 +641,13 @@
         },
         "description": "從巴拉頓湖沼學協會而來的 1940 有地理標記的照片。",
         "name": "EUFAR 巴拉頓正射影像"
+      },
+      "geoscribble-latest": {
+        "attribution": {
+          "text": "GeoScribble 貢獻者"
+        },
+        "description": "Every Door 編輯的幾何調查筆記，最多三週",
+        "name": "GeoScribble 最新筆記"
       },
       "gothenburg-citymap": {
         "attribution": {
@@ -734,7 +752,7 @@
         "name": "Kartverket 建築物圖層"
       },
       "kelkkareitit": {
-        "description": "來自 OSM 的 Kelkkareitit.fi 雪車賽道（包含北歐）",
+        "description": "來自 OSM 的 Kelkkareitit.fi 雪車路徑 (包含北歐)",
         "name": "北歐雪車覆蓋層"
       },
       "lancucki-buildings": {
@@ -776,7 +794,7 @@
         "attribution": {
           "text": "© OpenStreetMap 貢獻者，CC-BY-SA"
         },
-        "name": "OpenPT 地圖（覆蓋層）"
+        "name": "OpenPT 地圖 (覆蓋層)"
       },
       "openrailwaymap": {
         "attribution": {
@@ -809,7 +827,7 @@
         "attribution": {
           "text": "© OpenStreetMap 貢獻者，CC-BY-SA"
         },
-        "name": "OpenStreetMap（德國樣式）"
+        "name": "OpenStreetMap (德國樣式)"
       },
       "osmse-ekonomiska": {
         "description": "「經濟地圖」的掃描，約1950–1978年",
@@ -843,7 +861,7 @@
         "attribution": {
           "text": "圖磚 © cquest@Openstreetmap France，資料 © IGN, LO/OL"
         },
-        "description": "已分類網路的路線（公路、國家、部門）",
+        "description": "已分類網路的路線 (公路、國家、部門)",
         "name": "路線 500"
       },
       "rzeszowski-aerial": {
@@ -893,8 +911,8 @@
         "name": "瑞典教育局 - 學校"
       },
       "skoterleder": {
-        "description": "Snowmobile 路徑",
-        "name": "Snowmobile 地圖瑞典"
+        "description": "雪車路徑",
+        "name": "瑞典雪車地圖"
       },
       "sropczyce-buildings": {
         "name": "Powiat ropczycko-sędziszowski：建築"
@@ -964,7 +982,7 @@
         "name": "Wrocław: Orthophotomap 2015 (航照圖)"
       },
       "wroclaw-orto2018": {
-        "name": "Wrocław: Orthophotomap 2018（航照圖）"
+        "name": "Wrocław: Orthophotomap 2018 (航照圖)"
       }
     }
   }

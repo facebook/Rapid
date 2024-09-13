@@ -172,6 +172,9 @@
         "description": "Esri archive 이미지는 기본 레이어보다 명확하고 정확할 수 있습니다.",
         "name": "Esri 전세계 항공 지도 (고화질) Beta"
       },
+      "FOMI_2011_2014": {
+        "description": "40cm/픽셀 해상도의 정부 기반, 잎으로 덮인 정사이미지. 이 레이어는 더 정확한 참조가 부족한 상태에서 정렬 베이스로 사용되어야 합니다. WEBP 형식 이미지, JOSM은 webp 플러그인이 필요합니다."
+      },
       "Frankfurt-am-Main-2019": {
         "attribution": {
           "text": "도시 측량 사무소 프랑크푸르트 암 마인"
@@ -477,6 +480,12 @@
       "Naturvardsverket-trails": {
         "description": "스웨덴 환경보호청이 기록한 자연보호구역 내 또는 그 주변의 매일 업데이트되는 산책로",
         "name": "환경 보호국 - 트레일"
+      },
+      "ODOT_TIMS_Road_Inventory": {
+        "attribution": {
+          "text": "오하이오 교통부"
+        },
+        "description": "오하이오 교통부(ODOT) - 2024년 6월 발표된 교통 정보 매핑 시스템(TIMS) 도로 목록."
       },
       "OSIP": {
         "attribution": {

@@ -41,7 +41,6 @@
       },
       "add_note": {
         "title": "Nota",
-        "label": "Voeg nota by",
         "description": "Probleem gesien? Laat ander weet."
       },
       "add_preset": {
@@ -268,15 +267,13 @@
       },
       "background": {
         "title": "Agtergrond",
-        "description": "Beskrywing",
-        "unknown": "Onbekend"
+        "description": "Beskrywing"
       },
       "history": {
         "version": "Weergawe",
         "last_edit": "Meest onlangse wysiging",
         "edited_by": "Gewysig deur",
         "changeset": "Wysigingstel",
-        "unknown": "Onbekend",
         "note_comments": "Kommentaar",
         "note_link_text": "Nota op openstreetmap.org"
       },
@@ -298,20 +295,14 @@
       "add_to_relation": "Voeg by in 'n verband",
       "role": "rol",
       "choose": "Kies funksie tipe",
+      "type": "Tipe",
       "remove": "Verwyder",
       "search": "Soek",
       "unknown": "Onbekend",
       "feature_list": "Soek bakens",
-      "edit": "Wysig baken",
-      "edit_features": "Wysig bakens",
       "check": {
         "yes": "Ja",
         "no": "Nee"
-      },
-      "radio": {
-        "structure": {
-          "type": "Tipe"
-        }
       },
       "add": "Voeg by"
     },
@@ -331,9 +322,6 @@
         },
         "keepRight": {
           "title": "KeepRight-probleme"
-        },
-        "improveOSM": {
-          "title": "ImproveOSM-probleme"
         },
         "osmose": {
           "title": "Osmose-probleme"
@@ -419,15 +407,6 @@
         "comment": "Kommentaar",
         "save_comment": "Stoor kommentaar",
         "ignore_comment": "Verwyder en lewer kommentaar"
-      }
-    },
-    "mapillary_map_features": {
-      "title": "Kaartbakens",
-      "tooltip": "Kaartbakens van Mapillary",
-      "object": {
-        "sign": {
-          "other": "ander teken"
-        }
       }
     },
     "note": {

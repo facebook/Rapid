@@ -97,13 +97,9 @@
       "list": "{users} વડે ફેરફારો"
     },
     "info_panels": {
-      "background": {
-        "unknown": "અજાણ્યું"
-      },
       "history": {
         "version": "આવૃત્તિ",
-        "last_edit": "છેલ્લો ફેરફાર",
-        "unknown": "અજાણ્યું"
+        "last_edit": "છેલ્લો ફેરફાર"
       },
       "location": {
         "title": "સ્થાન",
@@ -134,6 +130,7 @@
     },
     "inspector": {
       "show_more": "વધુ દર્શાવો",
+      "type": "પ્રકાર",
       "remove": "દૂર કરો",
       "search": "શોધો",
       "unknown": "અજાણ્યું",
@@ -143,7 +140,6 @@
       },
       "radio": {
         "structure": {
-          "type": "પ્રકાર",
           "default": "મૂળભૂત",
           "layer": "સ્તર"
         }
@@ -195,9 +191,6 @@
       "esri": {
         "remove": "દૂર કરો"
       }
-    },
-    "mapillary_map_features": {
-      "title": "નકશાની લાક્ષણિકતાઓ"
     },
     "help": {
       "overview": {

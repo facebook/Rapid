@@ -44,7 +44,6 @@
       },
       "add_note": {
         "title": "Нотатка",
-        "label": "Додати нотатку",
         "description": "Виявлено ваду? Повідомте інших."
       },
       "add_preset": {
@@ -777,9 +776,6 @@
     "loading_auth": "З’єднання з OpenStreetMap…",
     "report_a_bug": "Повідомити про помилку",
     "help_translate": "Допомогти перекласти",
-    "sidebar": {
-      "tooltip": "Сховати/Показати бічну панель"
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} прихований об’єкт",
@@ -842,7 +838,6 @@
         "description": "Опис",
         "resolution": "Роздільна здатність",
         "accuracy": "Точність",
-        "unknown": "Невідомо",
         "show_tiles": "Показати тайли",
         "hide_tiles": "Сховати тайли"
       },
@@ -853,7 +848,6 @@
         "last_edit": "Останні зміни",
         "edited_by": "Змінено: ",
         "changeset": "Набір змін",
-        "unknown": "Невідомо",
         "note_no_history": "Без історії (нова нотатка)",
         "note_comments": "Коментарі",
         "note_created_date": "Дата створення",
@@ -937,13 +931,13 @@
         "zoom": "{features} приховані. Наблизьтесь щоб показати їх."
       },
       "back_tooltip": "Змінити тип об’єкта",
+      "type": "Тип",
+      "details": "Подробиці",
       "remove": "Вилучити",
       "search": "Пошук",
       "unknown": "Невідомо",
       "incomplete": "<не завантажено>",
       "feature_list": "Пошук об’єктів",
-      "edit": "Властивості об’єкта",
-      "edit_features": "Редагувати об’єкти",
       "check": {
         "yes": "Так",
         "no": "Ні",
@@ -951,7 +945,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Тип",
           "default": "Типово",
           "layer": "Шар"
         }
@@ -1020,7 +1013,8 @@
         },
         "notes": {
           "tooltip": "Нотатки з OpenStreetMap",
-          "title": "Нотатки OpenStreetMap"
+          "title": "Нотатки OpenStreetMap",
+          "key": "Пн"
         },
         "maproulette": {
           "detail_title": "Деталі",
@@ -1029,10 +1023,6 @@
         "keepRight": {
           "tooltip": "Проблеми в даних виявлені за допомогою keepright.at",
           "title": "KeepRight - Вади"
-        },
-        "improveOSM": {
-          "tooltip": "Відсутні дані, знайдені за допомогою improveosm.org",
-          "title": "ImproveOSM Вади"
         },
         "osmose": {
           "tooltip": "Проблеми в даних виявлені за допомогою osmose.openstreetmap.fr",
@@ -1065,9 +1055,6 @@
     },
     "photo_overlays": {
       "title": "Шар з фото",
-      "traffic_signs": {
-        "title": "Дорожні знаки"
-      },
       "photo_type": {
         "flat": {
           "title": "Звичайні фото",
@@ -1329,40 +1316,6 @@
         "elems_title": "Об’єкти",
         "fix_title": "Поради щодо виправлення",
         "trap_title": "Поширені помилки"
-      },
-      "improveOSM": {
-        "title": "ImproveOSM Знахідки",
-        "geometry_types": {
-          "path": "шляхи",
-          "parking": "стоянки",
-          "road": "дороги",
-          "both": "дороги та стоянки"
-        },
-        "directions": {
-          "east": "схід",
-          "north": "північ",
-          "northeast": "північний схід",
-          "northwest": "північний захід",
-          "south": "південь",
-          "southeast": "південний схід",
-          "southwest": "південний захід",
-          "west": "захід"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Відсутній односторонній рух",
-            "description": "Вздовж цього відрізку {highway}, {percentage}% з {num_trips} записаних подорожей рухались від {from_node} до {to_node}. Можливо тут має бути теґ \"oneway\"."
-          },
-          "mr": {
-            "title": "Відсутня геометрія",
-            "description": "{num_trips} записаних подорожей на цій території підказують, зо тут може бути незамаплено {geometry_type}.",
-            "description_alt": "Дані зі сторонніх джерел підказують, що тут може бути {geometry_type}."
-          },
-          "tr": {
-            "title": "Відсутні заборони маневрів",
-            "description": "{num_passed} з {num_trips} записаних подорожей (що прямували на {travel_direction}) зробили поворот з {from_way} до {to_way} на {junction}. Можливо тут відсутня заборона маневру \"{turn_restriction}\"."
-          }
-        }
       },
       "keepRight": {
         "detail_description": "Опис",
@@ -1660,101 +1613,20 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Streetside фото від Microsoft",
-      "report": "Повідомити про порушення конфіденційності щодо цього зображення",
-      "view_on_bing": "Переглянути на мапах Bing",
+    "photos": {
       "hires": "Висока якість"
     },
-    "mapillary_images": {
-      "tooltip": "Знімки з вулиць від Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Об’єкти мапи",
-      "tooltip": "Об’єкти мапи від Mapillary",
-      "construction": {
-        "barrier": {
-          "temporary": "тимчасова перешкода"
-        },
-        "flat": {
-          "crosswalk_plain": "пішохідний перехід",
-          "driveway": "під'їзд до будівлі "
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "розмітка - рух ліворуч",
-            "right": "розмітка - рух праворуч",
-            "split_left_or_straight": "розмітка - рух ліворуч або прямо",
-            "split_right_or_straight": "розмітка - рух праворуч та прямо",
-            "straight": "розмітка - рух прямо"
-          },
-          "crosswalk_zebra": "розмітка - пішохідний перехід",
-          "give_way_row": "розмітка - дати дорогу",
-          "give_way_single": "розмітка - дати дорогу",
-          "other_marking": "розмітка - інше",
-          "stop_line": "розмітка - стоп-лінія",
-          "symbol": {
-            "bicycle": "розмітка - знак велосипеда"
-          },
-          "text": "розмітка - напис"
-        }
-      },
-      "object": {
-        "banner": "банер",
-        "bench": "лавка",
-        "bike_rack": "стоянка для велосипедів",
-        "billboard": "рекламний щит",
-        "catch_basin": "дощоприймач",
-        "cctv_camera": "камера відеоспостереження",
-        "fire_hydrant": "пожежний гідрант",
-        "junction_box": "розмітка - територія перехрестя",
-        "mailbox": "поштова скриня",
-        "manhole": "люк",
-        "parking_meter": "паркомат",
-        "phone_booth": "телефона будка",
-        "sign": {
-          "advertisement": "реклама",
-          "information": "інформаційний знак",
-          "other": "іншій знак",
-          "store": "магазин",
-          "traffic_sign": {
-            "back": "знак - зворотня сторона",
-            "direction_front": "знак - лицьова сторона",
-            "front": "знак - лицьова сторона"
-          }
-        },
-        "street_light": "ліхтар",
-        "support": {
-          "pole": "опора знака",
-          "traffic_sign_frame": "рамка знака",
-          "utility_pole": "стовп"
-        },
-        "traffic_cone": "дорожній конус",
-        "traffic_light": {
-          "cyclists": "вело світлофор",
-          "general_horizontal": "горизонтальний світлофор",
-          "general_single": "односекційний світлофор",
-          "general_upright": "вертикальний світлофор",
-          "other": "світлофор",
-          "pedestrians": "пішохідний світлофор"
-        },
-        "trash_can": "сміттєвий бак",
-        "water_valve": "кран (вода)"
-      }
+    "streetside": {
+      "tooltip": "Streetside фото від Microsoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Дорожні знаки від Mapillary"
-      },
-      "view_on_mapillary": "Переглянути цей знімок на Mapillary"
+      "tooltip": "Знімки з вулиць від Mapillary"
     },
-    "kartaview_images": {
-      "tooltip": "Знімки з вулиць від KartaView"
+    "mapillary_signs": {
+      "title": "Дорожні знаки"
     },
     "kartaview": {
-      "view_on_kartaview": "Переглянути цей знімок на KartaView"
+      "tooltip": "Знімки з вулиць від KartaView"
     },
     "note": {
       "note": "Нотатка",
@@ -1912,7 +1784,6 @@
       },
       "notes": {
         "title": "Нотатки",
-        "intro": "*Нотатки* використовуються для попередження інших користувачів про необхідність виправлення або для привертання уваги. Нотатки позначають певне місце на мапі. Щоб переглянути наявні нотатки або додати нові, відкрийте панель {data_icon} **{map_data}**, щоб увімкнути шар {osm_notes}.",
         "add_note_h": "Додавання нотаток",
         "add_note": "Щоб додати нову нотатку, натисніть кнопку {note_icon} **{note}** на панелі інструментів над мапою або натисніть клавішу `{add_note_key}`.",
         "update_note_h": "Закриття, повторне відкриття та коментування",
@@ -1949,9 +1820,7 @@
         "title": "Перевірка якості",
         "intro": "*Quality Assurance* (Q/A) — інструменти, що допомагають виявити помилки в теґах, нез’єднані дороги та проблеми з даними, які мапери потім можуть виправити. Щоб переглянути виявлені вади Q/A, натисніть панель {data_icon} **{map_data}**, щоб увімкнути певний шар Q/A.",
         "tools_h": "Інструменти",
-        "tools": "Наразі підтримується: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) та [Osmose](https://osmose.openstreetmap.fr/).",
-        "issues_h": "Розв’язання вад",
-        "issues": "Розв’язання вад Q/A схоже з процесом розгляду нотаток. При натисканні на наявну ваду Q/A на бічній панелі з’являються відомості про її тип та пошкоджені елементи. Кожен інструмент має свої власні можливості, але зазвичай ви можете прокоментувати та/або закрити ваду."
+        "issues_h": "Розв’язання вад"
       },
       "field": {
         "restrictions": {
@@ -2708,7 +2577,6 @@
           "map_data": "Показати/сховати панель Дані мапи",
           "issues": "Показати/сховати панель Вад",
           "preferences": "Показати панель налаштувань користувача",
-          "sidebar": "Сховати/Показати бічну панель",
           "wireframe": "Каркасний режим",
           "osm_data": "Показати дані OpenStreetMap",
           "highlight_edits": "Показати незбережені зміни"

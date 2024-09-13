@@ -5,6 +5,7 @@
       "mappingbotswana": "Kartlägg Botswana",
       "openstreetmapafrica": "OpenStreetMap Afrika",
       "openstreetmapalbania": "OpenStreetMap Albanien",
+      "openstreetmaparmenia": "OpenStreetMap Armenien",
       "openstreetmapasia": "OpenStreetMap Asien",
       "openstreetmapaustria": "OpenStreetMap Österrike",
       "openstreetmapbelgium": "OpenStreetMap Belgien",
@@ -23,6 +24,8 @@
       "openstreetmapcotedivoire": "OpenStreetMap Elfenbenskusten",
       "openstreetmapcroatia": "OpenStreetMap Kroatien",
       "openstreetmapcuba": "OpenStreetMap Kuba",
+      "openstreetmapcyprus": "OpenStreetMap Cypern",
+      "openstreetmapdeepsouth": "OpenStreetMap Djupa Södern",
       "openstreetmapdenmark": "OpenStreetMap Danmark",
       "openstreetmapdominicanrepublic": "OpenStreetMap Dominikanska republiken",
       "openstreetmapegypt": "OpenStreetMap Egypten",
@@ -85,6 +88,7 @@
       "openstreetmapturkey": "OpenStreetMap Turkiet",
       "openstreetmapuk": "OpenStreetMap Storbritannien",
       "openstreetmapukraine": "OpenStreetMap Ukraina",
+      "openstreetmapwestbengal": "OpenStreetMap Västbengalen",
       "openstreetmapwesternsahara": "OpenStreetMap Västsahara"
     },
     "_defaults": {
@@ -113,6 +117,10 @@
       },
       "gitlab": {
         "name": "GitLab för {community}"
+      },
+      "instagram": {
+        "name": "{community} på Instagram",
+        "description": "Följ oss på Instagram"
       },
       "irc": {
         "name": "{community} på IRC",
@@ -157,6 +165,10 @@
       "threads": {
         "name": "{community} på Threads",
         "description": "Följ oss på Threads"
+      },
+      "tiktok": {
+        "name": "{community} på TikTok",
+        "description": "Följ oss på TikTok"
       },
       "twitter": {
         "name": "{community} på 𝕏",
@@ -320,9 +332,6 @@
     "de-berlin-wiki": {
       "description": "Wiki-sida för {community}"
     },
-    "de-berlin-xmpp": {
-      "description": "Anslut till XMPP fleranvändarchatt: {url}"
-    },
     "de-bochum-wiki": {
       "description": "Wiki-sida för {community}"
     },
@@ -345,8 +354,7 @@
       "description": "Wiki-sida för {community}"
     },
     "de-hamburg-xmpp": {
-      "name": "OpenStreetMap Hamburg på XMPP",
-      "description": "Anslut till XMPP fleranvändarchatt: {url}"
+      "name": "OpenStreetMap Hamburg på XMPP"
     },
     "de-karlsruhe-mailinglist": {
       "name": "E-postlista Karlsruhe"
@@ -401,8 +409,7 @@
       "description": "OSM-gemenskap och användar-meetup för Kreis Viersen och Mönchengladbach"
     },
     "de-xmpp": {
-      "name": "OpenStreetMap DE på XMPP",
-      "description": "Anslut till XMPP fleranvändarchatt: {url}"
+      "name": "OpenStreetMap DE på XMPP"
     },
     "DF-telegram": {
       "extendedDescription": "Anslut till gemenskapen för att lära dig mer om OpenStreetMap, ställa frågor eller delta på våra möten. Alla är välkomna!"
@@ -759,9 +766,6 @@
     "OSM-Facebook": {
       "description": "Gilla oss på Facebook för nyheter och uppdateringar om OpenStreetMap"
     },
-    "osm-fj": {
-      "description": "Tillhandahåller OSM-tjänster och information för den gemenskapen i Fiji"
-    },
     "osm-gh-facebook": {
       "extendedDescription": "Kartläggare i Ghana-gemenskapen, marknadsför OpenStreetMap projektet Humanitarian OpenStreetMap Team (HOT) i Ghana. Gå med oss."
     },
@@ -814,9 +818,6 @@
     },
     "OSM-japan-facebook": {
       "description": "Kartläggare och OpenStreetMap-användare i Japan"
-    },
-    "OSM-japan-slack": {
-      "description": "En Slack-arbetsgrupp för den japanska OSM-gemenskapen {signupUrl}"
     },
     "OSM-japan-website": {
       "description": "Kartläggare och OpenStreetMap-användare i Japan"
@@ -931,10 +932,6 @@
     },
     "OSM-US-Slack": {
       "description": "Alla är välkomna! Registrera dig på {signupUrl}"
-    },
-    "OSM-Utah": {
-      "description": "Kartläggare och OpenStreetMap-användare runt Salt Lake City",
-      "extendedDescription": "Aktiviteter kan vara saker så som workshops där man lär sig att kartlägga, kartläggningsfester och datainsamling utomhus. Aktiviteterna kommer äga rum kring Salt Lake City, åtminstone initialt. Vi söker både efter erfarna kartläggare och nybörjare. Gå med och låt oss göra lite kartläggning!"
     },
     "OSM-Wyoming": {
       "description": "Kartläggare och OpenStreetMap-användare i staten Wyoming",

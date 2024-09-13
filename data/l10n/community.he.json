@@ -390,8 +390,7 @@
       "description": "עמוד הוויקי של {community}"
     },
     "de-berlin-xmpp": {
-      "name": "ה־XMPP של OpenStreetMap ברלין-ברנדנבורג ",
-      "description": "ניתן להצטרף לקבוצת הצ׳אט מרובת המשתתפים שלנו ב־XMPP:‏ {url}"
+      "name": "ה־XMPP של OpenStreetMap ברלין-ברנדנבורג "
     },
     "de-bochum-wiki": {
       "description": "עמוד הוויקי של {community}"
@@ -412,8 +411,7 @@
       "description": "עמוד הוויקי של {community}"
     },
     "de-hamburg-xmpp": {
-      "name": "OpenStreetMap המבורג ב־XMPP",
-      "description": "ניתן להצטרף לקבוצת הצ׳אט מרובת המשתתפים שלנו ב־XMPP:‏ {url}"
+      "name": "OpenStreetMap המבורג ב־XMPP"
     },
     "de-karlsruhe-mailinglist": {
       "name": "קבוצת הדיוור של קרלסרוהה"
@@ -459,8 +457,7 @@
       "description": "קהילה ומפגש משתמשי OSM במחוז וירסן ובמנשנגלדבך"
     },
     "de-xmpp": {
-      "name": "OpenStreetMap גרמניה ב־XMPP",
-      "description": "ניתן להצטרף לקבוצת הצ׳אט מרובת המשתתפים שלנו ב־XMPP:‏ {url}"
+      "name": "OpenStreetMap גרמניה ב־XMPP"
     },
     "DF-telegram": {
       "extendedDescription": "ניתן להצטרף לקהילה וללמוד עוד על OpenStreetMap, לשאול שאלות או להשתתף במפגשים שלנו. כולם מוזמנים!"
@@ -653,9 +650,6 @@
     "OSM-Facebook": {
       "description": "ניתן לעשות לנו ‚לייק’ בפייסבוק כדי לקבל חדשות ועדכונים על OpenStreetMap."
     },
-    "osm-fj": {
-      "description": "אספקת שירותי OSM ומידע לקהילה המקומית בפיג׳י"
-    },
     "osm-gh-facebook": {
       "extendedDescription": "ממפים בקהילת גאנה, מקדמים את OpenStreetMap ואת מיזמי צוות OpenStreetMap ההומניטרי (HOT) בגאנה. אפשר להצטרף אלינו."
     },
@@ -708,9 +702,6 @@
     },
     "OSM-japan-facebook": {
       "description": "ממפי ומשתמשי OpenStreetMap ביפן"
-    },
-    "OSM-japan-slack": {
-      "description": "מרחב עבודה ב־Slack עבור קהילת OSM היפנית {signupUrl}"
     },
     "OSM-japan-website": {
       "description": "ממפי ומשתמשי OpenStreetMap ביפן"
@@ -796,9 +787,6 @@
       "description": "בואו נהנה, נתרום משהו ללוס אנג׳לס ונלמד על מיפוי!",
       "extendedDescription": "OpenStreetMap (OSM) דרום קליפורניה היא קבוצה שמיועדת לכל מי שמעניין אות להיפגש ולעבוד יחד על OpenStreetMap.‏  OpenStreetMap, הוויקיפדיה של המפות, מפה חופשית של העולם שנוצרת על ידי למעלה ממיליון משתתפים מכל רחבי העולם.  כולם מוזמנים.  אם עוד אין לך היכרות עם OpenStreetMap, אנו נלמד אותך. אם יש לך רעיון למיזם מיפוי או אפילו סיור שטח עם הקבוצה, מעולה!"
     },
-    "OSM-South-Bay": {
-      "name": "OSM סאות׳ ביי"
-    },
     "OSM-Tampa-Bay": {
       "name": "OpenStreetMap מפרץ טמפה",
       "description": "ממפים ומשתמשים ב־OpenStreetMap באזור מפרץ טמפה",
@@ -831,9 +819,7 @@
       "description": "כולם מוזמנים! ניתן להירשם בכתובת {signupUrl}"
     },
     "OSM-Utah": {
-      "name": "OpenStreetMap יוטה",
-      "description": "ממפים ומשתמשים ב־OpenStreetMap באזור סולט לייק סיטי",
-      "extendedDescription": "פעילויות עשויות לכלול דברים כגון סדנאות הדרכה למיפוי, מסיבות מיפוי ואיסוף נתונים באוויר הפתוח. האירועים מתקיימים באזור סולט לייק סיטי, לפחות בתחילת הדרך. אנו מחפשים ממפים מנוסים לצד מתחילים ב־OSM. מזמינים אותך להצטרף אלינו ופשוט למפות!"
+      "name": "OpenStreetMap יוטה"
     },
     "OSM-Wyoming": {
       "name": "OpenStreetMap ויומינג",

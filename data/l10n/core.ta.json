@@ -137,13 +137,11 @@
         "title": "பின்னணி",
         "zoom": "பெரிதாக்குக",
         "source": "மூலம்",
-        "description": "விளக்கம்",
-        "unknown": "தெரியாதவை"
+        "description": "விளக்கம்"
       },
       "history": {
         "title": "வரலாறு",
         "version": "பதிப்பு",
-        "unknown": "தெரியாதவை",
         "note_comments": "பின்னூட்டங்கள்",
         "note_created_date": "தொங்கியத் தேதி",
         "note_created_user": "தொடங்கியவர்"
@@ -182,18 +180,18 @@
       "tags": "குறிச்சொற்கள்",
       "new_relation": "புது தொடர்பு...",
       "role": "செயல்பங்கு",
+      "type": "வகை",
+      "details": "விவரங்கள்",
       "remove": "நீக்கு",
       "search": "தேடு",
       "unknown": "தெரியாதவை",
       "incomplete": "<பதிவிறக்கம் செய்யப்படவில்லை>",
-      "edit": "அம்சத்தைப் மாற்ற",
       "check": {
         "yes": "ஆம்",
         "no": "இல்லை"
       },
       "radio": {
         "structure": {
-          "type": "வகை",
           "default": "இயல்பிருப்பு"
         }
       },
@@ -214,6 +212,9 @@
       "title": "வரைபடத் தரவு",
       "description": "வரைபடத் தரவு",
       "layers": {
+        "notes": {
+          "key": "வ"
+        },
         "maproulette": {
           "detail_title": "விவரங்கள்",
           "cancel": "ரத்து"

@@ -43,7 +43,6 @@
       },
       "add_note": {
         "title": "Заўвага",
-        "label": "Дадаць заўвагу",
         "description": "Выявілі праблему? Паведаміце іншым картаграфам."
       },
       "add_preset": {
@@ -265,9 +264,6 @@
     "logout": "Па-за акаўнтам",
     "report_a_bug": "Паведаміць пра памылку",
     "help_translate": "Дапамагчы з перакладам",
-    "sidebar": {
-      "tooltip": "Пераключыць бакавую панэль"
-    },
     "commit": {
       "title": "Загрузіць на OpenStreetMap",
       "upload_explanation": "Змяненні, якія вы загрузілі, будуць адлюстроўвацца на ўсіх мапах, якія выкарыстоўваюць дадзеныя з OpenStreetMap.",
@@ -342,17 +338,16 @@
       "multiple_values": "Некалькі значэнняў",
       "multiple_types": "Некалькі тыпаў",
       "back_tooltip": "Змяніць тып абʼекта",
+      "type": "Тып",
+      "details": "Падрабязней",
       "search": "Пошук",
       "feature_list": "Пошук аб'ектаў",
-      "edit": "Рэдагаваць аб'ект",
-      "edit_features": "Рэдагаваць аб'екты",
       "check": {
         "yes": "Так",
         "no": "Не"
       },
       "radio": {
         "structure": {
-          "type": "Тып",
           "default": "Па змаўчанні"
         }
       },
@@ -387,7 +382,8 @@
       "layers": {
         "osm": {
           "tooltip": "Картаграфічныя даныя OpenStreetMap ",
-          "title": "Даныя OpenStreetMap "
+          "title": "Даныя OpenStreetMap ",
+          "key": "О"
         },
         "notes": {
           "tooltip": "Даныя з заўвагамі OpenStreetMap",
@@ -400,10 +396,6 @@
         "keepRight": {
           "tooltip": "Праблемы з данымі, якія выяўлены keepright.at",
           "title": "Праблемы KeepRight"
-        },
-        "improveOSM": {
-          "tooltip": "Адсутныя даныя, якія выяўлены mproveosm.org",
-          "title": "Праблемы ImproveOSM "
         },
         "osmose": {
           "tooltip": "Праблемы з данымі, якія выяўлены osmose.openstreetmap.fr",
@@ -427,9 +419,6 @@
     },
     "photo_overlays": {
       "title": "Накладанне выяў",
-      "traffic_signs": {
-        "title": "Дарожныя знакі"
-      },
       "photo_type": {
         "flat": {
           "title": "Звычайныя здымкі",
@@ -533,15 +522,8 @@
         "save_comment": "Захаваць каметарый"
       }
     },
-    "mapillary_map_features": {
-      "title": "Аб'екты на карце",
-      "tooltip": "Аб'екты на карце з Mapillary"
-    },
-    "mapillary": {
-      "signs": {
-        "tooltip": "Дарожныя знакі з Mapillary"
-      },
-      "view_on_mapillary": "Вылічныя здымкі і панарамы з Mapillary"
+    "mapillary_signs": {
+      "title": "Дарожныя знакі"
     },
     "note": {
       "note": "Заўвага",
@@ -693,8 +675,7 @@
           "keyboard": "Паказаць гарачыя клавішы"
         },
         "display_options": {
-          "title": "Параметры адлюстравання",
-          "sidebar": "Пераключыць бакавую панэль"
+          "title": "Параметры адлюстравання"
         }
       },
       "editing": {

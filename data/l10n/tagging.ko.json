@@ -266,6 +266,14 @@
         "area/highway": {
           "label": "유형"
         },
+        "armrest": {
+          "label": "팔걸이",
+          "options": {
+            "no": "팔걸이 없음",
+            "undefined": "알 수 없음",
+            "yes": "1개 이상의 팔걸이 있음"
+          }
+        },
         "artist": {
           "label": "예술가"
         },
@@ -687,6 +695,27 @@
             "panning": "패닝"
           }
         },
+        "camp_site": {
+          "label": "유형",
+          "options": {
+            "basic": {
+              "description": "텐트를 치거나 차량을 주차할 수 있는 장소 외에는 아무것도 없음",
+              "title": "기본 (텐트/차량 스팟만)"
+            },
+            "deluxe": {
+              "description": "세탁소, 수영장 또는 이와 유사한 레크리에이션 시설과 같은 추가 편의 시설이 완비되어 있음",
+              "title": "디럭스 (세탁소 또는 수영장 등 제공)"
+            },
+            "serviced": {
+              "description": "화장실, 물, 샤워기 및 전기가 제공됨",
+              "title": "서비스 (샤워 및 전기 제공)"
+            },
+            "standard": {
+              "description": "근처에 화장실과 수도를 제공하거나 사용할 수 있음",
+              "title": "표준 (화장실 및 수도 제공)"
+            }
+          }
+        },
         "capacity": {
           "label": "수용량",
           "terms": "수용량"
@@ -803,6 +832,9 @@
         "communication_multi": {
           "label": "공동체 유형",
           "terms": "공동체 유형"
+        },
+        "community_centre": {
+          "label": "유형"
         },
         "connectivity": {
           "label": "연결성"
@@ -1231,7 +1263,7 @@
           "label": "목적지"
         },
         "destination/ref": {
-          "label": "목표 도로 번호"
+          "label": "목적지 도로 번호"
         },
         "destination/symbol": {
           "label": "목표 기호"
@@ -2240,6 +2272,10 @@
           "label": "조명",
           "terms": "조명"
         },
+        "loc_name": {
+          "label": "현지 이름",
+          "terms": "지역 이름"
+        },
         "location": {
           "label": "위치",
           "terms": "위치"
@@ -2327,7 +2363,7 @@
             "marble": "대리석",
             "metal": "금속",
             "plastic": "플라스틱",
-            "reinforced_conrete": "강화 콘크리트",
+            "reinforced_concrete": "강화 콘크리트",
             "rock": "바위",
             "sand": "모래",
             "sandstone": "사암",
@@ -2388,6 +2424,7 @@
             "blue_plaque": "파란색 명판",
             "bust": "흉상",
             "cross": "십자가 기념비",
+            "ghost_bike": "추모 자전거",
             "obelisk": "작은 오벨리스크",
             "plaque": "기념 명판",
             "sculpture": "비유적 조형물",
@@ -2616,6 +2653,10 @@
             "union": "노동조합 사무소",
             "water_utility": "수도사업소"
           }
+        },
+        "official_name": {
+          "label": "공식 이름",
+          "terms": "정식 명칭,정식 이름"
         },
         "oneway": {
           "label": "일방통행",
@@ -2897,6 +2938,7 @@
             "ice_skate": "아이스 스케이트",
             "nordic": "노르딕",
             "playground": "놀이터",
+            "ski_jump": "스키점프",
             "skitour": "스키투어",
             "sled": "설마",
             "sleigh": "썰매",
@@ -6985,7 +7027,7 @@
         },
         "highway/living_street": {
           "name": "주택가 거리",
-          "terms": "생활도로,이면도로"
+          "terms": "생활도로,보행자 우선도로"
         },
         "highway/milestone": {
           "name": "도로 거리표",
@@ -7389,7 +7431,7 @@
           "terms": "산업 지역"
         },
         "landuse/industrial/depot": {
-          "name": "창고",
+          "name": "차고지",
           "terms": "차고지"
         },
         "landuse/industrial/scrap_yard": {
@@ -7919,6 +7961,10 @@
         "leisure/sports_centre/horse_racing": {
           "name": "경마 경주로",
           "terms": "경마 경주로"
+        },
+        "leisure/sports_centre/karting": {
+          "name": "고카트 시설",
+          "terms": "고카트,카트,카트 레이싱,레이스,경주"
         },
         "leisure/sports_centre/shooting": {
           "name": "사격장 시설",

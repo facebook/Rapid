@@ -42,7 +42,6 @@
       },
       "add_note": {
         "title": "Nota",
-        "label": "Engadir nota",
         "description": "Atopaches un erro? Faillo saber a outros cartógrafos."
       },
       "add_preset": {
@@ -711,9 +710,6 @@
     "loading_auth": "Conectando co OpenStreetMap...",
     "report_a_bug": "Informar dun erro",
     "help_translate": "Axuda a traducir",
-    "sidebar": {
-      "tooltip": "Trocar a barra lateral."
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} elemento agochado",
@@ -767,7 +763,6 @@
         "description": "Descrición",
         "resolution": "Resolución",
         "accuracy": "Precisión",
-        "unknown": "Descoñecido",
         "show_tiles": "Amosar teselas",
         "hide_tiles": "Agochar teselas"
       },
@@ -778,7 +773,6 @@
         "last_edit": "Última edición",
         "edited_by": "Editado por",
         "changeset": "Conxunto de modificacións",
-        "unknown": "Descoñecido",
         "note_no_history": "Sen historial (novo elemento)",
         "note_comments": "Comentarios",
         "note_created_date": "Data de creación",
@@ -859,13 +853,13 @@
         "zoom": "{features} están agochados. Achégate para amosalos."
       },
       "back_tooltip": "Mudar tipo de elemento",
+      "type": "Tipo",
+      "details": "Detalles",
       "remove": "Eliminar",
       "search": "Procurar",
       "unknown": "Descoñecido",
       "incomplete": "<non descargado>",
       "feature_list": "Procurar elementos",
-      "edit": "Editar elemento",
-      "edit_features": "Editar elementos",
       "check": {
         "yes": "Si",
         "no": "Non",
@@ -873,7 +867,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Tipo",
           "default": "Por defecto",
           "layer": "Capa"
         }
@@ -952,10 +945,6 @@
           "tooltip": "Erros dos datos detectados polo keepright.at",
           "title": "Erros do KeepRight"
         },
-        "improveOSM": {
-          "tooltip": "Datos que fallan detectados polo betterosm.org",
-          "title": "Erros do ImproveOSM"
-        },
         "osmose": {
           "tooltip": "Erros dos datos detectados polo osmose.openstreetmap.fr",
           "title": "Erros do Osmose"
@@ -987,9 +976,6 @@
     },
     "photo_overlays": {
       "title": "Capas de imaxes",
-      "traffic_signs": {
-        "title": "Sinais de tráfico"
-      },
       "photo_type": {
         "flat": {
           "title": "Imaxes planas",
@@ -1250,40 +1236,6 @@
         "elems_title": "Elementos",
         "fix_title": "Guieiros",
         "trap_title": "Erros comúns"
-      },
-      "improveOSM": {
-        "title": "Detección do ImproveOSM",
-        "geometry_types": {
-          "path": "camiños",
-          "parking": "aparcadoiro",
-          "road": "estradas",
-          "both": "estradas e aparcadoiro"
-        },
-        "directions": {
-          "east": "leste",
-          "north": "norte",
-          "northeast": "nordés",
-          "northwest": "noroeste",
-          "south": "sur",
-          "southeast": "sueste",
-          "southwest": "suroeste",
-          "west": "oeste"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Falla vía dun só sentido",
-            "description": "Ó longo deste treito de {highway}, o {percentage}% das {num_trips} viaxes rexistradas viaxan de {from_node} cara {to_node}. Seica falle unha etiqueta dun só sentido \"oneway\"."
-          },
-          "mr": {
-            "title": "Falla a xeometría",
-            "description": "{num_trips} as viaxes rexistradas nesta área suxiren que pode haber un {geometry_type} sen cartografar aquí.",
-            "description_alt": "Os datos de terceiros suxiren que pode haber un {geometry_type} sen cartografar aquí."
-          },
-          "tr": {
-            "title": "Falla a restrición de xiro",
-            "description": "{num_passed} de {num_trips} viaxes rexistradas (viaxando cara o {travel_direction}) fan un xiro dende {from_way} cara {to_way} en {junction}. Seica falle unha restrición \"{turn_restriction}\"."
-          }
-        }
       },
       "keepRight": {
         "detail_description": "Descrición",
@@ -1597,95 +1549,17 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Imaxes Streetside do Microsoft",
-      "report": "Informar dun problema de privacidade con esta imaxe",
-      "view_on_bing": "Ollar no Bing Maps",
+    "photos": {
       "hires": "Alta resolución"
     },
-    "mapillary_images": {
-      "tooltip": "Imaxes ó nivel da rúa do Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Elementos do mapa",
-      "tooltip": "Elementos do mapa do Mapillary",
-      "construction": {
-        "barrier": {
-          "temporary": "barreira temporal"
-        },
-        "flat": {
-          "crosswalk_plain": "paso de peóns sinxelo",
-          "driveway": "camiño de acceso"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "sinalización horizontal: frecha (á esquerda)",
-            "right": "sinalización horizontal: frecha (á dereita)",
-            "split_left_or_straight": "sinalización horizontal: frecha (á esquerda e de fronte)",
-            "split_right_or_straight": "sinalización horizontal: frecha (á dereita e de fronte)",
-            "straight": "sinalización horizontal: frecha (de fronte)"
-          },
-          "crosswalk_zebra": "sinalización horizontal: paso de cebra",
-          "give_way_row": "sinalización horizontal: ceda (liña)",
-          "give_way_single": "sinalización horizontal: ceda (individual)",
-          "other_marking": "sinalización horizontal: outra",
-          "stop_line": "sinalización horizontal: liña de detención",
-          "symbol": {
-            "bicycle": "sinalización horizontal: símbolo (bicicleta)"
-          },
-          "text": "sinalización horizontal: texto"
-        }
-      },
-      "object": {
-        "banner": "bandeira",
-        "bench": "asento",
-        "bike_rack": "portabicicletas",
-        "billboard": "panel publicitario",
-        "catch_basin": "sumidoiro",
-        "cctv_camera": "cámara de vixilancia (CCTV)",
-        "fire_hydrant": "hidrante",
-        "junction_box": "armario de empalme",
-        "mailbox": "caixa do correo",
-        "manhole": "tapa de rexistro",
-        "parking_meter": "parquímetro",
-        "phone_booth": "cabina telefónica",
-        "sign": {
-          "advertisement": "anuncio",
-          "information": "sinal de información",
-          "other": "outro sinal",
-          "store": "letreiro de tenda",
-          "traffic_sign": {
-            "back": "sinal de tráfico: traseira",
-            "direction_front": "sinal de tráfico: frontal",
-            "front": "sinal de tráfico: frontal"
-          }
-        },
-        "street_light": "farol de rúa",
-        "support": {
-          "pole": "poste",
-          "traffic_sign_frame": "soporte de sinal de tráfico",
-          "utility_pole": "pau eléctrico"
-        },
-        "traffic_cone": "cono de tráfico",
-        "traffic_light": {
-          "cyclists": "semáforo para ciclistas",
-          "general_horizontal": "semáforo horizontal",
-          "general_single": "semáforo único",
-          "general_upright": "semáforo vertical",
-          "other": "semáforo",
-          "pedestrians": "semáforo para peóns"
-        },
-        "trash_can": "papeleira",
-        "water_valve": "válvula de auga"
-      }
+    "streetside": {
+      "tooltip": "Imaxes Streetside do Microsoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Sinais de tráfico do Mapillary"
-      },
-      "view_on_mapillary": "Ollar esta imaxe no Mapillary"
+      "tooltip": "Imaxes ó nivel da rúa do Mapillary"
+    },
+    "mapillary_signs": {
+      "title": "Sinais de tráfico"
     },
     "note": {
       "note": "Nota",
@@ -1843,7 +1717,6 @@
       },
       "notes": {
         "title": "Notas",
-        "intro": "As *Notas* empréganse para alertar a outros usuarios de que un elemento require un arranxo ou atención. As notas marcan unha localización específica no mapa. Para ollar as notas existentes ou engadir novas, abre a lapela {data_icon} **{map_data}** e habilita a capa {osm_notes}.",
         "add_note_h": "Engadir notas",
         "add_note": "Para engadir unha nova nota, preme o botón {note_icon} **{note}** na barra de ferramentas sobre o mapa, ou preme a tecla `{add_note_key}`.",
         "update_note_h": "Peche, reapertura e comentarios",
@@ -1880,9 +1753,7 @@
         "title": "Control de calidade",
         "intro": "As ferramentas de *control de calidade* (Q/A) poden atopar etiquetas non axeitadas, estradas desconectadas e outros erros co OpenStreetMap que poderán arranxar os cartógrafos. Para ollar os erros que atopan as ferramentas de *control de calidade* (Q/A) existentes, abre a lapela {data_icon} **{map_data}** e habilita unha capa específica de Q/A.",
         "tools_h": "Ferramentas",
-        "tools": "As ferramentas que son actualmente compatíbeis son: O [KeepRight](https://www.keepright.at/index.php?lang=gl), o [ImproveOSM](https://improveosm.org/en/) e o [Osmose](http://osmose.openstreetmap.fr/gl/map/).",
-        "issues_h": "Manexo de erros",
-        "issues": "O manexo de erros das ferramentas de *control de calidade* (Q/A) é semellante ó manexo de notas. Selecciona unha marcaxe para ollar os detalles do erro na barra lateral. Cada ferramenta ten as súas propias capacidades, pero xeralmente podes comentar e/ou pechar un erro."
+        "issues_h": "Manexo de erros"
       },
       "field": {
         "restrictions": {
@@ -2633,7 +2504,6 @@
           "map_data": "Trocar a lapela de datos do mapa",
           "issues": "Trocar a lapela de validacións de erros",
           "preferences": "Trocar a lapela de preferencias do usuario",
-          "sidebar": "Trocar a barra lateral",
           "wireframe": "Trocar o modo grella",
           "osm_data": "Trocar os datos do OpenStreetMap",
           "highlight_edits": "Sinalar edicións non gardadas"

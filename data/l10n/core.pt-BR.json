@@ -19,7 +19,6 @@
     },
     "modes": {
       "add_note": {
-        "label": "Adicionar nota",
         "description": "Detectou um problema? Deixe outros mapeadores saberem."
       },
       "browse": {
@@ -667,9 +666,6 @@
     "loading_auth": "Conectando ao OpenStreetMap...",
     "report_a_bug": "Reportar um erro",
     "help_translate": "Ajude na tradução",
-    "sidebar": {
-      "tooltip": "Alternar a barra lateral."
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} recurso oculto",
@@ -762,7 +758,6 @@
       "search": "Procurar",
       "incomplete": "<não baixado>",
       "feature_list": "Buscar elementos",
-      "edit_features": "Editar recursos",
       "check": {
         "reverser": "Mudar Sentido"
       },
@@ -819,10 +814,6 @@
           "tooltip": "Problemas de dados detectados por keepright.at",
           "title": "Erros do KeepRight"
         },
-        "improveOSM": {
-          "tooltip": "Dados ausentes detectados por improveosm.org",
-          "title": "Problemas ImproveOSM"
-        },
         "osmose": {
           "tooltip": "Problemas de dados detectados por osmose.openstreetmap.fr",
           "title": "Problemas Osmose"
@@ -853,9 +844,6 @@
     },
     "photo_overlays": {
       "title": "Sobreposições de fotos",
-      "traffic_signs": {
-        "title": "Placas de trânsito"
-      },
       "photo_type": {
         "panoramic": {
           "tooltip": "Fotos em 360°"
@@ -1058,30 +1046,6 @@
         "title": "Problema Osmose ",
         "elems_title": "Recursos",
         "fix_title": "Diretrizes para correção"
-      },
-      "improveOSM": {
-        "title": "Detecção do ImproveOSM",
-        "geometry_types": {
-          "parking": "estacionamento"
-        },
-        "directions": {
-          "east": "leste"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Falta de sentido",
-            "description": "Ao longo desta seção de {highway}, {percentage}% de viagens {num_trips} gravadas viajam de {from_node} para {to_node}. Pode estar faltando uma etiqueta \"oneway\"."
-          },
-          "mr": {
-            "title": "Geometria ausente",
-            "description": "Viagens  {num_trips} gravadas nesta área sugerem que pode haver desmapeamento {geometry_type} aqui.",
-            "description_alt": "Os dados de terceiros sugerem que pode haver {geometry_type} não mapeado aqui."
-          },
-          "tr": {
-            "title": "Restrição de conversão ausente",
-            "description": "{num_passed} de {num_trips} viagens gravadas (viajando para {travel_direction}) fazem uma curva de {from_way} para {to_way} em {junction}. Pode haver uma restrição \"{turn_restriction}\" em falta."
-          }
-        }
       },
       "keepRight": {
         "comment_placeholder": "Insira um comentário para compartilhar com outros usuários.",
@@ -1343,68 +1307,15 @@
       }
     },
     "streetside": {
-      "tooltip": "Fotos da Streetside da Microsoft",
-      "report": "Denunciar uma preocupação de privacidade com esta imagem",
-      "view_on_bing": "Visualizar no Bing Maps"
-    },
-    "mapillary_images": {
-      "tooltip": "Fotos a nível de rua do Mapillary"
-    },
-    "mapillary_map_features": {
-      "construction": {
-        "flat": {
-          "crosswalk_plain": "faixa de pedestres simples",
-          "driveway": "via de serviço"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "straight": "marcação de via - seta (siga em frente)"
-          },
-          "give_way_row": "marcação de via - dê a preferência (fila)",
-          "give_way_single": "marcação de via - dê a preferência (simples)",
-          "stop_line": "marcação de via - linha de parada"
-        }
-      },
-      "object": {
-        "banner": "bandeira",
-        "bench": "banco",
-        "bike_rack": "ciclovia paralela",
-        "billboard": "quadro de avisos",
-        "catch_basin": "bacia de captura",
-        "cctv_camera": "câmera de segurança",
-        "fire_hydrant": "hidrante",
-        "mailbox": "caixa de Correio",
-        "manhole": "bueiro",
-        "phone_booth": "cabine de fotos",
-        "sign": {
-          "advertisement": "propaganda",
-          "information": "information signsinal de informação",
-          "store": "sinal da loja"
-        },
-        "street_light": "iluminação pública",
-        "support": {
-          "utility_pole": "poste"
-        },
-        "traffic_cone": "Cone de tráfego",
-        "traffic_light": {
-          "cyclists": "semáforo para ciclista",
-          "general_horizontal": "semáforo horizontal",
-          "general_single": "semáforo único",
-          "general_upright": "semáforo vertical",
-          "other": "semáforo",
-          "pedestrians": "semáforo para pedestres"
-        },
-        "trash_can": "lixeira"
-      }
+      "tooltip": "Fotos da Streetside da Microsoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Placas de trânsito do Mapillary"
-      }
+      "tooltip": "Fotos a nível de rua do Mapillary"
     },
-    "kartaview_images": {
+    "mapillary_signs": {
+      "title": "Placas de trânsito"
+    },
+    "kartaview": {
       "tooltip": "Fotos a nível de rua da KartaView"
     },
     "note": {
@@ -1534,7 +1445,6 @@
         "copy_paste": "{copy_icon} **{copy}** and {paste_icon} **{paste}** permitem duplicar recursos."
       },
       "notes": {
-        "intro": "*Notas* são usadas para alertar outros usuários de que um elemento precisa de correção ou atenção. As notas marcam uma localização específica no mapa. Para visualizar notas existentes ou adicionar novas notas, clique no painel {data_icon} **{map_data}** e ative a camada {osm_notes}.",
         "add_note_h": "Adicionando notas",
         "add_note": "Para adicionar uma nova nota, clique no botão  {note_icon} **{note}** na barra de ferramentas sobre o mapa ou pressione a tecla de atalho `{add_note_key}`.",
         "update_note_h": "Encerramento, Reabertura e Comentando",
@@ -1570,9 +1480,7 @@
       "qa": {
         "title": "Verificação de qualidade",
         "intro": "Ferramentas de *verificação de qualidade* (Q/A em inglês) podem encontrar etiquetas erradas, vias desconectadas e outros problemas no OpenStreetMap que os mapeadores podem então corrigir. Para ver os problemas existentes de Q/A, abra o painel {data_icon} **{map_data}** e habilite uma camada de Q/A.",
-        "tools": "As seguintes ferramentas são suportadas atualmente: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) e [Osmose](https://osmose.openstreetmap.fr/).",
-        "issues_h": "Problemas de manuseio",
-        "issues": "O tratamento de problemas de Q/A é semelhante ao tratamento de notas. Selecione um marcador para visualizar os detalhes do problema na barra lateral. Cada ferramenta possui seus próprios recursos, mas geralmente você pode comentar e/ou fechar um problema."
+        "issues_h": "Problemas de manuseio"
       },
       "field": {
         "restrictions": {
@@ -2239,7 +2147,6 @@
           "map_data": "Alternar painel de dados do mapa",
           "issues": "Alternar painel de problemas de validação",
           "preferences": "Alternar painel de preferências do usuário",
-          "sidebar": "Alternar barra lateral",
           "wireframe": "Alternar modo wireframe",
           "osm_data": "Alternar dados do OpenStreetMap",
           "highlight_edits": "Realçar edições não salvas"

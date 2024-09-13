@@ -240,7 +240,6 @@
         "description": "Opis",
         "resolution": "Ločljivost",
         "accuracy": "Natančnost",
-        "unknown": "Neznano",
         "show_tiles": "Pokaži sličice",
         "hide_tiles": "Skrij sličice"
       },
@@ -250,8 +249,7 @@
         "version": "Različica",
         "last_edit": "Zadnje urejanje",
         "edited_by": "Urejevalec",
-        "changeset": "Spremembe",
-        "unknown": "Neznano"
+        "changeset": "Spremembe"
       },
       "location": {
         "title": "Mesto",
@@ -297,12 +295,13 @@
       "new_relation": "Nova zveza ...",
       "role": "Vloga",
       "choose": "Izberite vrsto predmeta",
+      "type": "Vrsta",
+      "details": "Podrobnosti",
       "remove": "Odstrani",
       "search": "Poišči",
       "unknown": "Neznano",
       "incomplete": "<ni prejeto>",
       "feature_list": "Iskanje po zemljevidu",
-      "edit": "Urejanje predmeta",
       "check": {
         "yes": "Da",
         "no": "Ne",
@@ -310,7 +309,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Vrsta",
           "default": "Privzeto",
           "layer": "Plast"
         }
@@ -351,6 +349,9 @@
       "layers": {
         "osm": {
           "tooltip": "Kartografski podatki OpenStreetMap"
+        },
+        "notes": {
+          "key": "S"
         },
         "maproulette": {
           "detail_title": "Podrobnosti",
@@ -499,40 +500,18 @@
       "osmose": {
         "detail_title": "Podrobnosti"
       },
-      "improveOSM": {
-        "geometry_types": {
-          "parking": "parkirišča",
-          "road": "ceste",
-          "both": "ceste in parkirišča"
-        },
-        "directions": {
-          "east": "vzhod",
-          "north": "sever",
-          "northeast": "severovzhod",
-          "northwest": "severozahod",
-          "south": "jug",
-          "southeast": "jugovzhod",
-          "southwest": "jugozahod",
-          "west": "zahod"
-        }
-      },
       "keepRight": {
         "detail_description": "Opis"
       }
     },
-    "streetside": {
-      "tooltip": "Ulične fotografije z Microsofta",
-      "view_on_bing": "Ogled na zemljevidih Bing",
+    "photos": {
       "hires": "Visoka ločljivost"
     },
-    "mapillary_images": {
-      "tooltip": "Fotografije ulic prek storitve Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Predmeti zemljevida"
+    "streetside": {
+      "tooltip": "Ulične fotografije z Microsofta"
     },
     "mapillary": {
-      "view_on_mapillary": "Pokaži sliko na spletišču Mapillary"
+      "tooltip": "Fotografije ulic prek storitve Mapillary"
     },
     "note": {
       "note": "Opomba",

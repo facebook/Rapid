@@ -109,7 +109,8 @@
       "openstreetmapwestbengal": "OpenStreetMap Bengala Occidental",
       "openstreetmapwesternsahara": "OpenStreetMap Sahara Occidental",
       "openstreetmapzimbabwe": "OpenStreetMap Zimbabue",
-      "osmmainz": "OSM Maguncia"
+      "osmmainz": "OSM Maguncia",
+      "swissopenstreetmap": "OpenStreetMap Suiza"
     },
     "_defaults": {
       "aparat": {
@@ -202,7 +203,8 @@
         "description": "Síguenos en 𝕏"
       },
       "xmpp": {
-        "name": "XMPP de {community}"
+        "name": "XMPP de {community}",
+        "description": "Únete a nuestro chat comunitario en XMPP: {url}"
       },
       "youtube": {
         "name": "{community} en YouTube",
@@ -362,8 +364,7 @@
       "description": "Página wiki de {community}"
     },
     "de-berlin-xmpp": {
-      "name": "OpenStreetMap Berlín-Brandenburg XMPP",
-      "description": "Únete a nuestro chat multiusuario XMPP: {url}"
+      "name": "OpenStreetMap Berlín-Brandenburg XMPP"
     },
     "de-bochum-wiki": {
       "description": "Página wiki de {community}"
@@ -387,8 +388,7 @@
       "description": "Página wiki de {community}"
     },
     "de-hamburg-xmpp": {
-      "name": "OpenStreetMap Hamburgo XMPP",
-      "description": "Únete a nuestro chat multiusuario de XMPP: {url}"
+      "name": "OpenStreetMap Hamburgo XMPP"
     },
     "de-karlsruhe-mailinglist": {
       "name": "Lista de correo de Karlsruhe"
@@ -441,9 +441,6 @@
     "de-viersen-meetup": {
       "name": "Meetup de OpenStreetMap Viersen",
       "description": "Reunión de la comunidad y usuarios de OSM Kreis Viersen y Mönchengladbach"
-    },
-    "de-xmpp": {
-      "description": "Únete a nuestro chat multiusuario de XMPP: {url}"
     },
     "DF-telegram": {
       "extendedDescription": "Únete a la comunidad para obtener más información sobre OpenStreetMap, hacer preguntas o participar en nuestras reuniones. ¡Todos son bienvenidos!"
@@ -645,6 +642,9 @@
     "MapColabora-twitter": {
       "description": "Mapeado Colaborativo / Geoinquietos Zaragoza Cuenta Twitter"
     },
+    "MapLYH": {
+      "description": "Grupo MapLYH"
+    },
     "mappa-mercia-group": {
       "name": "Grupo local Mappa Mercia",
       "description": "Un hogar para entusiastas de OpenStreetMap en las Midlands",
@@ -744,6 +744,10 @@
       "name": "Discord de Open Source San José",
       "description": "Contacta con otros mapeadores en Discord. Después de registrarte, únete al canal #🗺openstreetmap"
     },
+    "Open-Source-San-Jose-Mastodon": {
+      "description": "Sigue Open Source San José en Mastodon.",
+      "extendedDescription": "Open Source San José es una organización local sin ánimo de lucro que conecta los programadores y los diseñadores con las necesidades de la comunidad por la technología cívica. OSSJ apoya los South Bay Map Nights quincenales de la comunidad local de mapeadores voluntarios."
+    },
     "Open-Source-San-Jose-Slack": {
       "name": "Slack de Open Source San José",
       "description": "¡Todos son bienvenidos! Regístrate en {signupUrl}, luego únete al canal #proj-osm."
@@ -783,6 +787,10 @@
     "OSM-AR-wiki": {
       "description": "Todo lo que necesitas saber sobre el mapeo en Argentina."
     },
+    "osm-asia-facebook": {
+      "description": "Grupo de Facebook OpenStreetMap Asia",
+      "extendedDescription": "Un grupo para el apoyo integrado de mapeo en Asia. Queremos ser un lugar especialmente para mapeadores que no tienen una comunidad local, donde puedan compartir información y colaborar en la resolución de problemas en sus áreas que de otra manera no podrían abordar debido a la falta de una comunidad local."
+    },
     "osm-at": {
       "description": "La plataforma de información sobre OpenStreetMap en Austria"
     },
@@ -820,11 +828,11 @@
       "extendedDescription": "OpenStreetMap Sur Profundo es una comunidad de mapeo local del sureste de Estados Unidos."
     },
     "osm-delhi-xmpp": {
-      "description": "Únete a nuestra sala XMPP: {url}",
       "extendedDescription": "Sala XMPP para OSM Delhi; no conectada a ninguna red propietaria."
     },
     "OSM-Discord": {
-      "name": "Discord de OpenStreetMap Mundial"
+      "name": "Discord de OpenStreetMap Mundial",
+      "description": "Servidor de Discord no oficial, gestionado por la comunidad global de OpenStreetMap. Hay canales regionales disponibles."
     },
     "OSM-Discourse": {
       "name": "Foro de la comunidad de OpenStreetMap",
@@ -832,9 +840,6 @@
     },
     "OSM-Facebook": {
       "description": "Dale a Me gusta en Facebook para recibir noticias y actualizaciones sobre OpenStreetMap."
-    },
-    "osm-fj": {
-      "description": "Proporcionar servicios e información OSM para la comunidad local en Fiyi"
     },
     "osm-gh-facebook": {
       "extendedDescription": "Mapeadores en la comunidad de Ghana, promocionando los proyectos OpenStreetMap y Humanitarian OpenStreetMap Team (HOT) en Ghana. Únete a nosotros."
@@ -879,7 +884,6 @@
       "description": "Todo lo que necesitas saber sobre el mapeo en la India: {url}"
     },
     "osm-india-xmpp": {
-      "description": "Únete a nuestra sala XMPP: {url}",
       "extendedDescription": "Sala XMPP para la comunidad OSM de India; no conectada a ninguna red propietaria. También disponible desde Matrix a través de #osm-in:poddery.com"
     },
     "osm-iran-aparat": {
@@ -893,9 +897,6 @@
     },
     "OSM-japan-facebook": {
       "description": "Editores y usuarios de OpenStreetMap en Japón"
-    },
-    "OSM-japan-slack": {
-      "description": "Un grupo de trabajo en Slack para la comunidad de OSM Japón {signupUrl}"
     },
     "OSM-japan-website": {
       "description": "Editores y usuarios de OpenStreetMap en Japón"
@@ -978,10 +979,6 @@
       "description": "¡Divirtámonos, contribuyamos con algo a Los Ángeles y aprendamos a mapear!",
       "extendedDescription": "OpenStreetMap (OSM) Southern California es para todos aquellos interesados ​​en mapear para trabajar juntos con OpenStreetMap. OpenStreetMap, la Wikipedia de mapas, es un mapa de código abierto y gratuito creado por más de 1,000,000 de voluntarios en todo el mundo. Todos son bienvenidos. Si no conoce OpenStreetMap, le enseñaremos. Si tiene una idea para un proyecto de mapeo o incluso una excursión que el grupo pueda hacer, ¡genial!"
     },
-    "OSM-South-Bay": {
-      "description": "Únete a nuestras noches de mapas en línea de South Bay",
-      "extendedDescription": "Conoce a otros mapeadores de South Bay y colabora con proyectos de mapeo locales en nuestra reunión en línea cada otro martes por la noche, en asociación con Open Source San José. No se requieren habilidades de programación ni de SIG."
-    },
     "OSM-Tampa-Bay": {
       "description": "Editores y usuarios de OpenStreetMap en el área de Tampa Bay",
       "extendedDescription": "El grupo OSM de residentes locales de Tampa Bay para reunirnos y construir el mapa definitivo de Tampa Bay con OpenStreetMap, el mapa libre y editable del mundo.  Si te van los mapas, el código abierto, GPS, senderismo, ciclismo, etcetera, te encantará trabajar con OpenStreetMap -- ¡así que únete! Nos juntaremos y haremos mapas y hablaremos de nuevos temas una vez al mes o así."
@@ -1008,6 +1005,7 @@
       "extendedDescription": "Apoyamos a OpenStreetMap organizando conferencias anuales, proporcionando recursos comunitarios, estableciendo alianzas y difundiendo el mensaje. Únete a OpenStreetMap EE.UU. aquí: {signupUrl}",
       "events": {
         "mappingusa2022": {
+          "name": "Mapeando EEUU 2022",
           "description": "Acompáñenos en una conferencia virtual gratuita para celebrar las comunidades Wiki y OpenStreetMap de toda Norteamérica."
         }
       }
@@ -1016,13 +1014,8 @@
       "description": "¡Todos son bienvenidos! Regístrese en {signupUrl}"
     },
     "OSM-Utah": {
-      "description": "Editores y usuarios de OpenStreetMap en el área de Salt Lake City",
-      "extendedDescription": "Las actividades pueden incluir cosas como talleres de Aprender a Mapear, fiestas de mapeo y recolección de datos al aire libre. Los eventos se realizarán en el área de SLC, al menos inicialmente. Estamos buscando mapeadores experimentados y también personas nuevas en OSM. Únete y hagamos algunos mapas."
-    },
-    "osm-west-bengal-xmpp": {
-      "name": "OpenStreetMap Bengala Occidental XMPP",
-      "description": "Únete a nuestra sala XMPP: {url}",
-      "extendedDescription": "Sala XMPP para OSM Bengala Occidental."
+      "description": "Tu comunidad de mapeo OSM para el área de Salt Lake City",
+      "extendedDescription": "Nos reunimos mensualmente en Salt Lake City, generalmente el segundo miércoles del mes. ¡Todos son bienvenidos!"
     },
     "OSM-Wyoming": {
       "description": "Editores y usuarios de OpenStreetMap en el área de Wyoming",
@@ -1157,6 +1150,9 @@
     },
     "vn-mailinglist": {
       "description": "Lista de correo sobre OpenStreetMap en Vietnam o en vietnamita"
+    },
+    "vn-wiki": {
+      "description": "Página Wiki de {community}"
     },
     "YerCizenler-TR": {
       "description": "Asociación de mapeo para todos Yer Çizenler",

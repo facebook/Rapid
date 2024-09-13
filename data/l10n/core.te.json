@@ -156,11 +156,7 @@
     "info_panels": {
       "background": {
         "title": "వెనుతలం",
-        "description": "వివరణ",
-        "unknown": "గుర్తు తెలియని"
-      },
-      "history": {
-        "unknown": "గుర్తు తెలియని"
+        "description": "వివరణ"
       },
       "location": {
         "title": "ప్రాంతం"
@@ -190,11 +186,11 @@
       "new_relation": "కొత్త సంబంధం...",
       "role": "పాత్ర",
       "choose": "విశేష రకాన్ని ఎంచుకోండి",
+      "details": "వివరాలు",
       "remove": "తొలగించు",
       "search": "వెతుకు",
       "unknown": "గుర్తు తెలియని",
       "feature_list": "విశేషాలు వెతుకు",
-      "edit": "విశేషం మార్చు",
       "check": {
         "yes": "అవును",
         "no": "కాదు"
@@ -211,12 +207,15 @@
     },
     "map_data": {
       "layers": {
-        "maproulette": {
-          "detail_title": "వివరాలు",
-          "cancel": "రద్దుచేయి"
+        "osm": {
+          "key": "ఓ"
         },
         "rapid": {
           "key": "ఆర్"
+        },
+        "maproulette": {
+          "detail_title": "వివరాలు",
+          "cancel": "రద్దుచేయి"
         }
       },
       "map_features": "పటపు విశేషాలు"
@@ -291,9 +290,6 @@
       "keepRight": {
         "detail_description": "వివరణ"
       }
-    },
-    "mapillary_map_features": {
-      "title": "పటపు విశేషాలు"
     },
     "help": {
       "title": "సహాయం",

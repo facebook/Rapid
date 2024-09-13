@@ -347,9 +347,6 @@
     "de-berlin-wiki": {
       "description": "Strona Wiki {community}"
     },
-    "de-berlin-xmpp": {
-      "description": "Wejdź na nasz chat XMPP: {url}"
-    },
     "de-bochum-wiki": {
       "description": "Strona Wiki {community}"
     },
@@ -370,9 +367,6 @@
     },
     "de-dusseldorf-wiki": {
       "description": "Strona Wiki {community}"
-    },
-    "de-hamburg-xmpp": {
-      "description": "Wejdź na nasz chat XMPP: {url}"
     },
     "de-karlsruhe-mailinglist": {
       "name": "Lista dyskusyjna Karlsruhe"
@@ -416,9 +410,6 @@
     "de-viersen-meetup": {
       "name": "Spotkania OpenStreetMap Viersen",
       "description": "Spotkania społeczności i użytkowników OSM z Viersen i Mönchengladbach"
-    },
-    "de-xmpp": {
-      "description": "Wejdź na nasz chat XMPP: {url}"
     },
     "DF-telegram": {
       "extendedDescription": "Dołącz do społeczności, aby dowiedzieć się więcej o OpenStreetMap, zadawać pytania i brać udział w naszych spotkaniach. Zapraszamy wszystkich!"
@@ -521,6 +512,9 @@
     },
     "ireland-irc": {
       "extendedDescription": "Wejdź na kanał #{account} na irc.oftc.net (port 6667), prosimy o cierpliwość i chwilę oczekiwania po zadaniu pytania"
+    },
+    "ireland-matrix": {
+      "description": "Bramka Matrix dla kanału IRC OSM Ireland: {url}"
     },
     "ireland-meetup": {
       "description": "Spotkania dla wszystkich zainteresowanych OpenStreetMap"
@@ -645,6 +639,9 @@
     "mt-irc": {
       "extendedDescription": "Wejdź na kanał #{account} na irc.oftc.net (port 6667), prosimy o cierpliwość i chwilę oczekiwania po zadaniu pytania"
     },
+    "nl-discourse": {
+      "description": "Forum do dyskusji na temat OpenStreetMap w Holandii"
+    },
     "nl-matrix": {
       "description": "Wszyscy mapujący są mile widziani!"
     },
@@ -663,6 +660,7 @@
       "description": "Skontaktuj się z innymi twórcami map na Discordzie! Po rejestracji dołącz do kanału #🗺openstreetmap."
     },
     "OpenCleveland-meetup": {
+      "name": "Otwarty Cleveland",
       "description": "Ulepsz OpenStreetMap w okolicach Cleveland",
       "extendedDescription": "Open Geo Cleveland chce być źródłem dla ludzi w dyskusji i dzieleniu się wiedzą o używaniu darmowych zestawów danych, zwłaszcza OpenStreetMap, i otwartego oprogramowania do zarządzania, edytowania i wyświetlania danych geograficznych; a także zachęcać do używania ich w Północno-wschodnim Ohio. Jesteśmy również sekcją maptime =)"
     },
@@ -783,9 +781,6 @@
     "OSM-japan-facebook": {
       "description": "Mapujący i użytkownicy OpenStreetMap w Japonii"
     },
-    "OSM-japan-slack": {
-      "description": "Miejsce na Slacku japońskiej społeczności OSM {signupUrl}"
-    },
     "OSM-japan-website": {
       "description": "Mapujący i użytkownicy OpenStreetMap w Japonii"
     },
@@ -887,10 +882,6 @@
     "OSM-US-Slack": {
       "description": "Zapraszamy wszystkich! Zarejestruj się tutaj {signupUrl}"
     },
-    "OSM-Utah": {
-      "description": "Mapujący i użytkownicy OpenStreetMap z okolic Salt Lake City",
-      "extendedDescription": "Na działalność mogą składać się takie rzeczy, jak warsztaty Naucz Się Mapować, imprezy mapowania i zbieranie danych w terenie. Wydarzenia, przynajmniej na razie, będą miały miejsce w okolicach SLC. Szukamy wprawionych mapujących, jak również nowych ludzi. Dołącz do nas i zacznij mapować!"
-    },
     "OSM-Wyoming": {
       "description": "Mapujący i użytkownicy OpenStreetMap ze stanu Wyoming",
       "extendedDescription": "OpenStreetMap (OSM) Wyoming to lokalna wspólnota ludzi chcących wspierać się nawzajem w tworzeniu wolnych map. Zachęcamy wszystkich mapujących do organizowania lub proponowania wydarzeń w całym stanie. Mogą to być zwykłe spotkania, podstawowe lub zaawansowane ćwiczenia z OSM albo imprezy mapowania."
@@ -956,6 +947,9 @@
     },
     "talk-nz": {
       "description": "Lista dyskusyjna nowozelandzkiej społeczności OSM"
+    },
+    "talk-pacific": {
+      "extendedDescription": "Chcielibyśmy, aby ta lista mailingowa wspierała wszystkie narody Pacyfiku, w całej naszej różnorodności i aspiracjach, aby dzielić się przemyśleniami, pytaniami, projektami i wszystkim, co dotyczy OpenStreetMap na naszym morzu wysp."
     },
     "tn-facebook-group": {
       "name": "Grupa {community} na Facebooku"

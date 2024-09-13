@@ -42,7 +42,6 @@
       },
       "add_note": {
         "title": "Jegyzet",
-        "label": "Jegyzet hozzáadása",
         "description": "Problémát találtál? Értesítsd a többi térképezőt."
       },
       "add_preset": {
@@ -716,9 +715,6 @@
     "loading_auth": "Csatlakozás az OpenStreetMap kiszolgálóhoz…",
     "report_a_bug": "Hibabejelentés",
     "help_translate": "Segíts a fordításban",
-    "sidebar": {
-      "tooltip": "Oldalsáv ki-/bekapcsolása."
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} rejtett elem",
@@ -775,7 +771,6 @@
         "description": "Leírás",
         "resolution": "Felbontás",
         "accuracy": "Pontosság",
-        "unknown": "Ismeretlen",
         "show_tiles": "Csempék megjelenítése",
         "hide_tiles": "Csempék elrejtése"
       },
@@ -786,7 +781,6 @@
         "last_edit": "Utolsó szerkesztés",
         "edited_by": "Szerkesztette",
         "changeset": "Módosításkészlet",
-        "unknown": "Ismeretlen",
         "note_no_history": "Nincs előzmény (új jegyzet)",
         "note_comments": "Hozzászólások",
         "note_created_date": "Létrehozás dátuma",
@@ -868,13 +862,13 @@
         "zoom": "{features} el vannak rejtve. Nagyíts az engedélyezésükhöz."
       },
       "back_tooltip": "Elemtípus módosítása",
+      "type": "Típus",
+      "details": "Részletek",
       "remove": "Eltávolítás",
       "search": "Keresés",
       "unknown": "Ismeretlen",
       "incomplete": "<nincs letöltve>",
       "feature_list": "Elem keresése",
-      "edit": "Elem szerkesztése",
-      "edit_features": "Elemek szerkesztése",
       "check": {
         "yes": "Igen",
         "no": "Nem",
@@ -882,7 +876,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Típus",
           "default": "Alapértelmezett",
           "layer": "Réteg"
         }
@@ -951,7 +944,8 @@
         },
         "notes": {
           "tooltip": "Jegyzetadatok az OpenStreetMapről",
-          "title": "OpenStreetMap-jegyzetek"
+          "title": "OpenStreetMap-jegyzetek",
+          "key": "É"
         },
         "maproulette": {
           "detail_title": "Részletek",
@@ -960,10 +954,6 @@
         "keepRight": {
           "tooltip": "A keepright.at által észlelt adatproblémák",
           "title": "KeepRight problémák"
-        },
-        "improveOSM": {
-          "tooltip": "Az improveosm.org által észlelt hiányzó adatok",
-          "title": "ImproveOSM problémák"
         },
         "osmose": {
           "tooltip": "Az osmose.openstreetmap.fr által észlelt adatproblémák",
@@ -996,9 +986,6 @@
     },
     "photo_overlays": {
       "title": "Fénykép-fedőrétegek",
-      "traffic_signs": {
-        "title": "Jelzőtáblák"
-      },
       "photo_type": {
         "flat": {
           "title": "Sík fényképek",
@@ -1261,40 +1248,6 @@
         "elems_title": "Elemek",
         "fix_title": "Javítási útmutató",
         "trap_title": "Gyakori hibák"
-      },
-      "improveOSM": {
-        "title": "Az ImproveOSM észlelései",
-        "geometry_types": {
-          "path": "gyalogutak",
-          "parking": "parkolók",
-          "road": "utak",
-          "both": "utak és parkolók"
-        },
-        "directions": {
-          "east": "kelet",
-          "north": "észak",
-          "northeast": "északkelet",
-          "northwest": "északnyugat",
-          "south": "dél",
-          "southeast": "délkelet",
-          "southwest": "délnyugat",
-          "west": "nyugat"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Hiányzó egyirányú jelölés",
-            "description": "{highway} ezen szakaszán rögzített {num_trips} utazás {percentage}%-a {from_node} ponttól {to_node} pontig tart. Valószínűleg hiányzik egy egyirányú „oneway” címke."
-          },
-          "mr": {
-            "title": "Hiányzó geometria",
-            "description": "Az ezen a területen rögzített {num_trips} utazás alapján itt valószínűleg egy feltérképezetlen {geometry_type} van.",
-            "description_alt": "Egy külső szolgáltató adatai alapján itt feltérképezetlen {geometry_type} lehet."
-          },
-          "tr": {
-            "title": "Hiányzó bekanyarodási korlátozás",
-            "description": "{num_trips} ({travel_direction} felé tartó) felvett útból {junction} kereszteződésnél {num_passed} bekanyarodik innen: {from_way} ide: {to_way}. Itt alighanem van egy {turn_restriction} bekanyarodási korlátozás."
-          }
-        }
       },
       "keepRight": {
         "detail_description": "Leírás",
@@ -1609,101 +1562,20 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Út menti fényképek a Microsofttól",
-      "report": "A képpel kapcsolatos adatvédelmi aggály bejelentése",
-      "view_on_bing": "Megtekintés a Bing Mapsen",
+    "photos": {
       "hires": "Nagy felbontású"
     },
-    "mapillary_images": {
-      "tooltip": "Utcaszintű fényképek a Mapillaryről"
-    },
-    "mapillary_map_features": {
-      "title": "Térképelemek",
-      "tooltip": "Térképelemek a Mapillaryről",
-      "construction": {
-        "barrier": {
-          "temporary": "időszakos akadály"
-        },
-        "flat": {
-          "crosswalk_plain": "gyalogosátkelő (két párhuzamos szaggatott vonal)",
-          "driveway": "kocsibehajtó"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "felfestés – nyíl (balra)",
-            "right": "felfestés – nyíl (jobbra)",
-            "split_left_or_straight": "felfestés – nyíl (balra vagy egyenesen)",
-            "split_right_or_straight": "felfestés – nyíl (jobbra vagy egyenesen)",
-            "straight": "felfestés – nyíl (egyenesen)"
-          },
-          "crosswalk_zebra": "felfestés – zebra",
-          "give_way_row": "felfestés – elsőbbségadás kötelező (sok kis háromszög)",
-          "give_way_single": "felfestés – elsőbbségadás kötelező (egy nagy háromszög)",
-          "other_marking": "felfestés – egyéb",
-          "stop_line": "felfestés – stop (Állj! Elsőbbségadás kötelező)",
-          "symbol": {
-            "bicycle": "felfestés – ábra (kerékpár)"
-          },
-          "text": "felfestés – szöveg"
-        }
-      },
-      "object": {
-        "banner": "(reklám)zászló",
-        "bench": "pad",
-        "bike_rack": "kerékpártároló",
-        "billboard": "óriásplakát",
-        "catch_basin": "csatornalefolyó",
-        "cctv_camera": "biztonsági kamera",
-        "fire_hydrant": "tűzcsap",
-        "junction_box": "elektromos csatlakozódoboz",
-        "mailbox": "postaláda",
-        "manhole": "kibúvónyílás",
-        "parking_meter": "parkolóóra",
-        "phone_booth": "telefonfülke",
-        "sign": {
-          "advertisement": "hirdetés",
-          "information": "tájékoztató tábla",
-          "other": "más tábla",
-          "store": "boltfelirat",
-          "traffic_sign": {
-            "back": "jelzőtábla – hátulról",
-            "direction_front": "jelzőtábla – elölről",
-            "front": "jelzőtábla – elölről"
-          }
-        },
-        "street_light": "utcai lámpa",
-        "support": {
-          "pole": "pózna",
-          "traffic_sign_frame": "jelzőtáblaállvány",
-          "utility_pole": "közműoszlop"
-        },
-        "traffic_cone": "terelőbója",
-        "traffic_light": {
-          "cyclists": "kerékpáros közlekedési lámpa",
-          "general_horizontal": "vízszintes közlekedési lámpa",
-          "general_single": "egyetlen közlekedési lámpa",
-          "general_upright": "függőleges közlekedési lámpa",
-          "other": "közlekedési lámpa",
-          "pedestrians": "gyalogos közlekedési lámpa"
-        },
-        "trash_can": "szemétkosár",
-        "water_valve": "vízelzáró szelep"
-      }
+    "streetside": {
+      "tooltip": "Út menti fényképek a Microsofttól"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Jelzőtáblák a Mapillaryről"
-      },
-      "view_on_mapillary": "Kép megtekintése a Mapillaryn"
+      "tooltip": "Utcaszintű fényképek a Mapillaryről"
     },
-    "kartaview_images": {
-      "tooltip": "Utcaszintű fényképek a KartaView-ról"
+    "mapillary_signs": {
+      "title": "Jelzőtáblák"
     },
     "kartaview": {
-      "view_on_kartaview": "Kép megtekintése a KartaView-n"
+      "tooltip": "Utcaszintű fényképek a KartaView-ról"
     },
     "note": {
       "note": "Jegyzet",
@@ -1861,7 +1733,6 @@
       },
       "notes": {
         "title": "Jegyzetek",
-        "intro": "A *jegyzetek* arra figyelmeztetik a felhasználókat, hogy egy elemet javítani kell vagy figyelni kell rá. A jegyzetek egy adott helyet jelölnek meg a térképen. A meglévő jegyzetek megtekintéséhez vagy újak hozzáadásához nyisd meg a {data_icon} **{map_data}** panelt, és engedélyezd az {osm_notes} réteget.",
         "add_note_h": "Jegyzetek hozzáadása",
         "add_note": "Új jegyzet hozzáadásához nyomd meg a térkép fölötti eszköztárban a {note_icon} **{note}** gombot vagy nyomd le a `{add_note_key}` billentyűparancsot.",
         "update_note_h": "Lezárás, újranyitás és hozzászólás",
@@ -1898,9 +1769,7 @@
         "title": "Minőségbiztosítás",
         "intro": "A *minőségbiztosítási* (Quality Assurance, Q/A) eszközök hibás címkéket, leválasztott utakat és egyéb problémákat találnak az OpenStreetMapen, amelyeket a térképezők ezután kijavíthatnak. A meglévő minőségbiztosítási problémák megtekintéséhez nyisd meg a {data_icon} **{map_data}** panelt, és engedélyezd valamelyik Q/A réteget.",
         "tools_h": "Eszközök",
-        "tools": "Jelenleg a következő eszközök támogatottak: [KeepRight](https://www.keepright.at/?lang=hu), [ImproveOSM](https://improveosm.org/) és [Osmose](https://osmose.openstreetmap.fr/hu/map/).",
-        "issues_h": "Problémák kezelése",
-        "issues": "A minőségbiztosítási problémák kezelése hasonló a jegyzetek kezeléséhez. Válassz ki egy jelölőt a térképen, hogy az oldalsávon megtekinthesd a probléma részleteit. Minden eszköznek megvannak a maga képességei, de arra általában mindegyik alkalmas, hogy megjegyzést fűzz egy problémához vagy lezárd a problémát."
+        "issues_h": "Problémák kezelése"
       },
       "field": {
         "restrictions": {
@@ -2663,7 +2532,6 @@
           "map_data": "Térképadatpanel ki-/bekapcsolása",
           "issues": "Érvényesítési problémák panel ki-/bekapcsolása",
           "preferences": "Felhasználói beállítások panel ki-/bekapcsolása",
-          "sidebar": "Oldalsáv ki-/bekapcsolása",
           "wireframe": "Drótváz mód ki-/bekapcsolása",
           "osm_data": "OpenStreetMap-adatok ki-/bekapcsolása",
           "highlight_edits": "Nem mentett szerkesztések kiemelése"

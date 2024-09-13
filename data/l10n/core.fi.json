@@ -42,7 +42,6 @@
       },
       "add_note": {
         "title": "Karttailmoitus",
-        "label": "Lisää karttailmoitus",
         "description": "Huomasitko virheen? Kerro siitä muille kartoittajille."
       },
       "add_preset": {
@@ -467,9 +466,6 @@
     "loading_auth": "Yhdistetään OpenStreetMap-palveluun...",
     "report_a_bug": "Ilmoita ongelmasta",
     "help_translate": "Auta kääntämisessä",
-    "sidebar": {
-      "tooltip": "Näytä/piilota kohdemuokkain"
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} piilotettu karttakohde",
@@ -524,7 +520,6 @@
         "description": "Kuvaus",
         "resolution": "Resoluutio",
         "accuracy": "Täsmällisyys",
-        "unknown": "Ei tiedossa",
         "show_tiles": "Näytä yksittäisotosten rajat",
         "hide_tiles": "Piilota yksittäisotosten rajat"
       },
@@ -535,7 +530,6 @@
         "last_edit": "Viimeisin muokkaus",
         "edited_by": "Muokkaaja",
         "changeset": "Muutoskokoelma",
-        "unknown": "Ei tiedossa",
         "note_no_history": "Ei historiaa (tuore karttailmoitus)",
         "note_comments": "Kommentit",
         "note_created_date": "Lähetetty",
@@ -617,13 +611,13 @@
         "zoom": "Näytä {features} lähentämällä karttaa."
       },
       "back_tooltip": "Muuta kohdetyyppiä",
+      "type": "Tyyppi",
+      "details": "Yksityiskohdat",
       "remove": "Poista",
       "search": "Hae",
       "unknown": "Ei tiedossa",
       "incomplete": "<ei ladattu>",
       "feature_list": "Etsi karttakohteita",
-      "edit": "Muokkaa karttakohdetta",
-      "edit_features": "Muokkaa kohteita",
       "check": {
         "yes": "Kyllä",
         "no": "Ei",
@@ -631,7 +625,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Tyyppi",
           "default": "Oletus",
           "layer": "Korkeustaso"
         }
@@ -689,7 +682,8 @@
         },
         "notes": {
           "tooltip": "Näytä OpenStreetMapin karttailmoitukset",
-          "title": "OpenStreetMapin karttailmoitukset"
+          "title": "OpenStreetMapin karttailmoitukset",
+          "key": "P"
         },
         "maproulette": {
           "detail_title": "Lisätietoja",
@@ -698,10 +692,6 @@
         "keepRight": {
           "tooltip": "Koneellisesti tunnistettuja karttaongelmia KeepRight.at-sivustolta",
           "title": "KeepRight-ilmoitukset"
-        },
-        "improveOSM": {
-          "tooltip": "Improveosm.org-palvelun automaattisesti tunnistamat puuttuva aineisto",
-          "title": "ImproveOSM-ilmoitukset"
         },
         "osmose": {
           "tooltip": "Koneellisesti tunnistettuja karttaongelmia osmose.openstreetmap.fr-sivustolta",
@@ -734,9 +724,6 @@
     },
     "photo_overlays": {
       "title": "Kuvakerrokset",
-      "traffic_signs": {
-        "title": "Liikennemerkit"
-      },
       "photo_type": {
         "flat": {
           "tooltip": "Valokuvat"
@@ -966,36 +953,6 @@
         "elems_title": "Kohteet",
         "trap_title": "Yleiset virheet"
       },
-      "improveOSM": {
-        "title": "ImproveOSM-tunnistus",
-        "geometry_types": {
-          "path": "kävely- ja pyörätietä",
-          "parking": "pysäköintialuetta",
-          "road": "tietä",
-          "both": "tietä ja pysäköintialuetta"
-        },
-        "directions": {
-          "east": "itä",
-          "north": "pohjoinen",
-          "northeast": "koillinen",
-          "northwest": "luode",
-          "south": "etelä",
-          "southeast": "kaakko",
-          "southwest": "lounas",
-          "west": "länsi"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Puuttuva yksisuuntaisuus"
-          },
-          "mr": {
-            "title": "Puuttuva geometria"
-          },
-          "tr": {
-            "title": "Puuttuva kääntymisrajoitus"
-          }
-        }
-      },
       "keepRight": {
         "detail_description": "Kuvaus",
         "comment": "Kommentti",
@@ -1220,51 +1177,21 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Microsoftin katunäkymäkuvat",
-      "title": "Bing-katunäkymä",
-      "report": "Ilmoita kuvan yksityisyysloukkauksesta",
-      "view_on_bing": "Näytä Bing-kartoissa",
+    "photos": {
       "hires": "Korkearesoluutio"
     },
-    "mapillary_images": {
-      "tooltip": "Katunäkymäkuvat (Mapillary)"
-    },
-    "mapillary_map_features": {
-      "title": "Karttaominaisuudet",
-      "tooltip": "Karttakohteet Mapillarystä",
-      "object": {
-        "bench": "penkki",
-        "bike_rack": "pyöräteline",
-        "billboard": "tienvarsimainos",
-        "cctv_camera": "valvontakamera",
-        "fire_hydrant": "paloposti",
-        "mailbox": "postilaatikko",
-        "manhole": "katukaivo",
-        "phone_booth": "puhelinkoppi",
-        "sign": {
-          "advertisement": "mainos"
-        },
-        "street_light": "katuvalaisin",
-        "traffic_light": {
-          "cyclists": "liikennevalot pyöräilijöille",
-          "other": "liikennevalot",
-          "pedestrians": "liikennevalot jalankulkijoille"
-        },
-        "trash_can": "roskakori"
-      }
+    "streetside": {
+      "title": "Bing-katunäkymä",
+      "tooltip": "Microsoftin katunäkymäkuvat"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Liikennemerkit Mapillarystä"
-      },
-      "view_on_mapillary": "Näytä tämä kuva Mapillary-palvelussa"
+      "tooltip": "Katunäkymäkuvat (Mapillary)"
     },
-    "kartaview_images": {
-      "tooltip": "Katunäkymäkuvat KartaView-palvelusta"
+    "mapillary_signs": {
+      "title": "Liikennemerkit"
     },
     "kartaview": {
-      "view_on_kartaview": "Näytä tämä kuva KartaView-palvelussa"
+      "tooltip": "Katunäkymäkuvat KartaView-palvelusta"
     },
     "note": {
       "note": "Karttailmoitus",
@@ -1422,7 +1349,6 @@
       },
       "notes": {
         "title": "Karttailmoitukset",
-        "intro": "*Karttailmoituksella* voi ilmoittaa kartalla olevista virheistä muille käyttäjille. Selaa jo luotuja karttailmoituksia tai luo uusia napsauttamalla {data_icon} **{map_data}** ikkunan oikeasta laidasta ja sitten valitsemalla {osm_notes}.",
         "add_note_h": "Karttailmoituksen tekeminen",
         "add_note": "Lähetä karttailmoitus napsauttamalla {note_icon} **{note}** ylälaidan palkista tai pikanäppäimellä `{add_note_key}`. Hiiren osoitin muuttuu ristinmuotoiseksi.",
         "update_note_h": "Ratkaiseminen, uudelleenavaaminen ja kommentointi",
@@ -1459,9 +1385,7 @@
         "title": "Laaduntarkkailu",
         "intro": "*Laaduntarkkailutoiminto* pyrkii automaattisesti tunnistamaan muokkauksista yleisimpiä virheitä, kuten virheellisiä ominaisuustietoja ja risteysmerkintöjä. Kartoittajan on kuitenkin itse korjattava havaitut puutteet. Tarkastele muokkausvirhelistaa napsauttamalla {data_icon} **{map_data}**.",
         "tools_h": "Työkalut",
-        "tools": "iD tukee toistaiseksi ohjelmistoja [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) ja [Osmose](https://osmose.openstreetmap.fr/).",
-        "issues_h": "Muokkausvirheiden käsittely",
-        "issues": "Muokkausvirheiden käsittely muistuttaa karttailmoitusten käsittelyä. Napsauta muokkausvirhekuvaketta kartalla, jolloin sen tiedot avautuvat kohdemuokkaimeen. Käytettävissä olevat toiminnot vaihtelevat, mutta yleensä virheitä voi kommentoida ja merkitä ratkaistuksi."
+        "issues_h": "Muokkausvirheiden käsittely"
       },
       "field": {
         "restrictions": {
@@ -2181,7 +2105,6 @@
           "map_data": "Näytä/piilota kartta-aineistoasetukset",
           "issues": "Näytä/piilota muokkausvirheiden asetukset",
           "preferences": "Näytä/piilota käyttäjäasetukset",
-          "sidebar": "Näytä/piilota kohdemuokkain",
           "wireframe": "Muuta alueen taustatäyttö -asetusta",
           "osm_data": "Vaihda OpenStreetMap-aineistoa",
           "highlight_edits": "Korosta tallentamattomat muutokset"

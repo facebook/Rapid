@@ -46,7 +46,6 @@
       },
       "add_note": {
         "title": "Белешка",
-        "label": "Додај белешка",
         "description": "Забележавте некој проблем? Соопштете им го на другите картографи."
       },
       "add_preset": {
@@ -590,9 +589,6 @@
     "loading_auth": "Се поврзувам со OpenStreetMap...",
     "report_a_bug": "Пријави грешка",
     "help_translate": "Помогнете со преводот",
-    "sidebar": {
-      "tooltip": "Дај/тргни го страничникот."
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} скриени елементи",
@@ -646,7 +642,6 @@
         "description": "Опис",
         "resolution": "Разложеност",
         "accuracy": "Точност",
-        "unknown": "Непознато",
         "show_tiles": "Прикажи полиња",
         "hide_tiles": "Скриј полиња"
       },
@@ -657,7 +652,6 @@
         "last_edit": "Последно уредување",
         "edited_by": "Уредил",
         "changeset": "Промени",
-        "unknown": "Непознато",
         "note_no_history": "Нема историја (Нова белешка)",
         "note_comments": "Коментари",
         "note_created_date": "Создадено на",
@@ -739,13 +733,13 @@
         "zoom": "{features} се скриени. Приближете за да ги овозможите."
       },
       "back_tooltip": "Измени вид на елемент",
+      "type": "Вид",
+      "details": "Подробно",
       "remove": "Отстрани",
       "search": "Пребарај",
       "unknown": "Непознато",
       "incomplete": "<непреземено>",
       "feature_list": "Пребарај елементи",
-      "edit": "Измени елемент",
-      "edit_features": "Уреди елементи",
       "check": {
         "yes": "Да",
         "no": "Не",
@@ -753,7 +747,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Вид",
           "default": "По основно",
           "layer": "Слој"
         }
@@ -822,7 +815,8 @@
         },
         "notes": {
           "tooltip": "Податоците во белешки се од OpenStreetMap",
-          "title": "Белешки од OpenStreetMap"
+          "title": "Белешки од OpenStreetMap",
+          "key": "СГШ"
         },
         "maproulette": {
           "detail_title": "Подробно",
@@ -831,10 +825,6 @@
         "keepRight": {
           "tooltip": "keepright.at утврди проблеми со податоците",
           "title": "Проблеми според KeepRight"
-        },
-        "improveOSM": {
-          "tooltip": "improveosm.org утврди отсустни податоци",
-          "title": "Проблеми според ImproveOSM"
         },
         "osmose": {
           "tooltip": "osmose.openstreetmap.fr утврди проблеми со податоците",
@@ -867,9 +857,6 @@
     },
     "photo_overlays": {
       "title": "Фотооблоги",
-      "traffic_signs": {
-        "title": "Сообраќајни знаци"
-      },
       "photo_type": {
         "flat": {
           "title": "Рамни фотографии",
@@ -1130,40 +1117,6 @@
         "elems_title": "Елементи",
         "fix_title": "Напатствија за поправање",
         "trap_title": "Чести грешки"
-      },
-      "improveOSM": {
-        "title": "Пронаоѓање со ImproveOSM",
-        "geometry_types": {
-          "path": "патеки",
-          "parking": "паркирање",
-          "road": "патишта",
-          "both": "патишта и паркирање"
-        },
-        "directions": {
-          "east": "исток",
-          "north": "север",
-          "northeast": "североисток",
-          "northwest": "северозапад",
-          "south": "југ",
-          "southeast": "југоисток",
-          "southwest": "југозапад",
-          "west": "запад"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Недостасува еднонасочна",
-            "description": "Долж оваа делница на {highway}, {percentage} % од заведените {num_trips} патувања се одвиваат од {from_node} до {to_node}. Може да им недостасува ознака „oneway“ за еднонасочност."
-          },
-          "mr": {
-            "title": "Отсутна геометрија",
-            "description": "Според {num_trips} заведени патувања на ова подрачје, може да се заклучи дека овде нема неисцртано {geometry_type}.",
-            "description_alt": "Според податоците од други извори, т.е. 3-ти лица., може да се заклучи дека овде нема неисцртано  {geometry_type}."
-          },
-          "tr": {
-            "title": "Отсуствува забрана за вртење",
-            "description": "{num_passed} од {num_trips} заведени патувања (патувајќи на {travel_direction}) на {junction} свртуваат од {from_way} кон {to_way} . Може да отсуствува забрана „{turn_restriction}“."
-          }
-        }
       },
       "keepRight": {
         "detail_description": "Опис",
@@ -1450,64 +1403,17 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Улични фотографии од Microsoft",
-      "report": "Пријави нарушување на приватност во сликава",
-      "view_on_bing": "Погл. на Bing Карти",
+    "photos": {
       "hires": "Високоразделна"
     },
-    "mapillary_images": {
-      "tooltip": "Улични слики од Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Картографски елементи",
-      "tooltip": "Картографски елементи од Mapillary",
-      "construction": {
-        "barrier": {
-          "temporary": "привремена препрека"
-        },
-        "flat": {
-          "crosswalk_plain": "прост пешачки премин",
-          "driveway": "моторна патека"
-        }
-      },
-      "object": {
-        "banner": "бајрак",
-        "bench": "клупа",
-        "bike_rack": "Велосипедска закачалка",
-        "billboard": "рекламна табла",
-        "catch_basin": "сливник",
-        "cctv_camera": "Видеонадзор",
-        "fire_hydrant": "хидрант",
-        "mailbox": "поштенско сандаче",
-        "manhole": "шахта",
-        "phone_booth": "телефонска говорница",
-        "sign": {
-          "advertisement": "реклама",
-          "information": "информативен знак",
-          "store": "натписна табла"
-        },
-        "street_light": "улична светилка",
-        "support": {
-          "utility_pole": "бандера"
-        },
-        "traffic_cone": "сообраќаен конус",
-        "traffic_light": {
-          "cyclists": "велосипедистички семафор",
-          "general_horizontal": "хоризонтален семафор",
-          "general_single": "единечен семафор",
-          "general_upright": "вертикален семафор",
-          "other": "семафор",
-          "pedestrians": "пешачки семафор"
-        },
-        "trash_can": "канта за ѓубре"
-      }
+    "streetside": {
+      "tooltip": "Улични фотографии од Microsoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Сообраќајни знаци од Mapillary"
-      },
-      "view_on_mapillary": "Погледајте ја сликава на Mapillary"
+      "tooltip": "Улични слики од Mapillary"
+    },
+    "mapillary_signs": {
+      "title": "Сообраќајни знаци"
     },
     "note": {
       "note": "Белешка",
@@ -1591,8 +1497,7 @@
       },
       "qa": {
         "title": "Проверка на квалитетот",
-        "tools_h": "Алатки",
-        "tools": "Тековно се поддржани следниве алатки: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) и [Osmose](https://osmose.openstreetmap.fr/)."
+        "tools_h": "Алатки"
       },
       "field": {
         "restrictions": {
@@ -2012,7 +1917,6 @@
           "map_data": "Дај/трги прозорец со податоци за картата",
           "issues": "Дај/тргни прозорец за проблеми со заверка",
           "preferences": "Дај/тргни оддел за корис. нагодувања",
-          "sidebar": "Дај/тргни страничник",
           "wireframe": "Дај/тргни омрежување",
           "osm_data": "Дај/тргни податоци од OpenStreetMap",
           "highlight_edits": "Истакни незачувани уредувања"

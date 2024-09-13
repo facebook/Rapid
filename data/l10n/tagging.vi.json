@@ -533,10 +533,12 @@
             "ruins": "Tàn tích Tòa nhà",
             "school": "Tòa nhà Trường học",
             "semidetached_house": "Nhà Bán tách biệt",
+            "service": "Toà nhà Dịch vụ",
             "stadium": "Kiến trúc Sân vận động",
             "static_caravan": "Nhà di động",
             "synagogue": "Kiến trúc Nhà thờ Do Thái giáo",
             "temple": "Kiến trúc Đền thờ",
+            "terrace": "Nhà Liền kề",
             "train_station": "Tòa nhà Ga Tàu hỏa",
             "transportation": "Tòa nhà Phương tiện Công cộng",
             "university": "Tòa nhà Đại học",
@@ -717,6 +719,11 @@
         },
         "communication_multi": {
           "label": "Kiểu Giao thông"
+        },
+        "community_centre": {
+          "options": {
+            "cultural_centre": "Trung tâm Văn hoá"
+          }
         },
         "connectivity": {
           "label": "Các Kết nối Làn đường"
@@ -914,8 +921,10 @@
         "cuisine": {
           "label": "Ẩm thực",
           "options": {
+            "african": "Châu Phi",
             "american": "Mỹ",
             "asian": "Châu Á",
+            "breakfast": "Đồ ăn sáng",
             "bubble_tea": "Trà sữa",
             "burger": "Hamburger",
             "cake": "Bánh ngọt",
@@ -924,9 +933,11 @@
             "coffee_shop": "Quán cà phê",
             "dessert": "Tráng miệng",
             "donut": "Bánh vòng",
+            "european": "Châu Âu",
             "filipino": "Philippines",
             "fish": "Cá",
             "french": "Pháp",
+            "fries": "Đồ rán",
             "georgian": "Gruzia",
             "german": "Đức",
             "greek": "Hy Lạp",
@@ -940,7 +951,11 @@
             "korean": "Triều Tiên",
             "lebanese": "Liban",
             "malaysian": "Mã Lai",
+            "mediterranean": "Địa Trung Hải",
             "mexican": "Mễ",
+            "middle_eastern": "Trung Đông",
+            "noodle": "Mì",
+            "persian": "Ba Tư",
             "peruvian": "Peru",
             "polish": "Ba Lan",
             "portuguese": "Bồ Đào Nha",
@@ -948,14 +963,20 @@
             "russian": "Nga",
             "salad": "Rau trộn",
             "sandwich": "Bánh mì kẹp",
+            "sausage": "Xúc xích",
             "seafood": "Đồ biển",
+            "soup": "Súp",
             "spanish": "Tây Ban Nha",
             "steak_house": "Bít tết",
             "taiwanese": "Đài Loan",
+            "tea": "Trà",
             "thai": "Thái",
             "turkish": "Thổ Nhĩ Kỳ",
+            "udon": "Mì Udon",
             "ukrainian": "Ukraina",
-            "vietnamese": "Việt Nam"
+            "vietnamese": "Việt Nam",
+            "western": "Phương Tây",
+            "wings": "Cánh Gà"
           },
           "terms": "ẩm thực, cách nấu, am thuc, cach nau"
         },
@@ -1161,7 +1182,10 @@
           "label": "Kiểu"
         },
         "dock": {
-          "label": "Loại"
+          "label": "Loại",
+          "options": {
+            "drydock": "Ụ tàu khô"
+          }
         },
         "dog": {
           "label": "Chó",
@@ -1407,6 +1431,7 @@
             "biodiesel": "Diesel sinh học",
             "cng": "Khí nén tự nhiên (CNG)",
             "e10": "Xăng E10",
+            "e5": "Xăng E5",
             "e85": "Xăng E85",
             "octane_100": "Xăng (100 Octane)",
             "octane_80": "Xăng (80 Octane)",
@@ -1913,6 +1938,15 @@
           "label": "Cấp Bằng Lái xe",
           "terms": "cấp bằng lái xe, cap bang lai xe"
         },
+        "lifeguard": {
+          "options": {
+            "base": "Cơ sở Cứu hộ",
+            "tower": "Tháp Cứu hộ"
+          }
+        },
+        "lifeguard_check": {
+          "label": "Cứu hộ"
+        },
         "lift_gate/type": {
           "label": "Kiểu"
         },
@@ -1983,7 +2017,6 @@
             "limestone": "Đá vôi",
             "metal": "Kim loại",
             "plastic": "Nhựa",
-            "reinforced_conrete": "Bê tông cốt thép",
             "sand": "Cát",
             "sandstone": "Sa thạch",
             "soil": "Đất",
@@ -2255,6 +2288,9 @@
             "union": "Văn phòng Công đoàn",
             "water_utility": "Văn phòng Nhà cung cấp Nước sạch"
           }
+        },
+        "official_name": {
+          "label": "Tên Chính thức"
         },
         "oneway": {
           "label": "Chiều",
@@ -2786,13 +2822,22 @@
           "label": "Kiểu"
         },
         "resource": {
-          "label": "Tài nguyên"
+          "label": "Tài nguyên",
+          "options": {
+            "gold": "Vàng",
+            "iron_ore": "Quặng Sắt",
+            "limestone": "Đá vôi",
+            "sand": "Cát"
+          }
         },
         "restriction": {
           "label": "Kiểu"
         },
         "restrictions": {
           "label": "Hạn chế rẽ"
+        },
+        "roller_coaster/track": {
+          "label": "Loại"
         },
         "roof/colour": {
           "label": "Màu Mái",
@@ -2813,6 +2858,12 @@
         },
         "route_master": {
           "label": "Kiểu"
+        },
+        "royal_cypher-GB": {
+          "label": "Mật mã Hoàng gia",
+          "options": {
+            "no": "Không có"
+          }
         },
         "ruins": {
           "label": "Kiểu"
@@ -3572,6 +3623,12 @@
         "turning_circle": {
           "label": "Hình dạng"
         },
+        "two_sided": {
+          "options": {
+            "undefined": "Không có",
+            "yes": "Có"
+          }
+        },
         "usage_rail": {
           "label": "Kiểu Sử dụng",
           "options": {
@@ -3618,7 +3675,28 @@
           }
         },
         "vending": {
-          "label": "Loại Hàng hóa"
+          "label": "Loại Hàng hóa",
+          "options": {
+            "bicycle_tube": "Săm Xe đạp",
+            "bread": "Bánh mì",
+            "cigarettes": "Thuốc lá",
+            "coffee": "Cà phê",
+            "condoms": "Bao cao su",
+            "drinks": "Đồ uống",
+            "eggs": "Trứng",
+            "electronics": "Đồ điện tử",
+            "elongated_coin": "Đồng xu Kỉ niệm",
+            "food": "Đồ ăn",
+            "fuel": "Nhiên liệu",
+            "ice_cream": "Kem",
+            "milk": "Sữa",
+            "newspapers": "Báo",
+            "parking_tickets": "Vé Đỗ xe",
+            "public_transport_tickets": "Vé Phương tiện Công cộng",
+            "stamps": "Tem Bưu chính",
+            "sweets": "Đồ ngọt",
+            "water": "Nước Uống"
+          }
         },
         "vhf": {
           "label": "Kênh Tần số Rất cao",
@@ -3768,6 +3846,9 @@
         "address": {
           "name": "Địa chỉ",
           "terms": "địa chỉ, số địa chỉ, số nhà, số tòa nhà, dia chi, so dia chi, so nha, so toa nha"
+        },
+        "advertising": {
+          "name": "Thiết bị Quảng cáo"
         },
         "advertising/billboard": {
           "name": "Bảng Quảng cáo",
@@ -4467,6 +4548,9 @@
           "name": "Nhà hàng Pháp",
           "terms": "nhà hàng pháp, quán ăn pháp, tiệm ăn pháp, tiệm pháp, nhà ăn pháp, phòng ăn pháp, nhà hàng đồ pháp, quán ăn đồ pháp, tiệm ăn đồ pháp, tiệm đồ pháp, nhà ăn đồ pháp, phòng ăn đồ pháp, nha hang phap, quan an phap, tiem an phap, tiem phap, nha an phap, phong an phap, nha hang do phap, quan an do phap, tiem an do phap, tiem do phap, nha an do phap, phong an do phap"
         },
+        "amenity/restaurant/georgian": {
+          "name": "Nhà hàng Gruzia"
+        },
         "amenity/restaurant/german": {
           "name": "Nhà hàng Đức",
           "terms": "nhà hàng đức, quán ăn đức, tiệm ăn đức, tiệm đức, nhà ăn đức, phòng ăn đức, nhà hàng đồ đức, quán ăn đồ đức, tiệm ăn đồ đức, tiệm đồ đức, nhà ăn đồ đức, phòng ăn đồ đức, nha hang duc, quan an duc, tiem an duc, tiem duc, nha an duc, phong an duc, nha hang do duc, quan an do duc, tiem an do duc, tiem do duc, nha an do duc, phong an do duc"
@@ -4518,6 +4602,9 @@
         "amenity/restaurant/turkish": {
           "name": "Nhà hàng Thổ Nhĩ Kỳ",
           "terms": "nhà hàng thổ nhĩ kỳ, nhà hàng thổ nhĩ kì, quán ăn thổ nhĩ kỳ, quán ăn thổ nhĩ kì, tiệm ăn thổ nhĩ kỳ, tiệm ăn thổ nhĩ kì, tiệm thổ nhĩ kỳ, tiệm thổ nhĩ kì, nhà ăn thổ nhĩ kỳ, nhà ăn thổ nhĩ kì, phòng ăn thổ nhĩ kỳ, phòng ăn thổ nhĩ kì, nhà hàng đồ thổ nhĩ kỳ, nhà hàng đồ thổ nhĩ kì, quán ăn đồ thổ nhĩ kỳ, quán ăn đồ thổ nhĩ kì, tiệm ăn đồ thổ nhĩ kỳ, tiệm ăn đồ thổ nhĩ kì, tiệm đồ thổ nhĩ kỳ, tiệm đồ thổ nhĩ kì, nhà ăn đồ thổ nhĩ kỳ, nhà ăn đồ thổ nhĩ kì, phòng ăn đồ thổ nhĩ kỳ, phòng ăn đồ thổ nhĩ kì, nha hang tho nhi ky, nha hang tho nhi ki, quan an tho nhi ky, quan an tho nhi ki, tiem an tho nhi ky, tiem an tho nhi ki, tiem tho nhi ky, tiem tho nhi ki, nha an tho nhi ky, nha an tho nhi ki, phong an tho nhi ky, phong an tho nhi ki, nha hang do tho nhi ky, nha hang do tho nhi ki, quan an do tho nhi ky, quan an do tho nhi ki, tiem an do tho nhi ky, tiem an do tho nhi ki, tiem do tho nhi ky, tiem do tho nhi ki, nha an do tho nhi ky, nha an do tho nhi ki, phong an do tho nhi ky, phong an do tho nhi ki"
+        },
+        "amenity/restaurant/ukrainian": {
+          "name": "Nhà hàng Ucraina"
         },
         "amenity/restaurant/vietnamese": {
           "name": "Nhà hàng Việt Nam",
@@ -5109,6 +5196,9 @@
           "name": "Nhà kính",
           "terms": "nhà kính, nhà kiếng, nhà trồng rau, nhà trồng hoa, nha kinh, nha kieng, nha trong rau, nha trong hoa"
         },
+        "building/hangar": {
+          "name": "Nhà chứa Máy bay"
+        },
         "building/hospital": {
           "name": "Tòa nhà Bệnh viện",
           "terms": "tòa nhà bệnh viện, toà nhà bệnh viện, tòa nhà nhà thường, toà nhà nhà thường"
@@ -5582,6 +5672,9 @@
         "entrance/main": {
           "name": "Cửa Chính",
           "terms": "cửa chính, cửa ra vào chính, cửa vào chính, cửa ra chính, cua chinh, cua ra vao chinh, cua vao chinh, cua ra chinh"
+        },
+        "entrance/staircase": {
+          "name": "Lối vào Cầu thang"
         },
         "ford": {
           "name": "Nơi Lội qua Sông",
@@ -6291,6 +6384,9 @@
           "name": "Khu Tòa nhà Chung cư",
           "terms": "khu chung cư, khu căn hộ, khu tòa nhà chung cư, khu toà nhà chung cư, khu tòa nhà căn hộ, khu toà nhà căn hộ, chung cư, khu chung cu, khu can ho, khu toa nha chung cu, khu toa nha can ho, chung cu"
         },
+        "landuse/residential/trailer_park": {
+          "name": "Sân đỗ Nhà Di động"
+        },
         "landuse/retail": {
           "name": "Khu vực Bán lẻ",
           "terms": "khu vực bán lẻ, vùng bán lẻ, đất bán lẻ, khu vực buôn bán, vùng buôn bán, đất buôn bán, tiệm, cửa hàng, khu vuc ban le, vung ban le, dat ban le, khu vuc buon ban, vung buon ban, dat buon ban, tiem, cua hang"
@@ -6727,6 +6823,9 @@
         "man_made/carpet_hanger": {
           "name": "Giá Treo Thảm",
           "terms": "giá treo thảm, gia treo tham"
+        },
+        "man_made/charge_point": {
+          "name": "Trạm Sạc Xe điện"
         },
         "man_made/chimney": {
           "name": "Ống khói",
@@ -8292,6 +8391,9 @@
           "name": "Tiệm Ga",
           "terms": "tiệm ga, cửa hàng ga, tiệm gas, cửa hàng gas, tiệm khí ga, cửa hàng khí ga, tiệm khí gas, cửa hàng khí gas, tiệm khí thiên niên, cửa hàng khí thiên niên, tiệm dầu lửa, cửa hàng dầu lửa, tiệm prôpan, cửa hàng prôpan, tiệm prô-pan, cửa hàng prô-pan, tiem ga, cua hang ga, tiem gas, cua hang gas, tiem khi ga, cua hang khi ga, tiem khi gas, cua hang khi gas, tiem khi thien nien, cua hang khi thien nien, tiem dau lua, cua hang dau lua, tiem propan, cua hang propan, tiem pro-pan, cua hang pro-pan"
         },
+        "shop/general": {
+          "name": "Cửa hàng Tổng hợp"
+        },
         "shop/gift": {
           "name": "Tiệm Quà tặng",
           "terms": "cửa hàng quà tặng, cửa hàng bán quà tặng, nơi bán quà tặng, quầy quà tặng, quầy bán quà tặng, chỗ bán quà tặng, món quà, quà lưu niệm, quà kỷ niệm, quà kỉ niệm, dịp lễ hội, cua hang qua tang, cua hang ban qua tang, noi ban qua tang, quay qua tang, quay ban qua tang, cho ban qua tang, mon qua, qua luu niem, qua ky niem, qua ki niem, dip le hoi"
@@ -8487,6 +8589,9 @@
         "shop/repair": {
           "name": "Sửa Đồ",
           "terms": "sửa đồ, tiệm sửa đồ, cửa hàng sửa đồ, sua do, tiem sua do, cua hang sua do"
+        },
+        "shop/rice": {
+          "name": "Cửa hàng Gạo"
         },
         "shop/scuba_diving": {
           "name": "Tiệm Dụng cụ Lặn Scuba",

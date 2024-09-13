@@ -214,15 +214,13 @@
         "source": "Burim",
         "description": "Përshkrim",
         "resolution": "Rezolucion",
-        "accuracy": "Saktësi",
-        "unknown": "E panjohur"
+        "accuracy": "Saktësi"
       },
       "history": {
         "title": "Historia",
         "no_history": "Ska historik (Karakteristikë e re)",
         "last_edit": "Editimi i fundit",
         "edited_by": "Edituar nga",
-        "unknown": "I panjohur",
         "note_no_history": "Ska historik (Shënim i ri)",
         "note_comments": "Komentet",
         "note_created_date": "Data e krijimit",
@@ -273,11 +271,12 @@
       "new_relation": "Lidhje të re...",
       "role": "Rol",
       "choose": "Zgjidhni llojën e tiparit",
+      "type": "Tipi",
+      "details": "Detajet",
       "remove": "Hiq",
       "search": "Kërko",
       "unknown": "I panjohur",
       "feature_list": "Kërko tiparet",
-      "edit": "Redakto tiparin",
       "check": {
         "yes": "Po",
         "no": "Jo",
@@ -285,7 +284,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Tipi",
           "layer": "Shtresë"
         }
       },
@@ -441,15 +439,8 @@
         "close_comment": "Mbyllni dhe Komentoni"
       }
     },
-    "streetside": {
-      "view_on_bing": "Shikoje në hartat e Bing",
+    "photos": {
       "hires": "Rezolucion i lartë"
-    },
-    "mapillary_map_features": {
-      "title": "Karakteristikat e Hartës"
-    },
-    "mapillary": {
-      "view_on_mapillary": "Shikoje këtë imazh në Mapilary"
     },
     "note": {
       "note": "Shënim",

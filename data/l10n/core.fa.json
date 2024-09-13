@@ -42,7 +42,6 @@
       },
       "add_note": {
         "title": "یادداشت",
-        "label": "افزودن یادداشت",
         "description": "مشکلی پیدا کرده‌اید؟ به سایر نقشه‌کش‌ها اطلاع دهید."
       },
       "add_preset": {
@@ -713,10 +712,6 @@
     "loading_auth": "در حال اتصال به OpenStreetMap...",
     "report_a_bug": "گزارش یک اشکال",
     "help_translate": "کمک به ترجمه",
-    "sidebar": {
-      "key": "÷",
-      "tooltip": "باز و بسته کردن نوار کناری"
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} ویژگی پنهان",
@@ -773,7 +768,6 @@
         "description": "توضیح",
         "resolution": "وضوح",
         "accuracy": "دقت",
-        "unknown": "نامعلوم",
         "show_tiles": "نمایش کاشی‌ها",
         "hide_tiles": "پنهان‌کردن کاشی‌ها"
       },
@@ -784,7 +778,6 @@
         "last_edit": "آخرین ویرایش",
         "edited_by": "ویرایش‌کننده",
         "changeset": "بستهٔ تغییر",
-        "unknown": "نامعلوم",
         "note_no_history": "بدون تاریخچه (یادداشت جدید)",
         "note_comments": "پیام‌ها",
         "note_created_date": "تاریخ ایجاد",
@@ -830,6 +823,7 @@
       "location_unavailable": "مکان شما در دسترس نیست."
     },
     "inspector": {
+      "key": "÷",
       "zoom_to": {
         "title": "بزرگ‌نمایی روی انتخاب",
         "no_selection": "چیزی برای بزرگنمایی نیست."
@@ -866,13 +860,13 @@
         "zoom": "{features} مخفی هستند. بزرگنمایی کنید تا فعال شوند."
       },
       "back_tooltip": "تغییر نوع عارضه",
+      "type": "نوع",
+      "details": "جزئیات بیشتر",
       "remove": "پاک کردن",
       "search": "جستجو",
       "unknown": "نامشخص",
       "incomplete": "<دانلود نشده>",
       "feature_list": "جستجوی عارضه‌ها",
-      "edit": "ویرایش عارضه",
-      "edit_features": "ویرایش عارضه‌ها",
       "check": {
         "yes": "بله",
         "no": "خیر",
@@ -880,7 +874,6 @@
       },
       "radio": {
         "structure": {
-          "type": "نوع",
           "default": "پیش‌فرض",
           "layer": "لایه"
         }
@@ -963,10 +956,6 @@
           "tooltip": "کشف مسائلی در داده به‌وسیلهٔ keepright.at",
           "title": "مسائل KeepRight"
         },
-        "improveOSM": {
-          "tooltip": "کشف کمبود داده به‌وسیلهٔ improveosm.org",
-          "title": "مسائل ImproveOSM"
-        },
         "osmose": {
           "tooltip": "کشف مسائلی در داده به‌وسیلهٔ  osmose.openstreetmap.f",
           "title": "مسائل Osmose"
@@ -998,9 +987,6 @@
     },
     "photo_overlays": {
       "title": "پوشش‌های عکس",
-      "traffic_signs": {
-        "title": "تابلوهای ترافیکی"
-      },
       "photo_type": {
         "flat": {
           "title": "عکس‌های تخت",
@@ -1265,40 +1251,6 @@
         "elems_title": "عارضه‌ها",
         "fix_title": "راهنمای اصلاح",
         "trap_title": "اشتباه‌های رایج"
-      },
-      "improveOSM": {
-        "title": "تشخیص ImproveOSM",
-        "geometry_types": {
-          "path": "راهچه‌ها",
-          "parking": "پارکینگ",
-          "road": "جاده‌ها",
-          "both": "جاده‌ها و پارکینگ"
-        },
-        "directions": {
-          "east": "شرق",
-          "north": "شمال",
-          "northeast": "شمال شرقی",
-          "northwest": "شمال غربی",
-          "south": "جنوب",
-          "southeast": "جنوب شرقی",
-          "southwest": "جنوب غربی",
-          "west": "غرب"
-        },
-        "error_types": {
-          "ow": {
-            "title": "کمبود یکطرفه",
-            "description": "در امتداد این تکه از {highway}‏، {percentage}% از {num_trips} سفرِ ثبت‌شده، از {from_node} به {to_node} بوده. به‌نظر می‌رسد برچسب oneway فراموش شده."
-          },
-          "mr": {
-            "title": "کمبود رسم",
-            "description": "بر اساس {num_trips} سفر ثبت‌شده در این منطقه، به‌نظر می‌رسد رسم {geometry_type} در این محدوده انجام نشده.",
-            "description_alt": "از بررسی داده‌های شخص ثالث بر می‌آید که در این محدوده {geometry_type} نقشه‌کشی نشده."
-          },
-          "tr": {
-            "title": "کمبود محدودیت گردش",
-            "description": "در {num_passed} سفر از {num_trips} سفر ثبت‌شده (به‌سمت {travel_direction}) در {junction} از {from_way} به {to_way} گردش انجام شده. به‌نظر می‌رسد یک محدودیت {turn_restriction} نیاز باشد."
-          }
-        }
       },
       "keepRight": {
         "detail_description": "توضیح",
@@ -1610,101 +1562,20 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "تصاویر خیابانی مایکروسافت",
-      "report": "گزارش نقض حریم خصوصی در این تصویر",
-      "view_on_bing": "نمایش در نقشه‌های Bing ",
+    "photos": {
       "hires": "وضوح بالا"
     },
-    "mapillary_images": {
-      "tooltip": "عکس‌های خیابانی مپیلاری"
-    },
-    "mapillary_map_features": {
-      "title": "عارضه‌های نقشه",
-      "tooltip": "عارضه‌های نقشه از مپیلاری",
-      "construction": {
-        "barrier": {
-          "temporary": "مانع موقت"
-        },
-        "flat": {
-          "crosswalk_plain": "خط کشی عابر پیاده صاف",
-          "driveway": "گذرگاه"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "خط‌کشی - پیکان (چپ)",
-            "right": "خط‌کشی - پیکان (راست)",
-            "split_left_or_straight": "خط‌کشی - پیکان (تقسیم به چپ یا مستقیم)",
-            "split_right_or_straight": "خط‌کشی - پیکان (تقسیم به راست یا مستقیم)",
-            "straight": "خط‌کشی - پیکان (مستقیم)"
-          },
-          "crosswalk_zebra": "خط‌کشی - گذرگاه پیاده",
-          "give_way_row": "علامت گذاری خط - راه را رها کنید (row)",
-          "give_way_single": "علامت گذاری خط - راه را رها کنید (single)",
-          "other_marking": "خط‌کشی - سایر",
-          "stop_line": "خط‌کشی - خط ایست",
-          "symbol": {
-            "bicycle": "خط‌کشی - نماد (دوچرخه)"
-          },
-          "text": "خط‌کشی - متن"
-        }
-      },
-      "object": {
-        "banner": "بنر",
-        "bench": "نیمکت",
-        "bike_rack": "نرده پارک کردن دوچرخه",
-        "billboard": "تابلو تبلیغاتی",
-        "catch_basin": "رواناب‌گیر",
-        "cctv_camera": "دوربین مداربسته",
-        "fire_hydrant": "شیر آتش نشانی",
-        "junction_box": "جعبه اتصال / جعبه تقسیم",
-        "mailbox": "صندوق پستی",
-        "manhole": "دریچه آدم‌رو",
-        "parking_meter": "پارکومتر",
-        "phone_booth": "کیوسک تلفن",
-        "sign": {
-          "advertisement": "تبلیغات",
-          "information": "تابلوی اطلاعات",
-          "other": "علامت دیگر",
-          "store": "تابلوی فروشگاه",
-          "traffic_sign": {
-            "back": "علامت راهنمایی و رانندگی - عقب",
-            "direction_front": "علامت راهنمایی و رانندگی - جلو",
-            "front": "علامت راهنمایی و رانندگی - جلو"
-          }
-        },
-        "street_light": "روشنایی خیابان",
-        "support": {
-          "pole": "تیر",
-          "traffic_sign_frame": "قاب تابلوی راهنمایی و رانندگی",
-          "utility_pole": "تیرک شهری نامشخص (تیر برق، تلفن، روشنایی و ...)"
-        },
-        "traffic_cone": "مخروط ترافیکی",
-        "traffic_light": {
-          "cyclists": "چراغ راهنمایی دوچرخه‌سواری",
-          "general_horizontal": "چراغ راهنمایی افقی",
-          "general_single": "چراغ راهنمایی تک‌خانه",
-          "general_upright": "چراغ راهنمایی عمودی",
-          "other": "چراغ راهنمایی",
-          "pedestrians": "چراغ راهنمایی عابر پیاده"
-        },
-        "trash_can": "سطل زباله",
-        "water_valve": "شیر آب"
-      }
+    "streetside": {
+      "tooltip": "تصاویر خیابانی مایکروسافت"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "تابلوهای ترافیکی مپیلاری"
-      },
-      "view_on_mapillary": "نمایش این تصویر در Mapillary"
+      "tooltip": "عکس‌های خیابانی مپیلاری"
     },
-    "kartaview_images": {
-      "tooltip": "عکس‌های سطح خیابان از KartaView"
+    "mapillary_signs": {
+      "title": "تابلوهای ترافیکی"
     },
     "kartaview": {
-      "view_on_kartaview": "این تصویر را در KartaView مشاهده کنید"
+      "tooltip": "عکس‌های سطح خیابان از KartaView"
     },
     "note": {
       "note": "یادداشت",
@@ -1862,7 +1733,6 @@
       },
       "notes": {
         "title": "یادداشت‌ها",
-        "intro": "*یادداشت‌ها* را برای این می‌نویسیم که به سایر کاربران اطلاع بدهیم که یک عارضه به اصلاح یا توجه نیاز دارد. یادداشت‌ها یک مکان مشخص را روی نقشه نشانه‌گذاری می‌کنند. برای دیدن یادداشت‌های موجود یا اضافه‌کردن یادداشت جدید، پنل {data_icon} **{map_data}** را باز کنید و لایهٔ «{osm_notes}» را فعال کنید.",
         "add_note_h": "اضافه‌کردن یادداشت‌ها",
         "add_note": "برای ایجاد یادداشت جدید، روی دکمهٔ  {note_icon} **{note}** در نوارابزار بالای نقشه بزنید یا کلید میانبر `{add_note_key}` را فشار دهید. ",
         "update_note_h": "بستن، بازگشایی و نظردادن",
@@ -1899,9 +1769,7 @@
         "title": "تضمین کیفیت",
         "intro": "به‌کمک ابزارهای *تضمین کیفیت* یا *Quality Assurance* (Q/A)‎ می‌توانیم برچسب‌های نادرست، جاده‌های غیرمتصل و سایر مشکلات موجود در اوپن‌استریت‌مپ را پیدا کنیم و نقشه‌کش‌ها در صورت نیاز آن‌ها را اصلاح می‌کنند. برای دیدن مسئله‌هایی که هنوز حل نشده، پنجرک {data_icon} **{map_data}** را باز کنید و یکی از لایه‌های تضمین کیفیت را فعال کنید.",
         "tools_h": "ابزارها",
-        "tools": "در حال حاضر ویرایشگر iD از این ابزارها پشتیبانی می‌کند:  [KeepRight](https://www.keepright.at/)،‏ [ImproveOSM](https://improveosm.org/en/) و [Osmose](https://osmose.openstreetmap.fr/).",
-        "issues_h": "کارکردن با مسائل",
-        "issues": "رسیدگی به مسائل پرسش و پاسخ مشابه رسیدگی به یادداشت ها است. برای مشاهده جزئیات مشکل در نوار کناری ، یک نشانگر انتخاب کنید. هر ابزار قابلیت های خاص خود را دارد ، اما به طور کلی می توانید در مورد موضوعی نظر دهید و/یا آن را ببندید."
+        "issues_h": "کارکردن با مسائل"
       },
       "field": {
         "restrictions": {
@@ -2657,7 +2525,6 @@
           "map_data": "باز و بسته کردن کادر داده‌های نقشه",
           "issues": "باز و بسته کردن کادر مسئله‌های اعتبارسنجی",
           "preferences": "باز و بسته کردن کادر ترجیحات",
-          "sidebar": "باز و بسته کردن نوار کناری",
           "wireframe": "تغییر وضعیت حالت سیمی",
           "osm_data": "پنهان یا آشکارکردن داده‌های اوپن‌استریت‌مپ",
           "highlight_edits": "برجسته‌سازی ویرایش‌های ذخیره‌نشده"

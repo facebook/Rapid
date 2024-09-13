@@ -35,7 +35,6 @@
       },
       "add_note": {
         "title": "Märkus",
-        "label": "Lisa märkus",
         "description": "Avastasid probleemi? Anna teistele kaardistajatele sellest märku."
       },
       "add_preset": {
@@ -583,9 +582,6 @@
     "loading_auth": "OpenStreetMapiga ühendamine...",
     "report_a_bug": "Teata veast",
     "help_translate": "Aita tõlkida",
-    "sidebar": {
-      "tooltip": "Lülita külgriba ümber"
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} peidetud object.",
@@ -636,7 +632,6 @@
         "description": "Kirjeldus",
         "resolution": "Eraldus",
         "accuracy": "Täpsus",
-        "unknown": "Teadmata",
         "show_tiles": "Näita paane",
         "hide_tiles": "Peida paanid"
       },
@@ -647,7 +642,6 @@
         "last_edit": "Viimane muudatus",
         "edited_by": "Muutis",
         "changeset": "Muudatuskogum",
-        "unknown": "Teadmata",
         "note_no_history": "Ajalugu puudub (uus märkus)",
         "note_comments": "Kommentaare",
         "note_created_date": "Loomise aeg",
@@ -725,12 +719,13 @@
         "zoom": "{features} on peidetud. Suurenda, et neid näha."
       },
       "back_tooltip": "Muuda objekti tüüpi",
+      "type": "Tüüp",
+      "details": "Üksikasjad",
       "remove": "Eemalda",
       "search": "Otsi",
       "unknown": "Teadmata",
       "incomplete": "<alla laadimata>",
       "feature_list": "Otsi objekte",
-      "edit": "Muuda objekti",
       "check": {
         "yes": "Jah",
         "no": "Ei",
@@ -738,7 +733,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Tüüp",
           "default": "Vaikimisi",
           "layer": "Kiht"
         }
@@ -806,10 +800,6 @@
         "keepRight": {
           "tooltip": "Andmeprobleemid, mille tuvastas keepright.at",
           "title": "KeepRighti probleemid"
-        },
-        "improveOSM": {
-          "tooltip": "Puuduvad andmed, mille tuvastas improveosm.org",
-          "title": "ImproveOSM-i probleemid"
         },
         "osmose": {
           "tooltip": "Andmeprobleemid, mille tuvastas osmose.openstreetmap.fr",
@@ -1067,11 +1057,6 @@
         "elems_title": "Objektid",
         "trap_title": "Levinud vead"
       },
-      "improveOSM": {
-        "geometry_types": {
-          "path": "rajad"
-        }
-      },
       "keepRight": {
         "detail_description": "Kirjeldus",
         "comment": "Kommentaar",
@@ -1146,78 +1131,17 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Tänava-tasandi fotod Microsoftilt",
-      "report": "Teata selle pildiga seonduvast andmekaitse probleemist.",
-      "view_on_bing": "Vaata Bing Mapsis",
+    "photos": {
       "hires": "Suur eraldus"
     },
-    "mapillary_images": {
-      "tooltip": "Tänavatasandi fotod Mapillaryst"
-    },
-    "mapillary_map_features": {
-      "title": "Kaardiandmed",
-      "tooltip": "Kaardiandmed Mapillaryst",
-      "construction": {
-        "barrier": {
-          "temporary": "ajutine barjäär"
-        },
-        "flat": {
-          "driveway": "sissesõidutee"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "teemärgistus - nool (vasakule)",
-            "right": "teemärgistus - nool (paremale)",
-            "split_left_or_straight": "teemärgistus - nool (vasakule ja otse)",
-            "split_right_or_straight": "teemärgistus - nool (paremale ja otse)",
-            "straight": "teemärgistus - nool (otse)"
-          },
-          "crosswalk_zebra": "teemärgistus - ülekäigurada",
-          "give_way_row": "teemärgistus - anna teed (rida)",
-          "give_way_single": "teemärgistus - anna teed (üks)",
-          "other_marking": "teemärgistus - muu",
-          "stop_line": "teemärgistus - stoppjoon",
-          "symbol": {
-            "bicycle": "teemärgistus - ikoon (jalgratas)"
-          },
-          "text": "teemärgistus - tekst"
-        }
-      },
-      "object": {
-        "bench": "pink",
-        "bike_rack": "rattarada",
-        "billboard": "reklaamtahvel",
-        "junction_box": "harukarp",
-        "parking_meter": "parkimiskell",
-        "sign": {
-          "other": "muu märk",
-          "traffic_sign": {
-            "back": "liiklusmärgi tagakülg",
-            "direction_front": "liiklusmärgi esikülg",
-            "front": "liiklusmärgi esikülg"
-          }
-        },
-        "support": {
-          "pole": "post",
-          "traffic_sign_frame": "liiklusmärgi raam"
-        },
-        "water_valve": "veeklapp"
-      }
+    "streetside": {
+      "tooltip": "Tänava-tasandi fotod Microsoftilt"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Liiklusmärgid Mapillaryst"
-      },
-      "view_on_mapillary": "Vaata seda fotot Mapillarys"
-    },
-    "kartaview_images": {
-      "tooltip": "Tänavatasandi fotod KartaViewst"
+      "tooltip": "Tänavatasandi fotod Mapillaryst"
     },
     "kartaview": {
-      "view_on_kartaview": "Vaata seda fotot KartaViews"
+      "tooltip": "Tänavatasandi fotod KartaViewst"
     },
     "note": {
       "note": "Märkus",
@@ -1290,8 +1214,7 @@
         "using_h": "Tänavatasandi fotode kasutamine"
       },
       "qa": {
-        "tools_h": "Tarvikud",
-        "tools": "Järgnevad tööriistad on hetkel toetatud: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) ja [Osmose](https://osmose.openstreetmap.fr/)."
+        "tools_h": "Tarvikud"
       }
     },
     "issues": {
@@ -1714,7 +1637,6 @@
         "display_options": {
           "background": "Lülita taustpildi paan ümber",
           "map_data": "Lülita kaardiandmete paan ümber",
-          "sidebar": "Lülita külgriba ümber",
           "osm_data": "Lülita OpenStreetMapi andmed sisse või välja"
         },
         "selecting": {

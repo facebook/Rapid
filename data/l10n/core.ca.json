@@ -41,7 +41,6 @@
       },
       "add_note": {
         "title": "Nota",
-        "label": "Afegir Nota",
         "description": "Has trobat algun error? Fes-ho saber als altres mapejadors."
       },
       "add_preset": {
@@ -710,9 +709,6 @@
     "loading_auth": "Connectant a OpenStreetMap...",
     "report_a_bug": "Informa d'un error",
     "help_translate": "Ajuda a traduir-lo",
-    "sidebar": {
-      "tooltip": "Commuta la barra lateral."
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} objecte ocult",
@@ -766,7 +762,6 @@
         "description": "Descripció",
         "resolution": "Resolució",
         "accuracy": "Precisió",
-        "unknown": "Desconegut",
         "show_tiles": "Mostra les tessel·les",
         "hide_tiles": "Oculta les tessel·les"
       },
@@ -777,7 +772,6 @@
         "last_edit": "Darrera modificació",
         "edited_by": "Modificat per",
         "changeset": "Conjunt de modificacions",
-        "unknown": "Desconegut",
         "note_no_history": "Sense historial (Nota nova)",
         "note_comments": "Comentaris",
         "note_created_date": "Data de creació",
@@ -857,20 +851,19 @@
         "zoom": "{features} estan ocults. Apropeu-vos-hi per habilitar-los."
       },
       "back_tooltip": "Canvia el tipus d'objecte",
+      "type": "Tipus",
+      "details": "Detalls",
       "remove": "Eliminar",
       "search": "Cercar",
       "unknown": "Desconegut",
       "incomplete": "<no baixat>",
       "feature_list": "Cerca objectes",
-      "edit": "Edita l'objecte",
-      "edit_features": "Edita objectes",
       "check": {
         "yes": "Sí",
         "reverser": "Canvia la direcció"
       },
       "radio": {
         "structure": {
-          "type": "Tipus",
           "default": "Per defecte",
           "layer": "Capa"
         }
@@ -947,10 +940,6 @@
           "tooltip": "Problemes de dades detectats per keepright.at",
           "title": "Problemes de KeepRight"
         },
-        "improveOSM": {
-          "tooltip": "Dades que manquen detectades per Improveosm.org",
-          "title": "Problemes d'ImproveOSM"
-        },
         "osmose": {
           "tooltip": "Problemes de dades detectats per osmose.openstreetmap.fr",
           "title": "Problemes d'Osmose"
@@ -982,9 +971,6 @@
     },
     "photo_overlays": {
       "title": "Capes de superposades de fotos",
-      "traffic_signs": {
-        "title": "Senyals de trànsit"
-      },
       "photo_type": {
         "flat": {
           "title": "Fotos planes",
@@ -1243,40 +1229,6 @@
         "elems_title": "Objectes",
         "fix_title": "Directrius per arreglar",
         "trap_title": "Errors habituals"
-      },
-      "improveOSM": {
-        "title": "Detecció d'ImproveOSM",
-        "geometry_types": {
-          "path": "camins",
-          "parking": "aparcament",
-          "road": "carreteres",
-          "both": "carreteres i aparcaments"
-        },
-        "directions": {
-          "east": "est",
-          "north": "nord",
-          "northeast": "nord-est",
-          "northwest": "nord-oest",
-          "south": "sud",
-          "southeast": "sud-est",
-          "southwest": "sud-oest",
-          "west": "oest"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Manca direcció única",
-            "description": "Al llarg d'aquesta secció de {highway}, {percentage}% de {num_trips} desplaçaments registrats van de {from_node} a {to_node}. Potser hi manca l'etiqueta \"oneway\"."
-          },
-          "mr": {
-            "title": "Manca geometría",
-            "description": "{num_trips} desplaçaments registrats en aquesta àrea suggereixen que aquí potser hi ha una {geometry_type} sense mapejar.",
-            "description_alt": "Dades de tercers suggereixen que aquí potser hi ha una {geometry_type} sense mapejar."
-          },
-          "tr": {
-            "title": "Manca la restricció de gir",
-            "description": "{num_passed} de {num_trips} dels desplaçaments registrats (desplaçament cap a {travel_direction}) fan un gir des de {from_way} cap a {to_way} a {junction}. Potser hi manca una restricció \"{turn_restriction}\"."
-          }
-        }
       },
       "keepRight": {
         "detail_description": "Descripció",
@@ -1589,101 +1541,20 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Fotografies a peu de carrer de Microsoft",
-      "report": "Informa d'un possible problema de privacitat amb aquesta imatge",
-      "view_on_bing": "Mostra-ho al Bing Maps",
+    "photos": {
       "hires": "Alta resolució"
     },
-    "mapillary_images": {
-      "tooltip": "Fotos a peu de carrer de Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Objectes del mapa",
-      "tooltip": "Objectes del mapa de Mapillary",
-      "construction": {
-        "barrier": {
-          "temporary": "barrera temporal"
-        },
-        "flat": {
-          "crosswalk_plain": "encreuament pla",
-          "driveway": "via d'accés a una propietat"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "senyalització horitzontal - fletxa (esquerra)",
-            "right": "senyalització horitzontal - fletxa (dreta)",
-            "split_left_or_straight": "senyalització horitzontal - fletxa (gir a l'esquerra o recte)",
-            "split_right_or_straight": "senyalització horitzontal - fletxa (gir a la dreta o recte)",
-            "straight": "senyalització horitzontal - fletxa (recte)"
-          },
-          "crosswalk_zebra": "senyalització horitzontal - pas de vianants",
-          "give_way_row": "senyalització horitzontal - cediu el pas (encadenat)",
-          "give_way_single": "senyalització horitzontal - cediu el pas (únic)",
-          "other_marking": "senyalització horitzontal - altres",
-          "stop_line": "senyalització horitzontal - línia de stop",
-          "symbol": {
-            "bicycle": "senyalització horitzontal - símbol (bicicleta)"
-          },
-          "text": "senyalització horitzontal - text"
-        }
-      },
-      "object": {
-        "banner": "pancarta",
-        "bench": "banc",
-        "bike_rack": "aparcabicicletes",
-        "billboard": "Cartellera",
-        "catch_basin": "desguàs",
-        "cctv_camera": "Càmera d'un circuit tancat de televisió",
-        "fire_hydrant": "boca d'incendis",
-        "junction_box": "caixa de connexions",
-        "mailbox": "Bústia de correus",
-        "manhole": "Claveguera",
-        "parking_meter": "parquímetre",
-        "phone_booth": "Cabina telefònica",
-        "sign": {
-          "advertisement": "anunci",
-          "information": "senyal informatiu",
-          "other": "altres senyals",
-          "store": "cartell d'una botiga",
-          "traffic_sign": {
-            "back": "senyal de trànsit - revers",
-            "direction_front": "senyal de trànsit - frontal",
-            "front": "senyal de trànsit - frontal"
-          }
-        },
-        "street_light": "fanal",
-        "support": {
-          "pole": "Pal",
-          "traffic_sign_frame": "marc d'un senyal de trànsit",
-          "utility_pole": "Pal de serveis"
-        },
-        "traffic_cone": "con de trànsit",
-        "traffic_light": {
-          "cyclists": "semàfor de ciclistes",
-          "general_horizontal": "semàfor horitzontal",
-          "general_single": "semàfor senzill",
-          "general_upright": "semàfor vertical",
-          "other": "semàfor",
-          "pedestrians": "semàfor de vianants"
-        },
-        "trash_can": "paperera",
-        "water_valve": "clau de pas d'aigua"
-      }
+    "streetside": {
+      "tooltip": "Fotografies a peu de carrer de Microsoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Senyals de trànsit de Mapillary"
-      },
-      "view_on_mapillary": "Mostra la imatge a Mapillary"
+      "tooltip": "Fotos a peu de carrer de Mapillary"
     },
-    "kartaview_images": {
-      "tooltip": "Imatges a peu de carrer des de KartView"
+    "mapillary_signs": {
+      "title": "Senyals de trànsit"
     },
     "kartaview": {
-      "view_on_kartaview": "Mira aquesta imatge amb KartaView"
+      "tooltip": "Imatges a peu de carrer des de KartView"
     },
     "note": {
       "note": "Nota",
@@ -1840,7 +1711,6 @@
         "copy_paste": "{copy_icon} **{copy}** i {paste_icon} **{paste}** us permet duplicar objectes."
       },
       "notes": {
-        "intro": "Les *notes* s'utilitzen per alertar als altres usuaris que un objecte requereix arreglar-lo o atenció. Les notes marquen una ubicació específica al mapa. Per veure les notes existents o per afegir-ne de noves, obriu el panell de {data_icon} **{map_data}** i habiliteu la capa {osm_notes}.",
         "add_note_h": "Addició de notes",
         "add_note": "Per afegir una nota nova, premeu el botó {note_icon} **{note}** a la barra d'eines de sobre el mapa o premeu la tecla de drecera `{add_note_key}`.",
         "update_note_h": "Tancant, reobrint i comentant",
@@ -1877,9 +1747,7 @@
         "title": "Control de qualitat",
         "intro": "*Control de qualitat* Les eines de (Q/A) poden trobar etiquetes impròpies, carreteres desconnectades i altres problemes a OpenStreetMap, que els mapejadors poden arreglar. Per veure els problemes de Q/A existents, obriu el panell de {data_icon} **{map_data}** i habiliteu una capa específica de Q/A.",
         "tools_h": "Eines",
-        "tools": "Les següents eines estan suportades actualment: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) i [Osmose](https://osmose.openstreetmap.fr/).",
-        "issues_h": "Gestionant problemes",
-        "issues": "Manegar problemes del control de qualitat és semblant a manegar notes. Seleccioneu un marcador per veure els detalls del problema a la barra lateral. Cada eina té les seves capacitats, però generalment podeu comentar i/o tancar els problemes."
+        "issues_h": "Gestionant problemes"
       },
       "field": {
         "restrictions": {
@@ -2642,7 +2510,6 @@
           "map_data": "Commuta el panell de dades del mapa",
           "issues": "Commuta el panell de validació de problemes",
           "preferences": "Commuta el panell de preferències d'usuari",
-          "sidebar": "Commuta la barra lateral",
           "wireframe": "Commuta el mode de malla",
           "osm_data": "Commuta les dades d'OpenStreetMap",
           "highlight_edits": "Realça les edicions no desades"

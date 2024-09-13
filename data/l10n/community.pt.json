@@ -539,9 +539,6 @@
     "OSM-japan-facebook": {
       "description": "Mapeadores e utilizadores do OpenStreetMap no Japão"
     },
-    "OSM-japan-slack": {
-      "description": "Um espaço de trabalho Slack para a comunidade OSM do Japão {signupUrl}"
-    },
     "OSM-japan-website": {
       "description": "Mapeadores e utilizadores do OpenStreetMap no Japão"
     },
@@ -605,10 +602,6 @@
     },
     "OSM-US-Slack": {
       "description": "Todos são bem-vindos! Registem-se em {signupUrl}"
-    },
-    "OSM-Utah": {
-      "description": "Mapeadores e utilizadores do OpenStreetMap na área de Salt Lake City",
-      "extendedDescription": "As atividades podem incluir workshops como o Learn to Map, em que mapeamos e recolhemos dados em visitas de campo. Os eventos ocorrerão na área do SLC, pelo menos para já. Estamos à procura de mapeadores experientes, bem como recém-chegados ao OSM. Junta-te a nós e vamos mapear!"
     },
     "OSM-Wyoming": {
       "description": "Mapeadores e utilizadores do OpenStreetMap no estado de Wyoming",

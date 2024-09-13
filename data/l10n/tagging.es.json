@@ -226,6 +226,10 @@
           "label": "Aire Acondicionado",
           "terms": "aire, acondicionado, climatización, acondicionamiento, sistema, enfriamiento, refrigeración, ventilación, ventilador, refrigerante, evaporación, extractor"
         },
+        "alt_name": {
+          "label": "Nombre alternativo",
+          "terms": "alias, también conocido como, nombre secundario"
+        },
         "amenity": {
           "label": "Tipo"
         },
@@ -261,6 +265,14 @@
         },
         "area/highway": {
           "label": "Tipo"
+        },
+        "armrest": {
+          "label": "Apoyabrazos",
+          "options": {
+            "no": "Sin apoyabrazos",
+            "undefined": "Desconocido",
+            "yes": "Uno o más apoyabrazos"
+          }
         },
         "artist": {
           "label": "Artista"
@@ -675,6 +687,27 @@
             "panning": "Toma panorámica"
           }
         },
+        "camp_site": {
+          "label": "Tipo",
+          "options": {
+            "basic": {
+              "description": "Solo un lugar para armar una carpa o estacionar un vehículo",
+              "title": "Básico (solo lugares para carpas/vehículos)"
+            },
+            "deluxe": {
+              "description": "Completamente equipado y con servicios adicionales como lavandería, piscina u otras instalaciones recreativas similares",
+              "title": "De lujo (ofrece lavandería, piscina, etc.)"
+            },
+            "serviced": {
+              "description": "Se proporcionan baños, agua, duchas y electricidad",
+              "title": "Equipado (ofrece duchas y electricidad)"
+            },
+            "standard": {
+              "description": "Se proporcionan baños y agua o están disponibles cerca",
+              "title": "Estándar (ofrece baños y agua)"
+            }
+          }
+        },
         "capacity": {
           "label": "Capacidad",
           "terms": "capacidad, aforo, cabida, aptitud"
@@ -785,6 +818,18 @@
         "communication_multi": {
           "label": "Tipos de comunicación",
           "terms": "medios, comunicación, teléfono, correo, mensaje, llamada, chat, videollamada, televisión, radio, fax, morse, telepatía, cifrado, reuniones, braille, signos, sonidos, carta, lenguaje, idiomas"
+        },
+        "community_centre": {
+          "label": "Tipo",
+          "options": {
+            "club_home": "Sede del club",
+            "community_hall": "Salón comunitario",
+            "cultural_centre": "Centro cultural",
+            "family_centre": "Centro familiar",
+            "parish_hall": "Salón parroquial",
+            "village_hall": "Salón del pueblo",
+            "youth_centre": "Centro juvenil"
+          }
         },
         "connectivity": {
           "label": "Conectividad"
@@ -2182,6 +2227,10 @@
           "label": "Iluminado",
           "terms": "Iluminado, lámpara, iluminación, encender"
         },
+        "loc_name": {
+          "label": "Nombre local",
+          "terms": "nombre coloquial, nombre común, nombre informal, apodo"
+        },
         "location": {
           "label": "Ubicación",
           "terms": "ubicación, localización, posición"
@@ -2265,7 +2314,7 @@
             "limestone": "Caliza",
             "marble": "Mármol",
             "plastic": "Plástico",
-            "reinforced_conrete": "Hormigón armado",
+            "reinforced_concrete": "Concreto reforzado, Hormigón armado",
             "rock": "Roca",
             "sand": "Arena",
             "sandstone": "Arenisca",
@@ -2326,6 +2375,7 @@
             "blue_plaque": "Placa azul",
             "bust": "Busto",
             "cross": "Cruz conmemorativa",
+            "ghost_bike": "Bicicleta fantasma",
             "obelisk": "Obelisco",
             "plaque": "Placa conmemorativa",
             "sculpture": "Escultura",
@@ -2436,6 +2486,10 @@
           "placeholder": "Nombre común (si existe)",
           "terms": "Nombre, etiqueta, título, rotulo"
         },
+        "nat_name": {
+          "label": "Nombre nacional",
+          "terms": "Nombre nacional"
+        },
         "network": {
           "label": "Red",
           "terms": "red, cadena, mecanismo, sistema"
@@ -2541,6 +2595,10 @@
             "union": "Oficina sindical",
             "water_utility": "Oficina de suministro de agua"
           }
+        },
+        "official_name": {
+          "label": "Nombre oficial",
+          "terms": "nombre formal, nombre completo, nombre legal"
         },
         "oneway": {
           "label": "Sentido único",
@@ -2793,6 +2851,7 @@
             "ice_skate": "Patinaje sobre hielo",
             "nordic": "Nórdico",
             "playground": "Patio de juegos",
+            "ski_jump": "Salto de esquí",
             "skitour": "Esquí turístico",
             "sled": "Trineo",
             "sleigh": "Trineo",
@@ -3032,6 +3091,10 @@
         "ref_taxiway": {
           "label": "Nombre de calle de rodaje",
           "placeholder": "ej. A5"
+        },
+        "reg_name": {
+          "label": "Nombre regional",
+          "terms": "Nombre regional"
         },
         "relation": {
           "label": "Tipo"
@@ -3364,6 +3427,10 @@
         "shop": {
           "label": "Tipo"
         },
+        "short_name": {
+          "label": "Nombre corto",
+          "terms": "abreviatura, acrónimo, iniciales"
+        },
         "shower": {
           "label": "Duchas",
           "terms": "duchas, ducharse, ducha pública, regadera"
@@ -3525,6 +3592,7 @@
             "scuba_diving": "Buceo",
             "shooting": "Tiro deportivo",
             "skateboard": "Skateboard / Monopatinaje",
+            "ski_jumping": "Salto en esquí",
             "skiing": "Esquí",
             "soccer": "Fútbol",
             "softball": "Sóftbol",
@@ -3679,19 +3747,25 @@
           "options": {
             "artificial_turf": "Césped artificial",
             "asphalt": "Asfalto",
+            "clay": "Arcilla",
             "compacted": "Compactado",
             "concrete": "Hormigón",
+            "concrete:lanes": "Carriles de concreto",
+            "concrete:plates": "Placas de concreto",
             "dirt": "Tierra",
             "fine_gravel": "Grava fina",
             "grass": "Césped",
+            "grass_paver": "Adoquín de césped, Pavimento de césped",
             "gravel": "Grava",
             "ground": "Suelo",
             "mud": "Continuamente embarrado",
             "paved": "Pavimentado",
             "paving_stones": "Losas de piedra",
+            "pebblestone": "Piedra de canto rodado, Guijarro",
             "salt": "Sal",
             "sand": "Arena",
             "sett": "Adoquinado",
+            "tartan": "Tartan, Pavimento de caucho",
             "unhewn_cobblestone": "Empedrado (piedras sin cortar, redondeadas)",
             "unpaved": "Sin pavimentar",
             "wood": "Madera",
@@ -4616,9 +4690,33 @@
           "name": "Centro Comunitario",
           "terms": "Centro de la Comunidad, Centro Comunitario"
         },
+        "amenity/community_centre/club_home": {
+          "name": "Sede del club",
+          "terms": "Sede del club, Casa del club, Local del club, club"
+        },
+        "amenity/community_centre/community_hall": {
+          "name": "Salón comunitario",
+          "terms": "Salón comunitario, Salón de la comunidad, Centro comunitario"
+        },
+        "amenity/community_centre/cultural_centre": {
+          "name": "Centro cultural",
+          "terms": "Centro cultural, Instituto cultural, Casa de la cultura"
+        },
+        "amenity/community_centre/family_centre": {
+          "name": "Centro familiar",
+          "terms": "Centro familiar, Casa de la familia, Centro de familia"
+        },
         "amenity/community_centre/lgbtq": {
           "name": "Centro comunitario LGBTQ+",
           "terms": "evento LGBTQ, sala de LGBTQ, salón de eventos LGB, LGB"
+        },
+        "amenity/community_centre/parish_hall": {
+          "name": "Salón parroquial",
+          "terms": "Salón parroquial, Casa parroquial, Salón de la iglesia"
+        },
+        "amenity/community_centre/village_hall": {
+          "name": "Salón del pueblo",
+          "terms": "Salón del pueblo, Casa del pueblo, Salón comunal"
         },
         "amenity/community_centre/youth_centre": {
           "name": "Centro Juvenil",
@@ -4821,6 +4919,10 @@
         "amenity/fast_food/chicken": {
           "name": "Pollo (Comida rápida)",
           "terms": "desayuno, cena, comedor, cena, comer, parrilla, almuerzo, mesa, café, cafe, comida rápida, comida al paso"
+        },
+        "amenity/fast_food/chinese": {
+          "name": "Comida rápida china",
+          "terms": "Comida rápida china, Fast food chino, Restaurante de comida rápida china"
         },
         "amenity/fast_food/donut": {
           "name": "Rosquilla (Comida rápida)",
@@ -5387,6 +5489,10 @@
         "amenity/studio/video": {
           "name": "Estudio de cine",
           "terms": "producción de cine, estudio de cine, producción de video, grabación de video, estudio de video"
+        },
+        "amenity/swingerclub": {
+          "name": "Club de Swingers",
+          "terms": "Club de swingers, Club liberal, Club de intercambio de parejas"
         },
         "amenity/taxi": {
           "name": "Parada de taxi",
@@ -7365,6 +7471,10 @@
           "name": "Quiosco de música",
           "terms": "Templete, Quiosco de música, música, musica"
         },
+        "leisure/bathing_place": {
+          "name": "Lugar para bañarse",
+          "terms": "Lugar para bañarse, Zona de baños, Área de natación"
+        },
         "leisure/beach_resort": {
           "name": "Balneario de playa",
           "terms": "resort, complejo, playa, complejo de playa, balneario"
@@ -7767,6 +7877,10 @@
           "name": "Hipódromo",
           "terms": "hipódromo, hipodromo, carrera de caballos, apuestas de caballos"
         },
+        "leisure/sports_centre/karting": {
+          "name": "Pista de Go-Karts",
+          "terms": "Pista de Go-Karts, Circuito de Go-Karts, Instalación de Go-Karts"
+        },
         "leisure/sports_centre/shooting": {
           "name": "Instalación del campo de tiro",
           "terms": "campo de tiro, polígono de tiro"
@@ -7951,6 +8065,10 @@
           "name": "Quemado en antorcha",
           "terms": "Quemado en antorcha, llama, gas, petróleo, fuego, quemar"
         },
+        "man_made/footwear_decontamination-AU-NZ": {
+          "name": "Estación de descontaminación de calzado",
+          "terms": "limpieza de calzado, limpieza de zapatos, limpieza de botas, estación de contaminación, estación de descontaminación"
+        },
         "man_made/fuel_pump": {
           "name": "Surtidor de combustible",
           "terms": "Bomba de combustible, surtidor de combustible, manguera de combustible, gasolina, nafta, combustible, propano, gas, diesel, gnl, gnc, biodiesel"
@@ -8093,6 +8211,10 @@
         },
         "man_made/silo": {
           "terms": "silo, contenedor, grano, maíz, trigo, granero"
+        },
+        "man_made/ski_jump": {
+          "name": "Torre de salto en esquí",
+          "terms": "Torre de salto en esquí, Torre de esquí, Estructura para salto en esquí"
         },
         "man_made/storage_tank": {
           "name": "Tanque de almacenamiento",
@@ -8741,6 +8863,10 @@
           "name": "Oficina de terapeuta",
           "terms": "terapia, terapeuta, fisioterapia"
         },
+        "office/translator": {
+          "name": "Oficina de traducción",
+          "terms": "Oficina de traducción, Agencia de traducción, Centro de traducción, Servicio de traducción"
+        },
         "office/travel_agent": {
           "name": "Agencia de viajes"
         },
@@ -8790,6 +8916,10 @@
           "name": "Pista / Sendero de deportes de nieve",
           "terms": "esquí, esqui, nórdico, nordico, crosscountry, de fondo, cuesta abajo, alpino, snowboard, skitour, esquí de travesía, trineo, luge, trineo, trineo, esquí de travesía, husky, caballo, senderismo de invierno, raquetas de nieve, raquetas de nieve, hielo, patinaje"
         },
+        "piste/ski_jump": {
+          "name": "Pista de salto en esquí",
+          "terms": "Pista de salto en esquí, Rampa de salto en esquí, Pista de esquí de saltos"
+        },
         "piste/skitour": {
           "name": "Ruta de esquí de travesía",
           "terms": "Esquí, skitour, crosscountry, esquí de montaña, pista, ski"
@@ -8801,6 +8931,10 @@
         "piste/sleigh": {
           "name": "Pista de trineo",
           "terms": "trineo de perros, husky, caballo, pista, esquí de travesía, esqui de travesia, skijoring"
+        },
+        "piste/take_off": {
+          "name": "Despegue de salto en esquí",
+          "terms": "Despegue de salto en esquí, Plataforma de despegue, Rampa de despegue"
         },
         "place": {
           "name": "Lugar"
@@ -9782,6 +9916,10 @@
         "shop/hairdresser": {
           "name": "Peluquería",
           "terms": "peluquería, peluquero, peluquera, barbería, barbero, pelo, corte, salón"
+        },
+        "shop/hairdresser/barber": {
+          "name": "Barbero",
+          "terms": "Barbero, Peluquero, Cortador de cabello"
         },
         "shop/hairdresser_supply": {
           "name": "Tienda de suministros para peluquería",

@@ -224,10 +224,10 @@
       "new_relation": "Bagong relation ...",
       "role": "Kasapi",
       "choose": "Pumili ng uri ng \"features\"",
+      "details": "Mga detalye",
       "remove": "Alisin",
       "search": "Mag-search",
       "feature_list": "Mag-hanap ng \"feature\"",
-      "edit": "I-edit ang \"feature\"",
       "check": {
         "yes": "Oo",
         "no": "Hindi"
@@ -349,9 +349,6 @@
       "keepRight": {
         "detail_description": "Paglalarawan"
       }
-    },
-    "mapillary_map_features": {
-      "title": "Ang mga tumpok ng mapa"
     },
     "help": {
       "title": "Tulong",

@@ -49,7 +49,9 @@
       "openstreetmapcroatia": "OpenStreetMap Хорватия",
       "openstreetmapcuba": "OpenStreetMap Куба",
       "openstreetmapcuneo": "OpenStreetMap Кунео",
+      "openstreetmapcyprus": "OpenStreetMap Кипр",
       "openstreetmapcz": "OpenStreetMap Чехия",
+      "openstreetmapde": "OpenStreetMap Германия",
       "openstreetmapdeepsouth": "OpenStreetMap Глубокий Юг",
       "openstreetmapdelhi": "OpenStreetMap Дели",
       "openstreetmapdenmark": "OpenStreetMap Дания",
@@ -132,20 +134,63 @@
       "openstreetmapmontenegro": "OpenStreetMap Черногория",
       "openstreetmapmontrouge": "OpenStreetMap Монружа",
       "openstreetmapmorocco": "OpenStreetMap Марокко ",
+      "openstreetmapmunchen": "OpenStreetMap Мюнхен",
+      "openstreetmapmyanmar": "OpenStreetMap Мьянма",
       "openstreetmapnepal": "OpenStreetMap Непал",
+      "openstreetmapnetherlands": "OpenStreetMap Нидерланды",
       "openstreetmapnicaragua": "OpenStreetMap Никарагуа",
+      "openstreetmapniger": "OpenStreetMap Нигер",
+      "openstreetmapnigeria": "OpenStreetMap Нигерия",
+      "openstreetmapnorthkorea": "OpenStreetMap Северная Корея",
+      "openstreetmapnorway": "OpenStreetMap Норвегия",
+      "openstreetmapoceania": "OpenStreetMap Океания",
+      "openstreetmapohio": "OpenStreetMap Огайо",
+      "openstreetmapottawa": "OpenStreetMap Оттава",
+      "openstreetmappakistan": "OpenStreetMap Пакистан",
       "openstreetmappanama": "OpenStreetMap Панама",
       "openstreetmapparaguay": "OpenStreetMap Парагвай",
       "openstreetmapperu": "OpenStreetMap Перу",
+      "openstreetmapphilippines": "OpenStreetMap Филиппины",
+      "openstreetmappiemonte": "OpenStreetMap Пьемонт",
       "openstreetmappoland": "OpenStreetMap Польша",
+      "openstreetmapportugal": "OpenStreetMap Португалия",
+      "openstreetmapromania": "OpenStreetMap Румыния",
       "openstreetmaprussia": "Cообщество OpenStreetMap России",
+      "openstreetmaprwanda": "OpenStreetMap Руанда",
+      "openstreetmapsaudiarabia": "OpenStreetMap Саудовская Аравия",
+      "openstreetmapsenegal": "OpenStreetMap Сенегал",
       "openstreetmapserbia": "OpenStreetMap Сербия",
+      "openstreetmapseychelles": "OpenStreetMap Сейшелы",
+      "openstreetmapsierraleone": "OpenStreetMap Сьерра-Леоне",
+      "openstreetmapsingapore": "OpenStreetMap Сингапур",
       "openstreetmapslovenia": "OpenStreetMap Словения",
+      "openstreetmapsomalia": "OpenStreetMap Сомали",
+      "openstreetmapsouthafrica": "OpenStreetMap ЮАР",
+      "openstreetmapsouthsudan": "OpenStreetMap Южный Судан",
+      "openstreetmapsrilanka": "OpenStreetMap Шри-Ланка",
+      "openstreetmapsudan": "OpenStreetMap Судан",
       "openstreetmapsweden": "OpenStreetMap Швеция ",
+      "openstreetmapswitzerland": "OpenStreetMap Швейцария",
+      "openstreetmapsyria": "OpenStreetMap Сирия",
+      "openstreetmaptaiwan": "OpenStreetMap Тайвань",
       "openstreetmaptanzania": "OpenStreetMap Танзания",
+      "openstreetmapthailand": "OpenStreetMap Тайланд",
+      "openstreetmaptoronto": "OpenStreetMap Торонто",
+      "openstreetmaptunisia": "OpenStreetMap Тунис",
       "openstreetmapturkey": "OpenStreetMap Турция",
+      "openstreetmapuganda": "OpenStreetMap Уганда",
       "openstreetmapuk": "OpenStreetMap Англия",
-      "openstreetmapus": "OpenStreetMap США"
+      "openstreetmapukraine": "OpenStreetMap Украина",
+      "openstreetmapuruguay": "OpenStreetMap Уругвай",
+      "openstreetmapus": "OpenStreetMap США",
+      "openstreetmapuzbekistan": "OpenStreetMap Узбекистан",
+      "openstreetmapvenezuela": "OpenStreetMap Венесуэла",
+      "openstreetmapvietnam": "OpenStreetMap Вьетнам",
+      "openstreetmapwarszawa": "OpenStreetMap Варшава",
+      "openstreetmapwesternsahara": "OpenStreetMap Западная Сахара",
+      "openstreetmapzambia": "OpenStreetMap Замбия",
+      "openstreetmapzimbabwe": "OpenStreetMap Зимбабве",
+      "osmmainz": "OpenStreetMap Майнц"
     },
     "_defaults": {
       "discord": {
@@ -163,12 +208,23 @@
         "name": "Форум OpenStreetMap России",
         "description": "Официальный форум сообщества OpenStreetMap России"
       },
+      "github": {
+        "name": "{community} в GitHub"
+      },
+      "gitlab": {
+        "name": "{community} в GitLab"
+      },
+      "instagram": {
+        "name": "{community} в Instagram",
+        "description": "Подписывайтесь на нас в Instagram"
+      },
       "irc": {
         "name": "{community} в IRC",
         "description": "Подключайтесь к  #{account} на irc.oftc.net (порт 6667 или 6697 для SSL)"
       },
       "linkedin": {
-        "name": "{community} на LinkedIn"
+        "name": "{community} на LinkedIn",
+        "description": "Присоединяйтесь к нашему сообществу на LinkedIn"
       },
       "mailinglist": {
         "name": "Список рассылки {account}",
@@ -178,12 +234,22 @@
         "name": "{community} в Mastodon",
         "description": "Официальный аккаунт {community} в Mastodon"
       },
+      "matrix": {
+        "name": "{community} в Matrix Chat",
+        "description": "Присоединяйтесь к нашему Matrix chat"
+      },
       "reddit": {
         "name": "{community} в Reddit"
       },
       "telegram": {
         "name": "{community} в Telegram",
         "description": "Присоединяйтесь к нашему Telegram чату"
+      },
+      "threads": {
+        "description": "Подписывайся на нас в Threads"
+      },
+      "tiktok": {
+        "description": "Подписывайся на нас в TikTok"
       },
       "twitter": {
         "name": "{community} в 𝕏",
@@ -204,6 +270,12 @@
     "Bay-Area-OpenStreetMappers": {
       "description": "Улучшить перевод OpenStreetMap в Bay Area",
       "extendedDescription": "Эта группа занимается развитием сообщества OpenStreetMap здесь, в районе залива. Наши мероприятия открыты для всех: от энтузиастов с открытым исходным кодом до велосипедистов, специалистов по ГИС, геокэшеров и не только. Все, кто интересуется картами, картографированием и бесплатными картографическими данными, могут присоединиться к нашей группе, а также посещать наши мероприятия."
+    },
+    "bd-facebook": {
+      "extendedDescription": "Картографируете в Бангладеше? Есть вопросы, хотите пообщаться с сообществом? Присоединяйтесь к нам по ссылке {Url}. Рады всем!"
+    },
+    "be-chapter": {
+      "description": "Мы помогаем OpenStreetMap расти и развиваться в Бельгии"
     },
     "bo-facebook-group": {
       "name": "Группа {community} в Facebook"
@@ -305,8 +377,7 @@
       "description": "Приглашаются все! Регистрация на {signupUrl}"
     },
     "OSM-Utah": {
-      "name": "OpenStreetMap Юта",
-      "extendedDescription": "Мероприятия могут включать в себя такие вещи, как семинары по составлению карт, картографические вечеринки и сбор данных на открытом воздухе. Мероприятия будут проходить в районе SLC, по крайней мере, на начальном этапе. Мы ищем опытных картографов, а также новичков в OSM. Присоединяйтесь, и давайте составим карту!"
+      "name": "OpenStreetMap Юта"
     },
     "OSM-Wyoming": {
       "name": "OpenStreetMap Вайоминг",

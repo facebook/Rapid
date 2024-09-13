@@ -140,6 +140,9 @@
         "name": "eox.at 2021 无云影像"
       },
       "EOXAT2022CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 无云图像 - https://s2maps.eu 由 EOX IT Services GmbH 提供（包含经修改的 2022 年 Copernicus Sentinel 数据）"
+        },
         "description": "经过后期处理的 Sentinel 卫星图像。",
         "name": "eox.at 2022 无云"
       },
@@ -156,6 +159,13 @@
         },
         "description": "比默认图层或许更为清晰准确的 Esri 归档影像。",
         "name": "Esri 清晰世界影像 (测试版)"
+      },
+      "FOMI_2011_2014": {
+        "attribution": {
+          "text": "莱希纳知识中心"
+        },
+        "description": "基于政府的叶片覆盖正射影像图，全国分辨率为 40 厘米/像素。在缺乏更准确的参考资料时，应将该图层用作对齐基准。WEBP 格式的图像，JOSM 需要一个 WEBP 插件。",
+        "name": "FÖMI 正射影像 2011-2014 (WEBP)"
       },
       "Frankfurt-am-Main-2019": {
         "attribution": {
@@ -456,6 +466,13 @@
         "description": "瑞典环境保护局记录的自然保护区内或周围每日更新的步道信息",
         "name": "环境保护局 - 步道"
       },
+      "ODOT_TIMS_Road_Inventory": {
+        "attribution": {
+          "text": "俄亥俄州交通部"
+        },
+        "description": "俄亥俄州交通部 (ODOT) - 2024 年 6 月发布的交通信息地图系统 (TIMS) 道路清单。",
+        "name": "ODOT 道路清单"
+      },
       "OSIP": {
         "attribution": {
           "text": "俄亥俄州全州影像计划"
@@ -535,23 +552,40 @@
           "text": "© 瑞典国家遗产委员会, CC0"
         },
         "description": "古代和历史遗迹及纪念碑",
-        "name": "瑞典文物管理局 - 考古遗址和纪念碑"
+        "name": "瑞典国家遗产委员会 - 考古遗址和纪念碑"
       },
       "Riksantikvariambetet-heritage": {
         "attribution": {
           "text": "© 瑞典国家遗产委员会, CC0"
         },
-        "description": "文化遗产建筑和教堂"
+        "description": "文化遗产建筑和教堂",
+        "name": "瑞典国家遗产委员会 - 文物建筑"
       },
       "Riksantikvariambetet-protected": {
         "attribution": {
           "text": "© 瑞典国家遗产委员会, CC0"
-        }
+        },
+        "description": "文物建筑和宗教遗址保护区",
+        "name": "瑞典国家遗产委员会 - 文物保护区"
       },
       "Riksantikvariambetet-ruins": {
         "attribution": {
           "text": "© 瑞典国家遗产委员会, CC0"
-        }
+        },
+        "description": "文化历史遗址",
+        "name": "瑞典国家遗产委员会 - 遗址"
+      },
+      "SDFE_Overflade_Skyggekort_40cm": {
+        "attribution": {
+          "text": "丹麦数据供应和基础设施局"
+        },
+        "name": "SDFI 表面阴影地图（40 厘米）"
+      },
+      "SDFE_Terraen_Skyggekort_40cm": {
+        "attribution": {
+          "text": "丹麦数据供应和基础设施局"
+        },
+        "name": "SDFI 地形阴影地图（40 厘米）"
       },
       "SPW_ORTHO_LAST": {
         "name": "SPW(allonie) 最新航空影像"
@@ -561,15 +595,15 @@
       },
       "Siemianowice_Slaskie-aerial_image": {
         "attribution": {
-          "text": "Siemianowice Śląskie 市政府"
+          "text": "希隆斯克地区谢米亚诺维采市政府"
         },
-        "name": "Siemianowice Śląskie: Orthophotomap (航空影像)"
+        "name": "希隆斯克地区谢米亚诺维采市: Orthophotomap (航空影像)"
       },
       "Siemianowice_Slaskie-buildings": {
         "attribution": {
-          "text": "Siemianowice Śląskie 市政府"
+          "text": "希隆斯克地区谢米亚诺维采市政府"
         },
-        "name": "Siemianowice Śląskie：建筑"
+        "name": "希隆斯克地区谢米亚诺维采：建筑"
       },
       "US-TIGER-Roads-2018": {
         "description": "黄色 = 来自美国人口调查局的公共领域地图数据。红色 = 在 OpenStreetMap 中找不到数据。",
@@ -587,10 +621,19 @@
         "description": "黄色 = 来自美国人口调查局的公共领域地图数据。红色 = 在 OpenStreetMap 中找不到数据。",
         "name": "TIGER 道路 2021"
       },
+      "US-TIGER-Roads-2022": {
+        "description": "黄色 = 来自美国人口调查局的公共领域地图数据。红色 = 在 OpenStreetMap 中找不到数据。",
+        "name": "TIGER 道路 2022"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "黄色 = 来自美国人口调查局的公共领域地图数据。红色 = 在 OpenStreetMap 中找不到数据。",
+        "name": "TIGER 道路 2023"
+      },
       "USDA-NAIP": {
         "attribution": {
-          "text": "美利坚合众国农业部"
+          "text": "美国农业部"
         },
+        "description": "最近一年国家农业影像计划（NAIP）对美国本土各州的 30/60 厘米 4 波段数字正射影像（DOQQ）。",
         "name": "国家农业影像计划"
       },
       "US_Forest_Service_roads_overlay": {
@@ -709,6 +752,13 @@
         },
         "description": "来自巴拉顿湖沼学研究所的1940年地理标记照片",
         "name": "欧洲空载研究舰队（EUFAR）巴拉顿正射影像"
+      },
+      "geoscribble-latest": {
+        "attribution": {
+          "text": "GeoScribble 贡献者"
+        },
+        "description": "Every Door 编辑的几何调查笔记，最近三周",
+        "name": "GeoScribble 最新笔记"
       },
       "gothenburg-citymap": {
         "attribution": {
@@ -859,6 +909,24 @@
         },
         "name": "lubaczowski 县：建筑"
       },
+      "maaamet<TX_DOT>ee-cir_ngr": {
+        "attribution": {
+          "text": "爱沙尼亚国土部门提供的森林正射影像图"
+        },
+        "name": "爱沙尼亚国土林业部门"
+      },
+      "maaamet<TX_DOT>ee-orto": {
+        "attribution": {
+          "text": "爱沙尼亚国土部门正射影像地图"
+        },
+        "name": "爱沙尼亚国土部门正射影像地图（TMS）"
+      },
+      "maaamet<TX_DOT>ee-pohi_vr2": {
+        "attribution": {
+          "text": "爱沙尼亚国土部门总地图"
+        },
+        "name": "爱沙尼亚国土部门基本地图"
+      },
       "mapbox_locator_overlay": {
         "attribution": {
           "text": "条款与反馈"
@@ -906,12 +974,16 @@
       "osmse-ekonomiska": {
         "attribution": {
           "text": "© 瑞典国家测绘局, CC0"
-        }
+        },
+        "description": "“经济地图”扫描版本，约1950-1978年",
+        "name": "瑞典国家测绘局经济地图（1950-1978）"
       },
       "osmse-generalstab": {
         "attribution": {
           "text": "© 瑞典国家测绘局, CC0"
-        }
+        },
+        "description": "瑞典总参谋部地图扫描件，约 1859-1979 年",
+        "name": "瑞典总参谋部全国土地调查地图，约 1859-1979 年"
       },
       "poznan-ortofotomapa2014": {
         "attribution": {
@@ -952,7 +1024,9 @@
       "route500": {
         "attribution": {
           "text": "瓦片 © cquest@Openstreetmap France，数据 © IGN, LO/OL"
-        }
+        },
+        "description": "分级网络路线（高速公路、国道、省道）",
+        "name": "路线 500"
       },
       "rzeszowski-aerial": {
         "attribution": {
@@ -969,27 +1043,42 @@
       "scb-industrial": {
         "attribution": {
           "text": "© 瑞典统计局, CC0"
-        }
+        },
+        "description": "以大规模工业用地为特征的地理限定区域",
+        "name": "瑞典统计局 - 工业区"
       },
       "scb-settlements": {
         "attribution": {
           "text": "© 瑞典统计局, CC0"
-        }
+        },
+        "description": "居民人数在 50-199 人之间、房屋间距不超过 150 米的连续建筑区",
+        "name": "瑞典统计局 - 小型聚落"
       },
       "scb-urban": {
         "attribution": {
           "text": "© 瑞典统计局, CC0"
-        }
+        },
+        "description": "至少有 200 人居住的人类聚落，户与户之间的距离小于 500 米",
+        "name": "瑞典统计局 - 城镇区域"
       },
       "scb-vacation": {
         "attribution": {
           "text": "© 瑞典统计局, CC0"
-        }
+        },
+        "description": "主要由度假屋组成的毗连区；至少 50 个度假屋的集合，它们之间的距离不超过 150 米",
+        "name": "瑞典统计局 - 度假屋区"
       },
       "skobbler": {
         "attribution": {
           "text": "© 瓦片：skobbler 地图数据：OpenStreetMap贡献者"
         }
+      },
+      "skolverket-schools": {
+        "attribution": {
+          "text": "© 瑞典教育局"
+        },
+        "description": "瑞典学校。",
+        "name": "瑞典教育局 - 学校"
       },
       "skoterleder": {
         "description": "机动雪橇车径",
@@ -1026,6 +1115,13 @@
         },
         "description": "裾野市作为开放数据发布的航空影像。",
         "name": "裾野市正射影像"
+      },
+      "svk-electricity-network": {
+        "attribution": {
+          "text": "© 瑞典电网"
+        },
+        "description": "瑞典电力传输网络。",
+        "name": "瑞典电网 - 电力网络"
       },
       "tf-cycle": {
         "attribution": {

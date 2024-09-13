@@ -92,6 +92,9 @@
     },
     "map_data": {
       "layers": {
+        "osm": {
+          "key": "अो"
+        },
         "rapid": {
           "key": "र"
         }
@@ -119,12 +122,6 @@
       }
     },
     "QA": {
-      "improveOSM": {
-        "geometry_types": {
-          "road": "सड़कें",
-          "both": "सड़क पार्किंग"
-        }
-      },
       "keepRight": {
         "error_parts": {
           "school": "स्कूल"

@@ -28,8 +28,7 @@
         "title": "خاڵ"
       },
       "add_note": {
-        "title": "تێبینی",
-        "label": "نووسینی تێبینی"
+        "title": "تێبینی"
       },
       "browse": {
         "title": "گەڕان"
@@ -98,15 +97,13 @@
       "background": {
         "title": "پاشبنەما",
         "source": "سەرچاوە",
-        "description": "ناساندن",
-        "unknown": "نەناسراو"
+        "description": "ناساندن"
       },
       "history": {
         "title": "مێژوو",
         "version": "وەشان",
         "last_edit": "دوا دەستکاری",
         "edited_by": "دەستکرای کراوە لەلایەن",
-        "unknown": "نەناسراو",
         "note_comments": "سەرنجەکان",
         "note_created_date": "ڕێکەوتی درووستکردن",
         "note_created_user": "درووستکراوە لەلایەن",
@@ -142,6 +139,8 @@
     "inspector": {
       "view_on_osm": "لە openstreetmap.org ببینە",
       "view_on_osmose": "لە osmose.openstreetmap.fr ببینە",
+      "type": "جۆر",
+      "details": "وردەکارییەکان",
       "remove": "لابردن",
       "search": "گەڕان",
       "unknown": "نەناسراو",
@@ -152,7 +151,6 @@
       },
       "radio": {
         "structure": {
-          "type": "جۆر",
           "default": "بنەڕەتی"
         }
       },
@@ -179,7 +177,8 @@
         },
         "notes": {
           "tooltip": "دراوەی تێبینییەکانی نەخشەی شەقامی کراوە",
-          "title": "تێبینییەکانی نەخشەی شەقامی کراوە"
+          "title": "تێبینییەکانی نەخشەی شەقامی کراوە",
+          "key": "باکوور"
         },
         "maproulette": {
           "detail_title": "وردەکارییەکان",
@@ -268,21 +267,6 @@
       "osmose": {
         "detail_title": "وردەکارییەکان"
       },
-      "improveOSM": {
-        "geometry_types": {
-          "road": "ڕێگاکان"
-        },
-        "directions": {
-          "east": "ڕۆژهەڵات",
-          "north": "باکوور",
-          "northeast": "باکووری ڕۆژهەڵات",
-          "northwest": "باکووری ڕۆژاوا",
-          "south": "باشوور",
-          "southeast": "باشووری ڕۆژهەڵات",
-          "southwest": "باشووری ڕۆژاوا",
-          "west": "ڕۆژاوا"
-        }
-      },
       "keepRight": {
         "detail_description": "پێناسە",
         "comment": "سەرنج",
@@ -320,13 +304,8 @@
         }
       }
     },
-    "streetside": {
+    "photos": {
       "hires": "جۆریەتی بەرز"
-    },
-    "mapillary_map_features": {
-      "object": {
-        "street_light": "چرای سەرشەقام"
-      }
     },
     "note": {
       "note": "تێبینی",

@@ -134,11 +134,7 @@
     "info_panels": {
       "background": {
         "title": "පසුබිම",
-        "description": "විස්තරය",
-        "unknown": "නොදනී"
-      },
-      "history": {
-        "unknown": "නොදනී"
+        "description": "විස්තරය"
       },
       "location": {
         "title": "ස්ථානය"
@@ -166,7 +162,6 @@
       "unknown": "නොදනී",
       "incomplete": "<බාගත වේ නොමැත>",
       "feature_list": "ලක්ෂණ සොයන්න",
-      "edit": "ලක්ෂණ සංස්කරණය කරන්න",
       "check": {
         "yes": "ඔව්",
         "no": "නැත"
@@ -287,9 +282,6 @@
       "keepRight": {
         "detail_description": "විස්තරය"
       }
-    },
-    "mapillary_map_features": {
-      "title": "සිතියම් ලක්ෂණයන්"
     },
     "help": {
       "title": "සහය",

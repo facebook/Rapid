@@ -3,6 +3,7 @@
     "_communities": {
       "freelibreopensourcesoftwarekosovaflossk": "Phần mềm Tự do Nguồn mở Kosovo (FLOSSK)",
       "kiribatiwomeninmapping": "Người nữ Kiribati Lập Bản đồ",
+      "opensourcesanjose": "Mã nguồn mở San José",
       "openstreetmapafrica": "OpenStreetMap châu Phi",
       "openstreetmapalba": "OpenStreetMap Scotland",
       "openstreetmapasia": "OpenStreetMap châu Á",
@@ -303,8 +304,7 @@
       "description": "Trang Wiki {community}"
     },
     "de-berlin-xmpp": {
-      "name": "Kênh XMPP OpenStreetMap Berlin-Brandenburg",
-      "description": "Tham gia phòng trò chuyện nhiều người dùng XMPP của chúng ta: {url}"
+      "name": "Kênh XMPP OpenStreetMap Berlin-Brandenburg"
     },
     "de-bochum-wiki": {
       "description": "Trang Wiki {community}"
@@ -328,8 +328,7 @@
       "description": "Trang Wiki {community}"
     },
     "de-hamburg-xmpp": {
-      "name": "XMPP OpenStreetMap Hamburg",
-      "description": "Tham gia phòng trò chuyện nhiều người dùng XMPP của chúng ta: {url}"
+      "name": "XMPP OpenStreetMap Hamburg"
     },
     "de-karlsruhe-mailinglist": {
       "name": "Danh sách thư Karlsruhe"
@@ -374,8 +373,7 @@
       "name": "Họp mặt OpenStreetMap Viersen"
     },
     "de-xmpp": {
-      "name": "XMPP OpenStreetMap Đức",
-      "description": "Tham gia phòng trò chuyện nhiều người dùng XMPP của chúng ta: {url}"
+      "name": "XMPP OpenStreetMap Đức"
     },
     "DF-telegram": {
       "extendedDescription": "Mời mọi người tham gia cộng đồng để tìm hiểu thêm về OpenStreetMap, hỏi đáp, và tham dự các cuộc họp mặt của chúng ta."
@@ -485,6 +483,9 @@
     },
     "ko-github": {
       "description": "GitHub {community}"
+    },
+    "ko-osm": {
+      "description": "Chúng tôi giúp mở rộng và cải thiện OpenStreetMap tại Hàn Quốc."
     },
     "kosovo-flossk": {
       "name": "Phần mềm Tự do Nguồn mở Kosovo (FLOSSK)",
@@ -598,6 +599,10 @@
     "Open-Source-San-Jose-Discord": {
       "name": "Discord Mã nguồn mở San José"
     },
+    "Open-Source-San-Jose-Mastodon": {
+      "description": "Theo dõi Mã nguồn mở San José tại Mastodon.",
+      "extendedDescription": "Mã nguồn mở San José (OSSJ) là một tổ chức phi lợi nhuận địa phương phối hợp các lập trình viên và nhà thiết kế với các nhu cầu của cộng đồng theo kỹ thuật công cộng. OSSJ ủng hộ các Buổi đêm Bản đồ Miền Nam Vùng Vịnh hai tuần một lần của cộng đồng tình nguyện lập bản đồ địa phương."
+    },
     "Open-Source-San-Jose-Slack": {
       "name": "Slack Mã nguồn mở San José"
     },
@@ -672,9 +677,6 @@
     "OSM-Facebook": {
       "description": "Thích chúng tôi tại Facebook để nhận tin tức và cập nhật về OpenStreetMap."
     },
-    "osm-fj": {
-      "description": "Cung cấp dịch vụ và thông tin về OpenStreetMap cho cộng đồng địa phương tại Fiji"
-    },
     "osm-gh-facebook": {
       "extendedDescription": "Những người lập bản đồ trong cộng đồng tại Ghana, ủng hộ OpenStreetMap và các dự án Nhóm Nhân đạo OpenStreetMap (HOT) tại Ghana. Mời bạn tham gia!"
     },
@@ -725,9 +727,6 @@
     },
     "OSM-japan-facebook": {
       "description": "Những người lập bản đồ và người dùng OpenStreetMap ở Nhật Bản"
-    },
-    "OSM-japan-slack": {
-      "description": "Không gian làm việc Slack dành cho cộng đồng OSM Nhật Bản: {signupUrl}"
     },
     "OSM-japan-website": {
       "description": "Những người lập bản đồ và người dùng OpenStreetMap ở Nhật Bản"
@@ -793,10 +792,6 @@
       "description": "Hãy vui vẻ đóng góp vào Los Angeles và tìm hiểu cách xây dựng bản đồ!",
       "extendedDescription": "OpenStreetMap Nam Ca Li liên hiệp những người nào quan tâm về bản đồ để ủng hộ OpenStreetMap. OSM là Wikipedia của bản đồ, tức bản đồ thế giới mở do hơn một triệu người tình nguyện xây dựng ở khắp thế giới. Mời mọi người tham gia. Nếu bạn chưa biết đến OpenStreetMap, chúng tôi sẽ giới thiệu cho bạn. Nếu bạn có ý niệm bắt đầu dự án bản đồ hoặc dẫn nhóm đi nơi nào, tuyệt vời!"
     },
-    "OSM-South-Bay": {
-      "name": "OSM Miền Nam Vùng Vịnh",
-      "extendedDescription": "Gặp mặt những người cùng lập bản đồ tại miền Nam Vùng Vịnh và đóng góp vào các dự án lập bản đồ địa phương trong cuộc họp trực tuyến của chúng ta, vào ban chiều thứ ba hai tuần một lần, nhờ sự hỗ trợ của Mã nguồn mở San José. Không cần quen thuộc về lập trình hoặc GIS."
-    },
     "OSM-Tampa-Bay": {
       "name": "OpenStreetMap Vịnh Tampa",
       "description": "Những người lập bản đồ và người dùng OpenStreetMap ở vùng vịnh Tampa",
@@ -825,10 +820,6 @@
     },
     "OSM-US-Slack": {
       "description": "Mời bạn tham gia tại {signupUrl}"
-    },
-    "OSM-Utah": {
-      "description": "Những người lập bản đồ và người dùng OpenStreetMap ở vùng Thành phố Salt Lake",
-      "extendedDescription": "Các hoạt động có thể bao gồm những thứ như hội thảo Tập vẽ bản đồ, tiệc lập bản đồ, và buổi thu thập dữ liệu ngoài trời. Các sự kiện ban đầu sẽ diễn ra trong khu vực Thành phố Salt Lake. Chúng tôi đang tìm kiếm những người lập bản đồ có kinh nghiệm cũng như những người mới biết đến OSM. Tham gia và hãy cùng lập bản đồ!"
     },
     "OSM-Wyoming": {
       "description": "Những người lập bản đồ và người dùng OpenStreetMap ở tiểu bang Wyoming, Hoa Kỳ",

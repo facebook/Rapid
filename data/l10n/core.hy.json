@@ -13,8 +13,7 @@
         "filter_tooltip": "Կետեր"
       },
       "add_note": {
-        "title": "Նշում",
-        "label": "Ավելացնել նշում"
+        "title": "Նշում"
       },
       "browse": {
         "title": "Զննել։",
@@ -155,11 +154,7 @@
     "info_panels": {
       "background": {
         "title": "Ետնանկար",
-        "description": "Նկարագրութիւն",
-        "unknown": "Անյայտ"
-      },
-      "history": {
-        "unknown": "Անյայտ"
+        "description": "Նկարագրութիւն"
       },
       "location": {
         "title": "Տեղադրութիւն"
@@ -194,7 +189,6 @@
       "search": "Փնտրել",
       "unknown": "Անյայտ",
       "feature_list": "Փնտրման յատկութիւնները",
-      "edit": "Խմբագրել յատկութիւնը",
       "check": {
         "yes": "Այո",
         "no": "Ոչ"
@@ -220,11 +214,14 @@
       "description": "Քարտէզի Տուեալներ",
       "data_layers": "Տուեալների Շերտեր",
       "layers": {
-        "maproulette": {
-          "cancel": "Չեղարկել"
+        "osm": {
+          "key": "Օ"
         },
         "rapid": {
           "key": "Ռ"
+        },
+        "maproulette": {
+          "cancel": "Չեղարկել"
         }
       },
       "map_features": "Քարտէզի Յատկութիւնները",
@@ -343,12 +340,6 @@
       "keepRight": {
         "detail_description": "Նկարագրութիւն"
       }
-    },
-    "mapillary_map_features": {
-      "title": "Քարտէզի Յատկութիւնները"
-    },
-    "mapillary": {
-      "view_on_mapillary": "Դիտել այս նկարը Mapillary ֊ում"
     },
     "note": {
       "note": "Նշում"

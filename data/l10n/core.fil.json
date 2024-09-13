@@ -42,7 +42,6 @@
       },
       "add_note": {
         "title": "Tala",
-        "label": "Magdagdag ng Tala",
         "description": "May nakita kang isyu? Ipaalam sa iba pang mappers."
       },
       "add_preset": {
@@ -344,6 +343,13 @@
     "inspector": {
       "remove": "Tanggalin",
       "search": "Hanapin"
+    },
+    "map_data": {
+      "layers": {
+        "notes": {
+          "key": "H"
+        }
+      }
     },
     "area_fill": {
       "wireframe": {

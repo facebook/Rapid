@@ -43,7 +43,6 @@
       },
       "add_note": {
         "title": "הערה",
-        "label": "הוספת הערה",
         "description": "הבחנת בתקלה? כדאי לדווח לשאר הממפים."
       },
       "add_preset": {
@@ -734,9 +733,6 @@
     "loading_auth": "מתבצעת התחברות ל־OpenStreetMap…",
     "report_a_bug": "דיווח על תקלה",
     "help_translate": "עזרה בתרגום",
-    "sidebar": {
-      "tooltip": "פתיחה/סגירה של חלונית צד."
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "תכונה אחת נסתרת",
@@ -797,7 +793,6 @@
         "description": "תיאור",
         "resolution": "רזולוציה",
         "accuracy": "דיוק",
-        "unknown": "לא ידוע",
         "show_tiles": "הצגת אריחים",
         "hide_tiles": "הסתרת אריחים"
       },
@@ -808,7 +803,6 @@
         "last_edit": "עריכה אחרונה",
         "edited_by": "נערך על ידי",
         "changeset": "ערכת שינויים",
-        "unknown": "לא ידוע",
         "note_no_history": "אין היסטוריה (הערה חדשה)",
         "note_comments": "תגובות",
         "note_created_date": "מועד יצירה",
@@ -893,13 +887,13 @@
         "zoom": "{features} מוסתרות. יש להתקרב כדי להפעיל אותן."
       },
       "back_tooltip": "שינוי סוג תכונה",
+      "type": "סוג",
+      "details": "פרטים",
       "remove": "הסרה",
       "search": "חיפוש",
       "unknown": "לא ידוע",
       "incomplete": "<לא התקבל>",
       "feature_list": "חיפוש תכונות",
-      "edit": "עריכת תכונה",
-      "edit_features": "עריכת תכונות",
       "check": {
         "yes": "כן",
         "no": "לא",
@@ -907,7 +901,6 @@
       },
       "radio": {
         "structure": {
-          "type": "סוג",
           "default": "בררת מחדל",
           "layer": "שכבה"
         }
@@ -977,7 +970,8 @@
         },
         "notes": {
           "tooltip": "נתוני הערה מ־OpenStreetMap",
-          "title": "הערות של OpenStreetMap"
+          "title": "הערות של OpenStreetMap",
+          "key": "צפ׳"
         },
         "maproulette": {
           "detail_title": "פרטים",
@@ -986,10 +980,6 @@
         "keepRight": {
           "tooltip": "תקלות נתונים שהתגלו על ידי keepright.at",
           "title": "תקלות KeepRight"
-        },
-        "improveOSM": {
-          "tooltip": "זוהו נתונים חסרים על ידי improveosm.org",
-          "title": "תקלות ב־ImproveOSM"
         },
         "osmose": {
           "tooltip": "התגלו תקלות נתונים על ידי osmose.openstreetmap.fr",
@@ -1022,9 +1012,6 @@
     },
     "photo_overlays": {
       "title": "שכבות של תמונות",
-      "traffic_signs": {
-        "title": "תמרורים"
-      },
       "photo_type": {
         "flat": {
           "title": "תמונות שטוחות",
@@ -1289,40 +1276,6 @@
         "elems_title": "תכונות",
         "fix_title": "הנחיות לתיקון",
         "trap_title": "טעויות נפוצות"
-      },
-      "improveOSM": {
-        "title": "איתור עם ImproveOSM",
-        "geometry_types": {
-          "path": "נתיבים",
-          "parking": "חנייה",
-          "road": "דרכים",
-          "both": "דרכים וחנייה"
-        },
-        "directions": {
-          "east": "מזרח",
-          "north": "צפון",
-          "northeast": "צפון מזרח",
-          "northwest": "צפון מערב",
-          "south": "דרום",
-          "southeast": "דרום מזרח",
-          "southwest": "דרום מערב",
-          "west": "מערב"
-        },
-        "error_types": {
-          "ow": {
-            "title": "חד־סטרי חסר",
-            "description": "לאורך מקטע של {highway},‏ {percentage}% מתוך {num_trips} המסלולים שהוקלטו עוברים מ־{from_node} אל {to_node}. יכול להיות שחסרה תגית „חד־סטרי”."
-          },
-          "mr": {
-            "title": "צורה חסרה",
-            "description": "{num_trips} טיולים שהוקלטו בשטח הזה מרמזים שיתכן שיש כאן {geometry_type} שלא מופה.",
-            "description_alt": "נתונים מגוף צד־שלישי מרמזים שייתכן שיש כאן {geometry_type} שלא מופה."
-          },
-          "tr": {
-            "title": "הגבלת פנייה חסרה",
-            "description": "{num_passed} מתוך {num_trips} מסלולים שתועדו (לכיוון {travel_direction}) פונים מ־{from_way} אל {to_way} ב־{junction}. There יכול להיות שחסרה הגבלת „{turn_restriction}”."
-          }
-        }
       },
       "keepRight": {
         "detail_description": "תיאור",
@@ -1638,101 +1591,20 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "תמונות של Streetside מבית Microsoft",
-      "report": "דיווח על בעיית פרטיות עם תמונה זו",
-      "view_on_bing": "הצגה במפות Bing",
+    "photos": {
       "hires": "רזולוציה גבוהה"
     },
-    "mapillary_images": {
-      "tooltip": "תמונות בהתמקדות על רחובות מ־Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "תכונות המפה",
-      "tooltip": "תכונות מפה מ־Mapillary",
-      "construction": {
-        "barrier": {
-          "temporary": "מחסום זמני"
-        },
-        "flat": {
-          "crosswalk_plain": "מעבר חציה פשוט",
-          "driveway": "כביש גישה"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "סימון נתיב - חץ (שמאל)",
-            "right": "סימון נתיב - חץ (ימין)",
-            "split_left_or_straight": "סימון נתיב - חץ (פיצול שמאלה או ישר)",
-            "split_right_or_straight": "סימון נתיב - חץ (פיצול ימינה או ישר)",
-            "straight": "סימון נתיב - חץ (ישר)"
-          },
-          "crosswalk_zebra": "סימון נתיב - חץ (מעבר חציה)",
-          "give_way_row": "סימון נתיב - זכות קדימה (שורת נתיבים)",
-          "give_way_single": "סימון נתיב - זכות קדימה (נתיב יחיד)",
-          "other_marking": "סימון נתיב - אחר",
-          "stop_line": "סימון נתיב - קו עצירה",
-          "symbol": {
-            "bicycle": "סימון נתיב - סמל (אופניים)"
-          },
-          "text": "סימון נתיב - כיתוב"
-        }
-      },
-      "object": {
-        "banner": "כרזה",
-        "bench": "ספסל",
-        "bike_rack": "מתקן לאופניים",
-        "billboard": "שלט חוצות",
-        "catch_basin": "בור ניקוז",
-        "cctv_camera": "מצלמה במעגל סגור",
-        "fire_hydrant": "ברז כיבוי אש",
-        "junction_box": "תיבת צומת",
-        "mailbox": "תיבת דואר",
-        "manhole": "פתח תחזוקה",
-        "parking_meter": "מד חנייה",
-        "phone_booth": "תא טלפון",
-        "sign": {
-          "advertisement": "פרסומת",
-          "information": "שלט מידע",
-          "other": "שלט אחר",
-          "store": "שלט של חנות",
-          "traffic_sign": {
-            "back": "תמרור - גב",
-            "direction_front": "תמרור - חזית",
-            "front": "תמרור - חזית"
-          }
-        },
-        "street_light": "תאורת רחוב",
-        "support": {
-          "pole": "עמוד",
-          "traffic_sign_frame": "מסגרת תמרור",
-          "utility_pole": "עמוד תשתיות"
-        },
-        "traffic_cone": "קונוס",
-        "traffic_light": {
-          "cyclists": "רמזור לרוכבי אופניים",
-          "general_horizontal": "רמזור אופקי",
-          "general_single": "רמזור בודד",
-          "general_upright": "רמזור אנכי",
-          "other": "רמזור",
-          "pedestrians": "רמזור להולכי רגל"
-        },
-        "trash_can": "פח אשפה",
-        "water_valve": "שסתום מים"
-      }
+    "streetside": {
+      "tooltip": "תמונות של Streetside מבית Microsoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "תמרורים מ־Mapillary"
-      },
-      "view_on_mapillary": "צפייה בתמונה הזאת ב־Mapillary"
+      "tooltip": "תמונות בהתמקדות על רחובות מ־Mapillary"
     },
-    "kartaview_images": {
-      "tooltip": "תמונות בהתמקדות על רחובות מ־KartaView"
+    "mapillary_signs": {
+      "title": "תמרורים"
     },
     "kartaview": {
-      "view_on_kartaview": "הצגת התמונה הזאת ב־KartaView"
+      "tooltip": "תמונות בהתמקדות על רחובות מ־KartaView"
     },
     "note": {
       "note": "הערה",
@@ -1869,7 +1741,6 @@
       },
       "notes": {
         "title": "הערות",
-        "intro": "*הערות* משמשות להודיע למשתמשים אחרים שתכונה מסוימת דורשת תיקון או תשומת לב. הערות מסמנות מיקום מסוים במפה. כדי לצפות בהערות קיימות או להוסיף חדשות, יש לפתוח את לוח {data_icon} **{map_data}** ולהפעיל את השכבה {osm_notes}.",
         "add_note_h": "הוספת הערות",
         "add_note": "כדי להוסיף הערה חדשה, יש ללחוץ על הכפתור {note_icon} **{note}** בסרגל הכלים שמעל למפה או ללחוץ על מקש הקיצור `{add_note_key}`.",
         "update_note_h": "סגירה, פתיחה מחדש והוספת תגובות",
@@ -1905,9 +1776,7 @@
         "title": "אבטחת איכות",
         "intro": "כלי *אבטחת איכות* (Q/A) יכולים למצוא תגיות בלתי ראויות, כבישים מנותקים ותקלות נוספות ב־OpenStreetMap, שממפים יכולים לתקן. כדי לצפות בתקלות Q/A קיימות, יש לפתוח את החלונית {data_icon} **{map_data}** כדי להפעיל שכבת Q/A מסוימת.",
         "tools_h": "כלים",
-        "tools": "קיימת תמיכה בכלים הבאים: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) ו־[Osmose](https://osmose.openstreetmap.fr/).",
-        "issues_h": "טיפול בתקלות",
-        "issues": "טיפול בתקלות Q/A דומה לטיפול בהערות. יש לבחור בסמן כדי לצפות בפרטי התקלה בחלונית הצד. לכל כלי יש יכולות משלו אך באופן כללי יש לך אפשרות להגיב על ו/או לסגור תקלה."
+        "issues_h": "טיפול בתקלות"
       },
       "field": {
         "restrictions": {
@@ -2601,7 +2470,6 @@
           "map_data": "החלפת הופעת חלונית נתוני מפה",
           "issues": "החלפת הופעת חלונית אימות תקלות",
           "preferences": "החלפת מצב תצוגת חלונית העדפות משתמש",
-          "sidebar": "פתיחה/סגירה של חלונית צד",
           "wireframe": "החלפת מצב גבול דקיק",
           "osm_data": "הפעלה/כיבוי נתונים מ־OpenStreetMap",
           "highlight_edits": "הדגשת שינויים שטרם נשמרו"

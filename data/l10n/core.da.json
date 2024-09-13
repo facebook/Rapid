@@ -40,7 +40,6 @@
       },
       "add_note": {
         "title": "Bemærkning",
-        "label": "Tilføj bemærkning",
         "description": "Fundet en fejl? Læg en bemærkning til andre kortlæggere."
       },
       "add_preset": {
@@ -709,9 +708,6 @@
     "loading_auth": "Forbinder til OpenStreetMap...",
     "report_a_bug": "Rapporter en fejl",
     "help_translate": "Hjælp med at oversætte",
-    "sidebar": {
-      "tooltip": "Åbn/Luk sidebjælken."
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} skjult objekt",
@@ -766,7 +762,6 @@
         "description": "Beskrivelse",
         "resolution": "Opløsning",
         "accuracy": "Nøjagtighed",
-        "unknown": "Ukendt",
         "show_tiles": "Vis Kort-fliser",
         "hide_tiles": "Skjul Kort-fliser"
       },
@@ -776,7 +771,6 @@
         "last_edit": "Sidst ændret",
         "edited_by": "Ændret af",
         "changeset": "Ændringssæt",
-        "unknown": "Ukendt",
         "note_no_history": "Ingen historik (ny bemærkning)",
         "note_comments": "Kommentarer",
         "note_created_date": "Oprettelsesdato",
@@ -854,13 +848,12 @@
         "zoom": "{features} er skjulte. Zoom ind for at se dem."
       },
       "back_tooltip": "Ændr objektets type",
+      "details": "Detaljer",
       "remove": "Fjern",
       "search": "Søg",
       "unknown": "Ukendt",
       "incomplete": "<ikke downloadet>",
       "feature_list": "Find objekter",
-      "edit": "Rediger objekt",
-      "edit_features": "Rediger kortobjekter",
       "check": {
         "yes": "Ja",
         "no": "Nej",
@@ -945,10 +938,6 @@
           "tooltip": "Automatiskt detekterede kortproblemer fra keepright.at",
           "title": "KeepRight-problemer"
         },
-        "improveOSM": {
-          "tooltip": "improveosm.org har fundet ud af at der mangler data her",
-          "title": "ImproveOSM-problemer"
-        },
         "osmose": {
           "tooltip": "Automatiskt detekterede kortproblemer fra osmose.openstreetmap.fr",
           "title": "Osmose problemer"
@@ -980,9 +969,6 @@
     },
     "photo_overlays": {
       "title": "Fotooverlægninger",
-      "traffic_signs": {
-        "title": "Trafikskilte"
-      },
       "photo_type": {
         "flat": {
           "title": "Flade fotoer",
@@ -1237,40 +1223,6 @@
         "elems_title": "Kortobjekter",
         "fix_title": "Ret retningslinjer",
         "trap_title": "Almindelige fejltagelser"
-      },
-      "improveOSM": {
-        "title": "ImproveOSM-detektering",
-        "geometry_types": {
-          "path": "stier",
-          "parking": "parkering",
-          "road": "veje",
-          "both": "veje og parkering"
-        },
-        "directions": {
-          "east": "øst",
-          "north": "nord",
-          "northeast": "nordøst",
-          "northwest": "nordvest",
-          "south": "syd",
-          "southeast": "sydøst",
-          "southwest": "sydvest",
-          "west": "vest"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Manglende ensretning",
-            "description": "På denne {highway} blev {percentage}% af {num_trips} registrerede ture foretaget i retningen fra {from_node} to {to_node}. Den kan mangle en markering som \"ensrettet\"."
-          },
-          "mr": {
-            "title": "Manglende geometri",
-            "description": "{num_trips} registrerede ture i dette område indikerer at der kan mangle en {geometry_type} her.",
-            "description_alt": "Data fra en tredjepart indikerer at der kan mangle en {geometry_type} her."
-          },
-          "tr": {
-            "title": "Manglende svingbegrænsning",
-            "description": "{num_passed} ud af {num_trips} optagne ture (i retning {travel_direction}) drejer fra {from_way} ind på {to_way} ved {junction}. Der mangler muligvis en \"{turn_restriction}\"-begrænsning."
-          }
-        }
       },
       "keepRight": {
         "detail_description": "Beskrivelse",
@@ -1582,99 +1534,20 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Gadefotoer fra Microsoft",
-      "report": "Rapporter en privatlivsbekymring angående dette billede",
-      "view_on_bing": "Vis på Bing Maps",
+    "photos": {
       "hires": "Høj opløsning"
     },
-    "mapillary_images": {
-      "tooltip": "Gadefotoer fra Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Kortobjekter",
-      "tooltip": "Kortobjekter fra Mapillary",
-      "construction": {
-        "barrier": {
-          "temporary": "midlertidig spærring"
-        },
-        "flat": {
-          "crosswalk_plain": "simpelt fodgængerfelt",
-          "driveway": "indkørsel"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "banemarkering - pil (venstresving)",
-            "right": "banemarkering - pil (højresving)",
-            "split_left_or_straight": "banemarkering - pil (venstresving eller ligeud)",
-            "split_right_or_straight": "banemarkering - pil (højresving eller ligeud)",
-            "straight": "banemarkering - pil (ligeud)"
-          },
-          "crosswalk_zebra": "banemarkering - fodgængerovergang",
-          "give_way_row": "banemarkering - ubetinget vigepligt (række)",
-          "give_way_single": "banemarkering - ubetinget vigepligt (enkelt)",
-          "other_marking": "banemarkering - anden",
-          "stop_line": "banemarkering - stoplinje",
-          "symbol": {
-            "bicycle": "banemarkering - symbol (cykel)"
-          },
-          "text": "banemarkering - tekst"
-        }
-      },
-      "object": {
-        "bench": "bænk",
-        "bike_rack": "cykelstativ",
-        "catch_basin": "Regnvandsrist",
-        "cctv_camera": "Overvågningskamera",
-        "fire_hydrant": "Brandhane",
-        "junction_box": "kabelskab",
-        "mailbox": "postkasse",
-        "manhole": "Brønddæksel",
-        "parking_meter": "parkometer",
-        "phone_booth": "Telefonboks",
-        "sign": {
-          "advertisement": "reklame",
-          "information": "informationsskilt",
-          "other": "andet skilt",
-          "store": "Butiksskilt",
-          "traffic_sign": {
-            "back": "trafikskilt - bagside",
-            "direction_front": "trafikskilt - forside",
-            "front": "trafikskilt - forside"
-          }
-        },
-        "street_light": "Gadelys",
-        "support": {
-          "pole": "pæl",
-          "traffic_sign_frame": "trafikskiltsramme",
-          "utility_pole": "lygtepæl"
-        },
-        "traffic_cone": "trafikkegle",
-        "traffic_light": {
-          "cyclists": "cyklist trafiklys",
-          "general_horizontal": "horisontalt trafiklys",
-          "general_single": "enkelt trafiklys",
-          "general_upright": "vertikalt trafiklys",
-          "other": "trafiklys",
-          "pedestrians": "fodgængertrafiklys"
-        },
-        "trash_can": "skraldespand",
-        "water_valve": "vandventil"
-      }
+    "streetside": {
+      "tooltip": "Gadefotoer fra Microsoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Trafikskilte fra Mapillary"
-      },
-      "view_on_mapillary": "Vis dette billede på Mapillary"
+      "tooltip": "Gadefotoer fra Mapillary"
     },
-    "kartaview_images": {
-      "tooltip": "Gadefotoer fra KartaView"
+    "mapillary_signs": {
+      "title": "Trafikskilte"
     },
     "kartaview": {
-      "view_on_kartaview": "Se dette billede på KartaView"
+      "tooltip": "Gadefotoer fra KartaView"
     },
     "note": {
       "note": "Bemærkning",
@@ -1829,7 +1702,6 @@
       },
       "notes": {
         "title": "Bemærkninger",
-        "intro": "*Bemærkninger* bruges til at gøre andre brugere opmærksomme på at et kortobjekt skal rettes eller kræver opmærksomhed. Bemærkninger er knyttet til en bestemt lokation på kortet. For at vise eksisterende bemærkninger eller tilføje nye skal du åbne {data_icon} **{map_data}**-panelet og aktivere {osm_notes}-laget.",
         "add_note_h": "Tilføjelse af bemærkninger",
         "add_note": "For at tilføje en ny bemærkning klikkes på {note_icon} **{note}**-knappen i værktøjslinjen over kortet, eller trykkes på genvejstasten `{add_note_key}`.",
         "update_note_h": "Lukning, genåbning og kommentering",
@@ -1866,9 +1738,7 @@
         "title": "Kvalitetssikring",
         "intro": "*Kvalitetssikrings*-værktøjer (Q/A) kan finde ukorrekte tags, veje uden forbindelse og andre problemer i OpenStreetMap som kortlæggere så kan rette. For at vise eksisterende Q/A-problemer skal du åbne {data_icon} **{map_data}**-panelet og aktivere et specifikt Q/A-lag. ",
         "tools_h": "Værktøjer",
-        "tools": "De følgende værktøjer er understøttet for nuværende: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) og [Osmose](https://osmose.openstreetmap.fr/).",
-        "issues_h": "Håndtering af problemer",
-        "issues": "Måden at håndtere af Q/A-problemer på, ligner måden bemærkninger håndteres på. Marker en problemmarkør for at vise problemets detaljer i sidebjælken. Hvert værktøj har unikke egenskaber, men generelt kan man kommentere på og/eller lukke et problem."
+        "issues_h": "Håndtering af problemer"
       },
       "field": {
         "restrictions": {
@@ -2597,7 +2467,6 @@
           "map_data": "Åbn/luk kortdata-fane",
           "issues": "Åbn/luk problemer-fane",
           "preferences": "Åbn/luk præferencer-fane",
-          "sidebar": "Åbn/luk sidebjælke",
           "wireframe": "Skift trådnet-tilstand",
           "osm_data": "Vis/skjul OpenStreetMap-data",
           "highlight_edits": "Fremhæv ugemte ændringer"

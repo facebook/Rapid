@@ -39,7 +39,6 @@
       },
       "add_note": {
         "title": "註記",
-        "label": "新增註記",
         "description": "發現了問題？讓其他製圖者知道。"
       },
       "add_preset": {
@@ -616,9 +615,6 @@
     "loading_auth": "正在連接 OpenStreetMap...",
     "report_a_bug": "回報錯誤",
     "help_translate": "協助翻譯",
-    "sidebar": {
-      "tooltip": "切換側邊欄。"
-    },
     "feature_info": {
       "hidden_warning": "{count} 個隱藏圖徽"
     },
@@ -747,13 +743,13 @@
         "zoom": "{features} 已隱藏。拉近以啟用它們。"
       },
       "back_tooltip": "變更圖徽類型",
+      "type": "種類",
+      "details": "詳細資訊",
       "remove": "移除",
       "search": "搜尋",
       "unknown": "未知種類",
       "incomplete": "<未下載>",
       "feature_list": "搜尋物件",
-      "edit": "編輯特徵",
-      "edit_features": "編輯圖徽",
       "check": {
         "yes": "是",
         "no": "否",
@@ -761,7 +757,6 @@
       },
       "radio": {
         "structure": {
-          "type": "種類",
           "default": "預設",
           "layer": "圖層"
         }
@@ -829,7 +824,8 @@
         },
         "notes": {
           "tooltip": "從開放街圖而來的註記資料",
-          "title": "開放街圖註記"
+          "title": "開放街圖註記",
+          "key": "北"
         },
         "maproulette": {
           "detail_title": "詳細資料"
@@ -837,10 +833,6 @@
         "keepRight": {
           "tooltip": "由 keepright.at 偵測到的資料問題",
           "title": "KeepRight 問題"
-        },
-        "improveOSM": {
-          "tooltip": "由 improveosm.org 偵測到的遺失資料",
-          "title": "ImproveOSM 問題"
         },
         "osmose": {
           "tooltip": "由 osmose.openstreetmap.fr 偵測到的資料問題",
@@ -873,9 +865,6 @@
     },
     "photo_overlays": {
       "title": "照片覆蓋層",
-      "traffic_signs": {
-        "title": "交通號誌"
-      },
       "photo_type": {
         "flat": {
           "title": "平面照片",
@@ -1135,40 +1124,6 @@
         "elems_title": "圖徽",
         "fix_title": "修復指南",
         "trap_title": "常見錯誤"
-      },
-      "improveOSM": {
-        "title": " ImproveOSM 偵測",
-        "geometry_types": {
-          "path": "路徑",
-          "parking": "停車場",
-          "road": "道路",
-          "both": "道路和停車場"
-        },
-        "directions": {
-          "east": "東",
-          "north": "北",
-          "northeast": "東北",
-          "northwest": "西北",
-          "south": "南",
-          "southeast": "東南",
-          "southwest": "西南",
-          "west": "西"
-        },
-        "error_types": {
-          "ow": {
-            "title": "遺失的單行道",
-            "description": "沿著選取的 {highway}，{num_trips} 中有 {percentage}% 記錄從 {from_node} 到 {to_node} 的旅程，也許遺失 \"oneway\" 標籤。"
-          },
-          "mr": {
-            "title": "遺失幾何性質",
-            "description": "{num_trips} 記錄的旅程資料，顯示也許這裡有未繪製的  {geometry_type}。 ",
-            "description_alt": "從第三方而來的資料表示這裡可能有未繪製的 {geometry_type}。"
-          },
-          "tr": {
-            "title": "遺失的轉彎限制",
-            "description": "{num_trips} 中 {num_passed} 記錄  (travelling {travel_direction}) 的旅程中，有在 {junction} 從  {from_way} 到 {to_way}，也許有遺失的 \"{turn_restriction}\" 的限制。"
-          }
-        }
       },
       "keepRight": {
         "detail_description": "説明",
@@ -1484,101 +1439,20 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "微軟的街景照片",
-      "report": "回報關於此照片的隱私疑慮",
-      "view_on_bing": "在 Bing Maps 上檢視",
+    "photos": {
       "hires": "高解析度"
     },
-    "mapillary_images": {
-      "tooltip": "從 Mapillary 來的街道級照片"
-    },
-    "mapillary_map_features": {
-      "title": "圖徵",
-      "tooltip": "從 Mapillary 來的圖徵",
-      "construction": {
-        "barrier": {
-          "temporary": "臨時柵欄"
-        },
-        "flat": {
-          "crosswalk_plain": "一般人行穿越道",
-          "driveway": "車道"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "車道標記 - 箭頭（左）",
-            "right": "車道標記 - 箭頭（右）",
-            "split_left_or_straight": "車道標記 - 箭頭（左轉或直行分開）",
-            "split_right_or_straight": "車道標記 - 箭頭（右轉或直行分開）",
-            "straight": "車道標記 - 箭頭（直行）"
-          },
-          "crosswalk_zebra": "車道標記 - 人行穿越道",
-          "give_way_row": "車道標記 - 讓道（列）",
-          "give_way_single": "車道標記 - 讓道（單次）",
-          "other_marking": "車道標記 - 其他",
-          "stop_line": "車道標記 - 停止線",
-          "symbol": {
-            "bicycle": "車道標記 - 符號（腳踏車）"
-          },
-          "text": "車道標記 - 文字"
-        }
-      },
-      "object": {
-        "banner": "橫幅",
-        "bench": "長椅",
-        "bike_rack": "自行車架",
-        "billboard": "廣告牌",
-        "catch_basin": "捕撈盆",
-        "cctv_camera": "監視器",
-        "fire_hydrant": "消防栓",
-        "junction_box": "路口方塊",
-        "mailbox": "郵筒",
-        "manhole": "人孔",
-        "parking_meter": "停車收費表",
-        "phone_booth": "電話亭",
-        "sign": {
-          "advertisement": "廣告",
-          "information": "資訊標誌",
-          "other": "其他標誌",
-          "store": "商店標誌",
-          "traffic_sign": {
-            "back": "交通號誌 - 後",
-            "direction_front": "交通號誌 - 前",
-            "front": "交通號誌 - 前"
-          }
-        },
-        "street_light": "路燈",
-        "support": {
-          "pole": "旗桿",
-          "traffic_sign_frame": "交通標誌框",
-          "utility_pole": "電線桿"
-        },
-        "traffic_cone": "交通錐",
-        "traffic_light": {
-          "cyclists": "單車紅綠燈",
-          "general_horizontal": "水平紅綠燈",
-          "general_single": "單燈紅綠燈",
-          "general_upright": "垂直紅綠燈",
-          "other": "紅綠燈",
-          "pedestrians": "行人紅綠燈"
-        },
-        "trash_can": "垃圾桶",
-        "water_valve": "水閥"
-      }
+    "streetside": {
+      "tooltip": "微軟的街景照片"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "從 Mapillary 偵測到的交通號誌"
-      },
-      "view_on_mapillary": "在 Mapillary 檢視這張照片"
+      "tooltip": "從 Mapillary 來的街道級照片"
     },
-    "kartaview_images": {
-      "tooltip": "從 KartaView 而來的街景照片"
+    "mapillary_signs": {
+      "title": "交通號誌"
     },
     "kartaview": {
-      "view_on_kartaview": "在 KartaView 檢視這張照片"
+      "tooltip": "從 KartaView 而來的街景照片"
     },
     "note": {
       "note": "註記",
@@ -1736,7 +1610,6 @@
       },
       "notes": {
         "title": "註記",
-        "intro": "*註記*是用於警告其他使用者有圖徽需要修復或注意。註記會在地圖上特定位置標記。要檢視既有的註記或加入新的註記，打開 {data_icon} **{map_data}** 面板以啟用 {osm_notes} 層。",
         "add_note_h": "新增註記",
         "add_note": "要新增註記，點地圖上方工具列的 {note_icon} **{note}** 按鈕，或是按快速鍵 `{add_note_key}`。",
         "update_note_h": "關閉、重新開啟與留言",
@@ -1773,9 +1646,7 @@
         "title": "品質保証",
         "intro": "*品質保証* (Q/A, Quality Assurance) 工具能找出開放街圖上，不適當地標籤，為連結的道路或是其他問題，圖客能藉此修復。要檢視現有的 Q/A 問題，開啟 {data_icon} **{map_data}** 面板開啓特定 Q/A 層。",
         "tools_h": "工具",
-        "tools": "目前支援以下工具：[KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) 與 [Osmose](https://osmose.openstreetmap.fr/)。",
-        "issues_h": "處理問題",
-        "issues": "處理 Q/A 問題類似處理註記。選取標記以在側邊欄檢視議題。每個工具都有其功能，但是一般來說你可以回應和/或關閉問題。"
+        "issues_h": "處理問題"
       },
       "field": {
         "restrictions": {
@@ -2530,7 +2401,6 @@
           "map_data": "切換地圖資料面板",
           "issues": "切換驗證問題面板",
           "preferences": "切換使用者偏好設定面板",
-          "sidebar": "切換側邊欄",
           "wireframe": "切換線框模式",
           "osm_data": "切換 OpenStreetMap 資料",
           "highlight_edits": "突顯未儲存的編輯"

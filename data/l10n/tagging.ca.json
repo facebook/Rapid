@@ -554,7 +554,7 @@
             "commercial": "Edifici comercial",
             "construction": "Edifici en construcció",
             "cowshed": "Estable de vaques",
-            "detached": "Casa a quatre vents",
+            "detached": "Casa aïllada",
             "dormitory": "Dormitoris",
             "farm": "Casa a una granja",
             "farm_auxiliary": "Edifici d'una granja",
@@ -2189,7 +2189,6 @@
             "marble": "Marbre",
             "metal": "Metall",
             "plastic": "Plàstic",
-            "reinforced_conrete": "Ciment Reforçat",
             "rock": "Roca",
             "sand": "Sorra",
             "sandstone": "Gres",
@@ -5075,7 +5074,7 @@
           "terms": "edifici en construcció, edifici baix construcció"
         },
         "building/detached": {
-          "name": "Casa a quatre vents",
+          "name": "Casa aïllada",
           "terms": "llar, casa, familiar, unifamiliar, residència, allotjament"
         },
         "building/dormitory": {

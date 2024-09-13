@@ -43,7 +43,6 @@
       },
       "add_note": {
         "title": "Белешка",
-        "label": "Додај белешку",
         "description": "Уочили сте неправилност? Поделите са другим маперима."
       },
       "add_preset": {
@@ -745,9 +744,6 @@
     "loading_auth": "Повезивање са OpenStreetMap...",
     "report_a_bug": "Пријавите проблем",
     "help_translate": "Помозите у превођењу",
-    "sidebar": {
-      "tooltip": "Укључи / искључи бочну траку."
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} сакривено обележје",
@@ -806,7 +802,6 @@
         "description": "Опис",
         "resolution": "Резолуција",
         "accuracy": "Тачност",
-        "unknown": "Непознато",
         "show_tiles": "Прикажи плочице",
         "hide_tiles": "Сакриј плочице"
       },
@@ -817,7 +812,6 @@
         "last_edit": "Последња измена",
         "edited_by": "Изменио",
         "changeset": "Скуп измена",
-        "unknown": "Непознато",
         "note_no_history": "Нема историје (нова белешка)",
         "note_comments": "Коментари",
         "note_created_date": "Датум прављења",
@@ -900,13 +894,13 @@
         "zoom": "{features} обележја су сакривена. Увећајте да их прикажете."
       },
       "back_tooltip": "Промени врсту обележја",
+      "type": "Врста",
+      "details": "Детаљи",
       "remove": "Уклони",
       "search": "Претрага",
       "unknown": "Непознато",
       "incomplete": "<није преузето>",
       "feature_list": "Претражи обележја",
-      "edit": "Уређење обележја",
-      "edit_features": "Уреди обележја",
       "check": {
         "yes": "Да",
         "no": "Не",
@@ -914,7 +908,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Врста",
           "default": "Подразумевано",
           "layer": "Подлога"
         }
@@ -983,7 +976,8 @@
         },
         "notes": {
           "tooltip": "OpenStreetMap подаци белешке",
-          "title": "OpenStreetMap белешке"
+          "title": "OpenStreetMap белешке",
+          "key": "С"
         },
         "maproulette": {
           "detail_title": "Детаљи",
@@ -992,10 +986,6 @@
         "keepRight": {
           "tooltip": "Проблеми са подацима које је пронашао keepright.at",
           "title": "KeepRight проблеми"
-        },
-        "improveOSM": {
-          "tooltip": "Недостајући подаци које је открио improveosm.org",
-          "title": "ImproveOSM проблеми"
         },
         "osmose": {
           "tooltip": "Проблеми са подацима које је пронашао osmose.openstreetmap.fr",
@@ -1028,9 +1018,6 @@
     },
     "photo_overlays": {
       "title": "Фото подлоге",
-      "traffic_signs": {
-        "title": "Саобраћајни знаци"
-      },
       "photo_type": {
         "flat": {
           "title": "Равне слике",
@@ -1291,40 +1278,6 @@
         "elems_title": "Обележја",
         "fix_title": "Смернице за исправљање",
         "trap_title": "Честе погрешке"
-      },
-      "improveOSM": {
-        "title": "ImproveOSM детекција",
-        "geometry_types": {
-          "path": "путање",
-          "parking": "паркинг",
-          "road": "путеви",
-          "both": "путеви и паркинзи"
-        },
-        "directions": {
-          "east": "исток",
-          "north": "север",
-          "northeast": "североисток",
-          "northwest": "северозапад",
-          "south": "југ",
-          "southeast": "југоисток",
-          "southwest": "југозапад",
-          "west": "запад"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Недостајућа једносмерна улица",
-            "description": "На овој деоници {highway}, {percentage}% од {num_trips} снимљених путовања иде од {from_node} до {to_node}. Могуће да недостаје „oneway” ознака."
-          },
-          "mr": {
-            "title": "Недостајућа геометрија",
-            "description": "{num_trips} снимљених путовања у овој области указује да можда овде постоји неизмапиран(а) {geometry_type} овде.",
-            "description_alt": "Подаци треће стране указују да овде можда постоји неизмапиран(а) {geometry_type} овде."
-          },
-          "tr": {
-            "title": "Недостајућа ограничења скретања",
-            "description": "{num_passed} од {num_trips} снимљених путовања (путујући {travel_direction}) праве скретање из {from_way} у {to_way} на {junction}. Можда постоји недостајуће ограничење „{turn_restriction}”."
-          }
-        }
       },
       "keepRight": {
         "detail_description": "Опис",
@@ -1640,102 +1593,21 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Мајкрософтове фотографије улица",
-      "title": "Бинг фотографије улица",
-      "report": "Пријави проблем са приватношћу на овој слици",
-      "view_on_bing": "Види на Бинг мапама",
+    "photos": {
       "hires": "Висока резолуција"
     },
-    "mapillary_images": {
-      "tooltip": "Mapillary фотографије улица"
-    },
-    "mapillary_map_features": {
-      "title": "Обележја мапе",
-      "tooltip": "Мапирај обележја из Mapillary-ја",
-      "construction": {
-        "barrier": {
-          "temporary": "привремена ограда"
-        },
-        "flat": {
-          "crosswalk_plain": "обичан пешачки прелаз",
-          "driveway": "пут"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "линије на путу - стрелица (лево)",
-            "right": "линије на путу - стрелица (десно)",
-            "split_left_or_straight": "линије на путу - стрелица (дели се на лево и право)",
-            "split_right_or_straight": "линије на путу - стрелица (дели се на десно и право)",
-            "straight": "линије на путу - стрелица (право)"
-          },
-          "crosswalk_zebra": "линије на путу - пешачки",
-          "give_way_row": "линије на путу - право првенства (неограничено)",
-          "give_way_single": "линије на путу - право првенства (једно возило)",
-          "other_marking": "линије на путу - остало",
-          "stop_line": "линије на путу - стоп линија",
-          "symbol": {
-            "bicycle": "линије на путу - симбол (бицикл)"
-          },
-          "text": "линије на путу - текст"
-        }
-      },
-      "object": {
-        "banner": "банер",
-        "bench": "клупа",
-        "bike_rack": "држач за бицикле",
-        "billboard": "билборд",
-        "catch_basin": "сливник",
-        "cctv_camera": "надзорна камера",
-        "fire_hydrant": "хидрант",
-        "junction_box": "разводна кутија",
-        "mailbox": "поштанско сандуче",
-        "manhole": "шахт",
-        "parking_meter": "паркинг сат",
-        "phone_booth": "телефонска говорница",
-        "sign": {
-          "advertisement": "реклама",
-          "information": "информативни знак",
-          "other": "други знак",
-          "store": "стоп знак",
-          "traffic_sign": {
-            "back": "саобраћајни знак - назад",
-            "direction_front": "саобраћајни знак - напред",
-            "front": "саобраћајни знак - напред"
-          }
-        },
-        "street_light": "улично светло",
-        "support": {
-          "pole": "стуб",
-          "traffic_sign_frame": "оквир семафора",
-          "utility_pole": "бандера"
-        },
-        "traffic_cone": "саобраћајни чуњ",
-        "traffic_light": {
-          "cyclists": "семафор за бициклисте",
-          "general_horizontal": "хоризонтални семафор",
-          "general_single": "семафор са једним светлом",
-          "general_upright": "вертикални семафор",
-          "other": "семафор",
-          "pedestrians": "семафор за пешаке"
-        },
-        "trash_can": "канта за отпатке",
-        "water_valve": "вентил за воду"
-      }
+    "streetside": {
+      "title": "Бинг фотографије улица",
+      "tooltip": "Мајкрософтове фотографије улица"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Саобраћајни знаци са Mapillary-ја"
-      },
-      "view_on_mapillary": "Погледај ову слику на Mapillary-ју"
+      "tooltip": "Mapillary фотографије улица"
     },
-    "kartaview_images": {
-      "tooltip": "KartaView фотографије улица"
+    "mapillary_signs": {
+      "title": "Саобраћајни знаци"
     },
     "kartaview": {
-      "view_on_kartaview": "Погледај ову слију на KartaView-у"
+      "tooltip": "KartaView фотографије улица"
     },
     "note": {
       "note": "Белешка",
@@ -1893,7 +1765,6 @@
       },
       "notes": {
         "title": "Белешке",
-        "intro": "*Белешке* се користе да упозоре друге кориснике да неко обележје треба поправити или прегледати. Белешкама се означава одређено место на карти. Да погледате постојеће белешке или додате нове, отворите {data_icon} **{map_data}** панел и укључите слој {osm_notes}.",
         "add_note_h": "Додавање белешки",
         "add_note": "Да бисте додали нову белешку, притисните {note_icon} дугме **{note}** на траци алатки изнад карте или притисните пречицу `{add_note_key}` на тастатури.",
         "update_note_h": "Затварање, поновно отварање и коментарисање",
@@ -1930,9 +1801,7 @@
         "title": "Контрола квалитета",
         "intro": "Алати за *контролу квалитета* (Q/A) могу да нађу неисправне ознаке, неспојене путеве и друге проблеме на OpenStreetMap-ама, које потом мапери могу да поправе. Да погледате постојеће проблеме, отворите {data_icon} панел **{map_data}** и укључите жељену подлогу за контролу квалитета.",
         "tools_h": "Алати",
-        "tools": "Подржани су тренутно следећи алати: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) и [Osmose](https://osmose.openstreetmap.fr/).",
-        "issues_h": "Руковање проблемима",
-        "issues": "Управљање контролом квалитета је слична као и управљање белешкама. Означите маркер да видите детаље о проблему у траци са стране. Сваки алат има другачије могућности, али за сваки можете свакако да коментаришете и/или да затворите проблем."
+        "issues_h": "Руковање проблемима"
       },
       "field": {
         "restrictions": {
@@ -2686,7 +2555,6 @@
           "map_data": "Укључи/искључи панел са подацима карте",
           "issues": "Укључи / искључи панел са проблемима у провери исправности",
           "preferences": "Укључи / искључи панел са подешавањима",
-          "sidebar": "Укључи / искључи бочну траку",
           "wireframe": "Укључи / искључи попуњавање области",
           "osm_data": "Укључи / искључи OpenStreetMap податке",
           "highlight_edits": "Истакни несачуване измене"

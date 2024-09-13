@@ -43,7 +43,6 @@
       },
       "add_note": {
         "title": "Poznámka",
-        "label": "Přidat poznámku",
         "description": "Zjistili jste problém? Dejte vědět ostatním mapovačům."
       },
       "add_preset": {
@@ -776,9 +775,6 @@
     "loading_auth": "Připojování na OpenStreetMap…",
     "report_a_bug": "Nahlásit chybu",
     "help_translate": "Pomoct s překladem",
-    "sidebar": {
-      "tooltip": "Zobrazit/skrýt boční panel."
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} skrytý prvek",
@@ -840,7 +836,6 @@
         "description": "Popis",
         "resolution": "Rozlišení",
         "accuracy": "Přesnost",
-        "unknown": "Neznámé",
         "show_tiles": "Zobrazit dlaždice",
         "hide_tiles": "Skrýt dlaždice"
       },
@@ -851,7 +846,6 @@
         "last_edit": "Poslední úprava",
         "edited_by": "Upravil(a)",
         "changeset": "Sada změn",
-        "unknown": "Neznámé",
         "note_no_history": "Žádná historie (Nová poznámka)",
         "note_comments": "Komentáře",
         "note_created_date": "Datum vytvoření",
@@ -933,13 +927,13 @@
         "zoom": "{features} jsou skryté. Pro jejich zobrazení přibližte."
       },
       "back_tooltip": "Změnit druh prvku",
+      "type": "Typ",
+      "details": "Podrobnosti",
       "remove": "Odstranit",
       "search": "Hledat",
       "unknown": "Není známo",
       "incomplete": "<nebylo staženo>",
       "feature_list": "Hledat prvky",
-      "edit": "Editovat prvek",
-      "edit_features": "Editovat prvky",
       "check": {
         "yes": "Ano",
         "no": "Ne",
@@ -947,7 +941,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Typ",
           "default": "Výchozí",
           "layer": "Vrstva"
         }
@@ -1016,7 +1009,8 @@
         },
         "notes": {
           "tooltip": "Poznámky z OpenStreetMap",
-          "title": "Poznámky OpenStreetMap"
+          "title": "Poznámky OpenStreetMap",
+          "key": "S"
         },
         "maproulette": {
           "detail_title": "Podrobnosti",
@@ -1025,10 +1019,6 @@
         "keepRight": {
           "tooltip": "keepright.at odhalil problémy dat.",
           "title": "Problémy z KeepRight"
-        },
-        "improveOSM": {
-          "tooltip": "improveosm.org odhalil chybějící data.",
-          "title": "Problémy ImproveOSM"
         },
         "osmose": {
           "tooltip": "osmose.openstreetmap.fr odhalil problémy dat.",
@@ -1061,9 +1051,6 @@
     },
     "photo_overlays": {
       "title": "Fotografické překryvy",
-      "traffic_signs": {
-        "title": "Dopravní značky"
-      },
       "photo_type": {
         "flat": {
           "title": "Ploché fotografie",
@@ -1322,40 +1309,6 @@
         "elems_title": "Prvky",
         "fix_title": "Pokyny k opravám",
         "trap_title": "Časté chyby"
-      },
-      "improveOSM": {
-        "title": "Detekce ImproveOSM",
-        "geometry_types": {
-          "path": "cesty",
-          "parking": "parkoviště",
-          "road": "silnice",
-          "both": "silnice a parkoviště"
-        },
-        "directions": {
-          "east": "východ",
-          "north": "sever",
-          "northeast": "severovýchod",
-          "northwest": "severozápad",
-          "south": "jih",
-          "southeast": "jihovýchod",
-          "southwest": "jihozápad",
-          "west": "západ"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Chybějící jednosměrka",
-            "description": "Podél této části {highway}, {percentage}% of {num_trips} nahraných cest směřuje z {from_node} do {to_node}. Může zde chybět značka „Jednosměrka“."
-          },
-          "mr": {
-            "title": "Chybějící geometrie",
-            "description": "{num_trips} nahrané cesty naznačují, že by zde mohlo být nezmapováno {geometry_type}.",
-            "description_alt": "Data 3.strany naznačují, že by zde mohlo být nezmapováno {geometry_type}."
-          },
-          "tr": {
-            "title": "Chybějící omezení odbočení",
-            "description": "{num_passed} z {num_trips} nahraných záznamů (směrem {travel_direction}) odbočují z {from_way} na {to_way} na {junction}. Může zde chybět omezení odbočení „{turn_restriction}“."
-          }
-        }
       },
       "keepRight": {
         "detail_description": "Popis",
@@ -1671,100 +1624,20 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Fotografie z úrovně ulice od Microsoftu",
-      "report": "Oznamte problém se soukromím na této fotografii",
-      "view_on_bing": "Zobrazit na Bing mapách",
+    "photos": {
       "hires": "Vysoké rozlišení"
     },
-    "mapillary_images": {
-      "tooltip": "Fotografie z úrovně ulice z Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Mapové prvky",
-      "tooltip": "Mapové prvky z Mapillary",
-      "construction": {
-        "barrier": {
-          "temporary": "dočasná překážka"
-        },
-        "flat": {
-          "crosswalk_plain": "prostý přechod pro chodce",
-          "driveway": "příjezdová cesta"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "vodorovné značení – šipka (vlevo)",
-            "right": "vodorovné značení – šipka (vpravo)",
-            "split_left_or_straight": "vodorovné značení – šipka (vlevo či rovně)",
-            "split_right_or_straight": "vodorovné značení – šipka (vpravo či rovně)",
-            "straight": "vodorovné značení – šipka (rovně)"
-          },
-          "crosswalk_zebra": "vodorovné značení – přechod",
-          "give_way_row": "vodorovné značení – dej přednost (řada)",
-          "give_way_single": "vodorovné značení – dej přednost (samostatná)",
-          "other_marking": "vodorovné značení – ostatní",
-          "stop_line": "vodorovné značení – stop čára",
-          "symbol": {
-            "bicycle": "vodorovné značení – symbol (kolo)"
-          },
-          "text": "vodorovné značení – text"
-        }
-      },
-      "object": {
-        "banner": "reklamní plachta",
-        "bench": "lavice",
-        "bike_rack": "stojan na kola",
-        "catch_basin": "kanálová vpusť",
-        "cctv_camera": "CCTV kamera",
-        "fire_hydrant": "požární hydrant",
-        "junction_box": "spojovací skříňka",
-        "mailbox": "poštovní schránka",
-        "manhole": "Šachta",
-        "parking_meter": "parkovací hodiny",
-        "phone_booth": "telefonní budka",
-        "sign": {
-          "advertisement": "reklama",
-          "information": "informační tabule",
-          "other": "jiná značka",
-          "store": "cedule obchodu",
-          "traffic_sign": {
-            "back": "zadní strana dopravní značky",
-            "direction_front": "přední strana dopravní značky",
-            "front": "přední strana dopravní značky"
-          }
-        },
-        "street_light": "pouliční světlo",
-        "support": {
-          "pole": "sloup elektrického vedení",
-          "traffic_sign_frame": "okraj dopravní značky",
-          "utility_pole": "stožár"
-        },
-        "traffic_cone": "dopravní kužel",
-        "traffic_light": {
-          "cyclists": "cyklistický semafor",
-          "general_horizontal": "vodorovný semafor",
-          "general_single": "semafor s jedním světlem",
-          "general_upright": "svislý semafor",
-          "other": "semafor",
-          "pedestrians": "semafor pro chodce"
-        },
-        "trash_can": "odpadkový koš",
-        "water_valve": "vodní ventil"
-      }
+    "streetside": {
+      "tooltip": "Fotografie z úrovně ulice od Microsoftu"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Dopravní značení z Mapillary"
-      },
-      "view_on_mapillary": "Zobrazit tento obrázek na Mapillary"
+      "tooltip": "Fotografie z úrovně ulice z Mapillary"
     },
-    "kartaview_images": {
-      "tooltip": "Fotografie z úrovně ulice z KartaView"
+    "mapillary_signs": {
+      "title": "Dopravní značky"
     },
     "kartaview": {
-      "view_on_kartaview": "Zobrazit tento obrázek na KartaView"
+      "tooltip": "Fotografie z úrovně ulice z KartaView"
     },
     "note": {
       "note": "Poznámka",
@@ -1922,7 +1795,6 @@
       },
       "notes": {
         "title": "Poznámky",
-        "intro": "*Poznámky* slouží pro upozornění ostatních uživatelů na prvek vyžadující opravu, či pozornost. Poznámky označují určitou polohu na mapě. Pro zobrazení existujících poznámek nebo vytvoření nových otevřete panel {data_icon} **{map_data}** a zapněte vrstvu {osm_notes}.",
         "add_note_h": "Přidávání poznámek",
         "add_note": "Poznámku přidáte stisknutím tlačítka {note_icon} **{note}**, nacházející se na liště nad mapou, či stisknutím klávesové zkratky `{add_note_key}`.",
         "update_note_h": "Zavírání, znovuotevírání a komentování",
@@ -1959,9 +1831,7 @@
         "title": "Ověření správnosti",
         "intro": "Nástroje *Quality Assurance* (Q/A) dokáží najít nesprávné značky, odpojené cesty a další problémy s OpenStreetMap, které mohou mappeři opravit. Pro zobrazení existujících problémů Q/A otevřete panel {data_icon} **{map_data}** po straně mapy a zapněte požadované vrstvy Q/A.",
         "tools_h": "Nástroje",
-        "tools": "Podporované jsou následující nástroje: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) a [Osmose](https://osmose.openstreetmap.fr/).",
-        "issues_h": "Řešení problémů",
-        "issues": "Řešení problémů Q/A je shodné s řešením poznámek. Výběrem značky v mapě zobrazíte panel s podrobnostmi. Každý nástroj má svá specifika, nicméně všechny umožňují problém komentovat a/nebo zavřít."
+        "issues_h": "Řešení problémů"
       },
       "field": {
         "restrictions": {
@@ -2716,7 +2586,6 @@
           "map_data": "Přepnout panel dat mapy",
           "issues": "Přepnout panel ověření chyb",
           "preferences": "Přepnout panel uživatelských možností",
-          "sidebar": "Zobrazit/skrýt boční panel.",
           "wireframe": "Přepnout výplň budov",
           "osm_data": "Přepnout data OpenStreetMap",
           "highlight_edits": "Zvýraznit neuložené úpravy"

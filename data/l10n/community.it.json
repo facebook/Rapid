@@ -277,9 +277,6 @@
     "de-berlin-wiki": {
       "description": "{community} Pagina wiki"
     },
-    "de-berlin-xmpp": {
-      "description": "Unisciti alla nostra chat multiutente XMPP: {url}"
-    },
     "de-bochum-wiki": {
       "description": "{community} Pagina wiki"
     },
@@ -300,9 +297,6 @@
     },
     "de-dusseldorf-wiki": {
       "description": "{community} Pagina wiki"
-    },
-    "de-hamburg-xmpp": {
-      "description": "Unisciti alla nostra chat multiutente XMPP: {url}"
     },
     "de-karlsruhe-mailinglist": {
       "name": "Mailinglist di Karlsruhe"
@@ -342,9 +336,6 @@
     },
     "de-viersen-meetup": {
       "description": "La comunità OSM e gli utenti incontrano Kreis Viersen e Mönchengladbach"
-    },
-    "de-xmpp": {
-      "description": "Unisciti alla nostra chat multiutente XMPP: {url}"
     },
     "DF-telegram": {
       "extendedDescription": "Unisciti alla comunità per saperne di più su OpenStreetMap, fare domande e partecipare alle nostre riunioni. Tutti sono i benvenuti!"
@@ -675,9 +666,6 @@
     "OSM-Facebook": {
       "description": "Metti “Mi piace” su Facebook per notizie e aggiornamenti su OpenStreetMap"
     },
-    "osm-fj": {
-      "description": "Fornire servizi OSM e informazioni per la comunità locale delle Fiji"
-    },
     "osm-gh-facebook": {
       "extendedDescription": "Mappatori nella comunità del Ghana, promuoviamo OpenStreetMap e i progetti della squadra umanitaria di OpenStreetMap (HOT) in Ghana. Unisciti a noi."
     },
@@ -730,9 +718,6 @@
     },
     "OSM-japan-facebook": {
       "description": "Mappatori e utenti OpenStreetMap del Giappone"
-    },
-    "OSM-japan-slack": {
-      "description": "Uno spazio di lavoro Slack per la comunità OSM Japan {signupUrl}"
     },
     "OSM-japan-website": {
       "description": "Mappatori e utenti di OpenStreetMap in Giappone"
@@ -816,11 +801,6 @@
       "description": "Divertiamoci, contribuiamo con qualunque cosa a Los Angeles e impariamo a mappare!",
       "extendedDescription": "OpenStreetMap (OSM) della California del sud è per chiunque sia interessato a mappare insieme agli altri lavorando con OpenStreetMap. OpenStreetMap, la Wikipedia delle mappe, è la mappa del mondo open-source libera creata da più di un milione di volontari per tutto il globo. Chiunque è ben accetto. Se non conosci OpenStreetMap, te la insegneremo noi. Se hai un’idea per un progetto di mappatura oppure una gita sul campo che il nostro gruppo può effettuare, perfetto!"
     },
-    "OSM-South-Bay": {
-      "name": "OSM di South Bay",
-      "description": "Unisciti alle nostre notti online sulla mappa di South Bay",
-      "extendedDescription": "Incontra altri mappatori di South Bay e dai una mano con progetti di mappatura locali al nostro meetup online ogni due martedì sera, in collaborazione con Open Source San José. Non sono richieste competenze di programmazione e GIS."
-    },
     "OSM-Tampa-Bay": {
       "name": "OpenStreetMap di Tampa Bay",
       "description": "Mappatori e utenti OpenStreetMap dell’area di Tampa Bay",
@@ -858,9 +838,7 @@
       "description": "Sono tutti i benvenuti! Registrati all'indirizzo {signupUrl}"
     },
     "OSM-Utah": {
-      "name": "OpenStreetMap dello Utah",
-      "description": "Mappaori e utenti OpenStreetMap dell’area di Salt Lake City",
-      "extendedDescription": "Le attività comprendono cose come lezioni per imparare a mappare, feste di mappatura e uscite all’aperto per la raccolta di dati. Gli eventi avverranno nell’area SLC, almeno all’inizio. Stiamo cercando sia mappatori esperti che alle prime armi. Unisciti e andiamo a mappare!"
+      "name": "OpenStreetMap dello Utah"
     },
     "OSM-Wyoming": {
       "name": "OpenStreetMap del Wyoming",

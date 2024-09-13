@@ -287,6 +287,7 @@
             "bungee_jumping": "Strikkhopping",
             "carousel": "Karusell",
             "maze": "Labyrint",
+            "pirate_ship": "Sjørøverskipattraksjon",
             "roller_coaster": "Berg-og-dal-bane",
             "swing_carousel": "Svingkarusell",
             "train": "Turisttog",
@@ -331,6 +332,7 @@
             "jersey_barrier": "Fenderstein ",
             "kerb": "Kantstein",
             "lift_gate": "Løftebom",
+            "retaining_wall": "Støttemur",
             "stile": "Gjerdeklyver",
             "swing_gate": "Svingport",
             "toll_booth": "Bomstasjon",
@@ -394,6 +396,7 @@
         },
         "bicycle_road": {
           "options": {
+            "undefined": "Nei",
             "yes": "Ja"
           },
           "terms": "Sykkelvei, sykkelveg, sykkelsti"
@@ -474,6 +477,7 @@
             "cathedral": "Katedralbygning",
             "chapel": "Kapell",
             "church": "Kirkebygning",
+            "college": "Høgskolebygning",
             "commercial": "Kommersielt bygg",
             "construction": "Bygning under bygging",
             "cowshed": "Fjøs",
@@ -633,10 +637,12 @@
             "maternity": "Mammaklær / gravidklær",
             "men": "Herreklær",
             "motorcycle": "Motorsykkelklær",
+            "oversize": "Ekstra store klær",
             "socks": "Sokker",
             "sports": "Sportsklær",
             "suits": "Dresser",
             "swimwear": "Svømmeklær",
+            "traditional": "Folkedrakter",
             "underwear": "Undertøy",
             "wedding": "Bryllupsklær",
             "women": "Dameklær",
@@ -669,6 +675,10 @@
         },
         "consulate": {
           "options": {
+            "consular_agency": "Konsulærtjenestebyrå",
+            "consular_office": "Konsulatkontor",
+            "consulate_general": "Generalkonsulat",
+            "honorary_consul": "Honorær konsul",
             "yes": "Konsulat"
           }
         },
@@ -724,9 +734,11 @@
             "brewery": "Bryggeri",
             "carpenter": "Snekker",
             "carpet_layer": "Teppelegger",
+            "cleaning": "Rengjøringsbyrå",
             "clockmaker": "Urmaker",
             "confectionery": "Godterifabrikk",
             "distillery": "Destilleri",
+            "dressmaker": "Sydame",
             "electrician": "Elektriker",
             "electronics_repair": "Reparasjon av elektronikk",
             "floorer": "Gulvlegger",
@@ -738,8 +750,10 @@
             "key_cutter": "Nøkkelsliper",
             "locksmith": "Låsesmeder",
             "metal_construction": "Metallarbeider",
+            "painter": "Byggmaler",
             "photographer": "Fotograf",
             "plumber": "Rørlegger",
+            "pottery": "Pottemakeri",
             "rigger": "Scenerigger",
             "roofer": "Taktekker",
             "saddler": "Salmaker",
@@ -850,18 +864,33 @@
         "cuisine": {
           "label": "Kjøkken",
           "options": {
+            "african": "Afrikansk",
             "american": "Amerikansk",
+            "arab": "Arabisk",
+            "argentinian": "Argentinsk",
             "asian": "Asiatisk",
+            "balkan": "Balkansk",
+            "bavarian": "Bayersk",
+            "brazilian": "Brasiliansk",
+            "breakfast": "Frokost",
+            "brunch": "Brunsj",
             "bubble_tea": "Te med kuler",
             "cake": "Kake",
+            "caribbean": "Karibisk",
             "chicken": "Kylling",
             "chinese": "Kinesisk",
             "coffee_shop": "Kafé",
+            "curry": "Karri",
+            "european": "Europeisk",
             "filipino": "Filipinsk",
             "fish": "Fisk",
+            "fish_and_chips": "Fisk og Chips",
             "french": "Fransk",
+            "fries": "Pommes frites",
+            "georgian": "Georgisk",
             "german": "Tysk",
             "greek": "Gresk",
+            "hawaiian": "Hawaiisk",
             "hot_dog": "Pølse",
             "ice_cream": "Iskrem",
             "indian": "indisk",
@@ -872,20 +901,30 @@
             "lebanese": "Libanesisk",
             "malaysian": "Malaysisk",
             "mexican": "Meksikansk",
+            "moroccan": "Marokkansk",
+            "noodle": "Nudel",
+            "oriental": "Orientalsk",
             "pancake": "Pannekake",
+            "pastry": "Bakverk",
+            "persian": "Persisk",
+            "peruvian": "Peruviansk",
             "polish": "Polsk",
             "portuguese": "Portugisisk",
             "russian": "Russisk",
             "salad": "Salat",
             "sandwich": "Smørbrød",
             "seafood": "Sjømat",
+            "soup": "Suppe",
             "spanish": "Spansk",
             "steak_house": "Biffrestaurant",
             "taiwanese": "Taiwansk",
+            "tea": "Te",
             "thai": "Thailandsk",
             "turkish": "Tyrkisk",
             "ukrainian": "Ukrainsk",
-            "vietnamese": "Vietnamesisk"
+            "vietnamese": "Vietnamesisk",
+            "western": "Vestlig",
+            "wings": "Kyllingvinger"
           },
           "terms": "[oversett med synonymer eller relaterte termer for 'Kjøkken', atskilt med komma] "
         },
@@ -1269,6 +1308,7 @@
             "adblue:canister": "AdBlue / AUS 32 (solgt i kanner)",
             "cng": "Komprimert naturgass (CNG)",
             "e10": "E10-bensin",
+            "e5": "E5 Bensin",
             "e85": "E85-bensin",
             "h70": "Hydrogengass (700 bar)",
             "octane_100": "Bensin (100 oktan)",
@@ -1374,12 +1414,17 @@
         "healthcare": {
           "options": {
             "alternative": "Alternativ medisin",
+            "birthing_centre": "Fødestue",
             "blood_bank": "Blodbank",
+            "blood_donation": "Blodgivningssenter",
             "clinic": "Klinikk",
             "dentist": "Tannlege",
             "dialysis": "Dialyse-senter",
             "doctor": "Lege",
-            "midwife": "Jordmor"
+            "hospital": "Sykehus",
+            "midwife": "Jordmor",
+            "nurse": "Sykepleier",
+            "vaccination_centre": "Vaksinasjonssenter"
           }
         },
         "healthcare/speciality": {
@@ -1390,6 +1435,7 @@
             "biochemistry": "Biokjemi",
             "biology": "Biologi",
             "blood_check": "Blodprøve",
+            "body": "Kroppsterapi",
             "fertility": "Fertilitet",
             "nuclear": "Nukleærmedisin",
             "otolaryngology": "Øre, nese & hals",
@@ -1667,7 +1713,6 @@
             "marble": "Marmor",
             "metal": "Metall",
             "plastic": "Plast",
-            "reinforced_conrete": "Armert betong",
             "rock": "Bergart",
             "sandstone": "Sandstein",
             "soil": "Jord",
@@ -1910,6 +1955,7 @@
             "multi-storey": "Fler-etasjes",
             "rooftop": "Tak",
             "sheds": "Skur/utebod",
+            "street_side": "Gateparkering",
             "surface": "Overflate",
             "underground": "Under overflaten"
           }
@@ -2635,6 +2681,7 @@
         "survey_point/structure": {
           "label": "Struktur",
           "options": {
+            "beacon": "Trigonometrisk punkt",
             "block": "Blokk",
             "bracket": "Brakett",
             "cairn": "Varde",
@@ -2694,7 +2741,8 @@
         "toilets/disposal": {
           "options": {
             "bucket": "Bøtte",
-            "chemical": "Kjemikalie"
+            "chemical": "Kjemikalie",
+            "flush": "Toalettspyling"
           }
         },
         "toilets/handwashing": {
@@ -2964,6 +3012,8 @@
         },
         "wetland": {
           "options": {
+            "bog": "Myr",
+            "string_bog": "Strengmyr",
             "swamp": "Sump"
           }
         },
@@ -3483,6 +3533,9 @@
         "amenity/restaurant/french": {
           "name": "Fransk restaurant"
         },
+        "amenity/restaurant/georgian": {
+          "name": "Georgisk restaurant"
+        },
         "amenity/restaurant/german": {
           "name": "Tysk restaurant"
         },
@@ -3498,6 +3551,9 @@
         "amenity/restaurant/japanese": {
           "name": "Japansk restaurant"
         },
+        "amenity/restaurant/korean": {
+          "name": "Koreansk restaurant"
+        },
         "amenity/restaurant/mexican": {
           "name": "Meksikansk restaurant"
         },
@@ -3509,6 +3565,9 @@
         },
         "amenity/restaurant/seafood": {
           "name": "Sjømatrestaurant"
+        },
+        "amenity/restaurant/spanish": {
+          "name": "Spansk restaurant"
         },
         "amenity/restaurant/steakhouse": {
           "name": "Biffrestaurant"
@@ -3590,6 +3649,9 @@
         },
         "amenity/theatre/type/amphi": {
           "name": "Amfiteater"
+        },
+        "amenity/ticket_validator": {
+          "name": "Billettautomat"
         },
         "amenity/toilets": {
           "name": "Toalett"
@@ -3742,6 +3804,9 @@
         "barrier/border_control": {
           "name": "Grensekontroll"
         },
+        "barrier/bus_trap": {
+          "name": "Bussluse"
+        },
         "barrier/cattle_grid": {
           "name": "Fanghekk"
         },
@@ -3838,6 +3903,9 @@
         "building/apartments": {
           "name": "Leilighetsbygg"
         },
+        "building/bakehouse": {
+          "name": "Baksthus"
+        },
         "building/barn": {
           "name": "Låve"
         },
@@ -3913,6 +3981,9 @@
         "building/houseboat": {
           "name": "Husbåt"
         },
+        "building/hut": {
+          "name": "Skur"
+        },
         "building/industrial": {
           "name": "Industribygg"
         },
@@ -3961,6 +4032,15 @@
         "building/stadium": {
           "name": "Stadionbyging"
         },
+        "building/static_caravan": {
+          "name": "Karavan"
+        },
+        "building/sty": {
+          "name": "Grisehus"
+        },
+        "building/synagogue": {
+          "name": "Synagogebygning"
+        },
         "building/temple": {
           "name": "Tempelbygning"
         },
@@ -3988,6 +4068,9 @@
         "club": {
           "name": "Klubb"
         },
+        "club/scout": {
+          "name": "Speidergruppe"
+        },
         "club/sport": {
           "name": "Sportsklubb"
         },
@@ -4008,6 +4091,9 @@
         },
         "craft/bookbinder": {
           "name": "Bokbinderi"
+        },
+        "craft/brewery": {
+          "name": "Mikrobryggeri"
         },
         "craft/carpenter": {
           "name": "Snekker"
@@ -4135,8 +4221,17 @@
         "craft/winery": {
           "name": "Vingård"
         },
+        "cycleway/asl": {
+          "name": "Sykkelboks"
+        },
         "demolished/building": {
           "name": "Nylig revet bygning"
+        },
+        "disc_golf/basket": {
+          "name": "Frisbeegolfkurv"
+        },
+        "disc_golf/hole": {
+          "name": "Frisbeegolf hull"
         },
         "disused/amenity": {
           "name": "Nedlagt fasilitet"
@@ -4176,6 +4271,9 @@
         },
         "emergency/life_ring": {
           "name": "Livbøye"
+        },
+        "emergency/lifeboat_station": {
+          "name": "Livbåtsstasjon"
         },
         "emergency/lifeguard": {
           "name": "Livvakt"
@@ -4219,6 +4317,9 @@
         "golf/cartpath": {
           "name": "Golfbilvei"
         },
+        "golf/clubhouse": {
+          "name": "Golfklubbhus"
+        },
         "golf/driving_range": {
           "name": "Drivingrange"
         },
@@ -4248,6 +4349,9 @@
         },
         "healthcare/blood_donation": {
           "name": "Blodgiversentral"
+        },
+        "healthcare/dentist/orthodontics": {
+          "name": "Kjeveortoped"
         },
         "healthcare/hospice": {
           "name": "Hospits"
@@ -4350,6 +4454,9 @@
         },
         "highway/give_way": {
           "name": "Vikepliktskilt"
+        },
+        "highway/ladder": {
+          "name": "Stige"
         },
         "highway/living_street": {
           "name": "Gatetun"
@@ -4501,6 +4608,9 @@
         "historic/building": {
           "name": "Historisk bygning"
         },
+        "historic/cannon": {
+          "name": "Kanon"
+        },
         "historic/castle": {
           "name": "Slott"
         },
@@ -4582,6 +4692,9 @@
         "landuse/construction": {
           "name": "Byggeplass"
         },
+        "landuse/education": {
+          "name": "Utdanningsområde"
+        },
         "landuse/farm": {
           "name": "Jordbruksland"
         },
@@ -4627,6 +4740,15 @@
         "landuse/military/barracks": {
           "name": "Brakker"
         },
+        "landuse/military/base": {
+          "name": "Militærbase"
+        },
+        "landuse/military/base/navy": {
+          "name": "Marinebase"
+        },
+        "landuse/military/danger_area": {
+          "name": "Militært fareområde"
+        },
         "landuse/military/obstacle_course": {
           "name": "Militær hinderløype"
         },
@@ -4666,6 +4788,9 @@
         "landuse/residential/apartments": {
           "name": "Leilighetskompleks"
         },
+        "landuse/residential/trailer_park": {
+          "name": "Campingvognpark"
+        },
         "landuse/retail": {
           "name": "Butikkområde"
         },
@@ -4692,6 +4817,9 @@
         },
         "leisure/common": {
           "name": "Fellesområde"
+        },
+        "leisure/dance": {
+          "name": "Dansesal"
         },
         "leisure/dancing_school": {
           "name": "Danseskole"
@@ -5035,11 +5163,17 @@
         "man_made/yes": {
           "name": "Menneskeskapt ting (uspesifisert type)"
         },
+        "military/bunker": {
+          "name": "Militærbunker"
+        },
         "military/nuclear_explosion_site": {
           "name": "Atomeksplosjonssted"
         },
         "military/office": {
           "name": "Militærkontor"
+        },
+        "military/trench": {
+          "name": "Militær skyttergrav"
         },
         "natural": {
           "name": "Naturrelatert egenskap"
@@ -5086,6 +5220,9 @@
         "natural/reef": {
           "name": "Rev"
         },
+        "natural/ridge": {
+          "name": "Høydedrag"
+        },
         "natural/saddle": {
           "name": "Sadelpunkt"
         },
@@ -5098,6 +5235,9 @@
         "natural/shrub": {
           "name": "Krattskog"
         },
+        "natural/sinkhole": {
+          "name": "Synkehull"
+        },
         "natural/spring": {
           "name": "Vannkilde"
         },
@@ -5106,6 +5246,9 @@
         },
         "natural/tree_row": {
           "name": "Trerekke"
+        },
+        "natural/tree_stump": {
+          "name": "Trestamme"
         },
         "natural/valley": {
           "name": "Dal"
@@ -5125,6 +5268,12 @@
         "natural/water/lake": {
           "name": "Innsjø"
         },
+        "natural/water/moat": {
+          "name": "Vollgrav"
+        },
+        "natural/water/oxbow": {
+          "name": "Kroksjø"
+        },
         "natural/water/pond": {
           "name": "Dam"
         },
@@ -5137,8 +5286,23 @@
         "natural/water/stream": {
           "name": "Bekkområde"
         },
+        "natural/water/wastewater": {
+          "name": "Avløpsbasseng"
+        },
         "natural/wetland": {
           "name": "Myr"
+        },
+        "natural/wetland/bog": {
+          "name": "Myr"
+        },
+        "natural/wetland/marsh": {
+          "name": "Sump"
+        },
+        "natural/wetland/string_bog": {
+          "name": "Strengmyr"
+        },
+        "natural/wetland/swamp": {
+          "name": "Sump"
         },
         "natural/wetland/tidalflat": {
           "name": "Flatt tidevann"
@@ -5164,8 +5328,17 @@
         "office/architect": {
           "name": "Arkitektkontor"
         },
+        "office/association": {
+          "name": "Ideell organisasjonskontor"
+        },
         "office/charity": {
           "name": "Veldedighetskontor"
+        },
+        "office/company": {
+          "name": "Bedriftskontor"
+        },
+        "office/consulting": {
+          "name": "Konsulentkontor"
         },
         "office/coworking": {
           "name": "Medarbeiderområde"
@@ -5179,17 +5352,35 @@
         "office/diplomatic/embassy": {
           "name": "Ambassade"
         },
+        "office/diplomatic/liaison": {
+          "name": "Liaison Kontor"
+        },
         "office/educational_institution": {
           "name": "Utdanningsinstitusjon"
         },
         "office/employment_agency": {
           "name": "Bemanningsbyrå"
         },
+        "office/energy_supplier": {
+          "name": "Energileverandørkontor"
+        },
+        "office/engineer": {
+          "name": "Ingeniørkontor"
+        },
         "office/estate_agent": {
           "name": "Eiendomsmegler"
         },
+        "office/financial": {
+          "name": "Finanskontor"
+        },
+        "office/financial_advisor": {
+          "name": "Finansiell Rådgiver"
+        },
         "office/forestry": {
           "name": "Skogbrukskontoret"
+        },
+        "office/foundation": {
+          "name": "Kontor til Stiftelse"
         },
         "office/government": {
           "name": "Myndighetskontor\nOffentlig kontor",
@@ -5210,6 +5401,9 @@
         "office/newspaper": {
           "name": "Avisredaksjon"
         },
+        "office/ngo": {
+          "name": "Ikke-statlig organisasjonskontor"
+        },
         "office/physician": {
           "name": "Lege"
         },
@@ -5225,6 +5419,9 @@
         "office/research": {
           "name": "Forskningskontor"
         },
+        "office/security": {
+          "name": "Sikkerhetsvaktkontor"
+        },
         "office/surveyor": {
           "name": "Landmålerkontor"
         },
@@ -5239,6 +5436,9 @@
         },
         "office/travel_agent": {
           "name": "Reisebyrå"
+        },
+        "office/union": {
+          "name": "Fagforeningskontor"
         },
         "office/yes": {
           "name": "Kontor (uspesifisert type)"
@@ -5784,6 +5984,9 @@
         "shop/dairy": {
           "name": "Ferskvarebutikk"
         },
+        "shop/deli": {
+          "name": "Delikatesseforretning"
+        },
         "shop/department_store": {
           "name": "Supermarked"
         },
@@ -5881,6 +6084,9 @@
         "shop/honey": {
           "name": "Honningbutikk"
         },
+        "shop/household_linen": {
+          "name": "Tekstil- og Interiør Butikk"
+        },
         "shop/houseware": {
           "name": "Kjøkkenutstyrbutikk"
         },
@@ -5940,6 +6146,9 @@
         },
         "shop/musical_instrument": {
           "name": "Musikkinstrumentbutikk"
+        },
+        "shop/newsagent": {
+          "name": "Aviskiosk"
         },
         "shop/optician": {
           "name": "Optiker"
@@ -6096,6 +6305,9 @@
         },
         "tourism/attraction": {
           "name": "Turistattraksjon"
+        },
+        "tourism/camp_site": {
+          "name": "Campingplass"
         },
         "tourism/caravan_site": {
           "name": "Bobilpark"

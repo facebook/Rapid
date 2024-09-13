@@ -27,8 +27,7 @@
         "filter_tooltip": "نقاط"
       },
       "add_note": {
-        "title": "نوٹ",
-        "label": "نوٹ ڈالیں"
+        "title": "نوٹ"
       }
     },
     "operations": {
@@ -129,12 +128,10 @@
     },
     "info_panels": {
       "background": {
-        "description": "تفصیل",
-        "unknown": "نامعلوم"
+        "description": "تفصیل"
       },
       "history": {
-        "title": "تاریخچہ",
-        "unknown": "نامعلوم"
+        "title": "تاریخچہ"
       },
       "measurement": {
         "distance": "فاصلہ",
@@ -149,21 +146,15 @@
       "fields": "خانے",
       "members": "مشتمل چیزیں",
       "relations": "روابط",
+      "type": "قسم",
       "remove": "ہٹائیں",
       "search": "ڈھونڈیں",
       "unknown": "نامعلوم",
       "feature_list": "چیزیں ڈھونڈیں",
-      "edit": "چیز تبدیل کریں",
-      "edit_features": "چیزیں تبدیل کریں",
       "check": {
         "yes": "جی ہاں",
         "no": "جی نہیں",
         "reverser": "سمت بدلیں"
-      },
-      "radio": {
-        "structure": {
-          "type": "قسم"
-        }
       },
       "lock": {
         "suggestion": "\"{label}\" خانہ بند ہے چونکہ اس کے ساتھ ایک ویکی ڈیٹا ٹیگ جڑا ہوا ہے۔ آپ اسے \"خانے\" جگہ میں ہٹا سکتے ہیں یا تبدیل کر سکتے ہیں۔"
@@ -245,21 +236,6 @@
       "description": "تفصیل"
     },
     "QA": {
-      "improveOSM": {
-        "geometry_types": {
-          "road": "سڑکیں"
-        },
-        "directions": {
-          "east": "مشرق",
-          "north": "شمال",
-          "northeast": "شمال مشرق",
-          "northwest": "شمال مغرب",
-          "south": "جنوب",
-          "southeast": "جنوب مشرق",
-          "southwest": "جنوب مغرب",
-          "west": "مغرب"
-        }
-      },
       "keepRight": {
         "detail_description": "تفصیل",
         "error_parts": {
@@ -272,14 +248,6 @@
           "bank": "بینک",
           "pharmacy": "دوا خانہ",
           "cafe": "کیفے"
-        }
-      }
-    },
-    "mapillary_map_features": {
-      "title": "نقشے کی چیزیں",
-      "object": {
-        "sign": {
-          "advertisement": "اشتہار"
         }
       }
     },

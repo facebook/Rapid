@@ -41,7 +41,6 @@
       },
       "add_note": {
         "title": "Notat",
-        "label": "Legg til notat",
         "description": "Fant en feil? La andre kartleggere få vite det."
       },
       "add_preset": {
@@ -710,9 +709,6 @@
     "loading_auth": "Kobler til OpenStreetMap...",
     "report_a_bug": "Rapporter feil",
     "help_translate": "Hjelp til med oversettelse",
-    "sidebar": {
-      "tooltip": "Vis eller skjul sidemenyen."
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} skjulte objekter",
@@ -766,7 +762,6 @@
         "description": "Beskrivelse",
         "resolution": "Oppløsning",
         "accuracy": "Nøyaktighet",
-        "unknown": "Ukjent",
         "show_tiles": "Vis fliser",
         "hide_tiles": "Skjul fliser"
       },
@@ -777,7 +772,6 @@
         "last_edit": "Siste endring",
         "edited_by": "Endret av",
         "changeset": "Endringssett",
-        "unknown": "Ukjent",
         "note_no_history": "Ingen historikk (nytt notat)",
         "note_comments": "Kommentarer",
         "note_created_date": "Lager den",
@@ -859,12 +853,11 @@
         "zoom": "{features} er skjult. Zoom inn for å se dem."
       },
       "back_tooltip": "Endre objekttype",
+      "details": "Detaljer",
       "remove": "Fjern",
       "search": "Søk",
       "unknown": "Ukjent",
       "feature_list": "Søk etter objekter",
-      "edit": "Endre objekt",
-      "edit_features": "Endre objekter",
       "check": {
         "yes": "Ja",
         "no": "Nei",
@@ -949,10 +942,6 @@
           "tooltip": "Dataproblem oppdaget av keepright.at",
           "title": "KeepRight Problemer"
         },
-        "improveOSM": {
-          "tooltip": "Manglende data oppdaget av improveosm.org",
-          "title": "ImproveOSM problemer"
-        },
         "osmose": {
           "tooltip": "Dataproblemer oppdaget av osmose.openstreetmap.fr",
           "title": "Osmose-problemer"
@@ -984,9 +973,6 @@
     },
     "photo_overlays": {
       "title": "Bilde-overlegg",
-      "traffic_signs": {
-        "title": "Trafikkskilt"
-      },
       "photo_type": {
         "flat": {
           "title": "Flate bilder",
@@ -1245,40 +1231,6 @@
         "elems_title": "Objekter",
         "fix_title": "Fiks retningslinjer",
         "trap_title": "Vanlige Feil"
-      },
-      "improveOSM": {
-        "title": "ImproveOSM-oppdagelser",
-        "geometry_types": {
-          "path": "stier",
-          "parking": "parkering",
-          "road": "veier",
-          "both": "veier og parkering"
-        },
-        "directions": {
-          "east": "øst",
-          "north": "nord",
-          "northeast": "nordøst",
-          "northwest": "nordvest",
-          "south": "sør",
-          "southeast": "sørøst",
-          "southwest": "sørvest",
-          "west": "vest"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Manglende enveis",
-            "description": "Langs denne strekningen av {highway}, {percentage}% av {num_trips} spor peker fra {from_node} to {to_node}. Det kan mangle en enveis-egenskap her."
-          },
-          "mr": {
-            "title": "Manglende geometri",
-            "description": "{num_trips} spor i dette området viser at det kan være utegnede {geometry_type} her.",
-            "description_alt": "Data fra en tredjepart viser at det kan være utegnede {geometry_type} her."
-          },
-          "tr": {
-            "title": "Manglende svingebegrensning",
-            "description": "{num_passed} av {num_trips} GPS-spor (i retningen {travel_direction}) svinger fra {from_way} til {to_way} i krysset {junction}. Det kan mangle en \"{turn_restriction}\"-restriksjon her."
-          }
-        }
       },
       "keepRight": {
         "detail_description": "Beskrivelse",
@@ -1591,102 +1543,21 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Gatebilder fra Microsoft",
-      "title": "Bing gatebilder",
-      "report": "Rapporter et problem i forhold til personvern med dette bildet",
-      "view_on_bing": "Vis på Bing Maps",
+    "photos": {
       "hires": "Høy oppløsning"
     },
-    "mapillary_images": {
-      "tooltip": "Bilder på gate-nivå fra Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Kartobjekter",
-      "tooltip": "Kartobjekter fra Mapillary",
-      "construction": {
-        "barrier": {
-          "temporary": "midlertidig barriere"
-        },
-        "flat": {
-          "crosswalk_plain": "vanlig fotgjengerovergang ",
-          "driveway": "innkjørsel"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "feltmarkering - pil (venstre)",
-            "right": "feltmarkering - pil (høyre)",
-            "split_left_or_straight": "feltmarkering - pil (splitt venstre eller fremover)",
-            "split_right_or_straight": "feltmarkering - pil (splitt høyre eller fremover)",
-            "straight": "feltmarkering - pil (fremover)"
-          },
-          "crosswalk_zebra": "feltmarkering - fotgjengerovergang",
-          "give_way_row": "feltmarkering - vikeplikt (rad)",
-          "give_way_single": "feltmarkering - vikeplikt (en enkel)",
-          "other_marking": "feltmarkering - annet",
-          "stop_line": "feltmarkering - stoppelinje",
-          "symbol": {
-            "bicycle": "feltmarkering - symbol (sykkel)"
-          },
-          "text": "feltmarkering - tekst"
-        }
-      },
-      "object": {
-        "banner": "fane",
-        "bench": "benk",
-        "bike_rack": "sykkelstativ",
-        "billboard": "oppslagstavle",
-        "catch_basin": "dreneringskum",
-        "cctv_camera": "overvåkningskamera",
-        "fire_hydrant": "brannhydrant",
-        "junction_box": "koblingsboks",
-        "mailbox": "postkasse",
-        "manhole": "mannhull",
-        "parking_meter": "parkometer",
-        "phone_booth": "telefonkiosk",
-        "sign": {
-          "advertisement": "reklame",
-          "information": "informasjonsskilt",
-          "other": "annet skilt",
-          "store": "butikk skilt",
-          "traffic_sign": {
-            "back": "trafikkskilt - bakside",
-            "direction_front": "trafikkskilt - forside",
-            "front": "trafikkskilt - forside"
-          }
-        },
-        "street_light": "gatelys",
-        "support": {
-          "pole": "stang",
-          "traffic_sign_frame": "trafikkskiltramme",
-          "utility_pole": "kabel stolpe"
-        },
-        "traffic_cone": "Trafikkjegle",
-        "traffic_light": {
-          "cyclists": "trafikklys for sykkel",
-          "general_horizontal": "horisontalt trafikklys",
-          "general_single": "enkelt trafikklys",
-          "general_upright": "vertikalt trafikklys",
-          "other": "Trafikklys",
-          "pedestrians": "fotgjengersignal"
-        },
-        "trash_can": "søppelbøtte",
-        "water_valve": "vannkran"
-      }
+    "streetside": {
+      "title": "Bing gatebilder",
+      "tooltip": "Gatebilder fra Microsoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Trafikkskilt fra Mapillary"
-      },
-      "view_on_mapillary": "Vis dette bildet på Mapillary"
+      "tooltip": "Bilder på gate-nivå fra Mapillary"
     },
-    "kartaview_images": {
-      "tooltip": "Bilder på gatenivå fra KartaView"
+    "mapillary_signs": {
+      "title": "Trafikkskilt"
     },
     "kartaview": {
-      "view_on_kartaview": "Se dette bildet på KartaView"
+      "tooltip": "Bilder på gatenivå fra KartaView"
     },
     "note": {
       "note": "Notat",
@@ -1844,7 +1715,6 @@
       "qa": {
         "title": "Kvalitetssikring",
         "tools_h": "Verktøy",
-        "tools": "Følgende verktøy er foreløpig støttet: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) og [Osmose](https://osmose.openstreetmap.fr/).",
         "issues_h": "Håndtere problemer"
       },
       "field": {
@@ -2505,7 +2375,6 @@
           "map_data": "Velg kartdata rute",
           "issues": "Velg ruten for valideringsproblemer",
           "preferences": "Velg brukerinnstillinger rute",
-          "sidebar": "Vis/skjul sidemenyen",
           "wireframe": "Slå av/på wireframe-modus",
           "osm_data": "Slå av/på OpenStreetMap-data",
           "highlight_edits": "Uthev ulagrede endringer"

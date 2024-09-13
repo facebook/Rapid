@@ -124,11 +124,7 @@
     "info_panels": {
       "background": {
         "title": "Pozadina",
-        "description": "Opis",
-        "unknown": "Nepoznato"
-      },
-      "history": {
-        "unknown": "Nepoznato"
+        "description": "Opis"
       },
       "measurement": {
         "area": "Područje"
@@ -152,7 +148,6 @@
       "unknown": "Nepoznato",
       "incomplete": "<nije preuzeto>",
       "feature_list": "Značajke pretrage",
-      "edit": "Urediti značajku",
       "none": "Ništa"
     },
     "background": {

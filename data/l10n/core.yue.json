@@ -43,7 +43,6 @@
       },
       "add_note": {
         "title": "註",
-        "label": "加註",
         "description": "見到有問題？話畀其他製圖者知。"
       },
       "add_preset": {
@@ -247,9 +246,6 @@
     "loading_auth": "駁上去公家街圖⋯⋯",
     "report_a_bug": "報錯",
     "help_translate": "幫手繙",
-    "sidebar": {
-      "tooltip": "收放邊欄"
-    },
     "feature_info": {
       "hidden_warning": "隱藏地貌 {count} 個"
     },
@@ -284,14 +280,12 @@
       "background": {
         "title": "背景",
         "zoom": "放大縮細",
-        "description": "描述",
-        "unknown": "未知"
+        "description": "描述"
       },
       "history": {
         "last_edit": "最近修改",
         "edited_by": "修改人為",
         "changeset": "變更",
-        "unknown": "未知",
         "note_comments": "留言"
       },
       "location": {
@@ -332,21 +326,17 @@
       "choose": "揀地貌",
       "no_documentation_key": "未有文件解",
       "back_tooltip": "改地貌",
+      "type": "類",
+      "details": "明細",
       "remove": "移走",
       "search": "搵",
       "unknown": "未知",
       "incomplete": "<無傳落來>",
       "feature_list": "搵地貌",
-      "edit": "改地貌",
       "check": {
         "yes": "係",
         "no": "唔係",
         "reverser": "倒向"
-      },
-      "radio": {
-        "structure": {
-          "type": "類"
-        }
       },
       "add": "加",
       "none": "無",
@@ -374,7 +364,8 @@
       "data_layers": "資料層",
       "layers": {
         "notes": {
-          "title": "公家街圖註"
+          "title": "公家街圖註",
+          "key": "北"
         },
         "maproulette": {
           "detail_title": "明細",
@@ -548,24 +539,6 @@
         "detail_title": "明細",
         "elems_title": "地貌"
       },
-      "improveOSM": {
-        "geometry_types": {
-          "path": "徑",
-          "parking": "泊位",
-          "road": "路",
-          "both": "路及泊位"
-        },
-        "directions": {
-          "east": "東",
-          "north": "北",
-          "northeast": "東北",
-          "northwest": "西北",
-          "south": "南",
-          "southeast": "東南",
-          "southwest": "西南",
-          "west": "西"
-        }
-      },
       "keepRight": {
         "detail_description": "描述",
         "comment": "留言",
@@ -578,14 +551,8 @@
         }
       }
     },
-    "mapillary_images": {
-      "tooltip": "拎輿兵嘅街相"
-    },
-    "mapillary_map_features": {
-      "title": "地圖地貌"
-    },
     "mapillary": {
-      "view_on_mapillary": "去輿兵度睇張相"
+      "tooltip": "拎輿兵嘅街相"
     },
     "note": {
       "note": "註",
@@ -717,8 +684,7 @@
           "keyboard": "睇鍵盤快掣"
         },
         "display_options": {
-          "preferences": "收放喜好欄",
-          "sidebar": "收放邊欄"
+          "preferences": "收放喜好欄"
         }
       },
       "editing": {

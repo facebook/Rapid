@@ -226,6 +226,9 @@
           "label": "Klimatizo",
           "terms": "aerkondiĉigilo,klimatizilo,malvarmigilo"
         },
+        "alt_name": {
+          "label": "Alternativa nomo"
+        },
         "amenity": {
           "label": "Speco"
         },
@@ -238,6 +241,11 @@
         "animal_shelter": {
           "label": "Por bestoj"
         },
+        "archaeological_site": {
+          "options": {
+            "necropolis": "Nekropolo"
+          }
+        },
         "architect": {
           "label": "Arĥitekto",
           "terms": "arĥitekto,arhhitekto,arhxitekto,arkitekto,konstruisto"
@@ -249,11 +257,22 @@
           "label": "Artisto"
         },
         "artwork_type": {
-          "label": "Speco"
+          "label": "Speco",
+          "options": {
+            "graffiti": "Grafitio",
+            "mosaic": "Mozaiko"
+          }
         },
         "ascent": {
           "label": "Sumo de supreniroj",
           "terms": "supreniro"
+        },
+        "athletics_pitch": {
+          "options": {
+            "long_jump": "Longsalto",
+            "pole_vault": "Stango-salto",
+            "triple_jump": "Triobla salto"
+          }
         },
         "atm": {
           "label": "Bankaŭtomato"
@@ -307,7 +326,10 @@
           "label": "Polva/sabla bano"
         },
         "bath/type": {
-          "label": "Speco"
+          "label": "Speco",
+          "options": {
+            "lake": "Lago"
+          }
         },
         "beauty": {
           "label": "Servoj",
@@ -327,6 +349,12 @@
         },
         "bicycle_parking": {
           "label": "Speco"
+        },
+        "bicycle_road": {
+          "options": {
+            "undefined": "Ne",
+            "yes": "Jes"
+          }
         },
         "bin": {
           "label": "Rubujo",
@@ -351,7 +379,11 @@
           }
         },
         "board_type": {
-          "label": "Speco"
+          "label": "Speco",
+          "options": {
+            "art": "Arto",
+            "astronomy": "Astronomio"
+          }
         },
         "bollard": {
           "label": "Speco"
@@ -593,7 +625,10 @@
           }
         },
         "crop": {
-          "label": "Kultivaĵo"
+          "label": "Kultivaĵo",
+          "options": {
+            "tobacco": "Tabako"
+          }
         },
         "crossing": {
           "label": "Speco"
@@ -616,6 +651,11 @@
         },
         "crossing/light": {
           "label": "Trafiklumoj"
+        },
+        "crossing/markings": {
+          "options": {
+            "no": "Nemarkita"
+          }
         },
         "crossing_raised": {
           "label": "Plialtigita (stratĝibo)",
@@ -943,6 +983,10 @@
         },
         "entrance": {
           "label": "Speco",
+          "options": {
+            "main": "Ĉefa",
+            "secondary": "Sekundara"
+          },
           "terms": "tipo,savelirejo"
         },
         "except": {
@@ -1091,14 +1135,27 @@
           "terms": "genro,ina,iĉa,vira,ambaŭseksa"
         },
         "generator/method": {
-          "label": "Metodo"
+          "label": "Metodo",
+          "options": {
+            "photovoltaic": "Fotovoltaiko"
+          }
         },
         "generator/output/electricity": {
           "label": "Povumo",
           "placeholder": "50 MW, 100 MW, 200 MW…"
         },
         "generator/source": {
-          "label": "Energi-fonto"
+          "label": "Energi-fonto",
+          "options": {
+            "battery": "Baterio",
+            "coal": "Karbo",
+            "diesel": "Dizelo",
+            "gasoline": "Benzino",
+            "hydro": "Akvoenergio",
+            "oil": "Oleo",
+            "waste": "Malŝparo",
+            "wind": "Vento"
+          }
         },
         "generator/type": {
           "label": "Tipo"
@@ -1146,7 +1203,13 @@
           "label": "Speco"
         },
         "healthcare/speciality": {
-          "label": "Specialo"
+          "label": "Specialo",
+          "options": {
+            "abortion": "Abortigo",
+            "acupuncture": "Akupunkturo",
+            "anaesthetics": "Anestesiologio",
+            "fertility": "Fekundeco"
+          }
         },
         "heating": {
           "label": "Hejtado"
@@ -1446,6 +1509,9 @@
         },
         "material": {
           "label": "Materialo",
+          "options": {
+            "concrete": "Betono"
+          },
           "terms": "farita el"
         },
         "max_age": {
@@ -1686,6 +1752,9 @@
         },
         "payment_multi": {
           "label": "Pagmanieroj",
+          "options": {
+            "cryptocurrencies": "Kriptovaluto"
+          },
           "terms": "maniero de pago,kontanta mono,kreditkarto,pagkarto,bitcoin,bitmono"
         },
         "phases": {
@@ -1800,6 +1869,13 @@
         },
         "plant/method": {
           "label": "Metodo de produkto"
+        },
+        "plant/output": {
+          "options": {
+            "electricity": "Elektro",
+            "steam": "Vaporo",
+            "vacuum": "Vakuo"
+          }
         },
         "plant/output/electricity": {
           "placeholder": "500 MW, 1000 MW, 2000 MW…"
@@ -1970,6 +2046,11 @@
         },
         "religion": {
           "label": "Religio",
+          "options": {
+            "christian": "Kristana",
+            "jewish": "Juda",
+            "muslim": "Islama"
+          },
           "terms": "kredo,konfesio"
         },
         "reservation": {
@@ -2338,6 +2419,11 @@
         "substation": {
           "label": "Speco"
         },
+        "substation_pipeline": {
+          "options": {
+            "valve": "Valvo"
+          }
+        },
         "supervised": {
           "label": "Supergardo",
           "terms": "gardata,observata"
@@ -2471,6 +2557,12 @@
           "label": "Pozicio",
           "terms": "pozo"
         },
+        "toilets/wheelchair": {
+          "options": {
+            "no": "Ne",
+            "yes": "Jes"
+          }
+        },
         "toll": {
           "label": "Vojimposto",
           "terms": "pago,kotizo,pagenda ŝoseo"
@@ -2527,6 +2619,12 @@
             "backward": "Malantaŭen",
             "both": "Ambaŭ / ĉiuj",
             "forward": "Antaŭen"
+          }
+        },
+        "traffic_signals/sound": {
+          "options": {
+            "no": "Ne",
+            "yes": "Jes"
           }
         },
         "trail_visibility": {
@@ -3092,6 +3190,12 @@
         "amenity/doctors": {
           "name": "Kabineto de kuracisto",
           "terms": "kuracistejo,sanigejo,doktoro"
+        },
+        "amenity/doctors/gynaecology": {
+          "name": "Obstetrikisto/Ginekologo"
+        },
+        "amenity/doctors/urology": {
+          "name": "Urologisto"
         },
         "amenity/dojo": {
           "name": "Doĵo / batalart-lernejo",

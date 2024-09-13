@@ -39,7 +39,6 @@
       },
       "add_note": {
         "title": "참고",
-        "label": "참고 추가",
         "description": "문제점을 찾으셨나요? 다른 맵퍼에게 알려주세요."
       },
       "add_preset": {
@@ -620,9 +619,6 @@
     "loading_auth": "오픈스트리트맵에 연결 중...",
     "report_a_bug": "버그 제보하기",
     "help_translate": "번역 돕기",
-    "sidebar": {
-      "tooltip": "사이드바 토글하기"
-    },
     "feature_info": {
       "hidden_warning": "숨겨진 지물 {count}개"
     },
@@ -669,7 +665,6 @@
         "description": "설명",
         "resolution": "해상도",
         "accuracy": "정확도",
-        "unknown": "알 수 없음",
         "show_tiles": "타일 보이기",
         "hide_tiles": "타일 숨기기"
       },
@@ -680,7 +675,6 @@
         "last_edit": "최근 편집",
         "edited_by": "편집자",
         "changeset": "바뀜집합",
-        "unknown": "알 수 없음",
         "note_no_history": "역사 없음 (새 참고)",
         "note_comments": "댓글",
         "note_created_date": "만든일자:",
@@ -760,13 +754,13 @@
         "zoom": "{features}이(가) 숨겨져 있습니다. 보려면 확대하세요,"
       },
       "back_tooltip": "지물 유형 변경",
+      "type": "유형",
+      "details": "상세 정보",
       "remove": "제거",
       "search": "검색",
       "unknown": "알 수 없음",
       "incomplete": "<다운로드되지 않음>",
       "feature_list": "지물 검색",
-      "edit": "지물 편집",
-      "edit_features": "지물 편집",
       "check": {
         "yes": "예",
         "no": "아니오",
@@ -774,7 +768,6 @@
       },
       "radio": {
         "structure": {
-          "type": "유형",
           "default": "기본값",
           "layer": "레이어"
         }
@@ -843,7 +836,8 @@
         },
         "notes": {
           "tooltip": "OpenStreetMap의 참고 데이터",
-          "title": "오픈스트리트맵 참고"
+          "title": "오픈스트리트맵 참고",
+          "key": "북위"
         },
         "maproulette": {
           "detail_title": "자세한 정보",
@@ -852,10 +846,6 @@
         "keepRight": {
           "tooltip": "keepright.at에서 감지한 데이터 문제점",
           "title": "KeepRight 문제점"
-        },
-        "improveOSM": {
-          "tooltip": "improveosm.org에서 감지한 누락된 데이터",
-          "title": "ImproveOSM 문제점"
         },
         "osmose": {
           "tooltip": "osmose.openstreetmap.fr에서 감지한 데이터 문제점",
@@ -888,9 +878,6 @@
     },
     "photo_overlays": {
       "title": "사진 오버레이",
-      "traffic_signs": {
-        "title": "교통 표지판"
-      },
       "photo_type": {
         "flat": {
           "title": "평면 사진",
@@ -1155,40 +1142,6 @@
         "elems_title": "지물",
         "fix_title": "해결 방법",
         "trap_title": "흔한 실수"
-      },
-      "improveOSM": {
-        "title": "ImproveOSM 탐지",
-        "geometry_types": {
-          "path": "길",
-          "parking": "주차",
-          "road": "도로",
-          "both": "도로와 주차장"
-        },
-        "directions": {
-          "east": "동",
-          "north": "북",
-          "northeast": "북동",
-          "northwest": "북서",
-          "south": "남",
-          "southeast": "남동",
-          "southwest": "남서",
-          "west": "서"
-        },
-        "error_types": {
-          "ow": {
-            "title": "사라진 일방통행",
-            "description": "{highway} 의 이 섹션을 따라 기록된 {num_trip} 개 중 {{percentage}% 가 {node} 에서 {to_node} (으)로 이동합니다. \"oneway\" 태그가 사라질 수 있습니다."
-          },
-          "mr": {
-            "title": "기하 없음",
-            "description": "이 지역에 {num_trips} 이동 수는 맵핑되지 않은 {geometry_type} 이(가) 있을 수 있음을 시사합니다.",
-            "description_alt": "서드파티의 데이터에 따르면 매핑되지 않은 {geometry_type} 이(가) 있을 수 있습니다."
-          },
-          "tr": {
-            "title": "회전 제한 없음",
-            "description": "{num_trips} 개의 기록된 이동 중 {num_passed} 개 (이동 중 {travel_direction} 개) 가 {junction} 에서 {from_way} 에서 {to_way} (으)로 전환됩니다. \"{turn_restriction}\" 제한이 사라질 수 있습니다."
-          }
-        }
       },
       "keepRight": {
         "detail_description": "설명",
@@ -1504,102 +1457,21 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "마이크로소프트 제공 스트리트사이드 사진",
-      "title": "빙 스트리트사이드",
-      "report": "이 이미지에 대한 개인 정보 보호 문제 보고",
-      "view_on_bing": "Bing 지도에서 보기",
+    "photos": {
       "hires": "고해상도"
     },
-    "mapillary_images": {
-      "tooltip": "Mapillary 제공 거리 수준 사진"
-    },
-    "mapillary_map_features": {
-      "title": "지도 지물",
-      "tooltip": "Mapillary 제공 지도 지물",
-      "construction": {
-        "barrier": {
-          "temporary": "임시 보호벽"
-        },
-        "flat": {
-          "crosswalk_plain": "일반 횡단보도",
-          "driveway": "진입로"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "차선 표시 - 화살표 (좌측)",
-            "right": "차선 표시 - 화살표 (우측)",
-            "split_left_or_straight": "차선 표시 - 화살표 (좌측 및 직진)",
-            "split_right_or_straight": "차선 표시 - 화살표 (우측 및 직진)",
-            "straight": "차선 표시 - 화살표 (직진)"
-          },
-          "crosswalk_zebra": "차선 표시 - 횡단보도",
-          "give_way_row": "차선 표시 - 양보 (선형)",
-          "give_way_single": "차선 표시 - 양보 (단독)",
-          "other_marking": "차선 표시 - 기타",
-          "stop_line": "차선 표시 - 정지선",
-          "symbol": {
-            "bicycle": "차선 표시 - 기호 (자전거)"
-          },
-          "text": "차선 표시 - 글자"
-        }
-      },
-      "object": {
-        "banner": "배너",
-        "bench": "벤치",
-        "bike_rack": "자전거 고정대",
-        "billboard": "광고판",
-        "catch_basin": "배수구",
-        "cctv_camera": "CCTV 카메라",
-        "fire_hydrant": "소화전",
-        "junction_box": "교차로 영역",
-        "mailbox": "우편함",
-        "manhole": "맨홀",
-        "parking_meter": "주차 미터기",
-        "phone_booth": "공중전화 부스",
-        "sign": {
-          "advertisement": "광고",
-          "information": "안내판",
-          "other": "기타 표지판",
-          "store": "간판",
-          "traffic_sign": {
-            "back": "교통표지판 - 뒷쪽",
-            "direction_front": "교통표지판 - 앞쪽",
-            "front": "교통표지판 - 앞쪽"
-          }
-        },
-        "street_light": "가로등",
-        "support": {
-          "pole": "전신주",
-          "traffic_sign_frame": "교통표지판 틀",
-          "utility_pole": "전신주"
-        },
-        "traffic_cone": "라바콘",
-        "traffic_light": {
-          "cyclists": "자전거 신호등",
-          "general_horizontal": "가로형 신호등",
-          "general_single": "단색 신호등",
-          "general_upright": "세로형 신호등",
-          "other": "신호등",
-          "pedestrians": "보행자 신호등"
-        },
-        "trash_can": "쓰레기통",
-        "water_valve": "물 밸브"
-      }
+    "streetside": {
+      "title": "빙 스트리트사이드",
+      "tooltip": "마이크로소프트 제공 스트리트사이드 사진"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Mapillary 제공 교통표지판 정보"
-      },
-      "view_on_mapillary": "Mapillary에서 이 그림 보기"
+      "tooltip": "Mapillary 제공 거리 수준 사진"
     },
-    "kartaview_images": {
-      "tooltip": "KartaView 제공 거리 수준 사진"
+    "mapillary_signs": {
+      "title": "교통 표지판"
     },
     "kartaview": {
-      "view_on_kartaview": "KartaView에서 보기"
+      "tooltip": "KartaView 제공 거리 수준 사진"
     },
     "note": {
       "note": "참고",
@@ -1757,7 +1629,6 @@
       },
       "notes": {
         "title": "참고",
-        "intro": "*참고*는 다른 사용자들에게 지물이 수정이나 관심이 필요함을 알리기 위해 사용됩니다. 참고는 지도상의 특정 위치를 표시합니다. 기존 참고를 보거나 새로운 참고를 추가하려면  {data_icon} **{map_data}** 패널을 눌러 {osm_notes} 레이어를 활성화하세요.",
         "add_note_h": "참고 추가하기",
         "add_note": "참고를 추가하려면, 툴바의 {note_icon} **{note}** 버튼을 누르거나 단축키 `{add_note_key}`을 누르세요.",
         "update_note_h": "닫기, 다시 열기, 댓글 남기기",
@@ -1794,9 +1665,7 @@
         "title": "품질 관리",
         "intro": "*품질 관리* (Q/A) 도구는 오픈스트리트맵에서 부적절한 태그, 연결되지 않은 도로, 기타 문제점들을 발견해 사용자들이 수정할 수 있게 합니다. 존재하는 Q/A 문제점들을 보려면, {data_icon} **{map_data}** 패널을 열어 특정 Q/A 레이어를 활성화하세요.",
         "tools_h": "도구",
-        "tools": "현재 다음 도구들을 지원합니다: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/), [Osmose](https://osmose.openstreetmap.fr/).",
-        "issues_h": "문제점 다루기",
-        "issues": "Q/A 문제점을 다루는 법은 참고를 다루는 법과 비슷합니다. 표시를 선택해 문제점의 자세한 사항을 사이드바에서 확인하세요. 각 도구는 고유의 기능을 가지나, 일반적으로 댓글을 남기거나 문제점을 닫을 수 있습니다."
+        "issues_h": "문제점 다루기"
       },
       "field": {
         "restrictions": {
@@ -2548,7 +2417,6 @@
           "map_data": "지도 자료 패널 토글",
           "issues": "문제점 패널 토글",
           "preferences": "환경 설정 패널 토글",
-          "sidebar": "사이드바 토글",
           "wireframe": "테두리 모드 토글",
           "osm_data": "오픈스트리트맵 데이터 토글",
           "highlight_edits": "저장되지 않은 편집 강조"

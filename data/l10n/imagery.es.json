@@ -163,8 +163,12 @@
         "attribution": {
           "text": "Condiciones y sugerencias"
         },
-        "description": "Las imágenes de archivo de Esri pueden ser más claras y precisas que la capa predeterminada.",
+        "description": "Imágenes de archivo de Esri que pueden ser más claras y precisas que la capa predeterminada.",
         "name": "Imágenes mundiales de Esri (Claridad) Beta"
+      },
+      "FOMI_2011_2014": {
+        "description": "Ortofotos gubernamentales con cobertura de hojas y resolución de 40 cm/píxel para todo el país. Esta capa debe utilizarse como base de alineación en ausencia de una referencia más precisa. Imágenes en formato WEBP, JOSM necesita un plugin webp para ellas.",
+        "name": "Ortofoto FÖMI 2011-2014 (WEBP)"
       },
       "Frankfurt-am-Main-2019": {
         "attribution": {
@@ -454,6 +458,13 @@
         "description": "Senderos actualizados diariamente en las reservas naturales o sus alrededores, según los registros de la Agencia Sueca de Protección del Medio Ambiente",
         "name": "Agencia de Protección del Medio Ambiente - Senderos"
       },
+      "ODOT_TIMS_Road_Inventory": {
+        "attribution": {
+          "text": "Departamento de Transporte de Ohio"
+        },
+        "description": "Departamento de Transporte de Ohio (ODOT): Inventario de carreteras del Sistema de mapeo de información de transporte (TIMS) publicado en junio de 2024.",
+        "name": "Inventario de carreteras ODOT"
+      },
       "OSIP": {
         "attribution": {
           "text": "Programa estatal de imágenes de Ohio"
@@ -714,6 +725,13 @@
         },
         "description": "Fotografía geo-etiquetada de 1940 del Instituto Limnológico Balaton.",
         "name": "Ortofotos de EUFAR Balaton"
+      },
+      "geoscribble-latest": {
+        "attribution": {
+          "text": "Colaboradores de GeoScribble"
+        },
+        "description": "Notas de levantamiento geométrico del editor Every Door, con un máximo de tres semanas de antigüedad",
+        "name": "Últimas notas de GeoScribble"
       },
       "gothenburg-citymap": {
         "attribution": {

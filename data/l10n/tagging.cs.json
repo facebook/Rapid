@@ -1035,7 +1035,7 @@
             "argentinian": "Argentinská",
             "asian": "Asijská",
             "balkan": "Balkánská",
-            "barbecue": "Gril",
+            "barbecue": "Barbecue / Gril",
             "bavarian": "Barorská",
             "brazilian": "Brazilská",
             "breakfast": "Snídaně",
@@ -1403,7 +1403,7 @@
           "options": {
             "branch_embassy": "Pobočka velvyslanectví",
             "delegation": "Delegace",
-            "high_commission": "Vysoká provize",
+            "high_commission": "Vysoký komisař",
             "interests_section": "Sekce zájmů",
             "mission": "Diplomatická mise",
             "nunciature": "Diplomatická mise Svatého stolce",
@@ -2304,7 +2304,6 @@
             "marble": "Mramor",
             "metal": "Kov",
             "plastic": "Plast",
-            "reinforced_conrete": "Železobeton",
             "rock": "Skála",
             "sand": "Písek",
             "sandstone": "Pískovec",
@@ -3986,7 +3985,7 @@
           "label": "Typ"
         },
         "townhall/type": {
-          "label": "Typ"
+          "label": "Typ radnice/obecního úřadu"
         },
         "tracktype": {
           "label": "Klasifikace povrchu",
@@ -4567,7 +4566,7 @@
         },
         "amenity/bbq": {
           "name": "Gril",
-          "terms": "barbecue,grilovat"
+          "terms": "barbecue,grilovat,gril,"
         },
         "amenity/bench": {
           "name": "Lavička",
@@ -5295,8 +5294,8 @@
           "terms": "bar,snídaně,kavárna,kafe,jídelna,káva,stolovat,stolování,večeře,drive-in,jíst,gril,oběd,stůl"
         },
         "amenity/restaurant/barbecue": {
-          "name": "Barbecue",
-          "terms": "bar,grilování,jídelna,stolování,stolovat,večeře,drive-in,jíst,gril,oběd,stůl"
+          "name": "Barbecue restaurace",
+          "terms": "barbecue,grilování,gril,bbq"
         },
         "amenity/restaurant/chinese": {
           "name": "Čínská restaurace",
@@ -9667,7 +9666,7 @@
           "terms": "sběratelské potřeby,sběratelství,obchod se známkami,obchod se sběratelskými předměty,známky,mince,komix,panenky,antikvariát,filaterista,filaterie,razítka,sběratelský,sbírat"
         },
         "shop/computer": {
-          "name": "Počítače",
+          "name": "Obchod s počítači",
           "terms": "obchod s výpočetní technikou,počítače,elektro,elektronika,výpočetní technika"
         },
         "shop/confectionery": {
@@ -9787,8 +9786,8 @@
           "terms": "pohřebák,hřbitovní služby,hřbitovní služba,hrobař"
         },
         "shop/furniture": {
-          "name": "Nábytek",
-          "terms": "obchod s nábytkem,nábytek,domácnost"
+          "name": "Obchod s nábytkem",
+          "terms": "obchod s nabytkem,nábytek,domácnost"
         },
         "shop/games": {
           "name": "Deskové hry",
@@ -10003,7 +10002,7 @@
           "terms": "fotografie,fotografický obchod,foto,fotoobchod,video,vyvolávání,tisk,film,filmy,fotostudio,studio,fotoaparát,digitální,digitál,střih,ateliér,objektiv"
         },
         "shop/pottery": {
-          "name": "Keramika",
+          "name": "Obchod s keramikou",
           "terms": "keramika,hrnec,váza"
         },
         "shop/printer_ink": {
@@ -10085,8 +10084,8 @@
           "terms": "supermarket,obchod,přírodní produkty,bioprodukty,bio,eko,biopotraviny"
         },
         "shop/swimming_pool": {
-          "name": "Bazény",
-          "terms": "obchod s vybavením pro vířivky,obchod s údržbou vířivek,obchod s potřebami pro vířivky,obchod s bazény,bazény,obchod s vybavením pro bazény,obchod s instalací bazénů,obchod s údržbou bazénů,obchod s potřebami pro bazény"
+          "name": "Obchod s bazény",
+          "terms": "obchod s vybavením pro vířivky,obchod s údržbou vířivek,obchod s potřebami pro vířivky,obchod s bazeny,bazény,obchod s vybavením pro bazény,obchod s instalací bazénů,obchod s údržbou bazénů,obchod s potřebami pro bazény"
         },
         "shop/tailor": {
           "name": "Krejčovství",
@@ -10135,8 +10134,8 @@
           "terms": "obchod,prodejna,trofej,rofeje,poháry,medaile,diplomy,ocenění,ceny,rytí,rytiny,pamětní desky,plakety,rytí nápisů,rytec"
         },
         "shop/tyres": {
-          "name": "Pneuservis",
-          "terms": "prodejna pneumatik,pneumatiky,pneuservis"
+          "name": "Obchod s pneumatikami",
+          "terms": "prodejna pneumatik,pneumatiky"
         },
         "shop/vacant": {
           "name": "Neobsazený obchod"
@@ -10146,8 +10145,8 @@
           "terms": "vysavač,vysavače,vysávat,lux,luxovat"
         },
         "shop/variety_store": {
-          "name": "Diskontní prodejna",
-          "terms": "za pár babek,za bura"
+          "name": "Obchod s levným zbožím",
+          "terms": "obchod s levnym zbozim,všechno za dolar,vsechno za dolar,za pár babek,za bura"
         },
         "shop/video": {
           "name": "Video obchod",

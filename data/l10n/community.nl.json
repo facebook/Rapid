@@ -249,8 +249,7 @@
       "description": "{community} Wikipagina"
     },
     "de-berlin-xmpp": {
-      "name": "OpenStreetMap Berlijn-Brandenburg XMPP",
-      "description": "Kom erbij op onze XMPP chat: {url}"
+      "name": "OpenStreetMap Berlijn-Brandenburg XMPP"
     },
     "de-bochum-wiki": {
       "description": "{community} Wikipagina"
@@ -272,9 +271,6 @@
     },
     "de-dusseldorf-wiki": {
       "description": "{community} Wikipagina"
-    },
-    "de-hamburg-xmpp": {
-      "description": "Kom erbij op onze XMPP chat: {url}"
     },
     "de-karlsruhe-mailinglist": {
       "name": "Karlsruhe Mailinglijst"
@@ -313,9 +309,6 @@
     },
     "de-viersen-meetup": {
       "description": "OSM-gemeenschap en gebruikers-bijeenkomst Kreis Viersen en Mönchengladbach"
-    },
-    "de-xmpp": {
-      "description": "Kom erbij op onze XMPP chat: {url}"
     },
     "DF-telegram": {
       "extendedDescription": "Sluit je aan bij onze gemeenschap om meer te leren over OpenStreetMap, om vragen te stellen of om deel te nemen aan onze bijeenkomsten. Iedereen is welkom!"
@@ -561,9 +554,6 @@
     "OSM-japan-facebook": {
       "description": "Mappers en OpenStreetMap-gebruikers in Japan"
     },
-    "OSM-japan-slack": {
-      "description": "Een Slack werkplek voor de Japanse OSM gemeenschap {signupUrl}"
-    },
     "OSM-japan-website": {
       "description": "Mappers en OpenStreetMap-gebruikers in Japan"
     },
@@ -639,9 +629,6 @@
     },
     "OSM-US-Slack": {
       "description": "Iedereen is welkom! Meld je aan op {signupUrl}"
-    },
-    "OSM-Utah": {
-      "description": "Mappers en OpenStreetMap-gebruikers in de omgeving van Salt Lake City"
     },
     "OSM-Wyoming": {
       "description": "Mappers en OpenStreetMap-gebruikers in de omgeving van Wyoming"

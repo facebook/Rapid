@@ -452,6 +452,17 @@
             "panning": "Panorâmica"
           }
         },
+        "camp_site": {
+          "options": {
+            "basic": {
+              "description": "Somente um lugar para instalar uma tenda ou estacionar um veículo"
+            },
+            "deluxe": {
+              "description": "Com banheiros, água, chuveiros e eletricidade, além de serviços como lavanderia, piscina ou instalações recreativas semelhantes",
+              "title": "Luxo (lavanderia, piscina, etc.)"
+            }
+          }
+        },
         "capacity/disabled_parking": {
           "label": "Vagas para deficientes"
         },
@@ -468,7 +479,8 @@
           }
         },
         "changing_table": {
-          "label": "Fraldário"
+          "label": "Fraldário",
+          "terms": "mesa,fraldário,fraldas,bebê,trocar,"
         },
         "charge_fee": {
           "label": "Valor da taxa"
@@ -670,9 +682,7 @@
             "balkan": "Balcânica",
             "bavarian": "Bavária",
             "breakfast": "Café da manhã",
-            "brunch": "Almoço",
             "cake": "Bolo",
-            "chicken": "Galinha",
             "chinese": "Chinês",
             "coffee_shop": "Cafeteria",
             "curry": "Cereais",
@@ -684,7 +694,7 @@
             "frozen_yogurt": "Iogurte congelado",
             "german": "Alemão",
             "greek": "Grego",
-            "grill": "Bar e churrasqueira",
+            "grill": "Grelhado",
             "hot_dog": "Cachorro-quente/hot dog",
             "ice_cream": "Sorvete",
             "indian": "Indiano",
@@ -701,6 +711,7 @@
             "salad": "Salada",
             "sandwich": "Sanduíche",
             "seafood": "Frutos do mar",
+            "steak_house": "Steak house",
             "tapas": "Aperitivos",
             "thai": "Tailandês",
             "turkish": "Turco",
@@ -810,7 +821,8 @@
             "backward": "Contrária à direção da linha",
             "both": "Ambas / Todas",
             "forward": "Igual à direção da linha"
-          }
+          },
+          "terms": "direção,orientação,sentido"
         },
         "dispensing": {
           "label": "Vende remédios sob prescrição"
@@ -828,12 +840,21 @@
             "tidal": "Doca de maré represada"
           }
         },
+        "dock/height": {
+          "terms": "altura"
+        },
+        "dock/width": {
+          "terms": "largura"
+        },
         "dog": {
           "options": {
             "leashed": "Apenas amarrado",
             "unleashed": "Não é necessário usar coleiras"
           },
           "terms": "[traduza com sinônimos ou termos relacionados para 'Cães', separados por vírgulas]"
+        },
+        "door/width": {
+          "terms": "porta,largura,metros,width"
         },
         "drinking_water": {
           "label": "Potável",
@@ -1198,13 +1219,27 @@
         "kerb": {
           "label": "Meio-fio ou guia",
           "options": {
+            "flush": {
+              "description": "Um meio-fio rebaixado que está nivelado com o entorno."
+            },
             "lowered": {
+              "description": "Um meio-fio rebaixado que pode ser usado por cadeirantes, com uma altura não superior a 3 cm.",
               "title": "Reduzido"
             },
             "no": {
               "description": "Não há meio-fio nesse local."
+            },
+            "raised": {
+              "description": "Um meio-fio elevado que não pode ser usado facilmente por cadeirantes, superior a 3 cm."
+            },
+            "rolled": {
+              "description": "Um meio-fio elevado com aresta arredondada que facilita a transposição de carros ou bicicletas, mas não de cadeiras de rodas."
+            },
+            "yes": {
+              "description": "Existe algum tipo de meio-fio neste local, mas não se sabe se é elevado, rebaixado, etc."
             }
-          }
+          },
+          "terms": "lancil, meio-fio,berma,guia"
         },
         "kitchen": {
           "terms": "refeitório,cozinhar,cantina"
@@ -1232,7 +1267,8 @@
             "evergreen": "Perenifólia",
             "semi_deciduous": "Semi-caducifólia",
             "semi_evergreen": "Semi-perenifólia"
-          }
+          },
+          "terms": "folhas,ciclo"
         },
         "leaf_type": {
           "options": {
@@ -1289,7 +1325,7 @@
             "concrete": "Concreto",
             "dry_stone": "Pedras soltas (sem argamassa)",
             "glass": "Vidros",
-            "reinforced_conrete": "Concreto Armado",
+            "reinforced_concrete": "Concreto armado",
             "stone": "Rocha"
           },
           "terms": "material,matéria-prima"
@@ -1320,6 +1356,7 @@
         },
         "memorial": {
           "options": {
+            "ghost_bike": "Bicicleta-fantasma",
             "plaque": "Placa comemorativa"
           }
         },
@@ -1456,6 +1493,10 @@
         },
         "openfire": {
           "label": "Lareiras permitidas"
+        },
+        "opening_hours/drive_through": {
+          "label": "Horário de drive through",
+          "terms": "drive thru,drive,through,serviço,horas,atendimento,atender"
         },
         "operator": {
           "label": "Operador"
@@ -1868,7 +1909,6 @@
           "options": {
             "ambulatory_care": "Ambulatório",
             "assisted_living": "Moradia assistida",
-            "day_care": "Casa dia",
             "group_home": "Casa da família",
             "nursing_home": "Casa de repouso",
             "outreach": "Atividade de extensão/Outreach",
@@ -1983,11 +2023,16 @@
             "artificial_turf": "Grama artificial",
             "compacted": "Compactado (mistura de terra e agregados)",
             "concrete": "Concreto",
+            "concrete:lanes": "Faixas de concreto",
+            "concrete:plates": "Placas de concreto",
+            "fine_gravel": "Cascalho fino",
             "grass": "Grama",
+            "grass_paver": "Concregrama",
             "gravel": "Cascalho",
             "ground": "Terra batida",
             "paved": "Pavimentado",
             "paving_stones": "Piso intertravado",
+            "pebblestone": "Seixo",
             "sett": "Paralelepípedo",
             "unpaved": "Não pavimentado"
           }
@@ -2037,10 +2082,20 @@
         },
         "taxi_vehicle": {
           "options": {
+            "auto_rickshaw": {
+              "description": "Riquixás motorizados (tuk-tuk, bajaj, triciclo, etc.)",
+              "title": "Autorriquixá"
+            },
+            "cycle_rickshaw": {
+              "description": "Riquixás de pedais ( ecotáxi, padyak, velotaxi, etc.)",
+              "title": "Ciclo-riquixá"
+            },
             "motorcar": {
+              "description": "Carro motorizado (padrão)",
               "title": "Veículo motorizado"
             },
             "motorcycle": {
+              "description": "Com passageiros 'na garupa' (por exemplo, mototáxi, etc.)",
               "title": "Moto"
             }
           }
@@ -2485,7 +2540,7 @@
           "terms": "LGBTQ+ Bar"
         },
         "amenity/bbq": {
-          "name": "Churrasqueira",
+          "name": "Churrasqueira\nGrelhador\nAssador\nBarbecue\nGrill\nGrelha\nBBQ",
           "terms": "Forno, Churrasco, Grill, Barbecue"
         },
         "amenity/bench": {
@@ -2715,6 +2770,10 @@
         },
         "amenity/fast_food/sandwich": {
           "terms": "lanchonete, comida rápida, fast food, restaurante, alimentação, sanduíche natural, sandwich natural,"
+        },
+        "amenity/fast_food/wings": {
+          "name": "Asas de frango fritas",
+          "terms": "asinha,frito,frango,franguinho,comida rápida,lanche"
         },
         "amenity/ferry_terminal": {
           "name": "Terminal da balsa"
@@ -3123,7 +3182,6 @@
           "terms": "Banco de alimentos"
         },
         "amenity/social_facility/group_home": {
-          "name": "Asilo",
           "terms": "Albergue, casa de repouso, Casa de idosos, asilo, ancionato, clínica geriátrica"
         },
         "amenity/social_facility/homeless_shelter": {
@@ -3131,7 +3189,7 @@
           "terms": "refúgio para desabrigados, abrigo para sem-teto, albergue, abrigo, mendigo, sopão, sem-teto"
         },
         "amenity/social_facility/nursing_home": {
-          "name": "Casa de repouso",
+          "name": "Asilo",
           "terms": "Enfermagem, casa de saúde, lar de repouso, lar de idosos, asilo, lar de vida assistida, lar de saúde, casa de velhinhos,"
         },
         "amenity/studio": {
@@ -6807,6 +6865,9 @@
           "name": "Cabeleireiro",
           "terms": "Cabeleireiro, Salão de Beleza, Barbeiro"
         },
+        "shop/hairdresser/barber": {
+          "name": "Barbeiro\nBarbearia"
+        },
         "shop/hairdresser_supply": {
           "name": "Loja de suprimentos de cabeleireiro",
           "terms": "Loja de suprimentos de cabeleireiro"
@@ -6953,6 +7014,9 @@
         "shop/party": {
           "name": "Loja de materiais para festas",
           "terms": "Loja de materiais para festas"
+        },
+        "shop/pasta": {
+          "name": "Loja de massa"
         },
         "shop/pastry": {
           "name": "Confeitaria",
@@ -7105,14 +7169,16 @@
           "terms": "Pneus, Rodas, Borracharia, Vulcanizadora"
         },
         "shop/vacant": {
-          "name": "Loja Desocupada"
+          "name": "Loja Desocupada",
+          "terms": "Loja Desocupada"
         },
         "shop/vacuum_cleaner": {
           "name": "Loja de Aspiradores de Pó",
           "terms": "loja de aspiradores"
         },
         "shop/variety_store": {
-          "name": "Loja de descontos"
+          "name": "Loja de descontos",
+          "terms": "1.99,loja dos trezentos,bijuterias,adereços,quinquilharia,chineses,chinês"
         },
         "shop/video": {
           "name": "Loja/Locadora de Vídeos",

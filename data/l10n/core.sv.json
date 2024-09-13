@@ -40,7 +40,6 @@
       },
       "add_note": {
         "title": "Anteckning",
-        "label": "Lägg till anteckning",
         "description": "Hittat ett problem? Låt andra kartläggare få veta det. "
       },
       "add_preset": {
@@ -709,10 +708,6 @@
     "loading_auth": "Ansluter till OpenStreetMap...",
     "report_a_bug": "Rapportera ett fel",
     "help_translate": "Hjälp till och översätta",
-    "sidebar": {
-      "key": "´",
-      "tooltip": "Visa/dölj sidopanel"
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} dolt objekt",
@@ -768,7 +763,6 @@
         "description": "Beskrivning",
         "resolution": "Upplösning",
         "accuracy": "Precision",
-        "unknown": "Okänd",
         "show_tiles": "Visa kartrutor",
         "hide_tiles": "Dölj kartrutor"
       },
@@ -778,7 +772,6 @@
         "last_edit": "Senast redigering",
         "edited_by": "Redigerad av",
         "changeset": "Ändringsuppsättning",
-        "unknown": "Okänd",
         "note_no_history": "Ingen historik (ny anteckning)",
         "note_comments": "Kommentarer",
         "note_created_date": "Skapad den",
@@ -822,6 +815,7 @@
       "location_unavailable": "Din plats är inte tillgänglig."
     },
     "inspector": {
+      "key": "´",
       "zoom_to": {
         "title": "Zooma till markering",
         "no_selection": "Inget att zooma till."
@@ -858,13 +852,13 @@
         "zoom": "{features} är dolda. Zooma in för att aktivera dem. "
       },
       "back_tooltip": "Ändra objekttyp",
+      "type": "Typ",
+      "details": "Detaljer",
       "remove": "Ta bort",
       "search": "Sök",
       "unknown": "Okänd",
       "incomplete": "<inte hämtad>",
       "feature_list": "Sök efter objekt",
-      "edit": "Ändra objekt",
-      "edit_features": "Redigera objekt",
       "check": {
         "yes": "Ja",
         "no": "Nej",
@@ -872,7 +866,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Typ",
           "default": "Standard",
           "layer": "Lager"
         }
@@ -950,10 +943,6 @@
           "tooltip": "Dataproblem hittad av keepright.at",
           "title": "KeepRight-problem"
         },
-        "improveOSM": {
-          "tooltip": "Saknad data hittad av improveosm.org",
-          "title": "ImproveOSM-problem"
-        },
         "osmose": {
           "tooltip": "Dataproblem hittade av osmose.openstreetmap.fr",
           "title": "Osmose-problem"
@@ -985,9 +974,6 @@
     },
     "photo_overlays": {
       "title": "Bildlager",
-      "traffic_signs": {
-        "title": "Vägmärken"
-      },
       "photo_type": {
         "flat": {
           "title": "Platta foton",
@@ -1249,40 +1235,6 @@
         "elems_title": "Objekt",
         "fix_title": "Riktlinjer för att åtgärda buggar",
         "trap_title": "Vanliga misstag"
-      },
-      "improveOSM": {
-        "title": "ImproveOSM-upptäckt",
-        "geometry_types": {
-          "path": "spår",
-          "parking": "parkering",
-          "road": "vägar",
-          "both": "vägar och parkering"
-        },
-        "directions": {
-          "east": "öst",
-          "north": "norr",
-          "northeast": "nordöst",
-          "northwest": "nordväst",
-          "south": "syd",
-          "southeast": "sydöst",
-          "southwest": "sydväst",
-          "west": "väst"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Saknad enkelriktning",
-            "description": "Längs denna sektion av {highway} går {percentage} % av {num_trips} inspelade resor från {from_node} till {to_node}. Det kan saknas en \"oneway\"-tagg."
-          },
-          "mr": {
-            "title": "Saknar geometri",
-            "description": "{num_trips} inspelade resor i detta område tyder på att det kan saknas ett okarterat objekt av typen {geometry_type} här.",
-            "description_alt": "Data från tredje part tyder på att det kan finnas ej kartlagd {geometry_type} här. "
-          },
-          "tr": {
-            "title": "Saknar svängrestriktion ",
-            "description": "{num_passed} av {num_trips} inspelade resor (åt {travel_direction}) gör en sväng från {from_way} till {to_way} vid {junction}. Det kan saknas en svängrestriktion av typen \"{turn_restriction}\"."
-          }
-        }
       },
       "keepRight": {
         "detail_description": "Beskrivning",
@@ -1596,101 +1548,20 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Gatubilder från Microsoft",
-      "report": "Rapportera ett integritetsproblem med den här bilden",
-      "view_on_bing": "Visa på Bing Maps",
+    "photos": {
       "hires": "Hög upplösning"
     },
-    "mapillary_images": {
-      "tooltip": "Gatubilder från Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Kartobjekt",
-      "tooltip": "Kartobjekt från Mapillary",
-      "construction": {
-        "barrier": {
-          "temporary": "Tillfällig barriär"
-        },
-        "flat": {
-          "crosswalk_plain": "enkelt övergångsställe",
-          "driveway": "uppfart"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "vägmarkering - pil (vänster)",
-            "right": "vägmarkering - pil (höger)",
-            "split_left_or_straight": "vägmarkering - pil (gemensam vänster och rakt fram)",
-            "split_right_or_straight": "vägmarkering - pil (gemensam höger och rakt fram)",
-            "straight": "vägmarkering - pil (rakt fram)"
-          },
-          "crosswalk_zebra": "vägmarkering - övergångsställe",
-          "give_way_row": "vägmarkering - lämna företräde (rad)",
-          "give_way_single": "vägmarkering - lämna företräde (enkelt)",
-          "other_marking": "vägmarkering - annat",
-          "stop_line": "vägmarkering - stopplinje",
-          "symbol": {
-            "bicycle": "vägmarkering - symbol (cykel)"
-          },
-          "text": "vägmarkering - text"
-        }
-      },
-      "object": {
-        "banner": "baner",
-        "bench": "bänk",
-        "bike_rack": "cykelställ",
-        "billboard": "anslagstavla",
-        "catch_basin": "gatubrunn",
-        "cctv_camera": "övervakningskamera",
-        "fire_hydrant": "brandpost",
-        "junction_box": "kopplingsbox",
-        "mailbox": "brevlåda",
-        "manhole": "manhål",
-        "parking_meter": "parkeringsautomat",
-        "phone_booth": "telefonhytt",
-        "sign": {
-          "advertisement": "reklam",
-          "information": "informationsskylt",
-          "other": "annan skyllt",
-          "store": "stoppskylt",
-          "traffic_sign": {
-            "back": "trafikskylt - baksida",
-            "direction_front": "trafikskylt - framsida",
-            "front": "trafikskylt - framsida"
-          }
-        },
-        "street_light": "Gatuljus",
-        "support": {
-          "pole": "påle",
-          "traffic_sign_frame": "trafikskyltsram",
-          "utility_pole": "el-/telefonstolpe"
-        },
-        "traffic_cone": "trafikkon",
-        "traffic_light": {
-          "cyclists": "trafikljus för cyklister",
-          "general_horizontal": "horisontellt trafikljus",
-          "general_single": "enskilt trafikljus",
-          "general_upright": "vertikalt trafikljus",
-          "other": "trafikljus",
-          "pedestrians": "trafikljus för fotgängare"
-        },
-        "trash_can": "soptunna",
-        "water_valve": "vattenventil"
-      }
+    "streetside": {
+      "tooltip": "Gatubilder från Microsoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Trafikskyltar från Mapillary"
-      },
-      "view_on_mapillary": "Visa denna bild på Mapillary"
+      "tooltip": "Gatubilder från Mapillary"
     },
-    "kartaview_images": {
-      "tooltip": "Gatubilder från KartaView"
+    "mapillary_signs": {
+      "title": "Vägmärken"
     },
     "kartaview": {
-      "view_on_kartaview": "Visa denna bild på KartaView"
+      "tooltip": "Gatubilder från KartaView"
     },
     "note": {
       "note": "Anteckning",
@@ -1847,7 +1718,6 @@
       },
       "notes": {
         "title": "Anteckningar",
-        "intro": "*Anteckningar* används för att uppmärksamma andra användare att ett objekt behöver fixas eller bearbetas. Anteckningar markerar en specifik plats på kartan. För att se existerande anteckningar eller lägga till nya, klicka på panelen {data_icon} **{map_data}** för att aktivera lagret {osm_notes}.",
         "add_note_h": "Lägga till anteckningar",
         "add_note": "För att lägga till en ny anteckning, tryck på knappen {note_icon} **{note}** i verktygsraden ovanför kartan, eller trycka kortkommandot `{add_note_key}`.",
         "update_note_h": "Stänga, återöppna och kommentera",
@@ -1884,9 +1754,7 @@
         "title": "Kvalitetssäkring",
         "intro": "\"Kvalitetssäkringsverktyg\" (Q/A=Quality Assurance) kan hitta olämpliga taggar, icke anslutna vägar och andra typer av problem på OpenStreetMap, som kartläggare sedan kan rätta till.  För att visa existerande Q/A-problem, öppna panelen {data_icon} **{map_data}** för att aktivera ett specifikt Q/A-lager.",
         "tools_h": "Verktyg",
-        "tools": "Följande verktyg stöds för tillfället: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) och [Osmose](https://osmose.openstreetmap.fr/).",
-        "issues_h": "Hantera problem",
-        "issues": "Hanteringen av Q/A-problem liknar hanteringen av anteckningar. Välj en markör för att se detaljer om problemet i sidopanelen. Varje verktyg har sina egna möjligheter, men generellt kan du kommentera och/eller stänga ett problem."
+        "issues_h": "Hantera problem"
       },
       "field": {
         "restrictions": {
@@ -2636,7 +2504,6 @@
           "map_data": "Visa/dölj panelen Kartdata",
           "issues": "Visa/dölj panelen Problem",
           "preferences": "Visa/dölj panelen användarinställningar",
-          "sidebar": "Visa/dölj sidopanel",
           "wireframe": "Växla trådramsläge",
           "osm_data": "Visa/dölj OpenStreetMap-data",
           "highlight_edits": "Markera osparade ändringar"

@@ -227,6 +227,10 @@
           "label": "Klimatyzacja",
           "terms": "klimatyzacja, chłodzenie"
         },
+        "alt_name": {
+          "label": "Nazwa alternatywna",
+          "terms": "nazwa alternatywna"
+        },
         "amenity": {
           "label": "Rodzaj"
         },
@@ -263,6 +267,14 @@
         },
         "area/highway": {
           "label": "Rodzaj"
+        },
+        "armrest": {
+          "label": "Podłokietniki",
+          "options": {
+            "no": "Brak",
+            "undefined": "Nieokreślone",
+            "yes": "Jeden lub więcej"
+          }
         },
         "artist": {
           "label": "Artysta"
@@ -681,6 +693,27 @@
             "panning": "Obrotowa"
           }
         },
+        "camp_site": {
+          "label": "Rodzaj",
+          "options": {
+            "basic": {
+              "description": "Wyłącznie miejsce na namiot lub pojazd",
+              "title": "Podstawowy (wyłącznie miejsce na namiot/pojazd)"
+            },
+            "deluxe": {
+              "description": "Zapewnione są wszystkie typowe udogodnienia, a ponadto pralnia, basen kąpielowy albo inne podobne urządzenia rekreacyjne",
+              "title": "Deluxe (dostęp do pralni, basenu kąpielowego itd.)"
+            },
+            "serviced": {
+              "description": "Zapewniony jest dostęp do wody, toalet, pryszniców i elektryczności",
+              "title": "Z udogodnieniami (dostęp do pryszniców i elektryczności)"
+            },
+            "standard": {
+              "description": "Zapewniony jest dostęp do wody i toalet na terenie lub w pobliżu",
+              "title": "Standardowy (dostęp do wody i toalet)"
+            }
+          }
+        },
         "capacity": {
           "label": "Liczba miejsc",
           "terms": "liczba miejsc, pojemność"
@@ -794,6 +827,18 @@
         "communication_multi": {
           "label": "Rodzaje komunikacji",
           "terms": "rodzaje komunikacji, rodzaj komunikacji, rodzaje transmisji, rodzaj transmisji, transmisja"
+        },
+        "community_centre": {
+          "label": "Rodzaj",
+          "options": {
+            "club_home": "Świetlica klubowa",
+            "community_hall": "Świetlica (nieokreślona)",
+            "cultural_centre": "Centrum kultury",
+            "family_centre": "Centrum dla rodzin",
+            "parish_hall": "Dom parafialny / Sala parafialna",
+            "village_hall": "Świetlica wiejska",
+            "youth_centre": "Ośrodek młodzieżowy"
+          }
         },
         "connectivity": {
           "label": "Łączność"
@@ -2211,6 +2256,10 @@
           "label": "Oświetlenie",
           "terms": "oświetlenie, światło"
         },
+        "loc_name": {
+          "label": "Nazwa lokalna",
+          "terms": "nazwa lokalna, nazwa miejscowa, nazwa środowiskowa"
+        },
         "location": {
           "label": "Położenie",
           "terms": "położenie, lokalizacja, lokacja, miejsce"
@@ -2297,7 +2346,7 @@
             "limestone": "Wapień",
             "marble": "Marmur",
             "plastic": "Plastik",
-            "reinforced_conrete": "Beton zbrojony",
+            "reinforced_concrete": "Żelbet",
             "rock": "Skała",
             "sand": "Piach",
             "sandstone": "Piaskowiec",
@@ -2358,6 +2407,7 @@
             "blue_plaque": "Niebieska tablica",
             "bust": "Popiersie",
             "cross": "Krzyż",
+            "ghost_bike": "Duch roweru",
             "plaque": "Tablica pamiątkowa",
             "sculpture": "Rzeźba",
             "statue": "Posąg",
@@ -2465,6 +2515,10 @@
           "label": "Nazwa",
           "placeholder": "Powszechna nazwa własna (tylko jeśli istnieje)",
           "terms": "nazwa"
+        },
+        "nat_name": {
+          "label": "Nazwa narodowa",
+          "terms": "nazwa narodowa"
         },
         "natural": {
           "label": "Natura"
@@ -2580,6 +2634,10 @@
             "union": "Związek zawodowy",
             "water_utility": "Biuro wodociągowe"
           }
+        },
+        "official_name": {
+          "label": "Nazwa oficjalna",
+          "terms": "nazwa oficjalna"
         },
         "oneway": {
           "label": "Jednokierunkowa",
@@ -2841,6 +2899,7 @@
             "ice_skate": "Łyżwiarska (na lodzie)",
             "nordic": "Biegowa",
             "playground": "Narciarski plac zabaw",
+            "ski_jump": "Skocznia narciarska",
             "skitour": "Skiturowa",
             "sled": "Tor saneczkowy",
             "sleigh": "Dla zaprzęgów z saniami lub skuterów śnieżnych",
@@ -3083,6 +3142,10 @@
         "ref_taxiway": {
           "label": "Oznaczenie drogi kołowania",
           "placeholder": "np. A5"
+        },
+        "reg_name": {
+          "label": "Nazwa regionalna",
+          "terms": "nazwa regionalna"
         },
         "relation": {
           "label": "Rodzaj"
@@ -3419,6 +3482,10 @@
         "shop": {
           "label": "Rodzaj"
         },
+        "short_name": {
+          "label": "Nazwa skrócona",
+          "terms": "nazwa skrócona, nazwa krótka, skrót, akronim"
+        },
         "shower": {
           "label": "Prysznice",
           "terms": "prysznice"
@@ -3576,6 +3643,7 @@
             "scuba_diving": "Nurkowanie z butlą",
             "shooting": "Strzelectwo",
             "skateboard": "Skateboarding",
+            "ski_jumping": "Skoki narciarskie",
             "skiing": "Narciarstwo",
             "soccer": "Piłka nożna",
             "speedway": "Sport żużlowy",
@@ -3733,16 +3801,21 @@
           "options": {
             "artificial_turf": "Sztuczna trawa",
             "asphalt": "Asfalt",
+            "clay": "Mączka ceglana",
             "compacted": "Ubity tłuczeń",
             "concrete": "Beton",
+            "concrete:lanes": "Płyty betonowe (pasy pod koła)",
+            "concrete:plates": "Płyty betonowe (na całej szerokości)",
             "dirt": "Ziemia / Gleba / Pył",
             "fine_gravel": "Drobny żwir",
             "grass": "Trawa",
+            "grass_paver": "Płyty ażurowe",
             "gravel": "Żwir",
             "ground": "Gruntowa (ogólnie)",
             "mud": "Trwałe błoto",
             "paved": "Utwardzona (ogólnie)",
             "paving_stones": "Kostka / Płyty chodnikowe",
+            "pebblestone": "Otoczaki",
             "salt": "Sól",
             "sand": "Piasek",
             "sett": "Kostka kamienna / Bruk",
@@ -4648,7 +4721,7 @@
         },
         "amenity/clinic": {
           "name": "Przychodnia/poliklinika",
-          "terms": "przychodnia zdrowia, poliklinika, ośrodek zdrowia, zoz, nzoz, nocna opieka lekarska"
+          "terms": "przychodnia zdrowia, poliklinika, ośrodek zdrowia, klinika, zoz, nzoz, nocna opieka lekarska"
         },
         "amenity/clinic/abortion": {
           "name": "Klinika aborcyjna",
@@ -4676,15 +4749,39 @@
         },
         "amenity/community_centre": {
           "name": "Centrum społecznościowe",
-          "terms": "centrum społecznościowe, centrum społeczności, świetlica wiejska"
+          "terms": "centrum społecznościowe, centrum społeczności, ośrodek kultury, centrum kultury, dom kultury, świetlica wiejska, świetlica środowiskowa, świetlica"
+        },
+        "amenity/community_centre/club_home": {
+          "name": "Świetlica klubowa",
+          "terms": "świetlica klubowa, świetlica stowarzyszenia"
+        },
+        "amenity/community_centre/community_hall": {
+          "name": "Świetlica (sala spotkań społeczności)",
+          "terms": "świetlica, sala spotkań, sala zebrań"
+        },
+        "amenity/community_centre/cultural_centre": {
+          "name": "Ośrodek kultury",
+          "terms": "ośrodek kultury, centrum kultury"
+        },
+        "amenity/community_centre/family_centre": {
+          "name": "Centrum dla rodzin",
+          "terms": "centrum dla rodzin"
         },
         "amenity/community_centre/lgbtq": {
           "name": "Centrum społeczności LGBTQ+",
           "terms": "centrum społeczności lgbtq+, lgbt, gejów, lesbijek"
         },
+        "amenity/community_centre/parish_hall": {
+          "name": "Dom parafialny / Sala parafialna",
+          "terms": "dom parafialny, sala parafialna"
+        },
+        "amenity/community_centre/village_hall": {
+          "name": "Świetlica wiejska",
+          "terms": "świetlica wiejska"
+        },
         "amenity/community_centre/youth_centre": {
-          "name": "Centrum młodzieżowe",
-          "terms": "centrum młodzieżowe, ośrodek młodzieżowy"
+          "name": "Ośrodek młodzieżowy",
+          "terms": "ośrodek młodzieżowy, centrum młodzieżowe"
         },
         "amenity/compressed_air": {
           "name": "Kompresor",
@@ -4883,6 +4980,10 @@
         "amenity/fast_food/chicken": {
           "name": "Bar z kurczakiem",
           "terms": "bar z kurczakiem, kurczak z rożna"
+        },
+        "amenity/fast_food/chinese": {
+          "name": "Bar chiński",
+          "terms": "bar chiński"
         },
         "amenity/fast_food/donut": {
           "name": "Sklep z donutami",
@@ -5448,6 +5549,10 @@
         "amenity/studio/video": {
           "name": "Studio filmowe",
           "terms": "studio filmowe, wytwórnia filmowa, wytwórnia filmów, produkcja filmowa, produkcja filmów"
+        },
+        "amenity/swingerclub": {
+          "name": "Klub swingersów",
+          "terms": "klub swingersów"
         },
         "amenity/taxi": {
           "name": "Postój taksówek",
@@ -6849,7 +6954,7 @@
           "terms": "rampa ratunkowa, rampa awaryjnego hamowania, rampa awaryjna dla ciężarówek"
         },
         "highway/footway": {
-          "name": "Ścieżka dla pieszych",
+          "name": "Chodnik/ścieżka dla pieszych",
           "terms": "ścieżka dla pieszych, bulwar, ścieżka, deptak, szlak, chodzenie"
         },
         "highway/footway/access_aisle": {
@@ -6880,7 +6985,7 @@
           "name": "Nieformalna ścieżka dla pieszych"
         },
         "highway/footway/sidewalk": {
-          "name": "Chodnik",
+          "name": "Chodnik przy jezdni",
           "terms": "chodnik, chodnik wzdłuż drogi, chodnik przy jezdni"
         },
         "highway/footway/traffic_island": {
@@ -6924,7 +7029,7 @@
           "terms": "mijanka"
         },
         "highway/path": {
-          "name": "Ścieżka (nieokreślona)",
+          "name": "Ścieżka",
           "terms": "ścieżka, droga, dróżka"
         },
         "highway/path/boardwalk": {
@@ -7429,6 +7534,10 @@
           "name": "Estrada",
           "terms": "estrada, scena, arena, podium, występy, amfiteatr, muszla koncertowa, trybuna, trybuny"
         },
+        "leisure/bathing_place": {
+          "name": "Kąpielisko",
+          "terms": "kąpielisko"
+        },
         "leisure/beach_resort": {
           "name": "Ośrodek plażowy",
           "terms": "ośrodek plażowy, kurort, ośrodek wypoczynkowy, plaża"
@@ -7829,6 +7938,10 @@
           "name": "Tor wyścigów konnych (ośrodek sportowy)\nHipodrom",
           "terms": "tor wyścigów konnych, hipodrom"
         },
+        "leisure/sports_centre/karting": {
+          "name": "Ośrodek kartingowy\nOśrodek gokartowy",
+          "terms": "ośrodek kartingowy, centrum kartingowe, ośrodek gokartowy, centrum gokartowe, gokarty"
+        },
         "leisure/sports_centre/shooting": {
           "name": "Strzelnica (ośrodek sportowy)",
           "terms": "strzelnica"
@@ -7846,7 +7959,7 @@
           "terms": "stadion"
         },
         "leisure/swimming_area": {
-          "name": "Kąpielisko",
+          "name": "Kąpielisko (obszar wodny)",
           "terms": "kąpielisko"
         },
         "leisure/swimming_pool": {
@@ -8013,6 +8126,10 @@
           "name": "Pochodnia gazowa",
           "terms": "pochodnia gazowa, flara gazowa"
         },
+        "man_made/footwear_decontamination-AU-NZ": {
+          "name": "Punkt dekontaminacji obuwia",
+          "terms": "punkt dekontaminacji obuwia, stacja dekontaminacji obuwia, punkt odkażania obuwia, stacja odkażania obuwia, punkt dezynfekcji obuwia, stacja dezynfekcji obuwia"
+        },
         "man_made/fuel_pump": {
           "name": "Dystrybutor paliwa",
           "terms": "dystrybutor paliwa"
@@ -8156,6 +8273,10 @@
           "name": "Silos (wieżowy)\nElewator",
           "terms": "silos wieżowy, silos zbożowy, elewator, zboże, kukurydza, pszenica"
         },
+        "man_made/ski_jump": {
+          "name": "Skocznia narciarska (konstrukcja)",
+          "terms": "skocznia narciarska"
+        },
         "man_made/storage_tank": {
           "name": "Zbiornik\nCysterna",
           "terms": "zbiornik, cysterna"
@@ -8166,7 +8287,7 @@
         },
         "man_made/street_cabinet": {
           "name": "Skrzynka elektryczna",
-          "terms": "skrzynka elektryczna, szafka elektryczna, szafka uliczna, rozdzielnica elektryczna"
+          "terms": "skrzynka elektryczna, szafka elektryczna, szafka uliczna, rozdzielnica elektryczna, szafka instalacyjna, bzbwi"
         },
         "man_made/street_cabinet/postal_service": {
           "name": "Skrzynka dla listonosza",
@@ -8802,6 +8923,10 @@
           "name": "Terapeuta",
           "terms": "terapeuta, fizjoterapeuta"
         },
+        "office/translator": {
+          "name": "Tłumacz",
+          "terms": "tłumacz, biuro tłumaczeniowe"
+        },
         "office/travel_agent": {
           "name": "Biuro podróży"
         },
@@ -8851,6 +8976,10 @@
           "name": "Szlak sportów zimowych",
           "terms": "szlaki sportów zimowych, trasa sportów zimowych, narty, klasyczne, przełajowe, downhill, alpejskie, snowboard, wycieczki narciarskie, sanki, saneczki, sanie, kulig, skijöring, husky, koń, zimowa wspinaczka, rakiety śniegowe, lód, łyżwiarstwo"
         },
+        "piste/ski_jump": {
+          "name": "Skocznia narciarska (najazd/zeskok)",
+          "terms": "skocznia narciarska, najazd, zeskok"
+        },
         "piste/skitour": {
           "name": "Trasa skiturowa",
           "terms": "trasa skiturowa, szlak skiturowy, skitury, narty, wycieczki narciarskie, przełajowe, trasa narciarska"
@@ -8862,6 +8991,10 @@
         "piste/sleigh": {
           "name": "Trasa do kuligów",
           "terms": "trasa do kuligów, narty, trasa narciarska, narciarstwo, sanki, saneczki, sanie, skijöring, husky, koń"
+        },
+        "piste/take_off": {
+          "name": "Próg skoczni narciarskiej",
+          "terms": "próg skoczni narciarskiej"
         },
         "place": {
           "name": "Miejsce"
@@ -9846,6 +9979,9 @@
         "shop/hairdresser": {
           "name": "Fryzjer",
           "terms": "fryzjer, fryzjernia, salon fryzjerski, zakład fryzjerski, barber"
+        },
+        "shop/hairdresser/barber": {
+          "terms": "barber, fryzjer męski, cyrulik, golibroda, balwierz, balbierz, barbierz"
         },
         "shop/hairdresser_supply": {
           "name": "Sklep z artykułami fryzjerskimi",

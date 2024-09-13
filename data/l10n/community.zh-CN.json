@@ -6,6 +6,7 @@
       "mappingbotswana": "博茨瓦纳地图绘制",
       "maptimebogota": "波哥大地图时间",
       "maptimehrva": "Maptime HRVA",
+      "opensourcesanjose": "开源圣何塞",
       "openstreetmapaachen": "OpenStreetMap 亚琛",
       "openstreetmapafghanistan": "OpenStreetMap 阿富汗",
       "openstreetmapafrica": "OpenStreetMap 非洲",
@@ -53,6 +54,7 @@
       "openstreetmapcroatia": "OpenStreetMap 克罗地亚",
       "openstreetmapcuba": "OpenStreetMap 古巴",
       "openstreetmapcuneo": "OpenStreetMap 库内奥",
+      "openstreetmapcyprus": "开放街道地图 塞浦路斯",
       "openstreetmapcz": "OpenStreetMap 捷克",
       "openstreetmapde": "OpenStreetMap 德国",
       "openstreetmapdeepsouth": "OpenStreetMap 美国南部诸州",
@@ -386,15 +388,13 @@
       "name": "柏林邮件列表"
     },
     "de-berlin-xmpp": {
-      "name": "OpenStreetMap 柏林-勃兰登堡 XMPP",
-      "description": "加入我们的XMPP多用户聊天：{url}"
+      "name": "OpenStreetMap 柏林-勃兰登堡 XMPP"
     },
     "de-bochum-wiki": {
       "description": "{community} Wiki 页面"
     },
     "de-hamburg-xmpp": {
-      "name": "OpenStreetMap 汉堡 XMPP",
-      "description": "加入我们的XMPP多用户聊天：{url}"
+      "name": "OpenStreetMap 汉堡 XMPP"
     },
     "de-ostwestfalen-lippe-mailinglist": {
       "name": "东威斯特伐利亚州邮件列表",
@@ -417,8 +417,7 @@
       "name": "OpenStreetMap 菲尔森聚会"
     },
     "de-xmpp": {
-      "name": "OpenStreetMap 德国 XMPP",
-      "description": "加入我们的XMPP多用户聊天：{url}"
+      "name": "OpenStreetMap 德国 XMPP"
     },
     "DF-telegram": {
       "extendedDescription": "加入社区以了解有关 OpenStreetMap 的更多信息，在会议中提问或者参与。欢迎每个人的到来！"
@@ -563,9 +562,6 @@
     "osm-de": {
       "description": "位于德国的 OpenStreetMap 信息平台"
     },
-    "osm-delhi-xmpp": {
-      "description": "加入我们的XMPP多用户聊天：{url}"
-    },
     "OSM-Discord": {
       "name": "OpenStreetMap 全球 Discord"
     },
@@ -600,7 +596,6 @@
       "description": "在印度绘图所需要知道的所有事情: {url}"
     },
     "osm-india-xmpp": {
-      "description": "加入我们的XMPP多用户聊天：{url}",
       "extendedDescription": "印度 OSM 社群的 Matrix 聊天室；未橋接至任何專有網路。也可以透過 XMPP 的 https://xmpp.link/#osm-in:poddery.com 位址加入"
     },
     "osm-iran-aparat": {
@@ -608,9 +603,6 @@
     },
     "OSM-japan-facebook": {
       "description": "在日本的绘图者和 OpenStreetMap 用户"
-    },
-    "OSM-japan-slack": {
-      "description": "OSM 日本社区的 Slack 工作区：{signupUrl}"
     },
     "OSM-japan-website": {
       "description": "位于日本的绘图者和 OpenStreetMap 用户"
@@ -648,9 +640,6 @@
     "OSM-SoCal": {
       "name": "OpenStreetMap 南加州"
     },
-    "OSM-South-Bay": {
-      "name": "OSM 南湾"
-    },
     "OSM-Tampa-Bay": {
       "name": "OpenStreetMap 坦帕湾",
       "description": "坦帕湾地区的 OpenStreetMap 贡献者和使用者"
@@ -674,11 +663,7 @@
       "description": "欢迎所有人加入！在 {signupUrl} 上注册。"
     },
     "OSM-Utah": {
-      "name": "OpenStreetMap 犹他州",
-      "description": "位于盐湖城区域的绘图者和 OpenStreetMap 用户"
-    },
-    "osm-west-bengal-xmpp": {
-      "description": "加入我们的XMPP多用户聊天：{url}"
+      "name": "OpenStreetMap 犹他州"
     },
     "OSM-Wyoming": {
       "name": "OpenStreetMap 怀俄明州",
@@ -745,6 +730,9 @@
       "description": "科学和兽医学院 YouthMappers 分会",
       "extendedDescription": "YouthMappers ISSMV Dabala是一个非营利组织，致力于促进人道主义地图绘制以及使用开源和开放数据在几内亚建立决策工具。"
     },
+    "ym-Jacksonville-State-University": {
+      "extendedDescription": "杰克逊维尔州立大学灾难绘图小组是杰克逊维尔州立大学的一项计划，致力于在紧急情况下协助救灾工作。其中包括龙卷风、强雷暴、洪水等。该团队旨在成为周边郡县的宝贵资产，并为杰克逊维尔州立大学地球科学系的学生提供一个渠道，将他们在学术环境中学到的知识用于支持应急服务。我们的目标是简化灾难响应和恢复行动，同时利用学生的技能组合"
+    },
     "ym-Karatina-University": {
       "name": "卡蒂纳大学自然俱乐部"
     },
@@ -752,11 +740,23 @@
       "name": "恩克鲁玛科技大学的 YouthMappers",
       "description": "恩克鲁玛科技大学的 YouthMappers 分会"
     },
+    "ym-McGill-University": {
+      "extendedDescription": "麦吉尔大学开放制图小组：麦吉尔大学本科地理学会（OMG McGill）的成员，旨在将学生与开放地理空间数据和技术联系起来，通过在校园、蒙特利尔、加拿大和国外进行制图，增强复原力、社区建设和学习能力。"
+    },
+    "ym-Miami-University": {
+      "name": "地理与城市规划协会"
+    },
     "ym-Ohio-Wesleyan-University": {
       "name": "环境与野生动物俱乐部"
     },
     "ym-Oklahoma-State-University": {
       "name": "地理俱乐部"
+    },
+    "ym-Open-University-of-Tanzania": {
+      "extendedDescription": "坦桑尼亚开放大学青年制图师协会\n\n由坦桑尼亚开放大学地理系的成员和学生成立，他们主要需要通过与当地社区团体（如 Mikoko 童子军组织 (www.msg.or.tz)）的联合和合作项目来改善自己的职业生涯和帮助青年社区，并与国际高校合作开展与地理研究有关的交流项目，如 Mikoko 童子军组织准备的一些项目，这些项目将通过 2019 年国际自然与环境青年营 (www.campsite.msg.or.tz/nature.html ) 将当地大学与其他具有相同兴趣的大学联系起来。\n\n我们的分会将很快被认可为青年网络项目，为学生提供在当地学习和开展研究性学习的机会。"
+    },
+    "ym-Sokoine-University-of-Agriculture": {
+      "extendedDescription": "我们将使用基于系统概念和理论的制图技术来促进、探索和捕捉对环境可持续性所涉及的关系、观点和边界的不同理解，从而更全面地理解这一概念并制定行动计划。"
     },
     "ym-The-Gambia-YMCA-University-of-the-Gambia": {
       "extendedDescription": "Connected YouthMappers 由年轻甘比亚人组成，希望能改变和协助国家发展"
@@ -783,11 +783,24 @@
       "description": "加纳矿业大学 YouthMappers 分会",
       "extendedDescription": "UMaT YouthMappers是一群学生志愿者，他们旨在为学生提供机会，以提高他们在制图领域的技能，并创建开放的地理数据和分析，以应对全球范围内本地定义的发展挑战。"
     },
+    "ym-University-of-Victoria": {
+      "extendedDescription": "SOGS 致力于促进和代表地理系内的社会和学术利益。这体现在四个主要目标上： 为讨论有关地理系教育质量和可及性的问题提供一个论坛；通过代表学生参加系会议和系委员会，向系教师表达学生的一致意见；为学生的利益和地理系学生感兴趣的领域开展活动；通过 UVSS 和课程联盟理事会与校园内的其他学生团体进行联络。"
+    },
+    "ym-Vassar-College": {
+      "extendedDescription": "我们的使命是为同行、教育工作者和社区组织提供一个多学科平台，让他们参与当地的测绘项目，重点是加强当地的生态系统、建筑环境和社区健康。我们还致力于为全球人道主义援助和发展工作提供地理空间支持。"
+    },
+    "ym-Villanova-University": {
+      "extendedDescription": "维拉诺瓦全球飞行者协会（Villanova Globeplotters）秉承维拉诺瓦大学奥古斯丁的原则，为全球社会提供无私服务。在轻松的社交互动中，我们努力为有需要的人提供地理空间外联服务，无论参与学生的种族、学术专业、学生团体协会或大学生涯水平如何。"
+    },
     "ym-West-Virginia-University": {
-      "name": "Maptime 摩根敦"
+      "name": "Maptime 摩根敦",
+      "extendedDescription": "作为一个合作团队，这个共同创建的分会致力于为那些有兴趣参与国际发展、应急响应和地理信息科学交叉项目的人提供一个开放的学习环境。 他们通过提供技术培训和经验，帮助初学者和专家建立有意义、有用的地理基础设施数据，同时与世界各地的姐妹城市建立联系。"
     },
     "ym-Western-Michigan-University": {
       "name": "地理俱乐部"
+    },
+    "ym-Yarmouk-University": {
+      "extendedDescription": "年轻绘图者 的 YouthMappers 分会是中东和北非地区的第一个测绘小组，该地区的难民、干旱和贫困等危机日益严重，迫切需要开展人道主义测绘活动，以减轻这些危机的后果。我们鼓励青年测绘者利用开放数据应对中东和北非地区的挑战，为该地区的目标区域带来救济和发展。"
     }
   }
 }

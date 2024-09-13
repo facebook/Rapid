@@ -40,8 +40,7 @@
         "filter_tooltip": "پوئینٹ"
       },
       "add_note": {
-        "title": "نوٹ",
-        "label": "نوٹ پائیو"
+        "title": "نوٹ"
       },
       "add_preset": {
         "title": "{feature} پائیو"
@@ -185,9 +184,6 @@
     "logout": "لوگ آؤٹ کرو",
     "loading_auth": "اوپن صٹریٹ میپ جوڑدا…",
     "help_translate": "انواد کریو",
-    "sidebar": {
-      "tooltip": "مینو لُکݨ یا ویکھݨ"
-    },
     "commit": {
       "title": "نقشے اُتھے چڑھاؤ",
       "save": "چڑھاؤ",
@@ -219,8 +215,7 @@
         "zoom": "وڈا کرو",
         "vintage": "پُراݨے",
         "source": "سروت",
-        "description": "تفصیل",
-        "unknown": "نامعلوم"
+        "description": "تفصیل"
       },
       "history": {
         "title": "اتیت",
@@ -228,7 +223,6 @@
         "last_edit": "پہلاں سودھ",
         "edited_by": "تبفیلیاں دا ورتونوالا",
         "changeset": "تبدیلیاں",
-        "unknown": "نامعلوم",
         "note_no_history": "اتیت نہیں (نواں نوٹ)",
         "note_comments": "ٹپݨیاں",
         "note_created_date": "تریخ تے بݨائے",
@@ -275,19 +269,18 @@
       "key_value": "کنجی = مُل",
       "multiple_values": "کئی مُل",
       "multiple_types": "کئی قسماں",
+      "type": "قِسم",
+      "details": "ویروے",
       "remove": "مٹاؤ",
       "search": "کھوجو",
       "unknown": "نامعلوم",
       "feature_list": "چیزاں وچ کھوجو",
-      "edit": "چیز سودھو",
-      "edit_features": "چیزاں سودھو",
       "check": {
         "yes": "ہاں",
         "no": "نہیں"
       },
       "radio": {
         "structure": {
-          "type": "قِسم",
           "default": "مول",
           "layer": "کج"
         }
@@ -313,7 +306,8 @@
         },
         "notes": {
           "tooltip": "اوپن سٹریٹ میپ توں نوٹ دے ڈیٹا",
-          "title": "اوپن سٹریٹ میپ دے نوٹ"
+          "title": "اوپن سٹریٹ میپ دے نوٹ",
+          "key": "اُتر"
         },
         "maproulette": {
           "detail_title": "ویروے",
@@ -327,9 +321,6 @@
       "map_features": "نقشے دیاں چیزاں"
     },
     "photo_overlays": {
-      "traffic_signs": {
-        "title": "ٹریفک سائن"
-      },
       "date_filter": {
         "fromDate": {
           "title": "ایہہ توں"
@@ -464,17 +455,6 @@
         "detail_title": "ویروے",
         "elems_title": "چیزاں"
       },
-      "improveOSM": {
-        "geometry_types": {
-          "path": "پاتھ",
-          "parking": "پارکنگ",
-          "road": "سڑک",
-          "both": "سڑک اتے پارکنگ"
-        },
-        "directions": {
-          "west": "لہندا"
-        }
-      },
       "keepRight": {
         "detail_description": "تفصیل",
         "comment": "ٹپݨی",
@@ -531,30 +511,14 @@
       }
     },
     "streetside": {
-      "title": "بِنگ سڑک اُتے تصویر",
-      "view_on_bing": "بِنگ نقشے ویکھو"
-    },
-    "mapillary_images": {
-      "tooltip": "میپیلیری توں سڑک ‘تے تصویراں"
-    },
-    "mapillary_map_features": {
-      "title": "نقشے دیاں‌ چیزاں",
-      "tooltip": "میپیلیری توں نقش",
-      "object": {
-        "bench": "بنچ",
-        "cctv_camera": "سی سی ٹی وی کیمرا",
-        "sign": {
-          "other": "ہور سائن",
-          "store": "سائن دی ہٹی",
-          "traffic_sign": {
-            "direction_front": "ٹریفک سائن دا اگّا",
-            "front": "ٹریفک سائن دا اگّا"
-          }
-        }
-      }
+      "title": "بِنگ سڑک اُتے تصویر"
     },
     "mapillary": {
-      "title": "میپیلری"
+      "title": "میپیلری",
+      "tooltip": "میپیلیری توں سڑک ‘تے تصویراں"
+    },
+    "mapillary_signs": {
+      "title": "ٹریفک سائن"
     },
     "note": {
       "note": "نوٹ",

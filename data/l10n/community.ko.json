@@ -453,8 +453,7 @@
       "description": "{community} 위키 문서"
     },
     "de-berlin-xmpp": {
-      "name": "오픈스트리트맵 베를린-브란덴부르크 XMPP",
-      "description": "우리 XMPP 그룹 채팅에 가입하세요: {url}"
+      "name": "오픈스트리트맵 베를린-브란덴부르크 XMPP"
     },
     "de-bochum-wiki": {
       "description": "{community} 위키 문서"
@@ -478,8 +477,7 @@
       "description": "{community} 위키 문서"
     },
     "de-hamburg-xmpp": {
-      "name": "오픈스트리트맵 함부르크 XMPP",
-      "description": "우리 XMPP 그룹 채팅에 가입하세요: {url}"
+      "name": "오픈스트리트맵 함부르크 XMPP"
     },
     "de-karlsruhe-mailinglist": {
       "name": "카를스루에 메일링리스트"
@@ -534,8 +532,7 @@
       "description": "OSM 커뮤니티와 사용자 모임 Kreis Viersen과 Mönchengladbach"
     },
     "de-xmpp": {
-      "name": "오픈스트리트맵 독일 XMPP",
-      "description": "우리 XMPP 그룹 채팅에 가입하세요: {url}"
+      "name": "오픈스트리트맵 독일 XMPP"
     },
     "DF-telegram": {
       "extendedDescription": "오픈스트리트맵을 더 잘 알고 싶다면, 커뮤니티에 가입해보세요. 회의에 참여할 수도 있고, 질문을 할 수도 있습니다. 누구나 환영합니다!"
@@ -850,15 +847,21 @@
       "name": "오픈소스 San José Discord",
       "description": "Discord의 다른 맵퍼들과 소통하세요! 가입 후 #🗺openstreetmap 채널에 가입하세요."
     },
+    "Open-Source-San-Jose-Mastodon": {
+      "description": "Mastodon에서 오픈 소스 San José를 팔로우하세요.",
+      "extendedDescription": "오픈 소스 San José는 시민 기술을 통해 자원봉사 코더들과 디자이너들을 지역 사회의 필요와 연결하는 지역 비영리 단체입니다. OSSJ는 지역 자원봉사 매핑 커뮤니티의 South Bay Map Nights를 격주로 후원합니다."
+    },
     "Open-Source-San-Jose-Slack": {
       "name": "오픈소스 San José Slack",
       "description": "모두 환영합니다! {signupUrl}에서 가입한 다음, #proj-osm 채널에 참여하세요."
     },
     "OpenCleveland-meetup": {
+      "name": "오픈 클리블랜드",
       "description": "클리블랜드 지역 내 오픈스트리트맵 개선하기",
       "extendedDescription": "Open Geo Cleveland는 사람들이 무료 지리 데이터, 특히 OpenStreetMap과 지리 데이터를 관리, 편집 및 표시하는 Open Geo- spatial 소프트웨어를 사용하는 것에 대한 지식을 공유하고 북동부 오하이오에서 사용을 옹호할 수 있는 자원을 목표로 합니다. 우리는 또한 maptime 지부입니다 =)"
     },
     "osgeo-oceania": {
+      "name": "OSGeo 오세아니아",
       "description": "오세아니아의 오픈스트리트맵 커뮤니티의 발전을 지원합니다.",
       "extendedDescription": "OSGeo Oceania의 목적은 FOSS4G SotM Oceania 협의들의 감독 및 사회적 책무를 포함한 오세아니아 지역의 열린 지리 공간 커뮤니티를 지원하고 성장시키는 것입니다."
     },
@@ -887,6 +890,10 @@
     },
     "OSM-AR-wiki": {
       "description": "아르헨티나 지도 제작에 대해 알아야 할 모든 것."
+    },
+    "osm-asia-facebook": {
+      "description": "오픈스트리트맵 아시아 페이스북 그룹",
+      "extendedDescription": "아시아를 위한 통합 지도 제작 지원을 위한 단체입니다. 특히 지역 커뮤니티가 없는 맵퍼들이 지역 커뮤니티가 없어 해결할 수 없었던 지역의 문제를 해결하기 위해 정보를 공유하고 협력하는 장이 되기를 원합니다."
     },
     "osm-at": {
       "description": "오스트리아 오픈스트리트맵 정보 플랫폼"
@@ -929,7 +936,6 @@
     },
     "osm-delhi-xmpp": {
       "name": "오픈스트리트맵 델리 XMPP",
-      "description": "우리 XMPP 룸에 가입하세요: {url}",
       "extendedDescription": "OSM Delhi를 위한 XMPP 공간; 독점 네트워크에 연결되지 않습니다."
     },
     "OSM-Discord": {
@@ -941,9 +947,6 @@
     },
     "OSM-Facebook": {
       "description": "좋아요를 누르고 OpenStreetMap의 뉴스나 업데이트를 받아보세요."
-    },
-    "osm-fj": {
-      "description": "피지 지역사회를 위한 OSM 서비스 및 정보 제공"
     },
     "osm-gh-facebook": {
       "extendedDescription": "가나에서 오픈스트리트맵과 인도주의적 오픈스트리트맵 팀(HOT) 프로젝트를 추진하는 가나 커뮤니티의 맵퍼들이 함께 합니다."
@@ -991,7 +994,6 @@
     },
     "osm-india-xmpp": {
       "name": "오픈스트리트맵 인도 XMPP",
-      "description": "우리 XMPP 룸에 가입하세요: {url}",
       "extendedDescription": "인도 OSM 커뮤니티를 위한 XMPP 공간, 독점 네트워크에 브리지되지 않음. 또한 #osm-in:poddery.com 을 통해 매트릭스에서 제공됩니다"
     },
     "osm-iran-aparat": {
@@ -1005,9 +1007,6 @@
     },
     "OSM-japan-facebook": {
       "description": "일본 거주 오픈스트리트맵 사용자 및 맵퍼"
-    },
-    "OSM-japan-slack": {
-      "description": "OSM Japan 슬랙 커뮤니티 {signupUrl}"
     },
     "OSM-japan-website": {
       "description": "일본 거주 오픈스트리트맵 사용자 및 맵퍼"
@@ -1092,11 +1091,6 @@
       "description": "재미있게 놀고, 로스앤젤레스에 뭔가를 기여하고, 지도 제작에 대해 배워봅시다!",
       "extendedDescription": "OpenStreetMap (OSM) Southern California는 매핑에 관심이있는 모든 사람들이 OpenStreetMap과 함께 일하기 위해 모일 수 있습니다. 지도의 위키백과인 OpenStreetMap은 전 세계 1,000,000명 이상의 자원봉사자가 만든 세계의 무료 오픈 소스 지도입니다. 누구나 환영합니다. OpenStreetMap을 모른다면, 우리는 당신을 가르 칠 것입니다. 매핑 프로젝트 또는 그룹이 할 수있는 견학에 대한 아이디어가 있다면 좋습니다!"
     },
-    "OSM-South-Bay": {
-      "name": "OSM 사우스베이",
-      "description": "우리의 온라인 사우스 베이 지도 나이트에 참여하세요",
-      "extendedDescription": "오픈 소스 산호세와 협력하여 격주 화요일 밤에 열리는 온라인 미팅에서 사우스 베이의 지도 제작자들을 만나 현지 지도 제작 프로젝트에 도움을 받으십시오. 프로그래밍 및 GIS 기술은 필요하지 않습니다."
-    },
     "OSM-Tampa-Bay": {
       "name": "오픈스트리트맵 탬파베이",
       "description": "탬파베이 지역의 맵퍼와 오픈스트리트맵 사용자",
@@ -1135,13 +1129,8 @@
     },
     "OSM-Utah": {
       "name": "오픈스트리트맵 유타",
-      "description": "솔트레이크시티 지역의 맵퍼와 오픈스트리트맵 사용자",
-      "extendedDescription": "활동에는 지도 제작 워크숍, 지도 제작 파티, 야외 자료 수집과 같은 것들이 포함될 수 있습니다. 행사들은 적어도 처음에는 SLC 지역에서 열릴 것입니다. 우리는 OSM을 처음 접하는 사람들뿐만 아니라 노련한 지도 제작자들을 찾고 있습니다. 참여하고 지도 제작을 해봅시다!"
-    },
-    "osm-west-bengal-xmpp": {
-      "name": "오픈스트리트맵 서벵골 XMPP",
-      "description": "우리 XMPP 룸에 가입하세요: {url}",
-      "extendedDescription": "OSM 서벵갈을 위한 XMPP 공간입니다."
+      "description": "솔트레이크시티 지역의 OSM 매핑 커뮤니티",
+      "extendedDescription": "우리는 보통 매달의 두 번째 수요일, 솔트 레이크 시티에서 만납니다. 모두 환영합니다!"
     },
     "OSM-Wyoming": {
       "name": "오픈스트리트맵 와이오밍",

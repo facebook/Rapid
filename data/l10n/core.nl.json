@@ -40,7 +40,6 @@
       },
       "add_note": {
         "title": "Opmerking",
-        "label": "Voeg opmerking toe",
         "description": "Zie je iets wat niet klopt? Laat het andere mappers weten."
       },
       "add_preset": {
@@ -707,9 +706,6 @@
     "loading_auth": "Aan het verbinden met OpenStreetMap…",
     "report_a_bug": "Meld een bug",
     "help_translate": "Help met vertalen",
-    "sidebar": {
-      "tooltip": "Open het zijpaneel."
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} verborgen object",
@@ -765,7 +761,6 @@
         "description": "Omschrijving",
         "resolution": "Resolutie",
         "accuracy": "Nauwkeurigheid",
-        "unknown": "Onbekend",
         "show_tiles": "Toon tegels",
         "hide_tiles": "Verberg tegels"
       },
@@ -776,7 +771,6 @@
         "last_edit": "Recentste aanpassing",
         "edited_by": "Aangepast door",
         "changeset": "Wijzigingenset",
-        "unknown": "Onbekend",
         "note_no_history": "Geen geschiedenis (nieuwe kaartnotitie)",
         "note_comments": "Commentaar",
         "note_created_date": "Aanmaakdatum",
@@ -855,13 +849,12 @@
         "zoom": "{features} zijn verborgen. Zoom in om ze te tonen."
       },
       "back_tooltip": "Wijzig objecttype",
+      "details": "Meer informatie (Engels)",
       "remove": "Verwijder",
       "search": "Zoek",
       "unknown": "Onbekend",
       "incomplete": "<niet gedownload>",
       "feature_list": "Zoek objecttype",
-      "edit": "Bewerk object",
-      "edit_features": "Bewerk objecten",
       "check": {
         "yes": "Ja",
         "no": "Nee",
@@ -946,10 +939,6 @@
           "tooltip": "Gegevensproblemen gedetecteerd door keepright.at",
           "title": "KeepRight-problemen"
         },
-        "improveOSM": {
-          "tooltip": "Ontbrekende gegevens gedetecteerd door improveosm.org",
-          "title": "ImproveOSM-problemen"
-        },
         "osmose": {
           "tooltip": "Gegevensproblemen gedetecteerd door osmose.openstreetmap.fr",
           "title": "Osmose-issues"
@@ -981,9 +970,6 @@
     },
     "photo_overlays": {
       "title": "Fotolagen",
-      "traffic_signs": {
-        "title": "Verkeersborden"
-      },
       "photo_type": {
         "flat": {
           "title": "Platte foto's",
@@ -1236,40 +1222,6 @@
         "elems_title": "Objecten",
         "fix_title": "Reparatierichtlijnen",
         "trap_title": "Vaak voorkomende vergissingen"
-      },
-      "improveOSM": {
-        "title": "ImproveOSM-herkenning",
-        "geometry_types": {
-          "path": "paden",
-          "parking": "parkeren",
-          "road": "wegen",
-          "both": "wegen en parkeren"
-        },
-        "directions": {
-          "east": "oost",
-          "north": "noord",
-          "northeast": "noordoost",
-          "northwest": "noordwest",
-          "south": "zuid",
-          "southeast": "zuidoost",
-          "southwest": "zuidwest",
-          "west": "st"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Ontbrekende eenrichtingsweg",
-            "description": "Langs dit gedeelte van {highway}, {percentage}% van {num_trips} de geregistreerde reizen van {from_node} naar {to_node}. Er ontbreekt mogelijk een ‘eenrichtingsverkeer’-tag."
-          },
-          "mr": {
-            "title": "Ontbrekende geometrie",
-            "description": "{num_trips} geregistreerde trips in dit gebied suggereren dat hier mogelijk een ongetekend {geometry_type} is.",
-            "description_alt": "Data van een derde partij suggereren dat een een ongekarteerde {geometry_type} is hier."
-          },
-          "tr": {
-            "title": "Missende afslagbeperking",
-            "description": "{num_passed} van {num_trips} geregistreerde trips (richting {travel_direction}) maken een bocht van {from_way} naar {to_way} bij {junction}. Er is mogelijk een missende \"{turn_restriction}\" afslagbeperking."
-          }
-        }
       },
       "keepRight": {
         "detail_description": "Beschrijving",
@@ -1582,101 +1534,20 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Foto's op straatniveau van Mircrosoft",
-      "report": "Meld een privacyprobleem omtrent deze afbeelding",
-      "view_on_bing": "Bekijk op Bing Maps",
+    "photos": {
       "hires": "Hoge resolutie"
     },
-    "mapillary_images": {
-      "tooltip": "Foto's op straatniveau van Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Kaartobjecten",
-      "tooltip": "Kaartobjecten van Mapillary",
-      "construction": {
-        "barrier": {
-          "temporary": "tijdelijke afsluiting"
-        },
-        "flat": {
-          "crosswalk_plain": "gewone oversteekplaats",
-          "driveway": "oprit"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "rijstrookmarkering - pijl (links)",
-            "right": "rijstrookmarkering - pijl (rechts)",
-            "split_left_or_straight": "rijstrookmarkering - pijl (linksaf of rechtdoor)",
-            "split_right_or_straight": "rijstrookmarkering - pijl (rechtsaf of rechtdoor)",
-            "straight": "rijstrookmarkering - pijl (rechtdoor)"
-          },
-          "crosswalk_zebra": "rijstrookmarkering - zebrapad",
-          "give_way_row": "rijstrookmarkering - voorrang verlenen (rij)",
-          "give_way_single": "rijstrookmarkering - voorrang verlenen (enkel)",
-          "other_marking": "rijstrookmarkering - overig",
-          "stop_line": "rijstrookmarkering - stopstreep",
-          "symbol": {
-            "bicycle": "rijstrookmarkering - symbool (fiets)"
-          },
-          "text": "rijstrookmarkering - tekst"
-        }
-      },
-      "object": {
-        "banner": "banier",
-        "bench": "zitbank",
-        "bike_rack": "fietsenrek",
-        "billboard": "reclamebord",
-        "catch_basin": "opvangbekken",
-        "cctv_camera": "bewakingscamera",
-        "fire_hydrant": "brandkraan",
-        "junction_box": "kruispuntrooster",
-        "mailbox": "brievenbus",
-        "manhole": "putdeksel",
-        "parking_meter": "parkeermeter",
-        "phone_booth": "telefooncel",
-        "sign": {
-          "advertisement": "advertentie",
-          "information": "informatiebord",
-          "other": "ander bord",
-          "store": "winkelbord",
-          "traffic_sign": {
-            "back": "verkeersbord - achterzijde",
-            "direction_front": "verkeersbord - voorzijde",
-            "front": "verkeersbord - voorzijde"
-          }
-        },
-        "street_light": "straatverlichting",
-        "support": {
-          "pole": "paal",
-          "traffic_sign_frame": "kader van verkeersbord",
-          "utility_pole": "nutsvoorzieningenpaal"
-        },
-        "traffic_cone": "verkeerskegel",
-        "traffic_light": {
-          "cyclists": "fietsverkeerslicht",
-          "general_horizontal": "horizontaal verkeerslicht",
-          "general_single": "enkel verkeerslicht",
-          "general_upright": "verticaal verkeerslicht",
-          "other": "verkeerslicht",
-          "pedestrians": "voetgangersverkeerslicht"
-        },
-        "trash_can": "vuilnisbak",
-        "water_valve": "waterklep"
-      }
+    "streetside": {
+      "tooltip": "Foto's op straatniveau van Mircrosoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Verkeersborden van Mapillary"
-      },
-      "view_on_mapillary": "Bekijk deze afbeelding op Mapillary"
+      "tooltip": "Foto's op straatniveau van Mapillary"
     },
-    "kartaview_images": {
-      "tooltip": "Foto's op straatniveau van KartaView"
+    "mapillary_signs": {
+      "title": "Verkeersborden"
     },
     "kartaview": {
-      "view_on_kartaview": "Bekijk deze afbeelding op KartaView"
+      "tooltip": "Foto's op straatniveau van KartaView"
     },
     "note": {
       "note": "Kaartopmerking",
@@ -1832,7 +1703,6 @@
       },
       "notes": {
         "title": "Kaartopmerkingen",
-        "intro": "*Kaartopmerkingen* of Notes worden gebruikt om andere gebruikers te wijzen op een object dat verbeterd moet worden. Kaaropmerkingen duiden een specifieke plaats op de kaart aan. Om bestaande kaartopmerkingen te zien of er nieuwe toe te voegen, klik op het {data_icon} **{map_data}** paneel om de {osm_notes} laag te activeren.",
         "add_note_h": "Kaartopmerkingen toevoegen",
         "add_note": "Om een kaartnotitie toe te voegen, klik de {note_icon} **{note}**-knop op de werkbalk boven de kaart, of gebruik je de sneltoets `{add_note_key}`.",
         "update_note_h": "Sluiten, Heropenen en Becommentariëren",
@@ -1869,9 +1739,7 @@
         "title": "Kwaliteitscontrole",
         "intro": "Hulpmiddelen voor *kwaliteitscontrole* (afgekort \"Q/A\", van het Engelse *quality assurance*) kunnen helpen bij het vinden van onjuiste tags, niet verbonden wegen en andere problemen met OpenStreetMap die dan door mappers verholpen kunnen worden. Om bestaande Q/A-problemen te bekijken, klik op het {data_icon} **{map_data}**-paneel om een specifieke Q/A-laag aan te zetten.",
         "tools_h": "Gereedschappen",
-        "tools": "De volgende tools worden op dit moment ondersteund: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) en [Osmose](https://osmose.openstreetmap.fr/).",
-        "issues_h": "Problemen behandelen",
-        "issues": "Q/A-problemen verhelpen is vergelijkbaar met notities. Klik op een markering om de details van het probleem te bekijken in de zijbalk. Elke tool heeft zijn eigen mogelijkheden, maar over het algemeen kun je opmerkingen plaatsen en/of het probleem sluiten."
+        "issues_h": "Problemen behandelen"
       },
       "field": {
         "restrictions": {
@@ -2623,7 +2491,6 @@
           "map_data": "Kaartgegevenspaneel open/dicht",
           "issues": "Toon'Verberg validatiepaneel",
           "preferences": "Gebruikersinstellingenpaneel open/dicht",
-          "sidebar": "Zijpaneel aan/uit",
           "wireframe": "Wireframemodus aan/uit",
           "osm_data": "OpenStreetMap-gegevens aan/uit",
           "highlight_edits": "Markeer onopgeslagen wijzigingen"

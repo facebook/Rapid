@@ -192,8 +192,7 @@
       "name": "Berlin E-posta Listesi"
     },
     "de-berlin-xmpp": {
-      "name": "OpenStreetMap Berlin - Brandenburg XMPP",
-      "description": "XMPP çok kullanıcılı sohbetimize katılın : {url}"
+      "name": "OpenStreetMap Berlin - Brandenburg XMPP"
     },
     "de-karlsruhe-mailinglist": {
       "name": "Karlsruhe E-posta Listesi"
@@ -417,9 +416,6 @@
     "OSM-japan-facebook": {
       "description": "Japonya'daki Mappers ve OpenStreetMap kullanıcıları"
     },
-    "OSM-japan-slack": {
-      "description": "OSM Japonya topluluğu için gevşek bir çalışma alanı {signupUrl}"
-    },
     "OSM-japan-website": {
       "description": "Japonya'daki Mappers ve OpenStreetMap kullanıcıları"
     },
@@ -473,9 +469,6 @@
       "description": "Biraz eğlenelim, Los Angeles'a katkıda bulunalım ve haritalama hakkında bilgi edinelim!",
       "extendedDescription": "OpenStreetMap (OSM) Güney California, OpenStreetMap ile çalışmak için bir araya gelmek üzere haritalama ile ilgilenen herkes içindir. Haritaların Wikipedia'sı olan OpenStreetMap, dünya çapında 1.000.000'dan fazla gönüllü tarafından oluşturulan dünyanın ücretsiz bir açık kaynaklı haritasıdır. Herkese açığız. OpenStreetMap'i bilmiyorsanız size öğreteceğiz. Bir haritalama projesi hatta grubun yapabileceği bir okul gezisi fikriniz varsa, harika!"
     },
-    "OSM-South-Bay": {
-      "name": "OSM Güney Körfezi"
-    },
     "OSM-Tampa-Bay": {
       "name": "OpenStreetMap Tampa Körfezi",
       "description": "Tampa Körfezi bölgesindeki haritacılar ve OpenStreetMap kullanıcıları ",
@@ -495,10 +488,6 @@
     },
     "OSM-US-Slack": {
       "description": "Hoşgeldiniz! {signupUrl} adresinde kaydolun"
-    },
-    "OSM-Utah": {
-      "description": "Salt Lake City bölgesindeki haritacılar ve OpenStreetMap kullanıcıları ",
-      "extendedDescription": "Aktiviteler; Harita Öğrenme atölyeleri, haritalama partileri ve dış mekanda veri toplama gibi şeyler içerebilir. Etkinlikler en azından ilk olarak SLC alanında yer alacaktır. Bizler hem tecrübeli haritacılar hem de OSM'yle yeni tanışacak insanlar arıyoruz. Bize katılın ve haritalama yapalım!"
     },
     "OSM-Wyoming": {
       "description": "Wyoming eyalatindeki haritacılar ve OpenStreetMap kullanıcıları ",

@@ -167,8 +167,28 @@
         "description": "Images satellite de Francfort-sur-le-Main prises le 16 avril 2019",
         "name": "Images satellite 2019 de Francfort-sur-le-Main"
       },
+      "Geodatastyrelsen_Cadastral_Parcels_INSPIRE_View": {
+        "attribution": {
+          "text": "L'Agence de Géodonnées et l'Agence pour l'Approvisionnement et l'Infrastructure des Données (SDFI en danois)\n \n "
+        },
+        "name": "SDFI Parcelles cadastrales, Vue INSPIRE"
+      },
+      "Geodatastyrelsen_DTK_Kort25": {
+        "attribution": {
+          "text": "Agence pour l'Approvisionnement et l'Infrastructure des Données (SDFI en danois)"
+        }
+      },
       "Geodatastyrelsen_Denmark": {
+        "attribution": {
+          "text": "Agence pour l'Approvisionnement et l'Infrastructure des Données (SDFI en danois)"
+        },
         "name": "Images aériennes SDFI"
+      },
+      "Geodatastyrelsen_Skaermkort": {
+        "attribution": {
+          "text": "Agence pour l'Approvisionnement et l'Infrastructure des Données (SDFI en danois)"
+        },
+        "name": "SDFI Cartographie"
       },
       "Geoportal2-PL-City-boundaries_WMS": {
         "name": "Geoportal 2: limites municipales WMS"
@@ -495,6 +515,18 @@
       "Riksantikvariambetet-ruins": {
         "description": "Ruines d'intérêt historique et culturel",
         "name": "Riksantikvarieämbetet - Ruines"
+      },
+      "SDFE_Overflade_Skyggekort_40cm": {
+        "attribution": {
+          "text": "Agence pour l'Approvisionnement et l'Infrastructure des Données (SDFI en danois)"
+        },
+        "name": "SDFI Carte surfacique ombrée (40 cm)"
+      },
+      "SDFE_Terraen_Skyggekort_40cm": {
+        "attribution": {
+          "text": "Agence pour l'Approvisionnement et l'Infrastructure des Données (SDFI en danois)"
+        },
+        "name": "SDFI Carte en relief ombrée (40 cm)"
       },
       "SPW_ORTHO_LAST": {
         "name": "Imagerie aérienne SPW(allonie) la plus récente"
@@ -862,6 +894,10 @@
       "osmse-ekonomiska": {
         "description": "Numérisation de « Economic maps » de 1950-1978",
         "name": "Carte économique (historique) de Lantmäteriet entre 1950 et 1978"
+      },
+      "osmse-generalstab": {
+        "description": "Scan de la \"Carte de l'état-major\" env. 1859-1979",
+        "name": "Carte de l'état-major d'arpentage 1859-1979"
       },
       "poznan-ortofotomapa2014": {
         "attribution": {

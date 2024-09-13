@@ -16,9 +16,6 @@
     "OSM-japan-facebook": {
       "description": "日本のマッパーとOpenStreetMap ユーザー"
     },
-    "OSM-japan-slack": {
-      "description": "OSM日本コミュニティ向けのSlack ワークスペース {signupUrl}"
-    },
     "OSM-japan-website": {
       "description": "日本のマッパーとOpenStreetMap ユーザー"
     },

@@ -35,7 +35,6 @@
       },
       "add_note": {
         "title": "ᱱᱚᱴ",
-        "label": "ᱱᱚᱴ ᱥᱮᱞᱮᱫ ᱢᱮ",
         "key": "ᱩ"
       },
       "add_preset": {
@@ -86,13 +85,11 @@
     },
     "info_panels": {
       "background": {
-        "description": "ᱵᱤᱵᱨᱚᱱ",
-        "unknown": "ᱵᱟᱝ ᱵᱟᱲᱟᱭ"
+        "description": "ᱵᱤᱵᱨᱚᱱ"
       },
       "history": {
         "title": "ᱦᱤᱛᱟᱹᱞ",
         "last_edit": "ᱢᱩᱪᱟᱹᱛ ᱥᱟᱯᱲᱟᱣ",
-        "unknown": "ᱵᱟᱝ ᱵᱟᱲᱟᱭ",
         "note_no_history": "ᱦᱤᱛᱟᱹᱞ ᱵᱟᱹᱱᱩᱜ-ᱟ (ᱱᱟᱶᱟ ᱠᱷᱟᱴᱟᱹ ᱚᱞ)",
         "note_comments": "ᱚᱠᱛᱟᱠᱚ"
       },
@@ -117,19 +114,18 @@
       "show_more": "ᱵᱟᱹᱲᱛᱤ ᱩᱱᱩᱫᱩᱜ",
       "feature_type": "ᱜᱩᱱ ᱯᱨᱟᱹᱠᱟᱨ",
       "features": "ᱜᱩᱱᱠᱚ",
+      "type": "ᱯᱨᱟᱹᱠᱟᱨ",
+      "details": "ᱵᱤᱵᱨᱚᱱ",
       "remove": "ᱚᱪᱚᱜ ᱢᱮ",
       "search": "ᱥᱮᱸᱫᱽᱨᱟ",
       "unknown": "ᱵᱟᱝ ᱵᱟᱲᱟᱭ",
       "feature_list": "ᱥᱮᱸᱫᱽᱨᱟ ᱨᱮᱭᱟᱜ ᱜᱩᱱᱠᱚ",
-      "edit": "ᱜᱩᱱ ᱥᱟᱯᱲᱟᱣ ᱢᱮ",
-      "edit_features": "ᱜᱩᱱᱠᱚ ᱥᱟᱯᱲᱟᱣ ᱢᱮ",
       "check": {
         "yes": "ᱦᱮᱸ",
         "no": "ᱵᱟᱝ"
       },
       "radio": {
         "structure": {
-          "type": "ᱯᱨᱟᱹᱠᱟᱨ",
           "default": "ᱢᱩᱞ ᱯᱷᱮᱲᱟᱛ",
           "layer": "ᱯᱚᱨᱚᱛ"
         }
@@ -150,7 +146,8 @@
           "title": "OpenStreetMap ᱥᱟᱹᱠᱷᱤᱭᱟᱹᱛ"
         },
         "notes": {
-          "title": "OpenStreetMap ᱠᱷᱟᱴᱚ ᱵᱤᱪᱟᱹᱨ"
+          "title": "OpenStreetMap ᱠᱷᱟᱴᱚ ᱵᱤᱪᱟᱹᱨ",
+          "key": "ᱩ"
         },
         "maproulette": {
           "detail_title": "ᱵᱤᱵᱨᱚᱱ",
@@ -263,12 +260,6 @@
           "fuel": "ᱥᱩᱱᱩᱢ"
         }
       }
-    },
-    "streetside": {
-      "view_on_bing": "Bing Maps ᱨᱮ ᱧᱮᱞ ᱢᱮ"
-    },
-    "mapillary_map_features": {
-      "title": "ᱱᱚᱠᱥᱟ ᱨᱮᱭᱟᱜ ᱜᱩᱱᱠᱚ"
     },
     "note": {
       "note": "ᱱᱚᱴ",

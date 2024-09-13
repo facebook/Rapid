@@ -1636,13 +1636,13 @@
             "community_health_worker": "Operatore Sanitario Comunitario",
             "counselling": "Centro di consulenza",
             "dentist": "Dentista",
-            "dialysis": "Centro Dialisi",
+            "dialysis": "Centro dialisi",
             "doctor": "Medico di base",
             "hospice": "Ospizio",
             "hospital": "Ospedale",
             "laboratory": "Laboratorio medico",
             "midwife": "Clinica prenatale",
-            "nurse": "Infermiera ",
+            "nurse": "Infermiera",
             "occupational_therapist": "Medico del lavoro",
             "optometrist": "Oculista",
             "pharmacy": "Farmacia",
@@ -1699,7 +1699,7 @@
             "hypnosis": "Ipnosi",
             "infectious_diseases": "Malattie infettive",
             "intensive": "Terapia intensiva",
-            "internal": "Medicina alternativa",
+            "internal": "Medicina interna",
             "naturopathy": "Naturopatia",
             "neonatology": "Neonatologia",
             "nephrology": "Nefrologia",
@@ -1791,12 +1791,12 @@
             "memorial": "Memoriale",
             "milestone": "Pietra miliare",
             "mine": "Miniera",
-            "mine_shaft": "Il mio pozzo",
+            "mine_shaft": "Tunnel verticale",
             "monument": "Monumento",
             "pillory": "Gogna storica",
             "railway": "Linea ferroviaria",
             "ruins": "Rovine",
-            "shieling": "Scudo",
+            "shieling": "Alpeggio",
             "tomb": "Tomba",
             "wayside_cross": "Croce a bordo strada",
             "wayside_shrine": "Edicola votiva",
@@ -1946,9 +1946,9 @@
         "kneipp_water_cure_multi": {
           "label": "Tipi di vasca",
           "options": {
-            "arm": "Bacino del braccio",
-            "face": "Bacino del viso",
-            "foot": "Bacino del piede"
+            "arm": "Vasca per braccia",
+            "face": "Vasca per viso",
+            "foot": "Vasca per piedi"
           }
         },
         "label": {
@@ -2098,7 +2098,7 @@
             },
             "post": {
               "description": "Indicatore rialzato montato su un piccolo palo o palo.",
-              "title": "Inviare"
+              "title": "Palo"
             },
             "stone": {
               "description": "Marcature direttamente incise o dipinte su una pietra.",
@@ -2123,7 +2123,6 @@
             "marble": "Marmo",
             "metal": "Metallo",
             "plastic": "Plastica",
-            "reinforced_conrete": "Cemento rinforzato",
             "rock": "Roccia",
             "sand": "Sabbia",
             "sandstone": "Arenaria",
@@ -2373,7 +2372,7 @@
             "religion": "Ufficio religioso",
             "research": "Istituto di Ricerca",
             "security": "Ufficio della vigilanza",
-            "surveyor": "Ufficio di supervisione",
+            "surveyor": "Ufficio di un geometra",
             "tax_advisor": "Centro assistenza fiscale",
             "telecommunication": "Ufficio di telecomunicazioni",
             "therapist": "Studio psichiatrico",
@@ -3920,7 +3919,8 @@
           "label": "Sito web"
         },
         "website/menu": {
-          "label": "Collegamento al menù"
+          "label": "Collegamento al menù",
+          "placeholder": "https://esempio.it"
         },
         "wetland": {
           "label": "Tipo",
@@ -4274,7 +4274,7 @@
           "terms": "clinica abortiva,clinica per l’aborto,ospedale per l’aborto,centro per l’aborto,centro abortivo"
         },
         "amenity/clinic/dialysis": {
-          "name": "Centro Dialisi",
+          "name": "Centro dialisi",
           "terms": "dialisi renale,clinica di dialisi"
         },
         "amenity/clinic/fertility": {
@@ -4349,7 +4349,7 @@
           "terms": "psichiatria infantile,psichiatria infantile,psichiatria pediatrica"
         },
         "amenity/doctors/dermatology": {
-          "name": "Dermatologa",
+          "name": "Dermatologo",
           "terms": "dermatologia, capelli, unghie, pelle"
         },
         "amenity/doctors/gastroenterology": {
@@ -4417,8 +4417,8 @@
           "terms": "caviglia,piedi,piede,gamba,gambe,podologia"
         },
         "amenity/doctors/proctology": {
-          "name": "Chirurgo colorettale",
-          "terms": "assman,chirurgia colorettale,proctologia"
+          "name": "Chirurgo colo-rettale",
+          "terms": "chirurgia colo-rettale,colon,retto,proctologia"
         },
         "amenity/doctors/psychiatrist": {
           "name": "Psichiatra",
@@ -4436,7 +4436,7 @@
           "name": "Reumatologo"
         },
         "amenity/doctors/surgery": {
-          "name": "Chirurgo Generale"
+          "name": "Chirurgo generale"
         },
         "amenity/doctors/trauma": {
           "name": "Chirurgo traumatologo"
@@ -5705,7 +5705,7 @@
           "terms": "libri,riparazione"
         },
         "craft/brewery": {
-          "name": "Birrificio Artigianale"
+          "name": "Birrificio artigianale"
         },
         "craft/carpenter": {
           "name": "Carpentiere",
@@ -7863,7 +7863,8 @@
           "terms": "Ufficio di guardie giurate private"
         },
         "office/surveyor": {
-          "name": "Ufficio di supervisione"
+          "name": "Ufficio di un geometra",
+          "terms": "geometra,studio,geometri,valutazione,danni,rischio,particella,catasto,catastale,edilizia"
         },
         "office/tax_advisor": {
           "name": "Centro assistenza fiscale"

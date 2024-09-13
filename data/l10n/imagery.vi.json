@@ -253,6 +253,17 @@
         "description": "Bộ mảnh raster của Mapbox chứa lớp hình ảnh chụp từ vệ tinh và trên không trung",
         "name": "Mapbox Vệ tinh"
       },
+      "ODOT_TIMS_Road_Inventory": {
+        "attribution": {
+          "text": "Sở Giao thông Ohio"
+        }
+      },
+      "OSIP": {
+        "attribution": {
+          "text": "Chương trình Không ảnh toàn bang Ohio"
+        },
+        "name": "Chương trình Không ảnh toàn bang Ohio"
+      },
       "OSIP_1ft": {
         "attribution": {
           "text": "Chương trình Hình ảnh Toàn tiểu bang Ohio"

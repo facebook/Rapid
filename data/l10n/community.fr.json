@@ -1,8 +1,11 @@
 {
   "fr": {
     "_communities": {
+      "freelibreopensourcesoftwarekosovaflossk": "Free Libre Open Source Software Kosovo (FLOSSK)",
       "kiribatiwomeninmapping": "Les femmes cartographes de Kiribati",
       "mappingbotswana": "Cartographier le Botswana",
+      "maptimehrva": "MaptimeCroatie",
+      "openstreetmapaachen": "OpenStreetMap Aix-la-Chapelle",
       "openstreetmapafrica": "OpenStreetMap Afrique",
       "openstreetmapalba": "OpenStreetMap Écosse",
       "openstreetmapalbania": "OpenStreetMap Albanie",
@@ -13,14 +16,17 @@
       "openstreetmapaustria": "OpenStreetMap Autriche",
       "openstreetmapbelarus": "OpenStreetMap Biélorussie",
       "openstreetmapbelgium": "OpenStreetMap Belgique",
+      "openstreetmapbelize": "OpenStreetMap Bélize",
       "openstreetmapbengaluru": "OpenStreetMap Bangalore",
       "openstreetmapbenin": "OpenStreetMap Bénin",
+      "openstreetmapbivccvl": "OpenStreetMap Biella-Verceil-Canavais",
       "openstreetmapbolivia": "OpenStreetMap Bolivie",
       "openstreetmapbosniaandherzegovina": "OpenStreetMap Bosnie-Herzégovine",
       "openstreetmapbrasil": "OpenStreetMap Brésil",
       "openstreetmapbrasilia": "OpenStreetMap Brasilia",
       "openstreetmapbremen": "OpenStreetMap Brême",
       "openstreetmapbulgaria": "OpenStreetMap Bulgarie",
+      "openstreetmapbzh": "OpenStreetMap Bretagne",
       "openstreetmapcambodia": "OpenStreetMap Cambodge",
       "openstreetmapcameroon": "OpenStreetMap Cameroun",
       "openstreetmapcastillayleon": "OpenStreetMap Castille et León",
@@ -33,7 +39,10 @@
       "openstreetmapcotedivoire": "OpenStreetMap Côte d'Ivoire",
       "openstreetmapcroatia": "OpenStreetMap Croatie",
       "openstreetmapcuneo": "OpenStreetMap Coni",
+      "openstreetmapcyprus": "OpenStreetMap Chypre",
       "openstreetmapcz": "OpenStreetMap Tchéquie",
+      "openstreetmapde": "OpenStreetMap Allemagne",
+      "openstreetmapdeepsouth": "OpenStreetMap Sud profond",
       "openstreetmapdenmark": "OpenStreetMap Danemark",
       "openstreetmapdominicanrepublic": "OpenStreetMap République dominicaine",
       "openstreetmapdresden": "OpenStreetMap Dresde",
@@ -74,6 +83,7 @@
       "openstreetmaplatinamerica": "OpenStreetMap Amérique latine",
       "openstreetmaplatvia": "OpenStreetMap Lettonie",
       "openstreetmaplebanon": "OpenStreetMap Liban",
+      "openstreetmapliberia": "OpenStreetMap Libéria",
       "openstreetmaplibya": "OpenStreetMap Lybie",
       "openstreetmaplithuania": "OpenStreetMap Lituanie",
       "openstreetmaplombardia": "OpenStreetMap Lombardie",
@@ -126,46 +136,69 @@
       "openstreetmapwarszawa": "OpenStreetMap Varsovie",
       "openstreetmapwestbengal": "OpenStreetMap Bengal Ouest",
       "openstreetmapwesternsahara": "OpenStreetMap Sahara occidental",
-      "openstreetmapzambia": "OpenStreetMap Zambie"
+      "openstreetmapzambia": "OpenStreetMap Zambie",
+      "openstreetmapzimbabwe": "OpenStreetMap Zimbabwé",
+      "osmmainz": "OSM Mayence",
+      "youthmappersasu": "YouthMappers Université de l’État d'Arizona"
     },
     "_defaults": {
       "aparat": {
         "name": "{community} sur Aparat",
-        "description": "Abonnez-vous à notre chaîne Aparat"
+        "description": "Abonnez-vous à notre chaîne Aparat",
+        "url": "https://aparat.com/{compte}"
       },
       "discord": {
-        "name": "Discord de {community}",
-        "description": "Discutez avec d’autres cartographes sur Discord"
+        "name": "{communauté} sur Discord",
+        "description": "Discutez avec d’autres cartographes sur Discord",
+        "url": "https://discord.gg/{compte}"
       },
       "discourse": {
         "name": "Forum de la communauté {community}",
-        "description": "Le forum officiel de {community}"
+        "description": "Le forum officiel de {community}",
+        "url": "https://community.openstreetmap.org/c/communities/{compte}"
       },
       "facebook": {
         "name": "{community} sur Facebook",
-        "description": "Rejoignez notre communauté sur Facebook"
+        "description": "Rejoignez notre communauté sur Facebook",
+        "url": "https://www.facebook.com/{compte}"
+      },
+      "fediverse": {
+        "name": "{communauté}"
       },
       "forum": {
         "name": "Forum de {community}",
         "description": "Le forum officiel de {community}"
       },
       "github": {
-        "name": "GitHub de {community}"
+        "name": "GitHub de {community}",
+        "url": "https://github.com/{compte}"
       },
       "gitlab": {
-        "name": "GitLab de {community}"
+        "name": "GitLab de {community}",
+        "url": "https://gitlab.com/{compte}"
+      },
+      "group": {
+        "name": "{communauté}"
+      },
+      "instagram": {
+        "name": "{communauté} sur Instagram",
+        "description": "Suivez-nous sur Instagram",
+        "url": "https://instagram.com/{compte}"
       },
       "irc": {
         "name": "{community} sur IRC",
-        "description": "Rejoignez #{account} sur irc.oftc.net (port 6667 sans SSL ou 6697 avec SSL)"
+        "description": "Rejoignez #{account} sur irc.oftc.net (port 6667 sans SSL ou 6697 avec SSL)",
+        "url": "https://webchat.oftc.net/?channels={compte}"
       },
       "linkedin": {
         "name": "{community} sur LinkedIn",
-        "description": "Rejoignez notre communauté sur LinkedIn"
+        "description": "Rejoignez notre communauté sur LinkedIn",
+        "url": "https://www.linkedin.com/company/{compte}"
       },
       "mailinglist": {
         "name": "Liste de diffusion {account}",
-        "description": "La liste de diffusion officielle de {community}"
+        "description": "La liste de diffusion officielle de {community}",
+        "url": "https://lists.openstreetmap.org/listinfo/{compte}"
       },
       "mastodon": {
         "name": "{community} sur Mastodon",
@@ -173,16 +206,25 @@
       },
       "matrix": {
         "name": "Chat Matrix de {community}",
-        "description": "Rejoignez notre communauté sur Matrix Chat"
+        "description": "Rejoignez notre communauté sur Matrix Chat",
+        "url": "https://matrix.to/#/{compte}:matrix.org"
       },
       "meetup": {
-        "name": "Meetup de {community}"
+        "name": "Meetup de {community}",
+        "url": "https://www.meetup.com/{compte}"
       },
       "newsletter": {
         "name": "Lettre d'information de [community]"
       },
+      "osm": {
+        "name": "{communauté}"
+      },
+      "osm-lc": {
+        "name": "{communauté}"
+      },
       "reddit": {
-        "name": "{community} sur Reddit"
+        "name": "{community} sur Reddit",
+        "url": "https://www.reddit.com/r/{compte}"
       },
       "signal": {
         "name": "Signal {community}",
@@ -193,34 +235,51 @@
       },
       "telegram": {
         "name": "Telegram de {community}",
-        "description": "Rejoignez notre communauté sur Telegram"
+        "description": "Rejoignez notre communauté sur Telegram",
+        "url": "https://t.me/{compte}"
       },
       "threads": {
         "name": "{community} sur Threads",
-        "description": "Suivez-nous sur Threads"
+        "description": "Suivez-nous sur Threads",
+        "url": "https://threads.net/@{compte}"
+      },
+      "tiktok": {
+        "name": "{communauté} sur TikTok",
+        "description": "Suivez-nous sur TikTok",
+        "url": "https://tiktok.com/@{compte}"
       },
       "twitter": {
         "name": "{community} sur 𝕏",
-        "description": "Suivez-nous sur 𝕏"
+        "description": "Suivez-nous sur 𝕏",
+        "url": "https://twitter.com/{compte}"
+      },
+      "website": {
+        "name": "{communauté}"
       },
       "wiki": {
-        "name": "Projet wiki de {community}"
+        "name": "Projet wiki de {community}",
+        "url": "https://wiki.openstreetmap.org/wiki/{compte}"
       },
       "x": {
         "name": "{community} sur 𝕏",
-        "description": "Suivez-nous sur 𝕏"
+        "description": "Suivez-nous sur 𝕏",
+        "url": "https://twitter.com/{compte}"
       },
       "xmpp": {
         "name": "X.M.P.P. de {community}"
       },
       "youtube": {
         "name": "{community} sur YouTube",
-        "description": "Abonnez-vous à notre chaîne YouTube"
+        "description": "Abonnez-vous à notre chaîne YouTube",
+        "url": "https://www.youtube.com/channel/{compte}"
       },
       "zulip": {
         "name": "Zulip de {community}",
         "description": "Rejoignez notre chat en ligne sur Zulip"
       }
+    },
+    "aberdeen-discord": {
+      "name": "OSM ABZ sur Discord"
     },
     "af-matrix": {
       "description": "Groupe Matrix de la communauté afghane"
@@ -242,6 +301,7 @@
       "extendedDescription": "Rejoignez la communauté pour en apprendre plus sur OpenStreetMap, pour poser des questions ou participer à nos rencontres. Tout le monde est le bienvenu!"
     },
     "Bay-Area-OpenStreetMappers": {
+      "name": "Cartographes OSM de la région de la baie de San Francisco\n ",
       "description": "Améliorez OpenStreetMap dans la Bay Area",
       "extendedDescription": "Ce groupe a pour objectif de développer la communauté OpenStreetMap dans le secteur de la Région de la baie de San Francisco. Nos événements sont ouverts à tout le monde, passionné.e.s de l'Open Source, cyclistes, professionnel.le.s de la géomatique, geocachers, ou d'autres encore. Quiconque est intéressé.e par les cartes, la cartographie et les données cartographiques libres est invité.e à rejoindre le groupe et à participer aux événements."
     },
@@ -285,6 +345,9 @@
     "br-telegram": {
       "extendedDescription": "Rejoignez la communauté pour en apprendre plus sur OpenStreetMap, posez des questions ou participez à nos rencontres. Tout le monde est le bienvenu !"
     },
+    "br-wiki": {
+      "description": "Projet Wiki avec des guides en lignes d'infos et de coordination pour la cartographie au Brésil"
+    },
     "cape-coast-youthmappers": {
       "name": "YouthMappers de l'université de Cape Coast",
       "description": "Suivez-nous sur Twitter : {url}",
@@ -326,6 +389,12 @@
     "co-facebook": {
       "extendedDescription": "Rejoindre la communauté pour en savoir plus sur OpenStreetMap. Tout le monde est le bienvenu !"
     },
+    "co-github": {
+      "description": "Projets Git pour le Colombie"
+    },
+    "co-wiki": {
+      "description": "Page wiki avec la documentation pour cartographier la Colombie"
+    },
     "comunitat-valenciana-wiki": {
       "description": "Tout ce que vous devez savoir sur la cartographie dans la Communauté Valencienne : {url}"
     },
@@ -336,16 +405,16 @@
       "description": "Salon OpenStreetMap en tchèque, relié avec IRC, Jabber, Matrix et Telegram"
     },
     "czech-irc": {
-      "description": "Salon OpenStreetMap en tchèque, relié avec Jabber, Matrix et Telegram"
+      "description": "Salon OpenStreetMap en tchèque, relié avec Discord, Jabber, Matrix et Telegram"
     },
     "czech-matrix": {
-      "description": "Salon OpenStreetMap en tchèque, relié avec IRC, Jabber et Telegram"
+      "description": "Salon OpenStreetMap en tchèque, relié avec Discord, IRC, Jabber et Telegram"
     },
     "czech-telegram": {
-      "description": "Salon OpenStreetMap en tchèque, relié avec IRC, Jabber et Matrix"
+      "description": "Salon OpenStreetMap en tchèque, relié avec Discord, IRC, Jabber et Matrix"
     },
     "czech-xmpp": {
-      "description": "Salon OpenStreetMap en tchèque, relié avec IRC, Matrix et Telegram"
+      "description": "Salon OpenStreetMap en tchèque, relié avec Discord, IRC, Matrix et Telegram"
     },
     "de-aachen-wiki": {
       "description": "Page Wiki de {community}"
@@ -357,8 +426,7 @@
       "description": "Page wiki de {community}"
     },
     "de-berlin-xmpp": {
-      "name": "XMPP d'OpenStreetMap Berlin-Brandebourg",
-      "description": "Rejoignez notre chat multi-utilisateurs XMPP : {url}"
+      "name": "XMPP d'OpenStreetMap Berlin-Brandebourg"
     },
     "de-bochum-wiki": {
       "description": "Page wiki de {community}"
@@ -382,8 +450,7 @@
       "description": "Page wiki de {community}"
     },
     "de-hamburg-xmpp": {
-      "name": "XMPP d'OpenStreetMap Hambourg",
-      "description": "Rejoignez notre salle de discussion multi-utilisateurs XMPP : {url}"
+      "name": "XMPP d'OpenStreetMap Hambourg"
     },
     "de-karlsruhe-mailinglist": {
       "name": "Liste de diffusion de Karlsruhe"
@@ -393,6 +460,15 @@
     },
     "de-luneburg-wiki": {
       "description": "Page wiki de {community}"
+    },
+    "de-mainz-mailinglist": {
+      "description": "OpenStreetMap à Mayence et ses environs"
+    },
+    "de-mainz-telegram": {
+      "description": "OpenStreetMap à Mayence et ses environs"
+    },
+    "de-mainz-wiki": {
+      "description": "OpenStreetMap à Mayence et ses environs"
     },
     "de-munchen-wiki": {
       "description": "Page wiki de {community}"
@@ -428,8 +504,7 @@
       "description": "Rencontre de la communauté et des utilisateurs d'OSM Viersen et Mönchengladbach"
     },
     "de-xmpp": {
-      "name": "XMPP d'OpenStreetMap DE",
-      "description": "Rejoignez notre salle de discussion multi-utilisateurs XMPP : {url}"
+      "name": "XMPP d'OpenStreetMap DE"
     },
     "DF-telegram": {
       "extendedDescription": "Rejoignez la communauté pour en apprendre plus sur OpenStreetMap, pour poser des questions ou participer à nos rencontres. Vous êtes tous les bienvenus !"
@@ -451,6 +526,9 @@
     },
     "fr-chapter": {
       "description": "Nous aidons OpenStreetMap à croître et à s'améliorer en France."
+    },
+    "fr-discord": {
+      "name": "Communauté OpenStreetMap de France sur Discord"
     },
     "fr-matrix": {
       "description": "Un groupe Matrix pour la communauté d'OSM France : {url} (pont avec Telegram)"
@@ -701,7 +779,7 @@
       "extendedDescription": "Vous cartographiez au Népal ? Vous avez des questions, vous souhaitez rencontrer la communauté ? Rejoignez-nous sur {url}. Vous êtes tous les bienvenus !"
     },
     "Open-Source-San-Jose-Discord": {
-      "name": "Discord d'Open Source San José",
+      "name": "Open Source San José sur Discord",
       "description": "Entrez en contact avec d'autres mappeurs sur Discord ! Après votre inscription, rejoignez le canal #🗺openstreetmap."
     },
     "Open-Source-San-Jose-Slack": {
@@ -779,11 +857,8 @@
       "description": "Page Wiki de {community}",
       "extendedDescription": "OpenStreetMap Deep South est une communauté locale de cartographes du sud-est des États-Unis."
     },
-    "osm-delhi-xmpp": {
-      "description": "Rejoignez notre salle XMPP : {url}"
-    },
     "OSM-Discord": {
-      "name": "Discord d'OpenStreetMap Monde"
+      "name": "OpenStreetMap Monde sur Discord"
     },
     "OSM-Discourse": {
       "name": "Forum de la communauté OpenStreetMap",
@@ -791,9 +866,6 @@
     },
     "OSM-Facebook": {
       "description": "Mettez-nous un « j'aime » sur Facebook pour recevoir des nouvelles d'OpenStreetMap."
-    },
-    "osm-fj": {
-      "description": "Fournit des services et des informations OSM à la communauté locale de Fidji"
     },
     "osm-gh-facebook": {
       "extendedDescription": "Cartographes de la communauté du Ghana qui promeuvent les projets OpenStreetMap et les projets Humanitarian OpenStreetMap Team (HOT) au Ghana. Rejoignez-nous."
@@ -837,8 +909,7 @@
       "description": "Tout ce dont vous avez besoin pour cartographier en Inde : {url}"
     },
     "osm-india-xmpp": {
-      "name": "XMPP OpenStreetMap Inde",
-      "description": "Rejoignez notre salle XMPP : {url}"
+      "name": "XMPP OpenStreetMap Inde"
     },
     "osm-iran-aparat": {
       "extendedDescription": "Une bonne ressource de vidéos sur tout ce qui a trait à OpenStreetMap. Surtout en persan."
@@ -851,9 +922,6 @@
     },
     "OSM-japan-facebook": {
       "description": "Cartographes et utilisateurs d'OpenStreetMap au Japon"
-    },
-    "OSM-japan-slack": {
-      "description": "Messagerie Slake pour la communauté OSM du Japon {signupUrl}"
     },
     "OSM-japan-website": {
       "description": "Cartographes et utilisateurs d'OpenStreetMap au Japon"
@@ -971,14 +1039,6 @@
     },
     "OSM-US-Slack": {
       "description": "Vous êtes tous les bienvenus ! Enregistrez-vous sur {signupUrl}"
-    },
-    "OSM-Utah": {
-      "description": "Cartographes et utilisateurs d'OpenStreetMap dans la région de Salt Lake City",
-      "extendedDescription": "Les activités peuvent être des ateliers pour apprendre à cartographier, des cartoparties et des collectes de données en extérieur. Les événement se déroulent dans la zone de SLC au moins au départ. Nous cherchons des cartographes chevronnés ainsi que des nouveaux sur OSM. Rejoignez-nous et cartographions !"
-    },
-    "osm-west-bengal-xmpp": {
-      "name": "XMPP OpenStreetMap Bengale-Occidental",
-      "description": "Rejoignez notre salle XMPP : {url}"
     },
     "OSM-Wyoming": {
       "description": "Cartographes et utilisateurs d'OpenStreetMap dans la région de Wyoming",

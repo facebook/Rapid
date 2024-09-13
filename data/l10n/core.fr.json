@@ -41,7 +41,6 @@
         "filter_tooltip": "lignes"
       },
       "add_note": {
-        "label": "Ajouter une note",
         "description": "Vous avez repéré une erreur ? Faites-le savoir aux autres cartographes."
       },
       "add_preset": {
@@ -740,9 +739,6 @@
     "loading_auth": "Connexion à OpenStreetMap…",
     "report_a_bug": "Rapporter un bug",
     "help_translate": "Aider à traduire",
-    "sidebar": {
-      "tooltip": "Afficher/cacher la barre latérale."
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} élément caché",
@@ -798,7 +794,6 @@
         "title": "Fond",
         "resolution": "Résolution",
         "accuracy": "Précision",
-        "unknown": "Inconnu",
         "show_tiles": "Afficher la couche",
         "hide_tiles": "Masquer le couche"
       },
@@ -808,7 +803,6 @@
         "last_edit": "Dernière modification",
         "edited_by": "Edité par",
         "changeset": "Groupe de modification",
-        "unknown": "Inconnu",
         "note_no_history": "Pas d'historique (nouvelle note)",
         "note_comments": "Commentaires",
         "note_created_date": "Date de création",
@@ -886,13 +880,12 @@
         "zoom": "{features} sont cachés. Zoomez pour les afficher."
       },
       "back_tooltip": "Changer le type d'élément",
+      "details": "Détails",
       "remove": "Supprimer",
       "search": "Rechercher",
       "unknown": "Inconnu",
       "incomplete": "<non téléchargé>",
       "feature_list": "Rechercher des objets",
-      "edit": "Modifier l'élément",
-      "edit_features": "Modifier les éléments",
       "check": {
         "yes": "Oui",
         "no": "Non",
@@ -977,10 +970,6 @@
           "tooltip": "Anomalies détectées par keepright.at",
           "title": "Problèmes KeepRight"
         },
-        "improveOSM": {
-          "tooltip": "Données manquantes détectées par improveosm.org",
-          "title": "Problèmes ImproveOSM"
-        },
         "osmose": {
           "tooltip": "Anomalies détectées par osmose.openstreetmap.fr",
           "title": "Signalements Osmose"
@@ -1012,9 +1001,6 @@
     },
     "photo_overlays": {
       "title": "Couches photo",
-      "traffic_signs": {
-        "title": "Signalisation routière"
-      },
       "photo_type": {
         "flat": {
           "title": "Photos planes",
@@ -1274,39 +1260,6 @@
         "elems_title": "Éléments",
         "fix_title": "Guides de correction",
         "trap_title": "Erreurs fréquentes"
-      },
-      "improveOSM": {
-        "title": "Détections ImproveOSM",
-        "geometry_types": {
-          "path": "chemins",
-          "road": "routes",
-          "both": "routes et parking"
-        },
-        "directions": {
-          "east": "est",
-          "north": "nord",
-          "northeast": "nord-est",
-          "northwest": "nord-ouest",
-          "south": "sud",
-          "southeast": "sud-est",
-          "southwest": "sud-ouest",
-          "west": "ouest"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Sens unique manquant",
-            "description": "Le long de cette section de {highway}, {percentage} % des {num_trips} trajets enregistrés vont de {from_node} à {to_node}. Il se pourrait qu'il manque un attribut de sens-unique."
-          },
-          "mr": {
-            "title": "Géométrie manquante",
-            "description": "{num_trips} trajets enregistrés dans cette région suggèrent qu'il y a des {geometry_type} ici.",
-            "description_alt": "Des données d'une source tierce suggèrent qu'il y a des {geometry_type} non cartographiés ici."
-          },
-          "tr": {
-            "title": "Interdiction de tourner manquante",
-            "description": "{num_passed} des {num_trips} trajets enregistrés (vers {travel_direction}) ont tourné de {from_way} vers {to_way} au niveau de {junction}. Il pourrait y avoir une interdiction de tourner « {turn_restriction} » manquante."
-          }
-        }
       },
       "keepRight": {
         "comment": "Commentaire",
@@ -1618,101 +1571,20 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Photos Streetside de Microsoft",
-      "report": "Signaler un problème relatif à la vie privée sur cette image",
-      "view_on_bing": "Consulter sur Bing Maps",
+    "photos": {
       "hires": "Haute résolution"
     },
-    "mapillary_images": {
-      "tooltip": "Photos de rue depuis Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Éléments de la carte",
-      "tooltip": "Éléments de la carte de Mapillary",
-      "construction": {
-        "barrier": {
-          "temporary": "Obstacle temporaire"
-        },
-        "flat": {
-          "crosswalk_plain": "passage piéton uni",
-          "driveway": "allée"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "marquage au sol - flèche (tournez à gauche)",
-            "right": "marquage au sol - flèche (tournez à droite)",
-            "split_left_or_straight": "Marquage au sol -  flèche continuez tout droit ou tournez à gauche",
-            "split_right_or_straight": "Marquage au sol - flèche continuez tout droit ou tournez à droite",
-            "straight": "marquage au sol - flèche (continuez tout droit)"
-          },
-          "crosswalk_zebra": "marquage au sol - passage piéton",
-          "give_way_row": "Marquage au sol : cédez-le-passage",
-          "give_way_single": "Marquage au sol : cédez-le-passage",
-          "other_marking": "marquage au sol - autre",
-          "stop_line": "Marquage au sol - ligne de stop",
-          "symbol": {
-            "bicycle": "Marquage au sol - Réservé aux cyclistes"
-          },
-          "text": "marquage au sol - texte"
-        }
-      },
-      "object": {
-        "banner": "bannière",
-        "bench": "banc",
-        "bike_rack": "arceau à vélo",
-        "billboard": "Panneau publicitaire",
-        "catch_basin": "bassin de rétention",
-        "cctv_camera": "caméra de surveillance",
-        "fire_hydrant": "borne incendie",
-        "junction_box": "Boîte de dérivation",
-        "mailbox": "boîte aux lettres",
-        "manhole": "Bouche d'égout",
-        "parking_meter": "parcmètre",
-        "phone_booth": "Cabine téléphonique",
-        "sign": {
-          "advertisement": "Publicité",
-          "information": "Panneau d'information",
-          "other": "autre signe",
-          "store": "enseigne",
-          "traffic_sign": {
-            "back": "panneau de signalisation - vers l'arrière",
-            "direction_front": "panneau de signalisation - vers l'avant",
-            "front": "panneau de signalisation - vers l'avant"
-          }
-        },
-        "street_light": "lampadaire",
-        "support": {
-          "pole": "poteau",
-          "traffic_sign_frame": "Panneau de signalisation",
-          "utility_pole": "Poteau utilitaire"
-        },
-        "traffic_cone": "cône de signalisation",
-        "traffic_light": {
-          "cyclists": "feux tricolores pour cyclistes",
-          "general_horizontal": "feux tricolores horizontaux",
-          "general_single": "feux tricolore simples",
-          "general_upright": "feux tricolores verticaux",
-          "other": "feux tricolores",
-          "pedestrians": "Feux tricolores pour piétons"
-        },
-        "trash_can": "poubelle",
-        "water_valve": "robinet d'adduction d'eau"
-      }
+    "streetside": {
+      "tooltip": "Photos Streetside de Microsoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Signalisation routière de Mapillary"
-      },
-      "view_on_mapillary": "Voir cette image sur Mapillary"
+      "tooltip": "Photos de rue depuis Mapillary"
     },
-    "kartaview_images": {
-      "tooltip": "Photos horizontales de KartaView"
+    "mapillary_signs": {
+      "title": "Signalisation routière"
     },
     "kartaview": {
-      "view_on_kartaview": "Voir cette  photo sur KartaView"
+      "tooltip": "Photos horizontales de KartaView"
     },
     "note": {
       "title": "Modifier la note",
@@ -1865,7 +1737,6 @@
         "copy_paste": "{copy_icon} **{copy}** et {paste_icon} **{paste}** permettent de dupliquer des éléments."
       },
       "notes": {
-        "intro": "Les *notes* sont utilisées pour prévenir les utilisateurs qu'un élément requiert une correction ou une attention particulière. Les notes marquent un emplacement précis sur la carte. Pour voir les notes existantes ou en ajouter de nouvelles, ouvrez le panneau {data_icon} **{map_data}** et activez la couche {osm_notes}.",
         "add_note_h": "Ajout de notes",
         "add_note": "Pour ajouter une note, cliquez sur le bouton {note_icon} **{note}** dans la barre d'outils au dessus de la carte ou appuyez sur la touche raccourci `{add_note_key}`.",
         "update_note_h": "Fermer, réouvrir et commenter",
@@ -1902,9 +1773,7 @@
         "title": "Assurance qualité",
         "intro": "Les automates signalant des problèmes de qualité peuvent trouver des attributs incorrects, des chemins déconnectés et d'autres problèmes dans OpenStreetMap que vous pouvez ensuite corriger. Pour visualiser les problèmes de qualité existants, cliquez sur le panneau {data_icon} **{map_data}** et activer le ou les automates de qualité désirés.",
         "tools_h": "Outils",
-        "tools": "Les outils suivants sont pris en charge actuellement: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) et [Osmose](https://osmose.openstreetmap.fr/).",
-        "issues_h": "Gérer les problèmes",
-        "issues": "L'utilisation des automates signalant des problèmes de qualité est similaire à celle des notes. Sélectionnez dans  la barre latérale un automate de qualité pour afficher tous les problèmes que cet automate à repérer. Chaque automate a ses propres fonctionnalités mais généralement vous pouvez, pour chaque problème, laisser un commentaire ou le fermer."
+        "issues_h": "Gérer les problèmes"
       },
       "field": {
         "restrictions": {
@@ -2667,7 +2536,6 @@
           "map_data": "Afficher/cacher le panneau de données",
           "issues": "Afficher/cacher le panneau de validation des problèmes",
           "preferences": "Afficher/cacher le panneau de préférences utilisateur",
-          "sidebar": "Afficher/cacher barre latérale",
           "wireframe": "Afficher/cacher le mode filaire",
           "osm_data": "Basculer la couche des données OpenStreetMap",
           "highlight_edits": "Souligner les modifications non enregistrées"

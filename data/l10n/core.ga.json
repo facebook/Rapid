@@ -36,7 +36,6 @@
       },
       "add_note": {
         "title": "Nóta",
-        "label": "Cuir nóta leis",
         "description": "Ar aimsigh tú fadhb? Cuir mapálaí ar an eolas faoi."
       },
       "add_preset": {
@@ -332,7 +331,6 @@
         "description": "Cur Síos",
         "resolution": "Taifeach",
         "accuracy": "Cruinneas",
-        "unknown": "Anaithnid",
         "show_tiles": "Taispeán Tíleanna",
         "hide_tiles": "Folaigh Tíleanna"
       },
@@ -342,7 +340,6 @@
         "version": "Leagan",
         "last_edit": "An t-athrú is deireanaí",
         "edited_by": "Athraithe ag",
-        "unknown": "Anaithnid",
         "note_no_history": "Gan Stair (Nóta Nua)",
         "note_comments": "Teachtaireachtaí",
         "note_created_date": "Dáta Cruthaithe",
@@ -406,12 +403,12 @@
       "wiki_reference": "Féach ar cháipéisíocht",
       "wiki_en_reference": "Féach ar cháipéisíocht as Béarla",
       "back_tooltip": "Athraigh saghas gné",
+      "type": "Saghas",
+      "details": "Sonraí",
       "remove": "Bain",
       "search": "Cuardaigh",
       "unknown": "Anaithnid",
       "feature_list": "Cuardaigh gnéithe",
-      "edit": "Cuir gné in eagar",
-      "edit_features": "Cuir gnéithe in eagar",
       "check": {
         "yes": "Tá",
         "no": "Níl",
@@ -419,7 +416,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Saghas",
           "default": "Réamhshocruithe",
           "layer": "Sraith"
         }
@@ -476,9 +472,6 @@
           "detail_title": "Sonraí",
           "cancel": "Cealaigh"
         },
-        "improveOSM": {
-          "title": "Fadhbanna ImproveOSM"
-        },
         "osmose": {
           "title": "Fadhbanna Osemose"
         }
@@ -496,9 +489,6 @@
     },
     "photo_overlays": {
       "title": "Forleaganacha grianghraif",
-      "traffic_signs": {
-        "title": "Comharthaí Tráchta"
-      },
       "photo_type": {
         "flat": {
           "tooltip": "Grianghraif traidisiúnta"
@@ -695,37 +685,6 @@
         "fix_title": "Deisigh treoirlínte",
         "trap_title": "Botúin Comónta"
       },
-      "improveOSM": {
-        "title": "Brath ImproveOSM",
-        "geometry_types": {
-          "path": "cosáin",
-          "parking": "páirceáil",
-          "road": "bóithre",
-          "both": "bóithre agus áit pháirceála"
-        },
-        "directions": {
-          "east": "oirthear",
-          "north": "tuaisceart",
-          "northeast": "oirthuaisceart",
-          "northwest": "iarthuaisceart",
-          "south": "deisceart",
-          "southeast": "oirdheisceart",
-          "southwest": "iardheisceart",
-          "west": "iarthar"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Aontreo ar iarraidh",
-            "description": "Ar an bpíosa seo den {highway}, thaistil {percentage}% de na {num_trips} turais taifeadta ó {from_node} go dtí {to_node}. B'fhéidir go bhfuil clib \"aontreo\" ar iarraidh."
-          },
-          "mr": {
-            "title": "Céimseata ar iarraidh"
-          },
-          "tr": {
-            "title": "Srian casaidh ar iarraidh"
-          }
-        }
-      },
       "keepRight": {
         "detail_description": "Cur síos",
         "comment": "Teachtaireacht",
@@ -872,92 +831,20 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Grianghraif cois sráide ó Microsoft",
-      "view_on_bing": "Féach ar léarscáileanna Bing",
+    "photos": {
       "hires": "Taifeach ard"
     },
-    "mapillary_images": {
-      "tooltip": "Grianghraif ó leibhéal na sráide ó Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Gnéithe Léarscáile",
-      "tooltip": "Gnéithe léarscáile ó Mapillary",
-      "construction": {
-        "barrier": {
-          "temporary": "bacainn shealadach"
-        },
-        "flat": {
-          "crosswalk_plain": "trasrian coisithe simplí"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "marc lána - saighead (clé)",
-            "right": "marc lána - saighead (deas)",
-            "straight": "marc lána - saighead (díreach)"
-          },
-          "crosswalk_zebra": "marcanna lána - trasrian coisithe",
-          "other_marking": "marc lána - eile",
-          "stop_line": "marc lána - líne stop",
-          "symbol": {
-            "bicycle": "marc lána - comhartha (rothar)"
-          },
-          "text": "marc lána - téacs"
-        }
-      },
-      "object": {
-        "bike_rack": "raca rothar",
-        "billboard": "clár fógraí",
-        "cctv_camera": "ceamara TCI",
-        "fire_hydrant": "hiodrant dóiteáin",
-        "junction_box": "acomhal bosca buí",
-        "mailbox": "bosca poist",
-        "manhole": "dúnpholl",
-        "parking_meter": "meaisín páirceála",
-        "phone_booth": "bosca teileafóin",
-        "sign": {
-          "advertisement": "fógra",
-          "information": "comhartha eolais",
-          "other": "comhartha eile",
-          "store": "comhartha siopa",
-          "traffic_sign": {
-            "back": "comhartha bóthair - cúl",
-            "direction_front": "comhartha bóthair - aghaidh",
-            "front": "comhartha bóthair - aghaidh"
-          }
-        },
-        "street_light": "solas sráide",
-        "support": {
-          "pole": "cuaille",
-          "traffic_sign_frame": "fráma comhartha tráchta",
-          "utility_pole": "cuaille fóntais"
-        },
-        "traffic_cone": "cón tráchta",
-        "traffic_light": {
-          "cyclists": "solas tráchta rothar",
-          "general_horizontal": "solas tráchta cothrománach",
-          "general_single": "solas tráchta aonair",
-          "general_upright": "solas tráchta ceartingearach",
-          "other": "solas tráchta",
-          "pedestrians": "solas tráchta coisithe"
-        },
-        "trash_can": "bosca bruscair",
-        "water_valve": "comhla uisce"
-      }
+    "streetside": {
+      "tooltip": "Grianghraif cois sráide ó Microsoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Comharthaí tráchta ó Mapillary"
-      },
-      "view_on_mapillary": "Féach ar an íomhá seo ar Mapillary"
+      "tooltip": "Grianghraif ó leibhéal na sráide ó Mapillary"
     },
-    "kartaview_images": {
-      "tooltip": "Grianghraif ó leibhéal na sráide ó KartaView"
+    "mapillary_signs": {
+      "title": "Comharthaí Tráchta"
     },
     "kartaview": {
-      "view_on_kartaview": "Féach ar an íomhá seo ar KartaView"
+      "tooltip": "Grianghraif ó leibhéal na sráide ó KartaView"
     },
     "note": {
       "note": "Nóta",

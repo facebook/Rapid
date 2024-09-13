@@ -14,6 +14,9 @@
         "description": "Esri arhiivimaterjal, mis võib olla tavakihi piltidest selgem ja täpsem.",
         "name": "Esri Worldi pildimaterjal (selgem, beeta)"
       },
+      "FOMI_2011_2014": {
+        "name": "FÖMI ortofoto 2011-2014 (WEBP)"
+      },
       "MAPNIK": {
         "description": "OpenStreetMapi vaikekiht.",
         "name": "OpenStreetMap (standard)"
@@ -29,6 +32,12 @@
           "text": "Kasutustingimused ja tagasiside"
         },
         "name": "Mapboxi satelliidifotod"
+      },
+      "geoscribble-latest": {
+        "attribution": {
+          "text": "GeoScribble'i kaasautorid"
+        },
+        "name": "GeoScribble'i viimased märkused"
       },
       "maaamet<TX_DOT>ee-cir_ngr": {
         "name": "Maa-ameti metsanduslik ortofoto"

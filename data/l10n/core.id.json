@@ -37,7 +37,6 @@
       },
       "add_note": {
         "title": "Catatan",
-        "label": "Tambah Catatan",
         "description": "Menemukan masalah? Beritahu pemeta lain."
       },
       "add_preset": {
@@ -286,11 +285,7 @@
     "info_panels": {
       "background": {
         "title": "Latar",
-        "description": "Deskripsi",
-        "unknown": "Tidak diketahui"
-      },
-      "history": {
-        "unknown": "Tidak diketahui"
+        "description": "Deskripsi"
       },
       "location": {
         "title": "Lokasi"
@@ -325,12 +320,12 @@
       "results": "{n} hasil untuk {search}",
       "no_documentation_key": "Tidak ada dokumentasi yang tersedia",
       "back_tooltip": "Ubah tipe objek",
+      "details": "detail",
       "remove": "Buang",
       "search": "Cari",
       "unknown": "Tidak diketahui",
       "incomplete": "<tak terunduh>",
       "feature_list": "Cari fitur",
-      "edit": "Ubah Fitur",
       "check": {
         "yes": "Ya",
         "no": "Tidak"
@@ -376,6 +371,9 @@
       "description": "Data Peta",
       "data_layers": "Lapisan Data",
       "layers": {
+        "notes": {
+          "key": "U"
+        },
         "maproulette": {
           "detail_title": "detail",
           "cancel": "Batal"
@@ -520,12 +518,6 @@
         "detail_description": "Deskripsi"
       }
     },
-    "mapillary_map_features": {
-      "title": "Fitur Peta"
-    },
-    "mapillary": {
-      "view_on_mapillary": "Lihat gambar ini di Mapillary"
-    },
     "note": {
       "note": "Catatan"
     },
@@ -554,9 +546,6 @@
       },
       "relations": {
         "boundary_h": "Batas"
-      },
-      "notes": {
-        "intro": "*Catatan* digunakan untuk memberitahu pengguna lain bahwa fitur tersebut membutuhkan perbaikan atau perhatian. Catatan menandakan sebuah lokasi spesifik di peta. Untuk melihat catatan yang ada atau tambah baru, buka panel [data_icon] **[map_data]** dan nyalakan lapisan [osm_notes] ."
       },
       "streetlevel": {
         "using": "Untuk menggunakan foto jalanan untuk pemetaan, buka panel [data_icon] **[map_data]** pada sisi peta untuk mengaktifkan atau menon-aktifkan lapisan-lapisan atas foto yang tersedia."

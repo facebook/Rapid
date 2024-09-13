@@ -39,7 +39,6 @@
       },
       "add_note": {
         "title": "โน้ต",
-        "label": "เพิ่มโน้ต",
         "description": "พบปัญหา? แจ้งให้ผู้ทำแผนที่คนอื่นทราบ"
       },
       "add_preset": {
@@ -421,9 +420,6 @@
     "loading_auth": "กำลังเชื่อมต่อ OpenStreetMap...",
     "report_a_bug": "รายงานข้อผิดพลาด",
     "help_translate": "ร่วมช่วยแปลภาษา",
-    "sidebar": {
-      "tooltip": "เปิด-ปิดแถบด้านข้าง"
-    },
     "feature_info": {
       "hidden_warning": "{count} คุณสมบัติที่ซ่อนอยู่"
     },
@@ -456,15 +452,13 @@
         "source": "แหล่งที่มา",
         "description": "คำอธิบาย",
         "resolution": "ความละเอียด",
-        "accuracy": "ความแม่นยำ",
-        "unknown": "ไม่ทราบ"
+        "accuracy": "ความแม่นยำ"
       },
       "history": {
         "title": "ประวัติการแก้ไข",
         "version": "รุ่น",
         "last_edit": "แก้ไขล่าสุด",
         "edited_by": "แก้ไขโดย",
-        "unknown": "ไม่ทราบ",
         "note_comments": "ความคิดเห็น",
         "note_created_date": "วันที่สร้าง",
         "note_created_user": "สร้างโดย"
@@ -494,11 +488,10 @@
       "no_documentation_key": "ไม่มีเอกสารประกอบ",
       "wiki_reference": "ดูเอกสารประกอบ",
       "wiki_en_reference": "ดูเอกสารประกอบในภาษาอังกฤษ",
+      "details": "รายละเอียด",
       "search": "ค้นหา",
       "unknown": "ไม่ทราบ",
       "feature_list": "ค้นหาคุณสมบัติ",
-      "edit": "แก้ไขคุณสมบัติ",
-      "edit_features": "แก้ไขหลายคุณสมบัติ",
       "check": {
         "yes": "ใช่",
         "no": "ไม่"
@@ -522,7 +515,8 @@
       "layers": {
         "osm": {
           "tooltip": "ข้อมูลแผนที่จาก OpenStreetMap",
-          "title": "ข้อมูล OpenStreetMap"
+          "title": "ข้อมูล OpenStreetMap",
+          "key": "ว"
         },
         "maproulette": {
           "detail_title": "รายละเอียด",
@@ -608,9 +602,6 @@
           }
         }
       }
-    },
-    "mapillary_map_features": {
-      "title": "คุณสมบัติแผนที่"
     },
     "note": {
       "note": "โน้ต",
@@ -727,9 +718,6 @@
         },
         "help": {
           "title": "ช่วยเหลือ"
-        },
-        "display_options": {
-          "sidebar": "เปิด-ปิดแถบด้านข้าง"
         },
         "selecting": {
           "search": "ค้นหาคุณสมบัติที่ตรงกับข้อความค้นหา"

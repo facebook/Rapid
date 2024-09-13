@@ -41,7 +41,6 @@
       },
       "add_note": {
         "title": "Nota",
-        "label": "Aggiungi nota",
         "description": "Hai trovato un errore? Segnalalo agli altri mappatori."
       },
       "add_preset": {
@@ -741,9 +740,6 @@
     "loading_auth": "Connettendomi ad OpenStreetMap...",
     "report_a_bug": "Segnala un bug",
     "help_translate": "Aiuta nelle traduzioni",
-    "sidebar": {
-      "tooltip": "Commuta la barra laterale."
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} elemento nascosto",
@@ -801,7 +797,6 @@
         "description": "Descrizione",
         "resolution": "Risoluzione",
         "accuracy": "Accuratezza",
-        "unknown": "Sconosciuto",
         "show_tiles": "Mostra Mattonelle",
         "hide_tiles": "Nascondi Mattonelle"
       },
@@ -812,7 +807,6 @@
         "last_edit": "Ultima modifica",
         "edited_by": "Modificato da",
         "changeset": "Gruppo di modifiche",
-        "unknown": "Sconosciuto",
         "note_no_history": "Nessuna cronologia (nota nuova)",
         "note_comments": "Commenti",
         "note_created_date": "Data di creazione",
@@ -893,20 +887,19 @@
         "zoom": "{features} sono nascosti. Ingrandisci per abilitarli."
       },
       "back_tooltip": "Cambia tipo di elemento",
+      "type": "Tipo",
+      "details": "Dettagli",
       "remove": "Rimuovere",
       "search": "Cerca",
       "unknown": "Sconosciuto",
       "incomplete": "<non scaricato>",
       "feature_list": "Cerca elementi",
-      "edit": "Modifica elemento",
-      "edit_features": "Modifica elementi",
       "check": {
         "yes": "Sì",
         "reverser": "Cambia direzione"
       },
       "radio": {
         "structure": {
-          "type": "Tipo",
           "default": "Predefinito",
           "layer": "Strato"
         }
@@ -974,7 +967,8 @@
         },
         "notes": {
           "tooltip": "Dati delle note da OpenStreetMap",
-          "title": "Note di OpenStreetMap"
+          "title": "Note di OpenStreetMap",
+          "key": "Nord"
         },
         "maproulette": {
           "detail_title": "Dettagli",
@@ -983,10 +977,6 @@
         "keepRight": {
           "tooltip": "Problemi con i dati rilevato da keepright.at",
           "title": "Problemi KeepRight"
-        },
-        "improveOSM": {
-          "tooltip": "Dati mancanti rilevati da improveosm.org",
-          "title": "Problemi ImproveOSM"
         },
         "osmose": {
           "tooltip": "Problemi con i dati rilevato da osmose.openstreetmap.fr",
@@ -1019,9 +1009,6 @@
     },
     "photo_overlays": {
       "title": "Livelli foto",
-      "traffic_signs": {
-        "title": "Segnali stradali"
-      },
       "photo_type": {
         "flat": {
           "title": "Foto piane",
@@ -1279,40 +1266,6 @@
         "elems_title": "Elementi",
         "fix_title": "Sistema le linee guida",
         "trap_title": "Errori comuni"
-      },
-      "improveOSM": {
-        "title": "Rilevamento ImproveOSM",
-        "geometry_types": {
-          "path": "percorsi",
-          "parking": "parcheggio",
-          "road": "strade",
-          "both": "strade e parcheggio"
-        },
-        "directions": {
-          "east": "est",
-          "north": "nord",
-          "northeast": "nordest",
-          "northwest": "nordovest",
-          "south": "sud",
-          "southeast": "sudest",
-          "southwest": "sudovest",
-          "west": "ovest"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Senso unico mancante",
-            "description": "Lungo questa sezione di {highway}, il {percentage}% di {num_trips} passaggi registrati ha viaggiato da {from_node} a {to_node}. È possibile che manchi l’etichetta “oneway”."
-          },
-          "mr": {
-            "title": "Geometria mancante",
-            "description": "{num_trips} viaggi registrati in quest'area suggeriscono che potrebbe esserci {geometry_type} non mappate qui.",
-            "description_alt": "Dati di terzi suggeriscono che qua potrebbe mancare un/una {geometry_type}."
-          },
-          "tr": {
-            "title": "Divieto di svolta mancante",
-            "description": "{num_passed} su {num_trips} passaggi registrati (andando verso {travel_direction}) hanno svoltato da {from_way} verso {to_way} nel punto {junction}. È possibile che manchi un divieto di svolta “{turn_restriction}”."
-          }
-        }
       },
       "keepRight": {
         "detail_description": "Descrizione",
@@ -1625,101 +1578,20 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Foto Streetside da Microsoft",
-      "report": "Segnala un problema di privacy su questa foto",
-      "view_on_bing": "Vedi su Bing Maps",
+    "photos": {
       "hires": "Alta risoluzione"
     },
-    "mapillary_images": {
-      "tooltip": "Fotografie stradali da Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Elementi della mappa",
-      "tooltip": "Elementi della mappa da Mapillary",
-      "construction": {
-        "barrier": {
-          "temporary": "barriera temporanea"
-        },
-        "flat": {
-          "crosswalk_plain": "attraversamento semplice",
-          "driveway": "strada di accesso"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "segnaletica orizzontale (freccia a sinistra)",
-            "right": "segnaletica orizzontale (freccia a destra)",
-            "split_left_or_straight": "segnaletica orizzontale (freccia sinistra o diritto)",
-            "split_right_or_straight": "segnaletica orizzontale (freccia destra o diritto)",
-            "straight": "segnaletica orizzontale (freccia diritto)"
-          },
-          "crosswalk_zebra": "segnaletica orizzontale (attraversamento pedonale)",
-          "give_way_row": "segnaletica orizzontale (fila di dare precedenza)",
-          "give_way_single": "segnaletica orizzontale (dare precedenza singolo)",
-          "other_marking": "segnaletica orizzontale (altro)",
-          "stop_line": "segnaletica orizzontale (linea di stop)",
-          "symbol": {
-            "bicycle": "segnaletica orizzontale (simbolo bicicletta)"
-          },
-          "text": "segnaletica orizzontale (testo)"
-        }
-      },
-      "object": {
-        "banner": "striscione",
-        "bench": "panchina",
-        "bike_rack": "portabici",
-        "billboard": "cartellone pubblicitario",
-        "catch_basin": "caditoia",
-        "cctv_camera": "telecamera a circuito chiuso",
-        "fire_hydrant": "idrante antincendio",
-        "junction_box": "armadietto elettrico",
-        "mailbox": "casella postale",
-        "manhole": "tombino",
-        "parking_meter": "parchimetro",
-        "phone_booth": "cabina telefonica",
-        "sign": {
-          "advertisement": "pubblicità",
-          "information": "cartello informativo",
-          "other": "altro segnale",
-          "store": "insegna",
-          "traffic_sign": {
-            "back": "segnale stradale (dietro)",
-            "direction_front": "segnale stradale (di fronte)",
-            "front": "segnale stradale (di fronte)"
-          }
-        },
-        "street_light": "lampione",
-        "support": {
-          "pole": "palo",
-          "traffic_sign_frame": "cornice segnale stradale",
-          "utility_pole": "palo"
-        },
-        "traffic_cone": "cono di segnalazione",
-        "traffic_light": {
-          "cyclists": "semaforo per ciclisti",
-          "general_horizontal": "semaforo orizzontale",
-          "general_single": "semaforo singolo",
-          "general_upright": "semaforo verticale",
-          "other": "semaforo",
-          "pedestrians": "semaforo pedonale"
-        },
-        "trash_can": "cestino dell'immondizia",
-        "water_valve": "valvola idrica"
-      }
+    "streetside": {
+      "tooltip": "Foto Streetside da Microsoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Segnali stradali da Mapillary"
-      },
-      "view_on_mapillary": "Guarda questa immagine su Mapillary"
+      "tooltip": "Fotografie stradali da Mapillary"
     },
-    "kartaview_images": {
-      "tooltip": "Fotografie stradali da KartaView"
+    "mapillary_signs": {
+      "title": "Segnali stradali"
     },
     "kartaview": {
-      "view_on_kartaview": "Guarda questa immagine su KartaView"
+      "tooltip": "Fotografie stradali da KartaView"
     },
     "note": {
       "note": "Nota",
@@ -1875,7 +1747,6 @@
       },
       "notes": {
         "title": "Note",
-        "intro": "Le *note* servono per far sapere agli altri utenti che un elemento della mappa ha bisogno di essere controllato o corretto. Le note segnano una posizione specifica della mappa. Per vedere le note esistenti o aggiungerne di nuove, clicca sul pannello {data_icon} **{map_data}** e abilita il livello {osm_notes}.",
         "add_note_h": "Aggiunta di note",
         "add_note": "Per aggiungere una nuova nota, premi il pulsante {note_icon} **{note}** sulla barra degli strumenti sopra la mappa oppure premi la scorciatoia da tastiera `{add_note_key}`.",
         "update_note_h": "Chiusura, riapertura e aggiunta di commenti",
@@ -1912,9 +1783,7 @@
         "title": "Controllo qualità",
         "intro": "Gli strumenti di *controllo della qualità* (Q/A in inglese) individuano etichette improprie, strade separate dalle altre e altri problemi in OpenStreetMap che gli altri mappatori possono risolvere. Per vedere i problemi Q/A esistenti, apri il pannello {data_icon} **{map_data}** per abilitare uno specifico livello Q/A.",
         "tools_h": "Strumenti",
-        "tools": "I seguenti strumenti sono attualmente supportati: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) e [Osmose](https://osmose.openstreetmap.fr/).",
-        "issues_h": "Gestire i problemi",
-        "issues": "La gestione dei problemi di qualità è simile a quella delle note. Seleziona un indicatore per vedere i dettagli del problema sulla barra laterale. Ogni strumento è differente ma in genere è possibile commentare e/o chiudere un problema."
+        "issues_h": "Gestire i problemi"
       },
       "field": {
         "restrictions": {
@@ -2679,7 +2548,6 @@
           "map_data": "Commuta pannello dei dati",
           "issues": "Commuta pannello dei problemi di validazione",
           "preferences": "Commuta pannello delle preferenze utente",
-          "sidebar": "Commuta barra laterale",
           "wireframe": "Commuta modalità \"fil di ferro\"",
           "osm_data": "Commuta dati OpenStreetMap",
           "highlight_edits": "Evidenzia le modifiche non salvate"

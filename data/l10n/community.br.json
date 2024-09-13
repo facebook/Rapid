@@ -25,7 +25,9 @@
       "openstreetmapcotedivoire": "OpenStreetMap Aod an Olifant",
       "openstreetmapcroatia": "OpenStreetMap Kroatia",
       "openstreetmapcuba": "OpenStreetMap Kuba",
+      "openstreetmapcyprus": "OpenStreetMap Kiprenez",
       "openstreetmapcz": "OpenStreetMap Republik Tchek",
+      "openstreetmapde": "OpenStreetMap Alamagn",
       "openstreetmapdenmark": "OpenStreetMap Danmark",
       "openstreetmapdominicanrepublic": "OpenStreetMap ar Republik Dominikan",
       "openstreetmapegypt": "OpenStreetMap Ejipt",
@@ -302,9 +304,6 @@
     "de-berlin-wiki": {
       "description": "Pajenn Wiki {community}"
     },
-    "de-berlin-xmpp": {
-      "description": "Adkavit hor flap liesimplijer XMPP: {url}"
-    },
     "de-bochum-wiki": {
       "description": "Pajenn Wiki {community}"
     },
@@ -325,9 +324,6 @@
     },
     "de-dusseldorf-wiki": {
       "description": "Pajenn Wiki {community}"
-    },
-    "de-hamburg-xmpp": {
-      "description": "Adkavit hor flap XMPP lies-implijer: {url}"
     },
     "de-karlsruhe-mailinglist": {
       "name": "Lizher-kelaouiñ Karlsruhe"
@@ -379,9 +375,6 @@
     "de-viersen-meetup": {
       "name": "Emvod OpenStreetMap Viersen",
       "description": "Emvod kumuniezh OSM hag implijerien distrig Viersen ha Mönchengladbach"
-    },
-    "de-xmpp": {
-      "description": "Emezelit ouzh hor flap XMPP lies-implijer: {url}"
     },
     "DF-telegram": {
       "extendedDescription": "Emezelit er gumuniezh evit deskiñ muioc'h diwar-benn OpenStreetMap, sevel goulennoù pe kemer perzh en emvodoù. An holl 'zo deuet mat!"
@@ -596,6 +589,9 @@
     "OSM-AR-wiki": {
       "description": "Ar pep retañ evit kartennaouiñ Arc'hantina: {url}"
     },
+    "osm-asia-facebook": {
+      "description": "Strollad Facebook OpenStreetMap Azia"
+    },
     "osm-at": {
       "description": "Savenn titouroù diwar-benn OpenStreetMap en Aostria"
     },
@@ -739,12 +735,6 @@
     },
     "OSM-US-Slack": {
       "description": "Pep hini 'zo deuet mat! Lakait hoc'h anv war {signupUrl}"
-    },
-    "OSM-Utah": {
-      "description": "Kartennour·ien/ezed hag implijer·ien/ezed OpenStreetMap e korn-bro Salt Lake City"
-    },
-    "osm-west-bengal-xmpp": {
-      "name": "XMPP OpenStreetMap Kornôg Bengal"
     },
     "OSM-Wyoming": {
       "description": "Kartennour·ien/ezed hag implijer·ien/ezed OpenStreetMap e Wyoming"

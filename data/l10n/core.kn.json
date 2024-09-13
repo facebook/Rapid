@@ -34,7 +34,6 @@
       },
       "add_note": {
         "title": "ಟಿಪ್ಪಣಿ",
-        "label": "ಬರವಣಿಗೆಯನ್ನು ಸೇರಿಸು",
         "description": "ತಪ್ಪು ಕಂಡೀತೇ? ಬೇರೆಯವರಿಗೆ ತಿಳಿಸಿ."
       },
       "add_preset": {
@@ -240,11 +239,7 @@
         "vintage": "ವಿಂಟೇಜ್",
         "source": "ಮೂಲ",
         "description": "ವಿವರಣೆ",
-        "accuracy": "ನಿಖರತೆ",
-        "unknown": "ಅಜ್ಞಾತ"
-      },
-      "history": {
-        "unknown": "ಅಜ್ಞಾತ"
+        "accuracy": "ನಿಖರತೆ"
       },
       "location": {
         "title": "ಸ್ಥಳ"
@@ -276,11 +271,12 @@
       "new_relation": "ಹೊಸ ನಂಟು",
       "role": "ಪಾತ್ರ",
       "choose": "ವಸ್ತು ಪ್ರಕಾರವನ್ನ ಆಯ್ಕೆಮಾಡಿ  ",
+      "type": "‍ವಿಧ",
+      "details": "ವಿವರಗಳು",
       "remove": "ತೆಗೆದುಹಾಕು",
       "search": "ಹುಡುಕು",
       "unknown": "ತಿಳಿಯದ",
       "feature_list": "‍‍ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಹುಡುಕು",
-      "edit": "‍ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಸಂಪಾದಿಸು",
       "check": {
         "yes": "ಹೌದು",
         "no": "ಇಲ್ಲ",
@@ -288,7 +284,6 @@
       },
       "radio": {
         "structure": {
-          "type": "‍ವಿಧ",
           "default": " ಪೂರ್ವನಿಯೋಜಿತ",
           "layer": "ಪದರ"
         }
@@ -437,14 +432,8 @@
         "detail_description": "ವಿವರಣೆ"
       }
     },
-    "mapillary_images": {
-      "tooltip": "ರಸ್ತೆ ಮಟ್ಟದ ಚಿತ್ರಗಳು ಮ್ಯಾಪಿಲರೀ ಇಂದ "
-    },
-    "mapillary_map_features": {
-      "title": "‍ನಕ್ಷೆಯ ವೈಶಿಷ್ಟ್ಯತೆಗಳು"
-    },
     "mapillary": {
-      "view_on_mapillary": "ಈ ಚಿತ್ರವನ್ನು Mapillary ನಲ್ಲಿ ನೋಡಿ"
+      "tooltip": "ರಸ್ತೆ ಮಟ್ಟದ ಚಿತ್ರಗಳು ಮ್ಯಾಪಿಲರೀ ಇಂದ "
     },
     "note": {
       "note": "ಟಿಪ್ಪಣಿ"

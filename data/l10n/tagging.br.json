@@ -215,6 +215,10 @@
           "label": "Aerreizherezh",
           "terms": "Aerreizherezh,Aerreizhañ"
         },
+        "alt_name": {
+          "label": "Anv all",
+          "terms": "anv all,anv alternativel"
+        },
         "amenity": {
           "label": "Seurt"
         },
@@ -1755,6 +1759,10 @@
           "label": "Sklêrijennet",
           "terms": "sklêrijennet,gouloù,goulaouet,sklaeriet,splannet"
         },
+        "loc_name": {
+          "label": "Anv lec'hel",
+          "terms": "Anv lec'hel"
+        },
         "location": {
           "label": "Lec'hiadur",
           "terms": "lec'h,pelec'h,e-men,lec'hiadur"
@@ -1832,7 +1840,6 @@
             "limestone": "Maen-raz",
             "marble": "Marbr",
             "plastic": "Plastik",
-            "reinforced_conrete": "Betoñs houarnet",
             "rock": "Roc'h",
             "sand": "Traezh",
             "sandstone": "Krag",
@@ -1959,6 +1966,10 @@
           "placeholder": "Anv boutin (ma'z eus unan)",
           "terms": "anv"
         },
+        "nat_name": {
+          "label": "Anv broadel",
+          "terms": "Anv broadel"
+        },
         "natural": {
           "label": "Naturel"
         },
@@ -2059,6 +2070,10 @@
             "union": "Burev sindikad",
             "water_utility": "Ajañs an dour"
           }
+        },
+        "official_name": {
+          "label": "Anv ofisiel",
+          "terms": "Anv ofisiel,anv kefridiel"
         },
         "oneway": {
           "label": "Untu",
@@ -2423,6 +2438,10 @@
           "label": "Anv an hent-tremen",
           "placeholder": "da skouer: A5"
         },
+        "reg_name": {
+          "label": "Anv rannvroel",
+          "terms": "Anv rannvroel"
+        },
         "relation": {
           "label": "Seurt"
         },
@@ -2678,6 +2697,10 @@
         },
         "shop": {
           "label": "Seurt"
+        },
+        "short_name": {
+          "label": "Anv berr",
+          "terms": "Anv berr"
         },
         "shower": {
           "label": "Strinkerezh",

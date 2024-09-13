@@ -41,7 +41,6 @@
       },
       "add_note": {
         "title": "Oharra",
-        "label": "Oharra gehitu",
         "description": "Arazo bat ikusi duzu? Jakinarazi beste kartografo batzuk."
       },
       "add_preset": {
@@ -284,12 +283,10 @@
     },
     "info_panels": {
       "background": {
-        "description": "Deskripzioa",
-        "unknown": "Ezezaguna"
+        "description": "Deskripzioa"
       },
       "history": {
         "version": "Bertsioa",
-        "unknown": "Ezezaguna",
         "note_comments": "Iruzkinak"
       },
       "measurement": {
@@ -319,20 +316,14 @@
       },
       "multiple_types": "Hainbat mota",
       "back_tooltip": "Aldatu elementu mota",
+      "type": "Mota",
       "remove": "Ezabatu",
       "search": "Bilatu",
       "unknown": "Ezezaguna",
       "feature_list": "Bilatu elementuak",
-      "edit": "Editatu elementuak",
-      "edit_features": "Editatu elementuak",
       "check": {
         "yes": "Bai",
         "no": "Ez"
-      },
-      "radio": {
-        "structure": {
-          "type": "Mota"
-        }
       },
       "add": "Gehitu",
       "relation": "Erlazioa",
@@ -401,18 +392,6 @@
       "osmose": {
         "title": "Osmose arazoa"
       },
-      "improveOSM": {
-        "geometry_types": {
-          "parking": "aparkalekua",
-          "road": "errepideak"
-        },
-        "directions": {
-          "east": "ekialde",
-          "north": "iparra",
-          "south": "hegoa",
-          "west": "mendebalde"
-        }
-      },
       "keepRight": {
         "detail_description": "Deskripzioa",
         "comment": "Iruzkina",
@@ -452,24 +431,6 @@
           }
         }
       }
-    },
-    "streetside": {
-      "view_on_bing": "Bing Mapsen ikusi"
-    },
-    "mapillary_map_features": {
-      "title": "Mapako elementuak",
-      "object": {
-        "traffic_light": {
-          "other": "trafiko seinalea"
-        },
-        "trash_can": "zakarrontzia"
-      }
-    },
-    "mapillary": {
-      "signs": {
-        "tooltip": "Mapillaryko trafiko seinaleak"
-      },
-      "view_on_mapillary": "Irudi hau Mapillaryn ikusi"
     },
     "note": {
       "note": "Oharra",

@@ -45,7 +45,6 @@
       },
       "add_note": {
         "title": "Notenn",
-        "label": "Ouzhpennañ un notenn",
         "description": "Ur fazi ho peus merzet? Roit da c'houzout d'ar c'h·gartennour·ien/ezed all."
       },
       "add_preset": {
@@ -554,9 +553,6 @@
     "loading_auth": "O kennaskañ ouzh OpenStreetMap...",
     "report_a_bug": "Danevelliñ un draen",
     "help_translate": "Skoazellañ da dreiñ",
-    "sidebar": {
-      "tooltip": "Digeriñ/serriñ ar varrenn gostez"
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} elfenn kuzhet",
@@ -613,8 +609,7 @@
         "vintage": "Giz-kozh",
         "source": "Mammenn",
         "description": "Deskrivadur",
-        "resolution": "Diarunusted",
-        "unknown": "Dianav"
+        "resolution": "Diarunusted"
       },
       "history": {
         "title": "Roll istor",
@@ -623,7 +618,6 @@
         "last_edit": "Aozadenn diwezhañ",
         "edited_by": "Aozet gant",
         "changeset": "Hollad cheñchamantoù",
-        "unknown": "Dianav",
         "note_no_history": "Roll istor goullo (notenn nevez)",
         "note_comments": "Evezhiadennoù",
         "note_created_date": "Deiziad krouidigezh",
@@ -702,13 +696,13 @@
         "zoom": "Kuzhet eo {features}. Zoumañ evit o diskouez."
       },
       "back_tooltip": "Cheñch seurt an elfenn",
+      "type": "Seurt",
+      "details": "Muioc'h",
       "remove": "Lemel",
       "search": "Klask",
       "unknown": "Dianav",
       "incomplete": "nann-pellgarget",
       "feature_list": "Klask elfennoù",
-      "edit": "Kemmañ an elfenn",
-      "edit_features": "Aozañ an elfennoù",
       "check": {
         "yes": "Ya",
         "no": "Ket",
@@ -716,7 +710,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Seurt",
           "default": "Dre ziouer",
           "layer": "Gwiskad"
         }
@@ -789,10 +782,6 @@
           "tooltip": "Kudennoù roadennoù dinoet gant keepright.at",
           "title": "Kudennoù KeepRight"
         },
-        "improveOSM": {
-          "tooltip": "Roadennoù a vank bet dinoet gant improveosm.org",
-          "title": "Kudennoù ImproveOSM"
-        },
         "osmose": {
           "tooltip": "Kudennoù titouroù 'zo bet dinoet gant osmose.openstreetmap.fr",
           "title": "Kudennoù Osmose"
@@ -815,9 +804,6 @@
     },
     "photo_overlays": {
       "title": "Gwiskoù foto",
-      "traffic_signs": {
-        "title": "Panelloù-henchañ"
-      },
       "photo_type": {
         "flat": {
           "title": "Fotoioù kompez",
@@ -1024,30 +1010,6 @@
         "elems_title": "Elfennoù",
         "trap_title": "Fazioù aliesañ"
       },
-      "improveOSM": {
-        "title": "Dinoiñ ImproveOSM",
-        "geometry_types": {
-          "path": "gwenodennoù",
-          "parking": "parklec'h",
-          "road": "hentoù",
-          "both": "hentoù ha parklec'h"
-        },
-        "directions": {
-          "east": "reter",
-          "north": "norzh",
-          "northeast": "biz",
-          "northwest": "gwalarn",
-          "south": "su",
-          "southeast": "gevred",
-          "southwest": "mervent",
-          "west": "kornôg"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Un dikedenn \"untu\" a vank"
-          }
-        }
-      },
       "keepRight": {
         "detail_description": "Deskrivadur",
         "comment": "Evezhiadenn",
@@ -1196,75 +1158,20 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Skeudennoù-straed Microsoft",
-      "report": "Danevellit un trubuilh a-zivout ar prevezded gant ar skeudenn-mañ",
-      "view_on_bing": "Gwelet war Bing Maps",
+    "photos": {
       "hires": "A uhel diarunusted"
     },
-    "mapillary_images": {
-      "tooltip": "Skeudennoù-straed Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Elfennoù ar gartenn",
-      "tooltip": "Elfennoù kartenn Mapillary",
-      "construction": {
-        "barrier": {
-          "temporary": "Harz amzeriat"
-        },
-        "flat": {
-          "driveway": "alez"
-        }
-      },
-      "object": {
-        "bench": "bank",
-        "billboard": "panell skritellañ",
-        "cctv_camera": "kamera-evezhiañ",
-        "fire_hydrant": "genoù tan-gwall",
-        "mailbox": "boest-lizhiri",
-        "manhole": "genoù kan-skarzh ",
-        "parking_meter": "Parkmetr",
-        "phone_booth": "logell-bellgomz",
-        "sign": {
-          "advertisement": "bruderezh",
-          "information": "Panell ditouroù",
-          "other": "Panell all",
-          "store": "Panell stal",
-          "traffic_sign": {
-            "back": "Panell-heñchañ - kein",
-            "direction_front": "panell-heñchañ - tu-raok",
-            "front": "panell-heñchañ - tu-raok"
-          }
-        },
-        "street_light": "gouloù-straed",
-        "support": {
-          "pole": "Post",
-          "traffic_sign_frame": "Framm ar banell-heñchañ",
-          "utility_pole": "post tredan"
-        },
-        "traffic_cone": "Pikern",
-        "traffic_light": {
-          "cyclists": "Gouleier triliv marc'hoù-houarn",
-          "general_horizontal": "Gouleier triliv a-blaen",
-          "general_upright": "Gouleier triliv a-serzh",
-          "other": "Gouleier triliv",
-          "pedestrians": "Gouleier triliv kerzhourien"
-        },
-        "trash_can": "Poubellenn",
-        "water_valve": "Begel dour"
-      }
+    "streetside": {
+      "tooltip": "Skeudennoù-straed Microsoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Panelloù-henchañ Mapillary"
-      },
-      "view_on_mapillary": "Diskouez ar skeudenn-mañ war vMapillary"
+      "tooltip": "Skeudennoù-straed Mapillary"
     },
-    "kartaview_images": {
-      "tooltip": "Skeudennoù-straed KartaView"
+    "mapillary_signs": {
+      "title": "Panelloù-henchañ"
     },
     "kartaview": {
-      "view_on_kartaview": "Diskouez ar gartenn-mañ war gKartaView"
+      "tooltip": "Skeudennoù-straed KartaView"
     },
     "note": {
       "note": "Notenn",
@@ -1858,7 +1765,6 @@
           "title": "Arventennoù an diskwel ",
           "background": "Digeriñ/serriñ ar banell skeudennoù foñs",
           "preferences": "Digeriñ/serriñ panell penndibaboù an implijer",
-          "sidebar": "Digeriñ/serriñ ar varrenn gostez",
           "osm_data": "Enaouiñ/lazhañ roadennoù OpenStreetMap",
           "highlight_edits": "Splannañ kemmoù n'int ket bet enrollet"
         },

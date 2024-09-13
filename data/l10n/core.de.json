@@ -42,7 +42,6 @@
       },
       "add_note": {
         "title": "Hinweis",
-        "label": "Hinweis hinzufügen",
         "description": "Ein Problem entdeckt? Lass es andere Nutzer wissen."
       },
       "add_preset": {
@@ -710,9 +709,6 @@
     "loading_auth": "Mit OpenStreetMap verbinden …",
     "report_a_bug": "Einen Fehler melden",
     "help_translate": "Beim Übersetzen helfen",
-    "sidebar": {
-      "tooltip": "Seitenleiste ein-/ausblenden"
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} versteckte Objekte",
@@ -768,7 +764,6 @@
         "description": "Beschreibung",
         "resolution": "Auflösung",
         "accuracy": "Genauigkeit",
-        "unknown": "Unbekannt",
         "show_tiles": "Raster einblenden",
         "hide_tiles": "Raster ausblenden"
       },
@@ -779,7 +774,6 @@
         "last_edit": "Letzte Bearbeitung",
         "edited_by": "Bearbeitet von",
         "changeset": "Änderungssatz",
-        "unknown": "Unbekannt",
         "note_no_history": "Keine Chronik (Neuer Hinweis)",
         "note_comments": "Kommentare",
         "note_created_date": "Erzeugt am",
@@ -861,13 +855,12 @@
         "zoom": "{features} sind versteckt. Zoome hinein um sie zu sehen."
       },
       "back_tooltip": "Objekttyp ändern",
+      "type": "Typ",
       "remove": "Entfernen",
       "search": "Suchen",
       "unknown": "Unbekannt",
       "incomplete": "<nicht heruntergeladen>",
       "feature_list": "Objekte suchen",
-      "edit": "Bearbeite Objekt",
-      "edit_features": "Bearbeite Objekte",
       "check": {
         "yes": "Ja",
         "no": "Nein",
@@ -875,7 +868,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Typ",
           "default": "Standard",
           "layer": "Ebene"
         }
@@ -952,10 +944,6 @@
           "tooltip": "Datenprobleme gefunden von keepright.at",
           "title": "KeepRight Probleme"
         },
-        "improveOSM": {
-          "tooltip": "Fehlende Daten gefunden von improveosm.org",
-          "title": "ImproveOSM Probleme"
-        },
         "osmose": {
           "tooltip": "Datenprobleme gefunden von osmose.openstreetmap.fr",
           "title": "Osmose Probleme"
@@ -987,9 +975,6 @@
     },
     "photo_overlays": {
       "title": "Foto-Überlagerungen",
-      "traffic_signs": {
-        "title": "Verkehrszeichen"
-      },
       "photo_type": {
         "flat": {
           "title": "Normale Fotos",
@@ -1246,40 +1231,6 @@
         "elems_title": "Objekte",
         "fix_title": "Korrekturrichtlinien",
         "trap_title": "Häufige Fehler"
-      },
-      "improveOSM": {
-        "title": "ImproveOSM Meldungen",
-        "geometry_types": {
-          "path": "Wege",
-          "parking": "Parken",
-          "road": "Straßen",
-          "both": "Straßen und Parken"
-        },
-        "directions": {
-          "east": "Ost",
-          "north": "Nord",
-          "northeast": "Nordost",
-          "northwest": "Nordwest",
-          "south": "Süd",
-          "southeast": "Südost",
-          "southwest": "Südwest",
-          "west": "West"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Fehlende Einbahn",
-            "description": "Entlang dieses Abschnitts von {highway} führen {percentage}% der {num_trips} aufgezeichneten Fahrten von {from_node} nach {to_node}. Eine Einbahn (Eigenschaft \"oneway\") könnte fehlen."
-          },
-          "mr": {
-            "title": "Fehlende Geometrie",
-            "description": "{num_trips} aufgezeichnete Fahrten in dieser Gegend weisen darauf hin, dass hier ein {geometry_type} fehlt.",
-            "description_alt": "Daten von Dritten legen nahe, dass {geometry_type} hier fehlen könnte."
-          },
-          "tr": {
-            "title": "Fehlende Abbiegebeschränkung",
-            "description": "{num_passed} von {num_trips} aufgezeichneten Fahrten (Richtung {travel_direction}) biegen an {junction} von {from_way} nach {to_way} ab. Eine Abbiegebeschränkung \"{turn_restriction}\" könnte hier fehlen."
-          }
-        }
       },
       "keepRight": {
         "detail_description": "Beschreibung",
@@ -1595,101 +1546,20 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Straßenfotos von Microsoft",
-      "report": "Melde Privatsphäre-Verletzung bei diesem Bild",
-      "view_on_bing": "Auf Bing Maps ansehen",
+    "photos": {
       "hires": "Hochauflösung"
     },
-    "mapillary_images": {
-      "tooltip": "Straßenfotos von Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Karten-Objekte",
-      "tooltip": "Karten-Objekte von Mapillary",
-      "construction": {
-        "barrier": {
-          "temporary": "temporäre Barriere"
-        },
-        "flat": {
-          "crosswalk_plain": "einfacher Fußgängerübergang",
-          "driveway": "Einfahrt"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "Fahrbahnmarkierung - Pfeil (links)",
-            "right": "Fahrbahnmarkierung - Pfeil (rechts)",
-            "split_left_or_straight": "Fahrbahnmarkierung - Pfeil (geteilt links oder rechts)",
-            "split_right_or_straight": "Fahrbahnmarkierung - Pfeil (geteilt rechts oder geradeaus)",
-            "straight": "Fahrbahnmarkierung - Pfeil (geradeaus)"
-          },
-          "crosswalk_zebra": "Fahrbahnmarkierung - Zebrastreifen",
-          "give_way_row": "Fahrbahnmarkierung - Vorfahrt gewähren (Reihe)",
-          "give_way_single": "Fahrbahnmarkierung - Vorfahrt gewähren (enfach)",
-          "other_marking": "Fahrbahnmarkierung - Anderes",
-          "stop_line": "Fahrbahnmarkierung - Haltelinie",
-          "symbol": {
-            "bicycle": "Fahrbahnmarkierung - Symbol (Fahrrad)"
-          },
-          "text": "Fahrbahnmarkierung - Text"
-        }
-      },
-      "object": {
-        "banner": "Banner",
-        "bench": "Bank",
-        "bike_rack": "Fahrradständer",
-        "billboard": "Plakatwand",
-        "catch_basin": "Auffangbecken",
-        "cctv_camera": "Überwachungskamera",
-        "fire_hydrant": "Hydrant",
-        "junction_box": "Verteilerkasten",
-        "mailbox": "Briefkasten",
-        "manhole": "Kanaldeckel",
-        "parking_meter": "Parkuhr",
-        "phone_booth": "Telefonzelle",
-        "sign": {
-          "advertisement": "Werbung",
-          "information": "Informationsschild",
-          "other": "anderes Zeichen",
-          "store": "Ladenschild",
-          "traffic_sign": {
-            "back": "Verkehrszeichen - Rückseite",
-            "direction_front": "Verkehrszeichen - Vorderseite",
-            "front": "Verkehrszeichen - Vorderseite"
-          }
-        },
-        "street_light": "Straßenbeleuchtung",
-        "support": {
-          "pole": "Strommast",
-          "traffic_sign_frame": "Rahmen für Verkehrszeichen",
-          "utility_pole": "Mast (Versorgung allgemein)"
-        },
-        "traffic_cone": "Verkehrskegel",
-        "traffic_light": {
-          "cyclists": "Fahrradampel",
-          "general_horizontal": "horizontale Ampel",
-          "general_single": "einzelne Ampel",
-          "general_upright": "vertikale Ampel",
-          "other": "Ampel",
-          "pedestrians": "Fußgängerampel"
-        },
-        "trash_can": "Mistkübel",
-        "water_valve": "Wasserventil"
-      }
+    "streetside": {
+      "tooltip": "Straßenfotos von Microsoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Verkehrszeichen von Mapillary"
-      },
-      "view_on_mapillary": "Dieses Bild auf Mapillary ansehen"
+      "tooltip": "Straßenfotos von Mapillary"
     },
-    "kartaview_images": {
-      "tooltip": "Straßenfotos von KartaView"
+    "mapillary_signs": {
+      "title": "Verkehrszeichen"
     },
     "kartaview": {
-      "view_on_kartaview": "Dieses Bild auf KartaView ansehen"
+      "tooltip": "Straßenfotos von KartaView"
     },
     "note": {
       "note": "Hinweis",
@@ -1844,7 +1714,6 @@
       },
       "notes": {
         "title": "Hinweise",
-        "intro": "*Hinweise* werden genutzt, um andere Benutzer darauf aufmerksam zu machen, dass ein Objekt Aufmerksamkeit oder Fehlerbehebung erfordert. Hinweise markieren eine bestimmte Stelle auf der Karte. Um bestehende Hinweise anzuzeigen oder neue hinzuzufügen, öffne das Feld {data_icon} **{map_data}** und schalt die Datenebene {osm_notes} ein.",
         "add_note_h": "Hinweise hinzufügen",
         "add_note": "Drück auf {note_icon} **{note}** auf der Werkzeugleiste über der Karte oder die Taste `{add_note_key}` um einen Hinweis hinzuzufügen.",
         "update_note_h": "Kommentieren, Schließen und wieder öffnen",
@@ -1881,9 +1750,7 @@
         "title": "Qualitätssicherung",
         "intro": "Werkzeuge zur Qualitätssicherung können unpassende Eigenschaften, nicht verbundene Straßen und andere Probleme mit OpenStreetMap finden, die dann von Nutzern behoben werden können. Um bestehende Qualitätssicherungs-Probleme zu sehen öffne das Feld {data_icon} **{map_data}** um eine bestimmte Qualitätssicherungs-Ebene einzuschalten.",
         "tools_h": "Werkzeuge",
-        "tools": "Die folgenden Werkzeuge werden unterstützt: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) und [Osmose](https://osmose.openstreetmap.fr/).",
-        "issues_h": "Problembehandlung",
-        "issues": "Qualitätssicherungs-Probleme werden ähnlich wie Hinweise behandelt. Wähle einen Marker um die Problem-Details auf der linken Seitenleiste zu sehen. Jedes Qualitätssicherungs-Werkzeug hat seine eigenen Möglichkeiten, aber generell kannst du Probleme kommentieren und/oder schließen."
+        "issues_h": "Problembehandlung"
       },
       "field": {
         "restrictions": {
@@ -2644,7 +2511,6 @@
           "map_data": "Kartendaten-Feld ein-/ausblenden",
           "issues": "Datenproblem-Feld ein-/ausblenden",
           "preferences": "Benutzereinstellungs-Feld ein-/ausblenden",
-          "sidebar": "Seitenleiste ein-/ausblenden",
           "wireframe": "Gittermodus ein-/ausschalten",
           "osm_data": "OpenStreetMap Daten ein-/ausblenden",
           "highlight_edits": "Ungesicherte Bearbeitungen hervorheben"

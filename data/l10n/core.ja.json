@@ -39,7 +39,6 @@
       },
       "add_note": {
         "title": "メモ",
-        "label": "メモを追加",
         "description": "問題を指摘したら他のマッパーに知らせましょう。"
       },
       "add_preset": {
@@ -617,9 +616,6 @@
     "loading_auth": "OpenStreetMapへ接続中...",
     "report_a_bug": "バグ報告",
     "help_translate": "翻訳協力",
-    "sidebar": {
-      "tooltip": "サイドバー表示/非表示"
-    },
     "feature_info": {
       "hidden_warning": "非表示の地物{count}件"
     },
@@ -666,7 +662,6 @@
         "description": "説明",
         "resolution": "解像度",
         "accuracy": "精度",
-        "unknown": "不明",
         "show_tiles": "タイルを表示",
         "hide_tiles": "タイルを非表示"
       },
@@ -677,7 +672,6 @@
         "last_edit": "最新の編集",
         "edited_by": "編集者",
         "changeset": "変更セット",
-        "unknown": "不明",
         "note_no_history": "履歴なし(新しいメモ)",
         "note_comments": "コメント",
         "note_created_date": "作成日",
@@ -755,13 +749,13 @@
         "zoom": "{features} が非表示となっています。ズームインして有効化してください。"
       },
       "back_tooltip": "地物の種類を変更",
+      "type": "種別",
+      "details": "詳細",
       "remove": "削除",
       "search": "検索",
       "unknown": "不明",
       "incomplete": "<ダウンロード未完了>",
       "feature_list": "地物名や座標で位置検索してズーム",
-      "edit": "地物エディタ",
-      "edit_features": "地物を編集",
       "check": {
         "yes": "はい",
         "no": "いいえ",
@@ -769,7 +763,6 @@
       },
       "radio": {
         "structure": {
-          "type": "種別",
           "default": "既定",
           "layer": "レイヤー"
         }
@@ -838,7 +831,8 @@
         },
         "notes": {
           "tooltip": "OpenStreetMapのメモデータ",
-          "title": "OpenStreetMapのメモ"
+          "title": "OpenStreetMapのメモ",
+          "key": "北緯"
         },
         "maproulette": {
           "detail_title": "詳細",
@@ -847,10 +841,6 @@
         "keepRight": {
           "tooltip": "keepright.at が検知したデータの改善提案",
           "title": "KeepRight の改善提案"
-        },
-        "improveOSM": {
-          "tooltip": "improveosm.org が検知した設定漏れデータ",
-          "title": "ImproveOSM の改善提案(日本は未対応)"
         },
         "osmose": {
           "tooltip": "osmose.openstreetmap.fr が検知したデータの改善提案",
@@ -883,9 +873,6 @@
     },
     "photo_overlays": {
       "title": "写真の重ね合わせ",
-      "traffic_signs": {
-        "title": "交通標識"
-      },
       "photo_type": {
         "flat": {
           "title": "平面写真",
@@ -1145,40 +1132,6 @@
         "elems_title": "地物",
         "fix_title": "修正ガイドライン",
         "trap_title": "誤った修正の回避"
-      },
-      "improveOSM": {
-        "title": "ImproveOSM 検知内容",
-        "geometry_types": {
-          "path": "歩道・小道",
-          "parking": "駐車場",
-          "road": "道路",
-          "both": "道路と駐車場"
-        },
-        "directions": {
-          "east": "東",
-          "north": "北",
-          "northeast": "北東",
-          "northwest": "北西",
-          "south": "南",
-          "southeast": "南東",
-          "southwest": "南西",
-          "west": "西"
-        },
-        "error_types": {
-          "ow": {
-            "title": "一方通行が未設定",
-            "description": "{highway} のこの区間では、{num_trips} 件の通行記録のうち、{percentage} %が{from_node} から{to_node} に向かっています。「一方通行」タグが漏れている可能性があります。"
-          },
-          "mr": {
-            "title": "幾何図形が未設定",
-            "description": "このエリアで記録された{num_trips}件の通行記録は、ここにマッピングされていない{geometry_type} がある可能性を示しています。",
-            "description_alt": "サードパーティのデータが、ここにマッピングされていない{geometry_type} がある可能性を示しています。"
-          },
-          "tr": {
-            "title": "進行方向制限が未設定",
-            "description": "{num_trips} 件の記録された通行({travel_direction}方面への移動)のうち{num_passed} 件が、{from_way} から{to_way} へ{junction}で方向転換しています。「{turn_restriction}」の制限が未設定である可能性があります。"
-          }
-        }
       },
       "keepRight": {
         "detail_description": "説明",
@@ -1492,102 +1445,21 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Microsoftによる街路写真",
-      "title": "Bing街路",
-      "report": "この画像のプライバシーについてレポートする",
-      "view_on_bing": "Bing 地図で確認",
+    "photos": {
       "hires": "高解像度"
     },
-    "mapillary_images": {
-      "tooltip": "Mapillaryによる街路写真"
-    },
-    "mapillary_map_features": {
-      "title": "地物",
-      "tooltip": "Mapillaryの地物",
-      "construction": {
-        "barrier": {
-          "temporary": "一時的な障害物"
-        },
-        "flat": {
-          "crosswalk_plain": "横断歩道（ゼブラなし）",
-          "driveway": "民地内通路・ドライブウェイ"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "車線標示 - 矢印 (左)",
-            "right": "車線標示 - 矢印 (右)",
-            "split_left_or_straight": "車線標示 - 矢印 (左折または直進)",
-            "split_right_or_straight": "車線標示 - 矢印 (右折または直進)",
-            "straight": "車線標示 - 矢印 (直進)"
-          },
-          "crosswalk_zebra": "車線標示 - 横断歩道",
-          "give_way_row": "車線標示 - ゆずれ (row)",
-          "give_way_single": "車線標示 - ゆずれ (single)",
-          "other_marking": "車線標示 - その他",
-          "stop_line": "車線標示 - 停止線",
-          "symbol": {
-            "bicycle": "車線標示 - シンボル(自転車)"
-          },
-          "text": "車線標示 - 文字"
-        }
-      },
-      "object": {
-        "banner": "公告旗",
-        "bench": "ベンチ",
-        "bike_rack": "自転車ラック",
-        "billboard": "広告用看板",
-        "catch_basin": "集水ます",
-        "cctv_camera": "CCTVカメラ",
-        "fire_hydrant": "消火栓",
-        "junction_box": "ジャンクションボックス",
-        "mailbox": "郵便ポスト",
-        "manhole": "マンホール",
-        "parking_meter": "パーキングメーター",
-        "phone_booth": "電話ボックス",
-        "sign": {
-          "advertisement": "広告看板",
-          "information": "情報掲示板",
-          "other": "その他の標識",
-          "store": "店舗の看板",
-          "traffic_sign": {
-            "back": "交通標識 - 後方",
-            "direction_front": "交通標識 - 前方",
-            "front": "交通標識 - 前方"
-          }
-        },
-        "street_light": "街灯",
-        "support": {
-          "pole": "ポール",
-          "traffic_sign_frame": "交通標識の枠",
-          "utility_pole": "柱"
-        },
-        "traffic_cone": "三角コーン",
-        "traffic_light": {
-          "cyclists": "自転車用信号",
-          "general_horizontal": "横型信号",
-          "general_single": "単一信号",
-          "general_upright": "縦型信号",
-          "other": "信号",
-          "pedestrians": "歩行者用信号"
-        },
-        "trash_can": "ゴミ箱",
-        "water_valve": "送水バルブ"
-      }
+    "streetside": {
+      "title": "Bing街路",
+      "tooltip": "Microsoftによる街路写真"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Mapillaryの交通標識"
-      },
-      "view_on_mapillary": "この画像をMapillaryで表示"
+      "tooltip": "Mapillaryによる街路写真"
     },
-    "kartaview_images": {
-      "tooltip": "KartaViewの街路写真"
+    "mapillary_signs": {
+      "title": "交通標識"
     },
     "kartaview": {
-      "view_on_kartaview": "この画像をKartaViewで見る"
+      "tooltip": "KartaViewの街路写真"
     },
     "note": {
       "note": "メモ",
@@ -1745,7 +1617,6 @@
       },
       "notes": {
         "title": "メモ",
-        "intro": "*メモ*は修正や連絡が必要な地物について、他のユーザーにアラートを送るために使います。メモはマップ上に指定された位置を示します。既存のメモを閲覧したり新しく追加する場合には、{data_icon} **{map_data}**パネルをクリックして{osm_notes}のレイヤを有効化してください。",
         "add_note_h": "メモの追加",
         "add_note": "新しいメモを追加するには、マップ上部にあるツールバーの{note_icon} **{note}**ボタンを押すか、ショートカットキー`{add_note_key}`を押してください。",
         "update_note_h": "クローズ、再オープン、コメント",
@@ -1782,9 +1653,7 @@
         "title": "品質改善",
         "intro": "*品質改善* (Q/A) 用のツールはOpenStreetMap内の不適切なタグ、接続されていない道路、その他の課題などを見つけ出し、マッパーはそれを見て修正することができます。Q/A の改善提案にどのようなものがあるか見てみる場合は、 {data_icon} **{map_data}** パネルをクリックして、専用の Q/A レイヤを有効化してください。（訳注：見つけ出された改善提案はあくまで機械的にピックアップされたものであり、必ずしもエラーではない場合があります。現地の状態やタグ付けの知識があまり無い場合には安易に修正しないようくれぐれも注意してください。まずは地元や自分でマッピングした内容の修正から始めると良いでしょう。）",
         "tools_h": "ツール",
-        "tools": "現在は次のツールがサポートされています: [KeepRight](https://www.keepright.at/)、[ImproveOSM](https://improveosm.org/en/)及び [Osmose](https://osmose.openstreetmap.fr/)。",
-        "issues_h": "課題の扱い方",
-        "issues": "Q/A の課題の扱い方はメモと似ています。マーカーを選ぶと、サイドバー内で提案内容の詳細を見ることができます。各ツールにはそれぞれにできることがありますが、たいていコメントを付けたり改善提案をクローズしたりすることができます。"
+        "issues_h": "課題の扱い方"
       },
       "field": {
         "restrictions": {
@@ -2453,7 +2322,6 @@
           "map_data": "地図データパネルを表示/非表示",
           "issues": "改善提案パネルを表示/非表示",
           "preferences": "個人設定パネルを表示/非表示",
-          "sidebar": "サイドバーの表示/非表示",
           "wireframe": "ワイヤーフレームモード切替",
           "osm_data": "OpenStreetMapデータの表示切替",
           "highlight_edits": "未保存の編集をハイライト"

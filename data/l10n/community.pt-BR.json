@@ -1,13 +1,14 @@
 {
   "pt-BR": {
     "_communities": {
+      "freelibreopensourcesoftwarekosovaflossk": "Software Livre de Código Aberto do Kosovo (FLOSSK)",
       "kiribatiwomeninmapping": "Mulheres Mapeadoras de Kiribati",
       "mappingbotswana": "Mapeando Botsuana",
       "openstreetmaparmenia": "OpenStreetMap Armênia",
       "openstreetmapbengaluru": "OpenStreetMap Bangalore",
       "openstreetmapbosniaandherzegovina": "OpenStreetMap Bósnia e Herzegovina",
-      "openstreetmapbremen": "OpenStreetMap Brémen",
       "openstreetmapcologne": "OpenStreetMap Colônia",
+      "openstreetmapcyprus": "OpenStreetMap Chipre",
       "openstreetmapcz": "OpenStreetMap República Tcheca",
       "openstreetmapde": "OpenStreetMap Alemanha",
       "openstreetmapdelhi": "OpenStreetMap Déli",
@@ -18,8 +19,9 @@
       "openstreetmapgalicia": "OpenStreetMap Galícia",
       "openstreetmapiran": "OpenStreetMap Irã",
       "openstreetmapkenya": "OpenStreetMap Quênia",
-      "openstreetmaplatinamerica": "OpenStreetMap da América Latina",
       "openstreetmaplatvia": "OpenStreetMap Letônia",
+      "openstreetmapljubljana": "OpenStreetMap Liubliana",
+      "openstreetmapluneburg": "OpenStreetMap Luneburgo",
       "openstreetmapmadrid": "OpenStreetMap Madri",
       "openstreetmappoland": "OpenStreetMap Polônia",
       "openstreetmapromania": "OpenStreetMap Romênia",
@@ -46,6 +48,10 @@
       },
       "forum": {
         "description": "O fórum oficial para {community}"
+      },
+      "instagram": {
+        "name": "{community} no Instagram",
+        "description": "Siga-nos no Instagram"
       },
       "irc": {
         "description": "Junte-se a #{account} no irc.oftc.net (porta 6667 para não-SSL ou 6697 para SSL)"
@@ -75,6 +81,10 @@
         "name": "{community} no Threads",
         "description": "Siga-nos no Threads"
       },
+      "tiktok": {
+        "name": "{community} no TikTok",
+        "description": "Siga-nos no TikTok"
+      },
       "twitter": {
         "description": "Siga-nos no 𝕏"
       },
@@ -101,9 +111,12 @@
     "at-matrix": {
       "description": "Canal Matrix em alemão não-oficial para a Áustria"
     },
+    "Bahia-telegram": {
+      "extendedDescription": "Junte-se à comunidade para aprender mais sobre o OpenStreetMap, fazer perguntas ou participar dos nossos encontros. Todos são bem-vindos!"
+    },
     "Bay-Area-OpenStreetMappers": {
-      "description": "Melhorar o OpenStreetMap na Área da Baía",
-      "extendedDescription": "Este grupo é sobre crescer a comunidade do OpenStreetMap aqui na Área da Baía de São Francisco. Nossos eventos são abertos para todos, desde entusiastas open-source, ciclistas, profissionais GIS, geocachers, e além. Todos e quaisquer pessoas interessadas em mapas, cartografia e dados de mapa livres são bem-vindas a se juntar ao nosso grupo e participar dos nossos eventos."
+      "description": "Melhore o OpenStreetMap na Bay Area",
+      "extendedDescription": "Este grupo é sobre crescer a comunidade do OpenStreetMap aqui na Bay Area de São Francisco. Nossos eventos são abertos para todos, desde entusiastas de código aberto, ciclistas, profissionais de SIG, geocachers e muito mais. Qualquer pessoa interessada em mapas, cartografia e dados de mapa livres é bem-vinda a se juntar ao nosso grupo e participar dos nossos eventos."
     },
     "bd-facebook": {
       "extendedDescription": "Mapeando em Bangladesh? Tem dúvidas, quer conectar-se com a comunidade aqui? Junte-se a nós em {url}. Todos são bem-vindos!"
@@ -306,9 +319,6 @@
     },
     "OSM-japan-facebook": {
       "description": "Mapeadores e usuários do OpenStreetMap no Japão"
-    },
-    "OSM-japan-slack": {
-      "description": "Um espaço de trabalho do Slack para a comunidade OSM Japão {signupUrl}"
     },
     "OSM-japan-website": {
       "description": "Mapeadores e usuários do OpenStreetMap no Japão"

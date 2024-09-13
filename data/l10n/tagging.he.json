@@ -228,6 +228,10 @@
           "label": "מיזוג אוויר",
           "terms": "מיזוג,מזגן,קור,חום,לחות"
         },
+        "alt_name": {
+          "label": "שם חלופי",
+          "terms": "שם חלופי,כינוי חלופי"
+        },
         "amenity": {
           "label": "סוג"
         },
@@ -263,6 +267,14 @@
         },
         "area/highway": {
           "label": "סוג"
+        },
+        "armrest": {
+          "label": "משענות ידיים",
+          "options": {
+            "no": "ללא משענות ידיים",
+            "undefined": "לא ידוע",
+            "yes": "משענת יד אחת או יותר"
+          }
         },
         "artist": {
           "label": "אמן"
@@ -651,6 +663,27 @@
             "panning": "צילום פנורמי"
           }
         },
+        "camp_site": {
+          "label": "סוג",
+          "options": {
+            "basic": {
+              "description": "כלום מלבד מקום להקים אוהל או להחנות את הרכב",
+              "title": "בסיסי (רק מקומות לאוהל/רכב)"
+            },
+            "deluxe": {
+              "description": "שירות מלא וכולל שירותים נוספים כמו כביסה, בריכת שחייה או מתקני בילוי דומים",
+              "title": "דלוקס (מציע כביסה או בריכת שחייה וכו')"
+            },
+            "serviced": {
+              "description": "שירותים, מים, מקלחות וחשמל מסופקים",
+              "title": "שירות (מציע מקלחות וחשמל)"
+            },
+            "standard": {
+              "description": "שירותים ומים מסופקים או זמינים בקרבת מקום",
+              "title": "רגיל (מציע שירותים ומים)"
+            }
+          }
+        },
         "capacity": {
           "label": "קיבולת",
           "placeholder": "50, 100, 200…",
@@ -763,6 +796,9 @@
         "communication_multi": {
           "label": "סוגי התקשורת",
           "terms": "תצורות שידור,תצורות תקשורת,שיטות תקשורת,שיטות התקשרות,טלקומניקציה"
+        },
+        "community_centre": {
+          "label": "סוג"
         },
         "connectivity": {
           "label": "חיבור"
@@ -1988,6 +2024,9 @@
           "label": "מואר",
           "terms": "תאורה,מואר,יש אור,אור"
         },
+        "loc_name": {
+          "label": "שם מקומי"
+        },
         "location": {
           "label": "מיקום"
         },
@@ -2050,7 +2089,7 @@
             "marble": "שיש",
             "metal": "מתכת",
             "plastic": "פלסטיק",
-            "reinforced_conrete": "בטון מזוין",
+            "reinforced_concrete": "בטון מזוין",
             "rock": "סלע",
             "sand": "חול",
             "sandstone": "אבן חול",
@@ -2205,6 +2244,9 @@
           "placeholder": "שם נפוץ (אם בכלל)",
           "terms": "שם,כינוי,כותרת,תווית"
         },
+        "nat_name": {
+          "label": "שם לאומי"
+        },
         "natural": {
           "label": "טבעי"
         },
@@ -2318,6 +2360,10 @@
             "union": "לשכת איגודי עובדים",
             "water_utility": "משרד לשירות ציבורי - מים"
           }
+        },
+        "official_name": {
+          "label": "שם רשמי",
+          "terms": "שם חוקי,שם מלא"
         },
         "oneway": {
           "label": "חד־סטרי",
@@ -2460,6 +2506,7 @@
             "mastercard": "מאסטר-כארד (Mastercard)",
             "mastercard_contactless": "מאסטר כארד ללא מגע",
             "paypal": "פיי-פאל (PayPal)",
+            "telephone_cards": "כרטיס חיוג/טלכרט",
             "visa": "ויזה (Visa)"
           },
           "terms": "סוגי תשלום,אמצעי תשלום,סליקה,אשראי,מזומן"
@@ -2584,6 +2631,7 @@
           "label": "שיטת יצירה"
         },
         "plant/output": {
+          "label": "צורת פלט כוח",
           "options": {
             "cold_air": "אוויר קר",
             "cold_water": "מים קרים",
@@ -2815,6 +2863,13 @@
         "restrictions": {
           "label": "הגבלות פנייה"
         },
+        "roller_coaster/track": {
+          "options": {
+            "launch_straight": {
+              "title": "מסלול האצה"
+            }
+          }
+        },
         "roof/colour": {
           "label": "צבע הגג",
           "terms": "צבע גג,רעף,רעפים,גג"
@@ -2863,7 +2918,8 @@
           "label": "דוגמאות"
         },
         "sanitary_dump_station": {
-          "label": "תחנת סילוק"
+          "label": "תחנת סילוק",
+          "terms": "תחנת ריקון מכלים לקרוואנים"
         },
         "screen": {
           "label": "מסכים"
@@ -3319,8 +3375,10 @@
           "options": {
             "artificial_turf": "דשא מלאכותי",
             "asphalt": "אספלט",
+            "clay": "חרס/חימר",
             "compacted": "דחוס",
             "concrete": "בטון",
+            "concrete:plates": "לוחות בטון",
             "dirt": "בוץ",
             "fine_gravel": "חצץ איכותי",
             "grass": "דשא",
@@ -3330,6 +3388,7 @@
             "mud": "בוצי קבוע",
             "paved": "סלול",
             "paving_stones": "אבני ריצוף",
+            "pebblestone": "חלוקי נחל",
             "salt": "מלח",
             "sand": "חול",
             "sett": "אבנים תואמות",
@@ -3368,6 +3427,7 @@
         "survey_point/structure": {
           "label": "מבנה",
           "options": {
+            "block": "לבנים",
             "magnet": "מגנט",
             "pillar": "עמוד",
             "pin": "סיכה",
@@ -3624,7 +3684,8 @@
           "options": {
             "avalanche_protector": "מגן מפולת שלגים",
             "building_passage": "מעבר בניין",
-            "culvert": "מעבר מים"
+            "culvert": "מעבר מים",
+            "flooded": "מנהרה מוצפת"
           }
         },
         "turning_circle": {
@@ -3653,7 +3714,8 @@
           "label": "סוג שימוש",
           "options": {
             "headrace": "תעלת מים",
-            "irrigation": "השקיה"
+            "irrigation": "השקיה",
+            "transportation": "תחבורה"
           }
         },
         "utility": {
@@ -3705,7 +3767,7 @@
             "ice_cream": "גלידה",
             "ice_cubes": "קוביות קרח",
             "milk": "חלב",
-            "newspapers": "עחונים",
+            "newspapers": "עיתונים",
             "parking_tickets": "כרטיסי חניה",
             "pizza": "פיצה",
             "public_transport_tickets": "כרטיסי נסיעה לתחבורה ציבורית",
@@ -3784,6 +3846,7 @@
         "water_source": {
           "label": "מקור מים",
           "options": {
+            "main": "צינור הפצת מים",
             "water_tank": "מיכל מים"
           }
         },
@@ -3960,8 +4023,8 @@
           "terms": "רחבת חנייה,טיפולים,תחזוקה,חנייה"
         },
         "aeroway/gate": {
-          "name": "שער נמל תעופה",
-          "terms": "שער שדה תעופה, שער טיסה"
+          "name": "שער עלייה למטוס",
+          "terms": "שער שדה תעופה, שער טיסה, שער נמל תעופה"
         },
         "aeroway/hangar": {
           "name": "הנגאר",
@@ -4323,6 +4386,9 @@
           "name": "מזון מהיר עוף",
           "terms": "מזון מהיר,אוכל מהיר,ג׳אנק,ג'אנק,ג׳אנד פוד,ג'אנק פוד,המבורגר,המבורגריה,עוף,צ׳יקן,צ'יקן,עוף,פאסט פוד"
         },
+        "amenity/fast_food/chinese": {
+          "name": "מזון סיני מהיר"
+        },
         "amenity/fast_food/donut": {
           "name": "מזון מהיר דונאט",
           "terms": "מזון מהיר סופגנייה,דונאט,פאסט פוד"
@@ -4498,6 +4564,10 @@
         },
         "amenity/nursing_home": {
           "name": "בית אבות"
+        },
+        "amenity/parcel_locker": {
+          "name": "תא חבילות",
+          "terms": "תיבות דואר אוטומטיות,לוקר חבילות,תא לחבילות"
         },
         "amenity/parking": {
           "name": "מגרש חנייה",
@@ -4870,6 +4940,10 @@
           "name": "אולפן קולנוע",
           "terms": "סטודיו,סטודיו לקולנוע,אולפן צילומים,אולפן קולנוע"
         },
+        "amenity/swingerclub": {
+          "name": "מועדון חילופי זוגות",
+          "terms": "מועדון מין,מועדון סקס,מועדון סווינגר"
+        },
         "amenity/taxi": {
           "name": "עמדת מוניות",
           "terms": "עמדת מוניות"
@@ -5049,6 +5123,9 @@
         "area/highway": {
           "name": "שטח כביש",
           "terms": "מתחם כביש,תחום כביש"
+        },
+        "area/highway/traffic_island": {
+          "name": "אזור אי תנועה"
         },
         "attraction": {
           "name": "אטרקציה"
@@ -5234,6 +5311,9 @@
         },
         "barrier/motorcycle_barrier": {
           "name": "מחסום אופנועים"
+        },
+        "barrier/planter": {
+          "name": "גדר חיה"
         },
         "barrier/retaining_wall": {
           "name": "קיר תומך",
@@ -6113,7 +6193,7 @@
           "terms": "מקום לעצירת חירום,שוליים,כביש מהיר"
         },
         "highway/escape": {
-          "name": "מסלול עליה לעצירת משאית ללא בלימה"
+          "name": "מסלול עליה לעצירת משאית ללא בלמים"
         },
         "highway/footway": {
           "name": "דרך רגלית",
@@ -6581,7 +6661,8 @@
           "name": "בסיס צבאי"
         },
         "landuse/military/base/navy": {
-          "name": "בסיס חיל ים"
+          "name": "בסיס חיל ים",
+          "terms": "בסיס,צבא,חיל ים,חיל הים,משמר החופים,צה״ל,צה\"ל,צוללת,ספינה,דבור,דבורה,מלחמה"
         },
         "landuse/military/danger_area": {
           "name": "אזור סכנה צבאית"
@@ -6668,6 +6749,9 @@
         "leisure/bandstand": {
           "name": "בימת תזמורת",
           "terms": "במת תזמורת,הגבהה,אוהל הופעות,אוהל תזמורת,סוכך נגינה,בימת נגינה,במת נגינה"
+        },
+        "leisure/bathing_place": {
+          "name": "מקום רחצה"
         },
         "leisure/beach_resort": {
           "name": "אתר נופש על החוף",
@@ -6784,6 +6868,10 @@
         "leisure/garden/community": {
           "name": "גינה קהילתית",
           "terms": "גינה שכונתית,גן קהילתי,גידול קהילתי,בוטניקה,חקלאות"
+        },
+        "leisure/garden/kitchen": {
+          "name": "גינה קהילתית",
+          "terms": "גן שיתופי,גינה שיתופית,גינת ירק,גינת מאכל"
         },
         "leisure/garden/residential": {
           "name": "גן מגורים"
@@ -6986,6 +7074,10 @@
         "leisure/sports_centre/climbing_adventure": {
           "name": "פארק הרפתקאות"
         },
+        "leisure/sports_centre/karting": {
+          "name": "מתקן קארטינג",
+          "terms": "גו קארט,"
+        },
         "leisure/sports_centre/shooting": {
           "name": "מתקן מטווחי ירי"
         },
@@ -7081,6 +7173,9 @@
         "man_made/chimney": {
           "name": "ארובה",
           "terms": "ארובה"
+        },
+        "man_made/clarifier": {
+          "name": "מטהר שפכים"
         },
         "man_made/clearcut": {
           "name": "יער מגולח",
@@ -7513,6 +7608,9 @@
           "name": "סלע לא מחובר",
           "terms": "סלע מבודד"
         },
+        "natural/strait": {
+          "name": "מצר"
+        },
         "natural/tree": {
           "name": "עץ",
           "terms": "עץ"
@@ -7801,6 +7899,10 @@
         "office/therapist": {
           "name": "משרד מטפל",
           "terms": "משרד מטפלת"
+        },
+        "office/translator": {
+          "name": "משרד שירותי תרגום",
+          "terms": "שרותי תרגום,משרד תרגום,טראנסלט"
         },
         "office/travel_agent": {
           "name": "סוכנות נסיעות"
@@ -8410,6 +8512,9 @@
           "name": "יחס",
           "terms": "יחס"
         },
+        "roller_coaster/track": {
+          "name": "מסלול רכבת הרים"
+        },
         "route/ferry": {
           "name": "נתיב מעבורת",
           "terms": "נתיב מעבורת"
@@ -8769,6 +8874,10 @@
         "shop/hairdresser": {
           "name": "מעצב שיער",
           "terms": "מעצב שער"
+        },
+        "shop/hairdresser/barber": {
+          "name": "ספר",
+          "terms": "ספר,מעצב שיער"
         },
         "shop/hairdresser_supply": {
           "name": "חנות ציוד לספרים",

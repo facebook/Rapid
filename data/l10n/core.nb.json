@@ -38,8 +38,7 @@
         "filter_tooltip": "punkt"
       },
       "add_note": {
-        "title": "Notat",
-        "label": "Legg til Notat"
+        "title": "Notat"
       },
       "add_preset": {
         "title": "Legg til {egenskap}"

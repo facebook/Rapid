@@ -36,6 +36,7 @@
       "openstreetmapcanada": "OpenStreetMap Καναδάς",
       "openstreetmapcastillayleon": "OpenStreetMap Καστίλλη και Λεόν",
       "openstreetmapcatalancountries": "OpenStreetMap Καταλανικές χώρες",
+      "openstreetmapceara": "OpenStreetMap Σεαρά",
       "openstreetmapchad": "OpenStreetMap Τσαντ",
       "openstreetmapchile": "OpenStreetMap Χιλή",
       "openstreetmapchina": "OpenStreetMap Κίνα",
@@ -47,8 +48,11 @@
       "openstreetmapcroatia": "OpenStreetMap Κροατία",
       "openstreetmapcuba": "OpenStreetMap Κούβα",
       "openstreetmapcuneo": "OpenStreetMap Κούνεο",
+      "openstreetmapcyprus": "OpenStreetMap Κύπρος",
       "openstreetmapcz": "OpenStreetMap CZ (Τσεχία)",
       "openstreetmapde": "OpenStreetMap DE (Γερμανία)",
+      "openstreetmapdeepsouth": "OpenStreetMap Βαθύς Νότος",
+      "openstreetmapdelhi": "OpenStreetMap Δελχί",
       "openstreetmapdenmark": "OpenStreetMap Δανία",
       "openstreetmapdjibouti": "OpenStreetMap Τζιμπουτί",
       "openstreetmapdominicanrepublic": "OpenStreetMap Δομινικανή Δημοκρατία",
@@ -71,7 +75,9 @@
       "openstreetmapgeorgia": "OpenStreetMap Γεωργία",
       "openstreetmapgermany": "OpenStreetMap Γερμανία",
       "openstreetmapghana": "OpenStreetMap Γκάνα",
+      "openstreetmapgorakalwaria": "OpenStreetMap Γκόρα Καλβάρια",
       "openstreetmapgreece": "OpenStreetMap Ελλάδα",
+      "openstreetmapgrenoble": "OpenStreetMap Γκρενόμπλ",
       "openstreetmapguatemala": "OpenStreetMap Γουατεμάλα",
       "openstreetmapguinea": "OpenStreetMap Γουινέα",
       "openstreetmaphaiti": "OpenStreetMap Αϊτή",
@@ -110,6 +116,7 @@
       "openstreetmapljubljana": "OpenStreetMap Λιουμπλιάνα",
       "openstreetmaplombardia": "OpenStreetMap Λομβαρδία",
       "openstreetmaplondon": "OpenStreetMap Λονδίνο",
+      "openstreetmapluneburg": "OpenStreetMap Λύνεμπουργκ",
       "openstreetmapluxembourg": "OpenStreetMap Λουξεμβούργο",
       "openstreetmapmadagascar": "OpenStreetMap Μαδαγασκάρη",
       "openstreetmapmadrid": "OpenStreetMap Μαδρίτη",
@@ -124,6 +131,7 @@
       "openstreetmapmoldova": "OpenStreetMap Μολδαβία",
       "openstreetmapmongolia": "OpenStreetMap Μογγολία",
       "openstreetmapmontenegro": "OpenStreetMap Μαυροβούνιο",
+      "openstreetmapmontrouge": "OpenStreetMap Μονρούζ",
       "openstreetmapmorocco": "OpenStreetMap Μαρόκο",
       "openstreetmapmunchen": "OpenStreetMap Μόναχο",
       "openstreetmapmyanmar": "OpenStreetMap Μιανμάρ",
@@ -146,6 +154,8 @@
       "openstreetmappoland": "OpenStreetMap Πολωνία",
       "openstreetmapportugal": "OpenStreetMap Πορτογαλία",
       "openstreetmaprdc": "OpenStreetMap RDC (Κονγκό)",
+      "openstreetmaprennes": "OpenStreetMap Ρεν",
+      "openstreetmapreunion": "OpenStreetMap Ρεϋνιόν",
       "openstreetmapriograndedosul": "OpenStreetMap Ρίο Γκράντε ντο Σουλ",
       "openstreetmapromania": "OpenStreetMap Ρουμανία",
       "openstreetmaprussia": "OpenStreetMap Ρωσία",
@@ -155,6 +165,7 @@
       "openstreetmapserbia": "OpenStreetMap Σερβία",
       "openstreetmapseychelles": "OpenStreetMap Σεϋχέλλες",
       "openstreetmapsierraleone": "OpenStreetMap Σιέρρα Λεόνε",
+      "openstreetmapsingapore": "OpenStreetMap Σιγκαπούρη",
       "openstreetmapslovenia": "OpenStreetMap Σλοβενία",
       "openstreetmapsomalia": "OpenStreetMap Σομαλία",
       "openstreetmapsouthafrica": "OpenStreetMap Νότια Αφρική",
@@ -180,6 +191,8 @@
       "openstreetmapuzbekistan": "OpenStreetMap Ουζμπεκιστάν",
       "openstreetmapvenezuela": "OpenStreetMap Βενεζουέλα",
       "openstreetmapvietnam": "OpenStreetMap Βιετνάμ",
+      "openstreetmapwarszawa": "OpenStreetMap Βαρσοβία",
+      "openstreetmapwestbengal": "OpenStreetMap Δυτική Βεγγάλη",
       "openstreetmapwesternsahara": "OpenStreetMap Δυτική Σαχάρα",
       "openstreetmapzambia": "OpenStreetMap Ζάμπια",
       "openstreetmapzimbabwe": "OpenStreetMap Ζιμπάμπουε",
@@ -202,10 +215,16 @@
         "description": "Γίνετε μέλος της κοινότητάς μας στο Facebook"
       },
       "forum": {
+        "name": "{community} Φόρουμ",
         "description": "Το επίσημο forum του {community}"
       },
+      "instagram": {
+        "name": "{community} στο Instagram",
+        "description": "Ακολουθήστε μας στο Instagram"
+      },
       "irc": {
-        "name": "{community} στο IRC"
+        "name": "{community} στο IRC",
+        "description": "Συνδεθείτε με #{account} στο irc.oftc.net (θύρα 6667 για μη-SSL ή 6697 για SSL)"
       },
       "linkedin": {
         "name": "{community} στο LinkedIn",
@@ -220,7 +239,8 @@
         "description": "Ο επίσημος λογαριασμός στο Mastodon της κοινότητας {community}"
       },
       "matrix": {
-        "description": "Γίνετε μέλος της κοινότητάς μας στο Matrix chat"
+        "name": "{community} Συνομιλία Matrix",
+        "description": "Γίνετε μέλος της κοινότητάς μας στη συνομιλία Matrix"
       },
       "newsletter": {
         "name": "{community} ενημερωτικό δελτίο"
@@ -228,21 +248,37 @@
       "reddit": {
         "name": "{community} στο Reddit"
       },
+      "telegram": {
+        "description": "Γίνετε μέλος της κοινότητάς μας στη συνομιλία Telegram"
+      },
       "threads": {
         "name": "{community} στο Threads",
         "description": "Ακολουθήστε μας στο Threads"
+      },
+      "tiktok": {
+        "name": "{community} στο TikTok",
+        "description": "Ακολουθήστε μας στο TikTok"
       },
       "twitter": {
         "name": "{community} στο 𝕏",
         "description": "Ακολουθήστε μας στο 𝕏"
       },
+      "wiki": {
+        "name": "{community} ΒικιΈργο"
+      },
       "x": {
         "name": "{community} στο 𝕏",
         "description": "Ακολουθήστε μας στο 𝕏"
       },
+      "xmpp": {
+        "description": "Γίνετε μέλος της κοινότητάς μας στο XMPP: {url}"
+      },
       "youtube": {
         "name": "{community} στο YouTube",
         "description": "Εγγραφείτε στο κανάλι μας στο YouTube"
+      },
+      "zulip": {
+        "description": "Γίνετε μέλος της κοινότητάς μας στο Zulip"
       }
     },
     "af-matrix": {
@@ -250,6 +286,9 @@
     },
     "al-maptime-tirana": {
       "description": "Στις κοινωνικές εκδηλώσεις οργανωμένες γύρω από τη χαρτογράφηση - οι αρχάριοι είναι περισσότερο ευπρόσδεκτοι!"
+    },
+    "am-wiki": {
+      "description": "{community} Wiki σελίδα"
     },
     "at-wiki": {
       "description": "{community} Wiki σελίδα"
@@ -276,6 +315,12 @@
     },
     "cat-twitch": {
       "name": "Κανάλι Twitch για {community}"
+    },
+    "ch-mailinglist": {
+      "description": "Λίστα αλληλογραφίας για Ελβετία"
+    },
+    "co-github": {
+      "description": "Έργα git για την Κολομβία"
     },
     "comunitat-valenciana-wiki": {
       "description": "Όλα όσα χρειάζεται να ξέρετε για την χαρτογράφηση στην Βαλενθιανική Κοινότητα: {url}"
@@ -315,6 +360,9 @@
     },
     "de-munchen-wiki": {
       "description": "{community} Wiki σελίδα"
+    },
+    "de-telegram": {
+      "description": "Συνδεθείτε στην παγκόσμια υπερομάδα Telegram του OpenStreetMap D-A-CH στο {url}"
     },
     "fr-35-wiki": {
       "description": "{community} Wiki σελίδα"
@@ -365,6 +413,9 @@
     "madrid-wiki": {
       "description": "Όλα όσα χρειάζεται να ξέρετε για την χαρτογράφηση στην Μαδρίτη: {url}"
     },
+    "MapLYH": {
+      "description": "Ομάδα MapLYH"
+    },
     "Maptime-Oceania-Slack": {
       "description": "Εγγραφείτε στο {signupUrl}"
     },
@@ -379,6 +430,9 @@
     },
     "osm-africa-facebook-group": {
       "name": "{community} Ομάδα Facebook"
+    },
+    "osm-asia-facebook": {
+      "description": "Ομάδα Facebook OpenStreetMap Ασίας"
     },
     "osm-at": {
       "description": "Η πλατφόρμα για πληροφορίες σχετικά με το OpenStreetMap στην Αυστρία"
@@ -412,9 +466,15 @@
     "osm-deep-south-wiki": {
       "description": "{community} Wiki σελίδα"
     },
+    "OSM-Discord": {
+      "description": "Ανεπίσημος, Discord server διαχειριζόμενος από την κοινότητα για την παγκόσμια κοινότητα του OpenStreetMap. Περιφερειακά κανάλια είναι διαθέσιμα."
+    },
     "OSM-Discourse": {
       "name": "Φόρουμ Κοινότητας OpenStreetMap",
       "description": "Ένας κοινόχρηστος χώρος για συζητήσεις σχετικά με το OpenStreetMap"
+    },
+    "OSM-Facebook": {
+      "description": "Κάντε μας like στο Facebook για νέα και ενημερώσεις σχετικά με το OpenStreetMap."
     },
     "osm-gh-facebook": {
       "extendedDescription": "Χαρτογράφοι στην κοινότητα της Γκάνα, προωθούν εργασίες του OpenStreetMap και της Ανθρωπιστικής Ομάδας OpenStreetMap (HOT) στην Γκάνα. Ελάτε μαζί μας."
@@ -446,6 +506,12 @@
     "osm-india-wiki": {
       "description": "Όλα όσα χρειάζεται να ξέρετε για την χαρτογράφηση στην Ινδία: {url}"
     },
+    "osm-iran-telegram": {
+      "extendedDescription": "Είστε ευπρόσδεκτοι να εγγραφείτε στο κανάλι μας στο Telegram στη διεύθυνση {url}. Έχουμε επίσης μια υπερομάδα πολλών OSMers που ενδιαφέρονται για το Ιράν. Βρείτε τον σύνδεσμο της στο βιογραφικό του καναλιού."
+    },
+    "OSM-japan-discord": {
+      "description": "Ένας χώρος εργασίας στο Discord για την κοινότητα του OSM Ιαπωνία: {url}"
+    },
     "OSM-japan-facebook": {
       "description": "Χαρτογράφοι και χρήστες του OpenStreetMap στην Ιαπωνία"
     },
@@ -464,6 +530,9 @@
     "osm-ohio-wiki": {
       "description": "{community} Wiki σελίδα"
     },
+    "OSM-Telegram": {
+      "description": "Συνδεθείτε στην παγκόσμια υπερομάδα Telegram του OpenStreetMap στο {url}"
+    },
     "OSM-US": {
       "events": {
         "mappingusa2022": {
@@ -473,6 +542,12 @@
     },
     "OSM-US-Slack": {
       "description": "Όλοι είναι ευπρόσδεκτοι! Εγγραφείτε στο {signupUrl}"
+    },
+    "OSM-Utah": {
+      "name": "OpenStreetMap Γιούτα"
+    },
+    "OSM-Wyoming": {
+      "name": "OpenStreetMap Ουαϊόμινγκ"
     },
     "OSMF": {
       "name": "Ίδρυμα OpenStreetMap"
@@ -522,6 +597,9 @@
       "description": "OpenStreetMap Λονδίνο στο Twitter: {url}"
     },
     "uk-london-wiki": {
+      "description": "{community} Wiki σελίδα"
+    },
+    "vn-wiki": {
       "description": "{community} Wiki σελίδα"
     }
   }

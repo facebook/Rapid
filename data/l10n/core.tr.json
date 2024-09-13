@@ -42,7 +42,6 @@
       },
       "add_note": {
         "title": "Not",
-        "label": "Not Ekle",
         "description": "Bir sorun mu tespit ettin? Diğer haritacıların bilmesini sağla."
       },
       "add_preset": {
@@ -713,9 +712,6 @@
     "loading_auth": "OpenStreetMap'e bağlanıyor...",
     "report_a_bug": "Hata bildir",
     "help_translate": "Çeviriye yardım et",
-    "sidebar": {
-      "tooltip": "Kenar çubuğunu aç/kapat."
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} adet gizli nesne",
@@ -772,7 +768,6 @@
         "description": "Açıklama",
         "resolution": "Çözünürlük",
         "accuracy": "Doğruluk",
-        "unknown": "Bilinmiyor",
         "show_tiles": "Kılavuz Çizgilerini Göster",
         "hide_tiles": "Kılavuz Çizgilerini Gizle"
       },
@@ -783,7 +778,6 @@
         "last_edit": "Son Düzenleme",
         "edited_by": "Düzenleyen",
         "changeset": "Değişiklik Kümesi",
-        "unknown": "Bilinmiyor",
         "note_no_history": "Geçmiş bulunmamaktadır (New Note)",
         "note_comments": "Yorumlar",
         "note_created_date": "Oluşturma Tarihi",
@@ -865,13 +859,13 @@
         "zoom": "{features} gizlendi. Etkinleştirmek için yakınlaştırın."
       },
       "back_tooltip": "Nesne türünü değiştir.",
+      "type": "Çeşit",
+      "details": "Detaylar",
       "remove": "Kaldır",
       "search": "Ara",
       "unknown": "Bilinmiyor. Lütfen doldur.",
       "incomplete": "<indirilmedi>",
       "feature_list": "Nesne ara",
-      "edit": "Nesneyi düzenle",
-      "edit_features": "Nesneleri düzenle",
       "check": {
         "yes": "Evet",
         "no": "Hayır",
@@ -879,7 +873,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Çeşit",
           "default": "Varsayılan",
           "layer": "Katman"
         }
@@ -948,7 +941,8 @@
         },
         "notes": {
           "tooltip": "OpenStreetMap'ın Not Verileri",
-          "title": "OpenStreetMap Notları"
+          "title": "OpenStreetMap Notları",
+          "key": "K"
         },
         "maproulette": {
           "detail_title": "Detaylar",
@@ -957,10 +951,6 @@
         "keepRight": {
           "tooltip": "Keepright.at tarafından veri sorunları tespit edildi",
           "title": "KeepRight Sorunları"
-        },
-        "improveOSM": {
-          "tooltip": "İmproveeosm.org tarafından eksik veriler tespit edildi",
-          "title": "ImproveOSM Sorunları"
         },
         "osmose": {
           "tooltip": "osmose.openstreetmap.fr tarafından veri sorunu tespit edildi.",
@@ -993,9 +983,6 @@
     },
     "photo_overlays": {
       "title": "Fotoğraf Bindirmeleri",
-      "traffic_signs": {
-        "title": "Trafik Tablelaları"
-      },
       "photo_type": {
         "flat": {
           "title": "Düz Fotoğraflar",
@@ -1258,42 +1245,7 @@
         "fix_title": "Kılavuzları düzelt",
         "trap_title": "Genelde yapılan yanlışlar"
       },
-      "improveOSM": {
-        "title": "ImproveOSM Yakalama",
-        "geometry_types": {
-          "path": "patikalar",
-          "parking": "park",
-          "road": "yollar",
-          "both": "yollar ve parklar"
-        },
-        "directions": {
-          "east": "doğu",
-          "north": "kuzey",
-          "northeast": "kuzeydoğu",
-          "northwest": "kuzeybatı",
-          "south": "güney",
-          "southeast": "güneydoğu",
-          "southwest": "güneybatı",
-          "west": "batı"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Eksik tek-yön",
-            "description": "{highway} bu bölümü boyunca kaydedilen {num_trips} yolculuklarının {percentage}% kadarı {from_node} ile {to_node} arasında gidilmiştir. Bir \"tek yön\" etiketi eksik olabilir."
-          },
-          "mr": {
-            "title": "Geometri eksik",
-            "description": "Bu bölgede kaydedilmiş {num_trips} seyahatleri, burada haritalanmamış {geometry_type} olabileceğini öneriyor.",
-            "description_alt": "Üçüncü parti verileri burada haritalanmamış {geometry_type} olabileceğini öneriyor."
-          },
-          "tr": {
-            "title": "Dönüş Kısıtlaması Eksik",
-            "description": "Kayıtlı {num_trips} seyahatlerinden {num_passed}  (seyahat {travel_direction}), {junction} konumunda {from_way} ile {to_way} arasında bir dönüş yapıyor. Bir \"{turn_restriction}\" kısıtlaması eksik olabilir."
-          }
-        }
-      },
       "keepRight": {
-        "title": "Sağdan devam et",
         "detail_description": "Açıklama",
         "comment": "Yorum",
         "comment_placeholder": "Diğer kullanıcılarla paylaşmak için bir yorum girin.",
@@ -1607,101 +1559,20 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Microsoft'tan sokak fotoğrafları",
-      "report": "Bu görüntü ile ilgili gizlilik endişesi bildir",
-      "view_on_bing": "Bing Haritalar'da göster",
+    "photos": {
       "hires": "Yüksek çözünürlük"
     },
-    "mapillary_images": {
-      "tooltip": "Mapilary'den sokak fotoğrafları"
-    },
-    "mapillary_map_features": {
-      "title": "Harita Nesneleri",
-      "tooltip": "Mapillary'den harita nesneleri",
-      "construction": {
-        "barrier": {
-          "temporary": "geçici bariyer"
-        },
-        "flat": {
-          "crosswalk_plain": "Çizgili Yaya Geçidi",
-          "driveway": "araba yolu"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "şerit işaretleme - ok (sol)",
-            "right": "şerit işaretleme - ok (sağ)",
-            "split_left_or_straight": "şerit işaretleme - ok (sola bölünmüş veya düz)",
-            "split_right_or_straight": "şerit işaretleme - ok (sağa bölünmüş veya düz)",
-            "straight": "şerit işaretleme - ok (düz)"
-          },
-          "crosswalk_zebra": "şerit işaretleme - yaya geçidi",
-          "give_way_row": "şerit işaretleme - yol ver (sıra)",
-          "give_way_single": "şerit işaretleme - yol ver (tek)",
-          "other_marking": "şerit işaretleme - diğer",
-          "stop_line": "şerit işaretleme - durma çizgisi",
-          "symbol": {
-            "bicycle": "şerit işaretleme - sembol (bisiklet)"
-          },
-          "text": "şerit işaretleme - metin"
-        }
-      },
-      "object": {
-        "banner": "Afiş",
-        "bench": "Bank",
-        "bike_rack": "Bisiklet Park Yeri",
-        "billboard": "Reklam Panosu",
-        "catch_basin": "Tutma Havzası",
-        "cctv_camera": "Güvenlik Kamerası",
-        "fire_hydrant": "İtfaiye Vanası",
-        "junction_box": "bağlantı kutusu",
-        "mailbox": "Posta Kutusu",
-        "manhole": "Rogar Kapağı",
-        "parking_meter": "parkmetre",
-        "phone_booth": "Telefon Kulübesi",
-        "sign": {
-          "advertisement": "Reklam",
-          "information": "Bilgi Levhası",
-          "other": "diğer işaret",
-          "store": "Dükkan Tabelası",
-          "traffic_sign": {
-            "back": "trafi̇k i̇şareti̇ - arka",
-            "direction_front": "trafi̇k i̇şareti̇ - ön",
-            "front": "trafi̇k i̇şareti̇ - ön"
-          }
-        },
-        "street_light": "Sokak Lambası",
-        "support": {
-          "pole": "kutup",
-          "traffic_sign_frame": "trafik işaret çerçevesi",
-          "utility_pole": "Elektrik Direği"
-        },
-        "traffic_cone": "Trafik Konisi",
-        "traffic_light": {
-          "cyclists": "Bisiklet Trafik Lambası",
-          "general_horizontal": "Yatay Trafik Lambası",
-          "general_single": "Tek Trafik Lambası",
-          "general_upright": "Dikey Trafik Lambası",
-          "other": "Trafik Lambası",
-          "pedestrians": "Yaya Trafik Lambası"
-        },
-        "trash_can": "Çöp Kutusu",
-        "water_valve": "su vanası"
-      }
+    "streetside": {
+      "tooltip": "Microsoft'tan sokak fotoğrafları"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Mapillary'den trafik işaretleri"
-      },
-      "view_on_mapillary": "Bu resmi Mapillary'de görüntüle"
+      "tooltip": "Mapilary'den sokak fotoğrafları"
     },
-    "kartaview_images": {
-      "tooltip": "KartaView'dan sokak düzeyinde fotoğraflar"
+    "mapillary_signs": {
+      "title": "Trafik Tablelaları"
     },
     "kartaview": {
-      "view_on_kartaview": "Bu resmi KartaView'da görüntüle"
+      "tooltip": "KartaView'dan sokak düzeyinde fotoğraflar"
     },
     "note": {
       "note": "Not",
@@ -1859,7 +1730,6 @@
       },
       "notes": {
         "title": "Notlar",
-        "intro": "Notlar* bir özelliğin düzeltilmesi veya ilgilenilmesi konusunda diğer kullanıcıları uyarmak için kullanılır. Notlar, haritada belli bir konumu işaretler. Mevcut notları görüntülemek veya yenilerini eklemek için {data_icon} **{map_data}** panosunu açın ve {osm_notes} katmanını etkinleştirin.",
         "add_note_h": "Notlar eklemek",
         "add_note": "Yeni bir not eklemek için, haritanın yukarısındaki araç çubuğunda bulunan {note_icon} ** {note} ** düğmesine basın veya kısayol tuşuna \"{add_note_key}\" basın.",
         "update_note_h": "Kapatılıyor, yeniden açılıyor, yorum yapılıyor.",
@@ -1896,9 +1766,7 @@
         "title": "Kalite Kontrolü",
         "intro": "*Kalite Kontrol* (Q/A) araçları, OpenStreetMap ile uygun olmayan etiketleri, bağlantısı kesilmiş yolları ve diğer sorunları bulabilir ve haritacıların bu sorunu giderebilmesine yardımcı olur. Mevcut Q/A sorunlarını görüntülemek için {data_icon} **{map_data}** panelini açın ve belirli bir Q/A katmanını etkinleştirin.",
         "tools_h": "Araçlar",
-        "tools": "Şu araçlar desteklenmektedir: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) ve [Osmose](https://osmose.openstreetmap.fr/).",
-        "issues_h": "Sorunları Ele Alma",
-        "issues": "Soru / Cevap sorunlarıyla başa çıkmak, notlarla başa çıkmaya benzer. Kenar çubuğunda sorun ayrıntılarını görüntülemek için bir işaretleyici seçin. Her aracın kendi özellikleri vardır, ancak genellikle bir sorunu yorumlayabilir ve / veya kapatabilirsiniz."
+        "issues_h": "Sorunları Ele Alma"
       },
       "field": {
         "restrictions": {
@@ -2650,7 +2518,6 @@
           "map_data": "Harita veri bölmesini değiştir.",
           "issues": "Doğrulama sorunları bölmesini değiştir.",
           "preferences": "Kullanıcı tercihleri bölmesini aç/kapat",
-          "sidebar": "Kenar çubuğunu aç/kapat.",
           "wireframe": "Tel örgü moduna geçiniz",
           "osm_data": "OpenStreetMap verisini değiştir.",
           "highlight_edits": "Kaydedilmemiş değişiklikleri vurgula"

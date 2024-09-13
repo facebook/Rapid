@@ -347,8 +347,7 @@
       "description": "{community} Wiki stránka"
     },
     "de-berlin-xmpp": {
-      "name": "OpenStreetMap Berlín-Branborsko XMPP",
-      "description": "Připojte se k naší XMPP víceuživatelskému chatu: {url}"
+      "name": "OpenStreetMap Berlín-Branborsko XMPP"
     },
     "de-bochum-wiki": {
       "description": "{community} Wiki stránka"
@@ -372,8 +371,7 @@
       "description": "{community} Wiki stránka"
     },
     "de-hamburg-xmpp": {
-      "name": "OpenStreetMap Hamburk XMPP",
-      "description": "Připojte se k naší XMPP víceuživatelskému chatu: {url}"
+      "name": "OpenStreetMap Hamburk XMPP"
     },
     "de-karlsruhe-mailinglist": {
       "name": "Karlsruhská mailová konference"
@@ -422,9 +420,6 @@
     },
     "de-viersen-meetup": {
       "description": "Komunita OSM a uživatelé setkání Kreis Virsen a Mönchengladbachu"
-    },
-    "de-xmpp": {
-      "description": "Připojte se k naší XMPP víceuživatelskému chatu: {url}"
     },
     "DF-telegram": {
       "extendedDescription": "Připojte se ke komunitě a dozvíte se více o OpenStreetMap, můžete klást otázky nebo se účastnit našich setkání. Každý je vítán!"
@@ -792,7 +787,6 @@
     },
     "osm-delhi-xmpp": {
       "name": "OpenStreetMap Dillí XMPP",
-      "description": "Připojte se k naší XMPP místnosti: {url}",
       "extendedDescription": "XMPP místnost pro OSM Dillí, není propojena do žádné proprietární sítě."
     },
     "OSM-Discord": {
@@ -804,9 +798,6 @@
     },
     "OSM-Facebook": {
       "description": "Dejte naší facebookové stránce To se mi líbí, aby vám neunikly žádné novinky ze světa OpenStreetMap."
-    },
-    "osm-fj": {
-      "description": "Poskytování služeb a informací OSM pro místní komunitu ve Fidži"
     },
     "osm-gh-facebook": {
       "extendedDescription": "Mapovači z komunity v Ghaně propagující OpenStreetMap a projekty Humanitárního OpenStreetMap týmu (HOT) v Ghaně. Připojte se k nám."
@@ -852,7 +843,6 @@
     },
     "osm-india-xmpp": {
       "name": "OpenStreetMap Indie XMPP",
-      "description": "Připojte se k naší XMPP místnosti: {url}",
       "extendedDescription": "Místnost XMPP pro indickou komunitu OSM; není propojena do žádné proprietární sítě. Dostupné také od Matrix přes #osm-in:poddery.com"
     },
     "osm-iran-aparat": {
@@ -866,9 +856,6 @@
     },
     "OSM-japan-facebook": {
       "description": "Mapovači a uživatelé OpenStreetMap v Japonsku"
-    },
-    "OSM-japan-slack": {
-      "description": "Pracovní prostor Slack pro komunitu OSM Japonsko {signupUrl}"
     },
     "OSM-japan-website": {
       "description": "Mapovači a uživatelé OpenStreetMap v Japonsku"
@@ -951,10 +938,6 @@
       "description": "Pojďme se trochu pobavit, přispět něčím do Los Angeles a dozvědět se něco o mapování!",
       "extendedDescription": "OpenStreetMap (OSM) Jižní Kalifornie je pro každého, kdo se zajímá o mapování, aby se spojil a pracoval s OpenStreetMap. OpenStreetMap, Wikipedie map, je bezplatná mapa světa s otevřeným zdrojovým kódem, kterou vytváří více než 1 000 000 dobrovolníků po celém světě. Každý je vítán. Pokud OpenStreetMap neznáte, naučíme vás to. Pokud máte nápad na projekt mapování nebo dokonce exkurzi, kterou může skupina udělat, skvělé!"
     },
-    "OSM-South-Bay": {
-      "description": "Připojte se online k South Bay Map Nights",
-      "extendedDescription": "Seznamte se s kolegy ze South Bay Mappers a pomozte s místními mapovacími projekty na našem online setkání každou druhou úterní noc ve spolupráci s Open Source San José. Programování a dovednosti GIS nejsou vyžadovány."
-    },
     "OSM-Tampa-Bay": {
       "description": "Mapovači a uživatelé OpenStreetMap na území Tampa Bay",
       "extendedDescription": "Skupina OSM Tampa Bay pro místní obyvatele, aby se sešli a vytvořili definitivní mapu Tampa Bay pomocí OpenStreetMap, bezplatné a upravitelné mapy světa. Pokud máte rádi mapy, data, open source, GPS, turistiku, cyklistiku atd., budete rádi pracovat s OpenStreetMap – tak se připojte! Zhruba jednou za měsíc se sejdeme a budeme mapovat a mluvit o nových tématech."
@@ -988,15 +971,6 @@
     },
     "OSM-US-Slack": {
       "description": "Všichni jsou vítaní! Přihlaste se na {signupUrl}"
-    },
-    "OSM-Utah": {
-      "description": "Mapovači a uživatelé OpenStreetMap na území Salt Lake City",
-      "extendedDescription": "Aktivity mohou zahrnovat události, jako jsou workshopy Learn To Map, mapovací večírky a sběr venkovních dat. Události se budou konat v oblasti SLC, alespoň zpočátku. Hledáme ostřílené mapovače i lidi, kteří v OSM začínají. Připojte se a pojďte dělat nějaké mapování!"
-    },
-    "osm-west-bengal-xmpp": {
-      "name": "OpenStreetMap Západní Bengálsko XMPP",
-      "description": "Připojte se k naší XMPP místnosti: {url}",
-      "extendedDescription": "XMPP místnost pro OSM Západní Bengálsko."
     },
     "OSM-Wyoming": {
       "description": "Mapovači a uživatelé OpenStreetMap ve státě Wyoming",

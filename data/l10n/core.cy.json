@@ -44,7 +44,6 @@
       },
       "add_note": {
         "title": "Nodyn",
-        "label": "Ychwanegu Nodyn",
         "description": "Oes yna broblem? Rhoi gwybod i'r mapwyr eraill.",
         "key": "G"
       },
@@ -645,9 +644,6 @@
     "loading_auth": "Wrthi'n cysylltu ag OpenStreetMap...",
     "report_a_bug": "Adrodd am nam",
     "help_translate": "Helpu i gyfieithu",
-    "sidebar": {
-      "tooltip": "Toglo'r bar ochr."
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} nodwedd cudd",
@@ -709,7 +705,6 @@
         "description": "Disgrifiad",
         "resolution": "Eglurdeb",
         "accuracy": "Cywiriad",
-        "unknown": "Anhysbys",
         "show_tiles": "Dangos Teiliau",
         "hide_tiles": "Cuddio Teiliau"
       },
@@ -720,7 +715,6 @@
         "last_edit": "Golygiad diwethaf",
         "edited_by": "Golygwyd gan",
         "changeset": "Grŵp newid",
-        "unknown": "Anhysbys",
         "note_no_history": "Dim Hanes (Nodyn Newydd)",
         "note_comments": "Sylwadau",
         "note_created_date": "Dyddiad Creu",
@@ -798,12 +792,12 @@
       "multiple_values": "Gwerthoedd Lluosog",
       "multiple_types": "Mathau Lluosog",
       "back_tooltip": "Newid math o nodwedd",
+      "type": "Math",
+      "details": "Manylion",
       "remove": "Dileu",
       "search": "Chwilio",
       "unknown": "Anhysbys",
       "feature_list": "Chwilio nodweddion",
-      "edit": "Golygu nodwedd",
-      "edit_features": "Golygu nodweddion",
       "check": {
         "yes": "Ie",
         "no": "Na",
@@ -811,7 +805,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Math",
           "default": "Diofyn",
           "layer": "Haen"
         }
@@ -874,7 +867,8 @@
         },
         "notes": {
           "tooltip": "Data nodyn gan OpenStreetMap",
-          "title": "Nodiadau OpenStreetMap"
+          "title": "Nodiadau OpenStreetMap",
+          "key": "G"
         },
         "maproulette": {
           "detail_title": "Manylion",
@@ -883,10 +877,6 @@
         "keepRight": {
           "tooltip": "Canfuwyd gwallau data gan keepright.at",
           "title": "Gwallau KeepRight"
-        },
-        "improveOSM": {
-          "tooltip": "Canfuwyd data coll gan improveosm.org",
-          "title": "Gwallau ImproveOSM"
         },
         "osmose": {
           "tooltip": "Canfuwyd gwallau data gan osmose.openstreetmap.fr",
@@ -914,9 +904,6 @@
     },
     "photo_overlays": {
       "title": "Troshaenau Delwedd",
-      "traffic_signs": {
-        "title": "Arwyddion Traffig"
-      },
       "photo_type": {
         "flat": {
           "title": "Lluniau Fflat",
@@ -1151,33 +1138,6 @@
         "fix_title": "Canllawiau Trwsio",
         "trap_title": "Gwallau Cyffredin"
       },
-      "improveOSM": {
-        "title": "Canfyddiadau ImproveOSM",
-        "geometry_types": {
-          "path": "llwybrau",
-          "parking": "parcio",
-          "road": "ffyrdd",
-          "both": "ffyrdd a pharcio"
-        },
-        "directions": {
-          "east": "dwyrain",
-          "north": "gogledd",
-          "northeast": "gogledd-dwyrain",
-          "northwest": "gogledd-gorllewin",
-          "south": "de",
-          "southeast": "de-ddwyrain",
-          "southwest": "de-orllewin",
-          "west": "gorllewin"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Unffordd ar goll"
-          },
-          "mr": {
-            "title": "Geometrig Ar Goll"
-          }
-        }
-      },
       "keepRight": {
         "detail_description": "Disgrifiad",
         "comment": "Sylw",
@@ -1337,65 +1297,20 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Lluniau lefel-stryd o Microsoft",
-      "report": "Adrodd mater preifatrwydd am y ddelwedd hon",
-      "view_on_bing": "Gweld ar Bing Maps",
+    "photos": {
       "hires": "Eglurdeb uchel"
     },
-    "mapillary_images": {
-      "tooltip": "Lluniau lefel-stryd o Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Nodweddion Map",
-      "tooltip": "Nodweddion Map o Mapillary",
-      "construction": {
-        "barrier": {
-          "temporary": "rhwystr dros dro"
-        },
-        "flat": {
-          "crosswalk_plain": "croesfan plaen",
-          "driveway": "tramwyfa"
-        }
-      },
-      "object": {
-        "banner": "baner",
-        "bench": "mainc",
-        "cctv_camera": "Camera CCTC",
-        "mailbox": "blwch post",
-        "sign": {
-          "advertisement": "hysbyseb",
-          "information": "arwydd gwybodaeth",
-          "other": "arwydd arall",
-          "store": "arwydd siop",
-          "traffic_sign": {
-            "back": "Arwydd draffig - cefn",
-            "direction_front": "Arwydd draffig - wyneb",
-            "front": "Arwydd draffig - wyneb"
-          }
-        },
-        "street_light": "golau stryd",
-        "support": {
-          "pole": "polyn"
-        },
-        "traffic_cone": "côn traffig",
-        "traffic_light": {
-          "other": "golau traffig"
-        },
-        "trash_can": "bin sbwriel"
-      }
+    "streetside": {
+      "tooltip": "Lluniau lefel-stryd o Microsoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Arwyddion traffig o Mapillary"
-      },
-      "view_on_mapillary": "Gweld y ddelwedd hon ar Mapillary"
+      "tooltip": "Lluniau lefel-stryd o Mapillary"
     },
-    "kartaview_images": {
-      "tooltip": "Lluniau lefel-stryd o KartaView"
+    "mapillary_signs": {
+      "title": "Arwyddion Traffig"
     },
     "kartaview": {
-      "view_on_kartaview": "Gweld y ddelwedd hon ar KartaView"
+      "tooltip": "Lluniau lefel-stryd o KartaView"
     },
     "note": {
       "note": "Nodyn",
@@ -1523,7 +1438,6 @@
       "qa": {
         "title": "Sicrwydd Ansawdd",
         "tools_h": "Teclynnau",
-        "tools": "Cefnogir y teclynnau hyn ar hyn o bryd: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) ac [Osmose](https://osmose.openstreetmap.fr/).",
         "issues_h": "Trwsio Gwallau"
       },
       "field": {
@@ -1915,7 +1829,6 @@
           "title": "Opsiynau arddangos",
           "background": "Toglo panel cefndir delweddaeth",
           "map_data": "Toglo panel data map",
-          "sidebar": "Toglo bar ochr",
           "wireframe": "Toglo modd ffrâm wifren",
           "osm_data": "Toglo data OpenStreetMap",
           "highlight_edits": "Amlygu golygiadau heb eu cadw"

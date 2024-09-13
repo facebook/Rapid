@@ -113,12 +113,11 @@
     "inspector": {
       "view_on_osm": "Ka eeg openstreetmap.org",
       "choose": "Dooro nooca tilmaamaha",
+      "type": "Nooca",
       "search": "Raadi",
       "feature_list": "Tilmaamaha Waydiimaha",
-      "edit": "Tifaftir tilmaamaha",
       "radio": {
         "structure": {
-          "type": "Nooca",
           "layer": "Lakabka"
         }
       },

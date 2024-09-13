@@ -213,9 +213,6 @@
     "OSM-US-Slack": {
       "description": "Alle er velkomne! Registrer deg på {signupUrl}"
     },
-    "OSM-Utah": {
-      "description": "Kartleggere og OpenStreetMap brukere i Salt Lake City området"
-    },
     "OSM-Wyoming": {
       "description": "Kartverkere og OpenStreetMap brukere i Wyoming"
     },

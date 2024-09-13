@@ -206,7 +206,6 @@
         "description": "Descripción",
         "resolution": "Resolución",
         "accuracy": "Precisión",
-        "unknown": "Desconocíu",
         "show_tiles": "Amostrar teseles",
         "hide_tiles": "Tapecer teseles"
       },
@@ -215,8 +214,7 @@
         "version": "Versión",
         "last_edit": "Última edición",
         "edited_by": "Editao por",
-        "changeset": "Conxuntu de cambios",
-        "unknown": "Desconocíu"
+        "changeset": "Conxuntu de cambios"
       },
       "location": {
         "title": "Llocalización",
@@ -255,12 +253,13 @@
       "new_relation": "Nueva rellación...",
       "role": "Rol",
       "choose": "Seleicione un tipu de carauterística",
+      "type": "Tipu",
+      "details": "Detalles",
       "remove": "Desaniciar",
       "search": "Guetar",
       "unknown": "Desconocíu",
       "incomplete": "<non descargao>",
       "feature_list": "Buscar carauterístiques",
-      "edit": "Editar carauterística",
       "check": {
         "yes": "Si",
         "no": "Non",
@@ -268,7 +267,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Tipu",
           "default": "Predeterminao",
           "layer": "Capa"
         }
@@ -431,14 +429,8 @@
         "detail_description": "Descripción"
       }
     },
-    "mapillary_images": {
-      "tooltip": "Fotos a nivel de rúa de Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Elementos del mapa"
-    },
     "mapillary": {
-      "view_on_mapillary": "Ver esta imaxe'n Mapillary"
+      "tooltip": "Fotos a nivel de rúa de Mapillary"
     },
     "help": {
       "title": "Ayuda",

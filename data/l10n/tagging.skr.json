@@ -6,6 +6,9 @@
           "options": {
             "private": {
               "title": "نجی"
+            },
+            "unknown": {
+              "title": "نامعلوم"
             }
           },
           "types": {
@@ -18,7 +21,24 @@
         "access_simple": {
           "options": {
             "no": "کوئی وی کائنی",
+            "private": "نجی",
+            "unknown": "نامعلوم",
             "yes": "عوامی"
+          }
+        },
+        "addr/interpolation": {
+          "label": "قسم",
+          "options": {
+            "all": "سارے",
+            "even": "جفت",
+            "odd": "طاق"
+          }
+        },
+        "address": {
+          "placeholders": {
+            "country": "ملک",
+            "county": "کاؤنٹی",
+            "county!jp": "ضلع"
           }
         }
       }

@@ -42,7 +42,6 @@
       },
       "add_note": {
         "title": "Rimarko",
-        "label": "Aldoni rimarkon",
         "description": "Ĉu vi rimarkis problemon? Sciigu aliajn mapigistojn."
       },
       "add_preset": {
@@ -713,9 +712,6 @@
     "loading_auth": "Konektado al OpenStreetMap…",
     "report_a_bug": "Raporti eraron",
     "help_translate": "Helpi traduki",
-    "sidebar": {
-      "tooltip": "Baskuli flankbreton."
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} kaŝita objekto",
@@ -772,7 +768,6 @@
         "description": "Priskribo",
         "resolution": "Distingivo",
         "accuracy": "Akurateco",
-        "unknown": "Nekonata",
         "show_tiles": "Montri kahelojn",
         "hide_tiles": "Kaŝi kahelojn"
       },
@@ -783,7 +778,6 @@
         "last_edit": "Antaŭa redakto",
         "edited_by": "Redaktita de",
         "changeset": "Ŝanĝaro",
-        "unknown": "Nekonata",
         "note_no_history": "Neniu historio (nova rimarko)",
         "note_comments": "Komentoj",
         "note_created_date": "Kreita je",
@@ -865,13 +859,13 @@
         "zoom": "{features} estas kaŝitaj. Pligrandigu por vidigi ilin."
       },
       "back_tooltip": "Ŝanĝi specon de objekto",
+      "type": "Speco",
+      "details": "Detaloj",
       "remove": "Forigi",
       "search": "Serĉi",
       "unknown": "Nekonata",
       "incomplete": "<ne elŝutita>",
       "feature_list": "Serĉi objektojn",
-      "edit": "Redakti objekton",
-      "edit_features": "Redakti objektojn",
       "check": {
         "yes": "Jes",
         "no": "Ne",
@@ -879,7 +873,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Speco",
           "default": "Implicita",
           "layer": "Tavolo"
         }
@@ -958,10 +951,6 @@
           "tooltip": "Problemoj pri datumoj trovitaj de keepright.at",
           "title": "KeepRight-eraroj"
         },
-        "improveOSM": {
-          "tooltip": "Mankantaj datumoj trovitaj de improveosm.org",
-          "title": "ImproveOSM-eraroj"
-        },
         "osmose": {
           "tooltip": "Problemoj pri datumoj trovitaj de osmose.openstreetmap.fr",
           "title": "Osmose-eraroj"
@@ -993,9 +982,6 @@
     },
     "photo_overlays": {
       "title": "Fotaraj surtavoloj",
-      "traffic_signs": {
-        "title": "Trafiksignoj"
-      },
       "photo_type": {
         "flat": {
           "title": "Plataj fotoj",
@@ -1256,40 +1242,6 @@
         "elems_title": "Objektoj",
         "fix_title": "Konsiloj pri riparo",
         "trap_title": "Oftaj eraroj"
-      },
-      "improveOSM": {
-        "title": "Trovita de ImproveOSM",
-        "geometry_types": {
-          "path": "vojeto(j)",
-          "parking": "parkumejo",
-          "road": "vojo(j)",
-          "both": "vojo(j) kaj parkumejo"
-        },
-        "directions": {
-          "east": "orienten",
-          "north": "norden",
-          "northeast": "nord-orienten",
-          "northwest": "nord-okcidenten",
-          "south": "suden",
-          "southeast": "sud-orienten",
-          "southwest": "sud-okcidenten",
-          "west": "okcidenten"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Mankanta etikedo “unudirekta”",
-            "description": "Laŭlonge de tiu ĉi sekcio de  {highway}, {percentage}% da {num_trips} registritaj spuroj kondukis el {from_node} al {to_node}. Eble mankas la etikedo “oneway” (unidirekta)."
-          },
-          "mr": {
-            "title": "Mankanta geometrio",
-            "description": "{num_trips} registritaj spuroj en tiu ĉi areo indikas, ke tie povas esti iu(j) nemapigita(j) {geometry_type}.",
-            "description_alt": "Datumoj de ekstera servo indikas, ke tie povas esti iu(j) nemapigita(j) {geometry_type}."
-          },
-          "tr": {
-            "title": "Mankanta turna limigo",
-            "description": "{num_passed} el {num_trips} registritaj spuroj (direktantaj {travel_direction}) ĉe {junction} turniĝas el {from_way} al {to_way}. Eble mankas turna limigo “{turn_restriction}”."
-          }
-        }
       },
       "keepRight": {
         "detail_description": "Priskribo",
@@ -1605,101 +1557,20 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Strat-nivelaj fotoj el Microsoft",
-      "report": "Raporti privatecan problemon pri tiu ĉi foto",
-      "view_on_bing": "Montri ĉe Bing Mapoj",
+    "photos": {
       "hires": "Alta distingivo"
     },
-    "mapillary_images": {
-      "tooltip": "Strat-nivelaj fotoj el Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Map‑objektoj",
-      "tooltip": "Map‑objektoj el Mapillary",
-      "construction": {
-        "barrier": {
-          "temporary": "portempa barilo"
-        },
-        "flat": {
-          "crosswalk_plain": "stratpasejo",
-          "driveway": "enveturejo"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "surstrata trafiksigno – sago (maldekstren)",
-            "right": "surstrata trafiksigno – sago (dekstren)",
-            "split_left_or_straight": "surstrata trafiksigno – sago (maldekstren aŭ rekten)",
-            "split_right_or_straight": "surstrata trafiksigno – sago (dekstren aŭ rekten)",
-            "straight": "surstrata trafiksigno – sago (rekten)"
-          },
-          "crosswalk_zebra": "surstrata trafiksigno – stratpasejo",
-          "give_way_row": "surstrata trafiksigno – cedi veturon (serio)",
-          "give_way_single": "surstrata trafiksigno – cedi veturon (unu)",
-          "other_marking": "surstrata trafiksigno – alia",
-          "stop_line": "surstrata trafiksigno – linio stop’",
-          "symbol": {
-            "bicycle": "surstrata trafiksigno – simbolo (biciklo)"
-          },
-          "text": "surstrata trafiksigno – teksto"
-        }
-      },
-      "object": {
-        "banner": "flago",
-        "bench": "benko",
-        "bike_rack": "parkumejo bicikla",
-        "billboard": "reklam‑tabulego",
-        "catch_basin": "kloako pluvakva",
-        "cctv_camera": "supergarda kamerao",
-        "fire_hydrant": "hidranto",
-        "junction_box": "ŝranko distribua",
-        "mailbox": "poŝtkesto (senda)",
-        "manhole": "stratkanala kovrilo",
-        "parking_meter": "parkum-bileta vendilo",
-        "phone_booth": "telefonbudo",
-        "sign": {
-          "advertisement": "reklam‑tabulego",
-          "information": "informa signo",
-          "other": "alia signo",
-          "store": "komerca elpendaĵo",
-          "traffic_sign": {
-            "back": "trafiksigno – malantaŭo",
-            "direction_front": "trafiksigno – antaŭo",
-            "front": "trafiksigno – antaŭo"
-          }
-        },
-        "street_light": "stratlampo",
-        "support": {
-          "pole": "fosto",
-          "traffic_sign_frame": "kadro de trafiksigno",
-          "utility_pole": "kolono"
-        },
-        "traffic_cone": "trafik‑konuso",
-        "traffic_light": {
-          "cyclists": "trafiklumoj por bicikloj",
-          "general_horizontal": "trafiklumoj horizontalaj",
-          "general_single": "trafiklumo",
-          "general_upright": "trafiklumoj vertikalaj",
-          "other": "trafiklumoj",
-          "pedestrians": "trafiklumoj por piedirantoj"
-        },
-        "trash_can": "rubujo",
-        "water_valve": "valvo akva"
-      }
+    "streetside": {
+      "tooltip": "Strat-nivelaj fotoj el Microsoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Trafiksignoj el Mapillary"
-      },
-      "view_on_mapillary": "Montri ĉi tiun bildon en Mapillary"
+      "tooltip": "Strat-nivelaj fotoj el Mapillary"
     },
-    "kartaview_images": {
-      "tooltip": "Strat-nivelaj fotoj el KartaView"
+    "mapillary_signs": {
+      "title": "Trafiksignoj"
     },
     "kartaview": {
-      "view_on_kartaview": "Montri tiun ĉi bildon ĉe KartaView"
+      "tooltip": "Strat-nivelaj fotoj el KartaView"
     },
     "note": {
       "note": "Rimarko",
@@ -1857,7 +1728,6 @@
       },
       "notes": {
         "title": "Rimarkoj",
-        "intro": "“Rimarkoj” estas uzataj por informi aliajn uzantojn, ke objekto bezonas riparon aŭ kontrolon. Rimarko markas difinitan lokon sur la mapo. Por vidigi ekzistajn rimarkojn aŭ krei iun novan, malfermu la panelon {data_icon} **{map_data}** kaj aktivigu la tavolon {osm_notes}.",
         "add_note_h": "Aldoni rimarkojn",
         "add_note": "Por aldoni novan rimarkon, premu la butonon {note_icon} **{note}** sur la ilarstrio supre de mapo, aŭ premu la fulmoklavon `{add_note_key}`.",
         "update_note_h": "Fermi, remalfermi aŭ komenti",
@@ -1894,9 +1764,7 @@
         "title": "Certigo pri kvalito",
         "intro": "Iloj por certigo pri kvalito povas trovi malĝustajn etikedojn, nekonektitajn vojojn kaj aliajn problemojn pri OpenStreetMap, kiuj mapigistoj povas ripari. Por vidigi ekzistajn problemojn pri kvalito, malfermu la panelon {data_icon} **{map_data}** por vidigi specifan tavolon de problemoj pri kvalito.",
         "tools_h": "Iloj",
-        "tools": "La jenaj iloj estas nuntempe subtenataj: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/) kaj [Osmose](https://osmose.openstreetmap.fr/).",
-        "issues_h": "Pritrakti problemojn",
-        "issues": "Pritrakti problemojn pri kvalito estas simila al pritrakti rimarkojn. Elektu la markon por vidigi detalojn pri la problemo sur la flankbreto. Ĉiu ilo karakterizas per siaj propraj kapabloj, sed ĝenerale vi povas komenti aŭ fermi problemon."
+        "issues_h": "Pritrakti problemojn"
       },
       "field": {
         "restrictions": {
@@ -2648,7 +2516,6 @@
           "map_data": "Baskuli panelon de map‑datumoj",
           "issues": "Baskuli panelon de problemoj",
           "preferences": "Baskuli panelon de agordoj",
-          "sidebar": "Baskuli flankbreton",
           "wireframe": "Baskuli map-plenigon",
           "osm_data": "Baskuli map‑datumojn",
           "highlight_edits": "Emfazi nekonservitajn ŝanĝojn"

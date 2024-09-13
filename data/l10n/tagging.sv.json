@@ -225,6 +225,10 @@
           "label": "Luftkonditionering",
           "terms": "AC, kylning, Air condition, A/C"
         },
+        "alt_name": {
+          "label": "Alternativt Namn",
+          "terms": "Alternativt Namn, Alternativ benämning, Alternativ beteckning, Andra namn, alias, övrigt namn, sekundärt namn, även känd som, även kallad, även kallat"
+        },
         "amenity": {
           "label": "Typ"
         },
@@ -260,6 +264,14 @@
         },
         "area/highway": {
           "label": "Typ"
+        },
+        "armrest": {
+          "label": "Armstöd",
+          "options": {
+            "no": "Inget armstöd",
+            "undefined": "Okänt",
+            "yes": "En eller flera armstöd"
+          }
         },
         "artist": {
           "label": "Konstnär"
@@ -673,6 +685,27 @@
             "panning": "Panorering"
           }
         },
+        "camp_site": {
+          "label": "Typ",
+          "options": {
+            "basic": {
+              "description": "Inget annat än en plats att slå upp ett tält eller parkera ett fordon på",
+              "title": "Enkel (endast tält-/fordonsplatser)"
+            },
+            "deluxe": {
+              "description": "Har full service och har ytterligare bekvämligheter som en tvättstuga, pool eller liknande fritidsfaciliteter",
+              "title": "Exklusiv (erbjuder tvättstuga, pool, etc.)."
+            },
+            "serviced": {
+              "description": "Toaletter, vatten, duschar och el tillhandahålls",
+              "title": "Erbjuder service (erbjuder dusch och el)"
+            },
+            "standard": {
+              "description": "Toaletter och vatten finns eller finns i närheten",
+              "title": "Standard (erbjuder toaletter och vatten)"
+            }
+          }
+        },
         "capacity": {
           "label": "Kapacitet",
           "terms": "Kapacitet, antal, besökare, användare, antal"
@@ -789,6 +822,18 @@
         "communication_multi": {
           "label": "Kommunikationstyper",
           "terms": "Kommunikationstyper, kommunikation, radiomast, radiotorn, mast, antenn, mobilmast, mobilantenn, radioantenn, sändartorn, mobiltelefon, radiomast, TV-torn, TV-mast, radiosändning, kommunikationsmast, kommunikationstorn, transmissionsmast, överföringstorn, överföringsmast"
+        },
+        "community_centre": {
+          "label": "Typ",
+          "options": {
+            "club_home": "Föreningslokal, klubbstuga",
+            "community_hall": "Medborgarhus, folkets hus",
+            "cultural_centre": "Kulturcenter",
+            "family_centre": "Familjecenter",
+            "parish_hall": "Församlingshem",
+            "village_hall": "Bygdegård",
+            "youth_centre": "Fritidsgård"
+          }
         },
         "connectivity": {
           "label": "Sammankoppling"
@@ -2173,6 +2218,10 @@
           "label": "Belysning",
           "terms": "Belysning, lampa, lampor, gatubelysning, vägbelysning"
         },
+        "loc_name": {
+          "label": "Lokalt namn",
+          "terms": "lokalt namn, vardagsnamn, vanligt namn, informellt namn, smeknamn, öknamn, dialektalt namn"
+        },
         "location": {
           "label": "Lokalisering",
           "terms": "Lokalisering, underjordisk, nedsänkt, upphängd, nedgrävd, utomhus, inomhus"
@@ -2259,7 +2308,7 @@
             "marble": "Marmor",
             "metal": "Metall",
             "plastic": "Plast",
-            "reinforced_conrete": "Armerad betong",
+            "reinforced_concrete": "Armerad betong",
             "rock": "Sten",
             "sandstone": "Sandsten",
             "soil": "Jord",
@@ -2433,6 +2482,10 @@
           "placeholder": "Vanligt namn (om något)",
           "terms": "Namn, titel, märke"
         },
+        "nat_name": {
+          "label": "Nationellt namn",
+          "terms": "Nationellt namn, officiellt namn, statligt namn, formellt namn"
+        },
         "natural": {
           "label": "Natur"
         },
@@ -2543,6 +2596,10 @@
             "union": "Fackföreningskontor",
             "water_utility": "Vattenleverantör"
           }
+        },
+        "official_name": {
+          "label": "Officiellt namn",
+          "terms": "Officiellt namn, formellt namn, fullständigt namn, juridiskt namn"
         },
         "oneway": {
           "label": "Enkelriktat",
@@ -2801,6 +2858,7 @@
             "ice_skate": "Skridskoåkning",
             "nordic": "Längdskidåkning",
             "playground": "Lekplats",
+            "ski_jump": "Skidhopp",
             "skitour": "Turåkning",
             "sled": "Pulkabacke",
             "sleigh": "Slädåkning ",
@@ -3042,6 +3100,10 @@
         "ref_taxiway": {
           "label": "Namn på taxibana",
           "placeholder": "t.ex. A5"
+        },
+        "reg_name": {
+          "label": "Regionalt namn",
+          "terms": "Regionalt namn, områdesnamn, regionens namn, lokalt namn"
         },
         "relation": {
           "label": "Typ"
@@ -3368,6 +3430,10 @@
         "shop": {
           "label": "Typ"
         },
+        "short_name": {
+          "label": "Kort namn",
+          "terms": "kort namn, förkortning, akronym, initialism, kortnamn, "
+        },
         "shower": {
           "label": "Duschar",
           "terms": "Dusch, duschutrymme, duschkabin, duschbad, badrum, duschrum"
@@ -3521,6 +3587,7 @@
             "running": "Löpning",
             "scuba_diving": "Nöjesdykning",
             "shooting": "Skytte",
+            "ski_jumping": "Skidhoppning",
             "skiing": "Skidåkning",
             "soccer": "Fotboll",
             "softball": "Softboll",
@@ -3672,18 +3739,22 @@
           "options": {
             "artificial_turf": "Konstgräs",
             "asphalt": "Asfalt",
+            "clay": "Lera",
             "compacted": "Komprimerad",
             "concrete": "Betong",
             "dirt": "Jord",
             "fine_gravel": "Fint grus",
             "grass": "Gräs",
+            "grass_paver": "Gräsarmering",
             "gravel": "Grus",
             "ground": "Mark",
             "metal": "Metall",
             "mud": "Ihållande lerig",
             "paved": "Belagd",
             "paving_stones": "Gatsten",
+            "pebblestone": "Småsten",
             "sett": "Gatsten",
+            "tartan": "Tartan ",
             "unhewn_cobblestone": "Kullersten (ej huggen, rundade stenar)",
             "unpaved": "Obelagd",
             "wood": "Trä",
@@ -4604,9 +4675,18 @@
           "name": "Samlingslokal",
           "terms": "Samlingslokal, folkets hus, folkets park, festlokal, bygdegård, Hembygdsgård, Sockenstuga, bystuga, Byalag, byförening, festlokal, evenemang"
         },
+        "amenity/community_centre/cultural_centre": {
+          "name": "Kulturcenter"
+        },
+        "amenity/community_centre/family_centre": {
+          "name": "Familjecenter"
+        },
         "amenity/community_centre/lgbtq": {
           "name": "HBTQ-samlingslokal",
           "terms": "HBTQ-Samlingslokal, HBTQ-festlokal, HBTQ--evenemang, HBTQ"
+        },
+        "amenity/community_centre/parish_hall": {
+          "name": "Församlingshem"
         },
         "amenity/community_centre/youth_centre": {
           "name": "Fritidsgård",
@@ -8710,6 +8790,9 @@
         "piste/piste": {
           "name": "Vintersportspår / Pist",
           "terms": "Vintersportspår, skidor, skida, off-pist, offpist, utförsåkning, utför, alpint, snowboard, skidtur, skidåkning, släde, häst, vintervandring, snöskor, is, isåkning, skridsko, skridskoåkning, pist, längdskidor, längdskidspår, alpint, alpin"
+        },
+        "piste/ski_jump": {
+          "name": "Hoppbacke"
         },
         "piste/skitour": {
           "name": "Skidturspår",

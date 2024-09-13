@@ -248,7 +248,6 @@
         "zoom": "Hakaiky",
         "source": "Loharano",
         "description": "Famariparitana",
-        "unknown": "Tsy fantatra",
         "show_tiles": "Hampiseho ny kapila",
         "hide_tiles": "Hanafina ny kapila"
       },
@@ -258,7 +257,6 @@
         "last_edit": "Fanovana Farany",
         "edited_by": "Fanovana Nataon'i",
         "changeset": "Vondron'ova",
-        "unknown": "Tsy fantatra",
         "note_comments": "Fanehoan-kevitra"
       },
       "location": {
@@ -298,11 +296,12 @@
       "fields": "Saha",
       "role": "Anjara asa",
       "choose": "Safidio ny karazan'ny singa",
+      "type": "Karazany",
+      "details": "Antsipiriany",
       "remove": "Hanala",
       "search": "Hikaroka",
       "unknown": "Tsy fantatra",
       "feature_list": "Hikaroka singa",
-      "edit": "Hanova ny singa",
       "check": {
         "yes": "Eny",
         "no": "Tsia",
@@ -310,7 +309,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Karazany",
           "default": "Tsy miova",
           "layer": "Sosona"
         }
@@ -497,9 +495,6 @@
         "comment_placeholder": "Mampidira fanehoan-kevitra hozaraina amin'ny mpampiasa hafa.",
         "close_comment": "Hanakatona sy Haneho Hevitra"
       }
-    },
-    "mapillary_map_features": {
-      "title": "Singa ao amin'ny Sarintany"
     },
     "note": {
       "note": "Fanamarihana",

@@ -39,21 +39,6 @@
         }
       }
     },
-    "mapillary_map_features": {
-      "construction": {
-        "flat": {
-          "crosswalk_plain": "plain pedestrian crossing"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "crosswalk_zebra": "lane marking - pedestrian crossing"
-        }
-      },
-      "object": {
-        "trash_can": "rubbish bin"
-      }
-    },
     "help": {
       "lines": {
         "intro": "*Lines* are used to represent features such as roads, railroads, and rivers. Lines should be drawn down the centre of the feature that they represent.",

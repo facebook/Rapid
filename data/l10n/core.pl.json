@@ -44,7 +44,6 @@
       },
       "add_note": {
         "title": "Uwaga",
-        "label": "Dodaj uwagę",
         "description": "Problem na mapie? Poinformuj o tym innych mapujących."
       },
       "add_preset": {
@@ -780,9 +779,6 @@
     "loading_auth": "Łączenie z OpenStreetMap...",
     "report_a_bug": "Zgłoś błąd",
     "help_translate": "Pomóż przetłumaczyć",
-    "sidebar": {
-      "tooltip": "Przełącz panel boczny."
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} ukryty obiekt",
@@ -845,7 +841,6 @@
         "description": "Opis",
         "resolution": "Rozdzielczość",
         "accuracy": "Dokładność",
-        "unknown": "Nieznane",
         "show_tiles": "Pokaż dane kafli",
         "hide_tiles": "Ukryj dane kafli"
       },
@@ -856,7 +851,6 @@
         "last_edit": "Ostatnia edycja",
         "edited_by": "Edytowane przez",
         "changeset": "Zestaw zmian",
-        "unknown": "brak",
         "note_no_history": "Brak historii (nowa uwaga)",
         "note_comments": "Komentarze",
         "note_created_date": "Data utworzenia",
@@ -940,13 +934,13 @@
         "zoom": "{features} są ukryte. Przybliż mapę, żeby je aktywować."
       },
       "back_tooltip": "Zmień rodzaj obiektu",
+      "type": "Rodzaj",
+      "details": "Szczegóły",
       "remove": "Usuń",
       "search": "Szukaj",
       "unknown": "Nieznane",
       "incomplete": "<niepobrane>",
       "feature_list": "Wyszukiwanie rodzaju obiektu",
-      "edit": "Edytor obiektu",
-      "edit_features": "Edycja obiektów",
       "check": {
         "yes": "Tak",
         "no": "Nie",
@@ -954,7 +948,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Rodzaj",
           "default": "Domyślny",
           "layer": "Warstwa"
         }
@@ -1039,10 +1032,6 @@
           "tooltip": "Problemy na mapie wykryte przez keepright.at",
           "title": "Problemy KeepRight"
         },
-        "improveOSM": {
-          "tooltip": "Brakujące dane wykryte przez improveosm.org",
-          "title": "Problemy ImproveOSM"
-        },
         "osmose": {
           "tooltip": "Problemy na mapie wykryte przez osmose.openstreetmap.fr",
           "title": "Problemy Osmose"
@@ -1074,9 +1063,6 @@
     },
     "photo_overlays": {
       "title": "Nakładki ze zdjęciami",
-      "traffic_signs": {
-        "title": "Znaki drogowe"
-      },
       "photo_type": {
         "flat": {
           "title": "Zdjęcia niekontrastowe",
@@ -1336,41 +1322,7 @@
         "fix_title": "Zalecenia dotyczące naprawy",
         "trap_title": "Często popełniane błędy"
       },
-      "improveOSM": {
-        "title": "Wykrycie ImproveOSM",
-        "geometry_types": {
-          "path": "ścieżki",
-          "road": "drogi",
-          "both": "drogi i parkingi"
-        },
-        "directions": {
-          "east": "wschód",
-          "north": "północ",
-          "northeast": "północy wschód",
-          "northwest": "północny zachód",
-          "south": "południe",
-          "southeast": "południowy wschód",
-          "southwest": "południowy zachód",
-          "west": "zachód"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Brak jednokierunkowości",
-            "description": "Wzdłuż tego odcinka drogi: {highway}, {percentage}% z {num_trips} zarejestrowanych przejazdów porusza się od {from_node} do {to_node}. Być może brakuje tagu oneway=yes."
-          },
-          "mr": {
-            "title": "Brakujący kształt",
-            "description": "{num_trips} zarejestrowanych przejazdów w tym obszarze sugeruje, że mogą tu być niezmapowane: {geometry_type}.",
-            "description_alt": "Dane z zewnętrznych źródeł sugerują, że mogą być tu niezmapowane: {geometry_type}."
-          },
-          "tr": {
-            "title": "Brakujące ograniczenia skrętów",
-            "description": "Tylko {num_passed} z {num_trips} zarejestrowanych przejazdów (poruszając się na {travel_direction}) skręcało z {from_way} w {to_way} przez {junction}. Być może brakuje zakazu skrętu „{turn_restriction}”."
-          }
-        }
-      },
       "keepRight": {
-        "title": "Błąd KeepRight",
         "detail_description": "Opis",
         "comment": "Komentarz",
         "comment_placeholder": "Wprowadź komentarz, aby podzielić się z innymi użytkownikami.",
@@ -1681,101 +1633,20 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Widok ulicy od Microsoft",
-      "report": "Zgłoś naruszenie prywatności na tym zdjęciu",
-      "view_on_bing": "Zobacz na mapie Bing",
+    "photos": {
       "hires": "Wysoka rozdzielczość"
     },
-    "mapillary_images": {
-      "tooltip": "Zdjęcia z poziomu ulicy z Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Obiekty na mapie",
-      "tooltip": "Obiekty na mapie z Mapillary",
-      "construction": {
-        "barrier": {
-          "temporary": "tymczasowa przeszkoda"
-        },
-        "flat": {
-          "crosswalk_plain": "oznaczone przejście dla pieszych",
-          "driveway": "podjazd"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "znak poziomy - strzałka kierunkowa w lewo  ",
-            "right": "znak poziomy - strzałka kierunkowa w prawo",
-            "split_left_or_straight": "znak poziomy - strzałka kierunkowa na wprost lub w lewo",
-            "split_right_or_straight": "znak poziomy - strzałka kierunkowa na wprost lub w prawo",
-            "straight": "znak poziomy - strzałka kierunkowa na wprost"
-          },
-          "crosswalk_zebra": "znak poziomy - przejście dla pieszych",
-          "give_way_row": "znak poziomy - linia warunkowego zatrzymania złożona z trójkątów",
-          "give_way_single": "znak poziomy - trójkąt podporządkowania",
-          "other_marking": "znak poziomy - inny",
-          "stop_line": "znak poziomy - linia bezwzględnego zatrzymania - stop ",
-          "symbol": {
-            "bicycle": "znak poziomy - rower"
-          },
-          "text": "znak poziomy - napis"
-        }
-      },
-      "object": {
-        "banner": "flaga",
-        "bench": "ławka",
-        "bike_rack": "stojak rowerowy",
-        "billboard": "tablica reklamowa",
-        "catch_basin": "studzienka kanalizacyjna",
-        "cctv_camera": "kamera monitoringu",
-        "fire_hydrant": "hydrant przeciwpożarowy",
-        "junction_box": "skrzynka przyłączeniowa",
-        "mailbox": "skrzynka pocztowa",
-        "manhole": "studzienka włazowa",
-        "parking_meter": "parkometr",
-        "phone_booth": "budka telefoniczna",
-        "sign": {
-          "advertisement": "reklama",
-          "information": "tablica informacyjna",
-          "other": "inny znak",
-          "store": "szyld",
-          "traffic_sign": {
-            "back": "znak drogowy - tył",
-            "direction_front": "znak drogowy - przód",
-            "front": "znak drogowy - przód"
-          }
-        },
-        "street_light": "latarnia uliczna",
-        "support": {
-          "pole": "słup",
-          "traffic_sign_frame": "Rama znaku drogowego",
-          "utility_pole": "słup elektryczny"
-        },
-        "traffic_cone": "pachołek drogowy",
-        "traffic_light": {
-          "cyclists": "sygnalizacja dla rowerzystów",
-          "general_horizontal": "pozioma sygnalizacja świetlna",
-          "general_single": "pojedyncza sygnalizacja świetlna",
-          "general_upright": "pionowa sygnalizacja świetlna",
-          "other": "sygnalizacja świetlna",
-          "pedestrians": "sygnalizacja świetlna dla pieszych"
-        },
-        "trash_can": "kosz na śmieci",
-        "water_valve": "zawór wody"
-      }
+    "streetside": {
+      "tooltip": "Widok ulicy od Microsoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Znaki drogowe z Mapillary"
-      },
-      "view_on_mapillary": "Zobacz ten obraz na Mapillary"
+      "tooltip": "Zdjęcia z poziomu ulicy z Mapillary"
     },
-    "kartaview_images": {
-      "tooltip": "Zdjęcia ulic z KartaView"
+    "mapillary_signs": {
+      "title": "Znaki drogowe"
     },
     "kartaview": {
-      "view_on_kartaview": "Zobacz ten obraz w KartaView"
+      "tooltip": "Zdjęcia ulic z KartaView"
     },
     "note": {
       "note": "Uwaga",
@@ -1933,7 +1804,6 @@
       },
       "notes": {
         "title": "Uwagi",
-        "intro": "*Uwagi* są używane, aby ostrzegać innych użytkowników, że obiekt wymaga naprawy lub sprawdzenia. Uwagi wskazują na konkretną lokalizację na mapie. Aby zobaczyć istniejące uwagi lub dodać nowe, kliknij panel {data_icon} **{map_data}** i aktywuj warstwę uwag OpenStreetMap.",
         "add_note_h": "Dodawanie uwag",
         "add_note": "Aby dodać nową uwagę, naciśnij przycisk {note_icon} **{note}** na pasku powyżej mapy lub użyj skrótu `{add_note_key}`. Kursor zmieni swój kształt na krzyżyk.",
         "update_note_h": "Zamykanie, ponowne otwieranie, komentowanie",
@@ -1970,9 +1840,7 @@
         "title": "Zapewnienie jakości",
         "intro": "Narzędzia zapewnienia jakości pomagają wskazać niewłaściwe tagi, niepołączone drogi i inne problemy na OpenStreetMap, które mapujący mogą naprawić. Żeby wyświetlić istniejące problemy, otwórz {data_icon} **{map_data}** na panelu bocznym, żeby włączyć odpowiednią warstwę.",
         "tools_h": "Narzędzia",
-        "tools": "Aktualnie wspierane narzędzia to [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) i [Osmose](https://osmose.openstreetmap.fr/).",
-        "issues_h": "Obsługa problemów",
-        "issues": "Obsługa problemów jest podobna do obsługi uwag. Kliknij znaczek, aby wyświetlić szczegóły problemu na pasku bocznym. Każde narzędzie ma swoje własne możliwości, ale zazwyczaj można je komentować i zamykać."
+        "issues_h": "Obsługa problemów"
       },
       "field": {
         "restrictions": {
@@ -2724,7 +2592,6 @@
           "map_data": "Przełącz panel danych mapy",
           "issues": "Przełącz panel problemów",
           "preferences": "Przełącz panel ustawień",
-          "sidebar": "Przełącz panel boczny",
           "wireframe": "Przełącz tryb szkieletowy",
           "osm_data": "Przełącz dane OpenStreetMap",
           "highlight_edits": "Podświetl niezapisane zmiany"

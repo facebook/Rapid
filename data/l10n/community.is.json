@@ -55,9 +55,6 @@
     "OSM-US-Slack": {
       "description": "Allir velkomnir! Skráðu þig á {signupUrl}"
     },
-    "OSM-Utah": {
-      "description": "Kortagerðarfólk og notendur OpenStreetMap á Salt Lake City-svæðinu"
-    },
     "OSM-Wyoming": {
       "description": "Kortagerðarfólk og notendur OpenStreetMap í Wyoming-fylki, BNA"
     },

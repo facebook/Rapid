@@ -41,7 +41,6 @@
       },
       "add_note": {
         "title": "Minnispunktur",
-        "label": "Bæta við minnispunkti",
         "description": "Fannstu hnökra? Láttu annað kortagerðarfólk vita."
       },
       "add_preset": {
@@ -301,9 +300,6 @@
     "loading_auth": "Tengist við OpenStreetMap...",
     "report_a_bug": "Tilkynna villu",
     "help_translate": "Hjálpa til við að þýða",
-    "sidebar": {
-      "tooltip": "Víxla hliðarspjaldi af/á."
-    },
     "commit": {
       "title": "Senda inn á OpenStreetMap",
       "upload_explanation": "Breytingarnar sem þú gerir verða sýnilegar á öllum kortum sem nota OpenStreetMap gögn.",
@@ -332,7 +328,6 @@
         "description": "Lýsing",
         "resolution": "Upplausn",
         "accuracy": "Nákvæmni",
-        "unknown": "Óþekkt",
         "show_tiles": "Sýna kortaflísar",
         "hide_tiles": "Fela kortaflísar"
       },
@@ -343,7 +338,6 @@
         "last_edit": "Síðasta breyting",
         "edited_by": "Breytt af",
         "changeset": "Breytingasett",
-        "unknown": "Óþekkt",
         "note_no_history": "Enginn ferill (nýr minnispunktur)",
         "note_comments": "Athugasemdir",
         "note_created_date": "Búið til þann",
@@ -402,12 +396,13 @@
       "choose": "Veldu gerð eiginda",
       "wiki_reference": "Skoða hjálp/leiðbeiningar",
       "wiki_en_reference": "Skoða leiðbeiningar á ensku",
+      "type": "Tegund",
+      "details": "Nánar",
       "remove": "Fjarlægja",
       "search": "Leita",
       "unknown": "Óþekkt",
       "incomplete": "<ekki hlaðið niður>",
       "feature_list": "Leita að fitjum/eigindum",
-      "edit": "Breyta fitju/eigindum",
       "check": {
         "yes": "Já",
         "no": "Nei",
@@ -415,7 +410,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Tegund",
           "default": "Sjálfgefið",
           "layer": "Lag"
         }
@@ -466,9 +460,6 @@
         "keepRight": {
           "title": "KeepRight-vandamál"
         },
-        "improveOSM": {
-          "title": "ImproveOSM-vandamál"
-        },
         "custom": {
           "tooltip": "Dragðu og slepptu gagnaskrá á síðuna eða smelltu áhnappinn til að setja upp",
           "title": "Sérsniðin kortagögn",
@@ -480,9 +471,6 @@
       "osmhidden": "Þessar fitjur hafa verið faldar sjálfvirkt því að OpenStreetMap-lagið er falið."
     },
     "photo_overlays": {
-      "traffic_signs": {
-        "title": "Umferðarskilti"
-      },
       "photo_type": {
         "panoramic": {
           "tooltip": "360° myndir"
@@ -673,33 +661,6 @@
         "elems_title": "Fitjur",
         "fix_title": "Laga stoðlínur"
       },
-      "improveOSM": {
-        "title": "ImproveOSM-greining",
-        "geometry_types": {
-          "path": "slóðir",
-          "parking": "bílastæði",
-          "road": "vegir",
-          "both": "vegir og bílastæði"
-        },
-        "directions": {
-          "east": "austur",
-          "north": "norður",
-          "northeast": "norðaustur",
-          "northwest": "norðvestur",
-          "south": "suður",
-          "southeast": "suðaustur",
-          "southwest": "suðvestur",
-          "west": "vestur"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Einstefnu vantar"
-          },
-          "tr": {
-            "title": "Takmörkun á beygju vantar"
-          }
-        }
-      },
       "keepRight": {
         "detail_description": "Lýsing",
         "comment": "Athugasemd",
@@ -853,23 +814,17 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Ljósmyndir í götuhæð frá Microsoft",
-      "report": "Sendu tilkynningu um að þú efist um að mynd þessi virði reglur um meðferð persónuupplýsinga",
-      "view_on_bing": "Skoða á Bing Maps",
+    "photos": {
       "hires": "Háupplausn"
     },
-    "mapillary_images": {
-      "tooltip": "Ljósmyndir í götuhæð frá Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Fitjur á korti"
+    "streetside": {
+      "tooltip": "Ljósmyndir í götuhæð frá Microsoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Umferðaskilti frá Mapillary"
-      },
-      "view_on_mapillary": "Skoða þessa mynd á Mapillary"
+      "tooltip": "Ljósmyndir í götuhæð frá Mapillary"
+    },
+    "mapillary_signs": {
+      "title": "Umferðarskilti"
     },
     "note": {
       "note": "Minnispunktur",
@@ -1272,7 +1227,6 @@
         },
         "display_options": {
           "title": "Valkostir birtingar",
-          "sidebar": "Víxla hliðarspjaldi",
           "wireframe": "Víxla útlínuham af/á"
         },
         "selecting": {

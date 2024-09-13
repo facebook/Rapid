@@ -212,6 +212,9 @@
           "label": "Klimaanlæg",
           "terms": "klimaanlæg,ac,aircondition"
         },
+        "alt_name": {
+          "label": "Alternativt navn"
+        },
         "animal_boarding": {
           "label": "Til dyr"
         },
@@ -238,6 +241,11 @@
         "architect": {
           "label": "Arkitekt",
           "terms": "bygning,design,udvikling"
+        },
+        "armrest": {
+          "options": {
+            "undefined": "Uvist"
+          }
         },
         "artist": {
           "label": "Kunstner"
@@ -320,8 +328,8 @@
           "label": "Babysæde"
         },
         "backcountry": {
-          "label": "Primitiv overnatning",
-          "terms": "overnatning,primitiv,telt,bivuak,natur"
+          "label": "Afsidesliggende",
+          "terms": "Afsidesliggende,Primitiv overnatning,primitiv,telt,bivuak,natur,lejrplads,shelter"
         },
         "backrest": {
           "label": "Ryglæn"
@@ -489,6 +497,9 @@
           "options": {
             "aqueduct": "Akvædukt",
             "boardwalk": "Plankebro",
+            "cantilever": "Cantileverbro",
+            "covered": "Overdækket bro",
+            "movable": "Bevægelig bro",
             "viaduct": "Viadukt"
           }
         },
@@ -503,6 +514,7 @@
             "cathedral": "Katedralbygning",
             "chapel": "Kapelbygning",
             "church": "Kirkebygning",
+            "civic": "Civil-bygning",
             "college": "Bygning til videregående uddannelse",
             "commercial": "Erhvervsbyggeri",
             "construction": "Bygning under opførsel",
@@ -515,21 +527,34 @@
             "garages": "Garager",
             "grandstand": "Tribune",
             "greenhouse": "Drivhus",
+            "hangar": "Hangar-bygning",
             "hospital": "Hospitalsbygning",
+            "hotel": "Hotelbygning",
             "house": "Hus",
             "houseboat": "Husbåd",
             "hut": "Hytte",
+            "industrial": "Industriel-bygning",
             "kindergarten": "Vuggestue-/børnehavebygning",
+            "manufacture": "Industriel produktionsbygning",
+            "mosque": "Moske-bygning",
             "office": "Kontorbygning",
             "outbuilding": "Udhus",
             "public": "Offentlig bygning",
+            "residential": "Boligbyggeri",
             "retail": "Butiksbygning",
             "roof": "Tag",
+            "ruins": "Bygningsruiner",
             "school": "Skolebygning",
             "semidetached_house": "Dobbelthus",
             "shed": "Skur",
             "stable": "Hestestald",
+            "stadium": "Stadion-bygning",
+            "static_caravan": "Faststående campingvogn",
             "sty": "Grisestald",
+            "synagogue": "Synagoge-bygning",
+            "temple": "Tempelbygning",
+            "terrace": "Rækkehuse",
+            "train_station": "Jernbanestationsbygning",
             "university": "Universitetsbygning",
             "warehouse": "Varehus"
           },
@@ -1031,7 +1056,7 @@
           "label": "Kronediameter"
         },
         "diet_multi": {
-          "label": "Diæt type",
+          "label": "Kosttyper",
           "options": {
             "gluten_free": "Glutenfri",
             "lactose_free": "Laktosefri",
@@ -1207,6 +1232,11 @@
           "options": {
             "no": "Nej",
             "yes": "Ukendt type"
+          }
+        },
+        "fire_service_inlet": {
+          "options": {
+            "wall": "Mur"
           }
         },
         "fire_sprinkler": {
@@ -1468,6 +1498,9 @@
         "height_building": {
           "label": "Bygningshøjde (meter)"
         },
+        "highchair": {
+          "label": "Højstol"
+        },
         "highspeed": {
           "label": "Højhastighed",
           "terms": "tog,højhastighed,hastighed"
@@ -1706,6 +1739,9 @@
         "lit": {
           "label": "Gadebelysning"
         },
+        "loc_name": {
+          "label": "Lokalt navn"
+        },
         "location": {
           "label": "Lokalitet"
         },
@@ -1734,7 +1770,7 @@
           "label": "Dækning"
         },
         "mapillary": {
-          "label": "Mapillary billede ID",
+          "label": "Mapillary-billede-ID",
           "terms": "gadefoto,gade,street,street view"
         },
         "marker": {
@@ -1757,7 +1793,7 @@
             "limestone": "Kalksten",
             "marble": "Marmor",
             "plastic": "Plastik",
-            "reinforced_conrete": "Armeret beton",
+            "reinforced_concrete": "Armeret beton",
             "rock": "Sten",
             "sandstone": "Sandsten",
             "soil": "Jord",
@@ -1787,6 +1823,9 @@
         },
         "maxspeed/advisory": {
           "label": "Anbefalet fartgrænse"
+        },
+        "maxspeed/hgv": {
+          "label": "Hastighedsgrænse for lastbiler"
         },
         "maxstay": {
           "label": "Tidsbegrænsning"
@@ -1897,6 +1936,9 @@
           "label": "Navn",
           "placeholder": "Mest kendte navn (hvis noget)"
         },
+        "nat_name": {
+          "label": "Nationalt navn"
+        },
         "natural": {
           "label": "Naturlig"
         },
@@ -1984,6 +2026,9 @@
             "union": "Fagforeningskontor"
           }
         },
+        "official_name": {
+          "label": "Officielt navn"
+        },
         "oneway": {
           "label": "Ensrettet",
           "options": {
@@ -2025,6 +2070,7 @@
           "label": "Operatørtype"
         },
         "organic": {
+          "label": "Økologiske produkter",
           "options": {
             "no": "Ingen"
           }
@@ -2140,6 +2186,21 @@
             "skating": "Skøjteløb"
           }
         },
+        "piste/grooming_downhill": {
+          "options": {
+            "backcountry": "Offpiste - ingen præparering"
+          }
+        },
+        "piste/grooming_hike": {
+          "options": {
+            "backcountry": "Offpiste - snesko"
+          }
+        },
+        "piste/grooming_nordic": {
+          "options": {
+            "backcountry": "Offpiste, ingen præparering"
+          }
+        },
         "piste/type": {
           "options": {
             "connection": "Forbindelse",
@@ -2236,7 +2297,14 @@
           }
         },
         "ramp": {
-          "label": "Indbygget rampe"
+          "label": "Indbygget rampe",
+          "options": {
+            "no": "Nej",
+            "yes": "Ja"
+          }
+        },
+        "rcn_ref": {
+          "label": "Cykelkode"
         },
         "recycling_accepts": {
           "label": "Accepterer",
@@ -2269,6 +2337,9 @@
         },
         "ref/isil": {
           "label": "ISIL kode"
+        },
+        "ref/vatin": {
+          "label": "Momsnunmmer"
         },
         "ref_aeroway_gate": {
           "label": "Gate-nummer"
@@ -2308,6 +2379,20 @@
           "label": "Rullebane-navn",
           "placeholder": "f.eks. A5"
         },
+        "reg_name": {
+          "label": "Regionalt navn"
+        },
+        "religion": {
+          "options": {
+            "buddhist": "Buddhistisk",
+            "christian": "Kristen",
+            "hindu": "Hinduistisk",
+            "jewish": "Jødisk",
+            "muslim": "Muslimsk",
+            "none": "Ikke-religiøs",
+            "taoist": "Taoistisk"
+          }
+        },
         "reservation": {
           "label": "Reservationer",
           "options": {
@@ -2338,7 +2423,13 @@
           "label": "Udgør rundstrækning"
         },
         "royal_cypher-GB": {
-          "label": "Kongeligt monogram"
+          "label": "Kongeligt monogram",
+          "options": {
+            "no": "Nej"
+          }
+        },
+        "rwn_ref": {
+          "label": "Vandrekode"
         },
         "sac_scale": {
           "label": "Sværhedsgrad for vandrere",
@@ -2487,6 +2578,9 @@
         },
         "shoes": {
           "label": "Sko"
+        },
+        "short_name": {
+          "label": "Kort navn"
         },
         "shower": {
           "label": "Brusere"
@@ -2680,17 +2774,23 @@
           "options": {
             "artificial_turf": "Kunstgræs",
             "asphalt": "Asfalt",
+            "clay": "Ler",
             "compacted": "Pakket",
             "concrete": "Beton",
+            "concrete:lanes": "Betonbaner",
+            "concrete:plates": "Betonplader",
             "dirt": "Jord",
             "fine_gravel": "Fint grus",
             "grass": "Græs",
+            "grass_paver": "Græsarmering",
             "gravel": "Grus",
             "ground": "Ubehandlet overflade",
             "mud": "Vedvarende mudret",
             "paved": "Med fast belægning",
             "paving_stones": "Belægningssten",
+            "pebblestone": "Afrundede småsten (ral)",
             "sett": "Brosten",
+            "tartan": "Tartan (elastisk gummioverflade)",
             "unhewn_cobblestone": "Pigsten (uforarbejdede natursten)",
             "unpaved": "Uden fast belægning",
             "wood": "Træ",
@@ -2787,9 +2887,22 @@
         "toilets/handwashing": {
           "label": "Håndvask"
         },
+        "toilets/menstrual_products": {
+          "label": "Gratis menstruationsprodukter tilgængelige",
+          "options": {
+            "limited": "Begrænset til nogle båse",
+            "no": "Nej",
+            "yes": "Ja, i alle båse"
+          },
+          "terms": "Gratis menstruationsprodukter tilgængelige,gratis bind,bind"
+        },
+        "toilets/position": {
+          "label": "Positioner"
+        },
         "toilets/wheelchair": {
           "label": "Handicaptoilet",
           "options": {
+            "limited": "Begrænset",
             "no": "Nej",
             "yes": "Ja"
           },
@@ -3004,7 +3117,7 @@
           }
         },
         "water_point": {
-          "label": "Vandbrønd"
+          "label": "Vandpåfyldning"
         },
         "water_source": {
           "label": "Vandkilde",
@@ -3021,6 +3134,9 @@
         },
         "website": {
           "label": "Websted"
+        },
+        "website/menu": {
+          "label": "Menu-link"
         },
         "wetland": {
           "options": {
@@ -3525,8 +3641,8 @@
           "terms": "<oversæt med synonymer eller beslægtet termer for 'Brandstation', adskilt med kommaer>"
         },
         "amenity/food_court": {
-          "name": "Torvehaller",
-          "terms": "Torvehaller, Food Court, Fødevaremarkedspladser"
+          "name": "Madmarked",
+          "terms": "Madmarked,Torvehaller,Food Court,Fødevaremarkedspladser,Street-food,Restaurant"
         },
         "amenity/fountain": {
           "name": "Springvand",
@@ -6505,6 +6621,10 @@
           "name": "Naturskov",
           "terms": "skov,træ,træer,natur,urørt,jungle"
         },
+        "network/type/node_network-DE-NL-BE-LU": {
+          "name": "Knudepunkt for rekreative netværk",
+          "terms": "Knudepunkt for rekreative netværk,netværksknudepunkt,rekreativt netværksknudepunkt,knudepunkt"
+        },
         "noexit/yes": {
           "name": "Ingen udvej",
           "terms": "Ingen udvej"
@@ -7779,11 +7899,11 @@
         },
         "tourism/camp_site": {
           "name": "Campingplads",
-          "terms": "Campingplads, Lejrplads, Teltplads"
+          "terms": "Campingplads,Lejrplads,Teltplads"
         },
         "tourism/camp_site/backcountry": {
-          "name": "Primitivt campingområde",
-          "terms": "Primitivt campingområde,Primitiv overnatningsplads,Frit teltningsområde,Lejrplads,Afsides campingområde,teltplads,shelterplads"
+          "name": "Afsides campingområde",
+          "terms": "Afsides campingområde,Primitiv overnatningsplads,Frit teltningsområde,Lejrplads,Afsides campingområde,teltplads,shelterplads,primitiv camping"
         },
         "tourism/camp_site/group_only": {
           "name": "Campingområde for grupper",
@@ -7802,14 +7922,14 @@
         },
         "tourism/guest_house": {
           "name": "Gæstehus",
-          "terms": "Gæstehus, Bed&Breakfast, B&B"
+          "terms": "Gæstehus, Bed&Breakfast, B&B, b & B, bed, breakfast, hotel, overnatning, seng, sove, værelse"
         },
         "tourism/hostel": {
           "name": "Vandrerhjem",
           "terms": "Vandrerhjem"
         },
         "tourism/hotel": {
-          "terms": "Hotel"
+          "terms": "Hotel, overnatning, seng, sove, værelse"
         },
         "tourism/information": {
           "terms": "Turistinformation"
@@ -7979,6 +8099,9 @@
         "type/restriction/only_straight_on": {
           "name": "Kun ligeud",
           "terms": "ligefrem,frem,"
+        },
+        "type/restriction/only_u_turn": {
+          "name": "Kun u-vending"
         },
         "type/route": {
           "name": "Rute",

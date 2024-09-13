@@ -80,7 +80,9 @@
       "osm-gps": {
         "attribution": {
           "text": "© Опенстритмап доприносиоци"
-        }
+        },
+        "description": "Јавни ГПС трагови отпремљени на OpenStreetMap.",
+        "name": "OpenStreetMap ГПС трагови"
       },
       "osm-mapnik-german_style": {
         "attribution": {

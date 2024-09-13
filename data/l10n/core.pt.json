@@ -43,7 +43,6 @@
       },
       "add_note": {
         "title": "Nota",
-        "label": "Adicionar Nota",
         "description": "Detetaste um problema? Informa os outros mapeadores."
       },
       "add_preset": {
@@ -743,9 +742,6 @@
     "loading_auth": "A ligar ao OpenStreetMap...",
     "report_a_bug": "Comunicar um erro",
     "help_translate": "Ajuda a traduzir",
-    "sidebar": {
-      "tooltip": "Mostrar/esconder o painel lateral"
-    },
     "feature_info": {
       "hidden_warning": {
         "one": "{count} elemento oculto",
@@ -804,7 +800,6 @@
         "description": "Descrição",
         "resolution": "Resolução",
         "accuracy": "Precisão",
-        "unknown": "Desconhecido",
         "show_tiles": "Mostrar mosaicos",
         "hide_tiles": "Ocultar mosaicos"
       },
@@ -815,7 +810,6 @@
         "last_edit": "Última Edição",
         "edited_by": "Editado Por",
         "changeset": "Conjunto de alterações",
-        "unknown": "Desconhecido",
         "note_no_history": "Sem histórico (nova nota)",
         "note_comments": "Comentários",
         "note_created_date": "Data de Criação",
@@ -896,12 +890,12 @@
         "zoom": "Os {features} estão ocultos. Aproxima o mapa para os tornar visíveis."
       },
       "back_tooltip": "Alterar tipo de elemento",
+      "type": "Tipo",
+      "details": "Detalhes",
       "remove": "Remover",
       "search": "Pesquisar",
       "unknown": "Desconhecido",
       "feature_list": "Pesquisar elementos",
-      "edit": "Editar elemento",
-      "edit_features": "Editar elementos",
       "check": {
         "yes": "Sim",
         "no": "Não",
@@ -909,7 +903,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Tipo",
           "default": "Padrão",
           "layer": "Nível"
         }
@@ -988,10 +981,6 @@
           "tooltip": "Problemas nos dados detetados por keepright.at",
           "title": "Problemas do KeepRight"
         },
-        "improveOSM": {
-          "tooltip": "Dados em falta detetados por improveosm.org",
-          "title": "Problemas do ImproveOSM"
-        },
         "osmose": {
           "tooltip": "Problemas nos dados detetados por osmose.openstreetmap.fr",
           "title": "Problemas do Osmose"
@@ -1023,9 +1012,6 @@
     },
     "photo_overlays": {
       "title": "Camadas de Fotos",
-      "traffic_signs": {
-        "title": "Sinais de trânsito"
-      },
       "photo_type": {
         "flat": {
           "title": "Fotos planas",
@@ -1286,40 +1272,6 @@
         "elems_title": "Elementos",
         "fix_title": "Corrigir diretrizes",
         "trap_title": "Erros comuns"
-      },
-      "improveOSM": {
-        "title": "Deteção ImproveOSM",
-        "geometry_types": {
-          "path": "caminhos",
-          "parking": "parque de estacionamento",
-          "road": "estradas",
-          "both": "estradas e estacionamento"
-        },
-        "directions": {
-          "east": "este",
-          "north": "norte",
-          "northeast": "nordeste",
-          "northwest": "noroeste",
-          "south": "sul",
-          "southeast": "sudeste",
-          "southwest": "sudoeste",
-          "west": "oeste"
-        },
-        "error_types": {
-          "ow": {
-            "title": "Sentido Único em Falta",
-            "description": "Ao longo desta secção de {highway}, {percentage}% de {num_trips} viagens gravadas vão de {from_node} para {to_node}. Poderá estar a faltar a etiqueta \"oneway\" para indicar que é de sentido único."
-          },
-          "mr": {
-            "title": "Geometria em Falta",
-            "description": "{num_trips} viagens gravadas nesta área sugerem que poderá haver aqui {geometry_type} por mapear.",
-            "description_alt": "Dados de terceiros sugerem que poderá haver aqui {geometry_type} por cartografar."
-          },
-          "tr": {
-            "title": "Restrição de Viragem em Falta",
-            "description": "{num_passed} de {num_trips} viagens gravadas (que vêm de {travel_direction}) fazem uma viragem de {from_way} para {to_way} em {junction}. Poderá faltar aqui uma restrição do tipo \"{turn_restriction}\"."
-          }
-        }
       },
       "keepRight": {
         "detail_description": "Descrição",
@@ -1633,102 +1585,21 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Fotos ao nível de rua da Microsoft",
-      "title": "Fotos ao nível de rua do Bing",
-      "report": "Comunicar um problema de privacidade nesta imagem",
-      "view_on_bing": "Ver no Bing Maps",
+    "photos": {
       "hires": "Alta resolução"
     },
-    "mapillary_images": {
-      "tooltip": "Fotos ao nível de rua do Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Elementos do mapa",
-      "tooltip": "Elementos do mapa do Mapillary",
-      "construction": {
-        "barrier": {
-          "temporary": "barreira temporária"
-        },
-        "flat": {
-          "crosswalk_plain": "Passadeira sem marcas",
-          "driveway": "estrada de serviço"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "marcação de via - seta (esquerda)",
-            "right": "marcação de via - seta (direita)",
-            "split_left_or_straight": "marcação de via - seta (esquerda/frente)",
-            "split_right_or_straight": "marcação de via - seta (direita/frente)",
-            "straight": "marcação de via - seta (frente)"
-          },
-          "crosswalk_zebra": "marcação de via - passadeira",
-          "give_way_row": "marcação de via - cedência de passagem (fila)",
-          "give_way_single": "marcação de via - cedência de passagem (simples)",
-          "other_marking": "marcação de via - outro",
-          "stop_line": "marcação de via - linha de stop",
-          "symbol": {
-            "bicycle": "marcação de via - símbolo (bicicleta)"
-          },
-          "text": "marcação de via - texto"
-        }
-      },
-      "object": {
-        "banner": "Faixa publicitária",
-        "bench": "Banco de sentar",
-        "bike_rack": "Suporte para bicicleta",
-        "billboard": "Painel publicitário",
-        "catch_basin": "Sarjeta",
-        "cctv_camera": "Câmara de vigilância",
-        "fire_hydrant": "Boca de incêndio",
-        "junction_box": "caixa de intesecção",
-        "mailbox": "Caixa de correio",
-        "manhole": "Caixa de visita",
-        "parking_meter": "parquímetro",
-        "phone_booth": "Cabina telefónica",
-        "sign": {
-          "advertisement": "Publicidade",
-          "information": "Sinal de informação",
-          "other": "outro sinal",
-          "store": "Sinal de loja",
-          "traffic_sign": {
-            "back": "sinal de trânsito - traseira",
-            "direction_front": "sinal de trânsito - frente",
-            "front": "sinal de trânsito - frente"
-          }
-        },
-        "street_light": "Poste de iluminação",
-        "support": {
-          "pole": "poste",
-          "traffic_sign_frame": "estrutura de sinal de trânsito",
-          "utility_pole": "Poste utilitário"
-        },
-        "traffic_cone": "Cone de trânsito",
-        "traffic_light": {
-          "cyclists": "Semáforo para ciclistas",
-          "general_horizontal": "Semáforo horizontal",
-          "general_single": "Semáforo solitário",
-          "general_upright": "Semáforo vertical",
-          "other": "Semáforo",
-          "pedestrians": "Semáforo para peões"
-        },
-        "trash_can": "Caixote de lixo",
-        "water_valve": "válvula de água"
-      }
+    "streetside": {
+      "title": "Fotos ao nível de rua do Bing",
+      "tooltip": "Fotos ao nível de rua da Microsoft"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "Sinais de trânsito do Mapillary"
-      },
-      "view_on_mapillary": "Ver esta imagem no Mapillary"
+      "tooltip": "Fotos ao nível de rua do Mapillary"
     },
-    "kartaview_images": {
-      "tooltip": "Fotos ao nível de rua da KartaView"
+    "mapillary_signs": {
+      "title": "Sinais de trânsito"
     },
     "kartaview": {
-      "view_on_kartaview": "Ver esta imagem no KartaView"
+      "tooltip": "Fotos ao nível de rua da KartaView"
     },
     "note": {
       "note": "Nota",
@@ -1886,7 +1757,6 @@
       },
       "notes": {
         "title": "Notas",
-        "intro": "As *notas* são usadas para alertar outros utilizadores de que um elemento precisa de correção ou atenção. As notas marcam uma localização específica no mapa. Para visualizares notas existentes ou adicionares novas notas, clica no painel {data_icon} **{map_data}** para ativar a camada de notas do OpenStreetMap.",
         "add_note_h": "Adicionar notas",
         "add_note": "Para adicionares uma nova nota, clica no botão  {note_icon} **{note}** na barra de ferramentas, acima do mapa, ou pressiona na tecla de atalho `{add_note_key}`.",
         "update_note_h": "Concluir, reabrir e comentar",
@@ -1923,9 +1793,7 @@
         "title": "Controlo de Qualidade",
         "intro": "As ferramentas de *Controlo de Qualidade* podem detetar etiquetas erradas, estradas desligadas e outros problemas com o OpenStreetMap, os quais os mapeadores podem corrigir. Para veres os problemas existentes, clica no painel {data_icon} **{map_data}** para ativar uma camada específica de Controlo de Qualidade.",
         "tools_h": "Ferramentas",
-        "tools": "As ferramentas seguintes são suportadas: [KeepRight](https://www.keepright.at/), [ImproveOSM](https://improveosm.org/en/) e [Osmose](https://osmose.openstreetmap.fr/).",
-        "issues_h": "Gerir problemas",
-        "issues": "A gestão de problemas de Controlo de Qualidade é semelhante à gestão de notas. Seleciona um marcador para veres os detalhes do problema no painel lateral. Cada ferramenta tem as suas próprias funcionalidades, mas, geralmente, podes comentar e/ou fechar um problema."
+        "issues_h": "Gerir problemas"
       },
       "field": {
         "restrictions": {
@@ -2691,7 +2559,6 @@
           "map_data": "Ativar camada de dados do mapa",
           "issues": "Ativar camada de validação de erros",
           "preferences": "Mostrar/ocultar a aba de preferências",
-          "sidebar": "Ativar painel lateral",
           "wireframe": "Ativar modo linhas",
           "osm_data": "Ativar dados do OpenStreetMap",
           "highlight_edits": "Destacar edições por guardar"

@@ -33,22 +33,6 @@
     "save": {
       "unknown_error_details": "Please ensure you are connected to the Internet."
     },
-    "mapillary_map_features": {
-      "construction": {
-        "flat": {
-          "crosswalk_plain": "plain pedestrian crossing"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "crosswalk_zebra": "lane marking - pedestrian crossing"
-        }
-      },
-      "object": {
-        "mailbox": "post box",
-        "trash_can": "rubbish bin"
-      }
-    },
     "help": {
       "lines": {
         "intro": "*Lines* are used to represent features such as roads, railways, and rivers. Lines should be drawn down the centre of the feature that they represent."

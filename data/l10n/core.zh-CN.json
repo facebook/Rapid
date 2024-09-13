@@ -36,7 +36,6 @@
       },
       "add_note": {
         "title": "注记",
-        "label": "添加注记",
         "description": "发现有问题的地方？告知其他绘图者。"
       },
       "add_preset": {
@@ -605,9 +604,6 @@
     "loading_auth": "正在连接 OpenStreetMap...",
     "report_a_bug": "反馈 BUG",
     "help_translate": "帮助翻译",
-    "sidebar": {
-      "tooltip": "切换侧边栏。"
-    },
     "feature_info": {
       "hidden_warning": "{count} 个隐藏要素"
     },
@@ -736,8 +732,9 @@
         "zoom": "{features} 已隐藏。请放大地图以启用它们。"
       },
       "back_tooltip": "更改要素类型",
+      "type": "类型",
+      "details": "详情",
       "feature_list": "搜索要素",
-      "edit_features": "编辑要素",
       "check": {
         "yes": "是",
         "no": "否",
@@ -745,7 +742,6 @@
       },
       "radio": {
         "structure": {
-          "type": "类型",
           "default": "默认值",
           "layer": "图层"
         }
@@ -821,10 +817,6 @@
           "tooltip": "由 keepright.at 检测到的数据问题",
           "title": "KeepRight 问题"
         },
-        "improveOSM": {
-          "tooltip": "由 improveosm.org 检测到的缺失数据",
-          "title": "ImproveOSM 问题"
-        },
         "osmose": {
           "tooltip": "由 osmose.openstreetmap.fr 检测到的数据问题",
           "title": "Osmose 问题"
@@ -856,9 +848,6 @@
     },
     "photo_overlays": {
       "title": "照片叠加层",
-      "traffic_signs": {
-        "title": "交通标志"
-      },
       "photo_type": {
         "flat": {
           "title": "平面照片",
@@ -1112,40 +1101,6 @@
         "elems_title": "要素",
         "fix_title": "修复指导",
         "trap_title": "常见错误"
-      },
-      "improveOSM": {
-        "title": "ImproveOSM 检测",
-        "geometry_types": {
-          "path": "小路",
-          "parking": "停车位",
-          "road": "道路",
-          "both": "道路和停车位"
-        },
-        "directions": {
-          "east": "东",
-          "north": "北",
-          "northeast": "东北",
-          "northwest": "西北",
-          "south": "南",
-          "southeast": "东南",
-          "southwest": "西南",
-          "west": "西"
-        },
-        "error_types": {
-          "ow": {
-            "title": "缺少单行线",
-            "description": "在 {highway} 中该路段的 {num_trips} 个旅行记录中，有 {percentage}% 从 {from_node} 移动至 {to_node}，所以这里可能缺少一个单行线标签。"
-          },
-          "mr": {
-            "title": "缺少几何形状",
-            "description": "在该区域的 {num_trips} 个旅行记录表明此处可能有 {geometry_type} 未被绘制。",
-            "description_alt": "来自第三方的数据表明此处可能有 {geometry_type} 未被绘制。"
-          },
-          "tr": {
-            "title": "缺少转向限制",
-            "description": "{num_trips} 个朝{travel_direction}方向的旅行记录中的 {num_passed} 个在 {junction} 处从 {from_way} 转向至 {to_way}，所以这里可能缺少一个 \"{turn_restriction}\" 限制。"
-          }
-        }
       },
       "keepRight": {
         "comment": "评论",
@@ -1460,102 +1415,21 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "来自微软公司的街景照片",
-      "title": "必应 Streetside",
-      "report": "报告该图像的隐私问题",
-      "view_on_bing": "在必应地图上查看",
+    "photos": {
       "hires": "高分辨率"
     },
-    "mapillary_images": {
-      "tooltip": "来自Mapillary的街景照片"
-    },
-    "mapillary_map_features": {
-      "title": "地图要素",
-      "tooltip": "来自 Mapillary 的地图要素",
-      "construction": {
-        "barrier": {
-          "temporary": "临时屏障"
-        },
-        "flat": {
-          "crosswalk_plain": "普通人行横道",
-          "driveway": "车道"
-        }
-      },
-      "marking": {
-        "discrete": {
-          "arrow": {
-            "left": "道路标线 - 箭头（左转）",
-            "right": "道路标线 - 箭头（右转）",
-            "split_left_or_straight": "道路标线 - 箭头（左转或直行）",
-            "split_right_or_straight": "道路标线 - 箭头（右转或直行）",
-            "straight": "道路标线 - 箭头（直行）"
-          },
-          "crosswalk_zebra": "道路标线 - 人行横道",
-          "give_way_row": "道路标线 - give way (row)",
-          "give_way_single": "道路标线 - give way (single)",
-          "other_marking": "道路标线 - 其他",
-          "stop_line": "道路标线 - 停车线",
-          "symbol": {
-            "bicycle": "道路标线 - 符号（自行车）"
-          },
-          "text": "道路标线 - 文字"
-        }
-      },
-      "object": {
-        "banner": "横幅",
-        "bench": "长凳",
-        "bike_rack": "自行车架",
-        "billboard": "广告牌",
-        "catch_basin": "雨水渠",
-        "cctv_camera": "闭路电视摄像机",
-        "fire_hydrant": "消防栓",
-        "junction_box": "接线盒",
-        "mailbox": "信箱",
-        "manhole": "人孔",
-        "parking_meter": "停车收费表",
-        "phone_booth": "电话亭",
-        "sign": {
-          "advertisement": "广告牌",
-          "information": "信息栏",
-          "other": "其他标志",
-          "store": "商店招牌",
-          "traffic_sign": {
-            "back": "交通标志 - 掉头",
-            "direction_front": "交通标志 - 前",
-            "front": "交通标志 - 前"
-          }
-        },
-        "street_light": "路灯",
-        "support": {
-          "pole": "旗杆",
-          "traffic_sign_frame": "交通标志框架",
-          "utility_pole": "电线杆"
-        },
-        "traffic_cone": "交通锥",
-        "traffic_light": {
-          "cyclists": "自行车交通信号灯",
-          "general_horizontal": "水平交通信号灯",
-          "general_single": "单头交通信号灯",
-          "general_upright": "垂直交通信号灯",
-          "other": "交通信号灯",
-          "pedestrians": "行人交通信号灯"
-        },
-        "trash_can": "垃圾桶",
-        "water_valve": "水阀"
-      }
+    "streetside": {
+      "title": "必应 Streetside",
+      "tooltip": "来自微软公司的街景照片"
     },
     "mapillary": {
-      "signs": {
-        "tooltip": "来自 Mapillary 的交通标志"
-      },
-      "view_on_mapillary": "在Mapillary上查看这张图片"
+      "tooltip": "来自Mapillary的街景照片"
     },
-    "kartaview_images": {
-      "tooltip": "来自KartaView的街景照片"
+    "mapillary_signs": {
+      "title": "交通标志"
     },
     "kartaview": {
-      "view_on_kartaview": "在KartaView上查看这张图片"
+      "tooltip": "来自KartaView的街景照片"
     },
     "note": {
       "note": "注记",
@@ -1709,7 +1583,6 @@
       },
       "notes": {
         "title": "注记",
-        "intro": "*注记*用于警告其他用户此处有地图要素需要更正或注意。注记会标记示于地图上的特定位置。要查看现有注记或添加新注记，请打开{data_icon} ** {map_data} **面板并启用{osm_notes}图层。",
         "add_note_h": "添加注记",
         "add_note": "要添加新注记，请点击地图上方工具栏上的{note_icon} ** {note} **按钮，或按快捷键“ {add_note_key}”。",
         "update_note_h": "关闭、重启和评论",
@@ -1746,9 +1619,7 @@
         "title": "质量保证",
         "intro": "*质量保证* (Quality Assurance, Q/A) 工具可以发现错误的标签、断头路以及 OpenStreetMap 的其他问题，然后用户可以修复这些问题。 查看现有的质量问题，请打开 {data_icon} **{map_data}** 面板并，在这里可以启用特定的质量保证图层。",
         "tools_h": "工具",
-        "tools": "目前支持以下工具：[KeepRight](https://www.keepright.at/)、[ImproveOSM](https://improveosm.org/en/) 和 [Osmose](https://osmose.openstreetmap.fr/)。",
-        "issues_h": "处理问题",
-        "issues": "处理 Q/A 问题与处理笔记相似。点选其中一个标记，然后在侧边栏中查看问题详情。每个工具都有自己的功能，但通常您可以评论和/或关闭问题。"
+        "issues_h": "处理问题"
       },
       "field": {
         "restrictions": {
@@ -2497,7 +2368,6 @@
           "map_data": "切换地图数据面板",
           "issues": "切换验证问题面板",
           "preferences": "切换用户偏好设置面板",
-          "sidebar": "切换侧边栏",
           "wireframe": "切换线框模式",
           "osm_data": "切换 OpenStreetMap 数据",
           "highlight_edits": "高亮未保存的编辑"

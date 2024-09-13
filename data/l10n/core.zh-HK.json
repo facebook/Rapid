@@ -43,7 +43,6 @@
       },
       "add_note": {
         "title": "註",
-        "label": "新增備註",
         "description": "發現了問題？讓其他製圖者知道。"
       },
       "add_preset": {
@@ -345,9 +344,6 @@
     "loading_auth": "正在連接 OpenStreetMap...",
     "report_a_bug": "報告錯誤",
     "help_translate": "協助翻譯",
-    "sidebar": {
-      "tooltip": "切換側邊欄。"
-    },
     "osm_api_status": {
       "retry": "重試"
     },
@@ -447,12 +443,12 @@
       "wiki_en_reference": "查看英文版文件",
       "multiple_values": "多重值",
       "multiple_types": "多重種類",
+      "type": "種類",
+      "details": "詳細資料",
       "remove": "移除",
       "search": "搜尋",
       "incomplete": "<未下載>",
       "feature_list": "搜尋特徵",
-      "edit": "編輯特徵",
-      "edit_features": "編輯特徵",
       "check": {
         "yes": "是",
         "no": "否",
@@ -460,7 +456,6 @@
       },
       "radio": {
         "structure": {
-          "type": "種類",
           "default": "預設",
           "layer": "圖層"
         }
@@ -520,9 +515,6 @@
       "autohidden": "由於太多東西出現在螢幕上，這些特徵已被自動隱藏。你可以放大來編輯它們。"
     },
     "photo_overlays": {
-      "traffic_signs": {
-        "title": "交通標誌"
-      },
       "photo_type": {
         "panoramic": {
           "tooltip": "360° 相片"
@@ -703,32 +695,6 @@
         "detail_title": "詳細資料",
         "elems_title": "特徵"
       },
-      "improveOSM": {
-        "geometry_types": {
-          "path": "路徑",
-          "parking": "泊位",
-          "road": "道路",
-          "both": "道路和泊位"
-        },
-        "directions": {
-          "east": "東",
-          "north": "北",
-          "northeast": "東北",
-          "northwest": "西北",
-          "south": "南",
-          "southeast": "東南",
-          "southwest": "西南",
-          "west": "西"
-        },
-        "error_types": {
-          "ow": {
-            "title": "遺失的單程路"
-          },
-          "mr": {
-            "title": "遺失幾何性質"
-          }
-        }
-      },
       "keepRight": {
         "comment": "留言",
         "save_comment": "儲存留言",
@@ -762,33 +728,11 @@
         }
       }
     },
-    "mapillary_images": {
+    "mapillary": {
       "tooltip": "來自Mapillary的街道圖層相片"
     },
-    "mapillary_map_features": {
-      "title": "地圖特徵",
-      "object": {
-        "sign": {
-          "other": "其他標誌",
-          "store": "商店標誌",
-          "traffic_sign": {
-            "back": "交通號誌 - 後",
-            "direction_front": "交通號誌 - 前",
-            "front": "交通號誌 - 前"
-          }
-        },
-        "support": {
-          "pole": "旗桿"
-        },
-        "traffic_light": {
-          "other": "交通燈"
-        },
-        "trash_can": "垃圾桶",
-        "water_valve": "水閥"
-      }
-    },
-    "mapillary": {
-      "view_on_mapillary": "在Mapillary上觀看這影像"
+    "mapillary_signs": {
+      "title": "交通標誌"
     },
     "note": {
       "note": "註",

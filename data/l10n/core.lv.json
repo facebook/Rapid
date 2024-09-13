@@ -31,7 +31,6 @@
       },
       "add_note": {
         "title": "Piezīme",
-        "label": "Pievienot piezīmi",
         "description": "Atradi kļūdu? Pabrīdini citus kartētājus par to."
       },
       "add_preset": {
@@ -290,7 +289,6 @@
         "description": "Apraksts",
         "resolution": "Izšķirtspēja",
         "accuracy": "Precizitāte",
-        "unknown": "Nezināms",
         "show_tiles": "Rādīt Kvadrātus",
         "hide_tiles": "Paslēpt Kvadrātus"
       },
@@ -301,7 +299,6 @@
         "last_edit": "Pēdējais labojums",
         "edited_by": "Laboja",
         "changeset": "Izmaiņas",
-        "unknown": "Nezināms",
         "note_no_history": "Nav vēstures (Jauna piezīme)",
         "note_comments": "Komentāri",
         "note_created_date": "Izveidošanas datums",
@@ -347,19 +344,19 @@
       "new_relation": "Jauna relācija...",
       "role": "Loma",
       "choose": "Izvēlieties objekta tipu",
+      "type": "Tips",
+      "details": "Detaļas",
       "remove": "Noņemt ",
       "search": "Meklēt",
       "unknown": "Nezināms",
       "incomplete": "<nav lejuplādēts>",
       "feature_list": "Meklēt objektus",
-      "edit": "Rediģēt objektu",
       "check": {
         "yes": "Jā",
         "no": "Nē"
       },
       "radio": {
         "structure": {
-          "type": "Tips",
           "default": "Noklusējuma",
           "layer": "Slānis"
         }
@@ -611,60 +608,14 @@
         }
       }
     },
-    "streetside": {
-      "tooltip": "Ielas līmeņa attēli no Microsoft",
-      "view_on_bing": "Skatīt Bing kartēs",
+    "photos": {
       "hires": "Augsta izšķirtspēja"
     },
-    "mapillary_images": {
-      "tooltip": "Ielas līmeņa attēli no Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Kartes Objekti",
-      "construction": {
-        "flat": {
-          "crosswalk_plain": "parasta pāreja",
-          "driveway": "piebraucamais ceļš"
-        }
-      },
-      "object": {
-        "bench": "sols",
-        "bike_rack": "divriteņu novietne",
-        "billboard": "reklāmas dēlis",
-        "catch_basin": "sateces baseins",
-        "cctv_camera": "videonovērošanas kamera",
-        "fire_hydrant": "ugunsdzēsības hidrants",
-        "mailbox": "pastkaste",
-        "parking_meter": "stāvvietas skaitītājs",
-        "phone_booth": "tālruņa būdiņa",
-        "sign": {
-          "advertisement": "reklāmas afiša",
-          "information": "informatīva zīme",
-          "other": "cita veida zīme",
-          "store": "veikala izkārtne",
-          "traffic_sign": {
-            "back": "ceļa zīme - aizmugure",
-            "direction_front": "ceļa zīme - priekšpuse",
-            "front": "ceļa zīme - priekšpuse"
-          }
-        },
-        "support": {
-          "pole": "stabs",
-          "traffic_sign_frame": "ceļa zīmes rāmis"
-        },
-        "traffic_cone": "ceļa konuss",
-        "traffic_light": {
-          "cyclists": "riteņbraucēju luksofors",
-          "general_horizontal": "līmenisks luksofors",
-          "general_upright": "garenisks luksofors",
-          "other": "luksofors",
-          "pedestrians": "gājēju luksofors"
-        },
-        "trash_can": "atkritumu urna"
-      }
+    "streetside": {
+      "tooltip": "Ielas līmeņa attēli no Microsoft"
     },
     "mapillary": {
-      "view_on_mapillary": "Skatīt šo attēlu Mapillary"
+      "tooltip": "Ielas līmeņa attēli no Mapillary"
     },
     "note": {
       "note": "Piezīme",

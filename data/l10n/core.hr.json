@@ -24,7 +24,6 @@
       },
       "add_note": {
         "title": "Bilješka",
-        "label": "Dodaj bilješku",
         "description": "Primijetio/la si grešku? Obavijesti druge doprinositelje.",
         "key": "S"
       },
@@ -277,7 +276,6 @@
         "description": "Opis",
         "resolution": "Rezolucija",
         "accuracy": "Preciznost",
-        "unknown": "Nepoznato",
         "show_tiles": "Prikaži sličice",
         "hide_tiles": "Sakrij sličice"
       },
@@ -288,7 +286,6 @@
         "last_edit": "Posljednje uređivanje",
         "edited_by": "Uređeno od",
         "changeset": "Promjena",
-        "unknown": "Nepoznat",
         "note_comments": "Komentari"
       },
       "location": {
@@ -336,12 +333,13 @@
       "new_relation": "Nova relacija...",
       "role": "Uloga",
       "choose": "Odaberi vrstu elementa",
+      "type": "Vrsta",
+      "details": "Detalji",
       "remove": "Ukloni",
       "search": "Pretraži",
       "unknown": "Nepoznato",
       "incomplete": "<nije preuzeto>",
       "feature_list": "Traži elemente karte",
-      "edit": "Uredi element karte",
       "check": {
         "yes": "Da",
         "no": "Ne",
@@ -349,7 +347,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Vrsta",
           "default": "Predefinirano",
           "layer": "Sloj"
         }
@@ -389,6 +386,9 @@
       "layers": {
         "osm": {
           "tooltip": "Podaci karte sa OpenStreetMapa"
+        },
+        "notes": {
+          "key": "S"
         },
         "maproulette": {
           "detail_title": "Detalji",
@@ -547,23 +547,14 @@
         "close_comment": "Zatvori i dodaj komentar"
       }
     },
-    "streetside": {
-      "tooltip": "Ulične fotografije od Microsofta",
-      "report": "Prijavi problem sa privatnosti na ovoj slici",
-      "view_on_bing": "Pogledaj na Bing Maps karti",
+    "photos": {
       "hires": "Visoka rezolucija"
     },
-    "mapillary_images": {
-      "tooltip": "Ulične fotografije s Mapillary servisa"
-    },
-    "mapillary_map_features": {
-      "title": "Elementi karte",
-      "object": {
-        "trash_can": "kanta za smeće"
-      }
+    "streetside": {
+      "tooltip": "Ulične fotografije od Microsofta"
     },
     "mapillary": {
-      "view_on_mapillary": "Pogledaj ovu sliku na Mapillary"
+      "tooltip": "Ulične fotografije s Mapillary servisa"
     },
     "note": {
       "note": "Bilješka",

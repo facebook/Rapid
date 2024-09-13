@@ -114,11 +114,7 @@
     "info_panels": {
       "background": {
         "title": "背景",
-        "description": "描述",
-        "unknown": "未知"
-      },
-      "history": {
-        "unknown": "未知"
+        "description": "描述"
       },
       "measurement": {
         "area": "面"
@@ -135,8 +131,7 @@
       "remove": "删除",
       "search": "搜索",
       "unknown": "未知",
-      "incomplete": "<没有下载>",
-      "edit": "编辑要素"
+      "incomplete": "<没有下载>"
     },
     "background": {
       "title": "背景",

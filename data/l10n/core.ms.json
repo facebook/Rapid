@@ -19,7 +19,6 @@
       },
       "add_note": {
         "title": "Nota",
-        "label": "Tambah Nota",
         "description": "Ada sebarang masalah? Maklumkan terhadap pemeta-pemeta lain.",
         "key": "U"
       },
@@ -228,7 +227,6 @@
         "title": "Latar belakang",
         "vintage": "Vintaj",
         "description": "Perincian",
-        "unknown": "Tidak Diketahui",
         "show_tiles": "Tunjukkan Jubin",
         "hide_tiles": "Sembunyikan Jubin"
       },
@@ -238,7 +236,6 @@
         "last_edit": "Pengeditan Terakhir",
         "edited_by": "Diedit Oleh",
         "changeset": "Perubahan",
-        "unknown": "Tidak Diketahui",
         "note_comments": "Komen-komen"
       },
       "location": {
@@ -280,11 +277,12 @@
       "new_relation": "Hubungan baru...",
       "role": "Peranan",
       "choose": "Pilih jenis ciri",
+      "type": "Jenis",
+      "details": "Butiran",
       "remove": "Keluarkan",
       "search": "Gelintar",
       "unknown": "Tidak Diketahui",
       "feature_list": "Cari ciri",
-      "edit": "Edit ciri",
       "check": {
         "yes": "Ya",
         "no": "Tidak",
@@ -292,7 +290,6 @@
       },
       "radio": {
         "structure": {
-          "type": "Jenis",
           "default": "Lalai",
           "layer": "Lapisan"
         }
@@ -324,6 +321,9 @@
       "layers": {
         "osm": {
           "tooltip": "Data peta dari OpenStreetMap"
+        },
+        "notes": {
+          "key": "U"
         },
         "maproulette": {
           "detail_title": "Butiran",
@@ -473,24 +473,13 @@
       "osmose": {
         "detail_title": "Butiran"
       },
-      "improveOSM": {
-        "directions": {
-          "east": "timur"
-        }
-      },
       "keepRight": {
         "detail_description": "Perincian",
         "comment": "Ulasan"
       }
     },
-    "mapillary_images": {
-      "tooltip": "Gambar jalan dari Mapillary"
-    },
-    "mapillary_map_features": {
-      "title": "Ciri-ciri Peta"
-    },
     "mapillary": {
-      "view_on_mapillary": "Paparkan imej ini dalam Mapillary"
+      "tooltip": "Gambar jalan dari Mapillary"
     },
     "note": {
       "note": "Nota",
