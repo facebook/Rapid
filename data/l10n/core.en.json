@@ -923,8 +923,7 @@
       "unknown": "Unknown",
       "incomplete": "<not downloaded>",
       "feature_list": "Search features",
-      "edit": "Edit feature",
-      "edit_features": "Edit features",
+      "multiselect": "Multiple Selection",
       "check": {
         "yes": "Yes",
         "no": "No",
@@ -1033,6 +1032,7 @@
         "osm": {
           "tooltip": "Map data from OpenStreetMap",
           "title": "OpenStreetMap Data",
+          "feature": "OpenStreetMap Feature",
           "key": "O"
         },
         "notes": {
@@ -1401,7 +1401,6 @@
       "lose_changes": "You have unsaved changes. Switching the map server will discard them. Are you sure you want to switch servers?",
       "dev": "dev"
     },
-    "rapid_multiselect": "Multiple Selection",
     "rapid_splash": {
       "welcome": "Introducing AI-assisted mapping!",
       "text": "Select the {rapidicon} option to start the Rapid walkthrough. If you're new to OSM and haven't mapped before, select the first {walkthrough} option. Finally, click the last {edit} option if you want to get straight to mapping. You can always access the walkthrough later from the help menu.",

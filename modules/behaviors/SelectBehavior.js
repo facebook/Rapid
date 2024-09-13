@@ -16,7 +16,7 @@ const FAR_TOLERANCE = 12;
  * Properties available:
  *   `enabled`      `true` if the event handlers are enabled, `false` if not.
  *   `lastDown`     `eventData` Object for the most recent down event
- *   `lastUp`     `eventData` Object for the most recent up event (to detect dbl clicks)
+ *   `lastUp`       `eventData` Object for the most recent up event (to detect dbl clicks)
  *   `lastMove`     `eventData` Object for the most recent move event
  *   `lastSpace`    `eventData` Object for the most recent move event used to trigger a spacebar click
  *   `lastClick`    `eventData` Object for the most recent click event

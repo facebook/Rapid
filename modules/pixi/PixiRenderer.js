@@ -66,7 +66,6 @@ export class PixiRenderer extends EventEmitter {
 
     // Make sure callbacks have `this` bound correctly
     this._tick = this._tick.bind(this);
-    this._onHoverChange = this._onHoverChange.bind(this);
 
     // Disable mipmapping, we always want textures near the resolution they are at.
     PIXI.BaseTexture.defaultOptions.mipmap = PIXI.MIPMAP_MODES.OFF;
@@ -163,41 +162,6 @@ export class PixiRenderer extends EventEmitter {
       _sharedTextures = new PixiTextures(context);
     }
     this.textures = _sharedTextures;
-
-    // Event listeners to respond to any changes in selection or hover
-    context.behaviors.hover.on('hoverchange', this._onHoverChange);
-  }
-
-
-  /**
-   * _onHoverChange
-   * Respond to any change in hover
-   */
-  _onHoverChange(eventData) {
-    const context = this.context;
-    const scene = this.scene;
-    const ui = context.systems.ui;
-
-    const target = eventData.target;
-    const layer = target?.layer;
-    const dataID = target?.dataID;
-
-    const hoverData = target?.data;
-    const modeID = context.mode?.id;
-    if (modeID !== 'select' && modeID !== 'select-osm') {
-      ui.sidebar.hover(hoverData ? [hoverData] : []);
-    }
-
-    scene.clearClass('hover');
-    if (layer && dataID) {
-      // Only set hover class if this target isn't currently drawing
-      const drawingIDs = layer.getDataWithClass('drawing');
-      if (!drawingIDs.has(dataID)) {
-        layer.setClass('hover', dataID);
-      }
-    }
-
-    this.render();
   }
 
 

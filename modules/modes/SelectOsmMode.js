@@ -134,8 +134,7 @@ export class SelectOsmMode extends AbstractMode {
     editor.on('merge', this._merge);
     hover.on('hoverchange', this._hover);
 
-    ui.sidebar
-      .select(entityIDs, this._newFeature);
+    ui.sidebar.showInspector(entityIDs, this._newFeature);
 
     return true;
   }

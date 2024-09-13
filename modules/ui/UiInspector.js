@@ -110,12 +110,9 @@ export class UiInspector {
 
     const $$inspector = $inspector.enter()
       .append('div')
-      .attr('class', 'inspector-wrap inspector-hidden');
+      .attr('class', 'inspector-wrap inspector-hidden');   // UiSidebar will manage its visibility
 
     this.$inspector = $inspector = $inspector.merge($$inspector);
-
-    $inspector
-      .classed('inspector-hidden', !entityIDs.length);
 
 
     // add .panewrap

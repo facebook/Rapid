@@ -19,7 +19,7 @@ export { uiDisclosure } from './disclosure.js';
 export { uiEditMenu } from './edit_menu.js';
 export { uiEntityEditor } from './entity_editor.js';
 export { uiFeatureInfo } from './feature_info.js';
-export { uiFeatureList } from './feature_list.js';
+export { UiFeatureList } from './UiFeatureList.js';
 export { UiField } from './UiField.js';
 // export { uiFieldHelp } from './field_help.js';
 export { uiFlash } from './flash.js';

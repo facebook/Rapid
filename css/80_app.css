@@ -848,7 +848,7 @@ a.hide-toggle {
   position: relative;
 }
 
-.feature-list-pane {
+.feature-list-wrap {
   display: flex;
   flex: 1 0 0px;
   flex-flow: column nowrap;
