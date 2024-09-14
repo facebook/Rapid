@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "version": "2.4.1",
+    "generated": "2024-09-14T18:32:53.419Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.skr.json",
+    "hash": "25c9bdf0d2582e8c6c3646302f069a16"
+  },
+  "skr": {
+    "icons": {
+      "download": "ڈاؤن لوڈ",
+      "information": "ڄاݨکاری",
+      "remove": "ہٹاؤ",
+      "list": "تندیر"
+    },
+    "toolbar": {
+      "recent": "حالیہ"
+    },
+    "modes": {
+      "add_point": {
+        "title": "نقطہ"
+      },
+      "add_note": {
+        "title": "نوٹ"
+      },
+      "browse": {
+        "title": "براؤز کرو"
+      }
+    },
+    "note": {
+      "note": "نوٹ"
+    },
+    "languageNames": {
+      "skr": "سرائیکی"
+    }
+  }
+}

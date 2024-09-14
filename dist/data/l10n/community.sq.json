@@ -1,0 +1,19 @@
+{
+  "_meta": {
+    "version": "2.4.1",
+    "generated": "2024-09-14T18:32:53.528Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.sq.json",
+    "hash": "eb9bfcc1f249d695f5502e038ca379c2"
+  },
+  "sq": {
+    "cape-coast-youthmappers": {
+      "description": "Na ndiqni në Twitter: {url}"
+    },
+    "OSM-India-facebook": {
+      "description": "Përmirësoni OpenStreetMap në Indi"
+    },
+    "OSMF": {
+      "name": "Fondacioni OpenStreetMap"
+    }
+  }
+}
