@@ -1,6 +1,6 @@
 {
   "name": "@rapideditor/rapid",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "An AI-enhanced editor for OpenStreetMap",
   "repository": "github:facebook/Rapid",
   "homepage": "https://rapideditor.org",
@@ -12,6 +12,7 @@
   "license": "ISC",
   "type": "module",
   "main": "dist/rapid.min.js",
+  "files": [ "dist/" ],
   "scripts": {
     "all": "run-s clean build dist",
     "benchmark": "run-p start:server test:benchmark",
