@@ -39,6 +39,13 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [2.4.2](https://github.com/facebook/Rapid/releases/tag/rapid-v2.4.2)
+#### 2024-Sep-16
+
+#### :hammer: Development
+* [#1561] Reduce package size for JSDelivr CDN: exclude `/dist/data/modules`
+
+
 # [2.4.1](https://github.com/facebook/Rapid/releases/tag/rapid-v2.4.1)
 #### 2024-Sep-14
 
