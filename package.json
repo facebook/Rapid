@@ -12,7 +12,10 @@
   "license": "ISC",
   "type": "module",
   "main": "dist/rapid.min.js",
-  "files": [ "dist/" ],
+  "files": [
+    "dist",
+    "!dist/data/modules"
+  ],
   "scripts": {
     "all": "run-s clean build dist",
     "benchmark": "run-p start:server test:benchmark",
