@@ -101,6 +101,21 @@ git checkout release
 aws s3 cp dist <destination>
 ```
 
+
+### Purge cache
+
+```bash
+curl 'https://purge.jsdelivr.net/npm/@rapideditor/rapid/dist/rapid.css'
+curl 'https://purge.jsdelivr.net/npm/@rapideditor/rapid/dist/rapid.js'
+curl 'https://purge.jsdelivr.net/npm/@rapideditor/rapid/dist/rapid.min.js'
+curl 'https://purge.jsdelivr.net/npm/@rapideditor/rapid@2.4/dist/rapid.css'
+curl 'https://purge.jsdelivr.net/npm/@rapideditor/rapid@2.4/dist/rapid.js'
+curl 'https://purge.jsdelivr.net/npm/@rapideditor/rapid@2.4/dist/rapid.min.js'
+curl 'https://purge.jsdelivr.net/npm/@rapideditor/rapid@2/dist/rapid.css'
+curl 'https://purge.jsdelivr.net/npm/@rapideditor/rapid@2/dist/rapid.js'
+curl 'https://purge.jsdelivr.net/npm/@rapideditor/rapid@2/dist/rapid.min.js'
+```
+
 ### Notify Partners
 
 Notify anyone who uses Rapid that there is a new release.
