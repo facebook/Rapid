@@ -20,57 +20,17 @@ export class AssetSystem extends AbstractSystem {
     this.id = 'assets';
     this.dependencies = new Set();
 
+    //
     // Rapid's asset map contains all of the data files that we may need to load.
     // The data files are identified by keys, and are organized by origin.
-    //  'local' - will only load assets from the local folder.
     //  'latest' - may load latest assets from a CDN which match the expected semantic version
+    //  'local' - will only load assets from the local folder.
+    //
+    // Important: To use 'local', you'll need to have installed a version of Rapid
+    //   that has all of these dependencies copied into `/dist/data/modules/`.
+    // See https://github.com/rapideditor/rapid-standalone if this is what you need.
     //
     this.sources = {
-      local: {
-        'address_formats':           'data/address_formats.min.json',
-        'imagery':                   'data/imagery.min.json',
-        'intro_graph':               'data/intro_graph.min.json',
-        'intro_rapid_graph':         'data/intro_rapid_graph.min.json',
-        'languages':                 'data/languages.min.json',
-        'locales':                   'data/locales.min.json',
-        'phone_formats':             'data/phone_formats.min.json',
-        'qa_data':                   'data/qa_data.min.json',
-        'shortcuts':                 'data/shortcuts.min.json',
-        'tagging_preset_overrides':  'data/preset_overrides.min.json',
-        'territory_languages':       'data/territory_languages.min.json',
-        'wayback':                   'data/wayback.min.json',
-
-        'mapillary_js':   'data/modules/mapillary-js/mapillary.js',   // note no .min
-        'mapillary_css':  'data/modules/mapillary-js/mapillary.css',  // note no .min
-
-        'maplibre_js':   'data/modules/maplibre-gl/maplibre-gl.js',   // note no .min
-        'maplibre_css':  'data/modules/maplibre-gl/maplibre-gl.css',  // note no .min
-
-        'nsi_data':          'data/modules/name-suggestion-index/nsi.min.json',
-        'nsi_dissolved':     'data/modules/name-suggestion-index/dissolved.min.json',
-        'nsi_features':      'data/modules/name-suggestion-index/featureCollection.min.json',
-        'nsi_generics':      'data/modules/name-suggestion-index/genericWords.min.json',
-        'nsi_presets':       'data/modules/name-suggestion-index/presets/nsi-id-presets.min.json',
-        'nsi_replacements':  'data/modules/name-suggestion-index/replacements.min.json',
-        'nsi_trees':         'data/modules/name-suggestion-index/trees.min.json',
-
-        'oci_defaults':   'data/modules/osm-community-index/defaults.min.json',
-        'oci_features':   'data/modules/osm-community-index/featureCollection.min.json',
-        'oci_resources':  'data/modules/osm-community-index/resources.min.json',
-
-        'pannellum_js':   'data/modules/pannellum/pannellum.js',   // note no .min
-        'pannellum_css':  'data/modules/pannellum/pannellum.css',  // note no .min
-
-        'tagging_deprecated':         'data/modules/id-tagging-schema/deprecated.min.json',
-        'tagging_discarded':          'data/modules/id-tagging-schema/discarded.min.json',
-        'tagging_preset_categories':  'data/modules/id-tagging-schema/preset_categories.min.json',
-        'tagging_preset_defaults':    'data/modules/id-tagging-schema/preset_defaults.min.json',
-        'tagging_preset_fields':      'data/modules/id-tagging-schema/fields.min.json',
-        'tagging_preset_presets':     'data/modules/id-tagging-schema/presets.min.json',
-
-        'wmf_sitematrix':  'data/modules/wmf-sitematrix/wikipedia.min.json'
-      },
-
       latest: {
         'address_formats':           'data/address_formats.min.json',
         'imagery':                   'data/imagery.min.json',
@@ -114,6 +74,51 @@ export class AssetSystem extends AbstractSystem {
         'tagging_preset_presets':     'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/presets.min.json',
 
         'wmf_sitematrix':  'https://cdn.jsdelivr.net/npm/wmf-sitematrix@0.1/wikipedia.min.json'
+      },
+
+      local: {
+        'address_formats':           'data/address_formats.min.json',
+        'imagery':                   'data/imagery.min.json',
+        'intro_graph':               'data/intro_graph.min.json',
+        'intro_rapid_graph':         'data/intro_rapid_graph.min.json',
+        'languages':                 'data/languages.min.json',
+        'locales':                   'data/locales.min.json',
+        'phone_formats':             'data/phone_formats.min.json',
+        'qa_data':                   'data/qa_data.min.json',
+        'shortcuts':                 'data/shortcuts.min.json',
+        'tagging_preset_overrides':  'data/preset_overrides.min.json',
+        'territory_languages':       'data/territory_languages.min.json',
+        'wayback':                   'data/wayback.min.json',
+
+        'mapillary_js':   'data/modules/mapillary-js/mapillary.js',   // note no .min
+        'mapillary_css':  'data/modules/mapillary-js/mapillary.css',  // note no .min
+
+        'maplibre_js':   'data/modules/maplibre-gl/maplibre-gl.js',   // note no .min
+        'maplibre_css':  'data/modules/maplibre-gl/maplibre-gl.css',  // note no .min
+
+        'nsi_data':          'data/modules/name-suggestion-index/nsi.min.json',
+        'nsi_dissolved':     'data/modules/name-suggestion-index/dissolved.min.json',
+        'nsi_features':      'data/modules/name-suggestion-index/featureCollection.min.json',
+        'nsi_generics':      'data/modules/name-suggestion-index/genericWords.min.json',
+        'nsi_presets':       'data/modules/name-suggestion-index/presets/nsi-id-presets.min.json',
+        'nsi_replacements':  'data/modules/name-suggestion-index/replacements.min.json',
+        'nsi_trees':         'data/modules/name-suggestion-index/trees.min.json',
+
+        'oci_defaults':   'data/modules/osm-community-index/defaults.min.json',
+        'oci_features':   'data/modules/osm-community-index/featureCollection.min.json',
+        'oci_resources':  'data/modules/osm-community-index/resources.min.json',
+
+        'pannellum_js':   'data/modules/pannellum/pannellum.js',   // note no .min
+        'pannellum_css':  'data/modules/pannellum/pannellum.css',  // note no .min
+
+        'tagging_deprecated':         'data/modules/id-tagging-schema/deprecated.min.json',
+        'tagging_discarded':          'data/modules/id-tagging-schema/discarded.min.json',
+        'tagging_preset_categories':  'data/modules/id-tagging-schema/preset_categories.min.json',
+        'tagging_preset_defaults':    'data/modules/id-tagging-schema/preset_defaults.min.json',
+        'tagging_preset_fields':      'data/modules/id-tagging-schema/fields.min.json',
+        'tagging_preset_presets':     'data/modules/id-tagging-schema/presets.min.json',
+
+        'wmf_sitematrix':  'data/modules/wmf-sitematrix/wikipedia.min.json'
       }
     };
 

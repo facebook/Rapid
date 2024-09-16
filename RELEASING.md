@@ -51,7 +51,7 @@ git push origin main
 ```
 
 
-### Update and tag `release` branch
+### Update `release` branch
 
 The `release` branch checks in the contents of `/dist` too, this makes it suitable for deployment.
 It's basically a copy of `main` but with one additional commit appended to it.
@@ -67,7 +67,8 @@ git commit -m 'Check in build'
 git push origin -f release
 ```
 
-Sanity check:
+#### Sanity checks
+
 - At this point, our GitHub deploy action should notice that a commit was pushed to the release branch.
 - You can check the status of the action to see where the release got deployed:
   https://github.com/facebook/Rapid/actions/workflows/deploy.yml
@@ -75,6 +76,25 @@ Sanity check:
 - Test it!
 - If something looks wrong, you can still go back to `main` and push more commits, then remake the `release` branch as above.
 
+
+#### Dry run
+
+Confirm that publish will work, and that it won't be >150 MB.
+If it is too large, the JSDelivr CDN will not serve it.  See Rapid#1561
+
+```bash
+npm publish --dry-run
+```
+
+Typically you should see something like this:
+```
+npm notice package size: 24.5 MB
+npm notice unpacked size: 94.8 MB
+```
+(someday: can we automate this check?)
+
+
+#### Tag and Publish
 
 The point of no return, tag and publish:
 ```bash
@@ -115,6 +135,12 @@ curl 'https://purge.jsdelivr.net/npm/@rapideditor/rapid@2/dist/rapid.css'
 curl 'https://purge.jsdelivr.net/npm/@rapideditor/rapid@2/dist/rapid.js'
 curl 'https://purge.jsdelivr.net/npm/@rapideditor/rapid@2/dist/rapid.min.js'
 ```
+
+### Update rapid-standalone
+
+See https://github.com/rapideditor/rapid-standalone
+After publishing a new version of Rapid, you should also refresh and publish a new version of that project too.
+
 
 ### Notify Partners
 

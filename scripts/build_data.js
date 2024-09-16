@@ -85,10 +85,10 @@ function buildDataAsync() {
       ]);
 
       // Create target folders if necessary
-      if (!fs.existsSync('data/l10n'))          fs.mkdirSync('data/l10n', { recursive: true });
-      if (!fs.existsSync('data/modules'))       fs.mkdirSync('data/modules', { recursive: true });
-      if (!fs.existsSync('dist/data/l10n'))     fs.mkdirSync('dist/data/l10n', { recursive: true });
-      if (!fs.existsSync('dist/data/modules'))  fs.mkdirSync('dist/data/modules', { recursive: true });
+      shell.mkdir('-p', [
+        'data/l10n',
+        'dist/data/l10n'
+      ]);
 
       // Gather icons from various places that we need assembled into a spritesheet.
       // Start with icons we want to use in the UI that aren't tied to other data.
@@ -118,20 +118,17 @@ function buildDataAsync() {
       const languages = { languages: sortObject(CLDR.langNamesInNativeLang()) };
       fs.writeFileSync('data/languages.json', stringify(languages, { maxLength: 200 }) + '\n');
 
-      copyModuleData();
       writeEnJson();
 
       // copy `data/` files to `dist/data/` and stamp with metadata
-      // (skip module data, it's already copied and we don't want to modify it anyway)
-      for (const sourceFile of globSync('data/**/*.json', { ignore: 'data/modules/**' })) {
+      for (const sourceFile of globSync('data/**/*.json')) {
         const destinationFile = sourceFile.replace('data/', 'dist/data/');
         copyToDistSync(sourceFile, destinationFile);
       }
 
-      for (const file of globSync('dist/data/**/*.json', { ignore: 'dist/data/modules/**' })) {
+      for (const file of globSync('dist/data/**/*.json')) {
         minifySync(file);
       }
-
     })
     .then(() => {
       console.timeEnd(END);
@@ -214,70 +211,6 @@ function gatherTerritoryLanguages() {
   }
 
   return territoryLanguages;
-}
-
-
-// copyModuleData
-// Copies the data from various modules.  We distribute copies of these files
-// for situations where Rapid can not fetch the latest files from the CDN.
-function copyModuleData() {
-  try {
-    // id-tagging-schema
-    for (const file of ['deprecated', 'discarded', 'fields', 'preset_categories', 'preset_defaults', 'presets']) {
-      const source = `node_modules/@openstreetmap/id-tagging-schema/dist/${file}.min.json`;
-      const destination = `data/modules/id-tagging-schema/${file}.min.json`;
-      fs.cpSync(source, destination, { recursive: true });
-    }
-
-    // name-suggestion-index
-    for (const file of ['nsi', 'dissolved', 'featureCollection', 'genericWords', 'presets/nsi-id-presets', 'replacements', 'trees']) {
-      const source = `node_modules/name-suggestion-index/dist/${file}.min.json`;
-      const destination = `data/modules/name-suggestion-index/${file}.min.json`;
-      fs.cpSync(source, destination, { recursive: true });
-    }
-
-    // osm-community-index
-    for (const file of ['defaults', 'featureCollection', 'resources']) {
-      const source = `node_modules/osm-community-index/dist/${file}.min.json`;
-      const destination = `data/modules/osm-community-index/${file}.min.json`;
-      fs.cpSync(source, destination, { recursive: true });
-    }
-
-    // wmf-sitematrix
-    for (const file of ['wikipedia']) {
-      const source = `node_modules/wmf-sitematrix/${file}.min.json`;
-      const destination = `data/modules/wmf-sitematrix/${file}.min.json`;
-      fs.cpSync(source, destination, { recursive: true });
-    }
-
-    // mapillary-js
-    {
-      const source = 'node_modules/mapillary-js/dist';
-      const destination = 'data/modules/mapillary-js';
-      fs.cpSync(source, destination, { recursive: true });
-    }
-
-    // maplibre-gl
-    {
-      const source = 'node_modules/maplibre-gl/dist';
-      const destination = 'data/modules/maplibre-gl';
-      fs.cpSync(source, destination, { recursive: true });
-    }
-
-    // pannellum
-    {
-      const source = 'node_modules/pannellum/build';
-      const destination = 'data/modules/pannellum';
-      fs.cpSync(source, destination, { recursive: true });
-    }
-
-    // copy all of these to dist/data/modules also
-    fs.cpSync('data/modules', 'dist/data/modules', { recursive: true });
-
-  } catch (err) {
-    console.error(chalk.red(`Error - ${err.message}`));
-    process.exit(1);
-  }
 }
 
 
