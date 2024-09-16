@@ -1,0 +1,17 @@
+{
+  "_meta": {
+    "version": "2.4.2",
+    "generated": "2024-09-16T15:06:27.129Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.bg.json",
+    "hash": "76fb9997b4ef28b5c192c79d7e9bf6ea"
+  },
+  "bg": {
+    "Central-Pennsylvania-OSM": {
+      "name": "Централна Пенсилвания OSM"
+    },
+    "OSM-Chattanooga": {
+      "name": "OSM Чатануга",
+      "description": "OpenStreetMap потребителската група за Чатануга"
+    }
+  }
+}

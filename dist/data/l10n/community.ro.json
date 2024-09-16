@@ -1,0 +1,22 @@
+{
+  "_meta": {
+    "version": "2.4.2",
+    "generated": "2024-09-16T15:06:27.084Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.ro.json",
+    "hash": "8653ceabf9b83e90bb787d226fbf61e2"
+  },
+  "ro": {
+    "_communities": {
+      "openstreetmapafghanistan": "OpenStreetMap Afganistan",
+      "openstreetmapbangladesh": "OpenStreetMap Bangladeș",
+      "openstreetmapbelgium": "OpenStreetMap Belgia",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap Bosnia și Herțegovina"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "description": "Îmbunătățește OpenStreetMap în Bay Area"
+    },
+    "cape-coast-youthmappers": {
+      "description": "Urmăriţi-ne pe Twitter : {url}"
+    }
+  }
+}

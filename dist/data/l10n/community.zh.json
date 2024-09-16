@@ -1,0 +1,19 @@
+{
+  "_meta": {
+    "version": "2.4.2",
+    "generated": "2024-09-16T15:06:27.064Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.zh.json",
+    "hash": "21f48c0acb92eddc7e646dfcdb1b90e5"
+  },
+  "zh": {
+    "cape-coast-youthmappers": {
+      "name": "海岸角大学 YouthMappers",
+      "description": "在推特上关注我们：{url}",
+      "extendedDescription": "此为加纳海岸角大学的 Youth Mappers 官方分会。我们热爱地图、开放数据以及帮助弱势群体。"
+    },
+    "ym-The-Gambia-YMCA-University-of-the-Gambia": {
+      "description": "冈比亚基督教青年会/冈比亚大学的 YouthMappers 分会",
+      "extendedDescription": "Connected YouthMappers 由年轻甘比亚组成，希望能改变和协助国家发展。"
+    }
+  }
+}

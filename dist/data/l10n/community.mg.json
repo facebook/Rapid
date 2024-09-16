@@ -1,0 +1,19 @@
+{
+  "_meta": {
+    "version": "2.4.2",
+    "generated": "2024-09-16T15:06:27.094Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.mg.json",
+    "hash": "439bbd2734b2a83cbd67faab0ed36458"
+  },
+  "mg": {
+    "cape-coast-youthmappers": {
+      "description": "Araho ao aminin'ny Twitter izahay: {url}"
+    },
+    "osm-mg-facebook": {
+      "description": "Vondrona Facebook malagasy ho an'izay liana amin'ny OpenStreetMap."
+    },
+    "talk-mg": {
+      "description": "Toerana ahafahan'ny mpandray anjara sy ny mpampiasa ny OpenStreetMap eto Madagasikara mifanakalo hevitra sy miresaka."
+    }
+  }
+}

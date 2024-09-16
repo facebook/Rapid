@@ -1,0 +1,53 @@
+{
+  "_meta": {
+    "version": "2.4.2",
+    "generated": "2024-09-16T15:06:26.610Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/tagging.skr.json",
+    "hash": "36eb386b8e5843ab629ecb729746ed60"
+  },
+  "skr": {
+    "presets": {
+      "fields": {
+        "access": {
+          "options": {
+            "private": {
+              "title": "نجی"
+            },
+            "unknown": {
+              "title": "نامعلوم"
+            }
+          },
+          "types": {
+            "access": "سارے"
+          }
+        },
+        "access_aisle": {
+          "label": "قسم"
+        },
+        "access_simple": {
+          "options": {
+            "no": "کوئی وی کائنی",
+            "private": "نجی",
+            "unknown": "نامعلوم",
+            "yes": "عوامی"
+          }
+        },
+        "addr/interpolation": {
+          "label": "قسم",
+          "options": {
+            "all": "سارے",
+            "even": "جفت",
+            "odd": "طاق"
+          }
+        },
+        "address": {
+          "placeholders": {
+            "country": "ملک",
+            "county": "کاؤنٹی",
+            "county!jp": "ضلع"
+          }
+        }
+      }
+    }
+  }
+}

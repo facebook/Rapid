@@ -1,0 +1,32 @@
+{
+  "_meta": {
+    "version": "2.4.2",
+    "generated": "2024-09-16T15:06:26.824Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/imagery.skr.json",
+    "hash": "a30047a971d2fea76e7f372085c8d138"
+  },
+  "skr": {
+    "imagery": {
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "شرطاں تے فیڈ بیک"
+        }
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "شرطاں تے فیڈ بیک"
+        }
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "شرطاں تے فیڈ بیک"
+        }
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "شرطاں تے فیڈ بیک"
+        }
+      }
+    }
+  }
+}

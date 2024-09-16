@@ -1,0 +1,16 @@
+{
+  "_meta": {
+    "version": "2.4.2",
+    "generated": "2024-09-16T15:06:27.002Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.gan.json",
+    "hash": "12e34167e711f405d6b6d8a9d546d34c"
+  },
+  "gan": {
+    "intro": {
+      "graph": {
+        "state": "<value for addr:state>",
+        "countrycode": "cn"
+      }
+    }
+  }
+}
