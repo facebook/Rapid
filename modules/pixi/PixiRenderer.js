@@ -159,6 +159,7 @@ export class PixiRenderer extends PIXI.EventEmitter {
         _sharedTextures = new PixiTextures(this.context);
       }
       this.textures = _sharedTextures;
+    });
   }
 
 
