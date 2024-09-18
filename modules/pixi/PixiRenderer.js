@@ -1,6 +1,5 @@
 import * as PIXI from 'pixi.js';
 import { Application, BitmapFont } from 'pixi.js';
-import { settings } from '@pixi/settings';
 import { TAU, Viewport, numWrap, vecEqual, vecLength, vecRotate, vecScale, vecSubtract } from '@rapid-sdk/math';
 
 import { PixiEvents } from './PixiEvents.js';
@@ -70,7 +69,8 @@ export class PixiRenderer extends PIXI.EventEmitter {
     this._tick = this._tick.bind(this);
 
     // Disable mipmapping, we always want textures near the resolution they are at.
-    settings.AUTO_GENERATE_MIPMAPS = false;
+// in pixi v8 the settings object has been removed
+//    settings.AUTO_GENERATE_MIPMAPS = false;
 
     // Asynchronously initialize the PixiJS application
     this._pixiReadyPromise = this._initPixiAsync();

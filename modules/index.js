@@ -33,3 +33,7 @@ export const d3 = {
 import * as SDKMATH from '@rapid-sdk/math';
 import * as SDKUTIL from '@rapid-sdk/util';
 export const sdk = { ...SDKMATH, ...SDKUTIL };
+
+// Reexport Pixi
+// (for testing, remove later)
+export * as PIXI from 'pixi.js';
