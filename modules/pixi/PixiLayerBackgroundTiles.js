@@ -130,6 +130,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    */
   renderSource(timestamp, viewport, source, sourceContainer, tileMap) {
     const context = this.context;
+    const map = context.systems.map;
     const textureManager = this.renderer.textures;
     const osm = context.services.osm;
     const t = viewport.transform.props;
@@ -219,50 +220,19 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
         this._failed.delete(tile.url);
         if (!tile.sprite || !tile.image) return;  // it's possible that the tile isn't needed anymore and got pruned
 
-        // create a texture source & texture
-        const source = new PIXI.ImageSource({resource: tile.image});
-        // const texture = new PIXI.Texture({source});
-        // const texture = PIXI.Texture.from(tile.image);
-//        tile.sprite.texture = texture;
         const w = tile.image.naturalWidth;
         const h = tile.image.naturalHeight;
-        tile.sprite.texture = textureManager.allocate('tile', tile.sprite.label, w, h, source);
+        tile.sprite.texture = textureManager.allocate('tile', tile.sprite.label, w, h, tile.image);
 
         tile.loaded = true;
         tile.image = null;  // image is copied to the atlas, we can free it
-        context.systems.map.deferredRedraw();
+        map.deferredRedraw();
       };
-
-
-      // Assets.load(tile.url).then(() => {
-      //   // console.log(`Asset loaded: ${tile.url}`);
-      //   let texture = Assets.get(tile.url);
-
-      //   if (!(texture instanceof PIXI.Texture)) {
-      //       // console.error(`Expected a PIXI.Texture from Assets cache, received:`, texture);
-      //       return;
-      //   }
-
-      //   // console.log(`Texture retrieved successfully for: ${tile.url}`);
-      //   // console.log('Attempting to allocate texture...');
-      //   texture = textureManager.allocate('tile', tile.sprite.label, texture);
-
-      //   if (texture) {
-      //       // console.log('Texture allocated successfully.');
-      //       tile.sprite.texture = texture;
-      //       tile.loaded = true;
-      //       context.systems.map.deferredRedraw();
-      //   } else {
-      //       console.error(`Failed to allocate texture for: ${tile.url}`);
-      //   }
-      // }).catch(error => {
-      //     console.error(`Error loading asset: ${tile.url}`, error);
-      // });
 
       image.onerror = () => {
         tile.image = null;
         this._failed.add(tile.url);
-        context.systems.map.deferredRedraw();
+        map.deferredRedraw();
       };
     }
 
