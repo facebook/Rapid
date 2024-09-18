@@ -216,8 +216,8 @@ groupContainer.addChild(container);
         const BLUE = 0xe60ff;
 
         const locatorAura = new PIXI.Graphics()
-          .fill({color: BLUE, alpha: 0.4})
-          .circle(x, y, r);
+          .circle(x, y, r)
+          .fill({ color: BLUE, alpha: 0.4 });
         locatorAura.label = 'aura';
         this.geolocationContainer.addChild(locatorAura);
 
@@ -233,9 +233,9 @@ groupContainer.addChild(container);
         }
 
         const locatorPosition = new PIXI.Graphics()
+          .circle(x, y, 6.5)
           .stroke(1.5, 0xffffff, 1.0)
-          .fill({color: BLUE, alpha: 1.0})
-          .circle(x, y, 6.5);
+          .fill({ color: BLUE, alpha: 1.0 });
         locatorPosition.label = 'position';
         this.geolocationContainer.addChild(locatorPosition);
 

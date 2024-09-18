@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import { Mesh, Geometry, Shader, Texture } from 'pixi.js';
 import { DashLine } from '@rapideditor/pixi-dashed-line';
 import { GlowFilter } from 'pixi-filters';
 import { /* geomRotatePoints,*/ vecEqual, vecLength /*, vecSubtract */ } from '@rapid-sdk/math';
@@ -69,15 +68,15 @@ export class PixiFeaturePolygon extends AbstractFeature {
     //   .addAttribute('aVertexPosition', [0, 0, 100, 0, 50, 100], 2)
     //   .addIndex([0, 1, 2]);
 //pixi v8
-    const geometry = new Geometry({
+    const geometry = new PIXI.Geometry({
       attributes: { aPosition: [0, 0, 100, 0, 50, 100] },
       indexBuffer: [0, 1, 2]
     });
 
     // Setup the texture
-    const texture = Texture.WHITE;
+    const texture = PIXI.Texture.WHITE;
     // Assuming the new Mesh constructor uses a configuration object
-    const mesh = new Mesh({
+    const mesh = new PIXI.Mesh({
       geometry: geometry,
       texture: texture
     });
@@ -85,7 +84,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
     mesh.visible = false;
     this.mask = mesh;
 
-    // TODO Pixi v8: figure out why the fill is blowing stuff up. 
+    // TODO Pixi v8: figure out why the fill is blowing stuff up.
     this.container.addChild(lowRes, stroke, mesh); //(lowRes, fill, stroke, mesh);
 
     // Debug SSR
@@ -430,8 +429,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
     //
     // this.debugSSR
     //   .clear()
-    //   .lineStyle({ alpha: 1, width: 2, color: 0x00ff00 })
-    //   .poly(new PIXI.Polygon(ssrflat));
+    //   .poly(new PIXI.Polygon(ssrflat))
+    //   .stroke({ width: 2, color: 0x00ff00 });
 
     this._styleDirty = false;
     this.updateHalo();

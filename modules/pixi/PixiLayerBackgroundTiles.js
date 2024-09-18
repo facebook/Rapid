@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import { Assets, Texture } from 'pixi.js';
 import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
 import { AdjustmentFilter, ConvolutionFilter } from 'pixi-filters';
 import { Tiler, geoScaleToZoom, vecScale } from '@rapid-sdk/math';
@@ -309,8 +308,8 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
           tile.debug.position.set(x, y - size);  // left, top
           tile.debug
             .clear()
-            .lineStyle(2, DEBUGCOLOR)
-            .rect(0, 0, size, size);
+            .rect(0, 0, size, size)
+            .stroke({ width: 2, color: DEBUGCOLOR });
         }
 
       } else {   // tile not needed, can destroy it

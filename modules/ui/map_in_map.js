@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import { Application } from 'pixi.js';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 import { HALF_PI, Viewport, geoZoomToScale, numClamp, vecAdd, vecInterp, vecSubtract } from '@rapid-sdk/math';
 
@@ -209,8 +208,8 @@ export function uiMapInMap(context) {
 
       bbox
         .clear()
-        .lineStyle(2, 0xffff00)
-        .drawShape(new PIXI.Polygon(flatPoints));
+        .poly(new PIXI.Polygon(flatPoints))
+        .stroke({ width: 2, color: 0xffff00 });
 
       // Place an "up" arrow at the "top" of the box.
       const [arrowX, arrowY] = vecInterp(miniPoints[3], miniPoints[4], 0.5);
@@ -294,7 +293,7 @@ export function uiMapInMap(context) {
     async function _initMiniPixi() {
       if (!_supersurface || !_surface)  return;   // called too early?
 
-      _miniPixi= new Application();
+      _miniPixi= new PIXI.Application();
       await _miniPixi.init({
         antialias: true,
         autoDensity: true,

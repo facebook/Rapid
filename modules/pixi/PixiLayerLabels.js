@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import { BitmapFont } from 'pixi.js';
 import RBush from 'rbush';
 import { HALF_PI, TAU, numWrap, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@rapid-sdk/math';
 

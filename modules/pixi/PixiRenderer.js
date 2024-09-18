@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import { Application, BitmapFont } from 'pixi.js';
 import { TAU, Viewport, numWrap, vecEqual, vecLength, vecRotate, vecScale, vecSubtract } from '@rapid-sdk/math';
 
 import { PixiEvents } from './PixiEvents.js';
@@ -82,7 +81,7 @@ export class PixiRenderer extends PIXI.EventEmitter {
    * @return {Promise}  promise settled when pixi is ready
    */
   _initPixiAsync() {
-    this.pixi = new Application();
+    this.pixi = new PIXI.Application();
 
     return this.pixi.init({
       antialias: true,
@@ -524,11 +523,9 @@ export class PixiRenderer extends PIXI.EventEmitter {
 
     let debug1 = origin.getChildByName('center_stage');   // center stage
     if (!debug1) {
-      debug1 = new PIXI.Graphics();
-      debug1.lineStyle(0);
-      debug1.beginFill(0xffffff, 1);
-      debug1.drawCircle(0, 0, 20);
-      debug1.endFill();
+      debug1 = new PIXI.Graphics()
+        .circle(0, 0, 20)
+        .fill({ color: 0xffffff, alpha: 1 });
       debug1.label = 'center_stage';
       debug1.eventMode = 'none';
       debug1.sortableChildren = false;
@@ -539,11 +536,9 @@ export class PixiRenderer extends PIXI.EventEmitter {
 
     let debug2 = origin.getChildByName('center_screen');  // projected center of viewport
     if (!debug2) {
-      debug2 = new PIXI.Graphics();
-      debug2.lineStyle(0);
-      debug2.beginFill(0xff6666, 1);
-      debug2.drawCircle(0, 0, 15);
-      debug2.endFill();
+      debug2 = new PIXI.Graphics()
+        .circle(0, 0, 15)
+        .fill({ color: 0xff6666, alpha: 1 });
       debug2.label = 'center_screen';
       debug2.eventMode = 'none';
       debug2.sortableChildren = false;
@@ -557,20 +552,19 @@ export class PixiRenderer extends PIXI.EventEmitter {
     // debugging the contents of the texture atlas
     // let screen = origin.getChildByName('screen');
     // if (!screen) {
-    //   screen = new PIXI.Graphics();
-    //   screen.name = 'screen';
+    //   screen = new PIXI.Graphics()
+    //     .rect(0, 0, 512, 512)
+    //     .fill({ color: 0xffffff, alpha: 0.5 });
+    //   screen.label = 'screen';
     //   screen.eventMode = 'none';
     //   screen.sortableChildren = false;
     //   screen.zIndex = 100;
-    //   screen.beginFill({ r: 255, g: 255, b: 255, a: 0.5 });
-    //   screen.drawRect(0, 0, 512, 512);
-    //   screen.endFill();
     //   origin.addChild(screen);
     // }
     // let debug = origin.getChildByName('debug');
     // if (!debug) {
     //   debug = new PIXI.Sprite();
-    //   debug.name = 'debug';
+    //   debug.label = 'debug';
     //   debug.eventMode = 'none';
     //   debug.sortableChildren = false;
     //   debug.zIndex = 101;
