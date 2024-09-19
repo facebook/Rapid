@@ -1,5 +1,5 @@
-import { Assets, Graphics, Rectangle, ImageSource, Texture, MSAA_QUALITY } from 'pixi.js';
-import { AtlasAllocator } from '@rapideditor/pixi-texture-allocator';
+import * as PIXI from 'pixi.js';
+import { AtlasAllocator, optimizeAtlasUploads } from '@rapideditor/pixi-texture-allocator';
 
 
 /**
@@ -21,22 +21,21 @@ export class PixiTextures {
 
     const assets = context.systems.assets;
 
-    // We store textures in 3 atlases, each one is for holding similar sized things.
-    // Each "atlas" manages its own store of "BaseTextures" - real textures that upload to the GPU.
-    // This helps pack them efficiently and avoids swapping frequently as WebGL draws the scene.
-
-    // The new atlas allocator REQUIRES the renderer to be passed in so it can optimize the upload
-    // pipeline depending on whether we're using a webGL or webGPU renderer type.
-
-    // TODO pixi v8 - we need to stop hard-coding the texture allocator to always use webGL
-    // (see AtlasSource.ts::optimizeAtlasUploads() for the hard-coding kludge I had to do)
+    // Before using the atlases, we need to register the upload function with the renderer.
+    // This will choose the correct function for either webGL or webGPU renderer type.
     const renderer = context.pixi.renderer;
+    optimizeAtlasUploads(renderer);
+
+    // We store textures in 3 atlases, each one is for holding similar sized things.
+    // Each "atlas" manages its own store of "TextureSources" - real textures that upload to the GPU.
+    // This helps pack them efficiently and avoids swapping frequently as WebGL draws the scene.
 
     this._atlas = {
       symbol: new AtlasAllocator(),  // small graphics - markers, pins, symbols
       text: new AtlasAllocator(),    // text labels
-      tile: new AtlasAllocator(renderer)     // 256 or 512px square imagery tiles
+      tile: new AtlasAllocator()     // 256 or 512px square imagery tiles
     };
+
 
     // All the named textures we know about.
     // Each mapping is a unique identifying key to a PIXI.Texture
@@ -58,9 +57,10 @@ export class PixiTextures {
     for (const k of PATTERNS) {
       patternBundle[k] = assets.getFileURL(`img/pattern/${k}.png`);
     }
-    Assets.addBundle('patterns', patternBundle);
 
-    Assets.loadBundle(['patterns'])
+    PIXI.Assets.addBundle('patterns', patternBundle);
+
+    PIXI.Assets.loadBundle(['patterns'])
       .then(result => {
         // note that we can't pack patterns into an atlas yet - see PixiFeaturePolygon.js.
         for (const [textureID, texture] of Object.entries(result.patterns)) {
@@ -110,7 +110,7 @@ export class PixiTextures {
     // Is this an svg icon that we haven't converted to a texture yet?
     if (this._svgIcons.has(textureID)) {
       this.svgIconToTexture(textureID);
-      return Texture.EMPTY;   // return a placeholder
+      return PIXI.Texture.EMPTY;   // return a placeholder
     }
 
     return null;
@@ -139,11 +139,11 @@ export class PixiTextures {
     const atlas = this._atlas[atlasID];
     if (!atlas) return null;
 
-    const frame = new Rectangle(0, 0, atlas.slabWidth, atlas.slabHeight);
-    const baseTexture = atlas.textureSlabs[0]?.slab;
-    if (!baseTexture) return null;
+    const frame = new PIXI.Rectangle(0, 0, atlas.slabWidth, atlas.slabHeight);
+    const textureSource = atlas.textureSlabs[0]?.slab;
+    if (!textureSource) return null;
 
-    return new Texture(baseTexture, frame);
+    return new PIXI.Texture({ source: textureSource, frame: frame });
   }
 
 
@@ -235,10 +235,17 @@ export class PixiTextures {
    * @param  options     Options passed to `renderer.generateTexture`
    */
   graphicToTexture(textureID, graphic, options) {
+return PIXI.Texture.WHITE;
     const renderer = this.context.pixi.renderer;
-    options.multisample = MSAA_QUALITY.NONE;  // disable multisampling so we can use gl.readPixels
-    const renderTexture = renderer.generateTexture(graphic, options);
+    // options.multisample = MSAA_QUALITY.NONE;  // disable multisampling so we can use gl.readPixels
+    options.antialias = false;
 
+// https://github.com/pixijs/pixijs/issues/10836
+//    options.format = 'rgba32float';
+//const renderTexture = PIXI.RenderTexture.create(options);
+//renderTexture.source.uploadMethodId = "buffer"; // this line is important after you create the renderTexture
+//renderer.render({ target: renderTexture, container: graphic });
+    const renderTexture = renderer.generateTexture(graphic, options);
     const baseTexture = renderTexture.source;
 
     if (baseTexture.format !== 'RGBA6408') return;       // we could handle other values
@@ -298,7 +305,7 @@ export class PixiTextures {
 
     const size = 32;
     const options = { autoLoad: false, height: size, width: size };
-    const resource = new ImageSource(svgString, options);
+    const resource = new PIXI.ImageSource(svgString, options);
 
     // v7 code
     // resource.load().then(() => {
@@ -326,13 +333,13 @@ export class PixiTextures {
     //
     // Viewfields
     //
-    const viewfieldRect = new Rectangle(-13, 0, 26, 52);
+    const viewfieldRect = new PIXI.Rectangle(-13, 0, 26, 52);
     const viewfieldOptions = {
       region: viewfieldRect,  // texture the whole 26x26 region
       resolution: 3           // oversample a bit so it looks pretty when rotated
     };
 
-    const viewfield = new Graphics()            //   [-2,26]  ,---,  [2,26]
+    const viewfield = new PIXI.Graphics()       //   [-2,26]  ,---,  [2,26]
       .moveTo(-2, 26)                           //           /     \
       .lineTo(2, 26)                            //          /       \
       .lineTo(12, 4)                            //         /         \
@@ -342,7 +349,7 @@ export class PixiTextures {
       .stroke({ width: 1, color: 0x444444 });   // [-12,4]              [12,4]    |
                                                 //            [0,0]               +-- +x
 
-    const viewfieldDark = new Graphics()
+    const viewfieldDark = new PIXI.Graphics()
       .moveTo(-2, 26)
       .lineTo(2, 26)
       .lineTo(12, 4)
@@ -351,7 +358,7 @@ export class PixiTextures {
       .fill({ color: 0x333333, alpha: 1 })      // and fill dark gray (not intended to be tinted)
       .stroke({ width: 1, color: 0xcccccc });
 
-    const viewfieldOutline = new Graphics()
+    const viewfieldOutline = new PIXI.Graphics()
       .moveTo(-2, 26)
       .lineTo(2, 26)
       .lineTo(12, 4)
@@ -365,17 +372,17 @@ export class PixiTextures {
     this.graphicToTexture('viewfieldOutline', viewfieldOutline, viewfieldOptions);
 
 
-    const pano = new Graphics()  // just a full circle - for panoramic / 360° images
+    const pano = new PIXI.Graphics()  // just a full circle - for panoramic / 360° images
       .circle(0, 0, 20)
       .fill({ color: 0xffffff, alpha: 1 })
       .stroke({ width: 1, color: 0x444444 });
 
-    const panoDark = new Graphics()
+    const panoDark = new PIXI.Graphics()
       .circle(0, 0, 20)
       .fill({ color: 0x333333, alpha: 1 })
       .stroke({ width: 1, color: 0xcccccc });
 
-    const panoOutline = new Graphics()
+    const panoOutline = new PIXI.Graphics()
       .circle(0, 0, 20)
       .fill({ color: 0xffffff, alpha: 0 })
       .stroke({ width: 1, color: 0xcccccc });
@@ -389,7 +396,7 @@ export class PixiTextures {
     // Markers
     //
 
-    const pin = new Graphics()                  //              [0,-23]
+    const pin = new PIXI.Graphics()             //              [0,-23]
       .moveTo(0, 0)                             //              _,-+-,_
       .bezierCurveTo(-2,-2, -8,-10, -8,-15)     //            /'       `\
       .bezierCurveTo(-8,-19, -4,-23, 0,-23)     //           :           :
@@ -400,7 +407,7 @@ export class PixiTextures {
       .stroke({ width: 1, color: 0x444444 });   //               \   /      -y
                                                 //                `+`        |
                                                 //               [0,0]       +-- +x
-    const boldPin = new Graphics()
+    const boldPin = new PIXI.Graphics()
       .moveTo(0, 0)
       .bezierCurveTo(-2,-2, -8,-10, -8,-15)
       .bezierCurveTo(-8,-19, -4,-23, 0,-23)
@@ -410,37 +417,37 @@ export class PixiTextures {
       .stroke({ width: 1.5, color: 0x666666 })     // same pin, bolder line stroke
       .fill({ color: 0xdddddd, alpha: 1 });
 
-    const xlargeSquare = new Graphics()   // used as an "unknown" street sign
+    const xlargeSquare = new PIXI.Graphics()   // used as an "unknown" street sign
       .rect(-12, -12, 24, 24)
       .fill({ color: 0xffffff, alpha: 1 })
       .stroke({ width: 2, color: 0x444444 });
 
-    const largeSquare = new Graphics()    // suitable to display an icon inside
+    const largeSquare = new PIXI.Graphics()    // suitable to display an icon inside
       .rect(-8, -8, 16, 16)
       .fill({ color: 0xffffff, alpha: 1 })
       .stroke({ width: 2, color: 0x444444 });
 
-    const xlargeCircle = new Graphics()   // used as an "unknown" detection
+    const xlargeCircle = new PIXI.Graphics()   // used as an "unknown" detection
       .circle(0, 0, 12)
       .fill({ color: 0xffffff, alpha: 1 })
       .stroke({ width: 2, color: 0x444444 });
 
-    const largeCircle = new Graphics()    // suitable to display an icon inside
+    const largeCircle = new PIXI.Graphics()    // suitable to display an icon inside
       .circle(0, 0, 8)
       .fill({ color: 0xffffff, alpha: 1 })
       .stroke({ width: 1, color: 0x444444 });
 
-    const mediumCircle = new Graphics()   // suitable for a streetview photo marker
+    const mediumCircle = new PIXI.Graphics()   // suitable for a streetview photo marker
       .circle(0, 0, 6)
       .fill({ color: 0xffffff, alpha: 1 })
       .stroke({ width: 1, color: 0x444444 });
 
-    const smallCircle = new Graphics()    // suitable for a plain vertex
+    const smallCircle = new PIXI.Graphics()    // suitable for a plain vertex
       .circle(0, 0, 4.5)
       .fill({ color: 0xffffff, alpha: 1 })
       .stroke({ width: 1, color: 0x444444 });
 
-    const taggedCircle = new Graphics()   // a small circle with a dot inside
+    const taggedCircle = new PIXI.Graphics()   // a small circle with a dot inside
       .circle(0, 0, 4.5)
       .fill({ color: 0x000000, alpha: 1 })
       .circle(0, 0, 1.5)
@@ -459,7 +466,7 @@ export class PixiTextures {
 
 
     // KeepRight
-    const keepright = new Graphics()
+    const keepright = new PIXI.Graphics()
       .moveTo(15, 6.5)
       .lineTo(10.8, 6.5)
       .bezierCurveTo(12.2, 1.3, 11.7, 0.8, 11.2, 0.8)
@@ -478,7 +485,7 @@ export class PixiTextures {
       .fill({ color: 0xffffff });
 
     // OSM note
-    const osmnote = new Graphics()
+    const osmnote = new PIXI.Graphics()
       .moveTo(17.5, 0)
       .lineTo(2.5,0)
       .bezierCurveTo(1.13, 0, 0, 1.12, 0, 2.5)
@@ -496,7 +503,7 @@ export class PixiTextures {
       .stroke({ width: 1.5, color: 0x333333 })
       .fill({ color:0xffffff, alpha: 1 });
 
-    const osmose = new Graphics()
+    const osmose = new PIXI.Graphics()
       .poly([16,3, 4,3, 1,6, 1,17, 4,20, 7,20, 10,27, 13,20, 16,20, 19,17.033, 19,6])
       .closePath()
       .fill({ color: 0xffffff })
@@ -510,16 +517,16 @@ export class PixiTextures {
     //
     // Line markers
     //
-    const midpoint = new Graphics()             // [-3, 4]  ._                +y
+    const midpoint = new PIXI.Graphics()        // [-3, 4]  ._                +y
       .poly([-3,4, 7,0, -3,-4])                 //          | "-._             |
       .fill({ color:0xffffff, alpha: 1 })       //          |    _:>  [7,0]    +-- +x
       .stroke({ width: 1, color: 0x444444 });   //          |_,-"
                                                 // [-3,-4]  '
-    const oneway = new Graphics()
+    const oneway = new PIXI.Graphics()
       .poly([5,3, 0,3, 0,2, 5,2, 5,0, 10,2.5, 5,5])
       .stroke({ width: 1, color: 0xffffff });
 
-    const sided = new Graphics()
+    const sided = new PIXI.Graphics()
       .poly([0,5, 5,0, 0,-5])
       .stroke({ width: 1, color: 0xffffff });
 
@@ -533,17 +540,17 @@ export class PixiTextures {
     // We can replace areas with these sprites when they are very small
     // They are all sized to 10x10 (would look fine scaled down but not up)
     //
-    const lowresSquare = new Graphics()
+    const lowresSquare = new PIXI.Graphics()
       .rect(-5, -5, 10, 10)
       .fill({ color:0xffffff, alpha: 0.6 })
       .stroke({ width: 1, color: 0xffffff });
 
-    const lowresEll = new Graphics()
+    const lowresEll = new PIXI.Graphics()
       .poly([-5,-5, 5,-5, 5,5, 1,5, 1,1, -5,1, -5,-5])
       .fill({ color:0xffffff, alpha: 0.6 })
       .stroke({ width: 1, color: 0xffffff });
 
-    const lowresCircle = new Graphics()
+    const lowresCircle = new PIXI.Graphics()
       .circle(0, 0, 5)
       .fill({ color:0xffffff, alpha: 0.6 })
       .stroke({ width: 1, color: 0xffffff });
@@ -556,17 +563,17 @@ export class PixiTextures {
     // Low-res unfilled areas
     // For wireframe mode rendering (no fills at all)
     //
-    const lowresUnfilledSquare = new Graphics()
+    const lowresUnfilledSquare = new PIXI.Graphics()
       .rect(-5, -5, 10, 10)
       .fill({ color: 0, alpha: 0})
       .stroke({ width: 1, color: 0xffffff });
 
-    const lowresUnfilledEll = new Graphics()
+    const lowresUnfilledEll = new PIXI.Graphics()
       .poly([-5,-5, 5,-5, 5,5, 1,5, 1,1, -5,1, -5,-5])
       .fill({ color: 0, alpha: 0})
       .stroke({ width: 1, color: 0xffffff });
 
-    const lowresUnfilledCircle = new Graphics()
+    const lowresUnfilledCircle = new PIXI.Graphics()
       .circle(0, 0, 5)
       .fill({ color: 0, alpha: 0})
       .stroke({ width: 1, color: 0xffffff });

@@ -67,10 +67,6 @@ export class PixiRenderer extends PIXI.EventEmitter {
     // Make sure callbacks have `this` bound correctly
     this._tick = this._tick.bind(this);
 
-    // Disable mipmapping, we always want textures near the resolution they are at.
-// in pixi v8 the settings object has been removed
-//    settings.AUTO_GENERATE_MIPMAPS = false;
-
     // Asynchronously initialize the PixiJS application
     this._pixiReadyPromise = this._initPixiAsync();
   }
@@ -78,26 +74,38 @@ export class PixiRenderer extends PIXI.EventEmitter {
 
   /**
    * _initPixiAsync
-   * @return {Promise}  promise settled when pixi is ready
+   * @return {Promise}  Promise settled when Pixi is ready
    */
   _initPixiAsync() {
+
+    // setup defaults here
+    Object.assign(PIXI.TextureSource.defaultOptions, {
+      autoGarbageCollect: false,
+      autoGenerateMipmaps: false,
+      // format: 'rgba8unorm',
+      resolution: 1
+    });
+
     this.pixi = new PIXI.Application();
 
     return this.pixi.init({
       antialias: true,
       autoDensity: true,
       autoStart: false,        // don't start the ticker yet
+      canvas: this.surface.node(),
       events: {
         move: false,
         globalMove: false,
         click: true,
         wheel: false
       },
-      // resizeTo: supersurface.node(),
+      powerPreference: 'high-performance',
+      preference: 'webgl',
+      preferWebGLVersion: 2,
       resolution: window.devicePixelRatio,
       sharedLoader: true,
       sharedTicker: true,
-      canvas: this.surface.node()
+      textureGCActive: true
     })
     .then(() => {
       // todo - we should stop doing this.. Access to pixi app should be via an instance of PixiRenderer
@@ -461,7 +469,7 @@ export class PixiRenderer extends PIXI.EventEmitter {
     // Let's go!
     const effectiveZoom = map.effectiveZoom();
     this.scene.render(this._frame, pixiViewport, effectiveZoom);
-    // this._renderDebug();
+    //this._renderDebug();
 
     this._appPending = false;
     this._drawPending = true;
@@ -516,63 +524,62 @@ export class PixiRenderer extends PIXI.EventEmitter {
    * Render some debug shapes (usually commented out)
    */
   _renderDebug() {
-    const context = this.context;
-    const mapViewport = context.viewport;
-    const origin = this.origin;
-    const stage = this.stage;
+      const context = this.context;
+      const mapViewport = context.viewport;
+      const origin = this.origin;
+      const stage = this.stage;
 
-    let debug1 = origin.getChildByName('center_stage');   // center stage
-    if (!debug1) {
-      debug1 = new PIXI.Graphics()
-        .circle(0, 0, 20)
-        .fill({ color: 0xffffff, alpha: 1 });
-      debug1.label = 'center_stage';
-      debug1.eventMode = 'none';
-      debug1.sortableChildren = false;
-      debug1.zIndex = 101;
-      origin.addChild(debug1);
-    }
-    debug1.position.set(stage.position.x, stage.position.y);
-
-    let debug2 = origin.getChildByName('center_screen');  // projected center of viewport
-    if (!debug2) {
-      debug2 = new PIXI.Graphics()
-        .circle(0, 0, 15)
-        .fill({ color: 0xff6666, alpha: 1 });
-      debug2.label = 'center_screen';
-      debug2.eventMode = 'none';
-      debug2.sortableChildren = false;
-      debug2.zIndex = 102;
-      origin.addChild(debug2);
-    }
-    const centerLoc = this.pixiViewport.project(mapViewport.centerLoc());
-    debug2.position.set(centerLoc[0], centerLoc[1]);
-
+//    let debug1 = origin.getChildByLabel('center_stage');   // center stage
+//    if (!debug1) {
+//      debug1 = new PIXI.Graphics()
+//        .circle(0, 0, 20)
+//        .fill({ color: 0xffffff, alpha: 1 });
+//      debug1.label = 'center_stage';
+//      debug1.eventMode = 'none';
+//      debug1.sortableChildren = false;
+//      debug1.zIndex = 101;
+//      origin.addChild(debug1);
+//    }
+//    debug1.position.set(stage.position.x, stage.position.y);
+//
+//    let debug2 = origin.getChildByLabel('center_screen');  // projected center of viewport
+//    if (!debug2) {
+//      debug2 = new PIXI.Graphics()
+//        .circle(0, 0, 15)
+//        .fill({ color: 0xff6666, alpha: 1 });
+//      debug2.label = 'center_screen';
+//      debug2.eventMode = 'none';
+//      debug2.sortableChildren = false;
+//      debug2.zIndex = 102;
+//      origin.addChild(debug2);
+//    }
+//    const centerLoc = this.pixiViewport.project(mapViewport.centerLoc());
+//    debug2.position.set(centerLoc[0], centerLoc[1]);
 
     // debugging the contents of the texture atlas
-    // let screen = origin.getChildByName('screen');
-    // if (!screen) {
-    //   screen = new PIXI.Graphics()
-    //     .rect(0, 0, 512, 512)
-    //     .fill({ color: 0xffffff, alpha: 0.5 });
-    //   screen.label = 'screen';
-    //   screen.eventMode = 'none';
-    //   screen.sortableChildren = false;
-    //   screen.zIndex = 100;
-    //   origin.addChild(screen);
-    // }
-    // let debug = origin.getChildByName('debug');
-    // if (!debug) {
-    //   debug = new PIXI.Sprite();
-    //   debug.label = 'debug';
-    //   debug.eventMode = 'none';
-    //   debug.sortableChildren = false;
-    //   debug.zIndex = 101;
-    //   debug.height = 512;
-    //   debug.width = 512;
-    //   origin.addChild(debug);
-    // }
-    // debug.texture = this.textures.getDebugTexture('symbol');
+    let screen = stage.getChildByLabel('screen');
+    if (!screen) {
+      screen = new PIXI.Graphics()
+        .rect(0, 0, 512, 512)
+        .fill({ color: 0xffffff, alpha: 0.5 });
+      screen.label = 'screen';
+      screen.eventMode = 'none';
+      screen.sortableChildren = false;
+      screen.zIndex = 100;
+      stage.addChild(screen);
+    }
+    let debug = stage.getChildByLabel('debug');
+    if (!debug) {
+      debug = new PIXI.Sprite();
+      debug.label = 'debug';
+      debug.eventMode = 'none';
+      debug.sortableChildren = false;
+      debug.zIndex = 101;
+      debug.height = 512;
+      debug.width = 512;
+      stage.addChild(debug);
+    }
+    debug.texture = this.textures.getDebugTexture('tile');
     // debug.position.set(offset[0] + 50, offset[1] + 100);  // stay put
     // screen.position.set(offset[0] + 50, offset[1] + 100);  // stay put
 

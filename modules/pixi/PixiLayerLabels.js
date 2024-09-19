@@ -362,7 +362,7 @@ export class PixiLayerLabels extends AbstractLayer {
     const avoidContainers = [];
 
     const mapUIContainer = this.scene.layers.get('map-ui').container;
-    const selectedContainer = mapUIContainer.getChildByName('selected');
+    const selectedContainer = mapUIContainer.getChildByLabel('selected');
     if (selectedContainer) {
       avoidContainers.push(selectedContainer);
     }

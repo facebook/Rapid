@@ -182,7 +182,7 @@ export function uiMapInMap(context) {
         flatPoints[(i * 2) + 1] = y - offset[1];
       }
 
-      let bbox = stage.getChildByName('bbox');
+      let bbox = stage.getChildByLabel('bbox');
       if (!bbox) {
         bbox = new PIXI.Graphics();
         bbox.name = 'bbox';
@@ -190,7 +190,7 @@ export function uiMapInMap(context) {
         stage.addChild(bbox);
       }
 
-      let arrow = stage.getChildByName('arrow');
+      let arrow = stage.getChildByLabel('arrow');
       if (!arrow) {
         arrow = new PIXI.Container();
         arrow.name = 'arrow';

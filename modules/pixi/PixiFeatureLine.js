@@ -137,7 +137,7 @@ export class PixiFeatureLine extends AbstractFeature {
       // Update line markers, if any..
       // Todo: left/right markers (like for coastlines, retaining walls, etc)
       //
-      let lineMarkers = container.getChildByName('lineMarkers');
+      let lineMarkers = container.getChildByLabel('lineMarkers');
 
       if (showMarkers && ((style.lineMarkerTexture || style.lineMarkerName) || (style.sidedMarkerTexture || style.sidedMarkerName))) {
         // Create line marker container, if necessary

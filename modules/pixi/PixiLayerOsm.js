@@ -513,7 +513,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
 
     function _getLevelContainer(level) {
-      let levelContainer = lineContainer.getChildByName(level);
+      let levelContainer = lineContainer.getChildByLabel(level);
       if (!levelContainer) {
         levelContainer = new PIXI.Container();
         levelContainer.label= level.toString();
@@ -544,7 +544,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
     // Vertices related to the selection/hover should be drawn above everything
     const mapUIContainer = this.scene.layers.get('map-ui').container;
-    const selectedContainer = mapUIContainer.getChildByName('selected');
+    const selectedContainer = mapUIContainer.getChildByLabel('selected');
     const pointsContainer = this.scene.groups.get('points');
 
     function isInterestingVertex(node) {
@@ -740,7 +740,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
     // Midpoints should be drawn above everything
     const mapUIContainer = this.scene.layers.get('map-ui').container;
-    const selectedContainer = mapUIContainer.getChildByName('selected');
+    const selectedContainer = mapUIContainer.getChildByLabel('selected');
 
     // Generate midpoints from all the highlighted ways
     let midpoints = new Map();

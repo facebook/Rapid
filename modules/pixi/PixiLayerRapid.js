@@ -255,7 +255,7 @@ export class PixiLayerRapid extends AbstractLayer {
     const areasID = `${this.layerID}-${dataset.id}-areas`;
     const linesID = `${this.layerID}-${dataset.id}-lines`;
 
-    let areasContainer = basemapContainer.getChildByName(areasID);
+    let areasContainer = basemapContainer.getChildByLabel(areasID);
     if (!areasContainer) {
       areasContainer = new PIXI.Container();
       areasContainer.label= areasID;
@@ -263,7 +263,7 @@ export class PixiLayerRapid extends AbstractLayer {
       basemapContainer.addChild(areasContainer);
     }
 
-    let linesContainer = basemapContainer.getChildByName(linesID);
+    let linesContainer = basemapContainer.getChildByLabel(linesID);
     if (!linesContainer) {
       linesContainer = new PIXI.Container();
       linesContainer.label= linesID;

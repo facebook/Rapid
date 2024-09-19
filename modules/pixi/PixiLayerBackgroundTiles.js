@@ -147,7 +147,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     if (!this.isMinimap) {
       showDebug = context.getDebug('tile');
       const mapUIContainer = this.scene.layers.get('map-ui').container;
-      debugContainer = mapUIContainer.getChildByName('tile-debug');
+      debugContainer = mapUIContainer.getChildByLabel('tile-debug');
       debugContainer.visible = showDebug;
     }
 
@@ -325,7 +325,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     this._tileMaps.delete(sourceID);
 
     const groupContainer = this.scene.groups.get('background');
-    let sourceContainer = groupContainer.getChildByName(sourceID);
+    let sourceContainer = groupContainer.getChildByLabel(sourceID);
     if (sourceContainer) {
       sourceContainer.destroy({ children: true });
     }
@@ -366,7 +366,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    */
   getSourceContainer(sourceID) {
     const groupContainer = this.scene.groups.get('background');
-    let sourceContainer = groupContainer.getChildByName(sourceID);
+    let sourceContainer = groupContainer.getChildByLabel(sourceID);
     if (!sourceContainer) {
       sourceContainer = new PIXI.Container();
       sourceContainer.label= sourceID;
