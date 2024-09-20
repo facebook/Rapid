@@ -31,7 +31,7 @@ export class PixiTextures {
     // This helps pack them efficiently and avoids swapping frequently as WebGL draws the scene.
 
     this._atlas = {
-      symbol: new AtlasAllocator(),  // small graphics - markers, pins, symbols
+      symbol: new AtlasAllocator(renderer),  // small graphics - markers, pins, symbols
       text: new AtlasAllocator(),    // text labels
       tile: new AtlasAllocator()     // 256 or 512px square imagery tiles
     };
@@ -297,24 +297,29 @@ return PIXI.Texture.WHITE;
    * @param  textureID  Icon identifier (e.g. 'temaki-school')
    */
   svgIconToTexture(textureID) {
-    const svgString = this._svgIcons.get(textureID);
+    let svgString = this._svgIcons.get(textureID);
     if (!svgString) return;
 
     // Remove it to ensure that we only do this once.
     this._svgIcons.set(textureID, null);
 
-    const size = 32;
-    const options = { autoLoad: false, height: size, width: size };
-    const resource = new PIXI.ImageSource(svgString, options);
+    // Create a new graphics instance from the svg String,
+    // but first, sanitize the string to remove any 'currentColor', 'inherit', and 'url()' references.
+    svgString = svgString.replace(/(inherit|currentColor|url\(.*\))/gi, '#fff');
+    const svgGraphics = new PIXI.Graphics().svg(svgString);
+    const renderer = this.context.pixi.renderer;
 
-    // v7 code
-    // resource.load().then(() => {
-    //   this.allocate('symbol', textureID, size, size, resource.source);
-    //   this._svgIcons.delete(textureID);
-    //   this.context.deferredRedraw();
-    // });
+    const resolution = 2;
 
-    this.allocate('symbol', textureID, size, size, resource.source);
+    //Now, make a canvas and render the svg into it at higher resolution. 
+    const svgCanvas = renderer.extract.canvas({resolution: resolution, target: svgGraphics});
+    let ctx = svgCanvas.getContext('2d');
+    const imageData = ctx.getImageData(0,0,svgCanvas.width, svgCanvas.height);
+
+    const svgTexture = renderer.generateTexture({resolution: window.devicePixelRatio * 2, target: svgGraphics});
+
+    svgTexture.source.resource = imageData;
+    this.allocate('symbol', textureID, svgTexture.width*resolution, svgTexture.height*resolution, svgTexture.source);
     this._svgIcons.delete(textureID);
     this.context.deferredRedraw();
   }
