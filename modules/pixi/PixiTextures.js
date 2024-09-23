@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { AtlasAllocator, optimizeAtlasUploads } from '@rapideditor/pixi-texture-allocator';
+import { AtlasAllocator, registerAtlasUploader } from './atlas/AtlasAllocator.js';
 
 
 /**
@@ -24,17 +24,19 @@ export class PixiTextures {
     // Before using the atlases, we need to register the upload function with the renderer.
     // This will choose the correct function for either webGL or webGPU renderer type.
     const renderer = context.pixi.renderer;
-    optimizeAtlasUploads(renderer);
+    registerAtlasUploader(renderer);
 
     // We store textures in 3 atlases, each one is for holding similar sized things.
     // Each "atlas" manages its own store of "TextureSources" - real textures that upload to the GPU.
     // This helps pack them efficiently and avoids swapping frequently as WebGL draws the scene.
 
     this._atlas = {
-      symbol: new AtlasAllocator(renderer),  // small graphics - markers, pins, symbols
+      symbol: new AtlasAllocator(),  // small graphics - markers, pins, symbols
       text: new AtlasAllocator(),    // text labels
       tile: new AtlasAllocator()     // 256 or 512px square imagery tiles
     };
+
+    this._debugTexture = {};
 
 
     // All the named textures we know about.
@@ -133,17 +135,21 @@ export class PixiTextures {
   /**
    * getDebugTexture
    * @param   atlasID     One of 'symbol', 'text', or 'tile'
-   * @return  Array of PIXI.Textures for the specifiec atlas
+   * @return  {PIXI.Textures} Texture for the specifiec atlas
    */
   getDebugTexture(atlasID) {
+    if (this._debugTexture[atlasID]) {
+      return this._debugTexture[atlasID];
+    }
+
     const atlas = this._atlas[atlasID];
     if (!atlas) return null;
 
-    const frame = new PIXI.Rectangle(0, 0, atlas.slabWidth, atlas.slabHeight);
-    const textureSource = atlas.textureSlabs[0]?.slab;
-    if (!textureSource) return null;
+    const source = atlas.slabs[0];
+    if (!source) return null;
 
-    return new PIXI.Texture({ source: textureSource, frame: frame });
+    this._debugTexture[atlasID] = new PIXI.Texture({ source: source });
+    return this._debugTexture[atlasID];
   }
 
 
@@ -184,7 +190,8 @@ export class PixiTextures {
     // https://gamedev.stackexchange.com/a/49585
     if (atlasID === 'tile') {
       const rect = texture.frame.clone().pad(-0.5);
-      texture.frame = rect;  // `.frame` setter will call updateUVs() automatically
+      texture.frame = rect;  // `.frame` setter will call updateUvs() automatically
+      texture.update();   // maybe not in pixi v8?  I'm still seeing tile seams?
     }
 
     this._textureData.set(key, { texture: texture, refcount: 1 });
@@ -309,17 +316,15 @@ return PIXI.Texture.WHITE;
     const svgGraphics = new PIXI.Graphics().svg(svgString);
     const renderer = this.context.pixi.renderer;
 
+    // Now, make a canvas and render the svg into it at higher resolution.
     const resolution = 2;
-
-    //Now, make a canvas and render the svg into it at higher resolution.
-    const svgCanvas = renderer.extract.canvas({resolution: resolution, target: svgGraphics});
-    let ctx = svgCanvas.getContext('2d');
-    const imageData = ctx.getImageData(0,0,svgCanvas.width, svgCanvas.height);
-
-    const svgTexture = renderer.generateTexture({resolution: window.devicePixelRatio * 2, target: svgGraphics});
-
-    svgTexture.source.resource = imageData;
-    this.allocate('symbol', textureID, svgTexture.width*resolution, svgTexture.height*resolution, svgTexture.source);
+    const canvas = renderer.extract.canvas({ resolution: resolution, target: svgGraphics });
+//    const ctx = canvas.getContext('2d');
+//    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+//    const svgTexture = renderer.generateTexture({ resolution: window.devicePixelRatio * 2, target: svgGraphics });
+//    svgTexture.source.resource = imageData;
+//    const [w, h] = [svgTexture.width * resolution, svgTexture.height * resolution]
+    this.allocate('symbol', textureID, canvas.width, canvas.height, canvas);
     this._svgIcons.delete(textureID);
     this.context.deferredRedraw();
   }

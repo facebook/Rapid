@@ -269,21 +269,21 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
           }
 
           if (!tile.text) {
+//            tile.text = new PIXI.BitmapText({
+//              text: tileID,
+//              style: {
+//                fontFamily: 'rapid-debug',
+//                fontSize: 14
+//              }
+//            });
             tile.text = new PIXI.BitmapText({
               text: tileID,
               style: {
-                fontFamily: 'rapid-debug',
-                fontSize: 14
+                fontFamily: 'Arial',
+                fontSize: 14,
+                fill: 0xffffff
               }
             });
-//              tile.text = new PIXI.BitmapText({
-//                text: tileID,
-//                style: {
-//                  fontFamily: 'Arial',
-//                  fontSize: 14,
-//                  fill: 0xffffff
-//                }
-//              });
 
             tile.text.label = `label-${tileID}`;
             tile.text.tint = DEBUGCOLOR;

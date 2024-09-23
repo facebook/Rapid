@@ -580,7 +580,7 @@ export class PixiRenderer extends PIXI.EventEmitter {
       debug.width = 512;
       stage.addChild(debug);
     }
-    debug.texture = this.textures.getDebugTexture('tile');
+    debug.texture = this.textures.getDebugTexture('symbol');
     // debug.position.set(offset[0] + 50, offset[1] + 100);  // stay put
     // screen.position.set(offset[0] + 50, offset[1] + 100);  // stay put
 
