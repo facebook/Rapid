@@ -1,4 +1,4 @@
-describe('validationCrossingWays', () => {
+describe('validationKerbNodes', () => {
   let graph, tree;
 
   class MockLocalizationSystem {
@@ -24,7 +24,7 @@ describe('validationCrossingWays', () => {
   }
 
   const context = new MockContext();
-  const validator = Rapid.validationCrossingWays(context);
+  const validator = Rapid.validationKerbNodes(context);
 
   beforeEach(() => {
     graph = new Rapid.Graph();     // reset
@@ -73,7 +73,7 @@ describe('validationCrossingWays', () => {
     tree.rebase(entities, true);
   }
 
-
+  // TODO: Logic here will need to be adjusted according to how you write the actual validation/fix code. 
   function verifySingleCrossingIssue(issues, connectionTags) {
     // each entity must produce an identical issue
     expect(issues).to.have.lengthOf(2);
@@ -88,344 +88,19 @@ describe('validationCrossingWays', () => {
     }
   }
 
+  // TODO: Come up with a list of other things this validation should ignore. 
+  // Use the crossing_ways validations as an inspiration here: There are probably tons more test cases to check for like in that file.
   it('ignores untagged line crossing untagged line', () => {
     createWaysWithOneCrossingPoint({}, {});
     const issues = validate();
     expect(issues).to.have.lengthOf(0);
   });
 
-  it('ignores road crossing abandoned railway', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential' }, { railway: 'abandoned' });
+  // TODO: Once you've rewritten 'verifySingleCrossingIssue' make use of it for each positive test case
+  it('flags a crossing way and residential street if the street has no kerb nodes', () => {
+    createWaysWithOneCrossingPoint({highway: 'footway', footway: 'crossing'}, {highway: 'residential'});
     const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores road crossing non-rail railway', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential' }, { railway: 'yard' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores road crossing non-water waterway', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential' }, { waterway: 'fuel' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores road crossing non-building building', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential' }, { building: 'no' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores road crossing non-routable highway', () => {
-    createWaysWithOneCrossingPoint({ highway: 'services' }, { highway: 'residential' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  // legit crossing cases
-  it('ignores roads crossing roads on different layers', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential', layer: '0' }, { highway: 'residential', layer: '1'});
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores road tunnel crossing road', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential', tunnel: 'yes', layer: '-1' }, { highway: 'residential' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores road crossing railway bridge', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential' }, { railway: 'rail', bridge: 'yes' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores road bridge crossing waterway', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential', bridge: 'yes' }, { waterway: 'river' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores road crossing building on different layers', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential', layer: '-1' }, { building: 'yes' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores railway crossing railway bridge', () => {
-    createWaysWithOneCrossingPoint({ railway: 'rail', bridge: 'yes' }, { railway: 'rail' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores railway bridge crossing railway bridge on different layers', () => {
-    createWaysWithOneCrossingPoint({ railway: 'rail', bridge: 'yes', layer: '2' }, { railway: 'rail', bridge: 'yes' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores railway crossing waterway tunnel', () => {
-    createWaysWithOneCrossingPoint({ railway: 'rail' }, { waterway: 'river', tunnel: 'yes' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores railway crossing building on different layers', () => {
-    createWaysWithOneCrossingPoint({ railway: 'rail', layer: '-1' }, { building: 'yes' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores waterway crossing waterway tunnel', () => {
-    createWaysWithOneCrossingPoint({ waterway: 'canal', tunnel: 'yes' }, { waterway: 'river' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores waterway crossing building on different layers', () => {
-    createWaysWithOneCrossingPoint({ waterway: 'river', layer: '-1' }, { building: 'yes' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores building crossing building on different layers', () => {
-    createWaysWithOneCrossingPoint({ building: 'yes' }, { building: 'yes', layer: '1' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores corridor crossing corridor on different levels', () => {
-    createWaysWithOneCrossingPoint({ highway: 'corridor', level: '0' }, { highway: 'corridor', level: '1' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores a routable aeroway crossing a non-routable aeroway', () => {
-    createWaysWithOneCrossingPoint({ aeroway: 'taxiway' }, { aeroway: 'aerodrome' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores an aeroway crossing a road tunnel', () => {
-    createWaysWithOneCrossingPoint({ aeroway: 'runway' }, { highway: 'trunk', tunnel: 'yes', layer: '-1' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores an aeroway crossing a road bridge', () => {
-    createWaysWithOneCrossingPoint({ aeroway: 'runway' }, { highway: 'trunk', bridge: 'yes', layer: '1' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores an aeroway crossing a rail tunnel', () => {
-    createWaysWithOneCrossingPoint({ aeroway: 'runway' }, { railway: 'track', tunnel: 'yes', layer: '-1' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores an aeroway crossing a rail bridge', () => {
-    createWaysWithOneCrossingPoint({ aeroway: 'runway' }, { railway: 'track', bridge: 'yes', layer: '1' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores an aeroway bridge crossing a road', () => {
-    createWaysWithOneCrossingPoint({ aeroway: 'runway', bridge: 'yes', layer: '2' }, { highway: 'trunk', layer: '1' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores an aeroway bridge crossing a railway', () => {
-    createWaysWithOneCrossingPoint({ aeroway: 'runway', bridge: 'yes', layer: '1' }, { railway: 'track' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores an aeroway crossing a culvert', () => {
-    createWaysWithOneCrossingPoint({ aeroway: 'taxiway' }, { waterway: 'ditch', tunnel: 'culvert', layer: -1 });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores an aeroway crossing a building on a different layer', () => {
-    createWaysWithOneCrossingPoint({ aeroway: 'runway' }, { building: 'yes', layer: '0.5' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  // warning crossing cases between ways
-  it('flags road crossing road', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential' }, { highway: 'residential' });
-    verifySingleCrossingIssue(validate(), {});
-  });
-
-  it('flags road crossing footway', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential' }, { highway: 'footway' });
-    verifySingleCrossingIssue(validate(), { highway: 'crossing'});
-  });
-
-  it('flags road crossing cycleway', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential' }, { highway: 'cycleway' });
-    verifySingleCrossingIssue(validate(), { highway: 'crossing'});
-  });
-
-  it('flags road crossing marked crossing', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential' }, { highway: 'footway', footway: 'crossing', crossing: 'marked' });
-    verifySingleCrossingIssue(validate(), { highway: 'crossing' });
-  });
-
-  it('flags road crossing unmarked crossing', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential' }, { highway: 'footway', footway: 'crossing', crossing: 'unmarked' });
-    verifySingleCrossingIssue(validate(), { highway: 'crossing' });
-  });
-
-  it('flags road=track crossing footway', () => {
-    createWaysWithOneCrossingPoint({ highway: 'track' }, { highway: 'footway' });
-    verifySingleCrossingIssue(validate(), {});
-  });
-
-  it('flags cycleway crossing cycleway', () => {
-    createWaysWithOneCrossingPoint({ highway: 'cycleway' }, { highway: 'cycleway' });
-    verifySingleCrossingIssue(validate(), {});
-  });
-
-  it('flags cycleway crossing footway', () => {
-    createWaysWithOneCrossingPoint({ highway: 'cycleway' }, { highway: 'footway' });
-    verifySingleCrossingIssue(validate(), {});
-  });
-
-  it('flags footway crossing footway', () => {
-    createWaysWithOneCrossingPoint({ highway: 'footway' }, { highway: 'footway' });
-    verifySingleCrossingIssue(validate(), {});
-  });
-
-  it('flags road crossing railway', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential' }, { railway: 'rail' });
-    verifySingleCrossingIssue(validate(), { railway: 'level_crossing' });
-  });
-
-  it('flags footway crossing railway', () => {
-    createWaysWithOneCrossingPoint({ highway: 'footway' }, { railway: 'rail' });
-    verifySingleCrossingIssue(validate(), { railway: 'crossing' });
-  });
-
-  it('flags cycleway crossing railway', () => {
-    createWaysWithOneCrossingPoint({ highway: 'cycleway' }, { railway: 'rail' });
-    verifySingleCrossingIssue(validate(), { railway: 'crossing' });
-  });
-
-  it('flags minor road crossing waterway', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential' }, { waterway: 'river' });
-    verifySingleCrossingIssue(validate(), { ford: 'yes' });
-  });
-
-  it('flags major road crossing waterway', () => {
-    createWaysWithOneCrossingPoint({ highway: 'motorway' }, { waterway: 'river' });
-    verifySingleCrossingIssue(validate(), null);
-  });
-
-  it('flags road crossing building', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential' }, { building: 'yes' });
-    verifySingleCrossingIssue(validate(), null);
-  });
-
-  it('flags railway crossing railway', () => {
-    createWaysWithOneCrossingPoint({ railway: 'rail' }, { railway: 'rail' });
-    verifySingleCrossingIssue(validate(), {});
-  });
-
-  it('flags railway crossing waterway', () => {
-    createWaysWithOneCrossingPoint({ railway: 'rail' }, { waterway: 'river' });
-    verifySingleCrossingIssue(validate(), null);
-  });
-
-  it('flags road bridge crossing road bridge on the same layer', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential', bridge: 'yes' }, { highway: 'tertiary', bridge: 'yes' });
-    verifySingleCrossingIssue(validate(), {});
-  });
-
-  it('flags road bridge crossing aqueduct on the same layer', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential', bridge: 'yes' }, { waterway: 'canal', bridge: 'aqueduct' });
-    verifySingleCrossingIssue(validate(), null);
-  });
-
-  it('flags road tunnel crossing waterway tunnel on the same layer', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential', tunnel: 'yes' }, { waterway: 'canal', tunnel: 'yes' });
-    verifySingleCrossingIssue(validate(), null);
-  });
-
-  it('flags railway bridge crossing road bridge on the same layer', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential', bridge: 'yes' }, { railway: 'rail', bridge: 'yes' });
-    verifySingleCrossingIssue(validate(), { railway: 'level_crossing' });
-  });
-
-  it('flags railway crossing building', () => {
-    createWaysWithOneCrossingPoint({ railway: 'rail' }, { building: 'yes' });
-    verifySingleCrossingIssue(validate(), null);
-  });
-
-  it('flags waterway crossing waterway', () => {
-    createWaysWithOneCrossingPoint({ waterway: 'canal' }, { waterway: 'canal' });
-    verifySingleCrossingIssue(validate(), {});
-  });
-
-  it('flags waterway tunnel crossing waterway tunnel on the same layer', () => {
-    createWaysWithOneCrossingPoint({ waterway: 'canal', tunnel: 'yes' }, { waterway: 'canal', tunnel: 'yes' });
-    verifySingleCrossingIssue(validate(), {});
-  });
-
-  it('flags waterway crossing building', () => {
-    createWaysWithOneCrossingPoint({ waterway: 'river' }, { building: 'yes' });
-    verifySingleCrossingIssue(validate(), null);
-  });
-
-  it('flags building crossing building', () => {
-    createWaysWithOneCrossingPoint({ building: 'yes' }, { building: 'yes' });
-    verifySingleCrossingIssue(validate(), null);
-  });
-
-  it('flags corridor crossing corridor on the same level', () => {
-    createWaysWithOneCrossingPoint({ highway: 'corridor', level: '0' }, { highway: 'corridor', level: '0' });
-    verifySingleCrossingIssue(validate(), {});
-  });
-
-  it('flags an aeroway crosing another aeroway', () => {
-    createWaysWithOneCrossingPoint({ aeroway: 'runway' }, { aeroway: 'taxiway' });
-    verifySingleCrossingIssue(validate(), {});
-  });
-
-  it('flags an aeroway crosing a major road', () => {
-    createWaysWithOneCrossingPoint({ aeroway: 'runway' }, { highway: 'motorway' });
-    verifySingleCrossingIssue(validate(), { aeroway: 'aircraft_crossing' });
-  });
-
-  it('flags an aeroway crosing a service road', () => {
-    createWaysWithOneCrossingPoint({ aeroway: 'runway' }, { highway: 'service' });
-    verifySingleCrossingIssue(validate(), {});
-  });
-
-  it('flags an aeroway crosing a path', () => {
-    createWaysWithOneCrossingPoint({ aeroway: 'runway' }, { highway: 'corridor' });
-    verifySingleCrossingIssue(validate(), {});
-  });
-
-  it('flags an aeroway crosing a railway', () => {
-    createWaysWithOneCrossingPoint({ aeroway: 'taxiway' }, { railway: 'disused' });
-    verifySingleCrossingIssue(validate(), { aeroway: 'aircraft_crossing', railway: 'level_crossing' });
-  });
-
-  it('flags an aeroway crosing a waterway', () => {
-    createWaysWithOneCrossingPoint({ aeroway: 'runway' }, { waterway: 'canal' });
-    verifySingleCrossingIssue(validate(), null);
-  });
-
-  it('flags an aeroway crosing a building', () => {
-    createWaysWithOneCrossingPoint({ aeroway: 'runway' }, { building: 'hangar' });
-    verifySingleCrossingIssue(validate(), null);
+    expect(issues).to.have.lengthOf(1);
   });
 
 
@@ -449,7 +124,7 @@ describe('validationCrossingWays', () => {
     const n4 = Rapid.osmNode({ id: 'n-4', loc: [ 1,  1] });
     const n5 = Rapid.osmNode({ id: 'n-5', loc: [ 1, -1] });
     const n6 = Rapid.osmNode({ id: 'n-6', loc: [-1, -1] });
-    const w2 = Rapid.osmWay({ id: 'w-2', nodes: ['n-3', 'n-4', 'n-5', 'n-6'], tags: { highway: 'residential' }});
+    const w2 = Rapid.osmWay({ id: 'w-2', nodes: ['n-3', 'n-4', 'n-5', 'n-6'], tags: { highway: 'footway', footway: 'crossing' }});
 
     const entities = [n1, n2, n3, n4, n5, n6, w1, w2];
     graph = new Rapid.Graph(entities);
@@ -457,6 +132,8 @@ describe('validationCrossingWays', () => {
     tree.rebase(entities, true);
   }
 
+  // TODO: Don't worry too much abou this sort of case *just* yet. but! Do think about cases where a crosswalk traverses a pedestrian island. 
+  // Just worry about the single-node intersection case above and think about this once you've nailed that.
   it('flags road crossing road twice', () => {
     createWaysWithTwoCrossingPoints();
     const issues = validate();
@@ -483,77 +160,5 @@ describe('validationCrossingWays', () => {
     expect(issue.loc).to.eql([0, -1]);
   });
 
-
-  //
-  // n-6 *-------* n-5
-  //     |  n-2  |
-  //     |   *   |
-  //     |   |   |
-  // n-3 *---|---* n-4
-  //         |
-  //         *
-  //        n-1
-  //
-  function createWayAndRelationWithOneCrossingPoint(w1tags = {}, r1tags = {}) {
-    const n1 = Rapid.osmNode({ id: 'n-1', loc: [0, -1] });
-    const n2 = Rapid.osmNode({ id: 'n-2', loc: [0,  1] });
-    const w1 = Rapid.osmWay({ id: 'w-1', nodes: ['n-1', 'n-2'], tags: w1tags });
-
-    const n3 = Rapid.osmNode({ id: 'n-3', loc: [-1, 0] });
-    const n4 = Rapid.osmNode({ id: 'n-4', loc: [ 1, 0] });
-    const n5 = Rapid.osmNode({ id: 'n-5', loc: [ 1, 3] });
-    const n6 = Rapid.osmNode({ id: 'n-6', loc: [-1, 3] });
-    const w2 = Rapid.osmWay({ id: 'w-2', nodes: ['n-3', 'n-4', 'n-5'], tags: {} });
-    const w3 = Rapid.osmWay({ id: 'w-3', nodes: ['n-5', 'n-6', 'n-3'], tags: {} });
-    const r1 = Rapid.osmRelation({id: 'r-1', members: [{ id: 'w-2', type: 'way' }, { id: 'w-3', type: 'way' }], tags: r1tags });
-
-    const entities = [n1, n2, n3, n4, n5, n6, w1, w2, w3, r1];
-    graph = new Rapid.Graph(entities);
-    tree = new Rapid.Tree(graph);
-    tree.rebase(entities, true);
-  }
-
-  it('ignores road line crossing relation with building=yes without a type', () => {
-    createWayAndRelationWithOneCrossingPoint({ highway: 'residential' }, { building: 'yes' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores road line crossing type=building relation', () => {
-    createWayAndRelationWithOneCrossingPoint({ highway: 'residential' }, { building: 'yes', type: 'building' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('ignores road line crossing waterway multipolygon relation', () => {
-    createWayAndRelationWithOneCrossingPoint({ highway: 'residential' }, { waterway: 'river', type: 'multipolygon' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  it('flags road line crossing building multipolygon relation', () => {
-    createWayAndRelationWithOneCrossingPoint({ highway: 'residential' }, { building: 'yes', type: 'multipolygon' });
-    verifySingleCrossingIssue(validate(), null);
-  });
-
-  it('flags footway line crossing footway multipolygon relation', () => {
-    createWayAndRelationWithOneCrossingPoint({ highway: 'footway' }, { highway: 'footway', type: 'multipolygon' });
-    verifySingleCrossingIssue(validate(), {});
-  });
-
-  it('flags road line crossing footway multipolygon relation', () => {
-    createWayAndRelationWithOneCrossingPoint({ highway: 'residential' }, { highway: 'footway', type: 'multipolygon' });
-    verifySingleCrossingIssue(validate(), {});
-  });
-
-  it('flags railway line crossing footway multipolygon relation', () => {
-    createWayAndRelationWithOneCrossingPoint({ railway: 'tram' }, { highway: 'footway', type: 'multipolygon' });
-    verifySingleCrossingIssue(validate(), {});
-  });
-
-  it('flags waterway line crossing footway multipolygon relation', () => {
-    createWayAndRelationWithOneCrossingPoint({ waterway: 'stream' }, { highway: 'footway', type: 'multipolygon' });
-    verifySingleCrossingIssue(validate(), {});
-  });
 
 });
