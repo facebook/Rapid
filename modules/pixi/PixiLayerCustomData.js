@@ -1,4 +1,3 @@
-import * as PIXI from 'pixi.js';
 import { gpx, kml } from '@tmcw/togeojson';
 import geojsonRewind from '@mapbox/geojson-rewind';
 import { parse as wktParse } from 'wkt';

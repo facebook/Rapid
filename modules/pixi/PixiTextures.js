@@ -211,7 +211,7 @@ export class PixiTextures {
 
     if (tdata.refcount === 0) {
       atlas.free(tdata.texture);
-      tdata.texture.destroy(false);   // false = don't destroy base texture
+      tdata.texture.destroy(false);   // false = don't destroy textureSource
       tdata.texture = null;
       this._textureData.delete(key);
     }
@@ -227,7 +227,7 @@ export class PixiTextures {
    * This is much more performant than drawing the graphcs.
    *
    * We also pack these graphics into a "texture atlas" so that they all live in the same
-   * BaseTexture.  This texture gets sent to the GPU once then reused, so WebGL isn't constantly
+   * TextureSource.  This texture gets sent to the GPU once then reused, so WebGL isn't constantly
    * swapping between textures as it draws things.
    *
    * @param  textureID   Texture identifier (e.g. 'boldPin')
@@ -311,7 +311,7 @@ return PIXI.Texture.WHITE;
 
     const resolution = 2;
 
-    //Now, make a canvas and render the svg into it at higher resolution. 
+    //Now, make a canvas and render the svg into it at higher resolution.
     const svgCanvas = renderer.extract.canvas({resolution: resolution, target: svgGraphics});
     let ctx = svgCanvas.getContext('2d');
     const imageData = ctx.getImageData(0,0,svgCanvas.width, svgCanvas.height);

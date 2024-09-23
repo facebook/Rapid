@@ -225,7 +225,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
         tile.sprite.texture = textureManager.allocate('tile', tile.sprite.label, w, h, tile.image);
 
         tile.loaded = true;
-        tile.image = null;  // image is copied to the atlas, we can free it
+        tile.image = null;  // reference to `image` is held by the atlas, we can null it
         map.deferredRedraw();
       };
 
@@ -265,17 +265,34 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
             tile.debug = new PIXI.Graphics();
             tile.debug.label = `debug-${tileID}`;
             tile.debug.eventMode = 'none';
-            tile.debug.sortableChildren = false;
             debugContainer.addChild(tile.debug);
-
-            const label = new PIXI.BitmapText(tileID, { fontName: 'debug' });
-            label.label = `label-${tileID}`;
-            label.tint = DEBUGCOLOR;
-            label.position.set(2, 2);
-            tile.debug.addChild(label);
           }
 
-          tile.debug.position.set(x, y - size);  // left, top
+          if (!tile.text) {
+            tile.text = new PIXI.BitmapText({
+              text: tileID,
+              style: {
+                fontFamily: 'rapid-debug',
+                fontSize: 14
+              }
+            });
+//              tile.text = new PIXI.BitmapText({
+//                text: tileID,
+//                style: {
+//                  fontFamily: 'Arial',
+//                  fontSize: 14,
+//                  fill: 0xffffff
+//                }
+//              });
+
+            tile.text.label = `label-${tileID}`;
+            tile.text.tint = DEBUGCOLOR;
+            tile.text.eventMode = 'none';
+            debugContainer.addChild(tile.text);
+          }
+
+          tile.debug.position.set(x, y - size);          // left, top
+          tile.text.position.set(x + 2, y - size + 2);  // left, top
           tile.debug
             .clear()
             .rect(0, 0, size, size)
@@ -341,20 +358,23 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     const textureManager = this.renderer.textures;
 
     if (tile.sprite) {
-      tile.sprite.texture = null;
       if (tile.loaded) {
         textureManager.free('tile', tile.sprite.label);
       }
-      tile.sprite.destroy({ children: true, texture: false, baseTexture: false });
+      tile.sprite.destroy({ texture: true, textureSource: false });
     }
 
     if (tile.debug) {
-      tile.debug.destroy({ children: true });
+      tile.debug.destroy();
+    }
+    if (tile.text) {
+      tile.text.destroy();
     }
 
     tile.image = null;
     tile.sprite = null;
     tile.debug = null;
+    tile.text = null;
   }
 
 
@@ -369,7 +389,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     let sourceContainer = groupContainer.getChildByLabel(sourceID);
     if (!sourceContainer) {
       sourceContainer = new PIXI.Container();
-      sourceContainer.label= sourceID;
+      sourceContainer.label = sourceID;
       sourceContainer.eventMode = 'none';
       sourceContainer.sortableChildren = true;
       groupContainer.addChild(sourceContainer);

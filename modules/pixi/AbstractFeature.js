@@ -98,7 +98,7 @@ export class AbstractFeature {
     this.context = null;
 
     if (this.halo) {
-      this.halo.destroy({ children: true });
+      this.halo.destroy();
       this.halo = null;
     }
 

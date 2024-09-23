@@ -283,7 +283,7 @@ export class PixiFeaturePoint extends AbstractFeature {
 
     // Recalculate hitArea, grow it if too small
     const MINSIZE = 20;
-    // In v8, getLocalBounds now returns a Bounds, not a Rectangle. 
+    // In v8, getLocalBounds now returns a Bounds, not a Rectangle.
     // The Rectangle is wrapped within the bounds object.
     const rect = this.marker.getLocalBounds().rectangle.clone();
 
@@ -369,7 +369,7 @@ export class PixiFeaturePoint extends AbstractFeature {
 
     } else {
       if (this.halo) {
-        this.halo.destroy({ children: true });
+        this.halo.destroy();
         this.halo = null;
       }
     }

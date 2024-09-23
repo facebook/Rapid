@@ -105,7 +105,8 @@ export class PixiRenderer extends PIXI.EventEmitter {
       resolution: window.devicePixelRatio,
       sharedLoader: true,
       sharedTicker: true,
-      textureGCActive: true
+      textureGCActive: true,
+      useBackBuffer: true
     })
     .then(() => {
       // todo - we should stop doing this.. Access to pixi app should be via an instance of PixiRenderer
@@ -113,16 +114,16 @@ export class PixiRenderer extends PIXI.EventEmitter {
       this.context.pixi = this.pixi;
 
       // Prepare a basic bitmap font that we can use for things like debug messages
-      // BitmapFont.install('debug', {
-      //   fill: 0xffffff,
-      //   fontSize: 14,
-      //   stroke: 0x333333,
-      //   strokeThickness: 2
-      // },{
-      //   chars: BitmapFont.ASCII,
-      //   padding: 0,
-      //   resolution: 2
-      // });
+      PIXI.BitmapFont.install({
+        name: 'rapid-debug',
+        style: {
+          fill: { color: 0xffffff },
+          fontSize: 14,
+          stroke: { color: 0x333333 }
+        },
+        chars: PIXI.BitmapFontManager.ASCII,
+        resolution: 2
+      });
 
       // Register Pixi with the pixi-inspector extension if it is installed
       // https://github.com/bfanger/pixi-inspector

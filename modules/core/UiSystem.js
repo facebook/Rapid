@@ -250,8 +250,9 @@ export class UiSystem extends AbstractSystem {
           .attr('class', 'select-trap')
           .text('t');
 
-        overMapEnter
-          .call(uiMapInMap(context));
+// not yet
+//        overMapEnter
+//          .call(uiMapInMap(context));
 
         overMapEnter
           .call(uiMap3dViewer(context));

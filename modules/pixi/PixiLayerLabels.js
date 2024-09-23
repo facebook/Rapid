@@ -9,22 +9,22 @@ import { getLineSegments, /*getDebugBBox,*/ lineToPoly } from './helpers.js';
 const MINZOOM = 12;
 
 const TEXT_NORMAL = {
-  fill: 0x333333,
+  fill: { color: 0x333333 },
   fontFamily: 'Arial, Helvetica, sans-serif',
   fontSize: 11,
   fontWeight: 600,
   lineJoin: 'round',
-  stroke:({width:2.7, color:'0xffffff'})
+  stroke: { width: 2.7, color: 0xffffff }
 };
 
 const TEXT_ITALIC = {
-  fill: 0x333333,
+  fill: { color: 0x333333 },
   fontFamily: 'Arial, Helvetica, sans-serif',
   fontSize: 11,
   fontStyle: 'italic',
   fontWeight: 600,
   lineJoin: 'round',
-  stroke:({width:2.7, color:'0xffffff'})
+  stroke: { width: 2.7, color: 0xffffff }
 };
 
 
@@ -106,9 +106,21 @@ export class PixiLayerLabels extends AbstractLayer {
     this._labelOffset = new PIXI.Point();
 
     // For ascii-only labels, we can use PIXI.BitmapText to avoid generating label textures
-    // BitmapFont.install('label-normal', TEXT_NORMAL, { chars: BitmapFont.ASCII, padding: 0, resolution: 2 });
+    PIXI.BitmapFontManager.install({
+      name: 'label-normal',
+      style: TEXT_NORMAL,
+      chars: PIXI.BitmapFontManager.ASCII,
+      padding: 0,
+      resolution: 1
+    });
     // not actually used
-    // PIXI.BitmapFont.from('label-italic', TEXT_ITALIC, { chars: PIXI.BitmapFont.ASCII, padding: 0, resolution: 2 });
+    // PIXI.BitmapFontManager.from({
+    //   name: 'label-italic',
+    //   style: TEXT_ITALIC,
+    //   chars: PIXI.BitmapFontManager.ASCII,
+    //   padding: 0,
+    //   resolution: 1
+    // });
 
     // For all other labels, generate it on the fly in a PIXI.Text or PIXI.Sprite
     this._textStyleNormal = new PIXI.TextStyle(TEXT_NORMAL);
@@ -127,7 +139,7 @@ export class PixiLayerLabels extends AbstractLayer {
     this.debugContainer.removeChildren();
 
     for (const dObj of this._dObjs.values()) {
-      dObj.destroy({ children: true, texture: false, baseTexture: false });
+      dObj.destroy();
     }
     for (const label of this._labels.values()) {
       label.dObjID = null;
@@ -192,7 +204,7 @@ export class PixiLayerLabels extends AbstractLayer {
     for (const dObjID of dObjIDs) {
       const dObj = this._dObjs.get(dObjID);
       if (dObj) {
-        dObj.destroy({ children: true, texture: false, baseTexture: false });
+        dObj.destroy();
       }
       this._dObjs.delete(dObjID);
     }
@@ -455,7 +467,7 @@ export class PixiLayerLabels extends AbstractLayer {
       if (/^[\x20-\x7E]*$/.test(feature.label)) {   // is it in the printable ASCII range?
         labelObj = new PIXI.BitmapText({
           text: feature.label,
-          style: { fontName: 'label-normal' }
+          style: { fontFamily: 'label-normal' }
         });
         // labelObj.updateText();           // force update it so its texture is ready to be reused on a sprite
         labelObj.label = feature.label;
@@ -688,7 +700,7 @@ for (let i = 0; i < bufferdata.inner.length / 2; ++i) {
     }
 
 //    if (!picked) {
-//      labelObj.destroy({ children: true });  // didn't place it
+//      labelObj.destroy();  // didn't place it
 //    }
   }
 
@@ -868,7 +880,7 @@ for (let i = 0; i < bufferdata.inner.length / 2; ++i) {
     });
 
     // we can destroy the sprite now, it's texture will remain on the rope?
-    // sprite.destroy({ children: true });
+    // sprite.destroy();
   }
 
 
