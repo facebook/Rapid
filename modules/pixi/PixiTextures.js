@@ -28,12 +28,12 @@ export class PixiTextures {
 
     // We store textures in 3 atlases, each one is for holding similar sized things.
     // Each "atlas" manages its own store of "TextureSources" - real textures that upload to the GPU.
-    // This helps pack them efficiently and avoids swapping frequently as WebGL draws the scene.
+    // This helps pack them efficiently and avoids swapping textures frequently as WebGL draws the scene.
 
     this._atlas = {
-      symbol: new AtlasAllocator(),  // small graphics - markers, pins, symbols
-      text: new AtlasAllocator(),    // text labels
-      tile: new AtlasAllocator()     // 256 or 512px square imagery tiles
+      symbol: new AtlasAllocator('symbol'),  // small graphics - markers, pins, symbols
+      text: new AtlasAllocator('text'),      // text labels
+      tile: new AtlasAllocator('tile')       // 256 or 512px square imagery tiles
     };
 
     this._debugTexture = {};
@@ -184,15 +184,19 @@ export class PixiTextures {
       throw new Error(`Couldn't allocate texture ${key}`);
     }
 
-    // For tiles we want to preserve their power of 2 dimensions - so no padding!
-    // But we also want to prevent their colors from spilling into an adjacent tile in the atlas.
-    // Shrink texture coords by half pixel to avoid this.
-    // https://gamedev.stackexchange.com/a/49585
-    if (atlasID === 'tile') {
-      const rect = texture.frame.clone().pad(-0.5);
-      texture.frame = rect;  // `.frame` setter will call updateUvs() automatically
-      texture.update();   // maybe not in pixi v8?  I'm still seeing tile seams?
-    }
+    texture.label = key;
+
+// no longer needed in v8?  this code introduces seams instead of closing them.
+// maybe we are just doing a better job of linear sampling / antialiasing disabled?
+//    // For tiles we want to preserve their power of 2 dimensions - so no padding!
+//    // But we also want to prevent their colors from spilling into an adjacent tile in the atlas.
+//    // Shrink texture coords by half pixel to avoid this.
+//    // https://gamedev.stackexchange.com/a/49585
+//    if (atlasID === 'tile') {
+//      const rect = texture.frame.clone().pad(-0.5);
+//      texture.frame = rect;  // `.frame` setter will call updateUvs() automatically
+//      texture.update();   // maybe not in pixi v8?  I'm still seeing tile seams?
+//    }
 
     this._textureData.set(key, { texture: texture, refcount: 1 });
 

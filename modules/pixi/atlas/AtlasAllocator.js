@@ -12,12 +12,14 @@ export class AtlasAllocator {
   /**
    * Creates an atlas allocator.
    * @constructor
+   * @param {string} label - optional label, can be used for debugging
    * @param {number} slabWidth
    * @param {number} slabHeight
    */
-  constructor(slabWidth = 2048, slabHeight = 2048) {
+  constructor(label = '', slabWidth = 2048, slabHeight = 2048) {
     this._tempRect = new PIXI.Rectangle();
 
+    this.label = label;
     this.slabWidth = slabWidth;
     this.slabHeight = slabHeight;
     this.slabs = [];
@@ -49,7 +51,7 @@ export class AtlasAllocator {
     }
 
     // Need another new slab.
-    const slab = new AtlasSource(this.slabWidth, this.slabHeight);
+    const slab = new AtlasSource(this.label, this.slabWidth, this.slabHeight);
 
     // Append this slab to the head of the list.
     this.slabs.unshift(slab);
@@ -179,17 +181,27 @@ export class AtlasAllocator {
 
 
 /**
+ * AtlasSource
  * An {@code AtlasSource} is used by {@link AtlasAllocator} to manage texture sources.
  * @public
  */
 export class AtlasSource extends PIXI.TextureSource {
   /**
-   * Creates an atlas resource.
-   * @param width
-   * @param height
+   * Creates a TextureSource for the textures in the atlas (aka a "slab")
+   * @param {string}  label - optional label, can be used for debugging
+   * @param {number}  width
+   * @param {number}  height
    */
-  constructor(width, height) {
-    super({ width, height });
+  constructor(label, width, height) {
+    super({
+      antialias: false,
+      autoGarbageCollect: false,
+      autoGenerateMipmaps: false,
+      height: height,
+      label: label,
+      resolution: 1,
+      width: width
+    });
     this.uploadMethodId = 'atlas';
 
     this._items = new Map();      // Map<uid, Item object>
