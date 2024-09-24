@@ -47,6 +47,8 @@ describe('validationKerbNodes', () => {
     expect(issues).to.have.lengthOf(0);
   });
 
+  // TODO: Recall that this test was copied from crossing_ways, which tests overlapping ways that don't have any intersecting nodes. 
+  // We'll need to rewrite the setup methods like this one to have an 'n-5' at the crossing point, and to evaluate *that* instead.
 
 
   //
@@ -76,6 +78,7 @@ describe('validationKerbNodes', () => {
   // TODO: Logic here will need to be adjusted according to how you write the actual validation/fix code. 
   function verifySingleCrossingIssue(issues, connectionTags) {
     // each entity must produce an identical issue
+    // TODO: Determine whether this will still be the case in the kerb_nodes validator
     expect(issues).to.have.lengthOf(2);
     expect(issues[0].id).to.eql(issues[1].id);
 

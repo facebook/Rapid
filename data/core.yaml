@@ -1883,6 +1883,11 @@ en:
       tip: "Find way segments that are duplicated (same node endpoints)"
       message: "Two or more segments share the same pair of nodes"
       reference: "Redundant way segments should be merged or moved apart."
+    kerb_nodes:
+     title: "Kerb Nodes"
+     message: "{feature} may be missing kerb nodes."
+     reference: "Crossing ways should have individual kerb nodes (where appropriate)."
+     footway-highway: "Footways crossing highways should have separately-mapped kerb nodes."
     crossing_ways:
       title: Crossings Ways
       message: "{feature} crosses {feature2}"
@@ -2079,6 +2084,9 @@ en:
       add_a_tunnel:
         title: Add a tunnel
         annotation: Added a tunnel.
+      add_kerb_nodes:
+        title: Added kerb nodes
+        annotation: Added kerb nodes.
       address_the_concern:
         title: Address the concern
       set_both_as_marked:
