@@ -246,49 +246,61 @@ export class PixiTextures {
    * @param  options     Options passed to `renderer.generateTexture`
    */
   _graphicToTexture(textureID, graphic, options) {
-return PIXI.Texture.WHITE;
-    const renderer = this.context.pixi.renderer;
-    // options.multisample = MSAA_QUALITY.NONE;  // disable multisampling so we can use gl.readPixels
+// v8
     options.antialias = false;
+    options.target = graphic;
+    const renderer = this.context.pixi.renderer;
+    const renderTexture = renderer.generateTexture(options);
+    const { pixels, width, height } = renderer.texture.getPixels(renderTexture);
 
-// https://github.com/pixijs/pixijs/issues/10836
-//    options.format = 'rgba32float';
-//const renderTexture = PIXI.RenderTexture.create(options);
-//renderTexture.source.uploadMethodId = "buffer"; // this line is important after you create the renderTexture
-//renderer.render({ target: renderTexture, container: graphic });
-    const renderTexture = renderer.generateTexture(graphic, options);
-    const baseTexture = renderTexture.source;
+    const texture = this.allocate('symbol', textureID, width, height, pixels);
 
-    if (baseTexture.format !== 'RGBA6408') return;       // we could handle other values
-    if (baseTexture.type !== '5121') return;  // but probably don't need to.
-
-    const framebuffer = baseTexture.framebuffer;
-    // If we can't get framebuffer, just return the rendertexture
-    // Maybe we are running in a test/ci environment?
-    if (!framebuffer) return renderTexture;
-
-    const w = framebuffer.width;
-    const h = framebuffer.height;
-    const pixels = new Uint8Array(w * h * 4);
-
-    const gl = renderer.context.gl;
-    const glfb = framebuffer.glFramebuffers[1];
-    const fb = glfb?.framebuffer;
-
-    // If we can't get glcontext or glframebuffer, just return the rendertexture
-    // Maybe we are running in a test/ci environment?
-    if (!gl || !fb) return renderTexture;
-
-    gl.bindFramebuffer(gl.FRAMEBUFFER, fb);   // should be bound already, but couldn't hurt?
-    gl.readPixels(0, 0, w, h, baseTexture.format, baseTexture.type, pixels);
-
-    // Store the texture in the symbol atlas
-    const texture = this.allocate('symbol', textureID, w, h, pixels);
     // These textures are overscaled, but `orig` Rectangle stores the original width/height
     // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
     texture.orig = renderTexture.orig.clone();
 
-    renderTexture.destroy(true);  // safe to destroy, the texture is copied to the atlas
+    renderTexture.destroy();
+    graphic.destroy({ context: true });
+
+
+// v7
+//    const renderer = this.context.pixi.renderer;
+//    // options.multisample = MSAA_QUALITY.NONE;  // disable multisampling so we can use gl.readPixels
+//    options.antialias = false;
+//
+//    const renderTexture = renderer.generateTexture(graphic, options);
+//    const baseTexture = renderTexture.source;
+//
+//    if (baseTexture.format !== 'RGBA6408') return;       // we could handle other values
+//    if (baseTexture.type !== '5121') return;  // but probably don't need to.
+//
+//    const framebuffer = baseTexture.framebuffer;
+//    // If we can't get framebuffer, just return the rendertexture
+//    // Maybe we are running in a test/ci environment?
+//    if (!framebuffer) return renderTexture;
+//
+//    const w = framebuffer.width;
+//    const h = framebuffer.height;
+//    const pixels = new Uint8Array(w * h * 4);
+//
+//    const gl = renderer.context.gl;
+//    const glfb = framebuffer.glFramebuffers[1];
+//    const fb = glfb?.framebuffer;
+//
+//    // If we can't get glcontext or glframebuffer, just return the rendertexture
+//    // Maybe we are running in a test/ci environment?
+//    if (!gl || !fb) return renderTexture;
+//
+//    gl.bindFramebuffer(gl.FRAMEBUFFER, fb);   // should be bound already, but couldn't hurt?
+//    gl.readPixels(0, 0, w, h, baseTexture.format, baseTexture.type, pixels);
+//
+//    // Store the texture in the symbol atlas
+//    const texture = this.allocate('symbol', textureID, w, h, pixels);
+//    // These textures are overscaled, but `orig` Rectangle stores the original width/height
+//    // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
+//    texture.orig = renderTexture.orig.clone();
+//
+//    renderTexture.destroy(true);  // safe to destroy, the texture is copied to the atlas
   }
 
 
@@ -383,16 +395,12 @@ return PIXI.Texture.WHITE;
    * This is much more performant than drawing the graphcs.
    */
   _cacheGraphics() {
-    const options = { resolution: 2 };
 
     //
     // Viewfields
     //
     const viewfieldRect = new PIXI.Rectangle(-13, 0, 26, 52);
-    const viewfieldOptions = {
-      region: viewfieldRect,  // texture the whole 26x26 region
-      resolution: 3           // oversample a bit so it looks pretty when rotated
-    };
+    const viewfieldOptions = { frame: viewfieldRect };  // texture the whole 26x26 region
 
     const viewfield = new PIXI.Graphics()       //   [-2,26]  ,---,  [2,26]
       .moveTo(-2, 26)                           //           /     \
@@ -401,7 +409,7 @@ return PIXI.Texture.WHITE;
       .bezierCurveTo(12, 0, -12, 0, -12, 4)     //        /           \
       .closePath()                              //       /             \
       .fill({ color: 0xffffff, alpha: 1 })      //       ""--_______--""         +y
-      .stroke({ width: 1, color: 0x444444 });   // [-12,4]              [12,4]    |
+      .stroke({ color: 0x444444, width: 1 });   // [-12,4]              [12,4]    |
                                                 //            [0,0]               +-- +x
 
     const viewfieldDark = new PIXI.Graphics()
@@ -411,7 +419,7 @@ return PIXI.Texture.WHITE;
       .bezierCurveTo(12, 0, -12, 0, -12, 4)
       .closePath()                              // same viewfield, but outline light gray
       .fill({ color: 0x333333, alpha: 1 })      // and fill dark gray (not intended to be tinted)
-      .stroke({ width: 1, color: 0xcccccc });
+      .stroke({ color: 0xcccccc, width: 1 });
 
     const viewfieldOutline = new PIXI.Graphics()
       .moveTo(-2, 26)
@@ -419,8 +427,7 @@ return PIXI.Texture.WHITE;
       .lineTo(12, 4)
       .bezierCurveTo(12, 0, -12, 0, -12, 4)
       .closePath()
-      .fill({ color: 0xffffff, alpha: 0 })
-      .stroke({ width: 1, color: 0xcccccc });
+      .stroke({ color: 0xcccccc, width: 1 });
 
     this._graphicToTexture('viewfield', viewfield, viewfieldOptions);
     this._graphicToTexture('viewfieldDark', viewfieldDark, viewfieldOptions);
@@ -430,21 +437,20 @@ return PIXI.Texture.WHITE;
     const pano = new PIXI.Graphics()  // just a full circle - for panoramic / 360° images
       .circle(0, 0, 20)
       .fill({ color: 0xffffff, alpha: 1 })
-      .stroke({ width: 1, color: 0x444444 });
+      .stroke({ color: 0x444444, width: 1 });
 
     const panoDark = new PIXI.Graphics()
       .circle(0, 0, 20)
       .fill({ color: 0x333333, alpha: 1 })
-      .stroke({ width: 1, color: 0xcccccc });
+      .stroke({ color: 0xcccccc, width: 1 });
 
     const panoOutline = new PIXI.Graphics()
       .circle(0, 0, 20)
-      .fill({ color: 0xffffff, alpha: 0 })
-      .stroke({ width: 1, color: 0xcccccc });
+      .stroke({ color: 0xcccccc, width: 1 });
 
-    this._graphicToTexture('pano', pano, options);
-    this._graphicToTexture('panoDark', panoDark, options);
-    this._graphicToTexture('panoOutline', panoOutline, options);
+    this._graphicToTexture('pano', pano);
+    this._graphicToTexture('panoDark', panoDark);
+    this._graphicToTexture('panoOutline', panoOutline);
 
 
     //
@@ -459,7 +465,7 @@ return PIXI.Texture.WHITE;
       .bezierCurveTo(8,-10, 2,-2, 0,0)          //            \         /
       .closePath()                              //             \       /
       .fill({ color: 0xffffff, alpha: 1 })      //              \     /
-      .stroke({ width: 1, color: 0x444444 });   //               \   /      -y
+      .stroke({ color: 0x444444, width: 1 });   //               \   /      -y
                                                 //                `+`        |
                                                 //               [0,0]       +-- +x
     const boldPin = new PIXI.Graphics()
@@ -469,55 +475,55 @@ return PIXI.Texture.WHITE;
       .bezierCurveTo(4,-23, 8,-19, 8,-15)
       .bezierCurveTo(8,-10, 2,-2, 0,0)
       .closePath()
-      .stroke({ width: 1.5, color: 0x666666 })     // same pin, bolder line stroke
-      .fill({ color: 0xdddddd, alpha: 1 });
+      .fill({ color: 0xdddddd, alpha: 1 })
+      .stroke({ color: 0x666666, width: 1.5 });    // same pin, bolder line stroke
 
     const xlargeSquare = new PIXI.Graphics()   // used as an "unknown" street sign
       .rect(-12, -12, 24, 24)
       .fill({ color: 0xffffff, alpha: 1 })
-      .stroke({ width: 2, color: 0x444444 });
+      .stroke({ color: 0x444444, width: 2 });
 
     const largeSquare = new PIXI.Graphics()    // suitable to display an icon inside
       .rect(-8, -8, 16, 16)
       .fill({ color: 0xffffff, alpha: 1 })
-      .stroke({ width: 2, color: 0x444444 });
+      .stroke({ color: 0x444444, width: 2 });
 
     const xlargeCircle = new PIXI.Graphics()   // used as an "unknown" detection
       .circle(0, 0, 12)
       .fill({ color: 0xffffff, alpha: 1 })
-      .stroke({ width: 2, color: 0x444444 });
+      .stroke({ color: 0x444444, width: 2 });
 
     const largeCircle = new PIXI.Graphics()    // suitable to display an icon inside
       .circle(0, 0, 8)
       .fill({ color: 0xffffff, alpha: 1 })
-      .stroke({ width: 1, color: 0x444444 });
+      .stroke({ color: 0x444444, width: 1 });
 
     const mediumCircle = new PIXI.Graphics()   // suitable for a streetview photo marker
       .circle(0, 0, 6)
       .fill({ color: 0xffffff, alpha: 1 })
-      .stroke({ width: 1, color: 0x444444 });
+      .stroke({ color: 0x444444, width: 1 });
 
     const smallCircle = new PIXI.Graphics()    // suitable for a plain vertex
       .circle(0, 0, 4.5)
       .fill({ color: 0xffffff, alpha: 1 })
-      .stroke({ width: 1, color: 0x444444 });
+      .stroke({ color: 0x444444, width: 1 });
 
     const taggedCircle = new PIXI.Graphics()   // a small circle with a dot inside
       .circle(0, 0, 4.5)
       .fill({ color: 0x000000, alpha: 1 })
       .circle(0, 0, 1.5)
       .fill({ color: 0xffffff, alpha: 1 })
-      .stroke({ width: 1, color: 0x444444 });
+      .stroke({ color: 0x444444, width: 1 });
 
-    this._graphicToTexture('pin', pin, options);
-    this._graphicToTexture('boldPin', boldPin, options);
-    this._graphicToTexture('xlargeSquare', xlargeSquare, options);
-    this._graphicToTexture('largeSquare', largeSquare, options);
-    this._graphicToTexture('xlargeCircle', xlargeCircle, options);
-    this._graphicToTexture('largeCircle', largeCircle, options);
-    this._graphicToTexture('mediumCircle', mediumCircle, options);
-    this._graphicToTexture('smallCircle', smallCircle, options);
-    this._graphicToTexture('taggedCircle', taggedCircle, options);
+    this._graphicToTexture('pin', pin);
+    this._graphicToTexture('boldPin', boldPin);
+    this._graphicToTexture('xlargeSquare', xlargeSquare);
+    this._graphicToTexture('largeSquare', largeSquare);
+    this._graphicToTexture('xlargeCircle', xlargeCircle);
+    this._graphicToTexture('largeCircle', largeCircle);
+    this._graphicToTexture('mediumCircle', mediumCircle);
+    this._graphicToTexture('smallCircle', smallCircle);
+    this._graphicToTexture('taggedCircle', taggedCircle);
 
 
     // KeepRight
@@ -536,7 +542,7 @@ return PIXI.Texture.WHITE;
       .lineTo(15.6, 7.8)
       .bezierCurveTo(16, 7.2, 15.6, 6.5, 15, 6.5)
       .closePath()
-      .stroke({ width: 1, color: 0x333333 })
+      .stroke({ color: 0x333333, width: 1 })
       .fill({ color: 0xffffff });
 
     // OSM note
@@ -555,18 +561,18 @@ return PIXI.Texture.WHITE;
       .lineTo(20, 2.5)
       .bezierCurveTo(20, 1.13, 18.87, 0, 17.5, 0)
       .closePath()
-      .stroke({ width: 1.5, color: 0x333333 })
+      .stroke({ color: 0x333333, width: 1.5 })
       .fill({ color:0xffffff, alpha: 1 });
 
     const osmose = new PIXI.Graphics()
       .poly([16,3, 4,3, 1,6, 1,17, 4,20, 7,20, 10,27, 13,20, 16,20, 19,17.033, 19,6])
       .closePath()
       .fill({ color: 0xffffff })
-      .stroke({ width: 1, color: 0x333333 });
+      .stroke({ color: 0x333333, width: 1 });
 
-    this._graphicToTexture('keepright', keepright, options);
-    this._graphicToTexture('osmnote', osmnote, options);
-    this._graphicToTexture('osmose', osmose, options);
+    this._graphicToTexture('keepright', keepright);
+    this._graphicToTexture('osmnote', osmnote);
+    this._graphicToTexture('osmose', osmose);
 
 
     //
@@ -574,20 +580,20 @@ return PIXI.Texture.WHITE;
     //
     const midpoint = new PIXI.Graphics()        // [-3, 4]  ._                +y
       .poly([-3,4, 7,0, -3,-4])                 //          | "-._             |
-      .fill({ color:0xffffff, alpha: 1 })       //          |    _:>  [7,0]    +-- +x
-      .stroke({ width: 1, color: 0x444444 });   //          |_,-"
+      .fill({ color: 0xffffff, alpha: 1 })      //          |    _:>  [7,0]    +-- +x
+      .stroke({ color: 0x444444, width: 1 });   //          |_,-"
                                                 // [-3,-4]  '
     const oneway = new PIXI.Graphics()
       .poly([5,3, 0,3, 0,2, 5,2, 5,0, 10,2.5, 5,5])
-      .stroke({ width: 1, color: 0xffffff });
+      .fill({ color: 0xffffff, alpha: 1 });
 
     const sided = new PIXI.Graphics()
       .poly([0,5, 5,0, 0,-5])
-      .stroke({ width: 1, color: 0xffffff });
+      .fill({ color: 0xffffff, alpha: 1 });
 
-    this._graphicToTexture('midpoint', midpoint, options);
-    this._graphicToTexture('oneway', oneway, options);
-    this._graphicToTexture('sided', sided, options);
+    this._graphicToTexture('midpoint', midpoint);
+    this._graphicToTexture('oneway', oneway);
+    this._graphicToTexture('sided', sided);
 
 
     //
@@ -597,22 +603,22 @@ return PIXI.Texture.WHITE;
     //
     const lowresSquare = new PIXI.Graphics()
       .rect(-5, -5, 10, 10)
-      .fill({ color:0xffffff, alpha: 0.6 })
-      .stroke({ width: 1, color: 0xffffff });
+      .fill({ color: 0xffffff, alpha: 0.6 })
+      .stroke({ color: 0xffffff, width: 1 });
 
     const lowresEll = new PIXI.Graphics()
       .poly([-5,-5, 5,-5, 5,5, 1,5, 1,1, -5,1, -5,-5])
-      .fill({ color:0xffffff, alpha: 0.6 })
-      .stroke({ width: 1, color: 0xffffff });
+      .fill({ color: 0xffffff, alpha: 0.6 })
+      .stroke({ color: 0xffffff, width: 1 });
 
     const lowresCircle = new PIXI.Graphics()
       .circle(0, 0, 5)
-      .fill({ color:0xffffff, alpha: 0.6 })
-      .stroke({ width: 1, color: 0xffffff });
+      .fill({ color: 0xffffff, alpha: 0.6 })
+      .stroke({ color: 0xffffff, width: 1 });
 
-    this._graphicToTexture('lowres-square', lowresSquare, options);
-    this._graphicToTexture('lowres-ell', lowresEll, options);
-    this._graphicToTexture('lowres-circle', lowresCircle, options);
+    this._graphicToTexture('lowres-square', lowresSquare);
+    this._graphicToTexture('lowres-ell', lowresEll);
+    this._graphicToTexture('lowres-circle', lowresCircle);
 
     //
     // Low-res unfilled areas
@@ -620,22 +626,19 @@ return PIXI.Texture.WHITE;
     //
     const lowresUnfilledSquare = new PIXI.Graphics()
       .rect(-5, -5, 10, 10)
-      .fill({ color: 0, alpha: 0})
-      .stroke({ width: 1, color: 0xffffff });
+      .stroke({ color: 0xffffff, width: 1 });
 
     const lowresUnfilledEll = new PIXI.Graphics()
       .poly([-5,-5, 5,-5, 5,5, 1,5, 1,1, -5,1, -5,-5])
-      .fill({ color: 0, alpha: 0})
-      .stroke({ width: 1, color: 0xffffff });
+      .stroke({ color: 0xffffff, width: 1 });
 
     const lowresUnfilledCircle = new PIXI.Graphics()
       .circle(0, 0, 5)
-      .fill({ color: 0, alpha: 0})
-      .stroke({ width: 1, color: 0xffffff });
+      .stroke({ color: 0xffffff, width: 1 });
 
-    this._graphicToTexture('lowres-unfilled-square', lowresUnfilledSquare, options);
-    this._graphicToTexture('lowres-unfilled-ell', lowresUnfilledEll, options);
-    this._graphicToTexture('lowres-unfilled-circle', lowresUnfilledCircle, options);
+    this._graphicToTexture('lowres-unfilled-square', lowresUnfilledSquare);
+    this._graphicToTexture('lowres-unfilled-ell', lowresUnfilledEll);
+    this._graphicToTexture('lowres-unfilled-circle', lowresUnfilledCircle);
   }
 
 }
