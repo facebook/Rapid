@@ -43,10 +43,10 @@ export class PixiTextures {
     // Each mapping is a unique identifying key to a PIXI.Texture
     // The Texture is not necessarily packed in an Atlas (but ideally it should be)
     // Important!  Make sure these texture keys don't conflict
-    this._textureData = new Map();   // Map(key -> { PIXI.Texture, refcount })  (e.g. 'symbol-boldPin')
+    this._textureData = new Map();   // Map<key, { PIXI.Texture, refcount }>  (e.g. 'symbol-boldPin')
 
     // Because SVGs take some time to texturize, store the svg string and texturize only if needed
-    this._svgIcons = new Map();   // Map(key -> String)  (e.g. 'temaki-school')
+    this._svgIcons = new Map();   // Map<key, SVGSymbolElement>  (e.g. 'temaki-school')
 
     // Load patterns
     const PATTERNS = [
@@ -111,7 +111,7 @@ export class PixiTextures {
 
     // Is this an svg icon that we haven't converted to a texture yet?
     if (this._svgIcons.has(textureID)) {
-      this.svgIconToTexture(textureID);
+      this._svgIconToTexture(textureID);
       return PIXI.Texture.EMPTY;   // return a placeholder
     }
 
@@ -230,7 +230,7 @@ export class PixiTextures {
 
 
   /**
-   * graphicToTexture
+   * _graphicToTexture
    * Convert frequently used graphics to textures/sprites for performance
    * https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
    *
@@ -245,7 +245,7 @@ export class PixiTextures {
    * @param  graphic     A PIXI.Graphic to convert to a texture
    * @param  options     Options passed to `renderer.generateTexture`
    */
-  graphicToTexture(textureID, graphic, options) {
+  _graphicToTexture(textureID, graphic, options) {
 return PIXI.Texture.WHITE;
     const renderer = this.context.pixi.renderer;
     // options.multisample = MSAA_QUALITY.NONE;  // disable multisampling so we can use gl.readPixels
@@ -295,42 +295,83 @@ return PIXI.Texture.WHITE;
   /**
    * addSvgIcon
    * Because SVGs take some time to rasterize, store a placeholder and only rasterize when needed
-   * @param   textureID   Icon identifier (e.g. 'temaki-school')
-   * @param   svgStr   Stringified svg
+   * @param  {string}            textureID   Icon identifier (e.g. 'temaki-school')
+   * @param  {SVGSymbolElement}  symbol      The SVG Symbol element for the icon
    */
-  addSvgIcon(textureID, svgStr) {
-    this._svgIcons.set(textureID, svgStr);
+  addSvgIcon(textureID, symbol) {
+    this._svgIcons.set(textureID, symbol);
   }
 
 
   /**
-   * svgIconToTexture
+   * _svgIconToTexture
    * @param  textureID  Icon identifier (e.g. 'temaki-school')
    */
-  svgIconToTexture(textureID) {
-    let svgString = this._svgIcons.get(textureID);
-    if (!svgString) return;
+  _svgIconToTexture(textureID) {
+    const symbol = this._svgIcons.get(textureID);
+    if (!symbol) return;
 
     // Remove it to ensure that we only do this once.
     this._svgIcons.set(textureID, null);
 
-    // Create a new graphics instance from the svg String,
-    // but first, sanitize the string to remove any 'currentColor', 'inherit', and 'url()' references.
-    svgString = svgString.replace(/(inherit|currentColor|url\(.*\))/gi, '#fff');
-    const svgGraphics = new PIXI.Graphics().svg(svgString);
-    const renderer = this.context.pixi.renderer;
+// The old way, just put the SVG on an Image and pack that into the atlas.
+// see https://github.com/facebook/Rapid/commit/dd24e912
 
-    // Now, make a canvas and render the svg into it at higher resolution.
-    const resolution = 2;
-    const canvas = renderer.extract.canvas({ resolution: resolution, target: svgGraphics });
-//    const ctx = canvas.getContext('2d');
-//    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-//    const svgTexture = renderer.generateTexture({ resolution: window.devicePixelRatio * 2, target: svgGraphics });
-//    svgTexture.source.resource = imageData;
-//    const [w, h] = [svgTexture.width * resolution, svgTexture.height * resolution]
-    this.allocate('symbol', textureID, canvas.width, canvas.height, canvas);
-    this._svgIcons.delete(textureID);
-    this.context.deferredRedraw();
+    const iconID = symbol.getAttribute('id');
+    const viewBox = symbol.getAttribute('viewBox');
+
+    // Make a new <svg> container
+    let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+    svg.setAttribute('width', '32');
+    svg.setAttribute('height', '32');
+    svg.setAttribute('color', '#fff');   // white so we can tint them
+    svg.setAttribute('viewBox', viewBox);
+
+    // Clone children (this is essentially what <use> does)
+    for (const child of symbol.childNodes) {
+      svg.appendChild(child.cloneNode(true));  // true = deep clone
+    }
+
+    const svgStr = (new XMLSerializer()).serializeToString(svg);
+    svg = null;
+
+    let image = new Image();
+    image.src = `data:image/svg+xml,${encodeURIComponent(svgStr)}`;
+    image.onload = () => {
+      const w = image.naturalWidth;
+      const h = image.naturalHeight;
+      const texture = this.allocate('symbol', textureID, w, h, image);
+      this._svgIcons.delete(textureID);
+      this.context.deferredRedraw();
+      image = null;
+    };
+
+// various approaches using the new Pixi SVG Parser and texture generation:
+//    let svgString = this._svgIcons.get(textureID);
+//    if (!svgString) return;
+//
+//     // Create a new graphics instance from the svg String,
+//     // but first, sanitize the string to remove any 'currentColor', 'inherit', and 'url()' references.
+//     svgString = svgString.replace(/(inherit|currentColor|url\(.*\))/gi, '#fff');
+//     const size = 32;
+//     const graphics = new PIXI.Graphics().svg(svgString);
+//     graphics.setSize(size, size);
+//
+//     // Now, make a canvas and render the svg into it at higher resolution.
+//     const renderer = this.context.pixi.renderer;
+//     // const canvas = renderer.extract.canvas({ resolution: 2, target: svgGraphics });
+//     const texture = renderer.textureGenerator.generateTexture({ resolution: 2, target: graphics });
+// //    const canvas = renderer.texture.generateCanvas(texture);
+// //    this.allocate('symbol', textureID, canvas.width, canvas.height, canvas);
+//     const { pixels, width, height } = renderer.texture.getPixels(texture);
+//     this.allocate('symbol', textureID, width, height, pixels);
+//
+//     texture.destroy();
+//     graphics.destroy({ context: true });
+//
+//    this._svgIcons.delete(textureID);
+//    this.context.deferredRedraw();
   }
 
 
@@ -381,9 +422,9 @@ return PIXI.Texture.WHITE;
       .fill({ color: 0xffffff, alpha: 0 })
       .stroke({ width: 1, color: 0xcccccc });
 
-    this.graphicToTexture('viewfield', viewfield, viewfieldOptions);
-    this.graphicToTexture('viewfieldDark', viewfieldDark, viewfieldOptions);
-    this.graphicToTexture('viewfieldOutline', viewfieldOutline, viewfieldOptions);
+    this._graphicToTexture('viewfield', viewfield, viewfieldOptions);
+    this._graphicToTexture('viewfieldDark', viewfieldDark, viewfieldOptions);
+    this._graphicToTexture('viewfieldOutline', viewfieldOutline, viewfieldOptions);
 
 
     const pano = new PIXI.Graphics()  // just a full circle - for panoramic / 360° images
@@ -401,9 +442,9 @@ return PIXI.Texture.WHITE;
       .fill({ color: 0xffffff, alpha: 0 })
       .stroke({ width: 1, color: 0xcccccc });
 
-    this.graphicToTexture('pano', pano, options);
-    this.graphicToTexture('panoDark', panoDark, options);
-    this.graphicToTexture('panoOutline', panoOutline, options);
+    this._graphicToTexture('pano', pano, options);
+    this._graphicToTexture('panoDark', panoDark, options);
+    this._graphicToTexture('panoOutline', panoOutline, options);
 
 
     //
@@ -468,15 +509,15 @@ return PIXI.Texture.WHITE;
       .fill({ color: 0xffffff, alpha: 1 })
       .stroke({ width: 1, color: 0x444444 });
 
-    this.graphicToTexture('pin', pin, options);
-    this.graphicToTexture('boldPin', boldPin, options);
-    this.graphicToTexture('xlargeSquare', xlargeSquare, options);
-    this.graphicToTexture('largeSquare', largeSquare, options);
-    this.graphicToTexture('xlargeCircle', xlargeCircle, options);
-    this.graphicToTexture('largeCircle', largeCircle, options);
-    this.graphicToTexture('mediumCircle', mediumCircle, options);
-    this.graphicToTexture('smallCircle', smallCircle, options);
-    this.graphicToTexture('taggedCircle', taggedCircle, options);
+    this._graphicToTexture('pin', pin, options);
+    this._graphicToTexture('boldPin', boldPin, options);
+    this._graphicToTexture('xlargeSquare', xlargeSquare, options);
+    this._graphicToTexture('largeSquare', largeSquare, options);
+    this._graphicToTexture('xlargeCircle', xlargeCircle, options);
+    this._graphicToTexture('largeCircle', largeCircle, options);
+    this._graphicToTexture('mediumCircle', mediumCircle, options);
+    this._graphicToTexture('smallCircle', smallCircle, options);
+    this._graphicToTexture('taggedCircle', taggedCircle, options);
 
 
     // KeepRight
@@ -523,9 +564,9 @@ return PIXI.Texture.WHITE;
       .fill({ color: 0xffffff })
       .stroke({ width: 1, color: 0x333333 });
 
-    this.graphicToTexture('keepright', keepright, options);
-    this.graphicToTexture('osmnote', osmnote, options);
-    this.graphicToTexture('osmose', osmose, options);
+    this._graphicToTexture('keepright', keepright, options);
+    this._graphicToTexture('osmnote', osmnote, options);
+    this._graphicToTexture('osmose', osmose, options);
 
 
     //
@@ -544,9 +585,9 @@ return PIXI.Texture.WHITE;
       .poly([0,5, 5,0, 0,-5])
       .stroke({ width: 1, color: 0xffffff });
 
-    this.graphicToTexture('midpoint', midpoint, options);
-    this.graphicToTexture('oneway', oneway, options);
-    this.graphicToTexture('sided', sided, options);
+    this._graphicToTexture('midpoint', midpoint, options);
+    this._graphicToTexture('oneway', oneway, options);
+    this._graphicToTexture('sided', sided, options);
 
 
     //
@@ -569,9 +610,9 @@ return PIXI.Texture.WHITE;
       .fill({ color:0xffffff, alpha: 0.6 })
       .stroke({ width: 1, color: 0xffffff });
 
-    this.graphicToTexture('lowres-square', lowresSquare, options);
-    this.graphicToTexture('lowres-ell', lowresEll, options);
-    this.graphicToTexture('lowres-circle', lowresCircle, options);
+    this._graphicToTexture('lowres-square', lowresSquare, options);
+    this._graphicToTexture('lowres-ell', lowresEll, options);
+    this._graphicToTexture('lowres-circle', lowresCircle, options);
 
     //
     // Low-res unfilled areas
@@ -592,9 +633,9 @@ return PIXI.Texture.WHITE;
       .fill({ color: 0, alpha: 0})
       .stroke({ width: 1, color: 0xffffff });
 
-    this.graphicToTexture('lowres-unfilled-square', lowresUnfilledSquare, options);
-    this.graphicToTexture('lowres-unfilled-ell', lowresUnfilledEll, options);
-    this.graphicToTexture('lowres-unfilled-circle', lowresUnfilledCircle, options);
+    this._graphicToTexture('lowres-unfilled-square', lowresUnfilledSquare, options);
+    this._graphicToTexture('lowres-unfilled-ell', lowresUnfilledEll, options);
+    this._graphicToTexture('lowres-unfilled-circle', lowresUnfilledCircle, options);
   }
 
 }

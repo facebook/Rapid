@@ -93,12 +93,12 @@ export class UiDefs {
       .each((d, i, nodes) => {
         const symbol = nodes[i];
         const iconID = symbol.getAttribute('id');
-        const viewBox = symbol.getAttribute('viewBox');
-        const size = 32;
-        const color = '#fff';   // white will apply to `currentColor`, so we can tint them
-        const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" height="${size}" width="${size}" color="${color}" viewBox="${viewBox}">${symbol.innerHTML}</svg>`;
-
-        textureManager.addSvgIcon(iconID, svgStr);
+//        const viewBox = symbol.getAttribute('viewBox');
+//        const size = 32;
+//        const color = '#fff';   // white will apply to `currentColor`, so we can tint them
+//        const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" height="${size}" width="${size}" color="${color}" viewBox="${viewBox}">${symbol.innerHTML}</svg>`;
+//
+        textureManager.addSvgIcon(iconID, symbol);
      });
   }
 
