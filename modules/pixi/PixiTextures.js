@@ -247,6 +247,11 @@ export class PixiTextures {
    */
   _graphicToTexture(textureID, graphic, options) {
 // v8
+
+    if (!options) {
+      options = {};
+    }
+
     options.antialias = false;
     options.target = graphic;
     const renderer = this.context.pixi.renderer;
