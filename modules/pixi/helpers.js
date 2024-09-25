@@ -67,11 +67,24 @@ export function lineToPoly(flatPoints, lineStyle = {}) {
 
   // Make some fake graphicsData and graphicsGeometry.
   // (I'm avoiding using a real PIXI.Graphic because I dont want to affect the batch system)
-  const graphicsData = { shape: sourceShape, lineStyle: lineStyle };
-  const graphicsGeometry = { closePointEps: EPSILON, indices: [], points: [], uvs: [] };
+//  const graphicsData = { shape: sourceShape, lineStyle: lineStyle };
+  const graphicsGeometry = { closePointEps: EPSILON, indices: [], verts: [], uvs: [] };
 
   // Pixi will do the work for us.
-  PIXI.buildLine(graphicsData, graphicsGeometry);
+// v7
+//  PIXI.buildLine(graphicsData, graphicsGeometry);
+// v8
+  PIXI.buildLine(
+    flatPoints,
+    lineStyle,
+    false,  // flipAlignment
+    false,  // closed
+    graphicsGeometry.verts,
+    undefined,       // _verticesStride - unused
+    undefined,       // _verticesOffset - unused
+    graphicsGeometry.indices,
+    undefined       // _indicesOffset - unused
+  );
 
 
   // The `graphicsGeometry` now contains the points as they would be drawn (as a strip of triangles).
@@ -98,7 +111,7 @@ export function lineToPoly(flatPoints, lineStyle = {}) {
   //   indices:  0 1 2  1 2 3  2 3 4  3 4 5  4 5 6  4 6 7  6 7 8  …
   //      side:  L R L  R L R  L R L  R L R  L R R  L R L  R L R  …
 
-  const verts = graphicsGeometry.points;
+  const verts = graphicsGeometry.verts;
   const indices = graphicsGeometry.indices;
 
   let sides = new Map();  // Map(index -> what side it's on) (`true` if left, `false` if right)
@@ -342,7 +355,7 @@ export function flatCoordsToPoints(coords) {
 
 
 export function getDebugBBox(x, y, width, height, color, alpha, name) {
-  const sprite = new PIXI.Sprite(PIXI.Texture.WHITE);
+  const sprite = new PIXI.Sprite({ texture: PIXI.Texture.WHITE });
   sprite.eventMode = 'none';
   sprite.anchor.set(0, 0);  // top, left
   sprite.position.set(x, y);

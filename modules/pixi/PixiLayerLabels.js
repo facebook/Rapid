@@ -283,8 +283,7 @@ export class PixiLayerLabels extends AbstractLayer {
       // Points first, then lines (so line labels can avoid point labels)
       this.labelPoints(points);
       this.labelLines(lines);
-// todo: figure out pixi v8 linebuilder works
-//      this.labelPolygons(polygons);
+      this.labelPolygons(polygons);
 
       this.renderObjects();
 
@@ -509,8 +508,7 @@ export class PixiLayerLabels extends AbstractLayer {
       if (!feature.container.visible || !feature.container.renderable) continue;    // not visible
       if (feature.geometry.width < 600 && feature.geometry.height < 600) continue;  // too small
 
-      // TODO: Fix getLabelSprite after v8 upgrade
-      // const labelObj = this.getLabelSprite(feature.label, 'italic');
+      const labelObj = this.getLabelSprite(feature.label, 'italic');
 
 // precompute a line buffer in geometry maybe?
 const hitStyle = {
@@ -527,7 +525,7 @@ let coords = new Array(bufferdata.inner.length / 2);  // un-flatten :(
 for (let i = 0; i < bufferdata.inner.length / 2; ++i) {
   coords[i] = [ bufferdata.inner[(i * 2)], bufferdata.inner[(i * 2) + 1] ];
 }
-// this.placeRopeLabel(feature, labelObj, coords);
+this.placeRopeLabel(feature, labelObj, coords);
 
     }
   }
