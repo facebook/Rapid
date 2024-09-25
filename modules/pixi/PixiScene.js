@@ -108,7 +108,7 @@ export class PixiScene extends EventEmitter {
       new PixiLayerKartaPhotos(this, 'kartaview'),
       new PixiLayerStreetsidePhotos(this, 'streetside'),
 
-//      new PixiLayerLabels(this, 'labels'),
+      new PixiLayerLabels(this, 'labels'),
       new PixiLayerEditBlocks(this, 'edit-blocks'),
       new PixiLayerMapUI(this, 'map-ui')
     ].forEach(layer => this.layers.set(layer.id, layer));

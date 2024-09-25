@@ -100,7 +100,7 @@ export class PixiTextures {
   /**
    * getTexture
    * @param   atlasID     One of 'symbol', 'text', or 'tile'
-   * @param   textureID   e.g. 'boldPin', 'Main Street', 'Bing-0,1,2'
+   * @param   textureID   e.g. 'boldPin', 'Main Street-normal', 'Bing-0,1,2'
    * @return  A PIXI.Texture (or null if not found)
    */
   getTexture(atlasID, textureID) {
@@ -158,7 +158,7 @@ export class PixiTextures {
    * This packs an asset into one of the atlases and tracks it in the textureData map
    * The asset can be one of: HTMLImageElement | HTMLCanvasElement | ImageBitmap | ImageData | ArrayBufferView
    * @param   atlasID     One of 'symbol', 'text', or 'tile'
-   * @param   textureID   e.g. 'boldPin', 'Main Street', 'Bing-0,1,2'
+   * @param   textureID   e.g. 'boldPin', 'Main Street-normal', 'Bing-0,1,2'
    * @param   width       width in pixels
    * @param   height      height in pixels
    * @param   asset       The thing to pack
@@ -208,7 +208,7 @@ export class PixiTextures {
    * free
    * Unpacks a texture from the atlas and frees its resources
    * @param   atlasID     One of 'symbol', 'text', or 'tile'
-   * @param   textureID   e.g. 'boldPin', 'Main Street', 'Bing-0,1,2'
+   * @param   textureID   e.g. 'boldPin', 'Main Street-normal', 'Bing-0,1,2'
    */
   free(atlasID, textureID) {
     const atlas = this._atlas[atlasID];
@@ -241,71 +241,59 @@ export class PixiTextures {
    * TextureSource.  This texture gets sent to the GPU once then reused, so WebGL isn't constantly
    * swapping between textures as it draws things.
    *
-   * @param  textureID   Texture identifier (e.g. 'boldPin')
-   * @param  graphic     A PIXI.Graphic to convert to a texture
-   * @param  options     Options passed to `renderer.generateTexture`
+   * @param    {string}        textureID   Texture identifier (e.g. 'boldPin')
+   * @param    {PIXI.Graphic}  graphic     A PIXI.Graphic to convert to a texture
+   * @param    {Object}        options     Options passed to `renderer.generateTexture`
+   * @returns  {PIXI.Texture}    Texture allocated from the text atlas
    */
-  _graphicToTexture(textureID, graphic, options) {
-// v8
-
-    if (!options) {
-      options = {};
-    }
-
+  _graphicToTexture(textureID, graphic, options = {}) {
     options.antialias = false;
     options.target = graphic;
-    const renderer = this.context.pixi.renderer;
-    const renderTexture = renderer.generateTexture(options);
-    const { pixels, width, height } = renderer.texture.getPixels(renderTexture);
 
+    const renderer = this.context.pixi.renderer;
+    const temp = renderer.generateTexture(options);
+    const { pixels, width, height } = renderer.texture.getPixels(temp);
     const texture = this.allocate('symbol', textureID, width, height, pixels);
 
     // These textures are overscaled, but `orig` Rectangle stores the original width/height
     // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
-    texture.orig = renderTexture.orig.clone();
+    texture.orig = temp.orig.clone();
 
-    renderTexture.destroy();
+    temp.destroy();
     graphic.destroy({ context: true });
+    return texture;
+  }
 
 
-// v7
-//    const renderer = this.context.pixi.renderer;
-//    // options.multisample = MSAA_QUALITY.NONE;  // disable multisampling so we can use gl.readPixels
-//    options.antialias = false;
-//
-//    const renderTexture = renderer.generateTexture(graphic, options);
-//    const baseTexture = renderTexture.source;
-//
-//    if (baseTexture.format !== 'RGBA6408') return;       // we could handle other values
-//    if (baseTexture.type !== '5121') return;  // but probably don't need to.
-//
-//    const framebuffer = baseTexture.framebuffer;
-//    // If we can't get framebuffer, just return the rendertexture
-//    // Maybe we are running in a test/ci environment?
-//    if (!framebuffer) return renderTexture;
-//
-//    const w = framebuffer.width;
-//    const h = framebuffer.height;
-//    const pixels = new Uint8Array(w * h * 4);
-//
-//    const gl = renderer.context.gl;
-//    const glfb = framebuffer.glFramebuffers[1];
-//    const fb = glfb?.framebuffer;
-//
-//    // If we can't get glcontext or glframebuffer, just return the rendertexture
-//    // Maybe we are running in a test/ci environment?
-//    if (!gl || !fb) return renderTexture;
-//
-//    gl.bindFramebuffer(gl.FRAMEBUFFER, fb);   // should be bound already, but couldn't hurt?
-//    gl.readPixels(0, 0, w, h, baseTexture.format, baseTexture.type, pixels);
-//
-//    // Store the texture in the symbol atlas
-//    const texture = this.allocate('symbol', textureID, w, h, pixels);
-//    // These textures are overscaled, but `orig` Rectangle stores the original width/height
-//    // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
-//    texture.orig = renderTexture.orig.clone();
-//
-//    renderTexture.destroy(true);  // safe to destroy, the texture is copied to the atlas
+  /**
+   * textToTexture
+   * Convert frequently used text to textures/sprites for performance
+   * @param    {string}          textureID   e.g. 'Main Street-normal'
+   * @param    {string}          str         the string
+   * @param    {PIXI.TextStyle}  textStyle
+   * @returns  {PIXI.Texture}    Texture allocated from the text atlas
+   */
+  textToTexture(textureID, str, textStyle) {
+    const options = {
+      text: str,
+      style: textStyle,
+      resolution: 2
+    };
+
+    const renderer = this.context.pixi.renderer;
+    const result = renderer.canvasText.createTextureAndCanvas(options);
+    const canvas = result.canvasAndContext.canvas;
+    const temp = result.texture;
+    const w = temp.frame.width * temp.source.resolution;
+    const h = temp.frame.height * temp.source.resolution;
+    const texture = this.allocate('text', textureID, w, h, canvas);
+
+    // These textures are overscaled, but `orig` Rectangle stores the original width/height
+    // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
+    texture.orig = temp.orig.clone();
+
+    temp.destroy();
+    return texture;
   }
 
 

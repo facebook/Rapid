@@ -8,23 +8,21 @@ import { getLineSegments, /*getDebugBBox,*/ lineToPoly } from './helpers.js';
 
 const MINZOOM = 12;
 
-const TEXT_NORMAL = {
+const TEXTSTYLE_NORMAL = {
   fill: { color: 0x333333 },
   fontFamily: 'Arial, Helvetica, sans-serif',
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 600,
-  lineJoin: 'round',
-  stroke: { width: 2.7, color: 0xffffff }
+  stroke: { color: 0xffffff, width: 3, join: 'round' }
 };
 
-const TEXT_ITALIC = {
+const TEXTSTYLE_ITALIC = {
   fill: { color: 0x333333 },
   fontFamily: 'Arial, Helvetica, sans-serif',
-  fontSize: 11,
+  fontSize: 12,
   fontStyle: 'italic',
   fontWeight: 600,
-  lineJoin: 'round',
-  stroke: { width: 2.7, color: 0xffffff }
+  stroke: { color: 0xffffff, width: 3, join: 'round' }
 };
 
 
@@ -106,25 +104,23 @@ export class PixiLayerLabels extends AbstractLayer {
     this._labelOffset = new PIXI.Point();
 
     // For ascii-only labels, we can use PIXI.BitmapText to avoid generating label textures
-    PIXI.BitmapFontManager.install({
+    PIXI.BitmapFont.install({
       name: 'label-normal',
-      style: TEXT_NORMAL,
+      style: TEXTSTYLE_NORMAL,
       chars: PIXI.BitmapFontManager.ASCII,
-      padding: 0,
-      resolution: 1
+      resolution: 2
     });
     // not actually used
-    // PIXI.BitmapFontManager.from({
+    // PIXI.BitmapFont.install({
     //   name: 'label-italic',
-    //   style: TEXT_ITALIC,
+    //   style: TEXTSTYLE_ITALIC,
     //   chars: PIXI.BitmapFontManager.ASCII,
-    //   padding: 0,
-    //   resolution: 1
+    //   resolution: 2
     // });
 
     // For all other labels, generate it on the fly in a PIXI.Text or PIXI.Sprite
-    this._textStyleNormal = new PIXI.TextStyle(TEXT_NORMAL);
-    this._textStyleItalic = new PIXI.TextStyle(TEXT_ITALIC);
+    this._textStyleNormal = new PIXI.TextStyle(TEXTSTYLE_NORMAL);
+    this._textStyleItalic = new PIXI.TextStyle(TEXTSTYLE_ITALIC);
   }
 
 
@@ -309,7 +305,6 @@ export class PixiLayerLabels extends AbstractLayer {
     const textureManager = this.renderer.textures;
 
     let texture = textureManager.getTexture('text', textureID);
-
     if (!texture) {
       // Add some extra padding if we detect unicode combining marks in the text - see Rapid#653
       let pad = 0;
@@ -319,41 +314,16 @@ export class PixiLayerLabels extends AbstractLayer {
 
       let textStyle;
       if (pad) {   // make a new style
-        const props = Object.assign({}, (style === 'normal' ? TEXT_NORMAL : TEXT_ITALIC), { padding: pad });
-        textStyle = new PIXI.TextStyle(props);
+        const opts = Object.assign({}, (style === 'normal' ? TEXTSTYLE_NORMAL : TEXTSTYLE_ITALIC), { padding: pad });
+        textStyle = new PIXI.TextStyle(opts);
       } else {     // use a cached style
         textStyle = (style === 'normal' ? this._textStyleNormal : this._textStyleItalic);
       }
 
-      // Generate the Text
-      const text = new PIXI.Text(str, textStyle);
-      text.resolution = 2;
-      // text.!updateText(false);  // force update it so the texture is prepared
-
-      // Copy the texture data into the atlas.
-      // Also remove x-padding, as this will only end up pushing the label away from the pin.
-      // (We are mostly interested in y-padding diacritics, see Rapid#653)
-      // Note: Whatever padding we set before got doubled because resolution = 2
-      const [x, y] = [pad * 2, 0];
-
-      //v8 - pixi doesn't have a canvas for text anymore, so these widths and heights might not be quite right
-      // i.e. do we need to round them?
-      const [w, h] = [text.width - (pad * 4), text.height];
-      const data = text.context.getImageData(x, y, w, h);
-
-      texture = textureManager.allocate('text', textureID, w, h, data);
-
-      // These textures are overscaled, but `orig` Rectangle stores the original width/height
-      // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
-      // We need to manually adjust these values so that the Sprites or Ropes know how big to be.
-      texture.orig = text.texture.orig.clone();
-      texture.orig.width = w / 2;
-      texture.orig.height = h / 2;
-
-      text.destroy();  // safe to destroy, the texture is copied to the atlas
+      texture = textureManager.textToTexture(textureID, str, textStyle);
     }
 
-    const sprite = new PIXI.Sprite(texture);
+    const sprite = new PIXI.Sprite({ texture: texture });
     sprite.label = str;
     sprite.anchor.set(0.5, 0.5);   // middle, middle
     return sprite;
@@ -467,17 +437,18 @@ export class PixiLayerLabels extends AbstractLayer {
       if (/^[\x20-\x7E]*$/.test(feature.label)) {   // is it in the printable ASCII range?
         labelObj = new PIXI.BitmapText({
           text: feature.label,
-          style: { fontFamily: 'label-normal' }
+          resolution: 2,
+          style: {
+            fontFamily: 'label-normal',
+            fontSize: 12
+          }
         });
-        // labelObj.updateText();           // force update it so its texture is ready to be reused on a sprite
         labelObj.label = feature.label;
-        // labelObj.anchor.set(0.5, 0.5);   // middle, middle
-        labelObj.anchor.set(0.5, 1);     // middle, bottom  - why??
+        labelObj.anchor.set(0.5, 0.5);   // middle, middle
+
+      } else {
+        labelObj = this.getLabelSprite(feature.label, 'normal');
       }
-      // TODO: Figure out how to extract image data from text to use the texture allocator
-      // else {
-      //   labelObj = this.getLabelSprite(feature.label, 'normal');
-      // }
 
       if (labelObj) {
         this.placeTextLabel(feature, labelObj);
@@ -514,10 +485,8 @@ export class PixiLayerLabels extends AbstractLayer {
       if (!feature.container.visible || !feature.container.renderable) continue;    // not visible
       if (feature.geometry.width < 40 && feature.geometry.height < 40) continue;    // too small
 
-      // TODO: Fix getLabelSprite after v8 upgrade
-      // const labelObj = this.getLabelSprite(feature.label, 'normal');
-
-      // this.placeRopeLabel(feature, labelObj, feature.geometry.coords);
+      const labelObj = this.getLabelSprite(feature.label, 'normal');
+      this.placeRopeLabel(feature, labelObj, feature.geometry.coords);
     }
   }
 
@@ -746,7 +715,7 @@ for (let i = 0; i < bufferdata.inner.length / 2; ++i) {
     const labelOffset = this._labelOffset;
     const temp = new PIXI.Point();
     const coords = origCoords.map(([x, y]) => {
-      origin.toGlobal({x: x, y: y}, temp, true /* skip updates ok? - we called toGlobal already */);
+      origin.toGlobal({x: x, y: y}, temp);
       return [temp.x - labelOffset.x, temp.y - labelOffset.y];
     });
 
@@ -931,7 +900,7 @@ for (let i = 0; i < bufferdata.inner.length / 2; ++i) {
       } else if (label.type === 'rope') {
         const labelObj = options.labelObj;  // a PIXI.Sprite, or PIXI.Text
         const points = options.coords.map(([x,y]) => new PIXI.Point(x, y));
-        const rope = new PIXI.MeshRope(labelObj.texture, points);
+        const rope = new PIXI.MeshRope({ texture: labelObj.texture, points: points });
         rope.label = labelID;
         rope.autoUpdate = false;
         rope.sortableChildren = false;

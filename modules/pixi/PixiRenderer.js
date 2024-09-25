@@ -470,7 +470,7 @@ export class PixiRenderer extends PIXI.EventEmitter {
     // Let's go!
     const effectiveZoom = map.effectiveZoom();
     this.scene.render(this._frame, pixiViewport, effectiveZoom);
-    //this._renderDebug();
+    // this._renderDebug();
 
     this._appPending = false;
     this._drawPending = true;
@@ -580,10 +580,9 @@ export class PixiRenderer extends PIXI.EventEmitter {
       debug.width = 512;
       stage.addChild(debug);
     }
-    debug.texture = this.textures.getDebugTexture('symbol');
-    // debug.position.set(offset[0] + 50, offset[1] + 100);  // stay put
-    // screen.position.set(offset[0] + 50, offset[1] + 100);  // stay put
-
+    debug.texture = this.textures.getDebugTexture('text');
+    debug.position.set(50, -200);
+    screen.position.set(50, -200);
   }
 
 }
