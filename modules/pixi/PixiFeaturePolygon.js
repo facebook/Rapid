@@ -347,6 +347,19 @@ export class PixiFeaturePolygon extends AbstractFeature {
 //        dl.polygon(coords);
 //
 //        shape.holes.forEach(hole => dl.polygon(flatCoordsToPoints(hole.points)));
+// pixi v8
+        const DASH_STYLE = {
+          alpha: 1.0,
+          dash: dash,
+          width: lineWidth, // px
+          color: color
+        };
+        this.stroke.clear();
+        const dl = new DashLine(this.stroke, DASH_STYLE);
+        const coords = flatCoordsToPoints(shape.outer.points);
+        dl.polygon(coords);
+        shape.holes.forEach(hole => dl.polygon(flatCoordsToPoints(hole.points)));
+        dl.setStrokeStyle(DASH_STYLE);
       }
     }
 

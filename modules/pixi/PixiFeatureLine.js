@@ -33,7 +33,7 @@ export class PixiFeatureLine extends AbstractFeature {
     super(layer, featureID);
 
     this.type = 'line';
-    this._bufferdata = null;
+    this._hitGraphic = null;
 
     const casing = new PIXI.Graphics();
     casing.label = 'casing';
@@ -61,11 +61,11 @@ export class PixiFeatureLine extends AbstractFeature {
     this.casing = null;
     this.stroke = null;
 
-    if (this._bufferdata) {
-      delete this._bufferdata.inner;
-      delete this._bufferdata.outer;
-      delete this._bufferdata.perimeter;
-      this._bufferdata = null;
+    if (this._hitGraphic) {
+      delete this._hitGraphic.inner;
+      delete this._hitGraphic.outer;
+      delete this._hitGraphic.perimeter;
+      this._hitGraphic = null;
     }
   }
 
@@ -231,33 +231,32 @@ export class PixiFeatureLine extends AbstractFeature {
       let g = graphic.clear();
       if (style[which].alpha === 0) return;
 
-      points.forEach(([x, y], i) => {
-        if (i === 0) {
-          g.moveTo(x, y);
-        } else {
-          g.lineTo(x, y);
-        }
-      });
+      const strokeStyle = {
+        color: style[which].color,
+        width: width,
+        alpha: style[which].alpha || 1.0,
+        join: style[which].join,
+        cap:  style[which].cap,
+      };
 
       if (style[which].dash) {
-        g = new DashLine(g, {
-          dash: style[which].dash,
-          color: style[which].color,
-          width: width,
-          alpha: style[which].alpha || 1.0,
-          join: style[which].join,
-          cap:  style[which].cap,
-        });
+        strokeStyle.dash = style[which].dash;
+        g = new DashLine(g, strokeStyle);
+        drawLineFromPoints(points, g);
       } else {
-        g = g.stroke({
-          color: style[which].color,
-          width: width,
-          alpha: style[which].alpha || 1.0,
-          join: style[which].join,
-          cap:  style[which].cap,
-        });
+        drawLineFromPoints(points, g);
+        g = g.stroke(strokeStyle);
       }
 
+      function drawLineFromPoints(points, graphics) {
+        points.forEach(([x, y], i) => {
+          if (i === 0) {
+            graphics.moveTo(x, y);
+          } else {
+            graphics.lineTo(x, y);
+          }
+        });
+      }
     }
 
   }
@@ -306,15 +305,12 @@ export class PixiFeatureLine extends AbstractFeature {
         return gEvent.containsPoint({ x, y });
       },
     };
-
-// todo: figure out pixi v8 linebuilder works in case the hit-test code above doensn't pan out
-//    this._bufferdata = lineToPoly(this.geometry.flatOuter, hitStyle);
-//    this.container.hitArea = new PIXI.Polygon(this._bufferdata.perimeter);
+    this._hitGraphic = hitGraphic;
   }
 
   /**
    * updateHalo
-   * Show/Hide halo (expects `this._bufferdata` to be already set up by `updateHitArea` as a PIXI.Polygon)
+   * Show/Hide halo (expects `this._hitGraphic` to be already set up by `updateHitArea` as a PIXI.Polygon)
    */
   updateHalo() {
     const showHover = (this.visible && this._classes.has('hover'));
@@ -356,16 +352,15 @@ export class PixiFeatureLine extends AbstractFeature {
       };
 
       this.halo.clear();
-      const dl = new DashLine(this.halo, HALO_STYLE);
-      if (this._bufferdata) {
-        if (this._bufferdata.outer && this._bufferdata.inner) {
-          dl.poly(this._bufferdata.outer);
-          dl.poly(this._bufferdata.inner);
-        } else {
-          dl.poly(this._bufferdata.perimeter);
-        }
-        dl.setStrokeStyle(HALO_STYLE);
-      }
+      // const dl = new DashLine(this.halo, HALO_STYLE);
+      // if (this._hitGraphic) {
+      //   if (this._hitGraphic.outer && this._hitGraphic.inner) {
+      //     //TODO: Figure out a way to draw the selection halo given the hitGraphic we calculated.
+      //   } else {
+      //     dl.polygon(this._hitGraphic.perimeter);
+      //   }
+      //   dl.setStrokeStyle(HALO_STYLE);
+      // }
     } else {
       if (this.halo) {
         this.halo.destroy();
