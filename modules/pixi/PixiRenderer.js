@@ -129,6 +129,11 @@ export class PixiRenderer extends PIXI.EventEmitter {
       // https://github.com/bfanger/pixi-inspector
       globalThis.__PIXI_APP__ = this.pixi;
 
+      window.__PIXI_DEVTOOLS__ = {
+        pixi: PIXI,
+        app: this.pixi
+      };
+
       // Setup the stage
       // The `stage` should be positioned so that `[0,0]` is at the center of the viewport,
       // and this is the pivot point for map rotation.

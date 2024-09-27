@@ -192,13 +192,6 @@ export class UiSystem extends AbstractSystem {
 
     map.pause();  // don't draw until we've set zoom/lat/long
 
-    container.selectAll('#rapid-defs')
-      .data([0])
-      .enter()
-      .append('svg')
-      .attr('id', 'rapid-defs')
-      .call(this.defs.render);
-
     // Sidebar
     container
       .call(this.sidebar.render);
@@ -226,6 +219,13 @@ export class UiSystem extends AbstractSystem {
     // bhousel aug 8, I feel a bit bad about this
     (map._pixiReadyPromise || Promise.reject())
       .then(() => {
+
+        container.selectAll('#rapid-defs')
+        .data([0])
+        .enter()
+        .append('svg')
+        .attr('id', 'rapid-defs')
+        .call(this.defs.render);
 
         // Top toolbar
         contentEnter

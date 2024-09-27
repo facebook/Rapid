@@ -253,15 +253,20 @@ export class PixiTextures {
     const renderer = this.context.pixi.renderer;
     const temp = renderer.generateTexture(options);
     const { pixels, width, height } = renderer.texture.getPixels(temp);
-    const texture = this.allocate('symbol', textureID, width, height, pixels);
 
-    // These textures are overscaled, but `orig` Rectangle stores the original width/height
-    // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
-    texture.orig = temp.orig.clone();
+    // for webGPU, we must convert the pixel array into a bitmap
+    const imageData = new ImageData(pixels, width, height);
+    const asset = createImageBitmap(imageData);
 
-    temp.destroy();
-    graphic.destroy({ context: true });
-    return texture;
+    asset.then((result) => {
+      const texture = this.allocate('symbol', textureID, width, height, result);
+      // These textures are overscaled, but `orig` Rectangle stores the original width/height
+      // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
+      texture.orig = temp.orig.clone();
+      temp.destroy();
+      graphic.destroy({ context: true });
+      return texture;
+    });
   }
 
 
