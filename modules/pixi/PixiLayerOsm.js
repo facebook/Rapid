@@ -297,7 +297,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
       for (let i = 0; i < parts.length; ++i) {
         const coords = parts[i];
-        const featureID = `${this.layerID}-${entityID}-fill-${i}`;
+        const featureID = `${this.layerID}-${entityID}-${i}`;
         let feature = this.features.get(featureID);
 
         // If feature existed before as a different type, recreate it.

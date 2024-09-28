@@ -299,10 +299,10 @@ export class PixiFeatureLine extends AbstractFeature {
     // let hitGeometry = new PIXI.Graphics(this.casing.context);
     hitGraphic.stroke(hitStyle);
 
-    let gEvent = hitGraphic.context;
+    let graphicContext = hitGraphic.context;
     this.container.hitArea = {
       contains(x, y) {
-        return gEvent.containsPoint({ x, y });
+        return graphicContext.containsPoint({ x, y });
       },
     };
     this._hitGraphic = hitGraphic;
