@@ -57,9 +57,14 @@ export class PixiFeatureLine extends AbstractFeature {
    * Do not use the Feature after calling `destroy()`.
    */
   destroy() {
-    super.destroy();
-    this.casing = null;
-    this.stroke = null;
+    if (this.casing) {
+      this.casing.destroy();
+      this.casing = null;
+    }
+    if (this.stroke) {
+      this.stroke.destroy();
+      this.stroke = null;
+    }
 
     if (this._hitGraphic) {
       delete this._hitGraphic.inner;
@@ -67,6 +72,8 @@ export class PixiFeatureLine extends AbstractFeature {
       delete this._hitGraphic.perimeter;
       this._hitGraphic = null;
     }
+
+    super.destroy();
   }
 
 

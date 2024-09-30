@@ -60,10 +60,20 @@ export class PixiFeaturePoint extends AbstractFeature {
    * Do not use the Feature after calling `destroy()`.
    */
   destroy() {
+    if (this.marker) {
+      this.marker.destroy();
+      this.marker = null;
+    }
+    if (this.icon) {
+      this.icon.destroy();
+      this.icon = null;
+    }
+    if (this.viewfields) {
+      this.viewfields.destroy({ children: true });
+      this.viewfields = null;
+    }
+
     super.destroy();
-    this.marker = null;
-    this.icon = null;
-    this.viewfields = null;
   }
 
 

@@ -89,8 +89,6 @@ export class PixiFeaturePolygon extends AbstractFeature {
    * Do not use the Feature after calling `destroy()`.
    */
   destroy() {
-    super.destroy();
-
     if (this.lowRes) {
       this.lowRes.destroy();
       this.lowRes = null;
@@ -129,6 +127,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
     if (this._bufferdata) {
       this._bufferdata = null;
     }
+
+    super.destroy();
   }
 
 
