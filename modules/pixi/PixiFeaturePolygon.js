@@ -1,9 +1,9 @@
 import * as PIXI from 'pixi.js';
-import { DashLine } from '@rapideditor/pixi-dashed-line';
 import { GlowFilter } from 'pixi-filters';
 import { /* geomRotatePoints,*/ vecEqual, vecLength /*, vecSubtract */ } from '@rapid-sdk/math';
 
 import { AbstractFeature } from './AbstractFeature.js';
+import { DashLine } from './lib/DashLine.js';
 import { lineToPoly } from './helpers.js';
 
 const PARTIALFILLWIDTH = 32;

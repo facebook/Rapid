@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ 'main', '!pixi_v8' ]
+    branches: [ main ]
 
 env:
   FORCE_COLOR: 2

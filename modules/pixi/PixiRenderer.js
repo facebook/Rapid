@@ -566,8 +566,8 @@ export class PixiRenderer extends PIXI.EventEmitter {
     let screen = stage.getChildByLabel('screen');
     if (!screen) {
       screen = new PIXI.Graphics()
-        .rect(0, 0, 512, 512)
-        .fill({ color: 0xffffff, alpha: 0.5 });
+        .rect(-5, -5, 522, 522)
+        .fill({ color: 0x000000, alpha: 1 });
       screen.label = 'screen';
       screen.eventMode = 'none';
       screen.sortableChildren = false;
@@ -585,7 +585,7 @@ export class PixiRenderer extends PIXI.EventEmitter {
       debug.width = 512;
       stage.addChild(debug);
     }
-    debug.texture = this.textures.getDebugTexture('text');
+    debug.texture = this.textures.getDebugTexture('tile');
     debug.position.set(50, -200);
     screen.position.set(50, -200);
   }

@@ -1,8 +1,8 @@
 import * as PIXI from 'pixi.js';
-import { DashLine } from '@rapideditor/pixi-dashed-line';
 import { geoMetersToLon } from '@rapid-sdk/math';
 
 import { AbstractLayer } from './AbstractLayer.js';
+import { DashLine } from './lib/DashLine.js';
 
 
 /**

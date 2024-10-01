@@ -65,8 +65,6 @@
     "@rapid-sdk/util": "~1.0.0-pre.3",
     "@rapideditor/country-coder": "~5.3.0",
     "@rapideditor/location-conflation": "~1.4.0",
-    "@rapideditor/pixi-dashed-line": "file:../pixi-dashed-line",
-    "@rapideditor/pixi-texture-allocator": "file:../pixi-texture-allocator",
     "@rapideditor/wayback-core": "^1.0.7",
     "@tmcw/togeojson": "^5.8.1",
     "@types/chai": "^4.3.19",

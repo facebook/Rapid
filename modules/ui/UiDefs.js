@@ -82,7 +82,7 @@ export class UiDefs {
     }
 
     // Notify Pixi about the icons so they can be used by WebGL/webGPU - see Rapid#925
-    // Note: because webGPU startup is async, this code now only fires after the pixiReadyPromise 
+    // Note: because webGPU startup is async, this code now only fires after the pixiReadyPromise
     // has been fulfilled (it is called later in UiSystem).
 
     // Pixi's textureManager should be set up, throw if we're wrong about this.

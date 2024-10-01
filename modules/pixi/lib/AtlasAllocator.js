@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { GuilloteneAllocator } from '@rapideditor/pixi-texture-allocator';
+import { GuilloteneAllocator } from './GuilloteneAllocator.js';
 
 
 /**
