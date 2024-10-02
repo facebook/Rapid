@@ -29,7 +29,7 @@ export class UiMapInMap {
     this._isHidden = true;      // start out hidden
     this._skipEvents = false;
     this._gesture = null;
-    this._zDiff = 6;            // by default, minimap renders at (main zoom - 6)
+    this._zDiff = 5;            // by default, minimap renders at (main zoom - 5)
     this._tStart = null;        // if mid-gesture, transform at start of gesture
     this._initPromise = null;
 
@@ -108,12 +108,12 @@ export class UiMapInMap {
 
     // hardcoded dimensions for now
     const [w, h] = [200, 150];
-    this.viewMini.dimensions = [w, h];
+    this.viewMini.dimensions = [w * 2, h * 2];
     $surface
       .style('width', `${w}px`)
       .style('height', `${h}px`)
-      .attr('width', w)
-      .attr('height', h);
+      .attr('width', w * 2)
+      .attr('height', h * 2);
 
     this.initAsync()
       .then(() => this.drawMinimap());
@@ -311,6 +311,7 @@ export class UiMapInMap {
       sprite.texture = textures.get('sided');
       sprite.tint = 0xffff00;
       sprite.anchor.set(0, 0.5); // left, middle
+      sprite.scale.set(2, 2);
       sprite.rotation = -HALF_PI;
       arrow.addChild(sprite);
     }
@@ -318,7 +319,7 @@ export class UiMapInMap {
     bbox
       .clear()
       .poly(flatPoints)
-      .stroke({ color: 0xffff00, width: 2 });
+      .stroke({ color: 0xffff00, width: 3 });
 
     // Place an "up" arrow at the "top" of the box.
     const [arrowX, arrowY] = vecInterp(miniPoints[3], miniPoints[4], 0.5);
