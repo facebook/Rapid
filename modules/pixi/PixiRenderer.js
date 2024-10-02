@@ -88,10 +88,10 @@ export class PixiRenderer extends PIXI.EventEmitter {
 
     this.pixi = new PIXI.Application();
 
-    return this.pixi.init({
+    const options = {
       antialias: true,
       autoDensity: true,
-      autoStart: false,        // don't start the ticker yet
+      autoStart: false,    // Don't start the ticker yet
       canvas: this.surface.node(),
       events: {
         move: false,
@@ -99,80 +99,84 @@ export class PixiRenderer extends PIXI.EventEmitter {
         click: true,
         wheel: false
       },
+      multiView: true,   // Needed for minimap
       powerPreference: 'high-performance',
       preference: 'webgl',
       preferWebGLVersion: 2,
+      preserveDrawingBuffer: true,
       resolution: window.devicePixelRatio,
       sharedLoader: true,
       sharedTicker: true,
       textureGCActive: true,
-      useBackBuffer: true
-    })
-    .then(() => {
-      // todo - we should stop doing this.. Access to pixi app should be via an instance of PixiRenderer
-      // so we can have multiple Pixi renderers - this will make the minimap less hacky & enable restriction editor
-      this.context.pixi = this.pixi;
+      useBackBuffer: false
+    };
 
-      // Prepare a basic bitmap font that we can use for things like debug messages
-      PIXI.BitmapFont.install({
-        name: 'rapid-debug',
-        style: {
-          fill: { color: 0xffffff },
-          fontSize: 14,
-          stroke: { color: 0x333333 }
-        },
-        chars: PIXI.BitmapFontManager.ASCII,
-        resolution: 2
+    return this.pixi.init(options)
+      .then(() => {
+        // todo - we should stop doing this.. Access to pixi app should be via an instance of PixiRenderer
+        // so we can have multiple Pixi renderers - this will make the minimap less hacky & enable restriction editor
+        this.context.pixi = this.pixi;
+
+        // Prepare a basic bitmap font that we can use for things like debug messages
+        PIXI.BitmapFont.install({
+          name: 'rapid-debug',
+          style: {
+            fill: { color: 0xffffff },
+            fontSize: 14,
+            stroke: { color: 0x333333 }
+          },
+          chars: PIXI.BitmapFontManager.ASCII,
+          resolution: 2
+        });
+
+        // Register Pixi with the pixi-inspector extension if it is installed
+        // https://github.com/bfanger/pixi-inspector
+        globalThis.__PIXI_APP__ = this.pixi;
+
+        window.__PIXI_DEVTOOLS__ = {
+          pixi: PIXI,
+          app: this.pixi
+        };
+
+        // Setup the stage
+        // The `stage` should be positioned so that `[0,0]` is at the center of the viewport,
+        // and this is the pivot point for map rotation.
+        const stage = this.pixi.stage;
+        stage.label = 'stage';
+        stage.sortableChildren = true;
+        stage.eventMode = 'static';
+        // Add a big hit area to `stage` so that clicks on nothing will generate events
+        stage.hitArea = new PIXI.Rectangle(-10000000, -10000000, 20000000, 20000000);
+        this.stage = stage;
+
+        // The `origin` returns `[0,0]` back to the `[top,left]` coordinate of the viewport,
+        // so `project/unproject` continues to work.
+        // This also includes the `offset` which includes any panning that the user has done.
+        const origin = new PIXI.Container();
+        origin.label = 'origin';
+        origin.sortableChildren = true;
+        origin.eventMode = 'passive';
+        stage.addChild(origin);
+        this.origin = origin;
+
+        // Setup the ticker
+        const ticker = this.pixi.ticker;
+        const defaultListener = ticker._head.next;
+        ticker.remove(defaultListener._fn, defaultListener._context);
+        ticker.add(this._tick, this);
+        ticker.start();
+
+        this.scene = new PixiScene(this);
+        this.events = new PixiEvents(this);
+
+        // Texture Manager should only be created once
+        // This is because it will start loading assets and Pixi's asset loader is not reentrant.
+        // (it causes test failures if we create a bunch of these)
+        if (!_sharedTextures) {
+          _sharedTextures = new PixiTextures(this.context);
+        }
+        this.textures = _sharedTextures;
       });
-
-      // Register Pixi with the pixi-inspector extension if it is installed
-      // https://github.com/bfanger/pixi-inspector
-      globalThis.__PIXI_APP__ = this.pixi;
-
-      window.__PIXI_DEVTOOLS__ = {
-        pixi: PIXI,
-        app: this.pixi
-      };
-
-      // Setup the stage
-      // The `stage` should be positioned so that `[0,0]` is at the center of the viewport,
-      // and this is the pivot point for map rotation.
-      const stage = this.pixi.stage;
-      stage.label = 'stage';
-      stage.sortableChildren = true;
-      stage.eventMode = 'static';
-      // Add a big hit area to `stage` so that clicks on nothing will generate events
-      stage.hitArea = new PIXI.Rectangle(-10000000, -10000000, 20000000, 20000000);
-      this.stage = stage;
-
-      // The `origin` returns `[0,0]` back to the `[top,left]` coordinate of the viewport,
-      // so `project/unproject` continues to work.
-      // This also includes the `offset` which includes any panning that the user has done.
-      const origin = new PIXI.Container();
-      origin.label = 'origin';
-      origin.sortableChildren = true;
-      origin.eventMode = 'passive';
-      stage.addChild(origin);
-      this.origin = origin;
-
-      // Setup the ticker
-      const ticker = this.pixi.ticker;
-      const defaultListener = ticker._head.next;
-      ticker.remove(defaultListener._fn, defaultListener._context);
-      ticker.add(this._tick, this);
-      ticker.start();
-
-      this.scene = new PixiScene(this);
-      this.events = new PixiEvents(this);
-
-      // Texture Manager should only be created once
-      // This is because it will start loading assets and Pixi's asset loader is not reentrant.
-      // (it causes test failures if we create a bunch of these)
-      if (!_sharedTextures) {
-        _sharedTextures = new PixiTextures(this.context);
-      }
-      this.textures = _sharedTextures;
-    });
   }
 
 

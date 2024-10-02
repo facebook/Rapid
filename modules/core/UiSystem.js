@@ -7,7 +7,7 @@ import { utilDetect } from '../util/detect.js';
 import {
   uiAccount, uiAttribution, uiBearing, uiContributors, UiDefs, uiEditMenu,
   /* uiFeatureInfo,*/ uiFlash, uiFullScreen, uiGeolocate, uiIcon,
-  uiInfo, uiIntro, uiIssuesInfo, uiLoading, uiMapInMap,
+  uiInfo, uiIntro, uiIssuesInfo, uiLoading, UiMapInMap,
   uiMap3dViewer, UiPhotoViewer, uiRapidServiceLicense,
   uiSplash, uiRestore, uiScale, uiShortcuts,
   UiSidebar, uiSourceSwitch, uiSpinner, uiStatus, uiTooltip,
@@ -41,6 +41,7 @@ export class UiSystem extends AbstractSystem {
     this.flash = null;
     this.editMenu = null;
     this.info = null;
+    this.mapInMap = null;
     this.sidebar = null;
     this.photoviewer = null;
     this.shortcuts = null;
@@ -91,6 +92,7 @@ export class UiSystem extends AbstractSystem {
         this.flash = uiFlash(context);
         this.editMenu = uiEditMenu(context);
         this.info = uiInfo(context);
+        this.mapInMap = new UiMapInMap(context);
         this.sidebar = new UiSidebar(context);
         this.photoviewer = new UiPhotoViewer(context);
         this.shortcuts = uiShortcuts(context);
@@ -250,9 +252,8 @@ export class UiSystem extends AbstractSystem {
           .attr('class', 'select-trap')
           .text('t');
 
-// not yet
-//        overMapEnter
-//          .call(uiMapInMap(context));
+        overMapEnter
+          .call(this.mapInMap.render);
 
         overMapEnter
           .call(uiMap3dViewer(context));

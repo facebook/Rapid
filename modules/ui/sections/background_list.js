@@ -9,7 +9,6 @@ import { ImagerySource } from '../../core/lib/index.js';
 import { uiIcon } from '../icon.js';
 import { uiCmd } from '../cmd.js';
 import { uiSettingsCustomBackground } from '../settings/custom_background.js';
-import { uiMapInMap } from '../map_in_map.js';
 import { uiSection } from '../section.js';
 
 
@@ -108,7 +107,7 @@ export function uiSectionBackgroundList(context) {
       .attr('type', 'checkbox')
       .on('change', d3_event => {
         d3_event.preventDefault();
-        uiMapInMap.toggle();
+        ui.mapInMap.toggle();
       });
 
     minimapLabelEnter
