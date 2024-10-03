@@ -35,7 +35,7 @@ export class AbstractFeature {
     this.type = 'unknown';
     this.layer = layer;
     this.scene = layer.scene;
-    this.renderer = layer.renderer;
+    this.gfx = layer.gfx;
     this.context = layer.context;
     this.featureID = featureID;
 
@@ -94,7 +94,7 @@ export class AbstractFeature {
 
     this.layer = null;
     this.scene = null;
-    this.renderer = null;
+    this.gfx = null;
     this.context = null;
 
     if (this.halo) {

@@ -6,10 +6,12 @@ import { utilHighlightEntities } from '../util/index.js';
 export function uiOsmoseDetails(context) {
   const editor = context.systems.editor;
   const filters = context.systems.filters;
+  const gfx = context.systems.gfx;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const osmose = context.services.osmose;
   const presets = context.systems.presets;
+  const scene = context.systems.gfx.scene;
 
   let _qaItem;
 
@@ -157,7 +159,7 @@ export function uiOsmoseDetails(context) {
 
                 utilHighlightEntities([entityID], false, context);
 
-                map.scene.enableLayers('osm');  // make sure osm layer is even on
+                scene.enableLayers('osm');  // make sure osm layer is even on
                 map.centerZoom(d.loc, 20);
                 map.selectEntityID(entityID);
               });
@@ -179,7 +181,7 @@ export function uiOsmoseDetails(context) {
 
         // Don't hide entities related to this issue - iD#5880
         filters.forceVisible(d.elems);
-        map.immediateRedraw();
+        gfx.immediateRedraw();
       })
       .catch(e => console.error(e));  // eslint-disable-line
   }

@@ -44,7 +44,7 @@ export class MapNudgeBehavior extends AbstractBehavior {
 
     this._nudge = [0, 0];
 
-    const eventManager = this.context.systems.map.renderer.events;
+    const eventManager = this.context.systems.gfx.events;
     eventManager.on('pointermove', this._pointermove);
 
     if (!this._intervalID) {
@@ -72,7 +72,7 @@ export class MapNudgeBehavior extends AbstractBehavior {
   disable() {
     this._enabled = false;
 
-    const eventManager = this.context.systems.map.renderer.events;
+    const eventManager = this.context.systems.gfx.events;
     eventManager.off('pointermove', this._pointermove);
 
     if (this._intervalID) {

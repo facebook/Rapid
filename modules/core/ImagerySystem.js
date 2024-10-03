@@ -31,7 +31,7 @@ export class ImagerySystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'imagery';
-    this.dependencies = new Set(['assets', 'editor', 'l10n', 'map', 'urlhash']);
+    this.dependencies = new Set(['assets', 'editor', 'gfx', 'l10n', 'map', 'urlhash']);
 
     this._initPromise = null;
     this._imageryIndex = null;
@@ -199,12 +199,12 @@ export class ImagerySystem extends AbstractSystem {
   startAsync() {
     if (this._startPromise) return this._startPromise;
 
-    const map = this.context.systems.map;
-    const prerequisites = map.startAsync();  // ImagerySystem should listen for layerchange after scene exists
+    const gfx = this.context.systems.gfx;
+    const prerequisites = gfx.startAsync();  // ImagerySystem should listen for layerchange after scene exists
 
     return this._startPromise = prerequisites
       .then(() => {
-        map.scene.on('layerchange', this._imageryChanged);
+        gfx.scene.on('layerchange', this._imageryChanged);
         this._started = true;
       });
   }

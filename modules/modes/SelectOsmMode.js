@@ -69,11 +69,11 @@ export class SelectOsmMode extends AbstractMode {
     const filters = context.systems.filters;
     const hover = context.behaviors.hover;
     const locations = context.systems.locations;
-    const map = context.systems.map;
-    const scene = map.scene;
+    const gfx = context.systems.gfx;
+    const scene = gfx.scene;
     const ui = context.systems.ui;
     const urlhash = context.systems.urlhash;
-    const eventManager = map.renderer.events;
+    const eventManager = gfx.events;
 
     const selection = options.selection ?? {};
     let entityIDs = selection.osm ?? [];
@@ -152,11 +152,11 @@ export class SelectOsmMode extends AbstractMode {
     const filters = context.systems.filters;
     const hover = context.behaviors.hover;
     const l10n = context.systems.l10n;
-    const map = context.systems.map;
-    const scene = map.scene;
+    const gfx = context.systems.gfx;
+    const scene = gfx.scene;
     const ui = context.systems.ui;
     const urlhash = context.systems.urlhash;
-    const eventManager = map.renderer.events;
+    const eventManager = gfx.events;
 
     // If the user added an empty relation, we should clean it up.
     const graph = editor.staging.graph;
@@ -660,7 +660,7 @@ export class SelectOsmMode extends AbstractMode {
     const context = this.context;
     const editor = context.systems.editor;
     const graph = editor.staging.graph;
-    const eventManager = context.systems.map.renderer.events;
+    const eventManager = context.systems.gfx.events;
 
     const target = eventData.target;
     const datum = target?.data;

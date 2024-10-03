@@ -242,8 +242,8 @@ export class PixiLayerLabels extends AbstractLayer {
 
       // The label container should be kept unrotated so that it stays screen-up not north-up.
       // We need to counter the effects of the 'stage' and 'origin' containers that we are underneath.
-      const stage = this.renderer.stage.position;
-      const origin = this.renderer.origin.position;
+      const stage = this.gfx.stage.position;
+      const origin = this.gfx.origin.position;
       const bearing = viewport.transform.rotation;
 
       // Determine the difference between the global/screen coordinate system (where [0,0] is top left)
@@ -251,7 +251,7 @@ export class PixiLayerLabels extends AbstractLayer {
       // We need to save this labeloffset for use elsewhere, it is the basis for having a consistent coordinate
       // system to track labels to place and objects to avoid. (we apply it to values we get from `getBounds`)
       const labelOffset = this._labelOffset;
-      this.renderer.origin.toGlobal({ x: 0, y: 0 }, labelOffset);
+      this.gfx.origin.toGlobal({ x: 0, y: 0 }, labelOffset);
 
       const groupContainer = this.scene.groups.get('labels');
       groupContainer.position.set(-origin.x, -origin.y);     // undo origin - [0,0] is now center
@@ -301,7 +301,7 @@ export class PixiLayerLabels extends AbstractLayer {
    */
   getLabelSprite(str, style = 'normal') {
     const textureID = `${str}-${style}`;
-    const textureManager = this.renderer.textures;
+    const textureManager = this.gfx.textures;
 
     let texture = textureManager.getTexture('text', textureID);
     if (!texture) {
@@ -709,7 +709,7 @@ this.placeRopeLabel(feature, labelObj, coords);
 
 
     // Convert from original projected coords to global coords..
-    const origin = this.renderer.origin;
+    const origin = this.gfx.origin;
     const labelOffset = this._labelOffset;
     const temp = new PIXI.Point();
     const coords = origCoords.map(([x, y]) => {
@@ -856,10 +856,8 @@ this.placeRopeLabel(feature, labelObj, coords);
    * This renders any of the Label objects in the view
    */
   renderObjects() {
-    const context = this.context;
-
     // Get the display bounds in screen/global coordinates
-    const screen = context.pixi.screen;
+    const screen = this.gfx.pixi.screen;
     const labelOffset = this._labelOffset;
     const screenBounds = {
       minX: screen.x - labelOffset.x,

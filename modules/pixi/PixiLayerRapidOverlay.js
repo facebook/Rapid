@@ -1,8 +1,6 @@
 import * as PIXI from 'pixi.js';
 
-import { geojsonFeatures } from '../util/util.js';
 import { AbstractLayer } from './AbstractLayer.js';
-
 
 
 /**
@@ -31,7 +29,7 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
     this._overlaysDefined = false;
 
     const datasets = this.context.systems.rapid.datasets;
-    for (const [key, dataset] of datasets.entries()) {
+    for (const dataset of datasets.values()) {
       if (dataset.overlay) {
         this._overlaysDefined = true;
       }
@@ -59,7 +57,7 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
     //Extremely inefficient but we're not drawing anything else at this zoom
     parentContainer.removeChildren();
 
-    for (const [key, dataset] of datasets.entries()) {
+    for (const dataset of datasets.values()) {
       if (dataset.overlay && dataset.enabled) {
         const customColor = new PIXI.Color(dataset.color);
         const overlay = dataset.overlay;

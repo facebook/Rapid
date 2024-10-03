@@ -33,7 +33,7 @@ export class RapidSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'rapid';
-    this.dependencies = new Set(['editor', 'l10n', 'urlhash']);
+    this.dependencies = new Set(['editor', 'l10n', 'map', 'urlhash']);
 
     // Watch edit history to keep track of which features have been accepted by the user.
     // These features will be filtered out when drawing

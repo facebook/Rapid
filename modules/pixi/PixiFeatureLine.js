@@ -3,7 +3,7 @@ import { GlowFilter } from 'pixi-filters';
 
 import { AbstractFeature } from './AbstractFeature.js';
 import { DashLine } from './lib/DashLine.js';
-import { getLineSegments, lineToPoly } from './helpers.js';
+import { getLineSegments } from './helpers.js';
 
 const ONEWAY_SPACING = 35;
 const SIDED_SPACING = 30;
@@ -86,7 +86,7 @@ export class PixiFeatureLine extends AbstractFeature {
     if (!this.dirty) return;  // nothing to do
 
     const wireframeMode = this.context.systems.map.wireframeMode;
-    const textureManager = this.renderer.textures;
+    const textureManager = this.gfx.textures;
     const container = this.container;
     const style = this._style;
     //

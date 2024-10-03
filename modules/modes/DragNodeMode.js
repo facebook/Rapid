@@ -54,7 +54,7 @@ export class DragNodeMode extends AbstractMode {
     const editor = context.systems.editor;
     const filters = context.systems.filters;
     const l10n = context.systems.l10n;
-    const map = context.systems.map;
+    const scene = context.systems.gfx.scene;
     const ui = context.systems.ui;
 
     this._reselectIDs = options.reselectIDs ?? [];
@@ -102,7 +102,7 @@ export class DragNodeMode extends AbstractMode {
     this._startLoc = entity.loc;
     this._selectedData.set(entity.id, entity);
 
-    const layer = map.scene.layers.get('osm');
+    const layer = scene.layers.get('osm');
     layer.setClass('drawing', this.dragNode.id);
     for (const parent of graph.parentWays(this.dragNode)) {
       layer.setClass('drawing', parent.id);
@@ -144,8 +144,8 @@ export class DragNodeMode extends AbstractMode {
     this._selectedData.clear();
 
     const context = this.context;
-    const map = context.systems.map;
-    const layer = map.scene.layers.get('osm');
+    const scene = context.systems.gfx.scene;
+    const layer = scene.layers.get('osm');
     layer.clearClass('drawing');
 
     context.behaviors.drag

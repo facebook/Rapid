@@ -102,8 +102,7 @@ export class MapillaryService extends AbstractSystem {
     if (this._startPromise) return this._startPromise;
 
     const context = this.context;
-    const map = context.systems.map;
-    const eventManager = map.renderer.events;
+    const eventManager = context.systems.gfx.events;
 
     // add mly-wrapper
     const $$wrapper = context.container().select('.photoviewer .middle-middle')
@@ -752,7 +751,9 @@ export class MapillaryService extends AbstractSystem {
 
         this._processTile(buffer, tile);
 
-        this.context.deferredRedraw();
+        const gfx = this.context.systems.gfx;
+        gfx.deferredRedraw();
+
         if (datasetID === 'images') {
           this.emit('loadedImages');
         } else if (datasetID === 'signs') {
@@ -900,7 +901,8 @@ export class MapillaryService extends AbstractSystem {
           object_type:        type
         });
 
-        this.context.immediateRedraw();
+        const gfx = this.context.systems.gfx;
+        gfx.immediateRedraw();
         return detection;
       })
       .catch(err => {

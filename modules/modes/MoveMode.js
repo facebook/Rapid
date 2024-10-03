@@ -41,11 +41,12 @@ export class MoveMode extends AbstractMode {
   enter(options = {}) {
     const context = this.context;
     const editor = context.systems.editor;
+    const gfx = context.systems.gfx;
     const graph = editor.staging.graph;
     const filters = context.systems.filters;
     const locations = context.systems.locations;
     const map = context.systems.map;
-    const eventManager = map.renderer.events;
+    const eventManager = gfx.events;
 
     const selection = options.selection ?? {};
     let entityIDs = selection.osm ?? [];
@@ -98,7 +99,7 @@ export class MoveMode extends AbstractMode {
     const editor = context.systems.editor;
     const filters = context.systems.filters;
     const l10n = context.systems.l10n;
-    const eventManager = context.systems.map.renderer.events;
+    const eventManager = context.systems.gfx.events;
 
     filters.forceVisible([]);
 

@@ -127,9 +127,8 @@ export class UiMapInMap {
   drawMinimap() {
     if (this._isHidden) return;
 
-    const map = this.context.systems.map;
-    const renderer = map.renderer;
-    if (!renderer?.pixi || !renderer?.textures?.loaded) return;  // called too early?
+    const gfx = this.context.systems.gfx;
+    if (!gfx.pixi || !gfx.textures?.loaded) return;  // called too early?
 
     this._updateTransform();
     this._updateBoundingBox();
@@ -257,11 +256,8 @@ export class UiMapInMap {
     if (this._isHidden) return;
 
     const context = this.context;
-    const map = context.systems.map;
-    const renderer = map.renderer;
-    const textures = renderer?.textures;
-    const pixi = renderer?.pixi;
-    if (!pixi || !textures?.loaded) return;  // called too early?
+    const gfx = context.systems.gfx;
+    if (!gfx.pixi || !gfx.textures?.loaded) return;  // called too early?
 
     const stage = this.stage;
     const viewMain = context.viewport;
@@ -308,7 +304,7 @@ export class UiMapInMap {
 
       // We're repurposing the 'sided' arrow, so we need to turn it -90°
       const sprite = new PIXI.Sprite();
-      sprite.texture = textures.get('sided');
+      sprite.texture = gfx.textures.get('sided');
       sprite.tint = 0xffff00;
       sprite.anchor.set(0, 0.5); // left, middle
       sprite.scale.set(2, 2);
@@ -389,18 +385,15 @@ export class UiMapInMap {
   _tick() {
     if (this._isHidden) return;
 
-    const context = this.context;
-    const map = context.systems.map;
-    const renderer = map.renderer;
-    const pixi = renderer?.pixi;
-    if (!pixi || !renderer?.textures?.loaded) return;  // called too early?
+    const gfx = this.context.systems.gfx;
+    if (!gfx.pixi || !gfx.textures?.loaded) return;  // called too early?
 
     window.performance.mark('minimap-start');
 
     const frame = 0;    // not used
     this.layer.render(frame, this.viewMini);   // APP
 
-    pixi.renderer.render({    // DRAW
+    gfx.pixi.renderer.render({    // DRAW
       container: this.stage,
       target: this.$surface.node()
     });
@@ -421,20 +414,18 @@ export class UiMapInMap {
     if (!this.$supersurface || !this.$surface)  return Promise.reject();  // called too early?
 
     const context = this.context;
+    const gfx = context.systems.gfx;
     const l10n = context.systems.l10n;
-    const map = context.systems.map;
 
-    // Use the same Pixi Application that the main map uses.
+    // Use the same Pixi Application managed by the Graphics System.
     // As of Pixi v8, we can not create multiple Pixi Applications.
     // Instead, a single application can render to multiple canvases.
-    const renderer = map.renderer;
-    const pixi = renderer.pixi;
-    if (!pixi || !renderer?.textures)  return Promise.reject();  // called too early?
+    if (!gfx.pixi || !gfx.textures)  return Promise.reject();  // called too early?
 
     // event handlers
     const key = l10n.t('background.minimap.key');
     context.keybinding().on(key, this.toggle);
-    map.on('draw', this.drawMinimap);
+    gfx.on('draw', this.drawMinimap);
 
     // Mock Stage
     const stage = new PIXI.Container();
@@ -443,21 +434,21 @@ export class UiMapInMap {
     stage.eventMode = 'none';
     this.stage = stage;
 
-    // Mock Renderer
-    const miniRenderer = {
+    // Mock Graphics System
+    const miniGfx = {
       context: context,
       supersurface: this.$supersurface.node(),
       surface: this.$surface.node(),
-      pixi: pixi,
+      pixi: gfx.pixi,
       stage: stage,
       origin: stage,
-      textures: renderer.textures
+      textures: gfx.textures
     };
 
     // Mock Scene
     const miniScene = {
       context: context,
-      renderer: miniRenderer,
+      gfx: miniGfx,
       groups: new Map(),
       layers: new Map(),
       features: new Map()

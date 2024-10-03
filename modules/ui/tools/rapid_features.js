@@ -8,7 +8,7 @@ import { uiTooltip } from '../tooltip.js';
 
 export function uiToolRapidFeatures(context) {
   const l10n = context.systems.l10n;
-  const map = context.systems.map;
+  const scene = context.systems.gfx.scene;
   const ui = context.systems.ui;
   const urlhash = context.systems.urlhash;
 
@@ -29,13 +29,13 @@ export function uiToolRapidFeatures(context) {
 
   function layerEnabled() {
     if (!context.scene) return false;
-    const rapidLayer = map.scene.layers.get('rapid');
+    const rapidLayer = scene.layers.get('rapid');
     return rapidLayer?.enabled;
   }
 
 
   function toggleFeatures() {
-    map.scene.toggleLayers('rapid');
+    scene.toggleLayers('rapid');
     toggleKeyDispatcher.call('ai_feature_toggle');
   }
 
@@ -124,7 +124,7 @@ export function uiToolRapidFeatures(context) {
 
     ui.on('uichange', render);
     urlhash.on('hashchange', render);
-    map.scene.on('layerchange', render);
+    scene.on('layerchange', render);
     context.on('modechange', render);
 
     $wrap = $parent
@@ -139,7 +139,7 @@ export function uiToolRapidFeatures(context) {
     context.keybinding().off(rapidFeaturesToggleKey);
     ui.off('uichange', render);
     urlhash.off('hashchange', render);
-    map.scene.off('layerchange', render);
+    scene.off('layerchange', render);
     context.off('modechange', render);
     $wrap = null;
   };

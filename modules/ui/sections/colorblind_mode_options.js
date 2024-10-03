@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+
 import { uiTooltip } from '../tooltip.js';
 import { uiCombobox } from '../combobox.js';
 import { uiSection } from '../section.js';
@@ -6,12 +7,12 @@ import { utilNoAuto } from '../../util/index.js';
 
 
 export function uiSectionColorblindModeOptions(context) {
-  const l10n = context.systems.l10n;
   const colors = context.systems.colors;  // todo: replace
+  const l10n = context.systems.l10n;
+  const gfx = context.systems.gfx;
 
+  const mapDataContainer = gfx.scene.groups.get('basemap');
   let comboData = [{ title: 'default', value: l10n.t('preferences.colorblind_options.default') }];
-
-  const mapDataContainer = context.scene().groups.get('basemap');
 
   // colorblind filters
   const protanopiaFilter = new PIXI.ColorMatrixFilter();
@@ -76,11 +77,10 @@ export function uiSectionColorblindModeOptions(context) {
         if (val in filtersObject && val !== 'Default') {
           let filterToApply = filtersObject[val];
           mapDataContainer.filters = [filterToApply];
-          context.systems.map.immediateRedraw();
         } else {
           mapDataContainer.filters = [];
-          context.systems.map.immediateRedraw();
         }
+        gfx.immediateRedraw();
       });
 
     colorblindCombo.data(comboData);

@@ -530,7 +530,8 @@ export class KartaviewService extends AbstractSystem {
           sequence.v++;
         }
 
-        context.deferredRedraw();
+        const gfx = context.systems.gfx;
+        gfx.deferredRedraw();
         this.emit('loadedData');
 
         if (data.length === MAXRESULTS) {
@@ -612,7 +613,8 @@ export class KartaviewService extends AbstractSystem {
         sequence.images[image.sequenceIndex] = image;
         sequence.v++;
 
-        context.deferredRedraw();
+        const gfx = context.systems.gfx;
+        gfx.deferredRedraw();
         this.emit('loadedData');
 
         return image;

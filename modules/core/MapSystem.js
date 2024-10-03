@@ -4,7 +4,6 @@ import {
 } from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
-import { PixiRenderer } from '../pixi/PixiRenderer.js';
 import { uiCmd } from '../ui/cmd.js';
 import { utilTotalExtent } from '../util/index.js';
 
@@ -16,12 +15,7 @@ const MAX_Z = 24;
 /**
  * `MapSystem` maintains the map state and provides an interface for manipulating the map view.
  *
- * Supports `pause()` / `resume()` - when paused, the the code in PixiRenderer.js will not render
- *
  * Properties available:
- *   `supersurface`    The parent `div` for temporary transforms between redraws
- *   `surface`         The sibling `canvas` map drawing surface
- *   `overlay`         The sibling `div` overlay, offsets the supersurface transform
  *   `highlightEdits`  `true` if edited features should be shown in a special style, `false` otherwise
  *   `areaFillMode`    one of 'full', 'partial' (default), or 'wireframe'
  *   `wireframeMode`   `true` if fill mode is 'wireframe', `false` otherwise
@@ -41,12 +35,7 @@ export class MapSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'map';
-    this.dependencies = new Set(['editor', 'filters', 'imagery', 'l10n', 'photos', 'storage', 'styles', 'urlhash']);
-
-    // Create these early
-    this.supersurface = document.createElement('div');  // parent `div` temporary transforms between redraws
-    this.surface = document.createElement('canvas');    // sibling `canvas` map drawing surface
-    this.overlay = document.createElement('div');       // sibling `div` overlay offsets the supersurface transform
+    this.dependencies = new Set(['editor', 'filters', 'gfx', 'imagery', 'l10n', 'photos', 'storage', 'styles', 'urlhash']);
 
     // display options
     this.areaFillOptions = ['wireframe', 'partial', 'full'];
@@ -54,10 +43,8 @@ export class MapSystem extends AbstractSystem {
     this._currFillMode = 'partial';    // the current fill mode
     this._toggleFillMode = 'partial';  // the previous *non-wireframe* fill mode
 
-    this._renderer = null;
     this._initPromise = null;
     this._startPromise = null;
-    this._pixiReadyPromise = null;
 
     // D3 selections
     this.$parent = null;
@@ -87,8 +74,9 @@ export class MapSystem extends AbstractSystem {
     }
 
     const context = this.context;
-    const storage = context.systems.storage;
+    const gfx = context.systems.gfx;
     const l10n = context.systems.l10n;
+    const storage = context.systems.storage;
     const urlhash = context.systems.urlhash;
 
     // Note: We want MapSystem's hashchange listener registered as early as possible
@@ -98,7 +86,8 @@ export class MapSystem extends AbstractSystem {
 
     const prerequisites = Promise.all([
       storage.initAsync(),
-      l10n.initAsync()
+      l10n.initAsync(),
+      gfx.initAsync()
     ]);
 
     return this._initPromise = prerequisites
@@ -127,13 +116,13 @@ export class MapSystem extends AbstractSystem {
             const mode = context.mode;
             if (mode && /^draw/.test(mode.id)) return;
 
-            this.scene.toggleLayers('osm');
+            gfx.scene.toggleLayers('osm');
             context.enter('browse');
           })
           .on(toggleNotesKey, e => {
             e.preventDefault();
             e.stopPropagation();
-            this.scene.toggleLayers('notes');
+            gfx.scene.toggleLayers('notes');
           })
           .on(highlightEditsKey, e => {
             e.preventDefault();
@@ -149,16 +138,18 @@ export class MapSystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
-    if (this._startPromise) return this._startPromise;
+    this._started = true;
+    return Promise.resolve();
 
-    const ui = this.context.systems.ui;
-    const prerequisites = ui.startAsync();  // UI must be started before we resolve
-
-    return this._startPromise = prerequisites
-      .then(() => {
-        this._started = true;
-        return this._pixiReadyPromise || Promise.reject();
-      });
+//    if (this._startPromise) return this._startPromise;
+//
+//    const ui = this.context.systems.ui;
+//    const prerequisites = ui.startAsync();  // UI must be started before we resolve
+//
+//    return this._startPromise = prerequisites
+//      .then(() => {
+//        this._started = true;
+//      });
   }
 
 
@@ -169,31 +160,7 @@ export class MapSystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed resetting
    */
   resetAsync() {
-    this._renderer?.scene?.reset();
-    this.immediateRedraw();
     return Promise.resolve();
-  }
-
-
-  /**
-   * pause
-   * Pauses this system
-   * When paused, the MapSystem will not render
-   */
-  pause() {
-    this._paused = true;
-  }
-
-
-  /**
-   * resume
-   * Resumes (unpauses) this system.
-   * When paused, the MapSystem will not render
-   * Note that calling `resume` schedules an "immediate" redraw (on the next available tick).
-   */
-  resume() {
-    this._paused = false;
-    this.immediateRedraw();
   }
 
 
@@ -211,6 +178,14 @@ export class MapSystem extends AbstractSystem {
     }
 
     const context = this.context;
+    const editor = context.systems.editor;
+    const filters = context.systems.filters;
+    const gfx = context.systems.gfx;
+    const imagery = context.systems.imagery;
+    const photos = context.systems.photos;
+    const styles = context.systems.styles;
+    const scene = gfx.scene;
+
 
     // Selection here contains a D3 selection for the `main-map` div that the map gets added to
     // It's an absolutely positioned div that takes up as much space as it's allowed to.
@@ -227,7 +202,7 @@ export class MapSystem extends AbstractSystem {
       .data([0]);
 
     const $$supersurface = $supersurface.enter()
-      .append(() => this.supersurface)
+      .append(() => gfx.supersurface)
       .attr('class', 'supersurface');
 
     $supersurface = $supersurface.merge($$supersurface);
@@ -245,7 +220,7 @@ export class MapSystem extends AbstractSystem {
       .data([0]);
 
     const $$surface = $surface.enter()
-      .append(() => this.surface)
+      .append(() => gfx.surface)
       .attr('class', 'surface');
 
     $surface = $surface.merge($$surface);
@@ -258,104 +233,92 @@ export class MapSystem extends AbstractSystem {
       .data([0]);
 
     const $$overlay = $overlay.enter()
-      .append(() => this.overlay)
+      .append(() => gfx.overlay)
       .attr('class', 'overlay');
 
     $overlay = $overlay.merge($$overlay);
 
 
-    if (this._renderer) return;  // we created it already
-    this._renderer = new PixiRenderer(context, this.supersurface, this.surface, this.overlay);
+// THIS SHOULD BE MOVED TO INIT?
 
-    this._pixiReadyPromise = (this._renderer._pixiReadyPromise || Promise.reject())
-      .then(() => {
-        // Forward the 'move' and 'draw' events from PixiRenderer
-        this._renderer
-          .on('move', () => this.emit('move'))
-          .on('draw', () => {
-            this._updateHash();
-            this.emit('draw', { full: true });  // pass {full: true} for legacy receivers
-          });
+    // Setup Event Handlers
+    // Forward the 'move' and 'draw' events from the GraphicsSystem
+    gfx
+      .on('move', () => this.emit('move'))
+      .on('draw', () => {
+        this._updateHash();
+        this.emit('draw', { full: true });  // pass {full: true} for legacy receivers
+      });
 
-        // Setup events that cause the map to redraw...
-        const editor = context.systems.editor;
-        const filters = context.systems.filters;
-        const imagery = context.systems.imagery;
-        const photos = context.systems.photos;
-        const styles = context.systems.styles;
-        const scene = this._renderer.scene;
+    editor
+      .on('merge', entityIDs => {
+        if (entityIDs) {
+          scene.dirtyData('osm', entityIDs);
+        }
+        gfx.deferredRedraw();
+      })
+      .on('stagingchange', difference => {
+        // todo - maybe only do this if difference.didChange.geometry?
+        const complete = difference.complete();
+        for (const entity of complete.values()) {
+          if (entity) {      // may be undefined if entity was deleted
+            entity.touch();  // bump .v in place, rendering code will pick it up as dirty
+            filters.clearEntity(entity);  // clear feature filter cache
+          }
+        }
+        gfx.immediateRedraw();
+      })
+      .on('historyjump', (prevIndex, currIndex) => {
+        // This code occurs when jumping to a different edit because of a undo/redo/restore, etc.
+        const prevEdit = editor.history[prevIndex];
+        const currEdit = editor.history[currIndex];
 
-        editor
-          .on('merge', entityIDs => {
-            if (entityIDs) {
-              scene.dirtyData('osm', entityIDs);
-            }
-            this.deferredRedraw();
-          })
-          .on('stagingchange', difference => {
-            // todo - maybe only do this if difference.didChange.geometry?
-            const complete = difference.complete();
-            for (const entity of complete.values()) {
-              if (entity) {      // may be undefined if entity was deleted
-                entity.touch();  // bump .v in place, rendering code will pick it up as dirty
-                filters.clearEntity(entity);  // clear feature filter cache
-              }
-            }
-            this.immediateRedraw();
-          })
-          .on('historyjump', (prevIndex, currIndex) => {
-            // This code occurs when jumping to a different edit because of a undo/redo/restore, etc.
-            const prevEdit = editor.history[prevIndex];
-            const currEdit = editor.history[currIndex];
+        // Counterintuitively, when undoing, we might want the metadata from the _next_ edit (located at prevIndex).
+        // If that edit exists (it might not if we are restoring) use that one, otherwise just use the current edit
+        const didUndo = (currIndex === prevIndex - 1);
+        const edit = (didUndo && prevEdit) ?? currEdit;
 
-            // Counterintuitively, when undoing, we might want the metadata from the _next_ edit (located at prevIndex).
-            // If that edit exists (it might not if we are restoring) use that one, otherwise just use the current edit
-            const didUndo = (currIndex === prevIndex - 1);
-            const edit = (didUndo && prevEdit) ?? currEdit;
-
-            // Reposition the map if we've jumped to a different place.
-            const t0 = context.viewport.transform.props;
-            const t1 = edit.transform;
-            if (t1 && (t0.x !== t1.x || t0.y !== t1.y || t0.k !== t1.k || t0.r !== t1.r)) {
-              this.transformEase(t1);
-            }
-
-            // Switch to select mode if the edit contains selected ids.
-            // Note: draw modes need to do a little extra work to survive this,
-            //  so they have their own `historyjump` listeners.
-            const modeID = context.mode?.id;
-            if (/^draw/.test(modeID)) return;
-
-            // For now these IDs are assumed to be OSM ids.
-            // Check that they are actually in the stable graph.
-            const graph = edit.graph;
-            const checkIDs = edit.selectedIDs ?? [];
-            const selectedIDs = checkIDs.filter(entityID => graph.hasEntity(entityID));
-            if (selectedIDs.length) {
-              context.enter('select-osm', { selection: { osm: selectedIDs }} );
-            } else {
-              context.enter('browse');
-            }
-          });
-
-        filters
-          .on('filterchange', () => {
-            scene.dirtyLayers('osm');
-            this.immediateRedraw();
-          });
-
-        context.on('modechange', this.immediateRedraw);
-        imagery.on('imagerychange', this.immediateRedraw);
-        photos.on('photochange', this.immediateRedraw);
-        scene.on('layerchange', this.immediateRedraw);
-        styles.on('stylechange', this.immediateRedraw);
-
-        const osm = context.services.osm;
-        if (osm) {
-          osm.on('authchange', this.immediateRedraw);
+        // Reposition the map if we've jumped to a different place.
+        const t0 = context.viewport.transform.props;
+        const t1 = edit.transform;
+        if (t1 && (t0.x !== t1.x || t0.y !== t1.y || t0.k !== t1.k || t0.r !== t1.r)) {
+          this.transformEase(t1);
         }
 
+        // Switch to select mode if the edit contains selected ids.
+        // Note: draw modes need to do a little extra work to survive this,
+        //  so they have their own `historyjump` listeners.
+        const modeID = context.mode?.id;
+        if (/^draw/.test(modeID)) return;
+
+        // For now these IDs are assumed to be OSM ids.
+        // Check that they are actually in the stable graph.
+        const graph = edit.graph;
+        const checkIDs = edit.selectedIDs ?? [];
+        const selectedIDs = checkIDs.filter(entityID => graph.hasEntity(entityID));
+        if (selectedIDs.length) {
+          context.enter('select-osm', { selection: { osm: selectedIDs }} );
+        } else {
+          context.enter('browse');
+        }
       });
+
+    filters
+      .on('filterchange', () => {
+        scene.dirtyLayers('osm');
+        gfx.immediateRedraw();
+      });
+
+    context.on('modechange', gfx.immediateRedraw);
+    imagery.on('imagerychange', gfx.immediateRedraw);
+    photos.on('photochange', gfx.immediateRedraw);
+    scene.on('layerchange', gfx.immediateRedraw);
+    styles.on('stylechange', gfx.immediateRedraw);
+
+    const osm = context.services.osm;
+    if (osm) {
+      osm.on('authchange', gfx.immediateRedraw);
+    }
   }
 
 
@@ -441,7 +404,8 @@ export class MapSystem extends AbstractSystem {
    * allow the changes to batch up over several animation frames.
    */
   deferredRedraw() {
-    this._renderer?.deferredRender();
+    const gfx = this.context.systems.gfx;
+    gfx.deferredRedraw();
   }
 
 
@@ -452,7 +416,8 @@ export class MapSystem extends AbstractSystem {
    * the map to update on one of the next few animation frames to show their change.
    */
   immediateRedraw() {
-    this._renderer?.render();
+    const gfx = this.context.systems.gfx;
+    gfx.immediateRedraw();
   }
 
 
@@ -483,7 +448,8 @@ export class MapSystem extends AbstractSystem {
    * @return  Array [x,y] pixel location of pointer (or center of the map)
    */
   mouse() {
-    return this._renderer.events?.coord?.map || this.centerPoint();
+    const gfx = this.context.systems.gfx;
+    return gfx.events?.coord?.map || this.centerPoint();
   }
 
 
@@ -514,7 +480,9 @@ export class MapSystem extends AbstractSystem {
 
     // Avoid tiny or out of bounds rotations
     t2.r = numWrap((+(t2.r || 0).toFixed(3)), 0, TAU);   // radians
-    this._renderer.setTransformAsync(t2, duration ?? 0);
+
+    const gfx = this.context.systems.gfx;
+    gfx.setTransformAsync(t2, duration ?? 0);
     return this;
   }
 
@@ -529,7 +497,9 @@ export class MapSystem extends AbstractSystem {
   setTransformAsync(t2, duration = 0) {
     // Avoid tiny or out of bounds rotations
     t2.r = numWrap((+(t2.r || 0).toFixed(3)), 0, TAU);   // radians
-    return this._renderer.setTransformAsync(t2, duration);
+
+    const gfx = this.context.systems.gfx;
+    return gfx.setTransformAsync(t2, duration);
   }
 
 
@@ -886,8 +856,10 @@ export class MapSystem extends AbstractSystem {
     if (this._highlightEdits === val) return;  // no change
 
     this._highlightEdits = val;
-    this._renderer.scene.dirtyScene();
-    this.immediateRedraw();
+
+    const gfx = this.context.systems.gfx;
+    gfx.scene.dirtyScene();
+    gfx.immediateRedraw();
     this.emit('mapchange');
   }
 
@@ -900,20 +872,23 @@ export class MapSystem extends AbstractSystem {
     return this._currFillMode;
   }
   set areaFillMode(val) {
-    const prefs = this.context.systems.storage;
+    const context = this.context;
+    const gfx = context.systems.gfx;
+    const storage = context.systems.storage;
+
     const current = this._currFillMode;
     if (current === val) return;  // no change
 
     if (current !== 'wireframe') {
       this._toggleFillMode = current;
-      prefs.setItem('area-fill-toggle', current);  // remember the previous *non-wireframe* fill mode
+      storage.setItem('area-fill-toggle', current);  // remember the previous *non-wireframe* fill mode
     }
 
     this._currFillMode = val;
-    prefs.setItem('area-fill', val);
+    storage.setItem('area-fill', val);
 
-    this._renderer.scene.dirtyScene();
-    this.immediateRedraw();
+    gfx.scene.dirtyScene();
+    gfx.immediateRedraw();
     this.emit('mapchange');
   }
 
@@ -933,26 +908,6 @@ export class MapSystem extends AbstractSystem {
     } else {
       this.areaFillMode = this._toggleFillMode;  // go back to the previous *non-wireframe* fill mode
     }
-  }
-
-
-  /**
-   * scene
-   * @return reference to the PixiScene object
-   * @readonly
-   */
-  get scene() {
-    return this._renderer?.scene;
-  }
-
-
-  /**
-   * scene
-   * @return reference to the PixiRenderer object
-   * @readonly
-   */
-  get renderer() {
-    return this._renderer;
   }
 
 }

@@ -14,17 +14,18 @@ export class PixiTextures {
 
   /**
    * @constructor
-   * @param  context  Global shared application context
+   * @param  gfx   The GraphicsSystem that owns this TextureManager
    */
-  constructor(context) {
-    this.context = context;
+  constructor(gfx) {
+    this.gfx = gfx;
+    this.context = gfx.context;
     this.loaded = false;
 
-    const assets = context.systems.assets;
+    const assets = this.context.systems.assets;
 
     // Before using the atlases, we need to register the upload function with the renderer.
     // This will choose the correct function for either webGL or webGPU renderer type.
-    const renderer = context.pixi.renderer;
+    const renderer = gfx.pixi.renderer;
     registerAtlasUploader(renderer);
 
     // We store textures in 3 atlases, each one is for holding similar sized things.
@@ -251,7 +252,7 @@ export class PixiTextures {
     options.antialias = false;
     options.target = graphic;
 
-    const renderer = this.context.pixi.renderer;
+    const renderer = this.gfx.pixi.renderer;
     const temp = renderer.generateTexture(options);
     const { pixels, width, height } = renderer.texture.getPixels(temp);
 
@@ -286,7 +287,7 @@ export class PixiTextures {
       resolution: 2
     };
 
-    const renderer = this.context.pixi.renderer;
+    const renderer = this.gfx.pixi.renderer;
     const result = renderer.canvasText.createTextureAndCanvas(options);
     const canvas = result.canvasAndContext.canvas;
     const temp = result.texture;
@@ -304,12 +305,12 @@ export class PixiTextures {
 
 
   /**
-   * addSvgIcon
+   * registerSvgIcon
    * Because SVGs take some time to rasterize, store a placeholder and only rasterize when needed
    * @param  {string}            textureID   Icon identifier (e.g. 'temaki-school')
    * @param  {SVGSymbolElement}  symbol      The SVG Symbol element for the icon
    */
-  addSvgIcon(textureID, symbol) {
+  registerSvgIcon(textureID, symbol) {
     this._svgIcons.set(textureID, symbol);
   }
 
@@ -328,7 +329,6 @@ export class PixiTextures {
 // The old way, just put the SVG on an Image and pack that into the atlas.
 // see https://github.com/facebook/Rapid/commit/dd24e912
 
-    const iconID = symbol.getAttribute('id');
     const viewBox = symbol.getAttribute('viewBox');
 
     // Make a new <svg> container
@@ -352,9 +352,9 @@ export class PixiTextures {
     image.onload = () => {
       const w = image.naturalWidth;
       const h = image.naturalHeight;
-      const texture = this.allocate('symbol', textureID, w, h, image);
+      this.allocate('symbol', textureID, w, h, image);
       this._svgIcons.delete(textureID);
-      this.context.deferredRedraw();
+      this.gfx.deferredRedraw();
       image = null;
     };
 
@@ -370,7 +370,7 @@ export class PixiTextures {
 //     graphics.setSize(size, size);
 //
 //     // Now, make a canvas and render the svg into it at higher resolution.
-//     const renderer = this.context.pixi.renderer;
+//     const renderer = this.gfx.pixi.renderer;
 //     // const canvas = renderer.extract.canvas({ resolution: 2, target: svgGraphics });
 //     const texture = renderer.textureGenerator.generateTexture({ resolution: 2, target: graphics });
 // //    const canvas = renderer.texture.generateCanvas(texture);
@@ -382,7 +382,7 @@ export class PixiTextures {
 //     graphics.destroy({ context: true });
 //
 //    this._svgIcons.delete(textureID);
-//    this.context.deferredRedraw();
+//    this.gfx.deferredRedraw();
   }
 
 

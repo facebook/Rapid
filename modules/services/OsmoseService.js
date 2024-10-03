@@ -157,7 +157,8 @@ export class OsmoseService extends AbstractSystem {
             }
           }
 
-          this.context.deferredRedraw();
+          const gfx = this.context.systems.gfx;
+          gfx.deferredRedraw();
           this.emit('loadedData');
         })
         .catch(err => {

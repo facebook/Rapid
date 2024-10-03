@@ -131,7 +131,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
   renderSource(timestamp, viewport, source, sourceContainer, tileMap) {
     const context = this.context;
     const map = context.systems.map;
-    const textureManager = this.renderer.textures;
+    const textureManager = this.gfx.textures;
     const osm = context.services.osm;
     const t = viewport.transform.props;
     const sourceID = source.key;   // note: use `key` here, for Wayback it will include the date
@@ -226,13 +226,13 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
         tile.loaded = true;
         tile.image = null;  // reference to `image` is held by the atlas, we can null it
-        map.deferredRedraw();
+        this.gfx.deferredRedraw();
       };
 
       image.onerror = () => {
         tile.image = null;
         this._failed.add(tile.url);
-        map.deferredRedraw();
+        this.gfx.deferredRedraw();
       };
     }
 
@@ -347,7 +347,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    * @param  tile  Tile object
    */
   destroyTile(tile) {
-    const textureManager = this.renderer.textures;
+    const textureManager = this.gfx.textures;
 
     if (tile.sprite) {
       if (tile.loaded) {

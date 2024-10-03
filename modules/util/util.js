@@ -78,9 +78,9 @@ export function geojsonExtent(geojson) {
 // Adds or removes highlight styling for the specified entities
 export function utilHighlightEntities(entityIDs, highlighted, context) {
   const editor = context.systems.editor;
-  const map = context.systems.map;
+  const gfx = context.systems.gfx;
 
-  const scene = map.scene;
+  const scene = gfx.scene;
   if (!scene) return;  // called too soon?
 
   const layer = scene.layers.get('osm');
@@ -103,7 +103,7 @@ export function utilHighlightEntities(entityIDs, highlighted, context) {
     layer.clearClass('highlight');
   }
 
-  map.immediateRedraw();
+  gfx.immediateRedraw();
 }
 
 

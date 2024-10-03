@@ -42,8 +42,7 @@ export class LassoBehavior extends AbstractBehavior {
     this._lassoing = false;
     this._extent = null;
 
-    const map = this.context.systems.map;
-    const eventManager = map.renderer.events;
+    const eventManager = this.context.systems.gfx.events;
     eventManager.on('pointerdown', this._pointerdown);
     eventManager.on('pointermove', this._pointermove);
     eventManager.on('pointerup', this._pointerup);
@@ -61,8 +60,7 @@ export class LassoBehavior extends AbstractBehavior {
     this._lassoing = false;
     this._extent = null;
 
-    const map = this.context.systems.map;
-    const eventManager = map.renderer.events;
+    const eventManager = this.context.systems.gfx.events;
     eventManager.off('pointerdown', this._pointerdown);
     eventManager.off('pointermove', this._pointermove);
     eventManager.off('pointerup', this._pointerup);
@@ -77,8 +75,10 @@ export class LassoBehavior extends AbstractBehavior {
   _pointerdown() {
     // Ignore it if we are not over the canvas
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    const map = this.context.systems.map;
-    const eventManager = map.renderer.events;
+    const context = this.context;
+    const gfx = context.systems.gfx;
+    const map = context.systems.map;
+    const eventManager = gfx.events;
     if (!eventManager.pointerOverRenderer) return;
 
     const modifiers = eventManager.modifierKeys;
@@ -101,8 +101,10 @@ export class LassoBehavior extends AbstractBehavior {
   _pointermove() {
     if (!this._lassoing) return;
 
-    const map = this.context.systems.map;
-    const eventManager = map.renderer.events;
+    const context = this.context;
+    const gfx = context.systems.gfx;
+    const map = context.systems.map;
+    const eventManager = gfx.events;
     if (!eventManager.pointerOverRenderer) return;
 
     const coord = map.mouseLoc();
@@ -112,9 +114,9 @@ export class LassoBehavior extends AbstractBehavior {
     this._coords.push(coord);
 
     // Push the polygon data to the map UI for rendering.
-    const mapUILayer = map.scene.layers.get('map-ui');
+    const mapUILayer = gfx.scene.layers.get('map-ui');
     mapUILayer.lassoPolygonData = this._coords;
-    map.immediateRedraw();
+    gfx.immediateRedraw();
   }
 
 
@@ -125,10 +127,12 @@ export class LassoBehavior extends AbstractBehavior {
    */
   _pointerup() {
     if (!this._lassoing) return;
-
     this._lassoing = false;
-    const map = this.context.systems.map;
-    const mapUILayer = map.scene.layers.get('map-ui');
+
+    const context = this.context;
+    const gfx = context.systems.gfx;
+
+    const mapUILayer = gfx.scene.layers.get('map-ui');
 
     const ids = this._lassoed();
     this._coords = [];

@@ -144,11 +144,14 @@ export class Context extends EventEmitter {
       return filters.hasHiddenConnections(entity, graph);
     };
 
+    // GraphicsSystem
+    const gfx = this.systems.gfx;
+    this.deferredRedraw = gfx.deferredRedraw;
+    this.immediateRedraw = gfx.immediateRedraw;
+    this.scene = () => gfx.scene;
+
     // MapSystem
-    const map = this.systems.map;
-    this.deferredRedraw = map.deferredRedraw;
-    this.immediateRedraw = map.immediateRedraw;
-    this.scene = () => map.scene;
+    //const map = this.systems.map;
     this.editable = () => {
       const mode = this._currMode;
       if (!mode || mode.id === 'save') return false;      // don't allow editing during save
@@ -453,7 +456,7 @@ export class Context extends EventEmitter {
   }
   setDebug(flag, val = true) {
     this._debugFlags[flag] = val;
-    this.systems.map?.immediateRedraw();
+    this.systems.gfx?.immediateRedraw();
   }
 
 

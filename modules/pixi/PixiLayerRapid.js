@@ -32,7 +32,7 @@ export class PixiLayerRapid extends AbstractLayer {
 // u_time: 0.0,
 // tint: new Float32Array([1, 1, 1, 1]),
 // translationMatrix: new PIXI.Matrix(),
-// default: this.context.pixi.renderer.plugins.batch._shader.uniformGroup
+// default: this.gfx.renderer.plugins.batch._shader.uniformGroup
 //};
 //
 //const vert = `
@@ -160,8 +160,8 @@ export class PixiLayerRapid extends AbstractLayer {
     if (!this.enabled || !rapid.datasets.size || zoom < MINZOOM) return;
 
 // shader experiment
-//const offset = this.context.pixi.stage.position;
-//const transform = this.context.pixi.stage.worldTransform;
+//const offset = this.gfx.pixi.stage.position;
+//const transform = this.gfx.pixi.stage.worldTransform;
 //this._uniforms.translationMatrix = transform.clone().translate(-offset.x, -offset.y);
 //this._uniforms.u_time = frame/10;
 

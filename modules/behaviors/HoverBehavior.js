@@ -44,7 +44,7 @@ export class HoverBehavior extends AbstractBehavior {
     this.lastMove = null;
     this.hoverTarget = null;
 
-    const eventManager = this.context.systems.map.renderer.events;
+    const eventManager = this.context.systems.gfx.events;
     eventManager.on('modifierchange', this._doHover);
     eventManager.on('pointerover', this._doHover);
     eventManager.on('pointerout', this._doHover);
@@ -70,7 +70,7 @@ export class HoverBehavior extends AbstractBehavior {
     this.lastMove = null;
     this.hoverTarget = null;
 
-    const eventManager = this.context.systems.map.renderer.events;
+    const eventManager = this.context.systems.gfx.events;
     eventManager.off('modifierchange', this._doHover);
     eventManager.off('pointerover', this._doHover);
     eventManager.off('pointerout', this._doHover);
@@ -103,7 +103,7 @@ export class HoverBehavior extends AbstractBehavior {
     if (interaction.gesture) return;  // dont change hover while interacting with the map
 
     const context = this.context;
-    const eventManager = context.systems.map.renderer.events;
+    const eventManager = context.systems.gfx.events;
     const modifiers = eventManager.modifierKeys;
     const isMac = utilDetect().os === 'mac';
     const disableSnap = modifiers.has('Alt') || modifiers.has('Meta') || (!isMac && modifiers.has('Control'));

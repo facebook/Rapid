@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js';
-import { select as d3_select } from 'd3-selection';
 import { TAU, Viewport, numWrap, vecEqual, vecLength, vecRotate, vecScale, vecSubtract } from '@rapid-sdk/math';
 
-import { PixiEvents } from './PixiEvents.js';
-import { PixiScene } from './PixiScene.js';
-import { PixiTextures } from './PixiTextures.js';
+import { AbstractSystem } from './AbstractSystem.js';
+import { PixiEvents } from '../pixi/PixiEvents.js';
+import { PixiScene } from '../pixi/PixiScene.js';
+import { PixiTextures } from '../pixi/PixiTextures.js';
 import { utilSetTransform } from '../util/util.js';
 
 let _sharedTextures;   // singleton (for now)
@@ -12,10 +12,11 @@ let _sharedTextures;   // singleton (for now)
 const THROTTLE = 250;  // throttled rendering milliseconds (for now)
 
 
-
 /**
- * PixiRenderer
- * The renderer implements a game loop and manages when rendering tasks happen.
+ * GraphicsSystem
+ * The graphics system owns the Pixi environment.
+ * This system implements a game loop and manages when rendering tasks happen.
+ * (formerly named PixiRenderer)
  *
  * Properties you can access:
  *   `supersurface`   The parent `div` for temporary transforms between redraws
@@ -33,29 +34,30 @@ const THROTTLE = 250;  // throttled rendering milliseconds (for now)
  *   `move`      Fires after the map's transform has changed (can fire frequently)
  *               ('move' is mostly for when you want to update some content that floats over the map)
  */
-export class PixiRenderer extends PIXI.EventEmitter {
+export class GraphicsSystem extends AbstractSystem {
 
   /**
-   * Create a Pixi application rendering to the given canvas.
-   * We also add it as `context.pixi` so that other parts of Rapid can use it.
    * @constructor
-   *
-   * @param  {Context}            context        Global shared application context
-   * @param  {HTMLDivElement}     supersurface   The parent `div` for temporary transforms between redraws
-   * @param  {HTMLCanvasElement}  surface`       The sibling `canvas` map drawing surface
-   * @param  {HTMLDivElement}     overlay`       The sibling `div` overlay, offsets the supersurface transform
+   * @param  `context`   Global shared application context
    */
-  constructor(context, supersurface, surface, overlay) {
-    super();
-    this.context = context;
-    this.supersurface = supersurface;
-    this.surface = surface;
-    this.overlay = overlay;
+  constructor(context) {
+    super(context);
 
-    this._frame = 0;              // counter that increments
-    this._timeToNextRender = 0;   // milliseconds of time to defer rendering
-    this._appPending = false;
-    this._drawPending = false;
+    this.id = 'gfx';
+    this.dependencies = new Set(['map']);
+
+    // Create these early
+    this.supersurface = document.createElement('div');  // parent `div` temporary transforms between redraws
+    this.surface = document.createElement('canvas');    // sibling `canvas` map drawing surface
+    this.overlay = document.createElement('div');       // sibling `div` overlay offsets the supersurface transform
+
+    // Pixi objects, will be created in initAsync.
+    this.pixi = null;
+    this.stage = null;
+    this.origin = null;
+    this.scene = null;
+    this.events = null;
+    this.textures = null;
 
     // Properties used to manage the scene transform
     this.pixiViewport = new Viewport();
@@ -63,19 +65,33 @@ export class PixiRenderer extends PIXI.EventEmitter {
     this._isTempTransformed = false;     // is the supersurface transformed?
     this._transformEase = null;
 
-    // Make sure callbacks have `this` bound correctly
-    this._tick = this._tick.bind(this);
+    this._frame = 0;              // counter that increments
+    this._timeToNextRender = 0;   // milliseconds of time to defer rendering
+    this._appPending = false;
+    this._drawPending = false;
+    this._initPromise = null;
 
-    // Asynchronously initialize the PixiJS application
-    this._pixiReadyPromise = this._initPixiAsync();
+    // Ensure methods used as callbacks always have `this` bound correctly.
+    // (This is also necessary when using `d3-selection.call`)
+    this.deferredRedraw = this.deferredRedraw.bind(this);
+    this.immediateRedraw = this.immediateRedraw.bind(this);
+    this._tick = this._tick.bind(this);
   }
 
 
   /**
-   * _initPixiAsync
-   * @return {Promise}  Promise settled when Pixi is ready
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this component has completed initialization
    */
-  _initPixiAsync() {
+  initAsync() {
+    if (this._initPromise) return this._initPromise;
+
+    for (const id of this.dependencies) {
+      if (!this.context.systems[id]) {
+        return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
+      }
+    }
 
     // setup defaults here
     Object.assign(PIXI.TextureSource.defaultOptions, {
@@ -110,11 +126,8 @@ export class PixiRenderer extends PIXI.EventEmitter {
       useBackBuffer: false
     };
 
-    return this.pixi.init(options)
+    return this._initPromise = this.pixi.init(options)
       .then(() => {
-        // todo - we should stop doing this.. Access to pixi app should be via an instance of PixiRenderer
-        // so we can have multiple Pixi renderers - this will make the minimap less hacky & enable restriction editor
-        this.context.pixi = this.pixi;
 
         // Prepare a basic bitmap font that we can use for things like debug messages
         PIXI.BitmapFont.install({
@@ -172,10 +185,54 @@ export class PixiRenderer extends PIXI.EventEmitter {
         // This is because it will start loading assets and Pixi's asset loader is not reentrant.
         // (it causes test failures if we create a bunch of these)
         if (!_sharedTextures) {
-          _sharedTextures = new PixiTextures(this.context);
+          _sharedTextures = new PixiTextures(this);
         }
         this.textures = _sharedTextures;
       });
+  }
+
+
+  /**
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this component has completed startup
+   */
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * Note that calling `resetAsync` schedules an "immediate" redraw (on the next available tick).
+   * @return {Promise} Promise resolved when this component has completed resetting
+   */
+  resetAsync() {
+    this.immediateRedraw();
+    return Promise.resolve();
+  }
+
+
+  /**
+   * pause
+   * Pauses this system
+   * When paused, the GraphicsSystem will not render
+   */
+  pause() {
+    this._paused = true;
+  }
+
+
+  /**
+   * resume
+   * Resumes (unpauses) this system.
+   * When paused, the GraphicsSystem will not render
+   * Note that calling `resume` schedules an "immediate" redraw (on the next available tick).
+   */
+  resume() {
+    this._paused = false;
+    this.immediateRedraw();
   }
 
 
@@ -246,19 +303,19 @@ export class PixiRenderer extends PIXI.EventEmitter {
 
 
   /**
-   * deferredRender
+   * deferredRedraw
    * Schedules an APP pass but does not reset the timer
    */
-  deferredRender() {
+  deferredRedraw() {
     this._appPending = true;
   }
 
 
   /**
-   * render
+   * immediateRedraw
    * Schedules an APP pass on the next available tick
    */
-  render() {
+  immediateRedraw() {
     this._timeToNextRender = 0;    // asap
     this._appPending = true;
   }
@@ -429,7 +486,7 @@ export class PixiRenderer extends PIXI.EventEmitter {
 
     const context = this.context;
     const map = context.systems.map;
-    if (map.paused) return;
+    if (this.paused) return;
 
     // If the user is currently resizing, skip rendering until the size has settled
     if (context.container().classed('resizing')) return;
@@ -533,9 +590,9 @@ export class PixiRenderer extends PIXI.EventEmitter {
    * Render some debug shapes (usually commented out)
    */
   _renderDebug() {
-      const context = this.context;
-      const mapViewport = context.viewport;
-      const origin = this.origin;
+//      const context = this.context;
+//      const mapViewport = context.viewport;
+//      const origin = this.origin;
       const stage = this.stage;
 
 //    let debug1 = origin.getChildByLabel('center_stage');   // center stage

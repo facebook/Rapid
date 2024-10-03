@@ -31,14 +31,14 @@ export class PixiEvents extends EventEmitter {
 
   /**
    * @constructor
-   * @param  renderer   The Renderer that owns this Event system
+   * @param  gfx   The GraphicsSystem that owns this EventManager
    */
-  constructor(renderer) {
+  constructor(gfx) {
     super();
     this._enabled = false;
 
-    this.renderer = renderer;
-    this.context = renderer.context;
+    this.gfx = gfx;
+    this.context = gfx.context;
 
     this.pointerOverRenderer = false;
     this.modifierKeys = new Set();
@@ -88,18 +88,18 @@ export class PixiEvents extends EventEmitter {
     window.addEventListener('keydown', this._keydown);
     window.addEventListener('keyup', this._keyup);
 
-    const renderer = this.renderer;
+    const gfx = this.gfx;
 
     // Attach wheel to supersurface so that content on the overlay (like the edit menu)
     // doesn't receive the wheel events and prevent panning and zooming.
-    const supersurface = renderer.supersurface;
+    const supersurface = gfx.supersurface;
     supersurface.addEventListener('wheel', this._wheel, { passive: false });  // false allows preventDefault
 
-    const view = renderer.pixi.canvas;
-    view.addEventListener('pointerover', this._pointerover);
-    view.addEventListener('pointerout', this._pointerout);
+    const surface = gfx.surface;
+    surface.addEventListener('pointerover', this._pointerover);
+    surface.addEventListener('pointerout', this._pointerout);
 
-    const stage = renderer.pixi.stage;
+    const stage = gfx.pixi.stage;
     stage.addEventListener('click', this._click);
     stage.addEventListener('rightclick', this._click);   // pixi has a special 'rightclick' event
     stage.addEventListener('pointerdown', this._pointerdown);
@@ -123,16 +123,16 @@ export class PixiEvents extends EventEmitter {
     window.removeEventListener('keydown', this._keydown);
     window.removeEventListener('keyup', this._keyup);
 
-    const renderer = this.renderer;
+    const gfx = this.gfx;
 
-    const supersurface = renderer.supersurface;
+    const supersurface = gfx.supersurface;
     supersurface.removeEventListener('wheel', this._wheel);
 
-    const view = renderer.pixi.canvas;
-    view.removeEventListener('pointerover', this._pointerover);
-    view.removeEventListener('pointerout', this._pointerout);
+    const surface = gfx.surface;
+    surface.removeEventListener('pointerover', this._pointerover);
+    surface.removeEventListener('pointerout', this._pointerout);
 
-    const stage = renderer.pixi.stage;
+    const stage = gfx.pixi.stage;
     stage.removeEventListener('click', this._click);
     stage.removeEventListener('rightclick', this._click);
     stage.removeEventListener('pointerdown', this._pointerdown);
@@ -157,7 +157,7 @@ export class PixiEvents extends EventEmitter {
     // We don't know when that event will be, next time user happens to shake the mouse?
     // So we'll also set it directly on the canvas so it locks in now
     const path = this.context.assetPath;
-    const view = this.renderer.pixi.canvas;
+    const surface = this.gfx.surface;
 
     const cursors = {
       areaCursor: `url(${path}img/cursor-select-area.png), pointer`,
@@ -171,28 +171,28 @@ export class PixiEvents extends EventEmitter {
 
     switch (style) {
       case 'areaCursor':
-        view.style.cursor = cursors.areaCursor;
+        surface.style.cursor = cursors.areaCursor;
         break;
       case 'connectLineCursor':
-        view.style.cursor = cursors.connectLineCursor;
+        surface.style.cursor = cursors.connectLineCursor;
         break;
       case 'connectVertexCursor':
-        view.style.cursor = cursors.connectVertexCursor;
+        surface.style.cursor = cursors.connectVertexCursor;
         break;
       case 'lineCursor':
-        view.style.cursor = cursors.lineCursor;
+        surface.style.cursor = cursors.lineCursor;
         break;
       case 'pointCursor':
-        view.style.cursor = cursors.pointCursor;
+        surface.style.cursor = cursors.pointCursor;
         break;
       case 'selectSplitCursor':
-        view.style.cursor = cursors.selectSplitCursor;
+        surface.style.cursor = cursors.selectSplitCursor;
         break;
       case 'vertexCursor':
-        view.style.cursor = cursors.vertexCursor;
+        surface.style.cursor = cursors.vertexCursor;
         break;
       default:
-        view.style.cursor = style;
+        surface.style.cursor = style;
         break;
       }
   }

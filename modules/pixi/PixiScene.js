@@ -55,12 +55,12 @@ export class PixiScene extends EventEmitter {
 
   /**
    * @constructor
-   * @param  renderer   The Renderer that owns this Scene
+   * @param  gfx   The GraphicsSystem that owns this Scene
    */
-  constructor(renderer) {
+  constructor(gfx) {
     super();
-    this.renderer = renderer;
-    this.context = renderer.context;
+    this.gfx = gfx;
+    this.context = gfx.context;
 
     this.groups = new Map();     // Map (groupID -> PIXI.Container)
     this.layers = new Map();     // Map (layerID -> Layer)
@@ -83,7 +83,7 @@ export class PixiScene extends EventEmitter {
       container.label = groupID;
       container.sortableChildren = true;
       container.zIndex = i;
-      this.renderer.origin.addChild(container);
+      gfx.origin.addChild(container);
       this.groups.set(groupID, container);
     });
 
