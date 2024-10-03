@@ -149,8 +149,6 @@ export class Context extends EventEmitter {
     this.deferredRedraw = map.deferredRedraw;
     this.immediateRedraw = map.immediateRedraw;
     this.scene = () => map.scene;
-    this.surface = () => map.surface;
-    this.surfaceRect = () => map.surface.node().getBoundingClientRect();
     this.editable = () => {
       const mode = this._currMode;
       if (!mode || mode.id === 'save') return false;      // don't allow editing during save

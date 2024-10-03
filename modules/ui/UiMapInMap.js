@@ -446,8 +446,8 @@ export class UiMapInMap {
     // Mock Renderer
     const miniRenderer = {
       context: context,
-      supersurface: this.$supersurface,
-      surface: this.$surface,
+      supersurface: this.$supersurface.node(),
+      surface: this.$surface.node(),
       pixi: pixi,
       stage: stage,
       origin: stage,

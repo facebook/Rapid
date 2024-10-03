@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { select as d3_select } from 'd3-selection';
 import { TAU, Viewport, numWrap, vecEqual, vecLength, vecRotate, vecScale, vecSubtract } from '@rapid-sdk/math';
 
 import { PixiEvents } from './PixiEvents.js';
@@ -17,9 +18,9 @@ const THROTTLE = 250;  // throttled rendering milliseconds (for now)
  * The renderer implements a game loop and manages when rendering tasks happen.
  *
  * Properties you can access:
- *   `supersurface`   D3 selection to the parent `div` "supersurface"
- *   `surface`        D3 selection to the sibling `canvas` "surface"
- *   `overlay`        D3 selection to the sibling `div` "overlay"
+ *   `supersurface`   The parent `div` for temporary transforms between redraws
+ *   `surface`        The sibling `canvas` map drawing surface
+ *   `overlay`        The sibling `div` overlay, offsets the supersurface transform
  *   `pixi`           PIXI.Application() created to render to the canvas
  *   `stage`          PIXI.Container() that lives at the root of this scene
  *   `origin`         PIXI.Container() that lives beneath the stage, used to set origin to [0,0]
@@ -38,12 +39,11 @@ export class PixiRenderer extends PIXI.EventEmitter {
    * Create a Pixi application rendering to the given canvas.
    * We also add it as `context.pixi` so that other parts of Rapid can use it.
    * @constructor
-   * @global
    *
-   * @param  context        Global shared application context
-   * @param  supersurface   D3 selection to the parent `div` "supersurface"
-   * @param  surface        D3 selection to the sibling `canvas` "surface"
-   * @param  overlay        D3 selection to the sibling `div` "overlay"
+   * @param  {Context}            context        Global shared application context
+   * @param  {HTMLDivElement}     supersurface   The parent `div` for temporary transforms between redraws
+   * @param  {HTMLCanvasElement}  surface`       The sibling `canvas` map drawing surface
+   * @param  {HTMLDivElement}     overlay`       The sibling `div` overlay, offsets the supersurface transform
    */
   constructor(context, supersurface, surface, overlay) {
     super();
@@ -51,7 +51,6 @@ export class PixiRenderer extends PIXI.EventEmitter {
     this.supersurface = supersurface;
     this.surface = surface;
     this.overlay = overlay;
-    this.initialized = false;
 
     this._frame = 0;              // counter that increments
     this._timeToNextRender = 0;   // milliseconds of time to defer rendering
@@ -92,7 +91,7 @@ export class PixiRenderer extends PIXI.EventEmitter {
       antialias: true,
       autoDensity: true,
       autoStart: false,    // Don't start the ticker yet
-      canvas: this.surface.node(),
+      canvas: this.surface,
       events: {
         move: false,
         globalMove: false,
@@ -499,10 +498,10 @@ export class PixiRenderer extends PIXI.EventEmitter {
     if (!vecEqual(pixiDims, canvasDims)) {
       const [w, h] = pixiDims;
       // Resize supersurface and overlay to cover the screen dimensions.
-      const ssnode = this.supersurface.node();
+      const ssnode = this.supersurface;
       ssnode.style.width = `${w}px`;
       ssnode.style.height = `${h}px`;
-      const onode = this.overlay.node();
+      const onode = this.overlay;
       onode.style.width = `${w}px`;
       onode.style.height = `${h}px`;
       // Resize pixi canvas

@@ -1,4 +1,3 @@
-import { select as d3_select } from 'd3-selection';
 import {
   DEG2RAD, RAD2DEG, TAU, Extent, Viewport, geoMetersToLon, geoZoomToScale,
   numClamp, numWrap, vecAdd, vecRotate, vecSubtract
@@ -20,10 +19,10 @@ const MAX_Z = 24;
  * Supports `pause()` / `resume()` - when paused, the the code in PixiRenderer.js will not render
  *
  * Properties available:
- *   `supersurface`    D3 selection to the parent `div` "supersurface"
- *   `surface`         D3 selection to the sibling `canvas` "surface"
- *   `overlay`         D3 selection to the sibling `div` "overlay"
- *   `highlightEdits`   true` if edited features should be shown in a special style, `false` otherwise
+ *   `supersurface`    The parent `div` for temporary transforms between redraws
+ *   `surface`         The sibling `canvas` map drawing surface
+ *   `overlay`         The sibling `div` overlay, offsets the supersurface transform
+ *   `highlightEdits`  `true` if edited features should be shown in a special style, `false` otherwise
  *   `areaFillMode`    one of 'full', 'partial' (default), or 'wireframe'
  *   `wireframeMode`   `true` if fill mode is 'wireframe', `false` otherwise
  *
@@ -44,9 +43,10 @@ export class MapSystem extends AbstractSystem {
     this.id = 'map';
     this.dependencies = new Set(['editor', 'filters', 'imagery', 'l10n', 'photos', 'storage', 'styles', 'urlhash']);
 
-    this.supersurface = d3_select(null);  // parent `div` temporary zoom/pan transform
-    this.surface = d3_select(null);       // sibling `canvas`
-    this.overlay = d3_select(null);       // sibling `div`, offsets supersurface transform (used to hold the editmenu)
+    // Create these early
+    this.supersurface = document.createElement('div');  // parent `div` temporary transforms between redraws
+    this.surface = document.createElement('canvas');    // sibling `canvas` map drawing surface
+    this.overlay = document.createElement('div');       // sibling `div` overlay offsets the supersurface transform
 
     // display options
     this.areaFillOptions = ['wireframe', 'partial', 'full'];
@@ -58,6 +58,9 @@ export class MapSystem extends AbstractSystem {
     this._initPromise = null;
     this._startPromise = null;
     this._pixiReadyPromise = null;
+
+    // D3 selections
+    this.$parent = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
@@ -196,14 +199,22 @@ export class MapSystem extends AbstractSystem {
 
   /**
    * render
-   * @param  `selection`  A d3-selection to a `div` that the map should render itself into
+   * Accepts a parent selection, and renders the content under it.
+   * (The parent selection is required the first time, but can be inferred on subsequent renders)
+   * @param {d3-selection} $parent - A d3-selection to a HTMLEement that this component should render itself into
    */
-  render(selection) {
+  render($parent = this.$parent) {
+    if ($parent) {
+      this.$parent = $parent;
+    } else {
+      return;   // no parent - called too early?
+    }
+
     const context = this.context;
 
     // Selection here contains a D3 selection for the `main-map` div that the map gets added to
     // It's an absolutely positioned div that takes up as much space as it's allowed to.
-    selection
+    $parent
       // Suppress the native right-click context menu
       .on('contextmenu', e => e.preventDefault())
       // Suppress swipe-to-navigate browser pages on trackpad/magic mouse – iD#5552
@@ -212,9 +223,15 @@ export class MapSystem extends AbstractSystem {
     // The `supersurface` is a wrapper div that we temporarily transform as the user zooms and pans.
     // This allows us to defer actual rendering until the browser has more time to do it.
     // At regular intervals we reset this root transform and actually redraw the this.
-    this.supersurface = selection
-      .append('div')
+    let $supersurface = $parent.selectAll('.supersurface')
+      .data([0]);
+
+    const $$supersurface = $supersurface.enter()
+      .append(() => this.supersurface)
       .attr('class', 'supersurface');
+
+    $supersurface = $supersurface.merge($$supersurface);
+
 
     // Content beneath the supersurface may be transformed and will need to rerender sometimes.
     // This includes the Pixi WebGL canvas and the right-click edit menu
@@ -224,20 +241,30 @@ export class MapSystem extends AbstractSystem {
     //  - d3 selecting surface's child stuff
     //  - css classing surface's child stuff
     //  - listening to events on the surface
-    this.surface = this.supersurface
-      .append('canvas')
+    let $surface = $supersurface.selectAll('.surface')
+      .data([0]);
+
+    const $$surface = $surface.enter()
+      .append(() => this.surface)
       .attr('class', 'surface');
+
+    $surface = $surface.merge($$surface);
+
 
     // The `overlay` is a div that is transformed to cancel out the supersurface.
     // This is a place to put things _not drawn by pixi_ that should stay positioned
     // with the map, like the editmenu.
-    this.overlay = this.supersurface
-      .append('div')
+    let $overlay = $supersurface.selectAll('.overlay')
+      .data([0]);
+
+    const $$overlay = $overlay.enter()
+      .append(() => this.overlay)
       .attr('class', 'overlay');
 
+    $overlay = $overlay.merge($$overlay);
+
+
     if (this._renderer) return;  // we created it already
-
-
     this._renderer = new PixiRenderer(context, this.supersurface, this.surface, this.overlay);
 
     this._pixiReadyPromise = (this._renderer._pixiReadyPromise || Promise.reject())

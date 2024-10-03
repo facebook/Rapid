@@ -123,12 +123,12 @@ export function utilIsColorValid(value) {
 
 
 // `utilSetTransform`
-// Applies a CSS transformation to the given selection
-export function utilSetTransform(selection, x, y, scale, rotate) {
+// Applies a CSS transformation to the given element
+export function utilSetTransform(element, x, y, scale, rotate) {
   const t = `translate3d(${x}px,${y}px,0)`;
   const s = (scale && scale !== 1) ? ` scale(${scale})` : '';
   const r = rotate ? ` rotate(${rotate}rad)` : '';
-  return selection.style('transform', `${t}${s}${r}`);
+  element.style.transform = `${t}${s}${r}`;
 }
 
 

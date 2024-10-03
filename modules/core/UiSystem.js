@@ -664,9 +664,9 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
 
     // Focus the surface, otherwise clicking off the menu may not trigger browse mode
     // (bhousel - I don't know whether this is needed anymore in 2024)
-    const surfaceNode = context.surface().node();
-    if (surfaceNode.focus) {   // FF doesn't support it
-      surfaceNode.focus();
+    const surface = map.surface;
+    if (surface.focus) {   // FF doesn't support it
+      surface.focus();
     }
 
     for (const operation of operations) {
@@ -681,7 +681,8 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
       .operations(operations);
 
     // render the menu
-    map.overlay.call(this.editMenu);
+    const $overlay = d3_select(map.overlay);
+    $overlay.call(this.editMenu);
   }
 
 
@@ -693,16 +694,17 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
   redrawEditMenu() {
     const context = this.context;
     const map = context.systems.map;
+    const $overlay = d3_select(map.overlay);
 
     // If the menu isn't showing, there's nothing to do
-    if (map.overlay.selectAll('.edit-menu').empty()) return;
+    if ($overlay.selectAll('.edit-menu').empty()) return;
 
     // The mode decides which operations are available
     const operations = context.mode?.operations ?? [];
 
     if (operations.length && context.editable()) {
       this.editMenu.operations(operations);
-      map.overlay.call(this.editMenu);   // redraw it
+      $overlay.call(this.editMenu);   // redraw it
     } else {
       this.editMenu.close();
     }

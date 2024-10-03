@@ -1,3 +1,4 @@
+import { select as d3_select } from 'd3-selection';
 import { vecLength } from '@rapid-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior.js';
@@ -141,8 +142,8 @@ export class DragBehavior extends AbstractBehavior {
     const map = context.systems.map;
 
     // If we detect the edit (right-click) menu, we should cease any dragging behavior.
-    const hasEditmenu = map.supersurface.select('.edit-menu').size();
-    if (hasEditmenu) {
+    const hasEditMenu = d3_select(map.overlay).select('.edit-menu').size();
+    if (hasEditMenu) {
       this._pointercancel(e);
       return;
     }

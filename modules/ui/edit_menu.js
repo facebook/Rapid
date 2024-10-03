@@ -214,7 +214,7 @@ export function uiEditMenu(context) {
     }
 
     const anchor = viewport.project(_anchorLoc, true);  // convert wgs84 [lon,lat] to screen [x,y]
-    const surfaceRect = context.surfaceRect();
+    const surfaceRect = map.surface.getBoundingClientRect();
 
     // close the menu if it's gone offscreen
     if (anchor[0] < 0 || anchor[0] > surfaceRect.width || anchor[1] < 0 || anchor[1] > surfaceRect.height) {

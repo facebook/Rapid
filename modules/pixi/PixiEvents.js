@@ -92,7 +92,7 @@ export class PixiEvents extends EventEmitter {
 
     // Attach wheel to supersurface so that content on the overlay (like the edit menu)
     // doesn't receive the wheel events and prevent panning and zooming.
-    const supersurface = renderer.supersurface.node();
+    const supersurface = renderer.supersurface;
     supersurface.addEventListener('wheel', this._wheel, { passive: false });  // false allows preventDefault
 
     const view = renderer.pixi.canvas;
@@ -125,7 +125,7 @@ export class PixiEvents extends EventEmitter {
 
     const renderer = this.renderer;
 
-    const supersurface = renderer.supersurface.node();
+    const supersurface = renderer.supersurface;
     supersurface.removeEventListener('wheel', this._wheel);
 
     const view = renderer.pixi.canvas;

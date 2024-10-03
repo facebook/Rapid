@@ -43,7 +43,10 @@ export class UiPanelLocation extends AbstractUiPanel {
     this._selection = selection;
     this._currLocation = null;
 
-    this.context.surface().on('pointermove.info-location', this.render);
+    const context = this.context;
+    const map = context.systems.map;
+    const $surface = d3_select(map.surface);
+    $surface.on('pointermove.info-location', this.render);
   }
 
 
@@ -61,7 +64,10 @@ export class UiPanelLocation extends AbstractUiPanel {
     this._selection = d3_select(null);
     this._currLocation = null;
 
-    this.context.surface().on('pointermove.info-location', null);
+    const context = this.context;
+    const map = context.systems.map;
+    const $surface = d3_select(map.surface);
+    $surface.on('pointermove.info-location', null);
   }
 
 

@@ -631,8 +631,12 @@ export class KartaviewService extends AbstractSystem {
    */
   _zoomPan(d3_event) {
     const t = d3_event.transform;
-    this.context.container().select('.photoviewer .osc-image-wrap')
-      .call(utilSetTransform, t.x, t.y, t.k);
+    const $container = this.context.container();
+    const $imageWrap = $container.select('.photoviewer .osc-image-wrap');
+
+    if ($imageWrap.size()) {
+      utilSetTransform($imageWrap.node(), t.x, t.y, t.k);
+    }
   }
 
 
