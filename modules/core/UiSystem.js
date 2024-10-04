@@ -48,8 +48,8 @@ export class UiSystem extends AbstractSystem {
 
     this._firstRender = true;
     this._needWidth = {};
-    this._startPromise = null;
     this._initPromise = null;
+    this._startPromise = null;
     this._resizeTimeout = null;
 
     this._mapRect = null;
@@ -185,6 +185,7 @@ export class UiSystem extends AbstractSystem {
     const context = this.context;
     const l10n = context.systems.l10n;
     const lang = l10n.localeCode();
+    const gfx = context.systems.gfx;
     const map = context.systems.map;
 
     container
@@ -195,11 +196,16 @@ export class UiSystem extends AbstractSystem {
     container
       .call(uiFullScreen(context));
 
-    map.pause();  // don't draw until we've set zoom/lat/long
-
     // Sidebar
     container
       .call(this.sidebar.render);
+
+    container.selectAll('#rapid-defs')
+      .data([0])
+      .enter()
+      .append('svg')
+      .attr('id', 'rapid-defs')
+      .call(this.defs.render);
 
 
     // main-content
@@ -219,21 +225,13 @@ export class UiSystem extends AbstractSystem {
       .attr('class', 'main-map')
       .call(map.render);
 
-
-    container.selectAll('#rapid-defs')
-      .data([0])
-      .enter()
-      .append('svg')
-      .attr('id', 'rapid-defs')
-      .call(this.defs.render);
-
-      // Top toolbar
-      contentEnter
-        .append('div')
-        .attr('class', 'top-toolbar-wrap')
-        .append('div')
-        .attr('class', 'top-toolbar fillD')
-        .call(uiTopToolbar(context));
+    // Top toolbar
+    contentEnter
+      .append('div')
+      .attr('class', 'top-toolbar-wrap')
+      .append('div')
+      .attr('class', 'top-toolbar fillD')
+      .call(uiTopToolbar(context));
 
 
       // Over Map
@@ -429,10 +427,9 @@ export class UiSystem extends AbstractSystem {
       container
         .call(this.shortcuts);
 
-      // Setup map dimensions, and allow rendering..
+      // Setup map dimensions
       // This should happen after .main-content and toolbars exist.
       this.resize();
-      map.resume();
 
 
       // On first render only, enter browse mode and show a startup screen.
@@ -650,7 +647,7 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
     this.editMenu.close();   // remove any displayed menu
 
     const context = this.context;
-    const map = context.systems.map;
+    const gfx = context.systems.gfx;
     const viewport = context.viewport;
 
     // The mode decides which operations are available
@@ -660,7 +657,7 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
 
     // Focus the surface, otherwise clicking off the menu may not trigger browse mode
     // (bhousel - I don't know whether this is needed anymore in 2024)
-    const surface = map.surface;
+    const surface = gfx.surface;
     if (surface.focus) {   // FF doesn't support it
       surface.focus();
     }
@@ -677,7 +674,7 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
       .operations(operations);
 
     // render the menu
-    const $overlay = d3_select(map.overlay);
+    const $overlay = d3_select(gfx.overlay);
     $overlay.call(this.editMenu);
   }
 
@@ -689,8 +686,8 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
    */
   redrawEditMenu() {
     const context = this.context;
-    const map = context.systems.map;
-    const $overlay = d3_select(map.overlay);
+    const gfx = context.systems.gfx;
+    const $overlay = d3_select(gfx.overlay);
 
     // If the menu isn't showing, there's nothing to do
     if ($overlay.selectAll('.edit-menu').empty()) return;

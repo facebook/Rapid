@@ -40,7 +40,6 @@ export class PhotoSystem extends AbstractSystem {
     this._filterUsernames = null;
 
     this._initPromise = null;
-    this._startPromise = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._hashchange = this._hashchange.bind(this);
@@ -64,16 +63,22 @@ export class PhotoSystem extends AbstractSystem {
     }
 
     const context = this.context;
+    const gfx = context.systems.gfx;
     const map = context.systems.map;
     const urlhash = context.systems.urlhash;
 
     const prerequisites = Promise.all([
-      map.initAsync(),   // PhotoSystem should listen for hashchange after MapSystem
+      gfx.initAsync(),   // `gfx.scene` will exist after `initAsync`
+      map.initAsync(),   // `PhotoSystem` should listen for 'hashchange' after `MapSystem`
       urlhash.initAsync()
     ]);
 
     return this._initPromise = prerequisites
-      .then(() => urlhash.on('hashchange', this._hashchange));
+      .then(() => {
+        // Setup event handlers..
+        urlhash.on('hashchange', this._hashchange);
+        gfx.scene.on('layerchange', this._layerchange);
+      });
   }
 
 
@@ -83,16 +88,8 @@ export class PhotoSystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
-    if (this._startPromise) return this._startPromise;
-
-    const gfx = this.context.systems.gfx;
-    const prerequisites = gfx.startAsync();  // PhotoSystem should listen for layerchange after scene exists
-
-    return this._startPromise = prerequisites
-      .then(() => {
-        gfx.scene.on('layerchange', this._layerchange);
-        this._started = true;
-      });
+    this._started = true;
+    return Promise.resolve();
   }
 
 

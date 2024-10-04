@@ -130,7 +130,6 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    */
   renderSource(timestamp, viewport, source, sourceContainer, tileMap) {
     const context = this.context;
-    const map = context.systems.map;
     const textureManager = this.gfx.textures;
     const osm = context.services.osm;
     const t = viewport.transform.props;

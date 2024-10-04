@@ -70,6 +70,7 @@ export class GraphicsSystem extends AbstractSystem {
     this._appPending = false;
     this._drawPending = false;
     this._initPromise = null;
+    this._startPromise = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
@@ -176,7 +177,6 @@ export class GraphicsSystem extends AbstractSystem {
         const defaultListener = ticker._head.next;
         ticker.remove(defaultListener._fn, defaultListener._context);
         ticker.add(this._tick, this);
-        ticker.start();
 
         this.scene = new PixiScene(this);
         this.events = new PixiEvents(this);
@@ -198,7 +198,23 @@ export class GraphicsSystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
-    return Promise.resolve();
+    if (this._startPromise) return this._startPromise;
+
+    const context = this.context;
+    const map = context.systems.map;
+    const ui = context.systems.ui;
+
+    // Wait for UI and Map to be ready, then start the ticker
+    const prerequisites = Promise.all([
+      map.startAsync(),
+      ui.startAsync()
+    ]);
+
+    return this._startPromise = prerequisites
+      .then(() => {
+        this._started = true;
+        this.pixi.ticker.start();
+      });
   }
 
 
@@ -243,6 +259,8 @@ export class GraphicsSystem extends AbstractSystem {
    * and schedule work to happen at opportune times (within animation frame boundaries)
    */
   _tick() {
+    if (!this._started || this._paused) return;
+
     const ticker = this.pixi.ticker;
     // console.log('FPS=' + ticker.FPS.toFixed(1));
 
@@ -304,7 +322,8 @@ export class GraphicsSystem extends AbstractSystem {
 
   /**
    * deferredRedraw
-   * Schedules an APP pass but does not reset the timer
+   * Schedules an APP pass but does not reset the timer.
+   * This is for situations where new data is available, but we can wait a bit to show it.
    */
   deferredRedraw() {
     this._appPending = true;
@@ -313,11 +332,14 @@ export class GraphicsSystem extends AbstractSystem {
 
   /**
    * immediateRedraw
-   * Schedules an APP pass on the next available tick
+   * Schedules an APP pass on the next available tick.
+   * If there was a DRAW pending, cancel it.
+   * This is for situations where we want the user to see the update immediately.
    */
   immediateRedraw() {
     this._timeToNextRender = 0;    // asap
     this._appPending = true;
+    this._drawPending = false;
   }
 
 
@@ -483,10 +505,10 @@ export class GraphicsSystem extends AbstractSystem {
   _app() {
     // Wait for textures to be loaded before attempting rendering.
     if (!this.textures?.loaded) return;
+    if (!this._started || this._paused) return;
 
     const context = this.context;
     const map = context.systems.map;
-    if (this.paused) return;
 
     // If the user is currently resizing, skip rendering until the size has settled
     if (context.container().classed('resizing')) return;

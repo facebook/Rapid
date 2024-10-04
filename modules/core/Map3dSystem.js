@@ -23,7 +23,7 @@ export class Map3dSystem extends AbstractSystem {
     super(context);
     this.id = 'map3d';
     this.autoStart = false;
-    this.dependencies = new Set(['editor', 'l10n', 'map', 'styles', 'ui', 'urlhash']);
+    this.dependencies = new Set(['editor', 'gfx', 'l10n', 'map', 'styles', 'ui', 'urlhash']);
     this.maplibre = null;
     this.containerID = 'map3d_container';
 
@@ -74,11 +74,9 @@ export class Map3dSystem extends AbstractSystem {
 
     return this._initPromise = prerequisites
       .then(() => {
+        // Setup event handlers..
         urlhash.on('hashchange', this._hashchange);
-
-        const toggleKey = uiCmd('⌘' + l10n.t('background.3dmap.key'));
-        context.keybinding().off(toggleKey);
-        context.keybinding().on(toggleKey, this.toggle);
+        this._setupKeybinding();
       });
   }
 
@@ -92,11 +90,8 @@ export class Map3dSystem extends AbstractSystem {
     if (this._startPromise) return this._startPromise;
 
     const context = this.context;
-    const map = context.systems.map;
+    const gfx = context.systems.gfx;
     const ui = context.systems.ui;
-
-    map.on('draw', this.deferredRedraw);  // respond to changes in the main map
-    map.on('move', this.deferredRedraw);
 
     const prerequisites = Promise.all([
       ui.startAsync(),    // wait for UI to be started, so the container will exist
@@ -125,6 +120,9 @@ export class Map3dSystem extends AbstractSystem {
           }
           });
 
+        // Setup event handlers..
+        gfx.on('draw', this.deferredRedraw);  // respond to changes in the main map
+        gfx.on('move', this.deferredRedraw);
         maplibre.on('move', this._map3dmoved);   // respond to changes in the 3d map
         maplibre.on('moveend', this._map3dmoved);
 
@@ -226,6 +224,20 @@ export class Map3dSystem extends AbstractSystem {
    */
   toggle() {
     this.visible = !this.visible;
+  }
+
+
+  /**
+   * _setupKeybinding
+   * This sets up the keybinding, replacing existing if needed
+   */
+  _setupKeybinding() {
+    const context = this.context;
+    const l10n = context.systems.l10n;
+    const toggleKey = uiCmd('⌘' + l10n.t('background.3dmap.key'));
+
+    context.keybinding().off(toggleKey);
+    context.keybinding().on(toggleKey, this.toggle);
   }
 
 

@@ -119,6 +119,7 @@ export class FilterSystem extends AbstractSystem {
 
     return this._initPromise = prerequisites
       .then(() => {
+        // Setup event handlers..
         urlhash.on('hashchange', this._hashchange);
 
         // Take initial values from urlhash first, localstorage second

@@ -10,6 +10,7 @@ import { utilHighlightEntities, utilRebind } from '../util/index.js';
 export function uiEditMenu(context) {
   const dispatch = d3_dispatch('toggled');
 
+  const gfx = context.systems.gfx;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const ui = context.systems.ui;
@@ -214,7 +215,7 @@ export function uiEditMenu(context) {
     }
 
     const anchor = viewport.project(_anchorLoc, true);  // convert wgs84 [lon,lat] to screen [x,y]
-    const surfaceRect = map.surface.getBoundingClientRect();
+    const surfaceRect = gfx.surface.getBoundingClientRect();
 
     // close the menu if it's gone offscreen
     if (anchor[0] < 0 || anchor[0] > surfaceRect.width || anchor[1] < 0 || anchor[1] > surfaceRect.height) {

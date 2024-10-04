@@ -139,7 +139,7 @@ export class UrlHashSystem extends AbstractSystem {
         window.addEventListener('hashchange', this._hashchange);
 
         this._started = true;
-        this.resume();
+        this.resume();  // Emits 'hashchange'
       });
   }
 

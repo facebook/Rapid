@@ -34,7 +34,6 @@ export class StyleSystem extends AbstractSystem {
     this.id = 'styles';
     this.context = context;
     this.dependencies = new Set(['assets']);
-    this.autoStart = true;
 
     // Experiment, see Rapid#1230
     // matrix values from https://github.com/maputnik/editor
@@ -552,6 +551,7 @@ export class StyleSystem extends AbstractSystem {
     };
 
 
+    // Ensure methods used as callbacks always have `this` bound correctly.
     this.styleMatch = this.styleMatch.bind(this);
   }
 
@@ -564,7 +564,7 @@ export class StyleSystem extends AbstractSystem {
   initAsync(){
     for (const id of this.dependencies) {
       if (!this.context.systems[id]) {
-          return Promise.reject(`Cannot init: ${this.id} requires ${id}`);
+        return Promise.reject(`Cannot init: ${this.id} requires ${id}`);
       }
     }
     return Promise.resolve();

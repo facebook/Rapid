@@ -74,9 +74,14 @@ export class MapSystem extends AbstractSystem {
     }
 
     const context = this.context;
+    const editor = context.systems.editor;
+    const filters = context.systems.filters;
     const gfx = context.systems.gfx;
+    const imagery = context.systems.imagery;
     const l10n = context.systems.l10n;
+    const photos = context.systems.photos;
     const storage = context.systems.storage;
+    const styles = context.systems.styles;
     const urlhash = context.systems.urlhash;
 
     // Note: We want MapSystem's hashchange listener registered as early as possible
@@ -85,9 +90,9 @@ export class MapSystem extends AbstractSystem {
     urlhash.on('hashchange', this._hashchange);
 
     const prerequisites = Promise.all([
-      storage.initAsync(),
+      gfx.initAsync(),
       l10n.initAsync(),
-      gfx.initAsync()
+      storage.initAsync(),
     ]);
 
     return this._initPromise = prerequisites
@@ -95,39 +100,89 @@ export class MapSystem extends AbstractSystem {
         this._currFillMode = storage.getItem('area-fill') || 'partial';           // the current fill mode
         this._toggleFillMode = storage.getItem('area-fill-toggle') || 'partial';  // the previous *non-wireframe* fill mode
 
-        const wireframeKey = l10n.t('area_fill.wireframe.key');
-        const toggleOsmKey = uiCmd('⇧' + l10n.t('map_data.layers.osm.key'));
-        const toggleNotesKey = uiCmd('⇧' + l10n.t('map_data.layers.notes.key'));
-        const highlightEditsKey = l10n.t('map_data.highlight_edits.key');
+        // Scene will exist after gfx init
+        const scene = gfx.scene;
 
-        context.keybinding().off([wireframeKey, toggleOsmKey, highlightEditsKey]);
-
-        context.keybinding()
-          .on(wireframeKey, e => {
-            e.preventDefault();
-            e.stopPropagation();
-            this.wireframeMode = !this.wireframeMode;
-          })
-          .on(toggleOsmKey, e => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            // Don't disappear the OSM data while drawing - iD#6584
-            const mode = context.mode;
-            if (mode && /^draw/.test(mode.id)) return;
-
-            gfx.scene.toggleLayers('osm');
-            context.enter('browse');
-          })
-          .on(toggleNotesKey, e => {
-            e.preventDefault();
-            e.stopPropagation();
-            gfx.scene.toggleLayers('notes');
-          })
-          .on(highlightEditsKey, e => {
-            e.preventDefault();
-            this.highlightEdits = !this.highlightEdits;
+        // Setup Event Handlers..
+        // Forward the 'move' and 'draw' events from the GraphicsSystem
+        gfx
+          .on('move', () => this.emit('move'))
+          .on('draw', () => {
+            this._updateHash();
+            this.emit('draw', { full: true });  // pass {full: true} for legacy receivers
           });
+
+        editor
+          .on('merge', entityIDs => {
+            if (entityIDs) {
+              scene.dirtyData('osm', entityIDs);
+            }
+            gfx.deferredRedraw();
+          })
+          .on('stagingchange', difference => {
+            // todo - maybe only do this if difference.didChange.geometry?
+            const complete = difference.complete();
+            for (const entity of complete.values()) {
+              if (entity) {      // may be undefined if entity was deleted
+                entity.touch();  // bump .v in place, rendering code will pick it up as dirty
+                filters.clearEntity(entity);  // clear feature filter cache
+              }
+            }
+            gfx.immediateRedraw();
+          })
+          .on('historyjump', (prevIndex, currIndex) => {
+            // This code occurs when jumping to a different edit because of a undo/redo/restore, etc.
+            const prevEdit = editor.history[prevIndex];
+            const currEdit = editor.history[currIndex];
+
+            // Counterintuitively, when undoing, we might want the metadata from the _next_ edit (located at prevIndex).
+            // If that edit exists (it might not if we are restoring) use that one, otherwise just use the current edit
+            const didUndo = (currIndex === prevIndex - 1);
+            const edit = (didUndo && prevEdit) ?? currEdit;
+
+            // Reposition the map if we've jumped to a different place.
+            const t0 = context.viewport.transform.props;
+            const t1 = edit.transform;
+            if (t1 && (t0.x !== t1.x || t0.y !== t1.y || t0.k !== t1.k || t0.r !== t1.r)) {
+              this.transformEase(t1);
+            }
+
+            // Switch to select mode if the edit contains selected ids.
+            // Note: draw modes need to do a little extra work to survive this,
+            //  so they have their own `historyjump` listeners.
+            const modeID = context.mode?.id;
+            if (/^draw/.test(modeID)) return;
+
+            // For now these IDs are assumed to be OSM ids.
+            // Check that they are actually in the stable graph.
+            const graph = edit.graph;
+            const checkIDs = edit.selectedIDs ?? [];
+            const selectedIDs = checkIDs.filter(entityID => graph.hasEntity(entityID));
+            if (selectedIDs.length) {
+              context.enter('select-osm', { selection: { osm: selectedIDs }} );
+            } else {
+              context.enter('browse');
+            }
+          });
+
+        filters
+          .on('filterchange', () => {
+            scene.dirtyLayers('osm');
+            gfx.immediateRedraw();
+          });
+
+        context.on('modechange', gfx.immediateRedraw);
+        imagery.on('imagerychange', gfx.immediateRedraw);
+        photos.on('photochange', gfx.immediateRedraw);
+        scene.on('layerchange', gfx.immediateRedraw);
+        styles.on('stylechange', gfx.immediateRedraw);
+
+        const osm = context.services.osm;
+        if (osm) {
+          osm.on('authchange', gfx.immediateRedraw);
+        }
+
+        this._setupKeybinding();
       });
   }
 
@@ -140,16 +195,6 @@ export class MapSystem extends AbstractSystem {
   startAsync() {
     this._started = true;
     return Promise.resolve();
-
-//    if (this._startPromise) return this._startPromise;
-//
-//    const ui = this.context.systems.ui;
-//    const prerequisites = ui.startAsync();  // UI must be started before we resolve
-//
-//    return this._startPromise = prerequisites
-//      .then(() => {
-//        this._started = true;
-//      });
   }
 
 
@@ -178,16 +223,9 @@ export class MapSystem extends AbstractSystem {
     }
 
     const context = this.context;
-    const editor = context.systems.editor;
-    const filters = context.systems.filters;
     const gfx = context.systems.gfx;
-    const imagery = context.systems.imagery;
-    const photos = context.systems.photos;
-    const styles = context.systems.styles;
-    const scene = gfx.scene;
 
-
-    // Selection here contains a D3 selection for the `main-map` div that the map gets added to
+    // $parent here contains a d3-selection for the `main-map` div that the map gets added to
     // It's an absolutely positioned div that takes up as much space as it's allowed to.
     $parent
       // Suppress the native right-click context menu
@@ -198,15 +236,11 @@ export class MapSystem extends AbstractSystem {
     // The `supersurface` is a wrapper div that we temporarily transform as the user zooms and pans.
     // This allows us to defer actual rendering until the browser has more time to do it.
     // At regular intervals we reset this root transform and actually redraw the this.
-    let $supersurface = $parent.selectAll('.supersurface')
-      .data([0]);
-
-    const $$supersurface = $supersurface.enter()
+    const $$supersurface = $parent.selectAll('.supersurface')
+      .data([0])
+      .enter()
       .append(() => gfx.supersurface)
       .attr('class', 'supersurface');
-
-    $supersurface = $supersurface.merge($$supersurface);
-
 
     // Content beneath the supersurface may be transformed and will need to rerender sometimes.
     // This includes the Pixi WebGL canvas and the right-click edit menu
@@ -216,109 +250,65 @@ export class MapSystem extends AbstractSystem {
     //  - d3 selecting surface's child stuff
     //  - css classing surface's child stuff
     //  - listening to events on the surface
-    let $surface = $supersurface.selectAll('.surface')
-      .data([0]);
-
-    const $$surface = $surface.enter()
+    $$supersurface.selectAll('.surface')
+      .data([0])
+      .enter()
       .append(() => gfx.surface)
       .attr('class', 'surface');
-
-    $surface = $surface.merge($$surface);
-
 
     // The `overlay` is a div that is transformed to cancel out the supersurface.
     // This is a place to put things _not drawn by pixi_ that should stay positioned
     // with the map, like the editmenu.
-    let $overlay = $supersurface.selectAll('.overlay')
-      .data([0]);
-
-    const $$overlay = $overlay.enter()
+    $$supersurface.selectAll('.overlay')
+      .data([0])
+      .enter()
       .append(() => gfx.overlay)
       .attr('class', 'overlay');
+  }
 
-    $overlay = $overlay.merge($$overlay);
 
+  /**
+   * _setupKeybinding
+   * This sets up the keybinding, replacing existing if needed
+   */
+  _setupKeybinding() {
+    const context = this.context;
+    const gfx = context.systems.gfx;
+    const l10n = context.systems.l10n;
 
-// THIS SHOULD BE MOVED TO INIT?
+    const wireframeKey = l10n.t('area_fill.wireframe.key');
+    const toggleOsmKey = uiCmd('⇧' + l10n.t('map_data.layers.osm.key'));
+    const toggleNotesKey = uiCmd('⇧' + l10n.t('map_data.layers.notes.key'));
+    const highlightEditsKey = l10n.t('map_data.highlight_edits.key');
 
-    // Setup Event Handlers
-    // Forward the 'move' and 'draw' events from the GraphicsSystem
-    gfx
-      .on('move', () => this.emit('move'))
-      .on('draw', () => {
-        this._updateHash();
-        this.emit('draw', { full: true });  // pass {full: true} for legacy receivers
-      });
+    context.keybinding().off([wireframeKey, toggleOsmKey, highlightEditsKey]);
 
-    editor
-      .on('merge', entityIDs => {
-        if (entityIDs) {
-          scene.dirtyData('osm', entityIDs);
-        }
-        gfx.deferredRedraw();
+    context.keybinding()
+      .on(wireframeKey, e => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.wireframeMode = !this.wireframeMode;
       })
-      .on('stagingchange', difference => {
-        // todo - maybe only do this if difference.didChange.geometry?
-        const complete = difference.complete();
-        for (const entity of complete.values()) {
-          if (entity) {      // may be undefined if entity was deleted
-            entity.touch();  // bump .v in place, rendering code will pick it up as dirty
-            filters.clearEntity(entity);  // clear feature filter cache
-          }
-        }
-        gfx.immediateRedraw();
+      .on(toggleOsmKey, e => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Don't disappear the OSM data while drawing - iD#6584
+        const mode = context.mode;
+        if (mode && /^draw/.test(mode.id)) return;
+
+        gfx.scene.toggleLayers('osm');
+        context.enter('browse');
       })
-      .on('historyjump', (prevIndex, currIndex) => {
-        // This code occurs when jumping to a different edit because of a undo/redo/restore, etc.
-        const prevEdit = editor.history[prevIndex];
-        const currEdit = editor.history[currIndex];
-
-        // Counterintuitively, when undoing, we might want the metadata from the _next_ edit (located at prevIndex).
-        // If that edit exists (it might not if we are restoring) use that one, otherwise just use the current edit
-        const didUndo = (currIndex === prevIndex - 1);
-        const edit = (didUndo && prevEdit) ?? currEdit;
-
-        // Reposition the map if we've jumped to a different place.
-        const t0 = context.viewport.transform.props;
-        const t1 = edit.transform;
-        if (t1 && (t0.x !== t1.x || t0.y !== t1.y || t0.k !== t1.k || t0.r !== t1.r)) {
-          this.transformEase(t1);
-        }
-
-        // Switch to select mode if the edit contains selected ids.
-        // Note: draw modes need to do a little extra work to survive this,
-        //  so they have their own `historyjump` listeners.
-        const modeID = context.mode?.id;
-        if (/^draw/.test(modeID)) return;
-
-        // For now these IDs are assumed to be OSM ids.
-        // Check that they are actually in the stable graph.
-        const graph = edit.graph;
-        const checkIDs = edit.selectedIDs ?? [];
-        const selectedIDs = checkIDs.filter(entityID => graph.hasEntity(entityID));
-        if (selectedIDs.length) {
-          context.enter('select-osm', { selection: { osm: selectedIDs }} );
-        } else {
-          context.enter('browse');
-        }
+      .on(toggleNotesKey, e => {
+        e.preventDefault();
+        e.stopPropagation();
+        gfx.scene.toggleLayers('notes');
+      })
+      .on(highlightEditsKey, e => {
+        e.preventDefault();
+        this.highlightEdits = !this.highlightEdits;
       });
-
-    filters
-      .on('filterchange', () => {
-        scene.dirtyLayers('osm');
-        gfx.immediateRedraw();
-      });
-
-    context.on('modechange', gfx.immediateRedraw);
-    imagery.on('imagerychange', gfx.immediateRedraw);
-    photos.on('photochange', gfx.immediateRedraw);
-    scene.on('layerchange', gfx.immediateRedraw);
-    styles.on('stylechange', gfx.immediateRedraw);
-
-    const osm = context.services.osm;
-    if (osm) {
-      osm.on('authchange', gfx.immediateRedraw);
-    }
   }
 
 
@@ -348,6 +338,7 @@ export class MapSystem extends AbstractSystem {
       // Why a '-' here?  Because "bearing" is the angle that the user points, not the angle that north points.
       ang = numWrap(-ang, 0, 360);
 
+console.log(`map hashchange moving map to ${newMap}`);
       this.setMapParams([lon, lat], zoom, ang * DEG2RAD);   // will eventually call setTransformAsync
     }
 
