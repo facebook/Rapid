@@ -574,6 +574,7 @@ export class GraphicsSystem extends AbstractSystem {
     // It will clear the canvas, so do this immediately before we render.
     const pixiDims = this.pixiViewport.dimensions;
     const canvasDims = [this.pixi.screen.width, this.pixi.screen.height];
+
     if (!vecEqual(pixiDims, canvasDims)) {
       const [w, h] = pixiDims;
       // Resize supersurface and overlay to cover the screen dimensions.
@@ -583,12 +584,28 @@ export class GraphicsSystem extends AbstractSystem {
       const onode = this.overlay;
       onode.style.width = `${w}px`;
       onode.style.height = `${h}px`;
+
       // Resize pixi canvas
-      this.pixi.renderer.resize(w, h);
+      const renderer = this.pixi.renderer;
+      renderer.resize(w, h);
+
+      // needed for multiview?
+      // If we are using the WebGL renderer and have multiView enabled,
+      // Pixi will render to a different canvas before copying to the target canvas.
+      // The render canvas may need a resize too.
+      if (renderer.type === PIXI.RendererType.WEBGL && renderer.context.multiView) {
+        renderer.context.ensureCanvasSize(this.surface);
+      }
     }
 
     // Let's go!
     this.pixi.render();
+
+// multiview?  it renders but is not interactive
+//    this.pixi.renderer.render({
+//      container: this.stage,
+//      target: this.surface
+//    });
 
     // Remove any temporary parent transform..
     if (this._isTempTransformed) {
