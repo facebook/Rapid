@@ -338,7 +338,6 @@ export class MapSystem extends AbstractSystem {
       // Why a '-' here?  Because "bearing" is the angle that the user points, not the angle that north points.
       ang = numWrap(-ang, 0, 360);
 
-console.log(`map hashchange moving map to ${newMap}`);
       this.setMapParams([lon, lat], zoom, ang * DEG2RAD);   // will eventually call setTransformAsync
     }
 
