@@ -1,4 +1,4 @@
-// polyfill idle callback functions (for Safari)
+// Polyfill idle callback functions (for Safari)
 window.requestIdleCallback = window.requestIdleCallback ||
   function(cb) {
     var start = Date.now();
@@ -16,6 +16,5 @@ window.cancelIdleCallback = window.cancelIdleCallback ||
     window.cancelAnimationFrame(handle);
   };
 
-import * as __all__ from './index.js';
-window.Rapid = __all__;
-window.iD = __all__;
+import * as Rapid from './index.js';
+window.Rapid = Rapid;

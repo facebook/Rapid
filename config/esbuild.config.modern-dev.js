@@ -2,13 +2,13 @@ import esbuild from 'esbuild';
 
 esbuild
   .build({
-    minify: true,
+    minify: false,
     bundle: true,
-    sourcemap: false,
-    entryPoints: ['./modules/main.js'],
+    sourcemap: true,
+    entryPoints: ['./modules/main_dev.js'],
     legalComments: 'none',
     logLevel: 'info',
-    outfile: 'dist/rapid.legacy.min.js',
-    target: 'es2016'
+    outfile: 'dist/rapid.js',
+    target: 'esnext'
   })
   .catch(() => process.exit(1));
