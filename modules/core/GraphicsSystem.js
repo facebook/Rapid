@@ -59,6 +59,9 @@ export class GraphicsSystem extends AbstractSystem {
     this.events = null;
     this.textures = null;
 
+    // Spector.js is a WebGL debugging tool, only available in the dev build.
+    this.spector = null;
+
     // Properties used to manage the scene transform
     this.pixiViewport = new Viewport();
     this._prevTransform = { x: 0, y: 0, k: 256 / Math.PI, r: 0 };    // transform at time of last draw
@@ -142,14 +145,23 @@ export class GraphicsSystem extends AbstractSystem {
           resolution: 2
         });
 
-        // Register Pixi with the pixi-inspector extension if it is installed
-        // https://github.com/bfanger/pixi-inspector
-        globalThis.__PIXI_APP__ = this.pixi;
+        // Enable debugging tools
+        if (window.Rapid.isDebug) {
+          // Register Pixi with the pixi-inspector extension if it is installed
+          // https://github.com/bfanger/pixi-inspector
+          globalThis.__PIXI_APP__ = this.pixi;
 
-        window.__PIXI_DEVTOOLS__ = {
-          pixi: PIXI,
-          app: this.pixi
-        };
+          window.__PIXI_DEVTOOLS__ = {
+            pixi: PIXI,
+            app: this.pixi
+          };
+
+          const renderer = this.pixi.renderer;
+          if (window.SPECTOR && renderer.type === PIXI.RendererType.WEBGL) {
+            this.spector = new window.SPECTOR.Spector();
+            this.spector.spyCanvas(renderer.context.canvas);
+          }
+        }
 
         // Setup the stage
         // The `stage` should be positioned so that `[0,0]` is at the center of the viewport,

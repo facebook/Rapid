@@ -66,6 +66,7 @@ export { uiSection } from './section.js';
 export { uiShortcuts } from './shortcuts.js';
 export { UiSidebar } from './UiSidebar.js';
 export { uiSourceSwitch } from './source_switch.js';
+export { UiSpector } from './UiSpector.js';
 export { uiSpinner } from './spinner.js';
 export { uiSplash } from './splash.js';
 export { uiStatus } from './status.js';
