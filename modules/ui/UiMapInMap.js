@@ -436,13 +436,16 @@ export class UiMapInMap {
 
     // Mock Graphics System
     const miniGfx = {
+      id: 'gfx',
       context: context,
       supersurface: this.$supersurface.node(),
       surface: this.$surface.node(),
-      pixi: gfx.pixi,
       stage: stage,
       origin: stage,
-      textures: gfx.textures
+      pixi: gfx.pixi,
+      textures: gfx.textures,
+      deferredRedraw: gfx.deferredRedraw,
+      immediateRedraw: gfx.immediateRedraw
     };
 
     // Mock Scene
@@ -453,6 +456,7 @@ export class UiMapInMap {
       layers: new Map(),
       features: new Map()
     };
+    miniGfx.scene = miniScene;
 
     // Mock Group Container
     const groupContainer = new PIXI.Container();
