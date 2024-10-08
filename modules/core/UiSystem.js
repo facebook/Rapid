@@ -354,11 +354,11 @@ export class UiSystem extends AbstractSystem {
 
     footerEnter
       .append('div')
-      .attr('class', 'flash-wrap footer-hide');
+      .attr('class', 'flash-wrap map-footer-hide');
 
     let footerWrapEnter = footerEnter
       .append('div')
-      .attr('class', 'main-footer-wrap footer-show');
+      .attr('class', 'map-footer-wrap map-footer-show');
 
     footerWrapEnter
       .append('div')
