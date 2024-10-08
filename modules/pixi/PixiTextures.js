@@ -28,14 +28,30 @@ export class PixiTextures {
     const renderer = gfx.pixi.renderer;
     registerAtlasUploader(renderer);
 
+    // Try to get the max texture size.
+    // We will max out the size of the atlases to avoid switching textures.
+    let size = 2048;   // a reasonable default
+    if (renderer.type === PIXI.RendererType.WEBGL) {
+      const gl = renderer.gl;
+      size = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+//    } else if (renderer.type === PIXI.RendererType.WEBGPU) {
+// Warning in console:
+// "Texture size ([Extent3D width:16384, height:16384, depthOrArrayLayers:1])
+// exceeded maximum texture size ([Extent3D width:8192, height:8192, depthOrArrayLayers:256])."
+//
+// This should work, and returns the size expected. Not sure why it generates the above warning.
+//      const gpu = renderer.gpu;
+//      size = gpu.adapter.limits.maxTextureDimension2D;
+    }
+
     // We store textures in 3 atlases, each one is for holding similar sized things.
     // Each "atlas" manages its own store of "TextureSources" - real textures that upload to the GPU.
     // This helps pack them efficiently and avoids swapping textures frequently as WebGL draws the scene.
 
     this._atlas = {
-      symbol: new AtlasAllocator('symbol'),  // small graphics - markers, pins, symbols
-      text: new AtlasAllocator('text'),      // text labels
-      tile: new AtlasAllocator('tile')       // 256 or 512px square imagery tiles
+      symbol: new AtlasAllocator('symbol', size),  // small graphics - markers, pins, symbols
+      text: new AtlasAllocator('text', size),      // text labels
+      tile: new AtlasAllocator('tile', size)       // 256 or 512px square imagery tiles
     };
 
     this._debugTexture = {};

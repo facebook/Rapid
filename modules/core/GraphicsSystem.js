@@ -121,6 +121,7 @@ export class GraphicsSystem extends AbstractSystem {
       multiView: true,   // Needed for minimap
       powerPreference: 'high-performance',
       preference: 'webgl',
+//      preference: 'webgpu',
       preferWebGLVersion: 2,
       preserveDrawingBuffer: true,
       resolution: window.devicePixelRatio,

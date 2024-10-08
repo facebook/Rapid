@@ -13,15 +13,13 @@ export class AtlasAllocator {
    * Creates an atlas allocator.
    * @constructor
    * @param {string} label - optional label, can be used for debugging
-   * @param {number} slabWidth
-   * @param {number} slabHeight
+   * @param {number} size - the size of the textures to create
    */
-  constructor(label = '', slabWidth = 2048, slabHeight = 2048) {
+  constructor(label = '', size = 2048) {
     this._tempRect = new PIXI.Rectangle();
 
     this.label = label;
-    this.slabWidth = slabWidth;
-    this.slabHeight = slabHeight;
+    this.size = size;
     this.slabs = [];
   }
 
@@ -40,8 +38,8 @@ export class AtlasAllocator {
    */
   _allocateTexture(width, height, padding = 0) {
     // Cannot allocate a texture larger than the slab size.
-    if ((width + (2 * padding)) > this.slabWidth || (height + (2 * padding)) > this.slabHeight) {
-      throw new Error(`Texture can not exceed slab size of ${this.slabWidth}x${this.slabHeight}`);
+    if ((width + (2 * padding)) > this.size || (height + (2 * padding)) > this.size) {
+      throw new Error(`Texture can not exceed slab size of ${this.size}x${this.size}`);
     }
 
     // Loop through the slabs and find one with enough space, if any.
@@ -51,7 +49,7 @@ export class AtlasAllocator {
     }
 
     // Need another new slab.
-    const slab = new AtlasSource(this.label, this.slabWidth, this.slabHeight);
+    const slab = new AtlasSource(this.label, this.size);
 
     // Append this slab to the head of the list.
     this.slabs.unshift(slab);
@@ -189,23 +187,23 @@ export class AtlasSource extends PIXI.TextureSource {
   /**
    * Creates a TextureSource for the textures in the atlas (aka a "slab")
    * @param {string}  label - optional label, can be used for debugging
-   * @param {number}  width
-   * @param {number}  height
+   * @param {number}  size - the size of the textures to create
    */
-  constructor(label, width, height) {
+  constructor(label, size) {
     super({
       antialias: false,
       autoGarbageCollect: false,
       autoGenerateMipmaps: false,
-      height: height,
+      dimensions: '2d',
+      height: size,
       label: label,
       resolution: 1,
-      width: width
+      width: size
     });
     this.uploadMethodId = 'atlas';
 
     this._items = new Map();      // Map<uid, Item object>
-    this._binPacker = new GuilloteneAllocator(width, height);
+    this._binPacker = new GuilloteneAllocator(size, size);
   }
 }
 
