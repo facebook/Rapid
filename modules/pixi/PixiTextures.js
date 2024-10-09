@@ -5,7 +5,9 @@ import { AtlasAllocator, registerAtlasUploader } from './lib/AtlasAllocator.js';
 
 /**
  * PixiTextures does the work of managing the textures.
- * The goal is to use common spritesheets to avoid extensive texture swapping
+ * We store most textures in 3 atlases, each one is for holding similar sized things.
+ * Each "atlas" manages its own store of "TextureSources" - real textures that upload to the GPU.
+ * This helps pack them efficiently and avoids swapping textures frequently as WebGL draws the scene.
  *
  * Properties you can access:
  *   `loaded`   `true` after the spritesheets and textures have finished loading
@@ -53,8 +55,6 @@ export class PixiTextures {
       text: new AtlasAllocator('text', size),      // text labels
       tile: new AtlasAllocator('tile', size)       // 256 or 512px square imagery tiles
     };
-
-    this._debugTexture = {};
 
 
     // All the named textures we know about.
@@ -107,8 +107,8 @@ export class PixiTextures {
    * a legacy accessor - we used to just expose the Map publicly
    * and other code would just call map.get(textureID) to get what they need
    *
-   * @param   textureID
-   * @return  A PIXI.Texture (or null if not found)
+   * @param   {string}        textureID
+   * @return  {PIXI.Texture?} The texture (or `null` if not found)
    */
   get(textureID) {
     return this.getTexture('symbol', textureID);
@@ -117,9 +117,9 @@ export class PixiTextures {
 
   /**
    * getTexture
-   * @param   atlasID     One of 'symbol', 'text', or 'tile'
-   * @param   textureID   e.g. 'boldPin', 'Main Street-normal', 'Bing-0,1,2'
-   * @return  A PIXI.Texture (or null if not found)
+   * @param   {string}  atlasID     One of 'symbol', 'text', or 'tile'
+   * @param   {string}  textureID   e.g. 'boldPin', 'Main Street-normal', 'Bing-0,1,2'
+   * @return  {PIXI.Texture?} The texture (or `null` if not found)
    */
   getTexture(atlasID, textureID) {
     const key = `${atlasID}-${textureID}`;
@@ -141,8 +141,8 @@ export class PixiTextures {
    * getPatternTexture
    * These are just like any other texture except that they can't live in an atlas.
    * PixiFeaturePolygon.js as some comments on it, maybe a Pixi bug or limitation.
-   * @param   textureID   e.g. 'bushes'
-   * @return  A PIXI.Texture (or null if not found)
+   * @param   {string}        textureID   e.g. 'bushes'
+   * @return  {PIXI.Texture?} The texture (or `null` if not found)
    */
   getPatternTexture(textureID) {
     const tdata = this._textureData.get(textureID);
@@ -152,22 +152,17 @@ export class PixiTextures {
 
   /**
    * getDebugTexture
-   * @param   atlasID     One of 'symbol', 'text', or 'tile'
-   * @return  {PIXI.Textures} Texture for the specifiec atlas
+   * @param   {string}         atlasID     One of 'symbol', 'text', or 'tile'
+   * @return  {PIXI.Textures}  Texture for the specified atlas
    */
   getDebugTexture(atlasID) {
-    if (this._debugTexture[atlasID]) {
-      return this._debugTexture[atlasID];
-    }
-
     const atlas = this._atlas[atlasID];
     if (!atlas) return null;
 
     const source = atlas.slabs[0];
     if (!source) return null;
 
-    this._debugTexture[atlasID] = new PIXI.Texture({ source: source });
-    return this._debugTexture[atlasID];
+    return new PIXI.Texture({ source: source });
   }
 
 
@@ -175,12 +170,12 @@ export class PixiTextures {
    * allocate
    * This packs an asset into one of the atlases and tracks it in the textureData map
    * The asset can be one of: HTMLImageElement | HTMLCanvasElement | ImageBitmap | ImageData | ArrayBufferView
-   * @param   atlasID     One of 'symbol', 'text', or 'tile'
-   * @param   textureID   e.g. 'boldPin', 'Main Street-normal', 'Bing-0,1,2'
-   * @param   width       width in pixels
-   * @param   height      height in pixels
-   * @param   asset       The thing to pack
-   * @return  A PIXI.Texture (or null if it couldn't be packed)
+   * @param   {string}  atlasID     One of 'symbol', 'text', or 'tile'
+   * @param   {string}  textureID   e.g. 'boldPin', 'Main Street-normal', 'Bing-0,1,2'
+   * @param   {number}  width       width in pixels
+   * @param   {number}  height      height in pixels
+   * @param   (*)       asset       The thing to pack
+   * @return  {PIXI.Textures}       The newly allocated texture (or `null` if it couldn't be packed)
    */
   allocate(atlasID, textureID, width, height, asset) {
     const atlas = this._atlas[atlasID];
@@ -225,8 +220,8 @@ export class PixiTextures {
   /**
    * free
    * Unpacks a texture from the atlas and frees its resources
-   * @param   atlasID     One of 'symbol', 'text', or 'tile'
-   * @param   textureID   e.g. 'boldPin', 'Main Street-normal', 'Bing-0,1,2'
+   * @param  {string}  atlasID     One of 'symbol', 'text', or 'tile'
+   * @param  {string}  textureID   e.g. 'boldPin', 'Main Street-normal', 'Bing-0,1,2'
    */
   free(atlasID, textureID) {
     const atlas = this._atlas[atlasID];
@@ -262,7 +257,7 @@ export class PixiTextures {
    * @param    {string}        textureID   Texture identifier (e.g. 'boldPin')
    * @param    {PIXI.Graphic}  graphic     A PIXI.Graphic to convert to a texture
    * @param    {Object}        options     Options passed to `renderer.generateTexture`
-   * @returns  {PIXI.Texture}    Texture allocated from the text atlas
+   * @returns  {PIXI.Texture}  Texture allocated from the text atlas
    */
   _graphicToTexture(textureID, graphic, options = {}) {
     options.antialias = false;
@@ -471,7 +466,6 @@ export class PixiTextures {
     //
     // Markers
     //
-
     const pin = new PIXI.Graphics()             //              [0,-23]
       .moveTo(0, 0)                             //              _,-+-,_
       .bezierCurveTo(-2,-2, -8,-10, -8,-15)     //            /'       `\

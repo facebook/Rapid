@@ -686,6 +686,7 @@ export class GraphicsSystem extends AbstractSystem {
       screen.zIndex = 100;
       stage.addChild(screen);
     }
+
     let debug = stage.getChildByLabel('debug');
     if (!debug) {
       debug = new PIXI.Sprite();
@@ -697,7 +698,12 @@ export class GraphicsSystem extends AbstractSystem {
       debug.width = 512;
       stage.addChild(debug);
     }
-    debug.texture = this.textures.getDebugTexture('tile');
+
+    // replace the texture each frame
+    if (debug.texture) {
+      debug.texture.destroy();
+    }
+    debug.texture = this.textures.getDebugTexture('text');
     debug.position.set(50, -200);
     screen.position.set(50, -200);
   }

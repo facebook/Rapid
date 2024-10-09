@@ -51,8 +51,8 @@ export class AtlasAllocator {
     // Need another new slab.
     const slab = new AtlasSource(this.label, this.size);
 
-    // Append this slab to the head of the list.
-    this.slabs.unshift(slab);
+    // Add this slab to the end of the list.
+    this.slabs.push(slab);
 
     // Issue the texture from this blank slab.
     return this._issueTexture(slab, width, height, padding);
@@ -164,14 +164,18 @@ export class AtlasAllocator {
     if (!item) {
       throw new Error('Texture not found on slab.');
     }
+
     item.texture.destroy(false);
     item.asset = null;
     item.texture = null;
     slab._items.delete(uid);
 
-    // if (!slab._items.size) {
-    //   free slab?
-    // }
+//    // no items left, free the slab (unless it's the first slab)
+//    if (!slab._items.size && slab !== this.slabs[0]) {
+//      slab.destroy();
+//      slab._items = null;
+//      slab._binPacker = null;
+//    }
   }
 
 }

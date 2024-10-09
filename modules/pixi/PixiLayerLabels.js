@@ -89,14 +89,16 @@ export class PixiLayerLabels extends AbstractLayer {
     // These Maps store "Boxes" which are indexed in the label placement RBush.
     // We store them in several maps because some features (like vertices)
     // can be both an avoidance but also have a label placed by it.
-    this._avoidBoxes = new Map();   // Map (featureID -> Array[avoid Boxes] )
-    this._labelBoxes = new Map();   // Map (featureID -> Array[label Boxes] )
+    this._avoidBoxes = new Map();   // Map<featureID, Array[avoid Boxes] >
+    this._labelBoxes = new Map();   // Map<featureID, Array[label Boxes] >
 
     // After working out the placement math, we don't automatically render display objects,
     // since many objects would get placed far offscreen.
-    this._labels = new Map();    // Map (labelID -> Label Object)
+    this._labels = new Map();      // Map<labelID, Label Object>
     // Display Objects includes anything managed by this layer: labels and debug boxes
-    this._dObjs = new Map();     // Map (dObjID -> Display Object)
+    this._dObjs = new Map();       // Map<dObjID, Display Object>
+    // Keep track of textures that we've allocated
+    this._textureIDs = new Map();  // Map<string, textureID>
 
     // We reset the labeling when scale or rotation change
     this._tPrev = { x: 0, y: 0, k: 256 / Math.PI, r: 0 };
@@ -139,6 +141,7 @@ export class PixiLayerLabels extends AbstractLayer {
     }
     for (const label of this._labels.values()) {
       label.dObjID = null;
+//textures freed by `renderObjects()` for now
 //      if (textureManager.get('text', label.str)) {
 //        textureManager.free('text', label.str);
 //      }
@@ -192,6 +195,10 @@ export class PixiLayerLabels extends AbstractLayer {
       if (label?.dObjID)  {
         dObjIDs.add(label.dObjID);
         label.dObjID = null;
+//textures freed by `renderObjects()` for now
+//      if (textureManager.get('text', label.str)) {
+//        textureManager.free('text', label.str);
+//      }
       }
       this._labels.delete(labelID);
     }
@@ -320,6 +327,7 @@ export class PixiLayerLabels extends AbstractLayer {
       }
 
       texture = textureManager.textToTexture(textureID, str, textStyle);
+      this._textureIDs.set(str, textureID);
     }
 
     const sprite = new PIXI.Sprite({ texture: texture });
@@ -868,6 +876,7 @@ this.placeRopeLabel(feature, labelObj, coords);
 
     // Collect Labels in view
     const labelIDs = new Set();
+    const seenTextures = new Set();
     const visible = this._rbush.search(screenBounds);
     for (const box of visible) {
       if (box.labelID) {
@@ -879,9 +888,11 @@ this.placeRopeLabel(feature, labelObj, coords);
     for (const labelID of labelIDs) {
       const label = this._labels.get(labelID);
       if (!label) continue;         // unknown labelID - shouldn't happen?
-      if (label.dObjID) continue;   // done already
 
       const options = label.options;
+      seenTextures.add(options.str);
+
+      if (label.dObjID) continue;   // The label was created already
       const dObjID = labelID;
 
       if (label.type === 'text') {
@@ -905,6 +916,16 @@ this.placeRopeLabel(feature, labelObj, coords);
         this._dObjs.set(dObjID, rope);
         label.dObjID = dObjID;
         this.labelContainer.addChild(rope);
+      }
+    }
+
+    // Cleanup label textures not visible in the scene anymore.
+    // (Otherwise the text atlas will just keep growing)
+    const textureManager = this.gfx.textures;
+    for (const [str, textureID] of this._textureIDs) {
+      if (!seenTextures.has(str)) {
+        textureManager.free('text', textureID);
+        this._textureIDs.delete(str);
       }
     }
   }
