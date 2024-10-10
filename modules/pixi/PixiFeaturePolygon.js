@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { GlowFilter } from 'pixi-filters';
-import { /* geomRotatePoints,*/ vecEqual, vecLength /*, vecSubtract */ } from '@rapid-sdk/math';
+import { vecEqual, vecLength } from '@rapid-sdk/math';
 
 import { AbstractFeature } from './AbstractFeature.js';
 import { DashLine } from './lib/DashLine.js';
@@ -35,6 +35,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
 
     this.type = 'polygon';
     this._ssrdata = null;
+    this._bufferdata = null;
 
     const lowRes = new PIXI.Sprite();
     lowRes.label = 'lowRes';
@@ -114,19 +115,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
       this.debugSSR = null;
     }
 
-    if (this._ssrdata) {
-      delete this._ssrdata.ssr;
-      delete this._ssrdata.origSsr;
-      delete this._ssrdata.origAxis1;
-      delete this._ssrdata.origAxis2;
-      delete this._ssrdata.origCenter;
-      delete this._ssrdata.shapeType;
-      this._ssrdata = null;
-    }
-
-    if (this._bufferdata) {
-      this._bufferdata = null;
-    }
+    this._ssrdata = null;
+    this._bufferdata = null;
 
     super.destroy();
   }
@@ -432,13 +422,14 @@ export class PixiFeaturePolygon extends AbstractFeature {
     //   .stroke({ width: 2, color: 0x00ff00 });
 
     this._styleDirty = false;
+
     this.updateHalo();
   }
 
 
   /**
    * updateHalo
-   * Show/Hide halo
+   * Show/Hide halo (expects `this._bufferdata` to be already set up by `update()`)
    */
   updateHalo() {
     const wireframeMode = this.context.systems.map.wireframeMode;

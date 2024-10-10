@@ -3,7 +3,7 @@ import { GlowFilter } from 'pixi-filters';
 
 import { AbstractFeature } from './AbstractFeature.js';
 import { DashLine } from './lib/DashLine.js';
-import { getLineSegments } from './helpers.js';
+import { getLineSegments, lineToPoly } from './helpers.js';
 
 const ONEWAY_SPACING = 35;
 const SIDED_SPACING = 30;
@@ -33,7 +33,7 @@ export class PixiFeatureLine extends AbstractFeature {
     super(layer, featureID);
 
     this.type = 'line';
-    this._hitGraphic = null;
+    this._bufferdata = null;
 
     const casing = new PIXI.Graphics();
     casing.label = 'casing';
@@ -66,12 +66,7 @@ export class PixiFeatureLine extends AbstractFeature {
       this.stroke = null;
     }
 
-    if (this._hitGraphic) {
-      delete this._hitGraphic.inner;
-      delete this._hitGraphic.outer;
-      delete this._hitGraphic.perimeter;
-      this._hitGraphic = null;
-    }
+    this._bufferdata = null;
 
     super.destroy();
   }
@@ -89,6 +84,7 @@ export class PixiFeatureLine extends AbstractFeature {
     const textureManager = this.gfx.textures;
     const container = this.container;
     const style = this._style;
+
     //
     // GEOMETRY
     //
@@ -103,8 +99,6 @@ export class PixiFeatureLine extends AbstractFeature {
       this.sceneBounds.y = minY;
       this.sceneBounds.width = w;
       this.sceneBounds.height = h;
-
-      this.updateHitArea(this.geometry.coords);
     }
 
     //
@@ -204,6 +198,41 @@ export class PixiFeatureLine extends AbstractFeature {
         lineMarkers.destroy({ children: true });
       }
 
+      // Buffer around line, used for hit area and halo..
+      if (this.visible) {
+        // what line width to use?? copied the 'casing' calculation from below, improve this later
+        const minwidth = 3;
+        let width = style.casing.width;
+
+        // Apply effectiveZoom style adjustments
+        if (zoom < 16) {
+          width -= 4;
+        } else if (zoom < 17) {
+          width -= 2;
+        }
+        if (width < minwidth) {
+          width = minwidth;
+        }
+
+        if (wireframeMode) {
+          width = 1;
+        }
+
+        const bufferStyle = {
+          alpha: 1,
+          alignment: 0.5,  // middle of line
+          color: 0x000000,
+          width: width + 10,
+          cap: 'butt',
+          join: 'bevel'
+        };
+        this._bufferdata = lineToPoly(this.geometry.flatCoords, bufferStyle);
+        this.container.hitArea = new PIXI.Polygon(this._bufferdata.perimeter);
+      } else {
+        this._bufferdata = null;
+        this.container.hitArea = null;
+      }
+
       this._styleDirty = false;
     }
 
@@ -214,6 +243,7 @@ export class PixiFeatureLine extends AbstractFeature {
     if (this.stroke.renderable) {
       updateGraphic('stroke', this.stroke, this.geometry.coords, style, wireframeMode);
     }
+
     this.updateHalo();
 
 
@@ -269,60 +299,15 @@ export class PixiFeatureLine extends AbstractFeature {
   }
 
 
-// experiment
-  updateHitArea(coords) {
-    if (!this.geometry.flatOuter) {
-      this.container.hitArea = null;
-      return;   // no points?
-    }
-
-//    // Fix for Rapid#648: If we're drawing, we don't need to hit ourselves.
-    // bhousel 3/23 sometimes we do!
-//    if (this._classes.has('drawing')) {
-//      this.container.hitArea = null;
-//      return;
-//    }
-
-    const hitWidth = Math.max(3, this._style.casing.width || 0);
-    const hitStyle = {
-      alignment: 0.5,  // middle of line
-      color: 0x0,
-      width: hitWidth + 10,
-      alpha: 1.0,
-      join: 'bevel',
-      cap: 'butt'
-    };
-
-    let hitGraphic = new PIXI.Graphics();
-
-    coords.forEach(([x, y], i) => {
-      if (i === 0) {
-        hitGraphic.moveTo(x, y);
-      } else {
-        hitGraphic.lineTo(x, y);
-      }
-    });
-
-    // let hitGeometry = new PIXI.Graphics(this.casing.context);
-    hitGraphic.stroke(hitStyle);
-
-    let graphicContext = hitGraphic.context;
-    this.container.hitArea = {
-      contains(x, y) {
-        return graphicContext.containsPoint({ x, y });
-      },
-    };
-    this._hitGraphic = hitGraphic;
-  }
-
   /**
    * updateHalo
-   * Show/Hide halo (expects `this._hitGraphic` to be already set up by `updateHitArea` as a PIXI.Polygon)
+   * Show/Hide halo (expects `this._bufferdata` to be already set up by `update()`)
    */
   updateHalo() {
     const showHover = (this.visible && this._classes.has('hover'));
     const showSelect = (this.visible && this._classes.has('select'));
     const showHighlight = (this.visible && this._classes.has('highlight'));
+
     // Hover
     if (showHover) {
       if (!this.container.filters) {
@@ -359,15 +344,17 @@ export class PixiFeatureLine extends AbstractFeature {
       };
 
       this.halo.clear();
-      // const dl = new DashLine(this.halo, HALO_STYLE);
-      // if (this._hitGraphic) {
-      //   if (this._hitGraphic.outer && this._hitGraphic.inner) {
-      //     //TODO: Figure out a way to draw the selection halo given the hitGraphic we calculated.
-      //   } else {
-      //     dl.polygon(this._hitGraphic.perimeter);
-      //   }
-      //   dl.setStrokeStyle(HALO_STYLE);
-      // }
+      const dl = new DashLine(this.halo, HALO_STYLE);
+      if (this._bufferdata) {
+        if (this._bufferdata.outer && this._bufferdata.inner) {   // closed line
+          dl.polygon(this._bufferdata.outer);
+          dl.polygon(this._bufferdata.inner);
+        } else {   // unclosed line
+          dl.polygon(this._bufferdata.perimeter);
+        }
+      }
+      dl.setStrokeStyle(HALO_STYLE);
+
     } else {
       if (this.halo) {
         this.halo.destroy();
