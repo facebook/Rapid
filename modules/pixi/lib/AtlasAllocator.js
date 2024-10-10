@@ -16,8 +16,6 @@ export class AtlasAllocator {
    * @param {number} size - the size of the textures to create
    */
   constructor(label = '', size = 2048) {
-    this._tempRect = new PIXI.Rectangle();
-
     this.label = label;
     this.size = size;
     this.slabs = [];
@@ -69,18 +67,17 @@ export class AtlasAllocator {
    * @return {PIXI.Texture}  The issued texture, if successful; otherwise, `null`.
    */
   _issueTexture(slab, width, height, padding = 0) {
-    const bin = slab._binPacker.allocate(width + (2 * padding), height + (2 * padding));
-    if (!bin) return null;
+    const rect = slab._binPacker.allocate(width + (2 * padding), height + (2 * padding));
+    if (!rect) return null;
 
-    this._tempRect.copyFrom(bin);
-    this._tempRect.pad(-padding);
+    rect.pad(-padding);   // actual frame shouldn't include the padding
 
     const texture = new PIXI.Texture({
       source: slab,
-      frame: this._tempRect  // Texture will make a copy
+      frame: rect    // Texture will make a copy
     });
 
-    texture.__bin = bin;   // important to preserve this, it contains `__mem_area`
+    texture.__bin = rect;   // important to preserve this, it contains `__mem_area`
     return texture;
   }
 
@@ -226,6 +223,17 @@ const glUploadAtlasResource = {
       glTexture.width = width;
       glTexture.height = height;
 
+// fill red
+//const size = width * height;
+//const pixels = new Uint8Array(size * 4);
+//for (let i = 0; i < size; i++) {
+//  const j = i * 4;
+//  pixels[j] = 255;
+//  pixels[j+1] = 0;
+//  pixels[j+2] = 0;
+//  pixels[j+3] = 255;
+//}
+
       gl.texImage2D(
         glTexture.target,
         0,
@@ -235,7 +243,11 @@ const glUploadAtlasResource = {
         0,
         glTexture.format,
         glTexture.type,
-        undefined
+        undefined          // no copy
+// fill red
+//        gl.RGBA,
+//        gl.UNSIGNED_BYTE,
+//        pixels
       );
     }
 
@@ -244,7 +256,7 @@ const glUploadAtlasResource = {
       // see https://github.com/rapideditor/pixi-texture-allocator/issues/2  ??
       if (item.updateId === item.dirtyId) continue;
 
-      const frame = item.texture.frame;
+      const bin = item.texture.__bin;
       let source = item.asset;
 
       if (webGLVersion === 1) {
@@ -274,10 +286,10 @@ const glUploadAtlasResource = {
       gl.texSubImage2D(
         glTexture.target,
         0,
-        frame.x,
-        frame.y,
-        frame.width,
-        frame.height,
+        bin.x,
+        bin.y,
+        bin.width,
+        bin.height,
         glTexture.format,
         glTexture.type,
         source
@@ -299,20 +311,20 @@ const gpuUploadAtlasResource = {
       // see https://github.com/rapideditor/pixi-texture-allocator/issues/2  ??
       if (item.updateId === item.dirtyId) continue;
 
-      const frame = item.texture.frame;
+      const bin = item.texture.__bin;
 
       gpu.device.queue.copyExternalImageToTexture(
         { source: item.asset },
         {
           texture: gpuTexture, premultipliedAlpha,
           origin: {
-            x: frame.x,
-            y: frame.y,
+            x: bin.x,
+            y: bin.y,
           },
         },
         {
-          height: frame.height,
-          width: frame.width,
+          height: bin.height,
+          width: bin.width,
         }
       );
 

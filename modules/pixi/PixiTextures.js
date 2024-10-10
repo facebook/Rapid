@@ -31,25 +31,22 @@ export class PixiTextures {
     registerAtlasUploader(renderer);
 
     // Try to get the max texture size.
-    // We will max out the size of the atlases to avoid switching textures.
-    let size = 2048;   // a reasonable default
+    // We will prefer large atlas size of 8192 to avoid texture swapping, but can settle for less.
+    let maxsize = 2048;   // a reasonable default
     if (renderer.type === PIXI.RendererType.WEBGL) {
       const gl = renderer.gl;
-      size = gl.getParameter(gl.MAX_TEXTURE_SIZE);
-//    } else if (renderer.type === PIXI.RendererType.WEBGPU) {
-// Warning in console:
-// "Texture size ([Extent3D width:16384, height:16384, depthOrArrayLayers:1])
-// exceeded maximum texture size ([Extent3D width:8192, height:8192, depthOrArrayLayers:256])."
-//
-// This should work, and returns the size expected. Not sure why it generates the above warning.
-//      const gpu = renderer.gpu;
-//      size = gpu.adapter.limits.maxTextureDimension2D;
+      maxsize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+    } else if (renderer.type === PIXI.RendererType.WEBGPU) {
+      const gpu = renderer.gpu;
+      maxsize = gpu.adapter.limits.maxTextureDimension2D;
     }
+
+    const trysize = 8192;
+    const size = Math.min(trysize, maxsize);
 
     // We store textures in 3 atlases, each one is for holding similar sized things.
     // Each "atlas" manages its own store of "TextureSources" - real textures that upload to the GPU.
     // This helps pack them efficiently and avoids swapping textures frequently as WebGL draws the scene.
-
     this._atlas = {
       symbol: new AtlasAllocator('symbol', size),  // small graphics - markers, pins, symbols
       text: new AtlasAllocator('text', size),      // text labels
@@ -199,17 +196,15 @@ export class PixiTextures {
 
     texture.label = key;
 
-// no longer needed in v8?  this code introduces seams instead of closing them.
-// maybe we are just doing a better job of linear sampling / antialiasing disabled?
-//    // For tiles we want to preserve their power of 2 dimensions - so no padding!
-//    // But we also want to prevent their colors from spilling into an adjacent tile in the atlas.
-//    // Shrink texture coords by half pixel to avoid this.
-//    // https://gamedev.stackexchange.com/a/49585
-//    if (atlasID === 'tile') {
-//      const rect = texture.frame.clone().pad(-0.5);
-//      texture.frame = rect;  // `.frame` setter will call updateUvs() automatically
-//      texture.update();   // maybe not in pixi v8?  I'm still seeing tile seams?
-//    }
+    // For tiles we want to preserve their power of 2 dimensions - so no padding!
+    // But we also want to prevent their colors from spilling into an adjacent tile in the atlas.
+    // Shrink texture coords by half pixel to avoid this.
+    // https://gamedev.stackexchange.com/a/49585
+    if (atlasID === 'tile') {
+      const rect = texture.frame.clone().pad(-0.5);
+      texture.frame = rect;  // `.frame` setter will call updateUvs() automatically
+      texture.update();      // maybe not in pixi v8?  I'm still seeing tile seams?
+    }
 
     this._textureData.set(key, { texture: texture, refcount: 1 });
 
