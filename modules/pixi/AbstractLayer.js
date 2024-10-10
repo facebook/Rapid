@@ -34,7 +34,7 @@ export class AbstractLayer {
    */
   constructor(scene, layerID) {
     this.scene = scene;
-    this.renderer = scene.renderer;
+    this.gfx = scene.gfx;
     this.context = scene.context;
     this.layerID = layerID;
 

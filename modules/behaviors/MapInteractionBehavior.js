@@ -64,7 +64,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     this._lastPoint = null;
     this._lastAngle = null;
 
-    const eventManager = this.context.systems.map.renderer.events;
+    const eventManager = this.context.systems.gfx.events;
     eventManager.on('click', this._click);
     eventManager.on('keydown', this._keydown);
     eventManager.on('pointerdown', this._pointerdown);
@@ -89,7 +89,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     this._lastPoint = null;
     this._lastAngle = null;
 
-    const eventManager = this.context.systems.map.renderer.events;
+    const eventManager = this.context.systems.gfx.events;
     eventManager.off('click', this._click);
     eventManager.off('keydown', this._keydown);
     eventManager.off('pointerdown', this._pointerdown);
@@ -222,8 +222,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     this._updatePinchState();
 
     const context = this.context;
-    const map = context.systems.map;
-    const eventManager = map.renderer.events;
+    const eventManager = context.systems.gfx.events;
 
     // If shift is pressed it's a lasso, not a map drag
     if (eventManager.modifierKeys.has('Shift')) return;
@@ -257,6 +256,13 @@ export class MapInteractionBehavior extends AbstractBehavior {
     if (this._isPaneOpen()) {
       return; // Ignore move events if any pane is open
     }
+
+    const context = this.context;
+    const gfx = context.systems.gfx;
+    const map = context.systems.map;
+    const eventManager = gfx.events;
+    const viewport = context.viewport;
+
     this.activeTouches[e.pointerId] = { x: e.global.x, y: e.global.y, clientX: e.clientX, clientY: e.clientY };
     if (Object.keys(this.activeTouches).length === 2) {
       const touchPoints = Object.values(this.activeTouches);
@@ -264,27 +270,19 @@ export class MapInteractionBehavior extends AbstractBehavior {
       const currentAngle = Math.atan2(touchPoints[1].clientY - touchPoints[0].clientY, touchPoints[1].clientX - touchPoints[0].clientX);
       const angleDelta = currentAngle - this._initialAngle;
       const scaleChange = currentDistance / this._initialPinchDistance;
-      const currentZoom = this.context.viewport.transform.zoom;
+      const currentZoom = viewport.transform.zoom;
       const dampingFactor = currentZoom > 16 ? 0.25 : (currentZoom / 16) * 0.1 + 0.25;
       const adjustedScaleChange = 1 + (scaleChange - 1) * dampingFactor;
       const newZoom = currentZoom * adjustedScaleChange;
       const clampedZoom = Math.max(MIN_Z, Math.min(newZoom, MAX_Z));
-      this.context.systems.map.zoom(clampedZoom);  // Directly call map.zoom with the new zoom level
+      map.zoom(clampedZoom);  // Directly call map.zoom with the new zoom level
       this._initialPinchDistance = currentDistance;
       this._initialAngle = currentAngle;
       if (Math.abs(angleDelta) > ROTATION_THRESHOLD) {
-        const context = this.context;
-        const map = context.systems.map;
-        const viewport = context.viewport;
         const t = viewport.transform.props;
         map.transform({ x: t.x, y: t.y, k: t.k, r: t.r + angleDelta });
       }
     }
-
-    const context = this.context;
-    const map = context.systems.map;
-    const eventManager = map.renderer.events;
-    const viewport = context.viewport;
 
     const down = this.lastDown;
     const move = this._getEventData(e);
@@ -352,7 +350,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     this._lastPoint = null;
     this._lastAngle = null;
 
-    const eventManager = this.context.systems.map.renderer.events;
+    const eventManager = this.context.systems.gfx.events;
     const mode = this.context.mode.id;
     if (mode === 'draw-area' || mode === 'draw-line') {
       eventManager.setCursor('crosshair');

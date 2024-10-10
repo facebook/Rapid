@@ -408,7 +408,8 @@ export class VectorTileService extends AbstractSystem {
 
     if (newFeatures.length) {
       this._cacheFeatures(cache, newFeatures);
-      this.context.deferredRedraw();
+      const gfx = this.context.systems.gfx;
+      gfx.deferredRedraw();
       this.emit('loadedData');
     }
   }
@@ -603,7 +604,8 @@ export class VectorTileService extends AbstractSystem {
 
     if (newFeatures.length) {
       this._cacheFeatures(cache, newFeatures);
-      this.context.deferredRedraw();
+      const gfx = this.context.systems.gfx;
+      gfx.deferredRedraw();
     }
   }
 

@@ -107,7 +107,7 @@ export class StreetsideService extends AbstractSystem {
     if (this._startPromise) return this._startPromise;
 
     const context = this.context;
-    const eventManager = context.systems.map.renderer.events;
+    const eventManager = context.systems.gfx.events;
     const ui = context.systems.ui;
 
     // create ms-wrapper, a photo wrapper class
@@ -752,7 +752,8 @@ export class StreetsideService extends AbstractSystem {
       photos.selectPhoto('streetside', selectBubbleID);  // reselect
     }
 
-    this.context.deferredRedraw();
+    const gfx = this.context.systems.gfx;
+    gfx.deferredRedraw();
     this.emit('loadedData');
   }
 

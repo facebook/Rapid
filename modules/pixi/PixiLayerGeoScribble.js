@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import { Color } from 'pixi.js';
 
 import { AbstractLayer } from './AbstractLayer.js';
 import { PixiFeatureLine } from './PixiFeatureLine.js';
@@ -26,7 +25,7 @@ export class PixiLayerGeoScribble extends AbstractLayer {
     super(scene, layerID);
 
     const geoscribbles = new PIXI.Container();
-    geoscribbles.name = `${this.layerID}-geoscribbles`;
+    geoscribbles.label = `${this.layerID}-geoscribbles`;
     geoscribbles.sortableChildren = false;
     geoscribbles.interactiveChildren = true;
     this.scribblesContainer = geoscribbles;
@@ -106,11 +105,11 @@ export class PixiLayerGeoScribble extends AbstractLayer {
   getLineStyle(styleOverride, line) {
     // Start with the default style object.
     const lineStyle = styleOverride || {
-      stroke: { width: 2, color: CUSTOM_COLOR, alpha: 1, cap: PIXI.LINE_CAP.ROUND },
+      stroke: { width: 2, color: CUSTOM_COLOR, alpha: 1, cap: 'round' },
       labelTint: CUSTOM_COLOR
     };
 
-    const color = line.properties.color ? new Color(line.properties.color) : CUSTOM_COLOR;
+    const color = line.properties.color ? new PIXI.Color(line.properties.color) : CUSTOM_COLOR;
     const thin = line.properties.thin;
     const dashed = line.properties.dashed;
 

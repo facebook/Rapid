@@ -1,4 +1,4 @@
-import { Color } from 'pixi.js';
+import * as PIXI from 'pixi.js';
 import { Tiler, vecSubtract } from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 import { marked } from 'marked';
@@ -157,7 +157,8 @@ export class OsmoseService extends AbstractSystem {
             }
           }
 
-          this.context.deferredRedraw();
+          const gfx = this.context.systems.gfx;
+          gfx.deferredRedraw();
           this.emit('loadedData');
         })
         .catch(err => {
@@ -413,7 +414,7 @@ export class OsmoseService extends AbstractSystem {
 
         // Save item colors to automatically style issue markers later
         const itemInt = item.item;
-        this._osmoseColors.set(itemInt, new Color(item.color).toNumber());
+        this._osmoseColors.set(itemInt, new PIXI.Color(item.color).toNumber());
 
         // Value of root key will be null if no string exists
         // If string exists, value is an object with key 'auto' for string

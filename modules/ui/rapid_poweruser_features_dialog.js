@@ -4,6 +4,7 @@ import { uiModal } from './modal.js';
 
 
 export function uiRapidPowerUserFeaturesDialog(context) {
+  const gfx = context.systems.gfx;
   const l10n = context.systems.l10n;
   const rapid = context.systems.rapid;
   const storage = context.systems.storage;
@@ -72,7 +73,7 @@ export function uiRapidPowerUserFeaturesDialog(context) {
         }
       }
       context.enter('browse');   // return to browse mode (in case something was selected)
-      context.systems.map.immediateRedraw();
+      gfx.immediateRedraw();
     }
   }
 

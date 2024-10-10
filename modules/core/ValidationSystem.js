@@ -114,8 +114,8 @@ export class ValidationSystem extends AbstractSystem {
           this._disabledRuleIDs = new Set(ruleIDs);
         }
 
-        // register event handlers:
-        // WHEN TO RUN VALIDATION:
+        // Setup event handlers..
+        // When to run validation:
         editor
           .on('stablechange', () => this.validateAsync())
           .on('merge', entityIDs => this._validateBaseEntitiesAsync(entityIDs));

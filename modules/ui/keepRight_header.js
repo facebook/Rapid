@@ -1,4 +1,4 @@
-import { Color } from 'pixi.js';
+import * as PIXI from 'pixi.js';
 
 import { uiIcon } from './icon.js';
 
@@ -53,7 +53,7 @@ export function uiKeepRightHeader(context) {
     headerEnter.selectAll('.qaItem svg.icon')
       .attr('stroke', '#333')
       .attr('stroke-width', '1.3px')
-      .attr('color', new Color(iconFill).toHex());
+      .attr('color', new PIXI.Color(iconFill).toHex());
   }
 
 

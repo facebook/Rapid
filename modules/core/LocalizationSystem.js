@@ -158,7 +158,9 @@ export class LocalizationSystem extends AbstractSystem {
         this._languages = results[0].languages;
         this._locales = results[1].locales;
 
+        // Setup event handlers..
         urlhash.on('hashchange', this._hashchange);
+
         return this.selectLocaleAsync();
       })
       .catch(e => console.error(e));  // eslint-disable-line

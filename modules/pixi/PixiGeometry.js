@@ -19,6 +19,7 @@ import polylabel from '@mapbox/polylabel';
  *   `origPoi`       Original pole of inaccessability, [ lon, lat ]
  *   `origSsr`       Original smallest surrounding rectangle
  *   `coords`        Projected coordinate data
+ *   `flatCoords`    Projected coordinate data, flat Array how Pixi wants it [ x,y, x,y, … ]
  *   `extent`        Projected extent
  *   `outer`         Projected outer ring, Array of coordinate pairs [ [x,y], [x,y], … ]
  *   `flatOuter`     Projected outer ring, flat Array how Pixi wants it [ x,y, x,y, … ]
@@ -71,6 +72,7 @@ export class PixiGeometry {
     // The rest of the data is projected data in screen coordinates
     // ([0,0] is the origin of the Pixi scene)
     this.coords = null;
+    this.flatCoords = null;
     this.extent = null;
     this.hull = null;
     this.centroid = null;
@@ -98,6 +100,7 @@ export class PixiGeometry {
 
     // reset all projected properties
     this.coords = null;
+    this.flatCoords = null;
     this.extent = null;
     this.outer = null;
     this.flatOuter = null;
@@ -163,12 +166,14 @@ export class PixiGeometry {
     // Assign outer and holes
     if (this.type === 'line') {
       this.coords = projRings[0];
+      this.flatCoords = projFlatRings[0];
       this.outer = projRings[0];
       this.flatOuter = projFlatRings[0];
       this.holes = null;
       this.flatHoles = null;
     } else {
       this.coords = projRings;
+      this.flatCoords = projFlatRings;
       this.outer = projRings[0];
       this.flatOuter = projFlatRings[0];
       this.holes = projRings.slice(1);

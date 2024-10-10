@@ -539,8 +539,9 @@ export function uiSectionRawMembershipEditor(context) {
             input.property('value', '');
 
             // remove hover-higlighting
-            context.surface().selectAll('.highlighted')
-                .classed('highlighted', false);
+            // old
+            //context.surface().selectAll('.highlighted')
+            //    .classed('highlighted', false);
         }
 
 

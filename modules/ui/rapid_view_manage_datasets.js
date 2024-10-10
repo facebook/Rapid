@@ -10,8 +10,12 @@ import { utilKeybinding, utilNoAuto, utilRebind } from '../util/index.js';
 
 export function uiRapidViewManageDatasets(context, parentModal) {
   const assets = context.systems.assets;
+  const gfx = context.systems.gfx;
   const l10n = context.systems.l10n;
   const rapid = context.systems.rapid;
+  const storage = context.systems.storage;
+  const urlhash = context.systems.urlhash;
+
   const dispatch = d3_dispatch('done');
   const categoryCombo = uiCombobox(context, 'dataset-categories');
   const MAXRESULTS = 100;
@@ -235,8 +239,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     const status = selection.selectAll('.rapid-view-manage-datasets-status');
     const results = selection.selectAll('.rapid-view-manage-datasets');
 
-    const prefs = context.systems.storage;
-    const showPreview = prefs.getItem('rapid-internal-feature.previewDatasets') === 'true';
+    const showPreview = storage.getItem('rapid-internal-feature.previewDatasets') === 'true';
     const esri = context.services.esri;
 
     if (!esri || (Array.isArray(_datasetInfo) && !_datasetInfo.length)) {
@@ -479,7 +482,6 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     }
 
     // update url hash
-    const urlhash = context.systems.urlhash;
     const datasetIDs = [...rapid.datasets.values()]
       .filter(ds => ds.added && ds.enabled)
       .map(ds => ds.id)
@@ -489,7 +491,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     _content.call(renderModalContent);
 
     context.enter('browse');   // return to browse mode (in case something was selected)
-    context.systems.map.immediateRedraw();
+    gfx.immediateRedraw();
   }
 
 

@@ -355,6 +355,7 @@ export class UiFeatureList {
     const context = this.context;
     const map = context.systems.map;
     const osm = context.services.osm;
+    const scene = context.systems.gfx.scene;
 
     if (d.location) {
       map.centerZoomEase([d.location[1], d.location[0]], 19);
@@ -365,7 +366,7 @@ export class UiFeatureList {
 
     } else if (osm && d.noteID) {  // looks like an OSM Note
       const selectNote = (note) => {
-        map.scene.enableLayers('notes');
+        scene.enableLayers('notes');
         map.centerZoomEase(note.loc, 19);
         const selection = new Map().set(note.id, note);
         context.enter('select', { selection: selection });

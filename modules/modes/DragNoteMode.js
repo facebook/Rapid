@@ -104,7 +104,7 @@ export class DragNoteMode extends AbstractMode {
 
     const context = this.context;
     const locations = context.systems.locations;
-    const map = context.systems.map;
+    const gfx = context.systems.gfx;
     const osm = context.services.osm;
     const viewport = context.viewport;
     const point = eventData.coord.map;
@@ -130,7 +130,7 @@ export class DragNoteMode extends AbstractMode {
 
     // Force a redraw - there is no event for notes that would tell the map to redraw.
     // (unlike with dragging osm features around, where editsystem emits `stagingchanged` events)
-    map.immediateRedraw();
+    gfx.immediateRedraw();
   }
 
 

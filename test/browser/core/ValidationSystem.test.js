@@ -5,14 +5,17 @@ describe('ValidationSystem', () => {
     constructor() { }
     initAsync()   { return Promise.resolve(); }
     on()          { return this; }
+    pause()       { }
+    resume()      { }
   }
 
-  class MockStorageSystem {
-    constructor() { }
+  class MockGfxSystem {
+    constructor() {
+      this.scene = { layers: new Map() };
+    }
     initAsync()   { return Promise.resolve(); }
-    getItem()     { return ''; }
-    hasItem()     { return false; }
-    setItem()     { }
+    pause()       { }
+    resume()      { }
   }
 
   class MockImagerySystem {
@@ -34,6 +37,14 @@ describe('ValidationSystem', () => {
     photosUsed()  { return ''; }
   }
 
+  class MockStorageSystem {
+    constructor() { }
+    initAsync()   { return Promise.resolve(); }
+    getItem()     { return ''; }
+    hasItem()     { return false; }
+    setItem()     { }
+  }
+
   class MockUrlSystem {
     constructor() {
       this.initialHashParams = new Map();
@@ -48,6 +59,7 @@ describe('ValidationSystem', () => {
       this.systems = {
         assets:   new Rapid.AssetSystem(this),
         editor:   new Rapid.EditSystem(this),
+        gfx:      new MockGfxSystem(),
         imagery:  new MockImagerySystem(),
         l10n:     new MockLocalizationSystem(),
         map:      new MockSystem(),
@@ -58,7 +70,6 @@ describe('ValidationSystem', () => {
         urlhash:  new MockUrlSystem()
       };
     }
-    scene()       { return { layers: new Map() }; }
     selectedIDs() { return []; }
     on() {}
   }

@@ -67,11 +67,24 @@ export function lineToPoly(flatPoints, lineStyle = {}) {
 
   // Make some fake graphicsData and graphicsGeometry.
   // (I'm avoiding using a real PIXI.Graphic because I dont want to affect the batch system)
-  const graphicsData = { shape: sourceShape, lineStyle: lineStyle };
-  const graphicsGeometry = { closePointEps: EPSILON, indices: [], points: [], uvs: [] };
+//  const graphicsData = { shape: sourceShape, lineStyle: lineStyle };
+  const graphicsGeometry = { closePointEps: EPSILON, indices: [], verts: [], uvs: [] };
 
   // Pixi will do the work for us.
-  PIXI.graphicsUtils.buildLine(graphicsData, graphicsGeometry);
+// v7
+//  PIXI.buildLine(graphicsData, graphicsGeometry);
+// v8
+  PIXI.buildLine(
+    flatPoints,
+    lineStyle,
+    false,  // flipAlignment
+    isClosed,  // closed
+    graphicsGeometry.verts,
+    undefined,       // _verticesStride - unused
+    undefined,       // _verticesOffset - unused
+    graphicsGeometry.indices,
+    undefined       // _indicesOffset - unused
+  );
 
 
   // The `graphicsGeometry` now contains the points as they would be drawn (as a strip of triangles).
@@ -98,7 +111,7 @@ export function lineToPoly(flatPoints, lineStyle = {}) {
   //   indices:  0 1 2  1 2 3  2 3 4  3 4 5  4 5 6  4 6 7  6 7 8  …
   //      side:  L R L  R L R  L R L  R L R  L R R  L R L  R L R  …
 
-  const verts = graphicsGeometry.points;
+  const verts = graphicsGeometry.verts;
   const indices = graphicsGeometry.indices;
 
   let sides = new Map();  // Map(index -> what side it's on) (`true` if left, `false` if right)
@@ -341,43 +354,8 @@ export function flatCoordsToPoints(coords) {
 }
 
 
-
-/**
- * getLineCapEnum
- * see https://pixijs.download/dev/docs/PIXI.html#LINE_CAP
- * @param   {string}   str - One of 'butt', 'square', or 'round' (default)
- * @returns {nummber}  The corresponding PIXI enum value
- */
-export function getLineCapEnum(str) {
-  if (str === 'butt') {
-    return PIXI.LINE_CAP.BUTT;
-  } else if (str === 'square') {
-    return PIXI.LINE_CAP.SQUARE;
-  } else {
-    return PIXI.LINE_CAP.ROUND;
-  }
-}
-
-
-/**
- * getLineJoinEnum
- * see https://pixijs.download/dev/docs/PIXI.html#LINE_JOIN
- * @param   {string}   str - One of 'bevel', 'miter', or 'round' (default)
- * @returns {nummber}  The corresponding PIXI enum value
- */
-export function getLineJoinEnum(str) {
-  if (str === 'bevel') {
-    return PIXI.LINE_JOIN.BEVEL;
-  } else if (str === 'miter') {
-    return PIXI.LINE_JOIN.MITER;
-  } else {
-    return PIXI.LINE_JOIN.ROUND;
-  }
-}
-
-
 export function getDebugBBox(x, y, width, height, color, alpha, name) {
-  const sprite = new PIXI.Sprite(PIXI.Texture.WHITE);
+  const sprite = new PIXI.Sprite({ texture: PIXI.Texture.WHITE });
   sprite.eventMode = 'none';
   sprite.anchor.set(0, 0);  // top, left
   sprite.position.set(x, y);
@@ -385,6 +363,6 @@ export function getDebugBBox(x, y, width, height, color, alpha, name) {
   sprite.height = height;
   sprite.tint = color || 0xffff33;  // yellow
   sprite.alpha = alpha || 0.75;
-  if (name) sprite.name = name;
+  if (name) sprite.label = name;
   return sprite;
 }

@@ -1049,7 +1049,8 @@ export class OsmService extends AbstractSystem {
             that._noteCache.loaded.add(tile.id);
           }
           // deferLoadUsers();
-          that.context.deferredRedraw();
+          const gfx = that.context.systems.gfx;
+          gfx.deferredRedraw();
           that.emit('loadedNotes');
         },
         options
@@ -1064,7 +1065,8 @@ export class OsmService extends AbstractSystem {
     const gotNote = (err, results) => {
       if (callback) {
         callback(err, { data: results });
-        this.context.deferredRedraw();
+        const gfx = this.context.systems.gfx;
+        gfx.deferredRedraw();
         this.emit('loadedNotes');
       }
     };
@@ -1100,7 +1102,8 @@ export class OsmService extends AbstractSystem {
         if (err) {
           return callback(err);
         } else {
-          this.context.deferredRedraw();
+          const gfx = this.context.systems.gfx;
+          gfx.deferredRedraw();
           this.emit('loadedNotes');
           return callback(null, results.data[0]);
         }
@@ -1170,7 +1173,8 @@ export class OsmService extends AbstractSystem {
         if (err) {
           return callback(err);
         } else {
-          this.context.deferredRedraw();
+          const gfx = this.context.systems.gfx;
+          gfx.deferredRedraw();
           this.emit('loadedNotes');
           return callback(null, results.data[0]);
         }

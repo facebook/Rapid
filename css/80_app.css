@@ -4397,18 +4397,20 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 .map-footer {
   display: flex;
   flex: 0 0 0px;
-  flex-direction: column;
+  flex-flow: column nowrap;
 
   width: 100%;
   position: relative;
-  border-radius: 0;
-  pointer-events: none;
   -ms-user-select: element;
 }
 
+/* The very bottom "status" row */
+/* Will either display .flash-wrap or .map-footer-wrap */
 .map-footer-bar {
-  pointer-events: all;
-  display: block;
+  display: flex;
+  flex: 0 0 2.5em;
+  flex-flow: column nowrap;
+
   height: 2.5em;
   position: relative;
 }
@@ -4416,7 +4418,7 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 .map-footer-wrap,
 .flash-wrap {
   display: flex;
-  flex: 0 0 100%;
+  flex: 1 1 0px;
   flex-flow: row nowrap;
   justify-content: space-between;
 
@@ -4496,39 +4498,41 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 /* Footer - Flash messages
 ------------------------------------------------------- */
 .flash-content {
-    display: flex;
-    flex: 1 0 auto;
-    flex-flow: row nowrap;
-    align-items: center;
-    padding: 2px;
+  display: flex;
+  flex: 1 0 auto;
+  flex-flow: row nowrap;
+
+  align-items: center;
+  padding: 2px;
 }
 
 .flash-icon {
-    flex: 0 0 auto;
-    width: 20px;
-    height: 20px;
-    margin: 0 8px;
+  flex: 0 0 auto;
+
+  width: 20px;
+  height: 20px;
+  margin: 0 8px;
 }
 
 .flash-icon circle {
-    fill: #eee;
+  fill: #eee;
 }
 .flash-icon.disabled circle {
-    cursor: auto;
-    fill: rgba(255,255,255,0.7);
+  cursor: auto;
+  fill: rgba(255,255,255,0.7);
 }
 
 .flash-icon use {
-    color: #222;
+  color: #222;
 }
 .flash-icon.disabled use,
 .flash-icon.operation.disabled use {
-    fill: rgba(32,32,32,0.7);
-    color: rgba(40,40,40,0.7);
+  fill: rgba(32,32,32,0.7);
+  color: rgba(40,40,40,0.7);
 }
 
 .flash-text {
-    flex: 1 1 auto;
+  flex: 1 1 auto;
 }
 
 /* Scale bar
@@ -4638,32 +4642,33 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 }
 
 .api-status {
-    text-align: right;
-    padding: 1px 10px;
-    color: #eee;
-    flex: 1 1 auto;
+  flex: 1 1 0px;
+
+  text-align: right;
+  padding: 1px 10px;
+  color: #eee;
 }
 .ideditor[dir='rtl'] .api-status {
-    text-align: left;
+  text-align: left;
 }
 .api-status:empty {
-    display: none;
+  display: none;
 }
 
 .api-status.offline,
 .api-status.readonly,
 .api-status.error {
-    background: #a22;
+  background: #a22;
 }
 
 .api-status a {
-    text-decoration: underline;
-    color: #ccc;
-    pointer-events: all;
+  text-decoration: underline;
+  color: #ccc;
+  pointer-events: all;
 }
 .api-status a:focus,
 .api-status a:active {
-    color: inherit;
+  color: inherit;
 }
 @media (hover: hover) {
     .api-status a:hover {

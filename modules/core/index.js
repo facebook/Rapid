@@ -4,6 +4,7 @@ import { AbstractSystem } from './AbstractSystem.js';
 import { AssetSystem } from './AssetSystem.js';
 import { EditSystem } from './EditSystem.js';
 import { FilterSystem } from './FilterSystem.js';
+import { GraphicsSystem } from './GraphicsSystem.js';
 import { ImagerySystem } from './ImagerySystem.js';
 import { LocalizationSystem } from './LocalizationSystem.js';
 import { LocationSystem } from './LocationSystem.js';
@@ -24,6 +25,7 @@ export {
   AssetSystem,
   EditSystem,
   FilterSystem,
+  GraphicsSystem,
   ImagerySystem,
   LocalizationSystem,
   LocationSystem,
@@ -48,6 +50,7 @@ export const systems = {
 systems.available.set('assets', AssetSystem);
 systems.available.set('editor', EditSystem);
 systems.available.set('filters', FilterSystem);
+systems.available.set('gfx', GraphicsSystem);
 systems.available.set('imagery', ImagerySystem);
 systems.available.set('l10n', LocalizationSystem);
 systems.available.set('locations', LocationSystem);

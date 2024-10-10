@@ -81,10 +81,9 @@ export class UiDefs {
         .attr('fill', 'currentColor');
     }
 
-    // Notify Pixi about the icons so they can be used by WebGL - see Rapid#925
-    // Note: We believe that by the time `_spritesheetLoaded` is called,
+    // Notify Pixi about the icons so they can be used by WebGL/webGPU - see Rapid#925
     // Pixi's textureManager should be set up, throw if we're wrong about this.
-    const textureManager = this.context.systems.map.renderer?.textures;
+    const textureManager = this.context.systems.gfx.textures;
     if (!textureManager) {
       throw new Error(`TextureManager not ready to pack icons for ${spritesheetID}`);
     }
@@ -93,12 +92,7 @@ export class UiDefs {
       .each((d, i, nodes) => {
         const symbol = nodes[i];
         const iconID = symbol.getAttribute('id');
-        const viewBox = symbol.getAttribute('viewBox');
-        const size = 32;
-        const color = '#fff';   // white will apply to `currentColor`, so we can tint them
-        const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" height="${size}" width="${size}" color="${color}" viewBox="${viewBox}">${symbol.innerHTML}</svg>`;
-
-        textureManager.addSvgIcon(iconID, svgStr);
+        textureManager.registerSvgIcon(iconID, symbol);
      });
   }
 

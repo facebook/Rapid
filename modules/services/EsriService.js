@@ -329,7 +329,8 @@ export class EsriService extends AbstractSystem {
           cache.loaded[tile.id] = true;
           delete cache.inflight[tile.id];
 
-          this.context.deferredRedraw();
+          const gfx = this.context.systems.gfx;
+          gfx.deferredRedraw();
           this.emit('loadedData');
         }
       })

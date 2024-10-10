@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { EventEmitter } from '@pixi/utils';
+import { EventEmitter } from 'pixi.js';
 
 import { PixiLayerBackgroundTiles } from './PixiLayerBackgroundTiles.js';
 import { PixiLayerCustomData } from './PixiLayerCustomData.js';
@@ -55,12 +55,12 @@ export class PixiScene extends EventEmitter {
 
   /**
    * @constructor
-   * @param  renderer   The Renderer that owns this Scene
+   * @param  gfx   The GraphicsSystem that owns this Scene
    */
-  constructor(renderer) {
+  constructor(gfx) {
     super();
-    this.renderer = renderer;
-    this.context = renderer.context;
+    this.gfx = gfx;
+    this.context = gfx.context;
 
     this.groups = new Map();     // Map (groupID -> PIXI.Container)
     this.layers = new Map();     // Map (layerID -> Layer)
@@ -80,10 +80,10 @@ export class PixiScene extends EventEmitter {
       'ui'            // Misc UI draw above everything (select lasso, geocoding circle, debug shapes)
     ].forEach((groupID, i) => {
       const container = new PIXI.Container();
-      container.name = groupID;
+      container.label = groupID;
       container.sortableChildren = true;
       container.zIndex = i;
-      this.renderer.origin.addChild(container);
+      gfx.origin.addChild(container);
       this.groups.set(groupID, container);
     });
 

@@ -43,7 +43,8 @@ export class UiPanelLocation extends AbstractUiPanel {
     this._selection = selection;
     this._currLocation = null;
 
-    this.context.surface().on('pointermove.info-location', this.render);
+    const eventManager = this.context.systems.gfx.events;
+    eventManager.on('pointermove', this.render);
   }
 
 
@@ -61,7 +62,8 @@ export class UiPanelLocation extends AbstractUiPanel {
     this._selection = d3_select(null);
     this._currLocation = null;
 
-    this.context.surface().on('pointermove.info-location', null);
+    const eventManager = this.context.systems.gfx.events;
+    eventManager.off('pointermove', this.render);
   }
 
 

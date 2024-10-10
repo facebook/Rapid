@@ -1,8 +1,6 @@
 import * as PIXI from 'pixi.js';
 
-import { geojsonFeatures } from '../util/util.js';
 import { AbstractLayer } from './AbstractLayer.js';
-
 
 
 /**
@@ -24,14 +22,14 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
     this._enabled = true;
 
     const overlays = new PIXI.Container();
-    overlays.name = `${this.layerID}`;
+    overlays.label = `${this.layerID}`;
     overlays.sortableChildren = false;
     overlays.interactiveChildren = true;
     this.overlaysContainer = overlays;
     this._overlaysDefined = false;
 
     const datasets = this.context.systems.rapid.datasets;
-    for (const [key, dataset] of datasets.entries()) {
+    for (const dataset of datasets.values()) {
       if (dataset.overlay) {
         this._overlaysDefined = true;
       }
@@ -59,7 +57,7 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
     //Extremely inefficient but we're not drawing anything else at this zoom
     parentContainer.removeChildren();
 
-    for (const [key, dataset] of datasets.entries()) {
+    for (const dataset of datasets.values()) {
       if (dataset.overlay && dataset.enabled) {
         const customColor = new PIXI.Color(dataset.color);
         const overlay = dataset.overlay;
@@ -95,9 +93,8 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
 
         const point = viewport.project(loc);
         const feature = new PIXI.Graphics()
-          .beginFill(color, 0.05)
-          .drawCircle(0, 0, 40)
-          .endFill();
+          .fill({color, alpha:0.05})
+          .circle(0, 0, 40);
 
         feature.x = point[0];
         feature.y = point[1];

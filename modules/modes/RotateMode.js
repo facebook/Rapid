@@ -46,8 +46,7 @@ export class RotateMode extends AbstractMode {
     const graph = editor.staging.graph;
     const filters = context.systems.filters;
     const locations = context.systems.locations;
-    const map = context.systems.map;
-    const eventManager = map.renderer.events;
+    const eventManager = context.systems.gfx.events;
 
     const selection = options.selection ?? {};
     let entityIDs = selection.osm ?? [];
@@ -96,7 +95,7 @@ export class RotateMode extends AbstractMode {
     const editor = context.systems.editor;
     const filters = context.systems.filters;
     const l10n = context.systems.l10n;
-    const eventManager = context.systems.map.renderer.events;
+    const eventManager = context.systems.gfx.events;
 
     this._lastPoint = null;
     this._pivotLoc = null;
@@ -153,7 +152,7 @@ export class RotateMode extends AbstractMode {
   _pointermove() {
     const context = this.context;
     const editor = context.systems.editor;
-    const eventManager = context.systems.map.renderer.events;
+    const eventManager = context.systems.gfx.events;
     const currPoint = eventManager.coord.map;
 
     // Some notes!

@@ -244,7 +244,8 @@ export class KeepRightService extends AbstractSystem {
             this._cache.rbush.insert(this._encodeIssueRBush(d));
           }
 
-          this.context.deferredRedraw();
+          const gfx = this.context.systems.gfx;
+          gfx.deferredRedraw();
           this.emit('loadedData');
         })
         .catch(() => {

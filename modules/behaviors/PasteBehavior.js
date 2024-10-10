@@ -35,7 +35,7 @@ export class PasteBehavior extends AbstractBehavior {
     if (this._enabled) return;
     this._enabled = true;
 
-    const eventManager = this.context.systems.map.renderer.events;
+    const eventManager = this.context.systems.gfx.events;
     eventManager.on('keydown', this._keydown);
   }
 
@@ -48,7 +48,7 @@ export class PasteBehavior extends AbstractBehavior {
     if (!this._enabled) return;
     this._enabled = false;
 
-    const eventManager = this.context.systems.map.renderer.events;
+    const eventManager = this.context.systems.gfx.events;
     eventManager.off('keydown', this._keydown);
   }
 
@@ -75,6 +75,7 @@ export class PasteBehavior extends AbstractBehavior {
   _doPaste(e) {
     const context = this.context;
     const editor = context.systems.editor;
+    const gfx = context.systems.gfx;
     const l10n = context.systems.l10n;
     const map = context.systems.map;
 
@@ -89,7 +90,7 @@ export class PasteBehavior extends AbstractBehavior {
 
     // Ignore it if we are not over the canvas
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    const eventManager = map.renderer.events;
+    const eventManager = gfx.events;
     if (!eventManager.pointerOverRenderer) return;
 
     e.preventDefault();

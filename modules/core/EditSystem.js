@@ -82,7 +82,7 @@ export class EditSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'editor';   // was: 'history'
-    this.dependencies = new Set(['imagery', 'map', 'photos', 'storage']);
+    this.dependencies = new Set(['gfx', 'imagery', 'map', 'photos', 'storage']);
 
     this._mutex = utilSessionMutex('lock');
     this._canRestoreBackup = false;
@@ -133,7 +133,7 @@ export class EditSystem extends AbstractSystem {
       .then(() => {
         if (window.mocha) return;
 
-        // Setup event handlers
+        // Setup event handlers..
         window.addEventListener('beforeunload', e => {
           if (this._history.length > 1) {  // user did something
             e.preventDefault();
@@ -1006,6 +1006,7 @@ export class EditSystem extends AbstractSystem {
    */
   fromJSONAsync(json) {
     const context = this.context;
+    const gfx = context.systems.gfx;
     const map = context.systems.map;
     const osm = context.services.osm;
 
@@ -1018,7 +1019,7 @@ export class EditSystem extends AbstractSystem {
     // should we assert that the history has been reset?
     // we expect to chain after context.resetAsync() ? we could just call this._reset() ?
 
-    map.pause();  // block rendering
+    gfx.pause();  // block rendering
 
     let loading;
     if (!window.mocha) {
@@ -1149,7 +1150,7 @@ export class EditSystem extends AbstractSystem {
       this._index = backup.index;
       this._replaceStaging();
 
-      map.resume();       // unbock rendering, events will start firing now
+      gfx.resume();       // unbock rendering, events will start firing now
       loading?.close();   // unblock ui
 
       // emit events
@@ -1267,19 +1268,22 @@ export class EditSystem extends AbstractSystem {
    */
   _gatherSources(annotation) {
     const context = this.context;
+    const gfx = context.systems.gfx;
+    const imagery = context.systems.imagery;
+    const photos = context.systems.photos;
 
     const sources = {};
-    const imageryUsed = context.systems.imagery.imageryUsed();
+    const imageryUsed = imagery.imageryUsed();
     if (imageryUsed.length)  {
       sources.imagery = imageryUsed;
     }
 
-    const photosUsed = context.systems.photos.photosUsed();
+    const photosUsed = photos.photosUsed();
     if (photosUsed.length) {
       sources.photos = photosUsed;
     }
 
-    const customLayer = context.scene().layers.get('custom-data');
+    const customLayer = gfx.scene.layers.get('custom-data');
     const customDataUsed = customLayer?.dataUsed() ?? [];
     const rapidDataUsed = annotation?.dataUsed ?? [];
     const dataUsed = [...rapidDataUsed, ...customDataUsed];
