@@ -55,16 +55,12 @@ export function validationKerbNodes(context) {
         dynamicFixes: () => ['flush', 'lowered', 'raised'].map(type => new ValidationFix({
           title: `Add ${type} Kerb Nodes`,
           onClick: () => {
-            const graph = editor.staging.graph;
-            const positions = calculateNewNodePositions(wayID, graph);
+            // const positions = calculateNewNodePositions(wayID, editor.staging.graph);
             const tags = { barrier: 'kerb', kerb: type };
-            // addKerbNodes(wayID, editor.staging.graph, positions, tags);
-            // applyKerbNodeFix(this.entityIds[0], { barrier: 'kerb', kerb: type });
-            const action = getAddKerbNodesAction(wayID, positions, tags);
+            const action = applyKerbNodeFix(wayID, editor.staging.graph, tags);
             editor.perform(action);
-            // Commit changes with annotation
             editor.commit({
-              annotation: 'Added kerb nodes at start and end of the way',
+              annotation: 'Added kerb nodes at adjusted positions',
               selectedIDs: [wayID]
             });
           }
@@ -84,7 +80,16 @@ export function validationKerbNodes(context) {
   function intersectsPedestrianPathway(way, graph) {
     let intersectingWays = new Set();
     way.nodes.forEach(nodeId => {
-      const nodeWays = graph.parentWays(graph.entity(nodeId));
+      if (!nodeId) {
+        console.error('Undefined nodeId found in way:', way.id);
+        return;
+      }
+      const node = graph.entity(nodeId);
+      if (!node) {
+        console.error('Node not found in graph with ID:', nodeId);
+        return;
+      }
+      const nodeWays = graph.parentWays(node);
       nodeWays.forEach(way => intersectingWays.add(way));
     });
     return Array.from(intersectingWays).some(intersectingWay => {
@@ -124,104 +129,134 @@ export function validationKerbNodes(context) {
 
 
   // Function to calculate new node positions near the ends of a way
-  function calculateNewNodePositions(wayID, graph) {
-    const way = graph.hasEntity(wayID);
-    console.log('calculateNewNodePositions called with way:', way);
-    const nodes = graph.childNodes(way);
-    console.log(`Nodes retrieved in calculateNewNodePositions: ${nodes.map(node => node.id).join(', ')}`);
-
-    if (!nodes || nodes.length < 2) {
-      console.error('Not enough nodes:', wayID);
-      return;
-    }
-
-    const firstNode = nodes[0];
-    const lastNode = nodes[nodes.length - 1];
-    console.log('First Node:', firstNode.id, 'Last Node:', lastNode.id);
-
-    const firstNodePosition = calculatePosition(firstNode, lastNode, 1);
-    const lastNodePosition = calculatePosition(lastNode, firstNode, 1);
-
-    console.log('Calculated positions:', { firstNodePosition, lastNodePosition });
-    return { firstNodePosition, lastNodePosition };
-  }
+  // function calculateNewNodePositions(way, graph) {
+  //   const nodes = graph.childNodes(way);
+  //   if (nodes.length < 2) {
+  //     console.error('Not enough nodes to calculate new positions');
+  //     return;
+  //   }
+  //   // Get the first and second nodes for the start direction
+  //   const firstNode = nodes[0];
+  //   const secondNode = nodes[1];
+  //   const firstNodePosition = calculatePositionOffset(firstNode, secondNode, 1, graph);
+  //   // Get the last and second-to-last nodes for the end direction
+  //   const lastNode = nodes[nodes.length - 1];
+  //   const secondToLastNode = nodes[nodes.length - 2];
+  //   const lastNodePosition = calculatePositionOffset(lastNode, secondToLastNode, 1, graph);
+  //   return { firstNodePosition, lastNodePosition };
+  // }
 
 
-  function addKerbNodes(wayOrWayId, graph, tags) {
-    console.log('addKerbNodes called with wayOrWayId:', wayOrWayId);
-    let way = typeof wayOrWayId === 'string' ? graph.hasEntity(wayOrWayId) : wayOrWayId;
-    if (!way) {
-      console.error(`Way not found with ID: ${wayOrWayId}`);
-      return;
-    }
-    console.log('Way:', way);
-    const nodes = graph.childNodes(way);
-    console.log(`Nodes retrieved in addKerbNodes: ${nodes.map(node => node.id).join(', ')}`);
-    if (nodes.length < 2) {
-      console.error(`Not enough nodes in the way to calculate positions: ${way.id}, Nodes Count: ${nodes.length}`);
-      return;
-    }
+  // function calculatePositionOffset(startNode, endNode, distance) {
+  //   if (!startNode || !endNode) {
+  //     console.error('Invalid nodes for position calculation');
+  //     return null;
+  //   }
 
-    const firstNode = nodes[0];
-    const lastNode = nodes[nodes.length - 1];
-    console.log(`First Node ID: ${firstNode.id}, Last Node ID: ${lastNode.id}`);
+  //   const startLatMeters = geoLatToMeters(startNode.loc[1]);
+  //   const startLonMeters = geoLonToMeters(startNode.loc[0], startNode.loc[1]);
+  //   const endLatMeters = geoLatToMeters(endNode.loc[1]);
+  //   const endLonMeters = geoLonToMeters(endNode.loc[0], endNode.loc[1]);
 
-    if (!firstNode.loc || !lastNode.loc) {
-      console.error('Node location data is missing:', { firstNode, lastNode });
-      return;
-    }
+  //   const dxMeters = endLonMeters - startLonMeters;
+  //   const dyMeters = endLatMeters - startLatMeters;
+  //   const lengthMeters = Math.sqrt(dxMeters * dxMeters + dyMeters * dyMeters);
+  //   const scale = distance / lengthMeters;
 
-    const firstNodePosition = calculateNewPosition(firstNode, lastNode, 1);
-    const lastNodePosition = calculateNewPosition(lastNode, firstNode, 1);
-    console.log('Positions calculated:', { firstNodePosition, lastNodePosition });
+  //   const newXMeters = startLonMeters + dxMeters * scale;
+  //   const newYMeters = startLatMeters + dyMeters * scale;
 
-    if (!firstNodePosition || !lastNodePosition) {
-      console.error('Failed to calculate new positions');
-      return;
-    }
-
-    const firstKerbNode = osmNode({ loc: firstNodePosition, tags });
-    const lastKerbNode = osmNode({ loc: lastNodePosition, tags });
-
-    graph = actionAddMidpoint({ loc: firstNodePosition, edge: [firstNode.id, nodes[1].id] }, firstKerbNode)(graph);
-    graph = actionAddMidpoint({ loc: lastNodePosition, edge: [lastNode.id, nodes[nodes.length - 2].id] }, lastKerbNode)(graph);
-
-    console.log('Kerb nodes added to the graph');
-    return graph;
-  }
+  //   return {
+  //     lon: geoMetersToLon(newXMeters, geoMetersToLat(newYMeters)),
+  //     lat: geoMetersToLat(newYMeters)
+  //   };
+  // }
 
 
-  function applyKerbNodeFix(wayID, tags) {
+  // function addKerbNodes(wayOrWayId, graph, tags) {
+  //   console.log('addKerbNodes called with wayOrWayId:', wayOrWayId);
+  //   let way = typeof wayOrWayId === 'string' ? graph.hasEntity(wayOrWayId) : wayOrWayId;
+  //   if (!way) {
+  //     console.error(`Way not found with ID: ${wayOrWayId}`);
+  //     return;
+  //   }
+  //   console.log('Way:', way);
+  //   const nodes = graph.childNodes(way);
+  //   console.log(`Nodes retrieved in addKerbNodes: ${nodes.map(node => node.id).join(', ')}`);
+  //   if (nodes.length < 2) {
+  //     console.error(`Not enough nodes in the way to calculate positions: ${way.id}, Nodes Count: ${nodes.length}`);
+  //     return;
+  //   }
+  //   nodes.forEach(node => {
+  //     if (!node || !node.loc) {
+  //       console.error('Node location data is missing or node is undefined:', node);
+  //       return;
+  //     }
+  //   });
+
+  //   const firstNode = nodes[0];
+  //   const lastNode = nodes[nodes.length - 1];
+  //   console.log(`First Node ID: ${firstNode.id}, Last Node ID: ${lastNode.id}`);
+
+  //   if (!firstNode.loc || !lastNode.loc) {
+  //     console.error('Node location data is missing:', { firstNode, lastNode });
+  //     return;
+  //   }
+
+  //   const firstNodePosition = calculateNewPosition(firstNode, lastNode, 1);
+  //   const lastNodePosition = calculateNewPosition(lastNode, firstNode, 1);
+  //   console.log('Positions calculated:', { firstNodePosition, lastNodePosition });
+
+  //   if (!firstNodePosition || !lastNodePosition) {
+  //     console.error('Failed to calculate new positions');
+  //     return;
+  //   }
+
+  //   const firstKerbNode = osmNode({ loc: firstNodePosition, tags });
+  //   const lastKerbNode = osmNode({ loc: lastNodePosition, tags });
+
+  //   graph = actionAddMidpoint({ loc: firstNodePosition, edge: [firstNode.id, nodes[1].id] }, firstKerbNode)(graph);
+  //   graph = actionAddMidpoint({ loc: lastNodePosition, edge: [lastNode.id, nodes[nodes.length - 2].id] }, lastKerbNode)(graph);
+
+  //   console.log('Kerb nodes added to the graph');
+  //   return graph;
+  // }
+
+
+  function applyKerbNodeFix(wayID, graph, tags) {
     console.log('Entering applyKerbNodeFix', { wayID, tags });
-    let graph = editor.staging.graph;
+
     const way = graph.hasEntity(wayID);
     if (!way) {
       console.error('Way not found:', wayID);
       return;
     }
+
     console.log('Way nodes before update:', way.nodes.map(nodeId => graph.entity(nodeId).loc));
+
     const firstNodePosition = calculatePosition(graph.entity(way.nodes[0]), graph.entity(way.nodes[1]), 1);
     const lastNodePosition = calculatePosition(graph.entity(way.nodes[way.nodes.length - 2]), graph.entity(way.nodes[way.nodes.length - 1]), 1);
-    const firstKerbNode = osmNode({ loc: firstNodePosition, tags });
-    const lastKerbNode = osmNode({ loc: lastNodePosition, tags });
-    console.log('Adding first kerb node at:', firstNodePosition);
-    console.log('Adding last kerb node at:', lastNodePosition);
-    // editor.perform(actionAddMidpoint({ loc: firstNodePosition, edge: [way.nodes[0], way.nodes[1]] }, firstKerbNode)(graph));
-    // editor.perform(actionAddMidpoint({ loc: lastNodePosition, edge: [way.nodes[way.nodes.length - 2], way.nodes[way.nodes.length - 1]] }, lastKerbNode)(graph));
-    graph = actionAddMidpoint(({ loc: firstNodePosition, edge: [way.nodes[0], way.nodes[1]] }, firstKerbNode)(graph));
-    graph = actionAddMidpoint(({ loc: lastNodePosition, edge: [way.nodes[way.nodes.length - 2], way.nodes[way.nodes.length - 1]] }, lastKerbNode)(graph));
-    // Refresh the graph reference and update the view
-    graph = editor.staging.graph;
-    const updatedWay = graph.hasEntity(wayID);
-    if (updatedWay) {
-      console.log('Way nodes after update:', updatedWay.nodes.map(nodeId => graph.entity(nodeId).loc));
-    } else {
-      console.error('Updated way not found after adding nodes');
+
+    const firstKerbNode = osmNode({ loc: [firstNodePosition.lon, firstNodePosition.lat], tags });
+    const lastKerbNode = osmNode({ loc: [lastNodePosition.lon, lastNodePosition.lat], tags });
+
+    console.log('Adding kerb nodes:', { firstKerbNode, lastKerbNode });
+
+    try {
+      graph = actionAddMidpoint({ loc: firstNodePosition, edge: [way.nodes[0], way.nodes[1]] }, firstKerbNode)(graph);
+      graph = actionAddMidpoint({ loc: lastNodePosition, edge: [way.nodes[way.nodes.length - 2], way.nodes[way.nodes.length - 1]] }, lastKerbNode)(graph);
+      console.log('Kerb nodes added to the graph');
+    } catch (error) {
+      console.error('Error adding kerb nodes:', error);
     }
+
+    console.log('Way nodes after supposed update:', way.nodes.map(nodeId => graph.entity(nodeId).loc));
+
     editor.commit({
-      annotation: 'Added kerb nodes at start && end of the way',
+      annotation: 'Added kerb nodes at start & end of the way',
       selectedIDs: [firstKerbNode.id, lastKerbNode.id]
     });
+
     console.log('Exiting applyKerbNodeFix');
   }
 
@@ -269,22 +304,22 @@ export function validationKerbNodes(context) {
   }
 
 
-  function calculateNewPosition(startNode, endNode, distance) {
-    if (!startNode || !endNode || !startNode.loc || !endNode.loc) {
-      console.error('Invalid nodes for calculateNewPosition:', { startNode, endNode });
-      return null;
-    }
+  // function calculateNewPosition(startNode, endNode, distance) {
+  //   if (!startNode || !endNode || !startNode.loc || !endNode.loc) {
+  //     console.error('Invalid nodes for calculateNewPosition:', { startNode, endNode });
+  //     return null;
+  //   }
 
-    let dx = endNode.loc[0] - startNode.loc[0];
-    let dy = endNode.loc[1] - startNode.loc[1];
-    let length = Math.sqrt(dx * dx + dy * dy);
-    let scale = distance / length;
+  //   let dx = endNode.loc[0] - startNode.loc[0];
+  //   let dy = endNode.loc[1] - startNode.loc[1];
+  //   let length = Math.sqrt(dx * dx + dy * dy);
+  //   let scale = distance / length;
 
-    return {
-      lon: startNode.loc[0] + dx * scale,
-      lat: startNode.loc[1] + dy * scale
-    };
-  }
+  //   return {
+  //     lon: startNode.loc[0] + dx * scale,
+  //     lat: startNode.loc[1] + dy * scale
+  //   };
+  // }
 
 
   /**
@@ -297,31 +332,27 @@ export function validationKerbNodes(context) {
    */
   function getAddKerbNodesAction(wayID, positions, tags) {
     return function(graph) {
+      if (!graph) {
+        console.error('Graph is undefined');
+        return;
+      }
+
       const way = graph.hasEntity(wayID);
       if (!way) {
         console.error('Way not found:', wayID);
         return;
       }
 
-      const nodes = graph.childNodes(way);
-      if (nodes.length < 2) {
-        console.error('Not enough nodes');
-        return;
-      }
-
-      const firstNodePosition = positions.firstNodePosition;
-      const lastNodePosition = positions.lastNodePosition;
-
-      if (!firstNodePosition || !lastNodePosition) {
+      if (!positions.firstNodePosition || !positions.lastNodePosition) {
         console.error('Positions are not defined.');
         return;
       }
 
-      const firstKerbNode = osmNode({ loc: [firstNodePosition.lon, firstNodePosition.lat], tags });
-      const lastKerbNode = osmNode({ loc: [lastNodePosition.lon, lastNodePosition.lat], tags });
+      const firstKerbNode = osmNode({ loc: [positions.firstNodePosition.lon, positions.firstNodePosition.lat], tags });
+      const lastKerbNode = osmNode({ loc: [positions.lastNodePosition.lon, positions.lastNodePosition.lat], tags });
 
-      graph = actionAddMidpoint({ loc: [firstNodePosition.lon, firstNodePosition.lat], edge: [nodes[0].id, nodes[1].id] }, firstKerbNode)(graph);
-      graph = actionAddMidpoint({ loc: [lastNodePosition.lon, lastNodePosition.lat], edge: [nodes[nodes.length - 2].id, nodes[nodes.length - 1].id] }, lastKerbNode)(graph);
+      graph = actionAddMidpoint({ loc: [positions.firstNodePosition.lon, positions.firstNodePosition.lat], edge: [way.nodes[0].id, way.nodes[1].id] }, firstKerbNode)(graph);
+      graph = actionAddMidpoint({ loc: [positions.lastNodePosition.lon, positions.lastNodePosition.lat], edge: [way.nodes[way.nodes.length - 2].id, way.nodes[way.nodes.length - 1].id] }, lastKerbNode)(graph);
 
       return [firstKerbNode.id, lastKerbNode.id];
     };
