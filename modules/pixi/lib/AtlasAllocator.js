@@ -253,7 +253,6 @@ const glUploadAtlasResource = {
 
     // Upload all atlas items.
     for (const item of slab._items.values()) {
-      // see https://github.com/rapideditor/pixi-texture-allocator/issues/2  ??
       if (item.updateId === item.dirtyId) continue;
 
       const bin = item.texture.__bin;
@@ -308,25 +307,60 @@ const gpuUploadAtlasResource = {
     const premultipliedAlpha = slab.alphaMode === 'premultiply-alpha-on-upload';
 
     for (const item of slab._items.values()) {
-      // see https://github.com/rapideditor/pixi-texture-allocator/issues/2  ??
       if (item.updateId === item.dirtyId) continue;
 
       const bin = item.texture.__bin;
+      let source = item.asset;
+      if (source instanceof ImageData) {
+        source = source.data;
+      }
 
-      gpu.device.queue.copyExternalImageToTexture(
-        { source: item.asset },
-        {
-          texture: gpuTexture, premultipliedAlpha,
-          origin: {
-            x: bin.x,
-            y: bin.y,
+      // copyexternalimagetotexture
+      if (source instanceof HTMLImageElement ||
+        source instanceof HTMLCanvasElement ||
+        source instanceof ImageBitmap
+      ) {
+        gpu.device.queue.copyExternalImageToTexture(
+          { // source
+            source: source
           },
-        },
-        {
-          height: bin.height,
-          width: bin.width,
-        }
-      );
+          { // destination
+            origin: {
+              x: bin.x,
+              y: bin.y
+            },
+            premultipliedAlpha: premultipliedAlpha,
+            texture: gpuTexture,
+          },
+          { // copySize
+            height: bin.height,
+            width: bin.width,
+          }
+        );
+
+      // writetexture
+      } else if (ArrayBuffer.isView(source)) {
+        gpu.device.queue.writeTexture(
+          { // destination
+            origin: {
+              x: bin.x,
+              y: bin.y
+            },
+            texture: gpuTexture
+          },
+          source,
+          { // dataLayout
+            bytesPerRow: source.byteLength / bin.height
+          },
+          { // size
+            height: bin.height,
+            width: bin.width
+          }
+        );
+
+      } else {
+        throw new Error('Unsupported source type');
+      }
 
       item.updateId = item.dirtyId;
     }

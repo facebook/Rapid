@@ -238,7 +238,7 @@ export class PixiTextures {
 
 
   /**
-   * _graphicToTexture
+   * graphicToTexture
    * Convert frequently used graphics to textures/sprites for performance
    * https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
    *
@@ -250,31 +250,25 @@ export class PixiTextures {
    * swapping between textures as it draws things.
    *
    * @param    {string}        textureID   Texture identifier (e.g. 'boldPin')
-   * @param    {PIXI.Graphic}  graphic     A PIXI.Graphic to convert to a texture
+   * @param    {PIXI.Graphic}  graphic     A PIXI.Graphic to convert to a texture (will be destroyed)
    * @param    {Object}        options     Options passed to `renderer.generateTexture`
    * @returns  {PIXI.Texture}  Texture allocated from the text atlas
    */
-  _graphicToTexture(textureID, graphic, options = {}) {
+  graphicToTexture(textureID, graphic, options = {}) {
     options.antialias = false;
     options.target = graphic;
 
     const renderer = this.gfx.pixi.renderer;
     const temp = renderer.generateTexture(options);
     const { pixels, width, height } = renderer.texture.getPixels(temp);
+    const texture = this.allocate('symbol', textureID, width, height, pixels);
 
-    // for webGPU, we must convert the pixel array into a bitmap
-    const imageData = new ImageData(pixels, width, height);
-    const asset = createImageBitmap(imageData);
-
-    asset.then((result) => {
-      const texture = this.allocate('symbol', textureID, width, height, result);
-      // These textures are overscaled, but `orig` Rectangle stores the original width/height
-      // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
-      texture.orig = temp.orig.clone();
-      temp.destroy();
-      graphic.destroy({ context: true });
-      return texture;
-    });
+    // These textures are overscaled, but `orig` Rectangle stores the original width/height
+    // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
+    texture.orig = temp.orig.clone();
+    temp.destroy();
+    graphic.destroy({ context: true });
+    return texture;
   }
 
 
@@ -434,9 +428,9 @@ export class PixiTextures {
       .closePath()
       .stroke({ color: 0xcccccc, width: 1 });
 
-    this._graphicToTexture('viewfield', viewfield, viewfieldOptions);
-    this._graphicToTexture('viewfieldDark', viewfieldDark, viewfieldOptions);
-    this._graphicToTexture('viewfieldOutline', viewfieldOutline, viewfieldOptions);
+    this.graphicToTexture('viewfield', viewfield, viewfieldOptions);
+    this.graphicToTexture('viewfieldDark', viewfieldDark, viewfieldOptions);
+    this.graphicToTexture('viewfieldOutline', viewfieldOutline, viewfieldOptions);
 
 
     const pano = new PIXI.Graphics()  // just a full circle - for panoramic / 360° images
@@ -453,9 +447,9 @@ export class PixiTextures {
       .circle(0, 0, 20)
       .stroke({ color: 0xcccccc, width: 1 });
 
-    this._graphicToTexture('pano', pano);
-    this._graphicToTexture('panoDark', panoDark);
-    this._graphicToTexture('panoOutline', panoOutline);
+    this.graphicToTexture('pano', pano);
+    this.graphicToTexture('panoDark', panoDark);
+    this.graphicToTexture('panoOutline', panoOutline);
 
 
     //
@@ -519,15 +513,15 @@ export class PixiTextures {
       .fill({ color: 0xffffff, alpha: 1 })
       .stroke({ color: 0x444444, width: 1 });
 
-    this._graphicToTexture('pin', pin);
-    this._graphicToTexture('boldPin', boldPin);
-    this._graphicToTexture('xlargeSquare', xlargeSquare);
-    this._graphicToTexture('largeSquare', largeSquare);
-    this._graphicToTexture('xlargeCircle', xlargeCircle);
-    this._graphicToTexture('largeCircle', largeCircle);
-    this._graphicToTexture('mediumCircle', mediumCircle);
-    this._graphicToTexture('smallCircle', smallCircle);
-    this._graphicToTexture('taggedCircle', taggedCircle);
+    this.graphicToTexture('pin', pin);
+    this.graphicToTexture('boldPin', boldPin);
+    this.graphicToTexture('xlargeSquare', xlargeSquare);
+    this.graphicToTexture('largeSquare', largeSquare);
+    this.graphicToTexture('xlargeCircle', xlargeCircle);
+    this.graphicToTexture('largeCircle', largeCircle);
+    this.graphicToTexture('mediumCircle', mediumCircle);
+    this.graphicToTexture('smallCircle', smallCircle);
+    this.graphicToTexture('taggedCircle', taggedCircle);
 
 
     // KeepRight
@@ -574,9 +568,9 @@ export class PixiTextures {
       .fill({ color: 0xffffff })
       .stroke({ color: 0x333333, width: 1 });
 
-    this._graphicToTexture('keepright', keepright);
-    this._graphicToTexture('osmnote', osmnote);
-    this._graphicToTexture('osmose', osmose);
+    this.graphicToTexture('keepright', keepright);
+    this.graphicToTexture('osmnote', osmnote);
+    this.graphicToTexture('osmose', osmose);
 
 
     //
@@ -595,9 +589,9 @@ export class PixiTextures {
       .poly([0,5, 5,0, 0,-5])
       .fill({ color: 0xffffff, alpha: 1 });
 
-    this._graphicToTexture('midpoint', midpoint);
-    this._graphicToTexture('oneway', oneway);
-    this._graphicToTexture('sided', sided);
+    this.graphicToTexture('midpoint', midpoint);
+    this.graphicToTexture('oneway', oneway);
+    this.graphicToTexture('sided', sided);
 
 
     //
@@ -620,9 +614,9 @@ export class PixiTextures {
       .fill({ color: 0xffffff, alpha: 0.6 })
       .stroke({ color: 0xffffff, width: 1 });
 
-    this._graphicToTexture('lowres-square', lowresSquare);
-    this._graphicToTexture('lowres-ell', lowresEll);
-    this._graphicToTexture('lowres-circle', lowresCircle);
+    this.graphicToTexture('lowres-square', lowresSquare);
+    this.graphicToTexture('lowres-ell', lowresEll);
+    this.graphicToTexture('lowres-circle', lowresCircle);
 
     //
     // Low-res unfilled areas
@@ -640,9 +634,9 @@ export class PixiTextures {
       .circle(0, 0, 5)
       .stroke({ color: 0xffffff, width: 1 });
 
-    this._graphicToTexture('lowres-unfilled-square', lowresUnfilledSquare);
-    this._graphicToTexture('lowres-unfilled-ell', lowresUnfilledEll);
-    this._graphicToTexture('lowres-unfilled-circle', lowresUnfilledCircle);
+    this.graphicToTexture('lowres-unfilled-square', lowresUnfilledSquare);
+    this.graphicToTexture('lowres-unfilled-ell', lowresUnfilledEll);
+    this.graphicToTexture('lowres-unfilled-circle', lowresUnfilledCircle);
   }
 
 }
