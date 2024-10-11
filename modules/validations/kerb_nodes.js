@@ -18,48 +18,6 @@ export function validationKerbNodes(context) {
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
 
-  // helpers
-  function hasTag(v) {
-    return v !== undefined && v !== 'no';
-  }
-  function taggedAsIndoor(tags) {
-    return hasTag(tags.indoor) || hasTag(tags.level) || tags.highway === 'corridor';
-  }
-
-  function isKerbNode(entity) {
-    return entity.type === 'node' && entity.tags?.barrier === 'kerb';
-  }
-
-  // lookups
-  const allowBridge = new Set(['aeroway', 'highway', 'railway', 'waterway']);
-  const allowTunnel = new Set(['highway', 'railway', 'waterway']);
-  const ignoreBuilding = new Set(['demolished', 'dismantled', 'proposed', 'razed']);
-  const disallowFord = new Set([
-    'motorway', 'motorway_link', 'trunk', 'trunk_link',
-    'primary', 'primary_link', 'secondary', 'secondary_link'
-  ]);
-  const pathVals = new Set([
-    'path', 'footway', 'cycleway', 'bridleway', 'pedestrian'
-  ]);
-
-
-  /**
-   * isCrossingWay
-   * Is the way tagged with something that would indicate that it is a crossing,
-   *   for example `highway=footway`+`footway=crossing` ?
-   * @param   {Object}   tags - tags to check
-   * @return  {boolean}  `true` if the way is tagged as a crossing
-   */
-  function isCrossingWay(tags) {
-    for (const k of pathVals) {
-      if (tags.highway === k && tags[k] === 'crossing') {
-        return true;
-      }
-    }
-    return false;
-  }
-
-
   /**
    * checkKerbNodeCandidacy
    * This validation checks the given entity to see if it is a candidate to have kerb nodes added to it
@@ -71,347 +29,351 @@ export function validationKerbNodes(context) {
     if (entity.type !== 'way' || entity.isDegenerate()) return [];
     return detectKerbCandidates(entity, graph);
   };
+  const isKerbNode = (entity) => entity.type === 'node' && entity.tags?.barrier === 'kerb';
+  const isCrossingWay = (tags) => tags.highway === 'footway' && tags.footway === 'crossing';
 
+  const checkKerbNodeCandidacy = (entity, graph) => {
+    if (entity.type !== 'way' || entity.isDegenerate()) return [];
+    return detectKerbCandidates(entity, graph);
+  };
 
-  /**
-   * waysToCheck
-   * Returns the ways to check for problem crossings:
-   *   If not worth checking, return empty set
-   *   If entity is a way, return the entity
-   *   If entity is a multipolygon relation, return its inner and outer member ways
-   * @param  {Entity} entity
-   * @param  {Graph}  graph
-   * @return {Set}    Set of ways to check
-   */
-  function waysToCheck(entity, graph) {
-    if (!getFeatureType(entity, graph)) {   // no type - not worth checking
-      return new Set();
-
-    } else if (entity.type === 'way') {
-      return new Set([entity]);
-
-    } else if (entity.type === 'relation' && entity.tags.type === 'multipolygon') {
-      const result = new Set();
-      for (const member of entity.members) {
-        // also include no role, these are treated as 'outer'
-        if (member.type === 'way' && (!member.role || member.role === 'outer' || member.role === 'inner')) {
-          const child = graph.hasEntity(member.id);
-          if (child) {
-            result.add(child);  // useful: Set prevents duplicates
-          }
-        }
-      }
-      return result;
-
-    } else {
-      return new Set();  // nothing to check
-    }
-  }
-
-
-  /**
-   * getTaggedEntityForWay
-   * Returns the way or its parent relation, whichever has a useful feature type
-   * @param  {Entity}  way - the way involved in the crossing
-   * @param  {Graph}   graph  - the Graph we are validating
-   * @return {Entity}
-   */
-  function getTaggedEntityForWay(way, graph) {
-    if (getFeatureType(way, graph) === null) {
-      // if the way doesn't match a feature type, check its parent relations
-      const parentRels = graph.parentRelations(way);
-      for (const rel of parentRels) {
-        if (getFeatureType(rel, graph) !== null) {
-          return rel;
-        }
-      }
-    }
-    return way;
-  }
-
-
-  /**
-   * getFeatureType
-   * This determines what type of feature the given entity is
-   * @param  {Entity} entity
-   * @param  {Graph}  graph
-   * @return {string|null} One of 'aeroway', 'building', 'highway', 'railway', 'waterway', or null if none of those
-   */
-
-  // TODO: This method is one of the first things that the validator runs- it picks types of ways that need validation.
-  // There's a pretty significant logical refinement we can make here that will simplify all the downstream code. Can you think of it?
-  function getFeatureType(entity, graph) {
-    const geometry = entity.geometry(graph);
-    if (geometry !== 'line' && geometry !== 'area') return null;
-
-    const tags = entity.tags;
-
-    if (osmRoutableAerowayTags[tags.aeroway]) return 'aeroway';
-    if (hasTag(tags.building) && !ignoreBuilding.has(tags.building)) return 'building';
-    if (hasTag(tags.highway) && osmRoutableHighwayTagValues[tags.highway]) return 'highway';
-
-    // don't check railway or waterway areas
-    if (geometry !== 'line') return null;
-
-    if (hasTag(tags.railway) && osmRailwayTrackTagValues[tags.railway]) return 'railway';
-    if (hasTag(tags.waterway) && osmFlowingWaterwayTagValues[tags.waterway]) return 'waterway';
-
-    return null;
-  }
-
-  // TODO: a 'legit' crossing in this case means 'one that does not need validating'. So, true = ignore, false = throw a validation.
-  // Depending on the refinement you made to the above 'getFeatureType' method, there's probably quite a bit we can prune out of here.
-  /**
-   * isLegitCrossing
-   * This determines whether a crossing between the given entities is acceptable (according to OSM tagging conventions)
-   * @param  {Object} tags1 - entity1 tags
-   * @param  {string} type1 - entity1 type, 'aeroway', 'building', 'highway', 'railway', or 'waterway'
-   * @param  {Object} tags2 - entity2 tags
-   * @param  {string} type2 - entity2 type, 'aeroway', 'building', 'highway', 'railway', or 'waterway'
-   * @return {boolean} `true` if the crossing is fine (i.e. should raise no issue)
-   */
-  function isLegitCrossing(tags1, type1, tags2, type2) {
-    // assume 0 by default
-    const level1 = tags1.level || '0';
-    const level2 = tags2.level || '0';
-
-    // Allow indoor features to cross if they're indoor on different levels
-    if (taggedAsIndoor(tags1) && taggedAsIndoor(tags2) && level1 !== level2) return true;
-
-    // assume 0 by default; don't use way.layer() since we account for structures here
-    const layer1 = tags1.layer || '0';
-    const layer2 = tags2.layer || '0';
-
-    // Allow highways & footways to cross if they're on different layers (regardless of bridge/tunnel tags)
-    if ((type1 === 'highway' && type2 === 'footway') && layer1 !== layer2) return true;
-
-    // Allow bridges to cross on different layers
-    const bridge1 = allowBridge.has(type1) && hasTag(tags1.bridge);
-    const bridge2 = allowBridge.has(type2) && hasTag(tags2.bridge);
-    if ((bridge1 && !bridge2) || (!bridge1 && bridge2)) return true;  // one has a bridge, one doesnt
-    if (bridge1 && bridge2 && layer1 !== layer2) return true;         // both have bridges on different layers
-
-    // Allow tunnels to cross on different layers
-    const tunnel1 = allowTunnel.has(type1) && hasTag(tags1.tunnel);
-    const tunnel2 = allowTunnel.has(type2) && hasTag(tags2.tunnel);
-    if ((tunnel1 && !tunnel2) || (!tunnel1 && tunnel2)) return true;  // one has a tunnel, one doesnt
-    if (tunnel1 && tunnel2 && layer1 !== layer2) return true;         // both have tunnels on different layers
-
-    // Allow waterways to cross highways tagged with 'pier'
-    if (type1 === 'waterway' && type2 === 'highway' && tags2.man_made === 'pier') return true;
-    if (type2 === 'waterway' && type1 === 'highway' && tags1.man_made === 'pier') return true;
-
-    // Allow anything to cross buildings if on different layers
-    if ((type1 === 'building' || type2 === 'building') && layer1 !== layer2) return true;
-
-    return false;
-  }
-
-
-  /**
-   * getConnectionTags
-   * This determines whether a potential crossing between the given entities is allowed,
-   * and if so, what tags should be suggested on the crossing node.
-   * @param  {Entity} entity1
-   * @param  {Entity} entity2
-   * @param  {Graph}  graph
-   * @return {Object|null} Suggested tags for the connecting node, or `null` if the entities should not be connected
-   */
-  function getConnectionTags(entity1, entity2, graph) {
-    const type1 = getFeatureType(entity1, graph);
-    const type2 = getFeatureType(entity2, graph);
-    const crossingType = [type1, type2].sort().join('-');  // a string like 'highway-highway'
-
-    const geometry1 = entity1.geometry(graph);
-    const geometry2 = entity2.geometry(graph);
-    const bothLines = geometry1 === 'line' && geometry2 === 'line';
-
-    if (crossingType === 'aeroway-aeroway') {
-      return {};  // allowed, no tag suggestion
-
-    } else if (crossingType === 'aeroway-highway') {
-      const isService = entity1.tags.highway === 'service' || entity2.tags.highway === 'service';
-      const isPath = osmPathHighwayTagValues[entity1.tags.highway] || osmPathHighwayTagValues[entity2.tags.highway];
-      // Only significant roads get the `aeroway=aircraft_crossing` tag
-      return (isService || isPath) ? {} : { aeroway: 'aircraft_crossing' };
-
-    } else if (crossingType === 'aeroway-railway') {
-      return { aeroway: 'aircraft_crossing', railway: 'level_crossing' };
-
-    } else if (crossingType === 'aeroway-waterway') {
-      return null;  // not allowed
-
-    } else if (crossingType === 'highway-highway') {
-      const entity1IsPath = osmPathHighwayTagValues[entity1.tags.highway];
-      const entity2IsPath = osmPathHighwayTagValues[entity2.tags.highway];
-
-      // One feature is a path but not both
-      if ((entity1IsPath || entity2IsPath) && entity1IsPath !== entity2IsPath) {
-        const road = entity1IsPath ? entity2 : entity1;
-
-        // No crossing suggestion in some situations
-        if (!bothLines || road.tags.highway === 'track') {
-          return {};  // allowed, no tag suggestion
-        }
-
-        // Suggest joining them with a `highway=crossing` node.
-        // We'll run the `actionsyncCrossingTags` afterwards to make sure the tags are synced.
-        return { highway: 'crossing' };
-
-      } else {      // road-road or path-path
-        return {};  // allowed, no tag suggestion
-      }
-
-    } else if (crossingType === 'highway-railway') {
-      if (!bothLines) {
-        return {};  // allowed, no tag suggestion
-      }
-
-      const isTram = entity1.tags.railway === 'tram' || entity2.tags.railway === 'tram';
-      const isPath = osmPathHighwayTagValues[entity1.tags.highway] || osmPathHighwayTagValues[entity2.tags.highway];
-
-      if (isPath) {
-        if (isTram) {
-          return { railway: 'tram_crossing' };  // path-tram connections use this tag
-        } else {
-          return { railway: 'crossing' };       // other path-rail connections use this tag
-        }
-      } else {
-        if (isTram) {
-          return { railway: 'tram_level_crossing' };  // road-tram connections use this tag
-        } else {
-          return { railway: 'level_crossing' };       // other road-rail connections use this tag
-        }
-      }
-
-    } else if (crossingType === 'highway-waterway') {
-      // Do not suggest fords on structures
-      if (hasTag(entity1.tags.tunnel) && hasTag(entity2.tags.tunnel)) return null;
-      if (hasTag(entity1.tags.bridge) && hasTag(entity2.tags.bridge)) return null;
-
-      // Do not suggest fords on major highways (secondry and higher)
-      if (disallowFord.has(entity1.tags.highway) || disallowFord.has(entity2.tags.highway)) {
-        return null;
-      }
-      return bothLines ? { ford: 'yes' } : {};
-
-    } else if (crossingType === 'railway-railway') {
-      return {};  // allowed, no tag suggestion
-
-    } else if (crossingType === 'railway-waterway') {
-      return null;  // not allowed
-
-    } else if (crossingType === 'waterway-waterway') {
-      return {};  // allowed, no tag suggestion
-    }
-
-    return null;
-  }
-
-
-  /**
-   * detectKerbCandidates
-   * This determines where any crossing ways exist but do not have at least 1 kerb node.
-   * @param  {Entity} way - the candidate way we're evaluating for kerb nodes
-   * @param  {Graph}  graph
-   * @return {Array}  Array of Objects containing the crossing details
-   */
-  function detectKerbCandidates(way, graph) {
+  const detectKerbCandidates = (way, graph) => {
     let issues = [];
     const wayID = way.id;
-
-    // Discount any way that already has kerbs in it.
-    // TODO: Make further refinements to this logic, i.e. only consider ways that intersect with routable (traffic) roads
-    const hasKerbs = hasKerbNodes(way);
-    if (!hasKerbs) {
+    if (!hasRoutableTags(way) || !isCrossingWay(way.tags)) return issues;
+    const hasKerbs = hasKerbNodes(way, graph);
+    const intersectsPedestrianPathways = intersectsPedestrianPathway(way, graph);
+    if (!hasKerbs && intersectsPedestrianPathways) {
       issues.push(new ValidationIssue(context, {
         type,
-        subtype: 'fixme_tag',
+        subtype: 'missing_kerb_nodes',
         severity: 'warning',
-        message: function () {
-          const graph = editor.staging.graph;
-          const way = graph.hasEntity(this.entityIds[0]);
-
-          return l10n.t('issues.kerb_nodes.message', {
-            feature: l10n.displayLabel(way, graph),
-          });
-          return l10n.tHtml('issues.ambiguous_crossing_tags.incomplete_message');
-        },
+        message: () => way ? l10n.t('issues.kerb_nodes.message', { feature: l10n.displayLabel(way, graph) }) : 'Way not found',
         reference: showReference,
-        entityIds: [
-          wayID,
-        ],
+        entityIds: [wayID],
+        data: { crossingWayID: wayID },
+        dynamicFixes: () => ['flush', 'lowered', 'raised'].map(type => new ValidationFix({
+          title: `Add ${type} Kerb Nodes`,
+          onClick: () => {
+            const graph = editor.staging.graph;
+            const positions = calculateNewNodePositions(wayID, graph);
+            const tags = { barrier: 'kerb', kerb: type };
+            // addKerbNodes(wayID, editor.staging.graph, positions, tags);
+            // applyKerbNodeFix(this.entityIds[0], { barrier: 'kerb', kerb: type });
+            const action = getAddKerbNodesAction(wayID, positions, tags);
+            editor.perform(action);
+            // Commit changes with annotation
+            editor.commit({
+              annotation: 'Added kerb nodes at start and end of the way',
+              selectedIDs: [wayID]
+            });
+          }
+        }))
       }));
     }
-
-    // Choices being offered..
-    const choices = new Map();  // Map(string -> { setTags })
-
-    // Details about the entities involved in this issue.
-    const updates = new Map();  // Map(entityID -> { preset name, tagDiff })
+    return issues;
+  };
 
 
-    function showReference(selection) {
-      selection.selectAll('.issue-reference')
-        .data([0])
-        .enter()
-        .append('div')
-        .attr('class', 'issue-reference')
-        .html(l10n.tHtml('issues.kerb_nodes.reference'));
-    }
-
-    /**
-     * @param {*} way
-     * @returns true if the way has kerb information in it already (either it is marked )
-     */
-   function hasKerbNodes(way) {
-      way.nodes.forEach((nodeID, index) => {
-        const node = graph.entity(nodeID);
-        if (isKerbNode(node)) return true;
-      });
-      return false;
-    }
-
-  return issues;
+  function hasRoutableTags(way) {
+    const routableTags = ['highway', 'railway', 'waterway'];
+    return way.isArea() ? false : routableTags.some(tag => way.tags[tag]);
   }
 
-  /**
-   * getKerbNodesAction
-   * @param  {string} crossingWayID   - the crossing way ID to add kerb nodes to
-   * @param  {Object}  tags            - tags to assign to the new kerb nodes
-   * @return {Action}  An Action function that connects the ways
-   */
-  function getAddKerbNodesAction(crossingWayID, tags) {
 
+  function intersectsPedestrianPathway(way, graph) {
+    let intersectingWays = new Set();
+    way.nodes.forEach(nodeId => {
+      const nodeWays = graph.parentWays(graph.entity(nodeId));
+      nodeWays.forEach(way => intersectingWays.add(way));
+    });
+    return Array.from(intersectingWays).some(intersectingWay => {
+      const isPedestrian = isPedestrianPathway(intersectingWay);
+      return isPedestrian;
+    });
+  }
+
+
+  function isPedestrianPathway(way) {
+    const pedestrianTags = ['sidewalk', 'crossing', 'path'];
+    return pedestrianTags.includes(way.tags.footway) || pedestrianTags.includes(way.tags.highway);
+  }
+
+
+  function showReference(selection) {
+    selection.selectAll('.issue-reference')
+      .data([0])
+      .enter()
+      .append('div')
+      .attr('class', 'issue-reference')
+      .html(l10n.tHtml('issues.kerb_nodes.reference'));
+  }
+
+
+  /**
+   * @param {*} way
+   * @returns true if the way has kerb information in it already (either it is marked )
+   */
+  function hasKerbNodes(way) {
+    const graph = editor.staging.graph;
+    return way.nodes.some(nodeID => {
+      const node = graph.entity(nodeID);
+      return isKerbNode(node);
+    });
+  }
+
+
+  // Function to calculate new node positions near the ends of a way
+  function calculateNewNodePositions(wayID, graph) {
+    const way = graph.hasEntity(wayID);
+    console.log('calculateNewNodePositions called with way:', way);
+    const nodes = graph.childNodes(way);
+    console.log(`Nodes retrieved in calculateNewNodePositions: ${nodes.map(node => node.id).join(', ')}`);
+
+    if (!nodes || nodes.length < 2) {
+      console.error('Not enough nodes:', wayID);
+      return;
+    }
+
+    const firstNode = nodes[0];
+    const lastNode = nodes[nodes.length - 1];
+    console.log('First Node:', firstNode.id, 'Last Node:', lastNode.id);
+
+    const firstNodePosition = calculatePosition(firstNode, lastNode, 1);
+    const lastNodePosition = calculatePosition(lastNode, firstNode, 1);
+
+    console.log('Calculated positions:', { firstNodePosition, lastNodePosition });
+    return { firstNodePosition, lastNodePosition };
+  }
+
+
+  function addKerbNodes(wayOrWayId, graph, tags) {
+    console.log('addKerbNodes called with wayOrWayId:', wayOrWayId);
+    let way = typeof wayOrWayId === 'string' ? graph.hasEntity(wayOrWayId) : wayOrWayId;
+    if (!way) {
+      console.error(`Way not found with ID: ${wayOrWayId}`);
+      return;
+    }
+    console.log('Way:', way);
+    const nodes = graph.childNodes(way);
+    console.log(`Nodes retrieved in addKerbNodes: ${nodes.map(node => node.id).join(', ')}`);
+    if (nodes.length < 2) {
+      console.error(`Not enough nodes in the way to calculate positions: ${way.id}, Nodes Count: ${nodes.length}`);
+      return;
+    }
+
+    const firstNode = nodes[0];
+    const lastNode = nodes[nodes.length - 1];
+    console.log(`First Node ID: ${firstNode.id}, Last Node ID: ${lastNode.id}`);
+
+    if (!firstNode.loc || !lastNode.loc) {
+      console.error('Node location data is missing:', { firstNode, lastNode });
+      return;
+    }
+
+    const firstNodePosition = calculateNewPosition(firstNode, lastNode, 1);
+    const lastNodePosition = calculateNewPosition(lastNode, firstNode, 1);
+    console.log('Positions calculated:', { firstNodePosition, lastNodePosition });
+
+    if (!firstNodePosition || !lastNodePosition) {
+      console.error('Failed to calculate new positions');
+      return;
+    }
+
+    const firstKerbNode = osmNode({ loc: firstNodePosition, tags });
+    const lastKerbNode = osmNode({ loc: lastNodePosition, tags });
+
+    graph = actionAddMidpoint({ loc: firstNodePosition, edge: [firstNode.id, nodes[1].id] }, firstKerbNode)(graph);
+    graph = actionAddMidpoint({ loc: lastNodePosition, edge: [lastNode.id, nodes[nodes.length - 2].id] }, lastKerbNode)(graph);
+
+    console.log('Kerb nodes added to the graph');
+    return graph;
+  }
+
+
+  function applyKerbNodeFix(wayID, tags) {
+    console.log('Entering applyKerbNodeFix', { wayID, tags });
+    let graph = editor.staging.graph;
+    const way = graph.hasEntity(wayID);
+    if (!way) {
+      console.error('Way not found:', wayID);
+      return;
+    }
+    console.log('Way nodes before update:', way.nodes.map(nodeId => graph.entity(nodeId).loc));
+    const firstNodePosition = calculatePosition(graph.entity(way.nodes[0]), graph.entity(way.nodes[1]), 1);
+    const lastNodePosition = calculatePosition(graph.entity(way.nodes[way.nodes.length - 2]), graph.entity(way.nodes[way.nodes.length - 1]), 1);
+    const firstKerbNode = osmNode({ loc: firstNodePosition, tags });
+    const lastKerbNode = osmNode({ loc: lastNodePosition, tags });
+    console.log('Adding first kerb node at:', firstNodePosition);
+    console.log('Adding last kerb node at:', lastNodePosition);
+    // editor.perform(actionAddMidpoint({ loc: firstNodePosition, edge: [way.nodes[0], way.nodes[1]] }, firstKerbNode)(graph));
+    // editor.perform(actionAddMidpoint({ loc: lastNodePosition, edge: [way.nodes[way.nodes.length - 2], way.nodes[way.nodes.length - 1]] }, lastKerbNode)(graph));
+    graph = actionAddMidpoint(({ loc: firstNodePosition, edge: [way.nodes[0], way.nodes[1]] }, firstKerbNode)(graph));
+    graph = actionAddMidpoint(({ loc: lastNodePosition, edge: [way.nodes[way.nodes.length - 2], way.nodes[way.nodes.length - 1]] }, lastKerbNode)(graph));
+    // Refresh the graph reference and update the view
+    graph = editor.staging.graph;
+    const updatedWay = graph.hasEntity(wayID);
+    if (updatedWay) {
+      console.log('Way nodes after update:', updatedWay.nodes.map(nodeId => graph.entity(nodeId).loc));
+    } else {
+      console.error('Updated way not found after adding nodes');
+    }
+    editor.commit({
+      annotation: 'Added kerb nodes at start && end of the way',
+      selectedIDs: [firstKerbNode.id, lastKerbNode.id]
+    });
+    console.log('Exiting applyKerbNodeFix');
+  }
+
+
+  function calculatePosition(startNode, endNode, distance) {
+    if (!startNode || !endNode) {
+      console.error('Start || end node is undefined');
+      return;
+    }
+    if (!startNode.loc || !endNode.loc) {
+      console.error('Location data is missing for nodes');
+      return;
+    }
+    // Convert start and end node locations from degrees to meters
+    const startLatMeters = geoLatToMeters(startNode.loc[1]);
+    const startLonMeters = geoLonToMeters(startNode.loc[0], startNode.loc[1]);
+    const endLatMeters = geoLatToMeters(endNode.loc[1]);
+    const endLonMeters = geoLonToMeters(endNode.loc[0], endNode.loc[1]);
+    // Calculate deltas in meters
+    const dxMeters = endLonMeters - startLonMeters;
+    const dyMeters = endLatMeters - startLatMeters;
+    // Calculate length in meters
+    const lengthMeters = Math.sqrt(dxMeters * dxMeters + dyMeters * dyMeters);
+    // Calculate scale factor
+    const scale = distance / lengthMeters;
+    // Calculate new position in meters
+    const newXMeters = startLonMeters + dxMeters * scale;
+    const newYMeters = startLatMeters + dyMeters * scale;
+    // Convert new position back to geographic coordinates
+    const newPosition = {
+      lon: geoMetersToLon(newXMeters, geoMetersToLat(newYMeters)),
+      lat: geoMetersToLat(newYMeters)
+    };
+    console.log('Calculating new position:', {
+      startNode: startNode.loc,
+      endNode: endNode.loc,
+      distance,
+      dxMeters,
+      dyMeters,
+      lengthMeters,
+      scale,
+      newPosition
+    });
+    return newPosition;
+  }
+
+
+  function calculateNewPosition(startNode, endNode, distance) {
+    if (!startNode || !endNode || !startNode.loc || !endNode.loc) {
+      console.error('Invalid nodes for calculateNewPosition:', { startNode, endNode });
+      return null;
+    }
+
+    let dx = endNode.loc[0] - startNode.loc[0];
+    let dy = endNode.loc[1] - startNode.loc[1];
+    let length = Math.sqrt(dx * dx + dy * dy);
+    let scale = distance / length;
+
+    return {
+      lon: startNode.loc[0] + dx * scale,
+      lat: startNode.loc[1] + dy * scale
+    };
+  }
+
+
+  /**
+   * getAddKerbNodesAction
+   * Creates and executes an action to add kerb nodes to a specified way.
+   * @param {string} wayID - The ID of the way to add kerb nodes to.
+   * @param {Object} tags - Tags to assign to the new kerb nodes.
+   * @param {Object} location - The geographic location to add the new node.
+   * @return {Function} An action function that adds kerb nodes when executed.
+   */
+  function getAddKerbNodesAction(wayID, positions, tags) {
+    return function(graph) {
+      const way = graph.hasEntity(wayID);
+      if (!way) {
+        console.error('Way not found:', wayID);
+        return;
+      }
+
+      const nodes = graph.childNodes(way);
+      if (nodes.length < 2) {
+        console.error('Not enough nodes');
+        return;
+      }
+
+      const firstNodePosition = positions.firstNodePosition;
+      const lastNodePosition = positions.lastNodePosition;
+
+      if (!firstNodePosition || !lastNodePosition) {
+        console.error('Positions are not defined.');
+        return;
+      }
+
+      const firstKerbNode = osmNode({ loc: [firstNodePosition.lon, firstNodePosition.lat], tags });
+      const lastKerbNode = osmNode({ loc: [lastNodePosition.lon, lastNodePosition.lat], tags });
+
+      graph = actionAddMidpoint({ loc: [firstNodePosition.lon, firstNodePosition.lat], edge: [nodes[0].id, nodes[1].id] }, firstKerbNode)(graph);
+      graph = actionAddMidpoint({ loc: [lastNodePosition.lon, lastNodePosition.lat], edge: [nodes[nodes.length - 2].id, nodes[nodes.length - 1].id] }, lastKerbNode)(graph);
+
+      return [firstKerbNode.id, lastKerbNode.id];
+    };
   }
 
 
   /**
    * makeKerbNodesFix
-   * @param  {Object}  connectionTags
-   * @return {ValidationFix}
+   * Creates a fix action for adding kerb nodes.
+   * @param {Object} tags - Tags to assign to the new kerb nodes.
+   * @return {ValidationFix} - A fix action that can be executed by the user.
    */
-  function makeKerbNodesFix(connectionTags) {
-    let titleID = 'add_kerb_nodes';
-    // TODO: Pick a better icon for this action. 'temaki-pedestrian', perhaps?
-    let iconID = 'rapid-icon-connect';
-    iconID = 'temaki-pedestrian';
-
+  function makeKerbNodesFix(tags) {
     return new ValidationFix({
-      icon: iconID,
-      title: l10n.t(`issues.fix.${titleID}.title`),
+      title: 'Add Kerb Nodes',
       onClick: function() {
-        const crossingWayID = this.issue.data.crossingWayID;
-        const result = getAddKerbNodesAction(crossingWayID, connectionTags);
+        const selectedIDs = context.selectedIDs();
+        if (selectedIDs.length !== 1) {
+          console.error('No way selected');
+          return;
+        }
+        const selectedWayID = selectedIDs[0];
+        console.log('Selected way ID:', selectedWayID);
 
-        // result contains [function, annotation]
-        editor.perform(result[0]);
-        editor.commit({
-          annotation: result[1],
-          selectedIDs: this.issue.entityIds
-        });
+        // Perform the action to add kerb nodes and commit the changes
+        addKerbNodesAndCommit(editor.staging.graph, selectedWayID, tags);
       }
     });
+  }
+
+
+  /**
+   * Adds kerb nodes to the specified way and commits the changes.
+   * @param {Graph} graph - The current graph.
+   * @param {string} wayID - The ID of the way to add kerb nodes to.
+   * @param {Object} tags - Tags to assign to the new kerb nodes.
+   */
+  function addKerbNodesAndCommit(graph, wayID, tags) {
+    const action = getAddKerbNodesAction(wayID, tags);
+    console.log('Graph before adding nodes:', graph);
+    const nodeIDs = action(graph); // Execute the action to modify the graph
+    console.log('Graph after adding nodes:', graph);
+
+    if (nodeIDs && nodeIDs.length > 0) {
+      editor.perform(action); // Apply the action
+      editor.commit({
+        annotation: 'Added kerb nodes',
+        selectedIDs: nodeIDs
+      });
+    } else {
+      console.error('Failed to add kerb nodes');
+    }
   }
 
   validation.type = type;
