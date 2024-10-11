@@ -2341,6 +2341,12 @@
         "message": "Two or more segments share the same pair of nodes",
         "reference": "Redundant way segments should be merged or moved apart."
       },
+      "kerb_nodes": {
+        "title": "Kerb Nodes",
+        "message": "{feature} may be missing kerb nodes.",
+        "reference": "Crossing ways should have individual kerb nodes (where appropriate).",
+        "footway-highway": "Footways crossing highways should have separately-mapped kerb nodes."
+      },
       "crossing_ways": {
         "title": "Crossings Ways",
         "message": "{feature} crosses {feature2}",
@@ -2608,6 +2614,18 @@
         "add_a_tunnel": {
           "title": "Add a tunnel",
           "annotation": "Added a tunnel."
+        },
+        "add_kerb_nodes_flush": {
+          "title": "Add flush kerb nodes",
+          "annotation": "Added flush kerb nodes."
+        },
+        "add_kerb_nodes_lowered": {
+          "title": "Add lowered kerb nodes",
+          "annotation": "Added lowered kerb nodes."
+        },
+        "add_kerb_nodes_raised": {
+          "title": "Add raised kerb nodes",
+          "annotation": "Added raised kerb nodes."
         },
         "address_the_concern": {
           "title": "Address the concern"
