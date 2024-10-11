@@ -2075,9 +2075,15 @@ en:
       add_a_tunnel:
         title: Add a tunnel
         annotation: Added a tunnel.
-      add_kerb_nodes:
-        title: Added kerb nodes
-        annotation: Added kerb nodes.
+      add_kerb_nodes_flush:
+        title: Add flush kerb nodes
+        annotation: Added flush kerb nodes.
+      add_kerb_nodes_lowered:
+        title: Add lowered kerb nodes
+        annotation: Added lowered kerb nodes.
+      add_kerb_nodes_raised:
+        title: Add raised kerb nodes
+        annotation: Added raised kerb nodes.
       address_the_concern:
         title: Address the concern
       set_both_as_marked:
