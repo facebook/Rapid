@@ -225,37 +225,28 @@ export function validationKerbNodes(context) {
 
   function applyKerbNodeFix(wayID, graph, tags) {
     console.log('Entering applyKerbNodeFix', { wayID, tags });
-
-    const way = graph.hasEntity(wayID);
+    const way = graph.entity(wayID);
     if (!way) {
       console.error('Way not found:', wayID);
       return;
     }
 
-    console.log('Way nodes before update:', way.nodes.map(nodeId => graph.entity(nodeId).loc));
-
-    const firstNodePosition = calculatePosition(graph.entity(way.nodes[0]), graph.entity(way.nodes[1]), 1);
-    const lastNodePosition = calculatePosition(graph.entity(way.nodes[way.nodes.length - 2]), graph.entity(way.nodes[way.nodes.length - 1]), 1);
-
-    const firstKerbNode = osmNode({ loc: [firstNodePosition.lon, firstNodePosition.lat], tags });
-    const lastKerbNode = osmNode({ loc: [lastNodePosition.lon, lastNodePosition.lat], tags });
-
-    console.log('Adding kerb nodes:', { firstKerbNode, lastKerbNode });
-
     try {
-      graph = actionAddMidpoint({ loc: firstNodePosition, edge: [way.nodes[0], way.nodes[1]] }, firstKerbNode)(graph);
-      graph = actionAddMidpoint({ loc: lastNodePosition, edge: [way.nodes[way.nodes.length - 2], way.nodes[way.nodes.length - 1]] }, lastKerbNode)(graph);
+      const firstNodePosition = calculatePosition(graph.entity(way.nodes[0]), graph.entity(way.nodes[1]), 1);
+      const lastNodePosition = calculatePosition(graph.entity(way.nodes[way.nodes.length - 2]), graph.entity(way.nodes[way.nodes.length - 1]), 1);
+
+      // Create new osmNode instances
+      const firstKerbNode = osmNode({ loc: [firstNodePosition.lon, firstNodePosition.lat], tags });
+      const lastKerbNode = osmNode({ loc: [lastNodePosition.lon, lastNodePosition.lat], tags });
+
+      console.log('Before adding nodes:', way.nodes);
+      graph = addNodesToWay(graph, wayID, firstKerbNode, lastKerbNode);
+      console.log('After adding nodes:', graph.entity(wayID).nodes);
+
       console.log('Kerb nodes added to the graph');
     } catch (error) {
-      console.error('Error adding kerb nodes:', error);
+      console.error('Error during kerb node addition:', error);
     }
-
-    console.log('Way nodes after supposed update:', way.nodes.map(nodeId => graph.entity(nodeId).loc));
-
-    editor.commit({
-      annotation: 'Added kerb nodes at start & end of the way',
-      selectedIDs: [firstKerbNode.id, lastKerbNode.id]
-    });
 
     console.log('Exiting applyKerbNodeFix');
   }
@@ -263,43 +254,37 @@ export function validationKerbNodes(context) {
 
   function calculatePosition(startNode, endNode, distance) {
     if (!startNode || !endNode) {
-      console.error('Start || end node is undefined');
-      return;
+        console.error('Start || end node is undefined');
+        return null;
     }
     if (!startNode.loc || !endNode.loc) {
-      console.error('Location data is missing for nodes');
-      return;
+        console.error('Location data is missing for nodes');
+        return null;
     }
-    // Convert start and end node locations from degrees to meters
+
     const startLatMeters = geoLatToMeters(startNode.loc[1]);
     const startLonMeters = geoLonToMeters(startNode.loc[0], startNode.loc[1]);
     const endLatMeters = geoLatToMeters(endNode.loc[1]);
     const endLonMeters = geoLonToMeters(endNode.loc[0], endNode.loc[1]);
-    // Calculate deltas in meters
+
     const dxMeters = endLonMeters - startLonMeters;
     const dyMeters = endLatMeters - startLatMeters;
-    // Calculate length in meters
     const lengthMeters = Math.sqrt(dxMeters * dxMeters + dyMeters * dyMeters);
-    // Calculate scale factor
+
+    if (lengthMeters === 0) {
+        console.error('Start and end nodes are at the same position');
+        return null;
+    }
+
     const scale = distance / lengthMeters;
-    // Calculate new position in meters
     const newXMeters = startLonMeters + dxMeters * scale;
     const newYMeters = startLatMeters + dyMeters * scale;
-    // Convert new position back to geographic coordinates
+
     const newPosition = {
-      lon: geoMetersToLon(newXMeters, geoMetersToLat(newYMeters)),
-      lat: geoMetersToLat(newYMeters)
+        lon: geoMetersToLon(newXMeters, geoMetersToLat(newYMeters)),
+        lat: geoMetersToLat(newYMeters)
     };
-    console.log('Calculating new position:', {
-      startNode: startNode.loc,
-      endNode: endNode.loc,
-      distance,
-      dxMeters,
-      dyMeters,
-      lengthMeters,
-      scale,
-      newPosition
-    });
+    console.log('Calculat new position:', newPosition);
     return newPosition;
   }
 
@@ -356,6 +341,30 @@ export function validationKerbNodes(context) {
 
       return [firstKerbNode.id, lastKerbNode.id];
     };
+  }
+
+
+  function addNodesToWay(graph, wayID, firstNode, lastNode) {
+    let way = graph.entity(wayID);
+    if (!way) {
+        console.error('Way not found:', wayID);
+        return graph;
+    }
+
+    // Clone the node array
+    let nodes = way.nodes.slice();
+
+    // Insert the first new node after the first existing node
+    nodes.splice(1, 0, firstNode.id);
+
+    // Insert the last new node before the last existing node
+    nodes.splice(nodes.length - 1, 0, lastNode.id);
+
+    // Update the way with the new nodes list
+    let updatedWay = way.update({nodes: nodes});
+    graph = graph.replace(updatedWay);
+
+    return graph;
   }
 
 
