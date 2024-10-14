@@ -225,40 +225,63 @@ export function validationKerbNodes(context) {
 
   function applyKerbNodeFix(wayID, graph, tags) {
     console.log('Entering applyKerbNodeFix', { wayID, tags });
-    const way = graph.entity(wayID);
+
+    const way = graph.hasEntity(wayID);
     if (!way) {
-      console.error('Way not found:', wayID);
-      return;
+        console.error('Way not found:', wayID);
+        return;
     }
 
-    try {
-      const firstNodePosition = calculatePosition(graph.entity(way.nodes[0]), graph.entity(way.nodes[1]), 1);
-      const lastNodePosition = calculatePosition(graph.entity(way.nodes[way.nodes.length - 2]), graph.entity(way.nodes[way.nodes.length - 1]), 1);
+    const firstNodePosition = calculatePosition(graph.entity(way.nodes[0]), graph.entity(way.nodes[1]), 1);
+    const lastNodePosition = calculatePosition(graph.entity(way.nodes[way.nodes.length - 2]), graph.entity(way.nodes[way.nodes.length - 1]), 1);
 
-      // Create new osmNode instances
-      const firstKerbNode = osmNode({ loc: [firstNodePosition.lon, firstNodePosition.lat], tags });
-      const lastKerbNode = osmNode({ loc: [lastNodePosition.lon, lastNodePosition.lat], tags });
+    // Create new kerb nodes with unique IDs
+    const firstKerbNode = osmNode({ loc: [firstNodePosition.lon, firstNodePosition.lat], tags, id: generateUniqueId(graph) });
+    const lastKerbNode = osmNode({ loc: [lastNodePosition.lon, lastNodePosition.lat], tags, id: generateUniqueId(graph) });
 
-      console.log('Before adding nodes:', way.nodes);
-      graph = addNodesToWay(graph, wayID, firstKerbNode, lastKerbNode);
-      console.log('After adding nodes:', graph.entity(wayID).nodes);
+    console.log('Adding kerb nodes:', { firstKerbNode, lastKerbNode });
 
-      console.log('Kerb nodes added to the graph');
-    } catch (error) {
-      console.error('Error during kerb node addition:', error);
-    }
+    // Add the new nodes to the graph
+    graph = graph.replace(firstKerbNode);
+    graph = graph.replace(lastKerbNode);
+
+    // Update the way with new nodes
+    const updatedNodes = [...way.nodes];
+    updatedNodes.splice(1, 0, firstKerbNode.id);
+    updatedNodes.splice(updatedNodes.length - 1, 0, lastKerbNode.id);
+
+    const updatedWay = way.update({nodes: updatedNodes});
+    graph = graph.replace(updatedWay);
+
+    console.log('Updated way nodes:', updatedWay.nodes);
+
+    // Commit the changes to the graph
+    editor.perform(actionChangeTags(wayID, tags)); // Assuming you might want to change tags or similar
+    editor.commit({
+        annotation: 'Added kerb nodes at start & end of the way',
+        selectedIDs: [way.id]
+    });
 
     console.log('Exiting applyKerbNodeFix');
+  }
+
+  function generateUniqueId(graph) {
+      // Generate a unique node ID based on existing IDs in the graph
+      let newId;
+      do {
+          newId = `n${Math.floor(Math.random() * 1000000000)}`;
+      } while (graph.hasEntity(newId));
+      return newId;
   }
 
 
   function calculatePosition(startNode, endNode, distance) {
     if (!startNode || !endNode) {
-        console.error('Start || end node is undefined');
+        console.error('Start or end node is undefined');
         return null;
     }
     if (!startNode.loc || !endNode.loc) {
-        console.error('Location data is missing for nodes');
+        console.error('Location data is missing for nodes', {startNode, endNode});
         return null;
     }
 
@@ -284,7 +307,8 @@ export function validationKerbNodes(context) {
         lon: geoMetersToLon(newXMeters, geoMetersToLat(newYMeters)),
         lat: geoMetersToLat(newYMeters)
     };
-    console.log('Calculat new position:', newPosition);
+
+    console.log('Calculated new position:', newPosition);
     return newPosition;
   }
 
