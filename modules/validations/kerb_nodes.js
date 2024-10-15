@@ -228,12 +228,16 @@ export function validationKerbNodes(context) {
 
     const way = graph.hasEntity(wayID);
     if (!way) {
-        console.error('Way not found:', wayID);
-        return;
+      console.error('Way not found:', wayID);
+      return;
     }
 
     const firstNodePosition = calculatePosition(graph.entity(way.nodes[0]), graph.entity(way.nodes[1]), 1);
-    const lastNodePosition = calculatePosition(graph.entity(way.nodes[way.nodes.length - 2]), graph.entity(way.nodes[way.nodes.length - 1]), 1);
+    const lastNodePosition = calculatePosition(
+      graph.entity(way.nodes[way.nodes.length - 1]), // Last node
+      graph.entity(way.nodes[way.nodes.length - 2]), // Second-to-last node
+      1, // Distance of 1 meter
+    );
 
     // Create new kerb nodes with visibility set to true
     const firstKerbNode = osmNode({ loc: [firstNodePosition.lon, firstNodePosition.lat], tags, visible: true });
@@ -256,21 +260,21 @@ export function validationKerbNodes(context) {
     console.log('Updated way nodes:', updatedWay.nodes);
     // Commit the changes to the graph
     editor.commit({
-        annotation: 'Added kerb nodes at start & end of the way',
-        selectedIDs: [way.id]
+      annotation: 'Added kerb nodes at start & end of the way',
+      selectedIDs: [way.id]
     });
 
     console.log('Exiting applyKerbNodeFix');
   }
 
-  function calculatePosition(startNode, endNode, distance) {
+  function calculatePosition(startNode, endNode, distance, isLast = false) {
     if (!startNode || !endNode) {
-        console.error('Start or end node is undefined');
-        return null;
+      console.error('Start or end node is undefined');
+      return null;
     }
     if (!startNode.loc || !endNode.loc) {
-        console.error('Location data is missing for nodes', {startNode, endNode});
-        return null;
+      console.error('Location data is missing for nodes', {startNode, endNode});
+      return null;
     }
 
     const startLatMeters = geoLatToMeters(startNode.loc[1]);
@@ -283,17 +287,18 @@ export function validationKerbNodes(context) {
     const lengthMeters = Math.sqrt(dxMeters * dxMeters + dyMeters * dyMeters);
 
     if (lengthMeters === 0) {
-        console.error('Start and end nodes are at the same position');
-        return null;
+      console.error('Start and end nodes are at the same position');
+      return null;
     }
 
     const scale = distance / lengthMeters;
-    const newXMeters = startLonMeters + dxMeters * scale;
-    const newYMeters = startLatMeters + dyMeters * scale;
+    const directionMultiplier = isLast ? -1 : 1;
+    const newXMeters = startLonMeters + dxMeters * scale * directionMultiplier;
+    const newYMeters = startLatMeters + dyMeters * scale * directionMultiplier;
 
     const newPosition = {
-        lon: geoMetersToLon(newXMeters, geoMetersToLat(newYMeters)),
-        lat: geoMetersToLat(newYMeters)
+      lon: geoMetersToLon(newXMeters, geoMetersToLat(newYMeters)),
+      lat: geoMetersToLat(newYMeters)
     };
 
     console.log('Calculated new position:', newPosition);
