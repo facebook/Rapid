@@ -32,11 +32,6 @@ export function validationKerbNodes(context) {
   const isKerbNode = (entity) => entity.type === 'node' && entity.tags?.barrier === 'kerb';
   const isCrossingWay = (tags) => tags.highway === 'footway' && tags.footway === 'crossing';
 
-  const checkKerbNodeCandidacy = (entity, graph) => {
-    if (entity.type !== 'way' || entity.isDegenerate()) return [];
-    return detectKerbCandidates(entity, graph);
-  };
-
   const detectKerbCandidates = (way, graph) => {
     let issues = [];
     const wayID = way.id;
@@ -52,19 +47,22 @@ export function validationKerbNodes(context) {
         reference: showReference,
         entityIds: [wayID],
         data: { crossingWayID: wayID },
-        dynamicFixes: () => ['flush', 'lowered', 'raised'].map(type => new ValidationFix({
-          title: `Add ${type} Kerb Nodes`,
-          onClick: () => {
-            // const positions = calculateNewNodePositions(wayID, editor.staging.graph);
-            const tags = { barrier: 'kerb', kerb: type };
-            const action = applyKerbNodeFix(wayID, editor.staging.graph, tags);
-            editor.perform(action);
-            editor.commit({
-              annotation: 'Added kerb nodes at adjusted positions',
-              selectedIDs: [wayID]
-            });
-          }
-        }))
+        dynamicFixes: () => ['flush', 'lowered', 'raised'].map(type => {
+          const tags = { barrier: 'kerb', kerb: type };
+          const iconID = getIconForKerbNode(tags); // Get the appropriate icon based on the tags
+          return new ValidationFix({
+            icon: iconID, // Use the dynamically selected icon
+            title: `Add ${type} Kerb Nodes`,
+            onClick: () => {
+              const action = applyKerbNodeFix(wayID, editor.staging.graph, tags);
+              editor.perform(action);
+              editor.commit({
+                annotation: `Added ${type} kerb nodes at adjusted positions`,
+                selectedIDs: [wayID]
+              });
+            }
+          });
+        })
       }));
     }
     return issues;
@@ -128,101 +126,6 @@ export function validationKerbNodes(context) {
   }
 
 
-  // Function to calculate new node positions near the ends of a way
-  // function calculateNewNodePositions(way, graph) {
-  //   const nodes = graph.childNodes(way);
-  //   if (nodes.length < 2) {
-  //     console.error('Not enough nodes to calculate new positions');
-  //     return;
-  //   }
-  //   // Get the first and second nodes for the start direction
-  //   const firstNode = nodes[0];
-  //   const secondNode = nodes[1];
-  //   const firstNodePosition = calculatePositionOffset(firstNode, secondNode, 1, graph);
-  //   // Get the last and second-to-last nodes for the end direction
-  //   const lastNode = nodes[nodes.length - 1];
-  //   const secondToLastNode = nodes[nodes.length - 2];
-  //   const lastNodePosition = calculatePositionOffset(lastNode, secondToLastNode, 1, graph);
-  //   return { firstNodePosition, lastNodePosition };
-  // }
-
-
-  // function calculatePositionOffset(startNode, endNode, distance) {
-  //   if (!startNode || !endNode) {
-  //     console.error('Invalid nodes for position calculation');
-  //     return null;
-  //   }
-
-  //   const startLatMeters = geoLatToMeters(startNode.loc[1]);
-  //   const startLonMeters = geoLonToMeters(startNode.loc[0], startNode.loc[1]);
-  //   const endLatMeters = geoLatToMeters(endNode.loc[1]);
-  //   const endLonMeters = geoLonToMeters(endNode.loc[0], endNode.loc[1]);
-
-  //   const dxMeters = endLonMeters - startLonMeters;
-  //   const dyMeters = endLatMeters - startLatMeters;
-  //   const lengthMeters = Math.sqrt(dxMeters * dxMeters + dyMeters * dyMeters);
-  //   const scale = distance / lengthMeters;
-
-  //   const newXMeters = startLonMeters + dxMeters * scale;
-  //   const newYMeters = startLatMeters + dyMeters * scale;
-
-  //   return {
-  //     lon: geoMetersToLon(newXMeters, geoMetersToLat(newYMeters)),
-  //     lat: geoMetersToLat(newYMeters)
-  //   };
-  // }
-
-
-  // function addKerbNodes(wayOrWayId, graph, tags) {
-  //   console.log('addKerbNodes called with wayOrWayId:', wayOrWayId);
-  //   let way = typeof wayOrWayId === 'string' ? graph.hasEntity(wayOrWayId) : wayOrWayId;
-  //   if (!way) {
-  //     console.error(`Way not found with ID: ${wayOrWayId}`);
-  //     return;
-  //   }
-  //   console.log('Way:', way);
-  //   const nodes = graph.childNodes(way);
-  //   console.log(`Nodes retrieved in addKerbNodes: ${nodes.map(node => node.id).join(', ')}`);
-  //   if (nodes.length < 2) {
-  //     console.error(`Not enough nodes in the way to calculate positions: ${way.id}, Nodes Count: ${nodes.length}`);
-  //     return;
-  //   }
-  //   nodes.forEach(node => {
-  //     if (!node || !node.loc) {
-  //       console.error('Node location data is missing or node is undefined:', node);
-  //       return;
-  //     }
-  //   });
-
-  //   const firstNode = nodes[0];
-  //   const lastNode = nodes[nodes.length - 1];
-  //   console.log(`First Node ID: ${firstNode.id}, Last Node ID: ${lastNode.id}`);
-
-  //   if (!firstNode.loc || !lastNode.loc) {
-  //     console.error('Node location data is missing:', { firstNode, lastNode });
-  //     return;
-  //   }
-
-  //   const firstNodePosition = calculateNewPosition(firstNode, lastNode, 1);
-  //   const lastNodePosition = calculateNewPosition(lastNode, firstNode, 1);
-  //   console.log('Positions calculated:', { firstNodePosition, lastNodePosition });
-
-  //   if (!firstNodePosition || !lastNodePosition) {
-  //     console.error('Failed to calculate new positions');
-  //     return;
-  //   }
-
-  //   const firstKerbNode = osmNode({ loc: firstNodePosition, tags });
-  //   const lastKerbNode = osmNode({ loc: lastNodePosition, tags });
-
-  //   graph = actionAddMidpoint({ loc: firstNodePosition, edge: [firstNode.id, nodes[1].id] }, firstKerbNode)(graph);
-  //   graph = actionAddMidpoint({ loc: lastNodePosition, edge: [lastNode.id, nodes[nodes.length - 2].id] }, lastKerbNode)(graph);
-
-  //   console.log('Kerb nodes added to the graph');
-  //   return graph;
-  // }
-
-
   function applyKerbNodeFix(wayID, graph, tags) {
     console.log('Entering applyKerbNodeFix', { wayID, tags });
 
@@ -267,6 +170,7 @@ export function validationKerbNodes(context) {
     console.log('Exiting applyKerbNodeFix');
   }
 
+
   function calculatePosition(startNode, endNode, distance, isLast = false) {
     if (!startNode || !endNode) {
       console.error('Start or end node is undefined');
@@ -306,114 +210,17 @@ export function validationKerbNodes(context) {
   }
 
 
-  /**
-   * getAddKerbNodesAction
-   * Creates and executes an action to add kerb nodes to a specified way.
-   * @param {string} wayID - The ID of the way to add kerb nodes to.
-   * @param {Object} tags - Tags to assign to the new kerb nodes.
-   * @param {Object} location - The geographic location to add the new node.
-   * @return {Function} An action function that adds kerb nodes when executed.
-   */
-  // function getAddKerbNodesAction(wayID, positions, tags) {
-  //   return function(graph) {
-  //     if (!graph) {
-  //       console.error('Graph is undefined');
-  //       return;
-  //     }
-
-  //     const way = graph.hasEntity(wayID);
-  //     if (!way) {
-  //       console.error('Way not found:', wayID);
-  //       return;
-  //     }
-
-  //     if (!positions.firstNodePosition || !positions.lastNodePosition) {
-  //       console.error('Positions are not defined.');
-  //       return;
-  //     }
-
-  //     const firstKerbNode = osmNode({ loc: [positions.firstNodePosition.lon, positions.firstNodePosition.lat], tags });
-  //     const lastKerbNode = osmNode({ loc: [positions.lastNodePosition.lon, positions.lastNodePosition.lat], tags });
-
-  //     graph = actionAddMidpoint({ loc: [positions.firstNodePosition.lon, positions.firstNodePosition.lat], edge: [way.nodes[0].id, way.nodes[1].id] }, firstKerbNode)(graph);
-  //     graph = actionAddMidpoint({ loc: [positions.lastNodePosition.lon, positions.lastNodePosition.lat], edge: [way.nodes[way.nodes.length - 2].id, way.nodes[way.nodes.length - 1].id] }, lastKerbNode)(graph);
-
-  //     return [firstKerbNode.id, lastKerbNode.id];
-  //   };
-  // }
-
-
-  // function addNodesToWay(graph, wayID, firstNode, lastNode) {
-  //   let way = graph.entity(wayID);
-  //   if (!way) {
-  //       console.error('Way not found:', wayID);
-  //       return graph;
-  //   }
-
-  //   // Clone the node array
-  //   let nodes = way.nodes.slice();
-
-  //   // Insert the first new node after the first existing node
-  //   nodes.splice(1, 0, firstNode.id);
-
-  //   // Insert the last new node before the last existing node
-  //   nodes.splice(nodes.length - 1, 0, lastNode.id);
-
-  //   // Update the way with the new nodes list
-  //   let updatedWay = way.update({nodes: nodes});
-  //   graph = graph.replace(updatedWay);
-
-  //   return graph;
-  // }
-
-
-  // /**
-  //  * makeKerbNodesFix
-  //  * Creates a fix action for adding kerb nodes.
-  //  * @param {Object} tags - Tags to assign to the new kerb nodes.
-  //  * @return {ValidationFix} - A fix action that can be executed by the user.
-  //  */
-  // function makeKerbNodesFix(tags) {
-  //   return new ValidationFix({
-  //     title: 'Add Kerb Nodes',
-  //     onClick: function() {
-  //       const selectedIDs = context.selectedIDs();
-  //       if (selectedIDs.length !== 1) {
-  //         console.error('No way selected');
-  //         return;
-  //       }
-  //       const selectedWayID = selectedIDs[0];
-  //       console.log('Selected way ID:', selectedWayID);
-
-  //       // Perform the action to add kerb nodes and commit the changes
-  //       addKerbNodesAndCommit(editor.staging.graph, selectedWayID, tags);
-  //     }
-  //   });
-  // }
-
-
-  // /**
-  //  * Adds kerb nodes to the specified way and commits the changes.
-  //  * @param {Graph} graph - The current graph.
-  //  * @param {string} wayID - The ID of the way to add kerb nodes to.
-  //  * @param {Object} tags - Tags to assign to the new kerb nodes.
-  //  */
-  // function addKerbNodesAndCommit(graph, wayID, tags) {
-  //   const action = getAddKerbNodesAction(wayID, tags);
-  //   console.log('Graph before adding nodes:', graph);
-  //   const nodeIDs = action(graph); // Execute the action to modify the graph
-  //   console.log('Graph after adding nodes:', graph);
-
-  //   if (nodeIDs && nodeIDs.length > 0) {
-  //     editor.perform(action); // Apply the action
-  //     editor.commit({
-  //       annotation: 'Added kerb nodes',
-  //       selectedIDs: nodeIDs
-  //     });
-  //   } else {
-  //     console.error('Failed to add kerb nodes');
-  //   }
-  // }
+  function getIconForKerbNode(tags) {
+    let iconID = 'default-icon'; // Default icon
+    if (tags.barrier === 'kerb' && tags.kerb === 'flush') {
+        iconID = 'temaki-kerb-flush'; // Example icon for flush kerbs
+    } else if (tags.barrier === 'kerb' && tags.kerb === 'raised') {
+        iconID = 'temaki-kerb-raised'; // Example icon for raised kerbs
+    } else if (tags.barrier === 'kerb' && tags.kerb === 'lowered') {
+        iconID = 'temaki-kerb-lowered'; // Example icon for lowered kerbs
+    }
+    return iconID;
+  }
 
   validation.type = type;
 
