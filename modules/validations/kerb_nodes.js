@@ -127,47 +127,40 @@ export function validationKerbNodes(context) {
 
 
   function applyKerbNodeFix(wayID, graph, tags) {
-    console.log('Entering applyKerbNodeFix', { wayID, tags });
-
     const way = graph.hasEntity(wayID);
     if (!way) {
       console.error('Way not found:', wayID);
       return;
     }
 
+    // Calculate positions for the new kerb nodes
     const firstNodePosition = calculatePosition(graph.entity(way.nodes[0]), graph.entity(way.nodes[1]), 1);
-    const lastNodePosition = calculatePosition(
-      graph.entity(way.nodes[way.nodes.length - 1]), // Last node
-      graph.entity(way.nodes[way.nodes.length - 2]), // Second-to-last node
-      1, // Distance of 1 meter
-    );
+    const lastNodePosition = calculatePosition(graph.entity(way.nodes[way.nodes.length - 1]), graph.entity(way.nodes[way.nodes.length - 2]), 1);
 
-    // Create new kerb nodes with visibility set to true
+    // Create new kerb nodes
     const firstKerbNode = osmNode({ loc: [firstNodePosition.lon, firstNodePosition.lat], tags, visible: true });
     const lastKerbNode = osmNode({ loc: [lastNodePosition.lon, lastNodePosition.lat], tags, visible: true });
 
-    console.log('Adding kerb nodes:', { firstKerbNode, lastKerbNode });
-
-    // Perform the action to add the new nodes using editor.perform
+    // Add new nodes to the graph at the midpoint of the specified segments
     editor.perform(actionAddMidpoint({ loc: firstKerbNode.loc, edge: [way.nodes[0], way.nodes[1]] }, firstKerbNode));
     editor.perform(actionAddMidpoint({ loc: lastKerbNode.loc, edge: [way.nodes[way.nodes.length - 2], way.nodes[way.nodes.length - 1]] }, lastKerbNode));
 
-    const updatedNodes = [...way.nodes];
-    updatedNodes.splice(1, 0, firstKerbNode.id);
-    updatedNodes.splice(updatedNodes.length - 1, 0, lastKerbNode.id);
+    // Perform the split
+    const splitAction = actionSplit([firstKerbNode.id, lastKerbNode.id]);
+    graph = editor.perform(splitAction);
+    const newWayIDs = splitAction.getCreatedWayIDs();
 
-    const updatedWay = way.update({nodes: updatedNodes});
-    graph = graph.replace(updatedWay);
-
-    editor.perform(actionSplit([firstKerbNode.id, lastKerbNode.id]));
-    console.log('Updated way nodes:', updatedWay.nodes);
-    // Commit the changes to the graph
-    editor.commit({
-      annotation: 'Added kerb nodes at start & end of the way',
-      selectedIDs: [way.id]
+    // Change tags to indicate these are sidewalks
+    const sidewalkTags = { highway: 'footway', footway: 'sidewalk' };
+    newWayIDs.forEach(wayId => {
+        editor.perform(actionChangeTags(wayId, sidewalkTags));
     });
 
-    console.log('Exiting applyKerbNodeFix');
+    // Commit the changes to the graph
+    editor.commit({
+      annotation: 'Added kerb nodes and updated way tags to sidewalks',
+      selectedIDs: [way.id].concat(newWayIDs)
+    });
   }
 
 
