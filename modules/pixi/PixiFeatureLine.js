@@ -328,13 +328,153 @@ export class PixiFeatureLine extends AbstractFeature {
     }
 
     // Select
+    let halo = this.halo;
     if (showSelect) {
-      if (!this.halo) {
-        this.halo = new PIXI.Graphics();
-        this.halo.label = `${this.id}-halo`;
+      if (!halo) {
         const mapUIContainer = this.scene.layers.get('map-ui').container;
-        mapUIContainer.addChild(this.halo);
+
+// // AS MESH
+// const halo = new PIXI.Container();
+// halo.label = `${this.id}-halo`;
+// mapUIContainer.addChild(halo);
+// this.halo = halo;
+
+        halo = new PIXI.Graphics();
+        halo.label = `${this.id}-halo`;
+        mapUIContainer.addChild(halo);
+        this.halo = halo;
       }
+
+//      // new dashline experiment
+//      const textureManager = this.gfx.textures;
+//      const dtexture = textureManager.getDashTexture({
+//        dashes: [6, 3],
+//        styles: [{ alpha: 1, color: 0xffffff, width: 2 }, { alpha: 0, color: 0xff0000, width: 2 }]
+//      });
+
+//  //      const textureMatrix = new PIXI.Matrix();
+//
+//  // let dashTexture = PIXI.Texture.WHITE;
+ // let tex = textureManager.getPatternTexture('quarry');
+//  // let dashTexture = textureManager.getTexture('symbol', 'white');
+//  // dashTexture.source.addressMode = 'repeat';
+//
+// let tex = dtexture;
+//  let atlas = tex.source;
+//  let tm = tex.textureMatrix;
+//  // tm.update = PIXI.NOOP;
+//  // if (tm._updateID === 1) {  // first time only
+//
+//    let orig = tex.__bin;  // original frame for an atlas texture can always be found in `__bin`
+//    let [aw, ah] = [atlas.pixelWidth, atlas.pixelHeight];      // atlas dimensions
+//    let [ax, ay] = [aw / 2, ah / 2];                           // center of atlas
+//    let [tw, th] = [orig.width, orig.height];               // texture dimensions
+//    let [tx, ty] = [orig.x + (tw / 2), orig.y + (th / 2)];  // center of texture
+//    let [sx, sy] = [aw / tw, ah / th];   // scale up to fill atlas
+//    let [dx, dy] = [tx - ax, ty - ay];   // move texture to center of atlas
+//
+//    tex.frame = new PIXI.Rectangle(0, 0, aw, ah);  // pretend this texture fills the atlas
+//    tex.updateUvs();
+//
+//  //  let mat = tm.mapCoord;
+//  //  mat.identity();
+//  //  mat.scale(0.1,0.1);
+//    // tm.update();
+//    // mat.identity().scale(tw/aw, th/ah);
+//    // mat.identity().scale(sx,sy).translate(dx,dy);  // zoom in on just this part of the atlas
+//    // tm.update();
+//  // mat.identity();  //.translate(dx, dy);  //.scale(sx, sy);
+//  // }
+
+// // AS PATTERN
+//     halo.clear();
+// // AS MESH
+// this.halo.removeChildren();
+
+//      if (this._bufferdata) {
+//        if (this._bufferdata.outer && this._bufferdata.inner) {   // closed line
+
+// // AS MESH
+//
+// // unflatten :(
+// const outersize = this._bufferdata.outer.length / 2;
+// const outerpoints = new Array(outersize);
+// for (let i = 0; i < outersize; i++) {
+//   const j = i * 2;
+//   outerpoints[i] = new PIXI.Point(this._bufferdata.outer[j], this._bufferdata.outer[j+1]);
+// }
+//
+// const outer = new PIXI.MeshRope({ texture: tex, points: outerpoints, textureScale: 4 });
+// outer.label = `${this.id}-halo-outer`;
+// outer.eventMode = 'none';
+// outer.autoUpdate = false;
+// outer.tint = 0xffff00;
+//
+// // unflatten :(
+// const innersize = this._bufferdata.inner.length / 2;
+// const innerpoints = new Array(innersize);
+// for (let i = 0; i < innersize; i++) {
+//   const j = i * 2;
+//   innerpoints[i] = new PIXI.Point(this._bufferdata.inner[j], this._bufferdata.inner[j+1]);
+// }
+//
+// const inner = new PIXI.MeshRope({ texture: tex, points: innerpoints, textureScale: 4 });
+// inner.label = `${this.id}-halo-inner`;
+// inner.eventMode = 'none';
+// inner.autoUpdate = false;
+// inner.tint = 0xffff00;
+//
+// this.halo.addChild(outer, inner);
+
+// // AS PATTERN
+// halo
+//   .poly(this._bufferdata.outer)
+//   .stroke({
+//     alpha: 0.9,
+//     color: 0xffff00,
+//     width: 2,
+//     texture: tex
+//   });
+//
+// halo
+//   .poly(this._bufferdata.inner)
+//   .stroke({
+//     alpha: 0.9,
+//     color: 0xffff00,
+//     width: 10,
+//     texture: tex
+//   });
+
+//        } else {   // unclosed line
+
+
+// // AS MESH
+// // unflatten :(
+// const perimsize = this._bufferdata.perimeter.length / 2;
+// const perimpoints = new Array(perimsize);
+// for (let i = 0; i < perimsize; i++) {
+//  const j = i * 2;
+//  perimpoints[i] = new PIXI.Point(this._bufferdata.perimeter[j], this._bufferdata.perimeter[j+1]);
+// }
+// const perim = new PIXI.MeshRope({ texture: tex, points: perimpoints, textureScale: 4 });
+// perim.label = `${this.id}-halo-perim`;
+// perim.eventMode = 'none';
+// perim.autoUpdate = false;
+// perim.tint = 0xffff00;
+// this.halo.addChild(perim);
+
+// // AS PATTERN
+// halo
+//   .poly(this._bufferdata.perimeter)
+//   .stroke({
+//     alpha: 0.9,
+//     color: 0xffff00,
+//     width: 2,
+//     texture: tex
+//   });
+
+//        }
+//      }
 
       const HALO_STYLE = {
         alpha: 0.9,

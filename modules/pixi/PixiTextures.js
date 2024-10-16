@@ -1,4 +1,6 @@
 import * as PIXI from 'pixi.js';
+import { numWrap } from '@rapid-sdk/math';
+import { utilHashcode } from '@rapid-sdk/util';
 
 import { AtlasAllocator, registerAtlasUploader } from './lib/AtlasAllocator.js';
 
@@ -48,7 +50,7 @@ export class PixiTextures {
     // Each "atlas" manages its own store of "TextureSources" - real textures that upload to the GPU.
     // This helps pack them efficiently and avoids swapping textures frequently as WebGL draws the scene.
     this._atlas = {
-      symbol: new AtlasAllocator('symbol', size),  // small graphics - markers, pins, symbols
+      symbol: new AtlasAllocator('symbol', 1024),  // small graphics - markers, pins, symbols
       text: new AtlasAllocator('text', size),      // text labels
       tile: new AtlasAllocator('tile', size)       // 256 or 512px square imagery tiles
     };
@@ -143,7 +145,76 @@ export class PixiTextures {
    */
   getPatternTexture(textureID) {
     const tdata = this._textureData.get(textureID);
-    return tdata?.texture;
+    return tdata?.texture || null;
+  }
+
+
+  /**
+   * getDashTexture
+   * This returns an existing dash texture, or creates a new one and returns that.
+   * (I tried to store these in the symbol atlas, but was unable to make it work.
+   *  For now, they'll work like pattern textures.)
+   *
+   *   DashOptions = {
+   *    dashes: Array<number>
+   *    styles: Array<object>
+   *   }
+   *
+   * @param   {Object}        dashOptions - dash options
+   * @return  {PIXI.Texture}  The texture (or `null` if the DashOptions were invalid)
+   */
+  getDashTexture(dashOptions = {}) {
+    try {
+      const dashID = this.getDashID(dashOptions);
+      const textureID = `dash-${dashID}`;
+      const texture = this.getPatternTexture(textureID);
+
+      if (texture) {
+        return texture;
+      } else {
+        return this.dashToTexture(textureID, dashOptions);
+      }
+
+    } catch (err) {
+      console.error(err);   // eslint-disable-line no-console
+      return null;
+    }
+  }
+
+
+  /**
+   * getDashID
+   * This generates a stable ID for the given `DashOptions`.
+   *
+   *   DashOptions = {
+   *    dashes: Array<number>   // dash lengths
+   *    styles: Array<object>   // stroke styles
+   *   }
+   *
+   * @param   {Object}  dashOptions  Object containing dash options
+   * @return  {string}  stable ID for the dash
+   * @throws  Will throw if the DashOptions are invalid
+   */
+  getDashID(dashOptions = {}) {
+    const dashes = dashOptions.dashes;
+    const styles = dashOptions.styles;
+    if (!Array.isArray(dashes) || !dashes.length) throw new Error('no dashes');
+    if (!Array.isArray(styles) || !styles.length) throw new Error('no styles');
+    if (dashes.length !== styles.length) throw new Error(`dashes length ${dashes.length} mismatch styles length ${styles.length}`);
+
+    const strokeDefaults = { alpha: 0, width: 2 };  // default is off
+    let descriptor = '';
+
+    for (let i = 0; i < dashes.length; i++) {
+      const dash = dashes[i] || 0;
+      const isValid = (!isNaN(dash) && isFinite(dash) && dash > 0 && dash < 1000);
+      if (!isValid) throw new Error(`invalid dash ${dash}`);
+
+      const style = { ...strokeDefaults, ...(styles[i] || {}) };
+      descriptor += `${dash}:${JSON.stringify(style)},`;
+    }
+
+    return utilHashcode(descriptor).toString();
   }
 
 
@@ -252,7 +323,7 @@ export class PixiTextures {
    * @param    {string}        textureID   Texture identifier (e.g. 'boldPin')
    * @param    {PIXI.Graphic}  graphic     A PIXI.Graphic to convert to a texture (will be destroyed)
    * @param    {Object}        options     Options passed to `renderer.generateTexture`
-   * @returns  {PIXI.Texture}  Texture allocated from the text atlas
+   * @returns  {PIXI.Texture}  Texture allocated from the symbol atlas
    */
   graphicToTexture(textureID, graphic, options = {}) {
     options.antialias = false;
@@ -274,7 +345,7 @@ export class PixiTextures {
 
   /**
    * textToTexture
-   * Convert frequently used text to textures/sprites for performance
+   * Convert frequently used text to textures/sprites for performance.
    * @param    {string}          textureID   e.g. 'Main Street-normal'
    * @param    {string}          str         the string
    * @param    {PIXI.TextStyle}  textStyle
@@ -301,6 +372,117 @@ export class PixiTextures {
 
     temp.destroy();
     return texture;
+  }
+
+
+  /**
+   * dashToTexture
+   * Similar to `graphicToTexture`, but creates dash line textures.
+   * (I tried to store these in the symbol atlas, but was unable to make it work.
+   *  For now, they'll work like pattern textures.)
+   *
+   *   DashOptions = {
+   *    dashes: Array<number>   // dash lengths
+   *    styles: Array<object>   // stroke styles
+   *   }
+   *
+   * @param    {string}        textureID    Texture identifier (e.g. 'dash-deadc0de')
+   * @param    {Object}        dashOptions  Dash options
+   * @returns  {PIXI.Texture}  Dash Texture
+   * @throws   Will throw if the DashOptions are invalid
+   */
+  dashToTexture(textureID, dashOptions = {}) {
+    const dashes = dashOptions.dashes;
+    const styles = dashOptions.styles;
+    if (!Array.isArray(dashes) || !dashes.length) throw new Error('no dashes');
+    if (!Array.isArray(styles) || !styles.length) throw new Error('no styles');
+    if (dashes.length !== styles.length) throw new Error(`dashes length ${dashes.length} mismatch styles length ${styles.length}`);
+
+    const graphic = new PIXI.Graphics();
+    const strokeDefaults = { alpha: 0, width: 2 };  // default is off
+    let cursor = new PIXI.Point();
+    let index = 0;
+
+    // Draw the specified dashes..
+    while (index < dashes.length) {
+      _drawDash(index++);
+    }
+
+//    // Note, pattern textures need power of 2 dimensions in order to repeat/wrap.
+//    // Increase the size of the frame as needed.
+    let rect = graphic.getLocalBounds().rectangle;
+    const orig = rect.clone();
+    // const frame = rect.clone();
+//    frame.width = PIXI.nextPow2(orig.width);
+//    frame.height = PIXI.nextPow2(orig.height);
+
+//    // Continue drawing dashes until we've met the needed length..
+//    while (rect.width < frame.width) {
+//      _drawDash(index++);
+//      delete graphic._localBoundsCacheData;   // wish there were a less hacky way?
+//      rect = graphic.getLocalBounds().rectangle;
+//    }
+
+    const options = {
+      // autoGarbageCollect: false,
+      // autoGenerateMipmaps: false,
+      antialias: false,
+      // frame: frame,
+      resolution: 2,
+      target: graphic
+    };
+
+    // can't allocate repeating textures in the atlas :-(
+    // if we could...
+    // return this.graphicToTexture(textureID, graphic, options);
+
+    const renderer = this.gfx.pixi.renderer;
+    const temp = renderer.generateTexture(options);
+
+    // Extract pixels from RenderTexture
+    const { pixels, width, height } = renderer.texture.getPixels(temp);
+    const texture = new PIXI.Texture({
+      source: new PIXI.BufferImageSource({
+        addressMode: 'repeat',
+        alphaMode: 'premultiply-alpha-on-upload',
+        height: height,
+        label: textureID,
+        resource: pixels,
+        resolution: 2,
+        width: width
+      }),
+      label: textureID
+    });
+
+    // These textures are overscaled, but `orig` Rectangle stores the original width/height
+    // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
+    // texture.orig = temp.orig.clone();
+    texture.orig = temp.orig.clone();
+    texture.frame = temp.orig.clone();
+    texture.update();
+
+    this._textureData.set(textureID, { texture: texture, refcount: 1 });
+
+    temp.destroy();
+    graphic.destroy({ context: true });
+    return texture;
+
+
+    // internal
+    function _drawDash(index) {
+      const i = numWrap(index, 0, dashes.length);
+      const length = dashes[i] || 0;
+      const isValid = (!isNaN(length) && isFinite(length) && length > 0 && length < 1000);
+      if (!isValid) throw new Error(`invalid dash ${length}`);
+
+      const style = { ...strokeDefaults, ...(styles[i] || {}) };
+      cursor.y = style.width / 2;
+
+      graphic.moveTo(cursor.x, cursor.y);
+      cursor.x += length;
+      graphic.lineTo(cursor.x, cursor.y);
+      graphic.stroke(style);
+    }
   }
 
 
@@ -637,6 +819,14 @@ export class PixiTextures {
     this.graphicToTexture('lowres-unfilled-square', lowresUnfilledSquare);
     this.graphicToTexture('lowres-unfilled-ell', lowresUnfilledEll);
     this.graphicToTexture('lowres-unfilled-circle', lowresUnfilledCircle);
+
+    //
+    // A white texture, but allocated in the symbol atlas.
+    // This is basically the same thing as `PIXI.Texture.WHITE`
+    // (This could help to allow both textured and untextured things to batch together)
+    //
+    this.WHITE = this.allocate('symbol', 'white', 1, 1, new Uint8Array([255, 255, 255, 255]));
+    this.WHITE.destroy = PIXI.NOOP;
   }
 
 }

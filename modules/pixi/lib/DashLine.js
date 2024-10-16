@@ -24,7 +24,7 @@ const dashLineOptionsDefault = {
   color: 0xffffff,
   alpha: 1,
   scale: 1,
-  useTexture: false,
+  useTexture: true,
   alignment: 0.5
 };
 
