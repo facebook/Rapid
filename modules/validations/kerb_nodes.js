@@ -4,7 +4,7 @@ import {
   vecAngle, vecLength
 } from '@rapid-sdk/math';
 
-import { actionAddMidpoint, actionChangeTags, actionMergeNodes, actionSplit, actionSyncCrossingTags } from '../actions/index.js';
+import { actionAddMidpoint, actionChangeTags, actionSplit} from '../actions/index.js';
 import { osmNode } from '../osm/node.js';
 import {
   osmFlowingWaterwayTagValues, osmPathHighwayTagValues, osmRailwayTrackTagValues,
@@ -69,12 +69,25 @@ export function validationKerbNodes(context) {
   };
 
 
+  /**
+   * hasRoutableTags
+   * Checks if the given way has tags that make it routable
+   * @param  {Object} way - The way entity to check
+   * @return {Boolean} True if the way has routable tags, false otherwise
+   */
   function hasRoutableTags(way) {
     const routableTags = ['highway', 'railway', 'waterway'];
     return way.isArea() ? false : routableTags.some(tag => way.tags[tag]);
   }
 
 
+  /**
+   * intersectsPedestrianPathway
+   * Determines if the given way intersects with pedestrian pathways
+   * @param  {Object} way - The way entity to check
+   * @param  {Object} graph - The graph containing the way and node data
+   * @return {Boolean} True if the way intersects pedestrian pathways, false otherwise
+   */
   function intersectsPedestrianPathway(way, graph) {
     let intersectingWays = new Set();
     way.nodes.forEach(nodeId => {
@@ -97,12 +110,23 @@ export function validationKerbNodes(context) {
   }
 
 
+  /**
+   * isPedestrianPathway
+   * Checks if the given way is a pedestrian pathway based on its tags
+   * @param  {Object} way - The way entity to check
+   * @return {Boolean} True if the way is a pedestrian pathway, false otherwise
+   */
   function isPedestrianPathway(way) {
     const pedestrianTags = ['sidewalk', 'crossing', 'path'];
     return pedestrianTags.includes(way.tags.footway) || pedestrianTags.includes(way.tags.highway);
   }
 
 
+  /**
+   * showReference
+   * Displays a reference for the issue in the UI
+   * @param  {Object} selection - The UI selection to append the reference to
+   */
   function showReference(selection) {
     selection.selectAll('.issue-reference')
       .data([0])
@@ -114,8 +138,10 @@ export function validationKerbNodes(context) {
 
 
   /**
-   * @param {*} way
-   * @returns true if the way has kerb information in it already (either it is marked )
+   * hasKerbNodes
+   * Checks if the given way already has kerb nodes
+   * @param  {Object} way - The way entity to check
+   * @return {Boolean} True if kerb nodes are present, false otherwise
    */
   function hasKerbNodes(way) {
     const graph = editor.staging.graph;
@@ -126,6 +152,13 @@ export function validationKerbNodes(context) {
   }
 
 
+  /**
+   * applyKerbNodeFix
+   * Applies a fix to add kerb nodes to the specified way
+   * @param  {String} wayID - The ID of the way to fix
+   * @param  {Object} graph - The graph containing the way and node data
+   * @param  {Object} tags - The tags to assign to the new kerb nodes
+   */
   function applyKerbNodeFix(wayID, graph, tags) {
     const way = graph.hasEntity(wayID);
     if (!way) {
@@ -134,8 +167,8 @@ export function validationKerbNodes(context) {
     }
 
     // Calculate positions for the new kerb nodes
-    const firstNodePosition = calculatePosition(graph.entity(way.nodes[0]), graph.entity(way.nodes[1]), 1);
-    const lastNodePosition = calculatePosition(graph.entity(way.nodes[way.nodes.length - 1]), graph.entity(way.nodes[way.nodes.length - 2]), 1);
+    const firstNodePosition = calculateNewNodePosition(graph.entity(way.nodes[0]), graph.entity(way.nodes[1]), 1);
+    const lastNodePosition = calculateNewNodePosition(graph.entity(way.nodes[way.nodes.length - 1]), graph.entity(way.nodes[way.nodes.length - 2]), 1);
 
     // Create new kerb nodes
     const firstKerbNode = osmNode({ loc: [firstNodePosition.lon, firstNodePosition.lat], tags, visible: true });
@@ -164,7 +197,16 @@ export function validationKerbNodes(context) {
   }
 
 
-  function calculatePosition(startNode, endNode, distance, isLast = false) {
+  /**
+   * calculateNewNodePosition
+   * Calculates the position for a new node based on the start and end nodes
+   * @param  {Object} startNode - The starting node
+   * @param  {Object} endNode - The ending node
+   * @param  {Number} distance - The distance from the start node to place the new node
+   * @param  {Boolean} isLast - Flag to indicate if this is the last node (affects calculation direction)
+   * @return {Object|null} The calculated position or null if an error occurred
+   */
+  function calculateNewNodePosition(startNode, endNode, distance, isLast = false) {
     if (!startNode || !endNode) {
       console.error('Start or end node is undefined');
       return null;
@@ -198,11 +240,16 @@ export function validationKerbNodes(context) {
       lat: geoMetersToLat(newYMeters)
     };
 
-    console.log('Calculated new position:', newPosition);
     return newPosition;
   }
 
 
+  /**
+   * getIconForKerbNode
+   * Determines the appropriate icon for a kerb node based on its tags
+   * @param  {Object} tags - The tags of the kerb node
+   * @return {String} The ID of the icon to use
+   */
   function getIconForKerbNode(tags) {
     let iconID = 'default-icon'; // Default icon
     if (tags.barrier === 'kerb' && tags.kerb === 'flush') {
