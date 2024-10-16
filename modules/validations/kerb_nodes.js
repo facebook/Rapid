@@ -152,7 +152,6 @@ export function validationKerbNodes(context) {
     editor.perform(actionAddMidpoint({ loc: firstKerbNode.loc, edge: [way.nodes[0], way.nodes[1]] }, firstKerbNode));
     editor.perform(actionAddMidpoint({ loc: lastKerbNode.loc, edge: [way.nodes[way.nodes.length - 2], way.nodes[way.nodes.length - 1]] }, lastKerbNode));
 
-    // Update the way with new nodes
     const updatedNodes = [...way.nodes];
     updatedNodes.splice(1, 0, firstKerbNode.id);
     updatedNodes.splice(updatedNodes.length - 1, 0, lastKerbNode.id);
@@ -160,6 +159,7 @@ export function validationKerbNodes(context) {
     const updatedWay = way.update({nodes: updatedNodes});
     graph = graph.replace(updatedWay);
 
+    editor.perform(actionSplit([firstKerbNode.id, lastKerbNode.id]));
     console.log('Updated way nodes:', updatedWay.nodes);
     // Commit the changes to the graph
     editor.commit({
