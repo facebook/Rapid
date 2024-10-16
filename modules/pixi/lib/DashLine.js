@@ -24,9 +24,10 @@ const dashLineOptionsDefault = {
   color: 0xffffff,
   alpha: 1,
   scale: 1,
-  useTexture: false,
+  useTexture: true,
   alignment: 0.5
 };
+
 
 let _dashTextureCache = {};   // cache of Textures for dashed lines
 
@@ -47,58 +48,48 @@ export class DashLine {
    * @param [options.alignment] - The alignment of any lines drawn (0.5 = middle, 1 = outer, 0 = inner)
    */
   constructor(graphics, options = {}) {
+    options = { ...dashLineOptionsDefault, ...options };
+    this.options = options;
+
     this.lineLength = null;           // current length of the line
     this.cursor = new PIXI.Point();   // cursor location
-    this.scale = 1;
-    this.activeTexture = null;    // sanity check to ensure the lineStyle is still in use
     this.start = null;
 
     this.graphics = graphics;
-    options = { ...dashLineOptionsDefault, ...options };
     this.dash = options.dash;
     this.dashSize = this.dash.reduce((a, b) => a + b);
+    this.scale = options.scale;
     this.useTexture = options.useTexture;
-    this.options = options;
-    this.setStrokeStyle();
-  }
-
-  stroke() {
-    this.graphics.stroke();
-  }
-
-  beginPath() {
-    this.graphics.beginPath();
-  }
-
-  /** resets line style to enable dashed line (useful if lineStyle was changed on graphics element) */
-  setStrokeStyle() {
-    const options = this.options;
 
     if (this.useTexture) {
-      const texture = this._getTexture(options, this.dashSize);
-      this.graphics.stroke({
-        width: options.width * options.scale,
-        color: options.color,
+      this.activeTexture = this._getTexture(options, this.dashSize);
+      this.strokeStyle = {
+        alignment: options.alignment,
         alpha: options.alpha,
-        texture: texture,
-        alignment: options.alignment
-      });
-      this.activeTexture = texture;
-
-    } else {
-      this.graphics.stroke({
-        width: options.width * options.scale,
         color: options.color,
+        matrix: new PIXI.Matrix(),
+        texture: this.activeTexture,
+        width: options.width * options.scale
+      };
+    } else {
+      this.activeTexture = null;
+      this.strokeStyle = {
+        alignment: options.alignment,
         alpha: options.alpha,
         cap: options.cap,
+        color: options.color,
         join: options.join,
-        alignment: options.alignment
-      });
+        width: options.width * options.scale
+      };
     }
-    this.scale = options.scale;
   }
 
 
+  /**
+   * moveTo
+   * Move to a position to prepare to draw a line.
+   * This is essentially our 'reset' function.
+   */
   moveTo(x, y) {
     this.lineLength = 0;
     this.cursor.set(x, y);
@@ -108,29 +99,52 @@ export class DashLine {
   }
 
 
-  lineTo(x, y, closePath) {
+  /**
+   * lineTo
+   * Extend the line to given x,y coordinate
+   */
+  lineTo(x, y, doClosePath) {
     if (this.lineLength === null) {  // lineTo() called before moveTo()?
       this.moveTo(0, 0);
     }
-    let [x0, y0] = [this.cursor.x, this.cursor.y];   // the position of the cursor
+    let [x0, y0] = [this.cursor.x, this.cursor.y];   // the start position of the cursor
     const length = vecLength([x0, y0], [x, y]);
-    if (length < 1) return this;   // dont bother advancing the cursor less than a pixel
+    if (length < 1) {
+      this.lineLength += length;  // advance length, but don't draw anything (these tiny lengths add up)
+      return this;
+    }
 
     const angle = Math.atan2(y - y0, x - x0);
     const cos = Math.cos(angle);
     const sin = Math.sin(angle);
-    const closed = closePath && x === this.start.x && y === this.start.y;
+    const final = doClosePath && x === this.start.x && y === this.start.y;
 
     if (this.useTexture) {
-      this.graphics.moveTo(x0, y0);
-      this._adjustLineStyle(angle);
-      if (closed && this.dash.length % 2 === 0) {
+      if (final && this.dash.length % 2 === 0) {
         const gap = Math.min(this.dash[this.dash.length - 1], length);
         this.graphics.lineTo(x - cos * gap, y - sin * gap);
         this.graphics.closePath();
       } else {
         this.graphics.lineTo(x, y);
       }
+
+      // set texture matrix
+      let m = this.strokeStyle.matrix;
+      m.identity();
+      if (angle) {
+        m.rotate(angle);
+      }
+      if (this.scale !== 1) {
+        m.scale(this.scale, this.scale);
+      }
+      const textureStart = -this.lineLength;
+      m.translate(
+        this.cursor.x + textureStart * cos,
+        this.cursor.y + textureStart * sin
+      );
+
+      this.lineLength += length;
+      this.cursor.set(x, y);
 
     } else {
       // Determine where in the dash pattern the cursor is starting from.
@@ -155,7 +169,7 @@ export class DashLine {
         const dashSize = (this.dash[dashIndex] * this.scale) - dashStart;
         let dist = (remaining > dashSize) ? dashSize : remaining;
 
-        if (closed) {
+        if (final) {
           const remainingDistance = vecLength([x0 + cos * dist, y0 + sin * dist], [this.start.x, this.start.y]);
           if (remainingDistance <= dist) {
             if (dashIndex % 2 === 0) {
@@ -186,8 +200,10 @@ export class DashLine {
         dashIndex = dashIndex === this.dash.length ? 0 : dashIndex;
         dashStart = 0;
       }
-      this.setStrokeStyle();  // Not sure why this fixes #2?
     }
+
+    // Pixi v8: call `stroke()` after issuing draw instructions
+    this.graphics.stroke(this.strokeStyle);
 
     return this;
   }
@@ -267,12 +283,12 @@ export class DashLine {
 
 
   /**
-   *  polygon
+   *  poly
    *  @param  {PIXI.Point[] | number[]} points
    *  @param  {PIXI.Matrix} matrix?
    *  @return {DashLine}  this
    */
-  polygon(points, matrix = null) {
+  poly(points, matrix = null) {
     const p = new PIXI.Point();
 
     if (typeof points[0] === 'number') {   // flat array of numbers
@@ -368,27 +384,6 @@ export class DashLine {
   }
 
 
-
-  /**
-   *  adjust the matrix for the dashed texture
-   *  @param  {number}  angle
-   */
-  _adjustLineStyle(angle) {
-    const lineStyle = this.graphics.strokeStyle;
-    lineStyle.matrix = new PIXI.Matrix();
-    if (angle) {
-      lineStyle.matrix.rotate(angle);
-    }
-    if (this.scale !== 1) lineStyle.matrix.scale(this.scale, this.scale);
-    const textureStart = -this.lineLength;
-    lineStyle.matrix.translate(
-      this.cursor.x + textureStart * Math.cos(angle),
-      this.cursor.y + textureStart * Math.sin(angle)
-    );
-    this.graphics.stroke(lineStyle);
-  }
-
-
   /**
    *  creates or uses cached texture
    *  @param  {Object}      options
@@ -404,29 +399,29 @@ export class DashLine {
     const canvas = document.createElement('canvas');
     canvas.width = dashSize;
     canvas.height = Math.ceil(options.width);
-    const context = canvas.getContext('2d');
-    if (!context) {
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
       console.warn('Did not get context from canvas');   // eslint-disable-line no-console
       return null;
     }
 
-    context.strokeStyle = 'white';
-    context.globalAlpha = options.alpha;
-    context.lineWidth = options.width;
+    ctx.strokeStyle = 'white';
+    ctx.globalAlpha = options.alpha;
+    ctx.lineWidth = options.width;
 
     let x = 0;
     const y = options.width / 2;
-    context.moveTo(x, y);
+    ctx.moveTo(x, y);
 
     for (let i = 0; i < options.dash.length; i += 2) {
       x += options.dash[i];
-      context.lineTo(x, y);
+      ctx.lineTo(x, y);
       if (options.dash.length !== i + 1) {
         x += options.dash[i + 1];
-        context.moveTo(x, y);
+        ctx.moveTo(x, y);
       }
     }
-    context.stroke();
+    ctx.stroke();
     const texture = (_dashTextureCache[key] = PIXI.Texture.from(canvas));
     texture.source.scaleMode = 'nearest';
 

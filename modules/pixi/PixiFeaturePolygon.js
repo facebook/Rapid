@@ -318,8 +318,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
           strokeStyle.dash = dash;
           const dl = new DashLine(stroke, strokeStyle);
           dl
-            .polygon(ring)
-            .setStrokeStyle();
+            .poly(ring);
 
         } else {
           stroke
@@ -475,12 +474,11 @@ export class PixiFeaturePolygon extends AbstractFeature {
       this.halo.clear();
       const dl = new DashLine(this.halo, HALO_STYLE);
       if (this._bufferdata) {
-        dl.polygon(this._bufferdata.outer);
+        dl.poly(this._bufferdata.outer);
         if (wireframeMode) {
-          dl.polygon(this._bufferdata.inner);
+          dl.poly(this._bufferdata.inner);
         }
       }
-      dl.setStrokeStyle(HALO_STYLE);
 
     } else {
       if (this.halo) {
