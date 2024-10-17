@@ -67,7 +67,7 @@
     "@rapideditor/location-conflation": "~1.4.0",
     "@rapideditor/wayback-core": "^1.0.7",
     "@tmcw/togeojson": "^5.8.1",
-    "@types/chai": "^4.3.20",
+    "@types/chai": "^5.0.0",
     "d3": "~7.9.0",
     "editor-layer-index": "github:osmlab/editor-layer-index#gh-pages",
     "fast-deep-equal": "~3.1.3",
