@@ -33,12 +33,12 @@ export class PixiLayerOsm extends AbstractLayer {
 //    this._saveCannedData = false;
 
     const areas = new PIXI.Container();
-    areas.name = `${this.layerID}-areas`;
+    areas.label = `${this.layerID}-areas`;
     areas.sortableChildren = true;
     this.areaContainer = areas;
 
     const lines = new PIXI.Container();
-    lines.name = `${this.layerID}-lines`;
+    lines.label = `${this.layerID}-lines`;
     lines.sortableChildren = true;
     this.lineContainer = lines;
 
@@ -297,7 +297,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
       for (let i = 0; i < parts.length; ++i) {
         const coords = parts[i];
-        const featureID = `${this.layerID}-${entityID}-fill-${i}`;
+        const featureID = `${this.layerID}-${entityID}-${i}`;
         let feature = this.features.get(featureID);
 
         // If feature existed before as a different type, recreate it.
@@ -513,10 +513,10 @@ export class PixiLayerOsm extends AbstractLayer {
 
 
     function _getLevelContainer(level) {
-      let levelContainer = lineContainer.getChildByName(level);
+      let levelContainer = lineContainer.getChildByLabel(level);
       if (!levelContainer) {
         levelContainer = new PIXI.Container();
-        levelContainer.name = level.toString();
+        levelContainer.label= level.toString();
         levelContainer.sortableChildren = true;
         levelContainer.zIndex = level;
         lineContainer.addChild(levelContainer);
@@ -544,7 +544,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
     // Vertices related to the selection/hover should be drawn above everything
     const mapUIContainer = this.scene.layers.get('map-ui').container;
-    const selectedContainer = mapUIContainer.getChildByName('selected');
+    const selectedContainer = mapUIContainer.getChildByLabel('selected');
     const pointsContainer = this.scene.groups.get('points');
 
     function isInterestingVertex(node) {
@@ -740,7 +740,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
     // Midpoints should be drawn above everything
     const mapUIContainer = this.scene.layers.get('map-ui').container;
-    const selectedContainer = mapUIContainer.getChildByName('selected');
+    const selectedContainer = mapUIContainer.getChildByLabel('selected');
 
     // Generate midpoints from all the highlighted ways
     let midpoints = new Map();

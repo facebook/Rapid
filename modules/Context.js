@@ -1,4 +1,4 @@
-import { EventEmitter } from '@pixi/utils';
+import { EventEmitter } from 'pixi.js';
 import { select as d3_select } from 'd3-selection';
 import { Viewport } from '@rapid-sdk/math';
 import { utilUnicodeCharsTruncated } from '@rapid-sdk/util';
@@ -28,8 +28,8 @@ export class Context extends EventEmitter {
   constructor() {
     super();
 
-    this.version = '2.4.2';     // see https://semver.org/ for examples
-    // this.version = '2.4.0-pre.0';     // see https://semver.org/ for examples
+    // this.version = '2.4.2';     // see https://semver.org/ for examples
+    this.version = '2.5.0-pre.0';     // see https://semver.org/ for examples
 
     // If user has not seen this version of our software, we will show them a modal at startup.
     // Just bump these dates to a higher number to get the screen to come back.
@@ -144,13 +144,14 @@ export class Context extends EventEmitter {
       return filters.hasHiddenConnections(entity, graph);
     };
 
+    // GraphicsSystem
+    const gfx = this.systems.gfx;
+    this.deferredRedraw = gfx.deferredRedraw;
+    this.immediateRedraw = gfx.immediateRedraw;
+    this.scene = () => gfx.scene;
+
     // MapSystem
-    const map = this.systems.map;
-    this.deferredRedraw = map.deferredRedraw;
-    this.immediateRedraw = map.immediateRedraw;
-    this.scene = () => map.scene;
-    this.surface = () => map.surface;
-    this.surfaceRect = () => map.surface.node().getBoundingClientRect();
+    //const map = this.systems.map;
     this.editable = () => {
       const mode = this._currMode;
       if (!mode || mode.id === 'save') return false;      // don't allow editing during save
@@ -455,7 +456,7 @@ export class Context extends EventEmitter {
   }
   setDebug(flag, val = true) {
     this._debugFlags[flag] = val;
-    this.systems.map?.immediateRedraw();
+    this.systems.gfx?.immediateRedraw();
   }
 
 

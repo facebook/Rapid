@@ -44,6 +44,13 @@ describe('EditSystem', () => {
     constructor() { }
     initAsync()   { return Promise.resolve(); }
     on()          { return this; }
+  }
+
+  class MockGfxSystem {
+    constructor() {
+      this.scene = { layers: new Map() };
+    }
+    initAsync()   { return Promise.resolve(); }
     pause()       { }
     resume()      { }
   }
@@ -73,6 +80,7 @@ describe('EditSystem', () => {
       this.viewport = new Rapid.sdk.Viewport();
       this.systems = {
         imagery:  new MockImagerySystem(),
+        gfx:      new MockGfxSystem(),
         map:      new MockSystem(),
         photos:   new MockPhotoSystem(),
         rapid:    new MockSystem(),
@@ -81,7 +89,6 @@ describe('EditSystem', () => {
       this.services = {};
     }
     selectedIDs() { return []; }
-    scene()       { return { layers: new Map() }; }
   }
 
   const context = new MockContext();

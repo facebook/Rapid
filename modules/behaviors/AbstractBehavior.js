@@ -1,4 +1,4 @@
-import { EventEmitter } from '@pixi/utils';
+import { EventEmitter } from 'pixi.js';
 import { vecRotate } from '@rapid-sdk/math';
 
 
@@ -125,54 +125,49 @@ export class AbstractBehavior extends EventEmitter {
       target: null
     };
 
-    if (!e.target) {   // `e.target` is the Pixi DisplayObject that triggered this event.
+    //console.log(`hit: ${e.target?.label}`);
+
+    if (!e.target) {   // `e.target` is the PIXI.DisplayObject that triggered this event.
       return result;
     }
 
     let dObj = e.target;
-    let feature = dObj?.__feature__;
 
-    // __feature__ is here, use this target
-    if (feature) {
-      result.target = {
-        displayObject: dObj,
-        feature: feature,
-        featureID: feature.id,
-        layer: feature.layer,
-        layerID: feature.layer.id,
-        data: feature.data,
-        dataID: feature.dataID
-      };
-      return result;
+    // Try to find a target feature - it will have a `__feature__` property.
+    // Look up through the parent hierarchy until we find one or end up at the root stage.
+    while (dObj) {
+      let feature = dObj.__feature__;
+      if (feature) {
+        result.target = {
+          displayObject: dObj,
+          feature: feature,
+          featureID: feature.id,
+          layer: feature.layer,
+          layerID: feature.layer.id,
+          data: feature.data,
+          dataID: feature.dataID
+        };
+        return result;
+
+      } else {
+        if (dObj.parent) {
+          dObj = dObj.parent;
+
+        } else {  // can't look up any further, just return the original target.
+          result.target = {
+            displayObject: e.target,
+            feature: null,
+            featureID: null,
+            layer: null,
+            layerID: null,
+            data: null,
+            dataID: null
+          };
+          return result;
+        }
+      }
     }
 
-    // No __feature__ in target, look in parent
-    dObj = e.target.parent;
-    feature = dObj?.__feature__;
-    if (feature) {
-      result.target = {
-        displayObject: dObj,
-        feature: feature,
-        featureID: feature.id,
-        layer: feature.layer,
-        layerID: feature.layer.id,
-        data: feature.data,
-        dataID: feature.dataID
-      };
-      return result;
-    }
-
-    // No __feature__ there either, just use the original target
-    result.target = {
-      displayObject: e.target,
-      feature: null,
-      featureID: null,
-      layer: null,
-      layerID: null,
-      data: null,
-      dataID: null
-    };
-    return result;
   }
 
 }

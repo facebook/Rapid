@@ -17,19 +17,3 @@ export * from './util/index.js';
 export * from './validations/index.js';
 
 export { Context } from './Context.js';
-
-// Reexport only what our tests use, see iD#4379
-import * as D3 from 'd3';
-export const d3 = {
-  polygonArea: D3.polygonArea,
-  polygonCentroid: D3.polygonCentroid,
-  select: D3.select,
-  selectAll: D3.selectAll,
-  timerFlush: D3.timerFlush
-};
-
-// Reexport the sdk as a single `sdk` namespace.
-// (This works because we know there are no name conflicts)
-import * as SDKMATH from '@rapid-sdk/math';
-import * as SDKUTIL from '@rapid-sdk/util';
-export const sdk = { ...SDKMATH, ...SDKUTIL };

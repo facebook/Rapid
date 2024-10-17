@@ -1,8 +1,8 @@
 import * as PIXI from 'pixi.js';
-import { DashLine } from '@rapideditor/pixi-dashed-line';
 import { geoMetersToLon } from '@rapid-sdk/math';
 
 import { AbstractLayer } from './AbstractLayer.js';
+import { DashLine } from './lib/DashLine.js';
 
 
 /**
@@ -31,7 +31,7 @@ export class PixiLayerMapUI extends AbstractLayer {
 
 // todo: I'm adjusting the container nesting, this will need to be revisited
 const container = new PIXI.Container();
-container.name = layerID;
+container.label= layerID;
 container.sortableChildren = true;
 this.container = container;
 
@@ -47,7 +47,7 @@ groupContainer.addChild(container);
     this._geolocationData = null;
     this._geolocationDirty = false;
     const geolocationContainer = new PIXI.Container();
-    geolocationContainer.name = 'geolocation';
+    geolocationContainer.label= 'geolocation';
     geolocationContainer.eventMode = 'none';
     geolocationContainer.sortableChildren = false;
     geolocationContainer.visible = false;
@@ -55,7 +55,7 @@ groupContainer.addChild(container);
 
     // TILE DEBUGGING
     const tileDebugContainer = new PIXI.Container();
-    tileDebugContainer.name = 'tile-debug';
+    tileDebugContainer.label= 'tile-debug';
     tileDebugContainer.eventMode = 'none';
     tileDebugContainer.sortableChildren = false;
     tileDebugContainer.visible = false;
@@ -63,7 +63,7 @@ groupContainer.addChild(container);
 
     // SELECTED
     const selectedContainer = new PIXI.Container();
-    selectedContainer.name = 'selected';
+    selectedContainer.label= 'selected';
     selectedContainer.sortableChildren = true;
     selectedContainer.visible = true;
     this.selectedContainer = selectedContainer;
@@ -74,7 +74,7 @@ groupContainer.addChild(container);
     this._lassoLineGraphics = new PIXI.Graphics();
     this._lassoFillGraphics = new PIXI.Graphics();
     const lassoContainer = new PIXI.Container();
-    lassoContainer.name = 'lasso';
+    lassoContainer.label= 'lasso';
     lassoContainer.eventMode = 'none';
     lassoContainer.sortableChildren = false;
     lassoContainer.visible = true;
@@ -186,8 +186,13 @@ groupContainer.addChild(container);
       // Render the data only as long as we have something meaningful.
       if (this._lassoPolygonData?.length > 0) {
         const projectedCoords = this._lassoPolygonData.map(coord => viewport.project(coord));
-        new DashLine(this._lassoLineGraphics, LASSO_STYLE).drawPolygon(projectedCoords.flat());
-        this._lassoFillGraphics.beginFill(0xaaaaaa, 0.5).drawPolygon(projectedCoords.flat()).endFill();
+
+        new DashLine(this._lassoLineGraphics, LASSO_STYLE)
+          .poly(projectedCoords.flat());
+
+        this._lassoFillGraphics
+          .poly(projectedCoords.flat())
+          .fill({color: 0xaaaaaa, width: 0.5 });
       }
     }
   }
@@ -216,29 +221,27 @@ groupContainer.addChild(container);
         const BLUE = 0xe60ff;
 
         const locatorAura = new PIXI.Graphics()
-          .beginFill(BLUE, 0.4)
-          .drawCircle(x, y, r)
-          .endFill();
-        locatorAura.name = 'aura';
+          .circle(x, y, r)
+          .fill({ color: BLUE, alpha: 0.4 });
+        locatorAura.label = 'aura';
         this.geolocationContainer.addChild(locatorAura);
 
         // Show a viewfield for the heading if we have it
         if (d.heading !== null && !isNaN(d.heading)) {
-          const textures = this.renderer.textures;
+          const textures = this.gfx.textures;
           const locatorHeading = new PIXI.Sprite(textures.get('viewfieldDark'));
           locatorHeading.anchor.set(0.5, 1);  // middle, top
           locatorHeading.angle = d.heading;
-          locatorHeading.name = 'heading';
+          locatorHeading.label = 'heading';
           locatorHeading.position.set(x, y);
           this.geolocationContainer.addChild(locatorHeading);
         }
 
         const locatorPosition = new PIXI.Graphics()
-          .lineStyle(1.5, 0xffffff, 1.0)
-          .beginFill(BLUE, 1.0)
-          .drawCircle(x, y, 6.5)
-          .endFill();
-        locatorPosition.name = 'position';
+          .circle(x, y, 6.5)
+          .stroke(1.5, 0xffffff, 1.0)
+          .fill({ color: BLUE, alpha: 1.0 });
+        locatorPosition.label = 'position';
         this.geolocationContainer.addChild(locatorPosition);
 
         this.geolocationContainer.visible = true;

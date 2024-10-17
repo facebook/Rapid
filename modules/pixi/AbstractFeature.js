@@ -35,7 +35,7 @@ export class AbstractFeature {
     this.type = 'unknown';
     this.layer = layer;
     this.scene = layer.scene;
-    this.renderer = layer.renderer;
+    this.gfx = layer.gfx;
     this.context = layer.context;
     this.featureID = featureID;
 
@@ -43,7 +43,7 @@ export class AbstractFeature {
     this.container = container;
 
     container.__feature__ = this;   // Link the container back to `this`
-    container.name = featureID;
+    container.label = featureID;
     container.sortableChildren = false;
     container.visible = true;
 
@@ -94,11 +94,11 @@ export class AbstractFeature {
 
     this.layer = null;
     this.scene = null;
-    this.renderer = null;
+    this.gfx = null;
     this.context = null;
 
     if (this.halo) {
-      this.halo.destroy({ children: true });
+      this.halo.destroy();
       this.halo = null;
     }
 
@@ -160,7 +160,7 @@ export class AbstractFeature {
   set parentContainer(val) {
     const currParent = this.container.parent;
     if (val && val !== currParent) {   // put this feature under a different parent container
-      this.container.setParent(val);
+      val.addChild(this.container);
     } else if (!val && currParent) {   // remove this feature from its parent container
       currParent.removeChild(this.container);
     }

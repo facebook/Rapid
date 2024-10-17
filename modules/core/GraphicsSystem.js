@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js';
-import { EventEmitter } from '@pixi/utils';
 import { TAU, Viewport, numWrap, vecEqual, vecLength, vecRotate, vecScale, vecSubtract } from '@rapid-sdk/math';
 
-import { PixiEvents } from './PixiEvents.js';
-import { PixiScene } from './PixiScene.js';
-import { PixiTextures } from './PixiTextures.js';
+import { AbstractSystem } from './AbstractSystem.js';
+import { PixiEvents } from '../pixi/PixiEvents.js';
+import { PixiScene } from '../pixi/PixiScene.js';
+import { PixiTextures } from '../pixi/PixiTextures.js';
 import { utilSetTransform } from '../util/util.js';
 
 let _sharedTextures;   // singleton (for now)
@@ -12,15 +12,16 @@ let _sharedTextures;   // singleton (for now)
 const THROTTLE = 250;  // throttled rendering milliseconds (for now)
 
 
-
 /**
- * PixiRenderer
- * The renderer implements a game loop and manages when rendering tasks happen.
+ * GraphicsSystem
+ * The graphics system owns the Pixi environment.
+ * This system implements a game loop and manages when rendering tasks happen.
+ * (formerly named PixiRenderer)
  *
  * Properties you can access:
- *   `supersurface`   D3 selection to the parent `div` "supersurface"
- *   `surface`        D3 selection to the sibling `canvas` "surface"
- *   `overlay`        D3 selection to the sibling `div` "overlay"
+ *   `supersurface`   The parent `div` for temporary transforms between redraws
+ *   `surface`        The sibling `canvas` map drawing surface
+ *   `overlay`        The sibling `div` overlay, offsets the supersurface transform
  *   `pixi`           PIXI.Application() created to render to the canvas
  *   `stage`          PIXI.Container() that lives at the root of this scene
  *   `origin`         PIXI.Container() that lives beneath the stage, used to set origin to [0,0]
@@ -33,30 +34,33 @@ const THROTTLE = 250;  // throttled rendering milliseconds (for now)
  *   `move`      Fires after the map's transform has changed (can fire frequently)
  *               ('move' is mostly for when you want to update some content that floats over the map)
  */
-export class PixiRenderer extends EventEmitter {
+export class GraphicsSystem extends AbstractSystem {
 
   /**
-   * Create a Pixi application rendering to the given canvas.
-   * We also add it as `context.pixi` so that other parts of Rapid can use it.
    * @constructor
-   * @global
-   *
-   * @param  context        Global shared application context
-   * @param  supersurface   D3 selection to the parent `div` "supersurface"
-   * @param  surface        D3 selection to the sibling `canvas` "surface"
-   * @param  overlay        D3 selection to the sibling `div` "overlay"
+   * @param  `context`   Global shared application context
    */
-  constructor(context, supersurface, surface, overlay) {
-    super();
-    this.context = context;
-    this.supersurface = supersurface;
-    this.surface = surface;
-    this.overlay = overlay;
+  constructor(context) {
+    super(context);
 
-    this._frame = 0;              // counter that increments
-    this._timeToNextRender = 0;   // milliseconds of time to defer rendering
-    this._appPending = false;
-    this._drawPending = false;
+    this.id = 'gfx';
+    this.dependencies = new Set(['map', 'urlhash']);
+
+    // Create these early
+    this.supersurface = document.createElement('div');  // parent `div` temporary transforms between redraws
+    this.surface = document.createElement('canvas');    // sibling `canvas` map drawing surface
+    this.overlay = document.createElement('div');       // sibling `div` overlay offsets the supersurface transform
+
+    // Pixi objects, will be created in initAsync.
+    this.pixi = null;
+    this.stage = null;
+    this.origin = null;
+    this.scene = null;
+    this.events = null;
+    this.textures = null;
+
+    // Spector.js is a WebGL debugging tool, only available in the dev build.
+    this.spector = null;
 
     // Properties used to manage the scene transform
     this.pixiViewport = new Viewport();
@@ -64,104 +68,228 @@ export class PixiRenderer extends EventEmitter {
     this._isTempTransformed = false;     // is the supersurface transformed?
     this._transformEase = null;
 
-    // Make sure callbacks have `this` bound correctly
+    this._frame = 0;              // counter that increments
+    this._timeToNextRender = 0;   // milliseconds of time to defer rendering
+    this._appPending = false;
+    this._drawPending = false;
+    this._initPromise = null;
+    this._startPromise = null;
+
+    // Ensure methods used as callbacks always have `this` bound correctly.
+    // (This is also necessary when using `d3-selection.call`)
+    this.deferredRedraw = this.deferredRedraw.bind(this);
+    this.immediateRedraw = this.immediateRedraw.bind(this);
     this._tick = this._tick.bind(this);
+  }
 
-    // Disable mipmapping, we always want textures near the resolution they are at.
-    PIXI.BaseTexture.defaultOptions.mipmap = PIXI.MIPMAP_MODES.OFF;
 
-    // Prefer WebGL2, though browsers still may give us a WebGL1 context, see #493, #568
-    // Can also swap the commented lines below to force WebGL1 context for testing.
-    PIXI.settings.PREFER_ENV = PIXI.ENV.WEBGL2;
-    // PIXI.settings.PREFER_ENV = PIXI.ENV.WEBGL;
+  /**
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this component has completed initialization
+   */
+  initAsync() {
+    if (this._initPromise) return this._initPromise;
 
-    // Create a Pixi application rendering to the given surface `canvas`
-    this.pixi = new PIXI.Application({
-      antialias: true,
-      autoDensity: true,
-      autoStart: false,        // don't start the ticker yet
-      events: {
-        move: false,
-        globalMove: false,
-        click: true,
-        wheel: false
-      },
-      // resizeTo: supersurface.node(),
-      resolution: window.devicePixelRatio,
-      sharedLoader: true,
-      sharedTicker: true,
-      view: surface.node()
-    });
-
-    window.__PIXI_DEVTOOLS__ = {
-      pixi: PIXI,
-      app: this.pixi,
-      // If you are not using a pixi app, you can pass the renderer and stage directly
-      // renderer: myRenderer,
-      // stage: myStage,
-    };
-
-    // Register Pixi with the pixi-inspector extension if it is installed
-    // https://github.com/bfanger/pixi-inspector
-    globalThis.__PIXI_APP__ = this.pixi;
-
-// todo - we should stop doing this.. Access to pixi app should be via an instance of PixiRenderer
-// so we can have multiple Pixi renderers - this will make the minimap less hacky & enable restriction editor
-    context.pixi = this.pixi;
-
-    // Prepare a basic bitmap font that we can use for things like debug messages
-    PIXI.BitmapFont.from('debug', {
-      fill: 0xffffff,
-      fontSize: 14,
-      stroke: 0x333333,
-      strokeThickness: 2
-    },{
-      chars: PIXI.BitmapFont.ASCII,
-      padding: 0,
-      resolution: 2
-    });
-
-    // Setup the Ticker
-    // Replace the default Ticker listener (which just renders the scene each frame)
-    // with our own listener that gathers statistics and renders only as needed
-    const ticker = this.pixi.ticker;
-    const defaultListener = ticker._head.next;
-    ticker.remove(defaultListener.fn, defaultListener.context);
-    ticker.add(this._tick, this);
-    ticker.start();
-
-    // Setup the stage
-    // The `stage` should be positioned so that `[0,0]` is at the center of the viewport,
-    // and this is the pivot point for map rotation.
-    const stage = this.pixi.stage;
-    stage.name = 'stage';
-    stage.sortableChildren = true;
-    stage.eventMode = 'static';
-    // Add a big hit area to `stage` so that clicks on nothing will generate events
-    stage.hitArea = new PIXI.Rectangle(-10000000, -10000000, 20000000, 20000000);
-    this.stage = stage;
-
-    // The `origin` returns `[0,0]` back to the `[top,left]` coordinate of the viewport,
-    // so `project/unproject` continues to work.
-    // This also includes the `offset` which includes any panning that the user has done.
-    const origin = new PIXI.Container();
-    origin.name = 'origin';
-    origin.sortableChildren = true;
-    origin.eventMode = 'passive';
-    stage.addChild(origin);
-    this.origin = origin;
-
-    // Setup other classes
-    this.scene = new PixiScene(this);
-    this.events = new PixiEvents(this);
-
-    // Texture Manager should only be created once
-    // This is because it will start loading assets and Pixi's asset loader is not reentrant.
-    // (it causes test failures if we create a bunch of these)
-    if (!_sharedTextures) {
-      _sharedTextures = new PixiTextures(context);
+    for (const id of this.dependencies) {
+      if (!this.context.systems[id]) {
+        return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
+      }
     }
-    this.textures = _sharedTextures;
+
+    // Init prerequisites
+    const urlhash = this.context.systems.urlhash;
+    const prerequisites = Promise.all([
+      urlhash.initAsync()
+    ]);
+
+    return this._initPromise = prerequisites
+      .then(() => {
+        // For testing, allow user to override the renderer preference:
+        // `renderer=val` one of `webgl1`, `webgl2`/`webgl`, `webgpu`
+        let renderPreference, renderGLVersion;
+        switch (urlhash.initialHashParams.get('renderer')) {
+          case 'webgpu':
+            renderPreference = 'webgpu';
+            break;
+          case 'webgl1':
+            renderPreference = 'webgl';
+            renderGLVersion = 1;
+            break;
+          case 'webgl':
+          case 'webgl2':
+          default:
+            renderPreference = 'webgl';
+            renderGLVersion = 2;
+        }
+
+        // Setup PIXI defaults here..
+        Object.assign(PIXI.TextureSource.defaultOptions, {
+          autoGarbageCollect: false,
+          autoGenerateMipmaps: false,
+          resolution: 1
+        });
+
+        Object.assign(PIXI.HelloSystem.defaultOptions, {
+          hello: true  // Log renderer and Pixi version to the console
+        });
+
+        const options = {
+          antialias: true,
+          autoDensity: true,
+          autoStart: false,    // Don't start the ticker yet
+          canvas: this.surface,
+          events: {
+            move: false,
+            globalMove: false,
+            click: true,
+            wheel: false
+          },
+          multiView: true,   // Needed for minimap
+          powerPreference: 'high-performance',
+          preference: renderPreference,
+          preferWebGLVersion: renderGLVersion,
+          preserveDrawingBuffer: true,
+          resolution: window.devicePixelRatio,
+          sharedLoader: true,
+          sharedTicker: true,
+          textureGCActive: true,
+          useBackBuffer: false
+        };
+
+        this.pixi = new PIXI.Application();
+        return this.pixi.init(options);  // return Pixi's init Promise
+      })
+      .then(() => {   // After Pixi's init is complete...
+
+        // Prepare a basic bitmap font that we can use for things like debug messages
+        PIXI.BitmapFont.install({
+          name: 'rapid-debug',
+          style: {
+            fill: { color: 0xffffff },
+            fontSize: 14,
+            stroke: { color: 0x333333 }
+          },
+          chars: PIXI.BitmapFontManager.ASCII,
+          resolution: 2
+        });
+
+        // Enable debugging tools
+        if (window.Rapid.isDebug) {
+          // Register Pixi with the pixi-inspector extension if it is installed
+          // https://github.com/bfanger/pixi-inspector
+          globalThis.__PIXI_APP__ = this.pixi;
+
+          window.__PIXI_DEVTOOLS__ = {
+            pixi: PIXI,
+            app: this.pixi
+          };
+
+          const renderer = this.pixi.renderer;
+          if (window.SPECTOR && renderer.type === PIXI.RendererType.WEBGL) {
+            this.spector = new window.SPECTOR.Spector();
+            this.spector.spyCanvas(renderer.context.canvas);
+          }
+        }
+
+        // Setup the stage
+        // The `stage` should be positioned so that `[0,0]` is at the center of the viewport,
+        // and this is the pivot point for map rotation.
+        const stage = this.pixi.stage;
+        stage.label = 'stage';
+        stage.sortableChildren = true;
+        stage.eventMode = 'static';
+        // Add a big hit area to `stage` so that clicks on nothing will generate events
+        stage.hitArea = new PIXI.Rectangle(-10000000, -10000000, 20000000, 20000000);
+        this.stage = stage;
+
+        // The `origin` returns `[0,0]` back to the `[top,left]` coordinate of the viewport,
+        // so `project/unproject` continues to work.
+        // This also includes the `offset` which includes any panning that the user has done.
+        const origin = new PIXI.Container();
+        origin.label = 'origin';
+        origin.sortableChildren = true;
+        origin.eventMode = 'passive';
+        stage.addChild(origin);
+        this.origin = origin;
+
+        // Setup the ticker
+        const ticker = this.pixi.ticker;
+        const defaultListener = ticker._head.next;
+        ticker.remove(defaultListener._fn, defaultListener._context);
+        ticker.add(this._tick, this);
+
+        this.scene = new PixiScene(this);
+        this.events = new PixiEvents(this);
+
+        // Texture Manager should only be created once
+        // This is because it will start loading assets and Pixi's asset loader is not reentrant.
+        // (it causes test failures if we create a bunch of these)
+        if (!_sharedTextures) {
+          _sharedTextures = new PixiTextures(this);
+        }
+        this.textures = _sharedTextures;
+      });
+  }
+
+
+  /**
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this component has completed startup
+   */
+  startAsync() {
+    if (this._startPromise) return this._startPromise;
+
+    const context = this.context;
+    const map = context.systems.map;
+    const ui = context.systems.ui;
+
+    // Wait for UI and Map to be ready, then start the ticker
+    const prerequisites = Promise.all([
+      map.startAsync(),
+      ui.startAsync()
+    ]);
+
+    return this._startPromise = prerequisites
+      .then(() => {
+        this._started = true;
+        this.pixi.ticker.start();
+      });
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * Note that calling `resetAsync` schedules an "immediate" redraw (on the next available tick).
+   * @return {Promise} Promise resolved when this component has completed resetting
+   */
+  resetAsync() {
+    this.immediateRedraw();
+    return Promise.resolve();
+  }
+
+
+  /**
+   * pause
+   * Pauses this system
+   * When paused, the GraphicsSystem will not render
+   */
+  pause() {
+    this._paused = true;
+  }
+
+
+  /**
+   * resume
+   * Resumes (unpauses) this system.
+   * When paused, the GraphicsSystem will not render
+   * Note that calling `resume` schedules an "immediate" redraw (on the next available tick).
+   */
+  resume() {
+    this._paused = false;
+    this.immediateRedraw();
   }
 
 
@@ -172,6 +300,8 @@ export class PixiRenderer extends EventEmitter {
    * and schedule work to happen at opportune times (within animation frame boundaries)
    */
   _tick() {
+    if (!this._started || this._paused) return;
+
     const ticker = this.pixi.ticker;
     // console.log('FPS=' + ticker.FPS.toFixed(1));
 
@@ -232,21 +362,25 @@ export class PixiRenderer extends EventEmitter {
 
 
   /**
-   * deferredRender
-   * Schedules an APP pass but does not reset the timer
+   * deferredRedraw
+   * Schedules an APP pass but does not reset the timer.
+   * This is for situations where new data is available, but we can wait a bit to show it.
    */
-  deferredRender() {
+  deferredRedraw() {
     this._appPending = true;
   }
 
 
   /**
-   * render
-   * Schedules an APP pass on the next available tick
+   * immediateRedraw
+   * Schedules an APP pass on the next available tick.
+   * If there was a DRAW pending, cancel it.
+   * This is for situations where we want the user to see the update immediately.
    */
-  render() {
+  immediateRedraw() {
     this._timeToNextRender = 0;    // asap
     this._appPending = true;
+    this._drawPending = false;
   }
 
 
@@ -412,10 +546,10 @@ export class PixiRenderer extends EventEmitter {
   _app() {
     // Wait for textures to be loaded before attempting rendering.
     if (!this.textures?.loaded) return;
+    if (!this._started || this._paused) return;
 
     const context = this.context;
     const map = context.systems.map;
-    if (map.paused) return;
 
     // If the user is currently resizing, skip rendering until the size has settled
     if (context.container().classed('resizing')) return;
@@ -481,21 +615,38 @@ export class PixiRenderer extends EventEmitter {
     // It will clear the canvas, so do this immediately before we render.
     const pixiDims = this.pixiViewport.dimensions;
     const canvasDims = [this.pixi.screen.width, this.pixi.screen.height];
+
     if (!vecEqual(pixiDims, canvasDims)) {
       const [w, h] = pixiDims;
       // Resize supersurface and overlay to cover the screen dimensions.
-      const ssnode = this.supersurface.node();
+      const ssnode = this.supersurface;
       ssnode.style.width = `${w}px`;
       ssnode.style.height = `${h}px`;
-      const onode = this.overlay.node();
+      const onode = this.overlay;
       onode.style.width = `${w}px`;
       onode.style.height = `${h}px`;
+
       // Resize pixi canvas
-      this.pixi.renderer.resize(w, h);
+      const renderer = this.pixi.renderer;
+      renderer.resize(w, h);
+
+      // needed for multiview?
+      // If we are using the WebGL renderer and have multiView enabled,
+      // Pixi will render to a different canvas before copying to the target canvas.
+      // The render canvas may need a resize too.
+      if (renderer.type === PIXI.RendererType.WEBGL && renderer.context.multiView) {
+        renderer.context.ensureCanvasSize(this.surface);
+      }
     }
 
     // Let's go!
     this.pixi.render();
+
+// multiview?  it renders but is not interactive
+//    this.pixi.renderer.render({
+//      container: this.stage,
+//      target: this.surface
+//    });
 
     // Remove any temporary parent transform..
     if (this._isTempTransformed) {
@@ -519,71 +670,70 @@ export class PixiRenderer extends EventEmitter {
    * Render some debug shapes (usually commented out)
    */
   _renderDebug() {
-    const context = this.context;
-    const mapViewport = context.viewport;
-    const origin = this.origin;
-    const stage = this.stage;
+//      const context = this.context;
+//      const mapViewport = context.viewport;
+//      const origin = this.origin;
+      const stage = this.stage;
 
-    let debug1 = origin.getChildByName('center_stage');   // center stage
-    if (!debug1) {
-      debug1 = new PIXI.Graphics();
-      debug1.lineStyle(0);
-      debug1.beginFill(0xffffff, 1);
-      debug1.drawCircle(0, 0, 20);
-      debug1.endFill();
-      debug1.name = 'center_stage';
-      debug1.eventMode = 'none';
-      debug1.sortableChildren = false;
-      debug1.zIndex = 101;
-      origin.addChild(debug1);
-    }
-    debug1.position.set(stage.position.x, stage.position.y);
-
-    let debug2 = origin.getChildByName('center_screen');  // projected center of viewport
-    if (!debug2) {
-      debug2 = new PIXI.Graphics();
-      debug2.lineStyle(0);
-      debug2.beginFill(0xff6666, 1);
-      debug2.drawCircle(0, 0, 15);
-      debug2.endFill();
-      debug2.name = 'center_screen';
-      debug2.eventMode = 'none';
-      debug2.sortableChildren = false;
-      debug2.zIndex = 102;
-      origin.addChild(debug2);
-    }
-    const centerLoc = this.pixiViewport.project(mapViewport.centerLoc());
-    debug2.position.set(centerLoc[0], centerLoc[1]);
-
+//    let debug1 = origin.getChildByLabel('center_stage');   // center stage
+//    if (!debug1) {
+//      debug1 = new PIXI.Graphics()
+//        .circle(0, 0, 20)
+//        .fill({ color: 0xffffff, alpha: 1 });
+//      debug1.label = 'center_stage';
+//      debug1.eventMode = 'none';
+//      debug1.sortableChildren = false;
+//      debug1.zIndex = 101;
+//      origin.addChild(debug1);
+//    }
+//    debug1.position.set(stage.position.x, stage.position.y);
+//
+//    let debug2 = origin.getChildByLabel('center_screen');  // projected center of viewport
+//    if (!debug2) {
+//      debug2 = new PIXI.Graphics()
+//        .circle(0, 0, 15)
+//        .fill({ color: 0xff6666, alpha: 1 });
+//      debug2.label = 'center_screen';
+//      debug2.eventMode = 'none';
+//      debug2.sortableChildren = false;
+//      debug2.zIndex = 102;
+//      origin.addChild(debug2);
+//    }
+//    const centerLoc = this.pixiViewport.project(mapViewport.centerLoc());
+//    debug2.position.set(centerLoc[0], centerLoc[1]);
 
     // debugging the contents of the texture atlas
-    // let screen = origin.getChildByName('screen');
-    // if (!screen) {
-    //   screen = new PIXI.Graphics();
-    //   screen.name = 'screen';
-    //   screen.eventMode = 'none';
-    //   screen.sortableChildren = false;
-    //   screen.zIndex = 100;
-    //   screen.beginFill({ r: 255, g: 255, b: 255, a: 0.5 });
-    //   screen.drawRect(0, 0, 512, 512);
-    //   screen.endFill();
-    //   origin.addChild(screen);
-    // }
-    // let debug = origin.getChildByName('debug');
-    // if (!debug) {
-    //   debug = new PIXI.Sprite();
-    //   debug.name = 'debug';
-    //   debug.eventMode = 'none';
-    //   debug.sortableChildren = false;
-    //   debug.zIndex = 101;
-    //   debug.height = 512;
-    //   debug.width = 512;
-    //   origin.addChild(debug);
-    // }
-    // debug.texture = this.textures.getDebugTexture('symbol');
-    // debug.position.set(offset[0] + 50, offset[1] + 100);  // stay put
-    // screen.position.set(offset[0] + 50, offset[1] + 100);  // stay put
+    let screen = stage.getChildByLabel('screen');
+    if (!screen) {
+      screen = new PIXI.Graphics()
+        .rect(-5, -5, 522, 522)
+        .fill({ color: 0x000000, alpha: 1 });
+      screen.label = 'screen';
+      screen.eventMode = 'none';
+      screen.sortableChildren = false;
+      screen.zIndex = 100;
+      stage.addChild(screen);
+    }
 
+    let debug = stage.getChildByLabel('debug');
+    if (!debug) {
+      debug = new PIXI.Sprite();
+      debug.label = 'debug';
+      debug.eventMode = 'none';
+      debug.sortableChildren = false;
+      debug.zIndex = 101;
+      debug.height = 512;
+      debug.width = 512;
+      stage.addChild(debug);
+    }
+
+    // replace the texture each frame
+    if (debug.texture) {
+      debug.texture.destroy();
+    }
+    debug.texture = this.textures.getDebugTexture('text');
+    debug.position.set(50, -200);
+    screen.position.set(50, -200);
   }
 
 }

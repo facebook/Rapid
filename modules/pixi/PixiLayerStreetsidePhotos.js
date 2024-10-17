@@ -62,7 +62,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
    */
   _dirtyCurrentPhoto() {
     const context = this.context;
-    const map = context.systems.map;
+    const gfx = context.systems.gfx;
     const photos = context.systems.photos;
 
     const currPhotoID = photos.currPhotoID;
@@ -75,7 +75,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
       if (!feature) continue;
       feature._styleDirty = true;
     }
-    map.immediateRedraw();
+    gfx.immediateRedraw();
   }
 
 

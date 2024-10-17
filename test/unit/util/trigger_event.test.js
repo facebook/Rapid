@@ -2,7 +2,7 @@ import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-import { EventEmitter } from '@pixi/utils';
+import { EventEmitter } from 'pixi.js';
 
 describe('utilTriggerEvent', () => {
   it('trigger event', () => {

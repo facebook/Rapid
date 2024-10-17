@@ -8,25 +8,21 @@ import { getLineSegments, /*getDebugBBox,*/ lineToPoly } from './helpers.js';
 
 const MINZOOM = 12;
 
-const TEXT_NORMAL = {
-  fill: 0x333333,
+const TEXTSTYLE_NORMAL = {
+  fill: { color: 0x333333 },
   fontFamily: 'Arial, Helvetica, sans-serif',
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 600,
-  lineJoin: 'round',
-  stroke: 0xffffff,
-  strokeThickness: 2.7
+  stroke: { color: 0xffffff, width: 3, join: 'round' }
 };
 
-const TEXT_ITALIC = {
-  fill: 0x333333,
+const TEXTSTYLE_ITALIC = {
+  fill: { color: 0x333333 },
   fontFamily: 'Arial, Helvetica, sans-serif',
-  fontSize: 11,
+  fontSize: 12,
   fontStyle: 'italic',
   fontWeight: 600,
-  lineJoin: 'round',
-  stroke: 0xffffff,
-  strokeThickness: 2.7
+  stroke: { color: 0xffffff, width: 3, join: 'round' }
 };
 
 
@@ -66,19 +62,19 @@ export class PixiLayerLabels extends AbstractLayer {
     groupContainer.eventMode = 'none';
 
     const labelOriginContainer = new PIXI.Container();
-    labelOriginContainer.name = 'labelorigin';
+    labelOriginContainer.label= 'labelorigin';
     labelOriginContainer.eventMode = 'none';
     this.labelOriginContainer = labelOriginContainer;
 
     const debugContainer = new PIXI.Container();  //PIXI.ParticleContainer(50000);
-    debugContainer.name = 'debug';
+    debugContainer.label= 'debug';
     debugContainer.eventMode = 'none';
     debugContainer.roundPixels = false;
     debugContainer.sortableChildren = false;
     this.debugContainer = debugContainer;
 
     const labelContainer = new PIXI.Container();
-    labelContainer.name = 'labels';
+    labelContainer.label= 'labels';
     labelContainer.eventMode = 'none';
     labelContainer.sortableChildren = true;
     this.labelContainer = labelContainer;
@@ -93,14 +89,16 @@ export class PixiLayerLabels extends AbstractLayer {
     // These Maps store "Boxes" which are indexed in the label placement RBush.
     // We store them in several maps because some features (like vertices)
     // can be both an avoidance but also have a label placed by it.
-    this._avoidBoxes = new Map();   // Map (featureID -> Array[avoid Boxes] )
-    this._labelBoxes = new Map();   // Map (featureID -> Array[label Boxes] )
+    this._avoidBoxes = new Map();   // Map<featureID, Array[avoid Boxes] >
+    this._labelBoxes = new Map();   // Map<featureID, Array[label Boxes] >
 
     // After working out the placement math, we don't automatically render display objects,
     // since many objects would get placed far offscreen.
-    this._labels = new Map();    // Map (labelID -> Label Object)
+    this._labels = new Map();      // Map<labelID, Label Object>
     // Display Objects includes anything managed by this layer: labels and debug boxes
-    this._dObjs = new Map();     // Map (dObjID -> Display Object)
+    this._dObjs = new Map();       // Map<dObjID, Display Object>
+    // Keep track of textures that we've allocated
+    this._textureIDs = new Map();  // Map<string, textureID>
 
     // We reset the labeling when scale or rotation change
     this._tPrev = { x: 0, y: 0, k: 256 / Math.PI, r: 0 };
@@ -108,13 +106,23 @@ export class PixiLayerLabels extends AbstractLayer {
     this._labelOffset = new PIXI.Point();
 
     // For ascii-only labels, we can use PIXI.BitmapText to avoid generating label textures
-    PIXI.BitmapFont.from('label-normal', TEXT_NORMAL, { chars: PIXI.BitmapFont.ASCII, padding: 0, resolution: 2 });
+    PIXI.BitmapFont.install({
+      name: 'label-normal',
+      style: TEXTSTYLE_NORMAL,
+      chars: PIXI.BitmapFontManager.ASCII,
+      resolution: 2
+    });
     // not actually used
-    // PIXI.BitmapFont.from('label-italic', TEXT_ITALIC, { chars: PIXI.BitmapFont.ASCII, padding: 0, resolution: 2 });
+    // PIXI.BitmapFont.install({
+    //   name: 'label-italic',
+    //   style: TEXTSTYLE_ITALIC,
+    //   chars: PIXI.BitmapFontManager.ASCII,
+    //   resolution: 2
+    // });
 
     // For all other labels, generate it on the fly in a PIXI.Text or PIXI.Sprite
-    this._textStyleNormal = new PIXI.TextStyle(TEXT_NORMAL);
-    this._textStyleItalic = new PIXI.TextStyle(TEXT_ITALIC);
+    this._textStyleNormal = new PIXI.TextStyle(TEXTSTYLE_NORMAL);
+    this._textStyleItalic = new PIXI.TextStyle(TEXTSTYLE_ITALIC);
   }
 
 
@@ -129,10 +137,11 @@ export class PixiLayerLabels extends AbstractLayer {
     this.debugContainer.removeChildren();
 
     for (const dObj of this._dObjs.values()) {
-      dObj.destroy({ children: true, texture: false, baseTexture: false });
+      dObj.destroy();
     }
     for (const label of this._labels.values()) {
       label.dObjID = null;
+//textures freed by `renderObjects()` for now
 //      if (textureManager.get('text', label.str)) {
 //        textureManager.free('text', label.str);
 //      }
@@ -186,6 +195,10 @@ export class PixiLayerLabels extends AbstractLayer {
       if (label?.dObjID)  {
         dObjIDs.add(label.dObjID);
         label.dObjID = null;
+//textures freed by `renderObjects()` for now
+//      if (textureManager.get('text', label.str)) {
+//        textureManager.free('text', label.str);
+//      }
       }
       this._labels.delete(labelID);
     }
@@ -194,7 +207,7 @@ export class PixiLayerLabels extends AbstractLayer {
     for (const dObjID of dObjIDs) {
       const dObj = this._dObjs.get(dObjID);
       if (dObj) {
-        dObj.destroy({ children: true, texture: false, baseTexture: false });
+        dObj.destroy();
       }
       this._dObjs.delete(dObjID);
     }
@@ -236,8 +249,8 @@ export class PixiLayerLabels extends AbstractLayer {
 
       // The label container should be kept unrotated so that it stays screen-up not north-up.
       // We need to counter the effects of the 'stage' and 'origin' containers that we are underneath.
-      const stage = this.renderer.stage.position;
-      const origin = this.renderer.origin.position;
+      const stage = this.gfx.stage.position;
+      const origin = this.gfx.origin.position;
       const bearing = viewport.transform.rotation;
 
       // Determine the difference between the global/screen coordinate system (where [0,0] is top left)
@@ -245,7 +258,7 @@ export class PixiLayerLabels extends AbstractLayer {
       // We need to save this labeloffset for use elsewhere, it is the basis for having a consistent coordinate
       // system to track labels to place and objects to avoid. (we apply it to values we get from `getBounds`)
       const labelOffset = this._labelOffset;
-      this.renderer.origin.toGlobal({ x: 0, y: 0 }, labelOffset);
+      this.gfx.origin.toGlobal({ x: 0, y: 0 }, labelOffset);
 
       const groupContainer = this.scene.groups.get('labels');
       groupContainer.position.set(-origin.x, -origin.y);     // undo origin - [0,0] is now center
@@ -295,10 +308,9 @@ export class PixiLayerLabels extends AbstractLayer {
    */
   getLabelSprite(str, style = 'normal') {
     const textureID = `${str}-${style}`;
-    const textureManager = this.renderer.textures;
+    const textureManager = this.gfx.textures;
 
     let texture = textureManager.getTexture('text', textureID);
-
     if (!texture) {
       // Add some extra padding if we detect unicode combining marks in the text - see Rapid#653
       let pad = 0;
@@ -308,39 +320,18 @@ export class PixiLayerLabels extends AbstractLayer {
 
       let textStyle;
       if (pad) {   // make a new style
-        const props = Object.assign({}, (style === 'normal' ? TEXT_NORMAL : TEXT_ITALIC), { padding: pad });
-        textStyle = new PIXI.TextStyle(props);
+        const opts = Object.assign({}, (style === 'normal' ? TEXTSTYLE_NORMAL : TEXTSTYLE_ITALIC), { padding: pad });
+        textStyle = new PIXI.TextStyle(opts);
       } else {     // use a cached style
         textStyle = (style === 'normal' ? this._textStyleNormal : this._textStyleItalic);
       }
 
-      // Generate the Text
-      const text = new PIXI.Text(str, textStyle);
-      text.resolution = 2;
-      text.updateText(false);  // force update it so the texture is prepared
-
-      // Copy the texture data into the atlas.
-      // Also remove x-padding, as this will only end up pushing the label away from the pin.
-      // (We are mostly interested in y-padding diacritics, see Rapid#653)
-      // Note: Whatever padding we set before got doubled because resolution = 2
-      const [x, y] = [pad * 2, 0];
-      const [w, h] = [text.canvas.width - (pad * 4), text.canvas.height];
-      const data = text.context.getImageData(x, y, w, h);
-
-      texture = textureManager.allocate('text', textureID, w, h, data);
-
-      // These textures are overscaled, but `orig` Rectangle stores the original width/height
-      // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
-      // We need to manually adjust these values so that the Sprites or Ropes know how big to be.
-      texture.orig = text.texture.orig.clone();
-      texture.orig.width = w / 2;
-      texture.orig.height = h / 2;
-
-      text.destroy();  // safe to destroy, the texture is copied to the atlas
+      texture = textureManager.textToTexture(textureID, str, textStyle);
+      this._textureIDs.set(str, textureID);
     }
 
-    const sprite = new PIXI.Sprite(texture);
-    sprite.name = str;
+    const sprite = new PIXI.Sprite({ texture: texture });
+    sprite.label = str;
     sprite.anchor.set(0.5, 0.5);   // middle, middle
     return sprite;
   }
@@ -360,7 +351,7 @@ export class PixiLayerLabels extends AbstractLayer {
     const avoidContainers = [];
 
     const mapUIContainer = this.scene.layers.get('map-ui').container;
-    const selectedContainer = mapUIContainer.getChildByName('selected');
+    const selectedContainer = mapUIContainer.getChildByLabel('selected');
     if (selectedContainer) {
       avoidContainers.push(selectedContainer);
     }
@@ -385,14 +376,14 @@ export class PixiLayerLabels extends AbstractLayer {
     // Adds the given display object as an avoidance
     function _avoidObject(sourceObject) {
       if (!sourceObject.visible || !sourceObject.renderable) return;
-      const featureID = sourceObject.name;
+      const featureID = sourceObject.label;
       if (this._avoidBoxes.has(featureID)) return;  // we've processed this avoidance already
 
       // The rectangle is in global/screen coordinates (where [0,0] is top left).
       // To work in a coordinate system that is consistent, remove the label offset.
       // If we didn't do this, as the user pans or rotates the map, the objects that leave
       // and re-enter the scene would end up with different coordinates each time!
-      const fRect = sourceObject.getBounds();
+      const fRect = sourceObject.getBounds().rectangle;
       fRect.x -= this._labelOffset.x;
       fRect.y -= this._labelOffset.y;
 
@@ -451,16 +442,24 @@ export class PixiLayerLabels extends AbstractLayer {
 
       let labelObj;
       if (/^[\x20-\x7E]*$/.test(feature.label)) {   // is it in the printable ASCII range?
-        labelObj = new PIXI.BitmapText(feature.label, { fontName: 'label-normal' });
-        labelObj.updateText();           // force update it so its texture is ready to be reused on a sprite
-        labelObj.name = feature.label;
-        // labelObj.anchor.set(0.5, 0.5);   // middle, middle
-        labelObj.anchor.set(0.5, 1);     // middle, bottom  - why??
+        labelObj = new PIXI.BitmapText({
+          text: feature.label,
+          resolution: 2,
+          style: {
+            fontFamily: 'label-normal',
+            fontSize: 12
+          }
+        });
+        labelObj.label = feature.label;
+        labelObj.anchor.set(0.5, 0.5);   // middle, middle
+
       } else {
         labelObj = this.getLabelSprite(feature.label, 'normal');
       }
 
-      this.placeTextLabel(feature, labelObj);
+      if (labelObj) {
+        this.placeTextLabel(feature, labelObj);
+      }
     }
   }
 
@@ -476,7 +475,7 @@ export class PixiLayerLabels extends AbstractLayer {
     // It might be a level container with a name like "1", "-1", or just a name like "lines"
     // If `parseInt` fails, just sort the label above everything.
     function level(feature) {
-      const lvl = parseInt(feature.container.parent.name, 10);
+      const lvl = parseInt(feature.container.parent.label, 10);
       return isNaN(lvl) ? 999 : lvl;
     }
 
@@ -494,7 +493,6 @@ export class PixiLayerLabels extends AbstractLayer {
       if (feature.geometry.width < 40 && feature.geometry.height < 40) continue;    // too small
 
       const labelObj = this.getLabelSprite(feature.label, 'normal');
-
       this.placeRopeLabel(feature, labelObj, feature.geometry.coords);
     }
   }
@@ -526,8 +524,8 @@ const hitStyle = {
   color: 0x0,
   width: 24,
   alpha: 1.0,
-  join: PIXI.LINE_JOIN.BEVEL,
-  cap: PIXI.LINE_CAP.BUTT
+  join: 'bevel',
+  cap: 'butt'
 };
 const bufferdata = lineToPoly(feature.geometry.flatOuter, hitStyle);
 if (!bufferdata.inner) continue;
@@ -677,7 +675,7 @@ this.placeRopeLabel(feature, labelObj, coords);
     }
 
 //    if (!picked) {
-//      labelObj.destroy({ children: true });  // didn't place it
+//      labelObj.destroy();  // didn't place it
 //    }
   }
 
@@ -719,11 +717,11 @@ this.placeRopeLabel(feature, labelObj, coords);
 
 
     // Convert from original projected coords to global coords..
-    const origin = this.renderer.origin;
+    const origin = this.gfx.origin;
     const labelOffset = this._labelOffset;
     const temp = new PIXI.Point();
     const coords = origCoords.map(([x, y]) => {
-      origin.toGlobal({x: x, y: y}, temp, true /* skip updates ok? - we called toGlobal already */);
+      origin.toGlobal({x: x, y: y}, temp);
       return [temp.x - labelOffset.x, temp.y - labelOffset.y];
     });
 
@@ -857,7 +855,7 @@ this.placeRopeLabel(feature, labelObj, coords);
     });
 
     // we can destroy the sprite now, it's texture will remain on the rope?
-    // sprite.destroy({ children: true });
+    // sprite.destroy();
   }
 
 
@@ -866,10 +864,8 @@ this.placeRopeLabel(feature, labelObj, coords);
    * This renders any of the Label objects in the view
    */
   renderObjects() {
-    const context = this.context;
-
     // Get the display bounds in screen/global coordinates
-    const screen = context.pixi.screen;
+    const screen = this.gfx.pixi.screen;
     const labelOffset = this._labelOffset;
     const screenBounds = {
       minX: screen.x - labelOffset.x,
@@ -880,6 +876,7 @@ this.placeRopeLabel(feature, labelObj, coords);
 
     // Collect Labels in view
     const labelIDs = new Set();
+    const seenTextures = new Set();
     const visible = this._rbush.search(screenBounds);
     for (const box of visible) {
       if (box.labelID) {
@@ -891,9 +888,11 @@ this.placeRopeLabel(feature, labelObj, coords);
     for (const labelID of labelIDs) {
       const label = this._labels.get(labelID);
       if (!label) continue;         // unknown labelID - shouldn't happen?
-      if (label.dObjID) continue;   // done already
 
       const options = label.options;
+      seenTextures.add(options.str);
+
+      if (label.dObjID) continue;   // The label was created already
       const dObjID = labelID;
 
       if (label.type === 'text') {
@@ -908,8 +907,8 @@ this.placeRopeLabel(feature, labelObj, coords);
       } else if (label.type === 'rope') {
         const labelObj = options.labelObj;  // a PIXI.Sprite, or PIXI.Text
         const points = options.coords.map(([x,y]) => new PIXI.Point(x, y));
-        const rope = new PIXI.SimpleRope(labelObj.texture, points);
-        rope.name = labelID;
+        const rope = new PIXI.MeshRope({ texture: labelObj.texture, points: points });
+        rope.label = labelID;
         rope.autoUpdate = false;
         rope.sortableChildren = false;
         rope.tint = options.tint || 0xffffff;
@@ -917,6 +916,16 @@ this.placeRopeLabel(feature, labelObj, coords);
         this._dObjs.set(dObjID, rope);
         label.dObjID = dObjID;
         this.labelContainer.addChild(rope);
+      }
+    }
+
+    // Cleanup label textures not visible in the scene anymore.
+    // (Otherwise the text atlas will just keep growing)
+    const textureManager = this.gfx.textures;
+    for (const [str, textureID] of this._textureIDs) {
+      if (!seenTextures.has(str)) {
+        textureManager.free('text', textureID);
+        this._textureIDs.delete(str);
       }
     }
   }

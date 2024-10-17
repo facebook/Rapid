@@ -1,16 +1,23 @@
 describe('KartaviewService', () => {
   let _kartaview;
 
+  class MockGfxSystem {
+    constructor()     {}
+    deferredRedraw()  {}
+    immediateRedraw() {}
+  }
+
   class MockContext {
     constructor() {
-      this.systems = { };
+      this.systems = {
+        gfx: new MockGfxSystem()
+      };
 
       this.viewport = new Rapid.sdk.Viewport();
       this.viewport.transform = { x: -116508, y: 0, k: Rapid.sdk.geoZoomToScale(14) };  // [10°, 0°]
       this.viewport.dimensions = [64, 64];
     }
-    container()       { return null; }
-    deferredRedraw()  { }
+    container() { return null; }
   }
 
 

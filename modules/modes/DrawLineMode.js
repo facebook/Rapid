@@ -111,7 +111,7 @@ export class DrawLineMode extends AbstractMode {
     this._lastPoint = null;
     this._selectedData.clear();
 
-    const eventManager = context.systems.map.renderer.events;
+    const eventManager = context.systems.gfx.events;
     eventManager.setCursor('crosshair');
 
     context.enableBehaviors(['hover', 'draw', 'mapInteraction', 'mapNudge']);
@@ -165,9 +165,9 @@ export class DrawLineMode extends AbstractMode {
 
     const context = this.context;
     const editor = context.systems.editor;
-    const map = context.systems.map;
-    const layer = map.scene.layers.get('osm');
-    const eventManager = map.renderer.events;
+    const gfx = context.systems.gfx;
+    const layer = gfx.scene.layers.get('osm');
+    const eventManager = gfx.events;
 
     eventManager.setCursor('grab');
 
@@ -235,8 +235,8 @@ export class DrawLineMode extends AbstractMode {
   _refreshEntities() {
     const context = this.context;
     const editor = context.systems.editor;
-    const map = context.systems.map;
-    const layer = map.scene.layers.get('osm');
+    const gfx = context.systems.gfx;
+    const layer = gfx.scene.layers.get('osm');
 
     layer.clearClass('drawing');
     this._selectedData.clear();
@@ -403,7 +403,7 @@ export class DrawLineMode extends AbstractMode {
 
     if (locations.blocksAt(loc).length) return;   // editing is blocked here
 
-    const eventManager = context.systems.map.renderer.events;
+    const eventManager = context.systems.gfx.events;
     eventManager.setCursor('crosshair');
 
     let graph = editor.staging.graph;
@@ -813,7 +813,7 @@ export class DrawLineMode extends AbstractMode {
     const context = this.context;
     const editor = context.systems.editor;
     const graph = editor.staging.graph;
-    const eventManager = context.systems.map.renderer.events;
+    const eventManager = context.systems.gfx.events;
 
     const target = eventData.target;
     const datum = target?.data;

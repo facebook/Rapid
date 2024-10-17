@@ -7,10 +7,10 @@ import { utilDetect } from '../util/detect.js';
 import {
   uiAccount, uiAttribution, uiBearing, uiContributors, UiDefs, uiEditMenu,
   /* uiFeatureInfo,*/ uiFlash, uiFullScreen, uiGeolocate, uiIcon,
-  uiInfo, uiIntro, uiIssuesInfo, uiLoading, uiMapInMap,
+  uiInfo, uiIntro, uiIssuesInfo, uiLoading, UiMapInMap,
   uiMap3dViewer, UiPhotoViewer, uiRapidServiceLicense,
-  uiSplash, uiRestore, uiScale, uiShortcuts,
-  UiSidebar, uiSourceSwitch, uiSpinner, uiStatus, uiTooltip,
+  uiSplash, uiRestore, uiScale, uiShortcuts, UiSidebar,
+  uiSourceSwitch, UiSpector, uiSpinner, uiStatus, uiTooltip,
   uiTopToolbar, uiVersion, uiWhatsNew, uiZoom, uiZoomToSelection
 } from '../ui/index.js';
 
@@ -34,21 +34,23 @@ export class UiSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'ui';
-    this.dependencies = new Set(['editor', 'imagery', 'l10n', 'map', 'storage', 'urlhash']);
+    this.dependencies = new Set(['editor', 'gfx', 'imagery', 'l10n', 'map', 'storage', 'urlhash']);
 
     this.authModal = null;
     this.defs = null;
-    this.flash = null;
     this.editMenu = null;
+    this.flash = null;
     this.info = null;
-    this.sidebar = null;
+    this.mapInMap = null;
     this.photoviewer = null;
     this.shortcuts = null;
+    this.sidebar = null;
+    this.spector = null;
 
     this._firstRender = true;
     this._needWidth = {};
-    this._startPromise = null;
     this._initPromise = null;
+    this._startPromise = null;
     this._resizeTimeout = null;
 
     this._mapRect = null;
@@ -88,12 +90,14 @@ export class UiSystem extends AbstractSystem {
         // After l10n is ready we can make these
         this.authModal = uiLoading(context).blocking(true).message(l10n.t('loading_auth'));
         this.defs = new UiDefs(context);
-        this.flash = uiFlash(context);
         this.editMenu = uiEditMenu(context);
+        this.flash = uiFlash(context);
         this.info = uiInfo(context);
-        this.sidebar = new UiSidebar(context);
+        this.mapInMap = new UiMapInMap(context);
         this.photoviewer = new UiPhotoViewer(context);
         this.shortcuts = uiShortcuts(context);
+        this.sidebar = new UiSidebar(context);
+        this.spector = new UiSpector(context);
 
         const osm = context.services.osm;
         if (osm) {
@@ -177,6 +181,9 @@ export class UiSystem extends AbstractSystem {
    * @param container - d3-selection to the container we are rendering Rapid in
    */
   render(container) {
+    // For now, this should only happen once
+    if (this._started) return;
+
     const context = this.context;
     const l10n = context.systems.l10n;
     const lang = l10n.localeCode();
@@ -190,7 +197,9 @@ export class UiSystem extends AbstractSystem {
     container
       .call(uiFullScreen(context));
 
-    map.pause();  // don't draw until we've set zoom/lat/long
+    // Sidebar
+    container
+      .call(this.sidebar.render);
 
     container.selectAll('#rapid-defs')
       .data([0])
@@ -198,10 +207,6 @@ export class UiSystem extends AbstractSystem {
       .append('svg')
       .attr('id', 'rapid-defs')
       .call(this.defs.render);
-
-    // Sidebar
-    container
-      .call(this.sidebar.render);
 
 
     // main-content
@@ -219,7 +224,6 @@ export class UiSystem extends AbstractSystem {
     contentEnter
       .append('div')
       .attr('class', 'main-map')
-      // .attr('dir', 'ltr')
       .call(map.render);
 
     // Top toolbar
@@ -246,7 +250,7 @@ export class UiSystem extends AbstractSystem {
       .text('t');
 
     overMapEnter
-      .call(uiMapInMap(context));
+      .call(this.mapInMap.render);
 
     overMapEnter
       .call(uiMap3dViewer(context));
@@ -255,6 +259,9 @@ export class UiSystem extends AbstractSystem {
       .append('div')
       .attr('class', 'spinner')
       .call(uiSpinner(context));
+
+    overMapEnter
+      .call(this.spector.render);
 
 
     // Map controls
@@ -319,6 +326,10 @@ export class UiSystem extends AbstractSystem {
       .call(this.info);
 
     overMapEnter
+      .append('div')
+      .attr('class', 'photoviewer')
+      .classed('al', true)       // 'al'=left,  'ar'=right
+      .classed('hide', true)
       .call(this.photoviewer.render);
 
     overMapEnter
@@ -420,11 +431,9 @@ export class UiSystem extends AbstractSystem {
     container
       .call(this.shortcuts);
 
-
-    // Setup map dimensions, and allow rendering..
+    // Setup map dimensions
     // This should happen after .main-content and toolbars exist.
     this.resize();
-    map.resume();
 
 
     // On first render only, enter browse mode and show a startup screen.
@@ -642,7 +651,7 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
     this.editMenu.close();   // remove any displayed menu
 
     const context = this.context;
-    const map = context.systems.map;
+    const gfx = context.systems.gfx;
     const viewport = context.viewport;
 
     // The mode decides which operations are available
@@ -652,9 +661,9 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
 
     // Focus the surface, otherwise clicking off the menu may not trigger browse mode
     // (bhousel - I don't know whether this is needed anymore in 2024)
-    const surfaceNode = context.surface().node();
-    if (surfaceNode.focus) {   // FF doesn't support it
-      surfaceNode.focus();
+    const surface = gfx.surface;
+    if (surface.focus) {   // FF doesn't support it
+      surface.focus();
     }
 
     for (const operation of operations) {
@@ -669,7 +678,8 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
       .operations(operations);
 
     // render the menu
-    map.overlay.call(this.editMenu);
+    const $overlay = d3_select(gfx.overlay);
+    $overlay.call(this.editMenu);
   }
 
 
@@ -680,17 +690,18 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
    */
   redrawEditMenu() {
     const context = this.context;
-    const map = context.systems.map;
+    const gfx = context.systems.gfx;
+    const $overlay = d3_select(gfx.overlay);
 
     // If the menu isn't showing, there's nothing to do
-    if (map.overlay.selectAll('.edit-menu').empty()) return;
+    if ($overlay.selectAll('.edit-menu').empty()) return;
 
     // The mode decides which operations are available
     const operations = context.mode?.operations ?? [];
 
     if (operations.length && context.editable()) {
       this.editMenu.operations(operations);
-      map.overlay.call(this.editMenu);   // redraw it
+      $overlay.call(this.editMenu);   // redraw it
     } else {
       this.editMenu.close();
     }

@@ -1,8 +1,8 @@
 import * as PIXI from 'pixi.js';
-import { DashLine } from '@rapideditor/pixi-dashed-line';
 import { GlowFilter } from 'pixi-filters';
 
 import { AbstractFeature } from './AbstractFeature.js';
+import { DashLine } from './lib/DashLine.js';
 
 
 /**
@@ -35,14 +35,14 @@ export class PixiFeaturePoint extends AbstractFeature {
     this._isCircular = false;   // set true to use a circular halo and hit area
 
     const marker = new PIXI.Sprite();
-    marker.name = 'marker';
+    marker.label = 'marker';
     marker.eventMode = 'none';
     marker.sortableChildren = false;
     marker.visible = true;
     this.marker = marker;
 
     const icon = new PIXI.Sprite();
-    icon.name = 'icon';
+    icon.label = 'icon';
     icon.eventMode = 'none';
     icon.sortableChildren = false;
     icon.visible = false;
@@ -60,10 +60,20 @@ export class PixiFeaturePoint extends AbstractFeature {
    * Do not use the Feature after calling `destroy()`.
    */
   destroy() {
+    if (this.marker) {
+      this.marker.destroy();
+      this.marker = null;
+    }
+    if (this.icon) {
+      this.icon.destroy();
+      this.icon = null;
+    }
+    if (this.viewfields) {
+      this.viewfields.destroy({ children: true });
+      this.viewfields = null;
+    }
+
     super.destroy();
-    this.marker = null;
-    this.icon = null;
-    this.viewfields = null;
   }
 
 
@@ -122,7 +132,7 @@ export class PixiFeaturePoint extends AbstractFeature {
 
     const context = this.context;
     const wireframeMode = context.systems.map.wireframeMode;
-    const textureManager = this.renderer.textures;
+    const textureManager = this.gfx.textures;
     const style = this._style;
     const isPin = ['pin', 'boldPin', 'osmose'].includes(style.markerName);
 
@@ -171,7 +181,7 @@ export class PixiFeaturePoint extends AbstractFeature {
       // Ensure viewfield container exists
       if (!this.viewfields) {
         this.viewfields = new PIXI.Container();
-        this.viewfields.name = 'viewfields';
+        this.viewfields.label = 'viewfields';
         this.viewfields.eventMode = 'none';
         this.viewfields.sortableChildren = false;
         this.viewfields.visible = true;
@@ -283,7 +293,9 @@ export class PixiFeaturePoint extends AbstractFeature {
 
     // Recalculate hitArea, grow it if too small
     const MINSIZE = 20;
-    const rect = this.marker.getLocalBounds().clone();
+    // In v8, getLocalBounds now returns a Bounds, not a Rectangle.
+    // The Rectangle is wrapped within the bounds object.
+    const rect = this.marker.getLocalBounds().rectangle.clone();
 
     if (this._isCircular) {
       let radius = rect.width / 2;
@@ -341,7 +353,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     if (showSelect) {
       if (!this.halo) {
         this.halo = new PIXI.Graphics();
-        this.halo.name = `${this.id}-halo`;
+        this.halo.label = `${this.id}-halo`;
         const mapUIContainer = this.scene.layers.get('map-ui').container;
         mapUIContainer.addChild(this.halo);
       }
@@ -356,10 +368,11 @@ export class PixiFeaturePoint extends AbstractFeature {
       this.halo.clear();
 
       const shape = this.container.hitArea;
+      const dl = new DashLine(this.halo, HALO_STYLE);
       if (shape instanceof PIXI.Circle) {
-        new DashLine(this.halo, HALO_STYLE).drawCircle(shape.x, shape.y, shape.radius, 20);
+        dl.circle(shape.x, shape.y, shape.radius, 20);
       } else if (shape instanceof PIXI.Rectangle) {
-        new DashLine(this.halo, HALO_STYLE).drawRect(shape.x, shape.y, shape.width, shape.height);
+        dl.rect(shape.x, shape.y, shape.width, shape.height);
       }
 
       this.halo.position = this.container.position;
@@ -367,7 +380,7 @@ export class PixiFeaturePoint extends AbstractFeature {
 
     } else {
       if (this.halo) {
-        this.halo.destroy({ children: true });
+        this.halo.destroy();
         this.halo = null;
       }
     }

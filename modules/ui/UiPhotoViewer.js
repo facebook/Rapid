@@ -1,4 +1,4 @@
-import { EventEmitter } from '@pixi/utils';
+import { EventEmitter } from 'pixi.js';
 import { numClamp } from '@rapid-sdk/math';
 import { select as d3_select } from 'd3-selection';
 

@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js';
-import { DashLine } from '@rapideditor/pixi-dashed-line';
 import { GlowFilter } from 'pixi-filters';
-import { /* geomRotatePoints,*/ vecEqual, vecLength /*, vecSubtract */ } from '@rapid-sdk/math';
+import { vecEqual, vecLength } from '@rapid-sdk/math';
 
 import { AbstractFeature } from './AbstractFeature.js';
-import { flatCoordsToPoints, lineToPoly } from './helpers.js';
+import { DashLine } from './lib/DashLine.js';
+import { lineToPoly } from './helpers.js';
 
 const PARTIALFILLWIDTH = 32;
 
@@ -35,43 +35,48 @@ export class PixiFeaturePolygon extends AbstractFeature {
 
     this.type = 'polygon';
     this._ssrdata = null;
+    this._bufferdata = null;
 
     const lowRes = new PIXI.Sprite();
-    lowRes.name = 'lowRes';
+    lowRes.label = 'lowRes';
     lowRes.anchor.set(0.5, 0.5);  // middle, middle
-    lowRes.visible = false;
+    lowRes.interactive = false;
     lowRes.eventMode = 'static';
+    lowRes.visible = false;
     this.lowRes = lowRes;
 
     const fill = new PIXI.Graphics();
-    fill.name = 'fill';
+    fill.label = 'fill';
     fill.eventMode = 'static';
     fill.sortableChildren = false;
+    fill.visible = false;
     this.fill = fill;
 
-    const stroke = new PIXI.Graphics();
-    stroke.name = 'stroke';
-    stroke.eventMode = 'none';
-    stroke.sortableChildren = false;
-    this.stroke = stroke;
-
-    // When partially filling areas: we really want to define the mask as a line
-    // drawn within the inside of the area shape.  Graphics defined as a line
+    // When partially filling areas: we really want to define the mask as a stroke
+    // drawn within the inside of the area shape.  Graphics defined as a stroke
     // _can_ be used as a mask, but they do not participate in hit testing!
+    // (note: in pixi v8 they now do, but they don't yet respect the `alignment` property)
     // So we'll create the mask graphic and then copy its attributes into a mesh
     // which _does_ hit test properly.
-    // (Ignore the default MeshMaterial - it won't be drawn anyway, it's a mask.)
-    const mask = new PIXI.Mesh(null, new PIXI.MeshMaterial(PIXI.Texture.WHITE));
-    mask.name = 'mask';
+    const mask = new PIXI.Mesh({ geometry: new PIXI.MeshGeometry() });
+    mask.label = 'mask';
     mask.eventMode = 'static';
     mask.visible = false;
     this.mask = mask;
+    this.maskSource = new PIXI.Graphics();  // not added to scene
 
-    this.container.addChild(lowRes, fill, stroke, mask);
+    const strokes = new PIXI.Container();
+    strokes.label = 'strokes';
+    strokes.eventMode = 'static';
+    strokes.sortableChildren = false;
+    strokes.visible = false;
+    this.strokes = strokes;
+
+    this.container.addChild(lowRes, fill, mask, strokes);
 
     // Debug SSR
     // const debugSSR = new PIXI.Graphics();
-    // debugSSR.name = 'ssr';
+    // debugSSR.label = 'ssr';
     // debugSSR.eventMode = 'none';
     // debugSSR.sortableChildren = false;
     // this.debugSSR = debugSSR;
@@ -85,25 +90,35 @@ export class PixiFeaturePolygon extends AbstractFeature {
    * Do not use the Feature after calling `destroy()`.
    */
   destroy() {
+    if (this.lowRes) {
+      this.lowRes.destroy();
+      this.lowRes = null;
+    }
+    if (this.fill) {
+      this.fill.destroy();
+      this.fill = null;
+    }
+    if (this.mask) {
+      this.mask.destroy();
+      this.mask = null;
+    }
+    if (this.maskSource) {
+      this.maskSource.destroy();
+      this.maskSource = null;
+    }
+    if (this.strokes) {
+      this.strokes.destroy({ children: true });
+      this.strokes = null;
+    }
+    if (this.debugSSR) {
+      this.debugSSR.destroy();
+      this.debugSSR = null;
+    }
+
+    this._ssrdata = null;
+    this._bufferdata = null;
+
     super.destroy();
-    this.lowRes = null;
-    this.fill = null;
-    this.mask = null;
-    // this.debugSSR = null;
-
-    if (this._ssrdata) {
-      delete this._ssrdata.ssr;
-      delete this._ssrdata.origSsr;
-      delete this._ssrdata.origAxis1;
-      delete this._ssrdata.origAxis2;
-      delete this._ssrdata.origCenter;
-      delete this._ssrdata.shapeType;
-      this._ssrdata = null;
-    }
-
-    if (this._bufferdata) {
-      this._bufferdata = null;
-    }
   }
 
 
@@ -117,7 +132,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
 
     const context = this.context;
     const storage = context.systems.storage;
-    const wireframeMode = context.systems.map.wireframeMode;
+    const isWireframeMode = context.systems.map.wireframeMode;
     const bearing = context.viewport.transform.rotation;
 
     //
@@ -173,24 +188,6 @@ export class PixiFeaturePolygon extends AbstractFeature {
           shapeType: (cornersInSSR ? 'square' : 'circle')
         };
       }
-
-      // Redo line buffer
-      this._bufferdata = null;
-
-      // We use the buffer to draw the halo, also as the hit area when in wireframe mode
-      if (this.geometry.flatOuter) {  // no points?
-        // for now, just copy what PixiFeatureLine does
-        const bufferStyle = {
-          alignment: 0.5,  // middle of line
-          color: 0x0,
-          width: 16,  // px
-          alpha: 1.0,
-          join: PIXI.LINE_JOIN.BEVEL,
-          cap: PIXI.LINE_CAP.BUTT
-        };
-
-        this._bufferdata = lineToPoly(this.geometry.flatOuter, bufferStyle);
-      }
     }
 
     // Calculate bounds
@@ -207,26 +204,31 @@ export class PixiFeaturePolygon extends AbstractFeature {
     // STYLE
     //
     const style = this._style;
-    const textureManager = this.renderer.textures;
-    const color = style.fill.color || 0xaaaaaa;
-    const alpha = style.fill.alpha || 0.3;
+    const textureManager = this.gfx.textures;
+    const color = style.fill.color ?? 0xaaaaaa;
+    const alpha = style.fill.alpha ?? 0.3;
     const pattern = style.fill.pattern;
     const dash = style.stroke.dash || null;
 
+    const lowRes = this.lowRes;
+    const fill = this.fill;
+    const mask = this.mask;
+    const maskSource = this.maskSource;
+    const strokes = this.strokes;
+
     let texture = pattern && textureManager.getPatternTexture(pattern) || PIXI.Texture.WHITE;    // WHITE turns off the texture
     const textureMatrix = new PIXI.Matrix().rotate(-bearing);  // keep patterns face up
-    let shape;
 // bhousel update 5/27/22:
 // I've noticed that we can't use textures from a spritesheet for patterns,
 // and it would be nice to figure out why
 
     const fillstyle = storage.getItem('area-fill') ?? 'partial';
-    let doPartialFill = !style.requireFill && (fillstyle === 'partial');
+    let doFullFill = style.requireFill || (fillstyle === 'full');
 
     // If this shape is so small that partial filling makes no sense, fill fully (faster?)
     const cutoff = (2 * PARTIALFILLWIDTH) + 5;
     if (w < cutoff || h < cutoff) {
-      doPartialFill = false;
+      doFullFill = true;
     }
     // If this shape is so small that texture filling makes no sense, skip it (faster?)
 // bhousel update 5/27/22:
@@ -242,22 +244,22 @@ export class PixiFeaturePolygon extends AbstractFeature {
     if (w < 4 && h < 4) {  // so tiny
       this.lod = 0;  // off
       this.visible = false;
-      this.fill.visible = false;
-      this.stroke.visible = false;
-      this.mask.visible = false;
-      this.lowRes.visible = false;
+      lowRes.visible = false;
+      fill.visible = false;
+      mask.visible = false;
+      strokes.visible = false;
 
     // Very small, swap with lowRes sprite
     } else if (this._ssrdata && (w < 20 && h < 20)) {
       this.lod = 1;  // simplified
       this.visible = true;
-      const ssrdata = this._ssrdata;
-      this.fill.visible = false;
-      this.stroke.visible = false;
-      this.mask.visible = false;
-      this.lowRes.visible = true;
+      lowRes.visible = true;
+      fill.visible = false;
+      mask.visible = false;
+      strokes.visible = false;
 
-      const filling = wireframeMode ? '-unfilled' : '';
+      const ssrdata = this._ssrdata;
+      const filling = isWireframeMode ? '-unfilled' : '';
       const textureName = `lowres${filling}-${ssrdata.shapeType}`;
       const [x, y] = viewport.project(ssrdata.origCenter);
       const rotation = ssrdata.ssr.angle;
@@ -266,125 +268,140 @@ export class PixiFeaturePolygon extends AbstractFeature {
       const w = vecLength(axis1[0], axis1[1]);
       const h = vecLength(axis2[0], axis2[1]);
 
-      this.lowRes.texture = textureManager.get(textureName) || PIXI.Texture.WHITE;
-      this.lowRes.position.set(x, y);
-      this.lowRes.scale.set(w / 10, h / 10);   // our sprite is 10x10
-      this.lowRes.rotation = rotation;
-      this.lowRes.tint = color;
+      lowRes.texture = textureManager.get(textureName) || PIXI.Texture.WHITE;
+      lowRes.position.set(x, y);
+      lowRes.scale.set(w / 10, h / 10);   // our sprite is 10x10
+      lowRes.rotation = rotation;
+      lowRes.tint = color;
 
     } else {
       this.lod = 2;  // full
       this.visible = true;
-      this.fill.visible = true;
-      this.stroke.visible = true;
-      this.lowRes.visible = false;
-
-      shape = {
-        outer: new PIXI.Polygon(this.geometry.flatOuter),
-        holes: (this.geometry.flatHoles || []).map(flatHole => new PIXI.Polygon(flatHole))
-      };
+      lowRes.visible = false;
+      fill.visible = !isWireframeMode;
+      mask.visible = !isWireframeMode;
+      strokes.visible = true;
     }
 
     //
     // redraw the shapes
     //
+    const rings = this.geometry.flatCoords || [];  // outer, followed by holes if any
+    this._bufferdata = null;
 
-    // STROKE
-    if (shape && this.stroke.visible) {
-      const lineWidth = wireframeMode ? 1 : style.fill.width || 2;
+    // STROKES
+    strokes.removeChildren();
+    if (strokes.visible && rings.length) {
+      const lineWidth = isWireframeMode ? 1 : style.fill.width || 2;
+      const strokeStyle = {
+        alpha: 1,
+        alignment: 0.5,  // middle of line
+        color: color,
+        width: lineWidth,
+        cap: 'butt',
+        join: 'miter'
+      };
+      const bufferStyle = {
+        alpha: 1,
+        alignment: 0.5,  // middle of line
+        color: 0x000000,
+        width: lineWidth + 10,
+        cap: 'butt',
+        join: 'bevel'
+      };
 
-      if (!dash) {  // Solid lines
-        this.stroke
-        .clear()
-        .lineStyle({
-          alpha: 1,
-          width: lineWidth,
-          color: color
-        })
-        .drawShape(shape.outer);
+      for (let i = 0; i < rings.length; i++) {
+        const ring = rings[i];
+        const stroke = new PIXI.Graphics();
 
-        shape.holes.forEach(hole => this.stroke.drawShape(hole));
+        if (dash) {
+          strokeStyle.dash = dash;
+          const dl = new DashLine(stroke, strokeStyle);
+          dl
+            .poly(ring);
 
-      } else {   // Dashed lines
-        const DASH_STYLE = {
-          alpha: 1.0,
-          dash: dash,
-          width: lineWidth, // px
-          color: color
-        };
-        this.stroke.clear();
-        const dl = new DashLine(this.stroke, DASH_STYLE);
-        const coords = flatCoordsToPoints(shape.outer.points);
-        dl.drawPolygon(coords);
+        } else {
+          stroke
+            .poly(ring)
+            .stroke(strokeStyle);
+        }
 
-        shape.holes.forEach(hole => dl.drawPolygon(flatCoordsToPoints(hole.points)));
+        const buffer = lineToPoly(ring, bufferStyle);
+        if (i === 0) {
+          this._bufferdata = buffer;  // save outer buffer for later, for the hover halo..
+        }
+
+        stroke.hitArea = new PIXI.Polygon(buffer.perimeter);
+        stroke.label = `stroke${i}`;
+        stroke.eventMode = 'static';
+        stroke.sortableChildren = false;
+        strokes.addChild(stroke);
       }
     }
+
 
     // FILL
-    if (wireframeMode) {
-      this.fill.visible = false;
-      this.fill.clear();
+    if (fill.visible && rings.length) {
+      const fillStyle = {
+        color: color,
+        alpha: alpha,
+        texture: texture, // Optional: include only if texture is used
+        matrix: textureMatrix // Optional: include only if texture is used
+      };
 
-      // No fill - hit test the line buffer
-      if (this._bufferdata) {
-        this.container.hitArea = new PIXI.Polygon(this._bufferdata.perimeter);
+      fill.clear();
+      for (let i = 0; i < rings.length; i++) {
+        fill.poly(rings[i]);
+        if (i === 0) {
+          fill.fill(fillStyle);
+        } else {
+          fill.cut();
+        }
       }
-    } else {
-      // The fill will be hit tested
-      this.container.hitArea = null;
-    }
 
-    if (shape && this.fill.visible) {
-      this.fill
-        .clear()
-        .beginTextureFill({
-          alpha: alpha,
-          color: color,
-          texture: texture,
-          matrix: textureMatrix
-        })
-        .drawShape(shape.outer);
+      if (doFullFill) {
+        mask.visible = false;
+        fill.mask = null;
 
-      if (shape.holes.length) {
-        this.fill.beginHole();
-        shape.holes.forEach(hole => this.fill.drawShape(hole));
-        this.fill.endHole();
-      }
-      this.fill.endFill();
+      } else {  // partial fill
+        const maskStyle = {
+          alpha: 1,
+          color: 0xff0000,
+          width: PARTIALFILLWIDTH,
+          cap: 'butt',
+          join: 'bevel'
+        };
 
-      if (doPartialFill) {   // mask around the inside edges of the fill with a line
-        const maskSource = new PIXI.Graphics()
-          .clear()
-          .lineTextureStyle({
-            alpha: 1,
-            alignment: 0,  // inside (will do the right thing even for holes, as they are wound correctly)
-            color: 0x000000,
-            cap: PIXI.LINE_CAP.BUTT,
-            join: PIXI.LINE_JOIN.BEVEL,
-            width: PARTIALFILLWIDTH,
-            texture: PIXI.Texture.WHITE
-          });
-
-        maskSource.drawShape(shape.outer);
-        if (shape.holes.length) {
-          shape.holes.forEach(hole => maskSource.drawShape(hole));
+        // Generate mask around the edges of the shape
+        maskSource.clear();
+        for (let i = 0; i < rings.length; i++) {
+          maskSource.poly(rings[i]);
+          if (i === 0) {               // outer
+            maskStyle.alignment = 1;   // left
+            maskSource.stroke(maskStyle);
+          } else {                     // holes
+            maskStyle.alignment = 0;   // right
+            maskSource.stroke(maskStyle);
+          }
         }
 
         // Compute the mask's geometry, then copy its attributes into the mesh's geometry
         // This lets us use the Mesh as the mask and properly hit test against it.
-        maskSource.geometry.updateBatches(true);
-        this.mask.geometry = new PIXI.Geometry()
-          .addAttribute('aVertexPosition', maskSource.geometry.points, 2)
-          .addAttribute('aTextureCoord', maskSource.geometry.uvs, 2)
-          .addIndex(maskSource.geometry.indices);
+        const graphicsContext = maskSource.context;
+        const gpuContext = new PIXI.GpuGraphicsContext();
+        gpuContext.context = graphicsContext;   // _initContext
+        gpuContext.isBatchable = false;
 
-        this.mask.visible = true;
-        this.fill.mask = this.mask;
+        PIXI.buildContextBatches(graphicsContext, gpuContext);
 
-      } else {  // full fill - no mask
-        this.mask.visible = false;
-        this.fill.mask = null;
+        mask.geometry = new PIXI.MeshGeometry({
+          indices:  new Uint32Array(gpuContext.geometryData.indices),
+          positions: new Float32Array(gpuContext.geometryData.vertices),
+          uvs: new Float32Array(gpuContext.geometryData.uvs)
+        });
+
+        mask.visible = true;
+        fill.mask = mask;
       }
     }
 
@@ -400,17 +417,18 @@ export class PixiFeaturePolygon extends AbstractFeature {
     //
     // this.debugSSR
     //   .clear()
-    //   .lineStyle({ alpha: 1, width: 2, color: 0x00ff00 })
-    //   .drawShape(new PIXI.Polygon(ssrflat));
+    //   .poly(new PIXI.Polygon(ssrflat))
+    //   .stroke({ width: 2, color: 0x00ff00 });
 
     this._styleDirty = false;
+
     this.updateHalo();
   }
 
 
   /**
    * updateHalo
-   * Show/Hide halo
+   * Show/Hide halo (expects `this._bufferdata` to be already set up by `update()`)
    */
   updateHalo() {
     const wireframeMode = this.context.systems.map.wireframeMode;
@@ -441,7 +459,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
     if (showSelect) {
       if (!this.halo) {
         this.halo = new PIXI.Graphics();
-        this.halo.name = `${this.id}-halo`;
+        this.halo.label = `${this.id}-halo`;
         const mapUIContainer = this.scene.layers.get('map-ui').container;
         mapUIContainer.addChild(this.halo);
       }
@@ -456,15 +474,15 @@ export class PixiFeaturePolygon extends AbstractFeature {
       this.halo.clear();
       const dl = new DashLine(this.halo, HALO_STYLE);
       if (this._bufferdata) {
-        dl.drawPolygon(this._bufferdata.outer);
+        dl.poly(this._bufferdata.outer);
         if (wireframeMode) {
-          dl.drawPolygon(this._bufferdata.inner);
+          dl.poly(this._bufferdata.inner);
         }
       }
 
     } else {
       if (this.halo) {
-        this.halo.destroy({ children: true });
+        this.halo.destroy();
         this.halo = null;
       }
     }

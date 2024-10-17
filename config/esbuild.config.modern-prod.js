@@ -3,14 +3,14 @@ import fs from 'node:fs';
 
 esbuild
   .build({
-    minify: false,
+    minify: true,
     bundle: true,
-    sourcemap: true,
+    sourcemap: false,
     metafile: true,
-    entryPoints: ['./modules/main.js'],
+    entryPoints: ['./modules/main_prod.js'],
     legalComments: 'none',
     logLevel: 'info',
-    outfile: 'dist/rapid.js',
+    outfile: 'dist/rapid.min.js',
     target: 'esnext'
   })
   .then(result => {

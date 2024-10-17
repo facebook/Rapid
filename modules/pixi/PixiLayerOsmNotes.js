@@ -17,21 +17,6 @@ export class PixiLayerOsmNotes extends AbstractLayer {
    */
   constructor(scene, layerID) {
     super(scene, layerID);
-
-// might use these
-//    const markerHighlight = new PIXI.Graphics()
-//      .lineStyle(4, 0xcccccc, 0.6)
-//      .moveTo(-1, -1)
-//      .lineTo(-1, 17.25)
-//      .lineTo(18.5, 17.25)
-//      .lineTo(18.5, -1)
-//      .closePath();
-//
-//    const ellipse = new PIXI.Graphics()
-//      .lineStyle(1, 0x222222, 0.6)
-//      .beginFill(0x222222, 0.6)
-//      .drawEllipse(0.5, 1, 6.5, 3)
-//      .endFill();
   }
 
 

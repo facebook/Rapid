@@ -5,8 +5,9 @@ import { utilNoAuto } from '../../util/index.js';
 
 
 export function uiSectionColorSelection(context) {
-  const l10n = context.systems.l10n;
   const colors = context.systems.colors;  // todo: replace
+  const gfx = context.systems.gfx;
+  const l10n = context.systems.l10n;
 
   // Add or replace event handlers
   colors.off('colorsloaded', loadComboBoxData);
@@ -65,8 +66,8 @@ export function uiSectionColorSelection(context) {
 
           if (colors.currentColorScheme !== colorSchemeName) {
             colors.setColorScheme(colorSchemeName);
-            context.scene().dirtyScene();
-            context.systems.map.deferredRedraw();
+            gfx.scene.dirtyScene();
+            gfx.deferredRedraw();
           }
 
         } else {

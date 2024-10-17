@@ -178,8 +178,8 @@ export class UiSidebar {
    */
   _hoverchange(eventData) {
     const context = this.context;
-    const map = context.systems.map;
-    const scene = map.scene;
+    const gfx = context.systems.gfx;
+    const scene = gfx.scene;
 
     const target = eventData.target;
     const layer = target?.layer;
@@ -200,7 +200,7 @@ export class UiSidebar {
       }
     }
 
-    map.immediateRedraw();
+    gfx.immediateRedraw();
   }
 
 

@@ -146,7 +146,8 @@ export class GeoScribbleService extends AbstractSystem {
             cache.rbush.insert(box);
           }
 
-          this.context.deferredRedraw();
+          const gfx = this.context.systems.gfx;
+          gfx.deferredRedraw();
           this.emit('loadedData');
         })
         .catch(err => {

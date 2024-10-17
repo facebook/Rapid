@@ -203,7 +203,8 @@ export class MapWithAIService extends AbstractSystem {
             tree.rebase(result, true);
             cache.loaded.add(tile.id);
 
-            this.context.deferredRedraw();
+            const gfx = this.context.systems.gfx;
+            gfx.deferredRedraw();
             this.emit('loadedData');
           });
         })

@@ -248,7 +248,8 @@ export class MapRouletteService extends AbstractSystem {
           // save the challenge
           cache.challenges.set(challengeID, challenge);
 
-          this.context.deferredRedraw();
+          const gfx = this.context.systems.gfx;
+          gfx.deferredRedraw();
           this.emit('loadedData');
         })
         .catch(err => {

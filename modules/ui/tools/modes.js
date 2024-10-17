@@ -7,7 +7,7 @@ import { uiTooltip } from '../tooltip.js';
 
 export function uiToolDrawModes(context) {
   const l10n = context.systems.l10n;
-  const map = context.systems.map;
+  const gfx = context.systems.gfx;
   const presets = context.systems.presets;
   const ui = context.systems.ui;
 
@@ -160,8 +160,8 @@ export function uiToolDrawModes(context) {
     });
 
     ui.on('uichange', render);
-    map.on('draw', debouncedRender);
-    map.scene.on('layerchange', render);
+    gfx.on('draw', debouncedRender);
+    gfx.scene.on('layerchange', render);
     context.on('modechange', render);
     render();
   };
@@ -174,8 +174,8 @@ export function uiToolDrawModes(context) {
 
     debouncedRender.cancel();
     ui.off('uichange', render);
-    map.off('draw', debouncedRender);
-    map.scene.off('layerchange', render);
+    gfx.off('draw', debouncedRender);
+    gfx.scene.off('layerchange', render);
     context.off('modechange', render);
     $toolbar = null;
   };

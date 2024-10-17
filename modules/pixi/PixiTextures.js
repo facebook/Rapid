@@ -1,10 +1,13 @@
-import { Assets, Graphics, Rectangle, SVGResource, Texture, FORMATS, MSAA_QUALITY, TYPES } from 'pixi.js';
-import { AtlasAllocator } from '@rapideditor/pixi-texture-allocator';
+import * as PIXI from 'pixi.js';
+
+import { AtlasAllocator, registerAtlasUploader } from './lib/AtlasAllocator.js';
 
 
 /**
  * PixiTextures does the work of managing the textures.
- * The goal is to use common spritesheets to avoid extensive texture swapping
+ * We store most textures in 3 atlases, each one is for holding similar sized things.
+ * Each "atlas" manages its own store of "TextureSources" - real textures that upload to the GPU.
+ * This helps pack them efficiently and avoids swapping textures frequently as WebGL draws the scene.
  *
  * Properties you can access:
  *   `loaded`   `true` after the spritesheets and textures have finished loading
@@ -13,31 +16,52 @@ export class PixiTextures {
 
   /**
    * @constructor
-   * @param  context  Global shared application context
+   * @param  gfx   The GraphicsSystem that owns this TextureManager
    */
-  constructor(context) {
-    this.context = context;
+  constructor(gfx) {
+    this.gfx = gfx;
+    this.context = gfx.context;
     this.loaded = false;
 
-    const assets = context.systems.assets;
+    const assets = this.context.systems.assets;
+
+    // Before using the atlases, we need to register the upload function with the renderer.
+    // This will choose the correct function for either webGL or webGPU renderer type.
+    const renderer = gfx.pixi.renderer;
+    registerAtlasUploader(renderer);
+
+    // Try to get the max texture size.
+    // We will prefer large atlas size of 8192 to avoid texture swapping, but can settle for less.
+    let maxsize = 2048;   // a reasonable default
+    if (renderer.type === PIXI.RendererType.WEBGL) {
+      const gl = renderer.gl;
+      maxsize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+    } else if (renderer.type === PIXI.RendererType.WEBGPU) {
+      const gpu = renderer.gpu;
+      maxsize = gpu.adapter.limits.maxTextureDimension2D;
+    }
+
+    const trysize = 8192;
+    const size = Math.min(trysize, maxsize);
 
     // We store textures in 3 atlases, each one is for holding similar sized things.
-    // Each "atlas" manages its own store of "BaseTextures" - real textures that upload to the GPU.
-    // This helps pack them efficiently and avoids swapping frequently as WebGL draws the scene.
+    // Each "atlas" manages its own store of "TextureSources" - real textures that upload to the GPU.
+    // This helps pack them efficiently and avoids swapping textures frequently as WebGL draws the scene.
     this._atlas = {
-      symbol: new AtlasAllocator(),  // small graphics - markers, pins, symbols
-      text: new AtlasAllocator(),    // text labels
-      tile: new AtlasAllocator()     // 256 or 512px square imagery tiles
+      symbol: new AtlasAllocator('symbol', size),  // small graphics - markers, pins, symbols
+      text: new AtlasAllocator('text', size),      // text labels
+      tile: new AtlasAllocator('tile', size)       // 256 or 512px square imagery tiles
     };
+
 
     // All the named textures we know about.
     // Each mapping is a unique identifying key to a PIXI.Texture
     // The Texture is not necessarily packed in an Atlas (but ideally it should be)
     // Important!  Make sure these texture keys don't conflict
-    this._textureData = new Map();   // Map(key -> { PIXI.Texture, refcount })  (e.g. 'symbol-boldPin')
+    this._textureData = new Map();   // Map<key, { PIXI.Texture, refcount }>  (e.g. 'symbol-boldPin')
 
     // Because SVGs take some time to texturize, store the svg string and texturize only if needed
-    this._svgIcons = new Map();   // Map(key -> String)  (e.g. 'temaki-school')
+    this._svgIcons = new Map();   // Map<key, SVGSymbolElement>  (e.g. 'temaki-school')
 
     // Load patterns
     const PATTERNS = [
@@ -50,9 +74,10 @@ export class PixiTextures {
     for (const k of PATTERNS) {
       patternBundle[k] = assets.getFileURL(`img/pattern/${k}.png`);
     }
-    Assets.addBundle('patterns', patternBundle);
 
-    Assets.loadBundle(['patterns'])
+    PIXI.Assets.addBundle('patterns', patternBundle);
+
+    PIXI.Assets.loadBundle(['patterns'])
       .then(result => {
         // note that we can't pack patterns into an atlas yet - see PixiFeaturePolygon.js.
         for (const [textureID, texture] of Object.entries(result.patterns)) {
@@ -79,8 +104,8 @@ export class PixiTextures {
    * a legacy accessor - we used to just expose the Map publicly
    * and other code would just call map.get(textureID) to get what they need
    *
-   * @param   textureID
-   * @return  A PIXI.Texture (or null if not found)
+   * @param   {string}        textureID
+   * @return  {PIXI.Texture?} The texture (or `null` if not found)
    */
   get(textureID) {
     return this.getTexture('symbol', textureID);
@@ -89,9 +114,9 @@ export class PixiTextures {
 
   /**
    * getTexture
-   * @param   atlasID     One of 'symbol', 'text', or 'tile'
-   * @param   textureID   e.g. 'boldPin', 'Main Street', 'Bing-0,1,2'
-   * @return  A PIXI.Texture (or null if not found)
+   * @param   {string}  atlasID     One of 'symbol', 'text', or 'tile'
+   * @param   {string}  textureID   e.g. 'boldPin', 'Main Street-normal', 'Bing-0,1,2'
+   * @return  {PIXI.Texture?} The texture (or `null` if not found)
    */
   getTexture(atlasID, textureID) {
     const key = `${atlasID}-${textureID}`;
@@ -101,8 +126,8 @@ export class PixiTextures {
 
     // Is this an svg icon that we haven't converted to a texture yet?
     if (this._svgIcons.has(textureID)) {
-      this.svgIconToTexture(textureID);
-      return Texture.EMPTY;   // return a placeholder
+      this._svgIconToTexture(textureID);
+      return PIXI.Texture.EMPTY;   // return a placeholder
     }
 
     return null;
@@ -113,8 +138,8 @@ export class PixiTextures {
    * getPatternTexture
    * These are just like any other texture except that they can't live in an atlas.
    * PixiFeaturePolygon.js as some comments on it, maybe a Pixi bug or limitation.
-   * @param   textureID   e.g. 'bushes'
-   * @return  A PIXI.Texture (or null if not found)
+   * @param   {string}        textureID   e.g. 'bushes'
+   * @return  {PIXI.Texture?} The texture (or `null` if not found)
    */
   getPatternTexture(textureID) {
     const tdata = this._textureData.get(textureID);
@@ -124,18 +149,17 @@ export class PixiTextures {
 
   /**
    * getDebugTexture
-   * @param   atlasID     One of 'symbol', 'text', or 'tile'
-   * @return  Array of PIXI.Textures for the specifiec atlas
+   * @param   {string}         atlasID     One of 'symbol', 'text', or 'tile'
+   * @return  {PIXI.Textures}  Texture for the specified atlas
    */
   getDebugTexture(atlasID) {
     const atlas = this._atlas[atlasID];
     if (!atlas) return null;
 
-    const frame = new Rectangle(0, 0, atlas.slabWidth, atlas.slabHeight);
-    const baseTexture = atlas.textureSlabs[0]?.slab;
-    if (!baseTexture) return null;
+    const source = atlas.slabs[0];
+    if (!source) return null;
 
-    return new Texture(baseTexture, frame);
+    return new PIXI.Texture({ source: source });
   }
 
 
@@ -143,12 +167,12 @@ export class PixiTextures {
    * allocate
    * This packs an asset into one of the atlases and tracks it in the textureData map
    * The asset can be one of: HTMLImageElement | HTMLCanvasElement | ImageBitmap | ImageData | ArrayBufferView
-   * @param   atlasID     One of 'symbol', 'text', or 'tile'
-   * @param   textureID   e.g. 'boldPin', 'Main Street', 'Bing-0,1,2'
-   * @param   width       width in pixels
-   * @param   height      height in pixels
-   * @param   asset       The thing to pack
-   * @return  A PIXI.Texture (or null if it couldn't be packed)
+   * @param   {string}  atlasID     One of 'symbol', 'text', or 'tile'
+   * @param   {string}  textureID   e.g. 'boldPin', 'Main Street-normal', 'Bing-0,1,2'
+   * @param   {number}  width       width in pixels
+   * @param   {number}  height      height in pixels
+   * @param   (*)       asset       The thing to pack
+   * @return  {PIXI.Textures}       The newly allocated texture (or `null` if it couldn't be packed)
    */
   allocate(atlasID, textureID, width, height, asset) {
     const atlas = this._atlas[atlasID];
@@ -170,13 +194,16 @@ export class PixiTextures {
       throw new Error(`Couldn't allocate texture ${key}`);
     }
 
+    texture.label = key;
+
     // For tiles we want to preserve their power of 2 dimensions - so no padding!
     // But we also want to prevent their colors from spilling into an adjacent tile in the atlas.
     // Shrink texture coords by half pixel to avoid this.
     // https://gamedev.stackexchange.com/a/49585
     if (atlasID === 'tile') {
       const rect = texture.frame.clone().pad(-0.5);
-      texture.frame = rect;  // `.frame` setter will call updateUVs() automatically
+      texture.frame = rect;  // `.frame` setter will call updateUvs() automatically
+      texture.update();      // maybe not in pixi v8?  I'm still seeing tile seams?
     }
 
     this._textureData.set(key, { texture: texture, refcount: 1 });
@@ -188,8 +215,8 @@ export class PixiTextures {
   /**
    * free
    * Unpacks a texture from the atlas and frees its resources
-   * @param   atlasID     One of 'symbol', 'text', or 'tile'
-   * @param   textureID   e.g. 'boldPin', 'Main Street', 'Bing-0,1,2'
+   * @param  {string}  atlasID     One of 'symbol', 'text', or 'tile'
+   * @param  {string}  textureID   e.g. 'boldPin', 'Main Street-normal', 'Bing-0,1,2'
    */
   free(atlasID, textureID) {
     const atlas = this._atlas[atlasID];
@@ -203,7 +230,7 @@ export class PixiTextures {
 
     if (tdata.refcount === 0) {
       atlas.free(tdata.texture);
-      tdata.texture.destroy(false);   // false = don't destroy base texture
+      tdata.texture.destroy(false);   // false = don't destroy textureSource
       tdata.texture = null;
       this._textureData.delete(key);
     }
@@ -219,84 +246,143 @@ export class PixiTextures {
    * This is much more performant than drawing the graphcs.
    *
    * We also pack these graphics into a "texture atlas" so that they all live in the same
-   * BaseTexture.  This texture gets sent to the GPU once then reused, so WebGL isn't constantly
+   * TextureSource.  This texture gets sent to the GPU once then reused, so WebGL isn't constantly
    * swapping between textures as it draws things.
    *
-   * @param  textureID   Texture identifier (e.g. 'boldPin')
-   * @param  graphic     A PIXI.Graphic to convert to a texture
-   * @param  options     Options passed to `renderer.generateTexture`
+   * @param    {string}        textureID   Texture identifier (e.g. 'boldPin')
+   * @param    {PIXI.Graphic}  graphic     A PIXI.Graphic to convert to a texture (will be destroyed)
+   * @param    {Object}        options     Options passed to `renderer.generateTexture`
+   * @returns  {PIXI.Texture}  Texture allocated from the text atlas
    */
-  graphicToTexture(textureID, graphic, options) {
-    const renderer = this.context.pixi.renderer;
-    options.multisample = MSAA_QUALITY.NONE;  // disable multisampling so we can use gl.readPixels
-    const renderTexture = renderer.generateTexture(graphic, options);
+  graphicToTexture(textureID, graphic, options = {}) {
+    options.antialias = false;
+    options.target = graphic;
 
-    const baseTexture = renderTexture.baseTexture;
+    const renderer = this.gfx.pixi.renderer;
+    const temp = renderer.generateTexture(options);
+    const { pixels, width, height } = renderer.texture.getPixels(temp);
+    const texture = this.allocate('symbol', textureID, width, height, pixels);
 
-    if (baseTexture.format !== FORMATS.RGBA) return;       // we could handle other values
-    if (baseTexture.type !== TYPES.UNSIGNED_BYTE) return;  // but probably don't need to.
-
-    const framebuffer = baseTexture.framebuffer;
-    // If we can't get framebuffer, just return the rendertexture
-    // Maybe we are running in a test/ci environment?
-    if (!framebuffer) return renderTexture;
-
-    const w = framebuffer.width;
-    const h = framebuffer.height;
-    const pixels = new Uint8Array(w * h * 4);
-
-    const gl = renderer.context.gl;
-    const glfb = framebuffer.glFramebuffers[1];
-    const fb = glfb?.framebuffer;
-
-    // If we can't get glcontext or glframebuffer, just return the rendertexture
-    // Maybe we are running in a test/ci environment?
-    if (!gl || !fb) return renderTexture;
-
-    gl.bindFramebuffer(gl.FRAMEBUFFER, fb);   // should be bound already, but couldn't hurt?
-    gl.readPixels(0, 0, w, h, baseTexture.format, baseTexture.type, pixels);
-
-    // Store the texture in the symbol atlas
-    const texture = this.allocate('symbol', textureID, w, h, pixels);
     // These textures are overscaled, but `orig` Rectangle stores the original width/height
     // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
-    texture.orig = renderTexture.orig.clone();
-
-    renderTexture.destroy(true);  // safe to destroy, the texture is copied to the atlas
+    texture.orig = temp.orig.clone();
+    temp.destroy();
+    graphic.destroy({ context: true });
+    return texture;
   }
 
 
   /**
-   * addSvgIcon
-   * Because SVGs take some time to rasterize, store a placeholder and only rasterize when needed
-   * @param   textureID   Icon identifier (e.g. 'temaki-school')
-   * @param   svgStr   Stringified svg
+   * textToTexture
+   * Convert frequently used text to textures/sprites for performance
+   * @param    {string}          textureID   e.g. 'Main Street-normal'
+   * @param    {string}          str         the string
+   * @param    {PIXI.TextStyle}  textStyle
+   * @returns  {PIXI.Texture}    Texture allocated from the text atlas
    */
-  addSvgIcon(textureID, svgStr) {
-    this._svgIcons.set(textureID, svgStr);
+  textToTexture(textureID, str, textStyle) {
+    const options = {
+      text: str,
+      style: textStyle,
+      resolution: 2
+    };
+
+    const renderer = this.gfx.pixi.renderer;
+    const result = renderer.canvasText.createTextureAndCanvas(options);
+    const canvas = result.canvasAndContext.canvas;
+    const temp = result.texture;
+    const w = temp.frame.width * temp.source.resolution;
+    const h = temp.frame.height * temp.source.resolution;
+    const texture = this.allocate('text', textureID, w, h, canvas);
+
+    // These textures are overscaled, but `orig` Rectangle stores the original width/height
+    // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
+    texture.orig = temp.orig.clone();
+
+    temp.destroy();
+    return texture;
   }
 
 
   /**
-   * svgIconToTexture
+   * registerSvgIcon
+   * Because SVGs take some time to rasterize, store a placeholder and only rasterize when needed
+   * @param  {string}            textureID   Icon identifier (e.g. 'temaki-school')
+   * @param  {SVGSymbolElement}  symbol      The SVG Symbol element for the icon
+   */
+  registerSvgIcon(textureID, symbol) {
+    this._svgIcons.set(textureID, symbol);
+  }
+
+
+  /**
+   * _svgIconToTexture
    * @param  textureID  Icon identifier (e.g. 'temaki-school')
    */
-  svgIconToTexture(textureID) {
-    const svgString = this._svgIcons.get(textureID);
-    if (!svgString) return;
+  _svgIconToTexture(textureID) {
+    const symbol = this._svgIcons.get(textureID);
+    if (!symbol) return;
 
     // Remove it to ensure that we only do this once.
     this._svgIcons.set(textureID, null);
 
-    const size = 32;
-    const options = { autoLoad: false, height: size, width: size };
-    const resource = new SVGResource(svgString, options);
+// The old way, just put the SVG on an Image and pack that into the atlas.
+// see https://github.com/facebook/Rapid/commit/dd24e912
 
-    resource.load().then(() => {
-      this.allocate('symbol', textureID, size, size, resource.source);
+    const viewBox = symbol.getAttribute('viewBox');
+
+    // Make a new <svg> container
+    let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+    svg.setAttribute('width', '32');
+    svg.setAttribute('height', '32');
+    svg.setAttribute('color', '#fff');   // white so we can tint them
+    svg.setAttribute('viewBox', viewBox);
+
+    // Clone children (this is essentially what <use> does)
+    for (const child of symbol.childNodes) {
+      svg.appendChild(child.cloneNode(true));  // true = deep clone
+    }
+
+    const svgStr = (new XMLSerializer()).serializeToString(svg);
+    svg = null;
+
+    let image = new Image();
+    image.src = `data:image/svg+xml,${encodeURIComponent(svgStr)}`;
+    image.onload = () => {
+      const w = image.naturalWidth;
+      const h = image.naturalHeight;
+      this.allocate('symbol', textureID, w, h, image);
       this._svgIcons.delete(textureID);
-      this.context.deferredRedraw();
-    });
+      this.gfx.deferredRedraw();
+      image = null;
+    };
+
+// various approaches using the new Pixi SVG Parser and texture generation:
+//    let svgString = this._svgIcons.get(textureID);
+//    if (!svgString) return;
+//
+//     // Create a new graphics instance from the svg String,
+//     // but first, sanitize the string to remove any 'currentColor', 'inherit', and 'url()' references.
+//     svgString = svgString.replace(/(inherit|currentColor|url\(.*\))/gi, '#fff');
+//     const size = 32;
+//     const graphics = new PIXI.Graphics().svg(svgString);
+//     graphics.setSize(size, size);
+//
+//     // Now, make a canvas and render the svg into it at higher resolution.
+//     const renderer = this.gfx.pixi.renderer;
+//     // const canvas = renderer.extract.canvas({ resolution: 2, target: svgGraphics });
+//     const texture = renderer.textureGenerator.generateTexture({ resolution: 2, target: graphics });
+// //    const canvas = renderer.texture.generateCanvas(texture);
+// //    this.allocate('symbol', textureID, canvas.width, canvas.height, canvas);
+//     const { pixels, width, height } = renderer.texture.getPixels(texture);
+//     this.allocate('symbol', textureID, width, height, pixels);
+//
+//     texture.destroy();
+//     graphics.destroy({ context: true });
+//
+//    this._svgIcons.delete(textureID);
+//    this.gfx.deferredRedraw();
   }
 
 
@@ -308,159 +394,138 @@ export class PixiTextures {
    * This is much more performant than drawing the graphcs.
    */
   _cacheGraphics() {
-    const options = { resolution: 2 };
 
     //
     // Viewfields
     //
-    const viewfieldRect = new Rectangle(-13, 0, 26, 52);
-    const viewfieldOptions = {
-      region: viewfieldRect,  // texture the whole 26x26 region
-      resolution: 3           // oversample a bit so it looks pretty when rotated
-    };
+    const viewfieldRect = new PIXI.Rectangle(-13, 0, 26, 52);
+    const viewfieldOptions = { frame: viewfieldRect };  // texture the whole 26x26 region
 
-    const viewfield = new Graphics()            //   [-2,26]  ,---,  [2,26]
-      .lineStyle(1, 0x444444)                   //           /     \
-      .beginFill(0xffffff, 1)                   //          /       \
-      .moveTo(-2, 26)                           //         /         \
-      .lineTo(2, 26)                            //        /           \
-      .lineTo(12, 4)                            //       /             \
-      .bezierCurveTo(12,0, -12,0, -12,4)        //       ""--_______--""         +y
-      .closePath()                              // [-12,4]              [12,4]    |
-      .endFill();                               //            [0,0]               +-- +x
+    const viewfield = new PIXI.Graphics()       //   [-2,26]  ,---,  [2,26]
+      .moveTo(-2, 26)                           //           /     \
+      .lineTo(2, 26)                            //          /       \
+      .lineTo(12, 4)                            //         /         \
+      .bezierCurveTo(12, 0, -12, 0, -12, 4)     //        /           \
+      .closePath()                              //       /             \
+      .fill({ color: 0xffffff, alpha: 1 })      //       ""--_______--""         +y
+      .stroke({ color: 0x444444, width: 1 });   // [-12,4]              [12,4]    |
+                                                //            [0,0]               +-- +x
 
-    const viewfieldDark = new Graphics()
-      .lineStyle(1, 0xcccccc)        // same viewfield, but outline light gray
-      .beginFill(0x333333, 1)        // and fill dark gray (not intended to be tinted)
+    const viewfieldDark = new PIXI.Graphics()
       .moveTo(-2, 26)
       .lineTo(2, 26)
       .lineTo(12, 4)
-      .bezierCurveTo(12,0, -12,0, -12,4)
-      .closePath()
-      .endFill();
+      .bezierCurveTo(12, 0, -12, 0, -12, 4)
+      .closePath()                              // same viewfield, but outline light gray
+      .fill({ color: 0x333333, alpha: 1 })      // and fill dark gray (not intended to be tinted)
+      .stroke({ color: 0xcccccc, width: 1 });
 
-    const viewfieldOutline = new Graphics()
-      .lineStyle(1, 0xcccccc)        // same viewfield, but with no fill for wireframe mode
-      .beginFill(0xffffff, 0)
+    const viewfieldOutline = new PIXI.Graphics()
       .moveTo(-2, 26)
       .lineTo(2, 26)
       .lineTo(12, 4)
       .bezierCurveTo(12, 0, -12, 0, -12, 4)
       .closePath()
-      .endFill();
+      .stroke({ color: 0xcccccc, width: 1 });
 
     this.graphicToTexture('viewfield', viewfield, viewfieldOptions);
     this.graphicToTexture('viewfieldDark', viewfieldDark, viewfieldOptions);
     this.graphicToTexture('viewfieldOutline', viewfieldOutline, viewfieldOptions);
 
 
-    const pano = new Graphics()    // just a full circle - for panoramic / 360° images
-      .lineStyle(1, 0x444444)
-      .beginFill(0xffffff, 1)
-      .drawCircle(0, 0, 20)
-      .endFill();
+    const pano = new PIXI.Graphics()  // just a full circle - for panoramic / 360° images
+      .circle(0, 0, 20)
+      .fill({ color: 0xffffff, alpha: 1 })
+      .stroke({ color: 0x444444, width: 1 });
 
-    const panoDark = new Graphics()
-      .lineStyle(1, 0xcccccc)
-      .beginFill(0x333333, 1)
-      .drawCircle(0, 0, 20)
-      .endFill();
+    const panoDark = new PIXI.Graphics()
+      .circle(0, 0, 20)
+      .fill({ color: 0x333333, alpha: 1 })
+      .stroke({ color: 0xcccccc, width: 1 });
 
-    const panoOutline = new Graphics()
-      .lineStyle(1, 0xcccccc)
-      .beginFill(0xffffff, 0)
-      .drawCircle(0, 0, 20)
-      .endFill();
+    const panoOutline = new PIXI.Graphics()
+      .circle(0, 0, 20)
+      .stroke({ color: 0xcccccc, width: 1 });
 
-    this.graphicToTexture('pano', pano, options);
-    this.graphicToTexture('panoDark', panoDark, options);
-    this.graphicToTexture('panoOutline', panoOutline, options);
+    this.graphicToTexture('pano', pano);
+    this.graphicToTexture('panoDark', panoDark);
+    this.graphicToTexture('panoOutline', panoOutline);
 
 
     //
     // Markers
     //
-    const pin = new Graphics()                   //              [0,-23]
-      .lineStyle(1, 0x444444)                    //              _,-+-,_
-      .beginFill(0xffffff, 1)                    //            /'       `\
-      .moveTo(0, 0)                              //           :           :
-      .bezierCurveTo(-2,-2, -8,-10, -8,-15)      // [-8,-15]  :           :  [8,-15]
-      .bezierCurveTo(-8,-19, -4,-23, 0,-23)      //            \         /
-      .bezierCurveTo(4,-23, 8,-19, 8,-15)        //             \       /
-      .bezierCurveTo(8,-10, 2,-2, 0,0)           //              \     /
-      .closePath()                               //               \   /      -y
-      .endFill();                                //                `+`        |
-                                                 //               [0,0]       +-- +x
-    const boldPin = new Graphics()
-      .lineStyle(1.5, 0x666666)        // same pin, bolder line stroke
-      .beginFill(0xdddddd, 1)
+    const pin = new PIXI.Graphics()             //              [0,-23]
+      .moveTo(0, 0)                             //              _,-+-,_
+      .bezierCurveTo(-2,-2, -8,-10, -8,-15)     //            /'       `\
+      .bezierCurveTo(-8,-19, -4,-23, 0,-23)     //           :           :
+      .bezierCurveTo(4,-23, 8,-19, 8,-15)       // [-8,-15]  :           :  [8,-15]
+      .bezierCurveTo(8,-10, 2,-2, 0,0)          //            \         /
+      .closePath()                              //             \       /
+      .fill({ color: 0xffffff, alpha: 1 })      //              \     /
+      .stroke({ color: 0x444444, width: 1 });   //               \   /      -y
+                                                //                `+`        |
+                                                //               [0,0]       +-- +x
+    const boldPin = new PIXI.Graphics()
       .moveTo(0, 0)
       .bezierCurveTo(-2,-2, -8,-10, -8,-15)
       .bezierCurveTo(-8,-19, -4,-23, 0,-23)
       .bezierCurveTo(4,-23, 8,-19, 8,-15)
       .bezierCurveTo(8,-10, 2,-2, 0,0)
       .closePath()
-      .endFill();
+      .fill({ color: 0xdddddd, alpha: 1 })
+      .stroke({ color: 0x666666, width: 1.5 });    // same pin, bolder line stroke
 
-    const xlargeSquare = new Graphics()   // used as an "unknown" street sign
-      .lineStyle(2, 0x444444)
-      .beginFill(0xffffff, 1)
-      .drawRect(-12, -12, 24, 24)
-      .endFill();
+    const xlargeSquare = new PIXI.Graphics()   // used as an "unknown" street sign
+      .rect(-12, -12, 24, 24)
+      .fill({ color: 0xffffff, alpha: 1 })
+      .stroke({ color: 0x444444, width: 2 });
 
-    const largeSquare = new Graphics()    // suitable to display an icon inside
-      .lineStyle(1, 0x444444)
-      .beginFill(0xffffff, 1)
-      .drawRect(-8, -8, 16, 16)
-      .endFill();
+    const largeSquare = new PIXI.Graphics()    // suitable to display an icon inside
+      .rect(-8, -8, 16, 16)
+      .fill({ color: 0xffffff, alpha: 1 })
+      .stroke({ color: 0x444444, width: 2 });
 
-    const xlargeCircle = new Graphics()   // used as an "unknown" detection
-      .lineStyle(2, 0x444444)
-      .beginFill(0xffffff, 1)
-      .drawCircle(0, 0, 12)
-      .endFill();
+    const xlargeCircle = new PIXI.Graphics()   // used as an "unknown" detection
+      .circle(0, 0, 12)
+      .fill({ color: 0xffffff, alpha: 1 })
+      .stroke({ color: 0x444444, width: 2 });
 
-    const largeCircle = new Graphics()    // suitable to display an icon inside
-      .lineStyle(1, 0x444444)
-      .beginFill(0xffffff, 1)
-      .drawCircle(0, 0, 8)
-      .endFill();
+    const largeCircle = new PIXI.Graphics()    // suitable to display an icon inside
+      .circle(0, 0, 8)
+      .fill({ color: 0xffffff, alpha: 1 })
+      .stroke({ color: 0x444444, width: 1 });
 
-    const mediumCircle = new Graphics()   // suitable for a streetview photo marker
-      .lineStyle(1, 0x444444)
-      .beginFill(0xffffff, 1)
-      .drawCircle(0, 0, 6)
-      .endFill();
+    const mediumCircle = new PIXI.Graphics()   // suitable for a streetview photo marker
+      .circle(0, 0, 6)
+      .fill({ color: 0xffffff, alpha: 1 })
+      .stroke({ color: 0x444444, width: 1 });
 
-    const smallCircle = new Graphics()    // suitable for a plain vertex
-      .lineStyle(1, 0x444444)
-      .beginFill(0xffffff, 1)
-      .drawCircle(0, 0, 4.5)
-      .endFill();
+    const smallCircle = new PIXI.Graphics()    // suitable for a plain vertex
+      .circle(0, 0, 4.5)
+      .fill({ color: 0xffffff, alpha: 1 })
+      .stroke({ color: 0x444444, width: 1 });
 
-    const taggedCircle = new Graphics()   // a small circle with a dot inside
-      .lineStyle(1, 0x444444)
-      .beginFill(0xffffff, 1)
-      .drawCircle(0, 0, 4.5)
-      .beginFill(0x000000, 1)
-      .drawCircle(0, 0, 1.5)
-      .endFill();
+    const taggedCircle = new PIXI.Graphics()   // a small circle with a dot inside
+      .circle(0, 0, 4.5)
+      .fill({ color: 0x000000, alpha: 1 })
+      .circle(0, 0, 1.5)
+      .fill({ color: 0xffffff, alpha: 1 })
+      .stroke({ color: 0x444444, width: 1 });
 
-    this.graphicToTexture('pin', pin, options);
-    this.graphicToTexture('boldPin', boldPin, options);
-    this.graphicToTexture('xlargeSquare', xlargeSquare, options);
-    this.graphicToTexture('largeSquare', largeSquare, options);
-    this.graphicToTexture('xlargeCircle', xlargeCircle, options);
-    this.graphicToTexture('largeCircle', largeCircle, options);
-    this.graphicToTexture('mediumCircle', mediumCircle, options);
-    this.graphicToTexture('smallCircle', smallCircle, options);
-    this.graphicToTexture('taggedCircle', taggedCircle, options);
+    this.graphicToTexture('pin', pin);
+    this.graphicToTexture('boldPin', boldPin);
+    this.graphicToTexture('xlargeSquare', xlargeSquare);
+    this.graphicToTexture('largeSquare', largeSquare);
+    this.graphicToTexture('xlargeCircle', xlargeCircle);
+    this.graphicToTexture('largeCircle', largeCircle);
+    this.graphicToTexture('mediumCircle', mediumCircle);
+    this.graphicToTexture('smallCircle', smallCircle);
+    this.graphicToTexture('taggedCircle', taggedCircle);
 
 
     // KeepRight
-    const keepright = new Graphics()
-      .lineStyle(1, 0x333333)
-      .beginFill(0xffffff)
+    const keepright = new PIXI.Graphics()
       .moveTo(15, 6.5)
       .lineTo(10.8, 6.5)
       .bezierCurveTo(12.2, 1.3, 11.7, 0.8, 11.2, 0.8)
@@ -474,14 +539,12 @@ export class PixiTextures {
       .bezierCurveTo(8.8, 19.3, 9.1, 19.1, 9.2, 18.8)
       .lineTo(15.6, 7.8)
       .bezierCurveTo(16, 7.2, 15.6, 6.5, 15, 6.5)
-      .endFill()
-      .closePath();
-
+      .closePath()
+      .stroke({ color: 0x333333, width: 1 })
+      .fill({ color: 0xffffff });
 
     // OSM note
-    const osmnote = new Graphics()
-      .lineStyle(1.5, 0x333333)
-      .beginFill(0xffffff, 1)
+    const osmnote = new PIXI.Graphics()
       .moveTo(17.5, 0)
       .lineTo(2.5,0)
       .bezierCurveTo(1.13, 0, 0, 1.12, 0, 2.5)
@@ -496,42 +559,39 @@ export class PixiTextures {
       .lineTo(20, 2.5)
       .bezierCurveTo(20, 1.13, 18.87, 0, 17.5, 0)
       .closePath()
-      .endFill();
+      .stroke({ color: 0x333333, width: 1.5 })
+      .fill({ color:0xffffff, alpha: 1 });
 
-    const osmose = new Graphics()
-      .lineStyle(1, 0x333333)
-      .beginFill(0xffffff)
-      .drawPolygon([16,3, 4,3, 1,6, 1,17, 4,20, 7,20, 10,27, 13,20, 16,20, 19,17.033, 19,6])
-      .endFill()
-      .closePath();
+    const osmose = new PIXI.Graphics()
+      .poly([16,3, 4,3, 1,6, 1,17, 4,20, 7,20, 10,27, 13,20, 16,20, 19,17.033, 19,6])
+      .closePath()
+      .fill({ color: 0xffffff })
+      .stroke({ color: 0x333333, width: 1 });
 
-    this.graphicToTexture('keepright', keepright, options);
-    this.graphicToTexture('osmnote', osmnote, options);
-    this.graphicToTexture('osmose', osmose, options);
+    this.graphicToTexture('keepright', keepright);
+    this.graphicToTexture('osmnote', osmnote);
+    this.graphicToTexture('osmose', osmose);
 
 
     //
     // Line markers
     //
-    const midpoint = new Graphics()           // [-3, 4]  ._                +y
-      .lineStyle(1, 0x444444)                 //          | "-._             |
-      .beginFill(0xffffff, 1)                 //          |    _:>  [7,0]    +-- +x
-      .drawPolygon([-3,4, 7,0, -3,-4])        //          |_,-"
-      .endFill();                             // [-3,-4]  '
+    const midpoint = new PIXI.Graphics()        // [-3, 4]  ._                +y
+      .poly([-3,4, 7,0, -3,-4])                 //          | "-._             |
+      .fill({ color: 0xffffff, alpha: 1 })      //          |    _:>  [7,0]    +-- +x
+      .stroke({ color: 0x444444, width: 1 });   //          |_,-"
+                                                // [-3,-4]  '
+    const oneway = new PIXI.Graphics()
+      .poly([5,3, 0,3, 0,2, 5,2, 5,0, 10,2.5, 5,5])
+      .fill({ color: 0xffffff, alpha: 1 });
 
-    const oneway = new Graphics()
-      .beginFill(0xffffff, 1)
-      .drawPolygon([5,3, 0,3, 0,2, 5,2, 5,0, 10,2.5, 5,5])
-      .endFill();
+    const sided = new PIXI.Graphics()
+      .poly([0,5, 5,0, 0,-5])
+      .fill({ color: 0xffffff, alpha: 1 });
 
-    const sided = new Graphics()
-      .beginFill(0xffffff, 1)
-      .drawPolygon([0,5, 5,0, 0,-5])
-      .endFill();
-
-    this.graphicToTexture('midpoint', midpoint, options);
-    this.graphicToTexture('oneway', oneway, options);
-    this.graphicToTexture('sided', sided, options);
+    this.graphicToTexture('midpoint', midpoint);
+    this.graphicToTexture('oneway', oneway);
+    this.graphicToTexture('sided', sided);
 
 
     //
@@ -539,53 +599,44 @@ export class PixiTextures {
     // We can replace areas with these sprites when they are very small
     // They are all sized to 10x10 (would look fine scaled down but not up)
     //
-    const lowresSquare = new Graphics()
-      .lineStyle(1, 0xffffff)
-      .beginFill(0xffffff, 0.6)
-      .drawRect(-5, -5, 10, 10)
-      .endFill();
+    const lowresSquare = new PIXI.Graphics()
+      .rect(-5, -5, 10, 10)
+      .fill({ color: 0xffffff, alpha: 0.6 })
+      .stroke({ color: 0xffffff, width: 1 });
 
-    const lowresEll = new Graphics()
-      .lineStyle(1, 0xffffff)
-      .beginFill(0xffffff, 0.6)
-      .drawPolygon([-5,-5, 5,-5, 5,5, 1,5, 1,1, -5,1, -5,-5])
-      .endFill();
+    const lowresEll = new PIXI.Graphics()
+      .poly([-5,-5, 5,-5, 5,5, 1,5, 1,1, -5,1, -5,-5])
+      .fill({ color: 0xffffff, alpha: 0.6 })
+      .stroke({ color: 0xffffff, width: 1 });
 
-    const lowresCircle = new Graphics()
-      .lineStyle(1, 0xffffff)
-      .beginFill(0xffffff, 0.6)
-      .drawCircle(0, 0, 5)
-      .endFill();
+    const lowresCircle = new PIXI.Graphics()
+      .circle(0, 0, 5)
+      .fill({ color: 0xffffff, alpha: 0.6 })
+      .stroke({ color: 0xffffff, width: 1 });
 
-    this.graphicToTexture('lowres-square', lowresSquare, options);
-    this.graphicToTexture('lowres-ell', lowresEll, options);
-    this.graphicToTexture('lowres-circle', lowresCircle, options);
+    this.graphicToTexture('lowres-square', lowresSquare);
+    this.graphicToTexture('lowres-ell', lowresEll);
+    this.graphicToTexture('lowres-circle', lowresCircle);
 
     //
     // Low-res unfilled areas
     // For wireframe mode rendering (no fills at all)
     //
-    const lowresUnfilledSquare = new Graphics()
-      .lineStyle(1, 0xffffff)
-      .beginFill(0, 0)
-      .drawRect(-5, -5, 10, 10)
-      .endFill();
+    const lowresUnfilledSquare = new PIXI.Graphics()
+      .rect(-5, -5, 10, 10)
+      .stroke({ color: 0xffffff, width: 1 });
 
-    const lowresUnfilledEll = new Graphics()
-      .lineStyle(1, 0xffffff)
-      .beginFill(0, 0)
-      .drawPolygon([-5,-5, 5,-5, 5,5, 1,5, 1,1, -5,1, -5,-5])
-      .endFill();
+    const lowresUnfilledEll = new PIXI.Graphics()
+      .poly([-5,-5, 5,-5, 5,5, 1,5, 1,1, -5,1, -5,-5])
+      .stroke({ color: 0xffffff, width: 1 });
 
-    const lowresUnfilledCircle = new Graphics()
-      .lineStyle(1, 0xffffff)
-      .beginFill(0, 0)
-      .drawCircle(0, 0, 5)
-      .endFill();
+    const lowresUnfilledCircle = new PIXI.Graphics()
+      .circle(0, 0, 5)
+      .stroke({ color: 0xffffff, width: 1 });
 
-    this.graphicToTexture('lowres-unfilled-square', lowresUnfilledSquare, options);
-    this.graphicToTexture('lowres-unfilled-ell', lowresUnfilledEll, options);
-    this.graphicToTexture('lowres-unfilled-circle', lowresUnfilledCircle, options);
+    this.graphicToTexture('lowres-unfilled-square', lowresUnfilledSquare);
+    this.graphicToTexture('lowres-unfilled-ell', lowresUnfilledEll);
+    this.graphicToTexture('lowres-unfilled-circle', lowresUnfilledCircle);
   }
 
 }

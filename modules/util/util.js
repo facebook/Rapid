@@ -78,9 +78,9 @@ export function geojsonExtent(geojson) {
 // Adds or removes highlight styling for the specified entities
 export function utilHighlightEntities(entityIDs, highlighted, context) {
   const editor = context.systems.editor;
-  const map = context.systems.map;
+  const gfx = context.systems.gfx;
 
-  const scene = map.scene;
+  const scene = gfx.scene;
   if (!scene) return;  // called too soon?
 
   const layer = scene.layers.get('osm');
@@ -103,7 +103,7 @@ export function utilHighlightEntities(entityIDs, highlighted, context) {
     layer.clearClass('highlight');
   }
 
-  map.immediateRedraw();
+  gfx.immediateRedraw();
 }
 
 
@@ -123,12 +123,12 @@ export function utilIsColorValid(value) {
 
 
 // `utilSetTransform`
-// Applies a CSS transformation to the given selection
-export function utilSetTransform(selection, x, y, scale, rotate) {
+// Applies a CSS transformation to the given element
+export function utilSetTransform(element, x, y, scale, rotate) {
   const t = `translate3d(${x}px,${y}px,0)`;
   const s = (scale && scale !== 1) ? ` scale(${scale})` : '';
   const r = rotate ? ` rotate(${rotate}rad)` : '';
-  return selection.style('transform', `${t}${s}${r}`);
+  element.style.transform = `${t}${s}${r}`;
 }
 
 
