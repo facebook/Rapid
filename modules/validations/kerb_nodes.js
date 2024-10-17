@@ -1,15 +1,6 @@
-import {
-  Extent, geoLatToMeters, geoLonToMeters, geoSphericalClosestPoint,
-  geoSphericalDistance, geoMetersToLat, geoMetersToLon, geomLineIntersection,
-  vecAngle, vecLength
-} from '@rapid-sdk/math';
-
+import { geoLatToMeters, geoLonToMeters, geoMetersToLat, geoMetersToLon } from '@rapid-sdk/math';
 import { actionAddMidpoint, actionChangeTags, actionSplit} from '../actions/index.js';
 import { osmNode } from '../osm/node.js';
-import {
-  osmFlowingWaterwayTagValues, osmPathHighwayTagValues, osmRailwayTrackTagValues,
-  osmRoutableAerowayTags, osmRoutableHighwayTagValues
-} from '../osm/tags.js';
 import { ValidationIssue, ValidationFix } from '../core/lib/index.js';
 
 
@@ -17,6 +8,7 @@ export function validationKerbNodes(context) {
   const type = 'kerb_nodes';
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
+
 
   /**
    * checkKerbNodeCandidacy
@@ -154,10 +146,10 @@ export function validationKerbNodes(context) {
 
   /**
    * applyKerbNodeFix
-   * Applies a fix to add kerb nodes to the specified way
-   * @param  {String} wayID - The ID of the way to fix
-   * @param  {Object} graph - The graph containing the way and node data
-   * @param  {Object} tags - The tags to assign to the new kerb nodes
+   * Applies fixes to add kerb nodes to the specified way.
+   * @param  {String} wayID - The ID of the way to fix.
+   * @param  {Object} graph - The graph containing the way and node data.
+   * @param  {Object} tags - The tags to assign to the new kerb nodes.
    */
   function applyKerbNodeFix(wayID, graph, tags) {
     const way = graph.hasEntity(wayID);
@@ -166,20 +158,51 @@ export function validationKerbNodes(context) {
       return;
     }
 
-    // Calculate positions for the new kerb nodes
-    const firstNodePosition = calculateNewNodePosition(graph.entity(way.nodes[0]), graph.entity(way.nodes[1]), 1);
-    const lastNodePosition = calculateNewNodePosition(graph.entity(way.nodes[way.nodes.length - 1]), graph.entity(way.nodes[way.nodes.length - 2]), 1);
+    const firstNode = graph.entity(way.nodes[0]);
+    const lastNode = graph.entity(way.nodes[way.nodes.length - 1]);
 
-    // Create new kerb nodes
-    const firstKerbNode = osmNode({ loc: [firstNodePosition.lon, firstNodePosition.lat], tags, visible: true });
-    const lastKerbNode = osmNode({ loc: [lastNodePosition.lon, lastNodePosition.lat], tags, visible: true });
+    const firstNodeConnected = isConnectedToRefugeIsland(firstNode, graph);
+    const lastNodeConnected = isConnectedToRefugeIsland(lastNode, graph);
 
-    // Add new nodes to the graph at the midpoint of the specified segments
-    editor.perform(actionAddMidpoint({ loc: firstKerbNode.loc, edge: [way.nodes[0], way.nodes[1]] }, firstKerbNode));
-    editor.perform(actionAddMidpoint({ loc: lastKerbNode.loc, edge: [way.nodes[way.nodes.length - 2], way.nodes[way.nodes.length - 1]] }, lastKerbNode));
+    // Handle the first node
+    if (firstNodeConnected) {
+      updateNodeToKerb(firstNode, tags, graph);
+    } else {
+      kerbNodeAdditionForSingleNode(firstNode, way, graph, tags);
+    }
+
+    // Handle the last node
+    if (lastNodeConnected) {
+      updateNodeToKerb(lastNode, tags, graph);
+    } else {
+      kerbNodeAdditionForSingleNode(lastNode, way, graph, tags);
+    }
+  }
+
+
+  /**
+   * kerbNodeAdditionForSingleNode
+   * Adds a single kerb node to a specified way at the position of an existing node, splits the way, and updates tags.
+   * This function is used when a node is not connected to a traffic island and needs a kerb node addition.
+   * @param  {Object} node - The existing node where the kerb node will be added.
+   * @param  {Object} way - The way entity that the node belongs to.
+   * @param  {Object} graph - The graph containing the way and node data.
+   * @param  {Object} tags - The tags to assign to the new kerb node.
+   */
+  function kerbNodeAdditionForSingleNode(node, way, graph, tags) {
+    // Calculate the position for the new kerb node
+    const nodeIndex = way.nodes.indexOf(node.id);
+    const adjacentNode = graph.entity(way.nodes[nodeIndex + 1] || way.nodes[nodeIndex - 1]);
+    const newNodePosition = calculateNewNodePosition(node, adjacentNode, 1);
+
+    // Create a new kerb node
+    const newKerbNode = osmNode({ loc: [newNodePosition.lon, newNodePosition.lat], tags, visible: true });
+
+    // Add the new node to the graph at the midpoint of the specified segment
+    editor.perform(actionAddMidpoint({ loc: newKerbNode.loc, edge: [node.id, adjacentNode.id] }, newKerbNode));
 
     // Perform the split
-    const splitAction = actionSplit([firstKerbNode.id, lastKerbNode.id]);
+    const splitAction = actionSplit([newKerbNode.id]);
     graph = editor.perform(splitAction);
     const newWayIDs = splitAction.getCreatedWayIDs();
 
@@ -191,9 +214,57 @@ export function validationKerbNodes(context) {
 
     // Commit the changes to the graph
     editor.commit({
-      annotation: 'Added kerb nodes and updated way tags to sidewalks',
-      selectedIDs: [way.id].concat(newWayIDs)
+      annotation: 'Added kerb node and updated way tags to sidewalks',
+      selectedIDs: [node.id].concat(newWayIDs)
     });
+  }
+
+
+  /**
+   * isConnectedToRefugeIsland
+   * Checks if the given node is connected to a refuge island.
+   * @param  {Object} node - The node to check.
+   * @param  {Object} graph - The graph containing the node and way data.
+   * @return {Boolean} True if the node is connected to a refuge island, false otherwise.
+   */
+  function isConnectedToRefugeIsland(node, graph) {
+    const connectedWays = graph.parentWays(node);
+    const connectedToRefuge = connectedWays.some(way => isRefugeIsland(way));
+    return connectedToRefuge;
+  }
+
+
+  /**
+   * updateNodeToKerb
+   * Updates the given node to a kerb with specified tags.
+   * @param  {Object} node - The node to update.
+   * @param  {Object} tags - The tags to assign to the node.
+   * @param  {Object} graph - The graph containing the node data.
+   */
+  function updateNodeToKerb(node, tags, graph) {
+    // Prepare the new tags for the node
+    const newTags = {...node.tags, barrier: 'kerb', kerb: tags.kerb};
+
+    // Perform the tag change using the editor's actionChangeTags method
+    editor.perform(actionChangeTags(node.id, newTags));
+
+    // Optionally, you can directly commit the change here, or you can handle the commit elsewhere
+    editor.commit({
+      annotation: `Modified node to ${tags.kerb} kerb at the junction with a traffic island`,
+      selectedIDs: [node.id]
+    });
+  }
+
+
+  /**
+   * isRefugeIsland
+   * Checks if the given way is a refuge island based on its tags.
+   * @param  {Object} way - The way entity to check.
+   * @return {Boolean} True if the way is a refuge island, false otherwise.
+   */
+  function isRefugeIsland(way) {
+    const isTrafficIsland = way.tags.footway === 'traffic_island';
+    return isTrafficIsland;
   }
 
 
@@ -208,11 +279,9 @@ export function validationKerbNodes(context) {
    */
   function calculateNewNodePosition(startNode, endNode, distance, isLast = false) {
     if (!startNode || !endNode) {
-      console.error('Start or end node is undefined');
       return null;
     }
     if (!startNode.loc || !endNode.loc) {
-      console.error('Location data is missing for nodes', {startNode, endNode});
       return null;
     }
 
@@ -226,7 +295,6 @@ export function validationKerbNodes(context) {
     const lengthMeters = Math.sqrt(dxMeters * dxMeters + dyMeters * dyMeters);
 
     if (lengthMeters === 0) {
-      console.error('Start and end nodes are at the same position');
       return null;
     }
 
