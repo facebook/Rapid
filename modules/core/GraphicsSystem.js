@@ -44,7 +44,7 @@ export class GraphicsSystem extends AbstractSystem {
     super(context);
 
     this.id = 'gfx';
-    this.dependencies = new Set(['map']);
+    this.dependencies = new Set(['map', 'urlhash']);
 
     // Create these early
     this.supersurface = document.createElement('div');  // parent `div` temporary transforms between redraws
@@ -97,42 +97,70 @@ export class GraphicsSystem extends AbstractSystem {
       }
     }
 
-    // setup defaults here
-    Object.assign(PIXI.TextureSource.defaultOptions, {
-      autoGarbageCollect: false,
-      autoGenerateMipmaps: false,
-      // format: 'rgba8unorm',
-      resolution: 1
-    });
+    // Init prerequisites
+    const urlhash = this.context.systems.urlhash;
+    const prerequisites = Promise.all([
+      urlhash.initAsync()
+    ]);
 
-    this.pixi = new PIXI.Application();
-
-    const options = {
-      antialias: true,
-      autoDensity: true,
-      autoStart: false,    // Don't start the ticker yet
-      canvas: this.surface,
-      events: {
-        move: false,
-        globalMove: false,
-        click: true,
-        wheel: false
-      },
-      multiView: true,   // Needed for minimap
-      powerPreference: 'high-performance',
-      preference: 'webgl',
-//      preference: 'webgpu',
-      preferWebGLVersion: 2,
-      preserveDrawingBuffer: true,
-      resolution: window.devicePixelRatio,
-      sharedLoader: true,
-      sharedTicker: true,
-      textureGCActive: true,
-      useBackBuffer: false
-    };
-
-    return this._initPromise = this.pixi.init(options)
+    return this._initPromise = prerequisites
       .then(() => {
+        // For testing, allow user to override the renderer preference:
+        // `renderer=val` one of `webgl1`, `webgl2`/`webgl`, `webgpu`
+        let renderPreference, renderGLVersion;
+        switch (urlhash.initialHashParams.get('renderer')) {
+          case 'webgpu':
+            renderPreference = 'webgpu';
+            break;
+          case 'webgl1':
+            renderPreference = 'webgl';
+            renderGLVersion = 1;
+            break;
+          case 'webgl':
+          case 'webgl2':
+          default:
+            renderPreference = 'webgl';
+            renderGLVersion = 2;
+        }
+
+        // Setup PIXI defaults here..
+        Object.assign(PIXI.TextureSource.defaultOptions, {
+          autoGarbageCollect: false,
+          autoGenerateMipmaps: false,
+          resolution: 1
+        });
+
+        Object.assign(PIXI.HelloSystem.defaultOptions, {
+          hello: true  // Log renderer and Pixi version to the console
+        });
+
+        const options = {
+          antialias: true,
+          autoDensity: true,
+          autoStart: false,    // Don't start the ticker yet
+          canvas: this.surface,
+          events: {
+            move: false,
+            globalMove: false,
+            click: true,
+            wheel: false
+          },
+          multiView: true,   // Needed for minimap
+          powerPreference: 'high-performance',
+          preference: renderPreference,
+          preferWebGLVersion: renderGLVersion,
+          preserveDrawingBuffer: true,
+          resolution: window.devicePixelRatio,
+          sharedLoader: true,
+          sharedTicker: true,
+          textureGCActive: true,
+          useBackBuffer: false
+        };
+
+        this.pixi = new PIXI.Application();
+        return this.pixi.init(options);  // return Pixi's init Promise
+      })
+      .then(() => {   // After Pixi's init is complete...
 
         // Prepare a basic bitmap font that we can use for things like debug messages
         PIXI.BitmapFont.install({
