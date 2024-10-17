@@ -73,7 +73,7 @@ export class AssetSystem extends AbstractSystem {
         'tagging_preset_fields':      'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/fields.min.json',
         'tagging_preset_presets':     'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/presets.min.json',
 
-        'wmf_sitematrix':  'https://cdn.jsdelivr.net/npm/wmf-sitematrix@0.1/wikipedia.min.json'
+        'wmf_sitematrix':  'https://cdn.jsdelivr.net/npm/wmf-sitematrix@0.2/data/wikipedia.min.json'
       },
 
       local: {
