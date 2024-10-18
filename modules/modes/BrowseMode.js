@@ -43,6 +43,10 @@ export class BrowseMode extends AbstractMode {
     context.behaviors.hover
       .on('hoverchange', this._hover);
 
+    // Reset sidebar to show "search features"
+    const sidebar = context.systems.ui.sidebar;
+    sidebar.hide();
+
     // Get focus on the body.
     // I think this was done to remove focus from whatever
     // field the user was using in the sidebar/inspector?
