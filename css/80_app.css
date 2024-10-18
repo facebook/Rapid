@@ -858,8 +858,6 @@ a.hide-toggle {
   display: flex;
   flex: 1 0 0px;
   flex-flow: column nowrap;
-
-  position: relative;
   overflow: hidden;
 }
 
@@ -871,8 +869,6 @@ a.hide-toggle {
   display: flex;
   flex: 1 0 0px;
   flex-flow: row nowrap;
-
-  position: relative;
   width: 200%;
 }
 
@@ -880,14 +876,13 @@ a.hide-toggle {
   display: flex;
   flex: 0 0 50%;
   flex-flow: column nowrap;
+  width: 50%;
 }
 
 .inspector-body {
   display: flex;
   flex: 1 1 0px;
   flex-flow: column nowrap;
-
-  position: relative;
   overflow-y: scroll;
   overflow-x: hidden;
 }
