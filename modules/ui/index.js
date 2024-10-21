@@ -24,7 +24,7 @@ export { UiField } from './UiField.js';
 // export { uiFieldHelp } from './field_help.js';
 export { uiFlash } from './flash.js';
 export { uiFormFields } from './form_fields.js';
-export { uiFullScreen } from './full_screen.js';
+export { UiFullscreen } from './UiFullscreen.js';
 export { uiGeolocate } from './geolocate.js';
 export { uiIcon } from './icon.js';
 export { uiIntro } from './intro/intro.js';

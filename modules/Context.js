@@ -99,8 +99,8 @@ export class Context extends EventEmitter {
       downloaded: false   // downloaded data from osm
     };
 
-    // Container
-    this._container = d3_select(null);
+    // Container (a d3 selection)
+    this.$container = d3_select(null);
     this._embed = null;
 
     // true/false whether we are in the intro walkthrough
@@ -362,7 +362,7 @@ export class Context extends EventEmitter {
     // Exit current mode, if any
     if (currMode) {
       currMode.exit();
-      this._container.classed(`mode-${currMode.id}`, false);
+      this.$container.classed(`mode-${currMode.id}`, false);
     }
 
     // Try to enter the new mode, fallback to 'browse' mode
@@ -372,7 +372,7 @@ export class Context extends EventEmitter {
       this._currMode = this.modes.browse;
       this._currMode.enter();
     }
-    this._container.classed(`mode-${this._currMode.id}`, true);
+    this.$container.classed(`mode-${this._currMode.id}`, true);
     this.emit('modechange', this._currMode);
     return this._currMode;
   }
@@ -462,14 +462,14 @@ export class Context extends EventEmitter {
 
   // Container
   container(val) {
-    if (val === undefined) return this._container;
-    this._container = val;
-    this._container.classed('ideditor', true);
+    if (val === undefined) return this.$container;
+    this.$container = val;
+    this.$container.classed('ideditor', true);
     return this;
   }
 
   get containerNode() {
-    return this._container.node();
+    return this.$container.node();
   }
   set containerNode(val) {
     this.container(d3_select(val));

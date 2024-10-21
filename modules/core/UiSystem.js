@@ -6,7 +6,7 @@ import { utilDetect } from '../util/detect.js';
 
 import {
   uiAccount, uiAttribution, uiBearing, uiContributors, UiDefs, uiEditMenu,
-  /* uiFeatureInfo,*/ uiFlash, uiFullScreen, uiGeolocate, uiIcon,
+  /* uiFeatureInfo,*/ uiFlash, UiFullscreen, uiGeolocate, uiIcon,
   uiInfo, uiIntro, uiIssuesInfo, uiLoading, UiMapInMap,
   uiMap3dViewer, UiPhotoViewer, uiRapidServiceLicense,
   uiSplash, uiRestore, uiScale, uiShortcuts, UiSidebar,
@@ -40,6 +40,7 @@ export class UiSystem extends AbstractSystem {
     this.defs = null;
     this.editMenu = null;
     this.flash = null;
+    this.fullscreen = null;
     this.info = null;
     this.mapInMap = null;
     this.photoviewer = null;
@@ -92,6 +93,7 @@ export class UiSystem extends AbstractSystem {
         this.defs = new UiDefs(context);
         this.editMenu = uiEditMenu(context);
         this.flash = uiFlash(context);
+        this.fullscreen = new UiFullscreen(context);
         this.info = uiInfo(context);
         this.mapInMap = new UiMapInMap(context);
         this.photoviewer = new UiPhotoViewer(context);
@@ -108,7 +110,7 @@ export class UiSystem extends AbstractSystem {
       });
 
 // not sure what these were for
-//    container.on('click.ui', d3_event => {
+//    $container.on('click.ui', d3_event => {
 //      if (d3_event.button !== 0) return;  // we're only concerned with the primary mouse button
 //      if (!d3_event.composedPath) return;
 //
@@ -131,7 +133,7 @@ export class UiSystem extends AbstractSystem {
 //      // On iOS we disable pinch-to-zoom of the UI via the `touch-action`
 //      // CSS property, but on desktop Safari we need to manually cancel the
 //      // default gesture events.
-//      container.on('gesturestart.ui gesturechange.ui gestureend.ui', d3_event => {
+//      $container.on('gesturestart.ui gesturechange.ui gestureend.ui', d3_event => {
 //        // disable pinch-to-zoom of the UI via multitouch trackpads on macOS Safari
 //        d3_event.preventDefault();
 //      });
@@ -148,10 +150,11 @@ export class UiSystem extends AbstractSystem {
   startAsync() {
     if (this._startPromise) return this._startPromise;
 
-    // Render one time
     const $container = this.context.container();
     if ($container.size()) {
-      $container.call(this.render);
+      this.render();   // Render one time
+    } else {
+      return Promise.reject(new Error('No container to render to.'));
     }
 
     this._started = true;
@@ -178,9 +181,8 @@ export class UiSystem extends AbstractSystem {
   /**
    * render
    * Renders the Rapid user interface into the container.
-   * @param container - d3-selection to the container we are rendering Rapid in
    */
-  render(container) {
+  render() {
     // For now, this should only happen once
     if (this._started) return;
 
@@ -188,46 +190,52 @@ export class UiSystem extends AbstractSystem {
     const l10n = context.systems.l10n;
     const lang = l10n.localeCode();
     const map = context.systems.map;
+    const $container = context.container();
 
-    container
+    $container
       .attr('lang', lang)
       .attr('dir', l10n.textDirection());
 
-    // setup fullscreen keybindings (no button shown at this time)
-    container
-      .call(uiFullScreen(context));
+    // Setup fullscreen keybindings (no button shown at this time)
+    $container
+      .call(this.fullscreen.render);
 
-    // Sidebar
-    container
-      .call(this.sidebar.render);
-
-    container.selectAll('#rapid-defs')
+    // svg defs element (defines icons to be referred to elsewhere)
+    $container.selectAll('#rapid-defs')
       .data([0])
       .enter()
       .append('svg')
       .attr('id', 'rapid-defs')
       .call(this.defs.render);
 
+    // Sidebar (and sidebar resizer)
+    $container
+      .call(this.sidebar.render);
 
-    // main-content
-    const content = container.selectAll('.main-content')
+    // .main-content
+    // Contains the map and everything floating above it, such as toolbars, etc.
+    const $mainContent = $container.selectAll('.main-content')
       .data([lang]);
 
-    content.exit()
+    $mainContent.exit()
       .remove();
 
-    const contentEnter = content.enter()
+    const $$mainContent = $mainContent.enter()
       .append('div')
       .attr('class', 'main-content active');
 
     // The map
-    contentEnter
+    $$mainContent
       .append('div')
       .attr('class', 'main-map')
+      // Suppress the native right-click context menu
+      .on('contextmenu', e => e.preventDefault())
+      // Suppress swipe-to-navigate browser pages on trackpad/magic mouse – iD#5552
+      .on('wheel.map mousewheel.map', e => e.preventDefault())
       .call(map.render);
 
     // Top toolbar
-    contentEnter
+    $$mainContent
       .append('div')
       .attr('class', 'top-toolbar-wrap')
       .append('div')
@@ -236,7 +244,7 @@ export class UiSystem extends AbstractSystem {
 
 
     // Over Map
-    const overMapEnter = contentEnter
+    const $$overmap = $$mainContent
       .append('div')
       .attr('class', 'over-map');
 
@@ -244,59 +252,58 @@ export class UiSystem extends AbstractSystem {
     // pressing, even if it's not targeted. This conflicts with long-pressing
     // to show the edit menu. We add a selectable offscreen element as the first
     // child to trick Safari into not showing the selection UI.
-    overMapEnter
+    $$overmap
       .append('div')
       .attr('class', 'select-trap')
       .text('t');
 
-    overMapEnter
+    $$overmap
       .call(this.mapInMap.render);
 
-    overMapEnter
+    $$overmap
       .call(uiMap3dViewer(context));
 
-    overMapEnter
+    $$overmap
       .append('div')
       .attr('class', 'spinner')
       .call(uiSpinner(context));
 
-    overMapEnter
+    $$overmap
       .call(this.spector.render);
 
 
     // Map controls
-    const controlsEnter = overMapEnter
+    const $$controls = $$overmap
       .append('div')
       .attr('class', 'map-controls');
 
-    controlsEnter
+    $$controls
       .append('div')
       .attr('class', 'map-control bearing')
       .call(uiBearing(context));
 
-    controlsEnter
+    $$controls
       .append('div')
       .attr('class', 'map-control zoombuttons')
       .call(uiZoom(context));
 
-    controlsEnter
+    $$controls
       .append('div')
       .attr('class', 'map-control zoom-to-selection')
       .call(uiZoomToSelection(context));
 
-    controlsEnter
+    $$controls
       .append('div')
       .attr('class', 'map-control geolocate')
       .call(uiGeolocate(context));
 
 
     // Panes
-    // This should happen after map is initialized, as some require surface()
-    overMapEnter
+    $$overmap
       .append('div')
       .attr('class', 'map-panes')
       .each((d, i, nodes) => {
-        const selection = d3_select(nodes[i]);
+        const $$selection = d3_select(nodes[i]);
 
         // Instantiate the panes
         const uiPanes = [
@@ -309,74 +316,74 @@ export class UiSystem extends AbstractSystem {
 
         // For each pane, create the buttons to toggle the panes,
         // and perform a single render to append it to the map-panes div
-        for (const component of uiPanes) {
-          controlsEnter
+        for (const Component of uiPanes) {
+          $$controls
             .append('div')
-            .attr('class', `map-control map-pane-control ${component.id}-control`)
-            .call(component.renderToggleButton);
+            .attr('class', `map-control map-pane-control ${Component.id}-control`)
+            .call(Component.renderToggleButton);
 
-          selection
-            .call(component.renderPane);
+          $$selection
+            .call(Component.renderPane);
         }
       });
 
 
     // Info Panels
-    overMapEnter
+    $$overmap
       .call(this.info);
 
-    overMapEnter
+    $$overmap
       .append('div')
       .attr('class', 'photoviewer')
       .classed('al', true)       // 'al'=left,  'ar'=right
       .classed('hide', true)
       .call(this.photoviewer.render);
 
-    overMapEnter
+    $$overmap
       .append('div')
       .attr('class', 'attribution-wrap')
       .attr('dir', 'ltr')
       .call(uiAttribution(context));
 
     // Footer
-    let aboutEnter = contentEnter
+    const $$about = $$mainContent
       .append('div')
       .attr('class', 'map-footer');
 
-    aboutEnter
+    $$about
       .append('div')
       .attr('class', 'api-status')
       .call(uiStatus(context));
 
-    let footerEnter = aboutEnter
+    const $$footer = $$about
       .append('div')
       .attr('class', 'map-footer-bar fillD');
 
-    footerEnter
+    $$footer
       .append('div')
       .attr('class', 'flash-wrap map-footer-hide');
 
-    let footerWrapEnter = footerEnter
+    const $$footerWrap = $$footer
       .append('div')
       .attr('class', 'map-footer-wrap map-footer-show');
 
-    footerWrapEnter
+    $$footerWrap
       .append('div')
       .attr('class', 'scale-block')
       .call(uiScale(context));
 
-    let aboutListEnter = footerWrapEnter
+    const $$aboutList = $$footerWrap
       .append('div')
       .attr('class', 'info-block')
       .append('ul')
       .attr('class', 'map-footer-list');
 
-    aboutListEnter
+    $$aboutList
       .append('li')
       .attr('class', 'user-list')
       .call(uiContributors(context));
 
-    aboutListEnter
+    $$aboutList
       .append('li')
       .attr('class', 'fb-road-license')
       .attr('tabindex', -1)
@@ -384,26 +391,26 @@ export class UiSystem extends AbstractSystem {
 
     const apiConnections = context.apiConnections;
     if (apiConnections && apiConnections.length > 1) {
-      aboutListEnter
+      $$aboutList
         .append('li')
         .attr('class', 'source-switch')
         .call(uiSourceSwitch(context).keys(apiConnections));
     }
 
-    aboutListEnter
+    $$aboutList
       .append('li')
       .attr('class', 'issues-info')
       .call(uiIssuesInfo(context));
 
-//    aboutListEnter
+//    $$aboutList
 //      .append('li')
 //      .attr('class', 'feature-warning')
 //      .call(uiFeatureInfo(context));
 
-    const issueLinksEnter = aboutListEnter
+    const $$issueLinks = $$aboutList
       .append('li');
 
-    issueLinksEnter
+    $$issueLinks
       .append('button')
       .attr('class', 'bugnub')
       .attr('tabindex', -1)
@@ -411,24 +418,24 @@ export class UiSystem extends AbstractSystem {
       .call(uiIcon('#rapid-icon-bug', 'bugnub'))
       .call(uiTooltip(context).title(l10n.t('report_a_bug')).placement('top'));
 
-    issueLinksEnter
+    $$issueLinks
       .append('a')
       .attr('target', '_blank')
       .attr('href', 'https://github.com/facebook/Rapid/blob/main/CONTRIBUTING.md#translations')
       .call(uiIcon('#rapid-icon-translate', 'light'))
       .call(uiTooltip(context).title(l10n.t('help_translate')).placement('top'));
 
-    aboutListEnter
+    $$aboutList
       .append('li')
       .attr('class', 'version')
       .call(uiVersion(context));
 
     if (!context.embed()) {
-      aboutListEnter
+      $$aboutList
         .call(uiAccount(context));
     }
 
-    container
+    $container
       .call(this.shortcuts);
 
     // Setup map dimensions
@@ -450,13 +457,13 @@ export class UiSystem extends AbstractSystem {
       const sawWhatsNewVersion = parseInt(storage.getItem('sawWhatsNewVersion'), 10) || 0;
 
       if (startWalkthrough) {
-        container.call(uiIntro(context));     // Jump right into walkthrough..
+        $container.call(uiIntro(context));     // Jump right into walkthrough..
       } else if (editor.canRestoreBackup) {
-        container.call(uiRestore(context));   // Offer to restore backup edits..
+        $container.call(uiRestore(context));   // Offer to restore backup edits..
       } else if (sawPrivacyVersion !== context.privacyVersion) {
-        container.call(uiSplash(context));    // Show "Welcome to Rapid" / Privacy Policy
+        $container.call(uiSplash(context));    // Show "Welcome to Rapid" / Privacy Policy
       } else if (sawWhatsNewVersion !== context.whatsNewVersion) {
-        container.call(uiWhatsNew(context));  // Show "Whats New"
+        $container.call(uiWhatsNew(context));  // Show "Whats New"
       }
 
       this._firstRender = false;
@@ -500,10 +507,10 @@ export class UiSystem extends AbstractSystem {
       }, 400);  // if no resizes for 400ms, remove class
     }
 
-    const $content = $container.selectAll('.main-content');
-    if (!$content.size()) return;  // called too early?
+    const $mainContent = $container.selectAll('.main-content');
+    if (!$mainContent.size()) return;  // called too early?
 
-    const curr = this._copyRect($content.node().getBoundingClientRect());
+    const curr = this._copyRect($mainContent.node().getBoundingClientRect());
     const prev = this._mapRect || curr;
     this._mapRect = curr;
 
@@ -552,79 +559,79 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
    * Call checkOverflow when resizing or whenever the contents change.
    * I think this was to make button labels in the top bar disappear
    * when more buttons are added than the screen has available width
-   * @param {string}   selector - selector to select the thing to check
-   * @param {boolean}  reset - `true` to reset whatever data we have cached
+   * @param  {string}   selector - selector to select the thing to check
+   * @param  {boolean}  reset - `true` to reset whatever data we have cached
    */
   checkOverflow(selector, reset) {
     if (reset) {
       delete this._needWidth[selector];
     }
 
-    const selection = this.context.container().select(selector);
-    if (selection.empty()) return;
+    const $selection = this.context.container().select(selector);
+    if ($selection.empty()) return;
 
-    const scrollWidth = selection.property('scrollWidth');
-    const clientWidth = selection.property('clientWidth');
+    const scrollWidth = $selection.property('scrollWidth');
+    const clientWidth = $selection.property('clientWidth');
     let needed = this._needWidth[selector] || scrollWidth;
 
     if (scrollWidth > clientWidth) {    // overflow happening
-      selection.classed('narrow', true);
+      $selection.classed('narrow', true);
       if (!this._needWidth[selector]) {
         this._needWidth[selector] = scrollWidth;
       }
 
     } else if (scrollWidth >= needed) {
-      selection.classed('narrow', false);
+      $selection.classed('narrow', false);
     }
   }
 
 
   /**
    * togglePanes
-   * If no `showPane` is passed, all panes are hidden.
-   * @param {d3-selection} showPane? - A d3-selection to the pane to show
+   * If no `$showpane` is passed, all panes are hidden.
+   * @param {d3-selection} $showpane? - A d3-selection to the pane to show
    */
-  togglePanes(showPane) {
+  togglePanes($showpane) {
     const context = this.context;
     const l10n = context.systems.l10n;
     const container = context.container();
 
-    let hidePanes = container.selectAll('.map-pane.shown');
+    const $hidepanes = container.selectAll('.map-pane.shown');
     const side = l10n.isRTL() ? 'left' : 'right';
 
-    hidePanes
+    $hidepanes
       .classed('shown', false)
       .classed('hide', true);
 
     container.selectAll('.map-pane-control button')
       .classed('active', false);
 
-    if (showPane) {
-      hidePanes
+    if ($showpane) {
+      $hidepanes
         .classed('shown', false)
         .classed('hide', true)
         .style(side, '-500px');
 
-      container.selectAll('.' + showPane.attr('pane') + '-control button')
+      container.selectAll('.' + $showpane.attr('pane') + '-control button')
         .classed('active', true);
 
-      showPane
+      $showpane
         .classed('shown', true)
         .classed('hide', false);
 
-      if (hidePanes.empty()) {
-        showPane
+      if ($hidepanes.empty()) {
+        $showpane
           .style(side, '-500px')
           .transition()
           .duration(200)
           .style(side, '0px');
       } else {
-        showPane
+        $showpane
           .style(side, '0px');
       }
 
     } else {
-      hidePanes
+      $hidepanes
         .classed('shown', true)
         .classed('hide', false)
         .style(side, '0px')
@@ -745,7 +752,7 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
    * _copyRect
    * ClientRects are immutable, so copy them to an Object in case we need to trim the height/width.
    * @param   {DOMRect}  src -  rectangle (or something that looks like one)
-   * @returns  Object containing the copied properties
+   * @returns {Object}   the copied properties
    */
   _copyRect(src) {
     return {

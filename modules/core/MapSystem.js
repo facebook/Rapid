@@ -225,14 +225,6 @@ export class MapSystem extends AbstractSystem {
     const context = this.context;
     const gfx = context.systems.gfx;
 
-    // $parent here contains a d3-selection for the `main-map` div that the map gets added to
-    // It's an absolutely positioned div that takes up as much space as it's allowed to.
-    $parent
-      // Suppress the native right-click context menu
-      .on('contextmenu', e => e.preventDefault())
-      // Suppress swipe-to-navigate browser pages on trackpad/magic mouse – iD#5552
-      .on('wheel.map mousewheel.map', e => e.preventDefault());
-
     // The `supersurface` is a wrapper div that we temporarily transform as the user zooms and pans.
     // This allows us to defer actual rendering until the browser has more time to do it.
     // At regular intervals we reset this root transform and actually redraw the this.
