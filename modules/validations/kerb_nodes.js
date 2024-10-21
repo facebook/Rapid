@@ -39,7 +39,7 @@ export function validationKerbNodes(context) {
         reference: showReference,
         entityIds: [wayID],
         data: { crossingWayID: wayID },
-        dynamicFixes: () => ['flush', 'lowered', 'raised'].map(type => {
+        dynamicFixes: () => ['flush', 'lowered', 'raised', 'unspecified'].map(type => {
           const tags = { barrier: 'kerb', kerb: type };
           const iconID = getIconForKerbNode(tags); // Get the appropriate icon based on the tags
           return new ValidationFix({
@@ -326,6 +326,8 @@ export function validationKerbNodes(context) {
         iconID = 'temaki-kerb-raised'; // Example icon for raised kerbs
     } else if (tags.barrier === 'kerb' && tags.kerb === 'lowered') {
         iconID = 'temaki-kerb-lowered'; // Example icon for lowered kerbs
+    } else if (tags.barrier === 'kerb' && tags.kerb === 'unspecified') {
+        iconID = 'temaki-kerb-unspecified'; // Example icon for lowered kerbs
     }
     return iconID;
   }
