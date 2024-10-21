@@ -2075,6 +2075,9 @@ en:
       add_a_tunnel:
         title: Add a tunnel
         annotation: Added a tunnel.
+      add_kerb_nodes_unspecified:
+        title: Add unspecified kerb nodes
+        annotation: Added unspecified kerb nodes.
       add_kerb_nodes_flush:
         title: Add flush kerb nodes
         annotation: Added flush kerb nodes.
