@@ -263,20 +263,17 @@ const glUploadAtlasResource = {
           source = source.data; // pass the typed array directly
 
         } else if (source instanceof HTMLCanvasElement) {
+          // note that the canvas width/height may be larger than the actual texture
+          const [w, h] = [bin.width, bin.height];
           const ctx = source.getContext('2d');
-          const [w, h] = [source.width, source.height];
-
           source = ctx.getImageData(0, 0, w, h).data;
 
         } else if (source instanceof HTMLImageElement) {
           const [w, h] = [source.naturalWidth, source.naturalHeight];
           const canvas = document.createElement('canvas');
-
           canvas.width = w;
           canvas.height = h;
-
           const ctx = canvas.getContext('2d');
-
           ctx.drawImage(source, 0, 0);
           source = ctx.getImageData(0, 0, w, h).data;
         }
