@@ -396,14 +396,22 @@ export class DashLine {
       return _dashTextureCache[key];
     }
 
+    // For WebGL1 support, this canvas should have power of 2 dimensions.
     const canvas = document.createElement('canvas');
-    canvas.width = dashSize;
-    canvas.height = Math.ceil(options.width);
+    const drawWidth = dashSize;
+    const drawHeight = Math.ceil(options.width);
+    canvas.width = PIXI.nextPow2(drawWidth);
+    canvas.height = PIXI.nextPow2(drawHeight);
     const ctx = canvas.getContext('2d');
     if (!ctx) {
       console.warn('Did not get context from canvas');   // eslint-disable-line no-console
       return null;
     }
+
+    // scale up to fill canvas
+    const scaleX = canvas.width / drawWidth;
+    const scaleY = canvas.height / drawHeight;
+    ctx.scale(scaleX, scaleY);
 
     ctx.strokeStyle = 'white';
     ctx.globalAlpha = options.alpha;
@@ -422,6 +430,7 @@ export class DashLine {
       }
     }
     ctx.stroke();
+
     const texture = (_dashTextureCache[key] = PIXI.Texture.from(canvas));
     texture.source.scaleMode = 'nearest';
 
