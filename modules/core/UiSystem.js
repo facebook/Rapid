@@ -10,7 +10,7 @@ import {
   uiInfo, uiIntro, uiIssuesInfo, uiLoading, UiMapInMap,
   uiMap3dViewer, UiPhotoViewer, uiRapidServiceLicense,
   uiSplash, uiRestore, uiScale, uiShortcuts, UiSidebar,
-  uiSourceSwitch, UiSpector, uiSpinner, uiStatus, uiTooltip,
+  uiSourceSwitch, UiSpector, uiStatus, uiTooltip,
   uiTopToolbar, uiVersion, uiWhatsNew, uiZoom, uiZoomToSelection
 } from '../ui/index.js';
 
@@ -262,11 +262,6 @@ export class UiSystem extends AbstractSystem {
 
     $$overmap
       .call(uiMap3dViewer(context));
-
-    $$overmap
-      .append('div')
-      .attr('class', 'spinner')
-      .call(uiSpinner(context));
 
     $$overmap
       .call(this.spector.render);
