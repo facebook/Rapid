@@ -5,7 +5,18 @@ import { utilFetchResponse } from '../util/index.js';
 
 /**
  * UiDefs
- * A standalone SVG `defs` element that contains the icon spritesheets for the user interface
+ * A standalone `svg` and `defs` to contain the icon spritesheets for the user interface.
+ * It is attached to the main rapid container so the icons can be used anywhere.
+ *
+ * @example
+ *  <svg id='#rapid-defs'>
+ *    <defs>
+ *      <g class='spritesheet spritesheet-rapid'>…</g>
+ *      <g class='spritesheet spritesheet-maki'>…</g>
+ *      <g class='spritesheet spritesheet-temaki'>…</g>
+ *      …
+ *    </defs>
+ *  </svg>
  */
 export class UiDefs {
 
@@ -15,11 +26,13 @@ export class UiDefs {
    */
   constructor(context) {
     this.context = context;
-    this.parent = d3_select(null);
 
     this.spritesheetIDs = [
       'rapid', 'maki', 'temaki', 'fa', 'roentgen', 'community', /*'mapillary-object',*/ 'mapillary'
     ];
+
+    // D3 selections
+    this.$parent = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
@@ -30,23 +43,32 @@ export class UiDefs {
 
   /**
    * render
-   * @param  `selection`  A d3-selection to a `svg` element that the `defs` should render itself into
+   * Accepts a parent selection, and renders the content under it.
+   * (The parent selection is required the first time, but can be inferred on subsequent renders)
+   * @param {d3-selection} $parent - A d3-selection to a HTMLEement that this component should render itself into
    */
-  render(selection) {
+  render($parent = this.$parent) {
+    if ($parent) {
+      this.$parent = $parent;
+    } else {
+      return;   // no parent - called too early?
+    }
+
     const context = this.context;
     const assets = context.systems.assets;
 
-    this.parent = selection;
-
-    const defs = selection.selectAll('defs')
-      .data([0]);
-
-    const enter = defs.enter()
+    // create svg and defs if necessary
+    $parent.selectAll('#rapid-defs')
+      .data([0])
+      .enter()
+      .append('svg')
+      .attr('id', 'rapid-defs')
       .append('defs');
 
     // update
-    defs.merge(enter)
-      .selectAll('.spritesheet')
+    const $defs = $parent.selectAll('#rapid-defs > defs');
+
+    $defs.selectAll('.spritesheet')
       .data(this.spritesheetIDs, d => d)
       .enter()
       .append('g')
@@ -64,12 +86,12 @@ export class UiDefs {
 
   /**
    * _spritesheetLoaded
-   * @param  `selection`       A d3-selection to a `g` element that the icons should render themselves into
-   * @param  `spritesheetID`   String spritesheet id
-   * @param  `spritesheetSvg`  SVGDocument containting the fetched spritesheet
+   * @param  {d3-selection}  $selection      - A d3-selection to a `g` element that the icons should render themselves into
+   * @param  {string}        spritesheetID   - the spritesheet id to use
+   * @param  {XMLDocument}   spritesheetSvg  - Document containing the fetched spritesheet
    */
-  _spritesheetLoaded(selection, spritesheetID, spritesheetSvg) {
-    const group = selection.node();
+  _spritesheetLoaded($selection, spritesheetID, spritesheetSvg) {
+    const group = $selection.node();
     const element = spritesheetSvg.documentElement;
 
     element.setAttribute('id', spritesheetID);
@@ -77,7 +99,7 @@ export class UiDefs {
 
     // For some spritesheets, allow icon fill colors to be overridden..
     if (['maki', 'temaki', 'fa', 'roentgen', 'community'].includes(spritesheetID)) {
-      selection.selectAll('path')
+      $selection.selectAll('path')
         .attr('fill', 'currentColor');
     }
 
@@ -88,7 +110,7 @@ export class UiDefs {
       throw new Error(`TextureManager not ready to pack icons for ${spritesheetID}`);
     }
 
-    selection.selectAll('symbol')
+    $selection.selectAll('symbol')
       .each((d, i, nodes) => {
         const symbol = nodes[i];
         const iconID = symbol.getAttribute('id');

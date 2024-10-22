@@ -200,12 +200,8 @@ export class UiSystem extends AbstractSystem {
     $container
       .call(this.fullscreen.render);
 
-    // svg defs element (defines icons to be referred to elsewhere)
-    $container.selectAll('#rapid-defs')
-      .data([0])
-      .enter()
-      .append('svg')
-      .attr('id', 'rapid-defs')
+    // `svg` and `defs` elements (contains icon spritesheets to be used elsewhere)
+    $container
       .call(this.defs.render);
 
     // Sidebar (and sidebar resizer)
