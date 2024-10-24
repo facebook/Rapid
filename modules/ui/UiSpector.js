@@ -1,3 +1,5 @@
+import { selection } from 'd3-selection';
+
 
 /**
  * UiSpector
@@ -35,7 +37,7 @@ export class UiSpector {
    * @param {d3-selection} $parent - A d3-selection to a HTMLElement that this component should render itself into
    */
   render($parent = this.$parent) {
-    if ($parent) {
+    if ($parent instanceof selection) {
       this.$parent = $parent;
     } else {
       return;   // no parent - called too early?

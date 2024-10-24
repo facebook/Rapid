@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { selection } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 import { HALF_PI, Viewport, geoZoomToScale, numClamp, vecAdd, vecInterp, vecSubtract } from '@rapid-sdk/math';
 
@@ -65,7 +66,7 @@ export class UiMapInMap {
    * @param {d3-selection} $parent - A d3-selection to a HTMLElement that this component should render itself into
    */
   render($parent = this.$parent) {
-    if ($parent) {
+    if ($parent instanceof selection) {
       this.$parent = $parent;
     } else {
       return;   // no parent - called too early?

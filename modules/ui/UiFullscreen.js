@@ -36,7 +36,7 @@ export class UiFullscreen {
     if (!this.isSupported()) return;
 
 // parent not actually used here , since we aren't rendering a button
-//    if ($parent) {
+//    if ($parent instanceof selection) {
 //      this.$parent = $parent;
 //    } else {
 //      return;   // no parent - called too early?

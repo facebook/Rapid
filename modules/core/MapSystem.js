@@ -1,3 +1,4 @@
+import { selection } from 'd3-selection';
 import {
   DEG2RAD, RAD2DEG, TAU, Extent, Viewport, geoMetersToLon, geoZoomToScale,
   numClamp, numWrap, vecAdd, vecRotate, vecSubtract
@@ -216,7 +217,7 @@ export class MapSystem extends AbstractSystem {
    * @param {d3-selection} $parent - A d3-selection to a HTMLElement that this component should render itself into
    */
   render($parent = this.$parent) {
-    if ($parent) {
+    if ($parent instanceof selection) {
       this.$parent = $parent;
     } else {
       return;   // no parent - called too early?

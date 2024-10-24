@@ -1,3 +1,4 @@
+import { selection } from 'd3-selection';
 import { Extent, numClamp, vecAdd } from '@rapid-sdk/math';
 import { easeLinear as d3_easeLinear } from 'd3-ease';
 import { select as d3_select } from 'd3-selection';
@@ -27,7 +28,7 @@ export class UiCurtain {
     this._tooltipDirty = true;      // need to recompute the tooltip?
     this._inTransition = false;
 
-    // d3 selections
+    // D3 selections
     this.$parent = null;
     this.$curtain = null;
     this.$tooltip = null;
@@ -48,7 +49,7 @@ export class UiCurtain {
    * @param {d3-selection} $parent - A d3-selection to a HTMLElement that this component should render itself into
    */
   enable($parent = this.$parent) {
-    if ($parent) {
+    if ($parent instanceof selection) {
       this.$parent = $parent;
     } else {
       return;   // no parent - called too early?

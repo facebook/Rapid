@@ -1,3 +1,5 @@
+import { selection } from 'd3-selection';
+
 import { uiEntityEditor } from './entity_editor.js';
 import { uiPresetList } from './preset_list.js';
 import { UiViewOn } from './UiViewOn.js';
@@ -34,12 +36,12 @@ export class UiInspector {
   constructor(context) {
     this.context = context;
 
-    // create child components
+    // Create child components
     this.PresetList = uiPresetList(context);
     this.EntityEditor = uiEntityEditor(context);
     this.ViewOn = new UiViewOn(context);
 
-    // d3 selections
+    // D3 selections
     this.$parent = null;
     this.$inspector = null;
     this.$paneWrap = null;
@@ -78,7 +80,7 @@ export class UiInspector {
    * @param {d3-selection} $parent - A d3-selection to a HTMLElement that this component should render itself into
    */
   render($parent = this.$parent) {
-    if ($parent) {
+    if ($parent instanceof selection) {
       this.$parent = $parent;
     } else {
       return;   // no parent - called too early?

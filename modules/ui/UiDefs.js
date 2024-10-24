@@ -1,4 +1,4 @@
-import { select as d3_select } from 'd3-selection';
+import { selection, select as d3_select } from 'd3-selection';
 
 import { utilFetchResponse } from '../util/index.js';
 
@@ -48,7 +48,7 @@ export class UiDefs {
    * @param {d3-selection} $parent - A d3-selection to a HTMLElement that this component should render itself into
    */
   render($parent = this.$parent) {
-    if ($parent) {
+    if ($parent instanceof selection) {
       this.$parent = $parent;
     } else {
       return;   // no parent - called too early?
