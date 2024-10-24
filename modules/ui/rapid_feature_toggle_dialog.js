@@ -49,9 +49,10 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     if (dataset) {
       dataset.color = color;
 
-      gfx.scene.dirtyLayers('rapid');
-      gfx.scene.dirtyLayers('rapid-overlay');
-      gfx.immediateRedraw();
+      context.scene().dirtyLayers('rapid');
+      context.scene().dirtyLayers('rapid-overlay');
+      context.scene().dirtyLayers('overture');
+      context.systems.map.immediateRedraw();
       _content.call(renderModalContent);
 
       // If a Rapid feature is already selected, reselect it to update sidebar too

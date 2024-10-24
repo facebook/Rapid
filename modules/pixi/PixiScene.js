@@ -15,6 +15,7 @@ import { PixiLayerMapUI } from './PixiLayerMapUI.js';
 import { PixiLayerOsm } from './PixiLayerOsm.js';
 import { PixiLayerOsmNotes } from './PixiLayerOsmNotes.js';
 import { PixiLayerOsmose } from './PixiLayerOsmose.js';
+import { PixiLayerOverture } from './PixiLayerOverture.js';
 import { PixiLayerRapid } from './PixiLayerRapid.js';
 import { PixiLayerRapidOverlay } from './PixiLayerRapidOverlay.js';
 import { PixiLayerStreetsidePhotos } from './PixiLayerStreetsidePhotos.js';
@@ -94,6 +95,7 @@ export class PixiScene extends EventEmitter {
       new PixiLayerOsm(this, 'osm'),
       new PixiLayerRapid(this, 'rapid'),
       new PixiLayerRapidOverlay(this, 'rapid-overlay'),
+      new PixiLayerOverture(this, 'overture'),
 
       new PixiLayerMapillaryDetections(this, 'mapillary-detections'),
       new PixiLayerMapillarySigns(this, 'mapillary-signs'),
