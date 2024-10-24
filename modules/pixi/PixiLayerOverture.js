@@ -89,6 +89,10 @@ export class PixiLayerOverture extends AbstractLayer {
     if (zoom >= 16) {  // avoid firing off too many API requests
       service.loadTiles(dataset.id);  // fetch more
     }
+
+    const entities = service.getData(dataset.id);
+
+    console.log(`Received ${entities.length} entities from the overture service getData() call.`);
   }
 
   /**
