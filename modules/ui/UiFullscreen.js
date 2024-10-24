@@ -30,7 +30,7 @@ export class UiFullscreen {
    * render
    * Accepts a parent selection, and renders the content under it.
    * (The parent selection is required the first time, but can be inferred on subsequent renders)
-   * @param {d3-selection} $parent - A d3-selection to a HTMLEement that this component should render itself into
+   * @param {d3-selection} $parent - A d3-selection to a HTMLElement that this component should render itself into
    */
   render($parent = this.$parent) {
     if (!this.isSupported()) return;
@@ -102,7 +102,7 @@ export class UiFullscreen {
 
   /**
    * Toggle fullscreen mode
-   * @param {KeyboardEvent}  e? - the keyboard event, if any
+   * @param  {Event}    e? - the triggering event, if any (keypress or click)
    * @return {Promise}  Promise settled when the browser is finished toggling
    */
   toggle(e) {

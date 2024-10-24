@@ -296,7 +296,7 @@ li.hide,
 span.hide,
 textarea.hide,
 ul.hide {
-  display: none;
+  display: none !important;
 }
 
 .deemphasize {
@@ -314,106 +314,107 @@ ul.hide {
 /* Buttons
 ------------------------------------------------------- */
 button {
-    text-align: center;
-    border: 0;
-    background: #fff;
-    color: #333;
-    font-size: 12px;
-    display: inline-block;
-    border-radius: 4px;
+  text-align: center;
+  border: 0;
+  background: #fff;
+  color: #333;
+  font-size: 12px;
+  display: inline-block;
+  border-radius: 4px;
 }
 
 button:focus,
 button:active,
 /* we want to fake hovering sometimes */
 button.hover {
-    background-color: #ececec;
+  background-color: #ececec;
 }
 @media (hover: hover) {
-    button:hover {
-        background-color: #ececec;
-    }
+  button:hover {
+    background-color: #ececec;
+  }
 }
 button.active {
-    background: #7092ff;
+  background: #7092ff;
 }
 button.disabled {
-    background-color: rgba(255,255,255,.25);
-    color: rgba(0,0,0,.4);
-    cursor: not-allowed;
+  background-color: rgba(255,255,255,.25);
+  color: rgba(0,0,0,.4);
+  cursor: not-allowed;
 }
 
+/* Button Groups */
 .joined > * {
-    border-radius: 0;
-    border-right: 1px solid rgba(0,0,0,.5);
+  border-radius: 0;
+  border-left: none;
+  border-right: 1px solid rgba(0,0,0,.5);
 }
 .ideditor[dir='rtl'] .joined > * {
-    border-left: 1px solid rgba(0,0,0,.5);
-    border-right: none;
+  border-radius: 0;
+  border-left: 1px solid rgba(0,0,0,.5);
+  border-right: none;
+}
+.fillL .joined > * {
+  border-color: #fff;
 }
 
-.fillL .joined > * {
-    border-right: 1px solid #fff;
+.joined > *:first-child,
+.ideditor[dir='rtl'] .joined > *:last-child {
+  border-radius: 4px 0 0 4px;
 }
-.joined > *:first-child {
-    border-radius: 4px 0 0 4px;
-}
+.joined > *:last-child,
 .ideditor[dir='rtl'] .joined > *:first-child {
-    border-radius: 0 4px 4px 0;
+  border-radius: 0 4px 4px 0;
 }
-.joined > *:last-child {
-    border-right-width: 0;
-    border-radius: 0 4px 4px 0;
-}
-.ideditor[dir='rtl'] .joined > *.bar-button:last-child {
-    border-radius: 4px 0 0 4px;
+.joined > *:first-child:last-child {  /* only-child, but with better specificity */
+  border-radius: 4px;
 }
 
 
 /* Action buttons */
 button.action {
-    background: #7092ff;
-    color: #fff;
-    font-weight: bold;
+  background: #7092ff;
+  color: #fff;
+  font-weight: bold;
 }
 button.action:focus,
 button.action:active {
-    background: #597be7;
+  background: #597be7;
 }
 button.secondary-action {
-    background: #ececec;
-    font-weight: bold;
+  background: #ececec;
+  font-weight: bold;
 }
 button.secondary-action:focus,
 button.secondary-action:active {
-    background: #cccccc;
+  background: #cccccc;
 }
 
 button.action.disabled,
 button[disabled].action {
-    background: #cccccc;
-    color: #888;
-    cursor: not-allowed;
+  background: #cccccc;
+  color: #888;
+  cursor: not-allowed;
 }
 
 button.action,
 button.secondary-action {
-    padding: 10px 5px;
+  padding: 10px 5px;
 }
 
 @media (hover: hover) {
-    button.action:hover {
-        background: #597be7;
-    }
-    button.secondary-action:hover {
-        background: #cccccc;
-    }
-    button.action.disabled:hover,
-    button[disabled].action:hover {
-        background: #cccccc;
-        color: #888;
-        cursor: not-allowed;
-    }
+  button.action:hover {
+    background: #597be7;
+  }
+  button.secondary-action:hover {
+    background: #cccccc;
+  }
+  button.action.disabled:hover,
+  button[disabled].action:hover {
+    background: #cccccc;
+    color: #888;
+    cursor: not-allowed;
+  }
 }
 
 
@@ -510,124 +511,71 @@ button.disabled .icon.operation use,
 }
 
 
-
-
-
 /* Toolbar / Persistent UI Elements
 ------------------------------------------------------- */
-.top-toolbar-wrap {
+.top-toolbar {
+  display: flex;
   flex: 0 0 0px;
+  flex-flow: row nowrap;
 
-  position: relative;
+  justify-content: space-between;
+  padding: 10px 0 0 0;
   z-index: 101;
 }
 
-.top-toolbar {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  padding: 10px 0 0 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  height: 100%;
-  width: 100%;
-
-  /* hide scrollbar but allow scrolling */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE, Edge */
-}
-
-
-.top-toolbar::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-}
 .top-toolbar .toolbar-item {
-    display: flex;
-    flex: 0 1 auto;
-    flex-flow: column wrap;
-    justify-content: center;
-}
-.top-toolbar .toolbar-item .item-content {
-    display: flex;
-    flex: 0 1 auto;
-    flex-flow: row nowrap;
-    justify-content: center;
-    height: 40px;
-    width: auto;
-    margin: 0 5px;
-}
-.ideditor[dir='ltr'] .top-toolbar .toolbar-item:last-child .item-content,
-.ideditor[dir='rtl'] .top-toolbar .toolbar-item:first-child .item-content {
-    margin-right: 10px;
-}
-.ideditor[dir='ltr'] .top-toolbar .toolbar-item:first-child .item-content,
-.ideditor[dir='rtl'] .top-toolbar .toolbar-item:last-child .item-content {
-    margin-left: 10px;
-}
-.ideditor[dir='ltr'] .top-toolbar .toolbar-item:last-child .item-label,
-.ideditor[dir='rtl'] .top-toolbar .toolbar-item:first-child .item-label {
-    padding-right: 5px;
-}
-.ideditor[dir='ltr'] .top-toolbar .toolbar-item:first-child .item-label,
-.ideditor[dir='rtl'] .top-toolbar .toolbar-item:last-child .item-label {
-    padding-left: 5px;
-}
-.top-toolbar .toolbar-item .item-label {
-    text-align: center;
-    font-size: 11px;
-    white-space: nowrap;
-    margin: 1px 2px 2px 2px;
+  display: flex;
+  flex: 0 0 0px;
+  flex-flow: column wrap;
+  justify-content: center;
 }
 .top-toolbar .toolbar-item.spacer {
-    width: 100%;
-    flex-grow: 2;
-}
-.top-toolbar .toolbar-item:first-child {
-    justify-content: flex-start;
-}
-.top-toolbar .toolbar-item:last-child {
-    justify-content: flex-end;
-}
-.top-toolbar .toolbar-item:empty:not(.spacer) {
-    display: none;
-}
-button.bar-button {
-    flex: 0 0 auto;
-    flex-flow: row nowrap;
-    align-items: center;
-    padding: 0 10px;
-    min-width: 30px;
-    white-space: nowrap;
-    display: flex;
-    font-weight: bold;
-}
-button.bar-button .icon {
-    flex: 0 0 20px;
-}
-button.bar-button .label {
-    flex: 0 1 auto;
-    padding: 0 5px;
+  flex-grow: 1;
 }
 
-button.bar-button.dragging {
-    opacity: 0.75;
-    z-index: 200;
+.top-toolbar .toolbar-item .item-content {
+  display: flex;
+  flex: 0 0 40px;
+  flex-flow: row nowrap;
+  justify-content: center;
+
+  margin: 0 5px;
 }
-button.bar-button.dragging .tooltip {
-    display: none;
+
+.top-toolbar .toolbar-item .item-label {
+  text-align: center;
+  font-size: 11px;
+  white-space: nowrap;
+  margin: 1px 2px 2px 2px;
 }
-button.bar-button.dragging.removing {
-    cursor: url(img/cursor-select-remove.png), pointer;
+
+button.bar-button {
+  display: flex;
+  flex: 0 0 auto;
+  flex-flow: row nowrap;
+
+  align-items: center;
+  padding: 0 10px;
+  min-width: 30px;
+  white-space: nowrap;
+  font-weight: bold;
+}
+button.bar-button .icon {
+  flex: 0 0 20px;
+}
+button.bar-button .label {
+  flex: 0 1 auto;
+  padding: 0 5px;
 }
 
 button.add-area {
-    opacity: 0.65;
+  opacity: 0.65;
 }
 
 button.save .count {
-    display: inline-block;
-    min-width: 32px;
-    text-align: center;
+  display: inline-block;
+  min-width: 32px;
+  text-align: center;
 }
 
 .help-pane svg.icon.add-note,
@@ -644,41 +592,12 @@ button.add-note svg.icon {
   margin-top: 3px;
 }
 
-.spinner {
-    opacity: .5;
-    position: absolute;
-    right: 4px;
-    bottom: 4px;
-    height: 20px;
-    width: 20px;
-}
-.spinner img {
-    height: 100%;
-    width: 100%;
-    background: transparent;
-    border-radius: 100%;
-}
-.ideditor[dir='rtl'] .spinner img {
-    transform: scaleX(-1);
-    filter: FlipH;
-    -ms-filter: "FlipH";
-}
-
-
-.top-toolbar.narrow .spinner,
 .top-toolbar.narrow button.bar-button .label {
-    display: none;
+  display: none;
 }
 .top-toolbar.narrow button .count {
-    border-left-width: 0;
-    border-right-width: 0;
-}
-
-.ideditor[dir='ltr'] .undo-redo button:first-of-type {
-    margin-right: 1px;
-}
-.ideditor[dir='rtl'] .undo-redo button:first-of-type {
-    margin-left: 1px;
+  border-left-width: 0;
+  border-right-width: 0;
 }
 
 

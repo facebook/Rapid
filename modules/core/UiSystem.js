@@ -11,7 +11,7 @@ import {
   uiMap3dViewer, UiPhotoViewer, uiRapidServiceLicense,
   uiSplash, uiRestore, uiScale, uiShortcuts, UiSidebar,
   uiSourceSwitch, UiSpector, uiStatus, uiTooltip,
-  uiTopToolbar, uiVersion, uiWhatsNew, uiZoom, uiZoomToSelection
+  UiTopToolbar, uiVersion, uiWhatsNew, uiZoom, uiZoomToSelection
 } from '../ui/index.js';
 
 import {
@@ -47,6 +47,7 @@ export class UiSystem extends AbstractSystem {
     this.shortcuts = null;
     this.sidebar = null;
     this.spector = null;
+    this.topToolbar = null;
 
     this._firstRender = true;
     this._needWidth = {};
@@ -80,15 +81,18 @@ export class UiSystem extends AbstractSystem {
 
     const context = this.context;
     const l10n = context.systems.l10n;
+    const gfx = context.systems.gfx;
+
+    // Many UI components require l10n and gfx (for scene/layers)
     const prerequisites = Promise.all([
       l10n.initAsync(),
+      gfx.initAsync()
     ]);
 
     return this._initPromise = prerequisites
       .then(() => {
         window.addEventListener('resize', this.resize);
 
-        // After l10n is ready we can make these
         this.authModal = uiLoading(context).blocking(true).message(l10n.t('loading_auth'));
         this.defs = new UiDefs(context);
         this.editMenu = uiEditMenu(context);
@@ -100,6 +104,7 @@ export class UiSystem extends AbstractSystem {
         this.shortcuts = uiShortcuts(context);
         this.sidebar = new UiSidebar(context);
         this.spector = new UiSpector(context);
+        this.topToolbar = new UiTopToolbar(context);
 
         const osm = context.services.osm;
         if (osm) {
@@ -232,11 +237,7 @@ export class UiSystem extends AbstractSystem {
 
     // Top toolbar
     $$mainContent
-      .append('div')
-      .attr('class', 'top-toolbar-wrap')
-      .append('div')
-      .attr('class', 'top-toolbar fillD')
-      .call(uiTopToolbar(context));
+      .call(this.topToolbar.render);
 
 
     // Over Map
@@ -551,7 +552,6 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
    * I think this was to make button labels in the top bar disappear
    * when more buttons are added than the screen has available width
    * @param  {string}   selector - selector to select the thing to check
-   * @param  {boolean}  reset - `true` to reset whatever data we have cached
    */
   checkOverflow(selector, reset) {
     if (reset) {

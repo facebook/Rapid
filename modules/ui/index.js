@@ -73,7 +73,7 @@ export { uiSuccess } from './success.js';
 export { uiTagReference } from './tag_reference.js';
 export { uiToggle } from './toggle.js';
 export { uiTooltip } from './tooltip.js';
-export { uiTopToolbar } from './top_toolbar.js';
+export { UiTopToolbar } from './UiTopToolbar.js';
 export { uiVersion } from './version.js';
 export { UiViewOn } from './UiViewOn.js';
 export { uiWhatsNew } from './whats_new.js';

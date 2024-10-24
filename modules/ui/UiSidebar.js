@@ -99,7 +99,7 @@ export class UiSidebar {
    * render
    * Accepts a parent selection, and renders the content under it.
    * (The parent selection is required the first time, but can be inferred on subsequent renders)
-   * @param {d3-selection} $parent - A d3-selection to a HTMLEement that this component should render itself into
+   * @param {d3-selection} $parent - A d3-selection to a HTMLElement that this component should render itself into
    */
   render($parent = this.$parent) {
     if ($parent) {
