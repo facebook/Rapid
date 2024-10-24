@@ -39,7 +39,7 @@ export function validationKerbNodes(context) {
         reference: showReference,
         entityIds: [wayID],
         data: { crossingWayID: wayID },
-        dynamicFixes: () => ['flush', 'lowered', 'raised', 'unspecified'].map(type => {
+        dynamicFixes: () => ['unspecified', 'flush', 'lowered', 'raised'].map(type => {
           const tags = { barrier: 'kerb', kerb: type };
           const iconID = getIconForKerbNode(tags); // Get the appropriate icon based on the tags
           return new ValidationFix({
