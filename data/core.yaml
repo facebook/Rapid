@@ -1886,7 +1886,7 @@ en:
     kerb_nodes:
      title: "Kerb Nodes"
      message: "{feature} may be missing kerb nodes."
-     reference: "Crossing ways should have individual kerb nodes (where appropriate)."
+     reference: "Crossing ways should have individual kerb nodes (where appropriate). Use photo overlays to help determine kerb type."
      footway-highway: "Footways crossing highways should have separately-mapped kerb nodes."
     crossing_ways:
       title: Crossings Ways
