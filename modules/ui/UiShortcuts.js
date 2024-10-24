@@ -1,4 +1,4 @@
-import { select as d3_select } from 'd3-selection';
+import { selection, select as d3_select } from 'd3-selection';
 import { utilArrayUniq } from '@rapid-sdk/util';
 
 import { uiIcon } from './icon.js';
@@ -7,45 +7,84 @@ import { uiModal } from './modal.js';
 import { utilDetect } from '../util/detect.js';
 
 
-// This is a UI component for displaying the keyboard shortcuts (when the user presses '?')
-// It is a modified `uiModal` component.
-// We load the data from 'shortcuts.json' to populate this screen.
-//
-// +------------------------------+
-// | Keyboard Shortcuts         X |   `.shortcuts-heading`
-// +------------------------------+
-// |    Browsing Editing Tools    |   `.nav-bar` containing `.nav-items`
-// |                              |
-// |  +--column--+  +--column--+  |  \
-// |  | row      |  | row      |  |  |-- `.shortcuts-section`
-// |  | row      |  | row      |  |  |    contains multiple `.shortcut-tab` (one visible at a time)
-// |  | row      |  | row      |  |  |     each of those contains multiple `.shortcut-column`
-// |  +----------+  +----------+  |  |      each of those contains multiple `.shortcut-row`
-// +------------------------------+  /
-//
+/**
+ * UiShortcuts
+ * This is a UI component for displaying the keyboard shortcuts (when the user presses '?')
+ * It is a modified `uiModal` component.
+ * We load the data from 'shortcuts.json' to populate this screen.
+ *
+ * +------------------------------+
+ * | Keyboard Shortcuts         X |   `.shortcuts-heading`
+ * +------------------------------+
+ * |    Browsing Editing Tools    |   `.nav-bar` containing `.nav-items`
+ * |                              |
+ * |  +--column--+  +--column--+  |  \
+ * |  | row      |  | row      |  |  |-- `.shortcuts-section`
+ * |  | row      |  | row      |  |  |    contains multiple `.shortcut-tab` (one visible at a time)
+ * |  | row      |  | row      |  |  |     each of those contains multiple `.shortcut-column`
+ * |  +----------+  +----------+  |  |      each of those contains multiple `.shortcut-row`
+ * +------------------------------+  /
+ */
+export class UiShortcuts {
 
-export function uiShortcuts(context) {
-  const assets = context.systems.assets;
-  const l10n = context.systems.l10n;
+  /**
+   * @constructor
+   * @param  `context`  Global shared application context
+   */
+  constructor(context) {
+    this.context = context;
 
-  const detected = utilDetect();
-  let _activeTab = 0;
-  let _selection = null;
-  let _modal = null;
-  let _dataShortcuts = null;
+    this._detectedOS = utilDetect().os;
+    this._activeTab = 0;
+
+    // Modal and data will be created when calling `show()`
+    this.Modal = null;
+    this._dataShortcuts = null;
+
+    // D3 selections
+    this.$parent = null;
+
+    // Ensure methods used as callbacks always have `this` bound correctly.
+    // (This is also necessary when using `d3-selection.call`)
+    this.show = this.show.bind(this);
+    this.hide = this.hide.bind(this);
+    this.toggle = this.toggle.bind(this);
+    this.render = this.render.bind(this);
+
+    const l10n = context.systems.l10n;
+    this.keys = [l10n.t('shortcuts.toggle.key'), '?'];
+    context.keybinding().on(this.keys, this.toggle);
+  }
 
 
-  //
-  function render() {
-    if (!_modal || !_dataShortcuts) return;  // called too early
+  /**
+   * render
+   * Accepts a parent selection, and renders the content under it.
+   * (The parent selection is required the first time, but can be inferred on subsequent renders)
+   * @param {d3-selection} $parent - A d3-selection to a HTMLElement that this component should render itself into
+   */
+  render($parent = this.$parent) {
+    if ($parent instanceof selection) {
+      this.$parent = $parent;
+    } else {
+      return;   // no parent - called too early?
+    }
 
-    _modal.select('.modal')
+    // Note that this component works differently from many other ones.
+    // We'll only render if the `Modal` is already created - need to call `show()` first.
+    // Most of the below code is just appending content to the existing modal.
+    if (!this.Modal || !this._dataShortcuts) return;
+
+    const context = this.context;
+    const l10n = context.systems.l10n;
+
+    this.Modal.select('.modal')
       .classed('modal-shortcuts', true);
 
-    const content = _modal.select('.content');
+    const $content = this.Modal.select('.content');
 
     // enter
-    content
+    $content
       .selectAll('.shortcuts-heading')
       .data([0])
       .enter()
@@ -54,52 +93,52 @@ export function uiShortcuts(context) {
       .append('h3')
       .text(l10n.t('shortcuts.title'));
 
-    const wrapperEnter = content
+    const $$wrapper = $content
       .selectAll('.shortcuts-wrapper')
       .data([0])
       .enter()
       .append('div')
       .attr('class', 'shortcuts-wrapper modal-section');
 
-    const navBarEnter = wrapperEnter
+    const $$navbar = $$wrapper
       .append('div')
       .attr('class', 'nav-bar');
 
-    navBarEnter
+    $$navbar
       .selectAll('.nav-item')
-      .data(_dataShortcuts)
+      .data(this._dataShortcuts)
       .enter()
       .append('a')
       .attr('class', 'nav-item')
       .attr('href', '#')
-      .on('click', (d3_event, d) => {
-        d3_event.preventDefault();
-        _activeTab = _dataShortcuts.indexOf(d);
-        render();
+      .on('click', (e, d) => {
+        e.preventDefault();
+        this._activeTab = this._dataShortcuts.indexOf(d);
+        this.render();
       })
       .append('span')
       .text(d => l10n.t(d.text));
 
 
-    const shortcutsSectionEnter = wrapperEnter
+    const $$shortcutsSection = $$wrapper
       .append('div')
       .attr('class', 'shortcuts-section');
 
-    const tabsEnter = shortcutsSectionEnter
+    const tabsEnter = $$shortcutsSection
       .selectAll('.shortcut-tab')
-      .data(_dataShortcuts)
+      .data(this._dataShortcuts)
       .enter()
       .append('div')
       .attr('class', d => `shortcut-tab shortcut-tab-${d.tab}`);
 
-    const columnsEnter = tabsEnter
+    const $$columns = tabsEnter
       .selectAll('.shortcut-column')
       .data(d => d.columns)
       .enter()
       .append('table')
       .attr('class', 'shortcut-column');
 
-    const rowsEnter = columnsEnter
+    const $$rows = $$columns
       .selectAll('.shortcut-row')
       .data(d => d.rows)
       .enter()
@@ -108,7 +147,7 @@ export function uiShortcuts(context) {
 
 
     // Rows without a "shortcuts" property are the subsection headings
-    const sectionRowEnter = rowsEnter
+    const $$sectionRow = $$rows
       .filter(d => !d.shortcuts);
 
     // Each "section" row contains:
@@ -116,10 +155,10 @@ export function uiShortcuts(context) {
     // +      (empty)          |  h3 section heading   |
     // +-----------------------+-----------------------+
 
-    sectionRowEnter
+    $$sectionRow
       .append('td');  // empty
 
-    sectionRowEnter
+    $$sectionRow
       .append('td')
       .attr('class', 'shortcut-section')
       .append('h3')
@@ -127,7 +166,7 @@ export function uiShortcuts(context) {
 
 
     // Rows with a "shortcuts" property are the actual shortcuts
-    const shortcutRowEnter = rowsEnter
+    const $$shortcutRow = $$rows
       .filter(d => d.shortcuts);
 
     // Each "shortcut" row contains:
@@ -135,27 +174,27 @@ export function uiShortcuts(context) {
     // +      modifiers, keys  |  description          |
     // +-----------------------+-----------------------+
 
-    shortcutRowEnter
+    $$shortcutRow
       .append('td')
       .attr('class', 'shortcut-keys')
       .each((d, i, nodes) => {
-        const selection = d3_select(nodes[i]);
+        const $$selection = d3_select(nodes[i]);
 
         // Add modifiers, if any..
         let modifiers = d.modifiers || [];
-        if (detected.os === 'win' && d.text === 'shortcuts.editing.commands.redo') {
+        if (this._detectedOS === 'win' && d.text === 'shortcuts.editing.commands.redo') {
           modifiers = ['⌃'];
-        } else if (detected.os !== 'mac' && d.text === 'shortcuts.browsing.display_options.fullscreen') {
+        } else if (this._detectedOS !== 'mac' && d.text === 'shortcuts.browsing.display_options.fullscreen') {
           modifiers = [];
         }
 
         for (const val of modifiers) {
-          selection
+          $$selection
             .append('kbd')
             .attr('class', 'modifier')
             .text(d => uiCmd.display(context, val));
 
-          selection
+          $$selection
             .append('span')
             .text('+');
         }
@@ -163,9 +202,9 @@ export function uiShortcuts(context) {
 
         // Add shortcuts, if any..
         let shortcuts = d.shortcuts || [];
-        if (detected.os === 'win' && d.text === 'shortcuts.editing.commands.redo') {
+        if (this._detectedOS === 'win' && d.text === 'shortcuts.editing.commands.redo') {
           shortcuts = ['Y'];
-        } else if (detected.os !== 'mac' && d.text === 'shortcuts.browsing.display_options.fullscreen') {
+        } else if (this._detectedOS !== 'mac' && d.text === 'shortcuts.browsing.display_options.fullscreen') {
           shortcuts = ['F11'];
         }
 
@@ -203,25 +242,25 @@ export function uiShortcuts(context) {
             const icon = s.toLowerCase().match(/^\{(.*)\}$/);
             if (icon) {
               const altText = icon[1].replace('interaction-', '').replace(/\-/g, ' ');
-              selection
+              $$selection
                .call(uiIcon(`#rapid-${icon[1]}`, 'operation', altText));
 
             } else {
-              selection
+              $$selection
                 .append('kbd')
                 .attr('class', 'shortcut')
                 .text(s);
             }
 
             if (j < group.length - 1) {
-              selection
+              $$selection
                 .append('span')
                 .text('/');
             }
           }
 
           if (i < arr.length - 1) {
-            selection
+            $$selection
               .append('span')
               .text('\u00a0' + l10n.t('shortcuts.or') + '\u00a0');
           }
@@ -229,11 +268,11 @@ export function uiShortcuts(context) {
 
         // Add gesture word, if any..
         if (d.gesture) {
-          selection
+          $$selection
             .append('span')
             .text('+');
 
-          selection
+          $$selection
             .append('span')
             .attr('class', 'gesture')
             .text(d => l10n.t(d.gesture));
@@ -241,75 +280,81 @@ export function uiShortcuts(context) {
       });
 
 
-    shortcutRowEnter
+    $$shortcutRow
       .append('td')
       .attr('class', 'shortcut-desc')
       .text(d => d.text ? l10n.t(d.text) : '\u00a0');
 
 
     // Update
-    const wrapper = content.selectAll('.shortcuts-wrapper');
+    const $wrapper = $content.selectAll('.shortcuts-wrapper');
 
-    wrapper.selectAll('.nav-item')
-      .classed('active', (d, i) => i === _activeTab);
+    $wrapper.selectAll('.nav-item')
+      .classed('active', (d, i) => i === this._activeTab);
 
-    wrapper.selectAll('.shortcut-tab')
-      .style('display', (d, i) => i === _activeTab ? 'flex' : 'none');
+    $wrapper.selectAll('.shortcut-tab')
+      .style('display', (d, i) => i === this._activeTab ? 'flex' : 'none');
   }
 
 
+  /**
+   * show
+   * Shows the shortcuts modal.
+   * This will create the modal, then load the shortcuts data, then render()
+   */
+  show() {
+    if (!this.$parent) return;   // called too early?
 
-  function shortcuts(selection) {
-    _selection = selection;  // capture parent
+    const context = this.context;
+    const assets = context.systems.assets;
+    const $container = context.container();
 
-    // reset keybinding
-    const keys = [l10n.t('shortcuts.toggle.key'), '?'];
-    context.keybinding().off(keys);
-    context.keybinding().on(keys, shortcuts.toggle);
-  }
-
-
-  //
-  shortcuts.show = function() {
-    const otherShowing = context.container().selectAll('.shaded > div:not(.modal-shortcuts)').size();
+    const otherShowing = $container.selectAll('.shaded > div:not(.modal-shortcuts)').size();
     if (otherShowing) return;  // some other modal is already showing
 
-    const isShowing = context.container().selectAll('.shaded > div.modal-shortcuts').size();
+    const isShowing = $container.selectAll('.shaded > div.modal-shortcuts').size();
     if (isShowing) {  // remove any existing
-      shortcuts.hide();
+      this.hide();
     }
-    _modal = uiModal(_selection);
+
+    this.Modal = uiModal(this.$parent);
 
     assets.loadAssetAsync('shortcuts')
       .then(data => {
-        _dataShortcuts = data.shortcuts;
-        render();
+        this._dataShortcuts = data.shortcuts;
+        this.render();
       })
       .catch(e => console.error(e));  // eslint-disable-line
-  };
+  }
 
 
-  //
-  shortcuts.hide = function() {
-    if (!_modal) return;
-    _modal.close();
-    _modal = null;
-  };
+  /**
+   * hide
+   * Hides the shortcuts modal.
+   */
+  hide() {
+    if (!this.Modal) return;
+    this.Modal.close();
+    this.Modal = null;
+  }
 
 
-  //
-  shortcuts.toggle = function() {
-    const otherShowing = context.container().selectAll('.shaded > div:not(.modal-shortcuts)').size();
+  /**
+   * toggle
+   * Toggle the shortcuts modal
+   */
+  toggle() {
+    const $container = this.context.container();
+
+    const otherShowing = $container.selectAll('.shaded > div:not(.modal-shortcuts)').size();
     if (otherShowing) return;  // some other modal is already showing
 
-    const isShowing = context.container().selectAll('.shaded > div.modal-shortcuts').size();
+    const isShowing = $container.selectAll('.shaded > div.modal-shortcuts').size();
     if (isShowing) {
-      shortcuts.hide();
+      this.hide();
     } else {
-      shortcuts.show();
+      this.show();
     }
-  };
+  }
 
-
-  return shortcuts;
 }

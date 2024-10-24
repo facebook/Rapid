@@ -6,7 +6,7 @@ import { AbstractSystem } from './AbstractSystem.js';
 import {
   UiApiStatus, UiDefs, uiEditMenu, uiFlash, UiFullscreen, uiInfo, uiIntro,
   uiLoading, UiMapInMap, UiMapFooter, UiMapToolbar, UiOvermap, UiPhotoViewer,
-  uiSplash, uiRestore, uiShortcuts, UiSidebar, UiSpector, uiWhatsNew
+  uiSplash, uiRestore, UiShortcuts, UiSidebar, UiSpector, uiWhatsNew
 } from '../ui/index.js';
 
 
@@ -98,7 +98,7 @@ export class UiSystem extends AbstractSystem {
         this.mapToolbar = new UiMapToolbar(context);
         this.overmap = new UiOvermap(context);
         this.photoviewer = new UiPhotoViewer(context);
-        this.shortcuts = uiShortcuts(context);
+        this.shortcuts = new UiShortcuts(context);
         this.sidebar = new UiSidebar(context);
         this.spector = new UiSpector(context);
 
@@ -189,25 +189,16 @@ export class UiSystem extends AbstractSystem {
 
     const context = this.context;
     const l10n = context.systems.l10n;
-    const lang = l10n.localeCode();
     const map = context.systems.map;
     const $container = context.container();
 
     $container
-      .attr('lang', lang)
-      .attr('dir', l10n.textDirection());
-
-    // Setup fullscreen keybindings (no button shown at this time)
-    $container
-      .call(this.fullscreen.render);
-
-    // `svg` and `defs` elements (contains icon spritesheets to be used elsewhere)
-    $container
-      .call(this.defs.render);
-
-    // Sidebar (and sidebar resizer)
-    $container
-      .call(this.sidebar.render);
+      .attr('lang', l10n.localeCode())
+      .attr('dir', l10n.textDirection())
+      .call(this.fullscreen.render)
+      .call(this.defs.render)
+      .call(this.sidebar.render)
+      .call(this.shortcuts.render);
 
     // .main-content
     // Contains the map and everything floating above it, such as toolbars, etc.
@@ -238,9 +229,6 @@ export class UiSystem extends AbstractSystem {
       .call(this.apiStatus.render)
       .call(this.mapFooter.render);
 
-
-    $container
-      .call(this.shortcuts);
 
     // Setup map dimensions
     // This should happen after .main-content and toolbars exist.

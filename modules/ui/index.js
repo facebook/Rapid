@@ -67,7 +67,7 @@ export { uiRapidViewManageDatasets } from './rapid_view_manage_datasets.js';
 export { uiRestore } from './restore.js';
 export { uiScale } from './scale.js';
 export { uiSection } from './section.js';
-export { uiShortcuts } from './shortcuts.js';
+export { UiShortcuts } from './UiShortcuts.js';
 export { UiSidebar } from './UiSidebar.js';
 export { uiSourceSwitch } from './source_switch.js';
 export { UiSpector } from './UiSpector.js';
