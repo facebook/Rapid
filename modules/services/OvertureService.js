@@ -12,6 +12,7 @@ import { AbstractSystem } from '../core/AbstractSystem.js';
 import { utilFetchResponse } from '../util/index.js';
 
 const PMTILES_STAC_ROOT_URL = 'https://overturemaps-tiles-us-west-2-beta.s3.us-west-2.amazonaws.com/stac/';
+const PMTILES_ROOT_URL = 'https://overturemaps-tiles-us-west-2-beta.s3.us-west-2.amazonaws.com/';
 const PMTILES_STAC_CATALOG_PATH = 'catalog.json';
 
 
@@ -44,14 +45,19 @@ export class OvertureService extends AbstractSystem {
     this._nextID = 0;
   }
 
-async _loadThemeItem(url, release_catalog) { 
+async _loadThemeItem(url, release_catalog) {
   await fetch(url)
   .then(response => response.json())
-  .then(item =>  { 
+  .then(item =>  {
       const assets = item.assets;
       for (const key in assets) {
           if (assets[key].href) {
               const theme_name = key;
+              let urlPath = assets[key].href;
+
+              if (urlPath.startsWith('./')) {
+                urlPath = urlPath.slice(2);
+              }
               release_catalog[theme_name] = assets[key].href;
           }
       }
@@ -182,12 +188,21 @@ async _loadReleaseMetadata(url, catalog){
 
     //TODO: Revisit the id-to-url mapping once we're done. 
     if (datasetID.includes('places')) {
-      const url = PMTILES_STAC_ROOT_URL + this.pmTilesCatalog[this.latestRelease].places;
+      const url = PMTILES_ROOT_URL + this.pmTilesCatalog[this.latestRelease].places;
 
       vtService.loadTiles(url);
     }
+  }
 
+  getData(datasetID) {
+    const vtService = this.context.services.vectortile;  // 'mapwithai' or 'esri'
 
+    if (datasetID.includes('places')) {
+       const url = PMTILES_ROOT_URL + this.pmTilesCatalog[this.latestRelease].places;
+       return vtService.getData(url);
+    } else {
+      return [];
+    }
   }
 
 }
