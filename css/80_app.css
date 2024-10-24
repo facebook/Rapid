@@ -4308,19 +4308,9 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 
 /* Map Footer
 ------------------------------------------------------- */
-.map-footer {
-  display: flex;
-  flex: 0 0 0px;
-  flex-flow: column nowrap;
-
-  width: 100%;
-  position: relative;
-  -ms-user-select: element;
-}
-
 /* The very bottom "status" row */
 /* Will either display .flash-wrap or .map-footer-wrap */
-.map-footer-bar {
+.map-footer {
   display: flex;
   flex: 0 0 2.5em;
   flex-flow: column nowrap;
@@ -4409,6 +4399,39 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 }
 
 
+/* API Status bar
+------------------------------------------------------- */
+.api-status {
+  flex: 0 0 0px;
+
+  text-align: right;
+  padding: 1px 10px;
+  color: #eee;
+  background: rgba(170, 34, 34, 0.9);
+  z-index: 101;
+}
+.ideditor[dir='rtl'] .api-status {
+  text-align: left;
+}
+.api-status:empty {
+  display: none;
+}
+
+.api-status a {
+  text-decoration: underline;
+  color: #ccc;
+  pointer-events: all;
+}
+.api-status a:focus,
+.api-status a:active {
+  color: inherit;
+}
+@media (hover: hover) {
+  .api-status a:hover {
+    color: inherit;
+  }
+}
+
 /* Footer - Flash messages
 ------------------------------------------------------- */
 .flash-content {
@@ -4451,7 +4474,7 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 
 /* Scale bar
 ------------------------------------------------------- */
-.map-footer-bar .scale-block {
+.map-footer .scale-block {
     vertical-align: bottom;
     width: 250px;
     flex: 0 0 auto;
@@ -4486,7 +4509,7 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 
 /* Footer - About, Source Switcher
 ------------------------------------------------------- */
-.map-footer-bar .info-block {
+.map-footer .info-block {
     flex: 1 1 100%;
     overflow: hidden;
 }
@@ -4555,44 +4578,9 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
     content: ', ';
 }
 
-.api-status {
-  flex: 1 1 0px;
-
-  text-align: right;
-  padding: 1px 10px;
-  color: #eee;
-}
-.ideditor[dir='rtl'] .api-status {
-  text-align: left;
-}
-.api-status:empty {
-  display: none;
-}
-
-.api-status.offline,
-.api-status.readonly,
-.api-status.error {
-  background: #a22;
-}
-
-.api-status a {
-  text-decoration: underline;
-  color: #ccc;
-  pointer-events: all;
-}
-.api-status a:focus,
-.api-status a:active {
-  color: inherit;
-}
-@media (hover: hover) {
-    .api-status a:hover {
-        color: inherit;
-    }
-}
-
 .fb-road-license a {
-    padding: 2px 4px 4px 4px;
-    border-radius: 2px;
+  padding: 2px 4px 4px 4px;
+  border-radius: 2px;
 }
 
 /* Notification Badges

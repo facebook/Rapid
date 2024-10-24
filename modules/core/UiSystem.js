@@ -4,8 +4,8 @@ import { vecAdd } from '@rapid-sdk/math';
 import { AbstractSystem } from './AbstractSystem.js';
 
 import {
-  UiDefs, uiEditMenu, uiFlash, UiFullscreen, uiInfo, uiIntro, uiLoading,
-  UiMapInMap, UiMapFooter, UiMapToolbar, UiOvermap, UiPhotoViewer,
+  UiApiStatus, UiDefs, uiEditMenu, uiFlash, UiFullscreen, uiInfo, uiIntro,
+  uiLoading, UiMapInMap, UiMapFooter, UiMapToolbar, UiOvermap, UiPhotoViewer,
   uiSplash, uiRestore, uiShortcuts, UiSidebar, UiSpector, uiWhatsNew
 } from '../ui/index.js';
 
@@ -35,6 +35,7 @@ export class UiSystem extends AbstractSystem {
     this._resizeTimeout = null;
 
     // Child components, we will defer creating these until after some other things have initted.
+    this.apiStatus = null;
     this.authModal = null;
     this.defs = null;
     this.editMenu = null;
@@ -85,6 +86,7 @@ export class UiSystem extends AbstractSystem {
       .then(() => {
         window.addEventListener('resize', this.resize);
 
+        this.apiStatus = new UiApiStatus(context);
         this.authModal = uiLoading(context).blocking(true).message(l10n.t('loading_auth'));
         this.defs = new UiDefs(context);
         this.editMenu = uiEditMenu(context);
@@ -233,7 +235,9 @@ export class UiSystem extends AbstractSystem {
     $mainContent
       .call(this.mapToolbar.render)
       .call(this.overmap.render)
+      .call(this.apiStatus.render)
       .call(this.mapFooter.render);
+
 
     $container
       .call(this.shortcuts);
@@ -341,7 +345,7 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
 
     // check if header or footer have overflowed
     this.checkOverflow('.map-toolbar');
-    this.checkOverflow('.map-footer-bar');
+    this.checkOverflow('.map-footer');
 
     this.emit('uichange');
 

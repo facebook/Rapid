@@ -3,7 +3,7 @@ import { selection } from 'd3-selection';
 import { utilDetect } from '../util/detect.js';
 import {
   uiAccount, uiContributors, uiIcon, uiIssuesInfo, uiRapidServiceLicense,
-  uiScale, uiSourceSwitch, uiStatus, uiTooltip, uiVersion
+  uiScale, uiSourceSwitch, uiTooltip, uiVersion
 } from './index.js';
 
 
@@ -21,6 +21,25 @@ export class UiMapFooter {
     this.context = context;
 
     // Create child components
+    this.Contributors = uiContributors(context);
+//    this.FilterInfo = uiFeatureInfo(context);
+    this.IssueInfo = uiIssuesInfo(context);
+    this.RapidLicense = uiRapidServiceLicense(context);
+    this.Scale = uiScale(context);
+    this.VersionInfo = uiVersion(context);
+
+    if (!context.embed()) {
+      this.AccountInfo = uiAccount(context);
+    } else {
+      this.AccountInfo = null;
+    }
+
+    const apiConnections = context.apiConnections;
+    if (Array.isArray(apiConnections) && apiConnections.length > 1) {
+      this.SourceSwitch = uiSourceSwitch(context).keys(apiConnections);
+    } else {
+      this.SourceSwitch = null;
+    }
 
     // D3 selections
     this.$parent = null;
@@ -49,22 +68,13 @@ export class UiMapFooter {
     const context = this.context;
     const l10n = context.systems.l10n;
 
-    let $about = $parent.selectAll('.map-footer')
+    let $footer = $parent.selectAll('.map-footer')
       .data([0]);
 
     // enter
-    const $$about = $about.enter()
+    const $$footer = $footer.enter()
       .append('div')
-      .attr('class', 'map-footer');
-
-    $$about
-      .append('div')
-      .attr('class', 'api-status')
-      .call(uiStatus(context));
-
-    const $$footer = $$about
-      .append('div')
-      .attr('class', 'map-footer-bar fillD');
+      .attr('class', 'map-footer fillD');
 
     $$footer
       .append('div')
@@ -77,7 +87,7 @@ export class UiMapFooter {
     $$footerWrap
       .append('div')
       .attr('class', 'scale-block')
-      .call(uiScale(context));
+      .call(this.Scale);
 
     const $$aboutList = $$footerWrap
       .append('div')
@@ -88,31 +98,30 @@ export class UiMapFooter {
     $$aboutList
       .append('li')
       .attr('class', 'user-list')
-      .call(uiContributors(context));
+      .call(this.Contributors);
 
     $$aboutList
       .append('li')
       .attr('class', 'fb-road-license')
       .attr('tabindex', -1)
-      .call(uiRapidServiceLicense(context));
+      .call(this.RapidLicense);
 
-    const apiConnections = context.apiConnections;
-    if (apiConnections && apiConnections.length > 1) {
+    if (this.SourceSwitch) {
       $$aboutList
         .append('li')
         .attr('class', 'source-switch')
-        .call(uiSourceSwitch(context).keys(apiConnections));
+        .call(this.SourceSwitch);
     }
 
     $$aboutList
       .append('li')
       .attr('class', 'issues-info')
-      .call(uiIssuesInfo(context));
+      .call(this.IssueInfo);
 
 //    $$aboutList
 //      .append('li')
 //      .attr('class', 'feature-warning')
-//      .call(uiFeatureInfo(context));
+//      .call(this.FilterInfo);
 
     const $$issueLinks = $$aboutList
       .append('li');
@@ -135,11 +144,11 @@ export class UiMapFooter {
     $$aboutList
       .append('li')
       .attr('class', 'version')
-      .call(uiVersion(context));
+      .call(this.VersionInfo);
 
-    if (!context.embed()) {
+    if (this.AccountInfo) {
       $$aboutList
-        .call(uiAccount(context));
+        .call(this.AccountInfo);
     }
   }
 

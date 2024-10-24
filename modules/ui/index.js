@@ -1,4 +1,5 @@
 export { uiAccount } from './account.js';
+export { UiApiStatus } from './UiApiStatus.js';
 export { uiAttribution } from './attribution.js';
 export { uiBearing } from './bearing.js';
 export { uiChangesetEditor } from './changeset_editor.js';
@@ -71,7 +72,6 @@ export { UiSidebar } from './UiSidebar.js';
 export { uiSourceSwitch } from './source_switch.js';
 export { UiSpector } from './UiSpector.js';
 export { uiSplash } from './splash.js';
-export { uiStatus } from './status.js';
 export { uiSuccess } from './success.js';
 export { uiTagReference } from './tag_reference.js';
 export { uiToggle } from './toggle.js';
