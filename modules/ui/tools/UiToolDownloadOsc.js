@@ -63,7 +63,7 @@ export class UiToolDownloadOsc {
 
     this.Tooltip
       .placement('bottom')
-      .scrollContainer(context.container().select('.top-toolbar'))
+      .scrollContainer(context.container().select('.map-toolbar'))
       .title(l10n.t(editor.hasChanges() ? 'download_osc.help' : 'download_osc.no_changes'));
 
     // Button

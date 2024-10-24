@@ -67,7 +67,7 @@ export function uiIntroStartEditing(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       curtain.reveal({
-        revealSelector: '.top-toolbar button.save',
+        revealSelector: '.map-toolbar button.save',
         tipHtml: helpHtml(context, 'intro.startediting.save'),
         buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(showStartMappingAsync)

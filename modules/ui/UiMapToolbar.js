@@ -5,11 +5,11 @@ import {
 
 
 /**
- * UiTopToolbar
+ * UiMapToolbar
  * This component creates the toolbar section at the top of the map.
  *
  * @example
- * <div class='top-toolbar'>
+ * <div class='map-toolbar'>
  *   <div class='toolbar-item spacer'/>           // some toolbar items are just spacers..
  *   <div class='toolbar-item draw-modes'>        // others are real sections..
  *     <div class='item-content'>…</div>             // each real section contains a `item-content`
@@ -18,7 +18,7 @@ import {
  *   …
  * </div>
  */
-export class UiTopToolbar {
+export class UiMapToolbar {
 
   /**
    * @constructor
@@ -76,14 +76,14 @@ export class UiTopToolbar {
     ];
 
     // Create wrapper div if necessary
-    $parent.selectAll('.top-toolbar')
+    $parent.selectAll('.map-toolbar')
       .data([0])
       .enter()
       .append('div')
-      .attr('class', 'top-toolbar fillD');
+      .attr('class', 'map-toolbar fillD');
 
     // update
-    const $toolbar = $parent.selectAll('.top-toolbar');
+    const $toolbar = $parent.selectAll('.map-toolbar');
 
     let $items = $toolbar.selectAll('.toolbar-item')
       .data(items, (d, i) => d.id || `spacer${i}`);
@@ -129,7 +129,7 @@ export class UiTopToolbar {
       .text(d => l10n.t(d.stringID));
 
     // If we are adding/removing any buttons, check if toolbar has overflowed..
-    ui.checkOverflow('.top-toolbar', true);
+    ui.checkOverflow('.map-toolbar', true);
   }
 
 }

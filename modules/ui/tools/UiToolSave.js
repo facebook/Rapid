@@ -64,7 +64,7 @@ export class UiToolSave {
 
     this.Tooltip
       .placement('bottom')
-      .scrollContainer(context.container().select('.top-toolbar'))
+      .scrollContainer(context.container().select('.map-toolbar'))
       .title(l10n.t(numChanges > 0 ? 'save.help' : 'save.no_changes'))
       .shortcut(this.key);
 

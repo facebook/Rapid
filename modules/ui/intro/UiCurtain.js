@@ -1,7 +1,6 @@
-import { selection } from 'd3-selection';
 import { Extent, numClamp, vecAdd } from '@rapid-sdk/math';
 import { easeLinear as d3_easeLinear } from 'd3-ease';
-import { select as d3_select } from 'd3-selection';
+import { selection, select as d3_select } from 'd3-selection';
 import * as Polyclip from 'polyclip-ts';
 
 import { uiToggle } from '../toggle.js';

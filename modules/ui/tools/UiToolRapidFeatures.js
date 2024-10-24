@@ -73,18 +73,18 @@ export class UiToolRapidFeatures {
     const ui = context.systems.ui;
 
     const isPowerUser = urlhash.getParam('poweruser') === 'true';
-    const isNarrow = context.container().selectAll('.top-toolbar.narrow').size();
+    const isNarrow = context.container().selectAll('.map-toolbar.narrow').size();
 
     // Localize tooltips
     this.RapidTooltip
       .placement('bottom')
-      .scrollContainer(context.container().select('.top-toolbar'))
+      .scrollContainer(context.container().select('.map-toolbar'))
       .title(l10n.t('shortcuts.browsing.display_options.rapid_features_data'))
       .shortcut(this.key);
 
     this.PoweruserTooltip
       .placement('bottom')
-      .scrollContainer(context.container().select('.top-toolbar'))
+      .scrollContainer(context.container().select('.map-toolbar'))
       .title(l10n.t('rapid_poweruser_features.heading.label'));
 
 
@@ -143,7 +143,7 @@ export class UiToolRapidFeatures {
 
     // If we are adding/removing any buttons, check if toolbar has overflowed..
     if ($poweruserButton.enter().size() || $poweruserButton.exit().size()) {
-      ui.checkOverflow('.top-toolbar', true);
+      ui.checkOverflow('.map-toolbar', true);
     }
   }
 

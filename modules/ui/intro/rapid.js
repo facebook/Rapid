@@ -227,7 +227,7 @@ export function uiIntroRapid(context, curtain) {
     if (!_isTulipLaneAccepted()) return Promise.resolve(selectRoadAsync);
     if (!_isTulipLaneSelected()) context.enter('select-osm', { selection: { osm: [tulipLaneID] }});
 
-    const undoButton = d3_select('.top-toolbar button.undo-button');
+    const undoButton = d3_select('.map-toolbar button.undo-button');
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;

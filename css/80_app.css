@@ -513,7 +513,7 @@ button.disabled .icon.operation use,
 
 /* Toolbar / Persistent UI Elements
 ------------------------------------------------------- */
-.top-toolbar {
+.map-toolbar {
   display: flex;
   flex: 0 0 0px;
   flex-flow: row nowrap;
@@ -523,17 +523,17 @@ button.disabled .icon.operation use,
   z-index: 101;
 }
 
-.top-toolbar .toolbar-item {
+.map-toolbar .toolbar-item {
   display: flex;
   flex: 0 0 0px;
   flex-flow: column wrap;
   justify-content: center;
 }
-.top-toolbar .toolbar-item.spacer {
+.map-toolbar .toolbar-item.spacer {
   flex-grow: 1;
 }
 
-.top-toolbar .toolbar-item .item-content {
+.map-toolbar .toolbar-item .item-content {
   display: flex;
   flex: 0 0 40px;
   flex-flow: row nowrap;
@@ -542,7 +542,7 @@ button.disabled .icon.operation use,
   margin: 0 5px;
 }
 
-.top-toolbar .toolbar-item .item-label {
+.map-toolbar .toolbar-item .item-label {
   text-align: center;
   font-size: 11px;
   white-space: nowrap;
@@ -592,10 +592,10 @@ button.add-note svg.icon {
   margin-top: 3px;
 }
 
-.top-toolbar.narrow button.bar-button .label {
+.map-toolbar.narrow button.bar-button .label {
   display: none;
 }
-.top-toolbar.narrow button .count {
+.map-toolbar.narrow button .count {
   border-left-width: 0;
   border-right-width: 0;
 }

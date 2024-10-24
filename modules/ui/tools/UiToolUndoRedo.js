@@ -93,7 +93,7 @@ export class UiToolUndoRedo {
 
     this.Tooltip
       .placement('bottom')
-      .scrollContainer(context.container().select('.top-toolbar'));
+      .scrollContainer(context.container().select('.map-toolbar'));
 
     // Button group
     let $joined = $parent.selectAll('.joined')

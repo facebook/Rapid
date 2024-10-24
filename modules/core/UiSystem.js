@@ -7,11 +7,11 @@ import { utilDetect } from '../util/detect.js';
 import {
   uiAccount, uiAttribution, uiBearing, uiContributors, UiDefs, uiEditMenu,
   /* uiFeatureInfo,*/ uiFlash, UiFullscreen, uiGeolocate, uiIcon,
-  uiInfo, uiIntro, uiIssuesInfo, uiLoading, UiMapInMap,
+  uiInfo, uiIntro, uiIssuesInfo, uiLoading, UiMapInMap, UiMapToolbar,
   uiMap3dViewer, UiPhotoViewer, uiRapidServiceLicense,
   uiSplash, uiRestore, uiScale, uiShortcuts, UiSidebar,
   uiSourceSwitch, UiSpector, uiStatus, uiTooltip,
-  UiTopToolbar, uiVersion, uiWhatsNew, uiZoom, uiZoomToSelection
+  uiVersion, uiWhatsNew, uiZoom, uiZoomToSelection
 } from '../ui/index.js';
 
 import {
@@ -43,11 +43,11 @@ export class UiSystem extends AbstractSystem {
     this.fullscreen = null;
     this.info = null;
     this.mapInMap = null;
+    this.mapToolbar = null;
     this.photoviewer = null;
     this.shortcuts = null;
     this.sidebar = null;
     this.spector = null;
-    this.topToolbar = null;
 
     this._firstRender = true;
     this._needWidth = {};
@@ -100,11 +100,11 @@ export class UiSystem extends AbstractSystem {
         this.fullscreen = new UiFullscreen(context);
         this.info = uiInfo(context);
         this.mapInMap = new UiMapInMap(context);
+        this.mapToolbar = new UiMapToolbar(context);
         this.photoviewer = new UiPhotoViewer(context);
         this.shortcuts = uiShortcuts(context);
         this.sidebar = new UiSidebar(context);
         this.spector = new UiSpector(context);
-        this.topToolbar = new UiTopToolbar(context);
 
         const osm = context.services.osm;
         if (osm) {
@@ -237,7 +237,7 @@ export class UiSystem extends AbstractSystem {
 
     // Top toolbar
     $$mainContent
-      .call(this.topToolbar.render);
+      .call(this.mapToolbar.render);
 
 
     // Over Map
@@ -532,7 +532,7 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
     viewport.dimensions = dims;
 
     // check if header or footer have overflowed
-    this.checkOverflow('.top-toolbar');
+    this.checkOverflow('.map-toolbar');
     this.checkOverflow('.map-footer-bar');
 
     this.emit('uichange');

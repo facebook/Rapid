@@ -99,7 +99,7 @@ export class UiToolDrawModes {
     const ui = context.systems.ui;
 
     this.Tooltip
-      .scrollContainer(context.container().select('.top-toolbar'));
+      .scrollContainer(context.container().select('.map-toolbar'));
 
     // Button group
     let $joined = $parent.selectAll('.joined')
@@ -144,7 +144,7 @@ export class UiToolDrawModes {
 
     // If we are adding/removing any buttons, check if toolbar has overflowed..
     if ($buttons.enter().size() || $buttons.exit().size()) {
-      ui.checkOverflow('.top-toolbar', true);
+      ui.checkOverflow('.map-toolbar', true);
     }
 
     // update
