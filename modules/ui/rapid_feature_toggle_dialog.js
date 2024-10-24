@@ -49,6 +49,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
       context.scene().dirtyLayers('rapid');
       context.scene().dirtyLayers('rapid-overlay');
+      context.scene().dirtyLayers('overture');
       context.systems.map.immediateRedraw();
       _content.call(renderModalContent);
 
