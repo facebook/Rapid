@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 
 import { AbstractLayer } from './AbstractLayer.js';
+import { PixiFeaturePoint } from './PixiFeaturePoint.js';
 
 
 
@@ -20,7 +21,6 @@ export class PixiLayerOverture extends AbstractLayer {
    */
   constructor(scene, layerID) {
     super(scene, layerID);
-    this._clear();
     this._enabled = true;
 
     const overlays = new PIXI.Container();
@@ -92,14 +92,65 @@ export class PixiLayerOverture extends AbstractLayer {
 
     const entities = service.getData(dataset.id);
 
-    console.log(`Received ${entities.length} entities from the overture service getData() call.`);
+    this.renderPoints(dataset, frame, viewport, zoom, entities);
   }
 
+
   /**
-   * _clear
-   * Clear state to prepare for new custom data
+   * renderPoints
+   * @param dataset     The Rapid dataset definition
+   * @param  frame      Integer frame being rendered
+   * @param  viewport   Pixi viewport to use for rendering
+   * @param  zoom       Effective zoom to use for rendering
+   * @param  lines      Array of point data
    */
-  _clear() {
+  renderPoints(dataset, frame, viewport, zoom, points) {
+    const l10n = this.context.systems.l10n;
+    const parentContainer = this.scene.groups.get('points');
+
+    const pointStyle = {
+      markerName: 'largeCircle',
+      markerTint: dataset.color,
+      iconName: 'maki-circle-stroked',
+      labelTint: dataset.color
+    };
+
+    for (const d of points) {
+      const dataID = d.id;
+      const version = d.v || 0;
+      const parts = (d.geojson.geometry.type === 'Point') ? [d.geojson.geometry.coordinates]
+        : (d.geometry.type === 'MultiPoint') ? d.geometry.coordinates : [];
+
+      for (let i = 0; i < parts.length; ++i) {
+        const coords = parts[i];
+        const featureID = `${this.layerID}-${dataID}-${i}`;
+        let feature = this.features.get(featureID);
+
+        // If feature existed before as a different type, recreate it.
+        if (feature && feature.type !== 'point') {
+          feature.destroy();
+          feature = null;
+        }
+
+        if (!feature) {
+          feature = new PixiFeaturePoint(this, featureID);
+          feature.style = pointStyle;
+          feature.parentContainer = parentContainer;
+        }
+
+        // If data has changed.. Replace it.
+        if (feature.v !== version) {
+          feature.v = version;
+          feature.geometry.setCoords(coords);
+          feature.label = l10n.displayName(d.geojson.properties);
+          feature.setData(dataID, d);
+        }
+
+        this.syncFeatureClasses(feature);
+        feature.update(viewport, zoom);
+        this.retainFeature(feature, frame);
+      }
+    }
   }
 
 }
