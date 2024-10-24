@@ -43,6 +43,15 @@ export class PixiLayerOverture extends AbstractLayer {
 
 
   /**
+   * supported
+   * Whether the Layer's service exists
+   */
+  get supported() {
+    const service = this.context.services;
+    return !!service.overture;
+  }
+
+  /**
    * render
    * Render the Overture PMTIle data
    * @param  frame      Integer frame being rendered
@@ -50,79 +59,43 @@ export class PixiLayerOverture extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   render(frame, viewport, zoom) {
-    if (!this.enabled || !(this.hasData())) return;
+    if (!this.enabled) return;
 
-    const vtService = this.context.services.vectortile;
     const datasets = this.context.systems.rapid.datasets;
-    const parentContainer = this.overlaysContainer;
 
-    //Extremely inefficient but we're not drawing anything else at this zoom
-    parentContainer.removeChildren();
-
-    for (const [key, dataset] of datasets.entries()) {
+    for (const dataset of datasets.values()) {
       if (dataset.service === 'overture' && dataset.enabled) {
-        const customColor = new PIXI.Color(dataset.color);
-        const overlay = dataset.overlay;
-        if (vtService) {
-          if ((zoom >= overlay.minZoom ) && (zoom <= overlay.maxZoom)) {  // avoid firing off too many API requests
-              vtService.loadTiles(overlay.url);
-            }
-          const overlayData = vtService.getData(overlay.url).map(d => d.geojson);
-          const points = overlayData.filter(d => d.geometry.type === 'Point' || d.geometry.type === 'MultiPoint');
-          this.renderPoints(frame, viewport, zoom, points, customColor);
-        }
+          this.renderDataset(dataset, frame, viewport, zoom);
       }
     }
   }
 
-
   /**
-   * renderPoints
+   * renderDataset
+   * Render any data we have, and schedule fetching more of it to cover the view
+   *
+   * @param  dataset    Object
    * @param  frame      Integer frame being rendered
    * @param  viewport   Pixi viewport to use for rendering
    * @param  zoom       Effective zoom to use for rendering
-   * @param  lines      Array of point data
-   * @param  color      The color to use
    */
-  renderPoints(frame, viewport, zoom, points, color) {
-    const parentContainer = this.overlaysContainer;
-    for (const d of points) {
-      const parts = (d.geometry.type === 'Point') ? [d.geometry.coordinates]
-        : (d.geometry.type === 'MultiPoint') ? d.geometry.coordinates : [];
+  renderDataset(dataset, frame, viewport, zoom) {
+    const context = this.context;
+    const rapid = context.systems.rapid;
 
-      for (let i = 0; i < parts.length; ++i) {
-        const loc = parts[i];
 
-        const point = viewport.project(loc);
-        const feature = new PIXI.Graphics()
-          .beginFill(color, 0.05)
-          .drawCircle(0, 0, 40)
-          .endFill();
-
-        feature.x = point[0];
-        feature.y = point[1];
-        parentContainer.addChild(feature);
-      }
+    const service = context.services[dataset.service]; // Should be 'overture' if we've gotten here
+    if (!service?.started) return;
+    if (zoom >= 16) {  // avoid firing off too many API requests
+      service.loadTiles(dataset.id);  // fetch more
     }
   }
-
-
-  /**
-   * hasData
-   * Return true if there is overlay data to display.
-   * @return {boolean}  `true` if there is a vector tile template or geojson to display
-   */
-  hasData() {
-    return this._overlaysDefined;
-  }
-
 
   /**
    * _clear
    * Clear state to prepare for new custom data
    */
   _clear() {
-    this._overlaysDefined = false;
   }
 
 }
