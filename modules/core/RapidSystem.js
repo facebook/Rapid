@@ -111,6 +111,19 @@ export class RapidSystem extends AbstractSystem {
           license_markdown: l10n.t('rapid_feature_toggle.msBuildings.license_markdown')
         });
 
+        this._datasets.set('overture-places', {
+          id: 'overture-places',
+          beta: false,
+          added: true,         // whether it should appear in the list
+          enabled: false,      // whether the user has checked it on
+          conflated: true,
+          service: 'overture',
+          color: '#00ffff',
+          dataUsed: ['overture'],
+          label: l10n.t('rapid_feature_toggle.overture.places.label'),
+          license_markdown: l10n.t('rapid_feature_toggle.overture.places.license_markdown')
+        });
+
 // bhousel 8/29/24, not yet
 //        this._datasets.set('metaFootways', {
 //          id: 'metaFootways',
