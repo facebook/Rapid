@@ -2,21 +2,12 @@ import { select as d3_select } from 'd3-selection';
 import { vecAdd } from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
-import { utilDetect } from '../util/detect.js';
 
 import {
-  uiAccount, uiAttribution, uiBearing, uiContributors, UiDefs, uiEditMenu,
-  /* uiFeatureInfo,*/ uiFlash, UiFullscreen, uiGeolocate, uiIcon,
-  uiInfo, uiIntro, uiIssuesInfo, uiLoading, UiMapInMap, UiMapToolbar,
-  uiMap3dViewer, UiPhotoViewer, uiRapidServiceLicense,
-  uiSplash, uiRestore, uiScale, uiShortcuts, UiSidebar,
-  uiSourceSwitch, UiSpector, uiStatus, uiTooltip,
-  uiVersion, uiWhatsNew, uiZoom, uiZoomToSelection
+  UiDefs, uiEditMenu, uiFlash, UiFullscreen, uiInfo, uiIntro, uiLoading,
+  UiMapInMap, UiMapFooter, UiMapToolbar, UiOvermap, UiPhotoViewer,
+  uiSplash, uiRestore, uiShortcuts, UiSidebar, UiSpector, uiWhatsNew
 } from '../ui/index.js';
-
-import {
-  uiPaneBackground, uiPaneHelp, uiPaneIssues, uiPaneMapData, uiPanePreferences
-} from '../ui/panes/index.js';
 
 
 /**
@@ -36,32 +27,33 @@ export class UiSystem extends AbstractSystem {
     this.id = 'ui';
     this.dependencies = new Set(['editor', 'gfx', 'imagery', 'l10n', 'map', 'storage', 'urlhash']);
 
+    this._firstRender = true;
+    this._mapRect = null;
+    this._needWidth = {};
+    this._initPromise = null;
+    this._startPromise = null;
+    this._resizeTimeout = null;
+
+    // Child components, we will defer creating these until after some other things have initted.
     this.authModal = null;
     this.defs = null;
     this.editMenu = null;
     this.flash = null;
     this.fullscreen = null;
     this.info = null;
+    this.mapFooter = null;
     this.mapInMap = null;
     this.mapToolbar = null;
+    this.overmap = null;
     this.photoviewer = null;
     this.shortcuts = null;
     this.sidebar = null;
     this.spector = null;
 
-    this._firstRender = true;
-    this._needWidth = {};
-    this._initPromise = null;
-    this._startPromise = null;
-    this._resizeTimeout = null;
-
-    this._mapRect = null;
-
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
     this.render = this.render.bind(this);
     this.resize = this.resize.bind(this);
-    this._clickBugLink = this._clickBugLink.bind(this);
   }
 
 
@@ -99,8 +91,10 @@ export class UiSystem extends AbstractSystem {
         this.flash = uiFlash(context);
         this.fullscreen = new UiFullscreen(context);
         this.info = uiInfo(context);
+        this.mapFooter = new UiMapFooter(context);
         this.mapInMap = new UiMapInMap(context);
         this.mapToolbar = new UiMapToolbar(context);
+        this.overmap = new UiOvermap(context);
         this.photoviewer = new UiPhotoViewer(context);
         this.shortcuts = uiShortcuts(context);
         this.sidebar = new UiSidebar(context);
@@ -215,17 +209,15 @@ export class UiSystem extends AbstractSystem {
 
     // .main-content
     // Contains the map and everything floating above it, such as toolbars, etc.
-    const $mainContent = $container.selectAll('.main-content')
-      .data([lang]);
+    let $mainContent = $container.selectAll('.main-content')
+      .data([0]);
 
-    $mainContent.exit()
-      .remove();
-
+    // enter
     const $$mainContent = $mainContent.enter()
       .append('div')
       .attr('class', 'main-content active');
 
-    // The map
+    // .main-map
     $$mainContent
       .append('div')
       .attr('class', 'main-map')
@@ -235,197 +227,13 @@ export class UiSystem extends AbstractSystem {
       .on('wheel.map mousewheel.map', e => e.preventDefault())
       .call(map.render);
 
-    // Top toolbar
-    $$mainContent
-      .call(this.mapToolbar.render);
+    // update
+    $mainContent = $mainContent.merge($$mainContent);
 
-
-    // Over Map
-    const $$overmap = $$mainContent
-      .append('div')
-      .attr('class', 'over-map');
-
-    // HACK: Mobile Safari 14 likes to select anything selectable when long-
-    // pressing, even if it's not targeted. This conflicts with long-pressing
-    // to show the edit menu. We add a selectable offscreen element as the first
-    // child to trick Safari into not showing the selection UI.
-    $$overmap
-      .append('div')
-      .attr('class', 'select-trap')
-      .text('t');
-
-    $$overmap
-      .call(this.mapInMap.render);
-
-    $$overmap
-      .call(uiMap3dViewer(context));
-
-    $$overmap
-      .call(this.spector.render);
-
-
-    // Map controls
-    const $$controls = $$overmap
-      .append('div')
-      .attr('class', 'map-controls');
-
-    $$controls
-      .append('div')
-      .attr('class', 'map-control bearing')
-      .call(uiBearing(context));
-
-    $$controls
-      .append('div')
-      .attr('class', 'map-control zoombuttons')
-      .call(uiZoom(context));
-
-    $$controls
-      .append('div')
-      .attr('class', 'map-control zoom-to-selection')
-      .call(uiZoomToSelection(context));
-
-    $$controls
-      .append('div')
-      .attr('class', 'map-control geolocate')
-      .call(uiGeolocate(context));
-
-
-    // Panes
-    $$overmap
-      .append('div')
-      .attr('class', 'map-panes')
-      .each((d, i, nodes) => {
-        const $$selection = d3_select(nodes[i]);
-
-        // Instantiate the panes
-        const uiPanes = [
-          uiPaneBackground(context),
-          uiPaneMapData(context),
-          uiPaneIssues(context),
-          uiPanePreferences(context),
-          uiPaneHelp(context)
-        ];
-
-        // For each pane, create the buttons to toggle the panes,
-        // and perform a single render to append it to the map-panes div
-        for (const Component of uiPanes) {
-          $$controls
-            .append('div')
-            .attr('class', `map-control map-pane-control ${Component.id}-control`)
-            .call(Component.renderToggleButton);
-
-          $$selection
-            .call(Component.renderPane);
-        }
-      });
-
-
-    // Info Panels
-    $$overmap
-      .call(this.info);
-
-    $$overmap
-      .append('div')
-      .attr('class', 'photoviewer')
-      .classed('al', true)       // 'al'=left,  'ar'=right
-      .classed('hide', true)
-      .call(this.photoviewer.render);
-
-    $$overmap
-      .append('div')
-      .attr('class', 'attribution-wrap')
-      .attr('dir', 'ltr')
-      .call(uiAttribution(context));
-
-    // Footer
-    const $$about = $$mainContent
-      .append('div')
-      .attr('class', 'map-footer');
-
-    $$about
-      .append('div')
-      .attr('class', 'api-status')
-      .call(uiStatus(context));
-
-    const $$footer = $$about
-      .append('div')
-      .attr('class', 'map-footer-bar fillD');
-
-    $$footer
-      .append('div')
-      .attr('class', 'flash-wrap map-footer-hide');
-
-    const $$footerWrap = $$footer
-      .append('div')
-      .attr('class', 'map-footer-wrap map-footer-show');
-
-    $$footerWrap
-      .append('div')
-      .attr('class', 'scale-block')
-      .call(uiScale(context));
-
-    const $$aboutList = $$footerWrap
-      .append('div')
-      .attr('class', 'info-block')
-      .append('ul')
-      .attr('class', 'map-footer-list');
-
-    $$aboutList
-      .append('li')
-      .attr('class', 'user-list')
-      .call(uiContributors(context));
-
-    $$aboutList
-      .append('li')
-      .attr('class', 'fb-road-license')
-      .attr('tabindex', -1)
-      .call(uiRapidServiceLicense(context));
-
-    const apiConnections = context.apiConnections;
-    if (apiConnections && apiConnections.length > 1) {
-      $$aboutList
-        .append('li')
-        .attr('class', 'source-switch')
-        .call(uiSourceSwitch(context).keys(apiConnections));
-    }
-
-    $$aboutList
-      .append('li')
-      .attr('class', 'issues-info')
-      .call(uiIssuesInfo(context));
-
-//    $$aboutList
-//      .append('li')
-//      .attr('class', 'feature-warning')
-//      .call(uiFeatureInfo(context));
-
-    const $$issueLinks = $$aboutList
-      .append('li');
-
-    $$issueLinks
-      .append('button')
-      .attr('class', 'bugnub')
-      .attr('tabindex', -1)
-      .on('click', this._clickBugLink)
-      .call(uiIcon('#rapid-icon-bug', 'bugnub'))
-      .call(uiTooltip(context).title(l10n.t('report_a_bug')).placement('top'));
-
-    $$issueLinks
-      .append('a')
-      .attr('target', '_blank')
-      .attr('href', 'https://github.com/facebook/Rapid/blob/main/CONTRIBUTING.md#translations')
-      .call(uiIcon('#rapid-icon-translate', 'light'))
-      .call(uiTooltip(context).title(l10n.t('help_translate')).placement('top'));
-
-    $$aboutList
-      .append('li')
-      .attr('class', 'version')
-      .call(uiVersion(context));
-
-    if (!context.embed()) {
-      $$aboutList
-        .call(uiAccount(context));
-    }
+    $mainContent
+      .call(this.mapToolbar.render)
+      .call(this.overmap.render)
+      .call(this.mapFooter.render);
 
     $container
       .call(this.shortcuts);
@@ -712,30 +520,6 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
    */
   closeEditMenu() {
     this.editMenu.close();
-  }
-
-
-  /*
-   * _clickBugLink
-   * Opens GitHub to report a bug
-   */
-  _clickBugLink() {
-    const link = new URL('https://github.com/facebook/Rapid/issues/new');
-
-    // From the template we set up at https://github.com/facebook/Rapid/blob/main/.github/ISSUE_TEMPLATE/bug_report.yml
-    link.searchParams.append('template', 'bug_report.yml');
-    const detected = utilDetect();
-    const browser = `${detected.browser} v${detected.version}`;
-    const os = `${detected.os}`;
-    const userAgent = navigator.userAgent;
-
-    link.searchParams.append('browser', browser);
-    link.searchParams.append('os', os);
-    link.searchParams.append('useragent', userAgent);
-    link.searchParams.append('URL', window.location.href);
-    link.searchParams.append('version', this.context.version);
-
-    window.open(link.toString(), '_blank');
   }
 
 
