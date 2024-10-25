@@ -1,19 +1,9 @@
-import { Extent, Tiler, geoScaleToZoom, vecEqual } from '@rapid-sdk/math';
-import { utilHashcode } from '@rapid-sdk/util';
-import { VectorTile } from '@mapbox/vector-tile';
-import geojsonRewind from '@mapbox/geojson-rewind';
-import { PMTiles } from 'pmtiles';
-import stringify from 'fast-json-stable-stringify';
-import * as Polyclip from 'polyclip-ts';
-import Protobuf from 'pbf';
-import RBush from 'rbush';
+import { Tiler} from '@rapid-sdk/math';
 
 import { AbstractSystem } from '../core/AbstractSystem.js';
-import { utilFetchResponse } from '../util/index.js';
 
-const PMTILES_STAC_ROOT_URL = 'https://overturemaps-tiles-us-west-2-beta.s3.us-west-2.amazonaws.com/stac/';
 const PMTILES_ROOT_URL = 'https://overturemaps-tiles-us-west-2-beta.s3.us-west-2.amazonaws.com/';
-const PMTILES_STAC_CATALOG_PATH = 'catalog.json';
+const PMTILES_CATALOG_PATH = 'pmtiles_catalog.json';
 
 
 /**
@@ -45,69 +35,12 @@ export class OvertureService extends AbstractSystem {
     this._nextID = 0;
   }
 
-async _loadThemeItem(url, release_catalog) {
-  await fetch(url)
-  .then(response => response.json())
-  .then(item =>  {
-      const assets = item.assets;
-      for (const key in assets) {
-          if (assets[key].href) {
-              const theme_name = key;
-              let urlPath = assets[key].href;
 
-              if (urlPath.startsWith('./')) {
-                urlPath = urlPath.slice(2);
-              }
-              release_catalog[theme_name] = assets[key].href;
-          }
-      }
-  })
-  .catch(error => {
-    console.error('\t\tError fetching or parsing PMTiles asset ', error);
-  });
-}
-
-
-async _loadReleaseMetadata(url, catalog){
-  await fetch(url)
-    .then(response => response.json())
-    .then(collection => {
-      // Process the collection data
-      console.log(collection);
-
-      // Access specific properties
-      console.log(collection.id);
-      console.log(collection.description);
-      const release_name = collection.id;
-
-      catalog[release_name] = [];
-      // Iterate through collection items
-      collection.links.forEach(link => {
-          if (link.rel === 'item') {
-              console.log('\t' + link.rel, link.href);
-              this._loadThemeItem(PMTILES_STAC_ROOT_URL + release_name + '/' + link.href, catalog[release_name])
-          }
-      });
-
-    })
-    .catch(error => {
-      console.error('\tError fetching or parsing the PMTiles Collection', error);
-    });
-}
-
-
- async _loadStacRootMetadata(pmTilesCatalog) {
-  await fetch(PMTILES_STAC_ROOT_URL + PMTILES_STAC_CATALOG_PATH)
+ async _loadS3Catalog() {
+  await fetch(PMTILES_ROOT_URL + PMTILES_CATALOG_PATH)
     .then(response => response.json())
     .then(catalog => {
-
-      // Iterate through links
-      catalog.links.forEach(link => {
-          if (link.rel === 'child') {
-              const relPath = link.href;
-              this._loadReleaseMetadata(PMTILES_STAC_ROOT_URL + relPath, pmTilesCatalog);
-          }
-      });
+      this.pmTilesCatalog = catalog;
     })
     .catch(error => {
       console.error('Error fetching or parsing the PMTiles STAC Catalog:', error);
@@ -123,7 +56,7 @@ async _loadReleaseMetadata(url, catalog){
     const context = this.context;
     const vtService = context.services.vectortile;
 
-    this._loadStacRootMetadata(this.pmTilesCatalog);
+    this._loadS3Catalog();
     return Promise.resolve(vtService.initAsync()).then( () => {
     //other init here after the vector tile service is done initializing
 
@@ -144,13 +77,13 @@ async _loadReleaseMetadata(url, catalog){
     return Promise.resolve(vtService.startAsync()).then( () => {
       //other init here after the vector tile service is done starting
 
-      const dateStrings = Object.keys(this.pmTilesCatalog);
+      const dateStrings = this.pmTilesCatalog.releases.map(release => release.release_id);
 
 
       dateStrings.sort( (a, b) => new Date(b) - new Date(a));
 
-      // Grab the very latest date stamp.
-      this.latestRelease = dateStrings[0];
+      // Grab the very latest date stamp and keep track of the release associated with it.
+      this.latestRelease = this.pmTilesCatalog.releases.find(release => release.release_id === dateStrings[0]);
 
     });
   }
@@ -188,7 +121,9 @@ async _loadReleaseMetadata(url, catalog){
 
     //TODO: Revisit the id-to-url mapping once we're done. 
     if (datasetID.includes('places')) {
-      const url = PMTILES_ROOT_URL + this.pmTilesCatalog[this.latestRelease].places;
+
+      const file = this.latestRelease.files.find(file => file.theme === 'places');
+      const url = PMTILES_ROOT_URL + file.href;
 
       vtService.loadTiles(url);
     }
@@ -198,7 +133,8 @@ async _loadReleaseMetadata(url, catalog){
     const vtService = this.context.services.vectortile;  // 'mapwithai' or 'esri'
 
     if (datasetID.includes('places')) {
-       const url = PMTILES_ROOT_URL + this.pmTilesCatalog[this.latestRelease].places;
+      const file = this.latestRelease.files.find(file => file.theme === 'places');
+      const url = PMTILES_ROOT_URL + file.href;
        return vtService.getData(url);
     } else {
       return [];
