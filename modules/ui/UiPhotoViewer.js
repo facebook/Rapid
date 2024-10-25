@@ -1,6 +1,6 @@
 import { EventEmitter } from 'pixi.js';
+import { selection, select } from 'd3-selection';
 import { numClamp } from '@rapid-sdk/math';
-import { selection, select as d3_select } from 'd3-selection';
 
 import { uiIcon } from './icon.js';
 
@@ -192,7 +192,7 @@ export class UiPhotoViewer extends EventEmitter {
       rectW = rect.width;
       rectH = rect.height;
 
-      d3_select(window)
+      select(window)
         .on('pointermove.resize', _pointermove)
         .on('pointerup.resize pointercancel.resize', _pointerup);
     };
@@ -241,7 +241,7 @@ export class UiPhotoViewer extends EventEmitter {
       e.preventDefault();
       e.stopPropagation();
 
-      d3_select(window)
+      select(window)
         .on('pointermove.resize pointerup.resize pointercancel.resize', null);
     };
 

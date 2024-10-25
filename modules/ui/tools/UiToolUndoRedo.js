@@ -1,4 +1,4 @@
-import { selection, select as d3_select } from 'd3-selection';
+import { selection, select } from 'd3-selection';
 import debounce from 'lodash-es/debounce.js';
 
 import { uiCmd } from '../cmd.js';
@@ -124,7 +124,7 @@ export class UiToolUndoRedo {
 
     $buttons
       .each((d, i, nodes) => {
-        const $selection = d3_select(nodes[i]);
+        const $selection = select(nodes[i]);
 
         // set class
         $selection

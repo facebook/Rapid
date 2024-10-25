@@ -1,4 +1,4 @@
-import { selection, select as d3_select } from 'd3-selection';
+import { selection, select } from 'd3-selection';
 import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
 import * as sexagesimal from '@mapbox/sexagesimal';
 
@@ -213,7 +213,7 @@ export class UiFeatureList {
 
     $$label
       .each((d, i, nodes) => {
-        d3_select(nodes[i])
+        select(nodes[i])
           .call(uiIcon(`#rapid-icon-${d.geometry}`, 'pre-text'));
       });
 

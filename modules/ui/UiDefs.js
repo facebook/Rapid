@@ -1,4 +1,4 @@
-import { selection, select as d3_select } from 'd3-selection';
+import { selection, select } from 'd3-selection';
 
 import { utilFetchResponse } from '../util/index.js';
 
@@ -74,11 +74,11 @@ export class UiDefs {
       .append('g')
       .attr('class', d => `spritesheet spritesheet-${d}`)
       .each((d, i, nodes) => {
-        const group = d3_select(nodes[i]);
+        const $group = select(nodes[i]);
         const url = assets.getFileURL(`img/${d}-sprite.svg`);
         fetch(url)
           .then(utilFetchResponse)
-          .then(svg => group.call(this._spritesheetLoaded, d, svg))
+          .then(svg => $group.call(this._spritesheetLoaded, d, svg))
           .catch(e => console.error(e));  // eslint-disable-line
       });
   }

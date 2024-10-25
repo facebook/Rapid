@@ -1,4 +1,4 @@
-import { selection, select as d3_select } from 'd3-selection';
+import { selection, select } from 'd3-selection';
 import debounce from 'lodash-es/debounce.js';
 
 import { uiIcon } from '../icon.js';
@@ -133,7 +133,7 @@ export class UiToolDrawModes {
 
     $$buttons
       .each((d, i, nodes) => {
-        d3_select(nodes[i])
+        select(nodes[i])
           .call(uiIcon(`#rapid-icon-${d.icon}`))
           .call(this.Tooltip);
       });

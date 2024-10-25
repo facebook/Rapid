@@ -1,7 +1,6 @@
-import { selection, select as d3_select } from 'd3-selection';
-import {
-  UiToolRapidFeatures, UiToolDrawModes, UiToolSave, UiToolUndoRedo, UiToolDownloadOsc
-} from './tools/index.js';
+import { selection, select } from 'd3-selection';
+
+import { UiToolRapidFeatures, UiToolDrawModes, UiToolSave, UiToolUndoRedo, UiToolDownloadOsc } from './tools/index.js';
 
 
 /**
@@ -121,7 +120,7 @@ export class UiMapToolbar {
     $items
       .selectAll('.item-content')
       .each((d, i, nodes) => {
-        d3_select(nodes[i]).call(d.render);
+        select(nodes[i]).call(d.render);
       });
 
     $items

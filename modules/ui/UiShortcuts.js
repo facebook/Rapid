@@ -1,4 +1,4 @@
-import { selection, select as d3_select } from 'd3-selection';
+import { selection, select } from 'd3-selection';
 import { utilArrayUniq } from '@rapid-sdk/util';
 
 import { uiIcon } from './icon.js';
@@ -178,7 +178,7 @@ export class UiShortcuts {
       .append('td')
       .attr('class', 'shortcut-keys')
       .each((d, i, nodes) => {
-        const $$selection = d3_select(nodes[i]);
+        const $$selection = select(nodes[i]);
 
         // Add modifiers, if any..
         let modifiers = d.modifiers || [];

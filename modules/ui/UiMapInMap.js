@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { selection } from 'd3-selection';
-import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
+import { zoom, zoomIdentity } from 'd3-zoom';
 import { HALF_PI, Viewport, geoZoomToScale, numClamp, vecAdd, vecInterp, vecSubtract } from '@rapid-sdk/math';
 
 import { PixiLayerBackgroundTiles } from '../pixi/PixiLayerBackgroundTiles.js';
@@ -51,7 +51,7 @@ export class UiMapInMap {
     this._zoomEnded = this._zoomEnded.bind(this);
 
     // d3-zoom behavior
-    this._zoom = d3_zoom()
+    this._zoom = zoom()
       .scaleExtent([MIN_K, MAX_K])
       .on('start', this._zoomStarted)
       .on('zoom', this._zoomed)
@@ -145,7 +145,7 @@ export class UiMapInMap {
     if (this._skipEvents) return;
 
     const t = this.viewMini.transform.props;
-    this._tStart = d3_zoomIdentity.translate(t.x, t.y).scale(t.k);
+    this._tStart = zoomIdentity.translate(t.x, t.y).scale(t.k);
     this._gesture = null;
   }
 
@@ -244,7 +244,7 @@ export class UiMapInMap {
     const zoom = this._zoom;
     this._skipEvents = true;
     zoom.scaleExtent([MIN_K, geoZoomToScale(zMain - 3)]);
-    this.$supersurface.call(zoom.transform, d3_zoomIdentity.translate(xy[0], xy[1]).scale(kMini));
+    this.$supersurface.call(zoom.transform, zoomIdentity.translate(xy[0], xy[1]).scale(kMini));
     this._skipEvents = false;
   }
 

@@ -1,5 +1,5 @@
 import { selection } from 'd3-selection';
-import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
+import { interpolateNumber } from 'd3-interpolate';
 import { Extent, vecLength } from '@rapid-sdk/math';
 import _throttle from 'lodash-es/throttle.js';
 
@@ -490,7 +490,7 @@ export class UiSidebar {
     const startWidth = startCollapsed ? 0 : expandWidth;
     const endCollapsed = !startCollapsed;
     const endWidth = endCollapsed ? 0 : expandWidth;
-    const lerp = d3_interpolateNumber(startWidth, endWidth);
+    const lerp = interpolateNumber(startWidth, endWidth);
 
     this._startWidth = startWidth;
     this._lastWidth = startWidth;

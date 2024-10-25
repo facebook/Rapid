@@ -37,6 +37,7 @@ export { uiKeepRightEditor } from './keepRight_editor.js';
 export { uiKeepRightHeader } from './keepRight_header.js';
 export { uiLoading } from './loading.js';
 export { uiMap3dViewer } from './map3d_viewer.js';
+export { UiMapControls } from './UiMapControls.js';
 export { UiMapFooter } from './UiMapFooter.js';
 export { UiMapInMap } from './UiMapInMap.js';
 export { uiMapRouletteDetails } from './maproulette_details.js';

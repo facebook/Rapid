@@ -1,4 +1,4 @@
-import { select as d3_select } from 'd3-selection';
+import { select } from 'd3-selection';
 import { vecAdd } from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
@@ -6,7 +6,7 @@ import { AbstractSystem } from './AbstractSystem.js';
 import {
   UiApiStatus, UiDefs, uiEditMenu, uiFlash, UiFullscreen, uiInfo, uiIntro,
   uiLoading, UiMapInMap, UiMapFooter, UiMapToolbar, UiOvermap, UiPhotoViewer,
-  uiSplash, uiRestore, UiShortcuts, UiSidebar, UiSpector, uiWhatsNew
+  uiSplash, uiRestore, UiShortcuts, UiSidebar, uiWhatsNew
 } from '../ui/index.js';
 
 
@@ -49,7 +49,6 @@ export class UiSystem extends AbstractSystem {
     this.photoviewer = null;
     this.shortcuts = null;
     this.sidebar = null;
-    this.spector = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
@@ -100,7 +99,6 @@ export class UiSystem extends AbstractSystem {
         this.photoviewer = new UiPhotoViewer(context);
         this.shortcuts = new UiShortcuts(context);
         this.sidebar = new UiSidebar(context);
-        this.spector = new UiSpector(context);
 
         const osm = context.services.osm;
         if (osm) {
@@ -430,7 +428,7 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
         .duration(200)
         .style(side, '-500px')
         .on('end', function() {
-          d3_select(this)
+          select(this)
             .classed('shown', false)
             .classed('hide', true);
         });
@@ -476,7 +474,7 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
       .operations(operations);
 
     // render the menu
-    const $overlay = d3_select(gfx.overlay);
+    const $overlay = select(gfx.overlay);
     $overlay.call(this.editMenu);
   }
 
@@ -489,7 +487,7 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
   redrawEditMenu() {
     const context = this.context;
     const gfx = context.systems.gfx;
-    const $overlay = d3_select(gfx.overlay);
+    const $overlay = select(gfx.overlay);
 
     // If the menu isn't showing, there's nothing to do
     if ($overlay.selectAll('.edit-menu').empty()) return;

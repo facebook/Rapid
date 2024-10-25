@@ -1,6 +1,6 @@
 import { Extent, numClamp, vecAdd } from '@rapid-sdk/math';
-import { easeLinear as d3_easeLinear } from 'd3-ease';
-import { selection, select as d3_select } from 'd3-selection';
+import { easeLinear } from 'd3-ease';
+import { selection, select } from 'd3-selection';
 import * as Polyclip from 'polyclip-ts';
 
 import { uiToggle } from '../toggle.js';
@@ -240,7 +240,7 @@ export class UiCurtain {
       // A D3-selector selector or a DOMElement (in screen coordinates)
       } else {
         if (opts.revealSelector && !opts.revealNode) {   // d3-select an element
-          opts.revealNode = d3_select(opts.revealSelector).node();
+          opts.revealNode = select(opts.revealSelector).node();
         }
         if (opts.revealNode instanceof Element) {
           const rect = this._copyRect(opts.revealNode.getBoundingClientRect());
@@ -294,7 +294,7 @@ export class UiCurtain {
       $darkness = $darkness
         .transition()
         .duration(duration)
-        .ease(d3_easeLinear)
+        .ease(easeLinear)
         .on('end interrupt', () => this._inTransition = false);
 
     } else {
@@ -332,7 +332,7 @@ export class UiCurtain {
     // It can be specified separately, but it defaults to the already calculated `this._revealPolygon`
     if (opts) {
       if (opts.tipSelector && !opts.tipNode) {   // d3-select an element
-        opts.tipNode = d3_select(opts.tipSelector).node();
+        opts.tipNode = select(opts.tipSelector).node();
       }
       if (opts.tipNode instanceof Element) {   // get rect from the tipNode
         reveal = this._copyRect(opts.tipNode.getBoundingClientRect());

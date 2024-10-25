@@ -1,6 +1,10 @@
-import { selection, select as d3_select } from 'd3-selection';
+import { selection, select } from 'd3-selection';
 
-import { uiAttribution, uiBearing, uiGeolocate, uiMap3dViewer, uiZoom, uiZoomToSelection } from './index.js';
+import { uiAttribution } from './attribution.js';
+import { uiMap3dViewer } from './map3d_viewer.js';
+import { UiMapControls } from './UiMapControls.js';
+import { UiSpector } from './UiSpector.js';
+
 import { uiPaneBackground, uiPaneHelp, uiPaneIssues, uiPaneMapData, uiPanePreferences } from './panes/index.js';
 
 
@@ -25,6 +29,10 @@ export class UiOvermap {
     this.context = context;
 
     // Create child components
+    this.Attribution = uiAttribution(context);
+    this.Map3dViewer = uiMap3dViewer(context);
+    this.MapControls = new UiMapControls(context);
+    this.Spector = new UiSpector(context);
 
     // D3 selections
     this.$parent = null;
@@ -70,47 +78,20 @@ export class UiOvermap {
       .text('t');
 
     $$overmap
-      .call(ui.mapInMap.render);
+      .call(ui.mapInMap.render)
+      .call(this.Map3dViewer)
+      .call(this.Spector.render)
+      .call(this.MapControls.render);
 
-    $$overmap
-      .call(uiMap3dViewer(context));
-
-    $$overmap
-      .call(ui.spector.render);
-
-
-    // Map controls
-    const $$controls = $$overmap
-      .append('div')
-      .attr('class', 'map-controls');
-
-    $$controls
-      .append('div')
-      .attr('class', 'map-control bearing')
-      .call(uiBearing(context));
-
-    $$controls
-      .append('div')
-      .attr('class', 'map-control zoombuttons')
-      .call(uiZoom(context));
-
-    $$controls
-      .append('div')
-      .attr('class', 'map-control zoom-to-selection')
-      .call(uiZoomToSelection(context));
-
-    $$controls
-      .append('div')
-      .attr('class', 'map-control geolocate')
-      .call(uiGeolocate(context));
-
+    // We will add the pane buttons to this div also
+    const $mapControls = $$overmap.selectAll('.map-controls');
 
     // Panes
     $$overmap
       .append('div')
       .attr('class', 'map-panes')
       .each((d, i, nodes) => {
-        const $$selection = d3_select(nodes[i]);
+        const $$selection = select(nodes[i]);
 
         // Instantiate the panes
         const uiPanes = [
@@ -124,7 +105,7 @@ export class UiOvermap {
         // For each pane, create the buttons to toggle the panes,
         // and perform a single render to append it to the map-panes div
         for (const Component of uiPanes) {
-          $$controls
+          $mapControls
             .append('div')
             .attr('class', `map-control map-pane-control ${Component.id}-control`)
             .call(Component.renderToggleButton);
@@ -140,17 +121,13 @@ export class UiOvermap {
       .call(ui.info);
 
     $$overmap
-      .append('div')
-      .attr('class', 'photoviewer')
-      .classed('al', true)       // 'al'=left,  'ar'=right
-      .classed('hide', true)
       .call(ui.photoviewer.render);
 
     $$overmap
       .append('div')
       .attr('class', 'attribution-wrap')
       .attr('dir', 'ltr')
-      .call(uiAttribution(context));
+      .call(this.Attribution);
   }
 
 }
