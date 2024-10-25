@@ -2614,6 +2614,9 @@ en:
         title: "Viewers"
         minimap: "Toggle minimap"
         3dmap: "Toggle 3D map"
+        mapillary: "Toggle Mapillary"
+        bringStreetside: "Toggle Bing Streetside"
+        kartaview: "Toggle Kartaview"
       info:
         title: "Information"
         all: "Toggle all information panels"
