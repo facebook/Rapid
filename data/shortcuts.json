@@ -386,6 +386,21 @@
               "rapid": true
             },
             {
+              "modifiers": ["⇧"],
+              "shortcuts": ["M"],
+              "text": "shortcuts.tools.viewers.mapillary"
+            },
+            { 
+              "modifiers": ["⇧"],
+              "shortcuts": ["S"],
+              "text": "shortcuts.tools.viewers.bringStreetside"
+            },
+            {
+              "modifiers": ["⇧"],
+              "shortcuts": ["K"],
+              "text": "shortcuts.tools.viewers.kartaview"
+            },
+            {
               "section": "info",
               "text": "shortcuts.tools.info.title"
             },
