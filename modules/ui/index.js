@@ -77,7 +77,7 @@ export { uiSuccess } from './success.js';
 export { uiTagReference } from './tag_reference.js';
 export { uiToggle } from './toggle.js';
 export { uiTooltip } from './tooltip.js';
-export { uiVersion } from './version.js';
+export { UiVersionInfo } from './UiVersionInfo.js';
 export { UiViewOn } from './UiViewOn.js';
 export { uiWhatsNew } from './whats_new.js';
 export { uiZoom } from './zoom.js';

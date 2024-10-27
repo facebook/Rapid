@@ -4552,6 +4552,10 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
     margin: 0 3px;
 }
 
+.map-footer-list .version-wrap {
+  display: flex;
+}
+
 .source-switch a.chip.live {
     background: #d32232;
     color: #fff;
@@ -4582,6 +4586,7 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
   padding: 2px 4px 4px 4px;
   border-radius: 2px;
 }
+
 
 /* Notification Badges
 ------------------------------------------------------- */

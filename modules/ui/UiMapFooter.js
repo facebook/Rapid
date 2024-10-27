@@ -3,7 +3,7 @@ import { selection } from 'd3-selection';
 import { utilDetect } from '../util/detect.js';
 import {
   uiAccount, uiContributors, uiIcon, uiIssuesInfo, uiRapidServiceLicense,
-  uiScale, uiSourceSwitch, uiTooltip, uiVersion
+  uiScale, uiSourceSwitch, uiTooltip, UiVersionInfo
 } from './index.js';
 
 
@@ -26,7 +26,7 @@ export class UiMapFooter {
     this.IssueInfo = uiIssuesInfo(context);
     this.RapidLicense = uiRapidServiceLicense(context);
     this.Scale = uiScale(context);
-    this.VersionInfo = uiVersion(context);
+    this.VersionInfo = new UiVersionInfo(context);
 
     if (!context.embed()) {
       this.AccountInfo = uiAccount(context);
@@ -144,7 +144,7 @@ export class UiMapFooter {
     $$aboutList
       .append('li')
       .attr('class', 'version')
-      .call(this.VersionInfo);
+      .call(this.VersionInfo.render);
 
     if (this.AccountInfo) {
       $$aboutList
