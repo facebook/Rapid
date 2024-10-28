@@ -160,8 +160,12 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     // Determine tiles needed to cover the view at the zoom we want,
     // including any zoomed out tiles if this field contains any holes
     const needTiles = new Map();                // Map(tileID -> tile)
-    const maxZoom = Math.ceil(z);               // the zoom we want (round up for sharper imagery)
-    const minZoom = Math.max(0, maxZoom - source.zoomRange);   // the mininimum zoom we'll accept
+
+    // Make sure the min zoom is at least 1.
+    // z=0 causes a bug for Mapbox layers to disappear, these use very large tile size.
+    // Also the locator overlay should always show its labels, which start at zoom 1.
+    const maxZoom = Math.max(1, Math.ceil(z));                 // the zoom we want (round up for sharper imagery)
+    const minZoom = Math.max(1, maxZoom - source.zoomRange);   // the mininimum zoom we'll accept
 
     let covered = false;
     for (let tryZoom = maxZoom; !covered && tryZoom >= minZoom; tryZoom--) {
