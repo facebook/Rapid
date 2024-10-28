@@ -1,0 +1,21 @@
+{
+  "_meta": {
+    "version": "2.4.3",
+    "generated": "2024-10-28T15:18:28.712Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.nn.json",
+    "hash": "918e4af9cf7c9a8aa6b405934866ce0f"
+  },
+  "nn": {
+    "_communities": {
+      "openstreetmapnorway": "OpenStreetMap Noreg",
+      "openstreetmappoland": "OpenStreetMap Polen",
+      "openstreetmapsweden": "OpenStreetMap Sverige"
+    },
+    "cape-coast-youthmappers": {
+      "description": "Følg oss på Twitter: {url}"
+    },
+    "Maptime-Oceania-Slack": {
+      "description": "Registrer deg på {signupUrl}"
+    }
+  }
+}

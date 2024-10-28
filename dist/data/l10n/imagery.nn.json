@@ -1,0 +1,15 @@
+{
+  "_meta": {
+    "version": "2.4.3",
+    "generated": "2024-10-28T15:18:28.493Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/imagery.nn.json",
+    "hash": "74b93c1e3bce7b9fd43e71df82c47f6d"
+  },
+  "nn": {
+    "imagery": {
+      "MAPNIK": {
+        "name": "OpenStreetMap (standard)"
+      }
+    }
+  }
+}

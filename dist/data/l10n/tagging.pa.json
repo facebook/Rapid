@@ -1,0 +1,32 @@
+{
+  "_meta": {
+    "version": "2.4.3",
+    "generated": "2024-10-28T15:18:28.338Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/tagging.pa.json",
+    "hash": "a4b98cbf10533d4f489109f0e58f3c43"
+  },
+  "pa": {
+    "presets": {
+      "fields": {
+        "address": {
+          "placeholders": {
+            "city": "ਸ਼ਹਿਰ"
+          }
+        },
+        "cuisine": {
+          "options": {
+            "indian": "ਭਾਰਤੀ"
+          }
+        },
+        "name": {
+          "label": "ਨਾਮ"
+        }
+      },
+      "presets": {
+        "amenity/place_of_worship/muslim": {
+          "name": "ਮਸਜਿਦ\nਮਸੀਤ"
+        }
+      }
+    }
+  }
+}

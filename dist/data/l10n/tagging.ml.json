@@ -1,0 +1,51 @@
+{
+  "_meta": {
+    "version": "2.4.3",
+    "generated": "2024-10-28T15:18:28.349Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/tagging.ml.json",
+    "hash": "fe967500ec03e5a625e6beccfdb3629a"
+  },
+  "ml": {
+    "presets": {
+      "categories": {
+        "category-natural": {
+          "name": "പ്രകൃതി സവിശേഷതകൾ"
+        },
+        "category-route": {
+          "name": "റോഡ് സവിശേഷതകൾ"
+        },
+        "category-water": {
+          "name": "ജല സവിശേഷതകൾ"
+        }
+      },
+      "fields": {
+        "access": {
+          "types": {
+            "access": "എല്ലാം",
+            "bicycle": "സൈക്കിളുകള്‍",
+            "horse": "കുതിരകള്‍"
+          }
+        },
+        "address": {
+          "label": "വിലാസം",
+          "placeholders": {
+            "city": "നഗരം",
+            "city!vn": "നഗരം/പട്ടണം",
+            "country": "രാജ്യം",
+            "district": "ജില്ല",
+            "neighbourhood": "അയല്പക്കം",
+            "place": "പ്രദേശം",
+            "postcode": "പോസ്റ്റ്കോഡ്",
+            "state": "സംസ്ഥാനം"
+          }
+        },
+        "aerialway": {
+          "label": "തരം"
+        },
+        "atm": {
+          "label": "എടിഎം"
+        }
+      }
+    }
+  }
+}
