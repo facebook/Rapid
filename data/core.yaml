@@ -2615,7 +2615,7 @@ en:
         minimap: "Toggle minimap"
         3dmap: "Toggle 3D map"
         mapillary: "Toggle Mapillary"
-        bringStreetside: "Toggle Bing Streetside"
+        bingStreetside: "Toggle Bing Streetside"
         kartaview: "Toggle Kartaview"
       info:
         title: "Information"
