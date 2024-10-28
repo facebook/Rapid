@@ -39,6 +39,17 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [2.4.3](https://github.com/facebook/Rapid/releases/tag/rapid-v2.4.3)
+#### 2024-Oct-28
+
+#### :bug: Bugfixes
+* [#1566] Reset the sidebar to "search features" when entering browse mode
+* [#1567] Constrain the width of the pane, sidebar doesn't overflow
+
+[#1566]: https://github.com/facebook/Rapid/issues/1566
+[#1567]: https://github.com/facebook/Rapid/issues/1567
+
+
 # [2.4.2](https://github.com/facebook/Rapid/releases/tag/rapid-v2.4.2)
 #### 2024-Sep-16
 
