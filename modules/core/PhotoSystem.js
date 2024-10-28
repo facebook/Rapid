@@ -79,7 +79,22 @@ export class PhotoSystem extends AbstractSystem {
         // Setup event handlers..
         urlhash.on('hashchange', this._hashchange);
         gfx.scene.on('layerchange', this._layerchange);
-        document.addEventListener('keydown', this._keydown);
+        const wireframeKey = '⇧M';
+        const toggleOsmKey = '⇧S';
+        const toggleNotesKey = '⇧K';
+        context.keybinding()
+        .on(wireframeKey, e => {
+          e.preventDefault();
+          this.toggleLayer('mapillary');
+        })
+        .on(toggleOsmKey, e => {
+          e.preventDefault();
+          this.toggleLayer('streetside');
+        })
+        .on(toggleNotesKey, e => {
+          e.preventDefault();
+          this.toggleLayer('kartaview');
+        });
       });
   }
 
