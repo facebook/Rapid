@@ -1874,11 +1874,11 @@ en:
       tip: "Find way segments that are duplicated (same node endpoints)"
       message: "Two or more segments share the same pair of nodes"
       reference: "Redundant way segments should be merged or moved apart."
-    kerb_nodes:
-     title: "Kerb Nodes"
-     message: "{feature} may be missing kerb nodes."
-     reference: "Crossing ways should have individual kerb nodes (where appropriate). Use photo overlays to help determine kerb type."
-     footway-highway: "Footways crossing highways should have separately-mapped kerb nodes."
+    curb_nodes:
+     title: "Curb Nodes"
+     message: "{feature} may be missing curb nodes."
+     reference: "Crossing ways should have individual curb nodes (where appropriate). Use photo overlays to help determine curb type."
+     footway-highway: "Footways crossing highways should have separately-mapped curb nodes."
     crossing_ways:
       title: Crossings Ways
       message: "{feature} crosses {feature2}"
@@ -2075,18 +2075,18 @@ en:
       add_a_tunnel:
         title: Add a tunnel
         annotation: Added a tunnel.
-      add_kerb_nodes_unspecified:
-        title: Add unspecified kerb nodes
-        annotation: Added unspecified kerb nodes.
-      add_kerb_nodes_flush:
-        title: Add flush kerb nodes
-        annotation: Added flush kerb nodes.
-      add_kerb_nodes_lowered:
-        title: Add lowered kerb nodes
-        annotation: Added lowered kerb nodes.
-      add_kerb_nodes_raised:
-        title: Add raised kerb nodes
-        annotation: Added raised kerb nodes.
+      add_curb_nodes_unspecified:
+        title: Add unspecified curb nodes
+        annotation: Added unspecified curb nodes.
+      add_curb_nodes_flush:
+        title: Add flush curb nodes
+        annotation: Added flush curb nodes.
+      add_curb_nodes_lowered:
+        title: Add lowered curb nodes
+        annotation: Added lowered curb nodes.
+      add_curb_nodes_raised:
+        title: Add raised curb nodes
+        annotation: Added raised curb nodes.
       address_the_concern:
         title: Address the concern
       set_both_as_marked:
