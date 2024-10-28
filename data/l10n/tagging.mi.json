@@ -196,6 +196,12 @@
         "highway/construction": {
           "name": "Mahinga Rori"
         },
+        "highway/cycleway": {
+          "name": "Ngā ara paihikara"
+        },
+        "highway/cycleway/bicycle_foot": {
+          "name": "Ngā Ara mō te Paihikara me te Hīkoi"
+        },
         "highway/living_street": {
           "name": "Ara Wātea"
         },
@@ -207,6 +213,9 @@
         },
         "landuse/cemetery": {
           "name": "Urupā"
+        },
+        "landuse/construction": {
+          "name": "He Wāhi Whaihanga Tēnei"
         },
         "landuse/harbour": {
           "name": "Te Taunga"

@@ -123,6 +123,7 @@
           "terms": "Dopušten pristup, dopuštenje, pristup"
         },
         "activity": {
+          "label": "Aktivnost",
           "options": {
             "bicycle": "Biciklizam",
             "hiking": "Pješačenje",
@@ -231,6 +232,9 @@
           "label": "Klimatizirano",
           "terms": "klimatizacija, klima, klima uređaj"
         },
+        "alt_name": {
+          "label": "Alternativni naziv"
+        },
         "amenity": {
           "label": "Vrsta"
         },
@@ -285,6 +289,7 @@
           }
         },
         "ascent": {
+          "label": "Ukupni uspon",
           "terms": "Ukupni uspon, uspon, uzbrdica"
         },
         "athletics_pitch": {
@@ -315,7 +320,10 @@
           "label": "Bankomat"
         },
         "attraction": {
-          "label": "Vrsta"
+          "label": "Vrsta",
+          "options": {
+            "maze": "Labirint"
+          }
         },
         "automated": {
           "label": "Automatski"
@@ -479,6 +487,9 @@
         "boundary": {
           "label": "Vrsta"
         },
+        "branch_brand": {
+          "label": "Ogranak"
+        },
         "brand": {
           "label": "Marka",
           "terms": "Marka, trgovinska oznaka"
@@ -606,6 +617,9 @@
             "panning": "Horizontalno okretanje (paniranje)"
           }
         },
+        "camp_site": {
+          "label": "Vrsta"
+        },
         "capacity": {
           "label": "Kapacitet",
           "terms": "Kapacitet"
@@ -638,9 +652,11 @@
           "label": "Stol za presvlačenje beba"
         },
         "charge_fee": {
+          "label": "Iznos naknade",
           "terms": "Pristojba"
         },
         "charge_toll": {
+          "label": "Iznos cestarine",
           "terms": "Cestarina, naplata"
         },
         "check_date": {
@@ -651,6 +667,7 @@
           "options": {
             "babies": "Odjeća za bebe",
             "children": "Dječja odjeća",
+            "fur": "Odjeća od krzna",
             "hats": "Šeširi",
             "men": "Muška odjeća",
             "motorcycle": "Motociklistička odjeća",
@@ -663,6 +680,9 @@
             "women": "Ženska odjeća",
             "workwear": "Radna odjeća"
           }
+        },
+        "club": {
+          "label": "Vrsta"
         },
         "collection_times": {
           "label": "Vrijeme preuzimanja"
@@ -681,8 +701,17 @@
         "communication_multi": {
           "terms": "Vrste komunikacije"
         },
+        "community_centre": {
+          "label": "Vrsta"
+        },
         "construction": {
           "label": "Vrsta"
+        },
+        "consulate": {
+          "label": "Vrsta",
+          "options": {
+            "yes": "Konzulat"
+          }
         },
         "contact/facebook": {
           "placeholder": "https://www.facebook.com/NazivTvrtke"
@@ -764,14 +793,31 @@
         "crop": {
           "label": "Usjev",
           "options": {
+            "asparagus": "Šparoge",
+            "barley": "Ječam",
+            "beet": "Cikla",
+            "cassava": "Manioka",
+            "coffee": "Kava",
+            "cotton": "Pamuk",
+            "cranberries": "Brusnice",
             "flowers": "Cvijeće",
+            "grape": "Grožđe",
             "grass": "Trava",
+            "hop": "Hmelj",
             "lavender": "Lavanda",
+            "maize": "Kukuruz",
+            "potato": "Krumpir",
+            "rape": "Uljana repica",
             "rice": "Riža",
+            "soy": "Soja",
+            "strawberry": "Jagode",
+            "sugar_beet": "Šećerna repa",
+            "sugarcane": "Šećerna trska",
             "sunflower": "Suncokreti",
             "tea": "Čaj",
             "tobacco": "Duhan",
-            "vegetable": "Povrće"
+            "vegetable": "Povrće",
+            "wheat": "Pšenica"
           }
         },
         "crossing": {
@@ -829,6 +875,7 @@
             "filipino": "Filipinska",
             "fish": "Riba",
             "french": "Francuska",
+            "frozen_yogurt": "Smrznuti jogurt",
             "german": "Njemačka",
             "greek": "Grčka",
             "hawaiian": "Havajska",
@@ -842,7 +889,10 @@
             "mexican": "Meksička",
             "pancake": "Palačinke",
             "pasta": "Tjestenina",
+            "pastry": "Kolači",
             "persian": "Perzijska",
+            "polish": "Poljska",
+            "portuguese": "Portugalska",
             "russian": "Ruska",
             "salad": "Salata",
             "sandwich": "Sendvič",
@@ -850,10 +900,12 @@
             "seafood": "Morski plodovi",
             "soup": "Juhe",
             "spanish": "Španjolska",
+            "taiwanese": "Tajvanska",
             "tea": "Čaj",
             "turkish": "Turska",
             "ukrainian": "Ukrajinska",
             "vietnamese": "Vijetnamska",
+            "western": "Zapadnjačka",
             "wings": "Pileća krilca"
           },
           "terms": "Kuhinje"
@@ -928,6 +980,7 @@
           "label": "Dubina (metri)"
         },
         "descent": {
+          "label": "Ukupni spust",
           "terms": "Ukupna nizbrdica, nizbrdica"
         },
         "description": {
@@ -937,21 +990,37 @@
         "design": {
           "label": "Dizajn"
         },
+        "destination": {
+          "label": "Odredišta"
+        },
         "destination/ref": {
           "label": "Brojevi cesta odredišta"
         },
         "destination/symbol": {
           "label": "Znakovi odredišta"
         },
+        "destination_waterway": {
+          "label": "Odredište"
+        },
         "diameter": {
           "label": "Promjer"
         },
         "diet_multi": {
+          "label": "Vrste prehrane",
           "options": {
+            "gluten_free": "Bezglutenska",
+            "kosher": "Košer",
+            "lactose_free": "Bez laktoze",
             "vegan": "Veganska",
             "vegetarian": "Vegetarijanska "
           },
           "terms": "Vrste dijete, prehrana, košer, halal, meso, sirovo, vegetarijanac"
+        },
+        "diplomatic": {
+          "options": {
+            "consulate": "Konzulat",
+            "embassy": "Ambasada"
+          }
         },
         "direction": {
           "label": "Smjer (stupnjeva u smjeru kazaljke na satu)",
@@ -980,10 +1049,22 @@
             "forward": "Naprijed"
           }
         },
+        "display": {
+          "label": "Displej",
+          "options": {
+            "analog": "Analogni",
+            "digital": "Digitalni",
+            "sundial": "Sunčani sat"
+          }
+        },
         "distance": {
+          "label": "Udaljenost",
           "terms": "Daljina, udaljenost"
         },
         "disused/amenity": {
+          "label": "Vrsta"
+        },
+        "disused/shop": {
           "label": "Vrsta"
         },
         "dock": {
@@ -994,12 +1075,19 @@
           "options": {
             "leashed": "Samo na uzici",
             "no": "Nije dopušteno",
+            "unleashed": "Nije potreban povodac",
             "yes": "Dopušteno"
           },
           "terms": "Životinje, kućni ljubimci"
         },
         "door": {
           "label": "Vrata"
+        },
+        "door/height": {
+          "label": "Visina vrata (u metrima)"
+        },
+        "door/width": {
+          "label": "Širina vrata (u metrima)"
         },
         "drink_multi": {
           "label": "Pića"
@@ -1016,6 +1104,9 @@
           "label": "Trajanje",
           "terms": "Trajanje"
         },
+        "ele": {
+          "label": "Nadmorska visina (u metrima)"
+        },
         "electrified": {
           "label": "Elektrifikacija",
           "options": {
@@ -1031,13 +1122,20 @@
           "placeholder": "primjer@primjer.hr",
           "terms": "E-mail, e-pošta"
         },
+        "embassy": {
+          "options": {
+            "yes": "Ambasada"
+          }
+        },
         "emergency": {
           "label": "Hitna pomoć"
         },
         "entrance": {
           "label": "Vrsta",
           "options": {
+            "emergency": "Izlaz u slučaju opasnosti",
             "entrance": "Samo ulaz",
+            "garage": "Garažna vrata",
             "home": "Kućni ulaz",
             "main": "Glavni",
             "staircase": "Stubište"
@@ -1059,13 +1157,27 @@
         },
         "fire_hydrant/position": {
           "options": {
-            "green": "Zelena površina"
+            "green": "Zelena površina",
+            "sidewalk": "Nogostup"
           }
         },
         "fire_hydrant/pressure": {
           "terms": "Tlak (bar)"
         },
         "fire_hydrant/type": {
+          "options": {
+            "pillar": "Stup/nadzemni",
+            "underground": "Podzemni",
+            "wall": "Zid"
+          }
+        },
+        "fire_mains": {
+          "options": {
+            "yes": "Nepoznata vrsta"
+          }
+        },
+        "fire_service_inlet": {
+          "label": "Oblik",
           "options": {
             "pillar": "Stup/nadzemni",
             "underground": "Podzemni",
@@ -1085,6 +1197,7 @@
         },
         "flashing_lights": {
           "options": {
+            "no": "Ne",
             "yes": "Da"
           }
         },
@@ -1096,6 +1209,11 @@
         },
         "fuel": {
           "label": "Gorivo"
+        },
+        "fuel/fuel_multi": {
+          "options": {
+            "diesel": "Dizel"
+          }
         },
         "gauge": {
           "label": "Širina kolosijeka"
@@ -1116,7 +1234,13 @@
           "label": "Izlazna snaga"
         },
         "generator/source": {
-          "label": "Izvor"
+          "label": "Izvor",
+          "options": {
+            "battery": "Baterije",
+            "coal": "Ugljen",
+            "gas": "Zemni plin",
+            "wind": "Vjetar"
+          }
         },
         "generator/type": {
           "label": "Vrsta"
@@ -1133,6 +1257,22 @@
         "handrail": {
           "label": "Rukohvat",
           "terms": "Rukohvat"
+        },
+        "hazard_boundary": {
+          "options": {
+            "avalanche": "Lavina/Odron",
+            "electricity": "Strujni udar",
+            "hole": "Rupa",
+            "minefield": "Minsko polje",
+            "nuclear": "Radijacija",
+            "quicksand": "Živi pijesak"
+          }
+        },
+        "healthcare": {
+          "options": {
+            "dentist": "Zubar",
+            "pharmacy": "Apoteka"
+          }
         },
         "healthcare/speciality": {
           "options": {
@@ -1157,7 +1297,10 @@
           "label": "Vrsta"
         },
         "historic": {
-          "label": "Vrsta"
+          "label": "Vrsta",
+          "options": {
+            "milestone": "Povijesni miljokaz"
+          }
         },
         "historic/civilization": {
           "label": "Povijesna civilizacija"
@@ -1241,8 +1384,7 @@
             "customers": "Samo kupci",
             "no": "Besplatno",
             "yes": "Naplativo"
-          },
-          "terms": "Pristup internetu, besplatan wifi"
+          }
         },
         "internet_access/ssid": {
           "label": "Ime Wifi mreže",
@@ -1390,7 +1532,17 @@
           "terms": "Ograničenje brzine"
         },
         "maxspeed/advisory": {
+          "label": "Preporučeno ograničenje brzine",
           "terms": "Predloženo ograničenje brzine"
+        },
+        "maxspeed/hgv": {
+          "label": "Ograničenje brzine za kamione"
+        },
+        "maxweight": {
+          "label": "Ograničenje težine"
+        },
+        "maxwidth": {
+          "label": "Ograničenje širine"
         },
         "memorial": {
           "options": {
@@ -1413,9 +1565,13 @@
         "minspeed": {
           "terms": "Najmanja brzina"
         },
+        "mobile": {
+          "label": "Mobitel"
+        },
         "mooring": {
           "options": {
             "no": "Ne",
+            "private": "Privatno",
             "yes": "Da"
           }
         },
@@ -1498,8 +1654,26 @@
           "label": "Bilješka",
           "terms": "Napomena, komentar"
         },
+        "nudism": {
+          "label": "Nudizam",
+          "options": {
+            "customary": "Uobičajen",
+            "no": "Zabranjen",
+            "obligatory": "Obavezan",
+            "yes": "Dozvoljen"
+          }
+        },
         "office": {
-          "label": "Vrsta"
+          "label": "Vrsta",
+          "options": {
+            "accountant": "Računovodstveni ured",
+            "advertising_agency": "Reklamna agencija",
+            "architect": "Arhitektonski ured",
+            "association": "Ured neprofitne udruge",
+            "company": "Ured firme",
+            "newspaper": "Novinska redakcija",
+            "travel_agent": "Putnička agencija"
+          }
         },
         "oneway": {
           "label": "Jednosmjerna",
@@ -1536,6 +1710,10 @@
           "terms": "Operater"
         },
         "organic": {
+          "label": "Organski proizvodi",
+          "options": {
+            "no": "Nema"
+          },
           "terms": "Organski proizvodi, prirodno"
         },
         "outdoor_seating": {
@@ -1577,10 +1755,24 @@
           "options": {
             "no": "Ne",
             "yes": "Da (nedefinirano)"
+          },
+          "types": {
+            "parking:left": "Lijeva strana",
+            "parking:right": "Desna strana"
           }
         },
         "payment_multi": {
           "label": "Načini plaćanja",
+          "options": {
+            "cards": "Kartica",
+            "cash": "Gotovina",
+            "cheque": "Ček",
+            "coins": "Kovanice",
+            "contactless": "Beskontaktno plaćanje",
+            "credit_cards": "Kreditna kartica",
+            "cryptocurrencies": "Kriptovaluta",
+            "debit_cards": "Debitna kartica"
+          },
           "terms": "Način plaćanja"
         },
         "phone": {
@@ -2908,9 +3100,6 @@
           "name": "Kazalište",
           "terms": "kazalište"
         },
-        "amenity/theatre/type/amphi": {
-          "name": "Amfiteatar"
-        },
         "amenity/townhall": {
           "name": "Gradska vijećnica",
           "terms": "vijećnica"
@@ -3638,7 +3827,8 @@
           "name": "Područje smirenog prometa"
         },
         "highway/milestone": {
-          "name": "Miljokaz prometnice"
+          "name": "Kilometarska oznaka prometnice",
+          "terms": "Stacionaža,miljokaz"
         },
         "highway/mini_roundabout": {
           "name": "Mali kružni tok",
@@ -3768,7 +3958,7 @@
           "name": "Početak planinarske staze"
         },
         "highway/trunk": {
-          "name": "Autoput",
+          "name": "Brza cesta",
           "terms": "Autoput, autocesta, autostrada"
         },
         "highway/trunk_link": {
@@ -4755,9 +4945,6 @@
         "piste/nordic": {
           "name": "Staza za skijaško trčanje"
         },
-        "piste/piste": {
-          "name": "Staza za zimske sportove"
-        },
         "piste/skitour": {
           "name": "Staza za turno skijanje"
         },
@@ -5023,6 +5210,10 @@
         "railway/level_crossing": {
           "name": "Prijelaz preko željezničke pruge",
           "terms": "Prijelaz preko željezničke pruge, andrijin križ"
+        },
+        "railway/milestone": {
+          "name": "Kilometarska oznaka željeznice",
+          "terms": "Stacionaža"
         },
         "railway/platform": {
           "name": "Željezničko stajalište"
@@ -5302,12 +5493,18 @@
           "name": "Frizerski salon",
           "terms": "frizer,frizerski salon,frizerski studio,brijačnica,brico,šišanje"
         },
+        "shop/hairdresser/barber": {
+          "name": "Brijač"
+        },
         "shop/hairdresser_supply": {
           "name": "Trgovina frizerskim priborom"
         },
         "shop/hardware": {
           "name": "Željezarija",
           "terms": "željezarija,željezar"
+        },
+        "shop/health_food": {
+          "name": "Trgovina zdravom hranom"
         },
         "shop/hearing_aids": {
           "name": "Prodavaonica slušnih pomagala"
@@ -5335,6 +5532,9 @@
         "shop/laundry": {
           "name": "Praonica rublja",
           "terms": "praonica rublja"
+        },
+        "shop/laundry/self_service": {
+          "name": "Samoposlužna praonica rublja"
         },
         "shop/leather": {
           "name": "Trgovina kožnom galanterijom"
@@ -5456,6 +5656,9 @@
         "shop/seafood": {
           "name": "Ribarnica"
         },
+        "shop/second_hand": {
+          "name": "Trgovina rabljenom robom"
+        },
         "shop/sewing": {
           "name": "Pozamanterija\nTrgovina priborom za šivanje"
         },
@@ -5558,6 +5761,9 @@
         "shop/weapons": {
           "name": "Trgovina za oružje"
         },
+        "shop/wholesale": {
+          "name": "Veleprodaja\nTrgovina na veliko"
+        },
         "shop/wigs": {
           "name": "Prodavaonica perika"
         },
@@ -5608,6 +5814,9 @@
           "name": "Turistička atrakcija",
           "terms": "turistička atrakcija,turistička znamenitost,atrakcija,znamenitost,turizam,turistička"
         },
+        "tourism/camp_site": {
+          "name": "Kamp\nTeren za kampiranje"
+        },
         "tourism/caravan_site": {
           "name": "Autokamp",
           "terms": "park za rekreativna vozila,park za kamp-prikolice,RV park,kamp,kamp za kamp kućice,kamp za kamp prikolice,kamp prikolica,park za kamp prikolice,kamp za kamp-prikolice,autocamp,"
@@ -5636,11 +5845,17 @@
         "tourism/information/board": {
           "name": "Informativna ploča"
         },
+        "tourism/information/board/welcome_sign": {
+          "name": "Znak dobrodošlice"
+        },
         "tourism/information/guidepost": {
           "name": "Putokaz"
         },
         "tourism/information/map": {
           "name": "Karta"
+        },
+        "tourism/information/office": {
+          "name": "Centar za posjetitelje"
         },
         "tourism/information/route_marker": {
           "name": "Markacija"
@@ -5697,6 +5912,9 @@
         "traffic_sign/maxspeed": {
           "name": "Znak ograničenja brzine"
         },
+        "traffic_sign/variable_message": {
+          "name": "Dinamička prometna signalizacija"
+        },
         "type/boundary": {
           "name": "Granica",
           "terms": "granica,međa,linija,linija razgraničenja"
@@ -5707,6 +5925,9 @@
         },
         "type/connectivity": {
           "name": "Povezivost trake"
+        },
+        "type/destination_sign": {
+          "name": "Oznaka odredišta"
         },
         "type/multipolygon": {
           "name": "Multipoligon"
@@ -5845,6 +6066,10 @@
         },
         "waterway/fuel": {
           "name": "Benzinska postaja za brodove"
+        },
+        "waterway/milestone": {
+          "name": "Miljokaz plovnog puta",
+          "terms": "Stacionaža"
         },
         "waterway/river": {
           "name": "Rijeka"

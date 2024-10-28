@@ -179,6 +179,9 @@
         "admin_level": {
           "label": "Közigazgatási szint"
         },
+        "advertising": {
+          "label": "Típus"
+        },
         "aerialway": {
           "label": "Típus"
         },
@@ -226,6 +229,10 @@
           "label": "Légkondicionálás",
           "terms": "légkondicionálás, légkondi, hűtés, klíma, klímás"
         },
+        "alt_name": {
+          "label": "Alternatív név",
+          "terms": "más név,egyéb név,további név"
+        },
         "amenity": {
           "label": "Típus"
         },
@@ -241,13 +248,15 @@
         "archaeological_site": {
           "label": "Típus",
           "options": {
+            "baths": "Fürdő",
             "city": "Történelmi város",
             "fortification": "Erődítmény",
             "megalith": "Megalit",
             "necropolis": "Nekropolisz",
             "petroglyph": "Sziklafaragás",
             "roman_villa": "Római kori villa",
-            "settlement": "Történelmi település"
+            "settlement": "Történelmi település",
+            "tumulus": "Halomsír"
           }
         },
         "architect": {
@@ -256,6 +265,14 @@
         },
         "area/highway": {
           "label": "Típus"
+        },
+        "armrest": {
+          "label": "Karfa",
+          "options": {
+            "no": "Nincs karfa",
+            "undefined": "Ismeretlen",
+            "yes": "Egy vagy több karfa"
+          }
         },
         "artist": {
           "label": "Művész"
@@ -310,9 +327,20 @@
           "options": {
             "big_wheel": "Óriáskerék",
             "bumper_car": "Dodzsem",
+            "bungee_jumping": "Bungee jumping",
+            "carousel": "Körhinta",
+            "dark_ride": "Szellemvasút",
+            "drop_tower": "Ejtőtorony",
+            "kiddie_ride": "Pénzbedobós, felülős gyermekjáték",
+            "log_flume": "Vízi hullámvasút",
             "maze": "Labirintus",
+            "pirate_ship": "Kalózhajó",
+            "river_rafting": "Vadvízi evezés",
             "roller_coaster": "Hullámvasút",
-            "train": "Turistavonat"
+            "summer_toboggan": "Nyári bob",
+            "swing_carousel": "Lánckörhinta",
+            "train": "Turistavonat",
+            "water_slide": "Vízi csúszda"
           }
         },
         "automated": {
@@ -344,15 +372,28 @@
         "barrier": {
           "label": "Típus",
           "options": {
+            "block": "Tömb",
+            "bollard": "Terelőoszlop",
+            "cattle_grid": "Szarvasmarharács",
             "chain": "Lánc",
             "city_wall": "Városfal",
+            "cycle_barrier": "Kerékpáros akadály",
+            "ditch": "Árok",
             "entrance": "Bejárat",
             "fence": "Kerítés",
             "gate": "Kapu",
+            "guard_rail": "Szalagkorlát",
+            "hedge": "Sövény",
             "height_restrictor": "Magasságkorlátozó",
+            "jersey_barrier": "Előregyártott terelőfal",
+            "kerb": "Járdaszegély",
             "kissing_gate": "Lengőkapu",
             "lift_gate": "Sorompó",
+            "retaining_wall": "Támfal",
+            "stile": "Kerítésátjáró",
             "swing_gate": "Forgó sorompó",
+            "toll_booth": "Útdíjfizető-kapu",
+            "turnstile": "Beléptető kapu",
             "wall": "Fal"
           }
         },
@@ -381,7 +422,9 @@
         "bath/type": {
           "label": "Fürdőtípus",
           "options": {
+            "hot_spring": "Hőforrás",
             "lake": "Tó",
+            "onsen": "Onszen",
             "thermal": "Termálfürdő"
           }
         },
@@ -406,7 +449,9 @@
             "building": "Épületben",
             "handlebar_holder": "Kormánytartó",
             "lockers": "Különálló szekrények",
-            "shed": "Zárt fészer"
+            "shed": "Zárt fészer",
+            "stands": "Korlát (a vázat támasztja)",
+            "wall_loops": "Kerékbefogó hurok (csak a kereket támasztja)"
           }
         },
         "bicycle_road": {
@@ -454,11 +499,15 @@
         "bollard": {
           "label": "Típus",
           "options": {
+            "fixed": "Rögzített akadály",
             "flexible": "Rugalmas akadály",
             "foldable": "Összehajtható akadály",
             "removable": "Elmozdítható akadály",
             "rising": "Felemelhető akadály"
           }
+        },
+        "books": {
+          "label": "Könyvfajták"
         },
         "booth": {
           "label": "Fülke"
@@ -480,22 +529,39 @@
           "label": "Márka",
           "terms": "márka, márkanév, brand"
         },
+        "brewery": {
+          "label": "Árusított sörmárkák"
+        },
         "bridge": {
           "label": "Típus",
           "placeholder": "Alapértelmezett"
+        },
+        "bridge/ref": {
+          "label": "Híd száma"
         },
         "bridge/support": {
           "label": "Típus"
         },
         "bridge_combo": {
-          "label": "Típus"
+          "label": "Típus",
+          "options": {
+            "aqueduct": "Vízvezeték",
+            "cantilever": "Konzolos híd",
+            "covered": "Fedett híd",
+            "movable": "Mozgatható híd",
+            "viaduct": "Viadukt (völgyhíd)"
+          }
         },
         "building": {
           "label": "Épület",
           "options": {
+            "allotment_house": "Hétvégi ház",
+            "apartments": "Társasház",
             "barn": "Pajta",
             "boathouse": "Csónakház",
             "bungalow": "Bungaló",
+            "cabin": "Kis faház",
+            "carport": "Garázstető (oldalról nyitott)",
             "cathedral": "Székesegyház",
             "chapel": "Kápolnaépület",
             "church": "Templomépület",
@@ -517,6 +583,7 @@
             "hangar": "Hangárépület",
             "hospital": "Kórházépület",
             "hotel": "Szállodaépület",
+            "house": "Ház",
             "houseboat": "Lakóhajó",
             "hut": "Kunyhó",
             "industrial": "Ipari épület",
@@ -533,17 +600,24 @@
             "ruins": "Épület romjai",
             "school": "Iskolaépület",
             "semidetached_house": "Ikerház",
+            "service": "Gépészeti épület",
+            "shed": "Fészer",
             "stable": "Lóistálló",
             "stadium": "Stadionépület",
             "sty": "Disznóól",
             "synagogue": "Zsinagóga",
             "temple": "Templomépület",
+            "terrace": "Sorház",
             "train_station": "Vasútállomás-épület",
             "transportation": "Közlekedési épület",
             "university": "Egyetemi épület",
             "warehouse": "Raktár"
           },
           "terms": "építmény, ház, épület"
+        },
+        "building/colour": {
+          "label": "Homlokzat színe",
+          "terms": "fal színe,falszín,ház színe"
         },
         "building/flats": {
           "label": "Lakások, egységek"
@@ -602,10 +676,34 @@
             "panning": "Pásztázó"
           }
         },
+        "camp_site": {
+          "label": "Típus",
+          "options": {
+            "basic": {
+              "description": "Csak egy hely, ahol sátrat verhetsz vagy leparkolhatsz egy járművel",
+              "title": "Alapvető (csak sátor/kocsihely)"
+            },
+            "deluxe": {
+              "description": "Minden szolgáltatás és további kényelmi szolgáltatások, például mosoda, úszómedence vagy hasonló rekreációs lehetőségek",
+              "title": "Deluxe (mosoda, medence, stb.)"
+            },
+            "serviced": {
+              "description": "WC, víz, zuhanyzó és villany biztosított",
+              "title": "Szolgáltatásokkal (zuhanyzás és villany biztosított)"
+            },
+            "standard": {
+              "description": "WC és víz biztosított vagy elérhető a közelben",
+              "title": "Standard (WC és víz biztosított)"
+            }
+          }
+        },
         "capacity": {
           "label": "Kapacitás",
           "placeholder": "50, 100, 200…",
           "terms": "kapacitás, képesség, méret, befogadóképesség"
+        },
+        "capacity/caravans": {
+          "label": "Kapacitás (lakóautó / lakókocsi)"
         },
         "capacity/disabled_parking": {
           "label": "Parkolóhely mozgáskorlátozottaknak"
@@ -621,6 +719,10 @@
         },
         "capacity_volume": {
           "label": "Kapacitás (köbméter)"
+        },
+        "caravans": {
+          "label": "Lakóautó / lakókocsi",
+          "terms": "lakóautó,lakókocsi"
         },
         "castle_type": {
           "label": "Típus",
@@ -685,6 +787,7 @@
           "label": "Gyűjtött tárgy",
           "options": {
             "coins": "Pénzérme",
+            "comics": "Képregény",
             "stamps": "Bélyeg"
           }
         },
@@ -699,6 +802,18 @@
         "communication_multi": {
           "label": "Kommunikációtípusok",
           "terms": "kommunikációs módok"
+        },
+        "community_centre": {
+          "label": "Típus",
+          "options": {
+            "club_home": "Klubhelyiség",
+            "community_hall": "Közösségi ház",
+            "cultural_centre": "Kulturális központ",
+            "family_centre": "Családközpont",
+            "parish_hall": "Egyházközségi terem",
+            "village_hall": "Faluház",
+            "youth_centre": "Ifjúsági központ"
+          }
         },
         "connectivity": {
           "label": "Sávok kapcsolódása"
@@ -715,6 +830,11 @@
         },
         "consulting": {
           "label": "Szakterület"
+        },
+        "contact/facebook": {
+          "label": "Facebook felhasználónév vagy URL",
+          "placeholder": "https://www.facebook.com/VallalkozasNeve",
+          "terms": "facebook oldal"
         },
         "contact/webcam": {
           "label": "Webkamera URL",
@@ -733,6 +853,9 @@
         },
         "conveying_escalator": {
           "label": "Mozgólépcső vagy -járda"
+        },
+        "count": {
+          "label": "Elemek száma"
         },
         "country": {
           "label": "Ország"
@@ -768,7 +891,7 @@
             "caterer": "Partyszerviz",
             "chimney_sweeper": "Kéményseprő",
             "cleaning": "Takarító",
-            "clockmaker": "Órás",
+            "clockmaker": "Órás (falióra)",
             "confectionery": "Édességkészítő",
             "distillery": "Szeszfőzde",
             "electrician": "Villanyszerelő",
@@ -778,16 +901,21 @@
             "grinding_mill": "Malom, őrlő- vagy darálóüzem",
             "handicraft": "Kézműves",
             "hvac": "Fűtés-, szellőztetés- és légkondicionálás-szerelő",
+            "insulation": "Épület-hőszigetelő",
             "jeweller": "Ékszerész",
             "joiner": "Asztalos",
             "key_cutter": "Kulcsmásoló",
             "locksmith": "Lakatos",
+            "metal_construction": "Fémiparos",
             "oil_mill": "Olajütő",
             "painter": "Szobafestő",
             "parquet_layer": "Parkettás",
             "photographer": "Fényképész",
             "photographic_laboratory": "Fotólabor",
+            "plasterer": "Kőműves",
+            "plumber": "Vízvezeték-szerelő",
             "pottery": "Fazekas",
+            "rigger": "Vitorlásfelszerelés-készítő",
             "roofer": "Tetőfedő",
             "saddler": "Nyerges",
             "sailmaker": "Vitorlavarró",
@@ -800,12 +928,14 @@
             "tiler": "Burkoló",
             "tinsmith": "Bádogos",
             "upholsterer": "Kárpitos",
+            "watchmaker": "Órás",
             "winery": "Borászat"
           }
         },
         "crane/type": {
           "label": "Daru típusa",
           "options": {
+            "floor-mounted_crane": "Talajhoz rögzített daru",
             "gantry_crane": "Bakdaru",
             "portal_crane": "Portáldaru",
             "tower_crane": "Toronydaru",
@@ -844,7 +974,9 @@
         "crossing": {
           "label": "Típus",
           "options": {
-            "traffic_signals": "Lámpás gyalogosátkelő"
+            "traffic_signals": "Lámpás gyalogosátkelő",
+            "uncontrolled": "Csak útburkolati jelek",
+            "unmarked": "Nincsenek útburkolati jelek és jelzőlámpa"
           }
         },
         "crossing/barrier": {
@@ -869,7 +1001,21 @@
         "crossing/markings": {
           "label": "Átkelőjelzések",
           "options": {
-            "no": "Jelöletlen"
+            "dashes": "Párhuzamos szaggatott vonalak",
+            "dots": "Párhuzamos pontozott vonalak",
+            "ladder": "Létra hosszanti sávokkal",
+            "ladder:paired": "Létra dupla hosszanti sávokkal",
+            "ladder:skewed": "Létra átlós sávokkal",
+            "lines": "Párhuzamos vonalak",
+            "lines:paired": "Dupla párhuzamos vonalak",
+            "no": "Jelöletlen",
+            "pictograms": "Festett piktogramok",
+            "surface": "Csak felületi megkülönböztetés",
+            "yes": "Valahogy jelölt",
+            "zebra": "Zebra",
+            "zebra:bicolour": "Váltakozó színű zebra",
+            "zebra:double": "Zebra két sávban",
+            "zebra:paired": "Zebra csíkok párban"
           }
         },
         "crossing_raised": {
@@ -882,18 +1028,38 @@
         "cuisine": {
           "label": "Konyha",
           "options": {
+            "african": "afrikai",
             "american": "amerikai",
+            "arab": "arab",
+            "argentinian": "argentin",
             "asian": "ázsiai",
+            "bagel": "bagel",
+            "balkan": "balkáni",
+            "barbecue": "barbecue",
+            "bavarian": "bajor",
+            "beef_bowl": "gyūdon",
+            "bistro": "bisztró",
+            "brazilian": "brazil",
+            "breakfast": "reggeli",
+            "brunch": "villásreggeli",
             "bubble_tea": "bubble tea",
             "burger": "hamburger",
             "cake": "sütemény",
+            "caribbean": "karibi",
             "chicken": "csirke",
             "chinese": "kínai",
             "coffee_shop": "coffee shop",
+            "crepe": "palacsinta",
+            "curry": "curry",
             "dessert": "desszert",
             "donut": "fánk",
+            "european": "európai",
+            "filipino": "fülöp-szigeteki",
+            "fine_dining": "fine dining",
             "fish": "hal",
+            "fish_and_chips": "fish & chips",
             "french": "francia",
+            "fries": "sült krumpli",
             "german": "német",
             "greek": "görög",
             "hot_dog": "hot dog",
@@ -1733,13 +1899,11 @@
           "terms": "internet, wifi, wlan, web, net, hálózat"
         },
         "internet_access/fee": {
-          "label": "Internethozzáférés",
           "options": {
             "customers": "Csak ügyfeleknek",
             "no": "Ingyenes",
             "yes": "Fizetős"
-          },
-          "terms": "internet, hálózat, net, wifi"
+          }
         },
         "internet_access/ssid": {
           "label": "Wifi-hálózat neve",
@@ -4301,10 +4465,6 @@
           "name": "Színház",
           "terms": "amfiteátrum, játékszín, teátrum, bábszínház, operaház"
         },
-        "amenity/theatre/type/amphi": {
-          "name": "Amfiteátrum",
-          "terms": "aréna"
-        },
         "amenity/ticket_validator": {
           "name": "Jegyellenőrző\nBelépőkapu",
           "terms": "beléptető"
@@ -4428,6 +4588,10 @@
         "amenity/waste/dog_excrement": {
           "name": "Kutyaürülék-tartály",
           "terms": "ürülék, kutya, kuka, kutyaszar"
+        },
+        "amenity/waste_basket": {
+          "name": "Szemetes",
+          "terms": "szemeteskosár, kuka, szemétgyűjtő, hulladékgyűjtő"
         },
         "amenity/waste_disposal": {
           "name": "Szemeteskonténer",
@@ -5127,7 +5291,7 @@
           "terms": "kárpitozás, bútor"
         },
         "craft/watchmaker": {
-          "name": "Órás (karóra)",
+          "name": "Órás",
           "terms": "Órakészítő és javító műhely"
         },
         "craft/window_construction": {
@@ -6993,9 +7157,6 @@
         },
         "piste/nordic": {
           "name": "Sífutóút"
-        },
-        "piste/piste": {
-          "name": "Téli sport ösvény / Sípálya"
         },
         "piste/skitour": {
           "name": "Túrasí ösvény"

@@ -864,7 +864,6 @@
           }
         },
         "internet_access/fee": {
-          "label": "دەستڕاگەیشتنی ئینتەرنێت",
           "options": {
             "customers": "تەنیا کڕیاران",
             "no": "بەخۆڕاییە",

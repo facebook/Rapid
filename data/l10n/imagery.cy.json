@@ -225,6 +225,9 @@
       "Riksantikvariambetet-ruins": {
         "name": "Riksantikvarieämbetet - Adfeilion"
       },
+      "Siemianowice_Slaskie-aerial_image": {
+        "name": "Siemianowice Śląskie: Orthophotomap (delwedd o'r awyr)"
+      },
       "Siemianowice_Slaskie-buildings": {
         "name": "Siemianowice Śląskie: Adeiladau"
       },
@@ -248,6 +251,31 @@
       },
       "UrbisAdmFRNL": {
         "name": "UrbisAdm FR / NL"
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, Cyfranwyr OpenStreetMap, CC by-SA 3.0"
+        }
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, Cyfranwyr OpenStreetMap, CC by-SA 3.0"
+        }
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, Cyfranwyr OpenStreetMap, CC by-SA 3.0"
+        }
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, Cyfranwyr OpenStreetMap, CC by-SA 3.0"
+        }
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, Cyfranwyr OpenStreetMap, CC by-SA 3.0"
+        }
       },
       "Zabrze-2011": {
         "name": "Zabrze: Orthophotomap 2011 (delwedd o'r awyr)"
@@ -283,6 +311,9 @@
         },
         "name": "OpenPT Map (troshaen)"
       },
+      "openrailwaymap-signalling": {
+        "name": "OpenRailwayMap Signalau"
+      },
       "osm-gps": {
         "attribution": {
           "text": "© Cyfranwyr OpenStreetMap"
@@ -294,6 +325,9 @@
           "text": "© Cyfranwyr OpenStreetMap, CC-BY-SA"
         },
         "name": "OpenStreetMap (Almaenaidd)"
+      },
+      "osmse-generalstab": {
+        "description": "Sgan \"Generalstabskartan\" ca. 1859–1979"
       },
       "poznan-ortofotomapa2014": {
         "name": "Poznań: Orthophotomap 2014 (delwedd o'r awyr)"
@@ -367,7 +401,11 @@
       "tf-outdoors": {
         "attribution": {
           "text": "Mapiau © Thunderforest, Data © Cyfranwyr OpenStreetMap"
-        }
+        },
+        "name": "Thunderforest Awyr Agored"
+      },
+      "trafikverket-baninfo": {
+        "name": "Trafikverket Rhwydwaith Rheilffordd"
       },
       "wroclaw-orto2015": {
         "name": "Wrocław: Orthophotomap 2015 (delwedd o'r awyr)"

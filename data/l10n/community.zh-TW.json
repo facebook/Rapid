@@ -647,9 +647,6 @@
     "ireland-matrix": {
       "description": "OSM 愛爾蘭 IRC 頻道的 Matrix 閘口：{url}"
     },
-    "ireland-meetup": {
-      "description": "所有對開放街圖有興趣的人的聚會。"
-    },
     "is-chapter": {
       "description": "我們協助冰島的開放街圖成長茁壯並改善它。"
     },

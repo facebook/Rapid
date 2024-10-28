@@ -1069,7 +1069,7 @@
             "caribbean": "Caribeña",
             "chicken": "Pollo",
             "chinese": "China",
-            "coffee_shop": "Cafetería",
+            "coffee_shop": "Cafetería especializada",
             "dessert": "Postre",
             "diner": "Cena",
             "donut": "Dona / Rosquilla",
@@ -2048,13 +2048,13 @@
           "terms": "internet, wifi, wlan, local, público, privado, red, Wi-Fi, fibra, router, antena, cable coaxial, lan, ISP, conexión, protocolo, http, ftp, ssh, TCP, IP, enrutamiento, dns, dhcp, mac, dirección, 4G, 5G"
         },
         "internet_access/fee": {
-          "label": "Acceso a Internet",
+          "label": "Tarifa de acceso a Internet",
           "options": {
             "customers": "Solo clientes",
             "no": "Gratis",
             "yes": "Pago"
           },
-          "terms": "tarifa wifi, acceso, punto de acceso, conexión, wifi, wi-fi, acceso gratuito, precio wifi"
+          "terms": "Tarifa de acceso a Internet, costo de acceso a Internet, cargo por conexión a Internet, cuota de acceso a Internet"
         },
         "internet_access/ssid": {
           "label": "Nombre de la red wifi",
@@ -3917,7 +3917,7 @@
           "label": "Hasta"
         },
         "toilets": {
-          "label": "Baños",
+          "label": "Baños/Aseos/Servicios",
           "terms": "baño, baños, servicio, servicios, aseo, aseos, lavabo, tocador, inodoro, taza, letrina, retrete, toilette"
         },
         "toilets/disposal": {
@@ -5520,7 +5520,7 @@
         },
         "amenity/theatre/type/amphi": {
           "name": "Anfiteatro",
-          "terms": "aire libre, al aire libre, griego, ampi, anfi, anfiteatro"
+          "terms": "Anfiteatro, teatro al aire libre, arena, auditorio abierto, recinto exterior, espacio escénico al aire libre"
         },
         "amenity/ticket_validator": {
           "name": "Validador de boletos",
@@ -8913,8 +8913,7 @@
           "terms": "esquí de fondo, esqui de fondo, esquí nórdico, esqui nordico, pista, esquí, esqui, xc"
         },
         "piste/piste": {
-          "name": "Pista / Sendero de deportes de nieve",
-          "terms": "esquí, esqui, nórdico, nordico, crosscountry, de fondo, cuesta abajo, alpino, snowboard, skitour, esquí de travesía, trineo, luge, trineo, trineo, esquí de travesía, husky, caballo, senderismo de invierno, raquetas de nieve, raquetas de nieve, hielo, patinaje"
+          "name": "Sendero / Pista de deportes de nieve (tipo no especificado)"
         },
         "piste/ski_jump": {
           "name": "Pista de salto en esquí",
@@ -9910,7 +9909,7 @@
           "terms": "regalo, obsequio, presentes, recuerdo, souvenir, regaleria, regionales"
         },
         "shop/greengrocer": {
-          "name": "Verdulería / Frutería",
+          "name": "Tienda de frutas y verduras",
           "terms": "hortaliza, verdura, fruta, verdulería, frutería, legumbre, vegetal, verdulero, frutero"
         },
         "shop/hairdresser": {
@@ -10177,8 +10176,8 @@
           "terms": "deporte, deportivo"
         },
         "shop/stationery": {
-          "name": "Artículos de papelería y oficina",
-          "terms": "papel, papelería, escritorio, oficina, artículos de papelería, material de papelería, material de escritorio, papel de escribir, artículos de oficina, librería, libreria, artículos escolares, papelera"
+          "name": "Papelería/Librería",
+          "terms": "papel, papelería, escritorio, oficina, artículos de papelería, material de papelería, material de escritorio, papel de escribir, artículos de oficina, librería, libreria, artículos escolares, papelera, artículos de papelería y oficina"
         },
         "shop/storage_rental": {
           "name": "Alquiler de espacios para almacenaje",

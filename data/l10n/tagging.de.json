@@ -2037,13 +2037,13 @@
           "terms": "Internetzugang, WIFI, WLAN, WiFi, Internet"
         },
         "internet_access/fee": {
-          "label": "Internetzugangskosten",
+          "label": "Internetzugangsgebühr",
           "options": {
             "customers": "Nur für Kunden",
             "no": "Gratis",
             "yes": "Gebühr"
           },
-          "terms": "Internetkosten, Zugangskosten, Internetgebühr, Internetpreis"
+          "terms": "Internetzugangskosten, Internetkosten, Zugangskosten, Internetgebühr, Internetpreis"
         },
         "internet_access/ssid": {
           "label": "Wifi Netzwerkname",
@@ -5470,8 +5470,7 @@
           "terms": "Theater,Aufführung,Schauspiel,Musical"
         },
         "amenity/theatre/type/amphi": {
-          "name": "Amphitheater",
-          "terms": "Amphitheater"
+          "terms": "Amphitheater, Naturtheater, Rundbau"
         },
         "amenity/ticket_validator": {
           "name": "Entwerter",
@@ -6771,7 +6770,7 @@
           "terms": "Überweg, Übergang, Überquerung, Querung, Fußgängerüberweg, Fußgängerübergang, Fußgängerüberquerung, Fußgängerquerung"
         },
         "highway/crossing/traffic_signals": {
-          "name": "Kreuzung mit Fußgängerampel",
+          "name": "Überweg mit Ampelregelung",
           "terms": "Fußgängerampel, Fußgängerübergang, Radübergang"
         },
         "highway/crossing/uncontrolled": {
@@ -8846,8 +8845,7 @@
           "terms": "Langlauf, Loipe, Biathlon, "
         },
         "piste/piste": {
-          "name": "Wintersport Piste / Strecke",
-          "terms": "Wintersport, Winterwandern, Schneesport, Alpin, Skisport, Skiwanderung, Skiwanderweg, Piste, Loipe, Abfahrt, Schlitten, Schlittenhund, Eislauf, Eisbahn, Schneeschuh"
+          "name": "Schneesportstrecke / Piste (nicht spezifizierter Typ)"
         },
         "piste/ski_jump": {
           "name": "Skisprungpiste",

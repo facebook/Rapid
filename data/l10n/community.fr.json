@@ -139,66 +139,51 @@
       "openstreetmapzambia": "OpenStreetMap Zambie",
       "openstreetmapzimbabwe": "OpenStreetMap Zimbabwé",
       "osmmainz": "OSM Mayence",
+      "swissopenstreetmap": "OpenStreetMap Suisse",
       "youthmappersasu": "YouthMappers Université de l’État d'Arizona"
     },
     "_defaults": {
       "aparat": {
         "name": "{community} sur Aparat",
-        "description": "Abonnez-vous à notre chaîne Aparat",
-        "url": "https://aparat.com/{compte}"
+        "description": "Abonnez-vous à notre chaîne Aparat"
       },
       "discord": {
-        "name": "{communauté} sur Discord",
-        "description": "Discutez avec d’autres cartographes sur Discord",
-        "url": "https://discord.gg/{compte}"
+        "name": "{community} sur Discord",
+        "description": "Discutez avec d’autres cartographes sur Discord"
       },
       "discourse": {
         "name": "Forum de la communauté {community}",
-        "description": "Le forum officiel de {community}",
-        "url": "https://community.openstreetmap.org/c/communities/{compte}"
+        "description": "Le forum officiel de {community}"
       },
       "facebook": {
         "name": "{community} sur Facebook",
-        "description": "Rejoignez notre communauté sur Facebook",
-        "url": "https://www.facebook.com/{compte}"
-      },
-      "fediverse": {
-        "name": "{communauté}"
+        "description": "Rejoignez notre communauté sur Facebook"
       },
       "forum": {
         "name": "Forum de {community}",
         "description": "Le forum officiel de {community}"
       },
       "github": {
-        "name": "GitHub de {community}",
-        "url": "https://github.com/{compte}"
+        "name": "GitHub de {community}"
       },
       "gitlab": {
-        "name": "GitLab de {community}",
-        "url": "https://gitlab.com/{compte}"
-      },
-      "group": {
-        "name": "{communauté}"
+        "name": "GitLab de {community}"
       },
       "instagram": {
-        "name": "{communauté} sur Instagram",
-        "description": "Suivez-nous sur Instagram",
-        "url": "https://instagram.com/{compte}"
+        "name": "{community} sur Instagram",
+        "description": "Suivez-nous sur Instagram"
       },
       "irc": {
         "name": "{community} sur IRC",
-        "description": "Rejoignez #{account} sur irc.oftc.net (port 6667 sans SSL ou 6697 avec SSL)",
-        "url": "https://webchat.oftc.net/?channels={compte}"
+        "description": "Rejoignez #{account} sur irc.oftc.net (port 6667 sans SSL ou 6697 avec SSL)"
       },
       "linkedin": {
         "name": "{community} sur LinkedIn",
-        "description": "Rejoignez notre communauté sur LinkedIn",
-        "url": "https://www.linkedin.com/company/{compte}"
+        "description": "Rejoignez notre communauté sur LinkedIn"
       },
       "mailinglist": {
         "name": "Liste de diffusion {account}",
-        "description": "La liste de diffusion officielle de {community}",
-        "url": "https://lists.openstreetmap.org/listinfo/{compte}"
+        "description": "La liste de diffusion officielle de {community}"
       },
       "mastodon": {
         "name": "{community} sur Mastodon",
@@ -206,25 +191,16 @@
       },
       "matrix": {
         "name": "Chat Matrix de {community}",
-        "description": "Rejoignez notre communauté sur Matrix Chat",
-        "url": "https://matrix.to/#/{compte}:matrix.org"
+        "description": "Rejoignez notre communauté sur Matrix Chat"
       },
       "meetup": {
-        "name": "Meetup de {community}",
-        "url": "https://www.meetup.com/{compte}"
+        "name": "Meetup de {community}"
       },
       "newsletter": {
         "name": "Lettre d'information de [community]"
       },
-      "osm": {
-        "name": "{communauté}"
-      },
-      "osm-lc": {
-        "name": "{communauté}"
-      },
       "reddit": {
-        "name": "{community} sur Reddit",
-        "url": "https://www.reddit.com/r/{compte}"
+        "name": "{community} sur Reddit"
       },
       "signal": {
         "name": "Signal {community}",
@@ -235,43 +211,33 @@
       },
       "telegram": {
         "name": "Telegram de {community}",
-        "description": "Rejoignez notre communauté sur Telegram",
-        "url": "https://t.me/{compte}"
+        "description": "Rejoignez notre communauté sur Telegram"
       },
       "threads": {
         "name": "{community} sur Threads",
-        "description": "Suivez-nous sur Threads",
-        "url": "https://threads.net/@{compte}"
+        "description": "Suivez-nous sur Threads"
       },
       "tiktok": {
-        "name": "{communauté} sur TikTok",
-        "description": "Suivez-nous sur TikTok",
-        "url": "https://tiktok.com/@{compte}"
+        "name": "{community} sur TikTok",
+        "description": "Suivez-nous sur TikTok"
       },
       "twitter": {
         "name": "{community} sur 𝕏",
-        "description": "Suivez-nous sur 𝕏",
-        "url": "https://twitter.com/{compte}"
-      },
-      "website": {
-        "name": "{communauté}"
+        "description": "Suivez-nous sur 𝕏"
       },
       "wiki": {
-        "name": "Projet wiki de {community}",
-        "url": "https://wiki.openstreetmap.org/wiki/{compte}"
+        "name": "Projet wiki de {community}"
       },
       "x": {
         "name": "{community} sur 𝕏",
-        "description": "Suivez-nous sur 𝕏",
-        "url": "https://twitter.com/{compte}"
+        "description": "Suivez-nous sur 𝕏"
       },
       "xmpp": {
         "name": "X.M.P.P. de {community}"
       },
       "youtube": {
         "name": "{community} sur YouTube",
-        "description": "Abonnez-vous à notre chaîne YouTube",
-        "url": "https://www.youtube.com/channel/{compte}"
+        "description": "Abonnez-vous à notre chaîne YouTube"
       },
       "zulip": {
         "name": "Zulip de {community}",
@@ -615,9 +581,6 @@
     "ireland-matrix": {
       "description": "Un portail Matrix pour la chaîne IRC d'OSM Irlande : {url}"
     },
-    "ireland-meetup": {
-      "description": "Rencontres pour celles et ceux qui sont intéressé·es par OpenStreetMap"
-    },
     "is-chapter": {
       "description": "Nous aidons OpenStreetMap à croître et à s'améliorer en Islande."
     },
@@ -709,6 +672,9 @@
     "MapColabora-twitter": {
       "name": "Mapeado Colaborativo / Geoinquietos Saragosse",
       "description": "Compte Twitter de Mapeado Colaborativo / Geoinquietos Saragosse"
+    },
+    "MapLYH": {
+      "description": "Groupe MapLYH"
     },
     "mappa-mercia-group": {
       "name": "Groupe local Mappa Mercia",
@@ -1172,6 +1138,9 @@
     },
     "vn-mailinglist": {
       "description": "Liste de diffusion d'OpenStreetMap au Vietnam ou en vietnamien"
+    },
+    "vn-wiki": {
+      "description": "Page Wiki de {community}"
     },
     "YerCizenler-TR": {
       "description": "Association Yer Çizenler Mapping for Everyone",

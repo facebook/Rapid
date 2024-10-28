@@ -369,7 +369,6 @@
         },
         "building": {
           "options": {
-            "allotment_house": "Casa de horta urbana/comunitária",
             "barn": "Celeiro",
             "boathouse": "Guarderia para embarcações",
             "bungalow": "Bangalô",
@@ -1199,7 +1198,6 @@
           }
         },
         "internet_access/fee": {
-          "label": "Acesso à internet",
           "options": {
             "customers": "Somente clientes",
             "no": "Grátis"
@@ -1784,7 +1782,6 @@
             "EVIIIR": "EVIIIR (Eduardo VIII)",
             "EVIIR": "EVIIR (Eduardo VII)",
             "VR": "VR (Vitória)",
-            "no": "Não",
             "scottish_crown": "Coroa da Escócia"
           }
         },
@@ -3220,9 +3217,6 @@
         "amenity/theatre": {
           "terms": "auditório, show, eventos, peça, musical"
         },
-        "amenity/theatre/type/amphi": {
-          "terms": "Anfiteatro"
-        },
         "amenity/ticket_validator": {
           "name": "Máquina de validação de bilhetes",
           "terms": "ticket, bilhete, ingresso, validação de ingresso, catraca, entrada"
@@ -4295,8 +4289,8 @@
           "name": "Ponto de acesso de emergência"
         },
         "highway/emergency_bay": {
-          "name": "Local de parada de emergência",
-          "terms": "emergency stopping place, berma para paragem de emergência, faixa para paragem de emergência, paragem de emergência, local para paragem de emergência, local de paragem de emergência, acostamento de parada de emergência, acostamento para parada de emergência"
+          "name": "Área de refúgio",
+          "terms": "local de parada de emergência,emergency stopping place, berma para paragem de emergência, faixa para paragem de emergência, paragem de emergência, local para paragem de emergência, local de paragem de emergência, acostamento de parada de emergência, acostamento para parada de emergência"
         },
         "highway/footway": {
           "name": "Caminho de pedestre",
@@ -5932,10 +5926,6 @@
           "name": "Trilha de esqui de fundo",
           "terms": "Trilha de esqui de fundo"
         },
-        "piste/piste": {
-          "name": "Trilha para esportes de neve / pista",
-          "terms": "Trilha para esportes de neve / pista"
-        },
         "piste/skitour": {
           "name": "Trilha de turismo de esqui",
           "terms": "Trilhas de inverno"
@@ -6358,7 +6348,7 @@
           "terms": "Área de parada de trânsito"
         },
         "public_transport/stop_position": {
-          "name": "Local de Parada de Transporte",
+          "name": "Local de parada de transporte",
           "terms": "Local de parada de trânsito"
         },
         "public_transport/stop_position_aerialway": {
@@ -6374,7 +6364,7 @@
           "terms": "Localização de parada de balsa"
         },
         "public_transport/stop_position_light_rail": {
-          "name": "Local de parada do VLT",
+          "name": "Local de parada de VLT",
           "terms": "Local de parada do trilho leve"
         },
         "public_transport/stop_position_monorail": {
@@ -6395,7 +6385,7 @@
         },
         "public_transport/stop_position_trolleybus": {
           "name": "Trólebus parando local",
-          "terms": "Localização de parada do Trólebus"
+          "terms": "Localização de parada de trólebus"
         },
         "railway": {
           "name": "Elemento ferroviário"

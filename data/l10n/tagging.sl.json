@@ -1718,9 +1718,6 @@
           "name": "Gledališče",
           "terms": "gledališka dvorana"
         },
-        "amenity/theatre/type/amphi": {
-          "name": "Amfiteater"
-        },
         "amenity/townhall": {
           "name": "Mestna hiša",
           "terms": "magistrat,rotovž"

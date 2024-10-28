@@ -798,6 +798,15 @@
         "communication_multi": {
           "label": "Yhteystavat"
         },
+        "community_centre": {
+          "label": "Tyyppi",
+          "options": {
+            "cultural_centre": "Kulttuurikeskus",
+            "parish_hall": "Seurakuntatalo",
+            "village_hall": "Kyläkeskus",
+            "youth_centre": "Nuorisokeskus"
+          }
+        },
         "connectivity": {
           "label": "Yhdistettävyys"
         },
@@ -868,13 +877,13 @@
             "bookbinder": "Kirjasitomo",
             "brewery": "Olutpanimo",
             "builder": "Rakentaja",
-            "carpenter": "Puuseppä",
+            "carpenter": "Puusepänliike",
             "carpet_layer": "Mattoasennus",
             "caterer": "Pitopalvelu",
             "chimney_sweeper": "Nuohooja",
             "cleaning": "Siivouspalvelu",
             "clockmaker": "Kelloseppä",
-            "confectionery": "Makeiskonditoria\nkonditoria",
+            "confectionery": "Makeiskonditoria",
             "distillery": "Tislaamo",
             "dressmaker": "Ompelija",
             "electrician": "Sähköasentaja",
@@ -882,8 +891,9 @@
             "floorer": "Lattia-asentaja",
             "gardener": "Puutarhuri",
             "glaziery": "Lasittaja",
+            "grinding_mill": "Jauhomylly",
             "handicraft": "Käsityöt",
-            "hvac": "lämmitys-, ilmanvaihto- ja ilmastointi",
+            "hvac": "Lämmitys-, ilmanvaihto- ja ilmastointi",
             "insulation": "Sähköeristäjä",
             "jeweller": "Kultaseppä",
             "joiner": "Puuseppä",
@@ -897,17 +907,21 @@
             "photographic_laboratory": "Valokuvakehittämö",
             "plasterer": "Rappaaja",
             "plumber": "Putkimies",
+            "pottery": "Keramiikantekijä",
             "roofer": "Katontekijä",
             "saddler": "Satulaseppä",
             "sailmaker": "Purjeentekijä",
-            "sawmill": "Saha\nSahalaitos",
+            "sawmill": "Saha",
+            "scaffolder": "Telinerakentaja",
             "sculptor": "Kuvanveistäjä",
             "shoemaker": "Suutari",
             "signmaker": "Kylttivalmistaja",
+            "stonemason": "Kivenhakkaaja",
             "tailor": "Räätäli",
+            "tiler": "Laatoittaja",
             "tinsmith": "Tinaseppä",
             "upholsterer": "Verhoilija",
-            "watchmaker": "Kelloseppä",
+            "watchmaker": "Rannekelloseppä",
             "window_construction": "Ikkunanvalmistaja",
             "winery": "Viinitila"
           }
@@ -1014,6 +1028,8 @@
             "argentinian": "argentiinalainen",
             "asian": "aasialainen",
             "balkan": "balkanilainen",
+            "barbecue": "Grilliruoka",
+            "bavarian": "Bavarialainen",
             "brazilian": "Brasilialainen",
             "breakfast": "Aamupala",
             "brunch": "brunssi",
@@ -1080,6 +1096,7 @@
             "turkish": "turkkilainen",
             "ukrainian": "ukrainalainen",
             "vietnamese": "vietnamilainen",
+            "western": "Länsimainen",
             "wings": "kanansiivet"
           }
         },
@@ -1225,7 +1242,12 @@
           }
         },
         "diplomatic": {
-          "label": "Tyyppi"
+          "label": "Tyyppi",
+          "options": {
+            "consulate": "Konsulaatti",
+            "embassy": "Suurlähetystö",
+            "liaison": "Yhteydenpitotoimisto"
+          }
         },
         "diplomatic/services": {
           "label": "Palvelut"
@@ -1359,6 +1381,7 @@
           "options": {
             "delegation": "Delegaatio",
             "mission": "Tavoite",
+            "nunciature": "Pyhän istuimen diplomaattinen edustusto",
             "residence": "Lähettilään virka-asunto",
             "yes": "Suurlähetystö"
           }
@@ -1432,6 +1455,7 @@
           }
         },
         "fire_mains": {
+          "label": "Verkostotyyppi",
           "options": {
             "no": "Ei",
             "yes": "Tuntematon tyyppi"
@@ -1503,6 +1527,9 @@
         "ford": {
           "label": "Tyyppi",
           "placeholder": "Oletus"
+        },
+        "fortification_type": {
+          "label": "Linnoitustapa"
         },
         "fountain": {
           "label": "Tyyppi"
@@ -1768,6 +1795,7 @@
         "historic": {
           "label": "Tyyppi",
           "options": {
+            "archaeological_site": "Arkeologinen paikka",
             "bomb_crater": "pommikraatteri",
             "boundary_stone": "rajakivi",
             "building": "Historiallinen rakennus",
@@ -1780,11 +1808,13 @@
             "manor": "Kartano",
             "memorial": "Pieni muistomerkki",
             "milestone": "Kilometripylväs",
+            "millstone": "Myllykivi",
             "mine": "Kaivos",
+            "mine_shaft": "Kaivoskuilu",
             "monument": "Iso muistomerkki",
             "railway": "Rautatie",
             "ruins": "Rauniot",
-            "tomb": "Hauta",
+            "tomb": "Historiallinen hauta",
             "wayside_cross": "Tienvarsiristi",
             "wayside_shrine": "Tienvarsialttari",
             "wreck": "hylky"
@@ -1886,7 +1916,6 @@
           "terms": "internet-yhteys, nettiyhteys"
         },
         "internet_access/fee": {
-          "label": "Internet-yhteys",
           "options": {
             "customers": "Vain asiakkaille",
             "no": "Ilmainen",
@@ -2025,6 +2054,9 @@
         "lit": {
           "label": "Valaistus"
         },
+        "loc_name": {
+          "label": "Paikallinen nimi"
+        },
         "location": {
           "label": "Sijainti"
         },
@@ -2133,6 +2165,7 @@
             "blue_plaque": "Sininen muistolaatta",
             "bust": "Rintakuva",
             "cross": "Ristimuistomerkki",
+            "ghost_bike": "Haamupyörä",
             "obelisk": "Obeliski",
             "plaque": "Muistolaatta",
             "sculpture": "Veistos",
@@ -2159,7 +2192,15 @@
           "label": "Alhaisin sallittu nopeus"
         },
         "mobile": {
-          "label": "Matkapuhelin"
+          "label": "Matkapuhelin",
+          "placeholder": "+358 40 123 4567"
+        },
+        "mooring": {
+          "options": {
+            "no": "Ei",
+            "private": "Yksityinen",
+            "yes": "Kyllä"
+          }
         },
         "mtb/scale": {
           "label": "Maastopyöräilyn haastavuus",
@@ -2175,6 +2216,13 @@
         },
         "mtb/scale/imba": {
           "label": "IMBA-polkuluokitus",
+          "options": {
+            "0": "⚪ Helpoin (valkoinen ympyrä)",
+            "1": "🟢 Helppo (vihreä ympyrä)",
+            "2": "🟦 Keskivaikea (sininen neliö)",
+            "3": "◆ Vaikea (musta vinoneliö)",
+            "4": "◆◆ Äärimmäisen vaikea (kaksi mustaa vinoneliötä)"
+          },
           "placeholder": "Helppo, keskivaikea, Vaikea..."
         },
         "mtb/scale/uphill": {
@@ -2293,6 +2341,9 @@
             "union": "Ammattiliiton toimisto",
             "water_utility": "Vesilaitostoimisto"
           }
+        },
+        "official_name": {
+          "label": "Virallinen nimi"
         },
         "oneway": {
           "label": "Yksisuuntaisuus",
@@ -2544,6 +2595,7 @@
             "ice_skate": "Luistelu",
             "nordic": "Murtomaahiihto",
             "playground": "Leikkikenttä",
+            "ski_jump": "Mäkihyppy",
             "skitour": "Erämaahiihto",
             "sled": "Pulkkamäki/kelkkailu",
             "sleigh": "Hevos- tai koiravetoinen reki",
@@ -4057,6 +4109,9 @@
         "amenity/community_centre/lgbtq": {
           "name": "Seksuaalivähemmistöjen yhteisökeskus"
         },
+        "amenity/community_centre/parish_hall": {
+          "name": "Seurakuntatalo"
+        },
         "amenity/community_centre/youth_centre": {
           "name": "Nuorisokeskus"
         },
@@ -4632,10 +4687,6 @@
           "name": "Teatteri",
           "terms": "Teatteri, Kaupunginteatteri, Kansallisteatteri"
         },
-        "amenity/theatre/type/amphi": {
-          "name": "Amfiteatteri",
-          "terms": "ulkoilmateatteri, ulkoteatteri, ulko, ulkona, ympyrä, kaari, puoliympyrä, puolikaari, muotoinen"
-        },
         "amenity/toilets": {
           "name": "Vessa",
           "terms": "WC, Vessa, Käymälä, Huussi"
@@ -4752,7 +4803,7 @@
           "terms": "koira, koirankakka, kakka, kakkaroskis, roskis"
         },
         "amenity/waste_basket": {
-          "name": "roskakori",
+          "name": "Roskakori",
           "terms": "roska-astia, roskis, roskapönttö, jäte-astia, roska, jäte, jätteet"
         },
         "amenity/waste_disposal": {
@@ -5188,7 +5239,7 @@
           "terms": "urheiluyhdistys,urheilukerho,liikuntayhdistys"
         },
         "craft": {
-          "name": "Käsityö"
+          "name": "Ammatti"
         },
         "craft/agricultural_engines": {
           "name": "Maatalousmekaanikko"
@@ -5214,7 +5265,7 @@
           "name": "Panimo"
         },
         "craft/carpenter": {
-          "name": "Puuseppä"
+          "name": "Puusepänliike"
         },
         "craft/carpet_layer": {
           "name": "Mattosuunnittelutoimisto",
@@ -5291,6 +5342,9 @@
         "craft/plumber": {
           "name": "Putkimies"
         },
+        "craft/pottery": {
+          "name": "Keramiikantekijä"
+        },
         "craft/rigger": {
           "name": "Nosturi"
         },
@@ -5306,7 +5360,7 @@
         },
         "craft/sawmill": {
           "name": "Saha",
-          "terms": "saha, sahaamo, lauta, puu"
+          "terms": "saha, sahaamo, sahalaitos, lauta, puu"
         },
         "craft/scaffolder": {
           "name": "Rakennustelineliike"
@@ -5319,13 +5373,15 @@
           "name": "Suutari"
         },
         "craft/stonemason": {
-          "name": "Kivenhakkaamo"
+          "name": "Kivenhakkaamo",
+          "terms": "kiviseppä, kivenhakkaaja, kivenhakkaamo"
         },
         "craft/tailor": {
           "name": "Räätäli"
         },
         "craft/tiler": {
-          "name": "Laattaliike"
+          "name": "Laattaliike",
+          "terms": "laatoittaja, tiilikatonpanija"
         },
         "craft/tinsmith": {
           "name": "Peltiseppä"
@@ -5335,7 +5391,8 @@
           "terms": "verhoilija, kangasverhoilu, verhoilu, kangasverhoilija, kangas, kankaat, ompelu, ompelija"
         },
         "craft/watchmaker": {
-          "name": "Rannekelloseppä"
+          "name": "Rannekelloseppä",
+          "terms": "kelloseppä"
         },
         "craft/window_construction": {
           "name": "Ikkunankorjaus"
@@ -5503,6 +5560,9 @@
         },
         "healthcare/alternative/chiropractic": {
           "name": "Kiropraktikko"
+        },
+        "healthcare/alternative/homeopathy": {
+          "name": "Homeopaatti"
         },
         "healthcare/audiologist": {
           "name": "Audiologisti"
@@ -6213,6 +6273,9 @@
         "leisure/pitch/american_football": {
           "name": "Amerikkalainen jalkapallo -kenttä"
         },
+        "leisure/pitch/archery": {
+          "name": "Jousiammunta-alue"
+        },
         "leisure/pitch/australian_football": {
           "name": "Australialainen jalkapallokenttä"
         },
@@ -6375,6 +6438,9 @@
         "man_made/clearcut": {
           "name": "Avohakattu metsä"
         },
+        "man_made/compass_rose": {
+          "name": "Kompassiruusu"
+        },
         "man_made/courtyard": {
           "name": "Sisäpiha"
         },
@@ -6390,6 +6456,13 @@
         "man_made/cutline": {
           "name": "Metsänraja",
           "terms": "hakkuuraja"
+        },
+        "man_made/dovecote": {
+          "name": "Kyyhkyslakka"
+        },
+        "man_made/dyke": {
+          "name": "Valli",
+          "terms": "pato, rantavalli"
         },
         "man_made/embankment": {
           "name": "Penkere"
@@ -6475,6 +6548,9 @@
         "man_made/reservoir_covered": {
           "name": "Peitetty tekojärvi"
         },
+        "man_made/satellite_dish": {
+          "name": "Sateliittilautanen"
+        },
         "man_made/silo": {
           "name": "Siilo"
         },
@@ -6496,6 +6572,12 @@
         },
         "man_made/survey_point": {
           "name": "Mittauspiste"
+        },
+        "man_made/telescope": {
+          "name": "Teleskooppi"
+        },
+        "man_made/telescope/radio": {
+          "name": "Radioteleskooppi"
         },
         "man_made/tower": {
           "name": "Torni"
@@ -6654,6 +6736,10 @@
         },
         "natural/shrub": {
           "name": "Pensas"
+        },
+        "natural/sinkhole": {
+          "name": "Vajoama",
+          "terms": "doliini, vajoreikä"
         },
         "natural/spring": {
           "name": "Lähde"
@@ -6932,9 +7018,6 @@
         },
         "piste/nordic": {
           "name": "Hiihtolatu"
-        },
-        "piste/piste": {
-          "name": "Talviurheilupolku"
         },
         "piste/sled": {
           "name": "Pulkkamäki"
@@ -7861,6 +7944,9 @@
         "shop/paint": {
           "name": "Maalikauppa",
           "terms": "maalaaminen, maali, maalit, maalaus, rautakauppa, maalimyymälä, maaliliike"
+        },
+        "shop/pasta": {
+          "name": "Pastakauppa"
         },
         "shop/pastry": {
           "name": "Leipomokonditoria"

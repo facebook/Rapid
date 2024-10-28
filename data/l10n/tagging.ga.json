@@ -849,7 +849,6 @@
           }
         },
         "internet_access/fee": {
-          "label": "Rochtain Idirlín",
           "options": {
             "customers": "Custaiméirí Amháin",
             "no": "Saor",

@@ -2077,7 +2077,7 @@
           "terms": "dostęp do internetu, internet, wifi, wi-fi"
         },
         "internet_access/fee": {
-          "label": "Dostęp do Internetu (opłata)",
+          "label": "Opłata za dostęp do internetu",
           "options": {
             "customers": "Tylko dla klientów",
             "no": "Darmowy",
@@ -6291,8 +6291,8 @@
           "name": "Budynek dworca kolejowego"
         },
         "building/transportation": {
-          "name": "Budynek dworca kolejowego",
-          "terms": "budynek dworca kolejowego, budynek stacji kolejowej, dworzec kolejowy,transport,dworzec,stacja"
+          "name": "Budynek transportu publicznego",
+          "terms": "budynek dworca, budynek stacji, budynek centrum przesiadkowego, budynek węzła przesiadkowego, transport, dworzec, stacja, centrum przesiadkowe, węzeł przesiadkowy"
         },
         "building/university": {
           "name": "Budynek uczelni",
@@ -8973,8 +8973,7 @@
           "terms": "trasa narciarska, szlak narciarstwa klasycznego, szlak narciarstwa przełajowego, narty, klasyczne, przełajowe, narciarstwo"
         },
         "piste/piste": {
-          "name": "Szlak sportów zimowych",
-          "terms": "szlaki sportów zimowych, trasa sportów zimowych, narty, klasyczne, przełajowe, downhill, alpejskie, snowboard, wycieczki narciarskie, sanki, saneczki, sanie, kulig, skijöring, husky, koń, zimowa wspinaczka, rakiety śniegowe, lód, łyżwiarstwo"
+          "name": "Trasa do sportów zimowych (nieokreślonych)"
         },
         "piste/ski_jump": {
           "name": "Skocznia narciarska (najazd/zeskok)",
@@ -9387,7 +9386,7 @@
         },
         "public_transport/station": {
           "name": "Dworzec",
-          "terms": "dworzec, stacja, transport publiczny, terminal, transport, przewozy"
+          "terms": "dworzec, stacja, transport publiczny, terminal, transport, przewozy, centrum przesiadkowe, węzeł przesiadkowy"
         },
         "public_transport/station_aerialway": {
           "name": "Stacja wyciągu / kolei linowej",

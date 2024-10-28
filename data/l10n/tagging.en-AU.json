@@ -225,6 +225,9 @@
         "amenity/theatre": {
           "name": "Theatre"
         },
+        "amenity/theatre/type/amphi": {
+          "name": "Amphitheatre"
+        },
         "amenity/toilets": {
           "name": "Toilets\nBathroom\nLavatory\nWater Closet\nRestroom"
         },

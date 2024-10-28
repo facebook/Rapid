@@ -99,7 +99,7 @@
           "placeholder": "Неодређен",
           "terms": "dozvoljen pristup,дозвола,dozvola",
           "types": {
-            "access": "Сви",
+            "access": "За све",
             "bicycle": "За бицикле",
             "foot": "За пешаке",
             "horse": "За коње",
@@ -2016,7 +2016,6 @@
           }
         },
         "internet_access/fee": {
-          "label": "Приступ интернету",
           "options": {
             "customers": "Само купци",
             "no": "Слободан",
@@ -2290,6 +2289,7 @@
             "blue_plaque": "Плава плоча",
             "bust": "Биста",
             "cross": "Меморијални крст",
+            "ghost_bike": "Бели бицикли",
             "obelisk": "Обелиск",
             "plaque": "Спомен-плоча",
             "sculpture": "Скулптура",
@@ -2323,7 +2323,8 @@
           "label": "Мимика"
         },
         "min_age": {
-          "label": "Минимално годиште"
+          "label": "Минимална старост",
+          "terms": "Минимално доба"
         },
         "minspeed": {
           "label": "Минимално ограничење брзине"
@@ -2404,7 +2405,8 @@
           "label": "Мрежа"
         },
         "not/name": {
-          "label": "Неисправни називи"
+          "label": "Неисправни називи",
+          "terms": "Нетачан назив,Погрешан назив"
         },
         "note": {
           "label": "Напомена"
@@ -2741,6 +2743,7 @@
             "ice_skate": "Клизање",
             "nordic": "Нордијско скијање",
             "playground": "Игралиште",
+            "ski_jump": "Ски-скок",
             "skitour": "Турно скијање",
             "sled": "Санкање (вештачка стаза)",
             "sleigh": "Санкање (природна стаза)",
@@ -3198,6 +3201,9 @@
         "short_name": {
           "label": "Скраћени назив"
         },
+        "shower": {
+          "label": "Тушеви"
+        },
         "siren/purpose": {
           "label": "Сврха"
         },
@@ -3244,8 +3250,10 @@
         "social_facility": {
           "label": "Врста",
           "options": {
+            "ambulatory_care": "Амбулантна нега",
             "day_care": "Дневни боравак",
             "food_bank": "Народна кухиња",
+            "nursing_home": "Старачки дом",
             "shelter": "Склониште",
             "workshop": "Радионица"
           }
@@ -3344,6 +3352,7 @@
             "scuba_diving": "Роњење са боцом",
             "shooting": "Стрељаштво",
             "skateboard": "Скејтбординг",
+            "ski_jumping": "Ски скокови",
             "skiing": "Скијање",
             "soccer": "Фудбал",
             "softball": "Софтбол",
@@ -3444,8 +3453,13 @@
           "label": "Врста",
           "options": {
             "compensation": "Компензација реактивне енергије",
-            "converter": "Високонапонски исправљач"
+            "converter": "Високонапонски исправљач",
+            "generation": "Станица за повишење напона",
+            "traction": "Електровучна подстаница"
           }
+        },
+        "substation_pipeline": {
+          "label": "Врста"
         },
         "supervised": {
           "label": "Под надзором"
@@ -4444,7 +4458,8 @@
           "name": "Језичка школа"
         },
         "amenity/letter_box": {
-          "name": "Поштанско сандуче"
+          "name": "Кућно сандуче",
+          "terms": "Кућни сандучић"
         },
         "amenity/library": {
           "name": "Библиотека"
@@ -4775,9 +4790,6 @@
         },
         "amenity/theatre": {
           "name": "Позориште"
-        },
-        "amenity/theatre/type/amphi": {
-          "name": "Амфитеатар"
         },
         "amenity/toilets": {
           "name": "Тоалет"
@@ -5113,6 +5125,9 @@
         "boundary/administrative": {
           "name": "Административна граница"
         },
+        "boundary/hazard": {
+          "name": "Опасно подручје"
+        },
         "bridge/support": {
           "name": "Подршка мосту"
         },
@@ -5296,7 +5311,8 @@
           "name": "Мобилна кућа"
         },
         "building/sty": {
-          "name": "Свињац"
+          "name": "Свињац",
+          "terms": "Обор"
         },
         "building/synagogue": {
           "name": "Зграда синагоге",
@@ -5328,6 +5344,9 @@
         },
         "cemetery/grave": {
           "name": "Гроб"
+        },
+        "cemetery/sector": {
+          "name": "Парцела гробља"
         },
         "club": {
           "name": "Клуб"
@@ -6749,6 +6768,9 @@
         "man_made/street_cabinet": {
           "name": "Средњенапонски трафо"
         },
+        "man_made/street_cabinet/postal_service": {
+          "name": "Поштанско релејско сандуче"
+        },
         "man_made/surveillance": {
           "name": "Надзор",
           "terms": "надзор,видео-надзор,праћење,посматрање,сигурносни надзор"
@@ -7230,6 +7252,9 @@
         "pipeline/substation": {
           "name": "Црпна станица"
         },
+        "pipeline/valve": {
+          "name": "Вентил цевовода"
+        },
         "piste/downhill": {
           "name": "Ски-стаза"
         },
@@ -7244,9 +7269,6 @@
         },
         "piste/nordic": {
           "name": "Стаза за скијашко трчање"
-        },
-        "piste/piste": {
-          "name": "Стаза за зимске спортове"
         },
         "piste/skitour": {
           "name": "Стаза за турно скијање"

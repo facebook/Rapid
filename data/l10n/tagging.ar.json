@@ -1467,13 +1467,11 @@
           "terms": "اتصال انترنت"
         },
         "internet_access/fee": {
-          "label": "الوصول للانترنت",
           "options": {
             "customers": "للعملاء/الزبائن فقط",
             "no": "مجاني",
             "yes": "مدفوع"
-          },
-          "terms": "الوصول للانترنت"
+          }
         },
         "internet_access/ssid": {
           "label": "اسم شبكة الواي فاي",
@@ -3900,9 +3898,6 @@
         "amenity/theatre": {
           "name": "مسرح",
           "terms": "مسرح"
-        },
-        "amenity/theatre/type/amphi": {
-          "name": "مسرح روماني"
         },
         "amenity/ticket_validator": {
           "name": "مدقق التذاكر",
@@ -6721,10 +6716,6 @@
         "piste/nordic": {
           "name": "مسار تزلج عبر الريف",
           "terms": "مسار تزلج عبر الريف"
-        },
-        "piste/piste": {
-          "name": "ممر رياضة الثلوج / الزحلقة",
-          "terms": "ممر رياضة الثلوج / الزحلقة"
         },
         "piste/skitour": {
           "name": "مسار للتزلج على الجليد",

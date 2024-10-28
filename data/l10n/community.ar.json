@@ -488,9 +488,6 @@
     "ireland-matrix": {
       "description": "بوابة مصفوفة لقناة OSM أيرلندا IRC: {url}"
     },
-    "ireland-meetup": {
-      "description": "لقاءات لكل من يهتم بـ OpenStreetMap"
-    },
     "is-chapter": {
       "description": "نحن نساعد في النمو وتحسين خريطة الشارع المفتوحة في في أيسلندا."
     },

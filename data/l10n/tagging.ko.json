@@ -2092,13 +2092,11 @@
           "terms": "인터넷 접속"
         },
         "internet_access/fee": {
-          "label": "인터넷 접속",
           "options": {
             "customers": "고객 전용",
             "no": "무료",
             "yes": "유료"
-          },
-          "terms": "인터넷 접근,와이파이 요금"
+          }
         },
         "internet_access/ssid": {
           "label": "Wi-Fi 네트워크 이름",
@@ -5601,10 +5599,6 @@
           "name": "극장",
           "terms": "공연,연극,뮤지컬"
         },
-        "amenity/theatre/type/amphi": {
-          "name": "원형극장",
-          "terms": "원형극장"
-        },
         "amenity/ticket_validator": {
           "name": "티켓 검사기",
           "terms": "티켓 검사기"
@@ -8987,10 +8981,6 @@
         "piste/nordic": {
           "name": "크로스 컨트리 스키",
           "terms": "크로스 컨트리 스키"
-        },
-        "piste/piste": {
-          "name": "스노우 스포츠 트레일 / 피스트",
-          "terms": "스노우 스포츠 트레일 / 피스트"
         },
         "piste/skitour": {
           "name": "스키 관광",

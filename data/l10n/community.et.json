@@ -109,6 +109,9 @@
       "name": "OpenStreetMap India XMPP-vestluskanal",
       "extendedDescription": "India OSMi kogukonna XMPP jututuba; võrgusillad suletud võrkudega puuduvad. Sama jututuba on saadaval ka Matrixi jututoas #osm-in:poddery.com"
     },
+    "OSM-japan-discord": {
+      "description": "Discordi grupp OSMi Jaapani kogukonna jaoks: {url}"
+    },
     "OSM-Telegram": {
       "description": "Liitu Telegramis OpenStreetMapi üleilmse suurrühmaga aadressil {url}."
     },

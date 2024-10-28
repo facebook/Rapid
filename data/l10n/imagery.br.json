@@ -586,6 +586,11 @@
       "debicki-buildings": {
         "name": "Kontelezh Dębica: Savadurioù"
       },
+      "geoscribble-latest": {
+        "attribution": {
+          "text": "Kenlabourerien GeoScribble"
+        }
+      },
       "gothenburg-citymap": {
         "attribution": {
           "text": "© kumun Göteborg, CC0"

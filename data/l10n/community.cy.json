@@ -19,7 +19,9 @@
       "openstreetmapcatalancountries": "OpenStreetMap Gwledydd Catalaneg",
       "openstreetmapchina": "OpenStreetMap Tsieina",
       "openstreetmapcuba": "OpenStreetMap Ciwba",
+      "openstreetmapcz": "OpenStreetMap Gweriniaeth Tsiec",
       "openstreetmapde": "OpenStreetMap Yr Almaen",
+      "openstreetmapdeepsouth": "OpenStreetMap De UDA",
       "openstreetmapdenmark": "OpenStreetMap Denmarc",
       "openstreetmapegypt": "OpenStreetMap Yr Aifft",
       "openstreetmapespana": "OpenStreetMap Sbaen",
@@ -78,7 +80,8 @@
       "openstreetmapwestbengal": "OpenStreetMap Gorllewin Bengal",
       "openstreetmapwesternsahara": "OpenStreetMap Gorllewin Sahara",
       "openstreetmapzambia": "OpenStreetMap Sambia",
-      "openstreetmapzimbabwe": "OpenStreetMap Simbabwe"
+      "openstreetmapzimbabwe": "OpenStreetMap Simbabwe",
+      "swissopenstreetmap": "OpenStreetMap Y Swistir"
     },
     "_defaults": {
       "aparat": {
@@ -423,6 +426,9 @@
     },
     "MapColabora-mailinglist": {
       "description": "Rhestr Bost Mapeado Colaborativo / Geoinquietos Zaragoza"
+    },
+    "MapLYH": {
+      "description": "Grŵp MapLYH"
     },
     "mappa-mercia-group": {
       "name": "Grŵp lleol Mappa Mercia",

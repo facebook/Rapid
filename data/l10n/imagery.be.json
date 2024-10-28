@@ -2,7 +2,8 @@
   "be": {
     "imagery": {
       "Bing": {
-        "description": "Спадарожнікавыя і аэрафотаздымкі."
+        "description": "Спадарожнікавыя і аэрафотаздымкі.",
+        "name": "Aэрафотаздымкі Bing"
       },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
@@ -54,6 +55,9 @@
       },
       "OSM_Inspector-Tagging": {
         "name": "OSM Інспектар: Тэгі"
+      },
+      "OpenAerialMapMosaic": {
+        "name": "OpenAerialMap Mosaic, ад Kontur.io"
       },
       "SPW_ORTHO_LAST": {
         "name": "SPW(allonie) апошнія аэрафотаздымкі"

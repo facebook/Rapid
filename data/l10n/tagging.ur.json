@@ -1,6 +1,11 @@
 {
   "ur": {
     "presets": {
+      "categories": {
+        "category-path": {
+          "name": "راستے"
+        }
+      },
       "fields": {
         "access": {
           "label": "داخلہ برائے:",
@@ -105,16 +110,21 @@
           }
         },
         "building": {
-          "label": "عمارت",
+          "label": "مکان",
           "options": {
             "bungalow": "بنگلہ",
             "church": "گرجا گھر",
+            "college": "کالج عمارت",
+            "hospital": "ہسپتال عمارت",
             "house": "گھر",
+            "industrial": "صنعتی عمارت",
             "mosque": "مسجد عمارت",
             "office": "دفاتر عمارت",
             "roof": "چھت",
+            "school": "اسکول عمارت",
             "stable": "اسطبل",
-            "synagogue": "یہودی مسجد"
+            "synagogue": "یہودی مسجد",
+            "train_station": "ریل اڈہ عمارت"
           }
         },
         "building/levels": {
@@ -136,12 +146,28 @@
         },
         "clothes": {
           "options": {
+            "hats": "ٹوپیاں",
             "socks": "جرابیں"
           }
         },
+        "collector": {
+          "options": {
+            "coins": "سکے"
+          }
+        },
+        "colour": {
+          "label": "رنگ"
+        },
+        "country": {
+          "label": "ملک"
+        },
         "craft": {
           "options": {
+            "blacksmith": "لوہار",
+            "builder": "مستری",
             "gardener": "مالی",
+            "jeweller": "جوہری",
+            "shoemaker": "موچی",
             "tailor": "درزی"
           }
         },
@@ -153,6 +179,7 @@
             "grass": "گھاس",
             "potato": "آلو",
             "rice": "چاول",
+            "sugarcane": "گنا",
             "tea": "پتی",
             "tobacco": "تنباکو",
             "vegetable": "سبزی",
@@ -161,15 +188,25 @@
         },
         "cuisine": {
           "options": {
+            "african": "افریقی",
             "american": "امریکی",
+            "arab": "عرب",
+            "argentinian": "ارجنٹائنی",
             "asian": "ایشیائی",
+            "balkan": "بلقانی",
+            "breakfast": "ناشتا",
             "burger": "برگر",
             "cake": "کیک",
             "chicken": "مرغ",
             "chinese": "چینی",
+            "curry": "سالن",
             "dessert": "میٹھا",
             "donut": "ڈونٹ",
+            "european": "یورپی",
+            "filipino": "فلپائنی",
+            "fish": "مچھلی",
             "french": "فرانسیسی",
+            "fries": "چپس",
             "german": "جرمن",
             "greek": "یونانی",
             "indian": "بھارتی",
@@ -182,18 +219,23 @@
             "lebanese": "لبنانی",
             "malaysian": "ملائیشیائی",
             "pasta": "پاستا",
+            "persian": "فارسی",
             "pizza": "پیزا",
             "polish": "پولش",
             "portuguese": "پرتگالی",
+            "regional": "علاقائی",
             "russian": "روسی",
             "salad": "سالاد",
+            "shawarma": "شوارما",
             "spanish": "ہسپانوی",
             "sushi": "سوشی",
             "taiwanese": "تائوانی",
+            "tea": "چائے",
             "thai": "تھائی",
             "turkish": "ترکش",
             "ukrainian": "یوکرائنی",
-            "vietnamese": "ویتنامی"
+            "vietnamese": "ویتنامی",
+            "western": "مغربی"
           }
         },
         "date": {
@@ -217,6 +259,11 @@
             "vegetarian": "سبز"
           }
         },
+        "diplomatic": {
+          "options": {
+            "embassy": "صفارت خانہ"
+          }
+        },
         "distance": {
           "label": "فاصلہ"
         },
@@ -229,10 +276,22 @@
             "yes": "سفارت خانہ"
           }
         },
+        "entrance": {
+          "options": {
+            "exit": "صرف باہر جانے کا۔ راستہ",
+            "staircase": "سیڑھیاں"
+          }
+        },
         "fax": {
           "label": "فیکس"
         },
         "fire_hydrant/type": {
+          "options": {
+            "wall": "دیوار"
+          }
+        },
+        "fire_service_inlet": {
+          "label": "شکل",
           "options": {
             "wall": "دیوار"
           }
@@ -244,23 +303,32 @@
           "label": "جنس",
           "options": {
             "female": "عورت",
-            "male": "مرد"
+            "male": "مرد",
+            "unisex": "ہمہ جنسی"
           }
         },
         "generator/source": {
           "options": {
             "coal": "کوئلہ",
             "diesel": "ڈیزل",
-            "oil": "تیل"
+            "oil": "تیل",
+            "wind": "ہوا"
           }
         },
         "healthcare": {
           "options": {
-            "hospital": "ہسپتال"
+            "doctor": "ڈاکٹر",
+            "hospital": "ہسپتال",
+            "pharmacy": "دواخانہ"
           }
         },
         "healthcare/speciality": {
           "options": {
+            "allergology": "الرجی و دمہ",
+            "biology": "حیاتیات",
+            "cardiology": "قلبیات",
+            "homeopathy": " علاج بالمثل",
+            "pathology": " امراضیات",
             "vaccination": "ٹیکا کاری"
           }
         },
@@ -268,7 +336,10 @@
           "options": {
             "castle": "قلعہ",
             "church": "گرجا",
-            "railway": "ریلوے"
+            "city_gate": "شہر کا دروازہ",
+            "railway": "ریلوے",
+            "ruins": "کھنڈرات",
+            "tomb": "مقبرہ"
           }
         },
         "horse_riding": {
@@ -283,9 +354,14 @@
         "image": {
           "label": "تصویر"
         },
+        "intermittent": {
+          "label": "رواں",
+          "terms": "رواں شدہ"
+        },
         "internet_access": {
           "options": {
             "no": "نہیں",
+            "wired": "بذریعہ تار",
             "yes": "جی ہاں"
           }
         },
@@ -294,12 +370,17 @@
             "roundabout": "چورنگی"
           }
         },
+        "lanes": {
+          "label": "پتی",
+          "terms": "پتّی,پتیاں,پتّیاں,پٹی,پٹّی,پٹیاں,پٹّیاں"
+        },
         "language_multi": {
           "label": "زبانیں"
         },
         "material": {
           "options": {
             "brick": "اینٹ",
+            "bronze": "کانسی",
             "glass": "شیشہ",
             "iron": "لوہا",
             "plastic": "پلاسٹک",
@@ -319,6 +400,14 @@
           "options": {
             "statue": "مجسمہ"
           }
+        },
+        "military_service": {
+          "options": {
+            "army": "فوج"
+          }
+        },
+        "minspeed": {
+          "label": "اقلِ حدِ رفتار"
         },
         "name": {
           "label": "نام",
@@ -345,8 +434,16 @@
             "yes": "جی ہاں"
           }
         },
+        "opening_hours": {
+          "label": "اوقات"
+        },
         "operator": {
           "label": "انتظامیہ"
+        },
+        "parking": {
+          "options": {
+            "surface": "فرش"
+          }
         },
         "payment_multi": {
           "options": {
@@ -368,7 +465,12 @@
         },
         "plant/output": {
           "options": {
-            "electricity": "بجلی"
+            "cold_air": "ٹھنڈی ہوا",
+            "cold_water": "ٹھنڈا پانی",
+            "electricity": "بجلی",
+            "hot_air": "گرم ہوا",
+            "hot_water": "گرم پانی",
+            "steam": "بھاپ"
           }
         },
         "population": {
@@ -379,8 +481,19 @@
         },
         "recycling_accepts": {
           "options": {
+            "paper": "کاغذ",
+            "plastic": "پلاسٹک",
             "shoes": "جوتے"
           }
+        },
+        "ref_highway_junction": {
+          "label": "جنکشن نمبر"
+        },
+        "ref_platform": {
+          "label": "چبوترہ نمبر"
+        },
+        "ref_room_number": {
+          "label": "کمرہ نمبر"
         },
         "religion": {
           "label": "مذہب",
@@ -417,16 +530,30 @@
           "label": "رنگ",
           "options": {
             "green": "سبز",
+            "red": "سرخ",
             "white": "صفید",
             "yellow": "پیلا"
           }
         },
+        "seamark/buoy_lateral/shape": {
+          "label": "شکل"
+        },
         "service_times": {
           "label": "اوقاتِ عبادات"
+        },
+        "shoes": {
+          "label": "جوتے"
         },
         "smoking": {
           "options": {
             "no": "تمباکو نوشی منع ہے"
+          }
+        },
+        "social_facility_for": {
+          "options": {
+            "refugee": "مہجارین",
+            "senior": "بزرگان",
+            "woman": "مستورات"
           }
         },
         "source": {
@@ -476,17 +603,21 @@
         },
         "substance": {
           "options": {
+            "fuel": "تیل",
+            "hot_water": "گرم پانی",
             "rainwater": "بارش کا پانی",
             "water": "پینے والا پانی"
           }
         },
         "surface": {
+          "label": "فرش",
           "options": {
             "dirt": "مٹی",
             "grass": "گھاس",
             "sand": "ریت",
             "wood": "لکڑ"
-          }
+          },
+          "terms": "سطح"
         },
         "surveillance/type": {
           "options": {
@@ -525,9 +656,11 @@
           }
         },
         "vehicles": {
+          "label": "گاڑیاں",
           "options": {
             "bus": "بس",
-            "train": "ریل گاڑی"
+            "train": "ریل گاڑی",
+            "tram": "ٹرام"
           }
         },
         "vending": {
@@ -543,7 +676,8 @@
         },
         "water_source": {
           "options": {
-            "river": "دریا"
+            "river": "دریا",
+            "stream": "دھارا"
           }
         },
         "website": {
@@ -553,6 +687,10 @@
         },
         "website/menu": {
           "placeholder": "https://misaal.com"
+        },
+        "width": {
+          "label": "چوڑان (میٹر میں)",
+          "terms": "چوڑائی,چوڑائی (میٹر میں)"
         },
         "wikidata": {
           "label": "ویکی ڈیٹا"
@@ -639,7 +777,8 @@
           "name": "پلیس\nپولیس"
         },
         "amenity/post_office": {
-          "name": "ڈاک خانہ"
+          "name": "ڈاک گھر",
+          "terms": "ڈاک خانہ"
         },
         "amenity/telephone": {
           "name": "ٹیلی فون"
@@ -670,6 +809,9 @@
           "name": "جھونپڑی",
           "terms": "تھگلی,جھگی"
         },
+        "building/industrial": {
+          "name": "صنعتی عمارت"
+        },
         "building/mosque": {
           "name": "مسجد عمارت"
         },
@@ -684,6 +826,9 @@
           "name": "اسطبل",
           "terms": "استبل"
         },
+        "building/train_station": {
+          "name": "ریل اڈہ عمارت"
+        },
         "building_point": {
           "name": "عمارت\nمکان"
         },
@@ -693,14 +838,28 @@
         "craft/carpenter": {
           "name": "بڑھئی"
         },
+        "highway/footway": {
+          "name": "پیدل راستہ",
+          "terms": "پیدل رستہ"
+        },
         "highway/motorway": {
           "name": "موٹروے"
+        },
+        "highway/path": {
+          "name": "راستہ"
+        },
+        "highway/path/informal": {
+          "name": "کچا راستہ"
         },
         "highway/speed_camera": {
           "name": "کیمرہ برائے رفتار"
         },
         "highway/traffic_signals": {
           "name": "ٹریفک اشارے\nاشارے\nاشارہ\nٹریفک اشارہ"
+        },
+        "highway/trunk": {
+          "name": "عظیم شاہراہ",
+          "terms": "بڑی سڑک, شاہراہ,جرنیلی سڑک"
         },
         "historic": {
           "name": "تاریخی مقام"
@@ -716,6 +875,9 @@
         },
         "landuse/grass": {
           "name": "گھاس"
+        },
+        "landuse/industrial": {
+          "name": "صنعتی علاقہ"
         },
         "landuse/railway": {
           "name": "ریل راہداری",
@@ -824,20 +986,48 @@
         "playground/swing": {
           "name": "جھولا"
         },
+        "public_transport/platform/bus": {
+          "name": "بس چبوترہ",
+          "terms": "بس پلیٹفارم, چبوترہ"
+        },
+        "public_transport/platform/train": {
+          "name": "ریل چبوترہ",
+          "terms": "ٹرین چبوترہ,چبوترہ,ٹرین پلیٹفارم"
+        },
+        "public_transport/platform/tram": {
+          "name": "ٹرام چبوترہ",
+          "terms": "ٹرام پلیٹفارم, چبوترہ"
+        },
         "public_transport/station_bus": {
           "name": "بس اڈہ"
         },
         "public_transport/station_train": {
-          "name": "ٹرین اسٹیشن"
+          "name": "ریل اڈہ",
+          "terms": "ٹرین اسٹیشن"
         },
         "public_transport/station_tram": {
-          "name": "ٹرام اسٹیشن"
+          "name": "ٹرام اسٹیشن",
+          "terms": "ٹرام اڈہ,ٹرام اڈا"
+        },
+        "railway/platform": {
+          "name": "ریل چبوترہ"
+        },
+        "railway/rail": {
+          "name": "ریل پٹری",
+          "terms": "ٹرین پٹری,پٹری"
+        },
+        "railway/station": {
+          "name": "ریل اڈہ\nریل اڈا\nٹرین اسٹیشن\nٹرین سٹیشن\nٹرین اڈہ\nٹرین اڈا"
         },
         "relation": {
           "name": "تعلق"
         },
         "shop": {
           "name": "دکان\nدوکان"
+        },
+        "shop/butcher": {
+          "name": " قصائی",
+          "terms": " قسائی"
         },
         "shop/mall": {
           "name": "مال"
@@ -874,6 +1064,13 @@
         "waterway/river": {
           "name": "دریا",
           "terms": "ندی,نہر"
+        },
+        "waterway/stream": {
+          "name": "دھارا"
+        },
+        "waterway/stream_intermittent": {
+          "name": "رواں دھارا",
+          "terms": "رواں پانی"
         }
       }
     }

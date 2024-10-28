@@ -937,7 +937,6 @@
           }
         },
         "internet_access/fee": {
-          "label": "Interneterako sarrera",
           "options": {
             "customers": "Bezeroentzat bakarrik",
             "no": "Doakoa",
@@ -1964,9 +1963,6 @@
         },
         "amenity/theatre": {
           "name": "Antzoki"
-        },
-        "amenity/theatre/type/amphi": {
-          "name": "Anfiteatro"
         },
         "amenity/townhall": {
           "name": "Udaletxe"

@@ -1262,8 +1262,8 @@
           "terms": "Hauteur du quai (mètres)"
         },
         "dock/width": {
-          "label": "Largeur du quai (mètre)",
-          "terms": "Largeur du quai (mètre)"
+          "label": "Largeur du quai (mètres)",
+          "terms": "Largeur du quai (mètres)"
         },
         "dog": {
           "label": "Accès aux chiens",
@@ -1757,11 +1757,11 @@
           "label": "Chauffage"
         },
         "height": {
-          "label": " Hauteur (Mètres)",
+          "label": " Hauteur (mètres)",
           "terms": "hauteur"
         },
         "height/hub": {
-          "label": "Hauteur du sol au moyeu (mètres)",
+          "label": "Hauteur de la nacelle (mètres)",
           "terms": "hauteur, sol, moyeu, centre, rotor"
         },
         "height_building": {
@@ -1902,13 +1902,13 @@
           "terms": "wifi, wi-fi, réseau, internet, web, fibre optique"
         },
         "internet_access/fee": {
-          "label": "Accès Internet",
+          "label": "Accès Internet payant",
           "options": {
             "customers": "Réservé à la clientèle",
             "no": "Gratuit",
             "yes": "Payant"
           },
-          "terms": "accès-internet, wifi, wi-fi, internet-gratuit,wifi-gratuit"
+          "terms": "frais d'accès à internet,wifi payant,frais d'accès au wifi"
         },
         "internet_access/ssid": {
           "label": "Nom du réseau WiFi",
@@ -2011,10 +2011,10 @@
         "leaf_type": {
           "label": "Type de feuilles",
           "options": {
-            "broadleaved": "arbres feuillus",
+            "broadleaved": "Arbres feuillus",
             "leafless": "Sans feuilles",
             "mixed": "mélangé",
-            "needleleaved": "arbres à aiguilles"
+            "needleleaved": "Arbres à aiguilles"
           },
           "terms": "Type, genre, feuille, feuillage, aiguille"
         },
@@ -4406,8 +4406,8 @@
           "terms": "centre, club, maison, jeunesse, jeunes"
         },
         "amenity/compressed_air": {
-          "name": "Air comprimé",
-          "terms": "Air comprimé, compressed air"
+          "name": "Station de gonflage",
+          "terms": "Air comprimé, Station de gonflage, compressed air"
         },
         "amenity/conference_centre": {
           "name": "Centre de congrés",
@@ -5197,7 +5197,7 @@
         },
         "amenity/theatre/type/amphi": {
           "name": "Amphithéâtre",
-          "terms": "plein air,extérieur,grecque,amphi"
+          "terms": "Amphithéâtre,amphi,auditoire"
         },
         "amenity/ticket_validator": {
           "name": "Composteur de billet",
@@ -6220,7 +6220,7 @@
           "terms": "tuyau d'incendie,lance à incendie,canon à eau"
         },
         "emergency/fire_hydrant": {
-          "name": "Borne incendie",
+          "name": "Point d'eau incendie",
           "terms": "Borne incendie, borne-fontaine, borne fontaine, bouche d'incendie, poteau incendie, hydrant, fire hydrant, point d'eau incendie"
         },
         "emergency/fire_hydrant/pillar": {
@@ -8189,7 +8189,7 @@
         },
         "natural/tree/broadleaved/deciduous": {
           "name": "Arbres feuillus (décidus)",
-          "terms": "Arbres feuillus (décidus)"
+          "terms": "Arbres feuillus (décidus), chêne"
         },
         "natural/tree/broadleaved/evergreen": {
           "name": "Arbres feuillus (à l'année)"
@@ -8202,7 +8202,7 @@
         },
         "natural/tree/needleleaved/evergreen": {
           "name": "Arbres à aiguilles (à l'année)",
-          "terms": "Arbres à aiguilles (à l'année)"
+          "terms": "Arbres à aiguilles (à l'année), sapin, pin, épicéa"
         },
         "natural/tree_row": {
           "name": "Rangée d'arbres",
@@ -8568,10 +8568,6 @@
           "name": "Piste de ski de fond",
           "terms": "ski de fond,ski nordique"
         },
-        "piste/piste": {
-          "name": "Type de piste / sentier hivernal",
-          "terms": "Piste de ski, sentier nordique, piste de ski de fond, piste de descente, piste alpine, piste de snowboard, sentier de ski de randonnée, piste de luge, piste de traîneau à cheval, piste de chiens de traineau, sentier hivernal, sentier de raquette, piste de patins à glace"
-        },
         "piste/ski_jump": {
           "name": "Piste de saut à ski"
         },
@@ -8646,11 +8642,10 @@
           "terms": "banlieue"
         },
         "place/town": {
-          "name": "Ville (de 10 000 à 100 000 habitants)",
+          "name": "Ville (petite ou moyenne)",
           "terms": "Ville"
         },
         "place/village": {
-          "name": "Village (de 100 à 10 000 habitants)",
           "terms": "Village"
         },
         "playground": {

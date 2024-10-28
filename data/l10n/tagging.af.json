@@ -400,9 +400,6 @@
             "yes": "Ja"
           }
         },
-        "internet_access/fee": {
-          "label": "Internettoegang"
-        },
         "junction/ref_oneway": {
           "label": "Verkeerskruising nummer"
         },

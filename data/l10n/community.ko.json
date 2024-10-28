@@ -643,9 +643,6 @@
     "ireland-matrix": {
       "description": "OSM 아일랜드 IRC 채널의 매트릭스 입구: {url}"
     },
-    "ireland-meetup": {
-      "description": "OpenStreetMap에 관심 있는 모든 사람들의 만남"
-    },
     "is-chapter": {
       "description": "우리는 아이슬란드 내의 오픈스트리트맵을 성장시키고 개선하도록 돕습니다."
     },

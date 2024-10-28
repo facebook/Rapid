@@ -1564,13 +1564,11 @@
           "terms": "[oversett med synonymer eller relaterte termer for 'Internett-tilkobling', atskilt med komma] "
         },
         "internet_access/fee": {
-          "label": "Internettilgang",
           "options": {
             "customers": "Bare for kunder",
             "no": "Gratis",
             "yes": "Betalt"
-          },
-          "terms": "[oversett med synonymer eller relaterte termer for 'Internett-tilgang', atskilt med komma] "
+          }
         },
         "internet_access/ssid": {
           "label": "Wifi-nettverksnavn",
@@ -3647,9 +3645,6 @@
         "amenity/theatre": {
           "name": "Teater"
         },
-        "amenity/theatre/type/amphi": {
-          "name": "Amfiteater"
-        },
         "amenity/ticket_validator": {
           "name": "Billettautomat"
         },
@@ -5457,9 +5452,6 @@
         },
         "piste/nordic": {
           "name": "Langrennsløype"
-        },
-        "piste/piste": {
-          "name": "Snøsportsti/ Piste"
         },
         "piste/skitour": {
           "name": "Skitursti"

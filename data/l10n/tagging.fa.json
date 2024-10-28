@@ -1230,13 +1230,11 @@
           "terms": "اتصال اینترنتی، نت، اینترنت"
         },
         "internet_access/fee": {
-          "label": "دسترسی اینترنت",
           "options": {
             "customers": "فقط مشتریان",
             "no": "رایگان",
             "yes": "پولی"
-          },
-          "terms": "دسترسی اینترنت"
+          }
         },
         "internet_access/ssid": {
           "label": "نام شبکهٔ وای‌فای",
@@ -3535,10 +3533,6 @@
         "amenity/theatre": {
           "name": "تئاتر",
           "terms": "نمایش,تآتر,تاتر,نمایشنامه,تیاتر,صحنه,بلیط"
-        },
-        "amenity/theatre/type/amphi": {
-          "name": "آمفی تئاتر",
-          "terms": "آمفی, تئاتر, تاتر"
         },
         "amenity/toilets": {
           "name": "توالت عمومی",

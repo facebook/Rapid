@@ -941,13 +941,11 @@
           "terms": "internet, wifi, wlan, acceso a internet, conexión a internet, cable, datos"
         },
         "internet_access/fee": {
-          "label": "Acceso á internet",
           "options": {
             "customers": "Só clientes",
             "no": "De balde",
             "yes": "Pagamento"
-          },
-          "terms": "tarifa wifi, wifi de pagamento, wifi de pago, wifi de balde, wifi gratis, acceso a internet, conexión a internet"
+          }
         },
         "internet_access/ssid": {
           "label": "Nome da rede wifi"
@@ -2955,10 +2953,6 @@
         "amenity/theatre": {
           "name": "Teatro",
           "terms": "auditorio, teatro, anfiteatro, arte, cultura, escenografía, música, son, espectáculo, teatral"
-        },
-        "amenity/theatre/type/amphi": {
-          "name": "Anfiteatro",
-          "terms": "ar libre, aire libre, ao aire libre, grego, ampi, anfi, anfiteatro"
         },
         "amenity/toilets/disposal/flush": {
           "name": "Aseo con cisterna",
@@ -5167,9 +5161,6 @@
         },
         "piste/nordic": {
           "name": "Pista de esquí de fondo"
-        },
-        "piste/piste": {
-          "name": "Pista de deportes de neve"
         },
         "piste/skitour": {
           "name": "Pista de esquí de travesía"

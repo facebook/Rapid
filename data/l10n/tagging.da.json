@@ -243,8 +243,11 @@
           "terms": "bygning,design,udvikling"
         },
         "armrest": {
+          "label": "Armlæn",
           "options": {
-            "undefined": "Uvist"
+            "no": "Ingen armlæn",
+            "undefined": "Uvist",
+            "yes": "Et eller flere armlæn"
           }
         },
         "artist": {
@@ -499,6 +502,7 @@
             "boardwalk": "Plankebro",
             "cantilever": "Cantileverbro",
             "covered": "Overdækket bro",
+            "low_water_crossing": "Vadested",
             "movable": "Bevægelig bro",
             "viaduct": "Viadukt"
           }
@@ -539,13 +543,16 @@
             "mosque": "Moske-bygning",
             "office": "Kontorbygning",
             "outbuilding": "Udhus",
+            "pavilion": "Pavillon-bygning",
             "public": "Offentlig bygning",
             "residential": "Boligbyggeri",
             "retail": "Butiksbygning",
+            "riding_hall": "Ridehal",
             "roof": "Tag",
             "ruins": "Bygningsruiner",
             "school": "Skolebygning",
             "semidetached_house": "Dobbelthus",
+            "service": "Servicebygning",
             "shed": "Skur",
             "stable": "Hestestald",
             "stadium": "Stadion-bygning",
@@ -555,6 +562,7 @@
             "temple": "Tempelbygning",
             "terrace": "Rækkehuse",
             "train_station": "Jernbanestationsbygning",
+            "transportation": "Transport-bygning",
             "university": "Universitetsbygning",
             "warehouse": "Varehus"
           },
@@ -613,6 +621,26 @@
             "panning": "Panorering"
           }
         },
+        "camp_site": {
+          "options": {
+            "basic": {
+              "description": "Intet andet end et sted at slå et telt op eller parkere et køretøj",
+              "title": "Simpel (kun pladser til telte/køretøjer)"
+            },
+            "deluxe": {
+              "description": "Fuldt serviceret og med ekstra faciliteter som vaskeri, swimmingpool eller lignende rekreative faciliteter",
+              "title": "Deluxe (tilbyder vaskeri eller swimmingpool osv.)"
+            },
+            "serviced": {
+              "description": "Der er toiletter, vand, brusere og elektricitet.",
+              "title": "Serviceret (tilbyder brusere og elektricitet)"
+            },
+            "standard": {
+              "description": "Toiletter og vand findes eller er tilgængelige i nærheden",
+              "title": "Standard (tilbyder toiletter og vand)"
+            }
+          }
+        },
         "capacity": {
           "label": "Kapacitet",
           "terms": "Rumlighed"
@@ -638,6 +666,9 @@
         "caravans": {
           "label": "Campervan / Campingvogn",
           "terms": "camplet,camp-let,teltvogn,campingtrailer,camping trailer"
+        },
+        "cash_in": {
+          "label": "Indsættelser"
         },
         "castle_type": {
           "options": {
@@ -674,15 +705,18 @@
           "options": {
             "babies": "Babytøj",
             "children": "Børnetøj",
+            "denim": "Cowboy-tøj",
             "fur": "Pelsbeklædning",
             "hats": "Hatte",
             "maternity": "Ventetøj",
             "men": "Herretøj",
             "motorcycle": "Motorcykeltøj",
+            "oversize": "Tøj i store størrelser",
             "socks": "Sokker",
             "sports": "Sportstøj",
             "suits": "Jakkesæt",
             "swimwear": "Badetøj",
+            "traditional": "Folkedragter",
             "underwear": "Undertøj",
             "wedding": "Bryllupstøj",
             "women": "Dametøj",
@@ -711,6 +745,16 @@
         },
         "communication_multi": {
           "label": "Kommunikationstype"
+        },
+        "community_centre": {
+          "options": {
+            "club_home": "Klubhus",
+            "cultural_centre": "Kulturhus",
+            "family_centre": "Familiehus",
+            "parish_hall": "Sognehus",
+            "village_hall": "Forsamlingshus",
+            "youth_centre": "Undgdomshus"
+          }
         },
         "connectivity": {
           "label": "Forbindelser"
@@ -746,6 +790,9 @@
         "conveying_escalator": {
           "label": "Rulletrappe"
         },
+        "count": {
+          "label": "Antal objekter"
+        },
         "country": {
           "label": "Land"
         },
@@ -768,6 +815,7 @@
         },
         "craft": {
           "options": {
+            "agricultural_engines": "Maskinværksted",
             "basket_maker": "Kurvemager",
             "beekeeper": "Biavler",
             "blacksmith": "Smed",
@@ -777,26 +825,44 @@
             "builder": "Bygmester",
             "carpenter": "Tømrer",
             "carpet_layer": "Tæppelægger",
+            "caterer": "Diner transportable",
             "chimney_sweeper": "Skorstensfejer",
+            "cleaning": "Rengøringsservice",
+            "clockmaker": "Urmager",
+            "confectionery": "Slikfabrikation",
             "distillery": "Destilleri",
+            "dressmaker": "Kjolemager",
             "electrician": "Elektriker",
+            "electronics_repair": "Elektronikværksted",
             "floorer": "Gulvlægger",
+            "gardener": "Gartner",
+            "glaziery": "Glarmester",
             "handicraft": "Håndarbejde",
+            "hvac": "Airconditionservice",
+            "insulation": "Isoleringsspecialist",
             "jeweller": "Juveler",
+            "key_cutter": "Låsesmed",
             "locksmith": "Låsesmed",
+            "metal_construction": "Metalværksted",
             "oil_mill": "Oliemølle",
             "painter": "Maler",
+            "parquet_layer": "Gulvlægger",
             "photographer": "Fotograf",
+            "photographic_laboratory": "Fotolaboratorium",
             "plasterer": "Gipsarbejder",
             "plumber": "Blikkenslager",
             "pottery": "Keramiker",
             "roofer": "Tagdækker",
             "saddler": "Sadelmager",
             "sailmaker": "Sejlmager",
+            "sawmill": "Savværk",
+            "scaffolder": "Stillads",
+            "sculptor": "Skulptør",
             "shoemaker": "Skomager",
             "signmaker": "Skiltemager",
             "stonemason": "Stenhugger",
             "tailor": "Skrædder",
+            "tiler": "Flliselægger",
             "watchmaker": "Urmager"
           }
         },
@@ -1520,6 +1586,7 @@
             "city_gate": "Byport",
             "citywalls": "Bymur",
             "fort": "Historisk fort",
+            "manor": "Herregård",
             "memorial": "Mindesmærke",
             "milestone": "Kilometersten",
             "mine_shaft": "Mineskakt",
@@ -1620,13 +1687,11 @@
           "terms": "online,wifi,wi-fi,wlan,net,netværk"
         },
         "internet_access/fee": {
-          "label": "Internetadgang",
           "options": {
             "customers": "Forbeholdt kunder",
             "no": "Gratis",
             "yes": "Betaling"
-          },
-          "terms": "wifi,betaling,gebyr"
+          }
         },
         "internet_access/ssid": {
           "label": "Wi-Fi netværksnavn"
@@ -2209,6 +2274,7 @@
             "ice_skate": "Skøjter",
             "nordic": "Nordisk",
             "playground": "Legeplads",
+            "ski_jump": "Skihop",
             "skitour": "Skirute",
             "sled": "Slæde",
             "sleigh": "Kælk",
@@ -3463,6 +3529,10 @@
           "name": "Medborgerhus",
           "terms": "Medborgerhus,forsamlingshus,festsal"
         },
+        "amenity/community_centre/club_home": {
+          "name": "Klubhus",
+          "terms": "Klubhus,aktivitetshus,klublokale"
+        },
         "amenity/community_centre/lgbtq": {
           "name": " LGBTQ+-medborgerhus",
           "terms": "lqbtq,bøsse,lesbisk,homo,homoseksuel,trans,køn,"
@@ -4085,10 +4155,6 @@
         "amenity/theatre": {
           "name": "Teater",
           "terms": "Teater, Revy"
-        },
-        "amenity/theatre/type/amphi": {
-          "name": "Amfiteater",
-          "terms": "skueplads,friluftsscene"
         },
         "amenity/toilets": {
           "name": "Toilet",
@@ -5281,7 +5347,7 @@
         },
         "highway/path/boardwalk": {
           "name": "Plankebro",
-          "terms": "plankebro,boardwalk,gangbro"
+          "terms": "plankebro,bro,boardwalk,gangbro"
         },
         "highway/path/informal": {
           "name": "Trampesti",
@@ -5460,7 +5526,7 @@
           "terms": "fort,befæstning,slot,fæstning"
         },
         "historic/manor": {
-          "name": "Herrgårdssæde",
+          "name": "Herregård",
           "terms": "herregård,adel,gods"
         },
         "historic/memorial": {
@@ -6112,8 +6178,8 @@
           "name": "Rensning af spildevand"
         },
         "man_made/clearcut": {
-          "name": "Rydning",
-          "terms": "Ryddet skov"
+          "name": "Skovrydning",
+          "terms": "Skovrydning,skovfældning,rydning,rendrift"
         },
         "man_made/compass_rose": {
           "name": "Kompasrose"
@@ -6149,6 +6215,10 @@
         "man_made/flagpole": {
           "name": "Flagstang",
           "terms": "Flagstang"
+        },
+        "man_made/fuel_pump": {
+          "name": "Benzinpumpe",
+          "terms": "Benzinpumpe,pumpe,dieselpumpe"
         },
         "man_made/gantry": {
           "name": "Skiltportal",
@@ -7254,7 +7324,7 @@
         },
         "shop/appliance": {
           "name": "Hvidevareforretning",
-          "terms": "hvidevare,køleskab,ovn,vaskemaskine"
+          "terms": "hvidevare,hårde hvidevarer, hård hvidevare,køleskab,ovn,vaskemaskine,tørretumbler,fryser"
         },
         "shop/art": {
           "name": "Kunstbutik",
@@ -7926,7 +7996,7 @@
         },
         "tourism/hostel": {
           "name": "Vandrerhjem",
-          "terms": "Vandrerhjem"
+          "terms": "Vandrerhjem,hostel,motel,hotel"
         },
         "tourism/hotel": {
           "terms": "Hotel, overnatning, seng, sove, værelse"

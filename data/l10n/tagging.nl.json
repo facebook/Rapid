@@ -1897,13 +1897,11 @@
           "terms": "internetverbinding,wifi"
         },
         "internet_access/fee": {
-          "label": "Internettoegang",
           "options": {
             "customers": "Enkel klanten",
             "no": "Gratis",
             "yes": "Betalend"
-          },
-          "terms": "internet,internetverbinding"
+          }
         },
         "internet_access/ssid": {
           "label": "WiFi-netwerknaam",
@@ -2935,7 +2933,7 @@
           "options": {
             "aggregate": "Granulaat",
             "clay": "Klei",
-            "coal": "Kool",
+            "coal": "Steenkool",
             "gold": "Goud",
             "gravel": "Grind",
             "iron_ore": "IJzererts",
@@ -5125,10 +5123,6 @@
         },
         "amenity/theatre": {
           "terms": "concertgebouw,schouwburg,opvoering,optreden,opera,toneelstuk,musical"
-        },
-        "amenity/theatre/type/amphi": {
-          "name": "Amfitheater",
-          "terms": "Romeins theater"
         },
         "amenity/ticket_validator": {
           "name": "Stempelautomaat",
@@ -8196,9 +8190,6 @@
         },
         "piste/nordic": {
           "name": "Langlaufpiste"
-        },
-        "piste/piste": {
-          "name": "Wintersportpad"
         },
         "piste/skitour": {
           "name": "Toerskipad",

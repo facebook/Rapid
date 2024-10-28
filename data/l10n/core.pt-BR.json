@@ -4,11 +4,14 @@
       "download": "baixar",
       "information": "informações",
       "zoom_to": "zoom para",
-      "view_on": "ver no {domain}"
+      "view_on": "ver no {domain}",
+      "visit_website": "visitar site"
     },
     "toolbar": {
       "inspect": "Inspecionar",
-      "add_feature": "Adicionar elemento"
+      "undo_redo": "Desfazer/Refazer",
+      "add_feature": "Adicionar elemento",
+      "rapid_features": "Auxiliar"
     },
     "title": {
       "labeled_and_more": {
@@ -18,6 +21,15 @@
       }
     },
     "modes": {
+      "add_area": {
+        "description": "Adicione edifícios, parques, lagos ou outras áreas ao mapa."
+      },
+      "add_line": {
+        "description": "Adicione ruas, trilhas, riachos ou outras linhas ao mapa."
+      },
+      "add_point": {
+        "description": "Adicione restaurantes, lojas, lixeiras, caixas de correio ou outros pontos ao mapa."
+      },
       "add_note": {
         "description": "Detectou um problema? Deixe outros mapeadores saberem."
       },
@@ -190,6 +202,9 @@
             "one": "Endireitou um ponto.",
             "many": "Endireitou {n} pontos.",
             "other": "Endireitou {n} pontos."
+          },
+          "line": {
+            "one": "Uma linha endireitada."
           }
         },
         "too_bendy": {
@@ -283,6 +298,16 @@
         "has_wikidata_tag": {
           "single": "Esse elemento não pode ser reduzido porque tem uma etiqueta Wikidata.",
           "multiple": "Estes elementos não podem ser reduzidos porque alguns deles possuem etiquetas Wikidata."
+        }
+      },
+      "add_member": {
+        "annotation": {
+          "one": "Adicionado um membro a uma relação."
+        }
+      },
+      "delete_member": {
+        "annotation": {
+          "one": "Removido um membro de uma relação."
         }
       },
       "reorder_members": {
@@ -497,6 +522,9 @@
             "many": " {n} pontos invertidos.",
             "other": " {n} pontos invertidos."
           },
+          "line": {
+            "one": "Uma linha invertida."
+          },
           "feature": {
             "one": "Reverteu um recurso.",
             "many": "{n} recursos revertidos.",
@@ -544,6 +572,10 @@
             "single": {
               "single_node": "Divida esta linha em duas neste ponto.",
               "multiple_node": "Divida essa linha nesses pontos."
+            },
+            "multiple": {
+              "single_node": "Dividir estas linhas neste ponto.",
+              "multiple_node": "Dividir estas linhas nestes pontos."
             }
           },
           "area": {
@@ -743,6 +775,7 @@
       "view_on_osm": "Ver no openstreetmap.org",
       "view_on_osmose": "Ver no osmose.openstreetmap.fr",
       "view_on_keepRight": "Ver no keepright.at",
+      "view_on_maproulette": "Ver em maproulette.org",
       "feature_type": "Tipo de recurso",
       "features": "Recursos",
       "choose_relation": "Escolha uma relação pai",
@@ -785,7 +818,14 @@
       "reset": "redefinir",
       "reset_all": "Reiniciar tudo",
       "display_options": "Opções de exibição",
+      "wayback": {
+        "date": "Data"
+      },
       "contrast": "Constraste",
+      "3dmap": {
+        "description": "Mostrar mapa 3D",
+        "tooltip": "Mostrar um mapa 3D inserido."
+      },
       "minimap": {
         "tooltip": "Afastar a visualização do mapa para facilitar a localização da área atualmente mostrada."
       },
@@ -800,11 +840,14 @@
       "offset": "Arraste em qualquer ponto da área cinza abaixo para ajustar o deslocamento da imagem, ou entre com o valor do deslocamento em metros."
     },
     "map_data": {
+      "title": "Dados do mapa",
       "description": "Dados do Mapa",
+      "data_layers": "Camadas de dados",
       "layers": {
         "osm": {
           "tooltip": "Dados do mapa do OpenStreetMap",
-          "title": "Dados do OpenStreetMap"
+          "title": "Dados do OpenStreetMap",
+          "feature": "Elemento OpenStreetMap"
         },
         "notes": {
           "tooltip": "Observe as notas no OpenStreetMap",
@@ -1022,6 +1065,15 @@
       "like_osm": "Gosta do OpenStreetMap? Conecte-se com outros:",
       "missing": "Há algo faltando nesta lista?",
       "tell_us": "Conte-nos!"
+    },
+    "splash": {
+      "welcome": "Bem-vindo(a) ao {rapidicon}!",
+      "text": "Rapid é um editor amigável, mas poderoso, para o OpenStreetMap, um mapa gratuito do mundo. Se esta é sua primeira vez aqui, clique no botão abaixo para iniciar o tutorial. Qualquer um pode ser um mapeador!\n\nEsta é a versão **{version}** do Rapid. Para mais informações, visite nosso [registro de alterações](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new) e [rastreador de problemas](https://github.com/facebook/Rapid/issues) no GitHub. Divirta-se mapeando! 👍",
+      "walkthrough": "Iniciar o tutorial"
+    },
+    "whats_new": {
+      "welcome_v23": "Bem-vindo(a) ao {rapidicon} v2.3!",
+      "welcome_v24": "Bem-vindo(a) ao {rapidicon} v2.4!"
     },
     "source_switch": {
       "lose_changes": "Você tem alterações não salvas. Trocar o servidor de mapas irá descartar essas alterações. Tem certeza que deseja trocar de servidor?"
@@ -1340,8 +1392,10 @@
     },
     "help": {
       "help": {
+        "welcome": "Bem-vindo(a) ao editor {rapidicon} para [OpenStreetMap](https://www.openstreetmap.org/). Com este editor você pode atualizar o OpenStreetMap diretamente do seu navegador.",
         "open_data": "As edições que você fizer neste mapa ficarão visíveis para todos que usam o OpenStreetMap. Suas edições podem ser baseadas em conhecimento pessoal, pesquisa de campo, ou imagens aéreas ou capturadas no solo. Copiar de fontes comerciais, como Google Maps, [é estritamente proibido](https://www.openstreetmap.org/copyright).",
-        "before_start_h": "Antes de você começar"
+        "before_start_h": "Antes de você começar",
+        "before_start": "Você deve estar familiarizado com o OpenStreetMap e este editor antes de começar a editar. O Rapid contém um passo a passo para lhe ensinar os conceitos básicos de edição do OpenStreetMap. Pressione o botão \"{start_the_walkthrough}\" nesta tela para iniciar o tutorial — leva apenas cerca de 15 minutos."
       },
       "overview": {
         "title": "Visão geral",

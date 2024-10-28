@@ -690,6 +690,11 @@
         "description": "Photographies géo-référencées de 1940 de Balaton Limnological Institute.",
         "name": "Orthophotos EUFAR Balaton"
       },
+      "geoscribble-latest": {
+        "attribution": {
+          "text": "Contributeurs GeoScribble"
+        }
+      },
       "gothenburg-citymap": {
         "attribution": {
           "text": "© Municipalité de Göteborg, CC0"

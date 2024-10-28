@@ -7,6 +7,12 @@
       "EOXAT2018CLOUDLESS": {
         "description": "後処理済みのSentinel 衛星画像(日本では低解像度)"
       },
+      "EOXAT2022CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2衛星 雲なし画像 - (https://s2maps.eu EOX IT Services GmbHによる / Modified Copernicus Sentinel data 2022 を含む)"
+        },
+        "description": "処理済みSentinel衛星画像."
+      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "規約 & フィードバック"
@@ -19,6 +25,10 @@
         "description": "おそらくEsriデフォルトのレイヤより明瞭で正確、しかしやや古いEsriアーカイブ画像。（日本での違いは不明）",
         "name": "Esri World Imagery(精細版)ベータ"
       },
+      "FOMI_2011_2014": {
+        "description": "政府主導の緑地範囲オルソ写真（全国範囲・40cm/px解像度）\nより正確な基準画像がない場合、この画像を位置合わせの為に使用できます。画像はWEBP形式のため、JOSMではwebpプラグインが必要です。",
+        "name": "FÖMI オルソ写真 2011-2014 (WEBP形式)"
+      },
       "MAPNIK": {
         "description": "OpenStreetMap標準レイヤーです。",
         "name": "OpenStreetMap (標準)"
@@ -29,6 +39,13 @@
         },
         "description": "Mapboxが提供する、世界各地の衛星画像と航空画像のベースマップをまとめたラスタータイルセット",
         "name": "Mapbox衛星画像"
+      },
+      "ODOT_TIMS_Road_Inventory": {
+        "attribution": {
+          "text": "オハイオ州交通局"
+        },
+        "description": "オハイオ州交通局 (ODOT) - 交通情報マッピングシステム (TIMS) 道路目録 (2024/6公開).",
+        "name": "オハイオ州運輸局 道路目録"
       },
       "OSM_Inspector-Addresses": {
         "name": "OSM Inspector: 住所"
@@ -60,6 +77,9 @@
       "US-TIGER-Roads-2019": {
         "description": "黄 = US Censusからのパブリックドメインの地図データ。赤 = penStreetMapに無いデータ。"
       },
+      "US-TIGER-Roads-2023": {
+        "description": "黄 = US Censusからのパブリックドメインの地図データ。赤 = OpenStreetMapに無いデータ。"
+      },
       "US_Forest_Service_roads_overlay": {
         "description": "Highway: 緑枠 = unclassified.ブラウン枠 = track. Surface: gravel = ライトブラウン, Asphalt = 黒, paved = グレイ, ground =白, concrete = 青, grass = 緑. Seasonal = 白棒"
       },
@@ -89,6 +109,13 @@
       },
       "cyclosm": {
         "description": "CyclOSMは、サイクリングを意識してデザインされた地図スタイルです。OpenStreetMapのデータを活用し、綺麗で実用的なサイクリング用マップを作成しています。"
+      },
+      "geoscribble-latest": {
+        "attribution": {
+          "text": "「GeoScribble」協力者"
+        },
+        "description": "「Every Door」アプリによる測量メモ。直近3週間程度のデータ。",
+        "name": "「GeoScribble」での最新メモ"
       },
       "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
         "attribution": {
@@ -150,6 +177,13 @@
       },
       "osm-mapnik-german_style": {
         "name": "OpenStreetMap (ドイツスタイル)"
+      },
+      "osmse-ekonomiska": {
+        "description": "\"Economic maps\"のスキャン ca. 1950–1978",
+        "name": "Lantmäteriet 経済地図 1950–1978"
+      },
+      "osmse-generalstab": {
+        "description": "\"Generalstabskartan\"のスキャン ca. 1859–1979"
       },
       "stamen-terrain-background": {
         "name": "Stamen 地形図"

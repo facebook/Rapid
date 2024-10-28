@@ -826,7 +826,7 @@
           "terms": "顏色,色彩"
         },
         "comment": {
-          "label": "變更集評論",
+          "label": "變更集注釋",
           "placeholder": "簡單摘要你的貢獻 (必填)"
         },
         "communication_multi": {
@@ -2103,13 +2103,13 @@
           "terms": "上網,網路連線,連網"
         },
         "internet_access/fee": {
-          "label": "上網費用",
+          "label": "網路存取費用",
           "options": {
             "customers": "僅客戶",
             "no": "免費",
             "yes": "付費"
           },
-          "terms": "上網費用,網路連線費用,連網費用"
+          "terms": "網路連線費用"
         },
         "internet_access/ssid": {
           "label": "無線網路名稱",
@@ -2765,7 +2765,7 @@
             "sheds": "私人停車棚",
             "shoulder": "路肩",
             "street_side": "路邊",
-            "surface": "平面",
+            "surface": "地面",
             "underground": "地下"
           }
         },
@@ -3856,7 +3856,7 @@
           "terms": "支撐,支柱,支架,支座,固定"
         },
         "surface": {
-          "label": "路面鋪裝",
+          "label": "表面鋪裝",
           "options": {
             "artificial_turf": "人工草皮",
             "asphalt": "柏油",
@@ -3885,7 +3885,7 @@
             "wood": "木頭",
             "woodchips": "木片"
           },
-          "terms": "路面鋪裝,路面鋪設,路面,道路鋪面"
+          "terms": "路面鋪裝,路面鋪設,路面,道路鋪面,地坪,地面"
         },
         "surveillance": {
           "label": "監視類型",
@@ -5643,8 +5643,8 @@
           "terms": "劇場,戲院"
         },
         "amenity/theatre/type/amphi": {
-          "name": "羅馬圓形劇場",
-          "terms": "羅馬圓形劇場"
+          "name": "圓形劇場",
+          "terms": "圓形劇場,露天劇場,露天劇院"
         },
         "amenity/ticket_validator": {
           "name": "驗票閘門",
@@ -6000,8 +6000,8 @@
           "name": "扶手"
         },
         "barrier/hedge": {
-          "name": "籬笆",
-          "terms": "籬笆"
+          "name": "樹籬",
+          "terms": "樹籬"
         },
         "barrier/height_restrictor": {
           "name": "限高門架",
@@ -6243,7 +6243,6 @@
           "terms": "旅館建築,酒店建築,旅店建築,賓館建築,旅館大樓"
         },
         "building/house": {
-          "name": "房屋,",
           "terms": "房屋,住宅,獨棟房屋,獨棟住宅"
         },
         "building/house/terraced": {
@@ -6766,7 +6765,7 @@
         },
         "ford": {
           "name": "渡水點",
-          "terms": "渡水點"
+          "terms": "渡水,涉水,過水,跳石,汀步"
         },
         "ford_line": {
           "name": "渡水點"
@@ -7136,8 +7135,8 @@
           "terms": "住宅區道路"
         },
         "highway/rest_area": {
-          "name": "休息點",
-          "terms": "休息點"
+          "name": "休息站",
+          "terms": "休息區,休息站,服務區"
         },
         "highway/road": {
           "name": "不明類型的道路",
@@ -7231,7 +7230,7 @@
           "terms": "道路反射鏡,反射鏡"
         },
         "highway/traffic_signals": {
-          "name": "消通號誌",
+          "name": "交通號誌",
           "terms": "交通號誌,號誌,紅綠燈"
         },
         "highway/trailhead": {
@@ -7402,7 +7401,7 @@
           "name": "蓄水池"
         },
         "landuse/brownfield": {
-          "name": "棕色地",
+          "name": "棕地",
           "terms": "棕色地,受污染放置待恢復重開發地"
         },
         "landuse/cemetery": {
@@ -7569,8 +7568,8 @@
           "terms": "零售商場區"
         },
         "landuse/salt_pond": {
-          "name": "鹽田",
-          "terms": "鹽田"
+          "name": "鹽蒸發池",
+          "terms": "蒸發池,鹽田"
         },
         "landuse/vineyard": {
           "name": "葡萄園",
@@ -7616,8 +7615,8 @@
           "terms": "保齡球館"
         },
         "leisure/common": {
-          "name": "共有地",
-          "terms": "共有地,公有地"
+          "name": "公共活動地",
+          "terms": "公共活動地,私有共用地"
         },
         "leisure/dance": {
           "name": "舞廳",
@@ -9031,8 +9030,7 @@
           "terms": "跨國滑雪路線"
         },
         "piste/piste": {
-          "name": "雪地運動路線",
-          "terms": "雪地運動路線"
+          "name": "雪地運動路徑/滑雪道（未指定類型）"
         },
         "piste/ski_jump": {
           "name": "滑雪跳台",
@@ -9223,8 +9221,8 @@
           "terms": "彈跳床"
         },
         "playground/tunnel_tube": {
-          "name": "過隧道",
-          "terms": "過隧道"
+          "name": "爬行隧道",
+          "terms": "兒童,鑽爬,隧道"
         },
         "playground/water": {
           "name": "戲水設施",
@@ -9289,12 +9287,12 @@
           "terms": "風力渦輪"
         },
         "power/line": {
-          "name": "架空電纜",
-          "terms": "架空電纜"
+          "name": "特高壓架空電線",
+          "terms": "架空電線"
         },
         "power/minor_line": {
-          "name": "非超高壓電纜",
-          "terms": "非超高壓電纜"
+          "name": "高壓電線",
+          "terms": "高壓電線"
         },
         "power/plant": {
           "name": "發電廠",
@@ -9313,8 +9311,8 @@
           "terms": "水力發電廠,水力電廠"
         },
         "power/plant/source/method/photovoltaic": {
-          "name": "太陽能板發電場",
-          "terms": "太陽能板發電場"
+          "name": "太陽能發電場",
+          "terms": "太陽能發電場,太陽能板"
         },
         "power/plant/source/nuclear": {
           "name": "核能發電廠",
@@ -9585,8 +9583,8 @@
           "terms": "單軌電車軌道"
         },
         "railway/monorail/hanging": {
-          "name": "懸掛式單軌電車列車",
-          "terms": "懸掛式單軌電車列車"
+          "name": "懸掛式單軌鐵路",
+          "terms": "懸掛式,單軌,電車,列車,空軌"
         },
         "railway/narrow_gauge": {
           "name": "窄軌鐵路軌道",
@@ -10329,7 +10327,7 @@
           "terms": "售票處,售票亭"
         },
         "shop/tiles": {
-          "name": "磁磚專賣店",
+          "name": "瓷磚專賣店",
           "terms": "磁磚專賣店"
         },
         "shop/tobacco": {
@@ -10581,15 +10579,15 @@
         },
         "tourism/zoo/petting": {
           "name": "可愛動物園",
-          "terms": "可愛動物園"
+          "terms": "可愛動物園,寵物"
         },
         "tourism/zoo/safari": {
-          "name": "大型野生動物園",
-          "terms": "大型野生動物園"
+          "name": "野生動物園",
+          "terms": "野生動物園,猛獸,免下車,放養"
         },
         "tourism/zoo/wildlife": {
-          "name": "野生動物園",
-          "terms": "野生動物園"
+          "name": "土著動物園",
+          "terms": "野生動物園,土著,本地"
         },
         "traffic_calming": {
           "name": "道路減速設施",
@@ -10616,8 +10614,8 @@
           "terms": "橫溝"
         },
         "traffic_calming/hump": {
-          "name": "大型減速丘",
-          "terms": "大型減速丘"
+          "name": "減速丘",
+          "terms": "減速丘"
         },
         "traffic_calming/island": {
           "name": "分隔島",
@@ -10632,8 +10630,8 @@
           "terms": "減速標線"
         },
         "traffic_calming/table": {
-          "name": "減速平面",
-          "terms": "減速平面"
+          "name": "減速平台",
+          "terms": "減速平台,減速台"
         },
         "traffic_calming/yes": {
           "name": "道路減速設施 (未註明類型)"
@@ -10826,7 +10824,7 @@
         },
         "waterway/canal": {
           "name": "運河",
-          "terms": "運河,大水渠"
+          "terms": "渠,運河,水道,水路,圳"
         },
         "waterway/canal/lock": {
           "name": "運河船閘",
@@ -10877,8 +10875,8 @@
           "terms": "小溪"
         },
         "waterway/stream_intermittent": {
-          "name": "水流間歇不定",
-          "terms": "水流間歇不定"
+          "name": "間歇溪流",
+          "terms": "間歇,時令,季節,斷流,不定,溪"
         },
         "waterway/tidal_channel": {
           "name": "潮汐水道",

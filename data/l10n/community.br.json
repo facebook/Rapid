@@ -97,7 +97,8 @@
       "openstreetmapuzbekistan": "OpenStreetMap Ouzbekistan",
       "openstreetmapvietnam": "OpenStreetMap Viêt Nam",
       "openstreetmapwestbengal": "OpenStreetMap Kornôg Bengal",
-      "openstreetmapwesternsahara": "OpenStreetMap Sahara ar C'hornôg"
+      "openstreetmapwesternsahara": "OpenStreetMap Sahara ar C'hornôg",
+      "swissopenstreetmap": "OpenStreetMap Bro-Suis"
     },
     "_defaults": {
       "aparat": {
@@ -454,9 +455,6 @@
     "ireland-chapter": {
       "description": "Ni a sikour diorren ha gwellaat OpenStreetMap en Iwerzhon."
     },
-    "ireland-meetup": {
-      "description": "Emvodoù evit forzh piv a zo dedennet gant OpenStreetMap"
-    },
     "is-chapter": {
       "description": "Ni a sikour diorren ha gwellaat OpenStreetMap en Island."
     },
@@ -511,6 +509,9 @@
     },
     "MapColabora-twitter": {
       "description": "Kont Twitter Mapeado Colaborativo / Geoinquietos Zaragoza"
+    },
+    "MapLYH": {
+      "description": "Strollad MapLYH"
     },
     "MappingDC-meetup": {
       "description": "Gwellaat OpenStreetMap tro-dro da Washington D.C."
@@ -840,6 +841,9 @@
     },
     "vn-mailinglist": {
       "description": "Lizher-kelaouiñ OpenStreetMap vietnamat"
+    },
+    "vn-wiki": {
+      "description": "Pajenn Wiki {community}"
     },
     "YerCizenler-TR": {
       "description": "Kevredigezh Yer Çizenler Mapping for Everyone"

@@ -30,14 +30,17 @@
     "modes": {
       "add_area": {
         "title": "Fläche",
+        "description": "Gebäude, Parks, Seen oder andere Flächen auf der Karte hinzufügen.",
         "filter_tooltip": "Flächen"
       },
       "add_line": {
         "title": "Linie",
+        "description": "Straßen, Wanderwege, Bäche oder andere Linien auf der Karte hinzufügen.",
         "filter_tooltip": "Linien"
       },
       "add_point": {
         "title": "Punkt",
+        "description": "Geschäfte, Papierkörbe, Briefkästen oder andere Punkte auf der Karte hinzufügen.",
         "filter_tooltip": "Punkte"
       },
       "add_note": {
@@ -582,6 +585,10 @@
             "single": {
               "single_node": "Teile diese Linie an diesem Punkt in zwei Linien.",
               "multiple_node": "Teile diese Linie an diesen Punkten."
+            },
+            "multiple": {
+              "single_node": "Diese Linien an diesem Punkt teilen.",
+              "multiple_node": "Diese Linien an diesen Punkten teilen."
             }
           },
           "area": {
@@ -709,6 +716,7 @@
     "loading_auth": "Mit OpenStreetMap verbinden …",
     "report_a_bug": "Einen Fehler melden",
     "help_translate": "Beim Übersetzen helfen",
+    "example": "Beispiel:",
     "feature_info": {
       "hidden_warning": {
         "one": "{count} versteckte Objekte",
@@ -720,6 +728,7 @@
         "error": "Das OpenStreetMap API ist nicht erreichbar. Deine Bearbeitungen sind lokal gesichert. Prüfe deine Netzwerkverbindung.",
         "offline": "Das OpenStreetMap API ist offline. Deine Bearbeitungen sind lokal gesichert. Bitte probiere es später noch einmal.",
         "readonly": "Das OpenStreetMap API erlaubt aktuell kein Speichern. Du kannst deine Bearbeitungen fortsetzen, aber du kannst deine Änderungen erst später speichern.",
+        "ratelimit": "Zu viele Daten von OpenStreetMap heruntergeladen. Bitte in {seconds} Sekunden erneut versuchen oder das Konto wechseln.",
         "local_storage_full": "Du hast zu viele Änderungen vorgenommen, um eine Sicherungskopie zu erstellen. Du solltest deine Änderungen jetzt speichern."
       },
       "retry": "Wiederholung"
@@ -861,6 +870,7 @@
       "unknown": "Unbekannt",
       "incomplete": "<nicht heruntergeladen>",
       "feature_list": "Objekte suchen",
+      "multiselect": "Mehrfachauswahl",
       "check": {
         "yes": "Ja",
         "no": "Nein",
@@ -905,6 +915,9 @@
       "reset": "Zurücksetzen",
       "reset_all": "Alles zurücksetzen",
       "display_options": "Anzeige-Optionen",
+      "wayback": {
+        "date": "Datum"
+      },
       "brightness": "Helligkeit",
       "contrast": "Kontrast",
       "saturation": "Sättigung",
@@ -938,6 +951,7 @@
           "title": "OpenStreetMap Hinweise"
         },
         "maproulette": {
+          "comment": "Bitte bestätigen",
           "cancel": "Abbrechen"
         },
         "keepRight": {
@@ -1132,6 +1146,13 @@
           "tooltip": "Deaktiviere dieses Kästchen damit Symbole von Drittanbietern wie Wikimedia Commons, Facebook oder Twitter nicht angezeigt werden."
         }
       },
+      "map_interaction": {
+        "mouse_wheel": {
+          "auto": {
+            "title": "Automatisch"
+          }
+        }
+      },
       "color_selection": {
         "default": "Standard"
       }
@@ -1200,6 +1221,7 @@
       "tags": "Eigenschaften"
     },
     "rapid_feature_toggle": {
+      "worldwide": "Weltweit",
       "esri": {
         "remove": "Entfernen"
       }
@@ -1556,7 +1578,8 @@
       "tooltip": "Straßenfotos von Mapillary"
     },
     "mapillary_signs": {
-      "title": "Verkehrszeichen"
+      "title": "Verkehrszeichen",
+      "traffic_sign": "Verkehrsschild"
     },
     "kartaview": {
       "tooltip": "Straßenfotos von KartaView"

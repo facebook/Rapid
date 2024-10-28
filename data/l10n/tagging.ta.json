@@ -598,7 +598,6 @@
           }
         },
         "internet_access/fee": {
-          "label": "இணைய வசதி",
           "options": {
             "customers": "வாடிக்கையாளர்கள் மட்டும்",
             "no": "இலவசம்",

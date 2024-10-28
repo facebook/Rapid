@@ -1433,13 +1433,11 @@
           "terms": "['İnternet Bağlantısı' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
         },
         "internet_access/fee": {
-          "label": "İnternet Erişimi",
           "options": {
             "customers": "Sadece Müşteriler",
             "no": "Ücretsiz",
             "yes": "Ödemeli"
-          },
-          "terms": "['İnternet Erişimi' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
+          }
         },
         "internet_access/ssid": {
           "label": "Wifi Ağı İsmi",
@@ -3557,9 +3555,6 @@
         "amenity/theatre": {
           "name": "Tiyatro",
           "terms": "Tiyatro"
-        },
-        "amenity/theatre/type/amphi": {
-          "name": "Amfitiyatro"
         },
         "amenity/toilets": {
           "terms": "Tuvalet"
@@ -5991,9 +5986,6 @@
         },
         "piste/nordic": {
           "name": "Kros-Kayağı Kayak Patikası"
-        },
-        "piste/piste": {
-          "name": "Kar Sporları Yolu / Piste"
         },
         "piste/skitour": {
           "name": "Kayak Turu Yolu"

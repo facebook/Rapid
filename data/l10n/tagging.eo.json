@@ -167,17 +167,21 @@
             "province!cn": "Provinco/Municipo/Aŭtonomia regiono/Speciala administra divido",
             "province!jp": "Gubernio",
             "quarter": "Kvartalo",
-            "state": "Ŝtato",
+            "state": "Subŝtato",
             "street": "Strato",
             "subdistrict": "Subdistrikto",
             "subdistrict!vn": "Kvartalo/Komunumo/Urbeto",
             "suburb": "Suburbo",
+            "suburb!jp": "Urbego kun Esceptoj (政令市)",
             "unit": "Unueco"
           },
           "terms": "adreso,domnumero,stratnomo"
         },
         "admin_level": {
           "label": "Administra nivelo"
+        },
+        "advertising": {
+          "label": "Speco"
         },
         "aerialway": {
           "label": "Speco"
@@ -227,7 +231,8 @@
           "terms": "aerkondiĉigilo,klimatizilo,malvarmigilo"
         },
         "alt_name": {
-          "label": "Alternativa nomo"
+          "label": "Alternativa nomo",
+          "terms": "neoficiala nomo,alia nomo,plia nomo"
         },
         "amenity": {
           "label": "Speco"
@@ -242,7 +247,12 @@
           "label": "Por bestoj"
         },
         "archaeological_site": {
+          "label": "Speco",
           "options": {
+            "baths": "Banejo",
+            "city": "Historia urbo",
+            "crannog": "Crannóg (artefarita insulo)",
+            "enclosure": "Ĉirkaŭbaraĵo",
             "necropolis": "Nekropolo"
           }
         },
@@ -1346,13 +1356,11 @@
           "terms": "interreto,interretaliro,vifio,sendrata reto"
         },
         "internet_access/fee": {
-          "label": "Pago por interret-aliro",
           "options": {
             "customers": "Senpaga por klientoj",
             "no": "Senpaga",
             "yes": "Pagenda"
-          },
-          "terms": "interreto,interretaliro,vifio,sendrata reto"
+          }
         },
         "internet_access/ssid": {
           "label": "Nomo de sendrata reto",
@@ -3750,10 +3758,6 @@
         "amenity/theatre": {
           "name": "Teatrejo",
           "terms": "teatro"
-        },
-        "amenity/theatre/type/amphi": {
-          "name": "Amfiteatro",
-          "terms": "teatro,spektejo"
         },
         "amenity/ticket_validator": {
           "name": "Bilet-kontrolilo",
@@ -6523,10 +6527,6 @@
         "piste/nordic": {
           "name": "Skivojo nordia (skikurada)",
           "terms": "skitrako,skiado"
-        },
-        "piste/piste": {
-          "name": "Skivojo",
-          "terms": "skitrako,vintrosportoj,skiado,skikurso,neĝtabulado,sketado"
         },
         "piste/skitour": {
           "name": "Skivojo ski-ekskursuma",

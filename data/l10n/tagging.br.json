@@ -255,6 +255,13 @@
         "area/highway": {
           "label": "Seurt"
         },
+        "armrest": {
+          "label": "Brenkoù",
+          "options": {
+            "no": "Brenk ebet",
+            "undefined": "Dianav"
+          }
+        },
         "artist": {
           "label": "Arzour"
         },
@@ -587,6 +594,9 @@
             "fixed": "Dreset"
           }
         },
+        "camp_site": {
+          "label": "Seurt"
+        },
         "capacity": {
           "label": "Barregezh",
           "terms": "dalc'had,dalc'h,plasoù,kadorioù,gobed"
@@ -690,6 +700,12 @@
         "communication_multi": {
           "label": "Seurt kehentiñ",
           "terms": "Seurt kehentiñ"
+        },
+        "community_centre": {
+          "label": "Seurt",
+          "options": {
+            "cultural_centre": "Kreizenn sevenadurel"
+          }
         },
         "construction": {
           "label": "Seurt"
@@ -1644,13 +1660,11 @@
           "terms": "wifi,internet,kenrouedad,kennask,moned"
         },
         "internet_access/fee": {
-          "label": "Moned ouzh ar genrouedad",
           "options": {
             "customers": "Pratikoù nemetken",
             "no": "Digoust",
             "yes": "Paeet"
-          },
-          "terms": "wifi,internet,kenrouedad,kennask,moned"
+          }
         },
         "internet_access/ssid": {
           "label": "Anv ar rouedad Wifi",
@@ -2951,6 +2965,7 @@
           "options": {
             "artificial_turf": "Leton sintetek",
             "asphalt": "Asfalt",
+            "clay": "Pri",
             "concrete": "Betoñs",
             "dirt": "Douar",
             "fine_gravel": "Grouan munut",
@@ -3634,6 +3649,10 @@
         "amenity/community_centre": {
           "name": "Sal liezimplij"
         },
+        "amenity/community_centre/cultural_centre": {
+          "name": "Kreizenn sevenadurel",
+          "terms": "Kreizenn sevenadurel"
+        },
         "amenity/community_centre/lgbtq": {
           "name": "Kreizenn LGDTQ+"
         },
@@ -4243,8 +4262,8 @@
           "terms": "C'hoariva,teatr,pezh c'hoari,c'hoari,aktour,sonerezh,trajedienn,drama,komedienn,fentc'hoari"
         },
         "amenity/theatre/type/amphi": {
-          "name": "Selaouva",
-          "terms": "añfiteatr,c'hoariva,kelc'hva,selaouva,amfiteatr"
+          "name": "Añfiteatr",
+          "terms": "Añfiteatr,kelc'hva,selaouva,amfiteatr"
         },
         "amenity/ticket_validator": {
           "name": "Stamper tikedennoù",
@@ -7386,6 +7405,10 @@
         "shop/hairdresser": {
           "name": "Perukenner",
           "terms": "perukenner,ficher,ficherez,blev,ficher-blev,ficherez-vlev,peruker,troc'her,troc'herez,troc'her-blev,troc'herez-vlev,barver,perukerezh,perukennerezh"
+        },
+        "shop/hairdresser/barber": {
+          "name": "Barver",
+          "terms": "barver, perukenner"
         },
         "shop/hairdresser_supply": {
           "name": "Stal dafar perukenner",

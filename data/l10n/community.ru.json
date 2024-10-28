@@ -241,11 +241,18 @@
       "reddit": {
         "name": "{community} в Reddit"
       },
+      "signal": {
+        "description": "Присоединиться к часту в Signal"
+      },
+      "slack": {
+        "name": "{community} в Slack"
+      },
       "telegram": {
         "name": "{community} в Telegram",
         "description": "Присоединяйтесь к нашему Telegram чату"
       },
       "threads": {
+        "name": "{community} в Threads",
         "description": "Подписывайся на нас в Threads"
       },
       "tiktok": {
@@ -340,6 +347,10 @@
     "OSM-Colorado": {
       "name": "OpenStreetMap Колорадо",
       "extendedDescription": " OpenStreetMap (OSM) Colorado - это местное сотрудничество людей, заинтересованных в том, чтобы внести свой вклад в создание бесплатных карт. Мы призываем всех наших картографов организовывать или предлагать картографические мероприятия по всему штату. Мероприятия Meetup могут быть простыми социальными мероприятиями, обучением от базового до продвинутого уровня OSM или вечеринками по составлению карт сообщества."
+    },
+    "OSM-Discord": {
+      "name": "OpenStreetMap в Discord",
+      "description": "Неофициальный, поддерживаемый сообществом сервер Discord. Доступны каналы отдельных регионов"
     },
     "OSM-Discourse": {
       "name": "Форум сообщества OpenStreetMap",

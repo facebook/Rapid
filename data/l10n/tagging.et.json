@@ -1784,7 +1784,8 @@
             "customers": "Ainult külalistele",
             "no": "Tasuta",
             "yes": "Tasuline"
-          }
+          },
+          "terms": "võrguühendus,wifi"
         },
         "junction/ref_oneway": {
           "label": "Ristmiku number",
@@ -1887,7 +1888,8 @@
           "label": "Valgustatud"
         },
         "loc_name": {
-          "label": "Kohalik nimi"
+          "label": "Kohalik nimi",
+          "terms": "kohapealne, paikkondlik, paiklik, lokaalne, kodune"
         },
         "location": {
           "label": "Asukoht"
@@ -2082,7 +2084,8 @@
           "placeholder": "Üldlevinud nimi (kui on)"
         },
         "nat_name": {
-          "label": "Riigiülene nimi"
+          "label": "Rahvuslik nimi",
+          "terms": "riiklik"
         },
         "natural": {
           "label": "Looduslik"
@@ -2191,7 +2194,8 @@
           }
         },
         "official_name": {
-          "label": "Ametlik nimi"
+          "label": "Ametlik nimi",
+          "terms": " ofitsiaalne, formaalne"
         },
         "oneway": {
           "label": "Ühesuunaline",
@@ -2231,6 +2235,14 @@
         },
         "operator": {
           "label": "Operaator"
+        },
+        "organic": {
+          "label": "Mahetooted",
+          "options": {
+            "no": "Puuduvad",
+            "only": "Kõik kaubad",
+            "yes": "Osa kaubast"
+          }
         },
         "orientation/orientation_parking": {
           "label": "Suund"
@@ -2502,7 +2514,8 @@
           "placeholder": "näiteks A5"
         },
         "reg_name": {
-          "label": "Piirkondlik nimi"
+          "label": "Piirkondlik nimi",
+          "terms": "regionaalne"
         },
         "relation": {
           "label": "Tüüp"
@@ -3619,7 +3632,7 @@
           "name": "Kihelkonna seltsimaja"
         },
         "amenity/community_centre/village_hall": {
-          "name": "Küla seltsimaja"
+          "name": "Küla seltsimaja\nKülamaja"
         },
         "amenity/community_centre/youth_centre": {
           "name": "Noortekeskus"
@@ -4312,7 +4325,8 @@
           "terms": "teatrihoone, teatrimaja, teatrilava, lavalauad"
         },
         "amenity/theatre/type/amphi": {
-          "name": "Amfiteater"
+          "name": "Amfiteater",
+          "terms": "antiikteater,väliteater,vabaõhu"
         },
         "amenity/ticket_validator": {
           "name": "Piletite valideerija"
@@ -5860,7 +5874,7 @@
         },
         "leisure/firepit": {
           "name": "Lõkkease",
-          "terms": "Lõkkekoht"
+          "terms": "lõkkekoht,tulease,jaanituli,laagrituli,laagrilõke"
         },
         "leisure/fishing": {
           "name": "Kalapüügikoht"
@@ -6923,6 +6937,9 @@
         "pipeline": {
           "name": "Torujuhtme objekt"
         },
+        "piste/piste": {
+          "name": "Talispordi rada (tüüp on määratlemata)"
+        },
         "piste/ski_jump": {
           "name": "Suusahüpperada"
         },
@@ -7576,7 +7593,8 @@
           "name": "Juuksurisalong"
         },
         "shop/hairdresser/barber": {
-          "name": "Habemeajaja"
+          "name": "Habemeajaja",
+          "terms": "raseerija,barberšopp"
         },
         "shop/hairdresser_supply": {
           "name": "Juuksuritarvikute pood"

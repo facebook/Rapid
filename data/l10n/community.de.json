@@ -172,7 +172,7 @@
         "description": "Folge uns auf 𝕏"
       },
       "xmpp": {
-        "description": "Nimm an unserem XMPP-Community-Chat teil: {url}"
+        "description": "{url}Nimm an unserem XMPP-Community-Chat teil:"
       },
       "youtube": {
         "name": "{community} auf YouTube",
@@ -496,9 +496,6 @@
     },
     "ireland-matrix": {
       "description": "Ein Matrix gateway für den OSM Irland IRC channel: {url}"
-    },
-    "ireland-meetup": {
-      "description": "Treffen von allen die an OpenStreetMap interessiert sind"
     },
     "is-chapter": {
       "description": "Wir helfen OpenStreetMap in Island beim besser und größer werden."

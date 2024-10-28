@@ -321,13 +321,13 @@
             "big_wheel": "Ruota panoramica",
             "bumper_car": "Autoscontro",
             "carousel": "Carosello",
-            "dark_ride": "Giro oscuro",
-            "drop_tower": "Giro della torre a caduta",
-            "kiddie_ride": "Giro per bambini",
-            "log_flume": "Log canale",
+            "dark_ride": "Attrazione spaventosa",
+            "drop_tower": "Torre a caduta",
+            "kiddie_ride": "Per bambini",
+            "log_flume": "Tronchi galleggianti",
             "maze": "Labirinto",
-            "pirate_ship": "Giro in nave pirata",
-            "river_rafting": "Giro sulle rapide del fiume",
+            "pirate_ship": "Nave pirata",
+            "river_rafting": "Rapide del fiume",
             "roller_coaster": "Montagne russe",
             "summer_toboggan": "Slittino estivo",
             "swing_carousel": "Giostra oscillante",
@@ -1907,7 +1907,6 @@
           "terms": "wifi,wlan"
         },
         "internet_access/fee": {
-          "label": "Accesso a internet",
           "options": {
             "customers": "Solo clienti",
             "no": "Gratuito",
@@ -5008,10 +5007,6 @@
           "name": "Teatro",
           "terms": "teatro,spettacoli,giochi,musical"
         },
-        "amenity/theatre/type/amphi": {
-          "name": "Anfiteatro",
-          "terms": "anfiteatro,all'aperto,greco,teatro"
-        },
         "amenity/ticket_validator": {
           "name": "Validatore di biglietti"
         },
@@ -5212,7 +5207,7 @@
           "name": "Giostra per bambini"
         },
         "attraction/log_flume": {
-          "name": "Canale tronco"
+          "name": "Tronchi galleggianti"
         },
         "attraction/maze": {
           "name": "Labirinto",
@@ -5252,12 +5247,12 @@
           "terms": "blocco,pietra,macigno"
         },
         "barrier/bollard": {
-          "name": "Colonnina",
-          "terms": "Colonnina"
+          "name": "Paletto",
+          "terms": "Colonnina,paracarro,dissuasore mobile,dissuasore,panettone"
         },
         "barrier/bollard_line": {
-          "name": "Fila di colonnine",
-          "terms": "colonnine,riga di colonne, riga di colonnine"
+          "name": "Fila di paletti",
+          "terms": "colonnine,riga di colonne, riga di colonnine,fila di paletti,fila di dissuasori,fila di panettoni,fila di paracarri"
         },
         "barrier/border_control": {
           "name": "Controllo frontaliero",
@@ -7913,9 +7908,6 @@
         },
         "piste/nordic": {
           "name": "Pista da sci di fondo"
-        },
-        "piste/piste": {
-          "name": "Pista / Pista per sport invernali"
         },
         "piste/skitour": {
           "name": "Pista per sci alpinismo",

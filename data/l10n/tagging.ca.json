@@ -224,6 +224,9 @@
           "label": "Aire condicionat",
           "terms": "aire condicionat,  climatització, condicionament de l'aire, sistema de refredament, refrigeració"
         },
+        "alt_name": {
+          "label": "Nom Alternatiu"
+        },
         "amenity": {
           "label": "Tipus"
         },
@@ -1953,13 +1956,11 @@
           "terms": "wifi, wlan, connexió a internet, router, internet, xarxa"
         },
         "internet_access/fee": {
-          "label": "Accés a internet",
           "options": {
             "customers": "Només per a clients",
             "no": "Gratuït",
             "yes": "De pagament"
-          },
-          "terms": "wifi, wlan, connexió a internet, router, internet, xarxa, taxa"
+          }
         },
         "internet_access/ssid": {
           "label": "Nom de la xarxa Wifi",
@@ -4434,7 +4435,7 @@
           "name": "Llar d'avis"
         },
         "amenity/parcel_locker": {
-          "name": "Armari intel·ligent",
+          "name": "Bústia intel·ligent",
           "terms": "parcel locker,locker,parcel,paquets,bústia,comerç,comerç en línia,comerç online,bústia intel·ligent,casiller"
         },
         "amenity/parking": {
@@ -4718,9 +4719,6 @@
         "amenity/theatre": {
           "name": "Teatre",
           "terms": "Cinema, Sala de Cine, Complex de cines, edifici de cines, sala de cine"
-        },
-        "amenity/theatre/type/amphi": {
-          "name": "Amfiteatre"
         },
         "amenity/ticket_validator": {
           "name": "Validador de bitllets"
@@ -6863,9 +6861,6 @@
         },
         "piste/nordic": {
           "name": "Camí per esquí de muntanya"
-        },
-        "piste/piste": {
-          "name": "Camí / pista per esports de neu"
         },
         "place": {
           "name": "Lloc"

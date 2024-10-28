@@ -226,6 +226,9 @@
           "label": "Klimatizace",
           "terms": "chladící systém,chlazení"
         },
+        "alt_name": {
+          "label": "Alternativní název"
+        },
         "amenity": {
           "label": "Typ"
         },
@@ -262,6 +265,11 @@
         },
         "area/highway": {
           "label": "Typ"
+        },
+        "armrest": {
+          "options": {
+            "undefined": "Neznámý"
+          }
         },
         "artist": {
           "label": "Umělec"
@@ -686,6 +694,22 @@
             "panning": "Otočná"
           }
         },
+        "camp_site": {
+          "options": {
+            "deluxe": {
+              "description": "Plně servisované a s dalším vybavením, jako je prádelna, bazén nebo podobná rekreační zařízení.",
+              "title": "Deluxe (nabízí prádelnu nebo bazén atd.)"
+            },
+            "serviced": {
+              "description": "K dispozici jsou toalety, voda, sprchy a elektřina.",
+              "title": "Obsluhované (nabízí sprchy a elektřinu)"
+            },
+            "standard": {
+              "description": "V blízkosti jsou k dispozici toalety a voda.",
+              "title": "Standardní (nabízí toalety a vodu)"
+            }
+          }
+        },
         "capacity": {
           "label": "Kapacita",
           "terms": "objem,maximální,největší,nejvíce,limit,omezení"
@@ -802,6 +826,18 @@
         "communication_multi": {
           "label": "Typ komunikace",
           "terms": "druh komunikace,cesta,typ,druh,druhy,silnice,cesty"
+        },
+        "community_centre": {
+          "label": "Typ",
+          "options": {
+            "club_home": "Domácí klub",
+            "community_hall": "Společenský sál",
+            "cultural_centre": "Kulturní centrum",
+            "family_centre": "Rodinné centrum",
+            "parish_hall": "Farní síň",
+            "village_hall": "Obecní úřad",
+            "youth_centre": "Centrum pro mládež"
+          }
         },
         "connectivity": {
           "label": "Připojení"
@@ -2038,13 +2074,11 @@
           "terms": "wifi,wlan"
         },
         "internet_access/fee": {
-          "label": "Připojení k internetu",
           "options": {
             "customers": "Pouze pro zákazníky",
             "no": "Zdarma",
             "yes": "Placené"
-          },
-          "terms": "poplatek za wifi"
+          }
         },
         "internet_access/ssid": {
           "label": "Název WiFi sítě",
@@ -2217,6 +2251,9 @@
           "label": "Osvětlení",
           "terms": "lampa,osvětlení"
         },
+        "loc_name": {
+          "label": "Místní název"
+        },
         "location": {
           "label": "Umístění",
           "terms": "umístění,lokace,místo,kde,adresa,bod"
@@ -2304,6 +2341,7 @@
             "marble": "Mramor",
             "metal": "Kov",
             "plastic": "Plast",
+            "reinforced_concrete": "Železobeton",
             "rock": "Skála",
             "sand": "Písek",
             "sandstone": "Pískovec",
@@ -2591,6 +2629,9 @@
             "union": "Úřad práce",
             "water_utility": "Vodohospodářská kancelář"
           }
+        },
+        "official_name": {
+          "label": "Oficiální název"
         },
         "oneway": {
           "label": "Jednosměrka",
@@ -3436,6 +3477,9 @@
         "shop": {
           "label": "Typ"
         },
+        "short_name": {
+          "label": "Krátký název"
+        },
         "shower": {
           "label": "Sprchy",
           "terms": "osprchovat,voda,mytí,hygiena,sprchovat se,sprcha"
@@ -3590,6 +3634,7 @@
             "running": "Běh",
             "scuba_diving": "Potápění",
             "shooting": "Střelba",
+            "ski_jumping": "Skoky na lyžích",
             "skiing": "Lyžování",
             "soccer": "Fotbal",
             "speedway": "Motocyklová rychlostní dráha",
@@ -3748,17 +3793,22 @@
           "options": {
             "artificial_turf": "Umělý trávník",
             "asphalt": "Asfalt",
+            "clay": "Jíl",
             "compacted": "Zhutněný",
             "concrete": "Beton",
+            "concrete:lanes": "Betonové jízdní pruhy",
+            "concrete:plates": "Betonové panely",
             "dirt": "Hlína",
             "fine_gravel": "Jemný štěrk",
             "grass": "Tráva",
+            "grass_paver": "Zatravňovací dlažba",
             "gravel": "Štěrk",
             "ground": "Země",
             "metal": "Kov",
             "mud": "Vytrvale zablácená",
             "paved": "Zpevněný",
             "paving_stones": "Dlažba",
+            "pebblestone": "Oblázková dlažba",
             "salt": "Sůl",
             "sand": "Písek",
             "sett": "Dlažební kostky",
@@ -3868,7 +3918,7 @@
             },
             "motorcar": {
               "description": "Běžné auto (implicitně výchozí)",
-              "title": "Motokára"
+              "title": "Automobil"
             },
             "motorcycle": {
               "description": "S cestujícími 'jezdeckým pilónem' (např. mototaxi atd.)",
@@ -4699,6 +4749,9 @@
           "name": "Komunitní centrum",
           "terms": "událost,hala"
         },
+        "amenity/community_centre/club_home": {
+          "name": "Domácí klub"
+        },
         "amenity/community_centre/lgbtq": {
           "name": "Komunitní centrum LGBTQ+",
           "terms": "lgbtq událost,lgbtq hala,lgbt událost,lgbt hala,lgb událost,lgb hala'"
@@ -4904,6 +4957,9 @@
         "amenity/fast_food/chicken": {
           "name": "Kuřecí rychlé občerstvení",
           "terms": "snídaně,jídelna,stolovat,stolování,večeře,drive-in,jíst,gril,oběd,stůl"
+        },
+        "amenity/fast_food/chinese": {
+          "name": "Čínské rychlé občerstvení"
         },
         "amenity/fast_food/donut": {
           "name": "Kiosek s donuty",
@@ -5471,6 +5527,9 @@
           "name": "Filmové studio",
           "terms": "filmová produkce,filmové studio,videoprodukce,videozáznam,videostudio"
         },
+        "amenity/swingerclub": {
+          "name": "Swingers klub"
+        },
         "amenity/taxi": {
           "name": "Stanoviště taxi",
           "terms": "taxi"
@@ -5494,10 +5553,6 @@
         "amenity/theatre": {
           "name": "Divadlo",
           "terms": "divadelní,představení,hra,muzikál"
-        },
-        "amenity/theatre/type/amphi": {
-          "name": "Amfiteátr",
-          "terms": "pod širým nebem,venkovní,řecký,ampi"
         },
         "amenity/ticket_validator": {
           "name": "Ověřovač vstupenek",
@@ -7442,6 +7497,9 @@
           "name": "Kryté pódium",
           "terms": "hudební pavilon,hudební altán,altán,pavilón,pavilon,pódium,podium"
         },
+        "leisure/bathing_place": {
+          "name": "Místo ke koupání"
+        },
         "leisure/beach_resort": {
           "name": "Spravovaná pláž"
         },
@@ -8838,10 +8896,6 @@
         "piste/nordic": {
           "name": "Běžkařská stezka",
           "terms": "běžky,severské lyžování,sjezdovka,skate lyžování,lyžování,xc"
-        },
-        "piste/piste": {
-          "name": "Dráha pro zimní sporty",
-          "terms": "lyže,nordic,běh na lyžích,sjezd,alpský,snowboard,skitour,lyžařská turistika,sáňky,sáně,saně,sáňkování,ski-joring,husky,kůň,zimní turistika,sněžnice,výlety na sněžnicích,led,bruslení"
         },
         "piste/skitour": {
           "name": "Lyžařská turistická stezka",

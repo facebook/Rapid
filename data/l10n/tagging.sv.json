@@ -2038,13 +2038,11 @@
           "terms": "Internetanslutning, internet, wifi, wlan, lan, trådlöst, trådlöst internet, Internetaccess, internetåtkomst, ethernet"
         },
         "internet_access/fee": {
-          "label": "Internetåtkomst",
           "options": {
             "customers": "Enbart kunder",
             "no": "Fri",
             "yes": "Betald"
-          },
-          "terms": "Internetanslutning, internet, wifi, wlan, lan, trådlöst, trådlöst internet, Internetaccess, internetåtkomst, ethernet, wifi-avgift, internetavgift"
+          }
         },
         "internet_access/ssid": {
           "label": "Wifi-nätverksnamn",
@@ -5476,10 +5474,6 @@
           "name": "Teater",
           "terms": "föreställning, teaterföreställning, drama, skådespel, pjäs, skådeplats, skådebana, scen, teater, musikal"
         },
-        "amenity/theatre/type/amphi": {
-          "name": "Amfiteater",
-          "terms": "Amfiteater, utescen, utomhus, teater, utomhusteater, scen, läktare"
-        },
         "amenity/ticket_validator": {
           "name": "Biljettkontrollmaskin",
           "terms": "Biljettkontrollmaskin, Biljettkontroll, biljett, kontroll, validator, biljettvalidator, biljettregistrering, biljetstämpling, biljettspärr, spärr"
@@ -8786,10 +8780,6 @@
         "piste/nordic": {
           "name": "Längdskidspår",
           "terms": "Längdskidåkning, off-pist, längdskidor, Längdskidåkning, off-pist, skidspår, skidor, skating, pist, längdåkning, "
-        },
-        "piste/piste": {
-          "name": "Vintersportspår / Pist",
-          "terms": "Vintersportspår, skidor, skida, off-pist, offpist, utförsåkning, utför, alpint, snowboard, skidtur, skidåkning, släde, häst, vintervandring, snöskor, is, isåkning, skridsko, skridskoåkning, pist, längdskidor, längdskidspår, alpint, alpin"
         },
         "piste/ski_jump": {
           "name": "Hoppbacke"

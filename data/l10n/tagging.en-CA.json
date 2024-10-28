@@ -89,6 +89,9 @@
         "amenity/payment_centre": {
           "name": "Payment Centre"
         },
+        "amenity/theatre/type/amphi": {
+          "name": "Amphitheatre"
+        },
         "amenity/toilets": {
           "name": "Washroom\nBathroom"
         },

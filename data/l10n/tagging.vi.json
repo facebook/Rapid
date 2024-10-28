@@ -1822,13 +1822,11 @@
           "terms": "kết nối internet, kết nối mạng, ket noi internet, ket noi mang, wi-fi, wifi, wlan"
         },
         "internet_access/fee": {
-          "label": "Truy cập Internet",
           "options": {
             "customers": "Chỉ Khách hàng",
             "no": "Miễn phí",
             "yes": "Phí"
-          },
-          "terms": "truy cập internet, truy cập mạng, truy cap internet, truy cap mang, wi-fi, wifi"
+          }
         },
         "internet_access/ssid": {
           "label": "Tên Mạng Wi-Fi",
@@ -4700,10 +4698,6 @@
         "amenity/theatre": {
           "name": "Nhà hát",
           "terms": "nhà hát, rạp hát, sân khấu, kịch, nha hat, rap hat, san khau, kich"
-        },
-        "amenity/theatre/type/amphi": {
-          "name": "Đài vòng",
-          "terms": "đài vòng, sân khấu ngoài trời, dai vong, san khau ngoai troi"
         },
         "amenity/ticket_validator": {
           "name": "Máy Bấm Vé",

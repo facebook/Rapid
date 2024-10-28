@@ -516,9 +516,6 @@
     "ireland-matrix": {
       "description": "Bramka Matrix dla kanału IRC OSM Ireland: {url}"
     },
-    "ireland-meetup": {
-      "description": "Spotkania dla wszystkich zainteresowanych OpenStreetMap"
-    },
     "is-chapter": {
       "description": "Pomagamy rozwijać i ulepszać OpenStreetMap w Islandii."
     },
@@ -1357,6 +1354,7 @@
       "description": "Oddział YouthMappers na Uniwersytecie w Malawi"
     },
     "ym-University-of-Maryland-College-Park": {
+      "name": "Klub Geografii",
       "description": "Oddział YouthMappers na Uniwersytecie Marylandu w College Park"
     },
     "ym-University-of-Mines-and-Technology": {
@@ -1374,6 +1372,7 @@
       "description": "Oddział YouthMappers na Uniwersytecie Nigeryjskim w Nsukka"
     },
     "ym-University-of-North-Texas": {
+      "name": "Klub Geografii UNT",
       "description": "Oddział YouthMappers na Uniwersytecie Północnego Teksasu"
     },
     "ym-University-of-Northern-Colorado": {
@@ -1381,6 +1380,7 @@
       "extendedDescription": "Oficjalny oddział Geography and GIS Club powiązany z University of Northern Colorado. Naszym celem jest nauka, dzielenie się i kontaktowanie się z ludźmi wokół nas. #MakingSenseOfTheWorld"
     },
     "ym-University-of-Oregon": {
+      "name": "Mapa wykonana przez Northwest",
       "description": "Oddział YouthMappers na Uniwersytecie Oregonu"
     },
     "ym-University-of-Port-Harcourt": {

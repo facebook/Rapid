@@ -151,6 +151,10 @@
         "name": "{community} fórum",
         "description": "Oficiální diskuzní fórum komunity {community}"
       },
+      "instagram": {
+        "name": "{community} na Instagramu",
+        "description": "Sledujte nás na Instagramu"
+      },
       "irc": {
         "name": "{community} na IRC",
         "description": "Připojte se k #{account} na irc.oftc.net (port 6667 ne-SSL nebo 6697 pro SSL)"
@@ -170,6 +174,9 @@
       "matrix": {
         "description": "Připojte se k chatu naší komunity na Matrixu"
       },
+      "newsletter": {
+        "name": "{community} Zpravodaj"
+      },
       "reddit": {
         "name": "{community} na Redditu"
       },
@@ -183,6 +190,10 @@
         "name": "{community} na Threads",
         "description": "Sledujte nás na Threads"
       },
+      "tiktok": {
+        "name": "{community} na TikToku",
+        "description": "Sledujte nás na TikToku"
+      },
       "twitter": {
         "name": "{community} na 𝕏",
         "description": "Sledujte nás na 𝕏"
@@ -193,6 +204,9 @@
       "x": {
         "name": "{community} na 𝕏",
         "description": "Sledujte nás na 𝕏"
+      },
+      "xmpp": {
+        "description": "Připojte se k našemu komunitnímu chatu XMPP: {url}"
       },
       "youtube": {
         "name": "{community} na YouTube",
@@ -527,9 +541,6 @@
     "ireland-matrix": {
       "description": "Brána Matrix pro IRC kanál OSM Irska: {url}"
     },
-    "ireland-meetup": {
-      "description": "Setkání všech, kteří se zajímají o OpenStreetMap"
-    },
     "is-chapter": {
       "description": "Pomáháme OpenStreetMap na Islandu růst a zlepšovat se."
     },
@@ -712,6 +723,10 @@
     "Open-Source-San-Jose-Discord": {
       "description": "Zůstaňte ve spojení s ostatními mapovateli na Discordu! Po registraci se připojte ke kanálu #🗺openstreetmap."
     },
+    "Open-Source-San-Jose-Mastodon": {
+      "description": "Sledujte Open Source San José na Mastodonu.",
+      "extendedDescription": "Open Source San José je místní nezisková organizace, která propojuje dobrovolné programátory a designéry s potřebami komunity prostřednictvím občanských technologií. OSSJ sponzoruje místní dobrovolnickou mapovací komunitu, která pořádá dvakrát týdně South Bay Map Nights."
+    },
     "Open-Source-San-Jose-Slack": {
       "description": "Všichni jsou vítáni! Zaregistrujte se na adrese {signupUrl} a připojte se k kanálu #proj-osm."
     },
@@ -748,6 +763,9 @@
     },
     "OSM-AR-wiki": {
       "description": "Vše, co potřebujete vědět o mapování v Argentině."
+    },
+    "osm-asia-facebook": {
+      "extendedDescription": "Skupina pro integrovanou mapovou podporu pro Asii. Chceme být zejména místem pro mappery bez místní komunity, kde mohou sdílet informace a spolupracovat na řešení problémů ve svých oblastech, které by jinak kvůli neexistenci místní komunity nemohli řešit."
     },
     "osm-at": {
       "description": "Informační platforma pro OpenStreetMap v Rakousku"
@@ -790,7 +808,8 @@
       "extendedDescription": "XMPP místnost pro OSM Dillí, není propojena do žádné proprietární sítě."
     },
     "OSM-Discord": {
-      "name": "Světový Discord OpenStreetMap"
+      "name": "Světový Discord OpenStreetMap",
+      "description": "Neoficiální, komunitou spravovaný server Discord pro globální komunitu OpenStreetMap. K dispozici jsou regionální kanály."
     },
     "OSM-Discourse": {
       "name": "Fórum komunity OpenStreetMap",
@@ -853,6 +872,9 @@
     },
     "osm-iran-telegram": {
       "extendedDescription": "Můžete se připojit k našemu telegramovému kanálu na adrese {url}. Máme také superskupinu mnoha OSMers se zájmem o Írán. Odkaz na něj najdete v biu kanálu."
+    },
+    "OSM-japan-discord": {
+      "description": "Pracovní prostor Discordu pro komunitu OSM Japan: {url}"
     },
     "OSM-japan-facebook": {
       "description": "Mapovači a uživatelé OpenStreetMap v Japonsku"
@@ -971,6 +993,10 @@
     },
     "OSM-US-Slack": {
       "description": "Všichni jsou vítaní! Přihlaste se na {signupUrl}"
+    },
+    "OSM-Utah": {
+      "description": "Vaše mapovací komunita OSM pro oblast Salt Lake City",
+      "extendedDescription": "Scházíme se každý měsíc v Salt Lake City, obvykle druhou středu v měsíci. Všichni jsou vítáni!"
     },
     "OSM-Wyoming": {
       "description": "Mapovači a uživatelé OpenStreetMap ve státě Wyoming",

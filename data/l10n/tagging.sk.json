@@ -773,6 +773,18 @@
           "label": "Typy komunikácie",
           "terms": "Typy komunikácie,Komunikačné typy"
         },
+        "community_centre": {
+          "label": "Typ",
+          "options": {
+            "club_home": "Klubovňa",
+            "community_hall": "Spoločenská sála",
+            "cultural_centre": "Kultúrne centrum",
+            "family_centre": "Rodinné centrum",
+            "parish_hall": "Farská sála",
+            "village_hall": "Obecná sála",
+            "youth_centre": "Mládežnícke centrum"
+          }
+        },
         "connectivity": {
           "label": "Pripojenie"
         },
@@ -874,7 +886,7 @@
             "photographer": "Fotograf",
             "photographic_laboratory": "Fotolaboratórium",
             "plasterer": "Štukatér",
-            "plumber": "Inštalatér",
+            "plumber": "Vodoinštalatér",
             "pottery": "Hrnčiar",
             "rigger": "Nastavovač takeláže / javiskovej techniky",
             "roofer": "Strechár",
@@ -989,25 +1001,43 @@
           }
         },
         "cuisine": {
-          "label": "Jedlá",
+          "label": "Druh kuchyne",
           "options": {
+            "african": "Africká",
             "american": "Americká",
+            "arab": "Arabská",
+            "argentinian": "Argentinská",
             "asian": "Ázijská",
+            "balkan": "Balkánska",
             "barbecue": "Barbecue / Gril",
+            "bavarian": "Bavorská",
+            "beef_bowl": "Gjúdon",
+            "brazilian": "Brazílska",
+            "breakfast": "Raňajky",
             "bubble_tea": "Bublinkový čaj",
             "burger": "Hamburger",
             "cake": "Zákusok",
+            "caribbean": "Karibská",
             "chicken": "Kuracie",
             "chinese": "Čínska",
             "coffee_shop": "Káva",
+            "crepe": "Crêpe",
+            "curry": "Kari",
             "dessert": "Dezert",
             "donut": "Americká šiška",
+            "european": "Európska",
             "filipino": "Filipínska",
+            "fine_dining": "Fine dining",
             "fish": "Ryba",
+            "fish_and_chips": "Fish and chips",
             "french": "Frencúzska",
+            "fries": "Hranolky",
+            "frozen_yogurt": "Mrazený jogurt",
             "georgian": "Gruzínska",
             "german": "Nemecká",
             "greek": "Grécka",
+            "grill": "Bar a gril",
+            "hawaiian": "Havajská",
             "hot_dog": "Hotdog",
             "ice_cream": "Zmrzlina",
             "indian": "Indická",
@@ -1018,9 +1048,16 @@
             "korean": "Kórejská",
             "lebanese": "Libanonská",
             "malaysian": "Malajzijská",
+            "mediterranean": "Stredomorská",
             "mexican": "Mexická",
+            "middle_eastern": "Blízkovýchodná",
+            "moroccan": "Marocká",
+            "noodle": "Rezance",
+            "oriental": "Orientálna",
             "pancake": "Palacinky",
             "pasta": "Cestoviny",
+            "pastry": "Jemné pečivo",
+            "persian": "Perzská",
             "peruvian": "Peruánska",
             "polish": "Poľská",
             "portuguese": "Portugalská",
@@ -1028,17 +1065,22 @@
             "russian": "Ruská",
             "salad": "Šalát",
             "sandwich": "Sendvič",
+            "sausage": "Klobása",
             "seafood": "Morské plody",
+            "soup": "Polievka",
             "spanish": "Španielska",
             "steak_house": "Steak",
             "sushi": "Suši",
             "taiwanese": "Taiwanská",
+            "tea": "Čaj",
             "thai": "Thajská",
             "turkish": "Turecká",
             "ukrainian": "Ukrajinská",
-            "vietnamese": "Vietnamská"
+            "vietnamese": "Vietnamská",
+            "western": "Západná",
+            "wings": "Kuracie krídelka"
           },
-          "terms": "kuchyne,príchute,prichute,jedla,druhy jedál,druhy jedal,typy pokrmov,typy jedal,typy jedál"
+          "terms": "kuchyňa,kuchyna,kuchyne,príchute,prichute,jedla,druhy jedál,druhy jedal,druh jedla,typy pokrmov,typy jedal,typy jedál,typy jedal,jedlá,jedla"
         },
         "currency_multi": {
           "label": "Typy mien",
@@ -1267,7 +1309,7 @@
         },
         "drive_through": {
           "label": "Obslúženie z auta",
-          "terms": "Prejsť cez"
+          "terms": "obsluzenie z auta,drive-thru"
         },
         "duration": {
           "label": "Trvanie",
@@ -1766,6 +1808,7 @@
           "label": "Koše"
         },
         "horse_riding": {
+          "label": "Jazdecký areál",
           "options": {
             "horse_riding": "Áno",
             "undefined": "Nie"
@@ -1843,13 +1886,11 @@
           "terms": "Pripojenie k internetu"
         },
         "internet_access/fee": {
-          "label": "Prístup na internet",
           "options": {
             "customers": "Iba zákaznici",
             "no": "Zadarmo",
             "yes": "Platený"
-          },
-          "terms": "Prístup na internet"
+          }
         },
         "internet_access/ssid": {
           "label": "Názov Wifi siete",
@@ -2321,6 +2362,11 @@
           "label": "Otváracie hodiny",
           "placeholder": "Neznáme",
           "terms": "Hodiny"
+        },
+        "opening_hours/drive_through": {
+          "label": "Otváracie hodiny pre obslúženie z auta",
+          "placeholder": "Rovnaké ako bežné otváracie hodiny",
+          "terms": "otvaracie hodiny pre obsluzenie z auta,otvaracie hodiny druve-thru"
         },
         "operator": {
           "label": "Operátor",
@@ -3045,12 +3091,28 @@
           }
         },
         "social_facility_for": {
-          "label": "Obsluhovaných ľudí",
+          "label": "Cieľová skupina",
           "options": {
+            "abused": "Zneužívané deti alebo dospelí",
+            "child": "Deti",
+            "dementia": "Ľudia s demenciou",
+            "disabled": "Telesne znevýhodnení",
+            "diseased": "Trpiaci chorobou",
             "displaced": "Presťahovaní kvôli pohrome alebo konfliktu",
+            "drug_addicted": "Drogovo závislí",
             "homeless": "Bezdomovci",
-            "mental_health": "Dušené zdravie",
-            "refugee": "Utečenci"
+            "juvenile": "Mladiství",
+            "mental_health": "Mentálne znevýhodnení",
+            "migrant": "Migranti",
+            "orphan": "Siroty",
+            "refugee": "Utečenci",
+            "senior": "Seniori",
+            "terminally_ill": "Nevyliečiteľne chorí",
+            "underprivileged": "Znevýhodnení ľudia",
+            "unemployed": "Nezamestnaní",
+            "veteran": "Veteráni",
+            "victim": "Obete zločinu",
+            "woman": "Ženy"
           }
         },
         "source": {
@@ -3070,17 +3132,22 @@
         "sport": {
           "label": "Športy",
           "options": {
+            "10pin": "Bowling (10 kolkov)",
+            "9pin": "Kolky (9 kolkov)",
             "american_football": "Americký futbal",
             "athletics": "Atletika",
             "badminton": "Bedminton",
             "baseball": "Bejzbal",
             "basketball": "Basketbal",
             "beachvolleyball": "Plážový volejbal",
+            "billiards": "Biliard",
             "boules": "Guľové športy",
             "canoe": "Kanoistika",
+            "chess": "Šachy",
             "climbing": "Lezenie",
             "cricket": "Kriket",
             "cycling": "Cyklistika",
+            "darts": "Šípky",
             "disc_golf": "Discgolf",
             "dog_racing": "Psie dostihy",
             "equestrian": "Jazdectvo",
@@ -3103,6 +3170,7 @@
             "scuba_diving": "Prístrojové potápanie",
             "shooting": "Športová streľba ",
             "skateboard": "Skejtbording",
+            "ski_jumping": "Skoky na lyžiach",
             "skiing": "Lyžovanie",
             "soccer": "Futbal",
             "softball": "Softbal",
@@ -3110,14 +3178,16 @@
             "swimming": "Plávanie",
             "table_tennis": "Stolný tenis",
             "tennis": "Tenis",
-            "volleyball": "Volejbal"
+            "volleyball": "Volejbal",
+            "yoga": "Jóga"
           }
         },
         "sport/sport_ice": {
           "label": "Športy"
         },
         "sport/sport_pub": {
-          "label": "Športy"
+          "label": "Športy",
+          "terms": "sporty"
         },
         "sport/sport_racing_motor": {
           "label": "Športy"
@@ -3304,6 +3374,10 @@
             "cycle_rickshaw": {
               "title": "Rikša"
             },
+            "motorcar": {
+              "description": "Automobil",
+              "title": "Automobil"
+            },
             "motorcycle": {
               "title": "Motocykel"
             }
@@ -3435,6 +3509,9 @@
         "traffic_signals/arrow": {
           "label": "Hmatová šípka"
         },
+        "traffic_signals/countdown": {
+          "label": "Odpočítavanie"
+        },
         "traffic_signals/direction": {
           "label": "Smer jazdy",
           "options": {
@@ -3443,9 +3520,19 @@
             "forward": "Dopredu"
           }
         },
+        "traffic_signals/minimap": {
+          "label": "Dotyková mapa"
+        },
         "traffic_signals/sound": {
+          "label": "Zvukové signály",
           "options": {
-            "no": "Nie"
+            "locate": {
+              "title": "Lokátor dopytového tlačidla"
+            },
+            "no": "Nie",
+            "walk": {
+              "title": "Indikácia chôdze"
+            }
           }
         },
         "traffic_signals/vibration": {
@@ -4011,11 +4098,37 @@
           "name": "Komunitné centrum",
           "terms": "komunitne centrum,centrum voľného času,centrum volneho casu,cvc,cvč,krúžky,kruzky,vzdelavanie,vzdelávanie,výchova,vychova,kultúrny dom,kulturny dom,dom kultúry,dom kultury"
         },
+        "amenity/community_centre/club_home": {
+          "name": "Klubovňa",
+          "terms": "klubovna,klubová miestnosť,klubova miestnost,klubové centrum,klubove centrum"
+        },
+        "amenity/community_centre/community_hall": {
+          "name": "Spoločenská sála",
+          "terms": "spolocenska sala"
+        },
+        "amenity/community_centre/cultural_centre": {
+          "name": "Kultúrne centrum",
+          "terms": "kulturne centrum"
+        },
+        "amenity/community_centre/family_centre": {
+          "name": "Rodinné centrum",
+          "terms": "rodinne centrum"
+        },
         "amenity/community_centre/lgbtq": {
-          "name": "LGBTQ+ komunitné centrum"
+          "name": "LGBTQ+ komunitné centrum",
+          "terms": "LGBTQ+ komunitne centrum"
+        },
+        "amenity/community_centre/parish_hall": {
+          "name": "Farská sála",
+          "terms": "farska sala"
+        },
+        "amenity/community_centre/village_hall": {
+          "name": "Obecná sála",
+          "terms": "obecna sala"
         },
         "amenity/community_centre/youth_centre": {
-          "name": "Mládežnícke centrum"
+          "name": "Mládežnícke centrum",
+          "terms": "mladeznicke centrum"
         },
         "amenity/compressed_air": {
           "name": "Vzduchový kompresor",
@@ -4147,7 +4260,8 @@
           "name": "Miesto konania udalostí"
         },
         "amenity/exhibition_centre": {
-          "name": "Výstavné centrum"
+          "name": "Výstavné centrum",
+          "terms": "vystavne centrum,výstavisko,vystavisko"
         },
         "amenity/fast_food": {
           "name": "Rýchle občerstvenie",
@@ -4299,8 +4413,8 @@
           "name": "Hodinový hotel"
         },
         "amenity/luggage_locker": {
-          "name": "Úschovňa batožiny",
-          "terms": "uschovna batoziny"
+          "name": "Schránka na batožinu",
+          "terms": "schranka na batozinu,úschovňa batožiny,uschovna batoziny"
         },
         "amenity/marketplace": {
           "name": "Tržnica",
@@ -4398,6 +4512,10 @@
         },
         "amenity/place_of_worship/christian/la_luz_del_mundo": {
           "name": "Chrám La Luz del Mundo"
+        },
+        "amenity/place_of_worship/christian/quaker": {
+          "name": "Dom stretávania kvakerov",
+          "terms": "dom stretavania kvakerov,kvakeri,spoločnosť priateľov,spolocnost priatelov"
         },
         "amenity/place_of_worship/hindu": {
           "name": "Hinduistický chrám",
@@ -4514,7 +4632,8 @@
           "name": "Americká reštaurácia"
         },
         "amenity/restaurant/asian": {
-          "name": "Azijská reštaurácia"
+          "name": "Ázijská reštaurácia",
+          "terms": "azijska restauracia"
         },
         "amenity/restaurant/barbecue": {
           "name": "Barbecue / Gril reštaurácia",
@@ -4664,15 +4783,19 @@
         "amenity/studio/video": {
           "name": "Filmové štúdio"
         },
+        "amenity/swingerclub": {
+          "name": "Swingers klub"
+        },
         "amenity/taxi": {
-          "name": "Stanovisko taxíkov",
-          "terms": "taxík, taxislužba, taxi,taxik,taxisluzba,odvoz"
+          "name": "Stanovište taxíkov",
+          "terms": "stanoviste taxikov,taxík, taxislužba, taxi,taxik,taxisluzba,odvoz"
         },
         "amenity/taxi/auto_rickshaw": {
           "name": "Stanovište pre tuk-tuky"
         },
         "amenity/taxi/cycle_rickshaw": {
-          "name": "Stanovište pre rikše"
+          "name": "Stanovište pre rikše",
+          "terms": "riksa,cyklorikša,cykloriksa"
         },
         "amenity/taxi/motorcycle_taxi": {
           "name": "Stanovište taxi pre motocykle"
@@ -4684,9 +4807,6 @@
         "amenity/theatre": {
           "name": "Divadlo",
           "terms": "divadlo,predstavenie,muzikál,hra,scéna,muzikal,scena,činohra,cinohra,balet"
-        },
-        "amenity/theatre/type/amphi": {
-          "name": "Amfiteáter"
         },
         "amenity/ticket_validator": {
           "name": "Označovač lístkov"
@@ -5332,7 +5452,8 @@
           "terms": "zručnosť,remeselníctvo,cech"
         },
         "craft/agricultural_engines": {
-          "name": "Výrobca poľnohospodárskej techniky"
+          "name": "Výrobca poľnohospodárskej techniky",
+          "terms": "vyrobca polnohospodarskej techniky,poľnohospodárska technika,polnohospodarska technika,traktor"
         },
         "craft/basket_maker": {
           "name": "Košikárstvo",
@@ -5462,8 +5583,8 @@
           "terms": "štukatér,stukater,omietkár,omietkar"
         },
         "craft/plumber": {
-          "name": "Inštalatér",
-          "terms": "instalater,klampiar"
+          "name": "Vodoinštalatér",
+          "terms": "vodoinstalater,inštalatér,instalater"
         },
         "craft/pottery": {
           "name": "Hrnčiar"
@@ -5594,6 +5715,10 @@
         "emergency/fire_hydrant": {
           "name": "Požiarny hydrant",
           "terms": "poziarny hydrant,hydrant, zdroj vody,hadica,uzáver vod,uzaver vody"
+        },
+        "emergency/fire_service_inlet": {
+          "name": "Prípojka požiarneho vodovodu",
+          "terms": "pripojka poziarneho vodovodu,požiarny vodovod,poziarny vodovod,suchovod"
         },
         "emergency/first_aid_kit": {
           "name": "Lekárnička"
@@ -5745,7 +5870,8 @@
           "name": "Ušný lekár"
         },
         "healthcare/birthing_center": {
-          "name": "Pôrodnica"
+          "name": "Pôrodnica",
+          "terms": "porodnica"
         },
         "healthcare/blood_donation": {
           "name": "Centrum darovania krvi"
@@ -5949,13 +6075,14 @@
         },
         "highway/path": {
           "name": "Chodníček",
-          "terms": "cesticka,chodnik,chodník,pešina,pesina"
+          "terms": "chodnicek,cestička,cesticka,chodnik,chodník,pešina,pesina"
         },
         "highway/path/boardwalk": {
           "name": "Drevený chodník"
         },
         "highway/path/informal": {
-          "name": "Neformálny chodníček"
+          "name": "Neformálny chodníček",
+          "terms": "neformalny chodnicek,cestička,cesticka,chodníček,chodnicek"
         },
         "highway/pedestrian_area": {
           "name": "Pešia zóna"
@@ -5987,7 +6114,7 @@
           "terms": "obytna ulica,rezidenčná ulica,rezidencna ulica"
         },
         "highway/rest_area": {
-          "name": "Odpočívadlo bez obsluhy",
+          "name": "Prícestné odpočívadlo bez obsluhy",
           "terms": "odpocivadlo,dialnicne odpocivadlo,dialničné odpočívadlo"
         },
         "highway/road": {
@@ -6174,7 +6301,7 @@
         },
         "historic/wayside_shrine": {
           "name": "Prícestný svätostánok",
-          "terms": "pricestny svatostanok,svatyna,svätyňa,svatostanok,svätostánok,mala kaplnka,kaplnka"
+          "terms": "pricestny svatostanok,svatyna,svätyňa,svatostanok,svätostánok,malá kaplnka,mala kaplnka,kaplnka,božie muky,bozie muky,božia muka,bozia muka"
         },
         "historic/wreck": {
           "name": "Vrak lode"
@@ -6507,7 +6634,8 @@
           "terms": "golfove ihrisko,golf"
         },
         "leisure/horse_riding": {
-          "name": "Jazdecký areál"
+          "name": "Jazdecký areál",
+          "terms": "jazdecky areal"
         },
         "leisure/hot_tub": {
           "name": "Výrivka",
@@ -6529,7 +6657,8 @@
           "terms": "prístav,pristav,marína,marina"
         },
         "leisure/miniature_golf": {
-          "name": "Miniatúrny golf"
+          "name": "Minigolf",
+          "terms": "minigolfové ihrisko,minigolfove ihrisko"
         },
         "leisure/nature_reserve": {
           "name": "Prírodná rezervácia",
@@ -6723,6 +6852,10 @@
         },
         "leisure/sports_centre/horse_racing": {
           "name": "Dostihové závodisko"
+        },
+        "leisure/sports_centre/karting": {
+          "name": "Motokárové centrum",
+          "terms": "motokarove centrum,motokárová hala,motokarova hala,motokáry,motokary"
         },
         "leisure/sports_centre/shooting": {
           "name": "Areál strelnice",
@@ -7309,7 +7442,8 @@
           "name": "Vodná priekopa"
         },
         "natural/water/oxbow": {
-          "name": "Vodná plocha mŕtveho ramena"
+          "name": "Mŕtve rameno",
+          "terms": "mrtve rameno"
         },
         "natural/water/pond": {
           "name": "Rybník",
@@ -7528,7 +7662,7 @@
           "name": "Kancelária bezpečnostnej agentúry"
         },
         "office/surveyor": {
-          "name": "Geodet ( Statik",
+          "name": "Geodet / Statik",
           "terms": "geodézia,geodezia,stavebný znalec,stavebny znalec,zememerač,zememerac"
         },
         "office/tax_advisor": {
@@ -7570,9 +7704,6 @@
         "piste/nordic": {
           "name": "Trať pre klasické lyžovanie",
           "terms": "klasické lyžovanie,klasicke lyzovanie"
-        },
-        "piste/piste": {
-          "name": "Dráha pre zimné športy"
         },
         "piste/skitour": {
           "name": "Trasa bežeckého lyžovania\nBežkárska trasa"
@@ -8192,7 +8323,7 @@
         },
         "shop/camera": {
           "name": "Obchod s fotoaparátmi",
-          "terms": "fotoaparaty,objektívy,objektivy,šošovky,sosovky"
+          "terms": "fotoaparaty,objektívy,objektivy,šošovky,sosovky,fotografická technika,fotograficka technika,obchod s fotografickou technikou,fototechnika"
         },
         "shop/candles": {
           "name": "Obchod so sviečkami",
@@ -8476,7 +8607,7 @@
         },
         "shop/lighting": {
           "name": "Obchod so svietidlami",
-          "terms": "svietidlá,svietidla,lampy"
+          "terms": "svietidlá,svietidla,lampy,lampa,obchod s osvetlením,obchod s osvetlenim,osvetlenie"
         },
         "shop/locksmith": {
           "name": "Kľúčová služba (obchod)",
@@ -8578,8 +8709,8 @@
           "terms": "zvieraci salon,psí salón,psi salon,starostlivosť o zvieratá,starostlivost o zvierata,domáce zvieratá,domace zvierata"
         },
         "shop/photo": {
-          "name": "Obchod s fototechnikou",
-          "terms": "Fotoateliér,fotoatelier,fotostudio,fotoštúdio,fotografia"
+          "name": "Fotografické potreby",
+          "terms": "fotoateliér,fotoatelier,fotostudio,fotoštúdio,fotografia,fotolab,videolab,fotograficke potreby"
         },
         "shop/pottery": {
           "name": "Obchod s keramikou"

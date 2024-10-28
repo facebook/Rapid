@@ -2058,7 +2058,7 @@
           "terms": "互联网,wifi,网络,无线网,有线网,因特网,网络连接"
         },
         "internet_access/fee": {
-          "label": "互联网费用",
+          "label": "上网费用",
           "options": {
             "customers": "仅供顾客",
             "no": "免费",
@@ -2590,7 +2590,7 @@
             "newspaper": "报社",
             "ngo": "非政府组织",
             "notary": "公证处",
-            "physician": "诊室",
+            "physician": "医生办公室",
             "political_party": "政党办公室",
             "private_investigator": "私家侦探事务所",
             "property_management": "物业管理",
@@ -4733,8 +4733,8 @@
           "terms": "青年俱乐部,团中心,青年活动中心,青年活动室"
         },
         "amenity/compressed_air": {
-          "name": "压缩空气",
-          "terms": "压缩空气"
+          "name": "充气站",
+          "terms": "压缩空气,充气,打气,补气,气体,空气"
         },
         "amenity/conference_centre": {
           "name": "会议中心",
@@ -4759,8 +4759,8 @@
           "terms": "潜水中心,潜水服务,潜水"
         },
         "amenity/doctors": {
-          "name": "医师",
-          "terms": "医生,医师,护士,医院,医护,医疗,治疗,办公室,技师"
+          "name": "医院科室",
+          "terms": "医院,医生,医师,护士,科室,医护,医疗,治疗,办公室,技师,内科,外科,急诊科,急诊,五官科"
         },
         "amenity/doctors/allergology": {
           "name": "过敏科诊室",
@@ -5166,8 +5166,8 @@
           "terms": "药房,药店,药妆店,药剂师,药师,处方,处方药,药,中药,西药,药材"
         },
         "amenity/photo_booth": {
-          "name": "自助拍照机",
-          "terms": "拍照机,照相机,拍照,照相,自助,自动,照相馆,照相亭,证件,证件照,护照,快照,照片,照"
+          "name": "自助照相机",
+          "terms": "拍照机,照相机,拍照,照相,自助,自动,照相馆,照相亭,证件,证件照,护照,快照,照片,照,大头贴,快照"
         },
         "amenity/place_of_worship": {
           "terms": "礼拜场所,宗教礼拜处"
@@ -5244,19 +5244,19 @@
         },
         "amenity/prison": {
           "name": "监狱/看守所",
-          "terms": "监狱,看守所"
+          "terms": "监狱,看守所,戒毒所,强戒所,强制,戒毒,拘留,管制,劳改"
         },
         "amenity/pub": {
-          "name": "英式酒吧\n酒吧\n酒馆",
-          "terms": "英式酒吧,酒吧,酒馆"
+          "name": "清吧",
+          "terms": "清吧,酒吧,英式酒吧,酒馆"
         },
         "amenity/pub/irish": {
           "name": "爱尔兰酒吧",
           "terms": "爱尔兰,酒吧"
         },
         "amenity/pub/lgbtq": {
-          "name": "LGBTQ+ 英式酒吧\nLGBTQ+ 酒吧\nLGBTQ+ 酒馆",
-          "terms": "lgb,lgbt,lgbtq,同性恋,双性恋,双性,跨性别,酷儿,同性恋酒吧"
+          "name": "LGBTQ+ 酒吧",
+          "terms": "lgb,lgbt,lgbtq,同性恋,双性恋,双性,跨性别,酷儿,同性恋酒吧,gay吧,拉吧,清吧,酒吧"
         },
         "amenity/pub/microbrewery": {
           "name": "自酿酒吧",
@@ -5517,10 +5517,6 @@
         },
         "amenity/theatre": {
           "terms": "剧院,剧场,戏院"
-        },
-        "amenity/theatre/type/amphi": {
-          "name": "圆形剧场",
-          "terms": "圆形剧场,露天,竞技场,圆形露天剧场,阶梯教室"
         },
         "amenity/ticket_validator": {
           "name": "检票机",
@@ -6626,7 +6622,7 @@
         },
         "ford": {
           "name": "过水路面",
-          "terms": "过水路面,浅滩,漫水桥,垫脚石"
+          "terms": "涉水,渡水,过水,浅滩,碇步,汀步,跳岩,跳石,石墩,垫脚石"
         },
         "ford_line": {
           "name": "过水路面"
@@ -7060,8 +7056,8 @@
           "terms": "停标志"
         },
         "highway/street_lamp": {
-          "name": "街灯",
-          "terms": "街灯,路灯,灯光,照明,灯具,灯"
+          "name": "路灯",
+          "terms": "路灯,街灯,灯光,照明,灯具,灯,路旁灯"
         },
         "highway/tertiary": {
           "terms": "三级道路,道路,路,公路,马路"
@@ -7667,7 +7663,7 @@
         },
         "leisure/pitch/athletics/shot_put": {
           "name": "铅球场",
-          "terms": "铅球,投掷"
+          "terms": "铅球,投掷,实心球,投球,铅,球,球场"
         },
         "leisure/pitch/athletics/triple_jump": {
           "name": "三级跳场",
@@ -7728,15 +7724,33 @@
           "name": "五人制足球场",
           "terms": "足球,五人,五人制,五人足球"
         },
+        "leisure/pitch/gaga": {
+          "name": "加加球场",
+          "terms": "加加,嘎嘎,咖咖,球场"
+        },
+        "leisure/pitch/handball": {
+          "name": "团体手球场",
+          "terms": "团体,团体手球,手球,手球场,球场"
+        },
         "leisure/pitch/horseshoes": {
-          "name": "掷马蹄铁场地"
+          "name": "掷马蹄铁场地",
+          "terms": "马蹄铁,场地,投掷场"
         },
         "leisure/pitch/netball": {
-          "name": "无挡板篮球/篮网球场"
+          "name": "英式篮球场",
+          "terms": "英式篮球,篮球,篮网球,无挡板,无板篮球"
+        },
+        "leisure/pitch/padel": {
+          "name": "笼式网球场",
+          "terms": "笼式网球,笼式,网球,板网球,笼球"
         },
         "leisure/pitch/paintball": {
           "name": "水弹射击场",
-          "terms": "漆弹场,彩弹场"
+          "terms": "漆弹场,彩弹场,射击场,射击,水弹,彩弹"
+        },
+        "leisure/pitch/pickleball": {
+          "name": "匹克球场",
+          "terms": "匹克球,球场,网球场"
         },
         "leisure/pitch/rugby_league": {
           "name": "联盟式橄榄球场",
@@ -7744,7 +7758,7 @@
         },
         "leisure/pitch/rugby_union": {
           "name": "英式橄榄球场",
-          "terms": "英式,联合式,橄榄球场,橄榄球,球场"
+          "terms": "英式,联合式,联合式橄榄球,橄榄球场,橄榄球,球场"
         },
         "leisure/pitch/shooting": {
           "name": "射击场",
@@ -7762,7 +7776,12 @@
           "terms": "足球场"
         },
         "leisure/pitch/softball": {
-          "name": "垒球场"
+          "name": "垒球场",
+          "terms": "垒球,棒垒球"
+        },
+        "leisure/pitch/table_soccer": {
+          "name": "桌面足球台",
+          "terms": "桌面足球,桌上足球,桌式足球,足球桌,足球"
         },
         "leisure/pitch/table_tennis": {
           "name": "乒乓球场地",
@@ -7770,6 +7789,10 @@
         },
         "leisure/pitch/tennis": {
           "terms": "网球场"
+        },
+        "leisure/pitch/tetherball": {
+          "name": "绳球场",
+          "terms": "绳球场,绳球,梨球"
         },
         "leisure/pitch/volleyball": {
           "terms": "排球场"
@@ -7803,7 +7826,20 @@
           "terms": "体育中心,综合体育场,体育馆,体育场,体操馆,运动馆"
         },
         "leisure/sports_centre/climbing": {
-          "name": "攀岩墙"
+          "name": "攀岩馆",
+          "terms": "攀岩,攀登,攀爬,攀爬架,攀登架,攀爬网,攀岩墙,攀岩场,网,架,馆"
+        },
+        "leisure/sports_centre/climbing_adventure": {
+          "name": "冒险乐园",
+          "terms": "冒险,探险,野外,障碍,攀岩,爬绳,乐园,公园,竞赛"
+        },
+        "leisure/sports_centre/horse_racing": {
+          "name": "赛马场",
+          "terms": "赛马,马场,竞赛.比赛"
+        },
+        "leisure/sports_centre/karting": {
+          "name": "卡丁车场",
+          "terms": "卡丁车,赛车,小型,迷你,比赛,车场,卡丁"
         },
         "leisure/sports_centre/shooting": {
           "name": "射击场设施",
@@ -7831,6 +7867,21 @@
           "name": "赛道(非机动竞速项目)",
           "terms": "赛道,跑道,竞速"
         },
+        "leisure/track/athletics": {
+          "name": "田径跑道"
+        },
+        "leisure/track/athletics/javelin_throw": {
+          "name": "标枪跑道",
+          "terms": "标枪,投掷,加速,跑道"
+        },
+        "leisure/track/athletics/long_jump": {
+          "name": "跳远跑道",
+          "terms": "跳远,加速,跑道"
+        },
+        "leisure/track/athletics/pole_vault": {
+          "name": "撑杆跳跑道",
+          "terms": "撑杆跳,跳高,跑道"
+        },
         "leisure/track/athletics/running": {
           "name": "跑道"
         },
@@ -7854,6 +7905,9 @@
         "line": {
           "terms": "线"
         },
+        "man_made": {
+          "name": "人造设施"
+        },
         "man_made/adit": {
           "name": "坑道入口",
           "terms": "坑道入口,矿道入口"
@@ -7863,10 +7917,11 @@
           "terms": "天线,天线杆,天线塔,电话,通讯,手机,无线电,电视,广播,频道,电台,信号塔"
         },
         "man_made/beacon": {
-          "name": "信标"
+          "name": "信标",
+          "terms": "信标,信号,灯号,指示,引导"
         },
         "man_made/beehive": {
-          "name": "蜂窝",
+          "name": "蜂箱",
           "terms": "蜂窝,蜂巢,蜜蜂,蜂蜜,养蜂,养蜂人,蜂,蜂穴,授粉,花粉,农场"
         },
         "man_made/breakwater": {
@@ -7875,6 +7930,10 @@
         "man_made/bridge": {
           "name": "桥梁范围",
           "terms": "桥梁范围,桥面轮廓,桥梁区域,桥梁边缘,桥面,桥体,桥梁,大桥,桥"
+        },
+        "man_made/bunker_silo": {
+          "name": "储料堆场",
+          "terms": "堆料,储料,贮料,储存,堆场,场地,储场"
         },
         "man_made/cairn": {
           "name": "石墩/玛尼石"
@@ -7887,19 +7946,32 @@
           "name": "烟囱",
           "terms": "烟囱,烟囱塔"
         },
+        "man_made/clarifier": {
+          "name": "污水沉淀池",
+          "terms": "污水,处理,沉淀,沉淀池,污水池"
+        },
         "man_made/clearcut": {
-          "name": "采伐迹地"
+          "name": "采伐迹地",
+          "terms": "森林,林,树林,山林,砍伐,伐树,伐木,采伐,土地,山地,清理,迹地"
         },
         "man_made/compass_rose": {
-          "name": "风玫瑰",
-          "terms": "风玫瑰图"
+          "name": "罗盘图",
+          "terms": "风玫瑰,罗盘,导航,景点"
         },
         "man_made/courtyard": {
           "name": "庭院"
         },
         "man_made/crane": {
           "name": "起重机",
-          "terms": "起重机,起重,吊车,天车,行车,航吊,塔吊,重物,搬运"
+          "terms": "起重机,起重,港机,吊车,天车,行车,航吊,塔吊,重物,搬运,桥式,门式,门座式"
+        },
+        "man_made/crane/gantry_crane": {
+          "name": "桥式起重机",
+          "terms": "起重机,起重,港机,吊车,天车,行车,航吊,桥式,龙门式,龙门吊"
+        },
+        "man_made/crane/portal_crane": {
+          "name": "门座式起重机",
+          "terms": "起重机,起重,港机,吊车,吊机,塔吊,门式,门座式"
         },
         "man_made/cross": {
           "name": "十字架",
@@ -7910,7 +7982,8 @@
           "terms": "分界线,防火带,林,线"
         },
         "man_made/dovecote": {
-          "name": "鸽舍"
+          "name": "鸽舍",
+          "terms": "鸽舍,鸽,鸽子,鸟巢"
         },
         "man_made/dyke": {
           "name": "堤",
@@ -8034,6 +8107,10 @@
         "man_made/street_cabinet": {
           "name": "街道配电柜"
         },
+        "man_made/street_cabinet/postal_service": {
+          "name": "邮政中继箱",
+          "terms": "邮政,中继,箱,邮件,信件"
+        },
         "man_made/surveillance": {
           "name": "监视器",
           "terms": "监视器,监控,探头,监视探头"
@@ -8044,6 +8121,22 @@
         },
         "man_made/survey_point": {
           "terms": "测量点"
+        },
+        "man_made/tailings_pond": {
+          "name": "尾矿库",
+          "terms": "尾矿,尾矿池,水库,库区"
+        },
+        "man_made/telescope": {
+          "name": "望远镜",
+          "terms": "天文望远镜"
+        },
+        "man_made/telescope/optical": {
+          "name": "光学望远镜",
+          "terms": "望远镜,光学"
+        },
+        "man_made/telescope/radio": {
+          "name": "射电望远镜",
+          "terms": "望远镜,射电,电波,雷达"
         },
         "man_made/torii": {
           "name": "鸟居",
@@ -8057,24 +8150,28 @@
           "terms": "钟楼,钟"
         },
         "man_made/tower/communication": {
-          "name": "通信塔"
+          "name": "通信塔",
+          "terms": "通讯塔,塔,通讯,通信,电信,铁塔,天线"
         },
         "man_made/tower/cooling": {
           "name": "冷却塔",
           "terms": "发电厂"
         },
         "man_made/tower/defensive": {
-          "name": "防御塔"
+          "name": "防御塔",
+          "terms": "塔,防御,敌台,守卫,烽火楼"
         },
         "man_made/tower/diving": {
-          "name": "跳水台"
+          "name": "跳水台",
+          "terms": "跳水,平台"
         },
         "man_made/tower/minaret": {
           "name": "宣礼塔",
           "terms": "清真寺,尖塔,清真,宣礼,塔,叫拜楼,洋葱塔,伊斯兰"
         },
         "man_made/tower/observation": {
-          "name": "瞭望塔"
+          "name": "瞭望塔",
+          "terms": "塔,瞭望,观察,观测"
         },
         "man_made/tower/pagoda": {
           "name": "宝塔",
@@ -8263,12 +8360,42 @@
         "natural/stone": {
           "name": "孤立岩石"
         },
+        "natural/strait": {
+          "name": "海峡",
+          "terms": "海峡"
+        },
         "natural/tree": {
           "terms": "树"
+        },
+        "natural/tree/broadleaved": {
+          "name": "阔叶树"
+        },
+        "natural/tree/broadleaved/deciduous": {
+          "name": "落叶阔叶树",
+          "terms": "阔叶,落叶,树"
+        },
+        "natural/tree/broadleaved/evergreen": {
+          "name": "常绿阔叶树",
+          "terms": "常绿,阔叶,树"
+        },
+        "natural/tree/needleleaved": {
+          "name": "针叶树"
+        },
+        "natural/tree/needleleaved/deciduous": {
+          "name": "落叶针叶树",
+          "terms": "落叶,针叶,树"
+        },
+        "natural/tree/needleleaved/evergreen": {
+          "name": "常绿针叶树",
+          "terms": "常绿,针叶,树"
         },
         "natural/tree_row": {
           "name": "树列",
           "terms": "树列,一列树,一排树,树阵,树"
+        },
+        "natural/tree_stump": {
+          "name": "树桩",
+          "terms": "树桩,桩,木桩,兜脑壳"
         },
         "natural/valley": {
           "name": "山谷",
@@ -8296,6 +8423,10 @@
         "natural/water/moat": {
           "name": "护城河",
           "terms": "护城河,城池"
+        },
+        "natural/water/oxbow": {
+          "name": "牛轭湖",
+          "terms": "牛轭湖,牛轭,湖,河道,河"
         },
         "natural/water/pond": {
           "terms": "池塘"
@@ -8353,6 +8484,9 @@
         "natural/wetland/tidalflat": {
           "name": "潮滩",
           "terms": "滩,潮汐,埔"
+        },
+        "natural/wetland/wet_meadow": {
+          "name": "湿草甸"
         },
         "natural/wood": {
           "name": "自然树林",
@@ -8466,7 +8600,7 @@
         },
         "office/government": {
           "name": "政府机关",
-          "terms": "政府办公点"
+          "terms": "政府,办公,行政,政务,事业,机关,单位,局,部,处,站"
         },
         "office/government/prosecutor": {
           "name": "检察院",
@@ -8520,7 +8654,7 @@
           "terms": "公证,公证处,契约,保证,签名,学历,学位,成绩,刑事,婚姻,出生,委托,遗嘱,遗产,继承,声明,机构,抽奖,拍卖,证据"
         },
         "office/physician": {
-          "name": "诊室"
+          "name": "医生办公室"
         },
         "office/political_party": {
           "name": "政党办公室",
@@ -9256,8 +9390,13 @@
         "shop/clothes/second_hand": {
           "name": "二手服装店"
         },
+        "shop/clothes/suits": {
+          "name": "正装店",
+          "terms": "西装,衣服,服饰,正装,中山装,燕尾服,晨礼服,古装"
+        },
         "shop/clothes/underwear": {
-          "name": "内衣店"
+          "name": "内衣店",
+          "terms": "内衣,内裤,内衬,贴身,胸罩"
         },
         "shop/clothes/wedding": {
           "name": "婚纱店"
@@ -9399,6 +9538,10 @@
           "name": "理发店",
           "terms": "理发店"
         },
+        "shop/hairdresser/barber": {
+          "name": "理发店",
+          "terms": "理发,美发,剪发,快剪,洗剪吹,美发沙龙,发艺"
+        },
         "shop/hairdresser_supply": {
           "name": "美发美容用品店"
         },
@@ -9519,8 +9662,8 @@
           "terms": "户外用品店,销售户外活动用品的商店"
         },
         "shop/outpost": {
-          "name": "电商自提点",
-          "terms": "电商自提点,线上零售提货点,提货,在线"
+          "name": "社区团购自提点",
+          "terms": "电商,自提,线上,零售,社区,社区团购,团购,提货点,提货,在线,自提点,取货,取货点,网购"
         },
         "shop/paint": {
           "name": "油漆店",

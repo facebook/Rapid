@@ -520,9 +520,6 @@
     "ireland-matrix": {
       "description": "En Matrix-gateway för OSM Irelands IRC-kanal: {url}"
     },
-    "ireland-meetup": {
-      "description": "Meetups med alla som är intresserade av OpenStreetMap"
-    },
     "is-chapter": {
       "description": "Vi hjälper till att utöka och förbättra OpenStreetMap på Island."
     },

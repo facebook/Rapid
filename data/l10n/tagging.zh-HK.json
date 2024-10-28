@@ -2907,10 +2907,6 @@
           "name": "劇院",
           "terms": "Theater,劇場,劇院,戲院,舞臺戲院,電影院,戲棚"
         },
-        "amenity/theatre/type/amphi": {
-          "name": "露天劇場",
-          "terms": "圓形廣場,羅馬廣場,圓形劇場,圓形露天劇場"
-        },
         "amenity/toilets/disposal/flush": {
           "name": "沖水廁所"
         },
