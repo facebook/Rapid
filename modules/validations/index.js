@@ -8,7 +8,7 @@ export { validationFormatting } from './invalid_format.js';
 export { validationHelpRequest } from './help_request.js';
 export { validationImpossibleOneway } from './impossible_oneway.js';
 export { validationIncompatibleSource } from './incompatible_source.js';
-export { validationKerbNodes } from './kerb_nodes.js';
+export { validationCurbNodes } from './curb_nodes.js';
 export { validationMismatchedGeometry } from './mismatched_geometry.js';
 export { validationMissingRole } from './missing_role.js';
 export { validationMissingTag } from './missing_tag.js';
