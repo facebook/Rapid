@@ -56,11 +56,10 @@ export class OvertureService extends AbstractSystem {
     const context = this.context;
     const vtService = context.services.vectortile;
 
-    return Promise.resolve(vtService.initAsync()).then( () => {
-    //other init here after the vector tile service is done initializing
-    this._loadS3Catalog();
-
-    });
+    return Promise.all([
+      vtService.initAsync(),
+      this._loadS3Catalog()
+    ]);
   }
 
 
@@ -108,7 +107,7 @@ export class OvertureService extends AbstractSystem {
     }
   }
 
-  
+
   getData(datasetID) {
     const vtService = this.context.services.vectortile;  // 'mapwithai' or 'esri'
 
