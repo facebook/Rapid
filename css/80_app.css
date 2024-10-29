@@ -810,8 +810,10 @@ a.hide-toggle {
   padding: 20px;
 }
 
-/* preserve extra space at bottom of inspector to allow for dropdown options - iD#5280 */
-.entity-editor > div:last-child {
+/* Preserve extra space at bottom of scrollable stuff */
+/* to allow for dropdowns, hovering, etc - iD#5280, Rapid#1593 */
+.entity-editor > div:last-child,
+.pane-content > div:last-child {
   margin-bottom: 150px;
 }
 
@@ -4198,7 +4200,7 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
     flex-flow: row wrap-reverse;
     justify-content: flex-end;
     width: 100%;
-    z-index: 1;
+    z-index: 10;
     -ms-user-select: element;
     pointer-events: none;
     overflow: hidden;
