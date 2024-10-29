@@ -88,7 +88,7 @@ export class DragNodeMode extends AbstractMode {
       // Bail out if the node is connected to something hidden.
       const hasHidden = filters.hasHiddenConnections(entity, graph);
       if (hasHidden) {
-        ui.flash
+        ui.Flash
           .duration(4000)
           .iconName('#rapid-icon-no')
           .label(l10n.t('modes.drag_node.connected_to_hidden'))();

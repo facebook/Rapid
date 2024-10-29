@@ -39,7 +39,7 @@ export { uiLoading } from './loading.js';
 export { uiMap3dViewer } from './map3d_viewer.js';
 export { UiMapControls } from './UiMapControls.js';
 export { UiMapFooter } from './UiMapFooter.js';
-export { UiMapInMap } from './UiMapInMap.js';
+export { UiMinimap } from './UiMinimap.js';
 export { uiMapRouletteDetails } from './maproulette_details.js';
 export { uiMapRouletteEditor } from './maproulette_editor.js';
 export { UiMapToolbar } from './UiMapToolbar.js';

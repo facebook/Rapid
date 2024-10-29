@@ -107,7 +107,7 @@ export function uiSectionBackgroundList(context) {
       .attr('type', 'checkbox')
       .on('change', d3_event => {
         d3_event.preventDefault();
-        ui.mapInMap.toggle();
+        ui.Minimap.toggle();
       });
 
     minimapLabelEnter
@@ -155,7 +155,7 @@ export function uiSectionBackgroundList(context) {
       .attr('type', 'checkbox')
       .on('change', d3_event => {
         d3_event.preventDefault();
-        ui.info.toggle('background');
+        ui.Info.toggle('background');
       });
 
     panelLabelEnter
@@ -177,7 +177,7 @@ export function uiSectionBackgroundList(context) {
       .attr('type', 'checkbox')
       .on('change', d3_event => {
         d3_event.preventDefault();
-        ui.info.toggle('location');
+        ui.Info.toggle('location');
       });
 
     locPanelLabelEnter

@@ -454,7 +454,7 @@ export function uiPaneHelp(context) {
 
   function clickShortcuts(d3_event) {
     d3_event.preventDefault();
-    ui.shortcuts.show();
+    ui.Shortcuts.show();
   }
 
 

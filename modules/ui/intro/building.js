@@ -16,7 +16,7 @@ export function uiIntroBuilding(context, curtain) {
   const map = context.systems.map;
   const presets = context.systems.presets;
   const ui = context.systems.ui;
-  const editMenu = ui.editMenu;
+  const EditMenu = ui.EditMenu;
 
   const houseExtent = new Extent([-85.62836, 41.95622], [-85.62791, 41.95654]);
   const tankExtent = new Extent([-85.62766, 41.95324], [-85.62695, 41.95372]);
@@ -211,7 +211,7 @@ export function uiIntroBuilding(context, curtain) {
 
         _onModeChange = reject;   // disallow mode change
 
-        ui.sidebar.showPresetList();
+        ui.Sidebar.showPresetList();
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         const button = container.select('.preset-category_building .preset-list-button');
@@ -256,7 +256,7 @@ export function uiIntroBuilding(context, curtain) {
           }
         };
 
-        // ui.sidebar.showPresetList();  // calling this again causes issue
+        // ui.Sidebar.showPresetList();  // calling this again causes issue
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         const button = container.select('.preset-building_house .preset-list-button');
@@ -320,13 +320,13 @@ export function uiIntroBuilding(context, curtain) {
           tipHtml: helpHtml(context, `intro.buildings.${textID}`)
         });
 
-        editMenu.on('toggled.intro', open => {
+        EditMenu.on('toggled.intro', open => {
           if (open) resolve(clickSquareAsync);
         });
       }))
       .finally(() => {
         _onStableChange = null;
-        editMenu.on('toggled.intro', null);
+        EditMenu.on('toggled.intro', null);
       });
   }
 
@@ -536,7 +536,7 @@ export function uiIntroBuilding(context, curtain) {
 
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
-        ui.sidebar.showPresetList();
+        ui.Sidebar.showPresetList();
 
         curtain.reveal({
           revealSelector: '.preset-search-input',
@@ -610,13 +610,13 @@ export function uiIntroBuilding(context, curtain) {
         tipHtml: helpHtml(context, `intro.buildings.${textID}`)
       });
 
-      editMenu.on('toggled.intro', open => {
+      EditMenu.on('toggled.intro', open => {
         if (open) resolve(clickCircleAsync);
       });
     })
     .finally(() => {
       _onStableChange = null;
-      editMenu.on('toggled.intro', null);
+      EditMenu.on('toggled.intro', null);
     });
   }
 

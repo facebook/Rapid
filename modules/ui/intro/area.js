@@ -195,7 +195,7 @@ export function uiIntroArea(context, curtain) {
           }
         };
 
-        ui.sidebar.showPresetList();
+        ui.Sidebar.showPresetList();
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         curtain.reveal({
@@ -259,7 +259,7 @@ export function uiIntroArea(context, curtain) {
 
         _onModeChange = reject;   // disallow mode change;
 
-        ui.sidebar.showEntityEditor();
+        ui.Sidebar.showEntityEditor();
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         // scroll "Add field" into view
@@ -346,7 +346,7 @@ export function uiIntroArea(context, curtain) {
         }
       }, 300);
 
-      ui.sidebar.showEntityEditor();
+      ui.Sidebar.showEntityEditor();
 
       curtain.reveal({
         revealSelector: 'div.combobox',
@@ -376,7 +376,7 @@ export function uiIntroArea(context, curtain) {
       _rejectStep = reject;
       _onModeChange = () => resolve(playAsync);
 
-      ui.sidebar.showEntityEditor();
+      ui.Sidebar.showEntityEditor();
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
@@ -398,7 +398,7 @@ export function uiIntroArea(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _onModeChange = reject;   // disallow mode change;
-      ui.sidebar.showEntityEditor();
+      ui.Sidebar.showEntityEditor();
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane',

@@ -4,8 +4,8 @@ import { vecAdd } from '@rapid-sdk/math';
 import { AbstractSystem } from './AbstractSystem.js';
 
 import {
-  UiApiStatus, UiDefs, uiEditMenu, uiFlash, UiFullscreen, uiInfo, uiIntro,
-  uiLoading, UiMapInMap, UiMapFooter, UiMapToolbar, UiOvermap, UiPhotoViewer,
+  UiApiStatus, UiDefs, uiEditMenu, uiFlash, UiFullscreen, uiIntro,
+  uiLoading, UiMapFooter, UiMapToolbar, UiOvermap, UiPhotoViewer,
   uiSplash, uiRestore, UiShortcuts, UiSidebar, uiWhatsNew
 } from '../ui/index.js';
 
@@ -35,20 +35,24 @@ export class UiSystem extends AbstractSystem {
     this._resizeTimeout = null;
 
     // Child components, we will defer creating these until after some other things have initted.
-    this.apiStatus = null;
-    this.authModal = null;
-    this.defs = null;
-    this.editMenu = null;
-    this.flash = null;
-    this.fullscreen = null;
-    this.info = null;
-    this.mapFooter = null;
-    this.mapInMap = null;
-    this.mapToolbar = null;
-    this.overmap = null;
-    this.photoviewer = null;
-    this.shortcuts = null;
-    this.sidebar = null;
+    this.ApiStatus = null;
+    this.AuthModal = null;
+    this.Defs = null;
+    this.EditMenu = null;
+    this.Flash = null;
+    this.Fullscreen = null;
+    this.MapFooter = null;
+    this.MapToolbar = null;
+    this.Overmap = null;
+    this.Shortcuts = null;
+    this.Sidebar = null;
+
+    // These components live below in the tree, but we will hold a reference
+    // to them here in the UiSystem, so other code can find them easily.
+    this.Info = null;
+    this.Minimap = null;
+    this.PhotoViewer = null;
+    this.Spector = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
@@ -85,26 +89,30 @@ export class UiSystem extends AbstractSystem {
       .then(() => {
         window.addEventListener('resize', this.resize);
 
-        this.apiStatus = new UiApiStatus(context);
-        this.authModal = uiLoading(context).blocking(true).message(l10n.t('loading_auth'));
-        this.defs = new UiDefs(context);
-        this.editMenu = uiEditMenu(context);
-        this.flash = uiFlash(context);
-        this.fullscreen = new UiFullscreen(context);
-        this.info = uiInfo(context);
-        this.mapFooter = new UiMapFooter(context);
-        this.mapInMap = new UiMapInMap(context);
-        this.mapToolbar = new UiMapToolbar(context);
-        this.overmap = new UiOvermap(context);
-        this.photoviewer = new UiPhotoViewer(context);
-        this.shortcuts = new UiShortcuts(context);
-        this.sidebar = new UiSidebar(context);
+        this.ApiStatus = new UiApiStatus(context);
+        this.AuthModal = uiLoading(context).blocking(true).message(l10n.t('loading_auth'));
+        this.Defs = new UiDefs(context);
+        this.EditMenu = uiEditMenu(context);
+        this.Flash = uiFlash(context);
+        this.Fullscreen = new UiFullscreen(context);
+        this.MapFooter = new UiMapFooter(context);
+        this.MapToolbar = new UiMapToolbar(context);
+        this.Overmap = new UiOvermap(context);
+        this.Shortcuts = new UiShortcuts(context);
+        this.Sidebar = new UiSidebar(context);
+
+        // These components live below in the tree, but we will hold a reference
+        // to them here in the UiSystem, so that other code can find them easily.
+        this.Info = this.Overmap.Info;
+        this.Minimap = this.Overmap.Minimap;
+        this.PhotoViewer = this.Overmap.PhotoViewer;
+        this.Spector = this.Overmap.Spector;
 
         const osm = context.services.osm;
         if (osm) {
           osm
-            .on('authLoading', () => context.container()?.call(this.authModal))
-            .on('authDone', () => this.authModal.close());
+            .on('authLoading', () => context.container()?.call(this.AuthModal))
+            .on('authDone', () => this.AuthModal.close());
         }
       });
 
@@ -193,10 +201,10 @@ export class UiSystem extends AbstractSystem {
     $container
       .attr('lang', l10n.localeCode())
       .attr('dir', l10n.textDirection())
-      .call(this.fullscreen.render)
-      .call(this.defs.render)
-      .call(this.sidebar.render)
-      .call(this.shortcuts.render);
+      .call(this.Fullscreen.render)
+      .call(this.Defs.render)
+      .call(this.Sidebar.render)
+      .call(this.Shortcuts.render);
 
     // .main-content
     // Contains the map and everything floating above it, such as toolbars, etc.
@@ -222,16 +230,14 @@ export class UiSystem extends AbstractSystem {
     $mainContent = $mainContent.merge($$mainContent);
 
     $mainContent
-      .call(this.mapToolbar.render)
-      .call(this.overmap.render)
-      .call(this.apiStatus.render)
-      .call(this.mapFooter.render);
-
+      .call(this.MapToolbar.render)
+      .call(this.Overmap.render)
+      .call(this.ApiStatus.render)
+      .call(this.MapFooter.render);
 
     // Setup map dimensions
     // This should happen after .main-content and toolbars exist.
     this.resize();
-
 
     // On first render only, enter browse mode and show a startup screen.
     if (this._firstRender) {
@@ -444,7 +450,7 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
    * @param  {string}  triggerType  - (not used?)  'touch', 'pen', or 'rightclick' that triggered the menu
    */
   showEditMenu(anchorPoint, triggerType) {
-    this.editMenu.close();   // remove any displayed menu
+    this.EditMenu.close();   // remove any displayed menu
 
     const context = this.context;
     const gfx = context.systems.gfx;
@@ -468,14 +474,14 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
       }
     }
 
-    this.editMenu
+    this.EditMenu
       .anchorLoc(viewport.unproject(anchorPoint))
       .triggerType(triggerType)
       .operations(operations);
 
     // render the menu
     const $overlay = select(gfx.overlay);
-    $overlay.call(this.editMenu);
+    $overlay.call(this.EditMenu);
   }
 
 
@@ -496,10 +502,10 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
     const operations = context.mode?.operations ?? [];
 
     if (operations.length && context.editable()) {
-      this.editMenu.operations(operations);
-      $overlay.call(this.editMenu);   // redraw it
+      this.EditMenu.operations(operations);
+      $overlay.call(this.EditMenu);   // redraw it
     } else {
-      this.editMenu.close();
+      this.EditMenu.close();
     }
   }
 
@@ -509,7 +515,7 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
    * Remove any existing menu
    */
   closeEditMenu() {
-    this.editMenu.close();
+    this.EditMenu.close();
   }
 
 
@@ -526,7 +532,9 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
       right: src.right,
       bottom: src.bottom,
       width: src.width,
-      height: src.height
+      height: src.height,
+      x: src.x,
+      y: src.y
     };
   }
 

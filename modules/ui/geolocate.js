@@ -77,7 +77,7 @@ export function uiGeolocate(context) {
 
   function error() {
     if (_enabled) {    // user may have disabled it before the callback fires
-      ui.flash
+      ui.Flash
         .label(l10n.tHtml('geolocate.location_unavailable'))
         .iconName('#rapid-icon-geolocate')();
     }

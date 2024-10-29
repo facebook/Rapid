@@ -12,9 +12,9 @@ const MAX_K = geoZoomToScale(MAX_Z);
 
 
 /**
- * UiMapInMap
+ * UiMinimap
  */
-export class UiMapInMap {
+export class UiMinimap {
 
   /**
    * @constructor

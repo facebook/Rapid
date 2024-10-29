@@ -61,7 +61,7 @@ export class SelectMode extends AbstractMode {
     const gfx = context.systems.gfx;
     const photos = context.systems.photos;
     const scene = gfx.scene;
-    const sidebar = context.systems.ui.sidebar;
+    const Sidebar = context.systems.ui.Sidebar;
 
     context.enableBehaviors(['hover', 'select', 'drag', 'mapInteraction', 'lasso', 'paste']);
 
@@ -130,7 +130,7 @@ export class SelectMode extends AbstractMode {
           const osm = context.services.osm;
           const note = osm?.getNote(datumID);
           if (!(note instanceof QAItem)) return;   // or - go to browse mode
-          sidebar.show(sidebarContent.note(note));
+          Sidebar.show(sidebarContent.note(note));
           this._selectedData.set(datumID, note);  // update selectedData after a change happens?
         });
 
@@ -142,7 +142,7 @@ export class SelectMode extends AbstractMode {
           const keepright = context.services.keepRight;
           const error = keepright?.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
-          sidebar.show(sidebarContent.error(error));
+          Sidebar.show(sidebarContent.error(error));
           this._selectedData.set(datumID, error);  // update selectedData after a change happens?
         });
 
@@ -154,7 +154,7 @@ export class SelectMode extends AbstractMode {
           const osmose = context.services.osmose;
           const error = osmose?.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
-          sidebar.show(sidebarContent.error(error));
+          Sidebar.show(sidebarContent.error(error));
           this._selectedData.set(datumID, error);  // update selectedData after a change happens?
         });
 
@@ -166,7 +166,7 @@ export class SelectMode extends AbstractMode {
           const maproulette = context.services.maproulette;
           const error = maproulette?.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
-          sidebar.show(sidebarContent.error(error));
+          Sidebar.show(sidebarContent.error(error));
           this._selectedData.set(datumID, error);  // update selectedData after a change happens?
         });
 
@@ -194,10 +194,10 @@ export class SelectMode extends AbstractMode {
 
     // setup the sidebar
     if (sidebarContent) {
-      sidebar.show(sidebarContent); //.newNote(_newFeature));
+      Sidebar.show(sidebarContent); //.newNote(_newFeature));
       // Attempt to expand the sidebar, avoid obscuring the selected thing if we can..
       // For this to work the datum must have an extent already
-      // sidebar.expand(sidebar.intersects(datum.extent()));
+      // Sidebar.expand(Sidebar.intersects(datum.extent()));
     }
 
     return true;
@@ -214,7 +214,7 @@ export class SelectMode extends AbstractMode {
     const context = this.context;
     const photos = context.systems.photos;
     const scene = context.systems.gfx.scene;
-    const sidebar = context.systems.ui.sidebar;
+    const Sidebar = context.systems.ui.Sidebar;
 
     this.extent = null;
 
@@ -230,7 +230,7 @@ export class SelectMode extends AbstractMode {
     this._selectedData.clear();
 
     scene.clearClass('select');
-    sidebar.hide();
+    Sidebar.hide();
     photos.selectDetection(null);
   }
 

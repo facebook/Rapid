@@ -376,7 +376,7 @@ export function uiIntroNavigation(context, curtain) {
       _rejectStep = reject;
       _onModeChange = reject;   // disallow mode change
 
-      ui.sidebar.showEntityEditor();
+      ui.Sidebar.showEntityEditor();
       container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
       curtain.reveal({
@@ -402,7 +402,7 @@ export function uiIntroNavigation(context, curtain) {
       _rejectStep = reject;
       _onModeChange = reject;   // disallow mode change
 
-      ui.sidebar.showEntityEditor();
+      ui.Sidebar.showEntityEditor();
       container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
       // preset match, in case the user happened to change it.
@@ -434,7 +434,7 @@ export function uiIntroNavigation(context, curtain) {
       _rejectStep = reject;
       _onModeChange = reject;   // disallow mode change
 
-      ui.sidebar.showEntityEditor();
+      ui.Sidebar.showEntityEditor();
       container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
       curtain.reveal({
@@ -460,7 +460,7 @@ export function uiIntroNavigation(context, curtain) {
       _rejectStep = reject;
       _onModeChange = () => resolve(searchStreetAsync);
 
-      ui.sidebar.showEntityEditor();
+      ui.Sidebar.showEntityEditor();
 
       const iconSelector = '.entity-editor-pane button.close svg use';
       const iconName = d3_select(iconSelector).attr('href') || '#rapid-icon-close';
@@ -580,7 +580,7 @@ export function uiIntroNavigation(context, curtain) {
       _rejectStep = reject;
       _onModeChange = () => resolve(playAsync);
 
-      ui.sidebar.showEntityEditor();
+      ui.Sidebar.showEntityEditor();
       const iconSelector = '.entity-editor-pane button.close svg use';
       const iconName = d3_select(iconSelector).attr('href') || '#rapid-icon-close';
       const tipHtml = helpHtml(context, 'intro.navigation.street_different_fields') + '{br}' +

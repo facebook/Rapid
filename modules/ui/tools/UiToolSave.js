@@ -135,7 +135,7 @@ export class UiToolSave {
 
     //  // consider: there are no tooltips for touch interactions so flash feedback instead
     // if (isDisabled) {
-    //   context.systems.ui.flash
+    //   context.systems.ui.Flash
     //     .duration(2000)
     //     .iconName('#rapid-icon-save')
     //     .iconClass('disabled')

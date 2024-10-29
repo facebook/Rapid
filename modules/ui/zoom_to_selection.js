@@ -55,7 +55,7 @@ export function uiZoomToSelection(context) {
 
       } else {   // tool disabled
         if (_lastPointerUpType === 'touch' || _lastPointerUpType === 'pen') {
-          ui.flash
+          ui.Flash
             .duration(2000)
             .iconName('#rapid-icon-framed-dot')
             .iconClass('disabled')

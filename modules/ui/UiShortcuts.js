@@ -317,14 +317,15 @@ export class UiShortcuts {
       this.hide();
     }
 
-    this.Modal = uiModal(this.$parent);
-
     assets.loadAssetAsync('shortcuts')
       .then(data => {
         this._dataShortcuts = data.shortcuts;
+        this.Modal = uiModal(this.$parent);
         this.render();
       })
-      .catch(e => console.error(e));  // eslint-disable-line
+      .catch(e => {
+        console.error(e);  // eslint-disable-line
+      });
   }
 
 

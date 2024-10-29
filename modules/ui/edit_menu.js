@@ -175,7 +175,7 @@ export function uiEditMenu(context) {
       if (operation.disabled()) {
         if (_lastPointerUpType === 'touch' || _lastPointerUpType === 'pen') {
           // there are no tooltips for touch interactions so flash feedback instead
-          ui.flash
+          ui.Flash
             .duration(4000)
             .iconName(`#rapid-operation-${operation.id}`)
             .iconClass('operation disabled')
@@ -183,7 +183,7 @@ export function uiEditMenu(context) {
         }
       } else {
         if (_lastPointerUpType === 'touch' || _lastPointerUpType === 'pen') {
-          ui.flash
+          ui.Flash
             .duration(2000)
             .iconName(`#rapid-operation-${operation.id}`)
             .iconClass('operation')

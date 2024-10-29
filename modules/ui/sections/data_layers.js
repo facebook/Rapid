@@ -361,7 +361,7 @@ export function uiSectionDataLayers(context) {
       .attr('type', 'checkbox')
       .on('change', d3_event => {
         d3_event.preventDefault();
-        ui.info.toggle('history');
+        ui.Info.toggle('history');
       });
 
     historyPanelLabelEnter
@@ -383,7 +383,7 @@ export function uiSectionDataLayers(context) {
       .attr('type', 'checkbox')
       .on('change', d3_event => {
         d3_event.preventDefault();
-        ui.info.toggle('measurement');
+        ui.Info.toggle('measurement');
       });
 
     measurementPanelLabelEnter

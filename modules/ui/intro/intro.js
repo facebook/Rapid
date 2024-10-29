@@ -151,7 +151,7 @@ export function uiIntro(context, skipToRapid) {
     _original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
     imagery.brightness = 1;
 
-    ui.sidebar.expand(false);   // false = no animation
+    ui.Sidebar.expand(false);   // false = no animation
     _curtain = new UiCurtain(context);
     selection.call(_curtain.enable);
 

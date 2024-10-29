@@ -1,8 +1,11 @@
 import { selection, select } from 'd3-selection';
 
 import { uiAttribution } from './attribution.js';
+import { uiInfo } from './info.js';
 import { uiMap3dViewer } from './map3d_viewer.js';
 import { UiMapControls } from './UiMapControls.js';
+import { UiMinimap } from './UiMinimap.js';
+import { UiPhotoViewer } from './UiPhotoViewer.js';
 import { UiSpector } from './UiSpector.js';
 
 import { uiPaneBackground, uiPaneHelp, uiPaneIssues, uiPaneMapData, uiPanePreferences } from './panes/index.js';
@@ -30,8 +33,11 @@ export class UiOvermap {
 
     // Create child components
     this.Attribution = uiAttribution(context);
+    this.Info = uiInfo(context);
     this.Map3dViewer = uiMap3dViewer(context);
     this.MapControls = new UiMapControls(context);
+    this.Minimap = new UiMinimap(context);
+    this.PhotoViewer = new UiPhotoViewer(context);
     this.Spector = new UiSpector(context);
 
     // D3 selections
@@ -78,7 +84,7 @@ export class UiOvermap {
       .text('t');
 
     $$overmap
-      .call(ui.mapInMap.render)
+      .call(this.Minimap.render)
       .call(this.Map3dViewer)
       .call(this.Spector.render)
       .call(this.MapControls.render);
@@ -118,10 +124,10 @@ export class UiOvermap {
 
     // Info Panels
     $$overmap
-      .call(ui.info);
+      .call(this.Info);
 
     $$overmap
-      .call(ui.photoviewer.render);
+      .call(this.PhotoViewer.render);
 
     $$overmap
       .append('div')

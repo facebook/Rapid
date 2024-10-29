@@ -64,6 +64,7 @@ export class KeyOperationBehavior extends AbstractBehavior {
   _keydown(e) {
     const context = this.context;
     const operation = this._operation;
+    const ui = context.systems.ui;
 
     if (operation.availableForKeypress && !operation.availableForKeypress()) return;  // copy paste detail 😕
 
@@ -72,14 +73,14 @@ export class KeyOperationBehavior extends AbstractBehavior {
     const disabled = operation.disabled();
 
     if (disabled) {
-      context.systems.ui.flash
+      ui.Flash
         .duration(4000)
         .iconName(`#rapid-operation-${operation.id}`)
         .iconClass('operation disabled')
         .label(operation.tooltip)();
 
     } else {
-      context.systems.ui.flash
+      ui.Flash
         .duration(2000)
         .iconName(`#rapid-operation-${operation.id}`)
         .iconClass('operation')

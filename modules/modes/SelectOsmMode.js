@@ -134,7 +134,7 @@ export class SelectOsmMode extends AbstractMode {
     editor.on('merge', this._merge);
     hover.on('hoverchange', this._hover);
 
-    ui.sidebar.showInspector(entityIDs, this._newFeature);
+    ui.Sidebar.showInspector(entityIDs, this._newFeature);
 
     return true;
   }
@@ -192,7 +192,7 @@ export class SelectOsmMode extends AbstractMode {
 
     scene.clearClass('select');
     ui.closeEditMenu();
-    ui.sidebar.hide();
+    ui.Sidebar.hide();
     urlhash.setParam('id', null);
     filters.forceVisible([]);
 
@@ -315,7 +315,7 @@ export class SelectOsmMode extends AbstractMode {
       if (!operation.available()) return;
 
       if (operation.disabled()) {
-        ui.flash
+        ui.Flash
           .duration(4000)
           .iconName(`#rapid-operation-${operation.id}`)
           .iconClass('operation disabled')

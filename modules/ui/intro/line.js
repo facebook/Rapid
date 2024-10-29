@@ -15,7 +15,7 @@ export function uiIntroLine(context, curtain) {
   const map = context.systems.map;
   const presets = context.systems.presets;
   const ui = context.systems.ui;
-  const editMenu = ui.editMenu;
+  const EditMenu = ui.EditMenu;
 
   const flowerStreetID = 'w646';
   const tulipRoadStartExtent = new Extent([-85.63016, 41.95749], [-85.62937, 41.95843]);
@@ -268,7 +268,7 @@ export function uiIntroLine(context, curtain) {
 
         _onModeChange = reject;   // disallow mode change
 
-        // ui.sidebar.showPresetList(); // calling this again causes issue
+        // ui.Sidebar.showPresetList(); // calling this again causes issue
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         categoryButton = container.select('.preset-category_road_minor .preset-list-button');
@@ -306,7 +306,7 @@ export function uiIntroLine(context, curtain) {
         if (!_doesLineExist()) { resolve(addLineAsync); return; }
         if (!_isLineSelected()) context.enter('select-osm', { selection: { osm: [_lineID] }} );
 
-        // ui.sidebar.showPresetList(); // calling this again causes issue
+        // ui.Sidebar.showPresetList(); // calling this again causes issue
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         const categoryButton = container.select('.preset-category_road_minor .preset-list-button');
@@ -363,7 +363,7 @@ export function uiIntroLine(context, curtain) {
         if (!_doesLineExist()) { resolve(addLineAsync); return; }
         if (!_isLineSelected()) context.enter('select-osm', { selection: { osm: [_lineID] }} );
 
-        ui.sidebar.showPresetList();
+        ui.Sidebar.showPresetList();
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         const categoryButton = container.select('.preset-category_road_minor .preset-list-button');
@@ -420,7 +420,7 @@ export function uiIntroLine(context, curtain) {
 
         _onModeChange = () => resolve(didNameRoadAsync);
 
-        ui.sidebar.showEntityEditor();
+        ui.Sidebar.showEntityEditor();
 
         curtain.reveal({
           revealSelector: '.entity-editor-pane',
@@ -701,13 +701,13 @@ export function uiIntroLine(context, curtain) {
         tipHtml: rightClickString
       });
 
-      editMenu.on('toggled.intro', open => {
+      EditMenu.on('toggled.intro', open => {
         if (open) resolve(splitIntersectionAsync);
       });
     })
     .finally(() => {
       _onStagingChange = null;
-      editMenu.on('toggled.intro', null);
+      EditMenu.on('toggled.intro', null);
     });
   }
 
@@ -895,14 +895,14 @@ export function uiIntroLine(context, curtain) {
         tipHtml: rightClickString
       });
 
-      editMenu.on('toggled.intro', open => {
+      EditMenu.on('toggled.intro', open => {
         if (open) resolve(multiDeleteAsync);
       });
     })
     .finally(() => {
       _onModeChange = null;
       _onStagingChange = null;
-      editMenu.on('toggled.intro', null);
+      EditMenu.on('toggled.intro', null);
     });
   }
 

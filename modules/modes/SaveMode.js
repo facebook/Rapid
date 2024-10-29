@@ -57,8 +57,8 @@ export class SaveMode extends AbstractMode {
   enter() {
     const context = this.context;
     const osm = context.services.osm;
-    const sidebar = context.systems.ui.sidebar;
     const uploader = context.systems.uploader;
+    const Sidebar = context.systems.ui.Sidebar;
 
     if (!osm) return false;  // can't enter save mode
 
@@ -67,7 +67,7 @@ export class SaveMode extends AbstractMode {
     }
 
     // Show sidebar
-    sidebar.expand();
+    Sidebar.expand();
 
     this._active = true;
     this._wasSuccessfulSave = false;
@@ -76,13 +76,13 @@ export class SaveMode extends AbstractMode {
       .on('cancel', this._cancel);
 
     if (osm.authenticated()) {
-      sidebar.show(this._uiCommit);
+      Sidebar.show(this._uiCommit);
     } else {
       osm.authenticate(err => {
         if (err) {
           this._cancel();
         } else {
-          sidebar.show(this._uiCommit);
+          Sidebar.show(this._uiCommit);
         }
       });
     }
@@ -120,8 +120,8 @@ export class SaveMode extends AbstractMode {
     }
 
     const context = this.context;
-    const sidebar = context.systems.ui.sidebar;
     const uploader = context.systems.uploader;
+    const Sidebar = context.systems.ui.Sidebar;
 
     this._uiCommit.on('cancel', null);
     this._uiCommit = null;
@@ -145,7 +145,7 @@ export class SaveMode extends AbstractMode {
 
     // After a successful save, we want to leave the "thanks" content in the sidebar
     if (!this._wasSuccessfulSave) {
-      sidebar.hide();
+      Sidebar.hide();
     }
   }
 
@@ -308,15 +308,15 @@ export class SaveMode extends AbstractMode {
    */
   _resultSuccess(changeset) {
     const context = this.context;
-    const sidebar = context.systems.ui.sidebar;
+    const Sidebar = context.systems.ui.Sidebar;
 
     const successContent = this._uiSuccess
       .changeset(changeset)
       .location(this._location)
-      .on('cancel', () => sidebar.hide());
+      .on('cancel', () => Sidebar.hide());
 
     this._wasSuccessfulSave = true;
-    sidebar.show(successContent);
+    Sidebar.show(successContent);
 
     // Add delay before resetting to allow for postgres replication iD#1646 iD#2678
     window.setTimeout(() => {

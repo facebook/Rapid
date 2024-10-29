@@ -67,7 +67,7 @@ export function uiZoom(context) {
         if (!d.isDisabled()) {
           d.action(d3_event);
         } else if (_lastPointerUpType === 'touch' || _lastPointerUpType === 'pen') {
-          ui.flash
+          ui.Flash
             .duration(2000)
             .iconName(`#${d.icon}`)
             .iconClass('disabled')
