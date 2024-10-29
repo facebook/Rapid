@@ -56,9 +56,9 @@ export class OvertureService extends AbstractSystem {
     const context = this.context;
     const vtService = context.services.vectortile;
 
-    this._loadS3Catalog();
     return Promise.resolve(vtService.initAsync()).then( () => {
     //other init here after the vector tile service is done initializing
+    this._loadS3Catalog();
 
     });
   }
@@ -88,27 +88,6 @@ export class OvertureService extends AbstractSystem {
     });
   }
 
-  loadStacMetadata () { 
-    fetch(this.PMTILES_STAC_ROOT_URL) 
-      .then(response => response.json())
-      .then(catalog => {
-        // Process the catalog data
-        console.log(catalog);
-
-        // Access specific properties
-        console.log(catalog.id);
-        console.log(catalog.description);
-
-        // Iterate through links
-        catalog.links.forEach(link => {
-          console.log(link.rel, link.href);
-        });
-      })
-      .catch(error => {
-        console.error('Error fetching or parsing the PMTiles STAC Catalog:', error);
-      });
-  }
-
 
   /**
    * loadTiles
@@ -129,6 +108,7 @@ export class OvertureService extends AbstractSystem {
     }
   }
 
+  
   getData(datasetID) {
     const vtService = this.context.services.vectortile;  // 'mapwithai' or 'esri'
 
