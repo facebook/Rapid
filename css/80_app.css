@@ -4921,11 +4921,11 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 }
 
 .modal-shortcuts td {
-  padding-bottom: 5px;
+  padding-bottom: 3px;
 }
 
 .modal-shortcuts .shortcut-section {
-  padding: 20px 0 10px 0;
+  padding: 20px 0 3px 0;
 }
 
 .modal-shortcuts .shortcut-keys {
