@@ -255,7 +255,7 @@ export class MapWithAIService extends AbstractSystem {
     if (datasetID === 'fbRoads') {
       qs.result_type = 'road_vector_xml';
 
-    } else if (datasetID === 'metaFootways') {
+    } else if (datasetID === 'omdFootways') {
       qs.result_type = 'extended_osc';
       qs.sources = 'ML2OSM_META_FOOTWAYS';
     } else if (datasetID === 'msBuildings') {
