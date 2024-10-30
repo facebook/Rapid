@@ -4348,56 +4348,53 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 /* Attribution
 ------------------------------------------------------- */
 .attribution-wrap {
-    position: absolute;
-    bottom: 5px;
-    left: 5px;
-    right: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    z-index: 0;
-    pointer-events: none;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  right: 5px;
+  z-index: 0;
+  pointer-events: none;
 }
 
-.attribution-wrap > * {
-    pointer-events: auto;
+.attribution-section {
+  display: flex;
+  flex-flow: column nowrap;
+
+  pointer-events: auto;
+  color: #ccc;
+  font-size: 10px;
 }
 
-.attribution-wrap .base-layer-attribution,
-.attribution-wrap .overlay-layer-attribution {
-    color: #ccc;
-    font-size: 10px;
-}
-.attribution-wrap .overlay-layer-attribution {
-    text-align: right;
+.attribution-section.overlay-layer-attribution {
+  text-align: end;
 }
 
-.attribution-wrap .overlay-layer-attribution .attribution:not(:last-child):after {
-    content: '; ';
+.attribution,
+.attribution:visited {
+  color: #ccf;
 }
-
-.attribution-wrap .attribution a,
-.attribution-wrap .attribution a:visited {
-    color: #ccf;
-}
-.attribution-wrap .attribution a:focus,
-.attribution-wrap .attribution a:hover {
-    color: #aaf;
+.attribution:focus,
+.attribution:hover {
+  color: #aaf;
 }
 @media (hover: hover) {
-    .attribution-wrap .attribution a:hover {
-        color: #aaf;
-    }
+  .attribution:hover {
+    color: #aaf;
+  }
 }
 
-.attribution-wrap .attribution .source-image {
-    height: 20px;
-    vertical-align: middle;
-    border-radius: 3px;
+.attribution-image {
+  height: 20px;
+  vertical-align: middle;
+  border-radius: 3px;
 }
-
-.attribution-wrap .attribution span {
-    margin: 0 3px;
+.attribution-text {
+  margin: 0 3px;
 }
 
 

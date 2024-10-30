@@ -1,6 +1,6 @@
 export { uiAccount } from './account.js';
 export { UiApiStatus } from './UiApiStatus.js';
-export { uiAttribution } from './attribution.js';
+export { UiAttribution } from './UiAttribution.js';
 export { uiBearing } from './bearing.js';
 export { uiChangesetEditor } from './changeset_editor.js';
 export { uiCmd } from './cmd.js';

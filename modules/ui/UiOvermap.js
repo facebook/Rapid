@@ -1,6 +1,6 @@
 import { selection, select } from 'd3-selection';
 
-import { uiAttribution } from './attribution.js';
+import { UiAttribution } from './UiAttribution.js';
 import { uiInfo } from './info.js';
 import { uiMap3dViewer } from './map3d_viewer.js';
 import { UiMapControls } from './UiMapControls.js';
@@ -32,7 +32,7 @@ export class UiOvermap {
     this.context = context;
 
     // Create child components
-    this.Attribution = uiAttribution(context);
+    this.Attribution = new UiAttribution(context);
     this.Info = uiInfo(context);
     this.Map3dViewer = uiMap3dViewer(context);
     this.MapControls = new UiMapControls(context);
@@ -64,7 +64,6 @@ export class UiOvermap {
     }
 
     const context = this.context;
-    const ui = context.systems.ui;
 
     let $overmap = $parent.selectAll('.over-map')
       .data([0]);
@@ -121,19 +120,10 @@ export class UiOvermap {
         }
       });
 
-
-    // Info Panels
     $$overmap
-      .call(this.Info);
-
-    $$overmap
-      .call(this.PhotoViewer.render);
-
-    $$overmap
-      .append('div')
-      .attr('class', 'attribution-wrap')
-      .attr('dir', 'ltr')
-      .call(this.Attribution);
+      .call(this.Info)
+      .call(this.PhotoViewer.render)
+      .call(this.Attribution.render);
   }
 
 }
