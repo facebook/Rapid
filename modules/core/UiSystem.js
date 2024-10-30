@@ -27,7 +27,6 @@ export class UiSystem extends AbstractSystem {
     this.id = 'ui';
     this.dependencies = new Set(['editor', 'gfx', 'imagery', 'l10n', 'map', 'storage', 'urlhash']);
 
-    this._firstRender = true;
     this._mapRect = null;
     this._needWidth = {};
     this._initPromise = null;
@@ -157,15 +156,48 @@ export class UiSystem extends AbstractSystem {
   startAsync() {
     if (this._startPromise) return this._startPromise;
 
+    const context = this.context;
+    const editor = context.systems.editor;
+    const map = context.systems.map;
+    const storage = context.systems.storage;
+    const urlhash = context.systems.urlhash;
     const $container = this.context.container();
-    if ($container.size()) {
-      this.render();   // Render one time
-    } else {
+
+    if (!$container.size()) {
       return Promise.reject(new Error('No container to render to.'));
     }
 
-    this._started = true;
-    return this._startPromise = Promise.resolve();
+    // These systems currently don't do anything in start,
+    // but if they did, we'd want them to settle first.
+    const prerequisites = Promise.all([
+      editor.startAsync(),
+      map.startAsync()
+    ]);
+
+    return this._startPromise = prerequisites
+      .then(() => {
+        this.render();  // Render one time
+        this.resize();  // Update map dimensions - this should happen after .main-content and toolbars exist.
+
+        context.enter('browse');
+
+        // What to show first?
+        const startWalkthrough = urlhash.initialHashParams.get('walkthrough') === 'true';
+        const sawPrivacyVersion = parseInt(storage.getItem('sawPrivacyVersion'), 10) || 0;
+        const sawWhatsNewVersion = parseInt(storage.getItem('sawWhatsNewVersion'), 10) || 0;
+
+        if (startWalkthrough) {
+          $container.call(uiIntro(context));     // Jump right into walkthrough..
+        } else if (editor.canRestoreBackup) {
+          $container.call(uiRestore(context));   // Offer to restore backup edits..
+        } else if (sawPrivacyVersion !== context.privacyVersion) {
+          $container.call(uiSplash(context));    // Show "Welcome to Rapid" / Privacy Policy
+        } else if (sawWhatsNewVersion !== context.whatsNewVersion) {
+          $container.call(uiWhatsNew(context));  // Show "Whats New"
+        }
+
+        this._started = true;
+      });
   }
 
 
@@ -187,12 +219,11 @@ export class UiSystem extends AbstractSystem {
 
   /**
    * render
-   * Renders the Rapid user interface into the container.
+   * Renders the Rapid user interface into the main container.
+   * Note that most `render` functions accept a parent selection,
+   *  this is the only one that doesn't need it - `$container` is the parent.
    */
   render() {
-    // For now, this should only happen once
-    if (this._started) return;
-
     const context = this.context;
     const l10n = context.systems.l10n;
     const map = context.systems.map;
@@ -216,54 +247,15 @@ export class UiSystem extends AbstractSystem {
       .append('div')
       .attr('class', 'main-content active');
 
-    // .main-map
-    $$mainContent
-      .append('div')
-      .attr('class', 'main-map')
-      // Suppress the native right-click context menu
-      .on('contextmenu', e => e.preventDefault())
-      // Suppress swipe-to-navigate browser pages on trackpad/magic mouse – iD#5552
-      .on('wheel.map mousewheel.map', e => e.preventDefault())
-      .call(map.render);
-
     // update
     $mainContent = $mainContent.merge($$mainContent);
 
     $mainContent
+      .call(map.render)
       .call(this.MapToolbar.render)
       .call(this.Overmap.render)
       .call(this.ApiStatus.render)
       .call(this.MapFooter.render);
-
-    // Setup map dimensions
-    // This should happen after .main-content and toolbars exist.
-    this.resize();
-
-    // On first render only, enter browse mode and show a startup screen.
-    if (this._firstRender) {
-      context.enter('browse');
-
-      // What to show first?
-      const editor = context.systems.editor;
-      const storage = context.systems.storage;
-      const urlhash = context.systems.urlhash;
-
-      const startWalkthrough = urlhash.initialHashParams.get('walkthrough') === 'true';
-      const sawPrivacyVersion = parseInt(storage.getItem('sawPrivacyVersion'), 10) || 0;
-      const sawWhatsNewVersion = parseInt(storage.getItem('sawWhatsNewVersion'), 10) || 0;
-
-      if (startWalkthrough) {
-        $container.call(uiIntro(context));     // Jump right into walkthrough..
-      } else if (editor.canRestoreBackup) {
-        $container.call(uiRestore(context));   // Offer to restore backup edits..
-      } else if (sawPrivacyVersion !== context.privacyVersion) {
-        $container.call(uiSplash(context));    // Show "Welcome to Rapid" / Privacy Policy
-      } else if (sawWhatsNewVersion !== context.whatsNewVersion) {
-        $container.call(uiWhatsNew(context));  // Show "Whats New"
-      }
-
-      this._firstRender = false;
-    }
   }
 
 

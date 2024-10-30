@@ -226,12 +226,22 @@ export class MapSystem extends AbstractSystem {
     const context = this.context;
     const gfx = context.systems.gfx;
 
-    // The `supersurface` is a wrapper div that we temporarily transform as the user zooms and pans.
-    // This allows us to defer actual rendering until the browser has more time to do it.
-    // At regular intervals we reset this root transform and actually redraw the this.
-    const $$supersurface = $parent.selectAll('.supersurface')
+    // Everything in here runs one time (on enter).
+    // The 'main-map' is an absolutely positioned container that fills the space where the map will go.
+    const $$mainmap = $parent.selectAll('.main-map')
       .data([0])
       .enter()
+      .append('div')
+      .attr('class', 'main-map')
+      // Suppress the native right-click context menu
+      .on('contextmenu', e => e.preventDefault())
+      // Suppress swipe-to-navigate browser pages on trackpad/magic mouse – iD#5552
+      .on('wheel.map mousewheel.map', e => e.preventDefault());
+
+    // The `supersurface` is a wrapper div that we temporarily transform as the user zooms and pans.
+    // This allows us to defer actual rendering until the browser has more time to do it.
+    // At regular intervals we reset this root transform and actually redraw the map.
+    const $$supersurface = $$mainmap
       .append(() => gfx.supersurface)
       .attr('class', 'supersurface');
 
@@ -243,18 +253,14 @@ export class MapSystem extends AbstractSystem {
     //  - d3 selecting surface's child stuff
     //  - css classing surface's child stuff
     //  - listening to events on the surface
-    $$supersurface.selectAll('.surface')
-      .data([0])
-      .enter()
+    $$supersurface
       .append(() => gfx.surface)
       .attr('class', 'surface');
 
     // The `overlay` is a div that is transformed to cancel out the supersurface.
     // This is a place to put things _not drawn by pixi_ that should stay positioned
     // with the map, like the editmenu.
-    $$supersurface.selectAll('.overlay')
-      .data([0])
-      .enter()
+    $$supersurface
       .append(() => gfx.overlay)
       .attr('class', 'overlay');
   }
