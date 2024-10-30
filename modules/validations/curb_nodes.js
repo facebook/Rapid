@@ -40,9 +40,9 @@ export function validationCurbNodes(context) {
         data: { crossingWayID: wayID },
         dynamicFixes: () => ['unspecified', 'flush', 'lowered', 'raised'].map(type => {
           const tags = { barrier: 'kerb', kerb: type };
-          const iconID = getIconForCurbNode(tags); // Get the appropriate icon based on the tags
+          const iconID = getIconForCurbNode(tags);
           return new ValidationFix({
-            icon: iconID, // Use the dynamically selected icon
+            icon: iconID,
             title: `Add ${type} Curb Nodes`,
             onClick: () => {
               const action = applyCurbNodeFix(wayID, editor.staging.graph, tags);
@@ -88,10 +88,10 @@ export function validationCurbNodes(context) {
 
 
   /**
-   * hasKerbNodes
+   * hasCurbNodes
    * Checks if the given way already has curb nodes
    * @param  {Object} way - The way entity to check
-   * @return {Boolean} True if kerb nodes are present, false otherwise
+   * @return {Boolean} True if curb nodes are present, false otherwise
    */
   function hasCurbNodes(way) {
     const graph = editor.staging.graph;
