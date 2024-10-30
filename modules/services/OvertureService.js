@@ -1,6 +1,7 @@
 import { Tiler} from '@rapid-sdk/math';
 
 import { AbstractSystem } from '../core/AbstractSystem.js';
+import { utilFetchResponse } from '../util/index.js';
 
 const PMTILES_ROOT_URL = 'https://overturemaps-tiles-us-west-2-beta.s3.us-west-2.amazonaws.com/';
 const PMTILES_CATALOG_PATH = 'pmtiles_catalog.json';
@@ -8,13 +9,12 @@ const PMTILES_CATALOG_PATH = 'pmtiles_catalog.json';
 
 /**
  * `OvertureService`
- * This service connects to the 'official' sources of Overture PMTiles by acting as a wrapper around the 
+ * This service connects to the 'official' sources of Overture PMTiles by acting as a wrapper around the
  * vector tile service
  *
  * - Protomaps .pmtiles single-file archive containing MVT
  *    https://protomaps.com/docs/pmtiles
  *    https://github.com/protomaps/PMTiles
- *
  */
 export class OvertureService extends AbstractSystem {
 
@@ -28,24 +28,31 @@ export class OvertureService extends AbstractSystem {
     this.pmTilesCatalog = {};
 
     this.latestRelease = '';
-
-    // Sources are identified by their URL template..
-    this._sources = new Map();   // Map(template -> source)
-    this._tiler = new Tiler().tileSize(512).margin(1);
-    this._nextID = 0;
+    this._initPromise = null;
   }
 
 
- async _loadS3Catalog() {
-  await fetch(PMTILES_ROOT_URL + PMTILES_CATALOG_PATH)
-    .then(response => response.json())
-    .then(catalog => {
-      this.pmTilesCatalog = catalog;
-    })
-    .catch(error => {
-      console.error('Error fetching or parsing the PMTiles STAC Catalog:', error);
-    });
-}
+  /**
+   * _loadS3CatalogAsync
+   * Load and parse the overture catalog data
+   * @return {Promise} Promise resolved when the data has been loaded
+   */
+  _loadS3CatalogAsync() {
+    return fetch(PMTILES_ROOT_URL + PMTILES_CATALOG_PATH)
+      .then(utilFetchResponse)
+      .then(json => {
+        this.pmTilesCatalog = json;
+
+        // Grab the very latest date stamp and keep track of the release associated with it.
+        const dateStrings = this.pmTilesCatalog.releases.map(release => release.release_id);
+        dateStrings.sort((a, b) => new Date(b) - new Date(a));
+        this.latestRelease = this.pmTilesCatalog.releases.find(release => release.release_id === dateStrings[0]);
+      })
+      .catch(error => {
+        console.error('Error fetching or parsing the PMTiles STAC Catalog: ', error);
+      });
+  }
+
 
   /**
    * initAsync
@@ -53,13 +60,11 @@ export class OvertureService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed initialization
    */
   initAsync() {
-    const context = this.context;
-    const vtService = context.services.vectortile;
+    if (this._initPromise) return this._initPromise;
 
-    return Promise.all([
-      vtService.initAsync(),
-      this._loadS3Catalog()
-    ]);
+    const vtService = this.context.services.vectortile;
+    return this._initPromise = vtService.initAsync()
+      .then(() => this._loadS3CatalogAsync());
   }
 
 
@@ -70,21 +75,9 @@ export class OvertureService extends AbstractSystem {
    */
   startAsync() {
     this._started = true;
-    const context = this.context;
-    const vtService = context.services.vectortile;
 
-    return Promise.resolve(vtService.startAsync()).then( () => {
-      //other init here after the vector tile service is done starting
-
-      const dateStrings = this.pmTilesCatalog.releases.map(release => release.release_id);
-
-
-      dateStrings.sort( (a, b) => new Date(b) - new Date(a));
-
-      // Grab the very latest date stamp and keep track of the release associated with it.
-      this.latestRelease = this.pmTilesCatalog.releases.find(release => release.release_id === dateStrings[0]);
-
-    });
+    const vtService = this.context.services.vectortile;
+    return vtService.startAsync();
   }
 
 
@@ -94,12 +87,10 @@ export class OvertureService extends AbstractSystem {
    * @param   {string}  template - template to load tiles for
    */
   loadTiles(datasetID) {
+    const vtService = this.context.services.vectortile;
 
-    const vtService = this.context.services.vectortile;  // 'mapwithai' or 'esri'
-
-    //TODO: Revisit the id-to-url mapping once we're done. 
+    //TODO: Revisit the id-to-url mapping once we're done.
     if (datasetID.includes('places')) {
-
       const file = this.latestRelease.files.find(file => file.theme === 'places');
       const url = PMTILES_ROOT_URL + file.href;
 
@@ -109,7 +100,7 @@ export class OvertureService extends AbstractSystem {
 
 
   getData(datasetID) {
-    const vtService = this.context.services.vectortile;  // 'mapwithai' or 'esri'
+    const vtService = this.context.services.vectortile;
 
     if (datasetID.includes('places')) {
       const file = this.latestRelease.files.find(file => file.theme === 'places');

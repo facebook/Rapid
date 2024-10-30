@@ -1448,6 +1448,12 @@
         "label": "Microsoft Buildings",
         "license_markdown": "[license](https://github.com/microsoft/USBuildingFootprints/blob/master/LICENSE-DATA)"
       },
+      "overture": {
+        "places": {
+          "label": "Overture Places",
+          "license_markdown": "[license](https://docs.overturemaps.org/attribution/#places)"
+        }
+      },
       "esri": {
         "title": "ArcGIS Datasets",
         "about": "These datasets have been provided as open data by the ArcGIS user community for the purpose of improving OpenStreetMap.<br/>You can learn more by visiting [the Rapid Guide](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Esri-ArcGIS-FAQ) or [Esri/ArcGIS dataset page on the OSM Wiki](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets).",
