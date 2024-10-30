@@ -2,7 +2,7 @@ import { selection, select } from 'd3-selection';
 
 import { UiAttribution } from './UiAttribution.js';
 import { uiInfo } from './info.js';
-import { uiMap3dViewer } from './map3d_viewer.js';
+import { UiMap3dViewer } from './UiMap3dViewer.js';
 import { UiMapControls } from './UiMapControls.js';
 import { UiMinimap } from './UiMinimap.js';
 import { UiPhotoViewer } from './UiPhotoViewer.js';
@@ -34,7 +34,7 @@ export class UiOvermap {
     // Create child components
     this.Attribution = new UiAttribution(context);
     this.Info = uiInfo(context);
-    this.Map3dViewer = uiMap3dViewer(context);
+    this.Map3dViewer = new UiMap3dViewer(context);
     this.MapControls = new UiMapControls(context);
     this.Minimap = new UiMinimap(context);
     this.PhotoViewer = new UiPhotoViewer(context);
@@ -84,7 +84,7 @@ export class UiOvermap {
 
     $$overmap
       .call(this.Minimap.render)
-      .call(this.Map3dViewer)
+      .call(this.Map3dViewer.render)
       .call(this.Spector.render)
       .call(this.MapControls.render);
 

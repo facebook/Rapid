@@ -206,7 +206,7 @@ export class Map3dSystem extends AbstractSystem {
     } else {   // hide it
       urlhash.setParam('map3d', null);
 
-      // Expect the MapLibre container to exist already, it's created by `map3d_viewer.js`
+      // Expect the MapLibre container to exist already, it's created by `UiMap3dViewer.js`
       // If it doesn't exist, this will return a null selection, and that's ok too.
       const $mlcontainer = context.container().select(`#${this.containerID}`);
       $mlcontainer

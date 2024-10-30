@@ -5,7 +5,7 @@ import { AbstractSystem } from './AbstractSystem.js';
 
 import {
   UiApiStatus, UiDefs, uiEditMenu, uiFlash, UiFullscreen, uiIntro,
-  uiLoading, UiMapFooter, UiMapToolbar, UiOvermap, UiPhotoViewer,
+  uiLoading, UiMapFooter, UiMapToolbar, UiOvermap,
   uiSplash, uiRestore, UiShortcuts, UiSidebar, uiWhatsNew
 } from '../ui/index.js';
 
