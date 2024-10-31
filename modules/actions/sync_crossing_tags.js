@@ -156,7 +156,9 @@ export function actionSyncCrossingTags(entityID) {
 
       const node = graph.hasEntity(nodeID);
       if (!node) continue;
-
+      if (node.isEndpoint(graph) && connectsToRoad(node, graph)) {
+        continue;
+      }
       if (isCrossingWay) {  // Parent is a crossing - we are adding/updating crossing tags on childNodes..
         let isCandidate = false;
         for (const other of graph.parentWays(node)) {
@@ -183,6 +185,17 @@ export function actionSyncCrossingTags(entityID) {
           childNodes.add(node);
         }
       }
+    }
+
+
+    function connectsToRoad(node, graph) {
+      // Check if the node connects to a road
+      const parentWays = graph.parentWays(node);
+      const connects = parentWays.some(way => {
+        const highwayTag = way.tags.highway;
+        return highwayTag && highwayTag !== 'footway' && highwayTag !== 'path';
+      });
+      return connects;
     }
 
 
