@@ -82,6 +82,7 @@ export class PhotoSystem extends AbstractSystem {
         const wireframeKey = '⇧M';
         const toggleOsmKey = '⇧S';
         const toggleNotesKey = '⇧K';
+        const toggleAllLayersKey = '⇧D';
         context.keybinding()
         .on(wireframeKey, e => {
           e.preventDefault();
@@ -94,6 +95,10 @@ export class PhotoSystem extends AbstractSystem {
         .on(toggleNotesKey, e => {
           e.preventDefault();
           this.toggleLayer('kartaview');
+        })
+        .on(toggleAllLayersKey, e => {
+          e.preventDefault();
+          this.toggleAllLayers();
         });
       });
   }
@@ -115,6 +120,26 @@ export class PhotoSystem extends AbstractSystem {
       e.preventDefault();
       this.toggleLayer('kartaview');
     }
+  }
+
+
+  /**
+   * toggleAllLayers
+   * Toggles all photo layers on or off.
+   */
+  toggleAllLayers() {
+    const scene = this.context.systems.gfx.scene;
+    const allEnabled = this.layerIDs.every(layerID => {
+      const layer = scene.layers.get(layerID);
+      return layer && layer.enabled;
+    });
+    for (const layerID of this.layerIDs) {
+      const layer = scene.layers.get(layerID);
+      if (layer) {
+        layer.enabled = !allEnabled;
+      }
+    }
+    this._photoChanged();
   }
 
 
