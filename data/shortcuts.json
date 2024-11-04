@@ -401,6 +401,11 @@
               "text": "shortcuts.tools.viewers.kartaview"
             },
             {
+              "modifiers": ["⇧"],
+              "shortcuts": ["D"],
+              "text": "shortcuts.tools.viewers.allDataLayers"
+            },
+            {
               "section": "info",
               "text": "shortcuts.tools.info.title"
             },
