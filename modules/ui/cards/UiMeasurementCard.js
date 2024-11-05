@@ -1,10 +1,12 @@
-import { select as d3_select } from 'd3-selection';
-import { geoLength as d3_geoLength, geoCentroid as d3_geoCentroid } from 'd3-geo';
+import { selection } from 'd3-selection';
+import { geoLength, geoCentroid } from 'd3-geo';
 import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
-import { AbstractUiPanel } from './AbstractUiPanel.js';
+import { AbstractUiCard } from './AbstractUiCard.js';
 import { QAItem } from '../../osm/index.js';
+import { uiCmd } from '../cmd.js';
+import { uiIcon } from '../icon.js';
 
 
 // using WGS84 authalic radius (6371007.1809 m)
@@ -34,9 +36,9 @@ function asLineString(feature) {
 
 
 /**
- * UiPanelMeasurement
+ * UiMeasurementCard
  */
-export class UiPanelMeasurement extends AbstractUiPanel {
+export class UiMeasurementCard extends AbstractUiCard {
 
   /**
    * @constructor
@@ -47,63 +49,83 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     this.id = 'measurement';
 
     const l10n = context.systems.l10n;
-    this.title = l10n.t('info_panels.measurement.title');
-    this.key = l10n.t('info_panels.measurement.key');
+    const map = context.systems.map;
 
-    this._selection = d3_select(null);
     this._isImperial = !l10n.isMetric();
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
     this.render = this.render.bind(this);
-  }
+    this.rerender = (() => this.render());  // call render without argument
 
+    // Event listeners
+    map.on('draw', this.rerender);
+    context.on('modechange', this.rerender);
 
-  /**
-   * enable
-   * @param  `selection`  A d3-selection to a `div` that the panel should render itself into
-   */
-  enable(selection) {
-    if (this._enabled) return;
-
-    this._enabled = true;
-    this._selection = selection;
-
-    this.context.systems.map.on('draw', this.render);
-    this.context.on('modechange', this.render);
-  }
-
-
-  /**
-   * disable
-   */
-  disable() {
-    if (!this._enabled) return;
-
-    this._selection.html('');  // empty DOM
-
-    this._enabled = false;
-    this._selection = d3_select(null);
-
-    this.context.systems.map.off('draw', this.render);
-    this.context.off('modechange', this.render);
+    this.key = uiCmd('⌘⇧' + l10n.t('info_panels.measurement.key'));
+    context.keybinding().on(this.key, this.toggle);
   }
 
 
   /**
    * render
+   * Accepts a parent selection, and renders the content under it.
+   * (The parent selection is required the first time, but can be inferred on subsequent renders)
+   * @param {d3-selection} $parent - A d3-selection to a HTMLElement that this component should render itself into
    */
-  render() {
-    if (!this._enabled) return;
+  render($parent = this.$parent) {
+    if ($parent instanceof selection) {
+      this.$parent = $parent;
+    } else {
+      return;   // no parent - called too early?
+    }
 
-    const selection = this._selection;
+    if (!this.visible) return;
+
     const context = this.context;
     const l10n = context.systems.l10n;
     const graph = context.systems.editor.staging.graph;
     const localeCode = l10n.localeCode();
 
+    // .card-container
+    let $wrap = $parent.selectAll('.card-container')
+      .data([this.id], d => d);
+
+    // enter
+    const $$wrap = $wrap.enter()
+      .append('div')
+      .attr('class', d => `fillD2 card-container card-container-${d}`);
+
+    const $$title = $$wrap
+      .append('div')
+      .attr('class', 'fillD2 card-title');
+
+    $$title
+      .append('h3');
+
+    $$title
+      .append('button')
+      .attr('class', 'close')
+      .on('click', this.toggle)
+      .call(uiIcon('#rapid-icon-close'));
+
+    $$wrap
+      .append('div')
+      .attr('class', d => `card-content card-content-${d}`);
+
+
+    // update
+    this.$wrap = $wrap = $wrap.merge($$wrap);
+
+    $wrap.selectAll('h3')
+      .text(l10n.t('info_panels.measurement.title'));
+
+
+    // .card-content
+    const $content = $wrap.selectAll('.card-content');
+
     // Empty out the DOM content and rebuild from scratch..
-    selection.html('');
+    $content.html('');
 
     let heading;
     let center, location, centroid;
@@ -145,9 +167,9 @@ export class UiPanelMeasurement extends AbstractUiPanel {
           if (geometry === 'line' || geometry === 'area') {
             closed = (entity.type === 'relation') || (entity.isClosed() && !entity.isDegenerate());
 
-            length += radiansToMeters(d3_geoLength(asLineString(geojson)));
+            length += radiansToMeters(geoLength(asLineString(geojson)));
 
-            centroid = d3_geoCentroid(geojson);
+            centroid = geoCentroid(geojson);
             if (!centroid  || !isFinite(centroid[0]) || !isFinite(centroid[1])) {
               centroid = extent.center();
             }
@@ -182,17 +204,17 @@ export class UiPanelMeasurement extends AbstractUiPanel {
 
 
     if (heading) {
-      selection
+      $content
         .append('h4')
         .attr('class', 'measurement-heading')
         .text(heading);
     }
 
-    let list = selection.append('ul');
-    let coordItem;
+    let $list = $content.append('ul');
+    let $item;
 
     if (geometry) {
-      list
+      $list
         .append('li')
         .text(l10n.t('info_panels.measurement.geometry') + ':')
         .append('span')
@@ -200,7 +222,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     }
 
     if (totalNodeCount) {
-      list
+      $list
         .append('li')
         .text(l10n.t('info_panels.measurement.node_count') + ':')
         .append('span')
@@ -208,7 +230,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     }
 
     if (area) {
-      list
+      $list
         .append('li')
         .text(l10n.t('info_panels.measurement.area') + ':')
         .append('span')
@@ -216,7 +238,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     }
 
     if (length) {
-      list
+      $list
         .append('li')
         .text(l10n.t('info_panels.measurement.' + (closed ? 'perimeter' : 'length')) + ':')
         .append('span')
@@ -224,7 +246,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     }
 
     if (typeof distance === 'number') {
-      list
+      $list
         .append('li')
         .text(l10n.t('info_panels.measurement.distance') + ':')
         .append('span')
@@ -232,39 +254,39 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     }
 
     if (location) {
-      coordItem = list
+      $item = $list
         .append('li')
         .text(l10n.t('info_panels.measurement.location') + ':');
-      coordItem.append('span')
+      $item.append('span')
         .text(l10n.dmsCoordinatePair(location));
-      coordItem.append('span')
+      $item.append('span')
         .text(l10n.decimalCoordinatePair(location));
     }
 
     if (centroid) {
-      coordItem = list
+      $item = $list
         .append('li')
         .text(l10n.t('info_panels.measurement.centroid') + ':');
-      coordItem.append('span')
+      $item.append('span')
         .text(l10n.dmsCoordinatePair(centroid));
-      coordItem.append('span')
+      $item.append('span')
         .text(l10n.decimalCoordinatePair(centroid));
     }
 
     if (center) {
-      coordItem = list
+      $item = $list
         .append('li')
         .text(l10n.t('info_panels.measurement.center') + ':');
-      coordItem.append('span')
+      $item.append('span')
         .text(l10n.dmsCoordinatePair(center));
-      coordItem.append('span')
+      $item.append('span')
         .text(l10n.decimalCoordinatePair(center));
     }
 
     // Add Imperial/Metric toggle
     if (length || area || typeof distance === 'number') {
       const toggle = this._isImperial ? 'imperial' : 'metric';
-      selection
+      $content
         .append('a')
         .text(l10n.t(`info_panels.measurement.${toggle}`))
         .attr('href', '#')

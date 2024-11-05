@@ -31,6 +31,9 @@ export function uiSectionDataLayers(context) {
   const scene = context.scene();
   const ui = context.systems.ui;
 
+  const HistoryCard = ui.InfoCards.HistoryCard;
+  const MeasurementCard = ui.InfoCards.MeasurementCard;
+
   const section = uiSection(context, 'data-layers')
     .label(l10n.t('map_data.data_layers'))
     .disclosureContent(render);
@@ -359,10 +362,7 @@ export function uiSectionDataLayers(context) {
     historyPanelLabelEnter
       .append('input')
       .attr('type', 'checkbox')
-      .on('change', d3_event => {
-        d3_event.preventDefault();
-        ui.Info.toggle('history');
-      });
+      .on('change', HistoryCard.toggle);
 
     historyPanelLabelEnter
       .append('span')
@@ -381,14 +381,23 @@ export function uiSectionDataLayers(context) {
     measurementPanelLabelEnter
       .append('input')
       .attr('type', 'checkbox')
-      .on('change', d3_event => {
-        d3_event.preventDefault();
-        ui.Info.toggle('measurement');
-      });
+      .on('change', MeasurementCard.toggle);
 
     measurementPanelLabelEnter
       .append('span')
       .text(l10n.t('map_data.measurement_panel.title'));
+
+
+    // update
+    selection.selectAll('.history-panel-toggle-item')
+      .classed('active', HistoryCard.visible)
+      .selectAll('input')
+      .property('checked', HistoryCard.visible);
+
+    selection.selectAll('.measurement-panel-toggle-item')
+      .classed('active', MeasurementCard.visible)
+      .selectAll('input')
+      .property('checked', MeasurementCard.visible);
   }
 
 

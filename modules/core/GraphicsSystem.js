@@ -371,7 +371,6 @@ export class GraphicsSystem extends AbstractSystem {
   immediateRedraw() {
     this._timeToNextRender = 0;    // asap
     this._appPending = true;
-    this._drawPending = false;
   }
 
 

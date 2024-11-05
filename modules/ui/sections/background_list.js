@@ -38,6 +38,9 @@ export function uiSectionBackgroundList(context) {
   const storage = context.systems.storage;
   const ui = context.systems.ui;
 
+  const BackgroundCard = ui.InfoCards.BackgroundCard;
+  const LocationCard = ui.InfoCards.LocationCard;
+
   const section = uiSection(context, 'background-list')
     .label(l10n.t('background.backgrounds'))
     .disclosureContent(render);
@@ -153,10 +156,7 @@ export function uiSectionBackgroundList(context) {
     panelLabelEnter
       .append('input')
       .attr('type', 'checkbox')
-      .on('change', d3_event => {
-        d3_event.preventDefault();
-        ui.Info.toggle('background');
-      });
+      .on('change', BackgroundCard.toggle);
 
     panelLabelEnter
       .append('span')
@@ -175,10 +175,7 @@ export function uiSectionBackgroundList(context) {
     locPanelLabelEnter
       .append('input')
       .attr('type', 'checkbox')
-      .on('change', d3_event => {
-        d3_event.preventDefault();
-        ui.Info.toggle('location');
-      });
+      .on('change', LocationCard.toggle);
 
     locPanelLabelEnter
       .append('span')
@@ -206,9 +203,19 @@ export function uiSectionBackgroundList(context) {
     const extrasList = selection.selectAll('.bg-extras-list');
 
     extrasList.selectAll('.map3d-toggle-item')
-      .classed('active', d => map3d.visible)
-      .selectAll('.map3d-toggle-checkbox')
-      .property('checked', d => map3d.visible);
+      .classed('active', map3d.visible)
+      .selectAll('input')
+      .property('checked', map3d.visible);
+
+    extrasList.selectAll('.background-panel-toggle-item')
+      .classed('active', BackgroundCard.visible)
+      .selectAll('input')
+      .property('checked', BackgroundCard.visible);
+
+    extrasList.selectAll('.location-panel-toggle-item')
+      .classed('active', LocationCard.visible)
+      .selectAll('input')
+      .property('checked', LocationCard.visible);
   }
 
 

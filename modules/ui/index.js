@@ -29,7 +29,7 @@ export { UiFullscreen } from './UiFullscreen.js';
 export { uiGeolocate } from './geolocate.js';
 export { uiIcon } from './icon.js';
 export { uiIntro } from './intro/intro.js';
-export { uiInfo } from './info.js';
+export { UiInfoCards } from './UiInfoCards.js';
 export { UiInspector } from './UiInspector.js';
 export { uiIssuesInfo } from './issues_info.js';
 export { uiKeepRightDetails } from './keepRight_details.js';

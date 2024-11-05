@@ -1,16 +1,18 @@
-import { select as d3_select } from 'd3-selection';
+import { selection } from 'd3-selection';
 import { Extent } from '@rapid-sdk/math';
 import debounce from 'lodash-es/debounce.js';
 
-import { AbstractUiPanel } from './AbstractUiPanel.js';
+import { AbstractUiCard } from './AbstractUiCard.js';
+import { uiCmd } from '../cmd.js';
+import { uiIcon } from '../icon.js';
 
 const METADATA_KEYS = ['zoom', 'vintage', 'source', 'description', 'resolution', 'accuracy'];
 
 
 /**
- * UiPanelBackground
+ * UiBackgroundCard
  */
-export class UiPanelBackground extends AbstractUiPanel {
+export class UiBackgroundCard extends AbstractUiCard {
 
   /**
    * @constructor
@@ -21,72 +23,85 @@ export class UiPanelBackground extends AbstractUiPanel {
     this.id = 'background';
 
     const l10n = context.systems.l10n;
-    this.title = l10n.t('info_panels.background.title');
-    this.key = l10n.t('info_panels.background.key');
+    const map = context.systems.map;
 
-    this._selection = d3_select(null);
     this._currSourceID = null;
     this._metadata = {};
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
     this.render = this.render.bind(this);
+    this.rerender = (() => this.render());  // call render without argument
     this.updateMetadata = this.updateMetadata.bind(this);
-    this._deferredRender = debounce(this.render, 250);
-    this._deferredUpdateMetadata = debounce(this.updateMetadata, 250);
-  }
+    this.deferredRender = debounce(this.rerender, 250);
+    this.deferredUpdateMetadata = debounce(this.updateMetadata, 250);
 
+    // Event listeners
+    map
+      .on('draw', this.deferredRender)
+      .on('move', this.deferredUpdateMetadata);
 
-  /**
-   * enable
-   * @param  `selection`  A d3-selection to a `div` that the panel should render itself into
-   */
-  enable(selection) {
-    if (this._enabled) return;
-
-    this._enabled = true;
-    this._selection = selection;
-    this._currSourceID = null;
-    this._metadata = {};
-
-    this.context.systems.map
-      .on('draw', this._deferredRender)
-      .on('move', this._deferredUpdateMetadata);
-  }
-
-
-  /**
-   * disable
-   */
-  disable() {
-    if (!this._enabled) return;
-
-    this._deferredRender.cancel();
-    this._deferredUpdateMetadata.cancel();
-
-    this._selection.html('');  // empty DOM
-
-    this._enabled = false;
-    this._selection = d3_select(null);
-    this._currSourceID = null;
-    this._metadata = {};
-
-    this.context.systems.map
-      .off('draw', this._deferredRender)
-      .off('move', this._deferredUpdateMetadata);
+    this.key = uiCmd('⌘⇧' + l10n.t('info_panels.background.key'));
+    context.keybinding().on(this.key, this.toggle);
   }
 
 
   /**
    * render
+   * Accepts a parent selection, and renders the content under it.
+   * (The parent selection is required the first time, but can be inferred on subsequent renders)
+   * @param {d3-selection} $parent - A d3-selection to a HTMLElement that this component should render itself into
    */
-  render() {
-    if (!this._enabled) return;
+  render($parent = this.$parent) {
+    if ($parent instanceof selection) {
+      this.$parent = $parent;
+    } else {
+      return;   // no parent - called too early?
+    }
+
+    if (!this.visible) return;
 
     const context = this.context;
-    const selection = this._selection;
     const imagery = context.systems.imagery;
     const l10n = context.systems.l10n;
+
+
+    // .card-container
+    let $wrap = $parent.selectAll('.card-container')
+      .data([this.id], d => d);
+
+    // enter
+    const $$wrap = $wrap.enter()
+      .append('div')
+      .attr('class', d => `fillD2 card-container card-container-${d}`);
+
+    const $$title = $$wrap
+      .append('div')
+      .attr('class', 'fillD2 card-title');
+
+    $$title
+      .append('h3');
+
+    $$title
+      .append('button')
+      .attr('class', 'close')
+      .on('click', this.toggle)
+      .call(uiIcon('#rapid-icon-close'));
+
+    $$wrap
+      .append('div')
+      .attr('class', d => `card-content card-content-${d}`);
+
+
+    // update
+    this.$wrap = $wrap = $wrap.merge($$wrap);
+
+    $wrap.selectAll('h3')
+      .text(l10n.t('info_panels.background.title'));
+
+
+    // .card-content
+    const $content = $wrap.selectAll('.card-content');
 
     const source = imagery.baseLayerSource();
     const sourceID = source?.key;  // note: use `key` here, for Wayback it will include the date
@@ -99,20 +114,20 @@ export class UiPanelBackground extends AbstractUiPanel {
     }
 
     // Empty out the DOM content and rebuild from scratch..
-    selection.html('');
+    $content.html('');
 
-    let list = selection
+    let $list = $content
       .append('ul')
       .attr('class', 'background-info');
 
-    list
+    $list
       .append('li')
       .text(source.name);
 
     // The metadata fetching is not currently working for the Esri sources.
     // todo: We should get that working, but for now just show the date we have.
     if (source.id === 'EsriWayback') {
-      list
+      $list
         .append('li')
         .text(l10n.t('background.wayback.date') + ':')
         .append('span')
@@ -121,7 +136,7 @@ export class UiPanelBackground extends AbstractUiPanel {
 
     // Add list items for all the imagery metadata
     METADATA_KEYS.forEach(k => {
-      list
+      $list
         .append('li')
         .attr('class', `background-info-list-${k}`)
         .classed('hide', !this._metadata[k])
@@ -131,12 +146,12 @@ export class UiPanelBackground extends AbstractUiPanel {
         .text(this._metadata[k]);
     });
 
-    this._deferredUpdateMetadata();
+    this.deferredUpdateMetadata();
 
     // Add buttons
     const toggleTiles = context.getDebug('tile') ? 'hide_tiles' : 'show_tiles';
 
-    selection
+    $content
       .append('a')
       .text(l10n.t(`info_panels.background.${toggleTiles}`))
       .attr('href', '#')
@@ -153,13 +168,14 @@ export class UiPanelBackground extends AbstractUiPanel {
    * updateMetadata
    */
   updateMetadata() {
-    if (!this._enabled) return;
+    if (!this.visible) return;
+    if (!this.$wrap) return;   // called too early?
 
     const context = this.context;
-    const selection = this._selection;
     const imagery = context.systems.imagery;
     const l10n = context.systems.l10n;
     const viewport = context.viewport;
+    const $content = this.$wrap.selectAll('.card-content');
 
     const source = imagery.baseLayerSource();
     const sourceID = source?.key;  // note: use `key` here, for Wayback it will include the date
@@ -192,7 +208,7 @@ export class UiPanelBackground extends AbstractUiPanel {
     // update zoom
     const zoom = tileZoom || Math.floor(viewport.transform.zoom);
     this._metadata.zoom = String(zoom);
-    selection.selectAll('.background-info-list-zoom')
+    $content.selectAll('.background-info-list-zoom')
       .classed('hide', false)
       .selectAll('.background-info-span-zoom')
       .text(this._metadata.zoom);
@@ -206,7 +222,7 @@ export class UiPanelBackground extends AbstractUiPanel {
       // update vintage
       const vintage = result.vintage;
       this._metadata.vintage = vintage?.range || l10n.t('inspector.unknown');
-      selection.selectAll('.background-info-list-vintage')
+      $content.selectAll('.background-info-list-vintage')
         .classed('hide', false)
         .selectAll('.background-info-span-vintage')
         .text(this._metadata.vintage);
@@ -217,7 +233,7 @@ export class UiPanelBackground extends AbstractUiPanel {
 
         const val = result[k];
         this._metadata[k] = val;
-        selection.selectAll(`.background-info-list-${k}`)
+        $content.selectAll(`.background-info-list-${k}`)
           .classed('hide', !val)
           .selectAll(`.background-info-span-${k}`)
           .text(val);

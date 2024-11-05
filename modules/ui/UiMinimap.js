@@ -328,10 +328,10 @@ export class UiMinimap {
   /**
    * toggle
    * Toggles the minimap on/off
-   * @param  {Event}  d3 keypress event that triggered the toggle (if any)
+   * @param  {Event} e - event that triggered the toggle (if any)
    */
-  toggle(d3_event) {
-    if (d3_event) d3_event.preventDefault();
+  toggle(e) {
+    if (e) e.preventDefault();
 
     const context = this.context;
     const $wrap = this.$wrap;

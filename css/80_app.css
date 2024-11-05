@@ -4193,118 +4193,120 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 }
 
 
-/* Information Panels
+/* Information Cards
 ------------------------------------------------------- */
-.info-panels {
-    display: flex;
-    flex-flow: row wrap-reverse;
-    justify-content: flex-end;
-    width: 100%;
-    z-index: 10;
-    -ms-user-select: element;
-    pointer-events: none;
-    overflow: hidden;
+.info-cards {
+  display: flex;
+  flex-flow: row wrap-reverse;
+  justify-content: flex-end;
+
+  width: 100%;
+  z-index: 10;
+  -ms-user-select: element;
+  pointer-events: none;
+  overflow: hidden;
 }
 
-.panel-container h1,
-.panel-container h2,
-.panel-container h3,
-.panel-container h4,
-.panel-container h5 {
-    display: inline-block;
-    margin-bottom: 0;
+.card-container h1,
+.card-container h2,
+.card-container h3,
+.card-container h4,
+.card-container h5 {
+  display: inline-block;
+  margin-bottom: 0;
 }
 
-.panel-container h1,
-.panel-container h2,
-.panel-container h3 {
-    color: #ff8;
+.card-container h1,
+.card-container h2,
+.card-container h3 {
+  color: #ff8;
 }
 
-.panel-container {
-    flex: 0 0 auto;
-    margin: 0 2px 2px 0;
-    border-radius: 4px;
-    border: 1px solid rgba(0, 0, 0, 0.75);
-    padding-bottom: 10px;
-    width: 250px;
-    max-width: 100%;
-    pointer-events: auto;
+.card-container {
+  display: flex;
+  flex-flow: column nowrap;
+  flex: 0 0 auto;
+
+  margin: 0 2px 2px 0;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  padding-bottom: 10px;
+  width: 240px;
+  pointer-events: auto;
 }
 
-.panel-container .panel-title {
-    border-radius: 4px 4px 0 0;
+.card-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 5px 10px;
+  border-radius: 4px 4px 0 0;
 }
 
-.panel-title {
-    padding: 5px 10px;
-    display: flex;
-    justify-content: space-between;
+.card-title button.close {
+  padding: 2px;
+  background: none;
+  color: #ddd;
 }
-
-.panel-title button.close {
-    padding: 2px;
-    background: none;
-    color: #ddd;
+.ideditor[dir='rtl'] .card-title button.close {
+  float: left;
 }
-.ideditor[dir='rtl'] .panel-title button.close {
-    float: left;
-}
-.panel-title button.close:focus,
-.panel-title button.close:active {
-    color: #fff;
+.card-title button.close:focus,
+.card-title button.close:active {
+  color: #fff;
 }
 @media (hover: hover) {
-    .panel-title button.close:hover {
-        color: #fff;
-    }
-}
-.panel-title button.close .icon {
-    height: 20px;
-    width: 16px;
-}
-
-.panel-content {
-    padding: 5px 10px;
-    position: relative;
-}
-
-.panel-content ul:empty {
-    display: none;
-}
-
-.panel-content li span:not(.localized-text) {
-    display: inline-block;
-    white-space: nowrap;
-    margin: 0 8px;
-}
-
-.panel-content .button {
-    display: inline-block;
-    background: #7092ff;
-    border-radius: 2px;
-    padding: 0 4px;
-    margin-top: 10px;
-    margin-right: 10px;
+  .card-title button.close:hover {
     color: #fff;
+  }
 }
-.ideditor[dir='rtl'] .panel-content .button {
-    margin-right: auto;
-    margin-left: 10px;
+.card-title button.close .icon {
+  height: 20px;
+  width: 16px;
 }
 
-.panel-content-history .links a {
-    margin-left: 8px;
+.card-content {
+  padding: 5px 10px;
+  position: relative;
 }
-.ideditor[dir='rtl'] .panel-content-history .links a {
-    margin-left: auto;
-    margin-right: 8px;
+
+.card-content ul:empty {
+  display: none;
 }
-.panel-content-history h4 {
-    padding-bottom: 0;
+
+.card-content li span:not(.localized-text) {
+  display: inline-block;
+  white-space: nowrap;
+  margin: 0 8px;
 }
-.panel-content-location .location-info {
-    margin-top: 10px;
+
+.card-content .button {
+  display: inline-block;
+  background: #7092ff;
+  border-radius: 2px;
+  padding: 0 4px;
+  margin-top: 10px;
+  margin-right: 10px;
+  color: #fff;
+}
+.ideditor[dir='rtl'] .card-content .button {
+  margin-right: auto;
+  margin-left: 10px;
+}
+
+.card-content-history .links a {
+  margin-left: 8px;
+}
+.ideditor[dir='rtl'] .card-content-history .links a {
+  margin-left: auto;
+  margin-right: 8px;
+}
+.card-content-history h4 {
+  padding-bottom: 0;
+}
+.card-content-location .location-info {
+  margin-top: 10px;
 }
 
 
@@ -5225,7 +5227,7 @@ button.conflicts-button {
   font-weight: bold;
 }
 
-/* dark tooltips for sidebar / panels */
+/* dark tooltips */
 .tooltip.dark.top .popover-arrow,
 .map-pane .tooltip.top .popover-arrow,
 .sidebar .tooltip.top .popover-arrow {

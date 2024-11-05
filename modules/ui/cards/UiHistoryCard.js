@@ -1,13 +1,15 @@
-import { select as d3_select } from 'd3-selection';
+import { selection } from 'd3-selection';
+import debounce from 'lodash-es/debounce.js';
 
-import { AbstractUiPanel } from './AbstractUiPanel.js';
+import { AbstractUiCard } from './AbstractUiCard.js';
+import { uiCmd } from '../cmd.js';
 import { uiIcon } from '../icon.js';
 
 
 /**
- * UiPanelHistory
+ * UiHistoryCard
  */
-export class UiPanelHistory extends AbstractUiPanel {
+export class UiHistoryCard extends AbstractUiCard {
 
   /**
    * @constructor
@@ -18,67 +20,86 @@ export class UiPanelHistory extends AbstractUiPanel {
     this.id = 'history';
 
     const l10n = context.systems.l10n;
-    this.title = l10n.t('info_panels.history.title');
-    this.key = l10n.t('info_panels.history.key');
-
-    this._selection = d3_select(null);
+    const map = context.systems.map;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
     this.render = this.render.bind(this);
+    this.rerender = (() => this.render());  // call render without argument
+    this.deferredRender = debounce(this.rerender, 250);
     this.renderEntity = this.renderEntity.bind(this);
     this.renderNote = this.renderNote.bind(this);
     this.renderUser = this.renderUser.bind(this);
     this.renderChangeset = this.renderChangeset.bind(this);
     this.displayTimestamp = this.displayTimestamp.bind(this);
-  }
 
+    // Event listeners
+    map.on('draw', this.deferredRender);
+    context.on('modechange', this.rerender);
 
-  /**
-   * enable
-   * @param  `selection`  A d3-selection to a `div` that the panel should render itself into
-   */
-  enable(selection) {
-    if (this._enabled) return;
-
-    this._enabled = true;
-    this._selection = selection;
-
-    this.context.systems.map.on('draw', this.render);
-    this.context.on('modechange', this.render);
-  }
-
-
-  /**
-   * disable
-   */
-  disable() {
-    if (!this._enabled) return;
-
-    this._selection.html('');  // empty DOM
-
-    this._enabled = false;
-    this._selection = d3_select(null);
-
-    this.context.systems.map.off('draw', this.render);
-    this.context.off('modechange', this.render);
+    this.key = uiCmd('⌘⇧' + l10n.t('info_panels.history.key'));
+    context.keybinding().on(this.key, this.toggle);
   }
 
 
   /**
    * render
+   * Accepts a parent selection, and renders the content under it.
+   * (The parent selection is required the first time, but can be inferred on subsequent renders)
+   * @param {d3-selection} $parent - A d3-selection to a HTMLElement that this component should render itself into
    */
-  render() {
-    if (!this._enabled) return;
+  render($parent = this.$parent) {
+    if ($parent instanceof selection) {
+      this.$parent = $parent;
+    } else {
+      return;   // no parent - called too early?
+    }
+
+    if (!this.visible) return;
 
     const context = this.context;
-    const selection = this._selection;
     const graph = context.systems.editor.staging.graph;
     const l10n = context.systems.l10n;
-//    const osm = context.services.osm;
+
+
+    // .card-container
+    let $wrap = $parent.selectAll('.card-container')
+      .data([this.id], d => d);
+
+    // enter
+    const $$wrap = $wrap.enter()
+      .append('div')
+      .attr('class', d => `fillD2 card-container card-container-${d}`);
+
+    const $$title = $$wrap
+      .append('div')
+      .attr('class', 'fillD2 card-title');
+
+    $$title
+      .append('h3');
+
+    $$title
+      .append('button')
+      .attr('class', 'close')
+      .on('click', this.toggle)
+      .call(uiIcon('#rapid-icon-close'));
+
+    $$wrap
+      .append('div')
+      .attr('class', d => `card-content card-content-${d}`);
+
+
+    // update
+    this.$wrap = $wrap = $wrap.merge($$wrap);
+
+    $wrap.selectAll('h3')
+      .text(l10n.t('info_panels.history.title'));
+
+    // .card-content
+    const $content = $wrap.selectAll('.card-content');
 
     // Empty out the DOM content and rebuild from scratch..
-    selection.html('');
+    $content.html('');
 
 // //
 //     let selectedNoteID = context.selectedNoteID();
@@ -98,7 +119,7 @@ export class UiPanelHistory extends AbstractUiPanel {
 
     const singular = selected.length === 1 ? selected[0] : null;
 
-    selection
+    $content
       .append('h4')
       .attr('class', 'history-heading')
       .text(singular || l10n.t('info_panels.selected', { n: selected.length }));
@@ -106,54 +127,54 @@ export class UiPanelHistory extends AbstractUiPanel {
     if (!singular) return;
 
     if (entity) {
-      selection.call(this.renderEntity, entity);
+      $content.call(this.renderEntity, entity);
     } else if (note) {
-      selection.call(this.renderNote, note);
+      $content.call(this.renderNote, note);
     }
   }
 
 
   /**
    * renderNote
-   * @param  `selection`  A d3-selection to render into
-   * @param  `entity`     The OSM note to display details for
+   * @param  {d3-selection} $selection - A d3-selection to a HTMLElement that this function should render itself into
+   * @param  {Note}         note       - The OSM Note to display details for
    */
-  renderNote(selection, note) {
+  renderNote($selection, note) {
     const context = this.context;
     const l10n = context.systems.l10n;
     const osm = context.services.osm;
 
     if (!note || note.isNew()) {
-      selection
+      $selection
         .append('div')
         .text(l10n.t('info_panels.history.note_no_history'));
       return;
     }
 
-    let list = selection
+    const $list = $selection
       .append('ul');
 
-    list
+    $list
       .append('li')
       .text(l10n.t('info_panels.history.note_comments') + ':')
       .append('span')
       .text(note.comments.length);
 
     if (note.comments.length) {
-      list
+      $list
         .append('li')
         .text(l10n.t('info_panels.history.note_created_date') + ':')
         .append('span')
         .text(this.displayTimestamp(note.comments[0].date));
 
-      list
+      $list
         .append('li')
         .text(l10n.t('info_panels.history.note_created_user') + ':')
         .call(this.renderUser, note.comments[0].user);
     }
 
     if (osm) {
-      selection
+      $selection
         .append('a')
         .attr('class', 'view-history-on-osm')
         .attr('target', '_blank')
@@ -167,27 +188,27 @@ export class UiPanelHistory extends AbstractUiPanel {
 
   /**
    * renderEntity
-   * @param  `selection`  A d3-selection to render into
-   * @param  `entity`     The OSM entity (node, way, relation) to display details for
+   * @param  {d3-selection} $selection - A d3-selection to a HTMLElement that this function should render itself into
+   * @param  {Entity}       entity     - The OSM entity (node, way, relation) to display details for
    */
-  renderEntity(selection, entity) {
+  renderEntity($selection, entity) {
     const context = this.context;
     const l10n = context.systems.l10n;
     const osm = context.services.osm;
 
     if (!entity || entity.isNew()) {
-      selection
+      $selection
         .append('div')
         .text(l10n.t('info_panels.history.no_history'));
       return;
     }
 
-    let links = selection
+    const $links = $selection
       .append('div')
       .attr('class', 'links');
 
     if (osm) {
-      links
+      $links
         .append('a')
         .attr('class', 'view-history-on-osm')
         .attr('href', osm.historyURL(entity))
@@ -196,7 +217,7 @@ export class UiPanelHistory extends AbstractUiPanel {
         .text('OSM');
     }
 
-    links
+    $links
       .append('a')
       .attr('class', 'pewu-history-viewer-link')
       .attr('href', 'https://pewu.github.io/osm-history/#/' + entity.type + '/' + entity.osmId())
@@ -204,27 +225,27 @@ export class UiPanelHistory extends AbstractUiPanel {
       .attr('tabindex', -1)
       .text('PeWu');
 
-    let list = selection
+    const $list = $selection
       .append('ul');
 
-    list
+    $list
       .append('li')
       .text(l10n.t('info_panels.history.version') + ':')
       .append('span')
       .text(entity.version);
 
-    list
+    $list
       .append('li')
       .text(l10n.t('info_panels.history.last_edit') + ':')
       .append('span')
       .text(this.displayTimestamp(entity.timestamp));
 
-    list
+    $list
       .append('li')
       .text(l10n.t('info_panels.history.edited_by') + ':')
       .call(this.renderUser, entity.user);
 
-    list
+    $list
       .append('li')
       .text(l10n.t('info_panels.history.changeset') + ':')
       .call(this.renderChangeset, entity.changeset);
@@ -233,7 +254,8 @@ export class UiPanelHistory extends AbstractUiPanel {
 
   /**
    * displayTimestamp
-   * @returns   localized `String` for the given timestamp (or localized 'unknown' string)
+   * @param  {string}  stringified timestamp
+   * @return {string}  localized `String` for the given timestamp (or localized 'unknown' string)
    */
   displayTimestamp(timestamp) {
     const context = this.context;
@@ -256,43 +278,43 @@ export class UiPanelHistory extends AbstractUiPanel {
 
   /**
    * renderUser
-   * @param  `selection`  A d3-selection to render into
-   * @param  `userName`   The OSM username to display links for
+   * @param  {d3-selection} $selection - A d3-selection to a HTMLElement that this function should render itself into
+   * @param  {string}       username   - The OSM username to display details for
    */
-  renderUser(selection, userName) {
+  renderUser($selection, username) {
     const context = this.context;
     const l10n = context.systems.l10n;
     const osm = context.services.osm;
 
-    if (!userName) {
-      selection
+    if (!username) {
+      $selection
         .append('span')
         .text(l10n.t('inspector.unknown'));
       return;
     }
 
-    selection
+    $selection
       .append('span')
       .attr('class', 'user-name')
-      .text(userName);
+      .text(username);
 
-    let links = selection
+    const $links = $selection
       .append('div')
       .attr('class', 'links');
 
     if (osm) {
-      links
+      $links
         .append('a')
         .attr('class', 'user-osm-link')
-        .attr('href', osm.userURL(userName))
+        .attr('href', osm.userURL(username))
         .attr('target', '_blank')
         .text('OSM');
     }
 
-    links
+    $links
       .append('a')
       .attr('class', 'user-hdyc-link')
-      .attr('href', `https://hdyc.neis-one.org/?${userName}`)
+      .attr('href', `https://hdyc.neis-one.org/?${username}`)
       .attr('target', '_blank')
       .attr('tabindex', -1)
       .text('HDYC');
@@ -301,50 +323,50 @@ export class UiPanelHistory extends AbstractUiPanel {
 
   /**
    * renderChangeset
-   * @param  `selection`  A d3-selection to render into
-   * @param  `changeset`  the OSM changeset to display the links for
+   * @param  {d3-selection} $selection  - A d3-selection to a HTMLElement that this function should render itself into
+   * @param  {string}       changesetID - The OSM changeset id to display details for
    */
-  renderChangeset(selection, changeset) {
+  renderChangeset($selection, changesetID) {
     const context = this.context;
     const l10n = context.systems.l10n;
     const osm = context.services.osm;
 
-    if (!changeset) {
-      selection
+    if (!changesetID) {
+      $selection
         .append('span')
         .text(l10n.t('inspector.unknown'));
       return;
     }
 
-    selection
+    $selection
       .append('span')
       .attr('class', 'changeset-id')
-      .text(changeset);
+      .text(changesetID);
 
-    let links = selection
+    const $links = $selection
       .append('div')
       .attr('class', 'links');
 
     if (osm) {
-      links
+      $links
         .append('a')
         .attr('class', 'changeset-osm-link')
-        .attr('href', osm.changesetURL(changeset))
+        .attr('href', osm.changesetURL(changesetID))
         .attr('target', '_blank')
         .text('OSM');
     }
 
-    links
+    $links
       .append('a')
       .attr('class', 'changeset-osmcha-link')
-      .attr('href', `https://osmcha.org/changesets/${changeset}`)
+      .attr('href', `https://osmcha.org/changesets/${changesetID}`)
       .attr('target', '_blank')
       .text('OSMCha');
 
-    links
+    $links
       .append('a')
       .attr('class', 'changeset-achavi-link')
-      .attr('href', `https://overpass-api.de/achavi/?changeset=${changeset}`)
+      .attr('href', `https://overpass-api.de/achavi/?changeset=${changesetID}`)
       .attr('target', '_blank')
       .text('Achavi');
   }

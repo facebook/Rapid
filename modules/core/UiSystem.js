@@ -48,7 +48,7 @@ export class UiSystem extends AbstractSystem {
 
     // These components live below in the tree, but we will hold a reference
     // to them here in the UiSystem, so other code can find them easily.
-    this.Info = null;
+    this.InfoCards = null;
     this.Minimap = null;
     this.PhotoViewer = null;
     this.Spector = null;
@@ -102,7 +102,7 @@ export class UiSystem extends AbstractSystem {
 
         // These components live below in the tree, but we will hold a reference
         // to them here in the UiSystem, so that other code can find them easily.
-        this.Info = this.Overmap.Info;
+        this.InfoCards = this.Overmap.InfoCards;
         this.Minimap = this.Overmap.Minimap;
         this.PhotoViewer = this.Overmap.PhotoViewer;
         this.Spector = this.Overmap.Spector;
@@ -161,7 +161,7 @@ export class UiSystem extends AbstractSystem {
     const map = context.systems.map;
     const storage = context.systems.storage;
     const urlhash = context.systems.urlhash;
-    const $container = this.context.container();
+    const $container = context.container();
 
     if (!$container.size()) {
       return Promise.reject(new Error('No container to render to.'));
