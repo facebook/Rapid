@@ -205,15 +205,15 @@ export function uiSectionDataLayers(context) {
 
     labelEnter
       .append('span')
-      .text(d => l10n.t(`map_data.layers.${d.id}.title`));
+      .text(d => l10n.t(`map_data.layers.${d.id}.title`, { n: 999 }));
 
-    // Add input box for MapRoulette challenge ID
+    // Add input box for MapRoulette challenge IDs
     labelEnter.filter(d => d.id === 'maproulette')
       .append('input')
       .attr('type', 'text')
-      .attr('placeholder', 'challenge ID')
-      .attr('class', 'challenge-id')
-      .on('change', mapRouletteIDChanged);
+      .attr('placeholder', l10n.t('map_data.layers.maproulette.id_placeholder'))
+      .attr('class', 'challenge-ids')
+      .on('change', mapRouletteIDsChanged);
 
 
     // Update
@@ -226,8 +226,8 @@ export function uiSectionDataLayers(context) {
       .property('checked', d => d.enabled);
 
     li
-      .selectAll('input.challenge-id')
-      .attr('value', maproulette.challengeID);
+      .selectAll('input.challenge-ids')
+      .attr('value', maproulette.challengeIDs);
   }
 
 
@@ -333,12 +333,12 @@ export function uiSectionDataLayers(context) {
 
 
   /*
-   * mapRouletteIDChanged
+   * mapRouletteIDsChanged
    * @param  d3_event - change event, if called from a change handler
    */
-  function mapRouletteIDChanged(d3_event) {
+  function mapRouletteIDsChanged(d3_event) {
     const maproulette = context.services.maproulette;
-    maproulette.challengeID = d3_event.target.value;
+    maproulette.challengeIDs = d3_event.target.value;
   }
 
 

@@ -1046,18 +1046,22 @@
           "key": "R"
         },
         "maproulette": {
-          "tooltip": "Tasks from maproulette.org",
-          "title": "MapRoulette Task",
+          "tooltip": "Tasks from maproulette.org.  You can also enter a comma-separated list of challenge IDs to filter.",
+          "title": {
+            "one": "MapRoulette Task",
+            "other": "MapRoulette Tasks"
+          },
           "loading_task_details": "Loading Task Details...",
           "detail_title": "Details",
           "id_title": "Challenge Id / Task Id",
+          "id_placeholder": "Challenge IDs",
           "instruction_title": "Instructions",
           "fixedIt": "I fixed it!",
           "cantComplete": "Can't Complete",
           "alreadyFixed": "Already Fixed",
           "notAnIssue": "Not an Issue",
           "login": "You must log in to change MapRoulette challenge.",
-          "loginMaproulette": "You must log in to Maproulette to edit this task.",
+          "loginMaproulette": "You must log in to MapRoulette to edit this task.",
           "inputPlaceholder": "Change comment (optional)",
           "comment": "Please confirm",
           "cancel": "Cancel",

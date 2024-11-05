@@ -27,10 +27,15 @@ export class MapRouletteService extends AbstractSystem {
     this.id = 'maproulette';
     this.autoStart = false;
 
-    this._challengeID = null;  // if we want to filter only a specific challengeID
+    this._initPromise = null;
+    this._challengeIDs = new Set();  // Set<string> - if we want to filter only a specific challengeID
 
     this._cache = null;   // cache gets replaced on init/reset
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
+
+    // Ensure methods used as callbacks always have `this` bound correctly.
+    this._hashchange = this._hashchange.bind(this);
+    this._mapRouletteChanged = this._mapRouletteChanged.bind(this);
   }
 
 
@@ -40,7 +45,24 @@ export class MapRouletteService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed initialization
    */
   initAsync() {
-    return this.resetAsync();
+    if (this._initPromise) return this._initPromise;
+
+    const context = this.context;
+    const gfx = context.systems.gfx;
+    const urlhash = context.systems.urlhash;
+
+    const prerequisites = Promise.all([
+      gfx.initAsync(),   // `gfx.scene` will exist after `initAsync`
+      urlhash.initAsync()
+    ]);
+
+    return this._initPromise = prerequisites
+      .then(() => this.resetAsync())
+      .then(() => {
+        // Setup event handlers..
+        gfx.scene.on('layerchange', this._mapRouletteChanged);
+        urlhash.on('hashchange', this._hashchange);
+      });
   }
 
 
@@ -83,14 +105,28 @@ export class MapRouletteService extends AbstractSystem {
 
   /**
    * challengeID
-   * set/get the challengeID
+   * set/get the challengeIDs (as a string of comma-separated values)
    */
-  get challengeID() {
-    return this._challengeID;
+  get challengeIDs() {
+    return [...this._challengeIDs].join(',');
   }
-  set challengeID(val) {
-    if (val === this._challengeID) return;  // no change
-    this._challengeID = val;
+
+  set challengeIDs(ids = '') {
+    const str = ids.toString();
+    const vals = str.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+
+    // Keep only values that are numeric, reject things like NaN, null, Infinity
+    this._challengeIDs.clear();
+    for (const val of vals) {
+      const num = +val;
+      const valIsNumber = (!isNaN(num) && isFinite(num));
+      if (valIsNumber) {
+        this._challengeIDs.add(val);  // keep the string
+      }
+    }
+    const gfx = this.context.systems.gfx;
+    gfx.immediateRedraw();
+    this._mapRouletteChanged();
   }
 
 
@@ -103,7 +139,13 @@ export class MapRouletteService extends AbstractSystem {
     const extent = this.context.viewport.visibleExtent();
     return this._cache.rbush.search(extent.bbox())
       .map(d => d.data)
-      .filter(task => (this._challengeID && task.parentId === this._challengeID) || (!this._challengeID && task.isVisible));
+      .filter(task => {
+        if (this._challengeIDs.size) {
+          return this._challengeIDs.has(task.parentId);  // ignore isVisible if it's in the list
+        } else {
+          return task.isVisible;
+        }
+      });
   }
 
 
@@ -210,7 +252,6 @@ export class MapRouletteService extends AbstractSystem {
         cache.inflight.delete(url);
       });
   }
-
 
 
   /**
@@ -357,16 +398,6 @@ export class MapRouletteService extends AbstractSystem {
         if (task.taskStatus === 1) {  // only counts if the use chose "I Fixed It".
           this._cache.closed.push({ taskID: task.id, challengeID: task.parentId });
         }
-
-// commit.js will take care of the changeset comment
-//        if (!(task.id in this._cache.closed)) {
-//          this._cache.closed[task.id] = 0;
-//          if (task.comment) {
-//            task.comment += ` #maproulette mpr.lt/c/${task.parentId}/t/${task.id}`;
-//            this._cache.comment[task.id] = { id: task.id, comment: task.comment };
-//          }
-//        }
-//        this._cache.closed[task.id] += 1;
         this.removeTask(task);
         this.context.enter('browse');
         if (callback) callback(null, task);
@@ -487,6 +518,73 @@ export class MapRouletteService extends AbstractSystem {
       if (!rbush.collides(box)) {
         return loc;
       }
+    }
+  }
+
+
+  /**
+   * _hashchange
+   * Respond to any changes appearing in the url hash
+   * @param  currParams   Map(key -> value) of the current hash parameters
+   * @param  prevParams   Map(key -> value) of the previous hash parameters
+   */
+  _hashchange(currParams, prevParams) {
+    const scene = this.context.systems.gfx.scene;
+
+    // maproulette
+    // Support opening maproulette layer with a URL parameter:
+    //  e.g. `maproulette=true`  -or-
+    //  e.g. `maproulette=<challengeIDs>`
+    const newVal = currParams.get('maproulette') || '';
+    const oldVal = prevParams.get('maproulette') || '';
+    if (newVal !== oldVal) {
+      let isEnabled = false;
+
+      this._challengeIDs.clear();
+      const vals = newVal.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+      for (const val of vals) {
+        if (val === 'true') {
+          isEnabled = true;
+          continue;
+        }
+        // Try the value as a number, but reject things like NaN, null, Infinity
+        const num = +val;
+        const valIsNumber = (!isNaN(num) && isFinite(num));
+        if (valIsNumber) {
+          isEnabled = true;
+          this._challengeIDs.add(val);  // keep the string
+        }
+      }
+
+      if (isEnabled) {  // either of these will trigger 'layerchange'
+        scene.enableLayers('maproulette');
+      } else {
+        scene.disableLayers('maproulette');
+      }
+    }
+  }
+
+
+  /**
+   * _mapRouletteChanged
+   * Push changes in MapRoulette state to the urlhash
+   */
+  _mapRouletteChanged() {
+    const context = this.context;
+    const urlhash = context.systems.urlhash;
+    const scene = context.systems.gfx.scene;
+    const layer = scene.layers.get('maproulette');
+
+    // `maproulette=true` -or- `maproulette=<challengeIDs>`
+    if (layer?.enabled) {
+      const ids = this.challengeIDs;
+      if (ids) {
+        urlhash.setParam('maproulette', ids);
+      } else {
+        urlhash.setParam('maproulette', 'true');
+      }
+    } else {
+      urlhash.setParam('maproulette', null);
     }
   }
 }

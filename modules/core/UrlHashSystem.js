@@ -53,6 +53,7 @@ export class UrlHashSystem extends AbstractSystem {
 * __`gpx`__ - Same as `data`, it's just the legacy name for the same thing
 * __`datasets`__ - A comma-separated list of Rapid/Esri datasetIDs to enable
 * __`disable_features`__ - Disables features in the list.
+* __`maproulette`__ - Enable the MapRoulette task layer, e.g.`maproulette=true` -or- `maproulette=<challengeIDs>`
 * __`overlays`__ - A comma-separated list of imagery sourceIDs to display as overlays
 * __`photo`__ - The layerID and photoID of a photo to select, e.g `photo=mapillary/fztgSDtLpa08ohPZFZjeRQ`
 * __`photo_overlay`__ - The street-level photo overlay layers to enable.

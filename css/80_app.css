@@ -3074,10 +3074,10 @@ div.full-screen > button:focus {
 .layer-list .list-item-maproulette > label > span {
   flex: 1 1 auto;
 }
-.layer-list .list-item-maproulette .challenge-id {
+.layer-list .list-item-maproulette .challenge-ids {
   color: #333;
   height: 20px;
-  width: 100px;
+  width: 120px;
   cursor: pointer;
 }
 
