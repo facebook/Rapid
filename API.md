@@ -38,6 +38,8 @@ of Rapid (e.g. `https://mapwith.ai/rapid`), the following parameters are availab
   _Available values:_ Any of the [supported locales](https://github.com/facebook/Rapid/blob/main/data/locales.json).
 * __`map`__ - A slash-separated `zoom/latitude/longitude`.<br/>
   _Example:_ `map=20.00/38.90085/-77.02271`
+* __`maproulette`__ - Enable the MapRoulette task layer, optionally with comma-separated list of challenge IDs to filter.<br/>
+  _Example:_  `maproulette=true` -or- `maproulette=<challengeIDs>`
 * __`offset`__ - Background imagery alignment offset in meters, formatted as `east,north`.<br/>
   _Example:_ `offset=-10,5`
 * __`photo_overlay`__ - The street-level photo overlay layers to enable.<br/>

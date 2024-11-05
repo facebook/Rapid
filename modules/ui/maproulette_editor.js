@@ -37,7 +37,7 @@ export function uiMapRouletteEditor(context) {
 
     headerEnter
       .append('h3')
-      .text(l10n.t('map_data.layers.maproulette.title'));
+      .text(l10n.t('map_data.layers.maproulette.title', { n: 1 }));
 
     let body = selection.selectAll('.body')
       .data([0]);
