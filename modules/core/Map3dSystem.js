@@ -4,7 +4,7 @@ import { Color } from 'pixi.js';
 import throttle from 'lodash-es/throttle.js';
 
 import { AbstractSystem } from './AbstractSystem.js';
-import { uiCmd } from '../ui/cmd.js';
+import { utilCmd } from '../util/cmd.js';
 
 const SELECTION_COLOR = '#01d4fa';
 
@@ -234,7 +234,7 @@ export class Map3dSystem extends AbstractSystem {
   _setupKeybinding() {
     const context = this.context;
     const l10n = context.systems.l10n;
-    const toggleKey = uiCmd('⌘' + l10n.t('background.3dmap.key'));
+    const toggleKey = utilCmd('⌘' + l10n.t('background.3dmap.key'));
 
     context.keybinding().off(toggleKey);
     context.keybinding().on(toggleKey, this.toggle);

@@ -2,9 +2,8 @@ import { selection, select } from 'd3-selection';
 import { utilArrayUniq } from '@rapid-sdk/util';
 
 import { uiIcon } from './icon.js';
-import { uiCmd } from './cmd.js';
 import { uiModal } from './modal.js';
-import { utilDetect } from '../util/detect.js';
+import { utilCmd, utilDetect } from '../util/index.js';
 
 
 /**
@@ -192,7 +191,7 @@ export class UiShortcuts {
           $$selection
             .append('kbd')
             .attr('class', 'modifier')
-            .text(d => uiCmd.display(context, val));
+            .text(d => utilCmd.display(context, val));
 
           $$selection
             .append('span')
@@ -217,7 +216,7 @@ export class UiShortcuts {
           let group = Array.isArray(item) ? item : [item];  // treat all items as arrays
           group = group.map(s => {
             if (s.includes('{')) return s;
-            else return uiCmd.display(context, s.includes('.') ? l10n.t(s) : s);
+            else return utilCmd.display(context, s.includes('.') ? l10n.t(s) : s);
           });
           group = utilArrayUniq(group);
 

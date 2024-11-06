@@ -1,9 +1,8 @@
 import { select as d3_select } from 'd3-selection';
 
 import { uiIcon } from './icon.js';
-import { uiCmd } from './cmd.js';
 import { uiTooltip } from './tooltip.js';
-import { utilKeybinding } from '../util/keybinding.js';
+import { utilCmd, utilKeybinding } from '../util/index.js';
 
 
 export function uiZoom(context) {
@@ -83,15 +82,15 @@ export function uiZoom(context) {
     });
 
     utilKeybinding.plusKeys.forEach(key => {
-      context.keybinding().off([key, uiCmd('⌥' + key)]);
+      context.keybinding().off([key, utilCmd('⌥' + key)]);
       context.keybinding().on(key, zoomIn);
-      context.keybinding().on(uiCmd('⌥' + key), zoomInFurther);
+      context.keybinding().on(utilCmd('⌥' + key), zoomInFurther);
     });
 
     utilKeybinding.minusKeys.forEach(key => {
-      context.keybinding().off([key, uiCmd('⌥' + key)]);
+      context.keybinding().off([key, utilCmd('⌥' + key)]);
       context.keybinding().on(key, zoomOut);
-      context.keybinding().on(uiCmd('⌥' + key), zoomOutFurther);
+      context.keybinding().on(utilCmd('⌥' + key), zoomOutFurther);
     });
 
     function updateButtonStates() {

@@ -2,8 +2,8 @@ import { selection } from 'd3-selection';
 import debounce from 'lodash-es/debounce.js';
 
 import { AbstractUiCard } from './AbstractUiCard.js';
-import { uiCmd } from '../cmd.js';
 import { uiIcon } from '../icon.js';
+import { utilCmd } from '../../util/cmd.js';
 
 
 /**
@@ -34,7 +34,7 @@ export class UiLocationCard extends AbstractUiCard {
     // Event listeners
     eventManager.on('pointermove', this.rerender);
 
-    this.key = uiCmd('⌘⇧' + l10n.t('info_panels.location.key'));
+    this.key = utilCmd('⌘⇧' + l10n.t('info_panels.location.key'));
     context.keybinding().on(this.key, this.toggle);
   }
 

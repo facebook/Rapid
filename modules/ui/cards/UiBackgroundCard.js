@@ -3,8 +3,8 @@ import { Extent } from '@rapid-sdk/math';
 import debounce from 'lodash-es/debounce.js';
 
 import { AbstractUiCard } from './AbstractUiCard.js';
-import { uiCmd } from '../cmd.js';
 import { uiIcon } from '../icon.js';
+import { utilCmd } from '../../util/cmd.js';
 
 const METADATA_KEYS = ['zoom', 'vintage', 'source', 'description', 'resolution', 'accuracy'];
 
@@ -41,7 +41,7 @@ export class UiBackgroundCard extends AbstractUiCard {
       .on('draw', this.deferredRender)
       .on('move', this.deferredUpdateMetadata);
 
-    this.key = uiCmd('⌘⇧' + l10n.t('info_panels.background.key'));
+    this.key = utilCmd('⌘⇧' + l10n.t('info_panels.background.key'));
     context.keybinding().on(this.key, this.toggle);
   }
 

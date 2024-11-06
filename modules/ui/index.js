@@ -3,7 +3,6 @@ export { UiApiStatus } from './UiApiStatus.js';
 export { UiAttribution } from './UiAttribution.js';
 export { uiBearing } from './bearing.js';
 export { uiChangesetEditor } from './changeset_editor.js';
-export { uiCmd } from './cmd.js';
 export { uiCombobox } from './combobox.js';
 export { uiCommit } from './commit.js';
 export { uiCommitWarnings } from './commit_warnings.js';

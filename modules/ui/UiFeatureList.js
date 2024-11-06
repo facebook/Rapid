@@ -5,8 +5,7 @@ import * as sexagesimal from '@mapbox/sexagesimal';
 import { Graph } from '../core/lib/index.js';
 import { osmEntity } from '../osm/entity.js';
 import { uiIcon } from './icon.js';
-import { uiCmd } from './cmd.js';
-import { utilHighlightEntities, utilIsColorValid, utilNoAuto } from '../util/index.js';
+import { utilCmd, utilHighlightEntities, utilIsColorValid, utilNoAuto } from '../util/index.js';
 
 
 /**
@@ -56,7 +55,7 @@ export class UiFeatureList {
 //    context.systems.map
 //     .on('drawn.feature-list', mapDrawn);
 
-    const key = uiCmd('⌘F');
+    const key = utilCmd('⌘F');
     context.keybinding().on(key, this._focusSearch);
   }
 

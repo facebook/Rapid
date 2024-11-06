@@ -1,5 +1,4 @@
-import { uiCmd } from './cmd.js';
-import { utilDetect } from '../util/detect.js';
+import { utilCmd, utilDetect } from '../util/index.js';
 
 
 /**
@@ -53,7 +52,7 @@ export class UiFullscreen {
     //   .attr('class', 'icon full-screen');
 
     const detected = utilDetect();
-    const keys = (detected.os === 'mac' ? [uiCmd('⌃⌘F'), 'f11'] : ['f11']);
+    const keys = (detected.os === 'mac' ? [utilCmd('⌃⌘F'), 'f11'] : ['f11']);
     context.keybinding().off(keys);
     context.keybinding().on(keys, this.toggle);
   }

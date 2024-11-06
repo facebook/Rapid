@@ -1,4 +1,4 @@
-import { utilDetect } from '../util/detect.js';
+import { utilDetect } from './detect.js';
 
 
 // Throughout Rapid we specify key combos in MacOS style.
@@ -9,7 +9,7 @@ import { utilDetect } from '../util/detect.js';
 // Watch out: The '⌃' symbol U+2303 is not the same as the carat symbol '^' U+005E
 // see https://wincent.com/wiki/Unicode_representations_of_modifier_keys
 //
-export let uiCmd = function(combo) {
+export let utilCmd = function(combo) {
   const detected = utilDetect();
 
   if (detected.os === 'mac') {
@@ -28,7 +28,7 @@ export let uiCmd = function(combo) {
 // On Mac, we include the symbols, on other systems, we only include the word.
 // For example, '⌘' -> '⌘ Cmd'
 // Important:  This is intended to be called with a single character, not a key combo.
-uiCmd.display = function(context, char) {
+utilCmd.display = function(context, char) {
   if (char.length !== 1) return char;  // Ignore if multiple chars, like "F11"
 
   const l10n = context.systems.l10n;

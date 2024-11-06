@@ -1,8 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 
 import { uiPopover } from './popover.js';
-import { uiCmd } from './cmd.js';
-import { utilFunctor } from '../util/util.js';
+import { utilCmd, utilFunctor } from '../util/index.js';
 
 
 export function uiTooltip(context) {
@@ -93,7 +92,7 @@ export function uiTooltip(context) {
           selection
             .append('kbd')
             .attr('class', 'shortcut')
-            .text(d => uiCmd.display(context, d));
+            .text(d => utilCmd.display(context, d));
 
           if (i < shortcut.length - 1) {
             selection

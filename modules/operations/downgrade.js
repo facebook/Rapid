@@ -1,6 +1,6 @@
 import { actionChangeTags } from '../actions/change_tags.js';
 import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior.js';
-import { uiCmd } from '../ui/cmd.js';
+import { utilCmd } from '../util/cmd.js';
 
 
 export function operationDowngrade(context, selectedIDs) {
@@ -134,7 +134,7 @@ export function operationDowngrade(context, selectedIDs) {
 
 
   operation.id = 'downgrade';
-  operation.keys = [ uiCmd('⌫') ];
+  operation.keys = [ utilCmd('⌫') ];
   operation.title = l10n.t('operations.downgrade.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 

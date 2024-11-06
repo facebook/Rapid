@@ -2,8 +2,7 @@ import { Extent, vecSubtract } from '@rapid-sdk/math';
 
 import { actionCopyEntities } from '../actions/copy_entities.js';
 import { actionMove } from '../actions/move.js';
-
-import { uiCmd } from '../ui/cmd.js';
+import { utilCmd } from '../util/cmd.js';
 
 
 // see also `PasteBehavior`
@@ -97,7 +96,7 @@ export function operationPaste(context) {
 
 
   operation.id = 'paste';
-  operation.keys = [ uiCmd('⌘V') ];
+  operation.keys = [ utilCmd('⌘V') ];
   operation.title = l10n.t('operations.paste.title');
 
   return operation;

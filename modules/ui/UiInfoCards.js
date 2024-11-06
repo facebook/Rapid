@@ -1,12 +1,10 @@
 import { selection } from 'd3-selection';
 
-import { uiCmd } from './cmd.js';
-
 import { UiBackgroundCard } from './cards/UiBackgroundCard.js';
 import { UiHistoryCard } from './cards/UiHistoryCard.js';
 import { UiLocationCard } from './cards/UiLocationCard.js';
 import { UiMeasurementCard } from './cards/UiMeasurementCard.js';
-
+import { utilCmd } from '../util/cmd.js';
 
 
 /**
@@ -50,7 +48,7 @@ export class UiInfoCards {
 
     // bind ⌘I to show/hide all cards
     const l10n = context.systems.l10n;
-    this.key = uiCmd('⌘' + l10n.t('info_panels.key'));
+    this.key = utilCmd('⌘' + l10n.t('info_panels.key'));
     context.keybinding().on(this.key, this.toggle);
   }
 

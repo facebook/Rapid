@@ -7,8 +7,7 @@ import { AbstractMode } from './AbstractMode.js';
 import { actionDeleteRelation } from '../actions/delete_relation.js';
 import { actionMove, actionRotate } from '../actions/index.js';
 import * as Operations from '../operations/index.js';
-import { uiCmd } from '../ui/cmd.js';
-import { utilKeybinding, utilTotalExtent } from '../util/index.js';
+import { utilCmd, utilKeybinding, utilTotalExtent } from '../util/index.js';
 
 
 /**
@@ -123,8 +122,8 @@ export class SelectOsmMode extends AbstractMode {
     this.keybinding
       .on(['[', 'pgup'], this._previousVertex)
       .on([']', 'pgdown'], this._nextVertex)
-      .on(['{', uiCmd('⌘['), 'home'], this._firstVertex)
-      .on(['}', uiCmd('⌘]'), 'end'], this._lastVertex)
+      .on(['{', utilCmd('⌘['), 'home'], this._firstVertex)
+      .on(['}', utilCmd('⌘]'), 'end'], this._lastVertex)
       .on(['\\', 'pause'], this._focusNextParent);
 
     d3_select(document)

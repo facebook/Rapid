@@ -3,8 +3,7 @@ import { utilGetAllNodes } from '@rapid-sdk/util';
 
 import { actionDeleteMultiple } from '../actions/delete_multiple.js';
 import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior.js';
-import { uiCmd } from '../ui/cmd.js';
-import { utilTotalExtent } from '../util/index.js';
+import { utilCmd, utilTotalExtent } from '../util/index.js';
 
 
 export function operationDelete(context, selectedIDs) {
@@ -159,7 +158,7 @@ export function operationDelete(context, selectedIDs) {
 
 
   operation.id = 'delete';
-  operation.keys = [ uiCmd('⌘⌫'), uiCmd('⌘⌦'), uiCmd('⌦') ];
+  operation.keys = [ utilCmd('⌘⌫'), utilCmd('⌘⌦'), utilCmd('⌦') ];
   operation.title = l10n.t('operations.delete.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 

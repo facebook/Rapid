@@ -5,8 +5,7 @@ import {
 } from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
-import { uiCmd } from '../ui/cmd.js';
-import { utilTotalExtent } from '../util/index.js';
+import { utilCmd, utilTotalExtent } from '../util/index.js';
 
 const TILESIZE = 256;
 const MIN_Z = 2;
@@ -276,8 +275,8 @@ export class MapSystem extends AbstractSystem {
     const l10n = context.systems.l10n;
 
     const wireframeKey = l10n.t('area_fill.wireframe.key');
-    const toggleOsmKey = uiCmd('⇧' + l10n.t('map_data.layers.osm.key'));
-    const toggleNotesKey = uiCmd('⇧' + l10n.t('map_data.layers.notes.key'));
+    const toggleOsmKey = utilCmd('⇧' + l10n.t('map_data.layers.osm.key'));
+    const toggleNotesKey = utilCmd('⇧' + l10n.t('map_data.layers.notes.key'));
     const highlightEditsKey = l10n.t('map_data.highlight_edits.key');
 
     context.keybinding().off([wireframeKey, toggleOsmKey, highlightEditsKey]);

@@ -4,12 +4,12 @@ import { easeCubicInOut as d3_easeCubicInOut } from 'd3-ease';
 import { numWrap } from '@rapid-sdk/math';
 import debounce from 'lodash-es/debounce.js';
 
-import { uiTooltip } from '../tooltip.js';
 import { ImagerySource } from '../../core/lib/index.js';
 import { uiIcon } from '../icon.js';
-import { uiCmd } from '../cmd.js';
 import { uiSettingsCustomBackground } from '../settings/custom_background.js';
 import { uiSection } from '../section.js';
+import { uiTooltip } from '../tooltip.js';
+import { utilCmd } from '../../util/cmd.js';
 
 
 /** uiSectionBackgroundList
@@ -124,7 +124,7 @@ export function uiSectionBackgroundList(context) {
       .append('label')
       .call(uiTooltip(context)
         .title(l10n.t('background.3dmap.tooltip'))
-        .shortcut(uiCmd('⌘' + l10n.t('background.3dmap.key')))
+        .shortcut(utilCmd('⌘' + l10n.t('background.3dmap.key')))
         .placement('top')
       );
 
@@ -149,7 +149,7 @@ export function uiSectionBackgroundList(context) {
       .append('label')
       .call(uiTooltip(context)
         .title(l10n.t('background.panel.tooltip'))
-        .shortcut(uiCmd('⌘⇧' + l10n.t('info_panels.background.key')))
+        .shortcut(utilCmd('⌘⇧' + l10n.t('info_panels.background.key')))
         .placement('top')
       );
 
@@ -168,7 +168,7 @@ export function uiSectionBackgroundList(context) {
       .append('label')
       .call(uiTooltip(context)
         .title(l10n.t('background.location_panel.tooltip'))
-        .shortcut(uiCmd('⌘⇧' + l10n.t('info_panels.location.key')))
+        .shortcut(utilCmd('⌘⇧' + l10n.t('info_panels.location.key')))
         .placement('top')
       );
 
@@ -236,7 +236,7 @@ export function uiSectionBackgroundList(context) {
       };
       if (d.id === previousBackgroundID()) {
         titleHtml += '<br/><br/>' + l10n.t('background.switch');
-        tooltip.shortcut(uiCmd('⌘' + l10n.t('background.key')));
+        tooltip.shortcut(utilCmd('⌘' + l10n.t('background.key')));
       }
 
       if (titleHtml) {
@@ -567,7 +567,7 @@ export function uiSectionBackgroundList(context) {
   imagery.on('imagerychange', renderIfVisible);
   map.on('draw', deferredOnMapDraw);
 
-  const swapBackgroundKey = uiCmd('⌘' + l10n.t('background.key'));
+  const swapBackgroundKey = utilCmd('⌘' + l10n.t('background.key'));
   const nextBackgroundKey = l10n.t('background.next_background.key');
   const prevBackgroundKey = l10n.t('background.previous_background.key');
 

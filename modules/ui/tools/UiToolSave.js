@@ -1,9 +1,9 @@
 import { selection } from 'd3-selection';
-import { interpolateRgb as d3_interpolateRgb } from 'd3-interpolate';
+import { interpolateRgb } from 'd3-interpolate';
 
-import { uiCmd } from '../cmd.js';
 import { uiIcon } from '../icon.js';
 import { uiTooltip } from '../tooltip.js';
+import { utilCmd } from '../../util/cmd.js';
 
 
 /**
@@ -20,7 +20,7 @@ export class UiToolSave {
     this.context = context;
     this.id = 'save';
     this.stringID = 'save.title';
-    this.key = uiCmd('⌘S');
+    this.key = utilCmd('⌘S');
 
     this._numChanges = 0;
 
@@ -157,10 +157,10 @@ export class UiToolSave {
       return null;
     } else if (numChanges <= 50) {
       step = numChanges / 50;
-      return d3_interpolateRgb('#fff', '#ff8')(step);  // white -> yellow
+      return interpolateRgb('#fff', '#ff8')(step);  // white -> yellow
     } else {
       step = Math.min((numChanges - 50) / 50, 1.0);
-      return d3_interpolateRgb('#ff8', '#f88')(step);  // yellow -> red
+      return interpolateRgb('#ff8', '#f88')(step);  // yellow -> red
     }
   }
 

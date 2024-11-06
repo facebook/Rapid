@@ -1,5 +1,5 @@
 import { geoSphericalDistance, vecNormalizedDot } from '@rapid-sdk/math';
-import { uiCmd } from '../cmd.js';
+import { utilCmd } from '../../util/cmd.js';
 
 /**
  * Insert an icon
@@ -91,11 +91,11 @@ export function helpHtml(context, id, replacements) {
       twofinger_rotate_icon: icon('#rapid-interaction-twofinger-rotate', 'operation'),
 
       // insert keys; may be localized and platform-dependent
-      shift: uiCmd.display(context, '⇧'),
-      option: uiCmd.display(context, '⌥'),
-      control: uiCmd.display(context, '⌃'),
-      return: uiCmd.display(context, '↵'),
-      esc: uiCmd.display(context, '⎋'),
+      shift: utilCmd.display(context, '⇧'),
+      option: utilCmd.display(context, '⌥'),
+      control: utilCmd.display(context, '⌃'),
+      return: utilCmd.display(context, '↵'),
+      esc: utilCmd.display(context, '⎋'),
       space: l10n.t('shortcuts.key.space'),
       add_note_key: l10n.t('modes.add_note.key'),
       help_key: l10n.t('help.key'),

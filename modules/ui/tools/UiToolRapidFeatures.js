@@ -1,10 +1,10 @@
 import { selection } from 'd3-selection';
-import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { dispatch } from 'd3-dispatch';
 
-import { uiCmd } from '../cmd.js';
 import { uiRapidFeatureToggleDialog } from '../rapid_feature_toggle_dialog.js';
 import { uiRapidPowerUserFeaturesDialog } from '../rapid_poweruser_features_dialog.js';
 import { uiTooltip } from '../tooltip.js';
+import { utilCmd } from '../../util/cmd.js';
 
 
 /**
@@ -27,8 +27,8 @@ export class UiToolRapidFeatures {
     const ui = context.systems.ui;
     const urlhash = context.systems.urlhash;
 
-    this.key = uiCmd('⇧' + l10n.t('map_data.layers.rapid.key'));
-    this.dispatch = d3_dispatch('ai_feature_toggle');
+    this.key = utilCmd('⇧' + l10n.t('map_data.layers.rapid.key'));
+    this.dispatch = dispatch('ai_feature_toggle');
 
     // Create child components
     this.RapidDialog = uiRapidFeatureToggleDialog(context, this.key, this.dispatch);

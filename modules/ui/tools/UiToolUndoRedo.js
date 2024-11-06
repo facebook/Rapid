@@ -1,9 +1,9 @@
 import { selection, select } from 'd3-selection';
 import debounce from 'lodash-es/debounce.js';
 
-import { uiCmd } from '../cmd.js';
 import { uiIcon } from '../icon.js';
 import { uiTooltip } from '../tooltip.js';
+import { utilCmd } from '../../util/cmd.js';
 
 
 /**
@@ -43,13 +43,13 @@ export class UiToolUndoRedo {
 
     this.commands = [{
       id: 'undo',
-      key: uiCmd('⌘Z'),
+      key: utilCmd('⌘Z'),
       action: () => editor.undo(),
       annotation: () => editor.getUndoAnnotation(),
       getIcon: () => (l10n.isRTL() ? 'redo' : 'undo')
     }, {
       id: 'redo',
-      key: uiCmd('⌘⇧Z'),
+      key: utilCmd('⌘⇧Z'),
       action: () => editor.redo(),
       annotation: () => editor.getRedoAnnotation(),
       getIcon: () => (l10n.isRTL() ? 'undo' : 'redo')

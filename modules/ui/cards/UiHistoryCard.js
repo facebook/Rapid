@@ -2,8 +2,8 @@ import { selection } from 'd3-selection';
 import debounce from 'lodash-es/debounce.js';
 
 import { AbstractUiCard } from './AbstractUiCard.js';
-import { uiCmd } from '../cmd.js';
 import { uiIcon } from '../icon.js';
+import { utilCmd } from '../../util/cmd.js';
 
 
 /**
@@ -37,7 +37,7 @@ export class UiHistoryCard extends AbstractUiCard {
     map.on('draw', this.deferredRender);
     context.on('modechange', this.rerender);
 
-    this.key = uiCmd('⌘⇧' + l10n.t('info_panels.history.key'));
+    this.key = utilCmd('⌘⇧' + l10n.t('info_panels.history.key'));
     context.keybinding().on(this.key, this.toggle);
   }
 

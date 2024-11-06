@@ -2,9 +2,9 @@ import { select as d3_select } from 'd3-selection';
 
 import { uiTooltip } from '../tooltip.js';
 import { uiIcon } from '../icon.js';
-import { uiCmd } from '../cmd.js';
 import { uiSection } from '../section.js';
 import { uiSettingsCustomData } from '../settings/custom_data.js';
+import { utilCmd } from '../../util/cmd.js';
 
 
 /** uiSectionDataLayers
@@ -147,7 +147,7 @@ export function uiSectionDataLayers(context) {
         d3_select(nodes[i])
           .call(uiTooltip(context)
             .title(l10n.t(`map_data.layers.${d.id}.tooltip`))
-            .shortcut(uiCmd('⇧' + l10n.t(`map_data.layers.${d.id}.key`)))
+            .shortcut(utilCmd('⇧' + l10n.t(`map_data.layers.${d.id}.key`)))
             .placement('bottom')
           );
       });
@@ -355,7 +355,7 @@ export function uiSectionDataLayers(context) {
       .append('label')
       .call(uiTooltip(context)
         .title(l10n.t('map_data.history_panel.tooltip'))
-        .shortcut(uiCmd('⌘⇧' + l10n.t('info_panels.history.key')))
+        .shortcut(utilCmd('⌘⇧' + l10n.t('info_panels.history.key')))
         .placement('top')
       );
 
@@ -374,7 +374,7 @@ export function uiSectionDataLayers(context) {
       .append('label')
       .call(uiTooltip(context)
         .title(l10n.t('map_data.measurement_panel.tooltip'))
-        .shortcut(uiCmd('⌘⇧' + l10n.t('info_panels.measurement.key')))
+        .shortcut(utilCmd('⌘⇧' + l10n.t('info_panels.measurement.key')))
         .placement('top')
       );
 

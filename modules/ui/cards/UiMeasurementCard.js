@@ -5,8 +5,8 @@ import { utilGetAllNodes } from '@rapid-sdk/util';
 
 import { AbstractUiCard } from './AbstractUiCard.js';
 import { QAItem } from '../../osm/index.js';
-import { uiCmd } from '../cmd.js';
 import { uiIcon } from '../icon.js';
+import { utilCmd } from '../../util/cmd.js';
 
 
 // using WGS84 authalic radius (6371007.1809 m)
@@ -62,7 +62,7 @@ export class UiMeasurementCard extends AbstractUiCard {
     map.on('draw', this.rerender);
     context.on('modechange', this.rerender);
 
-    this.key = uiCmd('⌘⇧' + l10n.t('info_panels.measurement.key'));
+    this.key = utilCmd('⌘⇧' + l10n.t('info_panels.measurement.key'));
     context.keybinding().on(this.key, this.toggle);
   }
 

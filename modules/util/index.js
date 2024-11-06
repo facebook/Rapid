@@ -1,3 +1,4 @@
+export { utilCmd } from './cmd.js';
 export { utilDetect } from './detect.js';
 export { utilFetchResponse, FetchError } from './fetch_response.js';
 export { utilFunctor } from './util.js';
