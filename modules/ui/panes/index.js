@@ -1,5 +1,5 @@
-export { uiPaneBackground } from './background.js';
-export { uiPaneHelp } from './help.js';
-export { uiPaneIssues } from './issues.js';
-export { uiPaneMapData } from './map_data.js';
-export { uiPanePreferences } from './preferences.js';
+export * from './background.js';
+export * from './help.js';
+export * from './issues.js';
+export * from './map_data.js';
+export * from './preferences.js';

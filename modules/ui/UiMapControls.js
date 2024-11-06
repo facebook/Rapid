@@ -1,9 +1,8 @@
 import { selection, select } from 'd3-selection';
 
-import { uiBearing } from './bearing.js';
-import { uiGeolocate } from './geolocate.js';
-import { uiZoom } from './zoom.js';
-import { uiZoomToSelection } from './zoom_to_selection.js';
+import {
+  UiBearingControl, UiGeolocateControl, UiZoomControl, UiZoomToControl
+} from './controls/index.js';
 
 
 /**
@@ -21,10 +20,10 @@ export class UiMapControls {
     this.context = context;
 
     // Create child components
-    this.Bearing = uiBearing(context);
-    this.Zoom = uiZoom(context);
-    this.ZoomToSelection = uiZoomToSelection(context);
-    this.Geolocate = uiGeolocate(context);
+    this.BearingControl = new UiBearingControl(context);
+    this.ZoomControl = new UiZoomControl(context);
+    this.ZoomToControl = new UiZoomToControl(context);
+    this.GeolocateControl = new UiGeolocateControl(context);
 
     // D3 selections
     this.$parent = null;
@@ -61,26 +60,26 @@ export class UiMapControls {
 
     // Map Controls
     const components = [
-      { id: 'bearing', control: this.Bearing },
-      { id: 'zoombuttons', control: this.Zoom },
-      { id: 'zoom-to-selection', control: this.ZoomToSelection },
-      { id: 'geolocate', control: this.Geolocate }
+      { control: this.BearingControl, klass: 'bearing' },
+      { control: this.ZoomControl, klass: 'zoombuttons' },
+      { control: this.ZoomToControl, klass: 'zoom-to-selection' },
+      { control: this.GeolocateControl, klass: 'geolocate' }
     ];
 
     let $controls = $container.selectAll('.map-control')
-      .data(components, d => d.id);
+      .data(components, d => d.klass);
 
     // enter
     const $$controls = $controls.enter()
       .append('div')
-      .attr('class', d => `map-control ${d.id}`);
+      .attr('class', d => `map-control ${d.klass}`);
 
     // update
     $controls = $controls.merge($$controls);
 
     $controls
       .each((d, i, nodes) => {
-        select(nodes[i]).call(d.control);  // render
+        select(nodes[i]).call(d.control.render);  // render
       });
   }
 
