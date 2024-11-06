@@ -2626,6 +2626,7 @@ en:
         mapillary: "Toggle Mapillary"
         bingStreetside: "Toggle Bing Streetside"
         kartaview: "Toggle Kartaview"
+        disableDataLayers: "Toggle all data layers"
       info:
         title: "Information"
         all: "Toggle all information panels"

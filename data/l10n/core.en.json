@@ -3234,7 +3234,8 @@
           "3dmap": "Toggle 3D map",
           "mapillary": "Toggle Mapillary",
           "bingStreetside": "Toggle Bing Streetside",
-          "kartaview": "Toggle Kartaview"
+          "kartaview": "Toggle Kartaview",
+          "disableDataLayers": "Toggle all data layers"
         },
         "info": {
           "title": "Information",
