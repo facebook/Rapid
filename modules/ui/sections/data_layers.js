@@ -41,6 +41,31 @@ export function uiSectionDataLayers(context) {
   const settingsCustomData = uiSettingsCustomData(context)
     .on('change', customChanged);
 
+  let previousLayerStates = new Map();
+  function toggleAllLayers() {
+    const allLayerIDs = ['osm', 'notes', 'rapid', 'maproulette', 'keepRight', 'osmose', 'geoScribble', 'custom-data'];
+    const anyLayerEnabled = allLayerIDs.some(layerID => showsLayer(layerID));
+    if (anyLayerEnabled) {
+      // Save current state and disable all layers
+      allLayerIDs.forEach(layerID => {
+        previousLayerStates.set(layerID, showsLayer(layerID));
+        setLayer(layerID, false);
+      });
+    } else {
+      // Restore previous state
+      previousLayerStates.forEach((enabled, layerID) => {
+        setLayer(layerID, enabled);
+      });
+    }
+  }
+
+  // keyboard shortcut for toggling all layers
+  context.keybinding()
+    .on('⇧D', e => {
+      e.preventDefault();
+      toggleAllLayers();
+    });
+
 
 
   /* renderIfVisible
