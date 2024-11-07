@@ -43,7 +43,7 @@ export function uiSectionDataLayers(context) {
 
   let previousLayerStates = new Map();
   function toggleAllLayers() {
-    const allLayerIDs = ['osm', 'notes', 'rapid', 'maproulette', 'keepRight', 'osmose', 'geoScribble', 'custom-data'];
+    const allLayerIDs = ['osm', 'notes', 'rapid', 'maproulette', 'keepRight', 'osmose', 'geoScribble', 'custom-data', 'mapillary', 'streetside', 'kartaview'];
     const anyLayerEnabled = allLayerIDs.some(layerID => showsLayer(layerID));
     if (anyLayerEnabled) {
       // Save current state and disable all layers
