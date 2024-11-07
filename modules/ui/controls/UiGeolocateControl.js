@@ -68,7 +68,7 @@ export class UiGeolocateControl {
     const context = this.context;
     const l10n = context.systems.l10n;
 
-    let $button = $parent.selectAll('button.bearing')
+    let $button = $parent.selectAll('button')
       .data([0]);
 
     // enter

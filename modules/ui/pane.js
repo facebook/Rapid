@@ -83,7 +83,11 @@ export function uiPane(context, id) {
         .shortcut(_key);
     }
 
-    selection
+    const control = selection
+      .append('div')
+      .attr('class', `map-control map-pane-control ${id}-control`);
+
+    control
       .append('button')
       .on('click', pane.togglePane)
       .call(uiIcon(`#${_iconName}`, 'light'))

@@ -1,14 +1,13 @@
-import { selection, select } from 'd3-selection';
+import { selection } from 'd3-selection';
 
 import { UiAttribution } from './UiAttribution.js';
 import { UiInfoCards } from './UiInfoCards.js';
 import { UiMap3dViewer } from './UiMap3dViewer.js';
 import { UiMapControls } from './UiMapControls.js';
+import { UiMapPanes } from './UiMapPanes.js';
 import { UiMinimap } from './UiMinimap.js';
 import { UiPhotoViewer } from './UiPhotoViewer.js';
 import { UiSpector } from './UiSpector.js';
-
-import { uiPaneBackground, uiPaneHelp, uiPaneIssues, uiPaneMapData, uiPanePreferences } from './panes/index.js';
 
 
 /**
@@ -18,7 +17,7 @@ import { uiPaneBackground, uiPaneHelp, uiPaneIssues, uiPaneMapData, uiPanePrefer
  * @example
  * <div class='over-map'>
  *   // Lots of things live in here..
- *   // Minimap, map controls, map panels, info panels, photo viewer
+ *   // Minimap, map controls, map panes, info cards, photo viewer
  *   …
  * </div>
  */
@@ -36,6 +35,7 @@ export class UiOvermap {
     this.InfoCards = new UiInfoCards(context);
     this.Map3dViewer = new UiMap3dViewer(context);
     this.MapControls = new UiMapControls(context);
+    this.MapPanes = new UiMapPanes(context);
     this.Minimap = new UiMinimap(context);
     this.PhotoViewer = new UiPhotoViewer(context);
     this.Spector = new UiSpector(context);
@@ -46,7 +46,6 @@ export class UiOvermap {
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
     this.render = this.render.bind(this);
-    this.rerender = (() => this.render());  // call render without argument
   }
 
 
@@ -62,8 +61,6 @@ export class UiOvermap {
     } else {
       return;   // no parent - called too early?
     }
-
-    const context = this.context;
 
     let $overmap = $parent.selectAll('.over-map')
       .data([0]);
@@ -82,45 +79,15 @@ export class UiOvermap {
       .attr('class', 'select-trap')
       .text('t');
 
-    $$overmap
+    // update
+    $overmap = $overmap.merge($$overmap);
+
+    $overmap
       .call(this.Minimap.render)
       .call(this.Map3dViewer.render)
       .call(this.Spector.render)
-      .call(this.MapControls.render);
-
-    // We will add the pane buttons to this div also
-    const $mapControls = $$overmap.selectAll('.map-controls');
-
-    // Panes
-    $$overmap
-      .append('div')
-      .attr('class', 'map-panes')
-      .each((d, i, nodes) => {
-        const $$selection = select(nodes[i]);
-
-        // Instantiate the panes
-        const uiPanes = [
-          uiPaneBackground(context),
-          uiPaneMapData(context),
-          uiPaneIssues(context),
-          uiPanePreferences(context),
-          uiPaneHelp(context)
-        ];
-
-        // For each pane, create the buttons to toggle the panes,
-        // and perform a single render to append it to the map-panes div
-        for (const Component of uiPanes) {
-          $mapControls
-            .append('div')
-            .attr('class', `map-control map-pane-control ${Component.id}-control`)
-            .call(Component.renderToggleButton);
-
-          $$selection
-            .call(Component.renderPane);
-        }
-      });
-
-    $$overmap
+      .call(this.MapControls.render)
+      .call(this.MapPanes.render)
       .call(this.InfoCards.render)
       .call(this.PhotoViewer.render)
       .call(this.Attribution.render);

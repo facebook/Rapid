@@ -56,7 +56,7 @@ export class UiZoomToControl {
     const context = this.context;
     const l10n = context.systems.l10n;
 
-    let $button = $parent.selectAll('button.zoom-to-selection')
+    let $button = $parent.selectAll('button')
       .data([0]);
 
     // enter

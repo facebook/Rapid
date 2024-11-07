@@ -34,12 +34,8 @@ export function uiSectionBackgroundList(context) {
   const imagery = context.systems.imagery;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
-  const map3d = context.systems.map3d;
   const storage = context.systems.storage;
   const ui = context.systems.ui;
-
-  const BackgroundCard = ui.InfoCards.BackgroundCard;
-  const LocationCard = ui.InfoCards.LocationCard;
 
   const section = uiSection(context, 'background-list')
     .label(l10n.t('background.backgrounds'))
@@ -79,6 +75,10 @@ export function uiSectionBackgroundList(context) {
    * Render the background list and the checkboxes below it
    */
   function render(selection) {
+    const map3d = context.systems.map3d;
+    const BackgroundCard = ui.InfoCards.BackgroundCard;
+    const LocationCard = ui.InfoCards.LocationCard;
+
     // the main background list
     const container = selection.selectAll('.layer-background-list')
       .data([0]);

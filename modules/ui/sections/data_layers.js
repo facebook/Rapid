@@ -31,9 +31,6 @@ export function uiSectionDataLayers(context) {
   const scene = context.scene();
   const ui = context.systems.ui;
 
-  const HistoryCard = ui.InfoCards.HistoryCard;
-  const MeasurementCard = ui.InfoCards.MeasurementCard;
-
   const section = uiSection(context, 'data-layers')
     .label(l10n.t('map_data.data_layers'))
     .disclosureContent(render);
@@ -343,6 +340,9 @@ export function uiSectionDataLayers(context) {
 
 
   function drawPanelItems(selection) {
+    const HistoryCard = ui.InfoCards.HistoryCard;
+    const MeasurementCard = ui.InfoCards.MeasurementCard;
+
     let panelsListEnter = selection.selectAll('.md-extras-list')
       .data([0])
       .enter()
