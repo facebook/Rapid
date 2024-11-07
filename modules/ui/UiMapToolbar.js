@@ -1,6 +1,8 @@
 import { selection, select } from 'd3-selection';
 
-import { UiToolRapidFeatures, UiToolDrawModes, UiToolSave, UiToolUndoRedo, UiToolDownloadOsc } from './tools/index.js';
+import {
+  UiDownloadTool, UiDrawModesTool, UiRapidTool, UiSaveTool, UiUndoRedoTool
+} from './tools/index.js';
 
 
 /**
@@ -27,11 +29,11 @@ export class UiMapToolbar {
     this.context = context;
 
     // Create child components
-    this.DrawModes = new UiToolDrawModes(context);
-    this.RapidFeatures = new UiToolRapidFeatures(context);
-    this.UndoRedo = new UiToolUndoRedo(context);
-    this.Save = new UiToolSave(context);
-    this.DownloadOsc = new UiToolDownloadOsc(context);
+    this.DrawModes = new UiDrawModesTool(context);
+    this.Rapid = new UiRapidTool(context);
+    this.UndoRedo = new UiUndoRedoTool(context);
+    this.Save = new UiSaveTool(context);
+    this.Download = new UiDownloadTool(context);
 
     // D3 selections
     this.$parent = null;
@@ -64,14 +66,14 @@ export class UiMapToolbar {
     const urlhash = context.systems.urlhash;
     const ui = context.systems.ui;
 
-    const items = [
+    const tools = [
       'spacer',
       this.DrawModes,
-      this.RapidFeatures,
+      this.Rapid,
       'spacer',
       this.UndoRedo,
       this.Save,
-      this.DownloadOsc
+      this.Download
     ];
 
     // Create wrapper div if necessary
@@ -85,7 +87,7 @@ export class UiMapToolbar {
     const $toolbar = $parent.selectAll('.map-toolbar');
 
     let $items = $toolbar.selectAll('.toolbar-item')
-      .data(items, (d, i) => d.id || `spacer${i}`);
+      .data(tools, (d, i) => d.id || `spacer${i}`);
 
     // enter
     const $$items = $items
@@ -113,9 +115,9 @@ export class UiMapToolbar {
 
     // hidden/undocumented feature:
     // only show the "Download" button if urlhash ccontains `&download_osc=true`
-    const showDownloadOsc = urlhash.getParam('download_osc') === 'true';
+    const showDownload = urlhash.getParam('download_osc') === 'true';
     $items.filter(d => d.id === 'download_osc')
-      .classed('hide', !showDownloadOsc);
+      .classed('hide', !showDownload);
 
     $items
       .selectAll('.item-content')

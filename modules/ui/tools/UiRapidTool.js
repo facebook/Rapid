@@ -8,10 +8,10 @@ import { utilCmd } from '../../util/cmd.js';
 
 
 /**
- * UiToolRapidFeatures
+ * UiRapidTool
  * A toolbar section for the Rapid features
  */
-export class UiToolRapidFeatures {
+export class UiRapidTool {
 
   /**
    * @constructor

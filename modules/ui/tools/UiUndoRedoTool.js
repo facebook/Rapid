@@ -7,10 +7,10 @@ import { utilCmd } from '../../util/cmd.js';
 
 
 /**
- * UiToolUndoRedo
+ * UiUndoRedoTool
  * A toolbar section for the undo/redo buttons
  */
-export class UiToolUndoRedo {
+export class UiUndoRedoTool {
 
   /**
    * @constructor

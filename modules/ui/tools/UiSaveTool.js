@@ -7,10 +7,10 @@ import { utilCmd } from '../../util/cmd.js';
 
 
 /**
- * UiToolSave
+ * UiSaveTool
  * A toolbar section for the save button
  */
-export class UiToolSave {
+export class UiSaveTool {
 
   /**
    * @constructor

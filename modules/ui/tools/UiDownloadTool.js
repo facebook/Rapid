@@ -8,12 +8,12 @@ import { uiTooltip } from '../tooltip.js';
 
 
 /**
- * UiToolDownloadOsc
+ * UiDownloadTool
  * A toolbar section for the "Download OSC" button
  * This is an hidden/undocumented feature that only appears
  * if the url hash contains `&download_osc=true`
  */
-export class UiToolDownloadOsc {
+export class UiDownloadTool {
 
   /**
    * @constructor

@@ -6,10 +6,10 @@ import { uiTooltip } from '../tooltip.js';
 
 
 /**
- * UiToolDrawModes
+ * UiDrawModesTool
  * A toolbar section for the mode buttons
  */
-export class UiToolDrawModes {
+export class UiDrawModesTool {
 
   /**
    * @constructor
