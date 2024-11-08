@@ -4474,38 +4474,35 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 
 /* Scale bar
 ------------------------------------------------------- */
-.map-footer .scale-block {
-    vertical-align: bottom;
-    width: 250px;
-    flex: 0 0 auto;
-    user-select: none;
-    height: 30px;
-    align-self: center;
+.scale-wrap {
+  display: flex;
+  flex: 0 0 250px;
+  flex-flow: row nowrap;
+  align-items: center;
+
+  width: 250px;
+  user-select: none;
 }
 
-.scale-block .scale {
-    height: 100%;
-    width: 100%;
-    cursor: pointer;
-    display: block;
-}
-.ideditor[dir='rtl'] .scale-block .scale {
-    transform: scaleX(-1);
+.scale-wrap .scale {
+  display: flex;
+  flex: 0 0 auto;
+  cursor: pointer;
+  margin: 0 10px;
 }
 
-.scale-block .scale-text {
-    display: inline-block;
-    position: absolute;
-    color: #ccc;
-    top: 0.45em;
+.scale-wrap .scale path {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
 }
 
-.scale-block .scale path {
-    fill: none;
-    stroke: #ccc;
-    stroke-width: 1;
-    shape-rendering: crispEdges;
+.scale-wrap .scale-text {
+  display: flex;
+  flex: 1 0 0px;
 }
+
 
 /* Footer - About, Source Switcher
 ------------------------------------------------------- */

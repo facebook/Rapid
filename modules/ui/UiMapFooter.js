@@ -3,7 +3,7 @@ import { selection } from 'd3-selection';
 import { utilDetect } from '../util/detect.js';
 import {
   uiAccount, uiContributors, uiIcon, uiIssuesInfo,
-  uiScale, uiSourceSwitch, uiTooltip, UiVersionInfo
+  UiScale, uiSourceSwitch, uiTooltip, UiVersionInfo
 } from './index.js';
 
 
@@ -24,7 +24,7 @@ export class UiMapFooter {
     this.Contributors = uiContributors(context);
 //    this.FilterInfo = uiFeatureInfo(context);
     this.IssueInfo = uiIssuesInfo(context);
-    this.Scale = uiScale(context);
+    this.Scale = new UiScale(context);
     this.VersionInfo = new UiVersionInfo(context);
 
     if (!context.embed()) {
@@ -84,9 +84,7 @@ export class UiMapFooter {
       .attr('class', 'map-footer-wrap map-footer-show');
 
     $$footerWrap
-      .append('div')
-      .attr('class', 'scale-block')
-      .call(this.Scale);
+      .call(this.Scale.render);
 
     const $$aboutList = $$footerWrap
       .append('div')

@@ -63,7 +63,7 @@ export { uiRapidPowerUserFeaturesDialog } from './rapid_poweruser_features_dialo
 // export { uiRapidSplash } from './rapid_splash.js';
 export { uiRapidViewManageDatasets } from './rapid_view_manage_datasets.js';
 export { uiRestore } from './restore.js';
-export { uiScale } from './scale.js';
+export { UiScale } from './UiScale.js';
 export { uiSection } from './section.js';
 export { UiShortcuts } from './UiShortcuts.js';
 export { UiSidebar } from './UiSidebar.js';
