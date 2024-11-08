@@ -45,8 +45,10 @@ export class UiAttribution {
     const context = this.context;
     const imagery = context.systems.imagery;
     const l10n = context.systems.l10n;
+    const scene = context.systems.gfx.scene;
     const storage = context.systems.storage;
     const showThirdPartyIcons = (storage.getItem('preferences.privacy.thirdpartyicons') ?? 'true') === 'true';
+    const isRapidEnabled = scene.layers.get('rapid')?.enabled;
 
     // attribution wrapper
     let $wrap = $parent.selectAll('.attribution-wrap')
@@ -59,24 +61,35 @@ export class UiAttribution {
     $wrap = $wrap.merge($$wrap);
 
 
-    // attribution sections for baselayer and overlays
-    const data = [];
+    // Gather imagery and data sources that we will provide attribution for
+    const data = [
+      { id: 'baselayer', sources: [] },
+      { id: 'overlays', sources: [] }
+    ];
 
     const baselayer = imagery.baseLayerSource();
     if (baselayer) {
-      data.push({ id: 'base-layer-attribution', sources: [baselayer] });
+      data[0].sources.push(baselayer);
     }
 
-    const overlays = imagery.overlayLayerSources();
-    if (Array.isArray(overlays)) {
-      data.push({ id: 'overlay-layer-attribution', sources: overlays });
+    const overlays = imagery.overlayLayerSources() || [];
+    for (const overlay of overlays) {
+      data[1].sources.push(overlay);
     }
 
+    // Append a "source" for MapWithAI data attribution to the overlays section..
+    if (isRapidEnabled) {
+      data[1].sources.push({
+        id: '__mapwithai',
+        overlay: true,
+        terms_text: l10n.t('rapid_feature_license'),
+        terms_url: 'https://mapwith.ai/doc/license/MapWithAILicense.pdf'
+      });
+    }
+
+    // baselayer and overlays sections
     let $sections = $wrap.selectAll('.attribution-section')
       .data(data, d => d.id);
-
-    $sections.exit()
-      .remove();
 
     const $$sections = $sections.enter()
       .append('div')

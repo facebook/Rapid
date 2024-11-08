@@ -2,7 +2,7 @@ import { selection } from 'd3-selection';
 
 import { utilDetect } from '../util/detect.js';
 import {
-  uiAccount, uiContributors, uiIcon, uiIssuesInfo, uiRapidServiceLicense,
+  uiAccount, uiContributors, uiIcon, uiIssuesInfo,
   uiScale, uiSourceSwitch, uiTooltip, UiVersionInfo
 } from './index.js';
 
@@ -24,7 +24,6 @@ export class UiMapFooter {
     this.Contributors = uiContributors(context);
 //    this.FilterInfo = uiFeatureInfo(context);
     this.IssueInfo = uiIssuesInfo(context);
-    this.RapidLicense = uiRapidServiceLicense(context);
     this.Scale = uiScale(context);
     this.VersionInfo = new UiVersionInfo(context);
 
@@ -99,12 +98,6 @@ export class UiMapFooter {
       .append('li')
       .attr('class', 'user-list')
       .call(this.Contributors);
-
-    $$aboutList
-      .append('li')
-      .attr('class', 'fb-road-license')
-      .attr('tabindex', -1)
-      .call(this.RapidLicense);
 
     if (this.SourceSwitch) {
       $$aboutList

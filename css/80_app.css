@@ -4371,20 +4371,20 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
   font-size: 10px;
 }
 
-.attribution-section.overlay-layer-attribution {
+.attribution-section.overlays {
   text-align: end;
 }
 
-.attribution,
-.attribution:visited {
+.attribution-section a,
+.attribution-section a:visited {
   color: #ccf;
 }
-.attribution:focus,
-.attribution:hover {
+.attribution-section a:focus,
+.attribution-section a:hover {
   color: #aaf;
 }
 @media (hover: hover) {
-  .attribution:hover {
+  .attribution-section a:hover {
     color: #aaf;
   }
 }
@@ -4580,11 +4580,6 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 
 .user-list a:not(:last-child):after {
     content: ', ';
-}
-
-.fb-road-license a {
-  padding: 2px 4px 4px 4px;
-  border-radius: 2px;
 }
 
 

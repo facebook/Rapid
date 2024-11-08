@@ -60,7 +60,6 @@ export { uiRapidFeatureInspector } from './rapid_feature_inspector.js';
 export { uiRapidFeatureToggleDialog } from './rapid_feature_toggle_dialog.js';
 export { uiRapidFirstEditDialog } from './rapid_first_edit_dialog.js';
 export { uiRapidPowerUserFeaturesDialog } from './rapid_poweruser_features_dialog.js';
-export { uiRapidServiceLicense } from './rapid_service_license.js';
 // export { uiRapidSplash } from './rapid_splash.js';
 export { uiRapidViewManageDatasets } from './rapid_view_manage_datasets.js';
 export { uiRestore } from './restore.js';
