@@ -107,11 +107,11 @@ export function uiAccount(context) {
   return function(selection) {
     if (!osm) return;
 
-    selection.append('li')
+    selection.append('div')
       .attr('class', 'userInfo')
       .classed('hide', true);
 
-    selection.append('li')
+    selection.append('div')
       .attr('class', 'loginLogout')
       .classed('hide', true)
       .append('a')

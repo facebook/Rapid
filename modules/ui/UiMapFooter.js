@@ -86,36 +86,34 @@ export class UiMapFooter {
     $$footerWrap
       .call(this.Scale.render);
 
-    const $$aboutList = $$footerWrap
+    const $$footerInfo = $$footerWrap
       .append('div')
-      .attr('class', 'info-block')
-      .append('ul')
-      .attr('class', 'map-footer-list');
+      .attr('class', 'map-footer-info');
 
-    $$aboutList
-      .append('li')
+    $$footerInfo
+      .append('div')
       .attr('class', 'user-list')
       .call(this.Contributors);
 
     if (this.SourceSwitch) {
-      $$aboutList
-        .append('li')
+      $$footerInfo
+        .append('div')
         .attr('class', 'source-switch')
         .call(this.SourceSwitch);
     }
 
-    $$aboutList
-      .append('li')
+    $$footerInfo
+      .append('div')
       .attr('class', 'issues-info')
       .call(this.IssueInfo);
 
-//    $$aboutList
-//      .append('li')
+//    $$footerInfo
+//      .append('div')
 //      .attr('class', 'feature-warning')
 //      .call(this.FilterInfo);
 
-    const $$issueLinks = $$aboutList
-      .append('li');
+    const $$issueLinks = $$footerInfo
+      .append('div');
 
     $$issueLinks
       .append('button')
@@ -132,13 +130,11 @@ export class UiMapFooter {
       .call(uiIcon('#rapid-icon-translate', 'light'))
       .call(uiTooltip(context).title(l10n.t('help_translate')).placement('top'));
 
-    $$aboutList
-      .append('li')
-      .attr('class', 'version')
+    $$footerInfo
       .call(this.VersionInfo.render);
 
     if (this.AccountInfo) {
-      $$aboutList
+      $$footerInfo
         .call(this.AccountInfo);
     }
   }
