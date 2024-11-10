@@ -20,7 +20,7 @@ export class UiScale {
     this.context = context;
 
     const l10n = context.systems.l10n;
-    const map = context.systems.map;
+    const gfx = context.systems.gfx;
 
     this._isImperial = !l10n.isMetric();
 
@@ -36,7 +36,7 @@ export class UiScale {
     this.updateScale = this.updateScale.bind(this);
     this._deferredUpdateScale = throttle(this.updateScale, 100);
 
-    map.on('draw', this._deferredUpdateScale);
+    gfx.on('draw', this._deferredUpdateScale);
   }
 
 

@@ -7,7 +7,7 @@ export { uiCommit } from './commit.js';
 export { uiCommitWarnings } from './commit_warnings.js';
 export { uiConfirm } from './confirm.js';
 export { uiConflicts } from './conflicts.js';
-export { uiContributors } from './contributors.js';
+export { UiContributors } from './UiContributors.js';
 export { uiDataEditor } from './data_editor.js';
 export { uiDataHeader } from './data_header.js';
 export { UiDefs } from './UiDefs.js';

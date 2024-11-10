@@ -4534,6 +4534,11 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
   border-left: 1px solid rgba(255,255,255,.5);
 }
 
+.map-footer-info .contributors a:not(:last-child):after {
+  content: ', ';
+}
+
+
 .map-footer-info a.chip {
   padding: 1px 4px 1px 4px;
   border-radius: 2px;
@@ -4568,10 +4573,6 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 }
 .ideditor[dir='rtl'] .issues-info a.chip:not(:last-child) {
   margin-left: 5px;
-}
-
-.user-list a:not(:last-child):after {
-  content: ', ';
 }
 
 

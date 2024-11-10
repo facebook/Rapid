@@ -2,7 +2,7 @@ import { selection } from 'd3-selection';
 
 import { utilDetect } from '../util/detect.js';
 import {
-  uiAccount, uiContributors, uiIcon, uiIssuesInfo,
+  uiAccount, UiContributors, uiIcon, uiIssuesInfo,
   UiScale, uiSourceSwitch, uiTooltip, UiVersionInfo
 } from './index.js';
 
@@ -21,7 +21,7 @@ export class UiMapFooter {
     this.context = context;
 
     // Create child components
-    this.Contributors = uiContributors(context);
+    this.Contributors = new UiContributors(context);
 //    this.FilterInfo = uiFeatureInfo(context);
     this.IssueInfo = uiIssuesInfo(context);
     this.Scale = new UiScale(context);
@@ -91,9 +91,7 @@ export class UiMapFooter {
       .attr('class', 'map-footer-info');
 
     $$footerInfo
-      .append('div')
-      .attr('class', 'user-list')
-      .call(this.Contributors);
+      .call(this.Contributors.render);
 
     if (this.SourceSwitch) {
       $$footerInfo
