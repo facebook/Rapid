@@ -39,6 +39,17 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [2.4.4](https://github.com/facebook/Rapid/releases/tag/rapid-v2.4.4)
+#### 2024-Nov-11
+
+#### :tada: New Features
+* [#1422] Support MapRoulette task settings in a URL parameter
+  * Optionally include multiple challengeIDs in comma-seperated list
+  * Example: `maproulette=true` -or- `maproulette=<challengeIDs>`
+
+[#1422]: https://github.com/facebook/Rapid/issues/1422
+
+
 # [2.4.3](https://github.com/facebook/Rapid/releases/tag/rapid-v2.4.3)
 #### 2024-Oct-28
 
