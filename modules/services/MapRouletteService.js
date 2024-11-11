@@ -25,9 +25,10 @@ export class MapRouletteService extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'maproulette';
-    this.autoStart = false;
+    this.autoStart = true;
 
     this._initPromise = null;
+    this._startPromise = null;
     this._challengeIDs = new Set();  // Set<string> - if we want to filter only a specific challengeID
 
     this._cache = null;   // cache gets replaced on init/reset
@@ -45,24 +46,7 @@ export class MapRouletteService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed initialization
    */
   initAsync() {
-    if (this._initPromise) return this._initPromise;
-
-    const context = this.context;
-    const gfx = context.systems.gfx;
-    const urlhash = context.systems.urlhash;
-
-    const prerequisites = Promise.all([
-      gfx.initAsync(),   // `gfx.scene` will exist after `initAsync`
-      urlhash.initAsync()
-    ]);
-
-    return this._initPromise = prerequisites
-      .then(() => this.resetAsync())
-      .then(() => {
-        // Setup event handlers..
-        gfx.scene.on('layerchange', this._mapRouletteChanged);
-        urlhash.on('hashchange', this._hashchange);
-      });
+    return this.resetAsync();
   }
 
 
@@ -72,7 +56,28 @@ export class MapRouletteService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
-    this._started = true;
+    if (this._startPromise) return this._startPromise;
+
+    const context = this.context;
+    const map = context.systems.map;
+    const urlhash = context.systems.urlhash;
+    const prerequisites = Promise.all([
+      map.startAsync(),     // must perform these steps after scene exists
+      urlhash.startAsync()
+    ]);
+
+    return this._startPromise = prerequisites
+      .then(() => {
+        map.scene.on('layerchange', this._mapRouletteChanged);
+        urlhash.on('hashchange', this._hashchange);
+        this._started = true;
+
+        // We would have missed the initial 'hashchange' event from urlsystem,
+        // so we will manually call `_hashchange` here.
+        const curr = new Map(urlhash._currParams);
+        const prev = new Map();
+        this._hashchange(curr, prev);
+      });
   }
 
 
@@ -124,8 +129,8 @@ export class MapRouletteService extends AbstractSystem {
         this._challengeIDs.add(val);  // keep the string
       }
     }
-    const gfx = this.context.systems.gfx;
-    gfx.immediateRedraw();
+    const map = this.context.systems.map;
+    map.immediateRedraw();
     this._mapRouletteChanged();
   }
 
@@ -528,7 +533,7 @@ export class MapRouletteService extends AbstractSystem {
    * @param  prevParams   Map(key -> value) of the previous hash parameters
    */
   _hashchange(currParams, prevParams) {
-    const scene = this.context.systems.gfx.scene;
+    const scene = this.context.systems.map.scene;
 
     // maproulette
     // Support opening maproulette layer with a URL parameter:
@@ -571,7 +576,7 @@ export class MapRouletteService extends AbstractSystem {
   _mapRouletteChanged() {
     const context = this.context;
     const urlhash = context.systems.urlhash;
-    const scene = context.systems.gfx.scene;
+    const scene = context.systems.map.scene;
     const layer = scene.layers.get('maproulette');
 
     // `maproulette=true` -or- `maproulette=<challengeIDs>`
