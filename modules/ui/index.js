@@ -1,4 +1,4 @@
-export { uiAccount } from './account.js';
+export { UiAccount } from './UiAccount.js';
 export { UiApiStatus } from './UiApiStatus.js';
 export { UiAttribution } from './UiAttribution.js';
 export { uiChangesetEditor } from './changeset_editor.js';
@@ -67,7 +67,7 @@ export { UiScale } from './UiScale.js';
 export { uiSection } from './section.js';
 export { UiShortcuts } from './UiShortcuts.js';
 export { UiSidebar } from './UiSidebar.js';
-export { uiSourceSwitch } from './source_switch.js';
+export { UiSourceSwitch } from './UiSourceSwitch.js';
 export { UiSpector } from './UiSpector.js';
 export { uiSplash } from './splash.js';
 export { uiSuccess } from './success.js';

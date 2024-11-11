@@ -2,8 +2,8 @@ import { selection } from 'd3-selection';
 
 import { utilDetect } from '../util/detect.js';
 import {
-  uiAccount, UiContributors, uiIcon, uiIssuesInfo,
-  UiScale, uiSourceSwitch, uiTooltip, UiVersionInfo
+  UiAccount, UiContributors, uiIcon, uiIssuesInfo,
+  UiScale, UiSourceSwitch, uiTooltip, UiVersionInfo
 } from './index.js';
 
 
@@ -25,19 +25,13 @@ export class UiMapFooter {
 //    this.FilterInfo = uiFeatureInfo(context);
     this.IssueInfo = uiIssuesInfo(context);
     this.Scale = new UiScale(context);
+    this.SourceSwitch = new UiSourceSwitch(context);
     this.VersionInfo = new UiVersionInfo(context);
 
     if (!context.embed()) {
-      this.AccountInfo = uiAccount(context);
+      this.AccountInfo = new UiAccount(context);
     } else {
       this.AccountInfo = null;
-    }
-
-    const apiConnections = context.apiConnections;
-    if (Array.isArray(apiConnections) && apiConnections.length > 1) {
-      this.SourceSwitch = uiSourceSwitch(context).keys(apiConnections);
-    } else {
-      this.SourceSwitch = null;
     }
 
     // D3 selections
@@ -91,14 +85,8 @@ export class UiMapFooter {
       .attr('class', 'map-footer-info');
 
     $$footerInfo
-      .call(this.Contributors.render);
-
-    if (this.SourceSwitch) {
-      $$footerInfo
-        .append('div')
-        .attr('class', 'source-switch')
-        .call(this.SourceSwitch);
-    }
+      .call(this.Contributors.render)
+      .call(this.SourceSwitch.render);
 
     $$footerInfo
       .append('div')
@@ -133,7 +121,7 @@ export class UiMapFooter {
 
     if (this.AccountInfo) {
       $$footerInfo
-        .call(this.AccountInfo);
+        .call(this.AccountInfo.render);
     }
   }
 
