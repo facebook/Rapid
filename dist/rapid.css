@@ -3349,10 +3349,10 @@
 .ideditor .layer-list .list-item-maproulette > label > span {
   flex: 1 1 auto;
 }
-.ideditor .layer-list .list-item-maproulette .challenge-id {
+.ideditor .layer-list .list-item-maproulette .challenge-ids {
   color: #333;
   height: 20px;
-  width: 100px;
+  width: 120px;
   cursor: pointer;
 }
 

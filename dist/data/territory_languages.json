@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "version": "2.4.3",
-    "generated": "2024-10-28T15:18:28.153Z",
+    "version": "2.4.4",
+    "generated": "2024-11-11T15:32:14.758Z",
     "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/territory_languages.json",
-    "hash": "e22e5e3b47a6b4d7a2ab484d3451e215"
+    "hash": "370050daec188befdbe6837ae1e2dcbc"
   },
   "territoryLanguages": {
     "ac": ["en"],

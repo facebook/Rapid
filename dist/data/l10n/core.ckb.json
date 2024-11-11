@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "version": "2.4.3",
-    "generated": "2024-10-28T15:18:28.669Z",
+    "version": "2.4.4",
+    "generated": "2024-11-11T15:32:15.284Z",
     "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.ckb.json",
-    "hash": "8f9e1eeea6be8f405c90a8f981941301"
+    "hash": "e32f18d387d4eaff845235fc82c10b59"
   },
   "ckb": {
     "icons": {

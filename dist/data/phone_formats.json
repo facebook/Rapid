@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "version": "2.4.3",
-    "generated": "2024-10-28T15:18:28.155Z",
+    "version": "2.4.4",
+    "generated": "2024-11-11T15:32:14.760Z",
     "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/phone_formats.json",
-    "hash": "2441748ede98e77b482b590060c5fba7"
+    "hash": "1adc1dc8b2ce934d03413d02f9b8d2ce"
   },
   "phoneFormats": {
     "ag": "+1-268-555-1234",

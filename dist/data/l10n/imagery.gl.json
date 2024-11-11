@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "version": "2.4.3",
-    "generated": "2024-10-28T15:18:28.507Z",
+    "version": "2.4.4",
+    "generated": "2024-11-11T15:32:15.140Z",
     "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/imagery.gl.json",
-    "hash": "134e3feb6e073166c7dc4b9389339ad9"
+    "hash": "c67c11ee3cf1b05280ae18f930bed9b0"
   },
   "gl": {
     "imagery": {

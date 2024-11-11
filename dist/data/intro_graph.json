@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "version": "2.4.3",
-    "generated": "2024-10-28T15:18:28.161Z",
+    "version": "2.4.4",
+    "generated": "2024-11-11T15:32:14.766Z",
     "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/intro_graph.json",
-    "hash": "8f1128dd5fc98b8516c605f3a2b49a23"
+    "hash": "fb71cf27ca955b3ad0fee36f63b41f40"
   },
   "introGraph": {
     "n1": {

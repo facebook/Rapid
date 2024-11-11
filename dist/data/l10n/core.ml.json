@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "version": "2.4.3",
-    "generated": "2024-10-28T15:18:28.592Z",
+    "version": "2.4.4",
+    "generated": "2024-11-11T15:32:15.220Z",
     "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.ml.json",
-    "hash": "68ba2f4b62a0baec6ed099b3d18370c8"
+    "hash": "8bb3067dce4c52f10bdcb65868227f1c"
   },
   "ml": {
     "icons": {

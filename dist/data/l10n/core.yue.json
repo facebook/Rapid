@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "version": "2.4.3",
-    "generated": "2024-10-28T15:18:28.535Z",
+    "version": "2.4.4",
+    "generated": "2024-11-11T15:32:15.164Z",
     "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.yue.json",
-    "hash": "612569ced41cd2ea0f8e8ebc2d477841"
+    "hash": "75dd57693e34b08c96f856f07a9d3557"
   },
   "yue": {
     "icons": {

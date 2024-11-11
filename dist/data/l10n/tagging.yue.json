@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "version": "2.4.3",
-    "generated": "2024-10-28T15:18:28.268Z",
+    "version": "2.4.4",
+    "generated": "2024-11-11T15:32:14.869Z",
     "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/tagging.yue.json",
-    "hash": "b1cbb1a14dcdbbaed80b4be373405b71"
+    "hash": "5f5086bdef530abd26db03891d16a517"
   },
   "yue": {
     "presets": {

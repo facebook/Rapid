@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "version": "2.4.3",
-    "generated": "2024-10-28T15:18:28.361Z",
+    "version": "2.4.4",
+    "generated": "2024-11-11T15:32:14.977Z",
     "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/tagging.lb.json",
-    "hash": "a465d6d397521029951fd5859ea37e75"
+    "hash": "2d3bfd9f9992fb0434e28726383b3762"
   },
   "lb": {
     "presets": {

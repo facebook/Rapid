@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "version": "2.4.3",
-    "generated": "2024-10-28T15:18:28.152Z",
+    "version": "2.4.4",
+    "generated": "2024-11-11T15:32:14.757Z",
     "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/wayback.json",
-    "hash": "e3f183127f1e5b2773a2065b742fa207"
+    "hash": "c03e234a306de3428056c81835005f1e"
   },
   "wayback": {
     "10": {
@@ -764,7 +764,7 @@
       "itemURL": "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/16513/{level}/{row}/{col}",
       "metadataLayerUrl": "https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata_2014_r06/MapServer",
       "metadataLayerItemID": "e3e63ac9557742598e81d19dbce56741",
-      "layerIdentifier": "WB_2014_R16"
+      "layerIdentifier": "WB_2014_R06"
     },
     "16681": {
       "itemID": "7c1935f664f148bdb36678becaf6c831",

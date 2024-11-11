@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "version": "2.4.3",
-    "generated": "2024-10-28T15:18:28.682Z",
+    "version": "2.4.4",
+    "generated": "2024-11-11T15:32:15.293Z",
     "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.ast.json",
-    "hash": "365a7adbc1335f68c449c2e851562d21"
+    "hash": "65b68473393a8e305eb315abf32ff2ed"
   },
   "ast": {
     "modes": {

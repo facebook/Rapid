@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "version": "2.4.3",
-    "generated": "2024-10-28T15:18:28.687Z",
+    "version": "2.4.4",
+    "generated": "2024-11-11T15:32:15.297Z",
     "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.zh.json",
-    "hash": "f36ea7f6278ab59d0076120fd35b48b9"
+    "hash": "bd281f83d441d8164d7361d7d456752b"
   },
   "zh": {
     "cape-coast-youthmappers": {

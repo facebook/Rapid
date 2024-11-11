@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "version": "2.4.3",
-    "generated": "2024-10-28T15:18:28.649Z",
+    "version": "2.4.4",
+    "generated": "2024-11-11T15:32:15.270Z",
     "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.en.json",
-    "hash": "002a1958ac51e7fc7e7ca5a794dd89d8"
+    "hash": "e60be7793aca3e17affb549a626d4571"
   },
   "en": {
     "icons": {
@@ -1052,18 +1052,22 @@
           "key": "R"
         },
         "maproulette": {
-          "tooltip": "Tasks from maproulette.org",
-          "title": "MapRoulette Task",
+          "tooltip": "Tasks from maproulette.org.  You can also enter a comma-separated list of challenge IDs to filter.",
+          "title": {
+            "one": "MapRoulette Task",
+            "other": "MapRoulette Tasks"
+          },
           "loading_task_details": "Loading Task Details...",
           "detail_title": "Details",
           "id_title": "Challenge Id / Task Id",
+          "id_placeholder": "Challenge IDs",
           "instruction_title": "Instructions",
           "fixedIt": "I fixed it!",
           "cantComplete": "Can't Complete",
           "alreadyFixed": "Already Fixed",
           "notAnIssue": "Not an Issue",
           "login": "You must log in to change MapRoulette challenge.",
-          "loginMaproulette": "You must log in to Maproulette to edit this task.",
+          "loginMaproulette": "You must log in to MapRoulette to edit this task.",
           "inputPlaceholder": "Change comment (optional)",
           "comment": "Please confirm",
           "cancel": "Cancel",
