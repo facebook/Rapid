@@ -758,7 +758,7 @@
       "itemURL": "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/16513/{level}/{row}/{col}",
       "metadataLayerUrl": "https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata_2014_r06/MapServer",
       "metadataLayerItemID": "e3e63ac9557742598e81d19dbce56741",
-      "layerIdentifier": "WB_2014_R16"
+      "layerIdentifier": "WB_2014_R06"
     },
     "16681": {
       "itemID": "7c1935f664f148bdb36678becaf6c831",
