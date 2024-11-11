@@ -27149,7 +27149,7 @@
       "format": "esm"
     },
     "modules/services/MapRouletteService.js": {
-      "bytes": 16927,
+      "bytes": 17186,
       "imports": [
         {
           "path": "node_modules/@rapid-sdk/math/built/math.mjs",
@@ -32012,7 +32012,7 @@
       "imports": [],
       "exports": [],
       "inputs": {},
-      "bytes": 10955019
+      "bytes": 10955404
     },
     "dist/rapid.js": {
       "imports": [],
@@ -35380,7 +35380,7 @@
           "bytesInOutput": 40292
         },
         "modules/services/MapRouletteService.js": {
-          "bytesInOutput": 15603
+          "bytesInOutput": 15789
         },
         "modules/services/MapWithAIService.js": {
           "bytesInOutput": 14038
@@ -35482,7 +35482,7 @@
           "bytesInOutput": 512
         }
       },
-      "bytes": 5529369
+      "bytes": 5529555
     }
   }
 }
