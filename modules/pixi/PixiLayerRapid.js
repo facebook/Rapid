@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import geojsonRewind from '@mapbox/geojson-rewind';
+import { utilStringQs } from '@rapid-sdk/util';
 
 import { AbstractLayer } from './AbstractLayer.js';
 import { PixiFeatureLine } from './PixiFeatureLine.js';
@@ -192,8 +193,16 @@ export class PixiLayerRapid extends AbstractLayer {
     const service = context.services[dataset.service];  // 'mapwithai' or 'esri'
     if (!service?.started) return;
 
+    const useConflationStr = utilStringQs(window.location.hash).conflation;
+
+    let useConflation = dataset.conflated;
+
+    if (useConflationStr === 'false' || useConflationStr === 'no') {
+      useConflation = false;
+    }
+
     // Adjust the dataset id for whether we want the data conflated or not.
-    const datasetID = dataset.id + (dataset.conflated ? '-conflated' : '');
+    const datasetID = dataset.id + (useConflation ? '-conflated' : '');
     const dsGraph = service.graph(datasetID);
 
     // Filter out features that have already been accepted or ignored by the user.
