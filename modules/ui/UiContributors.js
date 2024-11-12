@@ -106,24 +106,26 @@ export class UiContributors {
       .attr('target', '_blank')
       .text(d => d);
 
+    const linksHTML = $$links.node().outerHTML;
+
     if (seen.size > MAXUSERS) {
       const othersNum = seen.size - MAXUSERS;
-      const $$count = select(document.createElement('span'));
+      const $$count = select(document.createElement('a'));
 
       $$count
-        .append('a')
         .attr('target', '_blank')
         .attr('href', osm.changesetsURL(viewport.centerLoc(), viewport.transform.zoom))
         .text(othersNum);
 
+      const countHTML = $$count.node().outerHTML;
+
       $wrap.selectAll('.user-list')   // "Edits by {users} and {n} others"
-        .html(l10n.tHtml('contributors.truncated_list', { n: othersNum, users: $$links.html(), count: $$count.html() }));
+        .html(l10n.t('contributors.truncated_list', { n: othersNum, users: linksHTML, count: countHTML }));
 
     } else {
       $wrap.selectAll('.user-list')   // "Edits by {users}"
-        .html(l10n.tHtml('contributors.list', { users: $$links.html() }));
+        .html(l10n.t('contributors.list', { users: linksHTML }));
     }
-
   }
 
 }

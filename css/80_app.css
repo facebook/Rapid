@@ -4534,7 +4534,17 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
   border-left: 1px solid rgba(255,255,255,.5);
 }
 
-.map-footer-info .contributors a:not(:last-child):after {
+.contributors span {
+  display: inline-flex;
+}
+.contributors a {
+  display: inline-block;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 2px;
+}
+.contributors a.user-link:not(:last-of-type):after {
   content: ', ';
 }
 
