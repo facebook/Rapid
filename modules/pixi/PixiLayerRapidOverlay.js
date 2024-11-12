@@ -26,14 +26,8 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
     overlays.sortableChildren = false;
     overlays.interactiveChildren = true;
     this.overlaysContainer = overlays;
-    this._overlaysDefined = false;
+    this._overlaysDefined = null;
 
-    const datasets = this.context.systems.rapid.datasets;
-    for (const dataset of datasets.values()) {
-      if (dataset.overlay) {
-        this._overlaysDefined = true;
-      }
-    }
 
     const basemapContainer = this.scene.groups.get('basemap');
     basemapContainer.addChild(overlays);
@@ -93,8 +87,8 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
 
         const point = viewport.project(loc);
         const feature = new PIXI.Graphics()
-          .fill({color, alpha:0.05})
-          .circle(0, 0, 40);
+          .circle(0, 0, 40)
+          .fill({color, alpha:0.05});
 
         feature.x = point[0];
         feature.y = point[1];
@@ -106,10 +100,22 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
 
   /**
    * hasData
-   * Return true if there is overlay data to display.
+   * Return true if there is any overlay endpoint URLs defined in the rapid datasets.
    * @return {boolean}  `true` if there is a vector tile template or geojson to display
    */
   hasData() {
+
+    if (this._overlaysDefined === null) {
+      const datasets = this.context.systems.rapid.datasets;
+      this._overlaysDefined = false;
+      for (const dataset of datasets.values()) {
+        if (dataset.overlay) {
+          this._overlaysDefined = true;
+        }
+      }
+
+    }
+
     return this._overlaysDefined;
   }
 
@@ -119,7 +125,7 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
    * Clear state to prepare for new custom data
    */
   _clear() {
-    this._overlaysDefined = false;
+    this._overlaysDefined = null;
   }
 
 }
