@@ -214,38 +214,42 @@ export function uiSectionDataLayers(context) {
 
 
   function drawQAItems(selection) {
-    const qaKeys = ['maproulette', 'keepRight', 'osmose', 'geoScribble'];
-    const qaLayers = qaKeys.map(layerID => scene.layers.get(layerID)).filter(Boolean);
+    const qaKeys = ['maproulette', 'nearbyTask', 'keepRight', 'osmose', 'geoScribble'];
+    const qaLayers = qaKeys.map(layerID => ({ id: layerID }));
     const maproulette = context.services.maproulette;
-
     let ul = selection
       .selectAll('.layer-list-qa')
       .data([0]);
-
     ul = ul.enter()
       .append('ul')
       .attr('class', 'layer-list layer-list-qa')
       .merge(ul);
-
     let li = ul.selectAll('.list-item')
       .data(qaLayers);
-
     li.exit()
       .remove();
-
     let liEnter = li.enter()
       .append('li')
-      .attr('class', d => `list-item list-item-${d.id}`);
-
+      .attr('class', d => {
+        let classes = `list-item list-item-${d.id}`;
+        if (d.id === 'nearbyTask') {
+          classes += ' indented';
+          }
+          return classes;
+        });
     let labelEnter = liEnter
       .append('label')
       .attr('class', 'content-label');
-
     labelEnter
       .append('input')
       .attr('type', 'checkbox')
-      .on('change', (e, d) => toggleLayer(d.id));
-
+      .on('change', (d3_event, d) => {
+        if (d.id === 'nearbyTask') {
+          nearbyTaskChanged(d3_event);
+        } else {
+          toggleLayer(d.id);
+        }
+      });
     labelEnter
       .append('span')
       .text(d => l10n.t(`map_data.layers.${d.id}.title`, { n: 999 }));
@@ -263,14 +267,20 @@ export function uiSectionDataLayers(context) {
     li = li.merge(liEnter);
 
     li
-      .classed('active', d => d.enabled)
+      .classed('active', d => showsLayer(d.id))
       .call(setTooltips)
       .selectAll('input[type="checkbox"]')
-      .property('checked', d => d.enabled);
-
+      .property('checked', d => showsLayer(d.id));
     li
       .selectAll('input.challenge-ids')
       .attr('value', maproulette.challengeIDs);
+  }
+
+  // Function to handle changes in the Nearby Task checkbox
+  function nearbyTaskChanged(d3_event) {
+      const isChecked = d3_event.target.checked;
+      console.log('Nearby Task checked:', isChecked);
+      // Add logic to handle the checkbox state
   }
 
 
