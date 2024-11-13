@@ -2,8 +2,8 @@ import { selection } from 'd3-selection';
 
 import { utilDetect } from '../util/detect.js';
 import {
-  UiAccount, UiContributors, uiIcon, uiIssuesInfo,
-  UiScale, UiSourceSwitch, uiTooltip, UiVersionInfo
+  UiAccount, UiContributors, UiFilterStatus, uiIcon,
+  UiScale, UiSourceSwitch, uiTooltip, UiValidatorStatus, UiVersionInfo
 } from './index.js';
 
 
@@ -22,10 +22,10 @@ export class UiMapFooter {
 
     // Create child components
     this.Contributors = new UiContributors(context);
-//    this.FilterInfo = uiFeatureInfo(context);
-    this.IssueInfo = uiIssuesInfo(context);
+    this.FilterStatus = new UiFilterStatus(context);
     this.Scale = new UiScale(context);
     this.SourceSwitch = new UiSourceSwitch(context);
+    this.ValidatorStatus = new UiValidatorStatus(context);
     this.VersionInfo = new UiVersionInfo(context);
 
     if (!context.embed()) {
@@ -86,17 +86,9 @@ export class UiMapFooter {
 
     $$footerInfo
       .call(this.Contributors.render)
-      .call(this.SourceSwitch.render);
-
-    $$footerInfo
-      .append('div')
-      .attr('class', 'issues-info')
-      .call(this.IssueInfo);
-
-//    $$footerInfo
-//      .append('div')
-//      .attr('class', 'feature-warning')
-//      .call(this.FilterInfo);
+      .call(this.SourceSwitch.render)
+      .call(this.ValidatorStatus.render)
+      .call(this.FilterStatus.render);
 
     const $$issueLinks = $$footerInfo
       .append('div');

@@ -4573,10 +4573,10 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 }
 
 .issues-info a.chip.resolved-count {
-  background: #15911E;
+  background: #15911e;
 }
 .issues-info a.chip.warnings-count {
-  background: #DF8500;
+  background: #df8500;
 }
 .ideditor[dir='ltr'] .issues-info a.chip:not(:last-child) {
   margin-right: 5px;

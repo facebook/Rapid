@@ -134,7 +134,7 @@ export class PixiLayerOsm extends AbstractLayer {
     context.loadTiles();  // Load tiles of OSM data to cover the view
 
     let entities = editor.intersects(context.viewport.visibleExtent());   // Gather data in view
-    entities = filters.filter(entities, graph);   // Apply feature filters
+    entities = filters.filterScene(entities, graph);   // Apply feature filters
 
     const data = {
       polygons: new Map(),
@@ -253,12 +253,13 @@ export class PixiLayerOsm extends AbstractLayer {
     const entities = data.polygons;
     const context = this.context;
     const graph = context.systems.editor.staging.graph;
+    const filters = context.systems.filters;
     const l10n = context.systems.l10n;
     const presets = context.systems.presets;
     const styles = context.systems.styles;
 
     const pointsContainer = this.scene.groups.get('points');
-    const showPoints = context.systems.filters.isEnabled('points');
+    const showPoints = filters.isEnabled('points');
 
     // For deciding if an unlabeled polygon feature is interesting enough to show a virtual pin.
     // Note that labeled polygon features will always get a virtual pin.

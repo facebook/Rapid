@@ -911,10 +911,6 @@
       "multiple_values": "Multiple Values",
       "multiple_types": "Multiple Types",
       "unshared_value_tooltip": "not shared by all features",
-      "hidden_preset": {
-        "manual": "{features} are hidden. Enable them in the Map Data pane.",
-        "zoom": "{features} are hidden. Zoom in to enable them."
-      },
       "back_tooltip": "Change feature type",
       "type": "Type",
       "details": "Details",
@@ -1215,6 +1211,12 @@
         "description": "Full Fill",
         "tooltip": "Areas are drawn fully filled."
       }
+    },
+    "filters": {
+      "hidden_preset": {
+        "manual": "{features} are filtered. Enable them in the Map Data pane."
+      },
+      "active": "Some features are filtered:"
     },
     "settings": {
       "custom_background": {

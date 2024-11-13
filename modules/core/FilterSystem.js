@@ -1,4 +1,4 @@
-import { utilArrayGroupBy, utilArrayUnion } from '@rapid-sdk/util';
+import { /* utilArrayGroupBy,*/ utilArrayUnion } from '@rapid-sdk/util';
 
 import { AbstractSystem } from './AbstractSystem.js';
 import { osmEntity, osmLifecyclePrefixes } from '../osm/index.js';
@@ -38,22 +38,22 @@ const paths = {
 
 
 
-class FilterRule {
-  constructor(filter) {
-    this.filter = filter;
+class Filter {
+  constructor(fn) {
+    this.match = fn;
     this.enabled = true;   // true = shown, false = hidden
-    this.count = 0;
+    this.count = 0;        // number of objects currently filtered
   }
 }
 
 
 /**
  * `FilterSystem` maintains matching and filtering rules.
- * Each rule is basically a filter function that returns true if an entity matches the rule.
+ * Each `Filter` is basically a filter function that returns true if an entity matches.
  * The code in here is relatively "hot", as it gets run against every entity.
  *
  * Events available:
- *   `filterchange`   Fires whenever user changes the enabled/disabled rules
+ *   `filterchange`   Fires whenever user changes the enabled/disabled filters
  */
 export class FilterSystem extends AbstractSystem {
 
@@ -66,33 +66,33 @@ export class FilterSystem extends AbstractSystem {
     this.id = 'filters';
     this.dependencies = new Set(['editor', 'storage', 'urlhash']);
 
-    this._rules = new Map();          // Map(rulekey -> rule)
-    this._hidden = new Set();         // Set(rulekey) to hide
+    this._filters = new Map();        // Map(filterID -> Filter)
+    this._hidden = new Set();         // Set(filterID) to hide
     this._forceVisible = new Set();   // Set(entityIDs) to show
-    this._cache = {};                 // Cache of entity.key to matched rules
+    this._cache = {};                 // Cache of entity.key to matched filterIDs
     this._initPromise = null;
 //    this._deferred = new Set();
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._hashchange = this._hashchange.bind(this);
 
-    // hardcode the rules for now
-    this._rules.set('points',          new FilterRule(this._isPoint.bind(this)));
-    this._rules.set('traffic_roads',   new FilterRule(this._isTrafficRoad.bind(this)));
-    this._rules.set('service_roads',   new FilterRule(this._isServiceRoad.bind(this)));
-    this._rules.set('paths',           new FilterRule(this._isPath.bind(this)));
-    this._rules.set('buildings',       new FilterRule(this._isBuilding.bind(this)));
-    this._rules.set('building_parts',  new FilterRule(this._isBuildingPart.bind(this)));
-    this._rules.set('indoor',          new FilterRule(this._isIndoor.bind(this)));
-    this._rules.set('landuse',         new FilterRule(this._isLanduse.bind(this)));
-    this._rules.set('boundaries',      new FilterRule(this._isBoundary.bind(this)));
-    this._rules.set('water',           new FilterRule(this._isWater.bind(this)));
-    this._rules.set('rail',            new FilterRule(this._isRail.bind(this)));
-    this._rules.set('pistes',          new FilterRule(this._isPiste.bind(this)));
-    this._rules.set('aerialways',      new FilterRule(this._isAerialway.bind(this)));
-    this._rules.set('power',           new FilterRule(this._isPower.bind(this)));
-    this._rules.set('past_future',     new FilterRule(this._isPastFuture.bind(this)));
-    this._rules.set('others',          new FilterRule(this._isOther.bind(this)));
+    // hardcode the filters for now
+    this._filters.set('points',          new Filter(this._isPoint.bind(this)));
+    this._filters.set('traffic_roads',   new Filter(this._isTrafficRoad.bind(this)));
+    this._filters.set('service_roads',   new Filter(this._isServiceRoad.bind(this)));
+    this._filters.set('paths',           new Filter(this._isPath.bind(this)));
+    this._filters.set('buildings',       new Filter(this._isBuilding.bind(this)));
+    this._filters.set('building_parts',  new Filter(this._isBuildingPart.bind(this)));
+    this._filters.set('indoor',          new Filter(this._isIndoor.bind(this)));
+    this._filters.set('landuse',         new Filter(this._isLanduse.bind(this)));
+    this._filters.set('boundaries',      new Filter(this._isBoundary.bind(this)));
+    this._filters.set('water',           new Filter(this._isWater.bind(this)));
+    this._filters.set('rail',            new Filter(this._isRail.bind(this)));
+    this._filters.set('pistes',          new Filter(this._isPiste.bind(this)));
+    this._filters.set('aerialways',      new Filter(this._isAerialway.bind(this)));
+    this._filters.set('power',           new Filter(this._isPower.bind(this)));
+    this._filters.set('past_future',     new Filter(this._isPastFuture.bind(this)));
+    this._filters.set('others',          new Filter(this._isOther.bind(this)));
   }
 
 
@@ -126,11 +126,11 @@ export class FilterSystem extends AbstractSystem {
         const toHide = urlhash.getParam('disable_features') ?? storage.getItem('disabled-features');
 
         if (toHide) {
-          const keys = toHide.replace(/;/g, ',').split(',').map(s => s.trim()).filter(Boolean);
-          for (const key of keys) {
-            this._hidden.add(key);
-            const rule = this._rules.get(key);
-            rule.enabled = false;
+          const filterIDs = toHide.replace(/;/g, ',').split(',').map(s => s.trim()).filter(Boolean);
+          for (const filterID of filterIDs) {
+            this._hidden.add(filterID);
+            const filter = this._filters.get(filterID);
+            filter.enabled = false;
           }
         }
       });
@@ -186,13 +186,13 @@ export class FilterSystem extends AbstractSystem {
    * keys
    */
   get keys() {
-    return [...this._rules.keys()];
+    return [...this._filters.keys()];
   }
 
 
   /**
    * hidden
-   * @return Set of hidden rule keys
+   * @return {Set<string>}  Set of hidden filterIDs
    */
   get hidden() {
     return this._hidden;
@@ -201,24 +201,24 @@ export class FilterSystem extends AbstractSystem {
 
   /**
    * isEnabled
-   * @param   k  rule key
-   * @return  true/false
+   * @param  {string}  filterID
+   * @return {boolean} true/false
    */
-  isEnabled(k) {
-    const rule = this._rules.get(k);
-    return rule?.enabled;
+  isEnabled(filterID) {
+    const filter = this._filters.get(filterID);
+    return filter?.enabled;
   }
 
 
   /**
    * enable
-   * Enables the given rule key
-   * @param  k  the rule key
+   * Enables the given filter
+   * @param  {string}  filterID
    */
-  enable(k) {
-    const rule = this._rules.get(k);
-    if (rule && !rule.enabled) {
-      rule.enabled = true;
+  enable(filterID) {
+    const filter = this._filters.get(filterID);
+    if (filter && !filter.enabled) {
+      filter.enabled = true;
       this._update();
     }
   }
@@ -226,14 +226,14 @@ export class FilterSystem extends AbstractSystem {
 
   /**
    * enableAll
-   * Enables all rule keys
+   * Enables all filters
    */
   enableAll() {
     let didChange = false;
-    for (const rule of this._rules.values()) {
-      if (!rule.enabled) {
+    for (const filter of this._filters.values()) {
+      if (!filter.enabled) {
         didChange = true;
-        rule.enabled = true;
+        filter.enabled = true;
       }
     }
     if (didChange) {
@@ -244,13 +244,13 @@ export class FilterSystem extends AbstractSystem {
 
   /**
    * disable
-   * Disables the given rule key
-   * @param  k  the rule key
+   * Disables the given filter
+   * @param  {string}  filterID
    */
-  disable(k) {
-    const rule = this._rules.get(k);
-    if (rule && rule.enabled) {
-      rule.enabled = false;
+  disable(filterID) {
+    const filter = this._filters.get(filterID);
+    if (filter?.enabled) {
+      filter.enabled = false;
       this._update();
     }
   }
@@ -258,14 +258,14 @@ export class FilterSystem extends AbstractSystem {
 
   /**
    * disableAll
-   * Disables all rule keys
+   * Disables all filters
    */
   disableAll() {
     let didChange = false;
-    for (const rule of this._rules.values()) {
-      if (rule.enabled) {
+    for (const filter of this._filters.values()) {
+      if (filter.enabled) {
         didChange = true;
-        rule.enabled = false;
+        filter.enabled = false;
       }
     }
     if (didChange) {
@@ -276,64 +276,69 @@ export class FilterSystem extends AbstractSystem {
 
   /**
    * toggle
-   * Toggles the given rule key between enabled/disabled states
-   * @param  k  the rule key
+   * Toggles the given filter between enabled/disabled states
+   * @param  {string}  filterID
    */
-  toggle(k) {
-    const rule = this._rules.get(k);
-    if (!rule) return;
+  toggle(filterID) {
+    const filter = this._filters.get(filterID);
+    if (!filter) return;
 
-    rule.enabled = !rule.enabled;
+    filter.enabled = !filter.enabled;
     this._update();
   }
 
 
-  /**
-   * resetStats
-   * Resets all stats and emits a `filterchange` event
-   */
-  resetStats() {
-    for (const rule of this._rules.values()) {
-      rule.count = 0;
-    }
-    this.emit('filterchange');
-  }
+// stats are gathered by `filterScene()` now
+//
+//  /**
+//   * resetStats
+//   * Resets all stats and emits a `filterchange` event
+//   */
+//  resetStats() {
+//    for (const filter of this._filters.values()) {
+//      filter.count = 0;
+//    }
+//    this.emit('filterchange');
+//  }
+
+//  /**
+//   * gatherStats
+//   * Gathers all filter stats for the given scene
+//   * @param   {Array<Entity>  d   Array of entities to test
+//   * @param   {Graph}         resolver
+//   */
+//  gatherStats(d, resolver) {
+//    const types = utilArrayGroupBy(d, 'type');
+//    const entities = [].concat(types.relation || [], types.way || [], types.node || []);
+//
+//    for (const filter of this._filters.values()) {   // reset stats
+//      filter.count = 0;
+//    }
+//
+//    for (const entity of entities) {
+//      const geometry = entity.geometry(resolver);
+//      const matchedKeys = Object.keys(this.getMatches(entity, resolver, geometry));
+//      for (const filterID of matchedKeys) {
+//        const filter = this._filters.get(filterID);
+//        filter.count++;
+//      }
+//    }
+//  }
 
 
   /**
-   * gatherStats
-   * Gathers all filter stats for the given scene
-   * @param   d         Array of entities in the scene
-   * @param   resolver  Graph
+   * getStats
+   * This returns stats about which filters are currently enabled,
+   *  and how many entities in the scene are filtered.
+   * @return  {Object}  result
    */
-  gatherStats(d, resolver) {
-    const types = utilArrayGroupBy(d, 'type');
-    const entities = [].concat(types.relation || [], types.way || [], types.node || []);
-
-    for (const rule of this._rules.values()) {  // reset stats
-      rule.count = 0;
-    }
-
-    for (const entity of entities) {
-      const geometry = entity.geometry(resolver);
-      const matchedKeys = Object.keys(this.getMatches(entity, resolver, geometry));
-      for (const key of matchedKeys) {
-        const rule = this._rules.get(key);
-        rule.count++;
-      }
-    }
-  }
-
-
-  /**
-   * stats
-   * Returns a result Object of all the rules and count of objects filtered
-   * @return  Object
-   */
-  stats() {
-    let result = {};
-    for (const [key, rule] of this._rules) {
-      result[key] = rule.count;
+  getStats() {
+    const result = {};
+    for (const [filterID, filter] of this._filters) {
+      result[filterID] = {
+        enabled: filter.enabled,
+        count:   filter.count
+      };
     }
     return result;
   }
@@ -342,7 +347,7 @@ export class FilterSystem extends AbstractSystem {
   /**
    * clear
    * Clears the cache of entity matches for the given entities
-   * @param  entities  Array of entities
+   * @param  {Array<Entity>}  entities - Entities to clear cache
    */
   clear(entities) {
     for (const entity of entities) {
@@ -354,7 +359,7 @@ export class FilterSystem extends AbstractSystem {
   /**
    * clearEntity
    * Clears the cache of entity matches for a single entity
-   * @param  entity  Entity
+   * @param  {Entity}  entity
    */
   clearEntity(entity) {
     const ekey = osmEntity.key(entity);
@@ -364,167 +369,184 @@ export class FilterSystem extends AbstractSystem {
 
   /**
    * getMatches
-   * Matches a single entity against the rules (`rule.filter` actually where this happens?)
-   * @param   entity    Entity
-   * @param   resolver  Graph
-   * @param   geometry  geometry of the entity ('point', 'line', 'vertex', 'area', 'relation')
-   * @return  An Object with keys that are the matched rule ids (e.g. `{ points: true, power: true }`)
+   * Matches a single entity against the filters
+   * @param   {Entity}       entity   - The Entity to test
+   * @param   {Graph}        resolver - Graph
+   * @param   {string}       geometry - geometry of the Entity ('point', 'line', 'vertex', 'area', 'relation')
+   * @return  {Set<string>}  A Set containing the matched filterIDs
    */
   getMatches(entity, resolver, geometry) {
-    // skip - vertexes are hidden based on whatever rules their parent ways have matched
-    if (geometry === 'vertex') return {};
+    // skip - vertexes are hidden based on whatever filters their parent ways have matched
+    if (geometry === 'vertex') return new Set();
     // skip - most relations don't have a geometry worth checking
     // (note that multipolygons are considered 'area' geometry not 'relation')
-    if (geometry === 'relation' && entity.tags.type !== 'boundary') return {};
+    if (geometry === 'relation' && entity.tags.type !== 'boundary') return new Set();
 
     const ekey = osmEntity.key(entity);
-    if (!this._cache[ekey]) {
-      this._cache[ekey] = {};
+    let cached = this._cache[ekey];
+    if (!cached) {
+      this._cache[ekey] = cached = { parents: null, matches: null };
+    }
+    if (cached.matches) {    // done already
+      return cached.matches;
     }
 
-    if (!this._cache[ekey].matches) {
-      let matches = {};
-      let hasMatch = false;
+    // If this entity has parents, make sure the parents are matched first.
+    // see iD#2548, iD#2887
+    const parents = cached.parents || this.getParents(entity, resolver, geometry);
+    if (parents.length) {
+      for (const parent of parents) {
+        const pkey = osmEntity.key(parent);
+        const pmatches = this._cache[pkey]?.matches;
+        if (pmatches) continue;  // parent matching was done already
+        this.getMatches(parent, resolver, parent.geometry(resolver));  // recurse up
+      }
+    }
 
-      for (const [key, rule] of this._rules) {
-        if (key === 'others') {
-          if (hasMatch) continue;  // we matched something better already
+    let matches = new Set();
+    for (const [filterID, filter] of this._filters) {
+      if (filterID === 'others') {     // 'others' matches last
+        if (matches.size) continue;    // skip if we matched something better already
 
-          // If an entity...
-          // 1. is a way that hasn't matched other 'interesting' feature rules,
-          if (entity.type === 'way') {
-            const parents = this.getParents(entity, resolver, geometry);
-
-            //  2a. belongs only to a single multipolygon relation
-            if ((parents.length === 1 && parents[0].isMultipolygon()) ||
-              // 2b. or belongs only to boundary relations
-              (parents.length > 0 && parents.every(parent => parent.tags.type === 'boundary'))) {
-
-              // ...then match whatever feature rules the parent relation has matched.
-              // see iD#2548, iD#2887
-              // IMPORTANT: For this to work, getMatches must be called on relations before ways.
-              const pkey = osmEntity.key(parents[0]);
-              if (this._cache[pkey] && this._cache[pkey].matches) {
-                matches = Object.assign({}, this._cache[pkey].matches);  // shallow copy
-                continue;
-              }
-            }
+        // Handle situations where a way should match whatever its parent relation matched.
+        // - hasn't matched other 'interesting' filters AND
+        //   - belongs only to a single multipolygon relation  OR
+        //   - belongs only to boundary relations
+        // see iD#2548, iD#2887
+        if (entity.type === 'way' && (
+          (parents.length === 1 && parents[0].isMultipolygon()) ||
+          (parents.length > 0 && parents.every(parent => parent.tags.type === 'boundary'))
+        )) {
+          const pkey = osmEntity.key(parents[0]);
+          const pmatches = this._cache[pkey]?.matches;
+          if (pmatches) {
+            matches = new Set(pmatches);  // copy
+            continue;
           }
         }
-
-        if (rule.filter(entity.tags, geometry)) {
-          matches[key] = hasMatch = true;
-        }
       }
-      this._cache[ekey].matches = matches;
+
+      if (filter.match(entity.tags, geometry)) {
+        matches.add(filterID);
+      }
     }
 
-    return this._cache[ekey].matches;
+    cached.matches = matches;
+    return matches;
   }
 
 
   /**
    * getParents
    * Returns parentWays of vertexes or parentRelations of other geometry types
-   * @param   entity    Entity
-   * @param   resolver  Graph
-   * @param   geometry  geometry of the entity ('point', 'line', 'vertex', 'area', 'relation')
-   * @return  An array of parent entities
+   * @param   {Entity}  entity   - The Entity to test
+   * @param   {Graph}   resolver - Graph
+   * @param   {string}  geometry - geometry of the Entity ('point', 'line', 'vertex', 'area', 'relation')
+   * @return  {Array<Entity>}  An array of parent entities
    */
   getParents(entity, resolver, geometry) {
     if (geometry === 'point') return [];
 
     const ekey = osmEntity.key(entity);
-    if (!this._cache[ekey]) {
-      this._cache[ekey] = {};
+    let cached = this._cache[ekey];
+    if (!cached) {
+      this._cache[ekey] = cached = { parents: null, matches: null };
     }
 
-    if (!this._cache[ekey].parents) {
+    if (!cached.parents) {
       let parents;
       if (geometry === 'vertex') {
         parents = resolver.parentWays(entity);
       } else {   // 'line', 'area', 'relation'
         parents = resolver.parentRelations(entity);
       }
-      this._cache[ekey].parents = parents;
+      cached.parents = parents;
     }
-    return this._cache[ekey].parents;
+
+    return cached.parents;
   }
 
 
   /**
    * isHiddenPreset
    * Checks whether a given preset would be hidden by the current filtering rules
-   * @param   preset    Preset
-   * @param   geometry  geometry of the Preset ('point', 'line', 'vertex', 'area', 'relation')
-   * @return  The rule which causes the preset to be hidden, or `false`
+   * @param   {Preset}   preset   - he Preset to test
+   * @param   {string}   geometry - geometry of the Preset ('point', 'line', 'vertex', 'area', 'relation')
+   * @return  {string?}  The first `filterID` which causes the Preset to be hidden, or `null`
    */
   isHiddenPreset(preset, geometry) {
-    if (!this._hidden.size) return false;
-    if (!preset.tags) return false;
+    if (!this._hidden.size) return null;
+    if (!preset.tags) return null;
 
     const tags = preset.setTags({}, geometry);
-    for (const [key, rule] of this._rules) {
-      if (rule.filter(tags, geometry)) {
-        if (this._hidden.has(key)) {
-          return key;
+    for (const [filterID, filter] of this._filters) {
+      if (filter.match(tags, geometry)) {
+        if (this._hidden.has(filterID)) {
+          return filterID;
         }
-        return false;
+        return null;
       }
     }
-    return false;
+    return null;
   }
 
 
   /**
    * isHiddenFeature
-   * Checks whether a given entity would be hidden by the current filtering rules
-   * @param   entity    Entity
-   * @param   resolver  Graph
-   * @param   geometry  geometry of the entity ('point', 'line', 'vertex', 'area', 'relation')
-   * @return  true/false
+   * Checks whether a given Entity would be hidden by the current filtering rules.
+   * Important note:  In OSM a feature can be several things, so there might be multiple matches.
+   * We only consider a feature hidden of _all_ of the matched rules are hidden.
+   * @param   {Entity}   entity   - The Entity to test
+   * @param   {Graph}    resolver - Graph
+   * @param   {string}   geometry - geometry of the Entity ('point', 'line', 'vertex', 'area', 'relation')
+   * @return  {string?}  The first `filterID` which causes the Entity to be hidden, or `null`
    */
   isHiddenFeature(entity, resolver, geometry) {
-    if (!this._hidden.size) return false;
-    if (!entity.version) return false;
-    if (this._forceVisible.has(entity.id)) return false;
+    if (!this._hidden.size) return null;
+    if (!entity.version) return null;
+    if (this._forceVisible.has(entity.id)) return null;
 
-    const matches = Object.keys(this.getMatches(entity, resolver, geometry));
-    return matches.length && matches.every(key => this._hidden.has(key));
+    const filterIDs = [...this.getMatches(entity, resolver, geometry)];
+    if (filterIDs.length && filterIDs.every(filterID => this._hidden.has(filterID))) {
+      return filterIDs[0];
+    } else {
+      return null;
+    }
   }
 
 
   /**
-   * isHiddenChild
+   * isHiddenVertex
    * Checks whether a given child entity would be hidden by the current filtering rules
-   * @param   entity    Entity
-   * @param   resolver  Graph
-   * @param   geometry  geometry of the entity ('point', 'line', 'vertex', 'area', 'relation')
-   * @return  true/false
+   * We only consider a child hidden of _all_ of the matched parent features are hidden.
+   * @param   {Entity}   entity   - The Entity to test
+   * @param   {Graph}    resolver - Graph
+   * @return  {string?}  The first `filterID` which causes the Entity to be hidden, or `null`
    */
-  isHiddenChild(entity, resolver, geometry) {
-    if (!this._hidden.size) return false;
-    if (!entity.version || geometry === 'point') return false;
-    if (this._forceVisible.has(entity.id)) return false;
+  isHiddenVertex(entity, resolver) {
+    if (!this._hidden.size) return null;
+    if (!entity.version) return null;
+    if (this._forceVisible.has(entity.id)) return null;
 
-    const parents = this.getParents(entity, resolver, geometry);
-    if (!parents.length) return false;
+    const parents = this.getParents(entity, resolver, 'vertex');
+    if (!parents.length) return null;
 
+    let filterID = null;
     for (const parent of parents) {
-      if (!this.isHidden(parent, resolver, parent.geometry(resolver))) {
-        return false;
-      }
+      const parentFilterID = this.isHidden(parent, resolver, parent.geometry(resolver));
+      if (!parentFilterID) return null;  // parent is not hidden
+      if (!filterID) filterID = parentFilterID;  // keep the first one
     }
-    return true;
+    return filterID;
   }
 
 
   /**
    * hasHiddenConnections
    * Checks whether a given entity is connected to a feature that is hidden
-   * @param   entity    Entity
-   * @param   resolver  Graph
-   * @return  true/false
+   * @param   {Entity}   entity   - The Entity to test
+   * @param   {Graph}    resolver - Graph
+   * @return  {boolean}  true/false
    */
   hasHiddenConnections(entity, resolver) {
     if (!this._hidden.size) return false;
@@ -538,7 +560,7 @@ export class FilterSystem extends AbstractSystem {
       connections = this.getParents(entity, resolver, entity.geometry(resolver));
     }
 
-    // gather ways connected to child nodes..
+    // Gather ways connected to child nodes..
     connections = childNodes.reduce((result, e) => {
       return resolver.isShared(e) ? utilArrayUnion(result, resolver.parentWays(e)) : result;
     }, connections);
@@ -550,17 +572,17 @@ export class FilterSystem extends AbstractSystem {
   /**
    * isHidden
    * Checks whether a given entity is hidden
-   * @param   entity    Entity
-   * @param   resolver  Graph
-   * @param   geometry  geometry of the entity ('point', 'line', 'vertex', 'area', 'relation')
-   * @return  true/false
+   * @param   {Entity}   entity   - The Entity to test
+   * @param   {Graph}    resolver - Graph
+   * @param   {string}   geometry - geometry of the Entity ('point', 'line', 'vertex', 'area', 'relation')
+   * @return  {string?}  The first `filterID` which causes the Entity to be hidden, or `null`
    */
   isHidden(entity, resolver, geometry) {
-    if (!this._hidden.size) return false;
-    if (!entity.version) return false;
+    if (!this._hidden.size) return null;
+    if (!entity.version) return null;
 
     if (geometry === 'vertex') {
-      return this.isHiddenChild(entity, resolver, geometry);
+      return this.isHiddenVertex(entity, resolver);
     } else {
       return this.isHiddenFeature(entity, resolver, geometry);
     }
@@ -568,22 +590,38 @@ export class FilterSystem extends AbstractSystem {
 
 
   /**
-   * filter
-   * Returns a result Array containing the non-hidden entities
-   * @param   entities  Array of Entities
-   * @param   resolver  Graph
-   * @return  Array of non-hidden entities
+   * filterScene
+   * Returns a result Array containing the non-hidden entities.
+   * This function also gathers the stats about how many entities are
+   * being filtered by the enabled filter rules.
+   * @param   {Array<Entity>}  entities - the Entities to test
+   * @param   {Graph}          resolver - Graph
+   * @return  {Array<Entity>}  Array of non-hidden entities
    */
-  filter(entities, resolver) {
-    if (!this._hidden.size) return entities;
+  filterScene(entities, resolver) {
+    for (const filter of this._filters.values()) {
+      filter.count = 0;
+    }
 
-    var result = [];
+    if (!this._hidden.size) return entities;  // no filters enabled
+
+    const results = [];
     for (const entity of entities) {
-      if (!this.isHidden(entity, resolver, entity.geometry(resolver))) {
-        result.push(entity);
+      const geometry = entity.geometry(resolver);
+      const filterID = this.isHidden(entity, resolver, geometry);
+      if (filterID) {
+        // don't count uninteresting vertices
+        const ignore = (geometry === 'vertex' && !entity.hasInterestingTags());
+        if (!ignore) {
+          const filter = this._filters.get(filterID);
+          filter.count++;
+        }
+      } else {
+        results.push(entity);
       }
     }
-    return result;
+
+    return results;
   }
 
 
@@ -592,7 +630,7 @@ export class FilterSystem extends AbstractSystem {
    * Adds the given entityIDs to the _forceVisible Set
    * This is usually done temporarily so that users can see stuff as they edit
    * that might otherwise be hidden
-   * @param   entityIDs  Array of Entity ids
+   * @param   {Array<string>}  entityIDs - Array of Entity ids
    */
   forceVisible(entityIDs) {
     this._forceVisible = new Set();
@@ -616,8 +654,8 @@ export class FilterSystem extends AbstractSystem {
   /**
    * _hashchange
    * Respond to any changes appearing in the url hash
-   * @param  currParams   Map(key -> value) of the current hash parameters
-   * @param  prevParams   Map(key -> value) of the previous hash parameters
+   * @param  {Map<string, string>}  currParams - The current hash parameters
+   * @param  {Map<string, string>}  prevParams - The previous hash parameters
    */
   _hashchange(currParams, prevParams) {
     // disable_features
@@ -630,12 +668,12 @@ export class FilterSystem extends AbstractSystem {
       }
 
       let didChange = false;
-      for (const [key, rule] of this._rules) {
-        if (rule.enabled && toDisableIDs.has(key)) {
-          rule.enabled = false;
+      for (const [filterID, filter] of this._filters) {
+        if (filter.enabled && toDisableIDs.has(filterID)) {
+          filter.enabled = false;
           didChange = true;
-        } else if (!rule.enabled && !toDisableIDs.has(key)) {
-          rule.enabled = true;
+        } else if (!filter.enabled && !toDisableIDs.has(filterID)) {
+          filter.enabled = true;
           didChange = true;
         }
       }
@@ -648,33 +686,35 @@ export class FilterSystem extends AbstractSystem {
 
 
   /**
-   *  _update
-   *  Called whenever the enabled/disabled rules change
-   *  Used to push changes in state to the urlhash and the localStorage
+   * _update
+   * Called whenever the enabled/disabled filters change
+   * Used to push changes in state to the urlhash and the localStorage
    */
   _update() {
+    const context = this.context;
+    const storage = context.systems.storage;
+    const urlhash = context.systems.urlhash;
+
     // gather hidden
     this._hidden = new Set();
-    for (const [key, rule] of this._rules) {
-      if (!rule.enabled) {
-        this._hidden.add(key);
+    for (const [filterID, filter] of this._filters) {
+      if (!filter.enabled) {
+        this._hidden.add(filterID);
       }
     }
-    const ruleIDs = [...this._hidden].join(',');
+    const filterIDs = [...this._hidden].join(',');
 
     // update url hash
-    const urlhash = this.context.systems.urlhash;
-    urlhash.setParam('disable_features', ruleIDs.length ? ruleIDs : null);
+    urlhash.setParam('disable_features', filterIDs.length ? filterIDs : null);
 
     // update localstorage
-    const storage = this.context.systems.storage;
-    storage.setItem('disabled-features', ruleIDs);
+    storage.setItem('disabled-features', filterIDs);
 
     this.emit('filterchange');
   }
 
 
-  // filter rules
+  // matchers
 
   _isPoint(tags, geometry) {
     return geometry === 'point';
@@ -786,7 +826,7 @@ export class FilterSystem extends AbstractSystem {
 
   // Lines or areas that don't match another feature filter.
   // IMPORTANT: The 'others' feature must be the last one defined,
-  // so that code in getMatches can skip this test if `hasMatch = true`
+  // so that code in getMatches can skip this test if someting else was matched.
   _isOther(tags, geometry) {
     return (geometry === 'line' || geometry === 'area');
   }
