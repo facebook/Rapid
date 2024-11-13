@@ -49,14 +49,18 @@ export class UiAccount {
       return;   // no parent - called too early?
     }
 
+    const context = this.context;
+    const l10n = context.systems.l10n;
+    const osm = context.services.osm;
+
+    // If we are embedded in another site, for example openstreetmap.org,
+    // we don't want to show account switcher controls.
+    if (context.embed()) return;
+
     if (this.user === undefined) {   // First time..
       this.getUserDetails();         // Get the user first, this will call render again..
       return;
     }
-
-    const context = this.context;
-    const l10n = context.systems.l10n;
-    const osm = context.services.osm;
 
     // enter .userInfo
     $parent.selectAll('.userInfo')

@@ -54,6 +54,7 @@ export { UiPhotoViewer } from './UiPhotoViewer.js';
 export { uiPopover } from './popover.js';
 export { uiPresetIcon } from './preset_icon.js';
 export { uiPresetList } from './preset_list.js';
+export { UiProjectLinks } from './UiProjectLinks.js';
 export { uiRapidColorpicker } from './rapid_colorpicker.js';
 export { uiRapidFeatureInspector } from './rapid_feature_inspector.js';
 export { uiRapidFeatureToggleDialog } from './rapid_feature_toggle_dialog.js';
