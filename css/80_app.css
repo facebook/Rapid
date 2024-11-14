@@ -574,7 +574,7 @@ button.add-area {
 
 button.save .count {
   display: inline-block;
-  min-width: 32px;
+  min-width: 20px;
   text-align: center;
 }
 
@@ -4527,10 +4527,11 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 .map-footer-info > div:empty {
   display: none;
 }
-.ideditor[dir='ltr'] .map-footer-info > div:not(:last-child) {
+.map-footer-info > div:not(:last-child) {
   border-right: 1px solid rgba(255,255,255,.5);
 }
 .ideditor[dir='rtl'] .map-footer-info > div:not(:last-child) {
+  border-right: unset;
   border-left: 1px solid rgba(255,255,255,.5);
 }
 
@@ -4578,11 +4579,18 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 .issues-info a.chip.warnings-count {
   background: #df8500;
 }
-.ideditor[dir='ltr'] .issues-info a.chip:not(:last-child) {
+.issues-info > *:not(:last-child),
+.project-links > *:not(:last-child) {
   margin-right: 5px;
 }
-.ideditor[dir='rtl'] .issues-info a.chip:not(:last-child) {
+.ideditor[dir='rtl'] .issues-info > *:not(:last-child),
+.ideditor[dir='rtl'] .project-links > *:not(:last-child) {
+  margin-right: unset;
   margin-left: 5px;
+}
+
+.project-links .icon.bugnub {
+  color: #ff26db;
 }
 
 

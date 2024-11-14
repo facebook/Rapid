@@ -171,6 +171,12 @@ export class MapSystem extends AbstractSystem {
             gfx.immediateRedraw();
           });
 
+        l10n
+          .on('localechange', () => {
+            scene.dirtyScene();    // labeled features can be on any layer
+            gfx.immediateRedraw();
+          });
+
         context.on('modechange', gfx.immediateRedraw);
         imagery.on('imagerychange', gfx.immediateRedraw);
         photos.on('photochange', gfx.immediateRedraw);

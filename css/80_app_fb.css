@@ -56,15 +56,6 @@ button.rapid-features.layer-off use {
   color: rgba(0,0,0,.4);
 }
 
-button.bugnub {
-  margin-right: 2px;
-}
-
-/* bug nub */
-.ideditor .icon.bugnub {
-    color: #ff26db;
-}
-
 /* rapid logo with wordmark embedded in text */
 .icon.pre-text.rapid {
     vertical-align: text-top;

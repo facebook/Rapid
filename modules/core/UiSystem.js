@@ -107,6 +107,13 @@ export class UiSystem extends AbstractSystem {
         this.PhotoViewer = this.Overmap.PhotoViewer;
         this.Spector = this.Overmap.Spector;
 
+        // Setup Event listeners..
+        l10n.on('localechange', () => {
+          if (this._started) {
+            this.render();
+          }
+        });
+
         const osm = context.services.osm;
         if (osm) {
           osm
@@ -257,21 +264,6 @@ export class UiSystem extends AbstractSystem {
       .call(this.ApiStatus.render)
       .call(this.MapFooter.render);
   }
-
-
-
-// Removing for now, this will not work as written (it is a good idea though)
-// For it to work, it has to live in context, and all the core systems will need to have
-// their own restart method.  They would need to do things like reload the localizations
-// and then re-init all the things, including setting up the key bindings and strings
-//  // `restart()` will destroy and rebuild the entire Rapid interface,
-//  // for example to switch the locale while Rapid is running.
-//  restart() {
-//    context.keybinding().clear();
-//    this._startPromise = null;
-//    context.container().selectAll('*').remove();
-//    this.ensureLoaded();
-//  }
 
 
   /*
