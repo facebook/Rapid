@@ -403,9 +403,6 @@ export class FilterSystem extends AbstractSystem {
       }
     }
 
-if (entity.id === 'w513179099') {
-  console.log('hi');
-}
     let matches = new Set();
     for (const [filterID, filter] of this._filters) {
       if (filterID === 'others') {     // 'others' matches last
@@ -759,7 +756,8 @@ if (entity.id === 'w513179099') {
       !this._isBuildingPart(tags) &&
       !this._isIndoor(tags) &&
       !this._isWater(tags) &&
-      !this._isAerialway(tags);
+      !this._isAerialway(tags) &&
+      !this._isPastFuture(tags);
   }
 
   _isBoundary(tags) {
@@ -823,7 +821,12 @@ if (entity.id === 'w513179099') {
 
     for (const [k, v] of Object.entries(tags)) {
       if (osmLifecyclePrefixes[k] || osmLifecyclePrefixes[v]) return true;
+
+      const parts = k.split(':');
+      if (parts.length === 1) continue;
+      if (osmLifecyclePrefixes[parts[0]]) return true;
     }
+
     return false;
   }
 

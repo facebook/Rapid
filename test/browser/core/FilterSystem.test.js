@@ -162,6 +162,7 @@ describe('FilterSystem', () => {
       Rapid.osmWay({id: 'building_yes', tags: {area: 'yes', amenity: 'school', building: 'yes'}, version: 1}),
       Rapid.osmWay({id: 'building_no', tags: {area: 'yes', amenity: 'school', building: 'no'}, version: 1}),
       Rapid.osmWay({id: 'building_part', tags: { 'building:part': 'yes'}, version: 1}),
+      Rapid.osmWay({id: 'building_demolished', tags: {'demolished:building': 'yes'}, version: 1}),
       Rapid.osmWay({id: 'garage1', tags: {area: 'yes', amenity: 'parking', parking: 'multi-storey'}, version: 1}),
       Rapid.osmWay({id: 'garage2', tags: {area: 'yes', amenity: 'parking', parking: 'sheds'}, version: 1}),
       Rapid.osmWay({id: 'garage3', tags: {area: 'yes', amenity: 'parking', parking: 'carports'}, version: 1}),
@@ -349,7 +350,7 @@ describe('FilterSystem', () => {
       ]);
 
       dontMatch('buildings', [
-        'building_no', 'point_bar', 'motorway', 'service', 'path',
+        'building_no', 'building_demolished', 'point_bar', 'motorway', 'service', 'path',
         'forest', 'boundary', 'boundary_member', 'water', 'railway', 'power_line',
         'motorway_construction', 'fence'
       ]);
@@ -364,7 +365,7 @@ describe('FilterSystem', () => {
       dontMatch('building_parts', [
         'building_yes',
         'garage1', 'garage2', 'garage3', 'garage4',
-        'building_no', 'point_bar', 'motorway', 'service', 'path',
+        'building_no', 'building_demolished', 'point_bar', 'motorway', 'service', 'path',
         'forest', 'boundary', 'boundary_member', 'water', 'railway', 'power_line',
         'motorway_construction', 'fence'
       ]);
@@ -431,7 +432,7 @@ describe('FilterSystem', () => {
     it('matches landuse', () => {
       doMatch('landuse', [
         'forest', 'scrub', 'industrial', 'parkinglot', 'building_no',
-        'rail_landuse', 'landuse_construction', 'retail',
+        'rail_landuse', /*'landuse_construction',*/ 'retail',
         'outer', 'inner1', 'inner2'  // non-interesting members of landuse multipolygon
       ]);
 
@@ -478,14 +479,13 @@ describe('FilterSystem', () => {
 
     it('matches rail', () => {
       doMatch('rail', [
-        'point_rail_station', 'point_old_rail_station',
-        'railway', 'rail_landuse', 'rail_disused'
+        'point_rail_station', 'railway', 'rail_landuse'
       ]);
 
       dontMatch('rail', [
         'rail_streetcar', 'rail_trail',  // because rail also used as highway
-        'point_bar', 'motorway', 'service', 'path', 'building_yes',
-        'forest', 'boundary', 'boundary_member', 'water', 'power_line',
+        'rail_disused', 'point_old_rail_station', 'point_bar', 'motorway', 'service', 'path',
+        'building_yes', 'forest', 'boundary', 'boundary_member', 'water', 'power_line',
         'motorway_construction', 'fence'
       ]);
     });
@@ -506,7 +506,7 @@ describe('FilterSystem', () => {
 
     it('matches past/future', () => {
       doMatch('past_future', [
-        'point_old_rail_station', 'rail_disused',
+        'building_demolished', 'point_old_rail_station', 'rail_disused',
         'motorway_construction', 'cycleway_proposed', 'landuse_construction'
       ]);
 
