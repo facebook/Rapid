@@ -143,7 +143,7 @@ export class UiValidatorStatus {
 
   /**
    * click
-   * When clicking on a status chip, open the Issues pane
+   * When clicking on a status chip, toggle the Issues pane.
    * @param  {Event} e - event that triggered the click (if any)
    */
   click(e) {
@@ -155,8 +155,7 @@ export class UiValidatorStatus {
     this.IssuesTooltip.hide();
     this.ResolvedTooltip.hide();
 
-    // open the Issues pane
-    ui.togglePanes(context.container().select('.map-panes .issues-pane'));
+    ui.Overmap.MapPanes.Issues.togglePane();
   }
 
 }

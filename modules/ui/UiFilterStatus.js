@@ -109,7 +109,7 @@ export class UiFilterStatus {
 
   /**
    * click
-   * When clicking on a status chip, open the Map Data pane
+   * When clicking on a status chip, toggle the Map Data pane.
    * @param  {Event} e - event that triggered the click (if any)
    */
   click(e) {
@@ -120,8 +120,7 @@ export class UiFilterStatus {
 
     this.Tooltip.hide();
 
-    // open the Issues pane
-    ui.togglePanes(context.container().select('.map-panes .map-data-pane'));
+    ui.Overmap.MapPanes.MapData.togglePane();
   }
 
 }
