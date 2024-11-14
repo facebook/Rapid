@@ -260,9 +260,10 @@ export function uiPaneHelp(context) {
   };
 
   // common replacements that we may use anywhere in the help text
+  const rtl = l10n.isRTL() ? '-rtl' : '';
   const replacements = {
     version: `**${context.version}**`,
-    rapidicon: `<svg class="icon pre-text rapid"><use xlink:href="#rapid-logo-rapid-wordmark"></use></svg>`
+    rapidicon: `<svg class="icon pre-text rapid"><use xlink:href="#rapid-logo-rapid-wordmark${rtl}"></use></svg>`
   };
 
 

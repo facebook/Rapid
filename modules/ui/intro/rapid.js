@@ -69,9 +69,13 @@ export function uiIntroRapid(context, curtain) {
       .setMapParamsAsync(loc, 18.5, 0, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+
+        const rtl = l10n.isRTL() ? '-rtl' : '';
         curtain.reveal({
           revealSelector: '.intro-nav-wrap .chapter-rapid',
-          tipHtml: helpHtml(context, 'intro.rapid.start', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
+          tipHtml: helpHtml(context, 'intro.rapid.start', {
+            rapid: icon(`#rapid-logo-rapid-wordmark${rtl}`, 'pre-text rapid')
+          }),
           buttonText: l10n.t('intro.ok'),
           buttonCallback: () => resolve(showHideRoadsAsync)
         });
@@ -84,9 +88,13 @@ export function uiIntroRapid(context, curtain) {
   function showHideRoadsAsync() {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+
+      const rtl = l10n.isRTL() ? '-rtl' : '';
       curtain.reveal({
         revealSelector: 'button.rapid-features',
-        tipHtml: helpHtml(context, 'intro.rapid.ai_roads', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
+        tipHtml: helpHtml(context, 'intro.rapid.ai_roads', {
+          rapid: icon(`#rapid-logo-rapid-wordmark${rtl}`, 'pre-text rapid')
+        }),
         buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(selectRoadAsync)
       });
@@ -162,9 +170,12 @@ export function uiIntroRapid(context, curtain) {
 
         _onModeChange = reject;   // disallow mode change
 
+        const rtl = l10n.isRTL() ? '-rtl' : '';
         curtain.reveal({
           revealExtent: tulipLaneExtent,
-          tipHtml: helpHtml(context, 'intro.rapid.add_road_not_saved_yet', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
+          tipHtml: helpHtml(context, 'intro.rapid.add_road_not_saved_yet', {
+            rapid: icon(`#rapid-logo-rapid-wordmark${rtl}`, 'pre-text rapid')
+          }),
           buttonText: l10n.t('intro.ok'),
           buttonCallback: () => resolve(showIssuesButtonAsync)
         });

@@ -8,6 +8,7 @@ export function uiRapidFirstEditDialog(context) {
 
   return function(selection) {
     const modal = uiModal(selection);
+    const rtl = l10n.isRTL() ? '-rtl' : '';
 
     modal.select('.modal')
       .attr('class', 'modal rapid-modal');
@@ -18,7 +19,9 @@ export function uiRapidFirstEditDialog(context) {
       .append('div')
       .attr('class', 'modal-section')
       .append('h3')
-      .html(l10n.t('rapid_first_edit.nice', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'logo-rapid') }));
+      .html(l10n.t('rapid_first_edit.nice', {
+        rapidicon: icon(`#rapid-logo-rapid-wordmark${rtl}`, 'logo-rapid')
+      }));
 
     content
       .append('div')

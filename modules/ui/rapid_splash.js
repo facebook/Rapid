@@ -17,6 +17,7 @@ export function uiRapidSplash(context) {
     storage.setItem('sawRapidSplash', true);
 
     const modalSelection = uiModal(selection);
+    const rtl = l10n.isRTL() ? '-rtl' : '';
 
     modalSelection.select('.modal')
       .attr('class', 'modal rapid-modal modal-splash');   // Rapid styling
@@ -33,7 +34,7 @@ export function uiRapidSplash(context) {
       .attr('class','modal-section')
       .append('p')
       .html(l10n.t('rapid_splash.text', {
-        rapidicon: icon('#rapid-logo-rapid-wordmark', 'logo-rapid'),
+        rapidicon: icon(`#rapid-logo-rapid-wordmark${rtl}`, 'logo-rapid'),
         walkthrough: icon('#rapid-logo-walkthrough', 'logo-walkthrough'),
         edit: icon('#rapid-logo-features', 'logo-features')
       }));
@@ -72,7 +73,7 @@ export function uiRapidSplash(context) {
       .append('svg')
       .attr('class', 'logo logo-rapid')
       .append('use')
-      .attr('xlink:href', '#rapid-logo-rapid-wordmark');
+      .attr('xlink:href', `#rapid-logo-rapid-wordmark${rtl}`);
 
     rapidWalkthrough
       .append('div')

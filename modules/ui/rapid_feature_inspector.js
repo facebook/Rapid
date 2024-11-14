@@ -172,6 +172,8 @@ export function uiRapidFeatureInspector(context, keybinding) {
 
 
   function rapidInspector(selection) {
+    const rtl = l10n.isRTL() ? '-rtl' : '';
+
     let inspector = selection.selectAll('.rapid-inspector')
       .data([0]);
 
@@ -197,7 +199,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
       // .attr('class', 'logo-rapid dark')
       .attr('class', 'logo-rapid')
       .append('use')
-      .attr('xlink:href', '#rapid-logo-rapid-wordmark');
+      .attr('xlink:href', `#rapid-logo-rapid-wordmark${rtl}`);
 
     headerEnter
       .append('button')

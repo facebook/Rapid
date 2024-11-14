@@ -18,6 +18,7 @@ export function uiWhatsNew(context) {
 
   return function render(selection) {
     const $modal = uiModal(selection);
+    const rtl = l10n.isRTL() ? '-rtl' : '';
 
     $modal.select('.modal')
       .attr('class', 'modal rapid-modal modal-whatsnew');
@@ -27,7 +28,9 @@ export function uiWhatsNew(context) {
       .append('div')
       .attr('class', 'modal-section')
       .append('h2')
-      .html(l10n.t('whats_new.welcome_v24', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }));
+      .html(l10n.t('whats_new.welcome_v24', {
+        rapidicon: icon(`#rapid-logo-rapid-wordmark${rtl}`, 'pre-text rapid')
+      }));
 
 
     const markdown = l10n.t('whats_new.text_v24') + '\n\n';

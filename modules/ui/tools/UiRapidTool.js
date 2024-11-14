@@ -74,6 +74,7 @@ export class UiRapidTool {
 
     const isPowerUser = urlhash.getParam('poweruser') === 'true';
     const isNarrow = context.container().selectAll('.map-toolbar.narrow').size();
+    const rtl = l10n.isRTL() ? '-rtl' : '';
 
     // Localize tooltips
     this.RapidTooltip
@@ -114,8 +115,7 @@ export class UiRapidTool {
     $$rapidButton
       .append('svg')
       .attr('class', 'logo-rapid')
-      .append('use')
-      .attr('xlink:href', '#rapid-logo-rapid-wordmark');
+      .append('use');
 
     // update
     $rapidButton = $rapidButton.merge($$rapidButton)
@@ -123,7 +123,7 @@ export class UiRapidTool {
 
     $rapidButton
       .selectAll('.logo-rapid use')
-      .attr('xlink:href',  isNarrow ? '#rapid-logo-rapid' : '#rapid-logo-rapid-wordmark' );
+      .attr('xlink:href',  isNarrow ? `#rapid-logo-rapid${rtl}` : `#rapid-logo-rapid-wordmark${rtl}` );
 
 
     // Poweruser Button

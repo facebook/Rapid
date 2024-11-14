@@ -110,6 +110,8 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     const rapidLayer = context.scene().layers.get('rapid');
     if (!rapidLayer) return;
 
+    const rtl = l10n.isRTL() ? '-rtl' : '';
+
     /* Toggle All */
     let toggleAll = selection.selectAll('.rapid-toggle-all')
       .data([0]);
@@ -127,7 +129,9 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     toggleAllTextEnter
       .append('div')
       .attr('class', 'rapid-feature-label')
-      .html(l10n.t('rapid_feature_toggle.toggle_all', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'logo-rapid') }));
+      .html(l10n.t('rapid_feature_toggle.toggle_all', {
+        rapidicon: icon(`#rapid-logo-rapid-wordmark${rtl}`, 'logo-rapid')
+      }));
 
     toggleAllTextEnter
       .append('span')

@@ -687,15 +687,9 @@ hide this one and style something on top of it.  */
     height: 12px;
     width: 6px;
 }
-.ideditor[dir='rtl'] .rapid-checkbox-label input:checked ~ .rapid-checkbox-custom::after {
-    margin: 6px 6px;
-    height: 6px;
-    width: 12px;
-}
 
 
 /* Rapid Power User features */
-
 .rapid-stack.poweruser .modal-section-heading {
     display: flex;
     flex-flow: column;

@@ -20,6 +20,7 @@ export function uiSplash(context) {
 
 
   return function render(selection) {
+    const rtl = l10n.isRTL() ? '-rtl' : '';
     storage.setItem('sawPrivacyVersion', context.privacyVersion);
 
     // prefetch intro graph data now, while user is looking at the splash screen
@@ -34,7 +35,9 @@ export function uiSplash(context) {
       .append('div')
       .attr('class', 'modal-section')
       .append('h2')
-      .html(l10n.t('splash.welcome', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }));
+      .html(l10n.t('splash.welcome', {
+        rapidicon: icon(`#rapid-logo-rapid-wordmark${rtl}`, 'pre-text rapid')
+      }));
 
 
     let markdown = l10n.t('splash.text', { version: context.version }) + '\n\n';
