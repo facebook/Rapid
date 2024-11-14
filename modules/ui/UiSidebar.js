@@ -349,7 +349,8 @@ export class UiSidebar {
         .classed('inspector-hidden', false)
         .classed('inspector-hover', false);
 
-      this.expand(true);
+      // Don't expand automatically, let the user control this - Rapid#1562
+      // this.expand(true);
 
       // Always redraw the Inspector even if the ids are the same,
       // as the entities themselves may have changed.
