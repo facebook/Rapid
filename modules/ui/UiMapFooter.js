@@ -8,7 +8,18 @@ import {
 
 /**
  * UiMapFooter
- * This component creates the footer section at the top of the map.
+ * This component creates the footer section at the bottom of the map.
+ *
+ * @example
+ * <div class='map-footer'>        // '.map-footer' contains 2 divs:
+ *   <div class='flash-wrap'/>       // '.flash-wrap' will slide in to show messages sometimes.
+ *   <div class='map-footer-wrap'>   // '.map-footer-wrap' contains the stuff you usually see:
+ *     <div class='scale-wrap'/>        // '.scale-wrap' takes 250px on the left
+ *     <div class='map-footer-info'>    // all other info takes the remaining space
+ *        …    // lots of components live here: contributors, status chips, links, version, account…
+ *     </div>
+ *   </div>
+ * </div>
  */
 export class UiMapFooter {
 
@@ -63,18 +74,31 @@ export class UiMapFooter {
       .append('div')
       .attr('class', 'flash-wrap map-footer-hide');
 
-    const $$footerWrap = $$footer
+    $$footer
       .append('div')
       .attr('class', 'map-footer-wrap map-footer-show');
 
-    $$footerWrap
+    // update
+    $footer = $footer.merge($$footer);
+
+    const $wrap = $footer.selectAll('.map-footer-wrap');
+
+    $wrap
       .call(this.Scale.render);
 
-    const $$footerInfo = $$footerWrap
+    // '.map-footer-info' section
+    let $info = $wrap.selectAll('.map-footer-info')
+      .data([0]);
+
+    // enter
+    const $$info = $info.enter()
       .append('div')
       .attr('class', 'map-footer-info');
 
-    $$footerInfo
+    // update
+    $info = $info.merge($$info);
+
+    $info
       .call(this.Contributors.render)
       .call(this.SourceSwitch.render)
       .call(this.ValidatorStatus.render)
