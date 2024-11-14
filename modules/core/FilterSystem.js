@@ -403,6 +403,9 @@ export class FilterSystem extends AbstractSystem {
       }
     }
 
+if (entity.id === 'w513179099') {
+  console.log('hi');
+}
     let matches = new Set();
     for (const [filterID, filter] of this._filters) {
       if (filterID === 'others') {     // 'others' matches last
@@ -739,7 +742,7 @@ export class FilterSystem extends AbstractSystem {
       tags.parking === 'sheds' ||
       tags.parking === 'carports' ||
       tags.parking === 'garage_boxes'
-    );
+    ) && !this._isPastFuture(tags);
   }
 
   _isBuildingPart(tags) {
@@ -785,7 +788,7 @@ export class FilterSystem extends AbstractSystem {
       tags.landuse === 'basin' ||
       tags.landuse === 'reservoir' ||
       tags.landuse === 'salt_pond'
-    );
+    ) && !this._isPastFuture(tags);
   }
 
   _isRail(tags) {
@@ -795,7 +798,7 @@ export class FilterSystem extends AbstractSystem {
       traffic_roads[tags.highway] ||
       service_roads[tags.highway] ||
       paths[tags.highway]
-    );
+    ) && !this._isPastFuture(tags);
   }
 
   _isPiste(tags) {
@@ -809,7 +812,7 @@ export class FilterSystem extends AbstractSystem {
   }
 
   _isPower(tags) {
-    return !!tags.power;
+    return !!tags.power && !this._isPastFuture(tags);
   }
 
   // contains a past/future tag, but not in active use as a road/path/cycleway/etc..
@@ -818,8 +821,8 @@ export class FilterSystem extends AbstractSystem {
       return false;
     }
 
-    for (const k of Object.keys(tags)) {
-      if (osmLifecyclePrefixes[k] || osmLifecyclePrefixes[tags[k]]) return true;
+    for (const [k, v] of Object.entries(tags)) {
+      if (osmLifecyclePrefixes[k] || osmLifecyclePrefixes[v]) return true;
     }
     return false;
   }
