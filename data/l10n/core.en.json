@@ -36,18 +36,15 @@
     "modes": {
       "add_area": {
         "title": "Area",
-        "description": "Add buildings, parks, lakes, or other areas to the map.",
-        "filter_tooltip": "areas"
+        "description": "Add buildings, parks, lakes, or other areas to the map."
       },
       "add_line": {
         "title": "Line",
-        "description": "Add roads, walking paths, streams, or other lines to the map.",
-        "filter_tooltip": "lines"
+        "description": "Add roads, walking paths, streams, or other lines to the map."
       },
       "add_point": {
         "title": "Point",
-        "description": "Add businesses, waste baskets, post boxes, or other points to the map.",
-        "filter_tooltip": "points"
+        "description": "Add businesses, waste baskets, post boxes, or other points to the map."
       },
       "add_note": {
         "title": "Note",
@@ -1094,7 +1091,6 @@
       "highlight_edits": {
         "key": "G"
       },
-      "map_features": "Map Features",
       "autohidden": "These features have been automatically hidden because too many would be shown on the screen.  You can zoom in to edit them.",
       "osmhidden": "These features have been automatically hidden because the OpenStreetMap layer is hidden."
     },
@@ -1131,7 +1127,12 @@
         "tooltip": "Show only photos by this user"
       }
     },
-    "feature": {
+    "filters": {
+      "title": "Filters",
+      "active": "Some features are filtered:",
+      "hidden_preset": {
+        "manual": "{features} are filtered. Enable them in the Map Data pane."
+      },
       "points": {
         "description": "Points",
         "tooltip": "Points of Interest"
@@ -1211,12 +1212,6 @@
         "description": "Full Fill",
         "tooltip": "Areas are drawn fully filled."
       }
-    },
-    "filters": {
-      "hidden_preset": {
-        "manual": "{features} are filtered. Enable them in the Map Data pane."
-      },
-      "active": "Some features are filtered:"
     },
     "settings": {
       "custom_background": {
@@ -1403,9 +1398,9 @@
       "dontshowagain": "Hide this screen until the next version"
     },
     "source_switch": {
+      "dev": "dev",
       "live": "live",
-      "lose_changes": "You have unsaved changes. Switching the map server will discard them. Are you sure you want to switch servers?",
-      "dev": "dev"
+      "lose_changes": "You have unsaved changes. Switching the map server will discard them. Are you sure you want to switch servers?"
     },
     "rapid_splash": {
       "welcome": "Introducing AI-assisted mapping!",

@@ -87,7 +87,7 @@ export class UiFilterStatus {
       if (filter.count > 0) {
         total += filter.count;
         details.push(
-          l10n.t('inspector.title_count', { title: l10n.t(`feature.${filterID}.description`), count: filter.count })
+          l10n.t('inspector.title_count', { title: l10n.t(`filters.${filterID}.description`), count: filter.count })
         );
       }
     }

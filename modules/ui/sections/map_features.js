@@ -6,8 +6,8 @@ export function uiSectionMapFeatures(context) {
   const filters = context.systems.filters;
   const l10n = context.systems.l10n;
 
-  const section = uiSection(context, 'map-features')
-    .label(l10n.t('map_data.map_features'))
+  const section = uiSection(context, 'filters')
+    .label(l10n.t('filters.title'))
     .disclosureContent(renderDisclosureContent);
 
 
@@ -68,7 +68,7 @@ export function uiSectionMapFeatures(context) {
     let enter = items.enter()
       .append('li')
       .call(uiTooltip(context)
-        .title(d => l10n.t(`feature.${d}.tooltip`))
+        .title(d => l10n.t(`filters.${d}.tooltip`))
         .placement('top')
       );
 
@@ -83,7 +83,7 @@ export function uiSectionMapFeatures(context) {
 
     label
       .append('span')
-      .text(d => l10n.t(`feature.${d}.description`));
+      .text(d => l10n.t(`filters.${d}.description`));
 
     // Update
     items = items

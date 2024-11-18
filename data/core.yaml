@@ -31,15 +31,12 @@ en:
     add_area:
       title: Area
       description: "Add buildings, parks, lakes, or other areas to the map."
-      filter_tooltip: areas
     add_line:
       title: Line
       description: "Add roads, walking paths, streams, or other lines to the map."
-      filter_tooltip: lines
     add_point:
       title: Point
       description: "Add businesses, waste baskets, post boxes, or other points to the map."
-      filter_tooltip: points
     add_note:
       title: Note
       description: "Spotted an issue? Let other mappers know."
@@ -863,7 +860,6 @@ en:
     style_options: Style Options
     highlight_edits:
       key: G
-    map_features: Map Features
     autohidden: "These features have been automatically hidden because too many would be shown on the screen.  You can zoom in to edit them."
     osmhidden: "These features have been automatically hidden because the OpenStreetMap layer is hidden."
   visual_diff:
@@ -889,7 +885,11 @@ en:
     username_filter:
       title: "Username"
       tooltip: "Show only photos by this user"
-  feature:
+  filters:
+    title: Filters
+    active: "Some features are filtered:"
+    hidden_preset:
+      manual: "{features} are filtered. Enable them in the Map Data pane."
     points:
       description: Points
       tooltip: "Points of Interest"
@@ -949,10 +949,6 @@ en:
     full:
       description: Full Fill
       tooltip: "Areas are drawn fully filled."
-  filters:
-    hidden_preset:
-      manual: "{features} are filtered. Enable them in the Map Data pane."
-    active: "Some features are filtered:"
   settings:
     custom_background:
       tooltip: Edit custom background
@@ -1106,9 +1102,9 @@ en:
     text_v24: "This release improves Rapid's text localization, and makes it easier to work with street-level data like Mapillary. Now you can inspect detected objects, such as traffic signs, crosswalks, bike racks, and more!\n\nFor all the details check out our [changelog](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new) and [issue tracker](https://github.com/facebook/Rapid/issues) on GitHub. Happy Mapping! 👍"
     dontshowagain: "Hide this screen until the next version"
   source_switch:
+    dev: dev
     live: live
     lose_changes: "You have unsaved changes. Switching the map server will discard them. Are you sure you want to switch servers?"
-    dev: dev
   rapid_splash:
     welcome: Introducing AI-assisted mapping!
     text: "Select the {rapidicon} option to start the Rapid walkthrough. If you're new to OSM and haven't mapped before, select the first {walkthrough} option. Finally, click the last {edit} option if you want to get straight to mapping. You can always access the walkthrough later from the help menu."
