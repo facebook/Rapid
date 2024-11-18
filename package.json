@@ -52,7 +52,7 @@
     "test:unit": "dotenvx run --quiet -- c8 node --test-reporter spec --test test/unit/**/*.test.js",
     "test:unzip-benchmark-data": "tar -xvf test/benchmark/tokyo_canned_data.zip -C test/benchmark",
     "test:cleanup-benchmark-data": "rm test/benchmark/tokyo_*_canned_osm_data.js",
-    "translations": "dotenvx run --quiet -- node scripts/update_translations.js"
+    "translations": "dotenvx run --quiet -- node scripts/tx_pull.js"
   },
   "dependencies": {
     "@mapbox/geojson-area": "^0.2.2",
