@@ -1,3 +1,4 @@
+import { select as d3_select } from 'd3-selection';
 import { Tiler, vecSubtract } from '@rapid-sdk/math';
 import RBush from 'rbush';
 
@@ -467,6 +468,87 @@ export class MapRouletteService extends AbstractSystem {
    */
   getClosed() {
     return this._cache.closed;
+  }
+
+
+  /**
+   * flyToNearbyTask
+   * Initiates the process to find and fly to a nearby task based on the current task's challenge ID and task ID.
+   * @param {Object} task - The current task object containing task details.
+   */
+  flyToNearbyTask(task) {
+    if (!this.nearbyTaskEnabled) return;
+    const challengeID = task.parentId;
+    const taskID = task.id;
+    if (!challengeID || !taskID) return;
+    this.filterNearbyTasks(challengeID, taskID);
+  }
+
+
+  /**
+   * filterNearbyTasks
+   * Fetches nearby tasks for a given challenge and task ID, and flies to the nearest task.
+   * @param {string} challengeID - The ID of the challenge.
+   * @param {string} taskID - The ID of the current task.
+   * @param {number} [zoom] - Optional zoom level for the map.
+   */
+  filterNearbyTasks(challengeID, taskID, zoom) {
+    const nearbyTasksUrl = `${MAPROULETTE_API}/challenge/${challengeID}/tasksNearby/${taskID}?excludeSelfLocked=true&limit=1`;
+
+    if (!taskID) return;
+
+    fetch(nearbyTasksUrl)
+      .then(utilFetchResponse)
+      .then(nearbyTasks => {
+        if (nearbyTasks.length > 0) {
+          const nearestTaskData = nearbyTasks[0];
+          nearestTaskData.parentId = nearestTaskData.parent.toString();
+
+          // Fetch the challenge details to get the name
+          const challengeUrl = `${MAPROULETTE_API}/challenge/${challengeID}`;
+          return fetch(challengeUrl)
+            .then(utilFetchResponse)
+            .then(challengeData => {
+              // Set the title and parentName using the challenge name
+              nearestTaskData.title = challengeData.name;
+              nearestTaskData.parentName = challengeData.name;
+
+              // Create a new QAItem with the updated title and parentName
+              const nearestTask = new QAItem(this, null, nearestTaskData.id.toString(), nearestTaskData);
+              const [lng, lat] = nearestTask.location.coordinates;
+
+              const map = this.context.systems.map;
+              if (map) {
+                map.centerZoomEase([lng, lat], zoom);
+                this.selectAndDisplayTask(nearestTask);
+              }
+            });
+        }
+      })
+      .catch(err => {
+        console.error('Error fetching nearby tasks for challenge:', challengeID, err);
+      });
+  }
+
+
+  /**
+   * selectAndDisplayTask
+   * Selects a task and updates the sidebar reflect the selection
+   * @param {QAItem} task - The task to be selected
+   */
+  selectAndDisplayTask(task) {
+    const context = this.context;
+    const maproulette = context.services.maproulette;
+    if (maproulette) {
+      if (!(task instanceof QAItem)) return;
+
+      maproulette.currentTask = task;
+      const selection = new Map();
+      selection.set(task.id, task);
+      context.enter('select', { selection });
+
+      d3_select('.sidebar-header').text(task.title); // ensure the title is set
+    }
   }
 
 

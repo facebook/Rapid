@@ -1024,7 +1024,7 @@
         },
         "nearbyTask": {
           "tooltip": "Jump to nearby MapRoulette task after completing current one.",
-          "title": "Jump to nearby task when done"
+          "title": "Jump to nearby task"
         },
         "keepRight": {
           "tooltip": "Data issues detected by keepright.at",
