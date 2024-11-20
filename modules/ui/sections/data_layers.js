@@ -276,11 +276,16 @@ export function uiSectionDataLayers(context) {
       .attr('value', maproulette.challengeIDs);
   }
 
-  // Function to handle changes in the Nearby Task checkbox
+  // handle changes in the Nearby Task checkbox
   function nearbyTaskChanged(d3_event) {
-      const isChecked = d3_event.target.checked;
-      console.log('Nearby Task checked:', isChecked);
-      // Add logic to handle the checkbox state
+    const isChecked = d3_event.target.checked;
+    const mapRouletteService = context.services.maproulette;
+    if (mapRouletteService) {
+      mapRouletteService.nearbyTaskEnabled = isChecked;
+
+      // Call the method to filter tasks based on the checkbox state
+      mapRouletteService.filterNearbyTasks(isChecked);
+    }
   }
 
 
