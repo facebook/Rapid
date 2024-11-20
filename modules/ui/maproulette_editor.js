@@ -443,7 +443,7 @@ export function uiMapRouletteEditor(context) {
     buttonSection.select('.submit-button')
       .text(l10n.t('map_data.layers.maproulette.submit'))
       .on('click.submit', function(d3_event, d) {
-        clickSumbit(d3_event, d, selection);
+        clickSubmit(d3_event, d, selection);
       });
   }
 
@@ -489,7 +489,7 @@ export function uiMapRouletteEditor(context) {
     selection.call(commentSaveSection);
   }
 
-  function clickSumbit(d3_event, d) {
+  function clickSubmit(d3_event, d) {
     this.blur();    // avoid keeping focus on the button - iD#4641
     const osm = context.services.osm;
     const userID = osm._userDetails.id;
@@ -506,6 +506,10 @@ export function uiMapRouletteEditor(context) {
         }
         dispatch.call('change', item);
       });
+    }
+    // Fly to a nearby task if the feature is enabled
+    if (maproulette && maproulette.nearbyTaskEnabled) {
+      maproulette.flyToNearbyTask(d);
     }
   }
 
