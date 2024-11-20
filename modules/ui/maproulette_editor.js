@@ -505,11 +505,11 @@ export function uiMapRouletteEditor(context) {
           return;
         }
         dispatch.call('change', item);
+        // Fly to a nearby task if the feature is enabled, after the update
+        if (maproulette.nearbyTaskEnabled) {
+          maproulette.flyToNearbyTask(d);
+        }
       });
-    }
-    // Fly to a nearby task if the feature is enabled
-    if (maproulette && maproulette.nearbyTaskEnabled) {
-      maproulette.flyToNearbyTask(d);
     }
   }
 
