@@ -156,7 +156,7 @@ export function validationCurbNodes(context) {
     // Create a new curb node
     const newCurbNode = osmNode({ loc: [newNodePosition.lon, newNodePosition.lat], tags, visible: true });
 
-    // Add the new node to the graph at the midpoint of the specified segment
+    // Add the new node to the graph
     editor.perform(actionAddMidpoint({ loc: newCurbNode.loc, edge: [node.id, adjacentNode.id] }, newCurbNode));
 
     // Perform the split
@@ -164,17 +164,22 @@ export function validationCurbNodes(context) {
     graph = editor.perform(splitAction);
     const newWayIDs = splitAction.getCreatedWayIDs();
 
-    // Change tags to indicate these are sidewalks
-    const sidewalkTags = { highway: 'footway', footway: 'sidewalk' };
-    newWayIDs.forEach(wayId => {
+    // Ensure that the new ways are created correctly
+    if (newWayIDs.length > 0) {
+      // Change tags to indicate these are sidewalks
+      const sidewalkTags = { highway: 'footway', footway: 'sidewalk' };
+      newWayIDs.forEach(wayId => {
         editor.perform(actionChangeTags(wayId, sidewalkTags));
-    });
+      });
 
-    // Commit the changes to the graph
-    editor.commit({
-      annotation: 'Added curb node and updated way tags to sidewalks',
-      selectedIDs: [node.id].concat(newWayIDs)
-    });
+      // Commit the changes to the graph
+      editor.commit({
+        annotation: 'Added curb node and updated way tags to sidewalks',
+        selectedIDs: [node.id].concat(newWayIDs)
+      });
+    } else {
+      console.error('No new ways created after split');
+    }
   }
 
 
