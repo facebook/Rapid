@@ -222,9 +222,9 @@ export function uiSectionDataLayers(context) {
     // Update
     li
       .merge(liEnter)
-      .classed('active', d => d.enabled)
+      .classed('active', d => showsLayer(d.id))
       .selectAll('input')
-      .property('checked', d => d.enabled);
+      .property('checked', d => showsLayer(d.id));
   }
 
 
