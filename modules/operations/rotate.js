@@ -88,7 +88,7 @@ export function operationRotate(context, selectedIDs) {
 
 
   operation.id = 'rotate';
-  operation.keys = [ l10n.t('operations.rotate.key') ];
+  operation.keys = [ l10n.t('shortcuts.command.rotate.key') ];
   operation.title = l10n.t('operations.rotate.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 

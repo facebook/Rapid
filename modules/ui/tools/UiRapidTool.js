@@ -27,7 +27,7 @@ export class UiRapidTool {
     const ui = context.systems.ui;
     const urlhash = context.systems.urlhash;
 
-    this.key = utilCmd('⇧' + l10n.t('map_data.layers.rapid.key'));
+    this.key = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_rapid_data.key'));
     this.dispatch = dispatch('ai_feature_toggle');
 
     // Create child components
@@ -80,7 +80,7 @@ export class UiRapidTool {
     this.RapidTooltip
       .placement('bottom')
       .scrollContainer(context.container().select('.map-toolbar'))
-      .title(l10n.t('shortcuts.browsing.display_options.rapid_features_data'))
+      .title(l10n.t('shortcuts.command.toggle_rapid_data.label'))
       .shortcut(this.key);
 
     this.PoweruserTooltip

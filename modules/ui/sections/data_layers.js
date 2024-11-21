@@ -28,7 +28,7 @@ import { utilCmd } from '../../util/cmd.js';
  */
 export function uiSectionDataLayers(context) {
   const l10n = context.systems.l10n;
-  const scene = context.scene();
+  const scene = context.systems.gfx.scene;
   const ui = context.systems.ui;
 
   const section = uiSection(context, 'data-layers')
@@ -38,31 +38,64 @@ export function uiSectionDataLayers(context) {
   const settingsCustomData = uiSettingsCustomData(context)
     .on('change', customChanged);
 
-  let previousLayerStates = new Map();
-  function toggleAllLayers() {
-    const allLayerIDs = ['osm', 'notes', 'rapid', 'maproulette', 'keepRight', 'osmose', 'geoScribble', 'custom-data', 'mapillary', 'streetside', 'kartaview'];
+  let _previousLayerStates = new Map();
+
+
+  /* toggleAllLayers
+   * @param  {Event} e - event that triggered the toggle (if any)
+   */
+  function toggleAllLayers(e) {
+    if (e)  e.preventDefault();
+
+    const allLayerIDs = [
+      'osm', 'notes', 'rapid', 'maproulette', 'keepRight', 'osmose', 'geoScribble',
+      'custom-data', 'mapillary', 'streetside', 'kartaview'
+    ];
+
     const anyLayerEnabled = allLayerIDs.some(layerID => showsLayer(layerID));
     if (anyLayerEnabled) {
       // Save current state and disable all layers
       allLayerIDs.forEach(layerID => {
-        previousLayerStates.set(layerID, showsLayer(layerID));
+        _previousLayerStates.set(layerID, showsLayer(layerID));
         setLayer(layerID, false);
       });
     } else {
       // Restore previous state
-      previousLayerStates.forEach((enabled, layerID) => {
+      _previousLayerStates.forEach((enabled, layerID) => {
         setLayer(layerID, enabled);
       });
     }
   }
 
-  // keyboard shortcut for toggling all layers
-  context.keybinding()
-    .on('⇧D', e => {
-      e.preventDefault();
-      toggleAllLayers();
-    });
 
+  /* toggleLayerKey
+   * Just wraps calls to `toggleLayer`, cancelling the key event
+   * @param  {Event} e - event that triggered the toggle (if any)
+   */
+  function toggleLayerKey(e, layerID) {
+    if (e)  e.preventDefault();
+    toggleLayer(layerID);
+  }
+
+  // setup key shortcuts
+  const toggleAllKey = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_all_layers.key'));
+  const toggleOsmKey = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_osm_data.key'));
+  const toggleNotesKey = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_osm_notes.key'));
+  const toggleMapillaryKey = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_mapillary.key'));
+  const toggleStreetsideKey = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_streetside.key'));
+  const toggleKartaviewKey = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_kartaview.key'));
+
+  context.keybinding().off([
+    toggleAllKey, toggleOsmKey, toggleNotesKey, toggleMapillaryKey, toggleStreetsideKey, toggleKartaviewKey
+  ]);
+
+  context.keybinding()
+    .on(toggleAllKey, e => toggleAllLayers(e))
+    .on(toggleOsmKey, e => toggleLayerKey(e, 'osm'))
+    .on(toggleNotesKey, e => toggleLayerKey(e, 'notes'))
+    .on(toggleMapillaryKey, e => toggleLayerKey(e, 'mapillary'))
+    .on(toggleStreetsideKey, e => toggleLayerKey(e, 'streetside'))
+    .on(toggleKartaviewKey, e => toggleLayerKey(e, 'kartaview'));
 
 
   /* renderIfVisible
@@ -141,8 +174,11 @@ export function uiSectionDataLayers(context) {
 
 
   function drawBaseItems(selection) {
-    const osmKeys = ['osm', 'notes', 'rapid'];
-    const osmLayers = osmKeys.map(layerID => scene.layers.get(layerID)).filter(Boolean);
+    const items = [
+      { id: 'osm',   layer: scene.layers.get('osm'),   key: 'shortcuts.command.toggle_osm_data.key' },
+      { id: 'notes', layer: scene.layers.get('notes'), key: 'shortcuts.command.toggle_osm_notes.key' },
+      { id: 'rapid', layer: scene.layers.get('rapid'), key: 'shortcuts.command.toggle_rapid_data.key' }
+    ];
 
     let ul = selection
       .selectAll('.layer-list-osm')
@@ -154,7 +190,7 @@ export function uiSectionDataLayers(context) {
       .merge(ul);
 
     let li = ul.selectAll('.list-item')
-      .data(osmLayers);
+      .data(items);
 
     li.exit()
       .remove();
@@ -169,7 +205,7 @@ export function uiSectionDataLayers(context) {
         d3_select(nodes[i])
           .call(uiTooltip(context)
             .title(l10n.t(`map_data.layers.${d.id}.tooltip`))
-            .shortcut(utilCmd('⇧' + l10n.t(`map_data.layers.${d.id}.key`)))
+            .shortcut(utilCmd('⇧' + l10n.t(d.key)))
             .placement('bottom')
           );
       });
@@ -177,7 +213,7 @@ export function uiSectionDataLayers(context) {
     labelEnter
       .append('input')
       .attr('type', 'checkbox')
-      .on('change', (d3_event, d) => toggleLayer(d.id));
+      .on('change', (e, d) => toggleLayer(d.id));
 
     labelEnter
       .append('span')
@@ -223,7 +259,7 @@ export function uiSectionDataLayers(context) {
     labelEnter
       .append('input')
       .attr('type', 'checkbox')
-      .on('change', (d3_event, d) => toggleLayer(d.id));
+      .on('change', (e, d) => toggleLayer(d.id));
 
     labelEnter
       .append('span')
@@ -380,7 +416,7 @@ export function uiSectionDataLayers(context) {
       .append('label')
       .call(uiTooltip(context)
         .title(l10n.t('map_data.history_panel.tooltip'))
-        .shortcut(utilCmd('⌘⇧' + l10n.t('info_panels.history.key')))
+        .shortcut(utilCmd('⌘⇧' + l10n.t('shortcuts.command.toggle_history_card.key')))
         .placement('top')
       );
 
@@ -399,7 +435,7 @@ export function uiSectionDataLayers(context) {
       .append('label')
       .call(uiTooltip(context)
         .title(l10n.t('map_data.measurement_panel.tooltip'))
-        .shortcut(utilCmd('⌘⇧' + l10n.t('info_panels.measurement.key')))
+        .shortcut(utilCmd('⌘⇧' + l10n.t('shortcuts.command.toggle_measurement_card.key')))
         .placement('top')
       );
 

@@ -103,7 +103,7 @@ export function operationMerge(context, selectedIDs) {
 
 
   operation.id = 'merge';
-  operation.keys = [ l10n.t('operations.merge.key') ];
+  operation.keys = [ l10n.t('shortcuts.command.merge.key') ];
   operation.title = l10n.t('operations.merge.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 

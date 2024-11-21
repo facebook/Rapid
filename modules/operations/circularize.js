@@ -108,7 +108,7 @@ export function operationCircularize(context, selectedIDs) {
 
 
   operation.id = 'circularize';
-  operation.keys = [ l10n.t('operations.circularize.key') ];
+  operation.keys = [ l10n.t('shortcuts.command.circularize.key') ];
   operation.title = l10n.t('operations.circularize.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 

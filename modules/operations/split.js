@@ -97,7 +97,7 @@ export function operationSplit(context, selectedIDs) {
 
 
   operation.id = 'split';
-  operation.keys = [ l10n.t('operations.split.key') ];
+  operation.keys = [ l10n.t('shortcuts.command.split.key') ];
   operation.title = l10n.t('operations.split.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 

@@ -287,7 +287,7 @@ export function uiPaneHelp(context) {
 
 
   const helpPane = uiPane(context, 'help')
-    .key(l10n.t('help.key'))
+    .key(l10n.t('shortcuts.command.toggle_help.key'))
     .label(l10n.t('help.title'))
     .description(l10n.t('help.title'))
     .iconName('rapid-icon-help');

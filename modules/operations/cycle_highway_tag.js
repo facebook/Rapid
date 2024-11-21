@@ -169,7 +169,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
 
 
   operation.id = 'cycle_highway_tag';
-  operation.keys = ['⇧' + l10n.t('operations.cycle_highway_tag.key')];
+  operation.keys = ['⇧' + l10n.t('shortcuts.command.cycle_highway_tag.key')];
   operation.title = l10n.t('operations.cycle_highway_tag.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 

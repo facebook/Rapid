@@ -48,8 +48,7 @@
       },
       "add_note": {
         "title": "Note",
-        "description": "Spotted an issue? Let other mappers know.",
-        "key": "N"
+        "description": "Spotted an issue? Let other mappers know."
       },
       "add_preset": {
         "title": "Add {feature}"
@@ -78,7 +77,6 @@
         }
       },
       "continue": {
-        "key": "A",
         "title": "Continue",
         "description": "Continue this line.",
         "not_eligible": "No line can be continued here.",
@@ -133,7 +131,6 @@
           "single": "Make this feature circular.",
           "multiple": "Make these features circular."
         },
-        "key": "O",
         "annotation": {
           "feature": {
             "one": "Made a feature circular.",
@@ -176,7 +173,6 @@
             "multiple": "Square the corners of these features."
           }
         },
-        "key": "Q",
         "annotation": {
           "corner": {
             "one": "Squared a corner.",
@@ -222,7 +218,6 @@
           "line": "Straighten this line.",
           "lines": "Straighten these lines."
         },
-        "key": "S",
         "annotation": {
           "point": {
             "one": "Straightened a point.",
@@ -388,7 +383,6 @@
             "multiple_ways": "Disconnect the selected features at these points."
           }
         },
-        "key": "D",
         "annotation": {
           "features": "Disconnected features.",
           "from_each_other": "Disconnected features from each other."
@@ -405,7 +399,6 @@
       "merge": {
         "title": "Merge",
         "description": "Merge these features.",
-        "key": "C",
         "annotation": {
           "one": "Merged a feature.",
           "other": "Merged {n} features."
@@ -426,7 +419,6 @@
           "single": "Move this feature to a different location.",
           "multiple": "Move these features to a different location."
         },
-        "key": "M",
         "annotation": {
           "point": "Moved a point.",
           "vertex": "Moved a node in a way.",
@@ -470,10 +462,6 @@
             "multiple": "Flip these features across their short axis."
           }
         },
-        "key": {
-          "long": "T",
-          "short": "Y"
-        },
         "annotation": {
           "long": {
             "feature": {
@@ -511,7 +499,6 @@
           "single": "Rotate this feature around its center point.",
           "multiple": "Rotate these features around their center point."
         },
-        "key": "R",
         "annotation": {
           "line": "Rotated a line.",
           "area": "Rotated an area.",
@@ -547,7 +534,6 @@
           "lines": "Make these lines go in the opposite direction.",
           "features": "Flip the directions of these features."
         },
-        "key": "V",
         "annotation": {
           "point": {
             "one": "Reversed a point.",
@@ -625,7 +611,6 @@
             }
           }
         },
-        "key": "X",
         "annotation": {
           "line": {
             "one": "Split a line.",
@@ -651,7 +636,6 @@
       },
       "extract": {
         "title": "Extract",
-        "key": "E",
         "description": {
           "vertex": {
             "single": "Extract this point from its parent lines/areas.",
@@ -684,7 +668,6 @@
       },
       "cycle_highway_tag": {
         "title": "Cycle Highway Tag",
-        "key": "C",
         "description": "Shortcut to cycle selected highway or crosswalk through several different tags.",
         "highway_annotation": "Changed highway tag of selected way.",
         "crosswalk_annotation": "Changed crosswalk tag of selected way."
@@ -797,13 +780,11 @@
       }
     },
     "info_panels": {
-      "key": "I",
       "selected": {
         "one": "{n} selected",
         "other": "{n} selected"
       },
       "background": {
-        "key": "B",
         "title": "Background",
         "zoom": "Zoom",
         "vintage": "Vintage",
@@ -815,7 +796,6 @@
         "hide_tiles": "Hide Tiles"
       },
       "history": {
-        "key": "H",
         "title": "History",
         "no_history": "No History (New Feature)",
         "version": "Version",
@@ -830,12 +810,10 @@
         "note_link_text": "Note on openstreetmap.org"
       },
       "location": {
-        "key": "L",
         "title": "Location",
         "unknown_location": "Unknown Location"
       },
       "measurement": {
-        "key": "M",
         "title": "Measurement",
         "geometry": "Geometry",
         "closed_line": "closed line",
@@ -865,16 +843,13 @@
       "no_results_worldwide": "No results found"
     },
     "geolocate": {
-      "key": "L",
       "title": "Show My Location",
       "locating": "Locating, please wait...",
       "location_unavailable": "Your location is unavailable."
     },
     "inspector": {
-      "key": "`",
       "tooltip": "Toggle the feature inspector.",
       "zoom_to": {
-        "key": "Z",
         "title": "Zoom To Selection",
         "no_selection": "Nothing to zoom to."
       },
@@ -963,7 +938,6 @@
     "background": {
       "title": "Background",
       "description": "Background Settings",
-      "key": "B",
       "backgrounds": "Backgrounds",
       "none": "None",
       "best_imagery": "Best known imagery source for this location",
@@ -991,13 +965,11 @@
       "sharpness": "Sharpness",
       "3dmap": {
         "description": "Show 3D map",
-        "tooltip": "Show an inset 3D map.",
-        "key": "/"
+        "tooltip": "Show an inset 3D map."
       },
       "minimap": {
         "description": "Show Minimap",
-        "tooltip": "Show a zoomed out map to help locate the area currently displayed.",
-        "key": "/"
+        "tooltip": "Show a zoomed out map to help locate the area currently displayed."
       },
       "panel": {
         "description": "Show Background Panel",
@@ -1008,35 +980,25 @@
         "tooltip": "Show coordinates and regional details."
       },
       "fix_misalignment": "Imagery Offset",
-      "offset": "Drag anywhere in the gray area below to adjust the imagery offset, or enter the offset values in meters.",
-      "next_background": {
-        "key": "."
-      },
-      "previous_background": {
-        "key": ","
-      }
+      "offset": "Drag anywhere in the gray area below to adjust the imagery offset, or enter the offset values in meters."
     },
     "map_data": {
       "title": "Map Data",
       "description": "Map Data",
-      "key": "F",
       "data_layers": "Data Layers",
       "layers": {
         "osm": {
           "tooltip": "Map data from OpenStreetMap",
           "title": "OpenStreetMap Data",
-          "feature": "OpenStreetMap Feature",
-          "key": "O"
+          "feature": "OpenStreetMap Feature"
         },
         "notes": {
           "tooltip": "Note data from OpenStreetMap",
-          "title": "OpenStreetMap Notes",
-          "key": "N"
+          "title": "OpenStreetMap Notes"
         },
         "rapid": {
           "tooltip": "Suggested features detected from machine learning and open data that can be used to improve OpenStreetMap",
-          "title": "Rapid Features",
-          "key": "R"
+          "title": "Rapid Features"
         },
         "maproulette": {
           "tooltip": "Tasks from maproulette.org.  You can also enter a comma-separated list of challenge IDs to filter.",
@@ -1088,9 +1050,6 @@
         "tooltip": "Show geometry values for the selection."
       },
       "style_options": "Style Options",
-      "highlight_edits": {
-        "key": "G"
-      },
       "autohidden": "These features have been automatically hidden because too many would be shown on the screen.  You can zoom in to edit them.",
       "osmhidden": "These features have been automatically hidden because the OpenStreetMap layer is hidden."
     },
@@ -1201,8 +1160,7 @@
     "area_fill": {
       "wireframe": {
         "description": "No Fill (Wireframe)",
-        "tooltip": "Enabling wireframe mode makes it easy to see the background imagery.",
-        "key": "W"
+        "tooltip": "Enabling wireframe mode makes it easy to see the background imagery."
       },
       "partial": {
         "description": "Partial Fill",
@@ -1270,7 +1228,6 @@
     "preferences": {
       "title": "Preferences",
       "description": "Preferences",
-      "key": "P",
       "privacy": {
         "title": "Privacy",
         "privacy_link": "View the Rapid privacy policy",
@@ -1424,15 +1381,13 @@
         "annotation": "Added a Rapid feature.",
         "tooltip": "Add this feature to the map to begin editing.",
         "disabled": "To help improve OSM data quality, we only allow {n} AI features to be added in each mapping session. Please try to fix issues on your edits so far. You will be able to add more AI features after saving.",
-        "disabled_flash": "To help improve OSM data quality, we only allow {n} AI Features to be added in each mapping session.",
-        "key": "A"
+        "disabled_flash": "To help improve OSM data quality, we only allow {n} AI Features to be added in each mapping session."
       },
       "option_ignore": {
         "label": "Ignore This Feature",
         "description": "Ignoring this feature helps us improve our machine learning. If you are unsure whether or not this is an accurate feature, feel free to leave it as is, nothing will be saved or lost. 👍",
         "annotation": "Ignored a Rapid feature.",
-        "tooltip": "Ignore this feature.",
-        "key": "D"
+        "tooltip": "Ignore this feature."
       }
     },
     "rapid_feature_license": "Facebook's Map With AI License",
@@ -1519,7 +1474,6 @@
       "rotate_the_map": "Rotate the map:",
       "n": "N"
     },
-    "cannot_zoom": "Cannot zoom out further in current mode.",
     "full_screen": "Toggle Full Screen",
     "self_intersection": {
       "error": {
@@ -1977,7 +1931,6 @@
     },
     "help": {
       "title": "Help",
-      "key": "H",
       "help": {
         "title": "Help",
         "welcome": "Welcome to the {rapidicon} editor for [OpenStreetMap](https://www.openstreetmap.org/). With this editor you can update OpenStreetMap right from your web browser.",
@@ -2040,7 +1993,7 @@
         "title": "Points",
         "intro": "*Points* can be used to represent features such as shops, restaurants, and monuments. They mark a specific location, and describe what's there.",
         "add_point_h": "Adding Points",
-        "add_point": "To add a point, press the {point_icon} **{point}** button on the toolbar above the map, or press the shortcut key `1`.",
+        "add_point": "To add a point, press the {point_icon} **{point}** button on the toolbar above the map, or press the shortcut key `{add_point_key}`.",
         "add_point_finish": "Next, place the new point on the map. With a mouse, position the cursor where the point should go and {mouse_left_icon} left-click. On a touchscreen, {onefinger_tap_icon} tap the location.",
         "move_point_h": "Moving Points",
         "move_point": "To move a point, {mouse_left_icon} left-click and drag it with a mouse or {onefinger_tap_and_drag_icon} tap-and-drag it on a touchscreen.",
@@ -2052,7 +2005,7 @@
         "title": "Lines",
         "intro": "*Lines* are used to represent features such as roads, railroads, and rivers. Lines should be drawn down the center of the feature that they represent.",
         "add_line_h": "Adding Lines",
-        "add_line": "To add a line, press the {line_icon} **{line}** button on the toolbar above the map, or press the shortcut key `2`.",
+        "add_line": "To add a line, press the {line_icon} **{line}** button on the toolbar above the map, or press the shortcut key `{add_line_key}`.",
         "add_line_draw": "Next, mark the line's starting location. With a mouse, position the cursor where the line should begin and {mouse_left_icon} left-click to place a node. On a touchscreen, {onefinger_tap_icon} tap the location.",
         "add_line_continue": "Continue placing nodes by {mouse_left_icon} clicking or {onefinger_tap_icon} tapping along the shape of the line. While drawing, you can zoom in or drag the map in order to add more detail.",
         "add_line_finish": "To finish a line, click or tap on the last node again or press `{return}`.",
@@ -2079,7 +2032,7 @@
         "point_or_area_h": "Points or Areas?",
         "point_or_area": "Many features can be represented as points or areas. You should map buildings and property outlines as areas whenever possible. Place points inside a building area to represent businesses, amenities, and other features located inside the building.",
         "add_area_h": "Adding Areas",
-        "add_area_command": "To add an area, press the {area_icon} **{area}** button on the toolbar above the map, or press the shortcut key `3`.",
+        "add_area_command": "To add an area, press the {area_icon} **{area}** button on the toolbar above the map, or press the shortcut key `{add_area_key}`.",
         "add_area_draw": "Next, place the first corner of the area. With a mouse, position the cursor over any corner and {mouse_left_icon} left-click to place a node. On a touchscreen, {onefinger_tap_icon} tap the location.",
         "add_area_continue": "Continue placing nodes by {mouse_left_icon} clicking or {onefinger_tap_icon} tapping along the edge of the area. While drawing, you can zoom in or drag the map in order to add more detail.",
         "add_area_finish": "To finish an area, click or tap on the first or last node again or press `{return}`.",
@@ -2226,7 +2179,6 @@
     },
     "issues": {
       "title": "Issues",
-      "key": "I",
       "list_title": "Issues",
       "errors": {
         "list_title": "Errors"
@@ -3109,9 +3061,6 @@
     "shortcuts": {
       "title": "Keyboard Shortcuts",
       "tooltip": "Show the keyboard shortcuts screen.",
-      "toggle": {
-        "key": "?"
-      },
       "key": {
         "alt": "Alt",
         "backspace": "Backspace",
@@ -3136,131 +3085,299 @@
         "drag": "drag"
       },
       "or": "-or-",
-      "browsing": {
-        "title": "Browsing",
-        "navigation": {
-          "title": "Navigation",
-          "pan": "Pan map",
-          "pan_more": "Pan map by a lot",
-          "zoom": "Zoom in / out",
-          "zoom_more": "Zoom in / out by a lot",
-          "rotate": "Rotate map",
-          "rotate_incremental": "Rotate Map Incrementally"
+      "browsing": "Browsing",
+      "editing": "Editing",
+      "tools": "Tools/Display",
+      "navigation": "Navigation",
+      "selecting_features": "Selecting features",
+      "with_features_selected": "With features selected",
+      "with_node_selected": "With node selected",
+      "with_way_selected": "With way selected",
+      "with_rapid_selected": "With Rapid feature selected",
+      "with_photo_selected": "With photo selected",
+      "drawing": "Drawing",
+      "commands": "Commands",
+      "operations": "Editing Operations",
+      "help": "Help",
+      "display_options": "Display options",
+      "viewers": "Viewers",
+      "layers": "Layers",
+      "info": "Information",
+      "command": {
+        "pan": {
+          "label": "Pan map"
         },
-        "help": {
-          "title": "Help",
-          "help": "Show help/documentation",
-          "keyboard": "Show keyboard shortcuts"
+        "pan_more": {
+          "label": "Pan map by a lot"
         },
-        "display_options": {
-          "title": "Display options",
-          "background": "Toggle background imagery pane",
-          "background_switch": "Switch back to last used background",
-          "background_previous": "Switch to previous background in list",
-          "background_next": "Switch to next background in list",
-          "map_data": "Toggle map data pane",
-          "issues": "Toggle validation issues pane",
-          "preferences": "Toggle user preferences pane",
-          "fullscreen": "Toggle full screen mode",
-          "inspector": "Toggle feature inspector",
-          "wireframe": "Toggle wireframe mode",
-          "osm_data": "Toggle OpenStreetMap data",
-          "osm_notes": "Toggle OpenStreetMap notes",
-          "rapid_features_data": "Toggle Rapid features",
-          "highlight_edits": "Highlight unsaved edits"
+        "zoom": {
+          "label": "Zoom in / out"
         },
-        "selecting": {
-          "title": "Selecting features",
-          "select_one": "Select a single feature",
-          "select_multi": "Select multiple features",
-          "lasso": "Draw a selection lasso around features",
-          "search": "Find features matching search text"
+        "zoom_more": {
+          "label": "Zoom in / out by a lot"
         },
-        "with_selected": {
-          "title": "With features selected",
-          "edit_menu": "Toggle edit menu",
-          "zoom_to": "Zoom in/out on selected features"
+        "rotate_map": {
+          "label": "Rotate map"
         },
-        "photo_selected": {
-          "title": "With photo selected",
-          "sequence": "Step to next / previous photo in sequence"
+        "rotate_incremental": {
+          "label": "Rotate map Incrementally"
         },
-        "vertex_selected": {
-          "title": "With node selected",
-          "previous": "Step to previous node",
-          "next": "Step to next node",
-          "first": "Jump to first node",
-          "last": "Jump to last node",
-          "change_parent": "Switch parent way",
-          "parent": "Select parent way"
+        "select_one": {
+          "label": "Select a single feature"
         },
-        "way_selected": {
-          "title": "With way selected",
-          "child": "Select child nodes"
-        }
-      },
-      "editing": {
-        "title": "Editing",
-        "drawing": {
-          "title": "Drawing",
-          "add_point": "'Add point' mode",
-          "add_line": "'Add line' mode",
-          "add_area": "'Add area' mode",
-          "add_note": "'Add note' mode",
-          "place_point": "Place a point or note",
-          "disable_snap": "Hold to disable point snapping",
-          "stop_line": "Finish drawing a line or area"
+        "select_multi": {
+          "label": "Select multiple features"
         },
-        "commands": {
-          "title": "Commands",
-          "copy": "Copy selected features",
-          "paste": "Paste copied features",
-          "undo": "Undo last action",
-          "redo": "Redo last action",
-          "save": "Save changes"
+        "lasso": {
+          "label": "Draw a selection lasso around features"
         },
-        "rapid": {
-          "title": "With Rapid feature selected",
-          "accept_feature": "Accept the feature",
-          "ignore_feature": "Ignore the feature"
+        "edit_menu": {
+          "label": "Toggle edit menu"
         },
-        "operations": {
-          "title": "Editing Operations",
-          "continue_line": "Continue a line at the selected endpoint",
-          "merge": "Combine (merge) selected features",
-          "disconnect": "Disconnect selected features",
-          "extract": "Extract a point from a feature",
-          "split": "Split features at the selected points",
-          "reverse": "Reverse selected features",
-          "move": "Move selected features",
-          "rotate": "Rotate selected features",
-          "orthogonalize": "Square corners of a line or area",
-          "straighten": "Straighten a line or points",
-          "circularize": "Circularize a closed line or area",
-          "reflect_long": "Flip features across the longer axis",
-          "reflect_short": "Flip features across the shorter axis",
-          "delete": "Delete selected features",
-          "cycle_highway_tag": "Cycle through common tags"
-        }
-      },
-      "tools": {
-        "title": "Tools",
-        "viewers": {
-          "title": "Viewers",
-          "minimap": "Toggle minimap",
-          "3dmap": "Toggle 3D map",
-          "mapillary": "Toggle Mapillary",
-          "bingStreetside": "Toggle Bing Streetside",
-          "kartaview": "Toggle Kartaview",
-          "disableDataLayers": "Toggle all data layers"
+        "zoom_to": {
+          "label": "Zoom in / out on selected features",
+          "key": "Z"
         },
-        "info": {
-          "title": "Information",
-          "all": "Toggle all information panels",
-          "background": "Toggle background panel",
-          "history": "Toggle history panel",
-          "location": "Toggle location panel",
-          "measurement": "Toggle measurement panel"
+        "previous_node": {
+          "label": "Step to previous node"
+        },
+        "next_node": {
+          "label": "Step to next node"
+        },
+        "first_node": {
+          "label": "Jump to first node"
+        },
+        "last_node": {
+          "label": "Jump to last node"
+        },
+        "change_parent": {
+          "label": "Switch parent way"
+        },
+        "select_parent": {
+          "label": "Select parent way"
+        },
+        "select_children": {
+          "label": "Select child nodes"
+        },
+        "accept_feature": {
+          "label": "Accept the feature",
+          "key": "A"
+        },
+        "ignore_feature": {
+          "label": "Ignore the feature",
+          "key": "D"
+        },
+        "follow_sequence": {
+          "label": "Step to next / previous photo in sequence"
+        },
+        "add_point": {
+          "label": "'Add point' mode",
+          "key": "1"
+        },
+        "add_line": {
+          "label": "'Add line' mode",
+          "key": "2"
+        },
+        "add_area": {
+          "label": "'Add area' mode",
+          "key": "3"
+        },
+        "add_note": {
+          "label": "'Add note' mode",
+          "key": "N"
+        },
+        "place_point": {
+          "label": "Place a point or note"
+        },
+        "disable_snap": {
+          "label": "Hold to disable point snapping"
+        },
+        "stop_line": {
+          "label": "Finish drawing a line or area"
+        },
+        "copy": {
+          "label": "Copy selected features"
+        },
+        "paste": {
+          "label": "Paste copied features"
+        },
+        "undo": {
+          "label": "Undo last action"
+        },
+        "redo": {
+          "label": "Redo last action"
+        },
+        "save": {
+          "label": "Save changes"
+        },
+        "find": {
+          "label": "Find features matching search text"
+        },
+        "continue_line": {
+          "label": "Continue a line at the selected endpoint",
+          "key": "A"
+        },
+        "merge": {
+          "label": "Combine (merge) selected features",
+          "key": "C"
+        },
+        "disconnect": {
+          "label": "Disconnect selected features",
+          "key": "D"
+        },
+        "extract": {
+          "label": "Extract a point from a feature",
+          "key": "E"
+        },
+        "split": {
+          "label": "Split features at the selected points",
+          "key": "X"
+        },
+        "reverse": {
+          "label": "Reverse selected features",
+          "key": "V"
+        },
+        "move": {
+          "label": "Move selected features",
+          "key": "M"
+        },
+        "rotate": {
+          "label": "Rotate selected features",
+          "key": "R"
+        },
+        "orthogonalize": {
+          "label": "Square corners of a line or area",
+          "key": "Q"
+        },
+        "straighten": {
+          "label": "Straighten a line or points",
+          "key": "S"
+        },
+        "circularize": {
+          "label": "Circularize a closed line or area",
+          "key": "O"
+        },
+        "reflect_long": {
+          "label": "Flip features across the longer axis",
+          "key": "T"
+        },
+        "reflect_short": {
+          "label": "Flip features across the shorter axis",
+          "key": "Y"
+        },
+        "delete": {
+          "label": "Delete selected features"
+        },
+        "cycle_highway_tag": {
+          "label": "Cycle through common tags",
+          "key": "C"
+        },
+        "toggle_background": {
+          "label": "Toggle background imagery pane",
+          "key": "B"
+        },
+        "background_switch": {
+          "label": "Switch back to last used background",
+          "key": "B"
+        },
+        "background_previous": {
+          "label": "Switch to previous background in list",
+          "key": ","
+        },
+        "background_next": {
+          "label": "Switch to next background in list",
+          "key": "."
+        },
+        "toggle_map_data": {
+          "label": "Toggle map data pane",
+          "key": "F"
+        },
+        "toggle_issues": {
+          "label": "Toggle validation issues pane",
+          "key": "I"
+        },
+        "toggle_preferences": {
+          "label": "Toggle user preferences pane",
+          "key": "P"
+        },
+        "toggle_help": {
+          "label": "Toggle help/documentation pane",
+          "key": "H"
+        },
+        "toggle_fullscreen": {
+          "label": "Toggle full screen mode"
+        },
+        "toggle_inspector": {
+          "label": "Toggle feature inspector",
+          "key": "`"
+        },
+        "wireframe": {
+          "label": "Toggle wireframe display",
+          "key": "W"
+        },
+        "highlight_edits": {
+          "label": "Highlight unsaved edits",
+          "key": "G"
+        },
+        "keyboard_shortcuts": {
+          "label": "Show keyboard shortcuts",
+          "key": "?"
+        },
+        "toggle_minimap": {
+          "label": "Toggle minimap",
+          "key": "/"
+        },
+        "toggle_3dmap": {
+          "label": "Toggle 3D map",
+          "key": "/"
+        },
+        "toggle_all_layers": {
+          "label": "Toggle all data layers",
+          "key": "D"
+        },
+        "toggle_osm_data": {
+          "label": "Toggle OpenStreetMap data",
+          "key": "O"
+        },
+        "toggle_osm_notes": {
+          "label": "Toggle OpenStreetMap notes",
+          "key": "N"
+        },
+        "toggle_rapid_data": {
+          "label": "Toggle Rapid features",
+          "key": "R"
+        },
+        "toggle_mapillary": {
+          "label": "Toggle Mapillary",
+          "key": "M"
+        },
+        "toggle_streetside": {
+          "label": "Toggle Bing Streetside",
+          "key": "S"
+        },
+        "toggle_kartaview": {
+          "label": "Toggle Kartaview",
+          "key": "K"
+        },
+        "toggle_all_cards": {
+          "label": "Toggle all information panels",
+          "key": "I"
+        },
+        "toggle_background_card": {
+          "label": "Toggle background panel",
+          "key": "B"
+        },
+        "toggle_history_card": {
+          "label": "Toggle history panel",
+          "key": "H"
+        },
+        "toggle_location_card": {
+          "label": "Toggle location panel",
+          "key": "L"
+        },
+        "toggle_measurement_card": {
+          "label": "Toggle measurement panel",
+          "key": "M"
         }
       }
     },
@@ -3286,11 +3403,6 @@
       "coordinate": "{coordinate}{direction}",
       "coordinate_pair": "{latitude}, {longitude}",
       "year_month_day": "YYYY-MM-DD"
-    },
-    "wikidata": {
-      "identifier": "Identifier",
-      "label": "Label",
-      "description": "Description"
     },
     "languageNames": {
       "aa": "Afar",

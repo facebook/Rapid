@@ -10,7 +10,7 @@ export function uiPaneIssues(context) {
   const l10n = context.systems.l10n;
 
   return uiPane(context, 'issues')
-    .key(l10n.t('issues.key'))
+    .key(l10n.t('shortcuts.command.toggle_issues.key'))
     .label(l10n.t('issues.title'))
     .description(l10n.t('issues.title'))
     .iconName('rapid-icon-alert')

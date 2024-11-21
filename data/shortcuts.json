@@ -2,207 +2,134 @@
   "shortcuts": [
     {
       "tab": "browsing",
-      "text": "shortcuts.browsing.title",
+      "text": "shortcuts.browsing",
       "columns": [
         {
           "rows": [
             {
-              "section": "help",
-              "text": "shortcuts.browsing.help.title"
-            },
-            {
-              "shortcuts": ["help.key"],
-              "text": "shortcuts.browsing.help.help"
-            },
-            {
-              "shortcuts": ["shortcuts.toggle.key", "?"],
-              "text": "shortcuts.browsing.help.keyboard"
-            },
-            {
               "section": "navigation",
-              "text": "shortcuts.browsing.navigation.title"
+              "text": "shortcuts.navigation"
             },
             {
               "shortcuts": ["{interaction-twofinger-tap-and-drag}", "{interaction-keyboard-arrows-all}"],
-              "text": "shortcuts.browsing.navigation.pan"
+              "text": "shortcuts.command.pan.label"
             },
             {
               "modifiers": ["⌘"],
               "shortcuts": ["{interaction-keyboard-arrows-all}"],
-              "text": "shortcuts.browsing.navigation.pan_more"
+              "text": "shortcuts.command.pan_more.label"
             },
             {
               "shortcuts": ["{interaction-mouse-wheel}", "{interaction-twofinger-zoom}", ["+", "-"]],
-              "text": "shortcuts.browsing.navigation.zoom"
+              "text": "shortcuts.command.zoom.label"
             },
             {
               "modifiers": ["⌘"],
               "shortcuts": [["+", "-"]],
-              "text": "shortcuts.browsing.navigation.zoom_more"
+              "text": "shortcuts.command.zoom_more.label"
             },
             {
               "modifiers": ["⌥"],
               "shortcuts": ["{interaction-mouse-left}", "{interaction-onefinger-tap}"],
-              "text": "shortcuts.browsing.navigation.rotate"
+              "text": "shortcuts.command.rotate_map.label"
             },
             {
               "modifiers": ["⇧"],
               "shortcuts": ["{interaction-keyboard-arrows-left-right}"],
-              "text": "shortcuts.browsing.navigation.rotate_incremental"
+              "text": "shortcuts.command.rotate_incremental.label"
             },
             {
-              "section": "display_options",
-              "text": "shortcuts.browsing.display_options.title"
+              "section": "selecting",
+              "text": "shortcuts.selecting_features"
             },
             {
-              "shortcuts": ["background.key"],
-              "text": "shortcuts.browsing.display_options.background"
-            },
-            {
-              "modifiers": ["⌘"],
-              "shortcuts": ["background.key"],
-              "text": "shortcuts.browsing.display_options.background_switch"
-            },
-            {
-              "shortcuts": ["background.previous_background.key"],
-              "text": "shortcuts.browsing.display_options.background_previous",
-              "rapid": true
-            },
-            {
-              "shortcuts": ["background.next_background.key"],
-              "text": "shortcuts.browsing.display_options.background_next",
-              "rapid": true
-            },
-            {
-              "shortcuts": ["map_data.key"],
-              "text": "shortcuts.browsing.display_options.map_data"
-            },
-            {
-              "shortcuts": ["issues.key"],
-              "text": "shortcuts.browsing.display_options.issues"
-            },
-            {
-              "shortcuts": ["preferences.key"],
-              "text": "shortcuts.browsing.display_options.preferences"
-            },
-            {
-              "modifiers": ["⌃", "⌘"],
-              "shortcuts": ["F"],
-              "text": "shortcuts.browsing.display_options.fullscreen"
-            },
-            {
-              "shortcuts": ["inspector.key", "`", "²"],
-              "text": "shortcuts.browsing.display_options.inspector"
-            },
-            {
-              "shortcuts": ["area_fill.wireframe.key"],
-              "text": "shortcuts.browsing.display_options.wireframe"
+              "shortcuts": ["{interaction-mouse-left}", "{interaction-onefinger-tap}", "shortcuts.key.space"],
+              "text": "shortcuts.command.select_one.label"
             },
             {
               "modifiers": ["⇧"],
-              "shortcuts": ["map_data.layers.osm.key"],
-              "text": "shortcuts.browsing.display_options.osm_data"
+              "shortcuts": ["{interaction-mouse-left}", "{interaction-onefinger-tap}", "shortcuts.key.space"],
+              "text": "shortcuts.command.select_multi.label"
             },
             {
               "modifiers": ["⇧"],
-              "shortcuts": ["map_data.layers.notes.key"],
-              "text": "shortcuts.browsing.display_options.osm_notes"
+              "shortcuts": ["{interaction-mouse-left}", "{interaction-onefinger-tap-and-drag}"],
+              "gesture": "shortcuts.gesture.drag",
+              "text": "shortcuts.command.lasso.label"
             },
             {
-              "modifiers": ["⇧"],
-              "shortcuts": ["map_data.layers.rapid.key"],
-              "text": "shortcuts.browsing.display_options.rapid_features_data",
-              "rapid": true
+              "section": "with_selected",
+              "text": "shortcuts.with_features_selected"
             },
             {
-              "shortcuts": ["map_data.highlight_edits.key"],
-              "text": "shortcuts.browsing.display_options.highlight_edits"
+              "shortcuts": ["{interaction-mouse-right}", "{interaction-onefinger-tap-and-hold}", "☰"],
+              "text": "shortcuts.command.edit_menu.label"
+            },
+            {
+              "shortcuts": ["shortcuts.command.zoom_to.key"],
+              "text": "shortcuts.command.zoom_to.label"
             }
           ]
         },
         {
           "rows": [
             {
-              "section": "selecting",
-              "text": "shortcuts.browsing.selecting.title"
-            },
-            {
-              "shortcuts": ["{interaction-mouse-left}", "{interaction-onefinger-tap}", "shortcuts.key.space"],
-              "text": "shortcuts.browsing.selecting.select_one"
-            },
-            {
-              "modifiers": ["⇧"],
-              "shortcuts": ["{interaction-mouse-left}", "{interaction-onefinger-tap}", "shortcuts.key.space"],
-              "text": "shortcuts.browsing.selecting.select_multi"
-            },
-            {
-              "modifiers": ["⇧"],
-              "shortcuts": ["{interaction-mouse-left}", "{interaction-onefinger-tap-and-drag}"],
-              "gesture": "shortcuts.gesture.drag",
-              "text": "shortcuts.browsing.selecting.lasso"
-            },
-            {
-              "modifiers": ["⌘"],
-              "shortcuts": ["F"],
-              "text": "shortcuts.browsing.selecting.search"
-            },
-            {
-              "section": "with_selected",
-              "text": "shortcuts.browsing.with_selected.title"
-            },
-            {
-              "shortcuts": ["{interaction-mouse-right}", "{interaction-onefinger-tap-and-hold}", "☰"],
-              "text": "shortcuts.browsing.with_selected.edit_menu"
-            },
-            {
-              "shortcuts": ["inspector.zoom_to.key"],
-              "text": "shortcuts.browsing.with_selected.zoom_to"
-            },
-            {
-              "section": "photo_selected",
-              "text": "shortcuts.browsing.photo_selected.title"
-            },
-            {
-              "shortcuts": ["{interaction-keyboard-arrows-up-down}"],
-              "text": "shortcuts.browsing.photo_selected.sequence"
-            },
-            {
-              "section": "vertex_selected",
-              "text": "shortcuts.browsing.vertex_selected.title"
+              "section": "node_selected",
+              "text": "shortcuts.with_node_selected"
             },
             {
               "shortcuts": ["[", "↖"],
-              "text": "shortcuts.browsing.vertex_selected.previous"
+              "text": "shortcuts.command.previous_node.label"
             },
             {
               "shortcuts": ["]", "↘"],
-              "text": "shortcuts.browsing.vertex_selected.next"
+              "text": "shortcuts.command.next_node.label"
             },
             {
               "shortcuts": ["{", "⇞"],
-              "text": "shortcuts.browsing.vertex_selected.first"
+              "text": "shortcuts.command.first_node.label"
             },
             {
               "shortcuts": ["}", "⇟"],
-              "text": "shortcuts.browsing.vertex_selected.last"
+              "text": "shortcuts.command.last_node.label"
             },
             {
               "shortcuts": ["\\", "shortcuts.key.pause"],
-              "text": "shortcuts.browsing.vertex_selected.change_parent"
+              "text": "shortcuts.command.change_parent.label"
             },
             {
               "modifiers": ["⌘"],
               "shortcuts": ["{interaction-keyboard-arrows-up}"],
-              "text": "shortcuts.browsing.vertex_selected.parent"
+              "text": "shortcuts.command.select_parent.label"
             },
             {
               "section": "way_selected",
-              "text": "shortcuts.browsing.way_selected.title"
+              "text": "shortcuts.with_way_selected"
             },
             {
               "modifiers": ["⌘"],
               "shortcuts": ["{interaction-keyboard-arrows-down}"],
-              "text": "shortcuts.browsing.way_selected.child"
+              "text": "shortcuts.command.select_children.label"
+            },
+            {
+              "section": "rapid",
+              "text": "shortcuts.with_rapid_selected"
+            },
+            {
+              "shortcuts": ["shortcuts.command.accept_feature.key"],
+              "text": "shortcuts.command.accept_feature.label"
+            },
+            {
+              "shortcuts": ["shortcuts.command.ignore_feature.key"],
+              "text": "shortcuts.command.ignore_feature.label"
+            },
+            {
+              "section": "photo_selected",
+              "text": "shortcuts.with_photo_selected"
+            },
+            {
+              "shortcuts": ["{interaction-keyboard-arrows-up-down}"],
+              "text": "shortcuts.command.follow_sequence.label"
             }
           ]
         }
@@ -210,84 +137,75 @@
     },
     {
       "tab": "editing",
-      "text": "shortcuts.editing.title",
+      "text": "shortcuts.editing",
       "columns": [
         {
           "rows": [
             {
               "section": "drawing",
-              "text": "shortcuts.editing.drawing.title"
+              "text": "shortcuts.drawing"
             },
             {
-              "shortcuts": ["1"],
-              "text": "shortcuts.editing.drawing.add_point"
+              "shortcuts": ["shortcuts.command.add_point.key"],
+              "text": "shortcuts.command.add_point.label"
             },
             {
-              "shortcuts": ["2"],
-              "text": "shortcuts.editing.drawing.add_line"
+              "shortcuts": ["shortcuts.command.add_line.key"],
+              "text": "shortcuts.command.add_line.label"
             },
             {
-              "shortcuts": ["3"],
-              "text": "shortcuts.editing.drawing.add_area"
+              "shortcuts": ["shortcuts.command.add_area.key"],
+              "text": "shortcuts.command.add_area.label"
             },
             {
-              "shortcuts": ["modes.add_note.key"],
-              "text": "shortcuts.editing.drawing.add_note"
+              "shortcuts": ["shortcuts.command.add_note.key"],
+              "text": "shortcuts.command.add_note.label"
             },
             {
               "shortcuts": ["{interaction-mouse-left}", "{interaction-onefinger-tap}", "shortcuts.key.space"],
-              "text": "shortcuts.editing.drawing.place_point"
+              "text": "shortcuts.command.place_point.label"
             },
             {
               "shortcuts": ["⌥"],
-              "text": "shortcuts.editing.drawing.disable_snap"
+              "text": "shortcuts.command.disable_snap.label"
             },
             {
               "shortcuts": ["↵", "⎋"],
-              "text": "shortcuts.editing.drawing.stop_line"
+              "text": "shortcuts.command.stop_line.label"
             },
             {
               "section": "commands",
-              "text": "shortcuts.editing.commands.title"
+              "text": "shortcuts.commands"
             },
             {
               "modifiers": ["⌘"],
               "shortcuts": ["C"],
-              "text": "shortcuts.editing.commands.copy"
+              "text": "shortcuts.command.copy.label"
             },
             {
               "modifiers": ["⌘"],
               "shortcuts": ["V"],
-              "text": "shortcuts.editing.commands.paste"
+              "text": "shortcuts.command.paste.label"
             },
             {
               "modifiers": ["⌘"],
               "shortcuts": ["Z"],
-              "text": "shortcuts.editing.commands.undo"
+              "text": "shortcuts.command.undo.label"
             },
             {
               "modifiers": ["⌘", "⇧"],
               "shortcuts": ["Z"],
-              "text": "shortcuts.editing.commands.redo"
+              "text": "shortcuts.command.redo.label"
             },
             {
               "modifiers": ["⌘"],
               "shortcuts": ["S"],
-              "text": "shortcuts.editing.commands.save"
+              "text": "shortcuts.command.save.label"
             },
             {
-              "section": "rapid",
-              "text": "shortcuts.editing.rapid.title"
-            },
-            {
-              "shortcuts": ["rapid_feature_inspector.option_accept.key"],
-              "text": "shortcuts.editing.rapid.accept_feature",
-              "rapid": true
-            },
-            {
-              "shortcuts": ["rapid_feature_inspector.option_ignore.key"],
-              "text": "shortcuts.editing.rapid.ignore_feature",
-              "rapid": true
+              "modifiers": ["⌘"],
+              "shortcuts": ["F"],
+              "text": "shortcuts.command.find.label"
             }
           ]
         },
@@ -295,71 +213,70 @@
           "rows": [
             {
               "section": "operations",
-              "text": "shortcuts.editing.operations.title"
+              "text": "shortcuts.operations"
             },
             {
-              "shortcuts": ["{interaction-keyboard-arrows-all}", "operations.move.key"],
-              "text": "shortcuts.editing.operations.move"
+              "shortcuts": ["{interaction-keyboard-arrows-all}", "shortcuts.command.move.key"],
+              "text": "shortcuts.command.move.label"
             },
             {
               "modifiers": ["⇧"],
-              "shortcuts": ["{interaction-keyboard-arrows-left-right}", "operations.rotate.key"],
-              "text": "shortcuts.editing.operations.rotate"
+              "shortcuts": ["{interaction-keyboard-arrows-left-right}", "shortcuts.command.rotate.key"],
+              "text": "shortcuts.command.rotate.label"
             },
             {
-              "shortcuts": ["operations.orthogonalize.key"],
-              "text": "shortcuts.editing.operations.orthogonalize"
+              "shortcuts": ["shortcuts.command.orthogonalize.key"],
+              "text": "shortcuts.command.orthogonalize.label"
             },
             {
-              "shortcuts": ["operations.straighten.key"],
-              "text": "shortcuts.editing.operations.straighten"
+              "shortcuts": ["shortcuts.command.straighten.key"],
+              "text": "shortcuts.command.straighten.label"
             },
             {
-              "shortcuts": ["operations.circularize.key"],
-              "text": "shortcuts.editing.operations.circularize"
+              "shortcuts": ["shortcuts.command.circularize.key"],
+              "text": "shortcuts.command.circularize.label"
             },
             {
-              "shortcuts": ["operations.continue.key"],
-              "text": "shortcuts.editing.operations.continue_line"
+              "shortcuts": ["shortcuts.command.continue_line.key"],
+              "text": "shortcuts.command.continue_line.label"
             },
             {
-              "shortcuts": ["operations.merge.key"],
-              "text": "shortcuts.editing.operations.merge"
+              "shortcuts": ["shortcuts.command.merge.key"],
+              "text": "shortcuts.command.merge.label"
             },
             {
-              "shortcuts": ["operations.disconnect.key"],
-              "text": "shortcuts.editing.operations.disconnect"
+              "shortcuts": ["shortcuts.command.disconnect.key"],
+              "text": "shortcuts.command.disconnect.label"
             },
             {
-              "shortcuts": ["operations.extract.key"],
-              "text": "shortcuts.editing.operations.extract"
+              "shortcuts": ["shortcuts.command.extract.key"],
+              "text": "shortcuts.command.extract.label"
             },
             {
-              "shortcuts": ["operations.split.key"],
-              "text": "shortcuts.editing.operations.split"
+              "shortcuts": ["shortcuts.command.split.key"],
+              "text": "shortcuts.command.split.label"
             },
             {
-              "shortcuts": ["operations.reverse.key"],
-              "text": "shortcuts.editing.operations.reverse"
+              "shortcuts": ["shortcuts.command.reverse.key"],
+              "text": "shortcuts.command.reverse.label"
             },
             {
-              "shortcuts": ["operations.reflect.key.long"],
-              "text": "shortcuts.editing.operations.reflect_long"
+              "shortcuts": ["shortcuts.command.reflect_long.key"],
+              "text": "shortcuts.command.reflect_long.label"
             },
             {
-              "shortcuts": ["operations.reflect.key.short"],
-              "text": "shortcuts.editing.operations.reflect_short"
+              "shortcuts": ["shortcuts.command.reflect_short.key"],
+              "text": "shortcuts.command.reflect_short.label"
             },
             {
               "modifiers": ["⌘"],
               "shortcuts": ["⌫"],
-              "text": "shortcuts.editing.operations.delete"
+              "text": "shortcuts.command.delete.label"
             },
             {
               "modifiers": ["⇧"],
-              "shortcuts": ["operations.cycle_highway_tag.key"],
-              "text": "shortcuts.editing.operations.cycle_highway_tag",
-              "rapid": true
+              "shortcuts": ["shortcuts.command.cycle_highway_tag.key"],
+              "text": "shortcuts.command.cycle_highway_tag.label"
             }
           ]
         }
@@ -367,72 +284,156 @@
     },
     {
       "tab": "tools",
-      "text": "shortcuts.tools.title",
+      "text": "shortcuts.tools",
       "columns": [
         {
           "rows": [
             {
-              "section": "viewers",
-              "text": "shortcuts.tools.viewers.title"
+              "section": "help",
+              "text": "shortcuts.help"
             },
             {
-              "shortcuts": ["background.minimap.key"],
-              "text": "shortcuts.tools.viewers.minimap"
+              "shortcuts": ["shortcuts.command.toggle_help.key"],
+              "text": "shortcuts.command.toggle_help.label"
+            },
+            {
+              "shortcuts": ["shortcuts.command.keyboard_shortcuts.key", "?"],
+              "text": "shortcuts.command.keyboard_shortcuts.label"
+            },
+            {
+              "section": "display_options",
+              "text": "shortcuts.display_options"
+            },
+            {
+              "shortcuts": ["shortcuts.command.toggle_background.key"],
+              "text": "shortcuts.command.toggle_background.label"
             },
             {
               "modifiers": ["⌘"],
-              "shortcuts": ["background.3dmap.key"],
-              "text": "shortcuts.tools.viewers.3dmap",
-              "rapid": true
+              "shortcuts": ["shortcuts.command.background_switch.key"],
+              "text": "shortcuts.command.background_switch.label"
+            },
+            {
+              "shortcuts": ["shortcuts.command.background_previous.key"],
+              "text": "shortcuts.command.background_previous.label"
+            },
+            {
+              "shortcuts": ["shortcuts.command.background_next.key"],
+              "text": "shortcuts.command.background_next.label"
+            },
+            {
+              "shortcuts": ["shortcuts.command.toggle_map_data.key"],
+              "text": "shortcuts.command.toggle_map_data.label"
+            },
+            {
+              "shortcuts": ["shortcuts.command.toggle_issues.key"],
+              "text": "shortcuts.command.toggle_issues.label"
+            },
+            {
+              "shortcuts": ["shortcuts.command.toggle_preferences.key"],
+              "text": "shortcuts.command.toggle_preferences.label"
+            },
+            {
+              "modifiers": ["⌃", "⌘"],
+              "shortcuts": ["F"],
+              "text": "shortcuts.command.toggle_fullscreen.label"
+            },
+            {
+              "shortcuts": ["shortcuts.command.toggle_inspector.key", "`", "²"],
+              "text": "shortcuts.command.toggle_inspector.label"
+            },
+            {
+              "shortcuts": ["shortcuts.command.wireframe.key"],
+              "text": "shortcuts.command.wireframe.label"
+            },
+            {
+              "shortcuts": ["shortcuts.command.highlight_edits.key"],
+              "text": "shortcuts.command.highlight_edits.label"
+            }
+          ]
+        },
+        {
+          "rows": [
+            {
+              "section": "viewers",
+              "text": "shortcuts.viewers"
+            },
+            {
+              "shortcuts": ["shortcuts.command.toggle_minimap.key"],
+              "text": "shortcuts.command.toggle_minimap.label"
+            },
+            {
+              "modifiers": ["⌘"],
+              "shortcuts": ["shortcuts.command.toggle_3dmap.key"],
+              "text": "shortcuts.command.toggle_3dmap.label"
+            },
+            {
+              "section": "layers",
+              "text": "shortcuts.layers"
             },
             {
               "modifiers": ["⇧"],
-              "shortcuts": ["M"],
-              "text": "shortcuts.tools.viewers.mapillary"
-            },
-            { 
-              "modifiers": ["⇧"],
-              "shortcuts": ["S"],
-              "text": "shortcuts.tools.viewers.bingStreetside"
+              "shortcuts": ["shortcuts.command.toggle_all_layers.key"],
+              "text": "shortcuts.command.toggle_all_layers.label"
             },
             {
               "modifiers": ["⇧"],
-              "shortcuts": ["K"],
-              "text": "shortcuts.tools.viewers.kartaview"
+              "shortcuts": ["shortcuts.command.toggle_osm_data.key"],
+              "text": "shortcuts.command.toggle_osm_data.label"
             },
-            { 
+            {
               "modifiers": ["⇧"],
-              "shortcuts": ["D"],
-              "text": "shortcuts.tools.viewers.disableDataLayers"
+              "shortcuts": ["shortcuts.command.toggle_osm_notes.key"],
+              "text": "shortcuts.command.toggle_osm_notes.label"
+            },
+            {
+              "modifiers": ["⇧"],
+              "shortcuts": ["shortcuts.command.toggle_rapid_data.key"],
+              "text": "shortcuts.command.toggle_rapid_data.label"
+            },
+            {
+              "modifiers": ["⇧"],
+              "shortcuts": ["shortcuts.command.toggle_mapillary.key"],
+              "text": "shortcuts.command.toggle_mapillary.label"
+            },
+            {
+              "modifiers": ["⇧"],
+              "shortcuts": ["shortcuts.command.toggle_streetside.key"],
+              "text": "shortcuts.command.toggle_streetside.label"
+            },
+            {
+              "modifiers": ["⇧"],
+              "shortcuts": ["shortcuts.command.toggle_kartaview.key"],
+              "text": "shortcuts.command.toggle_kartaview.label"
             },
             {
               "section": "info",
-              "text": "shortcuts.tools.info.title"
+              "text": "shortcuts.info"
             },
             {
               "modifiers": ["⌘"],
-              "shortcuts": ["info_panels.key"],
-              "text": "shortcuts.tools.info.all"
+              "shortcuts": ["shortcuts.command.toggle_all_cards.key"],
+              "text": "shortcuts.command.toggle_all_cards.label"
             },
             {
               "modifiers": ["⌘", "⇧"],
-              "shortcuts": ["info_panels.background.key"],
-              "text": "shortcuts.tools.info.background"
+              "shortcuts": ["shortcuts.command.toggle_background_card.key"],
+              "text": "shortcuts.command.toggle_background_card.label"
             },
             {
               "modifiers": ["⌘", "⇧"],
-              "shortcuts": ["info_panels.history.key"],
-              "text": "shortcuts.tools.info.history"
+              "shortcuts": ["shortcuts.command.toggle_history_card.key"],
+              "text": "shortcuts.command.toggle_history_card.label"
             },
             {
               "modifiers": ["⌘", "⇧"],
-              "shortcuts": ["info_panels.location.key"],
-              "text": "shortcuts.tools.info.location"
+              "shortcuts": ["shortcuts.command.toggle_location_card.key"],
+              "text": "shortcuts.command.toggle_location_card.label"
             },
             {
               "modifiers": ["⌘", "⇧"],
-              "shortcuts": ["info_panels.measurement.key"],
-              "text": "shortcuts.tools.info.measurement"
+              "shortcuts": ["shortcuts.command.toggle_measurement_card.key"],
+              "text": "shortcuts.command.toggle_measurement_card.label"
             }
           ]
         }

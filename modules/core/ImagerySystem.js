@@ -575,7 +575,10 @@ export class ImagerySystem extends AbstractSystem {
   set brightness(val = 1) {
     if (val === this._brightness) return;  // no change
     this._brightness = val;
-    this.context.scene().layers.get('background')?.setBrightness(val);
+
+    const context = this.context;
+    const scene = context.systems.gfx.scene;
+    scene.layers.get('background')?.setBrightness(val);
     this.emit('imagerychange');
   }
 
@@ -589,7 +592,10 @@ export class ImagerySystem extends AbstractSystem {
   set contrast(val = 1) {
     if (val === this._contrast) return;  // no change
     this._contrast = val;
-    this.context.scene().layers.get('background')?.setContrast(val);
+
+    const context = this.context;
+    const scene = context.systems.gfx.scene;
+    scene.layers.get('background')?.setContrast(val);
     this.emit('imagerychange');
   }
 
@@ -603,7 +609,10 @@ export class ImagerySystem extends AbstractSystem {
   set saturation(val = 1) {
     if (val === this._saturation) return;  // no change
     this._saturation = val;
-    this.context.scene().layers.get('background')?.setSaturation(val);
+
+    const context = this.context;
+    const scene = context.systems.gfx.scene;
+    scene.layers.get('background')?.setSaturation(val);
     this.emit('imagerychange');
   }
 
@@ -617,7 +626,10 @@ export class ImagerySystem extends AbstractSystem {
   set sharpness(val = 1) {
     if (val === this._sharpness) return;  // no change
     this._sharpness = val;
-    this.context.scene().layers.get('background')?.setSharpness(val);
+
+    const context = this.context;
+    const scene = context.systems.gfx.scene;
+    scene.layers.get('background')?.setSharpness(val);
     this.emit('imagerychange');
   }
 

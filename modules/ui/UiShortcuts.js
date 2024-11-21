@@ -51,7 +51,7 @@ export class UiShortcuts {
     this.render = this.render.bind(this);
 
     const l10n = context.systems.l10n;
-    this.keys = [l10n.t('shortcuts.toggle.key'), '?'];
+    this.keys = [l10n.t('shortcuts.command.keyboard_shortcuts.key'), '?'];
     context.keybinding().on(this.keys, this.toggle);
   }
 
@@ -119,18 +119,18 @@ export class UiShortcuts {
       .text(d => l10n.t(d.text));
 
 
-    const $$shortcutsSection = $$wrapper
+    const $$content = $$wrapper
       .append('div')
-      .attr('class', 'shortcuts-section');
+      .attr('class', 'shortcuts-content');
 
-    const tabsEnter = $$shortcutsSection
+    const $$tabs = $$content
       .selectAll('.shortcut-tab')
       .data(this._dataShortcuts)
       .enter()
       .append('div')
       .attr('class', d => `shortcut-tab shortcut-tab-${d.tab}`);
 
-    const $$columns = tabsEnter
+    const $$columns = $$tabs
       .selectAll('.shortcut-column')
       .data(d => d.columns)
       .enter()
@@ -155,7 +155,8 @@ export class UiShortcuts {
     // +-----------------------+-----------------------+
 
     $$sectionRow
-      .append('td');  // empty
+      .append('td')  // empty
+      .attr('class', 'shortcut-keys');
 
     $$sectionRow
       .append('td')
@@ -195,6 +196,7 @@ export class UiShortcuts {
 
           $$selection
             .append('span')
+            .attr('class', 'shortcut-separator')
             .text('+');
         }
 
@@ -261,7 +263,8 @@ export class UiShortcuts {
           if (i < arr.length - 1) {
             $$selection
               .append('span')
-              .text('\u00a0' + l10n.t('shortcuts.or') + '\u00a0');
+              .attr('class', 'shortcut-separator')
+              .text(l10n.t('shortcuts.or'));
           }
         }
 
@@ -269,6 +272,7 @@ export class UiShortcuts {
         if (d.gesture) {
           $$selection
             .append('span')
+            .attr('class', 'shortcut-separator')
             .text('+');
 
           $$selection
@@ -282,7 +286,7 @@ export class UiShortcuts {
     $$shortcutRow
       .append('td')
       .attr('class', 'shortcut-desc')
-      .text(d => d.text ? l10n.t(d.text) : '\u00a0');
+      .text(d => d.text ? l10n.t(d.text) : '\u00a0');   // \u00a0 = &nbsp;
 
 
     // Update

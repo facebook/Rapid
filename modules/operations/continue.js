@@ -73,7 +73,7 @@ export function operationContinue(context, selectedIDs) {
 
 
   operation.id = 'continue';
-  operation.keys = [ l10n.t('operations.continue.key') ];
+  operation.keys = [ l10n.t('shortcuts.command.continue_line.key') ];
   operation.title = l10n.t('operations.continue.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 

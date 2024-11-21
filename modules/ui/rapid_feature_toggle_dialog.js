@@ -71,7 +71,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
 
   function keyPressHandler(d3_event) {
-    if (d3_event.shiftKey && d3_event.key === l10n.t('map_data.layers.rapid.key')) {
+    if (d3_event.shiftKey && d3_event.key === l10n.t('shortcuts.command.toggle_rapid_data.key')) {
       toggleRapid();
     }
   }

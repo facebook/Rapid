@@ -5,7 +5,7 @@ import {
 } from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
-import { utilCmd, utilTotalExtent } from '../util/index.js';
+import { utilTotalExtent } from '../util/index.js';
 
 const TILESIZE = 256;
 const MIN_Z = 2;
@@ -277,37 +277,18 @@ export class MapSystem extends AbstractSystem {
    */
   _setupKeybinding() {
     const context = this.context;
-    const gfx = context.systems.gfx;
     const l10n = context.systems.l10n;
 
-    const wireframeKey = l10n.t('area_fill.wireframe.key');
-    const toggleOsmKey = utilCmd('⇧' + l10n.t('map_data.layers.osm.key'));
-    const toggleNotesKey = utilCmd('⇧' + l10n.t('map_data.layers.notes.key'));
-    const highlightEditsKey = l10n.t('map_data.highlight_edits.key');
+    const wireframeKey = l10n.t('shortcuts.command.wireframe.key');
+    const highlightEditsKey = l10n.t('shortcuts.command.highlight_edits.key');
 
-    context.keybinding().off([wireframeKey, toggleOsmKey, highlightEditsKey]);
+    context.keybinding().off([wireframeKey, highlightEditsKey]);
 
     context.keybinding()
       .on(wireframeKey, e => {
         e.preventDefault();
         e.stopPropagation();
         this.wireframeMode = !this.wireframeMode;
-      })
-      .on(toggleOsmKey, e => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        // Don't disappear the OSM data while drawing - iD#6584
-        const mode = context.mode;
-        if (mode && /^draw/.test(mode.id)) return;
-
-        gfx.scene.toggleLayers('osm');
-        context.enter('browse');
-      })
-      .on(toggleNotesKey, e => {
-        e.preventDefault();
-        e.stopPropagation();
-        gfx.scene.toggleLayers('notes');
       })
       .on(highlightEditsKey, e => {
         e.preventDefault();

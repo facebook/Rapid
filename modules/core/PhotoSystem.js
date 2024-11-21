@@ -45,7 +45,6 @@ export class PhotoSystem extends AbstractSystem {
     this._hashchange = this._hashchange.bind(this);
     this._layerchange = this._layerchange.bind(this);
     this._photoChanged = this._photoChanged.bind(this);
-    this._keydown = this._keydown.bind(this);
   }
 
 
@@ -79,62 +78,7 @@ export class PhotoSystem extends AbstractSystem {
         // Setup event handlers..
         urlhash.on('hashchange', this._hashchange);
         gfx.scene.on('layerchange', this._layerchange);
-        const wireframeKey = '⇧M';
-        const toggleOsmKey = '⇧S';
-        const toggleNotesKey = '⇧K';
-        context.keybinding()
-        .on(wireframeKey, e => {
-          e.preventDefault();
-          this.toggleLayer('mapillary');
-        })
-        .on(toggleOsmKey, e => {
-          e.preventDefault();
-          this.toggleLayer('streetside');
-        })
-        .on(toggleNotesKey, e => {
-          e.preventDefault();
-          this.toggleLayer('kartaview');
-        });
       });
-  }
-
-
-  /**
-   * _keydown
-   * Handles keydown events to toggle photo layers.
-   * @param {KeyboardEvent} e - The keyboard event.
-   */
-  _keydown(e) {
-    if (e.shiftKey && e.key === 'M') {
-      e.preventDefault();
-      this.toggleLayer('mapillary');
-    } else if (e.shiftKey && e.key === 'S') {
-      e.preventDefault();
-      this.toggleLayer('streetside');
-    } else if (e.shiftKey && e.key === 'K') {
-      e.preventDefault();
-      this.toggleLayer('kartaview');
-    }
-  }
-
-
-  /**
-   * toggleLayer
-   * Toggles the specified photo layer on or off.
-   * @param {string} layerID - The ID of the layer to toggle.
-   */
-  toggleLayer(layerID) {
-    const scene = this.context.systems.gfx.scene;
-    const layer = scene.layers.get(layerID);
-    if (layer) {
-      layer.enabled = !layer.enabled;
-      this._photoChanged();
-      if (layer.enabled) {
-        this.selectPhoto(layerID);
-      } else {
-        this.selectPhoto(); // Deselect if turned off
-      }
-    }
   }
 
 
@@ -705,7 +649,9 @@ export class PhotoSystem extends AbstractSystem {
    * @return {boolean}  `true` if enabled, `false` if not
    */
   isLayerEnabled(layerID) {
-    const layer = this.context.scene().layers.get(layerID);
+    const context = this.context;
+    const scene = context.systems.gfx.scene;
+    const layer = scene.layers.get(layerID);
     return layer?.enabled;
   }
 

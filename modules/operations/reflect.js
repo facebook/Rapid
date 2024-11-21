@@ -100,7 +100,7 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
   };
 
   operation.id = `reflect-${axis}`;
-  operation.keys = [ l10n.t(`operations.reflect.key.${axis}`) ];
+  operation.keys = [ l10n.t(`shortcuts.command.reflect_${axis}.key`) ];
   operation.title = l10n.t(`operations.reflect.title.${axis}`);
   operation.behavior = new KeyOperationBehavior(context, operation);
 

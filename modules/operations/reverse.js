@@ -76,7 +76,7 @@ export function operationReverse(context, selectedIDs) {
 
 
   operation.id = 'reverse';
-  operation.keys = [ l10n.t('operations.reverse.key') ];
+  operation.keys = [ l10n.t('shortcuts.command.reverse.key') ];
   operation.title = l10n.t('operations.reverse.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 

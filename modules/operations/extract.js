@@ -111,7 +111,7 @@ export function operationExtract(context, selectedIDs) {
 
 
   operation.id = 'extract';
-  operation.keys = [ l10n.t('operations.extract.key') ];
+  operation.keys = [ l10n.t('shortcuts.command.extract.key') ];
   operation.title = l10n.t('operations.extract.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 

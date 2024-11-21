@@ -153,7 +153,7 @@ export class UiSidebar {
       .call(this.Tooltip
         .placement(dir === 'rtl' ? 'right' : 'left')  // place on the sidebar side (i.e. don't cover the map)
         .title(l10n.t('inspector.tooltip'))
-        .shortcut(l10n.t('inspector.key'))
+        .shortcut(l10n.t('shortcuts.command.toggle_inspector.key'))
       );
 
     $sidebar
@@ -166,7 +166,7 @@ export class UiSidebar {
     this.$inspector = $sidebar.select('.inspector-wrap');
 
 // figure out a better way to rebind this if locale changes
-    const keys = [l10n.t('inspector.key'), '`', '²', '@'];  // iD#5663, iD#6864 - common QWERTY, AZERTY
+    const keys = [l10n.t('shortcuts.command.toggle_inspector.key'), '`', '²', '@'];  // iD#5663, iD#6864 - common QWERTY, AZERTY
     context.keybinding().off(keys);
     context.keybinding().on(keys, this.toggle);
   }

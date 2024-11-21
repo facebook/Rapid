@@ -4911,50 +4911,46 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
   }
 }
 
-.modal-shortcuts .shortcut-tab {
+.shortcut-tab {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
 }
 
-.modal-shortcuts .shortcut-column {
+.shortcut-column {
   width: auto;
+  height: 0;
+  margin-bottom: 20px;
 }
 
-.modal-shortcuts .shortcut-tab-tools .shortcut-column {
-  flex: 1 1 100%;
-  width: 100%;
+.shortcut-row {
 }
 
-.modal-shortcuts td {
+.shortcut-row > td {
   padding-bottom: 3px;
 }
 
-.modal-shortcuts .shortcut-section {
-  padding: 20px 0 3px 0;
+.shortcut-row > .shortcut-section {
+  padding: 15px 0 5px 0;
 }
 
-.modal-shortcuts .shortcut-keys {
+.shortcut-keys {
   padding: 0 10px;
   color: #767676;
   text-align: right;
   white-space: nowrap;
 }
-.ideditor[dir='rtl'] .modal-shortcuts .shortcut-keys {
+.ideditor[dir='rtl'] .shortcut-keys {
   text-align: left;
 }
 
-.modal-shortcuts .shortcut-keys kbd {
+.shortcut-keys kbd {
   color: #555;
+  margin: unset;
 }
-.modal-shortcuts .shortcut-keys svg {
+.shortcut-separator {
   margin: 0 3px;
 }
-.modal-shortcuts .shortcut-keys .gesture {
-  color: #333;
-  margin: 0 3px;
-}
-
 
 /* Settings Modals (custom background, custom data)
 ------------------------------------------------------- */

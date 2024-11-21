@@ -292,11 +292,11 @@ export function uiRapidFeatureInspector(context, keybinding) {
         shortcut = '';
       } else {
         title = l10n.t('rapid_feature_inspector.option_accept.tooltip');
-        shortcut = l10n.t('rapid_feature_inspector.option_accept.key');
+        shortcut = l10n.t('shortcuts.command.accept_feature.key');
       }
     } else if (d.key === 'ignore') {
       title = l10n.t('rapid_feature_inspector.option_ignore.tooltip');
-      shortcut = l10n.t('rapid_feature_inspector.option_ignore.key');
+      shortcut = l10n.t('shortcuts.command.ignore_feature.key');
     }
 
     if (title) {
@@ -334,8 +334,8 @@ export function uiRapidFeatureInspector(context, keybinding) {
   };
 
   if (keybinding) {
-    const acceptKey = l10n.t('rapid_feature_inspector.option_accept.key');
-    const ignoreKey = l10n.t('rapid_feature_inspector.option_ignore.key');
+    const acceptKey = l10n.t('shortcuts.command.accept_feature.key');
+    const ignoreKey = l10n.t('shortcuts.command.ignore_feature.key');
     keybinding().off([acceptKey, ignoreKey]);
     keybinding().on(acceptKey, onAcceptFeature);
     keybinding().on(ignoreKey, onIgnoreFeature);

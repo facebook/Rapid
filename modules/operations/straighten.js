@@ -148,7 +148,7 @@ export function operationStraighten(context, selectedIDs) {
 
 
   operation.id = 'straighten';
-  operation.keys = [ l10n.t('operations.straighten.key') ];
+  operation.keys = [ l10n.t('shortcuts.command.straighten.key') ];
   operation.title = l10n.t('operations.straighten.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 

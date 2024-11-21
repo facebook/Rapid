@@ -130,7 +130,7 @@ export function operationOrthogonalize(context, selectedIDs) {
 
 
   operation.id = 'orthogonalize';
-  operation.keys = [ l10n.t('operations.orthogonalize.key') ];
+  operation.keys = [ l10n.t('shortcuts.command.orthogonalize.key') ];
   operation.title = l10n.t('operations.orthogonalize.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 

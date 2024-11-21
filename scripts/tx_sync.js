@@ -181,7 +181,7 @@ async function getiDSourceStrings() {
   return getCollection(iter)
     .then(vals => {
       for (const val of vals) {
-        keys_id.set(val.attributes.key, val.id);  // e.g. 'operations.merge.key' -> 's:68bc25087df5d9870b5a1da54ca7e72d'
+        keys_id.set(val.attributes.key, val.id);  // e.g. 'icons.download' -> 's:9e6b7e75e8405d21eb9c2458ab412b18'
         sources_id.set(val.id, val);
       }
     });
@@ -206,9 +206,9 @@ async function getRapidSourceStrings() {
 function findSameSourceStrings() {
   console.log(chalk.yellow(`🔦  Finding source strings that are the same…`));
 
-  // Note: 'keys' are our identifiers, like 'operations.merge.key'
-  // use `keys_id` and `keys_rapid` to get the Transifex identifiers, like 's:68bc25087df5d9870b5a1da54ca7e72d'
-  // use `sources_id` and `sources_rapid` to get to the actual source strings.
+  // Note: 'keys' are our identifiers, like 'icons.download'
+  // use `keys_id` and `keys_rapid` to get the Transifex identifiers, like 's:9e6b7e75e8405d21eb9c2458ab412b18'
+  // use `sources_id` and `sources_rapid` to get to the actual source strings, like "download"
   for (const [key, stringID_id] of keys_id) {
     const stringID_rapid = keys_rapid.get(key);
     if (!stringID_id || !stringID_rapid) continue;

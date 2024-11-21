@@ -234,7 +234,7 @@ export class Map3dSystem extends AbstractSystem {
   _setupKeybinding() {
     const context = this.context;
     const l10n = context.systems.l10n;
-    const toggleKey = utilCmd('⌘' + l10n.t('background.3dmap.key'));
+    const toggleKey = utilCmd('⌘' + l10n.t('shortcuts.command.toggle_3dmap.key'));
 
     context.keybinding().off(toggleKey);
     context.keybinding().on(toggleKey, this.toggle);

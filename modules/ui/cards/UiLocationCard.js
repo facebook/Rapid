@@ -34,7 +34,7 @@ export class UiLocationCard extends AbstractUiCard {
     // Event listeners
     eventManager.on('pointermove', this.rerender);
 
-    this.key = utilCmd('⌘⇧' + l10n.t('info_panels.location.key'));
+    this.key = utilCmd('⌘⇧' + l10n.t('shortcuts.command.toggle_location_card.key'));
     context.keybinding().on(this.key, this.toggle);
   }
 

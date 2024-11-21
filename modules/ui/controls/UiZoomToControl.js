@@ -18,7 +18,7 @@ export class UiZoomToControl {
 
     const l10n = context.systems.l10n;
 
-    this.key = l10n.t('inspector.zoom_to.key');
+    this.key = l10n.t('shortcuts.command.zoom_to.key');
     this._prevTransform = null;   // After a zoom in, the previous transform to zoom back out
 
     // Create child components

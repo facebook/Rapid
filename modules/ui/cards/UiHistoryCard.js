@@ -37,7 +37,7 @@ export class UiHistoryCard extends AbstractUiCard {
     map.on('draw', this.deferredRender);
     context.on('modechange', this.rerender);
 
-    this.key = utilCmd('⌘⇧' + l10n.t('info_panels.history.key'));
+    this.key = utilCmd('⌘⇧' + l10n.t('shortcuts.command.toggle_history_card.key'));
     context.keybinding().on(this.key, this.toggle);
   }
 

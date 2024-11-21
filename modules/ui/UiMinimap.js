@@ -424,7 +424,7 @@ export class UiMinimap {
     if (!gfx.pixi || !gfx.textures)  return Promise.reject();  // called too early?
 
     // event handlers
-    const key = l10n.t('background.minimap.key');
+    const key = l10n.t('shortcuts.command.toggle_minimap.key');
     context.keybinding().on(key, this.toggle);
     gfx.on('draw', this.drawMinimap);
 

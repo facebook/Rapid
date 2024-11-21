@@ -62,7 +62,7 @@ export class UiMeasurementCard extends AbstractUiCard {
     map.on('draw', this.rerender);
     context.on('modechange', this.rerender);
 
-    this.key = utilCmd('⌘⇧' + l10n.t('info_panels.measurement.key'));
+    this.key = utilCmd('⌘⇧' + l10n.t('shortcuts.command.toggle_measurement_card.key'));
     context.keybinding().on(this.key, this.toggle);
   }
 

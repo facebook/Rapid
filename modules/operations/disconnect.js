@@ -223,7 +223,7 @@ export function operationDisconnect(context, selectedIDs) {
 
 
   operation.id = 'disconnect';
-  operation.keys = [ l10n.t('operations.disconnect.key') ];
+  operation.keys = [ l10n.t('shortcuts.command.disconnect.key') ];
   operation.title = l10n.t('operations.disconnect.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 

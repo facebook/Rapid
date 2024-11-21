@@ -27,6 +27,7 @@ en:
     labeled_and_more:
       one: "{labeled} and {count} more"
       other: "{labeled} and {count} more"
+
   modes:
     add_area:
       title: Area
@@ -40,7 +41,6 @@ en:
     add_note:
       title: Note
       description: "Spotted an issue? Let other mappers know."
-      key: 'N'
     add_preset:
       title: "Add {feature}"
     browse:
@@ -48,6 +48,7 @@ en:
       description: Pan and zoom the map.
     drag_node:
       connected_to_hidden: This can't be edited because it is connected to a hidden feature.
+
   operations:
     add:
       annotation:
@@ -60,7 +61,6 @@ en:
         line: Started a line.
         area: Started an area.
     continue:
-      key: A
       title: Continue
       description: Continue this line.
       not_eligible: No line can be continued here.
@@ -101,7 +101,6 @@ en:
       description:
         single: Make this feature circular.
         multiple: Make these features circular.
-      key: O
       annotation:
         feature:
           one: Made a feature circular.
@@ -132,7 +131,6 @@ en:
         feature:
           single: Square the corners of this feature.
           multiple: Square the corners of these features.
-      key: Q
       annotation:
         corner:
           one: Squared a corner.
@@ -166,7 +164,6 @@ en:
         points: Straighten these points.
         line: Straighten this line.
         lines: Straighten these lines.
-      key: S
       annotation:
         point:
           one: Straightened a point.
@@ -289,7 +286,6 @@ en:
             line: Disconnect the selected line at these points.
             area: Disconnect the selected area at these points.
           multiple_ways: Disconnect the selected features at these points.
-      key: D
       annotation:
         features: Disconnected features.
         from_each_other: Disconnected features from each other.
@@ -303,7 +299,6 @@ en:
     merge:
       title: Merge
       description: Merge these features.
-      key: C
       annotation:
         one: "Merged a feature."
         other: "Merged {n} features."
@@ -321,7 +316,6 @@ en:
       description:
         single: Move this feature to a different location.
         multiple: Move these features to a different location.
-      key: M
       annotation:
         point: Moved a point.
         vertex: Moved a node in a way.
@@ -354,9 +348,6 @@ en:
         short:
           single: Flip this feature across its short axis.
           multiple: Flip these features across their short axis.
-      key:
-        long: T
-        short: "Y"
       annotation:
         long:
           feature:
@@ -383,7 +374,6 @@ en:
       description:
         single: Rotate this feature around its center point.
         multiple: Rotate these features around their center point.
-      key: R
       annotation:
         line: Rotated a line.
         area: Rotated an area.
@@ -411,7 +401,6 @@ en:
         line: Make this line go in the opposite direction.
         lines: Make these lines go in the opposite direction.
         features: Flip the directions of these features.
-      key: V
       annotation:
         point:
           one: Reversed a point.
@@ -465,7 +454,6 @@ en:
           multiple:
             single_node: Divide these features at this point.
             multiple_node: Divide these features at these points.
-      key: X
       annotation:
         line:
           one: "Split a line."
@@ -484,7 +472,6 @@ en:
         delete: Deleted a turn restriction
     extract:
       title: Extract
-      key: E
       description:
         vertex:
           single: Extract this point from its parent lines/areas.
@@ -508,10 +495,10 @@ en:
         multiple: Points can't be extracted from these features because some are connected to hidden features.
     cycle_highway_tag:
       title: Cycle Highway Tag
-      key: C
       description: Shortcut to cycle selected highway or crosswalk through several different tags.
       highway_annotation: Changed highway tag of selected way.
       crosswalk_annotation: Changed crosswalk tag of selected way.
+
   restriction:
     controls:
       distance: Distance
@@ -578,6 +565,7 @@ en:
       ratelimit: You have downloaded too much data from OpenStreetMap. Please try again in {seconds} seconds or switch accounts.
       local_storage_full: You have made too many edits to back up. Consider saving your changes now.
     retry: Retry
+
   commit:
     title: Upload to OpenStreetMap
     upload_explanation: "The changes you upload will be visible on all maps that use OpenStreetMap data."
@@ -605,12 +593,10 @@ en:
       one: "Edits by {users} and {count} other"
       other: "Edits by {users} and {count} others"
   info_panels:
-    key: I
     selected:
       one: "{n} selected"
       other: "{n} selected"
     background:
-      key: B
       title: Background
       zoom: Zoom
       vintage: Vintage
@@ -621,7 +607,6 @@ en:
       show_tiles: Show Tiles
       hide_tiles: Hide Tiles
     history:
-      key: H
       title: History
       no_history: "No History (New Feature)"
       version: Version
@@ -635,11 +620,9 @@ en:
       note_created_user: Created By
       note_link_text: Note on openstreetmap.org
     location:
-      key: L
       title: Location
       unknown_location: Unknown Location
     measurement:
-      key: M
       title: Measurement
       geometry: Geometry
       closed_line: closed line
@@ -665,15 +648,12 @@ en:
     search: Search worldwide...
     no_results_worldwide: No results found
   geolocate:
-    key: L
     title: Show My Location
     locating: "Locating, please wait..."
     location_unavailable: Your location is unavailable.
   inspector:
-    key: '`'
     tooltip: Toggle the feature inspector.
     zoom_to:
-      key: Z
       title: Zoom To Selection
       no_selection: Nothing to zoom to.
     show_more: Show More
@@ -749,12 +729,12 @@ en:
       network_ref_direction: "{network} {ref} {direction}"
       network_ref_from_to: "{network} {ref} from {from} to {to}"
       network_ref_from_to_via: "{network} {ref} from {from} to {to} via {via}"
-    first_seen: "First Seen"
-    last_seen: "Last Seen"
+    first_seen: First Seen
+    last_seen: Last Seen
+
   background:
     title: Background
     description: Background Settings
-    key: B
     backgrounds: Backgrounds
     none: None
     best_imagery: Best known imagery source for this location
@@ -781,11 +761,9 @@ en:
     3dmap:
       description: Show 3D map
       tooltip: Show an inset 3D map.
-      key: '/'
     minimap:
       description: Show Minimap
       tooltip: Show a zoomed out map to help locate the area currently displayed.
-      key: '/'
     panel:
       description: Show Background Panel
       tooltip: Show advanced background information.
@@ -794,29 +772,22 @@ en:
       tooltip: Show coordinates and regional details.
     fix_misalignment: Imagery Offset
     offset: "Drag anywhere in the gray area below to adjust the imagery offset, or enter the offset values in meters."
-    next_background:
-      key: '.'
-    previous_background:
-      key: ','
+
   map_data:
     title: Map Data
     description: Map Data
-    key: F
     data_layers: Data Layers
     layers:
       osm:
         tooltip: Map data from OpenStreetMap
         title: OpenStreetMap Data
         feature: OpenStreetMap Feature
-        key: O
       notes:
         tooltip: Note data from OpenStreetMap
         title: OpenStreetMap Notes
-        key: 'N'
       rapid:
         tooltip: Suggested features detected from machine learning and open data that can be used to improve OpenStreetMap
         title: Rapid Features
-        key: R
       maproulette:
         tooltip: Tasks from maproulette.org.  You can also enter a comma-separated list of challenge IDs to filter.
         title:
@@ -858,33 +829,34 @@ en:
       title: Show Measurement Panel
       tooltip: Show geometry values for the selection.
     style_options: Style Options
-    highlight_edits:
-      key: G
     autohidden: "These features have been automatically hidden because too many would be shown on the screen.  You can zoom in to edit them."
     osmhidden: "These features have been automatically hidden because the OpenStreetMap layer is hidden."
+
   visual_diff:
     highlight_edits:
       description: Highlight Changes
       tooltip: Outline edited features
+
   photo_overlays:
     title: Photo Overlays
     photo_type:
       flat:
-        title: "Flat Photos"
-        tooltip: "Traditional photos"
+        title: Flat Photos
+        tooltip: Traditional photos
       panoramic:
-        title: "Panoramic Photos"
-        tooltip: "360° photos"
+        title: Panoramic Photos
+        tooltip: 360° photos
     date_filter:
       fromDate:
-        title: "From"
-        tooltip: "Show photos taken after this date"
+        title: From
+        tooltip: Show photos taken after this date
       toDate:
-        title: "To"
-        tooltip: "Show photos taken before this date"
+        title: To
+        tooltip: Show photos taken before this date
     username_filter:
-      title: "Username"
-      tooltip: "Show only photos by this user"
+      title: Username
+      tooltip: Show only photos by this user
+
   filters:
     title: Filters
     active: "Some features are filtered:"
@@ -892,63 +864,64 @@ en:
       manual: "{features} are filtered. Enable them in the Map Data pane."
     points:
       description: Points
-      tooltip: "Points of Interest"
+      tooltip: Points of Interest
     traffic_roads:
       description: Traffic Roads
-      tooltip: "Highways, Streets, etc."
+      tooltip: Highways, Streets, etc.
     service_roads:
       description: Service Roads
-      tooltip: "Service Roads, Parking Aisles, Tracks, etc."
+      tooltip: Service Roads, Parking Aisles, Tracks, etc.
     paths:
       description: Paths
-      tooltip: "Sidewalks, Foot Paths, Cycle Paths, etc."
+      tooltip: Sidewalks, Foot Paths, Cycle Paths, etc.
     buildings:
       description: Buildings
-      tooltip: "Buildings, Shelters, Garages, etc."
+      tooltip: Buildings, Shelters, Garages, etc.
     building_parts:
       description: Building Parts
-      tooltip: "3D Building and Roof Components"
+      tooltip: 3D Building and Roof Components
     indoor:
       description: Indoor Features
-      tooltip: "Rooms, Corridors, Stairwells, etc."
+      tooltip: Rooms, Corridors, Stairwells, etc.
     landuse:
       description: Landuse Features
-      tooltip: "Forests, Farmland, Parks, Residential, Commercial, etc."
+      tooltip: Forests, Farmland, Parks, Residential, Commercial, etc.
     boundaries:
       description: Boundaries
-      tooltip: "Administrative Boundaries"
+      tooltip: Administrative Boundaries
     water:
       description: Water Features
-      tooltip: "Rivers, Lakes, Ponds, Basins, etc."
+      tooltip: Rivers, Lakes, Ponds, Basins, etc.
     rail:
       description: Rail Features
-      tooltip: "Railways"
+      tooltip: Railways
     pistes:
       description: Pistes
-      tooltip: "Ski Slopes, Sled Runs, Ice Skating Trails, etc."
+      tooltip: Ski Slopes, Sled Runs, Ice Skating Trails, etc.
     aerialways:
       description: Aerial Features
-      tooltip: "Chair Lifts, Gondolas, Zip Lines, etc."
+      tooltip: Chair Lifts, Gondolas, Zip Lines, etc.
     power:
       description: Power Features
-      tooltip: "Power Lines, Power Plants, Substations, etc."
+      tooltip: Power Lines, Power Plants, Substations, etc.
     past_future:
       description: Past/Future Features
-      tooltip: "Proposed, Construction, Abandoned, Demolished, etc."
+      tooltip: Proposed, Construction, Abandoned, Demolished, etc.
     others:
       description: Other Features
-      tooltip: "Everything Else"
+      tooltip: Everything Else
+
   area_fill:
     wireframe:
       description: No Fill (Wireframe)
-      tooltip: "Enabling wireframe mode makes it easy to see the background imagery."
-      key: W
+      tooltip: Enabling wireframe mode makes it easy to see the background imagery.
     partial:
       description: Partial Fill
-      tooltip: "Areas are drawn with fill only around their inner edges. (Recommended for beginner mappers)"
+      tooltip: Areas are drawn with fill only around their inner edges. (Recommended for beginner mappers)
     full:
       description: Full Fill
-      tooltip: "Areas are drawn fully filled."
+      tooltip: Areas are drawn fully filled.
+
   settings:
     custom_background:
       tooltip: Edit custom background
@@ -992,10 +965,10 @@ en:
         example_xyz: "https://example.com/{z}/{x}/{y}.mvt?access_token=123"
         example_pmtiles: "https://example.com/buildings.pmtiles"
         placeholder: Enter a url
+
   preferences:
     title: Preferences
     description: Preferences
-    key: P
     privacy:
       title: Privacy
       privacy_link: View the Rapid privacy policy
@@ -1029,11 +1002,13 @@ en:
       deuteranopia: Deuteranopia
       tritanopia: Tritanopia
       placeholder: Select colorblind mode
+
   restore:
     heading: You have unsaved changes
     description: "Do you wish to restore unsaved changes from a previous editing session?"
     restore: Restore my changes
     reset: Discard my changes
+
   save:
     title: Save
     help: "Review your changes and upload them to OpenStreetMap, making them visible to other users."
@@ -1056,10 +1031,12 @@ en:
       download_changes: Or download osmChange file
       done: "All conflicts resolved!"
       help: "Another user changed some of the same map features you changed. Click on each feature below for more details about the conflict, and choose whether to keep your changes or the other user's changes."
+
   download_osc:
     title: Download
-    help: "Download current changes to the map in an osc file."
+    help: Download current changes to the map in an osc file.
     no_changes: No changes to download.
+
   merge_remote_changes:
     conflict:
       deleted: 'This feature has been deleted by {user}.'
@@ -1067,9 +1044,10 @@ en:
       nodelist: 'Nodes were changed by both you and {user}.'
       memberlist: 'Relation members were changed by both you and {user}.'
       tags: 'You changed the <b>{tag}</b> tag to "{local}" and {user} changed it to "{remote}".'
+
   success:
-    just_edited: "You just edited OpenStreetMap!"
-    thank_you: "Thank you for improving the map."
+    just_edited: You just edited OpenStreetMap!
+    thank_you: Thank you for improving the map.
     thank_you_location: "Thank you for improving the map around {where}."
     thank_you_where:
       format: "{place}{separator}{region}"
@@ -1083,11 +1061,12 @@ en:
     more: More
     events: Events
     languages: "Languages: {languages}"
-    missing: "Is something missing from this list?"
-    tell_us: "Tell us!"
+    missing: Is something missing from this list?
+    tell_us: Tell us!
+
   confirm:
-    okay: "OK"
-    cancel: "Cancel"
+    okay: OK
+    cancel: Cancel
   splash:
     welcome: "Welcome to {rapidicon}!"
     text: "Rapid is a friendly but powerful editor for OpenStreetMap, a free map of the world. If this is your first time here, click the button below to start the tutorial. Anyone can be a mapper!\n\nThis is Rapid version **{version}**. For more information visit our [changelog](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new) and [issue tracker](https://github.com/facebook/Rapid/issues) on GitHub. Happy Mapping! 👍"
@@ -1114,8 +1093,9 @@ en:
   rapid_first_edit:
     nice: You just added your first {rapidicon} AI-Assisted feature, nice.
     text: You'll need an OpenStreetMap account to save your work. Would you like to log in with OSM now or keep exploring?
-    exploring: "I'm just exploring"
-    login_with_osm: "Log in with OSM"
+    exploring: I'm just exploring
+    login_with_osm: Log in with OSM
+
   rapid_feature_inspector:
     prompt: How would you like to proceed with this selected feature?
     tags: Tags
@@ -1126,13 +1106,11 @@ en:
       tooltip: Add this feature to the map to begin editing.
       disabled: To help improve OSM data quality, we only allow {n} AI features to be added in each mapping session. Please try to fix issues on your edits so far. You will be able to add more AI features after saving.
       disabled_flash: To help improve OSM data quality, we only allow {n} AI Features to be added in each mapping session.
-      key: A
     option_ignore:
       label: Ignore This Feature
       description: Ignoring this feature helps us improve our machine learning. If you are unsure whether or not this is an accurate feature, feel free to leave it as is, nothing will be saved or lost. 👍
       annotation: Ignored a Rapid feature.
       tooltip: Ignore this feature.
-      key: D
   rapid_feature_license: Facebook's Map With AI License
   rapid_feature_toggle:
     toggle_all: Toggle all {rapidicon} features
@@ -1149,7 +1127,6 @@ en:
       places:
         label: Overture Places
         license_markdown: "[license](https://docs.overturemaps.org/attribution/#places)"
-
     esri:
       title: ArcGIS Datasets
       about: "These datasets have been provided as open data by the ArcGIS user community for the purpose of improving OpenStreetMap.<br/>You can learn more by visiting [the Rapid Guide](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Esri-ArcGIS-FAQ) or [Esri/ArcGIS dataset page on the OSM Wiki](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets)."
@@ -1164,11 +1141,12 @@ en:
       add_to_map: Add Dataset
       more_info: More Info
       license_markdown: "[license](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets#License)"
+
   rapid_poweruser_features:
     beta: Beta Feature
     heading:
       label: Rapid Power User Features
-      description: "for Rapid Insiders"
+      description: for Rapid Insiders
     previewDatasets:
       label: Show preview datasets
       description: Preview datasets are still in review and not available for all users
@@ -1184,28 +1162,34 @@ en:
     allowLargeEdits:
       label: Allow large edits
       description: Remove the limitations about editing features that are not currently visible
+
   version:
     whats_new: "What's new in Rapid {version}"
+
   tag_reference:
     description: Description
     on_wiki: "{tag} on wiki.osm.org"
     used_with: "used with {type}"
+
   zoom:
     in: Zoom In
     out: Zoom Out
     disabled:
       in: Cannot zoom in further.
       out: Cannot zoom out further.
+
   bearing:
     reset_bearing: Reset Bearing
     rotate_the_map: "Rotate the map:"
-    n: 'N'
-  cannot_zoom: "Cannot zoom out further in current mode."
+    n: 'N'     # This is the North 'N' that appears on the rotation control
+
   full_screen: Toggle Full Screen
+
   self_intersection:
     error:
       lines: Lines cannot cross over themselves.
       areas: Areas cannot cross over themselves.
+
   QA:
     osmose:
       title: Osmose Issue
@@ -1457,21 +1441,26 @@ en:
           description: '{var1} may have an outdated URL: {var2} contained suspicious text "{var3}".'
         413:
           description: '{var1} may have an outdated URL: {var2} did not contain keywords "{var3}".'
+
   photos:
     hires: High resolution
+
   streetside:
     title: Bing Streetside
     tooltip: Streetside photos from Microsoft
+
   mapillary:
     title: Mapillary
     tooltip: Street-level photos from Mapillary
     detection: Mapillary Detection
     show_detections: Show Detections
     view_on_mapillary: View on Mapillary
+
   mapillary_signs:
     title: Traffic Signs
     tooltip: Detected traffic signs in Mapillary photos
     traffic_sign: Traffic Sign
+
   mapillary_detections:
     title: Detected Objects
     tooltip: Detected objects in Mapillary photos
@@ -1534,9 +1523,11 @@ en:
         pedestrians: Traffic Light - Pedestrians
       trash-can: Trash Can
       water-valve: Water Valve
+
   kartaview:
     title: KartaView
     tooltip: "Street-level photos from KartaView"
+
   note:
     note: Note
     title: Edit note
@@ -1557,14 +1548,14 @@ en:
     open_comment: Reopen and Comment
     report: Report
     new: New Note
-    newDescription: "Describe the issue."
+    newDescription: Describe the issue.
     save: Save Note
     login: You must log in to change or comment on this note.
-    upload_explanation: "Your comments will be publicly visible to all OpenStreetMap users."
+    upload_explanation: Your comments will be publicly visible to all OpenStreetMap users.
     upload_explanation_with_user: "Your comments as {user} will be publicly visible to all OpenStreetMap users."
+
   help:
     title: Help
-    key: H
     help:
       title: Help
       welcome: "Welcome to the {rapidicon} editor for [OpenStreetMap](https://www.openstreetmap.org/). With this editor you can update OpenStreetMap right from your web browser."
@@ -1623,7 +1614,7 @@ en:
       title: Points
       intro: "*Points* can be used to represent features such as shops, restaurants, and monuments. They mark a specific location, and describe what's there."
       add_point_h: "Adding Points"
-      add_point: "To add a point, press the {point_icon} **{point}** button on the toolbar above the map, or press the shortcut key `1`."
+      add_point: "To add a point, press the {point_icon} **{point}** button on the toolbar above the map, or press the shortcut key `{add_point_key}`."
       add_point_finish: "Next, place the new point on the map. With a mouse, position the cursor where the point should go and {mouse_left_icon} left-click. On a touchscreen, {onefinger_tap_icon} tap the location."
       move_point_h: "Moving Points"
       move_point: "To move a point, {mouse_left_icon} left-click and drag it with a mouse or {onefinger_tap_and_drag_icon} tap-and-drag it on a touchscreen."
@@ -1634,7 +1625,7 @@ en:
       title: Lines
       intro: "*Lines* are used to represent features such as roads, railroads, and rivers. Lines should be drawn down the center of the feature that they represent."
       add_line_h: "Adding Lines"
-      add_line: "To add a line, press the {line_icon} **{line}** button on the toolbar above the map, or press the shortcut key `2`."
+      add_line: "To add a line, press the {line_icon} **{line}** button on the toolbar above the map, or press the shortcut key `{add_line_key}`."
       add_line_draw: "Next, mark the line's starting location. With a mouse, position the cursor where the line should begin and {mouse_left_icon} left-click to place a node. On a touchscreen, {onefinger_tap_icon} tap the location."
       add_line_continue: "Continue placing nodes by {mouse_left_icon} clicking or {onefinger_tap_icon} tapping along the shape of the line. While drawing, you can zoom in or drag the map in order to add more detail."
       add_line_finish: "To finish a line, click or tap on the last node again or press `{return}`."
@@ -1660,7 +1651,7 @@ en:
       point_or_area_h: "Points or Areas?"
       point_or_area: "Many features can be represented as points or areas. You should map buildings and property outlines as areas whenever possible. Place points inside a building area to represent businesses, amenities, and other features located inside the building."
       add_area_h: "Adding Areas"
-      add_area_command: "To add an area, press the {area_icon} **{area}** button on the toolbar above the map, or press the shortcut key `3`."
+      add_area_command: "To add an area, press the {area_icon} **{area}** button on the toolbar above the map, or press the shortcut key `{add_area_key}`."
       add_area_draw: "Next, place the first corner of the area. With a mouse, position the cursor over any corner and {mouse_left_icon} left-click to place a node. On a touchscreen, {onefinger_tap_icon} tap the location."
       add_area_continue: "Continue placing nodes by {mouse_left_icon} clicking or {onefinger_tap_icon} tapping along the edge of the area. While drawing, you can zoom in or drag the map in order to add more detail."
       add_area_finish: "To finish an area, click or tap on the first or last node again or press `{return}`."
@@ -1792,12 +1783,11 @@ en:
           indirect_noedit: "You may not edit indirect restrictions. Instead, edit the nearby direct restriction."
   issues:
     title: Issues
-    key: I
-    list_title: "Issues"
+    list_title: Issues
     errors:
-      list_title: "Errors"
+      list_title: Errors
     warnings:
-      list_title: "Warnings"
+      list_title: Warnings
     rules:
       title: Rules
     user_resolved_issues: Issues resolved by your edits
@@ -1821,12 +1811,12 @@ en:
     options:
       what:
         title: "Check:"
-        edited: "My Edits"
+        edited: My Edits
         all: "Everything"
       where:
         title: "Where:"
-        visible: "In View"
-        all: "Everywhere"
+        visible: In View
+        all: Everywhere
     suggested: "Suggested updates:"
     enable_all: Enable All
     disable_all: Disable All
@@ -1838,7 +1828,7 @@ en:
       annotation: Fixed several validation issues.
     almost_junction:
       title: Almost Junctions
-      tip: "Find features that should possibly be connected to other nearby features"
+      tip: Find features that should possibly be connected to other nearby features
       message: "{feature} is very close but not connected to {feature2}"
       self:
         message: "{feature} ends very close to itself but does not reconnect"
@@ -1867,8 +1857,8 @@ en:
     area_as_point:
       message: '{feature} should be an area, not a point'
     close_nodes:
-      title: "Very Close Points"
-      tip: "Find redundant and crowded points"
+      title: Very Close Points
+      tip: Find redundant and crowded points
       message: "Two points in {way} are very close together"
       reference: "Redundant points in a way should be merged or moved apart."
       detached:
@@ -2202,6 +2192,7 @@ en:
         title: Delete this node to simplify connection
       move_node_around_conn:
         title: Move this node to adjust connection shape
+
   intro:
     done: done
     ok: OK
@@ -2329,6 +2320,7 @@ en:
         willow-drive: Willow Drive
         wood-street: Wood Street
         world-fare: World Fare
+
     welcome:
       title: "Welcome"
       welcome: "Welcome! This walkthrough will teach you the basics of editing on OpenStreetMap."
@@ -2510,11 +2502,10 @@ en:
       shortcuts: "You can view a list of commands along with their keyboard shortcuts by pressing the `{shortcuts_key}` key."
       save: "Don't forget to regularly save your changes!"
       start: "Start mapping!"
+
   shortcuts:
-    title: "Keyboard Shortcuts"
-    tooltip: "Show the keyboard shortcuts screen."
-    toggle:
-      key: '?'
+    title: Keyboard Shortcuts
+    tooltip: Show the keyboard shortcuts screen.
     key:
       alt: Alt
       backspace: Backspace
@@ -2537,116 +2528,239 @@ en:
     gesture:
       drag: drag
     or: "-or-"
-    browsing:
-      title: "Browsing"
-      navigation:
-        title: "Navigation"
-        pan: "Pan map"
-        pan_more: "Pan map by a lot"
-        zoom: "Zoom in / out"
-        zoom_more: "Zoom in / out by a lot"
-        rotate: "Rotate map"
-        rotate_incremental: "Rotate Map Incrementally"
-      help:
-        title: "Help"
-        help: "Show help/documentation"
-        keyboard: "Show keyboard shortcuts"
-      display_options:
-        title: "Display options"
-        background: "Toggle background imagery pane"
-        background_switch: "Switch back to last used background"
-        background_previous: "Switch to previous background in list"
-        background_next: "Switch to next background in list"
-        map_data: "Toggle map data pane"
-        issues: "Toggle validation issues pane"
-        preferences: "Toggle user preferences pane"
-        fullscreen: "Toggle full screen mode"
-        inspector: "Toggle feature inspector"
-        wireframe: "Toggle wireframe mode"
-        osm_data: "Toggle OpenStreetMap data"
-        osm_notes: "Toggle OpenStreetMap notes"
-        rapid_features_data: "Toggle Rapid features"
-        highlight_edits: "Highlight unsaved edits"
-      selecting:
-        title: "Selecting features"
-        select_one: "Select a single feature"
-        select_multi: "Select multiple features"
-        lasso: "Draw a selection lasso around features"
-        search: "Find features matching search text"
-      with_selected:
-        title: "With features selected"
-        edit_menu: "Toggle edit menu"
-        zoom_to: "Zoom in/out on selected features"
-      photo_selected:
-        title: "With photo selected"
-        sequence: "Step to next / previous photo in sequence"
-      vertex_selected:
-        title: "With node selected"
-        previous: "Step to previous node"
-        next: "Step to next node"
-        first: "Jump to first node"
-        last: "Jump to last node"
-        change_parent: "Switch parent way"
-        parent: "Select parent way"
-      way_selected:
-        title: "With way selected"
-        child: "Select child nodes"
-    editing:
-      title: "Editing"
-      drawing:
-        title: "Drawing"
-        add_point: "'Add point' mode"
-        add_line: "'Add line' mode"
-        add_area: "'Add area' mode"
-        add_note: "'Add note' mode"
-        place_point: "Place a point or note"
-        disable_snap: "Hold to disable point snapping"
-        stop_line: "Finish drawing a line or area"
-      commands:
-        title: "Commands"
-        copy: "Copy selected features"
-        paste: "Paste copied features"
-        undo: "Undo last action"
-        redo: "Redo last action"
-        save: "Save changes"
-      rapid:
-        title: "With Rapid feature selected"
-        accept_feature: "Accept the feature"
-        ignore_feature: "Ignore the feature"
-      operations:
-        title: "Editing Operations"
-        continue_line: "Continue a line at the selected endpoint"
-        merge: "Combine (merge) selected features"
-        disconnect: "Disconnect selected features"
-        extract: "Extract a point from a feature"
-        split: "Split features at the selected points"
-        reverse: "Reverse selected features"
-        move: "Move selected features"
-        rotate: "Rotate selected features"
-        orthogonalize: "Square corners of a line or area"
-        straighten: "Straighten a line or points"
-        circularize: "Circularize a closed line or area"
-        reflect_long: "Flip features across the longer axis"
-        reflect_short: "Flip features across the shorter axis"
-        delete: "Delete selected features"
-        cycle_highway_tag: "Cycle through common tags"
-    tools:
-      title: "Tools"
-      viewers:
-        title: "Viewers"
-        minimap: "Toggle minimap"
-        3dmap: "Toggle 3D map"
-        mapillary: "Toggle Mapillary"
-        bingStreetside: "Toggle Bing Streetside"
-        kartaview: "Toggle Kartaview"
-        disableDataLayers: "Toggle all data layers"
-      info:
-        title: "Information"
-        all: "Toggle all information panels"
-        background: "Toggle background panel"
-        history: "Toggle history panel"
-        location: "Toggle location panel"
-        measurement: "Toggle measurement panel"
+    browsing: Browsing
+    editing: Editing
+    tools: Tools/Display
+    navigation: Navigation
+    selecting_features: Selecting features
+    with_features_selected: With features selected
+    with_node_selected: With node selected
+    with_way_selected: With way selected
+    with_rapid_selected: With Rapid feature selected
+    with_photo_selected: With photo selected
+    drawing: Drawing
+    commands: Commands
+    operations: Editing Operations
+    help: Help
+    display_options: Display options
+    viewers: Viewers
+    layers: Layers
+    info: Information
+
+    command:
+      pan:
+        label: Pan map
+      pan_more:
+        label: Pan map by a lot
+      zoom:
+        label: Zoom in / out
+      zoom_more:
+        label: Zoom in / out by a lot
+      rotate_map:
+        label: Rotate map
+      rotate_incremental:
+        label: Rotate map Incrementally
+
+      select_one:
+        label: Select a single feature
+      select_multi:
+        label: Select multiple features
+      lasso:
+        label: Draw a selection lasso around features
+
+      edit_menu:
+        label: Toggle edit menu
+      zoom_to:
+        label: Zoom in / out on selected features
+        key: Z   # <this key> to zoom in / out on selected features
+
+      previous_node:
+        label: Step to previous node
+      next_node:
+        label: Step to next node
+      first_node:
+        label: Jump to first node
+      last_node:
+        label: Jump to last node
+      change_parent:
+        label: Switch parent way
+      select_parent:
+        label: Select parent way
+
+      select_children:
+        label: Select child nodes
+
+      accept_feature:
+        label: Accept the feature
+        key: A   # <this key> to Accept a suggested feature
+      ignore_feature:
+        label: Ignore the feature
+        key: D   # <this key> to Ignore a suggested feature
+
+      follow_sequence:
+        label: Step to next / previous photo in sequence
+
+      add_point:
+        label: "'Add point' mode"
+        key: '1'   # <this key> to Add a Point
+      add_line:
+        label: "'Add line' mode"
+        key: '2'   # <this key> to Add a Line
+      add_area:
+        label: "'Add area' mode"
+        key: '3'   # <this key> to Add an Area
+      add_note:
+        label: "'Add note' mode"
+        key: 'N'   # <this key> to Add a Note
+      place_point:
+        label: Place a point or note
+      disable_snap:
+        label: Hold to disable point snapping
+      stop_line:
+        label: Finish drawing a line or area
+
+      copy:
+        label: Copy selected features
+      paste:
+        label: Paste copied features
+      undo:
+        label: Undo last action
+      redo:
+        label: Redo last action
+      save:
+        label: Save changes
+      find:
+        label: Find features matching search text
+
+      continue_line:
+        label: Continue a line at the selected endpoint
+        key: A     # <this key> to continue a line at the selected endpoint
+      merge:
+        label: Combine (merge) selected features
+        key: C     # <this key> to combine (merge) selected features
+      disconnect:
+        label: Disconnect selected features
+        key: D     # <this key> to disconnect selected features
+      extract:
+        label: Extract a point from a feature
+        key: E     # <this key> to extract a point from an area feature
+      split:
+        label: Split features at the selected points
+        key: X     # <this key> to split features at the selected points
+      reverse:
+        label: Reverse selected features
+        key: V     # <this key> to reverse selected features
+      move:
+        label: Move selected features
+        key: M     # <this key> to move selected features
+      rotate:
+        label: Rotate selected features
+        key: R     # <this key> to rotate selected features
+      orthogonalize:
+        label: Square corners of a line or area
+        key: Q     # <this key> to square corners of a line or area
+      straighten:
+        label: Straighten a line or points
+        key: S     # <this key> to straighten a line or points
+      circularize:
+        label: Circularize a closed line or area
+        key: O     # <this key> to circularize a closed line or area
+      reflect_long:
+        label: Flip features across the longer axis
+        key: T     # <this key> to flip features across their long axis
+      reflect_short:
+        label: Flip features across the shorter axis
+        key: 'Y'   # <this key> to flip features across their short axis
+      delete:
+        label: Delete selected features
+      cycle_highway_tag:
+        label: Cycle through common tags
+        key: C     # <Command> + <this key> to cycle through common tags
+
+      toggle_background:
+        label: Toggle background imagery pane
+        key: B     # <this key> to toggle the Background pane
+      background_switch:
+        label: Switch back to last used background
+        key: B     # <Command> + <this key> to switch back to last used background
+      background_previous:
+        label: Switch to previous background in list
+        key: ','   # <this key> to switch to the next background in the list
+      background_next:
+        label: Switch to next background in list
+        key: '.'   # <this key> to switch to the previous background in the list
+      toggle_map_data:
+        label: Toggle map data pane
+        key: F     # <this key> to toggle the Map Data pane
+      toggle_issues:
+        label: Toggle validation issues pane
+        key: I     # <this key> to toggle the Issues pane
+      toggle_preferences:
+        label: Toggle user preferences pane
+        key: P     # <this key> to toggle the Preferences pane
+      toggle_help:
+        label: Toggle help/documentation pane
+        key: H     # <this key> to toggle the Help pane
+      toggle_fullscreen:
+        label: Toggle full screen mode
+      toggle_inspector:
+        label: Toggle feature inspector
+        key: '`'   # <this key> to toggle the inspector (sidebar)
+      wireframe:
+        label: Toggle wireframe display
+        key: W     # <this key> to toggle wireframe display
+      highlight_edits:
+        label: Highlight unsaved edits
+        key: G     # <this key> to toggle changed edits display
+      keyboard_shortcuts:
+        label: Show keyboard shortcuts
+        key: '?'   # <this key> to toggle the keyboard shortcuts screen
+
+      toggle_minimap:
+        label: Toggle minimap
+        key: '/'   # <this key> to toggle the minimap
+      toggle_3dmap:
+        label: Toggle 3D map
+        key: '/'   # <Command> + <this key> to toggle the 3D map
+
+      toggle_all_layers:
+        label: Toggle all data layers
+        key: D     # <Shift> + <this key> to toggle all data layers
+      toggle_osm_data:
+        label: Toggle OpenStreetMap data
+        key: O     # <Shift> + <this key> to toggle the OpenStreetMap data layer
+      toggle_osm_notes:
+        label: Toggle OpenStreetMap notes
+        key: 'N'   # <Shift> + <this key> to toggle the OpenStreetMap notes layer
+      toggle_rapid_data:
+        label: Toggle Rapid features
+        key: R     # <Shift> + <this key> to toggle the Rapid layer
+      toggle_mapillary:
+        label: Toggle Mapillary
+        key: M     # <Shift> + <this key> to toggle the Mapillary layer
+      toggle_streetside:
+        label: Toggle Bing Streetside
+        key: S     # <Shift> + <this key> to toggle the Bing Streetside layer
+      toggle_kartaview:
+        label: Toggle Kartaview
+        key: K     # <Shift> + <this key> to toggle the Kartaview layer
+
+      toggle_all_cards:
+        label: Toggle all information panels
+        key: I     # <Command> + <this key> to toggle all Info panels
+      toggle_background_card:
+        label: Toggle background panel
+        key: B     # <Command> + <Shift> + <this key> to toggle the Background Info panel
+      toggle_history_card:
+        label: Toggle history panel
+        key: H     # <Command> + <Shift> + <this key> to toggle the History Info panel
+      toggle_location_card:
+        label: Toggle location panel
+        key: L     # <Command> + <Shift> + <this key> to toggle the Location Info panel
+      toggle_measurement_card:
+        label: Toggle measurement panel
+        key: M     # <Command> + <Shift> + <this key> to toggle the Measurement Info panel
+
   units:
     feet: "{quantity} ft"
     miles: "{quantity} mi"
@@ -2670,7 +2784,3 @@ en:
     coordinate_pair: "{latitude}, {longitude}"
     # translate the letters but leave the format the same
     year_month_day: "YYYY-MM-DD"
-  wikidata:
-    identifier: "Identifier"
-    label: "Label"
-    description: "Description"

@@ -9,7 +9,7 @@ export function uiPanePreferences(context) {
   const l10n = context.systems.l10n;
 
   return uiPane(context, 'preferences')
-    .key(l10n.t('preferences.key'))
+    .key(l10n.t('shortcuts.command.toggle_preferences.key'))
     .label(l10n.t('preferences.title'))
     .description(l10n.t('preferences.description'))
     .iconName('fas-user-cog')

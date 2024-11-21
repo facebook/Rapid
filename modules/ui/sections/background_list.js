@@ -101,7 +101,7 @@ export function uiSectionBackgroundList(context) {
       .append('label')
       .call(uiTooltip(context)
         .title(l10n.t('background.minimap.tooltip'))
-        .shortcut(l10n.t('background.minimap.key'))
+        .shortcut(l10n.t('shortcuts.command.toggle_minimap.key'))
         .placement('top')
       );
 
@@ -124,7 +124,7 @@ export function uiSectionBackgroundList(context) {
       .append('label')
       .call(uiTooltip(context)
         .title(l10n.t('background.3dmap.tooltip'))
-        .shortcut(utilCmd('⌘' + l10n.t('background.3dmap.key')))
+        .shortcut(utilCmd('⌘' + l10n.t('shortcuts.command.toggle_3dmap.key')))
         .placement('top')
       );
 
@@ -149,7 +149,7 @@ export function uiSectionBackgroundList(context) {
       .append('label')
       .call(uiTooltip(context)
         .title(l10n.t('background.panel.tooltip'))
-        .shortcut(utilCmd('⌘⇧' + l10n.t('info_panels.background.key')))
+        .shortcut(utilCmd('⌘⇧' + l10n.t('shortcuts.command.toggle_background_card.key')))
         .placement('top')
       );
 
@@ -168,7 +168,7 @@ export function uiSectionBackgroundList(context) {
       .append('label')
       .call(uiTooltip(context)
         .title(l10n.t('background.location_panel.tooltip'))
-        .shortcut(utilCmd('⌘⇧' + l10n.t('info_panels.location.key')))
+        .shortcut(utilCmd('⌘⇧' + l10n.t('shortcuts.command.toggle_location_card.key')))
         .placement('top')
       );
 
@@ -236,7 +236,7 @@ export function uiSectionBackgroundList(context) {
       };
       if (d.id === previousBackgroundID()) {
         titleHtml += '<br/><br/>' + l10n.t('background.switch');
-        tooltip.shortcut(utilCmd('⌘' + l10n.t('background.key')));
+        tooltip.shortcut(utilCmd('⌘' + l10n.t('shortcuts.command.background_switch.key')));
       }
 
       if (titleHtml) {
@@ -567,9 +567,9 @@ export function uiSectionBackgroundList(context) {
   imagery.on('imagerychange', renderIfVisible);
   map.on('draw', deferredOnMapDraw);
 
-  const swapBackgroundKey = utilCmd('⌘' + l10n.t('background.key'));
-  const nextBackgroundKey = l10n.t('background.next_background.key');
-  const prevBackgroundKey = l10n.t('background.previous_background.key');
+  const swapBackgroundKey = utilCmd('⌘' + l10n.t('shortcuts.command.background_switch.key'));
+  const nextBackgroundKey = l10n.t('shortcuts.command.background_next.key');
+  const prevBackgroundKey = l10n.t('shortcuts.command.background_previous.key');
 
   context.keybinding()
     .off([swapBackgroundKey, nextBackgroundKey, prevBackgroundKey]);

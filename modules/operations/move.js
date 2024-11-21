@@ -86,7 +86,7 @@ export function operationMove(context, selectedIDs) {
 
 
   operation.id = 'move';
-  operation.keys = [ l10n.t('operations.move.key') ];
+  operation.keys = [ l10n.t('shortcuts.command.move.key') ];
   operation.title = l10n.t('operations.move.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 

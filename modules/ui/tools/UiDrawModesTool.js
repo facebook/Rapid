@@ -31,27 +31,27 @@ export class UiDrawModesTool {
       preset: presets.item('point'),
       getTitle: () => l10n.t('modes.add_point.title'),
       getDescription: () => l10n.t('modes.add_point.description'),
-      getKey: () => '1'
+      getKey: () => l10n.t('shortcuts.command.add_point.key')
     }, {
       id: 'draw-line',
       icon: 'line',
       preset: presets.item('line'),
       getTitle: () => l10n.t('modes.add_line.title'),
       getDescription: () => l10n.t('modes.add_line.description'),
-      getKey: () => '2'
+      getKey: () => l10n.t('shortcuts.command.add_line.key')
     }, {
       id: 'draw-area',
       icon: 'area',
       preset: presets.item('area'),
       getTitle: () => l10n.t('modes.add_area.title'),
       getDescription: () => l10n.t('modes.add_area.description'),
-      getKey: () => '3'
+      getKey: () => l10n.t('shortcuts.command.add_area.key')
     }, {
       id: 'add-note',
       icon: 'note',
       getTitle: () => l10n.t('modes.add_note.title'),
       getDescription: () => l10n.t('modes.add_note.description'),
-      getKey: () => l10n.t('modes.add_note.key')
+      getKey: () => l10n.t('shortcuts.command.add_note.key')
     }];
 
 

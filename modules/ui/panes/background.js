@@ -11,7 +11,7 @@ export function uiPaneBackground(context) {
   const l10n = context.systems.l10n;
 
   return uiPane(context, 'background')
-    .key(l10n.t('background.key'))
+    .key(l10n.t('shortcuts.command.toggle_background.key'))
     .label(l10n.t('background.title'))
     .description(l10n.t('background.description'))
     .iconName('rapid-icon-layers')

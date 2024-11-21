@@ -41,7 +41,7 @@ export class UiBackgroundCard extends AbstractUiCard {
       .on('draw', this.deferredRender)
       .on('move', this.deferredUpdateMetadata);
 
-    this.key = utilCmd('⌘⇧' + l10n.t('info_panels.background.key'));
+    this.key = utilCmd('⌘⇧' + l10n.t('shortcuts.command.toggle_background_card.key'));
     context.keybinding().on(this.key, this.toggle);
   }
 

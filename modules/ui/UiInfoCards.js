@@ -48,7 +48,7 @@ export class UiInfoCards {
 
     // bind ⌘I to show/hide all cards
     const l10n = context.systems.l10n;
-    this.key = utilCmd('⌘' + l10n.t('info_panels.key'));
+    this.key = utilCmd('⌘' + l10n.t('shortcuts.command.toggle_all_cards.key'));
     context.keybinding().on(this.key, this.toggle);
   }
 
