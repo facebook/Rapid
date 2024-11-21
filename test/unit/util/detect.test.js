@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, it } from 'node:test';
+import { before, after, beforeEach, describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
@@ -15,45 +15,45 @@ if (!global.window) {  // mock window for Node
 }
 
 describe('utilDetect', () => {
-  let navigator;
-  let originalNavigator = global.navigator;
-  beforeEach(() => {
-    // Create a mock navigator object with a languages and platform property
-    navigator = {
-      languages: ['en-US'],
-      platform: 'Windows'
-    };
-    // Set the mock navigator object as the global navigator object
-    global.navigator = navigator;
+  let origNavigator;
+
+  before(() => {
+    origNavigator = global.navigator;
   });
-  afterEach(() => {
-    // Reset the global navigator object to its original value
-    global.navigator = originalNavigator;
+
+  after(() => {
+    global.navigator = origNavigator;  // restore original
+  });
+
+  beforeEach(() => {
+    const mock = {
+      languages: ['en-US', 'en'],
+      platform: 'MacIntel',
+      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36'
+    };
+    // Copy the original navigator, so we can safely change things.
+    global.navigator = Object.assign(origNavigator || mock);
   });
 
   it('should detect the browser and version', () => {
     const ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3';
-    global.navigator = { userAgent: ua };
-    const detected = Rapid.utilDetect();
+    global.navigator.userAgent = ua;
+    const detected = Rapid.utilDetect(true);
     assert.strictEqual(detected.browser, 'Chrome');
     assert.strictEqual(detected.version, '58.0');
   });
 
-  it('should detect the platform', () => {
+  it('should detect the os and platform', () => {
     const ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3';
-    global.navigator = { userAgent: ua };
-    const detected = Rapid.utilDetect();
+    global.navigator.userAgent = ua;
+    const detected = Rapid.utilDetect(true);
     assert.strictEqual(detected.os, 'win');
     assert.strictEqual(detected.platform, 'Windows');
   });
 
   it('should detect the locale', () => {
-    const detected = Rapid.utilDetect();
-    assert.ok(!detected.browserLocales.includes('en-US'));
-  });
-
-  it('should detect the platform', () => {
-    const detected = Rapid.utilDetect();
-    assert.strictEqual(detected.platform, 'Windows');
+    global.navigator.languages = ['es'];
+    const detected = Rapid.utilDetect(true);
+    assert.ok(detected.locales.includes('es'));
   });
 });

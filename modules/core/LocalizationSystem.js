@@ -208,8 +208,8 @@ export class LocalizationSystem extends AbstractSystem {
     //   4. English (always fallback)
     const requestedLocales = (this._preferredLocaleCodes || [])
       .concat(urlLocaleCodes)
-      .concat(utilDetect().browserLocales)   // Locales preferred by the browser in priority order.
-      .concat(['en']);                       // Fallback to English since it's the only guaranteed complete language
+      .concat(utilDetect().locales)   // Locales preferred by the browser in priority order.
+      .concat(['en']);                // Fallback to English since it's the only guaranteed complete language
 
     this._currLocaleCodes = this._getSupportedLocales(requestedLocales);
     this._currLocaleCode = this._currLocaleCodes[0];   // First is highest priority locale; the rest are fallbacks

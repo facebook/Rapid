@@ -1,9 +1,26 @@
 
-let _detected;
+let _cached;
 
+/**
+ * `utilDetect` detects things from the user's browser.
+ * It returns an object with the following:
+ * {
+ *   support: true,                   // Is Rapid supported?  (basically - not Internet Explorer)
+ *   browser: "Chrome",               // e.g. 'Edge','msie','Opera','Chrome','Safari','Firefox'
+ *   version: "133.0",                // reported browser version
+ *   languages: ['en-US'],            // Array sourced from `navigator.languages`
+ *   host: "http://127.0.0.1:8080/",
+ *   os: "mac",
+ *   platform: "Macintosh",
+ *   prefersColorScheme: 'light',         // 'light' or 'dark'
+ *   prefersContrast: null,               // 'more', 'less', or `null`
+ *   prefersReducedMotion: false,         // `true` or `false`
+ *   prefersReducedTransparency: false    // `true` or `false`
+ * }
+ */
 export function utilDetect(refresh) {
-  if (_detected && !refresh) return _detected;
-  _detected = {};
+  if (_cached && !refresh) return _cached;
+  _cached = {};
 
   const ua = navigator.userAgent;
   let m = null;
@@ -11,84 +28,63 @@ export function utilDetect(refresh) {
   /* Browser */
   m = ua.match(/(edg)\/?\s*(\.?\d+(\.\d+)*)/i);   // Edge
   if (m !== null) {
-    _detected.browser = 'Edge';
-    _detected.version = m[2];
+    _cached.browser = 'Edge';
+    _cached.version = m[2];
   }
-  if (!_detected.browser) {
+  if (!_cached.browser) {
     m = ua.match(/Trident\/.*rv:([0-9]{1,}[\.0-9]{0,})/i);   // IE11
     if (m !== null) {
-      _detected.browser = 'msie';
-      _detected.version = m[1];
+      _cached.browser = 'msie';
+      _cached.version = m[1];
     }
   }
-  if (!_detected.browser) {
+  if (!_cached.browser) {
     m = ua.match(/(opr)\/?\s*(\.?\d+(\.\d+)*)/i);   // Opera 15+
     if (m !== null) {
-      _detected.browser = 'Opera';
-      _detected.version = m[2];
+      _cached.browser = 'Opera';
+      _cached.version = m[2];
     }
   }
-  if (!_detected.browser) {
+  if (!_cached.browser) {
     m = ua.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
     if (m !== null) {
-      _detected.browser = m[1];
-      _detected.version = m[2];
+      _cached.browser = m[1];
+      _cached.version = m[2];
       m = ua.match(/version\/([\.\d]+)/i);
-      if (m !== null) _detected.version = m[1];
+      if (m !== null) _cached.version = m[1];
     }
   }
-  if (!_detected.browser) {
-    _detected.browser = navigator.appName;
-    _detected.version = navigator.appVersion;
+  if (!_cached.browser) {
+    _cached.browser = navigator.appName;
+    _cached.version = navigator.appVersion;
   }
 
-  // keep major.minor version only..
-  _detected.version = _detected.version.split(/\W/).slice(0,2).join('.');
+  // Keep major.minor version only..
+  _cached.version = _cached.version.split(/\W/).slice(0,2).join('.');
 
-  // detect other browser capabilities
-  // Legacy Opera has incomplete svg style support. See #715
-  _detected.opera = (_detected.browser.toLowerCase() === 'opera' && parseFloat(_detected.version) < 15 );
-
-  if (_detected.browser.toLowerCase() === 'msie') {
-    _detected.support = false;
+  if (_cached.browser.toLowerCase() === 'msie') {
+    _cached.support = false;
   } else {
-    _detected.support = true;
+    _cached.support = true;
   }
-
-  _detected.filedrop = (window.FileReader && 'ondrop' in window);
-  _detected.download = !(_detected.ie || _detected.browser.toLowerCase() === 'edge');
-  _detected.cssfilters = !(_detected.ie || _detected.browser.toLowerCase() === 'edge');
-
 
   /* Platform */
   if (/Win/.test(ua)) {
-    _detected.os = 'win';
-    _detected.platform = 'Windows';
+    _cached.os = 'win';
+    _cached.platform = 'Windows';
   } else if (/Mac/.test(ua)) {
-    _detected.os = 'mac';
-    _detected.platform = 'Macintosh';
+    _cached.os = 'mac';
+    _cached.platform = 'Macintosh';
   } else if (/X11/.test(ua) || /Linux/.test(ua)) {
-    _detected.os = 'linux';
-    _detected.platform = 'Linux';
+    _cached.os = 'linux';
+    _cached.platform = 'Linux';
   } else {
-    _detected.os = 'win';
-    _detected.platform = 'Unknown';
+    _cached.os = 'win';
+    _cached.platform = 'Unknown';
   }
 
-
   /* Locale */
-  // An array of locales requested by the browser in priority order.
-  _detected.browserLocales = Array.from(new Set( // remove duplicates
-      [navigator.language]
-        .concat(navigator.languages || [])
-        .concat([
-            // old property for backwards compatibility
-            navigator.userLanguage
-        ])
-        // remove any undefined values
-        .filter(Boolean)
-    ));
-
+  _cached.locales = navigator.languages.slice();  // shallow copy
 
   /* Host */
   const loc = window.top.location;
@@ -97,8 +93,13 @@ export function utilDetect(refresh) {
     origin = loc.protocol + '//' + loc.hostname + (loc.port ? ':' + loc.port: '');
   }
 
-  _detected.host = origin + loc.pathname;
+  _cached.host = origin + loc.pathname;
 
+  _cached.prefersColorScheme = window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  _cached.prefersContrast = window.matchMedia?.('(prefers-contrast: more)').matches ? 'more'
+    : window.matchMedia?.('(prefers-contrast: less)').matches ? 'less' : null;
+  _cached.prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  _cached.prefersReducedTransparency = window.matchMedia?.('(prefers-reduced-transparency: reduce)').matches;
 
-  return _detected;
+  return _cached;
 }
