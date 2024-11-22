@@ -21,7 +21,9 @@ export function validationCurbNodes(context) {
     if (entity.type !== 'way' || entity.isDegenerate()) return [];
     return detectCurbCandidates(entity, graph);
   };
-  const isCrossingWay = (tags) => tags.highway === 'footway' && tags.footway === 'crossing';
+  const isCrossingWay = (tags) => {
+    return (tags.highway === 'footway' && tags.footway === 'crossing') || (tags.highway === 'cycleway' && tags.cycleway === 'crossing');
+  };
 
   const detectCurbCandidates = (way, graph) => {
     let issues = [];
@@ -70,7 +72,7 @@ export function validationCurbNodes(context) {
    * @return {Boolean} True if the way has routable tags, false otherwise
    */
   function hasRoutableTags(way) {
-    const routableTags = ['highway'];
+    const routableTags = ['highway', 'cycleway'];
     return way.isArea() ? false : routableTags.some(tag => way.tags[tag]);
   }
 
