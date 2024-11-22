@@ -150,15 +150,10 @@ export function validationCurbNodes(context) {
     if (hasCurbNode(node, graph)) {
       return; // Exit if curb already exists
     }
-    // Determine if the node is the first or last in the way
-    const isFirstNode = way.nodes[0] === node.id;
-    const isLastNode = way.nodes[way.nodes.length - 1] === node.id;
     // Calculate the position for the new curb node
     const nodeIndex = way.nodes.indexOf(node.id);
-    const adjacentNode = isFirstNode
-      ? graph.entity(way.nodes[nodeIndex + 1])
-      : graph.entity(way.nodes[nodeIndex - 1]);
-    const newNodePosition = calculateNewNodePosition(node, adjacentNode, 1, isLastNode);
+    const adjacentNode = graph.entity(way.nodes[nodeIndex + 1] || way.nodes[nodeIndex - 1]);
+    const newNodePosition = calculateNewNodePosition(node, adjacentNode, 1);
     // Find connected ways and select the appropriate tags
     const connectedWays = graph.parentWays(node);
     let connectedWayTags = null;
@@ -167,10 +162,6 @@ export function validationCurbNodes(context) {
         connectedWayTags = connectedWay.tags;
         break;
       }
-    }
-    if (!connectedWayTags) {
-      console.warn('No connected non-crossing way found');
-      return;
     }
     // Create a new curb node with the specified curb tags
     const newCurbNode = osmNode({ loc: [newNodePosition.lon, newNodePosition.lat], tags: curbTags, visible: true });
