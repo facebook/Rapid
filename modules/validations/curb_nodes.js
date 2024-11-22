@@ -150,41 +150,42 @@ export function validationCurbNodes(context) {
     if (hasCurbNode(node, graph)) {
       return; // Exit if curb already exists
     }
-
+    // Determine if the node is the first or last in the way
+    const isFirstNode = way.nodes[0] === node.id;
+    const isLastNode = way.nodes[way.nodes.length - 1] === node.id;
     // Calculate the position for the new curb node
     const nodeIndex = way.nodes.indexOf(node.id);
-    const adjacentNode = graph.entity(way.nodes[nodeIndex + 1] || way.nodes[nodeIndex - 1]);
-    const newNodePosition = calculateNewNodePosition(node, adjacentNode, 1);
-
+    const adjacentNode = isFirstNode
+      ? graph.entity(way.nodes[nodeIndex + 1])
+      : graph.entity(way.nodes[nodeIndex - 1]);
+    const newNodePosition = calculateNewNodePosition(node, adjacentNode, 1, isLastNode);
     // Find connected ways and select the appropriate tags
     const connectedWays = graph.parentWays(node);
     let connectedWayTags = null;
-
     for (const connectedWay of connectedWays) {
       if (connectedWay.id !== way.id && !isCrossingWay(connectedWay.tags)) {
         connectedWayTags = connectedWay.tags;
         break;
       }
     }
-
+    if (!connectedWayTags) {
+      console.warn('No connected non-crossing way found');
+      return;
+    }
     // Create a new curb node with the specified curb tags
     const newCurbNode = osmNode({ loc: [newNodePosition.lon, newNodePosition.lat], tags: curbTags, visible: true });
-
     // Add the new node to the graph
     editor.perform(actionAddMidpoint({ loc: newCurbNode.loc, edge: [node.id, adjacentNode.id] }, newCurbNode));
-
     // Perform the split
     const splitAction = actionSplit([newCurbNode.id]);
     graph = editor.perform(splitAction);
     const newWayIDs = splitAction.getCreatedWayIDs();
-
     // Ensure that the new ways are created correctly
     if (newWayIDs.length > 0) {
       // Update the tags of the new ways to match the connected non-crossing way's tags
       newWayIDs.forEach(wayId => {
         editor.perform(actionChangeTags(wayId, connectedWayTags));
       });
-
       // Commit the changes to the graph
       editor.commit({
         annotation: 'Added curb node and updated way tags to match connected non-crossing way',
@@ -194,6 +195,7 @@ export function validationCurbNodes(context) {
       console.error('No new ways created after split');
     }
   }
+
 
 
   /**
