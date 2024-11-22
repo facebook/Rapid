@@ -56,12 +56,12 @@ export class UiFilterStatus {
     const l10n = context.systems.l10n;
 
     // Create/remove wrapper div if necessary
-    let $wrap = $parent.selectAll('.feature-warning')
+    let $wrap = $parent.selectAll('.filter-info')
       .data([0]);
 
     const $$wrap = $wrap.enter()
       .append('div')
-      .attr('class', 'feature-warning');
+      .attr('class', 'filter-info');
 
     const $$chip = $$wrap
       .append('a')

@@ -420,72 +420,84 @@ button.secondary-action {
 
 /* Icons
 ------------------------------------------------------- */
+/*
+ Unfortunately our icons in the rapid spritesheet are inconsistent.
+ They should really fill the viewbox, but they generally take up
+ less space than that.  This is why they default size them to 20px.
+ The icons we use from FontAwesome are consistent and use the entire
+ viewbox, so we default size them at 16px.
+*/
 .icon {
-    vertical-align: middle;
-    width: 20px;
-    height: 20px;
+  vertical-align: middle;
+  width: 20px;
+  height: 20px;
+}
+.icon.icon-fas {
+  width: 16px;
+  height: 16px;
+  margin: 2px;
 }
 
 .icon.operation use {
-    fill: #222;
-    color: #79f;
+  fill: #222;
+  color: #79f;
 }
 button.disabled .icon.operation use,
 .icon.operation.disabled use {
-    fill: rgba(32,32,32,.2);
-    color: rgba(40,40,40,.2);
+  fill: rgba(32,32,32,.2);
+  color: rgba(40,40,40,.2);
 }
 
 .icon.monochrome use {
-    fill: currentColor;
+  fill: currentColor;
 }
 
 .icon.inline {
-    vertical-align: text-top;
-    display: inline-block;
-    width: 1.17em;
-    height: 1.17em;
-    margin: 0px 3px;
+  vertical-align: text-top;
+  display: inline-block;
+  width: 1.17em;
+  height: 1.17em;
+  margin: 0px 3px;
 }
 
 .icon.pre-text {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 .ideditor[dir='rtl'] .icon.pre-text {
-    margin-left: 5px;
-    margin-right: 0;
+  margin-left: 5px;
+  margin-right: 0;
 }
 
 .icon.pre-text.user-icon {
-    margin-left: 5px;
-    margin-right: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .icon.light {
-    color: #fff;
-    fill: currentColor;
+  color: #fff;
+  fill: currentColor;
 }
 .icon.created {
-    color: #00ca07;
+  color: #00ca07;
 }
 .icon.modified {
-    color: #666;
+  color: #666;
 }
 .icon.deleted {
-    color: #ea0000;
+  color: #ea0000;
 }
 
 .user-icon {
-    max-height: 20px;
-    max-width: 20px;
-    height: auto;
-    width: auto;
-    border-radius: 3px;
+  max-height: 20px;
+  max-width: 20px;
+  height: auto;
+  width: auto;
+  border-radius: 3px;
 }
 
 .icon-annotation {
-    color: #333;
-    vertical-align: baseline;
+  color: #333;
+  vertical-align: baseline;
 }
 
 
@@ -3209,195 +3221,250 @@ div.full-screen > button:focus {
 /* Issues
 ------------------------------------------------------- */
 .issue {
-    overflow: hidden;
+  overflow: hidden;
 }
 .issue .issue-label,
 .issue-label .issue-text {
-    width: 100%;
-    display: flex;
-    flex-flow: row nowrap;
-    cursor: pointer;
-    text-align: initial;
-    background: none;
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  cursor: pointer;
+  text-align: initial;
+  background: none;
 }
 
 .issue-text .issue-icon {
-    flex: 0 0 auto;
-    padding: 2px 3px;
+  flex: 0 0 auto;
+  padding: 2px 4px;
+}
+.issue-container .issue-text .issue-icon {
+  padding: 2px 6px;
 }
 .issue-text .issue-message {
-    flex: 1 1 auto;
-    padding: 4px 5px;
+  flex: 1 1 auto;
+  padding: 4px 5px;
 }
 .issue-label .issue-autofix {
-    flex: 0 0 auto;
-    padding: 5px 8px;
+  flex: 0 0 auto;
+  padding: 5px 8px;
 }
 .issue-label .issue-info-button {
-    height: unset;
-    width: 32px;
-    flex: 0 0 auto;
-    border-left: 1px solid #ccc;
-    background-color: rgba(0,0,0,0);
+  height: unset;
+  width: 32px;
+  flex: 0 0 auto;
+  border-left: 1px solid #ccc;
+  background-color: rgba(0,0,0,0);
 }
 .ideditor[dir='rtl'] .issue-label .issue-info-button {
-    border-left: 0;
-    border-right: 1px solid #ccc;
+  border-left: 0;
+  border-right: 1px solid #ccc;
 }
 .issue-container .issue-label .issue-info-button .icon {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 .issue-container.active .issue-label .issue-info-button .icon {
-    opacity: 0.7;
+  opacity: 0.7;
 }
 .issue-label .issue-info-button:last-child {
-    border-radius: 0 4px 4px 0;
+  border-radius: 0 4px 4px 0;
 }
 .ideditor[dir='rtl'] .issue-label .issue-info-button:last-child {
-    border-radius: 4px 0 0 4px;
+  border-radius: 4px 0 0 4px;
 }
 
 button.autofix.action {
-    flex: 0 0 20px;
-    height: 20px;
-    width: 20px;
-    background: #7092ff;
-    color: #fff;
-    padding: 0;
+  flex: 0 0 20px;
+  height: 20px;
+  width: 20px;
+  background: #7092ff;
+  color: #fff;
+  padding: 0;
 }
 button.autofix.action:focus,
 button.autofix.action:active,
 button.autofix.action.active {
-    background: #597be7;
+  background: #597be7;
 }
 @media (hover: hover) {
-    button.autofix.action:hover {
-        background: #597be7;
-    }
+  button.autofix.action:hover {
+    background: #597be7;
+  }
 }
 
 /* fix all */
 .autofix-all {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-end;
-    margin-top: -25px;
-    padding-bottom: 5px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  margin-top: -25px;
+  padding-bottom: 5px;
 }
 .autofix-all-link-text {
-    padding: 0;
+  padding: 0;
 }
 .autofix-all-link-icon svg {
-    margin: 0 9px;
-    background: currentColor;
-    border-radius: 4px;
+  margin: 0 9px;
+  background: currentColor;
+  border-radius: 4px;
 }
 .autofix-all-link-icon svg use {
-    color: #fff;
+  color: #fff;
 }
-
-/* warning styles */
-.warnings-list,
-.warnings-list *,
-.issue-container.active .issue.severity-warning,
-.issue-container.active .issue.severity-warning * {
-    border-color: #fb2;
-}
-
-.warnings-list .issue.severity-warning .issue-label,
-.issue.severity-warning .issue-fix-list,
-.warning-section {
-    background: #ffc;
-}
-
-.issue-container.active .issue.severity-warning .issue-label {
-    background: #ffa;
-}
-
-.issue.severity-warning .issue-icon {
-    color: #f90;
-}
-
-.issue.severity-warning .issue-fix-item button.actionable,
-.issue-container.active .issue.severity-warning .issue-info-button {
-    color: #b15500;
-    fill: #b15500;
-}
-.warnings-list .issue.severity-warning .issue-label:active,
-.warnings-list .issue.severity-warning .issue-label:focus,
-.issue.severity-warning .issue-fix-item button.actionable:active,
-.issue.severity-warning .issue-fix-item button.actionable:focus {
-    background: #ff8;
-}
-.issue.severity-warning .issue-fix-item button.actionable:active,
-.issue.severity-warning .issue-fix-item button.actionable:focus,
-.issue-container.active .issue.severity-warning .issue-info-button:active,
-.issue-container.active .issue.severity-warning .issue-info-button:focus {
-    color: #7f3d00;
-    fill: #7f3d00;
-}
-@media (hover: hover) {
-    .warnings-list .issue.severity-warning .issue-label:hover,
-    .issue.severity-warning .issue-fix-item button.actionable:hover {
-        background: #ff8;
-    }
-    .issue.severity-warning .issue-fix-item button.actionable:hover,
-    .issue-container.active .issue.severity-warning .issue-info-button:hover {
-        color: #7f3d00;
-        fill: #7f3d00;
-    }
-}
-
 
 /* error styles */
-.errors-list,
-.errors-list *,
+.error-list,
+.error-list *,
 .issue-container.active .issue.severity-error,
 .issue-container.active .issue.severity-error * {
-    border-color: #f77;
+  border-color: #f77;
 }
 
-.errors-list .issue.severity-error .issue-label,
+.error-list .issue.severity-error .issue-label,
 .issue.severity-error .issue-fix-list,
 .error-section {
-    background: #ffd6d6;
+  background: #ffd6d6;
 }
 
 .issue-container.active .issue.severity-error .issue-label {
-    background: #ffc6c6;
+  background: #ffc6c6;
 }
 
 .issue.severity-error .issue-fix-item button.actionable,
 .issue-container.active .issue.severity-error .issue-info-button {
-    color: #b91201;
-    fill: #b91201;
+  color: #b91201;
+  fill: #b91201;
 }
 .issue.severity-error .issue-icon {
-    color: #dd1400;
+  color: #dd1400;
 }
-.errors-list .issue.severity-error .issue-label:active,
-.errors-list .issue.severity-error .issue-label:focus,
+.error-list .issue.severity-error .issue-label:active,
+.error-list .issue.severity-error .issue-label:focus,
 .issue.severity-error .issue-fix-item button.actionable:active,
 .issue.severity-error .issue-fix-item button.actionable:focus {
-    background: #ffb6b6;
+  background: #ffb6b6;
 }
 .issue.severity-error .issue-fix-item button.actionable:active,
 .issue.severity-error .issue-fix-item button.actionable:focus,
 .issue-container.active .issue.severity-error .issue-info-button:active,
 .issue-container.active .issue.severity-error .issue-info-button:focus {
-    color: #840c00;
-    fill: #840c00;
+  color: #840c00;
+  fill: #840c00;
 }
 @media (hover: hover) {
-    .errors-list .issue.severity-error .issue-label:hover,
-    .issue.severity-error .issue-fix-item button.actionable:hover {
-        background: #ffb6b6;
-    }
-    .issue.severity-error .issue-fix-item button.actionable:hover,
-    .issue-container.active .issue.severity-error .issue-info-button:hover {
-        color: #840c00;
-        fill: #840c00;
-    }
+  .error-list .issue.severity-error .issue-label:hover,
+  .issue.severity-error .issue-fix-item button.actionable:hover {
+    background: #ffb6b6;
+  }
+  .issue.severity-error .issue-fix-item button.actionable:hover,
+  .issue-container.active .issue.severity-error .issue-info-button:hover {
+    color: #840c00;
+    fill: #840c00;
+  }
+}
+
+/* warning styles */
+.warning-list,
+.warning-list *,
+.issue-container.active .issue.severity-warning,
+.issue-container.active .issue.severity-warning * {
+  border-color: #fb2;
+}
+
+.warning-list .issue.severity-warning .issue-label,
+.issue.severity-warning .issue-fix-list,
+.warning-section {
+  background: #ffc;
+}
+
+.issue-container.active .issue.severity-warning .issue-label {
+  background: #ffa;
+}
+
+.issue.severity-warning .issue-icon {
+  color: #f90;
+}
+
+.issue.severity-warning .issue-fix-item button.actionable,
+.issue-container.active .issue.severity-warning .issue-info-button {
+  color: #b15500;
+  fill: #b15500;
+}
+.warning-list .issue.severity-warning .issue-label:active,
+.warning-list .issue.severity-warning .issue-label:focus,
+.issue.severity-warning .issue-fix-item button.actionable:active,
+.issue.severity-warning .issue-fix-item button.actionable:focus {
+  background: #fafa30;
+}
+.issue.severity-warning .issue-fix-item button.actionable:active,
+.issue.severity-warning .issue-fix-item button.actionable:focus,
+.issue-container.active .issue.severity-warning .issue-info-button:active,
+.issue-container.active .issue.severity-warning .issue-info-button:focus {
+  color: #7f3d00;
+  fill: #7f3d00;
+}
+@media (hover: hover) {
+  .warning-list .issue.severity-warning .issue-label:hover,
+  .issue.severity-warning .issue-fix-item button.actionable:hover {
+    background: #fafa30;
+  }
+  .issue.severity-warning .issue-fix-item button.actionable:hover,
+  .issue-container.active .issue.severity-warning .issue-info-button:hover {
+    color: #7f3d00;
+    fill: #7f3d00;
+  }
+}
+
+
+/* suggestion styles */
+.suggestion-list,
+.suggestion-list *,
+.issue-container.active .issue.severity-suggestion,
+.issue-container.active .issue.severity-suggestion * {
+  border-color: #68abab;
+}
+
+.suggestion-list .issue.severity-suggestion .issue-label,
+.issue.severity-suggestion .issue-fix-list,
+.suggestion-section {
+  background: #c7fafa;
+}
+
+.issue-container.active .issue.severity-suggestion .issue-label {
+  background: #c7fafa;
+}
+
+.issue.severity-suggestion .issue-icon {
+  color: #00a7a7;
+}
+
+.issue.severity-suggestion .issue-fix-item button.actionable,
+.issue-container.active .issue.severity-suggestion .issue-info-button {
+  color: #098787;
+  fill: #098787;
+}
+.suggestion-list .issue.severity-suggestion .issue-label:active,
+.suggestion-list .issue.severity-suggestion .issue-label:focus,
+.issue.severity-suggestion .issue-fix-item button.actionable:active,
+.issue.severity-suggestion .issue-fix-item button.actionable:focus {
+  background: #7cfafa;
+}
+.issue.severity-suggestion .issue-fix-item button.actionable:active,
+.issue.severity-suggestion .issue-fix-item button.actionable:focus,
+.issue-container.active .issue.severity-suggestion .issue-info-button:active,
+.issue-container.active .issue.severity-suggestion .issue-info-button:focus {
+  color: #066262;
+  fill: #066262;
+}
+@media (hover: hover) {
+  .suggestion-list .issue.severity-suggestion .issue-label:hover,
+  .issue.severity-suggestion .issue-fix-item button.actionable:hover {
+    background: #7cfafa;
+  }
+  .issue.severity-suggestion .issue-fix-item button.actionable:hover,
+  .issue-container.active .issue.severity-suggestion .issue-info-button:hover {
+    color: #066262;
+    fill: #066262;
+  }
 }
 
 
@@ -3492,6 +3559,7 @@ input.square-degrees-input {
 }
 
 .section-entity-issues .issue-container.active .issue-label button.issue-text {
+    align-items: center;
     font-weight: bold;
 }
 .section-entity-issues .issue-container:not(:last-of-type) {
@@ -4598,18 +4666,23 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 
 .source-switch a.chip.live {
   background: #d32232;
-  color: #fff;
 }
 
-.feature-warning a.chip {
+.filter-info a.chip {
   background: #1e90ff;
 }
 
+.issues-info a.chip.error-count {
+  background: #d32232;
+}
+.issues-info a.chip.warning-count {
+  background: #df8500;
+}
+.issues-info a.chip.suggestion-count {
+  background: #00a7a7;
+}
 .issues-info a.chip.resolved-count {
   background: #15911e;
-}
-.issues-info a.chip.warnings-count {
-  background: #df8500;
 }
 .issues-info > *:not(:last-child),
 .project-links > *:not(:last-child) {

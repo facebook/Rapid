@@ -11,7 +11,7 @@ export class ValidationIssue {
 
     this.type = props.type;                  // required - name of rule that created the issue (e.g. 'missing_tag')
     this.subtype = props.subtype;            // optional - category of the issue within the type (e.g. 'relation_type' under 'missing_tag')
-    this.severity = props.severity;          // required - 'warning' or 'error'
+    this.severity = props.severity;          // required - 'warning', 'error', 'suggestion'
     this.entityIds = props.entityIds;        // required - Array of IDs of entities involved in the issue
     this.loc = props.loc;                    // optional - [lon, lat] to zoom in on to see the issue
     this.data = props.data;                  // optional - object containing extra data for the fixes
@@ -44,8 +44,8 @@ export class ValidationIssue {
     // (bhousel - why is this?  so they can use the latest graph?)
     let fixes = (typeof this.dynamicFixes === 'function') ? this.dynamicFixes() : [];
 
-    // For warnings, create an "ignore" option
-    if (this.severity === 'warning') {
+    // For minor issues, create an "ignore" option
+    if (this.severity !== 'error') {
       const l10n = this.context.systems.l10n;
       const validator = this.context.systems.validator;
 

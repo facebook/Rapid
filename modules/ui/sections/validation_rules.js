@@ -16,7 +16,7 @@ export function uiSectionValidationRules(context) {
 
   const section = uiSection(context, 'issues-rules')
     .disclosureContent(renderDisclosureContent)
-    .label(l10n.t('issues.rules.title'));
+    .label(l10n.t('issues.rules'));
 
 
   let _ruleKeys = validator.getRuleKeys()

@@ -94,6 +94,7 @@ function buildDataAsync() {
       // Start with icons we want to use in the UI that aren't tied to other data.
       const icons = new Set([
         'far-star',
+        'fas-circle-arrow-up',
         'fas-arrow-rotate-left',
         'fas-arrow-rotate-right',
         'fas-backward-step',
@@ -105,6 +106,7 @@ function buildDataAsync() {
         'fas-question',
         'fas-star',
         'fas-th-list',
+        'fas-triangle-exclamation',
         'fas-user-cog'
       ]);
 

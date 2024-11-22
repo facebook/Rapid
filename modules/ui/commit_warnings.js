@@ -10,10 +10,10 @@ export function uiCommitWarnings(context) {
     const issuesBySeverity = validator
       .getIssuesBySeverity({ what: 'edited', where: 'all', includeDisabledRules: true });
 
-    for (let severity in issuesBySeverity) {
+    for (const severity of ['error', 'warning']) {  // no 'suggestions' here
       let issues = issuesBySeverity[severity];
 
-      if (severity !== 'error') {      // exclude 'fixme' and similar - iD#8603
+      if (severity === 'warning') {      // exclude 'fixme' and similar - iD#8603
         issues = issues.filter(issue => issue.type !== 'help_request');
       }
 
@@ -72,7 +72,7 @@ export function uiCommitWarnings(context) {
         });
 
       buttons
-        .call(uiIcon('#rapid-icon-alert', 'pre-text'));
+        .call(uiIcon(validator.getSeverityIcon(severity), 'pre-text'));
 
       buttons
         .append('strong')

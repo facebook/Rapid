@@ -23,7 +23,7 @@ export function uiSectionEntityIssues(context) {
   let section = uiSection(context, 'entity-issues')
     .shouldDisplay(() => _issues.length)
     .label(() => {
-      return l10n.t('inspector.title_count', { title: l10n.t('issues.list_title'), count: _issues.length });
+      return l10n.t('inspector.title_count', { title: l10n.t('issues.title'), count: _issues.length });
     })
     .disclosureContent(renderDisclosureContent);
 
@@ -89,9 +89,8 @@ export function uiSectionEntityIssues(context) {
 
     textEnter
       .each((d, i, nodes) => {
-        const which = (d.severity === 'warning') ? 'alert' : 'error';
         d3_select(nodes[i])
-          .call(uiIcon(`#rapid-icon-${which}`, 'issue-icon'));
+          .call(uiIcon(validator.getSeverityIcon(d.severity), 'issue-icon'));
       });
 
     textEnter

@@ -363,15 +363,34 @@ export class ValidationSystem extends AbstractSystem {
    * @param   {Object}  options - see `getIssues`
    * @return  {Object}  result like:
    *   {
-   *     error:    Array of errors,
-   *     warning:  Array of warnings
+   *     error:       Array<ValidationIssue>,
+   *     warning:     Array<ValidationIssue>,
+   *     suggestion:  Array<ValidationIssue>
    *   }
    */
   getIssuesBySeverity(options) {
-    let groups = utilArrayGroupBy(this.getIssues(options), 'severity');
-    groups.error = groups.error ?? [];
-    groups.warning = groups.warning ?? [];
-    return groups;
+    const groups = utilArrayGroupBy(this.getIssues(options), 'severity');
+    return {       // note, we want them in this order
+      error:       groups.error ?? [],
+      warning:     groups.warning ?? [],
+      suggestion:  groups.suggestion ?? []
+    };
+  }
+
+
+  /**
+   * getSeverityIcon
+   * @param   {string}  severity - one of 'error', 'warning', 'suggestion', or 'resolved'
+   * @return  {string}  The name of the icon to use
+   */
+  getSeverityIcon(severity) {
+    const icons = {
+      error: '#rapid-icon-error',
+      warning: '#fas-triangle-exclamation',
+      suggestion: '#fas-circle-arrow-up',
+      resolved: '#rapid-icon-apply'
+    };
+    return icons[severity] || '#fas-triangle-exclamation';
   }
 
 
@@ -470,7 +489,7 @@ export class ValidationSystem extends AbstractSystem {
    * disableRules
    * Disables given validation rules,
    * then reruns the validation so that the user sees something happen in the UI
-   * @param   ruleIDs  Complete set of rules that should be disabled
+   * @param  {Array<string>}  ruleIDs - Complete set of rules that should be disabled
    */
   disableRules(ruleIDs = []) {
     this._disabledRuleIDs = new Set(ruleIDs);

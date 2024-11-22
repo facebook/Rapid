@@ -33,7 +33,7 @@ export function validationCurbNodes(context) {
       issues.push(new ValidationIssue(context, {
         type,
         subtype: 'missing_curb_nodes',
-        severity: 'warning',
+        severity: 'suggestion',
         message: () => way ? l10n.t('issues.curb_nodes.message', { feature: l10n.displayLabel(way, graph) }) : 'Way not found',
         reference: showReference,
         entityIds: [wayID],
@@ -279,13 +279,13 @@ export function validationCurbNodes(context) {
   function getIconForCurbNode(tags) {
     let iconID = 'default-icon'; // Default icon
     if (tags.barrier === 'kerb' && tags.kerb === 'flush') {
-        iconID = 'temaki-kerb-flush';
+      iconID = 'temaki-kerb-flush';
     } else if (tags.barrier === 'kerb' && tags.kerb === 'raised') {
-        iconID = 'temaki-kerb-raised';
+      iconID = 'temaki-kerb-raised';
     } else if (tags.barrier === 'kerb' && tags.kerb === 'lowered') {
-        iconID = 'temaki-kerb-lowered';
+      iconID = 'temaki-kerb-lowered';
     } else if (tags.barrier === 'kerb' && tags.kerb === 'unspecified') {
-        iconID = 'temaki-kerb-unspecified';
+      iconID = 'temaki-kerb-unspecified';
     }
     return iconID;
   }

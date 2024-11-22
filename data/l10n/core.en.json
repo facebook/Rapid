@@ -2179,16 +2179,10 @@
     },
     "issues": {
       "title": "Issues",
-      "list_title": "Issues",
-      "errors": {
-        "list_title": "Errors"
-      },
-      "warnings": {
-        "list_title": "Warnings"
-      },
-      "rules": {
-        "title": "Rules"
-      },
+      "errors": "Errors",
+      "warnings": "Warnings",
+      "suggestions": "Suggestions",
+      "rules": "Rules",
       "user_resolved_issues": "Issues resolved by your edits",
       "warnings_and_errors": "Warnings and errors",
       "no_issues": {

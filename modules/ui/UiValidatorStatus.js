@@ -68,40 +68,35 @@ export class UiValidatorStatus {
 
 
     // Gather info to display
-    const warningsItem = {
-      id: 'warnings',
-      count: 0,
-      iconID: 'rapid-icon-alert',
-      tooltip: this.IssuesTooltip
-    };
-
-    const resolvedItem = {
-      id: 'resolved',
-      count: 0,
-      iconID: 'rapid-icon-apply',
-      tooltip: this.ResolvedTooltip
-    };
-
-    const shownItems = [];
-    const liveIssues = validator.getIssues({
+    const chips = [];
+    const openIssues = validator.getIssuesBySeverity({
       what: storage.getItem('validate-what') ?? 'edited',
       where: storage.getItem('validate-where') ?? 'all'
     });
-    if (liveIssues.length) {
-      warningsItem.count = liveIssues.length;
-      shownItems.push(warningsItem);
+
+    for (const [severity, issues] of Object.entries(openIssues)) {
+      if (issues.length) {
+        chips.push({
+          id: severity,
+          count: issues.length,
+          tooltip: this.IssuesTooltip
+        });
+      }
     }
 
     if (storage.getItem('validate-what') === 'all') {
       const resolvedIssues = validator.getResolvedIssues();
       if (resolvedIssues.length) {
-        resolvedItem.count = resolvedIssues.length;
-        shownItems.push(resolvedItem);
+        chips.push({
+          id: 'resolved',
+          count: resolvedIssues.length,
+          tooltip: this.ResolvedTooltip
+        });
       }
     }
 
     let $chips = $wrap.selectAll('.chip')
-      .data(shownItems, d => d.id);
+      .data(chips, d => d.id);
 
     $chips.exit()
       .remove();
@@ -117,7 +112,7 @@ export class UiValidatorStatus {
         $$chip
           .on('click', this.click)
           .call(d.tooltip)
-          .call(uiIcon(`#${d.iconID}`));
+          .call(uiIcon(validator.getSeverityIcon(d.id)));
 
         $$chip
           .append('span')
