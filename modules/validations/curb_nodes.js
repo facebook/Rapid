@@ -28,8 +28,12 @@ export function validationCurbNodes(context) {
     let issues = [];
     const wayID = way.id;
     if (!hasRoutableTags(way) || !isCrossingWay(way.tags)) return issues;
-    const hasCurbs = hasCurbNodes(way, graph);
-    if (!hasCurbs) {
+    const firstNode = graph.entity(way.nodes[0]);
+    const lastNode = graph.entity(way.nodes[way.nodes.length - 1]);
+    const firstNodeHasCurb = hasCurbNode(firstNode, graph);
+    const lastNodeHasCurb = hasCurbNode(lastNode, graph);
+    // Check if either end is missing a curb
+    if (!firstNodeHasCurb || !lastNodeHasCurb) {
       issues.push(new ValidationIssue(context, {
         type,
         subtype: 'missing_curb_nodes',
@@ -88,17 +92,14 @@ export function validationCurbNodes(context) {
 
 
   /**
-   * hasCurbNodes
-   * Checks if the given way already has curb nodes
-   * @param  {Object} way - The way entity to check
-   * @return {Boolean} True if curb nodes are present, false otherwise
+   * hasCurbNode
+   * Checks if the given node has a curb
+   * @param  {Object} node - The node entity to check
+   * @param  {Object} graph - The graph containing the node data
+   * @return {Boolean} True if the node has a curb, false otherwise
    */
-  function hasCurbNodes(way) {
-    const graph = editor.staging.graph;
-    return way.nodes.some(nodeID => {
-      const node = graph.entity(nodeID);
-      return isCurbNode(node);
-    });
+  function hasCurbNode(node, graph) {
+    return node.tags && node.tags.barrier === 'kerb';
   }
 
 
@@ -115,24 +116,20 @@ export function validationCurbNodes(context) {
       console.error('Way not found:', wayID);  // eslint-disable-line
       return;
     }
-
     const firstNode = graph.entity(way.nodes[0]);
     const lastNode = graph.entity(way.nodes[way.nodes.length - 1]);
-
     const firstNodeConnected = isConnectedToRefugeIsland(firstNode, graph);
     const lastNodeConnected = isConnectedToRefugeIsland(lastNode, graph);
-
     // Handle the first node
     if (firstNodeConnected) {
       updateNodeToCurb(firstNode, tags, graph);
-    } else {
+    } else if (!hasCurbNode(firstNode, graph)) {
       curbNodeAdditionForSingleNode(firstNode, way, graph, tags);
     }
-
     // Handle the last node
     if (lastNodeConnected) {
       updateNodeToCurb(lastNode, tags, graph);
-    } else {
+    } else if (!hasCurbNode(lastNode, graph)) {
       curbNodeAdditionForSingleNode(lastNode, way, graph, tags);
     }
   }
@@ -148,6 +145,10 @@ export function validationCurbNodes(context) {
    * @param  {Object} tags - The tags to assign to the new curb node.
    */
   function curbNodeAdditionForSingleNode(node, way, graph, tags) {
+    // Check if the node already has a curb
+    if (hasCurbNode(node, graph)) {
+      return; // Exit if curb already exists
+    }
     // Calculate the position for the new curb node
     const nodeIndex = way.nodes.indexOf(node.id);
     const adjacentNode = graph.entity(way.nodes[nodeIndex + 1] || way.nodes[nodeIndex - 1]);
