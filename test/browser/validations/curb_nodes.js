@@ -90,10 +90,11 @@ describe('validationCurbNodes', () => {
     verifySingleCurbNodeIssue(issues);
   });
 
-  it('ignores a crossing way with existing curb nodes', () => {
-    const n1 = Rapid.osmNode({ id: 'n-1', loc: [0, -1] });
-    const n2 = Rapid.osmNode({ id: 'n-2', loc: [0,  1] });
-    const n5 = Rapid.osmNode({ id: 'n-5', loc: [0,  0], tags: { barrier: 'kerb' } });
+  it('ignores a crossing way with existing curb nodes at both ends', () => {
+    // Define nodes with curb tags at both ends
+    const n1 = Rapid.osmNode({ id: 'n-1', loc: [0, -1], tags: { barrier: 'kerb' } });
+    const n2 = Rapid.osmNode({ id: 'n-2', loc: [0,  1], tags: { barrier: 'kerb' } });
+    const n5 = Rapid.osmNode({ id: 'n-5', loc: [0,  0] }); // Middle node without curb
     const w1 = Rapid.osmWay({ id: 'w-1', nodes: ['n-1', 'n-5', 'n-2'], tags: { highway: 'footway', footway: 'crossing' } });
 
     const n3 = Rapid.osmNode({ id: 'n-3', loc: [-1, 0] });
