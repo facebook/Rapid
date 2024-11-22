@@ -2,6 +2,7 @@ import { geoLatToMeters, geoLonToMeters, geoMetersToLat, geoMetersToLon } from '
 import { actionAddMidpoint, actionChangeTags, actionSplit} from '../actions/index.js';
 import { osmNode } from '../osm/node.js';
 import { ValidationIssue, ValidationFix } from '../core/lib/index.js';
+import { uiIcon } from '../ui/icon.js';
 
 
 export function validationCurbNodes(context) {
@@ -83,12 +84,24 @@ export function validationCurbNodes(context) {
    * @param  {Object} selection - The UI selection to append the reference to
    */
   function showReference(selection) {
-    selection.selectAll('.issue-reference')
+    const referenceEnter = selection.selectAll('.issue-reference')
       .data([0])
       .enter()
       .append('div')
-      .attr('class', 'issue-reference')
+      .attr('class', 'issue-reference');
+    referenceEnter
+      .append('span')
       .text(l10n.t('issues.curb_nodes.reference'));
+    referenceEnter
+      .append('br');
+    const link = referenceEnter
+      .append('a')
+      .attr('href', 'https://wiki.openstreetmap.org/wiki/Key:kerb#:~:text=is%20being%20crossed.-,Values,-%5Bedit%20%7C')
+      .attr('target', '_blank')
+      .attr('title', 'Kerb Tagging Guidelines')
+      .call(uiIcon('#rapid-icon-out-link', 'inline'));
+    link.append('span')
+      .text('More info');
   }
 
 
