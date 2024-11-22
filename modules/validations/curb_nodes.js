@@ -21,7 +21,6 @@ export function validationCurbNodes(context) {
     if (entity.type !== 'way' || entity.isDegenerate()) return [];
     return detectCurbCandidates(entity, graph);
   };
-  const isCurbNode = (entity) => entity.type === 'node' && entity.tags?.barrier === 'kerb';
   const isCrossingWay = (tags) => tags.highway === 'footway' && tags.footway === 'crossing';
 
   const detectCurbCandidates = (way, graph) => {
@@ -144,18 +143,30 @@ export function validationCurbNodes(context) {
    * @param  {Object} graph - The graph containing the way and node data.
    * @param  {Object} tags - The tags to assign to the new curb node.
    */
-  function curbNodeAdditionForSingleNode(node, way, graph, tags) {
+  function curbNodeAdditionForSingleNode(node, way, graph, curbTags) {
     // Check if the node already has a curb
     if (hasCurbNode(node, graph)) {
       return; // Exit if curb already exists
     }
+
     // Calculate the position for the new curb node
     const nodeIndex = way.nodes.indexOf(node.id);
     const adjacentNode = graph.entity(way.nodes[nodeIndex + 1] || way.nodes[nodeIndex - 1]);
     const newNodePosition = calculateNewNodePosition(node, adjacentNode, 1);
 
-    // Create a new curb node
-    const newCurbNode = osmNode({ loc: [newNodePosition.lon, newNodePosition.lat], tags, visible: true });
+    // Find connected ways and select the appropriate tags
+    const connectedWays = graph.parentWays(node);
+    let connectedWayTags = null;
+
+    for (const connectedWay of connectedWays) {
+      if (connectedWay.id !== way.id && !isCrossingWay(connectedWay.tags)) {
+        connectedWayTags = connectedWay.tags;
+        break;
+      }
+    }
+
+    // Create a new curb node with the specified curb tags
+    const newCurbNode = osmNode({ loc: [newNodePosition.lon, newNodePosition.lat], tags: curbTags, visible: true });
 
     // Add the new node to the graph
     editor.perform(actionAddMidpoint({ loc: newCurbNode.loc, edge: [node.id, adjacentNode.id] }, newCurbNode));
@@ -167,15 +178,14 @@ export function validationCurbNodes(context) {
 
     // Ensure that the new ways are created correctly
     if (newWayIDs.length > 0) {
-      // Change tags to indicate these are sidewalks
-      const sidewalkTags = { highway: 'footway', footway: 'sidewalk' };
+      // Update the tags of the new ways to match the connected non-crossing way's tags
       newWayIDs.forEach(wayId => {
-        editor.perform(actionChangeTags(wayId, sidewalkTags));
+        editor.perform(actionChangeTags(wayId, connectedWayTags));
       });
 
       // Commit the changes to the graph
       editor.commit({
-        annotation: 'Added curb node and updated way tags to sidewalks',
+        annotation: 'Added curb node and updated way tags to match connected non-crossing way',
         selectedIDs: [node.id].concat(newWayIDs)
       });
     } else {
