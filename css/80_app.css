@@ -2682,6 +2682,38 @@ img.tag-reference-wiki-image {
   height: 28px;
 }
 
+
+.note-header-icon .note-fill {
+  color: #f30;
+  stroke: #333;
+  stroke-width: 40px;
+}
+.note-header-icon.new .note-fill {
+  color: #fe0;
+  stroke: #333;
+  stroke-width: 40px;
+}
+.note-header-icon.closed .note-fill {
+  color: #5d0;
+  stroke: #333;
+  stroke-width: 40px;
+}
+
+/* slight adjustments to preset icon for note icons */
+.note-header-icon .preset-icon-28 {
+  top: 18px;
+}
+.note-header-icon .note-icon-annotation {
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  margin: auto;
+}
+.note-header-icon .note-icon-annotation .icon {
+  width: 15px;
+  height: 15px;
+}
+
 .data-header-label,
 .note-header-label,
 .qa-header-label {
