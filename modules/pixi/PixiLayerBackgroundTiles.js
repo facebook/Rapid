@@ -145,8 +145,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     let debugContainer;
     if (!this.isMinimap) {
       showDebug = context.getDebug('tile');
-      const mapUIContainer = this.scene.layers.get('map-ui').container;
-      debugContainer = mapUIContainer.getChildByLabel('tile-debug');
+      const debugContainer = this.scene.layers.get('map-ui').tileDebug;
       debugContainer.visible = showDebug;
     }
 
@@ -286,7 +285,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
             debugContainer.addChild(tile.text);
           }
 
-          tile.debug.position.set(x, y - size);          // left, top
+          tile.debug.position.set(x, y - size);         // left, top
           tile.text.position.set(x + 2, y - size + 2);  // left, top
           tile.debug
             .clear()

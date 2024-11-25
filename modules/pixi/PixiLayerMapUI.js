@@ -29,15 +29,6 @@ export class PixiLayerMapUI extends AbstractLayer {
     super(scene, layerID);
     this.enabled = true;   // this layer should always be enabled
 
-// todo: I'm adjusting the container nesting, this will need to be revisited
-const container = new PIXI.Container();
-container.label= layerID;
-container.sortableChildren = true;
-this.container = container;
-
-const groupContainer = this.scene.groups.get('ui');
-groupContainer.addChild(container);
-
     this._oldk = 0;
 
     // setup the child containers
@@ -46,27 +37,34 @@ groupContainer.addChild(container);
     // GEOLOCATION
     this._geolocationData = null;
     this._geolocationDirty = false;
-    const geolocationContainer = new PIXI.Container();
-    geolocationContainer.label= 'geolocation';
-    geolocationContainer.eventMode = 'none';
-    geolocationContainer.sortableChildren = false;
-    geolocationContainer.visible = false;
-    this.geolocationContainer = geolocationContainer;
+    const geolocation = new PIXI.Container();
+    geolocation.label= 'geolocation';
+    geolocation.eventMode = 'none';
+    geolocation.sortableChildren = false;
+    geolocation.visible = false;
+    this.geolocation = geolocation;
 
     // TILE DEBUGGING
-    const tileDebugContainer = new PIXI.Container();
-    tileDebugContainer.label= 'tile-debug';
-    tileDebugContainer.eventMode = 'none';
-    tileDebugContainer.sortableChildren = false;
-    tileDebugContainer.visible = false;
-    this.tileDebugContainer = tileDebugContainer;
+    const tileDebug = new PIXI.Container();
+    tileDebug.label= 'tile-debug';
+    tileDebug.eventMode = 'none';
+    tileDebug.sortableChildren = false;
+    tileDebug.visible = false;
+    this.tileDebug = tileDebug;
 
     // SELECTED
-    const selectedContainer = new PIXI.Container();
-    selectedContainer.label= 'selected';
-    selectedContainer.sortableChildren = true;
-    selectedContainer.visible = true;
-    this.selectedContainer = selectedContainer;
+    const selected = new PIXI.Container();
+    selected.label = 'selected';
+    selected.sortableChildren = true;
+    selected.visible = true;
+    this.selected = selected;
+
+    // HALO
+    const halo = new PIXI.Container();
+    halo.label = 'halo';
+    halo.sortableChildren = true;
+    halo.visible = true;
+    this.halo = halo;
 
     // Lasso polygon
     this._lassoData = null;
@@ -77,10 +75,11 @@ groupContainer.addChild(container);
     lasso.label= 'lasso';
     lasso.eventMode = 'none';
     lasso.sortableChildren = false;
-    lasso.visible = true;
+    lasso.visible = false;
     this.lasso = lasso;
 
-    this.container.addChild(geolocationContainer, tileDebugContainer, selectedContainer, lasso);
+    const groupContainer = this.scene.groups.get('ui');
+    groupContainer.addChild(geolocation, tileDebug, selected, halo, lasso);
   }
 
 
@@ -173,6 +172,7 @@ groupContainer.addChild(container);
     const data = this._lassoData;
 
     if (Array.isArray(data) && data.length > 1) {  // should show lasso
+      container.visible = true;
       if (!container.children.length) {
         container.addChild(line, fill);
       }
@@ -197,6 +197,7 @@ groupContainer.addChild(container);
       fill.clear().poly(flatCoords).fill(fillStyle);
 
     } else {  // no lasso data
+      container.visible = false;
       if (container.children.length) {
         container.removeChildren();
       }
@@ -213,52 +214,56 @@ groupContainer.addChild(container);
    * @param  viewport   Pixi viewport to use for rendering
    */
   renderGeolocation(frame, viewport) {
-    if (this._geolocationDirty) {
-      this._geolocationDirty = false;
-      this.geolocationContainer.removeChildren();
+    if (!this._geolocationDirty) return;
 
-      if (this.geolocationData && this.geolocationData.coords) {
-        const d = this.geolocationData.coords;
-        const coord = [d.longitude, d.latitude];
-        const [x, y] = viewport.project(coord);
+    const container = this.geolocation;
 
-        // Calculate the radius of the accuracy aura (convert meters -> pixels)
-        const dLon = geoMetersToLon(d.accuracy, coord[1]);  // coord[1] = at this latitude
-        const edge = [d.longitude + dLon, d.latitude];
-        const x2 = viewport.project(edge)[0];
-        const r = Math.max(Math.abs(x2 - x), 15);
-        const BLUE = 0xe60ff;
+    container.removeChildren();
 
-        const locatorAura = new PIXI.Graphics()
-          .circle(x, y, r)
-          .fill({ color: BLUE, alpha: 0.4 });
-        locatorAura.label = 'aura';
-        this.geolocationContainer.addChild(locatorAura);
+    if (this.geolocationData && this.geolocationData.coords) {
+      container.visible = true;
 
-        // Show a viewfield for the heading if we have it
-        if (d.heading !== null && !isNaN(d.heading)) {
-          const textures = this.gfx.textures;
-          const locatorHeading = new PIXI.Sprite(textures.get('viewfieldDark'));
-          locatorHeading.anchor.set(0.5, 1);  // middle, top
-          locatorHeading.angle = d.heading;
-          locatorHeading.label = 'heading';
-          locatorHeading.position.set(x, y);
-          this.geolocationContainer.addChild(locatorHeading);
-        }
+      const d = this.geolocationData.coords;
+      const coord = [d.longitude, d.latitude];
+      const [x, y] = viewport.project(coord);
 
-        const locatorPosition = new PIXI.Graphics()
-          .circle(x, y, 6.5)
-          .stroke(1.5, 0xffffff, 1.0)
-          .fill({ color: BLUE, alpha: 1.0 });
-        locatorPosition.label = 'position';
-        this.geolocationContainer.addChild(locatorPosition);
+      // Calculate the radius of the accuracy aura (convert meters -> pixels)
+      const dLon = geoMetersToLon(d.accuracy, coord[1]);  // coord[1] = at this latitude
+      const edge = [d.longitude + dLon, d.latitude];
+      const x2 = viewport.project(edge)[0];
+      const r = Math.max(Math.abs(x2 - x), 15);
+      const BLUE = 0xe60ff;
 
-        this.geolocationContainer.visible = true;
+      const aura = new PIXI.Graphics()
+        .circle(x, y, r)
+        .fill({ color: BLUE, alpha: 0.4 });
+      aura.label = 'aura';
+      container.addChild(aura);
 
-      } else {
-        this.geolocationContainer.visible = false;
+      // Show a viewfield for the heading if we have it
+      if (d.heading !== null && !isNaN(d.heading)) {
+        const textures = this.gfx.textures;
+        const heading = new PIXI.Sprite(textures.get('viewfieldDark'));
+        heading.anchor.set(0.5, 1);  // middle, top
+        heading.angle = d.heading;
+        heading.label = 'heading';
+        heading.position.set(x, y);
+        container.addChild(heading);
       }
+
+      const position = new PIXI.Graphics()
+        .circle(x, y, 6.5)
+        .stroke(1.5, 0xffffff, 1.0)
+        .fill({ color: BLUE, alpha: 1.0 });
+      position.label = 'position';
+      container.addChild(position);
+
+    } else {
+      container.visible = false;
     }
+
+    this._geolocationDirty = false;
+
   }
 
 }

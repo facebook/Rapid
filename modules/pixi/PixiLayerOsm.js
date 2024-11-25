@@ -544,8 +544,7 @@ export class PixiLayerOsm extends AbstractLayer {
     const presets = context.systems.presets;
 
     // Vertices related to the selection/hover should be drawn above everything
-    const mapUIContainer = this.scene.layers.get('map-ui').container;
-    const selectedContainer = mapUIContainer.getChildByLabel('selected');
+    const selectedContainer = this.scene.layers.get('map-ui').selected;
     const pointsContainer = this.scene.groups.get('points');
 
     function isInterestingVertex(node) {
@@ -740,8 +739,7 @@ export class PixiLayerOsm extends AbstractLayer {
     const entities = new Map([...data.lines, ...data.polygons]);
 
     // Midpoints should be drawn above everything
-    const mapUIContainer = this.scene.layers.get('map-ui').container;
-    const selectedContainer = mapUIContainer.getChildByLabel('selected');
+    const selectedContainer = this.scene.layers.get('map-ui').selected;
 
     // Generate midpoints from all the highlighted ways
     let midpoints = new Map();

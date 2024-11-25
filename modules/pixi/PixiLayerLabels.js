@@ -350,8 +350,7 @@ export class PixiLayerLabels extends AbstractLayer {
     // Gather the containers that have avoidable stuff on them
     const avoidContainers = [];
 
-    const mapUIContainer = this.scene.layers.get('map-ui').container;
-    const selectedContainer = mapUIContainer.getChildByLabel('selected');
+    const selectedContainer = this.scene.layers.get('map-ui').selected;
     if (selectedContainer) {
       avoidContainers.push(selectedContainer);
     }
