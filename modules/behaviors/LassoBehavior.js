@@ -115,7 +115,7 @@ export class LassoBehavior extends AbstractBehavior {
 
     // Push the polygon data to the map UI for rendering.
     const mapUILayer = gfx.scene.layers.get('map-ui');
-    mapUILayer.lassoPolygonData = this._coords;
+    mapUILayer.lassoData = this._coords;
     gfx.immediateRedraw();
   }
 
@@ -136,7 +136,7 @@ export class LassoBehavior extends AbstractBehavior {
 
     const ids = this._lassoed();
     this._coords = [];
-    mapUILayer.lassoPolygonData = this._coords;
+    mapUILayer.lassoData = null;
 
     this._extent = null;
 

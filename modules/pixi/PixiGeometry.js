@@ -1,5 +1,5 @@
 import { Extent, geomGetSmallestSurroundingRectangle, vecInterp } from '@rapid-sdk/math';
-import { polygonHull as d3_polygonHull, polygonCentroid as d3_polygonCentroid } from 'd3-polygon';
+import { polygonHull, polygonCentroid } from 'd3-polygon';
 import polylabel from '@mapbox/polylabel';
 
 
@@ -205,7 +205,7 @@ export class PixiGeometry {
           this.hull[i] = viewport.project(this.origHull[i]);
         }
       } else {               // recalculate and store as WGS84
-        this.hull = d3_polygonHull(this.outer);
+        this.hull = polygonHull(this.outer);
         if (this.hull) {
           this.origHull = new Array(this.hull.length);
           for (let i = 0; i < this.origHull.length; ++i) {
@@ -221,7 +221,7 @@ export class PixiGeometry {
         if (this.hull.length === 2) {
           this.centroid = vecInterp(this.hull[0], this.hull[1], 0.5);  // average the 2 points
         } else {
-          this.centroid = d3_polygonCentroid(this.hull);
+          this.centroid = polygonCentroid(this.hull);
         }
         this.origCentroid = viewport.unproject(this.centroid);
       }

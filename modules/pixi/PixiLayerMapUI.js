@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { geoMetersToLon } from '@rapid-sdk/math';
+import { geoMetersToLon, vecEqual } from '@rapid-sdk/math';
 
 import { AbstractLayer } from './AbstractLayer.js';
 import { DashLine } from './lib/DashLine.js';
@@ -69,19 +69,29 @@ groupContainer.addChild(container);
     this.selectedContainer = selectedContainer;
 
     // Lasso polygon
-    this._lassoPolygonData = null;
-    this._lassoPolygonDirty = false;
-    this._lassoLineGraphics = new PIXI.Graphics();
-    this._lassoFillGraphics = new PIXI.Graphics();
-    const lassoContainer = new PIXI.Container();
-    lassoContainer.label= 'lasso';
-    lassoContainer.eventMode = 'none';
-    lassoContainer.sortableChildren = false;
-    lassoContainer.visible = true;
-    lassoContainer.addChild(this._lassoLineGraphics, this._lassoFillGraphics);
-    this.lassoContainer = lassoContainer;
+    this._lassoData = null;
+    this._lassoDirty = false;
+    this._lassoLine = new PIXI.Graphics();
+    this._lassoFill = new PIXI.Graphics();
+    const lasso = new PIXI.Container();
+    lasso.label= 'lasso';
+    lasso.eventMode = 'none';
+    lasso.sortableChildren = false;
+    lasso.visible = true;
+    this.lasso = lasso;
 
-    this.container.addChild(geolocationContainer, tileDebugContainer, selectedContainer, lassoContainer);
+    this.container.addChild(geolocationContainer, tileDebugContainer, selectedContainer, lasso);
+  }
+
+
+  /**
+   * reset
+   * Every Layer should have a reset function to clear out any state when a reset occurs.
+   */
+  reset() {
+    super.reset();
+    this._lassoData = null;
+    this.lasso.removeChildren();
   }
 
 
@@ -111,14 +121,15 @@ groupContainer.addChild(container);
 
 
   /**
-   * lassoPolygonData
+   * lassoData
+   * Pass an array of coordinate data that grows at the user draws the lasso
    */
-   get lassoPolygonData() {
-    return this._lassoPolygonData;
+  get lassoData() {
+    return this._lassoData;
   }
-  set lassoPolygonData(val) {
-    this._lassoPolygonData = val;
-    this._lassoPolygonDirty = true;
+  set lassoData(val) {
+    this._lassoData = val;
+    this._lassoDirty = true;
   }
 
 
@@ -133,7 +144,7 @@ groupContainer.addChild(container);
     const k = viewport.transform.scale;
     if (k !== this._oldk) {
       this._geolocationDirty = true;
-      this._lassoPolygonDirty = true;
+      this._lassoDirty = true;
       this._oldk = k;
     }
 
@@ -141,7 +152,7 @@ groupContainer.addChild(container);
       this.renderGeolocation(frame, viewport);
     }
 
-    if (this._lassoPolygonDirty) {
+    if (this._lassoDirty) {
       this.renderLasso(frame, viewport);
     }
 
@@ -154,48 +165,46 @@ groupContainer.addChild(container);
    * @param  viewport   Pixi viewport to use for rendering
    */
   renderLasso(frame, viewport) {
-    if (this._lassoPolygonDirty) {
-      this._lassoPolygonDirty = false;
-    }
+    if (!this._lassoDirty) return;
 
-    const LASSO_STYLE = {
-      alpha: 0.7,
-      dash: [6, 3],
-      width: 1,   // px
-      color: 0xffffff
-    };
+    const container = this.lasso;
+    const line = this._lassoLine;
+    const fill = this._lassoFill;
+    const data = this._lassoData;
 
-    // Simple state machine: If there's lasso data set, ensure that the lasso graphcs are added to the container.
-    // If there's no lasso data set, remove the graphics from the container and stop rendering.
-
-    // No polygon data? remove the graphics from the container.
-    if (!this._lassoPolygonData && this._lassoLineGraphics.parent) {
-      this.lassoContainer.removeChildren();
-
-    } else {
-      // Otherwise, we have polygon data but no parent. Add the graphics to the lasso container.
-      if (!this._lassoLineGraphics.parent) {
-        this.lassoContainer.addChild(this._lassoLineGraphics);
-        this.lassoContainer.addChild(this._lassoFillGraphics);
+    if (Array.isArray(data) && data.length > 1) {  // should show lasso
+      if (!container.children.length) {
+        container.addChild(line, fill);
       }
 
-      // Update polygon rendered to map UI
-      this._lassoLineGraphics.clear();
-      this._lassoFillGraphics.clear();
+      // Make sure the lasso is closed
+      const coords = data.slice();  // shallow copy
+      const start = coords.at(0);
+      const end = coords.at(-1);
+      if (!vecEqual(start, end)) {
+        coords.push(start);
+      }
 
-      // Render the data only as long as we have something meaningful.
-      if (this._lassoPolygonData?.length > 0) {
-        const projectedCoords = this._lassoPolygonData.map(coord => viewport.project(coord));
+      const flatCoords = coords.map(coord => viewport.project(coord)).flat();
 
-        new DashLine(this._lassoLineGraphics, LASSO_STYLE)
-          .poly(projectedCoords.flat());
+      // line
+      const lineStyle = { alpha: 0.7, dash: [6, 3], width: 1, color: 0xffffff };
+      line.clear();
+      new DashLine(line, lineStyle).poly(flatCoords);
 
-        this._lassoFillGraphics
-          .poly(projectedCoords.flat())
-          .fill({color: 0xaaaaaa, width: 0.5 });
+      // fill
+      const fillStyle = { alpha: 0.5, color: 0xaaaaaa };
+      fill.clear().poly(flatCoords).fill(fillStyle);
+
+    } else {  // no lasso data
+      if (container.children.length) {
+        container.removeChildren();
       }
     }
+
+    this._lassoDirty = false;
   }
+
 
   /**
    * renderGeolocation
