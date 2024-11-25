@@ -12,10 +12,9 @@ const MAX_ISSUES = 1000;
 /**
  *  uiSectionValidateIssues
  *  @param  `context`    Global shared application context
- *  @param  `sectionID`  String 'issues-errors' or 'issues-warnings'
  *  @param  `severity`   String 'error', 'warning', or 'suggestion'
  */
-export function uiSectionValidationIssues(context, sectionID, severity) {
+export function uiSectionValidationIssues(context, severity) {
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
@@ -24,6 +23,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
   const validator = context.systems.validator;
   const viewport = context.viewport;
 
+  const sectionID = `issues-${severity}`;
   const section = uiSection(context, sectionID)
     .label(sectionLabel)
     .shouldDisplay(sectionShouldDisplay)

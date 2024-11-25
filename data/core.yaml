@@ -1787,8 +1787,8 @@ en:
     warnings: Warnings
     suggestions: Suggestions
     rules: Rules
-    user_resolved_issues: Issues resolved by your edits
-    warnings_and_errors: Warnings and errors
+    open_tooltip: Detected errors, warnings, and suggestions
+    resolved_tooltip: Issues resolved by your edits
     no_issues:
       message:
         everything: Everything looks fine

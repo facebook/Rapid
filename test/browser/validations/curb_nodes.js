@@ -67,7 +67,7 @@ describe('validationCurbNodes', () => {
 
     const issue = issues[0];
     expect(issue.type).to.eql('curb_nodes');
-    expect(issue.severity).to.eql('warning');
+    expect(issue.severity).to.eql('suggestion');
     expect(issue.entityIds).to.have.lengthOf(1);
     expect(issue.entityIds[0]).to.eql('w-1');
   }
@@ -79,13 +79,13 @@ describe('validationCurbNodes', () => {
   });
 
   it('flags a crossing way and residential street if the street has no curb nodes', () => {
-    createWaysWithOneCrossingPoint({highway: 'footway', footway: 'crossing'}, {highway: 'residential'});
+    createWaysWithOneCrossingPoint({ highway: 'footway', footway: 'crossing' }, { highway: 'residential' });
     const issues = validate();
     verifySingleCurbNodeIssue(issues);
   });
 
   it('flags a crossing way with no curb nodes on a primary road', () => {
-    createWaysWithOneCrossingPoint({highway: 'footway', footway: 'crossing'}, {highway: 'primary'});
+    createWaysWithOneCrossingPoint({ highway: 'footway', footway: 'crossing' }, { highway: 'primary' });
     const issues = validate();
     verifySingleCurbNodeIssue(issues);
   });
@@ -110,13 +110,13 @@ describe('validationCurbNodes', () => {
   });
 
   it('flags a crossing way with a missing curb node on a secondary road', () => {
-    createWaysWithOneCrossingPoint({highway: 'footway', footway: 'crossing'}, {highway: 'secondary'});
+    createWaysWithOneCrossingPoint({ highway: 'footway', footway: 'crossing' }, { highway: 'secondary' });
     const issues = validate();
     verifySingleCurbNodeIssue(issues);
   });
 
   it('flags a crossing way with no curb nodes on a tertiary road', () => {
-    createWaysWithOneCrossingPoint({highway: 'footway', footway: 'crossing'}, {highway: 'tertiary'});
+    createWaysWithOneCrossingPoint({ highway: 'footway', footway: 'crossing' }, { highway: 'tertiary' });
     const issues = validate();
     verifySingleCurbNodeIssue(issues);
   });

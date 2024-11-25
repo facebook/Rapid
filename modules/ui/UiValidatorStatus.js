@@ -131,8 +131,8 @@ export class UiValidatorStatus {
       });
 
     // localize tooltips
-    this.IssuesTooltip.title(l10n.t('issues.warnings_and_errors'));
-    this.ResolvedTooltip.title(l10n.t('issues.user_resolved_issues'));
+    this.IssuesTooltip.title(l10n.t('issues.open_tooltip'));
+    this.ResolvedTooltip.title(l10n.t('issues.resolved_tooltip'));
   }
 
 

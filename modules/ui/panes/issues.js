@@ -17,8 +17,9 @@ export function uiPaneIssues(context) {
     .sections([
       uiSectionValidationOptions(context),
       uiSectionValidationStatus(context),
-      uiSectionValidationIssues(context, 'issues-errors', 'error'),
-      uiSectionValidationIssues(context, 'issues-warnings', 'warning'),
+      uiSectionValidationIssues(context, 'error'),
+      uiSectionValidationIssues(context, 'warning'),
+      uiSectionValidationIssues(context, 'suggestion'),
       uiSectionValidationRules(context)
     ]);
 }
