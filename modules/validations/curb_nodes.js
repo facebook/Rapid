@@ -112,7 +112,7 @@ export function validationCurbNodes(context) {
   function applyCurbNodeFix(wayID, graph, tags) {
     const way = graph.hasEntity(wayID);
     if (!way) {
-      console.error('Way not found:', wayID);
+      console.error('Way not found:', wayID);  // eslint-disable-line
       return;
     }
 

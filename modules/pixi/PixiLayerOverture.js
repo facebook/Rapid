@@ -31,7 +31,7 @@ export class PixiLayerOverture extends AbstractLayer {
     this._overlaysDefined = false;
 
     const datasets = this.context.systems.rapid.datasets;
-    for (const [key, dataset] of datasets.entries()) {
+    for (const dataset of datasets.values()) {
       if (dataset.overlay) {
         this._overlaysDefined = true;
       }
@@ -81,11 +81,10 @@ export class PixiLayerOverture extends AbstractLayer {
    */
   renderDataset(dataset, frame, viewport, zoom) {
     const context = this.context;
-    const rapid = context.systems.rapid;
-
 
     const service = context.services[dataset.service]; // Should be 'overture' if we've gotten here
     if (!service?.started) return;
+
     if (zoom >= 16) {  // avoid firing off too many API requests
       service.loadTiles(dataset.id);  // fetch more
     }

@@ -1007,7 +1007,6 @@ export class EditSystem extends AbstractSystem {
   fromJSONAsync(json) {
     const context = this.context;
     const gfx = context.systems.gfx;
-    const map = context.systems.map;
     const osm = context.services.osm;
 
     const backup = JSON.parse(json);
