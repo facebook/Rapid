@@ -508,10 +508,10 @@ export class PixiTextures {
 
     const taggedCircle = new PIXI.Graphics()   // a small circle with a dot inside
       .circle(0, 0, 4.5)
-      .fill({ color: 0x000000, alpha: 1 })
-      .circle(0, 0, 1.5)
       .fill({ color: 0xffffff, alpha: 1 })
-      .stroke({ color: 0x444444, width: 1 });
+      .stroke({ color: 0x444444, width: 1 })
+      .circle(0, 0, 2)
+      .fill({ color: 0x000000, alpha: 1 });
 
     this.graphicToTexture('pin', pin);
     this.graphicToTexture('boldPin', boldPin);
