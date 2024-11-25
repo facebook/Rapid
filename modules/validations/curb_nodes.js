@@ -1,7 +1,8 @@
 import { geoLatToMeters, geoLonToMeters, geoMetersToLat, geoMetersToLon } from '@rapid-sdk/math';
+
+import { ValidationIssue, ValidationFix } from '../core/lib/index.js';
 import { actionAddMidpoint, actionChangeTags, actionSplit} from '../actions/index.js';
 import { osmNode } from '../osm/node.js';
-import { ValidationIssue, ValidationFix } from '../core/lib/index.js';
 import { uiIcon } from '../ui/icon.js';
 
 
@@ -15,25 +16,43 @@ export function validationCurbNodes(context) {
    * checkCurbNodeCandidacy
    * This validation checks the given entity to see if it is a candidate to have curb nodes added to it
    * @param  {Entity}  entity - the Entity to validate
-   * @param  {Graph}   graph  - the Graph we are validating
-   * @return {Array}   Array of ValidationIssues detected
+   * @param  {Graph}   graph - the Graph we are validating
+   * @return {Array<ValidationIssue>}  validation results
    */
   const validation = function checkCurbNodeCandidacy(entity, graph) {
     if (entity.type !== 'way' || entity.isDegenerate()) return [];
     return detectCurbCandidates(entity, graph);
   };
+
+
+  /**
+   * isCrossingWay
+   * Checks if the given tags describe a crossing way
+   * @param  {Object}   tags - The tags to check
+   * @return {Boolean}  True if the way has crossing tags, false otherwise
+   */
   const isCrossingWay = (tags) => {
-    return (tags.highway === 'footway' && tags.footway === 'crossing') || (tags.highway === 'cycleway' && tags.cycleway === 'crossing');
+    return (tags.highway === 'footway' && tags.footway === 'crossing') ||
+      (tags.highway === 'cycleway' && tags.cycleway === 'crossing');
   };
 
+
+  /**
+   * detectCurbCandidates
+   * @param  {Way}    way - the Way to validate
+   * @param  {Graph}  graph - the Graph we are validating
+   * @return {Array<ValidationIssue>}  validation results
+   */
   const detectCurbCandidates = (way, graph) => {
     let issues = [];
     const wayID = way.id;
     if (!hasRoutableTags(way) || !isCrossingWay(way.tags)) return issues;
+
     const firstNode = graph.entity(way.nodes[0]);
     const lastNode = graph.entity(way.nodes[way.nodes.length - 1]);
     const firstNodeHasCurb = hasCurbNode(firstNode, graph);
     const lastNodeHasCurb = hasCurbNode(lastNode, graph);
+
     // Check if either end is missing a curb
     if (!firstNodeHasCurb || !lastNodeHasCurb) {
       issues.push(new ValidationIssue(context, {
@@ -49,12 +68,11 @@ export function validationCurbNodes(context) {
           const iconID = getIconForCurbNode(tags);
           return new ValidationFix({
             icon: iconID,
-            title: `Add ${type} Curb Nodes`,
+            title: l10n.t('issues.curb_nodes.fix.add_curb_nodes', { type: type }),
             onClick: () => {
-              const action = applyCurbNodeFix(wayID, editor.staging.graph, tags);
-              editor.perform(action);
+              performCurbNodeFixes(wayID, tags);
               editor.commit({
-                annotation: `Added ${type} curb nodes at adjusted positions`,
+                annotation: l10n.t('issues.curb_nodes.annotation.added_curb_nodes', { type: type }),
                 selectedIDs: [wayID]
               });
             }
@@ -69,8 +87,8 @@ export function validationCurbNodes(context) {
   /**
    * hasRoutableTags
    * Checks if the given way has tags that make it routable
-   * @param  {Object} way - The way entity to check
-   * @return {Boolean} True if the way has routable tags, false otherwise
+   * @param  {Way}      way - The way entity to check
+   * @return {Boolean}  True if the way has routable tags, false otherwise
    */
   function hasRoutableTags(way) {
     const routableTags = ['highway', 'cycleway'];
@@ -81,35 +99,40 @@ export function validationCurbNodes(context) {
   /**
    * showReference
    * Displays a reference for the issue in the UI
-   * @param  {Object} selection - The UI selection to append the reference to
+   * @param  {d3-selection} $selection - The UI selection to append the reference to
    */
-  function showReference(selection) {
-    const referenceEnter = selection.selectAll('.issue-reference')
+  function showReference($selection) {
+    const $$reference = $selection.selectAll('.issue-reference')
       .data([0])
       .enter()
       .append('div')
       .attr('class', 'issue-reference');
-    referenceEnter
+
+    $$reference
       .append('span')
-      .text(l10n.t('issues.curb_nodes.reference'));
-    referenceEnter
+      .text(l10n.t('issues.curb_nodes.reference.text'));
+
+    $$reference
       .append('br');
-    const link = referenceEnter
+
+    const $$link = $$reference
       .append('a')
-      .attr('href', 'https://wiki.openstreetmap.org/wiki/Key:kerb#:~:text=is%20being%20crossed.-,Values,-%5Bedit%20%7C')
+      .attr('href', l10n.t('issues.curb_nodes.reference.link_url'))
       .attr('target', '_blank')
-      .attr('title', 'Kerb Tagging Guidelines')
+      .attr('title', l10n.t('issues.curb_nodes.reference.link_alt_text'))
       .call(uiIcon('#rapid-icon-out-link', 'inline'));
-    link.append('span')
-      .text('More info');
+
+    $$link
+      .append('span')
+      .text(l10n.t('issues.curb_nodes.reference.link_text'));
   }
 
 
   /**
    * hasCurbNode
    * Checks if the given node has a curb
-   * @param  {Object} node - The node entity to check
-   * @param  {Object} graph - The graph containing the node data
+   * @param  {Node}    node  - The node entity to check
+   * @param  {Graph}   graph - The graph containing the node data
    * @return {Boolean} True if the node has a curb, false otherwise
    */
   function hasCurbNode(node, graph) {
@@ -118,55 +141,58 @@ export function validationCurbNodes(context) {
 
 
   /**
-   * applyCurbNodeFix
-   * Applies fixes to add curb nodes to the specified way.
-   * @param  {String} wayID - The ID of the way to fix.
-   * @param  {Object} graph - The graph containing the way and node data.
-   * @param  {Object} tags - The tags to assign to the new curb nodes.
+   * performCurbNodeFixes
+   * Performs fixes to add curb nodes to the specified way.
+   * @param  {string}  wayID - The ID of the way to fix.
+   * @param  {Object}  tags - The tags to assign to the new curb nodes.
+   * @return {Graph}   modified graph
    */
-  function applyCurbNodeFix(wayID, graph, tags) {
+  function performCurbNodeFixes(wayID, tags) {
+    const graph = editor.staging.graph;
     const way = graph.hasEntity(wayID);
     if (!way) {
-      console.error('Way not found:', wayID);  // eslint-disable-line
+      console.error('Way not found:', wayID);  // eslint-disable-line no-console
       return;
     }
+
     const firstNode = graph.entity(way.nodes[0]);
     const lastNode = graph.entity(way.nodes[way.nodes.length - 1]);
     const firstNodeConnected = isConnectedToRefugeIsland(firstNode, graph);
     const lastNodeConnected = isConnectedToRefugeIsland(lastNode, graph);
+
     // Handle the first node
     if (firstNodeConnected) {
       updateNodeToCurb(firstNode, tags, graph);
-    } else if (!hasCurbNode(firstNode, graph)) {
-      curbNodeAdditionForSingleNode(firstNode, way, graph, tags);
+    } else {
+      addCurbNode(firstNode, way, graph, tags);
     }
+
     // Handle the last node
     if (lastNodeConnected) {
       updateNodeToCurb(lastNode, tags, graph);
-    } else if (!hasCurbNode(lastNode, graph)) {
-      curbNodeAdditionForSingleNode(lastNode, way, graph, tags);
+    } else {
+      addCurbNode(lastNode, way, graph, tags);
     }
   }
 
 
   /**
-   * curbNodeAdditionForSingleNode
+   * addCurbNode
    * Adds a single curb node to a specified way at the position of an existing node, splits the way, and updates tags.
    * This function is used when a node is not connected to a traffic island and needs a curb node addition.
-   * @param  {Object} node - The existing node where the curb node will be added.
-   * @param  {Object} way - The way entity that the node belongs to.
-   * @param  {Object} graph - The graph containing the way and node data.
-   * @param  {Object} tags - The tags to assign to the new curb node.
+   * @param  {Node}    node - The existing node where the curb node will be added.
+   * @param  {Way}     way - The way entity that the node belongs to.
+   * @param  {Graph}   graph - The graph containing the way and node data.
+   * @param  {Object}  tags - The tags to assign to the new curb node.
    */
-  function curbNodeAdditionForSingleNode(node, way, graph, curbTags) {
-    // Check if the node already has a curb
-    if (hasCurbNode(node, graph)) {
-      return; // Exit if curb already exists
-    }
+  function addCurbNode(node, way, graph, curbTags) {
+    if (hasCurbNode(node, graph)) return;  // Exit if curb already exists
+
     // Calculate the position for the new curb node
     const nodeIndex = way.nodes.indexOf(node.id);
     const adjacentNode = graph.entity(way.nodes[nodeIndex + 1] || way.nodes[nodeIndex - 1]);
     const newNodePosition = calculateNewNodePosition(node, adjacentNode, 1);
+
     // Find connected ways and select the appropriate tags
     const connectedWays = graph.parentWays(node);
     let connectedWayTags = null;
@@ -180,69 +206,53 @@ export function validationCurbNodes(context) {
     const newCurbNode = osmNode({ loc: [newNodePosition.lon, newNodePosition.lat], tags: curbTags, visible: true });
     // Add the new node to the graph
     editor.perform(actionAddMidpoint({ loc: newCurbNode.loc, edge: [node.id, adjacentNode.id] }, newCurbNode));
+
     // Perform the split
     const splitAction = actionSplit([newCurbNode.id]);
-    graph = editor.perform(splitAction);
+    editor.perform(splitAction);
+
     const newWayIDs = splitAction.getCreatedWayIDs();
-    // Ensure that the new ways are created correctly
     if (newWayIDs.length > 0) {
-      // Update the tags of the new ways to match the connected non-crossing way's tags
-      newWayIDs.forEach(wayId => {
-        editor.perform(actionChangeTags(wayId, connectedWayTags));
-      });
-      // Commit the changes to the graph
-      editor.commit({
-        annotation: 'Added curb node and updated way tags to match connected non-crossing way',
-        selectedIDs: [node.id].concat(newWayIDs)
-      });
+      for (const wayID of newWayIDs) {
+        editor.perform(actionChangeTags(wayID, connectedWayTags));
+      }
     } else {
-      console.error('No new ways created after split');
+      console.error('No new ways created after split');  // eslint-disable-line no-console
     }
   }
-
 
 
   /**
    * isConnectedToRefugeIsland
    * Checks if the given node is connected to a refuge island.
-   * @param  {Object} node - The node to check.
-   * @param  {Object} graph - The graph containing the node and way data.
-   * @return {Boolean} True if the node is connected to a refuge island, false otherwise.
+   * @param  {Node}     node - The node to check.
+   * @param  {Graph}    graph - The graph containing the node and way data.
+   * @return {Boolean}  True if the node is connected to a refuge island, false otherwise.
    */
   function isConnectedToRefugeIsland(node, graph) {
     const connectedWays = graph.parentWays(node);
-    const connectedToRefuge = connectedWays.some(way => isRefugeIsland(way));
-    return connectedToRefuge;
+    return connectedWays.some(way => isRefugeIsland(way));
   }
 
 
   /**
    * updateNodeToCurb
    * Updates the given node to a curb with specified tags.
-   * @param  {Object} node - The node to update.
-   * @param  {Object} tags - The tags to assign to the node.
-   * @param  {Object} graph - The graph containing the node data.
+   * @param  {Node}    node - The node to update.
+   * @param  {Object}  tags - The tags to assign to the node.
+   * @param  {Graph}   graph - The graph containing the node data.
    */
   function updateNodeToCurb(node, tags, graph) {
-    // Prepare the new tags for the node
-    const newTags = {...node.tags, barrier: 'kerb', kerb: tags.kerb};
-
-    // Perform the tag change using the editor's actionChangeTags method
+    const newTags = { ...node.tags, barrier: 'kerb', kerb: tags.kerb };
     editor.perform(actionChangeTags(node.id, newTags));
-
-    // Optionally, you can directly commit the change here, or you can handle the commit elsewhere
-    editor.commit({
-      annotation: `Modified node to ${tags.kerb} curb at the junction with a traffic island`,
-      selectedIDs: [node.id]
-    });
   }
 
 
   /**
    * isRefugeIsland
    * Checks if the given way is a refuge island based on its tags.
-   * @param  {Object} way - The way entity to check.
-   * @return {Boolean} True if the way is a refuge island, false otherwise.
+   * @param  {Way}      way - The way entity to check.
+   * @return {Boolean}  True if the way is a refuge island, false otherwise.
    */
   function isRefugeIsland(way) {
     const isTrafficIsland = way.tags.footway === 'traffic_island';
@@ -253,19 +263,15 @@ export function validationCurbNodes(context) {
   /**
    * calculateNewNodePosition
    * Calculates the position for a new node based on the start and end nodes
-   * @param  {Object} startNode - The starting node
-   * @param  {Object} endNode - The ending node
-   * @param  {Number} distance - The distance from the start node to place the new node
-   * @param  {Boolean} isLast - Flag to indicate if this is the last node (affects calculation direction)
+   * @param  {Node}     startNode - The starting node
+   * @param  {Node}     endNode - The ending node
+   * @param  {number}   distance - The distance from the start node to place the new node
+   * @param  {boolean}  isLast - Flag to indicate if this is the last node (affects calculation direction)
    * @return {Object|null} The calculated position or null if an error occurred
    */
   function calculateNewNodePosition(startNode, endNode, distance, isLast = false) {
-    if (!startNode || !endNode) {
-      return null;
-    }
-    if (!startNode.loc || !endNode.loc) {
-      return null;
-    }
+    if (!startNode || !endNode) return null;
+    if (!startNode.loc || !endNode.loc) return null;
 
     const startLatMeters = geoLatToMeters(startNode.loc[1]);
     const startLonMeters = geoLonToMeters(startNode.loc[0], startNode.loc[1]);
@@ -297,11 +303,11 @@ export function validationCurbNodes(context) {
   /**
    * getIconForCurbNode
    * Determines the appropriate icon for a curb node based on its tags
-   * @param  {Object} tags - The tags of the curb node
-   * @return {String} The ID of the icon to use
+   * @param  {Object}  tags - The tags of the curb node
+   * @return {string}  The ID of the icon to use
    */
   function getIconForCurbNode(tags) {
-    let iconID = 'default-icon'; // Default icon
+    let iconID = 'default-icon';
     if (tags.barrier === 'kerb' && tags.kerb === 'flush') {
       iconID = 'temaki-kerb-flush';
     } else if (tags.barrier === 'kerb' && tags.kerb === 'raised') {

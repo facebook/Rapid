@@ -2285,8 +2285,19 @@
       "curb_nodes": {
         "title": "Curb Nodes",
         "message": "{feature} may be missing curb nodes.",
-        "reference": "Crossing ways should have individual curb nodes (where appropriate). Use photo overlays to help determine curb type.",
-        "footway-highway": "Footways crossing highways should have separately-mapped curb nodes."
+        "footway-highway": "Footways crossing highways should have separately-mapped curb nodes.",
+        "reference": {
+          "text": "Crossing ways should have individual curb nodes (where appropriate). Use photo overlays to help determine curb type.",
+          "link_alt_text": "Kerb Tagging Guidelines",
+          "link_text": "More info",
+          "link_url": "https://wiki.openstreetmap.org/wiki/Key:kerb#Values"
+        },
+        "fix": {
+          "add_curb_nodes": "Add {type} curb nodes"
+        },
+        "annotation": {
+          "added_curb_nodes": "Added {type} curb nodes"
+        }
       },
       "crossing_ways": {
         "title": "Crossings Ways",
