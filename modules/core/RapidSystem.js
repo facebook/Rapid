@@ -132,7 +132,7 @@ export class RapidSystem extends AbstractSystem {
 
        this._datasets.set('omdFootways', {
          id: 'omdFootways',
-         beta: true,
+         beta: false,
          added: true,         // whether it should appear in the list
          enabled: false,      // whether the user has checked it on
          conflated: true,
