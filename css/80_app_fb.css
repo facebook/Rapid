@@ -308,6 +308,10 @@ button.rapid-features.layer-off use {
   margin: 10px;
 }
 
+.rapid-inspector-notice {
+    font-style: italic;
+}
+
 .rapid-inspector-choice .choice-wrap {
   display: flex;
   flex: 1 0 50px;

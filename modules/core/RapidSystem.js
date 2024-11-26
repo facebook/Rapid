@@ -142,11 +142,13 @@ export class RapidSystem extends AbstractSystem {
            minZoom: 1,
            maxZoom: 15,
          },
+         tags: 'opendata',
          color: RAPID_MAGENTA,
          dataUsed: ['mapwithai', 'Open Footways'],
          label: l10n.t('rapid_feature_toggle.omdFootways.label'),
-         license_markdown: l10n.t('rapid_feature_toggle.omdFootways.license_markdown')
-       });
+         labelStringID: 'rapid_feature_toggle.omdFootways.label',
+         license_markdown: l10n.t('rapid_feature_toggle.omdFootways.license_markdown'),
+         licenseStringID: 'rapid_feature_toggle.omdFootways.license_markdown'});
       });
   }
 
