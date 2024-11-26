@@ -95,7 +95,9 @@ export class RapidSystem extends AbstractSystem {
           color: RAPID_MAGENTA,
           dataUsed: ['mapwithai', 'Facebook Roads'],
           label: l10n.t('rapid_feature_toggle.fbRoads.label'),
-          license_markdown: l10n.t('rapid_feature_toggle.fbRoads.license_markdown')
+          labelStringID: 'rapid_feature_toggle.fbRoads.label',
+          license_markdown: l10n.t('rapid_feature_toggle.fbRoads.license_markdown'),
+          licenseStringID: 'rapid_feature_toggle.fbRoads.license_markdown'
         });
 
         this._datasets.set('msBuildings', {
@@ -108,7 +110,9 @@ export class RapidSystem extends AbstractSystem {
           color: RAPID_MAGENTA,
           dataUsed: ['mapwithai', 'Microsoft Buildings'],
           label: l10n.t('rapid_feature_toggle.msBuildings.label'),
-          license_markdown: l10n.t('rapid_feature_toggle.msBuildings.license_markdown')
+          labelStringID: 'rapid_feature_toggle.msBuildings.label',
+          license_markdown: l10n.t('rapid_feature_toggle.msBuildings.license_markdown'),
+          licenseStringID: 'rapid_feature_toggle.msBuildings.license_markdown'
         });
 
         this._datasets.set('overture-places', {
@@ -119,9 +123,11 @@ export class RapidSystem extends AbstractSystem {
           conflated: true,
           service: 'overture',
           color: '#00ffff',
-          dataUsed: ['overture'],
+          dataUsed: ['overture', 'Overture Places'],
           label: l10n.t('rapid_feature_toggle.overture.places.label'),
-          license_markdown: l10n.t('rapid_feature_toggle.overture.places.license_markdown')
+          labelStringID: 'rapid_feature_toggle.overture.places.label',
+          license_markdown: l10n.t('rapid_feature_toggle.overture.places.license_markdown'),
+          licenseStringID: 'rapid_feature_toggle.overture.places.license_markdown'
         });
 
 // bhousel 8/29/24, not yet
@@ -140,7 +146,9 @@ export class RapidSystem extends AbstractSystem {
 //          color: RAPID_MAGENTA,
 //          dataUsed: ['mapwithai', 'Meta Footways'],
 //          label: l10n.t('rapid_feature_toggle.metaFootways.label'),
-//          license_markdown: l10n.t('rapid_feature_toggle.metaFootways.license_markdown')
+//          labelStringID: 'rapid_feature_toggle.metaFootways.label',
+//          license_markdown: l10n.t('rapid_feature_toggle.metaFootways.license_markdown'),
+//          licenseStringID: 'rapid_feature_toggle.metaFootways.license_markdown'
 //        });
       });
   }
@@ -370,7 +378,8 @@ export class RapidSystem extends AbstractSystem {
             color: RAPID_COLORS[nextColor],
             dataUsed: ['esri', this._openBuildingsTitle(d.title)],
             label: d.title,
-            license_markdown: l10n.t('rapid_feature_toggle.esri.license_markdown')
+            license_markdown: l10n.t('rapid_feature_toggle.esri.license_markdown'),
+            licenseStringID: 'rapid_feature_toggle.esri.license_markdown'
           };
 
           if (d.extent) {

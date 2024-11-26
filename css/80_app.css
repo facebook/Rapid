@@ -2490,10 +2490,9 @@ button.raw-tag-option svg.icon {
 }
 .tag-reference-body.expanded {
     padding-bottom: 10px;
-    display: inline-block;
+    display: unset;
 }
 .tag-reference-description {
-
 }
 .tag-reference-link {
     display: block;

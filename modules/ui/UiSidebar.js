@@ -12,7 +12,7 @@ import { uiKeepRightEditor } from './keepRight_editor.js';
 import { uiMapRouletteEditor } from './maproulette_editor.js';
 import { uiOsmoseEditor } from './osmose_editor.js';
 import { uiNoteEditor } from './note_editor.js';
-import { uiRapidFeatureInspector } from './rapid_feature_inspector.js';
+import { UiRapidInspector } from './UiRapidInspector.js';
 import { uiTooltip } from './tooltip.js';
 
 
@@ -45,6 +45,8 @@ export class UiSidebar {
   constructor(context) {
     this.context = context;
 
+    this._keys = null;
+
     // Create child components
     this.DataEditor = uiDataEditor(context);
     this.DetectionInspector = uiDetectionInspector(context);
@@ -54,7 +56,7 @@ export class UiSidebar {
     this.MapRouletteEditor = uiMapRouletteEditor(context);
     this.NoteEditor = uiNoteEditor(context);
     this.OsmoseEditor = uiOsmoseEditor(context);
-    this.RapidInspector = uiRapidFeatureInspector(context);
+    this.RapidInspector = new UiRapidInspector(context);
     this.Tooltip = uiTooltip(context);
 
     // D3 selections
@@ -82,6 +84,7 @@ export class UiSidebar {
     this._pointermove = this._pointermove.bind(this);
     this._pointerdown = this._pointerdown.bind(this);
     this._eventCancel = this._eventCancel.bind(this);
+    this._setupKeybinding = this._setupKeybinding.bind(this);
 
     /**
      * hover
@@ -91,8 +94,12 @@ export class UiSidebar {
      */
     this.hover = _throttle(this._hover, 200);
 
-    // Event listeners
+    // Setup event handlers
     context.behaviors.hover.on('hoverchange', this._hoverchange);
+
+    const l10n = context.systems.l10n;
+    l10n.on('localechange', this._setupKeybinding);
+    this._setupKeybinding();
   }
 
 
@@ -164,11 +171,6 @@ export class UiSidebar {
 
     this.$featureList = $sidebar.select('.feature-list-wrap');
     this.$inspector = $sidebar.select('.inspector-wrap');
-
-// figure out a better way to rebind this if locale changes
-    const keys = [l10n.t('shortcuts.command.toggle_inspector.key'), '`', '²', '@'];  // iD#5663, iD#6864 - common QWERTY, AZERTY
-    context.keybinding().off(keys);
-    context.keybinding().on(keys, this.toggle);
   }
 
 
@@ -225,12 +227,8 @@ export class UiSidebar {
     const graph = editor.staging.graph;
     let datum = target;
 
-
-    // Start by removing any existing custom sidebar content
-    if (this.$custom) {
-      this.$custom.remove();
-      this.$custom = null;
-    }
+    // Start by clearing out any custom state.
+    this.reset();
 
     // Hovering on Geo Data (vector tile, geojson, etc..)
     if (datum?.__featurehash__) {
@@ -238,7 +236,8 @@ export class UiSidebar {
 
     // Hovering on Rapid data..
     } else if (datum?.__fbid__) {
-      this.show(this.RapidInspector.datum(datum));
+      this.RapidInspector.datum = datum;
+      this.show(this.RapidInspector.render);
 
     // Hovering on Mapillary detection..
     } else if (datum?.type === 'detection') {
@@ -340,10 +339,7 @@ export class UiSidebar {
     if (Array.isArray(ids) && ids.length) {
       $featureList.classed('inspector-hidden', true);
 
-      if (this.$custom) {
-        this.$custom.remove();
-        this.$custom = null;
-      }
+      this.reset();
 
       $inspector
         .classed('inspector-hidden', false)
@@ -373,6 +369,7 @@ export class UiSidebar {
    * Shows some "custom" content in the sidebar
    * This is how almost all content renders to the sidebar
    * (except for the OSM editing "inspector", which is special)
+   * @param  {function}  renderFn - A function suitable for use in `d3-selection.call`
    */
   show(renderFn) {
     const $sidebar = this.$sidebar;
@@ -411,11 +408,7 @@ export class UiSidebar {
     const $featureList = this.$featureList;
     if (!$inspector || !$featureList) return;  // called too early?
 
-    if (this.$custom) {
-      this.$custom.remove();
-      this.$custom = null;
-    }
-
+    this.reset();
     $featureList.classed('inspector-hidden', false);
     $inspector.classed('inspector-hidden', true);
     this.Inspector.entityIDs([]).state('hide');
@@ -542,6 +535,27 @@ export class UiSidebar {
       ui.resize();
       this._storePreferences();
     }
+  }
+
+
+  /**
+   * reset
+   * Clears out any custom data that might be stored in the sidebar or child components.
+   */
+  reset() {
+    if (this.$custom) {
+      this.$custom.remove();
+      this.$custom = null;
+    }
+
+    this.DataEditor.datum(null);
+    this.DetectionInspector.datum(null);
+    this.Inspector.entityIDs([]);
+    this.KeepRightEditor.error(null);
+    this.MapRouletteEditor.error(null);
+    this.NoteEditor.note(null);
+    this.OsmoseEditor.error(null);
+    this.RapidInspector.datum = null;
   }
 
 
@@ -687,5 +701,24 @@ export class UiSidebar {
     const storage = this.context.systems.storage;
     storage.setItem('inspector.collapsed', preferCollapsed);
     storage.setItem('inspector.width', preferWidth);
+  }
+
+
+  /**
+   * _setupKeybinding
+   * This sets up the keybinding, replacing existing if needed
+   */
+  _setupKeybinding() {
+    const context = this.context;
+    const keybinding = context.keybinding();
+    const l10n = context.systems.l10n;
+
+    if (Array.isArray(this._keys)) {
+      keybinding.off(this._keys);
+    }
+
+    // see iD#5663, iD#6864 - common QWERTY, AZERTY
+    this._keys = [l10n.t('shortcuts.command.toggle_inspector.key'), '`', '²', '@'];
+    context.keybinding().on(this._keys, this.toggle);
   }
 }

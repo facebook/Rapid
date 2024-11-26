@@ -121,7 +121,6 @@ button.rapid-features.layer-off use {
     fill: #c6d8;
 }
 
-
 .rapid-inspector button.secondary,
 .modal.rapid-modal button.secondary {
     border: 0;
@@ -208,6 +207,7 @@ button.rapid-features.layer-off use {
   top: 0;
   right: 0;
   background: transparent;
+  border-radius: 0px;
 }
 .ideditor[dir='rtl'] .rapid-inspector .header button.rapid-inspector-close {
   right: unset;
@@ -293,57 +293,62 @@ button.rapid-features.layer-off use {
 
 .rapid-inspector-choices {
   display: flex;
+  flex: 0 0 0px;
   flex-flow: column nowrap;
   text-align: center;
 
-  background: linear-gradient(to top left, #ccc, #eee 90%);
+  background: #ddd;
   border-radius: 5px;
+}
+
+.rapid-inspector-choice {
+  display: flex;
+  flex: 0 0 0px;
+  flex-flow: column nowrap;
+  margin: 10px;
 }
 
 .rapid-inspector-choice .choice-wrap {
   display: flex;
-  flex: 1;
-  margin: 10px;
-  height: 50px;
+  flex: 1 0 50px;
+  flex-flow: row nowrap;
 }
 
 .rapid-inspector-choice .choice-wrap > button {
-    display: flex;
-    flex: 1;
-    border: 0;
-    align-items: center;
-    height: 100%;
+  display: flex;
+  flex: 1 1 0px;
+
+  border: 0;
+  align-items: center;
 }
+
 .rapid-inspector-choice .choice-wrap > button.choice-button {
-    border-right: 1px solid #333a;
-    border-radius: 25px 0 0 25px;
+  border-right: 1px solid #333a;
+  border-radius: 25px 0 0 25px;
 }
 .ideditor[dir='rtl'] .rapid-inspector-choice .choice-wrap > button.choice-button {
-    border-right: unset;
-    border-left: 1px solid #333a;
-    border-radius: 0 25px 25px 0;
+  border-right: unset;
+  border-left: 1px solid #333a;
+  border-radius: 0 25px 25px 0;
 }
 .rapid-inspector-choice .choice-wrap > button.tag-reference-button {
-    display: flex;
-    flex: 0 0 40px;
-    border-radius: 0 25px 25px 0;
+  flex: 0 0 40px;
+  border-radius: 0 25px 25px 0;
 }
 .ideditor[dir='rtl'] .rapid-inspector-choice .choice-wrap > button.tag-reference-button {
-    border-radius: 25px 0 0 25px;
+  border-radius: 25px 0 0 25px;
 }
 
 .rapid-inspector-choice .choice-button .choice-icon {
-    width: 30px;
-    height: 30px;
-    margin: 0 15px;
+  width: 30px;
+  height: 30px;
+  margin: 0 15px;
 }
 .rapid-inspector-choice .tag-reference-button .icon {
-    margin: 0 5px;
+  margin: 0 5px;
 }
-
-/* when hovering, hide the choices */
-.inspector-hover .rapid-inspector-choices {
-    display: none;
+.rapid-inspector-choice .tag-reference-body {
+  padding: 15px;
 }
 
 /* For things that should stack in rows */

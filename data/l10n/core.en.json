@@ -1376,7 +1376,7 @@
       "prompt": "How would you like to proceed with this selected feature?",
       "tags": "Tags",
       "option_accept": {
-        "label": "Use This Feature",
+        "label": "Add This Feature",
         "description": "Does this look like an accurate feature? Select this to start editing it so that you can connect, tag, and save it to OpenStreetMap. 👍",
         "annotation": "Added a Rapid feature.",
         "tooltip": "Add this feature to the map to begin editing.",

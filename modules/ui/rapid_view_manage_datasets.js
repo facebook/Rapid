@@ -459,7 +459,8 @@ export function uiRapidViewManageDatasets(context, parentModal) {
         color: colors[colorIndex],
         dataUsed: ['esri', d.title],
         label: d.title,
-        license_markdown: l10n.t('rapid_feature_toggle.esri.license_markdown')
+        license_markdown: l10n.t('rapid_feature_toggle.esri.license_markdown'),
+        licenseStringID: 'rapid_feature_toggle.esri.license_markdown'
       };
 
       if (d.extent) {
@@ -486,6 +487,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .filter(ds => ds.added && ds.enabled)
       .map(ds => ds.id)
       .join(',');
+
     urlhash.setParam('datasets', datasetIDs.length ? datasetIDs : null);
 
     _content.call(renderModalContent);

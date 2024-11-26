@@ -10,7 +10,6 @@ import { uiDetectionInspector } from '../ui/detection_inspector.js';
 import { uiKeepRightEditor } from '../ui/keepRight_editor.js';
 import { uiNoteEditor } from '../ui/note_editor.js';
 import { uiMapRouletteEditor } from '../ui/maproulette_editor.js';
-import { uiRapidFeatureInspector } from '../ui/rapid_feature_inspector.js';
 import { utilKeybinding } from '../util/index.js';
 
 const DEBUG = false;
@@ -33,7 +32,6 @@ export class SelectMode extends AbstractMode {
     super(context);
     this.id = 'select';
 
-    this.keybinding = null;
     this.extent = null;
   }
 
@@ -119,6 +117,7 @@ export class SelectMode extends AbstractMode {
 
 
     // What was selected?
+    Sidebar.reset();
  // The update handlers feel like they should live with the sidebar content components, not here
     let sidebarContent = null;
     // Selected a note...
@@ -183,9 +182,8 @@ export class SelectMode extends AbstractMode {
 
     // Selected Rapid feature...
     } else if (datum.__fbid__) {
-      this.keybinding = utilKeybinding('select-ai-features');
-      const rapidInspector = uiRapidFeatureInspector(context, this.keybinding).datum(datum);
-      sidebarContent = rapidInspector;
+      Sidebar.RapidInspector.datum = datum;
+      sidebarContent = Sidebar.RapidInspector.render;
     }
 
     // Todo: build a sidebar UI for:
@@ -218,21 +216,14 @@ export class SelectMode extends AbstractMode {
 
     this.extent = null;
 
-    if (this.keybinding) {
-      d3_select(document).call(this.keybinding.unbind);
-      this.keybinding = null;
-    }
-
     if (DEBUG) {
       console.log('SelectMode: exiting');  // eslint-disable-line no-console
     }
 
     this._selectedData.clear();
-
     scene.clearClass('select');
     Sidebar.hide();
     photos.selectDetection(null);
   }
 
 }
-
