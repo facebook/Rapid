@@ -97,6 +97,24 @@ export class EsriService extends AbstractSystem {
 
 
   /**
+   * getDataUsed
+   * This returns the string to use for the changeset `data_used` tag.
+   * For Rapid#1309 we need to change the "data used" string from
+   * 'Google Buildings for <Country>' to 'Google Open Buildings'.
+   * All other titles are returned unmodified.
+   * @param  {string}  title - the title to consider
+   * @return {string}  The same title in most cases, or the proper google buildings title if applicable.
+   */
+  getDataUsed(title) {
+    if (title.startsWith('Google Buildings for')) {
+      return 'Google Open Buildings';
+    } else {
+      return title;
+    }
+  }
+
+
+  /**
    * loadTiles
    * Schedule any data requests needed to cover the current map view
    * @param   {string}  datasetID - datasetID to load tiles for
@@ -446,7 +464,7 @@ export class EsriService extends AbstractSystem {
       }
 
       // Since ESRI had to split the massive google open buildings dataset into multiple countries,
-      // They asked us to aggregate them all under the same 'Google Open Buildings' dataset - #1300
+      // They asked us to aggregate them all under the same 'Google Open Buildings' dataset - Rapid#1300
       let name = `${dataset.name}`;
       if (name.startsWith('Google_Buildings_for')) {
         name = 'Google_Open_Buildings';
