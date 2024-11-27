@@ -1,5 +1,4 @@
 import { selection } from 'd3-selection';
-import { dispatch } from 'd3-dispatch';
 
 import { uiRapidFeatureToggleDialog } from '../rapid_feature_toggle_dialog.js';
 import { uiRapidPowerUserFeaturesDialog } from '../rapid_poweruser_features_dialog.js';
@@ -22,16 +21,12 @@ export class UiRapidTool {
     this.id = 'rapid_features';
     this.stringID = 'toolbar.rapid_features';
 
-    const l10n = context.systems.l10n;
     const scene = context.systems.gfx.scene;
     const ui = context.systems.ui;
     const urlhash = context.systems.urlhash;
 
-    this.key = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_rapid_data.key'));
-    this.dispatch = dispatch('ai_feature_toggle');
-
     // Create child components
-    this.RapidDialog = uiRapidFeatureToggleDialog(context, this.key, this.dispatch);
+    this.RapidDialog = uiRapidFeatureToggleDialog(context);
     this.PoweruserDialog = uiRapidPowerUserFeaturesDialog(context);
     this.RapidTooltip = uiTooltip(context);
     this.PoweruserTooltip = uiTooltip(context);
@@ -43,14 +38,12 @@ export class UiRapidTool {
     // (This is also necessary when using `d3-selection.call`)
     this.choose = this.choose.bind(this);
     this.render = this.render.bind(this);
-    this.toggleFeatures = this.toggleFeatures.bind(this);
     this.rerender = (() => this.render());  // call render without argument
 
     ui.on('uichange', this.rerender);
     urlhash.on('hashchange', this.rerender);
     scene.on('layerchange', this.rerender);
     context.on('modechange', this.rerender);
-    context.keybinding().on(this.key, this.toggleFeatures);
   }
 
 
@@ -81,7 +74,7 @@ export class UiRapidTool {
       .placement('bottom')
       .scrollContainer(context.container().select('.map-toolbar'))
       .title(l10n.t('shortcuts.command.toggle_rapid_data.label'))
-      .shortcut(this.key);
+      .shortcut(utilCmd('⇧' + l10n.t('shortcuts.command.toggle_rapid_data.key')));
 
     this.PoweruserTooltip
       .placement('bottom')
@@ -150,7 +143,7 @@ export class UiRapidTool {
 
   /**
    * choose
-   * @param  {Event}  e? - the triggering event, if any (keypress or click)
+   * @param  {Event}  e? - triggering event (if any)
    * @param  {Object} d? - object bound to the selection (i.e. the command)
    */
   choose(e, d) {
@@ -158,19 +151,6 @@ export class UiRapidTool {
     if (!d) return;
 
     this.context.container().call(d);
-  }
-
-
-  /**
-   * toggleFeatures
-   * @param  {Event}  e? - the triggering event, if any (keypress or click)
-   */
-  toggleFeatures(e) {
-    if (e)  e.preventDefault();
-
-    const scene = this.context.systems.gfx.scene;
-    scene.toggleLayers('rapid');
-    this.dispatch.call('ai_feature_toggle');
   }
 
 
@@ -183,6 +163,4 @@ export class UiRapidTool {
     const rapidLayer = scene.layers.get('rapid');
     return rapidLayer?.enabled;
   }
-
 }
-

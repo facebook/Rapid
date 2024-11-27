@@ -127,7 +127,7 @@ export class UiSaveTool {
 
   /**
    * choose
-   * @param  {Event}  e? - the triggering event, if any (keypress or click)
+   * @param  {Event} e? - triggering event (if any)
    */
   choose(e) {
     if (e)  e.preventDefault();

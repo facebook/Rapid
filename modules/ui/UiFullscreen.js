@@ -101,7 +101,7 @@ export class UiFullscreen {
 
   /**
    * Toggle fullscreen mode
-   * @param  {Event}    e? - the triggering event, if any (keypress or click)
+   * @param  {Event}    e? - triggering event (if any)
    * @return {Promise}  Promise settled when the browser is finished toggling
    */
   toggle(e) {

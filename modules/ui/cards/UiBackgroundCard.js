@@ -27,6 +27,7 @@ export class UiBackgroundCard extends AbstractUiCard {
 
     this._currSourceID = null;
     this._metadata = {};
+    this._keys = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
@@ -35,14 +36,17 @@ export class UiBackgroundCard extends AbstractUiCard {
     this.updateMetadata = this.updateMetadata.bind(this);
     this.deferredRender = debounce(this.rerender, 250);
     this.deferredUpdateMetadata = debounce(this.updateMetadata, 250);
+    this._setupKeybinding = this._setupKeybinding.bind(this);
 
-    // Event listeners
+    // Setup event handlers..
     map
       .on('draw', this.deferredRender)
       .on('move', this.deferredUpdateMetadata);
 
-    this.key = utilCmd('⌘⇧' + l10n.t('shortcuts.command.toggle_background_card.key'));
-    context.keybinding().on(this.key, this.toggle);
+    l10n
+      .on('localechange', this._setupKeybinding);
+
+    this._setupKeybinding();
   }
 
 
@@ -239,6 +243,24 @@ export class UiBackgroundCard extends AbstractUiCard {
           .text(val);
       });
     });
+  }
+
+
+  /**
+   * _setupKeybinding
+   * This sets up the keybinding, replacing existing if needed
+   */
+  _setupKeybinding() {
+    const context = this.context;
+    const keybinding = context.keybinding();
+    const l10n = context.systems.l10n;
+
+    if (Array.isArray(this._keys)) {
+      keybinding.off(this._keys);
+    }
+
+    this._keys = [utilCmd('⌘⇧' + l10n.t('shortcuts.command.toggle_background_card.key'))];
+    context.keybinding().on(this._keys, this.toggle);
   }
 
 }

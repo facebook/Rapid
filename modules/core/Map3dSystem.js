@@ -30,6 +30,7 @@ export class Map3dSystem extends AbstractSystem {
     this._loadPromise = null;
     this._initPromise = null;
     this._startPromise = null;
+    this._keys = null;
 
     // The 3d Map will stay close to the main map, but with an offset zoom and rotation
     this._zDiff = 3;     // by default, 3dmap will be at main zoom - 3
@@ -39,6 +40,7 @@ export class Map3dSystem extends AbstractSystem {
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._hashchange = this._hashchange.bind(this);
     this._map3dmoved = this._map3dmoved.bind(this);
+    this._setupKeybinding = this._setupKeybinding.bind(this);
     this.redraw = this.redraw.bind(this);
     this.deferredRedraw = throttle(this.redraw, 50, { leading: true, trailing: true });
     this.toggle = this.toggle.bind(this);
@@ -76,6 +78,7 @@ export class Map3dSystem extends AbstractSystem {
       .then(() => {
         // Setup event handlers..
         urlhash.on('hashchange', this._hashchange);
+        l10n.on('localechange', this._setupKeybinding);
         this._setupKeybinding();
       });
   }
@@ -221,8 +224,10 @@ export class Map3dSystem extends AbstractSystem {
   /**
    * toggle
    * If visible, make invisible.  If invisible, make visible.
+   * @param  {Event} e? - triggering event (if any)
    */
-  toggle() {
+  toggle(e) {
+    if (e) e.preventDefault();
     this.visible = !this.visible;
   }
 
@@ -233,11 +238,15 @@ export class Map3dSystem extends AbstractSystem {
    */
   _setupKeybinding() {
     const context = this.context;
+    const keybinding = context.keybinding();
     const l10n = context.systems.l10n;
-    const toggleKey = utilCmd('⌘' + l10n.t('shortcuts.command.toggle_3dmap.key'));
 
-    context.keybinding().off(toggleKey);
-    context.keybinding().on(toggleKey, this.toggle);
+    if (Array.isArray(this._keys)) {
+      keybinding.off(this._keys);
+    }
+
+    this._keys = [utilCmd('⌘' + l10n.t('shortcuts.command.toggle_3dmap.key'))];
+    context.keybinding().on(this._keys, this.toggle);
   }
 
 

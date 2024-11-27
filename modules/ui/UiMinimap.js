@@ -32,6 +32,7 @@ export class UiMinimap {
     this._gesture = null;
     this._zDiff = 5;            // by default, minimap renders at (main zoom - 5)
     this._tStart = null;        // if mid-gesture, transform at start of gesture
+    this._keys = null;
     this._initPromise = null;
 
     // D3 selections
@@ -45,6 +46,7 @@ export class UiMinimap {
     this.render = this.render.bind(this);
     this.toggle = this.toggle.bind(this);
     this.drawMinimap = this.drawMinimap.bind(this);
+    this._setupKeybinding = this._setupKeybinding.bind(this);
     this._tick = this._tick.bind(this);
     this._zoomStarted = this._zoomStarted.bind(this);
     this._zoomed = this._zoomed.bind(this);
@@ -56,6 +58,11 @@ export class UiMinimap {
       .on('start', this._zoomStarted)
       .on('zoom', this._zoomed)
       .on('end', this._zoomEnded);
+
+    // Setup event handlers..
+    const l10n = context.systems.l10n;
+    l10n.on('localechange', this._setupKeybinding);
+    this._setupKeybinding();
   }
 
 
@@ -328,7 +335,7 @@ export class UiMinimap {
   /**
    * toggle
    * Toggles the minimap on/off
-   * @param  {Event} e - event that triggered the toggle (if any)
+   * @param  {Event} e? - triggering event (if any)
    */
   toggle(e) {
     if (e) e.preventDefault();
@@ -416,7 +423,6 @@ export class UiMinimap {
 
     const context = this.context;
     const gfx = context.systems.gfx;
-    const l10n = context.systems.l10n;
 
     // Use the same Pixi Application managed by the Graphics System.
     // As of Pixi v8, we can not create multiple Pixi Applications.
@@ -424,8 +430,6 @@ export class UiMinimap {
     if (!gfx.pixi || !gfx.textures)  return Promise.reject();  // called too early?
 
     // event handlers
-    const key = l10n.t('shortcuts.command.toggle_minimap.key');
-    context.keybinding().on(key, this.toggle);
     gfx.on('draw', this.drawMinimap);
 
     // Mock Stage
@@ -472,4 +476,21 @@ export class UiMinimap {
     return this._initPromise = Promise.resolve();
   }
 
+
+  /**
+   * _setupKeybinding
+   * This sets up the keybinding, replacing existing if needed
+   */
+  _setupKeybinding() {
+    const context = this.context;
+    const keybinding = context.keybinding();
+    const l10n = context.systems.l10n;
+
+    if (Array.isArray(this._keys)) {
+      keybinding.off(this._keys);
+    }
+
+    this._keys = [l10n.t('shortcuts.command.toggle_minimap.key')];
+    context.keybinding().on(this._keys, this.toggle);
+  }
 }

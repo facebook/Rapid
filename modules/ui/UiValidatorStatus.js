@@ -139,7 +139,7 @@ export class UiValidatorStatus {
   /**
    * click
    * When clicking on a status chip, toggle the Issues pane.
-   * @param  {Event} e - event that triggered the click (if any)
+   * @param  {Event} e? - triggering event (if any)
    */
   click(e) {
     if (e)  e.preventDefault();

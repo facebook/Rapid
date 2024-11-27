@@ -131,7 +131,7 @@ export class UiBearingControl {
 
   /**
    * resetBearing
-   * @param  {Event}  e? - the triggering event, if any (keypress or click)
+   * @param  {Event} e? - triggering event (if any)
    */
   resetBearing(e) {
     if (e)  e.preventDefault();

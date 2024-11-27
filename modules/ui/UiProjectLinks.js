@@ -84,7 +84,7 @@ export class UiProjectLinks {
   /*
    * reportIssue
    * Opens GitHub to report a bug
-   * @param  {Event} e - event that triggered the click (if any)
+   * @param  {Event} e? - triggering event (if any)
    */
   reportIssue(e) {
     if (e)  e.preventDefault();

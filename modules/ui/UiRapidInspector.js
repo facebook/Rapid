@@ -56,7 +56,6 @@ export class UiRapidInspector {
     // Setup event handlers
     const l10n = context.systems.l10n;
     l10n.on('localechange', this._setupKeybinding);
-
     this._setupKeybinding();
   }
 

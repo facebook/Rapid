@@ -18,8 +18,8 @@ export class UiZoomToControl {
 
     const l10n = context.systems.l10n;
 
-    this.key = l10n.t('shortcuts.command.zoom_to.key');
     this._prevTransform = null;   // After a zoom in, the previous transform to zoom back out
+    this._keys = null;
 
     // Create child components
     this.Tooltip = uiTooltip(context);
@@ -33,10 +33,13 @@ export class UiZoomToControl {
     this.render = this.render.bind(this);
     this.modechange = this.modechange.bind(this);
     this.zoomTo = this.zoomTo.bind(this);
+    this._setupKeybinding = this._setupKeybinding.bind(this);
 
     // Event listeners
     context.on('modechange', this.modechange);
-    context.keybinding().on(this.key, this.zoomTo);
+    l10n.on('localechange', this._setupKeybinding);
+
+    this._setupKeybinding();
   }
 
 
@@ -77,7 +80,7 @@ export class UiZoomToControl {
     this.Tooltip
       .placement(l10n.isRTL() ? 'right' : 'left')
       .title(() => this.isDisabled() ? l10n.t('inspector.zoom_to.no_selection') : l10n.t('inspector.zoom_to.title'))
-      .shortcut(this.key);
+      .shortcut(l10n.t('shortcuts.command.zoom_to.key'));
   }
 
 
@@ -105,7 +108,7 @@ export class UiZoomToControl {
   /**
    * zoomTo
    * This zooms in on the selected feature(s), or unzooms out from them
-   * @param  {Event}  e? - the triggering event, if any (keypress or click)
+   * @param  {Event} e? - triggering event (if any)
    */
   zoomTo(e) {
     if (e)  e.preventDefault();
@@ -134,6 +137,24 @@ export class UiZoomToControl {
       //      .label(l10n.t('inspector.zoom_to.no_selection'))();
       //  }
     }
+  }
+
+
+  /**
+   * _setupKeybinding
+   * This sets up the keybinding, replacing existing if needed
+   */
+  _setupKeybinding() {
+    const context = this.context;
+    const keybinding = context.keybinding();
+    const l10n = context.systems.l10n;
+
+    if (Array.isArray(this._keys)) {
+      keybinding.off(this._keys);
+    }
+
+    this._keys = [l10n.t('shortcuts.command.zoom_to.key')];
+    context.keybinding().on(this._keys, this.zoomTo);
   }
 
 }

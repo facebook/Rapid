@@ -1,4 +1,4 @@
-import { select as d3_select } from 'd3-selection';
+import { select } from 'd3-selection';
 import { marked } from 'marked';
 
 import { icon } from './intro/helper.js';
@@ -6,18 +6,23 @@ import { uiIcon } from './icon.js';
 import { uiModal } from './modal.js';
 import { uiRapidColorpicker } from './rapid_colorpicker.js';
 import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets.js';
+import { utilCmd } from '../util/cmd.js';
 
 
-export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
+export function uiRapidFeatureToggleDialog(context) {
   const gfx = context.systems.gfx;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const rapid = context.systems.rapid;
+  const scene = context.systems.gfx.scene;
+  const urlhash = context.systems.urlhash;
 
-  let _modalSelection = d3_select(null);
-  let _content = d3_select(null);
+  let _modalSelection = null;
+  let _content = null;
   let _viewManageModal;
   let _colorpicker;
+
+  scene.on('layerchange', rerender);
 
 
   function datasetEnabled(d) {
@@ -31,15 +36,13 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       dataset.enabled = !dataset.enabled;
 
       // update url hash
-      const urlhash = context.systems.urlhash;
       const datasetIDs = [...rapid.datasets.values()]
         .filter(ds => ds.added && ds.enabled)
         .map(ds => ds.id)
         .join(',');
-      urlhash.setParam('datasets', datasetIDs.length ? datasetIDs : null);
 
-      gfx.scene.dirtyLayers('rapid');
-      gfx.scene.dirtyLayers('rapid-overlay');
+      urlhash.setParam('datasets', datasetIDs.length ? datasetIDs : null);
+      scene.dirtyLayers(['rapid', 'rapid-overlay', 'overture']);
       context.enter('browse');   // return to browse mode (in case something was selected)
     }
   }
@@ -49,11 +52,9 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     if (dataset) {
       dataset.color = color;
 
-      context.scene().dirtyLayers('rapid');
-      context.scene().dirtyLayers('rapid-overlay');
-      context.scene().dirtyLayers('overture');
-      context.systems.map.immediateRedraw();
-      _content.call(renderModalContent);
+      scene.dirtyLayers(['rapid', 'rapid-overlay', 'overture']);
+      gfx.immediateRedraw();
+      rerender();
 
       // If a Rapid feature is already selected, reselect it to update sidebar too
       const mode = context.mode;
@@ -64,50 +65,21 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     }
   }
 
+
   function toggleRapid() {
-    context.scene().toggleLayers('rapid');
+    scene.toggleLayers('rapid');
+  }
+
+
+  function rerender() {
+    if (!_content) return;  // called too early?
     _content.call(renderModalContent);
   }
 
 
-  function keyPressHandler(d3_event) {
-    if (d3_event.shiftKey && d3_event.key === l10n.t('shortcuts.command.toggle_rapid_data.key')) {
-      toggleRapid();
-    }
-  }
-
-
-  return function render(selection) {
-    _modalSelection = uiModal(selection);
-
-    _modalSelection.select('.modal')
-      .attr('class', 'modal rapid-modal');
-
-    _viewManageModal = uiRapidViewManageDatasets(context, _modalSelection)
-      .on('done', () => _content.call(renderModalContent));
-
-    _colorpicker = uiRapidColorpicker(context, _modalSelection)
-      .on('change', changeColor);
-
-    _content = _modalSelection.select('.content')
-      .append('div')
-      .attr('class', 'rapid-stack')
-      .on('keypress', keyPressHandler);
-
-    _content
-      .call(renderModalContent);
-
-    _content.selectAll('.ok-button')
-      .node()
-      .focus();
-
-    featureToggleKeyDispatcher
-      .on('ai_feature_toggle', () => _content.call(renderModalContent) );
-  };
-
-
+  // This is the real render function
   function renderModalContent(selection) {
-    const rapidLayer = context.scene().layers.get('rapid');
+    const rapidLayer = scene.layers.get('rapid');
     if (!rapidLayer) return;
 
     const rtl = l10n.isRTL() ? '-rtl' : '';
@@ -133,10 +105,11 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
         rapidicon: icon(`#rapid-logo-rapid-wordmark${rtl}`, 'logo-rapid')
       }));
 
+    const toggleKey = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_rapid_data.key'));
     toggleAllTextEnter
       .append('span')
       .attr('class', 'rapid-feature-hotkey')
-      .html('(' + AIFeatureToggleKey + ')');
+      .text('(' + toggleKey + ')');
 
     let toggleAllCheckboxEnter = toggleAllEnter
       .append('div')
@@ -214,11 +187,11 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
 
   function renderDatasets(selection) {
-    const prefs = context.systems.storage;
-    const showPreview = prefs.getItem('rapid-internal-feature.previewDatasets') === 'true';
+    const storage = context.systems.storage;
+    const showPreview = storage.getItem('rapid-internal-feature.previewDatasets') === 'true';
     const datasets = [...rapid.datasets.values()]
       .filter(d => d.added && (showPreview || !d.beta));    // exclude preview datasets unless user has opted into them
-    const rapidLayer = context.scene().layers.get('rapid');
+    const rapidLayer = scene.layers.get('rapid');
     if (!rapidLayer) return;
 
     let rows = selection.selectAll('.rapid-checkbox-dataset')
@@ -237,7 +210,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .append('div')
       .attr('class', 'rapid-feature')
       .each((d, i, nodes) => {
-        let selection = d3_select(nodes[i]);
+        let selection = select(nodes[i]);
 
         // line1: name and details
         let labelEnter = selection
@@ -286,7 +259,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
           .append('div')
           .attr('class', 'rapid-feature-extent-container')
           .each((d, i, nodes) => {
-            let selection = d3_select(nodes[i]);
+            let selection = select(nodes[i]);
 
             // if the data spans more than 100°*100°, it might as well be worldwide
             if (d.extent && d.extent.area() < 10000) {
@@ -344,4 +317,30 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .property('checked', datasetEnabled)
       .attr('disabled', rapidLayer.enabled ? null : true);
   }
+
+
+  return function render(selection) {
+    _modalSelection = uiModal(selection);
+
+    _modalSelection.select('.modal')
+      .attr('class', 'modal rapid-modal');
+
+    _viewManageModal = uiRapidViewManageDatasets(context, _modalSelection)
+      .on('done', rerender);
+
+    _colorpicker = uiRapidColorpicker(context, _modalSelection)
+      .on('change', changeColor);
+
+    _content = _modalSelection.select('.content')
+      .append('div')
+      .attr('class', 'rapid-stack');
+
+    _content
+      .call(renderModalContent);
+
+    _content.selectAll('.ok-button')
+      .node()
+      .focus();
+  };
+
 }

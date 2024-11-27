@@ -45,6 +45,7 @@ export class MapSystem extends AbstractSystem {
 
     this._initPromise = null;
     this._startPromise = null;
+    this._keys = null;
 
     // D3 selections
     this.$parent = null;
@@ -53,6 +54,7 @@ export class MapSystem extends AbstractSystem {
     // (This is also necessary when using `d3-selection.call`)
     this._hashchange = this._hashchange.bind(this);
     this._updateHash = this._updateHash.bind(this);
+    this._setupKeybinding = this._setupKeybinding.bind(this);
     this.render = this.render.bind(this);
     this.immediateRedraw = this.immediateRedraw.bind(this);
     this.deferredRedraw = this.deferredRedraw.bind(this);
@@ -173,6 +175,7 @@ export class MapSystem extends AbstractSystem {
 
         l10n
           .on('localechange', () => {
+            this._setupKeybinding();
             scene.dirtyScene();    // labeled features can be on any layer
             gfx.immediateRedraw();
           });
@@ -277,12 +280,16 @@ export class MapSystem extends AbstractSystem {
    */
   _setupKeybinding() {
     const context = this.context;
+    const keybinding = context.keybinding();
     const l10n = context.systems.l10n;
+
+    if (Array.isArray(this._keys)) {
+      keybinding.off(this._keys);
+    }
 
     const wireframeKey = l10n.t('shortcuts.command.wireframe.key');
     const highlightEditsKey = l10n.t('shortcuts.command.highlight_edits.key');
-
-    context.keybinding().off([wireframeKey, highlightEditsKey]);
+    this._keys = [wireframeKey, highlightEditsKey];
 
     context.keybinding()
       .on(wireframeKey, e => {

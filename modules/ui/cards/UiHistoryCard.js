@@ -22,6 +22,8 @@ export class UiHistoryCard extends AbstractUiCard {
     const l10n = context.systems.l10n;
     const map = context.systems.map;
 
+    this._keys = null;
+
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
     this.render = this.render.bind(this);
@@ -32,13 +34,14 @@ export class UiHistoryCard extends AbstractUiCard {
     this.renderUser = this.renderUser.bind(this);
     this.renderChangeset = this.renderChangeset.bind(this);
     this.displayTimestamp = this.displayTimestamp.bind(this);
+    this._setupKeybinding = this._setupKeybinding.bind(this);
 
     // Event listeners
     map.on('draw', this.deferredRender);
     context.on('modechange', this.rerender);
+    l10n.on('localechange', this._setupKeybinding);
 
-    this.key = utilCmd('⌘⇧' + l10n.t('shortcuts.command.toggle_history_card.key'));
-    context.keybinding().on(this.key, this.toggle);
+    this._setupKeybinding();
   }
 
 
@@ -369,6 +372,24 @@ export class UiHistoryCard extends AbstractUiCard {
       .attr('href', `https://overpass-api.de/achavi/?changeset=${changesetID}`)
       .attr('target', '_blank')
       .text('Achavi');
+  }
+
+
+  /**
+   * _setupKeybinding
+   * This sets up the keybinding, replacing existing if needed
+   */
+  _setupKeybinding() {
+    const context = this.context;
+    const keybinding = context.keybinding();
+    const l10n = context.systems.l10n;
+
+    if (Array.isArray(this._keys)) {
+      keybinding.off(this._keys);
+    }
+
+    this._keys = [utilCmd('⌘⇧' + l10n.t('shortcuts.command.toggle_history_card.key'))];
+    context.keybinding().on(this._keys, this.toggle);
   }
 
 }

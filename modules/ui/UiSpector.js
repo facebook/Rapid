@@ -64,7 +64,7 @@ export class UiSpector {
   /**
    * toggle
    * Toggles the Spector UI on/off
-   * @param  {Event} e - event that triggered the toggle (if any)
+   * @param  {Event} e? - triggering event (if any)
    */
   toggle(e) {
     if (e) e.preventDefault();

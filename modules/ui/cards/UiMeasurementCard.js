@@ -52,18 +52,20 @@ export class UiMeasurementCard extends AbstractUiCard {
     const map = context.systems.map;
 
     this._isImperial = !l10n.isMetric();
+    this._keys = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
     this.render = this.render.bind(this);
     this.rerender = (() => this.render());  // call render without argument
+    this._setupKeybinding = this._setupKeybinding.bind(this);
 
     // Event listeners
     map.on('draw', this.rerender);
     context.on('modechange', this.rerender);
+    l10n.on('localechange', this._setupKeybinding);
 
-    this.key = utilCmd('⌘⇧' + l10n.t('shortcuts.command.toggle_measurement_card.key'));
-    context.keybinding().on(this.key, this.toggle);
+    this._setupKeybinding();
   }
 
 
@@ -297,6 +299,24 @@ export class UiMeasurementCard extends AbstractUiCard {
           this.render();
         });
     }
+  }
+
+
+  /**
+   * _setupKeybinding
+   * This sets up the keybinding, replacing existing if needed
+   */
+  _setupKeybinding() {
+    const context = this.context;
+    const keybinding = context.keybinding();
+    const l10n = context.systems.l10n;
+
+    if (Array.isArray(this._keys)) {
+      keybinding.off(this._keys);
+    }
+
+    this._keys = [utilCmd('⌘⇧' + l10n.t('shortcuts.command.toggle_measurement_card.key'))];
+    context.keybinding().on(this._keys, this.toggle);
   }
 
 }

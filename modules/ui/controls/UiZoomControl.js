@@ -126,7 +126,7 @@ export class UiZoomControl {
 
   /**
    * zoomIn
-   * @param  {Event}  e? - the triggering event, if any (keypress or click)
+   * @param  {Event} e? - triggering event (if any)
    */
   zoomIn(e) {
     if (e)  e.preventDefault();
@@ -136,7 +136,7 @@ export class UiZoomControl {
 
   /**
    * zoomOut
-   * @param  {Event}  e? - the triggering event, if any (keypress or click)
+   * @param  {Event} e? - triggering event (if any)
    */
   zoomOut(e) {
     if (e)  e.preventDefault();
@@ -146,7 +146,7 @@ export class UiZoomControl {
 
   /**
    * zoomInFurther
-   * @param  {Event}  e? - the triggering event, if any (keypress or click)
+   * @param  {Event} e? - triggering event (if any)
    */
   zoomInFurther(e) {
     if (e)  e.preventDefault();
@@ -156,7 +156,7 @@ export class UiZoomControl {
 
   /**
    * zoomOutFurther
-   * @param  {Event}  e? - the triggering event, if any (keypress or click)
+   * @param  {Event} e? - triggering event (if any)
    */
   zoomOutFurther(e) {
     if (e)  e.preventDefault();

@@ -1,5 +1,4 @@
-import { select as d3_select } from 'd3-selection';
-import { geoBounds as d3_geoBounds } from 'd3-geo';
+import { geoBounds } from 'd3-geo';
 import { Extent } from '@rapid-sdk/math';
 
 import { AbstractMode } from './AbstractMode.js';
@@ -10,7 +9,6 @@ import { uiDetectionInspector } from '../ui/detection_inspector.js';
 import { uiKeepRightEditor } from '../ui/keepRight_editor.js';
 import { uiNoteEditor } from '../ui/note_editor.js';
 import { uiMapRouletteEditor } from '../ui/maproulette_editor.js';
-import { utilKeybinding } from '../util/index.js';
 
 const DEBUG = false;
 
@@ -72,7 +70,7 @@ export class SelectMode extends AbstractMode {
         other = new Extent(datum.loc);
 
       } else if (datum.__featurehash__) {   // Custom GeoJSON feature
-        const bounds = d3_geoBounds(datum);
+        const bounds = geoBounds(datum);
         other = new Extent(bounds[0], bounds[1]);
 
       } else if (datum.__fbid__) {  // Rapid feature

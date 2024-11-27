@@ -39,10 +39,12 @@ export function uiSectionDataLayers(context) {
     .on('change', customChanged);
 
   let _previousLayerStates = new Map();
+  let _keys = null;
 
 
-  /* toggleAllLayers
-   * @param  {Event} e - event that triggered the toggle (if any)
+  /*
+   * toggleAllLayers
+   * @param  {Event} e? - triggering event (if any)
    */
   function toggleAllLayers(e) {
     if (e)  e.preventDefault();
@@ -68,37 +70,19 @@ export function uiSectionDataLayers(context) {
   }
 
 
-  /* toggleLayerKey
+  /*
+   * toggleLayerKey
    * Just wraps calls to `toggleLayer`, cancelling the key event
-   * @param  {Event} e - event that triggered the toggle (if any)
+   * @param  {Event}  e? - triggering event (if any)
    */
   function toggleLayerKey(e, layerID) {
     if (e)  e.preventDefault();
     toggleLayer(layerID);
   }
 
-  // setup key shortcuts
-  const toggleAllKey = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_all_layers.key'));
-  const toggleOsmKey = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_osm_data.key'));
-  const toggleNotesKey = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_osm_notes.key'));
-  const toggleMapillaryKey = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_mapillary.key'));
-  const toggleStreetsideKey = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_streetside.key'));
-  const toggleKartaviewKey = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_kartaview.key'));
 
-  context.keybinding().off([
-    toggleAllKey, toggleOsmKey, toggleNotesKey, toggleMapillaryKey, toggleStreetsideKey, toggleKartaviewKey
-  ]);
-
-  context.keybinding()
-    .on(toggleAllKey, e => toggleAllLayers(e))
-    .on(toggleOsmKey, e => toggleLayerKey(e, 'osm'))
-    .on(toggleNotesKey, e => toggleLayerKey(e, 'notes'))
-    .on(toggleMapillaryKey, e => toggleLayerKey(e, 'mapillary'))
-    .on(toggleStreetsideKey, e => toggleLayerKey(e, 'streetside'))
-    .on(toggleKartaviewKey, e => toggleLayerKey(e, 'kartaview'));
-
-
-  /* renderIfVisible
+  /*
+   * renderIfVisible
    * This calls render on the Disclosure commponent.
    * It skips actual rendering if the disclosure is closed
    */
@@ -107,7 +91,8 @@ export function uiSectionDataLayers(context) {
   }
 
 
-  /* render
+  /*
+   * render
    * Render the data layer list and the checkboxes below it
    */
   function render(selection) {
@@ -462,7 +447,48 @@ export function uiSectionDataLayers(context) {
   }
 
 
+  /**
+   * _setupKeybinding
+   * This sets up the keybinding, replacing existing if needed
+   */
+  function _setupKeybinding() {
+    const keybinding = context.keybinding();
+    const l10n = context.systems.l10n;
+
+    if (Array.isArray(_keys)) {
+      keybinding.off(_keys);
+    }
+
+    // setup key shortcuts
+    const toggleAllKey = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_all_layers.key'));
+    const toggleOsmKey = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_osm_data.key'));
+    const toggleNotesKey = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_osm_notes.key'));
+    const toggleRapidKey = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_rapid_data.key'));
+    const toggleMapillaryKey = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_mapillary.key'));
+    const toggleStreetsideKey = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_streetside.key'));
+    const toggleKartaviewKey = utilCmd('⇧' + l10n.t('shortcuts.command.toggle_kartaview.key'));
+
+    _keys = [
+      toggleAllKey, toggleOsmKey, toggleNotesKey, toggleRapidKey,
+      toggleMapillaryKey, toggleStreetsideKey, toggleKartaviewKey
+    ];
+
+    keybinding
+      .on(toggleAllKey, e => toggleAllLayers(e))
+      .on(toggleOsmKey, e => toggleLayerKey(e, 'osm'))
+      .on(toggleNotesKey, e => toggleLayerKey(e, 'notes'))
+      .on(toggleRapidKey, e => toggleLayerKey(e, 'rapid'))
+      .on(toggleMapillaryKey, e => toggleLayerKey(e, 'mapillary'))
+      .on(toggleStreetsideKey, e => toggleLayerKey(e, 'streetside'))
+      .on(toggleKartaviewKey, e => toggleLayerKey(e, 'kartaview'));
+  }
+
+
+  // Event listeners
   scene.on('layerchange', renderIfVisible);
+  l10n.on('localechange', _setupKeybinding);
+
+  _setupKeybinding();
 
   return section;
 }

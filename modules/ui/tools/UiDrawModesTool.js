@@ -25,6 +25,8 @@ export class UiDrawModesTool {
     const presets = context.systems.presets;
     const ui = context.systems.ui;
 
+    this._keys = null;
+
     this.commands = [{
       id: 'add-point',
       icon: 'point',
@@ -70,15 +72,16 @@ export class UiDrawModesTool {
     this.render = this.render.bind(this);
     this.rerender = (() => this.render());  // call render without argument
     this.debouncedRender = debounce(this.rerender, 500, { leading: true, trailing: true });
+    this._setupKeybinding = this._setupKeybinding.bind(this);
 
     // Event listeners
-    for (const d of this.commands) {
-      context.keybinding().on(d.getKey(), e => this.choose(e, d));
-    }
     gfx.on('draw', this.debouncedRender);
     gfx.scene.on('layerchange', this.rerender);
     context.on('modechange', this.rerender);
     ui.on('uichange', this.rerender);
+    l10n.on('localechange', this._setupKeybinding);
+
+    this._setupKeybinding();
   }
 
 
@@ -183,7 +186,7 @@ export class UiDrawModesTool {
 
   /**
    * choose
-   * @param  {Event}  e? - the triggering event, if any (keypress or click)
+   * @param  {Event}  e? - triggering event (if any)
    * @param  {Object} d? - object bound to the selection (i.e. the command)
    */
   choose(e, d) {
@@ -203,4 +206,24 @@ export class UiDrawModesTool {
     }
   }
 
+
+  /**
+   * _setupKeybinding
+   * This sets up the keybinding, replacing existing if needed
+   */
+  _setupKeybinding() {
+    const context = this.context;
+    const keybinding = context.keybinding();
+
+    if (Array.isArray(this._keys)) {
+      keybinding.off(this._keys);
+    }
+
+    this._keys = [];
+    for (const d of this.commands) {
+      const key = d.getKey();
+      this._keys.push(key);
+      keybinding.on(key, e => this.choose(e, d));
+    }
+  }
 }

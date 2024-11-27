@@ -97,7 +97,7 @@ export class UiGeolocateControl {
 
   /**
    * toggle
-   * @param  {Event}  e? - the triggering event, if any (keypress or click)
+   * @param  {Event} e? - triggering event (if any)
    */
   toggle(e) {
     if (e)  e.preventDefault();
@@ -116,7 +116,7 @@ export class UiGeolocateControl {
    * start
    * Start geolocating - enable the button, block the UI, and initiate a geolocate request.
    * @see https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition
-   * @param  {Event}  e? - the triggering event, if any (keypress or click)
+   * @param  {Event} e? - triggering event (if any)
    */
   start(e) {
     if (e)  e.preventDefault();
@@ -139,7 +139,7 @@ export class UiGeolocateControl {
   /**
    * stop
    * Stop geolocating - disable the button and remove any saved data
-   * @param  {Event}  e? - the triggering event, if any (keypress or click)
+   * @param  {Event} e? - triggering event (if any)
    */
   stop(e) {
     if (e)  e.preventDefault();

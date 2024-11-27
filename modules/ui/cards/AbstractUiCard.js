@@ -42,7 +42,7 @@ export class AbstractUiCard {
   /**
    * show
    * Shows the component
-   * @param  {Event} e - event that triggered the show (if any)
+   * @param  {Event} e? - triggering event (if any)
    */
   show(e) {
     if (e) e.preventDefault();
@@ -69,7 +69,7 @@ export class AbstractUiCard {
   /**
    * hide
    * Hides the component
-   * @param  {Event} e - event that triggered the hide (if any)
+   * @param  {Event} e? - triggering event (if any)
    */
   hide(e) {
     if (e) e.preventDefault();
@@ -91,7 +91,7 @@ export class AbstractUiCard {
   /**
    * toggle
    * Toggles the component between shown/hidden
-   * @param  {Event} e - event that triggered the toggle (if any)
+   * @param  {Event} e? - triggering event (if any)
    */
   toggle(e) {
     if (this._isVisible) {

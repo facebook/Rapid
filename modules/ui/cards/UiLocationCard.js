@@ -23,6 +23,7 @@ export class UiLocationCard extends AbstractUiCard {
     const l10n = context.systems.l10n;
 
     this._currLocation = null;
+    this._keys = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
@@ -30,12 +31,13 @@ export class UiLocationCard extends AbstractUiCard {
     this.rerender = (() => this.render());  // call render without argument
     this.updateLocation = this.updateLocation.bind(this);
     this._deferredUpdateLocation = debounce(this.updateLocation, 1000);  // no more than 1/sec
+    this._setupKeybinding = this._setupKeybinding.bind(this);
 
     // Event listeners
     eventManager.on('pointermove', this.rerender);
+    l10n.on('localechange', this._setupKeybinding);
 
-    this.key = utilCmd('⌘⇧' + l10n.t('shortcuts.command.toggle_location_card.key'));
-    context.keybinding().on(this.key, this.toggle);
+    this._setupKeybinding();
   }
 
 
@@ -145,6 +147,24 @@ export class UiLocationCard extends AbstractUiCard {
       $content.selectAll('.location-info')
         .text(this._currLocation);
     }
+  }
+
+
+  /**
+   * _setupKeybinding
+   * This sets up the keybinding, replacing existing if needed
+   */
+  _setupKeybinding() {
+    const context = this.context;
+    const keybinding = context.keybinding();
+    const l10n = context.systems.l10n;
+
+    if (Array.isArray(this._keys)) {
+      keybinding.off(this._keys);
+    }
+
+    this._keys = [utilCmd('⌘⇧' + l10n.t('shortcuts.command.toggle_location_card.key'))];
+    context.keybinding().on(this._keys, this.toggle);
   }
 
 }

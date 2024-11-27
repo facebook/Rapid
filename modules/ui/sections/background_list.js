@@ -42,6 +42,7 @@ export function uiSectionBackgroundList(context) {
     .disclosureContent(render);
 
   let _backgroundList = d3_select(null);
+  let _keys = null;
 
   const customSource = imagery.getSourceByID('custom');
   const settingsCustomBackground = uiSettingsCustomBackground(context)
@@ -562,22 +563,38 @@ export function uiSectionBackgroundList(context) {
   }
 
 
-  const deferredOnMapDraw = debounce(onMapDraw, 1000, { leading: true, trailing: true });
+  /**
+   * _setupKeybinding
+   * This sets up the keybinding, replacing existing if needed
+   */
+  function _setupKeybinding() {
+    const keybinding = context.keybinding();
+    const l10n = context.systems.l10n;
 
+    if (Array.isArray(_keys)) {
+      keybinding.off(_keys);
+    }
+
+    const swapBackgroundKey = utilCmd('⌘' + l10n.t('shortcuts.command.background_switch.key'));
+    const nextBackgroundKey = l10n.t('shortcuts.command.background_next.key');
+    const prevBackgroundKey = l10n.t('shortcuts.command.background_previous.key');
+
+    _keys = [swapBackgroundKey, nextBackgroundKey, prevBackgroundKey];
+
+    keybinding
+      .on(swapBackgroundKey, swapBackground)
+      .on(nextBackgroundKey, nextBackground)
+      .on(prevBackgroundKey, prevBackground);
+  }
+
+
+  // Event listeners
+  const deferredOnMapDraw = debounce(onMapDraw, 1000, { leading: true, trailing: true });
   imagery.on('imagerychange', renderIfVisible);
   map.on('draw', deferredOnMapDraw);
+  l10n.on('localechange', _setupKeybinding);
 
-  const swapBackgroundKey = utilCmd('⌘' + l10n.t('shortcuts.command.background_switch.key'));
-  const nextBackgroundKey = l10n.t('shortcuts.command.background_next.key');
-  const prevBackgroundKey = l10n.t('shortcuts.command.background_previous.key');
-
-  context.keybinding()
-    .off([swapBackgroundKey, nextBackgroundKey, prevBackgroundKey]);
-
-  context.keybinding()
-    .on(swapBackgroundKey, swapBackground)
-    .on(nextBackgroundKey, nextBackground)
-    .on(prevBackgroundKey, prevBackground);
+  _setupKeybinding();
 
   return section;
 }

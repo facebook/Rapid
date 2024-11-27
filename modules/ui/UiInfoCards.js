@@ -23,6 +23,7 @@ export class UiInfoCards {
     this.context = context;
 
     this._wasVisible = new Set();
+    this._keys = null;
 
     // Create child components
     this.BackgroundCard = new UiBackgroundCard(context);
@@ -45,11 +46,12 @@ export class UiInfoCards {
     // (This is also necessary when using `d3-selection.call`)
     this.render = this.render.bind(this);
     this.toggle = this.toggle.bind(this);
+    this._setupKeybinding = this._setupKeybinding.bind(this);
 
-    // bind ⌘I to show/hide all cards
+    // Setup event handlers..
     const l10n = context.systems.l10n;
-    this.key = utilCmd('⌘' + l10n.t('shortcuts.command.toggle_all_cards.key'));
-    context.keybinding().on(this.key, this.toggle);
+    l10n.on('localechange', this._setupKeybinding);
+    this._setupKeybinding();
   }
 
 
@@ -85,7 +87,7 @@ export class UiInfoCards {
   /**
    * toggle
    * Toggles all info cards on/off
-   * @param  {Event} e - event that triggered the toggle (if any)
+   * @param  {Event} e? - triggering event (if any)
    */
   toggle(e) {
     if (e) e.preventDefault();
@@ -116,6 +118,25 @@ export class UiInfoCards {
     }
 
     this.render();
+  }
+
+
+  /**
+   * _setupKeybinding
+   * This sets up the keybinding, replacing existing if needed
+   */
+  _setupKeybinding() {
+    const context = this.context;
+    const keybinding = context.keybinding();
+    const l10n = context.systems.l10n;
+
+    if (Array.isArray(this._keys)) {
+      keybinding.off(this._keys);
+    }
+
+    // Bind ⌘I to show/hide all cards
+    this._keys = [utilCmd('⌘' + l10n.t('shortcuts.command.toggle_all_cards.key'))];
+    context.keybinding().on(this._keys, this.toggle);
   }
 
 }

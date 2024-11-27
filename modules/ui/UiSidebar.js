@@ -680,10 +680,10 @@ export class UiSidebar {
   /**
    * _eventCancel
    * Just cancels an event
-   * @param {Event}  e - the event to cancel
+   * @param  {Event} e? - triggering event (if any)
    */
   _eventCancel(e) {
-    e.preventDefault();
+    if (e)  e.preventDefault();
   }
 
 

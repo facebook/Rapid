@@ -35,6 +35,7 @@ export class UiShortcuts {
 
     this._detectedOS = utilDetect().os;
     this._activeTab = 0;
+    this._keys = null;
 
     // Modal and data will be created when calling `show()`
     this.Modal = null;
@@ -49,10 +50,12 @@ export class UiShortcuts {
     this.hide = this.hide.bind(this);
     this.toggle = this.toggle.bind(this);
     this.render = this.render.bind(this);
+    this._setupKeybinding = this._setupKeybinding.bind(this);
 
+    // Setup event handlers..
     const l10n = context.systems.l10n;
-    this.keys = [l10n.t('shortcuts.command.keyboard_shortcuts.key'), '?'];
-    context.keybinding().on(this.keys, this.toggle);
+    l10n.on('localechange', this._setupKeybinding);
+    this._setupKeybinding();
   }
 
 
@@ -359,6 +362,24 @@ export class UiShortcuts {
     } else {
       this.show();
     }
+  }
+
+
+  /**
+   * _setupKeybinding
+   * This sets up the keybinding, replacing existing if needed
+   */
+  _setupKeybinding() {
+    const context = this.context;
+    const keybinding = context.keybinding();
+    const l10n = context.systems.l10n;
+
+    if (Array.isArray(this._keys)) {
+      keybinding.off(this._keys);
+    }
+
+    this._keys = [l10n.t('shortcuts.command.keyboard_shortcuts.key'), '?'];
+    context.keybinding().on(this._keys, this.toggle);
   }
 
 }

@@ -145,7 +145,7 @@ export class UiUndoRedoTool {
 
   /**
    * choose
-   * @param  {Event}  e? - the triggering event, if any (keypress or click)
+   * @param  {Event}  e? - triggering event (if any)
    * @param  {Object} d? - object bound to the selection (i.e. the command)
    */
   choose(e, d) {
