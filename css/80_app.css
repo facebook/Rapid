@@ -5468,6 +5468,13 @@ li:first-of-type .badge .tooltip .popover-arrow {
     }
 }
 
+/* Firefox only */
+@-moz-document url-prefix() {
+  * {
+    scrollbar-width: thin;
+  }
+}
+
 
 /* Intro walkthrough
  ----------------------------------------------------- */
