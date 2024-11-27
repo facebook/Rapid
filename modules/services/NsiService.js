@@ -3,11 +3,6 @@ import { Matcher } from 'name-suggestion-index';
 import { AbstractSystem } from '../core/AbstractSystem.js';
 
 
-
-// This service contains all the code related to the **name-suggestion-index** (aka NSI)
-// NSI contains the most correct tagging for many commonly mapped features.
-// See https://github.com/osmlab/name-suggestion-index  and  https://nsi.guide
-
 // Sometimes we can upgrade a feature tagged like `building=yes` to a better tag.
 const buildingPreset = {
   'building/commercial': true,
@@ -28,9 +23,15 @@ const notNames = /:(colou?r|type|forward|backward|left|right|etymology|pronuncia
 const notBranches = /(coop|express|wireless|factory|outlet)/i;
 
 
-
 /**
  * `NsiService`
+ * This service contains all the code related to the **name-suggestion-index** (aka 'NSI').
+ * NSI contains the most correct tagging for many commonly mapped features.
+ * NSI data is distributed in large data files, we load them at startup and
+ * use them to add NSI presets and suggest tag upgrades.
+ *
+ * @see https://github.com/osmlab/name-suggestion-index
+ * @see https://nsi.guide
  */
 export class NsiService extends AbstractSystem {
 

@@ -14,7 +14,7 @@ import { utilFetchResponse } from '../util/index.js';
 
 /**
  * `VectorTileService`
- * This service can connect to sources of vector tile data
+ * This service can connect to sources of vector tile data.
  *
  * - Mapbox Vector Tiles (MVT) made available from a z/x/y tileserver
  *     https://github.com/mapbox/vector-tile-spec

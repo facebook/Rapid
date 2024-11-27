@@ -13,10 +13,10 @@ const GEOSCRIBBLE_API = 'https://geoscribble.osmz.ru/geojson';
 /**
  * `GeoScribbleService`
  * GeoScribble is a service that allows users to collaboratively draw on the map.
- * see also:
- *  https://wiki.openstreetmap.org/wiki/GeoScribble
- *  https://geoscribble.osmz.ru/docs
- *  https://github.com/Zverik/geoscribble
+ * This service connects to the GeoScribble API to fetch public 'scribbles'.
+ * @see https://wiki.openstreetmap.org/wiki/GeoScribble
+ * @see https://geoscribble.osmz.ru/docs
+ * @see https://github.com/Zverik/geoscribble
  *
  * Events available:
  *   'loadedData'

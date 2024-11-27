@@ -20,6 +20,11 @@ const TILEZOOM = 14;
 
 /**
  * `MapillaryService`
+ * This service loads photos, sequences, and detected items from the Mapillary API.
+ * @see https://www.mapillary.com/developer/api-documentation
+ *
+ * It also manages the embedded Mapillary-JS photo viewer.
+ * @see https://mapillary.github.io/mapillary-js/api
  *
  * Events available:
  *   `imageChanged`   - fired when a new image is visible in the viewer

@@ -12,6 +12,9 @@ import { utilFetchResponse } from '../util/index.js';
 
 /**
  * `OsmService`
+ * This service connects to the OpenStreetMap editing API to perform queries,
+ *  fetch data, upload changesets, and more.
+ * @see https://wiki.openstreetmap.org/wiki/API
  *
  * Events available:
  *   'apistatuschange'

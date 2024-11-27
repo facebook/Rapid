@@ -1,5 +1,3 @@
-import { Tiler} from '@rapid-sdk/math';
-
 import { AbstractSystem } from '../core/AbstractSystem.js';
 import { utilFetchResponse } from '../util/index.js';
 
@@ -9,8 +7,8 @@ const PMTILES_CATALOG_PATH = 'pmtiles_catalog.json';
 
 /**
  * `OvertureService`
- * This service connects to the 'official' sources of Overture PMTiles by acting as a wrapper around the
- * vector tile service
+ * This service connects to the 'official' sources of Overture PMTiles
+ * by acting as a wrapper around the vector tile service
  *
  * - Protomaps .pmtiles single-file archive containing MVT
  *    https://protomaps.com/docs/pmtiles
@@ -49,7 +47,7 @@ export class OvertureService extends AbstractSystem {
         this.latestRelease = this.pmTilesCatalog.releases.find(release => release.release_id === dateStrings[0]);
       })
       .catch(error => {
-        console.error('Error fetching or parsing the PMTiles STAC Catalog: ', error);
+        console.error('Error fetching or parsing the PMTiles STAC Catalog: ', error);   // eslint-disable-line no-console
       });
   }
 
@@ -105,7 +103,7 @@ export class OvertureService extends AbstractSystem {
     if (datasetID.includes('places')) {
       const file = this.latestRelease.files.find(file => file.theme === 'places');
       const url = PMTILES_ROOT_URL + file.href;
-       return vtService.getData(url);
+      return vtService.getData(url);
     } else {
       return [];
     }

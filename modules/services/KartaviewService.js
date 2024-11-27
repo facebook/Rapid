@@ -16,6 +16,13 @@ const TILEZOOM = 14;
 
 /**
  * `KartaviewService`
+ * This service loads photos and sequences from the Kartaview/OpenStreetCam APIs.
+ * ('Kartaview' used to be named 'OpenStreetCam', and this code uses a mix of APIs to work.)
+ * @see https://doc.kartaview.org/
+ * @see https://api.openstreetcam.org/api/doc.html
+ *
+ * It also manages a simple embedded photo viewer,
+ * allowing the user to zoom, pan, and rotate the photos.
  *
  * Events available:
  *   `imageChanged`

@@ -15,7 +15,9 @@ const OSMOSE_API = 'https://osmose.openstreetmap.fr/api/0.3';
 
 /**
  * `OsmoseService`
-
+ * This service connects to the Osmose API to fetch detected QA issues.
+ * @see https://wiki.openstreetmap.org/wiki/Osmose/api/0.3
+ *
  * Events available:
  *   'loadedData'
  */

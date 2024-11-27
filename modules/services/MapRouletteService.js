@@ -12,6 +12,10 @@ const MAPROULETTE_API = 'https://maproulette.org/api/v2';
 
 /**
  * `MapRouletteService`
+ * MapRoulette is a microtask platform for performing tasks to improve OpenStreetMap.
+ * This service connects to the MapRoulette API to fetch about challenges and tasks.
+ * @see https://wiki.openstreetmap.org/wiki/MapRoulette
+ * @see https://maproulette.org/docs/swagger-ui/index.html
  *
  * Events available:
  *   'loadedData'

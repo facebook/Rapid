@@ -43,6 +43,9 @@ KR_COLORS.set('400', 0xcc3355);
 
 /**
  * `KeepRightService`
+ * This service connects to the KeepRight API to fetch detected QA issues.
+ * @see https://wiki.openstreetmap.org/wiki/Keep_Right
+ * @see https://keepright.at/interfacing.php
  *
  * Events available:
  *   `loadedData`

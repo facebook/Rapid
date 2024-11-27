@@ -13,6 +13,7 @@ const TILEZOOM = 16;
 
 /**
  * `MapWithAIService`
+ * This service connects to the MapWithAI API to fetch data about Meta-hosted datasets.
  *
  * Events available:
  *   `loadedData`

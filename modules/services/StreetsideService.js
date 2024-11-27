@@ -12,6 +12,11 @@ const TILEZOOM = 16.5;
 
 /**
  * `StreetsideService`
+ * This service loads streetside photos and coverage information from
+ * various Microsoft/VirtualEarth APIs.
+ *
+ * It also manages the embedded Pannellum panoramic photo viewer.
+ * @see https://pannellum.org/documentation/api
  *
  * Events available:
  *   `imageChanged`   - fired when a new image is visible in the viewer

@@ -8,6 +8,8 @@ import { utilFetchResponse } from '../util/index.js';
 
 /**
  * `NominatimService`
+ * This service connects to the Nominatim API to perform geocoding queries.
+ * @see https://nominatim.org/release-docs/latest/api/Overview/
  */
 export class NominatimService extends AbstractSystem {
 

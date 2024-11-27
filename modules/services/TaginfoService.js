@@ -38,6 +38,8 @@ const tag_members_fractions = {
 
 /**
  * `TaginfoService`
+ * This service runs queries against the OpenStreetMap Taginfo API.
+ * @see https://taginfo.openstreetmap.org/taginfo/apidoc
  */
 export class TaginfoService extends AbstractSystem {
 

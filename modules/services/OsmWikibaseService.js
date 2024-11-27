@@ -7,6 +7,9 @@ import { utilFetchResponse } from '../util/index.js';
 
 /**
  * `OsmWikibaseService`
+ * This service runs queries against OpenStreetMap's Wikibase API.
+ * It is used to fetch tag documentation.
+ * @see https://wiki.openstreetmap.org/wiki/Data_items
  */
 export class OsmWikibaseService extends AbstractSystem {
 

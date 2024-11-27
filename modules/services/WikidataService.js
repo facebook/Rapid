@@ -8,6 +8,8 @@ const WIKIDATA_API = 'https://www.wikidata.org/w/api.php?';
 
 /**
  * `WikidataService`
+ * This service runs queries against the Wikidata API.
+ * @see https://www.mediawiki.org/wiki/API:Main_page
  */
 export class WikidataService extends AbstractSystem {
 
