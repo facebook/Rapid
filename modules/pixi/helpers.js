@@ -78,12 +78,9 @@ export function lineToPoly(flatPoints, lineStyle = {}) {
     flatPoints,
     lineStyle,
     false,  // flipAlignment
-    isClosed,  // closed
+    isClosed,
     graphicsGeometry.verts,
-    undefined,       // _verticesStride - unused
-    undefined,       // _verticesOffset - unused
-    graphicsGeometry.indices,
-    undefined       // _indicesOffset - unused
+    graphicsGeometry.indices
   );
 
 

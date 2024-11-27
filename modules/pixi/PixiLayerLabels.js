@@ -443,7 +443,6 @@ export class PixiLayerLabels extends AbstractLayer {
       if (/^[\x20-\x7E]*$/.test(feature.label)) {   // is it in the printable ASCII range?
         labelObj = new PIXI.BitmapText({
           text: feature.label,
-          resolution: 2,
           style: {
             fontFamily: 'label-normal',
             fontSize: 12

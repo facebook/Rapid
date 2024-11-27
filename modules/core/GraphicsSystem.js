@@ -619,14 +619,6 @@ export class GraphicsSystem extends AbstractSystem {
       // Resize pixi canvas
       const renderer = this.pixi.renderer;
       renderer.resize(w, h);
-
-      // needed for multiview?
-      // If we are using the WebGL renderer and have multiView enabled,
-      // Pixi will render to a different canvas before copying to the target canvas.
-      // The render canvas may need a resize too.
-      if (renderer.type === PIXI.RendererType.WEBGL && renderer.context.multiView) {
-        renderer.context.ensureCanvasSize(this.surface);
-      }
     }
 
     // Let's go!
