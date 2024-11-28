@@ -142,10 +142,9 @@ export function validationCurbNodes(context) {
 
   /**
    * performCurbNodeFixes
-   * Performs fixes to add curb nodes to the specified way.
-   * @param  {string}  wayID - The ID of the way to fix.
+   * Either make the endpoints curb nodes, or insert curb nodes around there.
+   * @param  {string}  wayID - The ID of the way to modify.
    * @param  {Object}  tags - The tags to assign to the new curb nodes.
-   * @return {Graph}   modified graph
    */
   function performCurbNodeFixes(wayID, tags) {
     const graph = editor.staging.graph;
@@ -155,29 +154,31 @@ export function validationCurbNodes(context) {
       return;
     }
 
-    const firstNode = graph.entity(way.nodes[0]);
-    const lastNode = graph.entity(way.nodes[way.nodes.length - 1]);
-    const firstNodeConnected = isConnectedToRefugeIsland(firstNode, graph);
-    const lastNodeConnected = isConnectedToRefugeIsland(lastNode, graph);
+    const firstNode = graph.entity(way.nodes.at(0));
+    const lastNode = graph.entity(way.nodes.at(-1));
+    const firstConnections = graph.parentWays(firstNode).filter(parent => parent.id !== wayID);
+    const lastConnections = graph.parentWays(lastNode).filter(parent => parent.id !== wayID);
+    const firstConnectsToRefugeIsland = firstConnections.some(parent => isRefugeIsland(parent));
+    const lastConnectsToRefugeIsland = lastConnections.some(parent => isRefugeIsland(parent));
 
     // Handle the first node
-    if (firstNodeConnected) {
+    if (!firstConnections.length || firstConnectsToRefugeIsland) {
       updateNodeToCurb(firstNode, tags, graph);
     } else {
-      addCurbNode(firstNode, way, graph, tags);
+      insertCurbNode(firstNode, way, graph, tags);
     }
 
     // Handle the last node
-    if (lastNodeConnected) {
+    if (!lastConnections.length || lastConnectsToRefugeIsland) {
       updateNodeToCurb(lastNode, tags, graph);
     } else {
-      addCurbNode(lastNode, way, graph, tags);
+      insertCurbNode(lastNode, way, graph, tags);
     }
   }
 
 
   /**
-   * addCurbNode
+   * insertCurbNode
    * Adds a single curb node to a specified way at the position of an existing node, splits the way, and updates tags.
    * This function is used when a node is not connected to a traffic island and needs a curb node addition.
    * @param  {Node}    node - The existing node where the curb node will be added.
@@ -185,7 +186,7 @@ export function validationCurbNodes(context) {
    * @param  {Graph}   graph - The graph containing the way and node data.
    * @param  {Object}  tags - The tags to assign to the new curb node.
    */
-  function addCurbNode(node, way, graph, curbTags) {
+  function insertCurbNode(node, way, graph, curbTags) {
     if (hasCurbNode(node, graph)) return;  // Exit if curb already exists
 
     // Calculate the position for the new curb node
@@ -219,19 +220,6 @@ export function validationCurbNodes(context) {
     } else {
       console.error('No new ways created after split');  // eslint-disable-line no-console
     }
-  }
-
-
-  /**
-   * isConnectedToRefugeIsland
-   * Checks if the given node is connected to a refuge island.
-   * @param  {Node}     node - The node to check.
-   * @param  {Graph}    graph - The graph containing the node and way data.
-   * @return {Boolean}  True if the node is connected to a refuge island, false otherwise.
-   */
-  function isConnectedToRefugeIsland(node, graph) {
-    const connectedWays = graph.parentWays(node);
-    return connectedWays.some(way => isRefugeIsland(way));
   }
 
 
