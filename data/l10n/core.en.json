@@ -3409,6 +3409,11 @@
       "coordinate_pair": "{latitude}, {longitude}",
       "year_month_day": "YYYY-MM-DD"
     },
+    "wikidata": {
+      "identifier": "Identifier",
+      "label": "Label",
+      "description": "Description"
+    },
     "languageNames": {
       "aa": "Afar",
       "ab": "Abkhazian",
