@@ -1,4 +1,5 @@
 import { select, selection } from 'd3-selection';
+import { marked } from 'marked';
 
 import { actionNoop, actionRapidAcceptFeature } from '../actions/index.js';
 import { uiIcon } from './icon.js';
@@ -49,6 +50,7 @@ export class UiRapidInspector {
     this.renderTagInfo = this.renderTagInfo.bind(this);
     this.renderChoices = this.renderChoices.bind(this);
     this.renderChoice = this.renderChoice.bind(this);
+    this.renderNotice = this.renderNotice.bind(this);
     this.acceptFeature = this.acceptFeature.bind(this);
     this.ignoreFeature = this.ignoreFeature.bind(this);
     this._setupKeybinding = this._setupKeybinding.bind(this);
@@ -117,7 +119,8 @@ export class UiRapidInspector {
     $inspector.selectAll('.body')
       .call(this.renderFeatureInfo)
       .call(this.renderTagInfo)
-      .call(this.renderChoices);
+      .call(this.renderChoices)
+      .call(this.renderNotice);
   }
 
 
@@ -394,6 +397,43 @@ export class UiRapidInspector {
     $choices.selectAll('.rapid-inspector-choice')
       .each(this.renderChoice);
   }
+
+
+
+  /**
+   * renderNotice
+   * Renders the 'rapid-inspector-notice' section
+   * This section contains remarks about the data - license, usage, or other hints
+   * @param {d3-selection} $selection - A d3-selection to a HTMLElement that this content should render itself into
+   */
+  renderNotice($selection) {
+    const context = this.context;
+    const l10n = context.systems.l10n;
+    const rapid = context.systems.rapid;
+    const datum = this.datum;
+    if (!datum) return;
+
+    const datasetID = datum.__datasetid__.replace('-conflated', '');
+    const dataset = rapid.datasets.get(datasetID);
+
+    // Only display notice data for open data (for now)
+    if (!dataset.tags.includes('opendata')) return;
+
+    let $notice = $selection.selectAll('.rapid-inspector-notice')
+      .data([0]);
+
+    // enter
+    const $$notice = $notice.enter()
+      .append('div')
+      .attr('class', 'rapid-inspector-notice');
+
+    $$notice
+      .html(marked.parse(l10n.t('rapid_feature_inspector.notice.open_data', {license: dataset.license_markdown})));
+
+    // update
+    $notice = $notice.merge($$notice);
+  }
+
 
 
   /**
