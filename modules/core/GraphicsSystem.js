@@ -101,126 +101,8 @@ export class GraphicsSystem extends AbstractSystem {
     ]);
 
     return this._initPromise = prerequisites
-      .then(() => {
-        // For testing, allow user to override the renderer preference:
-        // `renderer=val` one of `webgl1`, `webgl2`/`webgl`, `webgpu`
-        let renderPreference, renderGLVersion;
-        switch (urlhash.initialHashParams.get('renderer')) {
-          case 'webgpu':
-            renderPreference = 'webgpu';
-            break;
-          case 'webgl1':
-            renderPreference = 'webgl';
-            renderGLVersion = 1;
-            break;
-          case 'webgl':
-          case 'webgl2':
-          default:
-            renderPreference = 'webgl';
-            renderGLVersion = 2;
-        }
-
-        // Setup PIXI defaults here..
-        Object.assign(PIXI.TextureSource.defaultOptions, {
-          autoGarbageCollect: false,
-          autoGenerateMipmaps: false,
-          resolution: 1
-        });
-
-        Object.assign(PIXI.HelloSystem.defaultOptions, {
-          hello: true  // Log renderer and Pixi version to the console
-        });
-
-        const options = {
-          antialias: true,
-          autoDensity: true,
-          autoStart: false,    // Don't start the ticker yet
-          canvas: this.surface,
-          events: {
-            move: false,
-            globalMove: false,
-            click: true,
-            wheel: false
-          },
-          multiView: true,   // Needed for minimap
-          powerPreference: 'high-performance',
-          preference: renderPreference,
-          preferWebGLVersion: renderGLVersion,
-          preserveDrawingBuffer: true,
-          resolution: window.devicePixelRatio,
-          sharedLoader: true,
-          sharedTicker: true,
-          textureGCActive: true,
-          useBackBuffer: false
-        };
-
-        this.pixi = new PIXI.Application();
-        return this.pixi.init(options);  // return Pixi's init Promise
-      })
-      .then(() => {   // After Pixi's init is complete...
-
-        // Prepare a basic bitmap font that we can use for things like debug messages
-        PIXI.BitmapFont.install({
-          name: 'rapid-debug',
-          style: {
-            fill: { color: 0xffffff },
-            fontSize: 14,
-            stroke: { color: 0x333333 }
-          },
-          chars: PIXI.BitmapFontManager.ASCII,
-          resolution: 2
-        });
-
-        // Enable debugging tools
-        if (window.Rapid.isDebug) {
-          // Register Pixi with the pixi-inspector extension if it is installed
-          // https://github.com/bfanger/pixi-inspector
-          globalThis.__PIXI_APP__ = this.pixi;
-
-          window.__PIXI_DEVTOOLS__ = {
-            pixi: PIXI,
-            app: this.pixi
-          };
-        }
-
-        // Setup the stage
-        // The `stage` should be positioned so that `[0,0]` is at the center of the viewport,
-        // and this is the pivot point for map rotation.
-        const stage = this.pixi.stage;
-        stage.label = 'stage';
-        stage.sortableChildren = true;
-        stage.eventMode = 'static';
-        // Add a big hit area to `stage` so that clicks on nothing will generate events
-        stage.hitArea = new PIXI.Rectangle(-10000000, -10000000, 20000000, 20000000);
-        this.stage = stage;
-
-        // The `origin` returns `[0,0]` back to the `[top,left]` coordinate of the viewport,
-        // so `project/unproject` continues to work.
-        // This also includes the `offset` which includes any panning that the user has done.
-        const origin = new PIXI.Container();
-        origin.label = 'origin';
-        origin.sortableChildren = true;
-        origin.eventMode = 'passive';
-        stage.addChild(origin);
-        this.origin = origin;
-
-        // Setup the ticker
-        const ticker = this.pixi.ticker;
-        const defaultListener = ticker._head.next;
-        ticker.remove(defaultListener._fn, defaultListener._context);
-        ticker.add(this._tick, this);
-
-        this.scene = new PixiScene(this);
-        this.events = new PixiEvents(this);
-
-        // Texture Manager should only be created once
-        // This is because it will start loading assets and Pixi's asset loader is not reentrant.
-        // (it causes test failures if we create a bunch of these)
-        if (!_sharedTextures) {
-          _sharedTextures = new PixiTextures(this);
-        }
-        this.textures = _sharedTextures;
-      });
+      .then(() => this._initPixiAsync())
+      .then(() => this._afterPixiInit());
   }
 
 
@@ -716,6 +598,145 @@ export class GraphicsSystem extends AbstractSystem {
     debug.texture = this.textures.getDebugTexture('text');
     debug.position.set(50, -200);
     screen.position.set(50, -200);
+  }
+
+
+  /**
+   * _initPixiAsync
+   * Initializes the Pixi Application
+   * @return {Promise} Promise resolved when this Pixi has completed initialization
+   */
+  _initPixiAsync() {
+    if (this.pixi) return Promise.resolve();   // was done already?
+
+    const urlhash = this.context.systems.urlhash;
+
+    // For testing, allow user to override the renderer preference:
+    // `renderer=val` one of `webgl1`, `webgl2`/`webgl`, `webgpu`
+    let renderPreference, renderGLVersion;
+    switch (urlhash.initialHashParams.get('renderer')) {
+      case 'webgpu':
+        renderPreference = 'webgpu';
+        break;
+      case 'webgl1':
+        renderPreference = 'webgl';
+        renderGLVersion = 1;
+        break;
+      case 'webgl':
+      case 'webgl2':
+      default:
+        renderPreference = 'webgl';
+        renderGLVersion = 2;
+    }
+
+    // Setup PIXI defaults here..
+    Object.assign(PIXI.TextureSource.defaultOptions, {
+      autoGarbageCollect: false,
+      autoGenerateMipmaps: false,
+      resolution: 1
+    });
+
+    Object.assign(PIXI.HelloSystem.defaultOptions, {
+      hello: true  // Log renderer and Pixi version to the console
+    });
+
+    const options = {
+      antialias: true,
+      autoDensity: true,
+      autoStart: false,    // Don't start the ticker yet
+      canvas: this.surface,
+      events: {
+        move: false,
+        globalMove: false,
+        click: true,
+        wheel: false
+      },
+      multiView: true,   // Needed for minimap
+      powerPreference: 'high-performance',
+      preference: renderPreference,
+      preferWebGLVersion: renderGLVersion,
+      preserveDrawingBuffer: true,
+      resolution: window.devicePixelRatio,
+      sharedLoader: true,
+      sharedTicker: true,
+      textureGCActive: true,
+      useBackBuffer: false
+    };
+
+    this.pixi = new PIXI.Application();
+    return this.pixi.init(options);  // return Pixi's init Promise
+  }
+
+
+  /**
+   * _afterPixiInit
+   * Steps to run after Pixi has completed initialization.
+   * Set up scene, events, textures, stage, etc.
+   */
+  _afterPixiInit() {
+    if (this.scene) return;   // done already?
+
+    // Prepare a basic bitmap font that we can use for things like debug messages
+    PIXI.BitmapFont.install({
+      name: 'rapid-debug',
+      style: {
+        fill: { color: 0xffffff },
+        fontSize: 14,
+        stroke: { color: 0x333333 }
+      },
+      chars: PIXI.BitmapFontManager.ASCII,
+      resolution: 2
+    });
+
+    // Enable debugging tools
+    if (window.Rapid.isDebug) {
+      // Register Pixi with the pixi-inspector extension if it is installed
+      // https://github.com/bfanger/pixi-inspector
+      globalThis.__PIXI_APP__ = this.pixi;
+
+      window.__PIXI_DEVTOOLS__ = {
+        pixi: PIXI,
+        app: this.pixi
+      };
+    }
+
+    // Setup the stage
+    // The `stage` should be positioned so that `[0,0]` is at the center of the viewport,
+    // and this is the pivot point for map rotation.
+    const stage = this.pixi.stage;
+    stage.label = 'stage';
+    stage.sortableChildren = true;
+    stage.eventMode = 'static';
+    // Add a big hit area to `stage` so that clicks on nothing will generate events
+    stage.hitArea = new PIXI.Rectangle(-10000000, -10000000, 20000000, 20000000);
+    this.stage = stage;
+
+    // The `origin` returns `[0,0]` back to the `[top,left]` coordinate of the viewport,
+    // so `project/unproject` continues to work.
+    // This also includes the `offset` which includes any panning that the user has done.
+    const origin = new PIXI.Container();
+    origin.label = 'origin';
+    origin.sortableChildren = true;
+    origin.eventMode = 'passive';
+    stage.addChild(origin);
+    this.origin = origin;
+
+    // Setup the ticker
+    const ticker = this.pixi.ticker;
+    const defaultListener = ticker._head.next;
+    ticker.remove(defaultListener._fn, defaultListener._context);
+    ticker.add(this._tick, this);
+
+    this.scene = new PixiScene(this);
+    this.events = new PixiEvents(this);
+
+    // Texture Manager should only be created once
+    // This is because it will start loading assets and Pixi's asset loader is not reentrant.
+    // (it causes test failures if we create a bunch of these)
+    if (!_sharedTextures) {
+      _sharedTextures = new PixiTextures(this);
+    }
+    this.textures = _sharedTextures;
   }
 
 }
