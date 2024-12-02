@@ -1,4 +1,3 @@
-import { select as d3_select } from 'd3-selection';
 import { Tiler, vecSubtract } from '@rapid-sdk/math';
 import RBush from 'rbush';
 
@@ -486,6 +485,24 @@ export class MapRouletteService extends AbstractSystem {
 
 
   /**
+   * getChallengeDetails
+   * Retrieves challenge details from cache or API.
+   * @param {string} challengeID - The ID of the challenge.
+   * @returns {Promise} Promise resolving with challenge data.
+   */
+  getChallengeDetails(challengeID) {
+    const cachedChallenge = this._cache.challenges.get(challengeID);
+    if (cachedChallenge) {
+      return Promise.resolve(cachedChallenge);
+    } else {
+      const challengeUrl = `${MAPROULETTE_API}/challenge/${challengeID}`;
+      return fetch(challengeUrl)
+        .then(utilFetchResponse);
+    }
+  }
+
+
+  /**
    * filterNearbyTasks
    * Fetches nearby tasks for a given challenge and task ID, and flies to the nearest task.
    * @param {string} challengeID - The ID of the challenge.
@@ -494,20 +511,14 @@ export class MapRouletteService extends AbstractSystem {
    */
   filterNearbyTasks(challengeID, taskID, zoom) {
     const nearbyTasksUrl = `${MAPROULETTE_API}/challenge/${challengeID}/tasksNearby/${taskID}?excludeSelfLocked=true&limit=1`;
-
     if (!taskID) return;
-
     fetch(nearbyTasksUrl)
       .then(utilFetchResponse)
       .then(nearbyTasks => {
         if (nearbyTasks.length > 0) {
           const nearestTaskData = nearbyTasks[0];
           nearestTaskData.parentId = nearestTaskData.parent.toString();
-
-          // Fetch the challenge details to get the name
-          const challengeUrl = `${MAPROULETTE_API}/challenge/${challengeID}`;
-          return fetch(challengeUrl)
-            .then(utilFetchResponse)
+          return this.getChallengeDetails(challengeID)
             .then(challengeData => {
               // Set the title and parentName using the challenge name
               nearestTaskData.title = challengeData.name;
@@ -523,11 +534,11 @@ export class MapRouletteService extends AbstractSystem {
                 this.selectAndDisplayTask(nearestTask);
               }
             });
-        }
-      })
-      .catch(err => {
-        console.error('Error fetching nearby tasks for challenge:', challengeID, err);
-      });
+      }
+    })
+    .catch(err => {
+      console.error('Error fetching nearby tasks for challenge:', challengeID, err);
+    });
   }
 
 
@@ -537,17 +548,14 @@ export class MapRouletteService extends AbstractSystem {
    * @param {QAItem} task - The task to be selected
    */
   selectAndDisplayTask(task) {
-    const context = this.context;
-    const maproulette = context.services.maproulette;
+    const maproulette = this.context.services.maproulette;
     if (maproulette) {
       if (!(task instanceof QAItem)) return;
 
       maproulette.currentTask = task;
       const selection = new Map();
       selection.set(task.id, task);
-      context.enter('select', { selection });
-
-      d3_select('.sidebar-header').text(task.title); // ensure the title is set
+      this.context.enter('select', { selection });
     }
   }
 

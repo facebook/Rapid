@@ -374,11 +374,33 @@ export function uiMapRouletteEditor(context) {
           notAnIssue(d3_event, d, selection);
         });
 
+      const checkboxSection = buttonEnter.append('div')
+        .attr('class', 'checkbox-section');
+      checkboxSection
+        .append('input')
+        .attr('type', 'checkbox')
+        .attr('id', 'nearbyTaskCheckbox')
+        .property('checked', maproulette.nearbyTaskEnabled)
+        .on('change', nearbyTaskChanged);
+      checkboxSection
+        .append('label')
+        .attr('for', 'nearbyTaskCheckbox')
+        .text(l10n.t('map_data.layers.maproulette.nearbyTask.title'));
 
       function isSaveDisabled(d) {
         return (hasAuth && d.service === 'maproulette') ? null : true;
       }
     });
+  }
+
+
+  function nearbyTaskChanged(d3_event) {
+    const isChecked = d3_event.target.checked;
+    const mapRouletteService = context.services.maproulette;
+    if (mapRouletteService) {
+      mapRouletteService.nearbyTaskEnabled = isChecked;
+      // console.log('Nearby Task feature is now', isChecked ? 'enabled' : 'disabled');
+    }
   }
 
 
