@@ -417,21 +417,23 @@ export class UiRapidInspector {
     const dataset = rapid.datasets.get(datasetID);
 
     // Only display notice data for open data (for now)
-    if (!dataset.tags.includes('opendata')) return;
+    if (dataset.tags?.includes('opendata')) {
 
-    let $notice = $selection.selectAll('.rapid-inspector-notice')
+      let $notice = $selection.selectAll('.rapid-inspector-notice')
       .data([0]);
 
-    // enter
-    const $$notice = $notice.enter()
-      .append('div')
-      .attr('class', 'rapid-inspector-notice');
+      // enter
+      const $$notice = $notice.enter()
+        .append('div')
+        .attr('class', 'rapid-inspector-notice');
 
-    $$notice
-      .html(marked.parse(l10n.t('rapid_feature_inspector.notice.open_data', {license: dataset.license_markdown})));
+      $$notice
+        .html(marked.parse(l10n.t('rapid_feature_inspector.notice.open_data', {license: dataset.license_markdown})));
 
-    // update
-    $notice = $notice.merge($$notice);
+      // update
+      $notice = $notice.merge($$notice);
+    }
+
   }
 
 
