@@ -353,36 +353,16 @@ export class UiFeatureList {
 
     const context = this.context;
     const map = context.systems.map;
-    const osm = context.services.osm;
-    const scene = context.systems.gfx.scene;
 
     if (d.location) {
       map.centerZoomEase([d.location[1], d.location[0]], 19);
 
     } else if (d.id !== -1) {  // looks like an OSM Entity
       utilHighlightEntities([d.id], false, context);
-      map.selectEntityID(d.id, true);   // select and fit , download first if necessary
+      map.selectEntityID(d.id, true);   // select and fit, download first if necessary
 
-    } else if (osm && d.noteID) {  // looks like an OSM Note
-      const selectNote = (note) => {
-        scene.enableLayers('notes');
-        map.centerZoomEase(note.loc, 19);
-        const selection = new Map().set(note.id, note);
-        context.enter('select', { selection: selection });
-      };
-
-      let note = osm.getNote(d.noteID);
-      if (note) {
-        selectNote(note);
-      } else {
-        osm.loadNote(d.noteID, (err) => {
-          if (err) return;
-          note = osm.getNote(d.noteID);
-          if (note) {
-            selectNote(note);
-          }
-        });
-      }
+    } else if (d.noteID) {  // looks like an OSM Note
+      map.selectNoteID(d.noteID);
     }
   }
 

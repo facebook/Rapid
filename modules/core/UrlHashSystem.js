@@ -54,6 +54,7 @@ export class UrlHashSystem extends AbstractSystem {
 * __`locale`__ - A code specifying the localization to use, affecting the language, layout, and keyboard shortcuts. Multiple codes may be specified in order of preference. The first valid code will be the locale, while the rest will be used as fallbacks if certain text hasn't been translated. The default locale preferences are set by the browser.
 * __`rtl=true`__ - Force Rapid into right-to-left mode (useful for testing).
 * __`maproulette`__ - Enable the MapRoulette task layer, e.g.`maproulette=true` -or- `maproulette=<challengeIDs>`
+* __`note`__ - Enable the Notes layer, e.g.`note=true` -or- `note=<noteID>`
 * __`overlays`__ - A comma-separated list of imagery sourceIDs to display as overlays
 * __`photo`__ - The layerID and photoID of a photo to select, e.g `photo=mapillary/fztgSDtLpa08ohPZFZjeRQ`
 * __`photo_overlay`__ - The street-level photo overlay layers to enable.

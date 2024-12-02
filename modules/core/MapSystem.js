@@ -5,6 +5,7 @@ import {
 } from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
+import { QAItem } from '../osm/index.js';
 import { utilTotalExtent } from '../util/index.js';
 
 const TILESIZE = 256;
@@ -311,6 +312,9 @@ export class MapSystem extends AbstractSystem {
    * @param  prevParams   Map(key -> value) of the previous hash parameters
    */
   _hashchange(currParams, prevParams) {
+    const context = this.context;
+    const scene = context.systems.gfx.scene;
+
     // map
     const newMap = currParams.get('map');
     const oldMap = prevParams.get('map');
@@ -345,18 +349,56 @@ export class MapSystem extends AbstractSystem {
         }
       }
     }
+
+    // note
+    // Support opening notes layer with a URL parameter:
+    //  e.g. `note=true`  -or-
+    //  e.g. `note=<noteID>`
+    const newNote = currParams.get('note') || '';
+    const oldNote = prevParams.get('note') || '';
+    if (newNote !== oldNote) {
+      let isEnabled = false;
+      let noteID = null;
+
+      const vals = newNote.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+      for (const val of vals) {
+        if (val === 'true') {
+          isEnabled = true;
+          continue;
+        }
+        // Try the value as a number, but reject things like NaN, null, Infinity
+        const num = +val;
+        const valIsNumber = (!isNaN(num) && isFinite(num));
+        if (valIsNumber) {
+          isEnabled = true;
+          noteID = num;  // for now, just select the first one
+          break;
+        }
+      }
+
+      if (noteID) {
+        this.selectNoteID(noteID);
+      } else if (isEnabled) {
+        scene.enableLayers('notes');
+      } else {
+        scene.disableLayers('notes');
+      }
+    }
   }
 
 
   /**
    * _updateHash
-   * Push changes in map state to the urlhash
+   * Push changes in map state to the urlhash.
+   * This gets called on 'draw', so fairly frequently
    */
   _updateHash() {
     const context = this.context;
+    const scene = context.systems.gfx.scene;
     const urlhash = context.systems.urlhash;
     const viewport = context.viewport;
 
+    // map
     const [lon, lat] = viewport.centerLoc();
     const transform = viewport.transform;
     const zoom = transform.zoom;
@@ -376,6 +418,28 @@ export class MapSystem extends AbstractSystem {
     }
 
     urlhash.setParam('map', val);
+
+
+    // note
+    const layer = scene.layers.get('notes');
+    let noteID;
+    const [pair] = context.selectedData();  // get the first thing in the Map()
+    const [datumID, datum] = pair || [];
+    if (datum instanceof QAItem && datum.service === 'osm') {
+      noteID = datumID;
+    }
+
+    // `note=true` -or- `note=<noteID>`
+    if (layer?.enabled) {
+      if (noteID) {
+        urlhash.setParam('note', noteID);
+      } else {
+        urlhash.setParam('note', 'true');
+      }
+    } else {
+      urlhash.setParam('note', null);
+    }
+
   }
 
 
@@ -649,17 +713,24 @@ export class MapSystem extends AbstractSystem {
   /**
    * selectEntityID
    * Selects an entity by ID, loading it first if needed
-   * @param  entityID     entityID to select
-   * @param  fitToEntity  Whether to force fit the map view to show the entity
+   * @param  {string}  entityID  - entityID to select
+   * @param  {boolean} fitEntity - Whether to force fit the map view to show the entity
    */
-  selectEntityID(entityID, fitToEntity = false) {
+  selectEntityID(entityID, fitEntity = false) {
     const context = this.context;
     const editor = context.systems.editor;
+    const scene = context.systems.gfx.scene;
     const viewport = context.viewport;
+
+    if (!entityID) {
+      context.enter('browse');
+      return;
+    }
 
     const gotEntity = (entity) => {
       const selectedIDs = context.selectedIDs();
       if (context.mode?.id !== 'select-osm' || !selectedIDs.includes(entityID)) {
+        scene.enableLayers('osm');
         context.enter('select-osm', { selection: { osm: [entity.id] }} );
       }
 
@@ -670,7 +741,7 @@ export class MapSystem extends AbstractSystem {
       const isTooSmall = (viewport.transform.zoom < entityZoom - 2);
 
       // Can't reasonably see it, or we're forcing the fit.
-      if (fitToEntity || isOffscreen || isTooSmall) {
+      if (fitEntity || isOffscreen || isTooSmall) {
         this.fitEntities(entity);
       }
     };
@@ -679,13 +750,49 @@ export class MapSystem extends AbstractSystem {
     let entity = currGraph.hasEntity(entityID);
     if (entity) {   // have it already
       gotEntity(entity);
-
     } else {   // need to load it first
       context.loadEntity(entityID, (err, result) => {
         if (err) return;
         entity = result.data.find(e => e.id === entityID);
         if (!entity) return;
         gotEntity(entity);
+      });
+    }
+  }
+
+
+  /**
+   * selectNoteID
+   * Selects a note by ID, loading it first if needed
+   * @param  {string}   noteID  - noteID to select
+   */
+  selectNoteID(noteID) {
+    const context = this.context;
+    const osm = context.services.osm;
+    const scene = context.systems.gfx.scene;
+
+    if (!noteID || !osm) {
+      context.enter('browse');
+      return;
+    }
+
+    const gotNote = (note) => {
+      scene.enableLayers('notes');
+      const selection = new Map().set(note.id, note);
+      context.enter('select', { selection: selection });
+      this.centerZoomEase(note.loc, 19);
+    };
+
+    let note = osm.getNote(noteID);
+    if (note) {
+      gotNote(note);
+    } else {   // need to load it first
+      osm.loadNote(noteID, (err) => {
+        if (err) return;
+        note = osm.getNote(noteID);
+        if (note) {
+          gotNote(note);
+        }
       });
     }
   }
