@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 
 import { AbstractLayer } from './AbstractLayer';
-import  * as particles from '@pixi/particle-emitter';
+import  * as particles from '@barvynkoa/particle-emitter';
 import { snowflakesConfig } from './PixiLayerSnowflakesConfig';
 import { config } from 'chai';
 /**
@@ -22,17 +22,20 @@ export class PixiLayerSnowflakes {
   constructor(context, layerID) {
     this.context = context;
     // Disable mipmapping, we always want textures near the resolution they are at.
-    PIXI.settings.MIPMAP_TEXTURES = PIXI.MIPMAP_MODES.OFF;
+    // PIXI.settings.MIPMAP_TEXTURES = PIXI.MIPMAP_MODES.OFF;
 
     // Prefer WebGL 2.0 for now, this is to workaround issue #493 for now.
-    PIXI.settings.PREFER_ENV = PIXI.ENV.WEBGL2;
+    // PIXI.settings.PREFER_ENV = PIXI.ENV.WEBGL2;
 
     const overlay = this.context.container().select('.snowflake-overlay');
     const surface = this.context.container().select('.snowflake-layer');
 
     // Create a Pixi application rendering to the given surface `canvas`
     // Which in this case is an entirely separate canvas from the main map supersurface
-    this.pixi = new PIXI.Application({
+    this.pixi = new PIXI.Application();
+
+
+    this.pixi.init({
       antialias: true,
       autoDensity: true,
       autoStart: false,        // don't start the ticker yet
@@ -42,51 +45,53 @@ export class PixiLayerSnowflakes {
       sharedLoader: true,
       sharedTicker: true,
       view: surface.node(),
+    }).then(() => {
+      this.pixi.renderer.resize(window.innerWidth, window.innerHeight);
+
+      //Debug circle code
+      // const circle = new PIXI.Graphics()
+      //        .circle(0, 0, 200)
+      //  .fill({ color: 0xffffff, alpha: 1 });
+
+      //   circle.position.y = 400;
+      //   circle.position.x = 400;
+
+      // this.pixi.stage.addChild(circle);
+
+      const container = new PIXI.Container();
+      // container.setProperties({
+      //   scale: true,
+      //   position: true,
+      //   rotation: true,
+      //   uvs: true,
+      //   alpha: true,
+      // });
+      container.label = layerID;
+      this.container = container;
+      this.elapsed = Date.now();
+      this.pixi.stage.addChild(container);
+      this.pixi.renderer.resize(window.innerWidth, window.innerHeight);
+      this._enabled = true;            // this layer should always be enabled
+      this._oldk = 0;
+
+      //Now we need to modify the particle emitter config at runtime, so that it includes the dist folder.
+      //Otherwise, once we deploy to AWS this won't work.
+      let distModifiedConfig = snowflakesConfig;
+      // The 'textureRandom' behavior contains the texture path we need to reference.
+       let snowflakeImagePath = distModifiedConfig.behaviors.filter(behavior => behavior.type === 'textureRandom')[0].config;
+      // Modify each path by prepending the asset path.
+      snowflakeImagePath.textures = snowflakeImagePath.textures.map(texture => texture = this.context.assetPath + texture);
+
+      PIXI.Assets.load(this.context.assetPath + 'img/icons/snowflake.png').then(() => {
+      this.emitter = new particles.Emitter(container, distModifiedConfig);
+        this.emitter.parent = container;
+
+
+        const ticker = this.pixi.ticker; //Thank goodness for shared tickers
+        ticker.add(this.render, this);
+
+      });
     });
-    this.pixi.renderer.resize(window.innerWidth, window.innerHeight);
-
-    //Debug circle code
-    // const circle = new PIXI.Graphics()
-    //  .lineStyle(1, 0xFFFFFF, 1.0)
-    //  .beginFill(0xFFFFFF, 1.0)
-    //  .drawEllipse(0, 0, 50, 100).
-    //  endFill();
-
-    //   circle.position.y = 400;
-    //   circle.position.x = 400;
-
-    // this.pixi.stage.addChild(circle);
-
-    const container = new PIXI.ParticleContainer();
-    container.setProperties({
-      scale: true,
-      position: true,
-      rotation: true,
-      uvs: true,
-      alpha: true,
-    });
-    container.name = layerID;
-    this.container = container;
-    this.elapsed = Date.now();
-    this.pixi.stage.addChild(container);
-    this.pixi.renderer.resize(window.innerWidth, window.innerHeight);
-    this._enabled = true;            // this layer should always be enabled
-    this._oldk = 0;
-
-    //Now we need to modify the particle emitter config at runtime, so that it includes the dist folder.
-    //Otherwise, once we deploy to AWS this won't work.
-    let distModifiedConfig = snowflakesConfig;
-    // The 'textureRandom' behavior contains the texture path we need to reference.
-    let snowflakeImagePath = distModifiedConfig.behaviors.filter(behavior => behavior.type === 'textureRandom')[0].config;
-    // Modify each path by prepending the asset path.
-    snowflakeImagePath.textures = snowflakeImagePath.textures.map(texture => texture = this.context.assetPath + texture);
-
-    this.emitter = new particles.Emitter(container, distModifiedConfig);
-    this.emitter.parent = container;
-
-
-    const ticker = this.pixi.ticker; //Thank goodness for shared tickers
-    ticker.add(this.render, this);
   }
 
 

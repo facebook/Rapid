@@ -56,6 +56,7 @@
     "translations": "dotenvx run --quiet -- node scripts/tx_pull.js"
   },
   "dependencies": {
+    "@barvynkoa/particle-emitter": "^0.0.1",
     "@mapbox/geojson-area": "^0.2.2",
     "@mapbox/geojson-rewind": "^0.5.2",
     "@mapbox/polylabel": "1.0.2",

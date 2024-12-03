@@ -4201,8 +4201,6 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
   pointer-events: none;
 }
 
-<<<<<<< HEAD
-=======
 .snowflake-overlay {
     position: absolute;
     z-index: 3;
@@ -4216,7 +4214,6 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
     touch-action: none;
 }
 
->>>>>>> 1d1da5123 (Mappy Holidays 2022: The return)
 .overlay * {
   pointer-events: auto;
 }
