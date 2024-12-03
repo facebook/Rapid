@@ -65,6 +65,9 @@ function removeMetadata(entity) {
     delete entity.__service__;
     delete entity.__datasetid__;
     delete entity.tags.conn;
+    delete entity.tags.orig_id;
+    delete entity.tags.debug_way_id;
+    delete entity.tags.import;
     delete entity.tags.dupe;
 }
 
