@@ -388,7 +388,7 @@ export function uiMapRouletteEditor(context) {
         .text(l10n.t('map_data.layers.maproulette.nearbyTask.title'));
 
       function isSaveDisabled(d) {
-        return (hasAuth && d.service === 'maproulette') ? null : true;
+        return (hasAuth && d?.service === 'maproulette') ? null : true;
       }
     });
   }
