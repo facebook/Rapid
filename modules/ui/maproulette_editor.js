@@ -374,11 +374,33 @@ export function uiMapRouletteEditor(context) {
           notAnIssue(d3_event, d, selection);
         });
 
+      const checkboxSection = buttonEnter.append('div')
+        .attr('class', 'checkbox-section');
+      checkboxSection
+        .append('input')
+        .attr('type', 'checkbox')
+        .attr('id', 'nearbyTaskCheckbox')
+        .property('checked', maproulette.nearbyTaskEnabled)
+        .on('change', nearbyTaskChanged);
+      checkboxSection
+        .append('label')
+        .attr('for', 'nearbyTaskCheckbox')
+        .text(l10n.t('map_data.layers.maproulette.nearbyTask.title'));
 
       function isSaveDisabled(d) {
         return (hasAuth && d.service === 'maproulette') ? null : true;
       }
     });
+  }
+
+
+  function nearbyTaskChanged(d3_event) {
+    const isChecked = d3_event.target.checked;
+    const mapRouletteService = context.services.maproulette;
+    if (mapRouletteService) {
+      mapRouletteService.nearbyTaskEnabled = isChecked;
+      // console.log('Nearby Task feature is now', isChecked ? 'enabled' : 'disabled');
+    }
   }
 
 
@@ -443,7 +465,7 @@ export function uiMapRouletteEditor(context) {
     buttonSection.select('.submit-button')
       .text(l10n.t('map_data.layers.maproulette.submit'))
       .on('click.submit', function(d3_event, d) {
-        clickSumbit(d3_event, d, selection);
+        clickSubmit(d3_event, d, selection);
       });
   }
 
@@ -489,7 +511,7 @@ export function uiMapRouletteEditor(context) {
     selection.call(commentSaveSection);
   }
 
-  function clickSumbit(d3_event, d) {
+  function clickSubmit(d3_event, d) {
     this.blur();    // avoid keeping focus on the button - iD#4641
     const osm = context.services.osm;
     const userID = osm._userDetails.id;
@@ -505,6 +527,10 @@ export function uiMapRouletteEditor(context) {
           return;
         }
         dispatch.call('change', item);
+        // Fly to a nearby task if the feature is enabled, after the update
+        if (maproulette.nearbyTaskEnabled) {
+          maproulette.flyToNearbyTask(d);
+        }
       });
     }
   }

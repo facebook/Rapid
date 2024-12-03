@@ -808,6 +808,8 @@ en:
         comment: Please confirm
         cancel: Cancel
         submit: Submit
+        nearbyTask:
+          title: Jump to nearby task
       keepRight:
         tooltip: Data issues detected by keepright.at
         title: KeepRight Issues
