@@ -85,7 +85,14 @@ export const snowflakesConfig = {
             'type': 'textureRandom',
             'config': {
                 'textures': [
-                    'img/icons/snowflake.png'
+                    'img/icons/snowflake1.png',
+                    'img/icons/snowflake2.png',
+                    'img/icons/snowflake3.png',
+                    'img/icons/snowflake4.png',
+                    'img/icons/snowflake5.png',
+                    'img/icons/snowflake6.png',
+                    'img/icons/snowflake7.png',
+                    'img/icons/teapot.png',
                 ]
             }
         },
