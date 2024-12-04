@@ -1206,14 +1206,23 @@ div.map-controls .map-control {
     border-radius: 4px;
 }
 
+div.map-controls > .map-control > button > svg {
+    display:none;
+}
+
+div.map-controls div.bearing_n {
+    display:none;
+}
+
+div.map-control.bearing button {
+    background: url('img/holiday_reset_bearing.png')
+}
 div.map-control.help-control button {
     background: url('img/holiday_help.svg')
 }
-
 div.map-control.preferences-control button {
     background: url('img/holiday_preferences.svg')
 }
-
 div.map-control.issues-control button {
     background: url('img/holiday_issues.svg')
 }
@@ -1223,10 +1232,10 @@ div.map-control.map-data-control button {
 div.map-control.background-control button {
     background: url('img/holiday_background.svg')
 }
-div.map-control.geolocate-control button {
+div.map-control.geolocate button {
     background: url('img/holiday_geolocate.svg')
 }
-div.map-control.zoom-to-selection-control button {
+div.map-control.zoom-to-selection button {
     background: url('img/holiday_zoom-to-selection.svg')
 }
 div.map-control.zoombuttons button.zoom-in {
