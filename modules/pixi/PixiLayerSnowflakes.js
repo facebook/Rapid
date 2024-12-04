@@ -82,14 +82,29 @@ export class PixiLayerSnowflakes {
       // Modify each path by prepending the asset path.
       snowflakeImagePath.textures = snowflakeImagePath.textures.map(texture => texture = this.context.assetPath + texture);
 
-      PIXI.Assets.load(this.context.assetPath + 'img/icons/snowflake.png').then(() => {
-      this.emitter = new particles.Emitter(container, distModifiedConfig);
+      const snowflakepaths = [
+        'img/icons/snowflake1.png',
+        'img/icons/snowflake2.png',
+        'img/icons/snowflake3.png',
+        'img/icons/snowflake4.png',
+        'img/icons/snowflake5.png',
+        'img/icons/snowflake6.png',
+        'img/icons/snowflake7.png',
+        'img/icons/teapot.png',
+      ];
+
+      let snowflakePromises = snowflakepaths.map(path => PIXI.Assets.load(this.context.assetPath + path));
+
+      // let s1Promise = PIXI.Assets.load(this.context.assetPath + 'img/icons/snowflake.png');
+      // let s2Promise = PIXI.Assets.load(this.context.assetPath + 'img/icons/snowflake2.png');
+      Promise.all(snowflakePromises)
+      .then(() => {
+        this.emitter = new particles.Emitter(container, distModifiedConfig);
         this.emitter.parent = container;
 
 
         const ticker = this.pixi.ticker; //Thank goodness for shared tickers
         ticker.add(this.render, this);
-
       });
     });
   }
