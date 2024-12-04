@@ -39,9 +39,6 @@ export class UiRapidDatasetToggle {
     const l10n = context.systems.l10n;
     const scene = context.systems.gfx.scene;
 
-    this.datum = null;
-    this._keys = null;
-
     // Child components (will be created in `show()`)
     this.CatalogModal = null;
     this.ColorPicker = null;

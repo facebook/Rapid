@@ -59,7 +59,7 @@ export { uiRapidColorpicker } from './rapid_colorpicker.js';
 export { UiRapidDatasetToggle } from './UiRapidDatasetToggle.js';
 export { uiRapidFirstEditDialog } from './rapid_first_edit_dialog.js';
 export { UiRapidInspector } from './UiRapidInspector.js';
-export { uiRapidPowerUserFeaturesDialog } from './rapid_poweruser_features_dialog.js';
+export { UiRapidPowerUserFeatures } from './UiRapidPowerUserFeatures.js';
 // export { uiRapidSplash } from './rapid_splash.js';
 export { uiRapidViewManageDatasets } from './rapid_view_manage_datasets.js';
 export { uiRestore } from './restore.js';

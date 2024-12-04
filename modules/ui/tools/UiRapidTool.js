@@ -1,7 +1,7 @@
 import { selection } from 'd3-selection';
 
 import { UiRapidDatasetToggle } from '../UiRapidDatasetToggle.js';
-import { uiRapidPowerUserFeaturesDialog } from '../rapid_poweruser_features_dialog.js';
+import { UiRapidPowerUserFeatures } from '../UiRapidPowerUserFeatures.js';
 import { uiTooltip } from '../tooltip.js';
 import { utilCmd } from '../../util/cmd.js';
 
@@ -27,9 +27,9 @@ export class UiRapidTool {
 
     // Create child components
     this.RapidModal = new UiRapidDatasetToggle(context);
-    this.PoweruserDialog = uiRapidPowerUserFeaturesDialog(context);
+    this.PowerUserModal = new UiRapidPowerUserFeatures(context);
     this.RapidTooltip = uiTooltip(context);
-    this.PoweruserTooltip = uiTooltip(context);
+    this.PowerUserTooltip = uiTooltip(context);
 
     // D3 selections
     this.$parent = null;
@@ -76,7 +76,7 @@ export class UiRapidTool {
       .title(l10n.t('shortcuts.command.toggle_rapid_data.label'))
       .shortcut(utilCmd('⇧' + l10n.t('shortcuts.command.toggle_rapid_data.key')));
 
-    this.PoweruserTooltip
+    this.PowerUserTooltip
       .placement('bottom')
       .scrollContainer(context.container().select('.map-toolbar'))
       .title(l10n.t('rapid_poweruser_features.heading.label'));
@@ -96,7 +96,7 @@ export class UiRapidTool {
 
     // Rapid Button
     let $rapidButton = $joined.selectAll('button.rapid-features')
-      .data([this.RapidModal.show]);
+      .data([this.RapidModal]);
 
     // enter
     let $$rapidButton = $rapidButton.enter()
@@ -121,7 +121,7 @@ export class UiRapidTool {
 
     // Poweruser Button
     let $poweruserButton = $joined.selectAll('button.rapid-poweruser-features')
-      .data(isPowerUser ? [this.PoweruserDialog] : []);
+      .data(isPowerUser ? [this.PowerUserModal] : []);
 
     $poweruserButton.exit()
       .remove();
@@ -130,7 +130,7 @@ export class UiRapidTool {
       .append('button')
       .attr('class', 'bar-button rapid-poweruser-features')
       .on('click', this.choose)
-      .call(this.PoweruserTooltip)
+      .call(this.PowerUserTooltip)
       .append('div')
       .attr('class', 'beta');
 
@@ -144,13 +144,13 @@ export class UiRapidTool {
   /**
    * choose
    * @param  {Event}  e? - triggering event (if any)
-   * @param  {Object} d? - object bound to the selection (i.e. the command)
+   * @param  {Object} d? - object bound to the selection (i.e. the modal component)
    */
   choose(e, d) {
     if (e)  e.preventDefault();
     if (!d) return;
 
-    this.context.container().call(d);
+    this.context.container().call(d.show);
   }
 
 
