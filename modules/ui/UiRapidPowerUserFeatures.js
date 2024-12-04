@@ -5,7 +5,7 @@ import { uiModal } from './modal.js';
 
 /**
  * UiRapidPowerUserFeatures
- * This is the modal dialog where the user can toggle on and off power user features.
+ * This is the modal where the user can toggle on and off power user features.
  * It is shown by clicking the "Beta" button in the top menu, if `&poweruser=true` is in the url.
  */
 export class UiRapidPowerUserFeatures {

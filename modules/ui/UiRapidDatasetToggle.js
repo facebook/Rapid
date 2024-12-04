@@ -5,13 +5,13 @@ import { icon } from './intro/helper.js';
 import { uiIcon } from './icon.js';
 import { uiModal } from './modal.js';
 import { uiRapidColorpicker } from './rapid_colorpicker.js';
-import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets.js';
+import { UiRapidCatalog } from './UiRapidCatalog.js';
 import { utilCmd } from '../util/cmd.js';
 
 
 /**
  * UiRapidDatasetToggle
- * This is the modal dialog where the user can toggle on and off datasets.
+ * This is the modal where the user can toggle on and off datasets.
  * It is shown by clicking the main "Rapid" button in the top menu.
  *
  * @example
@@ -40,7 +40,6 @@ export class UiRapidDatasetToggle {
     const scene = context.systems.gfx.scene;
 
     // Child components (will be created in `show()`)
-    this.CatalogModal = null;
     this.ColorPicker = null;
 
     // D3 selections
@@ -81,9 +80,6 @@ export class UiRapidDatasetToggle {
 
       this.$modal.select('.modal')
         .attr('class', 'modal rapid-modal');
-
-      this.CatalogModal = uiRapidViewManageDatasets(context, this.$modal)
-        .on('done', this.rerender);
 
       this.ColorPicker = uiRapidColorpicker(context, this.$modal)
         .on('change', this.changeColor);
@@ -198,7 +194,10 @@ export class UiRapidDatasetToggle {
     const $$manageDatasets = $manageDatasets.enter()
       .append('div')
       .attr('class', 'modal-section rapid-checkbox rapid-manage-datasets')
-      .on('click', () => context.container().call(this.CatalogModal));
+      .on('click', () => {
+        const CatalogModal = new UiRapidCatalog(context, this.$modal).on('done', this.rerender);
+        context.container().call(CatalogModal.show);
+      });
 
     $$manageDatasets
       .append('div')
