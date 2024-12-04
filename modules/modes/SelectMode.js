@@ -98,6 +98,8 @@ export class SelectMode extends AbstractMode {
         if (layerID === 'osm') layerID = 'notes';
       } else if (datum.__fbid__) {      // a Rapid feature
         layerID = 'rapid';
+      } else if (datum.overture) {  // Overture data
+        layerID = 'rapid';
       } else if (datum.__featurehash__) {  // custom data
         layerID = 'custom-data';
       } else if (datum.type === 'detection') {   // A detection (object or sign)
@@ -177,6 +179,11 @@ export class SelectMode extends AbstractMode {
     // Selected custom data (e.g. gpx track)...
     } else if (datum.__featurehash__) {
       sidebarContent = uiDataEditor(context).datum(datum);
+
+    // Selected Overture feature...
+    } else if (datum.overture) {
+      Sidebar.OvertureInspector.datum = datum;
+      sidebarContent = Sidebar.OvertureInspector.render;
 
     // Selected Rapid feature...
     } else if (datum.__fbid__) {

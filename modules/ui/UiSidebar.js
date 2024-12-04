@@ -13,6 +13,7 @@ import { uiMapRouletteEditor } from './maproulette_editor.js';
 import { uiOsmoseEditor } from './osmose_editor.js';
 import { uiNoteEditor } from './note_editor.js';
 import { UiRapidInspector } from './UiRapidInspector.js';
+import { UiOvertureInspector } from './UiOvertureInspector.js';
 import { uiTooltip } from './tooltip.js';
 
 
@@ -57,6 +58,7 @@ export class UiSidebar {
     this.NoteEditor = uiNoteEditor(context);
     this.OsmoseEditor = uiOsmoseEditor(context);
     this.RapidInspector = new UiRapidInspector(context);
+    this.OvertureInspector = new UiOvertureInspector(context);
     this.Tooltip = uiTooltip(context);
 
     // D3 selections
@@ -233,12 +235,14 @@ export class UiSidebar {
     // Hovering on Geo Data (vector tile, geojson, etc..)
     if (datum?.__featurehash__) {
       this.show(this.DataEditor.datum(datum));
-
     // Hovering on Rapid data..
     } else if (datum?.__fbid__) {
       this.RapidInspector.datum = datum;
       this.show(this.RapidInspector.render);
-
+    // Hovering on Overture data..
+    } else if (datum?.overture) {
+      this.OvertureInspector.datum = datum;
+      this.show(this.OvertureInspector.render);
     // Hovering on Mapillary detection..
     } else if (datum?.type === 'detection') {
       this.show(this.DetectionInspector.datum(datum));
