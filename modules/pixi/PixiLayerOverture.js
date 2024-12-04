@@ -142,6 +142,8 @@ export class PixiLayerOverture extends AbstractLayer {
           feature.v = version;
           feature.geometry.setCoords(coords);
           feature.label = l10n.displayName(d.geojson.properties);
+          d.overture = true;
+          d.__datasetid__ = dataset.id;
           feature.setData(dataID, d);
         }
 
