@@ -1694,6 +1694,9 @@ a.hide-toggle {
     width: 20px;
     margin-top: 0;
 }
+.form-field-input-check > input[type="checkbox"]:indeterminate {
+    accent-color: #aaa;
+}
 .form-field-input-check > span {
     flex: 1 1 auto;
 }
