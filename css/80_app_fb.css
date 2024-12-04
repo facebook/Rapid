@@ -355,6 +355,10 @@ button.rapid-features.layer-off use {
   padding: 15px;
 }
 
+.overture-inspector img.wordmark-overture {
+  width:100%;
+}
+
 /* For things that should stack in rows */
 .rapid-stack {
   display: flex;
