@@ -56,7 +56,7 @@ export { uiPresetIcon } from './preset_icon.js';
 export { uiPresetList } from './preset_list.js';
 export { UiProjectLinks } from './UiProjectLinks.js';
 export { uiRapidColorpicker } from './rapid_colorpicker.js';
-export { uiRapidFeatureToggleDialog } from './rapid_feature_toggle_dialog.js';
+export { UiRapidDatasetToggle } from './UiRapidDatasetToggle.js';
 export { uiRapidFirstEditDialog } from './rapid_first_edit_dialog.js';
 export { UiRapidInspector } from './UiRapidInspector.js';
 export { uiRapidPowerUserFeaturesDialog } from './rapid_poweruser_features_dialog.js';

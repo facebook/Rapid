@@ -1,6 +1,6 @@
 import { selection } from 'd3-selection';
 
-import { uiRapidFeatureToggleDialog } from '../rapid_feature_toggle_dialog.js';
+import { UiRapidDatasetToggle } from '../UiRapidDatasetToggle.js';
 import { uiRapidPowerUserFeaturesDialog } from '../rapid_poweruser_features_dialog.js';
 import { uiTooltip } from '../tooltip.js';
 import { utilCmd } from '../../util/cmd.js';
@@ -26,7 +26,7 @@ export class UiRapidTool {
     const urlhash = context.systems.urlhash;
 
     // Create child components
-    this.RapidDialog = uiRapidFeatureToggleDialog(context);
+    this.RapidModal = new UiRapidDatasetToggle(context);
     this.PoweruserDialog = uiRapidPowerUserFeaturesDialog(context);
     this.RapidTooltip = uiTooltip(context);
     this.PoweruserTooltip = uiTooltip(context);
@@ -96,7 +96,7 @@ export class UiRapidTool {
 
     // Rapid Button
     let $rapidButton = $joined.selectAll('button.rapid-features')
-      .data([this.RapidDialog]);
+      .data([this.RapidModal.show]);
 
     // enter
     let $$rapidButton = $rapidButton.enter()

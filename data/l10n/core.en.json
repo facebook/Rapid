@@ -1377,6 +1377,9 @@
     },
     "rapid_feature_inspector": {
       "prompt": "How would you like to proceed with this selected feature?",
+      "notice": {
+        "open_data": "This dataset is comprised of open data. See our {license} for more details."
+      },
       "tags": "Tags",
       "option_accept": {
         "label": "Add This Feature",
@@ -1412,6 +1415,10 @@
           "label": "Overture Places",
           "license_markdown": "[license](https://docs.overturemaps.org/attribution/#places)"
         }
+      },
+      "omdFootways": {
+        "label": "Open Data Footways",
+        "license_markdown": "[license](https://rapideditor.org/doc/license/MapWithAILicense.pdf)"
       },
       "esri": {
         "title": "ArcGIS Datasets",

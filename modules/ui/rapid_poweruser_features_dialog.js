@@ -144,7 +144,7 @@ export function uiRapidPowerUserFeaturesDialog(context) {
     buttonsEnter
       .append('button')
       .attr('class', 'button ok-button action')
-      .on('click', () => _modalSelection.remove())
+      .on('click', () => _modalSelection.close())
       .text(l10n.t('confirm.okay'));
   }
 
