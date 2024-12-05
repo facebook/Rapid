@@ -208,6 +208,9 @@ input.disabled {
 }
 
 input[type="checkbox"],
+input[type="checkbox"]:indeterminate {
+    accent-color: #aaa;
+}
 input[type="radio"] {
   width: 14px;
   height: 14px;
@@ -1693,9 +1696,6 @@ a.hide-toggle {
     flex: 0 1 auto;
     width: 20px;
     margin-top: 0;
-}
-.form-field-input-check > input[type="checkbox"]:indeterminate {
-    accent-color: #aaa;
 }
 .form-field-input-check > span {
     flex: 1 1 auto;
