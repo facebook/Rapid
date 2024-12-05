@@ -264,8 +264,7 @@ button.rapid-features.layer-off use {
   border-radius: 0 0 5px 5px;
   border: 1px transparent;
 }
-.rapid-inspector .tag-bag, 
-.overture-inspector .property-bag {
+.rapid-inspector .tag-bag {
   display: flex;
   flex-flow: row wrap;
 }
@@ -285,6 +284,11 @@ button.rapid-features.layer-off use {
   font-weight: 300;
   margin: 0 3px;
 }
+
+.overture-inspector .property-info .property-entry {
+  flex-flow: row wrap;
+}
+
 .rapid-inspector .tag-key,
 .rapid-inspector .tag-value,
 .overture-inspector .property-key,
