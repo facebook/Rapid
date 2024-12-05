@@ -178,8 +178,8 @@ export class UiOvertureInspector {
    * @param {d3-selection} $selection - A d3-selection to a HTMLElement that this content should render itself into
    */
   renderPropertyInfo($selection) {
-    const tags = this.datum?.tags;
-    if (!tags) return;
+    const properties = this.datum?.geojson.properties;
+    if (!properties) return;
 
     const context = this.context;
     const l10n = context.systems.l10n;
@@ -192,25 +192,25 @@ export class UiOvertureInspector {
       .append('div')
       .attr('class', 'property-info');
 
-    const $$tagBag = $$propInfo
+    const $$propBag = $$propInfo
       .append('div')
-      .attr('class', 'tag-bag');
+      .attr('class', 'property-bag');
 
-    $$tagBag
+    $$propBag
       .append('div')
-      .attr('class', 'tag-heading');
+      .attr('class', 'property-heading');
 
-    for (const [k, v] of Object.entries(tags)) {
-      const $$tagEntry = $$tagBag.append('div').attr('class', 'tag-entry');
-      $$tagEntry.append('div').attr('class', 'tag-key').text(k);
-      $$tagEntry.append('div').attr('class', 'tag-value').text(v);
+    for (const [k, v] of Object.entries(properties)) {
+      const $$tagEntry = $$propBag.append('div').attr('class', 'property-entry');
+      $$tagEntry.append('div').attr('class', 'property-key').text(k);
+      $$tagEntry.append('div').attr('class', 'property-value').text(v);
     }
 
     // update
     $propInfo = $propInfo.merge($$propInfo);
 
     $propInfo.selectAll('.tag-heading')
-      .text(l10n.t('overture_feature_inspector.tags'));
+      .text(l10n.t('overture_feature_inspector.properties'));
   }
 
 
