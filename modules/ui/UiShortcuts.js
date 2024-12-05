@@ -1,4 +1,4 @@
-import { selection, select } from 'd3-selection';
+import { select } from 'd3-selection';
 import { utilArrayUniq } from '@rapid-sdk/util';
 
 import { uiIcon } from './icon.js';
@@ -38,11 +38,10 @@ export class UiShortcuts {
     this._keys = null;
 
     // Modal and data will be created when calling `show()`
-    this.Modal = null;
     this._dataShortcuts = null;
 
     // D3 selections
-    this.$parent = null;
+    this.$modal = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
@@ -54,36 +53,28 @@ export class UiShortcuts {
 
     // Setup event handlers..
     const l10n = context.systems.l10n;
-    l10n.on('localechange', this._setupKeybinding);
+    l10n.on('localechange', () => {
+      this._setupKeybinding();
+      this.render();
+    });
+
     this._setupKeybinding();
   }
 
 
   /**
    * render
-   * Accepts a parent selection, and renders the content under it.
-   * (The parent selection is required the first time, but can be inferred on subsequent renders)
-   * @param {d3-selection} $parent - A d3-selection to a HTMLElement that this component should render itself into
+   * Renders the content inside the modal.
+   * Note that most `render` functions accept a parent selection,
+   *  this one doesn't need it - `$modal` is always the parent.
    */
-  render($parent = this.$parent) {
-    if ($parent instanceof selection) {
-      this.$parent = $parent;
-    } else {
-      return;   // no parent - called too early?
-    }
-
-    // Note that this component works differently from many other ones.
-    // We'll only render if the `Modal` is already created - need to call `show()` first.
-    // Most of the below code is just appending content to the existing modal.
-    if (!this.Modal || !this._dataShortcuts) return;
+  render() {
+    // Modals are created at the time when `show()` is first called
+    if (!this.$modal || !this._dataShortcuts) return;
 
     const context = this.context;
     const l10n = context.systems.l10n;
-
-    this.Modal.select('.modal')
-      .classed('modal-shortcuts', true);
-
-    const $content = this.Modal.select('.content');
+    const $content = this.$modal.select('.content');
 
     // enter
     $content
@@ -307,26 +298,25 @@ export class UiShortcuts {
    * show
    * Shows the shortcuts modal.
    * This will create the modal, then load the shortcuts data, then render()
+   * For this kind of popup component, must first `show()` to create the modal.
    */
   show() {
-    if (!this.$parent) return;   // called too early?
-
     const context = this.context;
     const assets = context.systems.assets;
-    const $container = context.container();
-
-    const otherShowing = $container.selectAll('.shaded > div:not(.modal-shortcuts)').size();
-    if (otherShowing) return;  // some other modal is already showing
-
-    const isShowing = $container.selectAll('.shaded > div.modal-shortcuts').size();
-    if (isShowing) {  // remove any existing
-      this.hide();
-    }
+    const $container = context.container();   // $container is always the parent for a modal
 
     assets.loadAssetAsync('shortcuts')
       .then(data => {
         this._dataShortcuts = data.shortcuts;
-        this.Modal = uiModal(this.$parent);
+
+        const isShowing = $container.selectAll('.shaded').size();
+        if (isShowing) return;  // a modal is already showing
+
+        this.$modal = uiModal($container);
+
+        this.$modal.select('.modal')
+          .classed('modal-shortcuts', true);
+
         this.render();
       })
       .catch(e => {
@@ -340,9 +330,9 @@ export class UiShortcuts {
    * Hides the shortcuts modal.
    */
   hide() {
-    if (!this.Modal) return;
-    this.Modal.close();
-    this.Modal = null;
+    if (!this.$modal) return;
+    this.$modal.close();
+    this.$modal = null;
   }
 
 

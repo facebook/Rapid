@@ -476,8 +476,6 @@ button.rapid-features.layer-off use {
   font-size: 16px;
 }
 .modal.rapid-modal.modal-whatsnew .rapid-checkbox-label {
-  display: flex;
-  align-items: center;
   width: 100%;
 }
 .modal.rapid-modal.modal-whatsnew .rapid-checkbox-text {
@@ -494,23 +492,22 @@ button.rapid-features.layer-off use {
 
 /* dark scrollbars */
 .modal.rapid-modal {
-    scrollbar-width: thin;
-    scrollbar-color: #aaa #555;
+  scrollbar-width: thin;
 }
 .modal.rapid-modal ::-webkit-scrollbar {
-    width: 10px;
+  width: 10px;
 }
 .modal.rapid-modal ::-webkit-scrollbar-track {
-    background: #444;
+  background: #444;
 }
 .modal.rapid-modal ::-webkit-scrollbar-thumb {
-    background-color: #da26d3;
-    border-radius: 6px;
-    border: 0;
+  background-color: #da26d3;
+  border-radius: 6px;
+  border: 0;
 }
 .modal.rapid-modal ::-webkit-scrollbar-thumb:hover {
-    background-color: #c6d;
-    cursor: pointer;
+  background-color: #c6d;
+  cursor: pointer;
 }
 
 
@@ -622,6 +619,11 @@ button.rapid-features.layer-off use {
     flex: 1 1 auto;
     justify-content: flex-end;
     align-items: center;
+}
+
+.rapid-checkbox-label {
+  display: flex;
+  align-items: center;
 }
 
 .rapid-colorpicker-label {

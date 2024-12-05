@@ -64,21 +64,22 @@ export class UiRapidTool {
     const l10n = context.systems.l10n;
     const urlhash = context.systems.urlhash;
     const ui = context.systems.ui;
+    const $container = context.container();
 
     const isPowerUser = urlhash.getParam('poweruser') === 'true';
-    const isNarrow = context.container().selectAll('.map-toolbar.narrow').size();
+    const isNarrow = $container.selectAll('.map-toolbar.narrow').size();
     const rtl = l10n.isRTL() ? '-rtl' : '';
 
     // Localize tooltips
     this.RapidTooltip
       .placement('bottom')
-      .scrollContainer(context.container().select('.map-toolbar'))
+      .scrollContainer($container.select('.map-toolbar'))
       .title(l10n.t('shortcuts.command.toggle_rapid_data.label'))
       .shortcut(utilCmd('⇧' + l10n.t('shortcuts.command.toggle_rapid_data.key')));
 
     this.PowerUserTooltip
       .placement('bottom')
-      .scrollContainer(context.container().select('.map-toolbar'))
+      .scrollContainer($container.select('.map-toolbar'))
       .title(l10n.t('rapid_poweruser_features.heading.label'));
 
 
@@ -148,9 +149,7 @@ export class UiRapidTool {
    */
   choose(e, d) {
     if (e)  e.preventDefault();
-    if (!d) return;
-
-    this.context.container().call(d.show);
+    if (d)  d.show();
   }
 
 

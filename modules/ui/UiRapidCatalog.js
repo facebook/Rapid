@@ -1,5 +1,5 @@
 import { EventEmitter } from 'pixi.js';
-import { select, selection } from 'd3-selection';
+import { select } from 'd3-selection';
 import { Extent } from '@rapid-sdk/math';
 import { marked } from 'marked';
 
@@ -39,7 +39,6 @@ export class UiRapidCatalog extends EventEmitter {
     this.$parentModal = $parentModal;
     this.$wrap = null;
     this.$modal = null;
-    this.$content = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
@@ -62,14 +61,13 @@ export class UiRapidCatalog extends EventEmitter {
    * show
    * This shows the catalog if it isn't alreaday being shown.
    * For this kind of popup component, must first `show()` to create the modal.
-   * @param {d3-selection} $parent - A d3-selection to a HTMLElement that this component should render itself into
    */
-  show($parent) {
+  show() {
     const context = this.context;
-    const $container = context.container();
+    const $container = context.container();   // $container is always the parent for a modal
 
     // Unfortunately `uiModal` is written in a way that there can be only one at a time.
-    // So we have to roll our own modal here instead of just creating a second `uiModal`.
+    // So we need to roll our own modal here instead of just creating a second `uiModal`.
     const $shaded = $container.selectAll('.shaded');  // container for the existing modal
     if ($shaded.empty()) return;
     if ($shaded.selectAll('.modal-catalog').size()) return;  // catalog modal exists already
@@ -121,40 +119,32 @@ export class UiRapidCatalog extends EventEmitter {
 
     $$modal
       .append('div')
-      .attr('class', 'rapid-stack content');
+      .attr('class', 'content rapid-stack');
 
     // update
     this.$wrap = $wrap = $wrap.merge($$wrap);
     this.$modal = $wrap.selectAll('.modal-catalog');
-    this.$content = this.$modal.selectAll('.content');
 
     this.$modal
       .transition()
       .style('opacity', 1);
 
-    this.render($parent);
+    this.render();
   }
 
 
   /**
    * render
-   * Accepts a parent selection, and renders the content under it.
-   * (The parent selection is required the first time, but can be inferred on subsequent renders.)
-   * @param {d3-selection} $parent - A d3-selection to a HTMLElement that this component should render itself into
+   * Renders the content inside the modal.
+   * Note that most `render` functions accept a parent selection,
+   *  this one doesn't need it - `$modal` is always the parent.
    */
-  render($parent = this.$parent) {
-    if ($parent instanceof selection) {
-      this.$parent = $parent;
-    } else {
-      return;   // no parent - called too early?
-    }
+  render() {
+    if (!this.$modal) return;  // need to call `show()` first to create the modal.
 
     const context = this.context;
     const l10n = context.systems.l10n;
-
-    if (!this.$modal) return;  // need to call `show()` first to create the modal.
-
-    const $content = this.$content;
+    const $content = this.$modal.selectAll('.content');
 
     /* Header section */
     let $header = $content.selectAll('.rapid-catalog-header')
@@ -330,19 +320,22 @@ export class UiRapidCatalog extends EventEmitter {
   /**
    * renderDatasets
    * Renders datasets details into the `.rapid-catalog-datasets-section` div.
-   * @param {d3-selection} $container - A d3-selection to a HTMLElement that this component should render itself into
+   * @param {d3-selection} $selection - A d3-selection to a HTMLElement that this component should render itself into
    */
-  renderDatasets($container) {
+  renderDatasets($selection) {
+    if (!this.$modal) return;  // need to call `show()` first to create the modal.
+
     const context = this.context;
     const assets = context.systems.assets;
     const l10n = context.systems.l10n;
     const storage = context.systems.storage;
+    const $content = this.$modal.selectAll('.content');
 
     const showPreview = storage.getItem('rapid-internal-feature.previewDatasets') === 'true';
     const esri = context.services.esri;
 
-    const $status = $container.selectAll('.rapid-catalog-datasets-status');
-    const $results = $container.selectAll('.rapid-catalog-datasets');
+    const $status = $selection.selectAll('.rapid-catalog-datasets-status');
+    const $results = $selection.selectAll('.rapid-catalog-datasets');
 
     if (!esri || (Array.isArray(this._datasetInfo) && !this._datasetInfo.length)) {
       $results.classed('hide', true);
@@ -516,9 +509,10 @@ export class UiRapidCatalog extends EventEmitter {
       .classed('secondary', d => this.isDatasetAdded(d))
       .text(d => this.isDatasetAdded(d) ? l10n.t('rapid_feature_toggle.esri.remove') : l10n.t('rapid_feature_toggle.esri.add_to_map'));
 
+    // update the count
     const numShown = this._datasetInfo.filter(d => !d.filtered).length;
     const gt = (count > MAXRESULTS && numShown === MAXRESULTS) ? '>' : '';
-    this.$content.selectAll('.rapid-catalog-filter-results')
+    $content.selectAll('.rapid-catalog-filter-results')
       .text(l10n.t('rapid_feature_toggle.esri.datasets_found', { num: `${gt}${numShown}` }));
   }
 

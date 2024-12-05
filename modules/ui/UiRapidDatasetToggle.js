@@ -1,4 +1,4 @@
-import { select, selection } from 'd3-selection';
+import { select } from 'd3-selection';
 import { marked } from 'marked';
 
 import { icon } from './intro/helper.js';
@@ -43,8 +43,6 @@ export class UiRapidDatasetToggle {
     this.ColorPicker = null;
 
     // D3 selections
-    this.$parent = null;
-    this.$content = null;
     this.$modal = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
@@ -68,53 +66,45 @@ export class UiRapidDatasetToggle {
    * show
    * This shows the datataset modal if it isn't already being shown.
    * For this kind of popup component, must first `show()` to create the modal.
-   * Accepts a parent selection, and renders the content under it.
-   * @param {d3-selection} $parent - A d3-selection to a HTMLElement that this component should render itself into
    */
-  show($parent) {
+  show() {
     const context = this.context;
-    const isShowing = $parent.selectAll('.shaded').size();
+    const $container = context.container();   // $container is always the parent for a modal
 
-    if (!isShowing) {
-      this.$modal = uiModal($parent);
+    const isShowing = $container.selectAll('.shaded').size();
+    if (isShowing) return;  // a modal is already showing
 
-      this.$modal.select('.modal')
-        .attr('class', 'modal rapid-modal');
+    this.$modal = uiModal($container);
 
-      this.ColorPicker = uiRapidColorpicker(context, this.$modal)
-        .on('change', this.changeColor);
+    this.$modal.select('.modal')
+      .attr('class', 'modal rapid-modal');
 
-      this.$content = this.$modal.select('.content')
-        .append('div')
-        .attr('class', 'rapid-stack');
-    }
+    this.ColorPicker = uiRapidColorpicker(context, this.$modal)
+      .on('change', this.changeColor);
 
-    this.render($parent);
+    this.$modal.select('.content')
+      .attr('class', 'content rapid-stack');
+
+    this.render();
   }
 
 
   /**
    * render
-   * Accepts a parent selection, and renders the content under it.
-   * (The parent selection is required the first time, but can be inferred on subsequent renders.)
-   * @param {d3-selection} $parent - A d3-selection to a HTMLElement that this component should render itself into
+   * Renders the content inside the modal.
+   * Note that most `render` functions accept a parent selection,
+   *  this one doesn't need it - `$modal` is always the parent.
    */
-  render($parent = this.$parent) {
-    if ($parent instanceof selection) {
-      this.$parent = $parent;
-    } else {
-      return;   // no parent - called too early?
-    }
+  render() {
+    // Modals are created at the time when `show()` is first called
+    if (!this.$modal) return;
 
     const context = this.context;
     const l10n = context.systems.l10n;
     const scene = context.systems.gfx.scene;
     const rtl = l10n.isRTL() ? '-rtl' : '';
     const isRapidEnabled = scene.layers.get('rapid')?.enabled;
-
-    if (!this.$modal) return;  // need to call `show()` first to create the modal.
-
-    const $content = this.$content;
+    const $content = this.$modal.select('.content');
 
     /* Toggle All */
     let $toggleAll = $content.selectAll('.rapid-toggle-all')
@@ -251,9 +241,9 @@ export class UiRapidDatasetToggle {
   /**
    * renderDatasets
    * Renders the list of datasets into the `.rapid-datasets-container` div.
-   * @param {d3-selection} $container - A d3-selection to a HTMLElement that this component should render itself into
+   * @param {d3-selection} $selection - A d3-selection to a HTMLElement that this component should render itself into
    */
-  renderDatasets($container) {
+  renderDatasets($selection) {
     const context = this.context;
     const l10n = context.systems.l10n;
     const map = context.systems.map;
@@ -266,7 +256,7 @@ export class UiRapidDatasetToggle {
     const datasets = [...rapid.datasets.values()]
       .filter(d => d.added && (showPreview || !d.beta));    // exclude preview datasets unless user has opted into them
 
-    let $rows = $container.selectAll('.rapid-checkbox-dataset')
+    let $rows = $selection.selectAll('.rapid-checkbox-dataset')
       .data(datasets, d => d.id);
 
     // exit
@@ -482,7 +472,7 @@ export class UiRapidDatasetToggle {
 
       scene.dirtyLayers(['rapid', 'rapid-overlay', 'overture']);
       gfx.immediateRedraw();
-      this.rerender();
+      this.render();
 
       // In case a Rapid feature is already selected, reselect it to update sidebar too
       const mode = context.mode;

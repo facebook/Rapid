@@ -1,5 +1,3 @@
-import { selection } from 'd3-selection';
-
 import { uiModal } from './modal.js';
 
 
@@ -25,8 +23,6 @@ export class UiRapidPowerUserFeatures {
     ];
 
     // D3 selections
-    this.$parent = null;
-    this.$content = null;
     this.$modal = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
@@ -49,48 +45,41 @@ export class UiRapidPowerUserFeatures {
    * show
    * This shows the poweruser features modal if it isn't already being shown.
    * For this kind of popup component, must first `show()` to create the modal.
-   * Accepts a parent selection, and renders the content under it.
-   * @param {d3-selection} $parent - A d3-selection to a HTMLElement that this component should render itself into
    */
-  show($parent) {
-    const isShowing = $parent.selectAll('.shaded').size();
+  show() {
+    const context = this.context;
+    const $container = context.container();   // $container is always the parent for a modal
+
+    const isShowing = $container.selectAll('.shaded').size();
+    if (isShowing) return;  // a modal is already showing
 
     this.updateFeatureFlags();
 
-    if (!isShowing) {
-      this.$modal = uiModal($parent);
+    this.$modal = uiModal($container);
 
-      this.$modal.select('.modal')
-        .attr('class', 'modal rapid-modal');
+    this.$modal.select('.modal')
+      .attr('class', 'modal rapid-modal');
 
-      this.$content = this.$modal.select('.content')
-        .append('div')
-        .attr('class', 'rapid-stack poweruser');
-    }
+    this.$modal.select('.content')
+      .attr('class', 'content rapid-stack poweruser');
 
-    this.render($parent);
+    this.render();
   }
 
 
   /**
    * render
-   * Accepts a parent selection, and renders the content under it.
-   * (The parent selection is required the first time, but can be inferred on subsequent renders.)
-   * @param {d3-selection} $parent - A d3-selection to a HTMLElement that this component should render itself into
+   * Renders the content inside the modal.
+   * Note that most `render` functions accept a parent selection,
+   *  this one doesn't need it - `$modal` is always the parent.
    */
-  render($parent = this.$parent) {
-    if ($parent instanceof selection) {
-      this.$parent = $parent;
-    } else {
-      return;   // no parent - called too early?
-    }
+  render() {
+    // Modals are created at the time when `show()` is first called
+    if (!this.$modal) return;
 
     const context = this.context;
     const l10n = context.systems.l10n;
-
-    if (!this.$modal) return;  // need to call `show()` first to create the modal.
-
-    const $content = this.$content;
+    const $content = this.$modal.select('.content');
 
     /* Heading */
     let $heading = $content.selectAll('.modal-section-heading')
@@ -172,13 +161,13 @@ export class UiRapidPowerUserFeatures {
   /**
    * renderFeatureFlags
    * Renders the list of feature flag checkboxes into the `.rapid-features-container` div.
-   * @param {d3-selection} $container - A d3-selection to a HTMLElement that this component should render itself into
+   * @param {d3-selection} $selection - A d3-selection to a HTMLElement that this component should render itself into
    */
-  renderFeatures($container) {
+  renderFeatures($selection) {
     const context = this.context;
     const l10n = context.systems.l10n;
 
-    let $rows = $container.selectAll('.rapid-checkbox-feature')
+    let $rows = $selection.selectAll('.rapid-checkbox-feature')
       .data(this.featureFlags, d => d);
 
     // enter

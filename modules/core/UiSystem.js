@@ -228,7 +228,7 @@ export class UiSystem extends AbstractSystem {
    * render
    * Renders the Rapid user interface into the main container.
    * Note that most `render` functions accept a parent selection,
-   *  this is the only one that doesn't need it - `$container` is the parent.
+   *  this one doesn't need it - `$container` is always the parent.
    */
   render() {
     const context = this.context;
@@ -241,8 +241,7 @@ export class UiSystem extends AbstractSystem {
       .attr('dir', l10n.textDirection())
       .call(this.Fullscreen.render)
       .call(this.Defs.render)
-      .call(this.Sidebar.render)
-      .call(this.Shortcuts.render);
+      .call(this.Sidebar.render);
 
     // .main-content
     // Contains the map and everything floating above it, such as toolbars, etc.
