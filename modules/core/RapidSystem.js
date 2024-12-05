@@ -120,7 +120,7 @@ export class RapidSystem extends AbstractSystem {
           beta: false,
           added: true,         // whether it should appear in the list
           enabled: false,      // whether the user has checked it on
-          conflated: true,
+          conflated: false,
           service: 'overture',
           color: '#00ffff',
           dataUsed: ['overture', 'Overture Places'],
