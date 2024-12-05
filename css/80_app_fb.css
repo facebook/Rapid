@@ -273,8 +273,7 @@ button.rapid-features.layer-off use {
   margin-right: 5px;
   padding-left: 3px;
 }
-.rapid-inspector .tag-info .tag-entry,
-.overture-inspector .property-info .property-entry {
+.rapid-inspector .tag-info .tag-entry {
   display: flex;
   flex: 0 1 auto;
 
@@ -286,16 +285,28 @@ button.rapid-features.layer-off use {
 }
 
 .overture-inspector .property-info .property-entry {
+  display: flex;
   flex-flow: row wrap;
+  border-radius: 5px;
+  font-size: smaller;
+  font-weight: 300;
+  margin: 0 3px;
 }
 
 .rapid-inspector .tag-key,
 .rapid-inspector .tag-value,
-.overture-inspector .property-key,
-.overture-inspector .property-value {
+.overture-inspector .property-key {
   flex: 0 1 auto;
   padding: 0px 3px;
 }
+
+.overture-inspector .property-value {
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  margin: 0 3px;
+  padding: 0 3px;
+}
+
 .rapid-inspector .tag-key, 
 .overture-inspector .property-key {
   font-weight: bold;
