@@ -256,22 +256,26 @@ button.rapid-features.layer-off use {
   font-size: 13px;
 }
 
-.rapid-inspector .tag-info {
+.rapid-inspector .tag-info,
+.overture-inspector .property-info {
   padding: 7px;
   background: #444;
   color: #ddd;
   border-radius: 0 0 5px 5px;
   border: 1px transparent;
 }
-.rapid-inspector .tag-bag {
+.rapid-inspector .tag-bag, 
+.overture-inspector .property-bag {
   display: flex;
   flex-flow: row wrap;
 }
-.rapid-inspector .tag-heading {
+.rapid-inspector .tag-heading,
+.overture-inspector .property-heading {
   margin-right: 5px;
   padding-left: 3px;
 }
-.rapid-inspector .tag-info .tag-entry {
+.rapid-inspector .tag-info .tag-entry,
+.overture-inspector .property-info .property-entry {
   display: flex;
   flex: 0 1 auto;
 
@@ -282,11 +286,14 @@ button.rapid-features.layer-off use {
   margin: 0 3px;
 }
 .rapid-inspector .tag-key,
-.rapid-inspector .tag-value {
+.rapid-inspector .tag-value,
+.overture-inspector .property-key,
+.overture-inspector .property-value {
   flex: 0 1 auto;
   padding: 0px 3px;
 }
-.rapid-inspector .tag-key {
+.rapid-inspector .tag-key, 
+.overture-inspector .property-key {
   font-weight: bold;
   font-size: unset;
 }
