@@ -89,7 +89,7 @@ export class OvertureService extends AbstractSystem {
     // just this one for now
     const places = new RapidDataset(this.context, {
       id: 'overture-places',
-      conflated: true,
+      conflated: false,
       service: 'overture',
       categories: new Set(['overture', 'places', 'featured']),
       color: '#00ffff',

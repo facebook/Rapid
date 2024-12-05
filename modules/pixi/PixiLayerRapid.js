@@ -273,6 +273,8 @@ export class PixiLayerRapid extends AbstractLayer {
 
       // Just support points (for now)
       for (const entity of entities) {
+          entity.overture = true;
+          entity.__datasetid__ = datasetID;
           data.points.push(entity);
       }
     }
