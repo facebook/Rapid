@@ -167,9 +167,9 @@ export class PixiLayerRapid extends AbstractLayer {
 //this._uniforms.u_time = frame/10;
 
     for (const dataset of rapid.datasets.values()) {
-      if (dataset.service !== 'overture') {
+      // if (dataset.service !== 'overture') {
         this.renderDataset(dataset, frame, viewport, zoom);
-      }
+      // }
     }
   }
 
@@ -201,9 +201,14 @@ export class PixiLayerRapid extends AbstractLayer {
       useConflation = false;
     }
 
-    // Adjust the dataset id for whether we want the data conflated or not.
+    // Adjust the dataset id for whether we want the data conflated or not
     const datasetID = dataset.id + (useConflation ? '-conflated' : '');
-    const dsGraph = service.graph(datasetID);
+
+    // Overture data isn't editable, nor conflatable... yet.
+    let dsGraph = null;
+    if (dataset.service !== 'overture') {
+       dsGraph = service.graph(datasetID);
+    }
 
     // Filter out features that have already been accepted or ignored by the user.
     function isAcceptedOrIgnored(entity) {
@@ -258,6 +263,17 @@ export class PixiLayerRapid extends AbstractLayer {
         } else if (geom === 'area') {
           data.polygons.push(entity);
         }
+      }
+    } else if (dataset.service === 'overture') {
+
+      if (zoom >= 16) {  // avoid firing off too many API requests
+        service.loadTiles(datasetID);  // fetch more
+      }
+      const entities = service.getData(datasetID);
+
+      // Just support points (for now)
+      for (const entity of entities) {
+          data.points.push(entity);
       }
     }
 
@@ -419,7 +435,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
-        feature.geometry.setCoords(entity.loc);
+        feature.geometry.setCoords(entity.loc || entity.geojson.geometry.coordinates);
         feature.parentContainer = parentContainer;
         feature.rapidFeature = true;
         feature.setData(entity.id, entity);
@@ -429,12 +445,19 @@ export class PixiLayerRapid extends AbstractLayer {
 
       if (feature.dirty) {
         feature.style = pointStyle;
-        feature.label = l10n.displayName(entity.tags);
-        // experiment: label addresses
-        const housenumber = entity.tags['addr:housenumber'];
-        if (!feature.label && housenumber) {
-          feature.label = housenumber;
+
+        if (entity.geojson){
+          feature.label = entity.geojson.properties['@name'];
+        } else {
+          feature.label = l10n.displayName(entity.tags);
+
+          // experiment: label addresses
+          const housenumber = entity.tags['addr:housenumber'];
+          if (!feature.label && housenumber) {
+            feature.label = housenumber;
+          }
         }
+
         feature.update(viewport, zoom);
       }
 
