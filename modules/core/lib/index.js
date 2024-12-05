@@ -15,5 +15,6 @@ export { Field } from './Field.js';
 export { Graph } from './Graph.js';
 export { Preset } from './Preset.js';
 export { Tree } from './Tree.js';
+export { RapidDataset } from './RapidDataset.js';
 export { ValidationFix } from './ValidationFix.js';
 export { ValidationIssue } from './ValidationIssue.js';

@@ -2,6 +2,7 @@ import { gpx } from '@tmcw/togeojson';
 import { Extent } from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
+import { RapidDataset } from './lib/RapidDataset.js';
 
 const RAPID_MAGENTA = '#da26d3';
 const RAPID_COLORS = [
@@ -35,12 +36,14 @@ export class RapidSystem extends AbstractSystem {
     this.id = 'rapid';
     this.dependencies = new Set(['editor', 'l10n', 'map', 'urlhash']);
 
+    this.datasets = new Map();  // Map<datasetID, RapidDataset> - currently "added" datasets
+    this.catalog = new Map();   // Map<datasetID, RapidDataset> - all the datasets we know about
+
     // Watch edit history to keep track of which features have been accepted by the user.
     // These features will be filtered out when drawing
     this.acceptIDs = new Set();
     this.ignoreIDs = new Set();
 
-    this._datasets = new Map();   // Map(datasetID -> dataset)
     this._taskExtent = null;
     this._isTaskBoundsRect = null;
     this._hadPoweruser = false;   // true if the user had poweruser mode at any point in their editing
@@ -85,7 +88,7 @@ export class RapidSystem extends AbstractSystem {
         urlhash.on('hashchange', this._hashchange);
         editor.on('stablechange', this._stablechange);
 
-        this._datasets.set('fbRoads', {
+        const fbRoads = new RapidDataset(context, {
           id: 'fbRoads',
           beta: false,
           added: true,         // whether it should appear in the list
@@ -94,13 +97,11 @@ export class RapidSystem extends AbstractSystem {
           service: 'mapwithai',
           color: RAPID_MAGENTA,
           dataUsed: ['mapwithai', 'Facebook Roads'],
-          label: l10n.t('rapid_feature_toggle.fbRoads.label'),
-          labelStringID: 'rapid_feature_toggle.fbRoads.label',
-          license_markdown: l10n.t('rapid_feature_toggle.fbRoads.license_markdown'),
-          licenseStringID: 'rapid_feature_toggle.fbRoads.license_markdown'
+          licenseUrl: 'https://rapideditor.org/doc/license/MapWithAILicense.pdf',
+          labelStringID: 'rapid_feature_toggle.fbRoads.label'
         });
 
-        this._datasets.set('msBuildings', {
+        const msBuildings = new RapidDataset(context, {
           id: 'msBuildings',
           beta: false,
           added: true,         // whether it should appear in the list
@@ -109,13 +110,11 @@ export class RapidSystem extends AbstractSystem {
           service: 'mapwithai',
           color: RAPID_MAGENTA,
           dataUsed: ['mapwithai', 'Microsoft Buildings'],
-          label: l10n.t('rapid_feature_toggle.msBuildings.label'),
-          labelStringID: 'rapid_feature_toggle.msBuildings.label',
-          license_markdown: l10n.t('rapid_feature_toggle.msBuildings.license_markdown'),
-          licenseStringID: 'rapid_feature_toggle.msBuildings.license_markdown'
+          licenseUrl: 'https://github.com/microsoft/USBuildingFootprints/blob/master/LICENSE-DATA',
+          labelStringID: 'rapid_feature_toggle.msBuildings.label'
         });
 
-        this._datasets.set('overture-places', {
+        const places = new RapidDataset(context, {
           id: 'overture-places',
           beta: false,
           added: true,         // whether it should appear in the list
@@ -124,31 +123,35 @@ export class RapidSystem extends AbstractSystem {
           service: 'overture',
           color: '#00ffff',
           dataUsed: ['overture', 'Overture Places'],
-          label: l10n.t('rapid_feature_toggle.overture.places.label'),
-          labelStringID: 'rapid_feature_toggle.overture.places.label',
-          license_markdown: l10n.t('rapid_feature_toggle.overture.places.license_markdown'),
-          licenseStringID: 'rapid_feature_toggle.overture.places.license_markdown'
+          licenseUrl: 'https://docs.overturemaps.org/attribution/#places',
+          labelStringID: 'rapid_feature_toggle.overture.places.label'
         });
 
-       this._datasets.set('omdFootways', {
-         id: 'omdFootways',
-         beta: false,
-         added: true,         // whether it should appear in the list
-         enabled: false,      // whether the user has checked it on
-         conflated: true,
-         service: 'mapwithai',
-         overlay: {
-           url: 'https://external.xx.fbcdn.net/maps/vtp/rapid_overlay_footways/1/{z}/{x}/{y}/',
-           minZoom: 1,
-           maxZoom: 15,
-         },
-         tags: 'opendata',
-         color: RAPID_MAGENTA,
-         dataUsed: ['mapwithai', 'Open Footways'],
-         label: l10n.t('rapid_feature_toggle.omdFootways.label'),
-         labelStringID: 'rapid_feature_toggle.omdFootways.label',
-         license_markdown: l10n.t('rapid_feature_toggle.omdFootways.license_markdown'),
-         licenseStringID: 'rapid_feature_toggle.omdFootways.license_markdown'});
+        const footways = new RapidDataset(context, {
+          id: 'omdFootways',
+          beta: false,
+          added: true,         // whether it should appear in the list
+          enabled: false,      // whether the user has checked it on
+          conflated: true,
+          service: 'mapwithai',
+          overlay: {
+            url: 'https://external.xx.fbcdn.net/maps/vtp/rapid_overlay_footways/1/{z}/{x}/{y}/',
+            minZoom: 1,
+            maxZoom: 15,
+          },
+          tags: 'opendata',
+          color: RAPID_MAGENTA,
+          dataUsed: ['mapwithai', 'Open Footways'],
+          licenseUrl: 'https://rapideditor.org/doc/license/MapWithAILicense.pdf',
+          labelStringID: 'rapid_feature_toggle.omdFootways.label'
+        });
+
+        // by default add these ones
+        for (const ds of [fbRoads, msBuildings, places, footways]) {
+          ds.added = true;
+          this.datasets.set(ds.id, ds);
+        }
+
       });
   }
 
@@ -178,10 +181,6 @@ export class RapidSystem extends AbstractSystem {
 
   get colors() {
     return RAPID_COLORS;
-  }
-
-  get datasets() {
-    return this._datasets;
   }
 
   get taskExtent() {
@@ -316,7 +315,7 @@ export class RapidSystem extends AbstractSystem {
       }
 
       // Update all known datasets
-      for (const [datasetID, dataset] of this._datasets) {
+      for (const [datasetID, dataset] of this.datasets) {
         if (toEnable.has(datasetID)) {
           dataset.enabled = true;
           toEnable.delete(datasetID);  // delete marks it as done
@@ -328,26 +327,25 @@ export class RapidSystem extends AbstractSystem {
 
 
     // If there are remaining datasets to enable, try to load them from Esri.
-    const esri = this.context.services.esri;
+    const context = this.context;
+    const esri = context.services.esri;
     if (!esri || !toEnable.size) return;
 
     esri.startAsync()
       .then(() => esri.loadDatasetsAsync())
       .then(results => {
-        const l10n = this.context.systems.l10n;
-
         for (const datasetID of toEnable) {
           const d = results[datasetID];
           if (!d) continue;  // dataset with requested id not found, fail silently
 
-          // *** Code here is copied from `rapid_view_manage_datasets.js` `toggleDataset()` ***
+          // *** Code here is copied from `UiRapidCatalog.js` `toggleDataset()` ***
           esri.loadLayerAsync(d.id);   // start fetching layer info (the mapping between attributes and tags)
 
           const isBeta = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/preview');
           const isBuildings = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/buildings');
-          const nextColor = this._datasets.size % RAPID_COLORS.length;
+          const nextColor = this.datasets.size % RAPID_COLORS.length;
 
-          const dataset = {
+          const dataset = new RapidDataset(context, {
             id: d.id,
             beta: isBeta,
             added: true,       // whether it should appear in the list
@@ -357,9 +355,8 @@ export class RapidSystem extends AbstractSystem {
             color: RAPID_COLORS[nextColor],
             dataUsed: ['esri', esri.getDataUsed(d.title)],
             label: d.title,
-            license_markdown: l10n.t('rapid_feature_toggle.esri.license_markdown'),
-            licenseStringID: 'rapid_feature_toggle.esri.license_markdown'
-          };
+            licenseUrl: 'https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets#License'
+          });
 
           if (d.extent) {
             dataset.extent = new Extent(d.extent[0], d.extent[1]);
@@ -371,7 +368,7 @@ export class RapidSystem extends AbstractSystem {
             dataset.service = 'mapwithai';
           }
 
-          this._datasets.set(d.id, dataset);  // add it
+          this.datasets.set(dataset.id, dataset);  // add it
         }
       });
   }

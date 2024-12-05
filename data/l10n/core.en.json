@@ -1378,7 +1378,7 @@
     "rapid_feature_inspector": {
       "prompt": "How would you like to proceed with this selected feature?",
       "notice": {
-        "open_data": "This dataset is comprised of open data. See our {license} for more details."
+        "open_data": "This dataset is comprised of open data. See our [license]({url}) for more details."
       },
       "tags": "Tags",
       "option_accept": {
@@ -1398,27 +1398,24 @@
     },
     "rapid_feature_license": "Facebook's Map With AI License",
     "rapid_feature_toggle": {
+      "license": "License",
       "toggle_all": "Toggle all {rapidicon} features",
       "view_manage_datasets": "Add/Manage Datasets",
       "center_map": "Center map here",
       "worldwide": "Worldwide",
       "fbRoads": {
-        "label": "Facebook Roads",
-        "license_markdown": "[license](https://rapideditor.org/doc/license/MapWithAILicense.pdf)"
+        "label": "Facebook Roads"
       },
       "msBuildings": {
-        "label": "Microsoft Buildings",
-        "license_markdown": "[license](https://github.com/microsoft/USBuildingFootprints/blob/master/LICENSE-DATA)"
+        "label": "Microsoft Buildings"
       },
       "overture": {
         "places": {
-          "label": "Overture Places",
-          "license_markdown": "[license](https://docs.overturemaps.org/attribution/#places)"
+          "label": "Overture Places"
         }
       },
       "omdFootways": {
-        "label": "Open Data Footways",
-        "license_markdown": "[license](https://rapideditor.org/doc/license/MapWithAILicense.pdf)"
+        "label": "Open Data Footways"
       },
       "esri": {
         "title": "ArcGIS Datasets",
@@ -1432,8 +1429,7 @@
         "no_datasets": "No datasets available.",
         "remove": "Remove",
         "add_to_map": "Add Dataset",
-        "more_info": "More Info",
-        "license_markdown": "[license](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets#License)"
+        "more_info": "More Info"
       }
     },
     "rapid_poweruser_features": {

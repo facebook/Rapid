@@ -1,5 +1,4 @@
 import { select } from 'd3-selection';
-import { marked } from 'marked';
 
 import { icon } from './intro/helper.js';
 import { uiIcon } from './icon.js';
@@ -275,44 +274,36 @@ export class UiRapidDatasetToggle {
         const $$row = select(nodes[i]);
 
         // line1: name and details
-        const $$label = $$row
+        const $$line1 = $$row
           .append('div')
           .attr('class', 'rapid-feature-label-container');
 
-        $$label
+        $$line1
           .append('div')
           .attr('class', 'rapid-feature-label');
 
         if (d.beta) {
-          $$label
+          $$line1
             .append('div')
             .attr('class', 'rapid-feature-label-beta beta');
         }
 
         if (d.description) {
-          $$label
+          $$line1
             .append('div')
             .attr('class', 'rapid-feature-label-divider');
 
-          $$label
+          $$line1
             .append('div')
             .attr('class', 'rapid-feature-description');
         }
 
-        if (d.license_markdown) {
-          $$label
-            .append('div')
-            .attr('class', 'rapid-feature-label-divider');
-
-          $$label
-            .append('div')
-            .attr('class', 'rapid-feature-license');
-        }
-
         // line2: dataset extent
-        $$row
+        const $$line2 = $$row
           .append('div')
-          .attr('class', 'rapid-feature-extent-container')
+          .attr('class', 'rapid-feature-extent-container');
+
+        $$line2
           .each((d, i, nodes) => {
             const $$extent = select(nodes[i]);
 
@@ -332,6 +323,27 @@ export class UiRapidDatasetToggle {
                 .attr('class', 'rapid-feature-extent-worldwide');
             }
           });
+
+        if (d.licenseUrl) {
+          $$line2
+            .append('div')
+            .attr('class', 'rapid-feature-label-divider');
+
+          const $$link = $$line2
+            .append('div')
+            .attr('class', 'rapid-feature-license')
+            .append('a')
+            .attr('class', 'rapid-feature-licence-link')
+            .attr('target', '_blank')
+            .attr('href', d.licenseUrl);
+
+          $$link
+            .append('span')
+            .attr('class', 'rapid-feature-license-link-text');
+
+          $$link
+            .call(uiIcon('#rapid-icon-out-link', 'inline'));
+        }
       });
 
     const $$inputs = $$rows
@@ -365,9 +377,7 @@ export class UiRapidDatasetToggle {
 
     // localize and style everything...
     $rows.selectAll('.rapid-feature-label')
-      .text(d => {  // Attempt to localize the dataset name, fallback to 'label' or 'id'
-        return d.labelStringID ? l10n.t(d.labelStringID) : (d.label || d.id);
-      });
+      .text(d => d.getLabel());
 
     $rows.selectAll('.rapid-feature-label-beta')
       .attr('title', l10n.t('rapid_poweruser_features.beta'));
@@ -375,14 +385,8 @@ export class UiRapidDatasetToggle {
     $rows.selectAll('.rapid-feature-description')
       .text(d => d.description);
 
-    $rows.selectAll('.rapid-feature-license')
-      .html(d => {  // Attempt to localize the dataset license, fallback to 'license_markdown' or nothing
-        const markdown = d.licenseStringID ? l10n.t(d.licenseStringID) : (d.license_markdown || '');
-        return marked.parse(markdown);
-      });
-
-    $rows.selectAll('.rapid-feature-license p a')
-      .attr('target', '_blank');   // make sure the markdown links go to a new page
+    $rows.selectAll('.rapid-feature-license-link-text')
+      .text(l10n.t('rapid_feature_toggle.license'));
 
     $rows.selectAll('.rapid-feature-extent-center-map')
       .text(l10n.t('rapid_feature_toggle.center_map'));

@@ -1071,16 +1071,16 @@ en:
     cancel: Cancel
   splash:
     welcome: "Welcome to {rapidicon}!"
-    text: "Rapid is a friendly but powerful editor for OpenStreetMap, a free map of the world. If this is your first time here, click the button below to start the tutorial. Anyone can be a mapper!\n\nThis is Rapid version **{version}**. For more information visit our [changelog](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new) and [issue tracker](https://github.com/facebook/Rapid/issues) on GitHub. Happy Mapping! 👍"
-    privacy_update: "*Our privacy policy has recently been updated.*"
-    privacy: "By using this software, you agree to do so in accordance with the [Rapid privacy policy](https://github.com/facebook/Rapid/blob/main/PRIVACY.md)."
+    text: "Rapid is a friendly but powerful editor for OpenStreetMap, a free map of the world. If this is your first time here, click the button below to start the tutorial. Anyone can be a mapper!\n\nThis is Rapid version **{version}**. For more information visit our [changelog](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new) and [issue tracker](https://github.com/facebook/Rapid/issues) on GitHub. Happy Mapping! 👍" # This string may contain markdown
+    privacy_update: "*Our privacy policy has recently been updated.*"  # This string may contain markdown
+    privacy: "By using this software, you agree to do so in accordance with the [Rapid privacy policy](https://github.com/facebook/Rapid/blob/main/PRIVACY.md)."  # This string may contain markdown
     walkthrough: "Start the Tutorial"
     start: "Edit now"
   whats_new:
     welcome_v23: "Welcome to {rapidicon} v2.3!"
-    text_v23: "🌸 **Happy Spring 2024!**  We've added support for GeoScribble field notes, Esri Wayback Imagery, and completing MapRoulette tasks right from within Rapid. And, you can now rotate the map to make editing easier!\n\nFor all the details check out our [changelog](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new) and [issue tracker](https://github.com/facebook/Rapid/issues) on GitHub. Happy Mapping! 👍"
+    text_v23: "🌸 **Happy Spring 2024!**  We've added support for GeoScribble field notes, Esri Wayback Imagery, and completing MapRoulette tasks right from within Rapid. And, you can now rotate the map to make editing easier!\n\nFor all the details check out our [changelog](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new) and [issue tracker](https://github.com/facebook/Rapid/issues) on GitHub. Happy Mapping! 👍" # This string may contain markdown
     welcome_v24: "Welcome to {rapidicon} v2.4!"
-    text_v24: "This release improves Rapid's text localization, and makes it easier to work with street-level data like Mapillary. Now you can inspect detected objects, such as traffic signs, crosswalks, bike racks, and more!\n\nFor all the details check out our [changelog](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new) and [issue tracker](https://github.com/facebook/Rapid/issues) on GitHub. Happy Mapping! 👍"
+    text_v24: "This release improves Rapid's text localization, and makes it easier to work with street-level data like Mapillary. Now you can inspect detected objects, such as traffic signs, crosswalks, bike racks, and more!\n\nFor all the details check out our [changelog](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new) and [issue tracker](https://github.com/facebook/Rapid/issues) on GitHub. Happy Mapping! 👍" # This string may contain markdown
     dontshowagain: "Hide this screen until the next version"
   source_switch:
     dev: dev
@@ -1101,7 +1101,7 @@ en:
   rapid_feature_inspector:
     prompt: How would you like to proceed with this selected feature?
     notice:
-      open_data: This dataset is comprised of open data. See our {license} for more details.
+      open_data: This dataset is comprised of open data. See our [license]({url}) for more details.  # This string may contain markdown
     tags: Tags
     option_accept:
       label: Add This Feature
@@ -1117,26 +1117,23 @@ en:
       tooltip: Ignore this feature.
   rapid_feature_license: Facebook's Map With AI License
   rapid_feature_toggle:
+    license: License
     toggle_all: Toggle all {rapidicon} features
     view_manage_datasets: "Add/Manage Datasets"
     center_map: Center map here
     worldwide: Worldwide
     fbRoads:
       label: Facebook Roads
-      license_markdown: "[license](https://rapideditor.org/doc/license/MapWithAILicense.pdf)"
     msBuildings:
       label: Microsoft Buildings
-      license_markdown: "[license](https://github.com/microsoft/USBuildingFootprints/blob/master/LICENSE-DATA)"
     overture:
       places:
         label: Overture Places
-        license_markdown: "[license](https://docs.overturemaps.org/attribution/#places)"
     omdFootways:
       label: Open Data Footways
-      license_markdown: "[license](https://rapideditor.org/doc/license/MapWithAILicense.pdf)"
     esri:
       title: ArcGIS Datasets
-      about: "These datasets have been provided as open data by the ArcGIS user community for the purpose of improving OpenStreetMap.<br/>You can learn more by visiting [the Rapid Guide](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Esri-ArcGIS-FAQ) or [Esri/ArcGIS dataset page on the OSM Wiki](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets)."
+      about: "These datasets have been provided as open data by the ArcGIS user community for the purpose of improving OpenStreetMap.<br/>You can learn more by visiting [the Rapid Guide](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Esri-ArcGIS-FAQ) or [Esri/ArcGIS dataset page on the OSM Wiki](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets)."  # This string may contain markdown
       filter_datasets: filter datasets
       any_type: any type
       clear_filters: Clear Filters
@@ -1147,7 +1144,6 @@ en:
       remove: Remove
       add_to_map: Add Dataset
       more_info: More Info
-      license_markdown: "[license](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets#License)"
 
   rapid_poweruser_features:
     beta: Beta Feature

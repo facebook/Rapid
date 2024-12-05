@@ -3,6 +3,7 @@ import { select } from 'd3-selection';
 import { Extent } from '@rapid-sdk/math';
 import { marked } from 'marked';
 
+import { RapidDataset } from '../core/lib/RapidDataset.js';
 import { uiIcon } from './icon.js';
 import { uiCombobox} from './combobox.js';
 import { utilKeybinding, utilNoAuto } from '../util/index.js';
@@ -546,7 +547,6 @@ export class UiRapidCatalog extends EventEmitter {
   toggleDataset(e, d) {
     const context = this.context;
     const gfx = context.systems.gfx;
-    const l10n = context.systems.l10n;
     const rapid = context.systems.rapid;
     const urlhash = context.systems.urlhash;
 
@@ -569,7 +569,7 @@ export class UiRapidCatalog extends EventEmitter {
       const colors = rapid.colors;
       const colorIndex = datasets.size % colors.length;
 
-      const dataset = {
+      const dataset = new RapidDataset(context, {
         id: d.id,
         beta: isBeta,
         added: true,         // whether it should appear in the list
@@ -579,9 +579,8 @@ export class UiRapidCatalog extends EventEmitter {
         color: colors[colorIndex],
         dataUsed: ['esri', esri.getDataUsed(d.title)],
         label: d.title,
-        license_markdown: l10n.t('rapid_feature_toggle.esri.license_markdown'),
-        licenseStringID: 'rapid_feature_toggle.esri.license_markdown'
-      };
+        licenseUrl: 'https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets#License'
+      });
 
       if (d.extent) {
         dataset.extent = new Extent(d.extent[0], d.extent[1]);
@@ -599,7 +598,7 @@ export class UiRapidCatalog extends EventEmitter {
         }
       }
 
-      datasets.set(d.id, dataset);
+      datasets.set(dataset.id, dataset);
     }
 
     // update url hash

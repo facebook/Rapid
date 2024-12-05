@@ -291,10 +291,8 @@ export class UiRapidInspector {
       .style('background', color)
       .style('color', this.getBrightness(color) > 140.5 ? '#333' : '#fff');
 
-    // Attempt to localize the dataset name, fallback to 'label' or 'id'
-    const text = dataset.labelStringID ? l10n.t(dataset.labelStringID) : (dataset.label || dataset.id);
     $featureInfo.selectAll('.dataset-label')
-      .text(text);
+      .text(dataset.getLabel());
 
     $featureInfo.selectAll('.dataset-beta')
       .attr('title', l10n.t('rapid_poweruser_features.beta'));
@@ -418,9 +416,8 @@ export class UiRapidInspector {
 
     // Only display notice data for open data (for now)
     if (dataset.tags?.includes('opendata')) {
-
       let $notice = $selection.selectAll('.rapid-inspector-notice')
-      .data([0]);
+        .data([0]);
 
       // enter
       const $$notice = $notice.enter()
@@ -428,7 +425,7 @@ export class UiRapidInspector {
         .attr('class', 'rapid-inspector-notice');
 
       $$notice
-        .html(marked.parse(l10n.t('rapid_feature_inspector.notice.open_data', {license: dataset.license_markdown})));
+        .html(marked.parse(l10n.t('rapid_feature_inspector.notice.open_data', { url: dataset.licenseUrl })));
 
       // update
       $notice = $notice.merge($$notice);

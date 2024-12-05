@@ -513,112 +513,111 @@ button.rapid-features.layer-off use {
 
 /* Toggle Features */
 .modal.rapid-modal .rapid-checkbox {
-    font-size: 24px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 5px 10px;
-    width: 100%;
+  font-size: 24px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 5px 10px;
+  width: 100%;
 }
 .modal.rapid-modal .rapid-datasets-container > .rapid-checkbox:last-of-type {
-    padding-bottom: 15px;
+  padding-bottom: 15px;
 }
 
 .modal.rapid-modal .rapid-stack .rapid-datasets-container {
-    display: flex;
-    flex-flow: column;
-    width: 100%;
+  display: flex;
+  flex-flow: column;
+  width: 100%;
 }
 
 .rapid-stack .rapid-checkbox.rapid-toggle-all {
-    border-bottom: 1px solid #888a;
-    padding: 45px 10px 10px 10px;
+  border-bottom: 1px solid #888a;
+  padding: 45px 10px 10px 10px;
 }
 .rapid-stack .rapid-checkbox.rapid-manage-datasets {
-    border-top: 1px solid #888a;
-    padding: 10px;
-    cursor: pointer;
+  border-top: 1px solid #888a;
+  padding: 10px;
+  cursor: pointer;
 }
 .rapid-stack .rapid-checkbox.rapid-manage-datasets:hover {
-    color: #ddd;
-    background: #8885;
+  color: #ddd;
+  background: #8885;
 }
 
 .modal.rapid-modal .rapid-stack .rapid-feature {
-    display: flex;
-    flex-flow: column nowrap;
+  display: flex;
+  flex-flow: column nowrap;
 }
 
-.rapid-feature-label-container {
-    display: flex;
-    align-items: center;
+.rapid-feature-label,
+.rapid-feature-label-container,
+.rapid-feature-extent-container {
+  display: flex;
+  align-items: center;
 }
-.rapid-feature-label-container > div {
-    margin: 0 5px;
+.rapid-feature-label-container > div,
+.rapid-feature-extent-container > div {
+  margin: 0 5px;
 }
 .rapid-feature-extent-container {
-    font-size: 14px;
-    font-style: italic;
-    margin: -5px 5px 5px 5px;
-    color: #aaa;
+  font-size: 14px;
+  font-style: italic;
+  margin: -5px 5px 5px 5px;
+  color: #aaa;
 }
 
-.rapid-feature-label {
-    display: flex;
-    align-items: center;
-}
 .rapid-feature-label-container .rapid-feature-label-beta {
-    font-size: 14px;
+  font-size: 14px;
 }
 .rapid-feature-label > svg.icon.logo-rapid {
-    width: 4em;
-    height: 1.3em;
-    margin: -5px;
+  width: 4em;
+  height: 1.3em;
+  margin: -5px;
 }
 .rapid-feature-label-divider {
-    width: 1px;
-    height: 20px;
-    background: #888a;
+  width: 1px;
+  height: 20px;
+  background: #888a;
 }
 
 .rapid-feature-description {
-    font-size: 14px;
-    margin: 4px;
+  font-size: 14px;
+  margin: 4px;
 }
-.rapid-feature-license p {
-    font-size: 10px;
+.rapid-feature-license {
+  font-size: 12px;
 }
 .rapid-checkbox.disabled {
-    opacity: .5;
+  opacity: .5;
 }
 .rapid-feature-checkbox {
-    margin-left: auto;
+  margin-left: auto;
 }
 
 .rapid-checkbox.section-divider {
-    width: 100%;
-    height: 1px;
-    background: #888a;
-    padding: 1px;
-    align-self: center;
-    margin-top: 3px;
-    margin-bottom: 3px;
+  width: 100%;
+  height: 1px;
+  background: #888a;
+  padding: 1px;
+  align-self: center;
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
 
 .rapid-checkbox.section-divider.strong {
-    background: #fffa;
+  background: #fffa;
 }
 
 .rapid-feature-hotkey {
-    margin: 0 5px;
-    font-size: 14px;
+  margin: 0 5px;
+  font-size: 14px;
 }
 
 .rapid-checkbox-inputs {
-    display: flex;
-    flex: 1 1 auto;
-    justify-content: flex-end;
-    align-items: center;
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .rapid-checkbox-label {
@@ -627,81 +626,81 @@ button.rapid-features.layer-off use {
 }
 
 .rapid-colorpicker-label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    margin: 0 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0 15px;
 }
 .rapid-colorpicker-label:not(.disabled),
 .rapid-checkbox-label:not(.disabled) {
-    cursor: pointer;
+  cursor: pointer;
 }
 .rapid-colorpicker-label.disabled {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 .rapid-colorpicker {
-    padding: 2px;
-    border: none;
-    background: #fff;
-    border-radius: 6px;
-    width: 36px;
-    height: 36px;
+  padding: 2px;
+  border: none;
+  background: #fff;
+  border-radius: 6px;
+  width: 36px;
+  height: 36px;
 }
 .rapid-colorpicker-label:not(.disabled):hover {
-    opacity: 0.9;
+  opacity: 0.9;
 }
 
 .rapid-colorpicker-fill {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    border-radius: 4px;
-    width: 32px;
-    height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
 }
 .rapid-colorpicker-fill .icon {
-    pointer-events: none;
+  pointer-events: none;
 }
 
 /* since checkboxes can't be styled, we'll
 hide this one and style something on top of it.  */
 .rapid-checkbox-label input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
 }
 
 .rapid-checkbox-label .rapid-checkbox-custom {
-    height: 36px;
-    width: 36px;
-    background-color: transparent;
-    border-radius: 5px;
-    border: 2px solid #fff;
+  height: 36px;
+  width: 36px;
+  background-color: transparent;
+  border-radius: 5px;
+  border: 2px solid #fff;
 }
 
 .rapid-checkbox-label .rapid-checkbox-custom::after {
-    content: "";
-    height: 0px;
-    width: 0px;
+  content: "";
+  height: 0px;
+  width: 0px;
 }
 
 .rapid-checkbox-label input:checked ~ .rapid-checkbox-custom::after {
-    content: "";
-    display: block;
-    padding: 2px;
-    border-radius: 0;
-    border: solid #da26d3;
-    background-color: transparent;
-    border-width: 0 4px 4px 0;
-    transform: rotate(45deg);
-    opacity: 1;
-    margin: 3px 9px;
-    height: 12px;
-    width: 6px;
+  content: "";
+  display: block;
+  padding: 2px;
+  border-radius: 0;
+  border: solid #da26d3;
+  background-color: transparent;
+  border-width: 0 4px 4px 0;
+  transform: rotate(45deg);
+  opacity: 1;
+  margin: 3px 9px;
+  height: 12px;
+  width: 6px;
 }
 
 
