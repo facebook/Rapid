@@ -196,14 +196,46 @@ export class UiOvertureInspector {
       .append('div')
       .attr('class', 'property-bag');
 
-    $$propBag
+    
+
+      //Overture properties can come to us as strings, JSON arrays, or JSON objects. Handle all three!
+    for (const [k, v] of Object.entries(properties)) {
+      const $$propHeading = $$propBag
       .append('div')
       .attr('class', 'property-heading');
 
-    for (const [k, v] of Object.entries(properties)) {
       const $$tagEntry = $$propBag.append('div').attr('class', 'property-entry');
-      $$tagEntry.append('div').attr('class', 'property-key').text(k);
-      $$tagEntry.append('div').attr('class', 'property-value').text(v);
+
+      if (this._hasJsonStructure(v)) {
+        $$propHeading.text(k);
+        // $$tagEntry.append('div').attr('class', 'property-key').text(k);
+
+        const parsedJson = JSON.parse(v);
+        // Object processing
+        if (!Array.isArray(parsedJson)) {
+          $$propHeading.text(k);
+          for (const [k1, v1] of Object.entries(parsedJson)) {
+            $$tagEntry.append('div').attr('class', 'property-value').text(k1 + ':' + v1);
+          }
+
+          //Array processing
+        } else {
+          for (const entry of parsedJson) {
+
+            if ( entry instanceof Object ) {
+              for (const [k1,v1] of Object.entries(entry)){
+                $$tagEntry.append('div').attr('class', 'property-value').text(k1 + ':' + v1);
+              }
+            } else {
+              $$tagEntry.append('div').attr('class', 'property-value').text(entry);
+            }
+          }
+        }
+      } else {
+        //String handling- just make a key/value pair.
+        $$propHeading.text(k);
+        $$tagEntry.append('div').attr('class', 'property-value').text(v);
+      }
     }
 
     // update
@@ -213,7 +245,20 @@ export class UiOvertureInspector {
       .text(l10n.t('overture_feature_inspector.properties'));
   }
 
-
+  /**
+   * _hasJsonStructure is used to test the values we receive from the Overture data, which may be strings, Json arrays, or Json objects.
+   */
+  _hasJsonStructure(str) {
+    if (typeof str !== 'string') return false;
+    try {
+        const result = JSON.parse(str);
+        const type = Object.prototype.toString.call(result);
+        return type === '[object Object]'
+            || type === '[object Array]';
+    } catch (err) {
+        return false;
+    }
+}
 
   /**
    * renderNotice
