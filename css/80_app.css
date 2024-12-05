@@ -5438,6 +5438,50 @@ li:first-of-type .badge .tooltip .popover-arrow {
 }
 
 
+/* MapRoulette Context Menu
+------------------------------------------------------- */
+.maproulette-menu {
+    position: absolute;
+    z-index: 1000; /* Ensure the menu is above other elements */
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 4px;
+    border: 1px solid #ccc; /* Add a border for visibility */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add a shadow for depth */
+    /* padding is set in maproulette_menu.js */
+}
+
+.maproulette-menu-item {
+    display: flex;
+    align-items: center;
+    border-radius: 0;
+    padding: 0 12px;
+    /* height is set in maproulette_menu.js */
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.maproulette-menu-item:hover {
+    background-color: #f0f0f0; /* Highlight on hover */
+}
+
+.maproulette-menu-item .label {
+    max-width: 120px;
+    text-align: initial;
+    line-height: 1.1em;
+    font-weight: bold;
+}
+
+.ideditor[dir='ltr'] .maproulette-menu-item .label {
+    margin-left: 8px;
+}
+
+.ideditor[dir='rtl'] .maproulette-menu-item .label {
+    margin-right: 8px;
+}
+
+
 /* Scrollbars
  ----------------------------------------------------- */
 ::-webkit-scrollbar {

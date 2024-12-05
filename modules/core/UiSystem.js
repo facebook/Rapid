@@ -6,7 +6,7 @@ import { utilDetect } from '../util/detect.js';
 
 import {
   UiApiStatus, UiDefs, uiEditMenu, uiFlash, UiFullscreen, uiIntro,
-  uiLoading, UiMapFooter, UiMapToolbar, UiOvermap,
+  uiLoading, UiMapFooter, UiMapToolbar, uiMapRouletteMenu, UiOvermap,
   uiSplash, uiRestore, UiShortcuts, UiSidebar, uiWhatsNew
 } from '../ui/index.js';
 
@@ -39,6 +39,7 @@ export class UiSystem extends AbstractSystem {
     this.AuthModal = null;
     this.Defs = null;
     this.EditMenu = null;
+    this.MapRouletteMenu = null;
     this.Flash = null;
     this.Fullscreen = null;
     this.MapFooter = null;
@@ -100,6 +101,7 @@ export class UiSystem extends AbstractSystem {
         this.AuthModal = uiLoading(context).blocking(true).message(l10n.t('loading_auth'));
         this.Defs = new UiDefs(context);
         this.EditMenu = uiEditMenu(context);
+        this.MapRouletteMenu = uiMapRouletteMenu(context);
         this.Flash = uiFlash(context);
         this.Fullscreen = new UiFullscreen(context);
         this.MapFooter = new UiMapFooter(context);
@@ -507,6 +509,30 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
    */
   closeEditMenu() {
     this.EditMenu.close();
+  }
+
+
+  // Method to show the MapRoulette context menu
+  showMapRouletteMenu(anchorPoint, triggerType) {
+    this.closeMapRouletteMenu(); // Close any existing menu
+    const context = this.context;
+    const gfx = context.systems.gfx;
+    const viewport = context.viewport;
+    this.MapRouletteMenu
+      .anchorLoc(viewport.unproject(anchorPoint))
+      .triggerType(triggerType);
+    const $overlay = select(gfx.overlay);
+    $overlay.call(this.MapRouletteMenu);
+    this._showsMapRouletteMenu = true; // Update state
+  }
+
+
+  /*
+   * closeMapRouletteMenu
+   * Remove any existing menu
+   */
+  closeMapRouletteMenu() {
+    this.MapRouletteMenu.close();
   }
 
 
