@@ -35,6 +35,7 @@ export class SelectBehavior extends AbstractBehavior {
     this._spaceClickDisabled = false;
     this._longPressTimeout = null;
     this._showsMenu = false;
+    this._showsMapRouletteMenu = false;
 
     this.lastDown = null;
     this.lastUp = null;
@@ -66,6 +67,7 @@ export class SelectBehavior extends AbstractBehavior {
     this._spaceClickDisabled = false;
     this._longPressTimeout = null;
     this._showsMenu = false;
+    this._showsMapRouletteMenu = false;
 
     this.lastDown = null;
     this.lastUp = null;
@@ -95,6 +97,7 @@ export class SelectBehavior extends AbstractBehavior {
     this._spaceClickDisabled = false;
     this._longPressTimeout = null;
     this._showsMenu = false;
+    this._showsMapRouletteMenu = false;
 
     this.lastDown = null;
     this.lastUp = null;
@@ -176,6 +179,9 @@ export class SelectBehavior extends AbstractBehavior {
     this.context.systems.ui.closeEditMenu();
     this._showsMenu = false;
 
+    this.context.systems.ui.closeMapRouletteMenu();
+    this._showsMapRouletteMenu = false;
+
     const down = this._getEventData(e);
     this.lastDown = down;
     this.lastClick = null;
@@ -248,7 +254,14 @@ export class SelectBehavior extends AbstractBehavior {
         if (!this.context.selectedIDs().includes(down.target.dataID)) {
           this._doSelect();    // Select it first, if needed
         }
-        this._doContextMenu(); // Then show the context menu.
+        const target = down.target;
+        if (target && target.data && target.data.service === 'maproulette') {
+          const ui = this.context.systems.ui;
+          const anchorPoint = up.coord.screen;
+          ui.showMapRouletteMenu(anchorPoint, 'rightclick');
+        } else {
+          this._doContextMenu(); // Then show the context menu.
+        }
 
       } else {
         this._doSelect();
@@ -399,6 +412,7 @@ export class SelectBehavior extends AbstractBehavior {
     window.clearTimeout(this._longPressTimeout);
     this._longPressTimeout = null;
     this._showsMenu = false;
+    this._showsMapRouletteMenu = false;
   }
 
 
@@ -485,7 +499,20 @@ export class SelectBehavior extends AbstractBehavior {
     if (disableSnap) {
       eventData.target = null;
     }
-
+    const target = eventData.target;
+    const data = target?.data;
+    // Check if the clicked item is a MapRoulette task
+    if (data instanceof QAItem && data.service === 'maproulette') {
+      const anchorPoint = eventData.coord.screen;
+      if (this._showsMapRouletteMenu) {
+        ui.closeMapRouletteMenu();
+        this._showsMapRouletteMenu = false;
+      } else {
+        ui.showMapRouletteMenu(anchorPoint, 'rightclick');
+        this._showsMapRouletteMenu = true;
+      }
+      return;
+    }
     if (this._showsMenu) {   // menu is on, toggle it off
       ui.closeEditMenu();
       this._showsMenu = false;

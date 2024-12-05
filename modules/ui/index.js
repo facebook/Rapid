@@ -39,6 +39,7 @@ export { UiMapFooter } from './UiMapFooter.js';
 export { UiMinimap } from './UiMinimap.js';
 export { uiMapRouletteDetails } from './maproulette_details.js';
 export { uiMapRouletteEditor } from './maproulette_editor.js';
+export { uiMapRouletteMenu } from './maproulette_menu.js';
 export { UiMapToolbar } from './UiMapToolbar.js';
 export { uiModal } from './modal.js';
 export { uiNoteComments } from './note_comments.js';
