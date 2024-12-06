@@ -208,6 +208,9 @@ input.disabled {
 }
 
 input[type="checkbox"],
+input[type="checkbox"]:indeterminate {
+    accent-color: #aaa;
+}
 input[type="radio"] {
   width: 14px;
   height: 14px;
