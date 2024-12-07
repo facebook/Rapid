@@ -159,15 +159,20 @@ export class PixiEvents extends EventEmitter {
     const path = this.context.assetPath;
     const surface = this.gfx.surface;
 
-    const cursors = {
-      areaCursor: `url(${path}img/cursor-select-area.png), pointer`,
-      connectLineCursor: `url(${path}img/cursor-draw-connect-line.png) 9 9, crosshair`,
-      connectVertexCursor: `url(${path}img/cursor-draw-connect-vertex.png) 9 9, crosshair`,
-      lineCursor: `url(${path}img/cursor-select-line.png), pointer`,
-      pointCursor: `url(${path}img/cursor-select-point.png), pointer`,
-      selectSplitCursor: `url(${path}img/cursor-select-split.png), pointer`,
-      vertexCursor: `url(${path}img/cursor-select-vertex.png), pointer`,
+    // christmas tree https://www.vecteezy.com/png/9346313-hand-drawn-christmas-tree
+    // candy cane https://www.vecteezy.com/png/11016194-christmas-toy-lollipop-red-and-white-cane
+    // ginger bread man https://www.vecteezy.com/png/9399803-gingerbread-man-clipart-design-illustration
+    // santa https://www.vecteezy.com/png/15693545-santa-claus-christmas-cartoon-character
+
+     const cursors = {
+      connectLineCursor: `url(${path}/img/holiday_candy_cane_cursor.png) 5 5, crosshair`,
+      connectVertexCursor: `url(${path}/img/holiday_santa_claus_cursor.png) 5 5, crosshair`,
+      lineCursor:`url(${path}/img/holiday_santa_sleigh_cursor.png) 5 5, pointer`,
+      vertexCursor: `url(${path}/img/holiday_gingerbread_man_cursor.png) 5 5, pointer`,
+      pointCursor:`url(${path}/img/holiday_candy_cane_cursor.png) 5 5, pointer`,
+      areaCursor:`url(${path}/img/holiday_christmas_tree_cursor.png) 9 9, pointer`,
     };
+
 
     switch (style) {
       case 'areaCursor':
