@@ -617,20 +617,15 @@ export class GraphicsSystem extends AbstractSystem {
 
     // For testing, allow user to override the renderer preference:
     // `renderer=val` one of `webgl1`, `webgl2`/`webgl`, `webgpu`
-    let renderPreference, renderGLVersion;
+    let renderPreference = 'webgl';
+    let renderGLVersion = 2;
     switch (urlhash.initialHashParams.get('renderer')) {
       case 'webgpu':
         renderPreference = 'webgpu';
         break;
       case 'webgl1':
-        renderPreference = 'webgl';
         renderGLVersion = 1;
         break;
-      case 'webgl':
-      case 'webgl2':
-      default:
-        renderPreference = 'webgl';
-        renderGLVersion = 2;
     }
 
     // Setup PIXI defaults here..
