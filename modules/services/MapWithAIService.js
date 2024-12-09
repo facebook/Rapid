@@ -94,8 +94,10 @@ export class MapWithAIService extends AbstractSystem {
       service: 'mapwithai',
       categories: new Set(['meta', 'roads', 'featured']),
       dataUsed: ['mapwithai', 'Facebook Roads'],
+      itemUrl: 'https://github.com/facebookmicrosites/Open-Mapping-At-Facebook',
       licenseUrl: 'https://rapideditor.org/doc/license/MapWithAILicense.pdf',
-      labelStringID: 'rapid_feature_toggle.fbRoads.label'
+      labelStringID: 'rapid_feature_toggle.fbRoads.label',
+      descriptionStringID: 'rapid_feature_toggle.fbRoads.description'
     });
 
     const msBuildings = new RapidDataset(context, {
@@ -104,8 +106,10 @@ export class MapWithAIService extends AbstractSystem {
       service: 'mapwithai',
       categories: new Set(['microsoft', 'buildings', 'featured']),
       dataUsed: ['mapwithai', 'Microsoft Buildings'],
+      itemUrl: 'https://github.com/microsoft/GlobalMLBuildingFootprints',
       licenseUrl: 'https://github.com/microsoft/USBuildingFootprints/blob/master/LICENSE-DATA',
-      labelStringID: 'rapid_feature_toggle.msBuildings.label'
+      labelStringID: 'rapid_feature_toggle.msBuildings.label',
+      descriptionStringID: 'rapid_feature_toggle.msBuildings.description'
     });
 
     const omdFootways = new RapidDataset(context, {
@@ -120,8 +124,10 @@ export class MapWithAIService extends AbstractSystem {
       },
       tags: 'opendata',
       dataUsed: ['mapwithai', 'Open Footways'],
+      itemUrl: 'https://github.com/facebookmicrosites/Open-Mapping-At-Facebook',
       licenseUrl: 'https://rapideditor.org/doc/license/MapWithAILicense.pdf',
-      labelStringID: 'rapid_feature_toggle.omdFootways.label'
+      labelStringID: 'rapid_feature_toggle.omdFootways.label',
+      descriptionStringID: 'rapid_feature_toggle.omdFootways.description'
     });
 
     const introGraph = new RapidDataset(context, {
