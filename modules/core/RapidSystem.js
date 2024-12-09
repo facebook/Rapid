@@ -2,7 +2,6 @@ import { gpx } from '@tmcw/togeojson';
 import { Extent } from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
-import { RapidDataset } from './lib/RapidDataset.js';
 
 const RAPID_MAGENTA = '#da26d3';
 const RAPID_COLORS = [
@@ -19,10 +18,18 @@ const RAPID_COLORS = [
 ];
 
 
+// Convert a single value, an Array of values, or a Set of values.
+function asSet(vals) {
+  if (vals instanceof Set) return vals;
+  return new Set(vals !== undefined && [].concat(vals));
+}
+
+
 /**
  * `RapidSystem` maintains all the Rapid datasets
  *
  * Events available:
+ *  `datasetchange`   Fires when datasets are added/removed from the list
  *  `taskchanged`
  */
 export class RapidSystem extends AbstractSystem {
@@ -34,21 +41,24 @@ export class RapidSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'rapid';
-    this.dependencies = new Set(['editor', 'l10n', 'map', 'urlhash']);
+    this.dependencies = new Set(['assets', 'editor', 'l10n', 'map', 'urlhash']);
 
-    this.datasets = new Map();  // Map<datasetID, RapidDataset> - currently "added" datasets
-    this.catalog = new Map();   // Map<datasetID, RapidDataset> - all the datasets we know about
+    this.catalog = new Map();             // Map<datasetID, RapidDataset> - all the datasets we know about
+    this.categories = new Set();          // Set<string> - all the dataset 'categories' we know about
+    this._addedDatasetIDs = new Set();    // Set<datasetID> - currently "added" datasets - is it on the menu?
+    this._enabledDatasetIDs = new Set();  // Set<datasetID> - currently "enabled" datasets - is it checked?
 
     // Watch edit history to keep track of which features have been accepted by the user.
     // These features will be filtered out when drawing
-    this.acceptIDs = new Set();
-    this.ignoreIDs = new Set();
+    this.acceptIDs = new Set();    // Set<dataID>
+    this.ignoreIDs = new Set();    // Set<dataID>
 
     this._taskExtent = null;
     this._isTaskBoundsRect = null;
     this._hadPoweruser = false;   // true if the user had poweruser mode at any point in their editing
 
     this._initPromise = null;
+    this._startPromise = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._hashchange = this._hashchange.bind(this);
@@ -72,14 +82,12 @@ export class RapidSystem extends AbstractSystem {
 
     const context = this.context;
     const editor = context.systems.editor;
-    const l10n = context.systems.l10n;
     const map = context.systems.map;
     const urlhash = context.systems.urlhash;
 
     const prerequisites = Promise.all([
       editor.initAsync(),
       map.initAsync(),   // RapidSystem should listen for hashchange after MapSystem
-      l10n.initAsync(),
       urlhash.initAsync()
     ]);
 
@@ -87,72 +95,7 @@ export class RapidSystem extends AbstractSystem {
       .then(() => {
         urlhash.on('hashchange', this._hashchange);
         editor.on('stablechange', this._stablechange);
-
-        const fbRoads = new RapidDataset(context, {
-          id: 'fbRoads',
-          beta: false,
-          added: true,         // whether it should appear in the list
-          enabled: false,      // whether the user has checked it on
-          conflated: true,
-          service: 'mapwithai',
-          color: RAPID_MAGENTA,
-          dataUsed: ['mapwithai', 'Facebook Roads'],
-          licenseUrl: 'https://rapideditor.org/doc/license/MapWithAILicense.pdf',
-          labelStringID: 'rapid_feature_toggle.fbRoads.label'
-        });
-
-        const msBuildings = new RapidDataset(context, {
-          id: 'msBuildings',
-          beta: false,
-          added: true,         // whether it should appear in the list
-          enabled: false,      // whether the user has checked it on
-          conflated: true,
-          service: 'mapwithai',
-          color: RAPID_MAGENTA,
-          dataUsed: ['mapwithai', 'Microsoft Buildings'],
-          licenseUrl: 'https://github.com/microsoft/USBuildingFootprints/blob/master/LICENSE-DATA',
-          labelStringID: 'rapid_feature_toggle.msBuildings.label'
-        });
-
-        const places = new RapidDataset(context, {
-          id: 'overture-places',
-          beta: false,
-          added: true,         // whether it should appear in the list
-          enabled: false,      // whether the user has checked it on
-          conflated: true,
-          service: 'overture',
-          color: '#00ffff',
-          dataUsed: ['overture', 'Overture Places'],
-          licenseUrl: 'https://docs.overturemaps.org/attribution/#places',
-          labelStringID: 'rapid_feature_toggle.overture.places.label'
-        });
-
-        const footways = new RapidDataset(context, {
-          id: 'omdFootways',
-          beta: false,
-          added: true,         // whether it should appear in the list
-          enabled: false,      // whether the user has checked it on
-          conflated: true,
-          service: 'mapwithai',
-          overlay: {
-            url: 'https://external.xx.fbcdn.net/maps/vtp/rapid_overlay_footways/1/{z}/{x}/{y}/',
-            minZoom: 1,
-            maxZoom: 15,
-          },
-          tags: 'opendata',
-          color: RAPID_MAGENTA,
-          dataUsed: ['mapwithai', 'Open Footways'],
-          licenseUrl: 'https://rapideditor.org/doc/license/MapWithAILicense.pdf',
-          labelStringID: 'rapid_feature_toggle.omdFootways.label'
-        });
-
-        // by default add these ones
-        for (const ds of [fbRoads, msBuildings, places, footways]) {
-          ds.added = true;
-          this.datasets.set(ds.id, ds);
-        }
-
-      });
+     });
   }
 
 
@@ -162,8 +105,47 @@ export class RapidSystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
-    this._started = true;
-    return Promise.resolve();
+    if (this._startPromise) return this._startPromise;
+
+    // We wait until startAsync to create the dataset catalog because the services need to be initialized.
+    const context = this.context;
+    const urlhash = context.systems.urlhash;
+
+    const esri = context.services.esri;
+    const mapwithai = context.services.mapwithai;
+    const overture = context.services.overture;
+
+    // This code is written in a way that we can work with whatever
+    // data-providing services are installed.
+    const services = [];
+    if (esri)      services.push(esri);
+    if (mapwithai) services.push(mapwithai);
+    if (overture)  services.push(overture);
+
+    const prerequisites = Promise.all(services.map(service => service.startAsync()));
+
+    return this._startPromise = prerequisites
+      .then(() => {
+        // Gather all available datasets and categories into the dataset catalog..
+        for (const service of services) {
+          const datasets = service.getAvailableDatasets();
+          for (const dataset of datasets) {
+            this.catalog.set(dataset.id, dataset);
+            for (const category of dataset.categories) {
+              this.categories.add(category);
+            }
+          }
+        }
+
+        // Set some defaults
+        if (!urlhash.initialHashParams.has('datasets')) {
+          this._addedDatasetIDs = new Set(['fbRoads', 'msBuildings', 'overture-places', 'omdFootways']);  // on menu
+          this._enabledDatasetIDs = new Set(['fbRoads', 'msBuildings']);  // checked
+          this._datasetsChanged();
+        }
+
+        this._started = true;
+      });
   }
 
 
@@ -178,6 +160,88 @@ export class RapidSystem extends AbstractSystem {
     return Promise.resolve();
   }
 
+
+  /**
+   * addDatasets
+   * Add datasets to the menu.  (Does not set their checked 'enabled' state.)
+   * @param  {Set|Array|string}  datasetIDs - Set or Array of datasetIDs to add, or a single string datasetID
+   */
+  addDatasets(datasetIDs) {
+    for (const datasetID of asSet(datasetIDs)) {   // coax ids into a Set
+      this._addedDatasetIDs.add(datasetID);
+    }
+    this._datasetsChanged();
+  }
+
+
+  /**
+   * removeDatasets
+   * Remove datasets from the menu. (Also unchecks their 'enabled' state)
+   * @param  {Set|Array|string}  datasetIDs - Set or Array of datasetIDs to remove, or a single string datasetID
+   */
+  removeDatasets(datasetIDs) {
+    for (const datasetID of asSet(datasetIDs)) {   // coax ids into a Set
+      this._addedDatasetIDs.delete(datasetID);
+      this._enabledDatasetIDs.delete(datasetID);
+    }
+    this._datasetsChanged();
+  }
+
+
+  /**
+   * enableDatasets
+   * Checks the dataset as enabled. (Also ensures that the dataset is 'added' to the menu).
+   * @param  {Set|Array|string}  datasetIDs - Set or Array of datasetIDs to enable, or a single string datasetID
+   */
+  enableDatasets(datasetIDs) {
+    for (const datasetID of asSet(datasetIDs)) {   // coax ids into a Set
+      this._addedDatasetIDs.add(datasetID);
+      this._enabledDatasetIDs.add(datasetID);
+    }
+    this._datasetsChanged();
+  }
+
+
+  /**
+   * disableDatasets
+   * Unchecks the dataset as disabled. (Does not affect whether the dataset is 'added' to the menu)
+   * @param  {Set|Array|string}  datasetIDs - Set or Array of datasetIDs to disable, or a single string datasetID
+   */
+  disableDatasets(datasetIDs) {
+    for (const datasetID of asSet(datasetIDs)) {   // coax ids into a Set
+      this._enabledDatasetIDs.delete(datasetID);
+    }
+    this._datasetsChanged();
+  }
+
+
+  /**
+   * toggleDatasets
+   * Toggles the given datasets enabled state, does not affect any other datasets.
+   * @param  {Set|Array|string}  datasetIDs - Set or Array of datasetIDs to toggle, or a single string datasetID
+   */
+  toggleDatasets(datasetIDs) {
+    for (const datasetID of asSet(datasetIDs)) {   // coax ids into a Set
+      this._addedDatasetIDs.add(datasetID);  // it needs to be added to the menu
+      if (this._enabledDatasetIDs.has(datasetID)) {
+        this._enabledDatasetIDs.delete(datasetID);
+      } else {
+        this._enabledDatasetIDs.add(datasetID);
+      }
+    }
+    this._datasetsChanged();
+  }
+
+
+  // return just the added ones
+  get datasets() {
+    const results = new Map();
+    for (const datasetID of this._addedDatasetIDs) {
+      const dataset = this.catalog.get(datasetID);
+      results.set(datasetID, dataset);
+    }
+    return results;
+  }
 
   get colors() {
     return RAPID_COLORS;
@@ -260,7 +324,6 @@ export class RapidSystem extends AbstractSystem {
   }
 
 
-
   /**
    * _stablechange
    * This is called anytime the history changes, we recompute the accepted/ignored sets.
@@ -287,7 +350,6 @@ export class RapidSystem extends AbstractSystem {
       } else if (annotation?.type === 'rapid_ignore_feature') {
         if (annotation.entityID)  this.ignoreIDs.add(annotation.entityID);
       }
-
     }
   }
 
@@ -306,70 +368,42 @@ export class RapidSystem extends AbstractSystem {
     }
 
     // datasets
-    let toEnable = new Set();
     const newDatasets = currParams.get('datasets');
     const oldDatasets = prevParams.get('datasets');
     if (newDatasets !== oldDatasets) {
+      this._enabledDatasetIDs.clear();
       if (typeof newDatasets === 'string') {
-        toEnable = new Set(newDatasets.split(','));
+        const toEnable = newDatasets.replace(/;/g, ',').split(',').map(s => s.trim()).filter(Boolean);
+        this.enableDatasets(toEnable);
+      } else {  // all removed
+        this._datasetsChanged();
       }
+    }
+  }
 
-      // Update all known datasets
-      for (const [datasetID, dataset] of this.datasets) {
-        if (toEnable.has(datasetID)) {
-          dataset.enabled = true;
-          toEnable.delete(datasetID);  // delete marks it as done
-        } else {
-          dataset.enabled = false;
-        }
+
+  /**
+   * _datasetsChanged
+   * Handle changes in dataset state, update the urlhash, emit 'datasetchange'
+   */
+  _datasetsChanged() {
+    const context = this.context;
+    const urlhash = context.systems.urlhash;
+
+    const enabledIDs = [];
+    for (const [datasetID, dataset] of this.catalog) {
+      dataset.added = this._addedDatasetIDs.has(datasetID);
+      dataset.enabled = this._enabledDatasetIDs.has(datasetID);
+
+      if (dataset.added && dataset.enabled) {
+        enabledIDs.push(datasetID);
       }
     }
 
+    // datasets
+    urlhash.setParam('datasets', enabledIDs.length ? enabledIDs.join(',') : null);
 
-    // If there are remaining datasets to enable, try to load them from Esri.
-    const context = this.context;
-    const esri = context.services.esri;
-    if (!esri || !toEnable.size) return;
-
-    esri.startAsync()
-      .then(() => esri.loadDatasetsAsync())
-      .then(results => {
-        for (const datasetID of toEnable) {
-          const d = results[datasetID];
-          if (!d) continue;  // dataset with requested id not found, fail silently
-
-          // *** Code here is copied from `UiRapidCatalog.js` `toggleDataset()` ***
-          esri.loadLayerAsync(d.id);   // start fetching layer info (the mapping between attributes and tags)
-
-          const isBeta = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/preview');
-          const isBuildings = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/buildings');
-          const nextColor = this.datasets.size % RAPID_COLORS.length;
-
-          const dataset = new RapidDataset(context, {
-            id: d.id,
-            beta: isBeta,
-            added: true,       // whether it should appear in the list
-            enabled: true,     // whether the user has checked it on
-            conflated: false,
-            service: 'esri',
-            color: RAPID_COLORS[nextColor],
-            dataUsed: ['esri', esri.getDataUsed(d.title)],
-            label: d.title,
-            licenseUrl: 'https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets#License'
-          });
-
-          if (d.extent) {
-            dataset.extent = new Extent(d.extent[0], d.extent[1]);
-          }
-
-          // Test running building layers through MapWithAI conflation service
-          if (isBuildings) {
-            dataset.conflated = true;
-            dataset.service = 'mapwithai';
-          }
-
-          this.datasets.set(dataset.id, dataset);  // add it
-        }
-      });
+    this.emit('datasetchange');
   }
+
 }

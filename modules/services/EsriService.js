@@ -1,9 +1,9 @@
-import { select as d3_select } from 'd3-selection';
-import { Tiler } from '@rapid-sdk/math';
+import { select } from 'd3-selection';
+import { Extent, Tiler } from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 
 import { AbstractSystem } from '../core/AbstractSystem.js';
-import { Graph, Tree } from '../core/lib/index.js';
+import { Graph, Tree, RapidDataset } from '../core/lib/index.js';
 import { osmNode, osmRelation, osmWay } from '../osm/index.js';
 import { utilFetchResponse } from '../util/index.js';
 
@@ -50,7 +50,8 @@ export class EsriService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed initialization
    */
   initAsync() {
-    return this.resetAsync();
+    return this.resetAsync()
+      .then(() => this.loadDatasetsAsync());
   }
 
 
@@ -82,6 +83,49 @@ export class EsriService extends AbstractSystem {
     }
 
     return Promise.resolve();
+  }
+
+
+  /**
+   * getAvailableDatasets
+   * Called by `RapidSystem` to get the datasets that this service provides.
+   * @return {Array<RapidDataset>}  The datasets this service provides
+   */
+  getAvailableDatasets() {
+    // Convert the internal datasets into "Rapid" datasets for the catalog.
+    // We expect them to be all loaded now because `loadDatasetsAsync` is called by `initAsync`
+    //  and `getAvailableDatasets` is called by RapidSystem's `startAsync`.
+    return Object.values(this._datasets).map(d => {
+      // gather categories
+      const categories = new Set(['esri']);
+      for (const c of d.groupCategories) {
+        categories.add(c.toLowerCase().replace('/categories/', ''));
+      }
+
+      const dataset = new RapidDataset(this.context, {
+        id: d.id,
+        conflated: false,
+        service: 'esri',
+        categories: categories,
+        dataUsed: ['esri', this.getDataUsed(d.title)],
+        label: d.title,
+        description: d.snippet,
+        itemUrl: d.itemUrl,
+        licenseUrl: 'https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets#License',
+        thumbnailUrl: `${APIROOT}/items/${d.id}/info/${d.thumbnail}?w=400`
+      });
+
+      if (d.extent) {
+        dataset.extent = new Extent(d.extent[0], d.extent[1]);
+      }
+
+      // Test running building layers through MapWithAI conflation service
+      if (categories.has('buildings')) {
+        dataset.conflated = true;
+        dataset.service = 'mapwithai';
+      }
+      return dataset;
+    });
   }
 
 
@@ -313,7 +357,7 @@ export class EsriService extends AbstractSystem {
     ds.lastv = null;
 
     // cleanup the `licenseInfo` field by removing styles  (not used currently)
-    let license = d3_select(document.createElement('div'));
+    let license = select(document.createElement('div'));
     license.html(ds.licenseInfo);       // set innerHtml
     license.selectAll('*')
       .attr('style', null)

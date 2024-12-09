@@ -1,9 +1,7 @@
 import { EventEmitter } from 'pixi.js';
 import { select } from 'd3-selection';
-import { Extent } from '@rapid-sdk/math';
 import { marked } from 'marked';
 
-import { RapidDataset } from '../core/lib/RapidDataset.js';
 import { uiIcon } from './icon.js';
 import { uiCombobox} from './combobox.js';
 import { utilKeybinding, utilNoAuto } from '../util/index.js';
@@ -28,7 +26,6 @@ export class UiRapidCatalog extends EventEmitter {
     super();
     this.context = context;
 
-    this._datasetInfo = null;
     this._filterText = null;
     this._filterCategory = null;
     this._myClose = () => true;   // custom close handler
@@ -47,7 +44,6 @@ export class UiRapidCatalog extends EventEmitter {
     this.render = this.render.bind(this);
     this.rerender = (() => this.render());  // call render without argument
     this.renderDatasets = this.renderDatasets.bind(this);
-    this.isDatasetAdded = this.isDatasetAdded.bind(this);
     this.sortDatasets = this.sortDatasets.bind(this);
     this.toggleDataset = this.toggleDataset.bind(this);
     this.highlight = this.highlight.bind(this);
@@ -214,6 +210,11 @@ export class UiRapidCatalog extends EventEmitter {
         $datasets.call(this.renderDatasets);
       });
 
+    // set focus (but only on enter)
+    const inputNode = $$filterSearch.selectAll('.rapid-catalog-filter-search').node();
+    if (inputNode) inputNode.focus();
+
+
     const $$filterType = $$filter
       .append('div')
       .attr('class', 'rapid-catalog-filter-type-wrap');
@@ -306,10 +307,6 @@ export class UiRapidCatalog extends EventEmitter {
       .attr('class', 'button ok-button action')
       .on('click', this._myClose);
 
-    // set focus (but only on enter)
-    const buttonNode = $$buttons.selectAll('button').node();
-    if (buttonNode) buttonNode.focus();
-
     // update
     $buttons = $buttons.merge($$buttons);
 
@@ -327,94 +324,70 @@ export class UiRapidCatalog extends EventEmitter {
     if (!this.$modal) return;  // need to call `show()` first to create the modal.
 
     const context = this.context;
-    const assets = context.systems.assets;
     const l10n = context.systems.l10n;
+    const rapid = context.systems.rapid;
     const storage = context.systems.storage;
     const $content = this.$modal.selectAll('.content');
 
     const showPreview = storage.getItem('rapid-internal-feature.previewDatasets') === 'true';
-    const esri = context.services.esri;
 
     const $status = $selection.selectAll('.rapid-catalog-datasets-status');
     const $results = $selection.selectAll('.rapid-catalog-datasets');
 
-    if (!esri || (Array.isArray(this._datasetInfo) && !this._datasetInfo.length)) {
+    if (!rapid.catalog.size) {
       $results.classed('hide', true);
       $status.classed('hide', false).text(l10n.t('rapid_feature_toggle.esri.no_datasets'));
-      return;
-    }
-
-    if (!this._datasetInfo) {
-      $results.classed('hide', true);
-      $status.classed('hide', false)
-        .text(l10n.t('rapid_feature_toggle.esri.fetching_datasets'));
-
-      $status
-        .append('br');
-
-      $status
-        .append('img')
-        .attr('class', 'rapid-catalog-datasets-spinner')
-        .attr('src', assets.getFileURL('img/loader-black.gif'));
-
-      esri.startAsync()
-        .then(() => esri.loadDatasetsAsync())
-        .then(results => {
-          // Build set of available categories
-          let categories = new Set();
-
-          Object.values(results).forEach(d => {
-            d.groupCategories.forEach(c => {
-              categories.add(c.toLowerCase().replace('/categories/', ''));
-            });
-          });
-          if (!showPreview) categories.delete('preview');
-
-          const combodata = Array.from(categories).sort().map(c => {
-            let item = { title: c, value: c };
-            if (c === 'preview') item.display = `${c} <span class="rapid-catalog-dataset-beta beta"></span>`;
-            return item;
-          });
-          this.CategoryCombo.data(combodata);
-
-          // Exclude preview datasets unless user has opted into them
-          this._datasetInfo = Object.values(results)
-            .filter(d => showPreview || !d.groupCategories.some(category => category.toLowerCase() === '/categories/preview'));
-        })
-        .then(() => this.rerender());
-
       return;
     }
 
     $results.classed('hide', false);
     $status.classed('hide', true);
 
-    // Apply filters
-    let count = 0;
-    this._datasetInfo.forEach(d => {
-      const title = (d.title || '').toLowerCase();
-      const snippet = (d.snippet || '').toLowerCase();
+    // Update categories combo
+    // (redo it every time, in case the user toggles preview datasets on/off)
+    const categories = new Set(rapid.categories);  // make copy
+    if (!showPreview) categories.delete('preview');
 
-      if (this.isDatasetAdded(d)) {  // always show added datasets at the top of the list
+    const comboData = Array.from(categories).sort().map(c => {
+      let item = { title: c, value: c };
+      if (c === 'preview') item.display = `${c} <span class="rapid-catalog-dataset-beta beta"></span>`;
+      return item;
+    });
+
+    this.CategoryCombo.data(comboData);
+
+
+    // Gather datasets..
+    let count = 0;
+    const datasets = [...rapid.catalog.values()]
+      .filter(d => !d.hidden)
+      .sort(this.sortDatasets);
+
+    // Apply filters..
+    for (const d of datasets) {
+      const label = (d.label || '').toLowerCase();
+      const description = (d.description || '').toLowerCase();
+
+      if (d.added) {  // always show added datasets at the top of the list
         d.filtered = false;
         ++count;
-        return;
+        continue;
       }
-      if (this._filterText && title.indexOf(this._filterText) === -1 && snippet.indexOf(this._filterText) === -1) {
-        d.filtered = true;   // filterText not found anywhere in `title` or `snippet`
-        return;
+      if (this._filterText && !label.includes(this._filterText) && !description.includes(this._filterText)) {
+        d.filtered = true;   // filterText not found anywhere in `label` or `description`
+        continue;
       }
-      if (this._filterCategory && !(d.groupCategories.some(category => category.toLowerCase() === `/categories/${this._filterCategory}`))) {
-        d.filtered = true;   // filterCategory not found anywhere in `groupCategories``
-        return;
+      if (this._filterCategory && !(d.categories.has(this._filterCategory))) {
+        d.filtered = true;   // filterCategory not found anywhere in `categories``
+        continue;
       }
 
       d.filtered = (++count > MAXRESULTS);
-    });
+    }
 
-
+    // The datasets
     let $datasets = $results.selectAll('.rapid-catalog-dataset')
-      .data(this._datasetInfo, d => d.id);
+      .data(datasets, d => d.id);
 
     // exit
     $datasets.exit()
@@ -448,9 +421,8 @@ export class UiRapidCatalog extends EventEmitter {
     $$link
       .call(uiIcon('#rapid-icon-out-link', 'inline'));
 
-    const $$featured = $$labels.selectAll('.rapid-catalog-dataset-featured')
-      .data(d => d.groupCategories.filter(d => d.toLowerCase() === '/categories/featured'))
-      .enter()
+    const $$featured = $$labels
+      .filter(d => d.featured)
       .append('div')
       .attr('class', 'rapid-catalog-dataset-featured');
 
@@ -462,9 +434,8 @@ export class UiRapidCatalog extends EventEmitter {
       .append('span')
       .attr('class', 'rapid-catalog-dataset-featured-text');
 
-    $$labels.selectAll('.rapid-catalog-dataset-beta')
-      .data(d => d.groupCategories.filter(d => d.toLowerCase() === '/categories/preview'))
-      .enter()
+    $$labels
+      .filter(d => d.beta)
       .append('div')
       .attr('class', 'rapid-catalog-dataset-beta beta');
 
@@ -484,15 +455,17 @@ export class UiRapidCatalog extends EventEmitter {
     $$thumbnails
       .append('img')
       .attr('class', 'rapid-catalog-dataset-thumbnail')
-      .attr('src', d => `https://openstreetmap.maps.arcgis.com/sharing/rest/content/items/${d.id}/info/${d.thumbnail}?w=400`);
+      .classed('inverted', d => d.categories.has('esri'))  // invert colors from light->dark
+      .attr('src', d => d.thumbnailUrl);
 
     // update
-    $datasets = $datasets.merge($$datasets)
-      .sort(this.sortDatasets)
+    $datasets = $datasets.merge($$datasets);
+
+    $datasets
       .classed('hide', d => d.filtered);
 
     $datasets.selectAll('.rapid-catalog-dataset-name')
-      .html(d => this.highlight(this._filterText, d.title));
+      .html(d => this.highlight(this._filterText, d.label));
 
     $datasets.selectAll('.rapid-catalog-dataset-link-text')
       .text(l10n.t('rapid_feature_toggle.esri.more_info'));
@@ -504,14 +477,14 @@ export class UiRapidCatalog extends EventEmitter {
       .attr('title', l10n.t('rapid_poweruser_features.beta'));
 
     $datasets.selectAll('.rapid-catalog-dataset-snippet')
-      .html(d => this.highlight(this._filterText, d.snippet));
+      .html(d => this.highlight(this._filterText, d.description));
 
     $datasets.selectAll('.rapid-catalog-dataset-action')
-      .classed('secondary', d => this.isDatasetAdded(d))
-      .text(d => this.isDatasetAdded(d) ? l10n.t('rapid_feature_toggle.esri.remove') : l10n.t('rapid_feature_toggle.esri.add_to_map'));
+      .classed('secondary', d => d.added)
+      .text(d => d.added ? l10n.t('rapid_feature_toggle.esri.remove') : l10n.t('rapid_feature_toggle.esri.add_to_map'));
 
     // update the count
-    const numShown = this._datasetInfo.filter(d => !d.filtered).length;
+    const numShown = datasets.filter(d => !d.filtered).length;
     const gt = (count > MAXRESULTS && numShown === MAXRESULTS) ? '>' : '';
     $content.selectAll('.rapid-catalog-filter-results')
       .text(l10n.t('rapid_feature_toggle.esri.datasets_found', { num: `${gt}${numShown}` }));
@@ -525,105 +498,36 @@ export class UiRapidCatalog extends EventEmitter {
    * All others sort by name
    */
   sortDatasets(a, b) {
-    const aAdded = this.isDatasetAdded(a);
-    const bAdded = this.isDatasetAdded(b);
-    const aFeatured = a.groupCategories.some(d => d.toLowerCase() === '/categories/featured');
-    const bFeatured = b.groupCategories.some(d => d.toLowerCase() === '/categories/featured');
-
-    return aAdded && !bAdded ? -1
-      : bAdded && !aAdded ? 1
-      : aFeatured && !bFeatured ? -1
-      : bFeatured && !aFeatured ? 1
-      : a.title.localeCompare(b.title);
+    return a.added && !b.added ? -1
+      : b.added && !a.added ? 1
+      : a.featured && !b.featured ? -1
+      : b.featured && !a.featured ? 1
+      : a.label.localeCompare(b.label);
   }
 
 
   /**
    * toggleDataset
    * Toggles the given dataset between added/removed.
-   * @param  {Event}  e? - triggering event (if any)
-   * @param  {*}      d - bound datum (the dataset in this case)
+   * @param  {Event}         e? - triggering event (if any)
+   * @param  {RapidDataset}  d - bound datum (the dataset in this case)
    */
   toggleDataset(e, d) {
     const context = this.context;
-    const gfx = context.systems.gfx;
     const rapid = context.systems.rapid;
-    const urlhash = context.systems.urlhash;
+    const added = rapid.datasets;
 
-    const datasets = rapid.datasets;
-    const ds = datasets.get(d.id);
-
-    if (ds) {
-      ds.added = !ds.added;
-
-    } else {  // hasn't been added yet
-      const esri = context.services.esri;
-      if (esri) {   // start fetching layer info (the mapping between attributes and tags)
-        esri.loadLayerAsync(d.id);
+    if (added.has(d.id)) {
+      rapid.removeDatasets(d.id);  // remove from menu and disable/uncheck
+    } else {
+      rapid.enableDatasets(d.id);  // add to menu and enable/check
+      // If adding an Esri building dataset, disable the Microsoft buildings to avoid clutter
+      if (d.categories.has('esri') && d.categories.has('buildings') && added.has('msBuildings')) {
+        rapid.disableDatasets('msBuildings');
       }
-
-      const isBeta = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/preview');
-      const isBuildings = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/buildings');
-
-      // pick a new color
-      const colors = rapid.colors;
-      const colorIndex = datasets.size % colors.length;
-
-      const dataset = new RapidDataset(context, {
-        id: d.id,
-        beta: isBeta,
-        added: true,         // whether it should appear in the list
-        enabled: true,       // whether the user has checked it on
-        conflated: false,
-        service: 'esri',
-        color: colors[colorIndex],
-        dataUsed: ['esri', esri.getDataUsed(d.title)],
-        label: d.title,
-        licenseUrl: 'https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets#License'
-      });
-
-      if (d.extent) {
-        dataset.extent = new Extent(d.extent[0], d.extent[1]);
-      }
-
-      // Experiment: run building layers through MapWithAI conflation service
-      if (isBuildings) {
-        dataset.conflated = true;
-        dataset.service = 'mapwithai';
-
-        // and disable the Microsoft buildings to avoid clutter
-        const msBuildings = datasets.get('msBuildings');
-        if (msBuildings) {
-          msBuildings.enabled = false;
-        }
-      }
-
-      datasets.set(dataset.id, dataset);
     }
-
-    // update url hash
-    const datasetIDs = [...rapid.datasets.values()]
-      .filter(ds => ds.added && ds.enabled)
-      .map(ds => ds.id)
-      .join(',');
-
-    urlhash.setParam('datasets', datasetIDs.length ? datasetIDs : null);
-
-    this.render();
-
     context.enter('browse');   // return to browse mode (in case something was selected)
-    gfx.immediateRedraw();
-  }
-
-
-  /**
-   * isDatasetAdded
-   * @param  {*}  d - bound datum (the dataset in this case)
-   */
-  isDatasetAdded(d) {
-    const rapid = this.context.systems.rapid;
-    const ds = rapid.datasets.get(d.id);
-    return ds?.added;
+    this.render();
   }
 
 

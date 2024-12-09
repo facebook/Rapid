@@ -1,4 +1,5 @@
 import { AbstractSystem } from '../core/AbstractSystem.js';
+import { RapidDataset } from '../core/lib/index.js';
 import { utilFetchResponse } from '../util/index.js';
 
 const PMTILES_ROOT_URL = 'https://overturemaps-tiles-us-west-2-beta.s3.us-west-2.amazonaws.com/';
@@ -76,6 +77,28 @@ export class OvertureService extends AbstractSystem {
 
     const vtService = this.context.services.vectortile;
     return vtService.startAsync();
+  }
+
+
+  /**
+   * getAvailableDatasets
+   * Called by `RapidSystem` to get the datasets that this service provides.
+   * @return {Array<RapidDataset>}  The datasets this service provides
+   */
+  getAvailableDatasets() {
+    // just this one for now
+    const places = new RapidDataset(this.context, {
+      id: 'overture-places',
+      conflated: true,
+      service: 'overture',
+      categories: new Set(['overture', 'places', 'featured']),
+      color: '#00ffff',
+      dataUsed: ['overture', 'Overture Places'],
+      licenseUrl: 'https://docs.overturemaps.org/attribution/#places',
+      labelStringID: 'rapid_feature_toggle.overture.places.label'
+    });
+
+    return [places];
   }
 
 
