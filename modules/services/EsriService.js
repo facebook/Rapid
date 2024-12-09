@@ -110,7 +110,7 @@ export class EsriService extends AbstractSystem {
         dataUsed: ['esri', this.getDataUsed(d.title)],
         label: d.title,
         description: d.snippet,
-        itemUrl: d.itemUrl,
+        itemUrl: `${HOMEROOT}/item.html?id=${d.id}`,
         licenseUrl: 'https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets#License',
         thumbnailUrl: `${APIROOT}/items/${d.id}/info/${d.thumbnail}?w=400`
       });
@@ -324,10 +324,6 @@ export class EsriService extends AbstractSystem {
     //   .geometryType   "esriGeometryPoint" or "esriGeometryPolygon" ?
   }
 
-  _itemURL(itemID) {
-    return `${HOMEROOT}/item.html?id=${itemID}`;
-  }
-
   _tileURL(ds, extent, page) {
     page = page || 0;
     const layerID = ds.layer.id;
@@ -363,9 +359,6 @@ export class EsriService extends AbstractSystem {
       .attr('style', null)
       .attr('size', null);
     ds.license_html = license.html();   // get innerHtml
-
-    // generate public link to this item
-    ds.itemURL = this._itemURL(ds.id);
   }
 
 

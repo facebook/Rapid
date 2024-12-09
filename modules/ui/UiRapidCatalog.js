@@ -44,6 +44,7 @@ export class UiRapidCatalog extends EventEmitter {
     this.render = this.render.bind(this);
     this.rerender = (() => this.render());  // call render without argument
     this.renderDatasets = this.renderDatasets.bind(this);
+    this.sortCategories = this.sortCategories.bind(this);
     this.sortDatasets = this.sortDatasets.bind(this);
     this.toggleDataset = this.toggleDataset.bind(this);
     this.highlight = this.highlight.bind(this);
@@ -260,13 +261,13 @@ export class UiRapidCatalog extends EventEmitter {
     $filter = $filter.merge($$filter);
 
     $filter.selectAll('.rapid-catalog-filter-search')
-      .attr('placeholder', l10n.t('rapid_feature_toggle.esri.filter_datasets'));
+      .attr('placeholder', l10n.t('rapid_feature_toggle.filter_datasets'));
 
     $filter.selectAll('.rapid-catalog-filter-type')
-      .attr('placeholder', l10n.t('rapid_feature_toggle.esri.any_type'));
+      .attr('placeholder', l10n.t('rapid_feature_toggle.any_type'));
 
     $filter.selectAll('.rapid-catalog-filter-clear > a')
-      .text(l10n.t('rapid_feature_toggle.esri.clear_filters'));
+      .text(l10n.t('rapid_feature_toggle.clear_filters'));
 
 
     /* Dataset section */
@@ -336,7 +337,7 @@ export class UiRapidCatalog extends EventEmitter {
 
     if (!rapid.catalog.size) {
       $results.classed('hide', true);
-      $status.classed('hide', false).text(l10n.t('rapid_feature_toggle.esri.no_datasets'));
+      $status.classed('hide', false).text(l10n.t('rapid_feature_toggle.no_datasets'));
       return;
     }
 
@@ -348,9 +349,10 @@ export class UiRapidCatalog extends EventEmitter {
     const categories = new Set(rapid.categories);  // make copy
     if (!showPreview) categories.delete('preview');
 
-    const comboData = Array.from(categories).sort().map(c => {
-      let item = { title: c, value: c };
-      if (c === 'preview') item.display = `${c} <span class="rapid-catalog-dataset-beta beta"></span>`;
+    const comboData = Array.from(categories).sort().map(d => {
+      const display = l10n.t(`rapid_feature_toggle.category.${d}`, { default: d });
+      const item = { display: display, title: d, value: d };
+      if (d === 'preview') item.display = `${display} <span class="rapid-catalog-dataset-beta beta"></span>`;
       return item;
     });
 
@@ -365,8 +367,8 @@ export class UiRapidCatalog extends EventEmitter {
 
     // Apply filters..
     for (const d of datasets) {
-      const label = (d.label || '').toLowerCase();
-      const description = (d.description || '').toLowerCase();
+      const label = d.getLabel().toLowerCase();
+      const description = d.getDescription().toLowerCase();
 
       if (d.added) {  // always show added datasets at the top of the list
         d.filtered = false;
@@ -398,21 +400,43 @@ export class UiRapidCatalog extends EventEmitter {
       .append('div')
       .attr('class', 'rapid-catalog-dataset');
 
-    const $$labels = $$datasets
+    const $$label = $$datasets
       .append('div')
       .attr('class', 'rapid-catalog-dataset-label');
 
-    $$labels
+    $$label
       .append('div')
       .attr('class', 'rapid-catalog-dataset-name');
 
-    const $$link = $$labels
+    const $$categories = $$label
       .append('div')
-      .attr('class', 'rapid-catalog-dataset-license')
+      .attr('class', 'dataset-categories');
+
+    $$categories.selectAll('.dataset-category')
+      .data(d => {
+        const categories = new Set(d.categories);  // make copy
+        if (d.beta) categories.add('preview');     // make sure beta datasets have 'preview' category
+        return Array.from(categories).sort(this.sortCategories);
+      }, d => d)
+      .enter()
+      .append('div')
+      .attr('class', d => {
+        // include 'beta' class for preview category
+        return `dataset-category dataset-category-${d}` + (d === 'preview' ? ' beta' : '');
+      });
+
+    $$label
+      .append('div')
+      .attr('class', 'rapid-catalog-dataset-snippet');
+
+    const $$link = $$label
+      .filter(d => d.itemUrl)
+      .append('div')
+      .attr('class', 'rapid-catalog-dataset-more-info')
       .append('a')
       .attr('class', 'rapid-catalog-dataset-link')
       .attr('target', '_blank')
-      .attr('href', d => d.itemURL);
+      .attr('href', d => d.itemUrl);
 
     $$link
       .append('span')
@@ -421,38 +445,16 @@ export class UiRapidCatalog extends EventEmitter {
     $$link
       .call(uiIcon('#rapid-icon-out-link', 'inline'));
 
-    const $$featured = $$labels
-      .filter(d => d.featured)
-      .append('div')
-      .attr('class', 'rapid-catalog-dataset-featured');
-
-    $$featured
-      .append('span')
-      .text('\u2b50');  // emoji star
-
-    $$featured
-      .append('span')
-      .attr('class', 'rapid-catalog-dataset-featured-text');
-
-    $$labels
-      .filter(d => d.beta)
-      .append('div')
-      .attr('class', 'rapid-catalog-dataset-beta beta');
-
-    $$labels
-      .append('div')
-      .attr('class', 'rapid-catalog-dataset-snippet');
-
-    $$labels
+    $$label
       .append('button')
       .attr('class', 'rapid-catalog-dataset-action')
       .on('click', this.toggleDataset);
 
-    const $$thumbnails = $$datasets
+    const $$thumbnail = $$datasets
       .append('div')
       .attr('class', 'rapid-catalog-dataset-thumb');
 
-    $$thumbnails
+    $$thumbnail
       .append('img')
       .attr('class', 'rapid-catalog-dataset-thumbnail')
       .classed('inverted', d => d.categories.has('esri'))  // invert colors from light->dark
@@ -465,29 +467,34 @@ export class UiRapidCatalog extends EventEmitter {
       .classed('hide', d => d.filtered);
 
     $datasets.selectAll('.rapid-catalog-dataset-name')
-      .html(d => this.highlight(this._filterText, d.label));
+      .html(d => this.highlight(this._filterText, d.getLabel()));
 
     $datasets.selectAll('.rapid-catalog-dataset-link-text')
-      .text(l10n.t('rapid_feature_toggle.esri.more_info'));
+      .text(l10n.t('rapid_feature_toggle.more_info'));
 
-    $datasets.selectAll('.rapid-catalog-dataset-featured-text')
-      .text(l10n.t('rapid_feature_toggle.esri.featured'));
+    $$datasets.selectAll('.dataset-category')
+      .text(d => {
+        if (d === 'preview') return '';
+        const star = (d === 'featured') ? '\u2b50 ' : '';   // emoji star
+        const text = l10n.t(`rapid_feature_toggle.category.${d}`, { default: d });
+        return star + text;
+      });
 
-    $datasets.selectAll('.rapid-catalog-dataset-beta')
-      .attr('title', l10n.t('rapid_poweruser_features.beta'));
+    $datasets.selectAll('.dataset-category-preview')
+      .attr('title', l10n.t('rapid_poweruser_features.beta'));  // alt text
 
     $datasets.selectAll('.rapid-catalog-dataset-snippet')
-      .html(d => this.highlight(this._filterText, d.description));
+      .html(d => this.highlight(this._filterText, d.getDescription()));
 
     $datasets.selectAll('.rapid-catalog-dataset-action')
       .classed('secondary', d => d.added)
-      .text(d => d.added ? l10n.t('rapid_feature_toggle.esri.remove') : l10n.t('rapid_feature_toggle.esri.add_to_map'));
+      .text(d => d.added ? l10n.t('rapid_feature_toggle.remove') : l10n.t('rapid_feature_toggle.add_dataset'));
 
     // update the count
-    const numShown = datasets.filter(d => !d.filtered).length;
-    const gt = (count > MAXRESULTS && numShown === MAXRESULTS) ? '>' : '';
+    const n = datasets.filter(d => !d.filtered).length;
+    const gt = (count > MAXRESULTS) ? '>' : '';
     $content.selectAll('.rapid-catalog-filter-results')
-      .text(l10n.t('rapid_feature_toggle.esri.datasets_found', { num: `${gt}${numShown}` }));
+      .text(l10n.t('rapid_feature_toggle.datasets_found', { n: n, gt: gt }));
   }
 
 
@@ -503,6 +510,21 @@ export class UiRapidCatalog extends EventEmitter {
       : a.featured && !b.featured ? -1
       : b.featured && !a.featured ? 1
       : a.label.localeCompare(b.label);
+  }
+
+
+  /**
+   * sortCategories
+   * Featured before everything else
+   * Preview after everything else
+   * All others sort alphabetically
+   */
+  sortCategories(a, b) {
+    return a === 'featured' && b !== 'featured' ? -1
+      : b === 'featured' && a !== 'featured' ? 1
+      : a === 'preview' && b !== 'preview' ? 1
+      : b === 'preview' && a !== 'preview' ? -1
+      : a.localeCompare(b);
   }
 
 

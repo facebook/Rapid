@@ -94,8 +94,10 @@ export class OvertureService extends AbstractSystem {
       categories: new Set(['overture', 'places', 'featured']),
       color: '#00ffff',
       dataUsed: ['overture', 'Overture Places'],
+      itemUrl: 'https://docs.overturemaps.org/guides/places/',
       licenseUrl: 'https://docs.overturemaps.org/attribution/#places',
-      labelStringID: 'rapid_feature_toggle.overture.places.label'
+      labelStringID: 'rapid_feature_toggle.overture.places.label',
+      descriptionStringID: 'rapid_feature_toggle.overture.places.description'
     });
 
     return [places];

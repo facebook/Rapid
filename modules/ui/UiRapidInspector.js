@@ -295,7 +295,7 @@ export class UiRapidInspector {
       .text(dataset.getLabel());
 
     $featureInfo.selectAll('.dataset-beta')
-      .attr('title', l10n.t('rapid_poweruser_features.beta'));
+      .attr('title', l10n.t('rapid_poweruser_features.beta'));   // alt text
   }
 
 

@@ -367,7 +367,7 @@ export class UiRapidDatasetToggle {
       .text(d => d.getLabel());
 
     $rows.selectAll('.rapid-feature-label-beta')
-      .attr('title', l10n.t('rapid_poweruser_features.beta'));
+      .attr('title', l10n.t('rapid_poweruser_features.beta'));   // alt text
 
     $rows.selectAll('.rapid-feature-description')
       .text(d => d.description);

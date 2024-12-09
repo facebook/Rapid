@@ -954,28 +954,35 @@ img.rapid-catalog-dataset-thumbnail.inverted {
     font-size: 14px;
     margin-bottom: 3px;
 }
-.rapid-catalog-dataset-license {
-    display: inline-block;
+
+.dataset-categories {
+  display: flex;
+  flex-flow: row wrap;
 }
-.rapid-catalog-dataset-beta {
-    font-size: 10px;
+.dataset-category {
+  display: inline-block;
+  font-size: 10px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: #666;
+  color: #eee;
+  margin-left: unset;
+  margin-right: 4px;
+  line-height: 1.5;
 }
-.rapid-catalog-dataset-featured {
-    display: inline-block;
-    font-size: 11px;
-    background: #a21;
-    color: #dcdcdc;
-    padding: 1px 7px;
-    border-radius: 5px;
-    margin: 0px 10px;
-    line-height: 1.5;
+.ideditor[dir='rtl'] .dataset-category {
+  margin-right: unset;
+  margin-left: 4px;
 }
-.rapid-catalog-dataset-featured span {
-    margin: 0px 3px;
+.dataset-category-preview {
+  background: rgb(203,16,237);
+  background: linear-gradient(0deg, rgba(108,1,167,1) 6%, rgba(203,16,237,1) 50%, rgb(229, 140, 253) 90%, rgb(201, 42, 251) 100%);
+}
+.dataset-category-featured {
+  background: #a21;
 }
 
 /* Colorpicker popup */
-
 .colorpicker-popup {
     position: absolute;
     padding: 10px;
