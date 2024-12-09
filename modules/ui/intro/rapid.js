@@ -58,8 +58,7 @@ export function uiIntroRapid(context, curtain) {
 
     // Make sure Rapid data is on..
     context.scene().enableLayers('rapid');
-    const dataset = rapid.datasets.get('rapid_intro_graph');
-    dataset.enabled = true;
+    rapid.enableDatasets('rapid_intro_graph');
 
     const loc = tulipLaneExtent.center();
     const msec = transitionTime(loc, map.center());
@@ -109,10 +108,9 @@ export function uiIntroRapid(context, curtain) {
     editor.restoreCheckpoint('initial');
     ui.togglePanes();   // close issue pane
 
-    // Make sure Rapid data is on (in case the user unchecked it in a previous step)..
+    // Make sure Rapid data is on..
     context.scene().enableLayers('rapid');
-    const dataset = rapid.datasets.get('rapid_intro_graph');
-    dataset.enabled = true;
+    rapid.enableDatasets('rapid_intro_graph');
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
@@ -279,10 +277,9 @@ export function uiIntroRapid(context, curtain) {
     context.enter('browse');
     editor.restoreCheckpoint('initial');
 
-    // Make sure Rapid data is on (in case the user unchecked it in a previous step)..
+    // Make sure Rapid data is on..
     context.scene().enableLayers('rapid');
-    const dataset = rapid.datasets.get('rapid_intro_graph');
-    dataset.enabled = true;
+    rapid.enableDatasets('rapid_intro_graph');
 
     const loc = tulipLaneExtent.center();
     const msec = transitionTime(loc, map.center());
@@ -375,8 +372,7 @@ export function uiIntroRapid(context, curtain) {
   chapter.exit = () => {
     // Make sure Rapid data is off..
     context.scene().disableLayers('rapid');
-    const dataset = rapid.datasets.get('rapid_intro_graph');
-    dataset.enabled = false;
+    rapid.disableDatasets('rapid_intro_graph');
 
     _chapterCancelled = true;
 

@@ -51,7 +51,6 @@ export class UiRapidDatasetToggle {
     this.rerender = (() => this.render());  // call render without argument
     this.renderDatasets = this.renderDatasets.bind(this);
     this.changeColor = this.changeColor.bind(this);
-    this.isDatasetEnabled = this.isDatasetEnabled.bind(this);
     this.toggleDataset = this.toggleDataset.bind(this);
     this.toggleRapid = this.toggleRapid.bind(this);
 
@@ -267,84 +266,72 @@ export class UiRapidDatasetToggle {
       .append('div')
       .attr('class', 'rapid-checkbox rapid-checkbox-dataset');
 
-    $$rows
+    const $$label = $$rows
       .append('div')
-      .attr('class', 'rapid-feature')
+      .attr('class', 'rapid-feature');
+
+    // line1: name and optional beta badge
+    const $$line1 = $$label
+      .append('div')
+      .attr('class', 'rapid-feature-label-container');
+
+    $$line1
+      .append('div')
+      .attr('class', 'rapid-feature-label');
+
+    $$line1
+      .filter(d => d.beta)
+      .append('div')
+      .attr('class', 'rapid-feature-label-beta beta');
+
+    // line2:  extent and license link
+    const $$line2 = $$label
+      .append('div')
+      .attr('class', 'rapid-feature-extent-container');
+
+    $$line2
       .each((d, i, nodes) => {
-        const $$row = select(nodes[i]);
+        const $$extent = select(nodes[i]);
 
-        // line1: name and details
-        const $$line1 = $$row
-          .append('div')
-          .attr('class', 'rapid-feature-label-container');
-
-        $$line1
-          .append('div')
-          .attr('class', 'rapid-feature-label');
-
-        if (d.beta) {
-          $$line1
-            .append('div')
-            .attr('class', 'rapid-feature-label-beta beta');
-        }
-
-        if (d.description) {
-          $$line1
-            .append('div')
-            .attr('class', 'rapid-feature-label-divider');
-
-          $$line1
-            .append('div')
-            .attr('class', 'rapid-feature-description');
-        }
-
-        // line2: dataset extent
-        const $$line2 = $$row
-          .append('div')
-          .attr('class', 'rapid-feature-extent-container');
-
-        $$line2
-          .each((d, i, nodes) => {
-            const $$extent = select(nodes[i]);
-
-            // if the data spans more than 100°*100°, it might as well be worldwide
-            if (d.extent && d.extent.area() < 10000) {
-              $$extent
-                .append('a')
-                .attr('class', 'rapid-feature-extent-center-map')
-                .attr('href', '#')
-                .on('click', (e) => {
-                  e.preventDefault();
-                  map.extent(d.extent);
-                });
-            } else {
-              $$extent
-                .append('span')
-                .attr('class', 'rapid-feature-extent-worldwide');
-            }
-          });
-
-        if (d.licenseUrl) {
-          $$line2
-            .append('div')
-            .attr('class', 'rapid-feature-label-divider');
-
-          const $$link = $$line2
-            .append('div')
-            .attr('class', 'rapid-feature-license')
+        // if the data spans more than 100°*100°, it might as well be worldwide
+        if (d.extent && d.extent.area() < 10000) {
+          $$extent
             .append('a')
-            .attr('class', 'rapid-feature-licence-link')
-            .attr('target', '_blank')
-            .attr('href', d.licenseUrl);
-
-          $$link
+            .attr('class', 'rapid-feature-extent-center-map')
+            .attr('href', '#')
+            .on('click', (e) => {
+              e.preventDefault();
+              map.extent(d.extent);
+            });
+        } else {
+          $$extent
             .append('span')
-            .attr('class', 'rapid-feature-license-link-text');
-
-          $$link
-            .call(uiIcon('#rapid-icon-out-link', 'inline'));
+            .attr('class', 'rapid-feature-extent-worldwide');
         }
       });
+
+    const $$license = $$line2
+      .filter(d => d.licenseUrl);
+
+    $$license
+      .append('div')
+      .attr('class', 'rapid-feature-label-divider');
+
+    const $$link = $$license
+      .append('div')
+      .attr('class', 'rapid-feature-license')
+      .append('a')
+      .attr('class', 'rapid-feature-licence-link')
+      .attr('target', '_blank')
+      .attr('href', d => d.licenseUrl);
+
+    $$link
+      .append('span')
+      .attr('class', 'rapid-feature-license-link-text');
+
+    $$link
+      .call(uiIcon('#rapid-icon-out-link', 'inline'));
+
 
     const $$inputs = $$rows
       .append('div')
@@ -402,19 +389,8 @@ export class UiRapidDatasetToggle {
       .classed('disabled', !isRapidEnabled);
 
     $rows.selectAll('.rapid-feature-checkbox')
-      .property('checked', d => this.isDatasetEnabled(d))
+      .property('checked', d => d.enabled)
       .attr('disabled', isRapidEnabled ? null : true);
-  }
-
-
-  /**
-   * isDatasetEnabled
-   * @param  {*}  d - bound datum (the dataset in this case)
-   */
-  isDatasetEnabled(d) {
-    const rapid = this.context.systems.rapid;
-    const dataset = rapid.datasets.get(d.id);
-    return dataset?.enabled;
   }
 
 
@@ -433,28 +409,14 @@ export class UiRapidDatasetToggle {
    * toggleDataset
    * Called when a user has clicked the checkbox to toggle a dataset on/off.
    * @param  {Event}  e? - triggering event (if any)
-   * @param  {*}      d - bound datum (the dataset in this case)
+   * @param  {*}      d - bound datum (the RapidDataset in this case)
    */
   toggleDataset(e, d) {
     const context = this.context;
     const rapid = context.systems.rapid;
-    const scene = context.systems.gfx.scene;
-    const urlhash = context.systems.urlhash;
 
-    const dataset = rapid.datasets.get(d.id);
-    if (dataset) {
-      dataset.enabled = !dataset.enabled;
-
-      // update url hash
-      const datasetIDs = [...rapid.datasets.values()]
-        .filter(ds => ds.added && ds.enabled)
-        .map(ds => ds.id)
-        .join(',');
-
-      urlhash.setParam('datasets', datasetIDs.length ? datasetIDs : null);
-      scene.dirtyLayers(['rapid', 'rapid-overlay', 'overture']);
-      context.enter('browse');   // return to browse mode (in case something was selected)
-    }
+    context.enter('browse');   // return to browse mode (in case something was selected)
+    rapid.toggleDatasets(d.id);
   }
 
 

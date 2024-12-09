@@ -46,6 +46,7 @@ describe('MapSystem', () => {
         gfx:     new MockGfxSystem(this),
         imagery: new MockSystem(this),
         photos:  new MockSystem(this),
+        rapid:   new MockSystem(this),
         l10n:    new MockLocalizationSystem(this),
         storage: new MockStorageSystem(this),
         urlhash: new MockSystem(this),
