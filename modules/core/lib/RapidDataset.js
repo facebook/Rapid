@@ -10,7 +10,6 @@ export class RapidDataset {
    */
   constructor(context, props) {
     this.context = context;
-    const assets = context.systems.assets;
 
     this.id = props.id;
     this.service = props.service;                      // 'esri', 'mapwithai', 'overture'
@@ -23,7 +22,7 @@ export class RapidDataset {
 
     this.itemUrl = props.itemUrl ?? '';
     this.licenseUrl = props.licenseUrl ?? '';
-    this.thumbnailUrl = props.thumbnailUrl ?? assets.getFileURL('img/test-pattern.png');
+    this.thumbnailUrl = props.thumbnailUrl ?? this.getThumbnail();
 
     // flags
     this.added = props.added ?? false;        // whether it should appear in the list
@@ -43,6 +42,18 @@ export class RapidDataset {
     this._description = props.description;
     this.label = this.getLabel();
     this.description = this.getDescription();
+  }
+
+  // Choose a default thumbnail if we weren't supplied one.
+  getThumbnail() {
+    let type;
+    if (this.categories.has('buildings'))     type = 'buildings';
+    else if (this.categories.has('footways')) type = 'footways';
+    else if (this.categories.has('roads'))    type = 'roads';
+    else type = 'points';
+
+    const assets = this.context.systems.assets;
+    return assets.getFileURL(`img/data-${type}.png`);
   }
 
   // Attempt to localize the dataset name, fallback to 'label' or 'id'
