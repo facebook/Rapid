@@ -446,6 +446,10 @@ export class UiRapidCatalog extends EventEmitter {
       .call(uiIcon('#rapid-icon-out-link', 'inline'));
 
     $$label
+      .append('div')
+      .attr('class', 'dataset-added-text');
+
+    $$label
       .append('button')
       .attr('class', 'rapid-catalog-dataset-action')
       .on('click', this.toggleDataset);
@@ -464,6 +468,7 @@ export class UiRapidCatalog extends EventEmitter {
     $datasets = $datasets.merge($$datasets);
 
     $datasets
+      .classed('added', d => d.added)
       .classed('hide', d => d.filtered);
 
     $datasets.selectAll('.rapid-catalog-dataset-name')
@@ -475,7 +480,7 @@ export class UiRapidCatalog extends EventEmitter {
     $$datasets.selectAll('.dataset-category')
       .text(d => {
         if (d === 'preview') return '';
-        const star = (d === 'featured') ? '\u2b50 ' : '';   // emoji star
+        const star = (d === 'featured') ? '\u2b50 ' : '';   // 2b50 = emoji star
         const text = l10n.t(`rapid_feature_toggle.category.${d}`, { default: d });
         return star + text;
       });
@@ -485,6 +490,9 @@ export class UiRapidCatalog extends EventEmitter {
 
     $datasets.selectAll('.rapid-catalog-dataset-snippet')
       .html(d => this.highlight(this._filterText, d.getDescription()));
+
+    $datasets.selectAll('.dataset-added-text')
+      .text(d => d.added ? '\u2705 ' + l10n.t('rapid_feature_toggle.dataset_added') : '');  // 2705 = emoji check
 
     $datasets.selectAll('.rapid-catalog-dataset-action')
       .classed('secondary', d => d.added)

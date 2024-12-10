@@ -357,9 +357,9 @@ button.rapid-features.layer-off use {
 
 /* For things that should stack in rows */
 .rapid-stack {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 /* Rapid modal dialogs */
@@ -902,50 +902,46 @@ div.combobox.combobox-dataset-categories a:focus {
     text-align: center;
     margin: 50px;
 }
-.rapid-catalog-datasets-spinner {
-    filter: brightness(2)contrast(0.8);
-}
 
 .rapid-catalog-datasets {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 5px;
+  width: 100%;
 }
 .rapid-catalog-dataset {
-    flex: 0 1 50%;
-    padding: 15px 25px;
-    margin-bottom: 10px;
-    color: #eee;
-    display: flex;
-    flex-flow: row nowrap;
+  display: flex;
+  flex: 1 1 40%;
+  flex-flow: row nowrap;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+  height: 220px;
+  color: #eee;
+}
+.rapid-catalog-dataset.added {
+  background: rgba(55, 55, 55, 0.9);
 }
 
 .rapid-catalog-dataset-label {
-    flex: 1;
-    padding: 0 8px;
+  flex: 1;
+  padding: 0 8px;
 }
 .rapid-catalog-dataset-thumb {
-    flex: 0;
+  flex: 0;
 }
 img.rapid-catalog-dataset-thumbnail {
-    border-radius: 10px;
-    object-fit: cover;
-    height: 130px;
-    width: 180px;
+  border-radius: 10px;
+  object-fit: cover;
+  height: 130px;
+  width: 180px;
 }
 img.rapid-catalog-dataset-thumbnail.inverted {
-    filter: invert(1)brightness(2)contrast(0.75);
+  filter: invert(1) brightness(2) contrast(0.75);
 }
 
-.rapid-catalog-dataset button.rapid-catalog-dataset-action {
-    font-size: 12px;
-    height: 28px;
-    border-radius: 14px;
-    margin: 10px 0;
-    padding: 0 15px;
-}
 .rapid-catalog-dataset-name {
     font-weight: bold;
     font-size: 14px;
@@ -977,6 +973,17 @@ img.rapid-catalog-dataset-thumbnail.inverted {
 }
 .dataset-category-featured {
   background: #a21;
+}
+.dataset-added-text {
+  color: #16da16;
+}
+
+.rapid-catalog-dataset button.rapid-catalog-dataset-action {
+  font-size: 12px;
+  height: 28px;
+  border-radius: 14px;
+  margin: 10px 0;
+  padding: 0 15px;
 }
 
 /* Colorpicker popup */
