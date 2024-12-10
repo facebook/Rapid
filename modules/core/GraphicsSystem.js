@@ -44,7 +44,7 @@ export class GraphicsSystem extends AbstractSystem {
     super(context);
 
     this.id = 'gfx';
-    this.dependencies = new Set(['map', 'urlhash']);
+    this.dependencies = new Set(['assets', 'map', 'urlhash']);
 
     // Create these early
     this.supersurface = document.createElement('div');  // parent `div` temporary transforms between redraws
@@ -95,8 +95,12 @@ export class GraphicsSystem extends AbstractSystem {
     }
 
     // Init prerequisites
-    const urlhash = this.context.systems.urlhash;
+    const context = this.context;
+    const assets = context.systems.assets;
+    const urlhash = context.systems.urlhash;
+
     const prerequisites = Promise.all([
+      assets.initAsync(),
       urlhash.initAsync()
     ]);
 

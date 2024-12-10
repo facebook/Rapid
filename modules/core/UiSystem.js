@@ -2,6 +2,7 @@ import { select } from 'd3-selection';
 import { vecAdd } from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
+import { utilDetect } from '../util/detect.js';
 
 import {
   UiApiStatus, UiDefs, uiEditMenu, uiFlash, UiFullscreen, uiIntro,
@@ -25,7 +26,7 @@ export class UiSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'ui';
-    this.dependencies = new Set(['editor', 'gfx', 'imagery', 'l10n', 'map', 'storage', 'urlhash']);
+    this.dependencies = new Set(['assets', 'editor', 'gfx', 'imagery', 'l10n', 'map', 'storage', 'urlhash']);
 
     this._mapRect = null;
     this._needWidth = {};
@@ -75,19 +76,40 @@ export class UiSystem extends AbstractSystem {
     }
 
     const context = this.context;
-    const l10n = context.systems.l10n;
+    const assets = context.systems.assets;
     const gfx = context.systems.gfx;
+    const l10n = context.systems.l10n;
+    const urlhash = context.systems.urlhash;
 
     // Many UI components require l10n and gfx (for scene/layers)
     const prerequisites = Promise.all([
+      assets.initAsync(),
       l10n.initAsync(),
-      gfx.initAsync()
+      gfx.initAsync(),
+      urlhash.initAsync(),
     ]);
 
     return this._initPromise = prerequisites
       .then(() => {
         window.addEventListener('resize', this.resize);
 
+        // If we detect this is Rapid Canary, change the title and favicon.
+        const detected = utilDetect();
+        if (/\/canary$/.test(detected.host)) {
+          urlhash.titleBase = 'Rapid Canary';
+
+          const $head = select('head');
+          let $favicon = $head.select(`link[rel~='icon']`);
+          if (!$favicon.size()) {
+            $favicon = $head
+              .append('link')
+              .attr('rel', 'icon')
+              .attr('type', 'image/svg');
+          }
+          $favicon.attr('href', assets.getFileURL('img/rapid_favicon-canary.svg'));
+        }
+
+        // Create UI components
         this.ApiStatus = new UiApiStatus(context);
         this.AuthModal = uiLoading(context).blocking(true).message(l10n.t('loading_auth'));
         this.Defs = new UiDefs(context);
