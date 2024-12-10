@@ -465,7 +465,7 @@ export class UiRapidCatalog extends EventEmitter {
       .attr('src', d => d.thumbnailUrl);
 
     // update
-    $datasets = $datasets.merge($$datasets);
+    $datasets = $datasets.merge($$datasets).order();
 
     $datasets
       .classed('added', d => d.added)
