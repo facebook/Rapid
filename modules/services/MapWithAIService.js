@@ -118,7 +118,7 @@ export class MapWithAIService extends AbstractSystem {
       service: 'mapwithai',
       categories: new Set(['meta', 'footways', 'featured']),
       overlay: {
-        url: 'https://external.xx.fbcdn.net/maps/vtp/rapid_overlay_footways/1/{z}/{x}/{y}/',
+        url: 'https://external.xx.fbcdn.net/maps/vtp/rapid_overlay_footways/2/{z}/{x}/{y}/',
         minZoom: 1,
         maxZoom: 15,
       },
