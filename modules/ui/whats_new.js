@@ -20,6 +20,14 @@ export function uiWhatsNew(context) {
     const $modal = uiModal(selection);
     const rtl = l10n.isRTL() ? '-rtl' : '';
 
+    let version;
+    const match = context.version.match(/(\d+\.\d+)/);  // first match should be major,minor
+    if (match !== null) {
+      version = `v${match[1]}`;
+    } else {
+      version = context.version.toString();
+    }
+
     $modal.select('.modal')
       .attr('class', 'modal rapid-modal modal-whatsnew');
 
@@ -28,12 +36,13 @@ export function uiWhatsNew(context) {
       .append('div')
       .attr('class', 'modal-section')
       .append('h2')
-      .html(l10n.t('whats_new.welcome_v24', {
-        rapidicon: icon(`#rapid-logo-rapid-wordmark${rtl}`, 'pre-text rapid')
+      .html(l10n.t('splash.welcome', {
+        rapidicon: icon(`#rapid-logo-rapid-wordmark${rtl}`, 'pre-text rapid'),
+        version: version
       }));
 
 
-    const markdown = l10n.t('whats_new.text_v24') + '\n\n';
+    const markdown = l10n.t('whats_new.text_v25') + '\n\n' + l10n.t('whats_new.project_links') + '\n\n';
 
     const $mainSection = $content
       .append('div')

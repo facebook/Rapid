@@ -23,6 +23,14 @@ export function uiSplash(context) {
     const rtl = l10n.isRTL() ? '-rtl' : '';
     storage.setItem('sawPrivacyVersion', context.privacyVersion);
 
+    let version;
+    const match = context.version.match(/(\d+\.\d+)/);  // first match should be major,minor
+    if (match !== null) {
+      version = `v${match[1]}`;
+    } else {
+      version = context.version.toString();
+    }
+
     // prefetch intro graph data now, while user is looking at the splash screen
     assets.loadAssetAsync('intro_graph');
 
@@ -36,11 +44,12 @@ export function uiSplash(context) {
       .attr('class', 'modal-section')
       .append('h2')
       .html(l10n.t('splash.welcome', {
-        rapidicon: icon(`#rapid-logo-rapid-wordmark${rtl}`, 'pre-text rapid')
+        rapidicon: icon(`#rapid-logo-rapid-wordmark${rtl}`, 'pre-text rapid'),
+        version: version
       }));
 
 
-    let markdown = l10n.t('splash.text', { version: context.version }) + '\n\n';
+    let markdown = l10n.t('splash.text') + '\n\n';
 
     // If they have seen some privacy version, but not the current one,
     // prepend with "Our privacy policy has recently been updated."
