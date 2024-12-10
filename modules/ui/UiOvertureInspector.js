@@ -196,7 +196,6 @@ export class UiOvertureInspector {
       .append('div')
       .attr('class', 'property-bag');
 
-    
 
       //Overture properties can come to us as strings, JSON arrays, or JSON objects. Handle all three!
     for (const [k, v] of Object.entries(properties)) {
@@ -204,16 +203,22 @@ export class UiOvertureInspector {
       .append('div')
       .attr('class', 'property-heading');
 
+      let key = k;
+
+      // Some params come to us via pmtiles with a prepended '@' sign.
+      if (key.startsWith('@')) {
+        key = key.slice(1);
+      }
+      key = key.charAt(0).toUpperCase() + key.slice(1);
+      $$propHeading.text(key);
+
       const $$tagEntry = $$propBag.append('div').attr('class', 'property-entry');
 
       if (this._hasJsonStructure(v)) {
-        $$propHeading.text(k);
-        // $$tagEntry.append('div').attr('class', 'property-key').text(k);
 
         const parsedJson = JSON.parse(v);
         // Object processing
         if (!Array.isArray(parsedJson)) {
-          $$propHeading.text(k);
           for (const [k1, v1] of Object.entries(parsedJson)) {
             $$tagEntry.append('div').attr('class', 'property-value').text(k1 + ':' + v1);
           }
@@ -233,7 +238,6 @@ export class UiOvertureInspector {
         }
       } else {
         //String handling- just make a key/value pair.
-        $$propHeading.text(k);
         $$tagEntry.append('div').attr('class', 'property-value').text(v);
       }
     }
