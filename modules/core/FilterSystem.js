@@ -110,10 +110,10 @@ export class FilterSystem extends AbstractSystem {
       }
     }
 
-    const storage = this.context.systems.storage;
-    const urlhash = this.context.systems.urlhash;
+    const context = this.context;
+    const urlhash = context.systems.urlhash;
+
     const prerequisites = Promise.all([
-      storage.initAsync(),
       urlhash.initAsync()
     ]);
 
@@ -121,20 +121,7 @@ export class FilterSystem extends AbstractSystem {
       .then(() => {
         // Setup event handlers..
         urlhash.on('hashchange', this._hashchange);
-
-        // Take initial values from urlhash first, localstorage second
-        const toHide = urlhash.getParam('disable_features') ?? storage.getItem('disabled-features');
-
-        if (toHide) {
-          const filterIDs = toHide.replace(/;/g, ',').split(',').map(s => s.trim()).filter(Boolean);
-          for (const filterID of filterIDs) {
-            this._hidden.add(filterID);
-            const filter = this._filters.get(filterID);
-            filter.enabled = false;
-          }
-        }
       });
-
 
 //    // warm up the feature matching cache upon merging fetched data
 //    const editor = this.context.systems.editor;
@@ -161,7 +148,22 @@ export class FilterSystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
+    const context = this.context;
+    const storage = context.systems.storage;
+    const urlhash = context.systems.urlhash;
+
+    // Take filter values from urlhash first, localstorage second,
+    // Default to having boundaries hidden
+    const toHide = urlhash.getParam('disable_features') ?? storage.getItem('disabled-features') ?? 'boundaries';
+    const filterIDs = toHide.replace(/;/g, ',').split(',').map(s => s.trim()).filter(Boolean);
+    for (const filterID of filterIDs) {
+      this._hidden.add(filterID);
+      const filter = this._filters.get(filterID);
+      filter.enabled = false;
+    }
+    this._update();
     this._started = true;
+
     return Promise.resolve();
   }
 

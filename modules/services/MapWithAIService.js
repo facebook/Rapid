@@ -2,7 +2,7 @@ import { Tiler } from '@rapid-sdk/math';
 import { utilStringQs } from '@rapid-sdk/util';
 
 import { AbstractSystem } from '../core/AbstractSystem.js';
-import { Graph, Tree } from '../core/lib/index.js';
+import { Graph, Tree, RapidDataset } from '../core/lib/index.js';
 import { osmEntity, osmNode, osmWay } from '../osm/index.js';
 import { utilFetchResponse } from '../util/index.js';
 
@@ -77,6 +77,70 @@ export class MapWithAIService extends AbstractSystem {
   startAsync() {
     this._started = true;
     return Promise.resolve();
+  }
+
+
+  /**
+   * getAvailableDatasets
+   * Called by `RapidSystem` to get the datasets that this service provides.
+   * @return {Array<RapidDataset>}  The datasets this service provides
+   */
+  getAvailableDatasets() {
+    const context = this.context;
+
+    const fbRoads = new RapidDataset(context, {
+      id: 'fbRoads',
+      conflated: true,
+      service: 'mapwithai',
+      categories: new Set(['meta', 'roads', 'featured']),
+      dataUsed: ['mapwithai', 'Facebook Roads'],
+      itemUrl: 'https://github.com/facebookmicrosites/Open-Mapping-At-Facebook',
+      licenseUrl: 'https://rapideditor.org/doc/license/MapWithAILicense.pdf',
+      labelStringID: 'rapid_feature_toggle.fbRoads.label',
+      descriptionStringID: 'rapid_feature_toggle.fbRoads.description'
+    });
+
+    const msBuildings = new RapidDataset(context, {
+      id: 'msBuildings',
+      conflated: true,
+      service: 'mapwithai',
+      categories: new Set(['microsoft', 'buildings', 'featured']),
+      dataUsed: ['mapwithai', 'Microsoft Buildings'],
+      itemUrl: 'https://github.com/microsoft/GlobalMLBuildingFootprints',
+      licenseUrl: 'https://github.com/microsoft/USBuildingFootprints/blob/master/LICENSE-DATA',
+      labelStringID: 'rapid_feature_toggle.msBuildings.label',
+      descriptionStringID: 'rapid_feature_toggle.msBuildings.description'
+    });
+
+    const omdFootways = new RapidDataset(context, {
+      id: 'omdFootways',
+      conflated: true,
+      service: 'mapwithai',
+      categories: new Set(['meta', 'footways', 'featured']),
+      overlay: {
+        url: 'https://external.xx.fbcdn.net/maps/vtp/rapid_overlay_footways/1/{z}/{x}/{y}/',
+        minZoom: 1,
+        maxZoom: 15,
+      },
+      tags: 'opendata',
+      dataUsed: ['mapwithai', 'Open Footways'],
+      itemUrl: 'https://github.com/facebookmicrosites/Open-Mapping-At-Facebook',
+      licenseUrl: 'https://rapideditor.org/doc/license/MapWithAILicense.pdf',
+      labelStringID: 'rapid_feature_toggle.omdFootways.label',
+      descriptionStringID: 'rapid_feature_toggle.omdFootways.description'
+    });
+
+    const introGraph = new RapidDataset(context, {
+      id: 'rapid_intro_graph',
+      hidden: true,
+      conflated: false,
+      service: 'mapwithai',
+      color: '#da26d3',
+      dataUsed: [],
+      label: 'Rapid Walkthrough'
+    });
+
+    return [fbRoads, msBuildings, omdFootways, introGraph];
   }
 
 

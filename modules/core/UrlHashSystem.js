@@ -69,14 +69,6 @@ export class UrlHashSystem extends AbstractSystem {
     const q = utilStringQs(window.location.hash);
     this._initParams = new Map(Object.entries(q));
 
-    // Set some defaults (maybe come up with a less hacky way of doing this)
-    if (!this._initParams.has('datasets')) {
-      this._initParams.set('datasets', 'fbRoads,msBuildings');
-    }
-    if (!this._initParams.has('disable_features')) {
-      this._initParams.set('disable_features', 'boundaries');
-    }
-
     this._currParams = new Map(this._initParams);  // make copy
     this._currHash = null;   // cached window.location.hash
     this._prevParams = null;
@@ -121,6 +113,7 @@ export class UrlHashSystem extends AbstractSystem {
     const editor = context.systems.editor;
     const l10n = context.systems.l10n;
     const photos = context.systems.photos;
+    const rapid = context.systems.rapid;
     const map = context.systems.map;
     const ui = context.systems.ui;
 
@@ -130,6 +123,7 @@ export class UrlHashSystem extends AbstractSystem {
       l10n.startAsync(),
       map.startAsync(),
       photos.startAsync(),
+      rapid.startAsync(),
       ui.startAsync()
     ]);
 

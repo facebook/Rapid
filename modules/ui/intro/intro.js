@@ -112,8 +112,9 @@ export function uiIntro(context, skipToRapid) {
       brightness: imagery.brightness,
       baseLayer: imagery.baseLayerSource(),
       overlayLayers: imagery.overlayLayerSources(),
-      layersEnabled: new Set(),     // Set(layerID)
-      datasetsEnabled: new Set(),   // Set(datasetID)
+      layersEnabled: new Set(),                             // Set<layerID>
+      datasetsAdded: new Set(rapid._addedDatasetIDs),       // Set<datasetID>
+      datasetsEnabled: new Set(rapid._enabledDatasetIDs),   // Set<datasetID>
       edits: editor.toJSON()
     };
 
@@ -125,25 +126,9 @@ export function uiIntro(context, skipToRapid) {
     }
     context.scene().onlyLayers(['background', 'osm', 'labels']);
 
-    // Remember which Rapid datasets were enabled before - we will show only a fake walkthrough dataset
-    for (const [datasetID, dataset] of rapid.datasets) {
-      if (dataset.enabled) {
-        _original.datasetsEnabled.add(datasetID);
-        dataset.enabled = false;
-      }
-    }
-
-    rapid.datasets.set('rapid_intro_graph', {
-      id: 'rapid_intro_graph',
-      beta: false,
-      added: true,
-      enabled: false,   // start disabled, rapid chapter will enable it
-      conflated: false,
-      service: 'mapwithai',
-      color: '#da26d3',
-      dataUsed: [],
-      label: 'Rapid Walkthrough'
-    });
+    // Show only a fake walkthrough dataset
+    rapid.removeDatasets(rapid._addedDatasetIDs);
+    rapid.addDatasets('rapid_intro_graph');
 
     // Setup imagery
     const introSource = imagery.getSourceByID('Bing');
@@ -261,10 +246,9 @@ export function uiIntro(context, skipToRapid) {
     }
 
     // Restore Rapid datasets and service
-    for (const [datasetID, dataset] of rapid.datasets) {
-      dataset.enabled = _original.datasetsEnabled.has(datasetID);
-    }
-    rapid.datasets.delete('rapid_intro_graph');
+    rapid.removeDatasets('rapid_intro_graph');
+    rapid.addDatasets(_original.datasetsAdded);       // added to menu
+    rapid.enableDatasets(_original.datasetsEnabled);  // enabled/checked
 
     _curtain.disable();
     _navwrap.remove();

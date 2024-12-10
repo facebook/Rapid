@@ -36,7 +36,7 @@ export class MapSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'map';
-    this.dependencies = new Set(['editor', 'filters', 'gfx', 'imagery', 'l10n', 'photos', 'storage', 'styles', 'urlhash']);
+    this.dependencies = new Set(['editor', 'filters', 'gfx', 'imagery', 'l10n', 'photos', 'rapid', 'storage', 'styles', 'urlhash']);
 
     // display options
     this.areaFillOptions = ['wireframe', 'partial', 'full'];
@@ -83,6 +83,7 @@ export class MapSystem extends AbstractSystem {
     const imagery = context.systems.imagery;
     const l10n = context.systems.l10n;
     const photos = context.systems.photos;
+    const rapid = context.systems.rapid;
     const storage = context.systems.storage;
     const styles = context.systems.styles;
     const urlhash = context.systems.urlhash;
@@ -171,6 +172,12 @@ export class MapSystem extends AbstractSystem {
         filters
           .on('filterchange', () => {
             scene.dirtyLayers('osm');
+            gfx.immediateRedraw();
+          });
+
+        rapid
+          .on('datasetchange', () => {
+            scene.dirtyLayers(['rapid', 'rapid-overlay', 'overture']);
             gfx.immediateRedraw();
           });
 
