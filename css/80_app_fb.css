@@ -240,14 +240,16 @@ button.rapid-features.layer-off use {
   padding: 20px 0;
 }
 
-.rapid-inspector .feature-info {
+.rapid-inspector .feature-info,
+.overture-inspector .feature-info {
   display: flex;
   padding: 5px 10px;
   border-radius: 5px 5px 0 0;
   border: 1px solid #333;
 }
 
-.rapid-inspector .feature-info .dataset-label {
+.rapid-inspector .feature-info .dataset-label,
+.overture-inspector .feature-info .dataset-label  {
   flex: 1;
   font-size: 14px;
   font-weight: bold;
