@@ -167,9 +167,7 @@ export class PixiLayerRapid extends AbstractLayer {
 //this._uniforms.u_time = frame/10;
 
     for (const dataset of rapid.datasets.values()) {
-      // if (dataset.service !== 'overture') {
         this.renderDataset(dataset, frame, viewport, zoom);
-      // }
     }
   }
 
