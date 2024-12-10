@@ -175,10 +175,10 @@ export class UiRapidCatalog extends EventEmitter {
     $header = $header.merge($$header);
 
     $header.selectAll('.rapid-catalog-header-text')
-      .text(l10n.t('rapid_feature_toggle.esri.title'));
+      .text(l10n.t('rapid_feature_toggle.add_manage_datasets'));
 
     $header.selectAll('.rapid-catalog-header-about')
-      .html(marked.parse(l10n.t('rapid_feature_toggle.esri.about')));
+      .html(marked.parse(l10n.t('rapid_feature_toggle.about_the_catalog')));
 
     $header.selectAll('.rapid-catalog-header-about a')
       .attr('target', '_blank');   // make sure the markdown links go to a new page

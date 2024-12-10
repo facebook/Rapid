@@ -204,7 +204,7 @@ export class UiRapidDatasetToggle {
     $manageDatasets = $manageDatasets.merge($$manageDatasets);
 
     $manageDatasets.selectAll('.rapid-feature-label')
-      .text(l10n.t('rapid_feature_toggle.view_manage_datasets'));
+      .text(l10n.t('rapid_feature_toggle.add_manage_datasets'));
 
     $manageDatasets.selectAll('.rapid-checkbox-label use')
       .attr('xlink:href', l10n.isRTL() ? '#rapid-icon-backward' : '#rapid-icon-forward');

@@ -1119,7 +1119,7 @@ en:
   rapid_feature_toggle:
     license: License
     toggle_all: Toggle all {rapidicon} data
-    view_manage_datasets: "Add/Manage Datasets"
+    add_manage_datasets: "Add/Manage Datasets"
     center_map: Center map here
     worldwide: Worldwide
     no_datasets: No datasets available.
@@ -1127,6 +1127,7 @@ en:
     add_dataset: Add Dataset
     dataset_added: Dataset added
     more_info: More Info
+    about_the_catalog: "These datasets have been provided as open data by various organizations and the Esri user community for the purpose of improving OpenStreetMap.<br/>You can learn more by clicking the links below, or visiting [the Rapid Guide](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Esri-ArcGIS-FAQ) or [Esri/ArcGIS dataset page on the OSM Wiki](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets)."  # This string may contain markdown
     clear_filters: Clear Filters
     filter_datasets: filter datasets    # placeholder text for the filter text
     any_type: any type                  # placeholder text for the filter type dropdown
@@ -1159,9 +1160,6 @@ en:
     omdFootways:
       label: Open Data Footways
       description: Open footways data collected from various local government entities.
-    esri:
-      title: ArcGIS Datasets
-      about: "These datasets have been provided as open data by the ArcGIS user community for the purpose of improving OpenStreetMap.<br/>You can learn more by visiting [the Rapid Guide](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Esri-ArcGIS-FAQ) or [Esri/ArcGIS dataset page on the OSM Wiki](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets)."  # This string may contain markdown
 
   rapid_poweruser_features:
     beta: Beta Feature
