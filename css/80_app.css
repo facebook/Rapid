@@ -4175,7 +4175,7 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
   place-content: center;
   place-items: center;
 /* for testing */
-/*  background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RCA_Indian_Head_Test_Pattern.svg/1200px-RCA_Indian_Head_Test_Pattern.svg.png');*/
+/* background-image: url(img/test-pattern.png);*/ 
 /*  background-size:     cover;*/
 /*  background-repeat:   no-repeat;*/
 /*  background-position: center center;*/
