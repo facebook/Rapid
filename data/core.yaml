@@ -1122,9 +1122,14 @@ en:
     view_manage_datasets: "Add/Manage Datasets"
     center_map: Center map here
     worldwide: Worldwide
-    filter_datasets: filter datasets
-    any_type: any type
+    no_datasets: No datasets available.
+    remove: Remove
+    add_dataset: Add Dataset
+    dataset_added: Dataset added
+    more_info: More Info
     clear_filters: Clear Filters
+    filter_datasets: filter datasets    # placeholder text for the filter text
+    any_type: any type                  # placeholder text for the filter type dropdown
     datasets_found:
       one: "{n} dataset found"
       other: "{gt}{n} datasets found"   # {gt} = placeholder for greater than symbol '>', {n} = count
@@ -1141,10 +1146,6 @@ en:
       preview: preview
       roads: roads
       trees: trees
-    no_datasets: No datasets available.
-    remove: Remove
-    add_dataset: Add Dataset
-    more_info: More Info
     fbRoads:
       label: Facebook Roads
       description: AI predicted roads detected from Maxar Premium imagery and available in over 80 countries.
