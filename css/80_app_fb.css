@@ -491,11 +491,8 @@ button.rapid-features.layer-off use {
 
 
 /* dark scrollbars */
-.modal.rapid-modal {
-  scrollbar-width: thin;
-}
 .modal.rapid-modal ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 .modal.rapid-modal ::-webkit-scrollbar-track {
   background: #444;
