@@ -83,8 +83,7 @@ export class UiOvertureInspector {
     $$header
       .append('h3')
       .append('img')
-      .attr('class', 'wordmark-overture')
-      .attr('src', this.context.assetPath + 'img/omf-wordmark.svg');
+      .attr('class', 'wordmark-overture');
 
     $$header
       .append('button')
@@ -99,6 +98,8 @@ export class UiOvertureInspector {
 
     // update
     this.$inspector = $inspector = $inspector.merge($$inspector);
+    $inspector.selectAll('img.wordmark-overture')
+      .attr('src', this.context.assetPath + 'img/omf-wordmark' + rtl + '.svg');
 
     // localize logo
     $inspector.selectAll('.logo-overture > use')
