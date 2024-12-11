@@ -89,7 +89,7 @@ export class UiOvertureInspector {
       .append('button')
       .attr('class', 'overture-inspector-close')
       .on('click', () => context.enter('browse'))
-      .call(uiIcon('#overture-icon-close'));
+      .call(uiIcon('#rapid-icon-close'));
 
     // add `.body`
     $$inspector

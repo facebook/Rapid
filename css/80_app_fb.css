@@ -202,20 +202,27 @@ button.rapid-features.layer-off use {
 .rapid-inspector .header svg.logo-rapid {
   height: 35px;
 }
-.rapid-inspector .header button.rapid-inspector-close {
+.rapid-inspector .header button.rapid-inspector-close,
+.overture-inspector .header button.overture-inspector-close {
   position: absolute;
   top: 0;
   right: 0;
   background: transparent;
   border-radius: 0px;
 }
-.ideditor[dir='rtl'] .rapid-inspector .header button.rapid-inspector-close {
+.ideditor[dir='rtl'] .rapid-inspector .header button.rapid-inspector-close,
+.ideditor[dir='rtl'] .overture-inspector .header button.overture-inspector-close
+ {
   right: unset;
   left: 0;
 }
 .rapid-inspector .header button.rapid-inspector-close svg {
   color: #da26d3;
 }
+.rapid-inspector .header button.rapid-inspector-close svg {
+  color: #000000;
+}
+
 .rapid-inspector .header button.rapid-inspector-close:hover {
   background: #8885;
 }
