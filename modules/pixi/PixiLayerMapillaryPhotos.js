@@ -52,10 +52,10 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     this._fovchanged = this._fovchanged.bind(this);
 
     if (this.supported) {
-      const service = this.context.services.mapillary;
-      service.on('bearingChanged', this._bearingchanged);
-      service.on('fovChanged', this._fovchanged);
-      service.on('imageChanged', () => {
+      const mapillary = this.context.services.mapillary;
+      mapillary.on('bearingChanged', this._bearingchanged);
+      mapillary.on('fovChanged', this._fovchanged);
+      mapillary.on('imageChanged', () => {
         this._viewerFov = 55;
       });
     }
@@ -133,9 +133,12 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     if (val === this._enabled) return;  // no change
     this._enabled = val;
 
-    if (val) {
-      this.dirtyLayer();
-      this.context.services.mapillary.startAsync();
+    const context = this.context;
+    const gfx = context.systems.gfx;
+    const mapillary = context.services.mapillary;
+    if (val && mapillary) {
+      mapillary.startAsync()
+        .then(() => gfx.immediateRedraw());
     }
   }
 
@@ -214,15 +217,15 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   renderMarkers(frame, viewport, zoom) {
-    const service = this.context.services.mapillary;
-    if (!service?.started) return;
+    const mapillary = this.context.services.mapillary;
+    if (!mapillary?.started) return;
 
     // const showMarkers = (zoom >= MINMARKERZOOM);
     // const showViewfields = (zoom >= MINVIEWFIELDZOOM);
 
     const parentContainer = this.scene.groups.get('streetview');
-    let sequences = service.getSequences();
-    let images = service.getData('images');
+    let sequences = mapillary.getSequences();
+    let images = mapillary.getData('images');
 
     sequences = this.filterSequences(sequences);
     images = this.filterImages(images);
@@ -324,10 +327,10 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   render(frame, viewport, zoom) {
-    const service = this.context.services.mapillary;
-    if (!this.enabled || !service?.started || zoom < MINZOOM) return;
+    const mapillary = this.context.services.mapillary;
+    if (!this.enabled || !mapillary?.started || zoom < MINZOOM) return;
 
-    service.loadTiles('images');
+    mapillary.loadTiles('images');
     this.renderMarkers(frame, viewport, zoom);
   }
 

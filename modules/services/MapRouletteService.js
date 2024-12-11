@@ -77,6 +77,7 @@ export class MapRouletteService extends AbstractSystem {
    */
   startAsync() {
     this._started = true;
+    return Promise.resolve();
   }
 
 
@@ -248,7 +249,7 @@ export class MapRouletteService extends AbstractSystem {
         if (err.name === 'AbortError') {
           cache.tileRequest.delete(tile.id);  // allow retry
         } else {  // real error
-          console.error(err);  // eslint-disable-line
+          console.error(err);    // eslint-disable-line no-console
           cache.tileRequest.set(tile.id, { status: 'error' });  // don't retry
         }
       })
@@ -301,7 +302,7 @@ export class MapRouletteService extends AbstractSystem {
           if (err.name === 'AbortError') {
             cache.challengeRequest.delete(challengeID);  // allow retry
           } else {  // real error
-            console.error(err);  // eslint-disable-line
+            console.error(err);    // eslint-disable-line no-console
             cache.challengeRequest.set(challengeID, { status: 'error' });  // don't retry
           }
         })
@@ -361,7 +362,7 @@ export class MapRouletteService extends AbstractSystem {
         if (err.name === 'AbortError') {
           return;  // ok
         } else {  // real error
-          console.error(err);  // eslint-disable-line
+          console.error(err);    // eslint-disable-line no-console
         }
       })
       .finally(() => {
@@ -410,7 +411,7 @@ export class MapRouletteService extends AbstractSystem {
         if (err.name === 'AbortError') {
           return;  // ok
         } else {  // real error
-          console.error(err);  // eslint-disable-line
+          console.error(err);    // eslint-disable-line no-console
           if (callback) callback(err.message);
         }
       })
@@ -537,7 +538,7 @@ export class MapRouletteService extends AbstractSystem {
       }
     })
     .catch(err => {
-      console.error('Error fetching nearby tasks for challenge:', challengeID, err);
+      console.error('Error fetching nearby tasks for challenge:', challengeID, err);  // eslint-disable-line no-console
     });
   }
 

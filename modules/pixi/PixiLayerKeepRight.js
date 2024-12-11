@@ -45,9 +45,12 @@ export class PixiLayerKeepRight extends AbstractLayer {
     if (val === this._enabled) return;  // no change
     this._enabled = val;
 
-    if (val) {
-      this.dirtyLayer();
-      this.context.services.keepRight.startAsync();
+    const context = this.context;
+    const gfx = context.systems.gfx;
+    const keepRight = context.services.keepRight;
+    if (val && keepRight) {
+      keepRight.startAsync()
+        .then(() => gfx.immediateRedraw());
     }
   }
 
@@ -59,11 +62,11 @@ export class PixiLayerKeepRight extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   renderMarkers(frame, viewport, zoom) {
-    const service = this.context.services.keepRight;
-    if (!service?.started) return;
+    const keepRight = this.context.services.keepRight;
+    if (!keepRight?.started) return;
 
     const parentContainer = this.scene.groups.get('qa');
-    const items = service.getData();
+    const items = keepRight.getData();
 
     for (const d of items) {
       const featureID = `${this.layerID}-${d.id}`;
@@ -72,7 +75,7 @@ export class PixiLayerKeepRight extends AbstractLayer {
       if (!feature) {
         const style = {
           markerName: 'keepright',
-          markerTint: service.getColor(d.parentIssueType)
+          markerTint: keepRight.getColor(d.parentIssueType)
         };
 
         feature = new PixiFeaturePoint(this, featureID);
@@ -97,10 +100,10 @@ export class PixiLayerKeepRight extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   render(frame, viewport, zoom) {
-    const service = this.context.services.keepRight;
-    if (!this.enabled || !service?.started || zoom < MINZOOM) return;
+    const keepRight = this.context.services.keepRight;
+    if (!this.enabled || !keepRight?.started || zoom < MINZOOM) return;
 
-    service.loadTiles();
+    keepRight.loadTiles();
     this.renderMarkers(frame, viewport, zoom);
   }
 

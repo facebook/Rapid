@@ -55,6 +55,7 @@ export class GeoScribbleService extends AbstractSystem {
    */
   startAsync() {
     this._started = true;
+    return Promise.resolve();
   }
 
 

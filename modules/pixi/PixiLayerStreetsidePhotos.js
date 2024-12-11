@@ -48,9 +48,9 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
     this._dirtyCurrentPhoto = this._dirtyCurrentPhoto.bind(this);
 
     if (this.supported) {
-      const service = this.context.services.streetside;
-      service.on('bearingChanged', this._dirtyCurrentPhoto);
-      service.on('fovChanged', this._dirtyCurrentPhoto);
+      const streetside = this.context.services.streetside;
+      streetside.on('bearingChanged', this._dirtyCurrentPhoto);
+      streetside.on('fovChanged', this._dirtyCurrentPhoto);
     }
   }
 
@@ -104,9 +104,12 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
     if (val === this._enabled) return;  // no change
     this._enabled = val;
 
-    if (val) {
-      this.dirtyLayer();
-      this.context.services.streetside.startAsync();
+    const context = this.context;
+    const gfx = context.systems.gfx;
+    const streetside = context.services.streetside;
+    if (val && streetside) {
+      streetside.startAsync()
+        .then(() => gfx.immediateRedraw());
     }
   }
 
@@ -180,12 +183,12 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   renderMarkers(frame, viewport, zoom) {
-    const service = this.context.services.streetside;
-    if (!service?.started) return;
+    const streetside = this.context.services.streetside;
+    if (!streetside?.started) return;
 
     const parentContainer = this.scene.groups.get('streetview');
-    let images = service.getImages();
-    let sequences = service.getSequences();
+    let images = streetside.getImages();
+    let sequences = streetside.getSequences();
 
     sequences = this.filterSequences(sequences);
     images = this.filterImages(images);
@@ -238,7 +241,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
         const style = Object.assign({}, MARKERSTYLE);
 
         if (feature.hasClass('selectphoto')) {  // selected photo style
-          const viewer = service._viewer;
+          const viewer = streetside._viewer;
           const yaw = viewer?.getYaw() ?? 0;
           const fov = viewer?.getHfov() ?? 45;
 
@@ -279,10 +282,10 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   render(frame, viewport, zoom) {
-    const service = this.context.services.streetside;
-    if (!this.enabled || !service?.started || zoom < MINZOOM) return;
+    const streetside = this.context.services.streetside;
+    if (!this.enabled || !streetside?.started || zoom < MINZOOM) return;
 
-    service.loadTiles();
+    streetside.loadTiles();
     this.renderMarkers(frame, viewport, zoom);
   }
 

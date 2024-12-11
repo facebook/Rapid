@@ -65,9 +65,12 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
     if (val === this._enabled) return;  // no change
     this._enabled = val;
 
-    if (val) {
-      this.dirtyLayer();
-      this.context.services.kartaview.startAsync();
+    const context = this.context;
+    const gfx = context.systems.gfx;
+    const kartaview = context.services.kartaview;
+    if (val && kartaview) {
+      kartaview.startAsync()
+        .then(() => gfx.immediateRedraw());
     }
   }
 
@@ -142,12 +145,12 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   renderMarkers(frame, viewport, zoom) {
-    const service = this.context.services.kartaview;
-    if (!service?.started) return;
+    const kartaview = this.context.services.kartaview;
+    if (!kartaview?.started) return;
 
     const parentContainer = this.scene.groups.get('streetview');
-    let images = service.getImages();
-    let sequences = service.getSequences();
+    let images = kartaview.getImages();
+    let sequences = kartaview.getSequences();
 
     sequences = this.filterSequences(sequences);
     images = this.filterImages(images);
@@ -239,10 +242,10 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   render(frame, viewport, zoom) {
-    const service = this.context.services.kartaview;
-    if (!this.enabled || !service?.started || zoom < MINZOOM) return;
+    const kartaview = this.context.services.kartaview;
+    if (!this.enabled || !kartaview?.started || zoom < MINZOOM) return;
 
-    service.loadTiles();
+    kartaview.loadTiles();
     this.renderMarkers(frame, viewport, zoom);
   }
 

@@ -45,9 +45,12 @@ export class PixiLayerOsmNotes extends AbstractLayer {
     if (val === this._enabled) return;  // no change
     this._enabled = val;
 
-    if (val) {
-      this.dirtyLayer();
-      this.context.services.osm.startAsync();
+    const context = this.context;
+    const gfx = context.systems.gfx;
+    const osm = context.services.osm;
+    if (val && osm) {
+      osm.startAsync()
+        .then(() => gfx.immediateRedraw());
     }
   }
 
@@ -59,11 +62,11 @@ export class PixiLayerOsmNotes extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   renderMarkers(frame, viewport, zoom) {
-    const service = this.context.services.osm;
-    if (!service?.started) return;
+    const osm = this.context.services.osm;
+    if (!osm?.started) return;
 
     const parentContainer = this.scene.groups.get('qa');
-    const notes = service.getNotes();
+    const notes = osm.getNotes();
 
     for (const note of notes) {
       const featureID = `${this.layerID}-${note.id}`;
@@ -122,10 +125,10 @@ export class PixiLayerOsmNotes extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   render(frame, viewport, zoom) {
-    const service = this.context.services.osm;
-    if (!this.enabled || !service?.started || zoom < MINZOOM) return;
+    const osm = this.context.services.osm;
+    if (!this.enabled || !osm?.started || zoom < MINZOOM) return;
 
-    service.loadNotes(this.context.viewport);  // note: context.viewport !== pixi viewport
+    osm.loadNotes(this.context.viewport);  // note: context.viewport !== pixi viewport
     this.renderMarkers(frame, viewport, zoom);
   }
 

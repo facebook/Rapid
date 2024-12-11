@@ -47,9 +47,12 @@ export class PixiLayerMapillaryDetections extends AbstractLayer {
     if (val === this._enabled) return;  // no change
     this._enabled = val;
 
-    if (val) {
-      this.dirtyLayer();
-      this.context.services.mapillary.startAsync();
+    const context = this.context;
+    const gfx = context.systems.gfx;
+    const mapillary = context.services.mapillary;
+    if (val && mapillary) {
+      mapillary.startAsync()
+        .then(() => gfx.immediateRedraw());
     }
   }
 
@@ -86,12 +89,12 @@ export class PixiLayerMapillaryDetections extends AbstractLayer {
     const context = this.context;
     const presets = context.systems.presets;
 
-    const service = context.services.mapillary;
-    if (!service?.started) return;
+    const mapillary = context.services.mapillary;
+    if (!mapillary?.started) return;
 
     const parentContainer = this.scene.groups.get('qa');
 
-    let items = service.getData('detections');
+    let items = mapillary.getData('detections');
     items = this.filterDetections(items);
 
     for (const d of items) {
@@ -109,7 +112,7 @@ export class PixiLayerMapillaryDetections extends AbstractLayer {
 
       if (feature.dirty) {
         const isSelected = feature.hasClass('selectdetection');
-        const presetID = service.getDetectionPresetID(d.value);
+        const presetID = mapillary.getDetectionPresetID(d.value);
         const preset = presetID && presets.item(presetID);
 
         const style = {
@@ -137,10 +140,10 @@ export class PixiLayerMapillaryDetections extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   render(frame, viewport, zoom) {
-    const service = this.context.services.mapillary;
-    if (!this.enabled || !service?.started || zoom < MINZOOM) return;
+    const mapillary = this.context.services.mapillary;
+    if (!this.enabled || !mapillary?.started || zoom < MINZOOM) return;
 
-    service.loadTiles('detections');
+    mapillary.loadTiles('detections');
     this.renderMarkers(frame, viewport, zoom);
   }
 

@@ -104,7 +104,6 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
    * @return {boolean}  `true` if there is a vector tile template or geojson to display
    */
   hasData() {
-
     if (this._overlaysDefined === null) {
       const datasets = this.context.systems.rapid.datasets;
       this._overlaysDefined = false;

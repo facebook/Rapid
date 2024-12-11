@@ -45,9 +45,12 @@ export class PixiLayerMapRoulette extends AbstractLayer {
     if (val === this._enabled) return;  // no change
     this._enabled = val;
 
-    if (val) {
-      this.dirtyLayer();
-      this.context.services.maproulette.startAsync();
+    const context = this.context;
+    const gfx = context.systems.gfx;
+    const maproulette = context.services.maproulette;
+    if (val && maproulette) {
+      maproulette.startAsync()
+        .then(() => gfx.immediateRedraw());
     }
   }
 
@@ -59,11 +62,11 @@ export class PixiLayerMapRoulette extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderMarkers(frame, projection, zoom) {
-    const service = this.context.services.maproulette;
-    if (!service?.started) return;
+    const maproulette = this.context.services.maproulette;
+    if (!maproulette?.started) return;
 
     const parentContainer = this.scene.groups.get('qa');
-    const items = service.getData();
+    const items = maproulette.getData();
 
     for (const d of items) {
       const featureID = `${this.layerID}-${d.id}`;
@@ -102,10 +105,10 @@ export class PixiLayerMapRoulette extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const service = this.context.services.maproulette;
-    if (!this.enabled || !service?.started || zoom < MINZOOM) return;
+    const maproulette = this.context.services.maproulette;
+    if (!this.enabled || !maproulette?.started || zoom < MINZOOM) return;
 
-    service.loadTiles();
+    maproulette.loadTiles();
     this.renderMarkers(frame, projection, zoom);
   }
 

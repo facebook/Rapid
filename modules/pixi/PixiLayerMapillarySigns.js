@@ -45,9 +45,12 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
     if (val === this._enabled) return;  // no change
     this._enabled = val;
 
-    if (val) {
-      this.dirtyLayer();
-      this.context.services.mapillary.startAsync();
+    const context = this.context;
+    const gfx = context.systems.gfx;
+    const mapillary = context.services.mapillary;
+    if (val && mapillary) {
+      mapillary.startAsync()
+        .then(() => gfx.immediateRedraw());
     }
   }
 
@@ -80,13 +83,13 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
    */
   renderMarkers(frame, viewport, zoom) {
     const context = this.context;
-    const service = context.services.mapillary;
-    if (!service?.started) return;
+    const mapillary = context.services.mapillary;
+    if (!mapillary?.started) return;
 
     const container = context.container();
     const parentContainer = this.scene.groups.get('qa');
 
-    let items = service.getData('signs');
+    let items = mapillary.getData('signs');
     items = this.filterDetections(items);
 
     for (const d of items) {
@@ -136,10 +139,10 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   render(frame, viewport, zoom) {
-    const service = this.context.services.mapillary;
-    if (!this.enabled || !service?.started || zoom < MINZOOM) return;
+    const mapillary = this.context.services.mapillary;
+    if (!this.enabled || !mapillary?.started || zoom < MINZOOM) return;
 
-    service.loadTiles('signs');
+    mapillary.loadTiles('signs');
     this.renderMarkers(frame, viewport, zoom);
   }
 

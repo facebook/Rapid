@@ -31,6 +31,7 @@ export class OsmoseService extends AbstractSystem {
     super(context);
     this.id = 'osmose';
     this.autoStart = false;
+    this._startPromise = null;
 
     // persistent data - loaded at init
     this._osmoseColors = new Map();    // Map (itemType -> hex color)
@@ -59,8 +60,11 @@ export class OsmoseService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
+    if (this._startPromise) return this._startPromise;
+
     const assets = this.context.systems.assets;
-    return assets.loadAssetAsync('qa_data')
+
+    return this._startPromise = assets.loadAssetAsync('qa_data')
       .then(d => {
         this._osmoseData.icons = d.osmose.icons;
         this._osmoseData.types = Object.keys(d.osmose.icons)
@@ -68,7 +72,11 @@ export class OsmoseService extends AbstractSystem {
           .reduce((unique, item) => unique.indexOf(item) !== -1 ? unique : [...unique, item], []);
       })
       .then(() => this._loadStringsAsync())
-      .then(() => this._started = true);
+      .then(() => this._started = true)
+      .catch(err => {
+        if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
+        this._startPromise = null;
+      });
   }
 
 

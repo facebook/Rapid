@@ -45,9 +45,12 @@ export class PixiLayerOsmose extends AbstractLayer {
     if (val === this._enabled) return;  // no change
     this._enabled = val;
 
-    if (val) {
-      this.dirtyLayer();
-      this.context.services.osmose.startAsync();
+    const context = this.context;
+    const gfx = context.systems.gfx;
+    const osmose = context.services.osmose;
+    if (val && osmose) {
+      osmose.startAsync()
+        .then(() => gfx.immediateRedraw());
     }
   }
 
@@ -59,11 +62,11 @@ export class PixiLayerOsmose extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   renderMarkers(frame, viewport, zoom) {
-    const service = this.context.services.osmose;
-    if (!service?.started) return;
+    const osmose = this.context.services.osmose;
+    if (!osmose?.started) return;
 
     const parentContainer = this.scene.groups.get('qa');
-    const items = service.getData();
+    const items = osmose.getData();
 
     for (const d of items) {
       const featureID = `${this.layerID}-${d.id}`;
@@ -72,7 +75,7 @@ export class PixiLayerOsmose extends AbstractLayer {
       if (!feature) {
         const style = {
           markerName: 'osmose',
-          markerTint: service.getColor(d.item),
+          markerTint: osmose.getColor(d.item),
           iconName: d.icon
         };
 
@@ -102,10 +105,10 @@ export class PixiLayerOsmose extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   render(frame, viewport, zoom) {
-    const service = this.context.services.osmose;
-    if (!this.enabled || !service?.started || zoom < MINZOOM) return;
+    const osmose = this.context.services.osmose;
+    if (!this.enabled || !osmose?.started || zoom < MINZOOM) return;
 
-    service.loadTiles();
+    osmose.loadTiles();
     this.renderMarkers(frame, viewport, zoom);
   }
 

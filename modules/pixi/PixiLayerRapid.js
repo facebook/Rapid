@@ -110,8 +110,9 @@ export class PixiLayerRapid extends AbstractLayer {
    * Whether the Layer's service exists
    */
   get supported() {
-    const service = this.context.services;
-    return !!service.mapwithai || !!service.esri;
+    // return true if any of these are installed
+    const services = this.context.services;
+    return !!(services.mapwithai || services.esri || services.overture);
   }
 
 
@@ -131,10 +132,22 @@ export class PixiLayerRapid extends AbstractLayer {
     if (val === this._enabled) return;  // no change
     this._enabled = val;
 
-    if (val) {
-      this.dirtyLayer();
-      this.context.services.mapwithai.startAsync();
-      this.context.services.esri.startAsync();
+    const context = this.context;
+    const gfx = context.systems.gfx;
+    const esri = context.services.esri;
+    const mapwithai = context.services.mapwithai;
+    const overture = context.services.overture;
+
+    // This code is written in a way that we can work with whatever
+    // data-providing services are installed.
+    const services = [];
+    if (esri)      services.push(esri);
+    if (mapwithai) services.push(mapwithai);
+    if (overture)  services.push(overture);
+
+    if (val && services.length) {
+      Promise.all(services.map(service => service.startAsync()))
+        .then(() => gfx.immediateRedraw());
     }
   }
 

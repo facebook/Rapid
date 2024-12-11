@@ -60,9 +60,12 @@ export class PixiLayerGeoScribble extends AbstractLayer {
     if (val === this._enabled) return;  // no change
     this._enabled = val;
 
-    if (val) {
-      this.dirtyLayer();
-      this.context.services.geoScribble.startAsync();
+    const context = this.context;
+    const gfx = context.systems.gfx;
+    const geoScribble = context.services.geoScribble;
+    if (val && geoScribble) {
+      geoScribble.startAsync()
+        .then(() => gfx.immediateRedraw());
     }
   }
 
@@ -77,10 +80,10 @@ export class PixiLayerGeoScribble extends AbstractLayer {
   render(frame, viewport, zoom) {
     if (!this.enabled) return;
 
-    const service = this.context.services.geoScribble;
-    service.loadTiles();
+    const geoScribble = this.context.services.geoScribble;
+    geoScribble.loadTiles();
 
-    const geoData = service.getData();
+    const geoData = geoScribble.getData();
 
     // No polygons will be returned by the service, so we don't need to consider those types.
     const lines = geoData.filter(d => d.geometry.type === 'LineString' || d.geometry.type === 'MultiLineString');

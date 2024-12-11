@@ -71,9 +71,12 @@ export class PixiLayerOsm extends AbstractLayer {
     if (val === this._enabled) return;  // no change
     this._enabled = val;
 
-    if (val) {
-      this.dirtyLayer();
-      this.context.services.osm.startAsync();
+    const context = this.context;
+    const gfx = context.systems.gfx;
+    const osm = context.services.osm;
+    if (val && osm) {
+      osm.startAsync()
+        .then(() => gfx.immediateRedraw());
     }
   }
 
@@ -123,10 +126,10 @@ export class PixiLayerOsm extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   render(frame, viewport, zoom) {
-    const service = this.context.services.osm;
-    if (!this.enabled || !service?.started || zoom < MINZOOM) return;
-
     const context = this.context;
+    const osm = context.services.osm;
+    if (!this.enabled || !osm?.started || zoom < MINZOOM) return;
+
     const editor = context.systems.editor;
     const filters = context.systems.filters;
     const graph = editor.staging.graph;
