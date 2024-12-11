@@ -59,7 +59,7 @@ export function uiWhatsNew(context) {
 // if an image:
       .append('img')
       .attr('class', 'whatsnew-image')
-      .attr('src', assets.getFileURL('img/rapid-v24-mapillary.gif'));
+      .attr('src', assets.getFileURL('img/rapid-v25-curbs.gif'));
 // if a video:
 //      .append('video')
 //      .attr('class', 'whatsnew-image')
