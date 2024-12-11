@@ -213,10 +213,10 @@ export class UiOvertureInspector {
       $$propHeading.text(key);
 
       const $$tagEntry = $$propBag.append('div').attr('class', 'property-entry');
+      const parsedJson = this._getJsonStructure(v);
+      if (parsedJson === null) continue;
 
-      if (this._hasJsonStructure(v)) {
-
-        const parsedJson = JSON.parse(v);
+      if (Object.keys(parsedJson).length !== 0) {
         // Object processing
         if (!Array.isArray(parsedJson)) {
           for (const [k1, v1] of Object.entries(parsedJson)) {
@@ -250,17 +250,16 @@ export class UiOvertureInspector {
   }
 
   /**
-   * _hasJsonStructure is used to test the values we receive from the Overture data, which may be strings, Json arrays, or Json objects.
-   */
-  _hasJsonStructure(str) {
-    if (typeof str !== 'string') return false;
+   * _getJsonStructure is used to test the values we receive from the Overture data, which may be strings, Json arrays, or Json objects.
+   * @returns null if the str isn't a string, empty object {} if the string can't be parsed into JSON, or the parsed object.
+  */
+  _getJsonStructure(str) {
+    if (typeof str !== 'string') return null;
     try {
         const result = JSON.parse(str);
-        const type = Object.prototype.toString.call(result);
-        return type === '[object Object]'
-            || type === '[object Array]';
+        return result;
     } catch (err) {
-        return false;
+        return {};
     }
 }
 
