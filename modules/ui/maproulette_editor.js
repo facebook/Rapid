@@ -307,6 +307,7 @@ export function uiMapRouletteEditor(context) {
         console.error(err); // eslint-disable-line no-console
         return;
       }
+
       _mapRouletteApiKey = apiKey;
       const osm = context.services.osm;
       const hasOSMAuth = osm && osm.authenticated();
@@ -314,6 +315,16 @@ export function uiMapRouletteEditor(context) {
       const hasAuth = hasOSMAuth && hasMapRouletteAuth;
       const errID = _qaItem?.id;
       const isSelected = errID && context.selectedData().has(errID);
+
+      const uiSystem = context.systems.ui;
+      // Check if the MapRoulette menu is showing
+      if (uiSystem._showsMapRouletteMenu) {
+        selection.selectAll('.mr-save .buttons').style('display', 'none');
+        return;
+      } else {
+        selection.selectAll('.mr-save .buttons').style('display', ''); // Ensure buttons are shown if menu is not open
+      }
+
       let buttonSection = selection.selectAll('.buttons')
         .data(isSelected ? [_qaItem] : [], d => d.key);
 
