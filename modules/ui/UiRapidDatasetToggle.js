@@ -436,7 +436,7 @@ export class UiRapidDatasetToggle {
     if (dataset) {
       dataset.color = color;
 
-      scene.dirtyLayers(['rapid', 'rapid-overlay', 'overture']);
+      scene.dirtyLayers(['rapid', 'rapid-overlay']);
       gfx.immediateRedraw();
       this.render();
 

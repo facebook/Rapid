@@ -202,20 +202,27 @@ button.rapid-features.layer-off use {
 .rapid-inspector .header svg.logo-rapid {
   height: 35px;
 }
-.rapid-inspector .header button.rapid-inspector-close {
+.rapid-inspector .header button.rapid-inspector-close,
+.overture-inspector .header button.overture-inspector-close {
   position: absolute;
   top: 0;
   right: 0;
   background: transparent;
   border-radius: 0px;
 }
-.ideditor[dir='rtl'] .rapid-inspector .header button.rapid-inspector-close {
+.ideditor[dir='rtl'] .rapid-inspector .header button.rapid-inspector-close,
+.ideditor[dir='rtl'] .overture-inspector .header button.overture-inspector-close
+ {
   right: unset;
   left: 0;
 }
 .rapid-inspector .header button.rapid-inspector-close svg {
   color: #da26d3;
 }
+.rapid-inspector .header button.rapid-inspector-close svg {
+  color: #000000;
+}
+
 .rapid-inspector .header button.rapid-inspector-close:hover {
   background: #8885;
 }
@@ -240,14 +247,16 @@ button.rapid-features.layer-off use {
   padding: 20px 0;
 }
 
-.rapid-inspector .feature-info {
+.rapid-inspector .feature-info,
+.overture-inspector .feature-info {
   display: flex;
   padding: 5px 10px;
   border-radius: 5px 5px 0 0;
   border: 1px solid #333;
 }
 
-.rapid-inspector .feature-info .dataset-label {
+.rapid-inspector .feature-info .dataset-label,
+.overture-inspector .feature-info .dataset-label  {
   flex: 1;
   font-size: 14px;
   font-weight: bold;
@@ -256,7 +265,8 @@ button.rapid-features.layer-off use {
   font-size: 13px;
 }
 
-.rapid-inspector .tag-info {
+.rapid-inspector .tag-info,
+.overture-inspector .property-info {
   padding: 7px;
   background: #444;
   color: #ddd;
@@ -267,9 +277,12 @@ button.rapid-features.layer-off use {
   display: flex;
   flex-flow: row wrap;
 }
-.rapid-inspector .tag-heading {
+.rapid-inspector .tag-heading,
+.overture-inspector .property-heading {
   margin-right: 5px;
+  margin-top: 5px;
   padding-left: 3px;
+  font-size: larger;
 }
 .rapid-inspector .tag-info .tag-entry {
   display: flex;
@@ -281,12 +294,31 @@ button.rapid-features.layer-off use {
   font-weight: 300;
   margin: 0 3px;
 }
+
+.overture-inspector .property-info .property-entry {
+  display: flex;
+  flex-flow: row wrap;
+  border-radius: 5px;
+  font-size: smaller;
+  font-weight: 300;
+  margin: 0 3px;
+}
+
 .rapid-inspector .tag-key,
-.rapid-inspector .tag-value {
+.rapid-inspector .tag-value,
+.overture-inspector .property-key {
   flex: 0 1 auto;
   padding: 0px 3px;
 }
-.rapid-inspector .tag-key {
+
+.overture-inspector .property-value {
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  padding: 0 3px;
+}
+
+.rapid-inspector .tag-key, 
+.overture-inspector .property-key {
   font-weight: bold;
   font-size: unset;
 }
@@ -353,6 +385,10 @@ button.rapid-features.layer-off use {
 }
 .rapid-inspector-choice .tag-reference-body {
   padding: 15px;
+}
+
+.overture-inspector img.wordmark-overture {
+  width:100%;
 }
 
 /* For things that should stack in rows */

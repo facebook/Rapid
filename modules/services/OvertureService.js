@@ -48,7 +48,7 @@ export class OvertureService extends AbstractSystem {
         this.latestRelease = this.pmTilesCatalog.releases.find(release => release.release_id === dateStrings[0]);
       })
       .catch(error => {
-        console.error('Error fetching or parsing the PMTiles STAC Catalog: ', error);   // eslint-disable-line no-console
+        console.error('Error fetching or parsing the PMTiles Catalog: ', error);   // eslint-disable-line no-console
       });
   }
 
@@ -89,7 +89,7 @@ export class OvertureService extends AbstractSystem {
     // just this one for now
     const places = new RapidDataset(this.context, {
       id: 'overture-places',
-      conflated: true,
+      conflated: false,
       service: 'overture',
       categories: new Set(['overture', 'places', 'featured']),
       color: '#00ffff',

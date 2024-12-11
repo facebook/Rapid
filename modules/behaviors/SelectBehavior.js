@@ -345,6 +345,7 @@ export class SelectBehavior extends AbstractBehavior {
     // Clicked a non-OSM feature..
     if (
       data.__fbid__ ||            // Clicked a Rapid feature..
+      data.overture ||            // Clicked an Overture feature..
       data.__featurehash__ ||     // Clicked Custom Data (e.g. gpx track)..
       data instanceof QAItem ||   // Clicked a QA Item (OSM Note, KeepRight, Osmose, Maproulette)..
       data.type === 'detection'   // Clicked on an object detection / traffic sign..

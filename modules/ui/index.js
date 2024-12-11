@@ -45,6 +45,7 @@ export { uiNoteComments } from './note_comments.js';
 export { uiNoteEditor } from './note_editor.js';
 export { uiNoteHeader } from './note_header.js';
 export { uiNoteReport } from './note_report.js';
+export { UiOvertureInspector } from './UiOvertureInspector.js';
 export { uiOsmoseDetails } from './osmose_details.js';
 export { uiOsmoseEditor } from './osmose_editor.js';
 export { uiOsmoseHeader } from './osmose_header.js';
