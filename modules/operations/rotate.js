@@ -11,7 +11,6 @@ export function operationRotate(context, selectedIDs) {
   const storage = context.systems.storage;
   const viewport = context.viewport;
 
-  const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
   const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
   const extent = utilTotalExtent(entities, graph);
@@ -74,8 +73,8 @@ export function operationRotate(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      l10n.t(`operations.rotate.${disabledReason}.${multi}`) :
-      l10n.t(`operations.rotate.description.${multi}`);
+      l10n.t(`operations.rotate.${disabledReason}`, { n: selectedIDs.length }) :
+      l10n.t(`operations.rotate.description`, { n: selectedIDs.length });
   };
 
 

@@ -12,7 +12,6 @@ export function operationCircularize(context, selectedIDs) {
   const storage = context.systems.storage;
   const viewport = context.viewport;
 
-  const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
   const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
   const extent = utilTotalExtent(entities, graph);
@@ -97,8 +96,8 @@ export function operationCircularize(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      l10n.t(`operations.circularize.${disabledReason}.${multi}`) :
-      l10n.t(`operations.circularize.description.${multi}`);
+      l10n.t(`operations.circularize.${disabledReason}`, { n: selectedIDs.length }) :
+      l10n.t(`operations.circularize.description`, { n: selectedIDs.length });
   };
 
 

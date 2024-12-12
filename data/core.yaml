@@ -99,38 +99,39 @@ en:
     circularize:
       title: Circularize
       description:
-        single: Make this feature circular.
-        multiple: Make these features circular.
+        one: Make this feature circular.
+        other: Make these features circular.
       annotation:
         feature:
           one: Made a feature circular.
           other: "Made {n} features circular."
       multiple_blockers:
-        multiple: These can't be made circular for multiple reasons.
+        one: This can't be made circular for multiple reasons.
+        other: These can't be made circular for multiple reasons.
       not_closed:
-        single: This can't be made circular because it's not a loop.
-        multiple: These can't be made circular because they aren't loops.
+        one: This can't be made circular because it's not a loop.
+        other: These can't be made circular because they aren't loops.
       too_large:
-        single: This can't be made circular because not enough of it is currently visible.
-        multiple: These can't be made circular because not enough of them are currently visible.
+        one: This can't be made circular because not enough of it is currently visible.
+        other: These can't be made circular because not enough of them are currently visible.
       connected_to_hidden:
-        single: This can't be made circular because it is connected to a hidden feature.
-        multiple: These can't be made circular because some are connected to hidden features.
+        one: This can't be made circular because it is connected to a hidden feature.
+        other: These can't be made circular because some are connected to hidden features.
       not_downloaded:
-        single: This can't be made circular because parts of it have not yet been downloaded.
-        multiple: These can't be made circular because parts of them have not yet been downloaded.
+        one: This can't be made circular because parts of it have not yet been downloaded.
+        other: These can't be made circular because parts of them have not yet been downloaded.
       already_circular:
-        single: This can't be made more circular than it already is.
-        multiple: These can't be made more circular than they already are.
+        one: This can't be made more circular than it already is.
+        other: These can't be made more circular than they already are.
     orthogonalize:
       title: Square
       description:
         corner:
-          single: Square this corner.
-          multiple: Square these corners.
+          one: Square this corner.
+          other: Square these corners.
         feature:
-          single: Square the corners of this feature.
-          multiple: Square the corners of these features.
+          one: Square the corners of this feature.
+          other: Square the corners of these features.
       annotation:
         corner:
           one: Squared a corner.
@@ -139,25 +140,26 @@ en:
           one: Squared the corners of a feature.
           other: "Squared the corners of {n} features."
       multiple_blockers:
-        multiple: These can't be squared for multiple reasons.
+        one: This can't be squared for multiple reasons.
+        other: These can't be squared for multiple reasons.
       end_vertex:
-        single: This can't be squared because it is an endpoint.
-        multiple: These can't be squared because they are endpoints.
+        one: This can't be squared because it is an endpoint.
+        other: These can't be squared because they are endpoints.
       square_enough:
-        single: This can't be made more square than it already is.
-        multiple: These can't be made more square than they already are.
+        one: This can't be made more square than it already is.
+        other: These can't be made more square than they already are.
       not_squarish:
-        single: This can't be made square because it is not squarish.
-        multiple: These can't be made square because they are not squarish.
+        one: This can't be made square because it is not squarish.
+        other: These can't be made square because they are not squarish.
       too_large:
-        single: This can't be made square because not enough of it is currently visible.
-        multiple: These can't be made square because not enough of them are currently visible.
+        one: This can't be made square because not enough of it is currently visible.
+        other: These can't be made square because not enough of them are currently visible.
       connected_to_hidden:
-        single: This can't be made square because it is connected to a hidden feature.
-        multiple: These can't be made square because some are connected to hidden features.
+        one: This can't be made square because it is connected to a hidden feature.
+        other: These can't be made square because some are connected to hidden features.
       not_downloaded:
-        single: This can't be made square because parts of it have not yet been downloaded.
-        multiple: These can't be made square because parts of them have not yet been downloaded.
+        one: This can't be made square because parts of it have not yet been downloaded.
+        other: These can't be made square because parts of them have not yet been downloaded.
     straighten:
       title: Straighten
       description:
@@ -172,25 +174,25 @@ en:
           one: Straightened a line.
           other: "Straightened {n} lines."
       too_bendy:
-        single: This can't be straightened because it bends too much.
-        multiple: These can't be straightened because they bend too much.
+        one: This can't be straightened because it bends too much.
+        other: These can't be straightened because they bend too much.
       connected_to_hidden:
-        single: This can't be straightened because it is connected to a hidden feature.
-        multiple: These can't be straightened because some are connected to hidden features.
+        one: This can't be straightened because it is connected to a hidden feature.
+        other: These can't be straightened because some are connected to hidden features.
       not_downloaded:
-        single: This can't be straightened because parts of it have not yet been downloaded.
-        multiple: These can't be straightened because parts of them have not yet been downloaded.
+        one: This can't be straightened because parts of it have not yet been downloaded.
+        other: These can't be straightened because parts of them have not yet been downloaded.
       straight_enough:
-        single: This can't be made straighter than it already is.
-        multiple: These can't be made straighter than they already are.
+        one: This can't be made straighter than it already is.
+        other: These can't be made straighter than they already are.
       too_large:
-        single: This can't be straightened because not enough of it is currently visible.
-        multiple: These can't be straightened because not enough of them are currently visible.
+        one: This can't be straightened because not enough of it is currently visible.
+        other: These can't be straightened because not enough of them are currently visible.
     delete:
       title: Delete
       description:
-        single: Delete this feature permanently.
-        multiple: Delete these features permanently.
+        one: Delete this feature permanently.
+        other: Delete these features permanently.
       annotation:
         point: Deleted a point.
         vertex: Deleted a node from a way.
@@ -201,23 +203,23 @@ en:
           one: "Deleted a feature."
           other: "Deleted {n} features."
       too_large:
-        single: This feature can't be deleted because not enough of it is currently visible.
-        multiple: These features can't be deleted because not enough of them are currently visible.
+        one: This feature can't be deleted because not enough of it is currently visible.
+        other: These features can't be deleted because not enough of them are currently visible.
       incomplete_relation:
-        single: This feature can't be deleted because it hasn't been fully downloaded.
-        multiple: These features can't be deleted because they haven't been fully downloaded.
+        one: This feature can't be deleted because it hasn't been fully downloaded.
+        other: These features can't be deleted because they haven't been fully downloaded.
       part_of_relation:
-        single: This feature can't be deleted because it is part of a larger relation. You must remove it from the relation first.
-        multiple: These features can't be deleted because they are part of larger relations. You must remove them from the relations first.
+        one: This feature can't be deleted because it is part of a larger relation. You must remove it from the relation first.
+        other: These features can't be deleted because they are part of larger relations. You must remove them from the relations first.
       connected_to_hidden:
-        single: This feature can't be deleted because it is connected to a hidden feature.
-        multiple: These features can't be deleted because some are connected to hidden features.
+        one: This feature can't be deleted because it is connected to a hidden feature.
+        other: These features can't be deleted because some are connected to hidden features.
       not_downloaded:
-        single: This feature can't be deleted because parts of it have not yet been downloaded.
-        multiple: These features can't be deleted because parts of them have not yet been downloaded.
+        one: This feature can't be deleted because parts of it have not yet been downloaded.
+        other: These features can't be deleted because parts of them have not yet been downloaded.
       has_wikidata_tag:
-        single: This feature can't be deleted because it has a Wikidata tag.
-        multiple: These features can't be deleted because some have Wikidata tags.
+        one: This feature can't be deleted because it has a Wikidata tag.
+        other: These features can't be deleted because some have Wikidata tags.
     downgrade:
       title: Downgrade
       description:
@@ -236,8 +238,8 @@ en:
           one: "Downgraded a feature."
           other: "Downgraded {n} features."
       has_wikidata_tag:
-        single: This feature can't be downgraded because it has a Wikidata tag.
-        multiple: These features can't be downgraded because some have Wikidata tags.
+        one: This feature can't be downgraded because it has a Wikidata tag.
+        other: These features can't be downgraded because some have Wikidata tags.
     add_member:
       annotation:
         one: Added a member to a relation.
@@ -314,8 +316,8 @@ en:
     move:
       title: Move
       description:
-        single: Move this feature to a different location.
-        multiple: Move these features to a different location.
+        one: Move this feature to a different location.
+        other: Move these features to a different location.
       annotation:
         point: Moved a point.
         vertex: Moved a node in a way.
@@ -326,28 +328,28 @@ en:
           one: "Moved a feature."
           other: "Moved {n} features."
       incomplete_relation:
-        single: This feature can't be moved because it hasn't been fully downloaded.
-        multiple: These features can't be moved because they haven't been fully downloaded.
+        one: This feature can't be moved because it hasn't been fully downloaded.
+        other: These features can't be moved because they haven't been fully downloaded.
       too_large:
-        single: This feature can't be moved because not enough of it is currently visible.
-        multiple: These features can't be moved because not enough of them are currently visible.
+        one: This feature can't be moved because not enough of it is currently visible.
+        other: These features can't be moved because not enough of them are currently visible.
       connected_to_hidden:
-        single: This feature can't be moved because it is connected to a hidden feature.
-        multiple: These features can't be moved because some are connected to hidden features.
+        one: This feature can't be moved because it is connected to a hidden feature.
+        other: These features can't be moved because some are connected to hidden features.
       not_downloaded:
-        single: This feature can't be moved because parts of it have not yet been downloaded.
-        multiple: These features can't be moved because parts of them have not yet been downloaded.
+        one: This feature can't be moved because parts of it have not yet been downloaded.
+        other: These features can't be moved because parts of them have not yet been downloaded.
     reflect:
       title:
         long: Flip Long
         short: Flip Short
       description:
         long:
-          single: Flip this feature across its long axis.
-          multiple: Flip these features across their long axis.
+          one: Flip this feature across its long axis.
+          other: Flip these features across their long axis.
         short:
-          single: Flip this feature across its short axis.
-          multiple: Flip these features across their short axis.
+          one: Flip this feature across its short axis.
+          other: Flip these features across their short axis.
       annotation:
         long:
           feature:
@@ -358,22 +360,22 @@ en:
             one: Flipped a feature across its short axis.
             other: "Flipped {n} features across their short axis."
       incomplete_relation:
-        single: This feature can't be flipped because it hasn't been fully downloaded.
-        multiple: These features can't be flipped because they haven't been fully downloaded.
+        one: This feature can't be flipped because it hasn't been fully downloaded.
+        other: These features can't be flipped because they haven't been fully downloaded.
       too_large:
-        single: This feature can't be flipped because not enough of it is currently visible.
-        multiple: These features can't be flipped because not enough of them are currently visible.
+        one: This feature can't be flipped because not enough of it is currently visible.
+        other: These features can't be flipped because not enough of them are currently visible.
       connected_to_hidden:
-        single: This feature can't be flipped because it is connected to a hidden feature.
-        multiple: These features can't be flipped because some are connected to hidden features.
+        one: This feature can't be flipped because it is connected to a hidden feature.
+        other: These features can't be flipped because some are connected to hidden features.
       not_downloaded:
-        single: This feature can't be flipped because parts of it have not yet been downloaded.
-        multiple: These features can't be flipped because parts of them have not yet been downloaded.
+        one: This feature can't be flipped because parts of it have not yet been downloaded.
+        other: These features can't be flipped because parts of them have not yet been downloaded.
     rotate:
       title: Rotate
       description:
-        single: Rotate this feature around its center point.
-        multiple: Rotate these features around their center point.
+        one: Rotate this feature around its center point.
+        other: Rotate these features around their center point.
       annotation:
         line: Rotated a line.
         area: Rotated an area.
@@ -382,17 +384,17 @@ en:
           one: Rotated a feature.
           other: "Rotated {n} features."
       incomplete_relation:
-        single: This feature can't be rotated because it hasn't been fully downloaded.
-        multiple: These features can't be rotated because they haven't been fully downloaded.
+        one: This feature can't be rotated because it hasn't been fully downloaded.
+        other: These features can't be rotated because they haven't been fully downloaded.
       too_large:
-        single: This feature can't be rotated because not enough of it is currently visible.
-        multiple: These features can't be rotated because not enough of them are currently visible.
+        one: This feature can't be rotated because not enough of it is currently visible.
+        other: These features can't be rotated because not enough of them are currently visible.
       connected_to_hidden:
-        single: This feature can't be rotated because it is connected to a hidden feature.
-        multiple: These features can't be rotated because some are connected to hidden features.
+        one: This feature can't be rotated because it is connected to a hidden feature.
+        other: These features can't be rotated because some are connected to hidden features.
       not_downloaded:
-        single: This feature can't be rotated because parts of it have not yet been downloaded.
-        multiple: These features can't be rotated because parts of them have not yet been downloaded.
+        one: This feature can't be rotated because parts of it have not yet been downloaded.
+        other: These features can't be rotated because parts of them have not yet been downloaded.
     reverse:
       title: Reverse
       description:
@@ -422,17 +424,17 @@ en:
             one: Scaled up a feature.
             other: "Scaled up {n} features."
       too_small:
-        single: This feature can't be scaled down because it would become too small.
-        multiple: These features can't be scaled down because they would become too small.
+        one: This feature can't be scaled down because it would become too small.
+        other: These features can't be scaled down because they would become too small.
       too_large:
-        single: This feature can't be scaled because not enough of it is currently visible.
-        multiple: These features can't be scaled because not enough of them are currently visible.
+        one: This feature can't be scaled because not enough of it is currently visible.
+        other: These features can't be scaled because not enough of them are currently visible.
       connected_to_hidden:
-        single: This feature can't be scaled because it is connected to a hidden feature.
-        multiple: These features can't be scaled because some are connected to hidden features.
+        one: This feature can't be scaled because it is connected to a hidden feature.
+        other: These features can't be scaled because some are connected to hidden features.
       not_downloaded:
-        single: This feature can't be scaled because parts of it have not yet been downloaded.
-        multiple: These features can't be scaled because parts of them have not yet been downloaded.
+        one: This feature can't be scaled because parts of it have not yet been downloaded.
+        other: These features can't be scaled because parts of them have not yet been downloaded.
     split:
       title: Split
       description:
@@ -474,25 +476,25 @@ en:
       title: Extract
       description:
         vertex:
-          single: Extract this point from its parent lines/areas.
-          multiple: Extract these points from their parent features.
+          one: Extract this point from its parent lines/areas.
+          other: Extract these points from their parent features.
         line:
-          single: Extract a point from this line.
-          multiple: Extract points from these lines.
+          one: Extract a point from this line.
+          other: Extract points from these lines.
         area:
-          single: Extract a point from this area.
-          multiple: Extract points from these areas.
+          one: Extract a point from this area.
+          other: Extract points from these areas.
         feature:
-          multiple: Extract points from these features.
+          other: Extract points from these features.
       annotation:
         one: Extracted a point.
         other: "Extracted {n} points."
       too_large:
-        single: A point can't be extracted because not enough of this feature is visible.
-        multiple: Points can't be extracted because not enough of these features are visible.
+        one: A point can't be extracted because not enough of this feature is visible.
+        other: Points can't be extracted because not enough of these features are visible.
       connected_to_hidden:
-        single: This point can't be extracted because it is connected to a hidden feature.
-        multiple: Points can't be extracted from these features because some are connected to hidden features.
+        one: This point can't be extracted because it is connected to a hidden feature.
+        other: Points can't be extracted from these features because some are connected to hidden features.
     cycle_highway_tag:
       title: Cycle Highway Tag
       description: Shortcut to cycle selected highway or crosswalk through several different tags.
@@ -1851,7 +1853,7 @@ en:
         reference: Intersecting highways should share a junction vertex.
     ambiguous_crossing:
       title: Ambiguous Crossing Tags
-      tip: "Find situations where crossing tagging is inconsistent or outdated"
+      tip: Find situations where crossing tagging is inconsistent or outdated
       not_a_crossing: "(not a crossing)"
       no_changes: "(no changes)"
       message:
@@ -1880,10 +1882,10 @@ en:
         message: "{feature} is too close to {feature2}"
         reference: "Separate points should not share a location."
     duplicate_way_segments:
-      title: "Duplicate Way Segments"
-      tip: "Find way segments that are duplicated (same node endpoints)"
-      message: "Two or more segments share the same pair of nodes"
-      reference: "Redundant way segments should be merged or moved apart."
+      title: Duplicate Way Segments
+      tip: Find way segments that are duplicated (same node endpoints)
+      message: Two or more segments share the same pair of nodes
+      reference: Redundant way segments should be merged or moved apart.
     curb_nodes:
       title: Curb Nodes
       message: "{feature} may be missing curb nodes."
@@ -1902,50 +1904,50 @@ en:
       message: "{feature} crosses {feature2}"
       tip: "Find features that incorrectly cross over one another"
       aeroway-aeroway:
-        reference: "Crossing aeroways should be connected."
+        reference: Crossing aeroways should be connected.
       aeroway-building:
-        reference: "Aeroways crossing buildings should use bridges or different layers."
+        reference: Aeroways crossing buildings should use bridges or different layers.
       aeroway-highway:
-        reference: "Aeroways crossing railways should be connected."
+        reference: Aeroways crossing railways should be connected.
       aeroway-railway:
-        reference: "Aeroways crossing highways should be connected."
+        reference: Aeroways crossing highways should be connected.
       aeroway-waterway:
-        reference: "Aeroways crossing waterways should use tunnels."
+        reference: Aeroways crossing waterways should use tunnels.
       building-building:
-        reference: "Buildings should not intersect except on different layers."
+        reference: Buildings should not intersect except on different layers.
       building-highway:
-        reference: "Highways crossing buildings should use bridges, tunnels, or different layers."
+        reference: Highways crossing buildings should use bridges, tunnels, or different layers.
       building-railway:
-        reference: "Railways crossing buildings should use bridges, tunnels, or different layers."
+        reference: Railways crossing buildings should use bridges, tunnels, or different layers.
       building-waterway:
-        reference: "Waterways crossing buildings should use tunnels or different layers."
+        reference: Waterways crossing buildings should use tunnels or different layers.
       highway-highway:
-        reference: "Crossing highways should use bridges, tunnels, or intersections."
+        reference: Crossing highways should use bridges, tunnels, or intersections.
       highway-railway:
-        reference: "Highways crossing railways should use bridges, tunnels, or level crossings."
+        reference: Highways crossing railways should use bridges, tunnels, or level crossings.
       highway-waterway:
-        reference: "Highways crossing waterways should use bridges, tunnels, or fords."
+        reference: Highways crossing waterways should use bridges, tunnels, or fords.
       railway-railway:
-        reference: "Crossing railways should be connected or use bridges or tunnels."
+        reference: Crossing railways should be connected or use bridges or tunnels.
       railway-waterway:
-        reference: "Railways crossing waterways should use bridges or tunnels."
+        reference: Railways crossing waterways should use bridges or tunnels.
       waterway-waterway:
-        reference: "Crossing waterways should be connected or use tunnels."
+        reference: Crossing waterways should be connected or use tunnels.
       tunnel-tunnel:
-        reference: "Crossing tunnels should use different layers."
+        reference: Crossing tunnels should use different layers.
       tunnel-tunnel_connectable:
-        reference: "Crossing tunnels should be connected or use different layers."
+        reference: Crossing tunnels should be connected or use different layers.
       bridge-bridge:
-        reference: "Crossing bridges should use different layers."
+        reference: Crossing bridges should use different layers.
       bridge-bridge_connectable:
-        reference: "Crossing bridges should be connected or use different layers."
+        reference: Crossing bridges should be connected or use different layers.
       indoor-indoor:
-        reference: "Crossing indoor features should use different levels."
+        reference: Crossing indoor features should use different levels.
       indoor-indoor_connectable:
-        reference: "Crossing indoor features should be connected or use different levels."
+        reference: Crossing indoor features should be connected or use different levels.
     disconnected_way:
       title: Disconnected Ways
-      tip: "Find unroutable roads, paths, and ferry routes"
+      tip: Find unroutable roads, paths, and ferry routes
       routable:
         message:
           one: "{highway} is disconnected from other roads and paths"
@@ -1957,18 +1959,18 @@ en:
     short_road:
       title: Short road
       message: "{highway} is shorter than 20 meters."
-      tip: "You may want to delete or extend the road."
-      reference: "Short roads may need to be extended or deleted."
+      tip: You may want to delete or extend the road.
+      reference: Short roads may need to be extended or deleted.
     generic_name:
       message: '{feature} has the suspicious name "{name}"'
       message_language: '{feature} has the suspicious name "{name}" in {language}'
       reference: "Names should be the actual, on-the-ground names of features."
     help_request:
-      title: 'Help Requests'
-      tip: 'Find features where others requested assistance'
+      title: Help Requests
+      tip: Find features where others requested assistance
     incompatible_source:
       title: Suspicious Sources
-      tip: "Find features with suspicious source tags"
+      tip: Find features with suspicious source tags
       feature:
         message: '{feature} lists "{value}" as a data source'
       reference:
@@ -1982,8 +1984,9 @@ en:
       title: Invalid Formatting
       tip: Find tags with unexpected formats
       email:
-        message: '{feature} has an invalid email address'
-        message_multi: '{feature} has multiple invalid email addresses'
+        message:
+          one: '{feature} has an invalid email address'
+          other: '{feature} has multiple invalid email addresses'
         reference: 'Email addresses must look like "user@example.com".'
     line_as_area:
       message: '{feature} should be a line, not an area'
@@ -1991,18 +1994,18 @@ en:
       message: '{feature} should be a line, not a point'
     mismatched_geometry:
       title: Mismatched Geometry
-      tip: "Find features with conflicting tags and geometry"
+      tip: Find features with conflicting tags and geometry
       reference: Most features are limited to certain geometry types.
     missing_role:
       title: Missing Roles
       message: "{member} has no role within {relation}"
-      tip: "Find relations with missing or incorrect member roles"
+      tip: Find relations with missing or incorrect member roles
       multipolygon:
-        reference: "Multipolygon members must have an inner or outer role."
+        reference: Multipolygon members must have an inner or outer role.
     missing_tag:
       title: Missing Tags
-      tip: "Find features that are missing descriptive tags"
-      reference: "Features must have tags that define what they are."
+      tip: Find features that are missing descriptive tags
+      reference: Features must have tags that define what they are.
       any:
         message: "{feature} has no tags"
       descriptive:
@@ -2011,81 +2014,81 @@ en:
         message: "{feature} is a relation without a type"
     old_multipolygon:
       message: "{multipolygon} has misplaced tags"
-      reference: "Multipolygons should be tagged on their relation, not their outer way."
+      reference: Multipolygons should be tagged on their relation, not their outer way.
     outdated_tags:
       title: Outdated Tags
       message: "{feature} has outdated tags"
-      tip: "Find features with deprecated tags that can be updated"
-      reference: "Some tags change over time and should be updated."
+      tip: Find features with deprecated tags that can be updated
+      reference: Some tags change over time and should be updated.
       incomplete:
         message: "{feature} has incomplete tags"
-        reference: "Some features should have additional tags."
+        reference: Some features should have additional tags.
       noncanonical_brand:
         message: "{feature} looks like a common feature with nonstandard tags"
         message_incomplete: "{feature} looks like a common feature with incomplete tags"
-        reference: "Some features, for example retail chains or post offices, are expected to have certain tags in common."
+        reference: Some features, for example retail chains or post offices, are expected to have certain tags in common.
     point_as_area:
       message: '{feature} should be a point, not an area'
     point_as_line:
       message: '{feature} should be a point, not a line'
     point_as_vertex:
       message: '{feature} should be a standalone point based on its tags'
-      reference: "Some features shouldn't be part of lines or areas."
+      reference: Some features shouldn't be part of lines or areas.
     private_data:
       title: Private Information
-      tip: "Find features that may contain private information"
-      reference: "Sensitive data like personal phone numbers should not be tagged."
+      tip: Find features that may contain private information
+      reference: Sensitive data like personal phone numbers should not be tagged.
       contact:
         message: '{feature} might be tagged with private contact information'
     suspicious_name:
       title: Suspicious Names
-      tip: "Find features with generic or suspicious names"
+      tip: Find features with generic or suspicious names
     tag_suggests_area:
       message: '{feature} should be a closed area based on the tag "{tag}"'
-      reference: "Areas must have connected endpoints."
+      reference: Areas must have connected endpoints.
     unknown_road:
       message: "{feature} has no classification"
-      reference: "Roads without a specific type may not appear in maps or routing."
+      reference: Roads without a specific type may not appear in maps or routing.
     dupe_node_on_road:
       title: Very close nodes on road
-      message: "Very close nodes on road"
-      tip: "Nodes are less than 2 meters away."
-      tip_merge: "Nodes are less than 2 meters away; you may want to merge them."
-      tip_move_away: "Nodes are less than 2 meters away but not mergable; you may want to move them further apart."
+      message: Very close nodes on road
+      tip: Nodes are less than 2 meters away.
+      tip_merge: Nodes are less than 2 meters away; you may want to merge them.
+      tip_move_away: Nodes are less than 2 meters away but not mergable; you may want to move them further apart.
     y_shaped_connection:
       title: Possible extra node near connection
-      message: "Possible extra node near connection"
-      tip: "You may want to delete or move nodes around to simplify the connection."
-      reference: "Nodes around the connection may need to be moved or deleted."
+      message: Possible extra node near connection
+      tip: You may want to delete or move nodes around to simplify the connection.
+      reference: Nodes around the connection may need to be moved or deleted.
     impossible_oneway:
       title: Impossible One-Ways
-      tip: "Find route issues with one-way features"
+      tip: Find route issues with one-way features
       waterway:
         connected:
           start:
             message: "{feature} flows away from a connected waterway"
           end:
             message: "{feature} flows against a connected waterway"
-          reference: "Waterway segments should all flow in the same direction."
+          reference: Waterway segments should all flow in the same direction.
       highway:
         start:
           message: "{feature} is unreachable"
-          reference: "One-way roads must be accessible via other roads."
+          reference: One-way roads must be accessible via other roads.
         end:
           message: "{feature} has no outlet"
-          reference: "One-way roads must lead to other roads."
+          reference: One-way roads must lead to other roads.
     unclosed_multipolygon_part:
       message: "{feature} has an unclosed part"
-      reference: "All inner and outer parts of multipolygons should have connected endpoints."
+      reference: All inner and outer parts of multipolygons should have connected endpoints.
     unsquare_way:
       title: "Unsquare Corners (up to {val}°)"
       message: "{feature} has unsquare corners"
-      tip: "Find features with unsquare corners that can be drawn better"
+      tip: Find features with unsquare corners that can be drawn better
       buildings:
-        reference: "Buildings with unsquare corners can often be drawn more accurately."
+        reference: Buildings with unsquare corners can often be drawn more accurately.
     vertex_as_point:
       message: '{feature} should be part of a line or area based on its tags'
-      reference: "Some features shouldn't be standalone points."
+      reference: Some features shouldn't be standalone points.
     fix:
       add_a_bridge:
         title: Add a bridge
@@ -2220,129 +2223,129 @@ en:
     done: done
     ok: OK
     graph:
-      block_number: "<value for addr:block_number>"
-      city: Three Rivers
-      county: "<value for addr:county>"
-      district: "<value for addr:district>"
-      hamlet: "<value for addr:hamlet>"
-      neighbourhood: "<value for addr:neighbourhood>"
-      postcode: "49093"
-      province: "<value for addr:province>"
-      quarter: "<value for addr:quarter>"
-      state: MI
-      subdistrict: "<value for addr:subdistrict>"
-      suburb: "<value for addr:suburb>"
-      countrycode: us
+      block_number: "<value for addr:block_number>"   # Translate with a realistic 'addr:block_number' value, or a value in angle brackets like '<addr:block_number>' if your locale does not use 'addr:block_number' in addresses.
+      city: Three Rivers                              # Translate with a realistic 'addr:city' value, or a value in angle brackets like '<addr:city>' if your locale does not use 'addr:city' in addresses.
+      county: "<value for addr:county>"               # Translate with a realistic 'addr:county' value, or a value in angle brackets like '<addr:county>' if your locale does not use 'addr:county' in addresses.
+      district: "<value for addr:district>"           # Translate with a realistic 'addr:district' value, or a value in angle brackets like '<addr:district>' if your locale does not use 'addr:district' in addresses.
+      hamlet: "<value for addr:hamlet>"               # Translate with a realistic 'addr:hamlet' value, or a value in angle brackets like '<addr:hamlet>' if your locale does not use 'addr:hamlet' in addresses.
+      neighbourhood: "<value for addr:neighbourhood>" # Translate with a realistic 'addr:neighbourhood' value, or a value in angle brackets like '<addr:neighbourhood>' if your locale does not use 'addr:neighbourhood' in addresses.
+      postcode: "49093"                               # Translate with a realistic 'addr:postcode' value, or a value in angle brackets like '<addr:postcode>' if your locale does not use 'addr:postcode' in addresses.
+      province: "<value for addr:province>"           # Translate with a realistic 'addr:province' value, or a value in angle brackets like '<addr:province>' if your locale does not use 'addr:province' in addresses.
+      quarter: "<value for addr:quarter>"             # Translate with a realistic 'addr:quarter' value, or a value in angle brackets like '<addr:quarter>' if your locale does not use 'addr:quarter' in addresses.
+      state: MI                                       # Translate with a realistic 'addr:state' value, or a value in angle brackets like '<addr:state>' if your locale does not use 'addr:state' in addresses.
+      subdistrict: "<value for addr:subdistrict>"     # Translate with a realistic 'addr:subdistrict' value, or a value in angle brackets like '<addr:subdistrict>' if your locale does not use 'addr:subdistrict' in addresses.
+      suburb: "<value for addr:suburb>"               # Translate with a realistic 'addr:suburb' value, or a value in angle brackets like '<addr:suburb>' if your locale does not use 'addr:suburb' in addresses.
+      countrycode: us                                 # This is the 2-letter country code that determines what address format to use in the walkthrough.
       name:
-        1st-avenue: 1st Avenue
-        2nd-avenue: 2nd Avenue
-        4th-avenue: 4th Avenue
-        5th-avenue: 5th Avenue
-        6th-avenue: 6th Avenue
-        6th-street: 6th Street
-        7th-avenue: 7th Avenue
-        8th-avenue: 8th Avenue
-        9th-avenue: 9th Avenue
-        10th-avenue: 10th Avenue
-        11th-avenue: 11th Avenue
-        12th-avenue: 12th Avenue
-        access-point-employment: Access Point Employment
-        adams-street: Adams Street
-        andrews-elementary-school: Andrews Elementary School
-        andrews-street: Andrews Street
-        armitage-street: Armitage Street
-        barrows-school: Barrows School
-        battle-street: Battle Street
-        bennett-street: Bennett Street
-        bowman-park: Bowman Park
-        collins-drive: Collins Drive
-        conrail-railroad: Conrail Railroad
-        conservation-park: Conservation Park
-        constantine-street: Constantine Street
-        cushman-street: Cushman Street
-        dollar-tree: Dollar Tree
-        douglas-avenue: Douglas Avenue
-        east-street: East Street
-        elm-street: Elm Street
-        flower-street: Flower Street
-        foster-street: Foster Street
-        french-street: French Street
-        garden-street: Garden Street
-        gem-pawnbroker: Gem Pawnbroker
-        golden-finch-framing: Golden Finch Framing
-        grant-avenue: Grant Avenue
-        hoffman-pond: Hoffman Pond
-        hoffman-street: Hoffman Street
-        hook-avenue: Hook Avenue
-        jefferson-street: Jefferson Street
-        kelsey-street: Kelsey Street
-        lafayette-park: LaFayette Park
-        las-coffee-cafe: L.A.'s Coffee Cafe
-        lincoln-avenue: Lincoln Avenue
-        lowrys-books: Lowry's Books
-        lynns-garage: Lynn's Garage
-        main-street-barbell: Main Street Barbell
-        main-street-cafe: Main Street Cafe
-        main-street-fitness: Main Street Fitness
-        main-street: Main Street
-        maple-street: Maple Street
-        marina-park: Marina Park
-        market-street: Market Street
-        memory-isle-park: Memory Isle Park
-        memory-isle: Memory Isle
-        michigan-avenue: Michigan Avenue
-        middle-street: Middle Street
-        millard-street: Millard Street
-        moore-street: Moore Street
-        morris-avenue: Morris Avenue
-        mural-mall: Mural Mall
-        paisanos-bar-and-grill: Paisano's Bar and Grill
-        paisley-emporium: Paisley Emporium
-        paparazzi-tattoo: Paparazzi Tattoo
-        pealer-street: Pealer Street
-        pine-street: Pine Street
-        pizza-hut: Pizza Hut
-        portage-avenue: Portage Avenue
-        portage-river: Portage River
-        preferred-insurance-services: Preferred Insurance Services
-        railroad-drive: Railroad Drive
-        river-city-appliance: River City Appliance
-        river-drive: River Drive
-        river-road: River Road
-        river-street: River Street
-        riverside-cemetery: Riverside Cemetery
-        riverwalk-trail: Riverwalk Trail
-        riviera-theatre: Riviera Theatre
-        rocky-river: Rocky River
-        saint-joseph-river: Saint Joseph River
-        scidmore-park-petting-zoo: Scidmore Park Petting Zoo
-        scidmore-park: Scidmore Park
-        scouter-park: Scouter Park
-        sherwin-williams: Sherwin-Williams
-        south-street: South Street
-        southern-michigan-bank: Southern Michigan Bank
-        spring-street: Spring Street
-        sturgeon-river-road: Sturgeon River Road
-        three-rivers-city-hall: Three Rivers City Hall
-        three-rivers-elementary-school: Three Rivers Elementary School
-        three-rivers-fire-department: Three Rivers Fire Department
-        three-rivers-high-school: Three Rivers High School
-        three-rivers-middle-school: Three Rivers Middle School
-        three-rivers-municipal-airport: Three Rivers Municipal Airport
-        three-rivers-post-office: Three Rivers Post Office
-        three-rivers-public-library: Three Rivers Public Library
-        three-rivers: Three Rivers
-        tulip-lane: Tulip Lane
-        unique-jewelry: Unique Jewelry
-        walnut-street: Walnut Street
-        washington-street: Washington Street
-        water-street: Water Street
-        west-street: West Street
-        wheeler-street: Wheeler Street
-        william-towing: William Towing
-        willow-drive: Willow Drive
-        wood-street: Wood Street
-        world-fare: World Fare
+        1st-avenue: 1st Avenue                                 # Translate with a realistic residential street name that might appear in your locale.
+        2nd-avenue: 2nd Avenue                                 # Translate with a realistic residential street name that might appear in your locale.
+        4th-avenue: 4th Avenue                                 # Translate with a realistic residential street name that might appear in your locale.
+        5th-avenue: 5th Avenue                                 # Translate with a realistic residential street name that might appear in your locale.
+        6th-avenue: 6th Avenue                                 # Translate with a realistic residential street name that might appear in your locale.
+        6th-street: 6th Street                                 # Translate with a realistic residential street name that might appear in your locale.
+        7th-avenue: 7th Avenue                                 # Translate with a realistic residential street name that might appear in your locale.
+        8th-avenue: 8th Avenue                                 # Translate with a realistic residential street name that might appear in your locale.
+        9th-avenue: 9th Avenue                                 # Translate with a realistic residential street name that might appear in your locale.
+        10th-avenue: 10th Avenue                               # Translate with a realistic residential street name that might appear in your locale.
+        11th-avenue: 11th Avenue                               # Translate with a realistic residential street name that might appear in your locale.
+        12th-avenue: 12th Avenue                               # Translate with a realistic residential street name that might appear in your locale.
+        access-point-employment: Access Point Employment       # Translate with a realistic employment agency name that might appear in your locale.
+        adams-street: Adams Street                             # Translate with a realistic residential street name that might appear in your locale.
+        andrews-elementary-school: Andrews Elementary School   # Translate with a realistic school name that might appear in your locale.
+        andrews-street: Andrews Street                         # Translate with a realistic residential street name that might appear in your locale.
+        armitage-street: Armitage Street                       # Translate with a realistic residential street name that might appear in your locale.
+        barrows-school: Barrows School                         # Translate with a realistic school name that might appear in your locale.
+        battle-street: Battle Street                           # Translate with a realistic residential street name that might appear in your locale.
+        bennett-street: Bennett Street                         # Translate with a realistic residential street name that might appear in your locale.
+        bowman-park: Bowman Park                               # Translate with a realistic park name that might appear in your locale.
+        collins-drive: Collins Drive                           # Translate with a realistic residential street name that might appear in your locale.
+        conrail-railroad: Conrail Railroad                     # Translate with a realistic railroad name that might appear in your locale.
+        conservation-park: Conservation Park                   # Translate with a realistic park name that might appear in your locale.
+        constantine-street: Constantine Street                 # Translate with a realistic residential street name that might appear in your locale.
+        cushman-street: Cushman Street                         # Translate with a realistic residential street name that might appear in your locale.
+        dollar-tree: Dollar Tree                               # Translate with a realistic discount store name that might appear in your locale.
+        douglas-avenue: Douglas Avenue                         # Translate with a realistic residential street name that might appear in your locale.
+        east-street: East Street                               # Translate with a realistic residential street name that might appear in your locale.
+        elm-street: Elm Street                                 # Translate with a realistic residential street name that might appear in your locale.
+        flower-street: Flower Street                           # Translate with a realistic residential street name that might appear in your locale.
+        foster-street: Foster Street                           # Translate with a realistic residential street name that might appear in your locale.
+        french-street: French Street                           # Translate with a realistic residential street name that might appear in your locale.
+        garden-street: Garden Street                           # Translate with a realistic residential street name that might appear in your locale.
+        gem-pawnbroker: Gem Pawnbroker                         # Translate with a realistic pawn shop name that might appear in your locale.
+        golden-finch-framing: Golden Finch Framing             # Translate with a realistic framing shop name that might appear in your locale.
+        grant-avenue: Grant Avenue                             # Translate with a realistic residential street name that might appear in your locale.
+        hoffman-pond: Hoffman Pond                             # Translate with a realistic pond name that might appear in your locale.
+        hoffman-street: Hoffman Street                         # Translate with a realistic secondary street name that might appear in your locale.
+        hook-avenue: Hook Avenue                               # Translate with a realistic residential street name that might appear in your locale.
+        jefferson-street: Jefferson Street                     # Translate with a realistic secondary street name that might appear in your locale.
+        kelsey-street: Kelsey Street                           # Translate with a realistic residential street name that might appear in your locale.
+        lafayette-park: LaFayette Park                         # Translate with a realistic park name that might appear in your locale.
+        las-coffee-cafe: L.A.'s Coffee Cafe                    # Translate with a realistic cafe name that might appear in your locale.
+        lincoln-avenue: Lincoln Avenue                         # Translate with a realistic residential street name that might appear in your locale.
+        lowrys-books: Lowry's Books                            # Translate with a realistic bookstore name that might appear in your locale.
+        lynns-garage: Lynn's Garage                            # Translate with a realistic auto repair name that might appear in your locale.
+        main-street-barbell: Main Street Barbell               # Translate with a realistic gym name that might appear in your locale.
+        main-street-cafe: Main Street Cafe                     # Translate with a realistic cafe name that might appear in your locale.
+        main-street-fitness: Main Street Fitness               # Translate with a realistic gym name that might appear in your locale.
+        main-street: Main Street                               # Translate with a realistic primary street name that might appear in your locale.
+        maple-street: Maple Street                             # Translate with a realistic residential street name that might appear in your locale.
+        marina-park: Marina Park                               # Translate with a realistic park name that might appear in your locale.
+        market-street: Market Street                           # Translate with a realistic residential street name that might appear in your locale.
+        memory-isle-park: Memory Isle Park                     # Translate with a realistic park name that might appear in your locale.
+        memory-isle: Memory Isle                               # Translate with a realistic island name that might appear in your locale.
+        michigan-avenue: Michigan Avenue                       # Translate with a realistic primary street name that might appear in your locale.
+        middle-street: Middle Street                           # Translate with a realistic residential street name that might appear in your locale.
+        millard-street: Millard Street                         # Translate with a realistic residential street name that might appear in your locale.
+        moore-street: Moore Street                             # Translate with a realistic residential street name that might appear in your locale.
+        morris-avenue: Morris Avenue                           # Translate with a realistic residential street name that might appear in your locale.
+        mural-mall: Mural Mall                                 # Translate with a realistic residential street name that might appear in your locale.
+        paisanos-bar-and-grill: Paisano's Bar and Grill        # Translate with a realistic pizza restaurant name that might appear in your locale.
+        paisley-emporium: Paisley Emporium                     # Translate with a realistic thrift shop name that might appear in your locale.
+        paparazzi-tattoo: Paparazzi Tattoo                     # Translate with a realistic tattoo parlor name that might appear in your locale.
+        pealer-street: Pealer Street                           # Translate with a realistic residential street name that might appear in your locale.
+        pine-street: Pine Street                               # Translate with a realistic residential street name that might appear in your locale.
+        pizza-hut: Pizza Hut                                   # Translate with a realistic pizza restaurant name that might appear in your locale.
+        portage-avenue: Portage Avenue                         # Translate with a realistic residential street name that might appear in your locale.
+        portage-river: Portage River                           # Translate with a realistic river name that might appear in your locale.
+        preferred-insurance-services: Preferred Insurance Services  # Translate with a realistic insurance office name that might appear in your locale.
+        railroad-drive: Railroad Drive                         # Translate with a realistic residential street name that might appear in your locale.
+        river-city-appliance: River City Appliance             # Translate with a realistic appliance store name that might appear in your locale.
+        river-drive: River Drive                               # Translate with a realistic residential street name that might appear in your locale.
+        river-road: River Road                                 # Translate with a realistic residential street name that might appear in your locale.
+        river-street: River Street                             # Translate with a realistic residential street name that might appear in your locale.
+        riverside-cemetery: Riverside Cemetery                 # Translate with a realistic cemetery name that might appear in your locale.
+        riverwalk-trail: Riverwalk Trail                       # Translate with a realistic trail name that might appear in your locale.
+        riviera-theatre: Riviera Theatre                       # Translate with a realistic theatre name that might appear in your locale.
+        rocky-river: Rocky River                               # Translate with a realistic river name that might appear in your locale.
+        saint-joseph-river: Saint Joseph River                 # Translate with a realistic river name that might appear in your locale.
+        scidmore-park-petting-zoo: Scidmore Park Petting Zoo   # Translate with a realistic zoo name that might appear in your locale.
+        scidmore-park: Scidmore Park                           # Translate with a realistic park name that might appear in your locale.
+        scouter-park: Scouter Park                             # Translate with a realistic park name that might appear in your locale.
+        sherwin-williams: Sherwin-Williams                     # Translate with a realistic paint store name that might appear in your locale.
+        south-street: South Street                             # Translate with a realistic residential street name that might appear in your locale.
+        southern-michigan-bank: Southern Michigan Bank         # Translate with a realistic bank name that might appear in your locale.
+        spring-street: Spring Street                           # Translate with a realistic residential street name that might appear in your locale.
+        sturgeon-river-road: Sturgeon River Road               # Translate with a realistic residential street name that might appear in your locale.
+        three-rivers-city-hall: Three Rivers City Hall         # Translate with a realistic city hall name that might appear in your locale.
+        three-rivers-elementary-school: Three Rivers Elementary School  # Translate with a realistic school name that might appear in your locale.
+        three-rivers-fire-department: Three Rivers Fire Department      # Translate with a realistic fire department name that might appear in your locale.
+        three-rivers-high-school: Three Rivers High School              # Translate with a realistic school name that might appear in your locale.
+        three-rivers-middle-school: Three Rivers Middle School          # Translate with a realistic school name that might appear in your locale.
+        three-rivers-municipal-airport: Three Rivers Municipal Airport  # Translate with a realistic airport name that might appear in your locale.
+        three-rivers-post-office: Three Rivers Post Office              # Translate with a realistic post office name that might appear in your locale.
+        three-rivers-public-library: Three Rivers Public Library        # Translate with a realistic library name that might appear in your locale.
+        three-rivers: Three Rivers                                      # Translate with a realistic town name that might appear in your locale.
+        tulip-lane: Tulip Lane                                 # Translate with a realistic residential street name that might appear in your locale.
+        unique-jewelry: Unique Jewelry                         # Translate with a realistic jewelry store name that might appear in your locale.
+        walnut-street: Walnut Street                           # Translate with a realistic residential street name that might appear in your locale.
+        washington-street: Washington Street                   # Translate with a realistic residential street name that might appear in your locale.
+        water-street: Water Street                             # Translate with a realistic residential street name that might appear in your locale.
+        west-street: West Street                               # Translate with a realistic residential street name that might appear in your locale.
+        wheeler-street: Wheeler Street                         # Translate with a realistic residential street name that might appear in your locale.
+        william-towing: William Towing                         # Translate with a realistic auto repair name that might appear in your locale.
+        willow-drive: Willow Drive                             # Translate with a realistic residential street name that might appear in your locale.
+        wood-street: Wood Street                               # Translate with a realistic residential street name that might appear in your locale.
+        world-fare: World Fare                                 # Translate with a realistic gift shop name that might appear in your locale.
 
     welcome:
       title: "Welcome"

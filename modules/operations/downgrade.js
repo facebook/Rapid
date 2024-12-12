@@ -10,7 +10,6 @@ export function operationDowngrade(context, selectedIDs) {
 
   let _affectedFeatureCount = 0;
   let _downgradeType = downgradeTypeForEntityIDs(selectedIDs);
-  const multi = _affectedFeatureCount === 1 ? 'single' : 'multiple';
 
 
   function downgradeTypeForEntityIDs(entityIDs) {
@@ -117,7 +116,7 @@ export function operationDowngrade(context, selectedIDs) {
   operation.tooltip = function () {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      l10n.t(`operations.downgrade.${disabledReason}.${multi}`) :
+      l10n.t(`operations.downgrade.${disabledReason}`, { n: _affectedFeatureCount }) :
       l10n.t(`operations.downgrade.description.${_downgradeType}`);
   };
 

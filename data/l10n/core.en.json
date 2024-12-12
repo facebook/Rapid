@@ -128,8 +128,8 @@
       "circularize": {
         "title": "Circularize",
         "description": {
-          "single": "Make this feature circular.",
-          "multiple": "Make these features circular."
+          "one": "Make this feature circular.",
+          "other": "Make these features circular."
         },
         "annotation": {
           "feature": {
@@ -138,39 +138,40 @@
           }
         },
         "multiple_blockers": {
-          "multiple": "These can't be made circular for multiple reasons."
+          "one": "This can't be made circular for multiple reasons.",
+          "other": "These can't be made circular for multiple reasons."
         },
         "not_closed": {
-          "single": "This can't be made circular because it's not a loop.",
-          "multiple": "These can't be made circular because they aren't loops."
+          "one": "This can't be made circular because it's not a loop.",
+          "other": "These can't be made circular because they aren't loops."
         },
         "too_large": {
-          "single": "This can't be made circular because not enough of it is currently visible.",
-          "multiple": "These can't be made circular because not enough of them are currently visible."
+          "one": "This can't be made circular because not enough of it is currently visible.",
+          "other": "These can't be made circular because not enough of them are currently visible."
         },
         "connected_to_hidden": {
-          "single": "This can't be made circular because it is connected to a hidden feature.",
-          "multiple": "These can't be made circular because some are connected to hidden features."
+          "one": "This can't be made circular because it is connected to a hidden feature.",
+          "other": "These can't be made circular because some are connected to hidden features."
         },
         "not_downloaded": {
-          "single": "This can't be made circular because parts of it have not yet been downloaded.",
-          "multiple": "These can't be made circular because parts of them have not yet been downloaded."
+          "one": "This can't be made circular because parts of it have not yet been downloaded.",
+          "other": "These can't be made circular because parts of them have not yet been downloaded."
         },
         "already_circular": {
-          "single": "This can't be made more circular than it already is.",
-          "multiple": "These can't be made more circular than they already are."
+          "one": "This can't be made more circular than it already is.",
+          "other": "These can't be made more circular than they already are."
         }
       },
       "orthogonalize": {
         "title": "Square",
         "description": {
           "corner": {
-            "single": "Square this corner.",
-            "multiple": "Square these corners."
+            "one": "Square this corner.",
+            "other": "Square these corners."
           },
           "feature": {
-            "single": "Square the corners of this feature.",
-            "multiple": "Square the corners of these features."
+            "one": "Square the corners of this feature.",
+            "other": "Square the corners of these features."
           }
         },
         "annotation": {
@@ -184,31 +185,32 @@
           }
         },
         "multiple_blockers": {
-          "multiple": "These can't be squared for multiple reasons."
+          "one": "This can't be squared for multiple reasons.",
+          "other": "These can't be squared for multiple reasons."
         },
         "end_vertex": {
-          "single": "This can't be squared because it is an endpoint.",
-          "multiple": "These can't be squared because they are endpoints."
+          "one": "This can't be squared because it is an endpoint.",
+          "other": "These can't be squared because they are endpoints."
         },
         "square_enough": {
-          "single": "This can't be made more square than it already is.",
-          "multiple": "These can't be made more square than they already are."
+          "one": "This can't be made more square than it already is.",
+          "other": "These can't be made more square than they already are."
         },
         "not_squarish": {
-          "single": "This can't be made square because it is not squarish.",
-          "multiple": "These can't be made square because they are not squarish."
+          "one": "This can't be made square because it is not squarish.",
+          "other": "These can't be made square because they are not squarish."
         },
         "too_large": {
-          "single": "This can't be made square because not enough of it is currently visible.",
-          "multiple": "These can't be made square because not enough of them are currently visible."
+          "one": "This can't be made square because not enough of it is currently visible.",
+          "other": "These can't be made square because not enough of them are currently visible."
         },
         "connected_to_hidden": {
-          "single": "This can't be made square because it is connected to a hidden feature.",
-          "multiple": "These can't be made square because some are connected to hidden features."
+          "one": "This can't be made square because it is connected to a hidden feature.",
+          "other": "These can't be made square because some are connected to hidden features."
         },
         "not_downloaded": {
-          "single": "This can't be made square because parts of it have not yet been downloaded.",
-          "multiple": "These can't be made square because parts of them have not yet been downloaded."
+          "one": "This can't be made square because parts of it have not yet been downloaded.",
+          "other": "These can't be made square because parts of them have not yet been downloaded."
         }
       },
       "straighten": {
@@ -229,31 +231,31 @@
           }
         },
         "too_bendy": {
-          "single": "This can't be straightened because it bends too much.",
-          "multiple": "These can't be straightened because they bend too much."
+          "one": "This can't be straightened because it bends too much.",
+          "other": "These can't be straightened because they bend too much."
         },
         "connected_to_hidden": {
-          "single": "This can't be straightened because it is connected to a hidden feature.",
-          "multiple": "These can't be straightened because some are connected to hidden features."
+          "one": "This can't be straightened because it is connected to a hidden feature.",
+          "other": "These can't be straightened because some are connected to hidden features."
         },
         "not_downloaded": {
-          "single": "This can't be straightened because parts of it have not yet been downloaded.",
-          "multiple": "These can't be straightened because parts of them have not yet been downloaded."
+          "one": "This can't be straightened because parts of it have not yet been downloaded.",
+          "other": "These can't be straightened because parts of them have not yet been downloaded."
         },
         "straight_enough": {
-          "single": "This can't be made straighter than it already is.",
-          "multiple": "These can't be made straighter than they already are."
+          "one": "This can't be made straighter than it already is.",
+          "other": "These can't be made straighter than they already are."
         },
         "too_large": {
-          "single": "This can't be straightened because not enough of it is currently visible.",
-          "multiple": "These can't be straightened because not enough of them are currently visible."
+          "one": "This can't be straightened because not enough of it is currently visible.",
+          "other": "These can't be straightened because not enough of them are currently visible."
         }
       },
       "delete": {
         "title": "Delete",
         "description": {
-          "single": "Delete this feature permanently.",
-          "multiple": "Delete these features permanently."
+          "one": "Delete this feature permanently.",
+          "other": "Delete these features permanently."
         },
         "annotation": {
           "point": "Deleted a point.",
@@ -267,28 +269,28 @@
           }
         },
         "too_large": {
-          "single": "This feature can't be deleted because not enough of it is currently visible.",
-          "multiple": "These features can't be deleted because not enough of them are currently visible."
+          "one": "This feature can't be deleted because not enough of it is currently visible.",
+          "other": "These features can't be deleted because not enough of them are currently visible."
         },
         "incomplete_relation": {
-          "single": "This feature can't be deleted because it hasn't been fully downloaded.",
-          "multiple": "These features can't be deleted because they haven't been fully downloaded."
+          "one": "This feature can't be deleted because it hasn't been fully downloaded.",
+          "other": "These features can't be deleted because they haven't been fully downloaded."
         },
         "part_of_relation": {
-          "single": "This feature can't be deleted because it is part of a larger relation. You must remove it from the relation first.",
-          "multiple": "These features can't be deleted because they are part of larger relations. You must remove them from the relations first."
+          "one": "This feature can't be deleted because it is part of a larger relation. You must remove it from the relation first.",
+          "other": "These features can't be deleted because they are part of larger relations. You must remove them from the relations first."
         },
         "connected_to_hidden": {
-          "single": "This feature can't be deleted because it is connected to a hidden feature.",
-          "multiple": "These features can't be deleted because some are connected to hidden features."
+          "one": "This feature can't be deleted because it is connected to a hidden feature.",
+          "other": "These features can't be deleted because some are connected to hidden features."
         },
         "not_downloaded": {
-          "single": "This feature can't be deleted because parts of it have not yet been downloaded.",
-          "multiple": "These features can't be deleted because parts of them have not yet been downloaded."
+          "one": "This feature can't be deleted because parts of it have not yet been downloaded.",
+          "other": "These features can't be deleted because parts of them have not yet been downloaded."
         },
         "has_wikidata_tag": {
-          "single": "This feature can't be deleted because it has a Wikidata tag.",
-          "multiple": "These features can't be deleted because some have Wikidata tags."
+          "one": "This feature can't be deleted because it has a Wikidata tag.",
+          "other": "These features can't be deleted because some have Wikidata tags."
         }
       },
       "downgrade": {
@@ -314,8 +316,8 @@
           }
         },
         "has_wikidata_tag": {
-          "single": "This feature can't be downgraded because it has a Wikidata tag.",
-          "multiple": "These features can't be downgraded because some have Wikidata tags."
+          "one": "This feature can't be downgraded because it has a Wikidata tag.",
+          "other": "These features can't be downgraded because some have Wikidata tags."
         }
       },
       "add_member": {
@@ -416,8 +418,8 @@
       "move": {
         "title": "Move",
         "description": {
-          "single": "Move this feature to a different location.",
-          "multiple": "Move these features to a different location."
+          "one": "Move this feature to a different location.",
+          "other": "Move these features to a different location."
         },
         "annotation": {
           "point": "Moved a point.",
@@ -431,20 +433,20 @@
           }
         },
         "incomplete_relation": {
-          "single": "This feature can't be moved because it hasn't been fully downloaded.",
-          "multiple": "These features can't be moved because they haven't been fully downloaded."
+          "one": "This feature can't be moved because it hasn't been fully downloaded.",
+          "other": "These features can't be moved because they haven't been fully downloaded."
         },
         "too_large": {
-          "single": "This feature can't be moved because not enough of it is currently visible.",
-          "multiple": "These features can't be moved because not enough of them are currently visible."
+          "one": "This feature can't be moved because not enough of it is currently visible.",
+          "other": "These features can't be moved because not enough of them are currently visible."
         },
         "connected_to_hidden": {
-          "single": "This feature can't be moved because it is connected to a hidden feature.",
-          "multiple": "These features can't be moved because some are connected to hidden features."
+          "one": "This feature can't be moved because it is connected to a hidden feature.",
+          "other": "These features can't be moved because some are connected to hidden features."
         },
         "not_downloaded": {
-          "single": "This feature can't be moved because parts of it have not yet been downloaded.",
-          "multiple": "These features can't be moved because parts of them have not yet been downloaded."
+          "one": "This feature can't be moved because parts of it have not yet been downloaded.",
+          "other": "These features can't be moved because parts of them have not yet been downloaded."
         }
       },
       "reflect": {
@@ -454,12 +456,12 @@
         },
         "description": {
           "long": {
-            "single": "Flip this feature across its long axis.",
-            "multiple": "Flip these features across their long axis."
+            "one": "Flip this feature across its long axis.",
+            "other": "Flip these features across their long axis."
           },
           "short": {
-            "single": "Flip this feature across its short axis.",
-            "multiple": "Flip these features across their short axis."
+            "one": "Flip this feature across its short axis.",
+            "other": "Flip these features across their short axis."
           }
         },
         "annotation": {
@@ -477,27 +479,27 @@
           }
         },
         "incomplete_relation": {
-          "single": "This feature can't be flipped because it hasn't been fully downloaded.",
-          "multiple": "These features can't be flipped because they haven't been fully downloaded."
+          "one": "This feature can't be flipped because it hasn't been fully downloaded.",
+          "other": "These features can't be flipped because they haven't been fully downloaded."
         },
         "too_large": {
-          "single": "This feature can't be flipped because not enough of it is currently visible.",
-          "multiple": "These features can't be flipped because not enough of them are currently visible."
+          "one": "This feature can't be flipped because not enough of it is currently visible.",
+          "other": "These features can't be flipped because not enough of them are currently visible."
         },
         "connected_to_hidden": {
-          "single": "This feature can't be flipped because it is connected to a hidden feature.",
-          "multiple": "These features can't be flipped because some are connected to hidden features."
+          "one": "This feature can't be flipped because it is connected to a hidden feature.",
+          "other": "These features can't be flipped because some are connected to hidden features."
         },
         "not_downloaded": {
-          "single": "This feature can't be flipped because parts of it have not yet been downloaded.",
-          "multiple": "These features can't be flipped because parts of them have not yet been downloaded."
+          "one": "This feature can't be flipped because parts of it have not yet been downloaded.",
+          "other": "These features can't be flipped because parts of them have not yet been downloaded."
         }
       },
       "rotate": {
         "title": "Rotate",
         "description": {
-          "single": "Rotate this feature around its center point.",
-          "multiple": "Rotate these features around their center point."
+          "one": "Rotate this feature around its center point.",
+          "other": "Rotate these features around their center point."
         },
         "annotation": {
           "line": "Rotated a line.",
@@ -509,20 +511,20 @@
           }
         },
         "incomplete_relation": {
-          "single": "This feature can't be rotated because it hasn't been fully downloaded.",
-          "multiple": "These features can't be rotated because they haven't been fully downloaded."
+          "one": "This feature can't be rotated because it hasn't been fully downloaded.",
+          "other": "These features can't be rotated because they haven't been fully downloaded."
         },
         "too_large": {
-          "single": "This feature can't be rotated because not enough of it is currently visible.",
-          "multiple": "These features can't be rotated because not enough of them are currently visible."
+          "one": "This feature can't be rotated because not enough of it is currently visible.",
+          "other": "These features can't be rotated because not enough of them are currently visible."
         },
         "connected_to_hidden": {
-          "single": "This feature can't be rotated because it is connected to a hidden feature.",
-          "multiple": "These features can't be rotated because some are connected to hidden features."
+          "one": "This feature can't be rotated because it is connected to a hidden feature.",
+          "other": "These features can't be rotated because some are connected to hidden features."
         },
         "not_downloaded": {
-          "single": "This feature can't be rotated because parts of it have not yet been downloaded.",
-          "multiple": "These features can't be rotated because parts of them have not yet been downloaded."
+          "one": "This feature can't be rotated because parts of it have not yet been downloaded.",
+          "other": "These features can't be rotated because parts of them have not yet been downloaded."
         }
       },
       "reverse": {
@@ -565,20 +567,20 @@
           }
         },
         "too_small": {
-          "single": "This feature can't be scaled down because it would become too small.",
-          "multiple": "These features can't be scaled down because they would become too small."
+          "one": "This feature can't be scaled down because it would become too small.",
+          "other": "These features can't be scaled down because they would become too small."
         },
         "too_large": {
-          "single": "This feature can't be scaled because not enough of it is currently visible.",
-          "multiple": "These features can't be scaled because not enough of them are currently visible."
+          "one": "This feature can't be scaled because not enough of it is currently visible.",
+          "other": "These features can't be scaled because not enough of them are currently visible."
         },
         "connected_to_hidden": {
-          "single": "This feature can't be scaled because it is connected to a hidden feature.",
-          "multiple": "These features can't be scaled because some are connected to hidden features."
+          "one": "This feature can't be scaled because it is connected to a hidden feature.",
+          "other": "These features can't be scaled because some are connected to hidden features."
         },
         "not_downloaded": {
-          "single": "This feature can't be scaled because parts of it have not yet been downloaded.",
-          "multiple": "These features can't be scaled because parts of them have not yet been downloaded."
+          "one": "This feature can't be scaled because parts of it have not yet been downloaded.",
+          "other": "These features can't be scaled because parts of them have not yet been downloaded."
         }
       },
       "split": {
@@ -638,19 +640,19 @@
         "title": "Extract",
         "description": {
           "vertex": {
-            "single": "Extract this point from its parent lines/areas.",
-            "multiple": "Extract these points from their parent features."
+            "one": "Extract this point from its parent lines/areas.",
+            "other": "Extract these points from their parent features."
           },
           "line": {
-            "single": "Extract a point from this line.",
-            "multiple": "Extract points from these lines."
+            "one": "Extract a point from this line.",
+            "other": "Extract points from these lines."
           },
           "area": {
-            "single": "Extract a point from this area.",
-            "multiple": "Extract points from these areas."
+            "one": "Extract a point from this area.",
+            "other": "Extract points from these areas."
           },
           "feature": {
-            "multiple": "Extract points from these features."
+            "other": "Extract points from these features."
           }
         },
         "annotation": {
@@ -658,12 +660,12 @@
           "other": "Extracted {n} points."
         },
         "too_large": {
-          "single": "A point can't be extracted because not enough of this feature is visible.",
-          "multiple": "Points can't be extracted because not enough of these features are visible."
+          "one": "A point can't be extracted because not enough of this feature is visible.",
+          "other": "Points can't be extracted because not enough of these features are visible."
         },
         "connected_to_hidden": {
-          "single": "This point can't be extracted because it is connected to a hidden feature.",
-          "multiple": "Points can't be extracted from these features because some are connected to hidden features."
+          "one": "This point can't be extracted because it is connected to a hidden feature.",
+          "other": "Points can't be extracted from these features because some are connected to hidden features."
         }
       },
       "cycle_highway_tag": {
@@ -2439,8 +2441,10 @@
         "title": "Invalid Formatting",
         "tip": "Find tags with unexpected formats",
         "email": {
-          "message": "{feature} has an invalid email address",
-          "message_multi": "{feature} has multiple invalid email addresses",
+          "message": {
+            "one": "{feature} has an invalid email address",
+            "other": "{feature} has multiple invalid email addresses"
+          },
           "reference": "Email addresses must look like \"user@example.com\"."
         }
       },

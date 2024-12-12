@@ -20,7 +20,6 @@ export function operationStraighten(context, selectedIDs) {
   const wayIDs = ways.map(entity => entity.id);
   const nodes = entities.filter(entity => entity.type === 'node');
   const nodeIDs = nodes.map(entity => entity.id);
-  const multi = ((ways.length ? ways : nodes).length === 1 ? 'single' : 'multiple');
 
   const coords = utilGetAllNodes(selectedIDs, graph).map(node => node.loc);
   let extent = utilTotalExtent(selectedIDs, graph);
@@ -137,13 +136,13 @@ export function operationStraighten(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      l10n.t(`operations.straighten.${disabledReason}.${multi}`) :
+      l10n.t(`operations.straighten.${disabledReason}`, { n: ways.length || nodes.length  }) :
       l10n.t(`operations.straighten.description.${geometry}` + (ways.length === 1 ? '' : 's'));
   };
 
 
   operation.annotation = function() {
-    return l10n.t(`operations.straighten.annotation.${geometry}`, { n: ways.length ? ways.length : nodes.length });
+    return l10n.t(`operations.straighten.annotation.${geometry}`, { n: ways.length || nodes.length });
   };
 
 

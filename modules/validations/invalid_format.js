@@ -59,13 +59,15 @@ export function validationFormatting(context) {
           message: function() {
             const graph = editor.staging.graph;
             const entity = graph.hasEntity(this.entityIds[0]);
-            return entity ? l10n.t('issues.invalid_format.website.message' + this.data,
-              { feature: l10n.displayLabel(entity, graph), site: websites.join(', ') }) : '';
+            return entity ? l10n.t('issues.invalid_format.website.message', {
+              n: websites.length,
+              feature: l10n.displayLabel(entity, graph),
+              email: websites.join(', ')
+            }) : '';
           },
           reference: showReferenceWebsite,
           entityIds: [entity.id],
-          hash: websites.join(),
-          data: (websites.length > 1) ? '_multi' : ''
+          hash: websites.join()
         }));
       }
     }
@@ -86,13 +88,15 @@ export function validationFormatting(context) {
           message: function() {
             const graph = editor.staging.graph;
             const entity = graph.hasEntity(this.entityIds[0]);
-            return entity ? l10n.t('issues.invalid_format.email.message' + this.data,
-              { feature: l10n.displayLabel(entity, graph), email: emails.join(', ') }) : '';
+            return entity ? l10n.t('issues.invalid_format.email.message', {
+              n: emails.length,
+              feature: l10n.displayLabel(entity, graph),
+              email: emails.join(', ')
+            }) : '';
           },
           reference: showReferenceEmail,
           entityIds: [entity.id],
-          hash: emails.join(),
-          data: (emails.length > 1) ? '_multi' : ''
+          hash: emails.join()
         }));
       }
     }

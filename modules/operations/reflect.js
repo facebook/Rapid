@@ -22,7 +22,6 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
   const storage = context.systems.storage;
   const viewport = context.viewport;
 
-  const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
   const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
   const extent = utilTotalExtent(entities, graph);
@@ -90,8 +89,8 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      l10n.t(`operations.reflect.${disabledReason}.${multi}`) :
-      l10n.t(`operations.reflect.description.${axis}.${multi}`);
+      l10n.t(`operations.reflect.${disabledReason}`, { n: selectedIDs.length }) :
+      l10n.t(`operations.reflect.description.${axis}`, { n: selectedIDs.length });
   };
 
 
