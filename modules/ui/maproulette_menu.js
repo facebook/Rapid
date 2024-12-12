@@ -85,10 +85,10 @@ export function uiMapRouletteMenu(context) {
               return;
             }
             _mapRouletteApiKey = apiKey;
-            d.action(d3_event, d, _qaItem);
+            d.action(d3_event, d);
           });
         } else {
-          d.action(d3_event, d, _qaItem);
+          d.action(d3_event, d);
         }
         mapRouletteMenu.close();
       })
@@ -177,46 +177,30 @@ export function uiMapRouletteMenu(context) {
   }
 
 
-  function fixedIt(d3_event, d, _qaItem) {
-    if (!_qaItem) {
-      console.error('No task selected');
-      return;
-    }
+  function fixedIt(d3_event, d) {
     console.log('Current d in fixedIt:', d);
-    _qaItem._status = 1;
+    d._status = 1;
     _actionTaken = 'FIXED';
-    submitTask(d3_event, _qaItem);
+    submitTask(d3_event, d);
   }
 
 
   function cantComplete(d3_event, d) {
-    if (_qaItem) {
-      _qaItem._status = 6;
+      d._status = 6;
       _actionTaken = `CAN'T COMPLETE`;
-      submitTask(d3_event, _qaItem);
-    } else {
-      console.error('No task selected');
-    }
+      submitTask(d3_event, d);
   }
 
   function alreadyFixed(d3_event, d) {
-    if (_qaItem) {
-      _qaItem._status = 5;
+      d._status = 5;
       _actionTaken = 'ALREADY FIXED';
-      submitTask(d3_event, _qaItem);
-    } else {
-      console.error('No task selected');
-    }
+      submitTask(d3_event, d);
   }
 
   function notAnIssue(d3_event, d) {
-    if (_qaItem) {
-      _qaItem._status = 2;
+      d._status = 2;
       _actionTaken = 'NOT AN ISSUE';
-      submitTask(d3_event, _qaItem);
-    } else {
-      console.error('No task selected');
-    }
+      submitTask(d3_event, d);
   }
 
 
