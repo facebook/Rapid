@@ -164,7 +164,7 @@ export class UiRapidInspector {
       const flash = uiFlash(context)
         .duration(5000)
         .label(l10n.t(
-          'rapid_feature_inspector.option_accept.disabled_flash',
+          'rapid_inspector.option_accept.disabled_flash',
           { n: ACCEPT_FEATURES_LIMIT }
         ));
       flash();
@@ -182,7 +182,7 @@ export class UiRapidInspector {
     // serialized to JSON while saving undo/redo state in editor.save().
     const annotation = {
       type: 'rapid_accept_feature',
-      description: l10n.t('rapid_feature_inspector.option_accept.annotation'),
+      description: l10n.t('rapid_inspector.option_accept.annotation'),
       entityID: datum.id,
       dataUsed: dataset?.dataUsed || [datasetID]
     };
@@ -221,7 +221,7 @@ export class UiRapidInspector {
 
     const annotation = {
       type: 'rapid_ignore_feature',
-      description: l10n.t('rapid_feature_inspector.option_ignore.annotation'),
+      description: l10n.t('rapid_inspector.option_ignore.annotation'),
       entityID: datum.id
     };
     editor.perform(actionNoop());
@@ -295,7 +295,7 @@ export class UiRapidInspector {
       .text(dataset.getLabel());
 
     $featureInfo.selectAll('.dataset-beta')
-      .attr('title', l10n.t('rapid_poweruser_features.beta'));   // alt text
+      .attr('title', l10n.t('rapid_poweruser.beta'));   // alt text
   }
 
 
@@ -337,7 +337,7 @@ export class UiRapidInspector {
     $tagInfo = $tagInfo.merge($$tagInfo);
 
     $tagInfo.selectAll('.tag-heading')
-      .text(l10n.t('rapid_feature_inspector.tags'));
+      .text(l10n.t('rapid_inspector.tags'));
   }
 
 
@@ -354,15 +354,15 @@ export class UiRapidInspector {
       {
         key: 'accept',
         iconName: '#rapid-icon-rapid-plus-circle',
-        labelStringID: 'rapid_feature_inspector.option_accept.label',
-        referenceStringID: 'rapid_feature_inspector.option_accept.description',
+        labelStringID: 'rapid_inspector.option_accept.label',
+        referenceStringID: 'rapid_inspector.option_accept.description',
         tooltip: this.AcceptTooltip,
         onClick: this.acceptFeature
       }, {
         key: 'ignore',
         iconName: '#rapid-icon-rapid-minus-circle',
-        labelStringID: 'rapid_feature_inspector.option_ignore.label',
-        referenceStringID: 'rapid_feature_inspector.option_ignore.description',
+        labelStringID: 'rapid_inspector.option_ignore.label',
+        referenceStringID: 'rapid_inspector.option_ignore.description',
         tooltip: this.IgnoreTooltip,
         onClick: this.ignoreFeature
       }
@@ -390,7 +390,7 @@ export class UiRapidInspector {
     $choices = $choices.merge($$choices);
 
     $choices.selectAll('.rapid-inspector-prompt')
-      .text(l10n.t('rapid_feature_inspector.prompt'));
+      .text(l10n.t('rapid_inspector.prompt'));
 
     $choices.selectAll('.rapid-inspector-choice')
       .each(this.renderChoice);
@@ -425,7 +425,7 @@ export class UiRapidInspector {
         .attr('class', 'rapid-inspector-notice');
 
       $$notice
-        .html(marked.parse(l10n.t('rapid_feature_inspector.notice.open_data', { url: dataset.licenseUrl })));
+        .html(marked.parse(l10n.t('rapid_inspector.notice.open_data', { url: dataset.licenseUrl })));
 
       // update
       $notice = $notice.merge($$notice);
@@ -506,14 +506,14 @@ export class UiRapidInspector {
     let title, shortcut;
     if (d.key === 'accept') {
       if (isDisabled) {
-        title = l10n.t('rapid_feature_inspector.option_accept.disabled', { n: ACCEPT_FEATURES_LIMIT } );
+        title = l10n.t('rapid_inspector.option_accept.disabled', { n: ACCEPT_FEATURES_LIMIT } );
         shortcut = '';
       } else {
-        title = l10n.t('rapid_feature_inspector.option_accept.tooltip');
+        title = l10n.t('rapid_inspector.option_accept.tooltip');
         shortcut = l10n.t('shortcuts.command.accept_feature.key');
       }
     } else if (d.key === 'ignore') {
-      title = l10n.t('rapid_feature_inspector.option_ignore.tooltip');
+      title = l10n.t('rapid_inspector.option_ignore.tooltip');
       shortcut = l10n.t('shortcuts.command.ignore_feature.key');
     }
 

@@ -146,7 +146,7 @@ export class UiRapidDatasetToggle {
     $toggleAll = $toggleAll.merge($$toggleAll);
 
     $toggleAll.selectAll('.rapid-feature-label')
-      .html(l10n.t('rapid_feature_toggle.toggle_all', {
+      .html(l10n.t('rapid_menu.toggle_all', {
         rapidicon: icon(`#rapid-logo-rapid-wordmark${rtl}`, 'logo-rapid')
       }));
 
@@ -204,7 +204,7 @@ export class UiRapidDatasetToggle {
     $manageDatasets = $manageDatasets.merge($$manageDatasets);
 
     $manageDatasets.selectAll('.rapid-feature-label')
-      .text(l10n.t('rapid_feature_toggle.add_manage_datasets'));
+      .text(l10n.t('rapid_menu.add_manage_datasets'));
 
     $manageDatasets.selectAll('.rapid-checkbox-label use')
       .attr('xlink:href', l10n.isRTL() ? '#rapid-icon-backward' : '#rapid-icon-forward');
@@ -367,19 +367,19 @@ export class UiRapidDatasetToggle {
       .text(d => d.getLabel());
 
     $rows.selectAll('.rapid-feature-label-beta')
-      .attr('title', l10n.t('rapid_poweruser_features.beta'));   // alt text
+      .attr('title', l10n.t('rapid_poweruser.beta'));   // alt text
 
     $rows.selectAll('.rapid-feature-description')
       .text(d => d.description);
 
     $rows.selectAll('.rapid-feature-license-link-text')
-      .text(l10n.t('rapid_feature_toggle.license'));
+      .text(l10n.t('rapid_menu.license'));
 
     $rows.selectAll('.rapid-feature-extent-center-map')
-      .text(l10n.t('rapid_feature_toggle.center_map'));
+      .text(l10n.t('rapid_menu.center_map'));
 
     $rows.selectAll('.rapid-feature-extent-worldwide')
-      .text(l10n.t('rapid_feature_toggle.worldwide'));
+      .text(l10n.t('rapid_menu.worldwide'));
 
     $rows.selectAll('.rapid-colorpicker-label')
       .attr('disabled', isRapidEnabled ? null : true)

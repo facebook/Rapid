@@ -58,13 +58,13 @@ button.rapid-features.layer-off use {
 
 /* rapid logo with wordmark embedded in text */
 .icon.pre-text.rapid {
-    vertical-align: text-top;
-    margin-right: 0;
-    margin-left: 0;
-    display: inline-block;
-    width: 60px;
-    fill: #333;
-    color: #da26d3;
+  vertical-align: text-top;
+  margin-right: 0;
+  margin-left: 0;
+  display: inline-block;
+  width: 60px;
+  fill: #333;
+  color: #da26d3;
 }
 
 
@@ -73,118 +73,118 @@ button.rapid-features.layer-off use {
 /* We can not just add an `opacity: 0.5` .disabled rule because that affects children too including tooltips */
 .rapid-inspector button,
 .modal.rapid-modal button {
-    border: 0;
-    background: #c000c0;  /* rapid magenta is just too bold for giant buttons: #da26d3;*/
-    color: #eee;
-    font-size: 16px;
-    border-radius: 30px;
-    height: 3rem;
+  border: 0;
+  background: #c000c0;  /* rapid magenta is just too bold for giant buttons: #da26d3;*/
+  color: #eee;
+  font-size: 16px;
+  border-radius: 30px;
+  height: 3rem;
 }
 .rapid-inspector button svg,
 .modal.rapid-modal button svg {
-    color: #eee;
-    fill: #da26d3;
+  color: #eee;
+  fill: #da26d3;
 }
 .rapid-inspector button:focus,
 .rapid-inspector button:hover,
 .modal.rapid-modal button:focus,
 .modal.rapid-modal button:hover {
-    background: #c6d;
+  background: #c6d;
 }
 .rapid-inspector button:focus svg,
 .rapid-inspector button:hover svg,
 .modal.rapid-modal button:focus svg,
 .modal.rapid-modal button:hover svg {
-    fill: #c6d;
+  fill: #c6d;
 }
 
 .rapid-inspector button.disabled,
 .modal.rapid-modal button.disabled {
-    background: #da26d388;
-    color: #eee8;
+  background: #da26d388;
+  color: #eee8;
 }
 .rapid-inspector button.disabled svg,
 .modal.rapid-modal button.disabled svg {
-    color: #eee8;
-    fill: #da26d388;
+  color: #eee8;
+  fill: #da26d388;
 }
 .rapid-inspector button.disabled:focus,
 .rapid-inspector button.disabled:hover,
 .modal.rapid-modal button.disabled:focus,
 .modal.rapid-modal button.disabled:hover {
-    background: #c6d8;
+  background: #c6d8;
 }
 .rapid-inspector button.disabled:focus svg,
 .rapid-inspector button.disabled:hover svg,
 .modal.rapid-modal button.disabled:focus svg,
 .modal.rapid-modal button.disabled:hover svg {
-    fill: #c6d8;
+  fill: #c6d8;
 }
 
 .rapid-inspector button.secondary,
 .modal.rapid-modal button.secondary {
-    border: 0;
-    background: #666;
-    color: #eee;
+  border: 0;
+  background: #666;
+  color: #eee;
 }
 .rapid-inspector button.secondary svg,
 .modal.rapid-modal button.secondary svg {
-    color: #eee;
-    fill: #666;
+  color: #eee;
+  fill: #666;
 }
 .rapid-inspector button.secondary:focus,
 .rapid-inspector button.secondary:hover,
 .modal.rapid-modal button.secondary:focus,
 .modal.rapid-modal button.secondary:hover {
-    background: #888;
+  background: #888;
 }
 .rapid-inspector button.secondary:focus svg,
 .rapid-inspector button.secondary:hover svg,
 .modal.rapid-modal button.secondary:focus svg,
 .modal.rapid-modal button.secondary:hover svg {
-    fill: #888;
+  fill: #888;
 }
 
 .rapid-inspector button.secondary.disabled,
 .modal.rapid-modal button.secondary.disabled {
-    background: #6668;
-    color: #eee8;
+  background: #6668;
+  color: #eee8;
 }
 .rapid-inspector button.secondary.disabled svg,
 .modal.rapid-modal button.secondary.disabled svg {
-    color: #eee8;
-    fill: #6668;
+  color: #eee8;
+  fill: #6668;
 }
 .rapid-inspector button.secondary.disabled:focus,
 .rapid-inspector button.secondary.disabled:hover,
 .modal.rapid-modal button.secondary.disabled:focus,
 .modal.rapid-modal button.secondary.disabled:hover {
-    background: #8888;
+  background: #8888;
 }
 .rapid-inspector button.secondary.disabled:focus svg,
 .rapid-inspector button.secondary.disabled:hover svg,
 .modal.rapid-modal button.secondary.disabled:focus svg,
 .modal.rapid-modal button.secondary.disabled:hover svg {
-    fill: #8888;
+  fill: #8888;
 }
-
 
 .modal.rapid-modal button svg.logo-rapid,
 .modal.rapid-modal button svg.logo-rapid:focus,
 .modal.rapid-modal button svg.logo-rapid:hover {
-    color: #eee;
-    fill: #eee;
+  color: #eee;
+  fill: #eee;
 }
 .modal.rapid-modal button.disabled svg.logo-rapid,
 .modal.rapid-modal button.disabled svg.logo-rapid:focus,
 .modal.rapid-modal button.disabled svg.logo-rapid:hover {
-    color: #eee8;
-    fill: #eee8;
+  color: #eee8;
+  fill: #eee8;
 }
 
 
-/* Sidebar - Rapid Inspector */
-.rapid-inspector {
+/* Sidebar - Rapid/Overture Inspectors */
+.rapid-inspector,
+.overture-inspector {
   display: flex;
   flex: 1 1 0px;
   flex-flow: column nowrap;
@@ -202,37 +202,40 @@ button.rapid-features.layer-off use {
 .rapid-inspector .header svg.logo-rapid {
   height: 35px;
 }
-.rapid-inspector .header button.rapid-inspector-close,
-.overture-inspector .header button.overture-inspector-close {
+
+button.rapid-inspector-close,
+button.overture-inspector-close {
   position: absolute;
   top: 0;
   right: 0;
   background: transparent;
   border-radius: 0px;
+  height: 100%;
 }
-.ideditor[dir='rtl'] .rapid-inspector .header button.rapid-inspector-close,
-.ideditor[dir='rtl'] .overture-inspector .header button.overture-inspector-close
- {
+.ideditor[dir='rtl'] button.rapid-inspector-close,
+.ideditor[dir='rtl'] button.overture-inspector-close {
   right: unset;
   left: 0;
 }
-.rapid-inspector .header button.rapid-inspector-close svg {
+button.rapid-inspector-close svg,
+button.overture-inspector-close svg {
   color: #da26d3;
 }
-.rapid-inspector .header button.rapid-inspector-close svg {
+button.rapid-inspector-close svg,
+button.overture-inspector-close svg {
   color: #000000;
 }
-
-.rapid-inspector .header button.rapid-inspector-close:hover {
+button.rapid-inspector-close:hover,
+button.overture-inspector-close:hover {
   background: #8885;
 }
-
 
 .rapid-inspector .tooltip .popover-inner {
   border: 1px solid #aaaa;
 }
 
-.rapid-inspector .body {
+.rapid-inspector .body,
+.overture-inspector .body {
   display: flex;
   flex: 1 1 0px;
   flex-flow: column nowrap;
@@ -240,10 +243,10 @@ button.rapid-features.layer-off use {
   background: #f6f6f6;
   color: #333;
   padding: 20px;
-  opacity: 1;
 }
 
-.rapid-inspector .body p {
+.rapid-inspector .body p,
+.overture-inspector .body p {
   padding: 20px 0;
 }
 
@@ -272,22 +275,25 @@ button.rapid-features.layer-off use {
   color: #ddd;
   border-radius: 0 0 5px 5px;
   border: 1px transparent;
+  overflow-x: auto;
+}
+.overture-inspector .property-info {
+  padding: 0px 5px 15px 5px;
 }
 .rapid-inspector .tag-bag {
   display: flex;
   flex-flow: row wrap;
+  align-items: center
 }
-.rapid-inspector .tag-heading,
 .overture-inspector .property-heading {
   margin-right: 5px;
   padding-left: 3px;
-}
-
-.overture-inspector .property-heading {
   margin-top: 5px;
-  font-size: larger;  
+  font-size: larger;
 }
-
+.rapid-inspector .tag-heading {
+  padding-left: 3px;
+}
 
 .rapid-inspector .tag-info .tag-entry {
   display: flex;
@@ -322,7 +328,7 @@ button.rapid-features.layer-off use {
   padding: 0 3px;
 }
 
-.rapid-inspector .tag-key, 
+.rapid-inspector .tag-key,
 .overture-inspector .property-key {
   font-weight: bold;
   font-size: unset;
@@ -393,7 +399,9 @@ button.rapid-features.layer-off use {
 }
 
 .overture-inspector img.wordmark-overture {
-  width:100%;
+  width: 100%;
+  max-width: 225px;
+  object-fit: contain;
 }
 
 /* For things that should stack in rows */
@@ -744,119 +752,119 @@ hide this one and style something on top of it.  */
 
 /* Rapid Power User features */
 .rapid-stack.poweruser .modal-section-heading {
-    display: flex;
-    flex-flow: column;
-    padding: 10px 20px;
-    width: 100%;
+  display: flex;
+  flex-flow: column;
+  padding: 10px 20px;
+  width: 100%;
 }
 
 .rapid-stack.poweruser .modal-section-heading h3 {
-    font-size: 24px
+  font-size: 24px
 }
 .rapid-stack.poweruser .modal-heading-desc {
-    font-size: 16px;
-    font-style: italic;
+  font-size: 16px;
+  font-style: italic;
 }
 .rapid-stack.poweruser .modal-heading-desc .smile {
-    font-style: normal;
-    margin: 0 10px;
+  font-style: normal;
+  margin: 0 10px;
 }
 .rapid-stack.poweruser .rapid-features-container {
-    width: 100%;
-    border-top: 1px solid #888a;
+  width: 100%;
+  border-top: 1px solid #888a;
 }
 .rapid-stack.poweruser .rapid-features-container > .rapid-checkbox:last-of-type {
-    padding-bottom: 15px;
+  padding-bottom: 15px;
 }
 .rapid-stack.poweruser .rapid-features-container .rapid-feature-label {
-    margin: 0 5px;
+  margin: 0 5px;
 }
 
 .rapid-stack.poweruser .rapid-features-container .rapid-feature-description {
-    font-size: 14px;
-    font-style: italic;
-    margin: -5px 5px 5px 5px;
-    color: #aaa;
+  font-size: 14px;
+  font-style: italic;
+  margin: -5px 5px 5px 5px;
+  color: #aaa;
 }
 
-/* Add/Manage Datasets modal */
+/* Rapid Catalog modal */
 /* catalog-wrap is an absolutely positioned div to create a new stacking context,
    so we can put a modal on top of the other modal.
    (it functions like .shaded for layout but without adding any shading)
 */
 .catalog-wrap {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow: auto;
-    z-index: 51;   /* above existing modal */
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+  z-index: 51;   /* above existing modal */
 }
 .modal.rapid-modal.modal-catalog {
-    width: 80%;
-    min-width: 600px;
-    max-width: 1000px;
-    min-height: 85%;
+  width: 80%;
+  min-width: 600px;
+  max-width: 1000px;
+  min-height: 85%;
 }
 .modal.rapid-modal.modal-catalog p {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .modal-catalog .modal-section {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    width: 100%;
-    padding: 0;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  width: 100%;
+  padding: 0;
 }
 
 .modal-catalog .modal-section.rapid-catalog-header {
-    display: flex;
-    flex-flow: column nowrap;
-    padding: 10px 20px;
-    border-bottom: 1px solid #aaaa;
-    color: #fff;
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 10px 20px;
+  border-bottom: 1px solid #aaaa;
+  color: #fff;
 }
 .modal-catalog .modal-section.rapid-catalog-header > div {
-    display: flex;
-    flex: 1;
-    width: 100%;
-    align-items: center;
+  display: flex;
+  flex: 1;
+  width: 100%;
+  align-items: center;
 }
 
 .rapid-catalog-header-icon {
-    flex: 0 0 40px;
+  flex: 0 0 40px;
 }
 .rapid-catalog-header-text {
-    flex: 1 1 auto;
-    font-size: 24px;
-    padding: 0 5px;
+  flex: 1 1 auto;
+  font-size: 24px;
+  padding: 0 5px;
 }
 .rapid-catalog-header-about {
-    color: #ddd;
+  color: #ddd;
 }
 
 .modal-catalog .modal-section.rapid-catalog-filter {
-    display: flex;
-    flex-flow: row nowrap;
-    padding: 10px 20px;
-    border-bottom: 1px solid #aaaa;
-    color: #fff;
+  display: flex;
+  flex-flow: row nowrap;
+  padding: 10px 20px;
+  border-bottom: 1px solid #aaaa;
+  color: #fff;
 }
 .rapid-catalog-filter-search-wrap,
 .rapid-catalog-filter-type-wrap {
-    position: relative;
-    flex: 1;
-    padding: 0 5px;
+  position: relative;
+  flex: 1;
+  padding: 0 5px;
 }
 .rapid-catalog-filter-search-wrap > .icon {
-    position: absolute;
-    left: 16px;
-    top: 11px;
-    color: #aaa;
-    width: 16px;
-    height: 16px;
+  position: absolute;
+  left: 16px;
+  top: 11px;
+  color: #aaa;
+  width: 16px;
+  height: 16px;
 }
 .ideditor[dir='rtl'] .rapid-catalog-filter-search-wrap > .icon {
   left: unset;
@@ -865,83 +873,81 @@ hide this one and style something on top of it.  */
 
 .rapid-catalog-filter-search,
 .rapid-catalog-filter-type {
-    background: #444;
-    color: #ddd;
-    padding: 4px 12px;
-    border-radius: 10px;
-    border: 1px solid #333;
-    font-size: 16px;
-    width: 90%;
+  background: #444;
+  color: #ddd;
+  padding: 4px 12px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  font-size: 16px;
+  width: 90%;
 }
 .rapid-catalog-filter-search {
-    padding: 4px 12px 4px 40px;
+  padding: 4px 12px 4px 40px;
 }
 .ideditor[dir='rtl'] .rapid-catalog-filter-search {
-    padding: 4px 40px 4px 12px;
+  padding: 4px 40px 4px 12px;
 }
 .rapid-catalog-filter-search:focus,
 .rapid-catalog-filter-search:active,
 .rapid-catalog-filter-type:focus,
 .rapid-catalog-filter-type:active {
-    background: #444;
-    color: #eee;
-    outline: none;
-    border: 1px solid #aaa;
+  background: #444;
+  color: #eee;
+  outline: none;
+  border: 1px solid #aaa;
 }
 
 div.combobox.combobox-dataset-categories {
-    background: #333;
-    color: #ddd;
-    border: 1px solid #222;
+  background: #333;
+  color: #ddd;
+  border: 1px solid #222;
 }
-
 div.combobox.combobox-dataset-categories a {
-    color: #ddd;
-    border-top: 1px solid #222;
+  color: #ddd;
+  border-top: 1px solid #222;
 }
-
 div.combobox.combobox-dataset-categories a.selected,
 div.combobox.combobox-dataset-categories a:active,
 div.combobox.combobox-dataset-categories a:focus {
-    color: #eee;
-    background: #3c3c3c;
+  color: #eee;
+  background: #3c3c3c;
 }
 @media (hover: hover) {
-    div.combobox.combobox-dataset-categories a:hover {
-        color: #eee;
-        background: #3c3c3c;
-    }
+  div.combobox.combobox-dataset-categories a:hover {
+    color: #eee;
+    background: #3c3c3c;
+  }
 }
 
 .rapid-catalog-filter-clear a {
-    padding: 15px;
-    font-size: 14px;
+  padding: 15px;
+  font-size: 14px;
 }
 
 .rapid-catalog-filter-results {
-    flex: 1 1 200px;
-    padding: 0 5px;
-    text-align: end;
-    font-size: 20px;
+  flex: 1 1 200px;
+  padding: 0 5px;
+  text-align: end;
+  font-size: 20px;
 }
 
 .modal-catalog .rapid-catalog-datasets-section {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: stretch;
-    overflow-y: auto;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: stretch;
+  overflow-y: auto;
 }
 
 /* give this section height, even when its contents are hidden */
 .rapid-catalog-datasets-status,
 .rapid-catalog-datasets {
-    flex: 1 1 9999px;
+  flex: 1 1 9999px;
 }
 
 .rapid-catalog-datasets-status {
-    font-size: 20px;
-    text-align: center;
-    margin: 50px;
+  font-size: 20px;
+  text-align: center;
+  margin: 50px;
 }
 
 .rapid-catalog-datasets {
@@ -984,9 +990,9 @@ img.rapid-catalog-dataset-thumbnail.inverted {
 }
 
 .rapid-catalog-dataset-name {
-    font-weight: bold;
-    font-size: 14px;
-    margin-bottom: 3px;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 3px;
 }
 
 .dataset-categories {
@@ -1029,44 +1035,44 @@ img.rapid-catalog-dataset-thumbnail.inverted {
 
 /* Colorpicker popup */
 .colorpicker-popup {
-    position: absolute;
-    padding: 10px;
-    z-index: 100;
-    background-color: #fff;
-    border: none;
-    display: flex;
-    border-radius: 6px;
-    box-shadow: 0 0 2em black;
+  position: absolute;
+  padding: 10px;
+  z-index: 100;
+  background-color: #fff;
+  border: none;
+  display: flex;
+  border-radius: 6px;
+  box-shadow: 0 0 2em black;
 }
 .colorpicker-arrow {
-    position: absolute;
-    top: -10px;
-    width: 0;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom: 10px solid #fff;
+  position: absolute;
+  top: -10px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 10px solid #fff;
 }
 
 .colorpicker-colors {
-    display: flex;
-    flex-flow: row wrap;
+  display: flex;
+  flex-flow: row wrap;
 }
 .colorpicker-option {
-    border: 2px solid transparent;
-    background: #fff;
-    border-radius: 6px;
+  border: 2px solid transparent;
+  background: #fff;
+  border-radius: 6px;
 }
 .colorpicker-option:hover {
-    border: 2px solid #ddd;
+  border: 2px solid #ddd;
 }
 .colorpicker-option.selected {
-    border: 2px solid #444;
+  border: 2px solid #444;
 }
 .colorpicker-option-fill {
-    background-color: currentColor;
-    width: 20px;
-    height: 20px;
-    margin: 4px;
-    border-radius: 5px;
+  background-color: currentColor;
+  width: 20px;
+  height: 20px;
+  margin: 4px;
+  border-radius: 5px;
 }

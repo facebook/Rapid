@@ -790,6 +790,7 @@ en:
       rapid:
         tooltip: Suggested features detected from machine learning and open data that can be used to improve OpenStreetMap
         title: Rapid Features
+        license: Facebook's Map With AI License
       maproulette:
         tooltip: Tasks from maproulette.org.  You can also enter a comma-separated list of challenge IDs to filter.
         title:
@@ -1099,7 +1100,7 @@ en:
     exploring: I'm just exploring
     login_with_osm: Log in with OSM
 
-  rapid_feature_inspector:
+  rapid_inspector:
     prompt: How would you like to proceed with this selected feature?
     notice:
       open_data: This dataset is comprised of open data. See our [license]({url}) for more details.  # This string may contain markdown
@@ -1116,8 +1117,7 @@ en:
       description: Ignoring this feature helps us improve our machine learning. If you are unsure whether or not this is an accurate feature, feel free to leave it as is, nothing will be saved or lost. 👍
       annotation: Ignored a Rapid feature.
       tooltip: Ignore this feature.
-  rapid_feature_license: Facebook's Map With AI License
-  rapid_feature_toggle:
+  rapid_menu:
     license: License
     toggle_all: Toggle all {rapidicon} data
     add_manage_datasets: "Add/Manage Datasets"
@@ -1162,7 +1162,7 @@ en:
       label: Open Data Footways
       description: Open footways data collected from various local government entities.
 
-  rapid_poweruser_features:
+  rapid_poweruser:
     beta: Beta Feature
     heading:
       label: Rapid Power User Features

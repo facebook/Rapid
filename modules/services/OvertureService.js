@@ -96,8 +96,8 @@ export class OvertureService extends AbstractSystem {
       dataUsed: ['overture', 'Overture Places'],
       itemUrl: 'https://docs.overturemaps.org/guides/places/',
       licenseUrl: 'https://docs.overturemaps.org/attribution/#places',
-      labelStringID: 'rapid_feature_toggle.overture.places.label',
-      descriptionStringID: 'rapid_feature_toggle.overture.places.description'
+      labelStringID: 'rapid_menu.overture.places.label',
+      descriptionStringID: 'rapid_menu.overture.places.description'
     });
 
     return [places];

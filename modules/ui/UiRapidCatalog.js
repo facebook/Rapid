@@ -175,10 +175,10 @@ export class UiRapidCatalog extends EventEmitter {
     $header = $header.merge($$header);
 
     $header.selectAll('.rapid-catalog-header-text')
-      .text(l10n.t('rapid_feature_toggle.add_manage_datasets'));
+      .text(l10n.t('rapid_menu.add_manage_datasets'));
 
     $header.selectAll('.rapid-catalog-header-about')
-      .html(marked.parse(l10n.t('rapid_feature_toggle.about_the_catalog')));
+      .html(marked.parse(l10n.t('rapid_menu.about_the_catalog')));
 
     $header.selectAll('.rapid-catalog-header-about a')
       .attr('target', '_blank');   // make sure the markdown links go to a new page
@@ -261,13 +261,13 @@ export class UiRapidCatalog extends EventEmitter {
     $filter = $filter.merge($$filter);
 
     $filter.selectAll('.rapid-catalog-filter-search')
-      .attr('placeholder', l10n.t('rapid_feature_toggle.filter_datasets'));
+      .attr('placeholder', l10n.t('rapid_menu.filter_datasets'));
 
     $filter.selectAll('.rapid-catalog-filter-type')
-      .attr('placeholder', l10n.t('rapid_feature_toggle.any_type'));
+      .attr('placeholder', l10n.t('rapid_menu.any_type'));
 
     $filter.selectAll('.rapid-catalog-filter-clear > a')
-      .text(l10n.t('rapid_feature_toggle.clear_filters'));
+      .text(l10n.t('rapid_menu.clear_filters'));
 
 
     /* Dataset section */
@@ -337,7 +337,7 @@ export class UiRapidCatalog extends EventEmitter {
 
     if (!rapid.catalog.size) {
       $results.classed('hide', true);
-      $status.classed('hide', false).text(l10n.t('rapid_feature_toggle.no_datasets'));
+      $status.classed('hide', false).text(l10n.t('rapid_menu.no_datasets'));
       return;
     }
 
@@ -350,7 +350,7 @@ export class UiRapidCatalog extends EventEmitter {
     if (!showPreview) categories.delete('preview');
 
     const comboData = Array.from(categories).sort().map(d => {
-      const display = l10n.t(`rapid_feature_toggle.category.${d}`, { default: d });
+      const display = l10n.t(`rapid_menu.category.${d}`, { default: d });
       const item = { display: display, title: d, value: d };
       if (d === 'preview') item.display = `${display} <span class="rapid-catalog-dataset-beta beta"></span>`;
       return item;
@@ -475,34 +475,34 @@ export class UiRapidCatalog extends EventEmitter {
       .html(d => this.highlight(this._filterText, d.getLabel()));
 
     $datasets.selectAll('.rapid-catalog-dataset-link-text')
-      .text(l10n.t('rapid_feature_toggle.more_info'));
+      .text(l10n.t('rapid_menu.more_info'));
 
     $$datasets.selectAll('.dataset-category')
       .text(d => {
         if (d === 'preview') return '';
         const star = (d === 'featured') ? '\u2b50 ' : '';   // 2b50 = emoji star
-        const text = l10n.t(`rapid_feature_toggle.category.${d}`, { default: d });
+        const text = l10n.t(`rapid_menu.category.${d}`, { default: d });
         return star + text;
       });
 
     $datasets.selectAll('.dataset-category-preview')
-      .attr('title', l10n.t('rapid_poweruser_features.beta'));  // alt text
+      .attr('title', l10n.t('rapid_poweruser.beta'));  // alt text
 
     $datasets.selectAll('.rapid-catalog-dataset-snippet')
       .html(d => this.highlight(this._filterText, d.getDescription()));
 
     $datasets.selectAll('.dataset-added-text')
-      .text(d => d.added ? '\u2705 ' + l10n.t('rapid_feature_toggle.dataset_added') : '');  // 2705 = emoji check
+      .text(d => d.added ? '\u2705 ' + l10n.t('rapid_menu.dataset_added') : '');  // 2705 = emoji check
 
     $datasets.selectAll('.rapid-catalog-dataset-action')
       .classed('secondary', d => d.added)
-      .text(d => d.added ? l10n.t('rapid_feature_toggle.remove') : l10n.t('rapid_feature_toggle.add_dataset'));
+      .text(d => d.added ? l10n.t('rapid_menu.remove') : l10n.t('rapid_menu.add_dataset'));
 
     // update the count
     const n = datasets.filter(d => !d.filtered).length;
     const gt = (count > MAXRESULTS) ? '>' : '';
     $content.selectAll('.rapid-catalog-filter-results')
-      .text(l10n.t('rapid_feature_toggle.datasets_found', { n: n, gt: gt }));
+      .text(l10n.t('rapid_menu.datasets_found', { n: n, gt: gt }));
   }
 
 

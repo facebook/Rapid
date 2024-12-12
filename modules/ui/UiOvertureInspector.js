@@ -10,8 +10,8 @@ import { uiTooltip } from './tooltip.js';
 /**
  * UiOvertureInspector
  * The OvertureInspector is a UI component for viewing Overture Entities in the sidebar.
- * Because Overture entities conform to a certain schema, we might at some point build a JSON-Schema-aware 
- * version of this code that modifies the display of the data. 
+ * Because Overture entities conform to a certain schema, we might at some point build a JSON-Schema-aware
+ * version of this code that modifies the display of the data.
  *
  * @example
  *  <div class='overture-inspector'>
@@ -198,11 +198,11 @@ export class UiOvertureInspector {
       .attr('class', 'property-bag');
 
 
-      //Overture properties can come to us as strings, JSON arrays, or JSON objects. Handle all three!
+    // Overture properties can come to us as strings, JSON arrays, or JSON objects. Handle all three!
     for (const [k, v] of Object.entries(properties)) {
       const $$propHeading = $$propBag
-      .append('div')
-      .attr('class', 'property-heading');
+        .append('div')
+        .attr('class', 'property-heading');
 
       let key = k;
 
@@ -245,9 +245,6 @@ export class UiOvertureInspector {
 
     // update
     $propInfo = $propInfo.merge($$propInfo);
-
-    $propInfo.selectAll('.tag-heading')
-      .text(l10n.t('overture_feature_inspector.properties'));
   }
 
   /**
@@ -292,7 +289,7 @@ export class UiOvertureInspector {
         .attr('class', 'overture-inspector-notice');
 
       $$notice
-        .html(marked.parse(l10n.t('rapid_feature_inspector.notice.open_data', {license: dataset.license_markdown})));
+        .html(marked.parse(l10n.t('rapid_inspector.notice.open_data', {license: dataset.license_markdown})));
 
       // update
       $notice = $notice.merge($$notice);

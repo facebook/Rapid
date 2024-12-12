@@ -31,7 +31,7 @@ export class UiUndoRedoTool {
         // Handle string- or object-style annotations. Object-style
         // should include "type" and "description" keys, where
         // "description" is used in place of a string-style annotation.
-        // See ui/rapid_feature_inspector.js for the motivating use case.
+        // See ui/UiRapidInspector.js for the motivating use case.
         let str = d.annotation();
         if (str?.description) {
           str = str.description;

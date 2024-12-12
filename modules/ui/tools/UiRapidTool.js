@@ -80,7 +80,7 @@ export class UiRapidTool {
     this.PowerUserTooltip
       .placement('bottom')
       .scrollContainer($container.select('.map-toolbar'))
-      .title(l10n.t('rapid_poweruser_features.heading.label'));
+      .title(l10n.t('rapid_poweruser.heading.label'));
 
 
     // Button group

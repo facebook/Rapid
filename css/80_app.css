@@ -5443,32 +5443,31 @@ li:first-of-type .badge .tooltip .popover-arrow {
 /* Scrollbars
  ----------------------------------------------------- */
 ::-webkit-scrollbar {
-    height: 20px;
-    overflow: visible;
-    width: 10px;
-    border-left: 1px solid #DDD;
+  height: 20px;
+  overflow: visible;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-    background-clip: padding-box;
-    border: solid transparent;
-    border-width: 0;
+  background-clip: padding-box;
+  border: solid transparent;
+  border-width: 0;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: rgba(0,0,0,.2);
-    background-clip: padding-box;
-    border: solid transparent;
-    border-width: 3px 3px 3px 4px;
-    border-radius: 6px;
+  background-color: rgba(0,0,0,.2);
+  background-clip: padding-box;
+  border: solid transparent;
+  border-width: 3px 3px 3px 4px;
+  border-radius: 6px;
 }
 ::-webkit-scrollbar-track:active {
-    background-color: rgba(0,0,0,.05);
+  background-color: rgba(0,0,0,.05);
 }
 @media (hover: hover) {
-    ::-webkit-scrollbar-track:hover {
-        background-color: rgba(0,0,0,.05);
-    }
+  ::-webkit-scrollbar-track:hover {
+    background-color: rgba(0,0,0,.05);
+  }
 }
 
 /* Firefox only */

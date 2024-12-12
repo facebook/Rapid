@@ -82,7 +82,7 @@ export class UiAttribution {
       data[1].sources.push({
         id: '__mapwithai',
         overlay: true,
-        terms_text: l10n.t('rapid_feature_license'),
+        terms_text: l10n.t('map_data.layers.rapid.license'),
         terms_url: 'https://mapwith.ai/doc/license/MapWithAILicense.pdf'
       });
     }

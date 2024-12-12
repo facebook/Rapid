@@ -111,10 +111,10 @@ export class UiRapidPowerUserFeatures {
     $heading = $heading.merge($$heading);
 
     $heading.selectAll('.modal-heading')
-      .html(l10n.t('rapid_poweruser_features.heading.label'));
+      .html(l10n.t('rapid_poweruser.heading.label'));
 
     $heading.selectAll('.modal-heading-desc-text')
-      .text(l10n.t('rapid_poweruser_features.heading.description'));
+      .text(l10n.t('rapid_poweruser.heading.description'));
 
 
     /* Features */
@@ -211,10 +211,10 @@ export class UiRapidPowerUserFeatures {
 
     // localize and style everything...
     $rows.selectAll('.rapid-feature-label')
-      .text(d => l10n.t(`rapid_poweruser_features.${d}.label`));
+      .text(d => l10n.t(`rapid_poweruser.${d}.label`));
 
     $rows.selectAll('.rapid-feature-description')
-      .text(d => l10n.t(`rapid_poweruser_features.${d}.description`));
+      .text(d => l10n.t(`rapid_poweruser.${d}.description`));
 
     $rows.selectAll('.rapid-feature-checkbox')
       .property('checked', this.isFeatureEnabled);
