@@ -280,10 +280,15 @@ button.rapid-features.layer-off use {
 .rapid-inspector .tag-heading,
 .overture-inspector .property-heading {
   margin-right: 5px;
-  margin-top: 5px;
   padding-left: 3px;
-  font-size: larger;
 }
+
+.overture-inspector .property-heading {
+  margin-top: 5px;
+  font-size: larger;  
+}
+
+
 .rapid-inspector .tag-info .tag-entry {
   display: flex;
   flex: 0 1 auto;
