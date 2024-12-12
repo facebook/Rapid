@@ -1,5 +1,5 @@
-import { select as d3_select } from 'd3-selection';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { select as d3_select } from 'd3-selection';
 import { vecAdd } from '@rapid-sdk/math';
 
 import { uiIcon } from './icon.js';
@@ -28,6 +28,7 @@ export function uiMapRouletteMenu(context) {
   let _menuWidth;
   let _qaItem;
   let _actionTaken;
+  let _mapRouletteApiKey;
 
   const actions = [
     { id: 'fixed', title: l10n.t('map_data.layers.maproulette.fixedIt'), action: fixedIt },
@@ -77,7 +78,19 @@ export function uiMapRouletteMenu(context) {
       .attr('class', d => `maproulette-menu-item maproulette-menu-item-${d.id}`)
       .style('height', `${buttonHeight}px`)
       .on('click', (d3_event, d) => {
-        d.action(d3_event, d);
+        if (!_mapRouletteApiKey) {
+          getMapRouletteApiKey(context, (err, apiKey) => {
+            if (err) {
+              console.error('Error retrieving MapRoulette API key:', err);
+              return;
+            }
+            _mapRouletteApiKey = apiKey;
+            console.log('MapRoulette API key retrieved:', _mapRouletteApiKey);
+            d.action(d3_event, d);  // Call the action after retrieving the API key
+          });
+        } else {
+          d.action(d3_event, d);
+        }
         mapRouletteMenu.close();
       })
       .on('mouseenter.highlight', function(d3_event, d) {
@@ -165,31 +178,88 @@ export function uiMapRouletteMenu(context) {
   }
 
   function fixedIt(d3_event, d) {
-    if (d) {
-      d._status = 1;
+    if (_qaItem) {
+      _qaItem._status = 1;
       _actionTaken = 'FIXED';
+      submitTask(d3_event, _qaItem);
+    } else {
+      console.error('No task selected');
     }
   }
 
   function cantComplete(d3_event, d) {
-    if (d) {
-      d._status = 6;
+    if (_qaItem) {
+      _qaItem._status = 6;
       _actionTaken = `CAN'T COMPLETE`;
+      submitTask(d3_event, _qaItem);
+    } else {
+      console.error('No task selected');
     }
   }
 
   function alreadyFixed(d3_event, d) {
-    if (d) {
-      d._status = 5;
+    if (_qaItem) {
+      _qaItem._status = 5;
       _actionTaken = 'ALREADY FIXED';
+      submitTask(d3_event, _qaItem);
+    } else {
+      console.error('No task selected');
     }
   }
 
   function notAnIssue(d3_event, d) {
-    if (d) {
-            d._status = 2;
+    if (_qaItem) {
+      _qaItem._status = 2;
       _actionTaken = 'NOT AN ISSUE';
+      submitTask(d3_event, _qaItem);
+    } else {
+      console.error('No task selected');
     }
+  }
+
+  function submitTask(d3_event, task) {
+    const osm = context.services.osm;
+    const userID = osm._userDetails.id;
+    if (maproulette) {
+      console.log('task', task);
+      task.taskStatus = task._status;
+      task.mapRouletteApiKey = _mapRouletteApiKey;
+      // Check if the element exists and get its value, otherwise use an empty string
+      const commentInput = d3_select('.new-comment-input');
+      task.comment = commentInput.empty() ? '' : commentInput.property('value').trim();
+      // Ensure taskId is correctly set
+      if (!task.id) {
+        console.error('Task ID is missing');
+        return;
+      }
+      task.taskId = task.id;
+      task.userId = userID;
+      maproulette.postUpdate(task, (err, item) => {
+        if (err) {
+          console.error(err);  // eslint-disable-line no-console
+          return;
+        }
+        dispatch.call('change', item);
+        // Fly to a nearby task if the feature is enabled, after the update
+        if (maproulette.nearbyTaskEnabled) {
+          maproulette.flyToNearbyTask(task);
+        }
+      });
+    }
+  }
+
+
+  function getMapRouletteApiKey(context, callback) {
+    const osm = context.services.osm;
+    osm.loadMapRouletteKey((err, preferences) => {
+      if (typeof callback === 'function') {
+        if (err) {
+          callback(err);
+        } else {
+          callback(null, preferences.maproulette_apikey_v2);
+        }
+      }
+    });
   }
 
   mapRouletteMenu.close = function() {
@@ -209,6 +279,14 @@ export function uiMapRouletteMenu(context) {
   mapRouletteMenu.triggerType = function(val) {
     if (!arguments.length) return _triggerType;
     _triggerType = val;
+    return mapRouletteMenu;
+  };
+
+  mapRouletteMenu.error = function(val) {
+    if (!arguments.length) return _qaItem;
+    _qaItem = val;
+    console.log('Task selected:', _qaItem);
+    _actionTaken = '';
     return mapRouletteMenu;
   };
 
