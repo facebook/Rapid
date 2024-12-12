@@ -182,10 +182,10 @@ export function uiMapRouletteMenu(context) {
       console.error('No task selected');
       return;
     }
-    console.log('Current d in fixedIt:', d); // Debugging log
-    _qaItem._status = 1;  // Update the status of the task
-    _actionTaken = 'FIXED';  // Set the action taken
-    submitTask(d3_event, _qaItem);  // Submit the task with the updated status
+    console.log('Current d in fixedIt:', d);
+    _qaItem._status = 1;
+    _actionTaken = 'FIXED';
+    submitTask(d3_event, _qaItem);
   }
 
 
@@ -282,6 +282,7 @@ export function uiMapRouletteMenu(context) {
   mapRouletteMenu.error = function(val) {
     if (!arguments.length) return _qaItem;
     _qaItem = val;
+    console.log('_qaItem',_qaItem);
     _actionTaken = '';
     return mapRouletteMenu;
   };
