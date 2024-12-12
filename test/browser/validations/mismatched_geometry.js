@@ -1,5 +1,6 @@
 describe('validationMismatchedGeometry', () => {
   let graph;
+  let _savedAreaKeys;
 
   class MockLocalizationSystem {
     constructor() {}
@@ -11,12 +12,28 @@ describe('validationMismatchedGeometry', () => {
     constructor() {}
   }
 
+  class MockStorageSystem {
+    constructor() { }
+    getItem() { return ''; }
+  }
+
+  class MockUrlSystem {
+    constructor() {
+      this.initialHashParams = new Map();
+    }
+    initAsync()   { return Promise.resolve(); }
+    on()          { return this; }
+  }
+
   class MockContext {
     constructor() {
       this.systems = {
+        assets:     new Rapid.AssetSystem(this),
         l10n:       new MockLocalizationSystem(),
         locations:  new MockLocationSystem(),
-        presets:    new Rapid.PresetSystem(this)
+        presets:    new Rapid.PresetSystem(this),
+        storage:    new MockStorageSystem(),
+        urlhash:    new MockUrlSystem()
       };
     }
   }
@@ -26,7 +43,23 @@ describe('validationMismatchedGeometry', () => {
 
   beforeEach(() => {
     graph = new Rapid.Graph();     // reset
+    _savedAreaKeys = Rapid.osmAreaKeys;
+
+    // For the tests that need a building preset
+    const testPresets = {
+      building: {
+        tags: { building: '*' },
+        geometry: ['area']
+      }
+    };
+    context.systems.assets._cache.tagging_preset_presets = testPresets;
   });
+
+  afterEach(() => {
+    Rapid.osmSetAreaKeys(_savedAreaKeys);
+    context.systems.assets._cache.tagging_preset_presets = {};
+  });
+
 
 
   function validate() {
@@ -110,16 +143,32 @@ describe('validationMismatchedGeometry', () => {
   });
 
   it('flags open way with area tag', () => {
+    // In this test case, `building=yes` suggests area, and we should match the 'building' preset.
     Rapid.osmSetAreaKeys({ building: {} });
-    createOpenWay({ building: 'yes' });
-    const issues = validate();
-    expect(issues).to.have.lengthOf(1);
+    const presets = context.systems.presets;
+    return presets.initAsync().then(() => {
+      createOpenWay({ building: 'yes' });
+      const issues = validate();
+      expect(issues).to.have.lengthOf(1);
 
-    const issue = issues[0];
-    expect(issue.type).to.eql('mismatched_geometry');
-    expect(issue.subtype).to.eql('area_as_line');
-    expect(issue.severity).to.eql('warning');
-    expect(issue.entityIds).to.eql(['w-1']);
+      const issue = issues[0];
+      expect(issue.type).to.eql('mismatched_geometry');
+      expect(issue.subtype).to.eql('area_as_line');
+      expect(issue.severity).to.eql('warning');
+      expect(issue.entityIds).to.eql(['w-1']);
+    });
+  });
+
+  it('does not flag cases whether the entity matches the generic preset, regardless of geometry', () => {
+    // In this test case, `waterway=yes` suggests area, but we won't match any presets.
+    // There is no preset for `waterway=security_lock`, so it matches fallback presets for both line and area.
+    Rapid.osmSetAreaKeys({ waterway: { dam: true } });
+    const presets = context.systems.presets;
+    return presets.initAsync().then(() => {
+      createOpenWay({ 'disused:waterway': 'security_lock' });
+      const issues = validate();
+      expect(issues).to.have.lengthOf(0);
+    });
   });
 
   it('flags open way with both area and line tags', () => {

@@ -36,6 +36,12 @@ export function validationMismatchedGeometry(context) {
             // If the presets match something like '*', (e.g. attraction), ignore
             const key = Object.keys(tagSuggestingArea)[0];
             if (linePreset.tags[key] === '*' || areaPreset.tags[key === '*']) return null;
+
+            // If the entity matches the fallback preset, regardless of the
+            // geometry, then changing the geometry will not help.  iD#10523
+            if (linePreset.isFallback() && areaPreset.isFallback() && !deepEqual(tagSuggestingArea, { area: 'yes' })) {
+              return null;
+            }
         }
 
         return tagSuggestingArea;
