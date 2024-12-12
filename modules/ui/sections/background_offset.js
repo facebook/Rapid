@@ -69,8 +69,10 @@ export function uiSectionBackgroundOffset(context) {
   }
 
 
-  function dragOffset(d3_event) {
+  function pointerdown(d3_event) {
     if (d3_event.button !== 0) return;
+    let input = context.container().selectAll('.nudge-inner-rect > input').node();
+    if (d3_event.target === input) return;   // we are dragging in the input field, not the outer rect
 
     let origin = [d3_event.clientX, d3_event.clientY];
     const pointerId = d3_event.pointerId || 'mouse';
@@ -131,7 +133,7 @@ export function uiSectionBackgroundOffset(context) {
     let nudgeEnter = nudgeWrapEnter
       .append('div')
       .attr('class', 'nudge-outer-rect')
-      .on('pointerdown', dragOffset);
+      .on('pointerdown', pointerdown);
 
     nudgeEnter
       .append('div')
