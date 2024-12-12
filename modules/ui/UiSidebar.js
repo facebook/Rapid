@@ -10,6 +10,7 @@ import { UiInspector } from './UiInspector.js';
 import { uiDetectionInspector } from './detection_inspector.js';
 import { uiKeepRightEditor } from './keepRight_editor.js';
 import { uiMapRouletteEditor } from './maproulette_editor.js';
+import { uiMapRouletteMenu } from './maproulette_menu.js';
 import { uiOsmoseEditor } from './osmose_editor.js';
 import { uiNoteEditor } from './note_editor.js';
 import { UiRapidInspector } from './UiRapidInspector.js';
@@ -55,6 +56,7 @@ export class UiSidebar {
     this.Inspector = new UiInspector(context);
     this.KeepRightEditor = uiKeepRightEditor(context);
     this.MapRouletteEditor = uiMapRouletteEditor(context);
+    this.MapRouletteMenu= uiMapRouletteMenu(context);
     this.NoteEditor = uiNoteEditor(context);
     this.OsmoseEditor = uiOsmoseEditor(context);
     this.RapidInspector = new UiRapidInspector(context);
@@ -272,6 +274,7 @@ export class UiSidebar {
           Component = this.OsmoseEditor;
         } else if (service.id === 'maproulette') {
           Component = this.MapRouletteEditor;
+          this.MapRouletteMenu.error(datum);
         }
       }
 
@@ -557,6 +560,7 @@ export class UiSidebar {
     this.Inspector.entityIDs([]);
     this.KeepRightEditor.error(null);
     this.MapRouletteEditor.error(null);
+    this.MapRouletteMenu.error(null);
     this.NoteEditor.note(null);
     this.OsmoseEditor.error(null);
     this.RapidInspector.datum = null;

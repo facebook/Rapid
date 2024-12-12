@@ -9,6 +9,7 @@ import { uiDetectionInspector } from '../ui/detection_inspector.js';
 import { uiKeepRightEditor } from '../ui/keepRight_editor.js';
 import { uiNoteEditor } from '../ui/note_editor.js';
 import { uiMapRouletteEditor } from '../ui/maproulette_editor.js';
+import { uiMapRouletteMenu } from '../ui/maproulette_menu.js';
 
 const DEBUG = false;
 
@@ -159,6 +160,7 @@ export class SelectMode extends AbstractMode {
 
     } else if (datum instanceof QAItem && datum.service === 'maproulette') {
       sidebarContent = uiMapRouletteEditor(context).error(datum);
+      uiMapRouletteMenu(context).error(datum);
       sidebarContent
         .on('change', () => {
           gfx.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)

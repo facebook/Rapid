@@ -85,11 +85,10 @@ export function uiMapRouletteMenu(context) {
               return;
             }
             _mapRouletteApiKey = apiKey;
-            console.log('MapRoulette API key retrieved:', _mapRouletteApiKey);
-            d.action(d3_event, d);  // Call the action after retrieving the API key
+            d.action(d3_event, d, _qaItem);
           });
         } else {
-          d.action(d3_event, d);
+          d.action(d3_event, d, _qaItem);
         }
         mapRouletteMenu.close();
       })
@@ -102,7 +101,7 @@ export function uiMapRouletteMenu(context) {
         utilHighlightEntities(d.relatedEntityIds(), false, context);
       });
 
-        buttonsEnter.append('div')
+    buttonsEnter.append('div')
       .attr('class', 'icon-wrap')
       .call(uiIcon('', 'operation'));
 
@@ -177,15 +176,18 @@ export function uiMapRouletteMenu(context) {
     }
   }
 
-  function fixedIt(d3_event, d) {
-    if (_qaItem) {
-      _qaItem._status = 1;
-      _actionTaken = 'FIXED';
-      submitTask(d3_event, _qaItem);
-    } else {
+
+  function fixedIt(d3_event, d, _qaItem) {
+    if (!_qaItem) {
       console.error('No task selected');
+      return;
     }
+    console.log('Current d in fixedIt:', d); // Debugging log
+    _qaItem._status = 1;  // Update the status of the task
+    _actionTaken = 'FIXED';  // Set the action taken
+    submitTask(d3_event, _qaItem);  // Submit the task with the updated status
   }
+
 
   function cantComplete(d3_event, d) {
     if (_qaItem) {
@@ -217,37 +219,32 @@ export function uiMapRouletteMenu(context) {
     }
   }
 
-  function submitTask(d3_event, task) {
+
+  function submitTask(d3_event, d) {
+    if (!d) {
+      console.error('No task to submit');
+      return;
+    }
     const osm = context.services.osm;
     const userID = osm._userDetails.id;
     if (maproulette) {
-      console.log('task', task);
-      task.taskStatus = task._status;
-      task.mapRouletteApiKey = _mapRouletteApiKey;
-      // Check if the element exists and get its value, otherwise use an empty string
-      const commentInput = d3_select('.new-comment-input');
-      task.comment = commentInput.empty() ? '' : commentInput.property('value').trim();
-      // Ensure taskId is correctly set
-      if (!task.id) {
-        console.error('Task ID is missing');
-        return;
-      }
-      task.taskId = task.id;
-      task.userId = userID;
-      maproulette.postUpdate(task, (err, item) => {
+      d.taskStatus = d._status;
+      d.mapRouletteApiKey = _mapRouletteApiKey;
+      d.comment = d3_select('.new-comment-input').property('value').trim();
+      d.taskId = d.id;
+      d.userId = userID;
+      maproulette.postUpdate(d, (err, item) => {
         if (err) {
           console.error(err);  // eslint-disable-line no-console
           return;
         }
         dispatch.call('change', item);
-        // Fly to a nearby task if the feature is enabled, after the update
         if (maproulette.nearbyTaskEnabled) {
-          maproulette.flyToNearbyTask(task);
+          maproulette.flyToNearbyTask(d);
         }
       });
     }
   }
-
 
   function getMapRouletteApiKey(context, callback) {
     const osm = context.services.osm;
@@ -285,7 +282,6 @@ export function uiMapRouletteMenu(context) {
   mapRouletteMenu.error = function(val) {
     if (!arguments.length) return _qaItem;
     _qaItem = val;
-    console.log('Task selected:', _qaItem);
     _actionTaken = '';
     return mapRouletteMenu;
   };
