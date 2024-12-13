@@ -541,7 +541,7 @@ export function uiPresetList(context) {
 
       if (isHidden) {
         selection.call(uiTooltip(context)
-          .title(l10n.t('filters.hidden_preset.manual', { features: l10n.t(`feature.${filterID}.description`) }))
+          .title(l10n.t('filters.hidden_preset.manual', { features: l10n.t(`filters.${filterID}.description`) }))
           .placement(i < 2 ? 'bottom' : 'top')
         );
       }
