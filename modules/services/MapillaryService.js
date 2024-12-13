@@ -10,8 +10,10 @@ import { utilFetchResponse } from '../util/index.js';
 const accessToken = 'MLY|3376030635833192|f13ab0bdf6b2f7b99e0d8bd5868e1d88';
 const apiUrl = 'https://graph.mapillary.com/';
 const baseTileUrl = 'https://tiles.mapillary.com/maps/vtp';
-// const imageTileUrl = `${baseTileUrl}/mly1_public/2/{z}/{x}/{y}?access_token=${accessToken}`;
-const imageTileUrl = `${baseTileUrl}/mly1_computed_public/2/{z}/{x}/{y}?access_token=${accessToken}`;
+
+// see Rapid#1582 for discussion on computed vs original geometries.
+const imageTileUrl = `${baseTileUrl}/mly1_public/2/{z}/{x}/{y}?access_token=${accessToken}`;              // original
+//const imageTileUrl = `${baseTileUrl}/mly1_computed_public/2/{z}/{x}/{y}?access_token=${accessToken}`;   // computed
 const detectionTileUrl = `${baseTileUrl}/mly_map_feature_point/2/{z}/{x}/{y}?access_token=${accessToken}`;
 const trafficSignTileUrl = `${baseTileUrl}/mly_map_feature_traffic_sign/2/{z}/{x}/{y}?access_token=${accessToken}`;
 
@@ -497,16 +499,17 @@ export class MapillaryService extends AbstractSystem {
       return this.startAsync()
         .then(() => this._viewer.moveTo(imageID))
         .then(mlyImage => {
+          // see Rapid#1582 for discussion on computed vs original geometries.
           const cache = this._cache.images;
           const image = this._cacheImage(cache, {
             id:          mlyImage.id.toString(),
-            // loc:        [mlyImage.originalLngLat.lng, mlyImage.originalLngLat.lat],
-            loc:        [mlyImage.computedLngLat.lng, mlyImage.computedLngLat.lat],
+            loc:        [mlyImage.originalLngLat.lng, mlyImage.originalLngLat.lat],        // original
+            // loc:        [mlyImage.computedLngLat.lng, mlyImage.computedLngLat.lat],     // computed
             sequenceID:  mlyImage.sequenceId.toString(),
             captured_at: mlyImage.capturedAt,
             captured_by: mlyImage.creatorUsername,
-            // ca:          mlyImage.originalCompassAngle
-            ca:          mlyImage.computedCompassAngle
+            ca:          mlyImage.originalCompassAngle         // original
+            // ca:          mlyImage.computedCompassAngle      // computed
           });
 
           this._selectedImageID = imageID;

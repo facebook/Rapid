@@ -171,7 +171,7 @@ describe('MapillaryService', () => {
 
   describe('#loadTiles', () => {
     it('fires loadedImages when image tiles are loaded', done => {
-      fetchMock.mock(new RegExp('/mly1_computed_public/'), {
+      fetchMock.mock(new RegExp('/mly1(_computed)?_public/'), {
         body: '{"data":[]}',
         status: 200,
         headers: { 'Content-Type': 'application/json' }
@@ -188,7 +188,7 @@ describe('MapillaryService', () => {
 
     it('does not load tiles around Null Island', done => {
       const spy = sinon.spy();
-      fetchMock.mock(new RegExp('/mly1_computed_public/'), {
+      fetchMock.mock(new RegExp('/mly1(_computed)?_public/'), {
         body: '{"data":[]}',
         status: 200,
         headers: { 'Content-Type': 'application/json' }
