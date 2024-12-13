@@ -415,7 +415,7 @@ export class UiRapidInspector {
     const dataset = rapid.datasets.get(datasetID);
 
     // Only display notice data for open data (for now)
-    if (dataset.tags?.includes('opendata')) {
+    if (dataset.tags.has('opendata') && dataset.licenseUrl) {
       let $notice = $selection.selectAll('.rapid-inspector-notice')
         .data([0]);
 
@@ -424,11 +424,14 @@ export class UiRapidInspector {
         .append('div')
         .attr('class', 'rapid-inspector-notice');
 
-      $$notice
-        .html(marked.parse(l10n.t('rapid_inspector.notice.open_data', { url: dataset.licenseUrl })));
-
       // update
       $notice = $notice.merge($$notice);
+
+      $notice
+        .html(marked.parse(l10n.t('rapid_inspector.notice.open_data', { url: dataset.licenseUrl })));
+
+      $notice.selectAll('a')   // links in markdown should open in new page
+        .attr('target', '_blank');
     }
 
   }

@@ -117,12 +117,12 @@ export class MapWithAIService extends AbstractSystem {
       conflated: true,
       service: 'mapwithai',
       categories: new Set(['meta', 'footways', 'featured']),
+      tags: new Set(['opendata']),
       overlay: {
         url: 'https://external.xx.fbcdn.net/maps/vtp/rapid_overlay_footways/2/{z}/{x}/{y}/',
         minZoom: 1,
         maxZoom: 15,
       },
-      tags: 'opendata',
       dataUsed: ['mapwithai', 'Open Footways'],
       itemUrl: 'https://github.com/facebookmicrosites/Open-Mapping-At-Facebook',
       licenseUrl: 'https://rapideditor.org/doc/license/MapWithAILicense.pdf',

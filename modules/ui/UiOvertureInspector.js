@@ -1,8 +1,7 @@
-import { select, selection } from 'd3-selection';
+import { selection } from 'd3-selection';
 import { marked } from 'marked';
 
 import { uiIcon } from './icon.js';
-import { uiFlash } from './flash.js';
 import { uiTooltip } from './tooltip.js';
 
 
@@ -140,7 +139,6 @@ export class UiOvertureInspector {
     if (!datum) return;
 
     const context = this.context;
-    const l10n = context.systems.l10n;
     const rapid = context.systems.rapid;
 
     const datasetID = datum.__datasetid__;
@@ -166,10 +164,8 @@ export class UiOvertureInspector {
       .style('background', color)
       .style('color', this.getBrightness(color) > 140.5 ? '#333' : '#fff');
 
-    // Attempt to localize the dataset name, fallback to 'label' or 'id'
-    const text = dataset.labelStringID ? l10n.t(dataset.labelStringID) : (dataset.label || dataset.id);
     $featureInfo.selectAll('.dataset-label')
-      .text(text);
+      .text(dataset.getLabel());
   }
 
 
@@ -181,9 +177,6 @@ export class UiOvertureInspector {
   renderPropertyInfo($selection) {
     const properties = this.datum?.geojson.properties;
     if (!properties) return;
-
-    const context = this.context;
-    const l10n = context.systems.l10n;
 
     let $propInfo = $selection.selectAll('.property-info')
       .data([0]);
@@ -224,11 +217,10 @@ export class UiOvertureInspector {
             $$tagEntry.append('div').attr('class', 'property-value').text(k1 + ':' + v1);
           }
 
-          //Array processing
+        // Array processing
         } else {
           for (const entry of parsedJson) {
-
-            if ( entry instanceof Object ) {
+            if (entry instanceof Object ) {
               for (const [k1,v1] of Object.entries(entry)){
                 $$tagEntry.append('div').attr('class', 'property-value').text(k1 + ':' + v1);
               }
@@ -238,7 +230,7 @@ export class UiOvertureInspector {
           }
         }
       } else {
-        //String handling- just make a key/value pair.
+        // String handling- just make a key/value pair.
         $$tagEntry.append('div').attr('class', 'property-value').text(v);
       }
     }
@@ -247,19 +239,21 @@ export class UiOvertureInspector {
     $propInfo = $propInfo.merge($$propInfo);
   }
 
+
   /**
    * _getJsonStructure is used to test the values we receive from the Overture data, which may be strings, Json arrays, or Json objects.
    * @returns null if the str isn't a string, empty object {} if the string can't be parsed into JSON, or the parsed object.
-  */
+   */
   _getJsonStructure(str) {
     if (typeof str !== 'string') return null;
     try {
-        const result = JSON.parse(str);
-        return result;
+      const result = JSON.parse(str);
+      return result;
     } catch (err) {
-        return {};
+      return {};
     }
-}
+  }
+
 
   /**
    * renderNotice
@@ -278,21 +272,23 @@ export class UiOvertureInspector {
     const dataset = rapid.datasets.get(datasetID);
 
     // Only display notice data for open data (for now)
-    if (dataset.tags?.includes('opendata')) {
-
+    if (dataset.tags.has('opendata') && dataset.licenseUrl) {
       let $notice = $selection.selectAll('.overture-inspector-notice')
-      .data([0]);
+        .data([0]);
 
       // enter
       const $$notice = $notice.enter()
         .append('div')
         .attr('class', 'overture-inspector-notice');
 
-      $$notice
-        .html(marked.parse(l10n.t('rapid_inspector.notice.open_data', {license: dataset.license_markdown})));
-
       // update
       $notice = $notice.merge($$notice);
+
+      $notice
+        .html(marked.parse(l10n.t('rapid_inspector.notice.open_data', { url: dataset.licenseUrl })));
+
+      $notice.selectAll('a')   // links in markdown should open in new page
+        .attr('target', '_blank');
     }
 
   }

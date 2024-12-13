@@ -14,11 +14,11 @@ export class RapidDataset {
     this.id = props.id;
     this.service = props.service;                      // 'esri', 'mapwithai', 'overture'
     this.categories = props.categories ?? new Set();   // e.g. 'buildings' 'addresses'
+    this.tags = props.tags ?? new Set();               // e.g. 'opendata' - (flags like categories but not visible)
     this.color = props.color ?? RAPID_MAGENTA;
     this.dataUsed = props.dataUsed ?? [];
     this.extent = props.extent;
     this.overlay = props.overlay;
-    this.tags = props.tags;
 
     this.itemUrl = props.itemUrl ?? '';
     this.licenseUrl = props.licenseUrl ?? '';
