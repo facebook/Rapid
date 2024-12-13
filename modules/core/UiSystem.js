@@ -93,21 +93,7 @@ export class UiSystem extends AbstractSystem {
       .then(() => {
         window.addEventListener('resize', this.resize);
 
-        // If we detect this is Rapid Canary, change the title and favicon.
-        const detected = utilDetect();
-        if (/\/canary$/.test(detected.host)) {
-          urlhash.titleBase = 'Rapid Canary';
-
-          const $head = select('head');
-          let $favicon = $head.select(`link[rel~='icon']`);
-          if (!$favicon.size()) {
-            $favicon = $head
-              .append('link')
-              .attr('rel', 'icon')
-              .attr('type', 'image/svg');
-          }
-          $favicon.attr('href', assets.getFileURL('img/rapid_favicon-canary.svg'));
-        }
+        this._checkEnvironment();  // are we in a dev or staging environment?
 
         // Create UI components
         this.ApiStatus = new UiApiStatus(context);
@@ -521,6 +507,37 @@ dims = vecAdd(dims, [overscan * 2, overscan * 2]);
    */
   closeEditMenu() {
     this.EditMenu.close();
+  }
+
+
+  /**
+   * _checkEnvironment
+   * This adjusts the favicon and document title if we detect a development or staging environment.
+   * called by `initAsync()`
+   */
+  _checkEnvironment() {
+    const context = this.context;
+    const assets = context.systems.assets;
+    const urlhash = context.systems.urlhash;
+    const detected = utilDetect();
+
+    const $head = select('head');
+    let $favicon = $head.select(`link[rel~='icon']`);
+    if (!$favicon.size()) {
+      $favicon = $head
+        .append('link')
+        .attr('rel', 'icon')
+        .attr('type', 'image/svg');
+    }
+
+    if (/\/canary/.test(detected.host)) {
+      urlhash.titleBase = 'Rapid Canary';
+      $favicon.attr('href', assets.getFileURL('img/rapid_favicon-canary.svg'));
+
+    } else if (/(localhost|127\.0\.0\.1)/.test(detected.host)) {
+      urlhash.titleBase = 'Rapid Dev';
+      $favicon.attr('href', assets.getFileURL('img/rapid_favicon-dev.svg'));
+    }
   }
 
 
