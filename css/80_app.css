@@ -3093,16 +3093,14 @@ div.full-screen > button:focus {
 }
 
 .layer-list li.active button,
-.layer-list li.switch button,
-.layer-list li.active,
-.layer-list li.switch {
-    background: #e8ebff;
+.layer-list li.active {
+  background: #e8ebff;
 }
 
 .layer-list li.best > div.best {
-    padding: 5px;
-    flex: 0 0 auto;
-    align-self: center;
+  flex: 0 0 auto;
+  padding: 5px;
+  align-self: center;
 }
 
 .best > svg {

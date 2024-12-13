@@ -1,6 +1,5 @@
-import { descending as d3_descending, ascending as d3_ascending } from 'd3-array';
-import { select as d3_select } from 'd3-selection';
-import { easeCubicInOut as d3_easeCubicInOut } from 'd3-ease';
+import { select } from 'd3-selection';
+import { easeCubicInOut } from 'd3-ease';
 import { numWrap } from '@rapid-sdk/math';
 import debounce from 'lodash-es/debounce.js';
 
@@ -41,7 +40,7 @@ export function uiSectionBackgroundList(context) {
     .label(l10n.t('background.backgrounds'))
     .disclosureContent(render);
 
-  let _backgroundList = d3_select(null);
+  let _backgroundList = select(null);
   let _keys = null;
 
   const customSource = imagery.getSourceByID('custom');
@@ -225,7 +224,7 @@ export function uiSectionBackgroundList(context) {
    */
   function setTooltips(selection) {
     selection.each((d, i, nodes) => {
-      const item = d3_select(nodes[i]).select('label');
+      const item = select(nodes[i]).select('label');
       const placement = (i < nodes.length / 2) ? 'bottom' : 'top';
 
       const tooltip = uiTooltip(context).placement(placement);
@@ -256,7 +255,8 @@ export function uiSectionBackgroundList(context) {
       : _favoriteIDs.has(b.id) && !_favoriteIDs.has(a.id) ? 1
       : a.best && !b.best ? -1
       : b.best && !a.best ? 1
-      : d3_descending(a.area, b.area) || d3_ascending(a.name, b.name) || 0;
+      : (b.area !== a.area) ? b.area - a.area   // descending
+      : a.name.localeCompare(b.name);
   }
 
 
@@ -298,7 +298,7 @@ export function uiSectionBackgroundList(context) {
 
     listItemsEnter
       .each((d, i, nodes) => {
-        const li = d3_select(nodes[i]);
+        const li = select(nodes[i]);
 
         // Wayback gets an extra dropdown for picking the date
         if (d.id === 'EsriWayback') {
@@ -350,11 +350,10 @@ export function uiSectionBackgroundList(context) {
 
     listItems
       .each((d, i, nodes) => {
-        const li = d3_select(nodes[i]);
+        const li = select(nodes[i]);
 
         li
           .classed('active', d => imagery.showsLayer(d))
-          .classed('switch', d => d.id === previousBackgroundID())
           .call(setTooltips)
           .selectAll('input')
           .property('checked', d => imagery.showsLayer(d));
@@ -466,7 +465,7 @@ export function uiSectionBackgroundList(context) {
     d3_event.preventDefault();
 
     const target = d3_event.currentTarget;
-    const selection = d3_select(target);
+    const selection = select(target);
     selection.node().blur();  // remove focus after click
 
     if (_favoriteIDs.has(d.id)) {
@@ -480,14 +479,14 @@ export function uiSectionBackgroundList(context) {
     const vals = [..._favoriteIDs];
     storage.setItem('background-favorites', JSON.stringify(vals));
 
-    d3_select(target.parentElement)
+    select(target.parentElement)
       .transition()
       .duration(300)
-      .ease(d3_easeCubicInOut)
+      .ease(easeCubicInOut)
       .style('background-color', 'orange')
         .transition()
         .duration(300)
-        .ease(d3_easeCubicInOut)
+        .ease(easeCubicInOut)
         .style('background-color', null);
 
     renderIfVisible();
