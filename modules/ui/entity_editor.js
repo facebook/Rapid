@@ -412,65 +412,57 @@ export function uiEntityEditor(context) {
   //   width: [ '3', undefined ]
   // }
   function _getCombinedTags(entityIDs, graph) {
-    const combined = {};
-    const tagCounts = {};
+    const combined = new Map();    // Map<key, Set<value>
+    const counts = new Map();      // Map<kv, number>
 
     const entities = entityIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
 
-    // gather the keys
-    const allKeys = new Set();
+    // Gather the keys
     for (const entity of entities) {
       for (const k of Object.keys(entity.tags)) {
         if (k) {
-          allKeys.add(k);
+          combined.set(k, new Set());
         }
       }
     }
 
-    // gather the values
+    // Gather the values
     for (const entity of entities) {
-      for (const k of allKeys) {
-        const v = entity.tags[k];  // purposely allow `undefined`
-        const vals = combined[k];
-
-        if (!vals) {    // first value found, just save the value
-          combined[k] = v;
-        } else {
-          if (!Array.isArray(vals)) {
-            if (vals !== v) {         // additional value found, convert to Array of values
-              combined[k] = [vals, v];
-            }
-          } else {
-            if (!vals.includes(v)) {  // additional value found, append to Array of values
-              vals.push(v);
-            }
-          }
-        }
+      for (const [k, vals] of combined) {
+        const v = entity.tags[k];
+        vals.add(v);   // `v` may be 'undefined', we need to collect these also.
 
         const kv = `${k}=${v}`;
-        tagCounts[kv] = (tagCounts[kv] ?? 0) + 1;
+        const count = counts.get(kv) ?? 0;
+        counts.set(kv, count + 1);
       }
     }
 
-    // sort the Array-like values
-    for (const [k, vals] of Object.entries(combined)) {
-      if (!Array.isArray(vals)) continue;
+    // Return results as an Object, where the values are either single values or Arrays
+    const results = {};
+    for (const [k, vals] of combined) {
+      const arr = [...vals];
 
-      // sort in place, by frequency then alphabetically
-      vals.sort((val1, val2) => {
-        const count1 = tagCounts[`${k}=${val1}`] ?? 0;
-        const count2 = tagCounts[`${k}=${val2}`] ?? 0;
-        if (count2 !== count1) {
-          return count2 - count1;
-        }
-        if (val2 && val1) {
-          return val1.localeCompare(val2);
-        }
-        return val1 ? 1 : -1;
-      });
+      if (arr.length === 1) {   // entities all have same value..
+        results[k] = arr[0];
+
+      } else {   // entities have different values..
+        // sort in place, by frequency then alphabetically
+        results[k] = arr.sort((v1, v2) => {
+          const count1 = counts.get(`${k}=${v1}`) ?? 0;
+          const count2 = counts.get(`${k}=${v2}`) ?? 0;
+          if (count2 !== count1) {
+            return count2 - count1;
+          }
+          if (v2 && v1) {
+            return v1.localeCompare(v2);
+          }
+          return v1 ? 1 : -1;
+        });
+      }
     }
 
-    return combined;
+    return results;
   }
 
 
