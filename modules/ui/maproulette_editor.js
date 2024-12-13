@@ -359,7 +359,7 @@ export function uiMapRouletteEditor(context) {
 
       buttonSection.select('.fixedIt-button')
         .attr('disabled', isSaveDisabled(_qaItem))
-        .text(l10n.t('map_data.layers.maproulette.fixedIt'))
+        .text(l10n.t('map_data.layers.maproulette.fixed'))
         .on('click.fixedIt', function(d3_event, d) {
           fixedIt(d3_event, d, selection);
         });
@@ -410,7 +410,6 @@ export function uiMapRouletteEditor(context) {
     const mapRouletteService = context.services.maproulette;
     if (mapRouletteService) {
       mapRouletteService.nearbyTaskEnabled = isChecked;
-      // console.log('Nearby Task feature is now', isChecked ? 'enabled' : 'disabled');
     }
   }
 

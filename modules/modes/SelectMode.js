@@ -160,7 +160,8 @@ export class SelectMode extends AbstractMode {
 
     } else if (datum instanceof QAItem && datum.service === 'maproulette') {
       sidebarContent = uiMapRouletteEditor(context).error(datum);
-      uiMapRouletteMenu(context).error(datum);
+      let uiSystem = this.context.systems.ui;
+      uiSystem.MapRouletteMenu.error(datum);
       sidebarContent
         .on('change', () => {
           gfx.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)

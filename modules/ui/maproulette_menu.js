@@ -3,22 +3,30 @@ import { select as d3_select } from 'd3-selection';
 import { vecAdd } from '@rapid-sdk/math';
 
 import { uiIcon } from './icon.js';
-import { utilHighlightEntities, utilRebind } from '../util/index.js';
+import { utilRebind } from '../util/index.js';
 
+/**
+ * uiMapRouletteMenu
+ * Creates a MapRoulette menu UI component.
+ * @param {Object} context
+ * @return {Function} The MapRoulette menu component.
+ */
 export function uiMapRouletteMenu(context) {
-  const dispatch = d3_dispatch('toggled');
+  const dispatch = d3_dispatch('toggled', 'change');
   const maproulette = context.services.maproulette;
   const gfx = context.systems.gfx;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const viewport = context.viewport;
 
+  // Constants for layout and positioning
   const VIEW_TOP_MARGIN = 85;
   const VIEW_BOTTOM_MARGIN = 45;
   const VIEW_SIDE_MARGIN = 35;
   const MENU_SIDE_MARGIN = 10;
   const VERTICAL_PADDING = 4;
 
+  // Internal state variables
   let _menu = d3_select(null);
   let _anchorLoc = [0, 0];
   let _initialScale = 0;
@@ -27,40 +35,35 @@ export function uiMapRouletteMenu(context) {
   let _menuHeight;
   let _menuWidth;
   let _qaItem;
-  let _actionTaken;
   let _mapRouletteApiKey;
 
-  const actions = [
-    { id: 'fixed', title: l10n.t('map_data.layers.maproulette.fixedIt'), action: fixedIt },
-    { id: 'cantComplete', title: l10n.t('map_data.layers.maproulette.cantComplete'), action: cantComplete },
-    { id: 'alreadyFixed', title: l10n.t('map_data.layers.maproulette.alreadyFixed'), action: alreadyFixed },
-    { id: 'notAnIssue', title: l10n.t('map_data.layers.maproulette.notAnIssue'), action: notAnIssue }
-  ];
 
+  /**
+   * mapRouletteMenu
+   * Initializes and displays the MapRoulette menu.
+   * @param {Selection} selection
+   */
   function mapRouletteMenu(selection) {
     if (_triggerType === undefined) {
       _triggerType = 'rightclick';
     }
 
     const isTouchMenu = _triggerType.includes('touch') || _triggerType.includes('pen');
-    const ops = actions.filter(action => !isTouchMenu || !action.mouseOnly);
     _menuTop = isTouchMenu;
 
     let showLabels = true;
-
+    const actionTitles = [
+      l10n.t('map_data.layers.maproulette.fixed'),
+      l10n.t('map_data.layers.maproulette.cantComplete'),
+      l10n.t('map_data.layers.maproulette.alreadyFixed'),
+      l10n.t('map_data.layers.maproulette.notAnIssue')
+    ];
     const buttonHeight = showLabels ? 32 : 34;
-    if (showLabels) {
-      _menuWidth = 52 + Math.min(120, 6 * Math.max.apply(Math, ops.map(op => op.title.length)));
-    } else {
-      _menuWidth = 44;
-    }
-
-    _menuHeight = VERTICAL_PADDING * 2 + actions.length * buttonHeight;
+    _menuWidth = showLabels ? 52 + Math.min(120, 6 * Math.max.apply(Math, actionTitles.map(title => title.length))) : 44;
+    _menuHeight = VERTICAL_PADDING * 2 + 4 * buttonHeight; // 4 actions
     _initialScale = viewport.transform.scale;
 
-    const wrap = selection.selectAll('.maproulette-menu')
-      .data([0]);
-
+    const wrap = selection.selectAll('.maproulette-menu').data([0]);
     const wrapEnter = wrap.enter()
       .append('div')
       .attr('class', 'maproulette-menu')
@@ -68,37 +71,26 @@ export function uiMapRouletteMenu(context) {
 
     _menu = wrap.merge(wrapEnter);
 
-    let buttons = _menu.selectAll('.maproulette-menu-item')
-      .data(actions, d => d.id);
-
-    buttons.exit().remove();
-
-    const buttonsEnter = buttons.enter()
+    const buttonsEnter = _menu.selectAll('.maproulette-menu-item')
+      .data(['fixed', 'cantComplete', 'alreadyFixed', 'notAnIssue'])
+      .enter()
       .append('button')
-      .attr('class', d => `maproulette-menu-item maproulette-menu-item-${d.id}`)
+      .attr('class', d => `maproulette-menu-item maproulette-menu-item-${d}`)
       .style('height', `${buttonHeight}px`)
-      .on('click', (d3_event, d) => {
+      .on('click', (d3_event, actionId) => {
         if (!_mapRouletteApiKey) {
           getMapRouletteApiKey(context, (err, apiKey) => {
             if (err) {
-              console.error('Error retrieving MapRoulette API key:', err);
+              console.error('Error retrieving MapRoulette API key:', err); // eslint-disable-line no-console
               return;
             }
             _mapRouletteApiKey = apiKey;
-            d.action(d3_event, d);
+            executeAction(actionId, d3_event);
           });
         } else {
-          d.action(d3_event, d);
+          executeAction(actionId, d3_event);
         }
         mapRouletteMenu.close();
-      })
-      .on('mouseenter.highlight', function(d3_event, d) {
-        if (!d.relatedEntityIds || d3_select(this).classed('disabled')) return;
-        utilHighlightEntities(d.relatedEntityIds(), true, context);
-      })
-      .on('mouseleave.highlight', function(d3_event, d) {
-        if (!d.relatedEntityIds) return;
-        utilHighlightEntities(d.relatedEntityIds(), false, context);
       });
 
     buttonsEnter.append('div')
@@ -107,9 +99,7 @@ export function uiMapRouletteMenu(context) {
 
     buttonsEnter.append('span')
       .attr('class', 'label')
-      .text(d => d.title);
-
-    buttons = buttons.merge(buttonsEnter);
+      .text(actionId => l10n.t(`map_data.layers.maproulette.${actionId}`));
 
     _updatePosition();
     map.off('move', _updatePosition);
@@ -118,6 +108,35 @@ export function uiMapRouletteMenu(context) {
     dispatch.call('toggled', this, true);
   }
 
+
+  /**
+   * executeAction
+   * Executes the specified action based on the user's selection.
+   * @param {string} actionId - The ID of the action to execute.
+   * @param {Event} d3_event
+   */
+  function executeAction(actionId, d3_event) {
+    switch (actionId) {
+      case 'fixed':
+        fixedIt(d3_event, _qaItem);
+        break;
+      case 'cantComplete':
+        cantComplete(d3_event, _qaItem);
+        break;
+      case 'alreadyFixed':
+        alreadyFixed(d3_event, _qaItem);
+        break;
+      case 'notAnIssue':
+        notAnIssue(d3_event, _qaItem);
+        break;
+    }
+  }
+
+
+  /**
+   * _updatePosition
+   * Updates the position of the menu based on the viewport and anchor location.
+   */
   function _updatePosition() {
     if (!_menu || _menu.empty()) return;
 
@@ -158,6 +177,13 @@ export function uiMapRouletteMenu(context) {
       .style('left', `${left}px`)
       .style('top', `${top}px`);
 
+
+    /**
+     * displayOnLeft
+     * Determines whether the menu should be displayed on the left or right.
+     * @param {DOMRect} surfaceRect - The bounding rectangle of the surface.
+     * @return {boolean} True if the menu should be displayed on the left, false otherwise.
+     */
     function displayOnLeft(surfaceRect) {
       const isRTL = l10n.isRTL();
       if (isRTL) {  // right to left
@@ -177,36 +203,63 @@ export function uiMapRouletteMenu(context) {
   }
 
 
+  /**
+   * fixedIt
+   * Marks the task as fixed and submits it.
+   * @param {Event} d3_event - The D3 event object.
+   * @param {Object} d - The task data.
+   */
   function fixedIt(d3_event, d) {
-    console.log('Current d in fixedIt:', d);
     d._status = 1;
-    _actionTaken = 'FIXED';
     submitTask(d3_event, d);
   }
 
 
+  /**
+   * cantComplete
+   * Marks the task as cannot be completed and submits it.
+   * @param {Event} d3_event - The D3 event object.
+   * @param {Object} d - The task data.
+   */
   function cantComplete(d3_event, d) {
-      d._status = 6;
-      _actionTaken = `CAN'T COMPLETE`;
-      submitTask(d3_event, d);
+    d._status = 6;
+    submitTask(d3_event, d);
   }
 
+
+  /**
+   * alreadyFixed
+   * Marks the task as already fixed and submits it.
+   * @param {Event} d3_event - The D3 event object.
+   * @param {Object} d - The task data.
+   */
   function alreadyFixed(d3_event, d) {
-      d._status = 5;
-      _actionTaken = 'ALREADY FIXED';
-      submitTask(d3_event, d);
+    d._status = 5;
+    submitTask(d3_event, d);
   }
 
+
+  /**
+   * notAnIssue
+   * Marks the task as not an issue and submits it.
+   * @param {Event} d3_event - The D3 event object.
+   * @param {Object} d - The task data.
+   */
   function notAnIssue(d3_event, d) {
-      d._status = 2;
-      _actionTaken = 'NOT AN ISSUE';
-      submitTask(d3_event, d);
+    d._status = 2;
+    submitTask(d3_event, d);
   }
 
 
+  /**
+   * submitTask
+   * Submits the task to MapRoulette with the updated status.
+   * @param {Event} d3_event - The D3 event object.
+   * @param {Object} d - The task data.
+   */
   function submitTask(d3_event, d) {
     if (!d) {
-      console.error('No task to submit');
+      console.error('No task to submit'); // eslint-disable-line no-console
       return;
     }
     const osm = context.services.osm;
@@ -214,7 +267,14 @@ export function uiMapRouletteMenu(context) {
     if (maproulette) {
       d.taskStatus = d._status;
       d.mapRouletteApiKey = _mapRouletteApiKey;
-      d.comment = d3_select('.new-comment-input').property('value').trim();
+
+      const commentInput = d3_select('.new-comment-input');
+      if (commentInput.empty()) {
+        d.comment = '';
+      } else {
+        d.comment = commentInput.property('value').trim();
+      }
+
       d.taskId = d.id;
       d.userId = userID;
       maproulette.postUpdate(d, (err, item) => {
@@ -230,6 +290,13 @@ export function uiMapRouletteMenu(context) {
     }
   }
 
+
+  /**
+   * getMapRouletteApiKey
+   * Retrieves the MapRoulette API key from the user's preferences.
+   * @param {Object} context - The application context.
+   * @param {Function} callback - Callback function to handle the API key retrieval.
+   */
   function getMapRouletteApiKey(context, callback) {
     const osm = context.services.osm;
     osm.loadMapRouletteKey((err, preferences) => {
@@ -243,6 +310,11 @@ export function uiMapRouletteMenu(context) {
     });
   }
 
+
+  /**
+   * mapRouletteMenu.close
+   * Closes the MapRoulette menu and cleans up event listeners.
+   */
   mapRouletteMenu.close = function() {
     map.off('move', _updatePosition);
     _menu.remove();
@@ -251,23 +323,42 @@ export function uiMapRouletteMenu(context) {
     uiSystem._showsMapRouletteMenu = false; // Reset state
   };
 
+
+  /**
+   * mapRouletteMenu.anchorLoc
+   * Gets or sets the anchor location for the menu.
+   * @param {Array} [val] - The new anchor location.
+   * @return {Array|Function} The current anchor location or the menu component.
+   */
   mapRouletteMenu.anchorLoc = function(val) {
     if (!arguments.length) return _anchorLoc;
     _anchorLoc = val;
     return mapRouletteMenu;
   };
 
+
+  /**
+   * mapRouletteMenu.triggerType
+   * Gets or sets the trigger type for the menu.
+   * @param {string} [val] - The new trigger type.
+   * @return {string|Function} The current trigger type or the menu component.
+   */
   mapRouletteMenu.triggerType = function(val) {
     if (!arguments.length) return _triggerType;
     _triggerType = val;
     return mapRouletteMenu;
   };
 
+
+  /**
+   * mapRouletteMenu.error
+   * Gets or sets the QA item associated with the menu.
+   * @param {Object} [val] - The new QA item.
+   * @return {Object|Function} The current QA item or the menu component.
+   */
   mapRouletteMenu.error = function(val) {
     if (!arguments.length) return _qaItem;
     _qaItem = val;
-    console.log('_qaItem',_qaItem);
-    _actionTaken = '';
     return mapRouletteMenu;
   };
 

@@ -1014,7 +1014,7 @@
           "id_title": "Challenge Id / Task Id",
           "id_placeholder": "Challenge IDs",
           "instruction_title": "Instructions",
-          "fixedIt": "I fixed it!",
+          "fixed": "I fixed it!",
           "cantComplete": "Can't Complete",
           "alreadyFixed": "Already Fixed",
           "notAnIssue": "Not an Issue",
