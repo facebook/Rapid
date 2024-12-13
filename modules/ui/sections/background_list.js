@@ -43,7 +43,6 @@ export function uiSectionBackgroundList(context) {
   let _backgroundList = select(null);
   let _keys = null;
 
-  const customSource = imagery.getSourceByID('custom');
   const settingsCustomBackground = uiSettingsCustomBackground(context)
     .on('change', customChanged);
 
@@ -421,6 +420,7 @@ export function uiSectionBackgroundList(context) {
    * @param  data - Object containing settings for the custom imagery
    */
   function customChanged(d) {
+    const customSource = imagery.getSourceByID('custom');
     if (d?.template) {
       customSource.template = d.template;
       chooseBackground(undefined, customSource);
