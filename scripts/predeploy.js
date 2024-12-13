@@ -37,8 +37,7 @@ shell.sed('-i', /context.buildSHA.*;/, `context.buildSHA = '${buildSHA}';`, file
 shell.sed('-i', /context.buildDate.*;/, `context.buildDate = '${yyyymmdd}';`, file);
 
 if (isDebug) {
-  shell.sed('-i', 'rapid.min.js', `${path}/rapid.js`, file);                      // don't use minified rapid
-  shell.sed('-i', 'const context =', 'const context = window.context =', file);   // make context global
+  shell.sed('-i', 'rapid.min.js', `${path}/rapid.js`, file);      // don't use minified rapid
 } else {
   shell.sed('-i', 'rapid.min.js', `${path}/rapid.min.js`, file);
 }
