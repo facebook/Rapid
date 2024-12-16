@@ -22,6 +22,8 @@ window.Rapid.isDebug = true;
 
 // For dev build, we'll bundle additional things
 // that are useful for testing or debugging.
+import fetchMock from 'fetch-mock';
+window.fetchMock = fetchMock;
 
 // Include rapid-sdk as a single `sdk` namespace.
 // (This works because we know there are no name conflicts)

@@ -19,7 +19,6 @@ mocha.setup({
   ]
 });
 
-delete window.PointerEvent;  // force the brower to use mouse events
+delete window.PointerEvent;  // force the browser to use mouse events
 
-fetchMock.config.fallbackToNetwork = false;
-fetchMock.config.overwriteRoutes = false;
+window.fetchMock.mockGlobal();

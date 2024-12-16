@@ -21,13 +21,17 @@ describe('MapillaryService', () => {
 
 
   beforeEach(() => {
-    fetchMock.reset();
+    fetchMock.removeRoutes().clearHistory();
     _mapillary = new Rapid.MapillaryService(new MockContext());
 
     // Mock function for retieving tile data.. The original expects a protobuffer vector tile.
     _mapillary._loadTileDataToCache = () => { };
 
     return _mapillary.initAsync();
+  });
+
+  afterEach(() => {
+    fetchMock.removeRoutes().clearHistory();
   });
 
 
@@ -171,14 +175,14 @@ describe('MapillaryService', () => {
 
   describe('#loadTiles', () => {
     it('fires loadedImages when image tiles are loaded', done => {
-      fetchMock.mock(new RegExp('/mly1(_computed)?_public/'), {
+      fetchMock.route(/mly1(_computed)?_public/, {
         body: '{"data":[]}',
         status: 200,
         headers: { 'Content-Type': 'application/json' }
       });
 
       _mapillary.on('loadedImages', () => {
-        expect(fetchMock.calls().length).to.eql(1);
+        expect(fetchMock.callHistory.calls().length).to.eql(1);
         done();
       });
 
@@ -188,7 +192,7 @@ describe('MapillaryService', () => {
 
     it('does not load tiles around Null Island', done => {
       const spy = sinon.spy();
-      fetchMock.mock(new RegExp('/mly1(_computed)?_public/'), {
+      fetchMock.route(/mly1(_computed)?_public/, {
         body: '{"data":[]}',
         status: 200,
         headers: { 'Content-Type': 'application/json' }
@@ -200,7 +204,7 @@ describe('MapillaryService', () => {
 
       window.setTimeout(() => {
         expect(spy.notCalled).to.be.ok;
-        expect(fetchMock.calls().length).to.eql(0);   // no tile requests of any kind
+        expect(fetchMock.callHistory.calls().length).to.eql(0);   // no tile requests of any kind
         done();
       }, 20);
     });

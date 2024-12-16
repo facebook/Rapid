@@ -22,7 +22,7 @@ describe('OsmService', () => {
 
   beforeEach(() => {
     spy = sinon.spy();
-    fetchMock.reset();
+    fetchMock.removeRoutes().clearHistory();
 
     const capabilitiesJSON =
 `{
@@ -175,10 +175,10 @@ describe('OsmService', () => {
 }`;
 
     fetchMock
-      .mock(/api\/capabilities\.json/, { status: 200, body: capabilitiesJSON, headers: { 'Content-Type': 'application/json' } })
-      .mock(/api\/capabilities(?!\.json)/, { status: 200, body: capabilitiesXML, headers: { 'Content-Type': 'application/xml' } })
-      .mock(/user\/details\.json/, { status: 200, body: userJSON, headers: { 'Content-Type': 'application/json' } })
-      .mock(/changesets\.json/, { status: 200, body: changesetJSON, headers: { 'Content-Type': 'application/json' } });
+      .route(/api\/capabilities\.json/, { status: 200, body: capabilitiesJSON, headers: { 'Content-Type': 'application/json' } })
+      .route(/api\/capabilities(?!\.json)/, { status: 200, body: capabilitiesXML, headers: { 'Content-Type': 'application/xml' } })
+      .route(/user\/details\.json/, { status: 200, body: userJSON, headers: { 'Content-Type': 'application/json' } })
+      .route(/changesets\.json/, { status: 200, body: changesetJSON, headers: { 'Content-Type': 'application/json' } });
 
 
     _osm = new Rapid.OsmService(new MockContext());
@@ -189,7 +189,7 @@ describe('OsmService', () => {
 
   afterEach(() => {
     _osm.throttledReloadApiStatus.cancel();
-    fetchMock.reset();
+    fetchMock.removeRoutes().clearHistory();
   });
 
 
@@ -322,7 +322,7 @@ describe('OsmService', () => {
     const okResponse = { status: 200, body: body, headers: { 'Content-Type': 'application/json' } };
 
     it('returns an object', done => {
-      fetchMock.mock(/map\.json/, okResponse);
+      fetchMock.route(/map\.json/, okResponse);
 
       _osm.loadFromAPI(path, (err, result) => {
         expect(err).to.not.be.ok;
@@ -336,21 +336,21 @@ describe('OsmService', () => {
       const badResponse = { status: 400, body: 'Bad Request', headers: { 'Content-Type': 'text/plain' } };
 
       fetchMock
-        .mock((url, { headers }) => /map\.json/.test(url) && !!headers?.Authorization, badResponse)
-        .mock((url, { headers }) => /map\.json/.test(url) && !headers?.Authorization,  okResponse);
+        .route(match => /map\.json/.test(match.url) && match.options.headers?.authorization,  badResponse)
+        .route(match => /map\.json/.test(match.url) && !match.options.headers?.authorization, okResponse);
 
       loginAsync()
         .then(() => {
-          fetchMock.resetHistory();
+          fetchMock.clearHistory();
           _osm.loadFromAPI(path, (err, result) => {
             expect(err).to.be.not.ok;
             expect(typeof result).to.eql('object');
             expect(_osm.authenticated()).to.be.not.ok;
 
-            const calls = fetchMock.calls();
+            const calls = fetchMock.callHistory.calls();
             expect(calls).to.have.lengthOf.at.least(2);   // auth, unauth, capabilities
-            expect(calls[0][1]).to.have.nested.property('headers.Authorization');
-            expect(calls[1][1]).to.not.have.nested.property('headers.Authorization');
+            expect(calls[0].options.headers || {}).to.have.property('authorization');
+            expect(calls[1].options.headers || {}).to.not.have.property('authorization');
             done();
           });
         });
@@ -361,21 +361,21 @@ describe('OsmService', () => {
       const badResponse = { status: 401, body: 'Unauthorized', headers: { 'Content-Type': 'text/plain' } };
 
       fetchMock
-        .mock((url, { headers }) => /map\.json/.test(url) && !!headers?.Authorization, badResponse)
-        .mock((url, { headers }) => /map\.json/.test(url) && !headers?.Authorization,  okResponse);
+        .route(match => /map\.json/.test(match.url) && match.options.headers?.authorization,  badResponse)
+        .route(match => /map\.json/.test(match.url) && !match.options.headers?.authorization, okResponse);
 
       loginAsync()
         .then(() => {
-          fetchMock.resetHistory();
+          fetchMock.clearHistory();
           _osm.loadFromAPI(path, (err, result) => {
             expect(err).to.be.not.ok;
             expect(typeof result).to.eql('object');
             expect(_osm.authenticated()).to.be.not.ok;
 
-            const calls = fetchMock.calls();
+            const calls = fetchMock.callHistory.calls();
             expect(calls).to.have.lengthOf.at.least(2);   // auth, unauth, capabilities
-            expect(calls[0][1]).to.have.nested.property('headers.Authorization');
-            expect(calls[1][1]).to.not.have.nested.property('headers.Authorization');
+            expect(calls[0].options.headers || {}).to.have.property('authorization');
+            expect(calls[1].options.headers || {}).to.not.have.property('authorization');
             done();
           });
         });
@@ -384,22 +384,22 @@ describe('OsmService', () => {
     it('retries an authenticated call unauthenticated if 403 Forbidden', done => {
       const badResponse = { status: 403, body: 'Forbidden', headers: { 'Content-Type': 'text/plain' } };
 
-      fetchMock
-        .mock((url, { headers }) => /map\.json/.test(url) && !!headers?.Authorization, badResponse)
-        .mock((url, { headers }) => /map\.json/.test(url) && !headers?.Authorization,  okResponse);
+    fetchMock
+       .route(match => /map\.json/.test(match.url) && match.options.headers?.authorization,  badResponse)
+       .route(match => /map\.json/.test(match.url) && !match.options.headers?.authorization, okResponse);
 
       loginAsync()
         .then(() => {
-          fetchMock.resetHistory();
+          fetchMock.clearHistory();
           _osm.loadFromAPI(path, (err, result) => {
             expect(err).to.be.not.ok;
             expect(typeof result).to.eql('object');
             expect(_osm.authenticated()).to.be.not.ok;
 
-            const calls = fetchMock.calls();
+            const calls = fetchMock.callHistory.calls();
             expect(calls).to.have.lengthOf.at.least(2);   // auth, unauth, capabilities
-            expect(calls[0][1]).to.have.nested.property('headers.Authorization');
-            expect(calls[1][1]).to.not.have.nested.property('headers.Authorization');
+            expect(calls[0].options.headers || {}).to.have.property('authorization');
+            expect(calls[1].options.headers || {}).to.not.have.property('authorization');
             done();
           });
         });
@@ -423,7 +423,7 @@ describe('OsmService', () => {
     const partialResponse = { status: 200, body: partialBody, headers: { 'Content-Type': 'application/json' } };
 
     it('returns a partial JSON error', done => {
-      fetchMock.mock(/map\.json/, partialResponse);
+      fetchMock.route(/map\.json/, partialResponse);
 
       _osm.loadFromAPI(path, err => {
         expect(err.message).to.eql('Partial JSON');
@@ -450,7 +450,7 @@ describe('OsmService', () => {
     });
 
     it('calls callback when data tiles are loaded', done => {
-      fetchMock.mock(/map\.json/, {
+      fetchMock.route(/map\.json/, {
         body: tileBody,
         status: 200,
         headers: { 'Content-Type': 'application/json' }
@@ -497,7 +497,7 @@ describe('OsmService', () => {
 }`;
 
     it('loads a node', done => {
-      fetchMock.mock(/node\/1\.json/, {
+      fetchMock.route(/node\/1\.json/, {
         body: nodeBody,
         status: 200,
         headers: { 'Content-Type': 'application/json' }
@@ -513,7 +513,7 @@ describe('OsmService', () => {
 
 
     it('loads a way', done => {
-      fetchMock.mock(/way\/1\/full\.json/, {
+      fetchMock.route(/way\/1\/full\.json/, {
         body: wayBody,
         status: 200,
         headers: { 'Content-Type': 'application/json' }
@@ -529,7 +529,7 @@ describe('OsmService', () => {
 
 
     it('does not ignore repeat requests', done => {
-      fetchMock.mock(/node\/1\.json/, {
+      fetchMock.route(/node\/1\.json/, {
         body: nodeBody,
         status: 200,
         headers: { 'Content-Type': 'application/json' }
@@ -568,7 +568,7 @@ describe('OsmService', () => {
 }`;
 
     it('loads a node', done => {
-      fetchMock.mock(/node\/1\/1\.json/, {
+      fetchMock.route(/node\/1\/1\.json/, {
         body: nodeBody,
         status: 200,
         headers: { 'Content-Type': 'application/json' }
@@ -584,7 +584,7 @@ describe('OsmService', () => {
 
 
     it('loads a way', done => {
-      fetchMock.mock(/way\/1\/1\.json/, {
+      fetchMock.route(/way\/1\/1\.json/, {
         body: wayBody,
         status: 200,
         headers: { 'Content-Type': 'application/json' }
@@ -600,7 +600,7 @@ describe('OsmService', () => {
 
 
     it('does not ignore repeat requests', done => {
-      fetchMock.mock(/node\/1\/1\.json/, {
+      fetchMock.route(/node\/1\/1\.json/, {
         body: nodeBody,
         status: 200,
         headers: { 'Content-Type': 'application/json' }
@@ -722,14 +722,14 @@ describe('OsmService', () => {
 </osm>`;
 
     it('fires loadedNotes when notes are loaded', done => {
-      fetchMock.mock(/notes\?/, {
+      fetchMock.route(/notes\?/, {
         body: notesBody,
         status: 200,
         headers: { 'Content-Type': 'text/xml' }
       });
 
       _osm.on('loadedNotes', () => {
-        expect(fetchMock.calls()).to.have.lengthOf.at.least(1);
+        expect(fetchMock.callHistory.calls()).to.have.lengthOf.at.least(1);
         done();
       });
 

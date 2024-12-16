@@ -2,9 +2,13 @@ describe('OsmWikibaseService', () => {
   let _wikibase;
 
   beforeEach(() => {
-    fetchMock.reset();
+    fetchMock.removeRoutes().clearHistory();
     _wikibase = new Rapid.OsmWikibaseService();
     return _wikibase.initAsync();
+  });
+
+  afterEach(() => {
+    fetchMock.removeRoutes().clearHistory();
   });
 
 
@@ -253,7 +257,7 @@ describe('OsmWikibaseService', () => {
   describe('#getEntity', () => {
     it('calls the given callback with the results of the getEntity data item query', done => {
       const callback = sinon.spy();
-      fetchMock.mock(/action=wbgetentities/, {
+      fetchMock.route(/action=wbgetentities/, {
         body: JSON.stringify({
           entities: {
             Q42: keyData(),
@@ -269,7 +273,7 @@ describe('OsmWikibaseService', () => {
       _wikibase.getEntity({ key: 'amenity', value: 'parking', langCodes: ['fr'] }, callback);
 
       window.setTimeout(() => {
-        expect(parseQueryString(fetchMock.lastUrl())).to.eql(
+        expect(parseQueryString(fetchMock.callHistory.lastCall().url)).to.eql(
           {
             action: 'wbgetentities',
             sites: 'wiki',

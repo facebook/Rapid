@@ -19,7 +19,6 @@ module.exports = function (config) {
     files: [
       'node_modules/sinon/pkg/sinon.js',
       'node_modules/happen/happen.js',
-      'node_modules/fetch-mock/es5/client-bundle.js',
       { pattern: 'dist/rapid.js', included: true },
       { pattern: 'dist/rapid.css', included: true },
       { pattern: 'dist/**/*', included: false },

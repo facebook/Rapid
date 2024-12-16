@@ -128,7 +128,7 @@ describe('AssetSystem', () => {
     });
 
     it('returns a promise to fetch data if we do not already have the data', () => {
-      fetchMock.mock('/data/intro_graph.min.json', {
+      fetchMock.route(/\/data\/intro_graph\.min\.json/i, {
         body: JSON.stringify({ value: 'success' }),
         status: 200,
         headers: { 'Content-Type': 'application/json' }
@@ -140,7 +140,7 @@ describe('AssetSystem', () => {
         .then(data => {
           expect(data).to.be.an('object');
           expect(data.value).to.eql('success');
-          fetchMock.resetHistory();
+          fetchMock.removeRoutes().clearHistory();
         });
     });
 

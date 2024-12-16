@@ -22,9 +22,13 @@ describe('KartaviewService', () => {
 
 
   beforeEach(() => {
-    fetchMock.reset();
+    fetchMock.removeRoutes().clearHistory();
     _kartaview = new Rapid.KartaviewService(new MockContext());
     return _kartaview.initAsync();
+  });
+
+  afterEach(() => {
+    fetchMock.removeRoutes().clearHistory();
   });
 
 
@@ -84,14 +88,14 @@ describe('KartaviewService', () => {
         totalFilteredItems: ['3']
       };
 
-      fetchMock.mock(new RegExp('/nearby-photos/'), {
+      fetchMock.route(/nearby-photos/, {
         body: JSON.stringify(nearbyResponse),
         status: 200,
         headers: { 'Content-Type': 'application/json' }
       });
 
       _kartaview.on('loadedData', () => {
-        expect(fetchMock.calls().length).to.eql(1);  // after /photo/?sequenceId=100
+        expect(fetchMock.callHistory.calls().length).to.eql(1);  // after /photo/?sequenceId=100
         done();
       });
 
@@ -133,7 +137,7 @@ describe('KartaviewService', () => {
         totalFilteredItems: ['3']
       };
 
-      fetchMock.mock(new RegExp('/nearby-photos/'), {
+      fetchMock.route(/nearby-photos/, {
         body: JSON.stringify(nearbyResponse),
         status: 200,
         headers: { 'Content-Type': 'application/json' }
@@ -147,7 +151,7 @@ describe('KartaviewService', () => {
 
       window.setTimeout(() => {
         expect(spy.notCalled).to.be.ok;
-        expect(fetchMock.calls().length).to.eql(0);   // no tile requests of any kind
+        expect(fetchMock.callHistory.calls().length).to.eql(0);   // no tile requests of any kind
         done();
       }, 20);
     });

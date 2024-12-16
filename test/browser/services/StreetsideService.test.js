@@ -21,9 +21,13 @@ describe('StreetsideService', () => {
 
 
   beforeEach(() => {
-    fetchMock.reset();
+    fetchMock.removeRoutes().clearHistory();
     _streetside = new Rapid.StreetsideService(new MockContext());
     return _streetside.initAsync();
+  });
+
+  afterEach(() => {
+    fetchMock.removeRoutes().clearHistory();
   });
 
 
@@ -70,7 +74,7 @@ describe('StreetsideService', () => {
         }
       ];
 
-      fetchMock.mock(/StreetSideBubbleMetaData/, {
+      fetchMock.route(/StreetSideBubbleMetaData/, {
         body: JSON.stringify(data),
         status: 200,
         headers: { 'Content-Type': 'text/plain' }
@@ -109,7 +113,7 @@ describe('StreetsideService', () => {
         }
       ];
 
-      fetchMock.mock(/StreetSideBubbleMetaData/, {
+      fetchMock.route(/StreetSideBubbleMetaData/, {
         body: JSON.stringify(data),
         status: 200,
         headers: { 'Content-Type': 'text/plain' }
@@ -119,7 +123,7 @@ describe('StreetsideService', () => {
 
       window.setTimeout(() => {
         expect(spy.notCalled).to.be.ok;
-        expect(fetchMock.calls().length).to.eql(0);   // no tile requests of any kind
+        expect(fetchMock.callHistory.calls().length).to.eql(0);   // no tile requests of any kind
         done();
       }, 20);
     });
