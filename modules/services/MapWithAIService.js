@@ -124,8 +124,8 @@ export class MapWithAIService extends AbstractSystem {
         maxZoom: 15,
       },
       dataUsed: ['mapwithai', 'Open Footways'],
-      itemUrl: 'https://github.com/facebookmicrosites/Open-Mapping-At-Facebook',
-      licenseUrl: 'https://rapideditor.org/doc/license/MapWithAILicense.pdf',
+      itemUrl: 'https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Footways-FAQ',
+      licenseUrl: 'https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Footways-FAQ#attribution-and-license',
       labelStringID: 'rapid_menu.omdFootways.label',
       descriptionStringID: 'rapid_menu.omdFootways.description'
     });
