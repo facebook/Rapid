@@ -49,7 +49,6 @@
       "openstreetmapchile": "OpenStreetMap Chile",
       "openstreetmapchina": "OpenStreetMap China",
       "openstreetmapcologne": "OpenStreetMap Cologne",
-      "openstreetmapcolombia": "OpenStreetMap Colombia",
       "openstreetmapcomunitatvalenciana": "OpenStreetMap Comunitat Valenciana",
       "openstreetmapcostarica": "OpenStreetMap Costa Rica",
       "openstreetmapcotedivoire": "OpenStreetMap Cote d'Ivoire",
@@ -204,8 +203,11 @@
       "openstreetmapwesternsahara": "OpenStreetMap Western Sahara",
       "openstreetmapzambia": "OpenStreetMap Zambia",
       "openstreetmapzimbabwe": "OpenStreetMap Zimbabwe",
+      "osmcolombia": "OSM Colombia",
       "osmmainz": "OSM Mainz",
+      "osmnelson": "OSM Nelson",
       "swissopenstreetmap": "Swiss OpenStreetMap",
+      "tadeomappers": "TadeoMappers",
       "youthmappersasu": "YouthMappersASU"
     },
     "_defaults": {
@@ -213,6 +215,11 @@
         "name": "{community} on Aparat",
         "description": "Subscribe to our Aparat channel",
         "url": "https://aparat.com/{account}"
+      },
+      "bluesky": {
+        "name": "{community} on Bluesky",
+        "description": "Follow us on Bluesky",
+        "url": "https://bsky.app/profile/{account}"
       },
       "discord": {
         "name": "{community} Discord",
@@ -457,14 +464,61 @@
     "cl-telegram": {
       "extendedDescription": "Join the community to learn more about OpenStreetMap, ask questions or participate in our meetings. Everyone is welcome!"
     },
+    "co-discourse": {
+      "name": "OSM Communities discussion topics about Colombia",
+      "description": "These are the topics related to map changes in Colombia"
+    },
     "co-facebook": {
-      "extendedDescription": "Join the community to learn more about OpenStreetMap. Everyone is welcome!"
+      "name": "Group of {community} on Facebook",
+      "description": "Conversation group on OSM issues in Colombia"
     },
     "co-github": {
-      "description": "Git projects about Colombia"
+      "name": "{community} projects on GitHub",
+      "description": "Code projects developed by the community"
+    },
+    "co-instagram": {
+      "name": "Posts by {community} on Instagram",
+      "description": "Publications on community activities or information"
+    },
+    "co-linkedin": {
+      "name": "Posts by {community} on LinkedIn",
+      "description": "Publications on community activities or information"
+    },
+    "co-mastodon": {
+      "name": "Posts by {community} on Mastodon",
+      "description": "Publications on community activities or information"
+    },
+    "co-talk": {
+      "name": "{community} mailing list",
+      "description": "Emails that require communicating information with the community"
+    },
+    "co-telegram": {
+      "name": "Conversation group on {community} in Telegram",
+      "description": "Open discussions on topics of interest to the entire community. It is the most active channel"
+    },
+    "co-thread": {
+      "name": "Posts by {community} in Threads",
+      "description": "Publications on community activities or information"
+    },
+    "co-tiktok": {
+      "name": "Short videos of {community} on Tiktok",
+      "description": "Publications on community activities"
+    },
+    "co-twitter": {
+      "name": "Community {community} on x-Twitter",
+      "description": "Publications on community activities or information"
+    },
+    "co-whatsapp": {
+      "name": "News from the {community} community on WhatsApp",
+      "description": "Publications on community activities or information"
     },
     "co-wiki": {
-      "description": "Wiki page with the documentation to map Colombia"
+      "name": "Wiki page with documentation on the Colombia mapping project.",
+      "description": "Documentation on everything related to OpenStreetMap in Colombia"
+    },
+    "co-youtube": {
+      "name": "Videos of {community} on YouTube",
+      "description": "Videos of community activities or explanations of OSM activities"
     },
     "comunitat-valenciana-wiki": {
       "description": "Everything you need to know about mapping in Valencian Community: {url}"
@@ -630,6 +684,9 @@
     "gb-mailinglist": {
       "description": "Talk-gb is the main communication forum list for the UK (including Northern Ireland) OSM community"
     },
+    "ge-matrix": {
+      "description": "General chat about OpenStreetMap in Georgia, connected via bridge to the Telegram chat"
+    },
     "geogeeks_perth_meetup": {
       "name": "Geogeeks Perth",
       "description": "Perth-based meetup group for people interested in mapping, geospatial data, and open source. We run regular OSM mapping parties, talks, and social gatherings. Beginners very welcome!"
@@ -639,8 +696,12 @@
       "description": "Meetup for map enthusiasts in the Philadelphia area",
       "extendedDescription": "GeoPhilly unites developers, geographers, data geeks, open source enthusiasts, civic hackers and map addicts in our shared love of maps and the stories they tell. If you use maps as part of your work or just want to learn more, this is the meetup for you!  Our events aim to be open, friendly, educational and social and range from happy hours to lightning talks or even workshops. Come create a diverse, inspiring geospatial community in the Philadelphia with us!"
     },
-    "hr-irc": {
-      "description": "Join #{account} on irc.freenode.org (port 6667)"
+    "hr-github": {
+      "description": "{community} GitHub"
+    },
+    "hr-tm": {
+      "name": "{community} Tasking Manager",
+      "description": "Explore active mapping tasks in Croatia"
     },
     "hr-wiki": {
       "description": "Wikiproject page for Croatia"
@@ -688,9 +749,6 @@
     },
     "ireland-matrix": {
       "description": "A Matrix gateway for the OSM Ireland IRC channel: {url}"
-    },
-    "ireland-meetup": {
-      "description": "Meetups of everyone who is interested in OpenStreetMap"
     },
     "is-chapter": {
       "description": "We help grow and improve OpenStreetMap in Iceland."
@@ -773,15 +831,6 @@
       "description": "Map Kibera is a registered organization working in Kenya",
       "extendedDescription": "Map Kibera Trust’s mission is to increase influence and representation of marginalized communities through the creative use of digital tools for action."
     },
-    "MapABQ": {
-      "name": "MapABQ",
-      "description": "Monthly meeting of OpenStreetMap users in Albuquerque and Northern New Mexico",
-      "extendedDescription": "Anyone is welcome to join and we're happy to help get you started mapping. The meetings are in an open format to allow contributors to focus on adding to OpenStreetMap for Albuquerque and surrounding areas."
-    },
-    "MapColabora-mailinglist": {
-      "name": "Mapeado Colaborativo / Geoinquietos Zaragoza",
-      "description": "Mapeado Colaborativo / Geoinquietos Zaragoza Mailing list"
-    },
     "MapColabora-twitter": {
       "name": "Mapeado Colaborativo / Geoinquietos Zaragoza",
       "description": "Mapeado Colaborativo / Geoinquietos Zaragoza Twitter Account"
@@ -794,11 +843,6 @@
       "name": "Mappa Mercia local group",
       "description": "A home for OpenStreetMap enthusiasts in the Midlands",
       "extendedDescription": "Mappa Mercia is a project to grow OpenStreetMap in the West Midlands, UK. We run community events, provide training and support local organisations wishing to open up their data."
-    },
-    "MappingDC-meetup": {
-      "name": "MappingDC",
-      "description": "Improve OpenStreetMap in the DC area",
-      "extendedDescription": "We are a group of volunteer mappers who aim to improve the OpenStreetMap in the DC area. We also aim to teach others about the OSM ecosystem, data analytics, cartography, and GIS. We gather every other month at meetups to focus on one area of our city."
     },
     "MappingWR": {
       "name": "MappingWR",
@@ -1106,6 +1150,9 @@
     "osm-michigan-wiki": {
       "description": "{community} Wiki page"
     },
+    "osm-nelson": {
+      "description": "A OpenStreetMap group in Nelson, New Zealand."
+    },
     "osm-ni": {
       "name": "MapaNica.net",
       "description": "Provide OSM services and information for the local community in Nicaragua"
@@ -1144,9 +1191,6 @@
     "OSM-Seattle": {
       "name": "OpenStreetMap Seattle",
       "description": "Mappers and OpenStreetMap users in the Seattle area"
-    },
-    "osm-sierra-leone": {
-      "description": "We focus on the creation and use of open data to solve social, economic, and community challenges."
     },
     "OSM-SoCal": {
       "name": "OpenStreetMap Southern California",
@@ -1446,20 +1490,10 @@
       "name": "OyoMappersTeam (OMT) Oyo",
       "description": "YouthMappers chapter at Federal School of Surveys"
     },
-    "ym-Federal-University-of-Technology-Akure": {
-      "name": "YouthMappers Futa Space Club",
-      "description": "YouthMappers chapter at Federal University of Technology, Akure",
-      "extendedDescription": "Our mission is to raise the next generation of Space Leaders. Activities include research and capacity building in Remote Sensing, GIS, Climate Change, Astronomy, Cosmology, Space Engineering, Global Navigation, Robotics and Space Education."
-    },
     "ym-Fourah-Bay-College": {
       "name": "Student's Geographical Association",
       "description": "YouthMappers chapter at Fourah Bay College",
       "extendedDescription": "The Student's Geographical Association- YouthMappers is an association of Fourah Bay College Students with the common goals of mapping out vulnerable places in Sierra Leone and the world at large for relief and other beneficial purposes,carry out Research and other educative endeavors. The chapter consists of young people with great ideas, development oriented with the capacity to relate with each other, comprehend and implement sustainable developmental projects as a team."
-    },
-    "ym-General-Lansana-Conte-University": {
-      "name": "YouthMappers General Lansana Conte University",
-      "description": "YouthMappers chapter at General Lansana Conte University",
-      "extendedDescription": "The YouthMappers of the University General Lansana Conté is a non profit community willing to contribute to Map Guinea and others part of the world. We are promoting the use of GIS and Open data to build decision support tools. We also work to build capacities among the students and local communities."
     },
     "ym-George-Mason-University": {
       "name": "Mason Mappers",
@@ -1766,6 +1800,19 @@
       "description": "YouthMappers chapter at Universidad Distrital Francisco Jose de Caldas",
       "extendedDescription": "The Universidad Distrital Francisco José de Caldas is a public, coeducational, research university based in Bogotá, Colombia with a population of 26,140 students."
     },
+    "ym-Universidad-Jorge-Tadeo-Lozano": {
+      "name": "TadeoMappers at Universidad Jorge Tadeo Lozano",
+      "description": "YouthMappers chapter at Universidad Jorge Tadeo Lozano",
+      "extendedDescription": "Students from Bogota passionate about mapping activities that support biodiversity. They focus on mapping trees and bringing these activities to schools, aiming to involve the entire community in environmental efforts."
+    },
+    "ym-Universidad-Jorge-Tadeo-Lozano-github": {
+      "description": "GitHub of YouthMappers chapter TadeoMappers",
+      "extendedDescription": "TadeoMappers, in collaboration with the GNUTADEO Free Software collective, offers repositories for their work. Both groups are affiliated with Universidad Jorge Tadeo Lozano, promoting the use of mapping tools and software in support of community-driven projects."
+    },
+    "ym-Universidad-Jorge-Tadeo-Lozano-instagram": {
+      "description": "Instagram of YouthMappers chapter TadeoMappers",
+      "extendedDescription": "TadeoMappers is part of Free Software group GNUTADEO, collective from Universidad Jorge Tadeo Lozano"
+    },
     "ym-Universidad-Nacional-Autnoma-de-Honduras": {
       "name": "PumaGis Hn",
       "description": "YouthMappers chapter at Universidad Nacional Autónoma de Honduras"
@@ -1895,11 +1942,6 @@
       "name": "UNCO Geography and GIS Club",
       "description": "YouthMappers chapter at University of Northern Colorado",
       "extendedDescription": "Official Geography and GIS Club chapter affiliated with the University of Northern Colorado where our aim is to learn, share and connect with those around us. #MakingSenseOfTheWorld"
-    },
-    "ym-University-of-Oregon": {
-      "name": "Map by Northwest",
-      "description": "YouthMappers chapter at University of Oregon",
-      "extendedDescription": "Map By Northwest aims to engage undergraduate students at the University of Oregon in mapping projects to assist in humanitarian causes and for conducting geographic research. We welcome students from all disciplines to join us in our mapping adventures."
     },
     "ym-University-of-Port-Harcourt": {
       "name": "UniqueMappersTeam (UMT) Port Harcourt",
