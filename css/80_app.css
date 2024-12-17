@@ -3966,13 +3966,15 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 }
 
 .help-pane .nav {
+  display: flex;
+  justify-content: space-between;
   position: relative;
   padding-bottom: 30px;
+  width: 100%;
 }
 
 .help-pane .nav a {
-  float: left;
-  width: 50%;
+  flex: 0 0 50%;
   text-align: center;
 }
 
@@ -3986,7 +3988,7 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 }
 
 .help-pane .nav a:only-child {
-  width: 100%;
+  flex: 0 0 100%;
   border-radius: 4px;
 }
 
