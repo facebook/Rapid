@@ -6,17 +6,13 @@ describe('validationOutdatedTags', () => {
     t(id)                 { return id; }
   }
 
-  class MockLocationSystem {
-    constructor() {}
-  }
-
   class MockContext {
     constructor() {
       this.services = {};
       this.systems = {
         assets:     new Rapid.AssetSystem(this),
-        l10n:       new MockLocalizationSystem(),
-        locations:  new MockLocationSystem(),
+        l10n:       new MockLocalizationSystem(this),
+        locations:  new Rapid.LocationSystem(this),
         presets:    new Rapid.PresetSystem(this)
       };
     }

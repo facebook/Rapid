@@ -73,10 +73,14 @@ export class PresetSystem extends AbstractSystem {
       }
     }
 
-    const assets = this.context.systems.assets;
-    const urlhash = this.context.systems.urlhash;
+    const context = this.context;
+    const assets = context.systems.assets;
+    const locations = context.systems.locations;
+    const urlhash = context.systems.urlhash;
+
     const prerequisites = Promise.all([
       assets.initAsync(),
+      locations.initAsync(),
       urlhash.initAsync()
     ]);
 
@@ -143,7 +147,7 @@ export class PresetSystem extends AbstractSystem {
   merge(src) {
     let newLocationSets = [];
     const context = this.context;
-    const locationSystem = context.systems.locations;
+    const locations = context.systems.locations;
 
     // Merge Fields
     if (src.fields) {
@@ -246,12 +250,12 @@ if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
 
     // Merge Custom Features
     if (src.featureCollection && Array.isArray(src.featureCollection.features)) {
-      locationSystem.mergeCustomGeoJSON(src.featureCollection);
+      locations.mergeCustomGeoJSON(src.featureCollection);
     }
 
     // Resolve all locationSet features.
     if (newLocationSets.length) {
-      locationSystem.mergeLocationSets(newLocationSets);
+      locations.mergeLocationSets(newLocationSets);
     }
 
     return this;
@@ -294,49 +298,40 @@ if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
    */
   matchTags(tags, geometry, loc) {
     const keyIndex = this._geometryIndex[geometry];
+    const context = this.context;
+    const locations = context.systems.locations;
+
+    // If we care about location, gather the locationSets allowed at this location
+    const validHere = Array.isArray(loc) ? locations.locationSetsAt(loc) : null;
+
     let bestScore = -1;
-    let bestMatch;
+    let bestMatch = null;
     let matchCandidates = [];
 
     for (let k in tags) {
-      let indexMatches = [];
-
-      let valueIndex = keyIndex[k];
+      const valueIndex = keyIndex[k];
       if (!valueIndex) continue;
 
-      let keyValueMatches = valueIndex[tags[k]];
+      const indexMatches = [];
+      const keyValueMatches = valueIndex[tags[k]];
       if (keyValueMatches) indexMatches.push(...keyValueMatches);
-      let keyStarMatches = valueIndex['*'];
+      const keyStarMatches = valueIndex['*'];
       if (keyStarMatches) indexMatches.push(...keyStarMatches);
 
       if (indexMatches.length === 0) continue;
 
-      for (let i = 0; i < indexMatches.length; i++) {
-        const candidate = indexMatches[i];
+      for (const candidate of indexMatches) {
         const score = candidate.matchScore(tags);
         if (score === -1) continue;
 
-        matchCandidates.push({score, candidate});
+        // Exclude candidate if it is scoped to a location not valid here
+        if (validHere && candidate.locationSetID && !validHere[candidate.locationSetID]) continue;
+
+        matchCandidates.push({ score, candidate });
 
         if (score > bestScore) {
           bestScore = score;
           bestMatch = candidate;
-        }
-      }
-    }
-
-    const locationSystem = this.context.systems.locations;
-    if (bestMatch && bestMatch.locationSetID && bestMatch.locationSetID !== '+[Q2]' && Array.isArray(loc)) {
-      const validHere = locationSystem.locationSetsAt(loc);
-      if (!validHere[bestMatch.locationSetID]) {
-        matchCandidates.sort((a, b) => (a.score < b.score) ? 1 : -1);
-        for (let i = 0; i < matchCandidates.length; i++){
-          const candidateScore = matchCandidates[i];
-          if (!candidateScore.candidate.locationSetID || validHere[candidateScore.candidate.locationSetID]) {
-            bestMatch = candidateScore.candidate;
-            bestScore = candidateScore.score;
-            break;
-          }
         }
       }
     }
@@ -526,8 +521,8 @@ if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
     // If a location was provided, filter results to only those valid here.
     let arr = [...results.values()];
     if (Array.isArray(loc)) {
-      const locationSystem = this.context.systems.locations;
-      const validHere = locationSystem.locationSetsAt(loc);
+      const locations = this.context.systems.locations;
+      const validHere = locations.locationSetsAt(loc);
       arr = arr.filter(item => !item.locationSetID || validHere[item.locationSetID]);
     }
 

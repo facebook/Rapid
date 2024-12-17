@@ -8,10 +8,6 @@ describe('validationMismatchedGeometry', () => {
     t(id)                 { return id; }
   }
 
-  class MockLocationSystem {
-    constructor() {}
-  }
-
   class MockStorageSystem {
     constructor() { }
     getItem() { return ''; }
@@ -30,7 +26,7 @@ describe('validationMismatchedGeometry', () => {
       this.systems = {
         assets:     new Rapid.AssetSystem(this),
         l10n:       new MockLocalizationSystem(),
-        locations:  new MockLocationSystem(),
+        locations:  new Rapid.LocationSystem(this),
         presets:    new Rapid.PresetSystem(this),
         storage:    new MockStorageSystem(),
         urlhash:    new MockUrlSystem()
@@ -45,11 +41,15 @@ describe('validationMismatchedGeometry', () => {
     graph = new Rapid.Graph();     // reset
     _savedAreaKeys = Rapid.osmAreaKeys;
 
-    // For the tests that need a building preset
     const testPresets = {
       building: {
         tags: { building: '*' },
         geometry: ['area']
+      },
+      desert_library: {
+        tags: { amenity: 'library' },
+        geometry: ['point'],
+        locationSet: { include: ['Q620634'] }
       }
     };
     context.systems.assets._cache.tagging_preset_presets = testPresets;
@@ -166,6 +166,16 @@ describe('validationMismatchedGeometry', () => {
     const presets = context.systems.presets;
     return presets.initAsync().then(() => {
       createOpenWay({ 'disused:waterway': 'security_lock' });
+      const issues = validate();
+      expect(issues).to.have.lengthOf(0);
+    });
+  });
+
+  it(`does not flag open way if the preset location doesn't match the entity location` , () => {
+    // In this test case, there is an area preset for `amenity=library` but we won't match it because of the location
+    const presets = context.systems.presets;
+    return presets.initAsync().then(() => {
+      createOpenWay({ amenity: 'library' });
       const issues = validate();
       expect(issues).to.have.lengthOf(0);
     });
