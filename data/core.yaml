@@ -621,6 +621,9 @@ en:
       note_created_date: Created Date
       note_created_user: Created By
       note_link_text: Note on openstreetmap.org
+    yule_log:
+      title: Yule Log
+      key: Y
     location:
       title: Location
       unknown_location: Unknown Location
@@ -2786,6 +2789,9 @@ en:
       toggle_measurement_card:
         label: Toggle measurement panel
         key: M     # <Command> + <Shift> + <this key> to toggle the Measurement Info panel
+      toggle_yule_log:
+        label: Toggle Yule Log panel
+        key: Y     # <Command> + <Shift> + <this key> to toggle the Yule Log panel
 
   units:
     feet: "{quantity} ft"
