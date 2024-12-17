@@ -442,9 +442,9 @@ describe('osmNode', () => {
 
     it('supports direction=forward', () => {
       const node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
-      const node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'direction': 'forward' } });
+      const node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { direction: 'forward' } });
       const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
-      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'] });
+      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residental' } });
       const graph = new Rapid.Graph([node1, node2, node3, way]);
       assert.deepEqual(node2.directions(graph, viewport), [270]);
     });
@@ -454,7 +454,7 @@ describe('osmNode', () => {
       const node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
       const node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'direction': 'backward' } });
       const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
-      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'] });
+      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residental' } });
       const graph = new Rapid.Graph([node1, node2, node3, way]);
       assert.deepEqual(node2.directions(graph, viewport), [90]);
     });
@@ -464,10 +464,9 @@ describe('osmNode', () => {
       const node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
       const node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'direction': 'both' } });
       const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
-      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'] });
+      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residental' } });
       const graph = new Rapid.Graph([node1, node2, node3, way]);
-      assert.ok(node2.directions(graph, viewport), 90);
-      assert.ok(node2.directions(graph, viewport), 270);
+      assert.deepEqual(node2.directions(graph, viewport), [90, 270]);
     });
 
 
@@ -475,10 +474,9 @@ describe('osmNode', () => {
       const node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
       const node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'direction': 'all' } });
       const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
-      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'] });
+      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residental' } });
       const graph = new Rapid.Graph([node1, node2, node3, way]);
-      assert.ok(node2.directions(graph, viewport), 90);
-      assert.ok(node2.directions(graph, viewport), 270);
+      assert.deepEqual(node2.directions(graph, viewport), [90, 270]);
     });
 
 
@@ -486,7 +484,7 @@ describe('osmNode', () => {
       const node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
       const node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'traffic_signals:direction': 'forward' } });
       const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
-      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'] });
+      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residental' } });
       const graph = new Rapid.Graph([node1, node2, node3, way]);
       assert.deepEqual(node2.directions(graph, viewport), [270]);
     });
@@ -496,7 +494,7 @@ describe('osmNode', () => {
       const node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
       const node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'traffic_signals:direction': 'backward' } });
       const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
-      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'] });
+      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residental' } });
       const graph = new Rapid.Graph([node1, node2, node3, way]);
       assert.deepEqual(node2.directions(graph, viewport), [90]);
     });
@@ -506,10 +504,9 @@ describe('osmNode', () => {
       const node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
       const node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'traffic_signals:direction': 'both' } });
       const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
-      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'] });
+      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residental' } });
       const graph = new Rapid.Graph([node1, node2, node3, way]);
-      assert.ok(node2.directions(graph, viewport), 90);
-      assert.ok(node2.directions(graph, viewport), 270);
+      assert.deepEqual(node2.directions(graph, viewport), [90, 270]);
     });
 
 
@@ -517,10 +514,9 @@ describe('osmNode', () => {
       const node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
       const node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'traffic_signals:direction': 'all' } });
       const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
-      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'] });
+      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residental' } });
       const graph = new Rapid.Graph([node1, node2, node3, way]);
-      assert.ok(node2.directions(graph, viewport), 90);
-      assert.ok(node2.directions(graph, viewport), 270);
+      assert.deepEqual(node2.directions(graph, viewport), [90, 270]);
     });
 
 
@@ -528,7 +524,7 @@ describe('osmNode', () => {
       const node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
       const node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'railway:signal:direction': 'forward' } });
       const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
-      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'] });
+      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residental' } });
       const graph = new Rapid.Graph([node1, node2, node3, way]);
       assert.deepEqual(node2.directions(graph, viewport), [270]);
     });
@@ -538,7 +534,7 @@ describe('osmNode', () => {
       const node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
       const node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'railway:signal:direction': 'backward' } });
       const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
-      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'] });
+      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residental' } });
       const graph = new Rapid.Graph([node1, node2, node3, way]);
       assert.deepEqual(node2.directions(graph, viewport), [90]);
     });
@@ -548,10 +544,9 @@ describe('osmNode', () => {
       const node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
       const node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'railway:signal:direction': 'both' } });
       const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
-      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'] });
+      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residental' } });
       const graph = new Rapid.Graph([node1, node2, node3, way]);
-      assert.ok(node2.directions(graph, viewport), 90);
-      assert.ok(node2.directions(graph, viewport), 270);
+      assert.deepEqual(node2.directions(graph, viewport), [90, 270]);
     });
 
 
@@ -559,10 +554,9 @@ describe('osmNode', () => {
       const node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
       const node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'railway:signal:direction': 'all' } });
       const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
-      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'] });
+      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residental' } });
       const graph = new Rapid.Graph([node1, node2, node3, way]);
-      assert.ok(node2.directions(graph, viewport), 90);
-      assert.ok(node2.directions(graph, viewport), 270);
+      assert.deepEqual(node2.directions(graph, viewport), [90, 270]);
     });
 
 
@@ -570,7 +564,7 @@ describe('osmNode', () => {
       const node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
       const node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'camera:direction': 'forward' } });
       const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
-      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'] });
+      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residental' } });
       const graph = new Rapid.Graph([node1, node2, node3, way]);
       assert.deepEqual(node2.directions(graph, viewport), [270]);
     });
@@ -580,7 +574,7 @@ describe('osmNode', () => {
       const node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
       const node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'camera:direction': 'backward' } });
       const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
-      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'] });
+      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residental' } });
       const graph = new Rapid.Graph([node1, node2, node3, way]);
       assert.deepEqual(node2.directions(graph, viewport), [90]);
     });
@@ -590,10 +584,9 @@ describe('osmNode', () => {
       const node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
       const node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'camera:direction': 'both' } });
       const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
-      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'] });
+      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residental' } });
       const graph = new Rapid.Graph([node1, node2, node3, way]);
-      assert.ok(node2.directions(graph, viewport), 90);
-      assert.ok(node2.directions(graph, viewport), 270);
+      assert.deepEqual(node2.directions(graph, viewport), [90, 270]);
     });
 
 
@@ -601,10 +594,9 @@ describe('osmNode', () => {
       const node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
       const node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'camera:direction': 'all' } });
       const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
-      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'] });
+      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residental' } });
       const graph = new Rapid.Graph([node1, node2, node3, way]);
-      assert.ok(node2.directions(graph, viewport), 90);
-      assert.ok(node2.directions(graph, viewport), 270);
+      assert.deepEqual(node2.directions(graph, viewport), [90, 270]);
     });
 
 
@@ -614,13 +606,10 @@ describe('osmNode', () => {
       const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
       const node4 = Rapid.osmNode({ id: 'n4', loc: [0, -1] });
       const node5 = Rapid.osmNode({ id: 'n5', loc: [0, 1] });
-      const way1 = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2', 'n3'], tags: { 'highway': 'residential' } });
-      const way2 = Rapid.osmWay({ id: 'w2', nodes: ['n4', 'n2', 'n5'], tags: { 'highway': 'residential' } });
+      const way1 = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residential' } });
+      const way2 = Rapid.osmWay({ id: 'w2', nodes: ['n4', 'n2', 'n5'], tags: { highway: 'residential' } });
       const graph = new Rapid.Graph([node1, node2, node3, node4, node5, way1, way2]);
-      assert.ok(node2.directions(graph, viewport), 0);
-      assert.ok(node2.directions(graph, viewport), 90);
-      assert.ok(node2.directions(graph, viewport), 180);
-      assert.ok(node2.directions(graph, viewport), 270);
+      assert.deepEqual(node2.directions(graph, viewport), [0, 90, 180, 270]);
     });
 
 
@@ -630,8 +619,8 @@ describe('osmNode', () => {
       const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0], tags: { 'highway': 'stop', 'stop': 'all' } });
       const node4 = Rapid.osmNode({ id: 'n4', loc: [0, -1], tags: { 'highway': 'stop', 'stop': 'all' } });
       const node5 = Rapid.osmNode({ id: 'n5', loc: [0, 1], tags: { 'highway': 'stop', 'stop': 'all' } });
-      const way1 = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2', 'n3'], tags: { 'highway': 'residential' } });
-      const way2 = Rapid.osmWay({ id: 'w2', nodes: ['n4', 'n2', 'n5'], tags: { 'highway': 'residential' } });
+      const way1 = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residential' } });
+      const way2 = Rapid.osmWay({ id: 'w2', nodes: ['n4', 'n2', 'n5'], tags: { highway: 'residential' } });
       const graph = new Rapid.Graph([node1, node2, node3, node4, node5, way1, way2]);
       assert.deepEqual(node2.directions(graph, viewport), []);
     });
@@ -646,9 +635,9 @@ describe('osmNode', () => {
       const graph = new Rapid.Graph([node1, node2, node3, node4, node5]);
 
       assert.deepEqual(node1.directions(graph, viewport), [0, 45], 'numeric 0, numeric 45');
-      assert.deepEqual(node2.directions(graph, viewport), [45, 0], 'numeric 45, cardinal north');
+      assert.deepEqual(node2.directions(graph, viewport), [0, 45], 'numeric 45, cardinal north');
       assert.deepEqual(node3.directions(graph, viewport), [0, 90], 'cardinal north and east');
-      assert.deepEqual(node4.directions(graph, viewport), [0, 180, 90, 270], 'cardinal n,s,e,w');
+      assert.deepEqual(node4.directions(graph, viewport), [0, 90, 180, 270], 'cardinal n,s,e,w');
       assert.deepEqual(node5.directions(graph, viewport), [180], 'cardinal 180 and nonsense');
     });
 
@@ -657,13 +646,47 @@ describe('osmNode', () => {
       const node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
       const node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'camera:direction': 'both;ne;60' } });
       const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
-      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'] });
+      const way = Rapid.osmWay({ nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residental' } });
       const graph = new Rapid.Graph([node1, node2, node3, way]);
-      assert.ok(node2.directions(graph, viewport), 90);
-      assert.ok(node2.directions(graph, viewport), 270);
-      assert.ok(node2.directions(graph, viewport), 45);
-      assert.ok(node2.directions(graph, viewport), 60);
+      assert.deepEqual(node2.directions(graph, viewport), [45, 60, 90, 270]);
     });
+
+    it('does not return directions for non-routable line way', () => {
+      //          n4
+      //           |
+      //    n1 -- n2 -- n3
+      //           |
+      //          n5
+      const n1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
+      const n2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { direction: 'all' } });
+      const n3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
+      const n4 = Rapid.osmNode({ id: 'n4', loc: [0, 1] });
+      const n5 = Rapid.osmNode({ id: 'n5', loc: [0, -1] });
+      const w1 = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residental' } });
+      const w2 = Rapid.osmWay({ id: 'w2', nodes: ['n4', 'n2', 'n5'], tags: { natural: 'coastline' } });
+      const graph = new Rapid.Graph([n1, n2, n3, n4, n5, w1, w2]);
+      assert.deepEqual(n2.directions(graph, viewport), [90, 270]);
+    });
+
+    it('does not return directions for non-routable area way', () => {
+      //          n4 ------- n7
+      //           |         |
+      //    n1 -- n2 -- n3   |
+      //           |         |
+      //          n5 ------- n6
+      const n1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
+      const n2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { direction: 'all' } });
+      const n3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
+      const n4 = Rapid.osmNode({ id: 'n4', loc: [0, 1] });
+      const n5 = Rapid.osmNode({ id: 'n5', loc: [0, -1] });
+      const n6 = Rapid.osmNode({ id: 'n6', loc: [0, -1] });
+      const n7 = Rapid.osmNode({ id: 'n7', loc: [0, -1] });
+      const w1 = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2', 'n3'], tags: { highway: 'residental' } });
+      const w2 = Rapid.osmWay({ id: 'w2', nodes: ['n4', 'n2', 'n5', 'n6', 'n7', 'n4'], tags: { highway: 'services' } });
+      const graph = new Rapid.Graph([n1, n2, n3, n4, n5, n6, n7, w1, w2]);
+      assert.deepEqual(n2.directions(graph, viewport), [90, 270]);
+    });
+
   });
 
 
