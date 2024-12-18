@@ -6,6 +6,7 @@ import { uiIcon } from './icon.js';
 import { uiFlash } from './flash.js';
 //import { uiRapidFirstEditDialog } from './rapid_first_edit_dialog.js';
 import { uiTooltip } from './tooltip.js';
+import { utilKeybinding } from '../util/keybinding.js';
 
 const ACCEPT_FEATURES_LIMIT = 50;
 
@@ -34,6 +35,10 @@ export class UiRapidInspector {
 
     this.datum = null;
     this._keys = null;
+    // Need a "private" keybinding for this component because these keys conflict with
+    // the main keys used by the operations when editing OSM. ('A','D','M','R')
+    this._keybinding = utilKeybinding('UiRapidInspector');
+    select(document).call(this._keybinding);
 
     // D3 selections
     this.$parent = null;
@@ -54,6 +59,10 @@ export class UiRapidInspector {
     this.acceptFeature = this.acceptFeature.bind(this);
     this.ignoreFeature = this.ignoreFeature.bind(this);
     this._setupKeybinding = this._setupKeybinding.bind(this);
+
+    // accept and enter one of these modes:
+    this.moveFeature = (e) => this.acceptFeature(e, 'move');
+    this.rotateFeature = (e) => this.acceptFeature(e, 'rotate');
 
     // Setup event handlers
     const l10n = context.systems.l10n;
@@ -149,9 +158,10 @@ export class UiRapidInspector {
   /**
    * acceptFeature
    * Called when the user presses Add Feature.
-   * @param  {Event}  e? - triggering event (if any)
+   * @param  {Event}  e?         - triggering event (if any)
+   * @param  {string} nextMode?  - optional next mode to enter after accepting ('move' or 'rotate')
    */
-  acceptFeature(e) {
+  acceptFeature(e, nextMode) {
     const datum = this.datum;
     if (!datum) return;
 
@@ -159,6 +169,7 @@ export class UiRapidInspector {
     const editor = context.systems.editor;
     const l10n = context.systems.l10n;
     const rapid = context.systems.rapid;
+    const scene = context.systems.gfx.scene;
 
     if (this.isAcceptFeatureDisabled()) {
       const flash = uiFlash(context)
@@ -189,7 +200,39 @@ export class UiRapidInspector {
 
     editor.perform(actionRapidAcceptFeature(datum.id, graph));
     editor.commit({ annotation: annotation, selectedIDs: [datum.id] });
-    context.enter('select-osm', { selection: { osm: [datum.id] }} );
+
+    // What next
+    // - If we were in select mode, stay in select mode
+    // - Or, if we are passed a `nextMode` do that.
+    // - Or, if the feature was hovered, keep it hovered
+    const currMode = context.mode?.id || '';
+    if (!nextMode && /^select/.test(currMode)) {   // if it is selected, stay selected
+      nextMode = 'select-osm';
+    }
+
+    if (nextMode) {   // should be one of 'select-osm', 'move', or 'rotate'
+      context.enter(nextMode, { selection: { osm: [datum.id] }} );
+
+    } else {  // if it was hovered, hover the newly added item (this is hacky):
+      // 1. get the `lastMove` event, and make it appear to target the new entity on the 'osm' layer
+      // 2. tell the hover behavior to emit a new 'hoverchange' event.
+      const hover = context.behaviors.hover;
+      const lastMove = hover.lastMove;
+      const graph = editor.staging.graph;
+      const entity = graph.entity(datum.id);  // get the newly accepted entity
+      const layer = scene.layers.get('osm');
+      lastMove.target = {
+        displayObject: null,
+        feature: null,
+        featureID: null,
+        layer: layer,
+        layerID: layer.id,
+        data: entity,
+        dataID: entity.id
+      };
+      hover._doHover();
+    }
+
     this.datum = null;
 
     if (context.inIntro) return;
@@ -546,7 +589,7 @@ export class UiRapidInspector {
    */
   _setupKeybinding() {
     const context = this.context;
-    const keybinding = context.keybinding();
+    const keybinding = this._keybinding;
     const l10n = context.systems.l10n;
 
     if (Array.isArray(this._keys)) {
@@ -555,10 +598,14 @@ export class UiRapidInspector {
 
     const acceptKey = l10n.t('shortcuts.command.accept_feature.key');
     const ignoreKey = l10n.t('shortcuts.command.ignore_feature.key');
-    this._keys = [acceptKey, ignoreKey];
+    const moveKey = l10n.t('shortcuts.command.move.key');
+    const rotateKey = l10n.t('shortcuts.command.rotate.key');
+    this._keys = [acceptKey, ignoreKey, moveKey, rotateKey];
 
     keybinding.on(acceptKey, this.acceptFeature);
     keybinding.on(ignoreKey, this.ignoreFeature);
+    keybinding.on(moveKey, this.moveFeature);
+    keybinding.on(rotateKey, this.rotateFeature);
   }
 
 }
