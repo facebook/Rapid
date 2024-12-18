@@ -7,14 +7,11 @@
       "favorites": "Favourites"
     },
     "operations": {
+      "cancel_draw": {
+        "annotation": "Cancelled drawing."
+      },
       "circularize": {
         "title": "Circularise"
-      },
-      "rotate": {
-        "description": {
-          "single": "Rotate this feature around its centre point.",
-          "multiple": "Rotate these features around their centre point."
-        }
       }
     },
     "info_panels": {
@@ -22,13 +19,16 @@
         "center": "Centre"
       }
     },
-    "feature": {
+    "filters": {
       "paths": {
         "tooltip": "Footpaths, Walkways, Cycleways, etc."
       },
       "aerialways": {
         "tooltip": "Chair Lifts, Gondolas, Flying Foxes, etc."
       }
+    },
+    "save": {
+      "unknown_error_details": "Please ensure you are connected to the Internet."
     },
     "QA": {
       "keepRight": {
@@ -60,21 +60,34 @@
     },
     "intro": {
       "graph": {
+        "postcode": "TR17 1BB",
+        "state": "<value for addr:state>",
+        "countrycode": "gb",
         "name": {
           "andrews-elementary-school": "Andrews Primary School",
+          "conrail-railroad": "National Rail",
+          "dollar-tree": "Euro Tree",
+          "lincoln-avenue": "Longspring Avenue",
+          "michigan-avenue": "Mayfair Avenue",
+          "southern-michigan-bank": "Santander",
           "three-rivers-elementary-school": "Three Rivers Primary School",
           "three-rivers-fire-department": "Three Rivers Fire Station",
-          "three-rivers-middle-school": "Three Rivers High School"
+          "three-rivers-middle-school": "Three Rivers High School",
+          "washington-street": "Kings Road"
         }
       },
+      "welcome": {
+        "practice": "All of the data in this walkthrough is just for practising, and any edits that you make in the walkthrough will not be saved."
+      },
       "lines": {
+        "add_line": "*Lines* are used to represent features such as roads, railways, and rivers. **Press the {line_icon} {line} button to add a new line.**",
         "line_draw_info": "In OpenStreetMap, lines should be drawn down the centre of the road. You can drag and zoom the map while drawing if necessary."
       }
     },
     "shortcuts": {
-      "editing": {
-        "operations": {
-          "circularize": "Circularise a closed line or area"
+      "command": {
+        "circularize": {
+          "label": "Circularise a closed line or area"
         }
       }
     },

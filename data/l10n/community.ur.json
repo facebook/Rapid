@@ -24,7 +24,6 @@
       "openstreetmapchile": "اوپن اسٹریٹ میپس چِلی",
       "openstreetmapchina": "اوپن اسٹریٹ میپس چین",
       "openstreetmapcologne": "اوپن اسٹریٹ میپس کولون",
-      "openstreetmapcolombia": "اوپن اسٹریٹ میپس کولمبیا",
       "openstreetmapcostarica": "اوپن اسٹریٹ میپس کوستا ریکا",
       "openstreetmapcroatia": "اوپن اسٹریٹ میپس کرویشیا",
       "openstreetmapcuba": "اوپن اسٹریٹ میپس کوبا",
@@ -78,6 +77,7 @@
       "openstreetmapmichigan": "اوپن اسٹریٹ میپس مشگن",
       "openstreetmapmoldova": "اوپن اسٹریٹ میپس مالڈووا",
       "openstreetmapmongolia": "اوپن اسٹریٹ میپس منگولیا",
+      "openstreetmapmontenegro": "اوپن اسٹریٹ میپس مونٹینیگرو",
       "openstreetmapmorocco": "اوپن اسٹریٹ میپس مراکش",
       "openstreetmapmunchen": "اوپن اسٹریٹ میپس میونخ",
       "openstreetmapmyanmar": "اوپن اسٹریٹ میپس برما",
@@ -140,7 +140,8 @@
         "name": "{community} فیسبک پر"
       },
       "forum": {
-        "name": "{community} فارم"
+        "name": "{community} فارم",
+        "description": "{community} کا باضابطہ فارم"
       }
     }
   }

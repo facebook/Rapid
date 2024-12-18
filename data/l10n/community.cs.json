@@ -27,7 +27,6 @@
       "openstreetmapchad": "OpenStreetMap Čad",
       "openstreetmapchina": "OpenStreetMap Čína",
       "openstreetmapcologne": "OpenStreetMap Kolín nad Rýnem",
-      "openstreetmapcolombia": "OpenStreetMap Kolumbie",
       "openstreetmapcostarica": "OpenStreetMap Kostarika",
       "openstreetmapcotedivoire": "OpenStreetMap Pobřeží Slonoviny",
       "openstreetmapcroatia": "OpenStreetMap Chorvatsko",
@@ -151,6 +150,10 @@
         "name": "{community} fórum",
         "description": "Oficiální diskuzní fórum komunity {community}"
       },
+      "instagram": {
+        "name": "{community} na Instagramu",
+        "description": "Sledujte nás na Instagramu"
+      },
       "irc": {
         "name": "{community} na IRC",
         "description": "Připojte se k #{account} na irc.oftc.net (port 6667 ne-SSL nebo 6697 pro SSL)"
@@ -170,6 +173,9 @@
       "matrix": {
         "description": "Připojte se k chatu naší komunity na Matrixu"
       },
+      "newsletter": {
+        "name": "{community} Zpravodaj"
+      },
       "reddit": {
         "name": "{community} na Redditu"
       },
@@ -183,6 +189,10 @@
         "name": "{community} na Threads",
         "description": "Sledujte nás na Threads"
       },
+      "tiktok": {
+        "name": "{community} na TikToku",
+        "description": "Sledujte nás na TikToku"
+      },
       "twitter": {
         "name": "{community} na 𝕏",
         "description": "Sledujte nás na 𝕏"
@@ -193,6 +203,9 @@
       "x": {
         "name": "{community} na 𝕏",
         "description": "Sledujte nás na 𝕏"
+      },
+      "xmpp": {
+        "description": "Připojte se k našemu komunitnímu chatu XMPP: {url}"
       },
       "youtube": {
         "name": "{community} na YouTube",
@@ -306,15 +319,6 @@
     },
     "cl-telegram": {
       "extendedDescription": "Připojte se ke komunitě a dozvíte se více o OpenStreetMap, můžete klást otázky nebo se účastnit našich setkání. Každý je vítán!"
-    },
-    "co-facebook": {
-      "extendedDescription": "Připojte se ke komunitě a dozvíte se více o OpenStreetMap. Každý je vítán!"
-    },
-    "co-github": {
-      "description": "Projekty Git o Kolumbii"
-    },
-    "co-wiki": {
-      "description": "Wiki stránka s dokumentací k mapování Kolumbie"
     },
     "comunitat-valenciana-wiki": {
       "description": "Vše, co potřebujete vědět o mapování ve Valencijské komunitě: {url}"
@@ -477,8 +481,8 @@
       "description": "Seznamte se s nadšenci mapování na území Filadelfie",
       "extendedDescription": "GeoPhilly spojuje vývojáře, geografy, geology dat, nadšence s otevřeným zdrojovým kódem, občanské hackery a mapové šílence do naší společné lásky k mapám a k příběhům, které vyprávějí. Pokud používáte mapy jako součást své práce, nebo se chcete dozvědět více, toto je setkání právě pro vás! Cílem našich akcí je být otevřený, přátelský, vzdělávající se a společenský v rozsahu od šťastných hodin přes bleskové rozhovory nebo dokonce workshopy. Pojďte s námi vytvořit rozmanitou a inspirující geoprostorovou komunitu ve Filadelfii!"
     },
-    "hr-irc": {
-      "description": "Připojte se k #{account} na irc.freenode.org (port 6667)"
+    "hr-tm": {
+      "name": "{community} Správce úloh"
     },
     "hr-wiki": {
       "description": "Stránka wikiprojektu pro Chorvatsko"
@@ -526,9 +530,6 @@
     },
     "ireland-matrix": {
       "description": "Brána Matrix pro IRC kanál OSM Irska: {url}"
-    },
-    "ireland-meetup": {
-      "description": "Setkání všech, kteří se zajímají o OpenStreetMap"
     },
     "is-chapter": {
       "description": "Pomáháme OpenStreetMap na Islandu růst a zlepšovat se."
@@ -605,13 +606,6 @@
       "description": "Map Kibera je registrovaná organizace pracující v Keni",
       "extendedDescription": "Posláním organizace Map Kibera Trust je zvýšit vliv a zastoupení marginalizovaných komunit prostřednictvím kreativního využití digitálních nástrojů pro akci."
     },
-    "MapABQ": {
-      "description": "Měsíční setkání uživatelů OpenStreetMap v Albuquerque a Severním Novém Mexiku",
-      "extendedDescription": "Každý se může připojit a my vám rádi pomůžeme začít s mapováním. Schůzky jsou v otevřeném formátu, aby se přispěvatelé mohli soustředit na přidávání do OpenStreetMap pro Albuquerque a okolní oblasti."
-    },
-    "MapColabora-mailinglist": {
-      "description": "Mapeado Colaborativo / Geoinquietos Zaragoza mailová konference"
-    },
     "MapColabora-twitter": {
       "description": "Kooperativní mapování / Twitter účet Geoinquietos Zaragoza"
     },
@@ -619,10 +613,6 @@
       "name": "Lokální skupina Mappa Mercia",
       "description": "Milovníci map a OpenStreetMap v Midlands",
       "extendedDescription": "Mappa Mercia je projekt pro růst OpenStreetMap v Západní Midlands ve Spojeném království. Pořádáme akce pro komunitu, poskytujeme výcvik a podporu lokálních organizacím, kteří chtějí zpřístupnit svoje data."
-    },
-    "MappingDC-meetup": {
-      "description": "Vylepšete OpenStreetMap v oblasti DC",
-      "extendedDescription": "Jsme skupina dobrovolných mapovačů, jejichž cílem je vylepšit OpenStreetMap v oblasti DC. Naším cílem je také naučit ostatní o ekosystému OSM, analytice dat, kartografii a GIS. Scházíme se každý druhý měsíc na srazech, abychom se zaměřili na jednu oblast našeho města."
     },
     "MappingWR": {
       "description": "Usnadnění nalezení nízkouhlíkových tras v regionu Waterloo."
@@ -712,6 +702,10 @@
     "Open-Source-San-Jose-Discord": {
       "description": "Zůstaňte ve spojení s ostatními mapovateli na Discordu! Po registraci se připojte ke kanálu #🗺openstreetmap."
     },
+    "Open-Source-San-Jose-Mastodon": {
+      "description": "Sledujte Open Source San José na Mastodonu.",
+      "extendedDescription": "Open Source San José je místní nezisková organizace, která propojuje dobrovolné programátory a designéry s potřebami komunity prostřednictvím občanských technologií. OSSJ sponzoruje místní dobrovolnickou mapovací komunitu, která pořádá dvakrát týdně South Bay Map Nights."
+    },
     "Open-Source-San-Jose-Slack": {
       "description": "Všichni jsou vítáni! Zaregistrujte se na adrese {signupUrl} a připojte se k kanálu #proj-osm."
     },
@@ -748,6 +742,9 @@
     },
     "OSM-AR-wiki": {
       "description": "Vše, co potřebujete vědět o mapování v Argentině."
+    },
+    "osm-asia-facebook": {
+      "extendedDescription": "Skupina pro integrovanou mapovou podporu pro Asii. Chceme být zejména místem pro mappery bez místní komunity, kde mohou sdílet informace a spolupracovat na řešení problémů ve svých oblastech, které by jinak kvůli neexistenci místní komunity nemohli řešit."
     },
     "osm-at": {
       "description": "Informační platforma pro OpenStreetMap v Rakousku"
@@ -790,7 +787,8 @@
       "extendedDescription": "XMPP místnost pro OSM Dillí, není propojena do žádné proprietární sítě."
     },
     "OSM-Discord": {
-      "name": "Světový Discord OpenStreetMap"
+      "name": "Světový Discord OpenStreetMap",
+      "description": "Neoficiální, komunitou spravovaný server Discord pro globální komunitu OpenStreetMap. K dispozici jsou regionální kanály."
     },
     "OSM-Discourse": {
       "name": "Fórum komunity OpenStreetMap",
@@ -853,6 +851,9 @@
     },
     "osm-iran-telegram": {
       "extendedDescription": "Můžete se připojit k našemu telegramovému kanálu na adrese {url}. Máme také superskupinu mnoha OSMers se zájmem o Írán. Odkaz na něj najdete v biu kanálu."
+    },
+    "OSM-japan-discord": {
+      "description": "Pracovní prostor Discordu pro komunitu OSM Japan: {url}"
     },
     "OSM-japan-facebook": {
       "description": "Mapovači a uživatelé OpenStreetMap v Japonsku"
@@ -930,9 +931,6 @@
     "OSM-Seattle": {
       "description": "Mapovači a uživatelé OpenStreetMap na území Seattlu"
     },
-    "osm-sierra-leone": {
-      "description": "Zaměřujeme se na vytváření a používání otevřených dat k řešení sociálních, ekonomických a komunitních problémů."
-    },
     "OSM-SoCal": {
       "name": "OpenStreetMap Jižní Kalifornie",
       "description": "Pojďme se trochu pobavit, přispět něčím do Los Angeles a dozvědět se něco o mapování!",
@@ -971,6 +969,10 @@
     },
     "OSM-US-Slack": {
       "description": "Všichni jsou vítaní! Přihlaste se na {signupUrl}"
+    },
+    "OSM-Utah": {
+      "description": "Vaše mapovací komunita OSM pro oblast Salt Lake City",
+      "extendedDescription": "Scházíme se každý měsíc v Salt Lake City, obvykle druhou středu v měsíci. Všichni jsou vítáni!"
     },
     "OSM-Wyoming": {
       "description": "Mapovači a uživatelé OpenStreetMap ve státě Wyoming",
@@ -1204,19 +1206,10 @@
     "ym-Federal-School-of-Surveys": {
       "description": "Zastoupení YouthMappers na Fedeální škole průzkumů"
     },
-    "ym-Federal-University-of-Technology-Akure": {
-      "description": "Zastoupení YouthMappers na Federální univerzitě technologie, Akure",
-      "extendedDescription": "Naším posláním je vychovat další generaci vesmírných vůdců. Činnosti zahrnují výzkum a budování kapacit v oblasti dálkového průzkumu Země, GIS, změny klimatu, astronomie, kosmologie, vesmírného inženýrství, globální navigace, robotiky a kosmického vzdělávání."
-    },
     "ym-Fourah-Bay-College": {
       "name": "Studentská geografická asociace",
       "description": "Zastoupení YouthMappers na Fourah Bay College",
       "extendedDescription": "Studentská geografická asociace- YouthMappers je sdružení studentů Fourah Bay College se společnými cíli zmapovat zranitelná místa v Sierra Leone a ve světě obecně pro pomocné a jiné prospěšné účely, provádět výzkum a další vzdělávací aktivity. Zastoupení se skládá z mladých lidí se skvělými nápady, orientovanými na rozvoj se schopností vzájemně se propojit, pochopit a realizovat projekty udržitelného rozvoje jako tým."
-    },
-    "ym-General-Lansana-Conte-University": {
-      "name": "YouthMappers na Univerzitě generála Lansana Conteho",
-      "description": "Zastoupení YouthMappers na Univerzitě generála Lansana Conteho",
-      "extendedDescription": "YouthMappers z Univerzity General Lansana Conté je nezisková komunita ochotná přispívat do Map Guinei a dalších částí světa. Podporujeme používání GIS a otevřených dat k vytváření nástrojů pro podporu rozhodování. Pracujeme také na budování kapacit mezi studenty a místními komunitami."
     },
     "ym-George-Mason-University": {
       "name": "Mapovači Masonu",
@@ -1613,11 +1606,6 @@
     "ym-University-of-Northern-Colorado": {
       "description": "Zastoupení YouthMappers na Univerzitě v Severním Coloradu",
       "extendedDescription": "Oficiální zastoupení Klubu geografie a GIS přidružená k Univerzitě v Severním Coloradu, kde je naším cílem učit se, sdílet a spojovat se s lidmi kolem nás. Vytvářejte smysl světa! #MakingSenseOfTheWorld"
-    },
-    "ym-University-of-Oregon": {
-      "name": "Mapa podle severozápadu",
-      "description": "Zastoupení YouthMappers na Univerzitě v Oregonu",
-      "extendedDescription": "Mapa podle severozápadu si klade za cíl zapojit vysokoškoláky na Oregonské univerzitě do mapovacích projektů na pomoc v humanitárních záležitostech a na provádění geografického výzkumu. Vyzíváme studenty ze všech oborů, aby se k nám připojili do našich mapovacích dobrodružstvích."
     },
     "ym-University-of-Port-Harcourt": {
       "description": "Zastoupení YouthMappers na Univerzitě v Port Harcourt",

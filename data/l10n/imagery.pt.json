@@ -1,9 +1,18 @@
 {
   "pt": {
     "imagery": {
+      "Bedzin-PL-aerial_image": {
+        "name": "Będzin: Ortofotomapa 2013 (imagens aéreas)"
+      },
+      "Bedzin-PL-buildings": {
+        "name": "Będzin: Edifícios"
+      },
       "Bing": {
         "description": "Imagens aéreas e de satélite.",
         "name": "Imagens Aéreas Bing"
+      },
+      "Dourados_Ortofotos": {
+        "description": "Imagens aéreas de alta resolução de Dourados (2018) e diversos distritos (2020)."
       },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
@@ -11,6 +20,34 @@
         },
         "description": "Imagens Processadas do Satélite Sentinel.",
         "name": "eox.at 2018 sem nuvens"
+      },
+      "EOXAT2019CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu by EOX IT Services GmbH (Contém dados modificados do Copernicus Sentinel de 2019)"
+        },
+        "description": "Imagens Processadas do Satélite Sentinel.",
+        "name": "eox.at 2019 sem nuvens"
+      },
+      "EOXAT2020CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu by EOX IT Services GmbH (Contém dados modificados do Copernicus Sentinel de 2020)"
+        },
+        "description": "Imagens Processadas do Satélite Sentinel.",
+        "name": "eox.at 2020 sem nuvens"
+      },
+      "EOXAT2021CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu by EOX IT Services GmbH (Contém dados modificados do Copernicus Sentinel de 2021)"
+        },
+        "description": "Imagens Processadas do Satélite Sentinel.",
+        "name": "eox.at 2021 sem nuvens"
+      },
+      "EOXAT2022CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu by EOX IT Services GmbH (Contém dados modificados do Copernicus Sentinel de 2022)"
+        },
+        "description": "Imagens Processadas do Satélite Sentinel.",
+        "name": "eox.at 2022 sem nuvens"
       },
       "EsriWorldImagery": {
         "attribution": {
@@ -26,8 +63,151 @@
         "description": "A imagem de arquivo da ESRI poderá ser mais definida e detalhada que a camada pré-definida.",
         "name": "Imagem Global ESRI (Claridade) versão Beta"
       },
+      "FOMI_2011_2014": {
+        "description": "Ortofotos do governo com folhagem e resolução de 40 cm/pixel para todo o país. Esta camada deve ser usada como uma base de alinhamento na falta de uma referência mais precisa. Imagens no formato WEBP, o JOSM precisa de um plugin webp para elas.",
+        "name": "Ortofotos FÖMI 2011-2014 (WEBP)"
+      },
+      "Frankfurt-am-Main-2019": {
+        "attribution": {
+          "text": "Escritório Municipal de Topografia de Frankfurt am Main"
+        },
+        "description": "Imagens aéreas de Frankfurt am Main, fotografadas em 16 de abril de 2019",
+        "name": "Fotos aéreas de Frankfurt am Main 2019"
+      },
+      "Geoportal2-PL-City-boundaries_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        }
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        },
+        "description": "Ortofotomapa com uma resolução de 10 cm ou mais. Os dados são organizados por resolução e depois pelos mais recentes. Ex.: um mosaico de 2012 com uma resolução de 8 cm tem prioridade sobre um mosaico de 2019 com uma resolução de 10 cm."
+      },
       "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        },
+        "description": "Ortofotomapa com uma resolução de 10 cm ou mais. Os dados são organizados por resolução e depois pelos mais recentes. Ex.: um mosaico de 2012 com uma resolução de 8 cm tem prioridade sobre um mosaico de 2019 com uma resolução de 10 cm.",
         "name": "Geoportal 2: Ortofotos de Alta Resolução (imagens aéreas) (WMS)"
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        },
+        "description": "Numeração de Endereços Nacional Integrada WMS para transferência de imagens de mapas com base em dados espaciais do Registo Estadual de Fronteiras, Ruas e Endereços.",
+        "name": "Nomes de ruas do Geoportal 2"
+      },
+      "Geoportal2-PL-addres_points_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        },
+        "description": "Numeração de Endereços Nacional Integrada WMS para transferência de imagens de mapas com base em dados espaciais do Registo Estadual de Fronteiras, Ruas e Endereços.",
+        "name": "Geoportal 2: Pontos de endereço"
+      },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        }
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        },
+        "description": "Serviço de navegação (Web Map Service, WMS) que permite navegar em ortofotos para a área da Polónia. Os dados disponibilizados por este serviço são um ortofotomapa feito de fotos aéreas. O serviço oferece suporte para a interface WMS 1.3.0.",
+        "name": "Geoportal 2: Ortofotomapa (imagens aéreas mais recentes) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        },
+        "name": "Geoportal 2: Ortofotomapa (imagens aéreas mais recentes) (WMTS)"
+      },
+      "Geoportal2-PL-boundaries-of-communes_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-counties_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-provinces_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        }
+      },
+      "Geoportal2-PL-buildings_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        },
+        "description": "O serviço de Integração Nacional de Registos Prediais é um serviço coletivo de apresentação de dados provenientes diretamente das unidades de nível de poviat. O serviço contém apenas os dados das unidades que dispõem de serviço WMS com os parâmetros adequados e que decidiram incluir o seu serviço WMS no serviço coletivo \"KrajowaIntegracjaEwidycjiGruntow\".",
+        "name": "Geoportal 2: registos de edifícios WMS"
+      },
+      "Geoportal2-PL-gas-pipe_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        }
+      },
+      "Geoportal2-PL-heat-pipe_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        }
+      },
+      "Geoportal2-PL-plot_boundaries_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        },
+        "description": "O serviço de Integração Nacional de Registos Prediais é um serviço coletivo de apresentação de dados provenientes diretamente das unidades de nível de poviat. O serviço contém apenas os dados das unidades que dispõem de serviço WMS com os parâmetros adequados e que decidiram incluir o seu serviço WMS no serviço coletivo \"KrajowaIntegracjaEwidycjiGruntow\"."
+      },
+      "Geoportal2-PL-power-cord_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        }
+      },
+      "Geoportal2-PL-sewer-pipe_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        }
+      },
+      "Geoportal2-PL-shaded_relief_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        }
+      },
+      "Geoportal2-PL-squares-and-housing-estates_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        },
+        "description": "Numeração de Endereços Nacional Integrada WMS para transferência de imagens de mapas com base em dados espaciais do Registo Estadual de Fronteiras, Ruas e Endereços."
+      },
+      "Geoportal2-PL-state-borders_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        }
+      },
+      "Geoportal2-PL-telecommunications-cable_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        }
+      },
+      "Geoportal2-PL-water-pipe_WMS": {
+        "attribution": {
+          "text": "Gabinete Central de Geodesia e Cartografia"
+        }
+      },
+      "LSA-ALKIS_BU": {
+        "description": "Formato dos edifícios em Saxónia-Anhalt"
+      },
+      "LSA-DVG": {
+        "description": "Registo vetorial dos limites administrativos. São mostrados os limites do estado federal, do distrito, do município e de partes do município."
+      },
+      "LocalAuthorities_RightsOfWay": {
+        "attribution": {
+          "text": "Contém informação do setor público licenciada sob a Licença de Governo Aberto v3.0"
+        }
       },
       "MAPNIK": {
         "attribution": {
@@ -39,12 +219,15 @@
       "Mapbox": {
         "attribution": {
           "text": "Termos e opinião"
-        }
+        },
+        "description": "Mosaico de raster fornecido pelo Mapbox, que inclui um mapa base global de imagens aéreas e de satélite de alta resolução"
       },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {
           "text": "Contém informação do setor público licenciada sob a Licença de Governo Aberto v3.0"
-        }
+        },
+        "description": "Parcelas perfeitamente alinhadas (registo predial) da Grã-Bretanha",
+        "name": "Parcelas Cadastrais OSMUK"
       },
       "OSM_Inspector-Addresses": {
         "attribution": {
@@ -88,6 +271,10 @@
         },
         "name": "Inspector OSM: Etiquetagem"
       },
+      "OpenAerialMapMosaic": {
+        "description": "Todas as imagens do OpenAerialMap em uma camada de mosaico, por Kontur.io",
+        "name": "Mosaico OpenAerialMap, por Kontur.io"
+      },
       "Riksantikvariambetet-archaeological": {
         "description": "Ruínas e monumentos históricos e antigos"
       },
@@ -111,6 +298,18 @@
       "US-TIGER-Roads-2020": {
         "description": "Amarelo = dados cartográficos de domínio público do Censos dos EUA. Vermelho = Dados inexistentes no OpenStreetMap"
       },
+      "US-TIGER-Roads-2021": {
+        "description": "Amarelo = dados cartográficos de domínio público do Censos dos EUA. Vermelho = Dados inexistentes no OpenStreetMap",
+        "name": "Estradas TIGER 2021"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Amarelo = dados cartográficos de domínio público do Censos dos EUA. Vermelho = Dados inexistentes no OpenStreetMap",
+        "name": "Estradas TIGER 2022"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Amarelo = dados cartográficos de domínio público do Censos dos EUA. Vermelho = Dados inexistentes no OpenStreetMap",
+        "name": "Estradas TIGER 2023"
+      },
       "USDA-NAIP": {
         "attribution": {
           "text": "Departamento de Agricultura dos EUA"
@@ -120,6 +319,12 @@
       "US_Forest_Service_roads_overlay": {
         "description": "Estrada: cobertura verde = não classificada. cobertura castanha = trilho. Superfície: gravilha = preenchimento castanho claro, asfalto = preto, pavimentado = cinza, terra = branco, cimento = azul, erva = verde. Sazonal = barras brancas",
         "name": "Sobreposição Estradas Florestais E.U.A."
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Realizado através do UrbIS®© de Bruxelas - Distribuição & Direitos de Autor CIRB"
+        },
+        "name": "Imagens aéreas mais recentes CIRB/CIBG"
       },
       "UrbISOrtho2016": {
         "attribution": {
@@ -141,9 +346,19 @@
           "text": "Realizado através do Brussels UrbIS®© - Distribuição & Copyright CIRB"
         }
       },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Realizado através do UrbIS®© de Bruxelas - Distribuição & Direitos de Autor CIRB"
+        }
+      },
       "UrbisAdmFR": {
         "attribution": {
           "text": "Realizado através do Brussels UrbIS® © - Distribuição & Copyright CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
+        "attribution": {
+          "text": "Realizado através do UrbIS®© de Bruxelas - Distribuição & Direitos de Autor CIRB"
         }
       },
       "UrbisAdmNL": {
@@ -202,6 +417,13 @@
         "description": "Fotografia de 1940 com geo-tag do Balaton Limnological Institute.",
         "name": "Ortofotos de EUFAR Balaton"
       },
+      "geoscribble-latest": {
+        "attribution": {
+          "text": "Contribuidores do GeoScribble"
+        },
+        "description": "Anotações/rabiscos geométricos do editor Every Door, com três semanas no máximo",
+        "name": "Últimas anotações do GeoScribble"
+      },
       "gothenburg-citymap": {
         "attribution": {
           "text": "© Município de Gotemburgo, CC0"
@@ -212,7 +434,9 @@
       "gothenburg-dtm-2017": {
         "attribution": {
           "text": "© Município de Gotemburgo, CC0"
-        }
+        },
+        "description": "Serviço de mapa online que apresenta sombreados e inclinações com base no modelo de elevação 2017 para a cidade de Gotemburgo. Resolução: 0,5 metros por pixel.",
+        "name": "Sombreado de Gotemburgo"
       },
       "gothenburg-ortho": {
         "attribution": {
@@ -234,6 +458,20 @@
         },
         "description": "Ortofotos do município de Gotemburgo",
         "name": "Ortofotos de Gotemburgo 2019"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© Município de Gotemburgo, CC0"
+        },
+        "description": "Ortofotos do município de Gotemburgo",
+        "name": "Ortofotos de Gotemburgo 2021"
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© Município de Gotemburgo, CC0"
+        },
+        "description": "Ortofotos do município de Gotemburgo",
+        "name": "Ortofotos de Gotemburgo mais recentes"
       },
       "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
         "attribution": {
@@ -285,7 +523,8 @@
         "name": "Ortofotos Área Urbana Kalmar 2020"
       },
       "kartverket-bygninger": {
-        "description": "Edifícios INSPIRE para a Noruega."
+        "description": "Edifícios INSPIRE para a Noruega.",
+        "name": "Camada de Edifícios Kartverket"
       },
       "kelkkareitit": {
         "description": "Pistas de motas de neve de Kelkkareitit.fi do OSM (cobertura nórdica)",
@@ -359,6 +598,16 @@
         },
         "name": "OpenStreetMap (estilo alemão)"
       },
+      "osmse-ekonomiska": {
+        "attribution": {
+          "text": "Ortofotos Históricas Lantmäteriet - 1960"
+        }
+      },
+      "osmse-generalstab": {
+        "attribution": {
+          "text": "Ortofotos Históricas Lantmäteriet - 1960"
+        }
+      },
       "qa_no_address": {
         "attribution": {
           "text": "Simon Poole, dados © contribuidores OpenStreetMap"
@@ -428,6 +677,12 @@
       "trafikverket-vagnat-option": {
         "description": "Rede rodoviária sueca NVDB com várias opções de camadas de mapa",
         "name": "Opções da Rede Rodoviária Trafikverket"
+      },
+      "wroclaw-orto2015": {
+        "attribution": {
+          "text": "Município de Breslávia"
+        },
+        "name": "Breslávia: Ortofotomapa 2015 (imagens aéreas)"
       },
       "wroclaw-orto2018": {
         "attribution": {

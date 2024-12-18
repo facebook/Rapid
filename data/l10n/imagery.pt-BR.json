@@ -1,15 +1,6 @@
 {
   "pt-BR": {
     "imagery": {
-      "Bedzin-PL-aerial_image": {
-        "name": "Będzin: Ortofotomapa 2013 (imagens aéreas)"
-      },
-      "Bedzin-PL-buildings": {
-        "name": "Będzin: Edifícios"
-      },
-      "Dourados_Ortofotos": {
-        "description": "Imagens aéreas de alta resolução de Dourados (2018) e diversos distritos (2020)."
-      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 cloudless - https://s2maps.eu by EOX IT Services GmbH (Contém dados Copernicus Sentinel modificados 2017 e 2018)"
@@ -17,32 +8,16 @@
         "description": "Imagens de satélite Sentinel pós-processadas."
       },
       "EOXAT2019CLOUDLESS": {
-        "attribution": {
-          "text": "Sentinel-2 cloudless - https://s2maps.eu by EOX IT Services GmbH (Contém dados modificados do Copernicus Sentinel de 2019)"
-        },
-        "description": "Imagens de satélite Sentinel pós-processadas.",
-        "name": "eox.at 2019 sem nuvens"
+        "description": "Imagens de satélite Sentinel pós-processadas."
       },
       "EOXAT2020CLOUDLESS": {
-        "attribution": {
-          "text": "Sentinel-2 cloudless - https://s2maps.eu by EOX IT Services GmbH (Contém dados modificados do Copernicus Sentinel de 2020)"
-        },
-        "description": "Imagens de satélite Sentinel pós-processadas.",
-        "name": "eox.at 2020 sem nuvens"
+        "description": "Imagens de satélite Sentinel pós-processadas."
       },
       "EOXAT2021CLOUDLESS": {
-        "attribution": {
-          "text": "Sentinel-2 cloudless - https://s2maps.eu by EOX IT Services GmbH (Contém dados modificados do Copernicus Sentinel de 2021)"
-        },
-        "description": "Imagens de satélite Sentinel pós-processadas.",
-        "name": "eox.at 2021 sem nuvens"
+        "description": "Imagens de satélite Sentinel pós-processadas."
       },
       "EOXAT2022CLOUDLESS": {
-        "attribution": {
-          "text": "Sentinel-2 cloudless - https://s2maps.eu by EOX IT Services GmbH (Contém dados modificados do Copernicus Sentinel de 2022)"
-        },
-        "description": "Imagens de satélite Sentinel pós-processadas.",
-        "name": "eox.at 2022 sem nuvens"
+        "description": "Imagens de satélite Sentinel pós-processadas."
       },
       "EsriWorldImagery": {
         "attribution": {
@@ -58,23 +33,137 @@
         "description": "Arquivo de imagens da Esri que podem ser mais claras e precisas do que a camada padrão.",
         "name": "Imagens globais da Esri (Clareadas) Beta"
       },
-      "FOMI_2011_2014": {
-        "description": "Ortofotos do governo com folhagem e resolução de 40 cm/pixel para todo o país. Esta camada deve ser usada como uma base de alinhamento na falta de uma referência mais precisa. Imagens no formato WEBP, o JOSM precisa de um plugin webp para elas.",
-        "name": "Ortofotos FÖMI 2011-2014 (WEBP)"
-      },
-      "Frankfurt-am-Main-2019": {
+      "Geoportal2-PL-City-boundaries_WMS": {
         "attribution": {
-          "text": "Escritório Municipal de Topografia de Frankfurt am Main"
+          "text": "Gabinete central de geodesia e cartografia"
+        }
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
+        }
+      },
+      "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
+        }
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
         },
-        "description": "Imagens aéreas de Frankfurt am Main, fotografadas em 16 de abril de 2019",
-        "name": "Fotos aéreas de Frankfurt am Main 2019"
+        "description": "Numeração de endereços nacional integrada WMS para transferência de imagens de mapas com base em dados espaciais do registo estadual de Fronteiras, ruas e endereços.",
+        "name": "Nomes de ruas do geoportal 2"
+      },
+      "Geoportal2-PL-addres_points_WMS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
+        },
+        "description": "Numeração de endereços nacional integrada WMS para transferência de imagens de mapas com base em dados espaciais do registo estadual de Fronteiras, ruas e endereços."
+      },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
+        }
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
+        }
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-communes_WMS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-counties_WMS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-provinces_WMS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
+        }
+      },
+      "Geoportal2-PL-buildings_WMS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
+        }
+      },
+      "Geoportal2-PL-gas-pipe_WMS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
+        }
+      },
+      "Geoportal2-PL-heat-pipe_WMS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
+        }
+      },
+      "Geoportal2-PL-plot_boundaries_WMS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
+        }
+      },
+      "Geoportal2-PL-power-cord_WMS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
+        }
+      },
+      "Geoportal2-PL-sewer-pipe_WMS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
+        }
+      },
+      "Geoportal2-PL-shaded_relief_WMS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
+        }
+      },
+      "Geoportal2-PL-squares-and-housing-estates_WMS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
+        },
+        "description": "Numeração de endereços nacional integrada WMS para transferência de imagens de mapas com base em dados espaciais do registo estadual de Fronteiras, ruas e endereços."
+      },
+      "Geoportal2-PL-state-borders_WMS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
+        }
+      },
+      "Geoportal2-PL-telecommunications-cable_WMS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
+        }
+      },
+      "Geoportal2-PL-water-pipe_WMS": {
+        "attribution": {
+          "text": "Gabinete central de geodesia e cartografia"
+        }
+      },
+      "LocalAuthorities_RightsOfWay": {
+        "attribution": {
+          "text": "Contém informações do setor público licenciadas pela Open Government License v3.0."
+        }
       },
       "Mapbox": {
         "attribution": {
           "text": "Termos e Comentários"
         },
-        "description": "Mosaico de raster fornecido pelo Mapbox, que inclui um mapa base global de imagens aéreas e de satélite de alta resolução",
         "name": "Imagens de satélite Mapbox"
+      },
+      "OSMUK-Cadastral-Parcels": {
+        "attribution": {
+          "text": "Contém informações do setor público licenciadas pela Open Government License v3.0."
+        },
+        "description": "Parcelas cadastrais (cadastro) perfeitamente alinhadas na Grã-Bretanha",
+        "name": "Pacotes Cadastrais do OSMUK"
       },
       "OSM_Inspector-Addresses": {
         "attribution": {
@@ -118,10 +207,6 @@
         },
         "name": "Inspetor OSM: Etiquetas"
       },
-      "OpenAerialMapMosaic": {
-        "description": "Todas as imagens do OpenAerialMap em uma camada de mosaico, por Kontur.io",
-        "name": "Mosaico OpenAerialMap, por Kontur.io"
-      },
       "SPW_ORTHO_LAST": {
         "name": "SPW (allonie) imagens aéreas mais recentes"
       },
@@ -135,20 +220,27 @@
         "description": "Amarelo = Dados de mapas de domínio público do Censo dos EUA. Vermelho = Dados não encontrados no OpenStreetMap"
       },
       "US-TIGER-Roads-2020": {
+        "description": "Amarelo = Dados do mapa de domínio público do Censo dos EUA. Vermelho = Dados não encontrados no OpenStreetMap",
         "name": "Estradas TIGER 2020"
       },
       "US-TIGER-Roads-2021": {
-        "name": "Estradas TIGER 2021"
+        "description": "Amarelo = Dados do mapa de domínio público do Censo dos EUA. Vermelho = Dados não encontrados no OpenStreetMap"
       },
       "US-TIGER-Roads-2022": {
-        "name": "Estradas TIGER 2022"
+        "description": "Amarelo = Dados do mapa de domínio público do Censo dos EUA. Vermelho = Dados não encontrados no OpenStreetMap"
       },
       "US-TIGER-Roads-2023": {
-        "name": "Estradas TIGER 2023"
+        "description": "Amarelo = Dados do mapa de domínio público do Censo dos EUA. Vermelho = Dados não encontrados no OpenStreetMap"
       },
       "US_Forest_Service_roads_overlay": {
         "description": "Estrada: Cobertura verde = não classificada. Cobertura marrom = trilha. Superfície: cascalho = preenchimento marrom claro, Asfalto = preto, Pavimentado = cinza, Terra = branco, Concreto = azul, Grama = verde. Sazonal = barras brancas",
         "name": "Sobreposição de estradas florestais dos EUA"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Realizado por meio da Brussels UrbIS®© - Distribuição & Copyright CIRB"
+        },
+        "name": "Imagens aéreas mais recentes do CIRB/CIBG"
       },
       "UrbISOrtho2016": {
         "attribution": {
@@ -170,7 +262,17 @@
           "text": "Realizado por meio da Brussels UrbIS®© - Distribuição & Copyright CIRB"
         }
       },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Realizado por meio da Brussels UrbIS®© - Distribuição & Copyright CIRB"
+        }
+      },
       "UrbisAdmFR": {
+        "attribution": {
+          "text": "Realizado por meio da Brussels UrbIS®© - Distribuição & Copyright CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
         "attribution": {
           "text": "Realizado por meio da Brussels UrbIS®© - Distribuição & Copyright CIRB"
         }
@@ -231,13 +333,6 @@
         "description": "1940 fotografia com geo-tag do Balaton Limnological Institute.",
         "name": "Orthofotos de EUFAR Balaton"
       },
-      "geoscribble-latest": {
-        "attribution": {
-          "text": "Contribuidores do GeoScribble"
-        },
-        "description": "Anotações/rabiscos geométricos do editor Every Door, com três semanas no máximo",
-        "name": "Últimas anotações do GeoScribble"
-      },
       "gothenburg-citymap": {
         "description": "O mapa da cidade é um mapa geral que descreve Gotemburgo. Ele contém informações gerais sobre terrenos, comunicações, hidrografia, edifícios, números de endereços e nomes de ruas, divisão administrativa e outro texto de orientação.",
         "name": "Mapa da cidade de Gotemburgo "
@@ -248,20 +343,6 @@
       },
       "gothenburg-ortho": {
         "description": "Ortofoto para o município de Gotemburgo"
-      },
-      "gothenburg-ortho_2021": {
-        "attribution": {
-          "text": "© Município de Gotemburgo, CC0"
-        },
-        "description": "Ortofotos do município de Gotemburgo",
-        "name": "Ortofotos de Gotemburgo 2021"
-      },
-      "gothenburg-ortho_latest": {
-        "attribution": {
-          "text": "© Município de Gotemburgo, CC0"
-        },
-        "description": "Ortofotos do município de Gotemburgo",
-        "name": "Ortofotos de Gotemburgo mais recentes"
       },
       "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
         "description": "Imagens do Japão GSI airphoto. Não completamente ortorretificado, mas um pouco mais novo e/ou diferente do que as Imagens do GSI orto.",
@@ -407,7 +488,9 @@
         "description": "Rede rodoviária sueca NVDB com várias opções para camadas de mapa"
       },
       "wroclaw-orto2015": {
-        "name": "Breslávia: Ortofotomapa 2015 (imagens aéreas)"
+        "attribution": {
+          "text": "Prefeitura de Wroclaw"
+        }
       },
       "wroclaw-orto2018": {
         "attribution": {

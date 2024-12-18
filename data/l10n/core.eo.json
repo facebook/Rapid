@@ -29,16 +29,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Areo",
-        "filter_tooltip": "areoj"
+        "title": "Areo"
       },
       "add_line": {
-        "title": "Linio",
-        "filter_tooltip": "linioj"
+        "title": "Linio"
       },
       "add_point": {
-        "title": "Punkto",
-        "filter_tooltip": "punktoj"
+        "title": "Punkto"
       },
       "add_note": {
         "title": "Rimarko",
@@ -121,52 +118,15 @@
       },
       "circularize": {
         "title": "Rondigi",
-        "description": {
-          "single": "Fari ĉi tiun objekton ronda.",
-          "multiple": "Fari ĉi tiujn objektojn rondaj."
-        },
         "annotation": {
           "feature": {
             "one": "Rondigis objekton.",
             "other": "Rondigis {n} objektojn."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Ili ne povas esti rondigitaj pro diversaj kialoj."
-        },
-        "not_closed": {
-          "single": "Ĝi ne povas esti rondigita, pro ne esti fermita linio.",
-          "multiple": "Ili ne povas esti rondigitaj, ĉar ne estas fermitaj linioj."
-        },
-        "too_large": {
-          "single": "Ĝi ne povas esti rondigita, ĉar nesufiĉa parto de ĝi estas nune videbla.",
-          "multiple": "Ili ne povas esti rondigitaj, ĉar nesufiĉaj partoj de ili estas nuntempe videblaj."
-        },
-        "connected_to_hidden": {
-          "single": "Ĝi ne povas esti rondigita, pro esti kunigita al kaŝita objekto.",
-          "multiple": "Ili ne povas esti rondigitaj, ĉar kalkaj estas kunigitaj al kaŝitaj objektoj."
-        },
-        "not_downloaded": {
-          "single": "Ĝi ne povas esti rondigita, ĉar parto de ĝi ankoraŭ ne estas elŝutita.",
-          "multiple": "Ili ne povas esti rondigitaj, ĉar partoj de ili ankoraŭ ne estas elŝutitaj."
-        },
-        "already_circular": {
-          "single": "Ĝi ne povas esti rondigita pli.",
-          "multiple": "Ili ne povas esti rondigitaj pli."
         }
       },
       "orthogonalize": {
         "title": "Kvadratigi",
-        "description": {
-          "corner": {
-            "single": "Kvadratigi tiun ĉi angulon.",
-            "multiple": "Kvadratigi tiujn ĉi angulojn."
-          },
-          "feature": {
-            "single": "Kvadratigi angulojn de tiu ĉi objekto.",
-            "multiple": "Kvadratigi angulojn de tiuj ĉi objektoj."
-          }
-        },
         "annotation": {
           "corner": {
             "one": "Kvadratigis angulon.",
@@ -176,33 +136,6 @@
             "one": "Kvadratigis angulojn de la objekto.",
             "other": "Kvadratigis angulojn de {n} objektoj."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Ĝi ne povas esti kvadratigita pro diversaj kialoj."
-        },
-        "end_vertex": {
-          "single": "Ĝi ne povas esti kvadratigita, ĉar ĝi estas fina nodo.",
-          "multiple": "Ili ne povas esti kvadratigitaj, ĉar ili estas finaj nodoj."
-        },
-        "square_enough": {
-          "single": "Ĝi ne povas esti pli kvadrata.",
-          "multiple": "Ili ne povas esti pli kvadrataj."
-        },
-        "not_squarish": {
-          "single": "Ĝi ne povas esti kvadratigita, ĉar ĝi ne estas kvadratema.",
-          "multiple": "Ilii ne povas esti kvadratigitaj, ĉar ili ne estas kvadratemaj."
-        },
-        "too_large": {
-          "single": "Ĝi ne povas esti kvadratigita, ĉar nesufiĉa parto de ĝi estas nune videbla.",
-          "multiple": "Ili ne povas esti kvadratigitaj, ĉar nesufiĉaj partoj de ili estas nune videblaj."
-        },
-        "connected_to_hidden": {
-          "single": "Ĝi ne povas esti kvadratigita, ĉar ĝi estas kunigita al kaŝita objekto.",
-          "multiple": "Ili ne povas esti kvadratigitaj, ĉar ili estas kunigitaj al kaŝitaj objektoj."
-        },
-        "not_downloaded": {
-          "single": "Ĝi ne povas esti kvadratigita, ĉar parto de ĝi ankoraŭ ne estas elŝutita.",
-          "multiple": "Ili ne povas esti kvadratigitaj, ĉar partoj de ili ankoraŭ ne estas elŝutitaj."
         }
       },
       "straighten": {
@@ -221,34 +154,10 @@
             "one": "Rektigis linion.",
             "other": "Rektigis {n} liniojn."
           }
-        },
-        "too_bendy": {
-          "single": "Tiu ĉi objekto ne povas esti rektigita, ĉar ĝi estas tro kurba.",
-          "multiple": "Tiuj ĉi objektoj ne povas esti rektigitaj, ĉar ili estas tro kurbaj."
-        },
-        "connected_to_hidden": {
-          "single": "Tiu ĉi objekto ne povas esti rektigita, ĉar ĝi estas kunigita al kaŝita objekto.",
-          "multiple": "Tiuj ĉi objektoj ne povas esti rektigitaj, ĉar ili estas kunigitaj al kaŝitaj objektoj."
-        },
-        "not_downloaded": {
-          "single": "Tiu ĉi objekto ne povas esti rektigita, ĉar parto de ĝi ankoraŭ ne estas elŝutita.",
-          "multiple": "Tiuj ĉi linioj ne povas esti rektigitaj, ĉar partoj de ili ankoraŭ ne estas elŝutitaj."
-        },
-        "straight_enough": {
-          "single": "Ĝi ne povas esti pli rekta.",
-          "multiple": "Ili ne povas esti pli rektaj."
-        },
-        "too_large": {
-          "single": "Tiu ĉi objekto ne povas esti rektigita, ĉar nesufiĉa parto de ĝi estas nune videbla.",
-          "multiple": "Tiuj ĉi objektoj ne povas esti rektigitaj, ĉar nesufiĉaj partoj de ili estas nune videblaj."
         }
       },
       "delete": {
         "title": "Forigi",
-        "description": {
-          "single": "Forigi ĉi tiun objekton neinversigeble.",
-          "multiple": "Forigi ĉi tiujn objektojn neinversigeble."
-        },
         "annotation": {
           "point": "Forigis punkton.",
           "vertex": "Forigis nodon el linio/areo.",
@@ -259,30 +168,6 @@
             "one": "Forigis objekton.",
             "other": "Forigis {n} objektojn."
           }
-        },
-        "too_large": {
-          "single": "Ĉi tiu objekto ne povas esti forigita, ĉar nesufiĉa parto de ĝi estas nune videbla.",
-          "multiple": "Ĉi tiuj objektoj ne povas esti forigitaj, ĉar nesufiĉaj partoj de ili estas nune videblaj."
-        },
-        "incomplete_relation": {
-          "single": "Ĉi tiu objekto ne povas esti forigita, ĉar ĝi ne estas elŝutita tute.",
-          "multiple": "Ĉi tiuj objektoj ne povas esti forigitaj, ĉar ili ne estas elŝutitaj tute."
-        },
-        "part_of_relation": {
-          "single": "Ĉi tiu objekto ne povas esti forigita, ĉar ĝi estas parto de pli granda rilato. Vi devas unue forigi ĝin el la rilato.",
-          "multiple": "Ĉi tiuj objektoj ne povas esti forigitaj, ĉar ili estas partoj de pli grandaj rilatoj. Vi devas unue forigi ilin el la rilatoj."
-        },
-        "connected_to_hidden": {
-          "single": "Ĉi tiu objekto ne povas esti forigita, ĉar ĝi estas kunigita al kaŝita objekto.",
-          "multiple": "Ĉi tiuj objektoj ne povas esti forigitaj, ĉar ili estas kunigitaj al kaŝitaj objektoj."
-        },
-        "not_downloaded": {
-          "single": "Ne povas forigi tiun ĉi objekton, ĉar parto de ĝi ankoraŭ ne estas elŝutita.",
-          "multiple": "Ne povas forigi tiujn ĉi objektojn, ĉar partoj de ili ankoraŭ ne estas elŝutitaj."
-        },
-        "has_wikidata_tag": {
-          "single": "Ne povas forigi tiun ĉi objekton, ĉar ĝi havas la etikedon de Vikidatumoj.",
-          "multiple": "Ne povas forigi tiujn ĉi objektojn, ĉar iuj el ili havas la etikedojn de Vikidatumoj."
         }
       },
       "downgrade": {
@@ -306,10 +191,6 @@
             "one": "Senetikedigis objekton.",
             "other": "Senetikedigis {n} objektojn."
           }
-        },
-        "has_wikidata_tag": {
-          "single": "Ne povas senetikedigi tiun ĉi objekton, ĉar ĝi havas la etikedon de Vikidatumoj.",
-          "multiple": "Ne povas senetikedigi tiujn ĉi objekton, ĉar iuj el ili havas la etikedojn de Vikidatumoj."
         }
       },
       "add_member": {
@@ -409,10 +290,6 @@
       },
       "move": {
         "title": "Movi",
-        "description": {
-          "single": "Movi ĉi tiun objekton al alia loko.",
-          "multiple": "Movi ĉi tiujn objektojn al alia loko."
-        },
         "annotation": {
           "point": "Movis punkton.",
           "vertex": "Movis nodon en linio/areo.",
@@ -423,38 +300,12 @@
             "one": "Movis objekton.",
             "other": "Movis {n} objektojn."
           }
-        },
-        "incomplete_relation": {
-          "single": "Ĉi tiu objekto ne povas esti movita, ĉar ĝi ne estas elŝutita tute.",
-          "multiple": "Ĉi tiuj objektoj ne povas esti movitaj, ĉar ili ne estas elŝutitaj tute."
-        },
-        "too_large": {
-          "single": "Ĉi tiu objekto ne povas esti movita, ĉar nesufiĉa parto de ĝi estas nune videbla.",
-          "multiple": "Ĉi tiuj objektoj ne povas esti movitaj, ĉar nesufiĉaj partoj de ili estas nune videblaj."
-        },
-        "connected_to_hidden": {
-          "single": "Ĉi tiu objekto en povas esti movita, ĉar ĝi estas kunigita al kaŝita objekto.",
-          "multiple": "Ĉi tiuj objektoj ne povas esti movitaj, ĉar ili estas kunigitaj al kaŝitaj objektoj."
-        },
-        "not_downloaded": {
-          "single": "Ne povas movi tiun ĉi objekton, ĉar parto de ĝi ankoraŭ ne estas elŝutita.",
-          "multiple": "Ne povas movi tiujn ĉi objektojn, ĉar partoj de ili ankoraŭ ne estas elŝutitaj."
         }
       },
       "reflect": {
         "title": {
           "long": "Speguli (longa)",
           "short": "Speguli (mallonga)"
-        },
-        "description": {
-          "long": {
-            "single": "Speguli tiun ĉi objekton laŭ ĝia longa akso.",
-            "multiple": "Speguli tiujn ĉi objektojn laŭ iliaj longaj aksoj."
-          },
-          "short": {
-            "single": "Speguli tiun ĉi objekton laŭ ĝia mallonga akso.",
-            "multiple": "Speguli tiujn ĉi objektojn laŭ iliaj mallongaj aksoj."
-          }
         },
         "annotation": {
           "long": {
@@ -469,30 +320,10 @@
               "other": "Spegulis {n} objektojn laŭ ilia mallongaj aksoj."
             }
           }
-        },
-        "incomplete_relation": {
-          "single": "Tiu ĉi objekto ne povas esti spegulita, ĉar ĝi ne estas tute elŝutita.",
-          "multiple": "Tiuj ĉi objektoj ne povas esti spegulitaj, ĉar ili ne estas tute elŝutitaj."
-        },
-        "too_large": {
-          "single": "Tiu ĉi objekto ne povas esti spegulita, ćar nesufiĉa parto de ĝi estas nune videbla.",
-          "multiple": "Tiuj ĉi objektoj ne povas esti spegulitaj, ĉar nesufiĉaj partoj de ili estas nune videblaj."
-        },
-        "connected_to_hidden": {
-          "single": "Tiu ĉi objekto ne povas esti spegulita, ĉar ĝi estas kunigita al kaŝita objekto.",
-          "multiple": "Tiuj ĉi objektoj ne povas esti spegulitaj, ĉar ili estas kunigitaj al kaŝitaj objektoj."
-        },
-        "not_downloaded": {
-          "single": "Ne povas speguli tiun ĉi objekton, ĉar parto de ĝi ankoraŭ ne estas elŝutita.",
-          "multiple": "Ne povas speguli tiujn ĉi objektojn, ĉar partoj de ili ankoraŭ ne estas elŝutitaj."
         }
       },
       "rotate": {
         "title": "Turni",
-        "description": {
-          "single": "Turni ĉi tiun objekton laŭ ĝia centra punkto.",
-          "multiple": "Turni ĉi tiujn objektojn laŭ iliaj centraj punktoj."
-        },
         "annotation": {
           "line": "Turnis linion.",
           "area": "Turnis areon.",
@@ -501,22 +332,6 @@
             "one": "Turnis objekton.",
             "other": "Turnis {n} objektojn."
           }
-        },
-        "incomplete_relation": {
-          "single": "Ĉi tiu objekto ne povas esti turnita, ĉar ĝi ne estas elŝutita tute.",
-          "multiple": "Ĉi tiuj objektoj ne povas esti turnitaj, ĉar ili ne estas elŝutitaj tute."
-        },
-        "too_large": {
-          "single": "Ĉi tiu objekto ne povas esti turnita, ĉar nesufiĉa parto de ĝi estas nune videbla.",
-          "multiple": "Ĉi tiuj objektoj ne povas esti turnitaj, ĉar nesufiĉaj partoj de ili estas nune videblaj."
-        },
-        "connected_to_hidden": {
-          "single": "Ĉi tiu objekto en povas esti turnita, ĉar ĝi estas kunigita al kaŝita objekto.",
-          "multiple": "Ĉi tiuj objektoj ne povas esti turnitaj, ĉar ili estas kunigitaj al kaŝitaj objektoj."
-        },
-        "not_downloaded": {
-          "single": "Ne povas turni tiun ĉi objekton, ĉar parto de ĝi ankoraŭ ne estas elŝutita.",
-          "multiple": "Ne povas turni tiujn ĉi objektojn, ĉar partoj de ili ankoraŭ ne estas elŝutitaj."
         }
       },
       "reverse": {
@@ -557,22 +372,6 @@
               "other": "Pliigis {n} objektojn."
             }
           }
-        },
-        "too_small": {
-          "single": "Tiu ĉi objekto ne povas esti etigita pli, ĉar ĝi estus tro malgranda.",
-          "multiple": "Tiuj ĉi objektoj ne povas esti etigitaj pli, ĉar ili estus tro malgrandaj."
-        },
-        "too_large": {
-          "single": "Tiu ĉi objekto ne povas esti etigita/pliigita, ĉar nesufiĉa parto de ĝi estas nune videbla.",
-          "multiple": "Tiuj ĉi objektoj ne povas esti etigitaj/pliigitaj, ĉar nesufiĉaj partoj de ili estas nune videblaj."
-        },
-        "connected_to_hidden": {
-          "single": "Tiu ĉi objekto ne povas esti etigita/pliigita, ĉar ĝi estas kunigita al kaŝita objekto.",
-          "multiple": "Tiuj ĉi objektoj ne povas esti etigitaj/pliigitaj, ĉar iuj el ili estas kunigitaj al kaŝitaj objektoj."
-        },
-        "not_downloaded": {
-          "single": "Tiu ĉi objekto ne povas esti etigita/pliigita, ĉar parto de ĝi ankoraŭ ne estas elŝutita.",
-          "multiple": "Tiuj ĉi objektoj ne povas esti etigitaj/pliigitaj, ĉar partoj de ili ankoraŭ ne estas elŝutitaj."
         }
       },
       "split": {
@@ -627,33 +426,13 @@
       "extract": {
         "title": "Apartigi",
         "description": {
-          "vertex": {
-            "single": "Apartigi tiun ĉi punkton el linio/areo.",
-            "multiple": "Apartigi tiujn ĉi punktojn el iliaj superaj objektoj."
-          },
-          "line": {
-            "single": "Apartigi punkton el tiu ĉi linio.",
-            "multiple": "Apartigi punktojn el tiuj ĉi linioj."
-          },
-          "area": {
-            "single": "Apartigi punton el tiu ĉi areo.",
-            "multiple": "Apartigi punktojn el tiuj ĉi areoj."
-          },
           "feature": {
-            "multiple": "Apartigi punktojn el tiuj ĉi objektoj."
+            "other": "Apartigi punktojn el tiuj ĉi objektoj."
           }
         },
         "annotation": {
           "one": "Apartigis punkton.",
           "other": "Apartigis {n} punktojn."
-        },
-        "too_large": {
-          "single": "Ne povas apartigi punkton, ĉar nesufiĉa parto de tiu ĉi objekto estas nune videbla.",
-          "multiple": "Ne povas apartigi punktojn, ĉar nesufiĉaj partoj de tiuj ĉi objektoj estas nune videblaj."
-        },
-        "connected_to_hidden": {
-          "single": "Ne povas apartigi tiun ĉi punkton, ĉar ĝi estas kunigita al kaŝita objekto.",
-          "multiple": "Ne povas apartigi punktojn el tiuj ĉi objektoj, ĉar iuj el ili estas kunigitaj al kaŝitaj objektoj."
         }
       }
     },
@@ -854,10 +633,6 @@
       "multiple_values": "Pluraj valoroj",
       "multiple_types": "Pluraj specoj",
       "unshared_value_tooltip": "ne kunhavigataj de ĉiuj objektoj",
-      "hidden_preset": {
-        "manual": "{features} estas kaŝitaj. Vi povas aktivigi ilin per la panelo de map-datumoj.",
-        "zoom": "{features} estas kaŝitaj. Pligrandigu por vidigi ilin."
-      },
       "back_tooltip": "Ŝanĝi specon de objekto",
       "type": "Speco",
       "details": "Detaloj",
@@ -970,7 +745,6 @@
         "tooltip": "Montri geometriajn valorojn por la elektaĵo."
       },
       "style_options": "Agordoj pri stiloj",
-      "map_features": "Map-objektoj",
       "autohidden": "Ĉi tiuj objektoj estis aŭtomate kaŝitaj, ĉar tro multe da ili montriĝus sur ekrano. Vi povas pligrandigi por redakti ilin.",
       "osmhidden": "Ĉi tiuj elementoj estas aŭtomate kaŝitaj ĉar la tavolo de OpenStreetMap estas kaŝita."
     },
@@ -1007,7 +781,7 @@
         "tooltip": "Montri nur fotojn de tiu ĉi uzanto"
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Punktoj",
         "tooltip": "Interesaj ejoj"
@@ -1202,16 +976,17 @@
       "start": "Redakti nun"
     },
     "source_switch": {
+      "dev": "disvolvata",
       "live": "viva",
-      "lose_changes": "Vi havas nekonservitajn ŝanĝojn. Kiam vi ŝanĝos map-servilon, la ŝanĝoj ne konserviĝos. Ĉu vi certe volas ŝanĝi servilon?",
-      "dev": "disvolvata"
+      "lose_changes": "Vi havas nekonservitajn ŝanĝojn. Kiam vi ŝanĝos map-servilon, la ŝanĝoj ne konserviĝos. Ĉu vi certe volas ŝanĝi servilon?"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Etikedoj"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Forigi"
+    "rapid_menu": {
+      "remove": "Forigi",
+      "category": {
+        "roads": "vojo(j)"
       }
     },
     "tag_reference": {
@@ -1227,7 +1002,6 @@
         "out": "Ne povas malgrandigi pli."
       }
     },
-    "cannot_zoom": "Ne povas plie plibonigi en nuna reĝimo.",
     "full_screen": "Baskuligi plenekranon",
     "self_intersection": {
       "error": {
@@ -1650,7 +1424,6 @@
         "title": "Punktoj",
         "intro": "“Punktoj” estas uzataj por reprezenti objektojn kiel vendejojn, restoraciojn aŭ monumentojn. Ili indikas difinan lokon kaj priskribas kion estas tie.",
         "add_point_h": "Aldoni punktojn",
-        "add_point": "Por aldoni punkton, premu la butonon {point_icon} **{point}** sur la ilarstrio supre de la mapo, aŭ premu la fulmoklavon `1`.",
         "move_point_h": "Movi punktojn",
         "delete_point_h": "Forigi punktojn",
         "delete_point": "Estas ĝuste forigi objektojn, kiuj ne ekzistas en la reala mondo. Forigado de objekto el OpenStreetMap forigas ĝin el la mapo uzataj de multe da homoj, do certiĝu, ke objekto vere ne ekzistas antaŭ vi ĝin forigas."
@@ -1659,7 +1432,6 @@
         "title": "Linioj",
         "intro": "*Linioj* estas uzataj por reprezenti objektojn kiel vojojn, fervojojn aŭ riverojn. Linioj devas esti desegnitaj meze de reprezentata objekto.",
         "add_line_h": "Aldoni liniojn",
-        "add_line": "Por aldoni linion, premu la butonon {line_icon} **{line}** sur la ilarstrio supre de la mapo, aŭ premu la fulmoklavon `2`.",
         "add_line_finish": "Por fini la linion, denove klaku aŭ frapetu la finan punkton aŭ premu la klavon `{return}`.",
         "modify_line_h": "Modifi liniojn",
         "modify_line_dragnode": "Ofte vi rimarkos ke linioj formiĝas malĝuste, ekzemple vojo ne kongruas kun fona fotaro. Por alĝustigi linion, unue elektu ĝin. Ĉiuj nodoj de la linio estos markitaj per cirkletoj. Tiam vi povas ŝovi nodojn al pli ĝustaj pozicioj.",
@@ -1678,7 +1450,6 @@
         "point_or_area_h": "Punktoj aŭ areoj?",
         "point_or_area": "Multaj objektoj povas esti reprezentitaj kiel punktoj aŭ areoj. Vi devas mapigi konstruaĵojn kaj limojn de terenoj kiel areojn ĉiam, kio tio eblas. Enmetu punktojn ene konstruaĵa areo por reprezenti firmaojn, servojn kaj aliajn objektojn troviĝantajn ene la konstruaĵo.",
         "add_area_h": "Aldoni areojn",
-        "add_area_command": "Por aldoni areon, premu la butonon {area_icon} **{area}** sur la ilarstrio supre de la mapo, aŭ premu la fulmoklavon `3`.",
         "add_area_finish": "Por fini la areon, denove klaku aŭ frapetu la unuan aŭ la finan punkton, aŭ premu la klavon `{return}`.",
         "square_area_h": "Ortaj anguloj",
         "modify_area_h": "Modifi areojn",
@@ -1807,18 +1578,10 @@
     },
     "issues": {
       "title": "Problemoj",
-      "list_title": "Problemoj",
-      "errors": {
-        "list_title": "Eraroj"
-      },
-      "warnings": {
-        "list_title": "Avertoj"
-      },
-      "rules": {
-        "title": "Reguloj"
-      },
-      "user_resolved_issues": "Problemoj solvitaj per viaj redaktoj",
-      "warnings_and_errors": "Avertoj kaj eraroj",
+      "errors": "Eraroj",
+      "warnings": "Avertoj",
+      "rules": "Reguloj",
+      "resolved_tooltip": "Problemoj solvitaj per viaj redaktoj",
       "no_issues": {
         "message": {
           "everything": "Ĉio ŝajnas ĝuste",
@@ -1976,8 +1739,6 @@
         "title": "Erara tekstaranĝo",
         "tip": "Trovi etikedojn kun eraro formo",
         "email": {
-          "message": "{feature} havas malĝustan retpoŝtan adreson",
-          "message_multi": "{feature} havas kelkajn malĝustajn retpoŝtajn adresojn",
           "reference": "Retpoŝta adreso estu kiel “uzanto@example.com”."
         }
       },
@@ -2492,6 +2253,7 @@
       "title": "Fulmoklavoj",
       "tooltip": "Montri ekranon de fulmoklavoj.",
       "key": {
+        "delete": "Forigi",
         "menu": "Menuo",
         "space": "Spacostango"
       },
@@ -2499,96 +2261,165 @@
         "drag": "ŝovi"
       },
       "or": "-aŭ-",
-      "browsing": {
-        "title": "Foliumado",
-        "navigation": {
-          "title": "Navigi",
-          "pan": "Rulumi mapon"
+      "browsing": "Foliumado",
+      "editing": "Redaktado",
+      "navigation": "Navigado",
+      "selecting_features": "Elekti objektojn",
+      "with_features_selected": "Kiam objekto estas elektita",
+      "with_node_selected": "Kiam nodo estas elektita",
+      "with_way_selected": "Kiam linio estas elektita",
+      "drawing": "Desegni",
+      "commands": "Ordonoj",
+      "help": "Helpo",
+      "display_options": "Agordoj pri vido",
+      "info": "Informoj",
+      "command": {
+        "pan": {
+          "label": "Rulumi mapon"
         },
-        "help": {
-          "title": "Helpo",
-          "help": "Montri helpon/dokumentaron",
-          "keyboard": "Montri fulmoklavojn"
+        "select_one": {
+          "label": "Elekti unuopan objekton"
         },
-        "display_options": {
-          "title": "Agordoj pri vido",
-          "background": "Baskuli panelon de fona fotaro",
-          "map_data": "Baskuli panelon de map‑datumoj",
-          "issues": "Baskuli panelon de problemoj",
-          "preferences": "Baskuli panelon de agordoj",
-          "wireframe": "Baskuli map-plenigon",
-          "osm_data": "Baskuli map‑datumojn",
-          "highlight_edits": "Emfazi nekonservitajn ŝanĝojn"
+        "select_multi": {
+          "label": "Elekti kelkajn objektojn"
         },
-        "selecting": {
-          "title": "Elekti objektojn",
-          "select_one": "Elekti unuopan objekton",
-          "select_multi": "Elekti kelkajn objektojn",
-          "lasso": "Elekti per kaptoŝnuro",
-          "search": "Trovi objektojn kun serĉata teksto"
+        "lasso": {
+          "label": "Elekti per kaptoŝnuro"
         },
-        "with_selected": {
-          "title": "Kiam objekto estas elektita",
-          "edit_menu": "Baskuli redakt-menuon"
+        "edit_menu": {
+          "label": "Baskuli redakt-menuon"
         },
-        "vertex_selected": {
-          "title": "Kiam nodo estas elektita",
-          "first": "Al unua nodo",
-          "last": "Al fina nodo",
-          "change_parent": "Baskuli al supera linio",
-          "parent": "Elekti superan linion"
+        "first_node": {
+          "label": "Al unua nodo"
         },
-        "way_selected": {
-          "title": "Kiam linio estas elektita",
-          "child": "Elekti dependajn nodojn"
-        }
-      },
-      "editing": {
-        "title": "Redaktado",
-        "drawing": {
-          "title": "Desegni",
-          "add_point": "Reĝimo “aldoni punkton”",
-          "add_line": "Reĝimo “aldoni linion”",
-          "add_area": "Reĝimo “aldoni areon”",
-          "add_note": "Reĝimo “aldoni rimarkon”",
-          "place_point": "Enmeti punkton aŭ rimarkon",
-          "disable_snap": "Premteni por ne kapti punktojn",
-          "stop_line": "Fini desegni linion aŭ areon"
+        "last_node": {
+          "label": "Al fina nodo"
         },
-        "commands": {
-          "title": "Ordonoj",
-          "copy": "Kopii elektitajn objektojn",
-          "paste": "Alglui kopiitajn objektojn",
-          "undo": "Malfari antaŭan agon",
-          "redo": "Refari antaŭan agon",
-          "save": "Konservi ŝanĝojn"
+        "change_parent": {
+          "label": "Baskuli al supera linio"
         },
-        "operations": {
-          "continue_line": "Pluigi linion de la elektita finpunkto",
-          "merge": "Kunfandi elektitajn objektojn",
-          "disconnect": "Malkunigi elektitajn objektojn",
-          "extract": "Apartigi punkton el objekto",
-          "split": "Dividi objektojn ĉe elektitaj punktoj",
-          "reverse": "Inversigi elektitajn objektojn",
-          "move": "Movi elektitajn objektojn",
-          "rotate": "Turni elektitajn objektojn",
-          "orthogonalize": "Kvadratigi angulojn de linio aŭ areo",
-          "straighten": "Rektigi linion aŭ punktojn",
-          "circularize": "Rondigi fermitan linion aŭ areon",
-          "reflect_long": "Speguli objektojn laŭ iliaj longaj aksoj",
-          "reflect_short": "Speguli objekton laŭ iliaj mallongaj aksoj",
-          "delete": "Forigi elektitajn objektojn/verticojn"
-        }
-      },
-      "tools": {
-        "title": "Iloj",
-        "info": {
-          "title": "Informoj",
-          "all": "Baskuli ĉiujn informajn panelojn",
-          "background": "Baskuli fon-panelon",
-          "history": "Baskuli histori-panelon",
-          "location": "Baskuli pozici-panelon",
-          "measurement": "Baskuli mezur-panelon"
+        "select_parent": {
+          "label": "Elekti superan linion"
+        },
+        "select_children": {
+          "label": "Elekti dependajn nodojn"
+        },
+        "add_point": {
+          "label": "Reĝimo “aldoni punkton”"
+        },
+        "add_line": {
+          "label": "Reĝimo “aldoni linion”"
+        },
+        "add_area": {
+          "label": "Reĝimo “aldoni areon”"
+        },
+        "add_note": {
+          "label": "Reĝimo “aldoni rimarkon”"
+        },
+        "place_point": {
+          "label": "Enmeti punkton aŭ rimarkon"
+        },
+        "disable_snap": {
+          "label": "Premteni por ne kapti punktojn"
+        },
+        "stop_line": {
+          "label": "Fini desegni linion aŭ areon"
+        },
+        "copy": {
+          "label": "Kopii elektitajn objektojn"
+        },
+        "paste": {
+          "label": "Alglui kopiitajn objektojn"
+        },
+        "undo": {
+          "label": "Malfari antaŭan agon"
+        },
+        "redo": {
+          "label": "Refari antaŭan agon"
+        },
+        "save": {
+          "label": "Konservi ŝanĝojn"
+        },
+        "find": {
+          "label": "Trovi objektojn kun serĉata teksto"
+        },
+        "continue_line": {
+          "label": "Pluigi linion de la elektita finpunkto"
+        },
+        "merge": {
+          "label": "Kunfandi elektitajn objektojn"
+        },
+        "disconnect": {
+          "label": "Malkunigi elektitajn objektojn"
+        },
+        "extract": {
+          "label": "Apartigi punkton el objekto"
+        },
+        "split": {
+          "label": "Dividi objektojn ĉe elektitaj punktoj"
+        },
+        "reverse": {
+          "label": "Inversigi elektitajn objektojn"
+        },
+        "move": {
+          "label": "Movi elektitajn objektojn"
+        },
+        "rotate": {
+          "label": "Turni elektitajn objektojn"
+        },
+        "orthogonalize": {
+          "label": "Kvadratigi angulojn de linio aŭ areo"
+        },
+        "straighten": {
+          "label": "Rektigi linion aŭ punktojn"
+        },
+        "circularize": {
+          "label": "Rondigi fermitan linion aŭ areon"
+        },
+        "reflect_long": {
+          "label": "Speguli objektojn laŭ iliaj longaj aksoj"
+        },
+        "reflect_short": {
+          "label": "Speguli objekton laŭ iliaj mallongaj aksoj"
+        },
+        "delete": {
+          "label": "Forigi elektitajn objektojn/verticojn"
+        },
+        "toggle_background": {
+          "label": "Baskuli panelon de fona fotaro"
+        },
+        "toggle_map_data": {
+          "label": "Baskuli panelon de map‑datumoj"
+        },
+        "toggle_issues": {
+          "label": "Baskuli panelon de problemoj"
+        },
+        "toggle_preferences": {
+          "label": "Baskuli panelon de agordoj"
+        },
+        "highlight_edits": {
+          "label": "Emfazi nekonservitajn ŝanĝojn"
+        },
+        "keyboard_shortcuts": {
+          "label": "Montri fulmoklavojn"
+        },
+        "toggle_osm_data": {
+          "label": "Baskuli map‑datumojn"
+        },
+        "toggle_all_cards": {
+          "label": "Baskuli ĉiujn informajn panelojn"
+        },
+        "toggle_background_card": {
+          "label": "Baskuli fon-panelon"
+        },
+        "toggle_history_card": {
+          "label": "Baskuli histori-panelon"
+        },
+        "toggle_location_card": {
+          "label": "Baskuli pozici-panelon"
+        },
+        "toggle_measurement_card": {
+          "label": "Baskuli mezur-panelon"
         }
       }
     },

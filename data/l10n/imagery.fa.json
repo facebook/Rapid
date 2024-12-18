@@ -13,10 +13,23 @@
       "EOXAT2018CLOUDLESS": {
         "description": "تصاویر ماهواره‌ای Sentinel پس از پردازش."
       },
+      "EOXAT2019CLOUDLESS": {
+        "description": "تصاویر ماهواره‌ای Sentinel پس از پردازش."
+      },
+      "EOXAT2020CLOUDLESS": {
+        "description": "تصاویر ماهواره‌ای Sentinel پس از پردازش."
+      },
+      "EOXAT2021CLOUDLESS": {
+        "description": "تصاویر ماهواره‌ای Sentinel پس از پردازش."
+      },
+      "EOXAT2022CLOUDLESS": {
+        "description": "تصاویر ماهواره‌ای Sentinel پس از پردازش."
+      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "قوانین و بازخورد"
         },
+        "description": "تصاویر جهانی Esri",
         "name": "تصاویر جهانی Esri"
       },
       "EsriWorldImageryClarity": {
@@ -26,8 +39,22 @@
         "description": "تصاویر بایگانی Esri که معمولاً واضح‌تر و درست‌تر از لایه پیشفرض است.",
         "name": "تصاویر جهانی Esri ‏(Clarity) نسخه بتا"
       },
+      "Geoportal2-PL-buildings_WMS": {
+        "description": "سرویس ادغام ملی ثبت زمین یک سرویس جمعی برای ارائه داده های ثبت شده است که مستقیماً از واحدهای سطح poviat به دست می آید. این سرویس فقط داده های واحدهایی را دارد که سرویس WMS با پارامترهای مناسب دارند و تصمیم گرفته اند سرویس WMS خود را در سرویس جمعی \"KrajowaIntegracjaEwidycjiGruntow\" قرار دهند."
+      },
+      "Geoportal2-PL-plot_boundaries_WMS": {
+        "description": "سرویس ادغام ملی ثبت زمین یک سرویس جمعی برای ارائه داده های ثبت شده است که مستقیماً از واحدهای سطح poviat به دست می آید. این سرویس فقط داده های واحدهایی را دارد که سرویس WMS با پارامترهای مناسب دارند و تصمیم گرفته اند سرویس WMS خود را در سرویس جمعی \"KrajowaIntegracjaEwidycjiGruntow\" قرار دهند."
+      },
       "Gliwice-buildings": {
         "name": "گلیویس: ساختمان‌ها"
+      },
+      "LSA-DVG": {
+        "description": "ثبت بردار مرزهای اداری. مرزهای ایالت فدرال ، منطقه ، شهرداری و بخشهایی از شهرداری ذکر شده است."
+      },
+      "LocalAuthorities_RightsOfWay": {
+        "attribution": {
+          "text": "حاوی اطلاعات بخش عمومی است که تحت مجوز دولت باز نسخه 3.0 مجوز دارد."
+        }
       },
       "MAPNIK": {
         "description": "لایه پیشفرض اوپن‌استریت‌مپ.",
@@ -94,6 +121,21 @@
       "US-TIGER-Roads-2018": {
         "description": "زرد = داده‌های دولتی سرشماری آمریکا. قرمز = داده‌هایی که در اوپن‌استریت‌مپ پیدا نشد"
       },
+      "US-TIGER-Roads-2019": {
+        "description": "زرد = داده‌های دولتی سرشماری آمریکا. قرمز = داده‌هایی که در اوپن‌استریت‌مپ پیدا نشد"
+      },
+      "US-TIGER-Roads-2020": {
+        "description": "زرد = داده‌های دولتی سرشماری آمریکا. قرمز = داده‌هایی که در اوپن‌استریت‌مپ پیدا نشد"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "زرد = داده‌های دولتی سرشماری آمریکا. قرمز = داده‌هایی که در اوپن‌استریت‌مپ پیدا نشد"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "زرد = داده‌های دولتی سرشماری آمریکا. قرمز = داده‌هایی که در اوپن‌استریت‌مپ پیدا نشد"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "زرد = داده‌های دولتی سرشماری آمریکا. قرمز = داده‌هایی که در اوپن‌استریت‌مپ پیدا نشد"
+      },
       "USDA-NAIP": {
         "name": "برنامه ملی تصویربرداری کشاورزی"
       },
@@ -139,9 +181,40 @@
         "description": "عکاسی با برچسب جغرافیایی در سال 1940 از موسسه Limnological Balaton."
       },
       "gothenburg-citymap": {
+        "attribution": {
+          "text": "© شهرداری گوتنبرگ، CC0"
+        },
         "name": "نقشه شهر گوتنبرگ"
       },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© شهرداری گوتنبرگ، CC0"
+        },
+        "description": "سرویس نقشه وب ارائه تپه و شیب بر اساس مدل ارتفاع 2017 شهر گوتنبرگ. رزولوشن 0.5 متر در پیکسل"
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© شهرداری گوتنبرگ، CC0"
+        },
+        "description": "عکس اورتوفوتو برای شهرداری گوتنبرگ"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© شهرداری گوتنبرگ، CC0"
+        },
+        "description": "عکس اورتوفوتو برای شهرداری گوتنبرگ"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© شهرداری گوتنبرگ، CC0"
+        },
+        "description": "عکس اورتوفوتو برای شهرداری گوتنبرگ"
+      },
       "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© شهرداری گوتنبرگ، CC0"
+        },
+        "description": "عکس اورتوفوتو برای شهرداری گوتنبرگ",
         "name": "گوتنبرگ ارتفتو 2021"
       },
       "gothenburg-ortho_latest": {
@@ -179,6 +252,16 @@
         "description": "عکس‌های اورتو برای ساحل شمالی شهرداری کالمار 2014"
       },
       "kalmar-orto-2016": {
+        "attribution": {
+          "text": "© شهرداری کالمار"
+        }
+      },
+      "kalmar-orto-2018": {
+        "attribution": {
+          "text": "© شهرداری کالمار"
+        }
+      },
+      "kalmar-orto-2020": {
         "attribution": {
           "text": "© شهرداری کالمار"
         }
@@ -240,6 +323,11 @@
         }
       },
       "tf-landscape": {
+        "attribution": {
+          "text": "نقشه‌ها © Thunderforest،‏ داده‌ها © مشارکت‌کنندگان اوپن‌استریت‌مپ "
+        }
+      },
+      "tf-outdoors": {
         "attribution": {
           "text": "نقشه‌ها © Thunderforest،‏ داده‌ها © مشارکت‌کنندگان اوپن‌استریت‌مپ "
         }

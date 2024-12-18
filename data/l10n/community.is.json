@@ -1,13 +1,28 @@
 {
   "is": {
+    "_communities": {
+      "openstreetmapaustria": "OpenStreetMap Austurríki",
+      "openstreetmapbelarus": "OpenStreetMap Hvítarússland",
+      "openstreetmapgermany": "OpenStreetMap Þýskalandi",
+      "openstreetmapperu": "OpenStreetMap í Perú"
+    },
     "Bahia-telegram": {
       "extendedDescription": "Gakktu til liðs við teymið til að læra meira um OpenStreetMap, spyrja spurninga eða taka þátt í fundum. Allir eru velkomnir!"
     },
     "Bay-Area-OpenStreetMappers": {
       "description": "Bætum OpenStreetMap-gögn á Bay Area"
     },
+    "br-telegram": {
+      "extendedDescription": "Gakktu til liðs við teymið til að læra meira um OpenStreetMap, spyrja spurninga eða taka þátt í fundum. Allir eru velkomnir!"
+    },
     "cape-coast-youthmappers": {
       "description": "Fylgstu með okkur á Twitter: {url}"
+    },
+    "cl-facebook": {
+      "extendedDescription": "Gakktu til liðs við teymið til að læra meira um OpenStreetMap, spyrja spurninga eða taka þátt í fundum. Allir eru velkomnir!"
+    },
+    "cl-telegram": {
+      "extendedDescription": "Gakktu til liðs við teymið til að læra meira um OpenStreetMap, spyrja spurninga eða taka þátt í fundum. Allir eru velkomnir!"
     },
     "de-berlin-mailinglist": {
       "name": "Berlín-póstlistinn"
@@ -18,11 +33,23 @@
     "DF-telegram": {
       "extendedDescription": "Gakktu til liðs við teymið til að læra meira um OpenStreetMap, spyrja spurninga eða taka þátt í fundum. Allir eru velkomnir!"
     },
+    "Galicia-Xeoinquedos-Twitter": {
+      "description": "Fylgstu með okkur á Twitter á {url}"
+    },
     "Maptime-ME-meetup": {
       "description": "Kortagerðarfólk og notendur OpenStreetMap í kringum Portland, ME"
     },
+    "Maptime-Oceania-Slack": {
+      "description": "Skráðu þig á {signupUrl}"
+    },
+    "me-telegram": {
+      "description": "Allir velkomnir! Skráðu þig á {signupUrl}"
+    },
     "OpenCleveland-meetup": {
       "description": "Bætum OpenStreetMap-gögn á Cleveland-svæðinu"
+    },
+    "osm-africa-slack": {
+      "description": "Allir velkomnir! Skráðu þig á {signupUrl}"
     },
     "OSM-Central-Salish-Sea": {
       "description": "Kortagerðarfólk og notendur OpenStreetMap í kringum Mount Vernon, WA",
@@ -38,6 +65,9 @@
       "description": "Bætum OpenStreetMap-gögn á Indlandi"
     },
     "OSM-japan-facebook": {
+      "description": "Kortagerðarfólk og notendur OpenStreetMap í Japan"
+    },
+    "OSM-japan-website": {
       "description": "Kortagerðarfólk og notendur OpenStreetMap í Japan"
     },
     "OSM-Seattle": {
@@ -67,6 +97,15 @@
     "PHXGeo-twitter": {
       "name": "Twitter-hópur PHXGeo",
       "description": "Fylgstu með okkur á Twitter á {url}"
+    },
+    "RS-telegram": {
+      "extendedDescription": "Gakktu til liðs við teymið til að læra meira um OpenStreetMap, spyrja spurninga eða taka þátt í fundum. Allir eru velkomnir!"
+    },
+    "tw-slack": {
+      "description": "Allir velkomnir! Skráðu þig á {signupUrl}"
+    },
+    "us-massachusetts-mailinglist": {
+      "name": "Talk-us-massachusetts póstlistinn"
     }
   }
 }

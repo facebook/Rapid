@@ -2038,13 +2038,13 @@
           "terms": "Internetanslutning, internet, wifi, wlan, lan, trådlöst, trådlöst internet, Internetaccess, internetåtkomst, ethernet"
         },
         "internet_access/fee": {
-          "label": "Internetåtkomst",
+          "label": "Avgift för internetåtkomst",
           "options": {
             "customers": "Enbart kunder",
             "no": "Fri",
             "yes": "Betald"
           },
-          "terms": "Internetanslutning, internet, wifi, wlan, lan, trådlöst, trådlöst internet, Internetaccess, internetåtkomst, ethernet, wifi-avgift, internetavgift"
+          "terms": "Avgift, kostnad, belopp, wifi-avgift, wifi, internet, internetkostnad"
         },
         "internet_access/ssid": {
           "label": "Wifi-nätverksnamn",
@@ -2257,7 +2257,13 @@
           "label": "Omfattning"
         },
         "map_type": {
-          "label": "Typ"
+          "label": "Typ",
+          "options": {
+            "scheme": "Schematisk karta",
+            "street": "Vägkarta",
+            "topo": "Topografisk karta",
+            "toposcope": "Toposkop (utsiktstavla, riktningsvisare)"
+          }
         },
         "mapillary": {
           "label": "Bild-ID på Mapillary",
@@ -2369,6 +2375,7 @@
             "blue_plaque": "Blå minnestavla",
             "bust": "Byst",
             "cross": "Minneskors",
+            "ghost_bike": "Spökcykel",
             "plaque": "Minnestavla",
             "sculpture": "Skulptur",
             "statue": "Staty",
@@ -3742,6 +3749,8 @@
             "clay": "Lera",
             "compacted": "Komprimerad",
             "concrete": "Betong",
+            "concrete:lanes": "Betongremsor",
+            "concrete:plates": "Betongplattor",
             "dirt": "Jord",
             "fine_gravel": "Fint grus",
             "grass": "Gräs",
@@ -4177,6 +4186,7 @@
             "coffee": "Kaffe",
             "condoms": "Kondomer",
             "drinks": "Drycker",
+            "e-cigarettes": "E-Cigaretter",
             "eggs": "Ägg",
             "electronics": "Elektronik",
             "elongated_coin": "Souvenirmynt",
@@ -4675,6 +4685,12 @@
           "name": "Samlingslokal",
           "terms": "Samlingslokal, folkets hus, folkets park, festlokal, bygdegård, Hembygdsgård, Sockenstuga, bystuga, Byalag, byförening, festlokal, evenemang"
         },
+        "amenity/community_centre/club_home": {
+          "name": "Föreningslokal, klubbstuga"
+        },
+        "amenity/community_centre/community_hall": {
+          "name": "Medborgarhus, folkets hus"
+        },
         "amenity/community_centre/cultural_centre": {
           "name": "Kulturcenter"
         },
@@ -4687,6 +4703,9 @@
         },
         "amenity/community_centre/parish_hall": {
           "name": "Församlingshem"
+        },
+        "amenity/community_centre/village_hall": {
+          "name": "Bygdegård"
         },
         "amenity/community_centre/youth_centre": {
           "name": "Fritidsgård",
@@ -5475,10 +5494,6 @@
         "amenity/theatre": {
           "name": "Teater",
           "terms": "föreställning, teaterföreställning, drama, skådespel, pjäs, skådeplats, skådebana, scen, teater, musikal"
-        },
-        "amenity/theatre/type/amphi": {
-          "name": "Amfiteater",
-          "terms": "Amfiteater, utescen, utomhus, teater, utomhusteater, scen, läktare"
         },
         "amenity/ticket_validator": {
           "name": "Biljettkontrollmaskin",
@@ -6915,6 +6930,9 @@
         "highway/path/boardwalk": {
           "name": "Spång",
           "terms": "Spång, brädväg, brädor, plankor, plankstig, stig, gångväg"
+        },
+        "highway/path/crossing": {
+          "name": "Cykel- och gångkorsning"
         },
         "highway/path/informal": {
           "name": "Informell stig",
@@ -8786,10 +8804,6 @@
         "piste/nordic": {
           "name": "Längdskidspår",
           "terms": "Längdskidåkning, off-pist, längdskidor, Längdskidåkning, off-pist, skidspår, skidor, skating, pist, längdåkning, "
-        },
-        "piste/piste": {
-          "name": "Vintersportspår / Pist",
-          "terms": "Vintersportspår, skidor, skida, off-pist, offpist, utförsåkning, utför, alpint, snowboard, skidtur, skidåkning, släde, häst, vintervandring, snöskor, is, isåkning, skridsko, skridskoåkning, pist, längdskidor, längdskidspår, alpint, alpin"
         },
         "piste/ski_jump": {
           "name": "Hoppbacke"

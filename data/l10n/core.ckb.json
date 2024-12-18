@@ -18,8 +18,7 @@
     },
     "modes": {
       "add_area": {
-        "title": "ناوە",
-        "filter_tooltip": "ناوچەکان"
+        "title": "ناوە"
       },
       "add_line": {
         "title": "هێڵ"
@@ -47,9 +46,6 @@
       "orthogonalize": {
         "title": "چوارگۆشە"
       },
-      "straighten": {
-        "key": "باشوور"
-      },
       "delete": {
         "title": "سڕینەوە",
         "annotation": {
@@ -62,9 +58,6 @@
       },
       "rotate": {
         "title": "وەرگێڕان"
-      },
-      "extract": {
-        "key": "ڕۆژهەڵات"
       }
     },
     "restriction": {
@@ -177,8 +170,7 @@
         },
         "notes": {
           "tooltip": "دراوەی تێبینییەکانی نەخشەی شەقامی کراوە",
-          "title": "تێبینییەکانی نەخشەی شەقامی کراوە",
-          "key": "باکوور"
+          "title": "تێبینییەکانی نەخشەی شەقامی کراوە"
         },
         "maproulette": {
           "detail_title": "وردەکارییەکان",
@@ -186,7 +178,7 @@
         }
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "خاڵەکان"
       },
@@ -207,11 +199,6 @@
       },
       "rail": {
         "tooltip": "ئاسنەڕێ"
-      }
-    },
-    "area_fill": {
-      "wireframe": {
-        "key": "ڕۆژاوا"
       }
     },
     "settings": {
@@ -255,13 +242,17 @@
     "splash": {
       "start": "دەست بکە بە دەستکاریکردن"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "لابردن"
+    "rapid_menu": {
+      "remove": "لابردن",
+      "category": {
+        "roads": "ڕێگاکان"
       }
     },
     "tag_reference": {
       "description": "ناساندن"
+    },
+    "bearing": {
+      "n": "باکوور"
     },
     "QA": {
       "osmose": {
@@ -359,9 +350,7 @@
       }
     },
     "issues": {
-      "warnings": {
-        "list_title": "ئاگادارکردنەوەکان"
-      },
+      "warnings": "ئاگادارکردنەوەکان",
       "invalid_format": {
         "email": {
           "reference": "پێویستە پۆستی ئەلیکترۆنییەکەت لەوە بچێت\n\"user@example.com\"."
@@ -418,35 +407,40 @@
     "shortcuts": {
       "title": "کورتبڕەکانی تەختەکلیل",
       "tooltip": "پیشاندانی کورتبڕەکانی تەختەکلیل",
-      "toggle": {
-        "key": "؟"
-      },
       "key": {
         "delete": "سڕینەوە"
       },
       "or": "-یان-",
-      "browsing": {
-        "help": {
-          "title": "یارمەتی",
-          "keyboard": "پیشاندانی کورتبڕەکانی تەختەکلیل"
+      "editing": "دەستکاریکردن",
+      "drawing": "کێشان",
+      "help": "یارمەتی",
+      "display_options": "پیشاندانی بژاردەکان",
+      "info": "زانیاری",
+      "command": {
+        "add_note": {
+          "key": "باکوور"
         },
-        "display_options": {
-          "title": "پیشاندانی بژاردەکان"
-        }
-      },
-      "editing": {
-        "title": "دەستکاریکردن",
-        "drawing": {
-          "title": "کێشان"
+        "save": {
+          "label": "پاشەکەوتکردنی دەستاکرییەکان"
         },
-        "commands": {
-          "save": "پاشەکەوتکردنی دەستاکرییەکان"
-        }
-      },
-      "tools": {
-        "title": "ئامرازەکان",
-        "info": {
-          "title": "زانیاری"
+        "extract": {
+          "key": "ڕۆژهەڵات"
+        },
+        "straighten": {
+          "key": "باشوور"
+        },
+        "wireframe": {
+          "key": "ڕۆژاوا"
+        },
+        "keyboard_shortcuts": {
+          "label": "پیشاندانی کورتبڕەکانی تەختەکلیل",
+          "key": "؟"
+        },
+        "toggle_osm_notes": {
+          "key": "باکوور"
+        },
+        "toggle_streetside": {
+          "key": "باشوور"
         }
       }
     },

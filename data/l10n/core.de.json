@@ -19,7 +19,8 @@
       "undo_redo": "Rückgängig / Wiederherstellen",
       "recent": "Kürzlich",
       "favorites": "Favoriten",
-      "add_feature": "Objekt hinzufügen"
+      "add_feature": "Objekt hinzufügen",
+      "rapid_features": "Unterstützen"
     },
     "title": {
       "labeled_and_more": {
@@ -30,15 +31,15 @@
     "modes": {
       "add_area": {
         "title": "Fläche",
-        "filter_tooltip": "Flächen"
+        "description": "Gebäude, Parks, Seen oder andere Flächen auf der Karte hinzufügen."
       },
       "add_line": {
         "title": "Linie",
-        "filter_tooltip": "Linien"
+        "description": "Straßen, Wanderwege, Bäche oder andere Linien auf der Karte hinzufügen."
       },
       "add_point": {
         "title": "Punkt",
-        "filter_tooltip": "Punkte"
+        "description": "Geschäfte, Papierkörbe, Briefkästen oder andere Punkte auf der Karte hinzufügen."
       },
       "add_note": {
         "title": "Hinweis",
@@ -121,52 +122,15 @@
       },
       "circularize": {
         "title": "Kreisförmig machen",
-        "description": {
-          "single": "Mach dieses Objekt kreisförmig.",
-          "multiple": "Mach diese Objekte kreisförmig."
-        },
         "annotation": {
           "feature": {
             "one": "Ein Objekt kreisförmig gemacht.",
             "other": "{n} Objekte kreisförmig gemacht."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Diese Objekte können aus mehreren Gründen nicht kreisförmig gemacht werden."
-        },
-        "not_closed": {
-          "single": "Dieses Objekt kann aus mehreren Gründen nicht kreisförmig gemacht werden.",
-          "multiple": "Diese Objekte können nicht kreisförmig gemacht werden, weil sie keine Schleifen sind."
-        },
-        "too_large": {
-          "single": "Dieses Objekt kann nicht kreisförmig gemacht werden, weil derzeit nicht genug davon sichtbar ist.",
-          "multiple": "Diese Objekte können nicht kreisförmig gemacht werden, weil derzeit nicht genug davon sichtbar ist."
-        },
-        "connected_to_hidden": {
-          "single": "Dieses Objekt kann nicht kreisförmig gemacht werden, weil es mit einem versteckten Objekte verbunden ist.",
-          "multiple": "Diese Objekte können nicht kreisförmig gemacht werden, weil sie mit versteckten Objekten verbunden sind."
-        },
-        "not_downloaded": {
-          "single": "Dieses Objekt kann nicht kreisförmig gemacht werden, weil Teile davon noch nicht heruntergeladen wurden.",
-          "multiple": "Diese Objekte können nicht kreisförmig gemacht werden, weil Teile davon noch nicht heruntergeladen wurden."
-        },
-        "already_circular": {
-          "single": "Dieses Objekt kann nicht kreisförmig gemacht werden, weil es bereits kreisförmig ist.",
-          "multiple": "Diese Objekte können nicht kreisförmig gemacht werden, weil sie bereits kreisförmig sind."
         }
       },
       "orthogonalize": {
         "title": "Rechtwinklig machen",
-        "description": {
-          "corner": {
-            "single": "Mach diese Ecke rechtwinklig.",
-            "multiple": "Mach diese Ecken rechtwinklig."
-          },
-          "feature": {
-            "single": "Mach die Ecken dieses Objekts rechtwinklig.",
-            "multiple": "Mach die Ecken dieser Objekte rechtwinklig."
-          }
-        },
         "annotation": {
           "corner": {
             "one": "Eine Ecke rechtwinklig gemacht.",
@@ -176,33 +140,6 @@
             "one": "Die Ecken von einem Objekt rechtwinklig gemacht.",
             "other": "Die Ecken von {n} Objekten rechtwinklig gemacht."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Diese können aus mehreren Gründen nicht rechtwinklig gemacht werden."
-        },
-        "end_vertex": {
-          "single": "Das kann nicht rechtwinklig gemacht werden, weil es ein Endpunkt ist.",
-          "multiple": "Diese können nicht rechtwinklig gemacht werden, weil es Endpunkte sind."
-        },
-        "square_enough": {
-          "single": "Das kann nicht mehr rechtwinklig gemacht werden als es bereits ist.",
-          "multiple": "Diese können nicht mehr rechtwinklig gemacht werden als sie es bereits sind."
-        },
-        "not_squarish": {
-          "single": "Das kann nicht rechtwinklig gemacht werden, da es nicht annähernd rechtwinklig ist.",
-          "multiple": "Diese können nicht rechtwinklig gemacht werden, da sie nicht annähernd rechtwinklig sind."
-        },
-        "too_large": {
-          "single": "Das kann nicht rechtwinklig gemacht werden, weil derzeit nicht genug davon sichtbar ist.",
-          "multiple": "Diese können nicht rechtwinklig gemacht werden, weil derzeit nicht genug davon sichtbar ist."
-        },
-        "connected_to_hidden": {
-          "single": "Das kann nicht rechtwinklig gemacht werden, weil es mit einem versteckten Objekt verbunden ist.",
-          "multiple": "Diese könne nicht rechtwinklig gemacht werden, weil manche davon mit versteckten Objekten verbunden sind."
-        },
-        "not_downloaded": {
-          "single": "Das kann nicht rechtwinklig gemacht werden, weil Teile davon noch nicht heruntergeladen wurden.",
-          "multiple": "Diese können nicht rechtwinklig gemacht werden, weil Teile davon noch nicht heruntergeladen wurden."
         }
       },
       "straighten": {
@@ -221,34 +158,10 @@
             "one": "Eine Linie begradigt.",
             "other": "{n} Linien begradigt."
           }
-        },
-        "too_bendy": {
-          "single": "Dies kann nicht begradigt werden, weil es zu sehr gebogen ist.",
-          "multiple": "Diese können nicht begradigt werden, weil sie zu sehr gebogen sind."
-        },
-        "connected_to_hidden": {
-          "single": "Dies kann nicht begradigt werden, weil es mit einem versteckten Objekt verbunden ist.",
-          "multiple": "Diese können nicht begradigt werden, weil manches mit einem versteckten Objekt verbunden ist."
-        },
-        "not_downloaded": {
-          "single": "Dies kann nicht begradigt werden, weil Teile davon noch nicht heruntergeladen wurden.",
-          "multiple": "Diese können nicht begradigt werden, weil Teile davon noch nicht heruntergeladen wurden."
-        },
-        "straight_enough": {
-          "single": "Dies kann nicht noch gerader gemacht werden.",
-          "multiple": "Diese können nicht noch gerader gemacht werden."
-        },
-        "too_large": {
-          "single": "Dies kann nicht begradigt werden, weil derzeit nicht genug davon sichtbar ist.",
-          "multiple": "Diese können nicht begradigt werden, weil derzeit nicht genug davon sichtbar ist."
         }
       },
       "delete": {
         "title": "Löschen",
-        "description": {
-          "single": "Dieses Objekt dauerhaft löschen.",
-          "multiple": "Diese Objekte dauerhaft löschen."
-        },
         "annotation": {
           "point": "Punkt gelöscht.",
           "vertex": "Punkt aus einem Weg gelöscht.",
@@ -259,30 +172,6 @@
             "one": "{n} Objekte gelöscht.",
             "other": "{n} Objekte gelöscht."
           }
-        },
-        "too_large": {
-          "single": "Dieses Objekt kann nicht gelöscht werden, weil nicht derzeit genug davon sichtbar ist.",
-          "multiple": "Diese Objekte können nicht gelöscht werden, weil derzeit von ihnen nicht genug davon sichtbar ist."
-        },
-        "incomplete_relation": {
-          "single": "Dieses Objekt kann nicht gelöscht werden, weil es nicht vollständig heruntergeladen wurde.",
-          "multiple": "Diese Objekte können nicht gelöscht werden, weil sie nicht vollständig heruntergeladen wurden."
-        },
-        "part_of_relation": {
-          "single": "Dieses Objekt kann nicht gelöscht werden, weil es Mitglied einer Relation ist. Du musst es zuerst aus der Relation entfernen.",
-          "multiple": "Diese Objekte können nicht gelöscht werden, weil sie Mitglieder einer Relation sind. Du musst sie zuerst aus der Relation entfernen."
-        },
-        "connected_to_hidden": {
-          "single": "Dieses Objekt kann nicht gelöscht werden, weil es mit einem versteckten Objekt verbunden ist.",
-          "multiple": "Diese Objekte können nicht gelöscht werden, weil einige mit versteckten Objekten verbunden sind."
-        },
-        "not_downloaded": {
-          "single": "Dieses Objekt kann nicht gelöscht werden, weil Teile davon noch nicht heruntergeladen wurden.",
-          "multiple": "Diese Objekte können nicht gelöscht werden, weil Teile davon noch nicht heruntergeladen wurden."
-        },
-        "has_wikidata_tag": {
-          "single": "Dieses Objekt kann nicht gelöscht werden, weil es eine Wikidata-Eigenschaft hat.",
-          "multiple": "Diese Objekte können nicht gelöscht werden, weil einige eine Wikidata-Eigenschaft haben."
         }
       },
       "downgrade": {
@@ -306,10 +195,6 @@
             "one": "{n} Objekte herabgestuft.",
             "other": "{n} Objekte herabgestuft."
           }
-        },
-        "has_wikidata_tag": {
-          "single": "Dieses Objekt kann nicht herabgestuft werden, weil es eine Wikidata-Eigenschaft hat.",
-          "multiple": "Diese Objekte können nicht herabgestuft werden, weil einige eine Wikidata-Eigenschaft haben."
         }
       },
       "add_member": {
@@ -409,10 +294,6 @@
       },
       "move": {
         "title": "Verschieben",
-        "description": {
-          "single": "Dieses Objekt an eine andere Stelle verschieben.",
-          "multiple": "Diese Objekte an eine andere Stelle verschieben."
-        },
         "annotation": {
           "point": "Punkt verschoben.",
           "vertex": "Punkt in einem Weg verschoben.",
@@ -423,38 +304,12 @@
             "one": "Ein Objekt verschoben.",
             "other": "{n} Objekte verschoben."
           }
-        },
-        "incomplete_relation": {
-          "single": "Dieses Objekt kann nicht verschoben werden, weil es nicht vollständig heruntergeladen wurde.",
-          "multiple": "Diese Objekte können nicht verschoben werden, weil sie nicht vollständig heruntergeladen wurden."
-        },
-        "too_large": {
-          "single": "Dieses Objekt kann nicht verschoben werden, weil derzeit nicht genug davon sichtbar ist.",
-          "multiple": "Diese Objekte können nicht verschoben werden, weil derzeit nicht genug davon sichtbar ist."
-        },
-        "connected_to_hidden": {
-          "single": "Dieses Objekt kann nicht verschoben werden, weil es mit einem versteckten Objekt verbunden ist.",
-          "multiple": "Diese Objekte können nicht verschoben werden, weil einige mit einem versteckten Objekt verbunden sind."
-        },
-        "not_downloaded": {
-          "single": "Dieses Objekt kann nicht verschoben werden, weil Teile davon noch nicht heruntergeladen wurden.",
-          "multiple": "Diese Objekte können nicht verschoben werden, weil Teile davon noch nicht heruntergeladen wurden."
         }
       },
       "reflect": {
         "title": {
           "long": "Spiegeln an langer Achse",
           "short": "Spiegeln an kurzer Achse"
-        },
-        "description": {
-          "long": {
-            "single": "Dieses Objekt an der langen Achse spiegeln.",
-            "multiple": "Diese Objekte an der langen Achse spiegeln."
-          },
-          "short": {
-            "single": "Dieses Objekt an der kurzen Achse spiegeln.",
-            "multiple": "Diese Objekte an der kurzen Achse spiegeln."
-          }
         },
         "annotation": {
           "long": {
@@ -469,30 +324,10 @@
               "other": "{n} Objekte an der kurzen Achse gespiegelt."
             }
           }
-        },
-        "incomplete_relation": {
-          "single": "Dieses Objekt kann nicht gespiegelt werden, weil es noch nicht vollständig geladen wurde.",
-          "multiple": "Diese Objekte können nicht gespiegelt werden, weil sie noch nicht vollständig geladen wurden."
-        },
-        "too_large": {
-          "single": "Dieses Objekt kann nicht gespiegelt werden weil, davon noch nicht genug sichtbar ist.",
-          "multiple": "Diese Objekte können nicht gespiegelt werden, weil von ihnen noch nicht genug sichtbar ist."
-        },
-        "connected_to_hidden": {
-          "single": "Dieses Objekt kann nicht gespiegelt werden, weil es mit einem versteckten Objekt verbunden ist.",
-          "multiple": "Diese Objekte können nicht gespiegelt werden, weil zumindest eines davon mit einem versteckten Objekt verbunden ist."
-        },
-        "not_downloaded": {
-          "single": "Dieses Objekt kann nicht gespiegelt werden, weil Teile davon noch nicht geladen wurden.",
-          "multiple": "Diese Objekte können nicht gespiegelt werden, weil Teile davon noch nicht geladen wurden."
         }
       },
       "rotate": {
         "title": "Drehen",
-        "description": {
-          "single": "Dieses Objekt um seinen Mittelpunkt drehen.",
-          "multiple": "Diese Objekte um ihren Mittelpunkt drehen."
-        },
         "annotation": {
           "line": "Linie gedreht.",
           "area": "Fläche gedreht.",
@@ -501,22 +336,6 @@
             "one": "Ein Objekt gedreht.",
             "other": "{n} Objekte gedreht."
           }
-        },
-        "incomplete_relation": {
-          "single": "Dieses Objekt kann nicht gedreht werden, weil es nicht vollständig heruntergeladen wurde.",
-          "multiple": "Diese Objekte können nicht gedreht werden, weil sie nicht vollständig heruntergeladen wurden."
-        },
-        "too_large": {
-          "single": "Dieses Objekt kann nicht gedreht werden, weil derzeit nicht genug davon sichtbar ist.",
-          "multiple": "Diese Objekte können nicht gedreht werden, weil derzeit nicht genug davon sichtbar ist."
-        },
-        "connected_to_hidden": {
-          "single": "Dieses Objekt kann nicht gedreht werden, weil es mit einem versteckten Objekt verbunden ist.",
-          "multiple": "Diese Objekte können nicht gedreht werden, weil einige mit einem versteckten Objekt verbunden sind."
-        },
-        "not_downloaded": {
-          "single": "Dieses Objekt kann nicht gedreht werden, weil Teile davon noch nicht heruntergeladen wurden.",
-          "multiple": "Diese Objekte können nicht gedreht werden, weil Teile davon noch nicht heruntergeladen wurden."
         }
       },
       "reverse": {
@@ -557,22 +376,6 @@
               "other": "{n} Objekte vergrößert."
             }
           }
-        },
-        "too_small": {
-          "single": "Dieses Objekt kann nicht verkleinert werden, weil es zu klein würde.",
-          "multiple": "Diese Objekte können nicht verkleinert werden, weil sie zu klein würden."
-        },
-        "too_large": {
-          "single": "Dieses Objekt kann nicht skaliert werden, weil zu wenig davon sichtbar ist.",
-          "multiple": "Diese Objekte können nicht skaliert werden, weil zu wenig von ihnen sichtbar ist."
-        },
-        "connected_to_hidden": {
-          "single": "Dieses Objekt kann nicht skaliert werden, weil es mit einem versteckten Objekt verbunden ist.",
-          "multiple": "Diese Objekte können nicht skaliert werden, weil einige mit einem versteckten Objekt verbunden sind."
-        },
-        "not_downloaded": {
-          "single": "Dieses Objekt kann nicht skaliert werden, weil es noch nicht vollständig geladen wurde.",
-          "multiple": "Diese Objekte können nicht skaliert werden, weil sie noch nicht vollständig geladen wurden."
         }
       },
       "split": {
@@ -582,6 +385,10 @@
             "single": {
               "single_node": "Teile diese Linie an diesem Punkt in zwei Linien.",
               "multiple_node": "Teile diese Linie an diesen Punkten."
+            },
+            "multiple": {
+              "single_node": "Diese Linien an diesem Punkt teilen.",
+              "multiple_node": "Diese Linien an diesen Punkten teilen."
             }
           },
           "area": {
@@ -627,33 +434,13 @@
       "extract": {
         "title": "Entnehmen",
         "description": {
-          "vertex": {
-            "single": "Entnimm diesen Punkt von seinen Linien/Flächen.",
-            "multiple": "Entnimm diese Punkte von ihren Objekten."
-          },
-          "line": {
-            "single": "Entnimm einen Punkt von dieser Linie.",
-            "multiple": "Entnimm Punkte von diesen Linien."
-          },
-          "area": {
-            "single": "Entnimm einen Punkt von dieser Fläche.",
-            "multiple": "Entnimm Punkte von diesen Flächen."
-          },
           "feature": {
-            "multiple": "Entnimm Punkte von diesen Objekten."
+            "other": "Entnimm Punkte von diesen Objekten."
           }
         },
         "annotation": {
           "one": "{n} Punkte extrahiert.",
           "other": "{n} Punkte extrahiert."
-        },
-        "too_large": {
-          "single": "Ein Punkt kann nicht entnommen werden, weil derzeit nicht genug davon sichtbar ist.",
-          "multiple": "Die Punkte können nicht entnommen werden, weil von den Objekten derzeit nicht genug sichtbar ist."
-        },
-        "connected_to_hidden": {
-          "single": "Dieser Punkt kann nicht entnommen werden, weil er mit einem versteckten Objekt verbunden ist.",
-          "multiple": "Die Punkte können nicht entnommen werden, weil manche mit einem versteckten Objekt verbunden sind."
         }
       }
     },
@@ -709,6 +496,7 @@
     "loading_auth": "Mit OpenStreetMap verbinden …",
     "report_a_bug": "Einen Fehler melden",
     "help_translate": "Beim Übersetzen helfen",
+    "example": "Beispiel:",
     "feature_info": {
       "hidden_warning": {
         "one": "{count} versteckte Objekte",
@@ -720,6 +508,7 @@
         "error": "Das OpenStreetMap API ist nicht erreichbar. Deine Bearbeitungen sind lokal gesichert. Prüfe deine Netzwerkverbindung.",
         "offline": "Das OpenStreetMap API ist offline. Deine Bearbeitungen sind lokal gesichert. Bitte probiere es später noch einmal.",
         "readonly": "Das OpenStreetMap API erlaubt aktuell kein Speichern. Du kannst deine Bearbeitungen fortsetzen, aber du kannst deine Änderungen erst später speichern.",
+        "ratelimit": "Zu viele Daten von OpenStreetMap heruntergeladen. Bitte in {seconds} Sekunden erneut versuchen oder das Konto wechseln.",
         "local_storage_full": "Du hast zu viele Änderungen vorgenommen, um eine Sicherungskopie zu erstellen. Du solltest deine Änderungen jetzt speichern."
       },
       "retry": "Wiederholung"
@@ -768,12 +557,12 @@
         "hide_tiles": "Raster ausblenden"
       },
       "history": {
-        "key": "C",
         "title": "Chronik",
         "no_history": "Keine Chronik (Neues Objekt)",
         "last_edit": "Letzte Bearbeitung",
         "edited_by": "Bearbeitet von",
         "changeset": "Änderungssatz",
+        "link_text": "Historie auf openstreetmap.org",
         "note_no_history": "Keine Chronik (Neuer Hinweis)",
         "note_comments": "Kommentare",
         "note_created_date": "Erzeugt am",
@@ -827,6 +616,7 @@
       "view_on_osm": "Auf openstreetmap.org ansehen",
       "view_on_osmose": "Auf osmose.openstreetmap.fr ansehen",
       "view_on_keepRight": "Auf keepright.at ansehen",
+      "view_on_maproulette": "Auf maproulette.org ansehen",
       "feature_type": "Objekttyp",
       "fields": "Felder",
       "tags": "Eigenschaften",
@@ -844,16 +634,13 @@
         "other": "{n} Ergebnisse für {search}"
       },
       "no_documentation_key": "Dazu ist keine Dokumentation verfügbar.",
+      "edit_reference": "bearbeiten/übersetzen",
       "wiki_reference": "Dokumentation ansehen",
       "wiki_en_reference": "Dokumentation auf Englisch ansehen",
       "key_value": "Schlüssel=Wert",
       "multiple_values": "Mehrere Werte",
       "multiple_types": "Mehrere Typen",
       "unshared_value_tooltip": "nicht von allen Objekten gemeinsam genutzt",
-      "hidden_preset": {
-        "manual": "{features} sind versteckt, Schalt sie beim Kartendaten-Feld ein.",
-        "zoom": "{features} sind versteckt. Zoome hinein um sie zu sehen."
-      },
       "back_tooltip": "Objekttyp ändern",
       "type": "Typ",
       "remove": "Entfernen",
@@ -861,6 +648,7 @@
       "unknown": "Unbekannt",
       "incomplete": "<nicht heruntergeladen>",
       "feature_list": "Objekte suchen",
+      "multiselect": "Mehrfachauswahl",
       "check": {
         "yes": "Ja",
         "no": "Nein",
@@ -890,7 +678,9 @@
         "ref_from_to_via": "{ref} von {from} nach {to} via {via}",
         "network_ref_from_to": "{network} {ref} von {from} nach {to}",
         "network_ref_from_to_via": "{network} {ref} von {from} nach {to} via {via}"
-      }
+      },
+      "first_seen": "Zuerst gesehen",
+      "last_seen": "Zuletzt gesehen"
     },
     "background": {
       "title": "Bildmaterial",
@@ -901,14 +691,22 @@
       "switch": "Zu diesem Bildmaterial zurückschalten",
       "custom": "Benutzerdefiniert",
       "overlays": "Überlagerungen",
+      "imagery_source_faq": "Luftbildinformationen / Problem melden",
       "imagery_problem_faq": "Melde ein Problem mit dem Bildmaterial",
       "reset": "Zurücksetzen",
       "reset_all": "Alles zurücksetzen",
       "display_options": "Anzeige-Optionen",
+      "wayback": {
+        "description": "Esri Wayback enthält mit der Zeit erstellte, archivierte Schnappschüsse von Esri World Imagery.",
+        "date": "Datum"
+      },
       "brightness": "Helligkeit",
       "contrast": "Kontrast",
       "saturation": "Sättigung",
       "sharpness": "Schärfe",
+      "3dmap": {
+        "description": "3D-Karte anzeigen"
+      },
       "minimap": {
         "description": "Minimap anzeigen",
         "tooltip": "Eine eine vergrößerte Karte anzeigen, um den aktuell angezeigten Bereich zu lokalisieren."
@@ -931,14 +729,34 @@
       "layers": {
         "osm": {
           "tooltip": "Kartendaten von OpenStreetMap",
-          "title": "OpenStreetMap Daten"
+          "title": "OpenStreetMap Daten",
+          "feature": "OpenStreetMap Objekt"
         },
         "notes": {
           "tooltip": "Hinweise von OpenStreetMap",
           "title": "OpenStreetMap Hinweise"
         },
+        "rapid": {
+          "license": "Facebook's Map With AI Lizenz"
+        },
         "maproulette": {
-          "cancel": "Abbrechen"
+          "tooltip": "Aufträge von maproulette.org. Sie können auch eine kommagetrennte Liste aus Auftrag-IDs zum filtern eingeben.",
+          "title": {
+            "one": "MapRoulette-Aufgabe",
+            "other": "MapRoulette-Aufgaben"
+          },
+          "loading_task_details": "Auftragdetails werden geladen...",
+          "id_title": "Auftrag-ID",
+          "id_placeholder": "Auftrag-IDs",
+          "instruction_title": "Anweisungen",
+          "fixed": "Ich habe es behoben!",
+          "alreadyFixed": "Bereits Behoben",
+          "login": "Sie müssen Sich anmelden, um den MapRoulette-Auftrag ändern zu können.",
+          "loginMaproulette": "Sie müssen Sich bei MapRoulette anmelden, um den Auftrag bearbeiten zu können.",
+          "inputPlaceholder": "Änderungsnotiz (optional)",
+          "comment": "Bitte bestätigen",
+          "cancel": "Abbrechen",
+          "submit": "Einreichen"
         },
         "keepRight": {
           "tooltip": "Datenprobleme gefunden von keepright.at",
@@ -963,7 +781,6 @@
         "tooltip": "Geometriewerte für die Auswahl anzeigen"
       },
       "style_options": "Stiloptionen",
-      "map_features": "Karten-Objekte",
       "autohidden": "Diese Objekte wurden automatisch versteckt, weil zu viele auf dem Bildschirm angezeigt würden. Du kannst zum Bearbeiten hineinzoomen.",
       "osmhidden": "Diese Objekte wurden automatisch versteckt, weil die OpenStreetMap Ebene versteckt ist."
     },
@@ -1000,7 +817,12 @@
         "tooltip": "Zeige nur Fotos von diesem Benutzer"
       }
     },
-    "feature": {
+    "filters": {
+      "title": "Filter",
+      "active": "Einige Objekte sind gefiltert:",
+      "hidden_preset": {
+        "manual": "{features} sind gefiltert. Schalte sie im Kartendaten-Menü ein."
+      },
       "points": {
         "description": "Punkte",
         "tooltip": "Sehenswürdigkeit"
@@ -1118,6 +940,7 @@
         },
         "or": "Oder",
         "url": {
+          "xyz": "`{zoom}` oder `{z}`, `{x}`, `{y}` für Z/X/Y Kachelschema",
           "placeholder": "Gib eine URL ein"
         }
       }
@@ -1127,13 +950,35 @@
       "description": "Einstellungen",
       "privacy": {
         "title": "Datenschutz",
+        "privacy_link": "Die Rapid-Datenschutzrichtlinie anzeigen",
         "third_party_icons": {
           "description": "Symbole von Drittanbietern anzeigen",
           "tooltip": "Deaktiviere dieses Kästchen damit Symbole von Drittanbietern wie Wikimedia Commons, Facebook oder Twitter nicht angezeigt werden."
         }
       },
+      "map_interaction": {
+        "title": "Karteninteraktio",
+        "mouse_wheel": {
+          "title": "Mausradverhalten",
+          "auto": {
+            "title": "Automatisch"
+          }
+        }
+      },
       "color_selection": {
-        "default": "Standard"
+        "title": "Kartenfarbschema",
+        "tooltip": "Zwischen Farbschemata wechseln",
+        "default": "Standard",
+        "example": "Beispiel (Hoher Kontrast)",
+        "placeholder": "Farbschema auswählen"
+      },
+      "colorblind_options": {
+        "title": "Farbenblindheitsmodus",
+        "tooltip": "Zwischen Farbenblindheitsmodi wechseln",
+        "protanopia": "Protanopie",
+        "deuteranopia": "Deuteranopie",
+        "tritanopia": "Tritanopie",
+        "placeholder": "Farbenblindheitsmodus auswählen"
       }
     },
     "restore": {
@@ -1166,6 +1011,11 @@
         "help": "Ein anderer Benutzer hat einige der Objekte geändert, die du geändert hast. Klick unten auf jedes Objekt für weitere Details über den Konflikt und wähle aus, ob deine Änderungen oder die Änderungen des anderen Benutzers beibehalten werden sollen."
       }
     },
+    "download_osc": {
+      "title": "Herunterladen",
+      "help": "Lade die jetzigen Änderungen der Karte als osc-Datei herunter.",
+      "no_changes": "Keine Änderungen zum Herunterladen."
+    },
     "merge_remote_changes": {
       "conflict": {
         "deleted": "Dieses Objekt wurde von {user} gelöscht.",
@@ -1180,6 +1030,7 @@
       "thank_you_location": "Danke für die Verbesserung der Karte bei {where}.",
       "help_link_url": "https://wiki.openstreetmap.org/wiki/DE:FAQ#Wann_werden_meine_.C3.84nderungen_auf_den_Karten_gezeigt.3F",
       "view_on_osm": "Änderungen auf OSM anzeigen",
+      "your_changeset_id": "Deine Änderungssatz #:",
       "like_osm": "Gefällt dir OpenStreetMap? Nimm Kontakt auf:",
       "more": "Mehr",
       "events": "Veranstaltungen",
@@ -1191,18 +1042,58 @@
       "cancel": "Abbrechen"
     },
     "splash": {
+      "walkthrough": "Das Tutorial starten",
       "start": "Jetzt bearbeiten"
+    },
+    "whats_new": {
+      "dontshowagain": "Diesen Bildschirm bis zur nächsten Version verstecken"
     },
     "source_switch": {
       "lose_changes": "Es gibt ungesicherte Änderungen. Durch Wechsel des Kartenservers gehen diese verloren. Bist du sicher, dass du den Server wechseln willst?"
     },
-    "rapid_feature_inspector": {
-      "tags": "Eigenschaften"
+    "rapid_first_edit": {
+      "exploring": "Ich erkunde nur",
+      "login_with_osm": "Mit OSM einloggen"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Entfernen"
+    "rapid_inspector": {
+      "tags": "Eigenschaften",
+      "option_accept": {
+        "annotation": "Rapid-Objekt hinzugefügt.",
+        "tooltip": "Füge dieses Objekt der Karte hinzu, um mit dem Bearbeiten anzufangen."
+      },
+      "option_ignore": {
+        "label": "Dieses Objekt ignorieren",
+        "annotation": "Rapid-Objekt ignoriert.",
+        "tooltip": "Dieses Objekt ignorieren."
       }
+    },
+    "rapid_menu": {
+      "add_manage_datasets": "Datensätze hinzufügen/verwalten",
+      "center_map": "Karte hier zentrieren",
+      "worldwide": "Weltweit",
+      "no_datasets": "Keine Datensätze verfügbar.",
+      "remove": "Entfernen",
+      "add_dataset": "Datensatz hinzufügen",
+      "more_info": "Mehr Informationen",
+      "clear_filters": "Filter löschen",
+      "filter_datasets": "Datensätze filtern",
+      "any_type": "alle Typen",
+      "category": {
+        "roads": "Straßen"
+      }
+    },
+    "rapid_poweruser": {
+      "beta": "Beta-Funktion",
+      "heading": {
+        "label": "Rapid Poweruser-Funktionen",
+        "description": "für Rapid-Insider"
+      },
+      "previewDatasets": {
+        "label": "Vorschaudatensätze anzeigen"
+      }
+    },
+    "version": {
+      "whats_new": "Was ist neu in Rapid {version}"
     },
     "tag_reference": {
       "description": "Beschreibung",
@@ -1217,7 +1108,9 @@
         "out": "Kann nicht weiter herauszoomen."
       }
     },
-    "cannot_zoom": "Du kannst im aktuellen Modus nicht weiter herauszoomen.",
+    "bearing": {
+      "rotate_the_map": "Rotiere die Karte:"
+    },
     "full_screen": "Vollbildmodus ein-/ausschalten",
     "self_intersection": {
       "error": {
@@ -1233,6 +1126,7 @@
         "trap_title": "Häufige Fehler"
       },
       "keepRight": {
+        "title": "KeepRight Problem",
         "detail_description": "Beschreibung",
         "comment": "Kommentar",
         "comment_placeholder": "Gib einen Kommentar für andere Nutzer ein.",
@@ -1556,7 +1450,66 @@
       "tooltip": "Straßenfotos von Mapillary"
     },
     "mapillary_signs": {
-      "title": "Verkehrszeichen"
+      "title": "Verkehrszeichen",
+      "traffic_sign": "Verkehrsschild"
+    },
+    "mapillary_detections": {
+      "title": "Erkannte Objekte",
+      "tooltip": "In Mapillary-Bildern erkannte Objekte",
+      "construction": {
+        "barrier": {
+          "temporary": "Temporäre Barriere"
+        },
+        "flat": {
+          "driveway": "Einfahrt"
+        }
+      },
+      "marking": {
+        "discrete": {
+          "arrow": {
+            "left": "Spurmarkierung - Pfeil (Links)",
+            "right": "Fahrbahnmarkierung - Pfeil (Rechts)",
+            "split-left-or-straight": "Fahrbahnmarkierung - Pfeil (geteilt links oder geradeaus)",
+            "split-right-or-straight": "Fahrbahnmarkierung - Pfeil (geteilt rechts oder geradeaus)",
+            "straight": "Fahrbahnmarkierung - Pfeil (Geradeaus)"
+          },
+          "crosswalk-zebra": "Fahrbahnmarkierung - Zebrastreifen",
+          "give-way-row": "Fahrbahnmarkierung - Vorfahrt gewähren (Reihe)",
+          "give-way-single": "Fahrbahnmarkierung - Vorfahrt gewähren (enfach)",
+          "other-marking": "Fahrbahnmarkierung - Sonstiges",
+          "stop-line": "Fahrbahnmarkierung - Haltelinie",
+          "symbol": {
+            "bicycle": "Fahrbahnmarkierung - Symbol (Fahrrad)"
+          },
+          "text": "Fahrbahnmarkierung - Text"
+        }
+      },
+      "object": {
+        "bench": "Bank",
+        "bike-rack": "Fahrradständer",
+        "billboard": "Plakatwand",
+        "catch-basin": "Auffangbecken",
+        "cctv-camera": "Überwachungskamera",
+        "fire-hydrant": "Feuerhydrant",
+        "junction-box": "Verteilerkasten",
+        "mailbox": "Briefkasten",
+        "manhole": "Kanaldeckel",
+        "parking-meter": "Parkuhr",
+        "phone-booth": "Telefonzelle",
+        "sign": {
+          "traffic-sign": {
+            "back": "Verkehrszeichen - Rückseite",
+            "direction-front": "Verkehrszeichen - Vorderseite",
+            "front": "Verkehrszeichen - Vorderseite"
+          }
+        },
+        "street-light": "Straßenbeleuchtung",
+        "support": {
+          "pole": "Mast",
+          "traffic-sign-frame": "Verkehrszeichenmast"
+        },
+        "traffic-cone": "Verkehrskegel"
+      }
     },
     "kartaview": {
       "tooltip": "Straßenfotos von KartaView"
@@ -1592,8 +1545,10 @@
       "title": "Hilfe",
       "help": {
         "title": "Hilfe",
+        "welcome": "Willkommen zu dem {rapidicon}-Editor für [OpenStreetMap](https://www.openstreetmap.org/). Mit diesem Editor können Sie OpenStreetMap von Ihrem Webbrowser aus aktualisieren.",
         "open_data": "Deine Bearbeitungen auf dieser Karte werden für alle OpenStreetMap-Nutzerinnen öffentlich sichtbar. Du kannst Ortskenntnisse, Vor-Ort-Erhebungen, Luftbilder und Straßenfotos als Grundlage für deine Bearbeitungen verwenden. Kopieren von kommerziellen Quellen wie Google [ist streng verboten](https://www.openstreetmap.org/copyright).",
-        "before_start_h": "Bevor du anfängst"
+        "before_start_h": "Bevor du anfängst",
+        "open_source_help": "Sie können Rapid unterstützen, indem Sie [Fehler melden](https://github.com/facebook/Rapid/issues)."
       },
       "overview": {
         "title": "Überblick",
@@ -1636,7 +1591,6 @@
         "title": "Punkte",
         "intro": "*Punkte* können zum Darstellen von Objekten wie Geschäften, Restaurants oder Denkmälern benutzt werden. Sie kennzeichnen eine bestimmte Stelle und beschreiben was sich dort befindet.",
         "add_point_h": "Punkte hinzufügen",
-        "add_point": "Drück auf {point_icon} **{point}** auf der Werkzeugleiste über der Karte oder die Taste `1` um einen Punkt hinzuzufügen.",
         "move_point_h": "Punkte verschieben",
         "delete_point_h": "Punkte löschen",
         "delete_point": "Du kannst Objekte löschen, die es in der echten Welt nicht gibt. Durch das Löschen eines Objekts aus OpenStreetMap wird es aus der von allen verwendeten Karte entfernt. Du sollst dir sicher sein, dass es ein Objekt wirklich nicht gibt, bevor du es löscht."
@@ -1645,7 +1599,6 @@
         "title": "Linien",
         "intro": "*Linien* werden benutzt um Objekte wie Straßen, Eisenbahnschienen oder Flüsse darzustellen. Linien sollen in der Mitte des dargestellten Objekts gezeichnet werden.",
         "add_line_h": "Linien hinzufügen",
-        "add_line": "Drück auf {line_icon} **{line}** auf der Werkzeugleiste über der Karte oder die Taste `2` um eine Linie hinzuzufügen.",
         "add_line_finish": "Um eine Linie zu beenden, klick oder tipp nochmals auf den letzten Punkt oder drück `{return}`.",
         "modify_line_h": "Linien verändern",
         "modify_line_dragnode": "Häufig siehst du Linien, die nicht genau geformt sind, beispielsweise eine Straße, die nicht mit dem Bildmaterial zusammenpasst. Um die Form der Linie anzupassen, wähle sie aus. Alle Punkte der Linie werden als kleine Kreise angezeigt. Du kannst die Punkte an bessere Stellen ziehen.",
@@ -1664,7 +1617,6 @@
         "point_or_area_h": "Punkte oder Flächen?",
         "point_or_area": "Viele Objekte können als Punkte oder Flächen gezeichnet werden. Du sollst Gebäude und Wohngebiete - wenn möglich - als Flächen zeichnen. Platziere Punkte innerhalb eines Gebäudes um Geschäfte, Einrichtungen und andere Objekte im Gebäude darzustellen.",
         "add_area_h": "Flächen hinzufügen",
-        "add_area_command": "Drück auf {area_icon} **{area}** auf der Werkzeugleiste über der Karte oder die Taste `3` um eine Fläche hinzuzufügen.",
         "add_area_finish": "Um eine Fläche zu beenden, klick oder tipp nochmals auf den ersten oder letzten Punkt oder drück `{return}`.",
         "square_area_h": "Ecken rechtwinklig machen",
         "modify_area_h": "Flächen verändern",
@@ -1793,18 +1745,11 @@
     },
     "issues": {
       "title": "Datenprobleme",
-      "list_title": "Probleme",
-      "errors": {
-        "list_title": "Fehler"
-      },
-      "warnings": {
-        "list_title": "Warnungen"
-      },
-      "rules": {
-        "title": "Regeln"
-      },
-      "user_resolved_issues": "Durch deine Bearbeitungen gelöste Probleme",
-      "warnings_and_errors": "Warnungen und Fehler",
+      "errors": "Fehler",
+      "warnings": "Warnungen",
+      "suggestions": "Vorschläge",
+      "rules": "Regeln",
+      "resolved_tooltip": "Durch deine Bearbeitungen gelöste Probleme",
       "no_issues": {
         "message": {
           "everything": "Alles sieht gut aus",
@@ -1857,6 +1802,9 @@
         "highway-highway": {
           "reference": "Kreuzende Straßen sollten sich einen Verbindungspunkt teilen."
         }
+      },
+      "ambiguous_crossing": {
+        "no_changes": "(keine Änderungen)"
       },
       "area_as_point": {
         "message": "{feature} sollte eine Fläche sein, kein Punkt"
@@ -1937,6 +1885,10 @@
         "message": "{feature} mit Ersuchen um Verbesserung („fixme“)",
         "reference": "Eine „fixme“ Eigenschaft weist darauf hin, dass jemand um Hilfe mit einem Objekt ersucht."
       },
+      "short_road": {
+        "title": "Kurze Straße",
+        "message": "{highway} ist kürzer als 20 Meter."
+      },
       "generic_name": {
         "message": "{feature} hat den verdächtigen Namen \"{name}\"",
         "message_language": "{feature} hat den verdächtigen Namen \"{name}\" in {language}",
@@ -1962,8 +1914,6 @@
         "title": "Ungültige Formatierung",
         "tip": "Finde Eigenschaften mit unerwarteten Formaten",
         "email": {
-          "message": "{feature} hat eine ungültige E-Mail-Adresse",
-          "message_multi": "{feature} hat mehrere ungültige E-Mail-Adressen",
           "reference": "Email-Adresse muss wie \"user@example.com\" aussehen."
         }
       },
@@ -2030,6 +1980,7 @@
         "reference": "Manche Objekte sollte nicht Teil von Linien oder Flächen sein."
       },
       "private_data": {
+        "title": "Private Informationen",
         "tip": "Finde Objekt die private Informationen enthalten könnten",
         "reference": "Sensible Daten wie private Telefonnummern sollten nicht erfasst werden.",
         "contact": {
@@ -2099,6 +2050,10 @@
         },
         "address_the_concern": {
           "title": "Beschreibe deine Bedenken"
+        },
+        "set_both_as_marked": {
+          "title_use_marking": "Nutze '{marking}' Markierung",
+          "title_use_crossing": "Nutze '{crossing}'"
         },
         "connect_almost_junction": {
           "annotation": "Sehr nahe Objekte verbunden."
@@ -2495,94 +2450,173 @@
         "drag": "ziehen"
       },
       "or": "oder",
-      "browsing": {
-        "title": "Ansicht",
-        "navigation": {
-          "pan": "Karte verschieben"
+      "browsing": "Ansicht",
+      "editing": "Bearbeitung",
+      "selecting_features": "Objekte auswählen",
+      "with_features_selected": "Mit den ausgewählten Objekten",
+      "with_node_selected": "Mit dem ausgewählten Punkt",
+      "with_way_selected": "Mit ausgewähltem Weg",
+      "drawing": "Zeichnen",
+      "commands": "Befehle",
+      "help": "Hilfe",
+      "display_options": "Anzeigeoptionen",
+      "layers": "Ebenen",
+      "command": {
+        "pan": {
+          "label": "Karte verschieben"
         },
-        "help": {
-          "title": "Hilfe",
-          "help": "Hilfe ein-/ausblenden",
-          "keyboard": "Tastenkürzel ein-/ausblenden"
+        "rotate_map": {
+          "label": "Karte rotieren"
         },
-        "display_options": {
-          "title": "Anzeigeoptionen",
-          "background": "Bildmaterial-Feld ein-/ausblenden",
-          "map_data": "Kartendaten-Feld ein-/ausblenden",
-          "issues": "Datenproblem-Feld ein-/ausblenden",
-          "preferences": "Benutzereinstellungs-Feld ein-/ausblenden",
-          "wireframe": "Gittermodus ein-/ausschalten",
-          "osm_data": "OpenStreetMap Daten ein-/ausblenden",
-          "highlight_edits": "Ungesicherte Bearbeitungen hervorheben"
+        "select_one": {
+          "label": "Einzelnes Objekt auswählen"
         },
-        "selecting": {
-          "title": "Objekte auswählen",
-          "select_one": "Einzelnes Objekt auswählen",
-          "select_multi": "Mehrere Objekte auswählen",
-          "lasso": "Zieh ein Auswahl-Lasso um die Objekte herum",
-          "search": "Finde Objekte die zum Suchtext passen"
+        "select_multi": {
+          "label": "Mehrere Objekte auswählen"
         },
-        "with_selected": {
-          "title": "Mit den ausgewählten Objekten",
-          "edit_menu": "Bearbeitungs-Menü ein-/ausblenden"
+        "lasso": {
+          "label": "Zieh ein Auswahl-Lasso um die Objekte herum"
         },
-        "vertex_selected": {
-          "title": "Mit dem ausgewählten Punkt",
-          "first": "Erster Punkt",
-          "last": "Letzter Punkt",
-          "change_parent": "Linie/Fläche wechseln",
-          "parent": "Zugehörigen Weg auswählen"
+        "edit_menu": {
+          "label": "Bearbeitungs-Menü ein-/ausblenden"
         },
-        "way_selected": {
-          "title": "Mit ausgewähltem Weg",
-          "child": "Enthaltene Punkte auswählen"
-        }
-      },
-      "editing": {
-        "title": "Bearbeitung",
-        "drawing": {
-          "title": "Zeichnen",
-          "add_point": "'Neuen Punkt hinzufügen' (Modus)",
-          "add_line": "'Neue Linie hinzufügen' (Modus)",
-          "add_area": "'Neue Fläche hinzufügen' (Modus)",
-          "add_note": "'Neuen Hinweis hinzufügen' (Modus)",
-          "place_point": "Punkt oder Hinweis platzieren",
-          "disable_snap": "Festhalten verhindert Vereinigung",
-          "stop_line": "Zeichnen der Linie oder Fläche beenden"
+        "first_node": {
+          "label": "Erster Punkt"
         },
-        "commands": {
-          "title": "Befehle",
-          "copy": "Kopieren der ausgewählten Objekte",
-          "paste": "Einfügen der kopierten Objekte",
-          "undo": "Rückgängig machen der letzten Bearbeitung",
-          "redo": "Wiederherstellen der letzten Bearbeitung",
-          "save": "Speichern der Änderungen"
+        "last_node": {
+          "label": "Letzter Punkt"
         },
-        "operations": {
-          "continue_line": "Fortsetzen einer Linie am ausgewählten Endpunkt",
-          "merge": "Vereinigen der ausgewählten Objekte",
-          "disconnect": "Trennen der ausgewählten Objekte",
-          "extract": "Entnimm einen Punkt von einem Objekt",
-          "split": "Teile Objekte an den ausgewählten Punkten.",
-          "reverse": "Richtung der ausgewählten Objekte umdrehen",
-          "move": "Verschieben der ausgewählten Objekte",
-          "rotate": "Drehe die ausgewählten Objekte",
-          "orthogonalize": "Ecken rechtwinklig machen",
-          "straighten": "Begradigen der Linie oder der Punkte",
-          "circularize": "Kreisförmig machen der Linie oder Fläche",
-          "reflect_long": "Diese Objekte an der langen Achse spiegeln.",
-          "reflect_short": "Diese Objekte an der kurzen Achse spiegeln.",
-          "delete": "Lösche die ausgewählten Objekte"
-        }
-      },
-      "tools": {
-        "title": "Werkzeuge",
-        "info": {
-          "all": "Alle Informations-Felder ein-/ausblenden",
-          "background": "Bildmaterial-Feld ein-/ausblenden",
-          "history": "Chronik-Feld ein-/ausblenden",
-          "location": "Lage-Feld ein-/ausblenden",
-          "measurement": "Maße-Feld ein-/ausblenden"
+        "change_parent": {
+          "label": "Linie/Fläche wechseln"
+        },
+        "select_parent": {
+          "label": "Zugehörigen Weg auswählen"
+        },
+        "select_children": {
+          "label": "Enthaltene Punkte auswählen"
+        },
+        "ignore_feature": {
+          "label": "Ignoriere das Objekt"
+        },
+        "follow_sequence": {
+          "label": "Zum nächsten/vorherigen Foto der Sequenz springen"
+        },
+        "add_point": {
+          "label": "'Neuen Punkt hinzufügen' (Modus)"
+        },
+        "add_line": {
+          "label": "'Neue Linie hinzufügen' (Modus)"
+        },
+        "add_area": {
+          "label": "'Neue Fläche hinzufügen' (Modus)"
+        },
+        "add_note": {
+          "label": "'Neuen Hinweis hinzufügen' (Modus)"
+        },
+        "place_point": {
+          "label": "Punkt oder Hinweis platzieren"
+        },
+        "disable_snap": {
+          "label": "Festhalten verhindert Vereinigung"
+        },
+        "stop_line": {
+          "label": "Zeichnen der Linie oder Fläche beenden"
+        },
+        "copy": {
+          "label": "Kopieren der ausgewählten Objekte"
+        },
+        "paste": {
+          "label": "Einfügen der kopierten Objekte"
+        },
+        "undo": {
+          "label": "Rückgängig machen der letzten Bearbeitung"
+        },
+        "redo": {
+          "label": "Wiederherstellen der letzten Bearbeitung"
+        },
+        "save": {
+          "label": "Speichern der Änderungen"
+        },
+        "find": {
+          "label": "Finde Objekte die zum Suchtext passen"
+        },
+        "continue_line": {
+          "label": "Fortsetzen einer Linie am ausgewählten Endpunkt"
+        },
+        "merge": {
+          "label": "Vereinigen der ausgewählten Objekte"
+        },
+        "disconnect": {
+          "label": "Trennen der ausgewählten Objekte"
+        },
+        "extract": {
+          "label": "Entnimm einen Punkt von einem Objekt"
+        },
+        "split": {
+          "label": "Teile Objekte an den ausgewählten Punkten."
+        },
+        "reverse": {
+          "label": "Richtung der ausgewählten Objekte umdrehen"
+        },
+        "move": {
+          "label": "Verschieben der ausgewählten Objekte"
+        },
+        "rotate": {
+          "label": "Drehe die ausgewählten Objekte"
+        },
+        "orthogonalize": {
+          "label": "Ecken rechtwinklig machen"
+        },
+        "straighten": {
+          "label": "Begradigen der Linie oder der Punkte"
+        },
+        "circularize": {
+          "label": "Kreisförmig machen der Linie oder Fläche"
+        },
+        "reflect_long": {
+          "label": "Diese Objekte an der langen Achse spiegeln."
+        },
+        "reflect_short": {
+          "label": "Diese Objekte an der kurzen Achse spiegeln."
+        },
+        "delete": {
+          "label": "Lösche die ausgewählten Objekte"
+        },
+        "toggle_background": {
+          "label": "Bildmaterial-Feld ein-/ausblenden"
+        },
+        "toggle_map_data": {
+          "label": "Kartendaten-Feld ein-/ausblenden"
+        },
+        "toggle_issues": {
+          "label": "Datenproblem-Feld ein-/ausblenden"
+        },
+        "toggle_preferences": {
+          "label": "Benutzereinstellungs-Feld ein-/ausblenden"
+        },
+        "highlight_edits": {
+          "label": "Ungesicherte Bearbeitungen hervorheben"
+        },
+        "keyboard_shortcuts": {
+          "label": "Tastenkürzel ein-/ausblenden"
+        },
+        "toggle_osm_data": {
+          "label": "OpenStreetMap Daten ein-/ausblenden"
+        },
+        "toggle_all_cards": {
+          "label": "Alle Informations-Felder ein-/ausblenden"
+        },
+        "toggle_background_card": {
+          "label": "Bildmaterial-Feld ein-/ausblenden"
+        },
+        "toggle_history_card": {
+          "label": "Chronik-Feld ein-/ausblenden"
+        },
+        "toggle_location_card": {
+          "label": "Lage-Feld ein-/ausblenden"
+        },
+        "toggle_measurement_card": {
+          "label": "Maße-Feld ein-/ausblenden"
         }
       }
     },
@@ -2708,7 +2742,6 @@
       "gmh": "Mittelhochdeutsch",
       "gn": "Guaraní",
       "goh": "Althochdeutsch",
-      "gom": "Goa-Konkani",
       "gor": "Mongondou",
       "got": "Gotisch",
       "grc": "Altgriechisch",
@@ -2721,6 +2754,7 @@
       "haw": "Hawaiisch",
       "hax": "Süd-Haida",
       "he": "Hebräisch",
+      "hi-Latn": "Hindi (lateinisch)",
       "hif": "Fidschi-Hindi",
       "hit": "Hethitisch",
       "hmn": "Miao",
@@ -2937,6 +2971,7 @@
       "vi": "Vietnamesisch",
       "vls": "Westflämisch",
       "vmf": "Mainfränkisch",
+      "vmw": "Makua",
       "vot": "Wotisch",
       "wa": "Wallonisch",
       "wae": "Walliserdeutsch",
@@ -2967,7 +3002,7 @@
       "Beng": "Bengalisch",
       "Blis": "Bliss-Symbole",
       "Bugi": "Buginesisch",
-      "Cans": "UCAS",
+      "Cans": "Kanadische Aborigine-Silbenschrift",
       "Cari": "Karisch",
       "Copt": "Koptisch",
       "Cprt": "Zypriotisch",
@@ -3051,7 +3086,7 @@
       "Zmth": "Mathematische Notation",
       "Zsym": "Symbole",
       "Zxxx": "Schriftlos",
-      "Zyyy": "Verbreitet",
+      "Zyyy": "Unbestimmt",
       "Zzzz": "Unbekannte Schrift"
     }
   }

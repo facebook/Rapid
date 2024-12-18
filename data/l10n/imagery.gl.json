@@ -11,10 +11,23 @@
         "description": "Imaxes satelitais post-procesadas do Sentinel",
         "name": "eox.at 2018 sen nubes"
       },
+      "EOXAT2019CLOUDLESS": {
+        "description": "Imaxes satelitais post-procesadas do Sentinel"
+      },
+      "EOXAT2020CLOUDLESS": {
+        "description": "Imaxes satelitais post-procesadas do Sentinel"
+      },
+      "EOXAT2021CLOUDLESS": {
+        "description": "Imaxes satelitais post-procesadas do Sentinel"
+      },
+      "EOXAT2022CLOUDLESS": {
+        "description": "Imaxes satelitais post-procesadas do Sentinel"
+      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "Termos e opinións"
         },
+        "description": "Imaxes mundiais do Esri",
         "name": "Imaxes mundiais do Esri"
       },
       "EsriWorldImageryClarity": {
@@ -90,12 +103,29 @@
         "description": "Amarelo = Datos do mapa de dominio público do censo dos EE.UU. Vermello = Datos non atopados no OpenStreetMap",
         "name": "Estradas TIGER 2019"
       },
+      "US-TIGER-Roads-2020": {
+        "description": "Amarelo = Datos do mapa de dominio público do censo dos EE.UU. Vermello = Datos non atopados no OpenStreetMap"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Amarelo = Datos do mapa de dominio público do censo dos EE.UU. Vermello = Datos non atopados no OpenStreetMap"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Amarelo = Datos do mapa de dominio público do censo dos EE.UU. Vermello = Datos non atopados no OpenStreetMap"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Amarelo = Datos do mapa de dominio público do censo dos EE.UU. Vermello = Datos non atopados no OpenStreetMap"
+      },
       "USDA-NAIP": {
         "name": "Programa Nacional de Imaxes de Agricultura"
       },
       "US_Forest_Service_roads_overlay": {
         "description": "Estrada: marco verde = sen clasificar. marco marrón = pista. Superficie: grava = recheo marrón claro, asfalto = negro, pavimentado = gris, terra = branco, formigón = azul, herba/pasto = verde. Estacional = barras brancas",
         "name": "Sobreposición de estradas forestais dos EE.UU."
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Feito por medio do Brussels UrbIS® © - Distribución e Copyright CIRB"
+        }
       },
       "UrbISOrtho2016": {
         "attribution": {
@@ -118,9 +148,19 @@
         },
         "name": "UrbIS-Ortofoto 2019"
       },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Feito por medio do Brussels UrbIS® © - Distribución e Copyright CIRB"
+        }
+      },
       "UrbisAdmFR": {
         "attribution": {
           "text": "Feito por medio do Brussels UrbIS®© - Distribución e Copyright CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
+        "attribution": {
+          "text": "Feito por medio do Brussels UrbIS® © - Distribución e Copyright CIRB"
         }
       },
       "UrbisAdmNL": {
@@ -183,7 +223,41 @@
         "description": "O mapa da cidade é un mapa xeral que describe Gotemburgo. Contén información xeral acerca dos terreos, comunicacións, hidrografía, edificios, números de enderezo, nomes de rúas, división administrativa e outros textos orientativos.",
         "name": "Mapa da cidade de Gotemburgo"
       },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© Concello de Gotemburgo, CC0"
+        },
+        "description": "Servizo de mapa web que presenta asombreados e pendentes baseados no modelo de elevación do 2017 para a cidade de Gotemburgo. Resolución 0,5 metros por píxel.",
+        "name": "Asombreado de Gotemburgo"
+      },
       "gothenburg-ortho": {
+        "attribution": {
+          "text": "© Concello de Gotemburgo, CC0"
+        },
+        "description": "Ortofoto para o concello de Gotemburgo",
+        "name": "Ortofoto de Gotemburgo 2015"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© Concello de Gotemburgo, CC0"
+        },
+        "description": "Ortofoto para o concello de Gotemburgo",
+        "name": "Ortofoto de Gotemburgo 2017"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© Concello de Gotemburgo, CC0"
+        },
+        "description": "Ortofoto para o concello de Gotemburgo",
+        "name": "Ortofoto de Gotemburgo 2019"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© Concello de Gotemburgo, CC0"
+        },
+        "description": "Ortofoto para o concello de Gotemburgo"
+      },
+      "gothenburg-ortho_latest": {
         "attribution": {
           "text": "© Concello de Gotemburgo, CC0"
         },
@@ -230,6 +304,13 @@
         },
         "description": "Ortofotos de áreas urbás do municipio de Kalmar 2018.",
         "name": "Ortofotos Urbás Kalmar 2018"
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© Concello de Kalmar"
+        },
+        "description": "Ortofotos de áreas urbanas do concello de Kalmar 2020",
+        "name": "Ortofoto urbana de Kalmar 2020"
       },
       "kelkkareitit": {
         "description": "Kelkkareitit.fi camiños de motoneve do OSM (cobertura nórdica)",
@@ -369,6 +450,11 @@
       "trafikverket-vagnat-option": {
         "description": "Rede de estradas suecas NVDB con varias opcións de capas de mapas",
         "name": "Opcións da rede de estradas de Trafikverket"
+      },
+      "wroclaw-orto2015": {
+        "attribution": {
+          "text": "Concello de Wrocław"
+        }
       },
       "wroclaw-orto2018": {
         "attribution": {

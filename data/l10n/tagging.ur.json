@@ -1,6 +1,11 @@
 {
   "ur": {
     "presets": {
+      "categories": {
+        "category-path": {
+          "name": "راستے"
+        }
+      },
       "fields": {
         "access": {
           "label": "داخلہ برائے:",
@@ -9,13 +14,17 @@
               "description": "مقامی اشاروں یا خاص مقامی قوانین کی بنیاد پر رسائی کی اجازت"
             },
             "destination": {
-              "description": "محض منزل کی رسائی تک کیلئے اجازت"
+              "description": "محض منزل کی رسائی تک کیلئے اجازت",
+              "title": "منزل"
             },
             "no": {
               "description": "سرعام رسائی ممنوعہ ہے"
             },
             "permit": {
               "description": "رسائی بذریعہ درست اجازت نامہ"
+            },
+            "unknown": {
+              "title": "نامعلوم"
             },
             "yes": {
               "description": "رسائی بذریعہ قانون، رسائی برائے راہ"
@@ -30,8 +39,15 @@
             "motor_vehicle": "گاڑیاں"
           }
         },
+        "access_aisle": {
+          "label": "قسم"
+        },
         "access_simple": {
-          "label": "داخلہ برائے:"
+          "label": "داخلہ برائے:",
+          "options": {
+            "unknown": "نامعلوم"
+          },
+          "terms": "رسائی برائے:"
         },
         "addr/interpolation": {
           "label": "قسم",
@@ -65,6 +81,12 @@
             "suburb": "مضافات"
           }
         },
+        "advertising": {
+          "label": "قسم"
+        },
+        "aerialway": {
+          "label": "قسم"
+        },
         "aerialway/access": {
           "options": {
             "entry": "داخلہ",
@@ -74,11 +96,41 @@
         "aerialway/capacity": {
           "label": "گنجائش (فی گھنٹہ)"
         },
+        "aerialway/summer/access": {
+          "options": {
+            "entry": "داخلہ",
+            "exit": "خارج"
+          }
+        },
+        "aeroway": {
+          "label": "قسم"
+        },
+        "agrarian": {
+          "label": "اشیا"
+        },
+        "amenity": {
+          "label": "قسم"
+        },
         "archaeological_site": {
+          "label": "قسم",
           "options": {
             "baths": "حمامات",
             "city": "تاریخی شہر",
             "settlement": "تاریخی بستی"
+          }
+        },
+        "area/highway": {
+          "label": "قسم"
+        },
+        "armrest": {
+          "options": {
+            "undefined": "نامعلوم"
+          }
+        },
+        "artwork_type": {
+          "label": "قسم",
+          "options": {
+            "statue": "مجسمہ"
           }
         },
         "atm": {
@@ -88,37 +140,94 @@
           "label": "قسم"
         },
         "barrier": {
+          "label": "قسم",
           "options": {
             "toll_booth": "ٹول پلازہ",
             "wall": "دیوار"
           }
+        },
+        "barrier_planter": {
+          "options": {
+            "planter": "جی ہاں",
+            "undefined": "نہیں"
+          }
+        },
+        "basin": {
+          "label": "قسم"
         },
         "bath/type": {
           "options": {
             "lake": "جھیل"
           }
         },
+        "bicycle_parking": {
+          "label": "قسم"
+        },
+        "bicycle_road": {
+          "options": {
+            "undefined": "نہیں",
+            "yes": "جی ہاں"
+          }
+        },
+        "blind": {
+          "options": {
+            "no": "نہیں",
+            "yes": "جی ہاں"
+          }
+        },
         "board_type": {
+          "label": "قسم",
           "options": {
             "history": "تاریخ",
             "plants": "نباتات"
           }
         },
+        "bollard": {
+          "label": "قسم"
+        },
+        "boules": {
+          "label": "قسم"
+        },
+        "boundary": {
+          "label": "قسم"
+        },
+        "bridge": {
+          "label": "قسم"
+        },
+        "bridge/support": {
+          "label": "قسم"
+        },
+        "bridge_combo": {
+          "label": "قسم"
+        },
         "building": {
-          "label": "عمارت",
+          "label": "مکان",
           "options": {
             "bungalow": "بنگلہ",
             "church": "گرجا گھر",
+            "college": "کالج عمارت",
+            "construction": "زیر تعمیر عمارت",
+            "hospital": "ہسپتال عمارت",
             "house": "گھر",
+            "hut": "جھونپڑی",
+            "industrial": "صنعتی عمارت",
             "mosque": "مسجد عمارت",
             "office": "دفاتر عمارت",
             "roof": "چھت",
+            "school": "اسکول عمارت",
             "stable": "اسطبل",
-            "synagogue": "یہودی مسجد"
+            "synagogue": "یہودی مسجد",
+            "train_station": "ریل اڈہ عمارت"
           }
         },
         "building/levels": {
           "label": "منزلیں"
+        },
+        "bunker_type": {
+          "label": "قسم"
+        },
+        "camp_site": {
+          "label": "قسم"
         },
         "capacity": {
           "label": "گنجائش"
@@ -127,6 +236,7 @@
           "label": "کل گنجائس"
         },
         "castle_type": {
+          "label": "قسم",
           "options": {
             "palace": "محل"
           }
@@ -136,12 +246,48 @@
         },
         "clothes": {
           "options": {
+            "hats": "ٹوپیاں",
             "socks": "جرابیں"
           }
         },
-        "craft": {
+        "club": {
+          "label": "قسم"
+        },
+        "collector": {
           "options": {
+            "coins": "سکے"
+          }
+        },
+        "colour": {
+          "label": "رنگ"
+        },
+        "community_centre": {
+          "label": "قسم"
+        },
+        "construction": {
+          "label": "قسم"
+        },
+        "consulate": {
+          "label": "قسم"
+        },
+        "country": {
+          "label": "ملک"
+        },
+        "covered_no": {
+          "options": {
+            "no": "نہیں",
+            "yes": "جی ہاں"
+          }
+        },
+        "craft": {
+          "label": "قسم",
+          "options": {
+            "blacksmith": "لوہار",
+            "builder": "مستری",
+            "carpenter": "بڑھئی",
             "gardener": "مالی",
+            "jeweller": "جوہری",
+            "shoemaker": "موچی",
             "tailor": "درزی"
           }
         },
@@ -153,23 +299,49 @@
             "grass": "گھاس",
             "potato": "آلو",
             "rice": "چاول",
+            "sugarcane": "گنا",
             "tea": "پتی",
             "tobacco": "تنباکو",
             "vegetable": "سبزی",
             "wheat": "گندم"
           }
         },
+        "crossing": {
+          "label": "قسم"
+        },
+        "crossing/barrier": {
+          "options": {
+            "no": "نہیں",
+            "yes": "جی ہاں"
+          }
+        },
+        "crossing_raised": {
+          "options": {
+            "table": "جی ہاں",
+            "undefined": "نہیں"
+          }
+        },
         "cuisine": {
           "options": {
+            "african": "افریقی",
             "american": "امریکی",
+            "arab": "عرب",
+            "argentinian": "ارجنٹائنی",
             "asian": "ایشیائی",
+            "balkan": "بلقانی",
+            "breakfast": "ناشتا",
             "burger": "برگر",
             "cake": "کیک",
             "chicken": "مرغ",
             "chinese": "چینی",
+            "curry": "سالن",
             "dessert": "میٹھا",
             "donut": "ڈونٹ",
+            "european": "یورپی",
+            "filipino": "فلپائنی",
+            "fish": "مچھلی",
             "french": "فرانسیسی",
+            "fries": "چپس",
             "german": "جرمن",
             "greek": "یونانی",
             "indian": "بھارتی",
@@ -182,19 +354,27 @@
             "lebanese": "لبنانی",
             "malaysian": "ملائیشیائی",
             "pasta": "پاستا",
+            "persian": "فارسی",
             "pizza": "پیزا",
             "polish": "پولش",
             "portuguese": "پرتگالی",
+            "regional": "علاقائی",
             "russian": "روسی",
             "salad": "سالاد",
+            "shawarma": "شوارما",
             "spanish": "ہسپانوی",
             "sushi": "سوشی",
             "taiwanese": "تائوانی",
+            "tea": "چائے",
             "thai": "تھائی",
             "turkish": "ترکش",
             "ukrainian": "یوکرائنی",
-            "vietnamese": "ویتنامی"
+            "vietnamese": "ویتنامی",
+            "western": "مغربی"
           }
+        },
+        "cutting": {
+          "label": "قسم"
         },
         "date": {
           "label": "تاریخ"
@@ -202,6 +382,14 @@
         "denomination": {
           "label": "فرقہ",
           "terms": "ذات"
+        },
+        "departures_board": {
+          "options": {
+            "yes": "جی ہاں"
+          }
+        },
+        "depot": {
+          "label": "قسم"
         },
         "description": {
           "label": "تفصیل"
@@ -217,59 +405,175 @@
             "vegetarian": "سبز"
           }
         },
+        "diplomatic": {
+          "label": "قسم",
+          "options": {
+            "embassy": "صفارت خانہ"
+          }
+        },
         "distance": {
           "label": "فاصلہ"
+        },
+        "disused/amenity": {
+          "label": "قسم"
+        },
+        "disused/railway": {
+          "label": "قسم"
+        },
+        "disused/shop": {
+          "label": "قسم"
+        },
+        "dock": {
+          "label": "قسم"
+        },
+        "door_type": {
+          "label": "قسم"
+        },
+        "drink_multi": {
+          "label": "مشروب"
+        },
+        "electrified": {
+          "options": {
+            "no": "نہیں"
+          }
         },
         "email": {
           "label": "ای میل",
           "placeholder": "misaal@misaal.com"
         },
+        "embankment": {
+          "label": "قسم"
+        },
         "embassy": {
+          "label": "قسم",
           "options": {
             "yes": "سفارت خانہ"
+          }
+        },
+        "emergency_combo": {
+          "label": "قسم"
+        },
+        "emergency_ward_entrance": {
+          "label": "قسم"
+        },
+        "enforcement": {
+          "label": "قسم"
+        },
+        "entrance": {
+          "label": "قسم",
+          "options": {
+            "exit": "صرف باہر جانے کا۔ راستہ",
+            "staircase": "سیڑھیاں"
           }
         },
         "fax": {
           "label": "فیکس"
         },
+        "fence_type": {
+          "label": "قسم"
+        },
         "fire_hydrant/type": {
+          "label": "شکل",
           "options": {
             "wall": "دیوار"
           }
         },
+        "fire_mains": {
+          "options": {
+            "no": "نہیں"
+          }
+        },
+        "fire_service_inlet": {
+          "label": "شکل",
+          "options": {
+            "wall": "دیوار"
+          }
+        },
+        "fire_sprinkler": {
+          "options": {
+            "no": "نہیں"
+          }
+        },
+        "flashing_lights": {
+          "options": {
+            "no": "نہیں",
+            "yes": "جی ہاں"
+          }
+        },
+        "ford": {
+          "label": "قسم"
+        },
+        "fountain": {
+          "label": "قسم"
+        },
         "fuel": {
           "label": "تیل"
+        },
+        "fuel/fuel_multi": {
+          "options": {
+            "diesel": "ڈیزل"
+          }
         },
         "gender": {
           "label": "جنس",
           "options": {
             "female": "عورت",
-            "male": "مرد"
-          }
+            "male": "مرد",
+            "unisex": "ہمہ جنسی"
+          },
+          "placeholder": "نامعلوم"
         },
         "generator/source": {
           "options": {
             "coal": "کوئلہ",
             "diesel": "ڈیزل",
-            "oil": "تیل"
+            "oil": "تیل",
+            "wind": "ہوا"
           }
         },
+        "generator/type": {
+          "label": "قسم"
+        },
+        "government": {
+          "label": "قسم"
+        },
+        "guest_house": {
+          "label": "قسم"
+        },
         "healthcare": {
+          "label": "قسم",
           "options": {
-            "hospital": "ہسپتال"
+            "doctor": "ڈاکٹر",
+            "hospital": "ہسپتال",
+            "pharmacy": "دواخانہ"
           }
         },
         "healthcare/speciality": {
           "options": {
+            "allergology": "الرجی و دمہ",
+            "biology": "حیاتیات",
+            "cardiology": "قلبیات",
+            "homeopathy": " علاج بالمثل",
+            "pathology": " امراضیات",
             "vaccination": "ٹیکا کاری"
           }
         },
+        "highway": {
+          "label": "قسم"
+        },
         "historic": {
+          "label": "قسم",
           "options": {
             "castle": "قلعہ",
             "church": "گرجا",
-            "railway": "ریلوے"
+            "city_gate": "شہر کا دروازہ",
+            "railway": "ریلوے",
+            "ruins": "کھنڈرات",
+            "tomb": "مقبرہ"
           }
+        },
+        "holding_position/type": {
+          "label": "قسم"
         },
         "horse_riding": {
           "options": {
@@ -283,23 +587,91 @@
         "image": {
           "label": "تصویر"
         },
+        "indoor_type": {
+          "label": "قسم"
+        },
+        "industrial": {
+          "label": "قسم"
+        },
+        "information": {
+          "label": "قسم"
+        },
+        "intermittent": {
+          "label": "رواں",
+          "terms": "رواں شدہ"
+        },
         "internet_access": {
           "options": {
             "no": "نہیں",
+            "wired": "بذریعہ تار",
             "yes": "جی ہاں"
           }
+        },
+        "junction/ref_oneway": {
+          "label": "جنکشن نمبر"
         },
         "junction_line": {
           "options": {
             "roundabout": "چورنگی"
           }
         },
+        "kerb": {
+          "options": {
+            "no": {
+              "title": "نہیں"
+            },
+            "yes": {
+              "title": "جی ہاں"
+            }
+          }
+        },
+        "kerb/kerb_barrier": {
+          "label": "قسم"
+        },
+        "lamp_type": {
+          "label": "قسم"
+        },
+        "landuse": {
+          "label": "قسم"
+        },
+        "lanes": {
+          "label": "پتی",
+          "terms": "پتّی,پتیاں,پتّیاں,پٹی,پٹّی,پٹیاں,پٹّیاں"
+        },
         "language_multi": {
           "label": "زبانیں"
+        },
+        "leisure": {
+          "label": "قسم"
+        },
+        "level_semi": {
+          "label": "منزلیں"
+        },
+        "liaison": {
+          "label": "قسم"
+        },
+        "lifeguard": {
+          "label": "قسم"
+        },
+        "lift_gate/type": {
+          "label": "قسم"
+        },
+        "man_made": {
+          "label": "قسم"
+        },
+        "manhole": {
+          "label": "قسم"
+        },
+        "map_type": {
+          "label": "قسم"
+        },
+        "marker": {
+          "label": "قسم"
         },
         "material": {
           "options": {
             "brick": "اینٹ",
+            "bronze": "کانسی",
             "glass": "شیشہ",
             "iron": "لوہا",
             "plastic": "پلاسٹک",
@@ -316,18 +688,56 @@
           "label": "حدِ رفتار برائے LTV"
         },
         "memorial": {
+          "label": "قسم",
           "options": {
             "statue": "مجسمہ"
           }
+        },
+        "military_service": {
+          "options": {
+            "army": "فوج"
+          }
+        },
+        "minspeed": {
+          "label": "اقلِ حدِ رفتار"
+        },
+        "mooring": {
+          "options": {
+            "no": "نہیں",
+            "yes": "جی ہاں"
+          }
+        },
+        "museum": {
+          "label": "قسم"
         },
         "name": {
           "label": "نام",
           "placeholder": "سرعام نام (جو ہو)"
         },
+        "network_bicycle": {
+          "options": {
+            "rcn": "علاقائی"
+          }
+        },
+        "network_foot": {
+          "options": {
+            "rwn": "علاقائی"
+          }
+        },
+        "network_horse": {
+          "options": {
+            "rhn": "علاقائی"
+          }
+        },
+        "note": {
+          "label": "نوٹ"
+        },
         "office": {
+          "label": "قسم",
           "options": {
             "financial": "مالی دفتر",
             "government": "سرکاری دفتر",
+            "insurance": "بیمہ دفتر",
             "political_party": "سیاسی جماعت کا دفتر",
             "religion": "دینی دفتر"
           }
@@ -345,13 +755,41 @@
             "yes": "جی ہاں"
           }
         },
+        "opening_hours": {
+          "label": "اوقات",
+          "placeholder": "نامعلوم"
+        },
         "operator": {
           "label": "انتظامیہ"
+        },
+        "parcel_pickup": {
+          "options": {
+            "no": "نہیں",
+            "yes": "جی ہاں"
+          }
+        },
+        "parking": {
+          "label": "قسم",
+          "options": {
+            "surface": "فرش"
+          }
+        },
+        "parking/side/parking": {
+          "options": {
+            "no": "نہیں"
+          }
+        },
+        "parking_entrance": {
+          "label": "قسم"
+        },
+        "parking_space": {
+          "label": "قسم"
         },
         "payment_multi": {
           "options": {
             "alipay": "ایلی پئے",
             "apple_pay": "ایپل پئے",
+            "coins": "سکے",
             "google_pay": "گوگل پئے",
             "paypal": "پئے پال",
             "visa": "ویزہ",
@@ -363,24 +801,81 @@
         "phone": {
           "label": "ٹیلی فون"
         },
+        "pipeline": {
+          "label": "قسم"
+        },
         "piste/difficulty": {
           "label": "دشواری"
         },
+        "piste/type": {
+          "label": "قسم"
+        },
+        "place": {
+          "label": "قسم"
+        },
         "plant/output": {
           "options": {
-            "electricity": "بجلی"
+            "cold_air": "ٹھنڈی ہوا",
+            "cold_water": "ٹھنڈا پانی",
+            "electricity": "بجلی",
+            "hot_air": "گرم ہوا",
+            "hot_water": "گرم پانی",
+            "steam": "بھاپ"
           }
+        },
+        "playground": {
+          "label": "قسم"
         },
         "population": {
           "label": "کل آبادی"
         },
+        "post_box/type": {
+          "label": "قسم"
+        },
+        "power": {
+          "label": "قسم"
+        },
         "product": {
           "label": "اشیا"
         },
+        "public_bookcase/type": {
+          "label": "قسم"
+        },
+        "pump": {
+          "options": {
+            "yes": "جی ہاں"
+          }
+        },
+        "railway": {
+          "label": "قسم"
+        },
+        "ramp": {
+          "options": {
+            "no": "نہیں",
+            "yes": "جی ہاں"
+          }
+        },
         "recycling_accepts": {
           "options": {
+            "paper": "کاغذ",
+            "plastic": "پلاسٹک",
             "shoes": "جوتے"
           }
+        },
+        "recycling_type": {
+          "label": "قسم"
+        },
+        "ref_highway_junction": {
+          "label": "جنکشن نمبر"
+        },
+        "ref_platform": {
+          "label": "چبوترہ نمبر"
+        },
+        "ref_room_number": {
+          "label": "کمرہ نمبر"
+        },
+        "relation": {
+          "label": "قسم"
         },
         "religion": {
           "label": "مذہب",
@@ -397,14 +892,46 @@
           },
           "terms": "دین, دھرم"
         },
+        "residential": {
+          "label": "قسم"
+        },
+        "resort": {
+          "label": "قسم"
+        },
         "resource": {
           "options": {
             "coal": "کوئلہ",
             "sand": "ریت"
           }
         },
+        "restriction": {
+          "label": "قسم"
+        },
+        "roller_coaster/track": {
+          "label": "قسم"
+        },
         "roof/colour": {
           "label": "چھت کا رنگ"
+        },
+        "room": {
+          "label": "قسم"
+        },
+        "route": {
+          "label": "قسم"
+        },
+        "route_master": {
+          "label": "قسم"
+        },
+        "royal_cypher-GB": {
+          "options": {
+            "no": "نہیں"
+          }
+        },
+        "ruins": {
+          "label": "قسم"
+        },
+        "seamark/beacon_isolated_danger/shape": {
+          "label": "شکل"
         },
         "seamark/beacon_lateral/colour": {
           "label": "رنگ",
@@ -413,26 +940,74 @@
             "red": "سرخ"
           }
         },
+        "seamark/beacon_lateral/shape": {
+          "label": "شکل"
+        },
         "seamark/buoy_lateral/colour": {
           "label": "رنگ",
           "options": {
             "green": "سبز",
+            "red": "سرخ",
             "white": "صفید",
             "yellow": "پیلا"
           }
         },
+        "seamark/buoy_lateral/shape": {
+          "label": "شکل"
+        },
+        "seamark/harbour/category_marina": {
+          "options": {
+            "marina": "جی ہاں",
+            "marina_no_facilities": "نہیں"
+          }
+        },
+        "second_hand": {
+          "options": {
+            "no": "نہیں",
+            "yes": "جی ہاں"
+          }
+        },
+        "service": {
+          "label": "قسم"
+        },
         "service_times": {
           "label": "اوقاتِ عبادات"
+        },
+        "shelter_type": {
+          "label": "قسم"
+        },
+        "shoes": {
+          "label": "جوتے"
+        },
+        "shop": {
+          "label": "قسم"
+        },
+        "siren/type": {
+          "label": "قسم"
+        },
+        "site": {
+          "label": "قسم"
         },
         "smoking": {
           "options": {
             "no": "تمباکو نوشی منع ہے"
           }
         },
+        "social_facility": {
+          "label": "قسم"
+        },
+        "social_facility_for": {
+          "options": {
+            "refugee": "مہجارین",
+            "senior": "بزرگان",
+            "woman": "مستورات"
+          }
+        },
         "source": {
           "label": "ذرائع"
         },
         "sport": {
+          "label": "کھیل",
           "options": {
             "badminton": "بیڈمنٹن",
             "baseball": "بیس بال",
@@ -461,6 +1036,18 @@
         "start_date": {
           "label": "تاریخِ آغاز"
         },
+        "stile": {
+          "label": "قسم"
+        },
+        "street_cabinet": {
+          "label": "قسم"
+        },
+        "stroller": {
+          "options": {
+            "no": "نہیں",
+            "yes": "جی ہاں"
+          }
+        },
         "structure": {
           "label": "ساخت",
           "options": {
@@ -472,21 +1059,35 @@
           "label": "ساخت"
         },
         "structure_waterway": {
-          "label": "ساخت"
+          "label": "ساخت",
+          "placeholder": "نامعلوم"
+        },
+        "studio": {
+          "label": "قسم"
         },
         "substance": {
           "options": {
+            "fuel": "تیل",
+            "hot_water": "گرم پانی",
             "rainwater": "بارش کا پانی",
             "water": "پینے والا پانی"
           }
         },
+        "substation": {
+          "label": "قسم"
+        },
+        "substation_pipeline": {
+          "label": "قسم"
+        },
         "surface": {
+          "label": "فرش",
           "options": {
             "dirt": "مٹی",
             "grass": "گھاس",
             "sand": "ریت",
             "wood": "لکڑ"
-          }
+          },
+          "terms": "سطح"
         },
         "surveillance/type": {
           "options": {
@@ -497,6 +1098,24 @@
         "survey_point/structure": {
           "label": "ساخت"
         },
+        "swimming_pool": {
+          "label": "قسم"
+        },
+        "switch": {
+          "label": "قسم"
+        },
+        "takeaway": {
+          "options": {
+            "no": "نہیں",
+            "yes": "جی ہاں"
+          }
+        },
+        "telecom": {
+          "label": "قسم"
+        },
+        "telescope/type": {
+          "label": "قسم"
+        },
         "toilets": {
           "label": "بیوت الخلا\nبیوت الخلاء\nبیت الخلا\nبیت الخلاء"
         },
@@ -505,11 +1124,70 @@
             "bucket": "بالٹی"
           }
         },
+        "toilets/menstrual_products": {
+          "options": {
+            "no": "نہیں"
+          }
+        },
+        "toilets/wheelchair": {
+          "options": {
+            "no": "نہیں",
+            "yes": "جی ہاں"
+          }
+        },
+        "tomb": {
+          "label": "قسم"
+        },
+        "tourism": {
+          "label": "قسم"
+        },
+        "tower/type": {
+          "label": "قسم"
+        },
+        "townhall/type": {
+          "label": "قسم"
+        },
+        "trade": {
+          "label": "قسم"
+        },
+        "traffic_calming": {
+          "label": "قسم"
+        },
         "traffic_sign": {
           "label": "اشارہ"
         },
+        "traffic_signals": {
+          "label": "قسم"
+        },
+        "traffic_signals/sound": {
+          "options": {
+            "no": "نہیں",
+            "yes": "جی ہاں"
+          }
+        },
+        "transformer": {
+          "label": "قسم"
+        },
         "trees": {
           "label": "درخت"
+        },
+        "trench": {
+          "label": "قسم"
+        },
+        "tunnel": {
+          "label": "قسم"
+        },
+        "tunnel_combo": {
+          "label": "قسم"
+        },
+        "turning_circle": {
+          "label": "شکل"
+        },
+        "two_sided": {
+          "options": {
+            "undefined": "نہیں",
+            "yes": "جی ہاں"
+          }
         },
         "usage_rail": {
           "options": {
@@ -524,27 +1202,44 @@
             "water": "پانی"
           }
         },
+        "valve": {
+          "label": "قسم"
+        },
         "vehicles": {
+          "label": "گاڑیاں",
           "options": {
             "bus": "بس",
-            "train": "ریل گاڑی"
+            "train": "ریل گاڑی",
+            "tram": "ٹرام"
           }
         },
         "vending": {
           "options": {
+            "coffee": "کافی",
             "drinks": "مشروب",
             "eggs": "انڈے",
             "food": "خوراک",
             "fuel": "تیل",
             "milk": "دودھ",
             "newspapers": "اخبارات",
-            "pizza": "پیزا"
+            "pizza": "پیزا",
+            "water": "پینے والا پانی"
           }
+        },
+        "wall": {
+          "label": "قسم"
+        },
+        "water": {
+          "label": "قسم"
         },
         "water_source": {
           "options": {
-            "river": "دریا"
+            "river": "دریا",
+            "stream": "دھارا"
           }
+        },
+        "waterway": {
+          "label": "قسم"
         },
         "website": {
           "label": "ویب سائیٹ",
@@ -554,11 +1249,30 @@
         "website/menu": {
           "placeholder": "https://misaal.com"
         },
+        "wetland": {
+          "label": "قسم"
+        },
+        "wheelchair": {
+          "options": {
+            "no": "نہیں",
+            "yes": "جی ہاں"
+          }
+        },
+        "width": {
+          "label": "چوڑان (میٹر میں)",
+          "terms": "چوڑائی,چوڑائی (میٹر میں)"
+        },
         "wikidata": {
           "label": "ویکی ڈیٹا"
         },
         "wikipedia": {
           "label": "ویکی پیڈیا"
+        },
+        "windings/auto": {
+          "options": {
+            "no": "نہیں",
+            "yes": "جی ہاں"
+          }
         }
       },
       "presets": {
@@ -639,13 +1353,20 @@
           "name": "پلیس\nپولیس"
         },
         "amenity/post_office": {
-          "name": "ڈاک خانہ"
+          "name": "ڈاک گھر",
+          "terms": "ڈاک خانہ"
         },
         "amenity/telephone": {
           "name": "ٹیلی فون"
         },
+        "area": {
+          "name": "خانہ"
+        },
         "barrier/toll_booth": {
           "name": "ٹول پلازہ"
+        },
+        "barrier/wall": {
+          "name": "دیوار"
         },
         "boundary": {
           "name": "حدود\nسرحد"
@@ -663,12 +1384,25 @@
         "building/church": {
           "name": "گرجا گھر"
         },
+        "building/college": {
+          "name": "کالج عمارت"
+        },
+        "building/construction": {
+          "name": "زیر تعمیر عمارت",
+          "terms": "عمارت زیر تعمیر"
+        },
+        "building/hospital": {
+          "name": "ہسپتال عمارت"
+        },
         "building/house": {
           "name": "گھر"
         },
         "building/hut": {
           "name": "جھونپڑی",
           "terms": "تھگلی,جھگی"
+        },
+        "building/industrial": {
+          "name": "صنعتی عمارت"
         },
         "building/mosque": {
           "name": "مسجد عمارت"
@@ -680,9 +1414,18 @@
         "building/roof": {
           "name": "چھت"
         },
+        "building/school": {
+          "name": "اسکول عمارت"
+        },
         "building/stable": {
           "name": "اسطبل",
           "terms": "استبل"
+        },
+        "building/synagogue": {
+          "name": "یہودی مسجد"
+        },
+        "building/train_station": {
+          "name": "ریل اڈہ عمارت"
         },
         "building_point": {
           "name": "عمارت\nمکان"
@@ -690,11 +1433,37 @@
         "cemetery/grave": {
           "name": "قبر"
         },
+        "craft/blacksmith": {
+          "name": "لوہار"
+        },
         "craft/carpenter": {
           "name": "بڑھئی"
         },
+        "craft/gardener": {
+          "name": "مالی"
+        },
+        "craft/shoemaker": {
+          "name": "موچی"
+        },
+        "craft/tailor": {
+          "name": "درزی"
+        },
+        "highway/construction": {
+          "name": "زیر تعمیر سڑک",
+          "terms": "سڑک زیر تعمیر,بند سڑک"
+        },
+        "highway/footway": {
+          "name": "پیدل راستہ",
+          "terms": "پیدل رستہ"
+        },
         "highway/motorway": {
           "name": "موٹروے"
+        },
+        "highway/path": {
+          "name": "راستہ"
+        },
+        "highway/path/informal": {
+          "name": "کچا راستہ"
         },
         "highway/speed_camera": {
           "name": "کیمرہ برائے رفتار"
@@ -702,20 +1471,39 @@
         "highway/traffic_signals": {
           "name": "ٹریفک اشارے\nاشارے\nاشارہ\nٹریفک اشارہ"
         },
+        "highway/trunk": {
+          "name": "عظیم شاہراہ",
+          "terms": "بڑی سڑک, شاہراہ,جرنیلی سڑک"
+        },
         "historic": {
           "name": "تاریخی مقام"
         },
         "historic/castle": {
           "name": "قلعہ"
         },
+        "historic/castle/palace": {
+          "name": "محل"
+        },
         "historic/castle/stately": {
           "name": "شاتو\nشیٹو\nشاٹو"
+        },
+        "historic/city_gate": {
+          "name": "شہر کا دروازہ"
+        },
+        "historic/ruins": {
+          "name": "کھنڈرات"
+        },
+        "historic/tomb": {
+          "name": "مقبرہ"
         },
         "landuse/cemetery": {
           "name": "قبرستان"
         },
         "landuse/grass": {
           "name": "گھاس"
+        },
+        "landuse/industrial": {
+          "name": "صنعتی علاقہ"
         },
         "landuse/railway": {
           "name": "ریل راہداری",
@@ -762,6 +1550,9 @@
         "natural/mud": {
           "name": "کیچڑ"
         },
+        "natural/sand": {
+          "name": "ریت"
+        },
         "natural/tree": {
           "name": "درخت"
         },
@@ -780,6 +1571,12 @@
         "office/administrative": {
           "name": "انتظامی دفتر"
         },
+        "office/diplomatic/embassy": {
+          "name": "صفارت خانہ"
+        },
+        "office/financial": {
+          "name": "مالی دفتر"
+        },
         "office/government": {
           "name": "سرکاری دفتر"
         },
@@ -789,6 +1586,9 @@
         "office/political_party": {
           "name": "سیاسی جماعت کا دفتر",
           "terms": "دفتر برائے سیاسی جماعت"
+        },
+        "office/religion": {
+          "name": "دینی دفتر"
         },
         "office/yes": {
           "name": "دفتر (نامعلوم)"
@@ -801,6 +1601,9 @@
         },
         "place/farm": {
           "name": "کھیت"
+        },
+        "place/hamlet": {
+          "name": "بستی"
         },
         "place/island": {
           "name": "جزیرہ"
@@ -824,20 +1627,55 @@
         "playground/swing": {
           "name": "جھولا"
         },
+        "point": {
+          "name": "مقام"
+        },
+        "public_transport/platform/bus": {
+          "name": "بس چبوترہ",
+          "terms": "بس پلیٹفارم, چبوترہ"
+        },
+        "public_transport/platform/train": {
+          "name": "ریل چبوترہ",
+          "terms": "ٹرین چبوترہ,چبوترہ,ٹرین پلیٹفارم"
+        },
+        "public_transport/platform/tram": {
+          "name": "ٹرام چبوترہ",
+          "terms": "ٹرام پلیٹفارم, چبوترہ"
+        },
         "public_transport/station_bus": {
           "name": "بس اڈہ"
         },
         "public_transport/station_train": {
-          "name": "ٹرین اسٹیشن"
+          "name": "ریل اڈہ",
+          "terms": "ٹرین اسٹیشن"
         },
         "public_transport/station_tram": {
-          "name": "ٹرام اسٹیشن"
+          "name": "ٹرام اسٹیشن",
+          "terms": "ٹرام اڈہ,ٹرام اڈا"
+        },
+        "railway/construction": {
+          "name": "زیر تعمیر ریلوے",
+          "terms": "ریلوے زیر تعمیر"
+        },
+        "railway/platform": {
+          "name": "ریل چبوترہ"
+        },
+        "railway/rail": {
+          "name": "ریل پٹری",
+          "terms": "ٹرین پٹری,پٹری"
+        },
+        "railway/station": {
+          "name": "ریل اڈہ\nریل اڈا\nٹرین اسٹیشن\nٹرین سٹیشن\nٹرین اڈہ\nٹرین اڈا"
         },
         "relation": {
           "name": "تعلق"
         },
         "shop": {
           "name": "دکان\nدوکان"
+        },
+        "shop/butcher": {
+          "name": " قصائی",
+          "terms": " قسائی"
         },
         "shop/mall": {
           "name": "مال"
@@ -858,6 +1696,9 @@
         "tourism/museum": {
           "name": "عجائب گھر"
         },
+        "traffic_sign": {
+          "name": "اشارہ"
+        },
         "type/boundary": {
           "name": "حدود"
         },
@@ -874,6 +1715,13 @@
         "waterway/river": {
           "name": "دریا",
           "terms": "ندی,نہر"
+        },
+        "waterway/stream": {
+          "name": "دھارا"
+        },
+        "waterway/stream_intermittent": {
+          "name": "رواں دھارا",
+          "terms": "رواں پانی"
         }
       }
     }

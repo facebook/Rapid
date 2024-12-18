@@ -27,16 +27,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Område",
-        "filter_tooltip": "områden"
+        "title": "Område"
       },
       "add_line": {
-        "title": "Linje",
-        "filter_tooltip": "linjer"
+        "title": "Linje"
       },
       "add_point": {
-        "title": "Punkt",
-        "filter_tooltip": "punkter"
+        "title": "Punkt"
       },
       "add_note": {
         "title": "Anteckning",
@@ -119,52 +116,15 @@
       },
       "circularize": {
         "title": "Gör till cirkel",
-        "description": {
-          "single": "Gör detta objekt runt.",
-          "multiple": "Gör dessa objekt runa."
-        },
         "annotation": {
           "feature": {
             "one": "Gjorde ett objekt runt.",
             "other": "Gjorde {n} objekt runda."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Dessa kan inte göras runda på grund av flera anledningar."
-        },
-        "not_closed": {
-          "single": "Detta kan inte göras runt då det inte är en loop.",
-          "multiple": "Dessa kan inte göras runda då de inte är loopar."
-        },
-        "too_large": {
-          "single": "Detta kan inte göras runt då inte tillräckligt av det är synligt.",
-          "multiple": "Dessa kan inte göras runda då inte tillräckligt av dem är synliga."
-        },
-        "connected_to_hidden": {
-          "single": "Detta kan inte göras runt då det är kopplat till ett dolt objekt.",
-          "multiple": "Dessa kan inte göras runda då vissa av dem är kopplade till dolda objekt."
-        },
-        "not_downloaded": {
-          "single": "Detta kan inte göras runt då delar av det ännu inte har laddats ned.",
-          "multiple": "Dessa kan inte göras runda då delar av dem ännu inte har laddats ned."
-        },
-        "already_circular": {
-          "single": "Detta kan inte göras mer runt än det redan är.",
-          "multiple": "Dessa kan inte göras mer runda än de redan är."
         }
       },
       "orthogonalize": {
         "title": "Räta upp",
-        "description": {
-          "corner": {
-            "single": "Räta upp detta hörn.",
-            "multiple": "Räta upp dessa hörn."
-          },
-          "feature": {
-            "single": "Räta upp hörnen på detta objekt.",
-            "multiple": "Räta upp hörnen på dessa objekt."
-          }
-        },
         "annotation": {
           "corner": {
             "one": "Rätat upp ett hörn.",
@@ -174,33 +134,6 @@
             "one": "Rätat upp hörnen på ett objekt.",
             "other": "Rätat upp hörnen på {n} objekt."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Dessa kan inte räta upp av flera anledningar."
-        },
-        "end_vertex": {
-          "single": "Denna kan inte rätas upp då den är en ändpunkt.",
-          "multiple": "Dessa kan inte rätas upp då de är ändpunkter."
-        },
-        "square_enough": {
-          "single": "Denna kan inte rätas upp mer än den redan är.",
-          "multiple": "Dessa kan inte rätas upp mer än de redan är."
-        },
-        "not_squarish": {
-          "single": "Denna kan inte rätas upp då den inte är en fyrkant.",
-          "multiple": "Dessa kan inte rätas upp då de inte är fyrkantiga."
-        },
-        "too_large": {
-          "single": "Denna kan inte rätas upp då inte tillräckligt av den är synligt för tillfället.",
-          "multiple": "Dessa kan inte rätas upp då inte tillräckligt av dem är synligt för tillfället."
-        },
-        "connected_to_hidden": {
-          "single": "Detta kan inte rätas upp då det är kopplat till ett dolt objekt.",
-          "multiple": "Dessa kan inte rätas upp då vissa av dem är kopplade till dolda objekt."
-        },
-        "not_downloaded": {
-          "single": "Detta kan inte göras kvadratisk då delar av det ännu inte har laddats ned.",
-          "multiple": "Dessa kan inte göras kvadratisk då delar av dem ännu inte har laddats ned."
         }
       },
       "straighten": {
@@ -219,34 +152,10 @@
             "one": "Rätade ut en linje.",
             "other": "Rätade ut {n} linjer."
           }
-        },
-        "too_bendy": {
-          "single": "Den kan inte rätas ut då den är för böjd.",
-          "multiple": "Dessa kan inte rätas ut då de är för böjda."
-        },
-        "connected_to_hidden": {
-          "single": "Denna linje kan inte rätas ut då den är kopplad till ett dolt objekt.",
-          "multiple": "Dessa kan inte rätas ut då vissa av dem är kopplade till dolda objekt."
-        },
-        "not_downloaded": {
-          "single": "Detta kan inte rätas ut då delar av det ännu inte har laddats ned.",
-          "multiple": "Dessa kan inte rätas ut då delar av dem ännu inte har laddats ned."
-        },
-        "straight_enough": {
-          "single": "Denna kan inte rätas ut mer än den redan är.",
-          "multiple": "Dessa kan inte rätas ut mer än de redan är."
-        },
-        "too_large": {
-          "single": "Denna kan inte rätas ut då inte tillräckligt av den är synligt för tillfället.",
-          "multiple": "Dessa kan inte rätas ut då inte tillräckligt av dem är synligt för tillfället."
         }
       },
       "delete": {
         "title": "Radera",
-        "description": {
-          "single": "Radera detta objekt permanent.",
-          "multiple": "Radera dessa objekt permanent."
-        },
         "annotation": {
           "point": "Tog bort en punkt.",
           "vertex": "Tog bort en nod från en väg.",
@@ -257,30 +166,6 @@
             "one": "Tog bort ett objekt.",
             "other": "Tog bort {n} objekt."
           }
-        },
-        "too_large": {
-          "single": "Detta objekt kan inte raderas då inte tillräckligt av det är synligt för tillfället.",
-          "multiple": "Dessa objekt kan inte raderas då inte tillräckligt av dem är synliga för tillfället."
-        },
-        "incomplete_relation": {
-          "single": "Detta objekt kan inte raderas då det inte är fullständigt nedladdat.",
-          "multiple": "Dessa objekt kan inte raderas då de inte är fullständigt nedladdade."
-        },
-        "part_of_relation": {
-          "single": "Detta objekt kan inte raderas då det är del i en relation. Du måste ta bort det från relationen först. ",
-          "multiple": "Dessa objekt kan inte raderas då de är delar i en relation. Du måste ta bort dem från relationen först."
-        },
-        "connected_to_hidden": {
-          "single": "Detta objekt kan inte raderas då det är kopplat till ett dolt objekt.",
-          "multiple": "Dessa objekt kan inte raderas då några av dem är kopplade till dolda objekt."
-        },
-        "not_downloaded": {
-          "single": "Detta objekt kan inte raderas då delar av det ännu inte har laddats ned.",
-          "multiple": "Dessa objekt kan inte raderas då delar av dem ännu inte har laddats ned."
-        },
-        "has_wikidata_tag": {
-          "single": "Detta objekt kan inte raderas då det har en Wikidata-tagg.",
-          "multiple": "Dessa objekt kan inte raderas då de har Wikidata-taggar."
         }
       },
       "downgrade": {
@@ -304,10 +189,6 @@
             "one": "Nedgradera ett objekt.",
             "other": "Nedgradera {n} objekt."
           }
-        },
-        "has_wikidata_tag": {
-          "single": "Detta objekt kan inte nedgraderas då det har en Wikidata-tagg.",
-          "multiple": "Dessa objekt kan inte nedgraderas då vissa ha Wikidata-taggar."
         }
       },
       "add_member": {
@@ -407,10 +288,6 @@
       },
       "move": {
         "title": "Flytta",
-        "description": {
-          "single": "Flytta detta objekt till annan plats.",
-          "multiple": "Flytta dessa objekt till annan plats."
-        },
         "annotation": {
           "point": "Flyttade en punkt.",
           "vertex": "Flyttade en nod i en väg.",
@@ -421,38 +298,12 @@
             "one": "Flyttade ett objekt.",
             "other": "Flyttade {n} objekt."
           }
-        },
-        "incomplete_relation": {
-          "single": "Detta objekt kan inte flyttas då det inte är fullständigt nedladdat.",
-          "multiple": "Dessa objekt kan inte flyttas då de inte är fullständigt nedladdade."
-        },
-        "too_large": {
-          "single": "Detta objekt kan inte flyttas, då inte tillräckligt mycket av det är synligt för tillfället.",
-          "multiple": "Dessa objekt kan inte flyttas då de inte är tillräckligt synliga för tillfället."
-        },
-        "connected_to_hidden": {
-          "single": "Detta objekt kan inte flyttas då det är kopplat till dolt objekt.",
-          "multiple": "Dessa objekt kan inte flyttas då de är kopplade till dolda objekt."
-        },
-        "not_downloaded": {
-          "single": "Detta objekt kan inte flyttas då delar av det ännu inte har laddats ned.",
-          "multiple": "Dessa objekt kan inte flyttas då delar av dem ännu inte har laddats ned."
         }
       },
       "reflect": {
         "title": {
           "long": "Spegla lång",
           "short": "Spegla kort"
-        },
-        "description": {
-          "long": {
-            "single": "Spegla detta objekt längs dess långa axel.",
-            "multiple": "Spegla dessa objekt längs deras gemensamma långa axel."
-          },
-          "short": {
-            "single": "Spegla detta objekt längs dess korta axel.",
-            "multiple": "Spegla dessa objekt längs deras gemensamma korta axel."
-          }
         },
         "annotation": {
           "long": {
@@ -467,30 +318,10 @@
               "other": "Speglade {n} objekt längs deras korta axel."
             }
           }
-        },
-        "incomplete_relation": {
-          "single": "Detta objekt kan inte speglas då det inte har laddats ned fullständigt.",
-          "multiple": "Dessa objekt kan inte speglas då de inte har laddats ned fullständigt."
-        },
-        "too_large": {
-          "single": "Detta objekt kan inte speglas då inte tillräckligt av det är synligt för tillfället.",
-          "multiple": "Dessa objekt kan inte speglas då inte tillräckligt av dem är synligt för tillfället."
-        },
-        "connected_to_hidden": {
-          "single": "Detta objekt kan inte speglas då det är kopplat till ett dolt objekt.",
-          "multiple": "Dessa objekt kan inte speglas då några av dem är kopplade till dolda objekt."
-        },
-        "not_downloaded": {
-          "single": "Detta objekt kan inte speglas då delar av det ännu inte har laddats ned.",
-          "multiple": "Dessa objekt kan inte speglas då delar av det ännu inte har laddats ned."
         }
       },
       "rotate": {
         "title": "Rotera",
-        "description": {
-          "single": "Rotera detta objekt runt dess centrumpunkt.",
-          "multiple": "Rotera dessa objekt runt deras gemensamma centrumpunkt."
-        },
         "annotation": {
           "line": "Roterade en linje.",
           "area": "Roterade ett område.",
@@ -499,22 +330,6 @@
             "one": "Roterade ett objekt.",
             "other": "Roterade {n} objekt."
           }
-        },
-        "incomplete_relation": {
-          "single": "Detta objekt kan inte roteras då det inte har laddats ned fullständigt.",
-          "multiple": "Dessa objekt kan inte roteras då de inte är fullständigt nedladdade."
-        },
-        "too_large": {
-          "single": "Detta objekt kan inte roteras då det inte är tillräckligt av det är synligt för tillfället.",
-          "multiple": "Dessa objekt kan inte roteras då de inte är tillräckligt synliga för tillfället."
-        },
-        "connected_to_hidden": {
-          "single": "Detta objekt kan inte roteras då det är kopplat till dolt objekt.",
-          "multiple": "Dessa objekt kan inte roteras då de är kopplade till dolda objekt."
-        },
-        "not_downloaded": {
-          "single": "Detta objekt kan inte roteras då delar av det ännu inte har laddats ned.",
-          "multiple": "Dessa objekt kan inte roteras då delar av dem ännu inte har laddats ned."
         }
       },
       "reverse": {
@@ -555,22 +370,6 @@
               "other": "Skalade upp {n} objekt."
             }
           }
-        },
-        "too_small": {
-          "single": "Detta objekt kan inte skalas ned då det skulle bli för litet.",
-          "multiple": "Dessa objekt kan inte skalas ned då de skulle bli för små."
-        },
-        "too_large": {
-          "single": "Detta objekt kan inte skalas då inte tillräckligt av det är synligt för tillfället.",
-          "multiple": "Dessa objekt kan inte skalas då inte tillräckligt av dem är synliga för tillfället."
-        },
-        "connected_to_hidden": {
-          "single": "Detta objekt kan inte skalas då det är kopplat till ett dolt objekt.",
-          "multiple": "Dessa objekt kan inte skalas då några av dem är kopplade till dolda objekt."
-        },
-        "not_downloaded": {
-          "single": "Detta objekt kan inte skalas då delar av det ännu inte har laddats ned.",
-          "multiple": "Dessa objekt kan inte skalas då delar av dem ännu inte har laddats ned."
         }
       },
       "split": {
@@ -625,33 +424,13 @@
       "extract": {
         "title": "Extrahera",
         "description": {
-          "vertex": {
-            "single": "Extrahera denna punkt från linje/område den tillhör.",
-            "multiple": "Extrahera dessa punkter från dess föräldraobjekt."
-          },
-          "line": {
-            "single": "Extrahera en punkt från denna linje.",
-            "multiple": "Extrahera punkter från dessa linjer."
-          },
-          "area": {
-            "single": "Extrahera en punkt från detta område.",
-            "multiple": "Extrahera punkter från dessa områden."
-          },
           "feature": {
-            "multiple": "Extrahera punkter från dessa objekt."
+            "other": "Extrahera punkter från dessa objekt."
           }
         },
         "annotation": {
           "one": "Extraherade en punkt.",
           "other": "Extraherade {n} punkter."
-        },
-        "too_large": {
-          "single": "En punkt kan inte extraheras då inte tillräckligt av det här objektet är synligt för tillfället.",
-          "multiple": "Punkter kan inte extraheras då inte tillräckligt av de här objekten är synliga för tillfället."
-        },
-        "connected_to_hidden": {
-          "single": "Denna punkt kan inte extraheras då den är kopplad till ett dolt objekt.",
-          "multiple": "Punkter kan inte extraheras från dessa objekt då vissa av dem är kopplade till dolda objekt."
         }
       }
     },
@@ -791,6 +570,7 @@
         "perimeter": "Omkrets",
         "length": "Längd",
         "distance": "Avstånd",
+        "area": "Område",
         "centroid": "Centrumpunkt",
         "location": "Placering",
         "metric": "Metriskt",
@@ -815,7 +595,6 @@
       "location_unavailable": "Din plats är inte tillgänglig."
     },
     "inspector": {
-      "key": "´",
       "zoom_to": {
         "title": "Zooma till markering",
         "no_selection": "Inget att zooma till."
@@ -847,10 +626,6 @@
       "multiple_values": "Multipla värden",
       "multiple_types": "Flera typer",
       "unshared_value_tooltip": "inte gemensam för alla objekt",
-      "hidden_preset": {
-        "manual": "{features} är dolda. Aktivera dem i panelen Kartdata.",
-        "zoom": "{features} är dolda. Zooma in för att aktivera dem. "
-      },
       "back_tooltip": "Ändra objekttyp",
       "type": "Typ",
       "details": "Detaljer",
@@ -962,7 +737,6 @@
         "tooltip": "Visa geometriska värden för markeringen."
       },
       "style_options": "Stilinställningar",
-      "map_features": "Kartobjekt",
       "autohidden": "Dessa objekt har dolts automatiskt då för mycket annars skulle ha visats på skärmen. Du kan zooma in för att redigera dem. ",
       "osmhidden": "Dessa objekt har dolts automatiskt då OpenStreetMap-lagret är dolt."
     },
@@ -999,7 +773,7 @@
         "tooltip": "Visa enbart bilder från denna användare"
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Punkter",
         "tooltip": "Intressanta platser"
@@ -1199,12 +973,13 @@
     "source_switch": {
       "lose_changes": "Du har osparade ändringar som kommer gå förlorade vid byte av kartserver. Är du säker att du vill byta server?"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Taggar"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Ta bort"
+    "rapid_menu": {
+      "remove": "Ta bort",
+      "category": {
+        "roads": "vägar"
       }
     },
     "tag_reference": {
@@ -1220,7 +995,6 @@
         "out": "Kan inte zooma ut ytterligare."
       }
     },
-    "cannot_zoom": "Går ej att zooma ut ytterligare i nuvarande läge. ",
     "full_screen": "Växla fullskärm",
     "self_intersection": {
       "error": {
@@ -1640,7 +1414,6 @@
         "title": "Punkter",
         "intro": "*Punkter* kan användas för att representera objekt så som affärer, restauranger och monument. De markerar en specifik plats och beskriver vad det är.",
         "add_point_h": "Lägg till punkter",
-        "add_point": "För att lägga till en punkt, tryck på knappen {point_icon} **{point}** i verktygsraden ovanför kartan, eller tryck på kortkommandot `1`.",
         "move_point_h": "Flytta punkter",
         "delete_point_h": "Radera punkter",
         "delete_point": "Det är ok att radera objekt som inte existerar i den verkliga världen. Genom att radera ett objekt från OpenStreetMap raderas det från kartan som alla användare ser, så du bör försäkra dig om att objektet verkligen inte finns i verkligheten innan du raderar det."
@@ -1649,7 +1422,6 @@
         "title": "Linjer",
         "intro": "*Linjer* används för att representera objekt så som vägar, järnvägar och floder. Linjer bör ritas längst mitten av objektet de representerar.",
         "add_line_h": "Lägg till linjer",
-        "add_line": "För att lägga till en linje, klicka på knappen {line_icon} **{line}** i verktygsraden ovanför kartan, eller tryck på kortkommandot `2`.",
         "add_line_finish": "För att slutföra linjen, klick eller tryck på senaste noden igen eller tryck `{return}`.",
         "modify_line_h": "Modifiera linjer",
         "modify_line_dragnode": "Ofta ser du linjer som inte har korrekt form, t.ex. vägar som inte helt matchar med bakgrundsbilden. För att justera formen på en linje, markera den först. Alla noder längst linjen kommer att visas som små cirklar. Du kan dra och flytta noderna till bättre platser.",
@@ -1668,7 +1440,6 @@
         "point_or_area_h": "Punkter eller områden?",
         "point_or_area": "Många objekt kan representeras både som punkter och som områden. Du bör rita konturen av byggnader och fastigheter som områden när det är möjligt. Placera punkter inuti en byggnads område för att representera företag, faciliteter och andra objekt lokaliserade inuti byggnaden.",
         "add_area_h": "Lägg till områden",
-        "add_area_command": "För att lägga till ett område, klicka på knappen {area_icon} **{area}** i verktygsraden ovanför kartan, eller tryck på kortkommandot `3`.",
         "add_area_finish": "För att slutföra ett område, klicka eller tryck på första eller sista noden igen, eller tryck `{return}`.",
         "square_area_h": "Räta upp hörn",
         "modify_area_h": "Modifiera områden",
@@ -1796,18 +1567,10 @@
     },
     "issues": {
       "title": "Problem",
-      "list_title": "Problem",
-      "errors": {
-        "list_title": "Fel"
-      },
-      "warnings": {
-        "list_title": "Varningar"
-      },
-      "rules": {
-        "title": "Regler"
-      },
-      "user_resolved_issues": "Problem lösta med dina ändringar",
-      "warnings_and_errors": "Varningar och fel",
+      "errors": "Fel",
+      "warnings": "Varningar",
+      "rules": "Regler",
+      "resolved_tooltip": "Problem lösta med dina ändringar",
       "no_issues": {
         "message": {
           "everything": "Allt ser bra ut",
@@ -1965,8 +1728,6 @@
         "title": "Felaktig formatering",
         "tip": "Hitta taggar med oväntat format",
         "email": {
-          "message": "{feature} har en felaktig e-postadress",
-          "message_multi": "{feature} har flera felaktiga e-postadresser",
           "reference": "E-postadresser måste vara på formen \"mottagare@exempel.se\"."
         }
       },
@@ -2481,6 +2242,7 @@
       "tooltip": "Visa vy med kortkommandon.",
       "key": {
         "backspace": "Backsteg",
+        "delete": "Radera",
         "menu": "Meny",
         "space": "Mellanslag"
       },
@@ -2488,94 +2250,170 @@
         "drag": "dra"
       },
       "or": "-eller-",
-      "browsing": {
-        "title": "Navigera",
-        "navigation": {
-          "pan": "Panorera kartan"
+      "browsing": "Navigera",
+      "editing": "Redigera",
+      "selecting_features": "Markera objekt",
+      "with_features_selected": "Med objekt markerat",
+      "with_node_selected": "Med nod markerad",
+      "with_way_selected": "Med väg markerad",
+      "drawing": "Rita",
+      "commands": "Kommandon",
+      "help": "Hjälp",
+      "display_options": "Visa inställningar",
+      "command": {
+        "pan": {
+          "label": "Panorera kartan"
         },
-        "help": {
-          "title": "Hjälp",
-          "help": "Visa hjälp/dokumentation",
-          "keyboard": "Visa kortkommandon"
+        "select_one": {
+          "label": "Markera ett enskilt objekt"
         },
-        "display_options": {
-          "title": "Visa inställningar",
-          "background": "Visa/dölj panelen bakgrundsbild",
-          "map_data": "Visa/dölj panelen Kartdata",
-          "issues": "Visa/dölj panelen Problem",
-          "preferences": "Visa/dölj panelen användarinställningar",
-          "wireframe": "Växla trådramsläge",
-          "osm_data": "Visa/dölj OpenStreetMap-data",
-          "highlight_edits": "Markera osparade ändringar"
+        "select_multi": {
+          "label": "Markera flera objekt"
         },
-        "selecting": {
-          "title": "Markera objekt",
-          "select_one": "Markera ett enskilt objekt",
-          "select_multi": "Markera flera objekt",
-          "lasso": "Rita en markeringslasso runt objekt",
-          "search": "Hitta objekt som matchar söktext"
+        "lasso": {
+          "label": "Rita en markeringslasso runt objekt"
         },
-        "with_selected": {
-          "title": "Med objekt markerat",
-          "edit_menu": "Visa/dölj redigeringsmeny"
+        "edit_menu": {
+          "label": "Visa/dölj redigeringsmeny"
         },
-        "vertex_selected": {
-          "title": "Med nod markerad",
-          "first": "Hoppa till första noden",
-          "last": "Hoppa till sista noden",
-          "change_parent": "Växla vald väg",
-          "parent": "Välj föräldraväg"
+        "first_node": {
+          "label": "Hoppa till första noden"
         },
-        "way_selected": {
-          "title": "Med väg markerad",
-          "child": "Markera barnnoder"
-        }
-      },
-      "editing": {
-        "title": "Redigera",
-        "drawing": {
-          "title": "Rita",
-          "add_point": "'Lägg till punkt'-läge",
-          "add_line": "'Lägg till linje'-läge",
-          "add_area": "'Lägg till område'-läge",
-          "add_note": "'Lägg till anteckning'-läge",
-          "place_point": "Placera en punkt eller anteckning",
-          "disable_snap": "Hindra att punkter kopplas samman",
-          "stop_line": "Slutför linje eller område"
+        "last_node": {
+          "label": "Hoppa till sista noden"
         },
-        "commands": {
-          "title": "Kommandon",
-          "copy": "Kopiera markerade objekt",
-          "paste": "Klistra in kopierade objekt",
-          "undo": "Ångra senaste ändring",
-          "redo": "Gör om senaste ändring",
-          "save": "Spara ändringar"
+        "change_parent": {
+          "label": "Växla vald väg"
         },
-        "operations": {
-          "continue_line": "Fortsätt en linje från markerad slutnod",
-          "merge": "Kombinera (sammanfoga) markerade objekt",
-          "disconnect": "Koppla isär valt objekt",
-          "extract": "Extrahera en punkt från ett objekt",
-          "split": "Dela ett objekt vid angivna punkter",
-          "reverse": "Byt riktning på valt objekt",
-          "move": "Flytta markerade objekt",
-          "rotate": "Rotera markerade objekt",
-          "orthogonalize": "Räta upp hörn på en linje eller område",
-          "straighten": "Räta ut en linje eller punkter",
-          "circularize": "Gör en sluten linje eller ett område cirkulär. ",
-          "reflect_long": "Spegla objekt längs dess långa axel",
-          "reflect_short": "Spegla objekt längs deras korta axel",
-          "delete": "Radera markerade objekt"
-        }
-      },
-      "tools": {
-        "title": "Verktyg",
-        "info": {
-          "all": "Visa/dölj alla informationspaneler",
-          "background": "Visa/dölj panelen Bakgrund",
-          "history": "Visa/dölj panelen Historik",
-          "location": "Visa/dölj panelen Lokalisering",
-          "measurement": "Visa/dölj panelen Mätning"
+        "select_parent": {
+          "label": "Välj föräldraväg"
+        },
+        "select_children": {
+          "label": "Markera barnnoder"
+        },
+        "add_point": {
+          "label": "'Lägg till punkt'-läge"
+        },
+        "add_line": {
+          "label": "'Lägg till linje'-läge"
+        },
+        "add_area": {
+          "label": "'Lägg till område'-läge"
+        },
+        "add_note": {
+          "label": "'Lägg till anteckning'-läge"
+        },
+        "place_point": {
+          "label": "Placera en punkt eller anteckning"
+        },
+        "disable_snap": {
+          "label": "Hindra att punkter kopplas samman"
+        },
+        "stop_line": {
+          "label": "Slutför linje eller område"
+        },
+        "copy": {
+          "label": "Kopiera markerade objekt"
+        },
+        "paste": {
+          "label": "Klistra in kopierade objekt"
+        },
+        "undo": {
+          "label": "Ångra senaste ändring"
+        },
+        "redo": {
+          "label": "Gör om senaste ändring"
+        },
+        "save": {
+          "label": "Spara ändringar"
+        },
+        "find": {
+          "label": "Hitta objekt som matchar söktext"
+        },
+        "continue_line": {
+          "label": "Fortsätt en linje från markerad slutnod"
+        },
+        "merge": {
+          "label": "Kombinera (sammanfoga) markerade objekt"
+        },
+        "disconnect": {
+          "label": "Koppla isär valt objekt"
+        },
+        "extract": {
+          "label": "Extrahera en punkt från ett objekt",
+          "key": "Ö"
+        },
+        "split": {
+          "label": "Dela ett objekt vid angivna punkter"
+        },
+        "reverse": {
+          "label": "Byt riktning på valt objekt"
+        },
+        "move": {
+          "label": "Flytta markerade objekt"
+        },
+        "rotate": {
+          "label": "Rotera markerade objekt"
+        },
+        "orthogonalize": {
+          "label": "Räta upp hörn på en linje eller område"
+        },
+        "straighten": {
+          "label": "Räta ut en linje eller punkter"
+        },
+        "circularize": {
+          "label": "Gör en sluten linje eller ett område cirkulär. "
+        },
+        "reflect_long": {
+          "label": "Spegla objekt längs dess långa axel"
+        },
+        "reflect_short": {
+          "label": "Spegla objekt längs deras korta axel"
+        },
+        "delete": {
+          "label": "Radera markerade objekt"
+        },
+        "toggle_background": {
+          "label": "Visa/dölj panelen bakgrundsbild"
+        },
+        "toggle_map_data": {
+          "label": "Visa/dölj panelen Kartdata"
+        },
+        "toggle_issues": {
+          "label": "Visa/dölj panelen Problem"
+        },
+        "toggle_preferences": {
+          "label": "Visa/dölj panelen användarinställningar"
+        },
+        "toggle_inspector": {
+          "key": "´"
+        },
+        "wireframe": {
+          "key": "V"
+        },
+        "highlight_edits": {
+          "label": "Markera osparade ändringar"
+        },
+        "keyboard_shortcuts": {
+          "label": "Visa kortkommandon"
+        },
+        "toggle_osm_data": {
+          "label": "Visa/dölj OpenStreetMap-data"
+        },
+        "toggle_all_cards": {
+          "label": "Visa/dölj alla informationspaneler"
+        },
+        "toggle_background_card": {
+          "label": "Visa/dölj panelen Bakgrund"
+        },
+        "toggle_history_card": {
+          "label": "Visa/dölj panelen Historik"
+        },
+        "toggle_location_card": {
+          "label": "Visa/dölj panelen Lokalisering"
+        },
+        "toggle_measurement_card": {
+          "label": "Visa/dölj panelen Mätning"
         }
       }
     },
@@ -2658,6 +2496,7 @@
       "bjn": "banjariska",
       "bkm": "bamekon",
       "bla": "siksika",
+      "blo": "anii",
       "bm": "bambara",
       "bn": "bengali",
       "bo": "tibetanska",
@@ -2788,7 +2627,7 @@
       "gay": "gayo",
       "gba": "gbaya",
       "gbz": "zoroastrisk dari",
-      "gd": "skotsk gäliska",
+      "gd": "skotsk gaeliska",
       "gez": "etiopiska",
       "gil": "gilbertiska",
       "gl": "galiciska",
@@ -2796,7 +2635,6 @@
       "gmh": "medelhögtyska",
       "gn": "guaraní",
       "goh": "fornhögtyska",
-      "gom": "Goa-konkani",
       "gon": "gondi",
       "gor": "gorontalo",
       "got": "gotiska",
@@ -2907,6 +2745,7 @@
       "kv": "kome",
       "kw": "korniska",
       "kwk": "kwakʼwala",
+      "kxv": "kuvi",
       "ky": "kirgiziska",
       "la": "latin",
       "lad": "ladino",
@@ -2936,7 +2775,6 @@
       "lua": "luba-lulua",
       "lui": "luiseño",
       "lun": "lunda",
-      "luo": "luo",
       "lus": "lushai",
       "luy": "luhya",
       "lv": "lettiska",
@@ -3201,6 +3039,7 @@
       "vi": "vietnamesiska",
       "vls": "västflamländska",
       "vmf": "Main-frankiska",
+      "vmw": "makua",
       "vo": "volapük",
       "vot": "votiska",
       "vro": "võru",
@@ -3216,6 +3055,7 @@
       "xal": "kalmuckiska",
       "xh": "xhosa",
       "xmf": "mingrelianska",
+      "xnr": "kangri",
       "xog": "lusoga",
       "yao": "kiyao",
       "yap": "japetiska",

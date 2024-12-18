@@ -14,8 +14,7 @@
         "title": "Área"
       },
       "add_point": {
-        "title": "Punto",
-        "filter_tooltip": "puntia"
+        "title": "Punto"
       }
     },
     "info_panels": {
@@ -26,7 +25,7 @@
     "geometry": {
       "point": "punto"
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Puntia",
         "tooltip": "Puntia di interes"

@@ -20,16 +20,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Suprafață",
-        "filter_tooltip": "zone"
+        "title": "Suprafață"
       },
       "add_line": {
-        "title": "Linie",
-        "filter_tooltip": "linii"
+        "title": "Linie"
       },
       "add_point": {
-        "title": "Punct",
-        "filter_tooltip": "puncte"
+        "title": "Punct"
       },
       "add_note": {
         "title": "Notiță",
@@ -101,40 +98,12 @@
       },
       "delete": {
         "title": "Șterge",
-        "description": {
-          "single": "Șterge acest obiect permanent.",
-          "multiple": "Șterge aceste obiecte permanent."
-        },
         "annotation": {
           "point": "Șterge un punct.",
           "vertex": "Șterge un nod dintr-o cale.",
           "line": "Șterge o linie.",
           "area": "Șterge o suprafață.",
           "relation": "Șterge o relație."
-        },
-        "too_large": {
-          "single": "Acest obiect nu poate fi șters din moment ce nu este destul din el vizibil.",
-          "multiple": "Aceste obiecte nu pot fi șterse din moment ce nu este destul din ele vizibil."
-        },
-        "incomplete_relation": {
-          "single": "Acest obiect nu poate fi șters din moment ce nu a fost descărcat în întregime.",
-          "multiple": "Aceste obiecte nu pot fi șterse din moment ce nu a fost descărcate în întregime."
-        },
-        "part_of_relation": {
-          "single": "Această caracteristică nu poate fi ștersă, deoarece face parte dintr-o structură mai mare. Mai întâi trebuie să îl eliminați din structură.",
-          "multiple": "Aceste caracteristici nu pot fi șterse, deoarece fac parte din structuri mai mari. Mai întâi trebuie să le eliminați din structuri."
-        },
-        "connected_to_hidden": {
-          "single": "Această funcție poate fi ștersă, deoarece este conectată la o caracteristică ascunsă.",
-          "multiple": "Aceste funcții nu pot fi șterse, deoarece unele sunt conectate la funcții ascunse."
-        },
-        "not_downloaded": {
-          "single": "Această caracteristică nu poate fi ștersă, deoarece părți din ea nu au fost încă descărcate.",
-          "multiple": "Aceste caracteristici nu pot fi șterse, deoarece unele dintre ele nu au fost încă descărcate."
-        },
-        "has_wikidata_tag": {
-          "single": "Această caracteristică nu poate fi ștersă, deoarece are o etichetă Wikidata.",
-          "multiple": "Aceste caracteristici nu pot fi șterse, deoarece unele au etichete Wikidata."
         }
       },
       "downgrade": {
@@ -164,18 +133,11 @@
       },
       "move": {
         "title": "Mută",
-        "description": {
-          "single": "Mută această caracteristică la o locație diferită.",
-          "multiple": "Mută caracteristicile la o locație diferită."
-        },
         "annotation": {
           "point": "Am mutat un punct.",
           "vertex": "Am mutat un nod intr-o cale.",
           "line": "Am mutat o linie.",
           "area": "Am mutat o suprafață."
-        },
-        "incomplete_relation": {
-          "single": "Această caracteristică nu poate fi mutată deoarece nu a fost descărcată complet."
         }
       },
       "rotate": {
@@ -368,10 +330,9 @@
           "detail_title": "Detalii",
           "cancel": "Renunță"
         }
-      },
-      "map_features": "Funcționalitățile Hărții"
+      }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Puncte",
         "tooltip": "Puncte de interes"
@@ -460,10 +421,8 @@
     "source_switch": {
       "lose_changes": "Ai modificări nesalvate. Schimbând serverul de harți, le vei pierde. Ești sigur(ă) ca vrei să schimbi serverele ?"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Şterge"
-      }
+    "rapid_menu": {
+      "remove": "Şterge"
     },
     "tag_reference": {
       "description": "Descriere",
@@ -515,9 +474,7 @@
       }
     },
     "issues": {
-      "warnings": {
-        "list_title": "Atenționări"
-      }
+      "warnings": "Atenționări"
     },
     "intro": {
       "done": "gata",
@@ -643,51 +600,51 @@
     },
     "shortcuts": {
       "key": {
+        "delete": "Șterge",
         "option": "Opțiuni",
         "pause": "Pauză",
         "return": "Înapoi"
       },
       "or": "-sau-",
-      "browsing": {
-        "title": "Căutare",
-        "navigation": {
-          "title": "Navigare",
-          "pan": "Mișcă harta"
+      "browsing": "Căutare",
+      "editing": "Editare",
+      "navigation": "Navigare",
+      "selecting_features": "Selectare obiecte",
+      "drawing": "Desenare",
+      "commands": "Comenzi",
+      "help": "Ajutor",
+      "display_options": "Afișează opțiuni",
+      "info": "Informație",
+      "command": {
+        "pan": {
+          "label": "Mișcă harta"
         },
-        "help": {
-          "title": "Ajutor"
+        "select_one": {
+          "label": "Selectează un singur obiect"
         },
-        "display_options": {
-          "title": "Afișează opțiuni"
+        "select_multi": {
+          "label": "Selectează mai multe obiecte"
         },
-        "selecting": {
-          "title": "Selectare obiecte",
-          "select_one": "Selectează un singur obiect",
-          "select_multi": "Selectează mai multe obiecte"
+        "first_node": {
+          "label": "Sari la primul nod"
         },
-        "vertex_selected": {
-          "first": "Sari la primul nod",
-          "last": "Sari la ultimul nod"
-        }
-      },
-      "editing": {
-        "title": "Editare",
-        "drawing": {
-          "title": "Desenare"
+        "last_node": {
+          "label": "Sari la ultimul nod"
         },
-        "commands": {
-          "title": "Comenzi",
-          "copy": "Copiază obiecte selectate",
-          "paste": "Lipește obiecte selectate",
-          "undo": "Anulează ultima acțiune",
-          "redo": "Refă ultima acțiune",
-          "save": "Salvează modificările"
-        }
-      },
-      "tools": {
-        "title": "Unelte",
-        "info": {
-          "title": "Informație"
+        "copy": {
+          "label": "Copiază obiecte selectate"
+        },
+        "paste": {
+          "label": "Lipește obiecte selectate"
+        },
+        "undo": {
+          "label": "Anulează ultima acțiune"
+        },
+        "redo": {
+          "label": "Refă ultima acțiune"
+        },
+        "save": {
+          "label": "Salvează modificările"
         }
       }
     },
@@ -750,6 +707,7 @@
       "bin": "bini",
       "bkm": "kom",
       "bla": "siksika",
+      "blo": "anii",
       "bm": "bambara",
       "bn": "bengaleză",
       "bo": "tibetană",
@@ -965,6 +923,7 @@
       "kv": "komi",
       "kw": "cornică",
       "kwk": "kwakʼwala",
+      "kxv": "kuvi",
       "ky": "kârgâză",
       "la": "latină",
       "lad": "ladino",
@@ -978,6 +937,7 @@
       "lij": "liguriană",
       "lil": "lillooet",
       "lkt": "lakota",
+      "lmo": "lombardă",
       "ln": "lingala",
       "lo": "laoțiană",
       "lol": "mongo",
@@ -990,7 +950,6 @@
       "lua": "luba-lulua",
       "lui": "luiseno",
       "lun": "lunda",
-      "luo": "luo",
       "lus": "mizo",
       "luy": "luyia",
       "lv": "letonă",
@@ -1169,6 +1128,7 @@
       "swb": "comoreză",
       "syc": "siriacă clasică",
       "syr": "siriacă",
+      "szl": "sileziană",
       "ta": "tamilă",
       "tce": "tutchone de sud",
       "te": "telugu",
@@ -1214,10 +1174,10 @@
       "umb": "umbundu",
       "ur": "urdu",
       "uz": "uzbecă",
-      "vai": "vai",
       "ve": "venda",
       "vec": "venetă",
       "vi": "vietnameză",
+      "vmw": "makhuwa",
       "vo": "volapuk",
       "vot": "votică",
       "vun": "vunjo",
@@ -1231,6 +1191,7 @@
       "wuu": "chineză wu",
       "xal": "calmucă",
       "xh": "xhosa",
+      "xnr": "kangri",
       "xog": "soga",
       "yao": "yao",
       "yap": "yapeză",

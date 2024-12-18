@@ -25,10 +25,17 @@
       "openstreetmapgermany": "OpenStreetMap Tyskland",
       "openstreetmapgreece": "OpenStreetMap Hellas",
       "openstreetmapnorway": "OpenStreetMap Norge",
+      "openstreetmapswitzerland": "OpenStreetMap Sveits",
       "openstreetmapus": "OpenStreetMap USA"
     },
     "al-maptime-tirana": {
       "description": "Sosiale arrangementer organisert rundt kartlegging - nybegynnere hjertelig velkomne!"
+    },
+    "am-wiki": {
+      "description": "{community} Wiki-side"
+    },
+    "at-wiki": {
+      "description": "{community} Wiki-side"
     },
     "Bahia-telegram": {
       "extendedDescription": "Bli med i fellesskapet for å lære mer om OpenStreetMap, spørre spørsmål eller delta på møtene våre. Alle er velkommen!"
@@ -37,6 +44,9 @@
       "name": "Bay Area OpenStreetMap-kartleggere",
       "description": "Forbedre OpenStreetMap i Bay Area",
       "extendedDescription": "Denne gruppen handler om å utvide OpenStreetMap-fellesskapet her i Bay Area. Hendelsene våre er åpne for alle, fra åpen-kildekode-entusiaster, syklister, GIS-profesjonelle, geocachere, og videre. Hvem som helst og alle som er interesserte i kart, lage kart og åpne kartdata er velkommen for å bli med i gruppen vår og delta på hendelsene våre."
+    },
+    "bd-facebook": {
+      "extendedDescription": "Kartlegger du i Bangladesh? Har du spørsmål, og har lyst til å sosialisere med fellesskapet her? Bli med på {url}. Alle er velkomne!"
     },
     "be-chapter": {
       "description": "Vi hjelper med å vokse og forbedre OpenStreetMap i Belgia.",
@@ -52,6 +62,12 @@
     "bg-wiki": {
       "description": "Wikiproject-side for Bulgaria"
     },
+    "bo-matrix": {
+      "description": "Alle kartleggere er velkomne!"
+    },
+    "br-telegram": {
+      "extendedDescription": "Bli med i fellesskapet for å lære mer om OpenStreetMap, spørre spørsmål eller delta på møtene våre. Alle er velkommen!"
+    },
     "cape-coast-youthmappers": {
       "name": "Universitetet av Cape Coast YouthMappers",
       "description": "Følg oss på Twitter: {url}",
@@ -64,11 +80,47 @@
       "name": "OpenStreetMap Sveits e-postliste",
       "description": "E-postliste for Sveits"
     },
+    "cl-facebook": {
+      "extendedDescription": "Bli med i fellesskapet for å lære mer om OpenStreetMap, spørre spørsmål eller delta på møtene våre. Alle er velkommen!"
+    },
+    "cl-telegram": {
+      "extendedDescription": "Bli med i fellesskapet for å lære mer om OpenStreetMap, spørre spørsmål eller delta på møtene våre. Alle er velkommen!"
+    },
     "czech-community": {
       "description": "Kar portal, nettside og kontakter på OSM medlemmer i Tsjekkia"
     },
+    "de-aachen-wiki": {
+      "description": "{community} Wiki-side"
+    },
     "de-berlin-mailinglist": {
       "name": "Berlin e-postliste"
+    },
+    "de-berlin-wiki": {
+      "description": "{community} Wiki-side"
+    },
+    "de-bochum-wiki": {
+      "description": "{community} Wiki-side"
+    },
+    "de-bonn-wiki": {
+      "description": "{community} Wiki-side"
+    },
+    "de-bremen-wiki": {
+      "description": "{community} Wiki-side"
+    },
+    "de-cologne-wiki": {
+      "description": "{community} Wiki-side"
+    },
+    "de-dresden-wiki": {
+      "description": "{community} Wiki-side"
+    },
+    "de-dusseldorf-wiki": {
+      "description": "{community} Wiki-side"
+    },
+    "de-luneburg-wiki": {
+      "description": "{community} Wiki-side"
+    },
+    "de-munchen-wiki": {
+      "description": "{community} Wiki-side"
     },
     "de-mv-mailinglist": {
       "name": "Mecklenburg-Vorpommern E-postliste"
@@ -84,11 +136,20 @@
     "DF-telegram": {
       "extendedDescription": "Bli med i fellesskapet for å lære mer om OpenStreetMap, spørre spørsmål eller delta på møtene våre. Alle er velkommen!"
     },
+    "fr-35-wiki": {
+      "description": "{community} Wiki-side"
+    },
+    "fr-38-wiki": {
+      "description": "{community} Wiki-side"
+    },
     "fr-bzh-website": {
       "description": "Kartet som snakker bretonsk"
     },
     "fr-chapter": {
       "description": "Vi hjelper vokse og forbedre OpenStreetMap i Frankrike."
+    },
+    "fr-montrouge-wiki": {
+      "description": "{community} Wiki-side"
     },
     "fr-telegram": {
       "description": "En Telegram-gruppe for det franske OSM-fellesskapet: {url}"
@@ -103,8 +164,8 @@
       "description": "Oppmøte for kartentusiaster i Philadelphia-området",
       "extendedDescription": "GeoPhilly forener utviklere, geografer, datanerder, åpen-kildekode-entusiaster, hackere og kartavhengige i vår delte interesse i kart og historiene de forteller. Hvis du bruker kart som del av yrket ditt, eller bare vil vite mer, er dette oppmøtet for deg! Hendelsen vår har i mål å være åpen, vennlig, lærerik og sosial, og består av alt fra \"happy hours\" til lynprat og til og med workshops. Kom og ta del av en mangfoldig, inspirerende fellesskap i Philadelphia med oss!"
     },
-    "MapColabora-mailinglist": {
-      "description": "Mapeado Colaborativo / Geoinquietos Zaragoza e-postliste"
+    "hu-wiki": {
+      "description": "{community} Wiki-side"
     },
     "MapColabora-twitter": {
       "description": "Mapeado Colaborativo / Geoinquietos Zaragoza Twitter-konto"
@@ -119,6 +180,12 @@
     "Maptime-Oceania-Slack": {
       "description": "Registrer deg på {signupUrl}"
     },
+    "me-telegram": {
+      "description": "Alle er velkomne! Registrer deg på {signupUrl}"
+    },
+    "nl-matrix": {
+      "description": "Alle kartleggere er velkomne!"
+    },
     "no-irc": {
       "description": "Chatterom for kartleggere og OpenStreetMap-brukere, utviklere og entusiaster i Norge"
     },
@@ -129,6 +196,12 @@
     },
     "OpenCleveland-meetup": {
       "description": "Forbedre OpenStreetMap i Cleveland området"
+    },
+    "osm-africa-matrix": {
+      "description": "Alle kartleggere er velkomne!"
+    },
+    "osm-africa-slack": {
+      "description": "Alle er velkomne! Registrer deg på {signupUrl}"
     },
     "OSM-AR-twitter": {
       "extendedDescription": "Nyheter fra det lokale fellesskapet og OpenStreetMap generelt."
@@ -143,6 +216,9 @@
     "OSM-Colorado": {
       "description": "Kartleggere og OpenStreetMap-brukere i Colorado, USA",
       "extendedDescription": "OpenStreetMap (OSM) Colorado er ett lokalt samarbeid av folk interessert i å bidra i å lage frie kart. Vi oppmuntrer alle våre kartleggere til å organisere eller foreslå kartleggingshendelser i staten. Aktiviteter under oppmøte kan være enkel sosial miksing, grunnleggende OSM til avansert trening, eller fellesskap kartleggingsgrupper."
+    },
+    "osm-deep-south-wiki": {
+      "description": "{community} Wiki-side"
     },
     "OSM-Facebook": {
       "description": "Lik oss på Facebook for nyheter og oppdateringer om OpenStreetMap."
@@ -174,6 +250,12 @@
     "OSM-Kerala-facebook": {
       "description": "Forbedre OpenStreetMap i Kerala",
       "extendedDescription": "Kartlegger du i Kerala? Har du spørsmål, og har lyst til å sosialisere med fellesskapet her? Bli med på {url}. Alle er velkomne!"
+    },
+    "osm-michigan-wiki": {
+      "description": "{community} Wiki-side"
+    },
+    "osm-ohio-wiki": {
+      "description": "{community} Wiki-side"
     },
     "OSM-Ottawa-meetup": {
       "description": "Kartleggere og OpenStreetMap-brukere i Ottawa-området"
@@ -245,6 +327,9 @@
     "rs-wiki": {
       "description": "Wikiproject-side for Serbia"
     },
+    "sg-wiki": {
+      "description": "{community} Wiki-side"
+    },
     "si-ljubljana-wiki": {
       "description": "{community} Wiki-side"
     },
@@ -254,8 +339,14 @@
     "talk-au": {
       "description": "Sted for australske kartleggere å chatte"
     },
+    "talk-bo": {
+      "extendedDescription": "Kartlegger du i Bolivia? Har du spørsmål, og har lyst til å sosialisere med fellesskapet her? Bli med på {url}. Alle er velkomne!"
+    },
     "talk-nz": {
       "description": "New Zealands OSM-samfunnsprat"
+    },
+    "tw-slack": {
+      "description": "Alle er velkomne! Registrer deg på {signupUrl}"
     },
     "tz-website": {
       "description": "Tilbyr OSM-tjenester og informasjon til lokalsamfunnet i Tanzania"
@@ -275,6 +366,9 @@
     },
     "uk-loomio": {
       "name": "OpenStreetMap UK på Loomio"
+    },
+    "vn-wiki": {
+      "description": "{community} Wiki-side"
     }
   }
 }

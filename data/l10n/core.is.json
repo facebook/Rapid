@@ -28,16 +28,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Svæði",
-        "filter_tooltip": "svæði"
+        "title": "Svæði"
       },
       "add_line": {
-        "title": "Lína",
-        "filter_tooltip": "línur"
+        "title": "Lína"
       },
       "add_point": {
-        "title": "Punktur",
-        "filter_tooltip": "punktar"
+        "title": "Punktur"
       },
       "add_note": {
         "title": "Minnispunktur",
@@ -91,20 +88,10 @@
         "title": "Líma"
       },
       "circularize": {
-        "title": "Hringlaga",
-        "description": {
-          "single": "Gera þessa fitju hringlaga.",
-          "multiple": "Gera þessar fitjur hringlaga."
-        }
+        "title": "Hringlaga"
       },
       "orthogonalize": {
-        "title": "Hornrétta",
-        "description": {
-          "corner": {
-            "single": "Rétta þetta horn.",
-            "multiple": "Rétta þessi horn."
-          }
-        }
+        "title": "Hornrétta"
       },
       "straighten": {
         "title": "Slétta",
@@ -115,32 +102,12 @@
       },
       "delete": {
         "title": "Eyða",
-        "description": {
-          "single": "Eyða þessu endanlega.",
-          "multiple": "Eyða þessum fitjum endanlega."
-        },
         "annotation": {
           "point": "Eyddi punkti.",
           "vertex": "Eyddi hnúti af leið.",
           "line": "Eyddi línu.",
           "area": "Eyddi svæði.",
           "relation": "Eyddi venslum."
-        },
-        "too_large": {
-          "single": "Ekki hægt að eyða þessu því ekki er nægur hluti þess sýnilegur.",
-          "multiple": "Ekki hægt að eyða þessum atriðum því ekki er nægur hluti þeirra sýnilegur."
-        },
-        "incomplete_relation": {
-          "single": "Ekki er hægt að eyða þessu atriði því að það er ekki fullhlaðið.",
-          "multiple": "Ekki er hægt að eyða þessum atriðum því að þau eru ekki fullhlaðin."
-        },
-        "part_of_relation": {
-          "single": "Ekki hægt að eyða þessu atriði því það er hluti af stærri venslum. Þú þarft fyrst að fjarlægja það úr venslunum.",
-          "multiple": "Ekki hægt að eyða þessum atriðum því þau eru hluti af stærri venslum. Þú þarft fyrst að fjarlægja þau úr venslunum."
-        },
-        "connected_to_hidden": {
-          "single": "Ekki hægt að eyða þessu því það tengist földu eigindi.",
-          "multiple": "Ekki hægt að breyta þessum atriðum því sum þeirra tengjast földum eigindum."
         }
       },
       "reorder_members": {
@@ -184,50 +151,18 @@
       },
       "move": {
         "title": "Færa",
-        "description": {
-          "single": "Færa þessa fitju á annan stað.",
-          "multiple": "Færa þessar fitjur á annan stað."
-        },
         "annotation": {
           "point": "Færði punkt.",
           "vertex": "Færði hnút á leið.",
           "line": "Færði línu.",
           "area": "Færði svæði."
-        },
-        "incomplete_relation": {
-          "single": "Ekki er hægt að færa þetta atriði því að það er ekki fullhlaðið.",
-          "multiple": "Ekki er hægt að færa þessi atriði því þau eru ekki fullhlaðin."
-        },
-        "too_large": {
-          "single": "Ekki hægt að færa þetta atriði því ekki er nægur hluti þess sýnilegur.",
-          "multiple": "Ekki hægt að færa þessi atriði því ekki er nægur hluti þeirra sýnilegur."
-        },
-        "connected_to_hidden": {
-          "single": "Ekki hægt að færa þetta atriði því það tengist földu eigindi.",
-          "multiple": "Ekki hægt að færa þessi atriði því sum þeirra tengjast földum eigindum."
         }
       },
       "rotate": {
         "title": "Snúa",
-        "description": {
-          "single": "Snúa þessari fitju um miðpunkt sinn.",
-          "multiple": "Snúa þessum fitjum um sameiginlegan miðpunkt sinn."
-        },
         "annotation": {
           "line": "Snéri línu.",
           "area": "Snéri svæði."
-        },
-        "incomplete_relation": {
-          "single": "Ekki er hægt að snúa þessu atriði því að það er ekki fullhlaðið.",
-          "multiple": "Ekki er hægt að snúa þessum atriðum því að þau eru ekki fullhlaðin."
-        },
-        "too_large": {
-          "single": "Ekki hægt að snúa þessu atriði því ekki er nægur hluti þess sýnilegur.",
-          "multiple": "Ekki hægt að snúa þessum atriðum því ekki er nægur hluti þeirra sýnilegur."
-        },
-        "connected_to_hidden": {
-          "single": "Ekki hægt að snúa þessu atriði því það tengist földu eigindi.",
-          "multiple": "Ekki hægt að snúa þessum atriðum því sum þeirra tengjast földum eigindum."
         }
       },
       "reverse": {
@@ -243,9 +178,6 @@
           "create": "Bætti við takmörkunum á beygju",
           "delete": "Eyddi takmörkunum á beygju"
         }
-      },
-      "extract": {
-        "key": "A"
       }
     },
     "restriction": {
@@ -466,7 +398,6 @@
           "zoom": "Renna að gögnum"
         }
       },
-      "map_features": "Fitjur á korti",
       "autohidden": "Þessar fitjur hafa verið faldar sjálfvirkt því annars yrðu of margar sýndar á skjánum. Þú getur rennt að til að breyta þeim.",
       "osmhidden": "Þessar fitjur hafa verið faldar sjálfvirkt því að OpenStreetMap-lagið er falið."
     },
@@ -477,7 +408,7 @@
         }
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Punktar",
         "tooltip": "Merkisstaðir"
@@ -627,16 +558,17 @@
       "start": "Breyta núna"
     },
     "source_switch": {
+      "dev": "þróun",
       "live": "raun",
-      "lose_changes": "Þú átt óvistaðar breytingar. Að skipta um kortaþjón mun henda þeim. Ertu viss um að þú viljir skipta um kortaþjón?",
-      "dev": "þróun"
+      "lose_changes": "Þú átt óvistaðar breytingar. Að skipta um kortaþjón mun henda þeim. Ertu viss um að þú viljir skipta um kortaþjón?"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Merki"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Fjarlægja"
+    "rapid_menu": {
+      "remove": "Fjarlægja",
+      "category": {
+        "roads": "vegir"
       }
     },
     "tag_reference": {
@@ -652,7 +584,6 @@
         "out": "Get ekki rennt lengra frá."
       }
     },
-    "cannot_zoom": "Get ekki rennt lengra frá í núverandi ham.",
     "full_screen": "Víxla skjáfylli af/á",
     "QA": {
       "osmose": {
@@ -1006,12 +937,8 @@
       }
     },
     "issues": {
-      "errors": {
-        "list_title": "Villur"
-      },
-      "warnings": {
-        "list_title": "Aðvaranir"
-      },
+      "errors": "Villur",
+      "warnings": "Aðvaranir",
       "missing_role": {
         "message": "{member} hefur ekkert hlutverk innan {relation}"
       },
@@ -1214,75 +1141,118 @@
         "drag": "draga"
       },
       "or": "-eða-",
-      "browsing": {
-        "title": "Flakk",
-        "navigation": {
-          "title": "Rötun",
-          "pan": "Hliðra korti"
+      "browsing": "Flakk",
+      "editing": "Breytingar",
+      "navigation": "Rötun",
+      "selecting_features": "Velja fitjur",
+      "with_node_selected": "Með valinn hnút",
+      "drawing": "Teikning",
+      "commands": "Skipanir",
+      "help": "Hjálp",
+      "display_options": "Valkostir birtingar",
+      "info": "Upplýsingar",
+      "command": {
+        "pan": {
+          "label": "Hliðra korti"
         },
-        "help": {
-          "title": "Hjálp",
-          "help": "Birta hjálp/leiðbeiningar",
-          "keyboard": "Birta flýtilykla"
+        "select_one": {
+          "label": "Velja staka fitju"
         },
-        "display_options": {
-          "title": "Valkostir birtingar",
-          "wireframe": "Víxla útlínuham af/á"
+        "select_multi": {
+          "label": "Velja margar fitjur"
         },
-        "selecting": {
-          "title": "Velja fitjur",
-          "select_one": "Velja staka fitju",
-          "select_multi": "Velja margar fitjur",
-          "lasso": "Draga valsvæði í kringum fitjur",
-          "search": "Finna fitjur sem samsvara leitartexta"
+        "lasso": {
+          "label": "Draga valsvæði í kringum fitjur"
         },
-        "with_selected": {
-          "edit_menu": "Víxla breytingavalmynd af/á"
+        "edit_menu": {
+          "label": "Víxla breytingavalmynd af/á"
         },
-        "vertex_selected": {
-          "title": "Með valinn hnút",
-          "first": "Hoppa í fyrsta hnút",
-          "last": "Hoppa í síðasta hnút",
-          "change_parent": "Skipta í yfirleið (parent)"
-        }
-      },
-      "editing": {
-        "title": "Breytingar",
-        "drawing": {
-          "title": "Teikning",
-          "add_point": "'Bæta við punkti' hamur",
-          "add_line": "'Bæta við línu' hamur",
-          "add_area": "'Bæta við svæði' hamur",
-          "add_note": "'Bæta við minnispunkti' hamur",
-          "place_point": "Setja punkt eða minnispunkt",
-          "disable_snap": "Halda niðri til að koma í veg fyrir grip í punkta",
-          "stop_line": "Ljúka við að teikna línu eða svæði"
+        "first_node": {
+          "label": "Hoppa í fyrsta hnút"
         },
-        "commands": {
-          "title": "Skipanir",
-          "copy": "Afrita valdar fitjur",
-          "paste": "Líma valdar fitjur",
-          "undo": "Afturkalla síðustu aðgerð",
-          "redo": "Endurtaka síðustu aðgerð",
-          "save": "Vista breytingar"
+        "last_node": {
+          "label": "Hoppa í síðasta hnút"
         },
-        "operations": {
-          "merge": "Sameina (setja saman) valdar fitjur",
-          "move": "Færa valdar fitjur",
-          "rotate": "Snúa völdum fitjum",
-          "circularize": "Gera lokaða línu eða svæði hringlaga",
-          "delete": "Eyða völdum fitjum"
-        }
-      },
-      "tools": {
-        "title": "Verkfæri",
-        "info": {
-          "title": "Upplýsingar",
-          "all": "Víxla öllum upplýsingaspjöldum af/á",
-          "background": "Víxla bakgrunnsspjaldi af/á",
-          "history": "Víxla aðgerðaferilspjaldi af/á",
-          "location": "Víxla staðsetningarspjaldi af/á",
-          "measurement": "Víxla mælingaspjaldi af/á"
+        "change_parent": {
+          "label": "Skipta í yfirleið (parent)"
+        },
+        "add_point": {
+          "label": "'Bæta við punkti' hamur"
+        },
+        "add_line": {
+          "label": "'Bæta við línu' hamur"
+        },
+        "add_area": {
+          "label": "'Bæta við svæði' hamur"
+        },
+        "add_note": {
+          "label": "'Bæta við minnispunkti' hamur"
+        },
+        "place_point": {
+          "label": "Setja punkt eða minnispunkt"
+        },
+        "disable_snap": {
+          "label": "Halda niðri til að koma í veg fyrir grip í punkta"
+        },
+        "stop_line": {
+          "label": "Ljúka við að teikna línu eða svæði"
+        },
+        "copy": {
+          "label": "Afrita valdar fitjur"
+        },
+        "paste": {
+          "label": "Líma valdar fitjur"
+        },
+        "undo": {
+          "label": "Afturkalla síðustu aðgerð"
+        },
+        "redo": {
+          "label": "Endurtaka síðustu aðgerð"
+        },
+        "save": {
+          "label": "Vista breytingar"
+        },
+        "find": {
+          "label": "Finna fitjur sem samsvara leitartexta"
+        },
+        "merge": {
+          "label": "Sameina (setja saman) valdar fitjur"
+        },
+        "extract": {
+          "key": "A"
+        },
+        "move": {
+          "label": "Færa valdar fitjur"
+        },
+        "rotate": {
+          "label": "Snúa völdum fitjum"
+        },
+        "circularize": {
+          "label": "Gera lokaða línu eða svæði hringlaga"
+        },
+        "delete": {
+          "label": "Eyða völdum fitjum"
+        },
+        "wireframe": {
+          "key": "V"
+        },
+        "keyboard_shortcuts": {
+          "label": "Birta flýtilykla"
+        },
+        "toggle_all_cards": {
+          "label": "Víxla öllum upplýsingaspjöldum af/á"
+        },
+        "toggle_background_card": {
+          "label": "Víxla bakgrunnsspjaldi af/á"
+        },
+        "toggle_history_card": {
+          "label": "Víxla aðgerðaferilspjaldi af/á"
+        },
+        "toggle_location_card": {
+          "label": "Víxla staðsetningarspjaldi af/á"
+        },
+        "toggle_measurement_card": {
+          "label": "Víxla mælingaspjaldi af/á"
         }
       }
     },
@@ -1353,6 +1323,7 @@
       "bik": "bíkol",
       "bin": "bíní",
       "bla": "siksika",
+      "blo": "anii",
       "bm": "bambara",
       "bn": "bengalska",
       "bo": "tíbeska",
@@ -1572,6 +1543,7 @@
       "kv": "komíska",
       "kw": "kornbreska",
       "kwk": "kwakʼwala",
+      "kxv": "kúví",
       "ky": "kirgiska",
       "la": "latína",
       "lad": "ladínska",
@@ -1582,8 +1554,10 @@
       "lez": "lesgíska",
       "lg": "ganda",
       "li": "limbúrgíska",
+      "lij": "lígúríska",
       "lil": "lillooet",
       "lkt": "lakóta",
+      "lmo": "lombardíska",
       "ln": "lingala",
       "lo": "laó",
       "lol": "mongó",
@@ -1771,6 +1745,7 @@
       "swb": "shimaoríska",
       "syc": "klassísk sýrlenska",
       "syr": "sýrlenska",
+      "szl": "slesíska",
       "ta": "tamílska",
       "tce": "suður-tutchone",
       "te": "telúgú",
@@ -1818,7 +1793,9 @@
       "uz": "úsbekska",
       "vai": "vaí",
       "ve": "venda",
+      "vec": "feneyska",
       "vi": "víetnamska",
+      "vmw": "makúva",
       "vo": "volapyk",
       "vot": "votíska",
       "vun": "vunjó",
@@ -1832,6 +1809,7 @@
       "wuu": "wu-kínverska",
       "xal": "kalmúkska",
       "xh": "sósa",
+      "xnr": "kangrí",
       "xog": "sóga",
       "yao": "jaó",
       "yap": "japíska",
@@ -1902,8 +1880,8 @@
       "Orya": "oriya",
       "Rohg": "hanifi",
       "Sinh": "sinhala",
-      "Sund": "sundanesíska",
-      "Syrc": "syriakíska",
+      "Sund": "sundanesískt",
+      "Syrc": "syriakískt",
       "Taml": "tamílskt",
       "Telu": "telúgú",
       "Tfng": "tifinagh",

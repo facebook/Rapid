@@ -9,6 +9,12 @@
             },
             "private": {
               "title": "Privat"
+            },
+            "unknown": {
+              "title": "Ukjend"
+            },
+            "yes": {
+              "title": "Tillate"
             }
           },
           "placeholder": "Ikkje spesifisert",
@@ -24,7 +30,13 @@
           "options": {
             "no": "Ingen",
             "private": "Privat",
+            "unknown": "Ukjend",
             "yes": "Offentleg"
+          }
+        },
+        "activity": {
+          "options": {
+            "horse": "Riding"
           }
         },
         "addr/interpolation": {
@@ -97,12 +109,20 @@
         "architect": {
           "label": "Arkitekt"
         },
+        "armrest": {
+          "options": {
+            "undefined": "Ukjend"
+          }
+        },
         "artwork_type": {
           "options": {
             "sculpture": "Skulptur"
           }
         },
         "athletics_pitch": {
+          "label": "Hending"
+        },
+        "athletics_track": {
           "label": "Hending"
         },
         "atm": {
@@ -211,6 +231,7 @@
         },
         "covered_no": {
           "options": {
+            "no": "Nei",
             "yes": "Ja"
           }
         },
@@ -230,6 +251,18 @@
             "wheat": "Kveite"
           }
         },
+        "crossing/barrier": {
+          "options": {
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "crossing_raised": {
+          "options": {
+            "table": "Ja",
+            "undefined": "Nei"
+          }
+        },
         "cuisine": {
           "options": {
             "fish": "Fisk",
@@ -237,7 +270,9 @@
             "georgian": "Georgisk",
             "german": "Tysk",
             "greek": "Gresk",
-            "juice": "Jus"
+            "juice": "Jus",
+            "regional": "Regionalt",
+            "tea": "Te"
           }
         },
         "cutting": {
@@ -251,6 +286,10 @@
           "options": {
             "lane": {
               "description": "Ein sykkelveg er skilt frå biltrafikk med ei måla linje"
+            },
+            "no": {
+              "description": "Ingen sykkelveg",
+              "title": "Ingen"
             }
           }
         },
@@ -273,11 +312,25 @@
         "design": {
           "label": "Utforming"
         },
+        "destination": {
+          "label": "Destinasjonar"
+        },
+        "destination_waterway": {
+          "label": "Destinasjon"
+        },
         "devices": {
           "label": "Einingar"
         },
+        "diplomatic": {
+          "options": {
+            "consulate": "Konsulat"
+          }
+        },
         "diplomatic/services": {
           "label": "Tenseter"
+        },
+        "direction_cardinal-US-CA-NZ": {
+          "label": "Retningar"
         },
         "direction_clock": {
           "label": "Retningar",
@@ -308,6 +361,11 @@
         },
         "duration": {
           "label": "Varigheit"
+        },
+        "electrified": {
+          "options": {
+            "no": "Nei"
+          }
         },
         "email": {
           "label": "E-post"
@@ -341,6 +399,22 @@
             "wall": "Vegg"
           }
         },
+        "fire_mains": {
+          "options": {
+            "no": "Nei"
+          }
+        },
+        "fire_service_inlet": {
+          "label": "Form",
+          "options": {
+            "wall": "Vegg"
+          }
+        },
+        "fire_sprinkler": {
+          "options": {
+            "no": "Nei"
+          }
+        },
         "fireplace": {
           "label": "Eldstad"
         },
@@ -350,6 +424,12 @@
         "fitness_station": {
           "label": "Utstyrstype"
         },
+        "flashing_lights": {
+          "options": {
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
         "ford": {
           "placeholder": "Standard"
         },
@@ -358,6 +438,9 @@
         },
         "fuel": {
           "label": "Drivstoff"
+        },
+        "fuel/fuel_multi": {
+          "label": "Drivstofftypar"
         },
         "gender": {
           "label": "Kjønn",
@@ -378,6 +461,11 @@
         },
         "handicap": {
           "label": "Funksjonshemming"
+        },
+        "healthcare": {
+          "options": {
+            "dentist": "Tannlege"
+          }
         },
         "healthcare/speciality": {
           "label": "Spesialitetar"
@@ -422,6 +510,16 @@
         "interval": {
           "label": "Intervall"
         },
+        "kerb": {
+          "options": {
+            "no": {
+              "title": "Nei"
+            },
+            "yes": {
+              "title": "Ja"
+            }
+          }
+        },
         "kerb/height": {
           "label": "Høgde"
         },
@@ -453,10 +551,17 @@
         "maxspeed": {
           "label": "Fartsgrense"
         },
+        "memorial": {
+          "options": {
+            "sculpture": "Skulptur"
+          }
+        },
         "mooring": {
           "options": {
             "guest": "Gjestar",
-            "private": "Privat"
+            "no": "Nei",
+            "private": "Privat",
+            "yes": "Ja"
           }
         },
         "name": {
@@ -464,6 +569,9 @@
         },
         "network": {
           "label": "Nettverk"
+        },
+        "network/type": {
+          "label": "Nettverkstype"
         },
         "network_bicycle": {
           "options": {
@@ -498,14 +606,22 @@
         "note": {
           "label": "Merknad"
         },
+        "nudism": {
+          "options": {
+            "yes": "Tillate"
+          }
+        },
         "oneway": {
           "options": {
             "no": "Nei",
+            "reversible": "Reversibel",
             "yes": "Ja"
           }
         },
         "oneway_yes": {
           "options": {
+            "no": "Nei",
+            "reversible": "Reversibel",
             "yes": "Ja"
           }
         },
@@ -524,18 +640,41 @@
         },
         "organic": {
           "options": {
-            "no": "Ingen"
+            "no": "Ingen",
+            "only": "berre"
           }
         },
         "outdoor_seating": {
           "label": "Utandørsservering"
+        },
+        "parcel_pickup": {
+          "options": {
+            "no": "Nei",
+            "yes": "Ja"
+          }
         },
         "park_ride": {
           "label": "Innfartsparkering"
         },
         "parking": {
           "options": {
-            "carports": "Biloppstillingsplassar under tak"
+            "carports": "Biloppstillingsplassar under tak",
+            "rooftop": "Hustak"
+          }
+        },
+        "parking/side/orientation": {
+          "types": {
+            "parking:left:orientation": "Venstre side",
+            "parking:right:orientation": "Høgre side"
+          }
+        },
+        "parking/side/parking": {
+          "options": {
+            "no": "Nei"
+          },
+          "types": {
+            "parking:left": "Venstre side",
+            "parking:right": "Høgre side"
           }
         },
         "phone": {
@@ -553,14 +692,45 @@
           },
           "placeholder": "Lett, mellomstadium, avansert…"
         },
+        "piste/difficulty_downhill": {
+          "placeholder": "Lett, mellomstadium, avansert…"
+        },
+        "piste/difficulty_nordic": {
+          "placeholder": "Lett, mellomstadium, avansert…"
+        },
+        "piste/difficulty_skitour": {
+          "placeholder": "Lett, mellomstadium, avansert…"
+        },
+        "product": {
+          "label": "Produkts"
+        },
         "pump": {
           "options": {
-            "no": "Ingen"
+            "no": "Ingen",
+            "yes": "Ja"
           }
         },
         "railway/signal/direction": {
           "options": {
-            "both": "Begge/Alle"
+            "backward": "bakover",
+            "both": "Begge/Alle",
+            "forward": "Framover"
+          }
+        },
+        "ramp": {
+          "options": {
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "recycling_accepts": {
+          "options": {
+            "clothes": "Klede"
+          }
+        },
+        "royal_cypher-GB": {
+          "options": {
+            "no": "Nei"
           }
         },
         "scuba_diving": {
@@ -612,6 +782,12 @@
             "other": "Anna"
           }
         },
+        "seamark/harbour/category_marina": {
+          "options": {
+            "marina": "Ja",
+            "marina_no_facilities": "Nei"
+          }
+        },
         "seamark/mooring/category": {
           "label": "Kategori"
         },
@@ -649,28 +825,124 @@
         "smoking": {
           "label": "Røyking"
         },
+        "stroller": {
+          "options": {
+            "limited": "Avgrensa",
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "structure": {
+          "placeholder": "Ukjend"
+        },
+        "structure_waterway": {
+          "placeholder": "Ukjend"
+        },
+        "substance": {
+          "options": {
+            "fuel": "Drivstoff"
+          }
+        },
         "surveillance/type": {
           "options": {
             "camera": "Kamera"
           }
         },
+        "survey_point/purpose": {
+          "options": {
+            "both": "Begge"
+          }
+        },
+        "takeaway": {
+          "options": {
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "toilets/menstrual_products": {
+          "options": {
+            "no": "Nei"
+          }
+        },
+        "toilets/wheelchair": {
+          "options": {
+            "limited": "Avgrensa",
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
         "traffic_sign/direction": {
           "options": {
-            "both": "Begge/Alle"
+            "backward": "bakover",
+            "both": "Begge/Alle",
+            "forward": "Framover"
           }
         },
         "traffic_signals/direction": {
           "options": {
-            "both": "Begge/Alle"
+            "backward": "bakover",
+            "both": "Begge/Alle",
+            "forward": "Framover"
+          }
+        },
+        "traffic_signals/sound": {
+          "options": {
+            "no": "Nei",
+            "yes": "Ja"
           }
         },
         "tunnel": {
           "placeholder": "Standard"
+        },
+        "turning_circle": {
+          "label": "Form"
+        },
+        "two_sided": {
+          "options": {
+            "undefined": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "vehicles": {
+          "options": {
+            "tram": "Trikk"
+          }
+        },
+        "vending": {
+          "options": {
+            "coffee": "Kaffi",
+            "fuel": "Drivstoff"
+          }
+        },
+        "water_source": {
+          "options": {
+            "river": "Elv",
+            "stream": "Straum"
+          }
+        },
+        "wheelchair": {
+          "options": {
+            "limited": "Avgrensa",
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "windings/auto": {
+          "options": {
+            "no": "Nei",
+            "yes": "Ja"
+          }
         }
       },
       "presets": {
+        "address": {
+          "name": "Addresse"
+        },
         "amenity/atm": {
           "name": "Minibank"
+        },
+        "amenity/bench": {
+          "name": "Benk"
         },
         "amenity/dentist": {
           "name": "Tannlege"
@@ -681,14 +953,80 @@
         "amenity/language_school": {
           "name": "Språkskule"
         },
+        "amenity/telephone": {
+          "name": "Telefon"
+        },
+        "area": {
+          "name": "Område"
+        },
         "attraction/carousel": {
           "name": "Karusell"
+        },
+        "barrier/entrance": {
+          "name": "Inngang"
+        },
+        "barrier/wall": {
+          "name": "Vegg"
+        },
+        "building": {
+          "name": "Bygning"
+        },
+        "building/school": {
+          "name": "Skulebugning"
+        },
+        "building_point": {
+          "name": "Bygning"
+        },
+        "craft/tailor": {
+          "name": "Skreddar"
+        },
+        "craft/watchmaker": {
+          "name": "Klokkemakar"
+        },
+        "craft/winery": {
+          "name": "Vinprodusent"
+        },
+        "entrance/emergency": {
+          "name": "Naudutgang"
         },
         "leisure/dancing_school": {
           "name": "Danseskule"
         },
+        "line": {
+          "name": "Linje"
+        },
+        "office/diplomatic/consulate": {
+          "name": "Konsulat"
+        },
+        "place": {
+          "name": "Plass"
+        },
+        "place/city": {
+          "name": "By/Bygd"
+        },
+        "place/hamlet": {
+          "name": "Grend"
+        },
+        "place/square": {
+          "name": "Kvadrat"
+        },
+        "point": {
+          "name": "Punkt"
+        },
+        "seamark": {
+          "name": "Sjømerke"
+        },
+        "shop/tailor": {
+          "name": "Skreddar"
+        },
+        "tourism/artwork/sculpture": {
+          "name": "Skulptur"
+        },
         "waterway/river": {
           "name": "Elv"
+        },
+        "waterway/stream": {
+          "name": "Straum"
         }
       }
     }

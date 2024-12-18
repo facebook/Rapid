@@ -8,6 +8,7 @@
         "attribution": {
           "text": "Uvjeti i povratne informacije"
         },
+        "description": "Esri World snimke",
         "name": "Esri World snimke"
       },
       "EsriWorldImageryClarity": {
@@ -124,6 +125,11 @@
         }
       },
       "tf-landscape": {
+        "attribution": {
+          "text": "Karte © Thunderforest, Podaci © OpenStreetMap doprinositelji"
+        }
+      },
+      "tf-outdoors": {
         "attribution": {
           "text": "Karte © Thunderforest, Podaci © OpenStreetMap doprinositelji"
         }

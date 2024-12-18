@@ -28,16 +28,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Lekua",
-        "filter_tooltip": "areak"
+        "title": "Lekua"
       },
       "add_line": {
-        "title": "Lerroa",
-        "filter_tooltip": "lerroak"
+        "title": "Lerroa"
       },
       "add_point": {
-        "title": "Puntua",
-        "filter_tooltip": "puntuak"
+        "title": "Puntua"
       },
       "add_note": {
         "title": "Oharra",
@@ -112,52 +109,15 @@
       },
       "circularize": {
         "title": "Biribildu",
-        "description": {
-          "single": "Ezaugarri hau biribildu.",
-          "multiple": "Ezaugarri hauek biribildu."
-        },
         "annotation": {
           "feature": {
             "one": "Ezaugarri bat biribildu da.",
             "other": "{n} ezaugarri biribildu dira."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Hau ezin da zirkularra egin hainbat arrazoirengatik."
-        },
-        "not_closed": {
-          "single": "Hau ezin da biribildu ez delako begizta itxi bat.",
-          "multiple": "Hauek ezin dira biribildu ez direlako begizta itxiak."
-        },
-        "too_large": {
-          "single": "Hau ezin da biribila egin zatiren bat ez dagoelako ikusgai.",
-          "multiple": "Hauek ezin dira biribildu horietako zati batzuk ez daudelako ikusgai."
-        },
-        "connected_to_hidden": {
-          "single": "Hau ezin da biribil egin ezkutuko ezaugarri bati lotuta dagoelako.",
-          "multiple": "Hauek ezin dira biribil egin horietako batzuk ezkutuko ezaugarri batzuetara lotuta daudelako."
-        },
-        "not_downloaded": {
-          "single": "Hau ezin da biribil egin zatiren bat ez delako oraindik deskargatu.",
-          "multiple": "Hauek ezin dira biribil egin zatiren batzuk ez direlako oraindik deskargatu."
-        },
-        "already_circular": {
-          "single": "Hau ezin da dagoena baino biribilago egin.",
-          "multiple": "Hauek ezin dira egin direnak baino biribilagoak."
         }
       },
       "orthogonalize": {
         "title": "Laukia",
-        "description": {
-          "corner": {
-            "single": "Ertz hau karratu bihurtu.",
-            "multiple": "Ertz hauek karratuak bihurtu."
-          },
-          "feature": {
-            "single": "Ezaugarri honen ertzak karratu bihurtu.",
-            "multiple": "Ezaugarri hauen ertzak karratu bihurtu."
-          }
-        },
         "annotation": {
           "corner": {
             "one": "Ertz bat karratu bihurtu da.",
@@ -185,27 +145,11 @@
       },
       "delete": {
         "title": "Ezabatu",
-        "description": {
-          "single": "Ezaugarri hau iraunkorki ezabatu.",
-          "multiple": "Ezaugarri hauek iraunkorki ezabatu."
-        },
         "annotation": {
           "point": "Puntu bat ezabatu da.",
           "line": "Lerro bat ezabatu da.",
           "area": "Eremu bat ezabatu da.",
           "relation": "Erlazio bat ezabatu da."
-        },
-        "too_large": {
-          "single": "Funtzio hau ezin da ezabatu  gaur egun ez dagoelako nahikoa erabilgarri.",
-          "multiple": "Funtzio hauek ezin dira ezabatu gaur egun ez dagoelako nahikoa erabilgarri."
-        },
-        "incomplete_relation": {
-          "single": "Funtzio hau ezin da ezabatu ez delako guztiz deskargatu. ",
-          "multiple": "Funtzio hauek ezin dira ezabatu ez direlako guztiz deskargatu. "
-        },
-        "connected_to_hidden": {
-          "single": "Funtzio hau ezin da ezabatu ezkutuko funtzio bati lotuta dagoelako. ",
-          "multiple": "Funtzio hauek ezin dira ezabatu haietariko batzuk ezkutuko funtzio batzuei lotuta daudelako."
         }
       },
       "downgrade": {
@@ -229,10 +173,6 @@
       },
       "move": {
         "title": "Mugitu",
-        "description": {
-          "single": "Funtzio hau beste leku batera mugitu. ",
-          "multiple": "Funtzio hauek beste leku batera mugitu. "
-        },
         "annotation": {
           "point": "Puntu bat mugitu da.",
           "line": "Lerro bat mugitu da.",
@@ -334,8 +274,7 @@
         "maproulette": {
           "cancel": "Ezeztatu"
         }
-      },
-      "map_features": "Mapako elementuak"
+      }
     },
     "photo_overlays": {
       "photo_type": {
@@ -348,13 +287,13 @@
         }
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Puntuak",
         "tooltip": "Puntu interesgarriak"
       },
       "buildings": {
-        "description": "Eraikinak"
+        "description": "Eraikuntzak"
       }
     },
     "save": {
@@ -377,12 +316,13 @@
     "splash": {
       "start": "Editatu orain"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Etiketak"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Ezabatu"
+    "rapid_menu": {
+      "remove": "Ezabatu",
+      "category": {
+        "roads": "errepideak"
       }
     },
     "tag_reference": {
@@ -492,12 +432,8 @@
     },
     "issues": {
       "title": "Arazoak",
-      "list_title": "Arazoak",
-      "rules": {
-        "title": "Arauak"
-      },
-      "user_resolved_issues": "Zure edizioekin konpondutako arazoak",
-      "warnings_and_errors": "Abisu eta erroreak",
+      "rules": "Arauak",
+      "resolved_tooltip": "Zure edizioekin konpondutako arazoak",
       "options": {
         "what": {
           "all": "Dena"
@@ -559,35 +495,30 @@
       "key": {
         "delete": "Ezabatu"
       },
-      "browsing": {
-        "help": {
-          "title": "Laguntza"
+      "editing": "Editatu",
+      "drawing": "Marraztu",
+      "commands": "Aginduak",
+      "help": "Laguntza",
+      "display_options": "Bistaratzeko aukerak",
+      "info": "Informazioa",
+      "command": {
+        "copy": {
+          "label": "Aukeratutako ezaugarriak kopiatu"
         },
-        "display_options": {
-          "title": "Bistaratzeko aukerak"
-        }
-      },
-      "editing": {
-        "title": "Editatu",
-        "drawing": {
-          "title": "Marraztu"
+        "save": {
+          "label": "Aldaketak gorde"
         },
-        "commands": {
-          "title": "Aginduak",
-          "copy": "Aukeratutako ezaugarriak kopiatu",
-          "save": "Aldaketak gorde"
+        "move": {
+          "label": "Aukeratutako ezaugarriak mugitu"
         },
-        "operations": {
-          "move": "Aukeratutako ezaugarriak mugitu",
-          "straighten": "Puntu lerro bat zuzendu",
-          "circularize": "Lerro itxia ala area biribildu",
-          "delete": "Aukeratutako ezaugarriak ezabatu"
-        }
-      },
-      "tools": {
-        "title": "Tresnak",
-        "info": {
-          "title": "Informazioa"
+        "straighten": {
+          "label": "Puntu lerro bat zuzendu"
+        },
+        "circularize": {
+          "label": "Lerro itxia ala area biribildu"
+        },
+        "delete": {
+          "label": "Aukeratutako ezaugarriak ezabatu"
         }
       }
     },
@@ -638,6 +569,7 @@
       "bi": "bislama",
       "bin": "edoera",
       "bla": "siksikera",
+      "blo": "aniiera",
       "bm": "bambarera",
       "bn": "bengalera",
       "bo": "tibetera",
@@ -758,7 +690,7 @@
       "iba": "ibanera",
       "ibb": "ibibioera",
       "id": "indonesiera",
-      "ie": "interlingue",
+      "ie": "interlinguea",
       "ig": "igboera",
       "ii": "Sichuango yiera",
       "ikt": "Kanada mendebaldeko inuitera",
@@ -813,6 +745,7 @@
       "kv": "komiera",
       "kw": "kornubiera",
       "kwk": "kwakwala",
+      "kxv": "kuvia",
       "ky": "kirgizera",
       "la": "latina",
       "lad": "ladinoa",
@@ -824,6 +757,7 @@
       "lij": "liguriera",
       "lil": "lillooetera",
       "lkt": "lakotera",
+      "lmo": "lombardiera",
       "ln": "lingala",
       "lo": "laosera",
       "lou": "Louisianako kreolera",
@@ -978,6 +912,7 @@
       "sw-CD": "Kongoko swahilia",
       "swb": "komoreera",
       "syr": "asiriera",
+      "szl": "silesiera",
       "ta": "tamilera",
       "tce": "hegoaldeko tutchoneera",
       "te": "telugua",
@@ -1020,6 +955,7 @@
       "ve": "vendera",
       "vec": "veneziera",
       "vi": "vietnamera",
+      "vmw": "makhuwera",
       "vo": "volapük",
       "vun": "vunjoa",
       "wa": "valoniera",
@@ -1030,6 +966,7 @@
       "wuu": "wu txinera",
       "xal": "kalmykera",
       "xh": "xhosera",
+      "xnr": "kangrera",
       "xog": "sogera",
       "yav": "yangbenera",
       "ybb": "yemba",
@@ -1037,8 +974,9 @@
       "yo": "jorubera",
       "yrl": "nheengatua",
       "yue": "Kantongo txinera",
+      "za": "zhuangera",
       "zgh": "amazigera estandarra",
-      "zh": "mandarinera",
+      "zh": "mandarina",
       "zh-Hans": "mandarin sinplifikatua",
       "zh-Hant": "mandarin tradizionala",
       "zu": "zuluera",
@@ -1066,7 +1004,7 @@
       "Bugi": "buginera",
       "Buhd": "buhid",
       "Cakm": "txakma",
-      "Cans": "Kanadiako aborigenen silabiko bateratua",
+      "Cans": "Kanadako aborigenen silabario bateratua",
       "Cari": "kariera",
       "Cham": "txamera",
       "Cher": "txerokiarra",
@@ -1108,21 +1046,21 @@
       "Hrkt": "silabario japoniarrak",
       "Hung": "hungariera zaharra",
       "Ital": "italiera zaharra",
-      "Jamo": "jamo-bihurketa",
+      "Jamo": "jamoa",
       "Java": "javaniera",
       "Jpan": "japoniarra",
       "Kali": "kayah li",
       "Kana": "katakana",
       "Kawi": "kawi",
       "Khar": "kharoshthi",
-      "Khmr": "khemerarra",
+      "Khmr": "khmertarra",
       "Khoj": "khojkiera",
       "Kits": "khitanerako script txikiak",
       "Knda": "kanadarra",
       "Kore": "korearra",
       "Kthi": "kaithiera",
       "Lana": "lannera",
-      "Laoo": "laosarra",
+      "Laoo": "laostarra",
       "Latn": "latinoa",
       "Lepc": "leptxa",
       "Limb": "linbuera",
@@ -1140,7 +1078,7 @@
       "Mend": "mende",
       "Merc": "meroitiar etzana",
       "Mero": "meroitirra",
-      "Mlym": "malayalamarra",
+      "Mlym": "malabartarra",
       "Modi": "modiera",
       "Mong": "mongoliarra",
       "Mroo": "mroera",
@@ -1193,7 +1131,7 @@
       "Takr": "takriera",
       "Tale": "tai le",
       "Talu": "tai lue berria",
-      "Taml": "tamilarra",
+      "Taml": "tamildarra",
       "Tang": "tangutera",
       "Tavt": "tai viet",
       "Telu": "teluguarra",

@@ -1,13 +1,11 @@
 {
   "zh-HK": {
     "imagery": {
-      "Bing": {
-        "description": "衛星和航攝圖"
-      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "條款和意見"
         },
+        "description": "Esri world 世界航攝圖",
         "name": "Esri world 世界航攝圖"
       },
       "EsriWorldImageryClarity": {
@@ -24,8 +22,7 @@
       "Mapbox": {
         "attribution": {
           "text": "條款和意見"
-        },
-        "name": "Mapbox 衛星圖"
+        }
       },
       "OSM_Inspector-Addresses": {
         "attribution": {
@@ -75,46 +72,26 @@
       "SPW_PICC": {
         "name": "SPW(allonie) PICC 數值圖"
       },
-      "US_Forest_Service_roads_overlay": {
-        "name": "美國森林道路圖層"
+      "US-TIGER-Roads-2018": {
+        "description": "黃色 = 來自美國人口普查的公共地圖數據。紅色 = 在OpenStreetMap找不到數據"
       },
-      "Waymarked_Trails-Cycling": {
-        "attribution": {
-          "text": "© waymarkedtrails.org, OpenStreetMap 貢獻者，CC by-SA 3.0"
-        },
-        "name": "Waymarked Trails: 單車"
+      "US-TIGER-Roads-2019": {
+        "description": "黃色 = 來自美國人口普查的公共地圖數據。紅色 = 在OpenStreetMap找不到數據"
       },
-      "Waymarked_Trails-Hiking": {
-        "attribution": {
-          "text": "© waymarkedtrails.org, OpenStreetMap 貢獻者，CC by-SA 3.0"
-        },
-        "name": "Waymarked Trails: 遠足"
+      "US-TIGER-Roads-2020": {
+        "description": "黃色 = 來自美國人口普查的公共地圖數據。紅色 = 在OpenStreetMap找不到數據"
       },
-      "Waymarked_Trails-MTB": {
-        "attribution": {
-          "text": "© waymarkedtrails.org, OpenStreetMap 貢獻者，CC by-SA 3.0"
-        },
-        "name": "Waymarked Trails: 越野單車"
+      "US-TIGER-Roads-2021": {
+        "description": "黃色 = 來自美國人口普查的公共地圖數據。紅色 = 在OpenStreetMap找不到數據"
       },
-      "Waymarked_Trails-Skating": {
-        "attribution": {
-          "text": "© waymarkedtrails.org, OpenStreetMap 貢獻者，CC by-SA 3.0"
-        },
-        "name": "Waymarked Trails: 溜冰"
+      "US-TIGER-Roads-2022": {
+        "description": "黃色 = 來自美國人口普查的公共地圖數據。紅色 = 在OpenStreetMap找不到數據"
       },
-      "Waymarked_Trails-Winter_Sports": {
-        "attribution": {
-          "text": "© waymarkedtrails.org, OpenStreetMap 貢獻者，CC by-SA 3.0"
-        },
-        "name": "Waymarked Trails: 冬季運動"
+      "US-TIGER-Roads-2023": {
+        "description": "黃色 = 來自美國人口普查的公共地圖數據。紅色 = 在OpenStreetMap找不到數據"
       },
       "basemap<TX_DOT>at-orthofoto": {
         "description": "由 basemap.at 提供的 Orthofoto 圖層。geoimage.at 的 \"繼承者\"。"
-      },
-      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
-        "attribution": {
-          "text": "GSI 日本"
-        }
       },
       "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
         "attribution": {
@@ -122,17 +99,13 @@
         }
       },
       "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
-        "attribution": {
-          "text": "GSI 日本"
-        },
         "name": "日本 GSI 標準地圖"
       },
       "mapbox_locator_overlay": {
         "attribution": {
           "text": "條款和意見"
         },
-        "description": "顯示主要的特徵以協助您定位。",
-        "name": "定位器覆蓋層"
+        "description": "顯示主要的特徵以協助您定位。"
       },
       "openpt_map": {
         "attribution": {
@@ -144,7 +117,6 @@
         "attribution": {
           "text": "© OpenStreetMap 貢獻者"
         },
-        "description": "上傳至OpenStreetMap的公開 GPS 軌跡。",
         "name": "OpenStreetMap GPS 軌跡"
       },
       "osm-mapnik-german_style": {
@@ -156,8 +128,7 @@
       "qa_no_address": {
         "attribution": {
           "text": "Simon Poole，資料 ©OpenStreetMap 貢獻者"
-        },
-        "name": "QA 無地址"
+        }
       },
       "skobbler": {
         "attribution": {
@@ -168,15 +139,17 @@
         "description": "Snowmobile 路徑",
         "name": "Snowmobile 地圖瑞典"
       },
-      "stamen-terrain-background": {
-        "name": "Stamen 地形"
-      },
       "tf-cycle": {
         "attribution": {
           "text": "地圖 © Thunderforest，資料 © OpenStreetMap 貢獻者"
         }
       },
       "tf-landscape": {
+        "attribution": {
+          "text": "地圖 © Thunderforest，資料 © OpenStreetMap 貢獻者"
+        }
+      },
+      "tf-outdoors": {
         "attribution": {
           "text": "地圖 © Thunderforest，資料 © OpenStreetMap 貢獻者"
         }

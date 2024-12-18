@@ -8,8 +8,14 @@
     "cape-coast-youthmappers": {
       "description": "Følg oss på Twitter: {url}"
     },
+    "Galicia-Xeoinquedos-Twitter": {
+      "description": "Følg oss på Twitter på {url}"
+    },
     "Maptime-Oceania-Slack": {
       "description": "Registrer deg på {signupUrl}"
+    },
+    "PHXGeo-twitter": {
+      "description": "Følg oss på Twitter på {url}"
     }
   }
 }

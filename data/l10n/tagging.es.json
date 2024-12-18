@@ -1069,7 +1069,7 @@
             "caribbean": "Caribeña",
             "chicken": "Pollo",
             "chinese": "China",
-            "coffee_shop": "Cafetería",
+            "coffee_shop": "Cafetería especializada",
             "dessert": "Postre",
             "diner": "Cena",
             "donut": "Dona / Rosquilla",
@@ -2048,13 +2048,13 @@
           "terms": "internet, wifi, wlan, local, público, privado, red, Wi-Fi, fibra, router, antena, cable coaxial, lan, ISP, conexión, protocolo, http, ftp, ssh, TCP, IP, enrutamiento, dns, dhcp, mac, dirección, 4G, 5G"
         },
         "internet_access/fee": {
-          "label": "Acceso a Internet",
+          "label": "Tarifa de acceso a Internet",
           "options": {
             "customers": "Solo clientes",
             "no": "Gratis",
             "yes": "Pago"
           },
-          "terms": "tarifa wifi, acceso, punto de acceso, conexión, wifi, wi-fi, acceso gratuito, precio wifi"
+          "terms": "Tarifa de acceso a Internet, costo de acceso a Internet, cargo por conexión a Internet, cuota de acceso a Internet"
         },
         "internet_access/ssid": {
           "label": "Nombre de la red wifi",
@@ -2266,7 +2266,13 @@
           "label": "Cobertura"
         },
         "map_type": {
-          "label": "Tipo"
+          "label": "Tipo",
+          "options": {
+            "scheme": "Mapa esquemático",
+            "street": "Mapa de carreteras",
+            "topo": "Mapa topográfico",
+            "toposcope": "Toposcopio"
+          }
         },
         "mapillary": {
           "label": "ID de imagen de Mapillary",
@@ -3380,7 +3386,8 @@
           "terms": "venta de usados, usada, usados"
         },
         "segregated": {
-          "label": "Separación de bicicletas y peatones"
+          "label": "Separación de bicicletas y peatones",
+          "terms": "Separación bici-peatón, división ciclista-peatonal, carril de separación peatonal y ciclista"
         },
         "self_service": {
           "label": "Autoservicio"
@@ -3917,7 +3924,7 @@
           "label": "Hasta"
         },
         "toilets": {
-          "label": "Baños",
+          "label": "Baños/Aseos/Servicios",
           "terms": "baño, baños, servicio, servicios, aseo, aseos, lavabo, tocador, inodoro, taza, letrina, retrete, toilette"
         },
         "toilets/disposal": {
@@ -4194,6 +4201,7 @@
             "coffee": "Café",
             "condoms": "Condones",
             "drinks": "Bebidas",
+            "e-cigarettes": "Cigarrillos electrónicos",
             "eggs": "Huevos",
             "electronics": "Electrónica",
             "elongated_coin": "Monedas de recuerdo",
@@ -5520,7 +5528,7 @@
         },
         "amenity/theatre/type/amphi": {
           "name": "Anfiteatro",
-          "terms": "aire libre, al aire libre, griego, ampi, anfi, anfiteatro"
+          "terms": "Anfiteatro, teatro al aire libre, arena, auditorio abierto, recinto exterior, espacio escénico al aire libre"
         },
         "amenity/ticket_validator": {
           "name": "Validador de boletos",
@@ -6974,6 +6982,18 @@
           "name": "Pasarela de tablones",
           "terms": "muelle, pasarela de tablones, sendero elevado de madera, paseo de tablas, tablas, madera, tarima, entarimado, paseo marítimo, puente"
         },
+        "highway/path/crossing": {
+          "name": "Cruce para ciclistas y peatones"
+        },
+        "highway/path/crossing/traffic_signals": {
+          "name": "Cruce para ciclistas y peatones con señales peatonales"
+        },
+        "highway/path/crossing/uncontrolled": {
+          "name": "Cruce marcado para ciclistas y peatones"
+        },
+        "highway/path/crossing/unmarked": {
+          "name": "Cruce no marcado para ciclistas y peatones"
+        },
         "highway/path/informal": {
           "name": "Camino informal",
           "terms": "rastro de contrabando, camino de vaca, línea de deseo, camino de deseo, línea deseada, camino deseado, camino de elefante, camino de juego, camino de cabra, camino de rebaño, camino de cerdos, acceso directo, atajo, camino social, rastro de uso, no planificado, deseado"
@@ -7361,6 +7381,14 @@
         "landuse/meadow": {
           "name": "Prado",
           "terms": "prado, pradera, campo, mies, braniza, braña"
+        },
+        "landuse/meadow_orchard/meadow": {
+          "name": "Prado con árboles frutales",
+          "terms": "Prado con árboles frutales, campo con árboles frutales, área verde con frutales, campo frutal, área verde con árboles de frutas"
+        },
+        "landuse/meadow_orchard/orchard": {
+          "name": "Huerto en pradera",
+          "terms": "Huerto en pradera, plantación de frutales en campo, frutales en campo abierto, frutales en campo, plantación de frutales en pradera"
         },
         "landuse/military": {
           "name": "Área militar",
@@ -8481,7 +8509,7 @@
           "terms": "roca, piedra"
         },
         "natural/saddle": {
-          "name": "Collado",
+          "name": "Collado / Abra",
           "terms": "collado,depresión,paso de montaña,portillo,punto de silla,abra, ensillada, cañada"
         },
         "natural/sand": {
@@ -8913,8 +8941,7 @@
           "terms": "esquí de fondo, esqui de fondo, esquí nórdico, esqui nordico, pista, esquí, esqui, xc"
         },
         "piste/piste": {
-          "name": "Pista / Sendero de deportes de nieve",
-          "terms": "esquí, esqui, nórdico, nordico, crosscountry, de fondo, cuesta abajo, alpino, snowboard, skitour, esquí de travesía, trineo, luge, trineo, trineo, esquí de travesía, husky, caballo, senderismo de invierno, raquetas de nieve, raquetas de nieve, hielo, patinaje"
+          "name": "Sendero / Pista de deportes de nieve (tipo no especificado)"
         },
         "piste/ski_jump": {
           "name": "Pista de salto en esquí",
@@ -9094,8 +9121,8 @@
           "terms": "Columpio, hamaca, hamacarse, amaca"
         },
         "playground/teenshelter": {
-          "name": "Refugio para jóvenes",
-          "terms": "refugio, abrigo, albergue, amparo, joven, adolescente"
+          "name": "Refugio para jugar",
+          "terms": "refugio, abrigo, albergue, amparo, joven, adolescente, juvenil, juegos"
         },
         "playground/tetherball": {
           "name": "Poste de Tetherball",
@@ -9910,7 +9937,7 @@
           "terms": "regalo, obsequio, presentes, recuerdo, souvenir, regaleria, regionales"
         },
         "shop/greengrocer": {
-          "name": "Verdulería / Frutería",
+          "name": "Tienda de frutas y verduras",
           "terms": "hortaliza, verdura, fruta, verdulería, frutería, legumbre, vegetal, verdulero, frutero"
         },
         "shop/hairdresser": {
@@ -10177,8 +10204,8 @@
           "terms": "deporte, deportivo"
         },
         "shop/stationery": {
-          "name": "Artículos de papelería y oficina",
-          "terms": "papel, papelería, escritorio, oficina, artículos de papelería, material de papelería, material de escritorio, papel de escribir, artículos de oficina, librería, libreria, artículos escolares, papelera"
+          "name": "Papelería/Librería",
+          "terms": "papel, papelería, escritorio, oficina, artículos de papelería, material de papelería, material de escritorio, papel de escribir, artículos de oficina, librería, libreria, artículos escolares, papelera, artículos de papelería y oficina"
         },
         "shop/storage_rental": {
           "name": "Alquiler de espacios para almacenaje",

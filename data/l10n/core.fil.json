@@ -29,16 +29,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Lugar",
-        "filter_tooltip": "mga lugar"
+        "title": "Lugar"
       },
       "add_line": {
-        "title": "Linya",
-        "filter_tooltip": "mga linya"
+        "title": "Linya"
       },
       "add_point": {
-        "title": "Punto",
-        "filter_tooltip": "mga punto"
+        "title": "Punto"
       },
       "add_note": {
         "title": "Tala",
@@ -121,52 +118,15 @@
       },
       "circularize": {
         "title": "Gawing pabilog",
-        "description": {
-          "single": "Gawing pabilog ang feature na ito.",
-          "multiple": "Gawing pabilog ang mga feature na ito."
-        },
         "annotation": {
           "feature": {
             "one": "Ginawa ang feature na pabilog.",
             "other": "Ginawang pabilog ang {n} na mga feature."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Ang mga ito ay hindi maaaring gawing pabilog para sa maraming dahilan."
-        },
-        "not_closed": {
-          "single": "Hindi ito maaaring gawing pabilog dahil hindi ito loop.",
-          "multiple": "Ang mga ito ay hindi maaaring gawing pabilog dahil hindi sila mga loop."
-        },
-        "too_large": {
-          "single": "Hindi ito maaaring gawing pabilog dahil hindi sapat sa kasalukuyan ang nakikita.",
-          "multiple": "Ang mga ito ay hindi maaaring gawing pabilog dahil hindi sapat sa mga ito ang kasalukuyang nakikita."
-        },
-        "connected_to_hidden": {
-          "single": "Hindi ito maaaring gawing pabilog dahil nakakonekta ito sa isang nakatagong feature.",
-          "multiple": "Ang mga ito ay hindi maaaring gawing pabilog dahil ang ilan ay konektado sa mga nakatagong feature."
-        },
-        "not_downloaded": {
-          "single": "Hindi ito maaaring gawing pabilog dahil ang mga bahagi nito ay hindi pa nai-download.",
-          "multiple": "Ang mga ito ay hindi maaaring gawing pabilog dahil ang ilang bahagi ng mga ito ay hindi pa nai-download."
-        },
-        "already_circular": {
-          "single": "Hindi ito maaaring gawing mas pabilog pa.",
-          "multiple": "Ang mga ito ay hindi maaaring gawing mas pabilog pa."
         }
       },
       "orthogonalize": {
         "title": "Gawing parisukat",
-        "description": {
-          "corner": {
-            "single": "Gawing parisukat ang sulok na ito.",
-            "multiple": "Gawing parisukat itong mga sulok."
-          },
-          "feature": {
-            "single": "Gawing parisukat ang mga sulok sa feature na ito.",
-            "multiple": "Gawing parisukat ang mga sulok ng mga feature na ito."
-          }
-        },
         "annotation": {
           "corner": {
             "one": "Naging parisukat ang sulok.",
@@ -176,33 +136,6 @@
             "one": "Naging parisukat ang mga sulok sa feature.",
             "other": "Naging parisukat ang mga sulok sa {n} na mga feature."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Ang mga ito ay hindi maaaring maging parisukat para sa maraming dahilan."
-        },
-        "end_vertex": {
-          "single": "Hindi ito maaaring maging parisukat dahil isa itong endpoint.",
-          "multiple": "Ang mga ito ay hindi maaaring maging parisukat dahil ang mga ito ay mga endpoint."
-        },
-        "square_enough": {
-          "single": "Hindi ito maaaring gawing mas parisukat pa.",
-          "multiple": "Ang mga ito ay hindi maaaring gawing mas parisukat pa."
-        },
-        "not_squarish": {
-          "single": "Hindi ito maaaring gawing parisukat dahil hindi ito medyo parisukat.",
-          "multiple": "Ang mga ito ay hindi maaaring gawing parisukat dahil hindi sila medyo parisukat."
-        },
-        "too_large": {
-          "single": "Hindi ito maaaring gawing parisukat dahil hindi sapat sa kasalukuyan ang nakikita.",
-          "multiple": "Ang mga ito ay hindi maaaring gawing parisukat dahil hindi sapat sa mga ito ang kasalukuyang nakikita."
-        },
-        "connected_to_hidden": {
-          "single": "Hindi ito maaaring gawing parisukat dahil nakakonekta ito sa isang nakatagong feature.",
-          "multiple": "Ang mga ito ay hindi maaaring gawing parisukat dahil ang ilan ay konektado sa mga nakatagong feature."
-        },
-        "not_downloaded": {
-          "single": "Hindi ito maaaring gawing parisukat dahil ang mga bahagi nito ay hindi pa nai-download.",
-          "multiple": "Ang mga ito ay hindi maaaring gawing parisukat dahil ang ilang bahagi ng mga ito ay hindi pa nai-download."
         }
       },
       "straighten": {
@@ -221,26 +154,6 @@
             "one": "Itinuwid ang isang linya.",
             "other": "Itinuwid ang {n} na mga linya."
           }
-        },
-        "too_bendy": {
-          "single": "Hindi na ito maituwid dahil nakayuko ito ng sobra.",
-          "multiple": "Ang mga ito ay hindi maituwid dahil sila ay nakayuko nang labis."
-        },
-        "connected_to_hidden": {
-          "single": "Hindi ito maituwid dahil nakakonekta ito sa isang nakatagong feature.",
-          "multiple": "Ang mga ito ay hindi maituwid dahil ang ilan ay konektado sa mga nakatagong feature."
-        },
-        "not_downloaded": {
-          "single": "Hindi ito maituwid dahil hindi pa nai-download ang ilang bahagi nito.",
-          "multiple": "Ang mga ito ay hindi maaaring ituwid dahil ang ilang bahagi ng mga ito ay hindi pa nai-download."
-        },
-        "straight_enough": {
-          "single": "Hindi ito maaaring gawing mas matuwid pa.",
-          "multiple": "Ang mga ito ay hindi maaaring gawing mas matuwid pa."
-        },
-        "too_large": {
-          "single": "Hindi ito maituwid dahil hindi sapat sa kasalukuyan ang nakikita.",
-          "multiple": "Ang mga ito ay hindi maituwid dahil hindi sapat sa mga ito ang kasalukuyang nakikita."
         }
       },
       "delete": {
@@ -344,25 +257,14 @@
       "remove": "Tanggalin",
       "search": "Hanapin"
     },
-    "map_data": {
-      "layers": {
-        "notes": {
-          "key": "H"
-        }
-      }
-    },
-    "area_fill": {
-      "wireframe": {
-        "key": "K"
-      }
-    },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Tanggalin"
-      }
+    "rapid_menu": {
+      "remove": "Tanggalin"
     },
     "tag_reference": {
       "description": "Paglalarawan"
+    },
+    "bearing": {
+      "n": "H"
     },
     "QA": {
       "keepRight": {
@@ -405,12 +307,33 @@
     "shortcuts": {
       "title": "Mga Shortcut sa Keyboard",
       "tooltip": "Ipakita ang screen ng mga keyboard shortcut.",
+      "key": {
+        "delete": "Burahin"
+      },
       "or": "-o-",
-      "browsing": {
-        "title": "Pagba-browse",
-        "navigation": {
-          "title": "Nabigasyon",
-          "pan": "Mag-pan sa mapa"
+      "browsing": "Pagba-browse",
+      "navigation": "Nabigasyon",
+      "command": {
+        "pan": {
+          "label": "Mag-pan sa mapa"
+        },
+        "add_note": {
+          "key": "H"
+        },
+        "extract": {
+          "key": "S"
+        },
+        "straighten": {
+          "key": "T"
+        },
+        "wireframe": {
+          "key": "K"
+        },
+        "toggle_osm_notes": {
+          "key": "H"
+        },
+        "toggle_streetside": {
+          "key": "T"
         }
       }
     },
@@ -438,7 +361,6 @@
       "ff": "Fulah",
       "fr-CH": "Swiss na French",
       "frr": "Hilagang Frisian",
-      "fy": "Kanlurang Frisian",
       "hax": "Katimugang Haida",
       "ht": "Haitian",
       "ikt": "Kanlurang Canadian Inuktitut",
@@ -452,7 +374,6 @@
       "ojb": "Hilagang-Kanluran ng Ojibwa",
       "ojw": "Kanlurang Ojibwa",
       "pt-BR": "Portuges ng Brasil",
-      "sah": "Sakha",
       "sdh": "Katimugang Kurdish",
       "se": "Hilagang Sami",
       "slh": "Katimugang Lushootseed",

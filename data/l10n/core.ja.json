@@ -26,16 +26,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "エリア",
-        "filter_tooltip": "エリア"
+        "title": "エリア"
       },
       "add_line": {
-        "title": "ライン",
-        "filter_tooltip": "ライン"
+        "title": "ライン"
       },
       "add_point": {
-        "title": "ポイント",
-        "filter_tooltip": "ポイント"
+        "title": "ポイント"
       },
       "add_note": {
         "title": "メモ",
@@ -100,79 +97,15 @@
       },
       "circularize": {
         "title": "円状に並べる",
-        "description": {
-          "single": "この地物を円状に整形",
-          "multiple": "これらの地物を円状に整形"
-        },
         "annotation": {
           "feature": "{n}件の地物を円状に整形しました。"
-        },
-        "multiple_blockers": {
-          "multiple": "複数の理由によりこれらは円状にできません。"
-        },
-        "not_closed": {
-          "single": "エリアが閉じられていないため、円状に整形することができません",
-          "multiple": "エリアが閉じられていないため、円状に整形することができません"
-        },
-        "too_large": {
-          "single": "全体が表示されていないため、円状に整形することができません。",
-          "multiple": "全体が表示されていないため、円状に整形することができません。"
-        },
-        "connected_to_hidden": {
-          "single": "非表示の地物に接続しているため、円状に整形することができません。",
-          "multiple": "非表示の地物に接続しているものがあるため、円状に整形することができません。"
-        },
-        "not_downloaded": {
-          "single": "一部がまだダウンロードされていないため、円状に整形できません。",
-          "multiple": "一部がまだダウンロードされていないため、円状に整形できません。"
-        },
-        "already_circular": {
-          "single": "既に円状です。",
-          "multiple": "既に円状です。"
         }
       },
       "orthogonalize": {
         "title": "直角化",
-        "description": {
-          "corner": {
-            "single": "この角を直角にする。",
-            "multiple": "これらの角を直角にする。"
-          },
-          "feature": {
-            "single": "この地物の角を直角にする。",
-            "multiple": "これらの地物の角を直角にする。"
-          }
-        },
         "annotation": {
           "corner": "{n}箇所の角を直角にしました。",
           "feature": "{n}件の地物の角を直角にしました。"
-        },
-        "multiple_blockers": {
-          "multiple": "複数の理由によりこれらは直角化できません。"
-        },
-        "end_vertex": {
-          "single": "終端なので直角化できません。",
-          "multiple": "終端なので直角化できません。"
-        },
-        "square_enough": {
-          "single": "すでに直角です。",
-          "multiple": "すでに直角です。"
-        },
-        "not_squarish": {
-          "single": "直角にできない辺があるため、角を直角に整形することができません",
-          "multiple": "直角にできない辺があるため、角を直角に整形することができません"
-        },
-        "too_large": {
-          "single": "ウェイが完全には表示されていないため、直角に整形することができません。",
-          "multiple": "全体が完全には表示されていないため、直角に整形することができません。"
-        },
-        "connected_to_hidden": {
-          "single": "非表示の地物に接続しているため、直角に整形することができません。",
-          "multiple": "非表示の地物に接続しているため、直角に整形することができません。"
-        },
-        "not_downloaded": {
-          "single": "一部がまだダウンロードされていないため、直角に整形できません。",
-          "multiple": "一部がまだダウンロードされていないため、直角に整形できません。"
         }
       },
       "straighten": {
@@ -185,34 +118,10 @@
         "annotation": {
           "point": "{n}件のポイントを直線化しました。",
           "line": "{n}件のラインを直線化しました。"
-        },
-        "too_bendy": {
-          "single": "このラインは複雑に曲がっているため、直線化できません。",
-          "multiple": "これは曲がりすぎているので直線化できません。"
-        },
-        "connected_to_hidden": {
-          "single": "非表示の地物に接続しているため、これは直線化できません。",
-          "multiple": "非表示の地物に接続しているため、これらは直線化できません。"
-        },
-        "not_downloaded": {
-          "single": "一部がまだダウンロードされていないため、これは直線化できません。",
-          "multiple": "一部がまだダウンロードされていないため、これらは直線化できません。"
-        },
-        "straight_enough": {
-          "single": "すでに直線です。",
-          "multiple": "これらはこれ以上直線化できません。"
-        },
-        "too_large": {
-          "single": "一部が表示されていないため、これは直線化できません。",
-          "multiple": "一部が表示されていないため、これらは直線化できません。"
         }
       },
       "delete": {
         "title": "削除",
-        "description": {
-          "single": "この地物を完全に削除します。",
-          "multiple": "これらの地物を完全に削除します。"
-        },
         "annotation": {
           "point": "ポイントを削除しました。",
           "vertex": "ウェイ上のノードを削除しました。",
@@ -220,30 +129,6 @@
           "area": "エリアを削除しました。",
           "relation": "リレーションを削除しました。",
           "feature": "{n}件の地物を削除しました。"
-        },
-        "too_large": {
-          "single": "この地物は完全には表示されていないため、削除できません。",
-          "multiple": "これらの地物は完全には表示されていないため、削除できません。"
-        },
-        "incomplete_relation": {
-          "single": "この地物はまだ完全にはダウンロードされていないので、削除できません。",
-          "multiple": "地物全体がダウンロードされていないため、削除することができません。"
-        },
-        "part_of_relation": {
-          "single": "この地物は大きなリレーションの一部であるため、削除できません。まずリレーションから削除してください。",
-          "multiple": "これらの地物は大きなリレーションの一部であるため、削除できません。まずリレーションから削除してください。"
-        },
-        "connected_to_hidden": {
-          "single": "この地物は非表示の地物に接続しているため、削除できません。",
-          "multiple": "これらの地物は非表示の地物に接続しているため、削除できません。"
-        },
-        "not_downloaded": {
-          "single": "一部がまだダウンロードされていないため、この地物は削除できません。",
-          "multiple": "一部がまだダウンロードされていないため、これらの地物は削除できません。"
-        },
-        "has_wikidata_tag": {
-          "single": "この地物にはWikidataタグがあるため、削除できません。",
-          "multiple": "これらの地物にはWikidataタグがいくつかあるため、削除できません。"
         }
       },
       "downgrade": {
@@ -258,10 +143,6 @@
           "building": "{n} 件の地物を基本的な建物だけにダウングレードしました。",
           "address": "{n} 件の地物を住所だけにダウングレードしました。",
           "generic": "{n} 件の地物をダウングレードしました。"
-        },
-        "has_wikidata_tag": {
-          "single": "この地物にはWikidataタグがあるため、ダウングレードできません。",
-          "multiple": "これらの地物にはWikidataタグがいくつかあるため、ダウングレードできません。"
         }
       },
       "add_member": {
@@ -352,10 +233,6 @@
       },
       "move": {
         "title": "移動",
-        "description": {
-          "single": "この地物を別の位置へ移動します。",
-          "multiple": "これらの地物を別な位置へ移動します。"
-        },
         "annotation": {
           "point": "ポイントを移動",
           "vertex": "ウェイ上のノードを移動",
@@ -363,38 +240,12 @@
           "area": "エリアの移動",
           "relation": "リレーションを移動しました。",
           "feature": "{n}件の地物を移動しました。"
-        },
-        "incomplete_relation": {
-          "single": "この地物はまだ完全にはダウンロードされていないので、移動できません。",
-          "multiple": "これらの地物はまだ完全にはダウンロードされていないので移動できません。"
-        },
-        "too_large": {
-          "single": "この地物は完全には表示されていないため、移動できません。",
-          "multiple": "これらの地物は完全には表示されていないため、移動できません。"
-        },
-        "connected_to_hidden": {
-          "single": "この地物は非表示の地物に接続しているため、移動できません。",
-          "multiple": "これらの地物は非表示の地物に接続しているため、移動できません。"
-        },
-        "not_downloaded": {
-          "single": "一部がまだダウンロードされていないため、この地物は移動できません。",
-          "multiple": "一部がまだダウンロードされていないため、これらの地物は移動できません。"
         }
       },
       "reflect": {
         "title": {
           "long": "長軸で回転",
           "short": "短軸で回転"
-        },
-        "description": {
-          "long": {
-            "single": "この地物を長軸で回転します。",
-            "multiple": "これらの地物を長軸で回転します。"
-          },
-          "short": {
-            "single": "この地物を短軸で回転します。",
-            "multiple": "これらの地物を短軸で回転します。"
-          }
         },
         "annotation": {
           "long": {
@@ -403,51 +254,15 @@
           "short": {
             "feature": "{n}件の地物を短軸で回転しました。"
           }
-        },
-        "incomplete_relation": {
-          "single": "この地物は完全にダウンロードされていないので、回転できません。",
-          "multiple": "これらの地物は完全にダウンロードされていないので、回転できません。"
-        },
-        "too_large": {
-          "single": "この地物は完全に表示されていないので、回転できません。",
-          "multiple": "これらの地物は完全に表示されていないので、反転できません。"
-        },
-        "connected_to_hidden": {
-          "single": "この地物は非表示の地物に接続しているため、回転できません。",
-          "multiple": "これらの地物は非表示の地物に接続しているため、回転できません。"
-        },
-        "not_downloaded": {
-          "single": "この地物は一部がまだダウンロードされていないので、反転できません。",
-          "multiple": "これらの地物は一部がまだダウンロードされていないので、反転できません。"
         }
       },
       "rotate": {
         "title": "回転",
-        "description": {
-          "single": "この地物を中心点で回転します。",
-          "multiple": "これらの地物を中心点で回転します。"
-        },
         "annotation": {
           "line": "ラインの回転",
           "area": "エリアの回転",
           "relation": "リレーションを回転しました。",
           "feature": "{n}件の地物を回転しました。"
-        },
-        "incomplete_relation": {
-          "single": "この地物はまだ完全にはダウンロードされていないので、回転できません。",
-          "multiple": "これらの地物はまだ完全にはダウンロードされていないので、回転させることができません。"
-        },
-        "too_large": {
-          "single": "この地物は完全には表示されていないため、回転できません。",
-          "multiple": "これらの地物は完全には表示されていないため、回転できません。"
-        },
-        "connected_to_hidden": {
-          "single": "この地物は非表示の地物に接続しているため、回転できません。",
-          "multiple": "これらの地物は非表示の地物に接続しているため、回転できません。"
-        },
-        "not_downloaded": {
-          "single": "一部がまだダウンロードされていないため、この地物は回転できません。",
-          "multiple": "一部がまだダウンロードされていないため、これらの地物は回転できません。"
         }
       },
       "reverse": {
@@ -473,22 +288,6 @@
           "up": {
             "feature": "{n}件の地物をスケールアップしました。"
           }
-        },
-        "too_small": {
-          "single": "この地物は小さすぎてスケールダウンできません。",
-          "multiple": "これらの地物は小さすぎてスケールダウンできません。"
-        },
-        "too_large": {
-          "single": "この地物は完全には表示されていないため、スケール変更できません。",
-          "multiple": "これらの地物は完全には表示されていないため、スケール変更できません。"
-        },
-        "connected_to_hidden": {
-          "single": "この地物は非表示の地物に接続しているため、スケール変更できません。",
-          "multiple": "これらの地物は非表示の地物に接続しているため、スケール変更できません。"
-        },
-        "not_downloaded": {
-          "single": "この地物は一部がまだダウンロードされていないので、スケール変更できません。",
-          "multiple": "これらの地物は一部がまだダウンロードされていないため、スケール変更できません。"
         }
       },
       "split": {
@@ -534,31 +333,11 @@
       "extract": {
         "title": "抜き移し",
         "description": {
-          "vertex": {
-            "single": "このポイントを親のライン/エリアから抜き移します。",
-            "multiple": "これらのポイントを親の地物から抜き移します。"
-          },
-          "line": {
-            "single": "このラインからポイントを抜き出します。",
-            "multiple": "これらのラインからポイントを抜き移します。"
-          },
-          "area": {
-            "single": "このエリアからポイントを抜き移します。",
-            "multiple": "これらのエリアからポイントを抜き移します。"
-          },
           "feature": {
-            "multiple": "これらの地物からポイントを抜き移します。"
+            "other": "これらの地物からポイントを抜き移します。"
           }
         },
-        "annotation": "{n} 件のポイントを抜き移しました。",
-        "too_large": {
-          "single": "地物が完全には表示されていないため、ポイントを抜き移しできません。",
-          "multiple": "これらの地物が完全には表示されていないため、ポイントを抜き移しできません。"
-        },
-        "connected_to_hidden": {
-          "single": "このポイントは非表示の地物に接続しているため、抜き移しできません。",
-          "multiple": "非表示の地物に接続しているため、ポイントを抜き移しできません。"
-        }
+        "annotation": "{n} 件のポイントを抜き移しました。"
       }
     },
     "restriction": {
@@ -744,10 +523,6 @@
       "multiple_values": "複数の値",
       "multiple_types": "複数の種類",
       "unshared_value_tooltip": "全ての地物では共有されていません",
-      "hidden_preset": {
-        "manual": "{features} が非表示となっています。地図データ設定ペインで有効化してください。",
-        "zoom": "{features} が非表示となっています。ズームインして有効化してください。"
-      },
       "back_tooltip": "地物の種類を変更",
       "type": "種別",
       "details": "詳細",
@@ -831,8 +606,7 @@
         },
         "notes": {
           "tooltip": "OpenStreetMapのメモデータ",
-          "title": "OpenStreetMapのメモ",
-          "key": "北緯"
+          "title": "OpenStreetMapのメモ"
         },
         "maproulette": {
           "detail_title": "詳細",
@@ -861,7 +635,6 @@
         "tooltip": "幾何図形の値を表示して選択。"
       },
       "style_options": "スタイルの調整",
-      "map_features": "表示対象地物の選択",
       "autohidden": "表示対象となっている地物の数が多すぎます。ズームインしてから編集を行ってください。",
       "osmhidden": "OpenStreetMapレイヤが非表示のため、これらの地物は自動的に非表示となっています。"
     },
@@ -898,7 +671,7 @@
         "tooltip": "このユーザーの写真だけを表示"
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "ポイント",
         "tooltip": "地点情報"
@@ -916,7 +689,7 @@
         "tooltip": "歩道、自転車道など"
       },
       "buildings": {
-        "description": "建築物",
+        "description": "建物",
         "tooltip": "建築物、避難所、ガレージなど"
       },
       "building_parts": {
@@ -932,7 +705,7 @@
         "tooltip": "森林、農地、公園、住宅地、商業区画など"
       },
       "boundaries": {
-        "description": "区域境界",
+        "description": "境界（バウンダリー）",
         "tooltip": "行政区境"
       },
       "water": {
@@ -1092,16 +865,17 @@
       "start": "今すぐ編集を始める"
     },
     "source_switch": {
+      "dev": "開発サーバ",
       "live": "本番サーバ",
-      "lose_changes": "OSMへアップロードされていない編集があります。投稿先サーバを切り替えると編集内容は破棄されます。投稿先を切り替えてよろしいですか？",
-      "dev": "開発サーバ"
+      "lose_changes": "OSMへアップロードされていない編集があります。投稿先サーバを切り替えると編集内容は破棄されます。投稿先を切り替えてよろしいですか？"
     },
-    "rapid_feature_inspector": {
-      "tags": "すべてのタグ"
+    "rapid_inspector": {
+      "tags": "タグ"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "削除"
+    "rapid_menu": {
+      "remove": "削除",
+      "category": {
+        "roads": "道路"
       }
     },
     "tag_reference": {
@@ -1117,7 +891,9 @@
         "out": "これ以上ズームアウトできません。"
       }
     },
-    "cannot_zoom": "現在のモードでは、これ以上ズームアウトできません。",
+    "bearing": {
+      "n": "北緯"
+    },
     "full_screen": "フルスクリーンにする",
     "self_intersection": {
       "error": {
@@ -1539,7 +1315,6 @@
         "title": "ポイント",
         "intro": "*ポイント*は店舗、レストラン、記念碑といった地物を表現するのに使います。 特定の位置にマークし、そこに何があるかを記述します。",
         "add_point_h": "ポイントの追加",
-        "add_point": "ポイントを追加するには、マップ上部のツールバーにある {point_icon} **{point}** ボタンをクリックするか、ショートカットキー `1`を押してください。",
         "move_point_h": "ポイントの移動",
         "delete_point_h": "ポイントの削除",
         "delete_point": "実世界に存在しない地物は削除しても構いません。OpenStreetMapから地物を削除するとみんなが見ているマップから削除されるので、削除する前にその地物が本当に存在しないかよく確認してください。"
@@ -1548,7 +1323,6 @@
         "title": "ライン",
         "intro": "*ライン*は道路、鉄道、河川といった地物を表現するのに使われます。 ラインはその地物の中心付近に引きます。",
         "add_line_h": "ラインの追加",
-        "add_line": "ラインを追加するには、マップ上部にあるツールバーの{line_icon} **{line}**ボタンを押すか、ショートカットキー`2`を押してください。",
         "add_line_finish": "ラインを引き終わったときには、最後のノード上でもう一度クリックまたはタップするか、`{return}`キーを押します。",
         "modify_line_h": "ラインの変更",
         "modify_line_dragnode": "背景画像と一致しない道路など、形状が正確でないラインを目にする機会は多いと思います。ラインの形状を調整する場合には、まずそのラインを選択します。そのライン上の全てのノードは小さな円として表示されます。その後、ノードをより適切な位置にドラッグします。",
@@ -1567,7 +1341,6 @@
         "point_or_area_h": "ポイントかエリアか？",
         "point_or_area": "多くの地物はポイントでもエリアでも表現することができますが、建物や敷地は極力エリアでマッピングすべきです。建物の中にあるのがビジネス施設なのかアメニティ施設なのか、あるいは別の地物なのかを表現するために、建物の中にポイントを置きます。",
         "add_area_h": "エリアの追加",
-        "add_area_command": "エリアを追加するには、マップ上部にあるツールバーの{area_icon} **{area}**ボタンを押すか、ショートカットキー`3`を押してください。",
         "add_area_finish": "エリアを描き終わったときには、最初か最後のノード上でもう一度クリックまたはタップするか、`{return}`キーを押します。",
         "square_area_h": "角を直角化",
         "modify_area_h": "エリアを変更",
@@ -1696,18 +1469,10 @@
     },
     "issues": {
       "title": "改善提案",
-      "list_title": "改善提案",
-      "errors": {
-        "list_title": "エラー"
-      },
-      "warnings": {
-        "list_title": "警告"
-      },
-      "rules": {
-        "title": "ルール"
-      },
-      "user_resolved_issues": "自分の編集で解決した改善提案",
-      "warnings_and_errors": "警告とエラー",
+      "errors": "エラー",
+      "warnings": "警告",
+      "rules": "ルール",
+      "resolved_tooltip": "自分の編集で解決した改善提案",
       "no_issues": {
         "message": {
           "everything": "改善提案はありません",
@@ -1862,8 +1627,6 @@
         "title": "不適切な形式",
         "tip": "想定外の形式のタグを探す",
         "email": {
-          "message": "{feature} には不適切なメールアドレスがあります",
-          "message_multi": "{feature} には不適切なメールアドレスが複数あります",
           "reference": "メールアドレスは \"user@example.com\" のような形式でなければなりません。"
         }
       },
@@ -2298,6 +2061,7 @@
       "tooltip": "キーボードショートカット画面を表示",
       "key": {
         "cmd": "コマンド",
+        "delete": "削除",
         "menu": "メニュー",
         "space": "スペース"
       },
@@ -2305,96 +2069,177 @@
         "drag": "ドラッグ"
       },
       "or": "-または-",
-      "browsing": {
-        "title": "閲覧",
-        "navigation": {
-          "title": "ナビゲーション",
-          "pan": "マップを動かす"
+      "browsing": "閲覧",
+      "editing": "編集",
+      "navigation": "ナビゲーション",
+      "selecting_features": "地物の選択",
+      "with_features_selected": "選択された地物に対して",
+      "with_node_selected": "選択されたノードに対して",
+      "with_way_selected": "選択されたウェイに対して",
+      "drawing": "描画",
+      "commands": "コマンド",
+      "help": "ヘルプ",
+      "display_options": "オプション画面表示",
+      "info": "補助情報パネル表示切替え",
+      "command": {
+        "pan": {
+          "label": "マップを動かす"
         },
-        "help": {
-          "title": "ヘルプ",
-          "help": "ヘルプ/ドキュメントを表示",
-          "keyboard": "ショートカットキーを表示"
+        "select_one": {
+          "label": "地物を1つ選ぶ"
         },
-        "display_options": {
-          "title": "オプション画面表示",
-          "background": "背景画像パネルを表示/非表示",
-          "map_data": "地図データパネルを表示/非表示",
-          "issues": "改善提案パネルを表示/非表示",
-          "preferences": "個人設定パネルを表示/非表示",
-          "wireframe": "ワイヤーフレームモード切替",
-          "osm_data": "OpenStreetMapデータの表示切替",
-          "highlight_edits": "未保存の編集をハイライト"
+        "select_multi": {
+          "label": "地物を複数選ぶ"
         },
-        "selecting": {
-          "title": "地物の選択",
-          "select_one": "地物を1つ選ぶ",
-          "select_multi": "地物を複数選ぶ",
-          "lasso": "地物を囲み線（投げ縄）で選ぶ",
-          "search": "地物のテキスト検索欄に移動"
+        "lasso": {
+          "label": "地物を囲み線（投げ縄）で選ぶ"
         },
-        "with_selected": {
-          "title": "選択された地物に対して",
-          "edit_menu": "編集メニューの表示/非表示"
+        "edit_menu": {
+          "label": "編集メニューの表示/非表示"
         },
-        "vertex_selected": {
-          "title": "選択されたノードに対して",
-          "first": "最初のノードへ移動",
-          "last": "最後のノードへ移動",
-          "change_parent": "親ウェイを切り替え",
-          "parent": "親ウェイを選択"
+        "first_node": {
+          "label": "最初のノードへ移動"
         },
-        "way_selected": {
-          "title": "選択されたウェイに対して",
-          "child": "子ノードを選択"
-        }
-      },
-      "editing": {
-        "title": "編集",
-        "drawing": {
-          "title": "描画",
-          "add_point": "「ポイントの追加」モード",
-          "add_line": "「ラインの追加」モード",
-          "add_area": "「エリアの追加」モード",
-          "add_note": "「メモの追加」モード",
-          "place_point": "ポイントまたはメモを置く",
-          "disable_snap": "押下中はポイント接近時の自動接続(SNAP)を無効化",
-          "stop_line": "ラインやエリアの描画を終了"
+        "last_node": {
+          "label": "最後のノードへ移動"
         },
-        "commands": {
-          "title": "コマンド",
-          "copy": "選択された地物をコピー",
-          "paste": "コピーされた地物を貼り付け",
-          "undo": "最後の操作を元に戻す",
-          "redo": "最後の操作を再実行",
-          "save": "編集結果を保存"
+        "change_parent": {
+          "label": "親ウェイを切り替え"
         },
-        "operations": {
-          "continue_line": "選択エンドポイントでラインを継続",
-          "merge": "選択した地物を連結(マージ)",
-          "disconnect": "選択した地物の接続を解除",
-          "extract": "ポイントを地物から抜き移す",
-          "split": "選択したポイントで地物を分割",
-          "reverse": "選択した地物を反転",
-          "move": "選択した地物を移動",
-          "rotate": "選択した地物を回転",
-          "orthogonalize": "ラインやエリアの角を直角化",
-          "straighten": "ラインや複数ポイントを直線化",
-          "circularize": "クローズドラインやエリアを円形化",
-          "reflect_long": "地物を長軸で回転",
-          "reflect_short": "地物を短軸で回転",
-          "delete": "選択された地物を削除"
-        }
-      },
-      "tools": {
-        "title": "ツール",
-        "info": {
-          "title": "補助情報パネル表示切替え",
-          "all": "表示中の全補助情報パネルを一括表示/非表示",
-          "background": "背景パネルを表示/非表示",
-          "history": "編集履歴パネルを表示/非表示",
-          "location": "位置パネルを表示/非表示",
-          "measurement": "計測パネルを表示/非表示"
+        "select_parent": {
+          "label": "親ウェイを選択"
+        },
+        "select_children": {
+          "label": "子ノードを選択"
+        },
+        "add_point": {
+          "label": "「ポイントの追加」モード"
+        },
+        "add_line": {
+          "label": "「ラインの追加」モード"
+        },
+        "add_area": {
+          "label": "「エリアの追加」モード"
+        },
+        "add_note": {
+          "label": "「メモの追加」モード",
+          "key": "北緯"
+        },
+        "place_point": {
+          "label": "ポイントまたはメモを置く"
+        },
+        "disable_snap": {
+          "label": "押下中はポイント接近時の自動接続(SNAP)を無効化"
+        },
+        "stop_line": {
+          "label": "ラインやエリアの描画を終了"
+        },
+        "copy": {
+          "label": "選択された地物をコピー"
+        },
+        "paste": {
+          "label": "コピーされた地物を貼り付け"
+        },
+        "undo": {
+          "label": "最後の操作を元に戻す"
+        },
+        "redo": {
+          "label": "最後の操作を再実行"
+        },
+        "save": {
+          "label": "編集結果を保存"
+        },
+        "find": {
+          "label": "地物のテキスト検索欄に移動"
+        },
+        "continue_line": {
+          "label": "選択エンドポイントでラインを継続"
+        },
+        "merge": {
+          "label": "選択した地物を連結(マージ)"
+        },
+        "disconnect": {
+          "label": "選択した地物の接続を解除"
+        },
+        "extract": {
+          "label": "ポイントを地物から抜き移す",
+          "key": "東経"
+        },
+        "split": {
+          "label": "選択したポイントで地物を分割"
+        },
+        "reverse": {
+          "label": "選択した地物を反転"
+        },
+        "move": {
+          "label": "選択した地物を移動"
+        },
+        "rotate": {
+          "label": "選択した地物を回転"
+        },
+        "orthogonalize": {
+          "label": "ラインやエリアの角を直角化"
+        },
+        "straighten": {
+          "label": "ラインや複数ポイントを直線化",
+          "key": "南緯"
+        },
+        "circularize": {
+          "label": "クローズドラインやエリアを円形化"
+        },
+        "reflect_long": {
+          "label": "地物を長軸で回転"
+        },
+        "reflect_short": {
+          "label": "地物を短軸で回転"
+        },
+        "delete": {
+          "label": "選択された地物を削除"
+        },
+        "toggle_background": {
+          "label": "背景画像パネルを表示/非表示"
+        },
+        "toggle_map_data": {
+          "label": "地図データパネルを表示/非表示"
+        },
+        "toggle_issues": {
+          "label": "改善提案パネルを表示/非表示"
+        },
+        "toggle_preferences": {
+          "label": "個人設定パネルを表示/非表示"
+        },
+        "wireframe": {
+          "key": "西経"
+        },
+        "highlight_edits": {
+          "label": "未保存の編集をハイライト"
+        },
+        "keyboard_shortcuts": {
+          "label": "ショートカットキーを表示"
+        },
+        "toggle_osm_data": {
+          "label": "OpenStreetMapデータの表示切替"
+        },
+        "toggle_osm_notes": {
+          "key": "北緯"
+        },
+        "toggle_streetside": {
+          "key": "南緯"
+        },
+        "toggle_all_cards": {
+          "label": "表示中の全補助情報パネルを一括表示/非表示"
+        },
+        "toggle_background_card": {
+          "label": "背景パネルを表示/非表示"
+        },
+        "toggle_history_card": {
+          "label": "編集履歴パネルを表示/非表示"
+        },
+        "toggle_location_card": {
+          "label": "位置パネルを表示/非表示"
+        },
+        "toggle_measurement_card": {
+          "label": "計測パネルを表示/非表示"
         }
       }
     },
@@ -2478,6 +2323,7 @@
       "bjn": "バンジャル語",
       "bkm": "コム語",
       "bla": "シクシカ語",
+      "blo": "アニ語 (blo)",
       "bm": "バンバラ語",
       "bn": "ベンガル語",
       "bo": "チベット語",
@@ -2611,7 +2457,6 @@
       "gmh": "中高ドイツ語",
       "gn": "グアラニー語",
       "goh": "古高ドイツ語",
-      "gom": "ゴア・コンカニ語",
       "gon": "ゴーンディー語",
       "gor": "ゴロンタロ語",
       "got": "ゴート語",
@@ -2721,6 +2566,7 @@
       "kv": "コミ語",
       "kw": "コーンウォール語",
       "kwk": "クヮキゥワラ語",
+      "kxv": "クーヴィンガ語",
       "ky": "キルギス語",
       "la": "ラテン語",
       "lad": "ラディノ語",
@@ -3013,6 +2859,7 @@
       "vi": "ベトナム語",
       "vls": "西フラマン語",
       "vmf": "マインフランク語",
+      "vmw": "マクア語",
       "vo": "ヴォラピュク語",
       "vot": "ヴォート語",
       "vro": "ヴォロ語",
@@ -3028,6 +2875,7 @@
       "xal": "カルムイク語",
       "xh": "コサ語",
       "xmf": "メグレル語",
+      "xnr": "カーングリー語",
       "xog": "ソガ語",
       "yao": "ヤオ語",
       "yap": "ヤップ語",

@@ -329,7 +329,7 @@
         },
         "name": "Gliwice: Savadurioù"
       },
-      "LSA-ATKIS_BU": {
+      "LSA-ALKIS_BU": {
         "description": "Furm savadurioù e Saks-Anhalt"
       },
       "LSA-DOP20": {
@@ -586,6 +586,11 @@
       "debicki-buildings": {
         "name": "Kontelezh Dębica: Savadurioù"
       },
+      "geoscribble-latest": {
+        "attribution": {
+          "text": "Kenlabourerien GeoScribble"
+        }
+      },
       "gothenburg-citymap": {
         "attribution": {
           "text": "© kumun Göteborg, CC0"
@@ -613,6 +618,7 @@
         "attribution": {
           "text": "© kumun Göteborg, CC0"
         },
+        "description": "Orthophoto kumun Göteborg",
         "name": "Orthophoto Göteborg 2021"
       },
       "gothenburg-ortho_latest": {

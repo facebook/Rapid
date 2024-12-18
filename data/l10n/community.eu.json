@@ -1,6 +1,17 @@
 {
   "eu": {
+    "_communities": {
+      "openstreetmapaustria": "Austriako OpenStreetMap",
+      "openstreetmapindonesia": "Indonesiako OpenStreetMap",
+      "openstreetmapjapan": "Japoniako OpenStreetMap",
+      "openstreetmapmongolia": "Mongoliako OpenStreetMap",
+      "openstreetmapnepal": "Nepaleko OpenStreetMap",
+      "openstreetmapsrilanka": "Sri Lankako OpenStreetMap"
+    },
     "be-matrix": {
+      "description": "Kartografo guztiak ongi etorriak dira!"
+    },
+    "bo-matrix": {
       "description": "Kartografo guztiak ongi etorriak dira!"
     },
     "cape-coast-youthmappers": {
@@ -8,6 +19,24 @@
     },
     "czech-community": {
       "description": "Txekiako OSM kideen mapa ataria, webgunea eta kontaktuak"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "description": "Jarrai gaitzazu Twitter-en hemen {url}"
+    },
+    "Maptime-Oceania-Slack": {
+      "description": "Izena eman {signupUrl}-ean"
+    },
+    "me-telegram": {
+      "description": "Pertsona oro da ongi etorria! Izena eman {signupUrl}-en."
+    },
+    "nl-matrix": {
+      "description": "Kartografo guztiak ongi etorriak dira!"
+    },
+    "osm-africa-matrix": {
+      "description": "Kartografo guztiak ongi etorriak dira!"
+    },
+    "osm-africa-slack": {
+      "description": "Pertsona oro da ongi etorria! Izena eman {signupUrl}-en."
     },
     "osm-at": {
       "description": "Austriako OpenStreetMap-ari buruzko informazio plataforma"
@@ -21,6 +50,9 @@
     "OSM-India-Puducherry-Matrix": {
       "name": "Software Hardware Libre Mugimenduak - Matrix"
     },
+    "OSM-japan-facebook": {
+      "description": "Japoniako Kartografo eta OpenStreetMap erabiltzaileak"
+    },
     "OSM-japan-website": {
       "description": "Japoniako Kartografo eta OpenStreetMap erabiltzaileak"
     },
@@ -32,6 +64,9 @@
     },
     "talk-mg": {
       "description": "Madagaskarren OpenStreetMap-eko eragile, komunitate eta erabiltzailek elkarbanatzeko eta eztabaidatzeko gunea"
+    },
+    "tw-slack": {
+      "description": "Pertsona oro da ongi etorria! Izena eman {signupUrl}-en."
     }
   }
 }

@@ -78,28 +78,12 @@
       },
       "delete": {
         "title": "Hamafa",
-        "description": {
-          "single": "Hamafa tanteraka an'ito singa ito.",
-          "multiple": "Hamafa tanteraka an'ireto singa ireto."
-        },
         "annotation": {
           "point": "Namafa an'ilay teboka.",
           "vertex": "Namafa an'ilay vona tamin'ilay tsipika.",
           "line": "Namafa an'ilay tsipika.",
           "area": "Namafa an'ilay faritra.",
           "relation": "Namafa an'ilay fifandraisana."
-        },
-        "too_large": {
-          "single": "Tsy mety fafàna ito singa ito satria tsy ampy ny faritra miseho aminy.",
-          "multiple": "Tsy mety fafàna ireo singa ireo satria tsy ampy ny faritra miseho aminy."
-        },
-        "incomplete_relation": {
-          "single": "Tsy mety fafàna ito singa ito satria tsy azo manontolo tamin'ny nakàna azy.",
-          "multiple": "Tsy mety fafàna ireo singa ireo satria tsy azo manontolo tamin'ny nakàna azy."
-        },
-        "connected_to_hidden": {
-          "single": "Tsy mety fafàna ito singa ito satria mifampitohy amina zavatra tsy miseho.",
-          "multiple": "Tsy mety fafàna ireo singa ireo satria mifampitohy amina zavatra tsy miseho ny sasany aminy."
         }
       },
       "disconnect": {
@@ -117,50 +101,18 @@
       },
       "move": {
         "title": "Hamindra",
-        "description": {
-          "single": "Hamindra an'ito singa ito amin'ny toerana hafa.",
-          "multiple": "Hamindra an'ireto singa ireto amin'ny toerana hafa."
-        },
         "annotation": {
           "point": "Namindra an'ilay teboka.",
           "vertex": "Namindra an'ilay vona tamin'ilay soritra.",
           "line": "Namindra an'ilay tsipika.",
           "area": "Namindra an'ilay faritra."
-        },
-        "incomplete_relation": {
-          "single": "Tsy mety afindra ito singa ito satria tsy azo manontolo tamin'ny nakàna azy.",
-          "multiple": "Tsy mety afindra ireo singa ireo satria tsy azo manontolo tamin'ny nakàna azy."
-        },
-        "too_large": {
-          "single": "Tsy mety afindra ito singa ito satria tsy ampy ny faritra miseho aminy.",
-          "multiple": "Tsy mety afindra ireo singa ireo satria tsy ampy ny faritra miseho aminy."
-        },
-        "connected_to_hidden": {
-          "single": "Tsy mety afindra ito singa ito satria mifampitohy amina zavatra tsy miseho.",
-          "multiple": "Tsy mety afindra ireo singa ireo satria mifampitohy amina zavatra tsy miseho ny sasany aminy."
         }
       },
       "rotate": {
         "title": "Hanodina",
-        "description": {
-          "single": "Hanodina an'ito singa ito manodidina ny ivony.",
-          "multiple": "Hanodina an'ireto singa ireto manodidina ny ivony."
-        },
         "annotation": {
           "line": "Nanodina an'ilay tsipika.",
           "area": "Nanodina an'ilay faritra."
-        },
-        "incomplete_relation": {
-          "single": "Tsy mety ahodina ito singa ito satria tsy azo manontolo tamin'ny nakàna azy.",
-          "multiple": "Tsy mety ahodina ireo singa ireo satria tsy azo manontolo tamin'ny nakàna azy."
-        },
-        "too_large": {
-          "single": "Tsy mety ahodina ito singa ito satria tsy ampy ny faritra miseho aminy.",
-          "multiple": "Tsy mety ahodina ireto singa ireto satria misy tsy miseho ny sasany aminy."
-        },
-        "connected_to_hidden": {
-          "single": "Tsy mety ahodina ito singa ito satria mifampitohy amina zavatra tsy miseho.",
-          "multiple": "Tsy mety ahodina ireo singa ireo satria mifampitohy amina zavatra tsy miseho ny sasany aminy."
         }
       },
       "reverse": {
@@ -356,11 +308,10 @@
           "cancel": "Hanafoana"
         }
       },
-      "map_features": "Singa ao amin'ny Sarintany",
       "autohidden": "Fanahy iniana nafenina ireo singa ireo satria maro loatra no ho niseho teo amin'ny efijery. Hakaikezo raha hanova azy ireo.",
       "osmhidden": "Fanahy iniana nafenina ireo singa ireo satria miafina ny sosona OpenStreetMap."
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Teboka",
         "tooltip": "Toerana"
@@ -473,17 +424,14 @@
     "source_switch": {
       "lose_changes": "Misy fanovana nataonao mbola tsy voatahiry. Raha mivery any amin'ny sarintany ianao dia very ireo. Azonao antoka ve fa te hiverina any amin'ny sarintany tokoa ianao?"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Hanala"
-      }
+    "rapid_menu": {
+      "remove": "Hanala"
     },
     "tag_reference": {
       "description": "Famariparitana",
       "on_wiki": "{tag} ao amin'ny wiki.osm.org",
       "used_with": "ampiasaina miaraka amin'ny {type}"
     },
-    "cannot_zoom": "Tsy afaka manalavitra noho izao intsony amin'ity maody ity.",
     "full_screen": "Hameno ny Efijery",
     "QA": {
       "osmose": {
@@ -559,9 +507,7 @@
       }
     },
     "issues": {
-      "warnings": {
-        "list_title": "Fampitandremana"
-      }
+      "warnings": "Fampitandremana"
     },
     "intro": {
       "graph": {
@@ -582,17 +528,11 @@
       "key": {
         "delete": "Hamafa"
       },
-      "browsing": {
-        "navigation": {
-          "title": "Fivezivezena"
-        },
-        "help": {
-          "title": "Fanampiana"
-        }
-      },
-      "editing": {
-        "commands": {
-          "save": "Hitahiry ny fanovana"
+      "navigation": "Fivezivezena",
+      "help": "Fanampiana",
+      "command": {
+        "save": {
+          "label": "Hitahiry ny fanovana"
         }
       }
     },

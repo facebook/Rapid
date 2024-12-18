@@ -24,7 +24,6 @@
       "openstreetmapchile": "OpenStreetMap Şili",
       "openstreetmapchina": "OpenStreetMap Çin",
       "openstreetmapcologne": "OpenStreetMap Köln",
-      "openstreetmapcolombia": "OpenStreetMap Kolombiya",
       "openstreetmapcomunitatvalenciana": "OpenStreetMap Valensiya Topluluğu",
       "openstreetmapcostarica": "OpenStreetMap Kosta Rika",
       "openstreetmapcotedivoire": "OpenStreetMap Fildişi Sahili",
@@ -141,8 +140,14 @@
       "description": "Haritalama etrafında düzenlenen sosyal etkinlikler - yeni başlayanlar davetlidir!",
       "extendedDescription": "Maptime, yeni başlayanlar için eğitim desteği sunan, tüm bilgi seviyeleri ve dereceleri için açık bir öğrenme ortamıdır. Maptime eşzamanlı olarak esnek ve yapılandırılmıştır, eğitimleri, atölyeleri, ortak bir hedefe sahip devam eden projeleri ve bağımsız/işbirlikçi çalışma süresini haritalamak için alan yaratır."
     },
+    "am-wiki": {
+      "description": "{community} Wiki sayfası"
+    },
     "at-matrix": {
       "description": "Avusturya için resmi olmayan Almanca Matrix kanalı"
+    },
+    "at-wiki": {
+      "description": "{community} Wiki sayfası"
     },
     "Bahia-telegram": {
       "extendedDescription": "OpenStreetMap hakkında daha fazlasını öğrenmek, soru sormak ve toplantılarımıza katılmak için topluluğa katılın"
@@ -151,6 +156,9 @@
       "name": "Körfez Bölgesi OpenStreetMappers",
       "description": "Körfez Bölgesi'nde OpenStreetMapp'i iyileştir",
       "extendedDescription": "Bu grup OpenStreetMap topluluğunu burada, Körfez Bölgesinde, büyütmek için kuruldu. Etkinliklerimiz, açık kaynaklı yazılım meraklılarına, bisiklet kullanıcılarına, CBS uzmanlarına, define avcılarına varana kadar herkese açık. Haritalarla, harita yapımıyla ve özgür harita verileriyle ilgilenen herkesin, grubumuza da etkinliklerimize de katılmasından memnuniyet duyarız."
+    },
+    "bd-facebook": {
+      "extendedDescription": "Bangladeş'te Haritalama Sorularınız var mı, buradan toplumla bağlantı kurmak mı istiyorsunuz? {Url} adresinden bize katılın. Hoşgeldiniz!"
     },
     "be-chapter": {
       "description": "Belçika'da Openstreetmap'i büyütmeye ve geliştirmeye yardımcı oluyoruz.",
@@ -165,6 +173,15 @@
     },
     "bg-wiki": {
       "description": "Bulgaristan Wikiproject sayfası"
+    },
+    "bo-facebook-group": {
+      "name": "{community} Facebook Grubu"
+    },
+    "bo-matrix": {
+      "description": "Tüm haritacılar davetlidir!"
+    },
+    "br-telegram": {
+      "extendedDescription": "OpenStreetMap hakkında daha fazlasını öğrenmek, soru sormak ve toplantılarımıza katılmak için topluluğa katılın. Herkese açıktır!"
     },
     "cape-coast-youthmappers": {
       "name": "Cape Coast Üniversitesi YouthMappers",
@@ -185,20 +202,56 @@
       "name": "Openstreetmap Schweiz/Suisse/Svizzera/Svizra E-posta listesi",
       "description": "İsviçre için E-posta Listesi"
     },
+    "cl-facebook": {
+      "extendedDescription": "OpenStreetMap hakkında daha fazlasını öğrenmek, soru sormak ve toplantılarımıza katılmak için topluluğa katılın. Herkese açıktır!"
+    },
+    "cl-telegram": {
+      "extendedDescription": "OpenStreetMap hakkında daha fazlasını öğrenmek, soru sormak ve toplantılarımıza katılmak için topluluğa katılın. Herkese açıktır!"
+    },
     "czech-community": {
       "description": "Çekya'daki OSM üyeler ilgili harita portalı, web sitesi ve kişiler"
+    },
+    "de-aachen-wiki": {
+      "description": "{community} Wiki sayfası"
     },
     "de-berlin-mailinglist": {
       "name": "Berlin E-posta Listesi"
     },
+    "de-berlin-wiki": {
+      "description": "{community} Wiki sayfası"
+    },
     "de-berlin-xmpp": {
       "name": "OpenStreetMap Berlin - Brandenburg XMPP"
+    },
+    "de-bochum-wiki": {
+      "description": "{community} Wiki sayfası"
+    },
+    "de-bonn-wiki": {
+      "description": "{community} Wiki sayfası"
+    },
+    "de-bremen-wiki": {
+      "description": "{community} Wiki sayfası"
+    },
+    "de-cologne-wiki": {
+      "description": "{community} Wiki sayfası"
+    },
+    "de-dresden-wiki": {
+      "description": "{community} Wiki sayfası"
+    },
+    "de-dusseldorf-wiki": {
+      "description": "{community} Wiki sayfası"
     },
     "de-karlsruhe-mailinglist": {
       "name": "Karlsruhe E-posta Listesi"
     },
     "de-karlsruhe-meetup": {
       "description": "Karlsruhe bölgesindeki haritacılar ve OpenStreetMap kullanıcıları "
+    },
+    "de-luneburg-wiki": {
+      "description": "{community} Wiki sayfası"
+    },
+    "de-munchen-wiki": {
+      "description": "{community} Wiki sayfası"
     },
     "de-mv-mailinglist": {
       "name": "Mecklenburg-Vorpommern E-posta Listesi"
@@ -229,6 +282,12 @@
     },
     "DF-telegram": {
       "extendedDescription": "OpenStreetMap hakkında daha çok şey öğrenmek, soru sormak veya toplantılarımıza katılmak için topluluğumuza katılın. Herkese açıktır!"
+    },
+    "fr-35-wiki": {
+      "description": "{community} Wiki sayfası"
+    },
+    "fr-38-wiki": {
+      "description": "{community} Wiki sayfası"
     },
     "fr-bzh-website": {
       "description": "Breton konuşan harita"
@@ -277,9 +336,18 @@
     "hu-meetup": {
       "description": "Macaristan'da buluşmalar düzenleme platformu"
     },
+    "hu-wiki": {
+      "description": "{community} Wiki sayfası"
+    },
+    "id-facebook-group": {
+      "name": "{community} Facebook Grubu"
+    },
     "ireland-chapter": {
       "description": "İrlanda'da OpenStreetMap'in büyümesine ve iyileştirilmesine yardımcı oluyoruz.",
       "extendedDescription": "OpenStreetMap Ireland, diğer açık girişimlerle etkileşime ek olarak, İrlanda adasındaki OpenStreetMap projesi için bir savunucu sesi sağlar."
+    },
+    "ireland-irc": {
+      "extendedDescription": "irc.oftc.net (port 6667) üzerinden #{account}'a katılın,  eğer bir soru sorduysanız lütfen sabırlı olun ve birkaç dakika bekleyin."
     },
     "is-chapter": {
       "description": "İzlanda'da OpenStreetMap'in büyümesine ve iyileştirilmesine yardımcı oluyoruz."
@@ -302,15 +370,21 @@
     "latam-wiki": {
       "description": "Latin Amerika'da haritalama hakkında bilmeniz gereken her şey"
     },
+    "madrid-uam-ym": {
+      "name": "UAM'da YouthMapper'lar",
+      "description": "Madrid Özerk Üniversitesi'nde YouthMappers bölümü"
+    },
+    "madrid-upm-ym": {
+      "name": "İnsani Yardım Haritalama",
+      "description": "Madrid Teknik Üniversitesi'nde YouthMappers bölümü",
+      "extendedDescription": "Coğrafi gönüllülük grubu Kasım 2017'de Moncloa Kampüsü'nde kuruldu. Üç Üniversiteden (Complutense, CEU ve UPM) yaklaşık 20 üye. Lisans öğrencileri, MSc ve PhD öğrencileri, Geoinquietos'tan eğitmenler tarafından desteklenen kuruluşlarla (MSF, Acción contra el Hambre, ...) birlikte çalışır. UPM tarafından Eğitici Yenilik Projesi olarak resmi tanınır (Kod IE1718.0411)"
+    },
     "mailinglist-sk-googlegroups": {
       "description": "Slovak topluluğu için resmi e-posta listesi"
     },
     "map-kibera": {
       "description": "Map Kibera, Kenyada çalışan kayıtlı bir organizasyondur.",
       "extendedDescription": "Map Kibera Trust'ın misyonu, eylem için dijital araçların yaratıcı kullanımı vasıtasıyla ötekileştirilmiş toplulukların tanıtımı ve etkilerinin arttırılmasıdır."
-    },
-    "MapColabora-mailinglist": {
-      "description": "Mapeado Colaborativo / Geoinquietos Zaragoza email listesi"
     },
     "MapColabora-twitter": {
       "description": "Mapeado Colaborativo / Geoinquietos Zaragoza Twitter Hesabı"
@@ -319,11 +393,6 @@
       "name": "Mercia Haritası yerel grubu",
       "description": "Midland'teki OpenStreetMap meraklıları için bir ev",
       "extendedDescription": "Mappa Mercia, İngiltere, West Midlands'de OpenStreetMap'i büyütme projesidir. Topluluk etkinlikleri düzenliyoruz, eğitim veriyoruz ve verilerini açmak isteyen yerel kuruluşları destekliyoruz."
-    },
-    "MappingDC-meetup": {
-      "name": "Haritalama DC",
-      "description": "Kolumbiya Bölgesi'inde OpenStreetMap'i geliştirin",
-      "extendedDescription": "Bizler DC bölgesinde OpenStreetMap'i  geliştirmeyi amaçlayan bir grup gönüllü haritacılarız. Aynı zamanda başkalarına da OSM ekosistemi, veri analizi, haritacılığı ve CBS hakkında öğretmeyi amaçlıyoruz. Her ay buluşmalar yapıp şehrimizin bir alanına odaklanıyoruz."
     },
     "MappingWR": {
       "description": "Waterloo Bölgesi çevresinde düşük karbonlu rotaları bulmayı kolaylaştırmak."
@@ -334,6 +403,15 @@
     },
     "Maptime-Oceania-Slack": {
       "description": "{signupUrl} kaydol"
+    },
+    "me-telegram": {
+      "description": "Herkese kapımız açık! Kaydolun {signupUrl}"
+    },
+    "mt-irc": {
+      "extendedDescription": "irc.oftc.net (port 6667) üzerinden #{account}'a katılın,  eğer bir soru sorduysanız lütfen sabırlı olun ve birkaç dakika bekleyin."
+    },
+    "nl-matrix": {
+      "description": "Tüm haritacılar davetlidir!"
     },
     "no-irc": {
       "description": "Norveç'teki haritacılar ve OpenStreetMap kullanıcıları, geliştiricileri ve meraklıları için sohbet odası"
@@ -346,6 +424,15 @@
     "OpenCleveland-meetup": {
       "description": "Cleveland bölgesinde OpenStreetMap'i geliştirin",
       "extendedDescription": "Open Geo Cleveland, insanların, özellikle OpenStreetMap ve coğrafi verileri yöneten, düzenleyen ve görüntüleyen Open jeo-uzamsal yazılımlar başta olmak üzere ücretsiz coğrafi veri setlerini kullanma hakkındaki bilgilerini tartışmaları ve paylaşmaları için bir kaynak olmayı ve Kuzeydoğu Ohio'da kullanımını savunan bir kaynak olmayı amaçlamaktadır. Ayrıca bir maptime derneğiyiz =)"
+    },
+    "osm-africa-facebook-group": {
+      "name": "{community} Facebook Grubu"
+    },
+    "osm-africa-matrix": {
+      "description": "Tüm haritacılar davetlidir!"
+    },
+    "osm-africa-slack": {
+      "description": "Herkese kapımız açık! Kaydolun {signupUrl}"
     },
     "OSM-AR-twitter": {
       "extendedDescription": "Yerel topluluk ve OpenStreetMap hakkında genel haberler"
@@ -371,6 +458,9 @@
     },
     "osm-de": {
       "description": "Almanya'da OpenStreetMap hakkında bilgi platformu"
+    },
+    "osm-deep-south-wiki": {
+      "description": "{community} Wiki sayfası"
     },
     "OSM-Facebook": {
       "description": "OpenStreetMap ile ilgili haberler ve güncellemeler için bizi Facebook'ta beğenin."
@@ -413,6 +503,9 @@
     "osm-iran-discord": {
       "extendedDescription": "OpenStreetMap İran için bir Discord sunucusu. Katılmaktan çekinmeyin!"
     },
+    "osm-iran-telegram": {
+      "extendedDescription": "Telegram kanalımıza buradan katılabilirsiniz {url}. Ayrıca İran'da birçok OSM'ciden oluşan bir üst grubumuz var. Bağlantısını kanalın biyografisinde bulabilirsiniz."
+    },
     "OSM-japan-facebook": {
       "description": "Japonya'daki Mappers ve OpenStreetMap kullanıcıları"
     },
@@ -423,15 +516,25 @@
       "description": "OSM Kenya, OSM katılımcıları ve kullanıcılarından oluşan bir topluluktur",
       "extendedDescription": "OSM, ülkedeki kuruluşlar, geliştiriciler ve YouthMappers dernekleri de dahil olmak üzere OpenStreetMap ile ilgilenen bireyler için yerel bir topluluktur."
     },
+    "osm-kenya-facebook": {
+      "description": "OSM Kenya, OSM katılımcıları ve kullanıcılarından oluşan bir topluluktur",
+      "extendedDescription": "OSM, ülkedeki kuruluşlar, geliştiriciler ve YouthMappers dernekleri de dahil olmak üzere OpenStreetMap ile ilgilenen bireyler için yerel bir topluluktur."
+    },
     "OSM-Kerala-facebook": {
       "description": "Kerala'da OpenStreetMap'i Geliştirin",
       "extendedDescription": "Kerala'da haritalama mı? Sorularınız var mı, buradan topluluk ile bağlantı kurmak mı istiyorsunuz? {Url} adresinden bize katılın. Hoş geldiniz!"
+    },
+    "osm-kerala-github": {
+      "description": "Bizimle birlikte kodlayın: {url}"
     },
     "osm-kerala-telegram": {
       "description": "Kerala'yı birlikte haritalıyoruz. Telegram grubumuza katılın: {url}"
     },
     "osm-mg-facebook": {
       "description": "OpenStreetMap ile ilgilenen insanlar için Malagasy Facebook grubu."
+    },
+    "osm-michigan-wiki": {
+      "description": "{community} Wiki sayfası"
     },
     "osm-ni": {
       "description": "Nikaraguadaki yerel topluluk için OSM servisleri ve bilgi sağla"
@@ -498,6 +601,9 @@
       "description": "OSMF, OpenStreetMap Projesini destekleyen, İngiltere merkezli, kâr amacı gütmeyen bir kuruluştur",
       "extendedDescription": "OSMF, OpenStreetMap projesini bağış toplayarak, OSM'ye güç sağlayan sunucuların bakımını yaparak, yıllık State of the Map konferansını düzenleyerek ve OSM'nin çalışmasını sağlayan gönüllüleri koordine ederek desteklemektedir. Buradan OSMF üyesi olarak katılarak desteğinizi gösterebilir ve OpenStreetMap'in gidişatında söz sahibi olabilirsiniz: {signupUrl}"
     },
+    "ph-facebook-group": {
+      "name": "{community} Facebook Grubu"
+    },
     "PHXGeo-meetup": {
       "name": "PHXGeo Buluşması",
       "description": "Phoenix, AZ bölgesindeki haritacılar ve OpenStreetMap kullanıcıları",
@@ -518,11 +624,23 @@
     "rs-wiki": {
       "description": "Sırbistan için Wikiproject sayfası"
     },
+    "sg-wiki": {
+      "description": "{community} Wiki sayfası"
+    },
+    "si-ljubljana-wiki": {
+      "description": "{community} Wiki sayfası"
+    },
+    "si-wiki": {
+      "description": "{community} Wiki sayfası"
+    },
     "sk-freemap": {
       "description": "Slovakya ve çevre bölgelerdeki araçları içeren OpenStreetMap harita internet sitesi"
     },
     "talk-au": {
       "description": "Avustralyalı haritacıların sohbet edebileceği yer"
+    },
+    "talk-bo": {
+      "extendedDescription": "Bolivya'da haritalama mı? Sorularınız var mı, buradan toplumla bağlantı kurmak mı istiyorsunuz? {Url} adresinden bize katılın. Hoş geldiniz!"
     },
     "talk-mg": {
       "description": "Paylaşmak ve tartışmak için Madagaskar'daki OpenStreetMap katılımcıları, toplulukları ve kullanıcıları için yer."
@@ -559,11 +677,21 @@
       "name": "OpenStreetMap Londra Twitter'da",
       "description": "OpenStreetMap Londra Twitter'da: {url}"
     },
+    "uk-london-wiki": {
+      "description": "{community} Wiki sayfası"
+    },
+    "us-massachusetts-mailinglist": {
+      "name": "Talk-us-massachusetts E-posta Listesi",
+      "description": "Massachusetts OSM topluluğu için e-posta posta listesi"
+    },
     "uy-irc": {
       "extendedDescription": "irc.freenode.org 'da #{account} 'a katılın"
     },
     "vn-mailinglist": {
       "description": "Vietnam'da veya Vietnamca OpenStreetMap hakkında posta listesi"
+    },
+    "vn-wiki": {
+      "description": "{community} Wiki sayfası"
     },
     "YerCizenler-TR": {
       "name": "er Çizenler",
@@ -671,20 +799,10 @@
     "ym-Federal-School-of-Surveys": {
       "description": "Federal Okul anketindeki YouthMappers derneğ"
     },
-    "ym-Federal-University-of-Technology-Akure": {
-      "name": "YouthMappers Futa Uzay Kulübü",
-      "description": "Akure, Federal Teknoloji Üniversitesi'nde YouthMappers derneğ",
-      "extendedDescription": "Misyonumuz yeni nesil Uzay Liderleri yetiştirmektir. Faaliyetlerimiz arasında Uzaktan Algılama, CBS, İklim Değişikliği, Astronomi, Kozmoloji, Uzay Mühendisliği, Küresel Navigasyon, Robotik ve Uzay Eğitimi alanlarında araştırma ve kapasite geliştirme yer almaktadır."
-    },
     "ym-Fourah-Bay-College": {
       "name": "Öğrenci Coğrafya Derneği",
       "description": "Fourah Bay Koleji'nde YouthMappers derneğ",
       "extendedDescription": "Öğrenci Coğrafya Derneği - YouthMappers, yardım ve diğer yararlı amaçlar için Sierra Leone ve dünyanın savunmasız yerlerinin haritasını çıkarma, araştırma ve diğer eğitici çabaları yürütmek gibi ortak hedefleri olan Fourah Bay Koleji öğrencileri birliğidir. Dernek, ekip olarak sürdürülebilir kalkınma projelerini anlama ve uygulama kapasitesine sahip, gelişim odaklı, harika fikirlere sahip gençlerden oluşmaktadır."
-    },
-    "ym-General-Lansana-Conte-University": {
-      "name": "General Lansana Conte üniversitesi YouthMappers",
-      "description": "General Lansana Conte Üniversitesi'nde YouthMappers derneğ",
-      "extendedDescription": "General Lansana Conté Üniversitesi'nin YouthMappers'ı, Harita Gine'ye ve dünyanın diğer kısımlarına katkıda bulunmaya istekli, kar amacı gütmeyen bir topluluktur. Karar destek araçları oluşturmak için CBS ve açık verilerin kullanımını teşvik ediyoruz. Ayrıca öğrenciler ve yerel topluluklar arasında kapasite oluşturmak için çalışıyoruz."
     },
     "ym-George-Mason-University": {
       "name": "Mason Haritacıları",
@@ -1083,11 +1201,6 @@
       "name": "UNCO Coğrafya ve CBS Kulübü",
       "description": "Northern Colorado Üniversitesi'ndeki YouthMappers bölümü",
       "extendedDescription": "Amacımızın çevremizdekileri öğrenmek, paylaşmak ve onlarla bağlantı kurmak olduğu Kuzey Colorado Üniversitesi'ne bağlı Resmi Coğrafya ve CBS Kulübü bölümü. #DünyayıAnlamlandırma"
-    },
-    "ym-University-of-Oregon": {
-      "name": "Kuzeybatı tarafında harita",
-      "description": "Oregon Üniversitesi'nde YouthMappers bölümü",
-      "extendedDescription": "Map By Northwest, Oregon Üniversitesi'ndeki lisans öğrencilerini insani amaçlara yardımcı olmak ve coğrafi araştırma yapmak için haritalama projelerine dahil etmeyi amaçlamaktadır. Tüm disiplinlerden öğrencileri haritalama maceralarımızda bize katılmaya davet ediyoruz."
     },
     "ym-University-of-Port-Harcourt": {
       "description": "Port Harcourt Üniversite'sindeki YouthMappers bölümü",

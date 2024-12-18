@@ -38,7 +38,6 @@
       "openstreetmapchile": "OpenStreetMap Чиле",
       "openstreetmapchina": "OpenStreetMap Кина",
       "openstreetmapcologne": "OpenStreetMap Келн",
-      "openstreetmapcolombia": "OpenStreetMap Колумбија",
       "openstreetmapcomunitatvalenciana": "OpenStreetMap Валенсијана",
       "openstreetmapcostarica": "OpenStreetMap Костарика",
       "openstreetmapcotedivoire": "OpenStreetMap Обала Слоноваче",
@@ -189,6 +188,9 @@
       "openstreetmapzimbabwe": "OpenStreetMap Зимбабве"
     },
     "_defaults": {
+      "discourse": {
+        "description": "Званичан форум за {community}"
+      },
       "facebook": {
         "name": "{community} на Фејсбуку",
         "description": "Придружи се нашој заједници на Фејсбуку"
@@ -210,6 +212,9 @@
       "reddit": {
         "name": "{community} на Reddit-у"
       }
+    },
+    "kosovo-flossk": {
+      "name": "Бесплатни софтвер отвореног кода Косова (FLOSSK)"
     },
     "Maptime-Oceania-Slack": {
       "description": "Пријавите се на {signupUrl}"

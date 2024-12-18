@@ -11,10 +11,23 @@
         "description": "Последващо обработени сателитни изображения на Sentinel.",
         "name": "eox.at 2018 безоблачен"
       },
+      "EOXAT2019CLOUDLESS": {
+        "description": "Последващо обработени сателитни изображения на Sentinel."
+      },
+      "EOXAT2020CLOUDLESS": {
+        "description": "Последващо обработени сателитни изображения на Sentinel."
+      },
+      "EOXAT2021CLOUDLESS": {
+        "description": "Последващо обработени сателитни изображения на Sentinel."
+      },
+      "EOXAT2022CLOUDLESS": {
+        "description": "Последващо обработени сателитни изображения на Sentinel."
+      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "Условия & oбратна връзка"
         },
+        "description": "Esri World изображения",
         "name": "Esri World изображения"
       },
       "EsriWorldImageryClarity": {
@@ -23,6 +36,11 @@
         },
         "description": "Архивните изображения на Esri могат да бъдат по ясни и точни от изображенията по подразбиране.",
         "name": "Esri World изображения (Clarity) Beta"
+      },
+      "LocalAuthorities_RightsOfWay": {
+        "attribution": {
+          "text": "Съдържа информация от публичния сектор, лицензирана под Open Government License v3.0"
+        }
       },
       "MAPNIK": {
         "description": "Стандартният OpenStreetMap слой.",
@@ -33,6 +51,11 @@
           "text": "Условия & обратна връзка"
         },
         "name": "Mapbox Сателит"
+      },
+      "OSMUK-Cadastral-Parcels": {
+        "attribution": {
+          "text": "Съдържа информация от публичния сектор, лицензирана под Open Government License v3.0"
+        }
       },
       "OSM_Inspector-Addresses": {
         "name": "OSM Inspector: Адреси"
@@ -69,12 +92,29 @@
         "description": "Жълто = Публично достъпни картографски данни от преброяване на населението US. Червено = Данни, които не са нанесени в OpenStreetMap",
         "name": "TIGER Пътища 2019"
       },
+      "US-TIGER-Roads-2020": {
+        "description": "Жълто = Публично достъпни картографски данни от преброяване на населението US. Червено = Данни, които не са нанесени в OpenStreetMap"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Жълто = Публично достъпни картографски данни от преброяване на населението US. Червено = Данни, които не са нанесени в OpenStreetMap"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Жълто = Публично достъпни картографски данни от преброяване на населението US. Червено = Данни, които не са нанесени в OpenStreetMap"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Жълто = Публично достъпни картографски данни от преброяване на населението US. Червено = Данни, които не са нанесени в OpenStreetMap"
+      },
       "USDA-NAIP": {
         "name": "Национална програма за изображения в селското стопанство"
       },
       "US_Forest_Service_roads_overlay": {
         "description": "Път: Зелено очертание = некласифициран. Кафяво очертание = track. Повърхност: чакъл = светло кафяво запълване, асфалт = черно, павиран = сиво, земен = бяло, бетон = синьо, трева = зелено. Сезонен = бели черти",
         "name": "Слой Горски пътища в САЩ"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Реализирано с помощта на Брюксел UrbIS® © - Разпространение и авторски права CIRB"
+        }
       },
       "UrbISOrtho2016": {
         "attribution": {
@@ -100,7 +140,17 @@
         },
         "name": "UrbIS-Орто 2019"
       },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Реализирано с помощта на Брюксел UrbIS® © - Разпространение и авторски права CIRB"
+        }
+      },
       "UrbisAdmFR": {
+        "attribution": {
+          "text": "Реализирано с помощта на Брюксел UrbIS® © - Разпространение и авторски права CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
         "attribution": {
           "text": "Реализирано с помощта на Брюксел UrbIS® © - Разпространение и авторски права CIRB"
         }
@@ -144,10 +194,32 @@
         "description": "Картата на града е обща карта, която описва Гьотеборг. Той съдържа обща информация за земя, комуникации, хидрография, сгради, адреси и имена на улици, административно деление и друг ориентационен текст.",
         "name": "Gothenburg карта на града"
       },
+      "gothenburg-dtm-2017": {
+        "description": "Услуга за уеб карти, представяща възвишения със сенки и наклони, базирана на височинен модел от 2017 г. за Гьотеборг. Разделителна способност 0,5 метра на пиксел.",
+        "name": "Gothenburg височини и сенки"
+      },
       "gothenburg-ortho": {
+        "description": "Ортофото за община Gothenburg",
+        "name": "Ортофото на Gothenburg от 2015"
+      },
+      "gothenburg-ortho_2017": {
+        "description": "Ортофото за община Gothenburg",
+        "name": "Ортофото на Gothenburg от 2017"
+      },
+      "gothenburg-ortho_2019": {
+        "description": "Ортофото за община Gothenburg",
+        "name": "Ортофото на Gothenburg от 2019"
+      },
+      "gothenburg-ortho_2021": {
+        "description": "Ортофото за община Gothenburg"
+      },
+      "gothenburg-ortho_latest": {
         "description": "Ортофото за община Gothenburg"
       },
       "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "GSI Япония"
+        },
         "description": "Японски GSI airphoto изображения. Не е напълно орторектифициран, но е малко по-нов и / или по-различно покрит от GSI ortho Imagery.",
         "name": "Японски GSI аерофото изображения"
       },
@@ -176,6 +248,10 @@
       "kalmar-orto-2018": {
         "description": "Ортофото за градските райони на община Kalmar 2018г",
         "name": "Kalmar ортофото на градската част 2018"
+      },
+      "kalmar-orto-2020": {
+        "description": "Ортофото за градските райони на община Kalmar 2020г",
+        "name": "Kalmar ортофото на градската част 2020"
       },
       "kelkkareitit": {
         "description": "Kelkkareitit.fi пътеки за моторни шейни от OSM (слой Север)",

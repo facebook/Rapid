@@ -12,6 +12,12 @@
       "presets": {
         "address": {
           "name": "Adrès"
+        },
+        "area": {
+          "name": "Área"
+        },
+        "point": {
+          "name": "Punto"
         }
       }
     }

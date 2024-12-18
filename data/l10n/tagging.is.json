@@ -8,6 +8,9 @@
         "category-building": {
           "name": "Byggingafitjur"
         },
+        "category-golf": {
+          "name": "Fitjur fyrir golf"
+        },
         "category-landuse": {
           "name": "Fitjur fyrir landnotkun"
         },
@@ -46,6 +49,9 @@
         "access": {
           "label": "Leyfður aðgangur",
           "options": {
+            "customers": {
+              "title": "Viðskiptavinir"
+            },
             "designated": {
               "description": "Aðgangur heimill samkvæmt skiltum eða sértækum staðbundnum reglum",
               "title": "Ætlað fyrir"
@@ -74,6 +80,9 @@
               "description": "Aðgangur heimill eingöngu með samþykki landeiganda",
               "title": "Einka"
             },
+            "unknown": {
+              "title": "Óþekkt"
+            },
             "yes": {
               "description": "Aðgangur leyfður með lögum; leiðarréttur",
               "title": "Leyft"
@@ -88,8 +97,35 @@
             "motor_vehicle": "Vélknúin ökutæki"
           }
         },
+        "access_aisle": {
+          "label": "Tegund"
+        },
         "access_simple": {
-          "label": "Leyfður aðgangur"
+          "label": "Leyfður aðgangur",
+          "options": {
+            "no": "Ekkert",
+            "permissive": "Með leyfi",
+            "private": "Einka",
+            "unknown": "Óþekkt",
+            "yes": "Opið öllum"
+          }
+        },
+        "activity": {
+          "options": {
+            "bicycle": "Hjólreiðar",
+            "hiking": "Gönguferðir",
+            "horse": "Hestaferðir",
+            "ski": "Skíði"
+          }
+        },
+        "addr/interpolation": {
+          "label": "Tegund",
+          "options": {
+            "all": "Allt",
+            "alphabetic": "Stafrófsröð",
+            "even": "Jafnar tölur",
+            "odd": "Oddatölur"
+          }
         },
         "address": {
           "label": "Heimilisfang",
@@ -124,6 +160,9 @@
         },
         "admin_level": {
           "label": "Stjórnsýslustig"
+        },
+        "advertising": {
+          "label": "Tegund"
         },
         "aerialway": {
           "label": "Tegund"
@@ -180,26 +219,117 @@
         "animal_shelter": {
           "label": "Fyrir dýr"
         },
+        "archaeological_site": {
+          "label": "Tegund",
+          "options": {
+            "baths": "Böð",
+            "enclosure": "Í búrum",
+            "fortification": "Víggirðing",
+            "necropolis": "Grafhýsaþyrping",
+            "tumulus": "Hörgur"
+          }
+        },
+        "architect": {
+          "label": "Arkítekt"
+        },
         "area/highway": {
           "label": "Tegund"
+        },
+        "armrest": {
+          "options": {
+            "undefined": "Óþekkt"
+          }
         },
         "artist": {
           "label": "Listamaður"
         },
         "artwork_type": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "bust": "Brjóstmynd",
+            "graffiti": "Veggjakrot",
+            "mural": "Veggmynd",
+            "painting": "Málverk",
+            "sculpture": "Höggmynd",
+            "statue": "Stytta"
+          }
+        },
+        "athletics_track": {
+          "options": {
+            "running": "Hlaup"
+          }
         },
         "atm": {
           "label": "Hraðbanki"
+        },
+        "attraction": {
+          "label": "Tegund",
+          "options": {
+            "amusement_ride": "Skemmtitæki",
+            "bungee_jumping": "Teygjustökk",
+            "carousel": "Hringekja",
+            "dark_ride": "Draugahús",
+            "maze": "Völundarhús",
+            "roller_coaster": "Rússíbani",
+            "train": "Ferðamannalest",
+            "water_slide": "Vatnsrennibraut"
+          }
+        },
+        "automated": {
+          "label": "Sjálfvirk"
+        },
+        "baby_feeding": {
+          "options": {
+            "no": "Ekkert"
+          }
+        },
+        "baby_seat": {
+          "label": "Barnastóll"
+        },
+        "backcountry": {
+          "label": "Ferðaleið"
         },
         "backrest": {
           "label": "Með baki"
         },
         "barrier": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "bollard": "Polli",
+            "cattle_grid": "Rimlahlið",
+            "chain": "Keðja",
+            "city_wall": "Borgarmúr",
+            "cycle_barrier": "Hjólahindrun",
+            "ditch": "Skurður",
+            "entrance": "Inngangur",
+            "fence": "Girðing",
+            "gate": "Hlið",
+            "guard_rail": "Vegrið",
+            "hedge": "Limgerði",
+            "jersey_barrier": "Hindrun með steypublokkum",
+            "kerb": "Kantsteinn",
+            "kissing_gate": "Vippuhlið",
+            "retaining_wall": "Stoðveggur",
+            "stile": "Hliðstigi",
+            "swing_gate": "Sveifluhlið",
+            "toll_booth": "Tollverðir",
+            "turnstile": "Snúningshlið",
+            "wall": "Veggur"
+          }
+        },
+        "barrier_planter": {
+          "label": "Hindrun",
+          "options": {
+            "planter": "Já",
+            "undefined": "Nei"
+          }
         },
         "basin": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "detention": "Varðhald",
+            "evaporation": "Uppgufun"
+          }
         },
         "bath/open_air": {
           "label": "Utandyra"
@@ -208,7 +338,19 @@
           "label": "Sandbað"
         },
         "bath/type": {
-          "label": "Sérgrein"
+          "label": "Sérgrein",
+          "options": {
+            "hot_spring": "Heit uppspretta",
+            "lake": "Stöðuvatn"
+          }
+        },
+        "beauty": {
+          "label": "Þjónustur",
+          "options": {
+            "cosmetics": "Snyrtivörur",
+            "tanning": "Sólbrúnka",
+            "waxing": "Vaxmeðferð"
+          }
         },
         "bench": {
           "label": "Bekkur"
@@ -216,8 +358,21 @@
         "bicycle_parking": {
           "label": "Tegund"
         },
+        "bicycle_road": {
+          "options": {
+            "undefined": "Nei",
+            "yes": "Já"
+          }
+        },
         "bin": {
           "label": "Ruslatunna"
+        },
+        "blind": {
+          "options": {
+            "limited": "Takmarkað",
+            "no": "Nei",
+            "yes": "Já"
+          }
         },
         "blood_components": {
           "label": "Blóðþættir",
@@ -228,6 +383,18 @@
           }
         },
         "board_type": {
+          "label": "Tegund",
+          "options": {
+            "art": "Listir",
+            "astronomy": "Stjörnufræði",
+            "geology": "Jarðfræði",
+            "history": "Aðgerðaferill",
+            "nature": "Náttúrufar",
+            "plants": "Plöntur",
+            "wildlife": "Dýralíf"
+          }
+        },
+        "bollard": {
           "label": "Tegund"
         },
         "booth": {
@@ -239,6 +406,9 @@
         "boundary": {
           "label": "Tegund"
         },
+        "branch_brand": {
+          "label": "Grein"
+        },
         "brand": {
           "label": "Vörumerki"
         },
@@ -249,8 +419,65 @@
         "bridge/support": {
           "label": "Tegund"
         },
+        "bridge_combo": {
+          "label": "Tegund",
+          "options": {
+            "aqueduct": "Vatnsveitubrú",
+            "movable": "Færanleg brú"
+          }
+        },
         "building": {
-          "label": "Bygging"
+          "label": "Bygging",
+          "options": {
+            "barn": "Hlaða",
+            "boathouse": "Bátaskýli",
+            "bungalow": "Sumarbústaður",
+            "bunker": "Byrgi",
+            "cabin": "Kofi",
+            "carport": "Bílskýli",
+            "cathedral": "Dómkirkjubygging",
+            "chapel": "Kapellubygging",
+            "church": "Kirkjubygging",
+            "civic": "Borgaraleg bygging",
+            "college": "Framhaldskólabygging",
+            "commercial": "Atvinnuhúsnæði",
+            "construction": "Á byggingarstigi",
+            "detached": "Aðskilin bygging",
+            "dormitory": "Heimavist",
+            "farm": "Íbúðarhús á býli",
+            "farm_auxiliary": "Landbúnaðarbygging",
+            "garage": "Bílskúr",
+            "garages": "Bílskúrar",
+            "greenhouse": "Gróðurhús",
+            "hospital": "Sjúkrahúsbygging",
+            "hotel": "Hótelbygging",
+            "house": "Hús",
+            "hut": "Fjallakofi",
+            "industrial": "Iðnaðarhúsnæði",
+            "mosque": "Moskubygging",
+            "public": "Opinber bygging",
+            "residential": "Íbúðarhúsnæði",
+            "retail": "Verslunarhúsnæði",
+            "roof": "Þak",
+            "ruins": "Byggingarústir",
+            "school": "Skólabygging",
+            "semidetached_house": "Hálf-aðskilin bygging",
+            "service": "Þjónustubygging",
+            "shed": "Skúr",
+            "stable": "Hesthús",
+            "stadium": "Íþróttaleikvangur",
+            "temple": "Musterisbygging",
+            "terrace": "Raðhús",
+            "transportation": "Samgöngubygging",
+            "university": "Háskólabygging",
+            "warehouse": "Vöruhús"
+          }
+        },
+        "building/levels": {
+          "label": "Hæðir"
+        },
+        "building/material": {
+          "label": "Efni"
         },
         "bunker_type": {
           "label": "Tegund"
@@ -272,20 +499,40 @@
             "panning": "Hliðrun"
           }
         },
+        "camp_site": {
+          "label": "Tegund"
+        },
         "capacity": {
           "label": "Notendafjöldi/Rýmd"
         },
         "castle_type": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "fortress": "Virki",
+            "kremlin": "Rússneskur (kreml)"
+          }
         },
         "clothes": {
-          "label": "Föt"
+          "label": "Föt",
+          "options": {
+            "hats": "Hattar",
+            "suits": "Jakkaföt",
+            "swimwear": "Sundföt",
+            "underwear": "Undirföt",
+            "workwear": "Vinnuföt"
+          }
         },
         "club": {
           "label": "Tegund"
         },
         "collection_times": {
           "label": "Losunartímar"
+        },
+        "collector": {
+          "options": {
+            "coins": "Mynt",
+            "stamps": "Frímerki"
+          }
         },
         "colour": {
           "label": "Litur"
@@ -297,11 +544,17 @@
         "communication_multi": {
           "label": "Tegundir samskipta"
         },
+        "community_centre": {
+          "label": "Tegund"
+        },
         "construction": {
           "label": "Tegund"
         },
         "consulate": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "yes": "Ræðismaður"
+          }
         },
         "contact/webcam": {
           "label": "URL-slóð vefmyndavélar",
@@ -318,14 +571,73 @@
             "reversible": "Getur snúist við"
           }
         },
+        "conveying_escalator": {
+          "label": "Rúllustigi"
+        },
         "country": {
           "label": "Land"
         },
         "covered": {
           "label": "Yfirbyggt"
         },
+        "covered_no": {
+          "options": {
+            "no": "Nei",
+            "undefined": "Ætlað að sé 'Nei'",
+            "yes": "Já"
+          }
+        },
         "craft": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "basket_maker": "Körfugerð",
+            "beekeeper": "Býflugnahirðir",
+            "blacksmith": "Járnsmiður",
+            "boatbuilder": "Bátasmiður",
+            "bookbinder": "Bókbindari",
+            "brewery": "Bruggari",
+            "builder": "Byggingafyrirtæki",
+            "carpenter": "Trésmiður",
+            "carpet_layer": "Teppalagning",
+            "caterer": "Veisluþjónusta",
+            "chimney_sweeper": "Sótari",
+            "clockmaker": "Klukkusmiður",
+            "confectionery": "Sælgætisgerð",
+            "distillery": "Eimingarhús",
+            "dressmaker": "Klæðskeri",
+            "electrician": "Rafvirki",
+            "floorer": "Gólflagnafyrirtæki",
+            "gardener": "Garðyrkjumaður",
+            "glaziery": "Gler og speglar",
+            "handicraft": "Handverk",
+            "hvac": "Loftræsting, upphitun og loftkæling",
+            "insulation": "Einangrari",
+            "jeweller": "Gullsmiður",
+            "joiner": "Trésmíði",
+            "key_cutter": "Lyklaþjónusta",
+            "locksmith": "Lásasmíði",
+            "painter": "Málari",
+            "photographer": "Ljósmyndari",
+            "photographic_laboratory": "Ljósmyndavinnustofa",
+            "plasterer": "Gifslagningar",
+            "plumber": "Pípulagningamaður",
+            "rigger": "Stagari (rigger)",
+            "roofer": "Þaksmíði",
+            "saddler": "Söðlasmiður",
+            "sailmaker": "Seglagerð",
+            "sawmill": "Sögunarmylla",
+            "scaffolder": "Vinnupallasmíði",
+            "sculptor": "Myndhöggvari",
+            "shoemaker": "Skósmiður",
+            "stonemason": "Steinsmiður",
+            "tailor": "Klæðskeri",
+            "tiler": "Flísaleggjari",
+            "tinsmith": "Tinsmiður",
+            "upholsterer": "Bólstrari",
+            "watchmaker": "Úrsmiður",
+            "window_construction": "Gluggasmíði",
+            "winery": "Víngerð"
+          }
         },
         "crane/type": {
           "label": "Tegund krana",
@@ -336,13 +648,94 @@
           }
         },
         "crop": {
-          "label": "Uppskera"
+          "label": "Uppskera",
+          "options": {
+            "coffee": "Kaffi",
+            "flowers": "Blóm",
+            "grass": "Gras",
+            "rice": "Hrísgrjón",
+            "tea": "Te",
+            "tobacco": "Tóbak"
+          }
         },
         "crossing": {
           "label": "Tegund"
         },
+        "crossing/barrier": {
+          "options": {
+            "no": "Nei",
+            "yes": "Já"
+          }
+        },
+        "crossing_raised": {
+          "label": "Hækkað",
+          "options": {
+            "table": "Já",
+            "undefined": "Nei"
+          }
+        },
         "cuisine": {
-          "label": "Matarhefð"
+          "label": "Matarhefð",
+          "options": {
+            "african": "Afrískt",
+            "american": "Amerískt",
+            "arab": "Arabískt",
+            "argentinian": "Argentínskt",
+            "asian": "Asískt",
+            "bagel": "Beyglur",
+            "balkan": "Balkanskt",
+            "barbecue": "Grill",
+            "bavarian": "Bæverskt",
+            "brazilian": "Brasilískt",
+            "burger": "Hamborgarar",
+            "cake": "Kökur",
+            "caribbean": "Karíbahafs",
+            "chicken": "Kjúklingar",
+            "chinese": "Kínverska",
+            "crepe": "Krepur",
+            "curry": "Karrý",
+            "donut": "Kleinuhringir",
+            "filipino": "Filipeyskt",
+            "fish": "Fiskur",
+            "french": "Franska",
+            "georgian": "Georgíska",
+            "german": "Þýska",
+            "greek": "Gríska",
+            "indian": "Indverskt",
+            "indonesian": "Indonesíska",
+            "italian": "Ítalska",
+            "japanese": "Japanska",
+            "juice": "Djús",
+            "korean": "Kóreska",
+            "lebanese": "Líbanskt",
+            "malaysian": "Malasíska",
+            "mediterranean": "Miðjarðarhafs",
+            "mexican": "Mexíkanskt",
+            "moroccan": "Marokkanskt",
+            "noodle": "Núðlur",
+            "pancake": "Pönnukökur",
+            "pastry": "Kökur",
+            "persian": "Persneska",
+            "peruvian": "Perúvískt",
+            "pizza": "Flatbökur",
+            "polish": "Pólska",
+            "portuguese": "Portúgalska",
+            "ramen": "Núðlur",
+            "regional": "Héraðskerfi",
+            "russian": "Rússneska",
+            "sandwich": "Samlokur",
+            "sausage": "Kryddpylsur",
+            "seafood": "Sjávarréttir",
+            "soba": "Soba-núðlur",
+            "soup": "Súpa",
+            "spanish": "Spænska",
+            "taiwanese": "Tævanskt",
+            "tea": "Te",
+            "thai": "Tælenska",
+            "turkish": "Tyrkneska",
+            "ukrainian": "Úkraníska",
+            "vietnamese": "Víetnamska"
+          }
         },
         "currency_multi": {
           "label": "Tegund gjaldmiðils"
@@ -359,6 +752,10 @@
           "options": {
             "lane": {
               "description": "Hjólabraut sem aðskilin er frá bílaumferð með málaðri línu"
+            },
+            "no": {
+              "description": "Engin hjólabraut",
+              "title": "Ekkert"
             },
             "opposite": {
               "description": "Hjólabraut sem stefnir í báðar áttir á einstefnugötu"
@@ -394,9 +791,13 @@
         },
         "departures_board": {
           "options": {
+            "no": "Ekkert",
             "timetable": "Tímatafla",
             "yes": "Já"
           }
+        },
+        "depot": {
+          "label": "Tegund"
         },
         "description": {
           "label": "Lýsing"
@@ -404,14 +805,33 @@
         "design": {
           "label": "Hönnun"
         },
+        "destination_waterway": {
+          "label": "Áfangastaður"
+        },
         "devices": {
           "label": "Tæki"
         },
+        "diet_multi": {
+          "options": {
+            "pescetarian": "Grænmetis-fiskætur",
+            "vegetarian": "Grænmetisfæði"
+          }
+        },
         "diplomatic": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "consulate": "Ræðismaður",
+            "embassy": "Sendiráð"
+          }
+        },
+        "diplomatic/services": {
+          "label": "Þjónustur"
         },
         "direction": {
           "label": "Stefna (gráður réttsælis)"
+        },
+        "direction_cardinal-US-CA-NZ": {
+          "label": "Stefna"
         },
         "direction_clock": {
           "label": "Stefna",
@@ -431,10 +851,24 @@
           "label": "Dreifing eftir lyfseðli"
         },
         "display": {
-          "label": "Birting"
+          "label": "Birting",
+          "options": {
+            "analog": "Hliðrænt",
+            "digital": "Stafrænt",
+            "sundial": "Sólúr"
+          }
         },
         "distance": {
           "label": "Fjarlægð"
+        },
+        "disused/amenity": {
+          "label": "Tegund"
+        },
+        "disused/railway": {
+          "label": "Tegund"
+        },
+        "disused/shop": {
+          "label": "Tegund"
         },
         "dock": {
           "label": "Tegund"
@@ -451,6 +885,9 @@
         },
         "door_type": {
           "label": "Tegund"
+        },
+        "drink_multi": {
+          "label": "Drykkir"
         },
         "drive_through": {
           "label": "Afgreiðslulúga"
@@ -477,7 +914,11 @@
           "placeholder": "Sjálfgefið"
         },
         "embassy": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "delegation": "Sendinefnd",
+            "yes": "Sendiráð"
+          }
         },
         "emergency": {
           "label": "Neyðarþjónusta"
@@ -485,11 +926,19 @@
         "emergency_combo": {
           "label": "Tegund"
         },
+        "emergency_ward_entrance": {
+          "label": "Tegund"
+        },
         "enforcement": {
           "label": "Tegund"
         },
         "entrance": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "main": "Aðal",
+            "secondary": "Auka",
+            "service": "Þjónusta"
+          }
         },
         "except": {
           "label": "Undantekningar"
@@ -504,18 +953,47 @@
         "fence_type": {
           "label": "Tegund"
         },
+        "fire_hydrant/position": {
+          "label": "Staðsetning",
+          "options": {
+            "parking_lot": "Bílastæðasvæði",
+            "sidewalk": "Gangstétt"
+          }
+        },
         "fire_hydrant/pressure": {
           "label": "Þrýstingur (bör)"
         },
         "fire_hydrant/type": {
+          "label": "Lögun",
           "options": {
             "pillar": "Stöpull/Ofanjarðar",
             "underground": "Neðanjarðar",
             "wall": "Veggur"
           }
         },
+        "fire_mains": {
+          "options": {
+            "no": "Nei"
+          }
+        },
+        "fire_service_inlet": {
+          "label": "Lögun",
+          "options": {
+            "pillar": "Stöpull/Ofanjarðar",
+            "underground": "Neðanjarðar",
+            "wall": "Veggur"
+          }
+        },
+        "fire_sprinkler": {
+          "options": {
+            "no": "Nei"
+          }
+        },
         "fireplace": {
           "label": "Eldstæði"
+        },
+        "fishing": {
+          "label": "Fiskveiði"
         },
         "fitness_station": {
           "label": "Gerð tækja"
@@ -526,9 +1004,21 @@
         "flag/type": {
           "label": "Tegund fána"
         },
+        "flashing_lights": {
+          "options": {
+            "no": "Nei",
+            "yes": "Já"
+          }
+        },
+        "floating": {
+          "label": "Fljótandi"
+        },
         "ford": {
           "label": "Tegund",
           "placeholder": "Sjálfgefið"
+        },
+        "fountain": {
+          "label": "Tegund"
         },
         "frequency": {
           "label": "Vinnutíðni"
@@ -538,6 +1028,16 @@
         },
         "fuel": {
           "label": "Eldsneyti"
+        },
+        "fuel/fuel_multi": {
+          "label": "Gerð eldsneytis",
+          "options": {
+            "diesel": "Dísel",
+            "propane": "Própan"
+          }
+        },
+        "gambling": {
+          "label": "Leikir"
         },
         "gauge": {
           "label": "Mælir"
@@ -552,16 +1052,33 @@
           "placeholder": "Óþekkt"
         },
         "generator/method": {
-          "label": "Aðferð"
+          "label": "Aðferð",
+          "options": {
+            "water-storage": "Lón",
+            "wind_turbine": "Vindtúrbína"
+          }
         },
         "generator/output/electricity": {
           "label": "Aflúttak"
         },
         "generator/source": {
-          "label": "Uppruni"
+          "label": "Uppruni",
+          "options": {
+            "battery": "Rafhlaða",
+            "biogas": "Lífgas",
+            "coal": "Kol",
+            "diesel": "Dísel",
+            "gasoline": "Bensín",
+            "oil": "Olía",
+            "waste": "Rusl",
+            "wind": "Vindur"
+          }
         },
         "generator/type": {
           "label": "Tegund"
+        },
+        "genus": {
+          "label": "Ættkvísl"
         },
         "government": {
           "label": "Tegund"
@@ -581,11 +1098,41 @@
         "hashtags": {
           "placeholder": "#dæmi"
         },
+        "hazard_boundary": {
+          "label": "Lífshætta"
+        },
         "healthcare": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "alternative": "Óhefðbundnar lækningar",
+            "audiologist": "Heyrnartækjafræðingur",
+            "birthing_centre": "Fæðingarheimili",
+            "clinic": "Læknastofa",
+            "dentist": "Tannlæknir",
+            "doctor": "Læknir",
+            "hospice": "Líknarsel",
+            "hospital": "Sjúkrahús",
+            "midwife": "Ljósmóðir",
+            "occupational_therapist": "Iðjuþjálfi",
+            "optometrist": "Sjóntækjafræðingur",
+            "pharmacy": "Lyfjabúð",
+            "physiotherapist": "Sjúkraþjálfari",
+            "podiatrist": "Fótaaðgerðafræðingur",
+            "psychotherapist": "Sálmeðferðarfræðingur",
+            "rehabilitation": "Endurhæfingaraðstaða",
+            "speech_therapist": "Talmeinafræðingur"
+          }
         },
         "healthcare/speciality": {
-          "label": "Sérgreinar"
+          "label": "Sérgreinar",
+          "options": {
+            "chiropractic": "Hnykkjalækningar",
+            "orthodontics": "Tannbitslækningar",
+            "osteopathy": "Hnykkjalækningar"
+          }
+        },
+        "heating": {
+          "label": "Upphitun"
         },
         "height": {
           "label": "Hæð (metrar)"
@@ -593,8 +1140,29 @@
         "highway": {
           "label": "Tegund"
         },
+        "highway_cartpath": {
+          "options": {
+            "service": "Þjónustugata"
+          }
+        },
         "historic": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "archaeological_site": "Fornleifasvæði",
+            "boundary_stone": "Markasteinn",
+            "castle": "Kastali",
+            "church": "Kirkja",
+            "memorial": "Minnismerki",
+            "milestone": "Vegalengdarsteinn",
+            "mine": "Náma",
+            "monument": "Minnisvarði",
+            "railway": "Járnbraut",
+            "ruins": "Rústir",
+            "tomb": "Gröf",
+            "wayside_cross": "Vegakross",
+            "wayside_shrine": "Vegaskrín",
+            "wreck": "Skipsflak"
+          }
         },
         "historic/civilization": {
           "label": "Söguleg menning"
@@ -607,6 +1175,12 @@
         },
         "historic/wreck/visible_at_low_tide": {
           "label": "Sýnilegt á fjöru"
+        },
+        "holding_position/type": {
+          "label": "Tegund",
+          "options": {
+            "runway": "Flugbraut"
+          }
         },
         "hoops": {
           "label": "Körfur"
@@ -623,6 +1197,9 @@
             "common": "Auðvelt: Engin vandamál eða erfiðleikar. (sjálfgefið)"
           },
           "placeholder": "Erfitt, hættulegt..."
+        },
+        "image": {
+          "label": "Mynd"
         },
         "incline": {
           "label": "Halli"
@@ -642,6 +1219,9 @@
         "industrial": {
           "label": "Tegund"
         },
+        "informal": {
+          "label": "Óformlegt"
+        },
         "information": {
           "label": "Tegund"
         },
@@ -660,16 +1240,50 @@
             "yes": "Já"
           }
         },
-        "junction_line": {
+        "internet_access/fee": {
+          "label": "Gjald fyrir internetaðgang",
           "options": {
+            "no": "Laust"
+          }
+        },
+        "junction/ref_oneway": {
+          "label": "Númer tengingar"
+        },
+        "junction_line": {
+          "label": "Tenging",
+          "options": {
+            "circular": "Hringakstur",
             "roundabout": "Hringtorg"
           }
         },
         "kerb": {
-          "label": "Kantsteinn"
+          "label": "Kantsteinn",
+          "options": {
+            "flush": {
+              "title": "Vatnssalerni"
+            },
+            "lowered": {
+              "title": "Lækkað"
+            },
+            "no": {
+              "title": "Nei"
+            },
+            "raised": {
+              "title": "Hækkað"
+            },
+            "yes": {
+              "title": "Já"
+            }
+          }
         },
         "kerb/height": {
           "label": "Hæð"
+        },
+        "kerb/kerb_barrier": {
+          "label": "Tegund"
+        },
+        "kitchen": {
+          "label": "Eldhús"
         },
         "label": {
           "label": "Merking"
@@ -720,7 +1334,19 @@
         "level": {
           "label": "Hæð"
         },
+        "level_semi": {
+          "label": "Hæðir"
+        },
         "liaison": {
+          "label": "Tegund"
+        },
+        "lifeguard": {
+          "label": "Tegund"
+        },
+        "lifeguard_check": {
+          "label": "Öryggisvörður"
+        },
+        "lift_gate/type": {
           "label": "Tegund"
         },
         "lit": {
@@ -736,6 +1362,15 @@
             "roof": "Þak"
           }
         },
+        "lock": {
+          "label": "Loka"
+        },
+        "lockable": {
+          "label": "Læsanlegt"
+        },
+        "locked": {
+          "label": "Læst"
+        },
         "man_made": {
           "label": "Tegund"
         },
@@ -749,10 +1384,42 @@
           "label": "Þekja"
         },
         "map_type": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "toposcope": "Skýringakort (toposcope)"
+          }
+        },
+        "marker": {
+          "label": "Tegund",
+          "options": {
+            "ground": {
+              "title": "Yfirborð"
+            },
+            "stone": {
+              "title": "Steinn"
+            }
+          }
         },
         "material": {
-          "label": "Efni"
+          "label": "Efni",
+          "options": {
+            "brick": "Múrsteinn",
+            "concrete": "Steinsteypa",
+            "glass": "Gler",
+            "granite": "Granít",
+            "limestone": "Kalksteinn",
+            "metal": "Málmur",
+            "plastic": "Plast",
+            "rock": "Grjótjökull",
+            "sand": "Sandur",
+            "sandstone": "Sandsteinn",
+            "steel": "Stál",
+            "stone": "Steinn",
+            "wood": "Viður"
+          }
+        },
+        "max_age": {
+          "label": "Hámarksaldur"
         },
         "maxspeed": {
           "label": "Hraðatakmörkun"
@@ -760,14 +1427,43 @@
         "maxspeed/advisory": {
           "label": "Ráðlögð hraðatakmörkun"
         },
+        "maxstay": {
+          "label": "Tímatakmörk"
+        },
         "memorial": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "bust": "Brjóstmynd",
+            "obelisk": "Bautasteinn",
+            "sculpture": "Höggmynd",
+            "statue": "Stytta",
+            "stone": "Steinn"
+          }
+        },
+        "microbrewery": {
+          "label": "Bruggað á staðnum"
+        },
+        "min_age": {
+          "label": "Lágmarksaldur"
         },
         "minspeed": {
           "label": "Lágmarkshraði"
         },
+        "mobile": {
+          "label": "Farsími",
+          "placeholder": "+354 123 4567"
+        },
         "monitoring_multi": {
           "label": "Vöktun"
+        },
+        "mooring": {
+          "label": "Skipalægi",
+          "options": {
+            "commercial": "Í atvinnuskyni",
+            "no": "Nei",
+            "private": "Einka",
+            "yes": "Já"
+          }
         },
         "mtb/scale": {
           "label": "Erfiðleikastig fjallahjólreiða",
@@ -796,6 +1492,9 @@
             "5": "5: Mjög bratt, venjulega þarf að ýta hjólinu eða bera það"
           }
         },
+        "museum": {
+          "label": "Tegund"
+        },
         "name": {
           "label": "Nafn",
           "placeholder": "Almennt heiti (ef eitthvað)"
@@ -805,6 +1504,9 @@
         },
         "network": {
           "label": "Leiðakerfi"
+        },
+        "network/type": {
+          "label": "Tegund leiðakerfis"
         },
         "network_bicycle": {
           "options": {
@@ -839,8 +1541,55 @@
         "note": {
           "label": "Athugasemd"
         },
+        "nudism": {
+          "label": "Nekt",
+          "options": {
+            "customary": "Venja",
+            "designated": "Ætlað fyrir",
+            "no": "Aðgangur bannaður",
+            "obligatory": "Skylda",
+            "permissive": "Með leyfi",
+            "yes": "Leyft"
+          }
+        },
         "office": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "accountant": "Bókhaldsskrifstofa",
+            "adoption_agency": "Ættleiðingaskrifstofa",
+            "advertising_agency": "Auglýsingastofa",
+            "architect": "Arkitektastofa",
+            "association": "Skrifstofa frjálsra félagasamtaka",
+            "charity": "Skrifstofa góðgerðasamtaka",
+            "company": "Skrifstofa fyrirtækis",
+            "coworking": "Sameiginlegt vinnurými",
+            "educational_institution": "Menntastofnun",
+            "employment_agency": "Atvinnumiðlun",
+            "energy_supplier": "Orkusöluskrifstofa",
+            "estate_agent": "Fasteignasöluskrifstofa",
+            "financial": "Fjármálafyrirtæki",
+            "forestry": "Skrifstofa skógarvarða",
+            "foundation": "Skrifstofa sjálfseignarstofnunar",
+            "government": "Opinber stofnun",
+            "guide": "Skrifstofa leiðsögumanna",
+            "insurance": "Tryggingaskrifstofa",
+            "it": "Upplýsingatækniskrifstofa",
+            "lawyer": "Lögmannaskrifstofa",
+            "moving_company": "Skrifstofa flutningafyrirtækis",
+            "newspaper": "Skrifstofur fréttablaðs",
+            "ngo": "Skrifstofa frjálsra félagasamtaka",
+            "notary": "Skrifstofa lögbókanda",
+            "physician": "Læknir",
+            "private_investigator": "Einkaspæjaraskrifstofa",
+            "quango": "Félagasamtök í samstarfi við hið opinbera (quango)",
+            "research": "Rannsóknarstofa",
+            "surveyor": "Landmælingaskrifstofa",
+            "tax_advisor": "Skattaráðgjafarskrifstofa",
+            "telecommunication": "Samskiptaskrifstofa",
+            "therapist": "Meðferðarstofa",
+            "travel_agent": "Ferðaskrifstofa",
+            "water_utility": "Skrifstofa vatnsveitu"
+          }
         },
         "oneway": {
           "label": "Einstefna",
@@ -871,8 +1620,24 @@
         "operator": {
           "label": "Rekstraraðili"
         },
+        "organic": {
+          "options": {
+            "no": "Ekkert",
+            "only": "Aðeins"
+          }
+        },
+        "orientation/orientation_parking": {
+          "label": "Stefna"
+        },
         "outdoor_seating": {
           "label": "Sæti utandyra"
+        },
+        "parcel_pickup": {
+          "options": {
+            "no": "Nei",
+            "undefined": "Ætlað að sé 'Já'",
+            "yes": "Já"
+          }
         },
         "park_ride": {
           "label": "Bílastæði fyrir almenningssamgöngur"
@@ -884,19 +1649,59 @@
             "garage_boxes": "Bílskúrar",
             "lane": "Við hlið vegar",
             "multi-storey": "Margra hæða",
+            "rooftop": "Þak",
             "sheds": "Skúrar",
             "surface": "Yfirborð",
             "underground": "Neðanjarðar"
           }
         },
+        "parking/side/orientation": {
+          "types": {
+            "parking:left:orientation": "Vinstra megin",
+            "parking:right:orientation": "Hægra megin"
+          }
+        },
+        "parking/side/parking": {
+          "label": "Bílastæði",
+          "options": {
+            "lane": "Við hlið vegar",
+            "no": "Nei",
+            "yes": "Já (óskilgreint)"
+          },
+          "types": {
+            "parking:left": "Vinstra megin",
+            "parking:right": "Hægra megin"
+          }
+        },
+        "parking_entrance": {
+          "label": "Tegund"
+        },
+        "parking_space": {
+          "label": "Tegund"
+        },
         "payment_multi": {
-          "label": "Greiðslumátar"
+          "label": "Greiðslumátar",
+          "options": {
+            "cash": "Reiðufé",
+            "cheque": "Athugun",
+            "coins": "Mynt",
+            "maestro": "Maestro-greiðslukort",
+            "mastercard": "MasterCard",
+            "visa": "VISA",
+            "visa_debit": "VISA-debetkort"
+          }
         },
         "phases": {
           "label": "Fasar"
         },
         "phone": {
           "label": "Sími"
+        },
+        "picnic_table": {
+          "label": "Nestisborð"
+        },
+        "pipeline": {
+          "label": "Tegund"
         },
         "piste/difficulty": {
           "label": "Erfiðleikastig",
@@ -999,11 +1804,23 @@
         "plant": {
           "label": "Orkuver"
         },
+        "plant/output": {
+          "options": {
+            "compressed_air": "Loftdæla",
+            "electricity": "Rafmagn"
+          }
+        },
         "playground": {
           "label": "Tegund"
         },
+        "playground/theme": {
+          "label": "Þema"
+        },
         "population": {
           "label": "Íbúafjöldi"
+        },
+        "post_box/type": {
+          "label": "Tegund"
         },
         "power": {
           "label": "Tegund"
@@ -1016,6 +1833,16 @@
         },
         "product": {
           "label": "Framleiðsla"
+        },
+        "public_bookcase/type": {
+          "label": "Tegund"
+        },
+        "pump": {
+          "label": "Dæla",
+          "options": {
+            "no": "Ekkert",
+            "yes": "Já"
+          }
         },
         "railway": {
           "label": "Tegund"
@@ -1031,11 +1858,30 @@
             "forward": "Áfram"
           }
         },
+        "ramp": {
+          "options": {
+            "no": "Nei",
+            "yes": "Já"
+          }
+        },
         "rating": {
           "label": "Afl"
         },
         "recycling_accepts": {
-          "label": "Tekur við"
+          "label": "Tekur við",
+          "options": {
+            "batteries": "Rafhlöður",
+            "cans": "Dósir",
+            "cardboard": "Bylgjupappi",
+            "clothes": "Föt",
+            "green_waste": "Lífrænn úrgangur",
+            "paper": "Pappír",
+            "plastic": "Plast",
+            "plastic_bottles": "Plastflöskur",
+            "plastic_packaging": "Plastumbúðir",
+            "scrap_metal": "Brotajárn",
+            "shoes": "Skór"
+          }
         },
         "recycling_type": {
           "label": "Tegund",
@@ -1053,6 +1899,9 @@
         },
         "ref_aeroway_gate": {
           "label": "Hliðnúmer"
+        },
+        "ref_disc_golf_hole": {
+          "label": "Númer holu"
         },
         "ref_golf_hole": {
           "label": "Númer holu"
@@ -1087,13 +1936,56 @@
           "label": "Tegund"
         },
         "religion": {
-          "label": "Trúarbrögð"
+          "label": "Trúarbrögð",
+          "options": {
+            "buddhist": "Búddismi",
+            "christian": "Kristið",
+            "confucian": "Konfúsismi",
+            "hindu": "Hindú",
+            "jewish": "Gyðinglegt",
+            "muslim": "Múslimskt",
+            "shinto": "Shintóismi",
+            "sikh": "Sikkísmi",
+            "taoist": "Taóismi",
+            "voodoo": "Vúdú"
+          }
+        },
+        "reservation": {
+          "options": {
+            "recommended": "Mælt með",
+            "required": "Nauðsynlegt"
+          }
+        },
+        "residential": {
+          "label": "Tegund"
+        },
+        "resort": {
+          "label": "Tegund"
+        },
+        "resource": {
+          "options": {
+            "aggregate": "Malarblanda",
+            "clay": "Leir",
+            "coal": "Kol",
+            "gold": "Gull",
+            "gravel": "Möl",
+            "limestone": "Kalksteinn",
+            "sand": "Sandur"
+          }
         },
         "restriction": {
           "label": "Tegund"
         },
         "restrictions": {
           "label": "Takmarkanir á beygjum"
+        },
+        "roller_coaster/track": {
+          "label": "Tegund",
+          "options": {
+            "waiting": {
+              "title": "Biðstofa"
+            }
+          }
         },
         "roof/colour": {
           "label": "Litur á þaki"
@@ -1108,6 +2000,14 @@
           "label": "Tegund"
         },
         "route_master": {
+          "label": "Tegund"
+        },
+        "royal_cypher-GB": {
+          "options": {
+            "no": "Nei"
+          }
+        },
+        "ruins": {
           "label": "Tegund"
         },
         "sac_scale": {
@@ -1189,6 +2089,17 @@
         "seamark/buoy_lateral/system": {
           "label": "Kerfi"
         },
+        "seamark/harbour/category_marina": {
+          "options": {
+            "marina": "Já",
+            "marina_no_facilities": "Nei"
+          }
+        },
+        "seamark/rescue_station/category": {
+          "options": {
+            "aircraft": "Flugvélar"
+          }
+        },
         "seamark/type": {
           "label": "Sjómerki"
         },
@@ -1211,7 +2122,14 @@
           "placeholder": "Já, Nei, Einungis"
         },
         "service": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "alley": "Sund",
+            "drive-through": "Afgreiðslulúga",
+            "driveway": "Innkeyrsla",
+            "emergency_access": "Neyðaraðgangur",
+            "parking_aisle": "Bílastæðavegur"
+          }
         },
         "service/vehicle": {
           "label": "Þjónustur"
@@ -1233,6 +2151,9 @@
         },
         "shelter_type": {
           "label": "Tegund"
+        },
+        "shoes": {
+          "label": "Skór"
         },
         "shop": {
           "label": "Tegund"
@@ -1278,15 +2199,79 @@
           "placeholder": "Mjóar rúllur, Venjuleg dekk, Utanvega..."
         },
         "social_facility": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "ambulatory_care": "Heimahlynning",
+            "assisted_living": "Búseta með stuðningi",
+            "day_care": "Dagvistun",
+            "food_bank": "Matarbanki",
+            "group_home": "Sambýli",
+            "nursing_home": "Hjúkrunarheimili",
+            "outreach": "Útbreiðsla",
+            "shelter": "Skýli"
+          }
         },
         "social_facility_for": {
-          "label": "Þjónustað fólk"
+          "label": "Þjónustað fólk",
+          "options": {
+            "child": "Börn",
+            "drug_addicted": "Eiturlyfjafíklar",
+            "homeless": "Heimilislausir",
+            "juvenile": "Ungmenni",
+            "migrant": "Farandfólk",
+            "orphan": "Munaðarleysingjar",
+            "senior": "Eldra fólk",
+            "veteran": "Uppgjafahermenn",
+            "woman": "Konur"
+          }
         },
         "source": {
           "label": "Heimildir"
         },
+        "species": {
+          "label": "Tegundir"
+        },
         "sport": {
+          "label": "Íþróttir",
+          "options": {
+            "american_football": "Amerískur ruðningsbolti",
+            "baseball": "Hornabolti",
+            "basketball": "Körfubolti",
+            "beachvolleyball": "Strandblak",
+            "chess": "Skák",
+            "climbing": "Klifur",
+            "cricket": "Krikket",
+            "curling": "Krulla",
+            "cycling": "Hjólreiðar",
+            "dog_racing": "Hundaveðhlaup",
+            "gaelic_games": "Gelískir leikar",
+            "gymnastics": "Fimleikar",
+            "horse_racing": "Kappreiðar",
+            "ice_hockey": "Íshokkí",
+            "ice_skating": "Skautar á ís",
+            "karting": "Kart-kappakstur",
+            "motocross": "Mótocross",
+            "rugby_union": "Sambandsruðningur (15 manna rúgbý)",
+            "running": "Hlaup",
+            "scuba_diving": "Loftpípuköfun",
+            "shooting": "Skotfimi",
+            "skateboard": "Hjólabretti",
+            "skiing": "Skíði",
+            "soccer": "Knattspyrna",
+            "swimming": "Sund",
+            "volleyball": "Blak"
+          }
+        },
+        "sport/sport_ice": {
+          "label": "Íþróttir"
+        },
+        "sport/sport_pub": {
+          "label": "Íþróttir"
+        },
+        "sport/sport_racing_motor": {
+          "label": "Íþróttir"
+        },
+        "sport/sport_racing_nonmotor": {
           "label": "Íþróttir"
         },
         "stars": {
@@ -1298,6 +2283,9 @@
         "step_count": {
           "label": "Fjöldi þrepa"
         },
+        "stile": {
+          "label": "Tegund"
+        },
         "stop": {
           "label": "Tegund stöðvunar",
           "options": {
@@ -1307,6 +2295,13 @@
         },
         "street_cabinet": {
           "label": "Tegund"
+        },
+        "stroller": {
+          "options": {
+            "limited": "Takmarkað",
+            "no": "Nei",
+            "yes": "Já"
+          }
         },
         "structure": {
           "label": "Mannvirki",
@@ -1319,6 +2314,14 @@
           },
           "placeholder": "Óþekkt"
         },
+        "structure_power": {
+          "label": "Mannvirki",
+          "options": {
+            "lattice": "Grind",
+            "solid": "Gegnheilt",
+            "tubular": "Rörlaga"
+          }
+        },
         "structure_waterway": {
           "label": "Mannvirki",
           "options": {
@@ -1329,11 +2332,29 @@
         "studio": {
           "label": "Tegund"
         },
+        "subject": {
+          "label": "Viðfangsefni"
+        },
         "substance": {
-          "label": "Efni"
+          "label": "Efni",
+          "options": {
+            "fuel": "Eldsneyti",
+            "sewage": "Frárennsli",
+            "water": "Drykkjarvatn"
+          }
         },
         "substation": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "industrial": "Iðnaður"
+          }
+        },
+        "substation_pipeline": {
+          "label": "Tegund",
+          "options": {
+            "industrial": "Iðnaður",
+            "measurement": "Mæling"
+          }
         },
         "supervised": {
           "label": "Undir eftirliti"
@@ -1342,7 +2363,22 @@
           "label": "Undirstaða"
         },
         "surface": {
-          "label": "Yfirborð"
+          "label": "Yfirborð",
+          "options": {
+            "asphalt": "Asfalt",
+            "clay": "Leir",
+            "compacted": "Þjappað",
+            "concrete": "Steinsteypa",
+            "dirt": "Mold",
+            "grass": "Gras",
+            "gravel": "Möl",
+            "ground": "Yfirborð",
+            "metal": "Málmur",
+            "pebblestone": "Steinvölur",
+            "sand": "Sandur",
+            "unpaved": "Óbundið slitlag",
+            "wood": "Viður"
+          }
         },
         "surveillance": {
           "label": "Gerð eftirlits"
@@ -1358,8 +2394,26 @@
         "surveillance/zone": {
           "label": "Svæði undir eftirliti"
         },
+        "survey_point/purpose": {
+          "label": "Tilgangur",
+          "options": {
+            "both": "Bæði"
+          }
+        },
+        "survey_point/structure": {
+          "label": "Mannvirki",
+          "options": {
+            "block": "Reitur",
+            "cairn": "Varða",
+            "cut": "Klippa",
+            "pole": "Staur"
+          }
+        },
         "swimming_pool": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "spa": "Spa-böð"
+          }
         },
         "switch": {
           "label": "Tegund",
@@ -1382,8 +2436,40 @@
           },
           "placeholder": "Já, Nei, Einungis taka með"
         },
+        "taxi_vehicle": {
+          "options": {
+            "motorcar": {
+              "title": "Bifreiðar"
+            },
+            "motorcycle": {
+              "title": "Mótorhjól"
+            }
+          }
+        },
+        "taxon": {
+          "label": "Flokkunarfræði"
+        },
+        "telecom": {
+          "label": "Tegund",
+          "options": {
+            "connection_point": "Tengipunktur",
+            "service_device": "Þjónustutæki"
+          }
+        },
+        "telecom/medium": {
+          "label": "Miðlungs"
+        },
+        "telescope/type": {
+          "label": "Tegund"
+        },
+        "tidal": {
+          "label": "Sjávarföll"
+        },
         "to": {
           "label": "Til"
+        },
+        "toilets": {
+          "label": "Snyrtingar"
         },
         "toilets/disposal": {
           "label": "Losun",
@@ -1393,11 +2479,34 @@
             "flush": "Vatnssalerni"
           }
         },
+        "toilets/menstrual_products": {
+          "options": {
+            "no": "Nei"
+          }
+        },
+        "toilets/wheelchair": {
+          "options": {
+            "limited": "Takmarkað",
+            "no": "Nei",
+            "yes": "Já"
+          }
+        },
         "toll": {
           "label": "Gjald"
         },
         "tomb": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "columbarium": "Duftgarður",
+            "crypt": "Grafhvelfing",
+            "hypogeum": "Neðanjarðargrafhýsi",
+            "mausoleum": "Grafhýsi",
+            "pyramid": "Pýramídi",
+            "sarcophagus": "Steinkista",
+            "table": "Pallur",
+            "tumulus": "Hörgur",
+            "vault": "Grafhýsi"
+          }
         },
         "tourism": {
           "label": "Tegund"
@@ -1407,6 +2516,9 @@
           "placeholder": "Stagaður, Grind, Lokaður..."
         },
         "tower/type": {
+          "label": "Tegund"
+        },
+        "townhall/type": {
           "label": "Tegund"
         },
         "tracktype": {
@@ -1423,7 +2535,20 @@
           "label": "Tegund"
         },
         "traffic_calming": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "bump": "Hraðahindrunarójafna",
+            "chicane": "Umferðarhliðrun",
+            "choker": "Umferðarþrenging",
+            "cushion": "Hraðahindrunarkoddi",
+            "dip": "Hraðahindrunardokk",
+            "hump": "Hraðahindrunaralda",
+            "rumble_strip": "Hvinrendur",
+            "table": "Hraðahindrunarpallur"
+          }
+        },
+        "traffic_calming_road": {
+          "label": "Hraðahindrun"
         },
         "traffic_sign": {
           "label": "Umferðarljós"
@@ -1445,6 +2570,15 @@
             "forward": "Áfram"
           }
         },
+        "traffic_signals/sound": {
+          "options": {
+            "no": "Nei",
+            "yes": "Já"
+          }
+        },
+        "traffic_signals/vibration": {
+          "label": "Titringur"
+        },
         "trail_visibility": {
           "label": "Sýnileiki slóðar",
           "options": {
@@ -1458,14 +2592,37 @@
           "placeholder": "Frábær, Góður, Lélegur..."
         },
         "transformer": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "phase_angle_regulator": "Fasahornsstýring"
+          }
         },
         "trees": {
           "label": "Tré"
         },
+        "trench": {
+          "label": "Tegund"
+        },
         "tunnel": {
           "label": "Tegund",
           "placeholder": "Sjálfgefið"
+        },
+        "tunnel_combo": {
+          "label": "Tegund",
+          "options": {
+            "avalanche_protector": "Snjóflóðavarnir",
+            "building_passage": "Undirgöng í gegnum byggingu",
+            "culvert": "Ræsi"
+          }
+        },
+        "turning_circle": {
+          "label": "Lögun"
+        },
+        "two_sided": {
+          "options": {
+            "undefined": "Nei",
+            "yes": "Já"
+          }
         },
         "usage_rail": {
           "label": "Tegund notkunar",
@@ -1478,8 +2635,57 @@
             "tourism": "Ferðaþjónusta"
           }
         },
+        "usage_waterway": {
+          "label": "Tegund notkunar",
+          "options": {
+            "transportation": "Flutningar"
+          }
+        },
+        "utility": {
+          "options": {
+            "oil": "Olía",
+            "power": "Rafafl",
+            "telecom": "Fjarskipti",
+            "water": "Vatn"
+          }
+        },
+        "valve": {
+          "label": "Tegund"
+        },
+        "vehicles": {
+          "options": {
+            "bus": "Strætisvagn",
+            "ferry": "Ferja",
+            "light_rail": "Léttlest",
+            "monorail": "Einteinungur",
+            "subway": "Neðanjarðarlest",
+            "train": "Lest",
+            "tram": "Sporvagn",
+            "trolleybus": "Rafknúinn strætisvagn"
+          }
+        },
         "vending": {
-          "label": "Vörutegundir"
+          "label": "Vörutegundir",
+          "options": {
+            "bread": "Brauð",
+            "cigarettes": "Sígarettur",
+            "coffee": "Kaffi",
+            "condoms": "Smokkar",
+            "drinks": "Drykkir",
+            "eggs": "Egg",
+            "electronics": "Rafeindatækni",
+            "excrement_bags": "Saurpokar",
+            "food": "Matur",
+            "fuel": "Eldsneyti",
+            "milk": "Mjólk",
+            "newspapers": "Dagblöð",
+            "pizza": "Flatbökur",
+            "sweets": "Sætindi",
+            "water": "Drykkjarvatn"
+          }
+        },
+        "via": {
+          "label": "Í gegnum"
         },
         "visibility": {
           "label": "Sýnileiki",
@@ -1520,11 +2726,26 @@
         "wall": {
           "label": "Tegund"
         },
+        "waste": {
+          "label": "Rusl",
+          "options": {
+            "cigarettes": "Sígarettur",
+            "trash": "Rusl"
+          }
+        },
         "water": {
           "label": "Tegund"
         },
         "water_point": {
           "label": "Vatnsból"
+        },
+        "water_source": {
+          "options": {
+            "pond": "Tjörn",
+            "river": "Á",
+            "stream": "Lækur",
+            "water_tank": "Vatnstankur"
+          }
         },
         "waterway": {
           "label": "Tegund"
@@ -1533,10 +2754,22 @@
           "label": "Vefsvæði"
         },
         "wetland": {
-          "label": "Tegund"
+          "label": "Tegund",
+          "options": {
+            "bog": "Fen",
+            "fen": "Starmýri",
+            "mangrove": "Leiruviðarskógur",
+            "marsh": "Votlendi",
+            "swamp": "Skógmýri"
+          }
         },
         "wheelchair": {
-          "label": "Hjólastólaaðgangur"
+          "label": "Hjólastólaaðgangur",
+          "options": {
+            "limited": "Takmarkað",
+            "no": "Nei",
+            "yes": "Já"
+          }
         },
         "wholesale": {
           "label": "Heildsala"
@@ -1546,6 +2779,14 @@
         },
         "windings": {
           "label": "Vindingar"
+        },
+        "windings/auto": {
+          "label": "Sjálfvirkur spennir",
+          "options": {
+            "no": "Nei",
+            "undefined": "Ætlað að sé 'Nei'",
+            "yes": "Já"
+          }
         },
         "windings/configuration": {
           "label": "Uppsetning vindinga",
@@ -1558,12 +2799,18 @@
         }
       },
       "presets": {
+        "addr/interpolation": {
+          "name": "Víxluð húsnúmer"
+        },
         "address": {
           "name": "Heimilisfang",
           "terms": "<heimilisfang,staðsetning>"
         },
         "advertising/billboard": {
           "name": "Auglýsingaspjald"
+        },
+        "advertising/column": {
+          "name": "Auglýsingasúl"
         },
         "aerialway/cable_car": {
           "name": "Kláfur"
@@ -1592,6 +2839,9 @@
         "aerialway/rope_tow": {
           "name": "Kaðallyfta"
         },
+        "aerialway/zip_line": {
+          "name": "Sviflína"
+        },
         "aeroway/aerodrome": {
           "name": "Flugvöllur",
           "terms": "<flugvöllur>"
@@ -1609,12 +2859,18 @@
         "aeroway/runway": {
           "name": "Flugbraut"
         },
+        "aeroway/spaceport": {
+          "name": "Geimflaugastöð"
+        },
         "aeroway/taxiway": {
           "name": "Akbraut flugvéla",
           "terms": "flugrein,færslubraut"
         },
         "aeroway/terminal": {
           "name": "Flugstöð"
+        },
+        "aeroway/windsock": {
+          "name": "Vindpoki"
         },
         "allotments/plot": {
           "name": "Samfélagsgarðskikar"
@@ -1706,6 +2962,9 @@
         "amenity/clock": {
           "name": "Klukka"
         },
+        "amenity/clock/sundial": {
+          "name": "Sólúr"
+        },
         "amenity/college": {
           "name": "Framhaldskólalóð"
         },
@@ -1732,6 +2991,9 @@
         },
         "amenity/doctors": {
           "name": "Læknir"
+        },
+        "amenity/doctors/podiatry": {
+          "name": "Fótaaðgerðafræðingur"
         },
         "amenity/dojo": {
           "name": "Dojo / Bardagaíþróttir"
@@ -1766,6 +3028,9 @@
         "amenity/fast_food/sandwich": {
           "name": "Skyndibiti, samlokur"
         },
+        "amenity/ferry_terminal": {
+          "name": "Ferjustöð"
+        },
         "amenity/fire_station": {
           "name": "Slökkvistöð"
         },
@@ -1799,8 +3064,14 @@
         "amenity/language_school": {
           "name": "Tungumálaskóli"
         },
+        "amenity/lavoir": {
+          "name": "Þvottaþró (þvottaaðstaða)"
+        },
         "amenity/library": {
           "name": "Bókasafn"
+        },
+        "amenity/lounger": {
+          "name": "Hægindastóll"
         },
         "amenity/love_hotel": {
           "name": "Ástarhótel"
@@ -1822,6 +3093,9 @@
         },
         "amenity/nursing_home": {
           "name": "Hjúkrunarheimili"
+        },
+        "amenity/parcel_locker": {
+          "name": "Bögglaskápur"
         },
         "amenity/parking": {
           "name": "Bílastæðasvæði"
@@ -1966,6 +3240,9 @@
         "amenity/social_facility": {
           "name": "Félagsþjónusta"
         },
+        "amenity/social_facility/ambulatory_care": {
+          "name": "Heimahlynning"
+        },
         "amenity/social_facility/food_bank": {
           "name": "Mataraðstoð"
         },
@@ -1989,6 +3266,9 @@
         },
         "amenity/theatre": {
           "name": "Leikhús"
+        },
+        "amenity/ticket_validator": {
+          "name": "Miðastimplari"
         },
         "amenity/townhall": {
           "name": "Ráðhús"
@@ -2026,6 +3306,9 @@
         "amenity/vending_machine/food": {
           "name": "Matarsjálfsali"
         },
+        "amenity/vending_machine/food/snacks": {
+          "name": "Snakksjálfsali"
+        },
         "amenity/vending_machine/ice_cream": {
           "name": "Íssjálfsali"
         },
@@ -2061,6 +3344,9 @@
         },
         "area": {
           "name": "Svæði"
+        },
+        "attraction": {
+          "name": "Aðdráttarafl"
         },
         "attraction/amusement_ride": {
           "name": "Skemmtitæki"
@@ -2098,8 +3384,17 @@
         "barrier/border_control": {
           "name": "Landamæraeftirlit"
         },
+        "barrier/bump_gate": {
+          "name": "Rúlluhlið"
+        },
+        "barrier/bus_trap": {
+          "name": "Hindrunargryfja"
+        },
         "barrier/cattle_grid": {
           "name": "Vegrist"
+        },
+        "barrier/chain": {
+          "name": "Keðja"
         },
         "barrier/city_wall": {
           "name": "Borgarmúrar"
@@ -2116,11 +3411,23 @@
         "barrier/fence": {
           "name": "Girðing"
         },
+        "barrier/full-height_turnstile": {
+          "name": "Snúningshlið í fullri stærð"
+        },
         "barrier/gate": {
           "name": "Hlið"
         },
+        "barrier/guard_rail": {
+          "name": "Vegrið"
+        },
+        "barrier/handrail": {
+          "name": "Handrið"
+        },
         "barrier/hedge": {
           "name": "Limgerði"
+        },
+        "barrier/jersey_barrier": {
+          "name": "Hindrun með steypublokkum"
         },
         "barrier/kerb": {
           "name": "Kantsteinn"
@@ -2131,17 +3438,32 @@
         "barrier/kissing_gate": {
           "name": "Sjálflokandi hlið"
         },
+        "barrier/motorcycle_barrier": {
+          "name": "Mótorhjólahindrun"
+        },
         "barrier/retaining_wall": {
           "name": "Hallaveggur"
+        },
+        "barrier/sally_port": {
+          "name": "Virkishlið"
         },
         "barrier/stile": {
           "name": "Príla"
         },
+        "barrier/swing_gate": {
+          "name": "Sveifluhlið"
+        },
         "barrier/toll_booth": {
           "name": "Gjaldhlið"
         },
+        "barrier/turnstile": {
+          "name": "Snúningshlið"
+        },
         "barrier/wall": {
           "name": "Veggur"
+        },
+        "boundary": {
+          "name": "Svæðismörk"
         },
         "boundary/administrative": {
           "name": "Stjórnsýslumörk"
@@ -2286,6 +3608,9 @@
         "building_point": {
           "name": "Bygging"
         },
+        "cemetery/grave": {
+          "name": "Gröf"
+        },
         "club": {
           "name": "Klúbbur"
         },
@@ -2340,6 +3665,9 @@
         "craft/electronics_repair": {
           "name": "Rafeindatækjaverkstæði"
         },
+        "craft/floorer": {
+          "name": "Gólflagnafyrirtæki"
+        },
         "craft/gardener": {
           "name": "Garðyrkjumaður"
         },
@@ -2348,6 +3676,9 @@
         },
         "craft/insulator": {
           "name": "Einangrun"
+        },
+        "craft/joiner": {
+          "name": "Trésmíði"
         },
         "craft/key_cutter": {
           "name": "Lyklaþjónusta"
@@ -2436,6 +3767,9 @@
         "emergency/fire_extinguisher": {
           "name": "Slökkvitæki"
         },
+        "emergency/fire_hose": {
+          "name": "Brunaslanga"
+        },
         "emergency/fire_hydrant": {
           "name": "Brunahani"
         },
@@ -2444,6 +3778,12 @@
         },
         "emergency/life_ring": {
           "name": "Bjarghringur"
+        },
+        "emergency/lifeguard": {
+          "name": "Öryggisvörður"
+        },
+        "emergency/mountain_rescue": {
+          "name": "Fjallabjörgun"
         },
         "emergency/no": {
           "name": "Ekki neyðaraðgangur"
@@ -2469,6 +3809,9 @@
         "ford": {
           "name": "Vað"
         },
+        "ford_line": {
+          "name": "Vað"
+        },
         "golf/bunker": {
           "name": "Glompa"
         },
@@ -2481,11 +3824,17 @@
         "golf/hole": {
           "name": "Golfhola"
         },
+        "golf/lateral_water_hazard": {
+          "name": "Vatnsgryfja til hliðar"
+        },
         "golf/rough": {
           "name": "Kargi"
         },
         "golf/tee": {
           "name": "Teigur"
+        },
+        "golf/water_hazard": {
+          "name": "Vatnsgryfja"
         },
         "healthcare": {
           "name": "Heilsugæsluaðstaða"
@@ -2544,6 +3893,9 @@
         "highway/corridor": {
           "name": "Gangur innanhúss"
         },
+        "highway/crossing": {
+          "name": "Þverun"
+        },
         "highway/crossing/unmarked": {
           "name": "Ómerkt gangbraut"
         },
@@ -2553,14 +3905,26 @@
         "highway/elevator": {
           "name": "Lyfta"
         },
+        "highway/emergency_access_point": {
+          "name": "Neyðaraðgangur"
+        },
         "highway/footway": {
           "name": "Göngustígur"
+        },
+        "highway/footway/crossing": {
+          "name": "Gangbraut"
+        },
+        "highway/footway/crossing/unmarked": {
+          "name": "Ómerkt gangbraut"
         },
         "highway/footway/sidewalk": {
           "name": "Gangstétt"
         },
         "highway/give_way": {
           "name": "Biðskyldumerki"
+        },
+        "highway/ladder": {
+          "name": "Stigi"
         },
         "highway/living_street": {
           "name": "Vistgata"
@@ -2668,6 +4032,9 @@
         "highway/traffic_signals": {
           "name": "Umferðarljós"
         },
+        "highway/trailhead": {
+          "name": "Upphaf slóða"
+        },
         "highway/trunk": {
           "name": "Umferðaræð"
         },
@@ -2692,6 +4059,9 @@
         "historic/boundary_stone": {
           "name": "Landamerkjasteinn"
         },
+        "historic/cannon": {
+          "name": "Fallbyssa"
+        },
         "historic/castle": {
           "name": "Kastali"
         },
@@ -2715,6 +4085,12 @@
         },
         "historic/wreck": {
           "name": "Skipsflak"
+        },
+        "indoor/corridor": {
+          "name": "Gangur innanhúss"
+        },
+        "indoor/corridor_line": {
+          "name": "Gangur innanhúss"
         },
         "indoor/room": {
           "name": "Herbergi"
@@ -2751,6 +4127,9 @@
         },
         "landuse/farmyard": {
           "name": "Bóndabýli"
+        },
+        "landuse/flowerbed": {
+          "name": "Blómabeð"
         },
         "landuse/garages": {
           "name": "Landnotkun fyrir verkstæði"
@@ -2790,6 +4169,9 @@
         },
         "landuse/military/barracks": {
           "name": "Herbúðir"
+        },
+        "landuse/military/base/navy": {
+          "name": "Flotastöð"
         },
         "landuse/military/range": {
           "name": "Hersvæði"
@@ -2841,6 +4223,9 @@
         },
         "leisure/bird_hide": {
           "name": "Fuglaskoðunarskýli"
+        },
+        "leisure/bleachers": {
+          "name": "Áhorfendapallar"
         },
         "leisure/bowling_alley": {
           "name": "Keiluhöll"
@@ -2904,6 +4289,9 @@
         },
         "leisure/garden": {
           "name": "Garður"
+        },
+        "leisure/garden/community": {
+          "name": "Samfélagsgarður"
         },
         "leisure/golf_course": {
           "name": "Golfvöllur"
@@ -3013,6 +4401,9 @@
         "leisure/track": {
           "name": "Keppnisbraut (ekki mótorsport)"
         },
+        "leisure/track/athletics/running": {
+          "name": "Hlaupabraut"
+        },
         "leisure/track/cycling": {
           "name": "Hjólreiðabraut"
         },
@@ -3034,11 +4425,23 @@
         "man_made/breakwater": {
           "name": "Sjóvarnargarður"
         },
+        "man_made/bunker_silo": {
+          "name": "Gryfjusíló"
+        },
+        "man_made/cairn": {
+          "name": "Varða"
+        },
         "man_made/chimney": {
           "name": "Skorsteinn"
         },
         "man_made/crane": {
           "name": "Krani"
+        },
+        "man_made/crane/portal_crane": {
+          "name": "Hegri"
+        },
+        "man_made/cross": {
+          "name": "Kross"
         },
         "man_made/embankment": {
           "name": "Stallur"
@@ -3046,11 +4449,23 @@
         "man_made/flagpole": {
           "name": "Fánastöng"
         },
+        "man_made/fuel_pump": {
+          "name": "Eldsneytisdæla"
+        },
+        "man_made/gantry": {
+          "name": "Tollhlið"
+        },
         "man_made/gasometer": {
           "name": "Gasmælir"
         },
         "man_made/lighthouse": {
           "name": "Viti"
+        },
+        "man_made/manhole": {
+          "name": "Mannop"
+        },
+        "man_made/manhole/drain": {
+          "name": "Yfirfall"
         },
         "man_made/mast": {
           "name": "Mastur"
@@ -3067,8 +4482,14 @@
         "man_made/mast/communication/television": {
           "name": "Sjónvarpsmastur"
         },
+        "man_made/mineshaft": {
+          "name": "Námugöng"
+        },
         "man_made/monitoring_station": {
           "name": "Vöktunarstöð"
+        },
+        "man_made/obelisk": {
+          "name": "Bautasteinn"
         },
         "man_made/observatory": {
           "name": "Skoðunarstöð"
@@ -3085,14 +4506,23 @@
         "man_made/pipeline": {
           "name": "Röraleiðsla"
         },
+        "man_made/planter": {
+          "name": "Gróðurílát"
+        },
         "man_made/pumping_station": {
           "name": "Dælustöð"
+        },
+        "man_made/reservoir_covered": {
+          "name": "Yfirbyggt vatnsforðabúr"
         },
         "man_made/silo": {
           "name": "Síló"
         },
         "man_made/storage_tank": {
           "name": "Geymslutankur"
+        },
+        "man_made/storage_tank/water": {
+          "name": "Vatnstankur"
         },
         "man_made/surveillance": {
           "name": "Eftirlit"
@@ -3111,6 +4541,9 @@
         },
         "man_made/tower/communication": {
           "name": "Samkiptaturn"
+        },
+        "man_made/tower/observation": {
+          "name": "Varðturn"
         },
         "man_made/wastewater_plant": {
           "name": "Skólphreinsistöð"
@@ -3133,6 +4566,18 @@
         "man_made/works": {
           "name": "Verksmiðja"
         },
+        "marker": {
+          "name": "Vísir"
+        },
+        "military/bunker": {
+          "name": "Hernaðarsprengjubyrgi"
+        },
+        "military/nuclear_explosion_site": {
+          "name": "Kjarnorkusprengisvæði"
+        },
+        "military/office": {
+          "name": "Hermálaskrifstofa"
+        },
         "natural/bare_rock": {
           "name": "Berar klappir"
         },
@@ -3141,6 +4586,9 @@
         },
         "natural/beach": {
           "name": "Strönd"
+        },
+        "natural/cape": {
+          "name": "Höfði"
         },
         "natural/cave_entrance": {
           "name": "Inngangur í helli",
@@ -3152,6 +4600,9 @@
         "natural/coastline": {
           "name": "Strandlengja"
         },
+        "natural/geyser": {
+          "name": "Goshver"
+        },
         "natural/glacier": {
           "name": "Jökull"
         },
@@ -3160,6 +4611,9 @@
         },
         "natural/heath": {
           "name": "Mói"
+        },
+        "natural/hot_spring": {
+          "name": "Heit uppspretta"
         },
         "natural/mud": {
           "name": "Leðja"
@@ -3185,8 +4639,20 @@
         "natural/scrub": {
           "name": "Kjarr"
         },
+        "natural/shingle": {
+          "name": "Möl"
+        },
+        "natural/shrub": {
+          "name": "Runni"
+        },
+        "natural/sinkhole": {
+          "name": "Jarðfall"
+        },
         "natural/spring": {
           "name": "Uppspretta"
+        },
+        "natural/strait": {
+          "name": "Sund"
         },
         "natural/tree": {
           "name": "Tré"
@@ -3194,11 +4660,20 @@
         "natural/tree_row": {
           "name": "Trjáröð"
         },
+        "natural/tree_stump": {
+          "name": "Trjástúfur"
+        },
+        "natural/valley": {
+          "name": "Dalur"
+        },
         "natural/volcano": {
           "name": "Eldstöð"
         },
         "natural/water": {
           "name": "Vatn"
+        },
+        "natural/water/basin": {
+          "name": "Lægð"
         },
         "natural/water/lake": {
           "name": "Stöðuvatn"
@@ -3211,6 +4686,21 @@
         },
         "natural/wetland": {
           "name": "Votlendi"
+        },
+        "natural/wetland/bog": {
+          "name": "Fen"
+        },
+        "natural/wetland/fen": {
+          "name": "Starmýri"
+        },
+        "natural/wetland/mangrove": {
+          "name": "Leiruviðarskógur"
+        },
+        "natural/wetland/marsh": {
+          "name": "Votlendi"
+        },
+        "natural/wetland/swamp": {
+          "name": "Skógmýri"
         },
         "noexit/yes": {
           "name": "Enginn útgangur"
@@ -3244,6 +4734,12 @@
         },
         "office/coworking": {
           "name": "Sameiginlegt vinnurými"
+        },
+        "office/diplomatic/consulate": {
+          "name": "Ræðismaður"
+        },
+        "office/diplomatic/embassy": {
+          "name": "Sendiráð"
         },
         "office/educational_institution": {
           "name": "Menntastofnun"
@@ -3332,6 +4828,9 @@
         "office/water_utility": {
           "name": "Skrifstofa vatnsveitu"
         },
+        "pipeline/valve": {
+          "name": "Leiðsluventill"
+        },
         "piste/skitour": {
           "name": "Ferðaskíðaleið"
         },
@@ -3383,6 +4882,15 @@
         "place/village": {
           "name": "Þorp"
         },
+        "playground/balancebeam": {
+          "name": "Jafnvægisslá"
+        },
+        "playground/basketrotator": {
+          "name": "Körfuhringróla"
+        },
+        "playground/basketswing": {
+          "name": "Körfuróla"
+        },
         "playground/cushion": {
           "name": "Hoppkoddi"
         },
@@ -3398,6 +4906,9 @@
         "playground/slide": {
           "name": "Rennibraut"
         },
+        "playground/springy": {
+          "name": "Rugguhestur"
+        },
         "playground/structure": {
           "name": "Leikjagrind"
         },
@@ -3407,6 +4918,9 @@
         "point": {
           "name": "Punktur"
         },
+        "power/cable": {
+          "name": "Aflkapall"
+        },
         "power/cable/underground": {
           "name": "Jarðstrengur"
         },
@@ -3415,6 +4929,9 @@
         },
         "power/generator/method/photovoltaic": {
           "name": "Sólarpanell"
+        },
+        "power/generator/source/hydro": {
+          "name": "Vatnstúrbína"
         },
         "power/generator/source/nuclear": {
           "name": "Kjarnaofn"
@@ -3431,6 +4948,12 @@
         "power/plant": {
           "name": "Orkuverslóð"
         },
+        "power/plant/source/nuclear": {
+          "name": "Kjarnorkuver"
+        },
+        "power/plant/source/solar": {
+          "name": "Sólorkuknúin aflstöð"
+        },
         "power/pole": {
           "name": "Rafmagnsstaur"
         },
@@ -3446,8 +4969,36 @@
         "power/transformer": {
           "name": "Straumbreytir"
         },
+        "public_transport/platform/aerialway_point": {
+          "name": "Lyftustöð / Biðsvæði"
+        },
+        "public_transport/platform/bus": {
+          "name": "Strætisvagnabiðpallur"
+        },
         "public_transport/platform/bus_point": {
           "name": "Strætó stoppistöð"
+        },
+        "public_transport/platform/ferry_point": {
+          "name": "Ferjustöð / Biðsvæði"
+        },
+        "public_transport/platform/light_rail_point": {
+          "name": "Léttlestarstoppistöð / Biðsvæði"
+        },
+        "public_transport/platform/monorail_point": {
+          "name": "Einteinungsstoppistöð / Biðsvæði"
+        },
+        "public_transport/platform/subway_point": {
+          "name": "Neðanjarðarlestarpallur"
+        },
+        "public_transport/platform/train_point": {
+          "name": "Lestarpallur"
+        },
+        "public_transport/platform/tram_point": {
+          "name": "Sporvagnastoppistöð / Biðsvæði"
+        },
+        "public_transport/platform_point": {
+          "name": "Biðstöð / Biðsvæði",
+          "terms": "almenningssamgöngur,strætó,samgöngur,stoppistöð"
         },
         "public_transport/station": {
           "name": "Umferðarmiðstöð",
@@ -3458,6 +5009,9 @@
         },
         "public_transport/station_bus": {
           "name": "Strætisvagnastöð / Umferðarmiðstöð"
+        },
+        "public_transport/station_ferry": {
+          "name": "Ferjustöð"
         },
         "public_transport/station_light_rail": {
           "name": "Léttlestarstöð"
@@ -3935,6 +5489,12 @@
         "tourism/artwork": {
           "name": "Listaverk"
         },
+        "tourism/artwork/bust": {
+          "name": "Brjóstmynd"
+        },
+        "tourism/artwork/graffiti": {
+          "name": "Veggjakrot"
+        },
         "tourism/artwork/mural": {
           "name": "Veggmynd"
         },
@@ -3946,6 +5506,9 @@
         },
         "tourism/attraction": {
           "name": "Ferðamannagildra"
+        },
+        "tourism/camp_pitch": {
+          "name": "Tjaldstæðishólf"
         },
         "tourism/camp_site": {
           "name": "Tjaldsvæði"
@@ -3979,6 +5542,9 @@
         },
         "tourism/information/map": {
           "name": "Kort"
+        },
+        "tourism/information/terminal": {
+          "name": "Upplýsingaskjár"
         },
         "tourism/motel": {
           "name": "Mótel"
@@ -4034,11 +5600,17 @@
         "traffic_sign/city_limit": {
           "name": "Þéttbýlis skilti"
         },
+        "traffic_sign/maxspeed": {
+          "name": "Skilti fyrir hraðatakmörk"
+        },
         "type/boundary": {
           "name": "Svæðamörk"
         },
         "type/boundary/administrative": {
           "name": "Stjórnsýslumörk"
+        },
+        "type/destination_sign": {
+          "name": "Skilti með áfangastað"
         },
         "type/multipolygon": {
           "name": "Fjölhyrningur"
@@ -4055,6 +5627,9 @@
         "type/route": {
           "name": "Leið"
         },
+        "type/route/bicycle": {
+          "name": "Hjólaleið"
+        },
         "type/route/bus": {
           "name": "Strætóleið"
         },
@@ -4064,11 +5639,17 @@
         "type/route/ferry": {
           "name": "Ferjuleið"
         },
+        "type/route/foot": {
+          "name": "Gönguleið"
+        },
         "type/route/hiking": {
           "name": "Gönguleið"
         },
         "type/route/light_rail": {
           "name": "Léttlestarleið"
+        },
+        "type/route/mtb": {
+          "name": "Fjallahjólaleið"
         },
         "type/route/pipeline": {
           "name": "Röraleið"
@@ -4078,6 +5659,9 @@
         },
         "type/route/power": {
           "name": "Orkuflutningsleið"
+        },
+        "type/route/railway": {
+          "name": "Lestarleið"
         },
         "type/route/road": {
           "name": "Vegaleið"
@@ -4120,6 +5704,9 @@
         },
         "waterway/fuel": {
           "name": "Eldsneytisstöð fyrir báta"
+        },
+        "waterway/lock_gate": {
+          "name": "Skipastigi"
         },
         "waterway/river": {
           "name": "Á"

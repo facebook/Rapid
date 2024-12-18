@@ -11,10 +11,23 @@
         "description": "Дообработени сателитски снимки од Sentinel.",
         "name": "eox.at 2018 безоблачно"
       },
+      "EOXAT2019CLOUDLESS": {
+        "description": "Дообработени сателитски снимки од Sentinel."
+      },
+      "EOXAT2020CLOUDLESS": {
+        "description": "Дообработени сателитски снимки од Sentinel."
+      },
+      "EOXAT2021CLOUDLESS": {
+        "description": "Дообработени сателитски снимки од Sentinel."
+      },
+      "EOXAT2022CLOUDLESS": {
+        "description": "Дообработени сателитски снимки од Sentinel."
+      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "Услови и мислења"
         },
+        "description": "Светски снимки на Esri",
         "name": "Светски снимки на Esri"
       },
       "EsriWorldImageryClarity": {
@@ -23,6 +36,116 @@
         },
         "description": "Архивски снимки на Esri кои може да се појасни и поточни од вообичаениот слој.",
         "name": "Светски снимки на Esri (Clarity) Бета"
+      },
+      "Geoportal2-PL-City-boundaries_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-addres_points_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-communes_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-counties_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-provinces_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-buildings_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-gas-pipe_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-heat-pipe_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-plot_boundaries_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-power-cord_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-sewer-pipe_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-shaded_relief_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-squares-and-housing-estates_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-state-borders_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-telecommunications-cable_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
+      },
+      "Geoportal2-PL-water-pipe_WMS": {
+        "attribution": {
+          "text": "Главна управа за геодезија и картографија на Полска"
+        }
       },
       "MAPNIK": {
         "description": "Вообичаениот слој на OpenStreetMap.",
@@ -33,6 +156,9 @@
           "text": "Услови и мислења"
         },
         "name": "Mapbox Сателитски"
+      },
+      "OSMUK-Cadastral-Parcels": {
+        "name": "OSMUK Катастарски парцели"
       },
       "OSM_Inspector-Addresses": {
         "attribution": {
@@ -90,12 +216,30 @@
         "description": "Жолто = Картографски податоци од пописот на САД во јавна сопственост. Црвено = Податоци кои не е присутни на OpenStreetMap",
         "name": "TIGER Патишта 2019"
       },
+      "US-TIGER-Roads-2020": {
+        "description": "Жолто = Картографски податоци од пописот на САД во јавна сопственост. Црвено = Податоци кои не е присутни на OpenStreetMap",
+        "name": "TIGER Патишта 2020"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Жолто = Картографски податоци од пописот на САД во јавна сопственост. Црвено = Податоци кои не е присутни на OpenStreetMap"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Жолто = Картографски податоци од пописот на САД во јавна сопственост. Црвено = Податоци кои не е присутни на OpenStreetMap"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Жолто = Картографски податоци од пописот на САД во јавна сопственост. Црвено = Податоци кои не е присутни на OpenStreetMap"
+      },
       "USDA-NAIP": {
         "name": "Национална програма за земјоделски снимки"
       },
       "US_Forest_Service_roads_overlay": {
         "description": "Пат: Зелена обраба = некласификувано. Кафеава обраба = козја патека. Површина: Чакал = светлокафеава полнетица, Асфалт = црно, поплочено = сиво, земја = бело, бетон = сино, трева = зелено. Сезонски = бели пруги",
         "name": "Облога за шумски патишта на САД"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Остварено преку UrbIS®© на Брисел — Расподелба и авторски права CIRB"
+        }
       },
       "UrbISOrtho2016": {
         "attribution": {
@@ -121,7 +265,17 @@
         },
         "name": "UrbIS-Орто 2019"
       },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Остварено преку UrbIS®© на Брисел — Расподелба и авторски права CIRB"
+        }
+      },
       "UrbisAdmFR": {
+        "attribution": {
+          "text": "Остварено преку UrbIS®© на Брисел — Расподелба и авторски права CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
         "attribution": {
           "text": "Остварено преку UrbIS®© на Брисел — Расподелба и авторски права CIRB"
         }
@@ -186,7 +340,41 @@
         "description": "Градската карта дава описен преглед на Гетеборг. Содржи општи информации а земјиштето, врските, хидрографијата, градбите, адресните броеви и имињата на улиците, управната поделба и друг текст за насочување.",
         "name": "Градска карта на Гетеборг"
       },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© Општина Гетеборг, CC0"
+        },
+        "description": "Семрежна картографска служба која дава сенчање и косини на основа на висинскиот модел за Град Гетеборг од 2017 г. Разделноста изнесува 0,5 метри на пиксел.",
+        "name": "Сенчана карта на Гетеборг"
+      },
       "gothenburg-ortho": {
+        "attribution": {
+          "text": "© Општина Гетеборг, CC0"
+        },
+        "description": "Ортоснимки за Општина Гетеборг",
+        "name": "Гетеборшки ортоснимки 2015"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© Општина Гетеборг, CC0"
+        },
+        "description": "Ортоснимки за Општина Гетеборг",
+        "name": "Гетеборшки ортоснимки 2017"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© Општина Гетеборг, CC0"
+        },
+        "description": "Ортоснимки за Општина Гетеборг",
+        "name": "Гетеборшки ортоснимки 2019"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© Општина Гетеборг, CC0"
+        },
+        "description": "Ортоснимки за Општина Гетеборг"
+      },
+      "gothenburg-ortho_latest": {
         "attribution": {
           "text": "© Општина Гетеборг, CC0"
         },
@@ -233,6 +421,20 @@
         },
         "description": "Ортоснимки од градските подрачја на општината Калмар, 2018 г.",
         "name": "Градски ортоснимки од Калмар 2018"
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© Општина Калмар"
+        },
+        "description": "Ортоснимки од градските подрачја на општината Калмар, 2020 г.",
+        "name": "Градски ортоснимки од Калмар 2020"
+      },
+      "kartverket-bygninger": {
+        "attribution": {
+          "text": "© Картографски завод на Норвешка"
+        },
+        "description": "INSPIRE градби за Норвешка",
+        "name": "Облога за згради на Карт. завод на Норвешка"
       },
       "kelkkareitit": {
         "description": "Патеки за моторни санки на Kelkkareitit.fi од OSM (Нордиски предели)",
@@ -311,6 +513,16 @@
           "text": "© Учесници на OpenStreetMap, CC-BY-SA"
         },
         "name": "OpenStreetMap (германски стил)"
+      },
+      "osmse-ekonomiska": {
+        "attribution": {
+          "text": "© Земјомерен завод на Шведска, CC0"
+        }
+      },
+      "osmse-generalstab": {
+        "attribution": {
+          "text": "© Земјомерен завод на Шведска, CC0"
+        }
       },
       "qa_no_address": {
         "attribution": {
@@ -397,6 +609,11 @@
         },
         "description": "Шведска железничка мрежа на NVDB со неколку можности за слоеви",
         "name": "Можности за патната мрежа на Сообраќајната управа на Шведска"
+      },
+      "wroclaw-orto2015": {
+        "attribution": {
+          "text": "Управа на Град Вроцлав"
+        }
       },
       "wroclaw-orto2018": {
         "attribution": {

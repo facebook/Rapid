@@ -1,9 +1,19 @@
 {
   "mk": {
+    "_communities": {
+      "openstreetmapbangladesh": "OpenStreetMap Бангладеш",
+      "openstreetmapindia": "OpenStreetMap Индија"
+    },
+    "bd-facebook": {
+      "extendedDescription": "Работите на Бангладеш? Имате прашања и сакате да се обратите кај тамошната заедница? Повелете на {url}. Сите се добредојдени!"
+    },
     "cape-coast-youthmappers": {
       "name": "Млади картографи при Универзитетот во Кејп Коуст",
       "description": "Следете нè на Twitter: {url}",
       "extendedDescription": "Ова е официјалниот профил на огранокот „Млади картографи“ / Youth Mappers при Универзитетот во Кејп Коуст, Гана. Наша љубов се картите, отворените податоци и да укажуваме помош на ранливите заедници."
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "description": "Следете нè на Twitter на {url}"
     },
     "kosovo-telegram": {
       "description": "Полуофицијална јавна група на Telegram за цело Косово. Добредојдени се сите картографи од било каде, на било кој јазик."
@@ -31,6 +41,12 @@
     },
     "osm-india-wiki": {
       "description": "Сè што треба да знаете за картографската работа на Индија: {url}"
+    },
+    "osm-iran-telegram": {
+      "extendedDescription": "Добредојдени сте да ни се придружите во нашиот канал на Telegram на {url}. Исто така, имаме и на надгрупа од многу картографи заинтересирани за Иран. Врската ќе ја најдете во описот на каналот."
+    },
+    "osm-kerala-github": {
+      "description": "Програмирајте со нас: {url}"
     },
     "osm-mg-facebook": {
       "description": "Група на Facebook за љубители на OpenStreetMap во Мадагаскар."

@@ -12,17 +12,14 @@
         "title": "பரப்பளவு"
       },
       "add_line": {
-        "title": "கோடு",
-        "filter_tooltip": "கோடுகள்"
+        "title": "கோடு"
       },
       "add_point": {
-        "title": "புள்ளி",
-        "filter_tooltip": "புள்ளிகள்"
+        "title": "புள்ளி"
       },
       "add_note": {
         "title": "குறிப்பு",
-        "description": "தவறு ஒன்றைக் கண்டீரா? ஏனைய வரைவாளர்களுக்கு அறியத்தருக.",
-        "key": "என் "
+        "description": "தவறு ஒன்றைக் கண்டீரா? ஏனைய வரைவாளர்களுக்கு அறியத்தருக."
       },
       "browse": {
         "title": "உலவ"
@@ -97,9 +94,6 @@
       },
       "split": {
         "title": "பிரி"
-      },
-      "extract": {
-        "key": "கி"
       }
     },
     "restriction": {
@@ -212,16 +206,13 @@
       "title": "வரைபடத் தரவு",
       "description": "வரைபடத் தரவு",
       "layers": {
-        "notes": {
-          "key": "வ"
-        },
         "maproulette": {
           "detail_title": "விவரங்கள்",
           "cancel": "ரத்து"
         }
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "புள்ளிகள்",
         "tooltip": "ஆர்வம் மிகுந்த இடங்கள்"
@@ -283,13 +274,11 @@
     "source_switch": {
       "live": "நேரலை"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "குறிச்சொற்கள்"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "நீக்கு"
-      }
+    "rapid_menu": {
+      "remove": "நீக்கு"
     },
     "tag_reference": {
       "description": "விளக்கம்"
@@ -363,9 +352,7 @@
       }
     },
     "issues": {
-      "warnings": {
-        "list_title": "எச்சரிக்கைகள்"
-      }
+      "warnings": "எச்சரிக்கைகள்"
     },
     "intro": {
       "done": "முடிந்தது",
@@ -408,24 +395,33 @@
       }
     },
     "shortcuts": {
+      "key": {
+        "delete": "நீக்கு"
+      },
       "or": "-அல்லது-",
-      "browsing": {
-        "title": "உலவுதல்",
-        "navigation": {
-          "title": "வழிசெலுத்தல்"
+      "browsing": "உலவுதல்",
+      "navigation": "வழிசெலுத்தல்",
+      "commands": "கட்டளைகள்",
+      "help": "உதவி",
+      "info": "குறிப்பு",
+      "command": {
+        "add_note": {
+          "key": "வ"
         },
-        "help": {
-          "title": "உதவி"
-        }
-      },
-      "editing": {
-        "commands": {
-          "title": "கட்டளைகள்"
-        }
-      },
-      "tools": {
-        "info": {
-          "title": "குறிப்பு"
+        "extract": {
+          "key": "கி"
+        },
+        "straighten": {
+          "key": "தெ"
+        },
+        "wireframe": {
+          "key": "மே"
+        },
+        "toggle_osm_notes": {
+          "key": "வ"
+        },
+        "toggle_streetside": {
+          "key": "தெ"
         }
       }
     },
@@ -503,6 +499,7 @@
       "bik": "பிகோல்",
       "bin": "பினி",
       "bla": "சிக்சிகா",
+      "blo": "அனீ",
       "bm": "பம்பாரா",
       "bn": "வங்காளம்",
       "bo": "திபெத்தியன்",
@@ -725,6 +722,7 @@
       "kv": "கொமி",
       "kw": "கார்னிஷ்",
       "kwk": "குவாக்வாலா",
+      "kxv": "குவி",
       "ky": "கிர்கிஸ்",
       "la": "லத்தின்",
       "lad": "லடினோ",
@@ -929,6 +927,7 @@
       "swb": "கொமோரியன்",
       "syc": "பாரம்பரிய சிரியாக்",
       "syr": "சிரியாக்",
+      "szl": "சிலேசியன்",
       "ta": "தமிழ்",
       "tce": "தெற்கு டட்சோன்",
       "te": "தெலுங்கு",
@@ -976,7 +975,9 @@
       "uz": "உஸ்பெக்",
       "vai": "வை",
       "ve": "வென்டா",
+      "vec": "வினிசியன்",
       "vi": "வியட்நாமீஸ்",
+      "vmw": "மகுவா",
       "vo": "ஒலாபூக்",
       "vot": "வோட்க்",
       "vun": "வுன்ஜோ",
@@ -990,6 +991,7 @@
       "wuu": "வூ சீனம்",
       "xal": "கல்மிக்",
       "xh": "ஹோசா",
+      "xnr": "காங்கிரி",
       "xog": "சோகா",
       "yao": "யாவ்",
       "yap": "யாபேசே",

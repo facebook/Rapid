@@ -69,6 +69,7 @@
     },
     "commit": {
       "upload_explanation": "التغييرات التي قمتم بتحميلها ستكون مرئية على جميع الخرائط التي تستخدم بيانات خريطة الشارع المفتوح.",
+      "save": "الرفع",
       "modified": "تم التغيير",
       "deleted": "تم الحذف",
       "created": "تم الإنشاء"
@@ -77,8 +78,12 @@
       "list": "{users} تعديلات من قبل"
     },
     "info_panels": {
+      "location": {
+        "title": "مكان"
+      },
       "measurement": {
-        "area": "مساحة"
+        "area": "مساحة",
+        "location": "مكان"
       }
     },
     "geolocate": {
@@ -86,32 +91,60 @@
     },
     "inspector": {
       "view_on_osm": "openstreetmap.org شاهد على",
+      "feature_type": "نوع العنصر/الميزة",
+      "fields": "الحقول",
+      "features": "الميزات",
       "choose": "حدد نوع الميزة"
     },
     "background": {
       "reset": "أعد للوضع السابق"
     },
+    "map_data": {
+      "layers": {
+        "maproulette": {
+          "detail_title": "التفاصيل"
+        }
+      }
+    },
+    "preferences": {
+      "title": "التفضيلات"
+    },
     "save": {
       "no_changes": ".لا تغييرات للحفظ"
     },
+    "success": {
+      "help_link_text": "التفاصيل"
+    },
+    "QA": {
+      "keepRight": {
+        "errorTypes": {
+          "<70>": {
+            "description": "{var1} فيه وسم فارغ: \"{var2}\"."
+          }
+        }
+      }
+    },
     "help": {
+      "overview": {
+        "navigation_h": "التنقل",
+        "nodes_ways": "في خرائط الشارع المفتوحة، قد يُطلق على النقطة في بعض الأحيان مصطلح *عُقدة*، كما قد يطلق على الخطوط والمساحات مصطلح *طُرق*."
+      },
       "editing": {
         "save_h": "حفظ"
+      },
+      "qa": {
+        "tools_h": "أدوات"
       }
+    },
+    "issues": {
+      "title": "مشاكل"
     },
     "intro": {
       "graph": {
         "city": "ثلاثة الأنهار",
-        "state": "<value for addr:state>",
-        "countrycode": "sa",
         "name": {
           "three-rivers": "ثلاثة الأنهار"
         }
-      }
-    },
-    "shortcuts": {
-      "key": {
-        "delete": "حذف"
       }
     }
   }

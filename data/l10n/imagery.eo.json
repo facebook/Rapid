@@ -29,6 +29,21 @@
         },
         "name": "Bytom: fotplano 2014 (aera fotaro)"
       },
+      "Bytom-2016": {
+        "attribution": {
+          "text": "Magistrato de la urbo Bytom"
+        }
+      },
+      "Bytom-2018": {
+        "attribution": {
+          "text": "Magistrato de la urbo Bytom"
+        }
+      },
+      "Bytom-2021": {
+        "attribution": {
+          "text": "Magistrato de la urbo Bytom"
+        }
+      },
       "Bytom-buildings": {
         "attribution": {
           "text": "Magistrato de la urbo Bytom"
@@ -84,10 +99,23 @@
         "description": "Pritraktita fotaro de la satelito Sentinel‑2.",
         "name": "eox.at 2018 sennuba"
       },
+      "EOXAT2019CLOUDLESS": {
+        "description": "Pritraktita fotaro de la satelito Sentinel‑2."
+      },
+      "EOXAT2020CLOUDLESS": {
+        "description": "Pritraktita fotaro de la satelito Sentinel‑2."
+      },
+      "EOXAT2021CLOUDLESS": {
+        "description": "Pritraktita fotaro de la satelito Sentinel‑2."
+      },
+      "EOXAT2022CLOUDLESS": {
+        "description": "Pritraktita fotaro de la satelito Sentinel‑2."
+      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "Kondiĉoj kaj rimarkoj"
         },
+        "description": "Tutmonda fotaro de Esri",
         "name": "Tutmonda fotaro de Esri"
       },
       "EsriWorldImageryClarity": {
@@ -103,6 +131,17 @@
         },
         "description": "Aera fotaro pri Frankfurto ĉe Majno, farita je 2019-04-16.",
         "name": "Frankfurto ĉe Majno: aerfotaro 2019"
+      },
+      "Geoportal2-PL-City-boundaries_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        }
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        },
+        "description": "Ortfotmapo je distingivo 10 cm aŭ pli bona. Datumoj ordigitaj unue laŭ distingivo (kvalito) kaj sekve laŭ aktualeco; ekzemplo: fotaro de 2012 je distingivo 8 cm estos montrata anstataŭ fotaro de 2019 je distingivo 10 cm."
       },
       "Geoportal2-PL-HighResolution-aerial_image_WMS": {
         "attribution": {
@@ -125,6 +164,11 @@
         "description": "WMS-foliumilo de Ŝtata Integrado de Adresa Numerado «Krajowa Integracja Numeracji Adresowej» ebliganta akiri mapbildojn kreitajn el spacaj datumojn pri stratoj kaj adresoj el Ŝtata Registro de Limoj «Państwowy Rejestr Granic».",
         "name": "Geoportal 2: adresoj"
       },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        }
+      },
       "Geoportal2-PL-aerial_image_WMS": {
         "attribution": {
           "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
@@ -139,12 +183,37 @@
         "description": "Foliumilo WMTS por ortfotmapoj de la areo de Polujo. Datumoj liverataj per tiu ĉi servo kreas ortfotmapon faritan el aeraj fotoj.",
         "name": "Geoportal 2: ortfotmapo (plej aktuala aera fotaro) (WMTS)"
       },
+      "Geoportal2-PL-boundaries-of-communes_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-counties_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-provinces_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        }
+      },
       "Geoportal2-PL-buildings_WMS": {
         "attribution": {
           "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
         },
         "description": "La servo Ŝtata Integrado de Registroj de Terpecoj «Krajowa Integracja Ewidencji Gruntów» kunigas datumojn liveratajn de distrikt‑nivelaj administrunuoj. La servo enhavas datumojn de nur tiuj administrunuoj, kiuj disponas ĝustan WMS‑servon kaj decidiĝis pri ampleksi siajn datumojn al la kuniga registro.",
         "name": "Geoportal 2: registro de konstruaĵoj"
+      },
+      "Geoportal2-PL-gas-pipe_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        }
+      },
+      "Geoportal2-PL-heat-pipe_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        }
       },
       "Geoportal2-PL-plot_boundaries_WMS": {
         "attribution": {
@@ -153,11 +222,57 @@
         "description": "La servo Ŝtata Integrado de Registroj de Terpecoj «Krajowa Integracja Ewidencji Gruntów» kunigas datumojn liveratajn de distrikt‑nivelaj administrunuoj. La servo enhavas datumojn de nur tiuj administrunuoj, kiuj disponas ĝustan WMS‑servon kaj decidiĝis pri ampleksi siajn datumojn al la kuniga registro.",
         "name": "Geoportal 2: limoj de terpecoj"
       },
+      "Geoportal2-PL-power-cord_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        }
+      },
       "Geoportal2-PL-prng": {
         "attribution": {
           "text": "Ĉefa ofico de dokumentaro geodezia kaj kartografia en Polujo"
         },
         "name": "Geoportal 2: registro de geografiaj nomoj"
+      },
+      "Geoportal2-PL-sewer-pipe_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        }
+      },
+      "Geoportal2-PL-shaded_relief_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        }
+      },
+      "Geoportal2-PL-squares-and-housing-estates_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        },
+        "description": "WMS-foliumilo de Ŝtata Integrado de Adresa Numerado «Krajowa Integracja Numeracji Adresowej» ebliganta akiri mapbildojn kreitajn el spacaj datumojn pri stratoj kaj adresoj el Ŝtata Registro de Limoj «Państwowy Rejestr Granic»."
+      },
+      "Geoportal2-PL-state-borders_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        }
+      },
+      "Geoportal2-PL-telecommunications-cable_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        }
+      },
+      "Geoportal2-PL-water-pipe_WMS": {
+        "attribution": {
+          "text": "Ĉefa ofico de geodezio kaj kartografio en Polujo"
+        }
+      },
+      "Gliwice-2003": {
+        "attribution": {
+          "text": "Magistrato de la urbo Gliwice"
+        }
+      },
+      "Gliwice-2009": {
+        "attribution": {
+          "text": "Magistrato de la urbo Gliwice"
+        }
       },
       "Gliwice-2013": {
         "attribution": {
@@ -183,13 +298,18 @@
         },
         "name": "Gliwice: ortfotmapo 2020 (aera fotaro)"
       },
+      "Gliwice-2021": {
+        "attribution": {
+          "text": "Magistrato de la urbo Gliwice"
+        }
+      },
       "Gliwice-buildings": {
         "attribution": {
           "text": "Magistrato de la urbo Gliwice"
         },
         "name": "Gliwice: konstruaĵoj"
       },
-      "LSA-ATKIS_BU": {
+      "LSA-ALKIS_BU": {
         "description": "Konstruaĵoj en Saksujo-Anhalto"
       },
       "LSA-DOP20": {
@@ -234,6 +354,12 @@
         "attribution": {
           "text": "Kondiĉoj kaj rimarkoj"
         }
+      },
+      "OSIP": {
+        "attribution": {
+          "text": "Fotara programo de subŝtato Ohio (OSIP)"
+        },
+        "name": "Fotara programo de subŝtato Ohio (OSIP)"
       },
       "OSIP_1ft": {
         "attribution": {
@@ -325,6 +451,12 @@
         "description": "Flave = publikaj map-datumoj de Usona popolnombrado. Ruĝe = datumoj ne trovitaj en OpenStreetMap"
       },
       "US-TIGER-Roads-2021": {
+        "description": "Flave = publikaj map-datumoj de Usona popolnombrado. Ruĝe = datumoj ne trovitaj en OpenStreetMap"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Flave = publikaj map-datumoj de Usona popolnombrado. Ruĝe = datumoj ne trovitaj en OpenStreetMap"
+      },
+      "US-TIGER-Roads-2023": {
         "description": "Flave = publikaj map-datumoj de Usona popolnombrado. Ruĝe = datumoj ne trovitaj en OpenStreetMap"
       },
       "USDA-NAIP": {
@@ -479,6 +611,18 @@
         },
         "description": "Ortfotmapo pri la komunumo Göteborg",
         "name": "Ortfotmapo Göteborg 2019"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© komunumo Göteborg, CC0"
+        },
+        "description": "Ortfotmapo pri la komunumo Göteborg"
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© komunumo Göteborg, CC0"
+        },
+        "description": "Ortfotmapo pri la komunumo Göteborg"
       },
       "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
         "attribution": {

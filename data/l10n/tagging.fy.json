@@ -2,11 +2,61 @@
   "fy": {
     "presets": {
       "fields": {
+        "atm": {
+          "label": "Jildautomaat"
+        },
+        "bench": {
+          "label": "Bankje"
+        },
+        "building": {
+          "options": {
+            "college": "Hegeskoalle-gebou",
+            "hospital": "Sikehûsgebou",
+            "kindergarten": "Beukerskoallegebou"
+          }
+        },
+        "diplomatic": {
+          "options": {
+            "embassy": "Ambassade"
+          }
+        },
+        "embassy": {
+          "options": {
+            "yes": "Ambassade"
+          }
+        },
+        "fire_hydrant/position": {
+          "options": {
+            "parking_lot": "Parkearplak"
+          }
+        },
+        "healthcare": {
+          "options": {
+            "clinic": "Klinyk",
+            "dentist": "Toskedokter",
+            "doctor": "Dokter"
+          }
+        },
         "holding_position/type": {
           "options": {
             "ILS": "Ynstrumintlâningssysteem",
             "intermediate": "Taksybanekrusing",
             "runway": "Startbaan"
+          }
+        },
+        "social_facility": {
+          "options": {
+            "nursing_home": "Ferpleechhûs"
+          }
+        },
+        "substance": {
+          "options": {
+            "water": "Drinkwetter"
+          }
+        },
+        "vending": {
+          "options": {
+            "water": "Drinkwetter"
           }
         }
       },
@@ -272,6 +322,12 @@
         "amenity/post_office": {
           "name": "Postkantoar"
         },
+        "amenity/social_facility/nursing_home": {
+          "name": "Ferpleechhûs"
+        },
+        "area": {
+          "name": "Flak"
+        },
         "building/college": {
           "name": "Hegeskoalle-gebou"
         },
@@ -281,8 +337,20 @@
         "building/kindergarten": {
           "name": "Beukerskoallegebou"
         },
+        "office/diplomatic/embassy": {
+          "name": "Ambassade"
+        },
+        "point": {
+          "name": "Punt"
+        },
         "public_transport/station_aerialway": {
           "name": "Kabelbaanstasjon"
+        },
+        "public_transport/station_bus": {
+          "name": "Busstasjon"
+        },
+        "public_transport/station_ferry": {
+          "name": "Feardaam/-kade"
         }
       }
     }

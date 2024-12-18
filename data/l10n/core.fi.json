@@ -29,16 +29,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Alue",
-        "filter_tooltip": "aluetta"
+        "title": "Alue"
       },
       "add_line": {
-        "title": "Viiva",
-        "filter_tooltip": "viivat"
+        "title": "Viiva"
       },
       "add_point": {
-        "title": "Paikkapiste",
-        "filter_tooltip": "pisteitä"
+        "title": "Paikkapiste"
       },
       "add_note": {
         "title": "Karttailmoitus",
@@ -109,79 +106,15 @@
       },
       "circularize": {
         "title": "Pyöristä",
-        "description": {
-          "single": "Pyöristä tämä kohde.",
-          "multiple": "Pyöristä nämä kohteet."
-        },
         "annotation": {
           "feature": {
             "one": "Pyöristettiin kohde.",
             "other": "Pyöristettiin {n} kohdetta."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Useista syistä johtuen näitä ei voi pyöristää."
-        },
-        "not_closed": {
-          "single": "Tätä ei voi pyöristää koska sitä ei ole suljettu.",
-          "multiple": "Näitä ei voi pyöristää koska niitä ei ole suljettu."
-        },
-        "too_large": {
-          "single": "Tätä kohdetta ei voi pyöristää, sillä se ei ole kokonaan näkyvissä.",
-          "multiple": "Näitä ei voida pyöristää koska ne eivät ole kokonaan näkyvissä."
-        },
-        "connected_to_hidden": {
-          "single": "Tätä kohdetta ei voi pyöristää, sillä se on yhdistetty piilotettuun kohteeseen.",
-          "multiple": "Näitä kohteita ei voi pyöristää, sillä ne on yhdistetty piilotettuihin kohteisiin."
-        },
-        "not_downloaded": {
-          "single": "Tätä kohdetta ei voi pyöristää, sillä sen kaikkia osia ei ole vielä ladattu.",
-          "multiple": "Näitä kohteita ei voi pyöristää, sillä niiden kaikkia osia ei ole vielä ladattu."
-        },
-        "already_circular": {
-          "single": "Tätä kohdetta ei voi enää pyöristää enempää.",
-          "multiple": "Näitä ei voi pyöristää enää enempää."
         }
       },
       "orthogonalize": {
-        "title": "Muuta suorakulmaiseksi",
-        "description": {
-          "corner": {
-            "single": "Tämä kulma suorakulmaiseksi.",
-            "multiple": "Nämä kulmat suorakulmaisiksi."
-          },
-          "feature": {
-            "single": "Tämä karttakohteen kulmat suorakulmaisiksi.",
-            "multiple": "Näiden karttakohteiden kulmat suorakulmaisiksi."
-          }
-        },
-        "multiple_blockers": {
-          "multiple": "Useista syistä johtuen näitä ei voida tehdä suorakulmaisiksi."
-        },
-        "end_vertex": {
-          "single": "Tätä kohdetta ei voi tehdä suorakulmaiseksi, sillä se on päätepiste.",
-          "multiple": "Näitä ei voi tehdä suorakulmaisiksi, sillä ne ovat päätepisteitä."
-        },
-        "square_enough": {
-          "single": "Tämä kohde on jo niin suorakulmainen, kuin se voi olla.",
-          "multiple": "Tätä ei voida tehdä suorakulmaiseksi koska on päätepiste."
-        },
-        "not_squarish": {
-          "single": "Tätä ei voi tehdä suorakulmaiseksi, koska se ei ole neliömäinen.",
-          "multiple": "Näitä ei voi tehdä suorakulmaiseksi, sillä ne eivät ole neliömäisiä."
-        },
-        "too_large": {
-          "single": "Tätä kohdetta ei voi muuttaa suorakulmaiseksi, sillä se ei ole kokonaan näkyvissä.",
-          "multiple": "Näitä ei voida tehdä suorakulmaisiksi koska ne eivät ole kokonaan näkyvissä."
-        },
-        "connected_to_hidden": {
-          "single": "Tätä kohdetta ei voi tehdä suorakulmaiseksi, sillä se on yhdistetty piilotettuun karttakohteeseen.",
-          "multiple": "Näitä kohteita ei voi tehdä suorakulmaisiksi, sillä ne on yhdistetty piilotettuihin kohteisiin."
-        },
-        "not_downloaded": {
-          "single": "Tätä kohdetta ei voi tehdä suorakulmaiseksi, sillä sen kaikkia osia ei ole vielä ladattu.",
-          "multiple": "Näitä kohteita ei voi tehdä suorakulmaiseksi, sillä niiden kaikkia osia ei ole vielä ladattu."
-        }
+        "title": "Muuta suorakulmaiseksi"
       },
       "straighten": {
         "title": "Suorista",
@@ -199,10 +132,6 @@
       },
       "delete": {
         "title": "Poista",
-        "description": {
-          "single": "Poista tämä karttakohde pysyvästi.",
-          "multiple": "Poista nämä karttakohteet pysyvästi."
-        },
         "annotation": {
           "point": "Paikkapiste poistettiin.",
           "vertex": "Piste poistettiin viivalta.",
@@ -213,30 +142,6 @@
             "one": "Poistettu {n} karttakohde.",
             "other": "Poistettu {n} karttakohdetta."
           }
-        },
-        "too_large": {
-          "single": "Tätä kohdetta ei voi poistaa, sillä se ei ole kokonaan näkyvissä.",
-          "multiple": "Näitä kohteita ei voi poistaa, sillä ne eivät ole kokonaan näkyvissä."
-        },
-        "incomplete_relation": {
-          "single": "Tätä karttakohdetta ei voi poistaa,  sillä sen tietoja ei ole täysin ladattu.",
-          "multiple": "Näitä karttakohteita ei voi poistaa,  sillä sen tietoja ei ole täysin ladattu."
-        },
-        "part_of_relation": {
-          "single": "Tätä kohdetta ei voi poistaa, koska se on osa suurempaa relaatiota. Poista ensin relaatiojäsenyys.",
-          "multiple": "Näitä ominaisuuksia ei voi poistaa sillä ne ovat osa suurempaa relaatiota. Sinun täytyy ensin poistaa kohde relaatiosta."
-        },
-        "connected_to_hidden": {
-          "single": "Kohdetta ei voi poistaa, koska se on liitetty yhdistetty karttakohteeseen.",
-          "multiple": "Kohteita ei voida poistaa, koska osa niistä on yhdistetty piilotettuihin karttakohteisiin."
-        },
-        "not_downloaded": {
-          "single": "Tätä kohdetta ei voi poistaa, sillä sen kaikkia osia ei ole vielä ladattu.",
-          "multiple": "Näitä kohteita ei voi poistaa, sillä niiden kaikkia osia ei ole vielä ladattu."
-        },
-        "has_wikidata_tag": {
-          "single": "Tätä kohdetta ei voi poistaa, sillä se on kytketty Wikidata-tietokantaan.",
-          "multiple": "Näitä kohteita ei voi poistaa, sillä osa niistä on kytketty Wikidata-tietokantaan."
         }
       },
       "downgrade": {
@@ -256,10 +161,6 @@
             "one": "Yksinkertaistettu {n} karttakohde pelkäksi osoitteeksi.",
             "other": "Yksinkertaistettu {n} karttakohdetta pelkiksi osoitteiksi."
           }
-        },
-        "has_wikidata_tag": {
-          "single": "Tätä kohdetta ei voi yksinkertaistaa, sillä se on kytketty Wikidata-tietokantaan.",
-          "multiple": "Näitä kohteita ei voi yksinkertaistaa, sillä jotkin niistä on kytketty Wikidata-tietokantaan."
         }
       },
       "reorder_members": {
@@ -329,60 +230,19 @@
       },
       "move": {
         "title": "Siirrä",
-        "description": {
-          "single": "Siirrä tämä kohde toiseen paikkaan.",
-          "multiple": "Siirrä nämä kohteet toiseen paikkaan"
-        },
         "annotation": {
           "point": "Paikkapiste siirretty.",
           "vertex": "Viivapiste siirretty.",
           "line": "Viiva siirretty.",
           "area": "Alue siirretty."
-        },
-        "incomplete_relation": {
-          "single": "Tätä kohdetta ei voi siirtää, sillä sen tietoja ei ole täysin ladattu.",
-          "multiple": "Näitä kohteita ei voi siirtää, sillä niiden tietoja ei ole täysin ladattu."
-        },
-        "too_large": {
-          "single": "Tätä kohdetta ei voi siirtää, sillä se ei ole kokonaan näkyvissä.",
-          "multiple": "Näitä kohteita ei voi siirtää, sillä ne eivät ole kokonaan näkyvissä."
-        },
-        "connected_to_hidden": {
-          "single": "Tätä kohdetta ei voi siirtää, sillä se on yhdistetty piilotettuun karttakohteeseen.",
-          "multiple": "Näitä kohteita ei voi siirtää, koska osa niistä on yhdistetty piilotettuihin ominaisuuksiin"
-        },
-        "not_downloaded": {
-          "single": "Tätä kohdetta ei voi siirtää, sillä sen kaikkia osia ei ole vielä ladattu.",
-          "multiple": "Näitä kohteita ei voi siirtää, sillä niiden kaikkia osia ei ole vielä ladattu."
-        }
-      },
-      "reflect": {
-        "incomplete_relation": {
-          "single": "Tätä kohdetta ei voi pyöräyttää, sillä sen tietoja ei ole täysin ladattu."
         }
       },
       "rotate": {
         "title": "Kierrä",
-        "description": {
-          "single": "Pyöritä tätä kohdetta sen keskipisteen ympäri.",
-          "multiple": "Pyöritä näitä kohteita niiden keskipisteiden ympäri."
-        },
         "annotation": {
           "line": "Viivaa kierretty.",
           "area": "Aluetta kierretty.",
           "relation": "Relaatiota kierretty."
-        },
-        "incomplete_relation": {
-          "single": "Tätä kohdetta ei voi kiertää, sillä sen tietoja ei ole täysin ladattu.",
-          "multiple": "Näitä kohteita ei voi siirtää, sillä niiden tietoja ei ole täysin ladattu."
-        },
-        "too_large": {
-          "single": "Tätä kohdetta ei voi kiertää, sillä se ei ole kokonaan näkyvissä.",
-          "multiple": "Näitä kohteita ei voi kiertää, sillä ne eivät ole kokonaan näkyvissä."
-        },
-        "connected_to_hidden": {
-          "single": "Tätä kohdetta ei voi pyörittää, sillä se on yhdistetty piilotettuun karttakohteeseen.",
-          "multiple": "Näitä kohteita ei voi pyörittää, koska osa niistä on yhdistetty piilotettuihin karttakohteisiin."
         }
       },
       "reverse": {
@@ -400,15 +260,7 @@
         }
       },
       "extract": {
-        "title": "Irrota",
-        "description": {
-          "vertex": {
-            "single": "Irroita tämä piste viivoistaan/alueistaan."
-          },
-          "area": {
-            "single": "Irroita piste tästä alueesta."
-          }
-        }
+        "title": "Irrota"
       }
     },
     "restriction": {
@@ -606,10 +458,6 @@
       "multiple_values": "Useita arvoja",
       "multiple_types": "Useita tyyppejä",
       "unshared_value_tooltip": "ei kaikissa kohteissa",
-      "hidden_preset": {
-        "manual": "Valitse {features} näkyviin Kartta-aineisto-näkymästä.",
-        "zoom": "Näytä {features} lähentämällä karttaa."
-      },
       "back_tooltip": "Muuta kohdetyyppiä",
       "type": "Tyyppi",
       "details": "Yksityiskohdat",
@@ -682,8 +530,7 @@
         },
         "notes": {
           "tooltip": "Näytä OpenStreetMapin karttailmoitukset",
-          "title": "OpenStreetMapin karttailmoitukset",
-          "key": "P"
+          "title": "OpenStreetMapin karttailmoitukset"
         },
         "maproulette": {
           "detail_title": "Lisätietoja",
@@ -712,7 +559,6 @@
         "tooltip": "Näytä valinnan geometria-arvot"
       },
       "style_options": "Ulkoasu",
-      "map_features": "Karttaominaisuudet",
       "autohidden": "Nämä kohteet on piilotettu automaattisesti, sillä ne sekoittaisivat karttanäkymää liikaa. Saat ne näkyviin suurentamalla karttaa.",
       "osmhidden": "Nämä kohteet ovat piilotettu automaattisesti, koska OpenStreetMap taso on piilotettu"
     },
@@ -738,9 +584,9 @@
         "tooltip": "Näytä vain tämän käyttäjän valokuvat"
       }
     },
-    "feature": {
+    "filters": {
       "points": {
-        "description": "Pisteet",
+        "description": "Paikkapisteet",
         "tooltip": "Paikkapisteet"
       },
       "traffic_roads": {
@@ -907,22 +753,24 @@
       "tell_us": "Kerro meille!"
     },
     "confirm": {
+      "okay": "\tOK",
       "cancel": "Peruuta"
     },
     "splash": {
       "start": "Muokkaa heti"
     },
     "source_switch": {
+      "dev": "kehitys",
       "live": "suora lähetys",
-      "lose_changes": "Kaikkia muutoksia ei ole tallennettu. Karttapalvelimen vaihtaminen hylkää nämä muutokset. Haluatko varmasti vaihtaa palvelinta?",
-      "dev": "kehitys"
+      "lose_changes": "Kaikkia muutoksia ei ole tallennettu. Karttapalvelimen vaihtaminen hylkää nämä muutokset. Haluatko varmasti vaihtaa palvelinta?"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Ominaisuustiedot"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Poista"
+    "rapid_menu": {
+      "remove": "Poista",
+      "category": {
+        "roads": "tietä"
       }
     },
     "tag_reference": {
@@ -938,7 +786,9 @@
         "out": "Loitontaa ei voi enempää."
       }
     },
-    "cannot_zoom": "Nykyisessä tilassa ei voi loitontaa enempää.",
+    "bearing": {
+      "n": "P"
+    },
     "full_screen": "Koko näytön tila",
     "self_intersection": {
       "error": {
@@ -1271,7 +1121,6 @@
         "title": "Paikkapisteet",
         "intro": "*Paikkapisteillä* voidaan merkitä kauppojen, ravintoloiden ja patsaiden kaltaisia karttakohteita, joilla on pistemäinen sijainti.",
         "add_point_h": "Paikkapisteiden lisääminen",
-        "add_point": "Lisää paikkapiste napsauttamalla {point_icon} **{point}** -painiketta yläpalkista tai painamalla pikanäppäintä `1`. Hiiren osoitin muuttuu ristin muotoiseksi.",
         "move_point_h": "Paikkapisteiden siirtäminen",
         "delete_point_h": "Paikkapisteiden poistaminen",
         "delete_point": "Voit poistaa kohteita, joita ei ole oikeasti olemassa. Kohteen poistaminen poistaa sen muidenkin kartalta, joten poista vain kohteita joista olet täysin varma."
@@ -1280,7 +1129,6 @@
         "title": "Viivat",
         "intro": "*Viivoilla* merkitään esimerkiksi katuja, rautateitä ja jokia. Viivat pitäisi piirtää niiden esittämän kohteen keskilinjaa pitkin.",
         "add_line_h": "Viivojen lisääminen",
-        "add_line": "Lisää viiva napsauttamalla {line_icon} **{line}** -painiketta yläpalkista tai painamalla pikanäppäintä `2`. Hiiren osoitin muuttuu ristin muotoiseksi.",
         "add_line_finish": "Lopeta viivan piirtäminen napsauttamalla tai napauttamalla viivan viimeistä pistettä uudestaan tai painamalla `{return}`.",
         "modify_line_h": "Viivojen muokkaaminen",
         "modify_line_dragnode": "Viivoja ei usein ole piirretty aivan täsmällisesti: esimerkiksi tie ei vastaa ilmakuvaa. Aloita viivan muotoilu napsauttamalla tai napauttamalla viivaa. Viivapisteet tulevat näkyviin pieninä ympyröinä, joita raahaamalla viivan voi muotoilla uudelleen.",
@@ -1299,7 +1147,6 @@
         "point_or_area_h": "Paikkapiste vai alue?",
         "point_or_area": "Monet kohteet voi esittää niin paikkapisteinä kuin alueinakin. Rakennukset ja maankäytölliset rajat tulee lähtökohtaisesti merkitä aina alueina. Voit sijoittaa paikkapisteitä rakennuksen alueen sisäpuolelle esittämään yrityksiä, palveluita ja muita rakennuksen sisällä olevia kohteita.",
         "add_area_h": "Alueiden lisääminen",
-        "add_area_command": "Lisää alue napsauttamalla {area_icon} **{area}** -painiketta yläpalkista tai painamalla pikanäppäintä `2`. Hiiren osoitin muuttuu ristin muotoiseksi.",
         "add_area_finish": "Lopeta alueen piirtäminen napsauttamalla tai napauttamalla viivan viimeistä pistettä uudestaan tai painamalla `{return}`.",
         "square_area_h": "Suorakulmaiseksi muuttaminen",
         "modify_area_h": "Alueiden muokkaaminen",
@@ -1428,18 +1275,10 @@
     },
     "issues": {
       "title": "Muokkausvirheet",
-      "list_title": "Muokkausvirheet",
-      "errors": {
-        "list_title": "Virheet"
-      },
-      "warnings": {
-        "list_title": "Varoitukset"
-      },
-      "rules": {
-        "title": "Automaattisesti havaittavat virheet"
-      },
-      "user_resolved_issues": "Ratkaisemasi virheet",
-      "warnings_and_errors": "Varoitukset ja virheet",
+      "errors": "Virheet",
+      "warnings": "Varoitukset",
+      "rules": "Automaattisesti havaittavat virheet",
+      "resolved_tooltip": "Ratkaisemasi virheet",
       "no_issues": {
         "message": {
           "everything": "Kaikki kunnossa",
@@ -1581,8 +1420,6 @@
         "title": "Virheelliset ominaisuustiedot",
         "tip": "Korosta virheellisesti merkityt ominaisuustiedot",
         "email": {
-          "message": "{feature} on merkitty virheellisellä sähköpostiosoitteella",
-          "message_multi": "{feature} on merkitty usealla virheellisellä sähköpostiosoitteella",
           "reference": "Sähköpostiosoitteen tulee olla muotoa \"erkki@esimerkki.fi\"."
         }
       },
@@ -2080,6 +1917,7 @@
       "tooltip": "Näytä luettelo pikanäppäimistä",
       "key": {
         "backspace": "Askelpalautin",
+        "delete": "Poista",
         "menu": "Valikko",
         "return": "Enter",
         "space": "Välilyönti"
@@ -2088,86 +1926,155 @@
         "drag": "vedä"
       },
       "or": "tai",
-      "browsing": {
-        "title": "Selaaminen",
-        "navigation": {
-          "title": "Liikkuminen",
-          "pan": "Vieritä karttaa"
+      "browsing": "Selaaminen",
+      "editing": "Muokkaaminen",
+      "navigation": "Käyttöliittymä",
+      "selecting_features": "Kohteiden valitseminen",
+      "with_features_selected": "Karttakohde valittuna",
+      "with_node_selected": "Piste valittuna",
+      "drawing": "Uusien kohteiden lisääminen",
+      "commands": "Pikakomennot",
+      "help": "Ohjeet",
+      "display_options": "Näyttöasetukset",
+      "info": "Tietoruudut",
+      "command": {
+        "pan": {
+          "label": "Vieritä karttaa"
         },
-        "help": {
-          "title": "Ohjeet",
-          "help": "Näytä käyttöohje",
-          "keyboard": "Näytä pikanäppäimet"
+        "select_one": {
+          "label": "Valitse yksi karttakohde"
         },
-        "display_options": {
-          "title": "Näyttöasetukset",
-          "background": "Näytä/piilota taustan asetukset",
-          "map_data": "Näytä/piilota kartta-aineistoasetukset",
-          "issues": "Näytä/piilota muokkausvirheiden asetukset",
-          "preferences": "Näytä/piilota käyttäjäasetukset",
-          "wireframe": "Muuta alueen taustatäyttö -asetusta",
-          "osm_data": "Vaihda OpenStreetMap-aineistoa",
-          "highlight_edits": "Korosta tallentamattomat muutokset"
+        "select_multi": {
+          "label": "Valitse useita karttakohteita"
         },
-        "selecting": {
-          "title": "Kohteiden valitseminen",
-          "select_one": "Valitse yksi karttakohde",
-          "select_multi": "Valitse useita karttakohteita",
-          "lasso": "Vedä valintaruutu kohteiden päälle",
-          "search": "Hae kohteen nimellä"
+        "lasso": {
+          "label": "Vedä valintaruutu kohteiden päälle"
         },
-        "with_selected": {
-          "title": "Karttakohde valittuna",
-          "edit_menu": "Näytä/piilota toimintovalikko"
+        "edit_menu": {
+          "label": "Näytä/piilota toimintovalikko"
         },
-        "vertex_selected": {
-          "title": "Piste valittuna",
-          "first": "Siirry ensimmäiseen viivapisteeseen",
-          "last": "Siirry viimeiseen viivapisteeseen"
-        }
-      },
-      "editing": {
-        "title": "Muokkaaminen",
-        "drawing": {
-          "title": "Uusien kohteiden lisääminen",
-          "add_point": "Uusi paikkapiste",
-          "add_line": "Uusi viiva",
-          "add_area": "Uusi alue",
-          "add_note": "Uusi karttailmoitus",
-          "place_point": "Sijoita piste tai karttailmoitus",
-          "disable_snap": "Estä tarttuminen muihin karttakohteisiin",
-          "stop_line": "Viivan tai alueen viimeinen piste"
+        "first_node": {
+          "label": "Siirry ensimmäiseen viivapisteeseen"
         },
-        "commands": {
-          "title": "Pikakomennot",
-          "copy": "Kopioi valitut kohteet",
-          "paste": "Liitä kopioidut kohteet",
-          "undo": "Kumoa viimeisin toiminto",
-          "redo": "Tee viimeisin komento uudelleen",
-          "save": "Tallenna muutokset"
+        "last_node": {
+          "label": "Siirry viimeiseen viivapisteeseen"
         },
-        "operations": {
-          "continue_line": "Jatka viivaa valitusta pisteestä",
-          "merge": "Yhdistä useita valittuja kohteita",
-          "extract": "Irrota piste kohteesta",
-          "reverse": "Vaihda valittujen kohteiden suuntaa.",
-          "move": "Siirrä valittuja kohteita",
-          "rotate": "Kierrä valittuja kohteita",
-          "orthogonalize": "Muuta viivan tai alueen kulmat suorakulmaisiksi",
-          "straighten": "Suorista viiva tai pisteet.",
-          "circularize": "Pyöristä alue",
-          "delete": "Poista valitut kohteet"
-        }
-      },
-      "tools": {
-        "title": "Näkymät",
-        "info": {
-          "title": "Tietoruudut",
-          "all": "Näytä/piilota kaikki tietoruudut",
-          "background": "Näytä/piilota taustan tietoruutu",
-          "history": "Näytä/piilota historiatietoruutu",
-          "location": "Näytä/piilota sijainnin tietoruutu",
-          "measurement": "Näytä/piilota mittatietoruutu"
+        "add_point": {
+          "label": "Uusi paikkapiste"
+        },
+        "add_line": {
+          "label": "Uusi viiva"
+        },
+        "add_area": {
+          "label": "Uusi alue"
+        },
+        "add_note": {
+          "label": "Uusi karttailmoitus",
+          "key": "P"
+        },
+        "place_point": {
+          "label": "Sijoita piste tai karttailmoitus"
+        },
+        "disable_snap": {
+          "label": "Estä tarttuminen muihin karttakohteisiin"
+        },
+        "stop_line": {
+          "label": "Viivan tai alueen viimeinen piste"
+        },
+        "copy": {
+          "label": "Kopioi valitut kohteet"
+        },
+        "paste": {
+          "label": "Liitä kopioidut kohteet"
+        },
+        "undo": {
+          "label": "Kumoa viimeisin toiminto"
+        },
+        "redo": {
+          "label": "Tee viimeisin komento uudelleen"
+        },
+        "save": {
+          "label": "Tallenna muutokset"
+        },
+        "find": {
+          "label": "Hae kohteen nimellä"
+        },
+        "continue_line": {
+          "label": "Jatka viivaa valitusta pisteestä"
+        },
+        "merge": {
+          "label": "Yhdistä useita valittuja kohteita"
+        },
+        "extract": {
+          "label": "Irrota piste kohteesta",
+          "key": "I"
+        },
+        "reverse": {
+          "label": "Vaihda valittujen kohteiden suuntaa."
+        },
+        "move": {
+          "label": "Siirrä valittuja kohteita"
+        },
+        "rotate": {
+          "label": "Kierrä valittuja kohteita"
+        },
+        "orthogonalize": {
+          "label": "Muuta viivan tai alueen kulmat suorakulmaisiksi"
+        },
+        "straighten": {
+          "label": "Suorista viiva tai pisteet.",
+          "key": "E"
+        },
+        "circularize": {
+          "label": "Pyöristä alue"
+        },
+        "delete": {
+          "label": "Poista valitut kohteet"
+        },
+        "toggle_background": {
+          "label": "Näytä/piilota taustan asetukset"
+        },
+        "toggle_map_data": {
+          "label": "Näytä/piilota kartta-aineistoasetukset"
+        },
+        "toggle_issues": {
+          "label": "Näytä/piilota muokkausvirheiden asetukset"
+        },
+        "toggle_preferences": {
+          "label": "Näytä/piilota käyttäjäasetukset"
+        },
+        "wireframe": {
+          "key": "L"
+        },
+        "highlight_edits": {
+          "label": "Korosta tallentamattomat muutokset"
+        },
+        "keyboard_shortcuts": {
+          "label": "Näytä pikanäppäimet"
+        },
+        "toggle_osm_data": {
+          "label": "Vaihda OpenStreetMap-aineistoa"
+        },
+        "toggle_osm_notes": {
+          "key": "P"
+        },
+        "toggle_streetside": {
+          "key": "E"
+        },
+        "toggle_all_cards": {
+          "label": "Näytä/piilota kaikki tietoruudut"
+        },
+        "toggle_background_card": {
+          "label": "Näytä/piilota taustan tietoruutu"
+        },
+        "toggle_history_card": {
+          "label": "Näytä/piilota historiatietoruutu"
+        },
+        "toggle_location_card": {
+          "label": "Näytä/piilota sijainnin tietoruutu"
+        },
+        "toggle_measurement_card": {
+          "label": "Näytä/piilota mittatietoruutu"
         }
       }
     },
@@ -2402,7 +2309,6 @@
       "gmh": "keskiyläsaksa",
       "gn": "guarani",
       "goh": "muinaisyläsaksa",
-      "gom": "goankonkani",
       "gon": "gondi",
       "gor": "gorontalo",
       "got": "gootti",
@@ -2529,6 +2435,7 @@
       "lil": "lillooet",
       "liv": "liivi",
       "lkt": "lakota",
+      "lld": "ladin",
       "lmo": "lombardi",
       "ln": "lingala",
       "lo": "lao",
@@ -2543,7 +2450,6 @@
       "lua": "luluanluba",
       "lui": "luiseño",
       "lun": "lunda",
-      "luo": "luo",
       "lus": "lusai",
       "luy": "luhya",
       "lv": "latvia",
@@ -2803,7 +2709,6 @@
       "umb": "mbundu",
       "ur": "urdu",
       "uz": "uzbekki",
-      "vai": "vai",
       "ve": "venda",
       "vec": "venetsia",
       "vep": "vepsä",

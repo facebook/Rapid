@@ -30,16 +30,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Plocha",
-        "filter_tooltip": "plochy"
+        "title": "Plocha"
       },
       "add_line": {
-        "title": "Čiara",
-        "filter_tooltip": "čiary"
+        "title": "Čiara"
       },
       "add_point": {
-        "title": "Bod",
-        "filter_tooltip": "body"
+        "title": "Bod"
       },
       "add_note": {
         "title": "Poznámka",
@@ -134,10 +131,6 @@
       },
       "circularize": {
         "title": "Usporiadať do kruhu",
-        "description": {
-          "single": "Usporiadaj tento objekt do kruhu.",
-          "multiple": "Sprav tieto objekty kruhovými."
-        },
         "annotation": {
           "feature": {
             "one": "Objekt bol spravený okrúhlymi.",
@@ -145,43 +138,10 @@
             "many": "Objekty {n} boli spravené okrúhlymi.",
             "other": "Objekty {n} boli spravené okrúhlymi."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Tieto objekty nemôžu byť spravené okrúhle z rôznych dvôvodov."
-        },
-        "not_closed": {
-          "single": "Tento objekt nemôže byť usporiadaný do kruhu, pretože nie je uzavretý.",
-          "multiple": "Tieto nemôžu byť spravené okrúhle, pretože tieto nie sú slučky."
-        },
-        "too_large": {
-          "single": "Tento objekt nemôže byť usporiadaný do kruhu, pretože z neho nie je dosť vidieť.",
-          "multiple": "Tieto objekty nemôžu byť usporiadané do kruhu, pretože z nich nie je dosť vidno."
-        },
-        "connected_to_hidden": {
-          "single": "Tento objekt nie je možné usporiadať do kruhu, pretože je spojený so skrytým objektom.",
-          "multiple": "Tieto objekty nie je možné usporiadať do kruhu, pretože sú spojené so skrytým objektom."
-        },
-        "not_downloaded": {
-          "single": "Tento objekt nie je možné usporiadať do kruhu, pretože niektoré jeho časti ešte neboli načítane.",
-          "multiple": "Tieto objekty nemôžu byť usporiadané do kruhu, pretože niektoré ich časti ešte neboli načítane."
-        },
-        "already_circular": {
-          "single": "Toto sa už nedá lepšie usporiadať do kruhu.",
-          "multiple": "Tieto objekty sa už nedajú lepšie usporiadať do kruhu."
         }
       },
       "orthogonalize": {
         "title": "Usporiadať do pravého uhla",
-        "description": {
-          "corner": {
-            "single": "Sprav tento roh pravouhlým.",
-            "multiple": "Sprav tieto rohy pravouhlými."
-          },
-          "feature": {
-            "single": "Sprav rohy tohoto objektu pravouhlými.",
-            "multiple": "Sprav rohy týchto objektov pravouhlými."
-          }
-        },
         "annotation": {
           "corner": {
             "one": "Roh bol spravený pravouhlým.",
@@ -195,33 +155,6 @@
             "many": "Rohy objektu boli spravené pravouhlými.",
             "other": "Rohy objektu {n} boli spravené pravouhlými."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Tento objekt sa nedá spraviť pravouhlým z viacerých dvôvodov."
-        },
-        "end_vertex": {
-          "single": "Tento bod sa nedá spraviť pravouhlým, pretože je koncový.",
-          "multiple": "Toto nemôže byť pravouhlé lebo to nie je uzavreté"
-        },
-        "square_enough": {
-          "single": "Toto sa už nedá lepšie spraviť pravouhlým.",
-          "multiple": "Tieto objekty sa už nedajú lepšie spraviť pravouhlými."
-        },
-        "not_squarish": {
-          "single": "Tento objekt nie je možné usporiadať do pravého uhla, pretože nie je štvorcový.",
-          "multiple": "Tieto objekty nie je možné usporiadať do pravého uhla, pretože nie sú štvorcové."
-        },
-        "too_large": {
-          "single": "Tento objekt nie je možné usporiadať do pravého uhla, pretože niektoré jeho časti nie sú viditeľné.",
-          "multiple": "Tieto objekty nemôžu byť usporiadané do pravého uhla, pretože z nich nie je dosť vidno."
-        },
-        "connected_to_hidden": {
-          "single": "Tento objekt nie je možné usporiadať do pravého uhla, pretože je spojený so skrytým objektom.",
-          "multiple": "Tieto objekty nie je možné usporiadať do pravého uhla, pretože sú spojené so skrytým objektom."
-        },
-        "not_downloaded": {
-          "single": "Tento objekt nie je možné usporiadať do pravého uhla, pretože niektoré jeho časti ešte neboli načítane.",
-          "multiple": "Tieto objekty nemôžu byť usporiadané do pravého uhla, pretože niektoré ich časti ešte neboli načítane."
         }
       },
       "straighten": {
@@ -244,34 +177,10 @@
             "many": "Vyrovnaných {n} čiar.",
             "other": "Vyrovnaných {n} čiar."
           }
-        },
-        "too_bendy": {
-          "single": "Tento objekt nie je možné vyrovnať, pretože je príliš nepravidelný.",
-          "multiple": "Tento objekt sa nedá vyrovnať, pretože je príliš ohnutý."
-        },
-        "connected_to_hidden": {
-          "single": "Tento objekt sa nedá vyrovnať, pretože je spojený so skrytím objektom.",
-          "multiple": "Tieto objekty sa nedajú vyrovnať, pretože niektoré sú spojené so skrytími objektami."
-        },
-        "not_downloaded": {
-          "single": "Tento objekt nie je možné vyrovnať, pretože niektoré jeho časti ešte neboli načítane.",
-          "multiple": "Tieto objekty nemôžu byť narovnané, pretože niektoré ich časti ešte neboli načítane."
-        },
-        "straight_enough": {
-          "single": "Toto sa už nedá viac vyrovnať ako je.",
-          "multiple": "Tieto sa už nedajú viac vyrovnať ako sú."
-        },
-        "too_large": {
-          "single": "Toto nemôže byť vyrovnané, pretože niektoré jeho časti nie sú viditeľné.",
-          "multiple": "Tieto nemôžu byť vyrovnané, pretože niektoré ich časti nie sú viditeľné."
         }
       },
       "delete": {
         "title": "Vymazať",
-        "description": {
-          "single": "Vymazať tento objekt natrvalo.",
-          "multiple": "Vymazať tieto objekty natrvalo."
-        },
         "annotation": {
           "point": "Odstránenie bodu.",
           "vertex": "Odstránenie uzla z cesty.",
@@ -284,30 +193,6 @@
             "many": "Bolo zmazaných {n} objektov.",
             "other": "Bolo zmazaných {n} objektov."
           }
-        },
-        "too_large": {
-          "single": "Tento objekt nie je možné vymazať, pretože niektoré jeho časti nie sú viditeľné.",
-          "multiple": "Tieto objekty nie je možné vymazať, pretože niektoré ich časti nie sú viditeľné."
-        },
-        "incomplete_relation": {
-          "single": "Tento objekt nie je možné vymazať, pretože nebol úplne stiahnutý.",
-          "multiple": "Tiento objekty nie je možné vymazať, pretože neboli úplne stiahnuté."
-        },
-        "part_of_relation": {
-          "single": "Tento objekt nemôžno vymazať, pretože je súčasťou väčšej relácie. Musíte ho najskôr z tejto relácie odobrať.",
-          "multiple": "Tieto objekty nemôžno vymazať, pretože sú súčasťou väčších relácii. Musíte ich z relácií najskôr odobrať."
-        },
-        "connected_to_hidden": {
-          "single": "Tento objekt nie je možné vymazať, pretože je spojený so skrytým objektom.",
-          "multiple": "Tieto objekty nie je možné vymazať, pretože niektoré sú spojené so skrytými objektami."
-        },
-        "not_downloaded": {
-          "single": "Tento objekt nie je možné zmazať, pretože niektoré jeho časti ešte neboli načítane.",
-          "multiple": "Tieto objekty nie je možné zmazať, pretože niektoré ich časti ešte neboli načítane."
-        },
-        "has_wikidata_tag": {
-          "single": "Tieto objekty nemôžu byť vymazané, pretože majú značku Wikidata.",
-          "multiple": "Tieto objekty nemôžu byť vymazané, pretože niektoré majú značky Wikidata."
         }
       },
       "downgrade": {
@@ -337,10 +222,6 @@
             "many": "{n} objektov degradovaných.",
             "other": "{n} objektov degradovaných."
           }
-        },
-        "has_wikidata_tag": {
-          "single": "Tento objekt nemôže byť degradovaný, pretože má značku Wikidata.",
-          "multiple": "Tieto objekty nemôžu byť degradované, pretože niektoré majú značky Wikidata."
         }
       },
       "add_member": {
@@ -446,10 +327,6 @@
       },
       "move": {
         "title": "Presunúť",
-        "description": {
-          "single": "Presunúť tento objekt na iné miesto.",
-          "multiple": "Presunúť tieto objekty na iné miesto."
-        },
         "annotation": {
           "point": "Presunutie bodu.",
           "vertex": "Uzol cesty bol presunutý.",
@@ -462,38 +339,12 @@
             "many": "{n} objektov bolo posunutých.",
             "other": "{n} objektov bolo posunutých."
           }
-        },
-        "incomplete_relation": {
-          "single": "Tento objekt nie je možné presunúť, pretože nebol úplne stiahnutý.",
-          "multiple": "Tiento objekty nie je možné presunúť, pretože neboli úplne stiahnuté."
-        },
-        "too_large": {
-          "single": "Tento objekt nie je možné presunúť, pretože niektoré jeho časti nie sú viditeľné.",
-          "multiple": "Tieto objekty nie je možné presunúť, pretože niektoré ich časti nie sú viditeľné."
-        },
-        "connected_to_hidden": {
-          "single": "Tento objekt nie je možné presunúť, pretože je spojený so skrytým objektom.",
-          "multiple": "Tieto objekty nie je možné presunúť, pretože niektoré sú spojené so skrytými objektami."
-        },
-        "not_downloaded": {
-          "single": "Tento objekt nie je možné posunúť, pretože niektoré jeho časti ešte neboli načítane.",
-          "multiple": "Tieto objekty nie je možné posunúť, pretože niektoré jeho ich ešte neboli načítane."
         }
       },
       "reflect": {
         "title": {
           "long": "Preklopiť na dĺžku",
           "short": "Preklopiť na šírku"
-        },
-        "description": {
-          "long": {
-            "single": "Preklopiť tento objekt cez jeho dlhú osu.",
-            "multiple": "Preklopiť tieto objekty cez ich dlhú osu."
-          },
-          "short": {
-            "single": "Preklopiť tento objekt cez jeho krátku osu.",
-            "multiple": "Preklopiť tieto objekty cez ich krátku osu."
-          }
         },
         "annotation": {
           "long": {
@@ -512,30 +363,10 @@
               "other": "Bolo preklopených {n} objektov cez ich krátku osu."
             }
           }
-        },
-        "incomplete_relation": {
-          "single": "Tento objekt nie je možné preklopiť, pretože nebol úplne stiahnutý.",
-          "multiple": "Tiento nie je možné nie je možné preklopiť, pretože neboli úplne stiahnuté."
-        },
-        "too_large": {
-          "single": "Tento objekt nie je možné preklopiť, pretože niektoré jeho časti nie sú viditeľné.",
-          "multiple": "Tieto objekty nie je možné preklopiť, pretože niektoré ich časti nie sú viditeľné."
-        },
-        "connected_to_hidden": {
-          "single": "Tento objekt nie je možné preklopiť, pretože je spojený so skrytým objektom.",
-          "multiple": "Tento objekty nie je možné preklopiť, pretože sú spojené so skrytým objektom."
-        },
-        "not_downloaded": {
-          "single": "Tento objekt nie je možné preklopiť, pretože jeho časti neboli úplne stiahnuté.",
-          "multiple": "Tieto objekty nie je možné preklopiť, pretože ich časti neboli úplne stiahnuté."
         }
       },
       "rotate": {
         "title": "Otočiť",
-        "description": {
-          "single": "Otočiť objekt okolo jeho stredového bodu.",
-          "multiple": "Otočiť tieto objekty okolo ich stredového bodu."
-        },
         "annotation": {
           "line": "Otočenie čiary.",
           "area": "Otočenie plochy.",
@@ -546,22 +377,6 @@
             "many": "{n} objektov bolo otočených.",
             "other": "{n} objektov bolo otočených."
           }
-        },
-        "incomplete_relation": {
-          "single": "Tento objekt nie je možné otočiť, pretože nebol úplne stiahnutý.",
-          "multiple": "Tiento objekty nie je možné otočiť, pretože neboli úplne stiahnuté."
-        },
-        "too_large": {
-          "single": "Tento objekt nie je možné otočit, pretože niektoré jeho časti nie sú viditeľné.",
-          "multiple": "Tieto objekty nie je možné otočiť, pretože niektoré ich časti nie sú viditeľné."
-        },
-        "connected_to_hidden": {
-          "single": "Tento objekt nie je možné otočiť, pretože je spojený so skrytým objektom.",
-          "multiple": "Tieto objekty nie je možné otočiť, pretože niektoré sú spojené so skrytými objektami."
-        },
-        "not_downloaded": {
-          "single": "Tento objekt nie je možné otočiť, pretože niektoré jeho časti ešte neboli stiahnuté.",
-          "multiple": "Tieto objekty nie je možné otočiť, pretože niektoré ich časti ešte neboli stiahnuté."
         }
       },
       "reverse": {
@@ -612,22 +427,6 @@
               "other": "{n} objektov zmenšených."
             }
           }
-        },
-        "too_small": {
-          "single": "Tento objekt nie je možné zmenšiť, pretože by bol príliš malý. ",
-          "multiple": "Tieto objekty nie je možné zmenšiť, pretože by boli príliš malé. "
-        },
-        "too_large": {
-          "single": "Tomuto objektu nie je možné zmeniť mierku, pretože niektoré jeho časti nie sú viditeľné.",
-          "multiple": "Nie je možné zmeniť veľkosť objektov, keďže nie je viditeľná dostatočná časť z nich."
-        },
-        "connected_to_hidden": {
-          "single": "Nie je možné zmeniť veľkosť tohto objektu, pretože je pripojený ku skrytému objektu.",
-          "multiple": "Týmto objektom nie je možné meniť mierku, pretože niektoré sú spojené so skrytými objektami."
-        },
-        "not_downloaded": {
-          "single": "Tomuto objektu nie je možné zmeniť mierku, pretože niektoré jeho časti ešte neboli stiahnuté.",
-          "multiple": "Týmto objektom nie je možné zmeniť mierku, pretože niektoré ich časti ešte neboli stiahnuté."
         }
       },
       "split": {
@@ -688,20 +487,8 @@
       "extract": {
         "title": "Extrahovať",
         "description": {
-          "vertex": {
-            "single": "Vytiahni tento bod z jeho rodičovskej čiary/plochy.",
-            "multiple": "Vytiahni tieto body z ich rodičovských objektov."
-          },
-          "line": {
-            "single": "Vytiahni bod z tejto čiary.",
-            "multiple": "Vytiahni body z týchto čiar."
-          },
-          "area": {
-            "single": "Vytiahni bod z tejto plochy.",
-            "multiple": "Vytiahni body z týchto plôch."
-          },
           "feature": {
-            "multiple": "Vytiahni body z týchto objektov."
+            "other": "Vytiahni body z týchto objektov."
           }
         },
         "annotation": {
@@ -709,14 +496,6 @@
           "few": "Boli vytiahnuté {n} body.",
           "many": "Bolo vytiahnutých {n} bodov.",
           "other": "Bolo vytiahnutých {n} bodov."
-        },
-        "too_large": {
-          "single": "Bod nie je možné extrahovať, keďže nie je viditeľná dostatočná časť tohto objektu.",
-          "multiple": "Body nie je možné extrahovať, pretože nie je viditeľná dostatočná časť týchto objektov."
-        },
-        "connected_to_hidden": {
-          "single": "Bod nie je možné extrahovať, keďže je pripojený k skrytému objektu. ",
-          "multiple": "Body nie je možné extrahovať, keďže sú pripojený k skrytým objektom. "
         }
       }
     },
@@ -925,10 +704,6 @@
       "multiple_values": "Viaceré hodnoty",
       "multiple_types": "Viaceré typy",
       "unshared_value_tooltip": "nie je zdieľaná všetkými objektami",
-      "hidden_preset": {
-        "manual": "{features} sú skryté. Povoľte ich v paneli mapových údajov",
-        "zoom": "{features} sú skryté. Priblížte mapu pre ich povolenie."
-      },
       "back_tooltip": "Zmeň typ objektu",
       "type": "Typ",
       "details": "Detaily",
@@ -1012,8 +787,7 @@
         },
         "notes": {
           "tooltip": "Dáta s poznámkami z OpenStreetMap",
-          "title": "OpenStreetMap poznámky",
-          "key": "S"
+          "title": "OpenStreetMap poznámky"
         },
         "maproulette": {
           "detail_title": "Podrobnosti",
@@ -1042,7 +816,6 @@
         "tooltip": "Zobraziť geometrické hodnoty pre výber."
       },
       "style_options": "Nastavenia štýlu",
-      "map_features": "Mapové objekty",
       "autohidden": "Tieto objekty boli automaticky skryté, pretože by ich bolo zobrazených príliš veľa. Pre ich editáciu, priblížte mapu.",
       "osmhidden": "Tieto objekty boli automaticky skryté, pretože vrstva OpenStreetMap nie je vidileľná."
     },
@@ -1079,7 +852,7 @@
         "tooltip": "Zobraziť iba fotografie nasnímané týmto používateľom"
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Body",
         "tooltip": "Body záujmu"
@@ -1276,12 +1049,13 @@
       "live": "pripojený",
       "lose_changes": "Máte neuložené zmeny. Zmenou mapového servera ich zrušíte. Ste si istý, že chcete prepnúť na iný server?"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Značky"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Odstráň"
+    "rapid_menu": {
+      "remove": "Odstráň",
+      "category": {
+        "roads": "cesty"
       }
     },
     "tag_reference": {
@@ -1297,7 +1071,9 @@
         "out": "Nie je možné viac oddialiť."
       }
     },
-    "cannot_zoom": "V tomto móde nie je možné viac oddialiť.",
+    "bearing": {
+      "n": "S"
+    },
     "full_screen": "Prepni na plnú obrazovku",
     "self_intersection": {
       "error": {
@@ -1719,7 +1495,6 @@
         "title": "Body",
         "intro": "*Body* môžu byť použité na znázorňovanie objektov ako sú obchody, reštaurácie a pamätihodnosti. Označujú presnú polohu a popisujú, čo sa tam nachádza.",
         "add_point_h": "Pridávanie bodov",
-        "add_point": "Keď chcete pridať bod, kliknite na tlačidlo {point_icon} **{point}** v paneli nástrojov nad mapou, alebo použite klávesovú skratku `1`.",
         "move_point_h": "Posun bodov",
         "delete_point_h": "Odstraňovanie bodov",
         "delete_point": "Je vporiadku vymazať objekty, ktoré v reálnom svete neexistujú. Zmazaním objektu z OpenStreetMap ho odstránite z mapy, ktorú všetci používaju, takže predtým, než ho zmažete, by ste sa mali uistiť, že daný objekt už naozaj neexistuje."
@@ -1728,7 +1503,6 @@
         "title": "Čiary",
         "intro": "*Čiary* sa používaju na znázornenie objektov ako cesty, železnice alebo rieky. Čiary by mali byť nakreslené nadol stretom objektu, ktorý znázorňujú.",
         "add_line_h": "Pridávanie čiar",
-        "add_line": "Pre pridanie čiary stlačte tlačítko {line_icon} **{line}** na nástrojovej lište nad mapou, alebo stlačte klávesovú skratku `2`.",
         "add_line_finish": "Pre dokončenie plochy, kliknite na posledný bod alebo stlačte `{return}`.",
         "modify_line_h": "Úprava čiar",
         "modify_line_dragnode": "Často nájdete čiary, ktoré majú nesprávny tvar, napríklad cesty, ktoré nesedia so snímkami na pozadí. Ak chcete upraviť tvar čiary, najprv ju označte. Všetky body, z ktorých sa čiara skladá, budú označené ako malé krúžky, ktoré môžete presúvať a upravovať ich polohu. ",
@@ -1747,7 +1521,6 @@
         "point_or_area_h": "Body alebo plochy?",
         "point_or_area": "Mnoho objektov je možné zakresliť buď ako bod alebo ako plochu. Hranice budov a pozemkov by ste mali zakresliť ako plochy vždy, keď je to možné. Ak chcete označiť obchody, výbavu alebo iné objekty vo vnútri budovy, použite na to samostatné body. ",
         "add_area_h": "Pridávanie plôch",
-        "add_area_command": "Ak chcete pridať plochu, kliknite na ikonu {area_icon} **{area}** na paneli nástrojov nad mapou alebo stlačte klávesovú skratku `3`.",
         "add_area_finish": "Pre dokončenie plochy, opätovne kliknite na prvý alebo posledný bod alebo stlačte `{return}`.",
         "square_area_h": "Pravouhlé rohy",
         "modify_area_h": "Posun plôch",
@@ -1876,18 +1649,10 @@
     },
     "issues": {
       "title": "Problémy",
-      "list_title": "Problémy",
-      "errors": {
-        "list_title": "Chyby"
-      },
-      "warnings": {
-        "list_title": "Varovania"
-      },
-      "rules": {
-        "title": "Pravidlá"
-      },
-      "user_resolved_issues": "Problémy vyriešené vašími úpravami",
-      "warnings_and_errors": "Varovania a chyby",
+      "errors": "Chyby",
+      "warnings": "Varovania",
+      "rules": "Pravidlá",
+      "resolved_tooltip": "Problémy vyriešené vašími úpravami",
       "no_issues": {
         "message": {
           "everything": "Všetko vyzerá dobre",
@@ -2047,8 +1812,6 @@
         "title": "Nevalidné formátovanie",
         "tip": "Nájdi značky s neočakávaným formátom",
         "email": {
-          "message": "{feature} má nevalidnú emailovú adresu",
-          "message_multi": "{feature} má niekolko nevalidných emailových adries",
           "reference": "Emailová adresa musí vyzerať ako \"pouzivatel@priklad.com\"."
         }
       },
@@ -2560,102 +2323,184 @@
       "title": "Klávesové skratky",
       "tooltip": "Zobraziť okno s klávesovými skratkami.",
       "key": {
+        "delete": "Vymazať",
         "space": "Medzerník"
       },
       "gesture": {
         "drag": "potiahnúť"
       },
       "or": "-alebo-",
-      "browsing": {
-        "title": "Prehliadanie",
-        "navigation": {
-          "title": "Navigácia",
-          "pan": "Posun mapy"
+      "browsing": "Prehliadanie",
+      "editing": "Upravovanie",
+      "navigation": "Navigácia",
+      "selecting_features": "Vyberanie objektov",
+      "with_features_selected": "S vybranými objektami",
+      "with_node_selected": "S vybraným uzlom",
+      "with_way_selected": "S vybranou cestou",
+      "drawing": "Kreslenie",
+      "commands": "Príkazy",
+      "help": "Nápoveda",
+      "display_options": "Zobraziť možnosti",
+      "info": "Informácie",
+      "command": {
+        "pan": {
+          "label": "Posun mapy"
         },
-        "help": {
-          "title": "Nápoveda",
-          "help": "Ukázať nápovedu/dokumentáciu",
-          "keyboard": "Ukázať klávesové skratky"
+        "select_one": {
+          "label": "Vybrať jeden objekt"
         },
-        "display_options": {
-          "title": "Zobraziť možnosti",
-          "background": "Ukáž/skry panel z mapami na pozadí",
-          "map_data": "Ukáž/skry panel s mapovými údajmi",
-          "issues": "Ukáž/skry panel s validačnými problémami",
-          "preferences": "Ukáž/skry panel s použivateľskými nastaveniami",
-          "wireframe": "Prepnúť obrysový mód",
-          "osm_data": "Ukáž/skry OpenStreerMap údaje",
-          "highlight_edits": "Zvýrazni neuložené zmeny"
+        "select_multi": {
+          "label": "Vybrať viacero objektov"
         },
-        "selecting": {
-          "title": "Vyberanie objektov",
-          "select_one": "Vybrať jeden objekt",
-          "select_multi": "Vybrať viacero objektov",
-          "lasso": "Nakresliť výberové laso okolo objektov",
-          "search": "Nájdi objekty zodpovedajúce hľadanému textu"
+        "lasso": {
+          "label": "Nakresliť výberové laso okolo objektov"
         },
-        "with_selected": {
-          "title": "S vybranými objektami",
-          "edit_menu": "Prepnúť editačné menu"
+        "edit_menu": {
+          "label": "Prepnúť editačné menu"
         },
-        "vertex_selected": {
-          "title": "S vybraným uzlom",
-          "first": "Preskočiť na prvý uzol",
-          "last": "Preskočiť na posledný uzol",
-          "change_parent": "Prepnúť nadradenú cestu",
-          "parent": "Vyber nadradenú cestu"
+        "first_node": {
+          "label": "Preskočiť na prvý uzol"
         },
-        "way_selected": {
-          "title": "S vybranou cestou",
-          "child": "Vyberte podriadené uzly"
-        }
-      },
-      "editing": {
-        "title": "Upravovanie",
-        "drawing": {
-          "title": "Kreslenie",
-          "add_point": "\"Pridať bod\" mód",
-          "add_line": "\"Pridať čiaru\" mód",
-          "add_area": "\"Pridať plochu\" mód",
-          "add_note": "Režim „pridať poznámku“",
-          "place_point": "Vlož pod alebo poznámku",
-          "disable_snap": "Podržanie zruší prichytávanie k bodu",
-          "stop_line": "Dokončiť kreslenie čiary alebo plochy"
+        "last_node": {
+          "label": "Preskočiť na posledný uzol"
         },
-        "commands": {
-          "title": "Príkazy",
-          "copy": "Kopírovať vybrané objekty",
-          "paste": "Vložiť zkopírované objekty",
-          "undo": "Vrátiť posledný úkon",
-          "redo": "Zopakovať posledný úkon",
-          "save": "Uložiť zmeny"
+        "change_parent": {
+          "label": "Prepnúť nadradenú cestu"
         },
-        "operations": {
-          "continue_line": "Pokračuj kreslenie čiary od zvoleného koncového bodu",
-          "merge": "Spojiť (zlúčiť) vybrané objekty",
-          "disconnect": "Odpoj vybrané objekty",
-          "extract": "Vytiahni bod z objektu",
-          "split": "Rozdeliť objekty vo vybraných bodoch",
-          "reverse": "Obráť smer vybraných objektov",
-          "move": "Presunúť vybraný objet",
-          "rotate": "Otočiť vybrané objekty",
-          "orthogonalize": "Sprav rohy čiary alebo plochy pravouhlými",
-          "straighten": "Vyrovnaj čiaru alebo body",
-          "circularize": "Usporiadať uzavretú čiaru alebo plochu do kruhu",
-          "reflect_long": "Preklopiť objekty cez ich dlhšiu os",
-          "reflect_short": "Preklopiť objekty cez ich kratšiu os",
-          "delete": "Vymazať vybrané objekty"
-        }
-      },
-      "tools": {
-        "title": "Nástroje",
-        "info": {
-          "title": "Informácie",
-          "all": "Prepnúť všetky informačné panely",
-          "background": "Prepnúť panel pozadia",
-          "history": "Prepnúť panel histórie",
-          "location": "Prepnúť panel polohy",
-          "measurement": "Prepnúť panel merania"
+        "select_parent": {
+          "label": "Vyber nadradenú cestu"
+        },
+        "select_children": {
+          "label": "Vyberte podriadené uzly"
+        },
+        "add_point": {
+          "label": "\"Pridať bod\" mód"
+        },
+        "add_line": {
+          "label": "\"Pridať čiaru\" mód"
+        },
+        "add_area": {
+          "label": "\"Pridať plochu\" mód"
+        },
+        "add_note": {
+          "label": "Režim „pridať poznámku“",
+          "key": "S"
+        },
+        "place_point": {
+          "label": "Vlož pod alebo poznámku"
+        },
+        "disable_snap": {
+          "label": "Podržanie zruší prichytávanie k bodu"
+        },
+        "stop_line": {
+          "label": "Dokončiť kreslenie čiary alebo plochy"
+        },
+        "copy": {
+          "label": "Kopírovať vybrané objekty"
+        },
+        "paste": {
+          "label": "Vložiť zkopírované objekty"
+        },
+        "undo": {
+          "label": "Vrátiť posledný úkon"
+        },
+        "redo": {
+          "label": "Zopakovať posledný úkon"
+        },
+        "save": {
+          "label": "Uložiť zmeny"
+        },
+        "find": {
+          "label": "Nájdi objekty zodpovedajúce hľadanému textu"
+        },
+        "continue_line": {
+          "label": "Pokračuj kreslenie čiary od zvoleného koncového bodu"
+        },
+        "merge": {
+          "label": "Spojiť (zlúčiť) vybrané objekty"
+        },
+        "disconnect": {
+          "label": "Odpoj vybrané objekty"
+        },
+        "extract": {
+          "label": "Vytiahni bod z objektu",
+          "key": "V"
+        },
+        "split": {
+          "label": "Rozdeliť objekty vo vybraných bodoch"
+        },
+        "reverse": {
+          "label": "Obráť smer vybraných objektov"
+        },
+        "move": {
+          "label": "Presunúť vybraný objet"
+        },
+        "rotate": {
+          "label": "Otočiť vybrané objekty"
+        },
+        "orthogonalize": {
+          "label": "Sprav rohy čiary alebo plochy pravouhlými"
+        },
+        "straighten": {
+          "label": "Vyrovnaj čiaru alebo body",
+          "key": "J"
+        },
+        "circularize": {
+          "label": "Usporiadať uzavretú čiaru alebo plochu do kruhu"
+        },
+        "reflect_long": {
+          "label": "Preklopiť objekty cez ich dlhšiu os"
+        },
+        "reflect_short": {
+          "label": "Preklopiť objekty cez ich kratšiu os"
+        },
+        "delete": {
+          "label": "Vymazať vybrané objekty"
+        },
+        "toggle_background": {
+          "label": "Ukáž/skry panel z mapami na pozadí"
+        },
+        "toggle_map_data": {
+          "label": "Ukáž/skry panel s mapovými údajmi"
+        },
+        "toggle_issues": {
+          "label": "Ukáž/skry panel s validačnými problémami"
+        },
+        "toggle_preferences": {
+          "label": "Ukáž/skry panel s použivateľskými nastaveniami"
+        },
+        "wireframe": {
+          "key": "Z"
+        },
+        "highlight_edits": {
+          "label": "Zvýrazni neuložené zmeny"
+        },
+        "keyboard_shortcuts": {
+          "label": "Ukázať klávesové skratky"
+        },
+        "toggle_osm_data": {
+          "label": "Ukáž/skry OpenStreerMap údaje"
+        },
+        "toggle_osm_notes": {
+          "key": "S"
+        },
+        "toggle_streetside": {
+          "key": "J"
+        },
+        "toggle_all_cards": {
+          "label": "Prepnúť všetky informačné panely"
+        },
+        "toggle_background_card": {
+          "label": "Prepnúť panel pozadia"
+        },
+        "toggle_history_card": {
+          "label": "Prepnúť panel histórie"
+        },
+        "toggle_location_card": {
+          "label": "Prepnúť panel polohy"
+        },
+        "toggle_measurement_card": {
+          "label": "Prepnúť panel merania"
         }
       }
     },
@@ -2729,6 +2574,7 @@
       "bin": "bini",
       "bkm": "kom",
       "bla": "siksika",
+      "blo": "anii",
       "bm": "bambarčina",
       "bn": "bengálčina",
       "bo": "tibetčina",
@@ -2950,6 +2796,7 @@
       "kv": "komijčina",
       "kw": "kornčina",
       "kwk": "kwakʼwala",
+      "kxv": "kuvi",
       "ky": "kirgizština",
       "la": "latinčina",
       "lad": "židovská španielčina",
@@ -2960,8 +2807,10 @@
       "lez": "lezginčina",
       "lg": "gandčina",
       "li": "limburčina",
+      "lij": "ligurčina",
       "lil": "lillooet",
       "lkt": "lakotčina",
+      "lmo": "lombardčina",
       "ln": "lingalčina",
       "lo": "laoština",
       "lol": "mongo",
@@ -2974,7 +2823,6 @@
       "lua": "lubčina (luluánska)",
       "lui": "luiseňo",
       "lun": "lunda",
-      "luo": "luo",
       "lus": "mizorámčina",
       "luy": "luhja",
       "lv": "lotyština",
@@ -3154,6 +3002,7 @@
       "swb": "komorčina",
       "syc": "sýrčina (klasická)",
       "syr": "sýrčina",
+      "szl": "sliezština",
       "ta": "tamilčina",
       "tce": "tutchone (juh)",
       "te": "telugčina",
@@ -3199,9 +3048,10 @@
       "umb": "umbundu",
       "ur": "urdčina",
       "uz": "uzbečtina",
-      "vai": "vai",
       "ve": "vendčina",
+      "vec": "benátčina",
       "vi": "vietnamčina",
+      "vmw": "makhuwčina",
       "vo": "volapük",
       "vot": "vodčina",
       "vun": "vunjo",
@@ -3215,6 +3065,7 @@
       "wuu": "čínština (wu)",
       "xal": "kalmyčtina",
       "xh": "xhoština",
+      "xnr": "kángrí",
       "xog": "soga",
       "yao": "jao",
       "yap": "japčina",

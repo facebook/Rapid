@@ -156,6 +156,12 @@
         "description": "Archivní snímky Esri, které mohou být čistší a přesnější jak výchozí vrstva.",
         "name": "Světové snímky Esri (Clarity) Beta"
       },
+      "FOMI_2011_2014": {
+        "attribution": {
+          "text": "Znalostní centrum Lechner"
+        },
+        "description": "Vládní ortofotomapy s listovým pokrytím s rozlišením 40 cm/pixel pro celou zemi. Tato vrstva by měla být použita jako vyrovnávací základna v případě, že chybí přesnější reference. Obrázky ve formátu WEBP, JOSM pro ně potřebuje zásuvný modul WebP."
+      },
       "Frankfurt-am-Main-2019": {
         "attribution": {
           "text": "Městský zeměměřický úřad Frankfurt nad Mohanem"
@@ -392,7 +398,7 @@
         },
         "name": "Hlivice: Budovy"
       },
-      "LSA-ATKIS_BU": {
+      "LSA-ALKIS_BU": {
         "description": "Tvar budov v Sasku-Anhaltsku"
       },
       "LSA-DOP20": {
@@ -450,6 +456,13 @@
       "Naturvardsverket-trails": {
         "description": "Denně aktualizované stezky v přírodních rezervacích nebo okolí zaznamenané švédskou agenturou pro ochranu životního prostředí",
         "name": "Agentura pro ochranu životního prostředí - Stezky"
+      },
+      "ODOT_TIMS_Road_Inventory": {
+        "attribution": {
+          "text": "Ohijské ministerstvo dopravy"
+        },
+        "description": "Ohijské ministerstvo dopravy (ODOT) - inventář silnic Dopravního informačního mapového systému (TIMS) vydaný v červnu 2024.",
+        "name": "Inventář silnic ODOT"
       },
       "OSIP": {
         "attribution": {
@@ -717,6 +730,13 @@
         },
         "description": "Fotografie se zeměpisnými souřadnicemi od Balaton Limnological Institute z roku 1940.",
         "name": "Ortofoto EUFAR Balaton"
+      },
+      "geoscribble-latest": {
+        "attribution": {
+          "text": "Přispěvatelé GeoScribble"
+        },
+        "description": "Poznámky z geometrického průzkumu editora Every Door, stáří maximálně tři týdny",
+        "name": "Poslední poznámky GeoScribble"
       },
       "gothenburg-citymap": {
         "attribution": {

@@ -26,16 +26,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Område",
-        "filter_tooltip": "områder"
+        "title": "Område"
       },
       "add_line": {
-        "title": "Linje",
-        "filter_tooltip": "linjer"
+        "title": "Linje"
       },
       "add_point": {
-        "title": "Punkt",
-        "filter_tooltip": "punkt"
+        "title": "Punkt"
       },
       "add_note": {
         "title": "Notat"
@@ -90,16 +87,6 @@
         "nothing_copied": "Ingen egenskaper har blitt kopiert."
       },
       "orthogonalize": {
-        "description": {
-          "corner": {
-            "single": "Rett ut dette hjørnet.",
-            "multiple": "Rette ut disse hjørnene."
-          },
-          "feature": {
-            "single": "Rett ut hjørnene av denne egenskapen.",
-            "multiple": "Rett ut hjørnene av disse egenskapene."
-          }
-        },
         "annotation": {
           "corner": {
             "one": "Rettet ut et hjørne.",
@@ -109,16 +96,6 @@
             "one": "Rettet ut hjørnene av en egenskap.",
             "other": "Rettet ut hjørnene av {n} egenskaper."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Disse kan ikke bli rettet ut av flere grunner."
-        },
-        "end_vertex": {
-          "single": "Dette kan ikke bli rettet fordi det er et endepunkt.",
-          "multiple": "Disse kan ikke bli rettet ut fordi de er endepunkt."
-        },
-        "square_enough": {
-          "single": "Dette kan ikke bli rettet utt mer enn det allerede er."
         }
       },
       "straighten": {
@@ -137,21 +114,6 @@
             "one": "Rettet ut ei linje.",
             "other": "Rettet ut {n} linjer."
           }
-        },
-        "too_bendy": {
-          "single": "Denne kan ikke rettes ut fordi den bøyer seg for mye.",
-          "multiple": "Disse kan ikke rettes ut fordi den bøyer seg for mye."
-        },
-        "connected_to_hidden": {
-          "single": "Dette kan ikke rettes ut fordi det er koblet til en skjult egenskap.",
-          "multiple": "Disse kan ikke rettes ut fordi de er koblet til en skjult egenskap."
-        },
-        "not_downloaded": {
-          "single": "Dette kan ikke rettes ut fordi  fordi deler av det har ikke blitt nedlastet ennå.",
-          "multiple": "Disse kan ikke rettes ut fordi fordi deler av de har ikke blitt nedlastet ennå."
-        },
-        "straight_enough": {
-          "single": "Dette kan ikke gjøres rettere enn det allerede er."
         }
       },
       "delete": {
@@ -216,10 +178,6 @@
       },
       "move": {
         "title": "Flytt",
-        "description": {
-          "single": "Flytt denne egenskapen til et annet sted.",
-          "multiple": "Flytt disse egenskapene til et annet sted."
-        },
         "annotation": {
           "point": "Flyttet et punkt"
         }
@@ -307,6 +265,7 @@
       "bjn": "banjar",
       "bkm": "kom",
       "bla": "siksika",
+      "blo": "anii",
       "bm": "bambara",
       "bn": "bengali",
       "bo": "tibetansk",
@@ -434,7 +393,6 @@
       "gmh": "mellomhøytysk",
       "gn": "guarani",
       "goh": "gammelhøytysk",
-      "gom": "goansk konkani",
       "gon": "gondi",
       "gor": "gorontalo",
       "got": "gotisk",
@@ -544,6 +502,7 @@
       "kv": "komi",
       "kw": "kornisk",
       "kwk": "kwak̓wala",
+      "kxv": "kuvi",
       "ky": "kirgisisk",
       "la": "latin",
       "lad": "ladinsk",
@@ -573,7 +532,6 @@
       "lua": "luba-lulua",
       "lui": "luiseno",
       "lun": "lunda",
-      "luo": "luo",
       "lus": "mizo",
       "luy": "luhya",
       "lv": "latvisk",
@@ -829,13 +787,13 @@
       "umb": "umbundu",
       "ur": "urdu",
       "uz": "usbekisk",
-      "vai": "vai",
       "ve": "venda",
       "vec": "venetiansk",
       "vep": "vepsisk",
       "vi": "vietnamesisk",
       "vls": "vestflamsk",
       "vmf": "Main-frankisk",
+      "vmw": "makhuwa",
       "vo": "volapyk",
       "vot": "votisk",
       "vro": "sørestisk",
@@ -851,6 +809,7 @@
       "xal": "kalmukkisk",
       "xh": "xhosa",
       "xmf": "mingrelsk",
+      "xnr": "kangri",
       "xog": "soga",
       "yao": "yao",
       "yap": "yapesisk",

@@ -2,7 +2,8 @@
   "be": {
     "imagery": {
       "Bing": {
-        "description": "Спадарожнікавыя і аэрафотаздымкі."
+        "description": "Спадарожнікавыя і аэрафотаздымкі.",
+        "name": "Aэрафотаздымкі Bing"
       },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
@@ -11,10 +12,23 @@
         "description": "Апрацаваныя здымкі Sentinel Satellite.",
         "name": "eox.at 2018 яснае надвор'е"
       },
+      "EOXAT2019CLOUDLESS": {
+        "description": "Апрацаваныя здымкі Sentinel Satellite."
+      },
+      "EOXAT2020CLOUDLESS": {
+        "description": "Апрацаваныя здымкі Sentinel Satellite."
+      },
+      "EOXAT2021CLOUDLESS": {
+        "description": "Апрацаваныя здымкі Sentinel Satellite."
+      },
+      "EOXAT2022CLOUDLESS": {
+        "description": "Апрацаваныя здымкі Sentinel Satellite."
+      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "Умовы і зваротная сувязь"
         },
+        "description": "Сусветныя здымкі Esri.",
         "name": "Сусветныя здымкі Esri."
       },
       "EsriWorldImageryClarity": {
@@ -55,6 +69,9 @@
       "OSM_Inspector-Tagging": {
         "name": "OSM Інспектар: Тэгі"
       },
+      "OpenAerialMapMosaic": {
+        "name": "OpenAerialMap Mosaic, ад Kontur.io"
+      },
       "SPW_ORTHO_LAST": {
         "name": "SPW(allonie) апошнія аэрафотаздымкі"
       },
@@ -64,11 +81,31 @@
       "US-TIGER-Roads-2018": {
         "description": "Жоўты = даныя, якія распаўсюджаныя US Census ў адкрытым доступе. Чырвоны = даныя недаступныя ў OpenStreetMap"
       },
+      "US-TIGER-Roads-2019": {
+        "description": "Жоўты = даныя, якія распаўсюджаныя US Census ў адкрытым доступе. Чырвоны = даныя недаступныя ў OpenStreetMap"
+      },
+      "US-TIGER-Roads-2020": {
+        "description": "Жоўты = даныя, якія распаўсюджаныя US Census ў адкрытым доступе. Чырвоны = даныя недаступныя ў OpenStreetMap"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Жоўты = даныя, якія распаўсюджаныя US Census ў адкрытым доступе. Чырвоны = даныя недаступныя ў OpenStreetMap"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Жоўты = даныя, якія распаўсюджаныя US Census ў адкрытым доступе. Чырвоны = даныя недаступныя ў OpenStreetMap"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Жоўты = даныя, якія распаўсюджаныя US Census ў адкрытым доступе. Чырвоны = даныя недаступныя ў OpenStreetMap"
+      },
       "USDA-NAIP": {
         "name": "Здымкі Нацыянальнай праграмы земляробства"
       },
       "US_Forest_Service_roads_overlay": {
         "description": "Дарогі: Зялёны контур = unclassified. Карычневы контур = track. Пакрыццё: gravel = светла-карычневыя запаўненні, asphalt = чорнае, paved = шэрае, ground = белае, concrete = сіняе, grass = зялёны. Seasonal = белыя палосы"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Выпушчана з дапамогай Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
       },
       "UrbISOrtho2016": {
         "attribution": {
@@ -85,7 +122,22 @@
           "text": "Выпушчана з дапамогай Brussels UrbIS®© - Distribution & Copyright CIRB"
         }
       },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "Выпушчана з дапамогай Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Выпушчана з дапамогай Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
       "UrbisAdmFR": {
+        "attribution": {
+          "text": "Выпушчана з дапамогай Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
         "attribution": {
           "text": "Выпушчана з дапамогай Brussels UrbIS®© - Distribution & Copyright CIRB"
         }
@@ -212,6 +264,11 @@
         "name": "Ортафота муніцыпалітэта Стакгольм"
       },
       "tf-landscape": {
+        "attribution": {
+          "text": "Карты © Thunderforest, Data © OpenStreetMap contributors"
+        }
+      },
+      "tf-outdoors": {
         "attribution": {
           "text": "Карты © Thunderforest, Data © OpenStreetMap contributors"
         }

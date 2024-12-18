@@ -26,7 +26,10 @@
           "label": "Pūrere Pūtea"
         },
         "building": {
-          "label": "Whare"
+          "label": "Whare",
+          "options": {
+            "church": "Whare hāhi"
+          }
         },
         "cuisine": {
           "options": {
@@ -172,6 +175,9 @@
         "amenity/waste_basket": {
           "name": "Rapihi"
         },
+        "area": {
+          "name": "Pae"
+        },
         "building": {
           "name": "Whare"
         },
@@ -180,6 +186,9 @@
         },
         "building/entrance": {
           "name": "Putanga"
+        },
+        "building_point": {
+          "name": "Whare"
         },
         "entrance": {
           "name": "Putanga"
@@ -196,6 +205,12 @@
         "highway/construction": {
           "name": "Mahinga Rori"
         },
+        "highway/cycleway": {
+          "name": "Ngā ara paihikara"
+        },
+        "highway/cycleway/bicycle_foot": {
+          "name": "Ngā Ara mō te Paihikara me te Hīkoi"
+        },
         "highway/living_street": {
           "name": "Ara Wātea"
         },
@@ -207,6 +222,9 @@
         },
         "landuse/cemetery": {
           "name": "Urupā"
+        },
+        "landuse/construction": {
+          "name": "He Wāhi Whaihanga Tēnei"
         },
         "landuse/harbour": {
           "name": "Te Taunga"
@@ -220,6 +238,9 @@
         "leisure/swimming_pool": {
           "name": "Hōpua"
         },
+        "line": {
+          "name": "Ara"
+        },
         "natural/beach": {
           "name": "Tātahi"
         },
@@ -231,6 +252,9 @@
         },
         "place/town": {
           "name": "Tāone"
+        },
+        "point": {
+          "name": "Ira"
         },
         "public_transport/platform/bus_point": {
           "name": "Tūnga Pahi"
@@ -282,6 +306,9 @@
         },
         "type/route/detour": {
           "name": "Otinga"
+        },
+        "waterway/river": {
+          "name": "Awa"
         }
       }
     }

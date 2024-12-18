@@ -30,9 +30,9 @@
       }
     },
     "shortcuts": {
-      "editing": {
-        "commands": {
-          "save": "Pupuri"
+      "command": {
+        "save": {
+          "label": "Pupuri"
         }
       }
     },
@@ -51,7 +51,7 @@
       "ann": "Ōporo",
       "anp": "Anahika",
       "ar": "Ārapi",
-      "ar-001": "Ārapi Moroko",
+      "ar-001": "Ārapi Moroki",
       "arn": "Mapūte",
       "ars": "Arapika Nahāri",
       "as": "Āhamēhi",

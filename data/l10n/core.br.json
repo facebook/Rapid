@@ -32,16 +32,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Takad",
-        "filter_tooltip": "takadoù"
+        "title": "Takad"
       },
       "add_line": {
-        "title": "Linenn",
-        "filter_tooltip": "linennoù"
+        "title": "Linenn"
       },
       "add_point": {
-        "title": "Poent",
-        "filter_tooltip": "poentoù"
+        "title": "Poent"
       },
       "add_note": {
         "title": "Notenn",
@@ -124,10 +121,6 @@
       },
       "circularize": {
         "title": "Rontaat",
-        "description": {
-          "single": "Lakaat an elfenn-mañ da gelc'h.",
-          "multiple": "Lakaat an elfennoù-mañ da gelc'hioù."
-        },
         "annotation": {
           "feature": {
             "one": "Elfenn aet da gelc'h.",
@@ -136,17 +129,6 @@
             "many": "{n} elfenn aet da gelc'h.",
             "other": "{n} elfenn aet da gelc'h."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "N'haller ket rontaat an elfennoù-mañ evit meur a abegoù."
-        },
-        "too_large": {
-          "single": "N'haller ket rontaat an elfenn-mañ rak ne weler anezhi en he fezh.",
-          "multiple": "N'haller ket rontaat an elfennoù-mañ rak ne weler anezhe en o fezh."
-        },
-        "already_circular": {
-          "single": "Homañ n'hall ket bezañ rontoc'h eget m'emañ dija.",
-          "multiple": "Ar re-mañ n'hallint ket bezañ rontoc'h eget m'emaint dija."
         }
       },
       "orthogonalize": {
@@ -166,10 +148,6 @@
             "many": "Kornoù {n} elfenn aet da garrez.",
             "other": "Kornoù {n} elfenn aet da garrez."
           }
-        },
-        "square_enough": {
-          "single": "Homañ n'hall ket bezañ karrezoc'h eget m'emañ dija.",
-          "multiple": "Ar re-mañ n'hallint ket bezañ karrezoc'h eget m'emaint dija."
         }
       },
       "straighten": {
@@ -194,22 +172,10 @@
             "many": "{n} linenn eeunaet.",
             "other": "{n} linenn eeunaet."
           }
-        },
-        "connected_to_hidden": {
-          "single": "N'haller ket eeunaat an elfenn-mañ rak staget eo ouzh un elfenn kuzhet.",
-          "multiple": "N'haller ket eeunaat an elfennoù-mañ rak staget int ouzh elfennoù kuzhet."
-        },
-        "too_large": {
-          "single": "N'haller ket eeunaat an elfenn-mañ rak ne weler anezhi en he fezh.",
-          "multiple": "N'haller ket eeunaat an elfennoù-mañ rak ne weler anezhe en o fezh."
         }
       },
       "delete": {
         "title": "Dilemel",
-        "description": {
-          "single": "Dilemel an elfenn-mañ da viken.",
-          "multiple": "Dilemel an elfennoù-mañ da viken."
-        },
         "annotation": {
           "point": "Poent lamet.",
           "vertex": "Skoulm dilamet diouzh an hent.",
@@ -223,22 +189,6 @@
             "many": "{n} elfenn lamet.",
             "other": "{n} elfenn lamet."
           }
-        },
-        "too_large": {
-          "single": "N'haller ket dilemel an elfenn-mañ rak ne weler anezhi en he fezh.",
-          "multiple": "N'haller ket dilemel an elfennoù-mañ rak ne weler anezhe en o fezh."
-        },
-        "incomplete_relation": {
-          "single": "N'haller ket dilemel an elfenn-mañ rak n'eo ket bet pellgarget penn-da-benn c'hoazh.",
-          "multiple": "N'haller ket dilemel an elfennoù-mañ rak n'int ket bet pellgarget penn-da-benn c'hoazh."
-        },
-        "connected_to_hidden": {
-          "single": "N'haller ket dilemel an elfenn-mañ rak staget eo ouzh un elfenn kuzhet.",
-          "multiple": "N'haller ket dilemel an elfennoù-mañ rak staget int ouzh elfennoù kuzhet."
-        },
-        "has_wikidata_tag": {
-          "single": "N'haller ket dilemel an elfenn-mañ rak un dikedenn Wikidata he deus.",
-          "multiple": "N'haller ket dilemel an elfennoù-mañ rak ur re o deus tikedennoù Wikidata."
         }
       },
       "downgrade": {
@@ -318,10 +268,6 @@
       },
       "move": {
         "title": "Dilec'hiañ",
-        "description": {
-          "single": "Dilec'hiañ an elfenn-mañ d'ul lec'h bennak all",
-          "multiple": "Dilec'hiañ an elfennoù-mañ d'ul lec'h bennak all"
-        },
         "annotation": {
           "point": "Poent dilec'hiet.",
           "vertex": "Skoulm ur roudenn dilec'hiet.",
@@ -335,32 +281,6 @@
             "many": "{n} elfenn dilec'hiet.",
             "other": "{n} elfenn dilec'hiet."
           }
-        },
-        "incomplete_relation": {
-          "single": "N'haller ket dilec'hiañ an elfenn-mañ rak n'eo ket bet pellgarget penn-da-benn.",
-          "multiple": "N'haller ket dilec'hiañ an elfennoù-mañ rak n'int ket bet pellgarget penn-da-benn."
-        },
-        "too_large": {
-          "single": "N'haller ket dilec'hiañ an elfenn-mañ rak ne weler anezhi en he fezh.",
-          "multiple": "N'haller ket dilec'hiañ an elfennoù-mañ rak ne weler anezhe en o fezh."
-        },
-        "connected_to_hidden": {
-          "single": "N'haller ket dilec'hiañ an elfenn-mañ rak staget eo ouzh un elfenn kuzhet.",
-          "multiple": "N'haller ket dilec'hiañ an elfennoù-mañ rak staget int ouzh elfennoù kuzhet."
-        }
-      },
-      "reflect": {
-        "incomplete_relation": {
-          "single": "N'haller ket gwintañ an elfenn-mañ rak n'eo ket bet pellgarget penn-da-benn.",
-          "multiple": "N'haller ket gwintañ an elfennoù-mañ rak n'int ket bet pellgarget penn-da-benn."
-        },
-        "too_large": {
-          "single": "N'haller ket eilpennañ an elfenn-mañ rak ne weler anezhi en he fezh.",
-          "multiple": "N'haller ket eilpennañ an elfennoù-mañ rak ne weler anezhe en o fezh."
-        },
-        "connected_to_hidden": {
-          "single": "N'haller ket gwintañ an elfenn-mañ rak staget eo ouzh un elfenn kuzhet.",
-          "multiple": "N'haller ket gwintañ an elfennoù-mañ rak staget int ouzh elfennoù kuzhet."
         }
       },
       "rotate": {
@@ -376,18 +296,6 @@
             "many": "{n} elfenn c'hwelet.",
             "other": "{n} elfenn c'hwelet."
           }
-        },
-        "incomplete_relation": {
-          "single": "N'haller ket c'hwelañ an elfenn-mañ rak n'eo ket bet pellgarget penn-da-benn.",
-          "multiple": "N'haller ket c'hwelañ an elfennoù-mañ rak n'int ket bet pellgarget penn-da-benn."
-        },
-        "too_large": {
-          "single": "N'haller ket c'hwelañ an elfenn-mañ rak ne weler anezhi en he fezh.",
-          "multiple": "N'haller ket c'hwelañ an elfennoù-mañ rak ne weler anezhe en o fezh."
-        },
-        "connected_to_hidden": {
-          "single": "N'haller ket c'hwelañ an elfenn-mañ rak staget eo ouzh un elfenn kuzhet.",
-          "multiple": "N'haller ket c'hwelañ an elfennoù-mañ rak staget int ouzh elfennoù kuzhet."
         }
       },
       "reverse": {
@@ -468,20 +376,8 @@
       "extract": {
         "title": "Eztennañ",
         "description": {
-          "vertex": {
-            "single": "Eztennañ ar poent-mañ diouzh e linennoù/takadoù kar.",
-            "multiple": "Eztennañ ar poentoù-mañ diouzh o elfennoù kar."
-          },
-          "line": {
-            "single": "Eztennañ ur poent diouzh al linenn-mañ.",
-            "multiple": "Eztennañ poentoù diouzh al linennoù-mañ."
-          },
-          "area": {
-            "single": "Eztennañ ur poent diouzh an takad-mañ.",
-            "multiple": "Eztennañ poentoù diouzh an takadoù-mañ."
-          },
           "feature": {
-            "multiple": "Eztennañ poentoù diouzh an elfennoù-mañ."
+            "other": "Eztennañ poentoù diouzh an elfennoù-mañ."
           }
         },
         "annotation": {
@@ -490,13 +386,6 @@
           "few": "{n} poent eztennet.",
           "many": "{n} poent eztennet.",
           "other": "{n} poent eztennet."
-        },
-        "too_large": {
-          "single": "N'haller ket eztennañ ur poent rak ne weler an elfenn-mañ en he fezh.",
-          "multiple": "N'haller ket eztennañ poentoù rak ne weler an elfennoù-mañ en o fezh."
-        },
-        "connected_to_hidden": {
-          "single": "N'haller ket eztennañ an elfenn-mañ rak staget eo ouzh un elfenn kuzhet."
         }
       }
     },
@@ -691,10 +580,6 @@
       "wiki_reference": "Diskouez an teuliadur",
       "wiki_en_reference": "Diskouez an teuliadur e saozneg",
       "multiple_types": "Meur a seurt",
-      "hidden_preset": {
-        "manual": "Kuzhet eo {features}. Kit d'ar rubrikenn \"titouroù ar gartenn\" evit o enaouiñ.",
-        "zoom": "Kuzhet eo {features}. Zoumañ evit o diskouez."
-      },
       "back_tooltip": "Cheñch seurt an elfenn",
       "type": "Seurt",
       "details": "Muioc'h",
@@ -793,8 +678,7 @@
       },
       "history_panel": {
         "title": "Diskouez panell ar roll istor"
-      },
-      "map_features": "Elfennoù ar gartenn"
+      }
     },
     "visual_diff": {
       "highlight_edits": {
@@ -829,7 +713,7 @@
         "tooltip": "Diskouez nemet fotoioù tapet gant an implijer-mañ"
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Poentoù",
         "tooltip": "Poentoù heverk"
@@ -974,12 +858,13 @@
       "live": "war-eeun",
       "lose_changes": "Kemmoù zo n'int ket bet enrollet. Ma cheñchit servijer ar gartenn e vint skarzhet. Ha sur oc'h d'en ober?"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Tikedennoù"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Lemel"
+    "rapid_menu": {
+      "remove": "Lemel",
+      "category": {
+        "roads": "hentoù"
       }
     },
     "tag_reference": {
@@ -995,7 +880,6 @@
         "out": "N'haller ket dizoumañ muioc'h."
       }
     },
-    "cannot_zoom": "N'haller ket dizoumañ muioc'h er mod-mañ",
     "full_screen": "Enaouiñ/lazhañ ar mod skramm a-bezh",
     "self_intersection": {
       "error": {
@@ -1313,18 +1197,10 @@
     },
     "issues": {
       "title": "Kudennoù",
-      "list_title": "Kudennoù",
-      "errors": {
-        "list_title": "Fazioù"
-      },
-      "warnings": {
-        "list_title": "Kemennoù"
-      },
-      "rules": {
-        "title": "Reolennoù"
-      },
-      "user_resolved_issues": "Kudennoù diskoulmet gant hoc'h aozadennoù",
-      "warnings_and_errors": "Kemennoù ha fazioù",
+      "errors": "Fazioù",
+      "warnings": "Kemennoù",
+      "rules": "Reolennoù",
+      "resolved_tooltip": "Kudennoù diskoulmet gant hoc'h aozadennoù",
       "no_issues": {
         "message": {
           "edits": "Reizh a seblant bezañ ho kemmoù",
@@ -1394,8 +1270,6 @@
       "invalid_format": {
         "title": "Furmad direizh",
         "email": {
-          "message": "Ur chomlec'h postel direizh en deus {feature}",
-          "message_multi": "Chomlec'hioù postel direizh en deus {feature}",
           "reference": "Ar chomlec'hioù-postel a rank kemer skouer eus ar stumm \"implijer@skouer.bzh\"."
         }
       },
@@ -1751,65 +1625,103 @@
         "drag": "riklañ"
       },
       "or": "-pe-",
-      "browsing": {
-        "title": "Merdeiñ",
-        "navigation": {
-          "title": "Merdeiñ"
+      "browsing": "Merdeiñ",
+      "editing": "Aozañ",
+      "navigation": "Merdeiñ",
+      "selecting_features": "Diuzañ",
+      "drawing": "Tresañ",
+      "commands": "Gourc'hemennoù",
+      "help": "Skoazell",
+      "display_options": "Arventennoù an diskwel ",
+      "info": "Titouroù",
+      "command": {
+        "select_one": {
+          "label": "Diuzañ un elfenn hepken"
         },
-        "help": {
-          "title": "Skoazell",
-          "help": "Diskouez skoazell/teuliadur",
-          "keyboard": "Diskouez ar berradennoù klavier"
+        "select_multi": {
+          "label": "Diuzañ meur a elfenn"
         },
-        "display_options": {
-          "title": "Arventennoù an diskwel ",
-          "background": "Digeriñ/serriñ ar banell skeudennoù foñs",
-          "preferences": "Digeriñ/serriñ panell penndibaboù an implijer",
-          "osm_data": "Enaouiñ/lazhañ roadennoù OpenStreetMap",
-          "highlight_edits": "Splannañ kemmoù n'int ket bet enrollet"
+        "add_point": {
+          "label": "Mod \"ouzhpennañ ur poent\""
         },
-        "selecting": {
-          "title": "Diuzañ",
-          "select_one": "Diuzañ un elfenn hepken",
-          "select_multi": "Diuzañ meur a elfenn"
-        }
-      },
-      "editing": {
-        "title": "Aozañ",
-        "drawing": {
-          "title": "Tresañ",
-          "add_point": "Mod \"ouzhpennañ ur poent\"",
-          "add_line": "Mod \"ouzhpennañ ul linenn\"",
-          "add_area": "Mod \"ouzhpennañ un takad\"",
-          "add_note": "Mod \"ouzhpennañ un notenn\"",
-          "place_point": "Lakaat ur poent pe un notenn",
-          "stop_line": "Paouez da dresañ al linenn pe an takad"
+        "add_line": {
+          "label": "Mod \"ouzhpennañ ul linenn\""
         },
-        "commands": {
-          "title": "Gourc'hemennoù",
-          "copy": "Eilañ an elfennoù diuzet",
-          "paste": "Pegañ an elfennoù bet eilet",
-          "save": "Enrollañ ar c'hemmoù"
+        "add_area": {
+          "label": "Mod \"ouzhpennañ un takad\""
         },
-        "operations": {
-          "disconnect": "Distagañ an elfennoù diuzet",
-          "extract": "Eztennañ ur poent diouzh an elfenn-mañ",
-          "reverse": "Eilpennañ an diuz",
-          "move": "Dilec'hiañ an elfennoù bet diuzet",
-          "rotate": "C'hwelañ an elfennoù diuzet",
-          "straighten": "Eeunaat ul linenn pe poentoù",
-          "delete": "Dilemel an elfennoù diuzet"
-        }
-      },
-      "tools": {
-        "title": "Binviji",
-        "info": {
-          "title": "Titouroù",
-          "all": "Digeriñ/serriñ holl banelloù titouroù",
-          "background": "Digeriñ/serriñ ar banell foñs",
-          "history": "Digeriñ/serriñ banell ar roll istor",
-          "location": "Digeriñ/serriñ panell al lec'hiadur",
-          "measurement": "Digeriñ/serriñ ar banell mentañ"
+        "add_note": {
+          "label": "Mod \"ouzhpennañ un notenn\""
+        },
+        "place_point": {
+          "label": "Lakaat ur poent pe un notenn"
+        },
+        "stop_line": {
+          "label": "Paouez da dresañ al linenn pe an takad"
+        },
+        "copy": {
+          "label": "Eilañ an elfennoù diuzet"
+        },
+        "paste": {
+          "label": "Pegañ an elfennoù bet eilet"
+        },
+        "save": {
+          "label": "Enrollañ ar c'hemmoù"
+        },
+        "disconnect": {
+          "label": "Distagañ an elfennoù diuzet"
+        },
+        "extract": {
+          "label": "Eztennañ ur poent diouzh an elfenn-mañ",
+          "key": "R"
+        },
+        "reverse": {
+          "label": "Eilpennañ an diuz"
+        },
+        "move": {
+          "label": "Dilec'hiañ an elfennoù bet diuzet"
+        },
+        "rotate": {
+          "label": "C'hwelañ an elfennoù diuzet"
+        },
+        "straighten": {
+          "label": "Eeunaat ul linenn pe poentoù"
+        },
+        "delete": {
+          "label": "Dilemel an elfennoù diuzet"
+        },
+        "toggle_background": {
+          "label": "Digeriñ/serriñ ar banell skeudennoù foñs"
+        },
+        "toggle_preferences": {
+          "label": "Digeriñ/serriñ panell penndibaboù an implijer"
+        },
+        "wireframe": {
+          "key": "K"
+        },
+        "highlight_edits": {
+          "label": "Splannañ kemmoù n'int ket bet enrollet"
+        },
+        "keyboard_shortcuts": {
+          "label": "Diskouez ar berradennoù klavier"
+        },
+        "toggle_osm_data": {
+          "label": "Enaouiñ/lazhañ roadennoù OpenStreetMap"
+        },
+        "toggle_all_cards": {
+          "label": "Digeriñ/serriñ holl banelloù titouroù"
+        },
+        "toggle_background_card": {
+          "label": "Digeriñ/serriñ ar banell foñs"
+        },
+        "toggle_history_card": {
+          "label": "Digeriñ/serriñ banell ar roll istor"
+        },
+        "toggle_location_card": {
+          "label": "Digeriñ/serriñ panell al lec'hiadur"
+        },
+        "toggle_measurement_card": {
+          "label": "Digeriñ/serriñ ar banell mentañ"
         }
       }
     },

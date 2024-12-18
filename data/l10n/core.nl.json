@@ -27,16 +27,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Vlak",
-        "filter_tooltip": "vlakken"
+        "title": "Vlak"
       },
       "add_line": {
-        "title": "Lijn",
-        "filter_tooltip": "lijnen"
+        "title": "Lijn"
       },
       "add_point": {
-        "title": "Punt",
-        "filter_tooltip": "punten"
+        "title": "Punt"
       },
       "add_note": {
         "title": "Opmerking",
@@ -119,52 +116,15 @@
       },
       "circularize": {
         "title": "Maak rond",
-        "description": {
-          "single": "Maak dit object rond. ",
-          "multiple": "Maak deze objecten rond. "
-        },
         "annotation": {
           "feature": {
             "one": "Eén object rond gemaakt.",
             "other": "{n} objecten rond gemaakt."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Deze kunnen niet rond worden gemaakt vanwege meerdere redenen. "
-        },
-        "not_closed": {
-          "single": "Dit kan niet rond worden gemaakt, omdat het geen lus is.",
-          "multiple": "Deze kunnen niet worden rond gemaakt, omdat ze geen lussen zijn. "
-        },
-        "too_large": {
-          "single": "Dit kan niet rond worden gemaakt, omdat slechts een te klein deel ervan momenteel zichtbaar is.",
-          "multiple": "Deze kunnen niet rond worden gemaakt, omdat slechts een klein deel ervan momenteel zichtbaar is. "
-        },
-        "connected_to_hidden": {
-          "single": "Dit kan niet rond worden gemaakt, omdat het verbonden is met een verborgen object.",
-          "multiple": "Deze kunnen niet rond worden gemaakt, omdat sommige verbonden zijn met verborgen objecten. "
-        },
-        "not_downloaded": {
-          "single": "Dit kan niet rond worden gemaakt, omdat het niet volledig gedownload is.",
-          "multiple": "Deze kunnen niet rond worden gemaakt, omdat het niet volledig gedownload is. "
-        },
-        "already_circular": {
-          "single": "Dit kan niet ronder worden gemaakt dan het al is. ",
-          "multiple": "Deze kunnen niet ronder worden gemaakt dan ze al zijn. "
         }
       },
       "orthogonalize": {
         "title": "Maak hoeken recht",
-        "description": {
-          "corner": {
-            "single": "Maak deze hoek vierkant.",
-            "multiple": "Maak deze hoeken vierkant."
-          },
-          "feature": {
-            "single": "Maak de hoeken van dit object haaks.",
-            "multiple": "Maak de hoeken van deze objecten haaks. "
-          }
-        },
         "annotation": {
           "corner": {
             "one": "Eén hoek haaks gemaakt.",
@@ -174,33 +134,6 @@
             "one": "De hoeken van één object zijn haaks gemaakt.",
             "other": "De hoeken van {n} objecten zijn haaks gemaakt."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Deze kunnen niet haaks worden gemaakt vanwege meerdere redenen. "
-        },
-        "end_vertex": {
-          "single": "Dit kan niet haaks worden gemaakt, omdat het een eindpunt is. ",
-          "multiple": "Deze kunnen niet haaks worden gemaakt, omdat het eindpunten zijn. "
-        },
-        "square_enough": {
-          "single": "Dit kan niet vierkanter gemaakt worden dan het al is.",
-          "multiple": "Deze kunnen niet vierkanter gemaakt worden dan ze al zijn. "
-        },
-        "not_squarish": {
-          "single": "Dit kan niet vierkant worden gemaakt, omdat het niet vierkantig is.",
-          "multiple": "Deze kunnen niet vierkant worden gemaakt, omdat ze niet vierkantig zijn. "
-        },
-        "too_large": {
-          "single": "Dit kan niet vierkant worden gemaakt, omdat slechts een te klein deel ervan momenteel zichtbaar is.",
-          "multiple": "Deze kunnen niet vierkant worden gemaakt, omdat slechts een klein deel ervan momenteel zichtbaar is. "
-        },
-        "connected_to_hidden": {
-          "single": "Dit kan niet vierkant worden gemaakt, omdat het verbonden is met een verborgen object.",
-          "multiple": "Deze kunnen niet vierkant worden gemaakt, omdat sommige verbonden zijn met verborgen objecten. "
-        },
-        "not_downloaded": {
-          "single": "Dit object kan niet vierkant worden gemaakt, omdat het niet volledig gedownload is.",
-          "multiple": "Dit kan niet vierkant worden gemaakt, omdat het niet volledig gedownload is."
         }
       },
       "straighten": {
@@ -219,34 +152,10 @@
             "one": "Eén lijn rechtgemaakt.",
             "other": "{n} lijnen zijn rechtgetrokken."
           }
-        },
-        "too_bendy": {
-          "single": "Dit kan niet worden rechtgetrokken, omdat het te veel kromt.",
-          "multiple": "Deze kunnen niet worden rechtgetrokken, omdat ze te veel krommen. "
-        },
-        "connected_to_hidden": {
-          "single": "Dit kan niet worden rechtgetrokken, omdat het verbonden is met een verborgen object.",
-          "multiple": "Deze kunnen niet worden rechtgetrokken, omdat sommige verbonden zijn met verborgen objecten. "
-        },
-        "not_downloaded": {
-          "single": "Dit kan niet worden rechtgetrokken, omdat het niet volledig gedownload is.",
-          "multiple": "Deze kunnen niet worden rechtgetrokken, omdat ze niet volledig gedownload zijn."
-        },
-        "straight_enough": {
-          "single": "Dit kan niet rechter worden gemaakt dan het al is. ",
-          "multiple": "Deze kunnen niet rechter worden gemaakt dan ze al zijn. "
-        },
-        "too_large": {
-          "single": "Dit kan niet worden rechtgetrokken, omdat slechts een deel ervan momenteel zichtbaar is.",
-          "multiple": "Deze kunnen niet worden rechtgemaakt, omdat slechts een deel ervan momenteel zichtbaar is."
         }
       },
       "delete": {
         "title": "Verwijder",
-        "description": {
-          "single": "Verwijder dit object voorgoed.",
-          "multiple": "Verwijder deze objecten voorgoed."
-        },
         "annotation": {
           "point": "Punt verwijderd.",
           "vertex": "Knoop weggehaald uit weg.",
@@ -257,30 +166,6 @@
             "one": "Eén object verwijderd.",
             "other": "{n} objecten verwijderd."
           }
-        },
-        "too_large": {
-          "single": "Dit object kan niet worden verwijderd, omdat slechts een te klein deel ervan momenteel zichtbaar is.",
-          "multiple": "Deze objecten kunnen niet worden verwijderd, omdat slechts een te klein deel van hen momenteel zichtbaar is."
-        },
-        "incomplete_relation": {
-          "single": "Dit object kan niet worden verwijderd, omdat het niet volledig gedownload is.",
-          "multiple": "Deze objecten kunnen niet worden verwijderd, omdat ze niet volledig gedownload zijn."
-        },
-        "part_of_relation": {
-          "single": "Dit object kan niet worden verwijderd, omdat het deel uitmaakt van een grotere relatie. Je moet het eerst uit de relatie verwijderen.",
-          "multiple": "Deze objecten kunnen niet worden verwijderd, omdat ze deel uitmaken van grotere relaties. Je moet ze eerst uit die relaties verwijderen."
-        },
-        "connected_to_hidden": {
-          "single": "Dit object kan niet worden verwijderd, omdat het verbonden is met een verborgen object.",
-          "multiple": "Deze objecten kunnen niet worden verwijderd, omdat sommige ervan verbonden zijn met verborgen objecten."
-        },
-        "not_downloaded": {
-          "single": "Dit object kan niet worden verwijderd, omdat het niet volledig gedownload is.",
-          "multiple": "Deze objecten kunnen niet worden verwijderd, omdat ze niet volledig gedownload zijn."
-        },
-        "has_wikidata_tag": {
-          "single": "Dit object kan niet worden verwijderd, omdat er een Wikidata-attribuut aan gekoppeld is.",
-          "multiple": "Deze objecten kunnen niet worden verwijderd, omdat er aan een aantal Wikidata-attributen gekoppeld zijn."
         }
       },
       "downgrade": {
@@ -303,10 +188,6 @@
             "one": "Eén object gedowngraded.",
             "other": "{n} objecten gedowngraded."
           }
-        },
-        "has_wikidata_tag": {
-          "single": "Dit object kan niet worden gedowngraded, omdat het een Wikidata-tag heeft.",
-          "multiple": "Deze objecten kunnen niet worden gedowngraded, omdat er aan sommige een Wikidata-tag gekoppeld is."
         }
       },
       "add_member": {
@@ -406,10 +287,6 @@
       },
       "move": {
         "title": "Verschuif",
-        "description": {
-          "single": "Verschuif dit object naar een andere plek.",
-          "multiple": "Verschuif deze objecten naar een andere plek."
-        },
         "annotation": {
           "point": "Punt verschoven.",
           "vertex": "Knooppunt van een weg verschoven.",
@@ -420,38 +297,12 @@
             "one": "Eén object verplaatst.",
             "other": "{n} objecten verplaatst."
           }
-        },
-        "incomplete_relation": {
-          "single": "Dit object kan niet worden verschoven, omdat het niet volledig gedownload is.",
-          "multiple": "Deze objecten kunnen niet worden verschoven, omdat ze niet volledig gedownload zijn."
-        },
-        "too_large": {
-          "single": "Dit object kan niet worden verschoven, omdat slechts een te klein deel ervan momenteel zichtbaar is.",
-          "multiple": "Deze objecten kunnen niet worden verschoven, omdat slechts een te klein deel van hen momenteel zichtbaar is."
-        },
-        "connected_to_hidden": {
-          "single": "Dit object kan niet worden verschoven, omdat het verbonden is met een verborgen object.",
-          "multiple": "Deze objecten kunnen niet worden verschoven, omdat sommigen ervan verbonden zijn met verborgen objecten."
-        },
-        "not_downloaded": {
-          "single": "Dit object kan niet worden verschoven, omdat het niet volledig gedownload is.",
-          "multiple": "Deze objecten kunnen niet worden verschoven, omdat ze niet volledig gedownload zijn."
         }
       },
       "reflect": {
         "title": {
           "long": "Spiegel lange as",
           "short": "Spiegel korte as"
-        },
-        "description": {
-          "long": {
-            "single": "Spiegel dit object om zijn lange as.",
-            "multiple": "Spiegel deze objecten om hun lange as."
-          },
-          "short": {
-            "single": "Spiegel dit object om zijn korte as.",
-            "multiple": "Spiegel deze objecten om hun korte as."
-          }
         },
         "annotation": {
           "long": {
@@ -466,30 +317,10 @@
               "other": "{n} objecten gespiegeld om hun korte as."
             }
           }
-        },
-        "incomplete_relation": {
-          "single": "Dit object kan niet gespiegeld worden omdat het niet volledig gedownload is.",
-          "multiple": "Deze objecten kunnen niet gespiegeld worden omdat ze niet volledig gedownload zijn."
-        },
-        "too_large": {
-          "single": "Dit object kan niet gespiegeld worden omdat slechts een deel ervan momenteel zichtbaar is.",
-          "multiple": "Deze objecten kunnen niet gespiegeld worden omdat slechts een deel van hen momenteel zichtbaar is."
-        },
-        "connected_to_hidden": {
-          "single": "Dit object kan niet gespiegeld worden omdat het verbonden is met een verborgen object.",
-          "multiple": "Deze objecten kunnen niet gespiegeld worden omdat sommigen ervan verbonden zijn met verborgen objecten."
-        },
-        "not_downloaded": {
-          "single": "Dit object kan niet worden gespiegeld omdat het niet volledig gedownload is.",
-          "multiple": "Deze objecten kunnen niet worden gespiegeld omdat deze niet volledig gedownload zijn."
         }
       },
       "rotate": {
         "title": "Draai",
-        "description": {
-          "single": "Draai dit object rond zijn middelpunt.",
-          "multiple": "Draai deze objecten rond hun middelpunt."
-        },
         "annotation": {
           "line": "Lijn gedraaid.",
           "area": "Vlak gedraaid.",
@@ -498,22 +329,6 @@
             "one": "Een object is gedraaid.",
             "other": "{n} objecten gedraaid."
           }
-        },
-        "incomplete_relation": {
-          "single": "Dit object kan niet gedraaid worden omdat het niet volledig gedownload is.",
-          "multiple": "Deze objecten kunnen niet gedraaid worden omdat ze niet volledig gedownload zijn."
-        },
-        "too_large": {
-          "single": "Dit object kan niet gedraaid worden omdat slechts een te klein deel ervan momenteel zichtbaar is.",
-          "multiple": "Deze objecten kunnen niet gedraaid worden omdat slechts een te klein deel van hen momenteel zichtbaar is."
-        },
-        "connected_to_hidden": {
-          "single": "Dit object kan niet gedraaid worden omdat het verbonden is met een verborgen object.",
-          "multiple": "Deze objecten kunnen niet gedraaid worden omdat sommigen ervan verbonden zijn met verborgen objecten."
-        },
-        "not_downloaded": {
-          "single": "Dit object kan niet worden geroteerd omdat het niet volledig gedownload is.",
-          "multiple": "Deze objecten kunnen niet worden geroteerd omdat deze niet volledig gedownload zijn."
         }
       },
       "reverse": {
@@ -554,22 +369,6 @@
               "other": "{n} objecten vergroot."
             }
           }
-        },
-        "too_small": {
-          "single": "Dit object kan niet kleiner geschaald worden omdat het te klein zou zijn.",
-          "multiple": "Deze objecten kunnen niet kleiner geschaald worden omdat ze te klein zouden zijn."
-        },
-        "too_large": {
-          "single": "Dit object kan niet geschaald worden omdat slechts een deel ervan momenteel zichtbaar is.",
-          "multiple": "Deze objecten kunnen niet geschaald worden omdat slechts een deel van hen momenteel zichtbaar is."
-        },
-        "connected_to_hidden": {
-          "single": "Dit object kan niet geschaald worden omdat het verbonden is met een verborgen object.",
-          "multiple": "Deze objecten kunnen niet geschaald worden omdat sommigen ervan verbonden zijn met verborgen objecten."
-        },
-        "not_downloaded": {
-          "single": "Dit object kan niet worden geschaald omdat het niet volledig gedownload is.",
-          "multiple": "Deze objecten kunnen niet worden geschaald omdat deze niet volledig gedownload zijn."
         }
       },
       "split": {
@@ -624,33 +423,13 @@
       "extract": {
         "title": "Extraheer",
         "description": {
-          "vertex": {
-            "single": "Extraheer dit punt van zijn bovenliggende lijnen/vlakken.",
-            "multiple": "Extraheer deze punten van hun bovenliggende objecten."
-          },
-          "line": {
-            "single": "Extraheer een punt van deze lijn.",
-            "multiple": "Extraheer punten van deze lijnen."
-          },
-          "area": {
-            "single": "Extraheer een punt van dit vlak.",
-            "multiple": "Extraheer punten van deze vlakken."
-          },
           "feature": {
-            "multiple": "Extraheer punten van deze objecten."
+            "other": "Extraheer punten van deze objecten."
           }
         },
         "annotation": {
           "one": "Een punt is geëxtraheerd.",
           "other": "{n} punten zijn geëxtraheerd."
-        },
-        "too_large": {
-          "single": "Een punt kan niet geëxtraheerd omdat slechts een klein deel van het object momenteel zichtbaar is.",
-          "multiple": "Punten kunnen niet worden geëxtraheerd omdat niet genoeg van de objecten momenteel zichtbaar is."
-        },
-        "connected_to_hidden": {
-          "single": "Dit punt kan niet worden geëxtraheerd omdat het verbonden is met een verborgen object.",
-          "multiple": "Punten kunnen niet worden geëxtraheerd van deze objecten omdat sommige verbonden zijn met verborgen objecten."
         }
       }
     },
@@ -727,6 +506,7 @@
       "upload_explanation_with_user": "De aanpassingen die je uploadt als {user} worden zichtbaar op alle kaarten die de gegevens van OpenStreetMap gebruiken.",
       "request_review": "Ik zou graag hebben dat iemand mijn bewerkingen nakijkt.",
       "request_review_info": "Twijfel je ergens over? Nodig een ervaren mapper uit om je werk achteraf na te kijken.",
+      "save": "Uploaden",
       "cancel": "Annuleer",
       "changes": "Wijzigingen",
       "download_changes": "Download osmChange-bestand",
@@ -844,10 +624,6 @@
       "multiple_values": "Meerdere waarden",
       "multiple_types": "Meerdere types",
       "unshared_value_tooltip": "niet gedeeld door alle objecten",
-      "hidden_preset": {
-        "manual": "{features} zijn verborgen. Open het kaartgegevenspaneel om ze te tonen.",
-        "zoom": "{features} zijn verborgen. Zoom in om ze te tonen."
-      },
       "back_tooltip": "Wijzig objecttype",
       "details": "Meer informatie (Engels)",
       "remove": "Verwijder",
@@ -958,7 +734,6 @@
         "tooltip": "Toon geometrische waarden van de selectie."
       },
       "style_options": "Stijlopties",
-      "map_features": "Objecttypes tonen/verbergen",
       "autohidden": "Deze objecten zijn automatisch verborgen, omdat er anders te veel op het scherm zouden staan. Je kan inzoomen om ze te bewerken.",
       "osmhidden": "Deze objecten zijn automatisch verborgen, omdat de OpenStreetMap-laag verborgen is."
     },
@@ -995,7 +770,7 @@
         "tooltip": "Toon foto's genomen door deze gebruiker"
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Punten",
         "tooltip": "Interessante punten"
@@ -1190,9 +965,10 @@
     "source_switch": {
       "lose_changes": "Je hebt niet-opgeslagen aanpassingen. Door te wisselen van kaartserver gaan deze verloren. Weet je zeker dat je van kaartserver wilt wisselen?"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Verwijder"
+    "rapid_menu": {
+      "remove": "Verwijder",
+      "category": {
+        "roads": "wegen"
       }
     },
     "tag_reference": {
@@ -1208,7 +984,6 @@
         "out": "Kan niet verder uitzoomen."
       }
     },
-    "cannot_zoom": "Kan niet verder uitzoomen in huidige modus",
     "full_screen": "Volledig scherm aan/uit",
     "self_intersection": {
       "error": {
@@ -1219,6 +994,7 @@
     "QA": {
       "osmose": {
         "title": "OSmose-issue",
+        "detail_title": "Meer informatie (Engels)",
         "elems_title": "Objecten",
         "fix_title": "Reparatierichtlijnen",
         "trap_title": "Vaak voorkomende vergissingen"
@@ -1626,7 +1402,6 @@
         "title": "Punten",
         "intro": "Punten kunnen gebruikt worden om objecten zoals winkels, restaurants en monumenten weer te geven. Ze geven een specifieke locatie aan en beschrijven wat daar is.",
         "add_point_h": "Punten toevoegen",
-        "add_point": "Om een punt toe te voegen, klik je op de {point_icon **{point}**-knop in de werkbalk boven de kaart, of gebruik je de sneltoets `1`.",
         "move_point_h": "Punten verplaatsen",
         "delete_point_h": "Punten verwijderen",
         "delete_point": "Objecten die niet in het echt bestaan, kan je verwijderen. Een object in OpenStreetMap verwijderen haalt het van de kaart voor iedereen ter wereld. Let dus goed op dat een object echt weg is voor je het verwijdert."
@@ -1635,7 +1410,6 @@
         "title": "Lijnen",
         "intro": "*Lijnen* worden gebruikt om objecten zoals wegen, spoorwegen en rivieren voor te stellen. Lijnen worden getekend in het midden van het object dat ze representeren.",
         "add_line_h": "Lijnen toevoegen",
-        "add_line": "Om een lijn toe te voegen, klik je op de {line_icon} **{line}**-knop in de werkbalk boven de kaart, of gebruik je de sneltoets `2`.",
         "add_line_finish": "Om een lijn te beëindigen, klik of druk op de laatste knoop of druk op `{return}`.",
         "modify_line_h": "Lijnen aanpassen",
         "modify_line_dragnode": "Je zal vaak lijnen zien die niet juist gevormd zijn, bijvoorbeeld een weg die niet overeenkomt met de achtergrondbeelden. Om de vorm van een lijn aan te passen moet je hem eerst selecteren. Alle knopen van de lijn zullen getekend worden als kleine cirkels. Je kan de knopen dan verslepen naar betere locaties.",
@@ -1654,7 +1428,6 @@
         "point_or_area_h": "Punten of vlakken?",
         "point_or_area": "Veel objecten kunnen worden gerepresenteerd worden als punt of vlak. Je voegt gebouwen en gebieden toe als vlakken wanneer dit mogelijk is.\n\nEr is geen internationale consensus over hoe bedrijven, voorzieningen en andere objecten binnen een gebouw gerepresenteerd moeten worden: op het vlak dat het gebouw voorsteld of als apart punt. Als je zoiets nieuw toevoegt, teken het dan als een punt binnen het gebouw. Als het object al in OpenStreetMap op het gebouw stond, verander het dan niet zomaar naar een apart punt.",
         "add_area_h": "Vlakken toevoegen",
-        "add_area_command": "Om een vlak toe te voegen, klik je op de {area_icon} **{area}**-knop in de werkbalk boven de kaart, of gebruik je de sneltoets `3`.",
         "add_area_finish": "Om een vlak te beëindigen, klik of druk op de laatste knoop of druk op `{return}`.",
         "square_area_h": "Hoeken haaks maken",
         "modify_area_h": "Vlakken aanpassen",
@@ -1781,18 +1554,10 @@
     },
     "issues": {
       "title": "Problemen",
-      "list_title": "Problemen",
-      "errors": {
-        "list_title": "Foutmeldingen"
-      },
-      "warnings": {
-        "list_title": "Waarschuwingen"
-      },
-      "rules": {
-        "title": "Regels"
-      },
-      "user_resolved_issues": "Problemen die zijn opgelost door jouw aanpassingen",
-      "warnings_and_errors": "Waarschuwingen en foutmeldingen",
+      "errors": "Foutmeldingen",
+      "warnings": "Waarschuwingen",
+      "rules": "Regels",
+      "resolved_tooltip": "Problemen die zijn opgelost door jouw aanpassingen",
       "no_issues": {
         "message": {
           "everything": "Alles ziet er goed uit",
@@ -1950,8 +1715,6 @@
         "title": "Ongeldige formattering",
         "tip": "Vind tags met onverwachte formatteringen",
         "email": {
-          "message": "{feature} heeft een ongeldig e-mailadres",
-          "message_multi": "{feature} heeft meerdere ongeldige e-mailadressen",
           "reference": "E-mailadressen moeten eruit zien als \"gebruiker@voorbeeld.com\""
         }
       },
@@ -2468,102 +2231,177 @@
       "title": "Sneltoetsen",
       "tooltip": "Toon het sneltoetsoverzicht.",
       "key": {
+        "delete": "Verwijder",
         "space": "Spatiebalk"
       },
       "gesture": {
         "drag": "sleep"
       },
       "or": "-of-",
-      "browsing": {
-        "title": "Rondbewegen",
-        "navigation": {
-          "title": "Navigatie",
-          "pan": "Verschuif kaart"
+      "browsing": "Rondbewegen",
+      "editing": "Bewerken",
+      "navigation": "Navigatie",
+      "selecting_features": "Objecten selecteren",
+      "with_features_selected": "Met objecten geselecteerd",
+      "with_node_selected": "Met knoop geselecteerd",
+      "with_way_selected": "Met geselecteerde weg",
+      "drawing": "Tekenen",
+      "commands": "Opdrachten",
+      "help": "Hulp",
+      "display_options": "Weergave-opties",
+      "info": "Informatie",
+      "command": {
+        "pan": {
+          "label": "Verschuif kaart"
         },
-        "help": {
-          "title": "Hulp",
-          "help": "Toon hulp/documentatie",
-          "keyboard": "Toon sneltoetsen"
+        "select_one": {
+          "label": "Eén object selecteren"
         },
-        "display_options": {
-          "title": "Weergave-opties",
-          "background": "Achtergrondafbeeldingenpaneel open/dicht",
-          "map_data": "Kaartgegevenspaneel open/dicht",
-          "issues": "Toon'Verberg validatiepaneel",
-          "preferences": "Gebruikersinstellingenpaneel open/dicht",
-          "wireframe": "Wireframemodus aan/uit",
-          "osm_data": "OpenStreetMap-gegevens aan/uit",
-          "highlight_edits": "Markeer onopgeslagen wijzigingen"
+        "select_multi": {
+          "label": "Meerdere objecten selecteren"
         },
-        "selecting": {
-          "title": "Objecten selecteren",
-          "select_one": "Eén object selecteren",
-          "select_multi": "Meerdere objecten selecteren",
-          "lasso": "Objecten selecteren met lasso",
-          "search": "Objecten zoeken"
+        "lasso": {
+          "label": "Objecten selecteren met lasso"
         },
-        "with_selected": {
-          "title": "Met objecten geselecteerd",
-          "edit_menu": "Bewerkmenu open/dicht"
+        "edit_menu": {
+          "label": "Bewerkmenu open/dicht"
         },
-        "vertex_selected": {
-          "title": "Met knoop geselecteerd",
-          "first": "Naar eerste knoop springen",
-          "last": "Naar laatste knoop springen",
-          "change_parent": "Van lijn wisselen",
-          "parent": "Selecteer parent weg"
+        "first_node": {
+          "label": "Naar eerste knoop springen"
         },
-        "way_selected": {
-          "title": "Met geselecteerde weg",
-          "child": "Selecteer subknopen"
-        }
-      },
-      "editing": {
-        "title": "Bewerken",
-        "drawing": {
-          "title": "Tekenen",
-          "add_point": "‘Punt toevoegen’-modus",
-          "add_line": "‘Lijn toevoegen’-modus",
-          "add_area": "‘Vlak toevoegen’-modus",
-          "add_note": "‘Kaartopmerking toevoegen’-modus",
-          "place_point": "Plaats punt of kaartopmerking",
-          "disable_snap": "Houd ingedrukt om punt-magnetisme uit te schakelen",
-          "stop_line": "Beëindig tekenen van lijn of vlak"
+        "last_node": {
+          "label": "Naar laatste knoop springen"
         },
-        "commands": {
-          "title": "Opdrachten",
-          "copy": "Geselecteerde objecten kopiëren",
-          "paste": "Geselecteerde objecten plakken",
-          "undo": "Laatste actie ongedaan maken",
-          "redo": "Ongedaan gemaakte actie opnieuw uitvoeren",
-          "save": "Sla aanpassingen op"
+        "change_parent": {
+          "label": "Van lijn wisselen"
         },
-        "operations": {
-          "continue_line": "Vervolg een lijn op het geselecteerde eindpunt",
-          "merge": "Geselecteerde objecten samenvoegen",
-          "disconnect": "Maak geselecteerde objecten los",
-          "extract": "Extraheer een punt uit een object",
-          "split": "Splits objecten bij de geselecteerde punten",
-          "reverse": "Keer geselecteerde objecten om",
-          "move": "Geselecteerde objecten verplaatsen",
-          "rotate": "Geselecteerde objecten draaien",
-          "orthogonalize": "Hoeken van lijn of vlak haaks maken",
-          "straighten": "Trek een lijn of punten recht",
-          "circularize": "Vlak of gesloten lijn rond maken",
-          "reflect_long": "Spiegel objecten langs de lange as",
-          "reflect_short": "Spiegel objecten langs de korte as",
-          "delete": "Geselecteerde objecten verwijderen"
-        }
-      },
-      "tools": {
-        "title": "Gereedschappen",
-        "info": {
-          "title": "Informatie",
-          "all": "Alle informatiepanelen open/dicht",
-          "background": "Achtergrondpaneel open/dicht",
-          "history": "Geschiedenispaneel open/dicht",
-          "location": "Locatiepaneel open/dicht",
-          "measurement": "Meetpaneel open/dicht"
+        "select_parent": {
+          "label": "Selecteer parent weg"
+        },
+        "select_children": {
+          "label": "Selecteer subknopen"
+        },
+        "add_point": {
+          "label": "‘Punt toevoegen’-modus"
+        },
+        "add_line": {
+          "label": "‘Lijn toevoegen’-modus"
+        },
+        "add_area": {
+          "label": "‘Vlak toevoegen’-modus"
+        },
+        "add_note": {
+          "label": "‘Kaartopmerking toevoegen’-modus"
+        },
+        "place_point": {
+          "label": "Plaats punt of kaartopmerking"
+        },
+        "disable_snap": {
+          "label": "Houd ingedrukt om punt-magnetisme uit te schakelen"
+        },
+        "stop_line": {
+          "label": "Beëindig tekenen van lijn of vlak"
+        },
+        "copy": {
+          "label": "Geselecteerde objecten kopiëren"
+        },
+        "paste": {
+          "label": "Geselecteerde objecten plakken"
+        },
+        "undo": {
+          "label": "Laatste actie ongedaan maken"
+        },
+        "redo": {
+          "label": "Ongedaan gemaakte actie opnieuw uitvoeren"
+        },
+        "save": {
+          "label": "Sla aanpassingen op"
+        },
+        "find": {
+          "label": "Objecten zoeken"
+        },
+        "continue_line": {
+          "label": "Vervolg een lijn op het geselecteerde eindpunt"
+        },
+        "merge": {
+          "label": "Geselecteerde objecten samenvoegen"
+        },
+        "disconnect": {
+          "label": "Maak geselecteerde objecten los"
+        },
+        "extract": {
+          "label": "Extraheer een punt uit een object",
+          "key": "O"
+        },
+        "split": {
+          "label": "Splits objecten bij de geselecteerde punten"
+        },
+        "reverse": {
+          "label": "Keer geselecteerde objecten om"
+        },
+        "move": {
+          "label": "Geselecteerde objecten verplaatsen"
+        },
+        "rotate": {
+          "label": "Geselecteerde objecten draaien"
+        },
+        "orthogonalize": {
+          "label": "Hoeken van lijn of vlak haaks maken"
+        },
+        "straighten": {
+          "label": "Trek een lijn of punten recht",
+          "key": "Z"
+        },
+        "circularize": {
+          "label": "Vlak of gesloten lijn rond maken"
+        },
+        "reflect_long": {
+          "label": "Spiegel objecten langs de lange as"
+        },
+        "reflect_short": {
+          "label": "Spiegel objecten langs de korte as"
+        },
+        "delete": {
+          "label": "Geselecteerde objecten verwijderen"
+        },
+        "toggle_background": {
+          "label": "Achtergrondafbeeldingenpaneel open/dicht"
+        },
+        "toggle_map_data": {
+          "label": "Kaartgegevenspaneel open/dicht"
+        },
+        "toggle_issues": {
+          "label": "Toon'Verberg validatiepaneel"
+        },
+        "toggle_preferences": {
+          "label": "Gebruikersinstellingenpaneel open/dicht"
+        },
+        "highlight_edits": {
+          "label": "Markeer onopgeslagen wijzigingen"
+        },
+        "keyboard_shortcuts": {
+          "label": "Toon sneltoetsen"
+        },
+        "toggle_osm_data": {
+          "label": "OpenStreetMap-gegevens aan/uit"
+        },
+        "toggle_streetside": {
+          "key": "Z"
+        },
+        "toggle_all_cards": {
+          "label": "Alle informatiepanelen open/dicht"
+        },
+        "toggle_background_card": {
+          "label": "Achtergrondpaneel open/dicht"
+        },
+        "toggle_history_card": {
+          "label": "Geschiedenispaneel open/dicht"
+        },
+        "toggle_location_card": {
+          "label": "Locatiepaneel open/dicht"
+        },
+        "toggle_measurement_card": {
+          "label": "Meetpaneel open/dicht"
         }
       }
     },
@@ -2574,7 +2412,7 @@
     },
     "wikidata": {
       "identifier": "Identificatie",
-      "description": "Omschrijving"
+      "description": "Beschrijving"
     },
     "languageNames": {
       "ab": "Abchazisch",
@@ -2683,7 +2521,6 @@
       "gmh": "Middelhoogduits",
       "gn": "Guaraní",
       "goh": "Oudhoogduits",
-      "gom": "Goa Konkani",
       "got": "Gothisch",
       "grc": "Oudgrieks",
       "gsw": "Zwitserduits",

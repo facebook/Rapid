@@ -1,6 +1,7 @@
 {
   "zh-CN": {
     "icons": {
+      "download": "下載",
       "information": "信息",
       "remove": "删除",
       "undo": "撤销",
@@ -25,14 +26,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "区域",
-        "filter_tooltip": "区域"
+        "title": "区域"
       },
       "add_line": {
-        "filter_tooltip": "线"
+        "title": "綫"
       },
       "add_point": {
-        "filter_tooltip": "点"
+        "title": "點"
       },
       "add_note": {
         "title": "注记",
@@ -42,6 +42,7 @@
         "title": "添加 {feature}"
       },
       "browse": {
+        "title": "周圍睇",
         "description": "移动和缩放地图。"
       },
       "drag_node": {
@@ -96,83 +97,18 @@
       },
       "circularize": {
         "title": "环形化",
-        "description": {
-          "single": "环状化该要素。",
-          "multiple": "环状化这些要素。"
-        },
         "annotation": {
           "feature": "环状化 {n} 个要素。"
-        },
-        "multiple_blockers": {
-          "multiple": "由于多个原因，无法环状化这些要素。"
-        },
-        "not_closed": {
-          "single": "该要素不是一个闭合环，无法将其环状化。",
-          "multiple": "这些要素不是闭合环，无法将它们环状化。"
-        },
-        "too_large": {
-          "single": "该要素的可见部分不足，无法将其环状化。",
-          "multiple": "这些要素的可见部分不足，无法将它们环状化。"
-        },
-        "connected_to_hidden": {
-          "single": "该要素与某一隐藏要素相连，无法将其环状化。",
-          "multiple": "这些要素与某些隐藏要素相连，无法将它们环状化。"
-        },
-        "not_downloaded": {
-          "single": "该要素有一部分未被下载，无法将其环状化。",
-          "multiple": "这些要素有一部分未被下载，无法将它们环状化。"
-        },
-        "already_circular": {
-          "single": "这个要素不能再更圆了。",
-          "multiple": "这些要素不能再更圆了。"
         }
       },
       "orthogonalize": {
         "title": "直角化",
-        "description": {
-          "corner": {
-            "single": "直角化该角落。",
-            "multiple": "直角化这些角落。"
-          },
-          "feature": {
-            "single": "直角化该要素的角落。",
-            "multiple": "直角化这些要素的角落。"
-          }
-        },
         "annotation": {
           "corner": "直角化 {n} 个角落。",
           "feature": "直角化 {n} 个要素的角落。"
-        },
-        "multiple_blockers": {
-          "multiple": "由于多个原因，无法将它们的所在角化为直角。"
-        },
-        "end_vertex": {
-          "single": "该点为端点，无法将其所在角化为直角。",
-          "multiple": "这些点为端点，无法将它们的所在角化为直角。"
-        },
-        "square_enough": {
-          "single": "无法使其更为直角化。",
-          "multiple": "无法使其更为直角化。"
-        },
-        "not_squarish": {
-          "single": "该要素不是近似方形的，无法将其直角化。",
-          "multiple": "这些要素不是近似方形的，无法将它们直角化。"
-        },
-        "too_large": {
-          "single": "该要素的可见部分不足，无法将其直角化。",
-          "multiple": "这些要素的可见部分不足，无法将它们直角化。"
-        },
-        "connected_to_hidden": {
-          "single": "该要素与一隐藏要素相连，无法将其直角化。",
-          "multiple": "这些要素与某些隐藏要素相连，无法将它们直角化。"
-        },
-        "not_downloaded": {
-          "single": "该要素有一部分未被下载，无法将其直角化。",
-          "multiple": "这些要素有一部分未被下载，无法将它们直角化。"
         }
       },
       "straighten": {
-        "title": "拉直",
         "description": {
           "points": "拉直这些点。",
           "line": "拉直该线。",
@@ -181,33 +117,10 @@
         "annotation": {
           "point": "拉直 {n} 个点。",
           "line": "拉直 {n} 条线。"
-        },
-        "too_bendy": {
-          "single": "该要素过于弯曲，无法将其拉直。",
-          "multiple": "这些要素过于弯曲，无法将其拉直。"
-        },
-        "connected_to_hidden": {
-          "single": "该要素与某隐藏要素相连，无法将其拉直。",
-          "multiple": "这些要素与某些隐藏要素相连，无法将它们拉直。"
-        },
-        "not_downloaded": {
-          "single": "该要素有一部分并未下载，无法将其拉直。",
-          "multiple": "这些要素有一部分并未下载，无法将它们拉直。"
-        },
-        "straight_enough": {
-          "single": "无法使其比现在更直。",
-          "multiple": "无法使它们比现在更直。"
-        },
-        "too_large": {
-          "single": "该要素的可见部分不足，无法将其拉直。",
-          "multiple": "这些要素的可见部分不足，无法将它们拉直。"
         }
       },
       "delete": {
-        "description": {
-          "single": "彻底删除该要素。",
-          "multiple": "彻底删除这些要素。"
-        },
+        "title": "刪",
         "annotation": {
           "point": "删除了一个点。",
           "vertex": "删除了路径上的一个节点。",
@@ -215,30 +128,6 @@
           "area": "删除了一个区域。",
           "relation": "删除了一个关系。",
           "feature": "删除 {n} 个要素。"
-        },
-        "too_large": {
-          "single": "该要素的可见部分不足，无法将其删除。",
-          "multiple": "这些要素的可见部分不足，无法将它们删除。"
-        },
-        "incomplete_relation": {
-          "single": "该要素未全部下载，无法将其删除。",
-          "multiple": "这些要素未全部下载，无法将它们删除。"
-        },
-        "part_of_relation": {
-          "single": "该要素为更大关系的一部分，无法将其删除。您必须先将其从关系中移除。",
-          "multiple": "这些要素是更大关系中的一部分，无法将它们删除。您必须先将它们从关系中移除。"
-        },
-        "connected_to_hidden": {
-          "single": "该要素与某一隐藏要素相连，无法将其删除。",
-          "multiple": "这些要素与某些隐藏要素相连，无法将它们删除。"
-        },
-        "not_downloaded": {
-          "single": "该要素的一部分未被下载，无法将其删除。",
-          "multiple": "这些要素的一部分未被下载，无法将它们删除。"
-        },
-        "has_wikidata_tag": {
-          "single": "该要素有维基数据标签，无法删除。",
-          "multiple": "有些要素有维基数据标签，无法全部删除。"
         }
       },
       "downgrade": {
@@ -253,10 +142,6 @@
           "building": "将{n}个要素降级为基本建筑物。",
           "address": "将{n}个要素降级为地址。",
           "generic": "降级了{n}个要素。"
-        },
-        "has_wikidata_tag": {
-          "single": "该要素存在维基数据的标签，无法将其降级。",
-          "multiple": "这些要素存在维基数据的标签，无法将它们降级。"
         }
       },
       "add_member": {
@@ -332,6 +217,7 @@
         "relation": "该要素与某个关系的成员相连，无法将其分离。"
       },
       "merge": {
+        "title": "併",
         "description": "合并这些要素。",
         "annotation": "合并 {n} 个要素。",
         "not_eligible": "这些要素不可以合并。",
@@ -345,10 +231,7 @@
         "too_many_vertices": "这些要素无法合并，因为将导致合并后路径节点过多。"
       },
       "move": {
-        "description": {
-          "single": "移动该要素到不同的位置。",
-          "multiple": "移动这些要素到不同的位置。"
-        },
+        "title": "搬",
         "annotation": {
           "point": "移动点。",
           "vertex": "移动路径中节点。",
@@ -356,38 +239,12 @@
           "area": "移动了一个区域",
           "relation": "移动一个关系。",
           "feature": "移动 {n} 个要素。"
-        },
-        "incomplete_relation": {
-          "single": "该要素未全部下载，无法移动。",
-          "multiple": "这些要素未全部下载，无法移动。"
-        },
-        "too_large": {
-          "single": "该要素的可见部分不足，无法移动。",
-          "multiple": "这些要素的可见部分不足，无法移动。"
-        },
-        "connected_to_hidden": {
-          "single": "该要素与某一隐藏要素相连，无法移动。",
-          "multiple": "这些要素与某些隐藏要素相连，无法移动。"
-        },
-        "not_downloaded": {
-          "single": "该要素的一部分未被下载，无法移动。",
-          "multiple": "这些要素的一部分未被下载，无法移动。"
         }
       },
       "reflect": {
         "title": {
           "long": "沿长轴翻转",
           "short": "沿短轴翻转"
-        },
-        "description": {
-          "long": {
-            "single": "沿该要素的长轴翻转。",
-            "multiple": "沿这些要素的长轴翻转。"
-          },
-          "short": {
-            "single": "沿该要素的短轴翻转。",
-            "multiple": "沿这些要素的短轴翻转。"
-          }
         },
         "annotation": {
           "long": {
@@ -396,53 +253,19 @@
           "short": {
             "feature": "沿其短轴翻转了 {n} 个要素。"
           }
-        },
-        "incomplete_relation": {
-          "single": "该要素未全部下载，无法将其翻转。",
-          "multiple": "这些要素未全部下载，无法将其翻转。"
-        },
-        "too_large": {
-          "single": "该要素的可见部分不足，无法将其翻转。",
-          "multiple": "这些要素的可见部分不足，无法将其翻转。"
-        },
-        "connected_to_hidden": {
-          "single": "该要素与某一隐藏要素相连，无法将其翻转。",
-          "multiple": "这些要素与某些隐藏要素相连，无法将它们翻转。"
-        },
-        "not_downloaded": {
-          "single": "这些要素的一部分未被下载，无法将其翻转。",
-          "multiple": "这些要素的一部分未被下载，无法将其翻转。"
         }
       },
       "rotate": {
-        "description": {
-          "single": "绕该要素的中心点旋转。",
-          "multiple": "绕这些要素的中心点旋转。"
-        },
+        "title": "擰轉",
         "annotation": {
           "line": "旋转线。",
           "area": "旋转了一个区域。",
           "relation": "旋转一个关系。",
           "feature": "旋转 {n} 个要素。"
-        },
-        "incomplete_relation": {
-          "single": "该要素未全部下载，无法旋转。",
-          "multiple": "这些要素未全部下载，无法旋转。"
-        },
-        "too_large": {
-          "single": "该要素的可见部分不足，无法旋转。",
-          "multiple": "这些要素的可见部分不足，无法旋转。"
-        },
-        "connected_to_hidden": {
-          "single": "该要素与某一隐藏要素相连，无法旋转。",
-          "multiple": "这些要素与某些隐藏要素相连，无法旋转。"
-        },
-        "not_downloaded": {
-          "single": "该要素的一部分未被下载，无法旋转。",
-          "multiple": "这些要素的一部分未被下载，无法旋转。"
         }
       },
       "reverse": {
+        "title": "倒向。",
         "description": {
           "point": "翻转该点的方向。",
           "points": "翻转这些点的方向。",
@@ -464,25 +287,10 @@
           "up": {
             "feature": "放大了 {n} 个要素"
           }
-        },
-        "too_small": {
-          "single": "该要素不能被缩小，因为这样它会变得过于小。",
-          "multiple": "这些要素不能被缩小，因为这样它们会变得过于小。"
-        },
-        "too_large": {
-          "single": "该要素的可见部分不足，无法缩放。",
-          "multiple": "这些要素的可见部分不足，无法缩放。"
-        },
-        "connected_to_hidden": {
-          "single": "该要素与某一隐藏要素相连，无法缩放。",
-          "multiple": "这些要素与某些隐藏要素相连，无法缩放。"
-        },
-        "not_downloaded": {
-          "single": "该要素的一部分未被下载，无法缩放。",
-          "multiple": "这些要素的一部分未被下载，无法缩放。"
         }
       },
       "split": {
+        "title": "斬開",
         "description": {
           "line": {
             "single": {
@@ -512,6 +320,7 @@
           "area": "分割 {n} 个区域。",
           "feature": "分割 {n} 个要素。"
         },
+        "not_eligible": "綫無得喺頭尾度斬。",
         "connected_to_hidden": "该要素与某一隐藏要素相连，无法分割。"
       },
       "restriction": {
@@ -523,31 +332,11 @@
       "extract": {
         "title": "提取",
         "description": {
-          "vertex": {
-            "single": "将该节点从其父路径/区域中提取出。",
-            "multiple": "从父要素中提取这些节点。"
-          },
-          "line": {
-            "single": "从这条线中提取节点。",
-            "multiple": "从这些线中提取节点。"
-          },
-          "area": {
-            "single": "从该区域中提取节点。",
-            "multiple": "从这些区域中提取节点。"
-          },
           "feature": {
-            "multiple": "从这些要素中提取节点。"
+            "other": "从这些要素中提取节点。"
           }
         },
-        "annotation": "分离 {n} 个节点。",
-        "too_large": {
-          "single": "一节点因此要素可见部分不足而无法提取。",
-          "multiple": "多节点因此要素可见部分不足而无法提取。"
-        },
-        "connected_to_hidden": {
-          "single": "此节点无法提取，因其与一隐藏要素连接。",
-          "multiple": "无法从这些要素中提取节点，因为某些节点与隐藏要素连接。"
-        }
+        "annotation": "分离 {n} 个节点。"
       }
     },
     "restriction": {
@@ -578,7 +367,6 @@
         "from": "从",
         "via": "经由",
         "to": "至",
-        "from_name": "{from} {fromName} 起",
         "select_from": "点击选择一个 {from}... 部分",
         "select_from_name": "点击选择 {from} {fromName} 起",
         "toggle": "点击应用 “{turn}”"
@@ -590,13 +378,13 @@
       "nothing": "没有可以撤销的操作。"
     },
     "redo": {
-      "title": "重做",
-      "tooltip": "重做：{action}",
       "nothing": "没有可以重做的操作。"
     },
     "translate": {
       "translate": "添加多语言名称",
-      "localized_translation_label": "多语言名称"
+      "localized_translation_label": "多语言名称",
+      "localized_translation_language": "揀話",
+      "localized_translation_name": "名"
     },
     "zoom_in_edit": "放大地图以编辑",
     "login": "登录",
@@ -623,6 +411,7 @@
       "request_review": "我需要由他人检查我的编辑。",
       "request_review_info": "对有些内容不确定？ 邀请经验丰富的绘图者在上线的时候检查您的工作。",
       "save": "上传",
+      "cancel": "唔做",
       "changes": "变更",
       "download_changes": "下载 osmChange 文件",
       "errors": "错误",
@@ -653,7 +442,6 @@
       "history": {
         "title": "历史",
         "no_history": "无历史记录（新要素）",
-        "version": "版本",
         "last_edit": "最近编辑",
         "edited_by": "编辑者",
         "changeset": "变更集",
@@ -672,15 +460,12 @@
         "geometry": "几何",
         "closed_line": "闭合路径",
         "closed_area": "闭合区域",
-        "center": "中心",
         "perimeter": "周长",
         "length": "长度",
         "distance": "距离",
         "area": "面积",
         "centroid": "质心",
         "location": "位置",
-        "metric": "公制",
-        "imperial": "英制",
         "node_count": "节点数"
       }
     },
@@ -697,6 +482,7 @@
       "no_results_worldwide": "没有找到结果"
     },
     "geolocate": {
+      "title": "標出我喺邊",
       "locating": "正在定位，请稍候……",
       "location_unavailable": "无法获取你的位置。"
     },
@@ -705,6 +491,7 @@
         "title": "缩放至选中要素",
         "no_selection": "没有可缩放至的东西。"
       },
+      "show_more": "睇多啲",
       "view_on_osm": "在 openstreetmap.org 上查看",
       "view_on_osmose": "在 osmose.openstreetmap.fr 上查看",
       "view_on_keepRight": "在 keepright.at 查看",
@@ -717,23 +504,21 @@
       "add_to_relation": "添加至一个关系",
       "new_relation": "新关系...",
       "choose_relation": "选择一个父关系",
+      "role": "作用",
       "multiple_roles": "多个角色",
       "choose": "选择要素类型",
       "results": "找到 {n} 个 {search} 的相关结果",
       "no_documentation_key": "没有可用的说明文档。",
       "wiki_reference": "查看参考资料",
       "wiki_en_reference": "查看英文参考资料",
-      "key_value": "键=值",
       "multiple_values": "多个值",
       "multiple_types": "多个类型",
       "unshared_value_tooltip": "非全部要素共享",
-      "hidden_preset": {
-        "manual": "{features} 已隐藏。请在地图数据面板中启用它们。",
-        "zoom": "{features} 已隐藏。请放大地图以启用它们。"
-      },
       "back_tooltip": "更改要素类型",
-      "type": "类型",
       "details": "详情",
+      "remove": "移走",
+      "search": "搵",
+      "incomplete": "<無傳落來>",
       "feature_list": "搜索要素",
       "check": {
         "yes": "是",
@@ -776,9 +561,9 @@
       "custom": "自定义",
       "overlays": "叠加图层",
       "imagery_problem_faq": "报告影像问题",
+      "reset": "重設",
       "reset_all": "重置全部",
       "display_options": "显示设定",
-      "brightness": "亮度",
       "contrast": "对比度",
       "saturation": "饱和度",
       "sharpness": "锐化",
@@ -811,7 +596,8 @@
           "title": "OpenStreetMap 注记"
         },
         "maproulette": {
-          "detail_title": "详情"
+          "detail_title": "详情",
+          "cancel": "唔做"
         },
         "keepRight": {
           "tooltip": "由 keepright.at 检测到的数据问题",
@@ -836,7 +622,6 @@
         "tooltip": "显示所选内容的几何信息。"
       },
       "style_options": "样式设定",
-      "map_features": "地图要素",
       "autohidden": "这些要素已被自动隐藏，因为屏幕中的要素过多。请放大再编辑。",
       "osmhidden": "由于 OpenStreetMap 数据图层已被禁用，这些要素已被自动隐藏。"
     },
@@ -850,11 +635,9 @@
       "title": "照片叠加层",
       "photo_type": {
         "flat": {
-          "title": "平面照片",
           "tooltip": "传统照片"
         },
         "panoramic": {
-          "title": "全景照片",
           "tooltip": "360° 照片"
         }
       },
@@ -864,7 +647,6 @@
           "tooltip": "展示晚于这个日期的照片"
         },
         "toDate": {
-          "title": "到",
           "tooltip": "展示早于这个日期的照片"
         }
       },
@@ -873,7 +655,7 @@
         "tooltip": "只展示这个用户的照片"
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "点",
         "tooltip": "兴趣点(POI)"
@@ -907,7 +689,7 @@
         "tooltip": "森林，农田，公园，居民地，商用地等。"
       },
       "boundaries": {
-        "description": "行政区划",
+        "description": "边界",
         "tooltip": "行政分界线"
       },
       "water": {
@@ -919,7 +701,6 @@
         "tooltip": "铁路"
       },
       "pistes": {
-        "description": "滑雪道",
         "tooltip": "滑雪坡、雪橇道、滑冰道等"
       },
       "aerialways": {
@@ -1010,11 +791,13 @@
       }
     },
     "restore": {
+      "heading": "你有修改未記妥",
       "description": "您在上一次编辑时有未保存的更改，您想恢复这些更改吗？",
       "restore": "恢复更改",
       "reset": "放弃更改"
     },
     "save": {
+      "title": "記低",
       "help": "检查更改，并上传至 OpenStreetMap 对所有人公开。",
       "no_changes": "没有待保存变更。",
       "error": "尝试保存时发生错误。",
@@ -1022,6 +805,7 @@
       "unknown_error_details": "请确保您已连接到互联网。",
       "uploading": "正在向 OpenStreetMap 上传更改……",
       "conflict_progress": "正在检查冲突：第 {num} / {total} 处",
+      "unsaved_changes": "你有修改未記妥",
       "conflict": {
         "header": "调解编辑冲突",
         "count": "第{num}处冲突，共{total}处",
@@ -1049,44 +833,49 @@
       "thank_you": "感谢您改进地图。",
       "thank_you_location": "感谢您改进 {where} 周边的地图。",
       "thank_you_where": {
-        "format": "{region}{separator}{place}",
         "separator": " "
       },
       "help_link_text": "详情",
       "view_on_osm": "在 OSM 上查看更改",
       "like_osm": "喜欢 OpenStreetMap 吗？不妨与更多人联系：",
-      "more": "更多",
       "events": "事件",
       "languages": "语言：{languages}",
       "missing": "列表里有遗漏的信息？",
       "tell_us": "告诉我们！"
     },
     "confirm": {
-      "okay": "确定"
+      "okay": "确定",
+      "cancel": "唔做"
     },
     "splash": {
       "start": "立即编辑"
     },
     "source_switch": {
+      "dev": "製作之中",
       "live": "实况模式",
       "lose_changes": "您有尚未保存的编辑，切换地图服务器会失去这些编辑。您是否确定要切换服务器？"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "标签"
     },
+    "rapid_menu": {
+      "remove": "移走",
+      "category": {
+        "roads": "道路"
+      }
+    },
     "tag_reference": {
+      "description": "说明",
       "on_wiki": "wiki.osm.org上的{tag}",
       "used_with": "使用 {type}"
     },
     "zoom": {
-      "in": "放大",
       "out": "缩小",
       "disabled": {
         "in": "无法进一步放大。",
         "out": "无法进一步缩小。"
       }
     },
-    "cannot_zoom": "在此模式下不能再缩小",
     "full_screen": "切换全屏",
     "self_intersection": {
       "error": {
@@ -1103,6 +892,7 @@
         "trap_title": "常见错误"
       },
       "keepRight": {
+        "detail_description": "说明",
         "comment": "评论",
         "comment_placeholder": "输入评论并分享给其他用户。",
         "close": "关闭（问题已解决）",
@@ -1145,7 +935,6 @@
           "hospital": "医院",
           "library": "图书馆",
           "theatre": "剧院",
-          "courthouse": "法院",
           "bank": "银行",
           "cinema": "影院",
           "pharmacy": "药店",
@@ -1153,7 +942,6 @@
           "fast_food": "快餐",
           "fuel": "油站",
           "from": "从",
-          "to": "至",
           "left_hand": "左侧",
           "right_hand": "右侧"
         },
@@ -1419,7 +1207,6 @@
       "hires": "高分辨率"
     },
     "streetside": {
-      "title": "必应 Streetside",
       "tooltip": "来自微软公司的街景照片"
     },
     "mapillary": {
@@ -1459,7 +1246,9 @@
       "upload_explanation_with_user": "{user}，你的评论将会对所有 OpenStreetMap 用户公开可见。"
     },
     "help": {
+      "title": "指南",
       "help": {
+        "title": "指南",
         "open_data_h": "开放数据",
         "open_data": "您在这个地图上做出的编辑会对所有使用 OpenStreetMap 的用户可见。您的编辑可以基于个人知识、实地调查、航空拍摄图片或者街景照片。从商业来源，例如谷歌地图这样的来源复制信息是被 [严格禁止](https://www.openstreetmap.org/copyright) 的。",
         "before_start_h": "在您开始之前",
@@ -1467,6 +1256,7 @@
       },
       "overview": {
         "title": "概览",
+        "navigation_h": "导览",
         "features_h": "地图要素",
         "features": "我们使用*要素*（*feature*）这个词来描述出现在地图上的事物，例如道路、建筑或兴趣点。任何真实世界的实物均可在 OpenStreetMap 上被映射为一个要素。地图要素在地图上使用*点*、*线*或*区域*进行表示。",
         "nodes_ways": "在 OpenStreetMap 中，点有时被称为 *节点* ，线和区域有时被称为 *路径* 。"
@@ -1479,6 +1269,7 @@
         "multiselect": "同时选择多个要素可让您一次性快速编辑它们。",
         "undo_redo_h": "撤销和重做",
         "undo_redo": "在您选择将编辑保存到OpenStreetMap服务器之前，您的编辑将存储在本地浏览器中。按下{undo_icon}**{undo}**按钮可以撤销编辑，按{redo_icon}**{redo}**按钮可以恢复编辑。",
+        "save_h": "記低",
         "save": "点击 {save_icon} **{save}** 以完成您的编辑并发送至 OpenStreetMap。请您牢记：要经常保存您的编辑！",
         "upload_h": "上传",
         "upload": "在上传您的变更前您必须输入[变更集注释](https://wiki.openstreetmap.org/wiki/Good_changeset_comments)。接着点击 **{upload}** 来将您的变更发送给OpenStreetMap，之后它们将会被合并到地图并且对所有人公开可见。",
@@ -1505,7 +1296,6 @@
         "title": "点",
         "intro": "*点*可以用于表示商店、餐馆、纪念碑等要素。它们标记一个明确的位置，并描述那里是什么。",
         "add_point_h": "添加点",
-        "add_point": "要添加一个点，点击地图上方工具栏的 {point_icon} **{point}** 按钮，或者按快捷键 `1`。",
         "move_point_h": "移动点",
         "delete_point_h": "删除点",
         "delete_point": "删除现实世界中不存在的要素是被允许的。在 OpenStreetMap 中删除要素意味着它将会从每个人使用的地图中移除，所以您应该在删除前确保它真的已不复存在。"
@@ -1514,7 +1304,6 @@
         "title": "线",
         "intro": "*线*用于表示道路、铁路、河流等要素。线应该沿着其所表示的要素的中线绘制。",
         "add_line_h": "添加线",
-        "add_line": "要添加线，点击地图上方工具栏的 {line_icon} **{line}** 按钮，或者按快捷键 `2`。",
         "add_line_finish": "要结束绘制线，请再次点击最后一个节点，或按 `{return}`。",
         "modify_line_h": "修改线",
         "modify_line_dragnode": "通常您会见到形状不正确的线，例如与背景影像不匹配的道路。要调整线的形状，首先选中它，所有线的节点都将呈现为小圆点。之后您可以拖动节点到更好的位置。",
@@ -1533,7 +1322,6 @@
         "point_or_area_h": "点还是区域？",
         "point_or_area": "许多要素可以表示为点或区域。您应尽可能将建筑物和住宅轮廓绘制成区域。将点放置在建筑物区域内以表示建筑物内的商业、便利设施和其他要素。",
         "add_area_h": "添加区域",
-        "add_area_command": "要新增区域，点击位于工具栏上的 {area_icon} **{area}** 按钮，或者按下键盘上的快捷键“3”。",
         "add_area_finish": "要结束绘制区域，请再次点击第一个或最后一个节点，或按 `{return}`。",
         "square_area_h": "直角化区域",
         "modify_area_h": "修改区域",
@@ -1563,7 +1351,6 @@
         "boundary_add": "要向边界关系中添加要素，请先选择该要素并向下滚动到要素编辑器的“关系”部分，然后点击 {plus} 添加按钮将此要素添加到附近的现有关系或新关系中。"
       },
       "operations": {
-        "title": "操作",
         "intro_2": "每个操作都有自己的键盘快捷键。大多数操作可以同时应用于多个特征。",
         "straighten": "{straighten_icon} **{straighten}** 消除路径的弯曲。其还可以将各组点排列成整齐的一行路径。",
         "orthogonalize": "{orthogonalize_icon} **{orthogonalize}** 将区域和路径的角度固定为90°。您能对单个角或整个特征进行平方化。",
@@ -1591,7 +1378,6 @@
         "save_note": "您必须按注记评论下方的按钮来单独保存各注记的编辑。上传到OpenStreetMap的变更集中**不**包含注记的编辑。"
       },
       "imagery": {
-        "title": "背景影像",
         "intro": "显示在地图数据下方的背景影像，是绘图过程中的重要资源。它们可以收集自卫星、飞机和无人机的航空照片，或扫描自历史地图，或来自其他可自由使用的数据源。",
         "sources_h": "影像来源",
         "choosing": "要查看可适用于编辑的影像资源，打开地图侧边的 {layers_icon} **{background_settings}**面板",
@@ -1600,8 +1386,6 @@
         "offset": "有时候影像相较于准确地图数据会有轻微的偏移。如果您看见大量的道路或建筑物偏移了背景影像，那可能是由影像不正确导致，这时请不要全部移动它们来匹配背景。相反，您可以在背景设置的底部找到\"{imagery_offset}\"版块，通过增加偏移来调整背景，从而使它与既有数据吻合。"
       },
       "streetlevel": {
-        "title": "街景照片",
-        "using_h": "使用街景照片",
         "using": "如果要用街景照片绘制地图，打开地图旁边的 {data_icon} **{map_data}** 面板，这里可以启用或者禁用照片叠加层。",
         "photos": "启用照片叠加层后，照片叠加层会沿照片顺序显示成一条线。 进一步放大地图，每个照片位置都会标记一个圆圈，继续放大，还会有锥形指示拍摄照片时相机所面对的方向。",
         "viewer": "当你选择其中一个照片位置，地图底部的角落会出现照片查看器。在照片查看器里你可以查看上一张或下一张图像。照片查看器还显示拍照者的名称、拍摄日期以及照片的原始链接。"
@@ -1662,15 +1446,9 @@
     },
     "issues": {
       "title": "问题",
-      "list_title": "问题",
-      "errors": {
-        "list_title": "错误"
-      },
-      "rules": {
-        "title": "规则"
-      },
-      "user_resolved_issues": "您的更改所解决的问题",
-      "warnings_and_errors": "警告和错误",
+      "errors": "错误",
+      "rules": "规则",
+      "resolved_tooltip": "您的更改所解决的问题",
       "no_issues": {
         "message": {
           "everything": "暂无问题",
@@ -1825,8 +1603,6 @@
         "title": "无效的格式",
         "tip": "查找含有无效格式的标签",
         "email": {
-          "message": "{feature} 存在一个无效电子邮件地址。",
-          "message_multi": "{feature} 存在多个无效电子邮件地址。",
           "reference": "电子邮件地址必须类似于 \"user@example.com\"。"
         }
       },
@@ -2344,103 +2120,171 @@
       "title": "快捷键",
       "tooltip": "显示键盘快捷键界面",
       "key": {
-        "enter": "回车",
-        "menu": "目录",
-        "return": "回车",
-        "space": "空格"
+        "delete": "刪",
+        "menu": "目录"
       },
       "gesture": {
         "drag": "拖动"
       },
-      "or": "-或-",
-      "browsing": {
-        "title": "浏览",
-        "navigation": {
-          "pan": "移动地图"
+      "browsing": "浏览",
+      "editing": "编辑",
+      "navigation": "导览",
+      "selecting_features": "选择要素",
+      "with_features_selected": "对选中的要素",
+      "with_node_selected": "对选中的节点",
+      "with_way_selected": "对选中的路径",
+      "drawing": "绘制",
+      "commands": "命令",
+      "help": "指南",
+      "display_options": "显示设定",
+      "info": "信息",
+      "command": {
+        "pan": {
+          "label": "移动地图"
         },
-        "help": {
-          "help": "显示帮助 / 参考文档",
-          "keyboard": "显示键盘快捷键"
+        "select_one": {
+          "label": "选择单个要素"
         },
-        "display_options": {
-          "title": "显示设定",
-          "background": "切换背景影像面板",
-          "map_data": "切换地图数据面板",
-          "issues": "切换验证问题面板",
-          "preferences": "切换用户偏好设置面板",
-          "wireframe": "切换线框模式",
-          "osm_data": "切换 OpenStreetMap 数据",
-          "highlight_edits": "高亮未保存的编辑"
+        "select_multi": {
+          "label": "选择多个要素"
         },
-        "selecting": {
-          "title": "选择要素",
-          "select_one": "选择单个要素",
-          "select_multi": "选择多个要素",
-          "lasso": "在要素周围绘制套索",
-          "search": "关键字搜寻要素"
+        "lasso": {
+          "label": "在要素周围绘制套索"
         },
-        "with_selected": {
-          "title": "对选中的要素",
-          "edit_menu": "切换编辑菜单"
+        "edit_menu": {
+          "label": "切换编辑菜单"
         },
-        "vertex_selected": {
-          "title": "对选中的节点",
-          "first": "跳至起始节点",
-          "last": "跳至末端节点",
-          "change_parent": "切换主路径",
-          "parent": "选择母路"
+        "first_node": {
+          "label": "跳至起始节点"
         },
-        "way_selected": {
-          "title": "对选中的路径",
-          "child": "选择子节点"
-        }
-      },
-      "editing": {
-        "title": "编辑",
-        "drawing": {
-          "title": "绘制",
-          "add_point": "'增加点' 模式",
-          "add_line": "'增加线' 模式",
-          "add_area": "'增加区域' 模式",
-          "add_note": "'添加注记' 模式",
-          "place_point": "放置一个节点或注记",
-          "disable_snap": "按住以禁用节点吸附",
-          "stop_line": "完成绘制线段或区域"
+        "last_node": {
+          "label": "跳至末端节点"
         },
-        "commands": {
-          "title": "命令",
-          "copy": "复制选中的要素",
-          "paste": "粘贴已复制的要素",
-          "undo": "撤销上一操作",
-          "redo": "重做上一操作",
-          "save": "保存更改"
+        "change_parent": {
+          "label": "切换主路径"
         },
-        "operations": {
-          "continue_line": "于选定终点继续绘制线",
-          "merge": "结合 (合并) 选中的要素",
-          "disconnect": "断开选定要素",
-          "extract": "从要素中提取节点",
-          "split": "在选中节点处分割要素",
-          "reverse": "反转选中的要素",
-          "move": "移动选中的要素",
-          "rotate": "旋转选中的要素",
-          "orthogonalize": "将线或区域上的弯角换成直角",
-          "straighten": "将线或多个点拉直",
-          "circularize": "将闭合的线或区域变成圆形",
-          "reflect_long": "沿要素的长轴翻转",
-          "reflect_short": "沿要素的短轴翻转",
-          "delete": "删除选中的要素"
-        }
-      },
-      "tools": {
-        "title": "工具",
-        "info": {
-          "title": "信息",
-          "all": "切换全部信息面板",
-          "background": "切换背景面板",
-          "history": "切换历史面板",
-          "location": "切换位置面板",
-          "measurement": "切换测量面板"
+        "select_parent": {
+          "label": "选择母路"
+        },
+        "select_children": {
+          "label": "选择子节点"
+        },
+        "add_point": {
+          "label": "'增加点' 模式"
+        },
+        "add_line": {
+          "label": "'增加线' 模式"
+        },
+        "add_area": {
+          "label": "'增加区域' 模式"
+        },
+        "add_note": {
+          "label": "'添加注记' 模式"
+        },
+        "place_point": {
+          "label": "放置一个节点或注记"
+        },
+        "disable_snap": {
+          "label": "按住以禁用节点吸附"
+        },
+        "stop_line": {
+          "label": "完成绘制线段或区域"
+        },
+        "copy": {
+          "label": "复制选中的要素"
+        },
+        "paste": {
+          "label": "粘贴已复制的要素"
+        },
+        "undo": {
+          "label": "撤销上一操作"
+        },
+        "redo": {
+          "label": "重做上一操作"
+        },
+        "save": {
+          "label": "保存更改"
+        },
+        "find": {
+          "label": "关键字搜寻要素"
+        },
+        "continue_line": {
+          "label": "于选定终点继续绘制线"
+        },
+        "merge": {
+          "label": "结合 (合并) 选中的要素"
+        },
+        "disconnect": {
+          "label": "断开选定要素"
+        },
+        "extract": {
+          "label": "从要素中提取节点"
+        },
+        "split": {
+          "label": "在选中节点处分割要素"
+        },
+        "reverse": {
+          "label": "反转选中的要素"
+        },
+        "move": {
+          "label": "移动选中的要素"
+        },
+        "rotate": {
+          "label": "旋转选中的要素"
+        },
+        "orthogonalize": {
+          "label": "将线或区域上的弯角换成直角"
+        },
+        "straighten": {
+          "label": "将线或多个点拉直"
+        },
+        "circularize": {
+          "label": "将闭合的线或区域变成圆形"
+        },
+        "reflect_long": {
+          "label": "沿要素的长轴翻转"
+        },
+        "reflect_short": {
+          "label": "沿要素的短轴翻转"
+        },
+        "delete": {
+          "label": "删除选中的要素"
+        },
+        "toggle_background": {
+          "label": "切换背景影像面板"
+        },
+        "toggle_map_data": {
+          "label": "切换地图数据面板"
+        },
+        "toggle_issues": {
+          "label": "切换验证问题面板"
+        },
+        "toggle_preferences": {
+          "label": "切换用户偏好设置面板"
+        },
+        "highlight_edits": {
+          "label": "高亮未保存的编辑"
+        },
+        "keyboard_shortcuts": {
+          "label": "显示键盘快捷键"
+        },
+        "toggle_osm_data": {
+          "label": "切换 OpenStreetMap 数据"
+        },
+        "toggle_all_cards": {
+          "label": "切换全部信息面板"
+        },
+        "toggle_background_card": {
+          "label": "切换背景面板"
+        },
+        "toggle_history_card": {
+          "label": "切换历史面板"
+        },
+        "toggle_location_card": {
+          "label": "切换位置面板"
+        },
+        "toggle_measurement_card": {
+          "label": "切换测量面板"
         }
       }
     },
@@ -2454,12 +2298,12 @@
       "kilometers": "{quantity} 千米",
       "square_meters": "{quantity} 平方米",
       "square_kilometers": "{quantity} 平方千米",
-      "hectares": "{quantity} 公顷",
-      "year_month_day": "年年年年-月月-日日"
+      "hectares": "{quantity} 公顷"
     },
     "wikidata": {
       "identifier": "标识符",
-      "label": "标签"
+      "label": "标签",
+      "description": "说明"
     }
   }
 }

@@ -566,6 +566,7 @@
         "building": {
           "label": "Edifício",
           "options": {
+            "allotment_house": "Casa de horta urbana/comunitária",
             "apartments": "Edifício de apartamentos",
             "barn": "Barracão agrícola",
             "boathouse": "Edifício para barcos",
@@ -825,7 +826,14 @@
           "terms": "comunicações,comunicação"
         },
         "community_centre": {
-          "label": "Tipo"
+          "label": "Tipo",
+          "options": {
+            "community_hall": "Salão comunitário",
+            "cultural_centre": "Centro Cultural",
+            "parish_hall": "Centro paroquial",
+            "village_hall": "Salão comunitário central",
+            "youth_centre": "Centro juvenil"
+          }
         },
         "connectivity": {
           "label": "Ligação"
@@ -1076,14 +1084,17 @@
             "donut": "Donuts",
             "european": "Europeia",
             "filipino": "Filipina",
+            "fine_dining": "Cozinha de autor",
             "fish": "Peixe",
             "fish_and_chips": "Peixe e batatas fritas",
             "french": "Francesa",
             "fries": "Batatas fritas",
+            "friture": "Batata frita",
             "frozen_yogurt": "Iogurte gelado",
             "georgian": "Georgiana",
             "german": "Alemã",
             "greek": "Grega",
+            "grill": "Grelhados",
             "hawaiian": "Havaiana",
             "hot_dog": "Cachorros-quentes",
             "ice_cream": "Gelados",
@@ -2038,13 +2049,13 @@
           "terms": "wifi,wi-fi,wlan,acesso à rede,web,ligação"
         },
         "internet_access/fee": {
-          "label": "Taxa de acesso à Internet",
+          "label": "Taxa de acesso à internet",
           "options": {
             "customers": "Clientes",
             "no": "Gratuito",
             "yes": "Pago"
           },
-          "terms": "taxa,custo,preço,valor,montante,quantia,wifi,wi-fi,acesso,internet,rede"
+          "terms": "wifi,fee,custo,preço,net,wi-fi,rede,web,intranet,quantia,valor,ligação"
         },
         "internet_access/ssid": {
           "label": "Nome da rede Wi-Fi",
@@ -2257,7 +2268,13 @@
           "label": "Cobertura"
         },
         "map_type": {
-          "label": "Tipo"
+          "label": "Tipo",
+          "options": {
+            "scheme": "Mapa esquemático",
+            "street": "Mapa de ruas",
+            "topo": "Mapa topográfico",
+            "toposcope": "Toposcópio"
+          }
         },
         "mapillary": {
           "label": "ID da imagem do Mapillary",
@@ -2967,6 +2984,12 @@
             "forward": "Para a frente"
           }
         },
+        "railway/switch": {
+          "label": "Tipo",
+          "options": {
+            "default": "Normal"
+          }
+        },
         "railway/track_ref": {
           "label": "Número da pista"
         },
@@ -3204,6 +3227,11 @@
         },
         "route_master": {
           "label": "Tipo"
+        },
+        "royal_cypher-GB": {
+          "options": {
+            "no": "Não"
+          }
         },
         "ruins": {
           "label": "Tipo"
@@ -4179,6 +4207,7 @@
             "coffee": "Café",
             "condoms": "Preservativos",
             "drinks": "Bebidas",
+            "e-cigarettes": "Cigarros eletrónicos",
             "eggs": "Ovos",
             "electronics": "Aparelhos eletrónicos",
             "elongated_coin": "Moedas turísticas",
@@ -4676,9 +4705,16 @@
           "name": "Centro comunitário",
           "terms": "Community Center, Espaço Social,centro social"
         },
+        "amenity/community_centre/cultural_centre": {
+          "terms": "cultura,centre,center,comunidade,culturais,atividades,actividades,comunitário"
+        },
         "amenity/community_centre/lgbtq": {
           "name": "Centro comunitário LGBTQ+",
           "terms": "gay, lésbico, lgbt, lgbtq, lgb, homosexual, homossexual"
+        },
+        "amenity/community_centre/parish_hall": {
+          "name": "Centro paroquial",
+          "terms": "paróquia,parish,igreja,religião"
         },
         "amenity/community_centre/youth_centre": {
           "name": "Centro comunitário para jovens",
@@ -4866,6 +4902,10 @@
           "name": "Comida rápida",
           "terms": "comida instantânea, comida de plástico, fast food, fast-food, lanchonete, lancheria, snack-bar, snackbar, snack bar, snak bar, snak-bar, restaurante de fast food, restaurante de comida rápida, restaurante de serviço rápido, restaurante, sanduíche, sanduixe, sanduiche, sande, sandes, casa de sandes, casa das sandes, McDonald's, mac donalds, macdonalds, mc donalds, mcdonalds, Burger King, Subway, rulote, rolote, farturas"
         },
+        "amenity/fast_food/bagel": {
+          "name": "Loja de bagels",
+          "terms": "fast food,comida rápida,lox,beygl,beigel,beiguel,comer"
+        },
         "amenity/fast_food/burger": {
           "name": "Hamburgueria",
           "terms": "fast food, burguer, hamburguer, hamburger,hambúrguer"
@@ -4877,6 +4917,10 @@
         "amenity/fast_food/chicken": {
           "name": "Frango Assado",
           "terms": "fast food, galinha, frango, frango grelhado,churrascaria"
+        },
+        "amenity/fast_food/chinese": {
+          "name": "Comida rápida chinesa",
+          "terms": "dim sum,fast food,chinese,china"
         },
         "amenity/fast_food/donut": {
           "name": "Donuts",
@@ -4912,6 +4956,10 @@
         "amenity/fast_food/sandwich": {
           "name": "Sanduicheria",
           "terms": "sandwich, fast food, sanduiche, sande, sandes, sanduixe, sanduíxe, sanduíche"
+        },
+        "amenity/fast_food/wings": {
+          "name": "Comida rápida asas de frango",
+          "terms": "galinha,chicken,comer,lunch,fast,food"
         },
         "amenity/ferry_terminal": {
           "name": "Terminal de ferry"
@@ -5261,6 +5309,10 @@
           "name": "Restaurante asiático",
           "terms": "restaurante de comida asiática, restaurante, comida asiática, cozinha asiática, asiático, asiática, oriental,japonês,chinês,tailandês,vietnamita,coreano"
         },
+        "amenity/restaurant/barbecue": {
+          "name": "Restaurante de churrasco",
+          "terms": "barbecue,comida,comer,bbq,carne,grelhado,assado,grill"
+        },
         "amenity/restaurant/chinese": {
           "name": "Restaurante chinês",
           "terms": "restaurante de comida chinesa, comida chinesa, chinesa,chinês"
@@ -5462,7 +5514,7 @@
         },
         "amenity/theatre/type/amphi": {
           "name": "Anfiteatro",
-          "terms": "anfiteatros"
+          "terms": "amphitheater,teatro,exterior,externo,ar-livre,ar livre,theatre"
         },
         "amenity/ticket_validator": {
           "name": "Validador de bilhetes",
@@ -6782,10 +6834,10 @@
           "terms": "D7e, D7f, pista obrigatória para peões e velocípedes, bicicleta, ciclovia, ciclista, pedonal, pedestre, ciclovia, pista obrigatória para peões e velocípedes, peões, peão, velocípede"
         },
         "highway/cycleway/crossing": {
-          "name": "Passadeira para bicicletas"
+          "name": "Passadeira para ciclistas"
         },
         "highway/cycleway/crossing/bicycle_foot": {
-          "name": "Passadeira p/bicicletas e peões",
+          "name": "Passadeira p/ciclistas e peões",
           "terms": "passadeira,faixa de segurança, ciclovia,ciclistas,bicicletas,travessia,pedestres,peões"
         },
         "highway/cycleway/crossing/traffic_signals": {
@@ -6797,7 +6849,7 @@
           "terms": "passadeira,peões,pedestres,estrada,trânsito,travessia,faixa de segurança,bicicletas,binas,ciclistas,ciclismo,cicloturismo,ciclovia"
         },
         "highway/cycleway/crossing/unmarked": {
-          "name": "Passadeira para bicicletas não marcada",
+          "name": "Travessia de ciclistas",
           "terms": "atravessamento de bicicletas, atravessamento para bicicletas, atravessamento de ciclista, atravessamento para ciclista,travessia,passadeira,bicicletas,ciclistas"
         },
         "highway/cycleway/moped_link-NL": {
@@ -6907,6 +6959,18 @@
         "highway/path/boardwalk": {
           "name": "Passadiço",
           "terms": "caminho de madeira,tábuas,trilho,pedonal,pedestre,passadisso"
+        },
+        "highway/path/crossing": {
+          "name": "Passadeira p/ciclistas e peões"
+        },
+        "highway/path/crossing/traffic_signals": {
+          "name": "Passadeira p/ ciclistas e peões c/ semáforos"
+        },
+        "highway/path/crossing/uncontrolled": {
+          "name": "Passadeira marcada p/ ciclistas e peões"
+        },
+        "highway/path/crossing/unmarked": {
+          "name": "Travessia p/ ciclistas e peões"
         },
         "highway/path/informal": {
           "name": "Trilho informal",
@@ -7293,6 +7357,14 @@
           "name": "Prado",
           "terms": "meadow,campo,área,zona,pasto,erva,vegetação,forragem,pastagem,feno,palha"
         },
+        "landuse/meadow_orchard/meadow": {
+          "name": "Prado com árvores de fruto",
+          "terms": "frutos,fruta,frutíferas,frutas,fruit,tree,pasto,pastagem,campo,área,zona,terreno"
+        },
+        "landuse/meadow_orchard/orchard": {
+          "name": "Árvores de fruto em prado",
+          "terms": "frutos,fruta,frutíferas,frutas,fruit,tree,pasto,pastagem,campo,área,zona,terreno"
+        },
         "landuse/military": {
           "name": "Área militar",
           "terms": "Military, Exército, Marinha, Forças Especiais, Força Aérea, Forças Armadas, Militar, Quartel,tropa,polícia"
@@ -7401,6 +7473,10 @@
         "leisure/bandstand": {
           "name": "Coreto",
           "terms": "bandstand, coreto,banda,filarmónica,música,igreja,edifício,festas"
+        },
+        "leisure/bathing_place": {
+          "name": "Local de banhos informal",
+          "terms": "banhar,banho,nadar,mergulhar,rio,lago,lagoa,água,natural,selvagem,bathing,dipping,swimming,swimming hole,ladder,pier,water"
         },
         "leisure/beach_resort": {
           "name": "Estância balnear",
@@ -8824,8 +8900,7 @@
           "terms": "esqui,ski,cross country,crosscountry,trilha,nórdico,clássico,neve,inverno"
         },
         "piste/piste": {
-          "name": "Pistas de desportos de inverno",
-          "terms": "esqui,ski,nórdicos,alpina, cross country,crosscountry,descida,downhill,snowboard, caminhadas, trenó, husky, cavalo, raquetes, pedestre, gelo, patinagem no gelo,inverno,neve,gelo"
+          "name": "Tipo de pista"
         },
         "piste/ski_jump": {
           "name": "Pista de saltos de esqui",

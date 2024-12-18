@@ -176,7 +176,7 @@
       "Gliwice-buildings": {
         "name": "Gliwice: Budynki"
       },
-      "LSA-ATKIS_BU": {
+      "LSA-ALKIS_BU": {
         "description": "Kształty budynków w Saksonii-Anhalt"
       },
       "LSA-DOP20": {
@@ -221,7 +221,11 @@
         "name": "Agencja Ochrony Środowiska - Szlaki"
       },
       "OSMUK-Cadastral-Parcels": {
-        "description": "Idealnie wyrównane działki katastralne (ewidencja gruntów) w Wielkiej Brytanii"
+        "attribution": {
+          "text": "Zawiera informacje z sektora publicznego na licencji Open Government Licence v3.0."
+        },
+        "description": "Idealnie wyrównane działki katastralne (ewidencja gruntów) w Wielkiej Brytanii",
+        "name": "OSMUK Działki"
       },
       "OSM_Inspector-Addresses": {
         "attribution": {
@@ -321,6 +325,11 @@
         "description": "Drogi:  Zielone obramowanie = czwartorzędna. Brązowe obramowanie = polna/leśna. Nawierzchnia: żwir = jasno-brązowe wypełnienie, asfalt = czarny, twarda = szary, grunt = biały, beton = niebieski, trawa = zielony. Dostępna sezonowo = białe paski",
         "name": "Nakładka z drogami z U.S. Forest"
       },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Zrealizowany za pomocą Brussels UrbIS®© – Dystrybucja i prawa autorskie: CIRB"
+        }
+      },
       "UrbISOrtho2016": {
         "attribution": {
           "text": "Zrealizowano za pomocą Brussels UrbIS®© – Dystrybucja i prawa autorskie CIRB"
@@ -341,6 +350,11 @@
           "text": "Zrealizowany za pomocą Brussels UrbIS®© – Dystrybucja i prawa autorskie: CIRB"
         }
       },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Zrealizowany za pomocą Brussels UrbIS®© – Dystrybucja i prawa autorskie: CIRB"
+        }
+      },
       "UrbisAdmFR": {
         "attribution": {
           "text": "Zrealizowano za pomocą Brussels UrbIS®© – Dystrybucja i prawa autorskie CIRB"
@@ -348,6 +362,9 @@
         "name": "UrbisAdm Francja"
       },
       "UrbisAdmFRNL": {
+        "attribution": {
+          "text": "Zrealizowany za pomocą Brussels UrbIS®© – Dystrybucja i prawa autorskie: CIRB"
+        },
         "name": "UrbisAdm Francja/Holandia"
       },
       "UrbisAdmNL": {
@@ -505,10 +522,12 @@
         "attribution": {
           "text": "© Gmina Kalmar"
         },
-        "description": "Ortofotomapy dla obszarów miejskich gminy Kalmar 2020"
+        "description": "Ortofotomapy dla obszarów miejskich gminy Kalmar 2020",
+        "name": "Kalmar Ortofotomapa 2020"
       },
       "kartverket-bygninger": {
-        "description": "Budynki INSPIRE w Norwegii"
+        "description": "Budynki INSPIRE w Norwegii",
+        "name": "Kartverket budynki"
       },
       "kelkkareitit": {
         "description": "Szlaki skuterów śnieżnych Kelkkareitit.fi z OSM (kraje nordyckie)",

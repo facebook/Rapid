@@ -39,26 +39,17 @@
         "title": "Goobo geli"
       },
       "delete": {
-        "title": "Tirtir",
-        "description": {
-          "single": "U tirtir goobtani si joogto ah"
-        }
+        "title": "Tirtir"
       },
       "disconnect": {
         "title": "Jar Xiriirka",
         "not_connected": "Ma jiraan khadad/goobo ku filan halkan ku yaalo si loo joojiyo"
       },
       "move": {
-        "title": "Dhaqaaji",
-        "description": {
-          "single": "U dhaqaaji muuqaalkan meel kale."
-        }
+        "title": "Dhaqaaji"
       },
       "rotate": {
-        "title": "Rog",
-        "description": {
-          "single": "U rog astaantan agagaarkeeda bartamaha."
-        }
+        "title": "Rog"
       },
       "reverse": {
         "title": "Dib u noqosho"
@@ -132,7 +123,7 @@
       "description": "Xogta Khariidada",
       "data_layers": "Lakabyada"
     },
-    "feature": {
+    "filters": {
       "service_roads": {
         "description": "Jidka Shaqaalaha"
       }
@@ -195,16 +186,16 @@
       "key": {
         "delete": "Tirtir"
       },
-      "browsing": {
-        "help": {
-          "title": "Caawin"
-        }
-      },
-      "editing": {
-        "commands": {
-          "undo": "Ka-noqosho",
-          "redo": "Ku-noqosho",
-          "save": "Keydso is-beddelada"
+      "help": "Caawin",
+      "command": {
+        "undo": {
+          "label": "Ka-noqosho"
+        },
+        "redo": {
+          "label": "Ku-noqosho"
+        },
+        "save": {
+          "label": "Keydso is-beddelada"
         }
       }
     },
@@ -238,7 +229,6 @@
       "ban": "U dhashay Baline",
       "be": "Beleruusiyaan",
       "bg": "Bulgeeriyaan",
-      "bho": "U dhashay Bhohp",
       "bi": "U dhashay Bislam",
       "bin": "U dhashay Bin",
       "bm": "Bambaara",
@@ -278,7 +268,7 @@
       "eo": "Isberaanto",
       "es": "Isbaanish",
       "es-419": "Isbaanishka Laatiin Ameerika",
-      "es-ES": "Isbaanish (Isbayn)",
+      "es-ES": "Isbaanish Yurub",
       "es-MX": "Isbaanishka Mexico",
       "et": "Istooniyaan",
       "eu": "Basquu",
@@ -339,23 +329,24 @@
       "ksh": "Kologniyaan",
       "ku": "Kurdishka",
       "kw": "Kornish",
+      "kxv": "Kufi",
       "ky": "Kirgiis",
       "la": "Laatiin",
       "lag": "Laangi",
       "lb": "Luksaamboorgish",
       "lg": "Gandha",
+      "lij": "Liguuriyaan",
       "lkt": "Laakoota",
       "lrc": "Luri Waqooyi",
       "lt": "Lituwaanays",
       "lu": "Luuba-kataanga",
       "luo": "Luwada",
       "lv": "Laatfiyaan",
-      "mai": "Dadka Maithili",
       "mas": "Masaay",
       "mer": "Meeru",
       "mfe": "Moorisayn",
       "mg": "Malagaasi",
-      "mgh": "Makhuwa",
+      "mgh": "Luuqadda Makhuwa-Meetto",
       "mgo": "Meetaa",
       "mi": "Maaoori",
       "mic": "Mi'kmaq",
@@ -385,12 +376,11 @@
       "pa": "Bunjaabi",
       "pcm": "Bidjinka Nayjeeriya",
       "pl": "Boolish",
-      "prg": "Brashiyaanki Hore",
+      "prg": "Brashiyaan",
       "ps": "Bashtuu",
       "pt": "Boortaqiis",
       "pt-BR": "Boortaqiiska Baraasiil",
-      "pt-PT": "Boortaqiis (Boortuqaal)",
-      "qu": "Quwejuwa",
+      "pt-PT": "Boortaqiiska Yurub",
       "rm": "Romaanis",
       "rn": "Rundhi",
       "ro": "Romanka",
@@ -398,14 +388,12 @@
       "rup": "U dhashay Aromania",
       "rw": "Ruwaandha",
       "rwk": "Raawa",
-      "sah": "Saaqa",
       "saq": "Sambuuru",
       "sd": "Siindhi",
       "se": "Sami Waqooyi",
       "seh": "Seena",
       "ses": "Koyraboro Seenni",
       "shi": "Shilha",
-      "si": "Sinhaleys",
       "sk": "Isloofaak",
       "sl": "Islofeeniyaan",
       "sm": "Samowan",
@@ -419,7 +407,8 @@
       "su": "Suudaaniis",
       "sv": "Iswiidhish",
       "sw": "Sawaaxili",
-      "syr": "Syria",
+      "syr": "Af-Siriyak",
+      "szl": "Sileshiyaan",
       "ta": "Tamiil",
       "te": "Teluugu",
       "teo": "Teeso",
@@ -436,21 +425,22 @@
       "ur": "Urduu",
       "uz": "Usbakis",
       "vai": "Faayi",
+      "vec": "Dadka Fenaays",
       "vi": "Fiitnaamays",
+      "vmw": "Af-Makhuwa",
       "vo": "Folabuuk",
       "vun": "Fuunjo",
       "wae": "Walseer",
       "wo": "Woolof",
-      "xh": "Hoosta",
       "xog": "Sooga",
       "yav": "Yaangbeen",
       "yi": "Yadhish",
       "yo": "Yoruuba",
       "yue": "Shiinays, Cantonese",
       "zgh": "Morokaanka Tamasayt Rasmiga",
-      "zh": "Shiinaha Mandarin",
-      "zh-Hans": "Shiinaha Rasmiga ah",
-      "zh-Hant": "Shiinahii Hore",
+      "zh": "Af-Shiineeska Mandarin",
+      "zh-Hans": "Shiineeska Mandarin ee Rasmiga ah",
+      "zh-Hant": "Af-Shiineeska Mandarin ee Qadiimiga ah",
       "zu": "Zuulu"
     },
     "scriptNames": {
@@ -550,6 +540,7 @@
       "Prti": "Qoraalka Parthian",
       "Qaag": "Qoraalka Sawgiga",
       "Rjng": "Dadka Rejan",
+      "Rohg": "Hanifi",
       "Runr": "Dadka Rejang",
       "Samr": "Dadka Samaritan",
       "Sarb": "Crabiyaankii Hore ee Wuqooyi",

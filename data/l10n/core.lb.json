@@ -26,16 +26,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Beräich",
-        "filter_tooltip": "Beräicher"
+        "title": "Beräich"
       },
       "add_line": {
-        "title": "Linn",
-        "filter_tooltip": "Linnen"
+        "title": "Linn"
       },
       "add_point": {
-        "title": "Punkt",
-        "filter_tooltip": "Punkten"
+        "title": "Punkt"
       },
       "add_note": {
         "title": "Notiz",
@@ -118,52 +115,15 @@
       },
       "circularize": {
         "title": "Kreesfërmeg maachen",
-        "description": {
-          "single": "Dësst Feature kreesfërmeg maachen.",
-          "multiple": "Dëss Features kreesfërmeg maachen."
-        },
         "annotation": {
           "feature": {
             "one": "Een Feature kreesfërmeg gemaach.",
             "other": "{n} Features kreesfërmeg gemaach."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Dëss kënnen aus e puer Grënn net kreesfërmeg gemaach ginn."
-        },
-        "not_closed": {
-          "single": "Dësst kann net kreesfërmeg gemaach ginn well et keng Schläif ass.",
-          "multiple": "Dëss kënnen net kreesfërmeg gemaach ginn well se keng Schläif sinn."
-        },
-        "too_large": {
-          "single": "Dësst kann net kreesfërmeg gemaach ginn well net genuch dovunner Siichtbar ass.",
-          "multiple": "Dëss kënnen net kreesfërmeg gemach ginn well net genuch dovunner Siichtbar sinn."
-        },
-        "connected_to_hidden": {
-          "single": "Dësst kann net kreesfërmeg gemaach ginn well et mat engem verstoppten Feature verbonnen ass.",
-          "multiple": "Dëss kennen net kreesfërmeg gemaach ginn well verschiddener mat verstoppten Features verbonnen sinn."
-        },
-        "not_downloaded": {
-          "single": "Dësst kann net kreesfërmeg gemaach ginn well verschidden Deeler nach net erofgelueden goufen.",
-          "multiple": "Dëss kennen net kreesfërmeg gemaach ginn well verschidden Deeler nach net erofgelueden goufen."
-        },
-        "already_circular": {
-          "single": "Dësst kann net méi kreesfërmeg gemaach ginn wéi et schon ass.",
-          "multiple": "Dëss kënnen net méi kreesfërmeg gemaach ginn wéi se schon sinn."
         }
       },
       "orthogonalize": {
         "title": "Rechtwénkeleg maachen",
-        "description": {
-          "corner": {
-            "single": "Dëssen Eck rechtwénkeleg maachen.",
-            "multiple": "Dëss Ecker rechtwénkeleg maachen."
-          },
-          "feature": {
-            "single": "D'Ecken vun dëssem Feature rechtwénkeleg maachen.",
-            "multiple": "D'Ecken vun dëssen Features rechtwénkeleg maachen."
-          }
-        },
         "annotation": {
           "corner": {
             "one": "Een Eck rechtwénkeleg gemaach.",
@@ -173,21 +133,6 @@
             "one": "D'Ecken vun engem Feature rechtwénkeleg gemaach.",
             "other": "D'Ecken vun {n} Features rechtwénkeleg gemaach."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Dëss kënnen net rechtwénkeleg gemaach ginn aus verschiddenen Grënn."
-        },
-        "end_vertex": {
-          "single": "Dësst kann net rechtwénkeleg gemaach ginn well et een Endpunkt ass.",
-          "multiple": "Dëss kënnen net rechtwénkeleg gemach ginn well et Endpunkten sinn."
-        },
-        "square_enough": {
-          "single": "Dësst kann net méi rechtwénkeleg gemaach ginn wéi et schon ass.",
-          "multiple": "Dëss kënnen net méi rechtwénkeleg gemaach ginn wéi se schon sinn."
-        },
-        "not_squarish": {
-          "single": "Dësst kann net rechtwénkeleg gemaach ginn well et net quadratesch ass.",
-          "multiple": "Dëss kënnen net rechtwénkeleg gemaach ginn well se net quadratesch sinn."
         }
       },
       "straighten": {
@@ -210,10 +155,6 @@
       },
       "delete": {
         "title": "Läschen",
-        "description": {
-          "single": "Dëssen Feature dauerhaft läschen.",
-          "multiple": "Dëss Features dauerhaft läschen."
-        },
         "annotation": {
           "point": "Een Punkt geläscht.",
           "vertex": "Een Knuet vun engem Wee geläscht.",
@@ -338,17 +279,15 @@
       }
     },
     "issues": {
-      "warnings": {
-        "list_title": "Warnungen"
-      }
+      "warnings": "Warnungen"
     },
     "shortcuts": {
       "key": {
         "delete": "Läschen"
       },
-      "editing": {
-        "commands": {
-          "save": "Ännerungen späicheren"
+      "command": {
+        "save": {
+          "label": "Ännerungen späicheren"
         }
       }
     },
@@ -491,7 +430,6 @@
       "gl": "Galizesch",
       "gmh": "Mëttelhéichdäitsch",
       "goh": "Alhéichdäitsch",
-      "gom": "Goan-Konkani",
       "gon": "Gondi-Sprooch",
       "gor": "Mongondou",
       "got": "Gotesch",

@@ -76,6 +76,38 @@
               "title": "ନିଷିଦ୍ଧ"
             }
           }
+        },
+        "access_simple": {
+          "label": "ଅନୁମୋଦିତ "
+        },
+        "destination_waterway": {
+          "label": "ଗନ୍ତବ୍ୟସ୍ଥଳ"
+        },
+        "note": {
+          "label": "ଟିପ୍ପଣୀ"
+        },
+        "nudism": {
+          "options": {
+            "designated": "ନିର୍ଦ୍ଧାରିତ",
+            "no": "ନିଷିଦ୍ଧ"
+          }
+        }
+      },
+      "presets": {
+        "area": {
+          "name": "ସ୍ଥାନ"
+        },
+        "line": {
+          "name": "ରେଖା"
+        },
+        "place/square": {
+          "name": "ବର୍ଗ"
+        },
+        "playground": {
+          "name": "ଖେଳ ପଡ଼ିଆ ଉପକରଣ"
+        },
+        "point": {
+          "name": "ବିନ୍ଦୁ"
         }
       }
     }

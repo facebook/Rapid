@@ -8,6 +8,7 @@
         "attribution": {
           "text": "Käyttöehdot ja palaute"
         },
+        "description": "Kansainväliset Esri-satelliittikuvat",
         "name": "Kansainväliset Esri-satelliittikuvat"
       },
       "EsriWorldImageryClarity": {
@@ -68,6 +69,27 @@
           "text": "© OpenStreetMapin tekijät, CC-BY-SA"
         },
         "name": "OSM Tarkastajat: Tagit"
+      },
+      "Riksantikvariambetet-archaeological": {
+        "description": "Muinaiset ja historialliset jäänteet ja monumentit"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Keltainen = Tekijänoikeudeton kartta-aineisto Yhdysvaltain väestönlaskentaviranomaiselta. Punainen = Aineisto ei löydy OpenStreetMapista"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "Keltainen = Tekijänoikeudeton kartta-aineisto Yhdysvaltain väestönlaskentaviranomaiselta. Punainen = Aineisto ei löydy OpenStreetMapista"
+      },
+      "US-TIGER-Roads-2020": {
+        "description": "Keltainen = Tekijänoikeudeton kartta-aineisto Yhdysvaltain väestönlaskentaviranomaiselta. Punainen = Aineisto ei löydy OpenStreetMapista"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Keltainen = Tekijänoikeudeton kartta-aineisto Yhdysvaltain väestönlaskentaviranomaiselta. Punainen = Aineisto ei löydy OpenStreetMapista"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Keltainen = Tekijänoikeudeton kartta-aineisto Yhdysvaltain väestönlaskentaviranomaiselta. Punainen = Aineisto ei löydy OpenStreetMapista"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Keltainen = Tekijänoikeudeton kartta-aineisto Yhdysvaltain väestönlaskentaviranomaiselta. Punainen = Aineisto ei löydy OpenStreetMapista"
       },
       "US_Forest_Service_roads_overlay": {
         "description": "Valtatie: Vihreä kehys = luokittelematon. Ruskea kehys = track. Pinta: gravel = vaaleanruskea täyttö, asfaltti = musta, pinnoitettu = harmaa, ground =white, concrete = blue, grass = green. Seasonal = white bars"
@@ -179,6 +201,16 @@
         },
         "name": "OpenStreetMap (saksalainen tyyli)"
       },
+      "osmse-ekonomiska": {
+        "attribution": {
+          "text": "© Ruotsin maanmittauslaitos, CC0"
+        }
+      },
+      "osmse-generalstab": {
+        "attribution": {
+          "text": "© Ruotsin maanmittauslaitos, CC0"
+        }
+      },
       "qa_no_address": {
         "attribution": {
           "text": "Simon Poole, aineisto ©OpenStreetMapin tekijät"
@@ -214,12 +246,17 @@
         },
         "name": "Thunderforest-maisema"
       },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Kartat © Thunderforest, Aineisto © OpenStreetMapin tekijät"
+        }
+      },
       "trafikverket-baninfo": {
         "attribution": {
           "text": "© Liikennevirasto, CC0"
         },
         "description": "Ruotsin rataverkko sivuraiteineen",
-        "name": "Liikenneviraston rataverkko"
+        "name": "Ruotsin Liikenneviraston rataverkko"
       },
       "trafikverket-baninfo-option": {
         "description": "Ruotsin rataverkko mukautettavilla asetusvalinnoilla",

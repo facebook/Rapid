@@ -30,16 +30,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Plocha",
-        "filter_tooltip": "plochy"
+        "title": "Plocha"
       },
       "add_line": {
-        "title": "Linie",
-        "filter_tooltip": "linie"
+        "title": "Linie"
       },
       "add_point": {
-        "title": "Bod",
-        "filter_tooltip": "body"
+        "title": "Bod"
       },
       "add_note": {
         "title": "Poznámka",
@@ -134,10 +131,6 @@
       },
       "circularize": {
         "title": "Zakulatit",
-        "description": {
-          "single": "Zakulatit tento prvek.",
-          "multiple": "Zakulatit tyto prvky."
-        },
         "annotation": {
           "feature": {
             "one": "Byl zakulacen prvek.",
@@ -145,43 +138,10 @@
             "many": "Bylo zakulaceno {n} prvků.",
             "other": "Bylo zakulaceno {n} prvků."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Nelze zakulatit, z několika důvodů."
-        },
-        "not_closed": {
-          "single": "Nelze zakulatit, neboť nejde o smyčku.",
-          "multiple": "Nelze zakulatit, neboť nejde o smyčky."
-        },
-        "too_large": {
-          "single": "Nelze zakulatit, protože není vidět dostatečně velká část.",
-          "multiple": "Nelze zakulatit, protože není vidět dostatečně velká část."
-        },
-        "connected_to_hidden": {
-          "single": "Nelze zakulatit, protože je napojen na skrytý prvek.",
-          "multiple": "Tyto prvky nelze zakulatit, protože některé jsou napojeny na skryté prvky."
-        },
-        "not_downloaded": {
-          "single": "Nelze zakulatit, neboť části tohoto objektu nebyly dosud stažené.",
-          "multiple": "Nelze zakulatit, neboť části objektů nebyly dosud stažené."
-        },
-        "already_circular": {
-          "single": "Nelze zakulatit více, než je.",
-          "multiple": "Nelze zakulatit více, než jsou."
         }
       },
       "orthogonalize": {
         "title": "Zpravoúhlit",
-        "description": {
-          "corner": {
-            "single": "Zpravoúhlit tento roh.",
-            "multiple": "Zpravoúhlit tyto rohy."
-          },
-          "feature": {
-            "single": "Zpravoúhlit rohy tohoto prvku.",
-            "multiple": "Zpravoúhlit rohy těchto prvků."
-          }
-        },
         "annotation": {
           "corner": {
             "one": "Roh byl zpravoúhlen.",
@@ -195,33 +155,6 @@
             "many": "Rohy {n} prvků byly zpravoúhleny.",
             "other": "Rohy {n} prvků byly zpravoúhleny."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Nelze zpravoúhlit z několika důvodů."
-        },
-        "end_vertex": {
-          "single": "Nelze zpravoúhlit, jedná se o koncový bod.",
-          "multiple": "Nelze zpravoúhlit, jedná se o koncové body."
-        },
-        "square_enough": {
-          "single": "Nelze zpravoúhlit více, než je.",
-          "multiple": "Nelze zpravoúhlit více, než jsou."
-        },
-        "not_squarish": {
-          "single": "Nelze zpravoúhlit, protože se čtyřhranu vůbec nepodobá.",
-          "multiple": "Nelze zpravoúhlit, protože se čtyřhranu vůbec nepodobají."
-        },
-        "too_large": {
-          "single": "Nelze zpravoúhlit, protože není vidět dostatečně velká část.",
-          "multiple": "Nelze zpravoúhlit, protože není vidět dostatečně velká část."
-        },
-        "connected_to_hidden": {
-          "single": "Nelze zpravoúhlit, protože je napojen na skrytý prvek.",
-          "multiple": "Nelze zpravoúhlit, protože jsou napojeny na skryté prvky."
-        },
-        "not_downloaded": {
-          "single": "Nelze zpravoúhlit, neboť části tohoto objektu nebyly dosud stažené.",
-          "multiple": "Nelze zpravoúhlit, neboť části těchto objektů nebyly dosud stažené."
         }
       },
       "straighten": {
@@ -244,34 +177,10 @@
             "many": "{n} linií bylo narovnáno.",
             "other": "{n} linií bylo narovnáno."
           }
-        },
-        "too_bendy": {
-          "single": "To nelze napřímit, protože se příliš ohýbá.",
-          "multiple": "Tyto nelze napřímit, protože se příliš ohýbají."
-        },
-        "connected_to_hidden": {
-          "single": "To nelze napřímit, protože je spojeno se skrytým prvkem",
-          "multiple": "Nelze je napřímit, protože některé jsou spojeny se skrytými prvky."
-        },
-        "not_downloaded": {
-          "single": "To nelze napřímit, protože jeho části ještě nebyly staženy.",
-          "multiple": "Nelze je napřímit, protože jejich části ještě nebyly staženy."
-        },
-        "straight_enough": {
-          "single": "To se nedá udělat přímější, než je.",
-          "multiple": "Nelze je učinit přímější, než už jsou."
-        },
-        "too_large": {
-          "single": "Nelze narovnat, neboť není vidět dostatečně velká část.",
-          "multiple": "Nelze zkopírovat, neboť z nich není dostatečný počet viditelný."
         }
       },
       "delete": {
         "title": "Smazat",
-        "description": {
-          "single": "Smazat trvale tento prvek.",
-          "multiple": "Smazat trvale tyto prvky."
-        },
         "annotation": {
           "point": "Smazán bod.",
           "vertex": "Smazán bod z linie.",
@@ -284,30 +193,6 @@
             "many": "{n} prvků bylo odstraněno.",
             "other": "{n} prvků bylo odstraněno."
           }
-        },
-        "too_large": {
-          "single": "Prvky nelze vymazat, protože není vidět dostatečně velká část.",
-          "multiple": "Prvky nelze vymazat, protože není vidět dostatečně velká část."
-        },
-        "incomplete_relation": {
-          "single": "Prvek nelze smazat, neboť nebyl zcela stažen.",
-          "multiple": "Tyto prvky nemohly být smazány, neboť nebyly zcela staženy."
-        },
-        "part_of_relation": {
-          "single": "Prvek nelze smazat, protože je součástí rozsáhlejší relace. Musíte ho napřed z této relace vyřadit.",
-          "multiple": "Prvky nelze smazat, protože jsou součástí rozsáhlejších relací. Musíte je nejprve z relací vyřadit."
-        },
-        "connected_to_hidden": {
-          "single": "Prvek nelze smazat, protože je napojen na skrytý prvek.",
-          "multiple": "Nelze smazat, protože jsou napojené na skryté prvky."
-        },
-        "not_downloaded": {
-          "single": "Prvek nelze smazat, neboť některé jeho části nebyly dosud staženy.",
-          "multiple": "Tyto prvky nemohou být smazány, neboť některé jejich části nebyly dosud staženy."
-        },
-        "has_wikidata_tag": {
-          "single": "Tento prvek nelze odstranit, protože obsahuje značku Wikidata.",
-          "multiple": "Tyto prvky nelze odstranit, protože některé mají značky Wikidata."
         }
       },
       "downgrade": {
@@ -337,10 +222,6 @@
             "many": "Degradováno {n} prvků.",
             "other": "Degradováno {n} prvků."
           }
-        },
-        "has_wikidata_tag": {
-          "single": "Tento prvek nelze degradovat, neboť obsahuje značku Wikidata.",
-          "multiple": "Tyto prvky nelze degradovat, neboť některé mají značky Wikidata."
         }
       },
       "add_member": {
@@ -446,10 +327,6 @@
       },
       "move": {
         "title": "Posunout",
-        "description": {
-          "single": "Přesunout tento prvek na jiné místo.",
-          "multiple": "Přesunout tyto prvky na jiné místo."
-        },
         "annotation": {
           "point": "Posunut bod.",
           "vertex": "Posunut bod v linii.",
@@ -462,38 +339,12 @@
             "many": "Posunuto {n} prvků.",
             "other": "Posunuto {n} prvků."
           }
-        },
-        "incomplete_relation": {
-          "single": "Prvek nelze přesunout, protože je stažen jen částečně.",
-          "multiple": "Tyto prvky nelze posunout, protože jsou stažené jen částečně."
-        },
-        "too_large": {
-          "single": "Prvek nelze přesunout, protože není vidět dostatečně velká část.",
-          "multiple": "Prvky nelze přesunout, protože není vidět dostatečně velká část."
-        },
-        "connected_to_hidden": {
-          "single": "Prvek nelze přesunout, protože je napojen na skrytý prvek.",
-          "multiple": "Prvky není možné přesunout, protože je napojen na skryté prvky."
-        },
-        "not_downloaded": {
-          "single": "Prvek nelze přesunout, neboť některé jeho části nebyly dosud staženy.",
-          "multiple": "Prvky nelze posunout, neboť některé jejich části nebyly dosud staženy."
         }
       },
       "reflect": {
         "title": {
           "long": "Zrcadlit delší",
           "short": "Zrcadlit kratší"
-        },
-        "description": {
-          "long": {
-            "single": "Zrcadlit tento prvek podle jeho delší osy.",
-            "multiple": "Zrcadlit tyto prvky podle jejich delší osy."
-          },
-          "short": {
-            "single": "Zrcadlit tento prvek podle jeho kratší osy.",
-            "multiple": "Zrcadlit tyto prvky podle jejich kratší osy."
-          }
         },
         "annotation": {
           "long": {
@@ -512,30 +363,10 @@
               "other": "{n} prvků zrcadleno podle jejich kratší osy."
             }
           }
-        },
-        "incomplete_relation": {
-          "single": "Prvek nelze zrcadlit, protože nebyl zcela stažen.",
-          "multiple": "Prvky nelze zrcadlit, protože nebyly zcela staženy."
-        },
-        "too_large": {
-          "single": "Prvek nelze zrcadlit, protože není vidět dostatečně velká část.",
-          "multiple": "Prvky nelze zrcadlit, protože není vidět dostatečně velká část."
-        },
-        "connected_to_hidden": {
-          "single": "Prvek nelze zrcadlit, protože je spojen se skrytým prvkem.",
-          "multiple": "Prvky nelze zrcadlit, protože některé jsou spojeny se skrytými prvky."
-        },
-        "not_downloaded": {
-          "single": "Prvek nelze zrcadlit, neboť některé jeho části nebyly dosud staženy.",
-          "multiple": "Prvky nelze zrcadlit, neboť některé jejich části nebyly dosud staženy."
         }
       },
       "rotate": {
         "title": "Otočit",
-        "description": {
-          "single": "Otočit tento prvek okolo středu.",
-          "multiple": "Otoč prvky okolo jejich středu."
-        },
         "annotation": {
           "line": "Linie byla otočena.",
           "area": "Plocha byla pootočena.",
@@ -546,22 +377,6 @@
             "many": "Otočeno {n} prvků.",
             "other": "Otočeno {n} prvků."
           }
-        },
-        "incomplete_relation": {
-          "single": "Tento prvek nelze posunout, protože je stažený jen částečně.",
-          "multiple": "Tyto prvky nemohly být smazány, neboť nebyly zcela staženy."
-        },
-        "too_large": {
-          "single": "Prvek nelze otočit, protože není vidět dostatečně velká část.",
-          "multiple": "Prvky nelze otočit, protože není vidět dostatečně velká část."
-        },
-        "connected_to_hidden": {
-          "single": "Prvek nelze otočit, protože je spojen se skrytými prvky.",
-          "multiple": "Prvky nelze otočit, protože některé jsou spojeny se skrytými prvky."
-        },
-        "not_downloaded": {
-          "single": "Prvek nelze otočit, neboť některé jeho části nebyly dosud staženy.",
-          "multiple": "Prvky nelze otočit, neboť některé jejich části nebyly dosud staženy."
         }
       },
       "reverse": {
@@ -612,22 +427,6 @@
               "other": "{n} prvků bylo zvětšeno."
             }
           }
-        },
-        "too_small": {
-          "single": "Tento prvek nelze zmenšit, protože by byl příliš malý.",
-          "multiple": "Tyto prvky nelze zmenšit, protože by byly příliš malé."
-        },
-        "too_large": {
-          "single": "Tento prvek nelze změnit, protože nyní není viditelná jeho dostatečná část.",
-          "multiple": "Těmto prvkům nelze změnit velikost, protože nyní nejsou dostatečně viditelné."
-        },
-        "connected_to_hidden": {
-          "single": "Nemůžete upravit velikost tohoto prvku, protože je spojen se skrytým prvkem.",
-          "multiple": "Nemůžete upravit velikost těchto prvků, protože některé jesou spojeny se skrytými prvky."
-        },
-        "not_downloaded": {
-          "single": "Nemůžete upravit velikost tohoto prvku, neboť některé jeho části nebyly dosud staženy.",
-          "multiple": "Nemůžete upravit velikost těchto prvků, neboť některé jejich části nebyly dosud staženy."
         }
       },
       "split": {
@@ -688,20 +487,8 @@
       "extract": {
         "title": "Vyjmout",
         "description": {
-          "vertex": {
-            "single": "Odpojit bod z jeho nadřazených linií/ploch.",
-            "multiple": "Odpojit tyto body z jejich nadřazených prvků."
-          },
-          "line": {
-            "single": "Vyjmout z této linie bod.",
-            "multiple": "Vyjmout z těchto linií body."
-          },
-          "area": {
-            "single": "Odpojit bod z této plochy.",
-            "multiple": "Vyjmout z těchto ploch body."
-          },
           "feature": {
-            "multiple": "Vyjmout z těchto prvků body."
+            "other": "Vyjmout z těchto prvků body."
           }
         },
         "annotation": {
@@ -709,14 +496,6 @@
           "few": "Vyjmuty {n} body.",
           "many": "Vyjmuto {n} bodů.",
           "other": "Vyjmuto {n} bodů."
-        },
-        "too_large": {
-          "single": "Bod nelze vyjmout, neboť není vidět dostatečná část tohoto prvku.",
-          "multiple": "Body nelze vyjmout, neboť není vidět dostatečná část těchto prvků."
-        },
-        "connected_to_hidden": {
-          "single": "Tento bod nelze vyjmout, neboť je připojen ke skrytému prvku.",
-          "multiple": "Prvky nelze z těchto prvků vyjmout, protože některé jsou napojeny na skryté prvky."
         }
       }
     },
@@ -922,10 +701,6 @@
       "multiple_values": "Více hodnot",
       "multiple_types": "Více druhů",
       "unshared_value_tooltip": "není sdíleno všemi prvky",
-      "hidden_preset": {
-        "manual": "{features} jsou skryté. Zobrazte je v panelu Mapová data.",
-        "zoom": "{features} jsou skryté. Pro jejich zobrazení přibližte."
-      },
       "back_tooltip": "Změnit druh prvku",
       "type": "Typ",
       "details": "Podrobnosti",
@@ -1009,8 +784,7 @@
         },
         "notes": {
           "tooltip": "Poznámky z OpenStreetMap",
-          "title": "Poznámky OpenStreetMap",
-          "key": "S"
+          "title": "Poznámky OpenStreetMap"
         },
         "maproulette": {
           "detail_title": "Podrobnosti",
@@ -1039,7 +813,6 @@
         "tooltip": "Zobrazit pro výběr geometrické hodnoty."
       },
       "style_options": "Volby stylů",
-      "map_features": "Mapové prvky",
       "autohidden": "Tyto prvky jsou nyní skryté, protože jinak by jich na mapě bylo zobrazeno příliš mnoho. Když mapu zvětšíte, můžete je zobrazit a editovat.",
       "osmhidden": "Tyto prvky byly automaticky skryté, protože je skrytá vrstva OpenStreetMap."
     },
@@ -1076,7 +849,7 @@
         "tooltip": "Zobrazit pouze fotografie pořízené tímto uživatelem"
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Body",
         "tooltip": "Body zájmu"
@@ -1273,12 +1046,13 @@
     "source_switch": {
       "lose_changes": "Vaše úpravy nebyly uloženy. Když přepnete mapový server, změny budou ztraceny. Opravdu chcete přepnout server?"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Značky"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Odstranit"
+    "rapid_menu": {
+      "remove": "Odstranit",
+      "category": {
+        "roads": "silnice"
       }
     },
     "tag_reference": {
@@ -1294,7 +1068,9 @@
         "out": "Již nelze víc oddálit."
       }
     },
-    "cannot_zoom": "Aktuální nastavení nedovoluje větší zvětšení.",
+    "bearing": {
+      "n": "S"
+    },
     "full_screen": "Na celou obrazovku",
     "self_intersection": {
       "error": {
@@ -1717,7 +1493,6 @@
         "title": "Body",
         "intro": "*Body* lze použít k označení prvků, jako jsou obchody, restaurace a památky. Označují konkrétní umístění a popisují, co je tam.",
         "add_point_h": "Přidávání bodů",
-        "add_point": "Bod přidáte kliknutím na tlačítko {point_icon} **{point}**, nacházející se na liště nad mapou. Případně stiskněte klávesovou zkratku `1`.",
         "move_point_h": "Přesun bodů",
         "delete_point_h": "Odstraňování bodů",
         "delete_point": "Je možné vymazat funkce, které v reálném světě neexistují. Smazání funkce z aplikace OpenStreetMap ji odstraní z mapy, kterou používá každý, takže byste se měli ujistit, že je funkce skutečně pryč, než ji odstraníte."
@@ -1726,7 +1501,6 @@
         "title": "Linie",
         "intro": "*Linie* jsou používány pro zakreslení prvků jakými jsou cesty, železnice a řeky. Linie by měly být vedeny středem zakreslovaného prvku.",
         "add_line_h": "Přidávání čar",
-        "add_line": "Linii přidáte stisknutím tlačítka {line_icon} **{line}**, nacházející se na liště nad mapou, či stisknutím klávesové zkratky `2`.",
         "add_line_finish": "Pro dokončení linie klikněte či klepněte znovu na poslední bod, nebo zmáčkněte `{return}`.",
         "modify_line_h": "Úprava čar",
         "modify_line_dragnode": "Často uvidíte linie, které nejsou správně tvarované; například cesta, která neodpovídá snímkům pozadí. Chcete-li upravit tvar linie, nejprve ji vyberte. Všechny uzly linie budou vykresleny jako malé kruhy. Potom můžete body přetáhnout na lepší pozice.",
@@ -1745,7 +1519,6 @@
         "point_or_area_h": "Body, nebo plochy?",
         "point_or_area": "Mnohé funkce mohou být reprezentovány jako body nebo oblasti. Měli byste mapovat stavby a obrysy nemovitostí jako oblasti, kdykoli je to možné. Umístěte body uvnitř budovy, aby reprezentovaly podniky, vybavení a další funkce umístěné uvnitř budovy.",
         "add_area_h": "Přidávání ploch",
-        "add_area_command": "Plochu přidáte stisknutím tlačítka {area_icon} **{area}**, nacházející se na liště nad mapou, či stisknutím klávesové zkratky `3`.",
         "add_area_finish": "Pro dokončení plochy znovu klikněte či klepněte na poslední bod, nebo zmáčkněte `{return}`.",
         "square_area_h": "Pravoúhlé rohy",
         "modify_area_h": "Úprava ploch",
@@ -1874,18 +1647,10 @@
     },
     "issues": {
       "title": "Chyby",
-      "list_title": "Problémy",
-      "errors": {
-        "list_title": "Chyby"
-      },
-      "warnings": {
-        "list_title": "Varování"
-      },
-      "rules": {
-        "title": "Pravidla"
-      },
-      "user_resolved_issues": "Problémy vyřešené Vašimi úpravami",
-      "warnings_and_errors": "Varování a chyby",
+      "errors": "Chyby",
+      "warnings": "Varování",
+      "rules": "Pravidla",
+      "resolved_tooltip": "Problémy vyřešené Vašimi úpravami",
       "no_issues": {
         "message": {
           "everything": "Všechno vypadá skvěle",
@@ -2045,8 +1810,6 @@
         "title": "Neplatné formátování",
         "tip": "Najít značky s neočekávanými formáty",
         "email": {
-          "message": "{feature} má neplatnou emailovou adresu",
-          "message_multi": "{feature} má více neplatných emailových adres",
           "reference": "E-mailové adresy musí vypadat jako „uzivatel@example.com“."
         }
       },
@@ -2560,6 +2323,7 @@
       "title": "Klávesové zkratky",
       "tooltip": "Zobrazit obrazovku klávesových zkratek.",
       "key": {
+        "delete": "Smazat",
         "menu": "Nabídka",
         "pgdn": "PageUp",
         "pgup": "PageDown",
@@ -2569,96 +2333,177 @@
         "drag": "táhnout"
       },
       "or": "-nebo-",
-      "browsing": {
-        "title": "Procházení",
-        "navigation": {
-          "title": "Navigace",
-          "pan": "Posun mapy"
+      "browsing": "Procházení",
+      "editing": "Úpravy",
+      "navigation": "Navigace",
+      "selecting_features": "Vybrání prvků",
+      "with_features_selected": "S vybranými prvky",
+      "with_node_selected": "S vybraným uzlem",
+      "with_way_selected": "Se zvolenou linií",
+      "drawing": "Kreslení",
+      "commands": "Příkazy",
+      "help": "Nápověda",
+      "display_options": "Vlastnosti zobrazení",
+      "info": "Informace",
+      "command": {
+        "pan": {
+          "label": "Posun mapy"
         },
-        "help": {
-          "title": "Nápověda",
-          "help": "Zobrazit nápovědu",
-          "keyboard": "Zobrazit klávesové zkratky"
+        "select_one": {
+          "label": "Zvolit jeden prvek"
         },
-        "display_options": {
-          "title": "Vlastnosti zobrazení",
-          "background": "Přepnout panel snímků na pozadí",
-          "map_data": "Přepnout panel dat mapy",
-          "issues": "Přepnout panel ověření chyb",
-          "preferences": "Přepnout panel uživatelských možností",
-          "wireframe": "Přepnout výplň budov",
-          "osm_data": "Přepnout data OpenStreetMap",
-          "highlight_edits": "Zvýraznit neuložené úpravy"
+        "select_multi": {
+          "label": "Zvolit více prvků"
         },
-        "selecting": {
-          "title": "Vybrání prvků",
-          "select_one": "Zvolit jeden prvek",
-          "select_multi": "Zvolit více prvků",
-          "lasso": "Nakreslit výběr okolo prvků",
-          "search": "Najít prvky obsahující hledaný text"
+        "lasso": {
+          "label": "Nakreslit výběr okolo prvků"
         },
-        "with_selected": {
-          "title": "S vybranými prvky",
-          "edit_menu": "Vyvolat nabídku úprav"
+        "edit_menu": {
+          "label": "Vyvolat nabídku úprav"
         },
-        "vertex_selected": {
-          "title": "S vybraným uzlem",
-          "first": "Skočit na první bod",
-          "last": "Skočit na poslední bod",
-          "change_parent": "Přepnout nadřazenou linii",
-          "parent": "Vyber nadřazenou linii"
+        "first_node": {
+          "label": "Skočit na první bod"
         },
-        "way_selected": {
-          "title": "Se zvolenou linií",
-          "child": "Zvolené podřízené body"
-        }
-      },
-      "editing": {
-        "title": "Úpravy",
-        "drawing": {
-          "title": "Kreslení",
-          "add_point": "Režim 'Přidat bod'",
-          "add_line": "Režim 'Přidat čáru'",
-          "add_area": "Režim 'Přidat plochu'",
-          "add_note": "Režim 'Přidat poznámku'",
-          "place_point": "Umístit bod nebo poznámku",
-          "disable_snap": "Přidržte pro zakázání přichytávání bodů",
-          "stop_line": "Dokončit kreslení linie nebo oblasti"
+        "last_node": {
+          "label": "Skočit na poslední bod"
         },
-        "commands": {
-          "title": "Příkazy",
-          "copy": "Kopírovat vybrané prvky",
-          "paste": "Vložit vybrané vlastnosti",
-          "undo": "Vrátit poslední akci",
-          "redo": "Zopakovat poslední akci",
-          "save": "Uložit změny"
+        "change_parent": {
+          "label": "Přepnout nadřazenou linii"
         },
-        "operations": {
-          "continue_line": "Prodloužit linii z vybraného koncového bodu",
-          "merge": "Spojit (sloučit) vybrané prvky",
-          "disconnect": "Rozpojit vybrané prvky",
-          "extract": "Odpojit bod z prvku",
-          "split": "Rozdělit prvky ve vybraných uzlech",
-          "reverse": "Převrátit vybrané prvky",
-          "move": "Přesunout vybrané prvky",
-          "rotate": "Otočit vybrané prvky",
-          "orthogonalize": "Pravoúhlé rohy linie nebo plochy",
-          "straighten": "Narovnat linii nebo body",
-          "circularize": "Zakulacení uzavřených čar, nebo ploch",
-          "reflect_long": "Zrcadlete prvky podle jejich delší osy.",
-          "reflect_short": "Zrcadlete prvky podle jejich kratší osy.",
-          "delete": "Smazat zvolené prvky"
-        }
-      },
-      "tools": {
-        "title": "Nástroje",
-        "info": {
-          "title": "Informace",
-          "all": "Přepnout všechny informační panely",
-          "background": "Přepnout panel pozadí",
-          "history": "Přepnout panel historie",
-          "location": "Přepnout panel umístění",
-          "measurement": "Přepnout panel měření"
+        "select_parent": {
+          "label": "Vyber nadřazenou linii"
+        },
+        "select_children": {
+          "label": "Zvolené podřízené body"
+        },
+        "add_point": {
+          "label": "Režim 'Přidat bod'"
+        },
+        "add_line": {
+          "label": "Režim 'Přidat čáru'"
+        },
+        "add_area": {
+          "label": "Režim 'Přidat plochu'"
+        },
+        "add_note": {
+          "label": "Režim 'Přidat poznámku'",
+          "key": "S"
+        },
+        "place_point": {
+          "label": "Umístit bod nebo poznámku"
+        },
+        "disable_snap": {
+          "label": "Přidržte pro zakázání přichytávání bodů"
+        },
+        "stop_line": {
+          "label": "Dokončit kreslení linie nebo oblasti"
+        },
+        "copy": {
+          "label": "Kopírovat vybrané prvky"
+        },
+        "paste": {
+          "label": "Vložit vybrané vlastnosti"
+        },
+        "undo": {
+          "label": "Vrátit poslední akci"
+        },
+        "redo": {
+          "label": "Zopakovat poslední akci"
+        },
+        "save": {
+          "label": "Uložit změny"
+        },
+        "find": {
+          "label": "Najít prvky obsahující hledaný text"
+        },
+        "continue_line": {
+          "label": "Prodloužit linii z vybraného koncového bodu"
+        },
+        "merge": {
+          "label": "Spojit (sloučit) vybrané prvky"
+        },
+        "disconnect": {
+          "label": "Rozpojit vybrané prvky"
+        },
+        "extract": {
+          "label": "Odpojit bod z prvku",
+          "key": "V"
+        },
+        "split": {
+          "label": "Rozdělit prvky ve vybraných uzlech"
+        },
+        "reverse": {
+          "label": "Převrátit vybrané prvky"
+        },
+        "move": {
+          "label": "Přesunout vybrané prvky"
+        },
+        "rotate": {
+          "label": "Otočit vybrané prvky"
+        },
+        "orthogonalize": {
+          "label": "Pravoúhlé rohy linie nebo plochy"
+        },
+        "straighten": {
+          "label": "Narovnat linii nebo body",
+          "key": "J"
+        },
+        "circularize": {
+          "label": "Zakulacení uzavřených čar, nebo ploch"
+        },
+        "reflect_long": {
+          "label": "Zrcadlete prvky podle jejich delší osy."
+        },
+        "reflect_short": {
+          "label": "Zrcadlete prvky podle jejich kratší osy."
+        },
+        "delete": {
+          "label": "Smazat zvolené prvky"
+        },
+        "toggle_background": {
+          "label": "Přepnout panel snímků na pozadí"
+        },
+        "toggle_map_data": {
+          "label": "Přepnout panel dat mapy"
+        },
+        "toggle_issues": {
+          "label": "Přepnout panel ověření chyb"
+        },
+        "toggle_preferences": {
+          "label": "Přepnout panel uživatelských možností"
+        },
+        "wireframe": {
+          "key": "Z"
+        },
+        "highlight_edits": {
+          "label": "Zvýraznit neuložené úpravy"
+        },
+        "keyboard_shortcuts": {
+          "label": "Zobrazit klávesové zkratky"
+        },
+        "toggle_osm_data": {
+          "label": "Přepnout data OpenStreetMap"
+        },
+        "toggle_osm_notes": {
+          "key": "S"
+        },
+        "toggle_streetside": {
+          "key": "J"
+        },
+        "toggle_all_cards": {
+          "label": "Přepnout všechny informační panely"
+        },
+        "toggle_background_card": {
+          "label": "Přepnout panel pozadí"
+        },
+        "toggle_history_card": {
+          "label": "Přepnout panel historie"
+        },
+        "toggle_location_card": {
+          "label": "Přepnout panel umístění"
+        },
+        "toggle_measurement_card": {
+          "label": "Přepnout panel měření"
         }
       }
     },
@@ -2748,6 +2593,7 @@
       "bjn": "bandžarština",
       "bkm": "kom",
       "bla": "siksika",
+      "blo": "aniiština",
       "bm": "bambarština",
       "bn": "bengálština",
       "bo": "tibetština",
@@ -2879,7 +2725,6 @@
       "gmh": "hornoněmčina (středověká)",
       "gn": "guaranština",
       "goh": "hornoněmčina (stará)",
-      "gom": "konkánština (Goa)",
       "gon": "góndština",
       "gor": "gorontalo",
       "got": "gótština",
@@ -2989,6 +2834,7 @@
       "kv": "komijština",
       "kw": "kornština",
       "kwk": "kvakiutština",
+      "kxv": "kúvi",
       "ky": "kyrgyzština",
       "la": "latina",
       "lad": "ladinština",
@@ -3275,13 +3121,13 @@
       "umb": "umbundu",
       "ur": "urdština",
       "uz": "uzbečtina",
-      "vai": "vai",
       "ve": "venda",
       "vec": "benátština",
       "vep": "vepština",
       "vi": "vietnamština",
       "vls": "vlámština (západní)",
       "vmf": "němčina (mohansko-franské dialekty)",
+      "vmw": "makhuwština",
       "vo": "volapük",
       "vot": "votština",
       "vro": "võruština",
@@ -3297,6 +3143,7 @@
       "xal": "kalmyčtina",
       "xh": "xhoština",
       "xmf": "mingrelština",
+      "xnr": "kángrí",
       "xog": "sogština",
       "yao": "jaoština",
       "yap": "japština",

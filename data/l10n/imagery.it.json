@@ -94,6 +94,9 @@
         },
         "description": "Immagini satellitari Sentinel post-elaborate."
       },
+      "EOXAT2022CLOUDLESS": {
+        "description": "Immagini satellitari Sentinel post-elaborate."
+      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "Termini & Feedback"
@@ -344,7 +347,7 @@
         },
         "name": "Gliwice: Edifici"
       },
-      "LSA-ATKIS_BU": {
+      "LSA-ALKIS_BU": {
         "description": "Forma degli edifici in Sassonia-Anhalt"
       },
       "LSA-DOP20": {
@@ -513,6 +516,9 @@
         "description": "Giallo = dati cartografici di pubblico dominio dal censimento USA. Rosso = dati non presenti in OpenStreetMap"
       },
       "US-TIGER-Roads-2022": {
+        "description": "Giallo = dati della mappa di pubblico dominio provenienti dal Censimento US. Rosso = dati non trovati su OpenStreetMap"
+      },
+      "US-TIGER-Roads-2023": {
         "description": "Giallo = dati della mappa di pubblico dominio provenienti dal Censimento US. Rosso = dati non trovati su OpenStreetMap"
       },
       "USDA-NAIP": {

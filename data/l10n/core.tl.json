@@ -58,28 +58,12 @@
       },
       "delete": {
         "title": "Burahin",
-        "description": {
-          "single": "Tanggalin ang tampok na ito ng tuluyan",
-          "multiple": "Tanggalin ang mga tampok na ito ng tuluyan"
-        },
         "annotation": {
           "point": "Binura ang isang point o tuldok.",
           "vertex": "Binura ang isang node mula sa way o linya.",
           "line": "Binura ang isang linya.",
           "area": "Binary ang isang area o poligon.",
           "relation": "Binura ang isang \"relation\"."
-        },
-        "incomplete_relation": {
-          "single": "Ang tampok na ito ay hindi maaaring tanggalin dahil ito ay hindi pa ganap na-download.",
-          "multiple": "Ang mga tampok na ito ay hindi maaaring tanggalin dahil ito ay hindi pa ganap na-download."
-        },
-        "part_of_relation": {
-          "single": "Ang tampok na ito ay hindi maaaring tanggalin dahil ito ay bahagi ng isang mas malaking kaugnayan. Dapat mong alisin ang mga ito mula sa pakikipag-ugnayan muna.",
-          "multiple": "Ang mga tampok na ito ay hindi maaaring tanggalin dahil ito ay bahagi ng isang mas malaking kaugnayan. Dapat mong alisin ang mga ito mula sa pakikipag-ugnayan muna."
-        },
-        "connected_to_hidden": {
-          "single": "Ang tampok na ito ay hindi maaaring tanggalin dahil ito ay konektado sa isang nakatagong tampok.",
-          "multiple": "Ang mga tampok na hindi maaaring tanggalin dahil ang ilan ay konektado sa mga nakatagong mga tampok."
         }
       },
       "disconnect": {
@@ -97,35 +81,15 @@
       },
       "move": {
         "title": "Ilipat ng posisyon",
-        "description": {
-          "single": "Ilipat ang tampok na ito sa ibang lokasyon.",
-          "multiple": "Ilipat ang mga tampok na ito sa ibang lokasyon."
-        },
         "annotation": {
           "point": "Inilipat ang posisyon ng isang punto o tuldok.",
           "vertex": "Inilipat ang posisyon ng isang \"node\" na sa isang \"way\".",
           "line": "Inilipat ang posisyon ng isang linya.",
           "area": "Inilipat ang posisyon ng isang area o poligon."
-        },
-        "incomplete_relation": {
-          "single": "Ang tampok na ito ay hindi pwedeng ilipat dahil hindi pa ito na do-download ng buo.",
-          "multiple": "Ang mga tampok na ito ay hindi pwedeng ilipat dahil hindi pa ito na do-download ng buo."
-        },
-        "too_large": {
-          "single": "Ang tampok na ito ay hindi pwedeng ilipat dahil hindi sapat ang kasulukuyang nakikita.",
-          "multiple": "Ang mga tampok na ito ay hindi pwedeng ilipat dahil hindi sapat ang kasulukuyang nakikita."
-        },
-        "connected_to_hidden": {
-          "single": "Ang tampok na ito ay hindi pwedeng ilipat dahil konektado ito sa nakatagong tampok.",
-          "multiple": "Ang mga tampok na ito ay hindi pwedeng ilipat dahil konektado ito sa nakatagong tampok."
         }
       },
       "rotate": {
         "title": "Paikutin",
-        "description": {
-          "single": "I-rotate ang tampok na ito sa paligid ng gitnang punto.",
-          "multiple": "I-rotate ang mga tampok na ito sa paligid ng kanilang gitnang punto."
-        },
         "annotation": {
           "line": "Pinaikot ang linya.",
           "area": "Pinaikot ang area o poligon."
@@ -253,12 +217,11 @@
           "detail_title": "Mga detalye",
           "cancel": "Kanselahin"
         }
-      },
-      "map_features": "Ang mga tumpok ng mapa"
+      }
     },
-    "feature": {
+    "filters": {
       "points": {
-        "description": "Mga punto",
+        "description": "Mga Punto o tuldok",
         "tooltip": "Mga tampok na interes"
       },
       "traffic_roads": {
@@ -330,17 +293,14 @@
     "source_switch": {
       "lose_changes": "Mayroon kang hindi na-save ang mga pagbabago. Mawawala ang pagbabagong ito kung lilipat sa ibang map server.   Sigurado ka bang gusto mong lumipat ng server?"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Alisin"
-      }
+    "rapid_menu": {
+      "remove": "Alisin"
     },
     "tag_reference": {
       "description": "Paglalarawan",
       "on_wiki": "{tag} sa wiki.osm.org",
       "used_with": "Kabilang sa gingamait ang {type}"
     },
-    "cannot_zoom": "Hindi na pwedeng mag-zoom out sa kasalukuyang \"mode\".",
     "full_screen": "I-fullscreen",
     "QA": {
       "osmose": {
@@ -376,9 +336,7 @@
       }
     },
     "issues": {
-      "warnings": {
-        "list_title": "Mga babala"
-      }
+      "warnings": "Mga babala"
     },
     "intro": {
       "done": "Tapos",
@@ -408,11 +366,7 @@
       "key": {
         "delete": "Burahin"
       },
-      "browsing": {
-        "help": {
-          "title": "Tulong"
-        }
-      }
+      "help": "Tulong"
     },
     "wikidata": {
       "description": "Paglalarawan"

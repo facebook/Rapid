@@ -12,6 +12,18 @@
         "description": "Dodatočne upravené snímky satelitu Sentinel.",
         "name": "eox.at 2018 bez oblakov"
       },
+      "EOXAT2019CLOUDLESS": {
+        "description": "Dodatočne upravené snímky satelitu Sentinel."
+      },
+      "EOXAT2020CLOUDLESS": {
+        "description": "Dodatočne upravené snímky satelitu Sentinel."
+      },
+      "EOXAT2021CLOUDLESS": {
+        "description": "Dodatočne upravené snímky satelitu Sentinel."
+      },
+      "EOXAT2022CLOUDLESS": {
+        "description": "Dodatočne upravené snímky satelitu Sentinel."
+      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "Podmienky & pripomienky"
@@ -26,6 +38,138 @@
         "description": "Archív snímok Esri, ktoré môžu byť jasnejšie a presnejšie než východzia hladina.",
         "name": "Snímky sveta Esri (Clarity) Beta"
       },
+      "Geoportal2-PL-City-boundaries_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        }
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        },
+        "description": "Ortofotomapa s rozlíšením 10 cm na alebo lepším. Údaje sú zotriedené podľa rozlíšenia a následne podľa veku. Napríklad snímky z roku 2012 s rozlíšením 8 cm majú prednosť pred snímkami s rozlíšením 10 cm z roku 2019."
+      },
+      "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        },
+        "description": "Ortofotomapa s rozlíšením 10 cm na alebo lepším. Údaje sú zotriedené podľa rozlíšenia a následne podľa veku. Napríklad snímky z roku 2012 s rozlíšením 8 cm majú prednosť pred snímkami s rozlíšením 10 cm z roku 2019."
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        },
+        "description": "Služba prehliadania WMS Integrácia číslovania národných adries umožňujúca sťahovanie mapových obrazov vytvorených na základe priestorových údajov zo Štátneho registra hraníc v oblasti záznamu ulíc a adries. ",
+        "name": "Názvy ulíc z geoportalu 2"
+      },
+      "Geoportal2-PL-addres_points_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        },
+        "description": "Služba prehliadania WMS Integrácia číslovania národných adries umožňujúca sťahovanie mapových obrazov vytvorených na základe priestorových údajov zo Štátneho registra hraníc v oblasti záznamu ulíc a adries. ",
+        "name": "Geoportál 2: body adries"
+      },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        }
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        },
+        "description": "Služba prehliadania (Web Map Service, WMS), ktorá umožňuje prezerať si ortofotomapy pre oblasť Poľska. Údaje poskytované prostredníctvom tejto služby sú ortofotomapou vytvorenou z leteckých snímok. Služba ponúka podporu pre rozhranie WMS 1.3.0. "
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-communes_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-counties_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-provinces_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        }
+      },
+      "Geoportal2-PL-buildings_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        },
+        "description": "Služba Národná integrácia pozemkových záznamov je kolektívna služba na prezentáciu údajov o registrácii pochádzajúcich priamo z jednotiek na úrovni poviat. Služba obsahuje iba údaje tých jednotiek, ktoré majú službu WMS s príslušnými parametrami a rozhodli sa zahrnúť svoju službu WMS do kolektívnej služby Národná integrácia pozemkových záznamov.",
+        "name": "Geoportal 2: Evidencia budov cez WMS"
+      },
+      "Geoportal2-PL-gas-pipe_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        }
+      },
+      "Geoportal2-PL-heat-pipe_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        }
+      },
+      "Geoportal2-PL-plot_boundaries_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        },
+        "description": "Služba Národná integrácia pozemkových záznamov je kolektívna služba na prezentáciu údajov o registrácii pochádzajúcich priamo z jednotiek na úrovni poviat. Služba obsahuje iba údaje tých jednotiek, ktoré majú službu WMS s príslušnými parametrami a rozhodli sa zahrnúť svoju službu WMS do kolektívnej služby Národná integrácia pozemkových záznamov."
+      },
+      "Geoportal2-PL-power-cord_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        }
+      },
+      "Geoportal2-PL-sewer-pipe_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        }
+      },
+      "Geoportal2-PL-shaded_relief_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        }
+      },
+      "Geoportal2-PL-squares-and-housing-estates_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        },
+        "description": "Služba prehliadania WMS Integrácia číslovania národných adries umožňujúca sťahovanie mapových obrazov vytvorených na základe priestorových údajov zo Štátneho registra hraníc v oblasti záznamu ulíc a adries. "
+      },
+      "Geoportal2-PL-state-borders_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        }
+      },
+      "Geoportal2-PL-telecommunications-cable_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        }
+      },
+      "Geoportal2-PL-water-pipe_WMS": {
+        "attribution": {
+          "text": "Hlavný úrad geodézie a kartografie"
+        }
+      },
+      "LSA-ALKIS_BU": {
+        "description": "Obrysy budov v oblasti Sasko"
+      },
+      "LSA-DVG": {
+        "description": "Vektorový záznam administratívnych hraníc. Poskytuje hranice federálnych štátov, okrskov, sídiel a častí sídiel."
+      },
+      "LocalAuthorities_RightsOfWay": {
+        "attribution": {
+          "text": "Obsahuje informácie z verejného sektora licnecované podľa Open Government Licence V3.0."
+        }
+      },
       "MAPNIK": {
         "attribution": {
           "text": "© OpenStreetMap prispievatelia, ODbL 1.0"
@@ -38,6 +182,13 @@
           "text": "Podmienky & pripomienky"
         },
         "name": "Mapbox satelitné"
+      },
+      "OSMUK-Cadastral-Parcels": {
+        "attribution": {
+          "text": "Obsahuje informácie z verejného sektora licnecované podľa Open Government Licence V3.0."
+        },
+        "description": "Perfekte zarovnané katastrálne parcely vo Veľkej Británii",
+        "name": "Katastraĺne parcely OSMUK"
       },
       "OSM_Inspector-Addresses": {
         "attribution": {
@@ -95,12 +246,31 @@
         "description": "Žltá = Verejne dostupné mapové údaje od US Census. Červená = Dáta nenájdené v OpenStreetMap.",
         "name": "Cesty TIGER 2019"
       },
+      "US-TIGER-Roads-2020": {
+        "description": "Žltá = Verejne dostupné údaje zo scítania ľudu v USA. Červená = údaje ktoré sa nenašli v OpenStreetMap",
+        "name": "TIGER 2020: cesty"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Žltá = Verejne dostupné údaje zo scítania ľudu v USA. Červená = údaje ktoré sa nenašli v OpenStreetMap"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Žltá = Verejne dostupné údaje zo scítania ľudu v USA. Červená = údaje ktoré sa nenašli v OpenStreetMap"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Žltá = Verejne dostupné údaje zo scítania ľudu v USA. Červená = údaje ktoré sa nenašli v OpenStreetMap"
+      },
       "USDA-NAIP": {
         "name": "Národný program poľnohospodárskych snímok"
       },
       "US_Forest_Service_roads_overlay": {
         "description": "Diaľnica: Zelené orámovanie = nezaradené. Hnedé orámovanie = poľná cesta. Povrch: štrk = svetlohnedá výplň, asfalt = čierna, spevnená = šedá, zem = biela, betón = modrá, tráva = zelená. Sezónne = biele pruhy",
         "name": "Vrstva lesných ciest USA"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Vyhotovené zo zdrojov UrbIS®© Brusel. Distribúcia a autorské práva CIRB"
+        },
+        "name": "Najnovšie letecké zábery CIRB/CIBG"
       },
       "UrbISOrtho2016": {
         "attribution": {
@@ -122,9 +292,19 @@
           "text": "Realizované formou Bruselského UrbIS® © - Distribúcia a autorské práva CIRB"
         }
       },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Vyhotovené zo zdrojov UrbIS®© Brusel. Distribúcia a autorské práva CIRB"
+        }
+      },
       "UrbisAdmFR": {
         "attribution": {
           "text": "Realizované formou Bruselského UrbIS® © - Distribúcia a autorské práva CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
+        "attribution": {
+          "text": "Vyhotovené zo zdrojov UrbIS®© Brusel. Distribúcia a autorské práva CIRB"
         }
       },
       "UrbisAdmNL": {
@@ -185,11 +365,45 @@
         "description": "Mapa mesta je prehľadná mapa, ktorá popisuje Göteborg. Obsahuje všeobecné informácie o pozemkoch, komunikáciách, hydrografii, budovách, adresných číslach a názvoch ulíc, administratívnom členení a ďalšom orientačnom texte.",
         "name": "Mestská mapa Gothenburg"
       },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© Miestna správa Gothenburg, CC0"
+        },
+        "description": "Webová mapová služba zobrazujúca tieňovanie svahov a sklony, postavená na modeli prevýšení v meste Gothenburg z roku 2017. Rozlíšenie 0.5 m/pixel. ",
+        "name": "Tieňovanie svahov Gothenburg"
+      },
       "gothenburg-ortho": {
         "attribution": {
           "text": "© Miestna správa Gothenburg, CC0"
         },
-        "description": "Otrofotomapa od miestnej správy Gothenburg"
+        "description": "Otrofotomapa od miestnej správy Gothenburg",
+        "name": "Ortofoto Gothenburg, 2015"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© Miestna správa Gothenburg, CC0"
+        },
+        "description": "Ortofotomapa mesta Gothenburg ",
+        "name": "Ortofoto Gothenburg, 2017"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© Miestna správa Gothenburg, CC0"
+        },
+        "description": "Ortofotomapa mesta Gothenburg ",
+        "name": "Ortofoto Gothenburg, 2019"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© Miestna správa Gothenburg, CC0"
+        },
+        "description": "Ortofotomapa mesta Gothenburg "
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© Miestna správa Gothenburg, CC0"
+        },
+        "description": "Ortofotomapa mesta Gothenburg "
       },
       "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
         "attribution": {
@@ -232,6 +446,17 @@
         },
         "description": "Letecké snímky obývaných zón oblasti Kalmar, 2018",
         "name": "Mestské ortofoto Kalmar, 2018"
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© Miestna správa Kalmar"
+        },
+        "description": "Letecké snímky obývaných zón oblasti Kalmar, 2020",
+        "name": "Mestské ortofoto Kalmar, 2020"
+      },
+      "kartverket-bygninger": {
+        "description": "INSPIRE: Budovy v Nórsku",
+        "name": "Kartverket: vrstva budov"
       },
       "kelkkareitit": {
         "description": "Kelkkareitit.fi - OSM mapa trás pre snežné skútre (pokrytie - Škandinávia)",
@@ -327,6 +552,7 @@
         "attribution": {
           "text": "© Miestna správa Stockholm, licencia CC0"
         },
+        "description": "Ortofoto z aglomerácie Stockholm 2018, licencia CC0",
         "name": "Ortofoto snímky mesta Štokholm"
       },
       "susono_shizuoka_jp_orthophoto": {
@@ -372,6 +598,11 @@
       "trafikverket-vagnat-option": {
         "description": "Švédska cestná sieť NVDB s viacerými možnosťami mapových vrstiev",
         "name": "Možnosti cestnej siete Trafikverket"
+      },
+      "wroclaw-orto2015": {
+        "attribution": {
+          "text": "Mestský úrad Wroclaw"
+        }
       },
       "wroclaw-orto2018": {
         "attribution": {

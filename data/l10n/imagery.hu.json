@@ -21,10 +21,23 @@
         "description": "Utófeldolgozott Sentinel műholdas légifelvétel.",
         "name": "eox.at 2018 felhőtlen"
       },
+      "EOXAT2019CLOUDLESS": {
+        "description": "Utófeldolgozott Sentinel műholdas légifelvétel."
+      },
+      "EOXAT2020CLOUDLESS": {
+        "description": "Utófeldolgozott Sentinel műholdas légifelvétel."
+      },
+      "EOXAT2021CLOUDLESS": {
+        "description": "Utófeldolgozott Sentinel műholdas légifelvétel."
+      },
+      "EOXAT2022CLOUDLESS": {
+        "description": "Utófeldolgozott Sentinel műholdas légifelvétel."
+      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "Feltételek és visszajelzés"
         },
+        "description": "Esri World felvételek",
         "name": "Esri World felvételek"
       },
       "EsriWorldImageryClarity": {
@@ -36,6 +49,9 @@
       },
       "Frankfurt-am-Main-2019": {
         "name": "Frankfurt am Main légifotó 2019"
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "description": "Ortofotótérkép legalább 10 cm-es felbontással. Az adatok felbontás, majd aktualitás szerint vannak rendezve."
       },
       "Geoportal2-PL-HighResolution-aerial_image_WMS": {
         "description": "Ortofotótérkép legalább 10 cm-es felbontással. Az adatok felbontás, majd aktualitás szerint vannak rendezve."
@@ -58,7 +74,10 @@
       "Geoportal2-PL-plot_boundaries_WMS": {
         "description": "A Lengyel Nemzeti Földnyilvántartási Integrációs szolgáltatás közvetlenül a megyei szintű egységektől származó földnyilvántartási adatok bemutatására szolgáló összevont szolgáltatás. A szolgáltatás csak azon egységek adatait tartalmazza, amelyeknek létezik megfelelő paraméterekkel rendelkező WMS-szolgáltatása, és úgy döntöttek, hogy WMS-szolgáltatásukat bevonják a NationalIntegrationGroundEvidence összesített szolgáltatásba."
       },
-      "LSA-ATKIS_BU": {
+      "Geoportal2-PL-squares-and-housing-estates_WMS": {
+        "description": "WMS megtekintési szolgáltatás lengyel nemzeti címszámozási integrációban, amely lehetővé teszi a Nemzeti Határnyilvántartás térbeli adataiból létrehozott térképi képek letöltését az utca- és címnyilvántartásokhoz."
+      },
+      "LSA-ALKIS_BU": {
         "description": "Az épületek alakja Szász-Anhalt tartományban"
       },
       "LSA-DOP20": {
@@ -170,6 +189,12 @@
       "US-TIGER-Roads-2021": {
         "description": "Sárga = Az amerikai népszámlálási hivatal nyilvános térképadatai. Piros = Az OpenStreetMapban nem található adat."
       },
+      "US-TIGER-Roads-2022": {
+        "description": "Sárga = Az amerikai népszámlálási hivatal nyilvános térképadatai. Piros = Az OpenStreetMapban nem található adat."
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Sárga = Az amerikai népszámlálási hivatal nyilvános térképadatai. Piros = Az OpenStreetMapban nem található adat."
+      },
       "US_Forest_Service_roads_overlay": {
         "description": "Utak: Zöld keret = besorolatlan. Barna keret = földút. Felület: murva = halvány barna kitöltés, aszfalt = fekete, kikövezett = szürke, föld = fehér, beton = kék, fű = zöld. Évszakos = fehér sávok",
         "name": "U.S.A. erdei útjainak rétege"
@@ -193,6 +218,11 @@
       "UrbISOrtho2018": {
         "attribution": {
           "text": "Készítette a brüsszeli UrbIS®© - Disztribúció és szerzői jogok: CIRB"
+        }
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "Megvalósult a brüsszeli UrbIS®© segítségével - Distribution & Copyright CIRB"
         }
       },
       "UrbISOrtho2020": {
@@ -271,9 +301,36 @@
         "name": "Göteborg várostérkép"
       },
       "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© Göteborg település, CC0"
+        },
         "description": "Göteborg város 2017-es magassági modellje alapján a domborzatot és lejtést bemutató webes térképszolgáltatás. Felbontás 0,5 méter per pixel."
       },
       "gothenburg-ortho": {
+        "attribution": {
+          "text": "© Göteborg település, CC0"
+        },
+        "description": "Göteborg település ortofotója"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© Göteborg település, CC0"
+        },
+        "description": "Göteborg település ortofotója"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© Göteborg település, CC0"
+        },
+        "description": "Göteborg település ortofotója"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© Göteborg település, CC0"
+        },
+        "description": "Göteborg település ortofotója"
+      },
+      "gothenburg-ortho_latest": {
         "attribution": {
           "text": "© Göteborg település, CC0"
         },
@@ -376,6 +433,11 @@
           "text": "Térképek: © Thunderforest, adatok: © OpenStreetMap contributors"
         },
         "name": "Thunderforest Landscape (táj)"
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Térképek: © Thunderforest, adatok: © OpenStreetMap-közreműködők"
+        }
       },
       "trafikverket-baninfo": {
         "description": "Svéd vasúthálózat, mellékvágányokkal együtt",

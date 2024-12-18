@@ -19,12 +19,10 @@
     },
     "modes": {
       "add_area": {
-        "title": "Apgabals",
-        "filter_tooltip": "apgabali"
+        "title": "Apgabals"
       },
       "add_line": {
-        "title": "Līnija",
-        "filter_tooltip": "līnijas"
+        "title": "Līnija"
       },
       "add_point": {
         "title": "Punkts"
@@ -96,36 +94,12 @@
       },
       "delete": {
         "title": "Dzēst",
-        "description": {
-          "single": "Dzēst šo objektu neatgriezeniski.",
-          "multiple": "Dzēst šos objektus neatgriezeniski."
-        },
         "annotation": {
           "point": "Punkts dzēsts.",
           "vertex": "Mezgls dzests.",
           "line": "Līnija dzēsta.",
           "area": "Apgabals dzēsts.",
           "relation": "Relācija dzēsta."
-        },
-        "too_large": {
-          "single": "Šo objektu nevar dzēst, jo tas nav pietiekami redzams.",
-          "multiple": "Šos objektus nevar dzēst, jo tie nav pietiekami redzami."
-        },
-        "incomplete_relation": {
-          "single": "Šo objektu nevar dzēst, jo tas nav pilnībā lejuplādēts.",
-          "multiple": "Šos objektus nevar dzēst, jo tie nav pilnībā lejupielādēti."
-        },
-        "part_of_relation": {
-          "single": "Šo objektu nevar dzēst jo tā ir daļa no lielākas relācijas. Tev tas ir jānoņem no šīs relācijas vispirms.",
-          "multiple": "Šos objektu nevar dzēst jo tā ir daļa no lielākas relācijas. Tev tie ir jānoņem no šīs relācijas vispirms."
-        },
-        "connected_to_hidden": {
-          "single": "Šo objektu nevar dzēst, jo tas ir pievienots paslēptam objektam.",
-          "multiple": "Šos objektus nevar dzēst, jo daži no tiem ir pievienoti paslēptiem objektiem."
-        },
-        "has_wikidata_tag": {
-          "single": "Šo objektu nevar dzēst, jo tam ir pievienots Vikidatu apzīmējums.",
-          "multiple": "Šos objektus nevar dzēst, jo dažiem no tiem ir pievienoti Vikidatu apzīmējumi."
         }
       },
       "downgrade": {
@@ -134,10 +108,6 @@
           "building": "Dzēst visus apzīmējumus, kas nav ēkas.",
           "address": "Dzēst visus apzīmējumus, kas nav adreses.",
           "generic": "Noņemt apzīmējumus."
-        },
-        "has_wikidata_tag": {
-          "single": "Šo objektu nevar pazemināt, jo tam ir pievienots Vikidatu apzīmējums.",
-          "multiple": "Šos objektus nevar pazemināt, jo dažiem no tiem ir pievienoti Vikidatu apzīmējumi."
         }
       },
       "connect": {
@@ -166,49 +136,18 @@
       },
       "move": {
         "title": "Pārvietot",
-        "description": {
-          "single": "Pārvieto šo objektu uz citu vietu.",
-          "multiple": "Pārvieto šos objektus uz citu vietu."
-        },
         "annotation": {
           "point": "Punkts pārvietots.",
           "vertex": "Mezgls pārvietots.",
           "line": "Līnija pārvietota.",
           "area": "Apgabals pārvietots."
-        },
-        "incomplete_relation": {
-          "single": "Šo objektu nevar pārvietot kamēr tas nav lejupielādēts pilnībā.",
-          "multiple": "Šos objektus nevar pārvietot jo tie nav pilnībā lejupielādēti."
-        },
-        "too_large": {
-          "single": "Šo objektu nevar pārvietot jo tas nav pietiekami redzams.",
-          "multiple": "Šos objektus nevar pārvietot jo tie nav pietiekami redzami."
-        },
-        "connected_to_hidden": {
-          "single": "Šo objektu nevar pārvietot, jo tas ir pievienots paslēptam objektam.",
-          "multiple": "Šos objektus nevar pārvietot jo daži no tiem ir pievienoti paslēptiem objektiem."
         }
       },
       "rotate": {
         "title": "Pagriezt",
-        "description": {
-          "single": "Pagriezt šo objektu ap tā centru.",
-          "multiple": "Pagriezt šos objektus ap to centra punktu."
-        },
         "annotation": {
           "line": "Līnija pagriezta.",
           "area": "Apgabals pagriezts."
-        },
-        "incomplete_relation": {
-          "single": "Šo objektu nevar pagriezt, jo tas nav pilnībā lejuplādēts.",
-          "multiple": "Šos objektus nevar pagriezt, jo tie nav pilnībā lejupielādēti."
-        },
-        "too_large": {
-          "single": "Šo objektu nevar pagriezt, jo tas nav pietiekami redzams.",
-          "multiple": "Šos objektus nevar pagriezt, jo tie nav pietiekami redzami."
-        },
-        "connected_to_hidden": {
-          "multiple": "Šos objektus nevar pagriezt, jo daži no tiem ir pievienoti pie paslēptiem objektiem."
         }
       },
       "reverse": {
@@ -408,11 +347,10 @@
           "zoom": "Pietuvināt līdz datiem"
         }
       },
-      "map_features": "Kartes Objekti",
       "autohidden": "Šie objekti tika automātiski paslēpti, jo pārāk daudz būtu parādijušies uz ekrāna. Pietuvini karti, lai tos parādītu.",
       "osmhidden": "Šie objekti tika automātiski paslēpti jo OpenStreetMap slānis ir paslēpts."
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Punkti",
         "tooltip": "Intereses Punkti"
@@ -534,13 +472,11 @@
     "source_switch": {
       "lose_changes": "Jums ir nesaglabātas izmaiņas. Tās tiks zaudētas mainot karšu serveri. Vai tiešām vēlaties mainīt karšu serveri?"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Apzīmējumi"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Noņemt "
-      }
+    "rapid_menu": {
+      "remove": "Noņemt "
     },
     "tag_reference": {
       "description": "Apraksts",
@@ -744,12 +680,8 @@
       }
     },
     "issues": {
-      "errors": {
-        "list_title": "Kļūdas"
-      },
-      "warnings": {
-        "list_title": "Brīdinājumi"
-      },
+      "errors": "Kļūdas",
+      "warnings": "Brīdinājumi",
       "missing_tag": {
         "title": "Trūkstoši apzīmējumi"
       },
@@ -847,34 +779,33 @@
       "key": {
         "delete": "Dzēst"
       },
-      "browsing": {
-        "navigation": {
-          "title": "Navigācija"
+      "navigation": "Navigācija",
+      "help": "Palīdzība",
+      "info": "Informācija",
+      "command": {
+        "lasso": {
+          "label": "Uzzīmēt izvēlnes laso ap objektiem"
         },
-        "help": {
-          "title": "Palīdzība"
+        "copy": {
+          "label": "Kopēt izvēlētos objektus"
         },
-        "selecting": {
-          "lasso": "Uzzīmēt izvēlnes laso ap objektiem",
-          "search": "Atrast objektus, kas atbilst meklētajam tekstam"
-        }
-      },
-      "editing": {
-        "commands": {
-          "copy": "Kopēt izvēlētos objektus",
-          "paste": "Ielīmēt kopētos objektus"
+        "paste": {
+          "label": "Ielīmēt kopētos objektus"
         },
-        "operations": {
-          "merge": "Apvienot (apkopot) izvēlētos objektus",
-          "move": "Pārvietot izvēlētos objektus",
-          "rotate": "Pagriezt izvēlētos objektus",
-          "delete": "Dzēst izvēlētos objektus"
-        }
-      },
-      "tools": {
-        "title": "Rīki",
-        "info": {
-          "title": "Informācija"
+        "find": {
+          "label": "Atrast objektus, kas atbilst meklētajam tekstam"
+        },
+        "merge": {
+          "label": "Apvienot (apkopot) izvēlētos objektus"
+        },
+        "move": {
+          "label": "Pārvietot izvēlētos objektus"
+        },
+        "rotate": {
+          "label": "Pagriezt izvēlētos objektus"
+        },
+        "delete": {
+          "label": "Dzēst izvēlētos objektus"
         }
       }
     },
@@ -938,6 +869,7 @@
       "bin": "binu",
       "bkm": "komu",
       "bla": "siksiku",
+      "blo": "anī",
       "bm": "bambaru",
       "bn": "bengāļu",
       "bo": "tibetiešu",
@@ -1150,6 +1082,7 @@
       "kv": "komiešu",
       "kw": "korniešu",
       "kwk": "kvakvala",
+      "kxv": "kuvi",
       "ky": "kirgīzu",
       "la": "latīņu",
       "lad": "ladino",
@@ -1160,8 +1093,10 @@
       "lez": "lezgīnu",
       "lg": "gandu",
       "li": "limburgiešu",
+      "lij": "ligūriešu",
       "lil": "lilluetu",
       "lkt": "lakotu",
+      "lmo": "lombardiešu",
       "ln": "lingala",
       "lo": "laosiešu",
       "lol": "mongu",
@@ -1174,7 +1109,6 @@
       "lua": "lubalulva",
       "lui": "luisenu",
       "lun": "lundu",
-      "luo": "luo",
       "lus": "lušeju",
       "luy": "luhju",
       "lv": "latviešu",
@@ -1193,7 +1127,7 @@
       "mfe": "Maurīcijas kreolu",
       "mg": "malagasu",
       "mga": "vidusīru",
-      "mgh": "makua",
+      "mgh": "makua-mīto",
       "mgo": "metu",
       "mh": "māršaliešu",
       "mi": "maoru",
@@ -1352,6 +1286,7 @@
       "swb": "komoru",
       "syc": "klasiskā sīriešu",
       "syr": "sīriešu",
+      "szl": "silēziešu",
       "ta": "tamilu",
       "tce": "dienvidtutčonu",
       "te": "telugu",
@@ -1399,7 +1334,9 @@
       "uz": "uzbeku",
       "vai": "vaju",
       "ve": "vendu",
+      "vec": "venēciešu",
       "vi": "vjetnamiešu",
+      "vmw": "makua",
       "vo": "volapiks",
       "vot": "votu",
       "vun": "vundžo",
@@ -1413,6 +1350,7 @@
       "wuu": "vu ķīniešu",
       "xal": "kalmiku",
       "xh": "khosu",
+      "xnr": "kangri",
       "xog": "sogu",
       "yao": "jao",
       "yap": "japiešu",

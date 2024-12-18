@@ -28,16 +28,11 @@
       }
     },
     "modes": {
-      "add_area": {
-        "filter_tooltip": "aree"
-      },
       "add_line": {
-        "title": "Linea",
-        "filter_tooltip": "linee"
+        "title": "Linea"
       },
       "add_point": {
-        "title": "Punto",
-        "filter_tooltip": "punti"
+        "title": "Punto"
       },
       "add_note": {
         "title": "Nota",
@@ -126,53 +121,16 @@
       },
       "circularize": {
         "title": "Rendi rotondo",
-        "description": {
-          "single": "Rendi circolare questo elemento.",
-          "multiple": "Rendi circolari questi elementi"
-        },
         "annotation": {
           "feature": {
             "one": "Reso un elemento circolare.",
             "many": "Resi {n} elementi circolari.",
             "other": "Resi {n} elementi circolari."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Questi elementi non possono essere resi rotondi per diversi motivi."
-        },
-        "not_closed": {
-          "single": "Questo elemento non può essere reso rotondo perché non è un anello.",
-          "multiple": "Questi elementi non possono essere resi rotondi perché non sono anelli."
-        },
-        "too_large": {
-          "single": "Questo elemento non può essere reso rotondo in quanto non ne è visibile abbastanza.",
-          "multiple": "Questi elementi non possono essere resi rotondi in quanto non ne sono visibili abbastanza."
-        },
-        "connected_to_hidden": {
-          "single": "Questo non può essere reso circolare in quanto connesso a un elemento nascosto.",
-          "multiple": "Questi non possono essere resi circolari in quanto alcuni sono connessi ad elementi nascosti."
-        },
-        "not_downloaded": {
-          "single": "Questo non può essere reso circolare in quanto alcune parti non sono ancora state scaricate.",
-          "multiple": "Questo non può essere reso circolare in quanto alcune parti non sono ancora state scaricate."
-        },
-        "already_circular": {
-          "single": "Questo non può essere reso più circolare di quanto è già.",
-          "multiple": "Questi non possono essere resi più circolare di quanto già siano."
         }
       },
       "orthogonalize": {
         "title": "Ortogonalizza",
-        "description": {
-          "corner": {
-            "single": "Rendi questo angolo retto.",
-            "multiple": "Rendi questi angoli retti."
-          },
-          "feature": {
-            "single": "Rendi retti gli angoli di questo elemento.",
-            "multiple": "Rendi retti gli angoli di questi elementi."
-          }
-        },
         "annotation": {
           "corner": {
             "one": "Squadrato un angolo.",
@@ -184,33 +142,6 @@
             "many": "Squadrato gli angoli di {n} elementi.",
             "other": "Squadrato gli angoli di {n} elementi."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Impossibile renderli retti per vari motivi."
-        },
-        "end_vertex": {
-          "single": "Impossibile renderlo retto perché è una estremità.",
-          "multiple": "Impossibile renderli retti perché sono delle estremità."
-        },
-        "square_enough": {
-          "single": "Impossibile renderlo più retto di quanto non sia già.",
-          "multiple": "Impossibile renderli retti più di quanto non siano già."
-        },
-        "not_squarish": {
-          "single": "Non può essere squadrato in quanto non sembra quadrato.",
-          "multiple": "Non possono essere squadrati in quanto non sembrano quadrati."
-        },
-        "too_large": {
-          "single": "Questo non può essere squadrato in quanto non ne è visibile abbastanza.",
-          "multiple": "Questi non possono essere squadrati in quanto non ne sono visibili abbastanza."
-        },
-        "connected_to_hidden": {
-          "single": "Questo non può essere squadrato perché è connetto a un elemento nascosto.",
-          "multiple": "Questi non possono essere squadrati perché alcuni sono connessi a elementi nascosti."
-        },
-        "not_downloaded": {
-          "single": "Non può essere squadrato perché alcune parti non sono state scaricate.",
-          "multiple": "Non possono essere squadrati perché alcune parti non sono state scaricate."
         }
       },
       "straighten": {
@@ -231,34 +162,10 @@
             "many": "Rettificate {n} linee.",
             "other": "Rettificate {n} linee."
           }
-        },
-        "too_bendy": {
-          "single": "Questo elemento non può essere raddrizzato perché è troppo curvo.",
-          "multiple": "Questi non possono essere raddrizzati perché sono troppo piegati."
-        },
-        "connected_to_hidden": {
-          "single": "Questo elemento non può essere raddrizzato perché è collegato a un elemento nascosto.",
-          "multiple": "Questi elementi non possono essere raddrizzati perché sono collegati a degli elementi nascosti."
-        },
-        "not_downloaded": {
-          "single": "Questo elemento non può essere raddrizzato perché alcune sue parti non sono ancora state scaricate.",
-          "multiple": "Questi elementi non possono essere raddrizzati perché alcune loro parti non sono ancora state scaricate."
-        },
-        "straight_enough": {
-          "single": "Questo elemento non può essere raddrizzato più di quanto non sia già.",
-          "multiple": "Questi elementi non possono essere raddrizzati più di quanto non siano già."
-        },
-        "too_large": {
-          "single": "Questo elemento non può essere raddrizzato perché non è del tutto visibile.",
-          "multiple": "Questi elementi non possono essere raddrizzati perché non sono del tutto visibili."
         }
       },
       "delete": {
         "title": "Cancella",
-        "description": {
-          "single": "Cancella questo elemento irreversibilmente.",
-          "multiple": "Cancella questi elementi irreversibilmente."
-        },
         "annotation": {
           "point": "Cancellato un punto.",
           "vertex": "Cancellato un punto da una way.",
@@ -270,30 +177,6 @@
             "many": "Cancellati {n} elementi.",
             "other": "Cancellati {n} elementi."
           }
-        },
-        "too_large": {
-          "single": "Questo elemento non può essere cancellato perché non è del tutto visibile.",
-          "multiple": "Questi elementi non possono essere cancellati perché non tutti sono visibili."
-        },
-        "incomplete_relation": {
-          "single": "Questo elemento non può essere cancellato perché non è stato completamente scaricato.",
-          "multiple": "Questi elementi non possono essere cancellati perché non sono stati completamente scaricati."
-        },
-        "part_of_relation": {
-          "single": "Questo elemento non può essere eliminato perché fa parte di una relazione. Devi prima rimuoverlo dalla relazione.",
-          "multiple": "Questi elementi non possono essere eliminati perché fanno parte di una relazione. Devi prima rimuoverli dalla relazione."
-        },
-        "connected_to_hidden": {
-          "single": "Questo elemento non può essere cancellato perché è connesso ad un elemento nascosto.",
-          "multiple": "Questi elementi non possono essere cancellati perché sono connessi a degli elementi nascosti."
-        },
-        "not_downloaded": {
-          "single": "Impossibile cancellare l’oggetto perché alcune sue parti non sono ancora state scaricate.",
-          "multiple": "Impossibile cancellare gli oggetti perché alcune loro parti non sono ancora state scaricate."
-        },
-        "has_wikidata_tag": {
-          "single": "Questo elemento non può essere cancellato perché contiene una etichetta Wikidata.",
-          "multiple": "Questi elementi non possono essere cancellati perché alcuni hanno delle etichette Wikidata."
         }
       },
       "downgrade": {
@@ -320,10 +203,6 @@
             "many": "Degradati {n} elementi.",
             "other": "Degradati {n} elementi."
           }
-        },
-        "has_wikidata_tag": {
-          "single": "Questo elemento non può essere degradato perché ha l’etichetta Wikidata.",
-          "multiple": "Questi elementi non possono essere degradati perché alcuni hanno etichette Wikidata."
         }
       },
       "add_member": {
@@ -426,10 +305,6 @@
       },
       "move": {
         "title": "Muovi",
-        "description": {
-          "single": "Muovi questo elemento in una posizione differente.",
-          "multiple": "Muovi questi elementi in una posizione differente."
-        },
         "annotation": {
           "point": "Mosso un punto.",
           "vertex": "Mosso un nodo su una way.",
@@ -441,38 +316,12 @@
             "many": "Spostati {n} elementi.",
             "other": "Spostati {n} elementi."
           }
-        },
-        "incomplete_relation": {
-          "single": "Questo elemento non può essere spostato perché non è ancora stato scaricato completamente.",
-          "multiple": "Questi elementi non possono essere spostati perché non sono ancora stati scaricati completamente."
-        },
-        "too_large": {
-          "single": "Questo elemento non può essere spostato perché non è del tutto visibile.",
-          "multiple": "Questi elementi non possono essere spostati perché non tutti sono visibili."
-        },
-        "connected_to_hidden": {
-          "single": "Questo elemento non può essere spostato perché è connesso ad un elemento nascosto.",
-          "multiple": "Questi elementi non possono essere spostati perché sono connessi a degli elementi nascosti."
-        },
-        "not_downloaded": {
-          "single": "Impossibile spostare perché alcune sue parti non sono ancora state scaricate.",
-          "multiple": "Impossibile spostare gli oggetti perché alcune loro parti non sono ancora state scaricate."
         }
       },
       "reflect": {
         "title": {
           "long": "Rifletti su asse maggiore",
           "short": "Rifletti su asse minore"
-        },
-        "description": {
-          "long": {
-            "single": "Rifletti questo elemento lungo il suo asse maggiore.",
-            "multiple": "Rifletti questi elementi lungo il loro asse maggiore."
-          },
-          "short": {
-            "single": "Rifletti questo elemento lungo il suo asse minore.",
-            "multiple": "Rifletti questi elementi lungo il loro asse minore."
-          }
         },
         "annotation": {
           "long": {
@@ -489,30 +338,10 @@
               "other": "Riflessi {n} elementi lungo il loro asse minore."
             }
           }
-        },
-        "incomplete_relation": {
-          "single": "Questo elemento non può essere riflesso perché non è stato completamente scaricato.",
-          "multiple": "Questi elementi non possono essere riflessi perché non sono stati completamente scaricati."
-        },
-        "too_large": {
-          "single": "Questo elemento non può essere riflesso perché non è del tutto visibile.",
-          "multiple": "Questi elementi non possono essere riflessi perché non tutti sono visibili."
-        },
-        "connected_to_hidden": {
-          "single": "Questo elemento non può essere riflesso perché è connesso ad un elemento nascosto.",
-          "multiple": "Questi elementi non possono essere riflessi perché sono connessi a degli elementi nascosti."
-        },
-        "not_downloaded": {
-          "single": "Questo elemento non può essere riflesso perché alcune sue parti non sono ancora state scaricate.",
-          "multiple": "Questi elementi non possono essere riflessi perché alcune loro parti non sono state ancora scaricate."
         }
       },
       "rotate": {
         "title": "Ruota",
-        "description": {
-          "single": "Ruota questo elemento attorno al suo punto centrale.",
-          "multiple": "Ruota questi elementi attorno al loro punto centrale."
-        },
         "annotation": {
           "line": "Ruotata una linea.",
           "area": "Ruotata un'area.",
@@ -522,22 +351,6 @@
             "many": "Rotati {n} elementi.",
             "other": "Rotati {n} elementi."
           }
-        },
-        "incomplete_relation": {
-          "single": "Questo elemento non può essere ruotato perché non è ancora stato scaricato completamente.",
-          "multiple": "Questi elementi non possono essere ruotati perché non sono ancora stati scaricati completamente."
-        },
-        "too_large": {
-          "single": "Questo elemento non può essere ruotato perché non è del tutto visibile.",
-          "multiple": "Questi elementi non possono essere ruotati perché non tutti sono visibili."
-        },
-        "connected_to_hidden": {
-          "single": "Questo elemento non può essere ruotato perché è connesso ad un elemento nascosto.",
-          "multiple": "Questi elementi non possono essere ruotati perché sono connessi a degli elementi nascosti."
-        },
-        "not_downloaded": {
-          "single": "Impossibile ruotare l’oggetto perché alcune sue parti non sono ancora state scaricate.",
-          "multiple": "Impossibile ruotare gli oggetti perché alcune loro parti non sono ancora state scaricate."
         }
       },
       "reverse": {
@@ -583,22 +396,6 @@
               "other": "Ingranditi {n} elementi."
             }
           }
-        },
-        "too_small": {
-          "single": "Questo elemento non può essere ridotto perché diverrebbe troppo piccolo.",
-          "multiple": "Questi elementi non possono essere ridotti perché diverrebbero troppo piccoli."
-        },
-        "too_large": {
-          "single": "Questo elemento non può essere ridimensionato perché non è del tutto visibile.",
-          "multiple": "Questi elementi non possono essere ridimensionati perché non sono del tutto visibili."
-        },
-        "connected_to_hidden": {
-          "single": "Questo elemento non può essere ridimensionato perché è connesso ad un elemento nascosto.",
-          "multiple": "Questi elementi non possono essere ridimensionati perché sono connessi a degli elementi nascosti."
-        },
-        "not_downloaded": {
-          "single": "Questo elemento non può essere ridimensionato perché alcune sue parti non sono ancora state scaricate.",
-          "multiple": "Questi elementi non possono essere ridimensionati perché alcune loro parti non sono ancora state scaricate."
         }
       },
       "split": {
@@ -656,34 +453,14 @@
       "extract": {
         "title": "Estrai",
         "description": {
-          "vertex": {
-            "single": "Estrai questo nodo dalle sue linee/aree genitrici.",
-            "multiple": "Estrai questi nodi dagli elementi genitori."
-          },
-          "line": {
-            "single": "Estrai un nodo da questa linea.",
-            "multiple": "Estrai i nodi da queste linee."
-          },
-          "area": {
-            "single": "Estrai un nodo da quest’area.",
-            "multiple": "Estrai i nodi da queste aree."
-          },
           "feature": {
-            "multiple": "Estrai i nodi da questi elementi."
+            "other": "Estrai i nodi da questi elementi."
           }
         },
         "annotation": {
           "one": "Estratto un nodo.",
           "many": "Estratti {n} nodi.",
           "other": "Estratti {n} nodi."
-        },
-        "too_large": {
-          "single": "Un nodo non può essere estratto perché l’elemento non è del tutto visibile.",
-          "multiple": "I nodi non possono essere estratti perché questi elementi non sono del tutto visibili."
-        },
-        "connected_to_hidden": {
-          "single": "Questo nodo non può essere estratto perché è collegato ad un elemento nascosto.",
-          "multiple": "I nodi non possono essere estratti da questi elementi perché alcuni sono collegati a elementi nascosti."
         }
       }
     },
@@ -882,10 +659,6 @@
       "multiple_values": "Valori multipli",
       "multiple_types": "Tipi multipli",
       "unshared_value_tooltip": "non condiviso da tutti gli elementi",
-      "hidden_preset": {
-        "manual": "{features} sono nascosti. Abilitali nel pannello Dati della mappa.",
-        "zoom": "{features} sono nascosti. Ingrandisci per abilitarli."
-      },
       "back_tooltip": "Cambia tipo di elemento",
       "type": "Tipo",
       "details": "Dettagli",
@@ -967,8 +740,7 @@
         },
         "notes": {
           "tooltip": "Dati delle note da OpenStreetMap",
-          "title": "Note di OpenStreetMap",
-          "key": "Nord"
+          "title": "Note di OpenStreetMap"
         },
         "maproulette": {
           "detail_title": "Dettagli",
@@ -997,7 +769,6 @@
         "tooltip": "Mostra i valori geometrici della selezione."
       },
       "style_options": "Opzioni di Stile",
-      "map_features": "Elementi della mappa",
       "autohidden": "Questi elementi sono stati automaticamente nascosti perché sarebbero stati troppi da visualizzare. Per modificarli è necessario ingrandire.",
       "osmhidden": "Questi elementi sono stati nascosti automaticamente perché il livello OpenStreetMap è nascosto."
     },
@@ -1034,7 +805,7 @@
         "tooltip": "Mostra solo foto di questo utente"
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Punti",
         "tooltip": "Punti di interesse"
@@ -1230,12 +1001,13 @@
     "source_switch": {
       "lose_changes": "Hai modifiche non salvate. Cambiare il server le farà scartare. Sei sicuro?"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Etichette"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Rimuovere"
+    "rapid_menu": {
+      "remove": "Rimuovere",
+      "category": {
+        "roads": "strade"
       }
     },
     "tag_reference": {
@@ -1251,7 +1023,9 @@
         "out": "Impossibile rimpicciolire ulteriormente."
       }
     },
-    "cannot_zoom": "Impossibile rimpicciolire ulteriormente nella modalità attuale.",
+    "bearing": {
+      "n": "Nord"
+    },
     "full_screen": "Passa a schermo intero",
     "self_intersection": {
       "error": {
@@ -1669,7 +1443,6 @@
         "title": "Punti",
         "intro": "I punti sono utilizzati per indicare oggetti come negozi, ristoranti, monumenti,... Indicano la posizione precisa e descrivono cosa c'è lì.",
         "add_point_h": "Aggiungere punti",
-        "add_point": "Per aggiungere un nodo premi il pulsante {point_icon} **{point}** sulla barra degli strumenti sopra la mappa oppure premi la scorciatoia da tastiera `1`.",
         "move_point_h": "Spostare punti",
         "delete_point_h": "Cancellare punti",
         "delete_point": "Non è errato rimuovere un elemento che non esiste nel mondo reale. Quando cancelli qualcosa da OpenStreetMap nessun potrà più vedere quell'oggetto sulla mappa, quindi prima di rimuoverlo verifica accuratamente che quell'elemento non sia più presente nella realtà."
@@ -1678,7 +1451,6 @@
         "title": "Linee",
         "intro": "Le *linee* sono utilizzate per rappresentare elementi quali strade, ferrovie e fiumi. Le linee dovrebbero essere tracciate lungo il centro dell'elemento che vogliono rappresentare.",
         "add_line_h": "Aggiungere linee",
-        "add_line": "Per aggiungere una linea, premi il pulsante {line_icon} **{line}** sulla barra degli strumenti sopra la mappa oppure premi la scorciatoia da tastiera `2`.",
         "add_line_finish": "Per terminare una linea, clicca o premi nuovamente l'ultimo nodo oppure premi `{return}`.",
         "modify_line_h": "Modificare linee",
         "modify_line_dragnode": "Spesso vedrai delle linee che non sono disegnate correttamente, per esempio una strada che non corrisponde granché alle immagini di sfondo. Per migliorare l'aspetto di una linea, per prima cosa selezionala. Tutti i nodi della linea diverranno dei piccoli cerchi. Adesso puoi spostare ciascun nodo in una posizione più corretta.",
@@ -1697,7 +1469,6 @@
         "point_or_area_h": "Punti o aree?",
         "point_or_area": "Molti oggetti possono essere rappresentati come punti o aree. Se possibile, dovresti sempre mappare gli edifici e i contorni di una proprietà come aree. Inserisci punti dentro l'area di un edificio per rappresentare attività commerciali, servizi e altri elementi presenti al suo interno.",
         "add_area_h": "Aggiungere aree",
-        "add_area_command": "Per aggiungere un'area, premi il pulsante {area_icon} **{area}** sulla barra degli strumenti sopra la mappa oppure premi la scorciatoia da tastiera `3`.",
         "add_area_finish": "Per completare un'area, clicca o premi nuovamente l'ultimo nodo oppure premi `{return}`.",
         "square_area_h": "Rendere retti gli angoli",
         "modify_area_h": "Modificare aree",
@@ -1826,18 +1597,10 @@
     },
     "issues": {
       "title": "Problemi",
-      "list_title": "Problemi",
-      "errors": {
-        "list_title": "Errori"
-      },
-      "warnings": {
-        "list_title": "Avvertimenti"
-      },
-      "rules": {
-        "title": "Regole"
-      },
-      "user_resolved_issues": "Problemi risolti dalle tue modifiche",
-      "warnings_and_errors": "Avvertimenti ed errori",
+      "errors": "Errori",
+      "warnings": "Avvertimenti",
+      "rules": "Regole",
+      "resolved_tooltip": "Problemi risolti dalle tue modifiche",
       "no_issues": {
         "message": {
           "everything": "Tutto sembra a posto",
@@ -1996,8 +1759,6 @@
         "title": "Formattazione non valida",
         "tip": "Trova etichette con formato inatteso",
         "email": {
-          "message": "{feature} ha un indirizzo email non valido",
-          "message_multi": "{feature} ha più indirizzi e-mail non validi",
           "reference": "Un indirizzo email dovrebbe essere del tipo “utente@esempio.it”."
         }
       },
@@ -2531,96 +2292,177 @@
         "drag": "trascina"
       },
       "or": "-o-",
-      "browsing": {
-        "title": "Naviga",
-        "navigation": {
-          "title": "Navigazione",
-          "pan": "Scorri la mappa"
+      "browsing": "Naviga",
+      "editing": "Modifica",
+      "navigation": "Navigazione",
+      "selecting_features": "Selezione elementi",
+      "with_features_selected": "Con gli elementi selezionati",
+      "with_node_selected": "Con il nodo selezionato",
+      "with_way_selected": "Con il percorso selezionato",
+      "drawing": "Disegna",
+      "commands": "Comandi",
+      "help": "Aiuto",
+      "display_options": "Mostra opzioni",
+      "info": "Informazioni",
+      "command": {
+        "pan": {
+          "label": "Scorri la mappa"
         },
-        "help": {
-          "title": "Aiuto",
-          "help": "Mostra la documentazione",
-          "keyboard": "Mostra scorciatoie da tastiera"
+        "select_one": {
+          "label": "Seleziona un solo elemento"
         },
-        "display_options": {
-          "title": "Mostra opzioni",
-          "background": "Commuta pannello delle immagini",
-          "map_data": "Commuta pannello dei dati",
-          "issues": "Commuta pannello dei problemi di validazione",
-          "preferences": "Commuta pannello delle preferenze utente",
-          "wireframe": "Commuta modalità \"fil di ferro\"",
-          "osm_data": "Commuta dati OpenStreetMap",
-          "highlight_edits": "Evidenzia le modifiche non salvate"
+        "select_multi": {
+          "label": "Seleziona più elementi"
         },
-        "selecting": {
-          "title": "Selezione elementi",
-          "select_one": "Seleziona un solo elemento",
-          "select_multi": "Seleziona più elementi",
-          "lasso": "Disegna un lazo intorno agli elementi da selezionare",
-          "search": "Trova gli elementi che corrispondono al testo della ricerca"
+        "lasso": {
+          "label": "Disegna un lazo intorno agli elementi da selezionare"
         },
-        "with_selected": {
-          "title": "Con gli elementi selezionati",
-          "edit_menu": "Commuta il menù edit"
+        "edit_menu": {
+          "label": "Commuta il menù edit"
         },
-        "vertex_selected": {
-          "title": "Con il nodo selezionato",
-          "first": "Passa al primo nodo",
-          "last": "Passa all'ultimo nodo",
-          "change_parent": "Cambia il percorso di cui il nodo fa parte",
-          "parent": "Seleziona percorso genitore"
+        "first_node": {
+          "label": "Passa al primo nodo"
         },
-        "way_selected": {
-          "title": "Con il percorso selezionato",
-          "child": "Seleziona i nodi figli"
-        }
-      },
-      "editing": {
-        "title": "Modifica",
-        "drawing": {
-          "title": "Disegna",
-          "add_point": "Modo ‘aggiungi punto’",
-          "add_line": "Modo ‘aggiungi linea’",
-          "add_area": "Modo ‘aggiungi area’",
-          "add_note": "Modo ‘Aggiungi nota’",
-          "place_point": "Posiziona un nodo o una nota",
-          "disable_snap": "Tieni premuto per disabilitare l'ancoraggio ai nodi preesistenti",
-          "stop_line": "Termina di disegnare una linea o un'area"
+        "last_node": {
+          "label": "Passa all'ultimo nodo"
         },
-        "commands": {
-          "title": "Comandi",
-          "copy": "Copia gli elementi selezionati",
-          "paste": "Incolla gli elementi selezionati",
-          "undo": "Annulla l'ultima operazione",
-          "redo": "Ripeti l'ultima operazione",
-          "save": "Salva le modifiche"
+        "change_parent": {
+          "label": "Cambia il percorso di cui il nodo fa parte"
         },
-        "operations": {
-          "continue_line": "Continua una linea dall'estremo selezionato",
-          "merge": "Unisci (fondi) gli elementi selezionati",
-          "disconnect": "Disconnetti gli elementi selezionati",
-          "extract": "Estrai un nodo da un oggetto",
-          "split": "Dividi gli elementi ai nodi selezionati.",
-          "reverse": "Invertire gli elementi selezionati",
-          "move": "Sposta gli elementi selezionati",
-          "rotate": "Ruota gli elementi selezionati",
-          "orthogonalize": "Rendi retti gli angoli di un percorso o un’area",
-          "straighten": "Raddrizza una linea o dei nodi",
-          "circularize": "Arrotonda una linea chiusa o area",
-          "reflect_long": "Rifletti gli elementi lungo l’asse maggiore",
-          "reflect_short": "Rifletti gli elementi lungo l’asse minore ",
-          "delete": "Cancella gli elementi selezionati"
-        }
-      },
-      "tools": {
-        "title": "Strumenti",
-        "info": {
-          "title": "Informazioni",
-          "all": "Commuta tutti i pannelli informazioni",
-          "background": "Commuta pannello di sfondo",
-          "history": "Commuta pannello cronologia",
-          "location": "Commuta pannello posizione",
-          "measurement": "Commuta pannello misurazione"
+        "select_parent": {
+          "label": "Seleziona percorso genitore"
+        },
+        "select_children": {
+          "label": "Seleziona i nodi figli"
+        },
+        "add_point": {
+          "label": "Modo ‘aggiungi punto’"
+        },
+        "add_line": {
+          "label": "Modo ‘aggiungi linea’"
+        },
+        "add_area": {
+          "label": "Modo ‘aggiungi area’"
+        },
+        "add_note": {
+          "label": "Modo ‘Aggiungi nota’",
+          "key": "Nord"
+        },
+        "place_point": {
+          "label": "Posiziona un nodo o una nota"
+        },
+        "disable_snap": {
+          "label": "Tieni premuto per disabilitare l'ancoraggio ai nodi preesistenti"
+        },
+        "stop_line": {
+          "label": "Termina di disegnare una linea o un'area"
+        },
+        "copy": {
+          "label": "Copia gli elementi selezionati"
+        },
+        "paste": {
+          "label": "Incolla gli elementi selezionati"
+        },
+        "undo": {
+          "label": "Annulla l'ultima operazione"
+        },
+        "redo": {
+          "label": "Ripeti l'ultima operazione"
+        },
+        "save": {
+          "label": "Salva le modifiche"
+        },
+        "find": {
+          "label": "Trova gli elementi che corrispondono al testo della ricerca"
+        },
+        "continue_line": {
+          "label": "Continua una linea dall'estremo selezionato"
+        },
+        "merge": {
+          "label": "Unisci (fondi) gli elementi selezionati"
+        },
+        "disconnect": {
+          "label": "Disconnetti gli elementi selezionati"
+        },
+        "extract": {
+          "label": "Estrai un nodo da un oggetto",
+          "key": "Est"
+        },
+        "split": {
+          "label": "Dividi gli elementi ai nodi selezionati."
+        },
+        "reverse": {
+          "label": "Invertire gli elementi selezionati"
+        },
+        "move": {
+          "label": "Sposta gli elementi selezionati"
+        },
+        "rotate": {
+          "label": "Ruota gli elementi selezionati"
+        },
+        "orthogonalize": {
+          "label": "Rendi retti gli angoli di un percorso o un’area"
+        },
+        "straighten": {
+          "label": "Raddrizza una linea o dei nodi",
+          "key": "Sud"
+        },
+        "circularize": {
+          "label": "Arrotonda una linea chiusa o area"
+        },
+        "reflect_long": {
+          "label": "Rifletti gli elementi lungo l’asse maggiore"
+        },
+        "reflect_short": {
+          "label": "Rifletti gli elementi lungo l’asse minore "
+        },
+        "delete": {
+          "label": "Cancella gli elementi selezionati"
+        },
+        "toggle_background": {
+          "label": "Commuta pannello delle immagini"
+        },
+        "toggle_map_data": {
+          "label": "Commuta pannello dei dati"
+        },
+        "toggle_issues": {
+          "label": "Commuta pannello dei problemi di validazione"
+        },
+        "toggle_preferences": {
+          "label": "Commuta pannello delle preferenze utente"
+        },
+        "wireframe": {
+          "key": "Ovest"
+        },
+        "highlight_edits": {
+          "label": "Evidenzia le modifiche non salvate"
+        },
+        "keyboard_shortcuts": {
+          "label": "Mostra scorciatoie da tastiera"
+        },
+        "toggle_osm_data": {
+          "label": "Commuta dati OpenStreetMap"
+        },
+        "toggle_osm_notes": {
+          "key": "Nord"
+        },
+        "toggle_streetside": {
+          "key": "Sud"
+        },
+        "toggle_all_cards": {
+          "label": "Commuta tutti i pannelli informazioni"
+        },
+        "toggle_background_card": {
+          "label": "Commuta pannello di sfondo"
+        },
+        "toggle_history_card": {
+          "label": "Commuta pannello cronologia"
+        },
+        "toggle_location_card": {
+          "label": "Commuta pannello posizione"
+        },
+        "toggle_measurement_card": {
+          "label": "Commuta pannello misurazione"
         }
       }
     },
@@ -2713,6 +2555,7 @@
       "bjn": "banjar",
       "bkm": "kom",
       "bla": "siksika",
+      "blo": "anii",
       "bm": "bambara",
       "bn": "bengalese",
       "bo": "tibetano",
@@ -2851,7 +2694,6 @@
       "gmh": "tedesco medio alto",
       "gn": "guaraní",
       "goh": "tedesco antico alto",
-      "gom": "konkani goano",
       "gon": "gondi",
       "gor": "gorontalo",
       "got": "gotico",
@@ -2957,6 +2799,7 @@
       "kv": "komi",
       "kw": "cornico",
       "kwk": "kwakʼwala",
+      "kxv": "kuvi",
       "ky": "kirghiso",
       "la": "latino",
       "lad": "giudeo-spagnolo",
@@ -2971,6 +2814,7 @@
       "lil": "lillooet",
       "liv": "livone",
       "lkt": "lakota",
+      "lld": "ladino",
       "lmo": "lombardo",
       "ln": "lingala",
       "lo": "lao",
@@ -2985,7 +2829,6 @@
       "lua": "luba-lulua",
       "lui": "luiseno",
       "lun": "lunda",
-      "luo": "luo",
       "lus": "lushai",
       "luy": "luyia",
       "lv": "lettone",
@@ -3242,12 +3085,12 @@
       "umb": "mbundu",
       "ur": "urdu",
       "uz": "uzbeco",
-      "vai": "vai",
       "ve": "venda",
       "vec": "veneto",
       "vep": "vepso",
       "vi": "vietnamita",
       "vls": "fiammingo occidentale",
+      "vmw": "macua",
       "vo": "volapük",
       "vot": "voto",
       "vro": "võro",
@@ -3263,6 +3106,7 @@
       "xal": "kalmyk",
       "xh": "xhosa",
       "xmf": "mengrelio",
+      "xnr": "kangri",
       "xog": "soga",
       "yao": "yao (bantu)",
       "yap": "yapese",

@@ -22,16 +22,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Ala",
-        "filter_tooltip": "alad"
+        "title": "Ala"
       },
       "add_line": {
-        "title": "Joon",
-        "filter_tooltip": "jooned"
+        "title": "Joon"
       },
       "add_point": {
-        "title": "Punkt",
-        "filter_tooltip": "punktid"
+        "title": "Punkt"
       },
       "add_note": {
         "title": "Märkus",
@@ -110,52 +107,15 @@
       },
       "circularize": {
         "title": "Muuda ringikujuliseks",
-        "description": {
-          "single": "Tee see objekt ringikujuliseks.",
-          "multiple": "Tee need objektid ringikujuliseks."
-        },
         "annotation": {
           "feature": {
             "one": "Objekt tehtud ringikujuliseks.",
             "other": "Objektid tehtud ringikujuliseks."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Neid ei saa teha ringikujuliseks mitmel eri põhjusel."
-        },
-        "not_closed": {
-          "single": "Seda ei saa ringikujuliseks teha, sest tegu pole suletud joonega.",
-          "multiple": "Neid ei saa ringikujuliseks teha, sest need pole suletud jooned."
-        },
-        "too_large": {
-          "single": "Seda ei saa teha ringikujuliseks, kuna see ei ole täielikult nähtaval.",
-          "multiple": "Neid ei saa ringikujuliseks teha, sest piisavalt suur osa neist pole praegu nähtaval."
-        },
-        "connected_to_hidden": {
-          "single": "Seda ei saa teha ringikujuliseks, kuna see on ühendatud peidetud objektiga.",
-          "multiple": "Neid ei saa ringikujuliseks teha, kuna mõned neist on ühendatud peidetud objektidega."
-        },
-        "not_downloaded": {
-          "single": "Seda ei saa ringikujuliseks teha, kuna osa sellest pole veel alla laaditud.",
-          "multiple": "Neid ei saa ringikujuliseks teha, kuna osa neist pole veel alla laaditud."
-        },
-        "already_circular": {
-          "single": "See on juba ringikujuline.",
-          "multiple": "Need on juba ringikujulised."
         }
       },
       "orthogonalize": {
         "title": "Tee kandiliseks",
-        "description": {
-          "corner": {
-            "single": "Tee see nurk kandiliseks.",
-            "multiple": "Tee need nurgad kandiliseks."
-          },
-          "feature": {
-            "single": "Tee selle objekti nurgad kandiliseks.",
-            "multiple": "Tee nende objektide nurgad kandiliseks."
-          }
-        },
         "annotation": {
           "corner": {
             "one": "Tehtud nurk kandiliseks.",
@@ -165,33 +125,6 @@
             "one": "Tehtud objekti nurgad kandiliseks.",
             "other": "Tehtud {n} objekti nurgad kandiliseks."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Seda ei saa teha kandiliseks mitmel eri põhjusel."
-        },
-        "end_vertex": {
-          "single": "Seda ei saa teha kandiliseks, sest see on lõpp-punkt.",
-          "multiple": "Neid ei saa teha kandiliseks, sest need on lõpp-punktid."
-        },
-        "square_enough": {
-          "single": "Seda ei saa teha kandilisemaks kui see juba on.",
-          "multiple": "Neid ei saa teha kandilisemaks kui need juba on."
-        },
-        "not_squarish": {
-          "single": "Seda ei saa kandiliseks teha, sest see pole nurkjas.",
-          "multiple": "Neid ei saa kandiliseks teha, sest need pole nurkjad."
-        },
-        "too_large": {
-          "single": "Seda ei saa teha täisnurkseks, kuna see ei ole täielikult nähtaval.",
-          "multiple": "Neid ei saa teha täisnurkseks, kuna need ei ole täielikult nähtaval."
-        },
-        "connected_to_hidden": {
-          "single": "Seda ei saa teha täisnurkseks, kuna see on ühendatud peidetud objektiga.",
-          "multiple": "Neid ei saa teha täisnurkseks, kuna osad neist on ühendatud peidetud objektidega."
-        },
-        "not_downloaded": {
-          "single": "Seda ei saa täisnurkseks teha, kuna osa sellest pole veel alla laaditud.",
-          "multiple": "Neid ei saa täisnurkseks teha, kuna osa neist pole veel alla laaditud."
         }
       },
       "straighten": {
@@ -210,34 +143,10 @@
             "one": "Joon sirgendatud.",
             "other": "{n} joont sirgendatud."
           }
-        },
-        "too_bendy": {
-          "single": "Seda ei saa sirgeks teha, kuna see paindub liiga palju.",
-          "multiple": "Neid ei saa sirgeks teha, kuna need painduvad liiga palju."
-        },
-        "connected_to_hidden": {
-          "single": "Seda ei saa sirgendada, sest see on ühendatud peidetud objektiga.",
-          "multiple": "Neid ei saa sirgendada, kuna osad neist on ühendatud peidetud objektidega."
-        },
-        "not_downloaded": {
-          "single": "Seda ei saa sirgendada, kuna osa sellest pole veel alla laaditud.",
-          "multiple": "Neid ei saa sirgendada, kuna osa neist pole veel alla laaditud."
-        },
-        "straight_enough": {
-          "single": "See on juba sirge.",
-          "multiple": "Need on juba sirged."
-        },
-        "too_large": {
-          "single": "Seda ei saa sirgendada, kuna see pole piisavalt nähtav.",
-          "multiple": "Neid ei saa sirgendada, sest piisavalt suur osa neist pole praegu nähtaval."
         }
       },
       "delete": {
         "title": "Kustuta",
-        "description": {
-          "single": "Kustutad selle objekti jäädavalt.",
-          "multiple": "Kustuta need objektid jäädavalt."
-        },
         "annotation": {
           "point": "Punkt kustutatud.",
           "vertex": "Sõlm kustutatud joonelt.",
@@ -248,30 +157,6 @@
             "one": "Objekt kustutatud.",
             "other": "{n} objekti kustutatud."
           }
-        },
-        "too_large": {
-          "single": "Seda objekti ei saa kustutada, sest piisavalt suur osa sellest pole praegu nähtaval.",
-          "multiple": "Neid objekte ei saa kustutada, sest piisavalt suur osa neist pole praegu nähtaval."
-        },
-        "incomplete_relation": {
-          "single": "Seda objekti ei saa kustutada, kuna see ei ole veel täielikult alla laaditud.",
-          "multiple": "Neid objekte ei saa kustutada, kuna need ei ole veel täielikult alla laaditud."
-        },
-        "part_of_relation": {
-          "single": "Objekti ei saa kustutada, sest see on osa suuremast relatsioonist. Pead kõigepealt selle relatsioonist eemaldama.",
-          "multiple": "Objekte ei saa kustutada, sest need on osa suurematest relatsioonidest. Pead kõigepealt need relatsioonidest eemaldama."
-        },
-        "connected_to_hidden": {
-          "single": "Seda objekti ei saa kustutada, kuna see on ühendatud peidetud objektiga.",
-          "multiple": "Neid objekte ei saa kustutada, kuna osad neist on ühendatud peidetud objektidega."
-        },
-        "not_downloaded": {
-          "single": "Seda objekti ei saa kustutada, kuna osa sellest pole veel alla laaditud.",
-          "multiple": "Neid objekte ei saa kustutada, kuna osad neist pole veel alla laaditud."
-        },
-        "has_wikidata_tag": {
-          "single": "Seda objekti ei saa kustutada, kuna sellel on Wikidata silt.",
-          "multiple": "Neid objekte ei saa kustutada, kuna osadel neist on Wikidata silt."
         }
       },
       "downgrade": {
@@ -379,10 +264,6 @@
       },
       "move": {
         "title": "Liiguta",
-        "description": {
-          "single": "Liiguta see objekt teise asukohta.",
-          "multiple": "Liiguta need objektid teise asukohta."
-        },
         "annotation": {
           "point": "Punkt liigutatud.",
           "vertex": "Joone sõlm liigutatud.",
@@ -393,34 +274,12 @@
             "one": "Tõstsin {n} objekti teise kohta.",
             "other": "{n} objekti liigutatud."
           }
-        },
-        "incomplete_relation": {
-          "single": "Seda objekti ei saa liigutada, kuna see ei ole veel täielikult alla laaditud.",
-          "multiple": "Neid objekte ei saa liigutada, kuna need ei ole veel täielikult alla laaditud."
-        },
-        "too_large": {
-          "single": "Seda objekti ei saa liigutada, sest piisavalt suur osa sellest pole praegu nähtaval.",
-          "multiple": "Neid objekte ei saa liigutada, sest piisavalt suur osa neist pole praegu nähtaval."
-        },
-        "connected_to_hidden": {
-          "single": "Seda objekti ei saa teise kohta tõsta, kuna ta on ühendatud peidetud objektiga.",
-          "multiple": "Neid objekte ei saa teise kohta tõsta, kuna nad osa neist on ühendatud peidetud objektidega."
         }
       },
       "reflect": {
         "title": {
           "long": "Pööra ümber pikema telje",
           "short": "Pööra ümber lühema telje"
-        },
-        "description": {
-          "long": {
-            "single": "Pööra see objekt ümber oma pikema telje.",
-            "multiple": "Pööra need objektid ümber oma pikemate telgede."
-          },
-          "short": {
-            "single": "Pööra see objekt ümber oma lühema telje.",
-            "multiple": "Pööra need objektid ümber oma lühemate telgede."
-          }
         },
         "annotation": {
           "long": {
@@ -439,10 +298,6 @@
       },
       "rotate": {
         "title": "Pööra",
-        "description": {
-          "single": "Pööra objekti ümber keskpunkti.",
-          "multiple": "Pööra objekte ümber nende keskpunkti."
-        },
         "annotation": {
           "line": "Pöörasin joone teistpidi.",
           "area": "Pöörasin ala.",
@@ -451,18 +306,6 @@
             "one": "Pöörasin {n} objekti.",
             "other": "Pöörasin {n} objekti."
           }
-        },
-        "incomplete_relation": {
-          "single": "Seda objekti ei saa pöörata, kuna see ei ole veel täielikult alla laaditud.",
-          "multiple": "Neid objekte ei saa pöörata, kuna need ei ole veel täielikult alla laaditud."
-        },
-        "too_large": {
-          "single": "Seda objekti ei saa pöörata, sest piisavalt suur osa sellest pole praegu nähtaval.",
-          "multiple": "Neid objekte ei saa pöörata, sest piisavalt suur osa neist pole praegu nähtaval."
-        },
-        "connected_to_hidden": {
-          "single": "Seda objekti ei saa pöörata, kuna ta on ühendatud peidetud objektiga.",
-          "multiple": "Neid objekte ei saa pöörata, kuna nad on ühendatud peidetud objektidega."
         }
       },
       "reverse": {
@@ -496,22 +339,6 @@
               "other": "{n} obekti suuremaks muudetud."
             }
           }
-        },
-        "too_small": {
-          "single": "Seda objekti ei saa väiksemaks muuta, kuna siis muutuks ta liiga pisikeseks.",
-          "multiple": "Neid objekte ei saa väiksemaks muuta, kuna siis muutuksid nad liiga pisikeseks."
-        },
-        "too_large": {
-          "single": "Selle objekti suurust ei saa muuta, kuna piisavalt suur osa temast pole praegu nähtaval.",
-          "multiple": "Nende objektide suurust ei saa muuta, kuna piisavalt suur osa neist pole praegu nähtaval."
-        },
-        "connected_to_hidden": {
-          "single": "Selle objekti suurust ei saa muuta, kuna ta on ühendatud peidetud objektiga.",
-          "multiple": "Nende objektide suurust ei saa muuta, kuna mõned neist on ühendatud peidetud objektidega."
-        },
-        "not_downloaded": {
-          "single": "Selle objekti suurust ei saa muuta, kuna mõned tema osad pole veel alla laaditud.",
-          "multiple": "Nende objektide suurust ei saa muuta, kuna mõned nende osad pole veel alla laaditud."
         }
       },
       "split": {
@@ -649,7 +476,6 @@
         "note_link_text": "Märkus openstreetmap.org-is"
       },
       "location": {
-        "key": "A",
         "title": "Asukoht",
         "unknown_location": "Teadmata asukoht"
       },
@@ -683,7 +509,6 @@
       "no_results_worldwide": "Tulemusi ei leitud"
     },
     "geolocate": {
-      "key": "A",
       "title": "Näita minu asukohta",
       "locating": "Asukoha määramine, palun oota...",
       "location_unavailable": "Sinu asukoht pole leitav."
@@ -715,9 +540,6 @@
       },
       "wiki_reference": "Vaata lisateavet",
       "wiki_en_reference": "Vaata lisateavet inglise keeles",
-      "hidden_preset": {
-        "zoom": "{features} on peidetud. Suurenda, et neid näha."
-      },
       "back_tooltip": "Muuda objekti tüüpi",
       "type": "Tüüp",
       "details": "Üksikasjad",
@@ -818,7 +640,6 @@
         "tooltip": "Näita valiku geomeetriaväärtusi."
       },
       "style_options": "Kaardikihtide stiil",
-      "map_features": "Kaardikuva",
       "autohidden": "Need objektid on automaatselt peidetud, sest neid oleks ekraanil liiga palju. Suumi sisse, et neid muuta.",
       "osmhidden": "Need objektid on automaatselt peidetud, sest OpenStreetMapi kiht on peidetud."
     },
@@ -845,7 +666,7 @@
         "tooltip": "Näita vaid selle kasutaja fotosid"
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Punktid",
         "tooltip": "Huvipunktid"
@@ -1027,13 +848,11 @@
     "source_switch": {
       "lose_changes": "Sul on salvestamata muudatusi. Kaardiserveri vahetamine kaotab need. Kas oled kindel, et soovid serverit vahetada?"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Sildid"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Eemalda"
-      }
+    "rapid_menu": {
+      "remove": "Eemalda"
     },
     "tag_reference": {
       "description": "Kirjeldus",
@@ -1048,7 +867,6 @@
         "out": "Ei ole võimalik rohkem välja suumida."
       }
     },
-    "cannot_zoom": "Ei ole võimalik rohkem välja suumida selles vaates.",
     "full_screen": "Lülita täisekraan sisse või välja",
     "QA": {
       "osmose": {
@@ -1219,17 +1037,9 @@
     },
     "issues": {
       "title": "Probleemid",
-      "list_title": "Probleemid",
-      "errors": {
-        "list_title": "Vead"
-      },
-      "warnings": {
-        "list_title": "Hoiatused"
-      },
-      "rules": {
-        "title": "Kontrollitavad reeglid"
-      },
-      "warnings_and_errors": "Hoiatused ja vead",
+      "errors": "Vead",
+      "warnings": "Hoiatused",
+      "rules": "Kontrollitavad reeglid",
       "no_issues": {
         "message": {
           "everything": "Kõik paistab korras olevat",
@@ -1624,48 +1434,67 @@
         "delete": "Kustuta",
         "space": "Tühik"
       },
-      "browsing": {
-        "navigation": {
-          "title": "Navigeerimine",
-          "pan": "Liiguta kaarti"
+      "navigation": "Navigeerimine",
+      "commands": "Käsud",
+      "help": "Abi",
+      "info": "Teave",
+      "command": {
+        "pan": {
+          "label": "Liiguta kaarti"
         },
-        "help": {
-          "title": "Abi",
-          "help": "Näita abiteavet ja dokumentatsiooni",
-          "keyboard": "Näita kiirklahve"
+        "copy": {
+          "label": "Kopeeri valitud objektid"
         },
-        "display_options": {
-          "background": "Lülita taustpildi paan ümber",
-          "map_data": "Lülita kaardiandmete paan ümber",
-          "osm_data": "Lülita OpenStreetMapi andmed sisse või välja"
+        "paste": {
+          "label": "Aseta valitud objektid"
         },
-        "selecting": {
-          "search": "Otsi objekte märksõna alusel"
-        }
-      },
-      "editing": {
-        "commands": {
-          "title": "Käsud",
-          "copy": "Kopeeri valitud objektid",
-          "paste": "Aseta valitud objektid",
-          "undo": "Võta viimane tegevus tagasi",
-          "redo": "Korda viimast tegevust",
-          "save": "Salvesta muudatused"
+        "undo": {
+          "label": "Võta viimane tegevus tagasi"
         },
-        "operations": {
-          "merge": "Ühenda valitud objektid",
-          "disconnect": "Ühenda valitud objektid lahti",
-          "split": "Tükelda objektid valitud punktide juurest",
-          "reverse": "Pööra valitud objektid teistpidi",
-          "reflect_long": "Pööra objektid ümber oma pikemate telgede",
-          "reflect_short": "Pööra objektid ümber oma lühemate telgede",
-          "delete": "Kustuta valitud objektid"
-        }
-      },
-      "tools": {
-        "title": "Tarvikud",
-        "info": {
-          "title": "Teave"
+        "redo": {
+          "label": "Korda viimast tegevust"
+        },
+        "save": {
+          "label": "Salvesta muudatused"
+        },
+        "find": {
+          "label": "Otsi objekte märksõna alusel"
+        },
+        "merge": {
+          "label": "Ühenda valitud objektid"
+        },
+        "disconnect": {
+          "label": "Ühenda valitud objektid lahti"
+        },
+        "split": {
+          "label": "Tükelda objektid valitud punktide juurest"
+        },
+        "reverse": {
+          "label": "Pööra valitud objektid teistpidi"
+        },
+        "reflect_long": {
+          "label": "Pööra objektid ümber oma pikemate telgede"
+        },
+        "reflect_short": {
+          "label": "Pööra objektid ümber oma lühemate telgede"
+        },
+        "delete": {
+          "label": "Kustuta valitud objektid"
+        },
+        "toggle_background": {
+          "label": "Lülita taustpildi paan ümber"
+        },
+        "toggle_map_data": {
+          "label": "Lülita kaardiandmete paan ümber"
+        },
+        "keyboard_shortcuts": {
+          "label": "Näita kiirklahve"
+        },
+        "toggle_osm_data": {
+          "label": "Lülita OpenStreetMapi andmed sisse või välja"
+        },
+        "toggle_location_card": {
+          "key": "A"
         }
       }
     },
@@ -1872,7 +1701,6 @@
       "fur": "friuuli",
       "fy": "läänefriisi",
       "ga": "iiri",
-      "gaa": "gaa",
       "gag": "gagauusi",
       "gan": "kani",
       "gay": "gajo",
@@ -2008,6 +1836,7 @@
       "lil": "lillueti",
       "liv": "liivi",
       "lkt": "lakota",
+      "lld": "ladiini",
       "lmo": "lombardi",
       "ln": "lingala",
       "lo": "lao",
@@ -2022,7 +1851,6 @@
       "lua": "lulua",
       "lui": "luisenjo",
       "lun": "lunda",
-      "luo": "luo",
       "lus": "lušei",
       "luy": "luhja",
       "lv": "läti",
@@ -2046,6 +1874,7 @@
       "mgh": "makhuwa-meetto",
       "mgo": "meta",
       "mh": "maršalli",
+      "mhn": "mohheni",
       "mi": "maoori",
       "mic": "mikmaki",
       "min": "minangkabau",
@@ -2280,7 +2109,6 @@
       "umb": "umbundu",
       "ur": "urdu",
       "uz": "usbeki",
-      "vai": "vai",
       "ve": "venda",
       "vec": "veneti",
       "vep": "vepsa",
@@ -2303,6 +2131,7 @@
       "xal": "kalmõki",
       "xh": "koosa",
       "xmf": "megreli",
+      "xnr": "kangri",
       "xog": "soga",
       "yao": "jao",
       "yap": "japi",
@@ -2368,6 +2197,7 @@
       "Elba": "Elbasani",
       "Elym": "elümi",
       "Ethi": "etioopia",
+      "Gara": "garai",
       "Geok": "hutsuri",
       "Geor": "gruusia",
       "Glag": "glagoolitsa",
@@ -2478,6 +2308,7 @@
       "Sora": "sora",
       "Soyo": "sojombo",
       "Sund": "sunda",
+      "Sunu": "sunvari",
       "Sylo": "siloti",
       "Syrc": "süüria",
       "Syre": "süüria estrangelo",

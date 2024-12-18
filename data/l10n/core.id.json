@@ -24,16 +24,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Wilayah",
-        "filter_tooltip": "area"
+        "title": "Wilayah"
       },
       "add_line": {
-        "title": "Garis",
-        "filter_tooltip": "garis"
+        "title": "Garis"
       },
       "add_point": {
-        "title": "Titik",
-        "filter_tooltip": "titik"
+        "title": "Titik"
       },
       "add_note": {
         "title": "Catatan",
@@ -98,74 +95,15 @@
       },
       "circularize": {
         "title": "Melingkar",
-        "description": {
-          "single": "Buat fitur ini melingkar.",
-          "multiple": "Buat fitur ini melingkar."
-        },
         "annotation": {
           "feature": "Membuat {n} fitur melingkar."
-        },
-        "multiple_blockers": {
-          "multiple": "Ini tidak bisa dibuat melingkar karena beberapa hal."
-        },
-        "not_closed": {
-          "single": "Ini tidak bisa dibuat melingkar karena bukan sebuah garis tertutup.",
-          "multiple": "Ini tidak bisa dibuat melingkar karena bukan sebuah garis tertutup."
-        },
-        "too_large": {
-          "single": "Ini tidak bisa dibuat melingkar karena baru sedikit yang tampak di layar.",
-          "multiple": "Ini tidak bisa dibuat melingkar karena baru sedikit yang tampak di layar."
-        },
-        "connected_to_hidden": {
-          "single": "Ini tidak bisa dibuat melingkar karena terhubung dengan fitur tersembunyi.",
-          "multiple": "Ini tidak bisa dibuat melingkar karena terhubung dengan fitur tersembunyi."
-        },
-        "not_downloaded": {
-          "single": "Ini tidak bisa dibuat melingkar karena beberapa bagian belum sepenuhnya terunduh.",
-          "multiple": "Ini tidak bisa dibuat melingkar karena beberapa bagian belum sepenuhnya terunduh."
-        },
-        "already_circular": {
-          "single": "Ini tidak dapat dibuat lebih melingkar lagi.",
-          "multiple": "Ini tidak dapat dibuat lebih melingkar lagi."
         }
       },
       "orthogonalize": {
         "title": "Persegi",
-        "description": {
-          "corner": {
-            "single": "Kotakkan sudut ini.",
-            "multiple": "Kotakkan sudut-sudut ini."
-          },
-          "feature": {
-            "single": "Kotakkan sudut dari fitur ini.",
-            "multiple": "Kotakkan sudut-sudut dari fitur ini."
-          }
-        },
         "annotation": {
           "corner": "Mengkotakkan {n} sudut",
           "feature": "Mengkotakkan sudut dari {n} fitur."
-        },
-        "multiple_blockers": {
-          "multiple": "Ini tidak bisa dikotakkan karena beberapa hal."
-        },
-        "end_vertex": {
-          "single": "Ini tidak bisa dikotakkan karena merupakan titik akhir (bukan sudut).",
-          "multiple": "Ini tidak bisa dikotakkan karena merupakan titik akhir (bukan sudut)."
-        },
-        "square_enough": {
-          "single": "Ini tidak bisa lebih dikotakkan lagi.",
-          "multiple": "Ini tidak bisa lebih dikotakkan lagi."
-        },
-        "not_squarish": {
-          "single": "Ini tidak bisa dikotakkan karena tidak mirip kotak.",
-          "multiple": "Ini tidak bisa dikotakkan karena tidak mirip kotak."
-        },
-        "too_large": {
-          "single": "Ini tidak bisa dikotakkan karena baru sedikit yang tampak di layar.",
-          "multiple": "Ini tidak bisa dikotakkan karena baru sedikit yang tampak di layar."
-        },
-        "connected_to_hidden": {
-          "single": "Ini tidak bisa dikotakkan karena terhubung dengan fitur tersembunyi."
         }
       },
       "straighten": {
@@ -173,10 +111,6 @@
       },
       "delete": {
         "title": "Hapus",
-        "description": {
-          "single": "Hapus fitur secara permanen.",
-          "multiple": "Hapus fitur-fitur ini secara permanen."
-        },
         "annotation": {
           "point": "Menghapus sebuah titik.",
           "vertex": "Menghapus sebuah simpul dari jalan.",
@@ -184,9 +118,6 @@
           "area": "Menghapus sebuah area.",
           "relation": "Menghapus sebuah relasi.",
           "feature": "Menghapus {n} fitur."
-        },
-        "too_large": {
-          "single": "Fitur ini tidak bisa dihapus karena baru sedikit yang tampak di layar."
         }
       },
       "disconnect": {
@@ -236,9 +167,6 @@
           "create": "Menambahkan larangan belok",
           "delete": "Menghapus larangan belok"
         }
-      },
-      "extract": {
-        "key": "T"
       }
     },
     "restriction": {
@@ -371,21 +299,17 @@
       "description": "Data Peta",
       "data_layers": "Lapisan Data",
       "layers": {
-        "notes": {
-          "key": "U"
-        },
         "maproulette": {
           "detail_title": "detail",
           "cancel": "Batal"
         }
       },
-      "map_features": "Fitur Peta",
       "autohidden": "Fitur-fitur berikut telah disembunyikan secara otomatis karena akan terlalu banyak yang tampil pada layar. Anda dapat perbesar untuk menyuntingnya."
     },
     "photo_overlays": {
       "title": "Lapisan-Lapisan Atas Foto"
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Titik",
         "tooltip": "Lokasi Pusat Perhatian"
@@ -436,8 +360,7 @@
     "area_fill": {
       "wireframe": {
         "description": "Tidak ada Isi (Wireframe)",
-        "tooltip": "Menggunakan modus wireframe membuat mudah untuk melihat gambar latar belakang.",
-        "key": "B"
+        "tooltip": "Menggunakan modus wireframe membuat mudah untuk melihat gambar latar belakang."
       },
       "partial": {
         "description": "Isi Sebagian",
@@ -494,10 +417,8 @@
       "live": "terhubung",
       "lose_changes": "Perubahan Anda belum disimpan. Mengganti server peta akan membatalkan perubahan. Anda yakin akan mengganti server?"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Buang"
-      }
+    "rapid_menu": {
+      "remove": "Buang"
     },
     "tag_reference": {
       "description": "Deskripsi",
@@ -508,7 +429,9 @@
       "in": "Perbesar",
       "out": "Perkecil"
     },
-    "cannot_zoom": "Tidak bisa memperbesar tampilan lebih jauh dengan mode ini.",
+    "bearing": {
+      "n": "U"
+    },
     "full_screen": "Tombol Layar Penuh",
     "QA": {
       "osmose": {
@@ -555,9 +478,7 @@
       }
     },
     "issues": {
-      "warnings": {
-        "list_title": "Peringatan"
-      },
+      "warnings": "Peringatan",
       "crossing_ways": {
         "indoor-indoor": {
           "reference": "Melintasi fitur-fitur dalam ruangan harus menggunakan tingkatan yang berbeda"
@@ -603,24 +524,27 @@
       "key": {
         "delete": "Hapus"
       },
-      "browsing": {
-        "navigation": {
-          "title": "Navigasi"
+      "navigation": "Navigasi",
+      "help": "Bantuan",
+      "info": "Informasi",
+      "command": {
+        "add_note": {
+          "key": "U"
         },
-        "help": {
-          "title": "Bantuan"
-        }
-      },
-      "editing": {
-        "commands": {
-          "save": "Simpan perubahan"
-        }
-      },
-      "tools": {
-        "title": "Alat",
-        "info": {
-          "title": "Informasi",
-          "location": "Nyalakan panel lokasi"
+        "save": {
+          "label": "Simpan perubahan"
+        },
+        "extract": {
+          "key": "T"
+        },
+        "wireframe": {
+          "key": "B"
+        },
+        "toggle_osm_notes": {
+          "key": "U"
+        },
+        "toggle_location_card": {
+          "label": "Nyalakan panel lokasi"
         }
       }
     },
@@ -682,7 +606,7 @@
       "crk": "Cree Dataran",
       "crl": "East Cree Utara",
       "crs": "Seselwa Kreol Prancis",
-      "cs": "Cheska",
+      "cs": "Ceko",
       "csb": "Kashubia",
       "csw": "Cree Rawa",
       "cu": "Bahasa Gereja Slavonia",
@@ -699,7 +623,7 @@
       "enm": "Inggris Abad Pertengahan",
       "es": "Spanyol",
       "es-ES": "Spanyol (Eropa)",
-      "et": "Esti",
+      "et": "Estonia",
       "fa": "Persia",
       "fa-AF": "Persia Dari",
       "fi": "Suomi",
@@ -764,8 +688,8 @@
       "lij": "Liguria",
       "lou": "Kreol Louisiana",
       "lrc": "Luri Utara",
-      "lt": "Lituavi",
-      "lv": "Latvi",
+      "lt": "Lituania",
+      "lv": "Latvia",
       "mad": "Madura",
       "mfe": "Morisien",
       "mg": "Malagasi",
@@ -834,7 +758,7 @@
       "sga": "Irlandia Kuno",
       "sh": "Serbo-Kroasia",
       "shu": "Arab Suwa",
-      "sl": "Sloven",
+      "sl": "Slovenia",
       "slh": "Lushootseed Selatan",
       "sli": "Silesia Rendah",
       "sm": "Samoa",
@@ -886,7 +810,6 @@
     },
     "scriptNames": {
       "Aghb": "Albania Kaukasia",
-      "Arab": "Arab",
       "Armi": "Aram Imperial",
       "Armn": "Armenia",
       "Avst": "Avesta",

@@ -1,11 +1,12 @@
 {
-  "pa-PK": {
+  "pa": {
     "imagery": {
       "Bing": {
         "name": "بنگ ہوائی نقشے"
       },
       "EsriWorldImagery": {
-        "description": "ایسری دھرتی تصویراں"
+        "description": "ایسری دھرتی تصویراں",
+        "name": "ایسری دھرتی تصویراں"
       }
     }
   }

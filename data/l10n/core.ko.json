@@ -26,16 +26,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "지역",
-        "filter_tooltip": "지역"
+        "title": "지역"
       },
       "add_line": {
-        "title": "선",
-        "filter_tooltip": "선"
+        "title": "선"
       },
       "add_point": {
-        "title": "점",
-        "filter_tooltip": "점"
+        "title": "점"
       },
       "add_note": {
         "title": "참고",
@@ -100,79 +97,15 @@
       },
       "circularize": {
         "title": "둥글게 하기",
-        "description": {
-          "single": "이 지물을 둥글게 합니다.",
-          "multiple": "이 지물들을 둥글게 합니다."
-        },
         "annotation": {
           "feature": "{n}개의 지물을 둥글게 했습니다."
-        },
-        "multiple_blockers": {
-          "multiple": "이 지물들은 여러 이유로 둥글게 만들 수 없습니다."
-        },
-        "not_closed": {
-          "single": "이 지물은 닫혀있지 않기 때문에 둥글게 만들 수 없습니다.",
-          "multiple": "이 지물들은 닫혀있지 않기 때문에 둥글게 만들 수 없습니다."
-        },
-        "too_large": {
-          "single": "이 지물은 현재 충분히 보이지 않기 때문에 둥글게 만들 수 없습니다.",
-          "multiple": "이 지물들은 현재 충분히 보이지 않기 때문에 둥글게 만들 수 없습니다."
-        },
-        "connected_to_hidden": {
-          "single": "이 지물은 숨겨진 지물에 연결되어 있기 때문에 둥글게 만들 수 없습니다.",
-          "multiple": "숨겨 있는 기능 과 연결되어있는 이를 동그라미 만들기에는힘들다."
-        },
-        "not_downloaded": {
-          "single": "이 지물은 일부분이 다운로드되지 않았기 때문에 둥글게 만들 수 없습니다.",
-          "multiple": "이 지물들은 일부분이 다운로드되지 않았기 때문에 둥글게 만들 수 없습니다."
-        },
-        "already_circular": {
-          "single": "이 지물은 더이상 둥글게 만들 수 없습니다.",
-          "multiple": "이 지물들은 더이상 둥글게 만들 수 없습니다."
         }
       },
       "orthogonalize": {
         "title": "각지게 하기",
-        "description": {
-          "corner": {
-            "single": "모서리를 각지게 합니다.",
-            "multiple": "모서리들을 사각형으로 만듭니다."
-          },
-          "feature": {
-            "single": "이 지물의 모서리를 각지게 합니다.",
-            "multiple": "이 지물들의 모서리를 각지게 합니다."
-          }
-        },
         "annotation": {
           "corner": "{n}개의 모서리를 각지게 했습니다.",
           "feature": "{n}개의 지물의 모서리를 각지게 했습니다."
-        },
-        "multiple_blockers": {
-          "multiple": "이 지물들은 여러가지 문제로 인해 사각형으로 만들 수 없습니다."
-        },
-        "end_vertex": {
-          "single": "이 점들은 끝점이므로 사각형으로 만들 수 없습니다.",
-          "multiple": "이 점들은 끝점이므로 사각형으로 만들 수 없습니다."
-        },
-        "square_enough": {
-          "single": "이 지물은 이미 사각형으로 만들어져 있기 때문에 더이상 사각형으로 만들 수 없습니다.",
-          "multiple": "이 지물들은 이미 사각형으로 만들어져 있기 때문에 더이상 사각형으로 만들 수 없습니다."
-        },
-        "not_squarish": {
-          "single": "이 지물은 사각 형태가 아니기 때문에 사각형으로 만들 수 없습니다.",
-          "multiple": "이 지물들은 사각 형태가 아니기 때문에 사각형으로 만들 수 없습니다."
-        },
-        "too_large": {
-          "single": "지금 보이는 것이 부족한 이는 네모가 아닙니다.",
-          "multiple": "이 지물들은 현재 충분히 보이지 않기 때문에 각지게 할 수 없습니다."
-        },
-        "connected_to_hidden": {
-          "single": "이 지물은 숨겨진 지물에 연결되어 있기 때문에 각지게 할 수 없습니다.",
-          "multiple": "이 지물들은 숨겨진 지물에 연결되어 있기 때문에 각지게 할 수 없습니다."
-        },
-        "not_downloaded": {
-          "single": "이 지물은 일부분이 다운로드되지 않았기 때문에 각지게 할 수 없습니다.",
-          "multiple": "이 지물들은 일부분이 다운로드되지 않았기 때문에 각지게 할 수 없습니다."
         }
       },
       "straighten": {
@@ -185,34 +118,10 @@
         "annotation": {
           "point": "{n}개의 점을 곧게 했습니다.",
           "line": "{n}개의 선을 곧게 했습니다."
-        },
-        "too_bendy": {
-          "single": "지물이 너무 휘어있어서 펼 수 없습니다.",
-          "multiple": "지물이 너무 휘어있어서 펼 수 없습니다."
-        },
-        "connected_to_hidden": {
-          "single": "이 지물은 숨겨진 지물에 연결되어 있기 때문에 곧게 할 수 없습니다.",
-          "multiple": "이 지물들은 숨겨진 지물에 연결되어 있기 때문에 곧게 할 수 없습니다."
-        },
-        "not_downloaded": {
-          "single": "이 지물은 일부분이 다운로드되지 않았기 때문에 곧게 할 수 없습니다.",
-          "multiple": "이 지물들은 일부분이 다운로드되지 않았기 때문에 곧게 할 수 없습니다."
-        },
-        "straight_enough": {
-          "single": "이 지물은 더 이상 곧게 할 수 없습니다.",
-          "multiple": "이 지물들은 더 이상 곧게 할 수 없습니다."
-        },
-        "too_large": {
-          "single": "이 지물은 현재 충분히 보이지 않기 때문에 곧게 할 수 없습니다.",
-          "multiple": "이 지물들은 현재 충분히 보이지 않기 때문에 곧게 할 수 없습니다."
         }
       },
       "delete": {
         "title": "삭제",
-        "description": {
-          "single": "이 지물을 영구적으로 삭제합니다.",
-          "multiple": "이 지물들을 영구적으로 삭제합니다"
-        },
         "annotation": {
           "point": "점을 삭제했습니다.",
           "vertex": "길에서 점을 삭제했습니다.",
@@ -220,30 +129,6 @@
           "area": "지역을 삭제했습니다.",
           "relation": "관계를 삭제했습니다.",
           "feature": "{n}개의 지물을 삭제했습니다."
-        },
-        "too_large": {
-          "single": "이 지물은 현재 충분히 보이지 않기 때문에 삭제할 수 없습니다.",
-          "multiple": "지물들이 현재 충분히 보이지 않기 때문에 삭제 할 수 없습니다."
-        },
-        "incomplete_relation": {
-          "single": "이 지물은 완전히 다운로드되어 있지 않기 때문에 삭제할 수 없습니다.",
-          "multiple": "이 지물들은 완전히 다운로드되어 있지 않기 때문에 삭제할 수 없습니다."
-        },
-        "part_of_relation": {
-          "single": "이 지물은 보다 큰 관계의 부분이기 때문에 삭제할 수 없습니다. 먼저 관계에서 지물을 제거해야 합니다.",
-          "multiple": "이 지물들은 보다 큰 관계의 부분이기 때문에 삭제할 수 없습니다. 먼저 관계에서 지물들을 제거해야 합니다."
-        },
-        "connected_to_hidden": {
-          "single": "이 지물은 숨겨진 지물에 연결되어 있기 때문에 삭제할 수 없습니다.",
-          "multiple": "이 지물들 중 일부가 숨겨진 지물에 연결되어 있기 때문에 삭제할 수 없습니다."
-        },
-        "not_downloaded": {
-          "single": "이 지물은 일부분이 다운로드되지 않았기 때문에 삭제할 수 없습니다.",
-          "multiple": "이 지물들 중 일부분이 다운로드되지 않았기 때문에 삭제할 수 없습니다."
-        },
-        "has_wikidata_tag": {
-          "single": "이 지물은 Wikidata 태그와 연결되어 있어 삭제할 수 없습니다.",
-          "multiple": "이 지물들 중 일부가 Wikidata 태그와 연결되어 있어 삭제할 수 없습니다."
         }
       },
       "downgrade": {
@@ -258,10 +143,6 @@
           "building": "{n}개의 지물을 기본 건물로 다운그레이드했습니다.",
           "address": "{n}개의 지물을 주소 정보로 다운그레이드했습니다.",
           "generic": "{n}개의 지물을 다운그레이드했습니다."
-        },
-        "has_wikidata_tag": {
-          "single": "이 지물은 Wikidata 태그와 연결되어 있어 다운그레이드할 수 없습니다.",
-          "multiple": "이 지물들 중 일부가 Wikidata 태그와 연결되어 있어 다운그레이드할 수 없습니다."
         }
       },
       "add_member": {
@@ -352,10 +233,6 @@
       },
       "move": {
         "title": "이동",
-        "description": {
-          "single": "이 지물을 다른 위치로 이동합니다.",
-          "multiple": "이 지물들을 다른 위치로 이동합니다."
-        },
         "annotation": {
           "point": "점을 이동했습니다.",
           "vertex": "길에서 점을 이동했습니다.",
@@ -363,38 +240,12 @@
           "area": "지역을 이동했습니다.",
           "relation": "관계를 이동했습니다.",
           "feature": "{n}개의 지물을 이동했습니다."
-        },
-        "incomplete_relation": {
-          "single": "이 지물은 완전히 다운로드되어 있지 않기 때문에 이동할 수 없습니다.",
-          "multiple": "이 지물들은 완전히 다운로드되어 있지 않기 때문에 이동할 수 없습니다."
-        },
-        "too_large": {
-          "single": "이 지물은 현재 충분히 보이지 않기 때문에 이동할 수 없습니다.",
-          "multiple": "지물들이 현재 충분히 보이지 않기 때문에 이동할 수 없습니다."
-        },
-        "connected_to_hidden": {
-          "single": "이 지물은 숨겨진 지물에 연결되어 있기 때문에 이동할 수 없습니다.",
-          "multiple": "일부 지물이 숨겨진 지물에 연결되어 있기 때문에 이동할 수 없습니다."
-        },
-        "not_downloaded": {
-          "single": "이 지물은 일부분이 다운로드되지 않았기 때문에 이동할 수 없습니다.",
-          "multiple": "이 지물들 중 일부분이 다운로드되지 않았기 때문에 이동할 수 없습니다."
         }
       },
       "reflect": {
         "title": {
           "long": "긴 방향으로 반전",
           "short": "짧은 방향으로 반전"
-        },
-        "description": {
-          "long": {
-            "single": "이 지물을 긴 축으로 반전합니다.",
-            "multiple": "이 지물들을 긴 축으로 반전합니다."
-          },
-          "short": {
-            "single": "이 지물을 짧은 축으로 반전합니다.",
-            "multiple": "이 지물들을 짧은 축으로 반전합니다."
-          }
         },
         "annotation": {
           "long": {
@@ -403,51 +254,15 @@
           "short": {
             "feature": "{n}개의 지물을 짧은 축으로 반전했습니다."
           }
-        },
-        "incomplete_relation": {
-          "single": "지물이 완전히 다운로드되지 않아서 반전시킬 수 없습니다.",
-          "multiple": "지물이 완전히 다운로드되지 않아서 반전시킬 수 없습니다."
-        },
-        "too_large": {
-          "single": "지물이 완전히 보이지 않아서 반전시킬 수 없습니다.",
-          "multiple": "지물이 완전히 보이지 않아서 반전시킬 수 없습니다."
-        },
-        "connected_to_hidden": {
-          "single": "지물이 가려진 다른 지물과 연결되어 있어서 반전시킬 수 없습니다.",
-          "multiple": "지물이 가려진 다른 지물과 연결되어 있어서 반전시킬 수 없습니다."
-        },
-        "not_downloaded": {
-          "single": "지물이 완전히 다운로드되지 않아서 반전시킬 수 없습니다.",
-          "multiple": "지물들 중 일부분이 다운로드되지 않았기 때문에 회전할 수 없습니다."
         }
       },
       "rotate": {
         "title": "회전",
-        "description": {
-          "single": "중심점을 기준으로 이 지물을 회전합니다.",
-          "multiple": "중심점을 기준으로 이 지물들을 회전합니다."
-        },
         "annotation": {
           "line": "선을 회전했습니다.",
           "area": "지역을 회전했습니다.",
           "relation": "관계를 회전했습니다.",
           "feature": "{n}개의 지물을 회전했습니다."
-        },
-        "incomplete_relation": {
-          "single": "이 지물은 완전히 다운로드되어 있지 않기 때문에 회전할 수 없습니다.",
-          "multiple": "이 지물들은 완전히 다운로드되어 있지 않기 때문에 회전할 수 없습니다."
-        },
-        "too_large": {
-          "single": "이 지물은 현재 충분히 보이지 않기 때문에 회전할 수 없습니다.",
-          "multiple": "지물들이 현재 충분히 보이지 않기 때문에 회전할 수 없습니다."
-        },
-        "connected_to_hidden": {
-          "single": "이 지물은 숨겨진 지물에 연결되어 있기 때문에 회전할 수 없습니다.",
-          "multiple": "일부 지물이 숨겨진 지물에 연결되어 있기 때문에 회전할 수 없습니다."
-        },
-        "not_downloaded": {
-          "single": "이 지물은 일부분이 다운로드되지 않았기 때문에 회전할 수 없습니다.",
-          "multiple": "지물들 중 일부분이 다운로드되지 않았기 때문에 회전할 수 없습니다."
         }
       },
       "reverse": {
@@ -473,22 +288,6 @@
           "up": {
             "feature": "지물을 확대했습니다."
           }
-        },
-        "too_small": {
-          "single": "지물이 너무 작아서 더 이상 축소할 수 없습니다.",
-          "multiple": "지물이 너무 작아서 더 이상 축소할 수 없습니다."
-        },
-        "too_large": {
-          "single": "지물이 완전히 보이지 않아서 크기를 조정할 수 없습니다.",
-          "multiple": "지물이 완전히 보이지 않아서 크기를 조정할 수 없습니다."
-        },
-        "connected_to_hidden": {
-          "single": "이 지물은 숨겨진 지물과 연결되어 있어서 크기를 조정할 수 없습니다.",
-          "multiple": "이 지물은 숨겨진 지물과 연결되어 있어서 크기를 조정할 수 없습니다."
-        },
-        "not_downloaded": {
-          "single": "지물의 일부가 아직 다운로드되지 않아서 크기를 조정할 수 없습니다.",
-          "multiple": "지물의 일부가 아직 다운로드되지 않아서 크기를 조정할 수 없습니다."
         }
       },
       "split": {
@@ -534,31 +333,11 @@
       "extract": {
         "title": "추출",
         "description": {
-          "vertex": {
-            "single": "부모 선/지역에서 이 점을 추출합니다.",
-            "multiple": "부모 지물로부터 이 점들을 추출합니다."
-          },
-          "line": {
-            "single": "이 선에서 점을 추출합니다.",
-            "multiple": "이 선들에서 점들을 추출합니다."
-          },
-          "area": {
-            "single": "이 지역에서 점을 추출합니다.",
-            "multiple": "이 지역들에서 점들을 추출합니다."
-          },
           "feature": {
-            "multiple": "이 지물들에서 점들을 추출합니다."
+            "other": "이 지물들에서 점들을 추출합니다."
           }
         },
-        "annotation": "{n}개의 점을 추출했습니다.",
-        "too_large": {
-          "single": "지물이 현재 충분히 보이지 않기 때문에 점을 추출할 수 없습니다.",
-          "multiple": "지물들이 현재 충분히 보이지 않기 때문에 점들을 추출할 수 없습니다."
-        },
-        "connected_to_hidden": {
-          "single": "이 점은 숨겨진 지물에 연결되어 있기 때문에 추출할 수 없습니다.",
-          "multiple": "이 점들은 숨겨진 지물에 연결되어 있기 때문에 추출할 수 없습니다."
-        }
+        "annotation": "{n}개의 점을 추출했습니다."
       }
     },
     "restriction": {
@@ -749,10 +528,6 @@
       "multiple_values": "여러 값",
       "multiple_types": "여러 유형",
       "unshared_value_tooltip": "모든 지물 사이 공유되지 않음",
-      "hidden_preset": {
-        "manual": "{features}이(가) 숨겨져 있습니다. 보려면 지도 정보 패널에서 활성화 하세요.",
-        "zoom": "{features}이(가) 숨겨져 있습니다. 보려면 확대하세요,"
-      },
       "back_tooltip": "지물 유형 변경",
       "type": "유형",
       "details": "상세 정보",
@@ -836,8 +611,7 @@
         },
         "notes": {
           "tooltip": "OpenStreetMap의 참고 데이터",
-          "title": "오픈스트리트맵 참고",
-          "key": "북위"
+          "title": "오픈스트리트맵 참고"
         },
         "maproulette": {
           "detail_title": "자세한 정보",
@@ -866,7 +640,6 @@
         "tooltip": "선택한 지물의 기하 수치를 표시합니다."
       },
       "style_options": "스타일 설정",
-      "map_features": "지도 지물",
       "autohidden": "이 지물은 화면에 너무 많이 보여질 수 있기 때문에 자동으로 숨겨집니다. 편집하려면 확대할 수 있습니다.",
       "osmhidden": "이 기능은 OpenStreetMap 레이어를 숨겨서 자동으로 숨겨졌습니다."
     },
@@ -903,7 +676,7 @@
         "tooltip": "이 사용자의 사진만 표시합니다."
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "점",
         "tooltip": "관심 있는 점"
@@ -1102,16 +875,17 @@
       "start": "지금 편집하기"
     },
     "source_switch": {
+      "dev": "개발",
       "live": "실시간",
-      "lose_changes": "저장되지 않은 편집이 있습니다. 지도 서버를 전환하면 해당 편집이 사라집니다. 서버를 전환하겠습니까?",
-      "dev": "개발"
+      "lose_changes": "저장되지 않은 편집이 있습니다. 지도 서버를 전환하면 해당 편집이 사라집니다. 서버를 전환하겠습니까?"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "태그"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "제거"
+    "rapid_menu": {
+      "remove": "제거",
+      "category": {
+        "roads": "도로"
       }
     },
     "tag_reference": {
@@ -1127,7 +901,9 @@
         "out": "더이상 축소할 수 없습니다."
       }
     },
-    "cannot_zoom": "현재 모드에서 더 축소할 수 없습니다.",
+    "bearing": {
+      "n": "북위"
+    },
     "full_screen": "전체 화면 전환",
     "self_intersection": {
       "error": {
@@ -1551,7 +1327,6 @@
         "title": "점",
         "intro": "*점*은 상점, 음식점과 산과 같은 지물로 표현하는 데 사용될 수 있습니다. 점은 특정 위치와 거기에 무엇이 있는지 설명을 표시합니다.",
         "add_point_h": "점 추가하기",
-        "add_point": "점을 추가하려면, 툴바의 {point_icon} **{point}** 버튼을 누르거나 단축키 '1'을 누르세요.",
         "move_point_h": "점 이동하기",
         "delete_point_h": "점 삭제하기",
         "delete_point": "실제 세상에 존재하지 않는 지물은 삭제해도 괜찮습니다. 오픈스트리트맵에서 지물을 삭제하면 모든 사람이 사용하는 지도에서 삭제되므로 지물을 삭제하기 전에 정말로 사라졌는지 확인해야 합니다."
@@ -1560,7 +1335,6 @@
         "title": "선",
         "intro": "*선*은 도로, 철도와 강과 같은 지물을 표현하는 데 사용됩니다. 선은 지물이 나타내는 부분의 가운데에 그려야 합니다.",
         "add_line_h": "선 추가하기",
-        "add_line": "선을 추가하려면, 툴바의 {line_icon} **{line}** 버튼을 누르거나 단축키 '2'를 누르세요.",
         "add_line_finish": "선을 완성하려면, 마지막 노드를 다시 클릭 또는 탭하거나 `{return}` 키를 누르세요.",
         "modify_line_h": "선 수정하기",
         "modify_line_dragnode": "흔히 배경 이미지와 맞지 않는 도로처럼 형태가 올바르지 않은 선을 보게 됩니다. 선의 모양을 수정하려면 먼저 선을 선택하세요. 선의 모든 노드가 작은 원으로 표시됩니다. 그다음 노드들을 더 나은 위치로 드래그하세요.",
@@ -1579,7 +1353,6 @@
         "point_or_area_h": "점? 아니면 지역?",
         "point_or_area": "많은 지물은 점 또는 지역으로 표현할 수 있습니다. 건물과 토지는 가능하면 지역으로 표현해야 합니다. 건물 지역 안에 점을 배치하여 건물 내부에 위치한 사업체, 편의 시설 및 기타 지물을 표현하세요.",
         "add_area_h": "지역 추가하기",
-        "add_area_command": "지역을 추가하려면, 툴바의 {area_icon} **{area}** 버튼을 누르거나 단축키 '3'을 누르세요.",
         "add_area_finish": "지역을 완성하려면, 첫번째 또는 마지막 점을 다시 클릭 또는 탭하거나 `{return}` 키를 누르세요.",
         "square_area_h": "각지게 하기",
         "modify_area_h": "지역 수정하기",
@@ -1708,18 +1481,10 @@
     },
     "issues": {
       "title": "문제점",
-      "list_title": "문제점",
-      "errors": {
-        "list_title": "오류"
-      },
-      "warnings": {
-        "list_title": "경고"
-      },
-      "rules": {
-        "title": "규칙"
-      },
-      "user_resolved_issues": "편집으로 해결된 문제점",
-      "warnings_and_errors": "경고 및 오류",
+      "errors": "오류",
+      "warnings": "경고",
+      "rules": "규칙",
+      "resolved_tooltip": "편집으로 해결된 문제점",
       "no_issues": {
         "message": {
           "everything": "모든 것이 괜찮아 보입니다",
@@ -1874,8 +1639,6 @@
         "title": "유효하지 않은 서식",
         "tip": "예상치 못한 형식의 태그 찾기",
         "email": {
-          "message": "{feature}에 유효하지 않은 이메일 주소가 있습니다.",
-          "message_multi": "{feature}에 여러 유효하지 않은 이메일 주소가 있습니다.",
           "reference": "이메일 주소는 \"user@example.com\"와 같은 형태여야 합니다."
         }
       },
@@ -2393,6 +2156,7 @@
       "title": "키보드 단축키",
       "tooltip": "화면에 키보드 단축키를 보여줍니다.",
       "key": {
+        "delete": "삭제",
         "menu": "메뉴",
         "pgup": "Pgup"
       },
@@ -2400,96 +2164,177 @@
         "drag": "드래그"
       },
       "or": "-또는-",
-      "browsing": {
-        "title": "찾아보기",
-        "navigation": {
-          "title": "둘러보기",
-          "pan": "지도 이동"
+      "browsing": "찾아보기",
+      "editing": "편집하기",
+      "navigation": "둘러보기",
+      "selecting_features": "지물 선택",
+      "with_features_selected": "지물이 선택된 경우",
+      "with_node_selected": "점이 선택된 경우",
+      "with_way_selected": "선이 선택된 경우",
+      "drawing": "그리기",
+      "commands": "명령어",
+      "help": "도움말",
+      "display_options": "디스플레이 옵션",
+      "info": "정보",
+      "command": {
+        "pan": {
+          "label": "지도 이동"
         },
-        "help": {
-          "title": "도움말",
-          "help": "도움말/문서 표시",
-          "keyboard": "키보드 단축키 보기"
+        "select_one": {
+          "label": "지물 하나 선택"
         },
-        "display_options": {
-          "title": "디스플레이 옵션",
-          "background": "배경 패널 토글",
-          "map_data": "지도 자료 패널 토글",
-          "issues": "문제점 패널 토글",
-          "preferences": "환경 설정 패널 토글",
-          "wireframe": "테두리 모드 토글",
-          "osm_data": "오픈스트리트맵 데이터 토글",
-          "highlight_edits": "저장되지 않은 편집 강조"
+        "select_multi": {
+          "label": "지물 여러개 선택"
         },
-        "selecting": {
-          "title": "지물 선택",
-          "select_one": "지물 하나 선택",
-          "select_multi": "지물 여러개 선택",
-          "lasso": "점 선택 올가미 그리기",
-          "search": "검색어와 일치하는 지물 찾기"
+        "lasso": {
+          "label": "점 선택 올가미 그리기"
         },
-        "with_selected": {
-          "title": "지물이 선택된 경우",
-          "edit_menu": "편집 메뉴 토글"
+        "edit_menu": {
+          "label": "편집 메뉴 토글"
         },
-        "vertex_selected": {
-          "title": "점이 선택된 경우",
-          "first": "처음 점으로 가기",
-          "last": "끝 점으로 가기",
-          "change_parent": "기본 방향 전환",
-          "parent": "기본 방향 선택"
+        "first_node": {
+          "label": "처음 점으로 가기"
         },
-        "way_selected": {
-          "title": "선이 선택된 경우",
-          "child": "자식 점 선택"
-        }
-      },
-      "editing": {
-        "title": "편집하기",
-        "drawing": {
-          "title": "그리기",
-          "add_point": "'점 추가' 모드",
-          "add_line": "'선 추가' 모드",
-          "add_area": "'지역 추가' 모드",
-          "add_note": "'참고 추가' 모드",
-          "place_point": "점이나 참고 놓기",
-          "disable_snap": "점에 붙는 기능 끄기",
-          "stop_line": "선 또는 지역 그리기 끝내기"
+        "last_node": {
+          "label": "끝 점으로 가기"
         },
-        "commands": {
-          "title": "명령어",
-          "copy": "선택한 지물 복사하기",
-          "paste": "복사된 지물 붙여넣기",
-          "undo": "최근 활동 실행 취소",
-          "redo": "실행 취소 복귀",
-          "save": "바뀜 저장"
+        "change_parent": {
+          "label": "기본 방향 전환"
         },
-        "operations": {
-          "continue_line": "선택한 점에서 선 계속 그리기",
-          "merge": "선택한 지물 병합",
-          "disconnect": "선택한 지물 연결 해제하기",
-          "extract": "지물에서 점 추출하기",
-          "split": "선택한 지점에서 지물 분할",
-          "reverse": "선택한 지물 방향 뒤집기",
-          "move": "선택한 지물 이동하기",
-          "rotate": "선택한 지물 회전하기",
-          "orthogonalize": "선 또는 지역 각지게 하기",
-          "straighten": "선 또는 점들 곧게 하기",
-          "circularize": "폐선이나 지역을 둥글게 하기",
-          "reflect_long": "긴 축으로 지물 반전",
-          "reflect_short": "짧은 축으로 지물 반전",
-          "delete": "선택한 지물 제거하기"
-        }
-      },
-      "tools": {
-        "title": "도구",
-        "info": {
-          "title": "정보",
-          "all": "모든 정보 패널 토글",
-          "background": "배경 패널 토글",
-          "history": "기록 패널 토글",
-          "location": "위치 패널 토글",
-          "measurement": "측정 패널 토글"
+        "select_parent": {
+          "label": "기본 방향 선택"
+        },
+        "select_children": {
+          "label": "자식 점 선택"
+        },
+        "add_point": {
+          "label": "'점 추가' 모드"
+        },
+        "add_line": {
+          "label": "'선 추가' 모드"
+        },
+        "add_area": {
+          "label": "'지역 추가' 모드"
+        },
+        "add_note": {
+          "label": "'참고 추가' 모드",
+          "key": "북위"
+        },
+        "place_point": {
+          "label": "점이나 참고 놓기"
+        },
+        "disable_snap": {
+          "label": "점에 붙는 기능 끄기"
+        },
+        "stop_line": {
+          "label": "선 또는 지역 그리기 끝내기"
+        },
+        "copy": {
+          "label": "선택한 지물 복사하기"
+        },
+        "paste": {
+          "label": "복사된 지물 붙여넣기"
+        },
+        "undo": {
+          "label": "최근 활동 실행 취소"
+        },
+        "redo": {
+          "label": "실행 취소 복귀"
+        },
+        "save": {
+          "label": "바뀜 저장"
+        },
+        "find": {
+          "label": "검색어와 일치하는 지물 찾기"
+        },
+        "continue_line": {
+          "label": "선택한 점에서 선 계속 그리기"
+        },
+        "merge": {
+          "label": "선택한 지물 병합"
+        },
+        "disconnect": {
+          "label": "선택한 지물 연결 해제하기"
+        },
+        "extract": {
+          "label": "지물에서 점 추출하기",
+          "key": "동경"
+        },
+        "split": {
+          "label": "선택한 지점에서 지물 분할"
+        },
+        "reverse": {
+          "label": "선택한 지물 방향 뒤집기"
+        },
+        "move": {
+          "label": "선택한 지물 이동하기"
+        },
+        "rotate": {
+          "label": "선택한 지물 회전하기"
+        },
+        "orthogonalize": {
+          "label": "선 또는 지역 각지게 하기"
+        },
+        "straighten": {
+          "label": "선 또는 점들 곧게 하기",
+          "key": "남위"
+        },
+        "circularize": {
+          "label": "폐선이나 지역을 둥글게 하기"
+        },
+        "reflect_long": {
+          "label": "긴 축으로 지물 반전"
+        },
+        "reflect_short": {
+          "label": "짧은 축으로 지물 반전"
+        },
+        "delete": {
+          "label": "선택한 지물 제거하기"
+        },
+        "toggle_background": {
+          "label": "배경 패널 토글"
+        },
+        "toggle_map_data": {
+          "label": "지도 자료 패널 토글"
+        },
+        "toggle_issues": {
+          "label": "문제점 패널 토글"
+        },
+        "toggle_preferences": {
+          "label": "환경 설정 패널 토글"
+        },
+        "wireframe": {
+          "key": "서경"
+        },
+        "highlight_edits": {
+          "label": "저장되지 않은 편집 강조"
+        },
+        "keyboard_shortcuts": {
+          "label": "키보드 단축키 보기"
+        },
+        "toggle_osm_data": {
+          "label": "오픈스트리트맵 데이터 토글"
+        },
+        "toggle_osm_notes": {
+          "key": "북위"
+        },
+        "toggle_streetside": {
+          "key": "남위"
+        },
+        "toggle_all_cards": {
+          "label": "모든 정보 패널 토글"
+        },
+        "toggle_background_card": {
+          "label": "배경 패널 토글"
+        },
+        "toggle_history_card": {
+          "label": "기록 패널 토글"
+        },
+        "toggle_location_card": {
+          "label": "위치 패널 토글"
+        },
+        "toggle_measurement_card": {
+          "label": "측정 패널 토글"
         }
       }
     },
@@ -2568,6 +2413,7 @@
       "bin": "비니어",
       "bkm": "콤어",
       "bla": "식시카어",
+      "blo": "아니이어",
       "bm": "밤바라어",
       "bn": "벵골어",
       "bo": "티베트어",
@@ -2688,7 +2534,6 @@
       "gmh": "중세 고지 독일어",
       "gn": "과라니어",
       "goh": "고대 고지 독일어",
-      "gom": "고아 콘칸어",
       "gon": "곤디어",
       "gor": "고론탈로어",
       "got": "고트어",
@@ -2789,6 +2634,7 @@
       "kv": "코미어",
       "kw": "콘월어",
       "kwk": "곽왈라어",
+      "kxv": "쿠비어",
       "ky": "키르기스어",
       "la": "라틴어",
       "lad": "라디노어",
@@ -2800,8 +2646,10 @@
       "lfn": "링구아 프랑카 노바",
       "lg": "간다어",
       "li": "림버거어",
+      "lij": "리구리아어",
       "lil": "릴루엣어",
       "lkt": "라코타어",
+      "lmo": "롬바르드어",
       "ln": "링갈라어",
       "lo": "라오어",
       "lol": "몽고어",
@@ -2997,6 +2845,7 @@
       "swb": "코모로어",
       "syc": "고전 시리아어",
       "syr": "시리아어",
+      "szl": "실레시아어",
       "ta": "타밀어",
       "tce": "남부 투톤어",
       "te": "텔루구어",
@@ -3024,7 +2873,7 @@
       "tog": "니아사 통가어",
       "tok": "도기 보나",
       "tpi": "토크 피신어",
-      "tr": "터키어",
+      "tr": "튀르키예어",
       "trv": "타로코어",
       "ts": "총가어",
       "tsi": "트심시안어",
@@ -3046,7 +2895,9 @@
       "uz": "우즈베크어",
       "vai": "바이어",
       "ve": "벤다어",
+      "vec": "베네치아어",
       "vi": "베트남어",
+      "vmw": "마쿠와어",
       "vo": "볼라퓌크어",
       "vot": "보틱어",
       "vun": "분조어",
@@ -3060,6 +2911,7 @@
       "wuu": "우어",
       "xal": "칼미크어",
       "xh": "코사어",
+      "xnr": "캉리어",
       "xog": "소가어",
       "yao": "야오족어",
       "yap": "얍페세어",

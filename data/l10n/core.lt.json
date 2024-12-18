@@ -28,16 +28,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Plotas",
-        "filter_tooltip": "plotai"
+        "title": "Plotas"
       },
       "add_line": {
-        "title": "Linija",
-        "filter_tooltip": "linijos"
+        "title": "Linija"
       },
       "add_point": {
-        "title": "Taškas",
-        "filter_tooltip": "taškai"
+        "title": "Taškas"
       },
       "add_note": {
         "title": "Pastaba",
@@ -132,10 +129,6 @@
       },
       "circularize": {
         "title": "Apvalinti",
-        "description": {
-          "single": "Pertvarkyti šį objektą į apskritimą.",
-          "multiple": "Pertvarkyti šiuos objektus į apskritimus."
-        },
         "annotation": {
           "feature": {
             "one": "suapvalintas objektas.",
@@ -143,29 +136,6 @@
             "many": "suapvalinta {n} objektų.",
             "other": "suapvalinta {n} objektų."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Šių objektų negalima suapvalinti dėl keleto priežasčių."
-        },
-        "not_closed": {
-          "single": "Šio objekto negalima suapvalinti, nes jis neuždaras.",
-          "multiple": "Šių objektų negalima suapvalinti, nes jie neuždari."
-        },
-        "too_large": {
-          "single": "Šio objekto negalima suapvalinti, nes nepakankama jo dalis šiuo metu matoma.",
-          "multiple": "Šių objektų negalima suapvalinti, nes nepakankama jų dalis šiuo metu matoma."
-        },
-        "connected_to_hidden": {
-          "single": "Šio objekto negalima suapvalinti, nes jis susietas su paslėptu objektu.",
-          "multiple": "Šių objektų negalima suapvalinti, nes kai kurie jų susieti su paslėptais objektais."
-        },
-        "not_downloaded": {
-          "single": "Šio objekto negalima suapvalinti, nes jis ne visas parsiųstas.",
-          "multiple": "Šių objektų negalima suapvalinti, nes jis ne visi parsiųsti."
-        },
-        "already_circular": {
-          "single": "Šio objekto negalima dar labiau suapvalinti.",
-          "multiple": "Šių objektų negalima dar labiau suapvalinti."
         }
       },
       "orthogonalize": {
@@ -191,34 +161,10 @@
             "many": "ištiesinta {n} linijų.",
             "other": "ištiesinta {n} linijų."
           }
-        },
-        "too_bendy": {
-          "single": "Šio objekto negalima ištiesinti, nes jis per daug išlinkęs.",
-          "multiple": "Šių objektų negalima ištiesinti, nes jie per daug išlinkę."
-        },
-        "connected_to_hidden": {
-          "single": "Šio objekto negalima ištiesinti, nes jis susietas su paslėptu objektu.",
-          "multiple": "Šių objektų negalima ištiesinti, nes kai kurie jų susieti su paslėptais objektais."
-        },
-        "not_downloaded": {
-          "single": "Šio objekto negalima ištiesinti, nes jis ne visas parsiųstas.",
-          "multiple": "Šių objektų negalima ištiesinti, nes jie ne visi parsiųsti."
-        },
-        "straight_enough": {
-          "single": "Šio objekto negalima dar labiau ištiesinti.",
-          "multiple": "Šių objektų negalima dar labiau ištiesinti."
-        },
-        "too_large": {
-          "single": "Šio objekto negalima ištiesinti, nes nepakankama jo dalis šiuo metu matoma.",
-          "multiple": "Šių objektų negalima ištiesinti, nes nepakankama jų dalis šiuo metu matoma."
         }
       },
       "delete": {
         "title": "Pašalinti",
-        "description": {
-          "single": "Pašalinti šį objektą visam laikui.",
-          "multiple": "Pašalinti šiuos objektus visam laikui."
-        },
         "annotation": {
           "point": "pašalintas taškas.",
           "vertex": "pašalintas taškas iš linijos.",
@@ -231,30 +177,6 @@
             "many": "pašalinta {n} ryšių.",
             "other": "pašalinta {n} ryšių."
           }
-        },
-        "too_large": {
-          "single": "Šio objekto negalima pašalinti, nes nepakankama jo dalis yra matoma.",
-          "multiple": "Šių objektų negalima pašalinti, nes nepakankama jų dalis šiuo metu matoma."
-        },
-        "incomplete_relation": {
-          "single": "Šio objekto negalima pašalinti, nes jis ne visas parsiųstas.",
-          "multiple": "Šių objektų negalima pašalinti, nes jie ne visi parsiųsti."
-        },
-        "part_of_relation": {
-          "single": "Šio objekto negalima pašalinti, nes jis yra didesnio ryšio dalis. Iš pradžių turite išimti jį iš ryšio.",
-          "multiple": "Šių objektų negalima pašalinti, nes jie yra didesnių ryšių dalis. Jūs turite iš pradžių išimti juos iš ryšių."
-        },
-        "connected_to_hidden": {
-          "single": "Šio objekto negalima pašalinti, nes jis susietas su paslėptu objektu.",
-          "multiple": "Šių objektų negalima pašalinti, nes kai kurie jų susieti su paslėptais objektais."
-        },
-        "not_downloaded": {
-          "single": "Šio objekto negalima pašalinti, nes kai kurios jo dalys dar neparsiųstos.",
-          "multiple": "Šių objektų negalima pašalinti, nes kai kurios jų dalys dar neparsiųstos."
-        },
-        "has_wikidata_tag": {
-          "single": "Šio objekto negalima pašalinti, nes jis turi „Wikidata“ žymą.",
-          "multiple": "Šių objektų negalima pašalinti, nes kai kurie jų turi „Wikidata“ žymas."
         }
       },
       "connect": {
@@ -293,50 +215,18 @@
       },
       "move": {
         "title": "Perkelti",
-        "description": {
-          "single": "Perkelti šį objektą į kitą vietą.",
-          "multiple": "Perkelti šiuos objektus į kitą vietą."
-        },
         "annotation": {
           "point": "Taškas perkeltas.",
           "vertex": "Perkeltas taškas kelyje.",
           "line": "Linija perkelta.",
           "area": "Perkeltas plotas."
-        },
-        "incomplete_relation": {
-          "single": "Šio objekto negalima perkelti, nes jis nebuvo pilnai atsiųstas.",
-          "multiple": "Šių objektų perkelti negalima, nes jie nebuvo pilnai atsiųsti."
-        },
-        "too_large": {
-          "single": "Šio objekto negalima perkelti, nes nepakankama dalis objekto šiuo metu matoma.",
-          "multiple": "Šių objektų negalima perkelti, nes nepakankama jų dalis šiuo metu matoma."
-        },
-        "connected_to_hidden": {
-          "single": "Šio objekto negalima perkelti, nes jis susietas su paslėptu objektu.",
-          "multiple": "Šių objektų negalima perkelti, nes kai kurie iš jų susieti su paslėptais objektais."
         }
       },
       "rotate": {
         "title": "Pasukti",
-        "description": {
-          "single": "Sukti šį objektą apie jo centro tašką.",
-          "multiple": "Sukti šiuos objektus ties jų centro tašku."
-        },
         "annotation": {
           "line": "Linija pasukta.",
           "area": "Pasuktas plotas."
-        },
-        "incomplete_relation": {
-          "single": "Šio objekto negalima sukti, nes jis nebuvo pilnai atsiųstas.",
-          "multiple": "Šių objektų negalima siųsti, nes jie nebuvo pilnai atsiųsti."
-        },
-        "too_large": {
-          "single": "Šio objekto negalima sukti, nes nepakankama jo dalis šiuo metu matoma.",
-          "multiple": "Šių objektų negalima sukti, nes nepakankama jų dalis šiuo metu matoma."
-        },
-        "connected_to_hidden": {
-          "single": "Šio objekto negalima sukti, nes jis susietas su paslėptu objektu.",
-          "multiple": "Šių objektų negalima sukti, nes kai kurie iš jų susieti su paslėptais objektais."
         }
       },
       "reverse": {
@@ -562,8 +452,7 @@
           "tooltip": "Žemėlapio duomenys iš OpenStreetMap"
         },
         "notes": {
-          "tooltip": "Pastabos duomenys iš OpenStreetMap",
-          "key": "Š"
+          "tooltip": "Pastabos duomenys iš OpenStreetMap"
         },
         "maproulette": {
           "detail_title": "Detalės",
@@ -578,7 +467,6 @@
         }
       },
       "style_options": "Stiliaus pasirinkimai",
-      "map_features": "Žemėlapio savybės",
       "autohidden": "Šie objektai buvo automatiškai paslėpti, nes ekrane tektų rodyti per daug. Galite didinti, jei norite juos keisti."
     },
     "visual_diff": {
@@ -597,7 +485,7 @@
         }
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Taškai",
         "tooltip": "Lankytinos vietos"
@@ -747,20 +635,20 @@
       "live": "gyva",
       "lose_changes": "Turite neįrašytų pakeitimų. Perjungiant žemėlapio stotį jie bus panaikinti. Ar tikrai norite pakeisti žemėlapių stotį?"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Žymės"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Pašalinti"
-      }
+    "rapid_menu": {
+      "remove": "Pašalinti"
     },
     "tag_reference": {
       "description": "Aprašymas",
       "on_wiki": "{tag} svetainėje wiki.osm.org",
       "used_with": "naudojama su {type}"
     },
-    "cannot_zoom": "Negalima atitolinti šiame režime.",
+    "bearing": {
+      "n": "Š"
+    },
     "full_screen": "Perjungti pilną ekraną",
     "QA": {
       "osmose": {
@@ -936,16 +824,9 @@
     },
     "issues": {
       "title": "Problemos",
-      "list_title": "Problemos",
-      "errors": {
-        "list_title": "Klaidos"
-      },
-      "warnings": {
-        "list_title": "Įspėjimai"
-      },
-      "rules": {
-        "title": "Klaidos"
-      },
+      "errors": "Klaidos",
+      "warnings": "Įspėjimai",
+      "rules": "Klaidos",
       "no_issues": {
         "message": {
           "everything": "Viskas atrodo gerai",
@@ -1312,50 +1193,67 @@
     "shortcuts": {
       "title": "Spartieji klavišai",
       "key": {
+        "delete": "Pašalinti",
         "space": "Tarpas"
       },
       "gesture": {
         "drag": "tempti"
       },
       "or": "-arba-",
-      "browsing": {
-        "title": "Naršymas",
-        "navigation": {
-          "title": "Navigacija"
+      "browsing": "Naršymas",
+      "editing": "Redagavimas",
+      "navigation": "Navigacija",
+      "drawing": "Piešimas",
+      "commands": "Komandos",
+      "help": "Pagalba",
+      "display_options": "Rodyti pasirinkimus",
+      "info": "Informacija",
+      "command": {
+        "add_point": {
+          "label": "'Pridėti tašką' režimas"
         },
-        "help": {
-          "title": "Pagalba",
-          "help": "Rodyti pagalbą/dokumentaciją"
+        "add_line": {
+          "label": "'Pridėti liniją' režimas"
         },
-        "display_options": {
-          "title": "Rodyti pasirinkimus"
-        }
-      },
-      "editing": {
-        "title": "Redagavimas",
-        "drawing": {
-          "title": "Piešimas",
-          "add_point": "'Pridėti tašką' režimas",
-          "add_line": "'Pridėti liniją' režimas",
-          "add_area": "'Pridėti plotą' režimas",
-          "add_note": "'Pridėti pastabą' režimas",
-          "place_point": "Pridėti tašką arba pastabą",
-          "stop_line": "Baigti piešti liniją arba plotą"
+        "add_area": {
+          "label": "'Pridėti plotą' režimas"
         },
-        "commands": {
-          "title": "Komandos",
-          "undo": "Atšaukti paskutinį veiksmą",
-          "redo": "Atstatyti paskutinį atšauktą veiksmą",
-          "save": "Išsaugoti pasikeitimus"
+        "add_note": {
+          "label": "'Pridėti pastabą' režimas",
+          "key": "Š"
         },
-        "operations": {
-          "circularize": "Cirkuliarizuoti uždarą liniją arba plotą"
-        }
-      },
-      "tools": {
-        "title": "Įrankiai",
-        "info": {
-          "title": "Informacija"
+        "place_point": {
+          "label": "Pridėti tašką arba pastabą"
+        },
+        "stop_line": {
+          "label": "Baigti piešti liniją arba plotą"
+        },
+        "undo": {
+          "label": "Atšaukti paskutinį veiksmą"
+        },
+        "redo": {
+          "label": "Atstatyti paskutinį atšauktą veiksmą"
+        },
+        "save": {
+          "label": "Išsaugoti pasikeitimus"
+        },
+        "extract": {
+          "key": "R"
+        },
+        "straighten": {
+          "key": "P"
+        },
+        "circularize": {
+          "label": "Cirkuliarizuoti uždarą liniją arba plotą"
+        },
+        "wireframe": {
+          "key": "V"
+        },
+        "toggle_osm_notes": {
+          "key": "Š"
+        },
+        "toggle_streetside": {
+          "key": "P"
         }
       }
     },
@@ -1439,6 +1337,7 @@
       "bjn": "bandžarų",
       "bkm": "komų",
       "bla": "siksikų",
+      "blo": "guanų",
       "bm": "bambarų",
       "bn": "bengalų",
       "bo": "tibetiečių",
@@ -1532,9 +1431,6 @@
       "enm": "Vidurio Anglijos",
       "eo": "esperanto",
       "es": "ispanų",
-      "es-419": "Lotynų Amerikos ispanų",
-      "es-ES": "Europos ispanų",
-      "es-MX": "Meksikos ispanų",
       "esu": "centrinės Aliaskos jupikų",
       "et": "estų",
       "eu": "baskų",
@@ -1576,7 +1472,6 @@
       "gmh": "Vidurio Aukštosios Vokietijos",
       "gn": "gvaranių",
       "goh": "senoji Aukštosios Vokietijos",
-      "gom": "Goa konkanių",
       "gon": "gondi",
       "gor": "gorontalo",
       "got": "gotų",
@@ -1685,6 +1580,7 @@
       "kv": "komi",
       "kw": "kornų",
       "kwk": "kvakvalų",
+      "kxv": "kuvi",
       "ky": "kirgizų",
       "la": "lotynų",
       "lad": "ladino",
@@ -1714,7 +1610,6 @@
       "lua": "luba lulua",
       "lui": "luiseno",
       "lun": "Lundos",
-      "luo": "luo",
       "lus": "mizo",
       "luy": "luja",
       "lv": "latvių",
@@ -1832,8 +1727,6 @@
       "pro": "senovės provansalų",
       "ps": "puštūnų",
       "pt": "portugalų",
-      "pt-BR": "Brazilijos portugalų",
-      "pt-PT": "Europos portugalų",
       "qu": "kečujų",
       "quc": "kičių",
       "qug": "Čimboraso aukštumų kečujų",
@@ -1967,13 +1860,13 @@
       "umb": "umbundu",
       "ur": "urdų",
       "uz": "uzbekų",
-      "vai": "vai",
       "ve": "vendų",
       "vec": "venetų",
       "vep": "vepsų",
       "vi": "vietnamiečių",
       "vls": "vakarų flamandų",
       "vmf": "pagrindinė frankonų",
+      "vmw": "makua",
       "vo": "volapiuko",
       "vot": "Votik",
       "vro": "veru",
@@ -1989,6 +1882,7 @@
       "xal": "kalmukų",
       "xh": "kosų",
       "xmf": "megrelų",
+      "xnr": "kangri",
       "xog": "sogų",
       "yao": "jao",
       "yap": "japezų",

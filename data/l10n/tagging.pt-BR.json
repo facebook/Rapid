@@ -369,7 +369,6 @@
         },
         "building": {
           "options": {
-            "allotment_house": "Casa de horta urbana/comunitária",
             "barn": "Celeiro",
             "boathouse": "Guarderia para embarcações",
             "bungalow": "Bangalô",
@@ -528,6 +527,11 @@
         },
         "communication_multi": {
           "label": "Tipos de comunicação"
+        },
+        "community_centre": {
+          "options": {
+            "youth_centre": "Centro de juventude"
+          }
         },
         "connectivity": {
           "label": "Conectividade"
@@ -1130,6 +1134,7 @@
             "building": "Edifício Histórico",
             "city_gate": "Portal da cidade",
             "citywalls": "Muralha da cidade",
+            "manor": "Mansão",
             "milestone": "Marco",
             "mine_shaft": "Eixo da mina",
             "monument": "Monumento",
@@ -1199,7 +1204,7 @@
           }
         },
         "internet_access/fee": {
-          "label": "Acesso à internet",
+          "label": "Taxa para acesso à Internet",
           "options": {
             "customers": "Somente clientes",
             "no": "Grátis"
@@ -1276,7 +1281,8 @@
             "leafless": "Sem folhas",
             "mixed": "Mista",
             "needleleaved": "Aciculifoliada"
-          }
+          },
+          "terms": "folhas,ciclo"
         },
         "length": {
           "label": "Comprimento (em metros)"
@@ -1784,7 +1790,6 @@
             "EVIIIR": "EVIIIR (Eduardo VIII)",
             "EVIIR": "EVIIR (Eduardo VII)",
             "VR": "VR (Vitória)",
-            "no": "Não",
             "scottish_crown": "Coroa da Escócia"
           }
         },
@@ -1966,7 +1971,8 @@
           "label": "Esportes"
         },
         "sport/sport_pub": {
-          "label": "Esportes"
+          "label": "Esportes",
+          "terms": "sport,esporte,modalidades,desporto,esportivo"
         },
         "sport/sport_racing_motor": {
           "label": "Esportes"
@@ -1986,6 +1992,9 @@
             "all": "De todas as direções",
             "minor": "Na(s) via(s) de hierarquia inferior"
           }
+        },
+        "street_cabinet": {
+          "terms": "tipo"
         },
         "stroller": {
           "label": "Acesso a carrinhos de bebê"
@@ -2014,6 +2023,9 @@
           "options": {
             "inspection_gauge": "Medidor de inspeção"
           }
+        },
+        "summit/cross": {
+          "label": "Cruz em cume"
         },
         "supervised": {
           "label": "Supervisionado"
@@ -2660,8 +2672,17 @@
         "amenity/community_centre": {
           "terms": "Centro comunitário, Salão de festas e eventos, centro social, associação de moradores"
         },
+        "amenity/community_centre/community_hall": {
+          "name": "Salão comunitário"
+        },
+        "amenity/community_centre/cultural_centre": {
+          "name": "Centro Cultural"
+        },
         "amenity/community_centre/lgbtq": {
           "terms": "Centro Comunitário LGBTQ+"
+        },
+        "amenity/community_centre/village_hall": {
+          "name": "Salão comunitário central"
         },
         "amenity/community_centre/youth_centre": {
           "name": "Centro de juventude",
@@ -2699,7 +2720,8 @@
           "name": "Ortopedista"
         },
         "amenity/doctors/podiatry": {
-          "name": "Podólogo"
+          "name": "Podólogo",
+          "terms": "podóloga, podologia, podiatria, podiatra, podopediatria, podogeriatria, pés, unhas"
         },
         "amenity/doctors/urology": {
           "name": "Urologista"
@@ -3220,9 +3242,6 @@
         "amenity/theatre": {
           "terms": "auditório, show, eventos, peça, musical"
         },
-        "amenity/theatre/type/amphi": {
-          "terms": "Anfiteatro"
-        },
         "amenity/ticket_validator": {
           "name": "Máquina de validação de bilhetes",
           "terms": "ticket, bilhete, ingresso, validação de ingresso, catraca, entrada"
@@ -3316,7 +3335,8 @@
           "terms": "Máquina de venda automática de alimentos"
         },
         "amenity/vending_machine/food/snacks": {
-          "name": "Máquina de venda de lanches"
+          "name": "Máquina de venda de lanches",
+          "terms": "salgados, doces, petiscos, salgadinhos, snacks, chicletes, biscoitos, balas"
         },
         "amenity/vending_machine/ice_cream": {
           "name": "Máquina de venda de sorvete",
@@ -4245,7 +4265,8 @@
           "terms": "Corredor interno, corredor interior, corredor coberto"
         },
         "highway/crossing": {
-          "name": "Travessia"
+          "name": "Travessia",
+          "terms": "Faixa de Pedestres"
         },
         "highway/crossing/traffic_signals": {
           "name": "Faixa de pedestres com semáforo\nTravessia de pedestres com semáforo\nTravessia de pedestres com sinal de tráfego",
@@ -4295,8 +4316,8 @@
           "name": "Ponto de acesso de emergência"
         },
         "highway/emergency_bay": {
-          "name": "Local de parada de emergência",
-          "terms": "emergency stopping place, berma para paragem de emergência, faixa para paragem de emergência, paragem de emergência, local para paragem de emergência, local de paragem de emergência, acostamento de parada de emergência, acostamento para parada de emergência"
+          "name": "Área de refúgio",
+          "terms": "local de parada de emergência,emergency stopping place, berma para paragem de emergência, faixa para paragem de emergência, paragem de emergência, local para paragem de emergência, local de paragem de emergência, acostamento de parada de emergência, acostamento para parada de emergência"
         },
         "highway/footway": {
           "name": "Caminho de pedestre",
@@ -4314,7 +4335,8 @@
           "name": "Travessia de pedestres"
         },
         "highway/footway/crossing/traffic_signals": {
-          "name": "Travessia de pedestres marcada com semáforo\nTravessia de pedestres marcada com sinal de tráfego\nFaixa de pedestres com semáforo"
+          "name": "Travessia de pedestres marcada com semáforo\nTravessia de pedestres marcada com sinal de tráfego\nFaixa de pedestres com semáforo",
+          "terms": "sinal de travessia de pedestres, travessia de pedestres com sinal, travessia de bicicletas com sinal"
         },
         "highway/footway/crossing/uncontrolled": {
           "name": "Travessia de pedestres marcada sem semáforo\nTravessia de pedestres marcada sem sinal de tráfego\nFaixa de pedestres sem semáforo",
@@ -4371,6 +4393,12 @@
         "highway/path/boardwalk": {
           "name": "Caminho de madeira\nPassarela de madeira\nPassarela de tábuas",
           "terms": "píer, pier, ponte de madeira, caminho de pedestre de madeira, caminho revestido de madeira"
+        },
+        "highway/path/crossing": {
+          "name": "Travessia de pedestres com ciclovia"
+        },
+        "highway/path/crossing/traffic_signals": {
+          "name": "Passadeira p/ ciclistas e peões c/semáforos"
         },
         "highway/path/informal": {
           "name": "Caminho Informal",
@@ -4734,6 +4762,9 @@
         "landuse/military/barracks": {
           "name": "Quartel",
           "terms": "quartel, caserna, força aérea, base, aeronáutica, exército, marinha, forças armadas, tropa, guerra"
+        },
+        "landuse/military/base/navy": {
+          "terms": "Base Naval, Base da Marinha"
         },
         "landuse/military/obstacle_course": {
           "name": "Curso de obstáculo militar",
@@ -5256,6 +5287,9 @@
           "name": "Mastro de Bandeira",
           "terms": "mastro, bandeira, pau de bandeira"
         },
+        "man_made/fuel_pump": {
+          "terms": "bomba de gasolina,bomba de etanol,bomba de diesel,gasolina,combustível,propano,diesel,biodiesel"
+        },
         "man_made/gantry": {
           "name": "Guindaste de logística"
         },
@@ -5701,7 +5735,8 @@
           "terms": "arvoredo,bosque,mata,matagal,mato,floresta,selva"
         },
         "network/type/node_network-DE-NL-BE-LU": {
-          "name": "Rede de pontos de lazer"
+          "name": "Rede de pontos de lazer",
+          "terms": "Nó de rede recreativa"
         },
         "noexit/yes": {
           "name": "Rua sem saída",
@@ -5735,7 +5770,8 @@
           "terms": "entidade sem fins lucrativos, escritório de associação, associação de profissionais, associação de moradores, instituição beneficente, sem lucro"
         },
         "office/bail_bond_agent-US-PH": {
-          "name": "Agente de fiança"
+          "name": "Agente de fiança",
+          "terms": "Agente de fiança"
         },
         "office/charity": {
           "name": "Caridade",
@@ -5911,7 +5947,8 @@
           "name": "Estação de dutovia"
         },
         "pipeline/valve": {
-          "name": "Válvula de duto"
+          "name": "Válvula de duto",
+          "terms": "Válvula de Oleoduto"
         },
         "piste/downhill": {
           "terms": "Pista de esqui alpino"
@@ -5931,10 +5968,6 @@
         "piste/nordic": {
           "name": "Trilha de esqui de fundo",
           "terms": "Trilha de esqui de fundo"
-        },
-        "piste/piste": {
-          "name": "Trilha para esportes de neve / pista",
-          "terms": "Trilha para esportes de neve / pista"
         },
         "piste/skitour": {
           "name": "Trilha de turismo de esqui",
@@ -6184,7 +6217,8 @@
           "terms": "Usina Hidrelétrica"
         },
         "power/plant/source/method/photovoltaic": {
-          "name": "Fazenda solar"
+          "name": "Fazenda solar",
+          "terms": "Central fotovoltaica"
         },
         "power/plant/source/nuclear": {
           "name": "Usina nuclear",
@@ -6358,7 +6392,7 @@
           "terms": "Área de parada de trânsito"
         },
         "public_transport/stop_position": {
-          "name": "Local de Parada de Transporte",
+          "name": "Local de parada de transporte",
           "terms": "Local de parada de trânsito"
         },
         "public_transport/stop_position_aerialway": {
@@ -6374,7 +6408,7 @@
           "terms": "Localização de parada de balsa"
         },
         "public_transport/stop_position_light_rail": {
-          "name": "Local de parada do VLT",
+          "name": "Local de parada de VLT",
           "terms": "Local de parada do trilho leve"
         },
         "public_transport/stop_position_monorail": {
@@ -6395,7 +6429,7 @@
         },
         "public_transport/stop_position_trolleybus": {
           "name": "Trólebus parando local",
-          "terms": "Localização de parada do Trólebus"
+          "terms": "Localização de parada de trólebus"
         },
         "railway": {
           "name": "Elemento ferroviário"

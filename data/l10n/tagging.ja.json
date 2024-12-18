@@ -2300,7 +2300,13 @@
           "label": "地図の範囲"
         },
         "map_type": {
-          "label": "種類"
+          "label": "種類",
+          "options": {
+            "scheme": "概略図",
+            "street": "街路図",
+            "topo": "地形図",
+            "toposcope": "方角図"
+          }
         },
         "mapillary": {
           "label": "Mapillary画像ID",
@@ -3432,7 +3438,8 @@
           "terms": "中古, 古物"
         },
         "segregated": {
-          "label": "レーン分離"
+          "label": "レーン分離",
+          "terms": "歩行者レーン, 自転車用レーン, 共用レーン"
         },
         "self_service": {
           "label": "セルフサービス"
@@ -4256,6 +4263,7 @@
             "coffee": "コーヒー",
             "condoms": "コンドーム",
             "drinks": "飲料",
+            "e-cigarettes": "電子タバコ",
             "eggs": "卵",
             "electronics": "電子機器",
             "elongated_coin": "記念コイン",
@@ -5588,8 +5596,8 @@
           "terms": "劇場, ホール, 映画館, 娯楽, カルチャー, シアター, コンサートホール, オペラハウス"
         },
         "amenity/theatre/type/amphi": {
-          "name": " 野外劇場",
-          "terms": " 野外劇場, 円形演技場, ひな壇式客席, 階段式観覧席"
+          "name": "野外劇場",
+          "terms": "野外劇場, 円形演技場, ひな壇式客席, 階段式観覧席"
         },
         "amenity/ticket_validator": {
           "name": "改札機",
@@ -6914,14 +6922,14 @@
           "terms": "自転車道, サイクリング道路, 自転車"
         },
         "highway/cycleway/bicycle_foot": {
-          "name": "自転車歩行者道",
+          "name": "自転車専用道路(歩行者通行可)",
           "terms": "自転車歩行者道, 自歩道, 自転車, 歩道"
         },
         "highway/cycleway/crossing": {
           "name": "自転車横断道"
         },
         "highway/cycleway/crossing/bicycle_foot": {
-          "name": "横断歩道(自転車道内)",
+          "name": "自転車横断道(歩行者横断可)",
           "terms": "横断歩道(自転車道内), 横断歩道, 自転車道"
         },
         "highway/cycleway/crossing/traffic_signals": {
@@ -7046,6 +7054,18 @@
         "highway/path/boardwalk": {
           "name": "木道",
           "terms": "木道, ボードウォーク, 遊歩道, 歩道"
+        },
+        "highway/path/crossing": {
+          "name": "自転車横断道(歩行者横断可)"
+        },
+        "highway/path/crossing/traffic_signals": {
+          "name": "自転車横断道(歩行者横断可、信号あり)"
+        },
+        "highway/path/crossing/uncontrolled": {
+          "name": "自転車横断道(歩行者横断可、信号なし)"
+        },
+        "highway/path/crossing/unmarked": {
+          "name": "自転車横断道(歩行者横断可、マークなし)"
         },
         "highway/path/informal": {
           "name": "けもの道",
@@ -7435,6 +7455,14 @@
         "landuse/meadow": {
           "name": "牧草地",
           "terms": "牧草地"
+        },
+        "landuse/meadow_orchard/meadow": {
+          "name": "果樹のある牧草地",
+          "terms": "果樹, 牧草地"
+        },
+        "landuse/meadow_orchard/orchard": {
+          "name": "牧草地にある果樹園",
+          "terms": "果樹, 牧草地"
         },
         "landuse/military": {
           "name": "軍用地",
@@ -8989,10 +9017,6 @@
         "piste/nordic": {
           "name": "ノルディック/クロスカントリー",
           "terms": "ノルディック/クロスカントリー, ノルディック, クロスカントリー, スキーコース"
-        },
-        "piste/piste": {
-          "name": "スキーコースの種類",
-          "terms": "スキーコースの種類, スキーコース"
         },
         "piste/ski_jump": {
           "name": "スキージャンプ台",

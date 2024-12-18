@@ -3,14 +3,10 @@
     "icons": {
       "download": "下載",
       "information": "資訊",
-      "remove": "移除",
       "undo": "復原",
       "zoom_to": "縮放至",
-      "copy": "複製",
       "view_on": "在 {domain} 上查看",
-      "visit_website": "造訪網站",
       "favorite": "喜愛",
-      "list": "清單",
       "text": "文本",
       "deselect": "取消選擇"
     },
@@ -23,26 +19,20 @@
     },
     "title": {
       "format": {
-        "changes": "（{changes}）{base}",
         "changes_context": "（{changes}）{base} – {context}"
-      },
-      "labeled_and_more": "{labeled}及另外{count}個"
+      }
     },
     "modes": {
       "add_area": {
-        "title": "範圍",
-        "filter_tooltip": "範圍"
+        "title": "範圍"
       },
       "add_line": {
-        "title": "綫",
-        "filter_tooltip": "綫"
+        "title": "綫"
       },
       "add_point": {
-        "title": "點",
-        "filter_tooltip": "點"
+        "title": "點"
       },
       "add_note": {
-        "title": "註",
         "description": "發現了問題？讓其他製圖者知道。"
       },
       "add_preset": {
@@ -83,9 +73,6 @@
       "cancel_draw": {
         "annotation": "已取消繪畫。"
       },
-      "change_role": {
-        "annotation": "已更改 {n} 個關係成員的角色。"
-      },
       "change_tags": {
         "annotation": "已更改標籤。"
       },
@@ -101,10 +88,6 @@
       },
       "circularize": {
         "title": "圓形化",
-        "description": {
-          "single": "讓此特徵變成圓形。",
-          "multiple": "讓此等特徵變成圓形。"
-        },
         "annotation": {
           "feature": "將 {n} 個特徵變為圓形。"
         }
@@ -116,18 +99,12 @@
         }
       },
       "straighten": {
-        "title": "拉直",
         "annotation": {
-          "point": "拉直 {n} 個點。",
           "line": "拉直 {n} 條綫。"
         }
       },
       "delete": {
         "title": "刪除",
-        "description": {
-          "single": "永久刪除此特徵。",
-          "multiple": "永久刪除這些特徵。"
-        },
         "annotation": {
           "point": "已刪除一點。",
           "vertex": "已刪除路徑上的一個節。",
@@ -135,29 +112,10 @@
           "area": "已刪除一個範圍。",
           "relation": "已刪除一個關係。",
           "feature": "已刪除 {n} 個特徵。"
-        },
-        "too_large": {
-          "single": "未能將這個特徵刪除因為它不是被完全看得到。",
-          "multiple": "未能將這些特徵刪除因為它不是被完全看得到。"
-        },
-        "incomplete_relation": {
-          "single": "此特徵未能刪除，因為它尚未完全下載。",
-          "multiple": "這些特徵未能刪除，因為它們尚未完全下載。"
-        },
-        "part_of_relation": {
-          "single": "這個特徵不能刪除，因為它是大型關係的其中一部分。你必須先從關係中移除。",
-          "multiple": "這些特徵不能刪除，因為它是大型關係的其中一部分。你必須先從關係中移除。"
-        },
-        "connected_to_hidden": {
-          "single": "未能將這個特徵刪除因為它連接著一個隱藏的特徵。",
-          "multiple": "未能將這些特徵刪除因為它連接著一些隱藏的特徵。"
         }
       },
       "downgrade": {
-        "title": "降級",
         "description": {
-          "building": "移除所有非建築物的標籤。",
-          "address": "移除所有非地址的標籤。",
           "generic": "移除標籤。"
         },
         "annotation": {
@@ -167,8 +125,6 @@
       "connect": {
         "annotation": {
           "from_vertex": {
-            "to_point": "已連接路徑到一點。",
-            "to_vertex": "已連接路徑到另一路徑。",
             "to_line": "已連接路徑到一條綫。",
             "to_area": "已連接路徑到一個範圍。",
             "to_adjacent_vertex": "已合併鄰近的點成為路徑。",
@@ -205,63 +161,24 @@
       },
       "move": {
         "title": "移動",
-        "description": {
-          "single": "移動這個特徵至另一位置。",
-          "multiple": "移動這些特徵至另一位置。"
-        },
         "annotation": {
           "point": "已移動一個點。",
           "vertex": "已移動路徑上的一個節。",
           "line": "已移動一條綫。",
           "area": "已移動一個範圍。",
           "feature": "已移動 {n} 個特徵。"
-        },
-        "incomplete_relation": {
-          "single": "此特徵未能移動，因為它尚未完全下載。",
-          "multiple": "這些特徵未能移動，因為它們尚未完全下載。"
-        },
-        "too_large": {
-          "single": "未能將這個特徵移動因為它不是被完全看得到。",
-          "multiple": "未能將這些特徵移動因為它們不是被完全看得到。"
-        },
-        "connected_to_hidden": {
-          "single": "未能移動這個特徵因為它連接著一個隱藏的特徵。",
-          "multiple": "未能將這些特徵移動因為有些連接著隱藏的特徵。"
-        }
-      },
-      "reflect": {
-        "title": {
-          "long": "翻轉長邊",
-          "short": "翻轉短邊"
         }
       },
       "rotate": {
         "title": "旋轉",
-        "description": {
-          "single": "依特徵中心旋轉。",
-          "multiple": "依這些特徵中心旋轉。"
-        },
         "annotation": {
           "line": "已旋轉一條綫。",
           "area": "已旋轉一個範圍。"
-        },
-        "incomplete_relation": {
-          "single": "此特徵未能旋轉，因為它尚未完全下載。",
-          "multiple": "此些特徵未能旋轉，因為它們尚未完全下載。"
-        },
-        "too_large": {
-          "single": "未能將這個特徵旋轉因為它不是被完全看得到。",
-          "multiple": "未能將這些特徵旋轉因為它們不是被完全看得到。"
-        },
-        "connected_to_hidden": {
-          "single": "未能旋轉這個特徵因為它連接著一個隱藏的特徵。",
-          "multiple": "未能旋轉這些特徵因為它們連接著隱藏的特徵。"
         }
       },
       "reverse": {
         "title": "反轉",
         "annotation": {
-          "point": "已反轉 {n} 個點。",
           "line": "已反轉 {n} 條綫。",
           "feature": "已反轉 {n} 個特徵。"
         }
@@ -277,10 +194,9 @@
         }
       },
       "split": {
+        "title": "斬開",
         "annotation": {
-          "line": "分割 {n} 條綫。",
-          "area": "分割 {n} 個區域。",
-          "feature": "已分離 {n} 個圖徽。"
+          "line": "分割 {n} 條綫。"
         },
         "not_eligible": "綫不能於頭或尾分割。",
         "connected_to_hidden": "未能分割這個因為它連接著一個隱藏的特徵。"
@@ -294,14 +210,10 @@
     },
     "restriction": {
       "controls": {
-        "distance": "距離",
         "via": "經",
-        "via_node_only": "只有節",
-        "via_up_to_one": "最多 1 路徑",
-        "via_up_to_two": "最多 2 路徑"
+        "via_node_only": "只有節"
       },
       "help": {
-        "indirect": "(間接)",
         "turn": {
           "no_left_turn": "不准左轉 {indirect}",
           "no_right_turn": "不准右轉 {indirect}",
@@ -311,32 +223,24 @@
           "only_right_turn": "只准右轉 {indirect}",
           "only_u_turn": "只准掉頭 {indirect}",
           "only_straight_on": "只准直行 {indirect}",
-          "allowed_left_turn": "允許左轉 {indirect}",
-          "allowed_right_turn": "允許右轉 {indirect}",
-          "allowed_u_turn": "允許掉頭 {indirect}",
-          "allowed_straight_on": "允許直行 {indirect}"
+          "allowed_u_turn": "允許掉頭 {indirect}"
         },
         "from": "由",
-        "via": "經",
-        "to": "到"
+        "via": "經"
       }
     },
     "undo": {
-      "title": "還原",
-      "tooltip": "還原：{action}",
       "nothing": "沒有可還原的動作。"
     },
     "redo": {
       "title": "取消復原",
-      "tooltip": "重做：{action}",
       "nothing": "沒有可重做的動作。"
     },
     "translate": {
       "translate": "新增多語言名稱",
       "localized_translation_label": "多語言名稱",
       "localized_translation_language": "選擇語言",
-      "localized_translation_name": "名稱",
-      "language_and_code": "{language} （{code}）"
+      "localized_translation_name": "名稱"
     },
     "zoom_in_edit": "放大以編輯",
     "login": "登入",
@@ -344,17 +248,14 @@
     "loading_auth": "正在連接 OpenStreetMap...",
     "report_a_bug": "報告錯誤",
     "help_translate": "協助翻譯",
-    "osm_api_status": {
-      "retry": "重試"
-    },
     "commit": {
       "title": "上傳到 OpenStreetMap",
       "upload_explanation": "你上載的變更會出現在其他使用 OpenStreetMap 資料的地圖。",
       "upload_explanation_with_user": "你以{user}的名字上載的變更會出現在其他使用 OpenStreetMap 資料的地圖。",
       "request_review": "我希望有其他人覆核我的編輯。",
       "save": "上載",
+      "cancel": "唔做",
       "download_changes": "下載 osmChange 檔案",
-      "errors": "錯誤",
       "modified": "已修改",
       "deleted": "已刪除",
       "created": "已建立",
@@ -370,50 +271,34 @@
       "background": {
         "zoom": "縮放",
         "vintage": "古舊",
-        "source": "來源",
         "resolution": "解像度",
-        "accuracy": "準確度",
         "show_tiles": "顯示方塊",
         "hide_tiles": "隱藏方塊"
       },
       "history": {
         "title": "歷程",
-        "version": "版本",
         "last_edit": "最後編輯",
         "edited_by": "編輯者",
         "changeset": "變動",
-        "note_comments": "留言",
         "note_created_date": "建立日期",
         "note_created_user": "建立者",
         "note_link_text": "openstreetmap.org 上的備註"
       },
       "location": {
-        "title": "位置",
-        "unknown_location": "未知位置"
+        "title": "位置"
       },
       "measurement": {
-        "title": "測量",
         "geometry": "幾何",
-        "closed_area": "封閉區域",
         "center": "中心點",
         "perimeter": "周界",
-        "length": "長度",
-        "distance": "距離",
         "area": "面積",
         "centroid": "形心",
         "location": "位置",
-        "metric": "公制",
-        "imperial": "英制",
         "node_count": "節數目"
       }
     },
     "geometry": {
-      "point": "點",
-      "vertex": "頂點",
-      "line": "綫",
-      "area": "範圍",
-      "relation": "關係",
-      "note": "註"
+      "relation": "關係"
     },
     "geocoder": {
       "search": "搜尋全世界...",
@@ -429,19 +314,14 @@
       "view_on_keepRight": "在 keepright.at 上查看",
       "feature_type": "特徵種類",
       "fields": "欄位",
-      "tags": "標籤",
-      "members": "成員",
       "relations": "關係",
       "features": "特徵",
-      "add_to_relation": "新增至關係",
       "new_relation": "建立新關係⋯⋯",
       "role": "作用",
-      "multiple_roles": "多重角色",
       "choose": "選擇特徵種類",
       "no_documentation_key": "沒有相關文件",
       "wiki_reference": "查看文件",
       "wiki_en_reference": "查看英文版文件",
-      "multiple_values": "多重值",
       "multiple_types": "多重種類",
       "type": "種類",
       "details": "詳細資料",
@@ -454,15 +334,7 @@
         "no": "否",
         "reverser": "更改方向"
       },
-      "radio": {
-        "structure": {
-          "default": "預設",
-          "layer": "圖層"
-        }
-      },
       "add": "新增",
-      "none": "無",
-      "node": "節",
       "way": "路徑",
       "relation": "關係",
       "location": "位置",
@@ -479,39 +351,28 @@
       }
     },
     "background": {
-      "description": "背景設定",
-      "backgrounds": "背景",
-      "none": "無",
       "best_imagery": "這地點最為人所知的背景影像",
       "switch": "切換回這個背景",
-      "custom": "自訂",
       "overlays": "覆蓋層",
       "reset": "重設",
       "reset_all": "重設所有",
       "display_options": "顯示選項",
-      "brightness": "亮度",
-      "contrast": "對比",
-      "saturation": "飽和度",
-      "sharpness": "銳利度",
       "minimap": {
-        "description": "顯示小地圖",
         "tooltip": "顯示縮小地圖以確定現在被顯示範圍的位置"
       },
       "offset": "於以下灰色範圍內平移或者輸入以米量度的誤差值就可校正對位誤差。"
     },
     "map_data": {
-      "title": "地圖資料",
-      "description": "地圖資料",
       "data_layers": "資料圖層",
       "layers": {
         "osm": {
           "tooltip": "來自 OpenStreetMap 的地圖數據"
         },
         "maproulette": {
-          "detail_title": "詳細資料"
+          "detail_title": "詳細資料",
+          "cancel": "唔做"
         }
       },
-      "map_features": "地圖特徵",
       "autohidden": "由於太多東西出現在螢幕上，這些特徵已被自動隱藏。你可以放大來編輯它們。"
     },
     "photo_overlays": {
@@ -529,7 +390,7 @@
         }
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "點",
         "tooltip": "興趣點"
@@ -543,7 +404,6 @@
         "tooltip": "輔助道路、停車場通道、小徑等等"
       },
       "paths": {
-        "description": "徑",
         "tooltip": "行人路、步行徑、單車徑等等"
       },
       "buildings": {
@@ -566,8 +426,7 @@
         "tooltip": "河流、湖泊、池塘、流域等等"
       },
       "rail": {
-        "description": "鐵路特徵",
-        "tooltip": "鐵路"
+        "description": "鐵路特徵"
       },
       "aerialways": {
         "description": "空中特徵"
@@ -603,20 +462,6 @@
       "custom_background": {
         "tooltip": "編輯自訂背景",
         "header": "自訂背景設定"
-      },
-      "custom_data": {
-        "file": {
-          "label": "瀏覽檔案"
-        },
-        "or": "或"
-      }
-    },
-    "preferences": {
-      "privacy": {
-        "title": "私隱"
-      },
-      "color_selection": {
-        "default": "預設"
       }
     },
     "restore": {
@@ -659,25 +504,21 @@
       "thank_you": "謝謝協助改善地圖。",
       "help_link_text": "詳細資料",
       "view_on_osm": "於OSM上顯示改變",
-      "more": "更多",
-      "events": "活動",
-      "languages": "語言：{languages}",
       "tell_us": "告訴我們！"
     },
     "confirm": {
-      "okay": "確定"
+      "okay": "確定",
+      "cancel": "唔做"
     },
     "source_switch": {
+      "dev": "開發模式",
       "live": "實況模式",
-      "lose_changes": "你有尚未儲存的變更。切換地圖伺服器將放棄它們。你確定要切換伺服器嗎？",
-      "dev": "開發模式"
+      "lose_changes": "你有尚未儲存的變更。切換地圖伺服器將放棄它們。你確定要切換伺服器嗎？"
     },
-    "rapid_feature_inspector": {
-      "tags": "標籤"
-    },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "移除"
+    "rapid_menu": {
+      "remove": "移除",
+      "category": {
+        "roads": "道路"
       }
     },
     "tag_reference": {
@@ -685,10 +526,8 @@
       "used_with": "與{type}一起用"
     },
     "zoom": {
-      "in": "放大",
       "out": "縮小"
     },
-    "cannot_zoom": "在這個模式下不能再縮小。",
     "full_screen": "切換全螢幕",
     "QA": {
       "osmose": {
@@ -696,54 +535,25 @@
         "elems_title": "特徵"
       },
       "keepRight": {
-        "comment": "留言",
         "save_comment": "儲存留言",
-        "close_comment": "關閉並留言",
         "error_parts": {
           "this_feature": "此特徵",
-          "school": "學校",
-          "university": "大學",
-          "hospital": "醫院",
-          "library": "圖書館",
-          "theatre": "劇院",
           "courthouse": "法庭",
-          "bank": "銀行",
-          "cinema": "戲院",
-          "pharmacy": "藥房",
           "cafe": "茶座",
-          "fast_food": "快餐店",
-          "fuel": "加油站",
           "from": "由",
-          "to": "至",
           "left_hand": "左邊",
           "right_hand": "右邊"
-        },
-        "errorTypes": {
-          "<75>": {
-            "description": "{var1} 有名稱 \"{var2}\" 但無其他標籤。"
-          },
-          "<410>": {
-            "title": "網站問題"
-          }
         }
       }
-    },
-    "mapillary": {
-      "tooltip": "來自Mapillary的街道圖層相片"
     },
     "mapillary_signs": {
       "title": "交通標誌"
     },
     "note": {
-      "note": "註",
-      "title": "編輯註記",
-      "commentTitle": "留言",
       "status": {
         "commented": "已留言 {when}"
       },
       "newComment": "新留言",
-      "comment": "留言",
-      "close_comment": "關閉並留言",
       "open_comment": "再開啟並留言"
     },
     "help": {
@@ -763,24 +573,18 @@
       "editing": {
         "title": "編輯及儲存",
         "select_h": "選擇",
-        "multiselect_h": "多重選擇",
         "save_h": "儲存",
         "upload_h": "上載",
-        "backups_h": "自動備份",
         "keyboard_h": "鍵盤快速鍵"
       },
       "feature_editor": {
         "title": "特徵編輯器",
         "type_h": "特徵種類",
-        "fields_h": "欄位",
-        "tags_h": "標籤"
+        "fields_h": "欄位"
       },
       "points": {
         "title": "點",
-        "intro": "*點*是用來表示如商店、餐廳和紀念碑這些特徵，它們用來標示一個特定位置和描述那裏有甚麼。",
-        "add_point_h": "新增點",
-        "move_point_h": "移動點",
-        "delete_point_h": "刪除點"
+        "intro": "*點*是用來表示如商店、餐廳和紀念碑這些特徵，它們用來標示一個特定位置和描述那裏有甚麼。"
       },
       "lines": {
         "title": "綫",
@@ -794,7 +598,6 @@
         "title": "關係",
         "edit_relation_h": "編輯關係",
         "maintain_relation_h": "維護關係",
-        "multipolygon_h": "多重多邊形",
         "boundary_h": "邊界"
       },
       "notes": {
@@ -805,9 +608,6 @@
       },
       "field": {
         "restrictions": {
-          "about": {
-            "title": "關於"
-          },
           "tips": {
             "title": "提示"
           }
@@ -816,13 +616,6 @@
     },
     "issues": {
       "title": "問題",
-      "list_title": "問題",
-      "errors": {
-        "list_title": "錯誤"
-      },
-      "rules": {
-        "title": "規則"
-      },
       "options": {
         "what": {
           "edited": "我的編輯"
@@ -833,21 +626,9 @@
           "message": "{feature} 太接近 {feature2} "
         }
       },
-      "crossing_ways": {
-        "message": "{feature} 跨過 {feature2}"
-      },
-      "missing_tag": {
-        "title": "缺少標籤",
-        "any": {
-          "message": "{feature} 沒有標籤"
-        }
-      },
       "outdated_tags": {
         "title": "已過時的標籤",
-        "message": "{feature} 有過時的標籤",
-        "reference": "有些標籤隨著時間過去而應該更新。",
         "incomplete": {
-          "message": "{feature} 的標籤不完整",
           "reference": "一些特徵應當有額外的標籤。"
         }
       },
@@ -855,16 +636,6 @@
         "move_tags": {
           "title": "移動此標籤",
           "annotation": "移動標籤。"
-        },
-        "remove_tags": {
-          "title": "移除標籤"
-        },
-        "upgrade_tags": {
-          "title": "升級標籤",
-          "annotation": "已升級舊的標籤。"
-        },
-        "use_different_levels": {
-          "title": "使用不同樓層"
         }
       }
     },
@@ -920,15 +691,12 @@
           "kelsey-street": "教西街",
           "lafayette-park": "老佛爺公園",
           "las-coffee-cafe": "香港咖啡廳",
-          "lincoln-avenue": "林肯大道",
           "lowrys-books": "羅莉書局",
           "lynns-garage": "蓮氏車房",
           "main-street-barbell": "大街啞鈴",
           "main-street-cafe": "大街咖啡廳",
           "main-street-fitness": "大街健身",
-          "main-street": "大街",
           "maple-street": "楓樹街",
-          "marina-park": "海洋公園",
           "market-street": "市場街",
           "memory-isle-park": "記憶島公園",
           "memory-isle": "記憶島",
@@ -943,7 +711,6 @@
           "paparazzi-tattoo": "狗仔隊紋身",
           "pealer-street": "標拿街",
           "pine-street": "松樹街",
-          "pizza-hut": "必勝客",
           "portage-avenue": "運輸街",
           "portage-river": "運輸河",
           "preferred-insurance-services": "第一保險",
@@ -987,7 +754,6 @@
         }
       },
       "welcome": {
-        "title": "歡迎",
         "welcome": "歡迎！這個教學將會教你 OpenStreetMap 基本的編輯方法。",
         "practice": "教學裡的資料都只為練習之用，你的所有編輯都不會儲存下來。",
         "words": "這篇教學會介紹新的辭彙和概念，當介紹新辭彙時，我們會用*斜體*標示。"
@@ -1048,76 +814,84 @@
     "shortcuts": {
       "title": "鍵盤快速鍵",
       "tooltip": "顯示鍵盤快速鍵畫面。",
+      "key": {
+        "delete": "刪除"
+      },
       "gesture": {
         "drag": "拖曳"
       },
-      "or": "-或-",
-      "browsing": {
-        "title": "瀏覽",
-        "navigation": {
-          "title": "導航",
-          "pan": "平移地圖"
+      "navigation": "導航",
+      "selecting_features": "選擇特徵",
+      "with_node_selected": "選取了點",
+      "commands": "命令",
+      "help": "說明",
+      "display_options": "顯示選項",
+      "command": {
+        "select_one": {
+          "label": "選擇一個特徵"
         },
-        "help": {
-          "title": "說明",
-          "help": "顯示說明/文件",
-          "keyboard": "顯示鍵盤快速鍵"
+        "select_multi": {
+          "label": "選擇多個特徵"
         },
-        "display_options": {
-          "title": "顯示選項",
-          "wireframe": "切換線框模式"
+        "lasso": {
+          "label": "在特徵周圍畫一個選擇套索"
         },
-        "selecting": {
-          "title": "選擇特徵",
-          "select_one": "選擇一個特徵",
-          "select_multi": "選擇多個特徵",
-          "lasso": "在特徵周圍畫一個選擇套索"
+        "first_node": {
+          "label": "跳至第一個節點"
         },
-        "with_selected": {
-          "edit_menu": "切換編輯選單"
+        "last_node": {
+          "label": "跳至最後一個節點"
         },
-        "vertex_selected": {
-          "title": "選取了點",
-          "first": "跳至第一個節點",
-          "last": "跳至最後一個節點",
-          "change_parent": "切換到源路徑"
-        }
-      },
-      "editing": {
-        "title": "編輯",
-        "drawing": {
-          "title": "繪製",
-          "add_point": "'增加節'模式",
-          "add_line": "'增加線'模式",
-          "add_area": "'增加範圍'模式",
-          "disable_snap": "長按可停用點捕捉",
-          "stop_line": "完成繪製線或範圍"
+        "change_parent": {
+          "label": "切換到源路徑"
         },
-        "commands": {
-          "title": "命令",
-          "copy": "複製已選擇特徵",
-          "paste": "貼上已複製特徵",
-          "undo": "還原上一個動作",
-          "redo": "重做上一個動作",
-          "save": "儲存變更"
+        "add_point": {
+          "label": "'增加節'模式"
         },
-        "operations": {
-          "merge": "結合(合併)已選擇特徵",
-          "move": "移動已選擇特徵",
-          "rotate": "旋轉已選擇特徵",
-          "circularize": "將已封閉的線或範圍圓形化",
-          "delete": "刪除已選擇特徵"
-        }
-      },
-      "tools": {
-        "title": "工具",
-        "info": {
-          "title": "資訊",
-          "all": "切換所有資訊面板",
-          "background": "切換背景面板",
-          "history": "切換歷程面板",
-          "location": "切換位置面板",
-          "measurement": "切換測量面板"
+        "add_line": {
+          "label": "'增加線'模式"
+        },
+        "add_area": {
+          "label": "'增加範圍'模式"
+        },
+        "disable_snap": {
+          "label": "長按可停用點捕捉"
+        },
+        "stop_line": {
+          "label": "完成繪製線或範圍"
+        },
+        "copy": {
+          "label": "複製已選擇特徵"
+        },
+        "paste": {
+          "label": "貼上已複製特徵"
+        },
+        "redo": {
+          "label": "重做上一個動作"
+        },
+        "save": {
+          "label": "儲存變更"
+        },
+        "merge": {
+          "label": "結合(合併)已選擇特徵"
+        },
+        "move": {
+          "label": "移動已選擇特徵"
+        },
+        "rotate": {
+          "label": "旋轉已選擇特徵"
+        },
+        "circularize": {
+          "label": "將已封閉的線或範圍圓形化"
+        },
+        "delete": {
+          "label": "刪除已選擇特徵"
+        },
+        "keyboard_shortcuts": {
+          "label": "顯示鍵盤快速鍵"
+        },
+        "toggle_history_card": {
+          "label": "切換歷程面板"
         }
       }
     },
@@ -1191,6 +965,7 @@
       "bjn": "班亞爾文",
       "bkm": "康姆文",
       "bla": "錫克錫卡文",
+      "blo": "阿尼文",
       "bm": "班巴拉文",
       "bn": "孟加拉文",
       "bo": "藏文",
@@ -1226,6 +1001,7 @@
       "chp": "奇佩瓦揚文",
       "chr": "柴羅基文",
       "chy": "沙伊安文",
+      "cic": "契卡索文",
       "ckb": "中庫德文",
       "clc": "齊爾柯廷語",
       "co": "科西嘉文",
@@ -1329,7 +1105,6 @@
       "gmh": "中古高地德文",
       "gn": "瓜拉尼文",
       "goh": "古高地德文",
-      "gom": "孔卡尼文",
       "gon": "岡德文",
       "gor": "科隆達羅文",
       "got": "哥德文",
@@ -1440,6 +1215,7 @@
       "kv": "科米文",
       "kw": "康瓦耳文",
       "kwk": "誇誇嘉誇語",
+      "kxv": "庫維文",
       "ky": "吉爾吉斯文",
       "la": "拉丁文",
       "lad": "拉迪諾文",
@@ -1521,7 +1297,7 @@
       "nan": "閩南語",
       "nap": "拿波里文",
       "naq": "納馬文",
-      "nb": "巴克摩挪威文",
+      "nb": "書面挪威文",
       "nd": "北地畢列文",
       "nds": "低地德文",
       "nds-NL": "低地薩克遜文",
@@ -1534,7 +1310,7 @@
       "nl": "荷蘭文",
       "nl-BE": "比利時荷蘭文",
       "nmg": "夸西奧文",
-      "nn": "耐諾斯克挪威文",
+      "nn": "新挪威文",
       "nnh": "恩甘澎文",
       "no": "挪威文",
       "nog": "諾蓋文",
@@ -1655,7 +1431,7 @@
       "sn": "修納文",
       "snk": "索尼基文",
       "so": "索馬里文",
-      "sog": "索格底亞納文",
+      "sog": "粟特文",
       "sq": "阿爾巴尼亞文",
       "sr": "塞爾維亞文",
       "srn": "蘇拉南東墎文",
@@ -1734,6 +1510,7 @@
       "vi": "越南文",
       "vls": "西佛蘭德文",
       "vmf": "美茵-法蘭克尼亞文",
+      "vmw": "馬庫瓦文",
       "vo": "沃拉普克文",
       "vot": "沃提克文",
       "vro": "佛羅文",
@@ -1749,6 +1526,7 @@
       "xal": "卡爾梅克文",
       "xh": "科薩文",
       "xmf": "明格列爾文",
+      "xnr": "康格里",
       "xog": "索加文",
       "yao": "瑤文",
       "yap": "雅浦文",
@@ -1800,7 +1578,7 @@
       "Dupl": "杜普洛伊速記",
       "Egyd": "古埃及世俗體",
       "Egyh": "古埃及僧侶體",
-      "Egyp": "古埃及象形文字",
+      "Egyp": "古埃及聖書體",
       "Elba": "愛爾巴桑文",
       "Ethi": "埃塞俄比亞文",
       "Geok": "喬治亞語系（阿索他路里和努斯克胡里文）",
@@ -1811,7 +1589,7 @@
       "Grek": "希臘字母",
       "Guru": "古木基文",
       "Hanb": "標上注音符號的漢字",
-      "Hang": "韓文字",
+      "Hang": "諺文",
       "Hani": "漢字",
       "Hano": "哈努諾文",
       "Hans": "簡體中文",
@@ -1844,7 +1622,7 @@
       "Lydi": "里底亞語",
       "Mahj": "印地文",
       "Mand": "曼底安文",
-      "Marc": "藏文",
+      "Marc": "瑪欽文",
       "Maya": "瑪雅象形文字",
       "Mend": "門德文",
       "Merc": "麥羅埃文（曲線字體）",
@@ -1861,7 +1639,7 @@
       "Newa": "尼瓦爾文",
       "Nkgb": "納西格巴文",
       "Nkoo": "西非書面語言 (N’Ko)",
-      "Nshu": "女書文字",
+      "Nshu": "女書",
       "Ogam": "歐甘文",
       "Orkh": "鄂爾渾文",
       "Orya": "奧里雅文",
@@ -1905,7 +1683,6 @@
       "Tfng": "提非納文",
       "Tglg": "塔加拉文",
       "Thaa": "它拿字母",
-      "Tibt": "西藏文",
       "Tirh": "邁蒂利文",
       "Ugar": "烏加列文",
       "Visp": "視覺語音文字",

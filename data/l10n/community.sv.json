@@ -3,6 +3,7 @@
     "_communities": {
       "kiribatiwomeninmapping": "Kiribati-kvinnor i kartläggning",
       "mappingbotswana": "Kartlägg Botswana",
+      "opensourcesanjose": "Öppen källa San José",
       "openstreetmapafrica": "OpenStreetMap Afrika",
       "openstreetmapalbania": "OpenStreetMap Albanien",
       "openstreetmaparmenia": "OpenStreetMap Armenien",
@@ -182,7 +183,8 @@
         "description": "Följ oss på 𝕏"
       },
       "xmpp": {
-        "name": "XMPP för {community"
+        "name": "XMPP för {community",
+        "description": "Anslut till vår gemenskapschatt på XMPP: {url}"
       },
       "youtube": {
         "name": "{community} på YouTube",
@@ -292,15 +294,6 @@
     },
     "cl-telegram": {
       "extendedDescription": "Anslut till gemenskapen för att lära dig mer om OpenStreetMap, ställa frågor eller delta på våra möten. Alla är välkomna!"
-    },
-    "co-facebook": {
-      "extendedDescription": "Anslut till gemenskapen för att lära dig mer om OpenStreetMap. Alla är välkomna!"
-    },
-    "co-github": {
-      "description": "Git-projekt om Colombia"
-    },
-    "co-wiki": {
-      "description": "Wikisidan med dokumentationen för att kartera Colombia"
     },
     "comunitat-valenciana-wiki": {
       "description": "Gemenskap för allt du behöver veta om kartläggning i Valencia: {url}"
@@ -471,8 +464,8 @@
       "description": "Träffar för kart-entusiaster kring Philadelphia",
       "extendedDescription": "GeoPhilly förenar utvecklare, geografer, data-nördar, open source-entusiaster, civila hackare och kartmissbrukare i vår gemensamma kärlek för kartor och vad de berättar för oss. Om du använder kartor som en del av ditt arbete eller bara vill lära dig mer, är det här samlingspunkten för dig! Våra aktiviteter syftar till att vara öppna, vänliga, pedagogiska och sociala och spänna allt från roliga stunder till korta föreläsningar eller till och med workshops. Kom och skapa en varierad, inspirerande geo-gemenskap i Philadelphia med oss!"
     },
-    "hr-irc": {
-      "description": "Anslut #{account} på irc.freenode.org (port 6667)"
+    "hr-github": {
+      "description": "GitHub för {community}"
     },
     "hr-wiki": {
       "description": "Wikiproject-sida för Kroatien"
@@ -519,9 +512,6 @@
     },
     "ireland-matrix": {
       "description": "En Matrix-gateway för OSM Irelands IRC-kanal: {url}"
-    },
-    "ireland-meetup": {
-      "description": "Meetups med alla som är intresserade av OpenStreetMap"
     },
     "is-chapter": {
       "description": "Vi hjälper till att utöka och förbättra OpenStreetMap på Island."
@@ -602,13 +592,6 @@
       "description": "Map Kibera är en registrerad organisation som verkar i Kenya",
       "extendedDescription": "Map Kibera Trusts uppdrag är att öka inflytande och representation av marginaliserade samhällen genom kreativ användning av digitala verktyg för handling."
     },
-    "MapABQ": {
-      "description": "Möte en gång i månaden för OpenStreetMap-användare i Albuquerque och norra New Mexico",
-      "extendedDescription": "Alla är välkomna att gå med och vi hjälper dig gärna att komma igång med kartläggningen. Mötena är i ett öppet format så att bidragsgivare kan fokusera på att lägga till OpenStreetMap för Albuquerque och omgivande områden."
-    },
-    "MapColabora-mailinglist": {
-      "description": "E-postlista för Mapeado Colaborativo / Geoinquietos Zaragoza"
-    },
     "MapColabora-twitter": {
       "description": "Twitter-konto för Mapeado Colaborativo / Geoinquietos Zaragoza"
     },
@@ -617,24 +600,31 @@
       "description": "Ett hem för OpenStreetMap-entusiaster i Midlands",
       "extendedDescription": "Mappa Mercia är ett projekt att förbättra OpenStreetMap i West Midlands, Storbritannien. Vi har gemenskapsevenemang, tillhandahåller upplärning och ger support till lokala organisationer som vill öppna upp sin data."
     },
-    "MappingDC-meetup": {
-      "description": "Förbättra OpenStreetMap i DC-området",
-      "extendedDescription": "Vi är en grupp volontär-kartläggare med syfte att förbättra OpenStreetMap i DC-området. Vi strävar även efter att lära andra om ekosystemet i OSM, dataanalys, kartografi och GIS. Vi samlas varannan månad för att fokusera på ett område i vår stad."
-    },
     "MappingWR": {
       "description": "Det är lätt att hitta vägar med låg koldioxidutsläpp runt Waterloo-regionen."
     },
     "maptime-bogota-facebook": {
-      "description": "Vi är en grupp människor som är intresserade av att kartlägga Bogotá och dess omgivningar i OpenStreetMap."
+      "description": "Vi är en grupp människor som är intresserade av att kartlägga Bogotá och dess omgivningar i OpenStreetMap.",
+      "extendedDescription": "Lär dig att samla in data på fältet och digitalisera det i OpenStreetMap. Det finns inga krav på förkunskaper! Du behöver bara lusten att delta, lära dig och ha kul."
     },
     "maptime-bogota-github": {
-      "description": "Vi är en grupp människor som är intresserade av att kartlägga Bogotá och dess omgivningar i OpenStreetMap."
+      "description": "Vi är en grupp människor som är intresserade av att kartlägga Bogotá och dess omgivningar i OpenStreetMap.",
+      "extendedDescription": "Lär dig att samla in data på fältet och digitalisera det i OpenStreetMap. Det finns inga krav på förkunskaper! Du behöver bara lusten att delta, lära dig och ha kul."
+    },
+    "maptime-bogota-linkedin": {
+      "description": "Vi är en grupp människor som är intresserade av att kartlägga Bogotá och dess omgivningar i OpenStreetMap.",
+      "extendedDescription": "Lär dig att samla in data på fältet och digitalisera det i OpenStreetMap. Det finns inga krav på förkunskaper! Du behöver bara lusten att delta, lära dig och ha kul."
     },
     "maptime-bogota-mastodon": {
-      "description": "Vi är en grupp människor som är intresserade av att kartlägga Bogotá och dess omgivningar i OpenStreetMap."
+      "description": "Vi är en grupp människor som är intresserade av att kartlägga Bogotá och dess omgivningar i OpenStreetMap.",
+      "extendedDescription": "Lär dig att samla in data på fältet och digitalisera det i OpenStreetMap. Det finns inga krav på förkunskaper! Du behöver bara lusten att delta, lära dig och ha kul."
     },
     "maptime-bogota-meetup": {
       "description": "Vi är en grupp intresserade av att kartlägga Bogotá och dess omgivningar till OpenStreetMap.",
+      "extendedDescription": "Lär dig att samla in data på fältet och digitalisera det i OpenStreetMap. Det finns inga krav på förkunskaper! Du behöver bara lusten att delta, lära dig och ha kul."
+    },
+    "maptime-bogota-telegram": {
+      "description": "Vi är en grupp människor som är intresserade av att kartlägga Bogotá och dess omgivningar i OpenStreetMap.",
       "extendedDescription": "Lär dig att samla in data på fältet och digitalisera det i OpenStreetMap. Det finns inga krav på förkunskaper! Du behöver bara lusten att delta, lära dig och ha kul."
     },
     "maptime-bogota-twitter": {
@@ -646,7 +636,8 @@
       "extendedDescription": "Lär dig att samla in data på fältet och digitalisera det i OpenStreetMap. Det finns inga krav på förkunskaper! Du behöver bara lusten att delta, lära dig och ha kul."
     },
     "maptime-bogota-youtube": {
-      "description": "Vi är en grupp människor som är intresserade av att kartlägga Bogotá och dess omgivningar i OpenStreetMap."
+      "description": "Vi är en grupp människor som är intresserade av att kartlägga Bogotá och dess omgivningar i OpenStreetMap.",
+      "extendedDescription": "Lär dig att samla in data på fältet och digitalisera det i OpenStreetMap. Det finns inga krav på förkunskaper! Du behöver bara lusten att delta, lära dig och ha kul."
     },
     "Maptime-ME-meetup": {
       "description": "Kartläggare och OpenStreetMap-användare runt Portland, Maine",
@@ -892,9 +883,6 @@
     "OSM-Seattle": {
       "description": "Kartläggare och OpenStreetMap-användare runt Seattle"
     },
-    "osm-sierra-leone": {
-      "description": "Vi fokuserar på skapande och användning av öppna data för att lösa sociala, ekonomiska och samhällsrelaterade utmaningar."
-    },
     "OSM-SoCal": {
       "name": "OpenStreetMap södra Kalifornien",
       "description": "Låt oss ha lite kul, bidra med något till Los Angeles och lär dig om kartläggning!",
@@ -973,6 +961,9 @@
     },
     "rs-wiki": {
       "description": "Wikiproject-sida för Serbien"
+    },
+    "sg-wiki": {
+      "description": "Wiki-sida för {community}"
     },
     "si-github": {
       "description": "GitHub för {community}"
@@ -1055,6 +1046,9 @@
     "vn-mailinglist": {
       "description": "E-postlista om OpenStreetMap i Vietnam eller på vietnamesiska"
     },
+    "vn-wiki": {
+      "description": "Wiki-sida för {community}"
+    },
     "YerCizenler-TR": {
       "description": "Yer Çizenler-kartläggning för alla  sammanslutningar",
       "extendedDescription": "Yer Çizenler är en lokal icke-statlig organisation, en del av det turkiska OSM-gemenskapen, som syftar till att främja användningen av öppna geospatiala data och verktyg inom det nationella kartläggningsgemenskapen."
@@ -1103,6 +1097,7 @@
       "extendedDescription": "GIS Students vid Cal U lär sig att tillämpa rumslig teori på den verkliga världen. Universitetsutbildningen fokuserar på geografi och använder GIS i nödhantering."
     },
     "ym-Central-Washington-University": {
+      "name": "Geografiska klubben",
       "description": "YouthMappers-filial vid Central Washington University",
       "extendedDescription": "Vårt mål med att samarbeta med Youthmappers är att ge lättnad till områden som behöver humanitär kartläggning. Genom att göra det tjänar vi våra bröder och systrar runt om i världen och främjar våra egna kartografiska färdigheter."
     },
@@ -1150,17 +1145,9 @@
     "ym-Federal-School-of-Surveys": {
       "description": "YouthMappers-filial vid Federal School of Surveys"
     },
-    "ym-Federal-University-of-Technology-Akure": {
-      "description": "YouthMappers-filial vid Federal University of Technology, Akure",
-      "extendedDescription": "Vårt uppdrag är att höja nästa generation rymdledare. Bland aktiviteterna ingår forskning och kapacitetsuppbyggnad inom fjärravkänning, GIS, klimatförändring, astronomi, kosmologi, rymdteknik, global navigering, robotik och rymdutbildning."
-    },
     "ym-Fourah-Bay-College": {
       "description": "YouthMappers-filial vid Fourah Bay College",
       "extendedDescription": "Student's Geographical Association- YouthMappers är en sammanslutning av Fourah Bay College-studenter med de gemensamma målen att kartlägga utsatta platser i Sierra Leone och världen i stort för lättnad och andra fördelaktiga ändamål, genomföra forskning och andra utbildningsinsatser. Kapitlet består av ungdomar med fantastiska idéer, utvecklingsorienterade med förmåga att relatera till varandra, förstå och genomföra hållbara utvecklingsprojekt som ett team."
-    },
-    "ym-General-Lansana-Conte-University": {
-      "description": "YouthMappers-filial vid General Lansana Conte University",
-      "extendedDescription": "YouthMappers of University General Lansana Conté är en ideell sammanslutning som är villigt att bidra till Map Guinea och andra delar av världen. Vi främjar användningen av GIS och Open data för att bygga verktyg för beslutsstöd. Vi arbetar också för att bygga upp kapacitet bland eleverna och lokala samhällen."
     },
     "ym-George-Mason-University": {
       "description": "YouthMappers-filial vid George Mason University",
@@ -1299,6 +1286,7 @@
       "extendedDescription": "Environment and Wildlife Club tittar på miljöfrågor på campus, i Delaware och till och med nationellt! Vi skapar campus- och samhällsprojekt, utforskar och njuter av friluftsliv, arbetar frivilligt och försöker främja miljöarbete i alla aspekter av våra liv."
     },
     "ym-Oklahoma-State-University": {
+      "name": "Geografiska klubben",
       "description": "YouthMappers-filial vid Oklahoma State University"
     },
     "ym-Open-University-of-Tanzania": {
@@ -1488,6 +1476,7 @@
       "extendedDescription": "Chanco Malawi YouthMappers är studentkartororganisationen för University of Malawis Chancellor College. Studenterna i denna filial fokuserar på kartläggning för Malawis utvecklings- och vetenskapsbehov."
     },
     "ym-University-of-Maryland-College-Park": {
+      "name": "Geografiska klubben",
       "description": "YouthMappers-filial vid University of Maryland - College Park",
       "extendedDescription": "Geografiklubbens uppdrag vid University of Maryland College Park är att engagera och uppmuntra studenter att utforska geografiska intressen inom campus och samhället."
     },
@@ -1514,10 +1503,6 @@
     "ym-University-of-Northern-Colorado": {
       "description": "YouthMappers-filial vid University of Northern Colorado",
       "extendedDescription": "Filialen Official Geography and GIS Club som är kopplat till University of Northern Colorado där vårt mål är att lära, dela och få kontakt med dem omkring oss. #MakingSenseOfTheWorld"
-    },
-    "ym-University-of-Oregon": {
-      "description": "YouthMappers-filial vid University of Oregon",
-      "extendedDescription": "Map By Northwest syftar till att engagera studenter vid University of Oregon i kartläggningsprojekt för att hjälpa humanitära mål och för att bedriva geografisk forskning. Vi välkomnar studenter från alla discipliner för att följa med i våra kartupplevelser."
     },
     "ym-University-of-Port-Harcourt": {
       "description": "YouthMappers-filial vid University of Port Harcourt",

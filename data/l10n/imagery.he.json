@@ -12,10 +12,23 @@
         "description": "תמונות לוויין שעברו עיבוד מבית Sentinel.",
         "name": "eox.at 2018 נטול עננים"
       },
+      "EOXAT2019CLOUDLESS": {
+        "description": "תמונות לוויין שעברו עיבוד מבית Sentinel."
+      },
+      "EOXAT2020CLOUDLESS": {
+        "description": "תמונות לוויין שעברו עיבוד מבית Sentinel."
+      },
+      "EOXAT2021CLOUDLESS": {
+        "description": "תמונות לוויין שעברו עיבוד מבית Sentinel."
+      },
+      "EOXAT2022CLOUDLESS": {
+        "description": "תמונות לוויין שעברו עיבוד מבית Sentinel."
+      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "תנאים ומשוב"
         },
+        "description": "תצלומי אוויר ESRI",
         "name": "תצלומי אוויר ESRI"
       },
       "EsriWorldImageryClarity": {
@@ -24,6 +37,116 @@
         },
         "description": "תמונות ארכיון מ־Esri שעשויות להיות ברורות ומדויקות יותר משכבת בררת המחדל.",
         "name": "ESRI תצלומי אוויר (Clarity Beta)"
+      },
+      "Geoportal2-PL-City-boundaries_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-addres_points_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-communes_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-counties_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-provinces_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-buildings_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-gas-pipe_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-heat-pipe_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-plot_boundaries_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-power-cord_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-sewer-pipe_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-shaded_relief_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-squares-and-housing-estates_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-state-borders_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-telecommunications-cable_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
+      },
+      "Geoportal2-PL-water-pipe_WMS": {
+        "attribution": {
+          "text": "משרד הגאודזיה והקרטוגרפיה הראשי של פולין"
+        }
       },
       "MAPNIK": {
         "attribution": {
@@ -93,12 +216,34 @@
         "description": "צהוב = נתונים לרשות הציבור באדיבות משרד האוכלוסין של ארה״ב. אדום = לא נמצאו נתונים ב־OpenStreetMap",
         "name": "דרכי TIGER‏ 2019"
       },
+      "US-TIGER-Roads-2020": {
+        "description": "צהוב = מידע ציבורי לפי מפקד אוכלוסין. אדום = מידע שלא נמצא ב־OpenStreetMap",
+        "name": "דרכי TIGER‏ 2020"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "צהוב = מידע ציבורי לפי מפקד אוכלוסין. אדום = מידע שלא נמצא ב־OpenStreetMap"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "צהוב = מידע ציבורי לפי מפקד אוכלוסין. אדום = מידע שלא נמצא ב־OpenStreetMap"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "צהוב = מידע ציבורי לפי מפקד אוכלוסין. אדום = מידע שלא נמצא ב־OpenStreetMap"
+      },
       "USDA-NAIP": {
+        "attribution": {
+          "text": "משרד החקלאות של ארה״ב"
+        },
         "name": "תכנית הצילום החקלאית הלאומית"
       },
       "US_Forest_Service_roads_overlay": {
         "description": "כביש מהיר: תחימה ירוקה = ללא סיווג. תחימה חומה = מסלול. פני שטח: חצץ = מילוי חום בהיר, אספלט = שחור, מרוצף = אפור, אדמה =לבן, בטון = כחול, דשא = ירוק. עונתי = פסים לבנים",
         "name": "שכבת דרכי יערות בארה״ב"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "מומש ע״י Brussels UrbIS®© - Distribution & Copyright CIRB"
+        },
+        "name": "צילומי האוויר העדכניים ביותר של CIRB/CIBG"
       },
       "UrbISOrtho2016": {
         "attribution": {
@@ -120,10 +265,21 @@
           "text": "עובד על ידי Brussels UrbIS®©‎ - הפצה וזכויות יוצרים CIRB"
         }
       },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "מומש ע״י Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
       "UrbisAdmFR": {
         "attribution": {
           "text": "מומש ע״י Brussels UrbIS®© - Distribution & Copyright CIRB"
         }
+      },
+      "UrbisAdmFRNL": {
+        "attribution": {
+          "text": "מומש ע״י Brussels UrbIS®© - Distribution & Copyright CIRB"
+        },
+        "name": "UrbisAdm צרפת/הולנד"
       },
       "UrbisAdmNL": {
         "attribution": {
@@ -182,11 +338,44 @@
         "description": "מפת העיר היא מפה סיקורית שמתארת את גותנבורג. היא מכילה פרטים כלליים על קרקע, תקשורת, תשתיות מים, בניינים, מספרי כתובות ושמות רחובות, חלוקה מנהלית וטקסט שמסייע בהתמצאות.",
         "name": "מפת העיר גותנבורג"
       },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© עיריית גטבורג, CC0"
+        },
+        "name": "הצללות גותנבורג"
+      },
       "gothenburg-ortho": {
         "attribution": {
           "text": "© עיריית גותנבורג, CC0"
         },
-        "description": "אורתופוטו לעיריית גותנברג"
+        "description": "אורתופוטו לעיריית גותנברג",
+        "name": "אורתופוטו של גטבורג 2015"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© עיריית גטבורג, CC0"
+        },
+        "description": "אורתופוטו לעיריית גטבורג",
+        "name": "אורתופוטו של גטבורג 2017"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© עיריית גטבורג, CC0"
+        },
+        "description": "אורתופוטו לעיריית גטבורג",
+        "name": "אורתופוטו של גטבורג 2019"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© עיריית גטבורג, CC0"
+        },
+        "description": "אורתופוטו לעיריית גטבורג"
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© עיריית גטבורג, CC0"
+        },
+        "description": "אורתופוטו לעיריית גטבורג"
       },
       "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
         "attribution": {
@@ -229,6 +418,17 @@
         },
         "description": "Kalmar אורטופוטו עירוני2018",
         "name": "Kalmar אורטופוטו עירוני 2018"
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© עיריית קלמאר"
+        },
+        "description": "אורתופוטוו לאזורים עירוניים של עיריית קלמאר 2020",
+        "name": "אורתופוטו עירוני של קלמאר 2020"
+      },
+      "kartverket-bygninger": {
+        "description": "INSPIRE בניינים בנורבגיה.",
+        "name": "שכבת בניינים של Kartverket"
       },
       "kelkkareitit": {
         "attribution": {
@@ -397,6 +597,11 @@
         },
         "description": "רשת הכבישים של NVDB השבדית עם מגוון אפשרויות לשכבות מפה",
         "name": "אפשרויות רשת כבישים Trafikverket"
+      },
+      "wroclaw-orto2015": {
+        "attribution": {
+          "text": "עיריית ורוצלב"
+        }
       },
       "wroclaw-orto2018": {
         "attribution": {

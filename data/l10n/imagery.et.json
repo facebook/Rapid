@@ -5,6 +5,10 @@
         "description": "Satelliidi- ja aerofotod."
       },
       "EsriWorldImagery": {
+        "attribution": {
+          "text": "Kasutustingimused ja tagasiside"
+        },
+        "description": "Esri Worldi pildimaterjal",
         "name": "Esri Worldi pildimaterjal"
       },
       "EsriWorldImageryClarity": {

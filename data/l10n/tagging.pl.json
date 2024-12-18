@@ -337,7 +337,7 @@
             "drop_tower": "Wieża swobodnego spadania",
             "kiddie_ride": "Bujak",
             "log_flume": "Spływ kłodą",
-            "maze": "Labirtynt",
+            "maze": "Labirynt",
             "pirate_ship": "Statek piracki",
             "river_rafting": "Spływ pontonowy",
             "roller_coaster": "Kolejka górska",
@@ -2077,7 +2077,7 @@
           "terms": "dostęp do internetu, internet, wifi, wi-fi"
         },
         "internet_access/fee": {
-          "label": "Dostęp do Internetu (opłata)",
+          "label": "Opłata za dostęp do internetu",
           "options": {
             "customers": "Tylko dla klientów",
             "no": "Darmowy",
@@ -2295,7 +2295,13 @@
           "label": "Zasięg mapy"
         },
         "map_type": {
-          "label": "Rodzaj mapy"
+          "label": "Rodzaj mapy",
+          "options": {
+            "scheme": "Schemat",
+            "street": "Ulic",
+            "topo": "Topograficzna",
+            "toposcope": "Róża kierunków"
+          }
         },
         "mapillary": {
           "label": "ID zdjęcia Mapillary",
@@ -2682,7 +2688,7 @@
         },
         "operator": {
           "label": "Zarządca",
-          "terms": "zarządca, zarządzający, organ prowadzący"
+          "terms": "zarządca, zarządzający, organ prowadzący, operator"
         },
         "operator/type": {
           "label": "Zarządca (rodzaj)"
@@ -3435,7 +3441,8 @@
           "terms": "sprzedaż używanych, second-hand, second hand"
         },
         "segregated": {
-          "label": "Rozdzielona"
+          "label": "Rozdzielona",
+          "terms": "rozdzielona, rozdzielenie, segregacja"
         },
         "self_service": {
           "label": "Samoobsługowa"
@@ -4256,6 +4263,7 @@
             "coffee": "Kawa",
             "condoms": "Prezerwatywy",
             "drinks": "Napoje",
+            "e-cigarettes": "E-papierosy",
             "eggs": "Jajka",
             "electronics": "Urządzenia elektroniczne",
             "elongated_coin": "Monety pamiątkowe",
@@ -6291,8 +6299,8 @@
           "name": "Budynek dworca kolejowego"
         },
         "building/transportation": {
-          "name": "Budynek dworca kolejowego",
-          "terms": "budynek dworca kolejowego, budynek stacji kolejowej, dworzec kolejowy,transport,dworzec,stacja"
+          "name": "Budynek transportu publicznego",
+          "terms": "budynek dworca, budynek stacji, budynek centrum przesiadkowego, budynek węzła przesiadkowego, transport, dworzec, stacja, centrum przesiadkowe, węzeł przesiadkowy"
         },
         "building/university": {
           "name": "Budynek uczelni",
@@ -7036,6 +7044,18 @@
           "name": "Kładka drewniana",
           "terms": "kładka drewniana, chodnik z desek, drewniany chodnik, mostek dla pieszych, ścieżka dla pieszych, pomost"
         },
+        "highway/path/crossing": {
+          "name": "Przejazd pieszo-rowerowy\nPrzejście pieszo-rowerowe"
+        },
+        "highway/path/crossing/traffic_signals": {
+          "name": "Przejazd pieszo-rowerowy z sygnalizacją świetlną\nPrzejście pieszo-rowerowe z sygnalizacją świetlną"
+        },
+        "highway/path/crossing/uncontrolled": {
+          "name": "Oznakowany przejazd pieszo-rowerowy\nOznakowane przejście pieszo-rowerowe"
+        },
+        "highway/path/crossing/unmarked": {
+          "name": "Nieoznakowany przejazd pieszo-rowerowy\nNieoznakowane przejście pieszo-rowerowe"
+        },
         "highway/path/informal": {
           "name": "Nieformalna ścieżka",
           "terms": "nieformalna ścieżka, nieoficjalna ścieżka, wydeptana ścieżka"
@@ -7424,6 +7444,14 @@
         "landuse/meadow": {
           "name": "Łąka/pastwisko",
           "terms": "łąka, pastwisko, rozłóg, wygon, nieużytki, polana, pole, zieleń"
+        },
+        "landuse/meadow_orchard/meadow": {
+          "name": "Łąka z drzewami owocowymi",
+          "terms": "łąka z drzewami owocowymi, streuobstwiese"
+        },
+        "landuse/meadow_orchard/orchard": {
+          "name": "Sad w obrębie łąki",
+          "terms": "sad w obrębie łąki, streuobstwiese"
         },
         "landuse/military": {
           "name": "Teren wojskowy",
@@ -8973,8 +9001,7 @@
           "terms": "trasa narciarska, szlak narciarstwa klasycznego, szlak narciarstwa przełajowego, narty, klasyczne, przełajowe, narciarstwo"
         },
         "piste/piste": {
-          "name": "Szlak sportów zimowych",
-          "terms": "szlaki sportów zimowych, trasa sportów zimowych, narty, klasyczne, przełajowe, downhill, alpejskie, snowboard, wycieczki narciarskie, sanki, saneczki, sanie, kulig, skijöring, husky, koń, zimowa wspinaczka, rakiety śniegowe, lód, łyżwiarstwo"
+          "name": "Trasa do sportów zimowych (nieokreślonych)"
         },
         "piste/ski_jump": {
           "name": "Skocznia narciarska (najazd/zeskok)",
@@ -9387,7 +9414,7 @@
         },
         "public_transport/station": {
           "name": "Dworzec",
-          "terms": "dworzec, stacja, transport publiczny, terminal, transport, przewozy"
+          "terms": "dworzec, stacja, transport publiczny, terminal, transport, przewozy, centrum przesiadkowe, węzeł przesiadkowy"
         },
         "public_transport/station_aerialway": {
           "name": "Stacja wyciągu / kolei linowej",
@@ -10471,7 +10498,7 @@
         },
         "tourism/information/guidepost": {
           "name": "Drogowskaz",
-          "terms": "drogowskaz"
+          "terms": "drogowskaz, kierunkowskaz"
         },
         "tourism/information/map": {
           "name": "Mapa",

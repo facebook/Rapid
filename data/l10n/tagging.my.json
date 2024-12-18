@@ -1,0 +1,22 @@
+{
+  "my": {
+    "presets": {
+      "fields": {
+        "note": {
+          "label": "မှတ်စု"
+        }
+      },
+      "presets": {
+        "area": {
+          "name": "ဧရိယာ"
+        },
+        "line": {
+          "name": "မျဉ်း"
+        },
+        "point": {
+          "name": "နေရာ"
+        }
+      }
+    }
+  }
+}

@@ -240,6 +240,11 @@
         "area/highway": {
           "label": "Tip"
         },
+        "armrest": {
+          "options": {
+            "undefined": "Necunoscut"
+          }
+        },
         "artwork_type": {
           "label": "Tip",
           "options": {
@@ -353,6 +358,7 @@
           }
         },
         "beauty": {
+          "label": "Servicii",
           "options": {
             "cosmetics": "Cosmetică",
             "hair_removal": "Îndepărtare păr",
@@ -455,6 +461,8 @@
             "chapel": "Capelă",
             "church": "Biserică",
             "civic": "Clădire civică",
+            "college": "Colegiu",
+            "commercial": "Clădire Comercială",
             "construction": "Clădire în construcție",
             "cowshed": "Grajd",
             "detached": "Casă separată",
@@ -478,10 +486,15 @@
             "office": "Clădire birouri",
             "public": "Clădire publică",
             "residential": "Clădire rezidențială",
+            "retail": "Clădire de Retail",
             "roof": "Acoperiș",
+            "school": "Școală",
+            "semidetached_house": "Casă Semi-detașată",
             "sty": "Cocină",
             "synagogue": "Clădire sinagogă",
             "temple": "Clădire templu",
+            "terrace": "Case în Rând",
+            "university": "Universitate",
             "warehouse": "Depozit"
           }
         },
@@ -526,6 +539,9 @@
             "fixed": "Fixat",
             "panning": "Mișcător"
           }
+        },
+        "camp_site": {
+          "label": "Tip"
         },
         "capacity": {
           "label": "Capacitate"
@@ -579,7 +595,13 @@
         "communication_multi": {
           "label": "Tipuri de Comunicație"
         },
+        "community_centre": {
+          "label": "Tip"
+        },
         "construction": {
+          "label": "Tip"
+        },
+        "consulate": {
           "label": "Tip"
         },
         "contact/webcam": {
@@ -588,17 +610,59 @@
         "content": {
           "label": "Conținut"
         },
+        "conveying": {
+          "options": {
+            "backward": "Înapoi",
+            "forward": "Înainte"
+          }
+        },
         "country": {
           "label": "Țară"
         },
         "covered": {
           "label": "Acoperit"
         },
+        "covered_no": {
+          "options": {
+            "no": "Nu",
+            "undefined": "Presupus a fi Nu",
+            "yes": "Da"
+          }
+        },
         "craft": {
-          "label": "Tip"
+          "label": "Tip",
+          "options": {
+            "brewery": "Berărie",
+            "gardener": "Grădinar",
+            "handicraft": "Manufactură",
+            "painter": "Pictor",
+            "photographer": "Fotograf",
+            "photographic_laboratory": "Laborator de Fotografie",
+            "saddler": "Șelar",
+            "shoemaker": "Cizmar",
+            "window_construction": "Geamgiu",
+            "winery": "Vinărie"
+          }
+        },
+        "crop": {
+          "options": {
+            "grass": "Iarbă"
+          }
         },
         "crossing": {
           "label": "Tip"
+        },
+        "crossing/barrier": {
+          "options": {
+            "no": "Nu",
+            "yes": "Da"
+          }
+        },
+        "crossing_raised": {
+          "options": {
+            "table": "Da",
+            "undefined": "Nu"
+          }
         },
         "cuisine": {
           "label": "Bucătării"
@@ -606,11 +670,21 @@
         "currency_multi": {
           "label": "Tipuri de Valută"
         },
+        "cutting": {
+          "label": "Tip",
+          "placeholder": "Implicit"
+        },
         "cycle_network": {
           "label": "Rețea"
         },
         "cycleway": {
-          "label": "Drumuri de Biciclete"
+          "label": "Drumuri de Biciclete",
+          "options": {
+            "no": {
+              "description": "Fără Drum de Biciclete",
+              "title": "Niciuna"
+            }
+          }
         },
         "date": {
           "label": "Dată"
@@ -624,10 +698,38 @@
         "denotation": {
           "label": "Denotație"
         },
+        "departures_board": {
+          "options": {
+            "no": "Niciuna",
+            "yes": "Da"
+          }
+        },
+        "depot": {
+          "label": "Tip"
+        },
         "description": {
           "label": "Descripție"
         },
+        "destination_waterway": {
+          "label": "Destinație"
+        },
+        "diplomatic": {
+          "label": "Tip",
+          "options": {
+            "embassy": "Ambasadă"
+          }
+        },
+        "diplomatic/services": {
+          "label": "Servicii"
+        },
+        "direction": {
+          "label": "Direcție (Grade în Sens de Ceasornic)"
+        },
+        "direction_cardinal-US-CA-NZ": {
+          "label": "Direcție"
+        },
         "direction_clock": {
+          "label": "Direcție",
           "options": {
             "anticlockwise": "Sens antiorar",
             "clockwise": "Sens orar"
@@ -635,13 +737,34 @@
         },
         "direction_vertex": {
           "options": {
+            "backward": "Înapoi",
             "forward": "Înainte"
           }
         },
         "display": {
           "label": "Afișare"
         },
+        "distance": {
+          "label": "Distanţă"
+        },
+        "disused/amenity": {
+          "label": "Tip"
+        },
+        "disused/railway": {
+          "label": "Tip"
+        },
+        "disused/shop": {
+          "label": "Tip"
+        },
         "dock": {
+          "label": "Tip"
+        },
+        "dog": {
+          "options": {
+            "yes": "Permis"
+          }
+        },
+        "door_type": {
           "label": "Tip"
         },
         "duration": {
@@ -657,8 +780,23 @@
           "label": "Tip",
           "placeholder": "Implicit"
         },
+        "embassy": {
+          "label": "Tip",
+          "options": {
+            "yes": "Ambasadă"
+          }
+        },
         "emergency": {
           "label": "Urgență"
+        },
+        "emergency_combo": {
+          "label": "Tip"
+        },
+        "emergency_ward_entrance": {
+          "label": "Tip"
+        },
+        "enforcement": {
+          "label": "Tip"
         },
         "entrance": {
           "label": "Tip"
@@ -672,20 +810,54 @@
         "fence_type": {
           "label": "Tip"
         },
+        "fire_hydrant/position": {
+          "label": "Poziție",
+          "options": {
+            "parking_lot": "Parcare",
+            "sidewalk": "Drum de Pietoni"
+          }
+        },
         "fire_hydrant/type": {
           "options": {
             "wall": "Zid"
           }
         },
+        "fire_mains": {
+          "options": {
+            "no": "Nu"
+          }
+        },
+        "fire_service_inlet": {
+          "options": {
+            "wall": "Zid"
+          }
+        },
+        "fire_sprinkler": {
+          "options": {
+            "no": "Nu"
+          }
+        },
         "fixme": {
           "label": "Repară-mă"
+        },
+        "flashing_lights": {
+          "options": {
+            "no": "Nu",
+            "yes": "Da"
+          }
         },
         "ford": {
           "label": "Tip",
           "placeholder": "Implicit"
         },
+        "fountain": {
+          "label": "Tip"
+        },
         "fuel": {
           "label": "Benzină"
+        },
+        "fuel/fuel_multi": {
+          "label": "Tipuri de Benzină"
         },
         "gender": {
           "label": "Sex",
@@ -696,7 +868,11 @@
           "placeholder": "Necunoscut"
         },
         "generator/method": {
-          "label": "Metodă"
+          "label": "Metodă",
+          "options": {
+            "water-storage": "Rezervor",
+            "wind_turbine": "Turbină de Vânt"
+          }
         },
         "generator/source": {
           "label": "Sursă"
@@ -707,8 +883,14 @@
         "government": {
           "label": "Tip"
         },
-        "healthcare": {
+        "guest_house": {
           "label": "Tip"
+        },
+        "healthcare": {
+          "label": "Tip",
+          "options": {
+            "clinic": "Clinică"
+          }
         },
         "height": {
           "label": "Înălțime (Metri)"
@@ -716,11 +898,33 @@
         "highway": {
           "label": "Tip"
         },
+        "highway_cartpath": {
+          "options": {
+            "service": "Stradă de Serviciu"
+          }
+        },
         "historic": {
-          "label": "Tip"
+          "label": "Tip",
+          "options": {
+            "archaeological_site": "Sit Arheologic",
+            "boundary_stone": "Piatră de Graniță",
+            "castle": "Castel",
+            "railway": "Cale Ferată",
+            "ruins": "Ruine",
+            "tomb": "Mormânt"
+          }
         },
         "historic/civilization": {
           "label": "Civilizații Istorice"
+        },
+        "holding_position/type": {
+          "label": "Tip"
+        },
+        "horse_riding": {
+          "options": {
+            "horse_riding": "Da",
+            "undefined": "Nu"
+          }
         },
         "incline": {
           "label": "Înclinare"
@@ -733,6 +937,12 @@
         },
         "indoor": {
           "label": "Înăuntru"
+        },
+        "indoor_type": {
+          "label": "Tip"
+        },
+        "industrial": {
+          "label": "Tip"
         },
         "information": {
           "label": "Tip"
@@ -748,8 +958,34 @@
             "yes": "Da"
           }
         },
+        "internet_access/fee": {
+          "label": "Acces Internet Gratuit",
+          "options": {
+            "customers": "Doar clienți"
+          }
+        },
+        "junction/ref_oneway": {
+          "label": "Număr de Juncție"
+        },
+        "junction_line": {
+          "label": "Juncție",
+          "options": {
+            "roundabout": "Sens Giratoriu"
+          }
+        },
         "kerb": {
-          "label": "Curbură"
+          "label": "Curbură",
+          "options": {
+            "no": {
+              "title": "Nu"
+            },
+            "yes": {
+              "title": "Da"
+            }
+          }
+        },
+        "kerb/kerb_barrier": {
+          "label": "Tip"
         },
         "lamp_type": {
           "label": "Tip"
@@ -782,8 +1018,25 @@
         "level": {
           "label": "Nivel"
         },
+        "level_semi": {
+          "label": "Etaje"
+        },
+        "liaison": {
+          "label": "Tip"
+        },
+        "lifeguard": {
+          "label": "Tip"
+        },
+        "lift_gate/type": {
+          "label": "Tip"
+        },
         "location": {
           "label": "Locație"
+        },
+        "location_pool": {
+          "options": {
+            "indoor": "Înăuntru"
+          }
         },
         "man_made": {
           "label": "Tip"
@@ -797,8 +1050,34 @@
         "map_type": {
           "label": "Tip"
         },
+        "marker": {
+          "label": "Tip"
+        },
+        "material": {
+          "options": {
+            "sand": "Nisip",
+            "wood": "Pădure"
+          }
+        },
         "maxspeed": {
           "label": "Limită de viteză"
+        },
+        "memorial": {
+          "label": "Tip",
+          "options": {
+            "sculpture": "Sculptură",
+            "statue": "Statuie"
+          }
+        },
+        "mooring": {
+          "options": {
+            "no": "Nu",
+            "private": "Privat",
+            "yes": "Da"
+          }
+        },
+        "museum": {
+          "label": "Tip"
         },
         "name": {
           "label": "Nume",
@@ -806,6 +1085,9 @@
         },
         "network": {
           "label": "Rețea"
+        },
+        "network/type": {
+          "label": "Tip Rețea"
         },
         "network_bicycle": {
           "options": {
@@ -831,8 +1113,31 @@
         "note": {
           "label": "Notă"
         },
+        "nudism": {
+          "options": {
+            "designated": "Desemnat",
+            "no": "Interzis",
+            "permissive": "Permisiv",
+            "yes": "Permis"
+          }
+        },
         "office": {
-          "label": "Tip"
+          "label": "Tip",
+          "options": {
+            "educational_institution": "Instituție Educațională",
+            "employment_agency": "Agenție de Muncă",
+            "estate_agent": "Agenție Imobiliară",
+            "financial": "Oficiu Financiar",
+            "government": "Oficiu de Guvern",
+            "insurance": "Oficiu de Asigurare",
+            "lawyer": "Cabinet de Avocatură",
+            "ngo": "Oficiu NGO",
+            "notary": "Notar",
+            "physician": "Fizician",
+            "research": "Birou de Cercetare",
+            "telecommunication": "Oficiu Telecom",
+            "travel_agent": "Agenție de Călătorii"
+          }
         },
         "oneway": {
           "label": "Sens unic",
@@ -850,7 +1155,21 @@
           }
         },
         "opening_hours": {
-          "label": "Ore"
+          "label": "Ore",
+          "placeholder": "Necunoscut"
+        },
+        "organic": {
+          "options": {
+            "no": "Niciuna",
+            "only": "Doar"
+          }
+        },
+        "parcel_pickup": {
+          "options": {
+            "no": "Nu",
+            "undefined": "Presupus a fi Da",
+            "yes": "Da"
+          }
         },
         "parking": {
           "label": "Tip",
@@ -858,13 +1177,56 @@
             "surface": "Suprafaţă"
           }
         },
+        "parking/side/orientation": {
+          "types": {
+            "parking:left:orientation": "Partea stângă",
+            "parking:right:orientation": "Partea dreaptă"
+          }
+        },
+        "parking/side/parking": {
+          "options": {
+            "no": "Nu",
+            "yes": "Da (nespecificat)"
+          },
+          "types": {
+            "parking:left": "Partea stângă",
+            "parking:right": "Partea dreaptă"
+          }
+        },
+        "parking_entrance": {
+          "label": "Tip"
+        },
+        "parking_space": {
+          "label": "Tip"
+        },
+        "payment_multi": {
+          "options": {
+            "coins": "Monede"
+          }
+        },
         "phone": {
           "label": "Telefon"
+        },
+        "picnic_table": {
+          "label": "Masă de Picnic"
+        },
+        "pipeline": {
+          "label": "Tip"
         },
         "piste/difficulty": {
           "label": "Dificultate"
         },
         "piste/grooming": {
+          "options": {
+            "classic": "Clasic"
+          }
+        },
+        "piste/grooming_downhill": {
+          "options": {
+            "classic": "Clasic"
+          }
+        },
+        "piste/grooming_nordic": {
           "options": {
             "classic": "Clasic"
           }
@@ -881,8 +1243,19 @@
         "place": {
           "label": "Tip"
         },
+        "plant/output": {
+          "options": {
+            "compressed_air": "Aer Comprimat"
+          }
+        },
+        "playground": {
+          "label": "Tip"
+        },
         "population": {
           "label": "Populație"
+        },
+        "post_box/type": {
+          "label": "Tip"
         },
         "power": {
           "label": "Tip"
@@ -890,8 +1263,40 @@
         "product": {
           "label": "Produse"
         },
+        "public_bookcase/type": {
+          "label": "Tip"
+        },
+        "pump": {
+          "options": {
+            "no": "Niciuna",
+            "yes": "Da"
+          }
+        },
         "railway": {
           "label": "Tip"
+        },
+        "railway/signal/direction": {
+          "options": {
+            "backward": "Înapoi",
+            "forward": "Înainte"
+          }
+        },
+        "ramp": {
+          "options": {
+            "no": "Nu",
+            "yes": "Da"
+          }
+        },
+        "recycling_accepts": {
+          "options": {
+            "clothes": "Haine"
+          }
+        },
+        "recycling_type": {
+          "label": "Tip",
+          "options": {
+            "centre": "Centru"
+          }
         },
         "ref_aeroway_gate": {
           "label": "Număr de Poartă"
@@ -917,11 +1322,28 @@
         "religion": {
           "label": "Religie"
         },
+        "residential": {
+          "label": "Tip"
+        },
+        "resort": {
+          "label": "Tip"
+        },
+        "resource": {
+          "options": {
+            "sand": "Nisip"
+          }
+        },
         "restriction": {
           "label": "Tip"
         },
         "restrictions": {
           "label": "Restricții de Întoarcere"
+        },
+        "roller_coaster/track": {
+          "label": "Tip"
+        },
+        "room": {
+          "label": "Tip"
         },
         "rooms": {
           "label": "Camere"
@@ -932,8 +1354,45 @@
         "route_master": {
           "label": "Tip"
         },
+        "royal_cypher-GB": {
+          "options": {
+            "no": "Nu"
+          }
+        },
+        "ruins": {
+          "label": "Tip"
+        },
         "sac_scale": {
           "label": "Dificultate de Drumeție"
+        },
+        "scuba_diving": {
+          "label": "Servicii"
+        },
+        "seamark/beacon_lateral/colour": {
+          "options": {
+            "green": "Verde"
+          }
+        },
+        "seamark/beacon_lateral/system": {
+          "options": {
+            "other": "Altele"
+          }
+        },
+        "seamark/buoy_lateral/colour": {
+          "options": {
+            "green": "Verde"
+          }
+        },
+        "seamark/buoy_lateral/system": {
+          "options": {
+            "other": "Altele"
+          }
+        },
+        "seamark/harbour/category_marina": {
+          "options": {
+            "marina": "Da",
+            "marina_no_facilities": "Nu"
+          }
         },
         "seasonal": {
           "label": "Sezonal"
@@ -948,7 +1407,12 @@
           "placeholder": "Da, Nu, Doar"
         },
         "service": {
-          "label": "Tip"
+          "label": "Tip",
+          "options": {
+            "alley": "Alee",
+            "emergency_access": "Acces de Urgențe",
+            "parking_aisle": "Drum de Parcare"
+          }
         },
         "service/vehicle": {
           "label": "Servicii"
@@ -965,6 +1429,12 @@
         "shop": {
           "label": "Tip"
         },
+        "siren/type": {
+          "label": "Tip",
+          "options": {
+            "other": "Altele"
+          }
+        },
         "site": {
           "label": "Tip"
         },
@@ -972,12 +1442,32 @@
           "label": "Fumători"
         },
         "social_facility": {
-          "label": "Tip"
+          "label": "Tip",
+          "options": {
+            "shelter": "Adăpost"
+          }
         },
         "source": {
           "label": "Surse"
         },
         "sport": {
+          "label": "Sporturi",
+          "options": {
+            "cycling": "Ciclism",
+            "running": "Alergare",
+            "skiing": "Schiat"
+          }
+        },
+        "sport/sport_ice": {
+          "label": "Sporturi"
+        },
+        "sport/sport_pub": {
+          "label": "Sporturi"
+        },
+        "sport/sport_racing_motor": {
+          "label": "Sporturi"
+        },
+        "sport/sport_racing_nonmotor": {
           "label": "Sporturi"
         },
         "stars": {
@@ -989,15 +1479,40 @@
         "step_count": {
           "label": "Număr de Trepte"
         },
+        "stile": {
+          "label": "Tip"
+        },
         "stop": {
           "options": {
             "minor": "Stradă Minoră"
+          }
+        },
+        "street_cabinet": {
+          "label": "Tip"
+        },
+        "stroller": {
+          "options": {
+            "limited": "Limitat",
+            "no": "Nu",
+            "yes": "Da"
           }
         },
         "structure": {
           "label": "Structură",
           "options": {
             "bridge": "Pod",
+            "embankment": "Îmbarcare",
+            "ford": "Vad",
+            "tunnel": "Tunel"
+          },
+          "placeholder": "Necunoscut"
+        },
+        "structure_power": {
+          "label": "Structură"
+        },
+        "structure_waterway": {
+          "label": "Structură",
+          "options": {
             "tunnel": "Tunel"
           },
           "placeholder": "Necunoscut"
@@ -1005,8 +1520,20 @@
         "studio": {
           "label": "Tip"
         },
+        "substance": {
+          "options": {
+            "fuel": "Benzină",
+            "water": "Apă de Băut"
+          }
+        },
         "substation": {
           "label": "Tip"
+        },
+        "substation_pipeline": {
+          "label": "Tip",
+          "options": {
+            "measurement": "Măsurare"
+          }
         },
         "supervised": {
           "label": "Supravegheat"
@@ -1015,7 +1542,12 @@
           "label": "Suport"
         },
         "surface": {
-          "label": "Suprafață"
+          "label": "Suprafață",
+          "options": {
+            "grass": "Iarbă",
+            "sand": "Nisip",
+            "wood": "Pădure"
+          }
         },
         "surveillance/type": {
           "options": {
@@ -1023,14 +1555,56 @@
             "guard": "Paznic"
           }
         },
+        "survey_point/purpose": {
+          "options": {
+            "both": "Amândouă"
+          }
+        },
+        "survey_point/structure": {
+          "label": "Structură",
+          "options": {
+            "block": "Blocaj",
+            "cut": "Taie"
+          }
+        },
+        "swimming_pool": {
+          "label": "Tip"
+        },
+        "switch": {
+          "label": "Tip"
+        },
         "takeaway": {
           "options": {
             "no": "Nu",
             "yes": "Da"
           }
         },
-        "tomb": {
+        "telecom": {
           "label": "Tip"
+        },
+        "telescope/type": {
+          "label": "Tip"
+        },
+        "toilets": {
+          "label": "Toaletă"
+        },
+        "toilets/menstrual_products": {
+          "options": {
+            "no": "Nu"
+          }
+        },
+        "toilets/wheelchair": {
+          "options": {
+            "limited": "Limitat",
+            "no": "Nu",
+            "yes": "Da"
+          }
+        },
+        "tomb": {
+          "label": "Tip",
+          "options": {
+            "tumulus": "Tumul"
+          }
         },
         "tourism": {
           "label": "Tip"
@@ -1041,17 +1615,95 @@
         "tower/type": {
           "label": "Tip"
         },
-        "traffic_calming": {
+        "townhall/type": {
           "label": "Tip"
+        },
+        "trade": {
+          "label": "Tip"
+        },
+        "traffic_calming": {
+          "label": "Tip",
+          "options": {
+            "bump": "Cucui de Viteză",
+            "hump": "Cucui de Viteză"
+          }
+        },
+        "traffic_sign/direction": {
+          "options": {
+            "backward": "Înapoi",
+            "forward": "Înainte"
+          }
         },
         "traffic_signals": {
           "label": "Tip"
         },
+        "traffic_signals/direction": {
+          "options": {
+            "backward": "Înapoi",
+            "forward": "Înainte"
+          }
+        },
+        "traffic_signals/sound": {
+          "options": {
+            "no": "Nu",
+            "yes": "Da"
+          }
+        },
         "trail_visibility": {
           "placeholder": "Excelent, Bun, Prost..."
         },
+        "transformer": {
+          "label": "Tip"
+        },
         "trees": {
           "label": "Copaci"
+        },
+        "trench": {
+          "label": "Tip"
+        },
+        "tunnel": {
+          "label": "Tip",
+          "placeholder": "Implicit"
+        },
+        "tunnel_combo": {
+          "label": "Tip"
+        },
+        "two_sided": {
+          "options": {
+            "undefined": "Nu",
+            "yes": "Da"
+          }
+        },
+        "usage_rail": {
+          "options": {
+            "branch": "Sucursală",
+            "tourism": "Turism"
+          }
+        },
+        "utility": {
+          "options": {
+            "power": "Energie",
+            "water": "Apă"
+          }
+        },
+        "valve": {
+          "label": "Tip"
+        },
+        "vehicles": {
+          "options": {
+            "monorail": "Monoșină",
+            "subway": "Metrou",
+            "tram": "Tranvai"
+          }
+        },
+        "vending": {
+          "options": {
+            "fuel": "Benzină",
+            "water": "Apă de Băut"
+          }
+        },
+        "via": {
+          "label": "Prin"
         },
         "visibility": {
           "label": "Vizibilitate"
@@ -1074,19 +1726,43 @@
         "water": {
           "label": "Tip"
         },
+        "water_source": {
+          "options": {
+            "pond": "Iaz",
+            "river": "Râu",
+            "stream": "Fluviu"
+          }
+        },
         "waterway": {
           "label": "Tip"
         },
         "wetland": {
           "label": "Tip"
         },
+        "wheelchair": {
+          "options": {
+            "limited": "Limitat",
+            "no": "Nu",
+            "yes": "Da"
+          }
+        },
         "width": {
           "label": "Grosime (Metri)"
+        },
+        "windings/auto": {
+          "options": {
+            "no": "Nu",
+            "undefined": "Presupus a fi Nu",
+            "yes": "Da"
+          }
         }
       },
       "presets": {
         "address": {
           "name": "Adresă"
+        },
+        "advertising/board": {
+          "name": "Avizier"
         },
         "aerialway/mixed_lift": {
           "name": "Lift Mixat"
@@ -1165,6 +1841,9 @@
         },
         "amenity/embassy": {
           "name": "Ambasadă"
+        },
+        "amenity/ferry_terminal": {
+          "name": "Terminal de Bac"
         },
         "amenity/fire_station": {
           "name": "Pompieri"
@@ -1256,6 +1935,9 @@
         "amenity/school": {
           "name": "Școală"
         },
+        "amenity/shelter": {
+          "name": "Adăpost"
+        },
         "amenity/social_facility": {
           "name": "Facilitate Socială"
         },
@@ -1283,11 +1965,35 @@
         "area": {
           "name": "Suprafață"
         },
+        "attraction/animal": {
+          "name": "Țarc animale"
+        },
+        "attraction/bungee_jumping": {
+          "name": "Sărituri cu coarda elastică"
+        },
+        "attraction/carousel": {
+          "name": "Carusel"
+        },
+        "attraction/maze": {
+          "name": "Labirint"
+        },
+        "attraction/roller_coaster": {
+          "name": "Roller coaster"
+        },
+        "attraction/water_slide": {
+          "name": "Tobogan cu apă"
+        },
         "barrier": {
           "name": "Barieră"
         },
         "barrier/block": {
           "name": "Blocaj"
+        },
+        "barrier/bollard": {
+          "name": "Bolard"
+        },
+        "barrier/chain": {
+          "name": "Lanț"
         },
         "barrier/city_wall": {
           "name": "Zid de Oraș"
@@ -1301,8 +2007,29 @@
         "barrier/gate": {
           "name": "Poartă"
         },
+        "barrier/guard_rail": {
+          "name": "Parapet"
+        },
+        "barrier/hedge": {
+          "name": "Gard viu"
+        },
+        "barrier/height_restrictor": {
+          "name": "Limitator de înălțime"
+        },
+        "barrier/kerb": {
+          "name": "Bordură"
+        },
+        "barrier/stile": {
+          "name": "Pârleaz"
+        },
+        "barrier/turnstile": {
+          "name": "Turnichet"
+        },
         "barrier/wall": {
           "name": "Zid"
+        },
+        "boundary": {
+          "name": "Graniță"
         },
         "boundary/administrative": {
           "name": "Graniță Administrativă"
@@ -1328,6 +2055,9 @@
         "building/church": {
           "name": "Biserică"
         },
+        "building/civic": {
+          "name": "Clădire civică"
+        },
         "building/college": {
           "name": "Colegiu"
         },
@@ -1336,6 +2066,9 @@
         },
         "building/construction": {
           "name": "Clădire în Construcție"
+        },
+        "building/cowshed": {
+          "name": "Grajd"
         },
         "building/detached": {
           "name": "Casă Detașată"
@@ -1346,14 +2079,32 @@
         "building/entrance": {
           "name": "Intrare/Ieșire"
         },
+        "building/farm": {
+          "name": "Casă la fermă"
+        },
+        "building/farm_auxiliary": {
+          "name": "Clădire a fermei"
+        },
+        "building/fire_station": {
+          "name": "Stație pompieri"
+        },
         "building/garage": {
           "name": "Garaj"
         },
         "building/garages": {
           "name": "Garaje"
         },
+        "building/ger": {
+          "name": "Iurtă"
+        },
+        "building/grandstand": {
+          "name": "Tribună"
+        },
         "building/greenhouse": {
           "name": "Seră"
+        },
+        "building/hangar": {
+          "name": "Hangar"
         },
         "building/hospital": {
           "name": "Spital"
@@ -1364,11 +2115,20 @@
         "building/house": {
           "name": "Casă"
         },
+        "building/houseboat": {
+          "name": "Casă plutitoare"
+        },
         "building/hut": {
           "name": "Colibă"
         },
         "building/industrial": {
           "name": "Clădire Industrială"
+        },
+        "building/mosque": {
+          "name": "Clădire moschee"
+        },
+        "building/office": {
+          "name": "Clădire birouri"
         },
         "building/public": {
           "name": "Clădire Publică"
@@ -1388,11 +2148,26 @@
         "building/semidetached_house": {
           "name": "Casă Semi-detașată"
         },
+        "building/sty": {
+          "name": "Cocină"
+        },
+        "building/synagogue": {
+          "name": "Clădire sinagogă"
+        },
+        "building/temple": {
+          "name": "Clădire templu"
+        },
         "building/university": {
           "name": "Universitate"
         },
         "building/warehouse": {
           "name": "Depozit"
+        },
+        "building_part": {
+          "name": "Parte de clădire"
+        },
+        "building_point": {
+          "name": "Clădire"
         },
         "craft/gardener": {
           "name": "Grădinar"
@@ -1433,6 +2208,9 @@
         "ford": {
           "name": "Vad"
         },
+        "ford_line": {
+          "name": "Vad"
+        },
         "golf/fairway": {
           "name": "Drum Maritim"
         },
@@ -1454,6 +2232,9 @@
         "highway/footway": {
           "name": "Potecă"
         },
+        "highway/footway/sidewalk": {
+          "name": "Drum de Pietoni"
+        },
         "highway/motorway": {
           "name": "Autostradă"
         },
@@ -1465,6 +2246,9 @@
         },
         "highway/path": {
           "name": "Potecă"
+        },
+        "highway/pedestrian_line": {
+          "name": "Drum Pietonal"
         },
         "highway/primary": {
           "name": "Drum principal"
@@ -1550,6 +2334,12 @@
         "historic/tomb": {
           "name": "Mormânt"
         },
+        "indoor/corridor": {
+          "name": "Coridor Interior"
+        },
+        "indoor/corridor_line": {
+          "name": "Coridor Interior"
+        },
         "junction": {
           "name": "Juncție"
         },
@@ -1598,8 +2388,17 @@
         "landuse/military/barracks": {
           "name": "Baraci"
         },
+        "landuse/military/base/navy": {
+          "name": "Bază Navală"
+        },
         "landuse/military/range": {
           "name": "Gamă Militară"
+        },
+        "landuse/pond": {
+          "name": "Iaz"
+        },
+        "landuse/reservoir": {
+          "name": "Rezervor"
         },
         "landuse/residential": {
           "name": "Zonă Rezidențială"
@@ -1633,6 +2432,9 @@
         },
         "leisure/garden": {
           "name": "Grădină"
+        },
+        "leisure/garden/community": {
+          "name": "Grădină Comunitară"
         },
         "leisure/golf_course": {
           "name": "Curs de Golf"
@@ -1730,8 +2532,14 @@
         "man_made/surveillance": {
           "name": "Supraveghere"
         },
+        "man_made/surveillance/camera": {
+          "name": "Cameră de Supraveghere"
+        },
         "man_made/tower": {
           "name": "Turn"
+        },
+        "man_made/tower/observation": {
+          "name": "Turn de Observație"
         },
         "man_made/wastewater_plant": {
           "name": "Sta'ie de Epurare"
@@ -1750,6 +2558,15 @@
         },
         "man_made/works": {
           "name": "Fabrică"
+        },
+        "military/bunker": {
+          "name": "Munker Militar"
+        },
+        "military/nuclear_explosion_site": {
+          "name": "Sit de Explozie Nucleară"
+        },
+        "military/office": {
+          "name": "Oficiu Militar"
         },
         "natural/bare_rock": {
           "name": "Stâncă"
@@ -1778,6 +2595,9 @@
         "natural/heath": {
           "name": "Landă"
         },
+        "natural/hot_spring": {
+          "name": "Izvor termal"
+        },
         "natural/peak": {
           "name": "Vârf"
         },
@@ -1799,6 +2619,9 @@
         "natural/water": {
           "name": "Apă"
         },
+        "natural/water/basin": {
+          "name": "Bazin"
+        },
         "natural/water/lake": {
           "name": "Lac"
         },
@@ -1819,6 +2642,9 @@
         },
         "office/administrative": {
           "name": "Oficiu Administrativ"
+        },
+        "office/diplomatic/embassy": {
+          "name": "Ambasadă"
         },
         "office/educational_institution": {
           "name": "Instituție Educațională"
@@ -1849,6 +2675,9 @@
         },
         "office/ngo": {
           "name": "Oficiu NGO"
+        },
+        "office/notary": {
+          "name": "Notar"
         },
         "office/physician": {
           "name": "Fizician"
@@ -1898,11 +2727,20 @@
         "place/village": {
           "name": "Sat"
         },
+        "playground": {
+          "name": "Echipament de loc de joacă"
+        },
         "point": {
           "name": "Punct"
         },
         "power/generator": {
           "name": "Generator de Energie"
+        },
+        "power/generator/source/nuclear": {
+          "name": "Reactor Nuclear"
+        },
+        "power/generator/source/wind": {
+          "name": "Turbină de Vânt"
         },
         "power/line": {
           "name": "Linie de Alimentare"
@@ -1921,6 +2759,9 @@
         },
         "power/transformer": {
           "name": "Transformator"
+        },
+        "public_transport/station_ferry": {
+          "name": "Terminal de Bac"
         },
         "railway/abandoned": {
           "name": "Cale Ferată Abandonată"
@@ -2197,6 +3038,15 @@
         "tourism/aquarium": {
           "name": "Acvariu"
         },
+        "tourism/artwork/graffiti": {
+          "name": "Grafitti"
+        },
+        "tourism/artwork/sculpture": {
+          "name": "Sculptură"
+        },
+        "tourism/artwork/statue": {
+          "name": "Statuie"
+        },
         "tourism/attraction": {
           "name": "Atracție Turistică"
         },
@@ -2293,11 +3143,17 @@
         "type/site": {
           "name": "Sit"
         },
+        "type/waterway": {
+          "name": "Drum Marin"
+        },
         "waterway/boatyard": {
           "name": "Curte de Bărci"
         },
         "waterway/dam": {
           "name": "Baraj"
+        },
+        "waterway/ditch": {
+          "name": "Șanț"
         },
         "waterway/drain": {
           "name": "Pârâu"

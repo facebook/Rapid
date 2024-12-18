@@ -16,6 +16,9 @@
             "private": {
               "title": "একান্ত"
             },
+            "unknown": {
+              "title": "অজানা"
+            },
             "yes": {
               "title": "অনুমোদিত"
             }
@@ -26,6 +29,23 @@
             "foot": "পদচালন",
             "horse": "ঘোড়া",
             "motor_vehicle": "মোটরগাড়ি"
+          }
+        },
+        "access_aisle": {
+          "label": "ধরন"
+        },
+        "access_simple": {
+          "options": {
+            "no": "কিছুনা",
+            "permissive": "অনুমতিসূচক",
+            "private": "একান্ত",
+            "unknown": "অজানা"
+          }
+        },
+        "addr/interpolation": {
+          "label": "ধরন",
+          "options": {
+            "all": "সব"
           }
         },
         "address": {
@@ -48,6 +68,9 @@
             "suburb": "শহরতলি",
             "unit": "একক"
           }
+        },
+        "advertising": {
+          "label": "ধরন"
         },
         "aerialway": {
           "label": "ধরন"
@@ -82,8 +105,16 @@
         "amenity": {
           "label": "ধরন"
         },
+        "archaeological_site": {
+          "label": "ধরন"
+        },
         "area/highway": {
           "label": "ধরন"
+        },
+        "armrest": {
+          "options": {
+            "undefined": "অজানা"
+          }
         },
         "artist": {
           "label": "শিল্পী"
@@ -94,39 +125,270 @@
         "atm": {
           "label": "এটিএম"
         },
-        "barrier": {
+        "attraction": {
           "label": "ধরন"
         },
+        "baby_feeding": {
+          "options": {
+            "no": "কিছুনা"
+          }
+        },
+        "bar": {
+          "label": "পানশালা"
+        },
+        "barrier": {
+          "label": "ধরন",
+          "options": {
+            "entrance": "দ্বার",
+            "fence": "বেড়া",
+            "gate": "ফটক",
+            "wall": "দেয়াল"
+          }
+        },
+        "barrier_planter": {
+          "options": {
+            "planter": "হ্যাঁ",
+            "undefined": "না"
+          }
+        },
+        "basin": {
+          "label": "ধরন"
+        },
+        "bath/type": {
+          "options": {
+            "lake": "হ্রদ"
+          }
+        },
+        "bench": {
+          "label": "বেঞ্চ"
+        },
         "bicycle_parking": {
+          "label": "ধরন"
+        },
+        "bicycle_road": {
+          "options": {
+            "undefined": "না",
+            "yes": "হ্যাঁ"
+          }
+        },
+        "blind": {
+          "options": {
+            "no": "না",
+            "yes": "হ্যাঁ"
+          }
+        },
+        "board_type": {
+          "label": "ধরন",
+          "options": {
+            "history": "ইতিহাস"
+          }
+        },
+        "bollard": {
+          "label": "ধরন"
+        },
+        "boules": {
           "label": "ধরন"
         },
         "boundary": {
           "label": "ধরন"
         },
+        "bridge": {
+          "label": "ধরন",
+          "placeholder": "পূর্বনির্ধারিত"
+        },
+        "bridge/support": {
+          "label": "ধরন"
+        },
+        "bridge_combo": {
+          "label": "ধরন"
+        },
         "building": {
-          "label": "দালান"
+          "label": "দালান",
+          "options": {
+            "commercial": "বানিজ্যিক ভবন",
+            "garage": "গ্যারেজ",
+            "house": "বাড়ি",
+            "hut": "কুড়েঘর",
+            "industrial": "শিল্পায়িত ভবন",
+            "residential": "আবাসিক ভবন"
+          }
+        },
+        "building/levels": {
+          "label": "স্তর",
+          "placeholder": "২, ৪, ৬..."
+        },
+        "building/levels/underground": {
+          "placeholder": "২, ৪, ৬..."
+        },
+        "bunker_type": {
+          "label": "ধরন"
+        },
+        "cables": {
+          "placeholder": "১, ২, ৩..."
+        },
+        "camp_site": {
+          "label": "ধরন"
         },
         "capacity": {
           "label": "ধারণক্ষমতা",
           "placeholder": "৫০, ১০০, ২০০..."
         },
+        "capacity/disabled_parking": {
+          "placeholder": "১, ২, ৩..."
+        },
+        "capacity/persons": {
+          "placeholder": "৫০, ১০০, ২০০..."
+        },
+        "capacity_volume": {
+          "placeholder": "৫০, ১০০, ২০০..."
+        },
+        "castle_type": {
+          "label": "ধরন"
+        },
+        "club": {
+          "label": "ধরন"
+        },
         "collection_times": {
           "label": "সংগ্রহের সময়"
         },
+        "community_centre": {
+          "label": "ধরন"
+        },
         "construction": {
+          "label": "ধরন"
+        },
+        "consulate": {
           "label": "ধরন"
         },
         "country": {
           "label": "দেশ"
         },
+        "couplings": {
+          "placeholder": "১, ২, ৩..."
+        },
+        "covered_no": {
+          "options": {
+            "no": "না",
+            "yes": "হ্যাঁ"
+          }
+        },
+        "craft": {
+          "label": "ধরন"
+        },
+        "crop": {
+          "options": {
+            "grass": "ঘাস"
+          }
+        },
         "crossing": {
+          "label": "ধরন"
+        },
+        "crossing/barrier": {
+          "options": {
+            "no": "না",
+            "yes": "হ্যাঁ"
+          }
+        },
+        "crossing_raised": {
+          "options": {
+            "table": "হ্যাঁ",
+            "undefined": "না"
+          }
+        },
+        "cutting": {
+          "label": "ধরন",
+          "placeholder": "পূর্বনির্ধারিত"
+        },
+        "cycle_network": {
+          "label": "নেটওয়ার্ক"
+        },
+        "cycleway": {
+          "options": {
+            "no": {
+              "title": "কিছুনা"
+            }
+          }
+        },
+        "departures_board": {
+          "options": {
+            "no": "কিছুনা",
+            "yes": "হ্যাঁ"
+          }
+        },
+        "depot": {
           "label": "ধরন"
         },
         "description": {
           "label": "বর্ননা"
         },
+        "destination_waterway": {
+          "label": "গন্তব্য"
+        },
+        "devices": {
+          "placeholder": "১, ২, ৩..."
+        },
+        "diplomatic": {
+          "label": "ধরন",
+          "options": {
+            "embassy": "দুতাবাস"
+          }
+        },
+        "direction_cardinal-US-CA-NZ": {
+          "label": "দিক"
+        },
+        "direction_clock": {
+          "label": "দিক",
+          "options": {
+            "anticlockwise": "ঘড়ির কাটার উল্টো দিকে",
+            "clockwise": "ঘড়ির কাটার দিকে"
+          }
+        },
+        "disused/amenity": {
+          "label": "ধরন"
+        },
+        "disused/railway": {
+          "label": "ধরন"
+        },
+        "disused/shop": {
+          "label": "ধরন"
+        },
+        "dock": {
+          "label": "ধরন"
+        },
+        "dog": {
+          "options": {
+            "yes": "অনুমোদিত"
+          }
+        },
+        "door_type": {
+          "label": "ধরন"
+        },
+        "electrified": {
+          "options": {
+            "no": "না"
+          }
+        },
+        "embankment": {
+          "label": "ধরন",
+          "placeholder": "পূর্বনির্ধারিত"
+        },
+        "embassy": {
+          "label": "ধরন",
+          "options": {
+            "yes": "দুতাবাস"
+          }
+        },
         "emergency": {
           "label": "জরুরি"
+        },
+        "emergency_combo": {
+          "label": "ধরন"
+        },
+        "emergency_ward_entrance": {
+          "label": "ধরন"
+        },
+        "enforcement": {
+          "label": "ধরন"
         },
         "entrance": {
           "label": "ধরন"
@@ -141,19 +403,56 @@
         "fee": {
           "label": "মূল্য"
         },
+        "fence_type": {
+          "label": "ধরন"
+        },
         "fire_hydrant/type": {
           "options": {
             "wall": "দেয়াল"
           }
         },
+        "fire_mains": {
+          "options": {
+            "no": "না"
+          }
+        },
+        "fire_service_inlet": {
+          "options": {
+            "wall": "দেয়াল"
+          }
+        },
+        "fire_sprinkler": {
+          "options": {
+            "no": "না"
+          }
+        },
         "fixme": {
           "label": "আমাকে ঠিক করুন"
+        },
+        "flashing_lights": {
+          "options": {
+            "no": "না",
+            "yes": "হ্যাঁ"
+          }
+        },
+        "ford": {
+          "label": "ধরন",
+          "placeholder": "পূর্বনির্ধারিত"
+        },
+        "fountain": {
+          "label": "ধরন"
         },
         "fuel": {
           "label": "জ্বালানি"
         },
+        "gender": {
+          "placeholder": "অজানা"
+        },
         "generator/method": {
-          "label": "পদ্ধতি"
+          "label": "পদ্ধতি",
+          "options": {
+            "water-storage": "জলাধার"
+          }
         },
         "generator/source": {
           "label": "উৎস"
@@ -161,21 +460,57 @@
         "generator/type": {
           "label": "ধরন"
         },
+        "government": {
+          "label": "ধরন"
+        },
+        "guest_house": {
+          "label": "ধরন"
+        },
         "handicap": {
           "label": "বিকলাঙ্গ",
           "placeholder": "১-১৮"
         },
+        "healthcare": {
+          "label": "ধরন"
+        },
         "highway": {
           "label": "ধরন"
         },
+        "highway_cartpath": {
+          "options": {
+            "service": "সার্ভিস রোড"
+          }
+        },
         "historic": {
+          "label": "ধরন",
+          "options": {
+            "castle": "প্রাসাদ",
+            "memorial": "স্মরণচিহ্ন",
+            "monument": "স্মৃতিস্তম্ভ",
+            "railway": "রেলপথ",
+            "ruins": "ধ্বংসাবশেষ"
+          }
+        },
+        "holding_position/type": {
           "label": "ধরন"
         },
         "hoops": {
           "placeholder": "১, ২, ৪..."
         },
+        "horse_riding": {
+          "options": {
+            "horse_riding": "হ্যাঁ",
+            "undefined": "না"
+          }
+        },
         "incline": {
           "label": "ঝোকা"
+        },
+        "indoor_type": {
+          "label": "ধরন"
+        },
+        "industrial": {
+          "label": "ধরন"
         },
         "information": {
           "label": "ধরন"
@@ -188,6 +523,22 @@
             "wlan": "তারবিহীন",
             "yes": "হ্যাঁ"
           }
+        },
+        "kerb": {
+          "options": {
+            "no": {
+              "title": "না"
+            },
+            "yes": {
+              "title": "হ্যাঁ"
+            }
+          }
+        },
+        "kerb/kerb_barrier": {
+          "label": "ধরন"
+        },
+        "lamp_type": {
+          "label": "ধরন"
         },
         "landuse": {
           "label": "ধরন"
@@ -205,15 +556,63 @@
         "length": {
           "label": "দৈর্ঘ্য (মিটার)"
         },
+        "level_semi": {
+          "label": "স্তর"
+        },
+        "liaison": {
+          "label": "ধরন"
+        },
+        "lifeguard": {
+          "label": "ধরন"
+        },
+        "lift_gate/type": {
+          "label": "ধরন"
+        },
         "location": {
           "label": "অবস্থান"
         },
         "man_made": {
           "label": "ধরন"
         },
+        "manhole": {
+          "label": "ধরন"
+        },
+        "map_type": {
+          "label": "ধরন"
+        },
+        "marker": {
+          "label": "ধরন"
+        },
+        "material": {
+          "options": {
+            "wood": "অরন্য"
+          }
+        },
         "maxspeed": {
           "label": "গতিসীমা",
           "placeholder": "৪০, ৫০, ৬০..."
+        },
+        "maxspeed/advisory": {
+          "placeholder": "৪০, ৫০, ৬০..."
+        },
+        "maxspeed/hgv": {
+          "placeholder": "৪০, ৫০, ৬০..."
+        },
+        "memorial": {
+          "label": "ধরন"
+        },
+        "mobile": {
+          "placeholder": "+৩১ ৪২ ১২৩ ৪৫৬৭"
+        },
+        "mooring": {
+          "options": {
+            "no": "না",
+            "private": "একান্ত",
+            "yes": "হ্যাঁ"
+          }
+        },
+        "museum": {
+          "label": "ধরন"
         },
         "name": {
           "label": "নাম",
@@ -225,47 +624,159 @@
         "network": {
           "label": "নেটওয়ার্ক"
         },
+        "network_road": {
+          "label": "নেটওয়ার্ক"
+        },
         "note": {
           "label": "টীকা"
         },
+        "nudism": {
+          "options": {
+            "no": "নিষিদ্ধ",
+            "permissive": "অনুমতিসূচক",
+            "yes": "অনুমোদিত"
+          }
+        },
         "office": {
-          "label": "ধরন"
+          "label": "ধরন",
+          "options": {
+            "ngo": "এনজিও অফিস",
+            "physician": "চিকিত্সক",
+            "telecommunication": "টেলিকম অফিস"
+          }
         },
         "oneway": {
-          "label": "একমুখো"
+          "label": "একমুখো",
+          "options": {
+            "no": "না",
+            "yes": "হ্যাঁ"
+          }
+        },
+        "oneway_yes": {
+          "options": {
+            "no": "না",
+            "yes": "হ্যাঁ"
+          }
         },
         "opening_hours": {
-          "label": "ঘন্টা"
+          "label": "ঘন্টা",
+          "placeholder": "অজানা"
         },
         "operator": {
           "label": "পরিচালক"
         },
+        "organic": {
+          "options": {
+            "no": "কিছুনা"
+          }
+        },
+        "parcel_pickup": {
+          "options": {
+            "no": "না",
+            "yes": "হ্যাঁ"
+          }
+        },
         "parking": {
+          "label": "ধরন",
+          "options": {
+            "surface": "উপরিভাগ"
+          }
+        },
+        "parking/side/parking": {
+          "options": {
+            "no": "না"
+          }
+        },
+        "parking_entrance": {
           "label": "ধরন"
+        },
+        "parking_space": {
+          "label": "ধরন"
+        },
+        "phases": {
+          "placeholder": "১, ২, ৩..."
         },
         "phone": {
           "label": "টেলিফোন",
           "placeholder": "+৩১ ৪২ ১২৩ ৪৫৬৭"
         },
+        "pipeline": {
+          "label": "ধরন"
+        },
+        "piste/type": {
+          "label": "ধরন",
+          "options": {
+            "playground": "খেলার মাঠ"
+          }
+        },
         "place": {
+          "label": "ধরন"
+        },
+        "playground": {
           "label": "ধরন"
         },
         "population": {
           "label": "জনসংখ্যা"
         },
+        "post_box/type": {
+          "label": "ধরন"
+        },
         "power": {
           "label": "ধরন"
         },
+        "public_bookcase/type": {
+          "label": "ধরন"
+        },
+        "pump": {
+          "options": {
+            "no": "কিছুনা",
+            "yes": "হ্যাঁ"
+          }
+        },
         "railway": {
           "label": "ধরন"
+        },
+        "ramp": {
+          "options": {
+            "no": "না",
+            "yes": "হ্যাঁ"
+          }
+        },
+        "recycling_type": {
+          "label": "ধরন"
+        },
+        "ref_disc_golf_hole": {
+          "placeholder": "১-১৮"
+        },
+        "ref_golf_hole": {
+          "placeholder": "১-১৮"
         },
         "relation": {
           "label": "ধরন"
         },
         "religion": {
-          "label": "ধর্ম"
+          "label": "ধর্ম",
+          "options": {
+            "buddhist": "বৌদ্ধ",
+            "christian": "খ্রিষ্টান",
+            "hindu": "হিন্দু",
+            "jewish": "ইহুদি",
+            "muslim": "মুসলিম"
+          }
+        },
+        "residential": {
+          "label": "ধরন"
+        },
+        "resort": {
+          "label": "ধরন"
         },
         "restriction": {
+          "label": "ধরন"
+        },
+        "roller_coaster/track": {
+          "label": "ধরন"
+        },
+        "room": {
           "label": "ধরন"
         },
         "route": {
@@ -274,14 +785,85 @@
         "route_master": {
           "label": "ধরন"
         },
-        "service": {
+        "royal_cypher-GB": {
+          "options": {
+            "no": "না"
+          }
+        },
+        "ruins": {
           "label": "ধরন"
+        },
+        "seamark/beacon_lateral/system": {
+          "options": {
+            "other": "অন্যান্য"
+          }
+        },
+        "seamark/buoy_lateral/system": {
+          "options": {
+            "other": "অন্যান্য"
+          }
+        },
+        "seamark/harbour/category_marina": {
+          "options": {
+            "marina": "হ্যাঁ",
+            "marina_no_facilities": "না"
+          }
+        },
+        "seats": {
+          "placeholder": "২, ৪, ৬..."
+        },
+        "second_hand": {
+          "options": {
+            "no": "না",
+            "yes": "হ্যাঁ"
+          }
+        },
+        "service": {
+          "label": "ধরন",
+          "options": {
+            "alley": "গলি"
+          }
         },
         "shelter": {
           "label": "ছাউনি"
         },
+        "shelter_type": {
+          "label": "ধরন"
+        },
         "shop": {
           "label": "ধরন"
+        },
+        "siren/type": {
+          "label": "ধরন",
+          "options": {
+            "other": "অন্যান্য"
+          }
+        },
+        "site": {
+          "label": "ধরন"
+        },
+        "social_facility": {
+          "label": "ধরন",
+          "options": {
+            "shelter": "ছাউনি"
+          }
+        },
+        "sport": {
+          "options": {
+            "golf": "গল্ফ"
+          }
+        },
+        "stile": {
+          "label": "ধরন"
+        },
+        "street_cabinet": {
+          "label": "ধরন"
+        },
+        "stroller": {
+          "options": {
+            "no": "না",
+            "yes": "হ্যাঁ"
+          }
         },
         "structure": {
           "label": "কাঠামো",
@@ -291,14 +873,168 @@
           },
           "placeholder": "অজানা"
         },
+        "structure_power": {
+          "label": "কাঠামো"
+        },
+        "structure_waterway": {
+          "label": "কাঠামো",
+          "options": {
+            "tunnel": "সুড়ঙ্গ"
+          },
+          "placeholder": "অজানা"
+        },
+        "studio": {
+          "label": "ধরন"
+        },
+        "substance": {
+          "options": {
+            "fuel": "জ্বালানি",
+            "water": "পানীয় জল"
+          }
+        },
+        "substation": {
+          "label": "ধরন"
+        },
+        "substation_pipeline": {
+          "label": "ধরন"
+        },
         "surface": {
-          "label": "উপরিভাগ"
+          "label": "উপরিভাগ",
+          "options": {
+            "grass": "ঘাস",
+            "wood": "অরন্য"
+          }
+        },
+        "survey_point/purpose": {
+          "options": {
+            "both": "উভয়"
+          }
+        },
+        "survey_point/structure": {
+          "label": "কাঠামো"
+        },
+        "swimming_pool": {
+          "label": "ধরন"
+        },
+        "switch": {
+          "label": "ধরন"
+        },
+        "takeaway": {
+          "options": {
+            "no": "না",
+            "yes": "হ্যাঁ"
+          }
+        },
+        "telecom": {
+          "label": "ধরন"
+        },
+        "telescope/type": {
+          "label": "ধরন"
+        },
+        "toilets": {
+          "label": "শৌচাগার"
+        },
+        "toilets/menstrual_products": {
+          "options": {
+            "no": "না"
+          }
+        },
+        "toilets/wheelchair": {
+          "options": {
+            "no": "না",
+            "yes": "হ্যাঁ"
+          }
+        },
+        "tomb": {
+          "label": "ধরন"
         },
         "tourism": {
           "label": "ধরন"
         },
+        "tower/construction": {
+          "label": "মেরামত"
+        },
+        "tower/platforms": {
+          "placeholder": "১, ২, ৩..."
+        },
+        "tower/type": {
+          "label": "ধরন"
+        },
+        "townhall/type": {
+          "label": "ধরন"
+        },
+        "trade": {
+          "label": "ধরন"
+        },
+        "traffic_calming": {
+          "label": "ধরন"
+        },
+        "traffic_signals": {
+          "label": "ধরন"
+        },
+        "traffic_signals/sound": {
+          "options": {
+            "no": "না",
+            "yes": "হ্যাঁ"
+          }
+        },
+        "transformer": {
+          "label": "ধরন"
+        },
+        "trench": {
+          "label": "ধরন"
+        },
+        "tunnel": {
+          "label": "ধরন",
+          "placeholder": "পূর্বনির্ধারিত"
+        },
+        "tunnel_combo": {
+          "label": "ধরন"
+        },
+        "two_sided": {
+          "options": {
+            "undefined": "না",
+            "yes": "হ্যাঁ"
+          }
+        },
+        "usage_rail": {
+          "options": {
+            "tourism": "পর্যটন"
+          }
+        },
+        "utility": {
+          "options": {
+            "water": "জল"
+          }
+        },
+        "valve": {
+          "label": "ধরন"
+        },
+        "vehicles": {
+          "options": {
+            "monorail": "মনোরেল",
+            "subway": "ভূতলপথ",
+            "tram": "ট্রাম"
+          }
+        },
+        "vending": {
+          "options": {
+            "fuel": "জ্বালানি",
+            "water": "পানীয় জল"
+          }
+        },
+        "wall": {
+          "label": "ধরন"
+        },
         "water": {
           "label": "ধরন"
+        },
+        "water_source": {
+          "options": {
+            "pond": "পুকুর",
+            "river": "নদী",
+            "stream": "পানিস্রোত"
+          }
         },
         "waterway": {
           "label": "ধরন"
@@ -309,8 +1045,23 @@
         "wetland": {
           "label": "ধরন"
         },
+        "wheelchair": {
+          "options": {
+            "no": "না",
+            "yes": "হ্যাঁ"
+          }
+        },
         "wikipedia": {
           "label": "উইকিপিডিয়া"
+        },
+        "windings": {
+          "placeholder": "১, ২, ৩..."
+        },
+        "windings/auto": {
+          "options": {
+            "no": "না",
+            "yes": "হ্যাঁ"
+          }
         }
       },
       "presets": {
@@ -401,6 +1152,9 @@
         "amenity/restaurant": {
           "name": "রেস্তোরাঁ"
         },
+        "amenity/shelter": {
+          "name": "ছাউনি"
+        },
         "amenity/telephone": {
           "name": "টেলিফোন"
         },
@@ -424,6 +1178,9 @@
         },
         "barrier/wall": {
           "name": "দেয়াল"
+        },
+        "boundary": {
+          "name": "সীমানা"
         },
         "boundary/administrative": {
           "name": "প্রশাসনিক সীমানা"
@@ -449,8 +1206,14 @@
         "building/residential": {
           "name": "আবাসিক ভবন"
         },
+        "building_point": {
+          "name": "দালান"
+        },
         "emergency/phone": {
           "name": "জরুরি ফোন"
+        },
+        "highway/crossing": {
+          "name": "ক্রসিং"
         },
         "highway/cycleway": {
           "name": "সাইকেলের রাস্তা"
@@ -524,8 +1287,14 @@
         "landuse/orchard": {
           "name": "ফলের বাগান"
         },
+        "landuse/pond": {
+          "name": "পুকুর"
+        },
         "landuse/quarry": {
           "name": "খনি"
+        },
+        "landuse/reservoir": {
+          "name": "জলাধার"
         },
         "landuse/vineyard": {
           "name": "আঙুরখেত"
@@ -626,6 +1395,9 @@
         "office": {
           "name": "কার্যালয়"
         },
+        "office/diplomatic/embassy": {
+          "name": "দুতাবাস"
+        },
         "office/ngo": {
           "name": "এনজিও অফিস"
         },
@@ -646,6 +1418,9 @@
         },
         "place/locality": {
           "name": "অঞ্চল"
+        },
+        "place/square": {
+          "name": "বর্গাকৃতি"
         },
         "place/town": {
           "name": "উপনগর"
@@ -775,6 +1550,9 @@
         },
         "type/boundary/administrative": {
           "name": "প্রশাসনিক সীমানা"
+        },
+        "type/waterway": {
+          "name": "পানিপথ"
         },
         "waterway/canal": {
           "name": "খাল"

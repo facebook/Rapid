@@ -8,6 +8,7 @@
         "attribution": {
           "text": "Sąlygos ir atsiliepimai"
         },
+        "description": "Esri Pasaulio Nuotraukos",
         "name": "Esri Pasaulio Nuotraukos"
       },
       "EsriWorldImageryClarity": {
@@ -23,6 +24,11 @@
           "text": "Sąlygos ir atsiliepimai"
         }
       },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "GSI Japonija"
+        }
+      },
       "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
         "attribution": {
           "text": "GSI Japonija"
@@ -32,6 +38,16 @@
       "mapbox_locator_overlay": {
         "attribution": {
           "text": "Sąlygos ir atsiliepimai"
+        }
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© OpenStreetMap talkininkai, CC-BY-SA"
+        }
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© OpenStreetMap talkininkai"
         }
       },
       "osm-mapnik-german_style": {

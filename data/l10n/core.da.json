@@ -27,16 +27,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Område",
-        "filter_tooltip": "områder"
+        "title": "Område"
       },
       "add_line": {
-        "title": "Linje",
-        "filter_tooltip": "linjer"
+        "title": "Linje"
       },
       "add_point": {
-        "title": "Punkt",
-        "filter_tooltip": "punkter"
+        "title": "Punkt"
       },
       "add_note": {
         "title": "Bemærkning",
@@ -119,52 +116,15 @@
       },
       "circularize": {
         "title": "Cirkulariser",
-        "description": {
-          "single": "Gør dette objekt rundt.",
-          "multiple": "Lav disse objekter runde."
-        },
         "annotation": {
           "feature": {
             "one": "Gjorde et kortobjekt rundt.",
             "other": "Gjorde {n} kortobjekter runde."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Disse kan ikke gøres cirkulære af flere grunde."
-        },
-        "not_closed": {
-          "single": "Dette kan ikke gøres cirkulært, da det ikke er en sløjfe.",
-          "multiple": "Disse kan ikke gøres cirkulære, da de ikke er sløjfer."
-        },
-        "too_large": {
-          "single": "Dette kan ikke gøres cirkulært, da ikke nok af det er synligt i den nuværende visning.",
-          "multiple": "Disse kan ikke gøres cirkulære, da ikke nok af dem er synlige i den nuværende visning."
-        },
-        "connected_to_hidden": {
-          "single": "Dette kan ikke gøres cirkulært, da det er forbundet til et skjult kortobjekt.",
-          "multiple": "Disse kan ikke gøres cirkulære, da de er forbundne til skjulte kortobjekter."
-        },
-        "not_downloaded": {
-          "single": "Dette kan ikke gøres cirkulært, da dele af det endnu ikke er hentet.",
-          "multiple": "Disse kan ikke gøres cirkulære, da dele af dem endnu ikke er hentet."
-        },
-        "already_circular": {
-          "single": "Dette kan ikke gøres mere cirkulært end det allerede er.",
-          "multiple": "Disse kan ikke gøres mere cirkulære end de allerede er."
         }
       },
       "orthogonalize": {
         "title": "Gør retvinklet",
-        "description": {
-          "corner": {
-            "single": "Gør dette hjørne retvinklet.",
-            "multiple": "Gør disse hjørner retvinklet."
-          },
-          "feature": {
-            "single": "Gør dette kortobjekts hjørner retvinklede.",
-            "multiple": "Gør disse kortobjekters hjørner retvinklede."
-          }
-        },
         "annotation": {
           "corner": {
             "one": "Gjorde et hjørne retvinklet.",
@@ -174,33 +134,6 @@
             "one": "Gjorde et kortobjekts hjørner retvinklet.",
             "other": "Gjorde {n} kortobjekters hjørner retvinklede."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Disse kan, af flere grunde, ikke gøres retvinklede."
-        },
-        "end_vertex": {
-          "single": "Dette kan ikke gøres retvinklet fordi det er et endepunkt.",
-          "multiple": "Disse kan ikke gøres retvinklede fordi de er endepunkter."
-        },
-        "square_enough": {
-          "single": "Dette kan ikke gøres mere retvinklet end det allerede er.",
-          "multiple": "Disse kan ikke gøres mere retvinklede end de allerede er."
-        },
-        "not_squarish": {
-          "single": "Dette kan ikke gøres retvinklet fordi det ikke er tæt på at være retvinklet i forvejen.",
-          "multiple": "Disse kan ikke gøres retvinklede fordi de ikke er tæt på at være retvinklede i forvejen."
-        },
-        "too_large": {
-          "single": "Dette kan ikke gøres retvinklet, da ikke nok af det er synligt i den nuværende visning.",
-          "multiple": "Disse kan ikke gøres retvinklede, da ikke nok af dem er synlige i den nuværende visning."
-        },
-        "connected_to_hidden": {
-          "single": "Dette kan ikke gøres retvinklet fordi det er forbundet til et skjult kortobjekt.",
-          "multiple": "Disse kan ikke gøres retvinklede fordi nogle af dem er forbundne til skjulte kortobjekter."
-        },
-        "not_downloaded": {
-          "single": "Dette kan ikke gøres retvinklet fordi dele af det ikke er indlæst endnu.",
-          "multiple": "Disse kan ikke gøres retvinklede fordi dele af dem ikke er indlæst endnu."
         }
       },
       "straighten": {
@@ -219,34 +152,10 @@
             "one": "Udrettede en linje.",
             "other": "Udrettede {n} linjer."
           }
-        },
-        "too_bendy": {
-          "single": "Dette kan ikke udrettes da det bøjer for meget.",
-          "multiple": "Disse kan ikke udrettes da de bøjer for meget."
-        },
-        "connected_to_hidden": {
-          "single": "Dette kan ikke udrettes da det er forbundet med et skjult kortobjekt.",
-          "multiple": "Disse kan ikke udrettes da nogle er forbundne med skjulte kortobjekter."
-        },
-        "not_downloaded": {
-          "single": "Dette kan ikke udrettes, da dele af det endnu ikke er hentet.",
-          "multiple": "Disse kan ikke udrettes, da dele af dem endnu ikke er hentet."
-        },
-        "straight_enough": {
-          "single": "Dette kan ikke udrettes mere end det allerede er.",
-          "multiple": "Disse kan ikke udrettes mere end de allerede er."
-        },
-        "too_large": {
-          "single": "Dette kan ikke udrettes, da ikke nok af det er synligt i den nuværende visning.",
-          "multiple": "Disse kan ikke udrettes, da ikke nok af dem er synligt i den nuværende visning."
         }
       },
       "delete": {
         "title": "Slet",
-        "description": {
-          "single": "Slet dette objekt permanent.",
-          "multiple": "Slet disse objekter permanent."
-        },
         "annotation": {
           "point": "Slettede et punkt.",
           "vertex": "Slettede et punkt fra en vej.",
@@ -257,30 +166,6 @@
             "one": "Slettede et kortobjekt.",
             "other": "Slettede {n} kortobjekter."
           }
-        },
-        "too_large": {
-          "single": "Dette objekt kan ikke slettes, da ikke nok af det er synligt i den nuværende visning.",
-          "multiple": "Disse objekter kan ikke slettes, da ikke nok af dem er synlige i den nuværende visning."
-        },
-        "incomplete_relation": {
-          "single": "Dette kortobjekt kan ikke slettes, da det ikke er blevet indlæst helt.",
-          "multiple": "Disse kortobjekter kan ikke slettes, da de ikke er blevet indlæst helt."
-        },
-        "part_of_relation": {
-          "single": "Dette objekt kan ikke slettes fordi det er en del af en større relation. Du er nødt til at fjerne det fra relationen først.",
-          "multiple": "Disse objekter kan ikke slettes fordi de er en del af en større relation. Du er nødt til at fjerne dem fra relationen først."
-        },
-        "connected_to_hidden": {
-          "single": "Dette objekt kan ikke slettes da det er forbundet til et skjult objekt.",
-          "multiple": "Disse kortobjekter kan ikke slettes, da nogle af dem er forbundet til skjulte kortobjekter."
-        },
-        "not_downloaded": {
-          "single": "Dette kortobjekt kan slettes, da dele af det ikke er indlæst endnu.",
-          "multiple": "Disse kortobjekter kan ikke slettes, da dele af dem ikke er indlæst endnu."
-        },
-        "has_wikidata_tag": {
-          "single": "Dette kortobjekt kan ikke slettes da det har et Wikidata-tag.",
-          "multiple": "Disse kortobjekter kan ikke slettes da nogle har et Wikidata-tag."
         }
       },
       "downgrade": {
@@ -304,10 +189,6 @@
             "one": "Nedgraderede et kortobjekt.",
             "other": "Nedgraderede {n} kortobjekter."
           }
-        },
-        "has_wikidata_tag": {
-          "single": "Dette kortobjekt kan ikke nedgraderes fordi det har et Wikidata-tag.",
-          "multiple": "Disse kortobjekter kan ikke nedgraderes fordi nogle har Wikidata-tags."
         }
       },
       "add_member": {
@@ -407,10 +288,6 @@
       },
       "move": {
         "title": "Flyt",
-        "description": {
-          "single": "Flyt dette objekt til anden lokalitet.",
-          "multiple": "Flyt disse objekter til anden lokalitet."
-        },
         "annotation": {
           "point": "Flyttede et punkt.",
           "vertex": "Flyttede et punkt i en vej.",
@@ -421,38 +298,12 @@
             "one": "Flyttede et kortobjekt.",
             "other": "Flyttede {n} kortobjekter."
           }
-        },
-        "incomplete_relation": {
-          "single": "Dette kortobjekt kan ikke flyttes, fordi det ikke er helt indlæst.",
-          "multiple": "Disse kortobjekter kan ikke flyttes da de ikke er helt indlæst."
-        },
-        "too_large": {
-          "single": "Dette objekt kan ikke flyttes, da ikke nok af det er synligt i den nuværende visning.",
-          "multiple": "Disse objekter kan ikke flyttes, da ikke nok af dem er synlige i den nuværende visning."
-        },
-        "connected_to_hidden": {
-          "single": "Dette kortobjekt kan ikke flyttes, da det er forbundet til et skjult kortobjekt.",
-          "multiple": "Disse kortobjekter kan ikke flyttes, da nogle af dem er forbundet til skjulte kortobjekter."
-        },
-        "not_downloaded": {
-          "single": "Dette kortobjekt kan ikke flyttes da dele af det ikke er indlæst endnu.",
-          "multiple": "Disse kortobjekter kan ikke flyttes da dele af dem ikke er indlæst endnu."
         }
       },
       "reflect": {
         "title": {
           "long": "Vend lang",
           "short": "Vend kort"
-        },
-        "description": {
-          "long": {
-            "single": "Vend dette kortobjekt omkring dets lange akse.",
-            "multiple": "Vend disse kortobjekter omkring deres lange akser."
-          },
-          "short": {
-            "single": "Vend dette kortobjekt omkring dets korte akse.",
-            "multiple": "Vend disse kortobjekter omkring deres korte akser."
-          }
         },
         "annotation": {
           "long": {
@@ -467,30 +318,10 @@
               "other": "Vendte {n} kortobjekter langs deres korte akser."
             }
           }
-        },
-        "incomplete_relation": {
-          "single": "Dette kortobjekt kan ikke vendes, da det ikke er blevet indlæst helt.",
-          "multiple": "Disse kortobjekter kan ikke vendes, da de ikke er blevet indlæst helt."
-        },
-        "too_large": {
-          "single": "Dette kortobjekt kan ikke vendes, da ikke nok af det er synligt i den nuværende visning.",
-          "multiple": "Disse kortobjekter kan ikke vendes, da ikke nok af dem er synligt i den nuværende visning."
-        },
-        "connected_to_hidden": {
-          "single": "Dette kortobjekt kan ikke vendes, da det er forbundet til et skjult kortobjekt.",
-          "multiple": "Disse kortobjekter kan ikke vendes, da nogle af dem er forbundet til skjulte kortobjekter."
-        },
-        "not_downloaded": {
-          "single": "Dette kortobjekt kan ikke vendes, da dele af det ikke er  indlæst endnu.",
-          "multiple": "Disse kortobjekter kan ikke vendes, da dele af dem ikke er indlæst endnu."
         }
       },
       "rotate": {
         "title": "Rotér",
-        "description": {
-          "single": "Rotér dette objekt omkring dets centerpunkt.",
-          "multiple": "Rotér disse objekter omkring deres centerpunkt."
-        },
         "annotation": {
           "line": "Roterede en linje.",
           "area": "Roterede et område.",
@@ -499,22 +330,6 @@
             "one": "Roterede et kortobjekt.",
             "other": "Roterede {n} kortobjekter."
           }
-        },
-        "incomplete_relation": {
-          "single": "Dette kortobjekt kan ikke roteres da det ikke er blevet indlæst helt.",
-          "multiple": "Disse kortobjekter kan ikke roteres da de ikke er blevet indlæst helt."
-        },
-        "too_large": {
-          "single": "Dette objekt kan ikke roteres, da ikke nok af det er synligt i den nuværende visning.",
-          "multiple": "Disse objekter kan ikke roteres, da ikke nok af dem er synlige i den nuværende visning."
-        },
-        "connected_to_hidden": {
-          "single": "Dette objekt kan ikke roteres da det er forbundet med et skjult objekt.",
-          "multiple": "Disse objekter kan ikke roteres da nogle af dem er forbundet med skjulte objekter."
-        },
-        "not_downloaded": {
-          "single": "Dette kortobjekt kan ikke roteres da dele af det ikke er blevet indlæst endnu.",
-          "multiple": "Disse kortobjekter kan ikke roteres da dele af dem ikke er blevet indlæst endnu."
         }
       },
       "reverse": {
@@ -555,22 +370,6 @@
               "other": "Opskalerede {n} kortobjekter."
             }
           }
-        },
-        "too_small": {
-          "single": "Dette kortobjekt kan ikke nedskaleres, da det så ville blive for småt.",
-          "multiple": "Disse kortobjekter kan ikke nedskaleres, da de så ville blive for små."
-        },
-        "too_large": {
-          "single": "Dette kortobjekt kan ikke skaleres, da ikke nok af det er synligt i den nuværende visning.",
-          "multiple": "Disse kortobjekter kan ikke skaleres, da ikke nok af dem er synligt i den nuværende visning."
-        },
-        "connected_to_hidden": {
-          "single": "Dette kortobjekt kan ikke skaleres, da det er forbundet med et skjult objekt.",
-          "multiple": "Disse kortobjekter kan ikke skaleres, da de er forbundne med skjulte objekter."
-        },
-        "not_downloaded": {
-          "single": "Dette kortobjekt kan ikke skaleres, da dele af det ikke er blevet indlæst endnu.",
-          "multiple": "Disse kortobjekter kan ikke skaleres, da dele af dem ikke er blevet indlæst endnu."
         }
       },
       "split": {
@@ -625,33 +424,13 @@
       "extract": {
         "title": "Frigør",
         "description": {
-          "vertex": {
-            "single": "Frigør dette punkt fra dets overordnede-linje/område.",
-            "multiple": "Frigør disse punkter fra deres overordnede kortobjekter."
-          },
-          "line": {
-            "single": "Frigør et punkt fra denne linje.",
-            "multiple": "Frigør punkter fra disse linjer."
-          },
-          "area": {
-            "single": "Frigør et punkt fra dette område.",
-            "multiple": "Frigør punkter fra disse områder."
-          },
           "feature": {
-            "multiple": "Frigør punkter fra disse kortobjekter."
+            "other": "Frigør punkter fra disse kortobjekter."
           }
         },
         "annotation": {
           "one": "Frigjorde et punkt.",
           "other": "Frigjorde {n} punkter."
-        },
-        "too_large": {
-          "single": "Et punkt kunne ikke frigøres, da ikke nok af dette kortobjekt er synligt.",
-          "multiple": "Punkter kunne ikke frigøres, da ikke nok af dette kortobjekt er synligt."
-        },
-        "connected_to_hidden": {
-          "single": "Dette punkt kunne ikke frigøres, da det er forbundet til et skjult kortobjekt.",
-          "multiple": "Punkter kan ikke frigøres fra dette kortobjekt, da nogle er forbundne til skjulte kortobjekter."
         }
       }
     },
@@ -824,6 +603,7 @@
       "view_on_keepRight": "Vis på keepright.at",
       "feature_type": "Kortobjekt-type",
       "fields": "Felter",
+      "tags": "Tags (mærker)",
       "members": "Medlemmer",
       "relations": "Relationer",
       "features": "Kortobjekter",
@@ -843,10 +623,6 @@
       "multiple_values": "Flere værdier",
       "multiple_types": "Flere typer",
       "unshared_value_tooltip": "ikke anvendt af alle objekter",
-      "hidden_preset": {
-        "manual": "{features} er skjulte. Indstil visning i Kortdata-fanen.",
-        "zoom": "{features} er skjulte. Zoom ind for at se dem."
-      },
       "back_tooltip": "Ændr objektets type",
       "details": "Detaljer",
       "remove": "Fjern",
@@ -957,7 +733,6 @@
         "tooltip": "Vis Geometriværdier for markeringen."
       },
       "style_options": "Visningsindstillinger",
-      "map_features": "Kortobjekter",
       "autohidden": "Disse objekter er automatisk blevet skjult, da for mange ellers ville blive vist på skærmen.\nDu kan zoome ind for at redigere dem.",
       "osmhidden": "Disse kortobjekter er blevet automatisk gemt fordi OpenStreetMap-laget er gemt."
     },
@@ -994,7 +769,7 @@
         "tooltip": "Vis kun fotos fra denne bruger"
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Punkter",
         "tooltip": "Interessepunkter"
@@ -1190,9 +965,13 @@
     "source_switch": {
       "lose_changes": "Du har ændringer som ikke er gemt endnu. Hvis du skifter kortserver, vil dine ændringer blive kasseret. Er du sikker på at du vil skifte server?"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Fjern"
+    "rapid_inspector": {
+      "tags": "Tags (mærker)"
+    },
+    "rapid_menu": {
+      "remove": "Fjern",
+      "category": {
+        "roads": "veje"
       }
     },
     "tag_reference": {
@@ -1208,7 +987,6 @@
         "out": "Kan ikke zoome længere ud."
       }
     },
-    "cannot_zoom": "Kan ikke zoome længere ud i nuværende tilstand.",
     "full_screen": "Skift fuldskærmstilstand",
     "self_intersection": {
       "error": {
@@ -1586,6 +1364,7 @@
       },
       "overview": {
         "title": "Overblik",
+        "navigation_h": "Navigering",
         "features_h": "Kortobjekter",
         "features": "Vi bruger ordet *kortobjekt* til at beskrive ting der optræder på kortet såsom veje, bygninger, eller interessepunkter. Enhver fysisk ting i den virkelige verden kan indtegnes som et kortobjekt på OpenStreetMap. Kortobjekter repræsenteres på kortet som *punkter*, *linjer* eller *områder*.",
         "nodes_ways": "I OpenStreetMap kaldes punkter sommetider *noder*, og linjer og områder sommetider *veje*."
@@ -1624,7 +1403,6 @@
         "title": "Punkter",
         "intro": "*Punkter* bruges til at repræsentere ting på kortet såsom forretninger, restauranter og monumenter. De er knyttet til et specifik sted og beskriver hvad der findes der. ",
         "add_point_h": "Tilføjelse af punkter",
-        "add_point": "For at tilføje et punkt klikkes på {point_icon} **{point}**-knappen i værktøjslinjen over kortet, eller trykkes på genvejstasten `1`.",
         "move_point_h": "Flytning af punkter",
         "delete_point_h": "Sletning af punkter",
         "delete_point": "Det er helt fint at slette kortobjekter som ikke eksisterer i virkeligheden. At slette noget fra OpenStreetMap fjerner det fra kortet som alle anvender, så du bør være helt sikker på at objektet virkeligt er væk før du sletter det."
@@ -1633,7 +1411,6 @@
         "title": "Linjer",
         "intro": "*Linjer* anvendes til at repræsentere ting såsom veje, jernbaner og floder. Linjer bør tegnes langs centrum af det de repræsenterer.",
         "add_line_h": "Tilføjelse af linjer",
-        "add_line": "For at tilføje en linje klikkes på {line_icon} **{line}**-knappen i værktøjslinjen over kortet, eller tryk genvejstasten `2`.",
         "add_line_finish": "For at afslutte en linje klik eller prik igen på den sidste node, eller tryk `{return}`.",
         "modify_line_h": "Ændring af linjer",
         "modify_line_dragnode": "Du vil ofte se linjer som ikke har den rigtige form, for eksempel en vej hvis forløb ikke følger baggrundsbilledet. For at justere en linjes form skal du først markere den. Alle noder som er en del af linjen tegnes nu som små cirkler. Du kan nu trække i noderne og placere dem korrekt.",
@@ -1652,7 +1429,6 @@
         "point_or_area_h": "Punkter eller Områder",
         "point_or_area": "Mange objekter vil kunne repræsenteres både som et punkt og et område. Du bør, når det er muligt, tegne bygninger og ejendommes omrids som et område. Placer punkter indenfor bygningers områder for at repræsentere forretninger, faciliteter og andre objekter der befinder sig inden i bygningen.",
         "add_area_h": "Tilføjelse af områder",
-        "add_area_command": "For at tilføje et område klikkes på {area_icon} **{area}**-knappen  i værktøjslinjen over kortet, eller trykkes på genvejstasten `3`.",
         "add_area_finish": "For at afslutte et område klik eller prik igen på den sidste node, eller tryk `{return}`.",
         "square_area_h": "Gør hjørner retvinklede",
         "modify_area_h": "Ændring af områder",
@@ -1780,18 +1556,10 @@
     },
     "issues": {
       "title": "Problemer",
-      "list_title": "Problemer",
-      "errors": {
-        "list_title": "Fejl"
-      },
-      "warnings": {
-        "list_title": "Advarsler"
-      },
-      "rules": {
-        "title": "Regler"
-      },
-      "user_resolved_issues": "Problemer løst af dine redigeringer",
-      "warnings_and_errors": "Advarsler og fejl",
+      "errors": "Fejl",
+      "warnings": "Advarsler",
+      "rules": "Regler",
+      "resolved_tooltip": "Problemer løst af dine redigeringer",
       "no_issues": {
         "message": {
           "everything": "Alting ser fint ud",
@@ -1949,8 +1717,6 @@
         "title": "Ugyldig formattering",
         "tip": "Find egenskaber med uventet formattering",
         "email": {
-          "message": "{feature} har en ugyldig email-adresse",
-          "message_multi": "{feature} har flere ugyldige email-adresser",
           "reference": "E-mailadresse skal ligne \"bruger@eksempel.dk\"."
         }
       },
@@ -2323,6 +2089,7 @@
         "chapters": "Du kan bruge knapperne i bunden til at springe mellem de forskellige dele af gennemgangen når du har lyst, eller til at genstarte en del hvis du sidder fast. Lad os komme i gang! **Klik '{next}' for at fortsætte.**"
       },
       "navigation": {
+        "title": "Navigering",
         "map_info": "Hovedkortet viser data fra OpenStreetMap oven på en baggrund.",
         "features": "Vi bruger ordet *objekt* til at beskrive ting der vises på kortet. Enhver fysisk ting i den virkelige verden kan indtegnes som et objekt på OpenStreetMap.",
         "points_lines_areas": "Objekter på kortet bliver repræsenteret som enten *punkter, linjer eller områder.*",
@@ -2443,6 +2210,7 @@
       "title": "Genvejstaster",
       "tooltip": "Vis skærmen med genvejstaster.",
       "key": {
+        "delete": "Slet",
         "return": "Retur",
         "space": "Mellemrum"
       },
@@ -2450,95 +2218,168 @@
         "drag": "træk"
       },
       "or": "-eller-",
-      "browsing": {
-        "title": "Visning",
-        "navigation": {
-          "title": "Navigering",
-          "pan": "Panorér på kortet"
+      "browsing": "Visning",
+      "editing": "Redigering",
+      "navigation": "Navigering",
+      "selecting_features": "Markering af kortobjekter",
+      "with_features_selected": "Med markerede objekter",
+      "with_node_selected": "Med markeret node",
+      "with_way_selected": "Med markeret vej",
+      "drawing": "Optegning",
+      "commands": "Kommandoer",
+      "help": "Hjælp",
+      "display_options": "Visnings-muligheder",
+      "command": {
+        "pan": {
+          "label": "Panorér på kortet"
         },
-        "help": {
-          "title": "Hjælp",
-          "help": "Vis hjælp/dokumentation",
-          "keyboard": "Vis genvejstaster"
+        "select_one": {
+          "label": "Marker et enkelt kortobjekt"
         },
-        "display_options": {
-          "title": "Visnings-muligheder",
-          "background": "Åbn/luk baggrundsbillede-fane",
-          "map_data": "Åbn/luk kortdata-fane",
-          "issues": "Åbn/luk problemer-fane",
-          "preferences": "Åbn/luk præferencer-fane",
-          "wireframe": "Skift trådnet-tilstand",
-          "osm_data": "Vis/skjul OpenStreetMap-data",
-          "highlight_edits": "Fremhæv ugemte ændringer"
+        "select_multi": {
+          "label": "Marker flere kortobjekter"
         },
-        "selecting": {
-          "title": "Markering af kortobjekter",
-          "select_one": "Marker et enkelt kortobjekt",
-          "select_multi": "Marker flere kortobjekter",
-          "lasso": "Tegn en markerings-lasso om kortobjekter",
-          "search": "Find kortobjekter der indeholder tekst"
+        "lasso": {
+          "label": "Tegn en markerings-lasso om kortobjekter"
         },
-        "with_selected": {
-          "title": "Med markerede objekter",
-          "edit_menu": "Åbn/luk redigeringsmenu"
+        "edit_menu": {
+          "label": "Åbn/luk redigeringsmenu"
         },
-        "vertex_selected": {
-          "title": "Med markeret node",
-          "first": "Spring til første node i vej",
-          "last": "Spring til sidste node i vej",
-          "change_parent": "Skift til anden forbunden vej",
-          "parent": "Marker overordnet vej"
+        "first_node": {
+          "label": "Spring til første node i vej"
         },
-        "way_selected": {
-          "title": "Med markeret vej",
-          "child": "Marker indeholdte noder "
-        }
-      },
-      "editing": {
-        "title": "Redigering",
-        "drawing": {
-          "title": "Optegning",
-          "add_point": "\"Tilføj punkt\"-tilstand",
-          "add_line": "\"Tilføj linje\"-tilstand",
-          "add_area": "\"Tilføj område\"-tilstand",
-          "add_note": "'Tilføj bemærkning'-tilstand",
-          "place_point": "Placer punkt eller bemærkning",
-          "disable_snap": "Undlad at 'klistre' til eksisterende punkt",
-          "stop_line": "Afslut tegning af linje eller område"
+        "last_node": {
+          "label": "Spring til sidste node i vej"
         },
-        "commands": {
-          "title": "Kommandoer",
-          "copy": "Kopier markerede kortobjekter",
-          "paste": "Indsæt kopierede kortobjekter",
-          "undo": "Fortryd seneste handling",
-          "redo": "Omgør fortrudt handling",
-          "save": "Gem ændringer"
+        "change_parent": {
+          "label": "Skift til anden forbunden vej"
         },
-        "operations": {
-          "continue_line": "Fortsæt linje ved markeret endepunkt",
-          "merge": "Kombiner (fusioner) markerede kortobjekter",
-          "disconnect": "Afkobl markerede kortobjekter",
-          "extract": "Frigør et punkt fra et objekt",
-          "split": "Opdel objekter ved markerede punkter",
-          "reverse": "Vend markerede kortobjekter",
-          "move": "Flyt markerede kortobjekter",
-          "rotate": "Rotér markerede kortobjekter",
-          "orthogonalize": "Gør linje eller områdes hjørner retvinklede",
-          "straighten": "Udret en linje eller punkter",
-          "circularize": "Gør en lukket linje eller område rundt",
-          "reflect_long": "Vend objekter om længste akse",
-          "reflect_short": "Vend objekter om korteste akse",
-          "delete": "Slet markerede kortobjekt"
-        }
-      },
-      "tools": {
-        "title": "Værktøjer",
-        "info": {
-          "all": "Vis/skjul alle informationspaneler",
-          "background": "Vis/skjul baggrundspanel",
-          "history": "Vis/skjul historikpanel",
-          "location": "Vis/skjul lokationspanel",
-          "measurement": "Vis/skjul opmålingspanel"
+        "select_parent": {
+          "label": "Marker overordnet vej"
+        },
+        "select_children": {
+          "label": "Marker indeholdte noder "
+        },
+        "add_point": {
+          "label": "\"Tilføj punkt\"-tilstand"
+        },
+        "add_line": {
+          "label": "\"Tilføj linje\"-tilstand"
+        },
+        "add_area": {
+          "label": "\"Tilføj område\"-tilstand"
+        },
+        "add_note": {
+          "label": "'Tilføj bemærkning'-tilstand"
+        },
+        "place_point": {
+          "label": "Placer punkt eller bemærkning"
+        },
+        "disable_snap": {
+          "label": "Undlad at 'klistre' til eksisterende punkt"
+        },
+        "stop_line": {
+          "label": "Afslut tegning af linje eller område"
+        },
+        "copy": {
+          "label": "Kopier markerede kortobjekter"
+        },
+        "paste": {
+          "label": "Indsæt kopierede kortobjekter"
+        },
+        "undo": {
+          "label": "Fortryd seneste handling"
+        },
+        "redo": {
+          "label": "Omgør fortrudt handling"
+        },
+        "save": {
+          "label": "Gem ændringer"
+        },
+        "find": {
+          "label": "Find kortobjekter der indeholder tekst"
+        },
+        "continue_line": {
+          "label": "Fortsæt linje ved markeret endepunkt"
+        },
+        "merge": {
+          "label": "Kombiner (fusioner) markerede kortobjekter"
+        },
+        "disconnect": {
+          "label": "Afkobl markerede kortobjekter"
+        },
+        "extract": {
+          "label": "Frigør et punkt fra et objekt",
+          "key": "Ø"
+        },
+        "split": {
+          "label": "Opdel objekter ved markerede punkter"
+        },
+        "reverse": {
+          "label": "Vend markerede kortobjekter"
+        },
+        "move": {
+          "label": "Flyt markerede kortobjekter"
+        },
+        "rotate": {
+          "label": "Rotér markerede kortobjekter"
+        },
+        "orthogonalize": {
+          "label": "Gør linje eller områdes hjørner retvinklede"
+        },
+        "straighten": {
+          "label": "Udret en linje eller punkter"
+        },
+        "circularize": {
+          "label": "Gør en lukket linje eller område rundt"
+        },
+        "reflect_long": {
+          "label": "Vend objekter om længste akse"
+        },
+        "reflect_short": {
+          "label": "Vend objekter om korteste akse"
+        },
+        "delete": {
+          "label": "Slet markerede kortobjekt"
+        },
+        "toggle_background": {
+          "label": "Åbn/luk baggrundsbillede-fane"
+        },
+        "toggle_map_data": {
+          "label": "Åbn/luk kortdata-fane"
+        },
+        "toggle_issues": {
+          "label": "Åbn/luk problemer-fane"
+        },
+        "toggle_preferences": {
+          "label": "Åbn/luk præferencer-fane"
+        },
+        "wireframe": {
+          "key": "V"
+        },
+        "highlight_edits": {
+          "label": "Fremhæv ugemte ændringer"
+        },
+        "keyboard_shortcuts": {
+          "label": "Vis genvejstaster"
+        },
+        "toggle_osm_data": {
+          "label": "Vis/skjul OpenStreetMap-data"
+        },
+        "toggle_all_cards": {
+          "label": "Vis/skjul alle informationspaneler"
+        },
+        "toggle_background_card": {
+          "label": "Vis/skjul baggrundspanel"
+        },
+        "toggle_history_card": {
+          "label": "Vis/skjul historikpanel"
+        },
+        "toggle_location_card": {
+          "label": "Vis/skjul lokationspanel"
+        },
+        "toggle_measurement_card": {
+          "label": "Vis/skjul opmålingspanel"
         }
       }
     },
@@ -2613,6 +2454,7 @@
       "bin": "bini",
       "bkm": "kom",
       "bla": "siksika",
+      "blo": "anii",
       "bm": "bambara",
       "bn": "bengali",
       "bo": "tibetansk",
@@ -2837,6 +2679,7 @@
       "kv": "komi",
       "kw": "cornisk",
       "kwk": "kwakʼwala",
+      "kxv": "kuvi",
       "ky": "kirgisisk",
       "la": "latin",
       "lad": "ladino",
@@ -2847,8 +2690,10 @@
       "lez": "lezghian",
       "lg": "ganda",
       "li": "limburgsk",
+      "lij": "ligurisk",
       "lil": "lillooet",
       "lkt": "lakota",
+      "lmo": "lombardisk",
       "ln": "lingala",
       "lo": "lao",
       "lol": "mongo",
@@ -2861,7 +2706,6 @@
       "lua": "luba-Lulua",
       "lui": "luiseno",
       "lun": "lunda",
-      "luo": "luo",
       "lus": "lushai",
       "luy": "luyana",
       "lv": "lettisk",
@@ -2894,7 +2738,7 @@
       "moe": "innu-aimun",
       "moh": "mohawk",
       "mos": "mossi",
-      "mr": "marathisk",
+      "mr": "marathi",
       "ms": "malajisk",
       "mt": "maltesisk",
       "mua": "mundang",
@@ -2948,7 +2792,7 @@
       "os": "ossetisk",
       "osa": "osage",
       "ota": "osmannisk tyrkisk",
-      "pa": "punjabisk",
+      "pa": "punjabi",
       "pag": "pangasinan",
       "pal": "pahlavi",
       "pam": "pampanga",
@@ -3041,6 +2885,7 @@
       "swb": "comorisk",
       "syc": "klassisk syrisk",
       "syr": "syrisk",
+      "szl": "schlesisk",
       "ta": "tamil",
       "tce": "sydtutchone",
       "te": "telugu",
@@ -3086,9 +2931,10 @@
       "umb": "umbundu",
       "ur": "urdu",
       "uz": "usbekisk",
-      "vai": "vai",
       "ve": "venda",
+      "vec": "venetiansk",
       "vi": "vietnamesisk",
+      "vmw": "makhuwa",
       "vo": "volapyk",
       "vot": "votisk",
       "vun": "vunjo",
@@ -3102,6 +2948,7 @@
       "wuu": "wu-kinesisk",
       "xal": "kalmyk",
       "xh": "xhosa",
+      "xnr": "kangri",
       "xog": "soga",
       "yao": "yao",
       "yap": "yapese",

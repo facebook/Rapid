@@ -2037,13 +2037,13 @@
           "terms": "Internetzugang, WIFI, WLAN, WiFi, Internet"
         },
         "internet_access/fee": {
-          "label": "Internetzugangskosten",
+          "label": "Internetzugangsgebühr",
           "options": {
             "customers": "Nur für Kunden",
             "no": "Gratis",
             "yes": "Gebühr"
           },
-          "terms": "Internetkosten, Zugangskosten, Internetgebühr, Internetpreis"
+          "terms": "Internetzugangskosten, Internetkosten, Zugangskosten, Internetgebühr, Internetpreis"
         },
         "internet_access/ssid": {
           "label": "Wifi Netzwerkname",
@@ -2253,7 +2253,13 @@
           "label": "Abdeckung"
         },
         "map_type": {
-          "label": "Typ"
+          "label": "Typ",
+          "options": {
+            "scheme": "Schematische Karte",
+            "street": "Straßenkarte",
+            "topo": "Topographische Karte",
+            "toposcope": "Toposkop"
+          }
         },
         "mapillary": {
           "terms": "Mapillary Image ID"
@@ -3372,7 +3378,8 @@
           "terms": "Gebrauchtwarenverkauf"
         },
         "segregated": {
-          "label": "Getrennter Rad- und Fußweg"
+          "label": "Getrennter Rad- und Fußweg",
+          "terms": "Getrennter Rad- und Gehweg, Geteilter Rad- und Gehweg, Getrennter Rad- und Fußweg, Geteilter Rad- und Fußweg, Getrennter Geh- und Radweg, Geteilter Geh- und Radweg, Geteilter Fuß- und Radweg, Getrennter Geh- und Radweg, Getrennter Fuß- und Radweg"
         },
         "self_service": {
           "label": "Selbstbedienung"
@@ -4160,6 +4167,7 @@
             "coffee": "Kaffee",
             "condoms": "Kondome",
             "drinks": "Getränke",
+            "e-cigarettes": "E-Zigaretten",
             "eggs": "Eier",
             "electronics": "Elektrogeräte",
             "elongated_coin": "Souvenirmünzen",
@@ -5470,8 +5478,7 @@
           "terms": "Theater,Aufführung,Schauspiel,Musical"
         },
         "amenity/theatre/type/amphi": {
-          "name": "Amphitheater",
-          "terms": "Amphitheater"
+          "terms": "Amphitheater, Naturtheater, Rundbau"
         },
         "amenity/ticket_validator": {
           "name": "Entwerter",
@@ -6771,7 +6778,7 @@
           "terms": "Überweg, Übergang, Überquerung, Querung, Fußgängerüberweg, Fußgängerübergang, Fußgängerüberquerung, Fußgängerquerung"
         },
         "highway/crossing/traffic_signals": {
-          "name": "Kreuzung mit Fußgängerampel",
+          "name": "Überweg mit Ampelregelung",
           "terms": "Fußgängerampel, Fußgängerübergang, Radübergang"
         },
         "highway/crossing/uncontrolled": {
@@ -6919,6 +6926,18 @@
         "highway/path/boardwalk": {
           "name": "Bohlenweg",
           "terms": "Pier, Steg, Knüppeldamm, erhöhter Fußweg aus Holz, Plankenweg, Prügelweg, Holzsteg, Knüppelweg, Bohlenweg, Holzweg"
+        },
+        "highway/path/crossing": {
+          "name": "Rad- und Gehwegquerung"
+        },
+        "highway/path/crossing/traffic_signals": {
+          "name": "Rad- und Gehwegquerung mit Ampelregelung"
+        },
+        "highway/path/crossing/uncontrolled": {
+          "name": "Rad- und Gehwegquerung mit Straßenmarkierung"
+        },
+        "highway/path/crossing/unmarked": {
+          "name": "Rad- und Gehwegquerung ohne Straßenmarkierung"
         },
         "highway/path/informal": {
           "name": "Trampelpfad",
@@ -7306,6 +7325,14 @@
         "landuse/meadow": {
           "name": "Wiese / Weide",
           "terms": "Landwirtschaftlich genutzte Wiese oder Weide, Almweide, Almwiese"
+        },
+        "landuse/meadow_orchard/meadow": {
+          "name": "Streuobstwiese (vereinzelte Obstbäume)",
+          "terms": " Obstwiese, Obstgarten, Bitz, Bangert, Bongert, Bungert, Baumgarten, Streuobstbau, Obstbau"
+        },
+        "landuse/meadow_orchard/orchard": {
+          "name": "Streuobstwiese (zahlreiche Obstbäume)",
+          "terms": " Obstwiese, Obstgarten, Bitz, Bangert, Bongert, Bungert, Baumgarten, Streuobstbau, Obstbau"
         },
         "landuse/military": {
           "name": "Militärgelände",
@@ -8846,8 +8873,7 @@
           "terms": "Langlauf, Loipe, Biathlon, "
         },
         "piste/piste": {
-          "name": "Wintersport Piste / Strecke",
-          "terms": "Wintersport, Winterwandern, Schneesport, Alpin, Skisport, Skiwanderung, Skiwanderweg, Piste, Loipe, Abfahrt, Schlitten, Schlittenhund, Eislauf, Eisbahn, Schneeschuh"
+          "name": "Schneesportstrecke / Piste (nicht spezifizierter Typ)"
         },
         "piste/ski_jump": {
           "name": "Skisprungpiste",

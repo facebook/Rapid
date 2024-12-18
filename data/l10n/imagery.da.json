@@ -8,10 +8,23 @@
         "description": "Efterbehandlet Sentinel Satellite billeder",
         "name": "eox.at 2018 skyfri"
       },
+      "EOXAT2019CLOUDLESS": {
+        "description": "Efterbehandlet Sentinel Satellite billeder"
+      },
+      "EOXAT2020CLOUDLESS": {
+        "description": "Efterbehandlet Sentinel Satellite billeder"
+      },
+      "EOXAT2021CLOUDLESS": {
+        "description": "Efterbehandlet Sentinel Satellite billeder"
+      },
+      "EOXAT2022CLOUDLESS": {
+        "description": "Efterbehandlet Sentinel Satellite billeder"
+      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "Vilkår & tilbagemelding"
         },
+        "description": "Esri World fotos",
         "name": "Esri World fotos"
       },
       "EsriWorldImageryClarity": {
@@ -104,8 +117,25 @@
       "US-TIGER-Roads-2019": {
         "description": "Gul = Offentlige kortdata fra US Census. Rød = Data ikke fundet i OpenStreetMap"
       },
+      "US-TIGER-Roads-2020": {
+        "description": "Gul = Offentlige kortdata fra US Census. Rød = Data ikke fundet i OpenStreetMap"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Gul = Offentlige kortdata fra US Census. Rød = Data ikke fundet i OpenStreetMap"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Gul = Offentlige kortdata fra US Census. Rød = Data ikke fundet i OpenStreetMap"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Gul = Offentlige kortdata fra US Census. Rød = Data ikke fundet i OpenStreetMap"
+      },
       "US_Forest_Service_roads_overlay": {
         "name": "Amerikansk skovvejs-overlag (U.S. Forest Service)"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Realiseret ved hjælp af Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
       },
       "UrbISOrtho2016": {
         "attribution": {
@@ -127,7 +157,17 @@
           "text": "Realiseret ved hjælp af Brussels UrbIS®© - Distribution & Copyright CIRB"
         }
       },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Realiseret ved hjælp af Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
       "UrbisAdmFR": {
+        "attribution": {
+          "text": "Realiseret ved hjælp af Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
         "attribution": {
           "text": "Realiseret ved hjælp af Brussels UrbIS®© - Distribution & Copyright CIRB"
         }
@@ -177,6 +217,11 @@
       "basemap<TX_DOT>at-overlay": {
         "description": "Annotationslag leveret af basemap.at."
       },
+      "cyclosm": {
+        "attribution": {
+          "text": "Visning: CyclOSM (hosted af OpenStreetMap Frankrig) © Kortdata OpenStreetMap bidragsydere"
+        }
+      },
       "eufar-balaton": {
         "description": "1940 geotagget fotografi fra Balaton Limnological Institute.",
         "name": "EUFAR Balaton ortofotos"
@@ -187,6 +232,36 @@
         },
         "description": "Bykortet er et oversigtskort der beskriver Göteborg. Det indeholder generelle informationer omkring land, kommunikation, hydrografi, bygninger, gadenavne og husnumre, administrativ afdeligt og anden orienterende tekst.",
         "name": "Göteborg bykort"
+      },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© Göteborg Kommune, CC0"
+        }
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© Göteborg Kommune, CC0"
+        }
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© Göteborg Kommune, CC0"
+        }
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© Göteborg Kommune, CC0"
+        }
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© Göteborg Kommune, CC0"
+        }
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© Göteborg Kommune, CC0"
+        }
       },
       "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
         "name": "Japan GSI luftfoto"
@@ -221,6 +296,11 @@
         },
         "description": "Ortofotos af byområdet i Kalmar Kommune 2018",
         "name": "Kalmar by ortofoto 2018"
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© Kalmar Kommune"
+        }
       },
       "kelkkareitit": {
         "description": "Kelkkareitit.fi snescooterspor fra OSM (nordisk dækkende)",

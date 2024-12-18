@@ -269,6 +269,11 @@
         "area/highway": {
           "label": "نوع"
         },
+        "armrest": {
+          "options": {
+            "undefined": "نامشخص"
+          }
+        },
         "artist": {
           "label": "هنرمند"
         },
@@ -298,11 +303,36 @@
             "javelin_throw": "زوبین"
           }
         },
+        "athletics_track": {
+          "label": "رخداد",
+          "options": {
+            "javelin_throw": "زوبین",
+            "running": "ورزش مسابقه دو"
+          }
+        },
         "atm": {
           "label": "دستگاه خودپرداز"
         },
         "attraction": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "animal": "محوطه حیوانات",
+            "bumper_car": "ماشین‌های کوبنده",
+            "bungee_jumping": "بانجی جامپینگ",
+            "carousel": "چرخ فلک",
+            "dark_ride": "تونل وحشت",
+            "drop_tower": "قطره برج سواری (یک نوع سواری سرگرم‌کننده برج سقوط آزاد)",
+            "kiddie_ride": "سواری بچه‌ها / دستگاه تکان‌دهنده سکه‌ای",
+            "log_flume": "ترن آبی",
+            "maze": "پازل، باغ هزارتو",
+            "pirate_ship": "کشتی سوار دزدان دریایی",
+            "river_rafting": "سواری سریع‌السیر در رودخانه",
+            "roller_coaster": "ترن هوایی",
+            "summer_toboggan": "سورتمه تابستانی",
+            "swing_carousel": "چرخ فلک تابی",
+            "train": "قطار توریستی",
+            "water_slide": "سرسره آبی"
+          }
         },
         "automated": {
           "label": "خودکار"
@@ -331,12 +361,24 @@
           "label": "نوع",
           "options": {
             "bollard": "تیرک مهار",
+            "cattle_grid": "شبکه آهنی",
+            "chain": "زنجیر",
             "city_wall": "دیوار دفاعی شهر",
+            "cycle_barrier": "مانع دوچرخه",
             "ditch": "گودال",
+            "entrance": "ورودی\nدر\nدرب\nباب",
             "fence": "حصار",
+            "gate": "دروازه / گیت",
+            "guard_rail": "گاردریل",
             "hedge": "پرچین",
+            "height_restrictor": "تنظیم‌کننده ارتفاع",
             "kerb": "جدول / لبه پیاده‌رو",
+            "kissing_gate": "ورودی مخصوص انسان/گیت ورودی",
             "retaining_wall": "دیوار نگه دارنده یا حائل یا دیوار مانع",
+            "stile": "نردبان پله‌ای حصار",
+            "swing_gate": "گیت کنترل تردد / دریچه گردان",
+            "toll_booth": "عوارضی",
+            "turnstile": "نرده گردان",
             "wall": "دیوار"
           }
         },
@@ -348,7 +390,11 @@
           }
         },
         "basin": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "detention": "حوضچه / حوضچه جمع کننده آب",
+            "retention": "حفظ / نگهداری"
+          }
         },
         "bath/open_air": {
           "label": "رو باز"
@@ -357,7 +403,11 @@
           "label": "حمام ماسه"
         },
         "bath/type": {
-          "label": "تخصص"
+          "label": "تخصص",
+          "options": {
+            "hot_spring": "چشمه آبگرم",
+            "lake": "دریاچه"
+          }
         },
         "beauty": {
           "label": "خدمات",
@@ -373,6 +423,12 @@
         },
         "bicycle_parking": {
           "label": "نوع"
+        },
+        "bicycle_road": {
+          "options": {
+            "undefined": "خیر",
+            "yes": "بله"
+          }
         },
         "bin": {
           "label": "سطل زباله",
@@ -396,7 +452,16 @@
           }
         },
         "board_type": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "art": "هنر",
+            "astronomy": "ستاره شناسی",
+            "history": "تاریخ/تاریخچه",
+            "nature": "طبیعت",
+            "plants": "گیاهان",
+            "welcome_sign": "تابلوی خوش‌آمد",
+            "wildlife": "حیات وحش"
+          }
         },
         "bollard": {
           "label": "نوع"
@@ -428,12 +493,68 @@
           "label": "نوع"
         },
         "bridge_combo": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "aqueduct": "قنات",
+            "boardwalk": "مسیر پیاده با تخته‌های چوبی",
+            "movable": "پل متحرک"
+          }
         },
         "building": {
           "label": "ساختمان",
           "options": {
-            "stadium": "ساختمان استادیوم"
+            "barn": "انبار غله",
+            "boathouse": "ساختمان تجمیع قایق / گاراژ قایق",
+            "bungalow": "بانگالو (نوعی خانه ییلاقی)",
+            "bunker": "پناهگاه",
+            "cabin": "کلبه کنده‌ای",
+            "carport": "فضای سایبان محدود",
+            "cathedral": "ساختمان کلیسای جامع",
+            "chapel": "ساختمان نمازخانه",
+            "church": "ساختمان کلیسا",
+            "civic": "بنای وابسته به شهروندان",
+            "college": "ساختمان دانشکده",
+            "commercial": "ساختمان تجاری",
+            "construction": "ساختمان در دست ساخت",
+            "cowshed": "طویله",
+            "detached": "خانه ویلایی",
+            "dormitory": "خوابگاه",
+            "farm": "خانه روستایی",
+            "farm_auxiliary": "ساختمان روستایی کمکی / غیرمسکونی",
+            "garage": "گاراژ تکی",
+            "garages": "گاراژ چندتایی",
+            "grandstand": "جایگاه تماشاچیان",
+            "greenhouse": "گلخانه",
+            "hangar": "آشیانه هواپیما (کوچک یا شخصی)",
+            "hospital": "ساختمان بیمارستان",
+            "hotel": "ساختمان هتل",
+            "house": "خانه",
+            "houseboat": "قایق خانگی",
+            "hut": "کلبه",
+            "industrial": "ساختمان صنعتی",
+            "kindergarten": "ساختمان پیش‌دبستانی / کودکستان",
+            "mosque": "ساختمان مسجد",
+            "office": "ساختمان اداری",
+            "pavilion": "ساختمان پاویون / نشیمنگاه VIP استادیوم",
+            "public": "ساختمان عمومی",
+            "residential": "ساختمان مسکونی",
+            "retail": "ساختمان فروشگاه‌ها و مغازه‌های خرده فروشی",
+            "roof": "سقف",
+            "ruins": "خرابه های ساختمان",
+            "school": "ساختمان مدرسه",
+            "semidetached_house": "خانه شبه ویلایی",
+            "service": "ساختمان خدمات",
+            "shed": "سایبان",
+            "stable": "اصطبل",
+            "stadium": "ساختمان استادیوم",
+            "static_caravan": "خانه سیار\nخانه پیش‌ساخته",
+            "sty": "آغل خوک",
+            "temple": "ساختمان معبد",
+            "terrace": "خانه های ردیفی",
+            "train_station": "ساختمان پایانهٔ قطار",
+            "transportation": "ساختمان حمل و نقل",
+            "university": "ساختمان دانشگاه",
+            "warehouse": "انبار"
           },
           "terms": "ساختمان، سازه"
         },
@@ -452,7 +573,11 @@
           "terms": "طبقه‌های زیرزمین، طبقات زیرزمین"
         },
         "building/material": {
-          "label": "جنس"
+          "label": "جنس",
+          "terms": "ماده، جنس، متریال"
+        },
+        "building/part": {
+          "label": "قسمتی از ساختمان"
         },
         "bunker_type": {
           "label": "نوع"
@@ -487,6 +612,9 @@
             "fixed": "ثابت",
             "panning": "چرخش افقی"
           }
+        },
+        "camp_site": {
+          "label": "نوع"
         },
         "capacity": {
           "label": "ظرفيت",
@@ -540,7 +668,13 @@
           "placeholder": "س‌س‌س‌س-م‌م-رر"
         },
         "clothes": {
-          "label": "لباس ها"
+          "label": "لباس ها",
+          "options": {
+            "hats": "کلاه ها",
+            "suits": "کت و شلوار",
+            "swimwear": "لباس شنا",
+            "workwear": "لباس کار"
+          }
         },
         "club": {
           "label": "نوع"
@@ -549,7 +683,10 @@
           "label": "ساعت جمع‌آوری"
         },
         "collector": {
-          "label": "موارد"
+          "label": "موارد",
+          "options": {
+            "stamps": "تمبرها"
+          }
         },
         "colour": {
           "label": "رنگ"
@@ -561,6 +698,9 @@
         "communication_multi": {
           "label": "نوع ارتباطات"
         },
+        "community_centre": {
+          "label": "نوع"
+        },
         "connectivity": {
           "label": "اتصال"
         },
@@ -568,7 +708,10 @@
           "label": "نوع"
         },
         "consulate": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "yes": "اداره کنسولگری"
+          }
         },
         "consulting": {
           "label": "تجربه و تخصص"
@@ -611,7 +754,61 @@
           }
         },
         "craft": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "agricultural_engines": "مکانیک موتورهای کشاورزی",
+            "basket_maker": "سبد ساز",
+            "beekeeper": "زنبوردار",
+            "blacksmith": "آهنگر",
+            "boatbuilder": "قایق ساز",
+            "bookbinder": "صحافی",
+            "brewery": "آبجوسازی",
+            "builder": "خانه ساز / سازنده",
+            "carpenter": "نجاری",
+            "carpet_layer": "موکت کار",
+            "caterer": "تهیه کننده غذا",
+            "chimney_sweeper": "دودکش پاک‌کن",
+            "cleaning": "خدمات نظافت",
+            "clockmaker": "ساعت ساز",
+            "confectionery": "آب نبات ساز",
+            "distillery": "کارخانه تقطیر",
+            "dressmaker": "خیاطی",
+            "electrician": "متخصص برق / تکنسین برق",
+            "floorer": "کفپوش",
+            "gardener": "باغبان",
+            "glaziery": "شیشه بری",
+            "handicraft": "صنایع دستی",
+            "hvac": "گرمایش و تهویه مطبوع",
+            "insulation": "عایق / ایزوگام",
+            "joiner": "نجار/نازک‌کار چوب",
+            "key_cutter": "برش های کلیدی",
+            "locksmith": "قفل ساز",
+            "metal_construction": "فلز کار / آهنگر",
+            "painter": "نقاش",
+            "parquet_layer": "نصاب پارکت",
+            "photographer": "عکاس",
+            "photographic_laboratory": "آزمایشگاه ظهور عکس",
+            "plasterer": "گچ کار",
+            "plumber": "لوله کش",
+            "pottery": "سفال‌گر",
+            "rigger": "طناب، دکل و بادبان سازی / قایق سازی",
+            "roofer": "سقف ساز / طاق زن",
+            "saddler": "زین ساز",
+            "sailmaker": "بادبان ساز / چادر دوز",
+            "sawmill": "چوب‌بری / کارخانه چوب بری والوارسازی",
+            "scaffolder": "داربست",
+            "sculptor": "مجسمه ساز ، پیکرتراش",
+            "shoemaker": "کفاش",
+            "signmaker": "تابلوساز",
+            "stonemason": "سنگ تراش",
+            "tailor": "خیاط",
+            "tiler": "کاشی کار / آجر پز",
+            "tinsmith": "قلع کار / آهن کوب",
+            "upholsterer": "خیاط پرده و رومبلی",
+            "watchmaker": "ساعت ساز",
+            "window_construction": "ساخت و ساز پنجره",
+            "winery": "شراب خانه / کارخانه شراب سازی"
+          }
         },
         "crane/type": {
           "label": "نوع جرثقیل",
@@ -622,7 +819,12 @@
           }
         },
         "crop": {
-          "label": "محصولات زراعی"
+          "label": "محصولات زراعی",
+          "options": {
+            "grass": "چمن",
+            "tea": "چای",
+            "tobacco": "تنباکو"
+          }
         },
         "crossing": {
           "label": "نوع"
@@ -656,8 +858,16 @@
         "cuisine": {
           "label": "نوع خوراک",
           "options": {
+            "african": "آفریقایی",
             "american": "آمریکایی",
+            "arab": "عرب",
+            "argentinian": "آرژانتینی",
             "asian": "آسیایی",
+            "bagel": "بیگل / نوعی نان دوناتی‌شکل",
+            "balkan": "بالکان",
+            "barbecue": "باربیکیو / جایگاه مخصوص کباب پختن",
+            "bavarian": "باواریایی",
+            "brazilian": "برزیلی",
             "bubble_tea": "چای حبابی / حباب‌دار",
             "burger": "همبرگر",
             "cake": "کیک",
@@ -666,6 +876,7 @@
             "coffee_shop": "کافی شاپ",
             "dessert": "دسر",
             "donut": "دونات",
+            "filipino": "فیلیپینی",
             "fish": "ماهی",
             "french": "فرانسوی",
             "german": "آلمانی",
@@ -681,20 +892,29 @@
             "korean": "کره‌ای",
             "lebanese": "لبنانی",
             "malaysian": "مالزیایی",
+            "mediterranean": "مدیترانه ای",
             "mexican": "مکزیکی",
+            "noodle": "ماکارونی / رشته فرنگی",
+            "pancake": "پن‌کیک",
             "pasta": "پاستا",
+            "pastry": "شیرینی",
+            "persian": "فارسی",
+            "peruvian": "پروئی",
             "pizza": "پیتزا",
             "polish": "لهستانی",
             "portuguese": "پرتغالی",
+            "ramen": "رامن_غذای ملی ژاپن ",
             "regional": "منطقه‌ای",
             "russian": "روسی",
             "salad": "سالاد",
             "sandwich": "ساندویچ",
             "seafood": "دریایی",
+            "soba": "سوبا_یک نوع نودل ژاپنی",
             "spanish": "اسپانیایی",
             "steak_house": "استیک‌هاوس / رستورانی مخصوص استیک و گوشت دنده",
             "sushi": "سوشی",
             "taiwanese": "تایوانی",
+            "tea": "چای",
             "thai": "تایلندی",
             "turkish": "ترکی",
             "vietnamese": "ویتنامی"
@@ -716,6 +936,10 @@
           "options": {
             "lane": {
               "description": "خط دوچرخه جدا شده از ترافیک خودرو با خط رنگی"
+            },
+            "no": {
+              "description": "بدون خط دوچرخه",
+              "title": "هیچ‌کدام"
             },
             "opposite": {
               "description": "خط دوطرفه ویژهٔ دوچرخه‌سواری در خیابان یکطرفه"
@@ -760,6 +984,9 @@
             "timetable": "جدول زمانی",
             "yes": "بله"
           }
+        },
+        "depot": {
+          "label": "نوع"
         },
         "depth": {
           "label": "عمق (متر)"
@@ -806,7 +1033,11 @@
           }
         },
         "diplomatic": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "consulate": "اداره کنسولگری",
+            "embassy": "سفارت خانه"
+          }
         },
         "diplomatic/services": {
           "label": "خدمات"
@@ -944,7 +1175,13 @@
           "label": "نوع"
         },
         "entrance": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "emergency": "خروج اضطراری",
+            "main": "اصلی",
+            "secondary": "دوم / ثانوی",
+            "service": "سرویس"
+          }
         },
         "except": {
           "label": "استثناها"
@@ -976,6 +1213,13 @@
         "fire_hydrant/diameter": {
           "label": "قطر (میلی‌متر ، اینچ ، یا حروف)"
         },
+        "fire_hydrant/position": {
+          "label": "موقعیت",
+          "options": {
+            "parking_lot": "پارکینگ",
+            "sidewalk": "پیاده‌رو خیابان"
+          }
+        },
         "fire_hydrant/pressure": {
           "label": "فشار (بار)"
         },
@@ -986,6 +1230,25 @@
             "pipe": "لوله پوشیده با کلاهک",
             "underground": "زیر زمینی",
             "wall": "دیواری"
+          }
+        },
+        "fire_mains": {
+          "options": {
+            "no": "خیر"
+          }
+        },
+        "fire_service_inlet": {
+          "label": "شکل",
+          "options": {
+            "pillar": "ستونی / روی زمین",
+            "pipe": "لوله پوشیده با کلاهک",
+            "underground": "زیر زمینی",
+            "wall": "دیواری"
+          }
+        },
+        "fire_sprinkler": {
+          "options": {
+            "no": "خیر"
           }
         },
         "fireplace": {
@@ -1005,6 +1268,12 @@
         },
         "flag/type": {
           "label": "نوع پرچم"
+        },
+        "flashing_lights": {
+          "options": {
+            "no": "خیر",
+            "yes": "بله"
+          }
         },
         "floating": {
           "label": "شناور"
@@ -1029,8 +1298,10 @@
           "label": "سوخت"
         },
         "fuel/fuel_multi": {
+          "label": "انواع سوخت",
           "options": {
-            "HGV_diesel": "کامیون دیزلی"
+            "HGV_diesel": "کامیون دیزلی",
+            "diesel": "دیزل"
           }
         },
         "gambling": {
@@ -1053,13 +1324,25 @@
           "terms": "جنسیت، مردانه، زنانه، دسترسی"
         },
         "generator/method": {
-          "label": "شیوه"
+          "label": "شیوه",
+          "options": {
+            "water-storage": "مخزن ذخیره آب",
+            "wind_turbine": "توربین بادی"
+          }
         },
         "generator/output/electricity": {
           "label": "توان خروجی"
         },
         "generator/source": {
-          "label": "منبع"
+          "label": "منبع",
+          "options": {
+            "biogas": "بیوگاز",
+            "diesel": "دیزل",
+            "gasoline": "گازوئیل",
+            "oil": "روغن",
+            "waste": "پسماند",
+            "wind": "باد"
+          }
         },
         "generator/type": {
           "label": "نوع"
@@ -1068,7 +1351,8 @@
           "label": "ارتفاع فوران"
         },
         "gnis/feature_id-US": {
-          "label": "شناسه عارضه GNIS (سامانه اطلاعات نام‌های جغرافیایی)"
+          "label": "شناسه عارضه GNIS (سامانه اطلاعات نام‌های جغرافیایی)",
+          "terms": "[ترجمه با مترادف یا اصطلاحات مرتبط با \"شناسه عارضه GNIS (سامانه اطلاعات نام‌های جغرافیایی)\" ، که با کاما از هم جدا شده است]"
         },
         "government": {
           "label": "نوع"
@@ -1096,14 +1380,42 @@
           "label": "هشتگ‌ها",
           "placeholder": "#مثال"
         },
+        "hazard_boundary": {
+          "label": "خطر"
+        },
         "healthcare": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "alternative": "طب جایگزین (در دست تحقیقات)",
+            "audiologist": "شنوایی سنجی",
+            "birthing_centre": "زایشگاه",
+            "clinic": "کلینیک",
+            "counselling": "مرکز مشاوره",
+            "dentist": "دندانپزشکی",
+            "doctor": "مطب دکتر",
+            "hospice": "آسایشگاه",
+            "laboratory": "آزمایشگاه پزشکی",
+            "midwife": "ماما",
+            "occupational_therapist": "کار درمانی",
+            "optometrist": "چشم پزشک / بینایی سنج",
+            "pharmacy": "داروخانه",
+            "physiotherapist": "فیزیوتراپیست",
+            "podiatrist": "پاپزشک / متخصص پا",
+            "psychotherapist": "روان‎‌درمانگر",
+            "rehabilitation": "توانبخشی",
+            "sample_collection": "تسهیلات جمع‌آوری نمونه",
+            "speech_therapist": "گفتار درمان"
+          }
         },
         "healthcare/speciality": {
           "label": "تخصصها",
           "options": {
+            "orthodontics": "ارتودنسی",
+            "osteopathy": "پوکی استخوان",
             "pathology": "آسیب شناس",
-            "podiatry": "متخصص پا"
+            "podiatry": "متخصص پا",
+            "shiatsu": "شیاتسو",
+            "stomatology": "دندانپزشکی"
           }
         },
         "heating": {
@@ -1124,10 +1436,33 @@
         "highway": {
           "label": "نوع"
         },
+        "highway_cartpath": {
+          "options": {
+            "service": "جادهٔ خدماتی"
+          }
+        },
         "historic": {
           "label": "نوع",
           "options": {
-            "citywalls": "دیوارهای تاریخی شهر"
+            "archaeological_site": "سایت باستان شناسی",
+            "boundary_stone": "سنگ مرزی",
+            "building": "ساختمان تاریخی",
+            "castle": "قلعه",
+            "city_gate": "دروازه شهر",
+            "citywalls": "دیوارهای تاریخی شهر",
+            "fort": "قلعه تاریخی",
+            "manor": "خانه اربابی (قرون وسطی)",
+            "memorial": "یادبود",
+            "mine": "مال من",
+            "monument": "مقبره / بنای تاریخی",
+            "pillory": "ستون تاریخی",
+            "railway": "راه آهن",
+            "ruins": "ویرانه / خرابه",
+            "shieling": "شیلینگ_نوعی کلبه",
+            "tomb": "آرامگاه / مقبره",
+            "wayside_cross": "صلیب کنار جاده",
+            "wayside_shrine": "آرامگاه کنار جاده",
+            "wreck": "کشتی شکسته"
           }
         },
         "historic/civilization": {
@@ -1230,13 +1565,12 @@
           "terms": "اتصال اینترنتی، نت، اینترنت"
         },
         "internet_access/fee": {
-          "label": "دسترسی اینترنت",
+          "label": "هزینهٔ دسترسی به اینترنت",
           "options": {
             "customers": "فقط مشتریان",
             "no": "رایگان",
             "yes": "پولی"
-          },
-          "terms": "دسترسی اینترنت"
+          }
         },
         "internet_access/ssid": {
           "label": "نام شبکهٔ وای‌فای",
@@ -1263,18 +1597,33 @@
           "label": "ارتفاع حاشیه پیاده‌رو",
           "options": {
             "flush": {
-              "description": "حاشیه ساخته شده‌ای که هم سطح با منطقه اطراف است. گاهی برای عبور باران به جوب"
+              "description": "حاشیه ساخته شده‌ای که هم سطح با منطقه اطراف است. گاهی برای عبور باران به جوب",
+              "title": "شستشو"
             },
             "lowered": {
-              "description": "حاشیه ساخته شده‌ای که برای استفاده‌کنندگان از ویلچر مناسب است؛ ارتفاع آن از چند سانتی متر بیشتر نباشد."
+              "description": "حاشیه ساخته شده‌ای که برای استفاده‌کنندگان از ویلچر مناسب است؛ ارتفاع آن از چند سانتی متر بیشتر نباشد.",
+              "title": "پایین آورد"
             },
             "no": {
-              "description": "هیچ محدودیتی در این مکان وجود ندارد."
+              "description": "هیچ محدودیتی در این مکان وجود ندارد.",
+              "title": "خیر"
+            },
+            "raised": {
+              "title": "مطرح شد"
+            },
+            "yes": {
+              "title": "بله"
             }
           }
         },
         "kerb/height": {
           "label": "ارتفاع"
+        },
+        "kerb/kerb_barrier": {
+          "label": "نوع"
+        },
+        "kitchen": {
+          "label": "آشپزخانه"
         },
         "kneipp_water_cure_multi": {
           "label": "انواع حوضه"
@@ -1342,6 +1691,15 @@
         "liaison": {
           "label": "نوع"
         },
+        "lifeguard": {
+          "label": "نوع"
+        },
+        "lifeguard_check": {
+          "label": "نجات غریق"
+        },
+        "lift_gate/type": {
+          "label": "نوع"
+        },
         "line_attachment": {
           "label": "پیوست خط"
         },
@@ -1386,16 +1744,41 @@
           "label": "پوشش"
         },
         "map_type": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "toposcope": "توپوسکوپ / جدول جهت‌گیری"
+          }
         },
         "mapillary": {
           "label": "شناسه تصویر مپیلاری"
         },
         "marker": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "ground": {
+              "title": "زمین"
+            },
+            "stone": {
+              "title": "سنگ"
+            }
+          }
         },
         "material": {
           "label": "جنس",
+          "options": {
+            "brick": "آجر",
+            "concrete": "بتن",
+            "glass": "شیشه",
+            "granite": "گرانیت",
+            "limestone": "سنگ آهک",
+            "metal": "فلز",
+            "plastic": "پلاستیک",
+            "rock": "سنگ",
+            "sand": "شنی / ریگ / ماسه ریز",
+            "steel": "فولاد",
+            "stone": "سنگ",
+            "wood": "چوب"
+          },
           "terms": "ماده، جنس، متریال"
         },
         "max_age": {
@@ -1413,11 +1796,20 @@
         },
         "maxspeed/hgv": {
           "label": "محدودیت سرعت کامیون",
+          "placeholder": "۴۰, ۵۰, ۶۰...",
           "terms": "حداکثر سرعت کامیون ، حد مجاز سرعت کامیون ، سرعت مجاز کامیون ، حداکثر سرعت مجاز کامیون ، محدودیت سرعت"
+        },
+        "maxstay": {
+          "label": "محدودیت زمانی"
         },
         "memorial": {
           "label": "نوع",
           "options": {
+            "bust": "سردیس",
+            "obelisk": "اُبِلیسک (ستون سنگی چهارگوش)",
+            "plaque": "لوح یادبود",
+            "sculpture": "مجسمه‌سازی",
+            "statue": "تندیس",
             "stone": "سنگ",
             "war_memorial": "یادبود جنگ"
           }
@@ -1427,6 +1819,13 @@
         },
         "microbrewery": {
           "label": "آبجوسازی کوچک"
+        },
+        "military_service": {
+          "options": {
+            "army": "ارتش",
+            "marines": "تفنگداران دریایی",
+            "navy": "نیروی دریایی"
+          }
         },
         "mimics": {
           "label": "نرم‌افزار میمیکس (تصویربرداری پزشکی)"
@@ -1448,6 +1847,15 @@
         },
         "monitoring_multi": {
           "label": "نوع نظارت"
+        },
+        "mooring": {
+          "label": "لنگر انداختن",
+          "options": {
+            "commercial": "تجاری",
+            "no": "خیر",
+            "private": "خصوصی",
+            "yes": "بله"
+          }
         },
         "mtb/scale": {
           "label": "دشواری دوچرخه‌سواری کوهستانی",
@@ -1544,8 +1952,57 @@
           "label": "يادداشت",
           "terms": "یادداشت"
         },
+        "nudism": {
+          "options": {
+            "designated": "ویژه",
+            "no": "ممنوع",
+            "permissive": "مجاز",
+            "yes": "مجاز"
+          }
+        },
         "office": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "accountant": "دفتر حسابدار",
+            "adoption_agency": "سازمان بهزیستی",
+            "advertising_agency": "کانون تبلیغاتی",
+            "architect": "دفتر معماری",
+            "association": "دفتر سازمان غیر انتفاعی",
+            "charity": "دفتر خیریه",
+            "company": "دفتر شرکت خصوصی",
+            "consulting": "دفتر مشاوره",
+            "coworking": "فضای کاری مشارکتی",
+            "diplomatic": "دفتر دیپلماتیک / امور خارجه",
+            "educational_institution": "مؤسسه آموزشی",
+            "employment_agency": "آژانس کاریابی",
+            "energy_supplier": "دفتر تأمین کننده انرژی",
+            "estate_agent": "دفتر املاک",
+            "financial": "اداره مالی",
+            "financial_advisor": "مشاور مالی",
+            "forestry": "دفتر جنگلداری",
+            "foundation": "دفتر بنیاد",
+            "government": "دفتر دولتی",
+            "guide": "دفتر راهنمای تور",
+            "insurance": "دفتر بیمه",
+            "it": "دفتر فناوری اطلاعات",
+            "lawyer": "دفتر حقوقی",
+            "moving_company": "دفتر خدمات باربری / حمل بار",
+            "newspaper": "دفتر روزنامه",
+            "ngo": "سازمان مردم نهاد",
+            "notary": "دفتر اسناد رسمی",
+            "physician": "پزشک",
+            "political_party": "دفتر حزب سیاسی",
+            "private_investigator": "دفتر تحقیقات خصوصی",
+            "religion": "دفاتر مذهبی",
+            "research": "سازمان تحقیقاتی و پژوهشی",
+            "security": "دفتر امنیت",
+            "surveyor": "دفتر نظرسنجی",
+            "tax_advisor": "دفتر مشاور مالیاتی",
+            "telecommunication": "دفتر مخابراتی",
+            "therapist": "دفتر روان‌درمان",
+            "travel_agent": "آژانس مسافرتی",
+            "water_utility": "دفتر تاسیسات آبی"
+          }
         },
         "oneway": {
           "label": "يک طرفه",
@@ -1595,6 +2052,9 @@
             "yes": "مقداری"
           }
         },
+        "orientation/orientation_parking": {
+          "label": "جهت"
+        },
         "outdoor_seating": {
           "label": "صندلی در فضای باز"
         },
@@ -1626,9 +2086,33 @@
             "multi-storey": "چندطبقه",
             "rooftop": "پشت بام",
             "sheds": "پارکینگ آلونکی",
+            "shoulder": "شانه",
             "street_side": "کنار-خیابان",
             "surface": "سطح",
             "underground": "زیرزمینی"
+          }
+        },
+        "parking/side/orientation": {
+          "options": {
+            "parallel": "موازی با خیابان"
+          },
+          "types": {
+            "parking:left:orientation": "سمت چپ",
+            "parking:right:orientation": "سمت راست"
+          }
+        },
+        "parking/side/parking": {
+          "label": "پارکینگ",
+          "options": {
+            "lane": "خط عبوری کنار جاده",
+            "no": "خیر",
+            "shoulder": "شانه",
+            "street_side": "کنار-خیابان",
+            "yes": "بله (نامشخص)"
+          },
+          "types": {
+            "parking:left": "سمت چپ",
+            "parking:right": "سمت راست"
           }
         },
         "parking_entrance": {
@@ -1640,7 +2124,18 @@
         "payment_multi": {
           "label": "روش‌های پرداخت",
           "options": {
-            "app": "اپلیکیشن موبایل"
+            "alipay": "علی پی_برنامه پرداخت تلفن همراه و آنلاین شخص ثالث چینی",
+            "american_express": "آمریکن اکسپرس",
+            "app": "اپلیکیشن موبایل",
+            "apple_pay": "اپل پی",
+            "bancomat": "دستگاه خودپرداز",
+            "cash": "پول نقد",
+            "cheque": "بررسی",
+            "diners_club": "داینرز کلاب / یک شرکت خدمات مالی آمریکایی",
+            "girocard": "ژیروکارد / شبکه بین بانکی آلمان",
+            "jcb": "جی سی بی / کارت اعتباری ژاپنی",
+            "maestro": "مائسترو_نوعی پرداخت",
+            "mastercard": "مسترکارت"
           },
           "terms": "انواع پرداخت"
         },
@@ -1763,6 +2258,12 @@
         "plant/method": {
           "label": "روش تولید"
         },
+        "plant/output": {
+          "options": {
+            "compressed_air": "هوای فشرده",
+            "hot_water": "آب گرم"
+          }
+        },
         "plant/output/electricity": {
           "placeholder": "۵۰۰ مگاوات، ۱۰۰۰ مگاوات، ۲۰۰۰ مگاوات..."
         },
@@ -1785,11 +2286,17 @@
         "population": {
           "label": "جمعیت"
         },
+        "population/date": {
+          "placeholder": "س‌س‌س‌س-م‌م-رر"
+        },
         "portable": {
           "label": "قابل حمل"
         },
         "post": {
           "label": "نشانی تحویل"
+        },
+        "post_box/type": {
+          "label": "نوع"
         },
         "power": {
           "label": "نوع"
@@ -1836,7 +2343,11 @@
           }
         },
         "ramp": {
-          "label": "راه‌گرد توکار"
+          "label": "راه‌گرد توکار",
+          "options": {
+            "no": "خیر",
+            "yes": "بله"
+          }
         },
         "rating": {
           "label": "درجه قدرت"
@@ -1845,7 +2356,8 @@
           "label": "کد دوچرخه‌سواری"
         },
         "real_fire-GB-IE": {
-          "label": "آتش واقعی"
+          "label": "آتش واقعی",
+          "terms": "[ترجمه با مترادف یا اصطلاحات مرتبط با \"آتش واقعی\" ، که با کاما از هم جدا شده است]"
         },
         "recycling_accepts": {
           "label": "قبول",
@@ -1926,6 +2438,18 @@
         },
         "religion": {
           "label": "دین",
+          "options": {
+            "buddhist": "بودایی",
+            "christian": "مسیحی",
+            "hindu": "هندو",
+            "jewish": "یهودی",
+            "muslim": "مسلمان",
+            "shinto": "شینتو",
+            "sikh": "آیین سیک",
+            "spiritualist": "روح گرایی / معنویت گرایی",
+            "taoist": "تائوئیسم",
+            "tenrikyo": "تنریکیو"
+          },
           "terms": "دین"
         },
         "reservation": {
@@ -1945,13 +2469,22 @@
           "label": "نوع"
         },
         "resource": {
-          "label": "منابع"
+          "label": "منابع",
+          "options": {
+            "aggregate": "جمع / مجموع",
+            "gravel": "ماسه",
+            "limestone": "سنگ آهک",
+            "sand": "شنی / ریگ / ماسه ریز"
+          }
         },
         "restriction": {
           "label": "نوع"
         },
         "restrictions": {
           "label": "محدودیت‌های گردش"
+        },
+        "roller_coaster/track": {
+          "label": "نوع"
         },
         "roof/colour": {
           "label": "رنگ سقف"
@@ -1970,6 +2503,12 @@
         },
         "route_master": {
           "label": "نوع"
+        },
+        "royal_cypher-GB": {
+          "options": {
+            "no": "خیر",
+            "scottish_crown": "تاج اسکاتلند"
+          }
         },
         "ruins": {
           "label": "نوع"
@@ -1997,7 +2536,8 @@
           "label": "نمونه‌ها"
         },
         "sanitary_dump_station": {
-          "label": "دفع توالت"
+          "label": "دفع توالت",
+          "terms": "دفع توالت"
         },
         "screen": {
           "label": "صفحه نمایش",
@@ -2080,8 +2620,20 @@
             "other": "سایر"
           }
         },
+        "seamark/harbour/category_marina": {
+          "options": {
+            "marina": "بله",
+            "marina_no_facilities": "خیر"
+          }
+        },
         "seamark/mooring/category": {
           "label": "دسته‌بندی"
+        },
+        "seamark/rescue_station/category": {
+          "options": {
+            "aircraft": "هواپیما",
+            "radio": "ایستگاه رادیو"
+          }
         },
         "seamark/type": {
           "terms": "نماد دریایی"
@@ -2143,6 +2695,9 @@
         "shelter_type": {
           "label": "نوع"
         },
+        "shoes": {
+          "label": "کفش‌ها"
+        },
         "shop": {
           "label": "نوع"
         },
@@ -2194,10 +2749,26 @@
           "label": "پیامک"
         },
         "social_facility": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "ambulatory_care": "مراقبت‌های سرپایی",
+            "assisted_living": "مسکن برای افراد مسن یا معلول / امکانات زندگی با کمک و مراقبت های ویژه",
+            "food_bank": "بانک غذا",
+            "group_home": "خانه گروه",
+            "nursing_home": "خانه سالمندان",
+            "shelter": "پناهگاه"
+          }
         },
         "social_facility_for": {
-          "label": "ظرفیت"
+          "label": "ظرفیت",
+          "options": {
+            "child": "فرزندان",
+            "juvenile": "نوجوانان",
+            "migrant": "مهاجران",
+            "orphan": "یتیمان",
+            "senior": "مسن/سالخوره",
+            "woman": "زنان"
+          }
         },
         "source": {
           "label": "منابع",
@@ -2211,12 +2782,48 @@
           },
           "terms": "منابع، منبع"
         },
+        "species": {
+          "label": "گونه ها / انواع"
+        },
         "species/wikidata": {
           "label": "قسمت‌های ویکی‌داده",
           "terms": "ویکی‌دادهٔ گونه، آیتم دادهٔ گونه"
         },
         "sport": {
-          "label": "ورزش‌ها"
+          "label": "ورزش‌ها",
+          "options": {
+            "american_football": "فوتبال آمریکایی",
+            "baseball": "بیسبال",
+            "basketball": "بسکتبال",
+            "beachvolleyball": "والیبال ساحلی",
+            "bmx": "بی‌ام‌ایکس",
+            "chess": "شطرنج",
+            "climbing": "صخره نوردی / سنگ نوردی",
+            "cricket": "کریکت",
+            "curling": "کرلینگ",
+            "cycling": "دوچرخه سواری",
+            "dog_racing": "ورزش مسابقه سگ",
+            "gaelic_games": "بازیهای گالیک",
+            "golf": "گلف",
+            "gymnastics": "ژیمناستیک",
+            "horse_racing": "مسابقه اسب دوانی",
+            "ice_hockey": "ورزش هاکی روی یخ",
+            "ice_skating": "ورزش اسکیت روی یخ",
+            "ice_stock": "ورزش سهام یخ (یک ورزش زمستانی)",
+            "karting": "مسابقه کارت",
+            "motocross": "ورزش موتوکراس/موتور پرشی",
+            "pelota": "توپ",
+            "rugby_union": "اتحادیه راگبی",
+            "running": "ورزش مسابقه دو",
+            "scuba_diving": "غواصی",
+            "shooting": "تیراندازی کردن با تفنگ",
+            "skateboard": "اسکیت برد",
+            "skiing": "اسکی",
+            "soccer": "فوتبال",
+            "swimming": "شنا كردن",
+            "tennis": "تنیس",
+            "volleyball": "والیبال"
+          }
         },
         "sport/sport_ice": {
           "label": "ورزش‌ها"
@@ -2278,6 +2885,12 @@
           },
           "placeholder": "نامعلوم"
         },
+        "structure_power": {
+          "label": "ساختار",
+          "options": {
+            "solid": "جامد / محکم"
+          }
+        },
         "structure_waterway": {
           "label": "ساختار",
           "options": {
@@ -2288,11 +2901,30 @@
         "studio": {
           "label": "نوع"
         },
+        "subject": {
+          "label": "موضوع"
+        },
         "substance": {
-          "label": "مواد"
+          "label": "مواد",
+          "options": {
+            "fuel": "سوخت",
+            "hot_water": "آب گرم",
+            "sewage": "فاضلاب شهری",
+            "water": "آب آشامیدنی"
+          }
         },
         "substation": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "industrial": "صنعتی"
+          }
+        },
+        "substation_pipeline": {
+          "label": "نوع",
+          "options": {
+            "industrial": "صنعتی",
+            "measurement": "اندازه‌گیری"
+          }
         },
         "supervised": {
           "label": "نظارت",
@@ -2313,8 +2945,10 @@
             "grass": "چمن",
             "gravel": "شنی (درشت)",
             "ground": "زمین",
+            "metal": "فلز",
             "paved": "روسازی‌شده",
             "paving_stones": "سنگ‌فرش هموار",
+            "pebblestone": "سنگ ریزه",
             "salt": "نمک",
             "sand": "شنی (ریز)",
             "unpaved": "روسازی‌نشده",
@@ -2340,6 +2974,7 @@
           "label": "تاریخ آخرین بررسی"
         },
         "survey_point/purpose": {
+          "label": "هدف",
           "options": {
             "both": "هر دو",
             "horizontal": "تراز افقی",
@@ -2347,10 +2982,20 @@
           }
         },
         "survey_point/structure": {
-          "label": "ساختار"
+          "label": "ساختار",
+          "options": {
+            "beacon": "فانوس دریایی",
+            "block": "بلوک / مانع",
+            "cairn": "توده سنگ مخروطی ، سنگ‌چین",
+            "cut": "برش",
+            "pole": "قطب"
+          }
         },
         "swimming_pool": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "spa": "آبگرم / چشمه معدنی"
+          }
         },
         "switch": {
           "label": "نوع",
@@ -2376,11 +3021,28 @@
         "target": {
           "label": "هدف"
         },
+        "taxi_vehicle": {
+          "options": {
+            "motorcar": {
+              "title": "خودرو"
+            },
+            "motorcycle": {
+              "title": "موتورسیکلت"
+            }
+          }
+        },
         "telecom": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "data_center": "مرکز داده",
+            "service_device": "دستگاه خدمات"
+          }
         },
         "telecom/medium": {
           "label": "متوسط"
+        },
+        "telescope/type": {
+          "label": "نوع"
         },
         "tidal": {
           "label": "جزر و مد",
@@ -2406,14 +3068,32 @@
           "label": "شستن دست",
           "terms": "شستن دستها، دست‌شویی، دست شویی"
         },
+        "toilets/menstrual_products": {
+          "options": {
+            "no": "خیر"
+          }
+        },
         "toilets/position": {
           "label": "جایگاه‌های توالت"
+        },
+        "toilets/wheelchair": {
+          "options": {
+            "limited": "محدود",
+            "no": "خیر",
+            "yes": "بله"
+          }
         },
         "toll": {
           "label": "باجه پرداخت"
         },
         "tomb": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "mausoleum": "آرامگاه / مقبره",
+            "pyramid": "هرم",
+            "table": "جدول",
+            "tumulus": "گورپشته"
+          }
         },
         "tourism": {
           "label": "نوع"
@@ -2421,6 +3101,9 @@
         "tower/construction": {
           "label": "ساخت و ساز",
           "placeholder": "دکل مهاری، مشبک، مخفی..."
+        },
+        "tower/platforms": {
+          "placeholder": "۱, ۲, ۳..."
         },
         "tower/type": {
           "label": "نوع"
@@ -2442,7 +3125,20 @@
           "label": "نوع"
         },
         "traffic_calming": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "bump": "سرعتگیر",
+            "chicane": "پیچ سرعتگیر",
+            "choker": "ترافیک خفه‌کن",
+            "cushion": "بالشتک سرعتکاه",
+            "dip": "غوطه ور شدن",
+            "hump": "سرعتکاه قوسی",
+            "rumble_strip": "نوار لرزاننده",
+            "table": "سرعتکاه تخت"
+          }
+        },
+        "traffic_calming_road": {
+          "label": "آرام‌سازی ترافیک"
         },
         "traffic_sign": {
           "label": "علائم راهنمایی و رانندگی"
@@ -2466,6 +3162,12 @@
             "forward": "رو به جلو"
           }
         },
+        "traffic_signals/sound": {
+          "options": {
+            "no": "خیر",
+            "yes": "بله"
+          }
+        },
         "trail_visibility": {
           "label": "مسیر پیاده روی (درجه‌بندی با دید در مسیر)",
           "options": {
@@ -2479,7 +3181,10 @@
           "placeholder": "عالی، خوب، بد ..."
         },
         "transformer": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "phase_angle_regulator": "تنظیم کننده زاویه فاز"
+          }
         },
         "trees": {
           "label": "درخت‌ها"
@@ -2495,7 +3200,21 @@
           "placeholder": "پیش فرض"
         },
         "tunnel_combo": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "avalanche_protector": "محافظ بهمن",
+            "building_passage": "ساختمان پاساژ",
+            "culvert": "آبگیر"
+          }
+        },
+        "turning_circle": {
+          "label": "شکل"
+        },
+        "two_sided": {
+          "options": {
+            "undefined": "خیر",
+            "yes": "بله"
+          }
         },
         "usage_rail": {
           "label": "نوع کاربری",
@@ -2509,8 +3228,20 @@
           },
           "terms": "نوع استفاده، نوع کاربرد"
         },
+        "usage_waterway": {
+          "label": "نوع کاربری",
+          "options": {
+            "transportation": "حمل و نقل"
+          }
+        },
         "utility": {
-          "label": "کاربرد"
+          "label": "کاربرد",
+          "options": {
+            "oil": "روغن",
+            "power": "نیرو / برق",
+            "telecom": "مخابرات",
+            "water": "آب"
+          }
         },
         "utility_semi": {
           "label": "کارایی"
@@ -2532,7 +3263,22 @@
           }
         },
         "vending": {
-          "label": "نوع اجناس:"
+          "label": "نوع اجناس:",
+          "options": {
+            "bread": "نان",
+            "drinks": "نوشیدنی",
+            "eggs": "تخم مرغ ها",
+            "electronics": "الکترونیک",
+            "excrement_bags": "کیسه های مدفوع",
+            "food": "غذا",
+            "fuel": "سوخت",
+            "ice_cream": "بستنی",
+            "milk": "شیر",
+            "newspapers": "روزنامه ها",
+            "pizza": "پیتزا",
+            "sweets": "شیرینی",
+            "water": "آب آشامیدنی"
+          }
         },
         "vhf": {
           "label": "کانال VHF"
@@ -2584,7 +3330,10 @@
           "label": "نوع"
         },
         "waste": {
-          "label": "پسماند"
+          "label": "پسماند",
+          "options": {
+            "trash": "زباله"
+          }
         },
         "water": {
           "label": "نوع"
@@ -2593,7 +3342,13 @@
           "label": "نقطه تقسیم آب"
         },
         "water_source": {
-          "label": "منشأ آب"
+          "label": "منشأ آب",
+          "options": {
+            "pond": "آبگیر / تالاب",
+            "river": "رود",
+            "stream": "نهر",
+            "water_tank": "مخزن آب"
+          }
         },
         "water_tank/volume": {
           "label": "حجم (لیتر)",
@@ -2606,7 +3361,14 @@
           "label": "وب سايت"
         },
         "wetland": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "bog": "باتلاق",
+            "fen": "مرداب",
+            "mangrove": "مانگرو / حرا",
+            "marsh": "باتلاق / مرداب",
+            "swamp": "مرداب / باتلاق"
+          }
         },
         "wheelchair": {
           "label": "دسترسی ویلچر",
@@ -2637,6 +3399,14 @@
         "windings": {
           "label": "سیم پیچ",
           "placeholder": "۱, ۲, ۳..."
+        },
+        "windings/auto": {
+          "label": "مبدل خودکار",
+          "options": {
+            "no": "خیر",
+            "undefined": "خیر فرض شده",
+            "yes": "بله"
+          }
         },
         "windings/configuration": {
           "label": "پیکربندی سیم پیچ",
@@ -2985,6 +3755,9 @@
         "amenity/doctors": {
           "name": "مطب دکتر",
           "terms": "مطب پزشک, دکتر, پزشک, طبیب"
+        },
+        "amenity/doctors/podiatry": {
+          "name": "پاپزشک / متخصص پا"
         },
         "amenity/dojo": {
           "name": "باشگاه / آموزشگاه هنرهای رزمی",
@@ -3536,10 +4309,6 @@
           "name": "تئاتر",
           "terms": "نمایش,تآتر,تاتر,نمایشنامه,تیاتر,صحنه,بلیط"
         },
-        "amenity/theatre/type/amphi": {
-          "name": "آمفی تئاتر",
-          "terms": "آمفی, تئاتر, تاتر"
-        },
         "amenity/toilets": {
           "name": "توالت عمومی",
           "terms": "دستشویی عمومی ، توالت ، WC ، دست به آب ، موال"
@@ -3635,6 +4404,10 @@
         "amenity/vending_machine/food": {
           "name": "دستگاه فروش خوراکی",
           "terms": "غذا"
+        },
+        "amenity/vending_machine/food/snacks": {
+          "name": "دستگاه فروش خوراکی",
+          "terms": "آب نبات ، آدامس ، چیپ ، پرزل ، کوکی ، کراکر"
         },
         "amenity/vending_machine/ice_cream": {
           "name": "دستگاه فروش بستنی",
@@ -3832,6 +4605,9 @@
         "barrier/hampshire_gate": {
           "name": "دروازه سیمی"
         },
+        "barrier/handrail": {
+          "name": "نرده"
+        },
         "barrier/hedge": {
           "name": "پرچین",
           "terms": "پرچین ، حصار ، مانع ، راه بند ، چپر ، خار بست ، راه بند"
@@ -3910,6 +4686,9 @@
         "boundary/administrative": {
           "name": "مرز حکومتی",
           "terms": "حاشیه مشخص کننده استان یا شهر یا روستا ، جدا کننده"
+        },
+        "boundary/hazard": {
+          "name": "منطقه خطرناک"
         },
         "bridge/support": {
           "name": "تکیه‌گاه پل\nپایه پل\nپشتیبان پل",
@@ -4600,7 +5379,8 @@
           "terms": "کریدور, کوریدور, راهرو"
         },
         "highway/crossing": {
-          "name": "گذرگاه پیاده"
+          "name": "گذرگاه پیاده",
+          "terms": "<ترجمه با مترادف یا اصطلاحات مشابه برای 'خط کشی عابر پیاده'، با کاما جدا میشوند>"
         },
         "highway/crossing/traffic_signals": {
           "name": "چراغ راهنمایی کنترل محل عابر پیاده",
@@ -4625,6 +5405,10 @@
           "name": "گذرگاه دوچرخه و پیاده",
           "terms": "عبور دوچرخه و پیاده ، عبور دوچرخه و عابر پیاده ، راه دوچرخه ، دوچرخه سواری ، دوچرخه سوار، تقاطع"
         },
+        "highway/cycleway/crossing/uncontrolled": {
+          "name": "گذرگاه دوچرخه با نشانه‌گذاری",
+          "terms": "عبور دوچرخه، تقاطع، عبور دوچرخه با علامت، گذرگاه دوچرخه با علامت"
+        },
         "highway/cycleway/crossing/unmarked": {
           "name": "گذرگاه دوچرخه بدون نشانه‌گذاری",
           "terms": "عبور دوچرخه بدون علامت، تقاطع"
@@ -4636,6 +5420,9 @@
         "highway/elevator_line": {
           "name": "آسانسور شیب‌رو، مایل",
           "terms": "راه آهن کابلی، آسانسور، شیبدار، شیبرو، مایل، پله برقی"
+        },
+        "highway/emergency_access_point": {
+          "name": "نقطه دسترسی اضطراری"
         },
         "highway/emergency_bay": {
           "name": "محل توقف اضطراری",
@@ -4665,6 +5452,10 @@
           "name": "محل عبور با چراغ راهنمایی عابر پیاده",
           "terms": "خط عابر پیاده با چراغ راهنما، خط کشی عابر پیاده، گذرگاه عابرپیاده"
         },
+        "highway/footway/crossing/unmarked": {
+          "name": "تقاطع گذرگاه پیاده بدون نشانه‌گذاری",
+          "terms": "گذرگاه عابر پیاده، محل عبور عابر پیاده"
+        },
         "highway/footway/sidewalk": {
           "name": "پیاده‌رو خیابان",
           "terms": "پیاده رو"
@@ -4676,6 +5467,9 @@
         "highway/give_way": {
           "name": "تابلو حق تقدم با خودرو روبرو",
           "terms": "تابلوی حق تقدم، دادن جای خود ، عملکرد ، علامت، راه دادن، انتظامی، پلیس، تابلو، تابلو رعایت حق تقدم، خطر"
+        },
+        "highway/ladder": {
+          "name": "نردبان / پلکان"
         },
         "highway/living_street": {
           "name": "خیابان  محدوده زندگی",
@@ -4711,6 +5505,9 @@
         "highway/path/boardwalk": {
           "name": "مسیر پیاده با تخته‌های چوبی",
           "terms": "اسکله، پیاده‌رو تخته‌ای، مسیر پیاده‌روی چوبی"
+        },
+        "highway/path/crossing": {
+          "name": "گذرگاه دوچرخه و پیاده"
         },
         "highway/path/informal": {
           "name": "مسیر غیررسمی",
@@ -5082,6 +5879,9 @@
         "landuse/military/barracks": {
           "name": "پادگان، سربازخانه",
           "terms": "نیروی هوایی ، ارتش ، پایگاه ، جنگ ، نیرو ، نگهبان ، دریایی ، نیروی دریایی ، نیرو ، جنگ، زور، نیروهای نظامی، سپاه، سرباز، سربازخانه، سرباز خانه، کار، بیگاری، پادگان، مرکز آموزشی نظامی، رزم، محاربه، حرب"
+        },
+        "landuse/military/base/navy": {
+          "name": "پایگاه نیروی دریایی"
         },
         "landuse/military/obstacle_course": {
           "name": "دوره موانع و تمرینات نظامی",
@@ -5462,6 +6262,9 @@
           "name": "مسیر مسابقه (مسابقات غیرموتوری)\nمیدان مسابقه",
           "terms": "دوچرخه\nاسب\nسگ\nمسابقه *\nمسیر\nپیست مسابقه\nخط مسابقه\nمسیر مسابقه"
         },
+        "leisure/track/athletics/running": {
+          "name": "مسیر مسابقه دو"
+        },
         "leisure/track/cycling": {
           "name": "پیست دوچرخه‌سواری",
           "terms": "مسیر دوچرخه ، مسیر دوچرخه سواری ، مسیر مسابقه دوچرخه ، میدان ویژه مسابقات دوچرخه سواری ، میدان سرپوشیده ، میدان دوچرخه ، پیست دوچرخه"
@@ -5527,6 +6330,9 @@
         "man_made/crane": {
           "name": "جرثقیل"
         },
+        "man_made/crane/portal_crane": {
+          "name": "جرثقیل دروازه ای"
+        },
         "man_made/cross": {
           "name": "صلیب",
           "terms": "صلیب ، کنار جاده ، علامت ، ضربدر ، باضافه ، نماد ، علائم ، یادبود"
@@ -5550,6 +6356,10 @@
         "man_made/flagpole": {
           "name": "میله پرچم",
           "terms": "تیر پرچم ، میله پرچم ، تیرک ، میله ، پرچم ، نشان ، دکل ، عمود"
+        },
+        "man_made/fuel_pump": {
+          "name": "پمپ سوخت (خودبردار)",
+          "terms": "بنزین ، گاز ، گازوئیل ، سوخت ، پروپان ، دیزل ، سی ان جی ، ال پی جی ، سیگنال ، بیودیزل"
         },
         "man_made/gasometer": {
           "name": "مخزن گاز",
@@ -5760,6 +6570,9 @@
         "man_made/works": {
           "name": "کارخانه"
         },
+        "marker": {
+          "name": "نشانه / نشانگر"
+        },
         "military/bunker": {
           "name": "پناه‌گاه نظامی",
           "terms": "حفره نظامی ، پناه‌گاه زیرزمینی ، نیروی هوایی ، ارتش ، پایگاه ، جنگ ، نیرو ، نگهبان ، دریایی ، نیروی دریایی ، نیرو ، جنگ"
@@ -5831,6 +6644,9 @@
           "name": "قله",
           "terms": "قله, نوک کوه, چکاد"
         },
+        "natural/reef": {
+          "name": "تپه دریایی / جزیره نما"
+        },
         "natural/ridge": {
           "name": "یال",
           "terms": "خط الرأس, خط‌الرأس, خط الراس, آب پخشان"
@@ -5869,6 +6685,9 @@
         "natural/stone": {
           "name": "سنگ بدون دسترسی / تخته سنگ",
           "terms": "سنگ ، سنگ بزرگ ، صخره"
+        },
+        "natural/strait": {
+          "name": "تنگه"
         },
         "natural/tree": {
           "name": "درخت",
@@ -5930,6 +6749,21 @@
           "name": "اراضی مرطوب",
           "terms": "باتلاق, نی زار, نیزار, خلاش, برکه خزه‌ای , خاک باتلاقی, مرداب, مانداب, هور, برکه, سطوح گلی, سطح گلی, پهنه جزر و مدی, پهنه کشندی, تالاب, زمین مرطوب"
         },
+        "natural/wetland/bog": {
+          "name": "باتلاق"
+        },
+        "natural/wetland/fen": {
+          "name": "مرداب"
+        },
+        "natural/wetland/mangrove": {
+          "name": "مانگرو / حرا"
+        },
+        "natural/wetland/marsh": {
+          "name": "باتلاق / مرداب"
+        },
+        "natural/wetland/swamp": {
+          "name": "مرداب / باتلاق"
+        },
         "natural/wood": {
           "name": "چوب یا جنگل طبیعی\nچوب جنگلی",
           "terms": "بورئال ، جنگل ، بیشه، درخت کاری، تایگا ، درخت ، درختان ، جنگل ها ، جنگل ها، چوب طبیعی، شمالی، درختستان، زمین جنگلی"
@@ -5983,7 +6817,8 @@
           "name": "اداره کنسولگری"
         },
         "office/diplomatic/embassy": {
-          "name": "سفارت خانه"
+          "name": "سفارت خانه",
+          "terms": "<ترجمه با مترادف یا اصطلاحات مشابه برای 'سفارت'، با کاما جدا می‌شوند>"
         },
         "office/educational_institution": {
           "name": "مؤسسه آموزشی",
@@ -6094,6 +6929,13 @@
         "office/water_utility": {
           "name": "دفتر تاسیسات آبی"
         },
+        "pipeline/substation": {
+          "name": "پست خط لوله"
+        },
+        "pipeline/valve": {
+          "name": "شیر لوله",
+          "terms": "روغن ، گاز طبیعی ، آب ، فاضلاب ، فاضلاب ، شیر ، سوپاپ ، دریچه ، باز و بسته ، درب ، قطع و وصل ، شیر فلکه ، ساقه دریچه ، پوشش شیر ، سرپوش ، درپوش ، در ، ولو"
+        },
         "piste/downhill": {
           "name": "پیست اسکی سرازیری"
         },
@@ -6175,6 +7017,10 @@
         "playground/slide": {
           "name": "سرسره"
         },
+        "playground/springy": {
+          "name": "بهار سواری",
+          "terms": "صندلی گهواره‌ای بهار ، صندلی گهواره‌ای قابل ارتجاع"
+        },
         "playground/swing": {
           "name": "تاب"
         },
@@ -6238,6 +7084,10 @@
         "power/plant/source/hydro": {
           "name": "نیروگاه برق آبی"
         },
+        "power/plant/source/method/photovoltaic": {
+          "name": "مزرعه خورشیدی / نیروگاه خورشیدی",
+          "terms": "نیروگاه فتوولتائیک ، پانل های خورشیدی ، پارک خورشیدی ، خورشیدی در مقیاس ابزار ، سلول خورشیدی"
+        },
         "power/plant/source/nuclear": {
           "name": "نیروگاه برق هسته‌ای"
         },
@@ -6250,7 +7100,11 @@
           "terms": "تیرک انتقال برق، دکل، تیر، تیرک، ستون، پایه، میله، برق، صنایع همگانی، برق شهری، برق فشار ضعیف"
         },
         "power/substation": {
-          "name": "ایستگاه فرعی"
+          "name": "ایستگاه فرعی",
+          "terms": "<ترجمه با مترادف یا اصطلاحات مشابه برای 'ایستگاه فرعی برق'، با کاما جدا می‌شوند>"
+        },
+        "power/switch": {
+          "name": "سوئیچ برق"
         },
         "power/tower": {
           "name": "دکل ولتاژ قوی"
@@ -6341,7 +7195,8 @@
           "terms": "اتوبوس ، ترانزیت عمومی ، حمل و نقل عمومی ، ایستگاه ، ترمینال ، ترانزیت ، حمل و نقل ، ایستگاه"
         },
         "public_transport/station_ferry": {
-          "name": "پایانه کشتی"
+          "name": "پایانه کشتی",
+          "terms": "<ترجمه با مترادف یا اصطلاحات مشابه برای 'پایانه کشتی'، با کاما جدا می‌شوند>"
         },
         "public_transport/station_light_rail": {
           "name": "پایانه قطار سبک شهری",
@@ -6406,6 +7261,9 @@
         "railway/abandoned": {
           "name": "راه آهن متروکه"
         },
+        "railway/buffer_stop": {
+          "name": "توقف بافر_سدی که در راه آهن از خروج قطارها از انتهای ریل جلوگیری می کند"
+        },
         "railway/construction": {
           "name": "ریل در دست ساخت",
           "terms": "راه آهن در دست ساخت، راه آهن در حال تعمیر، در حال تعمیر"
@@ -6426,12 +7284,18 @@
         "railway/narrow_gauge": {
           "name": "مسیر گیج باریک"
         },
+        "railway/platform": {
+          "name": "سکوی قطار"
+        },
         "railway/rail": {
           "name": "مسیر قطار"
         },
         "railway/rail/highspeed": {
           "name": "مسیر قطار تندرو",
           "terms": "مسیر قطار سریع‌السیر"
+        },
+        "railway/signal": {
+          "name": "سیگنال راه آهن"
         },
         "railway/station": {
           "name": "پایانهٔ قطار"
@@ -6442,6 +7306,9 @@
         "railway/subway_entrance": {
           "name": "ورودی مترو",
           "terms": "مترو، حمل و نقل، ترابری "
+        },
+        "railway/switch": {
+          "name": "سوئیچ راه آهن"
         },
         "railway/tram": {
           "name": "مسیر قطار شهری",
@@ -6479,6 +7346,9 @@
         },
         "seamark/buoy_lateral/red": {
           "name": "شناوه قرمز\nبویه قرمز"
+        },
+        "seamark/mooring": {
+          "name": "لنگر انداختن"
         },
         "shop": {
           "name": "فروشگاه",
@@ -6547,6 +7417,9 @@
         "shop/bookmaker": {
           "name": "دلال شرط‌بندی",
           "terms": "قماربازی, شرطبندی"
+        },
+        "shop/books": {
+          "name": "کتاب‌فروشی"
         },
         "shop/boutique": {
           "name": "بوتیک"
@@ -6763,6 +7636,9 @@
           "name": "فروشگاه ابزارآلات و یراق",
           "terms": "ابزار فروشی, یراق, لوازم ساختمانی"
         },
+        "shop/health_food": {
+          "name": "فروشگاه غذای سالم"
+        },
         "shop/hearing_aids": {
           "name": "فروشگاه لوازم کمک شنوایی"
         },
@@ -6850,8 +7726,14 @@
         "shop/musical_instrument": {
           "name": "فروشگاه سازهای موسیقی"
         },
+        "shop/newsagent": {
+          "name": "روزنامه‌فروشی"
+        },
         "shop/nutrition_supplements": {
           "name": "فروشگاه تغذیه مکمل"
+        },
+        "shop/nuts": {
+          "name": "فروشگاه آجیل و خشکبار"
         },
         "shop/optician": {
           "name": "عینک فروشی",
@@ -6954,7 +7836,8 @@
           "terms": "فروشگاه تجهیزات وان آب گرم ، فروشگاه تعمیر و نگهداری وان حمام گرم ، فروشگاه لوازم استخر ، فروشگاه استخر ، فروشگاه استخر ، فروشگاه تجهیزات استخر ، فروشگاه نصب استخر ، فروشگاه تعمیر و نگهداری استخر ، فروشگاه لوازم استخر"
         },
         "shop/tailor": {
-          "name": "خیاط"
+          "name": "خیاط",
+          "terms": "<ترجمه با مترادف یا اصطلاحات مشابه برای 'خیاط'، با کاما جدا می‌شوند>"
         },
         "shop/tattoo": {
           "name": "سالن تاتو"
@@ -6994,7 +7877,8 @@
           "name": "تایر فروشی"
         },
         "shop/vacant": {
-          "name": "فروشگاه خالی"
+          "name": "فروشگاه خالی",
+          "terms": "<ترجمه با مترادف یا اصطلاحات مشابه برای 'فروشگاه بدون فروشنده'، با کاما جدا می‌شوند>"
         },
         "shop/vacuum_cleaner": {
           "name": "فروشگاه جاروبرقی"
@@ -7065,6 +7949,9 @@
           "name": "هنر چیدمان",
           "terms": "هنر نصب یا راه اندازی آثار سه بعدی ، هنر تعاملی ، هنر مداخله ، هنر مدرن"
         },
+        "tourism/artwork/mural": {
+          "name": "نقاشی دیواری"
+        },
         "tourism/artwork/sculpture": {
           "name": "مجسمه"
         },
@@ -7074,6 +7961,10 @@
         "tourism/attraction": {
           "name": "جاذبه گردشگری",
           "terms": "جاذبه توریستی"
+        },
+        "tourism/camp_pitch": {
+          "name": "مکان برقراری چادر",
+          "terms": "مکان برقراری چادر، مکان قرار دادن خودرو کاروان, چادر"
         },
         "tourism/camp_site": {
           "name": "اردوگاه",
@@ -7149,6 +8040,9 @@
           "name": "نقطه دید",
           "terms": "چشم‌انداز<br>"
         },
+        "tourism/wilderness_hut": {
+          "name": "کلبه بیابان"
+        },
         "tourism/zoo": {
           "name": "باغ وحش",
           "terms": "حیوانات, پارک وحش, پارک حیوانات, شیر, ببر, خرس, پلنگ"
@@ -7221,7 +8115,8 @@
           "name": "اجرای محدودیت سرعت"
         },
         "type/multipolygon": {
-          "name": "ترکیب چندضلعی‌"
+          "name": "ترکیب چندضلعی‌",
+          "terms": "<ترجمه با مترادف یا اصطلاحات مشابه برای 'چند ضلعی'، با کاما جدا می‌شوند>"
         },
         "type/public_transport/stop_area_group": {
           "name": "گروه منطقه توقف حمل و نقل"
@@ -7296,6 +8191,9 @@
         "type/route/power": {
           "name": "مسیر نیرو\nمسیر برق",
           "terms": "خط انتقال برق"
+        },
+        "type/route/railway": {
+          "name": "مسیر راه آهن"
         },
         "type/route/road": {
           "name": "مسیر جاده"

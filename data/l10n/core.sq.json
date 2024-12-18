@@ -66,32 +66,12 @@
       },
       "delete": {
         "title": "Fshij",
-        "description": {
-          "single": "Fshijeni këtë karakteristik përkohësisht",
-          "multiple": "Fshijini këto karakteristika përkohësisht."
-        },
         "annotation": {
           "point": "U fshi një pik.",
           "vertex": "U fshi një nyjë nga një linjë.",
           "line": "U fshi një vijë.",
           "area": "U fshi një sipërfaqe.",
           "relation": "U fshi një lidhje."
-        },
-        "too_large": {
-          "single": "Kjo karakteristikë s'mund fshihet se pse s'është e mjaftueshme të dukshme.",
-          "multiple": "Këto karakteristika nuk mund të fshihen sepse nuk janë mjatueshëm të dukshme."
-        },
-        "incomplete_relation": {
-          "single": "Kjo karakteristikë nuk mund të fshihet sepse nuk është shkarkuar plotësisht.",
-          "multiple": "Këto karakteristika nuk mund të fshihen sepse nuk janë shkarkuar plotësisht."
-        },
-        "part_of_relation": {
-          "single": "Kjo karakteristikë nuk mund të fshihet sepse është pjesë e një relacioni më të madh. Duhet ta hiqni nga relacioni ku bën pjesë fillimisht.",
-          "multiple": "Këto karakteristika nuk mund të fshihen sepse ato janë pjesë të një relacioni më të madh. Ju duhet ti fshini ato nga relacioni fillimisht."
-        },
-        "connected_to_hidden": {
-          "single": "Kjo karakteristikë nuk mund të fshihet pasi është e lidhur me një karakteristikë të fshehur.",
-          "multiple": "Këto karakteristika nuk mund të fshihen pasi janë të lidhura me karakteristika të fshehura."
         }
       },
       "connect": {
@@ -115,27 +95,11 @@
       },
       "move": {
         "title": "Lëviz",
-        "description": {
-          "single": "Lëvize këtë karakteristikë në një vend tjetër.",
-          "multiple": "Lëvizi këto objekte në një vend tjetër."
-        },
         "annotation": {
           "point": "U lëviz një pik.",
           "vertex": "U lëviz një njyë në një linjë.",
           "line": "U lëviz një vijë.",
           "area": "U lëviz një sipërfaqe."
-        },
-        "incomplete_relation": {
-          "single": "Ky tipar nuk mund të lëvizet sepse nuk është shkarkuar plotësisht.",
-          "multiple": "Këto karakteristika nuk mund të fshihen sepse nuk janë shkarkuar plotësisht."
-        },
-        "too_large": {
-          "single": "Kjo karakteristikë s'mund fshihet se pse s'është e mjaftueshme të dukshme.",
-          "multiple": "Këto karakteristika nuk mund të fshihen sepse nuk janë mjatueshëm të dukshme."
-        },
-        "connected_to_hidden": {
-          "single": "Kjo karakteristikë nuk mund të lëvizet pasi është e lidhur me një karakteristikë të fshehur.",
-          "multiple": "Këto karakteristikë nuk mund të lëvizen pasi janë e lidhur me karakteristika të fshehura."
         }
       },
       "rotate": {
@@ -322,10 +286,9 @@
           "detail_title": "Detajet",
           "cancel": "Anullo"
         }
-      },
-      "map_features": "Karakteristikat e Hartës"
+      }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Pikat",
         "tooltip": "Pikat e interesit"
@@ -415,13 +378,11 @@
     "source_switch": {
       "live": "drejtpërdrejt"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Etiketat"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Hiq"
-      }
+    "rapid_menu": {
+      "remove": "Hiq"
     },
     "tag_reference": {
       "description": "Përshkrim",
@@ -519,9 +480,7 @@
       }
     },
     "issues": {
-      "warnings": {
-        "list_title": "Paralajmërime"
-      }
+      "warnings": "Paralajmërime"
     },
     "intro": {
       "graph": {
@@ -551,45 +510,50 @@
     "shortcuts": {
       "title": "Shkurtimet e tastierës",
       "tooltip": "Shfaq në ekran shkurtimet e tastierës",
-      "browsing": {
-        "navigation": {
-          "title": "Navigimi"
-        },
-        "help": {
-          "title": "Ndihmë",
-          "help": "Shfaqni ndihmë/dokumentacionin",
-          "keyboard": "Shfaq shkurtimet e tastierës"
-        },
-        "selecting": {
-          "title": "Duke përzgjedhur karakteristikat",
-          "select_one": "Përzgjidhni një karakterstikë të vetme",
-          "select_multi": "Përzgjidhni disa karakterstika"
-        },
-        "vertex_selected": {
-          "title": "Me nyjen e përzgjedhur",
-          "first": "Kaloni tek nyja e parë",
-          "last": "Kaloni tek nyja e fundit"
-        }
+      "key": {
+        "delete": "Fshij"
       },
-      "editing": {
-        "title": "Duke edituar",
-        "drawing": {
-          "title": "Duke vizatuar"
+      "editing": "Duke edituar",
+      "navigation": "Navigimi",
+      "selecting_features": "Duke përzgjedhur karakteristikat",
+      "with_node_selected": "Me nyjen e përzgjedhur",
+      "drawing": "Duke vizatuar",
+      "commands": "Komandat",
+      "help": "Ndihmë",
+      "command": {
+        "select_one": {
+          "label": "Përzgjidhni një karakterstikë të vetme"
         },
-        "commands": {
-          "title": "Komandat",
-          "copy": "Kopjoni karakteristikat e përzgjedhura",
-          "undo": "Zhbëj veprimin e fundit",
-          "redo": "Ribëj veprimin e fundit",
-          "save": "Ruaj ndryshimet"
+        "select_multi": {
+          "label": "Përzgjidhni disa karakterstika"
         },
-        "operations": {
-          "move": "Lëvizni karakteristikat e përzgjedhura",
-          "rotate": "Rrotulloni karakteristikat e përzgjedhura"
+        "first_node": {
+          "label": "Kaloni tek nyja e parë"
+        },
+        "last_node": {
+          "label": "Kaloni tek nyja e fundit"
+        },
+        "copy": {
+          "label": "Kopjoni karakteristikat e përzgjedhura"
+        },
+        "undo": {
+          "label": "Zhbëj veprimin e fundit"
+        },
+        "redo": {
+          "label": "Ribëj veprimin e fundit"
+        },
+        "save": {
+          "label": "Ruaj ndryshimet"
+        },
+        "move": {
+          "label": "Lëvizni karakteristikat e përzgjedhura"
+        },
+        "rotate": {
+          "label": "Rrotulloni karakteristikat e përzgjedhura"
+        },
+        "keyboard_shortcuts": {
+          "label": "Shfaq shkurtimet e tastierës"
         }
-      },
-      "tools": {
-        "title": "Mjetet"
       }
     },
     "wikidata": {
@@ -637,6 +601,7 @@
       "bi": "bislamisht",
       "bin": "binisht",
       "bla": "siksikaisht",
+      "blo": "anisht",
       "bm": "bambarisht",
       "bn": "bengalisht",
       "bo": "tibetisht",
@@ -742,6 +707,7 @@
       "hax": "haidaishte jugore",
       "he": "hebraisht",
       "hi": "indisht",
+      "hi-Latn": "hindisht (latine)",
       "hil": "hiligajnonisht",
       "hmn": "hmongisht",
       "hr": "kroatisht",
@@ -810,6 +776,7 @@
       "kv": "komisht",
       "kw": "kornisht",
       "kwk": "kuakualaisht",
+      "kxv": "kuvisht",
       "ky": "kirgizisht",
       "la": "latinisht",
       "lad": "ladinoisht",
@@ -977,6 +944,7 @@
       "sw-CD": "suahilishte kongoleze",
       "swb": "kamorianisht",
       "syr": "siriakisht",
+      "szl": "silesisht",
       "ta": "tamilisht",
       "tce": "tatshonishte jugore",
       "te": "teluguisht",
@@ -1018,6 +986,7 @@
       "ve": "vendaisht",
       "vec": "venetisht",
       "vi": "vietnamisht",
+      "vmw": "makuvaisht",
       "vo": "volapykisht",
       "vun": "vunxhoisht",
       "wa": "ualunisht",
@@ -1029,6 +998,7 @@
       "wuu": "kinezishte vu",
       "xal": "kalmikisht",
       "xh": "xhosaisht",
+      "xnr": "kangrisht",
       "xog": "sogisht",
       "yav": "jangbenisht",
       "ybb": "jembaisht",
@@ -1036,6 +1006,7 @@
       "yo": "jorubaisht",
       "yrl": "nejengatuisht",
       "yue": "kinezishte kantoneze",
+      "za": "zhuangisht",
       "zgh": "tamaziatishte standarde marokene",
       "zh": "kinezishte mandarine",
       "zh-Hans": "kinezishte mandarine (e thjeshtuar)",

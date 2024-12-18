@@ -369,7 +369,7 @@
         },
         "name": "กลิวิซ: อาคาร"
       },
-      "LSA-ATKIS_BU": {
+      "LSA-ALKIS_BU": {
         "description": "รูปร่างของอาคารในรัฐซัคเซิน-อันฮัลท์"
       },
       "LSA-DOP20": {
@@ -405,7 +405,7 @@
       },
       "MAPNIK": {
         "attribution": {
-          "text": "© ผู้สนับสนุน OpenStreetMap, ODbL 1.0"
+          "text": "© ผู้ร่วมให้ข้อมูล OpenStreetMap, ODbL 1.0"
         },
         "description": "เลเยอร์ OpenStreetMap พื้นฐาน",
         "name": "OpenStreetMap (มาตรฐาน)"
@@ -474,43 +474,43 @@
       },
       "OSM_Inspector-Addresses": {
         "attribution": {
-          "text": "© Geofabrik GmbH,  ผู้สนับสนุน OpenStreetMap, CC-BY-SA"
+          "text": "© Geofabrik GmbH,  ผู้ร่วมให้ข้อมูล OpenStreetMap, CC-BY-SA"
         },
         "name": "OSM Inspector: ที่อยู่"
       },
       "OSM_Inspector-Geometry": {
         "attribution": {
-          "text": "© Geofabrik GmbH, ผู้สนับสนุน OpenStreetMap, CC-BY-SA"
+          "text": "© Geofabrik GmbH, ผู้ร่วมให้ข้อมูล OpenStreetMap, CC-BY-SA"
         },
         "name": "OSM Inspector: เรขาคณิต"
       },
       "OSM_Inspector-Highways": {
         "attribution": {
-          "text": "© Geofabrik GmbH, ผู้สนับสนุน OpenStreetMap, CC-BY-SA"
+          "text": "© Geofabrik GmbH, ผู้ร่วมให้ข้อมูล OpenStreetMap, CC-BY-SA"
         },
         "name": "OSM Inspector: ถนนหนทาง"
       },
       "OSM_Inspector-Multipolygon": {
         "attribution": {
-          "text": "© Geofabrik GmbH, ผู้สนับสนุน OpenStreetMap, CC-BY-SA"
+          "text": "© Geofabrik GmbH, ผู้ร่วมให้ข้อมูล OpenStreetMap, CC-BY-SA"
         },
         "name": "OSM Inspector: พื้นที่"
       },
       "OSM_Inspector-Places": {
         "attribution": {
-          "text": "© Geofabrik GmbH, ผู้สนับสนุน OpenStreetMap, CC-BY-SA"
+          "text": "© Geofabrik GmbH, ผู้ร่วมให้ข้อมูล OpenStreetMap, CC-BY-SA"
         },
         "name": "OSM Inspector: สถานที่"
       },
       "OSM_Inspector-Routing": {
         "attribution": {
-          "text": "© Geofabrik GmbH, ผู้สนับสนุน OpenStreetMap, CC-BY-SA"
+          "text": "© Geofabrik GmbH, ผู้ร่วมให้ข้อมูล OpenStreetMap, CC-BY-SA"
         },
         "name": "OSM Inspector: การกำหนดเส้นทาง"
       },
       "OSM_Inspector-Tagging": {
         "attribution": {
-          "text": "© Geofabrik GmbH, ผู้สนับสนุน OpenStreetMap, CC-BY-SA"
+          "text": "© Geofabrik GmbH, ผู้ร่วมให้ข้อมูล OpenStreetMap, CC-BY-SA"
         },
         "name": "OSM Inspector: การแท็ก"
       },
@@ -641,30 +641,30 @@
       },
       "Waymarked_Trails-Cycling": {
         "attribution": {
-          "text": "© waymarkedtrails.org, ผู้สนับสนุน OpenStreetMap, CC by-SA 3.0"
+          "text": "© waymarkedtrails.org, ผู้ร่วมให้ข้อมูล OpenStreetMap, CC by-SA 3.0"
         },
         "name": "Waymarked Trails: ทางปั่น"
       },
       "Waymarked_Trails-Hiking": {
         "attribution": {
-          "text": "© waymarkedtrails.org, ผู้สนับสนุน OpenStreetMap, CC by-SA 3.0"
+          "text": "© waymarkedtrails.org, ผู้ร่วมให้ข้อมูล OpenStreetMap, CC by-SA 3.0"
         },
         "name": "Waymarked Trails: ทางเดินเขา"
       },
       "Waymarked_Trails-MTB": {
         "attribution": {
-          "text": "© waymarkedtrails.org, ผู้สนับสนุน OpenStreetMap, CC by-SA 3.0"
+          "text": "© waymarkedtrails.org, ผู้ร่วมให้ข้อมูล OpenStreetMap, CC by-SA 3.0"
         }
       },
       "Waymarked_Trails-Skating": {
         "attribution": {
-          "text": "© waymarkedtrails.org, ผู้สนับสนุน OpenStreetMap, CC by-SA 3.0"
+          "text": "© waymarkedtrails.org, ผู้ร่วมให้ข้อมูล OpenStreetMap, CC by-SA 3.0"
         },
         "name": "Waymarked Trails: ทางสเก็ต"
       },
       "Waymarked_Trails-Winter_Sports": {
         "attribution": {
-          "text": "© waymarkedtrails.org, ผู้สนับสนุน OpenStreetMap, CC by-SA 3.0"
+          "text": "© waymarkedtrails.org, ผู้ร่วมให้ข้อมูล OpenStreetMap, CC by-SA 3.0"
         },
         "name": "Waymarked Trails: กีฬาฤดูหนาว"
       },
@@ -687,7 +687,7 @@
       },
       "cyclosm": {
         "attribution": {
-          "text": "การเรนเดอร์: CyclOSM (โฮสต์โดย OpenStreetMap France) © ข้อมูลแผนที่: ผู้สนับสนุน OpenStreetMap"
+          "text": "การเรนเดอร์: CyclOSM (โฮสต์โดย OpenStreetMap France) © ข้อมูลแผนที่: ผู้ร่วมให้ข้อมูล OpenStreetMap"
         },
         "description": "CyclOSM คือรูปแบบแผนที่ที่ออกแบบมาเพื่อการปั่นจักรยานโดยเฉพาะ โดยใช้ประโยชน์จากข้อมูล OpenStreetMap เพื่อสร้างแผนที่การปั่นจักรยานที่สวยงามและใช้งานได้จริง!"
       },
@@ -706,7 +706,7 @@
       },
       "geoscribble-latest": {
         "attribution": {
-          "text": "ผู้สนับสนุน GeoScribble"
+          "text": "ผู้ร่วมให้ข้อมูล GeoScribble"
         },
         "description": "บันทึกการสำรวจทางเรขาคณิตจากบรรณาธิการของ Every Door อายุไม่เกินสามสัปดาห์",
         "name": "บันทึกล่าสุดของ GeoScribble"
@@ -874,39 +874,39 @@
       },
       "openpt_map": {
         "attribution": {
-          "text": "© ผู้สนับสนุน OpenStreetMap, CC-BY-SA"
+          "text": "© ผู้ร่วมให้ข้อมูล OpenStreetMap, CC-BY-SA"
         }
       },
       "openrailwaymap": {
         "attribution": {
-          "text": "การเรนเดอร์: OpenRailwayMap, © ข้อมูลแผนที่: ผู้สนับสนุน OpenStreetMap"
+          "text": "การเรนเดอร์: OpenRailwayMap, © ข้อมูลแผนที่: ผู้ร่วมให้ข้อมูล OpenStreetMap"
         },
         "description": "ภาพซ้อนทับที่แสดงโครงสร้างพื้นฐานทางรถไฟโดยอิงจากข้อมูล OpenStreetMap"
       },
       "openrailwaymap-maxspeeds": {
         "attribution": {
-          "text": "การเรนเดอร์: OpenRailwayMap, © ข้อมูลแผนที่: ผู้สนับสนุน OpenStreetMap"
+          "text": "การเรนเดอร์: OpenRailwayMap, © ข้อมูลแผนที่: ผู้ร่วมให้ข้อมูล OpenStreetMap"
         },
         "description": "ภาพซ้อนแสดงขีดจำกัดความเร็วของรถไฟตามข้อมูล OpenStreetMap",
         "name": "OpenRailwayMap ความเร็วสูงสุด"
       },
       "openrailwaymap-signalling": {
         "attribution": {
-          "text": "การเรนเดอร์: OpenRailwayMap, © ข้อมูลแผนที่: ผู้สนับสนุน OpenStreetMap"
+          "text": "การเรนเดอร์: OpenRailwayMap, © ข้อมูลแผนที่: ผู้ร่วมให้ข้อมูล OpenStreetMap"
         },
         "description": "ภาพซ้อนที่แสดงสัญญาณรถไฟโดยอิงจากข้อมูล OpenStreetMap",
         "name": "OpenRailwayMap ระบบอาณัติสัญญาณรถไฟ"
       },
       "osm-gps": {
         "attribution": {
-          "text": "© ผู้สนับสนุน OpenStreetMap"
+          "text": "© ผู้ร่วมให้ข้อมูล OpenStreetMap"
         },
         "description": "ร่องทาง GPS สาธารณะที่ถูกอัพโหลดไปยัง OpenStreetMap",
         "name": "รายทาง GPS OpenStreetMap"
       },
       "osm-mapnik-german_style": {
         "attribution": {
-          "text": "© ผู้สนับสนุน OpenStreetMap, CC-BY-SA"
+          "text": "© ผู้ร่วมให้ข้อมูล OpenStreetMap, CC-BY-SA"
         },
         "name": "OpenStreetMap (สไตล์เยอรมัน)"
       },
@@ -949,7 +949,7 @@
       },
       "qa_no_address": {
         "attribution": {
-          "text": "Simon Poole, ข้อมูล: © ผู้สนับสนุน OpenStreetMap"
+          "text": "Simon Poole, ข้อมูล: © ผู้ร่วมให้ข้อมูล OpenStreetMap"
         }
       },
       "route500": {
@@ -988,7 +988,7 @@
       },
       "skobbler": {
         "attribution": {
-          "text": "© ไทล์: skobbler ข้อมูลแผนที่:  ผู้สนับสนุน OpenStreetMap"
+          "text": "© ไทล์: skobbler ข้อมูลแผนที่:  ผู้ร่วมให้ข้อมูล OpenStreetMap"
         }
       },
       "skolverket-schools": {
@@ -1036,18 +1036,18 @@
       },
       "tf-cycle": {
         "attribution": {
-          "text": "แผนที่ © Thunderforest, ข้อมูล: © ผู้สนับสนุน OpenStreetMap"
+          "text": "แผนที่ © Thunderforest, ข้อมูล: © ผู้ร่วมให้ข้อมูล OpenStreetMap"
         }
       },
       "tf-landscape": {
         "attribution": {
-          "text": "แผนที่ © Thunderforest, ข้อมูล: © ผู้สนับสนุน OpenStreetMap"
+          "text": "แผนที่ © Thunderforest, ข้อมูล: © ผู้ร่วมให้ข้อมูล OpenStreetMap"
         },
         "name": "Thunderforest ภูมิประเทศ"
       },
       "tf-outdoors": {
         "attribution": {
-          "text": "แผนที่ © Thunderforest, ข้อมูล: © ผู้สนับสนุน OpenStreetMap"
+          "text": "แผนที่ © Thunderforest, ข้อมูล: © ผู้ร่วมให้ข้อมูล OpenStreetMap"
         },
         "name": "Thunderforest นอกอาคาร"
       },

@@ -29,16 +29,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Terület",
-        "filter_tooltip": "területek"
+        "title": "Terület"
       },
       "add_line": {
-        "title": "Vonal",
-        "filter_tooltip": "vonalak"
+        "title": "Vonal"
       },
       "add_point": {
-        "title": "Pont",
-        "filter_tooltip": "pontok"
+        "title": "Pont"
       },
       "add_note": {
         "title": "Jegyzet",
@@ -121,52 +118,15 @@
       },
       "circularize": {
         "title": "Kör alakúvá tétel",
-        "description": {
-          "single": "Az elem kör alakúvá tétele.",
-          "multiple": "Az elemek kör alakúvá tétele."
-        },
         "annotation": {
           "feature": {
             "one": "Elem kör alakúvá téve.",
             "other": "{n} elem kör alakúvá téve."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Ezek több okból sem tehetők kör alakúvá."
-        },
-        "not_closed": {
-          "single": "Ezt nem lehet kör alakúvá tenni, mert nem hurok.",
-          "multiple": "Ezeket nem lehet kör alakúvá tenni, mert nem hurkok."
-        },
-        "too_large": {
-          "single": "Ezt nem lehet kör alakúvá tenni, mert túl kevés látszik belőle.",
-          "multiple": "Ezeket nem lehet kör alakúvá tenni, mert túl kevés látszik belőlük."
-        },
-        "connected_to_hidden": {
-          "single": "Nem lehet kör alakúvá tenni, mert egy kikapcsolt rétegen lévő térképelemhez csatlakozik.",
-          "multiple": "Nem lehet kör alakúvá tenni, mert némelyikük kikapcsolt rétegen lévő térképelemhez csatlakozik."
-        },
-        "not_downloaded": {
-          "single": "Nem lehet kör alakúvá tenni, mert egyes részei nincsenek letöltve.",
-          "multiple": "Nem lehet kör alakúvá tenni, mert egyes részeik nincsenek letöltve."
-        },
-        "already_circular": {
-          "single": "Nem lehet a jelenleginél is kerekebbé tenni.",
-          "multiple": "Nem lehet a jelenleginél is kerekebbé tenni."
         }
       },
       "orthogonalize": {
         "title": "Derékszögesítés",
-        "description": {
-          "corner": {
-            "single": "Sarok derékszögesítése.",
-            "multiple": "Sarkok derékszögesítése."
-          },
-          "feature": {
-            "single": "Elem sarkainak derékszögesítése.",
-            "multiple": "Elemek sarkainak derékszögesítése."
-          }
-        },
         "annotation": {
           "corner": {
             "one": "Sarok derékszögesítve.",
@@ -176,33 +136,6 @@
             "one": "Elem sarkai derékszögesítve.",
             "other": "{n} elem sarkai derékszögesítve."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Ezeket több okból sem lehet derékszögesíteni."
-        },
-        "end_vertex": {
-          "single": "Nem lehet derékszögesíteni, mert végpont.",
-          "multiple": "Nem lehet derékszögesíteni, mert végpontok."
-        },
-        "square_enough": {
-          "single": "Nem lehet a jelenleginél is derékszögesebbé tenni.",
-          "multiple": "Nem lehet a jelenleginél is derékszögesebbé tenni őket."
-        },
-        "not_squarish": {
-          "single": "Nem lehet derékszögesíteni, mert nem szögletes alakú.",
-          "multiple": "Nem lehet derékszögesíteni, mert nem szögletes alakúak."
-        },
-        "too_large": {
-          "single": "Nem lehet derékszögesíteni, mert túl kevés látszik belőle.",
-          "multiple": "Nem lehet derékszögesíteni, mert túl kevés látszik belőlük."
-        },
-        "connected_to_hidden": {
-          "single": "Nem lehet derékszögesíteni, mert egy kikapcsolt rétegen lévő térképelemhez csatlakozik.",
-          "multiple": "Nem lehet derékszögesíteni, mert némelyikük kikapcsolt rétegen lévő térképelemhez csatlakozik."
-        },
-        "not_downloaded": {
-          "single": "Nem lehet derékszögesíteni, mert egyes részei nincsenek letöltve.",
-          "multiple": "Nem lehet derékszögesíteni, mert egyes részeik nincsenek letöltve."
         }
       },
       "straighten": {
@@ -221,34 +154,10 @@
             "one": "Vonal kiegyenesítve.",
             "other": "{n} vonal kiegyenesítve."
           }
-        },
-        "too_bendy": {
-          "single": "Nem lehet kiegyenesíteni, mert túl nagy ívben hajlik.",
-          "multiple": "Nem lehet kiegyenesíteni, mert túl nagy ívben hajlanak."
-        },
-        "connected_to_hidden": {
-          "single": "Nem lehet kiegyenesíteni, mert kikapcsolt rétegen lévő térképelemhez csatlakozik.",
-          "multiple": "Nem lehet kiegyenesíteni, mert némelyikük kikapcsolt rétegen lévő térképelemhez csatlakozik."
-        },
-        "not_downloaded": {
-          "single": "Nem lehet kiegyenesíteni, mert egyes részei még nincsenek letöltve.",
-          "multiple": "Nem lehet kiegyenesíteni, mert egyes részeik még nincsenek letöltve."
-        },
-        "straight_enough": {
-          "single": "Nem lehet a jelenleginél is egyenesebbé tenni.",
-          "multiple": "Nem lehet a jelenleginél is egyenesebbé tenni."
-        },
-        "too_large": {
-          "single": "Nem lehet kiegyenesíteni, mert túl kevés látszik belőle.",
-          "multiple": "Nem lehet kiegyenesíteni, mert túl kevés látszik belőlük."
         }
       },
       "delete": {
         "title": "Törlés",
-        "description": {
-          "single": "Az elem végleges törlése.",
-          "multiple": "Az elemek végleges törlése."
-        },
         "annotation": {
           "point": "Pont törölve.",
           "vertex": "Pont törölve egy vonalból.",
@@ -259,30 +168,6 @@
             "one": "Elem törölve.",
             "other": "{n} elem törölve."
           }
-        },
-        "too_large": {
-          "single": "Az elem nem törölhető, mert túl kevés látszik belőle.",
-          "multiple": "Ezek az elemek nem törölhetőek, mert túl kevés látszik belőlük."
-        },
-        "incomplete_relation": {
-          "single": "Az elem nem törölhető, mert nincs teljesen letöltve.",
-          "multiple": "Ezek az elemek nem törölhetőek, mert nincsenek teljesen letöltve."
-        },
-        "part_of_relation": {
-          "single": "Ez az elem nem törölhető, mert egy nagyobb kapcsolat része. Először el kell távolítanod a kapcsolatból.",
-          "multiple": "Ezek az elemek nem törölhetők, mert egy nagyobb kapcsolat részei. Először el kell távolítanod őket a kapcsolatokból."
-        },
-        "connected_to_hidden": {
-          "single": "Az elem nem törölhető, mert kikapcsolt rétegen lévő térképelemhez csatlakozik.",
-          "multiple": "Az elemek nem törölhetők, mert kikapcsolt rétegen lévő térképelemhez csatlakoznak."
-        },
-        "not_downloaded": {
-          "single": "Ez az elem nem törölhető, mert egyes részei nincsenek letöltve.",
-          "multiple": "Ezek az elemek nem törölhetők, mert egyes részeik nincsenek letöltve."
-        },
-        "has_wikidata_tag": {
-          "single": "Ez az elem nem törölhető, mert Wikidata címkével rendelkezik.",
-          "multiple": "Ezek az elemek nem törölhetők, mert néhányuk Wikidata címkével rendelkezik."
         }
       },
       "downgrade": {
@@ -306,10 +191,6 @@
             "one": "Elem visszaállítva.",
             "other": "{n} elem visszaállítva."
           }
-        },
-        "has_wikidata_tag": {
-          "single": "Ezt az elemet nem lehet visszafejleszteni, mert Wikidata címkével rendelkezik.",
-          "multiple": "Ezeket az elemeket nem lehet visszafejleszteni, mert némelyik Wikidata címkével rendelkezik."
         }
       },
       "add_member": {
@@ -409,10 +290,6 @@
       },
       "move": {
         "title": "Áthelyezés",
-        "description": {
-          "single": "Elem áthelyezése más helyre.",
-          "multiple": "Elemek áthelyezése más helyre."
-        },
         "annotation": {
           "point": "Pont áthelyezve.",
           "vertex": "A vonal egy pontja áthelyezve.",
@@ -423,38 +300,12 @@
             "one": "Elem áthelyezve.",
             "other": "{n} elem áthelyezve."
           }
-        },
-        "incomplete_relation": {
-          "single": "Ez az elem nem helyezhető át, mert nincs teljesen letöltve.",
-          "multiple": "Ezek az elemek nem helyezhetők át, mert nincsenek teljesen letöltve."
-        },
-        "too_large": {
-          "single": "Ez az elem nem helyezhető át, mert túl kevés látszik belőle.",
-          "multiple": "Ezek az elemek nem helyezhető át, mert túl kevés látszik belőlük."
-        },
-        "connected_to_hidden": {
-          "single": "Ez az elem nem helyezhető át, mert kikapcsolt rétegen lévő térképelemhez csatlakozik.",
-          "multiple": "Ezek az elemek nem helyezhetők át, mert kikapcsolt rétegen lévő térképelemhez csatlakoznak."
-        },
-        "not_downloaded": {
-          "single": "Ez az elem nem helyezhető át, mert egyes részei nincsenek letöltve.",
-          "multiple": "Ezek az elemek nem helyezhetők át, mert egyes részeik nincsenek letöltve."
         }
       },
       "reflect": {
         "title": {
           "long": "Tükrözés a hosszú tengelyre",
           "short": "Tükrözés a rövid tengelyre"
-        },
-        "description": {
-          "long": {
-            "single": "Elem tükrözése a hosszú tengelyére.",
-            "multiple": "Elemek tükrözése a hosszú tengelyükre."
-          },
-          "short": {
-            "single": "Elem tükrözése a rövid tengelyére.",
-            "multiple": "Ezen elemek tükrözése a rövid tengelyükre."
-          }
         },
         "annotation": {
           "long": {
@@ -469,30 +320,10 @@
               "other": "{n} elem tükrözve a rövid tengelyére."
             }
           }
-        },
-        "incomplete_relation": {
-          "single": "Ez az elem nem tükrözhető, mert nincs teljesen letöltve.",
-          "multiple": "Ezek az elemek nem tükrözhetők, mert nincsenek teljesen letöltve."
-        },
-        "too_large": {
-          "single": "Ez az elem nem tükrözhető, mert túl kevés látszik belőle.",
-          "multiple": "Ezek az elemek nem tükrözhetők, mert túl kevés látszik belőlük."
-        },
-        "connected_to_hidden": {
-          "single": "Ez az elem nem tükrözhető, mert kikapcsolt rétegen lévő térképelemhez csatlakozik.",
-          "multiple": "Ezek az elemek nem tükrözhetők, mert kikapcsolt rétegen lévő térképelemhez csatlakoznak."
-        },
-        "not_downloaded": {
-          "single": "Ez az elem nem tükrözhető, mert egyes részei még nincsenek letöltve.",
-          "multiple": "Ezek az elemek nem tükrözhetők, mert egyes elemeik még nincsenek letöltve."
         }
       },
       "rotate": {
         "title": "Forgatás",
-        "description": {
-          "single": "Elem elforgatása a középpontja körül.",
-          "multiple": "Elemek elforgatása a középpontjuk körül."
-        },
         "annotation": {
           "line": "Vonal elforgatva.",
           "area": "Terület elforgatva.",
@@ -501,22 +332,6 @@
             "one": "Elem elforgatva.",
             "other": "{n} elem elforgatva."
           }
-        },
-        "incomplete_relation": {
-          "single": "Az elem nem forgatható el, mert nincs teljesen letöltve.",
-          "multiple": "Az elemek nem forgathatók el, mert nincsenek teljesen letöltve."
-        },
-        "too_large": {
-          "single": "Az elem nem forgatható el, mert túl kevés látszik belőle.",
-          "multiple": "Az elemek nem forgathatók el, mert túl kevés látszik belőlük."
-        },
-        "connected_to_hidden": {
-          "single": "Az elem nem forgatható el, mert kikapcsolt rétegen lévő térképelemhez csatlakozik.",
-          "multiple": "Az elemek nem forgathatók el, mert kikapcsolt rétegen lévő térképelemhez csatlakoznak."
-        },
-        "not_downloaded": {
-          "single": "Ez az elem nem forgatható el, mert egyes részei nincsenek letöltve.",
-          "multiple": "Ezeket az elemeket nem lehet forgatni, mert egyes részeik nincsenek letöltve."
         }
       },
       "reverse": {
@@ -557,22 +372,6 @@
               "other": "{n} elem felnagyítva."
             }
           }
-        },
-        "too_small": {
-          "single": "Az elem nem kicsinyíthető, mert túl kicsivé válna.",
-          "multiple": "Az elemek nem kicsinyíthetők, mert túl kicsivé válnának."
-        },
-        "too_large": {
-          "single": "Az elem nem méretezhető át, mert túl kevés látszik belőle.",
-          "multiple": "Az elemek nem méretezhetők át, mert túl kevés látszik belőlük."
-        },
-        "connected_to_hidden": {
-          "single": "Az elem nem méretezhető át, mert kikapcsolt rétegen lévő térképelemhez csatlakozik.",
-          "multiple": "Az elemek nem méretezhetők át, mert közülük egyesek kikapcsolt rétegen lévő térképelemhez csatlakoznak."
-        },
-        "not_downloaded": {
-          "single": "Az elem nem méretezhető át, mert egyes részei nincsenek letöltve.",
-          "multiple": "Az elemek nem méretezhetők át, mert egyes részeik nincsenek letöltve."
         }
       },
       "split": {
@@ -627,33 +426,13 @@
       "extract": {
         "title": "Leválasztás",
         "description": {
-          "vertex": {
-            "single": "Pont leválasztása a szülő vonalairól/területeiről.",
-            "multiple": "Pontok leválasztása a szülő elemeikről."
-          },
-          "line": {
-            "single": "Pont leválasztása erről a vonalról.",
-            "multiple": "Pontok leválasztása ezekről a vonalakról."
-          },
-          "area": {
-            "single": "Pont leválasztása erről a területről.",
-            "multiple": "Pontok leválasztása ezekről a területekről."
-          },
           "feature": {
-            "multiple": "Pontok leválasztása ezekről az elemekről."
+            "other": "Pontok leválasztása ezekről az elemekről."
           }
         },
         "annotation": {
           "one": "Pont leválasztva.",
           "other": "{n} pont leválasztva."
-        },
-        "too_large": {
-          "single": "Egy pont nem választható le, mert túl kevés látszik az elemből.",
-          "multiple": "A pontok nem választhatók le, mert túl kevés látszik az elemekből."
-        },
-        "connected_to_hidden": {
-          "single": "Ez a pont nem választható le, mert kikapcsolt rétegen lévő térképelemhez kapcsolódik.",
-          "multiple": "A pont nem választhatók le, mert némelyikük kikapcsolt rétegen lévő térképelemhez csatlakozik."
         }
       }
     },
@@ -857,10 +636,6 @@
       "multiple_values": "Több érték",
       "multiple_types": "Több típus",
       "unshared_value_tooltip": "nem minden elemnél közös",
-      "hidden_preset": {
-        "manual": "{features} el vannak rejtve. Engedélyezd őket a Térképadatok panelen.",
-        "zoom": "{features} el vannak rejtve. Nagyíts az engedélyezésükhöz."
-      },
       "back_tooltip": "Elemtípus módosítása",
       "type": "Típus",
       "details": "Részletek",
@@ -944,8 +719,7 @@
         },
         "notes": {
           "tooltip": "Jegyzetadatok az OpenStreetMapről",
-          "title": "OpenStreetMap-jegyzetek",
-          "key": "É"
+          "title": "OpenStreetMap-jegyzetek"
         },
         "maproulette": {
           "detail_title": "Részletek",
@@ -974,7 +748,6 @@
         "tooltip": "Kijelölés geometriaértékeinek megjelenítése"
       },
       "style_options": "Stílusbeállítások",
-      "map_features": "Térképelemek",
       "autohidden": "Ezek az elemek automatikusan el vannak rejtve, mert túl sok jelenne meg belőlük a képernyőn. Nagyíts a szerkesztésükhöz.",
       "osmhidden": "Ezek az elemek automatikusan el vannak rejtve, mert az OpenStreetMap-réteg is el van rejtve."
     },
@@ -1011,7 +784,7 @@
         "tooltip": "Csak ezen felhasználó fényképeinek megjelenítése"
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Pontok",
         "tooltip": "Érdekes pontok"
@@ -1212,12 +985,13 @@
       "live": "élő",
       "lose_changes": "Elmentetlen változtatásaid vannak, amelyek a térképkiszolgáló váltásával elvesznek. Biztosan kiszolgálót akarsz váltani?"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Címkék"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Eltávolítás"
+    "rapid_menu": {
+      "remove": "Eltávolítás",
+      "category": {
+        "roads": "utak"
       }
     },
     "tag_reference": {
@@ -1233,7 +1007,9 @@
         "out": "Nem lehet tovább kicsinyíteni."
       }
     },
-    "cannot_zoom": "Ebben a módban nem lehet jobban kicsinyíteni.",
+    "bearing": {
+      "n": "É"
+    },
     "full_screen": "Teljes képernyős mód ki-/bekapcsolása",
     "self_intersection": {
       "error": {
@@ -1655,7 +1431,6 @@
         "title": "Pontok",
         "intro": "*Ponttal* olyan elemeket lehet megjeleníteni, mint például bolt, étterem vagy emlékmű. Egy konkrét helyet jelöl, és leírja, mi van ott. ",
         "add_point_h": "Pont hozzáadása",
-        "add_point": "Pont hozzáadásához nyomd le a térkép fölötti eszköztárban a {point_icon} **{point}** gombot vagy az `1` billentyűparancsot.",
         "move_point_h": "Pont áthelyezése",
         "delete_point_h": "Pont törlése",
         "delete_point": "A valóságban nem létező elemeket nyugodtan törölhetjük a térképről. Ha egy elemet törlünk az OpenStreetMapről, akkor az többé nem lesz látható a mindenki által használt térképen. A törlés előtt győződjünk meg róla, hogy az adott elem valóban nem létezik. "
@@ -1664,7 +1439,6 @@
         "title": "Vonalak",
         "intro": "A *vonalak* utakat, vasutakat, folyókat és ezekhez hasonló elemeket ábrázolnak. A vonalat mindig úgy kell meghúzni, hogy az ábrázolandó objektum (pl. út) középvonalában fusson.",
         "add_line_h": "Vonal hozzáadása",
-        "add_line": "Vonal hozzáadásához nyomd meg a térkép fölötti eszköztárban a {line_icon} **{line}** gombot vagy nyomd meg a `2` billentyűparancsot.",
         "add_line_finish": "A vonal befejezéséhez kattints vagy koppints még egyszer az utolsó pontra vagy nyomd le az `{return}` gombot.",
         "modify_line_h": "Vonal módosítása",
         "modify_line_dragnode": "Gyakran látni nem megfelelően kialakított vonalakat, például olyan utat, amely nem egyezik a háttérképpel. Alakjának kiigazításához először is ki kell jelölnöd a vonalat. A vonal pontjait ilyenkor kis körök jelzik. Ezután elhúzhatod az egyes úgy, hogy a vonal formája jobban nézzen ki.",
@@ -1683,7 +1457,6 @@
         "point_or_area_h": "Pont vagy terület?",
         "point_or_area": "Számos elem pontként és területként is megjelenhet. Épületeket és ingatlanokat lehetőleg területként kell feltérképezni. Az épületen belüli vállalkozások, szolgáltatások és egyéb elemek ábrázolásához az épületen belül helyezz el pontokat.",
         "add_area_h": "Terület hozzáadása",
-        "add_area_command": "Terület hozzáadásához nyomd meg a térkép fölötti eszköztárban a {area_icon} **{area}** gombot vagy nyomd meg a `3` billentyűparancsot.",
         "add_area_finish": "A terület befejezéséhez kattints vagy koppints még egyszer az első vagy az utolsó pontra, vagy nyomd meg az `{return}` gombot.",
         "square_area_h": "Derékszögű sarkok",
         "modify_area_h": "Terület módosítása",
@@ -1812,18 +1585,10 @@
     },
     "issues": {
       "title": "Problémák",
-      "list_title": "Problémák",
-      "errors": {
-        "list_title": "Hibák"
-      },
-      "warnings": {
-        "list_title": "Figyelmeztetések"
-      },
-      "rules": {
-        "title": "Szabályok"
-      },
-      "user_resolved_issues": "Általad megoldott problémák",
-      "warnings_and_errors": "Figyelmeztetések és hibák",
+      "errors": "Hibák",
+      "warnings": "Figyelmeztetések",
+      "rules": "Szabályok",
+      "resolved_tooltip": "Általad megoldott problémák",
       "no_issues": {
         "message": {
           "everything": "Úgy tűnik, minden rendben",
@@ -1981,8 +1746,6 @@
         "title": "Érvénytelen formázás",
         "tip": "Szokatlan formátumú címkék keresése",
         "email": {
-          "message": "{feature}: érvénytelen e-mail cím",
-          "message_multi": "{feature}: több érvénytelen e-mail cím",
           "reference": "Egy email címnek valahogy így kell kinéznie: „felhasznalo@peldaul.hu”"
         }
       },
@@ -2508,6 +2271,7 @@
       "title": "Billentyűparancsok",
       "tooltip": "Billentyűparancsok megjelenítése a képernyőn.",
       "key": {
+        "delete": "Törlés",
         "return": "Enter",
         "space": "Szóköz"
       },
@@ -2515,96 +2279,177 @@
         "drag": "húzás"
       },
       "or": "vagy",
-      "browsing": {
-        "title": "Böngészés",
-        "navigation": {
-          "title": "Navigáció",
-          "pan": "Térkép pásztázása"
+      "browsing": "Böngészés",
+      "editing": "Szerkesztés",
+      "navigation": "Navigálás",
+      "selecting_features": "Elemek kijelölése",
+      "with_features_selected": "Elem kijelölése után",
+      "with_node_selected": "Pont kijelölése után",
+      "with_way_selected": "Vonal kijelölése után",
+      "drawing": "Rajzolás",
+      "commands": "Parancsok",
+      "help": "Súgó",
+      "display_options": "Megjelenítési beállítások",
+      "info": "Információk",
+      "command": {
+        "pan": {
+          "label": "Térkép pásztázása"
         },
-        "help": {
-          "title": "Súgó",
-          "help": "Súgó/dokumentáció megjelenítése",
-          "keyboard": "Billentyűparancsok megjelenítése"
+        "select_one": {
+          "label": "Egyetlen elem kijelölése"
         },
-        "display_options": {
-          "title": "Megjelenítési beállítások",
-          "background": "Háttérkép-panel ki-/bekapcsolása",
-          "map_data": "Térképadatpanel ki-/bekapcsolása",
-          "issues": "Érvényesítési problémák panel ki-/bekapcsolása",
-          "preferences": "Felhasználói beállítások panel ki-/bekapcsolása",
-          "wireframe": "Drótváz mód ki-/bekapcsolása",
-          "osm_data": "OpenStreetMap-adatok ki-/bekapcsolása",
-          "highlight_edits": "Nem mentett szerkesztések kiemelése"
+        "select_multi": {
+          "label": "Több elem kijelölése"
         },
-        "selecting": {
-          "title": "Elemek kijelölése",
-          "select_one": "Egyetlen elem kijelölése",
-          "select_multi": "Több elem kijelölése",
-          "lasso": "Kijelölőlasszó rajzolása az elemek köré",
-          "search": "Keresési szövegnek megfelelő elemek keresése"
+        "lasso": {
+          "label": "Kijelölőlasszó rajzolása az elemek köré"
         },
-        "with_selected": {
-          "title": "Elem kijelölése után",
-          "edit_menu": "Szerkesztési menü ki-/bekapcsolása"
+        "edit_menu": {
+          "label": "Szerkesztési menü ki-/bekapcsolása"
         },
-        "vertex_selected": {
-          "title": "Pont kijelölése után",
-          "first": "Ugrás az első pontra",
-          "last": "Ugrás az utolsó pontra",
-          "change_parent": "Szülő vonal cseréje",
-          "parent": "Szülő vonal kijelölése"
+        "first_node": {
+          "label": "Ugrás az első pontra"
         },
-        "way_selected": {
-          "title": "Vonal kijelölése után",
-          "child": "Gyermekpontok kijelölése"
-        }
-      },
-      "editing": {
-        "title": "Szerkesztés",
-        "drawing": {
-          "title": "Rajzolás",
-          "add_point": "„Pont hozzáadása” mód",
-          "add_line": "„Vonal hozzáadása” mód",
-          "add_area": "„Terület hozzáadása” mód",
-          "add_note": "„Jegyzet hozzáadása” mód",
-          "place_point": "Pont vagy jegyzet elhelyezése",
-          "disable_snap": "Automatikus illesztés letiltása (folyamatosan lenyomva)",
-          "stop_line": "Vonal vagy terület rajzolásának befejezése"
+        "last_node": {
+          "label": "Ugrás az utolsó pontra"
         },
-        "commands": {
-          "title": "Parancsok",
-          "copy": "Kijelölt elem másolása",
-          "paste": "Másolt elem beillesztése",
-          "undo": "A legutóbbi művelet visszavonása",
-          "redo": "A legutóbbi újbóli elvégzése",
-          "save": "Módosítások mentése"
+        "change_parent": {
+          "label": "Szülő vonal cseréje"
         },
-        "operations": {
-          "continue_line": "Vonal folytatása a kijelölt végponttól",
-          "merge": "Kijelölt elemek összevonása (egyesítése)",
-          "disconnect": "Kijelölt elemek szétválasztása",
-          "extract": "Pont leválasztása egy elemről",
-          "split": "Elem elvágása a kijelölt pontoknál",
-          "reverse": "Kijelölt elem megfordítása",
-          "move": "Kijelölt elem áthelyezése",
-          "rotate": "Kijelölt elem forgatása",
-          "orthogonalize": "Vonal vagy terület sarkainak derékszögesítése",
-          "straighten": "Vonal vagy pontok kiegyenesítése",
-          "circularize": "Zárt vonal vagy terület kör alakúvá tétele",
-          "reflect_long": "Elem tükrözése a hosszabb tengelyére",
-          "reflect_short": "Elem tükrözése a rövidebb tengelyére",
-          "delete": "Kijelölt elem törlése"
-        }
-      },
-      "tools": {
-        "title": "Eszközök",
-        "info": {
-          "title": "Információk",
-          "all": "Az összes információs panel ki-/bekapcsolása",
-          "background": "Háttér panel ki-/bekapcsolása",
-          "history": "Előzmények panel ki-/bekapcsolása",
-          "location": "Tartózkodási hely panel ki-/bekapcsolása",
-          "measurement": "Mérés panel ki-/bekapcsolása"
+        "select_parent": {
+          "label": "Szülő vonal kijelölése"
+        },
+        "select_children": {
+          "label": "Gyermekpontok kijelölése"
+        },
+        "add_point": {
+          "label": "„Pont hozzáadása” mód"
+        },
+        "add_line": {
+          "label": "„Vonal hozzáadása” mód"
+        },
+        "add_area": {
+          "label": "„Terület hozzáadása” mód"
+        },
+        "add_note": {
+          "label": "„Jegyzet hozzáadása” mód",
+          "key": "É"
+        },
+        "place_point": {
+          "label": "Pont vagy jegyzet elhelyezése"
+        },
+        "disable_snap": {
+          "label": "Automatikus illesztés letiltása (folyamatosan lenyomva)"
+        },
+        "stop_line": {
+          "label": "Vonal vagy terület rajzolásának befejezése"
+        },
+        "copy": {
+          "label": "Kijelölt elem másolása"
+        },
+        "paste": {
+          "label": "Másolt elem beillesztése"
+        },
+        "undo": {
+          "label": "A legutóbbi művelet visszavonása"
+        },
+        "redo": {
+          "label": "A legutóbbi újbóli elvégzése"
+        },
+        "save": {
+          "label": "Módosítások mentése"
+        },
+        "find": {
+          "label": "Keresési szövegnek megfelelő elemek keresése"
+        },
+        "continue_line": {
+          "label": "Vonal folytatása a kijelölt végponttól"
+        },
+        "merge": {
+          "label": "Kijelölt elemek összevonása (egyesítése)"
+        },
+        "disconnect": {
+          "label": "Kijelölt elemek szétválasztása"
+        },
+        "extract": {
+          "label": "Pont leválasztása egy elemről",
+          "key": "K"
+        },
+        "split": {
+          "label": "Elem elvágása a kijelölt pontoknál"
+        },
+        "reverse": {
+          "label": "Kijelölt elem megfordítása"
+        },
+        "move": {
+          "label": "Kijelölt elem áthelyezése"
+        },
+        "rotate": {
+          "label": "Kijelölt elem forgatása"
+        },
+        "orthogonalize": {
+          "label": "Vonal vagy terület sarkainak derékszögesítése"
+        },
+        "straighten": {
+          "label": "Vonal vagy pontok kiegyenesítése",
+          "key": "D"
+        },
+        "circularize": {
+          "label": "Zárt vonal vagy terület kör alakúvá tétele"
+        },
+        "reflect_long": {
+          "label": "Elem tükrözése a hosszabb tengelyére"
+        },
+        "reflect_short": {
+          "label": "Elem tükrözése a rövidebb tengelyére"
+        },
+        "delete": {
+          "label": "Kijelölt elem törlése"
+        },
+        "toggle_background": {
+          "label": "Háttérkép-panel ki-/bekapcsolása"
+        },
+        "toggle_map_data": {
+          "label": "Térképadatpanel ki-/bekapcsolása"
+        },
+        "toggle_issues": {
+          "label": "Érvényesítési problémák panel ki-/bekapcsolása"
+        },
+        "toggle_preferences": {
+          "label": "Felhasználói beállítások panel ki-/bekapcsolása"
+        },
+        "wireframe": {
+          "key": "Ny"
+        },
+        "highlight_edits": {
+          "label": "Nem mentett szerkesztések kiemelése"
+        },
+        "keyboard_shortcuts": {
+          "label": "Billentyűparancsok megjelenítése"
+        },
+        "toggle_osm_data": {
+          "label": "OpenStreetMap-adatok ki-/bekapcsolása"
+        },
+        "toggle_osm_notes": {
+          "key": "É"
+        },
+        "toggle_streetside": {
+          "key": "D"
+        },
+        "toggle_all_cards": {
+          "label": "Az összes információs panel ki-/bekapcsolása"
+        },
+        "toggle_background_card": {
+          "label": "Háttér panel ki-/bekapcsolása"
+        },
+        "toggle_history_card": {
+          "label": "Előzmények panel ki-/bekapcsolása"
+        },
+        "toggle_location_card": {
+          "label": "Tartózkodási hely panel ki-/bekapcsolása"
+        },
+        "toggle_measurement_card": {
+          "label": "Mérés panel ki-/bekapcsolása"
         }
       }
     },
@@ -2682,6 +2527,7 @@
       "bin": "bini",
       "bkm": "kom",
       "bla": "siksika",
+      "blo": "anii",
       "bm": "bambara",
       "bn": "bangla",
       "bo": "tibeti",
@@ -2907,6 +2753,7 @@
       "kv": "komi",
       "kw": "korni",
       "kwk": "kwakʼwala",
+      "kxv": "kuvi",
       "ky": "kirgiz",
       "la": "latin",
       "lad": "ladino",
@@ -2933,7 +2780,6 @@
       "lua": "luba-lulua",
       "lui": "luiseno",
       "lun": "lunda",
-      "luo": "luo",
       "lus": "lushai",
       "luy": "lujia",
       "lv": "lett",
@@ -3160,10 +3006,10 @@
       "umb": "umbundu",
       "ur": "urdu",
       "uz": "üzbég",
-      "vai": "vai",
       "ve": "venda",
       "vec": "velencei",
       "vi": "vietnámi",
+      "vmw": "makua",
       "vo": "volapük",
       "vot": "votják",
       "vun": "vunjo",
@@ -3177,6 +3023,7 @@
       "wuu": "wu kínai",
       "xal": "kalmük",
       "xh": "xhosza",
+      "xnr": "kangri",
       "xog": "szoga",
       "yao": "jaó",
       "yap": "japi",
@@ -3200,7 +3047,6 @@
     },
     "scriptNames": {
       "Aghb": "Kaukázusi albaniai",
-      "Arab": "Arab",
       "Aran": "Nasztalik",
       "Armi": "Birodalmi arámi",
       "Armn": "Örmény",

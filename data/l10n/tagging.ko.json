@@ -834,7 +834,10 @@
           "terms": "공동체 유형"
         },
         "community_centre": {
-          "label": "유형"
+          "label": "유형",
+          "options": {
+            "youth_centre": "청소년 복지시설"
+          }
         },
         "connectivity": {
           "label": "연결성"
@@ -2092,13 +2095,12 @@
           "terms": "인터넷 접속"
         },
         "internet_access/fee": {
-          "label": "인터넷 접속",
+          "label": "인터넷 접속 요금",
           "options": {
             "customers": "고객 전용",
             "no": "무료",
             "yes": "유료"
-          },
-          "terms": "인터넷 접근,와이파이 요금"
+          }
         },
         "internet_access/ssid": {
           "label": "Wi-Fi 네트워크 이름",
@@ -3848,6 +3850,7 @@
           "options": {
             "artificial_turf": "인공 잔디",
             "asphalt": "아스팔트",
+            "clay": "점토",
             "compacted": "압축됨",
             "concrete": "콘크리트",
             "dirt": "흙",
@@ -5601,10 +5604,6 @@
           "name": "극장",
           "terms": "공연,연극,뮤지컬"
         },
-        "amenity/theatre/type/amphi": {
-          "name": "원형극장",
-          "terms": "원형극장"
-        },
         "amenity/ticket_validator": {
           "name": "티켓 검사기",
           "terms": "티켓 검사기"
@@ -7060,6 +7059,9 @@
         "highway/path/boardwalk": {
           "name": "보드워크",
           "terms": "보드워크"
+        },
+        "highway/path/crossing": {
+          "name": "자전거 & 보행자 횡단보도"
         },
         "highway/path/informal": {
           "name": "비공식 도로",
@@ -8987,10 +8989,6 @@
         "piste/nordic": {
           "name": "크로스 컨트리 스키",
           "terms": "크로스 컨트리 스키"
-        },
-        "piste/piste": {
-          "name": "스노우 스포츠 트레일 / 피스트",
-          "terms": "스노우 스포츠 트레일 / 피스트"
         },
         "piste/skitour": {
           "name": "스키 관광",

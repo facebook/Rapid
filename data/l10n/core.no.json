@@ -28,16 +28,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Område",
-        "filter_tooltip": "områder"
+        "title": "Område"
       },
       "add_line": {
-        "title": "Linje",
-        "filter_tooltip": "linjer"
+        "title": "Linje"
       },
       "add_point": {
-        "title": "Punkt",
-        "filter_tooltip": "punkter"
+        "title": "Punkt"
       },
       "add_note": {
         "title": "Notat",
@@ -120,52 +117,15 @@
       },
       "circularize": {
         "title": "Gjør rund",
-        "description": {
-          "single": "Gjør denne trekk sirkulær.",
-          "multiple": "Gjør disse trekk sirkulær."
-        },
         "annotation": {
           "feature": {
             "one": "Gjorde et objekt sirkulært.",
             "other": "Gjorde {n} objekter sirkulære."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Disse kan ikke gjøres sirkulær av flere grunner."
-        },
-        "not_closed": {
-          "single": "Det can ikke gjøres sirkulær fordi det ikke er en løkke.",
-          "multiple": "Disse kan ikke gjøres sirkulære fordi de er ikke løkker."
-        },
-        "too_large": {
-          "single": "Det kan ikke gjøres sirkulære fordi ikke nok av det er for tiden synlig.",
-          "multiple": "Disse kan ikke gjøres sirkulære fordi ikke nok av det er for tiden synlig."
-        },
-        "connected_to_hidden": {
-          "single": "Det kan ikke gjøres sirkulære fordi det er koblet til et skjult trekk.",
-          "multiple": "Disse kan ikke gjøres sirkulært fordi noen er koblet til skjulte trekk."
-        },
-        "not_downloaded": {
-          "single": "Det kan ikke gjøres sirkulært fordi deler av det har ikke blitt lastet ned.",
-          "multiple": "Disse objektene kan ikke gjøres sirkulære, da deler av objektene ikke er lastet ned ennå."
-        },
-        "already_circular": {
-          "single": "Dette kan ikke gjøres mer sirkulært enn det allerede er.",
-          "multiple": " Disse kan ikke gjøres mer sirkulært enn de allerede er."
         }
       },
       "orthogonalize": {
         "title": "Rett opp hjørner",
-        "description": {
-          "corner": {
-            "single": "Rett opp dette hjørnet.",
-            "multiple": "Rett opp disse hjørnene."
-          },
-          "feature": {
-            "single": "Rett opp hjørnene på denne egenskapen.",
-            "multiple": "Rett opp hjørnene på disse egenskapene."
-          }
-        },
         "annotation": {
           "corner": {
             "one": "Rettet opp et hjørne.",
@@ -175,33 +135,6 @@
             "one": "Rettet opp hjørnene til et objekt.",
             "other": "Rettet opp hjørnene til {n} objekter."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Disse kan ikke rettes opp av flere årsaker."
-        },
-        "end_vertex": {
-          "single": "Dette kan ikke rettes opp fordi det er et sluttpunkt.",
-          "multiple": "Disse kan ikke rettes opp fordi de er sluttpunkter."
-        },
-        "square_enough": {
-          "single": "Dette kan ikke rettes mer enn det allerede er.",
-          "multiple": "Disse kan ikke rettes mer enn de allerede er."
-        },
-        "not_squarish": {
-          "single": "Dette kan ikke rettes opp fordi det ikke er firkantede.",
-          "multiple": "Disse kan ikke rettes opp fordi de ikke er firkantede."
-        },
-        "too_large": {
-          "single": "Dette kan ikke rettes opp fordi ikke nok av det er synlig for øyeblikket.",
-          "multiple": "Disse kan ikke rettes opp fordi ikke nok av dem for øyeblikket er synlige."
-        },
-        "connected_to_hidden": {
-          "single": "Dette kan ikke rettes opp fordi noen er koblet til skjulte funksjon.",
-          "multiple": "Disse kan ikke rettes opp fordi noen er koblet til skjulte funksjoner."
-        },
-        "not_downloaded": {
-          "single": "Dette kan ikke rettes opp fordi deler av det ennå ikke er lastet ned.",
-          "multiple": "Disse kan ikke rettes opp fordi deler av dem ennå ikke er lastet ned."
         }
       },
       "straighten": {
@@ -220,34 +153,10 @@
             "one": "Rettet ut en linje.",
             "other": "Rettet ut {n} linjer."
           }
-        },
-        "too_bendy": {
-          "single": "Denne kan ikke rettes ut, da den er for buet.",
-          "multiple": "Disse kan ikke rettes ut, da de er for buede."
-        },
-        "connected_to_hidden": {
-          "single": "Denne kan ikke rettes ut, da den er knyttet til et skjult objekt.",
-          "multiple": "Disse kan ikke rettes ut, da minst én linje er koblet til én eller flere skjulte objekter."
-        },
-        "not_downloaded": {
-          "single": "Denne kan ikke rettes ut, da deler av objektet ikke er lastet ned ennå.",
-          "multiple": "Disse kan ikke rettes ut, da deler av objektene ikke er lastet ned ennå."
-        },
-        "straight_enough": {
-          "single": "Denne kan ikke rettes ut mer enn den allerede er.",
-          "multiple": "Disse kan ikke rettes ut mer enn de allerede er."
-        },
-        "too_large": {
-          "single": "Denne kan ikke rettes ut, da kun deler av den er synlig.",
-          "multiple": "Disse kan ikke rettes ut, da kun deler av dem er synlige."
         }
       },
       "delete": {
         "title": "Slett",
-        "description": {
-          "single": "Slett denne kartegenskapen permanent.",
-          "multiple": "Slett disse kartegenskapene permanent."
-        },
         "annotation": {
           "point": "Slettet et punkt.",
           "vertex": "Slettet et punkt fra en linje.",
@@ -258,30 +167,6 @@
             "one": "Slettet et objekt.",
             "other": "Slettet {n} objekter."
           }
-        },
-        "too_large": {
-          "single": "Dette objektet kan ikke slettes, da kun noen deler av det er synlig.",
-          "multiple": "Disse objektene kan ikke slettes, da kun noen deler av dem er synlige."
-        },
-        "incomplete_relation": {
-          "single": "Dette objektet kan ikke slettes fordi det ikke er fullstendig lastet ned.",
-          "multiple": "Disse objektene kan ikke slettes fordi de ikke er fullstendig lastet ned."
-        },
-        "part_of_relation": {
-          "single": "Dette objektet kan ikke slettes fordi det er en del av en større relasjon. Du må fjerne det fra relasjonen først.",
-          "multiple": "Disse objektene kan ikke slettes fordi de er en del av en større relasjon. Du må fjerne de fra relasjonen først."
-        },
-        "connected_to_hidden": {
-          "single": "Dette objektet kan ikke slettes fordi det er koblet til et skjult objekt.",
-          "multiple": "Disse objektene kan ikke slettes fordi noen av dem er koblet til en skjult kartegenskap."
-        },
-        "not_downloaded": {
-          "single": "Dette objektet kan ikke slettes, da deler av objektet ikke er lastet ned ennå.",
-          "multiple": "Disse objektene kan ikke slettes, da deler av objektene ikke er lastet ned ennå."
-        },
-        "has_wikidata_tag": {
-          "single": "Dette objektet kan ikke slettes, da den har en Wikidata-egenskap.",
-          "multiple": "Disse objektene kan ikke slettes, da noen har Wikidata-egenskaper."
         }
       },
       "downgrade": {
@@ -305,10 +190,6 @@
             "one": "Nedgraderte et objekt.",
             "other": "Nedgraderte {n} objekter."
           }
-        },
-        "has_wikidata_tag": {
-          "single": "Dette objektet kan ikke nedgraderes, da den har en Wikidata-egenskap.",
-          "multiple": "Disse objektene kan ikke nedgraderes, da noen har Wikidata-egenskaper."
         }
       },
       "add_member": {
@@ -408,10 +289,6 @@
       },
       "move": {
         "title": "Flytt",
-        "description": {
-          "single": "Flytt denne kartegenskapen til et annet sted.",
-          "multiple": "Flytt disse kartegenskapene til et annet sted."
-        },
         "annotation": {
           "point": "Flyttet et punkt.",
           "vertex": "Flyttet et punkt på en linje.",
@@ -422,38 +299,12 @@
             "one": "Flyttet et objekt.",
             "other": "Flyttet {n} objekter."
           }
-        },
-        "incomplete_relation": {
-          "single": "Denne kartegenskapen kan ikke flyttes fordi den ikke er fullstendig lastet ned.",
-          "multiple": "Disse kartegenskapene kan ikke flyttes fordi de ikke er fullstendig lastet ned."
-        },
-        "too_large": {
-          "single": "Denne kartegenskapen kan ikke flyttes fordi kun noen deler av den er synlig.",
-          "multiple": "Disse kartegenskapene kan ikke flyttes fordi kun noen deler av dem er synlige."
-        },
-        "connected_to_hidden": {
-          "single": "Denne kartegenskapen kan ikke flyttes fordi den er koblet til en skjult kartegenskap.",
-          "multiple": "Disse kartegenskapene kan ikke flyttes fordi noen av dem er koblet til en skjult kartegenskap."
-        },
-        "not_downloaded": {
-          "single": "Dette objektet kan ikke flyttes, da deler av objektet ikke er lastet ned ennå.",
-          "multiple": "Disse objektene kan ikke flyttes, da noen deler av dem ikke er lastet ned ennå."
         }
       },
       "reflect": {
         "title": {
           "long": "Snu på langsiden",
           "short": "Snu på kortsiden"
-        },
-        "description": {
-          "long": {
-            "single": "Speilvend dette kartobjektet om dens lange akse.",
-            "multiple": "Speilvend disse kartobjektene om deres lange akse."
-          },
-          "short": {
-            "single": "Speilvend dette kartobjektet om dens korte akse.",
-            "multiple": "Speilvend disse kartobjektene om dereskorte akse."
-          }
         },
         "annotation": {
           "long": {
@@ -468,30 +319,10 @@
               "other": "Speilvendte {n} objekter langs deres korte akse."
             }
           }
-        },
-        "incomplete_relation": {
-          "single": "Dette objektet kan ikke speiles fordi det ikke er fullstendig lastet ned.",
-          "multiple": "Disse objektene kan ikke speiles fordi de ikke er fullstendig lastet ned."
-        },
-        "too_large": {
-          "single": "Dette objektet kan ikke speiles fordi kun noen deler av det er synlig.",
-          "multiple": "Disse objektene kan ikke speiles fordi kun noen deler av dem er synlige."
-        },
-        "connected_to_hidden": {
-          "single": "Dette objektet kan ikke speiles da det er koblet til et skult objekt.",
-          "multiple": "Disse objektene kan ikke speilvendes da minst ett av objektene er koblet til et skjult objekt."
-        },
-        "not_downloaded": {
-          "single": "Dette objektet kan ikke speilvendes, da deler av objektet ennå ikke er lastet ned.",
-          "multiple": "Disse objektene kan ikke speilvendes fordi deler av dem ikke ennå er lastet ned."
         }
       },
       "rotate": {
         "title": "Rotér",
-        "description": {
-          "single": "Rotér dette objektet rundt sitt midtpunkt.",
-          "multiple": "Rotér disse objektene rundt sine midtpunkt."
-        },
         "annotation": {
           "line": "Rotér en linje.",
           "area": "Rotér et område.",
@@ -500,22 +331,6 @@
             "one": "Roterte et objekt.",
             "other": "Roterte {n} objekter."
           }
-        },
-        "incomplete_relation": {
-          "single": "Dette objektet kan ikke roteres da det ikke er fullstendig lastet ned.",
-          "multiple": "Disse objektene kan ikke roteres da de ikke er fullstendig lastet ned."
-        },
-        "too_large": {
-          "single": "Dette objektet kan ikke roteres da kun noen deler av det er synlig.",
-          "multiple": "Disse objektene kan ikke roteres da kun noen deler av det er synlig."
-        },
-        "connected_to_hidden": {
-          "single": "Dette objektet kan ikke roteres da det er koblet til et skjult objekt.",
-          "multiple": "Disse objektene kan ikke roteres da de er koblet til skjulte objekter."
-        },
-        "not_downloaded": {
-          "single": "Dette objektet kan ikke roteres, da deler av objektet ikke er lastet ned ennå.",
-          "multiple": "Disse objektene kan ikke roteres, da deler av objektene ikke er lastet ned ennå."
         }
       },
       "reverse": {
@@ -556,22 +371,6 @@
               "other": "Skalerte opp {n} objekter."
             }
           }
-        },
-        "too_small": {
-          "single": "Dette objektet kan ikke skaleres ned, da det ville blitt for smått.",
-          "multiple": "Disse objektene kan ikke skaleres ned, da de ville blitt for små."
-        },
-        "too_large": {
-          "single": "Dette objektet kan ikke skaleres da kun deler av den er synlig.",
-          "multiple": "Disse objektene kan ikke skaleres da kun deler av de er synlige."
-        },
-        "connected_to_hidden": {
-          "single": "Dette objektet kan ikke skaleres fordi den er koblet til et skjult objekt.",
-          "multiple": "Disse objektene kan ikke skaleres fordi minst ett objekt er koblet til et skjult objekt."
-        },
-        "not_downloaded": {
-          "single": "Dette objektet kan ikke skaleres fordi deler av objektet ennå ikke er lastet ned.",
-          "multiple": "Disse objektene kan ikke skaleres fordi deler av dem ennå ikke er lastet ned."
         }
       },
       "split": {
@@ -626,33 +425,13 @@
       "extract": {
         "title": "Ta ut",
         "description": {
-          "vertex": {
-            "single": "Ta ut dette punktet av moderobjektet.",
-            "multiple": "Ekstraher disse punktene fra foreldre-objektene."
-          },
-          "line": {
-            "single": "Ekstraher et punkt fra denne linjen.",
-            "multiple": "Ekstraher punkter fra disse linjene."
-          },
-          "area": {
-            "single": "Ta ut et punkt av dette området.",
-            "multiple": "Ekstraher punkter fra disse områdene."
-          },
           "feature": {
-            "multiple": "Ekstraher punkter fra disse objektene."
+            "other": "Ekstraher punkter fra disse objektene."
           }
         },
         "annotation": {
           "one": "Utvunnet et punkt.",
           "other": "Utvunnet {n} punkt."
-        },
-        "too_large": {
-          "single": "Et punkt kan ikke ekstraheres, da for lite av dette objektet er synlig.",
-          "multiple": "Punkter kan ikke ekstraheres, da kun deler av disse objektene er synlige."
-        },
-        "connected_to_hidden": {
-          "single": "Dette punktet kan ikke ekstraheres, da det er koblet til et skjult objekt.",
-          "multiple": "Punkter kan ikke ekstraheres fra disse objektene, da én eller flere er koblet til skjulte objekter."
         }
       }
     },
@@ -848,10 +627,6 @@
       "multiple_values": "Flere verdier",
       "multiple_types": "Flere typer",
       "unshared_value_tooltip": "ikke  delt av alle trekk",
-      "hidden_preset": {
-        "manual": "{features} er skjult. Aktiver dem i Kartdata-menyen.",
-        "zoom": "{features} er skjult. Zoom inn for å se dem."
-      },
       "back_tooltip": "Endre objekttype",
       "details": "Detaljer",
       "remove": "Fjern",
@@ -961,7 +736,6 @@
         "tooltip": "Vis geometriverdier for utvalget."
       },
       "style_options": "Stil alternativer",
-      "map_features": "Objekter",
       "autohidden": "Disse objektene har blitt automatisk skjult fordi for mange ville blitt vist på skjermen. Du kan zoome inn for å redigere dem.",
       "osmhidden": "Disse objektene har blitt skjult automatisk, da OpenStreetMap-laget er skjult."
     },
@@ -998,7 +772,7 @@
         "tooltip": "Vis kun foto av denne brukeren"
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Punkter",
         "tooltip": "Interessepunkter"
@@ -1195,12 +969,13 @@
       "live": "direkte",
       "lose_changes": "Du har ulagrede endringer. Hvis du bytter fra kartserveren så vil du miste dem. Er du sikker på at du vil bytte server?"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Egenskaper"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Fjern"
+    "rapid_menu": {
+      "remove": "Fjern",
+      "category": {
+        "roads": "veier"
       }
     },
     "tag_reference": {
@@ -1216,7 +991,6 @@
         "out": "Kan ikke zoome lenger ut."
       }
     },
-    "cannot_zoom": "Kan ikke zoome ut lenger i gjeldende modus.",
     "full_screen": "Skru av/på fullskjerm.",
     "self_intersection": {
       "error": {
@@ -1637,7 +1411,6 @@
         "title": "Punkter",
         "intro": "*Punkter* kan brukes til å representere objekter slik som butikker, restauranter og monumenter. De markerer en spesifik posisjon og beskriver hva som er der.",
         "add_point_h": "Legge til punkter",
-        "add_point": "For å legge til et punkt, trykk {point_icon} **{point}**-knappen på verktøylinjen over kartet, eller trykk hurtigtasten `1`.",
         "move_point_h": "Flytte punkter",
         "delete_point_h": "Slette punkter",
         "delete_point": "Det er greit å slette objekter som ikke finnes i den virkelige verden. Ved å slette en kartegenskap fra OpenStreetMap, fjernes den fra kartet som alle bruker, så du bør forsikre deg om at objektet virkelig ikke finnes lengre før du sletter den."
@@ -1646,7 +1419,6 @@
         "title": "Linjer",
         "intro": "*Linjer* brukes til å representere objekter slik som veier, jernbaner og elver. Linjer burde tegnes langs midten av objektet de representerer.",
         "add_line_h": "Legge til linjer",
-        "add_line": "For å legge til en linje, trykk på {line_icon} ** {line} ** knappen på verktøylinjen over kartet, eller trykk på hurtigtasten '2'. ",
         "add_line_finish": "For å fullføre en linje, klikk eller trykk på den siste noden igjen eller trykk på `{return}`.",
         "modify_line_h": "Endre linjer",
         "connect_line_h": "Koble sammen linjer",
@@ -1757,18 +1529,10 @@
     },
     "issues": {
       "title": "Problemer",
-      "list_title": "Problemer",
-      "errors": {
-        "list_title": "Feil"
-      },
-      "warnings": {
-        "list_title": "Advarsler"
-      },
-      "rules": {
-        "title": "Regler"
-      },
-      "user_resolved_issues": "Problemer løst av redigeringene dine",
-      "warnings_and_errors": "Advarsler og feil",
+      "errors": "Feil",
+      "warnings": "Advarsler",
+      "rules": "Regler",
+      "resolved_tooltip": "Problemer løst av redigeringene dine",
       "no_issues": {
         "message": {
           "everything": "Alt ser greit ut",
@@ -1909,8 +1673,6 @@
         "title": "Ugyldig formatering",
         "tip": "Finn egenskaper med uvanlige formater",
         "email": {
-          "message": "{feature} har en ugyldig e-postadresse",
-          "message_multi": "{feature} har flere ugyldige e-postadresser",
           "reference": "E-postadresser må se ut som \"bruker@eksempel.no\"."
         }
       },
@@ -2350,6 +2112,7 @@
       "title": "Tastatursnarveier",
       "tooltip": "Viser oversikten over tastatursnarveier.",
       "key": {
+        "delete": "Slett",
         "menu": "Meny",
         "return": "Retur",
         "space": "Mellomrom"
@@ -2358,96 +2121,169 @@
         "drag": "dra"
       },
       "or": "-eller-",
-      "browsing": {
-        "title": "Bla gjennom",
-        "navigation": {
-          "title": "Navigasjon",
-          "pan": "Flytt kartet"
+      "browsing": "Bla gjennom",
+      "editing": "Redigerer",
+      "navigation": "Navigasjon",
+      "selecting_features": "Velger objekter",
+      "with_features_selected": "Med egenskaper valgt",
+      "with_node_selected": "Med valgt node",
+      "with_way_selected": "MEd vei valgt",
+      "drawing": "Tegning",
+      "commands": "Kommandoer",
+      "help": "Hjelp",
+      "display_options": "Vis alternativer",
+      "info": "Informasjon",
+      "command": {
+        "pan": {
+          "label": "Flytt kartet"
         },
-        "help": {
-          "title": "Hjelp",
-          "help": "Hvis hjelp/dokumentasjon",
-          "keyboard": "Vis tastatursnarveier"
+        "select_one": {
+          "label": "Velg en enkelt kartegenskap"
         },
-        "display_options": {
-          "title": "Vis alternativer",
-          "background": "Velg bakgrunnsbilde rute",
-          "map_data": "Velg kartdata rute",
-          "issues": "Velg ruten for valideringsproblemer",
-          "preferences": "Velg brukerinnstillinger rute",
-          "wireframe": "Slå av/på wireframe-modus",
-          "osm_data": "Slå av/på OpenStreetMap-data",
-          "highlight_edits": "Uthev ulagrede endringer"
+        "select_multi": {
+          "label": "Velg flere objekter"
         },
-        "selecting": {
-          "title": "Velger objekter",
-          "select_one": "Velg en enkelt kartegenskap",
-          "select_multi": "Velg flere objekter",
-          "lasso": "Dra en seleksjonslasso rundt objekter",
-          "search": "Finn objekter som samsvarer med søketeksten"
+        "lasso": {
+          "label": "Dra en seleksjonslasso rundt objekter"
         },
-        "with_selected": {
-          "title": "Med egenskaper valgt",
-          "edit_menu": "Vis/skjul redigeringsmeny"
+        "edit_menu": {
+          "label": "Vis/skjul redigeringsmeny"
         },
-        "vertex_selected": {
-          "title": "Med valgt node",
-          "first": "Hopp til første node",
-          "last": "Hopp til siste node",
-          "change_parent": "Bytt linje som skal følges",
-          "parent": "Velg overordnet vei "
+        "first_node": {
+          "label": "Hopp til første node"
         },
-        "way_selected": {
-          "title": "MEd vei valgt",
-          "child": "Velg underordnede noder "
-        }
-      },
-      "editing": {
-        "title": "Redigerer",
-        "drawing": {
-          "title": "Tegning",
-          "add_point": "\"Legg til punkt\"-modus",
-          "add_line": "\"Legg til linje\"-modus",
-          "add_area": "\"Legg til område\"-modus",
-          "add_note": "\"Legg til notat\"-modus",
-          "place_point": "Plasser et punkt eller notat",
-          "disable_snap": "Hold nede for å deaktivere punkt-snapping",
-          "stop_line": "Avslutt tegning av linje eller område"
+        "last_node": {
+          "label": "Hopp til siste node"
         },
-        "commands": {
-          "title": "Kommandoer",
-          "copy": "Kopier valgte objekter",
-          "paste": "Lim inn kopierte objekter",
-          "undo": "Angre siste handling",
-          "redo": "Gjør om siste handling",
-          "save": "Lagre endringer"
+        "change_parent": {
+          "label": "Bytt linje som skal følges"
         },
-        "operations": {
-          "continue_line": "Forsett et linje på det valgte sluttpunktet",
-          "merge": "Kombiner (slå sammen) valgte objekter",
-          "disconnect": "Frakoble valgt objekter",
-          "extract": "Ta ut et punkt fra et objekt",
-          "split": "Del opp objekter på de valgte punktene",
-          "reverse": "Reverser valgte objekter",
-          "move": "Flytt valgte objekter",
-          "rotate": "Rotér valgte objekter",
-          "orthogonalize": "Rett ut hjørner til en linje eller et område",
-          "straighten": "Rett ut en linjer eller noen punkter",
-          "circularize": "Gjør en lukket linje eller område rundt",
-          "reflect_long": "Vend objekter over lengre akse ",
-          "reflect_short": "Vend objekter over den kortere aksen ",
-          "delete": "Slett valgte objekter"
-        }
-      },
-      "tools": {
-        "title": "Verktøy",
-        "info": {
-          "title": "Informasjon",
-          "all": "Slå av/på informasjonspaneler",
-          "background": "Slå av/på bakgrunnspaneler",
-          "history": "Slå av/på historikkpanelet",
-          "location": "Slå av/på stedspanel",
-          "measurement": "Slå av/på målingspanel"
+        "select_parent": {
+          "label": "Velg overordnet vei "
+        },
+        "select_children": {
+          "label": "Velg underordnede noder "
+        },
+        "add_point": {
+          "label": "\"Legg til punkt\"-modus"
+        },
+        "add_line": {
+          "label": "\"Legg til linje\"-modus"
+        },
+        "add_area": {
+          "label": "\"Legg til område\"-modus"
+        },
+        "add_note": {
+          "label": "\"Legg til notat\"-modus"
+        },
+        "place_point": {
+          "label": "Plasser et punkt eller notat"
+        },
+        "disable_snap": {
+          "label": "Hold nede for å deaktivere punkt-snapping"
+        },
+        "stop_line": {
+          "label": "Avslutt tegning av linje eller område"
+        },
+        "copy": {
+          "label": "Kopier valgte objekter"
+        },
+        "paste": {
+          "label": "Lim inn kopierte objekter"
+        },
+        "undo": {
+          "label": "Angre siste handling"
+        },
+        "redo": {
+          "label": "Gjør om siste handling"
+        },
+        "save": {
+          "label": "Lagre endringer"
+        },
+        "find": {
+          "label": "Finn objekter som samsvarer med søketeksten"
+        },
+        "continue_line": {
+          "label": "Forsett et linje på det valgte sluttpunktet"
+        },
+        "merge": {
+          "label": "Kombiner (slå sammen) valgte objekter"
+        },
+        "disconnect": {
+          "label": "Frakoble valgt objekter"
+        },
+        "extract": {
+          "label": "Ta ut et punkt fra et objekt",
+          "key": "Ø"
+        },
+        "split": {
+          "label": "Del opp objekter på de valgte punktene"
+        },
+        "reverse": {
+          "label": "Reverser valgte objekter"
+        },
+        "move": {
+          "label": "Flytt valgte objekter"
+        },
+        "rotate": {
+          "label": "Rotér valgte objekter"
+        },
+        "orthogonalize": {
+          "label": "Rett ut hjørner til en linje eller et område"
+        },
+        "straighten": {
+          "label": "Rett ut en linjer eller noen punkter"
+        },
+        "circularize": {
+          "label": "Gjør en lukket linje eller område rundt"
+        },
+        "reflect_long": {
+          "label": "Vend objekter over lengre akse "
+        },
+        "reflect_short": {
+          "label": "Vend objekter over den kortere aksen "
+        },
+        "delete": {
+          "label": "Slett valgte objekter"
+        },
+        "toggle_background": {
+          "label": "Velg bakgrunnsbilde rute"
+        },
+        "toggle_map_data": {
+          "label": "Velg kartdata rute"
+        },
+        "toggle_issues": {
+          "label": "Velg ruten for valideringsproblemer"
+        },
+        "toggle_preferences": {
+          "label": "Velg brukerinnstillinger rute"
+        },
+        "wireframe": {
+          "key": "V"
+        },
+        "highlight_edits": {
+          "label": "Uthev ulagrede endringer"
+        },
+        "keyboard_shortcuts": {
+          "label": "Vis tastatursnarveier"
+        },
+        "toggle_osm_data": {
+          "label": "Slå av/på OpenStreetMap-data"
+        },
+        "toggle_all_cards": {
+          "label": "Slå av/på informasjonspaneler"
+        },
+        "toggle_background_card": {
+          "label": "Slå av/på bakgrunnspaneler"
+        },
+        "toggle_history_card": {
+          "label": "Slå av/på historikkpanelet"
+        },
+        "toggle_location_card": {
+          "label": "Slå av/på stedspanel"
+        },
+        "toggle_measurement_card": {
+          "label": "Slå av/på målingspanel"
         }
       }
     },
@@ -2530,6 +2366,7 @@
       "bjn": "banjar",
       "bkm": "kom",
       "bla": "siksika",
+      "blo": "anii",
       "bm": "bambara",
       "bn": "bengali",
       "bo": "tibetansk",
@@ -2657,7 +2494,6 @@
       "gmh": "mellomhøytysk",
       "gn": "guarani",
       "goh": "gammelhøytysk",
-      "gom": "goansk konkani",
       "gon": "gondi",
       "gor": "gorontalo",
       "got": "gotisk",
@@ -2767,6 +2603,7 @@
       "kv": "komi",
       "kw": "kornisk",
       "kwk": "kwak̓wala",
+      "kxv": "kuvi",
       "ky": "kirgisisk",
       "la": "latin",
       "lad": "ladinsk",
@@ -2796,7 +2633,6 @@
       "lua": "luba-lulua",
       "lui": "luiseno",
       "lun": "lunda",
-      "luo": "luo",
       "lus": "mizo",
       "luy": "luhya",
       "lv": "latvisk",
@@ -3052,13 +2888,13 @@
       "umb": "umbundu",
       "ur": "urdu",
       "uz": "usbekisk",
-      "vai": "vai",
       "ve": "venda",
       "vec": "venetiansk",
       "vep": "vepsisk",
       "vi": "vietnamesisk",
       "vls": "vestflamsk",
       "vmf": "Main-frankisk",
+      "vmw": "makhuwa",
       "vo": "volapyk",
       "vot": "votisk",
       "vro": "sørestisk",
@@ -3074,6 +2910,7 @@
       "xal": "kalmukkisk",
       "xh": "xhosa",
       "xmf": "mingrelsk",
+      "xnr": "kangri",
       "xog": "soga",
       "yao": "yao",
       "yap": "yapesisk",

@@ -23,6 +23,16 @@
         },
         "name": "ম্যাপবক্স উপগ্রহ"
       },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, ওপেনস্ট্রীটম্যাপের অবদানকারীগণ, সিসি-বাই-এসএ"
+        }
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, ওপেনস্ট্রীটম্যাপের অবদানকারীগণ, সিসি-বাই-এসএ"
+        }
+      },
       "OSM_Inspector-Highways": {
         "attribution": {
           "text": "© Geofabrik GmbH, ওপেনস্ট্রীটম্যাপের অবদানকারীগণ, সিসি-বাই-এসএ"
@@ -53,12 +63,32 @@
           "text": "শর্তাবলী ও প্রতিক্রিয়া"
         }
       },
+      "openpt_map": {
+        "attribution": {
+          "text": "© ওপেনস্ট্রীটম্যাপের অবদানকারীগণ, সিসি-বাই-এসএ"
+        }
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© ওপেনস্ট্রীটম্যাপের অবদানকারীগণ"
+        }
+      },
       "osm-mapnik-german_style": {
         "attribution": {
           "text": "© ওপেনস্ট্রীটম্যাপের অবদানকারীগণ, সিসি-বাই-এসএ"
         }
       },
+      "tf-cycle": {
+        "attribution": {
+          "text": "মানচিত্র © Thunderforest, উপাত্ত © ওপেনস্ট্রীটম্যাপের অবদানকারীগণ"
+        }
+      },
       "tf-landscape": {
+        "attribution": {
+          "text": "মানচিত্র © Thunderforest, উপাত্ত © ওপেনস্ট্রীটম্যাপের অবদানকারীগণ"
+        }
+      },
+      "tf-outdoors": {
         "attribution": {
           "text": "মানচিত্র © Thunderforest, উপাত্ত © ওপেনস্ট্রীটম্যাপের অবদানকারীগণ"
         }

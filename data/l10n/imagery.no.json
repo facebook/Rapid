@@ -11,10 +11,23 @@
         "description": "Etterbehandlet Sentinel Satellite ortofoto.",
         "name": "eox.at 2018 skyfri"
       },
+      "EOXAT2019CLOUDLESS": {
+        "description": "Etterbehandlet Sentinel Satellite ortofoto."
+      },
+      "EOXAT2020CLOUDLESS": {
+        "description": "Etterbehandlet Sentinel Satellite ortofoto."
+      },
+      "EOXAT2021CLOUDLESS": {
+        "description": "Etterbehandlet Sentinel Satellite ortofoto."
+      },
+      "EOXAT2022CLOUDLESS": {
+        "description": "Etterbehandlet Sentinel Satellite ortofoto."
+      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "Vilkår og tilbakemelding"
         },
+        "description": "Esri World ortofoto",
         "name": "Esri World ortofoto"
       },
       "EsriWorldImageryClarity": {
@@ -91,9 +104,26 @@
       "US-TIGER-Roads-2019": {
         "description": "Gul = Offentlig domene kartdata fra US Census. Rød = Data ikke funnet i OpenStreetMap"
       },
+      "US-TIGER-Roads-2020": {
+        "description": "Gul = Offentlig domene kartdata fra US Census. Rød= Data ikke funnet i OpenStreetMap"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Gul = Offentlig domene kartdata fra US Census. Rød= Data ikke funnet i OpenStreetMap"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Gul = Offentlig domene kartdata fra US Census. Rød= Data ikke funnet i OpenStreetMap"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Gul = Offentlig domene kartdata fra US Census. Rød= Data ikke funnet i OpenStreetMap"
+      },
       "US_Forest_Service_roads_overlay": {
         "description": "Vei: Grønt omriss = uklassifisert, Brunt omriss = traktorvei. Overflate: grus = lysebrunt fyll, Asfalt = svart, solid veidekke = grå, bar bakke = hvit, betong = blå, gress = grønn. Sesongveier = hvite tverrsnitt",
         "name": "U.S. Forest Roads-overlegg"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Realisert med finansiering fra Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
       },
       "UrbISOrtho2016": {
         "attribution": {
@@ -115,7 +145,17 @@
           "text": "Realisert med finansiering fra Brussels UrbIS®© - Distribution & Copyright CIRB"
         }
       },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Realisert med finansiering fra Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
       "UrbisAdmFR": {
+        "attribution": {
+          "text": "Realisert med finansiering fra Brussels UrbIS®© - Distribution & Copyright CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
         "attribution": {
           "text": "Realisert med finansiering fra Brussels UrbIS®© - Distribution & Copyright CIRB"
         }
@@ -176,11 +216,44 @@
         "description": "Bykartet er et oversiktskart som beskriver Gøteborg. Den inneholder generell informasjon om areal, kommunikasjon, hydrografi, bygninger, adressenummer og gatenavn, administrative grenser og andre beskrivelser av omgivelsene.",
         "name": "Gothenburg Bykart"
       },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© Gøteborg kommune, CC0 "
+        },
+        "description": "Nettkartstjeneste som presenterer bakke og skråning basert på høydemodellen 2017 for Gøteborg. Oppløsning 0,5 meter per piksel. "
+      },
       "gothenburg-ortho": {
         "attribution": {
           "text": "© Gothenburg kommune, CC0"
         },
-        "description": "Ortofoto for Gothenburg kommune"
+        "description": "Ortofoto for Gothenburg kommune",
+        "name": "© Gøteborg Ortofoto 2015"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© Gøteborg kommune, CC0 "
+        },
+        "description": "Ortofoto for Gøteborg kommune ",
+        "name": "© Gøteborg Ortofoto 2017"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© Gøteborg kommune, CC0 "
+        },
+        "description": "Ortofoto for Gøteborg kommune ",
+        "name": "Gøteborg Ortofoto 2019"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© Gøteborg kommune, CC0 "
+        },
+        "description": "Ortofoto for Gøteborg kommune "
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© Gøteborg kommune, CC0 "
+        },
+        "description": "Ortofoto for Gøteborg kommune "
       },
       "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
         "description": "Japan GSI flyfoto. Ikke fullstendig og feilfri georeferanse, men litt nyere og forskjellig dekning enn GSI ortofoto.",
@@ -216,6 +289,17 @@
           "text": "© Kalmar Kommune"
         },
         "description": "Ortofoto for byområder i Kalmar kommune 2018"
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© Kalmar kommune"
+        },
+        "description": "Ortofoto for urban områder fra kommunen i Kalmar 2020",
+        "name": "Kalmar Urban Ortofoto 2020"
+      },
+      "kartverket-bygninger": {
+        "description": "INSPIRE bygninger for Norge.",
+        "name": "Kartverket Byggning overlegg."
       },
       "kelkkareitit": {
         "description": "Kelkkareitit.fi Snøscooterløyper fra OSM (Nordisk dekning)",
@@ -331,6 +415,11 @@
       "trafikverket-vagnat-option": {
         "description": "Svensk NVDB veinett med flere alternativer for kartlag",
         "name": "Trafikverket Vegnettverkalternativer"
+      },
+      "wroclaw-orto2015": {
+        "attribution": {
+          "text": "Wroclaw rådhus"
+        }
       },
       "wroclaw-orto2018": {
         "attribution": {

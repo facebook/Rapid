@@ -2,6 +2,9 @@
   "en-GB": {
     "presets": {
       "fields": {
+        "access": {
+          "terms": "permitted,private,public"
+        },
         "access_simple": {
           "terms": "permitted,private,public"
         },
@@ -22,6 +25,9 @@
         "atm": {
           "label": "Cash Machine"
         },
+        "backcountry": {
+          "terms": "Boonies"
+        },
         "barrier": {
           "options": {
             "kerb": "Kerb",
@@ -37,7 +43,8 @@
           "label": "Speciality"
         },
         "bin": {
-          "label": "Rubbish Bin"
+          "label": "Rubbish Bin",
+          "terms": "Garbage can, trash can, bin, garbage, trash"
         },
         "building": {
           "options": {
@@ -47,6 +54,9 @@
             "terrace": "Terraced houses"
           },
           "terms": "structure"
+        },
+        "building/levels": {
+          "terms": "Stories"
         },
         "button_operated": {
           "label": "Button Operated"
@@ -59,6 +69,11 @@
         },
         "colour": {
           "label": "Colour"
+        },
+        "community_centre": {
+          "options": {
+            "youth_centre": "Youth Centre"
+          }
         },
         "crossing/markings": {
           "options": {
@@ -107,8 +122,12 @@
         "door/width": {
           "label": "Door Width (Metres)"
         },
+        "drive_through": {
+          "terms": "Drive-Through, Drive Through, Drive Thru, Drive-Thru"
+        },
         "ele": {
-          "label": "Elevation (Metres)"
+          "label": "Elevation (Metres)",
+          "terms": "altitude,height,"
         },
         "fax": {
           "placeholder": "+44 1632 961234"
@@ -123,6 +142,9 @@
           "options": {
             "pillar": "Pillar/Above Ground"
           }
+        },
+        "frequency": {
+          "terms": "hertz,hz"
         },
         "fuel/fuel_multi": {
           "options": {
@@ -189,11 +211,21 @@
             "wlan": "Wi-Fi"
           }
         },
+        "internet_access/ssid": {
+          "terms": "SSID,"
+        },
+        "junction_line": {
+          "terms": "Intersection"
+        },
         "kerb": {
-          "label": "Kerb"
+          "label": "Kerb",
+          "terms": "Curb"
         },
         "length": {
           "label": "Length (Metres)"
+        },
+        "level_semi": {
+          "terms": "Stories"
         },
         "license_classes": {
           "label": "Classes of Driver’s Licence"
@@ -233,10 +265,12 @@
             "app": "Mobile App",
             "cheque": "Cheque",
             "notes": "Bank notes"
-          }
+          },
+          "terms": "Payment Methods"
         },
         "phone": {
-          "placeholder": "+44 1632 961234"
+          "placeholder": "+44 1632 961234",
+          "terms": "Phone, Phone Number"
         },
         "recycling_type": {
           "options": {
@@ -315,6 +349,9 @@
         "advertising/poster_box": {
           "terms": "lollylop, snowshoe, city light"
         },
+        "aeroway/jet_bridge": {
+          "name": "Aerobridge"
+        },
         "allotments/plot": {
           "name": "Individual Allotment Plot"
         },
@@ -323,6 +360,15 @@
         },
         "amenity/atm": {
           "name": "Cash Machine"
+        },
+        "amenity/bbq": {
+          "terms": "bbq,grill,barbecue"
+        },
+        "amenity/cafe": {
+          "terms": "bistro,coffee,tea,cafe"
+        },
+        "amenity/cafe/bubble_tea": {
+          "terms": "boba,bubble milk tea,pearl milk tea,taiwanese tea drink,tapioca,pearl tea,boba drink,cafe"
         },
         "amenity/cafe/coffee_shop": {
           "name": "Coffee shop"
@@ -361,17 +407,25 @@
         "amenity/ice_cream/frozen_yogurt": {
           "name": "Frozen Yoghurt Shop"
         },
+        "amenity/internet_cafe": {
+          "terms": "cybercafe,taxiphone,teleboutique,coffee,cafe,net,lanhouse,internet cafe"
+        },
         "amenity/kindergarten": {
           "name": "Preschool / Nursery Grounds"
         },
         "amenity/parking": {
-          "name": "Car Park"
+          "name": "Car Park",
+          "terms": "automobile parking,car lot,parking lot,car parking,rv parking,truck parking,vehicle parking"
         },
         "amenity/parking/multi-storey": {
-          "name": "Multistorey Car Park"
+          "name": "Multistorey Car Park",
+          "terms": "car,indoor parking,multistorey car park,parkade,parking building,parking deck,parking garage,parking ramp,parking structure,Multilevel Parking Garage"
         },
         "amenity/parking/park_ride": {
           "name": "Park & Ride Car Park"
+        },
+        "amenity/parking_entrance": {
+          "terms": "Parking Garage Entrace/Exit,Parking Garage Entrace,Parking Garage Exit,Carpark Entrance,Car Park Entrance"
         },
         "amenity/payment_centre": {
           "name": "Payment Centre"
@@ -388,14 +442,24 @@
         "amenity/recycling_centre": {
           "name": "Recycling Centre"
         },
+        "amenity/restaurant/barbecue": {
+          "terms": "barbecue restaurant,bar,bbq,canteen,dine,dining,dinner,drive-in,eat,grill,lunch,table"
+        },
+        "amenity/shelter/public_transport": {
+          "name": "Public Transport Shelter"
+        },
         "amenity/social_centre": {
           "name": "Social Centre"
         },
         "amenity/social_facility/group_home": {
-          "name": "Retirement Home"
+          "name": "Retirement Home",
+          "terms": "old,senior,living,care home,assisted living,elderly,retirement,retire,aged care,aged"
         },
         "amenity/theatre": {
           "name": "Theatre"
+        },
+        "amenity/theatre/type/amphi": {
+          "name": "Amphitheatre"
         },
         "amenity/toilets": {
           "name": "Toilets"
@@ -428,26 +492,38 @@
         "amenity/waste_basket": {
           "name": "Rubbish bin"
         },
+        "amenity/water_point": {
+          "terms": "water faucet,water point,water tap,water source,water spigot, rv drinking water, campervan drinking water"
+        },
+        "amenity/watering_place": {
+          "terms": "Trough"
+        },
         "amenity/weighbridge": {
-          "name": "Weigh Bridge"
+          "name": "Weigh Bridge",
+          "terms": "weigh station,Truck Scale"
         },
         "attraction/dark_ride": {
           "name": "Ghost Train"
         },
         "barrier/kerb": {
-          "name": "Kerb"
+          "name": "Kerb",
+          "terms": "Curb"
         },
         "barrier/kerb/flush": {
-          "name": "Flush Kerb"
+          "name": "Flush Kerb",
+          "terms": "Flush Curb,even curb,level curb,tactile curb,even kerb,level kerb,tactile kerb"
         },
         "barrier/kerb/lowered": {
-          "name": "Lowered Kerb"
+          "name": "Lowered Kerb",
+          "terms": "Lowered Curb,curb cut,kerb cut,kerb ramp,curb ramp,kerb ramp,dropped kerb,pram ramp"
         },
         "barrier/kerb/raised": {
-          "name": "Raised Kerb"
+          "name": "Raised Kerb",
+          "terms": "Raised Curb"
         },
         "barrier/kerb/rolled": {
-          "name": "Rolled Kerb"
+          "name": "Rolled Kerb",
+          "terms": "Rolled Curb"
         },
         "barrier/lift_gate": {
           "name": "Lift gate"
@@ -461,6 +537,9 @@
         },
         "building/kindergarten": {
           "name": "Nursery School Building"
+        },
+        "building/pavilion": {
+          "terms": "sports,pavilion"
         },
         "building/riding_hall": {
           "name": "Indoor Horse Riding Arena\nIndoor Riding Arena\nHorse Riding Hall"
@@ -479,6 +558,9 @@
         },
         "craft/confectionery": {
           "name": "Confectioner\nSweet Maker\nCandy Maker"
+        },
+        "emergency/fire_hose": {
+          "terms": "fire hose reel,fhr,riser,dry riser,standpipe,stand pipe"
         },
         "emergency/fire_service_inlet": {
           "name": "Fire Brigade Connection"
@@ -501,29 +583,50 @@
         "highway/bridleway": {
           "name": "Bridleway"
         },
+        "highway/cycleway/bicycle_foot": {
+          "terms": "Cycle & Foot Path,bicycle and foot path,bike and pedestrian path,green way,greenway,mixed-use trail,multi-use trail,segregated trail,shared path,shared use path,rail trail"
+        },
+        "highway/cycleway/crossing/bicycle_foot": {
+          "terms": "Cycle & Foot Crossing,bicycle and foot crosswalk,bike and pedestrian crossing,cycleway,cycling,cyclist"
+        },
         "highway/elevator": {
-          "name": "Lift"
+          "name": "Lift",
+          "terms": "elevator"
         },
         "highway/elevator_line": {
-          "name": "Inclined Lift"
+          "name": "Inclined Lift",
+          "terms": "inclined elevator,cable railway"
         },
         "highway/escape": {
           "name": "Escape Lane"
         },
+        "highway/footway": {
+          "terms": "Foot Path,Footpath,path,track,hike,hiking,promenade,trackway,trail,walk"
+        },
+        "highway/footway/access_aisle": {
+          "terms": "Access Aisle,accessible van loading zone,disabled parking access zone,parking access zone,parking lot aisle,striped zone,tow zone,tow-away zone,towaway zone,wheelchair aisle"
+        },
         "highway/footway/sidewalk": {
-          "name": "Pavement"
+          "name": "Pavement",
+          "terms": "sidewalk, pavement, footway, footpath"
         },
         "highway/give_way": {
-          "name": "Give Way Sign"
+          "name": "Give Way Sign",
+          "terms": "Yield,Sign"
         },
         "highway/milestone": {
           "name": "Road Milestone"
         },
         "highway/street_lamp": {
-          "name": "Street Light"
+          "name": "Street Light",
+          "terms": "streetlamp,street lamp,lamp,light,gaslight"
+        },
+        "highway/track": {
+          "terms": "fire trail"
         },
         "highway/traffic_signals": {
-          "name": "Traffic Lights"
+          "name": "Traffic Lights",
+          "terms": "light,stoplight,traffic light,traffic signals"
         },
         "indoor/elevator": {
           "name": "Indoor Lift Shaft"
@@ -531,11 +634,17 @@
         "landuse/allotments": {
           "name": "Allotment Garden"
         },
+        "landuse/military/range": {
+          "terms": "shooting range,shooting,range,gun,army,military,defence force"
+        },
         "landuse/residential/apartments": {
           "name": "Flat Complex"
         },
         "leisure/adult_gaming_centre": {
           "name": "Adult Gaming Centre"
+        },
+        "leisure/bandstand": {
+          "terms": "Bandstand"
         },
         "leisure/bleachers": {
           "name": "Stands"
@@ -577,13 +686,27 @@
           "name": "Athletics runway"
         },
         "man_made/fuel_pump": {
-          "name": "Fuel pump"
+          "name": "Fuel pump",
+          "terms": "petrol,fuel,gasoline,propane,diesel,lng,cng,biodiesel,gas pump"
         },
         "man_made/groyne": {
-          "name": "Groyne"
+          "name": "Groyne",
+          "terms": "Groin"
+        },
+        "natural/cape": {
+          "terms": "Point"
+        },
+        "natural/wetland/mangrove": {
+          "terms": "Mangrove"
+        },
+        "office/employment_agency": {
+          "terms": "job,career,careers,vocational,vocation,occupation"
         },
         "office/estate_agent": {
           "name": "Estate Agent"
+        },
+        "office/it": {
+          "terms": "computer,information,software,technology,tech,it,ict,information technology"
         },
         "office/union": {
           "name": "Union Office"
@@ -591,12 +714,18 @@
         "place/neighbourhood": {
           "name": "Neighbourhood"
         },
+        "public_transport/platform": {
+          "name": "Public Transport Platform"
+        },
         "public_transport/platform/subway": {
           "name": "Underground Railway Platform",
           "terms": "metro,platform,public transit,public transportation,rail,subway,track,transit,transportation,underground,tube"
         },
         "public_transport/platform/subway_point": {
           "name": "Underground Railway Stop / Platform"
+        },
+        "railway/rail": {
+          "terms": "Railway"
         },
         "railway/subway": {
           "name": "Underground Railway Track"
@@ -654,13 +783,16 @@
           "name": "Charity Shop"
         },
         "shop/cheese": {
-          "name": "Cheese Shop"
+          "name": "Cheese Shop",
+          "terms": "Cheesemonger"
         },
         "shop/chemist": {
-          "name": "Chemist"
+          "name": "Chemist",
+          "terms": "Chemist"
         },
         "shop/chocolate": {
-          "name": "Chocolate Shop"
+          "name": "Chocolate Shop",
+          "terms": "Chocolatier"
         },
         "shop/clothes": {
           "name": "Clothing Shop"
@@ -688,6 +820,9 @@
         },
         "shop/confectionery": {
           "name": "Sweet Shop"
+        },
+        "shop/convenience": {
+          "terms": "dairy,superette,convenience store,convenience shop,corner store,corner shop"
         },
         "shop/copyshop": {
           "name": "Copyshop"
@@ -908,6 +1043,9 @@
         },
         "tourism/caravan_site": {
           "name": "Caravan Park"
+        },
+        "tourism/chalet": {
+          "terms": "bach,crib"
         },
         "tourism/information/office": {
           "name": "Visitor Centre"

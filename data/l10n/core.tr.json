@@ -29,16 +29,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Alan",
-        "filter_tooltip": "alanlar"
+        "title": "Alan"
       },
       "add_line": {
-        "title": "Çizgi",
-        "filter_tooltip": "çizgiler"
+        "title": "Çizgi"
       },
       "add_point": {
-        "title": "Nokta",
-        "filter_tooltip": "noktalar"
+        "title": "Nokta"
       },
       "add_note": {
         "title": "Not",
@@ -121,52 +118,15 @@
       },
       "circularize": {
         "title": "Daireleştir",
-        "description": {
-          "single": "Bu nesneyi dairesel yap.",
-          "multiple": "Bu nesneleri dairesel yap."
-        },
         "annotation": {
           "feature": {
             "one": "Bir adet nesne dairesel yapıldı.",
             "other": "{n} adet nesne dairesel yapıldı."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Birçok nedenden dolayı bunlar dairesel yapılamaz."
-        },
-        "not_closed": {
-          "single": "Bu dairesel yapılamaz çünkü bu bir döngü değildir.",
-          "multiple": "Döngü olmadıkları için bunlar dairesel yapılamaz."
-        },
-        "too_large": {
-          "single": "Şu anda yeterli görünürlükte olmadığından bu dairesel yapılamaz.",
-          "multiple": "Bunlar şu anda yeterince görünür olmadığı için dairesel hareket yapılamaz."
-        },
-        "connected_to_hidden": {
-          "single": "Bu, gizli bir nesne ile bağlı olduğundan dairesel yapılamaz.",
-          "multiple": "Bazıları gizli nesnelere bağlı olduğu için bunlar dairesel yapılamaz."
-        },
-        "not_downloaded": {
-          "single": "Bazı kısımları hâlâ indirilmediğinden dolayı dairesel yapılamaz.",
-          "multiple": "Bunların bazı kısımları hâlâ indirilmediğinden dolayı dairesel yapılamaz."
-        },
-        "already_circular": {
-          "single": "Bu, şu anki olduğundan daha dairesel yapılamaz.",
-          "multiple": "Bunlar, şu anki olduklarından daha dairesel hale getirilemez."
         }
       },
       "orthogonalize": {
         "title": "Kareleştir",
-        "description": {
-          "corner": {
-            "single": "Köşeyi kareleştir.",
-            "multiple": "Köşeleri kareleştir."
-          },
-          "feature": {
-            "single": "Bu nesnenin köşelerini kareleştir.",
-            "multiple": "Bu nesnelerin köşelerini kareleştir."
-          }
-        },
         "annotation": {
           "corner": {
             "one": "Köşe kareleştirildi.",
@@ -176,33 +136,6 @@
             "one": "Bir nesnenin köşeleri kareleştirildi.",
             "other": "{n} adet nesnenin köşeleri kareleştirildi."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Bunlar, birçok nedenden dolayı kareleştirilemez."
-        },
-        "end_vertex": {
-          "single": "Bu nokta, bitiş noktası olduğundan köşeleştirilemez.",
-          "multiple": "Bunlar, bitiş noktası olduklarından dolayı köşeleştirilemez."
-        },
-        "square_enough": {
-          "single": "Bu, zaten olduğundan daha kare yapılamaz.",
-          "multiple": "Bunlar, şu an olduklarından daha fazla kareleştirilemez."
-        },
-        "not_squarish": {
-          "single": "Bu kare olamaz çünkü karesel değildir.",
-          "multiple": "Bunlar kare yapılamaz çünkü kare şeklinde değildirler."
-        },
-        "too_large": {
-          "single": "Bu kare yapılamaz çünkü şu anda yeterince görünmemektedir.",
-          "multiple": "Bunlar şu anda yeterince görülemediklerinden dolayı karesel yapılamaz."
-        },
-        "connected_to_hidden": {
-          "single": "Gizli bir nesneye bağlı olduğu için kare yapılamazlar",
-          "multiple": "Bazıları gizli nesnelere bağlı olduğu için kare yapılamazlar."
-        },
-        "not_downloaded": {
-          "single": "Bazı bölümleri henüz indirilmediğinden bu kare yapılamaz.",
-          "multiple": "Bunların bazı kısımları hâlâ indirilmediğinden dolayı karesel yapılamaz."
         }
       },
       "straighten": {
@@ -221,34 +154,10 @@
             "one": "Çizgi doğrusallaştırıldı.",
             "other": "{n} sayıda çizgi doğrusallaştırıldı."
           }
-        },
-        "too_bendy": {
-          "single": "Bu, çok fazla büküldüğü için düzleştirilemez.",
-          "multiple": "Bunlar, çok fazla büküldüklerinden dolayı düzleştirilemez."
-        },
-        "connected_to_hidden": {
-          "single": "Bu, gizli bir nesneye bağlı olduğu için düzleştirilemez.",
-          "multiple": "Bazıları gizli nesnelere bağlı olduğu için düzleştirilemezler."
-        },
-        "not_downloaded": {
-          "single": "Bazı kısımları hâlâ indirilmediğinden dolayı bu, düzleştirilemez.",
-          "multiple": "Bunların bazı kısımları hâlâ indirilmediğinden dolayı düzleştirilemezler."
-        },
-        "straight_enough": {
-          "single": "Bu, şu an olduğundan daha düz yapılamaz. ",
-          "multiple": "Bunlar, şu an olduklarından daha düz yapılamaz."
-        },
-        "too_large": {
-          "single": "Bunun yeteri kadarı görünür halde olmadığı için düzleştirilemez.",
-          "multiple": "Bunlar, şu an yeterli görülemediğinden dolayı düzleştirilemez."
         }
       },
       "delete": {
         "title": "Sil",
-        "description": {
-          "single": "Bu nesneyi kalıcı olarak sil.",
-          "multiple": "Bu nesneleri kalıcı olarak sil."
-        },
         "annotation": {
           "point": "Bir nokta silindi.",
           "vertex": "Yoldan bir bağlantı noktası silindi.",
@@ -259,30 +168,6 @@
             "one": "Nesne silindi.",
             "other": "{n} adet nesne silindi."
           }
-        },
-        "too_large": {
-          "single": "Bu nesnenin yeteri kadarı görünür halde olmadığı için silinemez.",
-          "multiple": "Bu nesneler yeteri kadarı görünür halde olmadıkları için silinemezler."
-        },
-        "incomplete_relation": {
-          "single": "Bu nesne henüz tamamen indirilmediği için silinemez.",
-          "multiple": "Bu nesneler henüz tamamen indirilmedikleri için silinemezler."
-        },
-        "part_of_relation": {
-          "single": "Bu nesne bir ilişkinin parçası olduğu için silinemez. Silmek için önce nesneyi üyesi olduğu ilişkiden çıkarın.",
-          "multiple": "Bu nesneler bir ilişkinin parçası oldukları için silinemezler. Silmek için önce nesneleri üyesi oldukları ilişkilerden çıkarın."
-        },
-        "connected_to_hidden": {
-          "single": "Bu nesne gizli bir nesneye bağlı olduğu için silinemez.",
-          "multiple": "Bu nesneler gizli nesnelere bağlı oldukları için silinemezler."
-        },
-        "not_downloaded": {
-          "single": "Bu nesne bazı kısımları henüz indirilmediği için silinemez.",
-          "multiple": "Bu nesneler bazı kısımları henüz indirilmediği için silinemezler."
-        },
-        "has_wikidata_tag": {
-          "single": "Bu nesne bir Wikidata etiketine sahip olduğu için silinemez.",
-          "multiple": "Bu nesnelerin bazıları Wikidata etiketine sahip olduğu için silinemezler."
         }
       },
       "downgrade": {
@@ -306,10 +191,6 @@
             "one": "Bir nesne düşürüldü.",
             "other": "{n} adet nesne düşürüldü."
           }
-        },
-        "has_wikidata_tag": {
-          "single": "Bu nesne bir Wikidata etiketine sahip olduğu için indirilemez.",
-          "multiple": "Bu nesnelerin bazıları Wikidata etiketine sahip olduğu için indirilemezler."
         }
       },
       "add_member": {
@@ -409,10 +290,6 @@
       },
       "move": {
         "title": "Taşı",
-        "description": {
-          "single": "Bu nesneyi başka bir konuma taşı.",
-          "multiple": "Bu nesneleri başka bir konuma taşı."
-        },
         "annotation": {
           "point": "Bir nokta taşındı.",
           "vertex": "Yoldan bir bağlantı noktası taşındı.",
@@ -423,38 +300,12 @@
             "one": "Bir nesne taşındı.",
             "other": " {n} adet nesne taşındı."
           }
-        },
-        "incomplete_relation": {
-          "single": "Bu nesne henüz tamamen indirilmediği için taşınamaz.",
-          "multiple": "Bu nesneler henüz tamamen indirilmedikleri için taşınamazlar."
-        },
-        "too_large": {
-          "single": "Bu nesnenin yeteri kadarı görünür halde olmadığı için taşınamaz.",
-          "multiple": "Bu nesneler yeteri kadarı görünür halde olmadıkları için taşınamazlar."
-        },
-        "connected_to_hidden": {
-          "single": "Bu nesne gizli bir nesneye bağlı olduğu için taşınamaz.",
-          "multiple": "Bu nesneler gizli bir nesneye bağlı oldukları için taşınamazlar."
-        },
-        "not_downloaded": {
-          "single": "Bu nesne bir kısmı henüz indirilmediği için taşınamaz.",
-          "multiple": "Bu nesnelerin bir kısmı henüz indirilmedikleri için taşınamazlar."
         }
       },
       "reflect": {
         "title": {
           "long": "Uzun çevir.",
           "short": "Kısa çevir."
-        },
-        "description": {
-          "long": {
-            "single": "Bu nesneyi uzun ekseni boyunca çevir.",
-            "multiple": "Bu nesneleri uzun eksenleri boyunca çevir."
-          },
-          "short": {
-            "single": "Bu nesneyi kısa ekseni boyunca çevir.",
-            "multiple": "Bu nesneleri kısa eksenleri boyunca çevir."
-          }
         },
         "annotation": {
           "long": {
@@ -469,30 +320,10 @@
               "other": "{n} adet nesne, kısa eksenleri boyunca çevirildi."
             }
           }
-        },
-        "incomplete_relation": {
-          "single": "Bu nesne henüz tam olarak indirilmediği için çevrilemez.",
-          "multiple": "Bu nesneler henüz tam olarak indirilmedikleri için çevrilemezler."
-        },
-        "too_large": {
-          "single": "Bu nesneler yeteri kadar görünür halde olmadıkları için çevrilemezlar.",
-          "multiple": "Bu nesneler yeteri kadar görünür olmadığından çevirilemezler."
-        },
-        "connected_to_hidden": {
-          "single": "Bu nesne gizli bir nesneye bağlı olduğu için çevirilemez.",
-          "multiple": "Bu nesnelerin bazıları gizli nesnelere bağlı olduğu için döndürülemezler."
-        },
-        "not_downloaded": {
-          "single": "Bu nesne bir kısmı henüz indirilmediği için çevirilemez.",
-          "multiple": "Bu nesneler bazı kısımları henüz indirilmedikleri için çevirilemezler."
         }
       },
       "rotate": {
         "title": "Döndür",
-        "description": {
-          "single": "Bu nesneyi merkezi etrafında döndür.",
-          "multiple": "Bu nesneleri merkezi etrafında döndür."
-        },
         "annotation": {
           "line": "Çizgi döndürüldü.",
           "area": "Alan döndürüldü.",
@@ -501,22 +332,6 @@
             "one": "Bir nesne döndürüldü.",
             "other": "{n} adet nesne döndürüldü."
           }
-        },
-        "incomplete_relation": {
-          "single": "Bu nesne henüz tamamen indirilmediği için döndürülemez.",
-          "multiple": "Bu nesneler henüz tamamen indirilmedikleri için döndürülemezler."
-        },
-        "too_large": {
-          "single": "Bu nesne yeteri kadarı görünür halde olmadığı için döndürülemez.",
-          "multiple": "Bu nesneler yeteri kadarı görünür halde olmadıkları için döndürülemezler."
-        },
-        "connected_to_hidden": {
-          "single": "Bu nesne gizli bir nesneye bağlı olduğu için döndürülemez.",
-          "multiple": "Bu nesneler gizli bir nesneye bağlı oldukları için çevirilemezler."
-        },
-        "not_downloaded": {
-          "single": "Bu nesnenin bir kısmı henüz indirilmediği için döndürülemez.",
-          "multiple": "Bu nesnelerin bazı kısımları henüz indirilmedikleri için döndürülemezler."
         }
       },
       "reverse": {
@@ -557,22 +372,6 @@
               "other": "{n} adet nesne büyütüldü."
             }
           }
-        },
-        "too_small": {
-          "single": "Bu nesne çok küçük hale geleceği için küçültülemez.",
-          "multiple": "Bu nesneler çok küçük hale gelecekleri için küçültülemezler."
-        },
-        "too_large": {
-          "single": "Bu nesnenin yeteri kadar görünür halde olmadığı için ölçeklenemez.",
-          "multiple": "Bu nesnelerin yeteri kadar görünür halde olmadığı için ölçeklenemezler."
-        },
-        "connected_to_hidden": {
-          "single": "Bu nesne gizli bir nesneye bağlı olduğu için ölçeklenemez.",
-          "multiple": "Bu nesnelerin bazıları gizli nesnelere bağlı olduğu için ölçeklenemezler."
-        },
-        "not_downloaded": {
-          "single": "Bu nesnenin bir kısmı henüz indirilmediği için ölçeklenemez.",
-          "multiple": "Bu nesnelerin bazı kısımları henüz indirilmediği için ölçeklenemezler."
         }
       },
       "split": {
@@ -627,33 +426,13 @@
       "extract": {
         "title": "Ayır",
         "description": {
-          "vertex": {
-            "single": "Bu noktayı ana satırlarından/alanlarından çıkarın.",
-            "multiple": "Bu noktaları temel nesnelerinden sökün."
-          },
-          "line": {
-            "single": "Bu çizgiden bir nokta çıkarın.",
-            "multiple": "Bu çizgilerden noktaları çıkarınız."
-          },
-          "area": {
-            "single": "Bu bölgeden bir nokta çıkarınız.",
-            "multiple": "Bu bölgelerden noktaları çıkarınız."
-          },
           "feature": {
-            "multiple": "Bu nesnelerden noktalar çıkar."
+            "other": "Bu nesnelerden noktalar çıkar."
           }
         },
         "annotation": {
           "one": "Bir nokta çıkartıldı.",
           "other": "{n} nokta çıkartıldı."
-        },
-        "too_large": {
-          "single": "Bir nokta ayıklanamaz çünkü bu nesne yeterince görünür değil.",
-          "multiple": "Noktalar ayıklanamaz çünkü bu nesnelerin yeterli miktarı görünür değil."
-        },
-        "connected_to_hidden": {
-          "single": "Bu nesne ayıklanamaz çünkü gizli bir nesneye bağlı.",
-          "multiple": "Noktalar bu nesnelerden ayıklanamaz çünkü bazıları gizli nesnelere bağlı."
         }
       }
     },
@@ -854,10 +633,6 @@
       "multiple_values": "Birçok Değer",
       "multiple_types": "Birçok Çeşit",
       "unshared_value_tooltip": "tüm nesneler tarafından paylaşılmıyor",
-      "hidden_preset": {
-        "manual": "{features} gizlendi. Harita Verileri bölümünden etkinleştirin.",
-        "zoom": "{features} gizlendi. Etkinleştirmek için yakınlaştırın."
-      },
       "back_tooltip": "Nesne türünü değiştir.",
       "type": "Çeşit",
       "details": "Detaylar",
@@ -941,8 +716,7 @@
         },
         "notes": {
           "tooltip": "OpenStreetMap'ın Not Verileri",
-          "title": "OpenStreetMap Notları",
-          "key": "K"
+          "title": "OpenStreetMap Notları"
         },
         "maproulette": {
           "detail_title": "Detaylar",
@@ -971,7 +745,6 @@
         "tooltip": "Yapılan seçim için geometri değerlerini gösterin."
       },
       "style_options": "Stil Ayarları",
-      "map_features": "Harita Nesneleri",
       "autohidden": "Bu nesnelerin tamamını ekranda göstermek zor olacağı için nesneler otomatik olarak gizlendi. Düzenlemek için haritanın belli bir bölgesine yakınlaşabilirsin.",
       "osmhidden": "Bu nesneler OpenStreetMap katmanı gizli olduğu için otomatik olarak gizlenmiştir."
     },
@@ -1008,7 +781,7 @@
         "tooltip": "Bu kullanıcının yalnızca fotoğraflarını göster"
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Noktalar",
         "tooltip": "İlgi Çekici Yerler"
@@ -1204,16 +977,17 @@
       "start": "Şimdi düzenle"
     },
     "source_switch": {
+      "dev": "geliştirme",
       "live": "canlı",
-      "lose_changes": "Kaydedilmemiş değişikliklerin var. Harita sunucusunu değiştirmek bunları kaybetmene sebep olur. Sunucuyu değiştirmek istediğinden emin misin?",
-      "dev": "geliştirme"
+      "lose_changes": "Kaydedilmemiş değişikliklerin var. Harita sunucusunu değiştirmek bunları kaybetmene sebep olur. Sunucuyu değiştirmek istediğinden emin misin?"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Etiketler"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Kaldır"
+    "rapid_menu": {
+      "remove": "Kaldır",
+      "category": {
+        "roads": "yollar"
       }
     },
     "tag_reference": {
@@ -1229,7 +1003,9 @@
         "out": "Daha fazla uzaklaştırılamıyor."
       }
     },
-    "cannot_zoom": "Bu modda daha fazla uzaklaşılamaz.",
+    "bearing": {
+      "n": "K"
+    },
     "full_screen": "Tam Ekran",
     "self_intersection": {
       "error": {
@@ -1652,7 +1428,6 @@
         "title": "Noktalar",
         "intro": "*Noktalar*, dükkanları, restoranları ya da anıtları temsil etmek için kullanılabilir. Belirli bir konumu işaretler ve orada ne olduğunu tarif ederler. ",
         "add_point_h": "Noktaların eklenmesi",
-        "add_point": "Bir nokta eklemek için, haritanın yukarısındaki araç çubuğunda bulunan {point_icon} **{point}** düğmesine veya kısayol tuşuna `1` basın.",
         "move_point_h": "Noktaların hareket ettirilmesi",
         "delete_point_h": "Noktaların silinmesi",
         "delete_point": "Gerçek dünyada var olmayan nesneleri silmekte sorun yok. OpenStreetMap'ten bir nesneyi silmek, onu herkesin kullandığı haritadan kaldırır, bu nedenle silmeden önce bir nesnenin gerçekten var olmadığından emin olmalısınız."
@@ -1661,7 +1436,6 @@
         "title": "Çizgiler",
         "intro": "*Çizgiler*, yollar, demiryolları ve nehirler gibi nesneleri temsil etmek için kullanılır. Çizgiler, temsil ettikleri nesnenin ortasından çizilmelidir.",
         "add_line_h": "Çizgilerin eklenmesi",
-        "add_line": "Bir çizgi eklemek için, haritanın yukarısındaki araç çubuğunda bulunan {line_icon} ** {line} ** düğmesine veya kısayol tuşuna `2` basın.",
         "add_line_finish": "Bir satırı bitirmek için, son düğüme tekrar tıklayın, dokunun veya '{return}' tuşuna basın.",
         "modify_line_h": "Çizgilerin değiştirilmesi",
         "modify_line_dragnode": "Çoğunlukla, örneğin arka plan görüntüsü ile uyuşmayan bir yol gibi doğru şekillendirilmemiş çizgiler görürsünüz. Bir çizginin şeklini ayarlamak için önce onu seçin. Çizginin tüm düğümleri küçük daireler olarak çizilecektir. Daha sonra düğümleri daha iyi konumlara sürükleyebilirsiniz.",
@@ -1680,7 +1454,6 @@
         "point_or_area_h": "Noktalar mı yoksa Alanlar mı?",
         "point_or_area": "Birçok nesne nokta veya alan olarak gösterilebilir. Mümkün olduğunca, binalar ve mülklerin ana hatlarını alanlar olarak haritalamalısınız. Binanın içinde bulunan işletmeleri, olanakları ve diğer nesneleri temsil etmek için bina alanı içine noktalar yerleştirin.",
         "add_area_h": "Alanların Eklenmesi",
-        "add_area_command": "Bir alan eklemek için, haritanın yukarısındaki araç çubuğunda bulunan {area_icon} ** {area} ** düğmesine veya kısayol tuşuna `3` basın.",
         "add_area_finish": "Bir alanı bitirmek için, ilk veya son düğüme tekrar tıklayın veya dokunun veya '{return}' tuşuna basın.",
         "square_area_h": "Kare Köşeler",
         "modify_area_h": "Alanların Değiştirilmesi",
@@ -1807,18 +1580,10 @@
     },
     "issues": {
       "title": "Sorunlar",
-      "list_title": "Sorunlar",
-      "errors": {
-        "list_title": "Hatalar"
-      },
-      "warnings": {
-        "list_title": "Uyarılar"
-      },
-      "rules": {
-        "title": "Kurallar"
-      },
-      "user_resolved_issues": "Düzenlemelerinizin çözdüğü sorunlar",
-      "warnings_and_errors": "Uyarılar ve hatalar",
+      "errors": "Hatalar",
+      "warnings": "Uyarılar",
+      "rules": "Kurallar",
+      "resolved_tooltip": "Düzenlemelerinizin çözdüğü sorunlar",
       "no_issues": {
         "message": {
           "everything": "Her şey iyi gözüküyor.",
@@ -1976,8 +1741,6 @@
         "title": "Geçersiz Biçimlendirme",
         "tip": "Beklenmeyen biçimlere sahip etiketleri bulun",
         "email": {
-          "message": "{feature} geçersiz bir e-posta adresine sahip",
-          "message_multi": "{feature} birden çok geçersiz e-posta adresine sahip",
           "reference": "Email adresleri \"kullanıcı@örnek.com\" şeklinde gözükmelidir."
         }
       },
@@ -2491,6 +2254,7 @@
       "title": "Klavye Kısayolları",
       "tooltip": "Klavye kısayolları ekranını gösterin.",
       "key": {
+        "delete": "Sil",
         "menu": "Menü",
         "option": "Seçenek",
         "pause": "Durdur",
@@ -2501,96 +2265,177 @@
         "drag": "sürükle"
       },
       "or": "-veya-",
-      "browsing": {
-        "title": "Gözat",
-        "navigation": {
-          "title": "Navigasyon",
-          "pan": "Haritada dolaş"
+      "browsing": "Gözat",
+      "editing": "Düzenleme",
+      "navigation": "Navigasyon",
+      "selecting_features": "Nesne seçme",
+      "with_features_selected": "Seçilen nesnelerle birlikte",
+      "with_node_selected": "Seçişmiş bağlantı noktalarıyla beraber",
+      "with_way_selected": "Seçilen yolla birlikte",
+      "drawing": "Çizim",
+      "commands": "Komutlar",
+      "help": "Yardım",
+      "display_options": "Görüntü ayarları",
+      "info": "Bilgi",
+      "command": {
+        "pan": {
+          "label": "Haritada dolaş"
         },
-        "help": {
-          "title": "Yardım",
-          "help": "Yardımı göster",
-          "keyboard": "Klavye kısayollarını göster"
+        "select_one": {
+          "label": "Bir nesne seç"
         },
-        "display_options": {
-          "title": "Görüntü ayarları",
-          "background": "Arka plan görüntü bölmesini değiştir.",
-          "map_data": "Harita veri bölmesini değiştir.",
-          "issues": "Doğrulama sorunları bölmesini değiştir.",
-          "preferences": "Kullanıcı tercihleri bölmesini aç/kapat",
-          "wireframe": "Tel örgü moduna geçiniz",
-          "osm_data": "OpenStreetMap verisini değiştir.",
-          "highlight_edits": "Kaydedilmemiş değişiklikleri vurgula"
+        "select_multi": {
+          "label": "Birden fazla nesne seç"
         },
-        "selecting": {
-          "title": "Nesne seçme",
-          "select_one": "Bir nesne seç",
-          "select_multi": "Birden fazla nesne seç",
-          "lasso": "Nesnelerin etrafında bir seçim alanı çiz",
-          "search": "Arama metniyle eşleşen özellikleri bulun."
+        "lasso": {
+          "label": "Nesnelerin etrafında bir seçim alanı çiz"
         },
-        "with_selected": {
-          "title": "Seçilen nesnelerle birlikte",
-          "edit_menu": "Düzenleme menüsünü aç/kapa"
+        "edit_menu": {
+          "label": "Düzenleme menüsünü aç/kapa"
         },
-        "vertex_selected": {
-          "title": "Seçişmiş bağlantı noktalarıyla beraber",
-          "first": "İlk düğüm noktasına git",
-          "last": "Son düğüm noktasına git",
-          "change_parent": "Parçası olduğu çizgiye geç",
-          "parent": "Parçası olduğu yolu seç"
+        "first_node": {
+          "label": "İlk düğüm noktasına git"
         },
-        "way_selected": {
-          "title": "Seçilen yolla birlikte",
-          "child": "Parçası olan düğümleri seç"
-        }
-      },
-      "editing": {
-        "title": "Düzenleme",
-        "drawing": {
-          "title": "Çizim",
-          "add_point": "'Nokta ekle' modu",
-          "add_line": "'Çizgi ekle' modu",
-          "add_area": "'Alan ekle' modu",
-          "add_note": "'Not ekle' modu",
-          "place_point": "Bir nokta ya da not koy.",
-          "disable_snap": "Nokta bitiştirmeyi iptal etmek için basılı tutun",
-          "stop_line": "Çizgi veya alan çizimini tamamla"
+        "last_node": {
+          "label": "Son düğüm noktasına git"
         },
-        "commands": {
-          "title": "Komutlar",
-          "copy": "Seçilmiş nesneleri kopyala",
-          "paste": "Kopyalanmış nesneleri yapıştır",
-          "undo": "Son işlemi geri al",
-          "redo": "Son işlemi tekrar uygula",
-          "save": "Değişiklikleri kaydet"
+        "change_parent": {
+          "label": "Parçası olduğu çizgiye geç"
         },
-        "operations": {
-          "continue_line": "Seçilmiş bitiş noktasından çizgiye devam et",
-          "merge": "Seçilmiş nesneleri birleştir",
-          "disconnect": "Seçilen nesnelerin bağlantısını kes.",
-          "extract": "Nesneden nokta ayır",
-          "split": "Nesneleri seçilmiş noktadan böl.",
-          "reverse": "Seçilen nesneleri ters çevir.",
-          "move": "Seçilmiş nesneleri taşı",
-          "rotate": "Seçilmiş nesneleri döndür",
-          "orthogonalize": "Çizgi veya alanın köşelerini kareleştir",
-          "straighten": "Noktaları veya çizgileri düzleştir",
-          "circularize": "Kapalı çizgiyi veya alanı daire haline getir",
-          "reflect_long": "Nesneleri uzun eksen boyunca çevir",
-          "reflect_short": "Nesneleri kısa eksen boyunca çevir",
-          "delete": "Seçilmiş nesneleri sil"
-        }
-      },
-      "tools": {
-        "title": "Araçlar",
-        "info": {
-          "title": "Bilgi",
-          "all": "Tüm bilgi panellerini açın",
-          "background": "Arkaplan panelini açın",
-          "history": "Geçmiş panelini açın",
-          "location": "Konum panelini açın / kapatın",
-          "measurement": "Ölçüm panelini açın / kapatın"
+        "select_parent": {
+          "label": "Parçası olduğu yolu seç"
+        },
+        "select_children": {
+          "label": "Parçası olan düğümleri seç"
+        },
+        "add_point": {
+          "label": "'Nokta ekle' modu"
+        },
+        "add_line": {
+          "label": "'Çizgi ekle' modu"
+        },
+        "add_area": {
+          "label": "'Alan ekle' modu"
+        },
+        "add_note": {
+          "label": "'Not ekle' modu",
+          "key": "K"
+        },
+        "place_point": {
+          "label": "Bir nokta ya da not koy."
+        },
+        "disable_snap": {
+          "label": "Nokta bitiştirmeyi iptal etmek için basılı tutun"
+        },
+        "stop_line": {
+          "label": "Çizgi veya alan çizimini tamamla"
+        },
+        "copy": {
+          "label": "Seçilmiş nesneleri kopyala"
+        },
+        "paste": {
+          "label": "Kopyalanmış nesneleri yapıştır"
+        },
+        "undo": {
+          "label": "Son işlemi geri al"
+        },
+        "redo": {
+          "label": "Son işlemi tekrar uygula"
+        },
+        "save": {
+          "label": "Değişiklikleri kaydet"
+        },
+        "find": {
+          "label": "Arama metniyle eşleşen özellikleri bulun."
+        },
+        "continue_line": {
+          "label": "Seçilmiş bitiş noktasından çizgiye devam et"
+        },
+        "merge": {
+          "label": "Seçilmiş nesneleri birleştir"
+        },
+        "disconnect": {
+          "label": "Seçilen nesnelerin bağlantısını kes."
+        },
+        "extract": {
+          "label": "Nesneden nokta ayır",
+          "key": "D"
+        },
+        "split": {
+          "label": "Nesneleri seçilmiş noktadan böl."
+        },
+        "reverse": {
+          "label": "Seçilen nesneleri ters çevir."
+        },
+        "move": {
+          "label": "Seçilmiş nesneleri taşı"
+        },
+        "rotate": {
+          "label": "Seçilmiş nesneleri döndür"
+        },
+        "orthogonalize": {
+          "label": "Çizgi veya alanın köşelerini kareleştir"
+        },
+        "straighten": {
+          "label": "Noktaları veya çizgileri düzleştir",
+          "key": "G"
+        },
+        "circularize": {
+          "label": "Kapalı çizgiyi veya alanı daire haline getir"
+        },
+        "reflect_long": {
+          "label": "Nesneleri uzun eksen boyunca çevir"
+        },
+        "reflect_short": {
+          "label": "Nesneleri kısa eksen boyunca çevir"
+        },
+        "delete": {
+          "label": "Seçilmiş nesneleri sil"
+        },
+        "toggle_background": {
+          "label": "Arka plan görüntü bölmesini değiştir."
+        },
+        "toggle_map_data": {
+          "label": "Harita veri bölmesini değiştir."
+        },
+        "toggle_issues": {
+          "label": "Doğrulama sorunları bölmesini değiştir."
+        },
+        "toggle_preferences": {
+          "label": "Kullanıcı tercihleri bölmesini aç/kapat"
+        },
+        "wireframe": {
+          "key": "B"
+        },
+        "highlight_edits": {
+          "label": "Kaydedilmemiş değişiklikleri vurgula"
+        },
+        "keyboard_shortcuts": {
+          "label": "Klavye kısayollarını göster"
+        },
+        "toggle_osm_data": {
+          "label": "OpenStreetMap verisini değiştir."
+        },
+        "toggle_osm_notes": {
+          "key": "K"
+        },
+        "toggle_streetside": {
+          "key": "G"
+        },
+        "toggle_all_cards": {
+          "label": "Tüm bilgi panellerini açın"
+        },
+        "toggle_background_card": {
+          "label": "Arkaplan panelini açın"
+        },
+        "toggle_history_card": {
+          "label": "Geçmiş panelini açın"
+        },
+        "toggle_location_card": {
+          "label": "Konum panelini açın / kapatın"
+        },
+        "toggle_measurement_card": {
+          "label": "Ölçüm panelini açın / kapatın"
         }
       }
     },
@@ -2654,6 +2499,7 @@
       "bho": "Arayanice",
       "bjn": "Banjar Dili",
       "bla": "Karaayak dili",
+      "blo": "Aniice",
       "bn": "Bengalce",
       "bo": "Tibetçe",
       "bqi": "Bahtiyari",
@@ -2757,7 +2603,6 @@
       "gmh": "Ortaçağ Yüksek Almancası",
       "gn": "Guarani dili",
       "goh": "Eski Yüksek Almanca",
-      "gom": "Goa Konkanicesi",
       "gon": "Gondi dili",
       "gor": "Gorontalo dili",
       "got": "Gotça",
@@ -3037,6 +2882,7 @@
       "vi": "Vietnamca",
       "vls": "Batı Flamanca",
       "vmf": "Main Frankonya Dili",
+      "vmw": "Makuaca",
       "vot": "Votça",
       "wa": "Valonca",
       "wal": "Valamo",
@@ -3047,6 +2893,7 @@
       "xal": "Kalmıkça",
       "xh": "Zosa dili",
       "xmf": "Megrelce",
+      "xnr": "Kangrice",
       "yap": "Yapça",
       "yi": "Yidiş",
       "yo": "Yorubaca",

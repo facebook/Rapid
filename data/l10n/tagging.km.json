@@ -35,6 +35,25 @@
         "category-road_minor": {
           "name": "ផ្លូវតូច"
         }
+      },
+      "fields": {
+        "note": {
+          "label": "ចំណាំ"
+        }
+      },
+      "presets": {
+        "area": {
+          "name": "តំបន់"
+        },
+        "line": {
+          "name": "បន្ទាត់"
+        },
+        "playground": {
+          "name": "បរិក្ខារសួនកុមារ"
+        },
+        "point": {
+          "name": "ចំណុច"
+        }
       }
     }
   }

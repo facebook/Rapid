@@ -10,20 +10,17 @@
     },
     "modes": {
       "add_area": {
-        "title": "Mnogokotnik",
-        "filter_tooltip": "območja"
+        "title": "Mnogokotnik"
       },
       "add_line": {
         "title": "Črta"
       },
       "add_point": {
-        "title": "Točka",
-        "filter_tooltip": "točke"
+        "title": "Točka"
       },
       "add_note": {
         "title": "Opomba",
-        "description": "Ali ste opazili problem? Obvestite urejevalce zemljevida.",
-        "key": "S"
+        "description": "Ali ste opazili problem? Obvestite urejevalce zemljevida."
       },
       "browse": {
         "title": "Prebrskaj",
@@ -80,32 +77,12 @@
       },
       "delete": {
         "title": "Odstrani",
-        "description": {
-          "single": "Nepovratno izbriši predmet.",
-          "multiple": "Nepovratno izbriši predmete."
-        },
         "annotation": {
           "point": "brisanje točke ×",
           "vertex": "izbrisano vozlišč ×",
           "line": "brisanje črte ×",
           "area": "brisanje mnogokotnika ×",
           "relation": "brisanje zveze ×"
-        },
-        "too_large": {
-          "single": "Predmeta ni mogoče izbrisati, ker trenutno ni v celoti viden.",
-          "multiple": "Predmetov ni mogoče izbrisati, ker trenutno niso v celoti vidni."
-        },
-        "incomplete_relation": {
-          "single": "Predmeta ni mogoče izbrisati, ker trenutno ni v celoti prejet.",
-          "multiple": "Predmetov ni mogoče izbrisati, ker trenutno niso v celoti prejeti."
-        },
-        "part_of_relation": {
-          "single": "Predmeta ni mogoče izbrisati, ker je povezan z drugimi predmeti. Vezi je treba najprej odstraniti.",
-          "multiple": "Predmetov ni mogoče izbrisati, ker so povezan z drugimi predmeti. Vezi je treba najprej odstraniti."
-        },
-        "connected_to_hidden": {
-          "single": "Predmeta ni mogoče izbrisati, ker je povezan z drugim skritim predmetom.",
-          "multiple": "Predmetov ni mogoče izbrisati, ker so povezani z drugim skritimi predmeti."
         }
       },
       "disconnect": {
@@ -124,50 +101,18 @@
       },
       "move": {
         "title": "Premakni",
-        "description": {
-          "single": "Premakni predmet na drugo mesto.",
-          "multiple": "Premakni predmete na drugo mesto."
-        },
         "annotation": {
           "point": "premikanje točke ×",
           "vertex": "premikanje vozlišča ×",
           "line": "premikanje črte ×",
           "area": "premikanje mnogokotnika ×"
-        },
-        "incomplete_relation": {
-          "single": "Predmeta ni mogoče premakniti, ker ni v celoti prejet.",
-          "multiple": "Predmetov ni mogoče premakniti, ker niso v celoti prejeti."
-        },
-        "too_large": {
-          "single": "Predmeta ni mogoče premakniti, ker trenutno ni v celoti viden.",
-          "multiple": "Predmetov ni mogoče premakniti, ker trenutno niso v celoti vidni."
-        },
-        "connected_to_hidden": {
-          "single": "Predmeta ni mogoče premakniti, ker je povezan z drugim skritim predmetom.",
-          "multiple": "Predmetov ni mogoče premakniti, ker so povezani z drugim skritimi predmeti."
         }
       },
       "rotate": {
         "title": "Zasukaj",
-        "description": {
-          "single": "Zasukaj predmet okoli njegove sredinske točke.",
-          "multiple": "Zasukaj predmete okoli njihove skupne sredinske točke."
-        },
         "annotation": {
           "line": "zasukanje črte ×",
           "area": "zasukanje mnogokotnika ×"
-        },
-        "incomplete_relation": {
-          "single": "Predmeta ni mogoče zasukati, ker trenutno ni v celoti prejet.",
-          "multiple": "Predmetov ni mogoče zasukati, ker trenutno niso v celoti prejeti."
-        },
-        "too_large": {
-          "single": "Predmeta ni mogoče zasukati, ker ni v celoti viden.",
-          "multiple": "Predmetov ni mogoče zasukati, ker niso v celoti vidni."
-        },
-        "connected_to_hidden": {
-          "single": "Predmeta ni mogoče zrcaliti, ker je povezan s skritim predmetom.",
-          "multiple": "Predmetov ni mogoče zasukati, ker so povezani s skritimi predmeti."
         }
       },
       "reverse": {
@@ -183,9 +128,6 @@
           "create": "dodajanje omejitve zavijanja ×",
           "delete": "odstranjevanje omejitev zavijanja ×"
         }
-      },
-      "extract": {
-        "key": "V"
       }
     },
     "restriction": {
@@ -232,7 +174,6 @@
     },
     "info_panels": {
       "background": {
-        "key": "O",
         "title": "Ozadje",
         "zoom": "Približaj",
         "vintage": "Starinsko",
@@ -244,7 +185,6 @@
         "hide_tiles": "Skrij sličice"
       },
       "history": {
-        "key": "Z",
         "title": "Zgodovina",
         "version": "Različica",
         "last_edit": "Zadnje urejanje",
@@ -350,19 +290,15 @@
         "osm": {
           "tooltip": "Kartografski podatki OpenStreetMap"
         },
-        "notes": {
-          "key": "S"
-        },
         "maproulette": {
           "detail_title": "Podrobnosti",
           "cancel": "Prekliči"
         }
       },
-      "map_features": "Predmeti zemljevida",
       "autohidden": "Nekateri predmeti so samodejno skriti, da jih na zaslonu ni prikazanih preveč. Za urejanje je treba zemljevid približati.",
       "osmhidden": "Nekateri predmeti so samodejno skriti, ker je plast OpenStreetMap skrita."
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Točke",
         "tooltip": "Točke POI"
@@ -477,13 +413,14 @@
       "cancel": "Prekliči"
     },
     "source_switch": {
+      "dev": "razvojno",
       "live": "objavljeno",
-      "lose_changes": "Nekatere spremembe še niso shranjene. Zamenjava strežnika zemljevida jih bo zavrgla. Ali ste prepričani, da želite zamenjati strežnik?",
-      "dev": "razvojno"
+      "lose_changes": "Nekatere spremembe še niso shranjene. Zamenjava strežnika zemljevida jih bo zavrgla. Ali ste prepričani, da želite zamenjati strežnik?"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Odstrani"
+    "rapid_menu": {
+      "remove": "Odstrani",
+      "category": {
+        "roads": "ceste"
       }
     },
     "tag_reference": {
@@ -494,7 +431,6 @@
     "bearing": {
       "n": "S"
     },
-    "cannot_zoom": "V trenutnem načinu nadaljnje oddaljevanje pogleda ni mogoče.",
     "full_screen": "Preklopi celozaslonski način",
     "QA": {
       "osmose": {
@@ -574,9 +510,7 @@
       }
     },
     "issues": {
-      "warnings": {
-        "list_title": "Opozorila"
-      }
+      "warnings": "Opozorila"
     },
     "intro": {
       "done": "končano",
@@ -776,73 +710,133 @@
         "drag": "potegni"
       },
       "or": "- oziroma -",
-      "browsing": {
-        "title": "Brskanje",
-        "navigation": {
-          "title": "Krmarjenje",
-          "pan": "Premakni zemljevid"
+      "browsing": "Brskanje",
+      "editing": "Urejanje",
+      "navigation": "Krmarjenje",
+      "selecting_features": "Izbiranje predmetov",
+      "with_node_selected": "Z izbranim vozliščem",
+      "drawing": "Risanje",
+      "commands": "Ukazi",
+      "help": "Pomoč",
+      "display_options": "Možnosti prikaza",
+      "info": "Podrobnosti",
+      "command": {
+        "pan": {
+          "label": "Premakni zemljevid"
         },
-        "help": {
-          "title": "Pomoč",
-          "help": "Pokaži pomoč / dokumentacijo",
-          "keyboard": "Pokaži tipkovne bližnjice"
+        "select_one": {
+          "label": "Izbor enega predmeta"
         },
-        "display_options": {
-          "title": "Možnosti prikaza",
-          "wireframe": "Preklopi prikaz žičnega načina"
+        "select_multi": {
+          "label": "Izbor več predmetov"
         },
-        "selecting": {
-          "title": "Izbiranje predmetov",
-          "select_one": "Izbor enega predmeta",
-          "select_multi": "Izbor več predmetov",
-          "lasso": "Izbor predmetov ali točk s potegom"
+        "lasso": {
+          "label": "Izbor predmetov ali točk s potegom"
         },
-        "with_selected": {
-          "edit_menu": "Preklopi meni urejanja"
+        "edit_menu": {
+          "label": "Preklopi meni urejanja"
         },
-        "vertex_selected": {
-          "title": "Z izbranim vozliščem",
-          "first": "Skoči na prvo vozlišče",
-          "last": "Skoči na zadnje vozlišče",
-          "change_parent": "Preklopi nadrejeni način"
-        }
-      },
-      "editing": {
-        "title": "Urejanje",
-        "drawing": {
-          "title": "Risanje",
-          "add_point": "Način dodajanja »Točk« ",
-          "add_line": "Način dodajanja »Črt« ",
-          "add_area": "Način dodajanja »Mnogokotnikov« ",
-          "add_note": "Način dodajanja »Opomb« ",
-          "disable_snap": "Zadržite tipko za onemogočanje lepljenja točk",
-          "stop_line": "Končaj risanje črte ali površine"
+        "first_node": {
+          "label": "Skoči na prvo vozlišče"
         },
-        "commands": {
-          "title": "Ukazi",
-          "copy": "Kopiraj označene predmete",
-          "paste": "Prilepi kopirane predmete",
-          "undo": "Razveljavi zadnje dejanje",
-          "redo": "Ponovno uveljavi zadnje dejanje",
-          "save": "Shrani spremembe"
+        "last_node": {
+          "label": "Skoči na zadnje vozlišče"
         },
-        "operations": {
-          "merge": "Združi izbrane predmete",
-          "move": "Premakni označene predmete",
-          "rotate": "Zasukaj izbrane predmete",
-          "circularize": "Zaokroži zaključeno črto ali mnogokotnik",
-          "delete": "Izbriši označene predmete"
-        }
-      },
-      "tools": {
-        "title": "Orodja",
-        "info": {
-          "title": "Podrobnosti",
-          "all": "Preklopi vsa okna podrobnosti",
-          "background": "Preklopi okno ozadja",
-          "history": "Preklopi okno zgodovine",
-          "location": "Preklopi okno mesta",
-          "measurement": "Preklopi okno merila"
+        "change_parent": {
+          "label": "Preklopi nadrejeni način"
+        },
+        "add_point": {
+          "label": "Način dodajanja »Točk« "
+        },
+        "add_line": {
+          "label": "Način dodajanja »Črt« "
+        },
+        "add_area": {
+          "label": "Način dodajanja »Mnogokotnikov« "
+        },
+        "add_note": {
+          "label": "Način dodajanja »Opomb« ",
+          "key": "S"
+        },
+        "disable_snap": {
+          "label": "Zadržite tipko za onemogočanje lepljenja točk"
+        },
+        "stop_line": {
+          "label": "Končaj risanje črte ali površine"
+        },
+        "copy": {
+          "label": "Kopiraj označene predmete"
+        },
+        "paste": {
+          "label": "Prilepi kopirane predmete"
+        },
+        "undo": {
+          "label": "Razveljavi zadnje dejanje"
+        },
+        "redo": {
+          "label": "Ponovno uveljavi zadnje dejanje"
+        },
+        "save": {
+          "label": "Shrani spremembe"
+        },
+        "merge": {
+          "label": "Združi izbrane predmete"
+        },
+        "extract": {
+          "key": "V"
+        },
+        "move": {
+          "label": "Premakni označene predmete"
+        },
+        "rotate": {
+          "label": "Zasukaj izbrane predmete"
+        },
+        "straighten": {
+          "key": "J"
+        },
+        "circularize": {
+          "label": "Zaokroži zaključeno črto ali mnogokotnik"
+        },
+        "delete": {
+          "label": "Izbriši označene predmete"
+        },
+        "toggle_background": {
+          "key": "O"
+        },
+        "background_switch": {
+          "key": "O"
+        },
+        "toggle_help": {
+          "key": "Z"
+        },
+        "wireframe": {
+          "key": "Z"
+        },
+        "keyboard_shortcuts": {
+          "label": "Pokaži tipkovne bližnjice"
+        },
+        "toggle_osm_notes": {
+          "key": "S"
+        },
+        "toggle_streetside": {
+          "key": "J"
+        },
+        "toggle_all_cards": {
+          "label": "Preklopi vsa okna podrobnosti"
+        },
+        "toggle_background_card": {
+          "label": "Preklopi okno ozadja",
+          "key": "O"
+        },
+        "toggle_history_card": {
+          "label": "Preklopi okno zgodovine",
+          "key": "Z"
+        },
+        "toggle_location_card": {
+          "label": "Preklopi okno mesta"
+        },
+        "toggle_measurement_card": {
+          "label": "Preklopi okno merila"
         }
       }
     },
@@ -907,6 +901,7 @@
       "bik": "bikolski jezik",
       "bin": "edo",
       "bla": "siksika",
+      "blo": "anii",
       "bm": "bambarščina",
       "bn": "bengalščina",
       "bo": "tibetanščina",
@@ -1123,6 +1118,7 @@
       "kv": "komijščina",
       "kw": "kornijščina",
       "kwk": "kvakvala",
+      "kxv": "kuvi",
       "ky": "kirgiščina",
       "la": "latinščina",
       "lad": "ladinščina",
@@ -1133,8 +1129,10 @@
       "lez": "lezginščina",
       "lg": "ganda",
       "li": "limburščina",
+      "lij": "ligurščina",
       "lil": "lilovetščina",
       "lkt": "lakotščina",
+      "lmo": "lombardščina",
       "ln": "lingala",
       "lo": "laoščina",
       "lol": "mongo",
@@ -1147,7 +1145,6 @@
       "lua": "luba-lulua",
       "lui": "luisenščina",
       "lun": "lunda",
-      "luo": "luo",
       "lus": "mizojščina",
       "luy": "luhijščina",
       "lv": "latvijščina",
@@ -1321,6 +1318,7 @@
       "swb": "šikomor",
       "syc": "klasična sirščina",
       "syr": "sirščina",
+      "szl": "šlezijščina",
       "ta": "tamilščina",
       "tce": "južna tučonščina",
       "te": "telugijščina",
@@ -1367,7 +1365,9 @@
       "uz": "uzbeščina",
       "vai": "vajščina",
       "ve": "venda",
+      "vec": "beneščina",
       "vi": "vietnamščina",
+      "vmw": "makuva",
       "vo": "volapik",
       "vot": "votjaščina",
       "vun": "vunjo",
@@ -1381,6 +1381,7 @@
       "wuu": "wu-kitajščina",
       "xal": "kalmiščina",
       "xh": "koščina",
+      "xnr": "kangri",
       "xog": "sogščina",
       "yao": "jaojščina",
       "yap": "japščina",
@@ -1390,6 +1391,7 @@
       "yo": "jorubščina",
       "yrl": "nheengatu",
       "yue": "kitajščina (kantonščina)",
+      "za": "džuangščina",
       "zap": "zapoteščina",
       "zbl": "znakovni jezik Bliss",
       "zen": "zenaščina",

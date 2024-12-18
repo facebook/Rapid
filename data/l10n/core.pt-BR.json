@@ -4,10 +4,12 @@
       "download": "baixar",
       "information": "informações",
       "zoom_to": "zoom para",
-      "view_on": "ver no {domain}"
+      "view_on": "ver no {domain}",
+      "visit_website": "visitar site"
     },
     "toolbar": {
       "inspect": "Inspecionar",
+      "undo_redo": "Desfazer/Refazer",
       "add_feature": "Adicionar elemento"
     },
     "title": {
@@ -92,53 +94,16 @@
         "nothing_copied": "Nenhum recurso foi copiado."
       },
       "circularize": {
-        "description": {
-          "single": "Fazer esse recurso circular.",
-          "multiple": "Fazer esses recursos circulares."
-        },
         "annotation": {
           "feature": {
             "one": "Tornou um recurso circular.",
             "many": "Tornou os {n} recursos circulares.",
             "other": "Tornou os {n} recursos circulares."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Estes não podem ser tornados circulares por várias razões."
-        },
-        "not_closed": {
-          "single": "Isso não pode ser circular porque não é um rotação.",
-          "multiple": "Estes não podem ser circulares porque não são rotações."
-        },
-        "too_large": {
-          "single": "Isso não pode ser circular porque não há quantidade suficiente visível no momento.",
-          "multiple": "Eles não podem ser circulares porque atualmente não há um número suficiente deles visível."
-        },
-        "connected_to_hidden": {
-          "single": "Isso não pode ser circular porque está conectado a um recurso oculto.",
-          "multiple": "Eles não podem ser circulares porque alguns estão conectados a recursos ocultos."
-        },
-        "not_downloaded": {
-          "single": "Isso não pode ser circular porque partes dele ainda não foram baixadas.",
-          "multiple": "Eles não podem ser circulares porque partes deles ainda não foram baixados."
-        },
-        "already_circular": {
-          "single": "Isso não pode ser mais circular do que já é.",
-          "multiple": "Estes não podem ser feitos mais circulares do que já são."
         }
       },
       "orthogonalize": {
         "title": "Ortogonalizar",
-        "description": {
-          "corner": {
-            "single": "Esquadre este canto.",
-            "multiple": "Esquadre esses cantos."
-          },
-          "feature": {
-            "single": "Esquadre os cantos desse recurso.",
-            "multiple": "Esquadre os cantos desses recursos."
-          }
-        },
         "annotation": {
           "corner": {
             "one": "Esquadrinhou um canto.",
@@ -150,33 +115,6 @@
             "many": "Quadratura dos cantos de {n} recursos.",
             "other": "Quadratura dos cantos de {n} recursos."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Estes não podem ser elevados ao quadrado por várias razões."
-        },
-        "end_vertex": {
-          "single": "Isso não pode ser elevado ao quadrado, porque é um ponto final.",
-          "multiple": "Estes não podem ser elevados ao quadrado porque são pontos finais."
-        },
-        "square_enough": {
-          "single": "Isso não pode ser mais quadrado do que já é.",
-          "multiple": "Estes não podem ser mais quadrados do que já são."
-        },
-        "not_squarish": {
-          "single": "Isso não pode ser corrigido porque não é quadrado.",
-          "multiple": "Estes não podem ser corrigidos porque não são quadrados."
-        },
-        "too_large": {
-          "single": "Isso não pode ser corrigido, porque atualmente não é visível o suficiente.",
-          "multiple": "Elas não podem ser quadradas, porque poucas delas estão visíveis no momento."
-        },
-        "connected_to_hidden": {
-          "single": "Isso não pode ser resolvido porque está conectado a um recurso oculto.",
-          "multiple": "Eles não podem ser corrigidos porque alguns estão conectados a recursos ocultos."
-        },
-        "not_downloaded": {
-          "single": "Isso não pode ser esquecido porque partes dele ainda não foram baixadas.",
-          "multiple": "Eles não podem ser corrigidos porque partes deles ainda não foram baixados."
         }
       },
       "straighten": {
@@ -190,35 +128,14 @@
             "one": "Endireitou um ponto.",
             "many": "Endireitou {n} pontos.",
             "other": "Endireitou {n} pontos."
+          },
+          "line": {
+            "one": "Uma linha endireitada."
           }
-        },
-        "too_bendy": {
-          "single": "Isso não pode ser corrigido porque dobra demais.",
-          "multiple": "Estes não podem ser endireitados porque dobram demais."
-        },
-        "connected_to_hidden": {
-          "single": "Isso não pode ser corrigido porque está conectado a um recurso oculto.",
-          "multiple": "Estes não podem ser corrigidos porque alguns estão conectados a recursos ocultos."
-        },
-        "not_downloaded": {
-          "single": "Isso não pode ser corrigido porque algumas partes ainda não foram baixadas.",
-          "multiple": "Eles não podem ser corrigidos porque partes deles ainda não foram baixados."
-        },
-        "straight_enough": {
-          "single": "Isso não pode ser corrigido do que já é.",
-          "multiple": "Estes não podem ser corrigidos do que já são."
-        },
-        "too_large": {
-          "single": "Isso não pode ser corrigido, porque atualmente não é visível o suficiente.",
-          "multiple": "Eles não podem ser corrigidos, porque poucos deles são visíveis no momento."
         }
       },
       "delete": {
         "title": "Excluir",
-        "description": {
-          "single": "Excluir este elemento permanentemente.",
-          "multiple": "Excluir estes elementos permanentemente."
-        },
         "annotation": {
           "point": "Excluído um ponto.",
           "vertex": "Excluído um pondo de uma linha.",
@@ -230,30 +147,6 @@
             "many": "Excluídos {n} recursos.",
             "other": "Excluídos {n} recursos."
           }
-        },
-        "too_large": {
-          "single": "Este elemento não pode ser apagado porque ele não está completamente visível na sua tela.",
-          "multiple": "Estes elementos não podem ser apagados porque alguns deles não estão visíveis em sua tela."
-        },
-        "incomplete_relation": {
-          "single": "Este elemento não pode ser excluído porque não foi ainda totalmente baixado.",
-          "multiple": "Estes elementos não podem ser excluídos porque não foram ainda totalmente baixados."
-        },
-        "part_of_relation": {
-          "single": "Este elemento não pode ser excluído porque ele é parte de uma relação maior. Você deve primeiro removê-lo da relação.",
-          "multiple": "Estes elementos não podem ser excluídos porque eles são parte de uma relação maior. Você deve primeiro removê-los da relação."
-        },
-        "connected_to_hidden": {
-          "single": "Este elemento não pode ser excluído pois está conectado a um elemento oculto.",
-          "multiple": "Estes elementos não podem ser excluídos pois alguns estão conectados a elementos ocultos."
-        },
-        "not_downloaded": {
-          "single": "Esse recurso não pode ser excluído porque partes dele ainda não foram baixadas.",
-          "multiple": "Esses recursos não podem ser excluídos porque partes deles ainda não foram baixadas."
-        },
-        "has_wikidata_tag": {
-          "single": "Esse elemento não pode ser excluído pois possui uma etiqueta Wikidata.",
-          "multiple": "Estes elementos não podem ser excluídos pois alguns possuem etiquetas do Wikidata."
         }
       },
       "downgrade": {
@@ -279,10 +172,16 @@
             "many": "{n} Recursos rebaixados.",
             "other": "{n} Recursos rebaixados."
           }
-        },
-        "has_wikidata_tag": {
-          "single": "Esse elemento não pode ser reduzido porque tem uma etiqueta Wikidata.",
-          "multiple": "Estes elementos não podem ser reduzidos porque alguns deles possuem etiquetas Wikidata."
+        }
+      },
+      "add_member": {
+        "annotation": {
+          "one": "Adicionado um membro a uma relação."
+        }
+      },
+      "delete_member": {
+        "annotation": {
+          "one": "Removido um membro de uma relação."
         }
       },
       "reorder_members": {
@@ -370,10 +269,6 @@
         "too_many_vertices": "Esses recursos não podem ser mesclados porque o caminho resultante teria muitos pontos."
       },
       "move": {
-        "description": {
-          "single": "Mover este elemento para um lugar diferente.",
-          "multiple": "Mover estes elementos para um lugar diferente."
-        },
         "annotation": {
           "vertex": "Moveu um ponto numa linha.",
           "line": "Moveu uma linha.",
@@ -384,38 +279,12 @@
             "many": "{n} recursos movidos.",
             "other": "{n} recursos movidos."
           }
-        },
-        "incomplete_relation": {
-          "single": "Este elemento não pode ser movido porque ainda não foi totalmente baixado.",
-          "multiple": "Estes elementos não podem ser movidos porque ainda não foram totalmente baixados."
-        },
-        "too_large": {
-          "single": "Este elemento não pode ser movido porque não há o suficiente dele visível no momento.",
-          "multiple": "Estes elementos não podem ser movidos porque não há o suficiente deles visível no momento."
-        },
-        "connected_to_hidden": {
-          "single": "Este elemento não pode ser movido pois está conectado a um elemento oculto.",
-          "multiple": "Estes elementos não podem ser movidos pois estão conectados a elementos ocultos."
-        },
-        "not_downloaded": {
-          "single": "Esse recurso não pode ser movido porque partes dele ainda não foram baixadas.",
-          "multiple": "Esses recursos não podem ser movidos porque partes deles ainda não foram baixadas."
         }
       },
       "reflect": {
         "title": {
           "long": "Virar longo",
           "short": "Virar curto"
-        },
-        "description": {
-          "long": {
-            "single": "Inverta esse recurso em seu eixo longo.",
-            "multiple": "Inverta esses recursos em seu eixo longo."
-          },
-          "short": {
-            "single": "Inverta este recurso em seu eixo curto.",
-            "multiple": "Inverta esses recursos em seu eixo curto."
-          }
         },
         "annotation": {
           "long": {
@@ -432,30 +301,10 @@
               "other": "{n} recursos invertidos em seu eixo curto."
             }
           }
-        },
-        "incomplete_relation": {
-          "single": "Este recurso não pode ser invertido porque não foi totalmente baixado.",
-          "multiple": "Esses recursos não podem ser invertidos porque não foram totalmente baixados."
-        },
-        "too_large": {
-          "single": "Este recurso não pode ser invertido porque não há quantidade suficiente visível no momento.",
-          "multiple": "Esses recursos não podem ser invertidos porque não há um número suficiente deles visíveis no momento."
-        },
-        "connected_to_hidden": {
-          "single": "Este recurso não pode ser invertido porque está conectado a um recurso oculto.",
-          "multiple": "Esses recursos não podem ser invertidos porque alguns estão conectados a recursos ocultos."
-        },
-        "not_downloaded": {
-          "single": "Este recurso não pode ser invertido porque partes dele ainda não foram baixadas.",
-          "multiple": "Esses recursos não podem ser invertidos porque partes deles ainda não foram baixadas."
         }
       },
       "rotate": {
         "title": "Girar",
-        "description": {
-          "single": "Girar este elemento em torno de seu ponto central.",
-          "multiple": "Girar estes elementos em torno de seu ponto central."
-        },
         "annotation": {
           "line": "Girou uma linha.",
           "area": "Girou uma área.",
@@ -465,22 +314,6 @@
             "many": "{n} recursos girados.",
             "other": "{n} recursos girados."
           }
-        },
-        "incomplete_relation": {
-          "single": "Este elemento não pode ser girado porque ainda não foi totalmente baixado.",
-          "multiple": "Estes elementos não podem ser girados porque ainda não foram totalmente baixados."
-        },
-        "too_large": {
-          "single": "Este elemento não pode ser girado porque não há o suficiente dele visível no momento.",
-          "multiple": "Estes elementos não podem ser girados porque não há o suficiente deles visível no momento."
-        },
-        "connected_to_hidden": {
-          "single": "Este elemento não pode ser girado pois está conectado a um elemento oculto.",
-          "multiple": "Estes elementos não podem ser girados pois alguns estão conectados a elementos ocultos."
-        },
-        "not_downloaded": {
-          "single": "Este recurso não pode ser girado porque partes dele ainda não foram baixadas.",
-          "multiple": "Esses recursos não podem ser girados porque partes deles ainda não foram baixadas."
         }
       },
       "reverse": {
@@ -496,6 +329,9 @@
             "one": "Inverteu um ponto.",
             "many": " {n} pontos invertidos.",
             "other": " {n} pontos invertidos."
+          },
+          "line": {
+            "one": "Uma linha invertida."
           },
           "feature": {
             "one": "Reverteu um recurso.",
@@ -520,22 +356,6 @@
               "other": "{n} recursos ampliados."
             }
           }
-        },
-        "too_small": {
-          "single": "Este recurso não pode ser reduzido porque ficaria muito pequeno.",
-          "multiple": "Esses recursos não podem ser reduzidos porque se tornariam muito pequenos."
-        },
-        "too_large": {
-          "single": "Este recurso não pode ser dimensionado porque não há quantidade suficiente visível no momento.",
-          "multiple": "Esses recursos não podem ser escalados porque não há um número suficiente deles visível no momento."
-        },
-        "connected_to_hidden": {
-          "single": "Este recurso não pode ser escalado porque está conectado a um recurso oculto.",
-          "multiple": "Esses recursos não podem ser escalados porque alguns estão conectados a recursos ocultos."
-        },
-        "not_downloaded": {
-          "single": "Este recurso não pode ser dimensionado porque partes dele ainda não foram baixadas.",
-          "multiple": "Esses recursos não podem ser escalados porque partes deles ainda não foram baixadas."
         }
       },
       "split": {
@@ -591,34 +411,14 @@
       },
       "extract": {
         "description": {
-          "vertex": {
-            "single": "Extrair este ponto de suas linhas/áreas pai.",
-            "multiple": "Extraia esses pontos dos recursos principais."
-          },
-          "line": {
-            "single": "Extraia um ponto desta linha.",
-            "multiple": "Extrair pontos dessas linhas."
-          },
-          "area": {
-            "single": "Extrair um ponto dessa área.",
-            "multiple": "Extrair pontos dessas áreas."
-          },
           "feature": {
-            "multiple": "Extrair pontos desses recursos."
+            "other": "Extrair pontos desses recursos."
           }
         },
         "annotation": {
           "one": "Extraiu um ponto.",
           "many": "Extraiu {n} pontos.",
           "other": "Extraiu {n} pontos."
-        },
-        "too_large": {
-          "single": "Um ponto não pode ser extraído porque não é suficiente esse recurso visível.",
-          "multiple": "Os pontos não podem ser extraídos porque poucos desses recursos são visíveis."
-        },
-        "connected_to_hidden": {
-          "single": "Este ponto não pode ser extraído porque está conectado a um recurso oculto.",
-          "multiple": "Não é possível extrair pontos desses recursos porque alguns estão conectados a recursos ocultos."
         }
       }
     },
@@ -657,8 +457,7 @@
     "translate": {
       "translate": "Adicionar nome multilíngue",
       "localized_translation_label": "Nome multilíngue",
-      "localized_translation_language": "Escolha o idioma",
-      "language_and_code": "{língua} ({código})"
+      "localized_translation_language": "Escolha o idioma"
     },
     "zoom_in_edit": "Aproxime o zoom para editar",
     "login": "Entrar",
@@ -706,6 +505,7 @@
     },
     "info_panels": {
       "background": {
+        "title": "Imagem de fundo",
         "vintage": "Data de Captura",
         "source": "Fonte",
         "show_tiles": "Mostrar moisaco",
@@ -719,10 +519,12 @@
         "note_link_text": "Nota no openstreetmap.org"
       },
       "location": {
+        "title": "Local",
         "unknown_location": "Localização Desconhecida"
       },
       "measurement": {
-        "perimeter": "Perímetro"
+        "perimeter": "Perímetro",
+        "location": "Local"
       }
     },
     "geocoder": {
@@ -750,13 +552,8 @@
       "wiki_reference": "Ver documentação",
       "multiple_values": "Valores múltiplos",
       "unshared_value_tooltip": "não compartilhado por todos os recursos",
-      "hidden_preset": {
-        "manual": "{features} estão escondidos. Ative-os no painel Dados do mapa.",
-        "zoom": "{features} estão escondidos. Aumente o zoom para ativá-los."
-      },
       "back_tooltip": "Alterar o tipo de elemento",
       "search": "Procurar",
-      "incomplete": "<não baixado>",
       "feature_list": "Buscar elementos",
       "check": {
         "reverser": "Mudar Sentido"
@@ -800,7 +597,9 @@
       "offset": "Arraste em qualquer ponto da área cinza abaixo para ajustar o deslocamento da imagem, ou entre com o valor do deslocamento em metros."
     },
     "map_data": {
+      "title": "Dados do mapa",
       "description": "Dados do Mapa",
+      "data_layers": "Camadas de dados",
       "layers": {
         "osm": {
           "tooltip": "Dados do mapa do OpenStreetMap",
@@ -832,7 +631,6 @@
         "tooltip": "Mostrar valores de geometria para a seleção."
       },
       "style_options": "Opções de estilo",
-      "map_features": "Elementos do mapa",
       "autohidden": "Estes elementos foram automaticamente ocultados porque muitos seriam exibidos na tela. Dê um zoom para editá-los.",
       "osmhidden": "Estes elementos foram automaticamente ocultados porque a camada do OpenStreetMap está ocultada."
     },
@@ -863,7 +661,7 @@
         "tooltip": "Mostrar apenas fotos deste usuário"
       }
     },
-    "feature": {
+    "filters": {
       "traffic_roads": {
         "description": "Vias de Trânsito",
         "tooltip": "Rodovias, Ruas, etc."
@@ -876,7 +674,7 @@
         "tooltip": "Calçadas, Caminhos de Pedestre, Ciclovias, etc."
       },
       "buildings": {
-        "description": "Construções",
+        "description": "Edificações",
         "tooltip": "Construções, abrigos, garagens etc."
       },
       "building_parts": {
@@ -1051,6 +849,7 @@
         "comment_placeholder": "Insira um comentário para compartilhar com outros usuários.",
         "close": "Fechar (problema corrigido)",
         "save_comment": "Salvar Comentário",
+        "close_comment": "Fechar e comentar",
         "error_parts": {
           "this_way": "este caminho",
           "this_oneway": "este caminho de sentido único",
@@ -1367,6 +1166,7 @@
         "title": "Editor de elementos",
         "intro": "O *editor de elementos* aparece junto ao mapa, e permite que você veja e edite todas as informações do elemento selecionado.",
         "definitions": "A seção no topo mostra o tipo do elemento. A seção no centro mostra os *campos*, que representam atributos de um elemento como seu nome ou endereço.",
+        "type_h": "Tipo de recurso",
         "type": "Você pode pressionar o tipo de recurso para alterar o recurso para um tipo diferente. Tudo o que existe no mundo real pode ser adicionado ao OpenStreetMap, para que você possa escolher entre milhares de tipos de recursos.",
         "type_picker": "O seletor de tipo exibe os tipos de recursos mais comuns, como parques, hospitais, restaurantes, estradas e edifícios. Você pode pesquisar qualquer coisa digitando o que está procurando na caixa de pesquisa. Você também pode pressionar o {inspect} icone **Informações** ao lado do tipo de recurso para saber mais sobre ele.",
         "fields_all_fields": "As seção \"{fields}\" contém todos os detalhes do recurso que você pode editar. No OpenStreetMap, todos os campos são opcionais e não há problema em deixar um campo em branco se você não tiver certeza.",
@@ -1378,7 +1178,6 @@
       "points": {
         "intro": "*Pontos* podem ser usados para representar elementos como lojas, restaurantes e monumentos. Eles marcam um local específico, e descrevem o que há ali.",
         "add_point_h": "Adicionando Pontos",
-        "add_point": "Para adicionar um ponto, pressione o botão {point_icon} **{point}** na barra de ferramentas acima do mapa ou pressione a tecla de atalho `1`.",
         "move_point_h": "Movendo Pontos",
         "delete_point_h": "Removendo Pontos",
         "delete_point": "Não há nenhum problema em excluir elementos que não existam no mundo real. Deletar um elemento do OpenStreetMap, remove isso do mapa que todos utilizam. Assim, certifique-se que o elemento realmente não existe mais antes de excluí-lo."
@@ -1403,7 +1202,6 @@
         "point_or_area_h": "Pontos ou Áreas",
         "point_or_area": "Muitos elementos podem ser representados como pontos ou áreas. Você deve mapear contornos de edificações e propriedades como áreas sempre que possível. Coloque pontos dentro da área de um edifício para representar negócios, estabelecimentos e outros elementos físicos localizados dentro do edifício.",
         "add_area_h": "Adicionando Áreas",
-        "add_area_command": "Para adicionar uma área, pressione o botão de {area_icon} **{area}** na barra de ferramentas acima do mapa, ou pressione a tecla de atalho `3`.",
         "add_area_finish": "Para terminar uma área, clique ou toque no primeiro ou último nó novamente ou pressione `{return}`.",
         "square_area_h": "Alinhar Cantos",
         "modify_area_h": "Modificando Áreas",
@@ -1520,7 +1318,8 @@
       }
     },
     "issues": {
-      "user_resolved_issues": "Problemas resolvidos por suas edições",
+      "warnings": "Alertas",
+      "resolved_tooltip": "Problemas resolvidos por suas edições",
       "no_issues": {
         "message": {
           "everything": "Tudo parece bem",
@@ -1662,8 +1461,6 @@
         "title": "Formatação Inválida",
         "tip": "Encontre etiquetas com formatos inesperados",
         "email": {
-          "message": "{feature} tem um endereço de e-mail inválido",
-          "message_multi": "{feature} possui vários endereços de e-mail inválidos",
           "reference": "Endereços de e-mail devem parecer \"usuário@exemplo.com\"."
         }
       },
@@ -2135,78 +1932,141 @@
     "shortcuts": {
       "title": "Atalhos de teclado",
       "tooltip": "Mostra a tela de atalhos de teclado.",
-      "browsing": {
-        "navigation": {
-          "pan": "Mapa panôramico"
-        },
-        "help": {
-          "help": "Mostrar ajuda/documentação"
-        },
-        "display_options": {
-          "background": "Alternar painel de imagens em segundo plano",
-          "map_data": "Alternar painel de dados do mapa",
-          "issues": "Alternar painel de problemas de validação",
-          "preferences": "Alternar painel de preferências do usuário",
-          "wireframe": "Alternar modo wireframe",
-          "osm_data": "Alternar dados do OpenStreetMap",
-          "highlight_edits": "Realçar edições não salvas"
-        },
-        "selecting": {
-          "title": "Seleção de elementos",
-          "select_one": "Selecione apenas um elemento",
-          "select_multi": "Selecione vários elementos",
-          "lasso": "Desenhar um laço de seleção em torno de elementos",
-          "search": "Encontre elementos correspondentes ao texto de busca"
-        },
-        "with_selected": {
-          "title": "Com os recursos selecionados",
-          "edit_menu": "Alterna menu de edição"
-        },
-        "vertex_selected": {
-          "first": "Pule para o primeiro nó",
-          "last": "Pule para o ultimo nó",
-          "change_parent": "Mudar caminho pai"
-        }
+      "key": {
+        "delete": "Excluir"
       },
-      "editing": {
-        "drawing": {
-          "add_point": "modo 'Adicionar ponto' ",
-          "add_line": "modo 'Adicionar linha'",
-          "add_area": "modo 'Adicionar area'",
-          "add_note": "Modo 'Adicionar nota'",
-          "place_point": "Coloque um ponto ou nota",
-          "disable_snap": "Pressione para desabilitar o agarramento de nós",
-          "stop_line": "Concluir desenhando uma linha ou área"
+      "selecting_features": "Seleção de elementos",
+      "with_features_selected": "Com os recursos selecionados",
+      "info": "Informações",
+      "command": {
+        "pan": {
+          "label": "Mapa panôramico"
         },
-        "commands": {
-          "undo": "Desfazer última ação",
-          "redo": "Refazer última ação",
-          "save": "Salvar alterações"
+        "select_one": {
+          "label": "Selecione apenas um elemento"
         },
-        "operations": {
-          "continue_line": "Continuar a linha no ponto final selecionado",
-          "merge": "Combinar (juntar) elementos selecionados",
-          "disconnect": "Desconectar os recursos selecionados",
-          "extract": "Extrair um ponto de um recurso",
-          "split": "Divida recursos nos pontos selecionados",
-          "reverse": "Inverter recursos selecionados",
-          "rotate": "Girar elementos selecionados",
-          "orthogonalize": "Cantos quadrados de uma linha ou área",
-          "straighten": "Endireitar uma linha ou pontos",
-          "circularize": "Circularizar uma linha fechada ou uma área",
-          "reflect_long": "Inverta recursos no eixo maior",
-          "reflect_short": "Inverta recursos no eixo mais curto",
-          "delete": "Excluir elementos selecionados"
-        }
-      },
-      "tools": {
-        "info": {
-          "title": "Informações",
-          "all": "Alterna todos os painéis de informação",
-          "background": "Alterna painel de fundo",
-          "history": "Alterna painel de histórico",
-          "location": "Alterna painel de localização",
-          "measurement": "Alterna painel de medição"
+        "select_multi": {
+          "label": "Selecione vários elementos"
+        },
+        "lasso": {
+          "label": "Desenhar um laço de seleção em torno de elementos"
+        },
+        "edit_menu": {
+          "label": "Alterna menu de edição"
+        },
+        "first_node": {
+          "label": "Pule para o primeiro nó"
+        },
+        "last_node": {
+          "label": "Pule para o ultimo nó"
+        },
+        "change_parent": {
+          "label": "Mudar caminho pai"
+        },
+        "add_point": {
+          "label": "modo 'Adicionar ponto' "
+        },
+        "add_line": {
+          "label": "modo 'Adicionar linha'"
+        },
+        "add_area": {
+          "label": "modo 'Adicionar area'"
+        },
+        "add_note": {
+          "label": "Modo 'Adicionar nota'"
+        },
+        "place_point": {
+          "label": "Coloque um ponto ou nota"
+        },
+        "disable_snap": {
+          "label": "Pressione para desabilitar o agarramento de nós"
+        },
+        "stop_line": {
+          "label": "Concluir desenhando uma linha ou área"
+        },
+        "undo": {
+          "label": "Desfazer última ação"
+        },
+        "redo": {
+          "label": "Refazer última ação"
+        },
+        "save": {
+          "label": "Salvar alterações"
+        },
+        "find": {
+          "label": "Encontre elementos correspondentes ao texto de busca"
+        },
+        "continue_line": {
+          "label": "Continuar a linha no ponto final selecionado"
+        },
+        "merge": {
+          "label": "Combinar (juntar) elementos selecionados"
+        },
+        "disconnect": {
+          "label": "Desconectar os recursos selecionados"
+        },
+        "extract": {
+          "label": "Extrair um ponto de um recurso"
+        },
+        "split": {
+          "label": "Divida recursos nos pontos selecionados"
+        },
+        "reverse": {
+          "label": "Inverter recursos selecionados"
+        },
+        "rotate": {
+          "label": "Girar elementos selecionados"
+        },
+        "orthogonalize": {
+          "label": "Cantos quadrados de uma linha ou área"
+        },
+        "straighten": {
+          "label": "Endireitar uma linha ou pontos"
+        },
+        "circularize": {
+          "label": "Circularizar uma linha fechada ou uma área"
+        },
+        "reflect_long": {
+          "label": "Inverta recursos no eixo maior"
+        },
+        "reflect_short": {
+          "label": "Inverta recursos no eixo mais curto"
+        },
+        "delete": {
+          "label": "Excluir elementos selecionados"
+        },
+        "toggle_background": {
+          "label": "Alternar painel de imagens em segundo plano"
+        },
+        "toggle_map_data": {
+          "label": "Alternar painel de dados do mapa"
+        },
+        "toggle_issues": {
+          "label": "Alternar painel de problemas de validação"
+        },
+        "toggle_preferences": {
+          "label": "Alternar painel de preferências do usuário"
+        },
+        "highlight_edits": {
+          "label": "Realçar edições não salvas"
+        },
+        "toggle_osm_data": {
+          "label": "Alternar dados do OpenStreetMap"
+        },
+        "toggle_all_cards": {
+          "label": "Alterna todos os painéis de informação"
+        },
+        "toggle_background_card": {
+          "label": "Alterna painel de fundo"
+        },
+        "toggle_history_card": {
+          "label": "Alterna painel de histórico"
+        },
+        "toggle_location_card": {
+          "label": "Alterna painel de localização"
+        },
+        "toggle_measurement_card": {
+          "label": "Alterna painel de medição"
         }
       }
     },
@@ -2303,8 +2163,10 @@
       "ttm": "tutchone setentrional",
       "tzm": "tamazight do Atlas Central",
       "uz": "uzbeque",
+      "vec": "vêneto",
       "wo": "uolofe",
       "xh": "xhosa",
+      "xnr": "kandri",
       "xog": "lusoga",
       "yo": "iorubá",
       "zgh": "tamazirte marroqino padrão",

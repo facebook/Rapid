@@ -9,6 +9,12 @@
     "Bay-Area-OpenStreetMappers": {
       "name": "ᱵᱮᱞ ᱡᱟᱭᱜᱟ OpenStreetMappers",
       "description": "ᱵᱮᱭ ᱡᱟᱭᱜᱟ ᱨᱮ OpenStreetMap ᱵᱮᱥ ᱛᱮᱭᱟᱨ ᱯᱮ"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "description": "ᱟᱞᱮ Twitter {url} ᱨᱮ ᱯᱟᱸᱡᱚ ᱞᱮᱢ"
+    },
+    "PHXGeo-twitter": {
+      "description": "ᱟᱞᱮ Twitter {url} ᱨᱮ ᱯᱟᱸᱡᱚ ᱞᱮᱢ"
     }
   }
 }

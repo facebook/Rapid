@@ -28,16 +28,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Àrea",
-        "filter_tooltip": "àrees"
+        "title": "Àrea"
       },
       "add_line": {
-        "title": "Línia",
-        "filter_tooltip": "línies"
+        "title": "Línia"
       },
       "add_point": {
-        "title": "Punt",
-        "filter_tooltip": "punts"
+        "title": "Punt"
       },
       "add_note": {
         "title": "Nota",
@@ -120,52 +117,15 @@
       },
       "circularize": {
         "title": "Feu-ho circular",
-        "description": {
-          "single": "Feu aquest objecte circular.",
-          "multiple": "Feu aquests objectes circulars."
-        },
         "annotation": {
           "feature": {
             "one": "S'ha fet circular un objecte.",
             "other": "S'han fet circulars {n} objectes."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "No es poden fer circulars per raons diverses."
-        },
-        "not_closed": {
-          "single": "No es pot fer circular perquè no és un bucle.",
-          "multiple": "No es poden fer circulars perquè no són bucles."
-        },
-        "too_large": {
-          "single": "No es pot fer circular perquè actualment no es veu una part suficient.",
-          "multiple": "No es poden fer circulars perquè no se'ls veu una part suficient."
-        },
-        "connected_to_hidden": {
-          "single": "No es pot fer circular perquè està connectat a un objecte ocult.",
-          "multiple": "No es poden fer circulars perquè alguns estan connectats a objectes ocults."
-        },
-        "not_downloaded": {
-          "single": "No es pot fer circular perquè té parts que encara no s'han descarregat.",
-          "multiple": "No es poden fer circulars perquè té parts que encara no s'han descarregat."
-        },
-        "already_circular": {
-          "single": "No es pot fer més circular del que ja és.",
-          "multiple": "No es poden fer més circular del que ja és."
         }
       },
       "orthogonalize": {
         "title": "Quadra",
-        "description": {
-          "corner": {
-            "single": "Quadra aquesta cantonada.",
-            "multiple": "Quadra aquestes cantonades."
-          },
-          "feature": {
-            "single": "Quadra les cantonades d'aquest objecte.",
-            "multiple": "Quadra les cantonades d'aquests objectes."
-          }
-        },
         "annotation": {
           "corner": {
             "one": "S'ha quadrat una cantonada.",
@@ -175,33 +135,6 @@
             "one": "S'han quadrat les cantonades d'un objecte.",
             "other": "S'han quadrat les cantonades de {n} objectes."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "No es poden quadrar per diverses raons."
-        },
-        "end_vertex": {
-          "single": "No es pot quadrar perquè és un extrem.",
-          "multiple": "No es poden quadrar perquè són extrems."
-        },
-        "square_enough": {
-          "single": "No es pot fer més quadrat del que ja és.",
-          "multiple": "No es poden fer més circulars del que ja són."
-        },
-        "not_squarish": {
-          "single": "No es pot quadrar perquè no té forma quadrada.",
-          "multiple": "No es poden quadrar perquè no tenen forma quadrada."
-        },
-        "too_large": {
-          "single": "No es pot quadrar perquè actualment no es veu una part suficient.",
-          "multiple": "No es poden quadrar perquè actualment no se'ls veu una part suficient."
-        },
-        "connected_to_hidden": {
-          "single": "No es pot quadrar perquè està connectat a un objecte ocult.",
-          "multiple": "No es poden quadrar perquè alguns estan connectats a objectes ocults."
-        },
-        "not_downloaded": {
-          "single": "No es pot quadrar perquè té parts que encara no s'han descarregat.",
-          "multiple": "No es poden fer quadrar perquè té parts que encara no s'han descarregat."
         }
       },
       "straighten": {
@@ -220,34 +153,10 @@
             "one": "S'ha fet recta una línia.",
             "other": "S'han fet rectes {n} línies."
           }
-        },
-        "too_bendy": {
-          "single": "No es pot alinear perquè es doblega massa",
-          "multiple": "No es poden alinear perquè es dobleguen massa."
-        },
-        "connected_to_hidden": {
-          "single": "No es pot alinear perquè està connectat a un objecte ocult.",
-          "multiple": "No es poden alinear perquè alguns estan connectats a objectes ocults."
-        },
-        "not_downloaded": {
-          "single": "No es pot alinear perquè té parts que encara no s'han descarregat.",
-          "multiple": "No es poden alinear perquè tenen parts que encara no s'han descarregat."
-        },
-        "straight_enough": {
-          "single": "No es pot fer més recte del que ja és.",
-          "multiple": "No es poden fer més rectes del que ja són."
-        },
-        "too_large": {
-          "single": "No es pot alinear perquè actualment no es veu una part suficient.",
-          "multiple": "No es poden alinear perquè actualment no es veu una part suficient."
         }
       },
       "delete": {
         "title": "Elimina",
-        "description": {
-          "single": "Elimina aquest objecte permanentment",
-          "multiple": "Elimina aquests objectes permanentment"
-        },
         "annotation": {
           "point": "Heu eliminat un punt.",
           "vertex": "Heu eliminat un node d'una via.",
@@ -258,30 +167,6 @@
             "one": "S'ha eliminat un objecte.",
             "other": "S'han eliminat {n} objectes."
           }
-        },
-        "too_large": {
-          "single": "Aquest objecte no es pot eliminar perquè no se'n visualitza un tros suficient.",
-          "multiple": "Aquests objectes no es poden eliminar perquè no se'n visualitza un tros suficient."
-        },
-        "incomplete_relation": {
-          "single": "Aquest objecte no es pot eliminar perquè no s'ha descarregat del tot.",
-          "multiple": "Aquests objectes no es poden eliminar perquè no s'han descarregat del tot."
-        },
-        "part_of_relation": {
-          "single": "Aquest objecte no es pot eliminar perquè forma part d'una relació més gran. Primer l'heu de treure de la relació.",
-          "multiple": "Aquests objectes no es poden eliminar perquè formen part d'una relació més gran. Primer els heu de treure de la relació."
-        },
-        "connected_to_hidden": {
-          "single": "Aquest objecte no es pot eliminar perquè està connectat a un objecte ocult.",
-          "multiple": "Aquests objectes no es poden eliminar perquè estan connectats a objectes ocults."
-        },
-        "not_downloaded": {
-          "single": "Aquest objecte no es pot eliminar perquè hi ha parts que encara no s'han descarregat",
-          "multiple": "Aquests objectes no es poden eliminar perquè hi ha parts que encara no s'han descarregat"
-        },
-        "has_wikidata_tag": {
-          "single": "Aquest objecte no es pot eliminar perquè té una etiqueta Wikidata.",
-          "multiple": "Aquests objectes no es poden eliminar perquè algunes tenen etiqueta Wikidata."
         }
       },
       "downgrade": {
@@ -305,10 +190,6 @@
             "one": "S'ha simplificat un objecte.",
             "other": "S'han simplificat {n} objectes."
           }
-        },
-        "has_wikidata_tag": {
-          "single": "Aquest objecte no es pot simplificar perquè té una etiqueta Wikidata.",
-          "multiple": "Aquests objectes no es poden simplificar perquè alguns tenen etiqueta Wikidata."
         }
       },
       "add_member": {
@@ -408,10 +289,6 @@
       },
       "move": {
         "title": "Mou",
-        "description": {
-          "single": "Mou aquest objecte a una ubicació diferent.",
-          "multiple": "Mou aquests objectes a una posició diferent."
-        },
         "annotation": {
           "point": "Heu mogut un punt.",
           "vertex": "Heu mogut un node d'una via.",
@@ -422,38 +299,12 @@
             "one": "S'ha mogut un objecte.",
             "other": "S'han mogut {n} objectes."
           }
-        },
-        "incomplete_relation": {
-          "single": "Aquest objecte no es pot moure perquè no s'ha baixat del tot.",
-          "multiple": "Aquests objectes no es poden moure perquè no s'han baixat del tot."
-        },
-        "too_large": {
-          "single": "Aquest objecte no es pot moure perquè no se'n veu un tros suficient. ",
-          "multiple": "Aquests objectes no es poden moure perquè no se'ls veu un tros suficient."
-        },
-        "connected_to_hidden": {
-          "single": "Aquest objecte no es pot moure perquè està connectat a un objecte ocult.",
-          "multiple": "Aquests objectes no es poden moure perquè alguns estan connectats a objectes ocults."
-        },
-        "not_downloaded": {
-          "single": "Aquest objecte no es pot moure perquè té parts que encara no s'han descarregat.",
-          "multiple": "Aquests objectes no es poden moure perquè tenen parts que encara no s'han descarregat."
         }
       },
       "reflect": {
         "title": {
           "long": "Capgira pel costat llarg",
           "short": "Capgira pel costat curt"
-        },
-        "description": {
-          "long": {
-            "single": "Capgira aquest objecte a través del seu eix llarg.",
-            "multiple": "Capgira aquests objectes a través del seu eix llarg."
-          },
-          "short": {
-            "single": "Capgira aquest objecte a través del seu eix curt.",
-            "multiple": "Capgira aquests objectes a través del seu eix curt."
-          }
         },
         "annotation": {
           "long": {
@@ -468,30 +319,10 @@
               "other": "S'han capgirat {n} objectes a través del seu eix curt."
             }
           }
-        },
-        "incomplete_relation": {
-          "single": "Aquest objecte no es pot capgirar perquè no s'ha descarregat del tot.",
-          "multiple": "Aquests objectes no es poden capgirar perquè no s'han descarregat del tot."
-        },
-        "too_large": {
-          "single": "Aquest objecte no es pot capgirar perquè no se'n veu un a part suficient. ",
-          "multiple": "Aquests objectes no es poden capgirar perquè no se'ls veu una part suficient."
-        },
-        "connected_to_hidden": {
-          "single": "Aquest objecte no es pot capgirar perquè està connectat a un objecte ocult.",
-          "multiple": "Aquests objectes no es poden capgirar perquè estan connectats a objectes ocults."
-        },
-        "not_downloaded": {
-          "single": "Aquest objecte no es pot capgirar perquè hi ha parts que encara no s'han descarregat.",
-          "multiple": "Aquests objectes no es poden capgirar perquè hi ha parts que encara no s'han descarregat."
         }
       },
       "rotate": {
         "title": "Gira",
-        "description": {
-          "single": "Gira aquest objecte al voltant del seu punt central.",
-          "multiple": "Gira aquests objectes al voltant dels respectius punts centrals."
-        },
         "annotation": {
           "line": "S'ha girat una línia.",
           "area": "S'ha girat una àrea.",
@@ -500,22 +331,6 @@
             "one": "S'ha girat un objecte",
             "other": "S'han girat {n} objectes."
           }
-        },
-        "incomplete_relation": {
-          "single": "Aquest objecte no es pot girar perquè no s'ha descarregat completament. ",
-          "multiple": "Aquests objectes no es poden girar perquè no s'han descarregat completament."
-        },
-        "too_large": {
-          "single": "Aquest objecte no es pot girar perquè no se'n veu un tros suficient. ",
-          "multiple": "Aquests objectes no es poden girar perquè no se'ls veu un tros suficient. "
-        },
-        "connected_to_hidden": {
-          "single": "Aquest objecte no es pot girar perquè està connectat a un objecte ocult. ",
-          "multiple": "Aquests objectes no es poden girar perquè estan connectats a objectes ocults. "
-        },
-        "not_downloaded": {
-          "single": "Aquest objecte no es pot girar perquè té parts que encara no s'han descarregat.",
-          "multiple": "Aquests objectes no es poden girar perquè tenen parts que encara no s'han descarregat"
         }
       },
       "reverse": {
@@ -556,22 +371,6 @@
               "other": "S'han ampliat {n} objectes."
             }
           }
-        },
-        "too_small": {
-          "single": "Aquest objecte no es pot reduir perquè seria massa petit.",
-          "multiple": "Aquests objectes no es poden reduir perquè serien massa petits."
-        },
-        "too_large": {
-          "single": "Aquest objecte no es pot escalar perquè no se'n veu un a part suficient. ",
-          "multiple": "Aquests objectes no es poden escalar perquè no se'ls veu una part suficient."
-        },
-        "connected_to_hidden": {
-          "single": "Aquest objecte no es pot escalar perquè està connectat a un objecte ocult.",
-          "multiple": "Aquests objectes no es poden escalar perquè estan connectats a objectes ocults."
-        },
-        "not_downloaded": {
-          "single": "Aquest objecte no es pot escalar perquè hi ha parts que encara no s'han descarregat",
-          "multiple": "Aquests objectes no es poden escalar perquè hi ha parts que encara no s'han descarregat."
         }
       },
       "split": {
@@ -626,33 +425,13 @@
       "extract": {
         "title": "Extreu",
         "description": {
-          "vertex": {
-            "single": "Extreu aquest punt de les línies o àrees que el contenen.",
-            "multiple": "Extreu aquests punts del seu objecte pare."
-          },
-          "line": {
-            "single": "Extreu un punt d'aquesta línia.",
-            "multiple": "Extreu punts d'aquestes línies."
-          },
-          "area": {
-            "single": "Extreu un punt d'aquesta àrea.",
-            "multiple": "Extreu punts d'aquestes àrees."
-          },
           "feature": {
-            "multiple": "Extreu punts d'aquests objectes."
+            "other": "Extreu punts d'aquests objectes."
           }
         },
         "annotation": {
           "one": "S'ha extret un punt.",
           "other": "S'han extret {n} punts."
-        },
-        "too_large": {
-          "single": "No es pot extreure un punt perquè no es veu una part suficient d'aquest objecte.",
-          "multiple": "No es poden extreure els punts perquè no es veu una part suficient d'aquests objectes."
-        },
-        "connected_to_hidden": {
-          "single": "No es pot extreure aquest punt perquè està connectat a un objecte ocult.",
-          "multiple": "No es poden extreure els punts d'aquests objectes perquè alguns estan connectats a objectes ocults."
         }
       }
     },
@@ -846,10 +625,6 @@
       "multiple_values": "Valors múltiples",
       "multiple_types": "Tipus múltiples",
       "unshared_value_tooltip": "no compartit per tots els objectes",
-      "hidden_preset": {
-        "manual": "{features} són ocultes. Habiliteu-les al panell de dades del mapa",
-        "zoom": "{features} estan ocults. Apropeu-vos-hi per habilitar-los."
-      },
       "back_tooltip": "Canvia el tipus d'objecte",
       "type": "Tipus",
       "details": "Detalls",
@@ -959,7 +734,6 @@
         "tooltip": "Mostra els valors de geometria per la selecció."
       },
       "style_options": "Opcions d'estil",
-      "map_features": "Objectes del mapa",
       "autohidden": "Aquests objectes s'han ocultat automàticament perquè n'haurien aparegut massa a la pantalla. Us podeu acostar per editar-los.",
       "osmhidden": "S'ha ocultat aquests objectes automàticament perquè la capa d'OpenStreetMap es troba ocultada."
     },
@@ -996,7 +770,7 @@
         "tooltip": "Mostra només fotos d'aquest usuari"
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Punts",
         "tooltip": "Punts d'Interès"
@@ -1193,12 +967,13 @@
       "live": "directe",
       "lose_changes": "Teniu canvis sense desar. Si canvieu el servidor del mapa els descartarà. Esteu segurs que voleu canviar els sevidors?"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Etiquetes"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Eliminar"
+    "rapid_menu": {
+      "remove": "Eliminar",
+      "category": {
+        "roads": "carreteres"
       }
     },
     "tag_reference": {
@@ -1214,7 +989,6 @@
         "out": "No es pot allunyar més."
       }
     },
-    "cannot_zoom": "No es pot allunyar més la vista al mode actual.",
     "full_screen": "Commuta la pantalla completa",
     "self_intersection": {
       "error": {
@@ -1634,7 +1408,6 @@
         "title": "Punts",
         "intro": "Els *punts* es poden fer servir per representar objectes com ara botigues, restaurants i monuments. Marquen una ubicació específica i descriuen el que es troba allà.",
         "add_point_h": "Afegint punts",
-        "add_point": "Per afegir un punt, premeu el botó {point_icon} **{point}** a la barra d'eines de sobre del mapa o premeu la tecla de drecera `1`.",
         "move_point_h": "Movent punts",
         "delete_point_h": "Eliminant punts",
         "delete_point": "Està bé esborrar objectes que no existeixin al món real. En esborrar un objecte d'OpenStreetMap l'elimineu del mapa que tothom utilitza, per tant hauríeu de saber del cert que l'objecte ja no hi és abans d'esborrar-lo."
@@ -1643,7 +1416,6 @@
         "title": "Línies",
         "intro": "Les *línies* s'utilitzen per representar objectes com carreteres, vies de tren i rius. Les línies s'han de dibuixar al centre de l'objecte que representen.",
         "add_line_h": "Afegint línies",
-        "add_line": "Per afegir una línia, premeu el botó {line_icon} **{line}** a la barra d'eines de sobre del mapa o premeu la tecla de drecera `2`.",
         "add_line_finish": "Per finalitzar una línia, torneu a clicar o a fer un toc a l'últim node o premeu `{return}`.",
         "modify_line_h": "Modificant línies",
         "modify_line_dragnode": "Sovint veureu línies que no tenen una forma correcta, per exemple una carretera que no concorda amb les imatges de fons. Per ajustar la forma d'una línia, primer cal seleccionar-la. Tots els nodes de la línia es mostraran com a petits cercles. Podeu arrossegar els nodes a llocs millors.",
@@ -1662,7 +1434,6 @@
         "point_or_area_h": "Punts o àrees?",
         "point_or_area": "Molts objectes es poden representar com a punts o àrees. Hauríeu de cartografiar edificis i perímetres de propietats com a àrees quan sigui possible. Ubiqueu punts dins d'una àrea d'edificis per representar negocis, serveis i altres objectes ubicats dins de l'edifici.",
         "add_area_h": "Afegint àrees",
-        "add_area_command": "Per afegir una àrea, premeu el botó {area_icon} **{area}** a la barra d'eines de sobre del mapa o premeu la tecla de drecera `3`.",
         "add_area_finish": "Per finalitzar una àrea, torneu a clicar o a fer un toc al primer o l'últim node o premeu `{return}`.",
         "square_area_h": "Quadra les cantonades",
         "modify_area_h": "Modificant àrees",
@@ -1790,15 +1561,9 @@
     },
     "issues": {
       "title": "Problemes",
-      "list_title": "Problemes",
-      "warnings": {
-        "list_title": "Avisos"
-      },
-      "rules": {
-        "title": "Regles"
-      },
-      "user_resolved_issues": "Avisos resolts amb les vostres edicions",
-      "warnings_and_errors": "Avisos i errors",
+      "warnings": "Avisos",
+      "rules": "Regles",
+      "resolved_tooltip": "Avisos resolts amb les vostres edicions",
       "no_issues": {
         "message": {
           "everything": "Sembla que tot està bé",
@@ -1956,8 +1721,6 @@
         "title": "Formatació no vàlida",
         "tip": "Cerca etiquetes amb formats inesperats",
         "email": {
-          "message": "{feature} té una adreça de correu electrònic no vàlida",
-          "message_multi": "{feature} té diverses adreces de correu electrònic no vàlides",
           "reference": "Les adreces de correu electrònic han de tenir la forma \"usuari@exemple.com\"."
         }
       },
@@ -2493,96 +2256,168 @@
         "drag": "Arrossega"
       },
       "or": "-o-",
-      "browsing": {
-        "title": "Cercant",
-        "navigation": {
-          "title": "Navegació",
-          "pan": "Mapa panoràmic"
+      "browsing": "Cercant",
+      "editing": "Modificant",
+      "navigation": "Navegació",
+      "selecting_features": "Seleccionant objectes",
+      "with_features_selected": "Amb objectes seleccionats",
+      "with_node_selected": "Amb node seleccionat",
+      "with_way_selected": "Amb via seleccionada",
+      "drawing": "Dibuixant",
+      "commands": "Ordres",
+      "help": "Ajuda",
+      "display_options": "Opcions de pantalla",
+      "info": "Informació",
+      "command": {
+        "pan": {
+          "label": "Mapa panoràmic"
         },
-        "help": {
-          "title": "Ajuda",
-          "help": "Mostrar ajuda/documentació",
-          "keyboard": "Mostrar dreceres del teclat"
+        "select_one": {
+          "label": "Selecciona un sol objecte"
         },
-        "display_options": {
-          "title": "Opcions de pantalla",
-          "background": "Commuta el panell d'imatges de fons",
-          "map_data": "Commuta el panell de dades del mapa",
-          "issues": "Commuta el panell de validació de problemes",
-          "preferences": "Commuta el panell de preferències d'usuari",
-          "wireframe": "Commuta el mode de malla",
-          "osm_data": "Commuta les dades d'OpenStreetMap",
-          "highlight_edits": "Realça les edicions no desades"
+        "select_multi": {
+          "label": "Selecciona diversos objectes"
         },
-        "selecting": {
-          "title": "Seleccionant objectes",
-          "select_one": "Selecciona un sol objecte",
-          "select_multi": "Selecciona diversos objectes",
-          "lasso": "Dibuixeu un llaç de selecció al voltant dels objectes",
-          "search": "Cerca objectes que coincideixin amb el text cercat"
+        "lasso": {
+          "label": "Dibuixeu un llaç de selecció al voltant dels objectes"
         },
-        "with_selected": {
-          "title": "Amb objectes seleccionats",
-          "edit_menu": "Commuta el menú d'edició"
+        "edit_menu": {
+          "label": "Commuta el menú d'edició"
         },
-        "vertex_selected": {
-          "title": "Amb node seleccionat",
-          "first": "Salta al primer node",
-          "last": "Salta al node final",
-          "change_parent": "Canvia la via mare",
-          "parent": "Selecciona la via mare"
+        "first_node": {
+          "label": "Salta al primer node"
         },
-        "way_selected": {
-          "title": "Amb via seleccionada",
-          "child": "Selecciona els nodes membres"
-        }
-      },
-      "editing": {
-        "title": "Modificant",
-        "drawing": {
-          "title": "Dibuixant",
-          "add_point": "Mode «Afegir punt»",
-          "add_line": "Mode «Afegir línia»",
-          "add_area": "Mode «Afegir àrea»",
-          "add_note": "Mode «Afegeix una nota»",
-          "place_point": "Posa un punt o nota",
-          "disable_snap": "Aguanta per inhabilitar l'ajustament de punts",
-          "stop_line": "Acaba de dibuixar una línia o àrea"
+        "last_node": {
+          "label": "Salta al node final"
         },
-        "commands": {
-          "title": "Ordres",
-          "copy": "Copia els objectes seleccionats",
-          "paste": "Enganxa els objectes copiats",
-          "undo": "Desfeu l'ultima acció",
-          "redo": "Refeu l'ultima acció",
-          "save": "Salveu el canvis"
+        "change_parent": {
+          "label": "Canvia la via mare"
         },
-        "operations": {
-          "continue_line": "Continua una línia a l'extrem seleccionat",
-          "merge": "Combina (fusiona) els objectes seleccionats",
-          "disconnect": "Desconnecta els objectes seleccionats",
-          "extract": "Extreu un punt de l'objecte",
-          "split": "Parteix objectes als punts seleccionats",
-          "reverse": "Inverteix els objectes seleccionats",
-          "move": "Mou els objectes seleccionats",
-          "rotate": "Gira els objectes seleccionats",
-          "orthogonalize": "Quadra les cantonades d'una línia o àrea",
-          "straighten": "Alinea una línia o punts",
-          "circularize": "Fes circular una línia tancada o una àrea",
-          "reflect_long": "Capgira objectes a través del seu eix llarg",
-          "reflect_short": "Capgira objectes a través del seu eix curt",
-          "delete": " Esborra els objectes seleccionats"
-        }
-      },
-      "tools": {
-        "title": "Ferramentes",
-        "info": {
-          "title": "Informació",
-          "all": "Commuta tots els panells d'informació",
-          "background": "Commuta el panell de fons",
-          "history": "Commuta el panell d'historial",
-          "location": "Commuta el panell d'ubicació",
-          "measurement": "Commuta el panell de mesuraments"
+        "select_parent": {
+          "label": "Selecciona la via mare"
+        },
+        "select_children": {
+          "label": "Selecciona els nodes membres"
+        },
+        "add_point": {
+          "label": "Mode «Afegir punt»"
+        },
+        "add_line": {
+          "label": "Mode «Afegir línia»"
+        },
+        "add_area": {
+          "label": "Mode «Afegir àrea»"
+        },
+        "add_note": {
+          "label": "Mode «Afegeix una nota»"
+        },
+        "place_point": {
+          "label": "Posa un punt o nota"
+        },
+        "disable_snap": {
+          "label": "Aguanta per inhabilitar l'ajustament de punts"
+        },
+        "stop_line": {
+          "label": "Acaba de dibuixar una línia o àrea"
+        },
+        "copy": {
+          "label": "Copia els objectes seleccionats"
+        },
+        "paste": {
+          "label": "Enganxa els objectes copiats"
+        },
+        "undo": {
+          "label": "Desfeu l'ultima acció"
+        },
+        "redo": {
+          "label": "Refeu l'ultima acció"
+        },
+        "save": {
+          "label": "Salveu el canvis"
+        },
+        "find": {
+          "label": "Cerca objectes que coincideixin amb el text cercat"
+        },
+        "continue_line": {
+          "label": "Continua una línia a l'extrem seleccionat"
+        },
+        "merge": {
+          "label": "Combina (fusiona) els objectes seleccionats"
+        },
+        "disconnect": {
+          "label": "Desconnecta els objectes seleccionats"
+        },
+        "extract": {
+          "label": "Extreu un punt de l'objecte"
+        },
+        "split": {
+          "label": "Parteix objectes als punts seleccionats"
+        },
+        "reverse": {
+          "label": "Inverteix els objectes seleccionats"
+        },
+        "move": {
+          "label": "Mou els objectes seleccionats"
+        },
+        "rotate": {
+          "label": "Gira els objectes seleccionats"
+        },
+        "orthogonalize": {
+          "label": "Quadra les cantonades d'una línia o àrea"
+        },
+        "straighten": {
+          "label": "Alinea una línia o punts"
+        },
+        "circularize": {
+          "label": "Fes circular una línia tancada o una àrea"
+        },
+        "reflect_long": {
+          "label": "Capgira objectes a través del seu eix llarg"
+        },
+        "reflect_short": {
+          "label": "Capgira objectes a través del seu eix curt"
+        },
+        "delete": {
+          "label": " Esborra els objectes seleccionats"
+        },
+        "toggle_background": {
+          "label": "Commuta el panell d'imatges de fons"
+        },
+        "toggle_map_data": {
+          "label": "Commuta el panell de dades del mapa"
+        },
+        "toggle_issues": {
+          "label": "Commuta el panell de validació de problemes"
+        },
+        "toggle_preferences": {
+          "label": "Commuta el panell de preferències d'usuari"
+        },
+        "wireframe": {
+          "key": "O"
+        },
+        "highlight_edits": {
+          "label": "Realça les edicions no desades"
+        },
+        "keyboard_shortcuts": {
+          "label": "Mostrar dreceres del teclat"
+        },
+        "toggle_osm_data": {
+          "label": "Commuta les dades d'OpenStreetMap"
+        },
+        "toggle_all_cards": {
+          "label": "Commuta tots els panells d'informació"
+        },
+        "toggle_background_card": {
+          "label": "Commuta el panell de fons"
+        },
+        "toggle_history_card": {
+          "label": "Commuta el panell d'historial"
+        },
+        "toggle_location_card": {
+          "label": "Commuta el panell d'ubicació"
+        },
+        "toggle_measurement_card": {
+          "label": "Commuta el panell de mesuraments"
         }
       }
     },
@@ -2662,6 +2497,7 @@
       "bin": "edo",
       "bkm": "kom",
       "bla": "blackfoot",
+      "blo": "anii",
       "bm": "bambara",
       "bn": "bengalí",
       "bo": "tibetà",
@@ -2792,7 +2628,6 @@
       "gmh": "alt alemany mitjà",
       "gn": "guaraní",
       "goh": "alt alemany antic",
-      "gom": "concani de Goa",
       "gon": "gondi",
       "gor": "gorontalo",
       "got": "gòtic",
@@ -2896,6 +2731,7 @@
       "kv": "komi",
       "kw": "còrnic",
       "kwk": "kwak’wala",
+      "kxv": "kuvi",
       "ky": "kirguís",
       "la": "llatí",
       "lad": "judeocastellà",
@@ -2922,7 +2758,6 @@
       "lua": "luba-lulua",
       "lui": "luisenyo",
       "lun": "lunda",
-      "luo": "luo",
       "lus": "mizo",
       "luy": "luyia",
       "lv": "letó",
@@ -3163,12 +2998,12 @@
       "umb": "umbundu",
       "ur": "urdú",
       "uz": "uzbek",
-      "vai": "vai",
       "ve": "venda",
       "vec": "vènet",
       "vep": "vepse",
       "vi": "vietnamita",
       "vls": "flamenc occidental",
+      "vmw": "makua",
       "vo": "volapük",
       "vot": "vòtic",
       "vun": "vunjo",
@@ -3183,6 +3018,7 @@
       "xal": "calmuc",
       "xh": "xosa",
       "xmf": "mingrelià",
+      "xnr": "kangri",
       "xog": "soga",
       "yao": "yao",
       "yap": "yapeà",

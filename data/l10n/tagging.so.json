@@ -10,6 +10,12 @@
         },
         "category-landuse": {
           "name": "Tilmaamaha Isticmaalka Dhulka"
+        },
+        "category-natural": {
+          "name": "Tilmaamaha Dabiiciga"
+        },
+        "category-road_service": {
+          "name": "Jidka Shaqaalaha"
         }
       },
       "fields": {
@@ -21,6 +27,15 @@
             "motor_vehicle": "Gawaarida"
           }
         },
+        "access_aisle": {
+          "label": "Nooca"
+        },
+        "addr/interpolation": {
+          "label": "Nooca",
+          "options": {
+            "all": "Dhammaan Gelitaanada"
+          }
+        },
         "address": {
           "label": "Cinwaanka",
           "placeholders": {
@@ -29,6 +44,9 @@
             "place": "Goob",
             "street": "Wadada"
           }
+        },
+        "advertising": {
+          "label": "Nooca"
         },
         "aerialway": {
           "label": "Nooca"
@@ -39,19 +57,61 @@
         "amenity": {
           "label": "Nooca"
         },
+        "archaeological_site": {
+          "label": "Nooca"
+        },
         "area/highway": {
           "label": "Nooca"
         },
         "artwork_type": {
           "label": "Nooca"
         },
+        "attraction": {
+          "label": "Nooca"
+        },
+        "bar": {
+          "label": "Makhaayad"
+        },
         "barrier": {
           "label": "Nooca"
+        },
+        "barrier_planter": {
+          "label": "Xannibaadaha",
+          "options": {
+            "planter": "Haa",
+            "undefined": "Maya"
+          }
+        },
+        "basin": {
+          "label": "Nooca"
+        },
+        "bath/type": {
+          "options": {
+            "lake": "Haro"
+          }
         },
         "bicycle_parking": {
           "label": "Nooca"
         },
+        "bicycle_road": {
+          "options": {
+            "undefined": "Maya",
+            "yes": "Haa"
+          }
+        },
+        "blind": {
+          "options": {
+            "no": "Maya",
+            "yes": "Haa"
+          }
+        },
         "board_type": {
+          "label": "Nooca",
+          "options": {
+            "history": "Taariikh"
+          }
+        },
+        "bollard": {
           "label": "Nooca"
         },
         "boules": {
@@ -63,10 +123,33 @@
         "bridge": {
           "label": "Nooca"
         },
+        "bridge/support": {
+          "label": "Nooca"
+        },
+        "bridge_combo": {
+          "label": "Nooca"
+        },
         "building": {
-          "label": "Dhismo"
+          "label": "Dhismo",
+          "options": {
+            "commercial": "Dhismaha Ganacsiga",
+            "house": "Guri",
+            "industrial": "Dhismaha Warshadaha",
+            "mosque": "Dhismaha Masaajid",
+            "public": "Dhismaha Dadweynaha",
+            "residential": "Dhismo Degaan",
+            "retail": "Dhismo Tafaariiqda",
+            "school": "Dhismo Dugsiyada",
+            "stadium": "Dhismo Garoon"
+          }
+        },
+        "building/levels": {
+          "label": "Heerarka"
         },
         "bunker_type": {
+          "label": "Nooca"
+        },
+        "camp_site": {
           "label": "Nooca"
         },
         "capacity": {
@@ -78,14 +161,43 @@
         "club": {
           "label": "Nooca"
         },
+        "community_centre": {
+          "label": "Nooca"
+        },
         "construction": {
           "label": "Nooca"
+        },
+        "consulate": {
+          "label": "Nooca"
+        },
+        "covered_no": {
+          "options": {
+            "no": "Maya",
+            "yes": "Haa"
+          }
         },
         "craft": {
           "label": "Nooca"
         },
+        "crop": {
+          "options": {
+            "grass": "Aag cagaaran"
+          }
+        },
         "crossing": {
           "label": "Nooca"
+        },
+        "crossing/barrier": {
+          "options": {
+            "no": "Maya",
+            "yes": "Haa"
+          }
+        },
+        "crossing_raised": {
+          "options": {
+            "table": "Haa",
+            "undefined": "Maya"
+          }
         },
         "cuisine": {
           "label": "Cunnada"
@@ -102,10 +214,33 @@
         "denomination": {
           "label": "Firqada"
         },
+        "departures_board": {
+          "options": {
+            "yes": "Haa"
+          }
+        },
+        "depot": {
+          "label": "Nooca"
+        },
         "description": {
           "label": "Sharaxaad"
         },
+        "diplomatic": {
+          "label": "Nooca"
+        },
+        "disused/amenity": {
+          "label": "Nooca"
+        },
+        "disused/railway": {
+          "label": "Nooca"
+        },
+        "disused/shop": {
+          "label": "Nooca"
+        },
         "dock": {
+          "label": "Nooca"
+        },
+        "door_type": {
           "label": "Nooca"
         },
         "electrified": {
@@ -117,13 +252,44 @@
         "embankment": {
           "label": "Nooca"
         },
+        "embassy": {
+          "label": "Nooca"
+        },
+        "emergency_combo": {
+          "label": "Nooca"
+        },
+        "emergency_ward_entrance": {
+          "label": "Nooca"
+        },
+        "enforcement": {
+          "label": "Nooca"
+        },
         "entrance": {
           "label": "Nooca"
         },
         "fence_type": {
           "label": "Nooca"
         },
+        "fire_mains": {
+          "options": {
+            "no": "Maya"
+          }
+        },
+        "fire_sprinkler": {
+          "options": {
+            "no": "Maya"
+          }
+        },
+        "flashing_lights": {
+          "options": {
+            "no": "Maya",
+            "yes": "Haa"
+          }
+        },
         "ford": {
+          "label": "Nooca"
+        },
+        "fountain": {
           "label": "Nooca"
         },
         "generator/source": {
@@ -135,13 +301,39 @@
         "government": {
           "label": "Nooca"
         },
+        "guest_house": {
+          "label": "Nooca"
+        },
         "healthcare": {
           "label": "Nooca"
         },
         "highway": {
           "label": "Nooca"
         },
+        "highway_cartpath": {
+          "options": {
+            "service": "Jidka Shaqaalaha"
+          }
+        },
         "historic": {
+          "label": "Nooca"
+        },
+        "holding_position/type": {
+          "label": "Nooca",
+          "options": {
+            "runway": "Gegada diyaaradaha"
+          }
+        },
+        "horse_riding": {
+          "options": {
+            "horse_riding": "Haa",
+            "undefined": "Maya"
+          }
+        },
+        "indoor_type": {
+          "label": "Nooca"
+        },
+        "industrial": {
           "label": "Nooca"
         },
         "information": {
@@ -153,6 +345,19 @@
             "yes": "Haa"
           }
         },
+        "kerb": {
+          "options": {
+            "no": {
+              "title": "Maya"
+            },
+            "yes": {
+              "title": "Haa"
+            }
+          }
+        },
+        "kerb/kerb_barrier": {
+          "label": "Nooca"
+        },
         "lamp_type": {
           "label": "Nooca"
         },
@@ -162,7 +367,22 @@
         "lanes": {
           "label": "Tirada Dhabbooyinka"
         },
+        "layer": {
+          "label": "Lakabka"
+        },
         "leisure": {
+          "label": "Nooca"
+        },
+        "level_semi": {
+          "label": "Heerarka"
+        },
+        "liaison": {
+          "label": "Nooca"
+        },
+        "lifeguard": {
+          "label": "Nooca"
+        },
+        "lift_gate/type": {
           "label": "Nooca"
         },
         "man_made": {
@@ -174,10 +394,27 @@
         "map_type": {
           "label": "Nooca"
         },
+        "marker": {
+          "label": "Nooca"
+        },
+        "material": {
+          "options": {
+            "wood": "Duur"
+          }
+        },
         "maxspeed": {
           "label": "Xadka Xawaaraha"
         },
         "memorial": {
+          "label": "Nooca"
+        },
+        "mooring": {
+          "options": {
+            "no": "Maya",
+            "yes": "Haa"
+          }
+        },
+        "museum": {
           "label": "Nooca"
         },
         "name": {
@@ -191,7 +428,11 @@
           "label": "Qoraal"
         },
         "office": {
-          "label": "Nooca"
+          "label": "Nooca",
+          "options": {
+            "government": "Xafiis Dowladeed",
+            "travel_agent": "Wakaalad Socdaal"
+          }
         },
         "oneway": {
           "label": "Hal Wado",
@@ -215,11 +456,42 @@
         "outdoor_seating": {
           "label": "Fadhiga Banaanka"
         },
+        "parcel_pickup": {
+          "options": {
+            "no": "Maya",
+            "yes": "Haa"
+          }
+        },
         "parking": {
           "label": "Nooca",
           "options": {
             "surface": "Sagxada"
           }
+        },
+        "parking/side/orientation": {
+          "types": {
+            "parking:left:orientation": "Dhinaca biddix",
+            "parking:right:orientation": "Dhinaca midig"
+          }
+        },
+        "parking/side/parking": {
+          "options": {
+            "no": "Maya",
+            "yes": "Haa (unspecified)"
+          },
+          "types": {
+            "parking:left": "Dhinaca biddix",
+            "parking:right": "Dhinaca midig"
+          }
+        },
+        "parking_entrance": {
+          "label": "Nooca"
+        },
+        "parking_space": {
+          "label": "Nooca"
+        },
+        "pipeline": {
+          "label": "Nooca"
         },
         "piste/type": {
           "label": "Nooca"
@@ -227,10 +499,33 @@
         "place": {
           "label": "Nooca"
         },
+        "playground": {
+          "label": "Nooca"
+        },
+        "post_box/type": {
+          "label": "Nooca"
+        },
         "power": {
           "label": "Nooca"
         },
+        "public_bookcase/type": {
+          "label": "Nooca"
+        },
+        "pump": {
+          "options": {
+            "yes": "Haa"
+          }
+        },
         "railway": {
+          "label": "Nooca"
+        },
+        "ramp": {
+          "options": {
+            "no": "Maya",
+            "yes": "Haa"
+          }
+        },
+        "recycling_type": {
           "label": "Nooca"
         },
         "relation": {
@@ -239,7 +534,19 @@
         "religion": {
           "label": "Diinta"
         },
+        "residential": {
+          "label": "Nooca"
+        },
+        "resort": {
+          "label": "Nooca"
+        },
         "restriction": {
+          "label": "Nooca"
+        },
+        "roller_coaster/track": {
+          "label": "Nooca"
+        },
+        "room": {
           "label": "Nooca"
         },
         "route": {
@@ -247,6 +554,20 @@
         },
         "route_master": {
           "label": "Nooca"
+        },
+        "royal_cypher-GB": {
+          "options": {
+            "no": "Maya"
+          }
+        },
+        "ruins": {
+          "label": "Nooca"
+        },
+        "seamark/harbour/category_marina": {
+          "options": {
+            "marina": "Haa",
+            "marina_no_facilities": "Maya"
+          }
         },
         "second_hand": {
           "options": {
@@ -261,6 +582,9 @@
           "label": "Nooca"
         },
         "shop": {
+          "label": "Nooca"
+        },
+        "siren/type": {
           "label": "Nooca"
         },
         "site": {
@@ -278,6 +602,30 @@
         "sport": {
           "label": "Cayaaraha"
         },
+        "sport/sport_ice": {
+          "label": "Cayaaraha"
+        },
+        "sport/sport_pub": {
+          "label": "Cayaaraha"
+        },
+        "sport/sport_racing_motor": {
+          "label": "Cayaaraha"
+        },
+        "sport/sport_racing_nonmotor": {
+          "label": "Cayaaraha"
+        },
+        "stile": {
+          "label": "Nooca"
+        },
+        "street_cabinet": {
+          "label": "Nooca"
+        },
+        "stroller": {
+          "options": {
+            "no": "Maya",
+            "yes": "Haa"
+          }
+        },
         "structure": {
           "label": "Dhismo",
           "options": {
@@ -285,6 +633,9 @@
             "ford": "Tog",
             "tunnel": "Jid Dalool"
           }
+        },
+        "structure_power": {
+          "label": "Dhismo"
         },
         "structure_waterway": {
           "label": "Dhismo",
@@ -298,14 +649,47 @@
         "substation": {
           "label": "Nooca"
         },
+        "substation_pipeline": {
+          "label": "Nooca"
+        },
         "surface": {
-          "label": "Sagxada"
+          "label": "Sagxada",
+          "options": {
+            "grass": "Aag cagaaran",
+            "wood": "Duur"
+          }
+        },
+        "survey_point/structure": {
+          "label": "Dhismo"
+        },
+        "swimming_pool": {
+          "label": "Nooca"
         },
         "switch": {
           "label": "Nooca"
         },
         "takeaway": {
           "label": "Qaadasho",
+          "options": {
+            "no": "Maya",
+            "yes": "Haa"
+          }
+        },
+        "telecom": {
+          "label": "Nooca"
+        },
+        "telescope/type": {
+          "label": "Nooca"
+        },
+        "toilets": {
+          "label": "Musqulo"
+        },
+        "toilets/menstrual_products": {
+          "options": {
+            "no": "Maya"
+          }
+        },
+        "toilets/wheelchair": {
           "options": {
             "no": "Maya",
             "yes": "Haa"
@@ -320,6 +704,9 @@
         "tower/type": {
           "label": "Nooca"
         },
+        "townhall/type": {
+          "label": "Nooca"
+        },
         "trade": {
           "label": "Nooca"
         },
@@ -329,10 +716,36 @@
         "traffic_signals": {
           "label": "Nooca"
         },
+        "traffic_signals/sound": {
+          "options": {
+            "no": "Maya",
+            "yes": "Haa"
+          }
+        },
         "transformer": {
           "label": "Nooca"
         },
+        "trench": {
+          "label": "Nooca"
+        },
         "tunnel": {
+          "label": "Nooca"
+        },
+        "tunnel_combo": {
+          "label": "Nooca"
+        },
+        "two_sided": {
+          "options": {
+            "undefined": "Maya",
+            "yes": "Haa"
+          }
+        },
+        "utility": {
+          "options": {
+            "water": "Biyaha"
+          }
+        },
+        "valve": {
           "label": "Nooca"
         },
         "wall": {
@@ -341,11 +754,28 @@
         "water": {
           "label": "Nooca"
         },
+        "water_source": {
+          "options": {
+            "pond": "Balli"
+          }
+        },
         "waterway": {
           "label": "Nooca"
         },
         "wetland": {
           "label": "Nooca"
+        },
+        "wheelchair": {
+          "options": {
+            "no": "Maya",
+            "yes": "Haa"
+          }
+        },
+        "windings/auto": {
+          "options": {
+            "no": "Maya",
+            "yes": "Haa"
+          }
         }
       },
       "presets": {
@@ -388,6 +818,9 @@
         "amenity/school": {
           "name": "Goobaha Dugsiyada"
         },
+        "area": {
+          "name": "Aagga"
+        },
         "barrier": {
           "name": "Xannibaadaha"
         },
@@ -421,7 +854,13 @@
         "building/stadium": {
           "name": "Dhismo Garoon"
         },
+        "building_point": {
+          "name": "Dhismo"
+        },
         "ford": {
+          "name": "Tog"
+        },
+        "ford_line": {
           "name": "Tog"
         },
         "highway/path": {
@@ -468,6 +907,9 @@
         },
         "landuse/military": {
           "name": "Goob Ciidan"
+        },
+        "landuse/pond": {
+          "name": "Balli"
         },
         "landuse/residential": {
           "name": "Aag Degaan"
@@ -540,6 +982,9 @@
         },
         "place/town": {
           "name": "Magaalo"
+        },
+        "point": {
+          "name": "Bar"
         },
         "power/line": {
           "name": "Khadka Korantada"

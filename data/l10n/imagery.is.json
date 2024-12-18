@@ -11,6 +11,7 @@
         "attribution": {
           "text": "Skilmálar og umsagnir"
         },
+        "description": "Heimsmyndir frá Esri",
         "name": "Heimsmyndir frá Esri"
       },
       "EsriWorldImageryClarity": {
@@ -86,9 +87,26 @@
         "description": "Gult = Kortagögn í almenningseigu frá US Census. Rautt = Gögn sem ekki finnast á OpenStreetMap",
         "name": "TIGER vegir 2019"
       },
+      "US-TIGER-Roads-2020": {
+        "description": "Gult = Kortagögn í almenningseigu frá US Census. Rautt = Gögn sem ekki finnast á OpenStreetMap"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Gult = Kortagögn í almenningseigu frá US Census. Rautt = Gögn sem ekki finnast á OpenStreetMap"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Gult = Kortagögn í almenningseigu frá US Census. Rautt = Gögn sem ekki finnast á OpenStreetMap"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Gult = Kortagögn í almenningseigu frá US Census. Rautt = Gögn sem ekki finnast á OpenStreetMap"
+      },
       "US_Forest_Service_roads_overlay": {
         "description": "Vegur: Grænn útjaðar = óflokkað. Brúnn útjaðar = slóði. Yfirborð: möl = ljósbrún fylling, malbik = svart, hellur = grátt, jarðvegur = hvítt, steypa = blátt, gras = grænt. Árstíðabundið = hvítar rendur",
         "name": "U.S. Forest vegayfirlag"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Gert með tilstilli Brussels UrbIS®© - Dreifing & höfundarréttur CIRB"
+        }
       },
       "UrbISOrtho2016": {
         "attribution": {
@@ -110,9 +128,19 @@
           "text": "Gert með tilstilli Brussels UrbIS®© - Dreifing & höfundarréttur CIRB"
         }
       },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Gert með tilstilli Brussels UrbIS®© - Dreifing & höfundarréttur CIRB"
+        }
+      },
       "UrbisAdmFR": {
         "attribution": {
           "text": "Framkvæmt með tilstilli Brussels UrbIS®© - Dreifing & höfundarréttur CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
+        "attribution": {
+          "text": "Gert með tilstilli Brussels UrbIS®© - Dreifing & höfundarréttur CIRB"
         }
       },
       "UrbisAdmNL": {
@@ -169,7 +197,32 @@
         },
         "name": "Borgarkort Gautaborgar"
       },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© Sveitarfélagið Gautaborg, CC0"
+        }
+      },
       "gothenburg-ortho": {
+        "attribution": {
+          "text": "© Sveitarfélagið Gautaborg, CC0"
+        }
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© Sveitarfélagið Gautaborg, CC0"
+        }
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© Sveitarfélagið Gautaborg, CC0"
+        }
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© Sveitarfélagið Gautaborg, CC0"
+        }
+      },
+      "gothenburg-ortho_latest": {
         "attribution": {
           "text": "© Sveitarfélagið Gautaborg, CC0"
         }
@@ -202,6 +255,13 @@
         },
         "description": "Orthophoto uppréttar loftmyndir af byggðum svæðum frá sveitarfélaginu Kalmar 2018",
         "name": "Kalmar byggingaland - orthophoto uppréttar loftmyndir 2014"
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© Sveitarfélagið Kalmar"
+        },
+        "description": "Orthophoto uppréttar loftmyndir af byggðum svæðum frá sveitarfélaginu Kalmar 2020",
+        "name": "Kalmar byggingaland - orthophoto uppréttar loftmyndir 2020"
       },
       "kelkkareitit": {
         "description": "Kelkkareitit.fi vélsleðaferlar frá OSM (norræn þekja)",

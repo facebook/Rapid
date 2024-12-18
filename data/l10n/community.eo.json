@@ -27,7 +27,6 @@
       "openstreetmapchile": "OpenStreetMap Ĉilio",
       "openstreetmapchina": "OpenStreetMap Ĉinio",
       "openstreetmapcologne": "OpenStreetMap Kolonjo",
-      "openstreetmapcolombia": "OpenStreetMap Kolombio",
       "openstreetmapcostarica": "OpenStreetMap Kostariko",
       "openstreetmapcotedivoire": "OpenStreetMap Ebur-Bordo",
       "openstreetmapcroatia": "OpenStreetMap Kroatio",
@@ -156,6 +155,9 @@
         "name": "{community} ĉe Discord",
         "description": "Kontaktu kun aliaj mapigistoj per Discord"
       },
+      "discourse": {
+        "description": "Oficiala forumo {community}"
+      },
       "facebook": {
         "name": "{community} ĉe Facebook",
         "description": "Aliĝu al nia komunumo ĉe Facebook"
@@ -238,6 +240,9 @@
       "description": "Plibonigi OpenStreetMap en la regiono apud Golfo de San-Francisko",
       "extendedDescription": "Celo de tiu ĉi grupo estas kunigi OpenStreetMap-komunumon en la regiono apud Golfo de San-Francisko. Niaj eventoj estas malfermitaj al ĉiuj: ŝatantoj de malfermkoda programaro, biciklistoj, GIS-profesiuloj, geokaŝ-ludantoj kaj aliuloj. Ĉiu, kiu interesiĝas pri mapoj, mapigado kaj liberaj map-datumoj povas aligi la grupon kaj alveni niajn eventojn."
     },
+    "bd-facebook": {
+      "extendedDescription": "Ĉu vi mapigas en Bangladeŝo? Ĉu vi havas demandojn aŭ volas kuniĝi al tiu ĉi komunumo? Aliĝu al ni ĉe {url}. Bonvenon ĉiuj!"
+    },
     "be-chapter": {
       "description": "Ni helpas kreskigi kaj plibonigi OpenStreetMap en Belgio."
     },
@@ -259,8 +264,17 @@
       "description": "Sekvu nin ĉe Twitter: {url}",
       "extendedDescription": "Oficiala Twitter-paĝo pri sekcio de Junaj Mapigistoj de Universitato de Cape Coast, Ganao. Ni ŝatas mapojn, malfermajn datumojn kaj helpi al senfortuloj."
     },
+    "cd-chapter": {
+      "name": "OpenStreetMap DRK"
+    },
     "Central-Pennsylvania-OSM": {
       "description": "Interreta mapiga komunumo en State College, Pensilvanio"
+    },
+    "cl-facebook": {
+      "extendedDescription": "Aliĝu al la komunumo por lerni pli pri OpenStreetMap, fari demandojn aŭ partopreni niajn kunvenojn. Ĉiuj estas bonvenaj!"
+    },
+    "cl-telegram": {
+      "extendedDescription": "Aliĝu al la komunumo por lerni pli pri OpenStreetMap, fari demandojn aŭ partopreni niajn kunvenojn. Ĉiuj estas bonvenaj!"
     },
     "czech-community": {
       "description": "Mapo, retejo kaj kontakto al OSM-mapigistoj en Ĉeĥujo"
@@ -272,12 +286,24 @@
       "name": "Dissendolisto OWL",
       "description": "Dissendolisto por la OSM-komunumo Ostwestfalen-Lippe"
     },
+    "DF-telegram": {
+      "extendedDescription": "Aliĝu al la komunumo por lerni pli pri OpenStreetMap, fari demandojn aŭ partopreni niajn kunvenojn. Ĉiuj estas bonvenaj!"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "description": "Sekvu nin ĉe Twitter ĉe {url}"
+    },
     "GeoPhilly": {
       "description": "Renkontiĝo por map-ŝatantoj proksime de Filadelfio",
       "extendedDescription": "GeoPhilly kunigas programistojn, geografiistoj, fanatikuloj de datumoj kaj malfermkoda programaro, lertuloj kaj map-ŝatantoj en la komuna amo al mapoj kaj historioj pri ili. Se vi uzas mapojn en laboro aŭ simple volas sciiĝi pli, tiu ĉi renkontiĝo estas por vi! Niaj renkontiĝoj estas malfermitaj, amikecaj, instruantaj kaj sociaj kaj temas pri klaĉado, teĥnika babilado kaj eĉ laboro. Alvenu por krei diversan kaj inspiran mapigan komunumon en Filadelfio kun ni!"
     },
+    "hr-github": {
+      "description": "{community} ĉe GitHub"
+    },
     "hu-meetup": {
       "description": "Platformo por organizi kunvenojn en Hungarujo"
+    },
+    "ko-github": {
+      "description": "{community} ĉe GitHub"
     },
     "mappa-mercia-group": {
       "name": "Loka grupo Mappa Mercia",
@@ -287,6 +313,12 @@
     "Maptime-ME-meetup": {
       "description": "Mapigistoj kaj uzantoj de OpenStreetMap proksime de Portlando (Majno)",
       "extendedDescription": "«Maptime» estas tempo por mapigado. Nia celo estas ebligi al ĉiu lerni pri kartografio per liveri spacon por kunlabora lernado, esplorado kaj map-farado uzante mapigajn ilojn kaj teĥnologiojn."
+    },
+    "me-telegram": {
+      "description": "Bonvenon ĉiuj! Aliĝu al ni ĉe {signupUrl}"
+    },
+    "nl-matrix": {
+      "description": "Ĉiuj kartografoj estas bonvenaj!"
     },
     "no-irc": {
       "description": "Babila kanalo por uzantoj, mapigistoj, programistoj kaj ŝatantoj de OpenStreetMap en Norvegujo"
@@ -299,6 +331,12 @@
     "OpenCleveland-meetup": {
       "description": "Plibonigi OpenStreetMap proksime de Klevlando",
       "extendedDescription": "Open Geo Cleveland celas esti rimedo por homoj por diskuti kaj kunhavigi scion pri uzi liberajn geografiajn datumojn (precipe OpenStreetMap) kaj liberan programaron por administri, redakti kaj vidigi geografiajn datumojn, kaj promoti ĝian uzon en nordorienta Ohio. Ni ankaŭ estas klubo de mapigistoj =)"
+    },
+    "osm-africa-matrix": {
+      "description": "Ĉiuj kartografoj estas bonvenaj!"
+    },
+    "osm-africa-slack": {
+      "description": "Bonvenon ĉiuj! Aliĝu al ni ĉe {signupUrl}"
     },
     "osm-at": {
       "description": "Platformo de informoj pri OpenStreetMap en Aŭstrujo"
@@ -370,8 +408,24 @@
       "name": "Fondaĵo OpenStreetMap",
       "description": "OSMF estas ne-profit-cela organizaĵo en Britujo, kiu subtenas la projekton OpenStreetMap"
     },
+    "PHXGeo-twitter": {
+      "description": "Sekvu nin ĉe Twitter ĉe {url}"
+    },
+    "RS-telegram": {
+      "extendedDescription": "Aliĝu al la komunumo por lerni pli pri OpenStreetMap, fari demandojn aŭ partopreni niajn kunvenojn. Ĉiuj estas bonvenaj!"
+    },
+    "si-github": {
+      "description": "{community} ĉe GitHub"
+    },
     "talk-mg": {
       "description": "Loko por mapigistoj, komunumoj kaj uzantoj de OpenStreetMap en Madagaskaro por kunhavigi kaj diskuti."
+    },
+    "tw-slack": {
+      "description": "Bonvenon ĉiuj! Aliĝu al ni ĉe {signupUrl}"
+    },
+    "us-massachusetts-mailinglist": {
+      "name": "Dissendolisto talk-us-massachusetts",
+      "description": "Dissendolisto por la OSM-komunumo en Masaĉuseco"
     }
   }
 }

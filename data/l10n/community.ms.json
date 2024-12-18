@@ -86,19 +86,112 @@
     "bd-facebook": {
       "extendedDescription": "Memeta di Bangladesh? Ada soalan atau ingin berkenalan dengan komuniti di sini? Sertai kami di {url}. Semua orang dialu-alukan!"
     },
+    "br-telegram": {
+      "extendedDescription": "Sertai komuniti untuk ketahui lebih lanjut tentang OpenStreetMap, bertanya soalan atau mengambil bahagian dalam mesyuarat kami. Semua orang dialu-alukan!"
+    },
     "Central-Pennsylvania-OSM": {
       "name": "OSM Pennsylvania Pusat",
       "description": "Komuniti pemetaan atas talian yang berpusat di luar State College, PA"
+    },
+    "cl-facebook": {
+      "extendedDescription": "Sertai komuniti untuk ketahui lebih lanjut tentang OpenStreetMap, bertanya soalan atau mengambil bahagian dalam mesyuarat kami. Semua orang dialu-alukan!"
+    },
+    "cl-telegram": {
+      "extendedDescription": "Sertai komuniti untuk ketahui lebih lanjut tentang OpenStreetMap, bertanya soalan atau mengambil bahagian dalam mesyuarat kami. Semua orang dialu-alukan!"
+    },
+    "de-aachen-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "de-berlin-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "de-bochum-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "de-bonn-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "de-bremen-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "de-cologne-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "de-dresden-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "de-dusseldorf-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "de-luneburg-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "de-munchen-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "DF-telegram": {
+      "extendedDescription": "Sertai komuniti untuk ketahui lebih lanjut tentang OpenStreetMap, bertanya soalan atau mengambil bahagian dalam mesyuarat kami. Semua orang dialu-alukan!"
+    },
+    "fr-35-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "fr-38-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "fr-montrouge-wiki": {
+      "description": "Halaman wiki {community}"
     },
     "GeoPhilly": {
       "description": "Pertemuan untuk peminat-peminat peta di kawasan Philadelphia",
       "extendedDescription": "GeoPhilly menyatukan pemaju, ahli geografi, gek data, peminat sumber terbuka, penggodam awam dan kaki peta dalam perkongsian minat kita tentang peta dan cerita-cerita yang dikongsi sama. Jika anda menggunakan peta sebagai sebahagian dari kerja anda atau hanya untuk mempelajari dengan lebih lanjut, ini ialah pertemuan untuk anda! Acara kami bertujuan untuk menjadi terbuka, mesra, berpendidikan dan bersosial dan berjulat dari jam gembira kepada ceramah kilat atau malah bengkel. Datanglah untuk mencipta komuniti yang berpelbagai, berinspirasi di Philadelphia dengan kami!"
     },
+    "hu-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "Maptime-Oceania-Slack": {
+      "description": "Daftar di {signupUrl}"
+    },
+    "me-telegram": {
+      "description": "Semua dialu-alukan hadir! Daftar di {signupUrl}"
+    },
+    "osm-africa-slack": {
+      "description": "Semua dialu-alukan hadir! Daftar di {signupUrl}"
+    },
     "OSM-Chattanooga": {
       "description": "Kumpulan pengguna OpenStreetMap bagi Chattanooga"
     },
+    "osm-deep-south-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "osm-michigan-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "osm-ohio-wiki": {
+      "description": "Halaman wiki {community}"
+    },
     "OSM-US-Slack": {
       "description": "Semua dialu-alukan hadir! Daftar di {signupUrl}"
+    },
+    "RS-telegram": {
+      "extendedDescription": "Sertai komuniti untuk ketahui lebih lanjut tentang OpenStreetMap, bertanya soalan atau mengambil bahagian dalam mesyuarat kami. Semua orang dialu-alukan!"
+    },
+    "sg-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "si-ljubljana-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "si-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "tw-slack": {
+      "description": "Semua dialu-alukan hadir! Daftar di {signupUrl}"
+    },
+    "uk-london-wiki": {
+      "description": "Halaman wiki {community}"
+    },
+    "vn-wiki": {
+      "description": "Halaman wiki {community}"
     }
   }
 }

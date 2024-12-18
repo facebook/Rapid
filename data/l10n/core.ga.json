@@ -23,16 +23,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Limistéar",
-        "filter_tooltip": "limistéir"
+        "title": "Limistéar"
       },
       "add_line": {
-        "title": "Líne",
-        "filter_tooltip": "línte"
+        "title": "Líne"
       },
       "add_point": {
-        "title": "Pointe",
-        "filter_tooltip": "pointí"
+        "title": "Pointe"
       },
       "add_note": {
         "title": "Nóta",
@@ -75,20 +72,6 @@
         "title": "Greamaigh",
         "nothing_copied": "Níor cóipeáladh aon ghné."
       },
-      "circularize": {
-        "description": {
-          "single": "Déan ciorclach an ghné seo. ",
-          "multiple": "Déan ciorclach na gnéithe seo. "
-        }
-      },
-      "orthogonalize": {
-        "description": {
-          "corner": {
-            "single": "Cearnaigh an coirnéal seo.",
-            "multiple": "Cearnaigh na coirnéil seo."
-          }
-        }
-      },
       "straighten": {
         "title": "Dírigh",
         "description": {
@@ -99,49 +82,18 @@
       },
       "delete": {
         "title": "Scrios",
-        "description": {
-          "single": "Scrios an ghné seo go buan.",
-          "multiple": "Scrios na gnéithe seo go buan."
-        },
         "annotation": {
           "point": "Scriosadh pointe.",
           "vertex": "Scriosadh nód ó bhealach.",
           "line": "Scriosadh líne.",
           "area": "Scriosadh limistéar.",
           "relation": "Scriosadh nasc."
-        },
-        "too_large": {
-          "single": "Ní fhéadtar an ghné seo a scriosadh mar níl a dóthain le feiceáil.",
-          "multiple": "Ní fhéadtar na gnéithe seo a scriosadh mar níl dóthain le feiceáil."
-        },
-        "incomplete_relation": {
-          "single": "Ní fhéadtar an ghné seo a scriosadh mar níl sí íoslódáilte go hiomlán.",
-          "multiple": "Ní fhéadtar na gnéithe seo a scriosadh mar níl siad íoslódáilte go hiomlán."
-        },
-        "part_of_relation": {
-          "single": "Ní fhéadtar an ghné seo a scriosadh mar tá baineann sí le nasc níos mó. Caithfidh tú í a bhaint ón nasc ar dtús.",
-          "multiple": "Ní fhéadtar na gnéithe seo a scriosadh mar baineann siad le naisc níos mó. Caithfidh tú iad a bhaint ó na naisc ar dtús."
-        },
-        "connected_to_hidden": {
-          "single": "Ní fhéadtar an ghné seo a scriosadh mar tá sí ceangailte le gné cheilte."
-        },
-        "not_downloaded": {
-          "single": "Ní fhéadtar an ghné seo a scriosadh mar tá páirteanna nach bhfuil íoslódáilte go fóill.",
-          "multiple": "Ní fhéadtar na gnéithe seo a scriosadh mar tá páirteanna nach bhfuil íoslódáilte go fóill."
-        },
-        "has_wikidata_tag": {
-          "single": "Ní fhéadtar an ghné seo a scriosadh mar tá clib Wikidata aici.",
-          "multiple": "Ní fhéadtar na gnéithe seo a scriosadh mar tá clibeanna Wikidata acu."
         }
       },
       "downgrade": {
         "title": "Íosghrádaigh",
         "description": {
           "generic": "Bain clibeanna."
-        },
-        "has_wikidata_tag": {
-          "single": "Ní fhéadtar an ghné seo a íosghrádú mar tá clib Wikidata aici.",
-          "multiple": "Ní fhéadtar na gnéithe seo a íosghrádú mar tá clibeanna Wikidata ag cuid acu."
         }
       },
       "connect": {
@@ -197,20 +149,12 @@
       },
       "move": {
         "title": "Bog",
-        "description": {
-          "single": "Bog an ghné seo go suíomh difriúil.",
-          "multiple": "Bog na gnéithe seo go suíomh difriúil."
-        },
         "annotation": {
           "point": "Bogadh pointe.",
           "vertex": "Bogadh nód ar an mbealach.",
           "line": "Bogadh líne.",
           "area": "Bogadh limistéar.",
           "relation": "Bogadh nasc."
-        },
-        "incomplete_relation": {
-          "single": "Ní féidir an ghné seo a bhogadh mar níl sí íoslódáilte go hiomlán.",
-          "multiple": "Ní féidir na gnéithe seo a bhogadh mar níl siad íoslódáilte go hiomlán."
         }
       },
       "reflect": {
@@ -221,18 +165,10 @@
       },
       "rotate": {
         "title": "Rothlaigh",
-        "description": {
-          "single": "Rothlaigh an ghné seo ar a lárphointe.",
-          "multiple": "Rothlaigh na gnéithe seo ar a lárphointe."
-        },
         "annotation": {
           "line": "Rothlaíodh líne.",
           "area": "Rothlaíodh limistéar.",
           "relation": "Rothlaíodh nasc."
-        },
-        "incomplete_relation": {
-          "single": "Ní fhéadtar an ghné seo a rothlú mar níl sí íoslódáilte go hiomlán.",
-          "multiple": "Ní fhéadtar na gnéithe seo a rothlú mar níl siad íoslódáilte go hiomlán."
         }
       },
       "reverse": {
@@ -479,8 +415,7 @@
       "history_panel": {
         "title": "Taispeáin Painéal na Staire"
       },
-      "style_options": "Roghanna stíle",
-      "map_features": "Gnéithe na Léarscáile"
+      "style_options": "Roghanna stíle"
     },
     "visual_diff": {
       "highlight_edits": {
@@ -513,7 +448,7 @@
         "tooltip": "Ná taispeáin ach grianghraif glactha ag an úsáideoir seo"
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Pointí",
         "tooltip": "Láithreacha Inspéise"
@@ -649,12 +584,13 @@
     "source_switch": {
       "lose_changes": "Tá athruithe nach bhfuil sábháilte agat. Scriosfar iad má athraíonn tú go freastalaí léarscáile eile. An bhfuil tú cinnte go bhfuil tú ag iarraidh athrú?"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Clibeanna"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Bain"
+    "rapid_menu": {
+      "remove": "Bain",
+      "category": {
+        "roads": "bóithre"
       }
     },
     "tag_reference": {
@@ -977,16 +913,9 @@
     },
     "issues": {
       "title": "Fadhbanna",
-      "list_title": "Fadhbanna",
-      "errors": {
-        "list_title": "Earráidí"
-      },
-      "warnings": {
-        "list_title": "Rabhaidh"
-      },
-      "rules": {
-        "title": "Rialacha"
-      },
+      "errors": "Earráidí",
+      "warnings": "Rabhaidh",
+      "rules": "Rialacha",
       "no_issues": {
         "message": {
           "everything": "Breathnaíonn gach rud ceart go leor",
@@ -1072,8 +1001,6 @@
       "invalid_format": {
         "title": "Formáidiú Neamhbhailí",
         "email": {
-          "message": "Tá seoladh ríomhphoist neamhbhailí ag {feature}",
-          "message_multi": "Tá seoladh ríomhphoist iomadúla neamhbhailí ag {feature}",
           "reference": "Caithfear seoltaí ríomhphoist a bheith mar \"úsáideoir@sampla.com\"."
         }
       },
@@ -1311,51 +1238,53 @@
       "gesture": {
         "drag": "tarraing"
       },
-      "browsing": {
-        "title": "Brabhsáil",
-        "navigation": {
-          "title": "Loingseoireacht"
+      "browsing": "Brabhsáil",
+      "editing": "Ag eagrú",
+      "navigation": "Loingseoireacht",
+      "drawing": "Ag tarraingt",
+      "commands": "Orduithe",
+      "help": "Cabhair",
+      "display_options": "Taispeáin roghanna",
+      "info": "Eolas",
+      "command": {
+        "select_one": {
+          "label": "Roghnaigh gné amháin"
         },
-        "help": {
-          "title": "Cabhair",
-          "help": "Taispeáin cabhair/cáipéisíocht",
-          "keyboard": "Taispeáin aicearraí méarchláir"
+        "first_node": {
+          "label": "Léim go dtí an chéad nód"
         },
-        "display_options": {
-          "title": "Taispeáin roghanna"
+        "last_node": {
+          "label": "Léim go dtí an nód deireanach"
         },
-        "selecting": {
-          "select_one": "Roghnaigh gné amháin"
+        "place_point": {
+          "label": "Cuir síos pointe nó nóta"
         },
-        "vertex_selected": {
-          "first": "Léim go dtí an chéad nód",
-          "last": "Léim go dtí an nód deireanach"
-        }
-      },
-      "editing": {
-        "title": "Ag eagrú",
-        "drawing": {
-          "title": "Ag tarraingt",
-          "place_point": "Cuir síos pointe nó nóta"
+        "copy": {
+          "label": "Cóipeáil na gnéithe roghnaithe"
         },
-        "commands": {
-          "title": "Orduithe",
-          "copy": "Cóipeáil na gnéithe roghnaithe",
-          "paste": "Greamaigh na gnéithe a cóipeáladh",
-          "undo": "Cealaigh an gníomh deireanach",
-          "save": "Sábháil na hathruithe"
+        "paste": {
+          "label": "Greamaigh na gnéithe a cóipeáladh"
         },
-        "operations": {
-          "move": "Bogadh na gnéithe roghnaithe",
-          "straighten": "Dírigh líne nó pointí",
-          "delete": "Scrios na gnéithe roghnaithe"
-        }
-      },
-      "tools": {
-        "title": "Uirlísí",
-        "info": {
-          "title": "Eolas",
-          "all": "Scoránaigh gach painéal eolais"
+        "undo": {
+          "label": "Cealaigh an gníomh deireanach"
+        },
+        "save": {
+          "label": "Sábháil na hathruithe"
+        },
+        "move": {
+          "label": "Bogadh na gnéithe roghnaithe"
+        },
+        "straighten": {
+          "label": "Dírigh líne nó pointí"
+        },
+        "delete": {
+          "label": "Scrios na gnéithe roghnaithe"
+        },
+        "keyboard_shortcuts": {
+          "label": "Taispeáin aicearraí méarchláir"
+        },
+        "toggle_all_cards": {
+          "label": "Scoránaigh gach painéal eolais"
         }
       }
     },
@@ -1768,6 +1697,7 @@
       "vec": "Veinéisis",
       "vi": "Vítneaimis",
       "vls": "Pléimeannais Iartharach",
+      "vmw": "Macuais",
       "wa": "Vallúnais",
       "wal": "Uailéitis",
       "war": "Uairéis",
@@ -1797,10 +1727,12 @@
       "Bali": "Bailíoch",
       "Batk": "Batacach",
       "Beng": "Beangálach",
+      "Brah": "Brámais",
       "Bugi": "Buigineach",
       "Buhd": "Buthaideach",
       "Cakm": "Seácmais",
       "Cans": "Siollach Bundúchasach Ceanadach Aontaithe",
+      "Cari": "Cló Cairiach",
       "Cher": "Seiricíoch",
       "Copt": "Coptach",
       "Cprt": "Cipireach",
@@ -1855,6 +1787,8 @@
       "Orya": "Oiríseach",
       "Osge": "Ósáis",
       "Perm": "Sean-Pheirmeach",
+      "Phli": "Pachlavais Inscríbhinne",
+      "Phlp": "Pachlavais Saltrach",
       "Phnx": "Féiníceach",
       "Plrd": "Pollard Foghrach",
       "Prti": "Pairtiach Inscríbhinniúil",

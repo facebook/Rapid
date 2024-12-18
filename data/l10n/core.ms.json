@@ -8,8 +8,7 @@
     },
     "modes": {
       "add_area": {
-        "title": "Kawasan",
-        "filter_tooltip": "kawasan"
+        "title": "Kawasan"
       },
       "add_line": {
         "title": "Garis"
@@ -19,8 +18,7 @@
       },
       "add_note": {
         "title": "Nota",
-        "description": "Ada sebarang masalah? Maklumkan terhadap pemeta-pemeta lain.",
-        "key": "U"
+        "description": "Ada sebarang masalah? Maklumkan terhadap pemeta-pemeta lain."
       },
       "browse": {
         "title": "Semak imbas",
@@ -67,32 +65,12 @@
       },
       "delete": {
         "title": "Hapus",
-        "description": {
-          "single": "Hapuskan gambaran ini secara kekal.",
-          "multiple": "Hapuskan beberapa gambaran secara kekal."
-        },
         "annotation": {
           "point": "Titik telah dihapuskan.",
           "vertex": "Suatu nod dalam jalan telah dihapus.",
           "line": "Suatu garis telah dihapuskan.",
           "area": "Kawasan telah dihapuskan.",
           "relation": "Suatu hubungan telah dihapuskan."
-        },
-        "too_large": {
-          "single": "Gambaran ini tidak dapat dihapuskan kerana bahagian penting tidak kelihatan secukupnya.",
-          "multiple": "Gambaran-gambaran ini tidak dapat dihapuskan kerana bahagian penting tidak kelihatan secukupnya."
-        },
-        "incomplete_relation": {
-          "single": "Gambaran ini tidak dapat dihapuskan kerana tidak dimuat turun keseluruhannya.",
-          "multiple": "Gambaran-gambaran ini tidak dapat dihapuskan kerana tidak dimuat turun keseluruhannya."
-        },
-        "part_of_relation": {
-          "single": "Gambaran ini tidak dapat dihapuskan kerana menjadi sebahagian ahli dalam hubungan yang lebih lanjut. Anda harus membuang keahliannya daripada hubungan tersebut.",
-          "multiple": "Ciri-ciri ini tidak dapat dipadam kerana mereka sebahagian dari hubungan yang lebih besar. Anda mesti keluarkan mereka dari hubungan tersebut dahulu."
-        },
-        "connected_to_hidden": {
-          "single": "Gambaran ini tidak dapat dihapuskan kerana bersambung dengan ciri yang tersorok.",
-          "multiple": "Gambaran-gambaran ini tidak dapat dihapuskan kerana bersambung dengan ciri yang tersorok."
         }
       },
       "disconnect": {
@@ -111,50 +89,18 @@
       },
       "move": {
         "title": "Alih",
-        "description": {
-          "single": "Alih gambaran ini ke tempat yang lain.",
-          "multiple": "Alih gambaran-gambaran ini ke tempat yang lain."
-        },
         "annotation": {
           "point": "Suatu titik telah dialih.",
           "vertex": "Suatu nod dalam jalan telah dialih.",
           "line": "Suatu garis telah dialih.",
           "area": "Telah dipindah suatu kawasan."
-        },
-        "incomplete_relation": {
-          "single": "Gambaran ini tidak dapat dialih kerana tidak dimuat turun secara keseluruhannya.",
-          "multiple": "Ciri-ciri ini tidak dapat dipindah kerana mereka belum sepenuhnya dimuat turun."
-        },
-        "too_large": {
-          "single": "Ciri ini tidak dapat dipindah kerana tidak cukup darinya dapat dilihat pada masa ini.",
-          "multiple": "Ciri-ciri ini tidak dapat dipindah kerana tidak cukup dari mereka dapat dilihat pada masa ini."
-        },
-        "connected_to_hidden": {
-          "single": "Ciri ini tidak dapat dipindah kerana ianya bersambung ke ciri tersembunyi.",
-          "multiple": "Ciri-ciri ini tidak dapat digerakkan kerana beberapa dari mereka bersambung ke ciri-ciri tersembunyi."
         }
       },
       "rotate": {
         "title": "Putar",
-        "description": {
-          "single": "Putarkan gambaran ini di sekitar titik tengahnya.",
-          "multiple": "Putarkan gambaran-gambaran ini di sekitar titik tengah masing-masing."
-        },
         "annotation": {
           "line": "Suatu garis telah diputarkan.",
           "area": "Telah diputarkan suatu kawasan."
-        },
-        "incomplete_relation": {
-          "single": "Gambaran ini tidak dapat diputarkan kerana tidak dimuat turun secara keseluruhannya.",
-          "multiple": "Gambaran-gambaran ini tidak dapat diputarkan kerana tidak dimuat turun secara keseluruhannya."
-        },
-        "too_large": {
-          "single": "Ciri ini tidak dapat diputar kerana tidak cukup darinya dapat dilihat pada masa ini.",
-          "multiple": "Ciri-ciri ini tidak dapat diputar kerana tidak cukup dari mereka dapat dilihat pada masa ini."
-        },
-        "connected_to_hidden": {
-          "single": "Ciri ini tidak dapat diputar kerana ianya bersambung ke ciri tersembunyi.",
-          "multiple": "Ciri-ciri ini tidak dapat diputar kerana beberapa dari mereka bersambung ke ciri-ciri tersembunyi."
         }
       },
       "reverse": {
@@ -170,9 +116,6 @@
           "create": "Suatu larangan membelok telah ditambah",
           "delete": "Suatu larangan membelok telah dihapuskan"
         }
-      },
-      "extract": {
-        "key": "T"
       }
     },
     "restriction": {
@@ -322,15 +265,11 @@
         "osm": {
           "tooltip": "Data peta dari OpenStreetMap"
         },
-        "notes": {
-          "key": "U"
-        },
         "maproulette": {
           "detail_title": "Butiran",
           "cancel": "Batal"
         }
       },
-      "map_features": "Ciri-ciri Peta",
       "autohidden": "Ciri-ciri ini telah disembunyikan secara automatik kerana terlalu banyak akan dipaparkan di skrin. Anda boleh mengezum masuk untuk mengedit mereka."
     },
     "photo_overlays": {
@@ -340,7 +279,7 @@
         }
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Titik-titik",
         "tooltip": "Titik-titik Tumpuan"
@@ -451,13 +390,11 @@
     "source_switch": {
       "lose_changes": "Anda mempunyai perubahan yang belum disimpan. Menukar pelayan peta akan membuangnya. Adakah anda pasti mahu menukar pelayan?"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Tag-tag"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Keluarkan"
-      }
+    "rapid_menu": {
+      "remove": "Keluarkan"
     },
     "tag_reference": {
       "description": "Perincian",
@@ -467,7 +404,6 @@
     "bearing": {
       "n": "U"
     },
-    "cannot_zoom": "Had zum jauh telah dicapai dalam mod yang sedang dipakai.",
     "full_screen": "Togol Skrin Penuh",
     "QA": {
       "osmose": {
@@ -536,12 +472,8 @@
       }
     },
     "issues": {
-      "errors": {
-        "list_title": "Ralat"
-      },
-      "warnings": {
-        "list_title": "Amaran"
-      }
+      "errors": "Ralat",
+      "warnings": "Amaran"
     },
     "intro": {
       "graph": {
@@ -674,31 +606,36 @@
       "key": {
         "delete": "Hapus"
       },
-      "browsing": {
-        "navigation": {
-          "title": "Pengemudian"
+      "navigation": "Pengemudian",
+      "help": "Bantuan",
+      "info": "Maklumat",
+      "command": {
+        "add_area": {
+          "label": "Mod 'tambah kawasan'"
         },
-        "help": {
-          "title": "Bantuan",
-          "keyboard": "Tunjukkan kaedah jalan pintas papan kekunci"
-        }
-      },
-      "editing": {
-        "drawing": {
-          "add_area": "Mod 'tambah kawasan'",
-          "stop_line": "Siapkan melukis garis atau kawasan"
+        "add_note": {
+          "key": "U"
         },
-        "commands": {
-          "save": "Simpan perubahan"
+        "stop_line": {
+          "label": "Siapkan melukis garis atau kawasan"
         },
-        "operations": {
-          "circularize": "Bulatkan garis atau kawasan tertutup"
-        }
-      },
-      "tools": {
-        "title": "Alat",
-        "info": {
-          "title": "Maklumat"
+        "save": {
+          "label": "Simpan perubahan"
+        },
+        "extract": {
+          "key": "T"
+        },
+        "circularize": {
+          "label": "Bulatkan garis atau kawasan tertutup"
+        },
+        "wireframe": {
+          "key": "B"
+        },
+        "keyboard_shortcuts": {
+          "label": "Tunjukkan kaedah jalan pintas papan kekunci"
+        },
+        "toggle_osm_notes": {
+          "key": "U"
         }
       }
     },
@@ -812,6 +749,7 @@
       "ky": "Kirghiz",
       "lah": "Lahnda",
       "lb": "Luxembourg",
+      "lij": "Liguria",
       "lo": "Laos",
       "lou": "Kreol Louisiana",
       "lrc": "Luri Utara",
@@ -875,6 +813,7 @@
       "su": "Sunda",
       "sv": "Sweden",
       "swb": "Comoria",
+      "szl": "Silesia",
       "tce": "Tutchone Selatan",
       "to": "Tonga",
       "tr": "Turki",
@@ -883,6 +822,7 @@
       "tzm": "Tamazight Atlas Tengah",
       "uk": "Ukraine",
       "uz": "Uzbekistan",
+      "vec": "Venetia",
       "vi": "Vietnam",
       "wuu": "Cina Wu",
       "yue": "Cina, Kantonis",
@@ -893,7 +833,6 @@
     },
     "scriptNames": {
       "Aghb": "Kaukasia Albania",
-      "Arab": "Arab",
       "Armi": "Aramia Imperial",
       "Armn": "Armenia",
       "Bali": "Bali",

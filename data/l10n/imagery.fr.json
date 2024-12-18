@@ -356,17 +356,15 @@
         },
         "name": "Gliwice - bâtiments"
       },
-      "LSA-ATKIS_BU": {
-        "description": "Forme des bâtiments de Saxe-Anhalt",
-        "name": "Bâtiments - Office National de la Topographie et de la Géoinformation de Saxe-Anhalt"
+      "LSA-ALKIS_BU": {
+        "description": "Forme des bâtiments de Saxe-Anhalt"
       },
       "LSA-DOP20": {
         "description": "Photos aériennes de l'Etat de Saxe-Anhalt, résolution de 20 cm",
         "name": "Orthophotos 20 cm - Office National de la Topographie et de la Géoinformation de Saxe-Anhalt"
       },
       "LSA-DVG": {
-        "description": "Enregistrement vectoriel des limites administratives. Les limites de l'État fédéral, des districts, des municipalités et des quartiers des municipalités sont indiquées.",
-        "name": "Limites administratives - Office National de la Topographie et de la Géoinformation de Saxe-Anhalt"
+        "description": "Enregistrement vectoriel des limites administratives. Les limites de l'État fédéral, des districts, des municipalités et des quartiers des municipalités sont indiquées."
       },
       "LocalAuthorities_RightsOfWay": {
         "attribution": {
@@ -689,6 +687,11 @@
         },
         "description": "Photographies géo-référencées de 1940 de Balaton Limnological Institute.",
         "name": "Orthophotos EUFAR Balaton"
+      },
+      "geoscribble-latest": {
+        "attribution": {
+          "text": "Contributeurs GeoScribble"
+        }
       },
       "gothenburg-citymap": {
         "attribution": {

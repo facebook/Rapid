@@ -109,6 +109,12 @@
         "description": "İşlenmiş Sentinel Uydu görüntüleri",
         "name": "eox.at 2018 bulutsuz"
       },
+      "EOXAT2019CLOUDLESS": {
+        "description": "Sonradan işlenmiş Sentinel Uydusu görüntüleri."
+      },
+      "EOXAT2020CLOUDLESS": {
+        "description": "Sonradan işlenmiş Sentinel Uydusu görüntüleri."
+      },
       "EOXAT2021CLOUDLESS": {
         "description": "Sonradan işlenmiş Sentinel Uydusu görüntüleri."
       },
@@ -227,7 +233,7 @@
       "Gliwice-buildings": {
         "name": "Gliwice: Binalar"
       },
-      "LSA-ATKIS_BU": {
+      "LSA-ALKIS_BU": {
         "description": "Saksonya-Anhalt'daki binaların biçimleri"
       },
       "Lodz-buildings": {
@@ -266,7 +272,8 @@
       "OSIP": {
         "attribution": {
           "text": "Ohio Eyalet Geneli Görüntüleme Programı"
-        }
+        },
+        "name": "Ohio Eyalet Geneli Görüntüleme Programı"
       },
       "OSIP_1ft": {
         "attribution": {

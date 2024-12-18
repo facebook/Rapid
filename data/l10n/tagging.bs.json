@@ -19,6 +19,9 @@
             "private": {
               "title": "Privatan"
             },
+            "unknown": {
+              "title": "Nepoznato"
+            },
             "yes": {
               "title": "Dozvoljeno"
             }
@@ -30,15 +33,36 @@
             "motor_vehicle": "Motorna vozila"
           }
         },
+        "access_aisle": {
+          "label": "Vrsta"
+        },
+        "access_simple": {
+          "options": {
+            "no": "Ništa",
+            "permissive": "Propustljiv",
+            "private": "Privatan",
+            "unknown": "Nepoznato"
+          }
+        },
+        "addr/interpolation": {
+          "label": "Vrsta"
+        },
         "address": {
           "label": "Adresa",
           "placeholders": {
             "city": "Grad",
+            "country": "Zemlja",
+            "hamlet": "Zaselak",
+            "housename": "Naziv",
+            "place": "Mjesto",
             "street": "Ulica"
           }
         },
         "admin_level": {
           "label": "Administrativni nivo"
+        },
+        "advertising": {
+          "label": "Vrsta"
         },
         "aerialway": {
           "label": "Vrsta"
@@ -70,6 +94,17 @@
         "amenity": {
           "label": "Vrsta"
         },
+        "archaeological_site": {
+          "label": "Vrsta"
+        },
+        "area/highway": {
+          "label": "Vrsta"
+        },
+        "armrest": {
+          "options": {
+            "undefined": "Nepoznato"
+          }
+        },
         "artist": {
           "label": "Javna umjetnost"
         },
@@ -79,28 +114,113 @@
         "atm": {
           "label": "Bankomat"
         },
+        "attraction": {
+          "label": "Vrsta"
+        },
+        "baby_feeding": {
+          "options": {
+            "no": "Ništa"
+          }
+        },
         "backrest": {
           "label": "Naslon za leđa"
         },
         "barrier": {
+          "label": "Vrsta",
+          "options": {
+            "bollard": "Bitva",
+            "cattle_grid": "Rešetke za stoku",
+            "city_wall": "Gradski zid",
+            "cycle_barrier": "Biciklistička prepreka",
+            "ditch": "Jarak",
+            "entrance": "Ulaz",
+            "fence": "Ograda",
+            "gate": "Kapija",
+            "hedge": "Živa ograda",
+            "kissing_gate": "Kapija (sa dvoje vrata)",
+            "retaining_wall": "Potporni zid",
+            "stile": "Prelaz preko ograde",
+            "toll_booth": "Naplatna rampa",
+            "wall": "Zid"
+          }
+        },
+        "barrier_planter": {
+          "label": "Barijera"
+        },
+        "basin": {
           "label": "Vrsta"
         },
+        "bath/type": {
+          "options": {
+            "lake": "Jezero"
+          }
+        },
+        "bench": {
+          "label": "Klupa"
+        },
         "bicycle_parking": {
+          "label": "Vrsta"
+        },
+        "board_type": {
+          "label": "Vrsta"
+        },
+        "bollard": {
+          "label": "Vrsta"
+        },
+        "boules": {
           "label": "Vrsta"
         },
         "boundary": {
           "label": "Vrsta"
         },
+        "bridge": {
+          "label": "Vrsta"
+        },
+        "bridge/support": {
+          "label": "Vrsta"
+        },
+        "bridge_combo": {
+          "label": "Vrsta"
+        },
         "building": {
-          "label": "Građevina"
+          "label": "Građevina",
+          "options": {
+            "commercial": "Poslovna zgrada",
+            "garage": "Garaža",
+            "house": "Kuća",
+            "hut": "Koliba",
+            "industrial": "Industrijska građevina",
+            "residential": "Stambena zgrada"
+          }
+        },
+        "building/levels": {
+          "label": "Nivoi"
+        },
+        "bunker_type": {
+          "label": "Vrsta"
+        },
+        "camp_site": {
+          "label": "Vrsta"
         },
         "capacity": {
           "label": "Kapacitet"
         },
+        "castle_type": {
+          "label": "Vrsta"
+        },
+        "club": {
+          "label": "Vrsta"
+        },
         "collection_times": {
           "label": "Vremena skupljanja"
         },
+        "community_centre": {
+          "label": "Vrsta"
+        },
         "construction": {
+          "label": "Vrsta"
+        },
+        "consulate": {
           "label": "Vrsta"
         },
         "country": {
@@ -109,8 +229,52 @@
         "covered": {
           "label": "Pokriveno"
         },
+        "craft": {
+          "label": "Vrsta",
+          "options": {
+            "beekeeper": "Pčelar",
+            "blacksmith": "Kovač",
+            "boatbuilder": "Brodograditelj",
+            "bookbinder": "Knjigovezac",
+            "brewery": "Pivara",
+            "carpenter": "Stolar",
+            "caterer": "Ugostitelj",
+            "clockmaker": "Proizvođač satova",
+            "dressmaker": "Izrada haljina",
+            "electrician": "Električar",
+            "gardener": "Vrtlar",
+            "insulation": "Izolator",
+            "key_cutter": "Izrada ključeva",
+            "locksmith": "Bravar",
+            "photographer": "Fotograf",
+            "plumber": "Vodoinstalater",
+            "roofer": "Krovopokrivač",
+            "saddler": "Sedlar",
+            "stonemason": "Klesar",
+            "tailor": "Krojač",
+            "window_construction": "Izrada prozora"
+          }
+        },
+        "crop": {
+          "options": {
+            "grass": "Travnjak"
+          }
+        },
         "crossing": {
           "label": "Vrsta"
+        },
+        "cutting": {
+          "label": "Vrsta"
+        },
+        "cycle_network": {
+          "label": "Mreža"
+        },
+        "cycleway": {
+          "options": {
+            "no": {
+              "title": "Ništa"
+            }
+          }
         },
         "denomination": {
           "label": "Vjeroispovjest"
@@ -118,11 +282,79 @@
         "denotation": {
           "label": "Označavanje"
         },
+        "departures_board": {
+          "options": {
+            "no": "Ništa"
+          }
+        },
+        "depot": {
+          "label": "Vrsta"
+        },
         "description": {
           "label": "Opis"
         },
+        "destination_waterway": {
+          "label": "Odredište"
+        },
+        "diplomatic": {
+          "label": "Vrsta",
+          "options": {
+            "embassy": "Ambasada"
+          }
+        },
+        "direction_cardinal-US-CA-NZ": {
+          "label": "Pravac"
+        },
+        "direction_clock": {
+          "label": "Pravac",
+          "options": {
+            "anticlockwise": "U smjeru suprotnom od kazaljke na satu",
+            "clockwise": "U smjeru kazaljke na satu"
+          }
+        },
+        "disused/amenity": {
+          "label": "Vrsta"
+        },
+        "disused/railway": {
+          "label": "Vrsta"
+        },
+        "disused/shop": {
+          "label": "Vrsta"
+        },
+        "dock": {
+          "label": "Vrsta"
+        },
+        "dog": {
+          "options": {
+            "yes": "Dozvoljeno"
+          }
+        },
+        "door_type": {
+          "label": "Vrsta"
+        },
+        "drive_through": {
+          "label": "Drive-in"
+        },
+        "embankment": {
+          "label": "Vrsta"
+        },
+        "embassy": {
+          "label": "Vrsta",
+          "options": {
+            "yes": "Ambasada"
+          }
+        },
         "emergency": {
           "label": "Hitna"
+        },
+        "emergency_combo": {
+          "label": "Vrsta"
+        },
+        "emergency_ward_entrance": {
+          "label": "Vrsta"
+        },
+        "enforcement": {
+          "label": "Vrsta"
         },
         "entrance": {
           "label": "Vrsta"
@@ -133,11 +365,41 @@
         "fee": {
           "label": "Provizija"
         },
+        "fence_type": {
+          "label": "Vrsta"
+        },
+        "fire_hydrant/position": {
+          "options": {
+            "sidewalk": "Trotoar"
+          }
+        },
+        "fire_hydrant/type": {
+          "options": {
+            "wall": "Zid"
+          }
+        },
+        "fire_service_inlet": {
+          "options": {
+            "wall": "Zid"
+          }
+        },
         "fixme": {
           "label": "Popravi me"
         },
+        "ford": {
+          "label": "Vrsta"
+        },
+        "fountain": {
+          "label": "Vrsta"
+        },
+        "gender": {
+          "placeholder": "Nepoznato"
+        },
         "generator/method": {
-          "label": "Način"
+          "label": "Način",
+          "options": {
+            "water-storage": "Rezervoar"
+          }
         },
         "generator/source": {
           "label": "Izvor"
@@ -145,17 +407,59 @@
         "generator/type": {
           "label": "Vrsta"
         },
+        "government": {
+          "label": "Vrsta"
+        },
+        "guest_house": {
+          "label": "Vrsta"
+        },
         "handicap": {
           "label": "Hendikep"
+        },
+        "healthcare": {
+          "label": "Vrsta",
+          "options": {
+            "clinic": "Klinika",
+            "dentist": "Zubar",
+            "doctor": "Doktor"
+          }
         },
         "highway": {
           "label": "Vrsta"
         },
+        "highway_cartpath": {
+          "options": {
+            "service": "Servisna cesta"
+          }
+        },
         "historic": {
-          "label": "Vrsta"
+          "label": "Vrsta",
+          "options": {
+            "archaeological_site": "Arheološko područje",
+            "boundary_stone": "Granični kamen",
+            "castle": "Dvorac",
+            "memorial": "Memorijal",
+            "monument": "Spomenik",
+            "railway": "Željeznička pruga",
+            "ruins": "Ruševine",
+            "wayside_cross": "Krajputaš ili stećak",
+            "wayside_shrine": "Hram pored puta"
+          }
+        },
+        "holding_position/type": {
+          "label": "Vrsta",
+          "options": {
+            "runway": "Pista"
+          }
         },
         "incline": {
           "label": "Nagib"
+        },
+        "indoor_type": {
+          "label": "Vrsta"
+        },
+        "industrial": {
+          "label": "Vrsta"
         },
         "information": {
           "label": "Vrsta"
@@ -165,6 +469,12 @@
             "wired": "Kablovski",
             "wlan": "WiFi"
           }
+        },
+        "kerb/kerb_barrier": {
+          "label": "Vrsta"
+        },
+        "lamp_type": {
+          "label": "Vrsta"
         },
         "landuse": {
           "label": "Vrsta"
@@ -178,6 +488,18 @@
         "leisure": {
           "label": "Vrsta"
         },
+        "level_semi": {
+          "label": "Nivoi"
+        },
+        "liaison": {
+          "label": "Vrsta"
+        },
+        "lifeguard": {
+          "label": "Vrsta"
+        },
+        "lift_gate/type": {
+          "label": "Vrsta"
+        },
         "lit": {
           "label": "Osvijetljeno"
         },
@@ -187,8 +509,33 @@
         "man_made": {
           "label": "Vrsta"
         },
+        "manhole": {
+          "label": "Vrsta"
+        },
+        "map_type": {
+          "label": "Vrsta"
+        },
+        "marker": {
+          "label": "Vrsta"
+        },
+        "material": {
+          "options": {
+            "wood": "Šuma"
+          }
+        },
         "maxspeed": {
           "label": "Ograničenje brzine"
+        },
+        "memorial": {
+          "label": "Vrsta"
+        },
+        "mooring": {
+          "options": {
+            "private": "Privatan"
+          }
+        },
+        "museum": {
+          "label": "Vrsta"
         },
         "name": {
           "label": "Naziv",
@@ -200,22 +547,68 @@
         "network": {
           "label": "Mreža"
         },
+        "network_road": {
+          "label": "Mreža"
+        },
         "note": {
           "label": "Bilješka"
         },
+        "nudism": {
+          "options": {
+            "designated": "Namjenski",
+            "no": "Zabranjeno",
+            "permissive": "Propustljiv",
+            "yes": "Dozvoljeno"
+          }
+        },
         "office": {
-          "label": "Vrsta"
+          "label": "Vrsta",
+          "options": {
+            "educational_institution": "Obrazovna institucija",
+            "employment_agency": "Agencija za zapošljavanje",
+            "estate_agent": "Agencija za nekretnine",
+            "financial": "Finansijski ured",
+            "government": "Vladin ured",
+            "insurance": "Ured za osiguranje",
+            "lawyer": "Pravni ured",
+            "ngo": "Ured NVO",
+            "physician": "Ljekar",
+            "research": "Ured za istraživanje",
+            "telecommunication": "Ured telekoma",
+            "travel_agent": "Putnička agencija"
+          }
         },
         "oneway": {
           "label": "Jednosmjerno"
         },
         "opening_hours": {
-          "label": "Sati"
+          "label": "Sati",
+          "placeholder": "Nepoznato"
+        },
+        "organic": {
+          "options": {
+            "no": "Ništa"
+          }
         },
         "park_ride": {
           "label": "Podsticaj parkiranja"
         },
         "parking": {
+          "label": "Vrsta",
+          "options": {
+            "surface": "Površina"
+          }
+        },
+        "parking_entrance": {
+          "label": "Vrsta"
+        },
+        "parking_space": {
+          "label": "Vrsta"
+        },
+        "phone": {
+          "label": "Telefon"
+        },
+        "pipeline": {
           "label": "Vrsta"
         },
         "piste/difficulty": {
@@ -225,24 +618,65 @@
           "label": "Održavanje"
         },
         "piste/type": {
-          "label": "Vrsta"
+          "label": "Vrsta",
+          "options": {
+            "playground": "Igralište"
+          }
         },
         "place": {
+          "label": "Vrsta"
+        },
+        "playground": {
+          "label": "Vrsta"
+        },
+        "post_box/type": {
           "label": "Vrsta"
         },
         "power": {
           "label": "Vrsta"
         },
+        "public_bookcase/type": {
+          "label": "Vrsta"
+        },
+        "pump": {
+          "options": {
+            "no": "Ništa"
+          }
+        },
         "railway": {
+          "label": "Vrsta"
+        },
+        "recycling_type": {
           "label": "Vrsta"
         },
         "relation": {
           "label": "Vrsta"
         },
         "religion": {
-          "label": "Religija"
+          "label": "Religija",
+          "options": {
+            "buddhist": "Budizam",
+            "christian": "Kršćanstvo",
+            "hindu": "Hinduizam",
+            "jewish": "Judaizam",
+            "muslim": "Islam",
+            "shinto": "Šintoizam",
+            "taoist": "Taoizam"
+          }
+        },
+        "residential": {
+          "label": "Vrsta"
+        },
+        "resort": {
+          "label": "Vrsta"
         },
         "restriction": {
+          "label": "Vrsta"
+        },
+        "roller_coaster/track": {
+          "label": "Vrsta"
+        },
+        "room": {
           "label": "Vrsta"
         },
         "route": {
@@ -251,8 +685,28 @@
         "route_master": {
           "label": "Vrsta"
         },
-        "service": {
+        "ruins": {
           "label": "Vrsta"
+        },
+        "seamark/beacon_lateral/system": {
+          "options": {
+            "other": "Drugo"
+          }
+        },
+        "seamark/buoy_lateral/system": {
+          "options": {
+            "other": "Drugo"
+          }
+        },
+        "service": {
+          "label": "Vrsta",
+          "options": {
+            "alley": "Uska ulica",
+            "drive-through": "Drive-in",
+            "driveway": "Prilaz",
+            "emergency_access": "Pristup za hitne slučajeve",
+            "parking_aisle": "Prolaz kroz parking"
+          }
         },
         "shelter": {
           "label": "Sklonište"
@@ -261,6 +715,27 @@
           "label": "Vrsta"
         },
         "shop": {
+          "label": "Vrsta"
+        },
+        "siren/type": {
+          "label": "Vrsta",
+          "options": {
+            "other": "Drugo"
+          }
+        },
+        "site": {
+          "label": "Vrsta"
+        },
+        "social_facility": {
+          "label": "Vrsta",
+          "options": {
+            "shelter": "Sklonište"
+          }
+        },
+        "stile": {
+          "label": "Vrsta"
+        },
+        "street_cabinet": {
           "label": "Vrsta"
         },
         "structure": {
@@ -273,23 +748,141 @@
           },
           "placeholder": "Nepoznato"
         },
+        "structure_power": {
+          "label": "Struktura"
+        },
+        "structure_waterway": {
+          "label": "Struktura",
+          "options": {
+            "tunnel": "Tunel"
+          },
+          "placeholder": "Nepoznato"
+        },
+        "studio": {
+          "label": "Vrsta"
+        },
+        "substance": {
+          "options": {
+            "water": "Voda za piće"
+          }
+        },
+        "substation": {
+          "label": "Vrsta"
+        },
+        "substation_pipeline": {
+          "label": "Vrsta"
+        },
         "supervised": {
           "label": "Pod nadzorom"
         },
         "surface": {
-          "label": "Površina"
+          "label": "Površina",
+          "options": {
+            "grass": "Travnjak",
+            "wood": "Šuma"
+          }
+        },
+        "survey_point/structure": {
+          "label": "Struktura",
+          "options": {
+            "block": "Blok"
+          }
+        },
+        "swimming_pool": {
+          "label": "Vrsta"
+        },
+        "switch": {
+          "label": "Vrsta"
+        },
+        "telecom": {
+          "label": "Vrsta"
+        },
+        "telescope/type": {
+          "label": "Vrsta"
+        },
+        "toilets": {
+          "label": "Toaleti"
         },
         "toilets/disposal": {
           "label": "Način odlaganja otpada iz toaleta"
         },
+        "tomb": {
+          "label": "Vrsta"
+        },
         "tourism": {
+          "label": "Vrsta"
+        },
+        "tower/construction": {
+          "label": "Građevinsko područje"
+        },
+        "tower/type": {
+          "label": "Vrsta"
+        },
+        "townhall/type": {
+          "label": "Vrsta"
+        },
+        "trade": {
+          "label": "Vrsta"
+        },
+        "traffic_calming": {
+          "label": "Vrsta"
+        },
+        "traffic_signals": {
           "label": "Vrsta"
         },
         "trail_visibility": {
           "label": "Vidljivost traga"
         },
+        "transformer": {
+          "label": "Vrsta"
+        },
+        "trench": {
+          "label": "Vrsta"
+        },
+        "tunnel": {
+          "label": "Vrsta"
+        },
+        "tunnel_combo": {
+          "label": "Vrsta"
+        },
+        "usage_rail": {
+          "options": {
+            "tourism": "Turizam"
+          }
+        },
+        "utility": {
+          "options": {
+            "power": "Energija",
+            "water": "Voda"
+          }
+        },
+        "valve": {
+          "label": "Vrsta"
+        },
+        "vehicles": {
+          "options": {
+            "monorail": "Pruga sa jednim kolosijekom",
+            "subway": "Podzemna željeznica",
+            "tram": "Tramvaj"
+          }
+        },
+        "vending": {
+          "options": {
+            "water": "Voda za piće"
+          }
+        },
+        "wall": {
+          "label": "Vrsta"
+        },
         "water": {
           "label": "Vrsta"
+        },
+        "water_source": {
+          "options": {
+            "pond": "Ribnjak",
+            "river": "Rijeka",
+            "stream": "Potok"
+          }
         },
         "waterway": {
           "label": "Vrsta"
@@ -389,6 +982,10 @@
           "name": "Zubar",
           "terms": "zubar,stomatolog"
         },
+        "amenity/doctors": {
+          "name": "Doktor",
+          "terms": "doktor,ljekar"
+        },
         "amenity/drinking_water": {
           "name": "Voda za piće",
           "terms": "voda za piće,pitka voda"
@@ -470,6 +1067,10 @@
           "name": "Gradska vijećnica",
           "terms": "gradska vijećnica,vijećnica"
         },
+        "amenity/vending_machine": {
+          "name": "Automat",
+          "terms": "automat,automat za prodaju pića,automat sa pićem,automat sa slatkišima"
+        },
         "area": {
           "name": "Područje",
           "terms": "područje,zona,oblast"
@@ -533,6 +1134,9 @@
           "name": "Zid",
           "terms": "zid,zidić,bedem"
         },
+        "boundary": {
+          "name": "Granica"
+        },
         "boundary/administrative": {
           "name": "Admninistrativna granica",
           "terms": "administrativna granica, administrativna linija"
@@ -564,6 +1168,9 @@
         "building/residential": {
           "name": "Stambena zgrada",
           "terms": "stambena zgrada,zgrada za stanovanje"
+        },
+        "building_point": {
+          "name": "Građevina"
         },
         "craft/beekeeper": {
           "name": "Pčelar"
@@ -654,15 +1261,27 @@
           "name": "Rupa za golf",
           "terms": "golf rupa,rupa za golf loptice"
         },
+        "golf/lateral_water_hazard": {
+          "name": "Vodena opasnost sa strane",
+          "terms": "opasnost of vode sa strane,voda sa strane"
+        },
         "golf/rough": {
           "terms": "područje \"divlje\" trave van igre,trava van golf terena"
         },
         "golf/tee": {
           "terms": "\"Tee\" kutija,kutija područja na početku rupe"
         },
+        "golf/water_hazard": {
+          "name": "Vodena opasnost",
+          "terms": "opasnost od vode,vodena opasnost"
+        },
         "highway/bridleway": {
           "name": "Konjska staza",
           "terms": "konjska staza,konjička staza,konjski trag"
+        },
+        "highway/crossing": {
+          "name": "Prelaz",
+          "terms": "prelaz,pješački prelaz"
         },
         "highway/cycleway": {
           "name": "Biciklistička staza",
@@ -671,6 +1290,10 @@
         "highway/footway": {
           "name": "Pješačka staza",
           "terms": "pješačka staza,staza,ugažena staza"
+        },
+        "highway/footway/sidewalk": {
+          "name": "Trotoar",
+          "terms": "trotoar"
         },
         "highway/living_street": {
           "name": "Stambena ulica",
@@ -827,13 +1450,27 @@
           "name": "Livada",
           "terms": "livada,prirodni travnjak"
         },
+        "landuse/military/barracks": {
+          "name": "Kasarna",
+          "terms": "kasarna,zgrada kasarne"
+        },
+        "landuse/military/range": {
+          "name": "Strelište",
+          "terms": "strelište,vojni poligon,poligon za vojne vježbe"
+        },
         "landuse/orchard": {
           "name": "Voćnjak",
           "terms": "voćnjak,uzgoj voća"
         },
+        "landuse/pond": {
+          "name": "Ribnjak"
+        },
         "landuse/quarry": {
           "name": "Rudnik",
           "terms": "kamenolom,vađenje kamena"
+        },
+        "landuse/reservoir": {
+          "name": "Rezervoar"
         },
         "landuse/vineyard": {
           "name": "Vinograd",
@@ -918,7 +1555,8 @@
           "terms": "šumski prosjek,prosjek kroz šumu"
         },
         "man_made/embankment": {
-          "name": "Nasip"
+          "name": "Nasip",
+          "terms": "nasip"
         },
         "man_made/flagpole": {
           "name": "Jarbol",
@@ -943,6 +1581,10 @@
         "man_made/tower": {
           "name": "Toranj",
           "terms": "toranj,kula"
+        },
+        "man_made/tower/observation": {
+          "name": "Osmatračnica",
+          "terms": "osmatračnica,toranj za osmatranje,platforma za osmatranje,toranj za turiste,protupožarni toranj"
         },
         "man_made/wastewater_plant": {
           "name": "Postrojenje za obradu otpadnih voda",
@@ -1012,6 +1654,10 @@
           "name": "Voda",
           "terms": "voda"
         },
+        "natural/water/basin": {
+          "name": "Sliv",
+          "terms": "sliv,bazen"
+        },
         "natural/water/lake": {
           "name": "Jezero",
           "terms": "jezero,vodom ispunjena kopnena depresija"
@@ -1034,6 +1680,10 @@
         },
         "office/administrative": {
           "name": "Administrativni ured"
+        },
+        "office/diplomatic/embassy": {
+          "name": "Ambasada",
+          "terms": "ambasada,konzulat,predstavništvo strane zemlje"
         },
         "office/educational_institution": {
           "name": "Obrazovna institucija",
@@ -1104,6 +1754,9 @@
           "name": "Lokalitet",
           "terms": "lokalitet,specifično mjesto"
         },
+        "place/square": {
+          "name": "Kvadrat"
+        },
         "place/town": {
           "name": "Gradić",
           "terms": "gradić,mali grad,manje urbano područje"
@@ -1132,6 +1785,10 @@
           "name": "Naponski stub",
           "terms": "naponski stub,stub el. napajanja"
         },
+        "power/substation": {
+          "name": "Trafo stanica",
+          "terms": "trafo,trafo stanica"
+        },
         "power/tower": {
           "name": "Visokonaponski dalekovod",
           "terms": "visokonaponski dalekovod,visokonaponski toranj"
@@ -1139,6 +1796,9 @@
         "power/transformer": {
           "name": "Transformator",
           "terms": "transformator,transformator el. energije"
+        },
+        "public_transport/platform/bus_point": {
+          "terms": "autobuska stanica,autobusko stajalište"
         },
         "railway/abandoned": {
           "name": "Napuštena željeznica",
@@ -1314,6 +1974,9 @@
         "shop/supermarket": {
           "terms": "supermarket,prodaja robe široke potrošnje"
         },
+        "shop/tailor": {
+          "name": "Krojač"
+        },
         "shop/toys": {
           "name": "Prodavnica igračaka",
           "terms": "prodavnica igračaka, radnja za prodaju igračaka"
@@ -1327,7 +1990,8 @@
           "terms": "prodavnica guma, radnja za prodaju auto-guma"
         },
         "shop/vacant": {
-          "name": "Prodavnica za iznajmljivanje"
+          "name": "Prodavnica za iznajmljivanje",
+          "terms": "prodavnica za iznajmljivanje,prodavnica za najam"
         },
         "shop/video": {
           "name": "Video klub",
@@ -1391,7 +2055,8 @@
           "terms": "administrativna granica,administrativna linija"
         },
         "type/multipolygon": {
-          "name": "Multipoligon"
+          "name": "Multipoligon",
+          "terms": "multipoligon,mnogougaonik"
         },
         "type/restriction": {
           "name": "Zabrana",
@@ -1440,6 +2105,10 @@
         "type/route_master": {
           "name": "Informacije o rutama",
           "terms": "informacije o rutama,informacije o trasama"
+        },
+        "type/waterway": {
+          "name": "Vodotok",
+          "terms": "vodotok,vodeni tok"
         },
         "waterway/canal": {
           "name": "Kanal",

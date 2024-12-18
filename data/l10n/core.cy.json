@@ -8,14 +8,14 @@
       "zoom_to": "chwyddo i",
       "copy": "copïo",
       "view_on": "gweld ar {domain}",
-      "visit_website": "ymweld â'r gwefan",
-      "favorite": "ffefryn",
+      "visit_website": "ymweld â gwefan",
+      "favorite": "ffefrynu",
       "list": "rhestr",
       "text": "testun",
       "deselect": "dad-ddewis"
     },
     "toolbar": {
-      "inspect": "Archwilio",
+      "inspect": "Arolygu",
       "undo_redo": "Dadwneud / Ailwneud",
       "recent": "Diweddar",
       "favorites": "Ffefrynnau",
@@ -31,21 +31,17 @@
     },
     "modes": {
       "add_area": {
-        "title": "Ardal",
-        "filter_tooltip": "ardaloedd"
+        "title": "Ardal"
       },
       "add_line": {
-        "title": "Llinell",
-        "filter_tooltip": "llinellau"
+        "title": "Llinell"
       },
       "add_point": {
-        "title": "Pwynt",
-        "filter_tooltip": "pwyntiau"
+        "title": "Pwynt"
       },
       "add_note": {
         "title": "Nodyn",
-        "description": "Oes yna broblem? Rhoi gwybod i'r mapwyr eraill.",
-        "key": "G"
+        "description": "Oes yna broblem? Rhoi gwybod i'r mapwyr eraill."
       },
       "add_preset": {
         "title": "Ychwanegu {feature}"
@@ -106,7 +102,7 @@
           "other": "Wedi gosod y nodweddion hyn ar gyfer gludo."
         },
         "annotation": {
-          "one": "Wedi copïo {n} nodwedd.",
+          "one": "Wedi copïo nodwedd.",
           "two": "Wedi copïo {n} nodwedd.",
           "many": "Wedi copïo {n} nodwedd.",
           "other": "Wedi copïo {n} nodwedd."
@@ -136,10 +132,6 @@
       },
       "circularize": {
         "title": "Cylchu",
-        "description": {
-          "single": "Cylchu'r nodwedd hon.",
-          "multiple": "Cylchu'r nodweddion hyn."
-        },
         "annotation": {
           "feature": {
             "one": "Wedi cylchu nodwedd.",
@@ -147,43 +139,10 @@
             "many": "Wedi cylchu {n} nodwedd.",
             "other": "Wedi cylchu {n} nodwedd."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Ni ellir gwneud y rhain yn gylchoedd am sawl rheswm."
-        },
-        "not_closed": {
-          "single": "Ni ellir gwneud hyn yn gylchol oherwydd nad yw'n ddolen.",
-          "multiple": "Ni ellir gwneud y rhain yn gylchol oherwydd nad ydynt yn ddolenni."
-        },
-        "too_large": {
-          "single": "Ni ellir gwneud hyn yn gylchol oherwydd nad oes digon ohoni yn weladwy ar hyn o bryd.",
-          "multiple": "Ni ellir gwneud y rhain yn gylchol oherwydd nad oes digon ohonynt yn weladwy ar hyn o bryd."
-        },
-        "connected_to_hidden": {
-          "single": "Ni ellir cylchu hwn oherwydd ei fod wedi'i gysylltu â nodwedd gudd.",
-          "multiple": "Ni ellir cylchu'r rhain oherwydd eu bod wedi'u cysylltu â nodweddion cudd."
-        },
-        "not_downloaded": {
-          "single": "Ni ellir gwneud hwn yn gylchol oherwydd nad yw rhannau ohono wedi'i lawrlwytho eto.",
-          "multiple": "Ni ellir gwneud y rhain yn gylchol oherwydd nad yw rhannau ohonynt wedi'u lawrlwytho eto."
-        },
-        "already_circular": {
-          "single": "Ni ellir gwneud hyn yn fwy cylchol nag y mae.",
-          "multiple": "Ni ellir gwneud y rhain yn fwy cylchol nag y maent."
         }
       },
       "orthogonalize": {
         "title": "Sgwario",
-        "description": {
-          "corner": {
-            "single": "Sgwario'r cornel hwn.",
-            "multiple": "Sgwario'r corneli hyn."
-          },
-          "feature": {
-            "single": "Sgwario corneli'r nodwedd hon.",
-            "multiple": "Sgwario corneli'r nodweddion hyn."
-          }
-        },
         "annotation": {
           "corner": {
             "one": "Wedi sgwario {n} cornel.",
@@ -197,33 +156,6 @@
             "many": "Wedi sgwario corneli {n} nodwedd.",
             "other": "Wedi sgwario corneli {n} nodwedd."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Ni ellir sgwario'r rhain am sawl rheswm."
-        },
-        "end_vertex": {
-          "single": "Ni ellir sgwario hwn gan ei bod yn bwynt terfyn.",
-          "multiple": "Ni ellir sgwario'r rheini oherwydd eu bod yn bwyntiau terfyn."
-        },
-        "square_enough": {
-          "single": "Ni ellir gwneud hwn yn fwy sgwâr nag y mae.",
-          "multiple": "Ni ellir gwneud y rheini'n fwy sgwâr nag y maent."
-        },
-        "not_squarish": {
-          "single": "Ni ellir gwneud hwn yn sgwâr oherwydd nid yw'n debyg i sgwâr.",
-          "multiple": "Ni ellir gwneud y rhain yn sgwâr oherwydd nad ydynt yn debyg i sgwâr."
-        },
-        "too_large": {
-          "single": "Ni ellir gwneud hwn yn sgwâr oherwydd nad oes digon ohono yn weladwy ar hyn o bryd.",
-          "multiple": "Ni ellir gwneud y rhain yn sgwâr oherwydd nad oes digon ohonynt yn weladwy ar hyn o bryd."
-        },
-        "connected_to_hidden": {
-          "single": "Ni ellir gwneud hyn yn sgwâr oherwydd ei fod wedi'i gysylltu â nodwedd gudd.",
-          "multiple": "Ni ellir gwneud y rhain yn sgwâr oherwydd eu bod wedi'u cysylltu â nodweddion cudd."
-        },
-        "not_downloaded": {
-          "single": "Ni ellir gwneud hyn yn sgwâr oherwydd nad yw rhannau ohono wedi'i lawrlwytho eto.",
-          "multiple": "Ni ellir gwneud y rhain yn sgwâr oherwydd nad yw rhannau ohonynt wedi'u lawrlwytho eto."
         }
       },
       "straighten": {
@@ -246,34 +178,10 @@
             "many": "Wedi sythu {n} llinell.",
             "other": "Wedi sythu {n} llinell."
           }
-        },
-        "too_bendy": {
-          "single": "Ni ellir sythu hon oherwydd ei bod yn troi gormod.",
-          "multiple": "Ni ellir sythu hyn oherwydd eu bod yn troi gormod."
-        },
-        "connected_to_hidden": {
-          "single": "Ni ellir sythu hwn oherwydd ei fod wedi'i gysylltu â nodwedd gudd.",
-          "multiple": "Ni ellir sythu'r rhain oherwydd eu bod wedi'u cysylltu â nodweddion cudd."
-        },
-        "not_downloaded": {
-          "single": "Ni ellir sythu hwn oherwydd nad yw rhannau ohono wedi'i lawrlwytho eto.",
-          "multiple": "Ni ellir sythu'r rhain oherwydd nad yw rhannau ohonynt wedi'u lawrlwytho eto."
-        },
-        "straight_enough": {
-          "single": "Ni ellir sythu hyn yn fwy nag y mae.",
-          "multiple": "Ni ellir gwneud y rhain yn sythach nag y maent."
-        },
-        "too_large": {
-          "single": "Ni ellir sythu hwn oherwydd nad oes digon ohono yn weladwy ar hyn o bryd.",
-          "multiple": "Ni ellir sythu'r rhain oherwydd nad oes digon ohonynt yn weladwy ar hyn o bryd."
         }
       },
       "delete": {
         "title": "Dileu",
-        "description": {
-          "single": "Dileu'r nodwedd hon yn barhaus.",
-          "multiple": "Dileu'r nodweddion hyn yn barhaus."
-        },
         "annotation": {
           "point": "Wedi dileu pwynt.",
           "vertex": "Wedi dileu nod o lwybr.",
@@ -286,30 +194,6 @@
             "many": "Wedi dileu {n} nodwedd.",
             "other": "Wedi dileu {n} nodwedd."
           }
-        },
-        "too_large": {
-          "single": "Ni ellir dileu'r nodwedd hon oherwydd nad oes digon ohoni yn weladwy ar hyn o bryd.",
-          "multiple": "Ni ellir dileu'r nodweddion hyn oherwydd nad oes digon ohonynt yn weladwy ar hyn o bryd."
-        },
-        "incomplete_relation": {
-          "single": "Ni ellir dileu'r nodwedd hon gan nad yw wedi'i lawrlwytho'n llawn eto.",
-          "multiple": "Ni ellir dileu'r nodweddion hyn gan nad ydynt wedi'u lawrlwytho'n llawn eto."
-        },
-        "part_of_relation": {
-          "single": "Ni ellir dileu'r nodwedd hon gan ei bod yn rhan o berthynas fwy. Rhaid ichi ei dynnu o'r berthynas yn gyntaf.",
-          "multiple": "Ni ellir dileu'r nodweddion hyn gan eu bod yn rhan o berthnasau mwy. Rhaid ichi eu dynnu o'r berthnasau yn gyntaf."
-        },
-        "connected_to_hidden": {
-          "single": "Ni ellir dileu'r nodwedd hon oherwydd ei bod wedi'i chysylltu â nodwedd gudd.",
-          "multiple": "Ni ellir dileu'r nodweddion hyn oherwydd bod rhai ohonynt wedi'u cysylltu â nodweddion cudd."
-        },
-        "not_downloaded": {
-          "single": "Ni ellir dileu'r nodwedd hon gan nad yw rhannau ohoni wedi'u lawrlwytho eto.",
-          "multiple": "Ni ellir dileu'r nodweddion hyn gan nad yw rhannau ohonynt wedi'u lawrlwytho eto."
-        },
-        "has_wikidata_tag": {
-          "single": "Ni ellir dileu'r nodwedd hon oherwydd bod tag Wicidata arni.",
-          "multiple": "Ni ellir dileu'r nodweddion hyn oherwydd bod tagiau Wicidata ar rhai ohonynt."
         }
       },
       "downgrade": {
@@ -339,10 +223,6 @@
             "many": "Wedi israddio {n} nodwedd.",
             "other": "Wedi israddio {n} nodwedd."
           }
-        },
-        "has_wikidata_tag": {
-          "single": "Ni ellir israddio'r nodwedd hon oherwydd bod tag Wicidata arni.",
-          "multiple": "Ni ellir israddio'r nodweddion hyn oherwydd bod tag Wicidata arnynt."
         }
       },
       "add_member": {
@@ -420,10 +300,6 @@
       },
       "move": {
         "title": "Symud",
-        "description": {
-          "single": "Symud y nodwedd hon i leoliad arall.",
-          "multiple": "Symud y nodweddion hyn i leoliad arall."
-        },
         "annotation": {
           "point": "Wedi symud pwynt.",
           "vertex": "Wedi symud nod mewn llwybr.",
@@ -436,38 +312,16 @@
             "many": "Wedi symud {n} nodwedd.",
             "other": "Wedi symud {n} nodwedd."
           }
-        },
-        "too_large": {
-          "single": "Ni ellir symud hyn oherwydd nad oes digon ohoni yn weladwy ar hyn o bryd.",
-          "multiple": "Ni ellir symud y rhain oherwydd nad oes digon ohonynt yn weladwy ar hyn o bryd."
-        },
-        "connected_to_hidden": {
-          "single": "Ni ellir symud hyn oherwydd ei bod wedi'i chysylltu â nodwedd gudd.",
-          "multiple": "Ni ellir symud y rhain oherwydd rhai ohonynt wedi'u cysylltu â nodweddion cudd."
         }
       },
       "reflect": {
         "title": {
           "long": "Fflipio Hir",
           "short": "Fflipio Byr"
-        },
-        "description": {
-          "long": {
-            "single": "Fflipio'r nodwedd hon ar draws ei hechel hir.",
-            "multiple": "Fflipio'r nodweddion hyn ar draws eu hechel hir."
-          },
-          "short": {
-            "single": "Fflipio'r nodwedd hon ar draws ei hechel fer.",
-            "multiple": "Fflipio'r nodweddion hyn ar draws eu hechel fer."
-          }
         }
       },
       "rotate": {
         "title": "Troi",
-        "description": {
-          "single": "Troi'r nodwedd hon o gwmpas ei phwynt ganolog.",
-          "multiple": "Troi'r nodweddion hyn o gwmpas eu pwyntiau canolog."
-        },
         "annotation": {
           "line": "Wedi troi llinell.",
           "area": "Wedi troi ardal.",
@@ -569,16 +423,8 @@
       "extract": {
         "title": "Echdynnu",
         "description": {
-          "line": {
-            "single": "Echdynnu pwynt o'r llinell hon.",
-            "multiple": "Echdynnu pwyntiau o'r llinellau hyn."
-          },
-          "area": {
-            "single": "Echdynnu pwynt o'r ardal hon.",
-            "multiple": "Echdynnu pwyntiau o'r ardaloedd hyn."
-          },
           "feature": {
-            "multiple": "Echdynnu pwyntiau o'r nodweddion hyn."
+            "other": "Echdynnu pwyntiau o'r nodweddion hyn."
           }
         },
         "annotation": {
@@ -593,7 +439,7 @@
       "controls": {
         "distance": "Pellter",
         "distance_up_to": "Hyd at {distance}",
-        "via": "Trwy",
+        "via": "Drwy",
         "via_node_only": "Nod yn unig",
         "via_up_to_one": "Hyd at 1 llwybr",
         "via_up_to_two": "Hyd at 2 lwybr"
@@ -615,7 +461,7 @@
           "allowed_straight_on": "Caniateir Syth Ymlaen {indirect}"
         },
         "from": "O",
-        "via": "TRWY",
+        "via": "DRWY",
         "to": "I",
         "select_from": "Cliciwch i ddewis segment {from}",
         "select_from_name": "Cliciwch i ddewis {from} {fromName}",
@@ -632,9 +478,10 @@
       "tooltip": "Ailwneud: {action}",
       "nothing": "Dim byd i'w ailwneud."
     },
+    "tooltip_keyhint": "Allwedd:",
     "translate": {
       "translate": "Ychwanegu enw amlieithog",
-      "localized_translation_label": "Enw amlieithog",
+      "localized_translation_label": "Enw Amlieithog",
       "localized_translation_language": "Dewis iaith",
       "localized_translation_name": "Enw"
     },
@@ -642,8 +489,9 @@
     "login": "Mewngofnodi",
     "logout": "Allgofnodi",
     "loading_auth": "Wrthi'n cysylltu ag OpenStreetMap...",
-    "report_a_bug": "Adrodd am nam",
+    "report_a_bug": "Rhoi gwybod am nam",
     "help_translate": "Helpu i gyfieithu",
+    "example": "Enghraifft:",
     "feature_info": {
       "hidden_warning": {
         "one": "{count} nodwedd cudd",
@@ -715,6 +563,7 @@
         "last_edit": "Golygiad diwethaf",
         "edited_by": "Golygwyd gan",
         "changeset": "Grŵp newid",
+        "link_text": "Hanes ar openstreetmap.org",
         "note_no_history": "Dim Hanes (Nodyn Newydd)",
         "note_comments": "Sylwadau",
         "note_created_date": "Dyddiad Creu",
@@ -723,7 +572,7 @@
       },
       "location": {
         "title": "Lleoliad",
-        "unknown_location": "Lleoliad anhysbys"
+        "unknown_location": "Lleoliad Anhysbys"
       },
       "measurement": {
         "title": "Mesur",
@@ -759,14 +608,16 @@
       "location_unavailable": "Nid yw eich lleoliad ar gael."
     },
     "inspector": {
+      "tooltip": "Toglo'r arolygydd nodweddion.",
       "zoom_to": {
         "title": "Chwyddo i ddewisiad",
         "no_selection": "Dim byd i'w chwyddo iddi."
       },
-      "show_more": "Gweld mwy",
+      "show_more": "Gweld Rhagor",
       "view_on_osm": "Gweld ar openstreetmap.org",
       "view_on_osmose": "Gweld ar osmose.openstreetmap.fr",
       "view_on_keepRight": "Gweld ar keepright.at",
+      "view_on_maproulette": "Gweld ar maproulette.org",
       "feature_type": "Math o Nodwedd",
       "fields": "Meysydd",
       "tags": "Tagiau",
@@ -786,11 +637,13 @@
         "other": "{n} canlyniad ar gyfer {search}"
       },
       "no_documentation_key": "Dim dogfennaeth ar gael.",
+      "edit_reference": "golygu/cyfieithu",
       "wiki_reference": "Gweld dogfennaeth",
       "wiki_en_reference": "Gweld dogfennaeth yn Saesneg",
       "key_value": "allwedd=gwerth",
       "multiple_values": "Gwerthoedd Lluosog",
       "multiple_types": "Mathau Lluosog",
+      "unshared_value_tooltip": "nid yw wedi'i rannu gan bob nodwedd",
       "back_tooltip": "Newid math o nodwedd",
       "type": "Math",
       "details": "Manylion",
@@ -818,13 +671,13 @@
       "add_fields": "Ychwanegu maes:",
       "display_name": {
         "from_to": "O {from} i {to}",
-        "from_to_via": "O {from} i {to} trwy {via}",
+        "from_to_via": "O {from} i {to} drwy {via}",
         "network_from_to": "{network} o {from} i {to}",
-        "network_from_to_via": "{network} o {from} i {to} trwy {via}",
+        "network_from_to_via": "{network} o {from} i {to} drwy {via}",
         "ref_from_to": "{ref} o {from} i {to}",
-        "ref_from_to_via": "{ref} o {from} i {to} trwy {via}",
+        "ref_from_to_via": "{ref} o {from} i {to} drwy {via}",
         "network_ref_from_to": "{network} {ref} o {from} i {to}",
-        "network_ref_from_to_via": "{network} {ref} o {from} i {to} trwy {via}"
+        "network_ref_from_to_via": "{network} {ref} o {from} i {to} drwy {via}"
       }
     },
     "background": {
@@ -836,14 +689,27 @@
       "switch": "Newid yn ôl i'r cefndir hwn",
       "custom": "Addas",
       "overlays": "Troshaenau",
+      "grid": {
+        "grids": "Gridiau",
+        "no_grid": "Dim Grid",
+        "n_by_n": "Grid {num} x {num}"
+      },
+      "imagery_source_faq": "Gwybodaeth Delwedd / Rhoi Gwybod am Broblem",
       "imagery_problem_faq": "Adrodd Gwall Delweddau",
       "reset": "ailosod",
       "reset_all": "Ailosod popeth",
       "display_options": "Opsiynau Arddangos",
+      "wayback": {
+        "date": "Dyddiad"
+      },
       "brightness": "Disgleirdeb",
       "contrast": "Cyferbynnedd",
       "saturation": "Dirlawnder",
       "sharpness": "Miniogrwydd",
+      "3dmap": {
+        "description": "Dangos map 3D",
+        "tooltip": "Dangos map 3D wedi'i osod."
+      },
       "minimap": {
         "description": "Dangos Map Bach"
       },
@@ -863,15 +729,26 @@
       "layers": {
         "osm": {
           "tooltip": "Data map o OpenStreetMap",
-          "title": "Data OpenStreetMap"
+          "title": "Data OpenStreetMap",
+          "feature": "Nodwedd OpenStreetMap"
         },
         "notes": {
           "tooltip": "Data nodyn gan OpenStreetMap",
-          "title": "Nodiadau OpenStreetMap",
-          "key": "G"
+          "title": "Nodiadau OpenStreetMap"
+        },
+        "rapid": {
+          "title": "Nodweddion Rapid",
+          "license": "Trwydded Map With AI Facebook"
         },
         "maproulette": {
+          "title": {
+            "one": "Tasg MapRoulette",
+            "two": "Tasgau MapRoulette",
+            "many": "Tasgau MapRoulette",
+            "other": "Tasgau MapRoulette"
+          },
           "detail_title": "Manylion",
+          "instruction_title": "Cyfarwyddiadau",
           "cancel": "Canslo"
         },
         "keepRight": {
@@ -893,8 +770,7 @@
       "measurement_panel": {
         "title": "Dangos Panel Mesur"
       },
-      "style_options": "Opsiynau Arddull",
-      "map_features": "Nodweddion Map"
+      "style_options": "Opsiynau Arddull"
     },
     "visual_diff": {
       "highlight_edits": {
@@ -924,29 +800,29 @@
       },
       "username_filter": {
         "title": "Enw defnyddiwr",
-        "tooltip": "Dangoswch dim ond lluniau gan y defnyddiwr hwn"
+        "tooltip": "Dango dim ond lluniau gan y defnyddiwr hwn"
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Pwyntiau",
         "tooltip": "Pwyntiau o Ddiddordeb"
       },
       "traffic_roads": {
         "description": "Ffyrdd Traffig",
-        "tooltip": "Priffyrdd, Strydoedd, ayb."
+        "tooltip": "Priffyrdd, Strydoedd, ac ati."
       },
       "service_roads": {
         "description": "Ffyrdd Gwasanaeth",
-        "tooltip": "Ffyrdd Gwasanaeth, Eiliau Parcio, Traciau, ayb."
+        "tooltip": "Ffyrdd Gwasanaeth, Eiliau Parcio, Traciau, ac ati."
       },
       "paths": {
         "description": "Llwybrau",
-        "tooltip": "Palmentydd, Troetffyrdd, Llwybrau Beicio, ayb."
+        "tooltip": "Palmentydd, Troedffyrdd, Llwybrau Beicio, ac ati."
       },
       "buildings": {
         "description": "Adeiladau",
-        "tooltip": "Adeiladau, Cysgodion, Garejis, ayb."
+        "tooltip": "Adeiladau, Cysgodion, Garejis, ac ati."
       },
       "building_parts": {
         "description": "Rhannau Adeilad",
@@ -954,11 +830,11 @@
       },
       "indoor": {
         "description": "Nodweddion Dan-do",
-        "tooltip": "Ystafelloedd, Coridorau, Grisiau, ayb."
+        "tooltip": "Ystafelloedd, Coridorau, Grisiau, ac ati."
       },
       "landuse": {
         "description": "Nodweddion Defnydd Tir",
-        "tooltip": "Coed, Amaethdir, Parc, Preswyl, Adwerthu, ayb."
+        "tooltip": "Coed, Amaethdir, Parc, Preswyl, Adwerthu, ac ati."
       },
       "boundaries": {
         "description": "Ffiniau",
@@ -966,7 +842,7 @@
       },
       "water": {
         "description": "Nodweddion Dŵr",
-        "tooltip": "Afon, Llyn, Pwll, Basin, ayb."
+        "tooltip": "Afonydd, Llynnoedd, Pyllau, Basinau, ac ati."
       },
       "rail": {
         "description": "Nodweddion Rheilffordd",
@@ -974,18 +850,18 @@
       },
       "pistes": {
         "description": "Llethrau",
-        "tooltip": "Llethrau Sgïo, Llwybrau Slêd, Llwybrau Sglefrio Iâ, ayb."
+        "tooltip": "Llethrau Sgïo, Llwybrau Slêd, Llwybrau Sglefrio Iâ, ac ati."
       },
       "aerialways": {
         "description": "Nodweddion Awyr"
       },
       "power": {
         "description": "Nodweddion Pŵer",
-        "tooltip": "Llinellau Drydan, Gorsafoedd Ynni, Isorsafoedd, ayb."
+        "tooltip": "Llinellau Drydan, Gorsafoedd Ynni, Isorsafoedd, ac ati."
       },
       "past_future": {
         "description": "Nodweddion Gorffennol / Dyfodol",
-        "tooltip": "Arfaethedig, Adeiladwaith, Gadawedig, Dymchwelwyd, ayb."
+        "tooltip": "Arfaethedig, Adeiladwaith, Gadawedig, Dymchwelwyd, ac ati."
       },
       "others": {
         "description": "Nodweddion Eraill",
@@ -1044,8 +920,18 @@
           "description": "Dangos eiconau trydydd parti"
         }
       },
+      "map_interaction": {
+        "mouse_wheel": {
+          "auto": {
+            "title": "Awtomatig"
+          }
+        }
+      },
       "color_selection": {
         "default": "Diofyn"
+      },
+      "colorblind_options": {
+        "default": "Diofyn (Dim)"
       }
     },
     "restore": {
@@ -1074,37 +960,73 @@
         "download_changes": "Neu lawrlwytho ffeil osmChange"
       }
     },
+    "download_osc": {
+      "title": "Lawrlwytho"
+    },
     "success": {
       "just_edited": "Rydych chi newydd golygu OpenStreetMap!",
       "thank_you": "Diolch am wella'r map.",
       "thank_you_location": "Diolch am wella'r map o gwmpas {where}.",
       "help_link_text": "Manylion",
       "view_on_osm": "Gweld newidiadau ar OSM",
-      "like_osm": "Ydych chi'n mwynhau OpenStreetMap? Ymunwch â'r gymuned:",
-      "more": "Mwy",
+      "your_changeset_id": "Eich grŵp newid #:",
+      "like_osm": "Ydych chi'n mwynhau OpenStreetMap? Cysylltwch ag eraill:",
+      "more": "Rhagor",
       "events": "Digwyddiadau",
       "languages": "Ieithoedd: {languages}",
-      "missing": "Oes yna rhywbeth ar goll o'r restr hon?",
-      "tell_us": "Rhowch wybod!"
+      "missing": "Oes yna rywbeth ar goll o'r restr hon?",
+      "tell_us": "Rhowch wybod i ni!"
     },
     "confirm": {
       "okay": "Iawn",
       "cancel": "Canslo"
     },
     "splash": {
+      "privacy_update": "*Rydym wedi diweddaru ein polisi preifatrwydd yn ddiweddar.*",
+      "walkthrough": "Dechrau'r Tiwtorial",
       "start": "Golygu nawr"
     },
+    "whats_new": {
+      "dontshowagain": "Cuddio'r sgrin hon tan y fersiwn nesaf"
+    },
     "source_switch": {
-      "live": "byw",
-      "dev": "datblygiad"
+      "dev": "datblygiad",
+      "live": "byw"
     },
-    "rapid_feature_inspector": {
-      "tags": "Tagiau"
+    "rapid_splash": {
+      "walkthrough": "Dechrau'r tiwtorial cyfan",
+      "skip_to_rapid": "Dysgu am Rapid!",
+      "start": "Dim diolch, rydw i eisiau mapio"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Dileu"
+    "rapid_first_edit": {
+      "login_with_osm": "Mewngofnodi gydag OSM"
+    },
+    "rapid_inspector": {
+      "tags": "Tagiau",
+      "option_ignore": {
+        "label": "Anwybyddu'r Nodwedd Hon"
       }
+    },
+    "rapid_menu": {
+      "worldwide": "Byd-eang",
+      "remove": "Dileu",
+      "category": {
+        "roads": "ffyrdd"
+      },
+      "fbRoads": {
+        "label": "Ffyrdd Facebook"
+      },
+      "msBuildings": {
+        "label": "Adeiladau Microsoft"
+      },
+      "overture": {
+        "places": {
+          "label": "Llefydd Overture"
+        }
+      }
+    },
+    "rapid_poweruser": {
+      "beta": "Nodwedd Beta"
     },
     "tag_reference": {
       "description": "Disgrifiad",
@@ -1122,7 +1044,6 @@
     "bearing": {
       "n": "G"
     },
-    "cannot_zoom": "Ni ellir chwyddo allan yn fwy yn y modd cyfredol.",
     "full_screen": "Toglo sgrîn lawn",
     "self_intersection": {
       "error": {
@@ -1304,7 +1225,10 @@
       "tooltip": "Lluniau lefel-stryd o Microsoft"
     },
     "mapillary": {
-      "tooltip": "Lluniau lefel-stryd o Mapillary"
+      "tooltip": "Lluniau lefel-stryd o Mapillary",
+      "detection": "Darganfyddiad Mapillary",
+      "show_detections": "Dangos Darganfyddiadau",
+      "view_on_mapillary": "Gweld ar Mapillary"
     },
     "mapillary_signs": {
       "title": "Arwyddion Traffig"
@@ -1456,18 +1380,10 @@
     },
     "issues": {
       "title": "Materion",
-      "list_title": "Materion",
-      "errors": {
-        "list_title": "Gwallau"
-      },
-      "warnings": {
-        "list_title": "Rhybuddion"
-      },
-      "rules": {
-        "title": "Rheolau"
-      },
-      "user_resolved_issues": "Gwallau wedi'u datrys gan eich golygiadau",
-      "warnings_and_errors": "Rhybuddion a gwallau",
+      "errors": "Gwallau",
+      "warnings": "Rhybuddion",
+      "rules": "Rheolau",
+      "resolved_tooltip": "Gwallau wedi'u datrys gan eich golygiadau",
       "no_issues": {
         "message": {
           "everything": "Mae popeth yn edrych yn iawn",
@@ -1550,8 +1466,6 @@
       "invalid_format": {
         "title": "Fformatio Annilys",
         "email": {
-          "message": "Mae gan {feature} gyfeiriad e-bost annilys",
-          "message_multi": "Mae gan {feature} gyfeiriadau e-bost annilys",
           "reference": "Dylai cyfeiriadau e-bost edrych fel \"user@example.com\"."
         }
       },
@@ -1751,7 +1665,10 @@
       "ok": "Iawn",
       "graph": {
         "city": "Tairafon",
-        "countrycode": "gb"
+        "countrycode": "gb",
+        "name": {
+          "three-rivers": "Tairafon"
+        }
       },
       "welcome": {
         "title": "Croeso",
@@ -1800,6 +1717,9 @@
         "circle_tank": "**Gwasgwch y botwm {circularize_icon} {circularize} i wneud y tanc yn gylch.**",
         "play": "Da iawn! Ceisiwch olrhain ychydig mwy o adeiladau, a rhowch gynnig ar rai o'r gweithrediadau eraill yn y ddewislen golygu. **Pan fyddwch chi'n barod i barhau i'r bennod nesaf, pwyswch '{next}'.**"
       },
+      "rapid": {
+        "title": "Nodweddion Rapid"
+      },
       "startediting": {
         "title": "Dechrau Golygu",
         "help": "Nawr, rydych chi'n barod i olygu OpenStreetMap!{br}Gallwch chi ailymweld â'r tiwtorial unrhyw bryd, neu weld mwy o ddogfennaeth gan wasgu'r botwm {help_icon} {help} neu'r bysell `{help_key}`.",
@@ -1810,91 +1730,180 @@
     },
     "shortcuts": {
       "title": "Bysellau Brys",
+      "key": {
+        "delete": "Dileu"
+      },
       "gesture": {
         "drag": "llusgo"
       },
       "or": "-neu-",
-      "browsing": {
-        "title": "Pori",
-        "navigation": {
-          "title": "Symud",
-          "pan": "Symud map"
+      "browsing": "Pori",
+      "editing": "Golygu",
+      "navigation": "Pori",
+      "selecting_features": "Dewis nodweddion",
+      "drawing": "Llunio",
+      "commands": "Gorchmynion",
+      "help": "Cymorth",
+      "display_options": "Opsiynau arddangos",
+      "viewers": "Syllwyr",
+      "info": "Gwybodaeth",
+      "command": {
+        "pan": {
+          "label": "Symud map"
         },
-        "help": {
-          "title": "Cymorth",
-          "help": "Dangos cymorth / dogfennaeth",
-          "keyboard": "Dangos bysellau brys"
+        "rotate_map": {
+          "label": "Troi map"
         },
-        "display_options": {
-          "title": "Opsiynau arddangos",
-          "background": "Toglo panel cefndir delweddaeth",
-          "map_data": "Toglo panel data map",
-          "wireframe": "Toglo modd ffrâm wifren",
-          "osm_data": "Toglo data OpenStreetMap",
-          "highlight_edits": "Amlygu golygiadau heb eu cadw"
+        "select_one": {
+          "label": "Dewis nodwedd unigol"
         },
-        "selecting": {
-          "title": "Dewis nodweddion",
-          "select_one": "Dewis nodwedd unigol",
-          "select_multi": "Dewis nodweddion lluosog",
-          "lasso": "Llunio lasso i ddewis nodweddion",
-          "search": "Chwilio am nodweddion sy'n cyfateb i'r testun chwilio"
+        "select_multi": {
+          "label": "Dewis nodweddion lluosog"
         },
-        "with_selected": {
-          "edit_menu": "Toglo dewislen olygu"
+        "lasso": {
+          "label": "Llunio lasso i ddewis nodweddion"
         },
-        "vertex_selected": {
-          "first": "Neidio i'r nod cyntaf",
-          "last": "Neidio i'r nod olaf",
-          "change_parent": "Newid llwybr rhiant",
-          "parent": "Dewiswch llwybr rhiant"
+        "edit_menu": {
+          "label": "Toglo dewislen olygu"
         },
-        "way_selected": {
-          "child": "Dewiswch nodau plentyn"
-        }
-      },
-      "editing": {
-        "title": "Golygu",
-        "drawing": {
-          "title": "Llunio",
-          "add_point": "Modd 'ychwanegu pwynt'",
-          "add_line": "Modd 'ychwanegu llinell'",
-          "add_area": "Modd 'ychwanegu ardal'",
-          "add_note": "Modd 'ychwanegu nodyn'",
-          "place_point": "Gosod pwynt neu nodyn",
-          "disable_snap": "Dal i analluogi snapio pwyntiau",
-          "stop_line": "Gorffen llunio llinell neu ardal"
+        "first_node": {
+          "label": "Neidio i'r nod cyntaf"
         },
-        "commands": {
-          "title": "Gorchmynion",
-          "copy": "Copïo nodweddion wedi'u dewis",
-          "paste": "Gludo nodweddion wedi'u dewis",
-          "undo": "Dad-wneud gweithred diwethaf",
-          "redo": "Ail-wneud gweithred diwethaf",
-          "save": "Cadw newidiadau"
+        "last_node": {
+          "label": "Neidio i'r nod olaf"
         },
-        "operations": {
-          "merge": "Cyfuno nodweddion wedi'u dewis",
-          "disconnect": "Datgysylltu nodweddion wedi'u dewis",
-          "extract": "Echdynnu pwynt o ardal.",
-          "reverse": "Gwrthdroi nodweddion dewisiedig",
-          "move": "Symud nodweddion dewisiedig",
-          "rotate": "Cylchdroi nodweddion wedi'u dewis",
-          "orthogonalize": "Sgwario corneli llinell neu ardal",
-          "straighten": "Sythu llinell neu bwyntiau",
-          "circularize": "Cylchu llinell gaeëdig neu ardal",
-          "delete": "Dileu nodweddion wedi'u dewis"
-        }
-      },
-      "tools": {
-        "title": "Teclynnau",
-        "info": {
-          "title": "Gwybodaeth",
-          "all": "Toglo pob panel gwybodaeth",
-          "background": "Toglo panel cefndir",
-          "history": "Toglo panel hanes",
-          "location": "Toglo panel lleoliad",
-          "measurement": "Toglo panel mesur"
+        "change_parent": {
+          "label": "Newid llwybr rhiant"
+        },
+        "select_parent": {
+          "label": "Dewiswch llwybr rhiant"
+        },
+        "select_children": {
+          "label": "Dewiswch nodau plentyn"
+        },
+        "add_point": {
+          "label": "Modd 'ychwanegu pwynt'"
+        },
+        "add_line": {
+          "label": "Modd 'ychwanegu llinell'"
+        },
+        "add_area": {
+          "label": "Modd 'ychwanegu ardal'"
+        },
+        "add_note": {
+          "label": "Modd 'ychwanegu nodyn'",
+          "key": "G"
+        },
+        "place_point": {
+          "label": "Gosod pwynt neu nodyn"
+        },
+        "disable_snap": {
+          "label": "Dal i analluogi snapio pwyntiau"
+        },
+        "stop_line": {
+          "label": "Gorffen llunio llinell neu ardal"
+        },
+        "copy": {
+          "label": "Copïo nodweddion wedi'u dewis"
+        },
+        "paste": {
+          "label": "Gludo nodweddion wedi'u dewis"
+        },
+        "undo": {
+          "label": "Dad-wneud gweithred diwethaf"
+        },
+        "redo": {
+          "label": "Ail-wneud gweithred diwethaf"
+        },
+        "save": {
+          "label": "Cadw newidiadau"
+        },
+        "find": {
+          "label": "Chwilio am nodweddion sy'n cyfateb i'r testun chwilio"
+        },
+        "merge": {
+          "label": "Cyfuno nodweddion wedi'u dewis"
+        },
+        "disconnect": {
+          "label": "Datgysylltu nodweddion wedi'u dewis"
+        },
+        "extract": {
+          "label": "Echdynnu pwynt o ardal."
+        },
+        "reverse": {
+          "label": "Gwrthdroi nodweddion dewisiedig"
+        },
+        "move": {
+          "label": "Symud nodweddion dewisiedig"
+        },
+        "rotate": {
+          "label": "Cylchdroi nodweddion wedi'u dewis"
+        },
+        "orthogonalize": {
+          "label": "Sgwario corneli llinell neu ardal"
+        },
+        "straighten": {
+          "label": "Sythu llinell neu bwyntiau"
+        },
+        "circularize": {
+          "label": "Cylchu llinell gaeëdig neu ardal"
+        },
+        "delete": {
+          "label": "Dileu nodweddion wedi'u dewis"
+        },
+        "toggle_background": {
+          "label": "Toglo panel cefndir delweddaeth"
+        },
+        "toggle_map_data": {
+          "label": "Toglo panel data map"
+        },
+        "wireframe": {
+          "key": "Gr"
+        },
+        "highlight_edits": {
+          "label": "Amlygu golygiadau heb eu cadw"
+        },
+        "keyboard_shortcuts": {
+          "label": "Dangos bysellau brys"
+        },
+        "toggle_minimap": {
+          "label": "Toglo map bach"
+        },
+        "toggle_3dmap": {
+          "label": "Toglo map 3D"
+        },
+        "toggle_all_layers": {
+          "label": "Toglo pob haenau data"
+        },
+        "toggle_osm_data": {
+          "label": "Toglo data OpenStreetMap"
+        },
+        "toggle_osm_notes": {
+          "key": "G"
+        },
+        "toggle_mapillary": {
+          "label": "Toglo Mapillary"
+        },
+        "toggle_streetside": {
+          "label": "Toglo Bing Streetside"
+        },
+        "toggle_kartaview": {
+          "label": "Toglo Kartaview"
+        },
+        "toggle_all_cards": {
+          "label": "Toglo pob panel gwybodaeth"
+        },
+        "toggle_background_card": {
+          "label": "Toglo panel cefndir"
+        },
+        "toggle_history_card": {
+          "label": "Toglo panel hanes"
+        },
+        "toggle_location_card": {
+          "label": "Toglo panel lleoliad"
+        },
+        "toggle_measurement_card": {
+          "label": "Toglo panel mesur"
         }
       }
     },
@@ -2111,6 +2120,7 @@
       "lb": "Lwcsembwrgeg",
       "lez": "Lezgheg",
       "li": "Limbwrgeg",
+      "lij": "Ligwreg",
       "lmo": "Lombardeg",
       "lo": "Laoeg",
       "lrc": "Luri Gogleddol",
@@ -2290,6 +2300,7 @@
       "vep": "Feps",
       "vi": "Fietnameg",
       "vls": "Fflemeg Gorllewinol",
+      "vmw": "Macua",
       "vo": "Folapük",
       "vot": "Foteg",
       "vun": "Funjo",

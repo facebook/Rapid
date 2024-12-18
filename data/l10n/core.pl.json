@@ -31,16 +31,13 @@
     },
     "modes": {
       "add_area": {
-        "title": "Obszar",
-        "filter_tooltip": "obszary"
+        "title": "Obszar"
       },
       "add_line": {
-        "title": "Linia",
-        "filter_tooltip": "linie"
+        "title": "Linia"
       },
       "add_point": {
-        "title": "Punkt",
-        "filter_tooltip": "punkty"
+        "title": "Punkt"
       },
       "add_note": {
         "title": "Uwaga",
@@ -135,10 +132,6 @@
       },
       "circularize": {
         "title": "Zaokrąglij",
-        "description": {
-          "single": "Utwórz koło z tego obszaru.",
-          "multiple": "Utwórz koła z tych obszarów."
-        },
         "annotation": {
           "feature": {
             "one": "Zaokrąglono obiekt.",
@@ -146,43 +139,10 @@
             "many": "Zaokrąglono {n} obiektów.",
             "other": "Zaokrąglono {n} obiektu."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Nie można zaokrąglić tych obiektów z wielu powodów."
-        },
-        "not_closed": {
-          "single": "Nie można zaokrąglić tego obiektu, ponieważ nie jest zamkniętą linią.",
-          "multiple": "Nie można zaokrąglić tych obiektów, ponieważ nie są zamkniętymi liniami."
-        },
-        "too_large": {
-          "single": "Nie można zaokrąglić tego obiektu, ponieważ nie jest on wystarczająco widoczny.",
-          "multiple": "Nie można zaokrąglić tych obiektów, ponieważ nie są one wystarczająco widoczne."
-        },
-        "connected_to_hidden": {
-          "single": "Nie można zaokrąglić tego obiektu, ponieważ jest połączony z ukrytym obiektem.",
-          "multiple": "Nie można zaokrąglić tych obiektów, ponieważ są połączone z ukrytym obiektem."
-        },
-        "not_downloaded": {
-          "single": "Nie można zaokrąglić tego obiektu, ponieważ nie został całkowicie pobrany.",
-          "multiple": "Nie można zaokrąglić tych obiektów, ponieważ nie zostały całkowicie pobrane."
-        },
-        "already_circular": {
-          "single": "Tego obiektu nie da się już bardziej zaokrąglić.",
-          "multiple": "Tych obiektów nie da się już bardziej zaokrąglić."
         }
       },
       "orthogonalize": {
         "title": "Popraw prostokątność",
-        "description": {
-          "corner": {
-            "single": "Nadaj kąt prosty temu wierzchołkowi.",
-            "multiple": "Nadaj kąty proste tym wierzchołkom."
-          },
-          "feature": {
-            "single": "Spraw, aby kąty tego obiektu były proste.",
-            "multiple": "Spraw, aby kąty tych obiektów były proste."
-          }
-        },
         "annotation": {
           "corner": {
             "one": "Nadano kąt prosty wierzchołkowi.",
@@ -196,33 +156,6 @@
             "many": "Nadano kąty proste wierzchołkom {n} obiektów.",
             "other": "Nadano kąty proste wierzchołkom {n} obiektów."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Nie można nadać kątów prostych z kilku powodów."
-        },
-        "end_vertex": {
-          "single": "Nie można nadać kąta prostego, ponieważ to jest końcowy węzeł.",
-          "multiple": "Nie można nadać kątów prostych, ponieważ to są końcowe węzły."
-        },
-        "square_enough": {
-          "single": "To nie może być już bardziej prostokątne.",
-          "multiple": "Te wierzchołki nie mogą być już bardziej prostokątne."
-        },
-        "not_squarish": {
-          "single": "Kąt musi być bliski 90°, żeby można było poprawić prostokątność.",
-          "multiple": "Kąty muszą być bliskie 90°, żeby można było poprawić prostokątność."
-        },
-        "too_large": {
-          "single": "Nie można poprawić prostokątności tego obiektu, ponieważ nie jest on wystarczająco widoczny.",
-          "multiple": "Nie można poprawić prostokątności tych obiektów, ponieważ nie są one wystarczająco widoczne."
-        },
-        "connected_to_hidden": {
-          "single": "Nie można utworzyć prostokąta z tego obiektu, ponieważ jest połączony z ukrytym obiektem.",
-          "multiple": "Nie można utworzyć prostokątów z tych obiektów, ponieważ są połączone z ukrytym obiektem."
-        },
-        "not_downloaded": {
-          "single": "Nie można stworzyć kątów prostych, ponieważ obiekt nie został całkowicie pobrany.",
-          "multiple": "Nie można stworzyć kątów prostych, ponieważ obiekty nie zostały całkowicie pobrane."
         }
       },
       "straighten": {
@@ -245,34 +178,10 @@
             "many": "Wyprostowano {n} linii.",
             "other": "Wyprostowano {n} linii."
           }
-        },
-        "too_bendy": {
-          "single": "Nie można wyprostować tej linii, ponieważ zakręca ona zbyt mocno.",
-          "multiple": "Nie można wyprostować tych linii, ponieważ zakręcają one zbyt mocno."
-        },
-        "connected_to_hidden": {
-          "single": "Nie można wyprostować tej linii, ponieważ jest połączona z ukrytym obiektem.",
-          "multiple": "Nie można wyprostować tych linii, ponieważ są połączone z ukrytym obiektem."
-        },
-        "not_downloaded": {
-          "single": "Nie można wyprostować tej linii, ponieważ nie została całkowicie pobrana.",
-          "multiple": "Nie można wyprostować tych linii, ponieważ nie zostały całkowicie pobrane."
-        },
-        "straight_enough": {
-          "single": "Ta linia jest już prosta.",
-          "multiple": "Te linie są już proste."
-        },
-        "too_large": {
-          "single": "Nie można wyprostować tego obiektu, ponieważ nie jest wystarczająco widoczny.",
-          "multiple": "Nie można wyprostować tych obiektów, ponieważ nie są wystarczająco widoczne."
         }
       },
       "delete": {
         "title": "Usuń",
-        "description": {
-          "single": "Trwale usuń ten obiekt.",
-          "multiple": "Trwale usuń te obiekty."
-        },
         "annotation": {
           "point": "Usunięto węzeł.",
           "vertex": "Usunięto węzeł z linii.",
@@ -285,30 +194,6 @@
             "many": "Usunięto {n} obiektów.",
             "other": "Usunięto {n} obiektu."
           }
-        },
-        "too_large": {
-          "single": "Nie można usunąć tego obiektu, ponieważ nie jest wystarczająco widoczny.",
-          "multiple": "Nie można usunąć tych obiektów, ponieważ nie są wystarczająco widoczne."
-        },
-        "incomplete_relation": {
-          "single": "Nie można usunąć tego obiektu, ponieważ nie został całkowicie pobrany.",
-          "multiple": "Nie można usunąć tych obiektów, ponieważ nie zostały całkowicie pobrane."
-        },
-        "part_of_relation": {
-          "single": "Nie można usunąć tego obiektu, ponieważ jest częścią większej relacji. Najpierw musisz usunąć go z relacji.",
-          "multiple": "Nie można usunąć tych obiektów, ponieważ są one częścią większych relacji. Najpierw musisz usunąć je z tych relacji."
-        },
-        "connected_to_hidden": {
-          "single": "Nie można usunąć tego obiektu, ponieważ jest połączony z ukrytym obiektem.",
-          "multiple": "Nie można usunąć tych obiektów, ponieważ są one połączone z ukrytymi obiektami."
-        },
-        "not_downloaded": {
-          "single": "Nie można usunąć tego obiektu, ponieważ nie został całkowicie pobrany.",
-          "multiple": "Nie można usunąć tych obiektów, ponieważ nie zostały całkowicie pobrane."
-        },
-        "has_wikidata_tag": {
-          "single": "Nie można usunąć tego obiektu, ponieważ ma tag wikidata.",
-          "multiple": "Nie można usunąć tych obiektów, ponieważ niektóre z nich mają tag wikidata."
         }
       },
       "downgrade": {
@@ -338,10 +223,6 @@
             "many": "Zdegradowano {n} obiektów.",
             "other": "Zdegradowano {n} obiektu."
           }
-        },
-        "has_wikidata_tag": {
-          "single": "Nie można zdegradować tego obiektu, ponieważ ma tag wikidata.",
-          "multiple": "Nie można zdegradować tych obiektów, ponieważ niektóre z nich mają tag wikidata."
         }
       },
       "add_member": {
@@ -447,10 +328,6 @@
       },
       "move": {
         "title": "Przesuń",
-        "description": {
-          "single": "Przesuń ten obiekt w inne miejsce.",
-          "multiple": "Przesuń te obiekty w inne miejsce."
-        },
         "annotation": {
           "point": "Przesunięto punkt.",
           "vertex": "Przesunięto węzeł na linii.",
@@ -463,38 +340,12 @@
             "many": "Przesunięto {n} obiektów.",
             "other": "Przesunięto {n} obiektu."
           }
-        },
-        "incomplete_relation": {
-          "single": "Nie można przesunąć tego obiektu, ponieważ nie został on całkowicie pobrany.",
-          "multiple": "Nie można przesunąć tych obiektów, ponieważ nie zostały całkowicie pobrane."
-        },
-        "too_large": {
-          "single": "Nie można przesunąć tego obiektu, ponieważ nie jest on wystarczająco widoczny.",
-          "multiple": "Nie można przesunąć tych obiektów, ponieważ nie są one wystarczająco widoczne."
-        },
-        "connected_to_hidden": {
-          "single": "Nie można przesunąć tego obiektu, ponieważ jest połączony z ukrytym obiektem.",
-          "multiple": "Nie można przesunąć tych obiektów, ponieważ są one połączone z ukrytymi obiektami."
-        },
-        "not_downloaded": {
-          "single": "Nie można przesunąć tego obiektu, ponieważ nie został całkowicie pobrany.",
-          "multiple": "Nie można przesunąć tych obiektów, ponieważ nie zostały całkowicie pobrane."
         }
       },
       "reflect": {
         "title": {
           "long": "Odbij krótkim bokiem",
           "short": "Odbij długim bokiem"
-        },
-        "description": {
-          "long": {
-            "single": "Odbij obiekt wzdłuż dłuższego boku.",
-            "multiple": "Odbij obiekty wzdłuż ich dłuższych boków."
-          },
-          "short": {
-            "single": "Odbij obiekt wzdłuż krótszego boku.",
-            "multiple": "Odbij obiekty wzdłuż ich krótszych boków."
-          }
         },
         "annotation": {
           "long": {
@@ -513,30 +364,10 @@
               "other": "Odbito obiekty wzdłuż ich krótszych boków."
             }
           }
-        },
-        "incomplete_relation": {
-          "single": "Nie można odbić tego obiektu, ponieważ nie został całkowicie pobrany.",
-          "multiple": "Nie można odbić tych obiektów, ponieważ nie zostały całkowicie pobrane."
-        },
-        "too_large": {
-          "single": "Nie można odbić tego obiektu, ponieważ nie jest wystarczająco widoczny.",
-          "multiple": "Nie można odbić tych obiektów, ponieważ nie są wystarczająco widoczne."
-        },
-        "connected_to_hidden": {
-          "single": "Nie można odbić tego obiektu, ponieważ jest połączony z ukrytym obiektem.",
-          "multiple": "Nie można odbić tych obiektów, ponieważ są połączone z ukrytymi obiektami."
-        },
-        "not_downloaded": {
-          "single": "Nie można odbić tego obiektu, ponieważ nie został całkowicie pobrany.",
-          "multiple": "Nie można odbić tych obiektów, ponieważ nie zostały całkowicie pobrane."
         }
       },
       "rotate": {
         "title": "Obróć",
-        "description": {
-          "single": "Obróć ten obiekt względem jego środka.",
-          "multiple": "Obróć te obiekty względem ich środka."
-        },
         "annotation": {
           "line": "Obrócono linię.",
           "area": "Obrócono obszar.",
@@ -547,22 +378,6 @@
             "many": "Obrócono {n} obiektów.",
             "other": "Obrócono obiekty."
           }
-        },
-        "incomplete_relation": {
-          "single": "Nie można obrócić tego obiektu, ponieważ nie został całkowicie pobrany.",
-          "multiple": "Nie można obrócić tych obiektów, ponieważ nie zostały całkowicie pobrane."
-        },
-        "too_large": {
-          "single": "Nie można obrócić tego obiektu, ponieważ nie jest on wystarczająco widoczny.",
-          "multiple": "Nie można obrócić tych obiektów, ponieważ nie są wystarczająco widoczne."
-        },
-        "connected_to_hidden": {
-          "single": "Nie można obrócić tego obiektu, ponieważ jest połączony z ukrytym obiektem.",
-          "multiple": "Nie można obrócić tych obiektów, ponieważ są one połączone z ukrytymi obiektami."
-        },
-        "not_downloaded": {
-          "single": "Nie można obrócić tego obiektu, ponieważ nie został całkowicie pobrany.",
-          "multiple": "Nie można obrócić tych obiektów, ponieważ nie zostały całkowicie pobrane."
         }
       },
       "reverse": {
@@ -613,22 +428,6 @@
               "other": "Powiększono {n} obiektu."
             }
           }
-        },
-        "too_small": {
-          "single": "Nie można pomniejszyć tego obiektu, ponieważ byłby zbyt mały.",
-          "multiple": "Nie można pomniejszyć tych obiektów, ponieważ byłyby zbyt małe."
-        },
-        "too_large": {
-          "single": "Nie można zmienić rozmiaru tego obiektu, ponieważ nie jest on wystarczająco widoczny.",
-          "multiple": "Nie można zmienić rozmiaru tych obiektów, ponieważ nie są wystarczająco widoczne."
-        },
-        "connected_to_hidden": {
-          "single": "Nie można zmienić rozmiaru tego obiektu, ponieważ jest połączony z ukrytym obiektem.",
-          "multiple": "Nie można zmienić rozmiaru tych obiektów, ponieważ są one połączone z ukrytymi obiektami."
-        },
-        "not_downloaded": {
-          "single": "Nie można zmienić rozmiaru tego obiektu, ponieważ nie został całkowicie pobrany.",
-          "multiple": "Nie można zmienić rozmiaru tych obiektów, ponieważ nie zostały całkowicie pobrane."
         }
       },
       "split": {
@@ -689,20 +488,8 @@
       "extract": {
         "title": "Wyodrębnij",
         "description": {
-          "vertex": {
-            "single": "Wyodrębnij ten punkt z jego linii lub obszarów nadrzędnych.",
-            "multiple": "Wyodrębnij te punkty z linii lub obszarów nadrzędnych."
-          },
-          "line": {
-            "single": "Wyodrębnij punkt z tej linii.",
-            "multiple": "Wyodrębnij punkty z tych linii."
-          },
-          "area": {
-            "single": "Wyodrębnij punkt z tego obszaru.",
-            "multiple": "Wyodrębnij punkty z tych obszarów."
-          },
           "feature": {
-            "multiple": "Wyodrębnij punkty z tych obiektów."
+            "other": "Wyodrębnij punkty z tych obiektów."
           }
         },
         "annotation": {
@@ -710,14 +497,6 @@
           "few": "Wyodrębniono {n} punkty.",
           "many": "Wyodrębniono {n} punktów.",
           "other": "Wyodrębniono {n} punktu."
-        },
-        "too_large": {
-          "single": "Nie można wyodrębnić punktu z tego obiektu, ponieważ nie jest on wystarczająco widoczny.",
-          "multiple": "Nie można wyodrębnić punktów z tych obiektów, ponieważ nie są one wystarczająco widoczne."
-        },
-        "connected_to_hidden": {
-          "single": "Nie można wyodrębnić tego punktu, ponieważ jest połączony z ukrytym obiektem.",
-          "multiple": "Nie można wyodrębnić punktów z tych obiektów, ponieważ niektóre z nich są połączone z ukrytymi obiektami."
         }
       }
     },
@@ -929,10 +708,6 @@
       "multiple_values": "Różne wartości",
       "multiple_types": "Różne rodzaje",
       "unshared_value_tooltip": "nie jest wspólne dla wszystkich obiektów",
-      "hidden_preset": {
-        "manual": "{features} są ukryte. Włącz je w panelu Dane mapy.",
-        "zoom": "{features} są ukryte. Przybliż mapę, żeby je aktywować."
-      },
       "back_tooltip": "Zmień rodzaj obiektu",
       "type": "Rodzaj",
       "details": "Szczegóły",
@@ -1051,7 +826,6 @@
         "tooltip": "Pokaż właściwości geometryczne zaznaczonych obiektów."
       },
       "style_options": "Wypełnianie obszarów",
-      "map_features": "Obiekty na mapie",
       "autohidden": "Te obiekty zostały automatycznie ukryte ze względu na ich zbyt dużą liczbę. Jeśli chcesz je edytować, przybliż mapę.",
       "osmhidden": "Te obiekty zostały automatycznie ukryte ze względu na ukrycie warstwy OpenStreetMap."
     },
@@ -1088,9 +862,9 @@
         "tooltip": "Pokaż zdjęcia tylko od tego użytkownika"
       }
     },
-    "feature": {
+    "filters": {
       "points": {
-        "description": "Punkty (POI)",
+        "description": "Punkty",
         "tooltip": "Użyteczne miejsca"
       },
       "traffic_roads": {
@@ -1285,12 +1059,13 @@
     "source_switch": {
       "lose_changes": "Istnieją niezapisane zmiany. Zmiana serwera spowoduje ich porzucenie. Zmienić serwer?"
     },
-    "rapid_feature_inspector": {
-      "tags": "Wszystkie znaczniki"
+    "rapid_inspector": {
+      "tags": "Znaczniki"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Usuń"
+    "rapid_menu": {
+      "remove": "Usuń",
+      "category": {
+        "roads": "drogi"
       }
     },
     "tag_reference": {
@@ -1306,7 +1081,6 @@
         "out": "Nie można bardziej oddalić widoku."
       }
     },
-    "cannot_zoom": "Nie można bardziej oddalić widoku w obecnym trybie.",
     "full_screen": "Tryb pełnoekranowy",
     "self_intersection": {
       "error": {
@@ -1726,7 +1500,6 @@
         "title": "Punkty",
         "intro": "*Punkty* mogą być używane, aby przedstawić obiekty takie, jak sklepy, restauracje i pomniki. Oznaczają one konkretne miejsce i opisują, co tam jest.",
         "add_point_h": "Dodawanie punktów",
-        "add_point": "Aby dodać punkt, naciśnij przycisk {point_icon} **{point}** na pasku powyżej mapy lub użyj skrótu klawiszowego `1`. Kursor zmieni swój kształt na krzyżyk.",
         "move_point_h": "Przesuwanie punktów",
         "delete_point_h": "Usuwanie punktów",
         "delete_point": "Możesz usuwać z mapy obiekty, które nie istnieją w rzeczywistości. Usunięcie obiektu z OpenStreetMap usuwa go wszystkim użytkownikom mapy, dlatego przed jego skasowaniem należy mieć całkowitą pewność, że obiektu naprawdę nie ma."
@@ -1735,7 +1508,6 @@
         "title": "Linie",
         "intro": "*Linie* są używane do przedstawiania takich obiektów jak drogi, linie kolejowe i rzeki. Linie należy rysować w osi obiektu, który przedstawiają.",
         "add_line_h": "Dodawanie linii",
-        "add_line": "Aby dodać linię, naciśnij przycisk {line_icon} **{line}** na pasku powyżej mapy lub użyj skrótu klawiszowego `2`. Kursor zmieni swój kształt na krzyżyk.",
         "add_line_finish": "Aby zakończyć linię, kliknij ponownie ostatni węzeł lub naciśnij `{return}`.",
         "modify_line_h": "Modyfikowanie linii",
         "modify_line_dragnode": "Często zobaczysz linie, które mają niepoprawny kształt, np. drogi, które nie pasują do obrazów warstwy tła. Aby poprawić kształt linii, najpierw zaznacz ją. Wszystkie jej węzły zostaną oznaczone kółeczkami, które możesz przesunąć do poprawnej lokalizacji.",
@@ -1754,7 +1526,6 @@
         "point_or_area_h": "Punkty czy obszary?",
         "point_or_area": "Wiele miejsc można przedstawiać jako punkty lub obszary. Mapuj obrysy budynków i posesji jako obszary, kiedy tylko jest to możliwe. Umieszczaj punkty wewnątrz obszaru budynku, żeby pokazać firmy, sklepy i inne obiekty znajdujące się w budynku.",
         "add_area_h": "Dodawanie obszarów",
-        "add_area_command": "Aby dodać obszar, naciśnij przycisk {area_icon} **{area}** na pasku powyżej mapy lub użyj skrótu klawiszowego `3`. Kursor zmieni swój kształt na krzyżyk.",
         "add_area_finish": "Aby zakończyć rysowanie obszaru, kliknij ponownie ostatni węzeł lub naciśnij `{return}`.",
         "square_area_h": "Kąty proste",
         "modify_area_h": "Modyfikowanie obszarów",
@@ -1883,18 +1654,10 @@
     },
     "issues": {
       "title": "Problemy",
-      "list_title": "Problemy",
-      "errors": {
-        "list_title": "Błędy"
-      },
-      "warnings": {
-        "list_title": "Ostrzeżenia"
-      },
-      "rules": {
-        "title": "Reguły"
-      },
-      "user_resolved_issues": "Problemy rozwiązane podczas tej edycji",
-      "warnings_and_errors": "Ostrzeżenia i błędy",
+      "errors": "Błędy",
+      "warnings": "Ostrzeżenia",
+      "rules": "Reguły",
+      "resolved_tooltip": "Problemy rozwiązane podczas tej edycji",
       "no_issues": {
         "message": {
           "everything": "Wszystko wygląda dobrze",
@@ -2054,8 +1817,6 @@
         "title": "Nieprawidłowe formatowanie",
         "tip": "Strony internetowe powinny zaczynać się od „http://” lub „https://”, a adresy e-mail powinny być w formie „nazwa@example.com”.",
         "email": {
-          "message": "{feature} ma niepoprawny format adresu e-mail",
-          "message_multi": "{feature} ma niepoprawny format adresów e-mail",
           "reference": "Adres e-mail powinien być w formie „nazwa@example.com”."
         }
       },
@@ -2571,100 +2332,172 @@
     "shortcuts": {
       "title": "Skróty klawiszowe",
       "tooltip": "Wyświetl ekran skrótów klawiszowych.",
+      "key": {
+        "delete": "Usuń"
+      },
       "gesture": {
         "drag": "przeciągnij"
       },
       "or": "-lub-",
-      "browsing": {
-        "title": "Przeglądanie",
-        "navigation": {
-          "title": "Nawigacja",
-          "pan": "Przesuń mapę"
+      "browsing": "Przeglądanie",
+      "editing": "Edytowanie",
+      "navigation": "Nawigacja",
+      "selecting_features": "Wybieranie obiektów",
+      "with_features_selected": "Z wybranymi obiektami",
+      "with_node_selected": "Z wybranym węzłem",
+      "with_way_selected": "Z wybraną drogą",
+      "drawing": "Rysowanie",
+      "commands": "Polecenia",
+      "help": "Pomoc",
+      "display_options": "Opcje wyświetlania",
+      "info": "Informacja",
+      "command": {
+        "pan": {
+          "label": "Przesuń mapę"
         },
-        "help": {
-          "title": "Pomoc",
-          "help": "Wyświetl pomoc/dokumentację",
-          "keyboard": "Wyświetl skróty klawiszowe"
+        "select_one": {
+          "label": "Wybierz jeden obiekt"
         },
-        "display_options": {
-          "title": "Opcje wyświetlania",
-          "background": "Przełącz panel ustawień tła",
-          "map_data": "Przełącz panel danych mapy",
-          "issues": "Przełącz panel problemów",
-          "preferences": "Przełącz panel ustawień",
-          "wireframe": "Przełącz tryb szkieletowy",
-          "osm_data": "Przełącz dane OpenStreetMap",
-          "highlight_edits": "Podświetl niezapisane zmiany"
+        "select_multi": {
+          "label": "Wybierz wiele obiektów"
         },
-        "selecting": {
-          "title": "Wybieranie obiektów",
-          "select_one": "Wybierz jeden obiekt",
-          "select_multi": "Wybierz wiele obiektów",
-          "lasso": "Wybierz obiekty lassem",
-          "search": "Znajdź obiekty pasujące do wyszukanego tekstu"
+        "lasso": {
+          "label": "Wybierz obiekty lassem"
         },
-        "with_selected": {
-          "title": "Z wybranymi obiektami",
-          "edit_menu": "Przełącz menu edycji"
+        "edit_menu": {
+          "label": "Przełącz menu edycji"
         },
-        "vertex_selected": {
-          "title": "Z wybranym węzłem",
-          "first": "Przejdź do pierwszego węzła",
-          "last": "Przejdź do ostatniego węzła",
-          "change_parent": "Następna linia z tym węzłem",
-          "parent": "Wybierz nadrzędną linię"
+        "first_node": {
+          "label": "Przejdź do pierwszego węzła"
         },
-        "way_selected": {
-          "title": "Z wybraną drogą",
-          "child": "wybierz węzły zależne"
-        }
-      },
-      "editing": {
-        "title": "Edytowanie",
-        "drawing": {
-          "title": "Rysowanie",
-          "add_point": "Tryb „Dodawanie punktu”",
-          "add_line": "Tryb „Dodawanie linii”",
-          "add_area": "Tryb „Dodawanie obszaru”",
-          "add_note": "Tryb „Dodawanie uwagi”",
-          "place_point": "Umieść punkt lub uwagę",
-          "disable_snap": "Przytrzymaj, by wyłączyć przyciąganie do punktu",
-          "stop_line": "Zakończ rysowanie linii lub obszaru"
+        "last_node": {
+          "label": "Przejdź do ostatniego węzła"
         },
-        "commands": {
-          "title": "Polecenia",
-          "copy": "Kopiuj wybrane obiekty",
-          "paste": "Wklej skopiowane obiekty",
-          "undo": "Cofnij ostatnie działanie",
-          "redo": "Ponów ostatnie działanie",
-          "save": "Zapisz zmiany"
+        "change_parent": {
+          "label": "Następna linia z tym węzłem"
         },
-        "operations": {
-          "continue_line": "Kontynuuj linię w wybranym węźle końcowym",
-          "merge": "Złącz (scal) wybrane obiekty",
-          "disconnect": "Rozłącz zaznaczone obiekty",
-          "extract": "Wyodrębnij punkt z obiektu",
-          "split": "Rozdziel obiekty w wybranych węzłach",
-          "reverse": "Odwróć wybrane obiekty",
-          "move": "Przenieś wybrane obiekty",
-          "rotate": "Obróć wybrane obiekty",
-          "orthogonalize": "Wyprostuj kąt wierzchołka lub kąty czworokąta",
-          "straighten": "Wyprostuj linię lub punkty",
-          "circularize": "Zaokrąglij zamkniętą linię lub obszar",
-          "reflect_long": "Odbij obiekty wzdłuż dłuższego boku",
-          "reflect_short": "Odbij obiekty wzdłuż krótszego boku",
-          "delete": "Usuń wybrane obiekty"
-        }
-      },
-      "tools": {
-        "title": "Narzędzia",
-        "info": {
-          "title": "Informacja",
-          "all": "Przełącz wszystkie panele informacyjne",
-          "background": "Przełącz panel tła",
-          "history": "Przełącz panel historii",
-          "location": "Przełącz panel lokalizacji",
-          "measurement": "Przełącz panel pomiarów"
+        "select_parent": {
+          "label": "Wybierz nadrzędną linię"
+        },
+        "select_children": {
+          "label": "wybierz węzły zależne"
+        },
+        "add_point": {
+          "label": "Tryb „Dodawanie punktu”"
+        },
+        "add_line": {
+          "label": "Tryb „Dodawanie linii”"
+        },
+        "add_area": {
+          "label": "Tryb „Dodawanie obszaru”"
+        },
+        "add_note": {
+          "label": "Tryb „Dodawanie uwagi”"
+        },
+        "place_point": {
+          "label": "Umieść punkt lub uwagę"
+        },
+        "disable_snap": {
+          "label": "Przytrzymaj, by wyłączyć przyciąganie do punktu"
+        },
+        "stop_line": {
+          "label": "Zakończ rysowanie linii lub obszaru"
+        },
+        "copy": {
+          "label": "Kopiuj wybrane obiekty"
+        },
+        "paste": {
+          "label": "Wklej skopiowane obiekty"
+        },
+        "undo": {
+          "label": "Cofnij ostatnie działanie"
+        },
+        "redo": {
+          "label": "Ponów ostatnie działanie"
+        },
+        "save": {
+          "label": "Zapisz zmiany"
+        },
+        "find": {
+          "label": "Znajdź obiekty pasujące do wyszukanego tekstu"
+        },
+        "continue_line": {
+          "label": "Kontynuuj linię w wybranym węźle końcowym"
+        },
+        "merge": {
+          "label": "Złącz (scal) wybrane obiekty"
+        },
+        "disconnect": {
+          "label": "Rozłącz zaznaczone obiekty"
+        },
+        "extract": {
+          "label": "Wyodrębnij punkt z obiektu"
+        },
+        "split": {
+          "label": "Rozdziel obiekty w wybranych węzłach"
+        },
+        "reverse": {
+          "label": "Odwróć wybrane obiekty"
+        },
+        "move": {
+          "label": "Przenieś wybrane obiekty"
+        },
+        "rotate": {
+          "label": "Obróć wybrane obiekty"
+        },
+        "orthogonalize": {
+          "label": "Wyprostuj kąt wierzchołka lub kąty czworokąta"
+        },
+        "straighten": {
+          "label": "Wyprostuj linię lub punkty"
+        },
+        "circularize": {
+          "label": "Zaokrąglij zamkniętą linię lub obszar"
+        },
+        "reflect_long": {
+          "label": "Odbij obiekty wzdłuż dłuższego boku"
+        },
+        "reflect_short": {
+          "label": "Odbij obiekty wzdłuż krótszego boku"
+        },
+        "delete": {
+          "label": "Usuń wybrane obiekty"
+        },
+        "toggle_background": {
+          "label": "Przełącz panel ustawień tła"
+        },
+        "toggle_map_data": {
+          "label": "Przełącz panel danych mapy"
+        },
+        "toggle_issues": {
+          "label": "Przełącz panel problemów"
+        },
+        "toggle_preferences": {
+          "label": "Przełącz panel ustawień"
+        },
+        "highlight_edits": {
+          "label": "Podświetl niezapisane zmiany"
+        },
+        "keyboard_shortcuts": {
+          "label": "Wyświetl skróty klawiszowe"
+        },
+        "toggle_osm_data": {
+          "label": "Przełącz dane OpenStreetMap"
+        },
+        "toggle_all_cards": {
+          "label": "Przełącz wszystkie panele informacyjne"
+        },
+        "toggle_background_card": {
+          "label": "Przełącz panel tła"
+        },
+        "toggle_history_card": {
+          "label": "Przełącz panel historii"
+        },
+        "toggle_location_card": {
+          "label": "Przełącz panel lokalizacji"
+        },
+        "toggle_measurement_card": {
+          "label": "Przełącz panel pomiarów"
         }
       }
     },
@@ -2749,6 +2582,7 @@
       "bjn": "banjar",
       "bkm": "kom",
       "bla": "siksika",
+      "blo": "anii",
       "bm": "bambara",
       "bn": "bengalski",
       "bo": "tybetański",
@@ -2887,7 +2721,6 @@
       "gmh": "średnio-wysoko-niemiecki",
       "gn": "guarani",
       "goh": "staro-wysoko-niemiecki",
-      "gom": "konkani (Goa)",
       "gon": "gondi",
       "gor": "gorontalo",
       "got": "gocki",
@@ -2998,6 +2831,7 @@
       "kv": "komi",
       "kw": "kornijski",
       "kwk": "kwakiutl",
+      "kxv": "kuvi",
       "ky": "kirgiski",
       "la": "łaciński",
       "lad": "ladyński",
@@ -3026,7 +2860,6 @@
       "lua": "luba-lulua",
       "lui": "luiseno",
       "lun": "lunda",
-      "luo": "luo",
       "lus": "mizo",
       "luy": "luhya",
       "lv": "łotewski",
@@ -3047,7 +2880,7 @@
       "mfe": "kreolski Mauritiusa",
       "mg": "malgaski",
       "mga": "średnioirlandzki",
-      "mgh": "makua",
+      "mgh": "makua-meetto",
       "mgo": "meta",
       "mh": "marszalski",
       "mi": "maoryjski",
@@ -3291,6 +3124,7 @@
       "vi": "wietnamski",
       "vls": "zachodnioflamandzki",
       "vmf": "meński frankoński",
+      "vmw": "makua",
       "vo": "wolapik",
       "vot": "wotiacki",
       "vro": "võro",
@@ -3306,6 +3140,7 @@
       "xal": "kałmucki",
       "xh": "khosa",
       "xmf": "megrelski",
+      "xnr": "kangri",
       "xog": "soga",
       "yao": "yao",
       "yap": "japski",

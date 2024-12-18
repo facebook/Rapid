@@ -4,6 +4,16 @@
       "Bing": {
         "description": "Imagini aeriane și de satelit."
       },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Termeni & Feedback"
+        }
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Termeni & Feedback"
+        }
+      },
       "MAPNIK": {
         "description": "Stratul OpenStreetMap implicit."
       },
@@ -125,6 +135,11 @@
           "text": "Hărți © Thunderforest, Date © Contribuitori OpenStreetMap"
         },
         "name": "Peisaj Thunderforest "
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Hărți © Thunderforest, Date © Contribuitori OpenStreetMap"
+        }
       }
     }
   }

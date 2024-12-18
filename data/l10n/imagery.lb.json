@@ -54,10 +54,23 @@
         "description": "Nobeaarbeschten Sentinel Satellitenbiller.",
         "name": "eox.at 2018 Wollekenfräi"
       },
+      "EOXAT2019CLOUDLESS": {
+        "description": "Nobeaarbeschten Sentinel Satellitenbiller."
+      },
+      "EOXAT2020CLOUDLESS": {
+        "description": "Nobeaarbeschten Sentinel Satellitenbiller."
+      },
+      "EOXAT2021CLOUDLESS": {
+        "description": "Nobeaarbeschten Sentinel Satellitenbiller."
+      },
+      "EOXAT2022CLOUDLESS": {
+        "description": "Nobeaarbeschten Sentinel Satellitenbiller."
+      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "Bedéngungen & Feedback"
         },
+        "description": "Esri Weltbiller",
         "name": "Esri Weltbiller"
       },
       "EsriWorldImageryClarity": {
@@ -73,6 +86,17 @@
         },
         "description": "Loftbiller vun Frankfurt am Main, fotograféiert den 16 Abrëll 2019",
         "name": "Frankfurt am Main Loftbiller 2019"
+      },
+      "Geoportal2-PL-City-boundaries_WMS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        }
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        },
+        "description": "Orthophotokaart mat enger Opléisung vun 10cm oder méi. D'Daten ginn no Opléisung an Aktualitéit sortéiert, z.B. wäert en Bild aus dem Joer 2019 mat enger Opléisung vun 10cm engem Bild aus dem Joer 2012 mat enger Opléisung vun 8cm virgezunn."
       },
       "Geoportal2-PL-HighResolution-aerial_image_WMS": {
         "attribution": {
@@ -95,6 +119,11 @@
         "description": "WMS-Unzeigedéngscht National Address Nummeréierung Integratioun, déi d'eroflueden vun Kaartenbiller erméiglecht, déi aus Geodaten vum nationalen Grenzenregëster fir Strossen an Adressen erstallt goufen.",
         "name": "Geoportal 2: Adresspunkten"
       },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        }
+      },
       "Geoportal2-PL-aerial_image_WMS": {
         "attribution": {
           "text": "Zentralamt fir Geodäsie an Kartographie"
@@ -108,13 +137,79 @@
         },
         "name": "Geoportal 2: Orthophotomap (neisten Loftbiller) (WMTS)"
       },
+      "Geoportal2-PL-boundaries-of-communes_WMS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-counties_WMS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-provinces_WMS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        }
+      },
+      "Geoportal2-PL-gas-pipe_WMS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        }
+      },
+      "Geoportal2-PL-heat-pipe_WMS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        }
+      },
+      "Geoportal2-PL-plot_boundaries_WMS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        }
+      },
+      "Geoportal2-PL-power-cord_WMS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        }
+      },
+      "Geoportal2-PL-sewer-pipe_WMS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        }
+      },
+      "Geoportal2-PL-shaded_relief_WMS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        }
+      },
+      "Geoportal2-PL-squares-and-housing-estates_WMS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        },
+        "description": "WMS-Unzeigedéngscht National Address Nummeréierung Integratioun, déi d'eroflueden vun Kaartenbiller erméiglecht, déi aus Geodaten vum nationalen Grenzenregëster fir Strossen an Adressen erstallt goufen."
+      },
+      "Geoportal2-PL-state-borders_WMS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        }
+      },
+      "Geoportal2-PL-telecommunications-cable_WMS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        }
+      },
+      "Geoportal2-PL-water-pipe_WMS": {
+        "attribution": {
+          "text": "Zentralamt fir Geodäsie an Kartographie"
+        }
+      },
       "Gliwice-2020": {
         "name": "Gliwice: Orthophotomap 2020 (Loftbild)"
       },
       "Gliwice-buildings": {
         "name": "Gliwice: Gebaier"
       },
-      "LSA-ATKIS_BU": {
+      "LSA-ALKIS_BU": {
         "description": "Grondress vun Gebaier an Sachsen-Anhalt"
       },
       "LSA-DOP20": {
@@ -138,9 +233,25 @@
         },
         "name": "Mapbox Satellit"
       },
+      "OSIP": {
+        "attribution": {
+          "text": "Ohio Saatswäiten Billerprogramm"
+        },
+        "name": "Ohio Saatswäiten Billerprogramm"
+      },
       "OSIP_1ft": {
         "attribution": {
           "text": "Ohio Saatswäiten Billerprogramm"
+        }
+      },
+      "OSIP_6in": {
+        "attribution": {
+          "text": "Ohio Saatswäiten Billerprogramm"
+        }
+      },
+      "OSMUK-Cadastral-Parcels": {
+        "attribution": {
+          "text": "Enthält Öffentlech Informatiounen lizenséiert ënnert der Open Governement Licence v3.0."
         }
       },
       "OSM_Inspector-Highways": {
@@ -177,6 +288,16 @@
           "text": "© Gemeng Gothenburg, CC0"
         }
       },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© Gemeng Gothenburg, CC0"
+        }
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© Gemeng Gothenburg, CC0"
+        }
+      },
       "kalmar-orto-2014": {
         "attribution": {
           "text": "© Gemeng Kalmar"
@@ -200,6 +321,11 @@
       "linkoping-orto": {
         "attribution": {
           "text": "© Gemeng Linköping"
+        }
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Bedéngungen & Feedback"
         }
       },
       "openpt_map": {

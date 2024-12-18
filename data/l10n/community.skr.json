@@ -5,6 +5,9 @@
       "openstreetmap": "اوپن سٹریٹ میپ",
       "openstreetmapafrica": "اوپن سٹریٹ میپ افریقہ",
       "openstreetmapnorway": "اوپن سٹریٹ میپ ناروے"
+    },
+    "OSM-AR-geolibres": {
+      "name": "جیولیبرا"
     }
   }
 }

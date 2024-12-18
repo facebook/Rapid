@@ -43,7 +43,6 @@
       "openstreetmapchile": "OpenStreetMap צ׳ילה",
       "openstreetmapchina": "OpenStreetMap סין",
       "openstreetmapcologne": "OpenStreetMap קלן",
-      "openstreetmapcolombia": "OpenStreetMap קולומביה",
       "openstreetmapcomunitatvalenciana": "OpenStreetMap הקהילה האוטונומית ולנסיה",
       "openstreetmapcostarica": "OpenStreetMap קוסטה ריקה",
       "openstreetmapcotedivoire": "OpenStreetMap קוט דיוואר (חוף השנהב)",
@@ -301,6 +300,9 @@
       "description": "אירועים חברתיים שמתגבשים סביב מיפוי - מתחילים מוזמנים בהחלט!",
       "extendedDescription": "Maptime היא סביבת למידה פתוחה לכל רמות ודרגות הידע, המציעה תמיכה חינוכית המיועדת למתחילים. Maptime היא גמישה ובנויה היטב בו זמנית, לטובת יצירת מקום להדרכות, סדנאות ומיזמים בנושאי מיפוי עם מטרה משותפת וזמן עבודה עצמאי/שיתופי."
     },
+    "am-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
     "at-matrix": {
       "description": "ערוץ Matrix גרמני בלתי רשמי לאוסטריה"
     },
@@ -376,6 +378,12 @@
     "ch-mailinglist": {
       "name": "קבוצת הדיוור של Openstreetmap שווייץ/שוויץ/שוייץ/שויץ/שווייצריה בכל השפות המקומיות",
       "description": "OpenStreetMap שוויץ רשימת תפוצה"
+    },
+    "cl-facebook": {
+      "extendedDescription": "ניתן להצטרף לקהילה וללמוד עוד על OpenStreetMap, לשאול שאלות או להשתתף במפגשים שלנו. כולם מוזמנים!"
+    },
+    "cl-telegram": {
+      "extendedDescription": "ניתן להצטרף לקהילה וללמוד עוד על OpenStreetMap, לשאול שאלות או להשתתף במפגשים שלנו. כולם מוזמנים!"
     },
     "czech-community": {
       "description": "פורטל המפה, האתר ופרטי הקשר של חברי OSM בצ׳כיה"
@@ -462,6 +470,9 @@
     "DF-telegram": {
       "extendedDescription": "ניתן להצטרף לקהילה וללמוד עוד על OpenStreetMap, לשאול שאלות או להשתתף במפגשים שלנו. כולם מוזמנים!"
     },
+    "fr-35-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
     "fr-38-wiki": {
       "description": "עמוד הוויקי של {community}"
     },
@@ -493,8 +504,8 @@
       "description": "קבוצת מפגשים לחובבי מפות באזור פילדלפיה",
       "extendedDescription": "GeoPhilly היא קבוצה של מפתחים, מומחי גאוגרפיה, גיקים של מידע, חובבי קוד פתוח, האקרים אזרחיים ומכורי מפות שמתאגדים סביב אהבתם המשותפת למפות ולסיפורים שהן מספרות. אם מפות משמשות אותך כחלק מהעבודה שלך או שפשוט מעניין אותך לדעת יותר, המפגש הזה מיועד לך! האירועים שלנו מתוכננים להיות פתוחים, ידידותיים, חינוכיים וחברתיים, החל מהרמת כוסית דרך הרצאות בזק ואפילו סדנאות. מזמינים אותך ליצור קהילה גאו־‏מרחבית מגוונת ומעוררת השראה בפילדלפיה ביחד אתנו!"
     },
-    "hr-irc": {
-      "description": "ניתן להצטרף ל־‎#{account} ב־irc.freenode.org (פתחה 6667)"
+    "hr-github": {
+      "description": "ה־GitHub של {community}"
     },
     "hr-wiki": {
       "description": "עמוד Wikiproject לקרואטיה"
@@ -527,6 +538,12 @@
     "ko-facebook": {
       "description": "ממפי ומשתמשי OpenStreetMap בקוריאה"
     },
+    "ko-github": {
+      "description": "ה־GitHub של {community}"
+    },
+    "kosovo-flossk": {
+      "name": "תוכנה חופשית בקוד פתוח קוסובו (FLOSSK)"
+    },
     "kosovo-telegram": {
       "description": "קבוצת טלגרם ציבורית חצי רשמית לכלל קוסובו. אנו מזמינים את כל הממפים מכל מקום ובכל שפה."
     },
@@ -542,6 +559,13 @@
     "latam-wiki": {
       "description": "כל מה שצריך לדעת על מיפוי באמריקה הלטינית {url}"
     },
+    "madrid-uam-ym": {
+      "name": "ממפים צעירים UAM",
+      "description": "ממפים צעירים בUganda Christian University Mbale Campus"
+    },
+    "madrid-upm-ym": {
+      "description": "ממפים צעירים Universidad Politécnica de Madrid"
+    },
     "madrid-wiki": {
       "description": "כל מה שצריך לדעת על מיפוי במדריד: {url}"
     },
@@ -552,10 +576,6 @@
     "map-kibera": {
       "description": "מיפוי קיברה (Map Kibera) הוא ארגון רשום שפועל בקניה"
     },
-    "MapColabora-mailinglist": {
-      "name": "מיפוי שיתופי / ממפי סרגוסה",
-      "description": "מיפוי שיתופי / רשימת הדיוור של ממפי סרגוסה"
-    },
     "MapColabora-twitter": {
       "name": "מיפוי שיתופי / ממפי סרגוסה",
       "description": "מיפוי שיתופי / חשבון הטוויטר של ממפי סרגוסה"
@@ -564,10 +584,6 @@
       "name": "הקבוצה המקומית Mappa Mercia",
       "description": "בית לחובבי OpenStreetMap במידלנדס",
       "extendedDescription": "מיזם Mappa Mercia מיועד לטפל את OpenStreetMap במערב המידלנדס, אנגליה. אנו מגבשים אירועים קהילתיים, מספקים הכשרה ותומכים בארגונים מקומיים שרוצים לפתוח את הנתונים שלהם."
-    },
-    "MappingDC-meetup": {
-      "description": "שיפור OpenStreetMap באיזור DC",
-      "extendedDescription": "אנחנו קבוצה של ממפים מתנדבים שחותרים לשפר את OpenStreetMap באיזור DC. אנו גם מוכוונים ללמד אחרים על המערכת שעוטפת את OSM, ניתוח הנתונים, רישום מפות ומערכות גאו אינפורמציה. אנו נפגשים אחת לחודשיים כדי להתמקד באזור אחד בעיר שלנו."
     },
     "MappingWR": {
       "description": "מסייעים בהנגשת המסלולים מופחתי הפחמן באזור ווטרלו."
@@ -579,6 +595,9 @@
     "Maptime-Oceania-Slack": {
       "name": "ה־Slack של Maptime אוסיאניה",
       "description": "ניתן להירשם בכתובת {signupUrl}"
+    },
+    "me-telegram": {
+      "description": "כולם מוזמנים! ניתן להירשם בכתובת {signupUrl}"
     },
     "nl-matrix": {
       "description": "כל הממפים מוזמנים!"
@@ -779,9 +798,6 @@
       "name": "OpenStreetMap סיאטל",
       "description": "ממפים ומשתמשים ב־OpenStreetMap באזור סיאטל"
     },
-    "osm-sierra-leone": {
-      "description": "אנו מתמקדים ביצירה ובשימוש בנתונים פתוחים כדי לפתוח אתגרים חברתיים, כלכליים וקהילתיים."
-    },
     "OSM-SoCal": {
       "name": "OpenStreetMap דרום קליפורניה",
       "description": "בואו נהנה, נתרום משהו ללוס אנג׳לס ונלמד על מיפוי!",
@@ -857,6 +873,9 @@
     "rs-wiki": {
       "description": "עמוד Wikiproject לקרואטיה"
     },
+    "sg-wiki": {
+      "description": "עמוד הוויקי של {community}"
+    },
     "si-github": {
       "description": "ה־GitHub של {community}"
     },
@@ -907,9 +926,16 @@
     "uk-london-wiki": {
       "description": "עמוד הוויקי של {community}"
     },
+    "us-massachusetts-mailinglist": {
+      "name": "קבוצת הדיוור Talk-us-massachusetts",
+      "description": "רשימת דיוור בדוא״ל לקהילת OSM במסצ׳וסטס"
+    },
     "uy-irc": {
       "description": "ניתן להצטרף ל־‎#{account} ב־irc.freenode.org (פתחה 6667)",
       "extendedDescription": "ניתן להצטרף ל־‎#{account} תחת irc.freenode.org"
+    },
+    "vn-wiki": {
+      "description": "עמוד הוויקי של {community}"
     },
     "ym-AASTU": {
       "name": "ממפים צערים בAASTU",
@@ -961,6 +987,9 @@
       "description": "ממפים צעירים באוניברסיטת קורנל",
       "extendedDescription": "הסטודנטים והפקולטה בקורנל משתמשים בנתונים פתוחים ובקוד פתוח כדי לענות על אתרים בקנה מידה מקומי, ארצי ובינלאומי. מטרת העשייה היא לקדם את היעדים האקדמיים והאישיים שלנו בפיתוח מיומנויות משלנו סביב גאו-אינפורמטיקה (GIS) ובקיאות מרחבית."
     },
+    "ym-CURAT": {
+      "name": "ממפים צעירים CURAT"
+    },
     "ym-Cuttington-University": {
       "name": "ממפים צעירים אוניברסיטת קטינגטון",
       "description": "ממפים צעירים אוניברסיטת קטינגטון"
@@ -987,17 +1016,9 @@
     "ym-Federal-School-of-Surveys": {
       "description": "ממפים צעירים ב Federal School of Surveys"
     },
-    "ym-Federal-University-of-Technology-Akure": {
-      "name": "ממפים צעירים בFuta Space Club",
-      "description": "ממפים צעירים בFederal University of Technology, Akure"
-    },
     "ym-Fourah-Bay-College": {
       "name": "ארגון מיפוי סטודנטים",
       "description": "ממפים צעירים בFourah Bay College"
-    },
-    "ym-General-Lansana-Conte-University": {
-      "name": "ממפים צעירים בGeneral Lansana Conte University",
-      "description": "ממפים צעירים בGeneral Lansana Conte University"
     },
     "ym-George-Mason-University": {
       "name": "ממפי Mason University",
@@ -1307,10 +1328,6 @@
     },
     "ym-University-of-Northern-Colorado": {
       "description": "ממפים צעירים ב University of Northern Colorado"
-    },
-    "ym-University-of-Oregon": {
-      "name": "מפה ע\"י צפון מערב",
-      "description": "ממפים צעירים ב University of Oregon"
     },
     "ym-University-of-Port-Harcourt": {
       "description": "ממפים צעירים ב University of Port Harcourt"

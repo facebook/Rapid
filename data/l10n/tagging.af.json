@@ -57,6 +57,9 @@
             "private": {
               "title": "Privaat"
             },
+            "unknown": {
+              "title": "Onbekend"
+            },
             "yes": {
               "title": "Toegelaat"
             }
@@ -75,11 +78,16 @@
         },
         "access_simple": {
           "options": {
+            "private": "Privaat",
+            "unknown": "Onbekend",
             "yes": "Openbaar"
           }
         },
         "addr/interpolation": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "all": "Alles"
+          }
         },
         "address": {
           "label": "Adres",
@@ -105,11 +113,17 @@
         "admin_level": {
           "label": "Administratiewe vlak"
         },
+        "advertising": {
+          "label": "Tipe"
+        },
         "aerialway": {
           "label": "Tipe"
         },
         "aerialway/access": {
-          "label": "Toegang"
+          "label": "Toegang",
+          "options": {
+            "both": "Beide"
+          }
         },
         "aerialway/summer/access": {
           "options": {
@@ -122,11 +136,19 @@
         "amenity": {
           "label": "Tipe"
         },
+        "archaeological_site": {
+          "label": "Tipe"
+        },
         "architect": {
           "label": "Argitek"
         },
         "area/highway": {
           "label": "Tipe"
+        },
+        "armrest": {
+          "options": {
+            "undefined": "Onbekend"
+          }
         },
         "artwork_type": {
           "label": "Tipe"
@@ -141,10 +163,39 @@
           "label": "Kroeg"
         },
         "barrier": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "bollard": "Toupaal",
+            "cattle_grid": "roosterhek",
+            "city_wall": "Stadsmuur",
+            "cycle_barrier": "Fietshinderpaal",
+            "ditch": "Sloot",
+            "entrance": "Deurgang",
+            "fence": "Heining",
+            "gate": "Hek",
+            "hedge": "Laning",
+            "kissing_gate": "Draaihek",
+            "retaining_wall": "Stuwal",
+            "stile": "Steg",
+            "toll_booth": "Tolhek",
+            "wall": "Muur"
+          }
+        },
+        "barrier_planter": {
+          "label": "Versperring",
+          "options": {
+            "planter": "Ja",
+            "undefined": "Nee"
+          }
         },
         "basin": {
           "label": "Tipe"
+        },
+        "bath/type": {
+          "options": {
+            "hot_spring": "Warmwaterbron",
+            "lake": "Meer"
+          }
         },
         "beauty": {
           "label": "Dienste",
@@ -157,6 +208,12 @@
         },
         "bicycle_parking": {
           "label": "Tipe"
+        },
+        "bicycle_road": {
+          "options": {
+            "undefined": "Nee",
+            "yes": "Ja"
+          }
         },
         "bin": {
           "label": "Asblik"
@@ -186,19 +243,75 @@
           "label": "Tipe"
         },
         "bridge_combo": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "boardwalk": "Plankenweg"
+          }
         },
         "building": {
-          "label": "Gebou"
+          "label": "Gebou",
+          "options": {
+            "apartments": "Woonstelgebou",
+            "barn": "Skuur",
+            "bungalow": "Kothuis",
+            "bunker": "Bomskuiling",
+            "cabin": "Blokhut",
+            "chapel": "Kapelgebou",
+            "church": "Kerkgebou",
+            "civic": "Openbare gebou",
+            "college": "Kollegegebou",
+            "commercial": "Kommersiële gebou",
+            "construction": "Gebou in aanbou",
+            "detached": "Alleenstaande woning",
+            "dormitory": "Studentehuis",
+            "farm": "Plaashuis",
+            "farm_auxiliary": "Plaasgebou",
+            "garages": "Vulstasies",
+            "greenhouse": "Kweekhuis",
+            "hangar": "Loodsgebou",
+            "hospital": "Hospitaalgebou",
+            "hotel": "Hotelgebou",
+            "house": "Huis",
+            "houseboat": "Huisboot",
+            "industrial": "Industriële gebou",
+            "kindergarten": "Kleuterskoolgebou",
+            "mosque": "Moskeegebou",
+            "office": "Kantoorgebou",
+            "public": "Openbare gebou",
+            "residential": "Residensiële gebou",
+            "retail": "Kleinhandel-gebou",
+            "roof": "Dak",
+            "ruins": "Vervalle gebou",
+            "school": "Skoolgebou",
+            "semidetached_house": "Halfgekoppelde huis",
+            "service": "Diensgebou",
+            "stable": "Stalle",
+            "temple": "Tempelgebou",
+            "train_station": "Spoorwegstasiegebou",
+            "university": "Universiteitgebou",
+            "warehouse": "Pakhuis"
+          }
+        },
+        "building/levels": {
+          "label": "Vlakke"
+        },
+        "building/part": {
+          "label": "Geboudeel"
         },
         "bunker_type": {
+          "label": "Tipe"
+        },
+        "camp_site": {
           "label": "Tipe"
         },
         "capacity": {
           "label": "Kapasiteit"
         },
         "castle_type": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "manor": "Landhuis"
+          }
         },
         "club": {
           "label": "Tipe"
@@ -209,6 +322,9 @@
         "communication_multi": {
           "label": "Kommunikasie"
         },
+        "community_centre": {
+          "label": "Tipe"
+        },
         "construction": {
           "label": "Tipe"
         },
@@ -218,11 +334,50 @@
         "country": {
           "label": "Land"
         },
+        "covered_no": {
+          "options": {
+            "no": "Nee",
+            "yes": "Ja"
+          }
+        },
         "craft": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "beekeeper": "Byeboer",
+            "blacksmith": "Smid",
+            "brewery": "Brouery",
+            "carpenter": "Skrynwerker",
+            "caterer": "Spysenier",
+            "dressmaker": "Kleremaker",
+            "electrician": "Elektrisiën",
+            "gardener": "Tuinier",
+            "glaziery": "Glaswerk",
+            "metal_construction": "Metaalwerk",
+            "painter": "Verwer",
+            "photographer": "Fotograaf",
+            "plumber": "Loodgieter",
+            "roofer": "Dakdekker",
+            "sawmill": "Saagmeule",
+            "shoemaker": "Skoenmaker",
+            "stonemason": "Klipkapper",
+            "tailor": "Snyer",
+            "window_construction": "Vensterraamwerk",
+            "winery": "Wynboer"
+          }
+        },
+        "crop": {
+          "options": {
+            "grass": "Gras"
+          }
         },
         "crossing": {
           "label": "Tipe"
+        },
+        "crossing/barrier": {
+          "options": {
+            "no": "Nee",
+            "yes": "Ja"
+          }
         },
         "crossing_raised": {
           "options": {
@@ -239,6 +394,9 @@
         "cutting": {
           "label": "Tipe"
         },
+        "cycle_network": {
+          "label": "Netwerk"
+        },
         "denomination": {
           "label": "Denominasie"
         },
@@ -249,6 +407,9 @@
           "options": {
             "yes": "Ja"
           }
+        },
+        "depot": {
+          "label": "Tipe"
         },
         "description": {
           "label": "Beskrywing"
@@ -263,10 +424,23 @@
           "label": "Eindbestemming"
         },
         "diplomatic": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "embassy": "Ambassade"
+          }
         },
         "diplomatic/services": {
           "label": "Dienste"
+        },
+        "direction_cardinal-US-CA-NZ": {
+          "label": "Rigting"
+        },
+        "direction_clock": {
+          "label": "Rigting",
+          "options": {
+            "anticlockwise": "Antikloksgewys",
+            "clockwise": "Kloksgewys"
+          }
         },
         "distance": {
           "label": "Afstand",
@@ -284,8 +458,16 @@
         "dock": {
           "label": "Tipe"
         },
+        "dog": {
+          "options": {
+            "yes": "Toegelaat"
+          }
+        },
         "door_type": {
           "label": "Tipe"
+        },
+        "drive_through": {
+          "label": "Deurry"
         },
         "electrified": {
           "options": {
@@ -296,7 +478,10 @@
           "label": "Tipe"
         },
         "embassy": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "yes": "Ambassade"
+          }
         },
         "emergency": {
           "label": "Noodgeval"
@@ -311,7 +496,10 @@
           "label": "Tipe"
         },
         "entrance": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "emergency": "Nooduitgang"
+          }
         },
         "fax": {
           "label": "Faks",
@@ -323,13 +511,39 @@
         "fence_type": {
           "label": "Tipe"
         },
+        "fire_hydrant/position": {
+          "options": {
+            "parking_lot": "Parkering"
+          }
+        },
         "fire_hydrant/type": {
           "options": {
             "wall": "Muur"
           }
         },
+        "fire_mains": {
+          "options": {
+            "no": "Nee"
+          }
+        },
+        "fire_service_inlet": {
+          "options": {
+            "wall": "Muur"
+          }
+        },
+        "fire_sprinkler": {
+          "options": {
+            "no": "Nee"
+          }
+        },
         "fixme": {
           "label": "Maak My Reg"
+        },
+        "flashing_lights": {
+          "options": {
+            "no": "Nee",
+            "yes": "Ja"
+          }
         },
         "ford": {
           "label": "Tipe"
@@ -356,13 +570,38 @@
           "label": "Tipe"
         },
         "healthcare": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "clinic": "Kliniek",
+            "dentist": "Tandarts",
+            "doctor": "Dokter"
+          }
         },
         "highway": {
           "label": "Tipe"
         },
+        "highway_cartpath": {
+          "options": {
+            "service": "Diensweg"
+          }
+        },
         "historic": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "archaeological_site": "Argeologiese plek",
+            "boundary_stone": "Grenspaal",
+            "building": "Historiese gebou",
+            "castle": "Kasteel",
+            "fort": "Historiese fort",
+            "manor": "Landhuis",
+            "memorial": "Gedenkteken",
+            "railway": "Spoorlyn",
+            "ruins": "Reune",
+            "tomb": "Graf",
+            "wayside_cross": "Wegteken",
+            "wayside_shrine": "Wegaltaar",
+            "wreck": "Wrak"
+          }
         },
         "holding_position/type": {
           "label": "Tipe",
@@ -400,14 +639,24 @@
             "yes": "Ja"
           }
         },
-        "internet_access/fee": {
-          "label": "Internettoegang"
-        },
         "junction/ref_oneway": {
           "label": "Verkeerskruising nummer"
         },
         "junction_line": {
           "label": "Verkeerskruising"
+        },
+        "kerb": {
+          "options": {
+            "no": {
+              "title": "Nee"
+            },
+            "yes": {
+              "title": "Ja"
+            }
+          }
+        },
+        "kerb/kerb_barrier": {
+          "label": "Tipe"
         },
         "kneipp_water_cure_multi": {
           "label": "Kom"
@@ -427,7 +676,16 @@
         "leisure": {
           "label": "Tipe"
         },
+        "level_semi": {
+          "label": "Vlakke"
+        },
         "liaison": {
+          "label": "Tipe"
+        },
+        "lifeguard": {
+          "label": "Tipe"
+        },
+        "lift_gate/type": {
           "label": "Tipe"
         },
         "location": {
@@ -451,14 +709,29 @@
         "marker": {
           "label": "Tipe"
         },
+        "material": {
+          "options": {
+            "wood": "Woud"
+          }
+        },
         "maxspeed": {
           "label": "Spoedlimiet"
         },
         "memorial": {
           "label": "Tipe"
         },
+        "mobile": {
+          "placeholder": "+27 11 907 1111"
+        },
         "monitoring_multi": {
           "label": "Monitering"
+        },
+        "mooring": {
+          "options": {
+            "no": "Nee",
+            "private": "Privaat",
+            "yes": "Ja"
+          }
         },
         "museum": {
           "label": "Tipe"
@@ -475,24 +748,61 @@
         },
         "network_bicycle": {
           "options": {
-            "ncn": "Nasionaal"
+            "ncn": "Nasionaal",
+            "rcn": "Streek"
           }
         },
         "network_foot": {
           "options": {
-            "nwn": "Nasionaal"
+            "nwn": "Nasionaal",
+            "rwn": "Streek"
           }
         },
         "network_horse": {
           "options": {
-            "nhn": "Nasionaal"
+            "nhn": "Nasionaal",
+            "rhn": "Streek"
           }
+        },
+        "network_road": {
+          "label": "Netwerk"
         },
         "note": {
           "label": "Nota"
         },
+        "nudism": {
+          "options": {
+            "designated": "Toegewys",
+            "no": "Toegang Verbode",
+            "yes": "Toegelaat"
+          }
+        },
         "office": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "accountant": "Boekhouer",
+            "advertising_agency": "Advetensieagentskap",
+            "architect": "Argitek",
+            "charity": "Liefdadigheidskantoor",
+            "diplomatic": "Diplomatiekekantoor",
+            "educational_institution": "Opvoedkundige instelling",
+            "employment_agency": "Werksagentskap",
+            "energy_supplier": "Energieverskafferkantoor",
+            "estate_agent": "Eiendomsagent",
+            "financial": "Finansieële kantoor",
+            "financial_advisor": "Finansieële adviseur",
+            "government": "Regeringskantoor",
+            "insurance": "Versekeringskantoor",
+            "newspaper": "Koerant kantoor",
+            "ngo": "NRO-kantoor",
+            "notary": "Notaris",
+            "quango": "Kwasi NRO-kantoor",
+            "religion": "Godsdienskantoor",
+            "research": "Navorsingskantoor",
+            "tax_advisor": "Belastingadviseur",
+            "telecommunication": "Telekommunikasiekantoor",
+            "travel_agent": "Reisagent"
+          }
         },
         "oneway": {
           "label": "Eenrigting",
@@ -520,6 +830,12 @@
         "organic": {
           "label": "Organiesekos"
         },
+        "parcel_pickup": {
+          "options": {
+            "no": "Nee",
+            "yes": "Ja"
+          }
+        },
         "park_ride": {
           "label": "Parkeer en ry"
         },
@@ -528,7 +844,13 @@
           "options": {
             "garage_boxes": "Vulstasies",
             "rooftop": "Dak",
-            "sheds": "Skure"
+            "sheds": "Skure",
+            "surface": "Oppervlakte"
+          }
+        },
+        "parking/side/parking": {
+          "options": {
+            "no": "Nee"
           }
         },
         "parking_entrance": {
@@ -540,6 +862,9 @@
         "phone": {
           "label": "Telefoon",
           "placeholder": "+27 11 907 1111"
+        },
+        "pipeline": {
+          "label": "Tipe"
         },
         "piste/type": {
           "label": "Tipe",
@@ -555,6 +880,9 @@
           "label": "Energiebron"
         },
         "playground": {
+          "label": "Tipe"
+        },
+        "post_box/type": {
           "label": "Tipe"
         },
         "power": {
@@ -574,6 +902,12 @@
         },
         "railway/position": {
           "label": "Mylpaal plek"
+        },
+        "ramp": {
+          "options": {
+            "no": "Nee",
+            "yes": "Ja"
+          }
         },
         "recycling_type": {
           "label": "Tipe",
@@ -610,7 +944,15 @@
           "label": "Tipe"
         },
         "religion": {
-          "label": "Geloof"
+          "label": "Geloof",
+          "options": {
+            "buddhist": "Boeddhis",
+            "christian": "Christen",
+            "hindu": "Hindoe",
+            "jewish": "Joods",
+            "muslim": "Moslem",
+            "shinto": "Sjinto"
+          }
         },
         "residential": {
           "label": "Tipe"
@@ -619,6 +961,9 @@
           "label": "Tipe"
         },
         "restriction": {
+          "label": "Tipe"
+        },
+        "roller_coaster/track": {
           "label": "Tipe"
         },
         "room": {
@@ -632,6 +977,11 @@
         },
         "route_master": {
           "label": "Tipe"
+        },
+        "royal_cypher-GB": {
+          "options": {
+            "no": "Nee"
+          }
         },
         "ruins": {
           "label": "Tipe"
@@ -649,6 +999,12 @@
             "other": "Ander"
           }
         },
+        "seamark/harbour/category_marina": {
+          "options": {
+            "marina": "Ja",
+            "marina_no_facilities": "Nee"
+          }
+        },
         "seamark/type": {
           "label": "Seemerker"
         },
@@ -661,6 +1017,9 @@
         "service": {
           "label": "Tipe",
           "options": {
+            "alley": "Steeg",
+            "drive-through": "Deurry",
+            "driveway": "Oprit",
             "emergency_access": "Noodtoegang",
             "parking_aisle": "In parkering"
           }
@@ -696,9 +1055,30 @@
           "label": "Tipe"
         },
         "social_facility": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "nursing_home": "Verpleging- en versorgingshuis",
+            "shelter": "Skuiling"
+          }
+        },
+        "source": {
+          "options": {
+            "osm notes": "OpenStreetMap notas"
+          }
         },
         "sport": {
+          "label": "Sporte"
+        },
+        "sport/sport_ice": {
+          "label": "Sporte"
+        },
+        "sport/sport_pub": {
+          "label": "Sporte"
+        },
+        "sport/sport_racing_motor": {
+          "label": "Sporte"
+        },
+        "sport/sport_racing_nonmotor": {
           "label": "Sporte"
         },
         "step_count": {
@@ -732,7 +1112,11 @@
           },
           "placeholder": "Onbekend"
         },
+        "structure_power": {
+          "label": "Struktuur"
+        },
         "structure_waterway": {
+          "label": "Struktuur",
           "options": {
             "tunnel": "Tonnel"
           },
@@ -741,8 +1125,23 @@
         "studio": {
           "label": "Tipe"
         },
+        "substance": {
+          "options": {
+            "fuel": "Brandstof",
+            "water": "Drinkwater"
+          }
+        },
         "substation": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "industrial": "Industrieel"
+          }
+        },
+        "substation_pipeline": {
+          "label": "Tipe",
+          "options": {
+            "industrial": "Industrieel"
+          }
         },
         "supervised": {
           "label": "Onder toesig"
@@ -750,7 +1149,8 @@
         "surface": {
           "label": "Oppervlakte",
           "options": {
-            "grass": "Gras"
+            "grass": "Gras",
+            "wood": "Woud"
           }
         },
         "surveillance": {
@@ -761,6 +1161,17 @@
         },
         "surveillance/zone": {
           "label": "Toesiggebied"
+        },
+        "survey_point/purpose": {
+          "options": {
+            "both": "Beide"
+          }
+        },
+        "survey_point/structure": {
+          "label": "Struktuur",
+          "options": {
+            "block": "Blok"
+          }
         },
         "swimming_pool": {
           "label": "Tipe"
@@ -777,8 +1188,22 @@
         "telecom": {
           "label": "Tipe"
         },
+        "telescope/type": {
+          "label": "Tipe"
+        },
         "toilets": {
           "label": "Toilette"
+        },
+        "toilets/menstrual_products": {
+          "options": {
+            "no": "Nee"
+          }
+        },
+        "toilets/wheelchair": {
+          "options": {
+            "no": "Nee",
+            "yes": "Ja"
+          }
         },
         "tomb": {
           "label": "Tipe"
@@ -810,6 +1235,12 @@
         "traffic_signals": {
           "label": "Tipe"
         },
+        "traffic_signals/sound": {
+          "options": {
+            "no": "Nee",
+            "yes": "Ja"
+          }
+        },
         "trail_visibility": {
           "label": "Sigbaarheid van pad"
         },
@@ -828,10 +1259,22 @@
         "tunnel_combo": {
           "label": "Tipe"
         },
+        "two_sided": {
+          "options": {
+            "undefined": "Nee",
+            "yes": "Ja"
+          }
+        },
         "usage_rail": {
           "options": {
             "industrial": "Industrieel",
-            "military": "Militêre"
+            "military": "Militêre",
+            "tourism": "Toerisme"
+          }
+        },
+        "utility": {
+          "options": {
+            "power": "Krag"
           }
         },
         "valve": {
@@ -848,6 +1291,13 @@
             "tram": "Trem"
           }
         },
+        "vending": {
+          "options": {
+            "fuel": "Brandstof",
+            "ice_cream": "Roomys",
+            "water": "Drinkwater"
+          }
+        },
         "volcano/type": {
           "label": "Vuurspuwende berg"
         },
@@ -861,7 +1311,13 @@
           "label": "Waterpunt"
         },
         "water_source": {
-          "label": "Waterbron"
+          "label": "Waterbron",
+          "options": {
+            "pond": "Dammetjie",
+            "river": "Rivier",
+            "stream": "Stroom",
+            "water_tank": "Watertenk"
+          }
         },
         "waterway": {
           "label": "Tipe"
@@ -870,11 +1326,20 @@
           "label": "Webwerf",
           "placeholder": "https://voorbeeld.com"
         },
+        "website/menu": {
+          "placeholder": "https://voorbeeld.com"
+        },
         "wetland": {
           "label": "Tipe"
         },
         "wheelchair": {
           "label": "Rolstoeltoegang",
+          "options": {
+            "no": "Nee",
+            "yes": "Ja"
+          }
+        },
+        "windings/auto": {
           "options": {
             "no": "Nee",
             "yes": "Ja"
@@ -1519,6 +1984,9 @@
         "disused/shop": {
           "name": "Winkel in onbruik"
         },
+        "embankment": {
+          "name": "Dyk"
+        },
         "emergency": {
           "name": "Noodgevalbaken"
         },
@@ -1615,6 +2083,9 @@
         },
         "highway/footway": {
           "name": "Voetpad"
+        },
+        "highway/footway/crossing/unmarked": {
+          "name": "Nie gemerk kruis"
         },
         "highway/give_way": {
           "name": "Toegeeteken"
@@ -1880,6 +2351,9 @@
           "name": "Boord",
           "terms": "boord, vrugteboord"
         },
+        "landuse/pond": {
+          "name": "Dammetjie"
+        },
         "landuse/quarry": {
           "name": "Kwarrie",
           "terms": "steengroef, klipbreekgat, groef"
@@ -1987,6 +2461,12 @@
         },
         "man_made/cutline": {
           "name": "snylyn"
+        },
+        "man_made/embankment": {
+          "name": "Dyk"
+        },
+        "man_made/fuel_pump": {
+          "name": "Gaspomp"
         },
         "man_made/lighthouse": {
           "name": "Ligtoring",
@@ -2331,7 +2811,8 @@
           "name": "Kragpaal"
         },
         "power/substation": {
-          "name": "Substasie"
+          "name": "Substasie",
+          "terms": "Substasie"
         },
         "power/tower": {
           "name": "Hoogspanningstoring"
@@ -2782,6 +3263,9 @@
         },
         "tourism/zoo": {
           "name": "Dieretuin"
+        },
+        "traffic_sign": {
+          "name": "Verkeersteken"
         },
         "type/boundary": {
           "name": "Grens"

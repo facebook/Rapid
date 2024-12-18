@@ -11,21 +11,17 @@
     },
     "modes": {
       "add_area": {
-        "title": "Područje",
-        "filter_tooltip": "područja"
+        "title": "Područje"
       },
       "add_line": {
-        "title": "Linija",
-        "filter_tooltip": "linije"
+        "title": "Linija"
       },
       "add_point": {
-        "title": "Točka",
-        "filter_tooltip": "točke"
+        "title": "Točka"
       },
       "add_note": {
         "title": "Bilješka",
-        "description": "Primijetio/la si grešku? Obavijesti druge doprinositelje.",
-        "key": "S"
+        "description": "Primijetio/la si grešku? Obavijesti druge doprinositelje."
       },
       "browse": {
         "title": "Pretraži",
@@ -87,32 +83,12 @@
       },
       "delete": {
         "title": "Izbriši",
-        "description": {
-          "single": "Trajno izbriši ovaj element.",
-          "multiple": "Trajno izbriši ove funkcije."
-        },
         "annotation": {
           "point": "Točka je obrisana.",
           "vertex": "Točka puta je obrisana.",
           "line": "Linija je obrisana.",
           "area": "Područje je obrisano.",
           "relation": "Relacija je obrisana."
-        },
-        "too_large": {
-          "single": "Ovaj se element ne može obrisati jer je premali dio objekta trenutno vidljiv.",
-          "multiple": "Ovi elementi se ne mogu obrisati jer ih je trenutno premalo vidljivo."
-        },
-        "incomplete_relation": {
-          "single": "Ovaj element se ne može obrisati jer nije potpuno preuzet s interneta.",
-          "multiple": "Ovi se elementi ne mogu obrisati jer nisu potpuno preuzeti s interneta."
-        },
-        "part_of_relation": {
-          "single": "Ovaj element se ne može obrisati jer je dio veće relacije. Moraš ga prvo obrisati iz relacije.",
-          "multiple": "Ovi elementi se ne mogu obrisati jer su dio veće relacije. Moraš ih prvo obrisati iz relacije."
-        },
-        "connected_to_hidden": {
-          "single": "Ovaj element se ne može se obrisati jer je spojen na neki skriveni element karte.",
-          "multiple": "Ovi elementi se ne mogu obrisati jer su neki spojeni na skrivene elemente karte."
         }
       },
       "connect": {
@@ -136,50 +112,18 @@
       },
       "move": {
         "title": "Premjesti",
-        "description": {
-          "single": "Premjesti ovaj element na drugu lokaciju.",
-          "multiple": "Premjesti ove elemente na drugu lokaciju."
-        },
         "annotation": {
           "point": "Točka je premještena.",
           "vertex": "Točka unutar puta je premještena.",
           "line": "Linija je premještena.",
           "area": "Područje je premješteno."
-        },
-        "incomplete_relation": {
-          "single": "Ovaj element se ne može premjestiti jer nije potpuno preuzet s interneta.",
-          "multiple": "Ovi se elementi ne mogu premjestiti jer nisu potpuno preuzeti s interneta."
-        },
-        "too_large": {
-          "single": "Ovaj se element ne može premjestiti jer je trenutno premali dio elementa vidljiv.",
-          "multiple": "Ovi elementi se ne mogu premjestiti jer ih je trenutno premalo vidljivo."
-        },
-        "connected_to_hidden": {
-          "single": "Ovaj element se ne može premjestiti jer je spojen na neki skriveni element karte.",
-          "multiple": "Ovi elementi se ne mogu premjestiti jer su neki od njih spojeni na skrivene elemente karte."
         }
       },
       "rotate": {
         "title": "Rotiraj",
-        "description": {
-          "single": "Rotiraj ovaj element oko njegove središnje točke.",
-          "multiple": "Rotiraj ove elemente oko njihove središnje točke."
-        },
         "annotation": {
           "line": "Linija je rotirana.",
           "area": "Područje je rotirana."
-        },
-        "incomplete_relation": {
-          "single": "Ovaj element se ne može rotirati jer nije u potpunosti preuzet s interneta.",
-          "multiple": "Ovi elementi se ne mogu rotirati jer nisu u potpunosti preuzeti s interneta."
-        },
-        "too_large": {
-          "single": "Ovaj element se ne može rotirati jer je trenutno premali dio elementa vidljiv.",
-          "multiple": "Ovi elementi se ne mogu rotirati jer ih je trenutno premalo vidljivo."
-        },
-        "connected_to_hidden": {
-          "single": "Ovaj element se ne može rotirati jer je spojen na neki skriveni element karte.",
-          "multiple": "Ovi elementi se ne mogu rotirati jer su neki od njih spojeni na skrivene elemente karte."
         }
       },
       "reverse": {
@@ -195,9 +139,6 @@
           "create": "Zabrana skretanja je dodana",
           "delete": "Zabrana skretanja je uklonjena"
         }
-      },
-      "extract": {
-        "key": "I"
       }
     },
     "restriction": {
@@ -387,18 +328,14 @@
         "osm": {
           "tooltip": "Podaci karte sa OpenStreetMapa"
         },
-        "notes": {
-          "key": "S"
-        },
         "maproulette": {
           "detail_title": "Detalji",
           "cancel": "Otkaži"
         }
       },
-      "map_features": "Elementi karte",
       "autohidden": "Ovi elementi su automatski skriveni jer ih je previše za prikaz na zaslonu. Možeš približiti prikaz za njihovo uređivanje."
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Točke",
         "tooltip": "Interesne točke"
@@ -514,17 +451,15 @@
       "cancel": "Otkaži"
     },
     "source_switch": {
+      "dev": "razvojno",
       "live": "uživo",
-      "lose_changes": "Imaš nespremljenih promjena. Zamjena servera karte će poništiti promjene. Jesi li siguran/na da želiš zamijeniti servere?",
-      "dev": "razvojno"
+      "lose_changes": "Imaš nespremljenih promjena. Zamjena servera karte će poništiti promjene. Jesi li siguran/na da želiš zamijeniti servere?"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Oznake"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Ukloni"
-      }
+    "rapid_menu": {
+      "remove": "Ukloni"
     },
     "tag_reference": {
       "description": "Opis",
@@ -534,7 +469,6 @@
     "bearing": {
       "n": "S"
     },
-    "cannot_zoom": "Nije moguće više udaljiti u trenutnom môdu.",
     "full_screen": "Slika preko cijelog zaslona",
     "QA": {
       "osmose": {
@@ -692,9 +626,7 @@
       }
     },
     "issues": {
-      "warnings": {
-        "list_title": "Upozorenja"
-      }
+      "warnings": "Upozorenja"
     },
     "intro": {
       "done": "gotovo",
@@ -876,79 +808,135 @@
     "shortcuts": {
       "title": "Tipkovne kratice",
       "tooltip": "Prikaži tipkovne kratice.",
+      "key": {
+        "delete": "Izbriši"
+      },
       "gesture": {
         "drag": "pomak"
       },
       "or": "-ili-",
-      "browsing": {
-        "title": "Pregledavanje",
-        "navigation": {
-          "title": "Navigacija",
-          "pan": "Pomicanje karte"
+      "browsing": "Pregledavanje",
+      "editing": "Uređivanje",
+      "navigation": "Navigacija",
+      "selecting_features": "Označavanje elemenata",
+      "with_node_selected": "Sa odabranom točkom",
+      "drawing": "Crtanje",
+      "commands": "Naredbe",
+      "help": "Pomoć",
+      "display_options": "Postavke prikaza",
+      "info": "Informacije",
+      "command": {
+        "pan": {
+          "label": "Pomicanje karte"
         },
-        "help": {
-          "title": "Pomoć",
-          "help": "Prikaži pomoć/dokumentaciju",
-          "keyboard": "Prikaži tipkovne kratice"
+        "select_one": {
+          "label": "Označavanje pojedinog elementa"
         },
-        "display_options": {
-          "title": "Postavke prikaza",
-          "wireframe": "Aktiviranje žičanog načina"
+        "select_multi": {
+          "label": "Odabir više elemenata"
         },
-        "selecting": {
-          "title": "Označavanje elemenata",
-          "select_one": "Označavanje pojedinog elementa",
-          "select_multi": "Odabir više elemenata",
-          "lasso": "Crtanje obruba za odabir elemenata",
-          "search": "Pronađi elemente koji odgovaraju tekstu"
+        "lasso": {
+          "label": "Crtanje obruba za odabir elemenata"
         },
-        "with_selected": {
-          "edit_menu": "Aktiviranje izbornika za uređivanje"
+        "edit_menu": {
+          "label": "Aktiviranje izbornika za uređivanje"
         },
-        "vertex_selected": {
-          "title": "Sa odabranom točkom",
-          "first": "Skok na prvu točku",
-          "last": "Skok na posljednju točku",
-          "change_parent": "Zamijeni roditeljski put"
-        }
-      },
-      "editing": {
-        "title": "Uređivanje",
-        "drawing": {
-          "title": "Crtanje",
-          "add_point": "Dodaj točku",
-          "add_line": "Dodaj liniju",
-          "add_area": "Dodaj područje",
-          "add_note": "Dodaj bilješku",
-          "place_point": "Postavi točku ili bilješku",
-          "disable_snap": "Drži za deaktiviranje hvatanja na elemente",
-          "stop_line": "Završi crtanje linije ili područja"
+        "first_node": {
+          "label": "Skok na prvu točku"
         },
-        "commands": {
-          "title": "Naredbe",
-          "copy": "Kopiraj odabrane elemente",
-          "paste": "Zalijepi kopirane elemente",
-          "undo": "Poništi posljednju radnju",
-          "redo": "Ponovi posljednju radnju",
-          "save": "Spremi promjene"
+        "last_node": {
+          "label": "Skok na posljednju točku"
         },
-        "operations": {
-          "merge": "Kombiniraj (spoji) odabrane elemente",
-          "move": "Premjesti odabrane elemente",
-          "rotate": "Rotiraj odabrane elemente",
-          "circularize": "Zaokruži zatvorenu liniju ili područje",
-          "delete": "Obriši odabrane elemente"
-        }
-      },
-      "tools": {
-        "title": "Alati",
-        "info": {
-          "title": "Informacije",
-          "all": "Aktiviranje svih informacijskih okvira",
-          "background": "Aktiviranje okvira pozadina",
-          "history": "Aktiviranje okvira povijesti",
-          "location": "Aktiviranje okvira lokacije",
-          "measurement": "Aktiviranje okvira za mjerenje"
+        "change_parent": {
+          "label": "Zamijeni roditeljski put"
+        },
+        "add_point": {
+          "label": "Dodaj točku"
+        },
+        "add_line": {
+          "label": "Dodaj liniju"
+        },
+        "add_area": {
+          "label": "Dodaj područje"
+        },
+        "add_note": {
+          "label": "Dodaj bilješku",
+          "key": "S"
+        },
+        "place_point": {
+          "label": "Postavi točku ili bilješku"
+        },
+        "disable_snap": {
+          "label": "Drži za deaktiviranje hvatanja na elemente"
+        },
+        "stop_line": {
+          "label": "Završi crtanje linije ili područja"
+        },
+        "copy": {
+          "label": "Kopiraj odabrane elemente"
+        },
+        "paste": {
+          "label": "Zalijepi kopirane elemente"
+        },
+        "undo": {
+          "label": "Poništi posljednju radnju"
+        },
+        "redo": {
+          "label": "Ponovi posljednju radnju"
+        },
+        "save": {
+          "label": "Spremi promjene"
+        },
+        "find": {
+          "label": "Pronađi elemente koji odgovaraju tekstu"
+        },
+        "merge": {
+          "label": "Kombiniraj (spoji) odabrane elemente"
+        },
+        "extract": {
+          "key": "I"
+        },
+        "move": {
+          "label": "Premjesti odabrane elemente"
+        },
+        "rotate": {
+          "label": "Rotiraj odabrane elemente"
+        },
+        "straighten": {
+          "key": "J"
+        },
+        "circularize": {
+          "label": "Zaokruži zatvorenu liniju ili područje"
+        },
+        "delete": {
+          "label": "Obriši odabrane elemente"
+        },
+        "wireframe": {
+          "key": "Z"
+        },
+        "keyboard_shortcuts": {
+          "label": "Prikaži tipkovne kratice"
+        },
+        "toggle_osm_notes": {
+          "key": "S"
+        },
+        "toggle_streetside": {
+          "key": "J"
+        },
+        "toggle_all_cards": {
+          "label": "Aktiviranje svih informacijskih okvira"
+        },
+        "toggle_background_card": {
+          "label": "Aktiviranje okvira pozadina"
+        },
+        "toggle_history_card": {
+          "label": "Aktiviranje okvira povijesti"
+        },
+        "toggle_location_card": {
+          "label": "Aktiviranje okvira lokacije"
+        },
+        "toggle_measurement_card": {
+          "label": "Aktiviranje okvira za mjerenje"
         }
       }
     },
@@ -1020,6 +1008,7 @@
       "bin": "bini",
       "bkm": "kom",
       "bla": "siksika",
+      "blo": "anii",
       "bm": "bambara",
       "bn": "bangla",
       "bo": "tibetski",
@@ -1244,6 +1233,7 @@
       "kv": "komi",
       "kw": "kornski",
       "kwk": "kwakʼwala",
+      "kxv": "kuvi",
       "ky": "kirgiski",
       "la": "latinski",
       "lad": "ladino",
@@ -1254,8 +1244,10 @@
       "lez": "lezgiški",
       "lg": "ganda",
       "li": "limburški",
+      "lij": "ligurski",
       "lil": "lillooet",
       "lkt": "lakota",
+      "lmo": "lombardski",
       "ln": "lingala",
       "lo": "laoski",
       "lol": "mongo",
@@ -1268,7 +1260,6 @@
       "lua": "luba-lulua",
       "lui": "luiseno",
       "lun": "lunda",
-      "luo": "luo",
       "lus": "lushai",
       "luy": "luyia",
       "lv": "latvijski",
@@ -1449,6 +1440,7 @@
       "swb": "komorski",
       "syc": "klasični sirski",
       "syr": "sirijski",
+      "szl": "šleski",
       "ta": "tamilski",
       "tce": "južni tutchone",
       "te": "teluški",
@@ -1494,9 +1486,10 @@
       "umb": "umbundu",
       "ur": "urdski",
       "uz": "uzbečki",
-      "vai": "vai",
       "ve": "venda",
+      "vec": "venecijanski",
       "vi": "vijetnamski",
+      "vmw": "makhuwa",
       "vo": "volapük",
       "vot": "votski",
       "vun": "vunjo",
@@ -1510,6 +1503,7 @@
       "wuu": "wu kineski",
       "xal": "kalmyk",
       "xh": "xhosa",
+      "xnr": "kangri",
       "xog": "soga",
       "yao": "yao",
       "yap": "japski",

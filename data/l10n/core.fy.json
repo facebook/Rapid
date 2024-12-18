@@ -65,7 +65,7 @@
       "title": "Kaartdata",
       "description": "Kaartdata"
     },
-    "feature": {
+    "filters": {
       "points": {
         "description": "Punten"
       },
@@ -104,9 +104,7 @@
       }
     },
     "issues": {
-      "title": "Knyppunten",
-      "list_title": "Knyppunten",
-      "warnings_and_errors": "Warskôgings en flaters"
+      "title": "Knyppunten"
     },
     "intro": {
       "points": {

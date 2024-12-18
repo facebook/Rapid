@@ -12,10 +12,23 @@
         "description": "Apstrādāti Sentinel Satalītattēli.",
         "name": "eox.at 2018 bez-mākoņu"
       },
+      "EOXAT2019CLOUDLESS": {
+        "description": "Apstrādāti Sentinel Satalītattēli."
+      },
+      "EOXAT2020CLOUDLESS": {
+        "description": "Apstrādāti Sentinel Satalītattēli."
+      },
+      "EOXAT2021CLOUDLESS": {
+        "description": "Apstrādāti Sentinel Satalītattēli."
+      },
+      "EOXAT2022CLOUDLESS": {
+        "description": "Apstrādāti Sentinel Satalītattēli."
+      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "Noteikumi un atsauksmes"
         },
+        "description": "Esri pasaules attēli",
         "name": "Esri pasaules attēli"
       },
       "EsriWorldImageryClarity": {
@@ -95,9 +108,26 @@
         "description": "Dzeltens = Publiska domēna kartes dati no ASV tautskaites. Sarkans = Dati, kas nav atrodami OpenStreetMap",
         "name": "TIGER Ceļi 2019"
       },
+      "US-TIGER-Roads-2020": {
+        "description": "Dzeltens = Publiska domēna kartes dati no ASV tautskaites. Sarkans = Dati, kas nav atrodami OpenStreetMap"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Dzeltens = Publiska domēna kartes dati no ASV tautskaites. Sarkans = Dati, kas nav atrodami OpenStreetMap"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Dzeltens = Publiska domēna kartes dati no ASV tautskaites. Sarkans = Dati, kas nav atrodami OpenStreetMap"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Dzeltens = Publiska domēna kartes dati no ASV tautskaites. Sarkans = Dati, kas nav atrodami OpenStreetMap"
+      },
       "US_Forest_Service_roads_overlay": {
         "description": "Šoseja: Zaļa apmale = neklasificēts. Brūna apmale = trase. Virsma: grants = gaiši brūns pildījums, Asfalts = melns, Bruģēts = pelēks, betons = zils, zāle = zaļš. Sezonāli = baltas strīpas.",
         "name": "ASV Meža Ceļu Pārklājums"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Realizēts, izmantojot  Brussels UrbIS®© - Izplatīšana & Autortiesības CIRB"
+        }
       },
       "UrbISOrtho2016": {
         "attribution": {
@@ -119,9 +149,19 @@
           "text": "Realizēts, izmantojot  Brussels UrbIS®© - Izplatīšana & Autortiesības CIRB"
         }
       },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Realizēts, izmantojot  Brussels UrbIS®© - Izplatīšana & Autortiesības CIRB"
+        }
+      },
       "UrbisAdmFR": {
         "attribution": {
           "text": "Realizēts, izmantojot  UrbIS®© - Izplatīšana & Copyright CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
+        "attribution": {
+          "text": "Realizēts, izmantojot  Brussels UrbIS®© - Izplatīšana & Autortiesības CIRB"
         }
       },
       "UrbisAdmNL": {
@@ -176,9 +216,37 @@
         "name": "EUFAR Balaton ortofotogrāfijas"
       },
       "gothenburg-citymap": {
+        "attribution": {
+          "text": "© Gēterborgas pašvaldība, CC0"
+        },
         "name": "Gēteborgas pilsētas karte"
       },
       "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© Gēterborgas pašvaldība, CC0"
+        }
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© Gēterborgas pašvaldība, CC0"
+        }
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© Gēterborgas pašvaldība, CC0"
+        }
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© Gēterborgas pašvaldība, CC0"
+        }
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© Gēterborgas pašvaldība, CC0"
+        }
+      },
+      "gothenburg-ortho_latest": {
         "attribution": {
           "text": "© Gēterborgas pašvaldība, CC0"
         }
@@ -221,6 +289,11 @@
         },
         "description": "Urbāno vietu ortofoto no Kalmaras pašvaldības 2018",
         "name": "Kalmāras Dienvidu Ortofoto 2018"
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© Kalmaras pašvaldība"
+        }
       },
       "kelkkareitit": {
         "description": "Kelkkareitit.fi sniegamotociklu takas no OSM (Nordisks pārklājums)",
@@ -303,6 +376,11 @@
         }
       },
       "tf-landscape": {
+        "attribution": {
+          "text": "Kartes © Thunderforest, Dati ©OpenStreetMap ieguldītāji"
+        }
+      },
+      "tf-outdoors": {
         "attribution": {
           "text": "Kartes © Thunderforest, Dati ©OpenStreetMap ieguldītāji"
         }

@@ -84,9 +84,29 @@
         "description": "Groc = Dades de mapa de domini públic del Cens dels EUA. Vermell = No es troben dades a OpenStreetMap",
         "name": "Carreteres TIGER 2018"
       },
+      "US-TIGER-Roads-2019": {
+        "description": "Groc = Dades de mapa de domini públic del Cens dels EUA. Vermell = No es troben dades a OpenStreetMap"
+      },
+      "US-TIGER-Roads-2020": {
+        "description": "Groc = Dades de mapa de domini públic del Cens dels EUA. Vermell = No es troben dades a OpenStreetMap"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Groc = Dades de mapa de domini públic del Cens dels EUA. Vermell = No es troben dades a OpenStreetMap"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Groc = Dades de mapa de domini públic del Cens dels EUA. Vermell = No es troben dades a OpenStreetMap"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Groc = Dades de mapa de domini públic del Cens dels EUA. Vermell = No es troben dades a OpenStreetMap"
+      },
       "US_Forest_Service_roads_overlay": {
         "description": "Carretera: Contorn verd = sense classificar. Contorn marró = pista. Superfície: grava = emplenat marró clar, Asfalt = negre, pavimentat = gris, terra = blanc, ciment = blau, gespa = verd. Estacional = franges blanques",
         "name": "Capa superposada dels Camins Forestals dels EUA"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Realitzat gràcies a Brussels UrbIS®© - Distribució i copyright CIRB"
+        }
       },
       "UrbISOrtho2016": {
         "attribution": {
@@ -98,7 +118,27 @@
           "text": "Realitzat gràcies a Brussels UrbIS®© - Distribució i copyright CIRB"
         }
       },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "Realitzat gràcies a Brussels UrbIS®© - Distribució i copyright CIRB"
+        }
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "Realitzat gràcies a Brussels UrbIS®© - Distribució i copyright CIRB"
+        }
+      },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Realitzat gràcies a Brussels UrbIS®© - Distribució i copyright CIRB"
+        }
+      },
       "UrbisAdmFR": {
+        "attribution": {
+          "text": "Realitzat gràcies a Brussels UrbIS®© - Distribució i copyright CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
         "attribution": {
           "text": "Realitzat gràcies a Brussels UrbIS®© - Distribució i copyright CIRB"
         }
@@ -212,6 +252,11 @@
         }
       },
       "tf-landscape": {
+        "attribution": {
+          "text": "Mapes © Thunderforest, Dades © col·laboradors d'OpenStreetMap"
+        }
+      },
+      "tf-outdoors": {
         "attribution": {
           "text": "Mapes © Thunderforest, Dades © col·laboradors d'OpenStreetMap"
         }

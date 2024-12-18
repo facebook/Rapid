@@ -11,10 +11,23 @@
         "description": "Imáxenes de satélite Sentinel post-procesaes.",
         "name": "eox.at 2018 ensin nubes"
       },
+      "EOXAT2019CLOUDLESS": {
+        "description": "Imáxenes de satélite Sentinel post-procesaes."
+      },
+      "EOXAT2020CLOUDLESS": {
+        "description": "Imáxenes de satélite Sentinel post-procesaes."
+      },
+      "EOXAT2021CLOUDLESS": {
+        "description": "Imáxenes de satélite Sentinel post-procesaes."
+      },
+      "EOXAT2022CLOUDLESS": {
+        "description": "Imáxenes de satélite Sentinel post-procesaes."
+      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "Términos y comentarios "
         },
+        "description": "Imáxenes mundiales Esri",
         "name": "Imáxenes mundiales Esri"
       },
       "EsriWorldImageryClarity": {
@@ -90,8 +103,25 @@
         "description": "Mariellu = Datos del mapa de dominiu públicu del US Census. Bermeyu = Datos que nun s'alcuentren n'OpenStreetMap",
         "name": "Estraes TIGER 2019"
       },
+      "US-TIGER-Roads-2020": {
+        "description": "Mariellu = Datos del mapa de dominiu públicu del US Census. Bermeyu = Datos que nun s'alcuentren n'OpenStreetMap"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Mariellu = Datos del mapa de dominiu públicu del US Census. Bermeyu = Datos que nun s'alcuentren n'OpenStreetMap"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Mariellu = Datos del mapa de dominiu públicu del US Census. Bermeyu = Datos que nun s'alcuentren n'OpenStreetMap"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Mariellu = Datos del mapa de dominiu públicu del US Census. Bermeyu = Datos que nun s'alcuentren n'OpenStreetMap"
+      },
       "US_Forest_Service_roads_overlay": {
         "name": "Capa d'estraes de U.S. Forest"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Fecho por mediu de Brussels UrbIS®© - Distribución & Copyright CIRB"
+        }
       },
       "UrbISOrtho2016": {
         "attribution": {
@@ -113,7 +143,17 @@
           "text": "Fecho por mediu de Brussels UrbIS®© - Distribución & Copyright CIRB"
         }
       },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Fecho por mediu de Brussels UrbIS®© - Distribución & Copyright CIRB"
+        }
+      },
       "UrbisAdmFR": {
+        "attribution": {
+          "text": "Fecho por mediu de Brussels UrbIS®© - Distribución & Copyright CIRB"
+        }
+      },
+      "UrbisAdmFRNL": {
         "attribution": {
           "text": "Fecho por mediu de Brussels UrbIS®© - Distribución & Copyright CIRB"
         }
@@ -176,7 +216,42 @@
         "description": "El mapa de la ciudá ye un mapa de supervisión que describe Gotemburgu. Contien información xeneral sobro'l terrén, comunicaciones, hidrografía, edificios, númberos de direición y nomes de calles, divisiones alministratives y otros testos d'orientación.",
         "name": "Mapa de la Ciudá de Gotemburgu"
       },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© conceyu de Gotemburgu, CC0"
+        }
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© conceyu de Gotemburgu, CC0"
+        }
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© conceyu de Gotemburgu, CC0"
+        }
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© conceyu de Gotemburgu, CC0"
+        }
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© conceyu de Gotemburgu, CC0"
+        }
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© conceyu de Gotemburgu, CC0"
+        }
+      },
       "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "GSI Xapón"
+        }
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
         "attribution": {
           "text": "GSI Xapón"
         }
@@ -232,6 +307,11 @@
           "text": "Mapes © Thunderforest, Datos © collaboradores d'OpenStreetMap"
         },
         "name": "Paisaxe de Thunderforest"
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Mapes © Thunderforest, Datos © collaboradores d'OpenStreetMap"
+        }
       }
     }
   }

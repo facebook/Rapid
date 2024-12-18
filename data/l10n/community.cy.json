@@ -19,12 +19,16 @@
       "openstreetmapcatalancountries": "OpenStreetMap Gwledydd Catalaneg",
       "openstreetmapchina": "OpenStreetMap Tsieina",
       "openstreetmapcuba": "OpenStreetMap Ciwba",
+      "openstreetmapcz": "OpenStreetMap Gweriniaeth Tsiec",
       "openstreetmapde": "OpenStreetMap Yr Almaen",
+      "openstreetmapdeepsouth": "OpenStreetMap De UDA",
       "openstreetmapdenmark": "OpenStreetMap Denmarc",
       "openstreetmapegypt": "OpenStreetMap Yr Aifft",
       "openstreetmapespana": "OpenStreetMap Sbaen",
+      "openstreetmapfiji": "OpenStreetMap Ffiji",
       "openstreetmapfinland": "OpenStreetMap Ffindir",
       "openstreetmapfrance": "OpenStreetMap Ffrainc",
+      "openstreetmapfreemapslovakia": "OpenStreetMap Freemap Slofacia",
       "openstreetmapgermany": "OpenStreetMap Yr Almaen",
       "openstreetmapgorakalwaria": "OpenStreetMap Góra Calwaria",
       "openstreetmapgreece": "OpenStreetMap Gwlad Groeg",
@@ -78,7 +82,8 @@
       "openstreetmapwestbengal": "OpenStreetMap Gorllewin Bengal",
       "openstreetmapwesternsahara": "OpenStreetMap Gorllewin Sahara",
       "openstreetmapzambia": "OpenStreetMap Sambia",
-      "openstreetmapzimbabwe": "OpenStreetMap Simbabwe"
+      "openstreetmapzimbabwe": "OpenStreetMap Simbabwe",
+      "swissopenstreetmap": "OpenStreetMap Y Swistir"
     },
     "_defaults": {
       "aparat": {
@@ -232,6 +237,9 @@
     "bo-matrix": {
       "description": "Croeso i bob mapiwr!"
     },
+    "br-telegram": {
+      "extendedDescription": "Ymunwch â'r gymuned i ddysgu mwy am OpenStreetMap, gofyn cwestiynau neu gymryd rhan yn ein cyfarfodydd. Croeso i bawb ymuno!"
+    },
     "cape-coast-youthmappers": {
       "description": "Dilynwch ni ar Twitter: {url}"
     },
@@ -246,8 +254,11 @@
       "name": "Rhestr Bost OpenStreetMap Y Swistir",
       "description": "Rhestr Bost y Swistir"
     },
-    "co-github": {
-      "description": "Prosiectau Git am Golombia"
+    "cl-facebook": {
+      "extendedDescription": "Ymunwch â'r gymuned i ddysgu mwy am OpenStreetMap, gofyn cwestiynau neu gymryd rhan yn ein cyfarfodydd. Croeso i bawb ymuno!"
+    },
+    "cl-telegram": {
+      "extendedDescription": "Ymunwch â'r gymuned i ddysgu mwy am OpenStreetMap, gofyn cwestiynau neu gymryd rhan yn ein cyfarfodydd. Croeso i bawb ymuno!"
     },
     "de-aachen-wiki": {
       "description": "Tudalen Wici {community}"
@@ -363,8 +374,11 @@
     "gb-mailinglist": {
       "description": "Talk-gb yw'r prif restr fforwm cyfathrebu ar gyfer cymuned OSM y DU (gan gynnwys Gogledd Iwerddon)"
     },
-    "hr-irc": {
-      "description": "Ymunwch â #{account} ar irc.freenode.org (porth 6667)"
+    "hr-github": {
+      "description": "{community} ar GitHub"
+    },
+    "hr-tm": {
+      "name": "Rheolwr Tasgau {community}"
     },
     "hr-wiki": {
       "description": "Tudalen WiciBrosiect am Groatia"
@@ -421,15 +435,12 @@
       "name": "Rhestr Bost Slofacia ar Google Groups",
       "description": "Y restr bost swyddogol ar gyfer y gymuned yn Slofacia"
     },
-    "MapColabora-mailinglist": {
-      "description": "Rhestr Bost Mapeado Colaborativo / Geoinquietos Zaragoza"
+    "MapLYH": {
+      "description": "Grŵp MapLYH"
     },
     "mappa-mercia-group": {
       "name": "Grŵp lleol Mappa Mercia",
       "description": "Cartref i ddefnyddwyr OpenStreetMap yn y Canolbarth"
-    },
-    "MappingDC-meetup": {
-      "description": "Gwella OpenStreetMap yn yr ardal DC"
     },
     "MapRVA": {
       "description": "Meetup MapRVA"
@@ -512,6 +523,9 @@
     "OSM-japan-facebook": {
       "description": "Mapwyr a defnyddwyr OpenStreetMap yn Japan"
     },
+    "OSM-japan-website": {
+      "description": "Mapwyr a defnyddwyr OpenStreetMap yn Japan"
+    },
     "osm-kerala-github": {
       "description": "Codio â ni: {url}"
     },
@@ -570,6 +584,9 @@
     "rs-discourse": {
       "description": "Fforwm i drafod OpenStreetMap yn Serbia"
     },
+    "RS-telegram": {
+      "extendedDescription": "Ymunwch â'r gymuned i ddysgu mwy am OpenStreetMap, gofyn cwestiynau neu gymryd rhan yn ein cyfarfodydd. Croeso i bawb ymuno!"
+    },
     "rs-wiki": {
       "description": "Tudalen WiciBrosiect am Serbia"
     },
@@ -626,6 +643,9 @@
     "uy-irc": {
       "description": "Ymunwch â #{account} ar irc.freenode.org (porth 6667)",
       "extendedDescription": "Ymunwch â #{account} ar irc.freenode.org"
+    },
+    "vn-wiki": {
+      "description": "Tudalen Wici {community}"
     },
     "ym-College-of-William-and-Mary": {
       "name": "Ar draws y map!"

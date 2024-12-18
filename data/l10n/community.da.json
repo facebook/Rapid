@@ -36,6 +36,9 @@
     "bg-wiki": {
       "description": "Wikiprojektside for Bulgarien"
     },
+    "bo-matrix": {
+      "description": "Alle kortlæggere er velkomne!"
+    },
     "cape-coast-youthmappers": {
       "description": "Følg os på Twitter på {url}"
     },
@@ -51,11 +54,23 @@
     "Maptime-Oceania-Slack": {
       "description": "Tilmeld dig på  {signupUrl}"
     },
+    "me-telegram": {
+      "description": "Alle er velkomne! Tilmeld dig på {signupUrl}"
+    },
+    "nl-matrix": {
+      "description": "Alle kortlæggere er velkomne!"
+    },
     "Open-Source-San-Jose-Discord": {
       "description": "Kom i kontakt med andre kortlæggere på Discord! Når du har tilmeldt dig, kan du tilslutte dig #🗺openstreetmap-kanalen."
     },
     "OpenCleveland-meetup": {
       "description": "Forbedr OpenStreetMap i Cleveland området"
+    },
+    "osm-africa-matrix": {
+      "description": "Alle kortlæggere er velkomne!"
+    },
+    "osm-africa-slack": {
+      "description": "Alle er velkomne! Tilmeld dig på {signupUrl}"
     },
     "OSM-Chattanooga": {
       "name": "OpenStreetMap Colombia Twitter",
@@ -82,11 +97,17 @@
     "OSM-Rome-meetup": {
       "description": "Forbedr OpenStreetMap i Rom området"
     },
+    "OSM-US-Slack": {
+      "description": "Alle er velkomne! Tilmeld dig på {signupUrl}"
+    },
     "OSMF": {
       "description": "OSMF er en UK-baseret non-profit organisation der støtter OpenStreetMap projektet"
     },
     "PHXGeo-twitter": {
       "description": "Følg os på Twitter på {url}"
+    },
+    "tw-slack": {
+      "description": "Alle er velkomne! Tilmeld dig på {signupUrl}"
     },
     "uk-london-mastodon": {
       "name": "OpenStreetMap London på Mastodon"

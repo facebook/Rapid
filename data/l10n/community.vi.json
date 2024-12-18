@@ -184,6 +184,9 @@
     "al-maptime-tirana": {
       "description": "Các sự kiện xã hội lập bản đồ – mời người mới tham gia!"
     },
+    "am-wiki": {
+      "description": "Trang Wiki {community}"
+    },
     "at-matrix": {
       "description": "Kênh Matrix tiếng Đức không chính thức của nước Áo"
     },
@@ -269,9 +272,6 @@
     },
     "cl-telegram": {
       "extendedDescription": "Mời mọi người tham gia cộng đồng để tìm hiểu thêm về OpenStreetMap, hỏi đáp, và tham dự các cuộc họp mặt của chúng ta."
-    },
-    "co-facebook": {
-      "extendedDescription": "Mời mọi người tham gia cộng đồng để tìm hiểu thêm về OpenStreetMap. Mời mọi người tham gia!"
     },
     "comunitat-valenciana-wiki": {
       "description": "Mọi điều cần biết để lập bản đồ tại Cộng đồng Valencia: {url}"
@@ -428,8 +428,8 @@
       "description": "Cuộc họp mặt cho những người hâm mộ bản đồ ở khu vực Philadelphia",
       "extendedDescription": "GeoPhilly liên hiệp các nhà phát triển, nhà địa lý học, người hâm mộ về dữ liệu và dữ liệu mở, “civic hacker”, và người nghiện bản đồ để bày tỏ say mê bản đồ và chia sẻ các câu chuyện trong bản đồ. Nếu bạn sử dụng bản đồ trong việc làm hoặc chỉ muốn tìm hiểu thêm, bạn nên tham gia cuộc họp mặt này! Chúng ta cố gắng tổ chức các sự kiện mở rộng, thân thiện, cùng giáo dục cùng giải trí, bao gồm họp mặt tại quán rượu, bài thuyết trình nhanh chóng, và workshop. Mời bạn cùng xây dựng một cộng đồng không gian địa lý đa dạng văn hóa và gây cảm hứng tại Philadelphia!"
     },
-    "hr-irc": {
-      "description": "Hãy tham gia #{account} tại irc.oftc.net (cổng 6667)"
+    "hr-github": {
+      "description": "GitHub {community}"
     },
     "hr-wiki": {
       "description": "Trang wiki về dự án Croatia"
@@ -468,9 +468,6 @@
     },
     "ireland-matrix": {
       "description": "Cổng Matrix kết nối với kênh IRC của OSM Ireland: {url}"
-    },
-    "ireland-meetup": {
-      "description": "Họp mặt trên thực tế dành cho mọi người quan tâm đến OpenStreetMap"
     },
     "is-chapter": {
       "description": "Chúng ta giúp phát triển và cải thiện OpenStreetMap tại Iceland."
@@ -533,13 +530,6 @@
       "name": "Quỹ Map Kibera",
       "description": "Map Kibera là một tổ chức đăng ký tại Kenya"
     },
-    "MapABQ": {
-      "description": "Những người dùng OpenStreetMap tại Albuquerque và miền Bắc New Mexico họp mặt hàng tháng",
-      "extendedDescription": "Mời bất cứ mọi người tham gia. Chúng ta rất mong giúp bạn bắt đầu lập bản đồ. Các cuộc họp mặt thoải mái để cho phép mọi người tập trung đóng góp vào OpenStreetMap tại Albuquerque và vùng lân cận."
-    },
-    "MapColabora-mailinglist": {
-      "description": "Danh sách thư Mapeado Colaborativo / Geoinquietos Zaragoza"
-    },
     "MapColabora-twitter": {
       "description": "Tài khoản Twitter của Mapeado Colaborativo / Geoinquietos Zaragoza"
     },
@@ -547,10 +537,27 @@
       "name": "Nhóm địa phương Mappa Mercia",
       "description": "Nơi tụ tập những người hâm mộ OpenStreetMap tại Midlands"
     },
-    "MappingDC-meetup": {
-      "description": "Cải thiện OpenStreetMap tại khu vực Washington, D.C."
+    "maptime-bogota-facebook": {
+      "description": "Chúng ta quan tâm bổ sung thêm Bogotá và các vùng lân cận vào OpenStreetMap.",
+      "extendedDescription": "Học cách thu tập dữ liệu ngoài đường và số hóa vào OpenStreetMap. Không nhất thiết phải có kinh nghiệm trước tiên, chỉ cần có ý định vui vẻ tham gia và tìm hiểu."
+    },
+    "maptime-bogota-github": {
+      "description": "Chúng ta quan tâm bổ sung thêm Bogotá và các vùng lân cận vào OpenStreetMap.",
+      "extendedDescription": "Học cách thu tập dữ liệu ngoài đường và số hóa vào OpenStreetMap. Không nhất thiết phải có kinh nghiệm trước tiên, chỉ cần có ý định vui vẻ tham gia và tìm hiểu."
+    },
+    "maptime-bogota-linkedin": {
+      "description": "Chúng ta quan tâm bổ sung thêm Bogotá và các vùng lân cận vào OpenStreetMap.",
+      "extendedDescription": "Học cách thu tập dữ liệu ngoài đường và số hóa vào OpenStreetMap. Không nhất thiết phải có kinh nghiệm trước tiên, chỉ cần có ý định vui vẻ tham gia và tìm hiểu."
+    },
+    "maptime-bogota-mastodon": {
+      "description": "Chúng ta quan tâm bổ sung thêm Bogotá và các vùng lân cận vào OpenStreetMap.",
+      "extendedDescription": "Học cách thu tập dữ liệu ngoài đường và số hóa vào OpenStreetMap. Không nhất thiết phải có kinh nghiệm trước tiên, chỉ cần có ý định vui vẻ tham gia và tìm hiểu."
     },
     "maptime-bogota-meetup": {
+      "description": "Chúng ta quan tâm bổ sung thêm Bogotá và các vùng lân cận vào OpenStreetMap.",
+      "extendedDescription": "Học cách thu tập dữ liệu ngoài đường và số hóa vào OpenStreetMap. Không nhất thiết phải có kinh nghiệm trước tiên, chỉ cần có ý định vui vẻ tham gia và tìm hiểu."
+    },
+    "maptime-bogota-telegram": {
       "description": "Chúng ta quan tâm bổ sung thêm Bogotá và các vùng lân cận vào OpenStreetMap.",
       "extendedDescription": "Học cách thu tập dữ liệu ngoài đường và số hóa vào OpenStreetMap. Không nhất thiết phải có kinh nghiệm trước tiên, chỉ cần có ý định vui vẻ tham gia và tìm hiểu."
     },
@@ -559,6 +566,10 @@
       "extendedDescription": "Học cách thu tập dữ liệu ngoài đường và số hóa vào OpenStreetMap. Không nhất thiết phải có kinh nghiệm trước tiên, chỉ cần có ý định vui vẻ tham gia và tìm hiểu."
     },
     "maptime-bogota-website": {
+      "description": "Chúng ta quan tâm bổ sung thêm Bogotá và các vùng lân cận vào OpenStreetMap.",
+      "extendedDescription": "Học cách thu tập dữ liệu ngoài đường và số hóa vào OpenStreetMap. Không nhất thiết phải có kinh nghiệm trước tiên, chỉ cần có ý định vui vẻ tham gia và tìm hiểu."
+    },
+    "maptime-bogota-youtube": {
       "description": "Chúng ta quan tâm bổ sung thêm Bogotá và các vùng lân cận vào OpenStreetMap.",
       "extendedDescription": "Học cách thu tập dữ liệu ngoài đường và số hóa vào OpenStreetMap. Không nhất thiết phải có kinh nghiệm trước tiên, chỉ cần có ý định vui vẻ tham gia và tìm hiểu."
     },
@@ -573,6 +584,9 @@
     "md-googlegroup": {
       "name": "Nhóm Google {community}",
       "description": "Hãy tham gia Nhóm Google {community}"
+    },
+    "me-telegram": {
+      "description": "Mời bạn tham gia tại {signupUrl}"
     },
     "mm-facebook": {
       "extendedDescription": "Bạn có lập bản đồ tại Miến Điện? Bạn có thắc mắc, muốn liên hệ với cộng đồng tại đây? Mời bạn tham gia tại {url}."
@@ -597,14 +611,16 @@
       "extendedDescription": "Bạn có lập bản đồ tại Nepal? Bạn có thắc mắc, muốn liên hệ với cộng đồng tại đây? Mời bạn tham gia tại {url}."
     },
     "Open-Source-San-Jose-Discord": {
-      "name": "Discord Mã nguồn mở San José"
+      "name": "Discord Mã nguồn mở San José",
+      "description": "Liên lạc với những người lập bản đồ trên Discord! Sau khi đăng nhập, hãy ghé vào kênh #🗺openstreetmap."
     },
     "Open-Source-San-Jose-Mastodon": {
       "description": "Theo dõi Mã nguồn mở San José tại Mastodon.",
       "extendedDescription": "Mã nguồn mở San José (OSSJ) là một tổ chức phi lợi nhuận địa phương phối hợp các lập trình viên và nhà thiết kế với các nhu cầu của cộng đồng theo kỹ thuật công cộng. OSSJ ủng hộ các Buổi đêm Bản đồ Miền Nam Vùng Vịnh hai tuần một lần của cộng đồng tình nguyện lập bản đồ địa phương."
     },
     "Open-Source-San-Jose-Slack": {
-      "name": "Slack Mã nguồn mở San José"
+      "name": "Slack Mã nguồn mở San José",
+      "description": "Mời bạn tham gia tại {signupUrl}, rồi tham gia kênh #proj-osm."
     },
     "OpenCleveland-meetup": {
       "description": "Cải thiện OpenStreetMap tại khu vực Cleveland",
@@ -732,7 +748,8 @@
       "description": "Những người lập bản đồ và người dùng OpenStreetMap ở Nhật Bản"
     },
     "osm-kenya": {
-      "description": "OSM Kenya là cộng đồng người đóng góp vào và sử dụng OSM"
+      "description": "OSM Kenya là cộng đồng người đóng góp vào và sử dụng OSM",
+      "extendedDescription": "OSM là cộng đồng địa phương dành cho những người quan tâm đến OpenStreetMap, bao gồm các tổ chức, nhà phát triển, và nhánh YouthMappers trong nước."
     },
     "osm-kenya-facebook": {
       "description": "OSM Kenya là cộng đồng người đóng góp vào và sử dụng OSM",
@@ -741,6 +758,9 @@
     "OSM-Kerala-facebook": {
       "description": "Cải thiện OpenStreetMap tại Kerala",
       "extendedDescription": "Bạn có lập bản đồ tại Kerala? Bạn có thắc mắc, muốn liên hệ với cộng đồng tại đây? Mời bạn tham gia tại {Url}."
+    },
+    "osm-kerala-github": {
+      "description": "Hãy cùng lập trình: {url}"
     },
     "osm-kerala-matrix": {
       "description": "Chúng ta lập bản đồ Kerala cùng với nhau. Hãy tham gia nhóm Matrix của chúng ta.",
@@ -760,6 +780,9 @@
     },
     "osm-ni": {
       "description": "Cung cấp dịch vụ và thông tin về OpenStreetMap cho cộng đồng địa phương tại Nicaragua"
+    },
+    "osm-ohio-wiki": {
+      "description": "Trang Wiki {community}"
     },
     "OSM-Ottawa-meetup": {
       "description": "Những người lập bản đồ và người dùng OpenStreetMap ở vùng Ottawa"
@@ -856,6 +879,9 @@
     "rs-wiki": {
       "description": "Trang wiki về dự án Serbia"
     },
+    "sg-wiki": {
+      "description": "Trang Wiki {community}"
+    },
     "si-github": {
       "description": "GitHub {community}"
     },
@@ -926,6 +952,9 @@
     },
     "vn-mailinglist": {
       "description": "Danh sách thư về OpenStreetMap tại Việt Nam hoặc trong tiếng Việt"
+    },
+    "vn-wiki": {
+      "description": "Trang Wiki {community}"
     },
     "ym-AASTU": {
       "description": "Nhánh YouthMappers tại Đại học Khoa học và Công nghệ Addis Ababa"
@@ -1004,15 +1033,8 @@
     "ym-Federal-School-of-Surveys": {
       "description": "Nhánh YouthMappers tại Trường Khảo sát Liên bang"
     },
-    "ym-Federal-University-of-Technology-Akure": {
-      "description": "Nhánh YouthMappers tại Đại học Công nghệ Liên bang tại Akure"
-    },
     "ym-Fourah-Bay-College": {
       "description": "Nhánh YouthMappers tại Trường cao đẳng Fourah Bay"
-    },
-    "ym-General-Lansana-Conte-University": {
-      "name": "YouthMappers Đại học Tướng Lansana Conté",
-      "description": "Nhánh YouthMappers tại Đại học Tướng Lansana Conté"
     },
     "ym-George-Mason-University": {
       "description": "Nhánh YouthMappers tại Đại học George Mason"
@@ -1304,9 +1326,6 @@
     "ym-University-of-Northern-Colorado": {
       "name": "Câu lạc bộ Địa lý và Hệ thống thông tin địa lý UNCO",
       "description": "Nhánh YouthMappers tại Đại học Bắc Colorado"
-    },
-    "ym-University-of-Oregon": {
-      "description": "Nhánh YouthMappers tại Đại học Oregon"
     },
     "ym-University-of-Port-Harcourt": {
       "description": "Nhánh YouthMappers tại Đại học Port Harcourt"

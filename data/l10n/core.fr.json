@@ -33,12 +33,10 @@
     },
     "modes": {
       "add_area": {
-        "title": "Surface",
-        "filter_tooltip": "surfaces"
+        "title": "Surface"
       },
       "add_line": {
-        "title": "Ligne",
-        "filter_tooltip": "lignes"
+        "title": "Ligne"
       },
       "add_note": {
         "description": "Vous avez repéré une erreur ? Faites-le savoir aux autres cartographes."
@@ -126,53 +124,16 @@
       },
       "circularize": {
         "title": "Arrondir",
-        "description": {
-          "single": "Arrondir cet élément.",
-          "multiple": "Arrondir ces éléments."
-        },
         "annotation": {
           "feature": {
             "one": "L'élément a été arrondi.",
             "many": "{n} éléments ont été arrondis.",
             "other": "{n} éléments ont été arrondis."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Ces éléments ne peuvent être arrondis pour plusieurs raisons."
-        },
-        "not_closed": {
-          "single": "Cet élément ne peut être arrondi car il ne s'agit pas d'une boucle.",
-          "multiple": "Ces éléments ne peuvent être arrondis car ce ne sont pas des boucles."
-        },
-        "too_large": {
-          "single": "Cet élément ne peut être arrondi car il n'est pas assez visible.",
-          "multiple": "Ces éléments ne peuvent être arrondis car ils ne sont pas assez visibles."
-        },
-        "connected_to_hidden": {
-          "single": "Cet élément ne peut être arrondi car il est connecté à un objet masqué.",
-          "multiple": "Ces éléments ne peuvent être arrondis car certains d'entre eux sont connectés à des objets masqués."
-        },
-        "not_downloaded": {
-          "single": "Cet élément ne peut être arrondi car il n'a pas été complètement téléchargé.",
-          "multiple": "Ces éléments ne peuvent être arrondis car ils n'ont pas été complètement téléchargés."
-        },
-        "already_circular": {
-          "single": "Cet élément ne peut être arrondi davantage qu'actuellement.",
-          "multiple": "Ces éléments ne peuvent être arrondis davantage qu'actuellement."
         }
       },
       "orthogonalize": {
         "title": "Carré",
-        "description": {
-          "corner": {
-            "single": "Rendre ce coin orthogonal",
-            "multiple": "Rendre ces coins orthogonaux"
-          },
-          "feature": {
-            "single": "Rendre cet élément orthogonal",
-            "multiple": "Rendre ces éléments orthogonaux"
-          }
-        },
         "annotation": {
           "corner": {
             "one": "Le coin a été rendu orthogonal.",
@@ -184,33 +145,6 @@
             "many": "{n} éléments rendus orthogonaux.",
             "other": "{n} éléments rendus orthogonaux."
           }
-        },
-        "multiple_blockers": {
-          "multiple": "Cet élément ne peut être orthogonalisé pour plusieurs raisons."
-        },
-        "end_vertex": {
-          "single": "Cet élément ne peut être orthogonalisé car c'est une extrémité.",
-          "multiple": "Ces éléments ne peuvent être orthogonalisés car ce sont des extrémités."
-        },
-        "square_enough": {
-          "single": "Cet élément ne peut pas être plus orthogonal qu'il ne l'est déjà.",
-          "multiple": "Ces éléments ne peuvent pas être plus orthogonaux qu'ils ne le sont déjà."
-        },
-        "not_squarish": {
-          "single": "Cet élément ne peut être orthogonalisé car il n'a pas une forme carrée.",
-          "multiple": "Ces éléments ne peuvent être orthogonalisés car ils n'ont pas une forme carrée."
-        },
-        "too_large": {
-          "single": "Cet élément ne peut être rendu orthogonal car il n'est pas assez visible.",
-          "multiple": "Ces éléments ne peuvent être rendus orthogonaux car ils ne sont pas assez visibles."
-        },
-        "connected_to_hidden": {
-          "single": "Cet élément ne peut être rendu orthogonal car il est connecté à un objet masqué.",
-          "multiple": "Ces éléments ne peuvent être rendus orthogonaux car certains d'entre eux sont connectés à des objets masqués."
-        },
-        "not_downloaded": {
-          "single": "Cet élément ne peut être rendu orthogonal car il n'a pas été complètement téléchargé.",
-          "multiple": "Ces éléments ne peuvent être rendus orthogonaux car ils n'ont pas été complètement téléchargés."
         }
       },
       "straighten": {
@@ -231,34 +165,10 @@
             "many": "{n} lignes redressées.",
             "other": "{n} lignes redressées."
           }
-        },
-        "too_bendy": {
-          "single": "Ne peut pas être redressée car elle courbe trop.",
-          "multiple": "Ne peuvent pas être redressées car elles courbent trop."
-        },
-        "connected_to_hidden": {
-          "single": "Cette ligne ne peut pas être redressée car elle est connectée à un élément caché.",
-          "multiple": "Ces lignes ne peuvent pas être redressées car certaines sont connectées à des éléments cachés."
-        },
-        "not_downloaded": {
-          "single": "Cette ligne ne peut pas être redressée car une partie n'a pas été téléchargée.",
-          "multiple": "Ces lignes ne peuvent pas être redressées car une partie n'a pas été téléchargée."
-        },
-        "straight_enough": {
-          "single": "Impossible de rendre l'élément plus droit qu'il ne l'est déjà.",
-          "multiple": "Impossible de rendre ces éléments plus droits qu'ils ne le sont déjà."
-        },
-        "too_large": {
-          "single": "Cette ligne ne peut pas être alignée car elle n'est pas suffisamment visible.",
-          "multiple": "Ces lignes ne peuvent pas être redressées car elles ne sont pas toutes assez visibles."
         }
       },
       "delete": {
         "title": "Supprimer",
-        "description": {
-          "single": "Supprimer cet élément définitivement.",
-          "multiple": "Supprimer ces éléments définitivement."
-        },
         "annotation": {
           "point": "suppression d'un point.",
           "vertex": "suppression d'un nœud d'une ligne.",
@@ -270,30 +180,6 @@
             "many": "{n} éléments supprimés.",
             "other": "{n} éléments supprimés."
           }
-        },
-        "too_large": {
-          "single": "Cet élément ne peut pas être supprimé car il n'est pas suffisamment visible.",
-          "multiple": "Ces éléments ne peuvent pas être supprimés car ils ne sont pas suffisamment visibles."
-        },
-        "incomplete_relation": {
-          "single": "Cet élément ne peut pas être supprimé car il n'a pas été téléchargé entièrement.",
-          "multiple": "Ces éléments ne peuvent pas être supprimés car ils n'ont pas été téléchargé entièrement."
-        },
-        "part_of_relation": {
-          "single": "Cet élément ne peut pas être supprimé car c'est un membre d'une relation plus grande. La relation doit être supprimé en premier.",
-          "multiple": "Ces éléments ne peuvent pas être supprimés ceux sont des membres de relations plus grandes. Les relations doivent être supprimées en premier."
-        },
-        "connected_to_hidden": {
-          "single": "Cet élément ne peut pas être supprimé car il est lié à un autre élément non visible.",
-          "multiple": "Ces éléments ne peuvent pas être supprimés car ils sont connectés à d'autres éléments non visibles."
-        },
-        "not_downloaded": {
-          "single": "Cet élément ne peut pas être supprimé car une partie n'est pas encore téléchargée.",
-          "multiple": "Ces éléments ne peuvent pas être supprimés car une partie n'est pas encore téléchargée."
-        },
-        "has_wikidata_tag": {
-          "single": "Cet élément ne peut pas être supprimé car il a un attribut Wikidata.",
-          "multiple": "Ces éléments ne peuvent être supprimés car certains ont un attribut Wikidata."
         }
       },
       "downgrade": {
@@ -320,10 +206,6 @@
             "many": "{n} éléments déclassés.",
             "other": "{n} éléments déclassés."
           }
-        },
-        "has_wikidata_tag": {
-          "single": "Cet élément ne peut pas être déclassé car il a un attribut Wikidata.",
-          "multiple": "Ces éléments ne peuvent être déclassés car certains on un attribut Wikidata."
         }
       },
       "add_member": {
@@ -426,10 +308,6 @@
       },
       "move": {
         "title": "Déplacer",
-        "description": {
-          "single": "Déplacer cet élément a un autre emplacement.",
-          "multiple": "Déplacer ces éléments à un autre emplacement."
-        },
         "annotation": {
           "point": "déplacement d'un point .",
           "vertex": "déplacement d'un nœud d'une ligne.",
@@ -441,38 +319,12 @@
             "many": "{n} éléments déplacés.",
             "other": "{n} éléments déplacés."
           }
-        },
-        "incomplete_relation": {
-          "single": "Cet élément ne peut pas être déplacé car il n'est pas téléchargé totalement.",
-          "multiple": "Ces éléments ne peuvent pas être déplacés car ils ne sont pas téléchargés totalement."
-        },
-        "too_large": {
-          "single": "Cet élément ne peut pas être déplacé car il n'est pas suffisamment visible actuellement.",
-          "multiple": "Ces éléments ne peuvent pas être déplacés car ils ne sont pas suffisamment visibles actuellement."
-        },
-        "connected_to_hidden": {
-          "single": "Cet élément ne peut pas être déplacé car il est connecté à un élément invisible.",
-          "multiple": "Ces éléments ne peuvent pas être déplacés car ils sont connectés à des éléments invisibles."
-        },
-        "not_downloaded": {
-          "single": "Cet élément ne peut pas être déplacé car une partie n'est pas encore téléchargée.",
-          "multiple": "Ces éléments ne peuvent pas être déplacés car une partie n'est pas encore téléchargée."
         }
       },
       "reflect": {
         "title": {
           "long": "Retourner Long",
           "short": "Retourner Court"
-        },
-        "description": {
-          "long": {
-            "single": "Retourner cet élément le long de son bord long.",
-            "multiple": "Retourner ces éléments le long de leurs bords longs."
-          },
-          "short": {
-            "single": "Retourner cet élément le long de son bord court.",
-            "multiple": "Retourner ces éléments le long de leurs bords courts."
-          }
         },
         "annotation": {
           "long": {
@@ -489,30 +341,10 @@
               "other": "{n} éléments ont été retournés le long de leur bord court."
             }
           }
-        },
-        "incomplete_relation": {
-          "single": "Cet élément ne peut pas être retourné car il n'a pas été téléchargé entièrement.",
-          "multiple": "Ces éléments ne peuvent pas être retournés car ils n'ont pas été téléchargés entièrement."
-        },
-        "too_large": {
-          "single": "Cet élément ne peut pas être retourné car il n'est pas suffisamment visible.",
-          "multiple": "Ces éléments ne peuvent pas être retournés car ils ne sont pas suffisamment visibles."
-        },
-        "connected_to_hidden": {
-          "single": "Cet élément ne peut pas être retourné car il est connecté à un élément caché.",
-          "multiple": "Ces éléments ne peuvent pas être retournés car ils sont connectés à des éléments cachés."
-        },
-        "not_downloaded": {
-          "single": "Cet élément ne peut pas être retourné car une partie n'est pas encore téléchargée.",
-          "multiple": "Ces éléments ne peuvent pas être retournés car une partie n'est pas encore téléchargée."
         }
       },
       "rotate": {
         "title": "Rotation",
-        "description": {
-          "single": "Tourner cet élément autour de son point central.",
-          "multiple": "Tourner ces éléments autour de leurs points centraux."
-        },
         "annotation": {
           "line": "ligne pivotée.",
           "area": "polygone pivoté.",
@@ -522,22 +354,6 @@
             "many": "{n} éléments pivotés.",
             "other": "{n} éléments pivotés."
           }
-        },
-        "incomplete_relation": {
-          "single": "Cet élément ne peut pas être tourné car il n'est pas téléchargé totalement.",
-          "multiple": "Ces éléments ne peuvent pas être tournés car ils ne sont pas téléchargés totalement."
-        },
-        "too_large": {
-          "single": "Cet élément ne peut pas être tourné car il n'est pas suffisamment visible actuellement.",
-          "multiple": "Ces éléments ne peuvent pas être tournés car ils ne sont pas suffisamment visibles actuellement."
-        },
-        "connected_to_hidden": {
-          "single": "Cet élément ne peut pas être tourné car il est connecté à un élément non visible.",
-          "multiple": "Ces éléments ne peut pas être tournés car ils sont connectés à des éléments non visibles."
-        },
-        "not_downloaded": {
-          "single": "Cet élément ne peut pas être tourné car une partie n'est pas encore téléchargée.",
-          "multiple": "Ces éléments ne peuvent pas être tournés car une partie n'est pas encore téléchargée."
         }
       },
       "reverse": {
@@ -583,22 +399,6 @@
               "other": "{n} éléments agrandis."
             }
           }
-        },
-        "too_small": {
-          "single": "Cet élément ne peut pas être réduit car il deviendrait trop petit.",
-          "multiple": "Ces éléments ne peuvent pas être réduits car ils deviendraient trop petits."
-        },
-        "too_large": {
-          "single": "Cet élément ne peut pas être mis à l'échelle car il n'est pas suffisamment visible actuellement.",
-          "multiple": "Ces éléments ne peuvent pas être mis à l'échelle car ils ne sont pas suffisamment visibles actuellement."
-        },
-        "connected_to_hidden": {
-          "single": "Cet élément ne peut pas être mis à  l’échelle car il est lié à un autre élément non visible.",
-          "multiple": "Ces éléments ne peuvent pas être mis à l'échelle car ils sont connectés a d’autres éléments non visibles. "
-        },
-        "not_downloaded": {
-          "single": "Cet élément ne peut pas être mis à l’échelle car une partie n’est pas encore téléchargée.",
-          "multiple": "Ces éléments ne peuvent pas être agrandis car une partie d'entre eux n'a pas été téléchargé."
         }
       },
       "split": {
@@ -656,34 +456,14 @@
       "extract": {
         "title": "Extraire",
         "description": {
-          "vertex": {
-            "single": "Extraire ce point des lignes ou polygones parents.",
-            "multiple": "Extraire ces points des éléments parents."
-          },
-          "line": {
-            "single": "Extraire un nœud de cette ligne.",
-            "multiple": "Extraire des nœuds de ces lignes."
-          },
-          "area": {
-            "single": "Extraire un point de ce polygone.",
-            "multiple": "Extraire des nœuds de ces zones."
-          },
           "feature": {
-            "multiple": "Extraire des nœuds de ces éléments."
+            "other": "Extraire des nœuds de ces éléments."
           }
         },
         "annotation": {
           "one": "Un point extrait.",
           "many": "{n} points extraits.",
           "other": "{n} points extraits."
-        },
-        "too_large": {
-          "single": "Un nœud ne peut pas être extrait car cet élément n'est pas suffisamment visible.",
-          "multiple": "Les nœuds ne peuvent être extraits car les éléments ne sont pas tous suffisamment visibles."
-        },
-        "connected_to_hidden": {
-          "single": "Ce nœud ne peut pas être extrait car il est connecté à un élément caché.",
-          "multiple": "Des nœuds ne peuvent pas être extraits car certains sont connectés à des éléments cachés."
         }
       }
     },
@@ -875,10 +655,6 @@
       "multiple_values": "Plusieur valeurs",
       "multiple_types": "Plusieurs types",
       "unshared_value_tooltip": "non partagé par tous les éléments",
-      "hidden_preset": {
-        "manual": "{features} sont cachés. Activez-les dans le panneau de données de carte.",
-        "zoom": "{features} sont cachés. Zoomez pour les afficher."
-      },
       "back_tooltip": "Changer le type d'élément",
       "details": "Détails",
       "remove": "Supprimer",
@@ -989,7 +765,6 @@
         "tooltip": "Afficher la géométrie de la sélection."
       },
       "style_options": "Options de style",
-      "map_features": "Éléments de la carte",
       "autohidden": "Ces éléments ont été automatiquement cachés parce qu'un trop grand nombre d'entre eux seraient affichés à l'écran. Vous pouvez zoomer pour les modifier.",
       "osmhidden": "Ces éléments ont été automatiquement cachés parce que le calque OpenStreetMap est caché."
     },
@@ -1026,7 +801,7 @@
         "tooltip": "Afficher uniquement les photos de cet utilisateur"
       }
     },
-    "feature": {
+    "filters": {
       "points": {
         "tooltip": "Points d'intérêt"
       },
@@ -1225,12 +1000,13 @@
     "source_switch": {
       "lose_changes": "Vos dernières modifications n'ont pas été sauvées. Si vous changez de serveur de carte, celles-ci seront perdues. Êtes-vous sûr de vouloir changer de serveur de carte ?"
     },
-    "rapid_feature_inspector": {
+    "rapid_inspector": {
       "tags": "Attributs"
     },
-    "rapid_feature_toggle": {
-      "esri": {
-        "remove": "Supprimer"
+    "rapid_menu": {
+      "remove": "Supprimer",
+      "category": {
+        "roads": "routes"
       }
     },
     "tag_reference": {
@@ -1245,7 +1021,6 @@
         "out": "Impossible de dézommer plus."
       }
     },
-    "cannot_zoom": "Impossible de zoomer plus en arrière dans ce mode.",
     "full_screen": "Afficher/cacher le plein écran",
     "self_intersection": {
       "error": {
@@ -1661,7 +1436,6 @@
       "points": {
         "intro": "Les *points* peuvent être utilisés pour représenter des éléments comme des magasins, restaurants ou monuments. Ils indiquent une position précise et décrivent ce qu'il y a à cet endroit. ",
         "add_point_h": "Ajouter des Points",
-        "add_point": "Pour ajouter un point, cliquez sur le bouton {point_icon} **{point}** de la barre d'outils au-dessus de la carte, ou utilisez le raccourci clavier en pressant la touche `1`.",
         "move_point_h": "Déplacer des Points",
         "delete_point_h": "Supprimer des Points ",
         "delete_point": "Vous pouvez supprimer des éléments qui n'existent pas dans le monde réel. Supprimer un élément d'OpenStreetMap l'efface de la carte que tout le monde utilise, aussi vous devez être absolument sûr que cet élément n'existe pas sur le terrain avant de le supprimer."
@@ -1670,7 +1444,6 @@
         "title": "Lignes",
         "intro": "Les *lignes* sont utilisées pour représenter des éléments comme des routes, des voies ferrées ou des rivières. Les lignes doivent être dessinées au centre de l'élément qu'elles représentent.",
         "add_line_h": "Ajouter des Lignes",
-        "add_line": "Pour ajouter une ligne, cliquez sur le bouton {line_icon} **{line}** de la barre d'outils au-dessus de la carte, ou utilisez le raccourci clavier en pressant la touche `2`.",
         "add_line_finish": "Pour terminer une ligne, cliquez ou tapez à nouveau sur le dernier nœud, ou pressez la touche `{return}`.",
         "modify_line_h": "Modifier des Lignes",
         "modify_line_dragnode": "Souvent, vous verrez que les lignes ne sont pas formées correctement, par exemple une route qui ne correspond pas à l'imagerie affichée en fond. Pour ajuster la forme d'une ligne, commencez par la sélectionner. Tous les nœuds de la ligne apparaîtront comme des petits cercles. Vous pourrez alors les déplacer.",
@@ -1689,7 +1462,6 @@
         "point_or_area_h": "Des points ou un polygone ?",
         "point_or_area": "De nombreux éléments peuvent être représentés par des points ou des polygones. Vous devriez cartographier les bâtiments et les contours de propriétés avec des polygones lorsque c'est possible. Placez des points à l'intérieur d'un bâtiment pour représenter des entreprises, des équipements et d'autres éléments se trouvant à l'intérieur.",
         "add_area_h": "Ajouter des polygones",
-        "add_area_command": "Pour ajouter un polygone, appuyez sur le bouton {area_icon} **{area}** de la barre d'outils au-dessus de la carte, ou utilisez le raccourci clavier `3`.",
         "add_area_finish": "Pour terminer un polygone, pressez la touche `{return}` ou cliquez / appuyez une seconde fois sur le premier ou le dernier nœud.",
         "square_area_h": "Rendre une forme orthogonale",
         "modify_area_h": "Modifier des polygones",
@@ -1816,18 +1588,10 @@
     },
     "issues": {
       "title": "Problèmes",
-      "list_title": "Problèmes",
-      "errors": {
-        "list_title": "Erreurs"
-      },
-      "warnings": {
-        "list_title": "Avertissements"
-      },
-      "rules": {
-        "title": "Règles"
-      },
-      "user_resolved_issues": "Problèmes résolus par vos modifications",
-      "warnings_and_errors": "Avertissements et erreurs",
+      "errors": "Erreurs",
+      "warnings": "Avertissements",
+      "rules": "Règles",
+      "resolved_tooltip": "Problèmes résolus par vos modifications",
       "no_issues": {
         "message": {
           "everything": "Tout a l'air correct",
@@ -1986,8 +1750,6 @@
         "title": "Format invalide",
         "tip": "Trouver des attributs avec des formats inattendus",
         "email": {
-          "message": "{feature} a une adresse de courriel invalide",
-          "message_multi": "{feature} a plusieurs adresses de courriel invalides",
           "reference": "Les adresses de courriel doivent ressembler à « utilisateur@exemple.com »."
         }
       },
@@ -2520,94 +2282,166 @@
         "drag": "glisser"
       },
       "or": "-ou-",
-      "browsing": {
-        "title": "Navigation",
-        "navigation": {
-          "pan": "Déplacer la vue"
+      "browsing": "Navigation",
+      "editing": "Édition",
+      "selecting_features": "Sélection",
+      "with_features_selected": "Avec les éléments sélectionnés",
+      "with_node_selected": "Avec le nœud sélectionné",
+      "with_way_selected": "Avec la ligne sélectionnée",
+      "drawing": "Tracés",
+      "commands": "Commandes",
+      "help": "Aide",
+      "display_options": "Afficher les options",
+      "command": {
+        "pan": {
+          "label": "Déplacer la vue"
         },
-        "help": {
-          "title": "Aide",
-          "help": "Afficher l'aide et la documentation",
-          "keyboard": "Afficher les raccourcis clavier"
+        "select_one": {
+          "label": "Sélectionner un seul élément"
         },
-        "display_options": {
-          "title": "Afficher les options",
-          "background": "Afficher/cacher le panneau d'imagerie",
-          "map_data": "Afficher/cacher le panneau de données",
-          "issues": "Afficher/cacher le panneau de validation des problèmes",
-          "preferences": "Afficher/cacher le panneau de préférences utilisateur",
-          "wireframe": "Afficher/cacher le mode filaire",
-          "osm_data": "Basculer la couche des données OpenStreetMap",
-          "highlight_edits": "Souligner les modifications non enregistrées"
+        "select_multi": {
+          "label": "Sélectionner plusieurs éléments"
         },
-        "selecting": {
-          "title": "Sélection",
-          "select_one": "Sélectionner un seul élément",
-          "select_multi": "Sélectionner plusieurs éléments",
-          "lasso": "Dessiner une sélection englobante autour des éléments",
-          "search": "Trouver des éléments correspondant à la recherche."
+        "lasso": {
+          "label": "Dessiner une sélection englobante autour des éléments"
         },
-        "with_selected": {
-          "title": "Avec les éléments sélectionnés",
-          "edit_menu": "Afficher/cacher le menu d'édition"
+        "edit_menu": {
+          "label": "Afficher/cacher le menu d'édition"
         },
-        "vertex_selected": {
-          "title": "Avec le nœud sélectionné",
-          "first": "Aller au premier nœud",
-          "last": "Aller au dernier nœud",
-          "change_parent": "Basculer sur une ligne connectée",
-          "parent": "Sélectionner la ligne parente"
+        "first_node": {
+          "label": "Aller au premier nœud"
         },
-        "way_selected": {
-          "title": "Avec la ligne sélectionnée",
-          "child": "Sélectionner les nœuds enfants"
-        }
-      },
-      "editing": {
-        "title": "Édition",
-        "drawing": {
-          "title": "Tracés",
-          "add_point": "Mode 'Ajouter un point'",
-          "add_line": "Mode 'Ajouter une ligne'",
-          "add_area": "Mode 'Ajouter un polygone'",
-          "add_note": "Mode 'Ajouter une note'",
-          "place_point": "Placer un point ou une note",
-          "disable_snap": "Désactiver l'attraction des points à proximité",
-          "stop_line": "Terminer de tracer une ligne ou un polygone"
+        "last_node": {
+          "label": "Aller au dernier nœud"
         },
-        "commands": {
-          "title": "Commandes",
-          "copy": "Copier les éléments sélectionnés",
-          "paste": "Coller les éléments copiés",
-          "undo": "Annuler la dernière action",
-          "redo": "Rétablir la dernière action",
-          "save": "Enregistrer les modifications"
+        "change_parent": {
+          "label": "Basculer sur une ligne connectée"
         },
-        "operations": {
-          "continue_line": "Poursuivre une ligne au point terminal sélectionné",
-          "merge": "Fusionner les éléments sélectionnés",
-          "disconnect": "Déconnecter les éléments sélectionnés",
-          "extract": "Extraire un point d'un élément",
-          "split": "Couper les lignes aux points sélectionnés",
-          "reverse": "Inverser la sélection",
-          "move": "Déplacer les éléments sélectionnés",
-          "rotate": "Tourner les éléments sélectionnés",
-          "orthogonalize": "Rendre les coins d'une ligne ou d'une surface orthogonaux",
-          "straighten": "Aligner des points ou les points d'une ligne",
-          "circularize": "Rendre circulaire une ligne fermée ou un polygone",
-          "reflect_long": "Retourner les éléments le long de leur bord long.",
-          "reflect_short": "Retourner les éléments le long de leur bord court.",
-          "delete": "Supprimer les éléments sélectionnés"
-        }
-      },
-      "tools": {
-        "title": "Outils",
-        "info": {
-          "all": "Afficher/cacher le panneau général",
-          "background": "Afficher/cacher le panneau fond",
-          "history": "Afficher/cacher le panneau d'historique",
-          "location": "Afficher/cacher le panneau de localisation",
-          "measurement": "Afficher/cacher le panneau de mesure"
+        "select_parent": {
+          "label": "Sélectionner la ligne parente"
+        },
+        "select_children": {
+          "label": "Sélectionner les nœuds enfants"
+        },
+        "add_point": {
+          "label": "Mode 'Ajouter un point'"
+        },
+        "add_line": {
+          "label": "Mode 'Ajouter une ligne'"
+        },
+        "add_area": {
+          "label": "Mode 'Ajouter un polygone'"
+        },
+        "add_note": {
+          "label": "Mode 'Ajouter une note'"
+        },
+        "place_point": {
+          "label": "Placer un point ou une note"
+        },
+        "disable_snap": {
+          "label": "Désactiver l'attraction des points à proximité"
+        },
+        "stop_line": {
+          "label": "Terminer de tracer une ligne ou un polygone"
+        },
+        "copy": {
+          "label": "Copier les éléments sélectionnés"
+        },
+        "paste": {
+          "label": "Coller les éléments copiés"
+        },
+        "undo": {
+          "label": "Annuler la dernière action"
+        },
+        "redo": {
+          "label": "Rétablir la dernière action"
+        },
+        "save": {
+          "label": "Enregistrer les modifications"
+        },
+        "find": {
+          "label": "Trouver des éléments correspondant à la recherche."
+        },
+        "continue_line": {
+          "label": "Poursuivre une ligne au point terminal sélectionné"
+        },
+        "merge": {
+          "label": "Fusionner les éléments sélectionnés"
+        },
+        "disconnect": {
+          "label": "Déconnecter les éléments sélectionnés"
+        },
+        "extract": {
+          "label": "Extraire un point d'un élément"
+        },
+        "split": {
+          "label": "Couper les lignes aux points sélectionnés"
+        },
+        "reverse": {
+          "label": "Inverser la sélection"
+        },
+        "move": {
+          "label": "Déplacer les éléments sélectionnés"
+        },
+        "rotate": {
+          "label": "Tourner les éléments sélectionnés"
+        },
+        "orthogonalize": {
+          "label": "Rendre les coins d'une ligne ou d'une surface orthogonaux"
+        },
+        "straighten": {
+          "label": "Aligner des points ou les points d'une ligne"
+        },
+        "circularize": {
+          "label": "Rendre circulaire une ligne fermée ou un polygone"
+        },
+        "reflect_long": {
+          "label": "Retourner les éléments le long de leur bord long."
+        },
+        "reflect_short": {
+          "label": "Retourner les éléments le long de leur bord court."
+        },
+        "delete": {
+          "label": "Supprimer les éléments sélectionnés"
+        },
+        "toggle_background": {
+          "label": "Afficher/cacher le panneau d'imagerie"
+        },
+        "toggle_map_data": {
+          "label": "Afficher/cacher le panneau de données"
+        },
+        "toggle_issues": {
+          "label": "Afficher/cacher le panneau de validation des problèmes"
+        },
+        "toggle_preferences": {
+          "label": "Afficher/cacher le panneau de préférences utilisateur"
+        },
+        "wireframe": {
+          "key": "O"
+        },
+        "highlight_edits": {
+          "label": "Souligner les modifications non enregistrées"
+        },
+        "keyboard_shortcuts": {
+          "label": "Afficher les raccourcis clavier"
+        },
+        "toggle_osm_data": {
+          "label": "Basculer la couche des données OpenStreetMap"
+        },
+        "toggle_all_cards": {
+          "label": "Afficher/cacher le panneau général"
+        },
+        "toggle_background_card": {
+          "label": "Afficher/cacher le panneau fond"
+        },
+        "toggle_history_card": {
+          "label": "Afficher/cacher le panneau d'historique"
+        },
+        "toggle_location_card": {
+          "label": "Afficher/cacher le panneau de localisation"
+        },
+        "toggle_measurement_card": {
+          "label": "Afficher/cacher le panneau de mesure"
         }
       }
     },
@@ -2693,6 +2527,7 @@
       "bjn": "banjar",
       "bkm": "kom",
       "bla": "siksika",
+      "blo": "anii",
       "bm": "bambara",
       "bn": "bengali",
       "bo": "tibétain",
@@ -2831,7 +2666,6 @@
       "gmh": "moyen haut-allemand",
       "gn": "guarani",
       "goh": "ancien haut allemand",
-      "gom": "konkani de Goa",
       "gon": "gondi",
       "gor": "gorontalo",
       "got": "gotique",
@@ -2941,6 +2775,7 @@
       "kv": "komi",
       "kw": "cornique",
       "kwk": "kwak’wala",
+      "kxv": "kuvi",
       "ky": "kirghize",
       "la": "latin",
       "lad": "ladino",
@@ -2970,7 +2805,6 @@
       "lua": "luba-kasaï (ciluba)",
       "lui": "luiseño",
       "lun": "lunda",
-      "luo": "luo",
       "lus": "lushaï",
       "luy": "luyia",
       "lv": "letton",
@@ -3235,6 +3069,7 @@
       "vi": "vietnamien",
       "vls": "flamand occidental",
       "vmf": "franconien du Main",
+      "vmw": "macua",
       "vo": "volapük",
       "vot": "vote",
       "vro": "võro",
@@ -3250,6 +3085,7 @@
       "xal": "kalmouk",
       "xh": "xhosa",
       "xmf": "mingrélien",
+      "xnr": "kangri",
       "xog": "soga",
       "yao": "yao",
       "yap": "yapois",

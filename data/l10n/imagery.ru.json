@@ -57,10 +57,23 @@
         },
         "description": "Обработанные спутниковые снимки Sentinel."
       },
+      "EOXAT2019CLOUDLESS": {
+        "description": "Обработанные спутниковые снимки Sentinel."
+      },
+      "EOXAT2020CLOUDLESS": {
+        "description": "Обработанные спутниковые снимки Sentinel."
+      },
+      "EOXAT2021CLOUDLESS": {
+        "description": "Обработанные спутниковые снимки Sentinel."
+      },
+      "EOXAT2022CLOUDLESS": {
+        "description": "Обработанные спутниковые снимки Sentinel."
+      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "Условия и обратная связь"
         },
+        "description": "Всемирные снимки Esri",
         "name": "Всемирные снимки Esri"
       },
       "EsriWorldImageryClarity": {
@@ -149,6 +162,18 @@
       "US-TIGER-Roads-2019": {
         "description": "Жёлтым = общедоступные картографические данные от US Census. Красным = данные, отсутствующие в OpenStreetMap"
       },
+      "US-TIGER-Roads-2020": {
+        "description": "Жёлтым = общедоступные картографические данные от US Census. Красным = данные, отсутствующие в OpenStreetMap"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Жёлтым = общедоступные картографические данные от US Census. Красным = данные, отсутствующие в OpenStreetMap"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Жёлтым = общедоступные картографические данные от US Census. Красным = данные, отсутствующие в OpenStreetMap"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Жёлтым = общедоступные картографические данные от US Census. Красным = данные, отсутствующие в OpenStreetMap"
+      },
       "USDA-NAIP": {
         "attribution": {
           "text": "Министерство сельского хозяйства США"
@@ -209,7 +234,41 @@
         "description": "Обзорная карта Гётеборга. Содержит обобщенные данные о землепользовании, коммуникациях, гидрографии, зданиях, названия улиц и адреса, а также административное деление.",
         "name": "Карта города Гётеборга"
       },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© Администрация Гётеборга, CC0"
+        },
+        "description": "Сервис веб-карт представляющий слои рельефа и уклонов, построеных на базе цифровой модели поверхности города Гётеборга 2017 года. Разрешение 0.5 метра в пикселе.",
+        "name": "Рельеф Гётеборга"
+      },
       "gothenburg-ortho": {
+        "attribution": {
+          "text": "© Администрация Гётеборга, CC0"
+        },
+        "description": "Ортофото для администрации Гётеборга",
+        "name": "Ортофотоплан Гётеборга 2015"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© Администрация Гётеборга, CC0"
+        },
+        "description": "Ортофото для администрации Гётеборга",
+        "name": "Ортофотоплан Гётеборга 2017"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© Администрация Гётеборга, CC0"
+        },
+        "description": "Ортофото для администрации Гётеборга",
+        "name": "Ортофотоплан Гётеборга 2019"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© Администрация Гётеборга, CC0"
+        },
+        "description": "Ортофото для администрации Гётеборга"
+      },
+      "gothenburg-ortho_latest": {
         "attribution": {
           "text": "© Администрация Гётеборга, CC0"
         },
@@ -247,6 +306,13 @@
           "text": "© Муниципалитет Kalmar"
         },
         "description": "Ортофотопланы городских территорий муниципалитета Kalmar 2018"
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© Муниципалитет города Kalmar"
+        },
+        "description": "Ортофото города от муниципалитета Kalmar 2020",
+        "name": "Ортофото города Kalmar 2020"
       },
       "kelkkareitit": {
         "description": "Kelkkareitit.fi зимние дороги для снегоходов OSM (Северные регионы)",
@@ -386,6 +452,11 @@
       "trafikverket-vagnat-option": {
         "description": "Шведский NVDB Дорожная сеть в нескольких вариантах отображения",
         "name": "Trafikverket Дорожная сеть дополнения"
+      },
+      "wroclaw-orto2015": {
+        "attribution": {
+          "text": "Мэрия Вроцлава"
+        }
       },
       "wroclaw-orto2018": {
         "attribution": {

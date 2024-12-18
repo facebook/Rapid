@@ -29,6 +29,21 @@
         },
         "name": "Bytom: Fotoplan 2014 (không ảnh)"
       },
+      "Bytom-2016": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Bytom"
+        }
+      },
+      "Bytom-2018": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Bytom"
+        }
+      },
+      "Bytom-2021": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Bytom"
+        }
+      },
       "Bytom-buildings": {
         "attribution": {
           "text": "Văn phòng Thành phố Bytom"
@@ -91,6 +106,18 @@
         "description": "Hình ảnh vệ tinh Sentinel được xử lý sau",
         "name": "eox.at 2018 không có mây"
       },
+      "EOXAT2019CLOUDLESS": {
+        "description": "Hình ảnh vệ tinh Sentinel được xử lý sau"
+      },
+      "EOXAT2020CLOUDLESS": {
+        "description": "Hình ảnh vệ tinh Sentinel được xử lý sau"
+      },
+      "EOXAT2021CLOUDLESS": {
+        "description": "Hình ảnh vệ tinh Sentinel được xử lý sau"
+      },
+      "EOXAT2022CLOUDLESS": {
+        "description": "Hình ảnh vệ tinh Sentinel được xử lý sau"
+      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "Điều khoản & Phản hồi"
@@ -111,6 +138,17 @@
         },
         "description": "Không ảnh Frankfurt am Main được chụp ngày 16 tháng 4 năm 2019",
         "name": "Không ảnh Frankfurt am Main 2019"
+      },
+      "Geoportal2-PL-City-boundaries_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        }
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        },
+        "description": "Bản đồ hình trực giao có độ phân giải 10 cm trở lên. Dữ liệu được sắp xếp theo độ phân giải rồi theo độ tươi, ví dụ mảng chụp năm 2012 có độ phân giải 8 cm sẽ phủ mảng chụp năm 2019 có độ phân giải 10 cm."
       },
       "Geoportal2-PL-HighResolution-aerial_image_WMS": {
         "attribution": {
@@ -133,6 +171,11 @@
         "description": "WMS Đánh số Địa chỉ Hợp nhất Quốc gia để tải về các hình ảnh bản đồ dựa vào dữ liệu không gian từ các hồ sơ đường sá và địa chỉ của Sổ bộ Biên giới Quốc gia.",
         "name": "Geoportal 2: Điểm địa chỉ"
       },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        }
+      },
       "Geoportal2-PL-aerial_image_WMS": {
         "attribution": {
           "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
@@ -145,11 +188,36 @@
         },
         "name": "Geoportal 2: Bản đồ Hình trực giao (không ảnh mới nhất) (WMTS)"
       },
+      "Geoportal2-PL-boundaries-of-communes_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-counties_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-provinces_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        }
+      },
       "Geoportal2-PL-buildings_WMS": {
         "attribution": {
           "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
         },
         "name": "Geoportal 2: Hồ sơ tòa nhà WMS"
+      },
+      "Geoportal2-PL-gas-pipe_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        }
+      },
+      "Geoportal2-PL-heat-pipe_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        }
       },
       "Geoportal2-PL-plot_boundaries_WMS": {
         "attribution": {
@@ -157,11 +225,57 @@
         },
         "name": "Geoportal 2: Miếng đất Granice"
       },
+      "Geoportal2-PL-power-cord_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        }
+      },
       "Geoportal2-PL-prng": {
         "attribution": {
           "text": "Trung tâm Tài liệu Trắc địa và Bản đồ"
         },
         "name": "Geoportal 2: Cơ sở dữ liệu Địa danh Ba Lan"
+      },
+      "Geoportal2-PL-sewer-pipe_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        }
+      },
+      "Geoportal2-PL-shaded_relief_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        }
+      },
+      "Geoportal2-PL-squares-and-housing-estates_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        },
+        "description": "WMS Đánh số Địa chỉ Hợp nhất Quốc gia để tải về các hình ảnh bản đồ dựa vào dữ liệu không gian từ các hồ sơ đường sá và địa chỉ của Sổ bộ Biên giới Quốc gia."
+      },
+      "Geoportal2-PL-state-borders_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        }
+      },
+      "Geoportal2-PL-telecommunications-cable_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        }
+      },
+      "Geoportal2-PL-water-pipe_WMS": {
+        "attribution": {
+          "text": "Văn phòng Chính vì Trắc địa và Bản đồ học"
+        }
+      },
+      "Gliwice-2003": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Gliwice"
+        }
+      },
+      "Gliwice-2009": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Gliwice"
+        }
       },
       "Gliwice-2013": {
         "attribution": {
@@ -187,13 +301,18 @@
         },
         "name": "Gliwice: bản đồ hình trực giao 2020 (không ảnh)"
       },
+      "Gliwice-2021": {
+        "attribution": {
+          "text": "Văn phòng Thành phố Gliwice"
+        }
+      },
       "Gliwice-buildings": {
         "attribution": {
           "text": "Văn phòng Thành phố Gliwice"
         },
         "name": "Gliwice: Tòa nhà"
       },
-      "LSA-ATKIS_BU": {
+      "LSA-ALKIS_BU": {
         "description": "Hình dạng các tòa nhà tại Sachsen-Anhalt"
       },
       "LSA-DOP20": {
@@ -360,6 +479,12 @@
         "description": "Màu vàng là dữ liệu bản đồ thuộc phạm vi công cộng do Cục Thống kê Dân số Hoa Kỳ cung cấp. Màu đỏ là dữ liệu chưa xuất hiện trong OpenStreetMap.",
         "name": "TIGER Đường sá 2021"
       },
+      "US-TIGER-Roads-2022": {
+        "description": "Màu vàng là dữ liệu bản đồ thuộc phạm vi công cộng do Cục Thống kê Dân số Hoa Kỳ cung cấp. Màu đỏ là dữ liệu chưa xuất hiện trong OpenStreetMap."
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Màu vàng là dữ liệu bản đồ thuộc phạm vi công cộng do Cục Thống kê Dân số Hoa Kỳ cung cấp. Màu đỏ là dữ liệu chưa xuất hiện trong OpenStreetMap."
+      },
       "USDA-NAIP": {
         "attribution": {
           "text": "Bộ Nông nghiệp Hoa Kỳ"
@@ -524,6 +649,18 @@
         },
         "description": "Hình ảnh trực giao đô thị Göteborg",
         "name": "Hình trực giao Göteborg 2019"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© đô thị Göteborg, CC0"
+        },
+        "description": "Hình ảnh trực giao đô thị Göteborg"
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© đô thị Göteborg, CC0"
+        },
+        "description": "Hình ảnh trực giao đô thị Göteborg"
       },
       "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
         "attribution": {
