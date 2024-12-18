@@ -20,6 +20,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 #### :sparkles: Usability & Accessibility
 #### :scissors: Operations
 #### :camera: Street-Level
+#### :compass: MapRoulette
 #### :white_check_mark: Validation
 #### :bug: Bugfixes
 #### :earth_asia: Localization
@@ -38,6 +39,110 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [id-tagging-schema#xxxx]: https://github.com/openstreetmap/id-tagging-schema/issues/xxxx
 [@xxxx]: https://github.com/xxxx
 -->
+
+
+# [2.5.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.5.0)
+#### 2024-Dec-xx  (coming soon!)
+
+#### :tada: New Features
+* [#1595], [#1644] New Dataset: Add [Overture Places](https://docs.overturemaps.org/guides/places/) as a readonly dataset
+* [#1608] New Dataset: Add [Open Map Data Footways](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Footways-FAQ) - open footway data provided by state and city level departments
+* [#1642] Refreshed dataset catalog, now allows users to search for both Esri and non-Esri data in the same place
+* [#1422] Add URL paremeter for MapRoulette settings: `&maproulette=true` or `&maproulette=challengeIDs`
+* [#1630] Add URL parameter for OSM Notes: `&note=true` or `&note=noteID`
+
+#### :hourglass: Performance
+* [#1189], [#1495] Upgrade renderer to Pixi v8, also includes various performance improvements
+* [#1145], [#1554] Performance improvements related to ANGLE WebGL backend
+
+#### :white_check_mark: Validation
+* [#1623] Add support for lower severity level 'suggestions'
+* [#1460], [#1583], [#1619], [#1622] Add a new 'Curb Nodes' suggestion to suggest and add curb nodes
+* [#1597], [#1599] Fix: Don't suggest converting a crossing endpoint into a crossing node
+* [iD#10522], [iD#10523] Fix: Don't show wrong error message for 'mismatched geometry' when no matching preset is found
+* [iD#10459] Fix: Don't show unsolvable 'mismatched geometry' error when matching a preset scoped to a different location
+
+#### :sparkles: Usability & Accessibility
+* [#1562] Don't expand sidebar automatically when selecting an OSM feature
+* [#1593] Don't allow side panes to cover information panels
+* [#1336] Allow keyboard shortcuts to accept, ignore, move, rotate Rapid features to work when hovering over a Rapid feature
+* [#1578], [#1592], [#1594], [#1606] New Keyboard shortcuts for toggling layers
+* [#1629], [#1637] Checkboxes in indeterminite state should look more like unchecked than checked
+* [#1378], [#1233] Remove confusing list item styling for the previously used background imagery
+* [iD#9013], [iD#5634] Don't show directional viewcones along ways which are not routable
+* [iD#10554] Show thin scrollbars in Firefox
+* [iD#10507], [iD#10508] Improve the code to prevent password managers from autofilling
+
+#### :compass: MapRoulette
+* [#1613], [#1618] Add checkbox option when closing a MapRoulette task to jump to the next task
+* [#1430], [#1638] Add a right-click menu for MapRoulette tasks
+
+#### :camera: Street-Level
+* [#1582] Mapillary: Show "original" positions of image markers instead of "corrected" positions
+
+#### :bug: Bugfixes
+* [#1403], [#1580] Fix: Razed railways remain visible when historical objects are hidden
+* [#1493] Fix: When selecting multiple features, show 'multiple values' in the tag editor if not all features have the tag
+* [#1643] Fix: Click-drag in input text field should not affect background imagery offset
+* [iD#10573], [iD#10581] Fix: Unclickable Keyboard Shortcuts button when on last page of help content
+
+#### :earth_asia: Localization
+* [#1488] Display mirrored Rapid logo in right-to-left locales
+
+#### :hammer: Development
+* [#1581] Add SpectorJS WebGL debugging tool, available in debug builds
+
+[#1145]: https://github.com/facebook/Rapid/issues/1145
+[#1189]: https://github.com/facebook/Rapid/issues/1189
+[#1233]: https://github.com/facebook/Rapid/issues/1233
+[#1336]: https://github.com/facebook/Rapid/issues/1336
+[#1378]: https://github.com/facebook/Rapid/issues/1378
+[#1403]: https://github.com/facebook/Rapid/issues/1403
+[#1422]: https://github.com/facebook/Rapid/issues/1422
+[#1430]: https://github.com/facebook/Rapid/issues/1430
+[#1460]: https://github.com/facebook/Rapid/issues/1460
+[#1488]: https://github.com/facebook/Rapid/issues/1488
+[#1493]: https://github.com/facebook/Rapid/issues/1493
+[#1495]: https://github.com/facebook/Rapid/issues/1495
+[#1554]: https://github.com/facebook/Rapid/issues/1554
+[#1562]: https://github.com/facebook/Rapid/issues/1562
+[#1578]: https://github.com/facebook/Rapid/issues/1578
+[#1580]: https://github.com/facebook/Rapid/issues/1580
+[#1581]: https://github.com/facebook/Rapid/issues/1581
+[#1582]: https://github.com/facebook/Rapid/issues/1582
+[#1583]: https://github.com/facebook/Rapid/issues/1583
+[#1592]: https://github.com/facebook/Rapid/issues/1592
+[#1593]: https://github.com/facebook/Rapid/issues/1593
+[#1594]: https://github.com/facebook/Rapid/issues/1594
+[#1595]: https://github.com/facebook/Rapid/issues/1595
+[#1597]: https://github.com/facebook/Rapid/issues/1597
+[#1599]: https://github.com/facebook/Rapid/issues/1599
+[#1606]: https://github.com/facebook/Rapid/issues/1606
+[#1608]: https://github.com/facebook/Rapid/issues/1608
+[#1613]: https://github.com/facebook/Rapid/issues/1613
+[#1618]: https://github.com/facebook/Rapid/issues/1618
+[#1619]: https://github.com/facebook/Rapid/issues/1619
+[#1622]: https://github.com/facebook/Rapid/issues/1622
+[#1623]: https://github.com/facebook/Rapid/issues/1623
+[#1629]: https://github.com/facebook/Rapid/issues/1629
+[#1630]: https://github.com/facebook/Rapid/issues/1630
+[#1637]: https://github.com/facebook/Rapid/issues/1637
+[#1638]: https://github.com/facebook/Rapid/issues/1638
+[#1642]: https://github.com/facebook/Rapid/issues/1642
+[#1643]: https://github.com/facebook/Rapid/issues/1643
+[#1644]: https://github.com/facebook/Rapid/issues/1644
+
+[iD#5634]: https://github.com/openstreetmap/iD/issues/5634
+[iD#9013]: https://github.com/openstreetmap/iD/issues/9013
+[iD#10459]: https://github.com/openstreetmap/iD/issues/10459
+[iD#10507]: https://github.com/openstreetmap/iD/issues/10507
+[iD#10508]: https://github.com/openstreetmap/iD/issues/10508
+[iD#10522]: https://github.com/openstreetmap/iD/issues/10522
+[iD#10523]: https://github.com/openstreetmap/iD/issues/10523
+[iD#10554]: https://github.com/openstreetmap/iD/issues/10554
+[iD#10573]: https://github.com/openstreetmap/iD/issues/10573
+[iD#10581]: https://github.com/openstreetmap/iD/issues/10581
+
 
 # [2.4.3](https://github.com/facebook/Rapid/releases/tag/rapid-v2.4.3)
 #### 2024-Oct-28
