@@ -3,8 +3,6 @@ import { easeLinear } from 'd3-ease';
 import { selection, select } from 'd3-selection';
 import * as Polyclip from 'polyclip-ts';
 
-import { uiToggle } from '../toggle.js';
-
 
 /**
  * UiCurtain
@@ -433,10 +431,6 @@ export class UiCurtain {
         }
       }
 
-//      if (opts.duration !== 0 || !this.$tooltip.classed(placement)) {
-//        this.$tooltip.call(uiToggle(true));
-//      }
-
       this.$tooltip
         .style('left', `${tipX}px`)
         .style('top', `${tipY}px`)
@@ -456,7 +450,7 @@ export class UiCurtain {
         .style('top', `${shiftY}px`);
 
     } else {
-      this.$tooltip.classed('in', false).call(uiToggle(false));
+      this.$tooltip.classed('in', false);
       this._tooltipDirty = false;
     }
   }
