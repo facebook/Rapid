@@ -401,10 +401,25 @@ export class UiMinimap {
     const frame = 0;    // not used
     this.layer.render(frame, this.viewMini);   // APP
 
-    gfx.pixi.renderer.render({    // DRAW
+    const renderer = gfx.pixi.renderer;
+    const targetCanvas = this.$surface.node();
+
+// workaround for https://github.com/pixijs/pixijs/issues/11168
+let mainCanvas;
+if (renderer.type === PIXI.RendererType.WEBGL && renderer.context.multiView) {
+mainCanvas = renderer.view.canvas;
+renderer.view.canvas = targetCanvas;  // switch to target canvas
+}
+
+    renderer.render({    // DRAW
       container: this.stage,
-      target: this.$surface.node()
+      target: targetCanvas
     });
+
+// workaround for https://github.com/pixijs/pixijs/issues/11168
+if (mainCanvas) {
+renderer.view.canvas = mainCanvas;  // restore main canvas
+}
 
     window.performance.mark('minimap-end');
     window.performance.measure('minimap', 'minimap-start', 'minimap-end');
