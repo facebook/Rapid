@@ -61,8 +61,8 @@ export class UiRapidInspector {
     this._setupKeybinding = this._setupKeybinding.bind(this);
 
     // accept and enter one of these modes:
-    this.moveFeature = (e) => this.acceptFeature(e, 'move');
-    this.rotateFeature = (e) => this.acceptFeature(e, 'rotate');
+    this.moveFeature = (e, d) => this.acceptFeature(e, d, 'move');
+    this.rotateFeature = (e, d) => this.acceptFeature(e, d, 'rotate');
 
     // Setup event handlers
     const l10n = context.systems.l10n;
@@ -159,9 +159,10 @@ export class UiRapidInspector {
    * acceptFeature
    * Called when the user presses Add Feature.
    * @param  {Event}  e?         - triggering event (if any)
+   * @param  {Object} d?         - object bound to the selection (i.e. the command) (not used)
    * @param  {string} nextMode?  - optional next mode to enter after accepting ('move' or 'rotate')
    */
-  acceptFeature(e, nextMode) {
+  acceptFeature(e, d, nextMode) {
     const datum = this.datum;
     if (!datum) return;
 
@@ -253,6 +254,7 @@ export class UiRapidInspector {
    * ignoreFeature
    * Called when the user presses "Ignore Feature".
    * @param  {Event}  e? - triggering event (if any)
+   * @param  {Object} d? - object bound to the selection (i.e. the command) (not used)
    */
   ignoreFeature(e) {
     const datum = this.datum;
