@@ -135,6 +135,7 @@ export class MapWithAIService extends AbstractSystem {
       hidden: true,
       conflated: false,
       service: 'mapwithai',
+      categories: new Set(['meta', 'roads']),
       color: '#da26d3',
       dataUsed: [],
       label: 'Rapid Walkthrough'
