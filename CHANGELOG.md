@@ -83,6 +83,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 #### :bug: Bugfixes
 * [#1403], [#1580] Fix: Razed railways remain visible when historical objects are hidden
 * [#1493] Fix: When selecting multiple features, show 'multiple values' in the tag editor if not all features have the tag
+* [#1636] Workaround: Avoid crash in Pixi MeshPipe code when changing a polygon with mesh size around 200 vertices
 * [#1643] Fix: Click-drag in input text field should not affect background imagery offset
 * [iD#10573], [iD#10581] Fix: Unclickable Keyboard Shortcuts button when on last page of help content
 
@@ -126,6 +127,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#1623]: https://github.com/facebook/Rapid/issues/1623
 [#1629]: https://github.com/facebook/Rapid/issues/1629
 [#1630]: https://github.com/facebook/Rapid/issues/1630
+[#1636]: https://github.com/facebook/Rapid/issues/1636
 [#1637]: https://github.com/facebook/Rapid/issues/1637
 [#1638]: https://github.com/facebook/Rapid/issues/1638
 [#1642]: https://github.com/facebook/Rapid/issues/1642

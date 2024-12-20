@@ -36,6 +36,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
     this.type = 'polygon';
     this._ssrdata = null;
     this._bufferdata = null;
+    this._vertexCount = 0;  // we will watch these for Rapid#1636
 
     const lowRes = new PIXI.Sprite();
     lowRes.label = 'lowRes';
@@ -72,7 +73,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
     strokes.visible = false;
     this.strokes = strokes;
 
-    this.container.addChild(lowRes, fill, mask, strokes);
+    this.container.addChild(lowRes, fill, strokes, mask);
 
     // Debug SSR
     // const debugSSR = new PIXI.Graphics();
@@ -212,7 +213,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
 
     const lowRes = this.lowRes;
     const fill = this.fill;
-    const mask = this.mask;
+    let mask = this.mask;   // Rapid#1636, see below - we may need to replace the mask
     const maskSource = this.maskSource;
     const strokes = this.strokes;
 
@@ -393,6 +394,32 @@ export class PixiFeaturePolygon extends AbstractFeature {
         gpuContext.isBatchable = false;
 
         PIXI.buildContextBatches(graphicsContext, gpuContext);
+
+        // Rapid#1636 - A very weird bug!!
+        // There is a crash in the Pixi MeshPipe code that occurs when we create a mesh and then
+        //  change its vertices from >200 to <200 or vice versa.
+        // We will investigate this more, but for now if we detect this condition, just recreate the Mesh.
+
+        // console.log('id: ' + this.featureID
+        //  + ' coords: ' + this.geometry.outer.length
+        //  + ' indices: ' + gpuContext.geometryData.indices.length
+        //  + ' vertices: ' + gpuContext.geometryData.vertices.length
+        // );
+
+        const curr = gpuContext.geometryData.vertices.length;
+        const prev = this._vertexCount;
+        if (curr > 200 && prev <= 200 || curr <= 200 && prev > 200) {
+          this.container.removeChild(mask);
+          mask.destroy();
+
+          // console.log('REPLACING THE MASK');
+          mask = new PIXI.Mesh({ geometry: new PIXI.MeshGeometry() });
+          mask.label = 'mask';
+          mask.eventMode = 'static';
+          this.container.addChild(mask);
+          this.mask = mask;
+        }
+        this._vertexCount = curr;
 
         mask.geometry = new PIXI.MeshGeometry({
           indices:  new Uint32Array(gpuContext.geometryData.indices),
