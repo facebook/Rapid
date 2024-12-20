@@ -117,7 +117,7 @@ export function validationMissingTag(context) {
             new ValidationFix({
               icon: 'rapid-operation-delete',
               title: l10n.t('issues.fix.delete_feature.title'),
-              disabledReason: disabledReasonID ? l10n.t(`operations.delete.${disabledReasonID}.single`) : undefined,
+              disabledReason: disabledReasonID ? l10n.t(`operations.delete.${disabledReasonID}`, { n: 1 }) : undefined,
               onClick: deleteOnClick
             })
           );
