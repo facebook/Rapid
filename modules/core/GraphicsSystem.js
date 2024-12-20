@@ -635,6 +635,10 @@ export class GraphicsSystem extends AbstractSystem {
       resolution: 1
     });
 
+    Object.assign(PIXI.RenderableGCSystem.defaultOptions, {
+      renderableGCActive: false
+    });
+
     Object.assign(PIXI.HelloSystem.defaultOptions, {
       hello: true  // Log renderer and Pixi version to the console
     });
