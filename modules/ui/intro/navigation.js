@@ -127,7 +127,7 @@ export function uiIntroNavigation(context, curtain) {
 
       _onMapMove = () => {
         if (!vecEqual(map.center(), startCenter)) {  // center changed
-          const instruction = d3_select('.curtain-tooltip span.instruction');
+          const instruction = d3_select('.curtain-tooltip .instruction');
           instruction.call(uiIcon('#rapid-icon-apply', 'inline success'));
         }
       };
@@ -165,7 +165,7 @@ export function uiIntroNavigation(context, curtain) {
 
       _onMapMove = () => {
         if (context.viewport.transform.zoom !== startZoom) {  // zoom changed
-          const instruction = d3_select('.curtain-tooltip span.instruction');
+          const instruction = d3_select('.curtain-tooltip .instruction');
           instruction.call(uiIcon('#rapid-icon-apply', 'inline success'));
         }
       };
@@ -218,7 +218,7 @@ export function uiIntroNavigation(context, curtain) {
 
       _onMapMove = () => {
         if (context.viewport.transform.rotation !== startRotation) {  // rotation changed
-          const instruction = d3_select('.curtain-tooltip span.instruction');
+          const instruction = d3_select('.curtain-tooltip .instruction');
           instruction.call(uiIcon('#rapid-icon-apply', 'inline success'));
         }
       };

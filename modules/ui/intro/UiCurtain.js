@@ -352,19 +352,22 @@ export class UiCurtain {
       const klass = 'curtain-tooltip popover tooltip arrowed in ' + (opts.tooltipClass || '');
 
       if (this._tooltipDirty) {   // Replace tooltip contents...
-        if (html.indexOf('**') !== -1) {
-          if (html.indexOf('<span') === 0) {
-            html = html.replace(/^(<span.*?>)(.+?)(\*\*)/, '$1<span>$2</span>$3');
-          } else {
-            html = html.replace(/^(.+?)(\*\*)/, '<span>$1</span>$2');
-          }
-          // pseudo markdown bold text for the instruction section..
-          html = html.replace(/\*\*(.*?)\*\*/g, '<span class="instruction">$1</span>');
+
+        // Extract instruction, if any
+        let instruction = '';
+        const match = html.match(/\*\*(.*?)\*\*/);
+        if (match) {
+          instruction = match[1];
+          html = html.replace(/\*\*.*?\*\*/g, '');
         }
 
+        html = html.replace(/<span[^>]*><\/span>/g, '');    // remove empty spans
         html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');   // emphasis
-        html = html.replace(/\{br\}/g, '<br/><br/>');       // linebreak
+        html = html.replace(/\{br\}/g, '<br/>');            // linebreak
 
+        if (instruction) {
+          html += `<div class="instruction">${instruction}</div>`;
+        }
         if (opts.buttonText && opts.buttonCallback) {
           html += `<div class="button-section"><button href="#" class="button action">${opts.buttonText}</button></div>`;
         }

@@ -5148,177 +5148,175 @@ a.user-info {
 /* Conflict resolution
 ------------------------------------------------------- */
 .conflicts-help {
-    padding: 20px;
-    background-color: #ffffbb;
-    border-bottom: 1px solid #ccc;
+  padding: 20px;
+  background-color: #ffffbb;
+  border-bottom: 1px solid #ccc;
 }
 
 .conflicts-buttons {
-    padding: 20px;
+  padding: 20px;
 }
 
 button.conflicts-button {
-    float: left;
+  float: left;
 }
 
 .conflict-container {
-    border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 }
 
 .conflict-description {
-    padding: 5px 20px;
-    display: block;
+  padding: 5px 20px;
+  display: block;
 }
 
 .conflicts-done {
-    padding: 20px 20px 0 20px;
+  padding: 20px 20px 0 20px;
 }
 
 .conflict-detail-container {
-    padding: 10px 20px;
+  padding: 10px 20px;
 }
 
 .conflict-count {
-    padding: 10px 20px;
+  padding: 10px 20px;
 }
 
 .conflict-choices {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .conflict-nav-buttons {
-    padding: 10px 0 20px 0;
+  padding: 10px 0 20px 0;
 }
 
 .conflict-nav-button {
-    height: 30px;
+  height: 30px;
 }
-
 
 
 /* Tooltips
 ------------------------------------------------------- */
 .popover {
-    position: absolute;
-    display: none;
+  position: absolute;
+  display: none;
 }
 .tooltip {
-    color: #333;
-    font-size: 12px;
-    white-space: initial;
+  color: #333;
+  font-size: 12px;
+  white-space: initial;
 }
 .tooltip:not(.curtain-tooltip) {
-    pointer-events: none;
+  pointer-events: none;
 }
 .popover.in {
-    z-index: 5000;
-    height: auto;
-    display: block;
+  z-index: 5000;
+  height: auto;
+  display: block;
 }
 .tooltip.in {
-    opacity: 0.95;
+  opacity: 0.95;
 }
 .popover.top {
-    margin-top: -4px;
+  margin-top: -4px;
 }
 .popover.right {
-    margin-left: 4px;
+  margin-left: 4px;
 }
 .popover.bottom {
-    margin-top: 4px;
+  margin-top: 4px;
 }
 .popover.left {
-    margin-left: -4px;
+  margin-left: -4px;
 }
 .popover.arrowed.top {
-    margin-top: -10px;
+  margin-top: -10px;
 }
 .popover.arrowed.right {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 .popover.arrowed.bottom {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 .popover.arrowed.left {
-    margin-left: -10px;
+  margin-left: -10px;
 }
 .bar-button .tooltip.arrowed.bottom {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 .tooltip.top {
-    text-align: center;
+  text-align: center;
 }
 .tooltip.right {
-    text-align: left;
+  text-align: left;
 }
 .tooltip.bottom {
-    text-align: center;
+  text-align: center;
 }
 .tooltip.left {
-    text-align: right;
-}
-
-.popover-inner {
-    border-radius: inherit;
+  text-align: right;
 }
 
 .tooltip .popover-inner {
-    border-radius: 4px;
-/*    max-width: 200px;*/
-/*    min-width: 80px;*/
-    max-width: 240px;
-    min-width: 100px;
-    padding: 10px;
-    font-weight: normal;
-    background-color: #fff;
+  display: flex;
+  flex-flow: column nowrap;
+
+  border-radius: 4px;
+/*  max-width: 200px;*/
+/*  min-width: 80px;*/
+  max-width: 240px;
+  min-width: 100px;
+  padding: 10px;
+  font-weight: normal;
+  background-color: #fff;
 }
 
 .popover-arrow {
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-color: transparent;
-    border-style: solid;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
 }
 .popover.top .popover-arrow {
-    bottom: -5px;
-    left: 50%;
-    margin-left: -5px;
-    border-top-color: #fff;
-    border-width: 5px 5px 0;
+  bottom: -5px;
+  left: 50%;
+  margin-left: -5px;
+  border-top-color: #fff;
+  border-width: 5px 5px 0;
 }
 .popover.right .popover-arrow {
-    top: 50%;
-    left: -5px;
-    margin-top: -5px;
-    border-right-color: #fff;
-    border-width: 5px 5px 5px 0;
+  top: 50%;
+  left: -5px;
+  margin-top: -5px;
+  border-right-color: #fff;
+  border-width: 5px 5px 5px 0;
 }
 .popover.left .popover-arrow {
-    top: 50%;
-    right: -5px;
-    margin-top: -5px;
-    border-left-color: #fff;
-    border-width: 5px 0 5px 5px;
+  top: 50%;
+  right: -5px;
+  margin-top: -5px;
+  border-left-color: #fff;
+  border-width: 5px 0 5px 5px;
 }
 .popover.bottom .popover-arrow {
-    top: -5px;
-    left: 50%;
-    margin-left: -5px;
-    border-bottom-color: #fff;
-    border-width: 0 5px 5px;
+  top: -5px;
+  left: 50%;
+  margin-left: -5px;
+  border-bottom-color: #fff;
+  border-width: 0 5px 5px;
 }
 .popover:not(.arrowed) .popover-arrow {
-    display: none;
+  display: none;
 }
 
 .tooltip-heading {
-    font-weight: bold;
-    background: #f6f6f6;
-    padding: 10px;
-    margin: -10px -10px 10px -10px;
-    border-radius: 3px 3px 0 0;
-    font-size: 14px;
+  font-weight: bold;
+  background: #f6f6f6;
+  padding: 10px;
+  margin: -10px -10px 10px -10px;
+  border-radius: 3px 3px 0 0;
+  font-size: 14px;
 }
 
 .tooltip-keyhint {
@@ -5338,22 +5336,22 @@ button.conflicts-button {
 .tooltip.dark.top .popover-arrow,
 .map-pane .tooltip.top .popover-arrow,
 .sidebar .tooltip.top .popover-arrow {
-    border-top-color: #000;
+  border-top-color: #000;
 }
 .tooltip.dark.bottom .popover-arrow,
 .map-pane .tooltip.bottom .popover-arrow,
 .sidebar .tooltip.bottom .popover-arrow {
-    border-bottom-color: #000;
+  border-bottom-color: #000;
 }
 .tooltip.dark.left .popover-arrow,
 .map-pane .tooltip.left .popover-arrow,
 .sidebar .tooltip.left .popover-arrow {
-    border-left-color: #000;
+  border-left-color: #000;
 }
 .tooltip.dark.right .popover-arrow,
 .map-pane .tooltip.right .popover-arrow,
 .sidebar .tooltip.right .popover-arrow {
-    border-right-color: #000;
+  border-right-color: #000;
 }
 .tooltip.dark .popover-inner,
 .tooltip.dark .tooltip-heading,
@@ -5361,41 +5359,41 @@ button.conflicts-button {
 .map-pane .tooltip-heading,
 .sidebar .popover-inner,
 .sidebar .tooltip-heading {
-    background: #000;
-    color: #ccc;
+  background: #000;
+  color: #ccc;
 }
 .tooltip.dark kbd,
 .map-pane .tooltip kbd,
 .sidebar .tooltip kbd {
-    background-color: #666;
-    border: solid 1px #444;
-    border-bottom-color: #333;
-    box-shadow: inset 0 -1px 0 #333;
-    color: #eee;
+  background-color: #666;
+  border: solid 1px #444;
+  border-bottom-color: #333;
+  box-shadow: inset 0 -1px 0 #333;
+  color: #eee;
 }
 
 /* Exceptions for tooltip layouts */
 
 /* commit warning tooltips need to be closer */
 .warning-section .tooltip.top {
-    margin-top: -5px;
+  margin-top: -5px;
 }
 
 li:first-of-type .badge .tooltip {
-    left: auto !important;
-    right: 5px !important;
+  left: auto !important;
+  right: 5px !important;
 }
 .ideditor[dir='rtl'] li:first-of-type .badge .tooltip {
-    left: 5px !important;
-    right: auto !important;
+  left: 5px !important;
+  right: auto !important;
 }
 li:first-of-type .badge .tooltip .popover-arrow {
-    right: 15px !important;
-    left: auto !important;
+  right: 15px !important;
+  left: auto !important;
 }
 .ideditor[dir='rtl'] li:first-of-type .badge .tooltip .popover-arrow {
-    left: 15px !important;
-    right: auto !important;
+  left: 15px !important;
+  right: auto !important;
 }
 
 
@@ -5541,116 +5539,132 @@ li:first-of-type .badge .tooltip .popover-arrow {
 }
 
 .intro-nav-wrap {
-    display: flex;
-    flex-direction: row;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 30px;
-    padding: 10px;
-    z-index: 1001;
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 30px;
+  padding: 10px;
+  z-index: 1001;
 }
 
 .intro-nav-wrap .intro-nav-wrap-logo {
-    flex: 0 0 auto;
-    height: 40px;
-    width: 40px;
-    color: #fff;
-    margin: 0px 20px;
-    vertical-align: middle;
+  flex: 0 0 auto;
+  height: 40px;
+  width: 40px;
+  color: #fff;
+  margin: 0px 20px;
+  vertical-align: middle;
 }
 
 .intro-nav-wrap .joined {
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: row;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: row;
 }
 
 .intro-nav-wrap button.chapter {
-    flex: 1 1 100%;
-    padding: 0px 5px;
-    font-weight: bold;
+  flex: 1 1 100%;
+  padding: 0px 5px;
+  font-weight: bold;
 }
 
 .intro-nav-wrap button.chapter.next {
-    animation-duration: 1s;
-    animation-name: pulse;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+  animation-duration: 1s;
+  animation-name: pulse;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 @keyframes pulse {
-    from  { background: #7092ff; }
-    to    { background: #c6d4ff; }
+  from  { background: #7092ff; }
+  to    { background: #c6d4ff; }
 }
 
 .intro-nav-wrap button.chapter.finished {
-    background: #8cd05f;
+  background: #8cd05f;
 }
 
 .intro-nav-wrap button.chapter .status {
-    display: none;
+  display: none;
 }
 
 .intro-nav-wrap button.chapter.finished .status {
-    display: inline-block;
+  display: inline-block;
 }
 
 .curtain-tooltip {
-    z-index: 1002;
-    pointer-events: none;
+  z-index: 1002;
+  pointer-events: none;
 }
 .curtain-tooltip.tooltip.in {
-    opacity: 1;
+  opacity: 1;
 }
 .curtain-tooltip.tooltip {
-    text-align: left;
+  text-align: left;
 }
 .ideditor[dir='rtl'] .curtain-tooltip.tooltip {
-    text-align: right;
+  text-align: right;
 }
 
 .curtain-tooltip .popover-inner {
-    font-size: 15px;
-    position: relative;
-    padding: 20px;
+  font-size: 15px;
+  position: relative;
+  padding: 20px;
 }
 
-.curtain-tooltip .popover-inner .button-section,
 .curtain-tooltip .popover-inner .instruction {
-    font-weight: bold;
-    display: block;
-    border-top: 1px solid #ccc;
-    margin-top: 10px;
-    margin-left: -20px;
-    margin-right: -20px;
-    padding: 10px 20px 0 20px;
-    pointer-events: auto;
+  display: block;
+  font-weight: bold;
+  border-top: 1px solid #ccc;
+  margin-top: 10px;
+  margin-left: -20px;
+  margin-right: -20px;
+  padding: 10px 20px 0 20px;
+  pointer-events: auto;
+}
+.curtain-tooltip .popover-inner .instruction:only-child {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.curtain-tooltip .popover-inner .button-section {
+  display: flex;
+  flex: 1 1 0px;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+
+  font-weight: bold;
+  border-top: 1px solid #ccc;
+  margin-top: 10px;
+  margin-left: -20px;
+  margin-right: -20px;
+  padding: 10px 20px 0 20px;
+  pointer-events: auto;
 }
 
 .curtain-tooltip .popover-inner a {
-    pointer-events: auto;
+  pointer-events: auto;
 }
 
 .curtain-tooltip .popover-inner .button-section button {
   width: 50%;
 }
 
-.curtain-tooltip .popover-inner .instruction:only-child {
-    border: 0;
-    padding: 0;
-    margin: 0;
-}
-
 .curtain-tooltip .popover-inner .icon.pre-text {
+  display: inline-block;
   vertical-align: text-top;
   margin-right: 0;
   margin-left: 0;
-  display: inline-block;
 }
 
 .curtain-tooltip .popover-inner .icon.success {
+  display: inline-block;
+  vertical-align: text-top;
   color: #55bb00;
-  margin: 0 3px;
+  margin: 0 5px;
 }
 
 .curtain-tooltip.intro-points-describe ,

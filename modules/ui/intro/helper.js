@@ -26,11 +26,11 @@ export function eventCancel(d3_event) {
 }
 
 
-// Returns the localized HTML element for `id` with a standardized set of icon, key, and
+// Returns the localized HTML element for `stringID` with a standardized set of icon, key, and
 // label replacements suitable for tutorials and documentation. Optionally supplemented
 // with custom `replacements`
 let helpStringReplacements;
-export function helpHtml(context, id, replacements) {
+export function helpHtml(context, stringID, replacements) {
   const l10n = context.systems.l10n;
   const isRTL = l10n.isRTL();
 
@@ -155,7 +155,7 @@ export function helpHtml(context, id, replacements) {
     reps = helpStringReplacements;
   }
 
-  return l10n.tHtml(id, reps).replace(/\`(.*?)\`/g, '<kbd>$1</kbd>');   // use keyboard key styling for shortcuts
+  return l10n.tHtml(stringID, reps).replace(/\`(.*?)\`/g, '<kbd>$1</kbd>');   // use keyboard key styling for shortcuts
 }
 
 

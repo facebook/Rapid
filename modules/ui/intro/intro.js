@@ -195,7 +195,7 @@ export function uiIntro(context, skipToRapid) {
 
     _buttons
       .append('span')
-      .html(d => l10n.tHtml(d.title));
+      .text(d => l10n.t(d.title));
 
     _buttons
       .append('span')
