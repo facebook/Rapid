@@ -484,8 +484,10 @@ export function uiSectionDataLayers(context) {
   }
 
 
-  // Event listeners
+  // Add or replace event handlers
+  scene.off('layerchange', renderIfVisible);
   scene.on('layerchange', renderIfVisible);
+  l10n.off('localechange', _setupKeybinding);
   l10n.on('localechange', _setupKeybinding);
 
   _setupKeybinding();

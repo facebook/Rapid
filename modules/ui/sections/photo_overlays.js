@@ -272,6 +272,8 @@ export function uiSectionPhotoOverlays(context) {
   }
 
   // Add or replace event handlers
+  scene.off('layerchange', renderIfVisible);
+  scene.on('layerchange', renderIfVisible);
   photos.off('photochange', renderIfVisible);
   photos.on('photochange', renderIfVisible);
 
