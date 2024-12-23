@@ -59,9 +59,9 @@ export class AssetSystem extends AbstractSystem {
         'nsi_replacements':  'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/replacements.min.json',
         'nsi_trees':         'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/trees.min.json',
 
-        'oci_defaults':   'https://cdn.jsdelivr.net/npm/osm-community-index@5.8/dist/defaults.min.json',
-        'oci_features':   'https://cdn.jsdelivr.net/npm/osm-community-index@5.8/dist/featureCollection.min.json',
-        'oci_resources':  'https://cdn.jsdelivr.net/npm/osm-community-index@5.8/dist/resources.min.json',
+        'oci_defaults':   'https://cdn.jsdelivr.net/npm/osm-community-index@5.9/dist/defaults.min.json',
+        'oci_features':   'https://cdn.jsdelivr.net/npm/osm-community-index@5.9/dist/featureCollection.min.json',
+        'oci_resources':  'https://cdn.jsdelivr.net/npm/osm-community-index@5.9/dist/resources.min.json',
 
         'pannellum_js':   'https://cdn.jsdelivr.net/npm/pannellum@2/build/pannellum.min.js',   // CDN supports .min
         'pannellum_css':  'https://cdn.jsdelivr.net/npm/pannellum@2/build/pannellum.min.css',  // CDN supports .min
