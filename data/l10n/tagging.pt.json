@@ -2695,19 +2695,45 @@
         "parking": {
           "label": "Tipo",
           "options": {
-            "carports": "Telheiros",
-            "garage_boxes": "Garagens",
-            "half_on_kerb": "Metade sobre o passeio",
-            "lane": "Estacionamento paralelo à estrada",
-            "layby": "Área de descanso",
-            "multi-storey": "Multinível",
-            "on_kerb": "Sobre o passeio",
-            "rooftop": "Topo de edifício",
-            "sheds": "Barracões",
-            "shoulder": "Berma",
-            "street_side": "Ao lado da rua",
-            "surface": "Superfície",
-            "underground": "Subterrâneo"
+            "carports": {
+              "title": "Telheiros"
+            },
+            "garage_boxes": {
+              "title": "Garagens"
+            },
+            "half_on_kerb": {
+              "title": "Metade sobre o passeio"
+            },
+            "lane": {
+              "title": "Via na estrada"
+            },
+            "layby": {
+              "title": "Área de descanso"
+            },
+            "multi-storey": {
+              "title": "Multiandares"
+            },
+            "on_kerb": {
+              "title": "Sobre o passeio"
+            },
+            "rooftop": {
+              "title": "Topo de edifício"
+            },
+            "sheds": {
+              "title": "Barracões"
+            },
+            "shoulder": {
+              "title": "Berma"
+            },
+            "street_side": {
+              "title": "Ao lado da rua"
+            },
+            "surface": {
+              "title": "Superfície"
+            },
+            "underground": {
+              "title": "Subterrâneo"
+            }
           }
         },
         "parking/side/orientation": {

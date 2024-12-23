@@ -2691,19 +2691,45 @@
         "parking": {
           "label": "Typ",
           "options": {
-            "carports": "Carportar",
-            "garage_boxes": "Garageboxar",
-            "half_on_kerb": "Halvvägs på trotoar",
-            "lane": "Fickparkering",
-            "layby": "Rastplats",
-            "multi-storey": "Flera våningar",
-            "on_kerb": "På trotoar",
-            "rooftop": "På taket",
-            "sheds": "Skjul",
-            "shoulder": "Vägren",
-            "street_side": "Sidan av väg",
-            "surface": "Yta",
-            "underground": "Underjordisk"
+            "carports": {
+              "title": "Carportar"
+            },
+            "garage_boxes": {
+              "title": "Garageboxar"
+            },
+            "half_on_kerb": {
+              "title": "Halvvägs på trotoar"
+            },
+            "lane": {
+              "title": "Fickparkering"
+            },
+            "layby": {
+              "title": "Rastplats"
+            },
+            "multi-storey": {
+              "title": "Flera våningar"
+            },
+            "on_kerb": {
+              "title": "På trotoar"
+            },
+            "rooftop": {
+              "title": "På taket"
+            },
+            "sheds": {
+              "title": "Skjul"
+            },
+            "shoulder": {
+              "title": "Vägren"
+            },
+            "street_side": {
+              "title": "Sidan av väg"
+            },
+            "surface": {
+              "title": "Yta"
+            },
+            "underground": {
+              "title": "Underjordisk"
+            }
           }
         },
         "parking/side/orientation": {

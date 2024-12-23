@@ -156,6 +156,12 @@
           "create": "已增加轉向限制",
           "delete": "已移除轉向限制"
         }
+      },
+      "extract": {
+        "description": {
+          "area": "從這區域截取點。"
+        },
+        "connected_to_hidden": "無法從這些圖徵截取點，因為有些連結的圖徵已經被隱藏了。"
       }
     },
     "undo": {
@@ -290,6 +296,7 @@
         },
         "maproulette": {
           "detail_title": "詳細資料",
+          "fixed": "我已經修復了！",
           "cancel": "唔做"
         }
       },
@@ -427,10 +434,19 @@
       "live": "實況模式",
       "lose_changes": "您有尚未儲存的編輯，切換地圖伺服器會失去這些編輯。您是否確定要切換伺服器？"
     },
+    "rapid_inspector": {
+      "option_accept": {
+        "disabled_flash": "要幫助改進開放街圖資料品質，我們每一次畫地圖階段只允許添加 {n}個 AI 圖徵。"
+      }
+    },
     "rapid_menu": {
       "remove": "移除",
+      "any_type": "任何類型",
       "category": {
         "roads": "道路"
+      },
+      "omdFootways": {
+        "label": "人行通道的開放資料"
       }
     },
     "tag_reference": {
@@ -578,7 +594,9 @@
       "title": "鍵盤快速鍵",
       "tooltip": "顯示鍵盤快速鍵畫面",
       "key": {
-        "delete": "刪除"
+        "delete": "刪除",
+        "enter": "輸入鍵",
+        "return": "退回"
       },
       "navigation": "導航",
       "commands": "命令",
@@ -592,6 +610,9 @@
         },
         "keyboard_shortcuts": {
           "label": "顯示鍵盤快速鍵"
+        },
+        "toggle_mapillary": {
+          "key": "MM"
         }
       }
     },

@@ -1184,13 +1184,27 @@
         "parking": {
           "label": "Vrsta parkirišča",
           "options": {
-            "carports": "Nadstrešek",
-            "garage_boxes": "Garažni boksi",
-            "lane": "Obcestno parkirišče",
-            "multi-storey": "Več nadstropij",
-            "sheds": "Zasebna garaža",
-            "surface": "Na prostem",
-            "underground": "Podzemna"
+            "carports": {
+              "title": "Nadstrešek"
+            },
+            "garage_boxes": {
+              "title": "Garažni boksi"
+            },
+            "lane": {
+              "title": "Obcestno parkirišče"
+            },
+            "multi-storey": {
+              "title": "Več nadstropij"
+            },
+            "sheds": {
+              "title": "Zasebna garaža"
+            },
+            "surface": {
+              "title": "Površina"
+            },
+            "underground": {
+              "title": "Podzemna"
+            }
           }
         },
         "parking/side/orientation": {

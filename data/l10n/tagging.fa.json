@@ -2079,17 +2079,39 @@
         "parking": {
           "label": "نوع",
           "options": {
-            "carports": "سایبان پارکینگ",
-            "garage_boxes": "اتاقک‌های گاراژ",
-            "lane": "خط عبوری کنار جاده",
-            "layby": "مشارکت / غیرفعال",
-            "multi-storey": "چندطبقه",
-            "rooftop": "پشت بام",
-            "sheds": "پارکینگ آلونکی",
-            "shoulder": "شانه",
-            "street_side": "کنار-خیابان",
-            "surface": "سطح",
-            "underground": "زیرزمینی"
+            "carports": {
+              "title": "سایبان پارکینگ"
+            },
+            "garage_boxes": {
+              "title": "اتاقک‌های گاراژ"
+            },
+            "lane": {
+              "title": "خط عبوری کنار جاده"
+            },
+            "layby": {
+              "title": "مشارکت / غیرفعال"
+            },
+            "multi-storey": {
+              "title": "چندطبقه"
+            },
+            "rooftop": {
+              "title": "پشت بام"
+            },
+            "sheds": {
+              "title": "پارکینگ آلونکی"
+            },
+            "shoulder": {
+              "title": "شانه"
+            },
+            "street_side": {
+              "title": "کنار-خیابان"
+            },
+            "surface": {
+              "title": "سطح"
+            },
+            "underground": {
+              "title": "زیر زمینی"
+            }
           }
         },
         "parking/side/orientation": {

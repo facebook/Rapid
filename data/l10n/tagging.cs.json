@@ -2535,7 +2535,8 @@
           "terms": "štítek,jméno"
         },
         "nat_name": {
-          "label": "Národní název"
+          "label": "Národní název",
+          "terms": "národní jméno"
         },
         "natural": {
           "label": "Přírodní objekt"
@@ -2739,19 +2740,58 @@
         "parking": {
           "label": "Druh",
           "options": {
-            "carports": "Přístřešek",
-            "garage_boxes": "Garáž",
-            "half_on_kerb": "Polovinou na obrubníku",
-            "lane": "Pruh na straně silnice",
-            "layby": "Volební účast / Odstávka",
-            "multi-storey": "Víceúrovňové",
-            "on_kerb": "Na obrubníku",
-            "rooftop": "Na střeše",
-            "sheds": "Lehký přístřešek",
-            "shoulder": "Na krajnici",
-            "street_side": "Podél ulice",
-            "surface": "Povrchové",
-            "underground": "Podzemní"
+            "carports": {
+              "description": "Struktura používaná k poskytování omezené ochrany vozidlům, obvykle bez stěn.",
+              "title": "Přístřešek"
+            },
+            "garage_boxes": {
+              "description": "Soukromá garáž s více samostatnými boxy pro každý vůz.",
+              "title": "Garáž"
+            },
+            "half_on_kerb": {
+              "description": "Parkování částečně na chodníku.",
+              "title": "Polovinou na obrubníku"
+            },
+            "lane": {
+              "description": "Parkování na ulici (kterou lze snadno předělat na jízdní pruh).",
+              "title": "Pruh na straně silnice"
+            },
+            "layby": {
+              "description": "Parkování na odpočívadle u silnice.",
+              "title": "Volební účast / Odstávka"
+            },
+            "multi-storey": {
+              "description": "Dvě nebo více úrovní parkovacích ploch v konstrukci budovy.",
+              "title": "Vícepatrové"
+            },
+            "on_kerb": {
+              "description": "Parkování na chodníku.",
+              "title": "Na obrubníku"
+            },
+            "rooftop": {
+              "description": "Jedna úroveň parkovací plochy na vrcholu budovy.",
+              "title": "Na střeše"
+            },
+            "sheds": {
+              "description": "Soukromé hangáry pro vozidla.",
+              "title": "Lehký přístřešek"
+            },
+            "shoulder": {
+              "description": "Parkování na krajnici.",
+              "title": "Na krajnici"
+            },
+            "street_side": {
+              "description": "Parkování přímo na ulici (ale ne na ní).",
+              "title": "Podél ulice"
+            },
+            "surface": {
+              "description": "Jedna úroveň parkování na pozemku.",
+              "title": "Povrch"
+            },
+            "underground": {
+              "description": "Podzemní parkoviště.",
+              "title": "Podzemní"
+            }
           }
         },
         "parking/side/orientation": {
@@ -3317,7 +3357,8 @@
             "demanding_mountain_hiking": "T3: Náročná horská turistika",
             "difficult_alpine_hiking": "T6: Těžká vysokohorská turistika",
             "hiking": "T1: Turistika",
-            "mountain_hiking": "T2: Horská turistika"
+            "mountain_hiking": "T2: Horská turistika",
+            "strolling": "Procházky"
           },
           "placeholder": "Horská turistika, vysokohorská turistika...",
           "terms": "náročnost,obtížnost,složitost,terén,chůze,hory"
@@ -3458,7 +3499,8 @@
           "terms": "prodává použité,prodej použitého,použitý,z druhé ruky,bazarové,bazar,sekáč,second-hand,není nové,nové,zašlé,staré,antikvariát,veteš"
         },
         "segregated": {
-          "label": "Oddělení chodců od cyklistů"
+          "label": "Oddělení chodců od cyklistů",
+          "terms": "jízdní kolo,kolo,chodník,cyklostezka,cyklotrasa,oddělení,čára"
         },
         "self_service": {
           "label": "Samoobsluha"
@@ -4780,26 +4822,32 @@
           "terms": "událost,hala"
         },
         "amenity/community_centre/club_home": {
-          "name": "Domácí klub"
+          "name": "Domácí klub",
+          "terms": "klubovna,klubová místnost,klubové centrum"
         },
         "amenity/community_centre/community_hall": {
-          "name": "Společenský sál"
+          "name": "Společenský sál",
+          "terms": "komunitní sál"
         },
         "amenity/community_centre/cultural_centre": {
-          "name": "Kulturní středisko"
+          "name": "Kulturní středisko",
+          "terms": "centrum kultury"
         },
         "amenity/community_centre/family_centre": {
-          "name": "Rodinné středisko"
+          "name": "Rodinné středisko",
+          "terms": "centrum pro rodinu"
         },
         "amenity/community_centre/lgbtq": {
           "name": "Komunitní centrum LGBTQ+",
           "terms": "lgbtq událost,lgbtq hala,lgbt událost,lgbt hala,lgb událost,lgb hala'"
         },
         "amenity/community_centre/parish_hall": {
-          "name": "Farní sál"
+          "name": "Farní sál",
+          "terms": "sál fary"
         },
         "amenity/community_centre/village_hall": {
-          "name": "Obecní úřad"
+          "name": "Obecní úřad",
+          "terms": "obecní sál"
         },
         "amenity/community_centre/youth_centre": {
           "name": "Centrum mládeže",
@@ -5004,7 +5052,8 @@
           "terms": "snídaně,jídelna,stolovat,stolování,večeře,drive-in,jíst,gril,oběd,stůl"
         },
         "amenity/fast_food/chinese": {
-          "name": "Čínské rychlé občerstvení"
+          "name": "Čínské rychlé občerstvení",
+          "terms": "čínská,čína,rychlé občerstvení,fast food,restaurace,jídlo,oběd,večeře"
         },
         "amenity/fast_food/donut": {
           "name": "Kiosek s donuty",
@@ -5573,7 +5622,8 @@
           "terms": "filmová produkce,filmové studio,videoprodukce,videozáznam,videostudio"
         },
         "amenity/swingerclub": {
-          "name": "Swingers klub"
+          "name": "Swingers klub",
+          "terms": "dospělý*,lifestyle club,porno*,sex,strip*,swinger"
         },
         "amenity/taxi": {
           "name": "Stanoviště taxi",
@@ -5600,7 +5650,8 @@
           "terms": "divadelní,představení,hra,muzikál"
         },
         "amenity/theatre/type/amphi": {
-          "name": "Amfiteátr"
+          "name": "Amfiteátr",
+          "terms": "otevřený,venkovní,řecký,amfitéatr"
         },
         "amenity/ticket_validator": {
           "name": "Ověřovač vstupenek",
@@ -6716,6 +6767,10 @@
           "name": "Hlavní vchod",
           "terms": "hlavní vchod,vchod,dveře,průchod,vstup,východ,hlavní vstup,vchodové dveře,vstupní dveře"
         },
+        "entrance/shop": {
+          "name": "Vchod do obchodu",
+          "terms": "dveře"
+        },
         "entrance/staircase": {
           "name": "Vstup na schodiště",
           "terms": "dveře,schody,schodiště,schodový"
@@ -7449,10 +7504,12 @@
           "terms": "louka,pastviny,tráva"
         },
         "landuse/meadow_orchard/meadow": {
-          "name": "Louka s ovocnými stromy"
+          "name": "Louka s ovocnými stromy",
+          "terms": "ovoce,louka"
         },
         "landuse/meadow_orchard/orchard": {
-          "name": "Sad vysazený na louce"
+          "name": "Sad vysazený na louce",
+          "terms": "ovoce,louka"
         },
         "landuse/military": {
           "name": "Vojenský prostor",
@@ -7961,7 +8018,8 @@
           "terms": "jezdecká dostihová dráha,cval,sázení na dostihy,dostihy,dostihové,sázky,dostihová dráha,jezdecká dráha"
         },
         "leisure/sports_centre/karting": {
-          "name": "Zařízení pro motokáry"
+          "name": "Zařízení pro motokáry",
+          "terms": "jít na káru,motokáry,motokárové závody"
         },
         "leisure/sports_centre/shooting": {
           "name": "Areál střelnice",
@@ -8146,7 +8204,8 @@
           "terms": "plynový komín,plyn,olej,oheň,hořet"
         },
         "man_made/footwear_decontamination-AU-NZ": {
-          "name": "Dekontaminační stanice obuvi"
+          "name": "Dekontaminační stanice obuvi",
+          "terms": "čištění obuvi,boty čištění,čištění bot,kontaminační stanice,dekontaminační stanice"
         },
         "man_made/fuel_pump": {
           "name": "Čerpací stanice",
@@ -8288,7 +8347,8 @@
           "terms": "silo,zásobník,silážní,sýpka,špýchar,špejchar"
         },
         "man_made/ski_jump": {
-          "name": "Věž skoku na lyžích"
+          "name": "Věž skoku na lyžích",
+          "terms": "skok,skokanský můstek,běh,náběh,struktura skokanského můstku,skokanská věž,věž skokanského můstku"
         },
         "man_made/storage_tank": {
           "name": "Zásobník",
@@ -8476,6 +8536,10 @@
         },
         "natural": {
           "name": "Přírodní prvek"
+        },
+        "natural/arch": {
+          "name": "Přírodní oblouk",
+          "terms": "přírodní most,kamenný oblouk"
         },
         "natural/bare_rock": {
           "name": "Plochy jednolité skály",
@@ -8931,7 +8995,8 @@
           "terms": "terapie"
         },
         "office/translator": {
-          "name": "Překladatelská kancelář"
+          "name": "Překladatelská kancelář",
+          "terms": "překladatel,překlad,překladatelská agentura"
         },
         "office/travel_agent": {
           "name": "Cestovní kancelář"
@@ -8982,7 +9047,8 @@
           "name": "Stezka/sjezdovka pro sněžné sporty (nespecifikovaný druh)"
         },
         "piste/ski_jump": {
-          "name": "Sjezdovka pro skoky na lyžích"
+          "name": "Sjezdovka pro skoky na lyžích",
+          "terms": "skok,skok na lyžích,skokanský můstek"
         },
         "piste/skitour": {
           "name": "Lyžařská turistická stezka",
@@ -8997,7 +9063,8 @@
           "terms": "psí spřežení,husky,kůň,sjezdovka,sáně,saně,ski-joring,skijoring"
         },
         "piste/take_off": {
-          "name": "Odrazová hrana skoku na lyžích"
+          "name": "Odrazová hrana skoku na lyžích",
+          "terms": "skok,skok na lyžích,start,odjezová,skok s lyžemi,hrana pro skoky na lyžích,hrana pro skoky s lyžemi"
         },
         "place": {
           "name": "Místo"
@@ -9953,6 +10020,9 @@
           "name": "Dárky, suvenýry",
           "terms": "obchod s dárky,suvenýry"
         },
+        "shop/gold_buyer": {
+          "name": "Zlatokupec"
+        },
         "shop/greengrocer": {
           "name": "Ovoce a zelenina",
           "terms": "zelinář,zelinářství,prodejna zeleniny,zelenina,ovoce,ovoce a zelenina"
@@ -9962,7 +10032,8 @@
           "terms": "kadeřník,holič,vizážista,kadeřnictví"
         },
         "shop/hairdresser/barber": {
-          "name": "Holičství"
+          "name": "Holičství",
+          "terms": "vousy,knír,holit,holení,kadeře,kadeřnictví,holicí strojek,kadeřník,stříhání vlasů"
         },
         "shop/hairdresser_supply": {
           "name": "Kadeřnické potřeby",

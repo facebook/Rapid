@@ -771,7 +771,9 @@
         "parking": {
           "label": "قسم",
           "options": {
-            "surface": "فرش"
+            "surface": {
+              "title": "فرش"
+            }
           }
         },
         "parking/side/parking": {

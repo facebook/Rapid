@@ -1174,7 +1174,9 @@
         "parking": {
           "label": "Tip",
           "options": {
-            "surface": "Suprafaţă"
+            "surface": {
+              "title": "Suprafaţă"
+            }
           }
         },
         "parking/side/orientation": {

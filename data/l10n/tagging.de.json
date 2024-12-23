@@ -2681,18 +2681,57 @@
         "parking": {
           "label": "Typ",
           "options": {
-            "garage_boxes": "Garagenboxen",
-            "half_on_kerb": "Halb auf Gehweg",
-            "lane": "Parkstreifen am Straßenrand",
-            "layby": "Haltebucht",
-            "multi-storey": "Parkhaus",
-            "on_kerb": "Auf Gehweg",
-            "rooftop": "Dachfläche",
-            "sheds": "Schuppen",
-            "shoulder": "Auf Seitenstreifen",
-            "street_side": "Straßenrand",
-            "surface": "Ebenerdig",
-            "underground": "Tiefgarage"
+            "carports": {
+              "description": "Struktur, die Fahrzeugen begrenzten Schutz bietet, in der Regel ohne Wände."
+            },
+            "garage_boxes": {
+              "description": "Private Garage mit mehreren Einzelboxen für jeweils ein Auto.",
+              "title": "Garagenboxen"
+            },
+            "half_on_kerb": {
+              "description": "Parken teilweise auf dem Gehweg.",
+              "title": "Halb auf Gehweg"
+            },
+            "lane": {
+              "description": "Parken auf der Straße (die leicht in eine Fahrspur umgewandelt werden könnte).",
+              "title": "Parkstreifen am Straßenrand"
+            },
+            "layby": {
+              "description": "Parken auf einem Rastplatz an einer Straße.",
+              "title": "Haltebucht"
+            },
+            "multi-storey": {
+              "description": "Zwei oder mehr Parkdecks in einem Gebäude.",
+              "title": "Mehrstöckig"
+            },
+            "on_kerb": {
+              "description": "Parken auf dem Gehweg.",
+              "title": "Auf Gehweg"
+            },
+            "rooftop": {
+              "description": "Eine Ebene eines Parkdecks auf einem Gebäude.",
+              "title": "auf dem Dach"
+            },
+            "sheds": {
+              "description": "Private Schuppen für Fahrzeuge.",
+              "title": "Schuppen"
+            },
+            "shoulder": {
+              "description": "Parken auf dem Seitenstreifen.",
+              "title": "Seitenstreifen"
+            },
+            "street_side": {
+              "description": "Parken direkt an der Straße (aber nicht auf der Straße).",
+              "title": "Straßenrand"
+            },
+            "surface": {
+              "description": "Eine Parkebene auf dem Boden.",
+              "title": "Oberfläche"
+            },
+            "underground": {
+              "description": "Tiefgarage.",
+              "title": "Unterflurhydrant"
+            }
           }
         },
         "parking/side/orientation": {
@@ -3241,7 +3280,8 @@
             "demanding_mountain_hiking": "T3: Anspruchsvolles Bergwandern",
             "difficult_alpine_hiking": "T6: Schwieriges alpines Bergsteigen",
             "hiking": "T1: Wandern",
-            "mountain_hiking": "T2: Bergwandern"
+            "mountain_hiking": "T2: Bergwandern",
+            "strolling": "Spazieren"
           },
           "placeholder": "Bergwandern, alpines Bergwandern...",
           "terms": "Wanderschwierigkeit, Wanderwegschwierigkeit"
@@ -9867,6 +9907,10 @@
         "shop/gift": {
           "name": "Geschenkeladen",
           "terms": "Geschenkeladen, Geschenkehandlung, Geschenkartikelladen, Souvenirladen, Souvenirgeschäft"
+        },
+        "shop/gold_buyer": {
+          "name": "Goldankauf",
+          "terms": "Goldankaufstelle,Goldhandel,Edelmetallhandel,Goldbörse,Goldhändler,Altgoldankauf,Schmuckankauf"
         },
         "shop/greengrocer": {
           "name": "Obst- und Gemüseladen",

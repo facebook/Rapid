@@ -252,7 +252,9 @@
         },
         "parking": {
           "options": {
-            "layby": "Lay-By"
+            "layby": {
+              "title": "Lay-By"
+            }
           }
         },
         "parking/side/orientation": {

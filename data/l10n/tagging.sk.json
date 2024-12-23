@@ -2476,16 +2476,36 @@
         "parking": {
           "label": "Typ",
           "options": {
-            "carports": "Prístrešky pre autá",
-            "garage_boxes": "Garáže",
-            "lane": "Postranný pruh",
-            "layby": "Odpočívadlo pri ceste (malé)",
-            "multi-storey": "Viacúrovňové",
-            "rooftop": "Na streche",
-            "sheds": "Súkromný prístrešok",
-            "street_side": "Pri ceste",
-            "surface": "Povrchové",
-            "underground": "Podzemné"
+            "carports": {
+              "title": "Prístrešky pre autá"
+            },
+            "garage_boxes": {
+              "title": "Garáže"
+            },
+            "lane": {
+              "title": "Cestný pruh"
+            },
+            "layby": {
+              "title": "Odpočívadlo pri ceste (malé)"
+            },
+            "multi-storey": {
+              "title": "Viacúrovňové"
+            },
+            "rooftop": {
+              "title": "Na streche"
+            },
+            "sheds": {
+              "title": "Súkromný prístrešok"
+            },
+            "street_side": {
+              "title": "Pri ceste"
+            },
+            "surface": {
+              "title": "Povrchové"
+            },
+            "underground": {
+              "title": "Podzemné"
+            }
           }
         },
         "parking/side/orientation": {

@@ -1305,9 +1305,15 @@
         "parking": {
           "label": "جۆر",
           "options": {
-            "lane": "کەلی قەراخ ڕێ",
-            "street_side": "ڕۆخی شەقام",
-            "surface": "ڕووپۆش"
+            "lane": {
+              "title": "کەلی قەراخ ڕێ"
+            },
+            "street_side": {
+              "title": "ڕۆخی شەقام"
+            },
+            "surface": {
+              "title": "ڕووپۆش"
+            }
           }
         },
         "parking/side/orientation": {

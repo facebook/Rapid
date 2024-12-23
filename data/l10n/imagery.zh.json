@@ -375,8 +375,14 @@
         },
         "name": "Gliwice：建築"
       },
+      "LSA-ALKIS-CP": {
+        "description": "從官方房地產地籍表中對土地進行向量記錄。"
+      },
       "LSA-ALKIS_BU": {
         "description": "薩克森-安哈特邦建築物的形狀"
+      },
+      "LSA-ATKIS-HYN": {
+        "description": "水體網紀錄（準確度可能與真實情況有所不同，請務必對照正射影像）"
       },
       "LSA-DOP20": {
         "description": "萨克森-安哈尔特州的航空影像，分辨率为20cm"

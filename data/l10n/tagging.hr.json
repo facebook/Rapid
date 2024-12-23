@@ -400,7 +400,10 @@
           }
         },
         "basin": {
-          "label": "Vrsta"
+          "label": "Vrsta",
+          "options": {
+            "evaporation": "Isparavanje"
+          }
         },
         "bath/open_air": {
           "label": "Vanjsko kupalište"
@@ -436,7 +439,8 @@
         "bicycle_parking": {
           "label": "Vrsta",
           "options": {
-            "building": "U zgradi"
+            "building": "U zgradi",
+            "stands": "Stalak za bicikle"
           }
         },
         "bicycle_road": {
@@ -514,6 +518,9 @@
         "bridge": {
           "label": "Vrsta",
           "placeholder": "Predefinirano"
+        },
+        "bridge/ref": {
+          "label": "Broj mosta"
         },
         "bridge/support": {
           "label": "Vrsta"
@@ -595,6 +602,9 @@
         "building/colour": {
           "label": "Boja fasade"
         },
+        "building/flats": {
+          "label": "Stambene jedinice"
+        },
         "building/levels": {
           "label": "Broj katova zajedno sa prizemljem",
           "terms": "Razine, katovi"
@@ -638,17 +648,28 @@
           }
         },
         "camp_site": {
-          "label": "Vrsta"
+          "label": "Vrsta",
+          "options": {
+            "serviced": {
+              "description": "Dostupni su toalet, voda, tuševi i opskrba električnom energijom"
+            }
+          }
         },
         "capacity": {
           "label": "Kapacitet",
           "terms": "Kapacitet"
+        },
+        "capacity/disabled_parking": {
+          "label": "Broj mjesta za slabopokretne osobe"
         },
         "capacity/persons": {
           "label": "Kapacitet (osoba)"
         },
         "capacity/tents": {
           "label": "Kapacitet (šatora)"
+        },
+        "capacity_parking": {
+          "label": "Ukupan broj mjesta"
         },
         "capacity_volume": {
           "label": "Kapacitet (kubnih metara)"
@@ -708,6 +729,7 @@
           "label": "Vrijeme preuzimanja"
         },
         "collector": {
+          "label": "Predmeti",
           "options": {
             "coins": "Numizmatika\nKovanice",
             "comics": "Stripovi",
@@ -746,6 +768,9 @@
         "contact/webcam": {
           "label": "URL web kamere",
           "placeholder": "http://primjer.hr/"
+        },
+        "content": {
+          "label": "Sadržaj"
         },
         "conveying": {
           "label": "Smjer kretanja",
@@ -788,6 +813,7 @@
             "carpet_layer": "Postavljač tepiha",
             "caterer": "Dostavljač",
             "chimney_sweeper": "Dimnjačar",
+            "cleaning": "Služba čišćenja",
             "clockmaker": "Urar",
             "distillery": "Destilerija",
             "dressmaker": "Krojač za žene",
@@ -878,6 +904,9 @@
             "yes": "Da"
           }
         },
+        "crossing/bell": {
+          "label": "Zvono"
+        },
         "crossing/island": {
           "label": "Pješački otok"
         },
@@ -910,8 +939,10 @@
             "argentinian": "Argentinska",
             "asian": "Azijska",
             "balkan": "Balkanska",
+            "barbecue": "Ugljani roštilj",
             "brazilian": "Brazilska",
             "breakfast": "Doručak",
+            "burger": "Hamburger",
             "cake": "Kolači",
             "chicken": "Piletina",
             "dessert": "Desert",
@@ -919,6 +950,7 @@
             "filipino": "Filipinska",
             "fish": "Riba",
             "french": "Francuska",
+            "fries": "Pomfrit",
             "frozen_yogurt": "Smrznuti jogurt",
             "german": "Njemačka",
             "greek": "Grčka",
@@ -928,6 +960,7 @@
             "indonesian": "Indonezijska",
             "italian": "Talijanska",
             "japanese": "Japanska",
+            "juice": "Sok",
             "korean": "Korejska",
             "mediterranean": "Mediteranska",
             "mexican": "Meksička",
@@ -1128,7 +1161,10 @@
           "label": "Vrsta"
         },
         "dock": {
-          "label": "Vrsta"
+          "label": "Vrsta",
+          "options": {
+            "drydock": "Suhi dok"
+          }
         },
         "dog": {
           "label": "Psi",
@@ -1192,6 +1228,8 @@
         "embassy": {
           "label": "Vrsta",
           "options": {
+            "delegation": "Delegacija",
+            "mission": "Diplomatska misija",
             "yes": "Ambasada"
           }
         },
@@ -1212,9 +1250,11 @@
           "options": {
             "emergency": "Izlaz u slučaju opasnosti",
             "entrance": "Samo ulaz",
+            "exit": "Samo izlaz",
             "garage": "Garažna vrata",
             "home": "Kućni ulaz",
             "main": "Glavni",
+            "service": "Usluga",
             "staircase": "Stubište"
           }
         },
@@ -1284,8 +1324,21 @@
           "label": "Popravi me",
           "terms": "Pomoć, traženje pomoći"
         },
+        "flag/name": {
+          "label": "Zastava države"
+        },
         "flashing_lights": {
           "options": {
+            "always": {
+              "title": "Uvijek trepere"
+            },
+            "button": {
+              "description": "Svjetla na aktivaciju tipkalom",
+              "title": "Aktivacija putem tipkala"
+            },
+            "button;sensor": {
+              "title": "Aktivacija senzorom i tipkalom"
+            },
             "no": "Ne",
             "yes": "Da"
           }
@@ -1309,7 +1362,10 @@
         "fuel/fuel_multi": {
           "label": "Tipovi goriva",
           "options": {
-            "diesel": "Dizel"
+            "LH2": "Tekući dušik",
+            "cng": "Stlačeni prirodni plin",
+            "diesel": "Dizel",
+            "propane": "Propan"
           }
         },
         "gauge": {
@@ -1327,7 +1383,8 @@
         "generator/method": {
           "label": "Metoda",
           "options": {
-            "water-storage": "Akumulacija"
+            "water-storage": "Akumulacija",
+            "wind_turbine": "Vjetrenjača"
           }
         },
         "generator/output/electricity": {
@@ -1340,6 +1397,7 @@
             "coal": "Ugljen",
             "diesel": "Dizel",
             "gas": "Zemni plin",
+            "nuclear": "Nuklearna energija",
             "wind": "Vjetar"
           }
         },
@@ -1972,18 +2030,39 @@
         "parking": {
           "label": "Vrsta",
           "options": {
-            "carports": "Nastrešnica",
-            "garage_boxes": "Boks garaža",
-            "half_on_kerb": "Dijelom na rubniku",
-            "lane": "Parking na prometnici",
-            "layby": "Na odmorištu",
-            "multi-storey": "Višerazinski",
-            "on_kerb": "Na rubnik",
-            "rooftop": "Na krovu",
-            "sheds": "Šupe",
-            "street_side": "Uz kolnik",
-            "surface": "Površinski",
-            "underground": "Podzemni"
+            "carports": {
+              "title": "Nastrešnica"
+            },
+            "garage_boxes": {
+              "title": "Boks garaža"
+            },
+            "half_on_kerb": {
+              "title": "Dijelom na rubniku"
+            },
+            "lane": {
+              "title": "Parking na prometnici"
+            },
+            "layby": {
+              "title": "Na odmorištu"
+            },
+            "on_kerb": {
+              "title": "Na rubnik"
+            },
+            "rooftop": {
+              "title": "Na krovu"
+            },
+            "sheds": {
+              "title": "Šupe"
+            },
+            "street_side": {
+              "title": "Uz kolnik"
+            },
+            "surface": {
+              "title": "Površinski"
+            },
+            "underground": {
+              "title": "Podzemni"
+            }
           }
         },
         "parking/side/orientation": {
@@ -4112,6 +4191,9 @@
         "craft/chimney_sweeper": {
           "name": "Dimnjačar"
         },
+        "craft/cleaning": {
+          "name": "Služba čišćenja"
+        },
         "craft/clockmaker": {
           "name": "Urar (ručni satovi)"
         },
@@ -4737,6 +4819,12 @@
         "landuse/industrial": {
           "name": "Industrijska zona"
         },
+        "landuse/industrial/depot": {
+          "name": "Terminal"
+        },
+        "landuse/industrial/scrap_yard": {
+          "name": "Smetlište"
+        },
         "landuse/industrial/slaughterhouse": {
           "name": "Klaonica"
         },
@@ -4761,6 +4849,9 @@
         "landuse/military/base/navy": {
           "name": "Vojna luka"
         },
+        "landuse/military/obstacle_course": {
+          "name": "Vojni poligon"
+        },
         "landuse/military/range": {
           "name": "Vojna streljana"
         },
@@ -4776,6 +4867,9 @@
         "landuse/quarry": {
           "name": "Kamenolom"
         },
+        "landuse/railway": {
+          "name": "Željeznički koridor"
+        },
         "landuse/religious": {
           "name": "Religiozno područje"
         },
@@ -4785,11 +4879,17 @@
         "landuse/residential": {
           "name": "Stambena zona"
         },
+        "landuse/residential/apartments": {
+          "name": "Apartmanski kompleks"
+        },
         "landuse/retail": {
           "name": "Trgovačka zona"
         },
         "landuse/vineyard": {
           "name": "Vinograd"
+        },
+        "landuse/winter_sports": {
+          "name": "Zimsko-rekreacijski centar"
         },
         "leisure/adult_gaming_centre": {
           "name": "Centar igara na sreću za odrasle"
@@ -4812,6 +4912,9 @@
         "leisure/dancing_school": {
           "name": "Plesna škola"
         },
+        "leisure/disc_golf_course": {
+          "name": "Disk golf teren"
+        },
         "leisure/dog_park": {
           "name": "Park za pse"
         },
@@ -4827,6 +4930,9 @@
         },
         "leisure/fitness_station": {
           "name": "Vanjski prostor za vježbanje"
+        },
+        "leisure/fitness_station/horizontal_bar": {
+          "name": "Poluga za vježbanje"
         },
         "leisure/garden": {
           "name": "Vrt",
@@ -5339,8 +5445,8 @@
           "name": "Greben"
         },
         "natural/saddle": {
-          "name": "Sedlo",
-          "terms": "prijevoj"
+          "name": "Prijevoj",
+          "terms": "planinarski prijevoj, sedlo"
         },
         "natural/sand": {
           "name": "Pijesak"
@@ -5686,6 +5792,9 @@
         },
         "power/generator/source/nuclear": {
           "name": "Nuklearni reaktor"
+        },
+        "power/generator/source/wind": {
+          "name": "Vjetrenjača"
         },
         "power/line": {
           "name": "Dalekovod",

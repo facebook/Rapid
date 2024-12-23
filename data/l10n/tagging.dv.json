@@ -341,7 +341,9 @@
         "parking": {
           "label": "އެކިިބާވަތްތަކުގެ ތަންތަން",
           "options": {
-            "surface": "މަގު"
+            "surface": {
+              "title": "މަގު"
+            }
           }
         },
         "parking/side/orientation": {

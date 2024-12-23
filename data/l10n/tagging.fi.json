@@ -380,8 +380,8 @@
             "chain": "ketju",
             "city_wall": "Kaupunginmuuri",
             "cycle_barrier": "Pyöräilyeste",
-            "ditch": "Oja",
-            "entrance": "Sisäänkäynti",
+            "ditch": "Kaivanto",
+            "entrance": "Kulkuaukko\nSisäänkäyntiaukko\nAidan aukko\nAukko aidassa\nMuurin aukko",
             "fence": "Aita",
             "gate": "portti",
             "guard_rail": "tiekaide",
@@ -396,7 +396,7 @@
             "swing_gate": "Kääntyvä puomi",
             "toll_booth": "Tietullipiste",
             "turnstile": "Kääntöportti",
-            "wall": "Seinä\nMuuri"
+            "wall": "Muuri\nSeinämuuri"
           }
         },
         "barrier_planter": {
@@ -1008,7 +1008,7 @@
           }
         },
         "crossing/barrier": {
-          "label": "Puomi",
+          "label": "Tasoristeyspuomi",
           "options": {
             "double_half": "kaksi puolipituista puomia",
             "full": "täysipituinen puomi",
@@ -2593,19 +2593,45 @@
         "parking": {
           "label": "Tyyppi",
           "options": {
-            "carports": "autokatos",
-            "garage_boxes": "riviautotalli",
-            "half_on_kerb": "Puoliksi reunakiven päällä",
-            "lane": "kadunvarren pysäköintikaista",
-            "layby": "Parkkipaikka tien varrella",
-            "multi-storey": "monikerroksinen pysäköintitalo",
-            "on_kerb": "kokonaan reunakiven päällä",
-            "rooftop": "katolla",
-            "sheds": "metallikatos",
-            "shoulder": "Pientareella",
-            "street_side": "kadunvarsi",
-            "surface": "kaduntasoinen pysäköintialue",
-            "underground": "pysäköintiluola"
+            "carports": {
+              "title": "autokatos"
+            },
+            "garage_boxes": {
+              "title": "riviautotalli"
+            },
+            "half_on_kerb": {
+              "title": "Puoliksi reunakiven päällä"
+            },
+            "lane": {
+              "title": "kadunvarren pysäköintikaista"
+            },
+            "layby": {
+              "title": "Parkkipaikka tien varrella"
+            },
+            "multi-storey": {
+              "title": "monikerroksinen pysäköintitalo"
+            },
+            "on_kerb": {
+              "title": "kokonaan reunakiven päällä"
+            },
+            "rooftop": {
+              "title": "katolla"
+            },
+            "sheds": {
+              "title": "metallikatos"
+            },
+            "shoulder": {
+              "title": "Pientareella"
+            },
+            "street_side": {
+              "title": "katuun liitetty pysäköintialue"
+            },
+            "surface": {
+              "title": "Pinta"
+            },
+            "underground": {
+              "title": "Paloposti maan alla"
+            }
           }
         },
         "parking/side/orientation": {
@@ -4285,7 +4311,7 @@
           "name": "Polkupyörävaja"
         },
         "amenity/bicycle_rental": {
-          "name": "Polkupyörän vuokrauspiste\nPyöränvuokrauspiste\nPyörävuokraus\nKaupunkipyöräasema",
+          "name": "Kaupunkipyöräasema",
           "terms": "pyörävuokraamo, kaupunkipyörä, pyöränvuokraus, pyörän vuokraus, polkupyörävuokraamo, polkupyörän vuokraus, polkupyöränvuokraus, polkupyörä, pyörä"
         },
         "amenity/bicycle_repair_station": {
@@ -5336,7 +5362,7 @@
           "name": "Nostopuomi"
         },
         "barrier/log": {
-          "name": "Kaatunut puu"
+          "name": "Kaatunut puu (este)"
         },
         "barrier/motorcycle_barrier": {
           "name": "Moottoripyöräeste"
@@ -5924,6 +5950,9 @@
         },
         "entrance/main": {
           "name": "Pääsisäänkäynti"
+        },
+        "entrance/shop": {
+          "name": "Myymälän sisäänkäynti"
         },
         "entrance/staircase": {
           "name": "Sisäänkäynti portaikkoon",

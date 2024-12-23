@@ -2777,19 +2777,58 @@
         "parking": {
           "label": "類",
           "options": {
-            "carports": "亭",
-            "garage_boxes": "廂房",
-            "half_on_kerb": "骑路缘",
-            "lane": "街邊",
-            "layby": "休息站",
-            "multi-storey": "多層",
-            "on_kerb": "人行道上",
-            "rooftop": "天台",
-            "sheds": "屋",
-            "shoulder": "路肩",
-            "street_side": "街邊",
-            "surface": "地面",
-            "underground": "地底"
+            "carports": {
+              "description": "用來為車輛提供有限保護的結構物，通常沒有牆壁。",
+              "title": "亭"
+            },
+            "garage_boxes": {
+              "description": "有多個獨立區塊的私人車庫，每個區塊一台車。",
+              "title": "廂房"
+            },
+            "half_on_kerb": {
+              "description": "部份停放在人行道上。",
+              "title": "骑路缘"
+            },
+            "lane": {
+              "description": "在街道上停車（可輕鬆轉換為車道）。",
+              "title": "街邊"
+            },
+            "layby": {
+              "description": "停在路邊的暫時休息區域。",
+              "title": "休息站"
+            },
+            "multi-storey": {
+              "description": "建築物結構中的兩層或多層停車場。",
+              "title": "多層"
+            },
+            "on_kerb": {
+              "description": "在人行道上停車。",
+              "title": "人行道上"
+            },
+            "rooftop": {
+              "description": "建築物頂部的一層停車場。",
+              "title": "天台"
+            },
+            "sheds": {
+              "description": "私人停車棚。",
+              "title": "屋"
+            },
+            "shoulder": {
+              "description": "路肩停車。",
+              "title": "路肩"
+            },
+            "street_side": {
+              "description": "直接停在街道旁（但不在街道上）。",
+              "title": "街邊"
+            },
+            "surface": {
+              "description": "地面上的單層停車場。",
+              "title": "地面"
+            },
+            "underground": {
+              "description": "地下停車場。",
+              "title": "地底"
+            }
           }
         },
         "parking/side/orientation": {
@@ -3367,7 +3406,8 @@
             "demanding_mountain_hiking": "T3：耐力行山",
             "difficult_alpine_hiking": "T6：艱行高山",
             "hiking": "T1：遠行",
-            "mountain_hiking": "T2：行山"
+            "mountain_hiking": "T2：行山",
+            "strolling": "散步"
           },
           "placeholder": "行山、行高山...",
           "terms": "路線難度,健行難度,步行難度"
@@ -6795,6 +6835,10 @@
           "name": "主要入口",
           "terms": "主要,出入口,入口,出口,出入口"
         },
+        "entrance/shop": {
+          "name": "商店入口",
+          "terms": "商店入口"
+        },
         "entrance/staircase": {
           "name": "樓梯間入口",
           "terms": "樓梯間入口"
@@ -8592,6 +8636,10 @@
         "natural": {
           "name": "自然"
         },
+        "natural/arch": {
+          "name": "天然拱門",
+          "terms": "天然拱門"
+        },
         "natural/bare_rock": {
           "name": "石地",
           "terms": "裸岩"
@@ -10098,6 +10146,10 @@
         "shop/gift": {
           "name": "禮品舖",
           "terms": "Gift Shop,禮品店,禮品舖,禮物店"
+        },
+        "shop/gold_buyer": {
+          "name": "黃金買家",
+          "terms": "黃金買家"
         },
         "shop/greengrocer": {
           "name": "菜檔",

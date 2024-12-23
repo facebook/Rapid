@@ -2345,18 +2345,42 @@
         "parking": {
           "label": "Math",
           "options": {
-            "carports": "Cysgod Car",
-            "half_on_kerb": "Hanner Ar Gwrb",
-            "lane": "Lôn Ochr Ffordd",
-            "layby": "Cilfan",
-            "multi-storey": "Aml-lawr",
-            "on_kerb": "Ar Gwrb",
-            "rooftop": "To",
-            "sheds": "Sieds",
-            "shoulder": "Llain Galed",
-            "street_side": "Ochr Stryd",
-            "surface": "Arwynebol",
-            "underground": "Dan Ddaear"
+            "carports": {
+              "title": "Cysgod Car"
+            },
+            "half_on_kerb": {
+              "title": "Hanner Ar Gwrb"
+            },
+            "lane": {
+              "title": "Lôn Ochr Ffordd"
+            },
+            "layby": {
+              "title": "Cilfan"
+            },
+            "multi-storey": {
+              "title": "Aml-lawr"
+            },
+            "on_kerb": {
+              "title": "Ar Gwrb"
+            },
+            "rooftop": {
+              "title": "To"
+            },
+            "sheds": {
+              "title": "Sieds"
+            },
+            "shoulder": {
+              "title": "Llain Galed"
+            },
+            "street_side": {
+              "title": "Ochr Stryd"
+            },
+            "surface": {
+              "title": "Arwyneb"
+            },
+            "underground": {
+              "title": "Dan Ddaear"
+            }
           }
         },
         "parking/side/orientation": {

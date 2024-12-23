@@ -1118,13 +1118,27 @@
         "parking": {
           "label": "Jenis",
           "options": {
-            "carports": "Garaj",
-            "garage_boxes": "Kotak Garaj",
-            "lane": "Lorong Pinggir Jalan",
-            "multi-storey": "Bertingkat-tingkat",
-            "sheds": "Bangsal",
-            "surface": "Permukaan",
-            "underground": "Bawah Tanah"
+            "carports": {
+              "title": "Garaj"
+            },
+            "garage_boxes": {
+              "title": "Kotak Garaj"
+            },
+            "lane": {
+              "title": "Lorong Pinggir Jalan"
+            },
+            "multi-storey": {
+              "title": "Bertingkat-tingkat"
+            },
+            "sheds": {
+              "title": "Bangsal"
+            },
+            "surface": {
+              "title": "Permukaan"
+            },
+            "underground": {
+              "title": "Bawah Tanah"
+            }
           }
         },
         "parking/side/orientation": {

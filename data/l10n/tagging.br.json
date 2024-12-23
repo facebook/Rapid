@@ -2167,10 +2167,18 @@
         "parking": {
           "label": "Seurt",
           "options": {
-            "rooftop": "Toenn",
-            "sheds": "Lochoù",
-            "surface": "A-us d'an douar",
-            "underground": "Dindandouar"
+            "rooftop": {
+              "title": "Toenn"
+            },
+            "sheds": {
+              "title": "Lochoù"
+            },
+            "surface": {
+              "title": "A-us d'an douar"
+            },
+            "underground": {
+              "title": "Dindandouar"
+            }
           }
         },
         "parking/side/orientation": {

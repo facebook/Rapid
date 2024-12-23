@@ -248,14 +248,23 @@
       "Gliwice-buildings": {
         "name": "Gliwice: Gebäude"
       },
+      "LSA-ALKIS-CP": {
+        "description": "Vektorielle Erfassung von Parzellen aus dem amtlichen Liegenschaftskataster.",
+        "name": "© GeoBasis-DE/LVermGeo LSA, ALKIS-Katasterparzellen"
+      },
       "LSA-ALKIS_BU": {
-        "description": "Gebäudeumrisse in Sachsen-Anhalt"
+        "description": "Gebäudeumrisse in Sachsen-Anhalt",
+        "name": "© GeoBasis-DE/LVermGeo LSA, ALKIS-Gebäudeumrisse"
+      },
+      "LSA-ATKIS-HYN": {
+        "description": "Aufzeichnung von Wassernetzen (kann von der Realität abweichen, immer in Verbindung mit Orthofoto betrachten)"
       },
       "LSA-DOP20": {
         "description": "Luftbild des Landes Sachsen-Anhalt, 20 cm Auflösung"
       },
       "LSA-DVG": {
-        "description": "Vektorisierte Erfassung von Verwaltungsgrenzen. Angegeben sind die Grenzen des Bundeslandes, des Kreises, der Gemeinde und der Gemeindeteile."
+        "description": "Vektorisierte Erfassung von Verwaltungsgrenzen. Angegeben sind die Grenzen des Bundeslandes, des Kreises, der Gemeinde und der Gemeindeteile.",
+        "name": "© GeoBasis-DE/LVermGeo LSA, Digitale Verwaltungsgrenzen"
       },
       "LocalAuthorities_RightsOfWay": {
         "attribution": {

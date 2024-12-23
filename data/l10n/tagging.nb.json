@@ -322,7 +322,9 @@
         },
         "parking": {
           "options": {
-            "underground": "Underjordisk "
+            "underground": {
+              "title": "Underjordisk "
+            }
           }
         },
         "parking/side/parking": {

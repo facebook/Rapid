@@ -2684,19 +2684,58 @@
         "parking": {
           "label": "Tipo",
           "options": {
-            "carports": "Cochera abierta",
-            "garage_boxes": "Garaje en cubículos",
-            "half_on_kerb": "La mitad en la acera",
-            "lane": "Carril al borde de la calzada",
-            "layby": "Área de descanso",
-            "multi-storey": "Multinivel",
-            "on_kerb": "En la acera",
-            "rooftop": "Techo",
-            "sheds": "Galpones",
-            "shoulder": "Arcén / banquina",
-            "street_side": "Adyacente a la calzada",
-            "surface": "Superficie",
-            "underground": "Subterráneo"
+            "carports": {
+              "description": "Estructura utilizada para ofrecer protección limitada a vehículos, típicamente sin paredes.",
+              "title": "Cochera abierta"
+            },
+            "garage_boxes": {
+              "description": "Garaje privado con múltiples compartimientos individuales para un vehículo cada uno.",
+              "title": "Garaje en cubículos"
+            },
+            "half_on_kerb": {
+              "description": "Estacionamiento parcialmente en la acera.",
+              "title": "La mitad en la acera"
+            },
+            "lane": {
+              "description": "Estacionamiento en la calle (que podría ser fácilmente convertido en un carril de circulación).",
+              "title": "Carril al borde de la calzada"
+            },
+            "layby": {
+              "description": "Estacionamiento en un área de descanso, al costado de una vía.",
+              "title": "Área de descanso"
+            },
+            "multi-storey": {
+              "description": "Dos o más niveles de estacionamiento en una estructura de edificio.",
+              "title": "Multinivel"
+            },
+            "on_kerb": {
+              "description": "Estacionamiento sobre la acera.",
+              "title": "En la acera"
+            },
+            "rooftop": {
+              "description": "Un nivel de estacionamiento en la parte superior de un edificio.",
+              "title": "Techo"
+            },
+            "sheds": {
+              "description": "Hangares privados para vehículos.",
+              "title": "Galpones"
+            },
+            "shoulder": {
+              "description": "Estacionamiento al costado de la vía.",
+              "title": "Arcén / Banquina"
+            },
+            "street_side": {
+              "description": "Estacionamiento directamente adyacente a la calle (pero no sobre ella).",
+              "title": "Adyacente a la calzada"
+            },
+            "surface": {
+              "description": "Un nivel de estacionamiento a nivel del suelo.",
+              "title": "Superficie"
+            },
+            "underground": {
+              "description": "Estacionamiento subterráneo.",
+              "title": "Subterráneo"
+            }
           }
         },
         "parking/side/orientation": {
@@ -3250,7 +3289,8 @@
             "demanding_mountain_hiking": "T3: Senderismo de montaña exigente",
             "difficult_alpine_hiking": "T6: Senderismo alpino difícil",
             "hiking": "T1: Senderismo",
-            "mountain_hiking": "T2: Senderismo de montaña"
+            "mountain_hiking": "T2: Senderismo de montaña",
+            "strolling": "Paseo"
           },
           "placeholder": "Caminata de montaña, caminata alpina...",
           "terms": "Excursionismo, hiking, dificultad, senderismo, caminata"
@@ -6643,6 +6683,10 @@
           "name": "Entrada principal",
           "terms": "entrada, ingreso, puerta, portón, acceso, principal, vestíbulo"
         },
+        "entrance/shop": {
+          "name": "Entrada de tienda",
+          "terms": "Entrada de tienda, acceso comercial, entrada de comercio."
+        },
         "entrance/staircase": {
           "name": "Escalera de entrada",
           "terms": "Escalera de entrada, puerta, escaleras"
@@ -8432,6 +8476,10 @@
         "natural": {
           "name": "Elemento natural"
         },
+        "natural/arch": {
+          "name": "Arco natural",
+          "terms": "Arco natural, puente de roca, formación rocosa arqueada."
+        },
         "natural/bare_rock": {
           "name": "Roca desnuda",
           "terms": "roca, roca desnuda, roca descubierta, costa rocosa, montaña"
@@ -9935,6 +9983,10 @@
         "shop/gift": {
           "name": "Tienda de regalos",
           "terms": "regalo, obsequio, presentes, recuerdo, souvenir, regaleria, regionales"
+        },
+        "shop/gold_buyer": {
+          "name": "Comprador de oro",
+          "terms": "Comprador de oro, adquisición de metales preciosos, casa de empeño"
         },
         "shop/greengrocer": {
           "name": "Tienda de frutas y verduras",

@@ -1171,13 +1171,27 @@
         "parking": {
           "label": "Tipu",
           "options": {
-            "carports": "Techaos",
-            "garage_boxes": "Cocheres",
-            "lane": "Llateral de carretera",
-            "multi-storey": "Multinivel",
-            "sheds": "Casetes",
-            "surface": "Superficie",
-            "underground": "Baxo tierra"
+            "carports": {
+              "title": "Techaos"
+            },
+            "garage_boxes": {
+              "title": "Cocheres"
+            },
+            "lane": {
+              "title": "Llateral de carretera"
+            },
+            "multi-storey": {
+              "title": "Multinivel"
+            },
+            "sheds": {
+              "title": "Casetes"
+            },
+            "surface": {
+              "title": "Superficie"
+            },
+            "underground": {
+              "title": "Baxo tierra"
+            }
           }
         },
         "parking/side/orientation": {

@@ -1207,8 +1207,12 @@
         "parking": {
           "label": "Cineál",
           "options": {
-            "surface": "Dromchla",
-            "underground": "Faoi Thalamh"
+            "surface": {
+              "title": "Dromchla"
+            },
+            "underground": {
+              "title": "Faoi Thalamh"
+            }
           }
         },
         "parking/side/parking": {

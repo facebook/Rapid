@@ -228,11 +228,6 @@
         "park_ride": {
           "label": "اصطف واركب"
         },
-        "parking": {
-          "options": {
-            "surface": "السطح"
-          }
-        },
         "payment_multi": {
           "label": "أنواع الدفع",
           "terms": "أنواع الدفع,أنواع الحساب"

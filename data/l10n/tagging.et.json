@@ -1933,13 +1933,28 @@
         "kerb": {
           "label": "Kõnnitee serv",
           "options": {
+            "flush": {
+              "description": "Kas muu teeosaga samas tasapinnas või üliväikese kaldega äärekivi või kaldtee.",
+              "title": "Tasane äärekivi"
+            },
+            "lowered": {
+              "description": "Kuni kui 3 sentimeetrit kõrge kaldu äärekivi, kust saab üle ratastooliga.",
+              "title": "Madaldatud äärekivi"
+            },
             "no": {
+              "description": "Antud asukohas äärekivi puudub.",
               "title": "Puudub"
             },
             "raised": {
-              "title": "Tõstetud pind"
+              "description": "Enam kui 3 sentimeetrit kõrge kandiline äärekivi, kust ei saa üle ratastooliga.",
+              "title": "Tõstetud äärekivi"
+            },
+            "rolled": {
+              "description": "Üldjuhul nõgus, mõnel puhul ka kumer äärekivi tavaliselt elamupiirkonnas, kust saab üle auto või jalgrattaga, aga mitte ratastooliga.",
+              "title": "Nõgus äärekivi"
             },
             "yes": {
+              "description": "Mingit sorti äärekivi on olemas, kuid täpne tüüp pole teada",
               "title": "Olemas"
             }
           },
@@ -2498,19 +2513,58 @@
         "parking": {
           "label": "Tüüp",
           "options": {
-            "carports": "Auto varjualused",
-            "garage_boxes": "Garaažiboksid",
-            "half_on_kerb": "Poolenisti kõnniteel",
-            "lane": "Teeäärne parkimisrada",
-            "layby": "Parkimistasku",
-            "multi-storey": "Mitmekorruseline",
-            "on_kerb": "Kõnniteel",
-            "rooftop": "Katusel",
-            "sheds": "Angaar",
-            "shoulder": "Tee õlal",
-            "street_side": "Teeäärne parkimisrada",
-            "surface": "Maapealne",
-            "underground": "Maaalune"
+            "carports": {
+              "description": "Tavaliselt ilma seinteta varikatus, mis pakub autole osalist kaitset välise keskkonna eest.",
+              "title": "Auto varjualused"
+            },
+            "garage_boxes": {
+              "description": "Hoone, kus asub palju tavaliselt eri omanikele kuuluvaid garaaže, millest igaüks on mõeldud ühele autole.",
+              "title": "Garaažiboksid"
+            },
+            "half_on_kerb": {
+              "description": "Tänavaäärne parkimiskorraldus, kus parkiv sõiduk võib osaliselt paikneda kõnniteel.",
+              "title": "Parkimine mõlemal pool poolenisti kõnniteel"
+            },
+            "lane": {
+              "description": "Tänavaäärne parkimiskorraldus, kus parkiv sõiduk võib asuda sõiduteel (ja parkimisala saab vajadusel kergesti muuta sõidurajaks).",
+              "title": "Teeäärne parkimisrada mõlemal pool"
+            },
+            "layby": {
+              "description": "Tee ääres või kõrval paiknev väike ilma teepoolse piirdeta eraldi ala mõne auto parkimiseks.",
+              "title": "Parkimistasku"
+            },
+            "multi-storey": {
+              "description": "Kaks või enam parkimiskorrust hoones.",
+              "title": "Mitmekorruseline"
+            },
+            "on_kerb": {
+              "description": "Tänavaäärne parkimiskorraldus, kus parkiv sõiduk võib paikneda kõnniteel.",
+              "title": "Parkimine mõlemal pool kõnniteel"
+            },
+            "rooftop": {
+              "description": "Üks parkimiskorrus hoone või ehitise katusel.",
+              "title": "Katusel"
+            },
+            "sheds": {
+              "description": "Väike, sageli kaarjas angaarilaadne rajatis ühe või mõne auto jaoks.",
+              "title": "Väike parkimisangaar"
+            },
+            "shoulder": {
+              "description": "Teeäärne parkimiskorraldus, kus parkiv sõiduk võib paikneda tee õlal.",
+              "title": "Tee õlal"
+            },
+            "street_side": {
+              "description": "Tänavaäärne parkimiskorraldus, kus parkiv sõiduk võib paikneda otse tee kõrval (kuid mitte tee sõidurea peal).",
+              "title": "Teeäärne parkimisrada mõlemal pool"
+            },
+            "surface": {
+              "description": "Ühetasandiline parkimine maapinnal.",
+              "title": "Maapealne"
+            },
+            "underground": {
+              "description": "Parkimine asub maa all kas hoone vastavas osas või eraldi rajatises.",
+              "title": "maa all"
+            }
           }
         },
         "parking/side/orientation": {
@@ -2861,7 +2915,8 @@
             "demanding_mountain_hiking": "T3: Raske mägimatkamine",
             "difficult_alpine_hiking": "T6: Väga raske alpimatkamine",
             "hiking": "T1: Matkamine",
-            "mountain_hiking": "T2: Mägimatkamine"
+            "mountain_hiking": "T2: Mägimatkamine",
+            "strolling": "Lonkimine"
           },
           "placeholder": "Šveitsi Alpiklubi rajatasemed"
         },
@@ -3002,6 +3057,9 @@
             "left": "Ratturist vasakul",
             "right": "Ratturist paremal"
           }
+        },
+        "siren/purpose": {
+          "label": "Eesmärk"
         },
         "siren/type": {
           "label": "Tüüp",
@@ -3245,7 +3303,8 @@
           }
         },
         "summit/cross": {
-          "label": "Rist mäetipus"
+          "label": "Rist mäetipus",
+          "terms": "mäerist"
         },
         "supervised": {
           "label": "Valvega"
@@ -3300,6 +3359,7 @@
           "label": "Jälgitav piirkond"
         },
         "survey_point/purpose": {
+          "label": "Eesmärk",
           "options": {
             "both": "mõlemad"
           }
@@ -3309,7 +3369,9 @@
           "options": {
             "beacon": "Majakas",
             "block": "Plokk",
-            "cairn": "Kivikangur"
+            "cairn": "Kivikangur",
+            "plaque": "Tahvel",
+            "pole": "Teivas"
           }
         },
         "swimming_pool": {
@@ -3390,6 +3452,11 @@
         },
         "toilets": {
           "label": "Tualetid"
+        },
+        "toilets/disposal": {
+          "options": {
+            "flush": "Tasanäe äärekivi"
+          }
         },
         "toilets/menstrual_products": {
           "label": "Saadaval on tasuta hügieenitooted naistele",
@@ -4841,13 +4908,15 @@
           "name": "Ala"
         },
         "area/highway/traffic_island": {
-          "name": "Eraldussaar"
+          "name": "Eraldussaar",
+          "terms": "ohutussaar,liiklussaar"
         },
         "attraction/amusement_ride": {
           "name": "Lõbuatraktsioon"
         },
         "attraction/big_wheel": {
-          "name": "Vaateratas"
+          "name": "Vaateratas",
+          "terms": "ilmaratas,kuradiratas"
         },
         "attraction/bungee_jumping": {
           "name": "Bendžihüpped"
@@ -5553,6 +5622,10 @@
         },
         "entrance/main": {
           "name": "Peasissepääs\nPeasissekäik\nPortaal"
+        },
+        "entrance/shop": {
+          "name": "Poe sissepääs",
+          "terms": "uks,pood,kauplus,kaupluse,peauks,sissepääs"
         },
         "entrance/staircase": {
           "name": "Sissepääs trepikotta"
@@ -6351,6 +6424,10 @@
         "leisure/ice_rink": {
           "name": "Uisuväljak"
         },
+        "leisure/indoor_play": {
+          "name": "Suur mängutuba",
+          "terms": "mängusaal"
+        },
         "leisure/marina": {
           "name": "Väikesadam",
           "terms": "Jahisadam,kaatrisadam,jaht,paat,kaater,sadam"
@@ -6472,6 +6549,10 @@
         "leisure/pitch/padel": {
           "name": "Padeliväljak"
         },
+        "leisure/pitch/paintball": {
+          "name": "Paintballi väljak",
+          "terms": "värvisõda,värvikuulimäng,värvipall,väljak,plats"
+        },
         "leisure/pitch/rugby_league": {
           "name": "Ragbiväljak (liigareeglite alusel)"
         },
@@ -6479,7 +6560,8 @@
           "name": "Ragbiväljak (liidureeglite alusel)"
         },
         "leisure/pitch/shooting": {
-          "name": "Lasketiir"
+          "name": "Lasketiir",
+          "terms": "tiir,laskerada,jahilasmine,sportlaskmine,sportpüss"
         },
         "leisure/pitch/skateboard": {
           "name": "Rulapark",
@@ -6502,6 +6584,10 @@
         },
         "leisure/playground": {
           "name": "Mänguväljak"
+        },
+        "leisure/playground/indoor": {
+          "name": "Väike mängutuba",
+          "terms": "mängusaal"
         },
         "leisure/resort": {
           "name": "Kuurort",
@@ -6534,6 +6620,10 @@
         },
         "leisure/sports_centre/karting": {
           "name": "Kardistaadion"
+        },
+        "leisure/sports_centre/shooting": {
+          "name": "Laskespordi keskus",
+          "terms": "laskesport"
         },
         "leisure/sports_centre/swimming": {
           "name": "Ujula",
@@ -6987,6 +7077,10 @@
         "natural": {
           "name": "Loodusobjekt"
         },
+        "natural/arch": {
+          "name": "Looduslik kaar või võlv",
+          "terms": "võlv,kaar,võlvkäik,kivikaar,kaljukaar"
+        },
         "natural/bare_rock": {
           "name": "Paljand",
           "terms": "Kivi paljand"
@@ -7282,7 +7376,8 @@
           "name": "Energiafirma  kontor"
         },
         "office/engineer": {
-          "name": "Inseneribüroo"
+          "name": "Inseneribüroo",
+          "terms": "tehnoloogiabüroo"
         },
         "office/estate_agent": {
           "name": "Kinnisvarabüroo"
@@ -7769,7 +7864,8 @@
           "name": "Trammi peatuspunkt"
         },
         "railway/turntable": {
-          "name": "Pöördesild"
+          "name": "Pöördesild",
+          "terms": "raudtee pöördesild"
         },
         "relation": {
           "name": "Relatsioon",
@@ -8079,6 +8175,10 @@
         },
         "shop/gift": {
           "name": "Kingipood"
+        },
+        "shop/gold_buyer": {
+          "name": "Kulla kokkuostja",
+          "terms": "kuld,väärismetall,kokkuost,kokkuostja"
         },
         "shop/greengrocer": {
           "name": "Puu- ja köögiviljapood",

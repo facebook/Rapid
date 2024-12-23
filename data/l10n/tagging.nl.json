@@ -2521,18 +2521,42 @@
         },
         "parking": {
           "options": {
-            "garage_boxes": "Garageboxen",
-            "half_on_kerb": "Half op de borduur",
-            "lane": "Parkeerstrook",
-            "layby": "Uitwijkplaats",
-            "multi-storey": "Parkeergebouw met meerdere verdiepingen",
-            "on_kerb": "Op de borduur",
-            "rooftop": "Dak",
-            "sheds": "Stallen",
-            "shoulder": "Berm",
-            "street_side": "Straatkant",
-            "surface": "Oppervlak",
-            "underground": "Ondergronds"
+            "garage_boxes": {
+              "title": "Garageboxen"
+            },
+            "half_on_kerb": {
+              "title": "Half op de borduur"
+            },
+            "lane": {
+              "title": "Parkeerstrook"
+            },
+            "layby": {
+              "title": "Uitwijkplaats"
+            },
+            "multi-storey": {
+              "title": "Meerdere verdiepingen"
+            },
+            "on_kerb": {
+              "title": "Op de borduur"
+            },
+            "rooftop": {
+              "title": "Dak"
+            },
+            "sheds": {
+              "title": "Stallen"
+            },
+            "shoulder": {
+              "title": "Berm"
+            },
+            "street_side": {
+              "title": "Straatkant"
+            },
+            "surface": {
+              "title": "Oppervlak"
+            },
+            "underground": {
+              "title": "Ondergronds"
+            }
           }
         },
         "parking/side/orientation": {

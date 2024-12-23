@@ -1818,14 +1818,24 @@
         "parking": {
           "label": "Tür",
           "options": {
-            "carports": "Kenarları Açık Park Alanı",
-            "garage_boxes": "Park Kutuları",
-            "lane": "Yol Kenarı Park Şeridi",
-            "multi-storey": "Çokkatlı",
-            "rooftop": "Çatı",
-            "sheds": "Gölgelik",
-            "surface": "Yüzey",
-            "underground": "Yeraltı"
+            "carports": {
+              "title": "Kenarları Açık Park Alanı"
+            },
+            "garage_boxes": {
+              "title": "Park Kutuları"
+            },
+            "multi-storey": {
+              "title": "Seviyeli"
+            },
+            "rooftop": {
+              "title": "Çatı"
+            },
+            "sheds": {
+              "title": "Gölgelik"
+            },
+            "surface": {
+              "title": "Yüzey"
+            }
           }
         },
         "parking_entrance": {

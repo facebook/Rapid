@@ -577,10 +577,12 @@
         "parking": {
           "label": "Art",
           "options": {
-            "multi-storey": "Mehrstöckig",
-            "rooftop": "auf dem Dach",
-            "shoulder": "Standstreifen",
-            "surface": "Oberfläche"
+            "shoulder": {
+              "title": "Standstreifen"
+            },
+            "underground": {
+              "title": "Tiefgarage"
+            }
           }
         },
         "parking/side/parking": {

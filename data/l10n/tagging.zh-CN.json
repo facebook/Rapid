@@ -1876,16 +1876,33 @@
         },
         "parking": {
           "options": {
-            "carports": "车棚",
-            "garage_boxes": "车库盒",
-            "layby": "公路停车港湾",
-            "multi-storey": "多层",
-            "on_kerb": "路缘上",
-            "rooftop": "屋顶",
-            "sheds": "车棚",
-            "street_side": "路边",
-            "surface": "地面",
-            "underground": "地下"
+            "carports": {
+              "title": "车棚"
+            },
+            "garage_boxes": {
+              "title": "车库盒"
+            },
+            "layby": {
+              "title": "公路停车港湾"
+            },
+            "multi-storey": {
+              "title": "多层"
+            },
+            "on_kerb": {
+              "title": "路缘上"
+            },
+            "rooftop": {
+              "title": "屋顶"
+            },
+            "sheds": {
+              "title": "车棚"
+            },
+            "surface": {
+              "title": "表面铺设"
+            },
+            "underground": {
+              "title": "地埋式"
+            }
           }
         },
         "parking/side/orientation": {

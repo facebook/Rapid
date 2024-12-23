@@ -742,7 +742,9 @@
         "parking": {
           "label": "قسم",
           "options": {
-            "surface": "بھومی"
+            "surface": {
+              "title": "بھومی"
+            }
           }
         },
         "parking/side/parking": {

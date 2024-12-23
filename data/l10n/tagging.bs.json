@@ -596,7 +596,9 @@
         "parking": {
           "label": "Vrsta",
           "options": {
-            "surface": "Površina"
+            "surface": {
+              "title": "Površina"
+            }
           }
         },
         "parking_entrance": {

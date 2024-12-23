@@ -465,7 +465,9 @@
         "parking": {
           "label": "Nooca",
           "options": {
-            "surface": "Sagxada"
+            "surface": {
+              "title": "Sagxada"
+            }
           }
         },
         "parking/side/orientation": {

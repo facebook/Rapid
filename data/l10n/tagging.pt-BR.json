@@ -1522,17 +1522,39 @@
         },
         "parking": {
           "options": {
-            "carports": "Abrigo de carros",
-            "garage_boxes": "Vagas de estacionamento",
-            "half_on_kerb": "Metade na calçada",
-            "lane": "Faixa de acostamento",
-            "layby": "Separado/Alça de acesso",
-            "multi-storey": "Estacionamento vertical",
-            "on_kerb": "Na calçada",
-            "rooftop": "Telhado",
-            "sheds": "Cabanas",
-            "shoulder": "Acostamento",
-            "street_side": "Lado da rua"
+            "carports": {
+              "title": "Abrigo de carros"
+            },
+            "garage_boxes": {
+              "title": "Vagas de estacionamento"
+            },
+            "half_on_kerb": {
+              "title": "Metade na calçada"
+            },
+            "lane": {
+              "title": "Faixa de estacionamento"
+            },
+            "layby": {
+              "title": "Separado/Alça de acesso"
+            },
+            "multi-storey": {
+              "title": "Estacionamento vertical"
+            },
+            "on_kerb": {
+              "title": "Na calçada"
+            },
+            "rooftop": {
+              "title": "Telhado"
+            },
+            "sheds": {
+              "title": "Cabanas"
+            },
+            "shoulder": {
+              "title": "Acostamento"
+            },
+            "street_side": {
+              "title": "Lado da rua"
+            }
           }
         },
         "parking/side/orientation": {

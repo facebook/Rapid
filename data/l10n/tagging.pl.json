@@ -2727,19 +2727,58 @@
         "parking": {
           "label": "Rodzaj",
           "options": {
-            "carports": "Zadaszenia",
-            "garage_boxes": "Boksy garażowe",
-            "half_on_kerb": "W połowie na chodniku",
-            "lane": "Pas na jezdni",
-            "layby": "Zatoczka",
-            "multi-storey": "Wielopoziomowy",
-            "on_kerb": "Na chodniku",
-            "rooftop": "Na dachu",
-            "sheds": "Wiaty",
-            "shoulder": "Na poboczu",
-            "street_side": "Obok jezdni",
-            "surface": "Naziemny",
-            "underground": "Podziemny"
+            "carports": {
+              "description": "Budowla zapewniająca pojazdom ograniczoną osłonę, przeważnie pozbawiona ścian.",
+              "title": "Zadaszenia"
+            },
+            "garage_boxes": {
+              "description": "Zespół prywatnych boksów garażowych mieszczących po jednym pojeździe.",
+              "title": "Boksy garażowe"
+            },
+            "half_on_kerb": {
+              "description": "Parkowanie częściowo na chodniku.",
+              "title": "W połowie na chodniku"
+            },
+            "lane": {
+              "description": "Parkowanie na części jezdni, która może być łatwo przekształcona w pas ruchu.",
+              "title": "Pas na jezdni"
+            },
+            "layby": {
+              "description": "Parkowanie w zatoczce wzdłuż drogi, przewidziany dla odpoczynku podróżnych.",
+              "title": "Zatoczka"
+            },
+            "multi-storey": {
+              "description": "Budynek o dwu lub więcej poziomach przeznaczony do parkowania pojazdów.",
+              "title": "Wielopoziomowy"
+            },
+            "on_kerb": {
+              "description": "Parkowanie w całości na chodniku.",
+              "title": "Na chodniku"
+            },
+            "rooftop": {
+              "description": "Pojedynczy poziom parkingowy na dachu budynku.",
+              "title": "Na dachu"
+            },
+            "sheds": {
+              "description": "Prywatne garaże.",
+              "title": "Garaże"
+            },
+            "shoulder": {
+              "description": "Parkowanie na poboczu drogi.",
+              "title": "Na poboczu"
+            },
+            "street_side": {
+              "description": "Parkowanie bezpośrednio przy jezdni (lecz nie na niej).",
+              "title": "Obok jezdni"
+            },
+            "surface": {
+              "description": "Jednopoziomowy parking na powierzchni.",
+              "title": "Na powierzchni"
+            },
+            "underground": {
+              "description": "Parking podziemny.",
+              "title": "Podziemny"
+            }
           }
         },
         "parking/side/orientation": {
@@ -3302,7 +3341,8 @@
             "demanding_mountain_hiking": "T3: Wymagająca Wędrówka Górska",
             "difficult_alpine_hiking": "T6: Trudna Wędrówka Alpejska",
             "hiking": "T1: Wędrówka",
-            "mountain_hiking": "T2: Wędrówka Górska"
+            "mountain_hiking": "T2: Wędrówka Górska",
+            "strolling": "Spacer"
           },
           "placeholder": "Wędrówka górska, Wędrówka alpejska...",
           "terms": "stopień trudności turystyki pieszej"
@@ -6703,6 +6743,10 @@
           "name": "Wejście główne",
           "terms": "wejście główne, główne wejście, drzwi"
         },
+        "entrance/shop": {
+          "name": "Wejście do sklepu",
+          "terms": "wejście do sklepu, wejście do lokalu usługowego, sklep, lokal usługowy"
+        },
         "entrance/staircase": {
           "name": "Wejście do klatki schodowej",
           "terms": "wejście do klatki schodowej, wejście na klatkę schodową, klatka schodowa"
@@ -8492,6 +8536,10 @@
         "natural": {
           "name": "Obiekt geograficzny"
         },
+        "natural/arch": {
+          "name": "Most skalny",
+          "terms": "most skalny, łuk skalny"
+        },
         "natural/bare_rock": {
           "name": "Odkryte skały",
           "terms": "odkryte skały, odkryta skała, obnażone skały, obnażona skała, skała macierzysta, skała, skały"
@@ -9998,6 +10046,10 @@
         "shop/gift": {
           "name": "Sklep z pamiątkami",
           "terms": "sklep z pamiątkami, sklep z prezentami, pamiątki, prezenty, gadżety, pocztówki, magnesy, figurki"
+        },
+        "shop/gold_buyer": {
+          "name": "Skup złota",
+          "terms": "skup złota"
         },
         "shop/greengrocer": {
           "name": "Warzywniak",

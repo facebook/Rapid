@@ -2505,19 +2505,45 @@
         "parking": {
           "label": "Tipo",
           "options": {
-            "carports": "Tettoia",
-            "garage_boxes": "Box garage",
-            "half_on_kerb": "Mezzo sul marciapiede",
-            "lane": "Corsia",
-            "layby": "Affluenza alle urne / piazzola di sosta",
-            "multi-storey": "Più piani",
-            "on_kerb": "Sul marciapiede",
-            "rooftop": "Tetto",
-            "sheds": "Capanno",
-            "shoulder": "Banchina",
-            "street_side": "Lato strada",
-            "surface": "Superficie",
-            "underground": "Sotterraneo"
+            "carports": {
+              "title": "Tettoia"
+            },
+            "garage_boxes": {
+              "title": "Box garage"
+            },
+            "half_on_kerb": {
+              "title": "Mezzo sul marciapiede"
+            },
+            "lane": {
+              "title": "Vicolo a bordo strada"
+            },
+            "layby": {
+              "title": "Affluenza alle urne / piazzola di sosta"
+            },
+            "multi-storey": {
+              "title": "Multi-piano"
+            },
+            "on_kerb": {
+              "title": "Sul marciapiede"
+            },
+            "rooftop": {
+              "title": "Tetto"
+            },
+            "sheds": {
+              "title": "Capanno"
+            },
+            "shoulder": {
+              "title": "Banchina"
+            },
+            "street_side": {
+              "title": "Lato strada"
+            },
+            "surface": {
+              "title": "Superficie"
+            },
+            "underground": {
+              "title": "Sotterraneo"
+            }
           }
         },
         "parking/side/orientation": {
@@ -5539,7 +5565,7 @@
         },
         "building/apartments": {
           "name": "Condominio",
-          "terms": "appartamenti,condomini,palazzi,palazzoni,casermoni,case popolari,abitazioni,case,edilizia popolare,peep,iacp,terreno,lotto,terreno condominiale, area condominiale"
+          "terms": "appartamenti,condomini,condominio,palazzi,palazzo,palazzoni,casermoni,case popolari,abitazioni,abitazione,residenza,case,edilizia popolare,peep,iacp,terreno,lotto,terreno condominiale, area condominiale"
         },
         "building/bakehouse": {
           "name": "Forno\nFornace\nFornaio"

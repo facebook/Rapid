@@ -2476,19 +2476,45 @@
         "parking": {
           "label": "Kiểu",
           "options": {
-            "carports": "Nhà xe",
-            "garage_boxes": "Ga ra",
-            "half_on_kerb": "Một phần trên hè",
-            "lane": "Làn đường",
-            "layby": "Trạm Dừng Nghỉ",
-            "multi-storey": "Cao tầng",
-            "on_kerb": "Trên hè",
-            "rooftop": "Trên Nóc nhà",
-            "sheds": "Lán",
-            "shoulder": "Làn dừng khẩn cấp",
-            "street_side": "Dọc đường",
-            "surface": "Ngoài trời",
-            "underground": "Ngầm"
+            "carports": {
+              "title": "Nhà xe"
+            },
+            "garage_boxes": {
+              "title": "Ga ra"
+            },
+            "half_on_kerb": {
+              "title": "Một phần trên hè"
+            },
+            "lane": {
+              "title": "Làn cạnh đường"
+            },
+            "layby": {
+              "title": "Trạm Dừng Nghỉ"
+            },
+            "multi-storey": {
+              "title": "Cao tầng"
+            },
+            "on_kerb": {
+              "title": "Trên hè"
+            },
+            "rooftop": {
+              "title": "Trên Nóc nhà"
+            },
+            "sheds": {
+              "title": "Lán"
+            },
+            "shoulder": {
+              "title": "Làn dừng khẩn cấp"
+            },
+            "street_side": {
+              "title": "Dọc đường"
+            },
+            "surface": {
+              "title": "Ngoài trời"
+            },
+            "underground": {
+              "title": "Ngầm"
+            }
           }
         },
         "parking/side/orientation": {

@@ -1336,9 +1336,15 @@
         "parking": {
           "label": "Tipe",
           "options": {
-            "rooftop": "Atap",
-            "surface": "Permukaan",
-            "underground": "Bawah Tanah"
+            "rooftop": {
+              "title": "Atap"
+            },
+            "surface": {
+              "title": "Permukaan"
+            },
+            "underground": {
+              "title": "Bawah tanah"
+            }
           }
         },
         "parking/side/orientation": {

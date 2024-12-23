@@ -2512,19 +2512,45 @@
         },
         "parking": {
           "options": {
-            "carports": "Auvent",
-            "garage_boxes": "Box",
-            "half_on_kerb": "Chevauchement du trottoir",
-            "lane": "Stationnement de rue",
-            "layby": "Bas-côté",
-            "multi-storey": "Sur plusieurs niveaux",
-            "on_kerb": "Sur le trottoir",
-            "rooftop": "Toiture",
-            "sheds": "Abri privé",
-            "shoulder": "Bas-côté",
-            "street_side": "Bordure de voie",
-            "surface": "En surface",
-            "underground": "Souterrain"
+            "carports": {
+              "title": "Auvent"
+            },
+            "garage_boxes": {
+              "title": "Box"
+            },
+            "half_on_kerb": {
+              "title": "Chevauchement du trottoir"
+            },
+            "lane": {
+              "title": "Stationnement de rue"
+            },
+            "layby": {
+              "title": "Bas-côté"
+            },
+            "multi-storey": {
+              "title": "Sur plusieurs niveaux"
+            },
+            "on_kerb": {
+              "title": "Sur le trottoir"
+            },
+            "rooftop": {
+              "title": "Toiture"
+            },
+            "sheds": {
+              "title": "Abri privé"
+            },
+            "shoulder": {
+              "title": "Accotement"
+            },
+            "street_side": {
+              "title": "Bordure de voie"
+            },
+            "surface": {
+              "title": "En surface"
+            },
+            "underground": {
+              "title": "Souterrain"
+            }
           }
         },
         "parking/side/orientation": {

@@ -2704,19 +2704,45 @@
         "parking": {
           "label": "Típus",
           "options": {
-            "carports": "Fedett, oldalról nyitott parkolóhelyek",
-            "garage_boxes": "Garázsok",
-            "half_on_kerb": "Félig a járdaszegélyen",
-            "lane": "Parkolósáv",
-            "layby": "Félreállóöböl",
-            "multi-storey": "Parkolóház",
-            "on_kerb": "Járdaszegélyen",
-            "rooftop": "Tetőn",
-            "sheds": "Kocsiszín",
-            "shoulder": "Leállósáv",
-            "street_side": "Úttest melletti",
-            "surface": "Felszíni",
-            "underground": "Föld alatti"
+            "carports": {
+              "title": "Fedett, oldalról nyitott parkolóhelyek"
+            },
+            "garage_boxes": {
+              "title": "Garázsok"
+            },
+            "half_on_kerb": {
+              "title": "Félig a járdaszegélyen"
+            },
+            "lane": {
+              "title": "Parkolósávon"
+            },
+            "layby": {
+              "title": "Félreállóöböl"
+            },
+            "multi-storey": {
+              "title": "Parkolóház"
+            },
+            "on_kerb": {
+              "title": "Járdaszegélyen"
+            },
+            "rooftop": {
+              "title": "Tetőn"
+            },
+            "sheds": {
+              "title": "Kocsiszín"
+            },
+            "shoulder": {
+              "title": "Leállósávban"
+            },
+            "street_side": {
+              "title": "Úttest mellett"
+            },
+            "surface": {
+              "title": "Felület"
+            },
+            "underground": {
+              "title": "Föld alatti"
+            }
           }
         },
         "parking/side/orientation": {

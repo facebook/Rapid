@@ -463,7 +463,9 @@
         "parking": {
           "label": "రకం",
           "options": {
-            "surface": "ఉపరితలం"
+            "surface": {
+              "title": "ఉపరితలం"
+            }
           }
         },
         "parking/side/parking": {

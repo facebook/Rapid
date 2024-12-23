@@ -2560,18 +2560,42 @@
         "parking": {
           "label": "Врста",
           "options": {
-            "carports": "Складиште аутомобила",
-            "half_on_kerb": "делом на тротоару",
-            "lane": "као трака",
-            "layby": "Одмориште",
-            "multi-storey": "Вишеспратно",
-            "on_kerb": "На ивичњаку",
-            "rooftop": "Кровни простор",
-            "sheds": "Наткривени",
-            "shoulder": "на зауставној траци",
-            "street_side": "Паркиг уз улицу",
-            "surface": "Надземни",
-            "underground": "Подземни"
+            "carports": {
+              "title": "Складиште аутомобила"
+            },
+            "half_on_kerb": {
+              "title": "делом на тротоару"
+            },
+            "lane": {
+              "title": "као трака"
+            },
+            "layby": {
+              "title": "Одмориште"
+            },
+            "multi-storey": {
+              "title": "Вишеспратно"
+            },
+            "on_kerb": {
+              "title": "На ивичњаку"
+            },
+            "rooftop": {
+              "title": "Кровни простор"
+            },
+            "sheds": {
+              "title": "Наткривени"
+            },
+            "shoulder": {
+              "title": "на зауставној траци"
+            },
+            "street_side": {
+              "title": "Паркиг уз улицу"
+            },
+            "surface": {
+              "title": "Подлога"
+            },
+            "underground": {
+              "title": "Подземна"
+            }
           }
         },
         "parking/side/orientation": {

@@ -1028,9 +1028,15 @@
         "parking": {
           "label": "வகை",
           "options": {
-            "sheds": "கொட்டகைகள்",
-            "surface": "மேற்பரப்பு",
-            "underground": "நிலத்தடி"
+            "sheds": {
+              "title": "கொட்டகைகள்"
+            },
+            "surface": {
+              "title": "மேற்பரப்பு"
+            },
+            "underground": {
+              "title": "நிலத்துக்குக் கீழ்"
+            }
           }
         },
         "parking/side/orientation": {

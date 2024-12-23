@@ -658,8 +658,12 @@
         },
         "parking": {
           "options": {
-            "carports": "Biloppstillingsplassar under tak",
-            "rooftop": "Hustak"
+            "carports": {
+              "title": "Biloppstillingsplassar under tak"
+            },
+            "rooftop": {
+              "title": "Hustak"
+            }
           }
         },
         "parking/side/orientation": {

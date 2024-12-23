@@ -2113,16 +2113,36 @@
         "parking": {
           "label": "Speco",
           "options": {
-            "carports": "Tegmentitaj duonbudoj",
-            "garage_boxes": "Parkumeja domo",
-            "lane": "Apudvoja",
-            "layby": "Trafikgolfo (servejo de vojaĝantoj)",
-            "multi-storey": "Pluretaĝa",
-            "rooftop": "Tegmento",
-            "sheds": "Garaĝ-budoj privataj",
-            "street_side": "Apudstrata",
-            "surface": "Supraĵa",
-            "underground": "Subtera"
+            "carports": {
+              "title": "Tegmentitaj duonbudoj"
+            },
+            "garage_boxes": {
+              "title": "Parkumeja domo"
+            },
+            "lane": {
+              "title": "Apudvoja"
+            },
+            "layby": {
+              "title": "Trafikgolfo (servejo de vojaĝantoj)"
+            },
+            "multi-storey": {
+              "title": "Pluretaĝa"
+            },
+            "rooftop": {
+              "title": "Tegmento"
+            },
+            "sheds": {
+              "title": "Garaĝ-budoj privataj"
+            },
+            "street_side": {
+              "title": "Apudstrata"
+            },
+            "surface": {
+              "title": "Pavimo"
+            },
+            "underground": {
+              "title": "Subtera"
+            }
           }
         },
         "parking/side/orientation": {

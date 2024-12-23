@@ -679,7 +679,9 @@
         "parking": {
           "label": "ধরন",
           "options": {
-            "surface": "উপরিভাগ"
+            "surface": {
+              "title": "উপরিভাগ"
+            }
           }
         },
         "parking/side/parking": {

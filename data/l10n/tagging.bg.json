@@ -1369,13 +1369,27 @@
         "parking": {
           "label": "Вид",
           "options": {
-            "carports": "Навеси",
-            "garage_boxes": "Гаражни клетки",
-            "lane": "Паркинг лента",
-            "multi-storey": "Многоетажен",
-            "sheds": "Паянтов",
-            "surface": "Наземен",
-            "underground": "Подземен"
+            "carports": {
+              "title": "Навеси"
+            },
+            "garage_boxes": {
+              "title": "Гаражни клетки"
+            },
+            "lane": {
+              "title": "Паркинг лента"
+            },
+            "multi-storey": {
+              "title": "Многоетажен паркинг"
+            },
+            "sheds": {
+              "title": "Паянтов"
+            },
+            "surface": {
+              "title": "Наземен"
+            },
+            "underground": {
+              "title": "Подземен паркинг"
+            }
           }
         },
         "parking/side/orientation": {

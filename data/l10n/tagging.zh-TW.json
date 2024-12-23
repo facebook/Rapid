@@ -380,6 +380,10 @@
             "warehouse": "倉庫"
           }
         },
+        "building/colour": {
+          "label": "立面顏色",
+          "terms": "立面,正面,前面,側面,顏色"
+        },
         "building/levels": {
           "label": "地上樓層數"
         },
@@ -1458,12 +1462,21 @@
         "parking": {
           "label": "類型",
           "options": {
-            "half_on_kerb": "部份在人行道上",
-            "lane": "路邊停車位",
-            "rooftop": "屋頂",
-            "street_side": "路邊",
-            "surface": "地面",
-            "underground": "地下"
+            "half_on_kerb": {
+              "title": "部份在人行道上"
+            },
+            "lane": {
+              "title": "路邊停車位"
+            },
+            "rooftop": {
+              "title": "屋頂"
+            },
+            "street_side": {
+              "title": "路邊"
+            },
+            "surface": {
+              "title": "地面"
+            }
           }
         },
         "parking/side/orientation": {

@@ -1325,14 +1325,30 @@
         "parking": {
           "label": "Tips",
           "options": {
-            "carports": "Nojumes",
-            "garage_boxes": "Garāžas",
-            "lane": "Ielas mala",
-            "multi-storey": "Vairākstāvu",
-            "rooftop": "Jumta",
-            "sheds": "Sķūnis",
-            "surface": "Virszemes",
-            "underground": "Apakšzemes"
+            "carports": {
+              "title": "Nojumes"
+            },
+            "garage_boxes": {
+              "title": "Garāžas"
+            },
+            "lane": {
+              "title": "Ielas mala"
+            },
+            "multi-storey": {
+              "title": "Vairākstāvu"
+            },
+            "rooftop": {
+              "title": "Jumta"
+            },
+            "sheds": {
+              "title": "Sķūnis"
+            },
+            "surface": {
+              "title": "Virszemes"
+            },
+            "underground": {
+              "title": "Apakšzemes"
+            }
           }
         },
         "parking/side/orientation": {

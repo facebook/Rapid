@@ -2790,19 +2790,50 @@
         "parking": {
           "label": "Тип",
           "options": {
-            "carports": "Навіси",
-            "garage_boxes": "Гаражі",
-            "half_on_kerb": "Одним боком на тротуарі",
-            "lane": "Смуга вздовж дороги",
-            "layby": "Місце відпочинку",
-            "multi-storey": "Багаторівнева",
-            "on_kerb": "На тротуарі",
-            "rooftop": "На даху",
-            "sheds": "Сарайчики",
-            "shoulder": "На узбіччі",
-            "street_side": "Вздовж дороги",
-            "surface": "Наземна",
-            "underground": "Підземна"
+            "carports": {
+              "title": "Навіси"
+            },
+            "garage_boxes": {
+              "title": "Гаражі"
+            },
+            "half_on_kerb": {
+              "description": "Паркування частково на тротуарі.",
+              "title": "Одним боком на тротуарі"
+            },
+            "lane": {
+              "title": "Смуга вздовж дороги"
+            },
+            "layby": {
+              "description": "Паркування на місці відпочинку вздовж дороги.",
+              "title": "Місце відпочинку"
+            },
+            "multi-storey": {
+              "title": "Багаторівнева"
+            },
+            "on_kerb": {
+              "description": "Паркування на тротуарі.",
+              "title": "На тротуарі"
+            },
+            "rooftop": {
+              "title": "На даху"
+            },
+            "sheds": {
+              "title": "Сарайчики"
+            },
+            "shoulder": {
+              "description": "Паркування на узбіччі.",
+              "title": "На узбіччі"
+            },
+            "street_side": {
+              "title": "Вздовж дороги"
+            },
+            "surface": {
+              "title": "Покриття"
+            },
+            "underground": {
+              "description": "Підземна автостоянка.",
+              "title": "Під землею"
+            }
           }
         },
         "parking/side/orientation": {
@@ -6795,6 +6826,9 @@
         "entrance/main": {
           "name": "Головний вхід",
           "terms": "двері,вхід,під’їзд"
+        },
+        "entrance/shop": {
+          "name": "Вхід до магазину"
         },
         "entrance/staircase": {
           "name": "Вхід в підʼїзд",

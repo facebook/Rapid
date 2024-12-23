@@ -2764,19 +2764,45 @@
         "parking": {
           "label": "ประเภท",
           "options": {
-            "carports": "โรงรถ",
-            "garage_boxes": "ตู้โรงรถ",
-            "half_on_kerb": "จอดครึ่งบนขอบถนน",
-            "lane": "ริมถนน",
-            "layby": "จุดพักรถ",
-            "multi-storey": "หลายชั้น",
-            "on_kerb": "จอดบนขอบถนน",
-            "rooftop": "ดาดฟ้า",
-            "sheds": "เพิง",
-            "shoulder": "ไหล่ทาง",
-            "street_side": "ริมถนน",
-            "surface": "ลานจอด",
-            "underground": "ใต้ดิน"
+            "carports": {
+              "title": "โรงรถ"
+            },
+            "garage_boxes": {
+              "title": "ตู้โรงรถ"
+            },
+            "half_on_kerb": {
+              "title": "จอดครึ่งบนขอบถนน"
+            },
+            "lane": {
+              "title": "ริมถนน"
+            },
+            "layby": {
+              "title": "จุดพักรถ"
+            },
+            "multi-storey": {
+              "title": "หลายชั้น"
+            },
+            "on_kerb": {
+              "title": "จอดบนขอบถนน"
+            },
+            "rooftop": {
+              "title": "ดาดฟ้า"
+            },
+            "sheds": {
+              "title": "เพิง"
+            },
+            "shoulder": {
+              "title": "ไหล่ทาง"
+            },
+            "street_side": {
+              "title": "ริมถนน"
+            },
+            "surface": {
+              "title": "ลานจอด"
+            },
+            "underground": {
+              "title": "ใต้ดิน"
+            }
           }
         },
         "parking/side/orientation": {

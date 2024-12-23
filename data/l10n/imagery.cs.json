@@ -398,14 +398,24 @@
         },
         "name": "Hlivice: Budovy"
       },
+      "LSA-ALKIS-CP": {
+        "description": "Vektorový záznam parcel z oficiálního katastru nemovitostí.",
+        "name": "© GeoBasis-DE/LVermGeo LSA, Katastrální parcely ALKIS"
+      },
       "LSA-ALKIS_BU": {
-        "description": "Tvar budov v Sasku-Anhaltsku"
+        "description": "Tvar budov v Sasku-Anhaltsku",
+        "name": "© GeoBasis-DE/LVermGeo LSA, Obrysy budov ALKIS"
+      },
+      "LSA-ATKIS-HYN": {
+        "description": "Záznam vodovodních sítí (přesnost se může lišit od skutečnosti, vždy uvažujte v souvislosti s ortofotem)",
+        "name": "© GeoBasis-DE/LVermGeo LSA, Vodovodní síť ATKIS"
       },
       "LSA-DOP20": {
         "description": "Letecký snímek spolkové země Sasko-Anhaltsko, rozlišení 20 cm"
       },
       "LSA-DVG": {
-        "description": "Vektorový záznam administrativních hranic. Jsou uvedeny hranice spolkové země, okresu, obce a části obce."
+        "description": "Vektorový záznam administrativních hranic. Jsou uvedeny hranice spolkové země, okresu, obce a části obce.",
+        "name": "© GeoBasis-DE/LVermGeo LSA, Digitální administrativní hranice"
       },
       "LocalAuthorities_RightsOfWay": {
         "attribution": {

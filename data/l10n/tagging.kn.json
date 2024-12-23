@@ -868,10 +868,18 @@
         "parking": {
           "label": "ವಿಧ",
           "options": {
-            "multi-storey": "ಬಹುಮಟ್ಟದ",
-            "sheds": "ತಂಗುದಾಣ",
-            "surface": "ಮೇಲ್ಮೈ",
-            "underground": "‍‍‍ನೆಲದಡಿ"
+            "multi-storey": {
+              "title": "ಬಹುಮಟ್ಟದ"
+            },
+            "sheds": {
+              "title": "ತಂಗುದಾಣ"
+            },
+            "surface": {
+              "title": "ಮೇಲ್ಮೈ"
+            },
+            "underground": {
+              "title": "‍‍‍ನೆಲದಡಿ"
+            }
           }
         },
         "parking/side/orientation": {

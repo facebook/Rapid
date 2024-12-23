@@ -2745,19 +2745,42 @@
         "parking": {
           "label": "유형",
           "options": {
-            "carports": "간이 차고",
-            "garage_boxes": "차고 상자",
-            "half_on_kerb": "연석에 걸친 주차",
-            "lane": "가로변 차로",
-            "layby": "임시 주차장 / 레이바이",
-            "multi-storey": "다층",
-            "on_kerb": "보도 주차",
-            "rooftop": "옥상 주차장",
-            "sheds": "개인 차고",
-            "shoulder": "갓길 주차",
-            "street_side": "갓길 주차장",
-            "surface": "지상",
-            "underground": "지하"
+            "carports": {
+              "title": "간이 차고"
+            },
+            "garage_boxes": {
+              "title": "차고 상자"
+            },
+            "half_on_kerb": {
+              "title": "연석에 걸친 주차"
+            },
+            "lane": {
+              "title": "가로변 차로"
+            },
+            "layby": {
+              "title": "임시 주차장 / 레이바이"
+            },
+            "multi-storey": {
+              "title": "다층"
+            },
+            "on_kerb": {
+              "title": "보도 주차"
+            },
+            "rooftop": {
+              "title": "옥상 주차장"
+            },
+            "sheds": {
+              "title": "개인 차고"
+            },
+            "shoulder": {
+              "title": "갓길 주차"
+            },
+            "street_side": {
+              "title": "갓길 주차장"
+            },
+            "underground": {
+              "title": "지하식 소화전"
+            }
           }
         },
         "parking/side/orientation": {

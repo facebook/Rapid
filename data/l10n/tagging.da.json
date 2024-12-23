@@ -2224,19 +2224,45 @@
         },
         "parking": {
           "options": {
-            "carports": "Carporte",
-            "garage_boxes": "Garagebokse",
-            "half_on_kerb": "Halvt på fortovet",
-            "lane": "Vejsidespor",
-            "layby": "Mindre rasteplads",
-            "multi-storey": "Multiniveau",
-            "on_kerb": "På fortovet",
-            "rooftop": "Tag",
-            "sheds": "Skure",
-            "shoulder": "Nødspor",
-            "street_side": "Kantsten",
-            "surface": "Overflade",
-            "underground": "Underjordisk"
+            "carports": {
+              "title": "Carporte"
+            },
+            "garage_boxes": {
+              "title": "Garagebokse"
+            },
+            "half_on_kerb": {
+              "title": "Halvt på fortovet"
+            },
+            "lane": {
+              "title": "Vejsidespor"
+            },
+            "layby": {
+              "title": "Mindre rasteplads"
+            },
+            "multi-storey": {
+              "title": "Multiniveau"
+            },
+            "on_kerb": {
+              "title": "På fortovet"
+            },
+            "rooftop": {
+              "title": "Tag"
+            },
+            "sheds": {
+              "title": "Skure"
+            },
+            "shoulder": {
+              "title": "Nødspor"
+            },
+            "street_side": {
+              "title": "Kantsten"
+            },
+            "surface": {
+              "title": "Overflade"
+            },
+            "underground": {
+              "title": "Underjordisk"
+            }
           }
         },
         "parking/side/orientation": {

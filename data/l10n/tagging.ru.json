@@ -2657,18 +2657,42 @@
         "parking": {
           "label": "Тип",
           "options": {
-            "carports": "Навес",
-            "garage_boxes": "Одноярусные гаражи",
-            "half_on_kerb": "Частично на тротуаре",
-            "lane": "Уличная парковка",
-            "multi-storey": "Многоярусная",
-            "on_kerb": "На тротуаре",
-            "rooftop": "На крыше",
-            "sheds": "Козырёк",
-            "shoulder": "На обочине",
-            "street_side": "Придорожная",
-            "surface": "Наземная",
-            "underground": "Подземная"
+            "carports": {
+              "title": "Навес"
+            },
+            "garage_boxes": {
+              "title": "Одноярусные гаражи"
+            },
+            "half_on_kerb": {
+              "title": "Частично на тротуаре"
+            },
+            "lane": {
+              "title": "На полосе"
+            },
+            "multi-storey": {
+              "title": "Многоуровневая"
+            },
+            "on_kerb": {
+              "title": "На тротуаре"
+            },
+            "rooftop": {
+              "title": "На крыше"
+            },
+            "sheds": {
+              "title": "Козырёк"
+            },
+            "shoulder": {
+              "title": "На обочине"
+            },
+            "street_side": {
+              "title": "В кармане"
+            },
+            "surface": {
+              "title": "Дорожное покрытие"
+            },
+            "underground": {
+              "title": "Подземный"
+            }
           }
         },
         "parking/side/orientation": {

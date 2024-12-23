@@ -1748,14 +1748,30 @@
         "parking": {
           "label": "Tipo",
           "options": {
-            "carports": "Cocheiras",
-            "garage_boxes": "Garaxe en cubículos",
-            "lane": "Carril na estrada",
-            "multi-storey": "Multinivel",
-            "rooftop": "Sobre do edificio",
-            "sheds": "Pendellos",
-            "surface": "Superficie",
-            "underground": "Subterráneo"
+            "carports": {
+              "title": "Cocheiras"
+            },
+            "garage_boxes": {
+              "title": "Garaxe en cubículos"
+            },
+            "lane": {
+              "title": "Carril na estrada"
+            },
+            "multi-storey": {
+              "title": "Varios niveis"
+            },
+            "rooftop": {
+              "title": "Sobre do edificio"
+            },
+            "sheds": {
+              "title": "Pendellos"
+            },
+            "surface": {
+              "title": "Superficie"
+            },
+            "underground": {
+              "title": "Subterráneo"
+            }
           }
         },
         "parking/side/orientation": {

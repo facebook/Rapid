@@ -842,10 +842,18 @@
         "parking": {
           "label": "Tipe",
           "options": {
-            "garage_boxes": "Vulstasies",
-            "rooftop": "Dak",
-            "sheds": "Skure",
-            "surface": "Oppervlakte"
+            "garage_boxes": {
+              "title": "Vulstasies"
+            },
+            "rooftop": {
+              "title": "Dak"
+            },
+            "sheds": {
+              "title": "Skure"
+            },
+            "surface": {
+              "title": "Oppervlakte"
+            }
           }
         },
         "parking/side/parking": {

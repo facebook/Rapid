@@ -1645,14 +1645,30 @@
         "parking": {
           "label": "Tegund",
           "options": {
-            "carports": "Bílskýli",
-            "garage_boxes": "Bílskúrar",
-            "lane": "Við hlið vegar",
-            "multi-storey": "Margra hæða",
-            "rooftop": "Þak",
-            "sheds": "Skúrar",
-            "surface": "Yfirborð",
-            "underground": "Neðanjarðar"
+            "carports": {
+              "title": "Bílskýli"
+            },
+            "garage_boxes": {
+              "title": "Bílskúrar"
+            },
+            "lane": {
+              "title": "Við hlið vegar"
+            },
+            "multi-storey": {
+              "title": "Margra hæða"
+            },
+            "rooftop": {
+              "title": "Þak"
+            },
+            "sheds": {
+              "title": "Skúrar"
+            },
+            "surface": {
+              "title": "Yfirborð"
+            },
+            "underground": {
+              "title": "Neðanjarðar"
+            }
           }
         },
         "parking/side/orientation": {

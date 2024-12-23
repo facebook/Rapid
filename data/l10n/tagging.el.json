@@ -2645,19 +2645,45 @@
         "parking": {
           "label": "Είδος",
           "options": {
-            "carports": "Υπόστεγο αυτοκινήτου",
-            "garage_boxes": "Τετράγωνο Παρκαρίσματος",
-            "half_on_kerb": "Μισό Στο Κράσπεδο",
-            "lane": "Πλευρική Λωρίδα",
-            "layby": "Χώρος στάθμευσης σε δρόμο για στάση/ξεκούραση",
-            "multi-storey": "Πολυεπίπεδο",
-            "on_kerb": "Στο Κράσπεδο",
-            "rooftop": "Ταράτσα",
-            "sheds": "Υπόστεγα",
-            "shoulder": "Λ.Ε.Α.",
-            "street_side": "Παραπλεύρως του δρόμου",
-            "surface": "Επίγειο",
-            "underground": "Υπόγειο"
+            "carports": {
+              "title": "Υπόστεγο αυτοκινήτου"
+            },
+            "garage_boxes": {
+              "title": "Τετράγωνο Παρκαρίσματος"
+            },
+            "half_on_kerb": {
+              "title": "Μισό Στο Κράσπεδο"
+            },
+            "lane": {
+              "title": "Πλευρική Λωρίδα"
+            },
+            "layby": {
+              "title": "Χώρος στάθμευσης σε δρόμο για στάση/ξεκούραση"
+            },
+            "multi-storey": {
+              "title": "Πολυεπίπεδο"
+            },
+            "on_kerb": {
+              "title": "Στο Κράσπεδο"
+            },
+            "rooftop": {
+              "title": "Ταράτσα"
+            },
+            "sheds": {
+              "title": "Υπόστεγα"
+            },
+            "shoulder": {
+              "title": "Λ.Ε.Α."
+            },
+            "street_side": {
+              "title": "Παραπλεύρως του δρόμου"
+            },
+            "surface": {
+              "title": "Υλικό Στρώσης"
+            },
+            "underground": {
+              "title": "Υπόγειο"
+            }
           }
         },
         "parking/side/orientation": {
@@ -3173,7 +3199,8 @@
             "demanding_mountain_hiking": "Τ3: Απαιτητική Ορειβασία",
             "difficult_alpine_hiking": "Τ6: Δύσκολη Αλπική Ανάβαση",
             "hiking": "Τ1: Ορεινή Ανάβαση",
-            "mountain_hiking": "Τ2: Ορειβασία"
+            "mountain_hiking": "Τ2: Ορειβασία",
+            "strolling": "Περίπατος"
           },
           "placeholder": "Ορειβασία, Αλπική Πεζοπορία...",
           "terms": "Δυσκολία Πεζοπορίας, Δυσκολία Πεζοπορικής Διαδρομής"
@@ -6015,6 +6042,10 @@
         "entrance/main": {
           "name": "Κύρια Είσοδος"
         },
+        "entrance/shop": {
+          "name": "Είσοδος καταστήματος",
+          "terms": "Είσοδος μαγαζιού"
+        },
         "entrance/staircase": {
           "name": "Είσοδος Με Σκαλιά",
           "terms": "σκαλιά, σκαλοπάτια"
@@ -7387,6 +7418,10 @@
         "natural": {
           "name": "Στοιχείο Φύση"
         },
+        "natural/arch": {
+          "name": "Φυσική αψίδα",
+          "terms": "Αψίδα"
+        },
         "natural/bare_rock": {
           "name": "Γυμνός Βράχος",
           "terms": "βράχος"
@@ -8597,6 +8632,10 @@
         "shop/gift": {
           "name": "Κατάστημα Δώρων",
           "terms": "Είδη δώρων"
+        },
+        "shop/gold_buyer": {
+          "name": "Αγοραστής χρυσού",
+          "terms": "Αγορά χρυσού"
         },
         "shop/greengrocer": {
           "name": "Οπωροπωλείο",

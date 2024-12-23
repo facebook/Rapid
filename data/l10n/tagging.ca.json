@@ -2533,19 +2533,45 @@
         "parking": {
           "label": "Tipus",
           "options": {
-            "carports": "Aixoplucs",
-            "garage_boxes": "Boxs",
-            "half_on_kerb": "Parcialment en la vorera",
-            "lane": "Adossat a la carretera",
-            "layby": "Apartadero de descans",
-            "multi-storey": "Diversos nivells",
-            "on_kerb": "A la vorera",
-            "rooftop": "Terrat",
-            "sheds": "Garatges",
-            "shoulder": "Voral",
-            "street_side": "Adjacent a la carretera",
-            "surface": "Superfície",
-            "underground": "Subterrani"
+            "carports": {
+              "title": "Aixoplucs"
+            },
+            "garage_boxes": {
+              "title": "Boxs"
+            },
+            "half_on_kerb": {
+              "title": "Parcialment en la vorera"
+            },
+            "lane": {
+              "title": "Adossat a la carretera"
+            },
+            "layby": {
+              "title": "Apartadero de descans"
+            },
+            "multi-storey": {
+              "title": "Diversos nivells"
+            },
+            "on_kerb": {
+              "title": "A la vorera"
+            },
+            "rooftop": {
+              "title": "Terrat"
+            },
+            "sheds": {
+              "title": "Garatges"
+            },
+            "shoulder": {
+              "title": "Voral"
+            },
+            "street_side": {
+              "title": "Adjacent a la carretera"
+            },
+            "surface": {
+              "title": "Superfície"
+            },
+            "underground": {
+              "title": "Subterrani"
+            }
           }
         },
         "parking/side/orientation": {

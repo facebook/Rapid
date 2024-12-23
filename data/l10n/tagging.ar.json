@@ -2288,17 +2288,39 @@
         "parking": {
           "label": "النوع",
           "options": {
-            "carports": "مظلات سيارات",
-            "garage_boxes": "صناديق المرآب",
-            "lane": "على جانب الطريق",
-            "layby": "جانب الطريق",
-            "multi-storey": "متعدد الطوابق",
-            "rooftop": "على سطح بناية",
-            "sheds": "مظلله",
-            "shoulder": "كتف الطريق",
-            "street_side": "جانب الشارع",
-            "surface": "أرضية",
-            "underground": "تحت الأرض"
+            "carports": {
+              "title": "مظلات سيارات"
+            },
+            "garage_boxes": {
+              "title": "صناديق المرآب"
+            },
+            "lane": {
+              "title": "على جانب الطريق"
+            },
+            "layby": {
+              "title": "جانب الطريق"
+            },
+            "multi-storey": {
+              "title": "متعدد الطوابق"
+            },
+            "rooftop": {
+              "title": "على سطح بناية"
+            },
+            "sheds": {
+              "title": "مظلله"
+            },
+            "shoulder": {
+              "title": "كتف الطريق"
+            },
+            "street_side": {
+              "title": "جانب الشارع"
+            },
+            "surface": {
+              "title": "السطح"
+            },
+            "underground": {
+              "title": "تحت الأرض"
+            }
           }
         },
         "parking/side/orientation": {

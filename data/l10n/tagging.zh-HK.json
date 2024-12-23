@@ -1278,14 +1278,30 @@
         "parking": {
           "label": "種類",
           "options": {
-            "carports": "車位",
-            "garage_boxes": "車庫箱",
-            "lane": "路旁",
-            "multi-storey": "多層",
-            "sheds": "有蓋",
-            "street_side": "路邊",
-            "surface": "地面",
-            "underground": "地下"
+            "carports": {
+              "title": "車位"
+            },
+            "garage_boxes": {
+              "title": "車庫箱"
+            },
+            "lane": {
+              "title": "路旁"
+            },
+            "multi-storey": {
+              "title": "多層"
+            },
+            "sheds": {
+              "title": "有蓋"
+            },
+            "street_side": {
+              "title": "路邊"
+            },
+            "surface": {
+              "title": "地面"
+            },
+            "underground": {
+              "title": "地下"
+            }
           }
         },
         "parking/side/orientation": {

@@ -2740,19 +2740,58 @@
         "parking": {
           "label": "種類",
           "options": {
-            "carports": "カーポート",
-            "garage_boxes": "箱型ガレージ",
-            "half_on_kerb": "片輪乗り上げ",
-            "lane": "路側帯",
-            "layby": "レイバイ（待避所）",
-            "multi-storey": "立体",
-            "on_kerb": "歩道縁石上",
-            "rooftop": "屋上",
-            "sheds": "小屋",
-            "shoulder": "路肩",
-            "street_side": "道路脇",
-            "surface": "地面",
-            "underground": "地下"
+            "carports": {
+              "description": "車両を限定的ながら風雨から保護するための構造物で、普通は壁がありません。",
+              "title": "カーポート"
+            },
+            "garage_boxes": {
+              "description": "それぞれ1台の自動車を格納できる複数の格納庫からなるガレージです。",
+              "title": "箱型ガレージ"
+            },
+            "half_on_kerb": {
+              "description": "歩道縁石へ半分乗り上げての駐車。",
+              "title": "片輪乗り上げ"
+            },
+            "lane": {
+              "description": "道路上にある駐車施設（容易に通行用レーンに転換できるようなもの）。",
+              "title": "駐車帯"
+            },
+            "layby": {
+              "description": "道路脇に設けられた休憩用の駐車施設。",
+              "title": "レイバイ（待避所）"
+            },
+            "multi-storey": {
+              "description": "建造物内にある2階建て以上の駐車デッキ。",
+              "title": "立体"
+            },
+            "on_kerb": {
+              "description": "歩道縁石上への駐車。",
+              "title": "歩道縁石上"
+            },
+            "rooftop": {
+              "description": "建物の屋上にある駐車デッキ。",
+              "title": "屋上"
+            },
+            "sheds": {
+              "description": "個人用の車両格納庫。",
+              "title": "小屋"
+            },
+            "shoulder": {
+              "description": "路肩への駐車。",
+              "title": "路肩"
+            },
+            "street_side": {
+              "description": "（道路上ではなく）道路のすぐ脇に設けられた駐車場。",
+              "title": "道路脇"
+            },
+            "surface": {
+              "description": "地面にある駐車場。 ",
+              "title": "表面の材質"
+            },
+            "underground": {
+              "description": "地下駐車場。",
+              "title": "地下式"
+            }
           }
         },
         "parking/side/orientation": {
@@ -6713,6 +6752,10 @@
           "name": "出入口 (正面)",
           "terms": "正面玄関, 表玄関, 表口, ドア, 正面入口, 出入口"
         },
+        "entrance/shop": {
+          "name": "出入口（店舗）",
+          "terms": "店舗入口, ドア, 扉, 入口"
+        },
         "entrance/staircase": {
           "name": "出入口（階段）",
           "terms": "階段の入口, 階段, 出入口, 出入り口, 出口, 入口"
@@ -8510,6 +8553,10 @@
         "natural": {
           "name": "自然関連"
         },
+        "natural/arch": {
+          "name": "天然橋",
+          "terms": "岩門, 石門"
+        },
         "natural/bare_rock": {
           "name": "岩場",
           "terms": "岩場"
@@ -10014,6 +10061,10 @@
         "shop/gift": {
           "name": "ギフト店",
           "terms": "ギフト店, ギフト用品店, 土産店, お土産, 贈答品, 店舗, お店, ギフト, プレゼント"
+        },
+        "shop/gold_buyer": {
+          "name": "金買取店",
+          "terms": "貴金属買取店"
         },
         "shop/greengrocer": {
           "name": "青果店",

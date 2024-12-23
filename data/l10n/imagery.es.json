@@ -394,14 +394,24 @@
         },
         "name": "Gliwice: Edificios"
       },
+      "LSA-ALKIS-CP": {
+        "description": "Registro vectorial de parcelas del catastro inmobiliario oficial.",
+        "name": "© GeoBasis-DE/LVermGeo LSA, parcelas del Catastro ALKIS."
+      },
       "LSA-ALKIS_BU": {
-        "description": "Forma de edificios en sajonia-anhalt"
+        "description": "Forma de edificios en sajonia-anhalt",
+        "name": "© GeoBasis-DE/LVermGeo LSA, contornos de edificios del Catastro ALKIS."
+      },
+      "LSA-ATKIS-HYN": {
+        "description": "Registro de redes hídricas (puede variar en precisión respecto a la realidad; siempre considerar en conjunto con la ortofoto).",
+        "name": "© GeoBasis-DE/LVermGeo LSA, red hídrica de ATKIS."
       },
       "LSA-DOP20": {
         "description": "imagen aérea del estado Sajonia-Anhalt, resolución 20 cm"
       },
       "LSA-DVG": {
-        "description": "Registro vectorial de límites administrativos. Se dan los límites del estado federal, distrito, municipio y partes del municipio."
+        "description": "Registro vectorial de límites administrativos. Se dan los límites del estado federal, distrito, municipio y partes del municipio.",
+        "name": "© GeoBasis-DE/LVermGeo LSA, límites administrativos digitales."
       },
       "LocalAuthorities_RightsOfWay": {
         "attribution": {

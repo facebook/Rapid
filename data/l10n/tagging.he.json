@@ -2508,18 +2508,42 @@
         "parking": {
           "label": "סוג",
           "options": {
-            "carports": "חניות מקורות",
-            "garage_boxes": "מוסך קופסה",
-            "half_on_kerb": "חצי על המדרכה",
-            "lane": "לצד הכביש",
-            "multi-storey": "רב־קומתי",
-            "on_kerb": "על המדרכה",
-            "rooftop": "גג",
-            "sheds": "מסוכך",
-            "shoulder": "בשוליים",
-            "street_side": "לצד-הכביש",
-            "surface": "משטח",
-            "underground": "תת־קרקעי"
+            "carports": {
+              "title": "חניות מקורות"
+            },
+            "garage_boxes": {
+              "title": "מוסך קופסה"
+            },
+            "half_on_kerb": {
+              "title": "חצי על המדרכה"
+            },
+            "lane": {
+              "title": "לצד הכביש"
+            },
+            "multi-storey": {
+              "title": "רב קומתי"
+            },
+            "on_kerb": {
+              "title": "על המדרכה"
+            },
+            "rooftop": {
+              "title": "גג"
+            },
+            "sheds": {
+              "title": "מסוכך"
+            },
+            "shoulder": {
+              "title": "בשוליים"
+            },
+            "street_side": {
+              "title": "לצידי-הכביש"
+            },
+            "surface": {
+              "title": "משטח"
+            },
+            "underground": {
+              "title": "תת־קרקעי"
+            }
           }
         },
         "parking/side/orientation": {

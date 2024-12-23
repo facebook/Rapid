@@ -1319,10 +1319,18 @@
         "parking": {
           "label": "Mota",
           "options": {
-            "carports": "Garaje",
-            "rooftop": "Teilatuan",
-            "sheds": "Estalgune",
-            "underground": "Lur azpiko"
+            "carports": {
+              "title": "Garaje"
+            },
+            "rooftop": {
+              "title": "Teilatuan"
+            },
+            "sheds": {
+              "title": "Estalgune"
+            },
+            "underground": {
+              "title": "Lur azpiko"
+            }
           }
         },
         "parking/side/orientation": {

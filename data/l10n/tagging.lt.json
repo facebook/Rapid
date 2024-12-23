@@ -1259,13 +1259,27 @@
         "parking": {
           "label": "Tipas",
           "options": {
-            "carports": "Stoginės",
-            "garage_boxes": "Garažai",
-            "lane": "Kelkraštis",
-            "multi-storey": "Daugiaaukštis",
-            "sheds": "Pašiūrės",
-            "surface": "Danga",
-            "underground": "Požeminis"
+            "carports": {
+              "title": "Stoginės"
+            },
+            "garage_boxes": {
+              "title": "Garažai"
+            },
+            "lane": {
+              "title": "Kelkraštis"
+            },
+            "multi-storey": {
+              "title": "Daugiaaukštis"
+            },
+            "sheds": {
+              "title": "Pašiūrės"
+            },
+            "surface": {
+              "title": "Danga"
+            },
+            "underground": {
+              "title": "Požeminis"
+            }
           }
         },
         "parking/side/orientation": {

@@ -2052,15 +2052,33 @@
         },
         "parking": {
           "options": {
-            "carports": "Bilbåser",
-            "garage_boxes": "Garasjekasser ",
-            "lane": "Parallell gateparkering",
-            "multi-storey": "Fler-etasjes",
-            "rooftop": "Tak",
-            "sheds": "Skur/utebod",
-            "street_side": "Gateparkering",
-            "surface": "Overflate",
-            "underground": "Under overflaten"
+            "carports": {
+              "title": "Bilbåser"
+            },
+            "garage_boxes": {
+              "title": "Garasjekasser "
+            },
+            "lane": {
+              "title": "Parallell gateparkering"
+            },
+            "multi-storey": {
+              "title": "Fleretasje parking"
+            },
+            "rooftop": {
+              "title": "Tak"
+            },
+            "sheds": {
+              "title": "Skur/utebod"
+            },
+            "street_side": {
+              "title": "Gateparkering"
+            },
+            "surface": {
+              "title": "Overflate"
+            },
+            "underground": {
+              "title": "Underjordisk"
+            }
           }
         },
         "parking/side/orientation": {
