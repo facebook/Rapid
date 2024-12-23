@@ -1,0 +1,19 @@
+{
+  "_meta": {
+    "version": "2.5.0",
+    "generated": "2024-12-23T18:54:02.690Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/imagery.pa.json",
+    "hash": "44d4d4bd4ebfdd017ceeea294d892982"
+  },
+  "pa": {
+    "imagery": {
+      "Bing": {
+        "name": "بنگ ہوائی نقشے"
+      },
+      "EsriWorldImagery": {
+        "description": "ایسری دھرتی تصویراں",
+        "name": "ایسری دھرتی تصویراں"
+      }
+    }
+  }
+}

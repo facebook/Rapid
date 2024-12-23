@@ -1,0 +1,13 @@
+{
+  "_meta": {
+    "version": "2.5.0",
+    "generated": "2024-12-23T18:54:02.764Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.pa-PK.json",
+    "hash": "bbae0be8bcf588331566c8f963ae3720"
+  },
+  "pa-PK": {
+    "_communities": {
+      "geolibres": "جیو لیبر "
+    }
+  }
+}

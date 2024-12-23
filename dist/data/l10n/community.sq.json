@@ -1,0 +1,25 @@
+{
+  "_meta": {
+    "version": "2.5.0",
+    "generated": "2024-12-23T18:54:02.762Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.sq.json",
+    "hash": "27b2ce4c8a054f9331122a8f17d64eed"
+  },
+  "sq": {
+    "cape-coast-youthmappers": {
+      "description": "Na ndiqni në Twitter: {url}"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "description": "Na ndiqni në Twitter: {url}"
+    },
+    "OSM-India-facebook": {
+      "description": "Përmirësoni OpenStreetMap në Indi"
+    },
+    "OSMF": {
+      "name": "Fondacioni OpenStreetMap"
+    },
+    "PHXGeo-twitter": {
+      "description": "Na ndiqni në Twitter: {url}"
+    }
+  }
+}
