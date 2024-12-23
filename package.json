@@ -25,9 +25,7 @@
     "build:bundle:modern:dev": "dotenvx run --quiet -- node config/esbuild.config.modern-dev.js",
     "clean": "shx rm -f dist/esbuild.json dist/*.js dist/*.map dist/*.css dist/img/*-sprite.svg",
     "dist": "run-p dist:**",
-    "dist:bundle:legacy:dev": "dotenvx run --quiet -- node config/esbuild.config.legacy-dev.js",
     "dist:bundle:modern:prod": "dotenvx run --quiet -- node config/esbuild.config.modern-prod.js",
-    "dist:bundle:legacy:prod": "dotenvx run --quiet -- node config/esbuild.config.legacy-prod.js",
     "dist:svg:community": "svg-sprite --symbol --symbol-dest . --shape-id-generator \"community-%s\" --symbol-sprite dist/img/community-sprite.svg node_modules/osm-community-index/dist/img/*.svg",
     "dist:svg:fa": "svg-sprite --symbol --symbol-dest . --symbol-sprite dist/img/fa-sprite.svg svg/fontawesome/*.svg",
     "dist:svg:maki": "svg-sprite --symbol --symbol-dest . --shape-id-generator \"maki-%s\" --symbol-sprite dist/img/maki-sprite.svg node_modules/@mapbox/maki/icons/*.svg",
@@ -36,6 +34,7 @@
     "dist:svg:rapid": "svg-sprite --symbol --symbol-dest . --shape-id-generator \"rapid-%s\" --symbol-sprite dist/img/rapid-sprite.svg \"svg/rapid-sprite/**/*.svg\"",
     "dist:svg:roentgen": "svg-sprite --symbol --symbol-dest . --shape-id-generator \"roentgen-%s\" --symbol-sprite dist/img/roentgen-sprite.svg svg/roentgen/*.svg",
     "dist:svg:temaki": "svg-sprite --symbol --symbol-dest . --shape-id-generator \"temaki-%s\" --symbol-sprite dist/img/temaki-sprite.svg node_modules/@rapideditor/temaki/icons/*.svg",
+    "dist:svg:christmas": "shx cp holidays/* dist/img",
     "docs": "jsdoc -c webdoc.conf.json -r",
     "imagery": "dotenvx run --quiet -- node scripts/update_imagery.js",
     "lint": "eslint modules test",
@@ -55,6 +54,7 @@
     "translations": "dotenvx run --quiet -- node scripts/tx_pull.js"
   },
   "dependencies": {
+    "@barvynkoa/particle-emitter": "^0.0.1",
     "@mapbox/geojson-area": "^0.2.2",
     "@mapbox/geojson-rewind": "^0.5.2",
     "@mapbox/polylabel": "1.0.2",
