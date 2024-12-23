@@ -37,10 +37,9 @@ export class EsriService extends AbstractSystem {
 
     this._tiler = new Tiler().zoomRange(TILEZOOM);
     this._datasets = {};
-    this._gotDatasets = false;
 
-    // Ensure methods used as callbacks always have `this` bound correctly.
-    this._parseDataset = this._parseDataset.bind(this);
+    this._initPromise = null;
+    this._datasetsPromise = null;
   }
 
 
@@ -50,8 +49,10 @@ export class EsriService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed initialization
    */
   initAsync() {
-    return this.resetAsync()
-      .then(() => this.loadDatasetsAsync());
+    if (this._initPromise) return this._initPromise;
+
+    return this._initPromise = this.resetAsync()
+      .then(() => this._loadDatasetsAsync());
   }
 
 
@@ -93,7 +94,7 @@ export class EsriService extends AbstractSystem {
    */
   getAvailableDatasets() {
     // Convert the internal datasets into "Rapid" datasets for the catalog.
-    // We expect them to be all loaded now because `loadDatasetsAsync` is called by `initAsync`
+    // We expect them to be all loaded now because `_loadDatasetsAsync` is called by `initAsync`
     //  and `getAvailableDatasets` is called by RapidSystem's `startAsync`.
     return Object.values(this._datasets).map(d => {
       // gather categories
@@ -124,6 +125,7 @@ export class EsriService extends AbstractSystem {
         dataset.conflated = true;
         dataset.service = 'mapwithai';
       }
+
       return dataset;
     });
   }
@@ -141,6 +143,18 @@ export class EsriService extends AbstractSystem {
 
     const extent = this.context.viewport.visibleExtent();
     return ds.tree.intersects(extent, ds.graph);
+  }
+
+
+  /**
+   * graph
+   * Returns the graph for the given datasetID
+   * @param   {string}  datasetID - datasetID to get data for
+   * @return  {Graph?}  The graph holding the data, or `undefined` if not found
+   */
+  graph(datasetID)  {
+    const ds = this._datasets[datasetID];
+    return ds?.graph;
   }
 
 
@@ -166,14 +180,22 @@ export class EsriService extends AbstractSystem {
    * loadTiles
    * Schedule any data requests needed to cover the current map view
    * @param   {string}  datasetID - datasetID to load tiles for
+   * @throws  Will throw if the datasetID is not found
    */
   loadTiles(datasetID) {
     if (this._paused) return;
 
-    // `loadDatasetsAsync` and `loadLayerAsync` are asynchronous,
-    // so ensure both have completed before we start requesting tiles.
     const ds = this._datasets[datasetID];
-    if (!ds || !ds.layer) return;
+    if (!ds)  {
+      throw new Error(`Unknown datasetID: ${datasetID}`);
+    }
+
+    // If we haven't loaded this dataset's schema information, do that first, then retry.
+    if (!ds.layer) {
+      this._loadDatasetLayerAsync(ds)
+        .then(() => this.loadTiles(datasetID));
+      return;
+    }
 
     const cache = ds.cache;
     const locations = this.context.systems.locations;
@@ -210,52 +232,76 @@ export class EsriService extends AbstractSystem {
   }
 
 
-  graph(datasetID)  {
-    const ds = this._datasets[datasetID];
-    return ds?.graph;
+  /**
+   * _loadDatasetsAsync
+   * Loads all the available datasets from the Esri server
+   * @return {Promise} Promise resolved when all pages of data have been loaded
+   */
+  _loadDatasetsAsync() {
+    if (this._datasetsPromise) return this._datasetsPromise;
+
+    return this._datasetsPromise = new Promise((resolve, reject) => {
+      // recursively fetch all pages of data
+      const fetchMore = (page) => {
+        fetch(this._searchURL(page))
+          .then(utilFetchResponse)
+          .then(json => {
+            for (const ds of json.results ?? []) {
+              this._parseDataset(ds);
+            }
+
+            if (json.nextStart > 0) {
+              fetchMore(json.nextStart);  // fetch next page
+            } else {
+              resolve(this._datasets);
+            }
+          })
+          .catch(e => {
+            reject(e);
+          });
+      };
+
+      fetchMore(1);
+    });
   }
 
 
-  loadDatasetsAsync() {
-    if (this._gotDatasets) {
-      return Promise.resolve(this._datasets);
+  /**
+   * _parseDataset
+   * Add this dataset to the list of available datasets
+   * @param  {Object}  ds - the dataset metadata
+   */
+  _parseDataset(ds) {
+    if (this._datasets[ds.id]) return;  // unless we've seen it already
 
-    } else {
-      const thiz = this;
-      return new Promise((resolve, reject) => {
-        let start = 1;
-        fetchMore(start);
+    this._datasets[ds.id] = ds;
+    ds.graph = new Graph();
+    ds.tree = new Tree(ds.graph);
+    ds.cache = { inflight: {}, loaded: {}, seen: {} };
+    ds.lastv = null;
+    ds.layer = null;   // the schema info will live here
 
-        function fetchMore(start) {
-          fetch(thiz._searchURL(start))
-            .then(utilFetchResponse)
-            .then(json => {
-              for (const ds of json.results ?? []) {
-                thiz._parseDataset(ds);
-              }
-
-              if (json.nextStart > 0) {
-                fetchMore(json.nextStart);  // fetch next page
-              } else {
-                thiz._gotDatasets = true;   // no more pages
-                resolve(thiz._datasets);
-              }
-            })
-            .catch(e => {
-              thiz._gotDatasets = false;
-              reject(e);
-            });
-        }
-      });
-    }
+    // Cleanup the `licenseInfo` field by removing styles  (not used currently)
+    const license = select(document.createElement('div'));
+    license.html(ds.licenseInfo);       // set innerHtml
+    license.selectAll('*')
+      .attr('style', null)
+      .attr('size', null);
+    ds.license_html = license.html();   // get innerHtml
   }
 
 
-  loadLayerAsync(datasetID) {
-    let ds = this._datasets[datasetID];
+  /**
+   * _loadDatasetLayerAsync
+   * Each dataset has a schema (aka "tagmap") which is available behind the "layerUrl".
+   * Before we can use the dataset we need to load this information.
+   * @param  {Object}  ds - the dataset to load the schema informarion
+   * @return {Promise} Promise resolved with the layer data when the dataset schema has been loaded
+   */
+  _loadDatasetLayerAsync(ds) {
     if (!ds || !ds.url) {
-      return Promise.reject(`Unknown datasetID: ${datasetID}`);
-    } else if (ds.layer) {
+      return Promise.reject(`No dataset`);
+    } else if (ds.layer) {    // done already
       return Promise.resolve(ds.layer);
     }
 
@@ -263,7 +309,7 @@ export class EsriService extends AbstractSystem {
       .then(utilFetchResponse)
       .then(json => {
         if (!json.layers || !json.layers.length) {
-          throw new Error(`Missing layer info for datasetID: ${datasetID}`);
+          throw new Error(`Missing layer info for datasetID: ${ds.id}`);
         }
 
         ds.layer = json.layers[0];  // should return a single layer
@@ -278,7 +324,6 @@ export class EsriService extends AbstractSystem {
           tagmap[f.name] = f.alias;    // 2. field `name` -> OSM tag (stored in `alias`)
         }
         ds.layer.tagmap = tagmap;
-
         return ds.layer;
       })
       .catch(e => {
@@ -341,25 +386,6 @@ export class EsriService extends AbstractSystem {
     return `${ds.url}/${layerID}/query?` + utilQsString(params);
   }
 
-
-  // Add each dataset to this._datasets, create internal state
-  _parseDataset(ds) {
-    if (this._datasets[ds.id]) return;  // unless we've seen it already
-
-    this._datasets[ds.id] = ds;
-    ds.graph = new Graph();
-    ds.tree = new Tree(ds.graph);
-    ds.cache = { inflight: {}, loaded: {}, seen: {} };
-    ds.lastv = null;
-
-    // cleanup the `licenseInfo` field by removing styles  (not used currently)
-    let license = select(document.createElement('div'));
-    license.html(ds.licenseInfo);       // set innerHtml
-    license.selectAll('*')
-      .attr('style', null)
-      .attr('size', null);
-    ds.license_html = license.html();   // get innerHtml
-  }
 
 
   _loadTilePage(ds, tile, page) {
