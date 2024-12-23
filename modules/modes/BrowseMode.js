@@ -44,8 +44,13 @@ export class BrowseMode extends AbstractMode {
       .on('hoverchange', this._hover);
 
     // Reset sidebar to show "search features"
+    // Exception: don't replace the "save-success" screen.
+    // Wait for the user to dismiss it or select something else. Rapid#700
     const Sidebar = context.systems.ui.Sidebar;
-    Sidebar.hide();
+    const didJustSave = (Sidebar.$custom && Sidebar.$custom.selectAll('.save-success').size());
+    if (!didJustSave) {
+      Sidebar.hide();
+    }
 
     // Get focus on the body.
     // I think this was done to remove focus from whatever
