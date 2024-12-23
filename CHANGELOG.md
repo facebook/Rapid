@@ -42,7 +42,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 
 
 # [2.5.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.5.0)
-#### 2024-Dec-xx  (coming soon!)
+#### 2024-Dec-23
 
 #### :tada: New Features
 * [#1595], [#1644] New Dataset: Add [Overture Places](https://docs.overturemaps.org/guides/places/) as a readonly dataset
