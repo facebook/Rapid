@@ -30,11 +30,14 @@ export class AtlasAllocator {
    *
    * @param  {number}  width - The width of the requested texture.
    * @param  {number}  height - The height of the requested texture.
-   * @param  {number}  padding - The padding requested around the texture, to prevent bleeding.
    * @return {PIXI.Texture} The allocated texture, if successful; otherwise, `null`.
    * @throws When dimensions are too large to fit on a slab
    */
-  _allocateTexture(width, height, padding = 0) {
+  _allocateTexture(width, height) {
+    // Always include an extra pixel of padding to avoid bleeding into neighbor texture.
+    // If `avoidSeams=true` we will write pixel data into this space - see Rapid#1650
+    const padding = 1;
+
     // Cannot allocate a texture larger than the slab size.
     if ((width + (2 * padding)) > this.size || (height + (2 * padding)) > this.size) {
       throw new Error(`Texture can not exceed slab size of ${this.size}x${this.size}`);
@@ -46,10 +49,8 @@ export class AtlasAllocator {
       if (texture) return texture;
     }
 
-    // Need another new slab.
+    // Need another slab.
     const slab = new AtlasSource(this.label, this.size);
-
-    // Add this slab to the end of the list.
     this.slabs.push(slab);
 
     // Issue the texture from this blank slab.
@@ -66,11 +67,11 @@ export class AtlasAllocator {
    * @param  {number}       padding - Padding required around the texture.
    * @return {PIXI.Texture}  The issued texture, if successful; otherwise, `null`.
    */
-  _issueTexture(slab, width, height, padding = 0) {
+  _issueTexture(slab, width, height, padding = 1) {
     const rect = slab._binPacker.allocate(width + (2 * padding), height + (2 * padding));
     if (!rect) return null;
 
-    rect.pad(-padding);   // actual frame shouldn't include the padding
+    rect.pad(-padding);   // The actual frame shouldn't include the padding
 
     const texture = new PIXI.Texture({
       source: slab,
@@ -88,12 +89,12 @@ export class AtlasAllocator {
    *
    * @param {number}  width
    * @param {number}  height
-   * @param {number}  padding
    * @param {*}       asset
+   * @param {boolean} avoidSeams - if true, upon upload we'll fill the padding with pixel data
    * @return {PIXI.Texture}  The issued texture
    * @throws If asset type is unrecognized, or dimensions will not fit on a slab
    */
-  allocate(width, height, padding, asset) {
+  allocate(width, height, asset, avoidSeams) {
     if (!(asset instanceof HTMLImageElement ||
       asset instanceof HTMLCanvasElement ||
       asset instanceof ImageBitmap ||
@@ -103,7 +104,11 @@ export class AtlasAllocator {
       throw new Error('Unsupported asset type');
     }
 
-    const texture = this._allocateTexture(width, height, padding);
+    if (asset instanceof HTMLImageElement && !asset.complete) {
+      throw new Error('HTMLImageElement not loaded - allocate in onload handler instead');
+    }
+
+    const texture = this._allocateTexture(width, height);
     const uid = texture.uid;
     const slab = texture.source;
 
@@ -111,25 +116,11 @@ export class AtlasAllocator {
       uid: uid,
       texture: texture,
       asset: asset,
-      // dirtyId !== updateId only if image loaded
-      dirtyId: asset instanceof HTMLImageElement && !asset.complete ? -1 : 0,
-      updateId: -1
+      avoidSeams: avoidSeams,
+      uploaded: false
     };
 
     slab._items.set(uid, item);
-
-    if (asset instanceof HTMLImageElement && !asset.complete) {
-      asset.addEventListener('load', () => {
-        if (!texture.destroyed && slab._items.has(uid)) {
-          item.dirtyId++;
-          slab.update();
-          texture.update();
-        } else {
-          console.warn('Image loaded after texture was destroyed');  // eslint-disable-line no-console
-        }
-      });
-    }
-
     slab.update();
 
     return texture;
@@ -214,6 +205,7 @@ const glUploadAtlasResource = {
   id: 'atlas',
   upload(slab, glTexture, gl, webGLVersion) {
     const { width, height } = slab;
+    const { target, format, type } = glTexture;
     const premultipliedAlpha = slab.alphaMode === 'premultiply-alpha-on-upload';
 
     gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, premultipliedAlpha);
@@ -233,27 +225,13 @@ const glUploadAtlasResource = {
 //  pixels[j+2] = 0;
 //  pixels[j+3] = 255;
 //}
-
-      gl.texImage2D(
-        glTexture.target,
-        0,
-        glTexture.format,
-        width,
-        height,
-        0,
-        glTexture.format,
-        glTexture.type,
-        undefined          // no copy
-// fill red
-//        gl.RGBA,
-//        gl.UNSIGNED_BYTE,
-//        pixels
-      );
+      gl.texImage2D(target, 0, format, width, height, 0, format, type, undefined);    // no fill
+//      gl.texImage2D(target, 0, format, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, pixels);  // fill red
     }
 
     // Upload all atlas items.
     for (const item of slab._items.values()) {
-      if (item.updateId === item.dirtyId) continue;
+      if (item.uploaded) continue;
 
       const bin = item.texture.__bin;
       let source = item.asset;
@@ -279,19 +257,27 @@ const glUploadAtlasResource = {
         }
       }
 
-      gl.texSubImage2D(
-        glTexture.target,
-        0,
-        bin.x,
-        bin.y,
-        bin.width,
-        bin.height,
-        glTexture.format,
-        glTexture.type,
-        source
-      );
+      const { x, y, width: w, height: h } = bin;
 
-      item.updateId = item.dirtyId;
+      // Experiment: bake in 1px padding by duplicating the edge rows/cols - see Rapid#1650
+      // Because it is too complicated to blit framebuffers, or grab just a few pixels from
+      // the source image, I'm just going to do this 4x for the corners + 1 for the main image.
+      // Goal is to avoid having images in the atlas bleed into a neighboring image by the sampler.
+      if (item.avoidSeams) {
+        gl.texSubImage2D(target, 0, x-1, y-1, 1, 1, format, type, source);  // left top
+        gl.texSubImage2D(target, 0, x-1, y+1, w, h, format, type, source);  // left bottom
+        gl.texSubImage2D(target, 0, x+1, y-1, w, h, format, type, source);  // right top
+        gl.texSubImage2D(target, 0, x+1, y+1, w, h, format, type, source);  // right bottom
+        gl.texSubImage2D(target, 0, x-1, y,   w, h, format, type, source);  // left mid
+        gl.texSubImage2D(target, 0, x+1, y,   w, h, format, type, source);  // right mid
+        gl.texSubImage2D(target, 0, x,   y-1, w, h, format, type, source);  // mid top
+        gl.texSubImage2D(target, 0, x,   y+1, w, h, format, type, source);  // mid bottom
+      }
+      // end experiment
+
+      gl.texSubImage2D(target, 0, x, y, w, h, format, type, source);  // the image we really want
+
+      item.uploaded = true;
     }
   }
 };
@@ -304,9 +290,9 @@ const gpuUploadAtlasResource = {
     const premultipliedAlpha = slab.alphaMode === 'premultiply-alpha-on-upload';
 
     for (const item of slab._items.values()) {
-      if (item.updateId === item.dirtyId) continue;
+      if (item.uploaded) continue;
 
-      const bin = item.texture.__bin;
+      const { x, y, width: w, height: h } = item.texture.__bin;
       let source = item.asset;
       if (source instanceof ImageData) {
         source = source.data;
@@ -317,49 +303,55 @@ const gpuUploadAtlasResource = {
         source instanceof HTMLCanvasElement ||
         source instanceof ImageBitmap
       ) {
-        gpu.device.queue.copyExternalImageToTexture(
-          { // source
-            source: source
-          },
-          { // destination
-            origin: {
-              x: bin.x,
-              y: bin.y
-            },
-            premultipliedAlpha: premultipliedAlpha,
-            texture: gpuTexture,
-          },
-          { // copySize
-            height: bin.height,
-            width: bin.width,
-          }
-        );
+        const src = { source: source };
+        const origin = { x: x, y: y };
+        const dest = { origin: origin, premultipliedAlpha: premultipliedAlpha, texture: gpuTexture };
+        const size = { width: w, height: h };
+
+        // Same experiment as the WebGL one above
+        if (item.avoidSeams) {
+          origin.x = x-1;  origin.y = y-1;   // top left
+          gpu.device.queue.copyExternalImageToTexture(src, dest, size);
+          origin.x = x-1;  origin.y = y+1;   // bottom left
+          gpu.device.queue.copyExternalImageToTexture(src, dest, size);
+          origin.x = x+1;  origin.y = y-1;   // top right
+          gpu.device.queue.copyExternalImageToTexture(src, dest, size);
+          origin.x = x+1;  origin.y = y+1;   // bottom right
+          gpu.device.queue.copyExternalImageToTexture(src, dest, size);
+        }
+        // end experiment
+
+        origin.x = x;  origin.y = y;   // the image we really want
+        gpu.device.queue.copyExternalImageToTexture(src, dest, size);
 
       // writetexture
       } else if (ArrayBuffer.isView(source)) {
-        gpu.device.queue.writeTexture(
-          { // destination
-            origin: {
-              x: bin.x,
-              y: bin.y
-            },
-            texture: gpuTexture
-          },
-          source,
-          { // dataLayout
-            bytesPerRow: source.byteLength / bin.height
-          },
-          { // size
-            height: bin.height,
-            width: bin.width
-          }
-        );
+        const origin = { x: x, y: y };
+        const dest = { origin: origin, texture: gpuTexture };
+        const layout = { bytesPerRow: source.byteLength / h };
+        const size = { width: w, height: h };
+
+        // Same experiment as the WebGL one above
+        if (item.avoidSeams) {
+          origin.x = x-1;  origin.y = y-1;   // top left
+          gpu.device.queue.writeTexture(dest, source, layout, size);
+          origin.x = x-1;  origin.y = y+1;   // bottom left
+          gpu.device.queue.writeTexture(dest, source, layout, size);
+          origin.x = x+1;  origin.y = y-1;   // top right
+          gpu.device.queue.writeTexture(dest, source, layout, size);
+          origin.x = x+1;  origin.y = y+1;   // bottom right
+          gpu.device.queue.writeTexture(dest, source, layout, size);
+        }
+        // end experiment
+
+        origin.x = x;  origin.y = y;   // the image we really want
+        gpu.device.queue.writeTexture(dest, source, layout, size);
 
       } else {
         throw new Error('Unsupported source type');
       }
 
-      item.updateId = item.dirtyId;
+      item.uploaded = true;
     }
   }
 };

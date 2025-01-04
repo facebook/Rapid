@@ -188,8 +188,8 @@ export class PixiTextures {
       return tdata.texture;
     }
 
-    const padding = atlasID === 'symbol' ? 1 : 0;
-    const texture = atlas.allocate(width, height, padding, asset);
+    const avoidSeams = (atlasID === 'tile');
+    const texture = atlas.allocate(width, height, asset, avoidSeams);
     if (!texture) {
       throw new Error(`Couldn't allocate texture ${key}`);
     }
@@ -200,11 +200,11 @@ export class PixiTextures {
     // But we also want to prevent their colors from spilling into an adjacent tile in the atlas.
     // Shrink texture coords by half pixel to avoid this.
     // https://gamedev.stackexchange.com/a/49585
-    if (atlasID === 'tile') {
-      const rect = texture.frame.clone().pad(-0.5);
-      texture.frame = rect;  // `.frame` setter will call updateUvs() automatically
-      texture.update();      // maybe not in pixi v8?  I'm still seeing tile seams?
-    }
+//    if (atlasID === 'tile') {
+//      const rect = texture.frame.clone().pad(-0.5);
+//      texture.frame = rect;  // `.frame` setter will call updateUvs() automatically
+//      texture.update();      // maybe not in pixi v8?  I'm still seeing tile seams?
+//    }
 
     this._textureData.set(key, { texture: texture, refcount: 1 });
 
