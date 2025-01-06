@@ -166,7 +166,7 @@ export class PixiTextures {
   /**
    * allocate
    * This packs an asset into one of the atlases and tracks it in the textureData map
-   * The asset can be one of: HTMLImageElement | HTMLCanvasElement | ImageBitmap | ImageData | ArrayBufferView
+   * The asset must be one of:  ImageData | Uint8ClampedArray | HTMLCanvasElement | HTMLImageElement
    * @param   {string}  atlasID     One of 'symbol', 'text', or 'tile'
    * @param   {string}  textureID   e.g. 'boldPin', 'Main Street-normal', 'Bing-0,1,2'
    * @param   {number}  width       width in pixels
@@ -188,23 +188,39 @@ export class PixiTextures {
       return tdata.texture;
     }
 
-    const avoidSeams = (atlasID === 'tile');
-    const texture = atlas.allocate(width, height, asset, avoidSeams);
+    // To simplify the atlas code, get everything into an `ImageData` before packing
+    let imageData;
+    if (asset instanceof ImageData) {
+      imageData = asset;
+
+    } else if (asset instanceof Uint8ClampedArray) {
+      imageData = new ImageData(asset, width, height);
+
+    } else if (asset instanceof HTMLCanvasElement) {
+      // note that the canvas dimensions may be larger than the passed-in dimensions
+      const ctx = asset.getContext('2d');
+      imageData = ctx.getImageData(0, 0, width, height);  // not the canvas width/height
+
+    } else if (asset instanceof HTMLImageElement) {
+      const [w, h] = [asset.naturalWidth, asset.naturalHeight];
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(asset, 0, 0);
+      imageData = ctx.getImageData(0, 0, w, h);
+
+    } else {
+      return null;  // some other format?
+    }
+
+
+    const texture = atlas.allocate(imageData);
     if (!texture) {
       throw new Error(`Couldn't allocate texture ${key}`);
     }
 
     texture.label = key;
-
-    // For tiles we want to preserve their power of 2 dimensions - so no padding!
-    // But we also want to prevent their colors from spilling into an adjacent tile in the atlas.
-    // Shrink texture coords by half pixel to avoid this.
-    // https://gamedev.stackexchange.com/a/49585
-//    if (atlasID === 'tile') {
-//      const rect = texture.frame.clone().pad(-0.5);
-//      texture.frame = rect;  // `.frame` setter will call updateUvs() automatically
-//      texture.update();      // maybe not in pixi v8?  I'm still seeing tile seams?
-//    }
 
     this._textureData.set(key, { texture: texture, refcount: 1 });
 
@@ -260,7 +276,7 @@ export class PixiTextures {
 
     const renderer = this.gfx.pixi.renderer;
     const temp = renderer.generateTexture(options);
-    const { pixels, width, height } = renderer.texture.getPixels(temp);
+    const { pixels, width, height } = renderer.texture.getPixels(temp);   // a Uint8ClampedArray
     const texture = this.allocate('symbol', textureID, width, height, pixels);
 
     // These textures are overscaled, but `orig` Rectangle stores the original width/height
@@ -330,12 +346,13 @@ export class PixiTextures {
 // see https://github.com/facebook/Rapid/commit/dd24e912
 
     const viewBox = symbol.getAttribute('viewBox');
+    const size = 64;  // somewhat large, but some mapillary signs have a lot of detail/text in them
 
     // Make a new <svg> container
     let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-    svg.setAttribute('width', '32');
-    svg.setAttribute('height', '32');
+    svg.setAttribute('width', size);
+    svg.setAttribute('height', size);
     svg.setAttribute('color', '#fff');   // white so we can tint them
     svg.setAttribute('viewBox', viewBox);
 

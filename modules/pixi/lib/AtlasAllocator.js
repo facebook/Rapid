@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { numClamp } from '@rapid-sdk/math';
 import { GuilloteneAllocator } from './GuilloteneAllocator.js';
 
 
@@ -23,100 +24,25 @@ export class AtlasAllocator {
 
 
   /**
-   * _allocateTexture
-   * Allocates a texture from this allocator.
-   * If its existing slab pool has enough space, the texture is issued from one.
-   * Otherwise, a new slab is created and the texture is issued from it.
-   *
-   * @param  {number}  width - The width of the requested texture.
-   * @param  {number}  height - The height of the requested texture.
-   * @return {PIXI.Texture} The allocated texture, if successful; otherwise, `null`.
-   * @throws When dimensions are too large to fit on a slab
-   */
-  _allocateTexture(width, height) {
-    // Always include an extra pixel of padding to avoid bleeding into neighbor texture.
-    // If `avoidSeams=true` we will write pixel data into this space - see Rapid#1650
-    const padding = 1;
-
-    // Cannot allocate a texture larger than the slab size.
-    if ((width + (2 * padding)) > this.size || (height + (2 * padding)) > this.size) {
-      throw new Error(`Texture can not exceed slab size of ${this.size}x${this.size}`);
-    }
-
-    // Loop through the slabs and find one with enough space, if any.
-    for (const slab of this.slabs) {
-      const texture = this._issueTexture(slab, width, height, padding);
-      if (texture) return texture;
-    }
-
-    // Need another slab.
-    const slab = new AtlasSource(this.label, this.size);
-    this.slabs.push(slab);
-
-    // Issue the texture from this blank slab.
-    return this._issueTexture(slab, width, height, padding);
-  }
-
-
-  /**
-   * Issues a texture from the given texture slab, if possible.
-   *
-   * @param  {AtlasSource}  slab - The texture slab to allocate frame.
-   * @param  {number}       width - The width of the requested texture.
-   * @param  {number}       height - The height of the requested texture.
-   * @param  {number}       padding - Padding required around the texture.
-   * @return {PIXI.Texture}  The issued texture, if successful; otherwise, `null`.
-   */
-  _issueTexture(slab, width, height, padding = 1) {
-    const rect = slab._binPacker.allocate(width + (2 * padding), height + (2 * padding));
-    if (!rect) return null;
-
-    rect.pad(-padding);   // The actual frame shouldn't include the padding
-
-    const texture = new PIXI.Texture({
-      source: slab,
-      frame: rect    // Texture will make a copy
-    });
-
-    texture.__bin = rect;   // important to preserve this, it contains `__mem_area`
-    return texture;
-  }
-
-
-  /**
    * allocate
-   * Allocates the given asset, returning a PIXI.Texture, or throwing if it could not be done.
-   *
-   * @param {number}  width
-   * @param {number}  height
-   * @param {*}       asset
-   * @param {boolean} avoidSeams - if true, upon upload we'll fill the padding with pixel data
-   * @return {PIXI.Texture}  The issued texture
-   * @throws If asset type is unrecognized, or dimensions will not fit on a slab
+   * Allocates the given asset, returning a `PIXI.Texture`, or throwing if it could not be done.
+   * @param   {ImageData}     imageData - The asset to pack in the atlas, must be of type ImageData
+   * @return  {PIXI.Texture}  The issued texture
+   * @throws  If asset type is unrecognized, or dimensions will not fit on a slab
    */
-  allocate(width, height, asset, avoidSeams) {
-    if (!(asset instanceof HTMLImageElement ||
-      asset instanceof HTMLCanvasElement ||
-      asset instanceof ImageBitmap ||
-      asset instanceof ImageData ||
-      ArrayBuffer.isView(asset)
-    )) {
-      throw new Error('Unsupported asset type');
+  allocate(imageData) {
+    if (!(imageData instanceof ImageData)) {
+      throw new Error('Unsupported asset type - convert it to ImageData first');
     }
 
-    if (asset instanceof HTMLImageElement && !asset.complete) {
-      throw new Error('HTMLImageElement not loaded - allocate in onload handler instead');
-    }
-
-    const texture = this._allocateTexture(width, height);
+    const texture = this._allocateTexture(imageData.width, imageData.height);
     const uid = texture.uid;
     const slab = texture.source;
 
     const item = {
       uid: uid,
       texture: texture,
-      asset: asset,
-      avoidSeams: avoidSeams,
+      imageData: imageData,
       uploaded: false
     };
 
@@ -130,9 +56,8 @@ export class AtlasAllocator {
   /**
    * free
    * Frees the texture and reclaims its space.
-   *
-   * @param  {PIXI.Texture }  texture
-   * @throws If the texture was not found, or some other issue prevents it from freeing.
+   * @param   {PIXI.Texture }  texture
+   * @throws  If the texture was not found, or some other issue prevents it from freeing.
    */
   free(texture) {
     const slab = this.slabs.find(slab => slab === texture.source);
@@ -154,7 +79,7 @@ export class AtlasAllocator {
     }
 
     item.texture.destroy(false);
-    item.asset = null;
+    item.imageData = null;
     item.texture = null;
     slab._items.delete(uid);
 
@@ -164,6 +89,66 @@ export class AtlasAllocator {
 //      slab._items = null;
 //      slab._binPacker = null;
 //    }
+  }
+
+
+  /**
+   * _allocateTexture
+   * Allocates a texture from this allocator.
+   * If its existing slab pool has enough space, the texture is issued from one.
+   * Otherwise, a new slab is created and the texture is issued from it.
+   *
+   * @param   {number}  width - The width of the requested texture.
+   * @param   {number}  height - The height of the requested texture.
+   * @return  {PIXI.Texture} The allocated texture, if successful; otherwise, `null`.
+   * @throws  When dimensions are too large to fit on a slab
+   */
+  _allocateTexture(width, height) {
+    // We'll always include an extra pixel of padding to avoid color bleeding into neighbor texture.
+    const padding = 1;
+
+    // Cannot allocate a texture larger than the slab size.
+    if ((width + (2 * padding)) > this.size || (height + (2 * padding)) > this.size) {
+      throw new Error(`Texture can not exceed slab size of ${this.size}x${this.size}`);
+    }
+
+    // Loop through the slabs and find one with enough space, if any.
+    for (const slab of this.slabs) {
+      const texture = this._issueTexture(slab, width, height);
+      if (texture) return texture;
+    }
+
+    // Need another slab.
+    const slab = new AtlasSource(this.label, this.size);
+    this.slabs.push(slab);
+
+    // Issue the texture from this blank slab.
+    return this._issueTexture(slab, width, height);
+  }
+
+
+  /**
+   * Issues a texture from the given texture slab, if possible.
+   *
+   * @param  {AtlasSource}  slab - The texture slab to allocate frame.
+   * @param  {number}       width - The width of the requested texture.
+   * @param  {number}       height - The height of the requested texture.
+   * @return {PIXI.Texture}  The issued texture, if successful; otherwise, `null`.
+   */
+  _issueTexture(slab, width, height) {
+    // We'll always include an extra pixel of padding to avoid color bleeding into neighbor texture.
+    const padding = 1;
+
+    const bin = slab._binPacker.allocate(width + (2 * padding), height + (2 * padding));
+    if (!bin) return null;
+
+    const texture = new PIXI.Texture({
+      source: slab,
+      frame: bin.clone().pad(-padding)   // The actual frame shouldn't include the padding
+    });
+
+    texture.__bin = bin;   // important to preserve this, it contains `__mem_area`
+    return texture;
   }
 
 }
@@ -187,6 +172,7 @@ export class AtlasSource extends PIXI.TextureSource {
       autoGarbageCollect: false,
       autoGenerateMipmaps: false,
       dimensions: '2d',
+      format: 'rgba8unorm',
       height: size,
       label: label,
       resolution: 1,
@@ -233,49 +219,27 @@ const glUploadAtlasResource = {
     for (const item of slab._items.values()) {
       if (item.uploaded) continue;
 
-      const bin = item.texture.__bin;
-      let source = item.asset;
+      const { x, y, width: w, height: h } = item.texture.__bin;
+      const { data: src, width: srcW, height: srcH } = item.imageData;
 
-      if (webGLVersion === 1) {
-        if (source instanceof ImageData) {
-          source = source.data; // pass the typed array directly
+      // Copy image data to a new Uint8Array that duplicates the 1px edge
+      const pixels = new Uint8Array(w * h * 4);
 
-        } else if (source instanceof HTMLCanvasElement) {
-          // note that the canvas width/height may be larger than the actual texture
-          const [w, h] = [bin.width, bin.height];
-          const ctx = source.getContext('2d');
-          source = ctx.getImageData(0, 0, w, h).data;
+      for (let dstY = 0; dstY < h; dstY++) {
+        const srcY = numClamp(dstY-1, 0, srcH-1);
 
-        } else if (source instanceof HTMLImageElement) {
-          const [w, h] = [source.naturalWidth, source.naturalHeight];
-          const canvas = document.createElement('canvas');
-          canvas.width = w;
-          canvas.height = h;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(source, 0, 0);
-          source = ctx.getImageData(0, 0, w, h).data;
+        for (let dstX = 0; dstX < w; dstX++) {
+          const srcX = numClamp(dstX-1, 0, srcW-1);
+          const s = ((srcY * srcW) + srcX) * 4;
+          const d = ((dstY * w) + dstX) * 4;
+          pixels[d] = src[s];
+          pixels[d+1] = src[s+1];
+          pixels[d+2] = src[s+2];
+          pixels[d+3] = src[s+3];
         }
       }
 
-      const { x, y, width: w, height: h } = bin;
-
-      // Experiment: bake in 1px padding by duplicating the edge rows/cols - see Rapid#1650
-      // Because it is too complicated to blit framebuffers, or grab just a few pixels from
-      // the source image, I'm just going to do this 4x for the corners + 1 for the main image.
-      // Goal is to avoid having images in the atlas bleed into a neighboring image by the sampler.
-      if (item.avoidSeams) {
-        gl.texSubImage2D(target, 0, x-1, y-1, 1, 1, format, type, source);  // left top
-        gl.texSubImage2D(target, 0, x-1, y+1, w, h, format, type, source);  // left bottom
-        gl.texSubImage2D(target, 0, x+1, y-1, w, h, format, type, source);  // right top
-        gl.texSubImage2D(target, 0, x+1, y+1, w, h, format, type, source);  // right bottom
-        gl.texSubImage2D(target, 0, x-1, y,   w, h, format, type, source);  // left mid
-        gl.texSubImage2D(target, 0, x+1, y,   w, h, format, type, source);  // right mid
-        gl.texSubImage2D(target, 0, x,   y-1, w, h, format, type, source);  // mid top
-        gl.texSubImage2D(target, 0, x,   y+1, w, h, format, type, source);  // mid bottom
-      }
-      // end experiment
-
-      gl.texSubImage2D(target, 0, x, y, w, h, format, type, source);  // the image we really want
+      gl.texSubImage2D(target, 0, x, y, w, h, format, type, pixels);
 
       item.uploaded = true;
     }
@@ -287,69 +251,36 @@ const glUploadAtlasResource = {
 const gpuUploadAtlasResource = {
   type: 'atlas',
   upload(slab, gpuTexture, gpu) {
-    const premultipliedAlpha = slab.alphaMode === 'premultiply-alpha-on-upload';
+    // const premultipliedAlpha = slab.alphaMode === 'premultiply-alpha-on-upload';
 
     for (const item of slab._items.values()) {
       if (item.uploaded) continue;
 
       const { x, y, width: w, height: h } = item.texture.__bin;
-      let source = item.asset;
-      if (source instanceof ImageData) {
-        source = source.data;
+      const { data: src, width: srcW, height: srcH } = item.imageData;
+
+      // Copy image data to a new Uint8Array that duplicates the 1px edge
+      const pixels = new Uint8Array(w * h * 4);
+
+      for (let dstY = 0; dstY < h; dstY++) {
+        const srcY = numClamp(dstY-1, 0, srcH-1);
+
+        for (let dstX = 0; dstX < w; dstX++) {
+          const srcX = numClamp(dstX-1, 0, srcW-1);
+          const s = ((srcY * srcW) + srcX) * 4;
+          const d = ((dstY * w) + dstX) * 4;
+          pixels[d] = src[s];
+          pixels[d+1] = src[s+1];
+          pixels[d+2] = src[s+2];
+          pixels[d+3] = src[s+3];
+        }
       }
 
-      // copyexternalimagetotexture
-      if (source instanceof HTMLImageElement ||
-        source instanceof HTMLCanvasElement ||
-        source instanceof ImageBitmap
-      ) {
-        const src = { source: source };
-        const origin = { x: x, y: y };
-        const dest = { origin: origin, premultipliedAlpha: premultipliedAlpha, texture: gpuTexture };
-        const size = { width: w, height: h };
+      const destination = { origin: { x: x, y: y }, texture: gpuTexture };
+      const layout = { bytesPerRow: pixels.byteLength / h };
+      const size = { width: w, height: h };
 
-        // Same experiment as the WebGL one above
-        if (item.avoidSeams) {
-          origin.x = x-1;  origin.y = y-1;   // top left
-          gpu.device.queue.copyExternalImageToTexture(src, dest, size);
-          origin.x = x-1;  origin.y = y+1;   // bottom left
-          gpu.device.queue.copyExternalImageToTexture(src, dest, size);
-          origin.x = x+1;  origin.y = y-1;   // top right
-          gpu.device.queue.copyExternalImageToTexture(src, dest, size);
-          origin.x = x+1;  origin.y = y+1;   // bottom right
-          gpu.device.queue.copyExternalImageToTexture(src, dest, size);
-        }
-        // end experiment
-
-        origin.x = x;  origin.y = y;   // the image we really want
-        gpu.device.queue.copyExternalImageToTexture(src, dest, size);
-
-      // writetexture
-      } else if (ArrayBuffer.isView(source)) {
-        const origin = { x: x, y: y };
-        const dest = { origin: origin, texture: gpuTexture };
-        const layout = { bytesPerRow: source.byteLength / h };
-        const size = { width: w, height: h };
-
-        // Same experiment as the WebGL one above
-        if (item.avoidSeams) {
-          origin.x = x-1;  origin.y = y-1;   // top left
-          gpu.device.queue.writeTexture(dest, source, layout, size);
-          origin.x = x-1;  origin.y = y+1;   // bottom left
-          gpu.device.queue.writeTexture(dest, source, layout, size);
-          origin.x = x+1;  origin.y = y-1;   // top right
-          gpu.device.queue.writeTexture(dest, source, layout, size);
-          origin.x = x+1;  origin.y = y+1;   // bottom right
-          gpu.device.queue.writeTexture(dest, source, layout, size);
-        }
-        // end experiment
-
-        origin.x = x;  origin.y = y;   // the image we really want
-        gpu.device.queue.writeTexture(dest, source, layout, size);
-
-      } else {
-        throw new Error('Unsupported source type');
-      }
+      gpu.device.queue.writeTexture(destination, pixels, layout, size);
 
       item.uploaded = true;
     }

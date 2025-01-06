@@ -118,10 +118,11 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
         feature.style = style;
         feature.parentContainer = parentContainer;
         feature.setData(d.id, d);
-        // const marker = feature.marker;
-        // const ICONSIZE = 24;
-        // marker.width = ICONSIZE;
-        // marker.height = ICONSIZE;
+
+        const marker = feature.marker;
+        const ICONSIZE = 24;
+        marker.width = ICONSIZE;
+        marker.height = ICONSIZE;
       }
 
       this.syncFeatureClasses(feature);

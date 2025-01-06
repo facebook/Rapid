@@ -599,7 +599,7 @@ export class GraphicsSystem extends AbstractSystem {
     if (debug.texture) {
       debug.texture.destroy();
     }
-    debug.texture = this.textures.getDebugTexture('text');
+    debug.texture = this.textures.getDebugTexture('symbol');
     debug.position.set(50, -200);
     screen.position.set(50, -200);
   }
