@@ -48,38 +48,39 @@ export function validationCurbNodes(context) {
     const wayID = way.id;
     if (!hasRoutableTags(way) || !isCrossingWay(way.tags)) return issues;
 
-    const firstNode = graph.entity(way.nodes.at(0));
-    const lastNode = graph.entity(way.nodes.at(-1));
-    const firstNodeHasCurb = hasCurbTag(firstNode);
-    const lastNodeHasCurb = hasCurbTag(lastNode);
-
-    // Check if either end is missing a curb
-    if (!firstNodeHasCurb || !lastNodeHasCurb) {
-      issues.push(new ValidationIssue(context, {
-        type,
-        subtype: 'missing_curb_nodes',
-        severity: 'suggestion',
-        message: () => way ? l10n.t('issues.curb_nodes.message', { feature: l10n.displayLabel(way, graph) }) : 'Way not found',
-        reference: showReference,
-        entityIds: [wayID],
-        data: { crossingWayID: wayID },
-        dynamicFixes: () => ['unspecified', 'flush', 'lowered', 'raised'].map(type => {
-          const tags = { barrier: 'kerb', kerb: type };
-          const iconID = getIconForCurbNode(tags);
-          return new ValidationFix({
-            icon: iconID,
-            title: l10n.t('issues.curb_nodes.fix.add_curb_nodes', { type: type }),
-            onClick: () => {
-              performCurbNodeFixes(wayID, tags);
-              editor.commit({
-                annotation: l10n.t('issues.curb_nodes.annotation.added_curb_nodes', { type: type }),
-                selectedIDs: [wayID]
-              });
-            }
-          });
-        })
-      }));
+    // Check all nodes in the way for curb tags
+    for (const nodeId of way.nodes) {
+      const node = graph.entity(nodeId);
+      if (hasCurbTag(node)) {
+        // If any node has a curb tag, skip this way as a candidate
+        return issues;
+      }
     }
+    // If no curb nodes are found, suggest adding curbs
+    issues.push(new ValidationIssue(context, {
+      type,
+      subtype: 'missing_curb_nodes',
+      severity: 'suggestion',
+      message: () => way ? l10n.t('issues.curb_nodes.message', { feature: l10n.displayLabel(way, graph) }) : 'Way not found',
+      reference: showReference,
+      entityIds: [wayID],
+      data: { crossingWayID: wayID },
+      dynamicFixes: () => ['unspecified', 'flush', 'lowered', 'raised'].map(type => {
+        const tags = { barrier: 'kerb', kerb: type };
+        const iconID = getIconForCurbNode(tags);
+        return new ValidationFix({
+          icon: iconID,
+          title: l10n.t('issues.curb_nodes.fix.add_curb_nodes', { type: type }),
+          onClick: () => {
+            performCurbNodeFixes(wayID, tags);
+            editor.commit({
+              annotation: l10n.t('issues.curb_nodes.annotation.added_curb_nodes', { type: type }),
+              selectedIDs: [wayID]
+            });
+          }
+        });
+      })
+    }));
     return issues;
   };
 
