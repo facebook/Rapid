@@ -41,21 +41,21 @@ describe('validationCurbNodes', () => {
     return issues;
   }
 
-  it('has no errors on init', () => {
-    const issues = validate();
-    expect(issues).to.have.lengthOf(0);
-  });
-
-  function createWaysWithOneCrossingPoint(w1tags = {}, w2tags = {}) {
-    const n1 = Rapid.osmNode({ id: 'n-1', loc: [0, -1] });
-    const n2 = Rapid.osmNode({ id: 'n-2', loc: [0,  1] });
-    const n5 = Rapid.osmNode({ id: 'n-5', loc: [0,  0] });
-    const w1 = Rapid.osmWay({ id: 'w-1', nodes: ['n-1', 'n-5', 'n-2'], tags: w1tags });
-
-    const n3 = Rapid.osmNode({ id: 'n-3', loc: [-1, 0] });
-    const n4 = Rapid.osmNode({ id: 'n-4', loc: [ 1, 0] });
-    const w2 = Rapid.osmWay({ id: 'w-2', nodes: ['n-3', 'n-5', 'n-4'], tags: w2tags });
-
+  function createSingleCrossing(w1tags = {}, w2tags = {}, n1tags = {}, n2tags = {}) {
+    //
+    //        n2  (w1 = the footway)
+    //        |
+    //  n3 -- n5 -- n4   (w2 = the road)
+    //        |
+    //        n1
+    //
+    const n1 = Rapid.osmNode({ id: 'n1', loc: [0, -1], tags: n1tags });
+    const n2 = Rapid.osmNode({ id: 'n2', loc: [0,  1], tags: n2tags });
+    const n3 = Rapid.osmNode({ id: 'n3', loc: [-1, 0] });
+    const n4 = Rapid.osmNode({ id: 'n4', loc: [ 1, 0] });
+    const n5 = Rapid.osmNode({ id: 'n5', loc: [0,  0] });   // road-crossing junction
+    const w1 = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n5', 'n2'], tags: w1tags });
+    const w2 = Rapid.osmWay({ id: 'w2', nodes: ['n3', 'n5', 'n4'], tags: w2tags });
     const entities = [n1, n2, n3, n4, n5, w1, w2];
     graph = new Rapid.Graph(entities);
     tree = new Rapid.Tree(graph);
@@ -69,56 +69,51 @@ describe('validationCurbNodes', () => {
     expect(issue.type).to.eql('curb_nodes');
     expect(issue.severity).to.eql('suggestion');
     expect(issue.entityIds).to.have.lengthOf(1);
-    expect(issue.entityIds[0]).to.eql('w-1');
+    expect(issue.entityIds[0]).to.eql('w1');
   }
 
+  it('has no errors on init', () => {
+    const issues = validate();
+    expect(issues).to.have.lengthOf(0);
+  });
+
   it('ignores untagged line crossing untagged line', () => {
-    createWaysWithOneCrossingPoint({}, {});
+    createSingleCrossing();  // no tags
     const issues = validate();
     expect(issues).to.have.lengthOf(0);
   });
 
-  it('flags a crossing way and residential street if the street has no curb nodes', () => {
-    createWaysWithOneCrossingPoint({ highway: 'footway', footway: 'crossing' }, { highway: 'residential' });
-    const issues = validate();
-    verifySingleCurbNodeIssue(issues);
-  });
+  for (const type of ['primary', 'secondary', 'tertiary', 'residential']) {
+    it(`flags missing curb nodes on a crossing way and ${type} road`, () => {
+      createSingleCrossing(
+        { highway: 'footway', footway: 'crossing' },
+        { highway: type }
+      );
+      const issues = validate();
+      verifySingleCurbNodeIssue(issues);
+    });
+  }
 
-  it('flags a crossing way with no curb nodes on a primary road', () => {
-    createWaysWithOneCrossingPoint({ highway: 'footway', footway: 'crossing' }, { highway: 'primary' });
-    const issues = validate();
-    verifySingleCurbNodeIssue(issues);
-  });
-
-  it('ignores a crossing way with existing curb nodes at both ends', () => {
-    // Define nodes with curb tags at both ends
-    const n1 = Rapid.osmNode({ id: 'n-1', loc: [0, -1], tags: { barrier: 'kerb' } });
-    const n2 = Rapid.osmNode({ id: 'n-2', loc: [0,  1], tags: { barrier: 'kerb' } });
-    const n5 = Rapid.osmNode({ id: 'n-5', loc: [0,  0] }); // Middle node without curb
-    const w1 = Rapid.osmWay({ id: 'w-1', nodes: ['n-1', 'n-5', 'n-2'], tags: { highway: 'footway', footway: 'crossing' } });
-
-    const n3 = Rapid.osmNode({ id: 'n-3', loc: [-1, 0] });
-    const n4 = Rapid.osmNode({ id: 'n-4', loc: [ 1, 0] });
-    const w2 = Rapid.osmWay({ id: 'w-2', nodes: ['n-3', 'n-5', 'n-4'], tags: { highway: 'residential' } });
-
-    const entities = [n1, n2, n3, n4, n5, w1, w2];
-    graph = new Rapid.Graph(entities);
-    tree = new Rapid.Tree(graph);
-    tree.rebase(entities, true);
-
+  it('ignores a crossing way with `barrier=kerb` tags at both ends', () => {
+    createSingleCrossing(
+      { highway: 'footway', footway: 'crossing' },
+      { highway: 'residential' },
+      { barrier: 'kerb' },
+      { barrier: 'kerb' }
+    );
     const issues = validate();
     expect(issues).to.have.lengthOf(0);
   });
 
-  it('flags a crossing way with a missing curb node on a secondary road', () => {
-    createWaysWithOneCrossingPoint({ highway: 'footway', footway: 'crossing' }, { highway: 'secondary' });
+  it('ignores a crossing way with `kerb=*` tags at both ends', () => {
+    createSingleCrossing(
+      { highway: 'footway', footway: 'crossing' },
+      { highway: 'residential' },
+      { kerb: 'no' },
+      { kerb: 'maybe' }
+    );
     const issues = validate();
-    verifySingleCurbNodeIssue(issues);
+    expect(issues).to.have.lengthOf(0);
   });
 
-  it('flags a crossing way with no curb nodes on a tertiary road', () => {
-    createWaysWithOneCrossingPoint({ highway: 'footway', footway: 'crossing' }, { highway: 'tertiary' });
-    const issues = validate();
-    verifySingleCurbNodeIssue(issues);
-  });
 });

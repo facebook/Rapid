@@ -48,10 +48,10 @@ export function validationCurbNodes(context) {
     const wayID = way.id;
     if (!hasRoutableTags(way) || !isCrossingWay(way.tags)) return issues;
 
-    const firstNode = graph.entity(way.nodes[0]);
-    const lastNode = graph.entity(way.nodes[way.nodes.length - 1]);
-    const firstNodeHasCurb = hasCurbNode(firstNode, graph);
-    const lastNodeHasCurb = hasCurbNode(lastNode, graph);
+    const firstNode = graph.entity(way.nodes.at(0));
+    const lastNode = graph.entity(way.nodes.at(-1));
+    const firstNodeHasCurb = hasCurbTag(firstNode);
+    const lastNodeHasCurb = hasCurbTag(lastNode);
 
     // Check if either end is missing a curb
     if (!firstNodeHasCurb || !lastNodeHasCurb) {
@@ -129,14 +129,14 @@ export function validationCurbNodes(context) {
 
 
   /**
-   * hasCurbNode
+   * hasCurbTag
    * Checks if the given node has a curb
-   * @param  {Node}    node  - The node entity to check
-   * @param  {Graph}   graph - The graph containing the node data
-   * @return {Boolean} True if the node has a curb, false otherwise
+   * @param  {Node}     node  - The node entity to check
+   * @return {Boolean}  true if the node has some tags that would indicate a curb, false otherwise
    */
-  function hasCurbNode(node, graph) {
-    return node.tags && node.tags.barrier === 'kerb';
+  function hasCurbTag(node) {
+    const tags = node.tags;
+    return !!tags.kerb || tags.barrier === 'kerb';
   }
 
 
@@ -187,7 +187,7 @@ export function validationCurbNodes(context) {
    * @param  {Object}  tags - The tags to assign to the new curb node.
    */
   function insertCurbNode(node, way, graph, curbTags) {
-    if (hasCurbNode(node, graph)) return;  // Exit if curb already exists
+    if (hasCurbTag(node)) return;  // Exit if curb already exists
 
     // Calculate the position for the new curb node
     const nodeIndex = way.nodes.indexOf(node.id);
