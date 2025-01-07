@@ -97,6 +97,10 @@ export class UiLocationCard extends AbstractUiCard {
     // .card-content
     const $content = $wrap.selectAll('.card-content');
 
+    // If the user is trying to select text, don't redraw - Rapid#1659
+    const textSelection = document.getSelection();
+    if (textSelection.containsNode($content.node(), true)) return;
+
     // Empty out the DOM content and rebuild from scratch..
     $content.html('');
 
