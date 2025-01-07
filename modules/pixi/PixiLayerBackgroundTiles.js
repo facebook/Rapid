@@ -145,7 +145,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     let debugContainer;
     if (!this.isMinimap) {
       showDebug = context.getDebug('tile');
-      const debugContainer = this.scene.layers.get('map-ui').tileDebug;
+      debugContainer = this.scene.layers.get('map-ui').tileDebug;
       debugContainer.visible = showDebug;
     }
 
