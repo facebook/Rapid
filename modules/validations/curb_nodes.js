@@ -203,6 +203,10 @@ export function validationCurbNodes(context) {
         break;
       }
     }
+    // Check if connectedWayTags is null and set default to "sidewalk"
+    if (connectedWayTags === null) {
+      connectedWayTags = { highway: 'footway' };
+    }
     // Create a new curb node with the specified curb tags
     const newCurbNode = osmNode({ loc: [newNodePosition.lon, newNodePosition.lat], tags: curbTags, visible: true });
     // Add the new node to the graph
