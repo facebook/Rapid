@@ -85,15 +85,10 @@ export function uiConflicts(context) {
       .append('a')
       .attr('class', 'download-changes');
 
-    if (detected.download) {   // All except IE11 and Edge
-      linkEnter                // download the data as a file
-        .attr('href', window.URL.createObjectURL(blob))
-        .attr('download', fileName);
-    } else {                   // IE11 and Edge
-      linkEnter                // open data uri in a new tab
-        .attr('target', '_blank')
-        .on('click.download', () => navigator.msSaveBlob(blob, fileName));
-    }
+    // All except IE11 and Edge
+    linkEnter
+      .attr('href', window.URL.createObjectURL(blob)) // download the data as a file
+      .attr('download', fileName);
 
     linkEnter
       .call(uiIcon('#rapid-icon-load', 'inline'))
