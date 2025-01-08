@@ -2,6 +2,7 @@ import { selection } from 'd3-selection';
 import debounce from 'lodash-es/debounce.js';
 
 import { AbstractUiCard } from './AbstractUiCard.js';
+import { QAItem } from '../../osm/index.js';
 import { uiIcon } from '../icon.js';
 import { utilCmd } from '../../util/cmd.js';
 
@@ -39,6 +40,7 @@ export class UiHistoryCard extends AbstractUiCard {
     // Event listeners
     map.on('draw', this.deferredRender);
     context.on('modechange', this.rerender);
+//    context.behaviors.hover.on('hoverchange', this.rerender);   //Rapid#1575
     l10n.on('localechange', this._setupKeybinding);
 
     this._setupKeybinding();
@@ -61,6 +63,7 @@ export class UiHistoryCard extends AbstractUiCard {
     if (!this.visible) return;
 
     const context = this.context;
+//    const hovered = context.behaviors.hover.hoverTarget;   //Rapid#1575
     const graph = context.systems.editor.staging.graph;
     const l10n = context.systems.l10n;
 
@@ -104,35 +107,48 @@ export class UiHistoryCard extends AbstractUiCard {
     // Empty out the DOM content and rebuild from scratch..
     $content.html('');
 
-// //
-//     let selectedNoteID = context.selectedNoteID();
 
-    let selected, note, entity;
-//     if (selectedNoteID && osm) {       // selected 1 note
-//       selected = [ l10n.t('note.note') + ' ' + selectedNoteID ];
-//       note = osm.getNote(selectedNoteID);
-//     } else {                           // selected 1..n entities
+    // Decide what to show info about
+    let selected = context.selectedData();
+//    if (!selected.size && hovered?.data) {  // if nothing selected, fallback to hover target - Rapid#1575
+//      selected = new Map().set(hovered.dataID, hovered.data);
+//    }
 
-// select only OSM entities for now
-      selected = context.selectedIDs().filter(e => graph.hasEntity(e));
-      if (selected.length) {
-        entity = graph.entity(selected[0]);
+    // We can only currently show info about OSM Entities and OSM notes.
+    for (const [datumID, datum] of selected) {
+      if (datum instanceof QAItem && datum.service === 'osm') continue;  // OSM Note
+      if (graph.hasEntity(datumID)) continue;  // OSM Entity
+      selected.delete(datumID);  // something else, discard
+    }
+
+    if (selected.size !== 1) {   // 0 items or multiple items
+      $content
+        .append('h4')
+        .attr('class', 'history-heading')
+        .text(l10n.t('info_panels.selected', { n: selected.size }));
+
+    } else {   // exactly 1 item
+      const [pair] = selected;  // get the first (only) thing in the Map()
+      const [datumID, datum] = pair;
+
+      if (datum instanceof QAItem) {  // a note
+        $content
+          .append('h4')
+          .attr('class', 'history-heading')
+          .text(l10n.t('note.note') + ' ' + datumID);
+
+        $content
+          .call(this.renderNote, datum);
+
+      } else {
+        $content
+          .append('h4')
+          .attr('class', 'history-heading')
+          .text(datumID);
+
+        $content
+          .call(this.renderEntity, datum);
       }
-//     }
-
-    const singular = selected.length === 1 ? selected[0] : null;
-
-    $content
-      .append('h4')
-      .attr('class', 'history-heading')
-      .text(singular || l10n.t('info_panels.selected', { n: selected.length }));
-
-    if (!singular) return;
-
-    if (entity) {
-      $content.call(this.renderEntity, entity);
-    } else if (note) {
-      $content.call(this.renderNote, note);
     }
   }
 
