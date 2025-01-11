@@ -18,19 +18,39 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
    */
   constructor(scene, layerID) {
     super(scene, layerID);
-    this._clear();
-    this._enabled = true;
 
+    this._enabled = true;
+    this._overlaysDefined = null;
+    this.overlaysContainer = null;
+  }
+
+
+  /**
+   * reset
+   * Every Layer should have a reset function to replace any Pixi objects and internal state.
+   */
+  reset() {
+    super.reset();
+
+    const groupContainer = this.scene.groups.get('basemap');
+
+    // Remove any existing containers
+    for (const child of groupContainer.children) {
+      if (child.label === this.layerID) {   // 'rapidoverlay'
+        groupContainer.removeChild(child);
+        child.destroy({ children: true });  // recursive
+      }
+    }
+
+    // Add containers
     const overlays = new PIXI.Container();
-    overlays.label = `${this.layerID}`;
+    overlays.label = `${this.layerID}`;  // 'rapidoverlay'
     overlays.sortableChildren = false;
     overlays.interactiveChildren = true;
     this.overlaysContainer = overlays;
     this._overlaysDefined = null;
 
-
-    const basemapContainer = this.scene.groups.get('basemap');
-    basemapContainer.addChild(overlays);
+    groupContainer.addChild(overlays);
   }
 
 
@@ -48,7 +68,7 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
     const datasets = this.context.systems.rapid.datasets;
     const parentContainer = this.overlaysContainer;
 
-    //Extremely inefficient but we're not drawing anything else at this zoom
+    // Extremely inefficient but we're not drawing anything else at this zoom
     parentContainer.removeChildren();
 
     for (const dataset of datasets.values()) {
@@ -57,8 +77,8 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
         const overlay = dataset.overlay;
         if (vtService) {
           if ((zoom >= overlay.minZoom ) && (zoom <= overlay.maxZoom)) {  // avoid firing off too many API requests
-              vtService.loadTiles(overlay.url);
-            }
+            vtService.loadTiles(overlay.url);
+          }
           const overlayData = vtService.getData(overlay.url).map(d => d.geojson);
           const points = overlayData.filter(d => d.geometry.type === 'Point' || d.geometry.type === 'MultiPoint');
           this.renderPoints(frame, viewport, zoom, points, customColor);
@@ -112,19 +132,9 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
           this._overlaysDefined = true;
         }
       }
-
     }
 
     return this._overlaysDefined;
-  }
-
-
-  /**
-   * _clear
-   * Clear state to prepare for new custom data
-   */
-  _clear() {
-    this._overlaysDefined = null;
   }
 
 }

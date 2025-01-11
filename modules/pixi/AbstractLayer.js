@@ -66,17 +66,17 @@ export class AbstractLayer {
 
   /**
    * reset
-   * Every Layer should have a reset function to clear out any state when a reset occurs.
+   * Every Layer should have a reset function to replace any Pixi objects and internal state.
    * Override in a subclass with needed logic.
    * @abstract
    */
   reset() {
     this._featureHasData.clear();
     this._dataHasFeature.clear();
-    this._parentHasChildren.clear();
-    this._childHasParents.clear();
-    this._dataHasClass.clear();
-    this._classHasData.clear();
+    this._parentHasChildren.clear();  // maybe don't clear this (should pseudo dom survive a reset?)
+    this._childHasParents.clear();    // maybe don't clear this (should pseudo dom survive a reset?)
+    this._dataHasClass.clear();       // maybe don't clear this (should pseudo css survive a reset?)
+    this._classHasData.clear();       // maybe don't clear this (should pseudo css survive a reset?)
 
     for (const feature of this.features.values()) {
       feature.destroy();

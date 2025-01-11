@@ -99,7 +99,7 @@ export class PixiEvents extends EventEmitter {
     surface.addEventListener('pointerover', this._pointerover);
     surface.addEventListener('pointerout', this._pointerout);
 
-    const stage = gfx.pixi.stage;
+    const stage = gfx.stage;
     stage.addEventListener('click', this._click);
     stage.addEventListener('rightclick', this._click);   // pixi has a special 'rightclick' event
     stage.addEventListener('pointerdown', this._pointerdown);
@@ -132,7 +132,7 @@ export class PixiEvents extends EventEmitter {
     surface.removeEventListener('pointerover', this._pointerover);
     surface.removeEventListener('pointerout', this._pointerout);
 
-    const stage = gfx.pixi.stage;
+    const stage = gfx.stage;
     stage.removeEventListener('click', this._click);
     stage.removeEventListener('rightclick', this._click);
     stage.removeEventListener('pointerdown', this._pointerdown);

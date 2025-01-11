@@ -7,8 +7,6 @@ import { PixiScene } from '../pixi/PixiScene.js';
 import { PixiTextures } from '../pixi/PixiTextures.js';
 import { utilSetTransform } from '../util/util.js';
 
-let _sharedTextures;   // singleton (for now)
-
 const THROTTLE = 250;  // throttled rendering milliseconds (for now)
 
 
@@ -30,9 +28,10 @@ const THROTTLE = 250;  // throttled rendering milliseconds (for now)
  *   `textures`       PixiTextures manages the textures
  *
  * Events available:
- *   `draw`      Fires after a full redraw
- *   `move`      Fires after the map's transform has changed (can fire frequently)
- *               ('move' is mostly for when you want to update some content that floats over the map)
+ *   `draw`           Fires after a full redraw
+ *   `move`           Fires after the map's transform has changed (can fire frequently)
+ *                    ('move' is mostly for when you want to update some content that floats over the map)
+ *   `contextchange`  Fires after the WebGLContext has changed (to let listeners know Pixi has been replaced)
  */
 export class GraphicsSystem extends AbstractSystem {
 
@@ -44,7 +43,8 @@ export class GraphicsSystem extends AbstractSystem {
     super(context);
 
     this.id = 'gfx';
-    this.dependencies = new Set(['assets', 'map', 'urlhash']);
+    this.dependencies = new Set(['assets', 'map', 'ui', 'urlhash']);
+    this.highQuality = true;  // this can go false if we detect poor performance
 
     // Create these early
     this.supersurface = document.createElement('div');  // parent `div` temporary transforms between redraws
@@ -60,7 +60,7 @@ export class GraphicsSystem extends AbstractSystem {
     this.textures = null;
 
     // Properties used to manage the scene transform
-    this.pixiViewport = new Viewport();
+    this._pixiViewport = null;
     this._prevTransform = { x: 0, y: 0, k: 256 / Math.PI, r: 0 };    // transform at time of last draw
     this._isTempTransformed = false;     // is the supersurface transformed?
     this._transformEase = null;
@@ -77,6 +77,32 @@ export class GraphicsSystem extends AbstractSystem {
     this.deferredRedraw = this.deferredRedraw.bind(this);
     this.immediateRedraw = this.immediateRedraw.bind(this);
     this._tick = this._tick.bind(this);
+
+    // If we are using WebGL, watch for context loss - Rapid#1658
+    this._handleGLContextLost = this._handleGLContextLost.bind(this);
+    this._handleGLContextRestored = this._handleGLContextRestored.bind(this);
+    this._isContextLost = false;
+
+    // Anything involving PIXI globals can be set up here, to ensure it only happens one time.
+    // We'll use the Pixi shared ticker, but we don't want it started yet.
+    const ticker = PIXI.Ticker.shared;
+    ticker.autoStart = false;
+    ticker.stop();
+    ticker.add(this._tick, this);
+    this.ticker = ticker;
+
+    // Prepare a basic bitmap font that we can use for things like debug messages
+    PIXI.BitmapFont.install({
+      name: 'rapid-debug',
+      style: {
+        fill: { color: 0xffffff },
+        fontSize: 14,
+        stroke: { color: 0x333333 }
+      },
+      chars: PIXI.BitmapFontManager.ASCII,
+      resolution: 2
+    });
+
   }
 
 
@@ -131,7 +157,7 @@ export class GraphicsSystem extends AbstractSystem {
     return this._startPromise = prerequisites
       .then(() => {
         this._started = true;
-        this.pixi.ticker.start();
+        this.ticker.start();
       });
   }
 
@@ -179,7 +205,7 @@ export class GraphicsSystem extends AbstractSystem {
   _tick() {
     if (!this._started || this._paused) return;
 
-    const ticker = this.pixi.ticker;
+    const ticker = this.ticker;
     // console.log('FPS=' + ticker.FPS.toFixed(1));
 
     // For now, we will perform either APP (Rapid prepares scene graph) or DRAW (Pixi render) during a tick.
@@ -320,7 +346,7 @@ export class GraphicsSystem extends AbstractSystem {
 
     const context = this.context;
     const mapViewport = context.viewport;
-    const pixiViewport = this.pixiViewport;
+    const pixiViewport = this._pixiViewport;
 
     // Calculate the transform easing, if any
     if (this._transformEase) {
@@ -431,7 +457,7 @@ export class GraphicsSystem extends AbstractSystem {
     if (context.container().classed('resizing')) return;
 
     const mapViewport = context.viewport;
-    const pixiViewport = this.pixiViewport;
+    const pixiViewport = this._pixiViewport;
 
     // At this point, the map transform is settled
     // (`_tform` is called immediately before `_app`)
@@ -489,7 +515,7 @@ export class GraphicsSystem extends AbstractSystem {
   _draw() {
     // Resize Pixi canvas if needed..
     // It will clear the canvas, so do this immediately before we render.
-    const pixiDims = this.pixiViewport.dimensions;
+    const pixiDims = this._pixiViewport.dimensions;
     const canvasDims = [this.pixi.screen.width, this.pixi.screen.height];
 
     if (!vecEqual(pixiDims, canvasDims)) {
@@ -567,7 +593,7 @@ export class GraphicsSystem extends AbstractSystem {
 //      debug2.zIndex = 102;
 //      origin.addChild(debug2);
 //    }
-//    const centerLoc = this.pixiViewport.project(mapViewport.centerLoc());
+//    const centerLoc = this._pixiViewport.project(mapViewport.centerLoc());
 //    debug2.position.set(centerLoc[0], centerLoc[1]);
 
     // debugging the contents of the texture atlas
@@ -644,9 +670,9 @@ export class GraphicsSystem extends AbstractSystem {
     });
 
     const options = {
-      antialias: true,
-      autoDensity: true,
-      autoStart: false,    // Don't start the ticker yet
+      antialias: this.highQuality,
+      autoDensity: this.highQuality,
+      autoStart: false,     // Avoid the ticker
       canvas: this.surface,
       events: {
         move: false,
@@ -659,9 +685,9 @@ export class GraphicsSystem extends AbstractSystem {
       preference: renderPreference,
       preferWebGLVersion: renderGLVersion,
       preserveDrawingBuffer: true,
-      resolution: window.devicePixelRatio,
+      resolution: this.highQuality ? window.devicePixelRatio : 1,
       sharedLoader: true,
-      sharedTicker: true,
+      sharedTicker: false,  // Avoid the ticker
       textureGCActive: true,
       useBackBuffer: false
     };
@@ -677,19 +703,16 @@ export class GraphicsSystem extends AbstractSystem {
    * Set up scene, events, textures, stage, etc.
    */
   _afterPixiInit() {
-    if (this.scene) return;   // done already?
+    if (this.stage) return;   // done already?
 
-    // Prepare a basic bitmap font that we can use for things like debug messages
-    PIXI.BitmapFont.install({
-      name: 'rapid-debug',
-      style: {
-        fill: { color: 0xffffff },
-        fontSize: 14,
-        stroke: { color: 0x333333 }
-      },
-      chars: PIXI.BitmapFontManager.ASCII,
-      resolution: 2
-    });
+    // Watch for WebGL context loss on context canvas - Rapid#1658
+    const renderer = this.pixi.renderer;
+    if (renderer.type === PIXI.RendererType.WEBGL) {
+      // Note that with multiview rendering the context canvas is not the view canvas (aka surface)
+      const canvas = renderer.context.canvas;
+      canvas.addEventListener('webglcontextlost', this._handleGLContextLost);
+      canvas.addEventListener('webglcontextrestored', this._handleGLContextRestored);
+    }
 
     // Enable debugging tools
     if (window.Rapid.isDebug) {
@@ -702,6 +725,10 @@ export class GraphicsSystem extends AbstractSystem {
         app: this.pixi
       };
     }
+
+    // Create or replace the Pixi viewport
+    // This viewport will closely follow the map viewport but can be offset from it.
+    this._pixiViewport = new Viewport();
 
     // Setup the stage
     // The `stage` should be positioned so that `[0,0]` is at the center of the viewport,
@@ -724,22 +751,161 @@ export class GraphicsSystem extends AbstractSystem {
     stage.addChild(origin);
     this.origin = origin;
 
-    // Setup the ticker
-    const ticker = this.pixi.ticker;
-    const defaultListener = ticker._head.next;
-    ticker.remove(defaultListener._fn, defaultListener._context);
-    ticker.add(this._tick, this);
-
-    this.scene = new PixiScene(this);
-    this.events = new PixiEvents(this);
-
-    // Texture Manager should only be created once
-    // This is because it will start loading assets and Pixi's asset loader is not reentrant.
-    // (it causes test failures if we create a bunch of these)
-    if (!_sharedTextures) {
-      _sharedTextures = new PixiTextures(this);
+    // The Pixi Application comes with its own ticker that just calls `render()`,
+    // and we don't want to ever use it.  Disable it.
+    const appTicker = this.pixi.ticker;
+    let next = appTicker._head.next;
+    while (next) {
+      next = next.destroy(true);  // remove any listeners
     }
-    this.textures = _sharedTextures;
+    this.pixi.start = () => {};
+    this.pixi.stop = () => {};
+
+    // Create these classes if we haven't already
+    if (!this.scene) {
+      this.scene = new PixiScene(this);
+    } else {
+      this.scene.reset();
+    }
+
+    if (!this.textures) {
+      this.textures = new PixiTextures(this);
+    } else {
+      this.textures.reset();
+    }
+
+    if (!this.events) {
+      this.events = new PixiEvents(this);
+    }
+  }
+
+
+  /**
+   * _handleGLContextLost
+   * Handler for webglcontextlost events on the canvas.
+   * @param  {WebGLContextEvent}  e  - The context event
+   */
+  _handleGLContextLost(e) {
+    e.preventDefault();
+
+    this._isContextLost = true;
+    this._drawPending = false;
+
+    this.ticker.stop();         // stop ticking
+    this.pause();               // stop rendering
+    this.events.disable();      // stop listening for events
+    this.highQuality = false;   // back off when we get the context restored..
+
+    // We'll try to keep the Pixi environment around, so that code elsewhere
+    // that references things like `scene`, `events`, etc has a chance of working.
+
+    // Nothing will be rendered anyway, but at least browse mode doesn't
+    // need Pixi for anything like the drawing/editing modes do.
+    // If the user happened to be editing something when the context was lost, that's too bad.
+    // We may be able to handle this better eventually, but for now we will just
+    // assume the whole graphics system is getting thrown out.
+    this.context.enter('browse');
+
+    // Normally Pixi's `GLContextSystem` would try to restore context if we call `render()`
+    //  see https://pixijs.download/release/docs/rendering.GlContextSystem.html
+    // But this process is buggy (see Pixi#10403) and we're paused and not calling render.
+    // So instead, we'll try to restore the context ourselves here and replace Pixi completely.
+    const renderer = this.pixi.renderer;
+    const ext = renderer.context.extensions.loseContext; // WEBGL_lose_context extension
+    if (!ext) return;  // I think all browsers we target should have this
+
+    Promise.resolve()
+      .then(() => new Promise(resolve => { window.setTimeout(resolve, 10); }))  // wait 10ms
+      .then(() => ext.restoreContext());
+  }
+
+
+  /**
+   * _handleGLContextRestored
+   * Handler for webglcontextrestored events on the canvas.
+   * @param  {WebGLContextEvent}  e  - The context event
+   */
+  _handleGLContextRestored(e) {
+    Promise.resolve()
+      .then(() => this._destroyPixi())
+      .then(() => this._initPixiAsync())
+      .then(() => this._afterPixiInit())
+      .then(() => {
+        // We just replaced the texture manager, so we have to tell it about the available SVG icons.
+        const context = this.context;
+        const $container = context.container();
+        $container.selectAll('#rapid-defs symbol')
+          .each((d, i, nodes) => {
+            const symbol = nodes[i];
+            const iconID = symbol.getAttribute('id');
+            this.textures.registerSvgIcon(iconID, symbol);
+          });
+
+        this._isContextLost = false;
+        this.events.enable();   // resume listening
+        this.resume();          // resume rendering
+        this.ticker.start();    // resume ticking
+        this.emit('contextchange');
+      });
+  }
+
+
+  /**
+   * _destroyPixi
+   * After a WebGL context loss, replace the parts of Pixi that need replacing.
+   * Basically we need to destroy the `PIXI.Application`
+   *  then force`_initPixiAsync` and `_afterPixiInit` to run again.
+   *
+   * Note: It might be possible avoid some of this, but I did hit this issue in testing:
+   *  https://github.com/pixijs/pixijs/issues/10403
+   * So for now, we will just replace the whole thing.
+   *
+   * To test, try:  `rapidContext.systems.gfx.testContextLoss()`
+   *  and see whether Pixi can deal with it.
+   */
+  _destroyPixi() {
+    if (!this.pixi) return;   // already destroyed
+
+    const renderer = this.pixi.renderer;
+    if (renderer.type === PIXI.RendererType.WEBGL) {
+      // note that with multiview rendering the context canvas is not the view canvas (aka surface)
+      const canvas = renderer.context.canvas;
+      canvas.removeEventListener('webglcontextlost', this._handleGLContextLost);
+      canvas.removeEventListener('webglcontextrestored', this._handleGLContextRestored);
+    }
+
+    const rendererDestroyOptions = {
+      removeView: false   // leave the surface attached to the DOM
+    };
+    const applicationDestroyOptions = {
+      children: true,
+      texture: true,
+      textureSource: true,
+      context: true
+    };
+
+    this.pixi.destroy(rendererDestroyOptions, applicationDestroyOptions);
+    this.pixi = null;
+
+    this.origin = null;
+    this.stage = null;
+  }
+
+
+  /**
+   * testContextLoss
+   * For testing, attempt to lose the WebGL context and get it back.
+   */
+  testContextLoss() {
+    if (!this.pixi) return;
+
+    const renderer = this.pixi.renderer;
+    if (renderer.type !== PIXI.RendererType.WEBGL) return;
+
+    const ext = renderer.context.extensions.loseContext; // WEBGL_lose_context extension
+    if (!ext) return;  // I think all browsers we target should have this
+    ext.loseContext();
+    // We'll end up in `_handleGLContextLost()` listener above
   }
 
 }

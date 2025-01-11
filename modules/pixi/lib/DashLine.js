@@ -29,14 +29,14 @@ const dashLineOptionsDefault = {
 };
 
 
-let _dashTextureCache = {};   // cache of Textures for dashed lines
 
 
 export class DashLine {
 
   /**
    * Create a DashLine
-   * @param graphics
+   * @param  {GraphicsSystem}  gfx       - Reference back to the GraphicsSystem, so we can find the texture cache
+   * @param  {PIXI.Graphics}   graphics  - The Pixi graphics object to draw with a dashed-line style
    * @param [options]
    * @param [options.useTexture=false] - use the texture based render (useful for very large or very small dashed lines)
    * @param [options.dash=[10,5] - an array holding the dash and gap (eg, [10, 5, 20, 5, ...])
@@ -47,7 +47,9 @@ export class DashLine {
    * @param [options.join] - add a LINE_JOIN style to the dashed lines (only works for useTexture: false)
    * @param [options.alignment] - The alignment of any lines drawn (0.5 = middle, 1 = outer, 0 = inner)
    */
-  constructor(graphics, options = {}) {
+  constructor(gfx, graphics, options = {}) {
+    this.gfx = gfx;
+
     options = { ...dashLineOptionsDefault, ...options };
     this.options = options;
 
@@ -391,9 +393,15 @@ export class DashLine {
    *  @return {PIXI.Texture}
    */
   _getTexture(options, dashSize) {
+    const dashTextureCache = this.gfx.textures?._dashTextureCache;
+    if (!dashTextureCache) {    // called too early?
+      console.error('No DashTextureCache found');   // eslint-disable-line no-console
+      return null;
+    }
+
     const key = options.dash.toString();
-    if (_dashTextureCache[key]) {
-      return _dashTextureCache[key];
+    if (dashTextureCache[key]) {
+      return dashTextureCache[key];
     }
 
     // For WebGL1 support, this canvas should have power of 2 dimensions.
@@ -404,7 +412,7 @@ export class DashLine {
     canvas.height = PIXI.nextPow2(drawHeight);
     const ctx = canvas.getContext('2d');
     if (!ctx) {
-      console.warn('Did not get context from canvas');   // eslint-disable-line no-console
+      console.error('Did not get context from canvas');   // eslint-disable-line no-console
       return null;
     }
 
@@ -431,7 +439,7 @@ export class DashLine {
     }
     ctx.stroke();
 
-    const texture = (_dashTextureCache[key] = PIXI.Texture.from(canvas));
+    const texture = (dashTextureCache[key] = PIXI.Texture.from(canvas));
     texture.source.scaleMode = 'nearest';
 
     return texture;

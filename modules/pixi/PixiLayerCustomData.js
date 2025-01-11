@@ -66,6 +66,17 @@ export class PixiLayerCustomData extends AbstractLayer {
 
 
   /**
+   * reset
+   * Every Layer should have a reset function to replace any Pixi objects and internal state.
+   */
+  reset() {
+    super.reset();
+    // note: we don't need to call this._clear() to remove custom data here.
+    // Custom data can persist through a reset of the graphics system.
+  }
+
+
+  /**
    * render
    * Render the GeoJSON custom data
    * @param  frame      Integer frame being rendered

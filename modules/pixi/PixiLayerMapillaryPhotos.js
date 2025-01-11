@@ -1,4 +1,4 @@
-import { scaleLinear as d3_scaleLinear } from 'd3-scale';
+import { scaleLinear } from 'd3-scale';
 
 import { AbstractLayer } from './AbstractLayer.js';
 import { PixiFeatureLine } from './PixiFeatureLine.js';
@@ -25,8 +25,8 @@ const MARKERSTYLE = {
   fovLength:       1
 };
 
-const fovWidthInterp = d3_scaleLinear([90, 10], [1.3, 0.7]);
-const fovLengthInterp = d3_scaleLinear([90, 10], [0.7, 1.5]);
+const fovWidthInterp = scaleLinear([90, 10], [1.3, 0.7]);
+const fovLengthInterp = scaleLinear([90, 10], [0.7, 1.5]);
 
 
 
@@ -59,6 +59,15 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
         this._viewerFov = 55;
       });
     }
+  }
+
+
+  /**
+   * reset
+   * Every Layer should have a reset function to replace any Pixi objects and internal state.
+   */
+  reset() {
+    super.reset();
   }
 
 

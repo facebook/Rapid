@@ -25,24 +25,14 @@ export class PixiLayerOsm extends AbstractLayer {
     super(scene, layerID);
     this.enabled = true;   // OSM layers should be enabled by default
 
-    const basemapContainer = this.scene.groups.get('basemap');
-    this._resolved = new Map();  // Map (entity.id -> GeoJSON feature)
+    this.areaContainer = null;
+    this.lineContainer = null;
+
+    this._resolved = new Map();  // Map <entityID, GeoJSON feature>
 
 // experiment for benchmarking
 //    this._alreadyDownloaded = false;
 //    this._saveCannedData = false;
-
-    const areas = new PIXI.Container();
-    areas.label = `${this.layerID}-areas`;
-    areas.sortableChildren = true;
-    this.areaContainer = areas;
-
-    const lines = new PIXI.Container();
-    lines.label = `${this.layerID}-lines`;
-    lines.sortableChildren = true;
-    this.lineContainer = lines;
-
-    basemapContainer.addChild(areas, lines);
   }
 
 
@@ -110,11 +100,35 @@ export class PixiLayerOsm extends AbstractLayer {
 
   /**
    * reset
-   * Every Layer should have a reset function to clear out any state when a reset occurs.
+   * Every Layer should have a reset function to replace any Pixi objects and internal state.
    */
   reset() {
     super.reset();
-    this._resolved.clear();
+
+    this._resolved.clear();  // cached geojson features
+
+    const groupContainer = this.scene.groups.get('basemap');
+
+    // Remove any existing containers
+    for (const child of groupContainer.children) {
+      if (child.label.startsWith(this.layerID + '-')) {   // 'osm-*'
+        groupContainer.removeChild(child);
+        child.destroy({ children: true });  // recursive
+      }
+    }
+
+    // Add containers
+    const areas = new PIXI.Container();
+    areas.label = `${this.layerID}-areas`;   // e.g. osm-areas
+    areas.sortableChildren = true;
+    this.areaContainer = areas;
+
+    const lines = new PIXI.Container();
+    lines.label = `${this.layerID}-lines`;   // e.g. osm-lines
+    lines.sortableChildren = true;
+    this.lineContainer = lines;
+
+    groupContainer.addChild(areas, lines);
   }
 
 

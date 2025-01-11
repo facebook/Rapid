@@ -76,6 +76,15 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
 
 
   /**
+   * reset
+   * Every Layer should have a reset function to replace any Pixi objects and internal state.
+   */
+  reset() {
+    super.reset();
+  }
+
+
+  /**
    * filterImages
    * @param  {Array<image>}  images - all images
    * @return {Array<image>}  images with filtering applied

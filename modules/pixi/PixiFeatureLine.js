@@ -80,7 +80,7 @@ export class PixiFeatureLine extends AbstractFeature {
   update(viewport, zoom) {
     if (!this.dirty) return;  // nothing to do
 
-    const wireframeMode = this.context.systems.map.wireframeMode;
+    const isWireframe = this.context.systems.map.wireframeMode;
     const textureManager = this.gfx.textures;
     const container = this.container;
     const style = this._style;
@@ -214,7 +214,7 @@ export class PixiFeatureLine extends AbstractFeature {
           width = minwidth;
         }
 
-        if (wireframeMode) {
+        if (isWireframe) {
           width = 1;
         }
 
@@ -238,64 +238,66 @@ export class PixiFeatureLine extends AbstractFeature {
 
 
     if (this.casing.renderable) {
-      updateGraphic('casing', this.casing, this.geometry.coords, style, wireframeMode);
+      this.updateGraphic('casing', this.casing, this.geometry.coords, style, zoom, isWireframe);
     }
     if (this.stroke.renderable) {
-      updateGraphic('stroke', this.stroke, this.geometry.coords, style, wireframeMode);
+      this.updateGraphic('stroke', this.stroke, this.geometry.coords, style, zoom, isWireframe);
     }
 
     this.updateHalo();
+  }
 
 
-    function updateGraphic(which, graphic, points, style, wireframeMode) {
-      const minwidth = which === 'casing' ? 3 : 2;
-      let width = style[which].width;
+  /**
+   * updateGraphic
+   */
+  updateGraphic(which, graphic, points, style, zoom, isWireframe) {
+    const minwidth = which === 'casing' ? 3 : 2;
+    let width = style[which].width;
 
-      // Apply effectiveZoom style adjustments
-      if (zoom < 16) {
-        width -= 4;
-      } else if (zoom < 17) {
-        width -= 2;
-      }
-      if (width < minwidth) {
-        width = minwidth;
-      }
-
-      if (wireframeMode) {
-        width = 1;
-      }
-
-      let g = graphic.clear();
-      if (style[which].alpha === 0) return;
-
-      const strokeStyle = {
-        color: style[which].color,
-        width: width,
-        alpha: style[which].alpha || 1.0,
-        join: style[which].join,
-        cap:  style[which].cap,
-      };
-
-      if (style[which].dash) {
-        strokeStyle.dash = style[which].dash;
-        g = new DashLine(g, strokeStyle);
-        drawLineFromPoints(points, g);
-      } else {
-        drawLineFromPoints(points, g);
-        g = g.stroke(strokeStyle);
-      }
-
-      function drawLineFromPoints(points, graphics) {
-        points.forEach(([x, y], i) => {
-          if (i === 0) {
-            graphics.moveTo(x, y);
-          } else {
-            graphics.lineTo(x, y);
-          }
-        });
-      }
+    // Apply effectiveZoom style adjustments
+    if (zoom < 16) {
+      width -= 4;
+    } else if (zoom < 17) {
+      width -= 2;
+    }
+    if (width < minwidth) {
+      width = minwidth;
     }
 
+    if (isWireframe) {
+      width = 1;
+    }
+
+    let g = graphic.clear();
+    if (style[which].alpha === 0) return;
+
+    const strokeStyle = {
+      color: style[which].color,
+      width: width,
+      alpha: style[which].alpha || 1.0,
+      join: style[which].join,
+      cap:  style[which].cap,
+    };
+
+    if (style[which].dash) {
+      strokeStyle.dash = style[which].dash;
+      g = new DashLine(this.gfx, g, strokeStyle);
+      drawLineFromPoints(points, g);
+    } else {
+      drawLineFromPoints(points, g);
+      g = g.stroke(strokeStyle);
+    }
+
+    function drawLineFromPoints(points, graphics) {
+      points.forEach(([x, y], i) => {
+        if (i === 0) {
+          graphics.moveTo(x, y);
+        } else {
+          graphics.lineTo(x, y);
+        }
+      });
+    }
   }
 
 
@@ -344,7 +346,7 @@ export class PixiFeatureLine extends AbstractFeature {
       };
 
       this.halo.clear();
-      const dl = new DashLine(this.halo, HALO_STYLE);
+      const dl = new DashLine(this.gfx, this.halo, HALO_STYLE);
       if (this._bufferdata) {
         if (this._bufferdata.outer && this._bufferdata.inner) {   // closed line
           dl.poly(this._bufferdata.outer);

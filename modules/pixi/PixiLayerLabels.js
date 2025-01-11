@@ -57,31 +57,9 @@ export class PixiLayerLabels extends AbstractLayer {
     super(scene, layerID);
     this.enabled = true;   // labels should be enabled by default
 
-    // Items in this layer don't actually need to be interactive
-    const groupContainer = this.scene.groups.get('labels');
-    groupContainer.eventMode = 'none';
-
-    const labelOriginContainer = new PIXI.Container();
-    labelOriginContainer.label= 'labelorigin';
-    labelOriginContainer.eventMode = 'none';
-    this.labelOriginContainer = labelOriginContainer;
-
-    const debugContainer = new PIXI.Container();  //PIXI.ParticleContainer(50000);
-    debugContainer.label= 'debug';
-    debugContainer.eventMode = 'none';
-    debugContainer.roundPixels = false;
-    debugContainer.sortableChildren = false;
-    this.debugContainer = debugContainer;
-
-    const labelContainer = new PIXI.Container();
-    labelContainer.label= 'labels';
-    labelContainer.eventMode = 'none';
-    labelContainer.sortableChildren = true;
-    this.labelContainer = labelContainer;
-
-    groupContainer.addChild(labelOriginContainer);
-    labelOriginContainer.addChild(debugContainer, labelContainer);
-
+    this.labelOriginContainer = null;
+    this.debugContainer = null;
+    this.labelContainer = null;
 
     // A RBush spatial index that stores all the placement boxes
     this._rbush = new RBush();
@@ -128,14 +106,12 @@ export class PixiLayerLabels extends AbstractLayer {
 
   /**
    * reset
-   * Every Layer should have a reset function to clear out any state when a reset occurs.
+   * Every Layer should have a reset function to replace any Pixi objects and internal state.
    */
   reset() {
     super.reset();
 
-    this.labelContainer.removeChildren();
-    this.debugContainer.removeChildren();
-
+    // Destroy any Pixi display objects
     for (const dObj of this._dObjs.values()) {
       dObj.destroy();
     }
@@ -146,6 +122,38 @@ export class PixiLayerLabels extends AbstractLayer {
 //        textureManager.free('text', label.str);
 //      }
     }
+
+    // Items in this layer don't actually need to be interactive
+    const groupContainer = this.scene.groups.get('labels');
+    groupContainer.eventMode = 'none';
+
+    // Remove any existing containers
+    for (const child of groupContainer.children) {
+      groupContainer.removeChild(child);
+      child.destroy({ children: true });  // recursive
+    }
+
+    // Add containers
+    const labelOriginContainer = new PIXI.Container();
+    labelOriginContainer.label= 'labelorigin';
+    labelOriginContainer.eventMode = 'none';
+    this.labelOriginContainer = labelOriginContainer;
+
+    const debugContainer = new PIXI.Container();  //PIXI.ParticleContainer(50000);
+    debugContainer.label= 'debug';
+    debugContainer.eventMode = 'none';
+    debugContainer.roundPixels = false;
+    debugContainer.sortableChildren = false;
+    this.debugContainer = debugContainer;
+
+    const labelContainer = new PIXI.Container();
+    labelContainer.label= 'labels';
+    labelContainer.eventMode = 'none';
+    labelContainer.sortableChildren = true;
+    this.labelContainer = labelContainer;
+
+    groupContainer.addChild(labelOriginContainer);
+    labelOriginContainer.addChild(debugContainer, labelContainer);
 
     this._avoidBoxes.clear();
     this._labelBoxes.clear();

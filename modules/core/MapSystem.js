@@ -177,7 +177,7 @@ export class MapSystem extends AbstractSystem {
 
         rapid
           .on('datasetchange', () => {
-            scene.dirtyLayers(['rapid', 'rapid-overlay', 'overture']);
+            scene.dirtyLayers(['rapid', 'rapidoverlay']);
             gfx.immediateRedraw();
           });
 

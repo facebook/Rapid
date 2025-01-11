@@ -45,9 +45,10 @@ export class UiMinimap {
     // (This is also necessary when using `d3-selection.call`)
     this.render = this.render.bind(this);
     this.toggle = this.toggle.bind(this);
-    this.drawMinimap = this.drawMinimap.bind(this);
     this._setupKeybinding = this._setupKeybinding.bind(this);
-    this._tick = this._tick.bind(this);
+    this._draw = this._draw.bind(this);
+    this._resetAsync = this._resetAsync.bind(this);
+    this._update = this._update.bind(this);
     this._zoomStarted = this._zoomStarted.bind(this);
     this._zoomed = this._zoomed.bind(this);
     this._zoomEnded = this._zoomEnded.bind(this);
@@ -124,15 +125,15 @@ export class UiMinimap {
       .attr('height', h * 2);
 
     this.initAsync()
-      .then(() => this.drawMinimap());
+      .then(() => this._update());
   }
 
 
   /**
-   * drawMinimap
+   * _update
    * Call this whenever something about the minimap needs to change
    */
-  drawMinimap() {
+  _update() {
     if (this._isHidden) return;
 
     const gfx = this.context.systems.gfx;
@@ -140,7 +141,7 @@ export class UiMinimap {
 
     this._updateTransform();
     this._updateBoundingBox();
-    this._tick();
+    this._draw();
   }
 
 
@@ -194,7 +195,7 @@ export class UiMinimap {
     // update `_zDiff` (difference in zoom between main and mini)
     this._zDiff = viewMain.transform.zoom - viewMini.transform.zoom;
 
-    this.drawMinimap();
+    this._update();
   }
 
 
@@ -213,7 +214,7 @@ export class UiMinimap {
     this._tStart = null;
     this._gesture = null;
 
-    this.drawMinimap();
+    this._update();
   }
 
 
@@ -364,7 +365,7 @@ export class UiMinimap {
         });
 
     } else {
-      this.drawMinimap();
+      this._update();
       $wrap
         .style('display', 'block')
         .style('opacity', '0')
@@ -387,10 +388,10 @@ export class UiMinimap {
 
 
   /**
-   * _tick
+   * _draw
    * Draw the minimap
    */
-  _tick() {
+  _draw() {
     if (this._isHidden) return;
 
     const gfx = this.context.systems.gfx;
@@ -445,7 +446,8 @@ renderer.view.canvas = mainCanvas;  // restore main canvas
     if (!gfx.pixi || !gfx.textures)  return Promise.reject();  // called too early?
 
     // event handlers
-    gfx.on('draw', this.drawMinimap);
+    gfx.on('draw', this._update);
+    gfx.on('contextchange', this._resetAsync);
 
     // Mock Stage
     const stage = new PIXI.Container();
@@ -489,6 +491,37 @@ renderer.view.canvas = mainCanvas;  // restore main canvas
     miniScene.layers.set(this.layer.id, this.layer);
 
     return this._initPromise = Promise.resolve();
+  }
+
+
+  /**
+   * _resetAsync
+   * Replace the Minimap after a context loss
+   * @return {Promise} Promise resolved when this component has completed reset and init
+   */
+  _resetAsync() {
+    const context = this.context;
+    const gfx = context.systems.gfx;
+
+    // event handlers
+    gfx.off('draw', this._update);
+    gfx.off('contextchange', this._resetAsync);
+
+    if (this.layer) {
+      this.layer.destroyAll();
+      this.layer = null;
+    }
+
+    if (this.stage) {
+      this.stage.destroy({ children: true });
+      this.stage = null;
+    }
+
+    this._initPromise = null;
+
+    // redo init and draw
+    return this.initAsync()
+      .then(() => this._update());
   }
 
 

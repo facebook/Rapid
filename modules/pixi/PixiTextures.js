@@ -10,7 +10,7 @@ import { AtlasAllocator, registerAtlasUploader } from './lib/AtlasAllocator.js';
  * This helps pack them efficiently and avoids swapping textures frequently as WebGL draws the scene.
  *
  * Properties you can access:
- *   `loaded`   `true` after the spritesheets and textures have finished loading
+ *   `loaded`   `true` after the patterns have finished loading
  */
 export class PixiTextures {
 
@@ -21,9 +21,51 @@ export class PixiTextures {
   constructor(gfx) {
     this.gfx = gfx;
     this.context = gfx.context;
+
     this.loaded = false;
 
+    // We store textures in 3 atlases, each one is for holding similar sized things. See `reset()` below.
+    // Each "atlas" manages its own store of "TextureSources" - real textures that upload to the GPU.
+    // This helps pack them efficiently and avoids swapping textures frequently as WebGL draws the scene.
+    this._atlas = null;
+
+    // All the named textures we know about.
+    // Each mapping is a unique identifying key to a PIXI.Texture
+    // The Texture is not necessarily packed in an Atlas (but ideally it should be)
+    // Important!  Make sure these texture keys don't conflict
+    this._textureData = new Map();   // Map<key, { PIXI.Texture, refcount }>  (e.g. 'symbol-boldPin')
+
+    // Because SVGs take some time to texturize, store the svg string and texturize only if needed
+    this._svgIcons = new Map();   // Map<key, SVGSymbolElement>  (e.g. 'temaki-school')
+
+    // DashLine plugin needs its own cache - we could eventually put these in an atlas.
+    this._dashTextureCache = {};
+
+    // Prepare a "bundle" to load the pattern textures
     const assets = this.context.systems.assets;
+    const filenames = [
+      'bushes', 'cemetery', 'cemetery_buddhist', 'cemetery_christian', 'cemetery_jewish', 'cemetery_muslim',
+      'construction', 'dots', 'farmland', 'farmyard', 'forest', 'forest_broadleaved', 'forest_leafless',
+      'forest_needleleaved', 'grass', 'landfill', 'lines', 'orchard', 'pond', 'quarry', 'vineyard',
+      'waves', 'wetland', 'wetland_bog', 'wetland_marsh', 'wetland_reedbed', 'wetland_swamp'
+    ];
+    const bundle = {};
+    for (const k of filenames) {
+      bundle[k] = assets.getFileURL(`img/pattern/${k}.png`);
+    }
+
+    PIXI.Assets.addBundle('patterns', bundle);
+
+    this.reset();
+  }
+
+
+  /**
+   * reset
+   * Replace any Pixi objects and internal state.
+   */
+  reset() {
+    const gfx = this.gfx;
 
     // Before using the atlases, we need to register the upload function with the renderer.
     // This will choose the correct function for either webGL or webGPU renderer type.
@@ -32,16 +74,17 @@ export class PixiTextures {
 
     // Try to get the max texture size.
     // We will prefer large atlas size of 8192 to avoid texture swapping, but can settle for less.
-    let maxsize = 2048;   // a reasonable default
-    if (renderer.type === PIXI.RendererType.WEBGL) {
-      const gl = renderer.gl;
-      maxsize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
-    } else if (renderer.type === PIXI.RendererType.WEBGPU) {
-      const gpu = renderer.gpu;
-      maxsize = gpu.adapter.limits.maxTextureDimension2D;
-    }
-
     const trysize = 8192;
+    let maxsize = 2048;   // a reasonable default
+    if (gfx.highQuality) {
+      if (renderer.type === PIXI.RendererType.WEBGL) {
+        const gl = renderer.gl;
+        maxsize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+      } else if (renderer.type === PIXI.RendererType.WEBGPU) {
+        const gpu = renderer.gpu;
+        maxsize = gpu.adapter.limits.maxTextureDimension2D;
+      }
+    }
     const size = Math.min(trysize, maxsize);
 
     // We store textures in 3 atlases, each one is for holding similar sized things.
@@ -53,33 +96,25 @@ export class PixiTextures {
       tile: new AtlasAllocator('tile', size)       // 256 or 512px square imagery tiles
     };
 
+    this._textureData.clear();
+    this._svgIcons.clear();
+    this._dashTextureCache = {};
 
-    // All the named textures we know about.
-    // Each mapping is a unique identifying key to a PIXI.Texture
-    // The Texture is not necessarily packed in an Atlas (but ideally it should be)
-    // Important!  Make sure these texture keys don't conflict
-    this._textureData = new Map();   // Map<key, { PIXI.Texture, refcount }>  (e.g. 'symbol-boldPin')
+    this._cacheGraphics();
 
-    // Because SVGs take some time to texturize, store the svg string and texturize only if needed
-    this._svgIcons = new Map();   // Map<key, SVGSymbolElement>  (e.g. 'temaki-school')
-
-    // Load patterns
-    const PATTERNS = [
-      'bushes', 'cemetery', 'cemetery_buddhist', 'cemetery_christian', 'cemetery_jewish', 'cemetery_muslim',
-      'construction', 'dots', 'farmland', 'farmyard', 'forest', 'forest_broadleaved', 'forest_leafless',
-      'forest_needleleaved', 'grass', 'landfill', 'lines', 'orchard', 'pond', 'quarry', 'vineyard',
-      'waves', 'wetland', 'wetland_bog', 'wetland_marsh', 'wetland_reedbed', 'wetland_swamp'
-    ];
-    let patternBundle = {};
-    for (const k of PATTERNS) {
-      patternBundle[k] = assets.getFileURL(`img/pattern/${k}.png`);
-    }
-
-    PIXI.Assets.addBundle('patterns', patternBundle);
-
-    PIXI.Assets.loadBundle(['patterns'])
+    // Replace or load patterns
+    Promise.resolve()
+      .then(() => {
+        // If they've been loaded before, force-unload them to get new Textures.
+        // This might happen after a WebGL context loss.
+        if (this.loaded) {
+          PIXI.Assets.unloadBundle(['patterns']);
+          this.loaded = false;
+        }
+      })
+      .then(() => PIXI.Assets.loadBundle(['patterns']))
       .then(result => {
-        // note that we can't pack patterns into an atlas yet - see PixiFeaturePolygon.js.
+        // note that we can't pack patterns into an atlas yet - see PixiFeaturePolygon.js
         for (const [textureID, texture] of Object.entries(result.patterns)) {
           this._textureData.set(textureID, { texture: texture, refcount: 1 });
         }
@@ -94,8 +129,6 @@ export class PixiTextures {
         this.loaded = true;
       })
       .catch(e => console.error(e));  // eslint-disable-line no-console
-
-    this._cacheGraphics();
   }
 
 
@@ -346,7 +379,9 @@ export class PixiTextures {
 // see https://github.com/facebook/Rapid/commit/dd24e912
 
     const viewBox = symbol.getAttribute('viewBox');
-    const size = 64;  // somewhat large, but some mapillary signs have a lot of detail/text in them
+
+    // Somewhat large, but some Mapillary signs have a lot of detail/text in them
+    const size = this.gfx.highQuality ? 64 : 32;
 
     // Make a new <svg> container
     let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');

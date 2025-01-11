@@ -56,6 +56,15 @@ export class PixiLayerKeepRight extends AbstractLayer {
 
 
   /**
+   * reset
+   * Every Layer should have a reset function to replace any Pixi objects and internal state.
+   */
+  reset() {
+    super.reset();
+  }
+
+
+  /**
    * renderMarkers
    * @param  frame      Integer frame being rendered
    * @param  viewport   Pixi viewport to use for rendering

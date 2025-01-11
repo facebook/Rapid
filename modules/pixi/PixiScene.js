@@ -44,9 +44,9 @@ function asSet(vals) {
  *  - `classID` - A pseudoclass identifier like 'hover' or 'select'
  *
  * Properties you can access:
- *   `groups`     `Map (groupID -> PIXI.Container)` of all groups
- *   `layers`     `Map (layerID -> Layer)` of all layers in the scene
- *   `features`   `Map (featureID -> Feature)` of all features in the scene
+ *   `groups`     `Map<groupID, PIXI.Container>` of all groups
+ *   `layers`     `Map<layerID, Layer>` of all layers in the scene
+ *   `features`   `Map<featureID, Feature>` of all features in the scene
  *
  * Events available:
  *   `layerchange`   Fires when layers are toggled from enabled/disabled
@@ -62,30 +62,9 @@ export class PixiScene extends EventEmitter {
     this.gfx = gfx;
     this.context = gfx.context;
 
-    this.groups = new Map();     // Map (groupID -> PIXI.Container)
-    this.layers = new Map();     // Map (layerID -> Layer)
-    this.features = new Map();   // Map (featureID -> Feature)
-
-    // Create Groups, and add them to the origin..
-    // Groups are pre-established Containers that the Layers can add
-    // their Features to, so that the scene can be sorted reasonably.
-    [
-      'background',   // Background imagery
-      'basemap',      // Editable basemap (OSM/Rapid)
-      'points',       // Editable points (OSM/Rapid)
-      'streetview',   // Streetview imagery, sequences
-      'qa',           // Q/A items, issues, notes
-      'labels',       // Text labels
-      'blocks',       // Blocked out regions
-      'ui'            // Misc UI draw above everything (select lasso, geocoding circle, debug shapes)
-    ].forEach((groupID, i) => {
-      const container = new PIXI.Container();
-      container.label = groupID;
-      container.sortableChildren = true;
-      container.zIndex = i;
-      gfx.origin.addChild(container);
-      this.groups.set(groupID, container);
-    });
+    this.groups = new Map();     // Map<groupID, PIXI.Container>
+    this.layers = new Map();     // Map<layerID, Layer>
+    this.features = new Map();   // Map<featureID, Feature>
 
     // Create Layers
     [
@@ -93,7 +72,7 @@ export class PixiScene extends EventEmitter {
       new PixiLayerGeoScribble(this, 'geoScribble'),
       new PixiLayerOsm(this, 'osm'),
       new PixiLayerRapid(this, 'rapid'),
-      new PixiLayerRapidOverlay(this, 'rapid-overlay'),
+      new PixiLayerRapidOverlay(this, 'rapidoverlay'),
 
       new PixiLayerMapillaryDetections(this, 'mapillary-detections'),
       new PixiLayerMapillarySigns(this, 'mapillary-signs'),
@@ -113,18 +92,53 @@ export class PixiScene extends EventEmitter {
       new PixiLayerMapUI(this, 'map-ui')
     ].forEach(layer => this.layers.set(layer.id, layer));
 
+    this.reset();
   }
 
 
   /**
    * reset
-   * Calls each Layer's `reset' method.
-   * This is used to clear out any state when a reset occurs.
+   * Replace any Pixi objects and internal state.
+   * Also calls each Layer's `reset' method to do the same for that layer.
    */
   reset() {
+    const gfx = this.gfx;
+    const origin = gfx.origin;
+    if (!origin) return;   // need the `origin` container to exist first
+
+    // Remove any existing containers
+    for (const child of origin.children) {
+      origin.removeChild(child);
+      child.destroy({ children: true });  // recursive
+    }
+
+    // Create group containers, and add them to the origin..
+    // Groups are pre-established Containers that the Layers can add
+    // their Features to, so that the scene can be sorted reasonably.
+    [
+      'background',   // Background imagery
+      'basemap',      // Editable basemap (OSM/Rapid)
+      'points',       // Editable points (OSM/Rapid)
+      'streetview',   // Streetview imagery, sequences
+      'qa',           // Q/A items, issues, notes
+      'labels',       // Text labels
+      'blocks',       // Blocked out regions
+      'ui'            // Misc UI draw above everything (select lasso, geocoding circle, debug shapes)
+    ].forEach((groupID, i) => {
+      const container = new PIXI.Container();
+      container.label = groupID;
+      container.sortableChildren = true;
+      container.zIndex = i;
+      origin.addChild(container);
+      this.groups.set(groupID, container);
+    });
+
+    // Reset/setup each layer
     for (const layer of this.layers.values()) {
       layer.reset();
     }
+
+    this.emit('layerchange');
   }
 
 

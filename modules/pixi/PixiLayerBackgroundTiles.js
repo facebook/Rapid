@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
+import { interpolateNumber } from 'd3-interpolate';
 import { AdjustmentFilter, ConvolutionFilter } from 'pixi-filters';
 import { Tiler, geoScaleToZoom, vecScale } from '@rapid-sdk/math';
 
@@ -32,10 +32,6 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     this.enabled = true;   // background imagery should be enabled by default
     this.isMinimap = isMinimap;
 
-    // Items in this layer don't need to be interactive
-    const groupContainer = this.scene.groups.get('background');
-    groupContainer.eventMode = 'none';
-
     this.filters = {
       brightness: 1,
       contrast: 1,
@@ -51,10 +47,15 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
   /**
    * reset
-   * Every Layer should have a reset function to clear out any state when a reset occurs.
+   * Every Layer should have a reset function to replace any Pixi objects and internal state.
    */
   reset() {
     super.reset();
+
+    // Items in this layer don't need to be interactive
+    const groupContainer = this.scene.groups.get('background');
+    groupContainer.eventMode = 'none';
+
     this.destroyAll();
     this._tileMaps.clear();
     this._failed.clear();
@@ -412,7 +413,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       // The central pixel (at index 4 of our 3x3 array) starts at 1 and increases
       const convolutionArray = sharpenMatrix.map((n, i) => {
         if (i === 4) {
-          const interp = d3_interpolateNumber(1, 2)(this.filters.sharpness);
+          const interp = interpolateNumber(1, 2)(this.filters.sharpness);
           const result = n * interp;
           return result;
         } else {
@@ -424,7 +425,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       sourceContainer.filters= [...sourceContainer.filters, this.convolutionFilter];
 
     } else if (this.filters.sharpness < 1) {
-      const blurFactor = d3_interpolateNumber(1, 8)(1 - this.filters.sharpness);
+      const blurFactor = interpolateNumber(1, 8)(1 - this.filters.sharpness);
       this.blurFilter = new PIXI.BlurFilter({
         strength: blurFactor,
         quality: 4

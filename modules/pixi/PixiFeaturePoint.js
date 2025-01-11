@@ -368,7 +368,7 @@ export class PixiFeaturePoint extends AbstractFeature {
       this.halo.clear();
 
       const shape = this.container.hitArea;
-      const dl = new DashLine(this.halo, HALO_STYLE);
+      const dl = new DashLine(this.gfx, this.halo, HALO_STYLE);
       if (shape instanceof PIXI.Circle) {
         dl.circle(shape.x, shape.y, shape.radius, 20);
       } else if (shape instanceof PIXI.Rectangle) {

@@ -35,13 +35,23 @@ export class PixiLayerEditBlocks extends AbstractLayer {
 
 
   /**
+   * reset
+   * Every Layer should have a reset function to replace any Pixi objects and internal state.
+   */
+  reset() {
+    super.reset();
+    this._lastv = null;
+  }
+
+
+  /**
    * render
    * Render any edit blocking polygons that are visible in the viewport
-   * @param  frame          Integer frame being rendered
-   * @param  pixiViewport   Pixi viewport to use for rendering
-   * @param  zoom           Effective zoom to use for rendering (not used here)
+   * @param  frame      Integer frame being rendered
+   * @param  viewport   Pixi viewport to use for rendering
+   * @param  zoom       Effective zoom to use for rendering
    */
-  render(frame, pixiViewport) {
+  render(frame, viewport) {
     const context = this.context;
     const locations = context.systems.locations;
     const mapViewport = context.viewport;  // context viewport !== pixi viewport (they are offset)
@@ -54,7 +64,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
     if (zoom >= MINZOOM) {
       const searchRect = mapViewport.visibleExtent().rectangle();
       blocks = locations.wpblocks().bbox(searchRect);
-      this.renderEditBlocks(frame, pixiViewport, zoom, blocks);
+      this.renderEditBlocks(frame, viewport, zoom, blocks);
     }
 
     // setup the explanation
@@ -85,12 +95,12 @@ export class PixiLayerEditBlocks extends AbstractLayer {
 
   /**
    * renderEditBlocks
-   * @param  frame         Integer frame being rendered
-   * @param  pixiViewport  Pixi viewport to use for rendering
-   * @param  zoom          Effective zoom to use for rendering
-   * @param  blocks        Array of block data visible in the view
+   * @param  frame      Integer frame being rendered
+   * @param  viewport   Pixi viewport to use for rendering
+   * @param  zoom       Effective zoom to use for rendering
+   * @param  blocks     Array of block data visible in the view
    */
-  renderEditBlocks(frame, pixiViewport, zoom, blocks) {
+  renderEditBlocks(frame, viewport, zoom, blocks) {
     const locations = this.context.systems.locations;
     const parentContainer = this.scene.groups.get('blocks');
     const BLOCK_STYLE = {
@@ -120,7 +130,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
         }
 
         this.syncFeatureClasses(feature);
-        feature.update(pixiViewport, zoom);
+        feature.update(viewport, zoom);
         this.retainFeature(feature, frame);
       }
     }

@@ -58,6 +58,15 @@ export class PixiLayerMapillaryDetections extends AbstractLayer {
 
 
   /**
+   * reset
+   * Every Layer should have a reset function to replace any Pixi objects and internal state.
+   */
+  reset() {
+    super.reset();
+  }
+
+
+  /**
    * filterDetections
    * @param  {Array<detection>}  detections - all detections
    * @return {Array<detection>}  detections with filtering applied

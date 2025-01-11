@@ -18,6 +18,7 @@ export class UiSpector {
     this.context = context;
 
     this._isHidden = true;   // start out hidden
+    this._spyCanvas = null;
 
     // Child components, we will defer creating these until `_initSpectorUI()`
     this.Spector = null;
@@ -110,22 +111,35 @@ export class UiSpector {
    */
   _initSpectorUI() {
     if (!this.$wrap) return;      // called too early?
-    if (this.Spector) return;     // already done
     if (!window.SPECTOR) return;  // no spector - production build?
 
     const context = this.context;
     const gfx = context.systems.gfx;
-    const renderer = gfx.pixi.renderer;
+    const renderer = gfx.pixi?.renderer;
+
+    if (!renderer) {   // This could happen if the WebGL context is lost and `pixi` is gone temporarily.
+      this._reset();   // Throw everything away, but the user can try toggling it on again later.
+      return;
+    }
 
     // Spector will only work with the WebGL renderer
     if (renderer.type !== PIXI.RendererType.WEBGL) return;  // webgpu?
-    const spector = new window.SPECTOR.Spector();
-    this.Spector = spector;
 
     // The default behavior of the CaptureMenu is to search the document for canvases to spy.
     // This doesn't work in our situation because Pixi is setup with `multiView: true`
     // and will render to an offscreen canvas - instead we will tell it what canvas to spy on.
+
+    // If canvas has changed because we replaced Pixi after a context loss, reset but continue on..
     const canvas = renderer.context.canvas;
+    if (canvas !== this._spyCanvas) {
+      this._reset();
+    }
+
+    if (this.Spector) return;   // init steps below were already done
+
+    const spector = new window.SPECTOR.Spector();
+    this.Spector = spector;
+    this._spyCanvas = canvas;
     spector.spyCanvas(canvas);
 
     // override of spector.getCaptureUI()
@@ -167,4 +181,14 @@ export class UiSpector {
     this.ResultView = spector.resultView = rv;
   }
 
+
+  /**
+   * _reset
+   */
+  _reset() {
+    this._spyCanvas = null;
+    this.Spector = null;
+    this.CaptureMenu = null;
+    this.ResultView = null;
+  }
 }

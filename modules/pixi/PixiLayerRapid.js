@@ -25,7 +25,7 @@ export class PixiLayerRapid extends AbstractLayer {
     super(scene, layerID);
     this.enabled = true;     // Rapid features should be enabled by default
 
-    this._resolved = new Map();  // Map (entity.id -> GeoJSON feature)
+    this._resolved = new Map();  // Map<entityID, GeoJSON feature>
 
 //// shader experiment:
 //this._uniforms = {
@@ -154,11 +154,23 @@ export class PixiLayerRapid extends AbstractLayer {
 
   /**
    * reset
-   * Every Layer should have a reset function to clear out any state when a reset occurs.
+   * Every Layer should have a reset function to replace any Pixi objects and internal state.
    */
   reset() {
     super.reset();
-    this._resolved.clear();
+    this._resolved.clear();  // cached geojson features
+
+    const groupContainer = this.scene.groups.get('basemap');
+
+    // Remove any existing containers
+    for (const child of groupContainer.children) {
+      if (child.label.startsWith(this.layerID + '-')) {   // 'rapid-*'
+        groupContainer.removeChild(child);
+        child.destroy({ children: true });  // recursive
+      }
+    }
+
+    // We don't add area or line containers here - `renderDataset()` does it as needed
   }
 
 
@@ -180,7 +192,7 @@ export class PixiLayerRapid extends AbstractLayer {
 //this._uniforms.u_time = frame/10;
 
     for (const dataset of rapid.datasets.values()) {
-        this.renderDataset(dataset, frame, viewport, zoom);
+      this.renderDataset(dataset, frame, viewport, zoom);
     }
   }
 
@@ -263,7 +275,6 @@ export class PixiLayerRapid extends AbstractLayer {
       }
 
       const entities = service.getData(datasetID);
-
       for (const entity of entities) {
         if (isAcceptedOrIgnored(entity)) continue;   // skip features already accepted/ignored by the user
         const geom = entity.geometry(dsGraph);
@@ -275,8 +286,8 @@ export class PixiLayerRapid extends AbstractLayer {
           data.polygons.push(entity);
         }
       }
-    } else if (dataset.service === 'overture') {
 
+    } else if (dataset.service === 'overture') {
       if (zoom >= 16) {  // avoid firing off too many API requests
         service.loadTiles(datasetID);  // fetch more
       }
@@ -284,9 +295,9 @@ export class PixiLayerRapid extends AbstractLayer {
 
       // Just support points (for now)
       for (const entity of entities) {
-          entity.overture = true;
-          entity.__datasetid__ = datasetID;
-          data.points.push(entity);
+        entity.overture = true;
+        entity.__datasetid__ = datasetID;
+        data.points.push(entity);
       }
     }
 

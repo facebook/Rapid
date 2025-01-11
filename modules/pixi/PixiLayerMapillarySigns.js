@@ -55,6 +55,15 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
   }
 
 
+  /**
+   * reset
+   * Every Layer should have a reset function to replace any Pixi objects and internal state.
+   */
+  reset() {
+    super.reset();
+  }
+
+
   filterDetections(detections) {
     const photos = this.context.systems.photos;
     const fromDate = photos.fromDate;

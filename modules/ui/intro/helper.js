@@ -298,5 +298,5 @@ export function transitionTime(loc1, loc2) {
  * @return Promise that settles after the delay
  */
 export function delayAsync(ms = 300) {
-  return new Promise(resolve => window.setTimeout(resolve, ms));  // eslint-disable-line no-promise-executor-return
+  return new Promise(resolve => { window.setTimeout(resolve, ms); });
 }

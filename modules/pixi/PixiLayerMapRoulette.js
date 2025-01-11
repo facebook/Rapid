@@ -56,6 +56,15 @@ export class PixiLayerMapRoulette extends AbstractLayer {
 
 
   /**
+   * reset
+   * Every Layer should have a reset function to replace any Pixi objects and internal state.
+   */
+  reset() {
+    super.reset();
+  }
+
+
+  /**
    * renderMarkers
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering

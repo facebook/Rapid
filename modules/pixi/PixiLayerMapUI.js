@@ -31,14 +31,43 @@ export class PixiLayerMapUI extends AbstractLayer {
 
     this._oldk = 0;
 
-    // setup the child containers
-    // these only go visible if they have something to show
-
-    // GEOLOCATION
     this._geolocationData = null;
     this._geolocationDirty = false;
+
+    this._lassoData = null;
+    this._lassoDirty = false;
+
+    this.geolocation = null;
+    this.tileDebug = null;
+    this.selected = null;
+    this.halo = null;
+    this.lasso = null;
+  }
+
+
+  /**
+   * reset
+   * Every Layer should have a reset function to replace any Pixi objects and internal state.
+   */
+  reset() {
+    super.reset();
+
+    this._oldk = 0;
+
+    const groupContainer = this.scene.groups.get('ui');
+
+    // Remove any existing containers
+    for (const child of groupContainer.children) {
+      groupContainer.removeChild(child);
+      child.destroy({ children: true });  // recursive
+    }
+
+    // Add containers
+    // These only go visible if they have something to show
+
+    // GEOLOCATION
     const geolocation = new PIXI.Container();
-    geolocation.label= 'geolocation';
+    geolocation.label = 'geolocation';
     geolocation.eventMode = 'none';
     geolocation.sortableChildren = false;
     geolocation.visible = false;
@@ -46,7 +75,7 @@ export class PixiLayerMapUI extends AbstractLayer {
 
     // TILE DEBUGGING
     const tileDebug = new PIXI.Container();
-    tileDebug.label= 'tile-debug';
+    tileDebug.label = 'tile-debug';
     tileDebug.eventMode = 'none';
     tileDebug.sortableChildren = false;
     tileDebug.visible = false;
@@ -66,31 +95,22 @@ export class PixiLayerMapUI extends AbstractLayer {
     halo.visible = true;
     this.halo = halo;
 
-    // Lasso polygon
-    this._lassoData = null;
-    this._lassoDirty = false;
+    // LASSO
+    if (this._lassoLine)  this._lassoLine.destroy();
+    if (this._lassoFill)  this._lassoFill.destroy();
+
     this._lassoLine = new PIXI.Graphics();
     this._lassoFill = new PIXI.Graphics();
+    this._lassoData = null;
+
     const lasso = new PIXI.Container();
-    lasso.label= 'lasso';
+    lasso.label = 'lasso';
     lasso.eventMode = 'none';
     lasso.sortableChildren = false;
     lasso.visible = false;
     this.lasso = lasso;
 
-    const groupContainer = this.scene.groups.get('ui');
     groupContainer.addChild(geolocation, tileDebug, selected, halo, lasso);
-  }
-
-
-  /**
-   * reset
-   * Every Layer should have a reset function to clear out any state when a reset occurs.
-   */
-  reset() {
-    super.reset();
-    this._lassoData = null;
-    this.lasso.removeChildren();
   }
 
 
@@ -190,7 +210,7 @@ export class PixiLayerMapUI extends AbstractLayer {
       // line
       const lineStyle = { alpha: 0.7, dash: [6, 3], width: 1, color: 0xffffff };
       line.clear();
-      new DashLine(line, lineStyle).poly(flatCoords);
+      new DashLine(this.gfx, line, lineStyle).poly(flatCoords);
 
       // fill
       const fillStyle = { alpha: 0.5, color: 0xaaaaaa };
