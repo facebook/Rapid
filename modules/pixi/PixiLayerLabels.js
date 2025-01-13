@@ -88,6 +88,7 @@ export class PixiLayerLabels extends AbstractLayer {
       name: 'label-normal',
       style: TEXTSTYLE_NORMAL,
       chars: PIXI.BitmapFontManager.ASCII,
+      padding: 6,
       resolution: 2
     });
     // not actually used
@@ -95,6 +96,7 @@ export class PixiLayerLabels extends AbstractLayer {
     //   name: 'label-italic',
     //   style: TEXTSTYLE_ITALIC,
     //   chars: PIXI.BitmapFontManager.ASCII,
+    //   padding: 6,
     //   resolution: 2
     // });
 

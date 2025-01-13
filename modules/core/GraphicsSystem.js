@@ -100,6 +100,7 @@ export class GraphicsSystem extends AbstractSystem {
         stroke: { color: 0x333333 }
       },
       chars: PIXI.BitmapFontManager.ASCII,
+      padding: 6,
       resolution: 2
     });
 
