@@ -91,6 +91,28 @@ export class GraphicsSystem extends AbstractSystem {
     ticker.add(this._tick, this);
     this.ticker = ticker;
 
+    Object.assign(PIXI.BitmapFontManager.defaultOptions, {
+      chars: PIXI.BitmapFontManager.ASCII,
+      resolution: 2,
+      padding: 6,
+      skipKerning: false
+    });
+
+    Object.assign(PIXI.HelloSystem.defaultOptions, {
+      hello: true  // Log renderer and Pixi version to the console
+    });
+
+    Object.assign(PIXI.RenderableGCSystem.defaultOptions, {
+      renderableGCActive: false
+    });
+
+    Object.assign(PIXI.TextureSource.defaultOptions, {
+      autoGarbageCollect: false,
+      autoGenerateMipmaps: false,
+      resolution: 1
+    });
+
+
     // Prepare a basic bitmap font that we can use for things like debug messages
     PIXI.BitmapFont.install({
       name: 'rapid-debug',
@@ -98,10 +120,7 @@ export class GraphicsSystem extends AbstractSystem {
         fill: { color: 0xffffff },
         fontSize: 14,
         stroke: { color: 0x333333 }
-      },
-      chars: PIXI.BitmapFontManager.ASCII,
-      padding: 6,
-      resolution: 2
+      }
     });
 
   }
@@ -654,21 +673,6 @@ export class GraphicsSystem extends AbstractSystem {
         renderGLVersion = 1;
         break;
     }
-
-    // Setup PIXI defaults here..
-    Object.assign(PIXI.TextureSource.defaultOptions, {
-      autoGarbageCollect: false,
-      autoGenerateMipmaps: false,
-      resolution: 1
-    });
-
-    Object.assign(PIXI.RenderableGCSystem.defaultOptions, {
-      renderableGCActive: false
-    });
-
-    Object.assign(PIXI.HelloSystem.defaultOptions, {
-      hello: true  // Log renderer and Pixi version to the console
-    });
 
     const options = {
       antialias: this.highQuality,

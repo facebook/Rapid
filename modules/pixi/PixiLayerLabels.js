@@ -83,22 +83,9 @@ export class PixiLayerLabels extends AbstractLayer {
     // Tracks the difference between the top left corner of the screen and the parent "origin" container
     this._labelOffset = new PIXI.Point();
 
-    // For ascii-only labels, we can use PIXI.BitmapText to avoid generating label textures
-    PIXI.BitmapFont.install({
-      name: 'label-normal',
-      style: TEXTSTYLE_NORMAL,
-      chars: PIXI.BitmapFontManager.ASCII,
-      padding: 6,
-      resolution: 2
-    });
-    // not actually used
-    // PIXI.BitmapFont.install({
-    //   name: 'label-italic',
-    //   style: TEXTSTYLE_ITALIC,
-    //   chars: PIXI.BitmapFontManager.ASCII,
-    //   padding: 6,
-    //   resolution: 2
-    // });
+    // For ASCII-only labels, we can use PIXI.BitmapText to avoid generating label textures
+    PIXI.BitmapFont.install({ name: 'label-normal', style: TEXTSTYLE_NORMAL });
+    // PIXI.BitmapFont.install({ name: 'label-italic', style: TEXTSTYLE_ITALIC });  // not currently used
 
     // For all other labels, generate it on the fly in a PIXI.Text or PIXI.Sprite
     this._textStyleNormal = new PIXI.TextStyle(TEXTSTYLE_NORMAL);
