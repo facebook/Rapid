@@ -47,7 +47,7 @@ export class UiMinimap {
     this.toggle = this.toggle.bind(this);
     this._setupKeybinding = this._setupKeybinding.bind(this);
     this._draw = this._draw.bind(this);
-    this._resetAsync = this._resetAsync.bind(this);
+    this._onGfxStatusChange = this._onGfxStatusChange.bind(this);
     this._update = this._update.bind(this);
     this._zoomStarted = this._zoomStarted.bind(this);
     this._zoomed = this._zoomed.bind(this);
@@ -447,7 +447,7 @@ renderer.view.canvas = mainCanvas;  // restore main canvas
 
     // event handlers
     gfx.on('draw', this._update);
-    gfx.on('contextchange', this._resetAsync);
+    gfx.on('statuschange', this._onGfxStatusChange);
 
     // Mock Stage
     const stage = new PIXI.Container();
@@ -495,6 +495,18 @@ renderer.view.canvas = mainCanvas;  // restore main canvas
 
 
   /**
+   * _onGfxStatusChange
+   * Callback function called when the GraphicsSystem loses/restores context
+   * @param  {string}  status - one of 'contextlost' or 'contextrestored'
+   */
+  _onGfxStatusChange(status) {
+    if (status === 'contextrestored') {
+      this._resetAsync();
+    }
+  }
+
+
+  /**
    * _resetAsync
    * Replace the Minimap after a context loss
    * @return {Promise} Promise resolved when this component has completed reset and init
@@ -505,7 +517,7 @@ renderer.view.canvas = mainCanvas;  // restore main canvas
 
     // event handlers
     gfx.off('draw', this._update);
-    gfx.off('contextchange', this._resetAsync);
+    gfx.off('statuschange', this._onGfxStatusChange);
 
     if (this.layer) {
       this.layer.destroyAll();

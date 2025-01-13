@@ -742,14 +742,16 @@
         "other": "{count} hidden features"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "Unable to reach the OpenStreetMap API. Your edits are safe locally. Check your network connection.",
         "offline": "The OpenStreetMap API is offline. Your edits are safe locally. Please come back later.",
         "readonly": "The OpenStreetMap API is currently read-only. You can continue editing, but must wait to save your changes.",
         "ratelimit": "You have downloaded too much data from OpenStreetMap. Please try again in {seconds} seconds or switch accounts.",
-        "local_storage_full": "You have made too many edits to back up. Consider saving your changes now."
+        "local_storage_full": "You have made too many edits to back up. Consider saving your changes now.",
+        "contextlost": "The graphics system has encountered a problem.  Rapid will try to continue with reduced quality."
       },
+      "dismiss": "Dismiss",
       "retry": "Retry"
     },
     "commit": {

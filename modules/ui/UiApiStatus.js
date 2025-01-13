@@ -19,6 +19,7 @@ export class UiApiStatus {
 
     this._apiStatus = null;
     this._backupStatus = null;
+    this._gfxStatus = null;
 
     // D3 selections
     this.$parent = null;
@@ -28,10 +29,13 @@ export class UiApiStatus {
     this.render = this.render.bind(this);
     this._onApiStatusChange = this._onApiStatusChange.bind(this);
     this._onBackupStatusChange = this._onBackupStatusChange.bind(this);
+    this._onGfxStatusChange = this._onGfxStatusChange.bind(this);
 
     // Setup event listeners
     const editor = context.systems.editor;
+    const gfx = context.systems.gfx;
     editor.on('backupstatuschange', this._onBackupStatusChange);
+    gfx.on('statuschange', this._onGfxStatusChange);
 
     // Note that it's possible to run in an environment without OSM.
     const osm = context.services.osm;
@@ -91,14 +95,27 @@ export class UiApiStatus {
     // Empty out the DOM content and rebuild from scratch..
     $apiStatus.html('');
 
-    if (this._apiStatus === 'readonly') {
-      $apiStatus.text(l10n.t('osm_api_status.message.readonly'));
+    if (this._gfxStatus === 'contextlost') {
+      $apiStatus.text(l10n.t('status.message.contextlost') + ' ');
+
+      $apiStatus
+        .append('a')
+        .attr('href', '#')
+        .text(l10n.t('status.dismiss'))
+        .on('click.dismiss', e => {
+          e.preventDefault();
+          this._gfxStatus = null;
+          this.render();
+        });
+
+    } else if (this._apiStatus === 'readonly') {
+      $apiStatus.text(l10n.t('status.message.readonly'));
 
     } else if (this._apiStatus === 'offline') {
-      $apiStatus.text(l10n.t('osm_api_status.message.offline'));
+      $apiStatus.text(l10n.t('status.message.offline'));
 
     } else if (this._apiStatus === 'ratelimit' && rateLimit) {
-      $apiStatus.text(l10n.t('osm_api_status.message.ratelimit', { seconds: rateLimit.remaining }));
+      $apiStatus.text(l10n.t('status.message.ratelimit', { seconds: rateLimit.remaining }));
 
       if (osm && !osm.authenticated()) {   // Tell the user to log in..
         $apiStatus
@@ -116,13 +133,13 @@ export class UiApiStatus {
       }
 
     } else if (this._apiStatus === 'error') {   // Some other problem, "check your network connection"..
-      $apiStatus.text(l10n.t('osm_api_status.message.error') + ' ');
+      $apiStatus.text(l10n.t('status.message.error') + ' ');
 
       if (osm) {   // Let the user manually retry their connection
         $apiStatus
           .append('a')
           .attr('href', '#')
-          .text(l10n.t('osm_api_status.retry'))
+          .text(l10n.t('status.retry'))
           .on('click.retry', e => {
             e.preventDefault();
             osm.throttledReloadApiStatus();
@@ -130,7 +147,7 @@ export class UiApiStatus {
       }
 
     } else if (this._backupStatus === 'error') {  // API is fine, but backups are not..
-      $apiStatus.text(l10n.t('osm_api_status.message.local_storage_full'));
+      $apiStatus.text(l10n.t('status.message.local_storage_full'));
     }
   }
 
@@ -155,5 +172,18 @@ export class UiApiStatus {
   _onBackupStatusChange(wasSuccessful) {
     this._backupStatus = wasSuccessful ? 'ok' : 'error';
     this.render();
+  }
+
+
+  /**
+   * _onGfxStatusChange
+   * Callback function called when the GraphicsSystem loses context
+   * @param  {string}  status - one of 'contextlost' or 'contextrestored'
+   */
+  _onGfxStatusChange(status) {
+    if (status === 'contextlost') {  // notify the user about this
+      this._gfxStatus = status;
+      this.render();
+    }
   }
 }

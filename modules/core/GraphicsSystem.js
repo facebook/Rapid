@@ -28,10 +28,10 @@ const THROTTLE = 250;  // throttled rendering milliseconds (for now)
  *   `textures`       PixiTextures manages the textures
  *
  * Events available:
- *   `draw`           Fires after a full redraw
- *   `move`           Fires after the map's transform has changed (can fire frequently)
- *                    ('move' is mostly for when you want to update some content that floats over the map)
- *   `contextchange`  Fires after the WebGLContext has changed (to let listeners know Pixi has been replaced)
+ *   `draw`            Fires after a full redraw
+ *   `move`            Fires after the map's transform has changed (can fire frequently)
+ *                     ('move' is mostly for when you want to update some content that floats over the map)
+ *   `statuschange`    Fires on status changes, receives 'contextlost' or 'contextrestored'
  */
 export class GraphicsSystem extends AbstractSystem {
 
@@ -805,6 +805,7 @@ export class GraphicsSystem extends AbstractSystem {
     // We may be able to handle this better eventually, but for now we will just
     // assume the whole graphics system is getting thrown out.
     this.context.enter('browse');
+    this.emit('statuschange', 'contextlost');
 
     // Normally Pixi's `GLContextSystem` would try to restore context if we call `render()`
     //  see https://pixijs.download/release/docs/rendering.GlContextSystem.html
@@ -845,7 +846,7 @@ export class GraphicsSystem extends AbstractSystem {
         this.events.enable();   // resume listening
         this.resume();          // resume rendering
         this.ticker.start();    // resume ticking
-        this.emit('contextchange');
+        this.emit('statuschange', 'contextrestored');
       });
   }
 
