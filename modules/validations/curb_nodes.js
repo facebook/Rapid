@@ -61,20 +61,20 @@ export function validationCurbNodes(context) {
       type,
       subtype: 'missing_curb_nodes',
       severity: 'suggestion',
-      message: () => way ? l10n.t('issues.curb_nodes.message', { feature: l10n.displayLabel(way, graph) }) : 'Way not found',
+      message: () => way ? l10n.t('issues.curb_nodes.message', { feature: l10n.displayLabel(way, graph) }) : '',
       reference: showReference,
       entityIds: [wayID],
       data: { crossingWayID: wayID },
-      dynamicFixes: () => ['unspecified', 'flush', 'lowered', 'raised'].map(type => {
+      dynamicFixes: () => ['yes', 'flush', 'lowered', 'raised'].map(type => {
         const tags = { barrier: 'kerb', kerb: type };
         const iconID = getIconForCurbNode(tags);
         return new ValidationFix({
           icon: iconID,
-          title: l10n.t('issues.curb_nodes.fix.add_curb_nodes', { type: type }),
+          title: l10n.t('issues.curb_nodes.fix.add_curb_nodes', { type: l10n.t(`issues.curb_nodes.type.${type}`) }),
           onClick: () => {
             performCurbNodeFixes(wayID, tags);
             editor.commit({
-              annotation: l10n.t('issues.curb_nodes.annotation.added_curb_nodes', { type: type }),
+              annotation: l10n.t('issues.curb_nodes.fix.annotation'),
               selectedIDs: [wayID]
             });
           }
@@ -300,18 +300,14 @@ export function validationCurbNodes(context) {
    * @return {string}  The ID of the icon to use
    */
   function getIconForCurbNode(tags) {
-    let iconID = 'default-icon';
-    if (tags.barrier === 'kerb' && tags.kerb === 'flush') {
-      iconID = 'temaki-kerb-flush';
-    } else if (tags.barrier === 'kerb' && tags.kerb === 'raised') {
-      iconID = 'temaki-kerb-raised';
-    } else if (tags.barrier === 'kerb' && tags.kerb === 'lowered') {
-      iconID = 'temaki-kerb-lowered';
-    } else if (tags.barrier === 'kerb' && tags.kerb === 'unspecified') {
-      iconID = 'temaki-kerb-unspecified';
+    const val = tags.kerb || '';
+    if (['flush', 'lowered', 'raised', 'rolled'].includes(val)) {
+      return `temaki-kerb-${val}`;
+    } else {
+      return 'temaki-kerb-unspecified';
     }
-    return iconID;
   }
+
 
   validation.type = type;
 

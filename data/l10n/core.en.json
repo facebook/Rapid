@@ -2312,15 +2312,19 @@
         "footway-highway": "Footways crossing highways should have separately-mapped curb nodes.",
         "reference": {
           "text": "Crossing ways should have individual curb nodes (where appropriate). Use photo overlays to help determine curb type.",
-          "link_alt_text": "Kerb Tagging Guidelines",
+          "link_alt_text": "Curb Tagging Guidelines",
           "link_text": "More info",
           "link_url": "https://wiki.openstreetmap.org/wiki/Key:kerb#Values"
         },
         "fix": {
-          "add_curb_nodes": "Add {type} curb nodes"
+          "add_curb_nodes": "Add {type} curb nodes",
+          "annotation": "Added curb nodes"
         },
-        "annotation": {
-          "added_curb_nodes": "Added {type} curb nodes"
+        "type": {
+          "yes": "unspecified",
+          "flush": "flush",
+          "lowered": "lowered",
+          "raised": "raised"
         }
       },
       "crossing_ways": {
@@ -2592,22 +2596,6 @@
         "add_a_tunnel": {
           "title": "Add a tunnel",
           "annotation": "Added a tunnel."
-        },
-        "add_curb_nodes_unspecified": {
-          "title": "Add unspecified curb nodes",
-          "annotation": "Added unspecified curb nodes."
-        },
-        "add_curb_nodes_flush": {
-          "title": "Add flush curb nodes",
-          "annotation": "Added flush curb nodes."
-        },
-        "add_curb_nodes_lowered": {
-          "title": "Add lowered curb nodes",
-          "annotation": "Added lowered curb nodes."
-        },
-        "add_curb_nodes_raised": {
-          "title": "Add raised curb nodes",
-          "annotation": "Added raised curb nodes."
         },
         "address_the_concern": {
           "title": "Address the concern"
