@@ -451,7 +451,7 @@ export class Graph {
 
   /**
    * revert
-   * Revert an Entity back to whatver state it had in the base graph
+   * Revert an Entity back to whatever state it had in the base graph
    * @param   entityID   The entityID of the Entity to revert
    * @return  A new Graph
    */
@@ -492,18 +492,16 @@ export class Graph {
    * load
    * Loads new Entities into the local Graph, obliterating any existing Entities.
    * Used when restoring history or entering/leaving walkthrough.
+   * This basically does the same thing as `replace`/`remove`, but without creating a new Graph.
    * @param   entities   `Object (entityID -> Entity)`
    * @return  this Graph
    */
   load(entities) {
-    const base = this._base;
-    const local = this._local;
-    local.entities = new Map();
-
     for (const [entityID, entity] of Object.entries(entities)) {
-      const original = base.entities.get(entityID);   // likely undefined, but may as well check
-      local.entities.set(entityID, entity);
-      this._updateCalculated(original, entity);
+      const current = this.hasEntity(entityID);
+      const replacement = entity || undefined;
+      this._updateCalculated(current, replacement);
+      this._local.entities.set(entityID, replacement);
     }
 
     return this;
