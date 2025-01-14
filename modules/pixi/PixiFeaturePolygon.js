@@ -293,6 +293,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
     // STROKES
     strokes.removeChildren();
     if (strokes.visible && rings.length) {
+      strokes.eventMode = this._classes.has('drawing') ? 'none' : 'static';  // Rapid#648
+
       const lineWidth = isWireframeMode ? 1 : style.fill.width || 2;
       const strokeStyle = {
         alpha: 1,
@@ -334,7 +336,6 @@ export class PixiFeaturePolygon extends AbstractFeature {
 
         stroke.hitArea = new PIXI.Polygon(buffer.perimeter);
         stroke.label = `stroke${i}`;
-        stroke.eventMode = 'static';
         stroke.sortableChildren = false;
         strokes.addChild(stroke);
       }
@@ -343,6 +344,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
 
     // FILL
     if (fill.visible && rings.length) {
+      fill.eventMode = this._classes.has('drawing') ? 'none' : 'static';  // Rapid#648
+
       const fillStyle = {
         color: color,
         alpha: alpha,

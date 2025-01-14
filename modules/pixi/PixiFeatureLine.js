@@ -199,7 +199,7 @@ export class PixiFeatureLine extends AbstractFeature {
       }
 
       // Buffer around line, used for hit area and halo..
-      if (this.visible) {
+      if (this.visible && !this._classes.has('drawing')) {  // Rapid#648 - If drawing, `hitArea = null`
         // what line width to use?? copied the 'casing' calculation from below, improve this later
         const minwidth = 3;
         let width = style.casing.width;

@@ -285,8 +285,7 @@ export class PixiFeaturePoint extends AbstractFeature {
   updateHitArea() {
     if (!this.visible) return;
 
-    // Fix for Rapid#648: If we're drawing, we don't need to hit ourselves.
-    if (this._classes.has('drawing')) {
+    if (this._classes.has('drawing')) {  // Rapid#648 - If drawing, `hitArea = null`
       this.container.hitArea = null;
       return;
     }
