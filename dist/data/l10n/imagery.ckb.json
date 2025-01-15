@@ -1,0 +1,15 @@
+{
+  "_meta": {
+    "version": "2.5.1",
+    "generated": "2025-01-15T22:40:39.839Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/imagery.ckb.json",
+    "hash": "f0700c354768626978d37cad5813b380"
+  },
+  "ckb": {
+    "imagery": {
+      "MAPNIK": {
+        "name": "OpenStreetMap (پێوانەیی)"
+      }
+    }
+  }
+}

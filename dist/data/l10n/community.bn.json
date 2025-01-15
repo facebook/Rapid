@@ -1,0 +1,25 @@
+{
+  "_meta": {
+    "version": "2.5.1",
+    "generated": "2025-01-15T22:40:39.966Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.bn.json",
+    "hash": "4bd4ca7e0e23b58180bc913f033ea6d1"
+  },
+  "bn": {
+    "_communities": {
+      "openstreetmapafghanistan": "OpenStreetMap আফগানিস্তান",
+      "openstreetmapafrica": "OpenStreetMap আফ্রিকা",
+      "openstreetmapalba": "OpenStreetMap আলবা",
+      "openstreetmapalbania": "OpenStreetMap আলবেনিয়া",
+      "openstreetmapargentina": "OpenStreetMap আর্জেন্টিনা",
+      "openstreetmapasia": "OpenStreetMap এশিয়া",
+      "openstreetmapasti": "OpenStreetMap আসতি",
+      "openstreetmapaustria": "OpenStreetMap অস্ট্রিয়া",
+      "openstreetmapbahia": "OpenStreetMap বাহাই",
+      "openstreetmapbangladesh": "OpenStreetMap বাংলাদেশ"
+    },
+    "cape-coast-youthmappers": {
+      "description": "টুইটারে আমাদের অনুসরণ করুন: {url}"
+    }
+  }
+}

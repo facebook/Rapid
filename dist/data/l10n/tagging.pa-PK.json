@@ -1,0 +1,363 @@
+{
+  "_meta": {
+    "version": "2.5.1",
+    "generated": "2025-01-15T22:40:39.718Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/tagging.pa-PK.json",
+    "hash": "3313ef1f84403711025c110599f28be7"
+  },
+  "pa-PK": {
+    "presets": {
+      "fields": {
+        "access": {
+          "options": {
+            "destination": {
+              "title": "صرف توڑ دا"
+            }
+          }
+        },
+        "access_aisle": {
+          "label": "قِسم"
+        },
+        "addr/interpolation": {
+          "label": "قِسم"
+        },
+        "address": {
+          "placeholders": {
+            "city": "شہر"
+          }
+        },
+        "aerialway": {
+          "label": "قِسم"
+        },
+        "aeroway": {
+          "label": "قِسم"
+        },
+        "amenity": {
+          "label": "قِسم"
+        },
+        "area/highway": {
+          "label": "قِسم"
+        },
+        "artwork_type": {
+          "label": "قِسم"
+        },
+        "attraction": {
+          "label": "قِسم"
+        },
+        "barrier": {
+          "label": "قِسم"
+        },
+        "basin": {
+          "label": "قِسم"
+        },
+        "bicycle_parking": {
+          "label": "قِسم"
+        },
+        "board_type": {
+          "label": "قِسم"
+        },
+        "bollard": {
+          "label": "قِسم"
+        },
+        "boules": {
+          "label": "قِسم"
+        },
+        "boundary": {
+          "label": "قِسم"
+        },
+        "bridge": {
+          "label": "قِسم"
+        },
+        "bridge/support": {
+          "label": "قِسم"
+        },
+        "bridge_combo": {
+          "label": "قِسم"
+        },
+        "bunker_type": {
+          "label": "قِسم"
+        },
+        "castle_type": {
+          "label": "قِسم"
+        },
+        "check_date": {
+          "placeholder": "YYYY-MM-DDء"
+        },
+        "club": {
+          "label": "قِسم"
+        },
+        "construction": {
+          "label": "قِسم"
+        },
+        "consulate": {
+          "label": "قِسم"
+        },
+        "craft": {
+          "label": "قِسم"
+        },
+        "crossing": {
+          "label": "قِسم"
+        },
+        "cuisine": {
+          "options": {
+            "indian": "بھارتی (دیسی)"
+          }
+        },
+        "generator/type": {
+          "label": "قِسم"
+        },
+        "government": {
+          "label": "قِسم"
+        },
+        "guest_house": {
+          "label": "قِسم"
+        },
+        "healthcare": {
+          "label": "قِسم"
+        },
+        "highway": {
+          "label": "قِسم"
+        },
+        "historic": {
+          "label": "قِسم"
+        },
+        "holding_position/type": {
+          "label": "قِسم"
+        },
+        "indoor_type": {
+          "label": "قِسم"
+        },
+        "industrial": {
+          "label": "قِسم"
+        },
+        "information": {
+          "label": "قِسم"
+        },
+        "lamp_type": {
+          "label": "قِسم"
+        },
+        "landuse": {
+          "label": "قِسم"
+        },
+        "layer": {
+          "label": "نقشے تے کج دا سطر"
+        },
+        "leisure": {
+          "label": "قِسم"
+        },
+        "liaison": {
+          "label": "قِسم"
+        },
+        "man_made": {
+          "label": "قِسم"
+        },
+        "manhole": {
+          "label": "قِسم"
+        },
+        "map_type": {
+          "label": "قِسم"
+        },
+        "marker": {
+          "label": "قِسم"
+        },
+        "memorial": {
+          "label": "قِسم"
+        },
+        "museum": {
+          "label": "قِسم"
+        },
+        "name": {
+          "label": "ناں"
+        },
+        "note": {
+          "label": "نوٹ"
+        },
+        "office": {
+          "label": "قِسم"
+        },
+        "parking": {
+          "label": "قِسم"
+        },
+        "parking_entrance": {
+          "label": "قِسم"
+        },
+        "parking_space": {
+          "label": "قِسم"
+        },
+        "phone": {
+          "label": "فون"
+        },
+        "piste/type": {
+          "label": "قِسم"
+        },
+        "place": {
+          "label": "قِسم"
+        },
+        "playground": {
+          "label": "قِسم"
+        },
+        "power": {
+          "label": "قِسم"
+        },
+        "public_bookcase/type": {
+          "label": "قِسم"
+        },
+        "railway": {
+          "label": "قِسم"
+        },
+        "recycling_type": {
+          "label": "قِسم"
+        },
+        "relation": {
+          "label": "قِسم"
+        },
+        "residential": {
+          "label": "قِسم"
+        },
+        "resort": {
+          "label": "قِسم"
+        },
+        "restriction": {
+          "label": "قِسم"
+        },
+        "room": {
+          "label": "قِسم"
+        },
+        "route": {
+          "label": "قِسم"
+        },
+        "route_master": {
+          "label": "قِسم"
+        },
+        "ruins": {
+          "label": "قِسم"
+        },
+        "service": {
+          "label": "قِسم"
+        },
+        "shelter_type": {
+          "label": "قِسم"
+        },
+        "shop": {
+          "label": "قِسم"
+        },
+        "siren/type": {
+          "label": "قِسم"
+        },
+        "site": {
+          "label": "قِسم"
+        },
+        "social_facility": {
+          "label": "قِسم"
+        },
+        "start_date": {
+          "placeholder": "YYYY-MM-DDء"
+        },
+        "stile": {
+          "label": "قِسم"
+        },
+        "street_cabinet": {
+          "label": "قِسم"
+        },
+        "studio": {
+          "label": "قِسم"
+        },
+        "substation": {
+          "label": "قِسم"
+        },
+        "switch": {
+          "label": "قِسم"
+        },
+        "telecom": {
+          "label": "قِسم"
+        },
+        "tomb": {
+          "label": "قِسم"
+        },
+        "tourism": {
+          "label": "قِسم"
+        },
+        "tower/type": {
+          "label": "قِسم"
+        },
+        "townhall/type": {
+          "label": "قِسم"
+        },
+        "trade": {
+          "label": "قِسم"
+        },
+        "traffic_calming": {
+          "label": "قِسم"
+        },
+        "traffic_sign": {
+          "label": "ٹریفک سائن"
+        },
+        "traffic_signals": {
+          "label": "قِسم"
+        },
+        "transformer": {
+          "label": "قِسم"
+        },
+        "trench": {
+          "label": "قِسم"
+        },
+        "tunnel": {
+          "label": "قِسم"
+        },
+        "tunnel_combo": {
+          "label": "قِسم"
+        },
+        "usage_rail": {
+          "label": "ورتݨ دی قِسم"
+        },
+        "valve": {
+          "label": "قِسم"
+        },
+        "wall": {
+          "label": "قِسم"
+        },
+        "water": {
+          "label": "قِسم"
+        },
+        "waterway": {
+          "label": "قِسم"
+        },
+        "wetland": {
+          "label": "قِسم"
+        }
+      },
+      "presets": {
+        "amenity/place_of_worship/muslim": {
+          "name": "مسجد\nمسیت"
+        },
+        "area": {
+          "name": "کھیتر"
+        },
+        "building": {
+          "name": "عمارت"
+        },
+        "building_point": {
+          "name": "عمارت"
+        },
+        "highway/footway/sidewalk": {
+          "name": "فُٹ پاتھ\nفٹ پاتھ\nفُٹپاتھ\nفٹپاتھ"
+        },
+        "highway/motorway_link": {
+          "name": "موٹروے دی لنک روڈ\nموٹروے لنک\nموٹر وے لنک"
+        },
+        "highway/service/parking_aisle": {
+          "name": "پارکنگ‌وے\nپارکنگ وے\nپارکنگ آئیل\nپارکنگ دی سڑک\nپارکنگ دا راہ\nپارکنگ دی گلی"
+        },
+        "place": {
+          "name": "تھاں\nستھان"
+        },
+        "place/city": {
+          "name": "شہر"
+        },
+        "route/ferry": {
+          "name": "فیری روٹ"
+        }
+      }
+    }
+  }
+}
