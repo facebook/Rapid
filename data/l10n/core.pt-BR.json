@@ -9,8 +9,7 @@
     },
     "toolbar": {
       "inspect": "Inspecionar",
-      "undo_redo": "Desfazer/Refazer",
-      "add_feature": "Adicionar elemento"
+      "undo_redo": "Desfazer/Refazer"
     },
     "title": {
       "labeled_and_more": {
@@ -472,7 +471,7 @@
         "other": "{count} recursos ocultos"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "Não foi possível acessar a API do OpenStreetMap. Suas edições são seguras localmente. Verifique sua conexão de rede.",
         "offline": "A API do OpenStreetMap está offline. Suas edições são seguras localmente. Por favor, volte mais tarde.",
@@ -512,7 +511,7 @@
         "hide_tiles": "Ocultar moisaco"
       },
       "history": {
-        "edited_by": "Editado por",
+        "last_edit": "Última Edição",
         "note_no_history": "Sem Histórico (Nova Nota)",
         "note_created_date": "Data criada",
         "note_created_user": "Criado por",
@@ -541,7 +540,6 @@
         "title": "Zoom para seleção",
         "no_selection": "Nada para ampliar."
       },
-      "show_more": "Mostrar mais",
       "view_on_osm": "Ver no openstreetmap.org",
       "view_on_osmose": "Ver no osmose.openstreetmap.fr",
       "view_on_keepRight": "Ver no keepright.at",
@@ -554,6 +552,7 @@
       "unshared_value_tooltip": "não compartilhado por todos os recursos",
       "back_tooltip": "Alterar o tipo de elemento",
       "search": "Procurar",
+      "incomplete": "<não baixado>",
       "feature_list": "Buscar elementos",
       "check": {
         "reverser": "Mudar Sentido"
@@ -570,7 +569,6 @@
       }
     },
     "background": {
-      "title": "Imagem de fundo",
       "description": "Configurações de fundo",
       "backgrounds": "Planos de fundo",
       "none": "Nenhum",
@@ -597,9 +595,7 @@
       "offset": "Arraste em qualquer ponto da área cinza abaixo para ajustar o deslocamento da imagem, ou entre com o valor do deslocamento em metros."
     },
     "map_data": {
-      "title": "Dados do mapa",
       "description": "Dados do Mapa",
-      "data_layers": "Camadas de dados",
       "layers": {
         "osm": {
           "tooltip": "Dados do mapa do OpenStreetMap",
@@ -630,7 +626,6 @@
         "title": "Mostrar painel de medição",
         "tooltip": "Mostrar valores de geometria para a seleção."
       },
-      "style_options": "Opções de estilo",
       "autohidden": "Estes elementos foram automaticamente ocultados porque muitos seriam exibidos na tela. Dê um zoom para editá-los.",
       "osmhidden": "Estes elementos foram automaticamente ocultados porque a camada do OpenStreetMap está ocultada."
     },
@@ -662,6 +657,9 @@
       }
     },
     "filters": {
+      "points": {
+        "tooltip": "Pontos de Interesse"
+      },
       "traffic_roads": {
         "description": "Vias de Trânsito",
         "tooltip": "Rodovias, Ruas, etc."
@@ -849,7 +847,6 @@
         "comment_placeholder": "Insira um comentário para compartilhar com outros usuários.",
         "close": "Fechar (problema corrigido)",
         "save_comment": "Salvar Comentário",
-        "close_comment": "Fechar e comentar",
         "error_parts": {
           "this_way": "este caminho",
           "this_oneway": "este caminho de sentido único",
@@ -1079,7 +1076,6 @@
             "title": "Faltando tracktype"
           },
           "<400>": {
-            "title": "Problema de geometria",
             "description": "Há um problema não especificado com a geometria aqui."
           },
           "<401>": {
@@ -1163,7 +1159,6 @@
         "keyboard": "Você pode ver uma lista de atalhos de teclado pressionando a tecla `{shortcuts_key}`."
       },
       "feature_editor": {
-        "title": "Editor de elementos",
         "intro": "O *editor de elementos* aparece junto ao mapa, e permite que você veja e edite todas as informações do elemento selecionado.",
         "definitions": "A seção no topo mostra o tipo do elemento. A seção no centro mostra os *campos*, que representam atributos de um elemento como seu nome ou endereço.",
         "type_h": "Tipo de recurso",
@@ -1251,7 +1246,6 @@
         "save_note": "Você deve salvar as edições da nota individualmente pressionando os botões abaixo dos comentários. As edições de nota **não** estão incluídas nos conjuntos de alterações que você envia para o OpenStreetMap."
       },
       "imagery": {
-        "title": "Imagens de fundo",
         "intro": "As imagens de fundo que aparecem abaixo dos dados do mapa são um recurso importante para o mapeamento. Essas imagens podem ser fotos aéreas coletadas de satélites, aviões e drones, ou podem ser mapas históricos digitalizados ou outros dados de fonte disponíveis gratuitamente.",
         "sources_h": "Fontes de imagens",
         "choosing": "Para ver quais as fontes de imagens estão disponíveis para editar, abra o painel {layers_icon} **{background_settings}** ao lado do mapa.",
@@ -1930,7 +1924,6 @@
       }
     },
     "shortcuts": {
-      "title": "Atalhos de teclado",
       "tooltip": "Mostra a tela de atalhos de teclado.",
       "key": {
         "delete": "Excluir"

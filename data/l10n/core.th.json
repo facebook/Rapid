@@ -291,7 +291,7 @@
     "feature_info": {
       "hidden_warning": "{count} คุณสมบัติที่ซ่อนอยู่"
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "local_storage_full": "คุณได้ทำการแก้ไขเกินกว่าที่จะสำรองข้อมูลได้ กรุณาพิจารณาบันทึกการเปลี่ยนแปลงตอนนี้"
       },

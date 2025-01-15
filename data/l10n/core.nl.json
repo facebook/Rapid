@@ -491,7 +491,7 @@
         "other": "{count} verborgen objecten"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "Er kan geen verbinding worden gemaakt met de OpenStreetMap-api. Je aanpassingen zijn lokaal opgeslagen. Controleer je internetverbinding.",
         "offline": "De OpenStreetMap-api is offline. Je aanpassingen zijn lokaal opgeslagen. Probeer het later opnieuw.",

@@ -195,7 +195,7 @@
     "loading_auth": "Savienojas ar OpenStreetMap...",
     "report_a_bug": "Ziņot par kļūdu",
     "help_translate": "Palīdzi tulkot",
-    "osm_api_status": {
+    "status": {
       "retry": "Mēģināt vēlreiz"
     },
     "commit": {

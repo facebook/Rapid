@@ -533,7 +533,7 @@
         "other": "{count} elementos ocultos"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "No se puede acceder a la API de OpenStreetMap. Sus ediciones están a salvo localmente. Verifique su conexión de red.",
         "offline": "La API de OpenStreetMap está fuera de línea. Sus ediciones están a salvo localmente. Regrese más tarde.",

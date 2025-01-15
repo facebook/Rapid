@@ -934,12 +934,6 @@
             "no": {
               "description": "Bisiklet yolu değil"
             },
-            "opposite": {
-              "description": "Tek yön yolda her iki yönde kullanılabilen bisiklet şeridi"
-            },
-            "opposite_lane": {
-              "description": "Trafiğin tersi yönde ilerleyen bisiklet şeridi"
-            },
             "share_busway": {
               "description": "Otobüs şeridini kullanan bisiklet şeridi"
             },

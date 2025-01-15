@@ -145,12 +145,16 @@
       "openstreetmapwesternsahara": "OpenStreetMap Sara Ocidental",
       "openstreetmapzambia": "OpenStreetMap Zâmbia",
       "openstreetmapzimbabwe": "OpenStreetMap Zimbabué",
+      "osmcolombia": "OSM Colômbia",
       "swissopenstreetmap": "OpenStreetMap Suíça"
     },
     "_defaults": {
       "aparat": {
         "name": "{community} no Aparat",
         "description": "Subscreve o nosso canal Aparat"
+      },
+      "bluesky": {
+        "description": "Siga-nos no Bluesky"
       },
       "discord": {
         "name": "Discord {community}",
@@ -358,6 +362,9 @@
     },
     "cl-telegram": {
       "extendedDescription": "Entre na comunidade para aprender mais sobre o OpenStreetMap, fazer perguntas ou participar dos nossos encontros. Todos são bem-vindos!"
+    },
+    "co-facebook": {
+      "description": "Grupo de conversação sobre problemas do OSM na Colômbia"
     },
     "czech-community": {
       "description": "Mapa, site e contactos em membros da OSM na República Checa"

@@ -566,7 +566,7 @@
         "other": "{count} ukrytego obiektu"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "Nie można nawiązać połączenia z API. Twoje edycje są zapisane lokalnie. Sprawdź swoje połączenie.",
         "offline": "API jest offline. Twoje edycje są zapisane lokalnie. Spróbuj później.",

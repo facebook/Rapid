@@ -1051,14 +1051,6 @@
               "description": "Không có làn xe đạp",
               "title": "Không có"
             },
-            "opposite": {
-              "description": "Làn xe đạp hai chiều trên đường một chiều",
-              "title": "Làn xe đạp ngược chiều giao thông"
-            },
-            "opposite_lane": {
-              "description": "Làn xe đạp chạy ngược chiều giao thông",
-              "title": "Làn xe đạp ngược chiều lối"
-            },
             "separate": {
               "description": "Đã vẽ lối đi xe đạp như một đường kẻ riêng",
               "title": "Lối đi xe đạp vẽ riêng"

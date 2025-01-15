@@ -415,7 +415,7 @@
         "other": "{count} peidetud objekti"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "OpenStreetMapi API on kättesaadamatu. Sinu muudatused on salvestatud kohalikult. Kontrolli internetiühendust.",
         "offline": "OpenStreetMapi API on ühenduseta. Sinu muudatused on salvestatud kohalikult. Proovi hiljem uuesti.",

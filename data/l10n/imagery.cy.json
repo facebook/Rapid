@@ -69,33 +69,35 @@
         "attribution": {
           "text": "Sentinel-2 cloudless - https://s2maps.eu gan EOX IT Services GmbH (Yn cynnwys data addas Copernicus Sentinel 2017 & 2018)"
         },
+        "description": "Delweddau lloeren Sentinel wedi'u hôl-brosesu.",
         "name": "eox.at 2018 heb gymylau"
       },
       "EOXAT2019CLOUDLESS": {
+        "description": "Delweddau lloeren Sentinel wedi'u hôl-brosesu",
         "name": "eox.at 2019 heb gymylau"
       },
       "EOXAT2020CLOUDLESS": {
+        "description": "Delweddau lloeren Sentinel wedi'u hôl-brosesu",
         "name": "eox.at 2020 heb gymylau"
       },
       "EOXAT2021CLOUDLESS": {
+        "description": "Delweddau lloeren Sentinel wedi'u hôl-brosesu",
         "name": "eox.at 2021 heb gymylau"
       },
       "EOXAT2022CLOUDLESS": {
+        "description": "Delweddau lloeren Sentinel wedi'u hôl-brosesu",
         "name": "eox.at 2022 heb gymylau"
       },
       "EsriWorldImagery": {
         "attribution": {
           "text": "Telerau ac Adborth"
-        },
-        "description": "Esri - Delweddaeth Byd",
-        "name": "Esri - Delweddaeth Byd"
+        }
       },
       "EsriWorldImageryClarity": {
         "attribution": {
           "text": "Telerau ac Adborth"
         },
-        "description": "Delweddau o archif Esri a allai fod yn fwy clir a chywir na'r haen ragosodedig.",
-        "name": "Esri - Delweddaeth Beta (Eglur)"
+        "description": "Delweddau o archif Esri a allai fod yn fwy clir a chywir na'r haen ragosodedig."
       },
       "Geodatastyrelsen_Denmark": {
         "name": "Delweddaeth SDFI"
@@ -230,6 +232,9 @@
         },
         "name": "Arolygydd OSM: Tagio"
       },
+      "OpenAerialMapMosaic": {
+        "name": "OpenAerialMap Mosaic, gan Kontur.io"
+      },
       "Riksantikvariambetet-heritage": {
         "name": "Riksantikvarieämbetet - Adeiladau treftadaeth"
       },
@@ -303,8 +308,78 @@
         },
         "name": "Nodiadau diweddaraf GeoScribble"
       },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© Bwrdeistref Gothenburg, CC0"
+        },
+        "name": "Map Dinas Gothenburg"
+      },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© Bwrdeistref Gothenburg, CC0"
+        }
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© Bwrdeistref Gothenburg, CC0"
+        },
+        "description": "Orthophoto ar gyfer bwrdeistref Gothenburg"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© Bwrdeistref Gothenburg, CC0"
+        },
+        "description": "Orthophoto ar gyfer bwrdeistref Gothenburg"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© Bwrdeistref Gothenburg, CC0"
+        },
+        "description": "Orthophoto ar gyfer bwrdeistref Gothenburg"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© Bwrdeistref Gothenburg, CC0"
+        },
+        "description": "Orthophoto ar gyfer bwrdeistref Gothenburg"
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© Bwrdeistref Gothenburg, CC0"
+        },
+        "description": "Orthophoto ar gyfer bwrdeistref Gothenburg",
+        "name": "Gothenburg Orthophoto diweddaraf"
+      },
+      "kalmar-orto-2014": {
+        "attribution": {
+          "text": "© Bwrdeistref Kalmar"
+        }
+      },
+      "kalmar-orto-2016": {
+        "attribution": {
+          "text": "© Bwrdeistref Kalmar"
+        }
+      },
+      "kalmar-orto-2018": {
+        "attribution": {
+          "text": "© Bwrdeistref Kalmar"
+        }
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© Bwrdeistref Kalmar"
+        }
+      },
+      "kartverket-bygninger": {
+        "description": "Adeiladau INSPIRE ar gyfer Norwy."
+      },
       "lancucki-buildings": {
         "name": "Powiat łańcucki: Adeiladau"
+      },
+      "linkoping-orto": {
+        "attribution": {
+          "text": "© Bwrdeistref Linköping"
+        }
       },
       "lubaczowski-buildings": {
         "name": "Powiat lubaczowski: Adeiladau"
@@ -335,7 +410,7 @@
         "attribution": {
           "text": "© Cyfranwyr OpenStreetMap, CC-BY-SA"
         },
-        "name": "OpenStreetMap (Almaenaidd)"
+        "name": "OpenStreetMap (Dull Almaenaidd)"
       },
       "osmse-generalstab": {
         "description": "Sgan \"Generalstabskartan\" ca. 1859–1979"
@@ -395,6 +470,11 @@
       },
       "stalowowolski-buildings": {
         "name": "Powiat stalowowolski: Adeiladau"
+      },
+      "stockholm-orto": {
+        "attribution": {
+          "text": "© Bwrdeistref Stockholm, CC0"
+        }
       },
       "svk-electricity-network": {
         "name": "SVK - Rhwydwaith Trydan"

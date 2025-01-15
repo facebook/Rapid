@@ -806,12 +806,12 @@
               "description": "无自行车道"
             },
             "opposite": {
-              "description": "单行路上，可双向通行的与其他车辆共享路面的自行车道",
-              "title": "双向共用车道"
+              "description": "请将标签更新为 oneway=yes、oneway:bicycle=no，以及 cycleway:both=no 等。",
+              "title": "（废止标签）双向非机动车道"
             },
             "opposite_lane": {
-              "description": "和其他车辆反向行驶的自行车道",
-              "title": "逆向自行车道"
+              "description": "请将标签更新为 oneway、oneway:bicycle，以及 cycleway:left/right=lane 等。",
+              "title": "（废止标签）逆向自行车道"
             },
             "separate": {
               "description": "这表示自行车道需要被渲染为单独的几何要素",
@@ -1877,31 +1877,53 @@
         "parking": {
           "options": {
             "carports": {
+              "description": "用于为车辆提供有限保护的结构，通常没有围墙。",
               "title": "车棚"
             },
             "garage_boxes": {
-              "title": "车库盒"
+              "description": "有多个独立的区块的私人车库，每个区块可停放一辆汽车。",
+              "title": "联排车库"
+            },
+            "half_on_kerb": {
+              "description": "部分人行道上可以停车。",
+              "title": "部分在人行道上"
+            },
+            "lane": {
+              "description": "在街道上停车（可容易转换成行车道）。",
+              "title": "路旁"
             },
             "layby": {
+              "description": "在路旁的休息区停车。",
               "title": "公路停车港湾"
             },
             "multi-storey": {
+              "description": "一个建筑结构中的两层或多层停车场。",
               "title": "多层"
             },
             "on_kerb": {
-              "title": "路缘上"
+              "description": "在人行道上停车。"
             },
             "rooftop": {
+              "description": "建筑物顶部的一层停车场。",
               "title": "屋顶"
             },
             "sheds": {
+              "description": "私人停车棚。",
               "title": "车棚"
             },
+            "shoulder": {
+              "description": "在路肩停车。"
+            },
+            "street_side": {
+              "title": "路旁并联式停车位"
+            },
             "surface": {
+              "description": "地面一层停车场。",
               "title": "表面铺设"
             },
             "underground": {
-              "title": "地埋式"
+              "description": "在地下停车。",
+              "title": "地下"
             }
           }
         },
@@ -2425,6 +2447,9 @@
         "shelter": {
           "label": "候车亭"
         },
+        "short_name": {
+          "label": "简称"
+        },
         "side": {
           "label": "方位",
           "options": {
@@ -2708,7 +2733,7 @@
         "switch": {
           "label": "开关类型",
           "options": {
-            "disconnector": "断路器",
+            "disconnector": "隔离开关",
             "mechanical": "机械式"
           }
         },
@@ -2752,8 +2777,9 @@
         },
         "telecom": {
           "options": {
-            "connection_point": "电信机房",
-            "distribution_point": "电信网关"
+            "connection_point": "楼宇机房",
+            "distribution_point": "网络配线柜",
+            "service_device": "综合机柜"
           }
         },
         "telecom/medium": {
@@ -5130,6 +5156,14 @@
           "name": "自行车横道 (无标线)",
           "terms": "自行车横道,自行车横道线,自行车路口,单车横道线,单车路口"
         },
+        "highway/cycleway/traffic_island": {
+          "name": "非机动车安全岛",
+          "terms": "非机动车,自行车,单车,电动车,电瓶车,避险岛,导流岛,安全岛,中心岛,分隔岛"
+        },
+        "highway/cycleway/traffic_island_shared": {
+          "name": "非机动车与行人安全岛",
+          "terms": "非机动车,自行车,单车,电动车,电瓶车,行人,步行,避险岛,导流岛,安全岛,中心岛,分隔岛"
+        },
         "highway/elevator": {
           "terms": "电梯,直梯"
         },
@@ -6076,6 +6110,10 @@
         "natural": {
           "name": "自然要素"
         },
+        "natural/arch": {
+          "name": "天然拱门",
+          "terms": "天然拱门"
+        },
         "natural/bare_rock": {
           "name": "岩石",
           "terms": "岩石,裸露岩石,石头,礁石,沉积,石"
@@ -7008,7 +7046,8 @@
           "name": "有轨电车停车处"
         },
         "railway/turntable": {
-          "name": "铁路转车盘"
+          "name": "铁路转车盘",
+          "terms": "铁路转车台,铁路调车转盘"
         },
         "railway/yard": {
           "name": "铁路车场",
@@ -7017,6 +7056,18 @@
         "relation": {
           "terms": "关系"
         },
+        "roller_coaster/station": {
+          "name": "过山车站台",
+          "terms": "过山车,云霄飞车,车站,站台"
+        },
+        "roller_coaster/support": {
+          "name": "过山车支架",
+          "terms": "过山车支架"
+        },
+        "roller_coaster/track": {
+          "name": "过山车轨道",
+          "terms": "过山车轨道"
+        },
         "route/ferry": {
           "name": "航线"
         },
@@ -7024,19 +7075,32 @@
           "name": "航标"
         },
         "seamark/beacon_isolated_danger": {
-          "name": "危险警号信号\n警告信号灯"
+          "name": "危险警号信号\n警告信号灯",
+          "terms": "危险警告信标"
         },
         "seamark/beacon_lateral": {
-          "name": "航道标志"
+          "name": "航道标志",
+          "terms": "航道信标"
+        },
+        "seamark/buoy_lateral": {
+          "terms": "航道浮标"
+        },
+        "seamark/buoy_lateral/green": {
+          "terms": "绿色浮标"
+        },
+        "seamark/buoy_lateral/red": {
+          "terms": "红色浮标"
         },
         "seamark/mooring": {
-          "name": "系泊设备"
+          "name": "系泊设备",
+          "terms": "泊位"
         },
         "shop": {
           "terms": "商店,超市,便利店,汽车,汽修,百货,商场,服装,面包,报刊,报纸,美发,理发,家具,硬件,电脑,花,电器,肉,酒,鞋,轮胎,自行车,单车,4S"
         },
         "shop/agrarian": {
-          "name": "农场供应店"
+          "name": "农业物资店",
+          "terms": "农资店,农业,物资,农场,农具,农业工具,农机,农业机械"
         },
         "shop/alcohol": {
           "name": "酒水店",
@@ -7109,9 +7173,16 @@
           "name": "蜡烛店",
           "terms": "蜡烛专卖店"
         },
+        "shop/cannabis": {
+          "terms": "大麻店"
+        },
         "shop/car": {
           "name": "汽车店",
           "terms": "车行"
+        },
+        "shop/car/second_hand": {
+          "name": "二手车行",
+          "terms": "二手车,旧车,车行"
         },
         "shop/car_parts": {
           "name": "汽车零部件商店",
@@ -7121,10 +7192,15 @@
           "terms": "汽车修理店"
         },
         "shop/caravan": {
-          "name": "房车售卖"
+          "name": "房车行",
+          "terms": "房车,露营车,车行,汽车店"
         },
         "shop/carpet": {
           "terms": "地毯店,毯店"
+        },
+        "shop/catalogue": {
+          "name": "目录购物商店",
+          "terms": "目录购物,邮购,目录商店"
         },
         "shop/charity": {
           "name": "慈善机构店",
@@ -7142,20 +7218,27 @@
           "terms": "服装店,时装,衣服,衬衫,连衣裙,时装,裤子,裙子"
         },
         "shop/clothes/second_hand": {
-          "name": "二手服装店"
+          "name": "二手服装店",
+          "terms": "二手服饰店,二手服装店,二手衣物店"
         },
         "shop/clothes/underwear": {
           "name": "内衣店"
         },
         "shop/clothes/wedding": {
-          "name": "婚纱店"
+          "name": "婚礼服饰店",
+          "terms": "婚礼,婚纱,婚服,婚装,婚礼服饰店"
+        },
+        "shop/clothes/workwear": {
+          "name": "工作服装店",
+          "terms": "工作服装店"
         },
         "shop/coffee": {
           "name": "咖啡豆/粉店",
           "terms": "咖啡,咖啡豆,咖啡粉,商店,摩卡,拿铁,馥芮白,玛奇朵,卡布奇诺"
         },
         "shop/collector": {
-          "name": "收藏品店"
+          "name": "收藏品店",
+          "terms": "收藏品,古玩,奇珍,宝物,珍藏"
         },
         "shop/computer": {
           "terms": "电脑店"
@@ -7174,16 +7257,25 @@
           "name": "化妆品店",
           "terms": "日化店"
         },
+        "shop/country_store": {
+          "name": "乡村杂货店",
+          "terms": "乡村杂货店"
+        },
         "shop/craft": {
-          "name": "工艺美术用品店"
+          "name": "手工艺材料店",
+          "terms": "手工艺材料店,手工艺用品店"
         },
         "shop/curtain": {
           "name": "窗帘店",
           "terms": "窗帘店"
         },
         "shop/dairy": {
-          "name": "牛奶店",
-          "terms": "牛奶店"
+          "name": "乳品店",
+          "terms": "乳品,牛奶,奶酪,酸奶,羊奶,水牛奶,早餐奶,鲜奶,巴氏奶,常温奶,牛奶店,奶店"
+        },
+        "shop/deli": {
+          "name": "高级食材店",
+          "terms": "高级食材店"
         },
         "shop/department_store": {
           "name": "百货商场",
@@ -7194,7 +7286,8 @@
           "terms": "DIY商店,手工店"
         },
         "shop/doors": {
-          "name": "门业店"
+          "name": "门业商店",
+          "terms": "门,门业,门店,门窗,防盗门,房门,室内门,木门,铝合金门,玻璃门,门业"
         },
         "shop/dry_cleaning": {
           "name": "干洗店",
@@ -7225,7 +7318,8 @@
           "name": "壁炉用品店"
         },
         "shop/fishing": {
-          "name": "钓鱼店"
+          "name": "钓鱼店",
+          "terms": "钓具,渔具,鱼竿,鱼钩,鱼护,鱼箱,鱼饵"
         },
         "shop/flooring": {
           "name": "地板店"
@@ -7258,6 +7352,10 @@
         "shop/gift": {
           "terms": "礼品店"
         },
+        "shop/gold_buyer": {
+          "name": "黄金收购",
+          "terms": "黄金收购"
+        },
         "shop/greengrocer": {
           "terms": "果蔬店"
         },
@@ -7277,6 +7375,13 @@
         },
         "shop/hifi": {
           "terms": "音响店"
+        },
+        "shop/hobby": {
+          "name": "（废止标签）业余爱好商店"
+        },
+        "shop/honey": {
+          "name": "蜂蜜制品店",
+          "terms": "蜂蜜"
         },
         "shop/household_linen": {
           "name": "布艺店"
@@ -7351,6 +7456,10 @@
           "name": "派对节日用品",
           "terms": "聚会,气球,服饰,装饰,邀请函"
         },
+        "shop/pasta": {
+          "name": "生面食店",
+          "terms": "面食,面点"
+        },
         "shop/pastry": {
           "name": "糕饼店",
           "terms": "油酥点心店,糕点店,糕饼店,面包点心店"
@@ -7361,6 +7470,10 @@
         "shop/pet": {
           "terms": "宠物店"
         },
+        "shop/pet_grooming": {
+          "name": "宠物美容",
+          "terms": "宠物美容"
+        },
         "shop/photo": {
           "name": "照相馆",
           "terms": "照相馆,照片"
@@ -7369,7 +7482,8 @@
           "name": "陶瓷店"
         },
         "shop/printer_ink": {
-          "name": "打印机墨水店"
+          "name": "打印耗材店",
+          "terms": "打印机,打印,墨盒,碳粉,耗材"
         },
         "shop/psychic": {
           "name": "特异功能(看相等)"
@@ -7472,7 +7586,8 @@
           "terms": "手表店,钟表店,Watches Shop"
         },
         "shop/water": {
-          "name": "饮水店"
+          "name": "饮用水门店",
+          "terms": "饮用水,桶装水,瓶装水,包装水,门店"
         },
         "shop/water_sports": {
           "name": "水上运动/泳具店"
@@ -7497,6 +7612,10 @@
         "tourism": {
           "name": "旅游要素"
         },
+        "tourism/alpine_hut": {
+          "name": "高山小屋",
+          "terms": "高山小屋,山屋"
+        },
         "tourism/apartment": {
           "terms": "公寓,客人公寓,出租公寓"
         },
@@ -7508,7 +7627,8 @@
           "terms": "艺术,壁画,雕塑,雕刻,雕像,人像,塑像,油画,绘画,石像,写真,浮雕,画像,街头艺术,颜料"
         },
         "tourism/artwork/graffiti": {
-          "name": "涂鸦"
+          "name": "涂鸦",
+          "terms": "涂鸦"
         },
         "tourism/artwork/installation": {
           "name": "艺术装置"
@@ -7534,6 +7654,10 @@
         "tourism/camp_site/backcountry": {
           "name": "野外宿营地",
           "terms": "野外宿营地,野外宿营区,野外露营地,野外露营区,野营场,露营,野营,野营场地,露营场地,宿营地,宿营,扎营,帐篷,度假"
+        },
+        "tourism/camp_site/group_only": {
+          "name": "团体露营地",
+          "terms": "团体露营地"
         },
         "tourism/caravan_site": {
           "terms": "房车营地"
@@ -7579,7 +7703,8 @@
           "terms": "小径标记,步道标记,步行径标记,标距柱,步行径标距柱"
         },
         "tourism/information/terminal": {
-          "name": "信息中心"
+          "name": "自助信息终端机",
+          "terms": "自助终端机,信息终端机,终端机,咨询终端,自助服务"
         },
         "tourism/motel": {
           "terms": "汽车旅馆"
@@ -7598,7 +7723,8 @@
           "terms": "乐园,游乐园,公园,主题,度假区,娱乐,游乐场"
         },
         "tourism/trail_riding_station": {
-          "name": "小径骑行站"
+          "name": "休憩马厩",
+          "terms": "马厩,休憩,履行,休息"
         },
         "tourism/viewpoint": {
           "name": "观景点",
@@ -7620,16 +7746,16 @@
           "terms": "野生动物园,动物园"
         },
         "tourism/zoo/wildlife": {
-          "name": "土著动物园",
-          "terms": "土著动物,土著,本地,动物园"
+          "name": "野放动物公园",
+          "terms": "土著动物,土著,本地,野放,野生,野外,动物公园"
         },
         "traffic_calming": {
-          "name": "交通减速设置",
-          "terms": "车辆减速措施"
+          "name": "交通减速设施",
+          "terms": "车辆减速措施,交通减速设施"
         },
         "traffic_calming/bump": {
           "name": "减速带",
-          "terms": "减速,减速带,交通稳静化"
+          "terms": "减速,减速带"
         },
         "traffic_calming/chicane": {
           "name": "减速弯道",
@@ -7639,16 +7765,20 @@
           "name": "窄化路面",
           "terms": "窄化路面,瓶颈化交叉口,窄点"
         },
+        "traffic_calming/cushion": {
+          "terms": "减速,减速垫,减速板,减速带,减速胶"
+        },
         "traffic_calming/dip": {
           "name": "减速路凹",
           "terms": "路凹,减速路凹,减速坑"
         },
         "traffic_calming/hump": {
           "name": "减速丘",
-          "terms": "减速,减速丘,交通稳静化"
+          "terms": "减速,减速丘"
         },
         "traffic_calming/island": {
-          "name": "导流岛"
+          "name": "导流岛",
+          "terms": "导流岛,分隔岛"
         },
         "traffic_calming/mini_bumps": {
           "name": "减速饼"
@@ -7661,8 +7791,12 @@
           "name": "减速台",
           "terms": "减速,减速台,交通稳静化"
         },
+        "traffic_calming/yes": {
+          "name": "交通减速设施（不特定类型）"
+        },
         "traffic_sign": {
-          "name": "交通标志"
+          "name": "交通标志",
+          "terms": "交通标志,交通标识"
         },
         "traffic_sign/city_limit": {
           "name": "城市限制标志"

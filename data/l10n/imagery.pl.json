@@ -64,16 +64,20 @@
         "name": "eox.at 2018 bezchmurne"
       },
       "EOXAT2019CLOUDLESS": {
-        "description": "Przetworzone zdjęcia satelitarne Sentinel"
+        "description": "Przetworzone zdjęcia satelitarne Sentinel",
+        "name": "eox.at 2019 - Bezchmurny"
       },
       "EOXAT2020CLOUDLESS": {
-        "description": "Przetworzone zdjęcia satelitarne Sentinel."
+        "description": "Przetworzone zdjęcia satelitarne Sentinel.",
+        "name": "eox.at 2020 - Bezchmurny"
       },
       "EOXAT2021CLOUDLESS": {
-        "description": "Przetworzone zdjęcia satelitarne Sentinel."
+        "description": "Przetworzone zdjęcia satelitarne Sentinel.",
+        "name": "eox.at 2021 - Bezchmurny"
       },
       "EOXAT2022CLOUDLESS": {
-        "description": "Przetworzone zdjęcia satelitarne Sentinel."
+        "description": "Przetworzone zdjęcia satelitarne Sentinel.",
+        "name": "eox.at 2022 - Bezchmurny"
       },
       "EsriWorldImagery": {
         "attribution": {
@@ -90,7 +94,11 @@
         "name": "Esri Beta (satelitarne i lotnicze)"
       },
       "Frankfurt-am-Main-2019": {
-        "description": "Zdjęcia lotnicze Frankfurtu nad Menem, sfotografowane 16 kwietnia 2019"
+        "description": "Zdjęcia lotnicze Frankfurtu nad Menem, sfotografowane 16 kwietnia 2019",
+        "name": "Frankfurt nad Menem - Zdjęcie lotnicze 2019"
+      },
+      "Geodatastyrelsen_Denmark": {
+        "name": "Zdjęcia lotnicze SDFI"
       },
       "Geoportal2-PL-City-boundaries_WMS": {
         "name": "Geoportal 2: Granice miast WMS"
@@ -220,6 +228,27 @@
       "Naturvardsverket-trails": {
         "name": "Agencja Ochrony Środowiska - Szlaki"
       },
+      "ODOT_TIMS_Road_Inventory": {
+        "attribution": {
+          "text": " \nDepartament Transportu Stanu Ohio"
+        }
+      },
+      "OSIP": {
+        "attribution": {
+          "text": " \nProgram obrazowania całego stanu Ohio"
+        },
+        "name": " \nProgram obrazowania całego stanu Ohio"
+      },
+      "OSIP_1ft": {
+        "attribution": {
+          "text": " \nProgram obrazowania całego stanu Ohio"
+        }
+      },
+      "OSIP_6in": {
+        "attribution": {
+          "text": " \nProgram obrazowania całego stanu Ohio"
+        }
+      },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {
           "text": "Zawiera informacje z sektora publicznego na licencji Open Government Licence v3.0."
@@ -307,13 +336,16 @@
         "description": "Kolor żółty = Dane mapowe w domenie publicznej pochodzące z US Census. Kolor czerwony = Tych danych nie ma w OpenStreetMap"
       },
       "US-TIGER-Roads-2021": {
-        "description": "Kolor żółty = Dane mapowe w domenie publicznej pochodzące z US Census. Kolor czerwony = Tych danych nie ma w OpenStreetMap"
+        "description": "Kolor żółty = Dane mapowe w domenie publicznej pochodzące z US Census. Kolor czerwony = Tych danych nie ma w OpenStreetMap",
+        "name": "Drogi TIGER 2021"
       },
       "US-TIGER-Roads-2022": {
-        "description": "Kolor żółty = Dane mapowe w domenie publicznej pochodzące z US Census. Kolor czerwony = Tych danych nie ma w OpenStreetMap"
+        "description": "Kolor żółty = Dane mapowe w domenie publicznej pochodzące z US Census. Kolor czerwony = Tych danych nie ma w OpenStreetMap",
+        "name": "Drogi TIGER 2022"
       },
       "US-TIGER-Roads-2023": {
-        "description": "Kolor żółty = Dane mapowe w domenie publicznej pochodzące z US Census. Kolor czerwony = Tych danych nie ma w OpenStreetMap"
+        "description": "Kolor żółty = Dane mapowe w domenie publicznej pochodzące z US Census. Kolor czerwony = Tych danych nie ma w OpenStreetMap",
+        "name": "Drogi TIGER 2023"
       },
       "USDA-NAIP": {
         "attribution": {
@@ -426,6 +458,12 @@
       "eufar-balaton": {
         "description": "Geotagowane zdjęcia z 1940 od Balaton Limnological Institute.",
         "name": "Ortofotomapy EUFAR Balaton"
+      },
+      "geoscribble-latest": {
+        "attribution": {
+          "text": "Użytkownicy GeoScribble"
+        },
+        "name": "Najnowsze notatki GeoScribble"
       },
       "gothenburg-citymap": {
         "attribution": {
@@ -629,7 +667,8 @@
         "attribution": {
           "text": "Płytki © cquest@Openstreetmap France, dane © IGN, LO/OL"
         },
-        "description": "Trasy sieci sklasyfikowanej (autostrady, drogi krajowe, drogi departamentalne)"
+        "description": "Trasy sieci sklasyfikowanej (autostrady, drogi krajowe, drogi departamentalne)",
+        "name": "Trasa 500"
       },
       "rzeszowski-aerial": {
         "name": "Powiat rzeszowski: Ortofotomapa (zdjęcia lotnicze)"

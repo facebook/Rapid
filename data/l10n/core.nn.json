@@ -108,7 +108,7 @@
     "logout": "Logg ut",
     "report_a_bug": "Rapporter ein feil",
     "help_translate": "Hjelp til med å omsette",
-    "osm_api_status": {
+    "status": {
       "retry": "Prøv ein gong til"
     },
     "commit": {

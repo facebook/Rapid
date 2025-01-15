@@ -545,12 +545,6 @@
               "description": "Brez pasu za kolesarje",
               "title": "Brez"
             },
-            "opposite": {
-              "description": "Obojesmerni kolesarski pas v enosmerni ulici"
-            },
-            "opposite_lane": {
-              "description": "Kolesarski pas, ki poteka v nasprotni smeri prometa"
-            },
             "share_busway": {
               "description": "Pas za kolesarje, ki je deljen z voznim pasom za avtobuse"
             },

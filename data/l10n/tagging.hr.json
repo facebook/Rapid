@@ -1009,12 +1009,6 @@
               "description": "Nema biciklističke trake",
               "title": "Nema"
             },
-            "opposite": {
-              "description": "Biciklistička traka za kretanje u oba smjera u jednosmjernoj ulici"
-            },
-            "opposite_lane": {
-              "description": "Biciklistička traka suprotnog smjera kretanja u odnosu na promet"
-            },
             "share_busway": {
               "description": "Biciklistička traka dijeljena s autobusnom trakom"
             },

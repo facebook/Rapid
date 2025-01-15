@@ -1190,12 +1190,12 @@
               "title": "无"
             },
             "opposite": {
-              "description": "在單向車道可以雙向通行的自行車道",
-              "title": "反向自行車道"
+              "description": "請更新道路的 oneway=yes、oneway:bicycle=no，以及 cycleway:both=no 等標籤。",
+              "title": "(廢止) 逆向單車道 "
             },
             "opposite_lane": {
-              "description": "與車流方向相反的自行車道",
-              "title": "逆向自行車道"
+              "description": "請更新道路的 oneway、oneway:bicycle，以及 cycleway:left/right=lane 等標籤。",
+              "title": "(廢止) 對向單車道"
             },
             "separate": {
               "description": "自行車道繪製為獨立的路徑",
@@ -7070,6 +7070,14 @@
         "highway/cycleway/moped_link-NL": {
           "name": "轻便摩托车专用道",
           "terms": "轻便,轻便摩托车,轻型,电动车,电动摩托车,电摩,电车,电动,摩托车,非机动车"
+        },
+        "highway/cycleway/traffic_island": {
+          "name": "腳踏車庇護島",
+          "terms": "腳踏車庇護島"
+        },
+        "highway/cycleway/traffic_island_shared": {
+          "name": "腳踏車與行人庇護島",
+          "terms": "腳踏車與行人庇護島"
         },
         "highway/cyclist_waiting_aid": {
           "name": "骑行休息辅助",

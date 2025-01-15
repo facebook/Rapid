@@ -930,12 +930,6 @@
               "description": "Neniu bicikl-koridoro",
               "title": "Neniu"
             },
-            "opposite": {
-              "description": "Bicikla koridoro, kiu ebligas moviĝi en ambaŭ direktoj sur unudirekta strato"
-            },
-            "opposite_lane": {
-              "description": "Bicikla koridoro, kiu ebligas moviĝi en kontraŭa direkto ol direkto de koridoro ĉe kiu ĝi troviĝas"
-            },
             "separate": {
               "description": "Bicikla koridoro mapigita kiel aparta linio"
             },

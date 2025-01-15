@@ -545,7 +545,7 @@
             "mosque": "Moske-bygning",
             "office": "Kontorbygning",
             "outbuilding": "Udhus",
-            "pavilion": "Pavillon-bygning",
+            "pavilion": "Sportspavillon",
             "public": "Offentlig bygning",
             "residential": "Boligbyggeri",
             "retail": "Butiksbygning",
@@ -1043,14 +1043,6 @@
               "description": "Ingen cykelsti",
               "title": "Ingen"
             },
-            "opposite": {
-              "description": "Cykelbane hvor det er tilladt at køre i begge retninger på en ensrettet gade",
-              "title": "Modsatrettet cykelsti, dobbelt"
-            },
-            "opposite_lane": {
-              "description": "Cykelbane der kører i modsat retning af biltrafikken",
-              "title": "Modsatrettet cykelsti, enkelt"
-            },
             "separate": {
               "description": "Indikerer at cykelsti blev kortlagt som en separat geometri",
               "title": "Cykelsti kortlagt separat"
@@ -1402,6 +1394,7 @@
             "LH2": "Flydende brint",
             "cng": "Komprimeret naturgas (CNG)",
             "e10": "E10 benzin",
+            "e5": "E5 benzin",
             "e85": "E85 benzin",
             "h70": "Brint i gasform (700 bar)",
             "octane_100": "Benzin (100 oktan)",
@@ -1487,8 +1480,26 @@
           "label": "Gelænder",
           "terms": " gelænder,baluster,rækværk"
         },
+        "handrest": {
+          "label": "Håndstøtte"
+        },
         "hashtags": {
           "placeholder": "#eksempel"
+        },
+        "hazard_boundary": {
+          "label": "Fare",
+          "options": {
+            "archery_range": "Bueskydning",
+            "avalanche": "Sneskred",
+            "biohazard": "Biologisk forurening",
+            "contamination": "Kemisk forurening",
+            "electricity": "Elektrisk stød",
+            "hole": "Hul",
+            "minefield": "Landminer",
+            "nuclear": "Nuklear / radioaktiv",
+            "quicksand": "Kviksand",
+            "shooting_range": "Våbenild"
+          }
         },
         "healthcare": {
           "options": {
@@ -1616,6 +1627,7 @@
             "manor": "Herregård",
             "memorial": "Mindesmærke",
             "milestone": "Kilometersten",
+            "millstone": "Møllesten",
             "mine_shaft": "Mineskakt",
             "pillory": "Historisk skamstøtte",
             "railway": "Jernbane",
@@ -2953,7 +2965,10 @@
           "placeholder": "Ukendt"
         },
         "structure_power": {
-          "label": "Struktur"
+          "label": "Struktur",
+          "options": {
+            "lattice": "Gitterkonstruktion"
+          }
         },
         "structure_waterway": {
           "label": "Struktur",
@@ -3134,7 +3149,8 @@
           "terms": "Gratis menstruationsprodukter tilgængelige,gratis bind,bind"
         },
         "toilets/position": {
-          "label": "Positioner"
+          "label": "Positioner",
+          "terms": "Positioner,stillinger"
         },
         "toilets/wheelchair": {
           "label": "Handicaptoilet",
@@ -3462,21 +3478,24 @@
           "name": "Reklame-totem",
           "terms": "reklame-totem,reklamesøjle.reklameskilt,reklame,plakat"
         },
+        "aerialway": {
+          "name": "Svævebane"
+        },
         "aerialway/cable_car": {
-          "name": "Svævebane",
-          "terms": "Svævebane, Gondolbane"
+          "name": "Kabinelift",
+          "terms": "Kabinelift,Svævebane,Gondolbane"
         },
         "aerialway/chair_lift": {
-          "name": "Skilift",
-          "terms": "Skilift, Stolelift"
+          "name": "Stolelift",
+          "terms": "Stolelift,Skilift"
         },
         "aerialway/drag_lift": {
           "name": "Træklift",
-          "terms": "Træklift"
+          "terms": "Træklift,slæbelift,t-lift,tallerkenlift"
         },
         "aerialway/gondola": {
-          "name": "Gondollift\nGondolbane",
-          "terms": "gondol,svævebane,svæve,kabel,kabelbane"
+          "name": "Gondollift",
+          "terms": "Gondolbane,gondol,svævebane,svæve,kabel,kabelbane,kabinelift"
         },
         "aerialway/goods": {
           "name": "Varekabelbane",
@@ -3503,7 +3522,8 @@
           "terms": "Tovlift"
         },
         "aerialway/zip_line": {
-          "name": "Svævebane"
+          "name": "Zipline",
+          "terms": "Zipline,svævebane"
         },
         "aeroway/aerodrome": {
           "name": "Lufthavn",
@@ -4289,7 +4309,7 @@
         },
         "amenity/shelter/public_transport": {
           "name": "Venteskur",
-          "terms": "venteskur,bus,tog,transport,offentlig,vente,læskur,læ,ly,halvtag"
+          "terms": "venteskur,busskur,tog,transport,offentlig,vente,læskur,læ,ly,halvtag"
         },
         "amenity/shower": {
           "name": "Brusebad",
@@ -4895,8 +4915,8 @@
           "name": "Udhus"
         },
         "building/pavilion": {
-          "name": "Pavillionbygning",
-          "terms": "pavillion,skur,midlertidig"
+          "name": "Sportspavillon",
+          "terms": "pavillion,skur,redskabsskur"
         },
         "building/public": {
           "name": "Offentlig bygning",
@@ -5740,8 +5760,8 @@
           "terms": "Helleanlæg (trafikø)"
         },
         "highway/unclassified": {
-          "name": "Mindre offentlig vej udenfor byområde",
-          "terms": "Mindre/Uspecificeret vej"
+          "name": "Mindre/ikke-klassificeret offentlig vej",
+          "terms": "Mindre/ikke-klassificeret offentlig vej,landevej,småvej,vej"
         },
         "historic": {
           "name": "Historisk sted",
@@ -5868,7 +5888,7 @@
           "name": "Bassin"
         },
         "landuse/brownfield": {
-          "terms": "byggefelt,byggegrund"
+          "terms": "byggegrund,udstykning,byggefelt"
         },
         "landuse/cemetery": {
           "name": "Gravplads",
@@ -5916,7 +5936,7 @@
           "terms": "Græs"
         },
         "landuse/greenfield": {
-          "terms": "byggegrund,udstykning"
+          "terms": "byggegrund,udstykning,byggefelt"
         },
         "landuse/harbour": {
           "name": "Havn",
@@ -5935,7 +5955,7 @@
         },
         "landuse/landfill": {
           "name": "Losseplads",
-          "terms": "Losseplads, Affaldsplads"
+          "terms": "Losseplads,Affaldsplads,Deponi"
         },
         "landuse/meadow": {
           "name": "Eng",
@@ -5986,8 +6006,8 @@
           "name": "Dam"
         },
         "landuse/quarry": {
-          "name": "Stenbrud/Grusgrav",
-          "terms": "grusgrav,stenbrud,minedriftsområde"
+          "name": "Råstofindvinding",
+          "terms": "råstofindvinding,grusgrav,stenbrud,minedriftsområde,råstofudvinding"
         },
         "landuse/railway": {
           "name": "Jernbanekorridor",
@@ -6011,6 +6031,9 @@
         "landuse/retail": {
           "name": "Handelsområde",
           "terms": "Handelsområde"
+        },
+        "landuse/salt_pond": {
+          "name": "Saltsyderi"
         },
         "landuse/vineyard": {
           "name": "Vingård",
@@ -6248,6 +6271,9 @@
         },
         "leisure/pitch/futsal": {
           "name": "Futsal-bane"
+        },
+        "leisure/pitch/handball": {
+          "name": "Håndboldbane"
         },
         "leisure/pitch/horseshoes": {
           "name": "Hesteskokastefelt",
@@ -6830,7 +6856,7 @@
         },
         "natural/scree": {
           "name": "Ur",
-          "terms": "Talus, Stenblokke"
+          "terms": "Ur,Talus,Stenblokke"
         },
         "natural/scrub": {
           "name": "Krat",
@@ -7298,7 +7324,8 @@
           "terms": "leg,legeplads,tunnel,rør"
         },
         "playground/zipwire": {
-          "name": "Lege-svævebane"
+          "name": "Lege-svævebane",
+          "terms": "Lege-svævebane,zipline"
         },
         "point": {
           "name": "Punkt",

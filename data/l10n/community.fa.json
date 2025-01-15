@@ -249,7 +249,7 @@
         "name": "تلگرام {community}",
         "description": "به گپ تلگرامی انجمن ما بپیوندید"
       },
-      "website": {
+      "url": {
         "name": "{انجمن}"
       },
       "wiki": {

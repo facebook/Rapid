@@ -1109,14 +1109,6 @@
               "description": "Žiadny",
               "title": "Žiadny"
             },
-            "opposite": {
-              "description": "Cyklopruh na jednosmernej ceste, ktorý vedie do oboch smerov",
-              "title": "Obojsmerný cyklopruh"
-            },
-            "opposite_lane": {
-              "description": "Cyklopruh, ktorý vedie do protismeru",
-              "title": "Protismerný cyklopruh"
-            },
             "separate": {
               "description": "Označuje, že cyklocesta bola zmapovaná zvlášť",
               "title": "Oddelená cyklocesta"
@@ -6820,7 +6812,7 @@
           "terms": "vyrivka,kúpeľ,kupel"
         },
         "leisure/ice_rink": {
-          "name": "Klzisko / Zimný štadión bez hľadiska",
+          "name": "Klzisko / Zimný štadión",
           "terms": "ľadová plocha,ladova plocha,korčulovanie,korculovanie,ľad,lad,zimny stadion"
         },
         "leisure/indoor_play": {
@@ -8588,7 +8580,7 @@
         },
         "shop/computer": {
           "name": "Obchod s výpočtovou technikou",
-          "terms": "obchod s vypoctovou technikou,pocitace,počitače,elektro,elektronika,vypoctova technika,výpočtová technika"
+          "terms": "obchod s vypoctovou technikou,pocitace,počítače,elektro,elektronika,vypoctova technika,výpočtová technika,obchod s počítačmi,obchod s pocitacmi,tlačiarne,tlaciarne"
         },
         "shop/confectionery": {
           "name": "Obchod so sladkosťami",
@@ -8631,7 +8623,7 @@
         },
         "shop/doityourself": {
           "name": "Obchod pre domácich majstrov",
-          "terms": "obchod pre domacich majstrov,obchod pre remeselníkov,obchod pre remeselnikov"
+          "terms": "obchod pre domacich majstrov,obchod pre remeselníkov,obchod pre remeselnikov,hobby market,hobby market,obchod pre kutilovremeselné potreby,remeselne potreby"
         },
         "shop/doors": {
           "name": "Obchod s dverami"
@@ -8734,7 +8726,7 @@
         },
         "shop/hardware": {
           "name": "Železiarstvo",
-          "terms": "zeleziarstvo,baumax,hornbach,náradie,naradie,predajna nárradia,predajna naradia"
+          "terms": "zeleziarstvo,náradie,naradie,predajňa náradia,predajna naradia,remeselné potreby,remeselne potreby,potreby pre remeselníkov,potreby pre remeselnikov,spojovací materiál,spojovaci material"
         },
         "shop/health_food": {
           "name": "Obchod so zdravou výživou",

@@ -634,12 +634,6 @@
               "description": "Bizikletentzako bidegorririk gabe",
               "title": "Ez baimendua"
             },
-            "opposite": {
-              "description": "Norabide bakarreko kale batean bi noranzkoetan ibiltzeko aukera duen bidegorria "
-            },
-            "opposite_lane": {
-              "description": "Trafikoaren kontrako norantzan doan bidegorria"
-            },
             "share_busway": {
               "description": "Autobus erraiarekin bat doan bidegorria"
             },

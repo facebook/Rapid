@@ -1,11 +1,20 @@
 {
   "mi": {
     "presets": {
+      "categories": {
+        "category-playground": {
+          "name": "Taputapu papa tākaro"
+        }
+      },
       "fields": {
         "access": {
+          "label": "E wātea ana",
           "types": {
             "bicycle": "Pahikara"
           }
+        },
+        "access_simple": {
+          "label": "E wātea ana"
         },
         "address": {
           "placeholders": {
@@ -25,10 +34,22 @@
         "atm": {
           "label": "Pūrere Pūtea"
         },
+        "bath/type": {
+          "options": {
+            "hot_spring": "Puia"
+          }
+        },
         "building": {
           "label": "Whare",
           "options": {
-            "church": "Whare hāhi"
+            "church": "Whare hāhi",
+            "fire_station": "Whare ki ratonga ahi",
+            "industrial": "Whare ahumahi"
+          }
+        },
+        "crop": {
+          "options": {
+            "grass": "Karaehe"
           }
         },
         "cuisine": {
@@ -50,6 +71,9 @@
             "west": "Hauāuru"
           }
         },
+        "dog": {
+          "label": "E wātea ana ki te kurī"
+        },
         "entrance": {
           "options": {
             "emergency": "Putanga Ohotata Anake",
@@ -61,7 +85,19 @@
         },
         "fire_hydrant/position": {
           "options": {
+            "green": "Karaehe",
             "parking_lot": "Ngā Tūnga Waka"
+          }
+        },
+        "generator/method": {
+          "options": {
+            "wind_turbine": "Pūrere kapohau"
+          }
+        },
+        "generator/source": {
+          "options": {
+            "geothermal": "Ngāwhā",
+            "solar": "hihi kōmaru"
           }
         },
         "historic": {
@@ -72,6 +108,11 @@
         "junction_line": {
           "options": {
             "roundabout": "Porowhawhe"
+          }
+        },
+        "material": {
+          "options": {
+            "rock": "Toka"
           }
         },
         "maxspeed": {
@@ -92,6 +133,14 @@
             "parking:right": "Matau"
           }
         },
+        "piste/type": {
+          "options": {
+            "playground": "Papa tākaro"
+          }
+        },
+        "polling_station": {
+          "label": "Whare pōti"
+        },
         "preschool": {
           "label": "Kura Pūhou"
         },
@@ -99,6 +148,27 @@
           "options": {
             "paper": "Pepa"
           }
+        },
+        "sport": {
+          "label": "hākinakina",
+          "options": {
+            "basketball": "Poitūkohu",
+            "beachvolleyball": "Tātahi poirewa",
+            "climbing": "Piki toka",
+            "volleyball": "Poirewa"
+          }
+        },
+        "sport/sport_ice": {
+          "label": "hākinakina"
+        },
+        "sport/sport_pub": {
+          "label": "hākinakina"
+        },
+        "sport/sport_racing_motor": {
+          "label": "hākinakina"
+        },
+        "sport/sport_racing_nonmotor": {
+          "label": "hākinakina"
         },
         "structure": {
           "options": {
@@ -111,8 +181,48 @@
             "tunnel": "Anaroa"
           }
         },
+        "substation": {
+          "options": {
+            "industrial": "Ahumahi"
+          }
+        },
+        "substation_pipeline": {
+          "options": {
+            "industrial": "Ahumahi"
+          }
+        },
+        "surface": {
+          "options": {
+            "grass": "Karaehe"
+          }
+        },
+        "surveillance/type": {
+          "options": {
+            "camera": "Kāmera"
+          }
+        },
+        "taxi_vehicle": {
+          "options": {
+            "motorcycle": {
+              "title": "Motopaika"
+            }
+          }
+        },
         "toilets": {
           "label": "Wharepaku"
+        },
+        "toilets/disposal": {
+          "options": {
+            "pitlatrine": "Hamuti"
+          }
+        },
+        "toilets/wheelchair": {
+          "label": "Wharepaku whaikaha"
+        },
+        "usage_rail": {
+          "options": {
+            "industrial": "Ahumahi"
+          }
         },
         "water_source": {
           "options": {
@@ -139,6 +249,9 @@
         "amenity/ferry_terminal": {
           "name": "Taunga Waka Kōpiko"
         },
+        "amenity/fire_station": {
+          "name": "Ratonga ahi"
+        },
         "amenity/grave_yard": {
           "name": "Urupā"
         },
@@ -154,8 +267,14 @@
         "amenity/mortuary": {
           "name": "Whare tūpāpaku"
         },
+        "amenity/motorcycle_parking": {
+          "name": "Tūnga motopaika"
+        },
         "amenity/parking": {
           "name": "Ngā Tūnga Waka"
+        },
+        "amenity/police": {
+          "name": "Pirihimana"
         },
         "amenity/recycling": {
           "name": "Hangarua"
@@ -165,6 +284,9 @@
         },
         "amenity/theatre": {
           "name": "Whare Tapere"
+        },
+        "amenity/toilets/disposal/pitlatrine": {
+          "name": "Hamuti"
         },
         "amenity/townhall": {
           "name": "Hōro ā-Tāone"
@@ -187,8 +309,20 @@
         "building/entrance": {
           "name": "Putanga"
         },
+        "building/fire_station": {
+          "name": "Whare ki ratonga ahi"
+        },
+        "building/industrial": {
+          "name": "Whare ahumahi"
+        },
         "building_point": {
           "name": "Whare"
+        },
+        "emergency/fire_alarm": {
+          "name": "Whakahoho"
+        },
+        "emergency/phone": {
+          "name": "Ngā ratonga mate whawhati tata"
         },
         "entrance": {
           "name": "Putanga"
@@ -220,20 +354,50 @@
         "highway/motorway_junction": {
           "name": "Putanga ki Te Ara Whānui"
         },
+        "highway/speed_camera": {
+          "name": "Kāmera inetere"
+        },
         "landuse/cemetery": {
           "name": "Urupā"
         },
         "landuse/construction": {
           "name": "He Wāhi Whaihanga Tēnei"
         },
+        "landuse/grass": {
+          "name": "Karaehe"
+        },
         "landuse/harbour": {
           "name": "Te Taunga"
+        },
+        "landuse/industrial": {
+          "name": "Papa ahumahi"
         },
         "landuse/retail": {
           "name": "Ngā Toa"
         },
+        "leisure/fitness_station": {
+          "name": "Taputapu whakapakari tinana"
+        },
         "leisure/park": {
           "name": "Papa Rēhia"
+        },
+        "leisure/pitch": {
+          "name": "Papa hākinakina"
+        },
+        "leisure/pitch/basketball": {
+          "name": "Papa poitūkohu"
+        },
+        "leisure/pitch/beachvolleyball": {
+          "name": "Papa tātahi poirewa"
+        },
+        "leisure/pitch/volleyball": {
+          "name": "Papa poirewa"
+        },
+        "leisure/playground": {
+          "name": "Papa tākaro"
+        },
+        "leisure/sports_centre": {
+          "name": "Pokapū hākinakina"
         },
         "leisure/swimming_pool": {
           "name": "Hōpua"
@@ -244,17 +408,47 @@
         "natural/beach": {
           "name": "Tātahi"
         },
+        "natural/coastline": {
+          "name": "Tapātai"
+        },
+        "natural/grassland": {
+          "name": "Papa karaehe"
+        },
+        "natural/hot_spring": {
+          "name": "Puia"
+        },
+        "natural/spring": {
+          "name": "Matatiki"
+        },
         "natural/water/river": {
           "name": "Papa wai awa"
         },
         "office": {
           "name": "Tari"
         },
+        "place/island": {
+          "name": "Motutere"
+        },
         "place/town": {
           "name": "Tāone"
         },
+        "playground": {
+          "name": "Taputapu papa tākaro"
+        },
         "point": {
           "name": "Ira"
+        },
+        "power/generator/method/photovoltaic": {
+          "name": "Papa kōmaru"
+        },
+        "power/generator/method/photovoltaic/location/roof": {
+          "name": "Papa kōmaru ki tuanui"
+        },
+        "power/generator/source/wind": {
+          "name": "Pūrere kapohau"
+        },
+        "power/plant/source/wind": {
+          "name": "Te pāmu hau"
         },
         "public_transport/platform/bus_point": {
           "name": "Tūnga Pahi"
@@ -283,8 +477,23 @@
         "shop/candles": {
           "name": "Kānara toa"
         },
+        "shop/clothes": {
+          "name": "Toa hoko kākahu"
+        },
+        "shop/optician": {
+          "name": "Kaimātai whatu"
+        },
+        "shop/photo": {
+          "name": "Hopu whakaahua toa"
+        },
         "tourism/camp_site": {
           "name": "Puninga"
+        },
+        "tourism/hotel": {
+          "name": "Ngā Hōtera"
+        },
+        "tourism/information": {
+          "name": "Ngā Mōhiohio"
         },
         "tourism/museum": {
           "name": "Whare tongarewa"

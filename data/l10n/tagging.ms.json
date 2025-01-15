@@ -484,12 +484,6 @@
               "description": "Tiada lorong basikal",
               "title": "Tiada"
             },
-            "opposite": {
-              "description": "Lorong basikal yang mempunyai dua arah pada jalan satu hala"
-            },
-            "opposite_lane": {
-              "description": "Lorong basikal pada lalu lintas yang berlawan arah"
-            },
             "share_busway": {
               "description": "Lorong basikal yang berkongsi dengan lorong bas"
             },

@@ -1064,14 +1064,6 @@
               "description": "Geen fietsstrook",
               "title": "Geen"
             },
-            "opposite": {
-              "description": "Een fietspad in beide richtingen op een eenrichtingsweg",
-              "title": "Fietsen toegestaan in tegengestelde richting"
-            },
-            "opposite_lane": {
-              "description": "Een fietspad in de andere richting dan de hoofdweg",
-              "title": "Fietsstrook in tegengestelde richting"
-            },
             "separate": {
               "description": "Geeft aan dat het fietspad los is uitgetekend",
               "title": "Fietspad apart in kaart gebracht"
@@ -2082,7 +2074,7 @@
           }
         },
         "lock": {
-          "label": "Slot"
+          "label": "Sluis"
         },
         "lockable": {
           "label": "Vergrendelbaar",
@@ -4281,7 +4273,7 @@
           "terms": "fietsenrek,fietsrek,fietsenparking,fietsenkelder"
         },
         "amenity/bicycle_parking/building": {
-          "name": "Overdekte fietsenstalling",
+          "name": "Fietsparkeergebouw",
           "terms": "fietsengarage,fietsenschuur,fietsenflat,parkeren,fiets"
         },
         "amenity/bicycle_parking/lockers": {
@@ -7880,14 +7872,14 @@
           "terms": "ravijn,talud"
         },
         "natural/scrub": {
-          "name": "Scrubland",
-          "terms": "kreupelhout,ruigte,savanne,prairie,pampa"
+          "name": "Kreupelhout",
+          "terms": "kreupelhout,ruigte,savanne,prairie,pampa,scrubland,struweel"
         },
         "natural/shingle": {
           "name": "Kiezelstrand"
         },
         "natural/shrub": {
-          "name": "Scrubland"
+          "name": "Struik"
         },
         "natural/sinkhole": {
           "name": "Zinkgat"

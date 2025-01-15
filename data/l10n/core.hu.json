@@ -500,7 +500,7 @@
         "other": "{count} térképelem kikapcsolt rétegen"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "Nem érhető el az OpenStreetMap API. Szerkesztéseid biztonságban vannak a gépeden. Ellenőrizd a hálózati kapcsolatodat.",
         "offline": "Az OpenStreetMap API offline. Szerkesztéseid biztonságban vannak a gépeden. Kérjük, térj vissza később!",

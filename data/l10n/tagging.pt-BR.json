@@ -733,14 +733,6 @@
               "description": "Sem ciclofaixa",
               "title": "Nenhum"
             },
-            "opposite": {
-              "description": "Uma ciclofaixa que segue em ambos sentidos em uma via de mão única",
-              "title": "Ciclofaixa no contrafluxo"
-            },
-            "opposite_lane": {
-              "description": "Uma ciclofaixa que segue no sentido contrário ao dos automóveis",
-              "title": "Via em Sentido Contrário"
-            },
             "separate": {
               "description": "Indica que a ciclovia foi mapeada como uma geometria separada",
               "title": "Ciclovia mapeada separadamente"
@@ -1526,6 +1518,7 @@
               "title": "Abrigo de carros"
             },
             "garage_boxes": {
+              "description": "Garagem privada com vários espaços individuais para carros.",
               "title": "Vagas de estacionamento"
             },
             "half_on_kerb": {
@@ -1538,6 +1531,7 @@
               "title": "Separado/Alça de acesso"
             },
             "multi-storey": {
+              "description": "Dois ou mais andares de pisos de estacionamento num edifício.",
               "title": "Estacionamento vertical"
             },
             "on_kerb": {
@@ -4326,6 +4320,13 @@
         "highway/cycleway/crossing/unmarked": {
           "name": "Travessia de bicicleta não marcada",
           "terms": "Travessia de ciclo não marcada"
+        },
+        "highway/cycleway/traffic_island": {
+          "name": "Ciclovia em ilha rodoviária",
+          "terms": "island,travessia,bicicletas,bicla,ciclistas,island,crossing,parada,bina,bicycle"
+        },
+        "highway/cycleway/traffic_island_shared": {
+          "terms": "island,ilha,rodoviária,travessia,bicicletas,bicla,ciclistas,island,crossing,parada,bina,bicycle,peões,caminho"
         },
         "highway/elevator": {
           "terms": "elevador"

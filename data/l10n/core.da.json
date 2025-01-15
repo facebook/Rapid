@@ -493,7 +493,7 @@
         "other": "{count} skjulte objekter"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "OpenStreetMap-API'et kan ikke kontaktes. Dine redigeringer er sikret lokalt. Kontroller din netværksforbindelse. ",
         "offline": "OpenStreetMap-API'et er ikke online. Dine redigeringer er sikret lokalt. Kom tilbage senere og prøv igen.",

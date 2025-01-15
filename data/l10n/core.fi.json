@@ -324,7 +324,7 @@
         "other": "{count} piilotettua karttakohdetta"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "Ei yhteyttä OpenStreetMapin palvelimeen. Muutokset on tallennettu tälle tietokoneelle. Tarkista verkkoyhteytesi.",
         "offline": "OpenStreetMap-sovellusrajapinta on pois käytöstä. Muutokset on tallennettu tälle tietokoneelle. Yritä myödhemmin uudelleen.",

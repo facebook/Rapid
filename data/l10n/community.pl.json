@@ -126,12 +126,19 @@
       "openstreetmapus": "OpenStreetMap USA",
       "openstreetmapvenezuela": "OpenStreetMap Wenezuela",
       "openstreetmapvietnam": "OpenStreetMap Wietnam",
-      "openstreetmapwesternsahara": "OpenStreetMap Sahara Zachodnia"
+      "openstreetmapwestbengal": "OpenStreetMap Zachodni Bengal",
+      "openstreetmapwesternsahara": "OpenStreetMap Sahara Zachodnia",
+      "osmcolombia": "OSM Kolumbia",
+      "swissopenstreetmap": "Szwajcarska OpenStreetMap"
     },
     "_defaults": {
       "aparat": {
         "name": "{community} na Aparat",
         "description": "Subskrybuj nasz kanał na Aparat"
+      },
+      "bluesky": {
+        "name": "{community} na Bluesky",
+        "description": "Śledź nas na Bluesky"
       },
       "discord": {
         "name": "{community} na Discord",
@@ -217,7 +224,8 @@
         "description": "Obserwuj nas na 𝕏"
       },
       "xmpp": {
-        "name": "XMPP {community}"
+        "name": "XMPP {community}",
+        "description": "Dołącz do naszego czatu społeczności na XMPP: {url}"
       },
       "youtube": {
         "name": "{community} na YouTube",

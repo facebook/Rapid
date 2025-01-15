@@ -229,7 +229,7 @@
     "loading_auth": "Ag ceangail le OpenStreetMap...",
     "report_a_bug": "Fabht a thuairisciú",
     "help_translate": "Cabhraigh le haistrigh",
-    "osm_api_status": {
+    "status": {
       "retry": "Atriail"
     },
     "commit": {

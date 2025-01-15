@@ -608,12 +608,6 @@
               "description": "Tidak ada jalur sepeda",
               "title": "Tidak ada"
             },
-            "opposite": {
-              "description": "Jalur sepeda yang melintas dua arah pada jalan satu arah"
-            },
-            "opposite_lane": {
-              "description": "Jalur sepeda yang melintas berlawanan arah dengan lalu lintas"
-            },
             "share_busway": {
               "description": "Jalur sepeda berbagi dengan jalur bus"
             },

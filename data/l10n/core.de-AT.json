@@ -1,8 +1,24 @@
 {
   "de-AT": {
     "operations": {
+      "orthogonalize": {
+        "end_vertex": {
+          "one": "Diese Ecke kann nicht rechtwinklig gemacht werden, weil es ein Endpunkt ist.",
+          "other": "Diese Ecken können nicht rechtwinklig gemacht werden, weil es Endpunkte sind."
+        }
+      },
       "delete": {
-        "title": "Entf"
+        "title": "Entf",
+        "has_wikidata_tag": {
+          "one": "Dieses Objekt kann nicht gelöscht werden, weil es eine Wikidata-Eigenschaft hat.",
+          "other": "Diese Objekte können nicht gelöscht werden, weil einige eine Wikidata-Eigenschaft haben."
+        }
+      },
+      "extract": {
+        "connected_to_hidden": {
+          "one": "Dieser Punkt kann nicht entnommen werden, weil er mit einem versteckten Objekt verbunden ist.",
+          "other": "Die Punkte können nicht entnommen werden, weil manche mit versteckten Objekt verbunden sind."
+        }
       }
     },
     "restriction": {

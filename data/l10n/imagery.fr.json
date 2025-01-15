@@ -691,7 +691,8 @@
       "geoscribble-latest": {
         "attribution": {
           "text": "Contributeurs GeoScribble"
-        }
+        },
+        "name": "Dernières notes GeoScribble"
       },
       "gothenburg-citymap": {
         "attribution": {

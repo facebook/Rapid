@@ -494,7 +494,7 @@
         "other": "{count} skjulte objekter"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "Kan ikke nå OpenStreetMap API. Endringene dine er trygge lokalt. Sjekk nettverkstilkoblingen din.",
         "offline": "OpenStreetMap API er offline. Endringene dine er trygge lokalt. Vennligst kom tilbake senere.",

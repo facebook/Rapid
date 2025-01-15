@@ -391,12 +391,6 @@
               "description": "Walang linya ng bisikleta",
               "title": "Wala"
             },
-            "opposite": {
-              "description": "Isang linya ng bisikleta ay nakakonekta sa parehong direksyon sa iisang linyang kalye"
-            },
-            "opposite_lane": {
-              "description": "Isang linya ng bisikleta ay nakakonekta sa kabilang direksyon ng trapiko"
-            },
             "share_busway": {
               "description": "Isang linya ng bisikleta ay naisama sa isang linya ng bus"
             }

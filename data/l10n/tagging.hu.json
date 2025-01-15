@@ -1164,14 +1164,6 @@
               "description": "Nincs kerékpársáv",
               "title": "Nincs"
             },
-            "opposite": {
-              "description": "Olyan kerékpársáv, amelyen egy egyirányú utcában mindkét irányba közlekedhetünk",
-              "title": "Forgalommal szembe vezető kerékpársáv"
-            },
-            "opposite_lane": {
-              "description": "Olyan kerékpársáv, amely a forgalommal ellentétes irányba vezet",
-              "title": "Ellentétes kerékpársáv"
-            },
             "separate": {
               "description": "Azt jelzi, hogy a kerékpárút különálló alakzatként lett felrajzolva a térképre",
               "title": "A kerékpárút önállóan szerepel a térképen"

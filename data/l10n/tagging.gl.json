@@ -781,12 +781,6 @@
               "description": "Sen carril bici",
               "title": "Sen bomba"
             },
-            "opposite": {
-              "description": "Un carril de bicicletas que vai en ambas direccións nunha vía de un único sentido"
-            },
-            "opposite_lane": {
-              "description": "Un carril de bicicletas que vai na dirección oposta á do tráfico da estrada"
-            },
             "share_busway": {
               "description": "Un carril de bicicletas compartido coas liñas de autobús"
             },

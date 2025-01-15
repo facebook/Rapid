@@ -594,12 +594,6 @@
               "description": "沒有單車徑",
               "title": "無"
             },
-            "opposite": {
-              "description": "單程路提供雙程行車單車徑"
-            },
-            "opposite_lane": {
-              "description": "與行車方向相反的單車徑"
-            },
             "share_busway": {
               "description": "與巴士綫共享的單車徑"
             },

@@ -500,7 +500,7 @@
         "other": "{count} nodwedd cudd"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "Ni ellir cyrraedd API OpenStreetMap. Mae eich golygiadau'n ddiogel yn leol. Gwiriwch eich cysylltiad gwe.",
         "offline": "Mae'r API OpenStreetMap yn all-lein. Mae eich golygiadau'n ddiogel yn leol. Ceisiwch eto'n nes ymlaen.",

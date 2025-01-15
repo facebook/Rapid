@@ -227,7 +227,7 @@
     "translate": {
       "localized_translation_name": "Pangalan"
     },
-    "osm_api_status": {
+    "status": {
       "retry": "Ulitin"
     },
     "commit": {

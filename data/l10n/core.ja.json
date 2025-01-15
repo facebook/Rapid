@@ -398,7 +398,7 @@
     "feature_info": {
       "hidden_warning": "非表示の地物{count}件"
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "OpenStreetMap APIと通信できません。編集内容はローカルに安全に保管されています。",
         "offline": "OpenStreetMap APIがオフラインです。編集内容はローカルに安全に保管されています。後ほどやり直してください。",

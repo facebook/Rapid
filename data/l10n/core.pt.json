@@ -1,7 +1,7 @@
 {
   "pt": {
     "icons": {
-      "download": "transferir",
+      "download": "descarregar",
       "information": "informação",
       "remove": "remover",
       "undo": "desfazer",
@@ -16,10 +16,10 @@
     },
     "toolbar": {
       "inspect": "Examinar",
-      "undo_redo": "Desfazer / Refazer",
+      "undo_redo": "Desfazer / refazer",
       "recent": "Recente",
       "favorites": "Favoritos",
-      "add_feature": "Adicionar Elemento",
+      "add_feature": "Adicionar elemento",
       "rapid_features": "Auxiliar"
     },
     "title": {
@@ -129,6 +129,11 @@
       },
       "circularize": {
         "title": "Circularizar",
+        "description": {
+          "one": "Tornar este elemento circular.",
+          "many": "Tornar estes elementos circulares.",
+          "other": "Tornar estes elementos circulares."
+        },
         "annotation": {
           "feature": {
             "one": "{n} elemento circularizado.",
@@ -174,6 +179,11 @@
       },
       "delete": {
         "title": "Eliminar",
+        "description": {
+          "one": "Eliminar este elemento permanentemente.",
+          "many": "Eliminar estes elementos permanentemente.",
+          "other": "Eliminar estes elementos permanentemente."
+        },
         "annotation": {
           "point": "Ponto eliminado.",
           "vertex": "Nó eliminado de uma linha.",
@@ -289,7 +299,7 @@
           "multiple": "Estes elementos não podem ser desligados, porque não estão suficientemente visíveis."
         },
         "not_connected": "Não existem aqui linhas ou áreas suficientes para serem desligadas.",
-        "not_downloaded": "Não é possível desligar este elemento, porque algumas das suas partes ainda não foram transferidas.",
+        "not_downloaded": "Não é possível desligar este elemento, porque algumas das suas partes ainda não foram descarregadas.",
         "connected_to_hidden": "Não é possível desligar este elemento, porque está ligado a um elemento oculto.",
         "relation": "Não é possível desligar este elemento, porque liga membros de uma relação."
       },
@@ -305,7 +315,7 @@
         "not_adjacent": "Estes elementos não podem ser combinados, porque as suas extremidades não estão ligadas.",
         "damage_relation": "Estes elementos não podem ser unidos, porque isso danificaria uma relação \"{relation}\".",
         "relation": "Estes elementos não podem ser combinados, porque têm funções de relação em conflito.",
-        "incomplete_relation": "Estes elementos não podem ser combinados, porque pelo menos um deles não foi totalmente transferido.",
+        "incomplete_relation": "Estes elementos não podem ser combinados, porque pelo menos um deles não foi totalmente descarregado.",
         "conflicting_tags": "Estes elementos não podem ser combinados, porque algumas das suas etiquetas têm valores conflituantes.",
         "conflicting_relations": "Estes elementos não podem ser unidos, porque pertencem a relações conflitantes.",
         "paths_intersect": "Estes elementos não podem ser combinados, porque a linha resultante se interceptaria a si mesma.",
@@ -328,8 +338,8 @@
       },
       "reflect": {
         "title": {
-          "long": "Refletir Longo",
-          "short": "Refletir Curto"
+          "long": "Refletir longo",
+          "short": "Refletir curto"
         },
         "annotation": {
           "long": {
@@ -474,12 +484,16 @@
           "many": "{n} pontos extraídos.",
           "other": "{n} pontos extraídos."
         }
+      },
+      "cycle_highway_tag": {
+        "crosswalk_annotation": "Alteração da etiqueta crosswalk da linha selecionada."
       }
     },
     "restriction": {
       "controls": {
         "distance": "Distância",
         "distance_up_to": "Até {distance}",
+        "via": "Através de",
         "via_node_only": "Apenas nó",
         "via_up_to_one": "Até 1 linha",
         "via_up_to_two": "Até 2 linhas"
@@ -501,6 +515,7 @@
           "allowed_straight_on": "Permitido seguir em frente {indirect}"
         },
         "from": "DE",
+        "via": "ATRAVÉS DE",
         "to": "PARA",
         "select_from": "Clica para selecionar um segmento {from}",
         "select_from_name": "Clica para selecionar {from} {fromName}",
@@ -517,19 +532,21 @@
       "tooltip": "Refazer: {action}",
       "nothing": "Nada a refazer."
     },
+    "tooltip_keyhint": "Chave:",
     "translate": {
       "translate": "Adicionar nome multilingue",
-      "localized_translation_label": "Nome Multilingue",
+      "localized_translation_label": "Nome multilingue",
       "localized_translation_language": "Escolhe o idioma",
       "localized_translation_name": "Nome",
       "language_and_code": "{língua} ({código})"
     },
     "zoom_in_edit": "Aproxima para editar",
-    "login": "Iniciar Sessão",
-    "logout": "Terminar Sessão",
+    "login": "Iniciar sessão",
+    "logout": "Terminar sessão",
     "loading_auth": "A ligar ao OpenStreetMap...",
     "report_a_bug": "Comunicar um erro",
     "help_translate": "Ajuda a traduzir",
+    "example": "Exemplo:",
     "feature_info": {
       "hidden_warning": {
         "one": "{count} elemento oculto",
@@ -537,11 +554,12 @@
         "other": "{count} elementos ocultos"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "Não foi possível comunicar com a API do OpenStreeMap. As tuas edições estão guardadas localmente. Verifica a tua ligação à rede.",
         "offline": "A API do OpenStreetMap está inacessível. As tuas edições estão guardadas localmente. Por favor, volta mais tarde.",
         "readonly": "De momento, a API do OpenStreetMap está apenas em modo de leitura. Podes continuar a editar, mas terás de esperar para guardar as tuas alterações.",
+        "ratelimit": "Descarregaste demasiados dados do OpenStreetMap. Tenta novamente em {seconds} segundos ou muda de conta.",
         "local_storage_full": "Fizeste demasiadas edições para fazer cópia de segurança. Considera guardar as tuas alterações agora."
       },
       "retry": "Repetir"
@@ -555,7 +573,7 @@
       "save": "Enviar",
       "cancel": "Cancelar",
       "changes": "Alterações",
-      "download_changes": "Transferir ficheiro osmChange",
+      "download_changes": "Descarregar ficheiro osmChange",
       "errors": "Erros",
       "warnings": "Avisos",
       "modified": "Alterado",
@@ -564,7 +582,9 @@
       "outstanding_errors_message": "Por favor, resolve primeiro todos os erros. Restam {count}.",
       "comment_needed_message": "Por favor, adiciona um resumo das alterações efetuadas.",
       "about_changeset_comments": "Sobre os comentários das alterações",
-      "google_warning": "Mencionaste a Google no teu comentário: convém lembrar que copiar do Google Maps é expressamente proibido."
+      "about_changeset_comments_link": "//wiki.openstreetmap.org/wiki/Pt:Good_changeset_comments",
+      "google_warning": "Mencionaste a Google no teu comentário: convém lembrar que copiar do Google Maps é expressamente proibido.",
+      "google_warning_link": "https://www.openstreetmap.org/copyright/pt"
     },
     "contributors": {
       "list": "Edições feitas por {users}",
@@ -595,12 +615,13 @@
         "title": "Histórico",
         "no_history": "Sem histórico (elemento novo)",
         "version": "Versão",
-        "last_edit": "Última Edição",
-        "edited_by": "Editado Por",
+        "last_edit": "Última edição",
+        "edited_by": "Editado por",
         "changeset": "Conjunto de alterações",
+        "link_text": "Histórico no openstreetmap.org",
         "note_no_history": "Sem histórico (nova nota)",
         "note_comments": "Comentários",
-        "note_created_date": "Data de Criação",
+        "note_created_date": "Data de criação",
         "note_created_user": "Criada por",
         "note_link_text": "Nota em openstreetmap.org"
       },
@@ -642,11 +663,12 @@
       "location_unavailable": "A tua localização não se encontra disponível."
     },
     "inspector": {
+      "tooltip": "Alternar o inspetor de elementos.",
       "zoom_to": {
         "title": "Focar",
         "no_selection": "Não há nada para focar."
       },
-      "show_more": "Mostrar Mais",
+      "show_more": "Mostrar mais",
       "view_on_osm": "Ver em openstreetmap.org",
       "view_on_osmose": "Ver em osmose.openstreetmap.fr",
       "view_on_keepRight": "Ver em keepright.at",
@@ -669,8 +691,10 @@
         "other": "{n} resultados para {search}"
       },
       "no_documentation_key": "Não há documentação disponível.",
+      "edit_reference": "editar / traduzir",
       "wiki_reference": "Ver documentação mais detalhada",
       "wiki_en_reference": "Ver documentação em inglês",
+      "key_value": "chave=valor",
       "multiple_values": "Vários valores",
       "multiple_types": "Vários tipos",
       "unshared_value_tooltip": "não é partilhado por todos os elementos",
@@ -680,8 +704,9 @@
       "remove": "Remover",
       "search": "Pesquisar",
       "unknown": "Desconhecido",
-      "incomplete": "<não baixado>",
+      "incomplete": "<não descarregado>",
       "feature_list": "Pesquisar elementos",
+      "multiselect": "Seleção múltipla",
       "check": {
         "yes": "Sim",
         "no": "Não",
@@ -715,19 +740,26 @@
       }
     },
     "background": {
-      "title": "Imagem de Fundo",
+      "title": "Imagem de fundo",
       "description": "Configurações da imagem de fundo",
-      "backgrounds": "Camadas de Fundo",
+      "backgrounds": "Camadas de fundo",
       "none": "Nenhuma",
       "best_imagery": "Melhor fonte de imagem para esta região",
       "switch": "Mudar para esta camada",
       "custom": "Personalizada",
-      "overlays": "Camadas Superiores",
+      "overlays": "Camadas superiores",
+      "grid": {
+        "grids": "Grelhas",
+        "no_grid": "Sem grelhas",
+        "n_by_n": "Grelha {num} por {num}"
+      },
+      "imagery_source_faq": "Informações da imagem de fundo / reportar um problema",
       "imagery_problem_faq": "Comunicar problema na camada de fundo",
       "reset": "repor",
       "reset_all": "Repor tudo",
-      "display_options": "Opções de Visualização",
+      "display_options": "Opções de visualização",
       "wayback": {
+        "description": "O Esri Wayback contém instantâneos arquivados do Esri World Imagery criados ao longo do tempo.",
         "date": "Data"
       },
       "brightness": "Brilho",
@@ -750,13 +782,13 @@
         "description": "Mostrar painel de localização",
         "tooltip": "Mostra coordenadas e detalhes regionais."
       },
-      "fix_misalignment": "Ajustar Deslocamento da Imagem",
+      "fix_misalignment": "Ajustar deslocamento da imagem",
       "offset": "Arrasta o rato na área cinzenta em baixo para ajustar o deslocamento da imagem ou introduz os valores do deslocamento em metros. "
     },
     "map_data": {
-      "title": "Dados do Mapa",
+      "title": "Dados do mapa",
       "description": "Dados do mapa",
-      "data_layers": "Camadas de Dados",
+      "data_layers": "Camadas de dados",
       "layers": {
         "osm": {
           "tooltip": "Dados cartográficos do OpenStreetMap",
@@ -767,8 +799,18 @@
           "tooltip": "Dados das notas do OpenStreetMap",
           "title": "Notas OpenstreetMap"
         },
+        "rapid": {
+          "tooltip": "Sugestões de elementos detetados a partir da aprendizagem automática e de dados abertos que podem ser utilizados para melhorar o OpenStreetMap"
+        },
         "maproulette": {
+          "title": {
+            "one": "Tarefa MapRoulette",
+            "many": "Tarefas MapRoulette",
+            "other": "Tarefas MapRoulette"
+          },
+          "loading_task_details": "A carregar detalhes da tarefa...",
           "detail_title": "Detalhes",
+          "instruction_title": "Instruções",
           "cancel": "Cancelar"
         },
         "keepRight": {
@@ -793,7 +835,7 @@
         "title": "Mostrar painel de medidas",
         "tooltip": "Mostra valores de geometria da seleção"
       },
-      "style_options": "Opções de Estilo",
+      "style_options": "Opções de estilo",
       "autohidden": "Estes elementos foram automaticamente ocultados para não haver demasiados elementos no ecrã. Podes aproximar para editá-los.",
       "osmhidden": "Estes elementos foram automaticamente ocultados porque a camada OpenStreetMap está oculta."
     },
@@ -804,7 +846,7 @@
       }
     },
     "photo_overlays": {
-      "title": "Camadas de Fotos",
+      "title": "Camadas de fotos",
       "photo_type": {
         "flat": {
           "title": "Fotos planas",
@@ -833,7 +875,7 @@
     "filters": {
       "points": {
         "description": "Pontos",
-        "tooltip": "Pontos de Interesse"
+        "tooltip": "Pontos de interesse"
       },
       "traffic_roads": {
         "description": "Estradas de tráfego",
@@ -853,7 +895,7 @@
       },
       "building_parts": {
         "description": "Partes de edifícios",
-        "tooltip": "Componentes de Telhados e Edifícios em 3D"
+        "tooltip": "Componentes de telhados e edifícios em 3D"
       },
       "indoor": {
         "description": "Elementos interiores",
@@ -888,12 +930,12 @@
         "tooltip": "Linhas de alta tensão, centrais elétricas, subestações, etc."
       },
       "past_future": {
-        "description": "Elementos antigos/futuros",
+        "description": "Elementos antigos / futuros",
         "tooltip": "Elementos propostos, em construção, abandonados, demolidos, etc."
       },
       "others": {
         "description": "Outros elementos",
-        "tooltip": "Tudo o Resto"
+        "tooltip": "Tudo o resto"
       }
     },
     "area_fill": {
@@ -913,7 +955,7 @@
     "settings": {
       "custom_background": {
         "tooltip": "Editar fundo personalizado",
-        "header": "Definições do Fundo Personalizado",
+        "header": "Definições do fundo personalizado",
         "instructions": {
           "info": "Introduz um modelo de URL de mosaicos em baixo.",
           "wms": {
@@ -942,13 +984,13 @@
       },
       "custom_data": {
         "tooltip": "Editar camada de dados personalizada",
-        "header": "Definições dos Dados do Mapa Personalizado",
+        "header": "Definições dos dados do mapa personalizado",
         "file": {
           "label": "Procurar ficheiros"
         },
         "or": "Ou",
         "url": {
-          "placeholder": "Introduzir url"
+          "placeholder": "Introduzir URL"
         }
       }
     },
@@ -990,11 +1032,16 @@
         "keep_local": "Manter a minha",
         "keep_remote": "Usar a deles",
         "restore": "Restaurar",
-        "delete": "Deixar Eliminado",
-        "download_changes": "Ou transferir ficheiro osmChange",
+        "delete": "Deixar eliminado",
+        "download_changes": "Ou descarregar o ficheiro osmChange",
         "done": "Todos os conflitos foram resolvidos!",
-        "help": "Outro utilizador alterou alguns dos elementos que alteraste. Clica em cada um dos elementos em baixo para mais detalhes sobre o conflito e decide se queres manter as tuas alterações ou as do outro utilizador.\n"
+        "help": "Outro utilizador alterou alguns dos elementos que alteraste. Clica em cada um dos elementos em baixo para mais detalhes sobre o conflito e decide se queres manter as tuas alterações ou as do outro utilizador."
       }
+    },
+    "download_osc": {
+      "title": "Descarregar",
+      "help": "Descarregar as alterações atuais do mapa num ficheiro osc.",
+      "no_changes": "Não há alterações a descarregar."
     },
     "merge_remote_changes": {
       "conflict": {
@@ -1036,7 +1083,8 @@
     "rapid_menu": {
       "remove": "Remover",
       "category": {
-        "roads": "estradas"
+        "roads": "estradas",
+        "trees": "árvores"
       }
     },
     "tag_reference": {
@@ -1052,7 +1100,7 @@
         "out": "Não é possível afastar mais."
       }
     },
-    "full_screen": "Ativar Ecrã Inteiro.",
+    "full_screen": "Ativar ecrã inteiro.",
     "self_intersection": {
       "error": {
         "lines": "As linhas não podem cruzar sobre si próprias.",
@@ -1073,8 +1121,8 @@
         "comment_placeholder": "Escreve um comentário para partilhar com outros utilizadores.",
         "close": "Fechar (problema resolvido)",
         "ignore": "Remover (falso positivo)",
-        "save_comment": "Guardar Comentário",
-        "close_comment": "Fechar e Comentar",
+        "save_comment": "Guardar comentário",
+        "close_comment": "Fechar e comentar",
         "ignore_comment": "Remover e comentar",
         "error_parts": {
           "this_node": "este nó",
@@ -1085,7 +1133,7 @@
           "this_railway": "esta ferrovia",
           "this_waterway": "esta via fluvial",
           "this_cycleway": "esta ciclovia",
-          "this_cycleway_footpath": "esta ciclovia/caminho pedonal",
+          "this_cycleway_footpath": "esta ciclovia / caminho pedonal",
           "this_riverbank": "esta margem de rio",
           "this_crossing": "esta passadeira",
           "this_railway_crossing": "esta passagem de peões ferroviária",
@@ -1095,13 +1143,13 @@
           "this_turn_restriction": "esta restrição de viragem",
           "this_roundabout": "esta rotunda",
           "this_mini_roundabout": "esta minirrotunda",
-          "this_track": "este caminho agrícola/florestal",
+          "this_track": "este caminho agrícola / florestal",
           "this_feature": "este elemento",
           "highway": "rodovia",
           "railway": "ferrovia",
           "waterway": "via fluvial",
           "cycleway": "cliclovia",
-          "cycleway_footpath": "ciclovia/caminho pedonal",
+          "cycleway_footpath": "ciclovia / caminho pedonal",
           "riverbank": "margem de rio",
           "place_of_worship": "local de culto",
           "pub": "tasca",
@@ -1352,7 +1400,7 @@
             "description": "{var1} não tem uma etiqueta \"tracktype\"."
           },
           "<400>": {
-            "title": "Problema de Geometria",
+            "title": "Problema de geometria",
             "description": "Existe aqui um problema de geometria não especificado."
           },
           "<401>": {
@@ -1434,14 +1482,14 @@
         "open_source_h": "Código aberto"
       },
       "overview": {
-        "title": "Ideia Geral",
+        "title": "Ideia geral",
         "navigation_h": "Navegação",
         "features_h": "Elementos do mapa",
         "features": "Utilizamos a palavra *elementos* para descrever as coisas que aparecem no mapa, como estradas, edifícios ou pontos de interesse. Qualquer coisa do mundo real pode ser mapeada como um elemento no OpenStreetMap. Os elementos do mapa são representados no mapa utilizando *pontos*, *linhas* ou *áreas*.",
         "nodes_ways": "Por vezes, os pontos são chamado *nós* e as linhas e as áreas são chamadas *vias*."
       },
       "editing": {
-        "title": "Editar e Guardar",
+        "title": "Editar e guardar",
         "select_h": "Selecionar",
         "select_space": "A tecla `{space}` também pode ser usada em vez do clique esquerdo quando se seleciona e desenha.",
         "multiselect_h": "Seleção múltipla",
@@ -1457,7 +1505,7 @@
         "keyboard": "Podes ver uma lista dos atalhos do teclado pressionando a tecla `{shortcuts_key}`."
       },
       "feature_editor": {
-        "title": "Editor de Elementos",
+        "title": "Editor de elementos",
         "intro": "O *editor de elementos* surge ao lado do mapa e permite-te ver e editar toda a informação do elemento selecionado.",
         "definitions": "A secção do topo, mostra o tipo do elemento. A secção intermédia contém *campos* que mostram os atributos do elemento, como o seu nome ou endereço. ",
         "type_h": "Tipo de elemento",
@@ -1558,7 +1606,7 @@
         "save_note": "Deves guardar cada nota editada individualmente pressionando os botões existentes por baixo dos comentários da nota. As edições das notas **não** ficam incluídas nos conjuntos de alterações que envias para o OpenStreetMap."
       },
       "imagery": {
-        "title": "Imagens de Fundo",
+        "title": "Imagens de fundo",
         "intro": "As imagens de fundo que aparecem por baixo dos dados do mapa são um importante recurso para mapear. Estas imagens podem ser fotografias aéreas recolhidas por satélite, aviões ou drones. Também podem ser mapas históricos que foram digitalizados ou outras fontes de informação que se encontram disponíveis gratuitamente. ",
         "sources_h": "Fontes das imagens",
         "choosing": "Para veres quais as fontes de imagens que estão disponíveis para editar, abre o painel {layers_icon} **{background_settings}** ao lado do mapa.",
@@ -1567,7 +1615,7 @@
         "offset": "Por vezes, a imagem de fundo apresenta um ligeiro deslocamento relativamente aos dados do mapa. Se vires que há muitas estradas ou edifícios deslocados em relação à imagem de fundo, é possível que a imagem esteja desfasada. Assim sendo, não desloques os elementos para que fiquem alinhados com a camada de fundo. Em vez disso, podes ajustar a camada de fundo para que fique alinhada com os dados existentes, expandindo a secção \"{imagery_offset}\", no fundo do painel \"Configurar imagem de fundo\"."
       },
       "streetlevel": {
-        "title": "Imagens ao Nível de Rua",
+        "title": "Imagens ao nível de rua",
         "using_h": "Utilizar imagens ao nível de rua",
         "using": "Para utilizares imagens ao nível de rua para mapear, abre o painel lateral {data_icon} **{map_data}** para ativar ou desativar uma camada de imagens de rua que esteja disponível.",
         "photos": "Uma vez ativada, a camada de imagens de rua mostrará uma linha ao longo da sequência de imagens. Em níveis de aproximação elevados, surgirá um marcador com a forma dum círculo que mostrará a localização de cada fotografia. Em níveis de aproximação ainda maiores, surgirá um cone que mostra a direção que a câmara tinha quando a imagem foi captada. ",
@@ -1583,7 +1631,7 @@
         "upload": "Também podes [enviar os teus dados GPS para o OpenStreetMap](https://www.openstreetmap.org/trace/create) de modo a que outros possam utilizá-los para mapear."
       },
       "qa": {
-        "title": "Controlo de Qualidade",
+        "title": "Controlo de qualidade",
         "intro": "As ferramentas de *Controlo de Qualidade* podem detetar etiquetas erradas, estradas desligadas e outros problemas com o OpenStreetMap, os quais os mapeadores podem corrigir. Para veres os problemas existentes, clica no painel {data_icon} **{map_data}** para ativar uma camada específica de Controlo de Qualidade.",
         "tools_h": "Ferramentas",
         "issues_h": "Gerir problemas"
@@ -2314,7 +2362,7 @@
       }
     },
     "shortcuts": {
-      "title": "Atalhos de Teclado",
+      "title": "Atalhos de teclado",
       "tooltip": "Mostrar o ecrã com os atalhos de teclado.",
       "key": {
         "backspace": "Retroceder (←)",

@@ -563,7 +563,7 @@
         "other": "{count} objektov skrytých"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "Nie je možné pristupovať k OpenStreetMap API. Vaše úpravy sú v bezpečí lokálne u vás. Skontrolujte vaše internetové pripojenie.",
         "offline": "OpenStreetMap API je odpojené. Vaše úpravy sú v bezpečí lokálne u vás. Prosím vráťte sa neskôr.",

@@ -122,15 +122,53 @@
       },
       "circularize": {
         "title": "Kreisförmig machen",
+        "description": {
+          "one": "Dieses Objekt kreisförmig machen.",
+          "other": "Diese Objekte kreisförmig machen."
+        },
         "annotation": {
           "feature": {
             "one": "Ein Objekt kreisförmig gemacht.",
             "other": "{n} Objekte kreisförmig gemacht."
           }
+        },
+        "multiple_blockers": {
+          "one": "Dieses Objekt kann aus mehreren Gründen nicht kreisförmig gemacht werden.",
+          "other": "Diese Objekte können aus mehreren Gründen nicht kreisförmig gemacht werden."
+        },
+        "not_closed": {
+          "one": "Dieses Objekt kann nicht kreisförmig gemacht werden, weil es keine Schleife ist.",
+          "other": "Diese Objekte können nicht kreisförmig gemacht werden, weil sie keine Schleifen sind."
+        },
+        "too_large": {
+          "one": "Dieses Objekt kann nicht kreisförmig gemacht werden, weil derzeit nicht genug davon sichtbar ist.",
+          "other": "Diese Objekte können nicht kreisförmig gemacht werden, weil derzeit nicht genug davon sichtbar ist."
+        },
+        "connected_to_hidden": {
+          "one": "Dieses Objekt kann nicht kreisförmig gemacht werden, weil es mit einem versteckten Objekte verbunden ist.",
+          "other": "Diese Objekte können nicht kreisförmig gemacht werden, weil sie mit versteckten Objekten verbunden sind."
+        },
+        "not_downloaded": {
+          "one": "Dieses Objekt kann nicht kreisförmig gemacht werden, weil Teile davon noch nicht heruntergeladen wurden.",
+          "other": "Diese Objekte können nicht kreisförmig gemacht werden, weil Teile davon noch nicht heruntergeladen wurden."
+        },
+        "already_circular": {
+          "one": "Dieses Objekt kann nicht kreisförmig gemacht werden, weil es bereits kreisförmig ist.",
+          "other": "Diese Objekte können nicht kreisförmig gemacht werden, weil sie bereits kreisförmig sind."
         }
       },
       "orthogonalize": {
         "title": "Rechtwinklig machen",
+        "description": {
+          "corner": {
+            "one": "Diese Ecke rechtwinklig machen.",
+            "other": "Diese Ecken rechtwinklig machen."
+          },
+          "feature": {
+            "one": "Die Ecken dieses Objekts rechtwinklig machen.",
+            "other": "Die Ecken dieser Objekten rechtwinklig machen."
+          }
+        },
         "annotation": {
           "corner": {
             "one": "Eine Ecke rechtwinklig gemacht.",
@@ -140,6 +178,34 @@
             "one": "Die Ecken von einem Objekt rechtwinklig gemacht.",
             "other": "Die Ecken von {n} Objekten rechtwinklig gemacht."
           }
+        },
+        "multiple_blockers": {
+          "one": "Dieser Winkel kann aus mehreren Gründen nicht rechtwinklig gemacht werden.",
+          "other": "Diese Winkel können aus mehreren Gründen nicht rechtwinklig gemacht werden."
+        },
+        "end_vertex": {
+          "one": "Dieser Winkel kann nicht rechtwinklig gemacht werden, weil er ein Endpunkt ist.",
+          "other": "Diese Winkel können nicht rechtwinklig gemacht werden, weil es Endpunkte sind."
+        },
+        "square_enough": {
+          "one": "Dieser Winkel kann nicht rechtwinklig gemacht werden, weil er es bereits ist.",
+          "other": "Diese Winkel können nicht rechtwinklig gemacht werden, weil sie es bereits sind."
+        },
+        "not_squarish": {
+          "one": "Dieser Winkel kann nicht rechtwinklig gemacht werden, da er nicht annähernd rechtwinklig ist.",
+          "other": "Diese Winkel können nicht rechtwinklig gemacht werden, da sie nicht annähernd rechtwinklig sind."
+        },
+        "too_large": {
+          "one": "Der Winkel kann nicht rechtwinklig gemacht werden, weil derzeit nicht genug davon sichtbar ist.",
+          "other": "Diese Winkel können nicht rechtwinklig gemacht werden, weil derzeit nicht genug von ihnen sichtbar ist."
+        },
+        "connected_to_hidden": {
+          "one": "Der Winkel kann nicht rechtwinklig gemacht werden, weil er mit einem versteckten Objekt verbunden ist.",
+          "other": "Diese Winkel können nicht rechtwinklig gemacht werden, weil manche davon mit versteckten Objekten verbunden sind."
+        },
+        "not_downloaded": {
+          "one": "Der Winkel kann nicht rechtwinklig gemacht werden, weil Teile davon noch nicht heruntergeladen wurden.",
+          "other": "Diese Winkel können nicht rechtwinklig gemacht werden, weil Teile von ihnen noch nicht heruntergeladen wurden."
         }
       },
       "straighten": {
@@ -158,10 +224,34 @@
             "one": "Eine Linie begradigt.",
             "other": "{n} Linien begradigt."
           }
+        },
+        "too_bendy": {
+          "one": "Diese Linie kann nicht begradigt werden, weil sie zu sehr gebogen ist.",
+          "other": "Diese Linien können nicht begradigt werden, weil sie zu sehr gebogen sind."
+        },
+        "connected_to_hidden": {
+          "one": "Diese Linie kann nicht begradigt werden, weil sie mit einem versteckten Objekt verbunden ist.",
+          "other": "Diese Linien können nicht begradigt werden, weil manche mit einem versteckten Objekt verbunden sind."
+        },
+        "not_downloaded": {
+          "one": "Diese Linie kann nicht begradigt werden, weil Teile davon noch nicht heruntergeladen wurden.",
+          "other": "Diese Linien können nicht begradigt werden, weil Teile von ihnen noch nicht heruntergeladen wurden."
+        },
+        "straight_enough": {
+          "one": "Diese Linie kann nicht weiter begradigt werden.",
+          "other": "Diese Linien können nicht weiter begradigt werden."
+        },
+        "too_large": {
+          "one": "Diese Linie kann nicht begradigt werden, weil derzeit nicht genug davon sichtbar ist.",
+          "other": "Diese Linien können nicht begradigt werden, weil derzeit nicht genug von ihnen sichtbar ist."
         }
       },
       "delete": {
         "title": "Löschen",
+        "description": {
+          "one": "Dieses Objekt dauerhaft löschen.",
+          "other": "Diese Objekte dauerhaft löschen."
+        },
         "annotation": {
           "point": "Punkt gelöscht.",
           "vertex": "Punkt aus einem Weg gelöscht.",
@@ -172,6 +262,30 @@
             "one": "{n} Objekte gelöscht.",
             "other": "{n} Objekte gelöscht."
           }
+        },
+        "too_large": {
+          "one": "Dieses Objekt kann nicht gelöscht werden, weil nicht derzeit genug davon sichtbar ist.",
+          "other": "Diese Objekte können nicht gelöscht werden, weil derzeit von ihnen nicht genug von ihnen sichtbar ist."
+        },
+        "incomplete_relation": {
+          "one": "Dieses Objekt kann nicht gelöscht werden, weil es nicht vollständig heruntergeladen wurde.",
+          "other": "Diese Objekte können nicht gelöscht werden, weil sie nicht vollständig heruntergeladen wurden."
+        },
+        "part_of_relation": {
+          "one": "Dieses Objekt kann nicht gelöscht werden, weil es Mitglieder einer Relation ist. Es muss zuerst aus der Relation entfernt werden.",
+          "other": "Diese Objekte können nicht gelöscht werden, weil sie Mitglieder einer Relation sind. Sie müssen zuerst aus der Relation entfernt werden."
+        },
+        "connected_to_hidden": {
+          "one": "Dieses Objekt kann nicht gelöscht werden, weil es mit einem versteckten Objekt verbunden ist.",
+          "other": "Diese Objekte können nicht gelöscht werden, weil einige mit versteckten Objekten verbunden sind."
+        },
+        "not_downloaded": {
+          "one": "Dieses Objekt kann nicht gelöscht werden, weil Teile davon noch nicht heruntergeladen wurden.",
+          "other": "Diese Objekte können nicht gelöscht werden, weil Teile von ihnen noch nicht heruntergeladen wurden."
+        },
+        "has_wikidata_tag": {
+          "one": "Dieses Objekt kann nicht gelöscht werden, weil es ein Wikidata-Attribut hat.",
+          "other": "Diese Objekte können nicht gelöscht werden, weil einige ein Wikidata-Attribut haben."
         }
       },
       "downgrade": {
@@ -195,6 +309,10 @@
             "one": "{n} Objekte herabgestuft.",
             "other": "{n} Objekte herabgestuft."
           }
+        },
+        "has_wikidata_tag": {
+          "one": "Dieses Objekt kann nicht herabgestuft werden, weil es ein Wikidata-Attribut hat.",
+          "other": "Diese Objekte können nicht herabgestuft werden, weil einige ein Wikidata-Attribut haben."
         }
       },
       "add_member": {
@@ -294,6 +412,10 @@
       },
       "move": {
         "title": "Verschieben",
+        "description": {
+          "one": "Dieses Objekt an eine andere Stelle verschieben.",
+          "other": "Diese Objekte an eine andere Stelle verschieben."
+        },
         "annotation": {
           "point": "Punkt verschoben.",
           "vertex": "Punkt in einem Weg verschoben.",
@@ -304,12 +426,38 @@
             "one": "Ein Objekt verschoben.",
             "other": "{n} Objekte verschoben."
           }
+        },
+        "incomplete_relation": {
+          "one": "Dieses Objekt kann nicht verschoben werden, weil es nicht vollständig heruntergeladen wurde.",
+          "other": "Diese Objekte können nicht verschoben werden, weil sie nicht vollständig heruntergeladen wurden."
+        },
+        "too_large": {
+          "one": "Dieses Objekt kann nicht verschoben werden, weil derzeit nicht genug davon sichtbar ist.",
+          "other": "Diese Objekte können nicht verschoben werden, weil derzeit nicht genug von ihnen sichtbar ist."
+        },
+        "connected_to_hidden": {
+          "one": "Dieses Objekt kann nicht verschoben werden, weil es mit einem versteckten Objekt verbunden ist.",
+          "other": "Diese Objekte können nicht verschoben werden, weil einige mit einem versteckten Objekt verbunden sind."
+        },
+        "not_downloaded": {
+          "one": "Dieses Objekt kann nicht verschoben werden, weil Teile davon noch nicht heruntergeladen wurden.",
+          "other": "Diese Objekte können nicht verschoben werden, weil Teile von ihnen noch nicht heruntergeladen wurden."
         }
       },
       "reflect": {
         "title": {
           "long": "Spiegeln an langer Achse",
           "short": "Spiegeln an kurzer Achse"
+        },
+        "description": {
+          "long": {
+            "one": "Dieses Objekt an der langen Achse spiegeln.",
+            "other": "Diese Objekte an der langen Achse spiegeln."
+          },
+          "short": {
+            "one": "Dieses Objekt an der kurzen Achse spiegeln.",
+            "other": "Diese Objekte an der kurzen Achse spiegeln."
+          }
         },
         "annotation": {
           "long": {
@@ -324,10 +472,30 @@
               "other": "{n} Objekte an der kurzen Achse gespiegelt."
             }
           }
+        },
+        "incomplete_relation": {
+          "one": "Dieses Objekt kann nicht gespiegelt werden, weil es noch nicht vollständig geladen wurde.",
+          "other": "Diese Objekte können nicht gespiegelt werden, weil sie noch nicht vollständig geladen wurden."
+        },
+        "too_large": {
+          "one": "Dieses Objekt kann nicht gespiegelt werden, weil davon noch nicht genug sichtbar ist.",
+          "other": "Diese Objekte können nicht gespiegelt werden, weil von ihnen noch nicht genug sichtbar ist."
+        },
+        "connected_to_hidden": {
+          "one": "Dieses Objekt kann nicht gespiegelt werden, weil es mit einem versteckten Objekt verbunden ist.",
+          "other": "Diese Objekte können nicht gespiegelt werden, weil einige mit versteckten Objekten verbunden sind."
+        },
+        "not_downloaded": {
+          "one": "Dieses Objekt kann nicht gespiegelt werden, weil Teile davon noch nicht geladen wurden.",
+          "other": "Diese Objekte können nicht gespiegelt werden, weil Teile von ihnen noch nicht geladen wurden."
         }
       },
       "rotate": {
         "title": "Drehen",
+        "description": {
+          "one": "Dieses Objekt um seinen Mittelpunkt drehen.",
+          "other": "Diese Objekte um ihren Mittelpunkt drehen."
+        },
         "annotation": {
           "line": "Linie gedreht.",
           "area": "Fläche gedreht.",
@@ -336,6 +504,22 @@
             "one": "Ein Objekt gedreht.",
             "other": "{n} Objekte gedreht."
           }
+        },
+        "incomplete_relation": {
+          "one": "Dieses Objekt kann nicht gedreht werden, weil es nicht vollständig heruntergeladen wurde.",
+          "other": "Diese Objekte können nicht gedreht werden, weil sie nicht vollständig heruntergeladen wurden."
+        },
+        "too_large": {
+          "one": "Dieses Objekt kann nicht gedreht werden, weil derzeit nicht genug davon sichtbar ist.",
+          "other": "Diese Objekte können nicht gedreht werden, weil derzeit nicht genug von ihnen sichtbar ist."
+        },
+        "connected_to_hidden": {
+          "one": "Dieses Objekt kann nicht gedreht werden, weil es mit einem versteckten Objekt verbunden ist.",
+          "other": "Diese Objekte können nicht gedreht werden, weil einige mit versteckten Objekten verbunden sind."
+        },
+        "not_downloaded": {
+          "one": "Dieses Objekt kann nicht gedreht werden, weil Teile davon noch nicht heruntergeladen wurden.",
+          "other": "Diese Objekte können nicht gedreht werden, weil Teile von ihnen noch nicht heruntergeladen wurden."
         }
       },
       "reverse": {
@@ -376,6 +560,22 @@
               "other": "{n} Objekte vergrößert."
             }
           }
+        },
+        "too_small": {
+          "one": "Dieses Objekt kann nicht verkleinert werden, weil es zu klein würde.",
+          "other": "Diese Objekte können nicht verkleinert werden, weil sie zu klein würden."
+        },
+        "too_large": {
+          "one": "Dieses Objekt kann nicht skaliert werden, weil zu wenig davon sichtbar ist.",
+          "other": "Diese Objekte können nicht skaliert werden, weil zu wenig von ihnen sichtbar ist."
+        },
+        "connected_to_hidden": {
+          "one": "Dieses Objekt kann nicht skaliert werden, weil es mit einem versteckten Objekt verbunden ist.",
+          "other": "Diese Objekte können nicht skaliert werden, weil einige mit versteckten Objekten verbunden sind."
+        },
+        "not_downloaded": {
+          "one": "Dieses Objekt kann nicht skaliert werden, weil Teile davon noch nicht vollständig geladen wurden.",
+          "other": "Diese Objekte können nicht skaliert werden, weil Teile von ihnen noch nicht vollständig geladen wurden."
         }
       },
       "split": {
@@ -434,6 +634,18 @@
       "extract": {
         "title": "Entnehmen",
         "description": {
+          "vertex": {
+            "one": "Diesen Punkt von seinen Linien/Flächen extrahieren.",
+            "other": "Diese Punkte von ihren Objekten extrahieren."
+          },
+          "line": {
+            "one": "Einen Punkt von dieser Linien extrahieren.",
+            "other": "Punkte von diesen Linien extrahieren."
+          },
+          "area": {
+            "one": "Einen Punkt von dieser Fläche extrahieren.",
+            "other": "Punkte von diesen Flächen extrahieren."
+          },
           "feature": {
             "other": "Entnimm Punkte von diesen Objekten."
           }
@@ -441,6 +653,14 @@
         "annotation": {
           "one": "{n} Punkte extrahiert.",
           "other": "{n} Punkte extrahiert."
+        },
+        "too_large": {
+          "one": "Ein Punkt kann nicht extrahiert werden, weil derzeit nicht genug vom Objekt sichtbar ist.",
+          "other": "Die Punkte können nicht extrahiert werden, weil von den Objekten derzeit nicht genug sichtbar ist."
+        },
+        "connected_to_hidden": {
+          "one": "Dieser Punkt kann nicht extrahiert werden, weil er mit einem versteckten Objekt verbunden ist.",
+          "other": "Die Punkte können nicht extrahiert werden, weil manche mit versteckten Objekt verbunden sind."
         }
       }
     },
@@ -503,7 +723,7 @@
         "other": "{count} versteckte Objekte"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "Das OpenStreetMap API ist nicht erreichbar. Deine Bearbeitungen sind lokal gesichert. Prüfe deine Netzwerkverbindung.",
         "offline": "Das OpenStreetMap API ist offline. Deine Bearbeitungen sind lokal gesichert. Bitte probiere es später noch einmal.",
@@ -1042,6 +1262,8 @@
       "cancel": "Abbrechen"
     },
     "splash": {
+      "welcome": "Willkommen zu {rapidicon} {version}!",
+      "privacy_update": "*Unsere Datenschutzrichtlinie wurde kürzlich aktualisiert.*",
       "walkthrough": "Das Tutorial starten",
       "start": "Jetzt bearbeiten"
     },
@@ -1079,7 +1301,16 @@
       "filter_datasets": "Datensätze filtern",
       "any_type": "alle Typen",
       "category": {
-        "roads": "Straßen"
+        "addresses": "Adressen",
+        "buildings": "Gebäude",
+        "footways": "Fußwege",
+        "places": "Orte",
+        "preview": "Vorschau",
+        "roads": "Straßen",
+        "trees": "Bäume"
+      },
+      "fbRoads": {
+        "label": "Facebook Straßen"
       }
     },
     "rapid_poweruser": {
@@ -1447,7 +1678,8 @@
       "tooltip": "Straßenfotos von Microsoft"
     },
     "mapillary": {
-      "tooltip": "Straßenfotos von Mapillary"
+      "tooltip": "Straßenfotos von Mapillary",
+      "view_on_mapillary": "Auf Mapillary ansehen"
     },
     "mapillary_signs": {
       "title": "Verkehrszeichen",
@@ -1817,6 +2049,11 @@
         "detached": {
           "message": "{feature} ist zu nahe bei {feature2}",
           "reference": "Verschiedene Punkte sollten nicht an derselben Stelle sein."
+        }
+      },
+      "curb_nodes": {
+        "reference": {
+          "link_text": "Mehr Informationen"
         }
       },
       "crossing_ways": {

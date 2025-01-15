@@ -524,7 +524,7 @@
         "other": "{count} elementi nascosti"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "Impossibile raggiungere le API di OpenStreetMap. Le tue modifiche sono al sicuro in locale. Verifica la tua connessione.",
         "offline": "Le API OpenStreetMap sono offline. Le tue modifiche sono al sicuro in locale. Per favore riprova più tardi.",

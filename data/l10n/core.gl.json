@@ -495,7 +495,7 @@
         "other": "{count} elementos agochados"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "Non foi posíbel acceder á API do OpenStreetMap. As túas edicións son seguras de xeito local. Verifica a túa conexión á rede.",
         "offline": "A API do OpenStreetMap está sen conexión. As túas edicións son seguras de xeito local. Por favor volve máis tarde.",

@@ -416,7 +416,15 @@
           "terms": "tool, iste,istekoht"
         },
         "bicycle_parking": {
-          "label": "Tüüp"
+          "label": "Tüüp",
+          "options": {
+            "building": "Hoones",
+            "handlebar_holder": "Lenkstangihoidja",
+            "lockers": "Eraldi jalgrataste hoiukapid",
+            "shed": "Kinnine rattakuur",
+            "stands": "Suur jalgrattatugi (toetab jalgratta raami)",
+            "wall_loops": "Väike jalgrattatugi (toetab vaid ratast)"
+          }
         },
         "bicycle_road": {
           "label": "Jalgrattatee",
@@ -463,7 +471,14 @@
           }
         },
         "bollard": {
-          "label": "Tüüp"
+          "label": "Tüüp",
+          "options": {
+            "fixed": "Jäik piirdetulp",
+            "flexible": "Painduv piirdetulp",
+            "foldable": "Kokkukeeratav piirdetulp",
+            "removable": "Eemaldatav piirdetulp",
+            "rising": "Tõusev piirdetulp"
+          }
         },
         "books": {
           "label": "Raamatute tüübid"
@@ -949,8 +964,14 @@
             "yes": "Olemas"
           }
         },
+        "crossing/bell": {
+          "label": "Heliline märguanne"
+        },
         "crossing/island": {
           "label": "Ohutussaar"
+        },
+        "crossing/light": {
+          "label": "Valgusfoor"
         },
         "crossing/markings": {
           "label": "Ülekäiguraja märgistus",
@@ -1097,14 +1118,15 @@
               "title": "Jalgrattarada pole"
             },
             "opposite": {
-              "description": "Rattarada, mis võimaldab liikuda ühesuunalisel tänaval mõlemas suunas",
-              "title": "Vastuvoolu jalgrattarada"
+              "description": "Palun asenda - oneway=yes, oneway:bicycle=no ja cycleway:both=no jne.",
+              "title": "(aegunud) Vastuvoolu jalgrattarada"
             },
             "opposite_lane": {
-              "description": "Rattarada, mis kulgeb muu liikluse suhtes vastassuunas",
-              "title": "Mõlemasuunaline jalgrattarada ühesuunalisel teel"
+              "description": "Palun asenda ühesuunalise teega -  oneway:bicycle, + cycleway:left/right=lane jne.",
+              "title": "(aegunud) Mõlemasuunaline jalgrattarada ühesuunalisel teel"
             },
             "separate": {
+              "description": "Märgib, et rattatee geomeetria on kaardistatud eraldi",
               "title": "Jalgrattarada on näidatud eraldi"
             },
             "share_busway": {
@@ -1150,6 +1172,7 @@
           "label": "Olulisus"
         },
         "departures_board": {
+          "label": "Sõiduplaan/infotabloo",
           "options": {
             "no": "Puudub",
             "realtime": "Reaalajas",
@@ -1435,8 +1458,14 @@
           "label": "Vajab parandamist",
           "terms": "paranda mind,ootab parandamist"
         },
+        "flag/name": {
+          "label": "Lipu nimi"
+        },
         "flag/type": {
           "label": "Lipu tüüp"
+        },
+        "flag/wikidata": {
+          "label": "Lipp Vikiandmetes"
         },
         "flashing_lights": {
           "options": {
@@ -1964,7 +1993,7 @@
           "label": "Ääre kõrgus"
         },
         "kerb/kerb_barrier": {
-          "label": "Tüüp"
+          "label": "Kõnnitee serva tüüp"
         },
         "kitchen": {
           "label": "Köök"
@@ -3816,20 +3845,24 @@
           "terms": "postiaadress"
         },
         "advertising": {
-          "name": "Reklaamikandja"
+          "name": "Reklaamikandja",
+          "terms": "reklaamlipp, neoonreklaam,reklaamsilt,reklaamviit,reklaamplakat"
         },
         "advertising/billboard": {
-          "name": "Suur kahepoolne reklaamtahvel"
+          "name": "Suur kahepoolne reklaamtahvel",
+          "terms": "välireklaam,suur reklaamtahvel"
         },
         "advertising/board": {
           "name": "Kuulutuste tahvel",
           "terms": "reklaamtahvel,teadete sein,teated"
         },
         "advertising/column": {
-          "name": "Reklaamtulp"
+          "name": "Reklaamtulp",
+          "terms": "välireklaam"
         },
         "advertising/poster_box": {
-          "name": "Väike kahepoolne reklaamtahvel"
+          "name": "Väike kahepoolne reklaamtahvel",
+          "terms": "välireklaam,väike reklaamtahvel"
         },
         "advertising/totem": {
           "name": "Püstine reklaamsilt",
@@ -3918,6 +3951,10 @@
         "amenity/animal_boarding": {
           "name": "Loomahotell",
           "terms": "lemmikloomahotell"
+        },
+        "amenity/animal_breeding": {
+          "name": "Tõuaretuskeskus",
+          "terms": "tõuparandus,tõuaretus"
         },
         "amenity/animal_shelter": {
           "name": "Loomade varjupaik"
@@ -4103,7 +4140,8 @@
           "name": "Ühiskasutatavad kontoriruumid"
         },
         "amenity/crematorium": {
-          "name": "Krematoorium"
+          "name": "Krematoorium",
+          "terms": "matused,kremeerimine,koolnupõletla"
         },
         "amenity/dentist": {
           "name": "Hambaarst"
@@ -4754,7 +4792,8 @@
           "name": "Filmistuudio"
         },
         "amenity/swingerclub": {
-          "name": "Svingerite klubi"
+          "name": "Svingerite klubi",
+          "terms": "paarivahetus"
         },
         "amenity/taxi": {
           "name": "Taksopeatus"
@@ -5028,6 +5067,19 @@
         },
         "barrier/kerb": {
           "name": "Kõnnitee serv"
+        },
+        "barrier/kerb/flush": {
+          "name": "Tasane äärekivi"
+        },
+        "barrier/kerb/lowered": {
+          "name": "Madaldatud äärekivi",
+          "terms": "madal äärekivi"
+        },
+        "barrier/kerb/raised": {
+          "name": "Tõstetud äärekivi"
+        },
+        "barrier/kerb/rolled": {
+          "name": "Nõgus äärekivi"
         },
         "barrier/kissing_gate": {
           "name": "Karjaaia lüüsiga jalgvärav",
@@ -5804,6 +5856,12 @@
           "name": "Märgistamata lõikumine (jalg- ja) jalgrattateega",
           "terms": "ratta,jalgratta,ülekäigu,ülekäik"
         },
+        "highway/cycleway/traffic_island": {
+          "name": "Ohutussaar rattateel"
+        },
+        "highway/cycleway/traffic_island_shared": {
+          "name": "Ohutussaar ratta- ja jalgteel"
+        },
         "highway/cyclist_waiting_aid": {
           "name": "Ratturi seisutugi"
         },
@@ -6140,7 +6198,8 @@
           "name": "Sisesein"
         },
         "internet_access/wlan": {
-          "name": "WiFi tugijaam\nWiFi kuumkoht"
+          "name": "WiFi tugijaam\nWiFi kuumkoht",
+          "terms": "wi-fi,wlan,wifi,kuumkoht"
         },
         "junction": {
           "name": "Ristmik",
@@ -6418,6 +6477,10 @@
         "leisure/golf_course": {
           "name": "Golfiväljak"
         },
+        "leisure/hackerspace": {
+          "name": "Häkkerite ühisruum",
+          "terms": "häkkerid,häkkimine,hackerspace"
+        },
         "leisure/horse_riding": {
           "name": "Ratsakeskus\nRatsabaas"
         },
@@ -6453,7 +6516,8 @@
           "name": "Piknikulaud"
         },
         "leisure/picnic_table/chess": {
-          "name": "Malelaud"
+          "name": "Malelaud",
+          "terms": "välimale,malemäng"
         },
         "leisure/pitch": {
           "name": "Spordiväljak"
@@ -6518,7 +6582,8 @@
           "name": "Puu- ja metallkuulimängude väljak"
         },
         "leisure/pitch/chess": {
-          "name": "Suur malelaud"
+          "name": "Suur malelaud",
+          "terms": "välimale,malemäng"
         },
         "leisure/pitch/cricket": {
           "name": "Kriketiväljak"
@@ -7325,10 +7390,12 @@
           "name": "Valitsuse kontor (aegunud silt)"
         },
         "office/adoption_agency": {
-          "name": "Lapsendamisbüroo"
+          "name": "Lapsendamisbüroo",
+          "terms": "lapsendamine,adoptsioon"
         },
         "office/advertising_agency": {
-          "name": "Reklaamibüroo"
+          "name": "Reklaamibüroo",
+          "terms": "reklaampost,välireklaam"
         },
         "office/architect": {
           "name": "Arhitektuuribüroo"
@@ -7486,7 +7553,8 @@
           "name": "Ametiühingu kontor"
         },
         "office/water_utility": {
-          "name": "Veevärgi kontor"
+          "name": "Veevärgi kontor",
+          "terms": "veevärk,kontor,büroo"
         },
         "office/yes": {
           "name": "Määratlemata kontor"
@@ -7631,7 +7699,8 @@
           "terms": "õhuliin"
         },
         "power/plant": {
-          "name": "Elektrijaamaala"
+          "name": "Elektrijaamaala",
+          "terms": "jõujaam"
         },
         "power/plant/source/coal": {
           "name": "Söeküttel elektrijaam"
@@ -7680,11 +7749,17 @@
           "name": "Trafo",
           "terms": "Transformaator"
         },
+        "public_transport/platform": {
+          "name": "Ühistranspordipeatuse ooteplatvorm"
+        },
         "public_transport/platform/aerialway": {
           "name": "Köistee peatuse platvorm"
         },
         "public_transport/platform/aerialway_point": {
           "name": "Köistee peatus"
+        },
+        "public_transport/platform/bus": {
+          "name": "Bussi ooteplatvorm"
         },
         "public_transport/platform/bus_point": {
           "name": "Bussipeatus"
@@ -7692,8 +7767,14 @@
         "public_transport/platform/bus_tram_point": {
           "name": "Bussi- ja trammipeatus"
         },
+        "public_transport/platform/ferry": {
+          "name": "Praami ooteplatvorm"
+        },
         "public_transport/platform/ferry_point": {
           "name": "Praamipeatus"
+        },
+        "public_transport/platform/light_rail": {
+          "name": "Kergraudtee ooteplatvorm"
         },
         "public_transport/platform/light_rail_point": {
           "name": "Kergraudtee peatus"
@@ -7703,6 +7784,9 @@
         },
         "public_transport/platform/monorail_point": {
           "name": "Monorelsstee platvorm"
+        },
+        "public_transport/platform/subway": {
+          "name": "Metroo ooteplatvorm"
         },
         "public_transport/platform/subway_point": {
           "name": "Metroopeatus"
@@ -7719,8 +7803,17 @@
         "public_transport/platform/tram_point": {
           "name": "Trammipeatus"
         },
+        "public_transport/platform/trolleybus": {
+          "name": "Trollibussi ooteplatvorm"
+        },
         "public_transport/platform/trolleybus_point": {
           "name": "Trollibussipeatus"
+        },
+        "public_transport/platform_point": {
+          "name": "Ühistranspordipeatuse ooteplatvorm"
+        },
+        "public_transport/station": {
+          "name": "Ühistranspordipeatus"
         },
         "public_transport/station_aerialway": {
           "name": "Köistee jaam"
@@ -7744,8 +7837,17 @@
         "public_transport/station_train": {
           "name": "Raudteejaam"
         },
+        "public_transport/station_train_halt": {
+          "name": "Rongipeatus (nõudepeatus / teivasjaam)"
+        },
         "public_transport/station_tram": {
           "name": "Trammipeatus"
+        },
+        "public_transport/station_trolleybus": {
+          "name": "Trollipeatus"
+        },
+        "public_transport/stop_area": {
+          "name": "Ühistranspordipeatuse ala"
         },
         "public_transport/stop_position": {
           "name": "Ühistranspordiveoki peatuspunkt"
@@ -7796,6 +7898,9 @@
         "railway/funicular": {
           "name": "Köisraudtee",
           "terms": "funikulöör,furnikulaar"
+        },
+        "railway/halt": {
+          "name": "Rongipeatus (nõudepeatus)"
         },
         "railway/level_crossing": {
           "name": "Raudteeülesõidukoht",
@@ -7889,7 +7994,7 @@
         },
         "shop": {
           "name": "Pood",
-          "terms": "kauplus"
+          "terms": "kauplus,äri,jaekaubandus,jaepood,jaekauplus"
         },
         "shop/agrarian": {
           "name": "Põllumajandustarvete kauplus",
@@ -8008,7 +8113,7 @@
           "name": "Juustupood"
         },
         "shop/chemist": {
-          "name": "Kodukeemia kauplus",
+          "name": "Apteek ja ilupood",
           "terms": "puhastus*,ravimid,kemikaal*,pesuvahend*,üldpuhastus*,hügieeni*,tarbed,keemia"
         },
         "shop/chocolate": {
@@ -8747,6 +8852,9 @@
         "type/enforcement": {
           "name": "Liiklusjärelvalve",
           "terms": "järelvalve,liikluskontroll,politseikontroll"
+        },
+        "type/public_transport/stop_area_group": {
+          "name": "Ühistranspordipeatuse alade grupp"
         },
         "type/restriction": {
           "name": "Piirang"

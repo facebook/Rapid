@@ -19,7 +19,8 @@
       "undo_redo": "還原／再做",
       "recent": "近來",
       "favorites": "喜好",
-      "add_feature": "加地貌"
+      "add_feature": "加地貌",
+      "rapid_features": "輔助"
     },
     "title": {
       "format": {
@@ -31,13 +32,16 @@
     },
     "modes": {
       "add_area": {
-        "title": "面"
+        "title": "面",
+        "description": "新增建築、公園、湖泊、或是其他區域到地圖上。"
       },
       "add_line": {
-        "title": "线"
+        "title": "线",
+        "description": "新增道路、人行通道、溪流，或是其他線條到地圖上。"
       },
       "add_point": {
-        "title": "点"
+        "title": "点",
+        "description": "新增商家、垃圾筒、郵箱，或是其他節點到地圖上。"
       },
       "add_note": {
         "title": "註",
@@ -102,16 +106,34 @@
       },
       "circularize": {
         "title": "圆",
+        "description": "讓這些圖徵圓形化。",
         "annotation": {
           "feature": "化{n}地貌為圓。"
-        }
+        },
+        "multiple_blockers": "因為多種原因這些圖徵並無法圓形化。",
+        "not_closed": "這些圖徵無法圓形化，因為他們並不是封閉的。",
+        "too_large": "因為這些圖徵可視化部分不足而無法圓形化。",
+        "connected_to_hidden": "因為這些圖徵當中有連到隱藏的圖徵而無法圓形化。",
+        "not_downloaded": "因為有部分未被下載而無法圓形化。",
+        "already_circular": "因為已經圓形化了，所有無法更圓形化。"
       },
       "orthogonalize": {
         "title": "整方",
+        "description": {
+          "corner": "方角化這些角落",
+          "feature": "方角化"
+        },
         "annotation": {
           "corner": " {n} 角化成方。",
           "feature": "{n} 地貌之角皆化成方。"
-        }
+        },
+        "multiple_blockers": "因為多種因素無法方角化。",
+        "end_vertex": "因為在端點而無法方角化。",
+        "square_enough": "因為已經很方了而無法更方角化。",
+        "not_squarish": "因為非方形而無法方角化。",
+        "too_large": "因為目前檢視部分不足而無法方角化。",
+        "connected_to_hidden": "因為有圖微連結到隱藏的圖徵而無法方角化。",
+        "not_downloaded": "因為有部分未下載而無法方角化。"
       },
       "straighten": {
         "title": "拉直",
@@ -123,10 +145,16 @@
         "annotation": {
           "point": "拉直 {n} 個點。",
           "line": "拉直 {n} 條線。"
-        }
+        },
+        "too_bendy": "因為有直線化的部分太彎曲了而無法進行。",
+        "connected_to_hidden": "因為有圖徵連結到隱藏的圖徵而無法直線化。",
+        "not_downloaded": "因為有部分未下載而無法直線化。",
+        "straight_enough": "因為已經夠直了所以無法再直線化。",
+        "too_large": "因為檢視部分不足而無法直線化。"
       },
       "delete": {
         "title": "删除",
+        "description": "永久刪除這些圖徵。",
         "annotation": {
           "point": "删除一个点。",
           "vertex": "删除线上一个结点。",
@@ -134,7 +162,13 @@
           "area": "删除一个面。",
           "relation": "删除一个关系。",
           "feature": "刪走{n}地貌。"
-        }
+        },
+        "too_large": "這些圖徵無法被刪除，因為檢視的部分並不夠。",
+        "incomplete_relation": "因為這些圖徵沒有完全下載下來，所以無法刪除這些圖徵。",
+        "part_of_relation": "因為這些圖徵是更大的關係的一部分，所以無法刪除。你必須先將他們從關係移除。",
+        "connected_to_hidden": "因為這些圖徵連結到隱藏的圖徵，所以無法刪除。",
+        "not_downloaded": "因為這些圖徵部分還未下載下來，所以無法刪除。",
+        "has_wikidata_tag": "因為這些圖徵帶有 Wikidata 標籤，所以無法刪除。"
       },
       "downgrade": {
         "title": "降級",
@@ -148,7 +182,8 @@
           "building": "將 {n} 個圖徽降級為基本建築。",
           "address": "已降級 {n} 個圖徽為地址。",
           "generic": "已降級 {n} 個圖徽。"
-        }
+        },
+        "has_wikidata_tag": "因為有些圖徵有 Wikidata 標籤而無法降級。"
       },
       "add_member": {
         "annotation": "已新增 {n} 個成員到關係中。"
@@ -238,6 +273,7 @@
       },
       "move": {
         "title": "移动",
+        "description": "移動這些圖徵到不同位置。",
         "annotation": {
           "point": "移动一个点。",
           "vertex": "移动线上一个结点",
@@ -245,12 +281,20 @@
           "area": "移动一个面。",
           "relation": "移動了一個關係。",
           "feature": "已移動 {n} 個圖徽。"
-        }
+        },
+        "incomplete_relation": "因為這些圖徵沒有完全下載，所以無法移動。",
+        "too_large": "因為檢視的部分太少，所以無法移動。",
+        "connected_to_hidden": "因為有些圖徵連接到隱藏的圖徵，所以無法移動。",
+        "not_downloaded": "因為有些圖徵還沒有下載下來，所以無法移動。"
       },
       "reflect": {
         "title": {
           "long": "翻轉長邊",
           "short": "翻轉短邊"
+        },
+        "description": {
+          "long": "依據長軸翻轉圖徵。",
+          "short": "依據短軸翻轉圖徵。"
         },
         "annotation": {
           "long": {
@@ -259,16 +303,25 @@
           "short": {
             "feature": "沿它們的短軸翻轉 {n} 個圖徽。"
           }
-        }
+        },
+        "incomplete_relation": "因為這些圖徵還沒有完全下載，所以無法翻轉。",
+        "too_large": "因為這些圖徵無法檢視，所以無法翻轉。",
+        "connected_to_hidden": "因為這些圖徵連結到隱藏的圖徵，所以無法翻轉。",
+        "not_downloaded": "因為這些圖徵的一部分還沒有下載，所以無法翻轉。"
       },
       "rotate": {
         "title": "旋转",
+        "description": "依據中心點翻轉這些圖徵。",
         "annotation": {
           "line": "旋转一条线。",
           "area": "旋转一个面。",
           "relation": "關聯擰轉咗。",
           "feature": "擰轉{n}地貌。"
-        }
+        },
+        "incomplete_relation": "因為這些圖徵還沒有完全下載，所以無法旋轉。",
+        "too_large": "因為檢視部分不夠，所以無法旋轉。",
+        "connected_to_hidden": "因為這些圖徵連結到隱藏的圖徵，所以無法旋轉。",
+        "not_downloaded": "因為這些圖徵有部分還沒有下載，所以無法旋轉。"
       },
       "reverse": {
         "title": "反转",
@@ -293,7 +346,11 @@
           "up": {
             "feature": "放大 {n} 個圖徽。"
           }
-        }
+        },
+        "too_small": "因為這些圖徵太小了，所以無法縮小。",
+        "too_large": "因為這些圖徵檢視的部分不夠，所以無法縮放。",
+        "connected_to_hidden": "因為這些圖徵連結到隱藏的圖徵，所以無法縮放。",
+        "not_downloaded": "因為這些圖徵還有部分沒有下載，所以無法縮放。"
       },
       "split": {
         "title": "分割",
@@ -302,6 +359,10 @@
             "single": {
               "single_node": "在這個點上將此線段一分為二。",
               "multiple_node": "在這些點上分割此線段。"
+            },
+            "multiple": {
+              "single_node": "在這個點上分割線段。",
+              "multiple_node": "在這些點上分割這些線段。"
             }
           },
           "area": {
@@ -338,6 +399,7 @@
       "extract": {
         "title": "抽出",
         "description": {
+          "vertex": "從父圖徵抽取節點。",
           "line": "從這些線截取點。",
           "area": "從這區域截取點",
           "feature": {
@@ -347,6 +409,12 @@
         "annotation": "已擷取 {n} 個點。",
         "too_large": "無法從這些圖徵截取點，因為沒有足夠可視的圖徵。",
         "connected_to_hidden": "無法從這些圖徵截取點，因為有些連結的圖徵已經被隱藏了"
+      },
+      "cycle_highway_tag": {
+        "title": "單車道標籤",
+        "description": "循環選擇的道路或是通道的標籤的快速鍵。",
+        "highway_annotation": "改變選擇的路徑的道路標籤。",
+        "crosswalk_annotation": "改變選擇的通道的標籤。"
       }
     },
     "restriction": {
@@ -378,6 +446,7 @@
         "via": "經由",
         "to": "到",
         "from_name": "{from} {fromName} 起",
+        "from_name_to_name": "{from}{fromName}{to}{toName}",
         "select_from": "點選 {from} 片段",
         "select_from_name": "點選 {from} 片段 {fromName}",
         "toggle": "點 \"{turn}\""
@@ -393,6 +462,7 @@
       "tooltip": "重做：{action}",
       "nothing": "没有可重做的。"
     },
+    "tooltip_keyhint": "鍵：",
     "translate": {
       "translate": "加種種話之名",
       "localized_translation_label": "種種話之名",
@@ -406,16 +476,20 @@
     "loading_auth": "连接OpenStreetMap...",
     "report_a_bug": "報錯",
     "help_translate": "幫手繙",
+    "example": "例子：",
     "feature_info": {
       "hidden_warning": "隱藏地貌 {count} 個"
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "無法存取 OpenStreetMap API。您的編輯安全地儲存在本機上。請檢查您的網路連線。",
         "offline": "OpenStreetMap API 離線。您的編輯安全地儲存在本機上。請稍後再回來。",
         "readonly": "公家街圖程式接口，今下只讀不寫。君可以照改，但要等下先記實修改。",
-        "local_storage_full": "您所作的編輯過多，無法備份。請考慮立刻儲存您的變更。"
+        "ratelimit": "你已經從開放街圖下載太多資料了，請在{seconds}秒後再一次，或是切換帳號。",
+        "local_storage_full": "您所作的編輯過多，無法備份。請考慮立刻儲存您的變更。",
+        "contextlost": "圖形遇到狀況，Rapid 會繼續運作但降低品質。"
       },
+      "dismiss": "解除",
       "retry": "重試"
     },
     "commit": {
@@ -462,6 +536,7 @@
         "last_edit": "最近修改",
         "edited_by": "修改人為",
         "changeset": "變更",
+        "link_text": "開放街圖網站上的歷史",
         "note_no_history": "無歷史（新註記）",
         "note_comments": "留言",
         "note_created_date": "創建日期",
@@ -507,6 +582,7 @@
       "location_unavailable": "無你嗰處。"
     },
     "inspector": {
+      "tooltip": "啟用圖徵檢查器",
       "zoom_to": {
         "title": "縮放到選取的部份",
         "no_selection": "沒有東西可放大。"
@@ -515,6 +591,7 @@
       "view_on_osm": "在openstreetmap.org上查看",
       "view_on_osmose": "在 osmose.openstreetmap.fr 上檢視",
       "view_on_keepRight": "在 keepright.at 檢視",
+      "view_on_maproulette": "在 maproulette.org 檢視",
       "feature_type": "地貌",
       "fields": "欄",
       "tags": "標籤",
@@ -529,6 +606,7 @@
       "choose": "选择对象的类型",
       "results": "{n} 個 {search} 的結果",
       "no_documentation_key": "未有文件解",
+      "edit_reference": "編輯/翻譯",
       "wiki_reference": "觀看說明文件",
       "wiki_en_reference": "觀看英文的說明文件",
       "key_value": "键=值",
@@ -543,6 +621,7 @@
       "unknown": "未知",
       "incomplete": "<没有下载>",
       "feature_list": "搵地貌",
+      "multiselect": "多重選擇",
       "check": {
         "yes": "係",
         "no": "唔係",
@@ -573,7 +652,9 @@
         "ref_from_to_via": "{ref} 從 {from} 到 {to} 經由 {via}",
         "network_ref_from_to": "{network} {ref} 從 {from} 到 {to}",
         "network_ref_from_to_via": "{network} {ref} 從 {from} 到 {to} 經由 {via}"
-      }
+      },
+      "first_seen": "最新看到",
+      "last_seen": "最後看到"
     },
     "background": {
       "title": "背景",
@@ -584,14 +665,28 @@
       "switch": "轉返去爾個背景",
       "custom": "自訂",
       "overlays": "覆疊",
+      "grid": {
+        "grids": "網格",
+        "no_grid": "沒有網格",
+        "n_by_n": "{num} 乘以 {num} 的網格"
+      },
+      "imagery_source_faq": "影像資訊 / 回報問題",
       "imagery_problem_faq": "回報影像問題",
       "reset": "重置",
       "reset_all": "所有重設",
       "display_options": "顯示設定",
+      "wayback": {
+        "description": "Esri Wayback 包含 Esri 世界影像的歷年影像。",
+        "date": "日期"
+      },
       "brightness": "亮度",
       "contrast": "對比",
       "saturation": "飽和度",
       "sharpness": "銳利度",
+      "3dmap": {
+        "description": "顯示 3D 地圖",
+        "tooltip": "顯示預設的 3D 地圖"
+      },
       "minimap": {
         "description": "顯示小地圖",
         "tooltip": "開個縮圖，幫手搵返家下睇到嘅範圍。"
@@ -614,19 +709,36 @@
       "layers": {
         "osm": {
           "tooltip": "來自開放街圖的地圖資料",
-          "title": "開放街圖資料"
+          "title": "開放街圖資料",
+          "feature": "開放街圖圖徵"
         },
         "notes": {
           "tooltip": "從開放街圖而來的註記資料",
           "title": "公家街圖註"
         },
         "rapid": {
+          "tooltip": "運用機器學習偵測的建議圖徵，以及開放資料，能夠運用來改進開放資料圖資",
+          "title": "Rapid 圖徵",
           "license": "Facebook 地圖的 AI 授權條款"
         },
         "maproulette": {
+          "tooltip": "從 maproulette.org 來的任務，你也可以用逗號分隔清單來篩選出挑戰編號。",
+          "title": "MapRoulette 任務",
+          "loading_task_details": "載入任務詳情…",
           "detail_title": "詳細資訊",
+          "id_title": "挑戰編號/任務編號",
+          "id_placeholder": "挑戰編號",
+          "instruction_title": "說明",
           "fixed": "我已經修復了!",
+          "cantComplete": "無法完成",
+          "alreadyFixed": "早就已經修復了",
+          "notAnIssue": "並非問題",
+          "login": "你必須登入才能改 MapRoulette 挑戰。",
+          "loginMaproulette": "你必須登入才能在 MapRoulette 編輯這項任務。 ",
+          "inputPlaceholder": "改變留言 (選填)",
+          "comment": "請確認",
           "cancel": "取消",
+          "submit": "送出",
           "nearbyTask": {
             "title": "跳到附近的任務"
           }
@@ -639,12 +751,17 @@
           "tooltip": "由 osmose.openstreetmap.fr 偵測到的資料問題",
           "title": "Osmose 問題"
         },
+        "geoScribble": {
+          "tooltip": "由 EveryDoor 使用者第一手的記錄",
+          "title": "GeoScribble 記錄"
+        },
         "custom": {
           "tooltip": "拖曳資料檔案到頁面上，或點選按鈕以設定",
           "title": "自訂地圖資料",
           "zoom": "縮放到資料"
         }
       },
+      "fill_area": "填滿區域",
       "history_panel": {
         "title": "顯示歷史面板",
         "tooltip": "顯示選取物件的歷史詳情。"
@@ -692,6 +809,10 @@
     },
     "filters": {
       "title": "篩選",
+      "active": "有些圖徵已經被篩選了：",
+      "hidden_preset": {
+        "manual": "{features}個圖徵已經被篩選了，請在地圖資料面版啟用這些資料。"
+      },
       "points": {
         "description": "点。",
         "tooltip": "名勝"
@@ -804,11 +925,20 @@
       "custom_data": {
         "tooltip": "編輯自訂資料圖層",
         "header": "自訂地圖資料設定",
+        "instructions": "將自訂地圖資料加到地圖上當作參考圖層，有兩種方式：",
         "file": {
+          "heading": "本地資料檔案",
+          "instructions": "選擇本地資料檔案，支援的檔案格式如下：",
+          "types": "`.gpx`、`.kml`、`.geojson`、`.json`",
+          "tip": "小技巧：你可以用拖拉的方式來載入任何類型檔案到主要地圖上。",
           "label": "瀏覽檔案"
         },
         "or": "或",
         "url": {
+          "heading": "遠端資料網址",
+          "instructions": "輸入上述檔案類型的網址， MVT 樣式向量圖磚服務，或是 .mptiles 檔案集。",
+          "tokens": "支援的替代權杖：",
+          "xyz": "`{zoom}` 或 `{z}`, `{x}`, `{y}`是為了 Z/X/Y 圖磚標準",
           "placeholder": "輸入 URL"
         }
       }
@@ -818,13 +948,45 @@
       "description": "喜好",
       "privacy": {
         "title": "私隱",
+        "privacy_link": "查看 Rapid 隐私政策",
         "third_party_icons": {
           "description": "顯示第三方圖示",
           "tooltip": "取消勾選此方塊以避免從第三方網站（如維基共享資源、Facebook 或 Twitter）載入圖示。"
         }
       },
+      "map_interaction": {
+        "title": "地圖互動",
+        "mouse_wheel": {
+          "title": "滑鼠滾輪行為",
+          "auto": {
+            "title": "自動",
+            "tooltip": "最适合触摸板用户。 使用双指，轻扫手势可平移地图，捏合手势可缩放和取消缩放地图。 按住 Shift 键可以缩放和取消缩放地图。"
+          },
+          "zoom": {
+            "title": "缩放地图",
+            "tooltip": "使用滚轮滚动可始终缩放或取消缩放地图。"
+          },
+          "pan": {
+            "title": "平移地图",
+            "tooltip": "使用滚轮滚动可以平移地图。 按住 Shift 键可以放大或缩小地图。"
+          }
+        }
+      },
       "color_selection": {
-        "default": "預設"
+        "title": "地图配色方案",
+        "tooltip": "在配色方案之间切换",
+        "default": "預設",
+        "example": "示例（高对比度）",
+        "placeholder": "选择配色方案"
+      },
+      "colorblind_options": {
+        "title": "色盲模式",
+        "tooltip": "在色盲模式之间切换",
+        "default": "默认（无）",
+        "protanopia": "红色盲",
+        "deuteranopia": "绿色盲",
+        "tritanopia": "蓝黄色盲",
+        "placeholder": "选择色盲模式"
       }
     },
     "restore": {
@@ -857,12 +1019,18 @@
         "help": "另一個使用者變更了您變更的某些相同圖徽。在每個圖徽下面點選以取得更多衝突的資訊，並選取是否要保留，您的變更或是其他使用者的變更。"
       }
     },
+    "download_osc": {
+      "title": "下载",
+      "help": "下載目前地圖變動到 osc 檔案。",
+      "no_changes": "沒有變動可以下載。"
+    },
     "merge_remote_changes": {
       "conflict": {
         "deleted": "此地貌已畀{user}剷走。.",
         "location": "此圖徽已被您與 {user} 同時移動。",
         "nodelist": "{user} 同你改過此項。",
-        "memberlist": "{user} 同你改過關聯細項。"
+        "memberlist": "{user} 同你改過關聯細項。",
+        "tags": "你改變<b>{tag}</b>標籤變成\"{local}\"，以及{user}改成\"{remote}\"。"
       }
     },
     "success": {
@@ -873,8 +1041,10 @@
         "format": "{region}{separator}{place}",
         "separator": "-"
       },
+      "your_changes": "幾分鐘之後你做出的變動應當會出現在開放街圖上，其他地方的話可能更新會比較久。",
       "help_link_text": "詳細資訊",
       "view_on_osm": "公家街圖處，睇返修改",
+      "your_changeset_id": "你的變更集 #：",
       "like_osm": "中意公家街圖？出面睇下傾下：",
       "more": "更多",
       "events": "活動",
@@ -888,12 +1058,35 @@
     },
     "splash": {
       "welcome": "歡迎來到{rapidicon}{version}！!",
+      "text": "Rapid 是相當使用友善但相當強大的全球自由地圖開放街圖的編輯器。如果你第一次來這裡，請點下面按鈕來開始教學模式，任何人都能加入成為圖客！\n\n要知道詳細資訊請在 GitHub 檢視[變化記錄](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new)以及[問題追蹤](https://github.com/facebook/Rapid/issues)。Happy Mapping！👍",
+      "privacy_update": "*我们最近更新了隐私政策。*",
+      "privacy": "在使用本软件时，您同意遵守以下条款 [Rapid隐私政策](https://github.com/facebook/Rapid/blob/main/PRIVACY.md)。",
+      "walkthrough": "开始教程",
       "start": "卽改"
+    },
+    "whats_new": {
+      "text_v24": "這次釋出版本改進 Rapid 的文字在地化，以及更容易處理街道等級資料如 Mapillary。如今你可以檢視偵測到的物件，如交通號誌、人行穿越道、自行車架等等！\n\n請檢視[版本變更記錄](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new)以及 GitHub 上的[問題追蹤器](https://github.com/facebook/Rapid/issues) 來察看詳情。祝畫地圖快樂！👍",
+      "text_v25": "這次釋出包括新的讓繪製路緣更容易的驗證程序，資料目標當中新的資料集，以及升級渲染器帶來更好的效能。",
+      "project_links": "要知道詳情請在 GitHub 檢視[變化記錄](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new)以及[問題追蹤](https://github.com/facebook/Rapid/issues)。Happy Mapping！👍",
+      "dontshowagain": "隱藏這畫面直到下個版本"
     },
     "source_switch": {
       "dev": "开发模式",
       "live": "运行模式",
       "lose_changes": "您有未保存的更改。切换地图服务器会丢弃他们。你确定要切换服务器吗？"
+    },
+    "rapid_splash": {
+      "welcome": "引入人工智能辅助绘图！",
+      "text": "選擇{rapidicon}選項開始 Rapid 教學，如果你不熟 OSM 還沒有畫過地圖，請先選擇 {walkthrough}選項。最後，如果你想直接來畫地圖，點最後的{edit}選項。你可以透過說明選單隨時進到教學模式。",
+      "walkthrough": "開始整個教學模式",
+      "skip_to_rapid": "了解 Rapid！",
+      "start": "不用了，谢谢，开始绘制地图吧"
+    },
+    "rapid_first_edit": {
+      "nice": "你剛加了你第一個{rapidicon}AI 輔助圖徵，很好。",
+      "text": "您需要一个OpenStreetMap帐户来保存您的工作。您想现在登录OSM还是继续浏览？",
+      "exploring": "我只是在浏览",
+      "login_with_osm": "通过 OSM 登录"
     },
     "rapid_inspector": {
       "prompt": "針對這個選取的圖徵你要如何處理？",
@@ -989,6 +1182,9 @@
         "description": "解除編輯不在目前檢範圍圖徵的限制"
       }
     },
+    "version": {
+      "whats_new": "Rapid 的新功能 {version}"
+    },
     "tag_reference": {
       "description": "描述",
       "on_wiki": "在wiki.osm.org查看{tag}",
@@ -1003,6 +1199,8 @@
       }
     },
     "bearing": {
+      "reset_bearing": "重設方位",
+      "rotate_the_map": "旋转地图：",
       "n": "北"
     },
     "full_screen": "來回全螢幕",
@@ -1021,6 +1219,7 @@
         "trap_title": "常見錯誤"
       },
       "keepRight": {
+        "title": "KeepRight 問題",
         "detail_description": "描述",
         "comment": "留言",
         "comment_placeholder": "寫低留言話畀其他用者知。",
@@ -1342,10 +1541,90 @@
       "tooltip": "微軟的街景照片"
     },
     "mapillary": {
-      "tooltip": "來自Mapillary的街道圖層相片"
+      "tooltip": "來自Mapillary的街道圖層相片",
+      "detection": "Mapillary检测",
+      "show_detections": "显示检测结果",
+      "view_on_mapillary": "在 Mapillary 上查看"
     },
     "mapillary_signs": {
-      "title": "交通號誌"
+      "title": "交通號誌",
+      "tooltip": "在 Mapillary 照片中检测到交通标志",
+      "traffic_sign": "交通标志"
+    },
+    "mapillary_detections": {
+      "title": "检测到的物体",
+      "tooltip": "在 Mapillary 照片中检测到的物体",
+      "construction": {
+        "barrier": {
+          "temporary": "临时路障"
+        },
+        "flat": {
+          "crosswalk_plain": "人行横道 - 平地",
+          "driveway": "机动车道"
+        }
+      },
+      "marking": {
+        "discrete": {
+          "arrow": {
+            "left": "车道标线 - 箭头（左）",
+            "right": "车道标线 - 箭头（右）",
+            "split-left-or-straight": "车道标线 - 箭头（左转或直行）",
+            "split-right-or-straight": "车道标线 - 箭头（右转或直行）",
+            "straight": "车道标线 - 箭头（直行）"
+          },
+          "crosswalk-zebra": "车道标线 - 人行横道",
+          "give-way-row": "連道標線 - 讓道 (列)",
+          "give-way-single": "車道 - 讓道 (單次)",
+          "other-marking": "车道标线 - 其他",
+          "stop-line": "车道标线 - 停止线",
+          "symbol": {
+            "bicycle": "车道标线 - 标志（自行车）"
+          },
+          "text": "车道标线 - 文字"
+        }
+      },
+      "object": {
+        "banner": "横幅",
+        "bench": "长椅",
+        "bike-rack": "自行车架",
+        "billboard": "广告牌",
+        "catch-basin": "集水井",
+        "cctv-camera": "监控摄像头",
+        "fire-hydrant": "消防栓",
+        "junction-box": "接线盒",
+        "mailbox": "邮箱",
+        "manhole": "人孔",
+        "parking-meter": "泊车计时器",
+        "phone-booth": "电话亭",
+        "sign": {
+          "advertisement": "标识 - 广告",
+          "information": "标识 - 信息",
+          "other": "标识 - 其他",
+          "store": "标识 - 商店",
+          "traffic-sign": {
+            "back": "交通标志 - 背面",
+            "direction-front": "交通标志 - 正面",
+            "front": "交通标志 - 正面"
+          }
+        },
+        "street-light": "路灯",
+        "support": {
+          "pole": "杆",
+          "traffic-sign-frame": "交通标志框架",
+          "utility-pole": "电线杆"
+        },
+        "traffic-cone": "交通锥",
+        "traffic-light": {
+          "cyclists": "交通信号灯 - 骑自行车者",
+          "general-horizontal": "交通信号灯 - 普通型（水平式）",
+          "general-single": "交通信号灯 - 普通型（单个）",
+          "general-upright": "交通信号灯 - 普通型（直立式）",
+          "other": "交通信号灯 - 其他",
+          "pedestrians": "交通信号灯 - 行人"
+        },
+        "trash-can": "垃圾桶",
+        "water-valve": "水阀"
+      }
     },
     "kartaview": {
       "tooltip": "從 KartaView 而來的街景照片"
@@ -1381,14 +1660,21 @@
       "title": "帮助",
       "help": {
         "title": "帮助",
+        "welcome": "歡迎來到{rapidicon} [開放街圖](https://www.openstreetmap.org/)編輯器，能夠在你網頁瀏覽器即時更新開放街圖的資料。",
         "open_data_h": "開放資料",
         "open_data": "在地圖上面的編輯變動會讓所有使用開放街圖的人看到。你的編輯必須基於個人知識，現地踏察，或是收集的空照或是街景影像。從商業來源如 Google 地圖，則[嚴重禁止](https://www.openstreetmap.org/copyright)。",
         "before_start_h": "開始之前",
-        "open_source_h": "開源"
+        "before_start": "在你開始編輯之前，你應當先熟悉開放街圖以及這個編輯器。Rapid 編輯器有教學模式，能夠先讓你知道開放街圖編輯的基礎。請按螢幕上\"{start_the_walkthrough}\"按鈕來開始教學模式－只會花上 15 分鐘時間。",
+        "open_source_h": "開源",
+        "open_source": "Rapid 編輯是共同協作的開源專案，而你目前使用{version}版本。原始碼有放在 [GitHub](https://github.com/facebook/Rapid) 上面。",
+        "open_source_help": "你可以通过 [报告bug] 来帮助Rapid (https://github.com/facebook/Rapid/issues)。"
       },
       "overview": {
         "title": "概要",
         "navigation_h": "导航",
+        "navigation_pan": "你可以按住{mouse_left_icon}滑鼠左鍵來移動滑鼠平移地圖，或是{onefinger_tap_and_drag_icon}拖動觸控螢幕。你也可以用{keyboard_arrows_all}鍵盤的箭頭來移動。",
+        "navigation_zoom": "你透過滾動{mouse_wheel_icon}滑鼠滾輪可以放大，還是用軌跡球，或是用{twofinger_zoom_icon}兩根手指弄觸控板放大。你也可以按地圖邊的{plus}/{minus}按鈕，或是鍵盤 `+`、`-` 鍵縮放。",
+        "navigation_rotate": "你可以按住`{option}`'與{mouse_left_icon}的狀況下旋轉地圖，以及拖拉地圖，或是按住`{shift}`鍵然後使用{keyboard_arrows_left_right}左/右箭頭鍵。",
         "features_h": "地圖地貌",
         "features": "我們用字詞*圖徵*來描述地圖上會出現的東西，像是道路、建築、或是興趣點。任何在現實世界出現的東西，都可以當作圖徵畫到開放街圖上面。地圖圖徵在地圖上以*點*、*線*或是*區域*的方式呈現。",
         "nodes_ways": "公家街圖中，處亦叫*節點*，綫及範圍亦叫*道*。"
@@ -1396,16 +1682,22 @@
       "editing": {
         "title": "修改並記低",
         "select_h": "選取",
+        "select_left_click": "{mouse_left_icon}按左鍵或是{onefinger_tap_icon}點一下圖徵來選取。這會高亮度顯示圖徵會閃耀發光，並能在圖徵檢視器看到圖徵詳細資訊。",
+        "select_right_click": "{mouse_right_icon}按右鍵或是{onefinger_tap_and_hold_icon}長按圖徵來顯示編輯選單，能夠顯示複製、旋轉和刪除等功能。",
         "select_space": "當你在選取或是繪製時，`{space}` 能夠充當左鍵的功能。",
         "multiselect_h": "多重選擇",
         "multiselect": "多重選擇功能讓你能夠一次全部快速編輯。",
+        "multiselect_shift_click": "在有滑鼠與鍵盤時，按住`{shift}`與對著圖徵{mouse_left_icon}按左鍵則能加入選取。在觸控螢幕時，{onefinger_tap_and_hold_icon}點與按住一個圖徵同時{onefinger_tap_icon}則用另外指頭點選額外的圖徵。",
+        "multiselect_lasso": "其他方式選取多個圖徵是按住`{shift}`鍵，接著點以及按住{mouse_left_icon}滑鼠左鍵，拖拉滑鼠來繪製選取範圍。所有範圍的點都會被選取。",
         "undo_redo_h": "復原及重複動作",
         "undo_redo": "你的編輯都會存在本地的瀏覽器裡，直到你選擇上傳到開放街圖伺服器上。你可以點 {undo} **復原**按鈕來復原先前的編輯， {redo} 取消復原按鍵來取消復原。",
         "save_h": "保存",
         "save": "點 {save_icon} **儲存** 完成你的編輯並傳送到開放街圖。你應該記得你必須時常儲存你的成果！ ",
+        "save_validation": "在儲存畫面，你有機會預覽你做了什麼。Rapid 也會進行基本的檢查，確認沒有遺失的資料以及提供有幫助的建議，以及如果有狀況則會跳出警告。",
         "upload_h": "傳上",
         "upload": "在上傳您的變動之前，您必須輸入[變更集留言](https://wiki.openstreetmap.org/wiki/Good_changeset_comments)。接著按**{upload}**來傳送你的變動到開放街圖，然後這些變動會合併到地圖上，每個人都看得到。",
         "backups_h": "自動備份",
+        "backups": "如果您在保存之前关闭了浏览器，您的编辑内容仍然保存在本地。当您以后使用相同的浏览器和设备再次访问时，Rapid 会提供恢复功能。",
         "keyboard_h": "𨧞盤快掣",
         "keyboard": "您可以透過按下 `{shortcuts_key}` 鍵瀏覽鍵盤快捷鍵清單。"
       },
@@ -1429,26 +1721,37 @@
         "intro": "*點*可以用來表示像是商店、餐廳和紀念碑的圖徵。他們佔據特定的地點，描述在那裡的東西。",
         "add_point_h": "新增點",
         "add_point": "要新增點，請按地圖上方工具列的{point_icon}**{point}** 按鈕，或是按快速建 `{add_point_key}`。",
+        "add_point_finish": "接著，將新的點放到地圖上，使用滑鼠則是用箭頭對準點應該在的位置，接著{mouse_left_icon}按左鍵。用觸控螢幕的話，{onefinger_tap_icon}則在位置點一下。",
         "move_point_h": "移動點",
+        "move_point": "要移動點的話，{mouse_left_icon}左鍵按一下然後用滑鼠揓動，或是{onefinger_tap_and_drag_icon}在觸控螢幕拖動。",
         "delete_point_h": "刪除點",
-        "delete_point": "刪除現實世界不存在的圖徵是很 OK 的事情。從開放街圖刪除圖徵，意味著從每個人會用到的地圖移除，所以你必須確定圖徵確實不在了，才真的刪除圖徵。"
+        "delete_point": "刪除現實世界不存在的圖徵是很 OK 的事情。從開放街圖刪除圖徵，意味著從每個人會用到的地圖移除，所以你必須確定圖徵確實不在了，才真的刪除圖徵。",
+        "delete_point_command": "要刪除點的話，{mouse_right_icon}按一下滑鼠右鍵，或是{onefinger_tap_and_hold_icon}長按點來顯示編輯選單，接著使用{delete_icon}**{delete}**操作。"
       },
       "lines": {
         "title": "直线。",
         "intro": "*線*用來代表像是道路、鐵路和河流。線應沿著被代表物體的中心繪製。",
         "add_line_h": "新增線",
         "add_line": "要新增線段，請按地圖上方工具列的{line_icon}**{line}** 按鈕，或是按快速鍵 `{add_line_key}`。",
+        "add_line_draw": "接著，按一下線段的開始位，使用滑鼠時，放置箭頭到線段開始的位置，接著{mouse_left_icon}按滑鼠左鍵放置新點。在觸控螢幕操作時，{onefinger_tap_icon}點位置。",
+        "add_line_continue": "接著透過{mouse_left_icon}按放置節點，或是沿著線段{onefinger_tap_icon}點出形狀。當你繪製時，你可以放大或是拖動地圖來看到詳細資訊。",
         "add_line_finish": "要完成畫線，按、輕按或是按下 `{return}` 最後一個節點。",
         "modify_line_h": "變更線",
         "modify_line_dragnode": "有時候你會看線的形狀並不正確，比方說道路並沒有與背景影像重合。要調整線的形狀，首先選取線，所有線的點都會變成小的圓圈，接著你可以拖動這些點到更適合的位置。",
+        "modify_line_addnode": "你也可以用{mouse_left_icon}點兩下沿著線新增點，或是{onefinger_tap_icon}點兩下線段，或是在點之間拖動中間點的小三角形。",
         "connect_line_h": "連結線",
         "connect_line": "路要適當連結，不只方便地圖顯示，還是提供導航最基本的方式。",
         "connect_line_display": "道路的交叉處會用灰色圓圈表示，而線的尾段如無連到任何東西，則是用較大的白色圓圈代表。",
+        "connect_line_drag": "要連接線到其他圖徵，拖動其中一個線段的點到其他圖徵，直到兩個圖徵結合。小技巧：你可以按住`{option}`鍵來避免連結到其他圖徵。",
         "connect_line_tag": "如果你的交叉處是交通號誌或是穿越道，你可以藉由選取連接的點，然後用圖徵編輯器選取正確的圖徵類似來增加。",
         "disconnect_line_h": "切斷線",
+        "disconnect_line_command": "要斷開道路與其他圖徵的連結，{mouse_right_icon}按右鍵或是{onefinger_tap_and_hold_icon}長按連結的節點，然後選擇編輯選單{disconnect_icon}**{disconnect}**操作。",
         "move_line_h": "移動線",
+        "move_line_command": "要移動整條線，對著線{mouse_right_icon}按右鍵然後選擇編輯選單{move_icon}**{move}**操作。接著移動滑鼠，然後{mouse_left_icon}按左鍵來在新位置放置線。",
+        "move_line_connected": "線連結到其他圖徵會在移動線時同時移動到新位置，Rapid 可能會阻止你移動連結到其他線的線。",
         "delete_line_h": "刪除線段",
-        "delete_line": "如果一條線都不對，舉例來說道路並不存在真實世界，當然你可以刪除。當你要刪除圖徵時請小心：背景影像也許過時，而看起來錯誤的道路也許是新修築的。"
+        "delete_line": "如果一條線都不對，舉例來說道路並不存在真實世界，當然你可以刪除。當你要刪除圖徵時請小心：背景影像也許過時，而看起來錯誤的道路也許是新修築的。",
+        "delete_line_command": "要刪除線段，{mouse_right_icon}按右鍵或是對著線段{onefinger_tap_and_hold_icon}長按來顯示編輯選單，接著使用{delete_icon}**{delete}**操作。"
       },
       "areas": {
         "title": "面。",
@@ -1457,12 +1760,17 @@
         "point_or_area": "許多圖徵能夠用點或是區域表示。你應該儘可能用區域來畫建築和其他東西的外框。將節點放在建築區域裡來表示商家、便利設施和其他在位於建築的圖徵。",
         "add_area_h": "新增區域",
         "add_area_command": "要新增區域，請按地圖上方工具列的{area_icon}**{area}** 按鈕，或是按快速鍵 `{add_area_key}`。",
+        "add_area_draw": "接著，放置在區域的第一個角落，用滑鼠時，放置箭頭在任何角落然後{mouse_left_icon}按左鍵來放置節點。在觸控螢幕上，{onefinger_tap_icon}點一下位置。",
+        "add_area_continue": "繼續用{mouse_left_icon}按鍵放置節點，或是沿著區域邊緣{onefinger_tap_icon}點，當你繪製時，你可以放大或是拖拉來檢視更多細節。",
         "add_area_finish": "要畫完成區域時，按、輕按最後一個節點或是按下 `{return}` 。",
         "square_area_h": "直角角落",
+        "square_area_command": "許多圖徵例如建築有方角角落，要方角化區域的角落，請{mouse_right_icon}按右鍵或是{onefinger_tap_and_hold_icon}長按區域的角落以及從編輯選單選擇{orthogonalize_icon}**{orthogonalize}**操作。",
         "modify_area_h": "變動區域",
         "modify_area_dragnode": "你會常看到形狀不太對的區域，比如說跟背景影像不太符合的建築物。要修正區域的形狀，先選擇區域，所有區域上的點會以小圓圈顯示，你可以拖動這些點到更適當的地點。",
+        "modify_area_addnode": "你也可以按沿著區域{mouse_left_icon}按兩下或是對著邊緣{onefinger_tap_icon}點兩下新增節點，或是拖動節點之間中間點的小三角形。",
         "delete_area_h": "刪除區域",
-        "delete_area": "如果區域畫得完全不對，像是真實世界並不存在那棟建築，那麼你可以放心刪除。但當刪除時請小心 - 背景影像也許已經過時了，那棟怪怪的建築也許只是新蓋好的建築。"
+        "delete_area": "如果區域畫得完全不對，像是真實世界並不存在那棟建築，那麼你可以放心刪除。但當刪除時請小心 - 背景影像也許已經過時了，那棟怪怪的建築也許只是新蓋好的建築。",
+        "delete_area_command": "要刪除區域，{mouse_right_icon}點右鍵或是{onefinger_tap_and_hold_icon}長按區域來顯示編輯選單，接著使用{delete_icon}**{delete}**操作。"
       },
       "relations": {
         "title": "關聯",
@@ -1472,12 +1780,16 @@
         "edit_relation_add": "要將圖徽新增到關係中，選取圖徽，然後在圖徽編輯器的 \"{relations}\" 部份中按 {plus} 新增按鈕。您可以從附近的關係清單中選擇，或是選擇 \"{new_relation}\" 選項。",
         "edit_relation_delete": "你也可以按 {delete_icon} **{delete}** 按鈕將關聯中的選擇圖徵移除。如果你移除關聯中所有的成員，關聯也將被自動刪除。",
         "maintain_relation_h": "維護關聯",
+        "maintain_relation": "對大部分的狀況來說，Rapid 會在你編輯時自動維護關聯。你應該在取代可能是關聯成員的圖徵特別小心。例如說，你刪除道路的一部分以及新繪製道路新的部分來取代，你應該將新的部分如同原來的，加到相同的關聯 (路線、轉彎限制等)。",
         "relation_types_h": "關聯種類",
         "multipolygon_h": "多重多邊形",
         "multipolygon": "*多重多邊形*關聯是擁有一個或多個*外框*以及一個或多個內部圖徵的群組。外框圖徵定義多重多邊形的外圍，而內部圖徵則定義次區域或是多重多邊形內部的洞。",
+        "multipolygon_create": "要新增多重多邊形，例如一棟中間有洞的建築，先畫整個區域的外緣，再來是畫中間內緣。然後`{shift}`+{mouse_left_icon}按左鍵選擇兩個圖徵，{mouse_right_icon}按右鍵來顯示編輯選單，然後選擇{merge_icon}**{merge}**操作。",
+        "multipolygon_merge": "合併多個線段與區域會新增這些選擇的區域為成員的多重多邊形。Rapid 會依據圖徵是否在側，自動選擇內圈與外圈角色。",
         "turn_restriction_h": "轉彎限制",
         "turn_restriction": "*轉彎限制*關聯是有數個交叉道路的群組。轉彎限制由*從*道，*經由*節點或道路，以及*到*道路。",
         "turn_restriction_field": "要編輯轉彎限制，選擇兩個以上道路交叉的節點。圖徵編輯器則會顯示特別的 \"{turn_restrictions}\" 欄位，欄位裡有交叉點相關的模式。",
+        "turn_restriction_editing": "在\"{turn_restrictions}\"欄位，選擇\"從\"道路，就能檢視是否允許轉彎或是禁止\"到\"道路。你能夠按轉彎圖示來切換允許或禁止。Rapid 會自動新增關聯，然後依據你的選擇來設定從、經過、到角色。",
         "route_h": "路線",
         "route": "*路線*關聯是一個由一個或多個線段圖徵組成的道路網路群組，像是公車路線、火車路線或是公路路線。",
         "route_add": "要將圖徽新增到路線關係中，選取圖徽並往下捲到圖徽編輯器的 \"{relations}\" 部份，然後點擊 {plus} 新增按鈕以新增此圖徽到附近既有的關係或新關係中。",
@@ -1487,6 +1799,7 @@
       },
       "operations": {
         "title": "操作",
+        "intro": "\"操作\"是你能夠編輯圖時的特殊行動。{mouse_right_icon}點滑鼠右鍵或是{onefinger_tap_and_hold_icon}長按任何圖徵來檢視可用的操作。",
         "intro_2": "每個操作都有其鍵盤快捷鍵。大多數操作可以一次套用到多個圖徽。",
         "straighten": "{straighten_icon} **{straighten}** 會移除線的轉折點。它也可以用來將點的群組對齊成整齊的線段。",
         "orthogonalize": "{orthogonalize_icon} **{orthogonalize}** 將區域的角落或線段變為 90°。您可以將單獨的角落直角化或整個圖徽都直角化。",
@@ -1506,8 +1819,12 @@
       },
       "notes": {
         "title": "註",
+        "intro": "*註記*是用於警告其他使用者有圖徽需要修復或注意。註記會在地圖上特定位置標記。註記圖層是預設關閉的。",
+        "show_notes": "要開啟註解圖層，請開啟{data_icon}**{map_data}**面板，然後點{osm_notes}的勾選方框，或是點`{shift}`+`{toggle_notes_key}`。",
         "add_note_h": "加註",
         "add_note": "要新增註記，點地圖上方工具列的 {note_icon} **{note}** 按鈕，或是按快速鍵 `{add_note_key}`。",
+        "place_note": "接著，將新的註記放到地圖上，使用滑鼠則是用箭頭對準註記應該在的位置，接著{mouse_left_icon}按左鍵。用觸控螢幕的話，{onefinger_tap_icon}則在位置點一下。",
+        "move_note": "要移動註記的話，{mouse_left_icon}左鍵按一下然後用滑鼠拖動，或是{onefinger_tap_and_drag_icon}在觸控螢幕拖動。只有註記會被移動。",
         "update_note_h": "關閉、重新開啟與留言",
         "update_note": "既有的註記可以透過將其關閉、重新開啟或是對它新增留言來更新。關閉註記是指出問題已經解決。重新開啟註記則是指出原本的問題沒有被解決。",
         "save_note_h": "記低註",
@@ -1520,10 +1837,12 @@
         "choosing": "要看有那些影像來源可以用在編輯，點選地圖旁的 {layers_icon} **{background_settings}**面板。",
         "sources": "[Bing 地圖](https://www.bing.com/maps/)衛星圖層或最佳的當地影像會被設定為預設的背景。視你在編輯的地方，還有其他的影像來源。有些影像比較新或有更高的解析度，所以請常常檢查有哪些圖層可用，以及選擇那個圖層是最好用的繪製地圖參考來源。",
         "offsets_h": "調整空拍圖層偏移",
-        "offset": "有時候影像會與既有地圖資料有些偏移狀況，如果你看到道路或是建築相比背景影像有偏移狀況，也許影像並沒有對準，請別移動全部的資料來吻合背景影像。你可以在背景影像設定，藉由 \"{imagery_offset}\" 調整背景來將影像吻合既有的資料。"
+        "offset": "有時候影像會與既有地圖資料有些偏移狀況，如果你看到道路或是建築相比背景影像有偏移狀況，也許影像並沒有對準，請別移動全部的資料來吻合背景影像。你可以在背景影像設定，藉由 \"{imagery_offset}\" 調整背景來將影像吻合既有的資料。",
+        "offset_change": "點小三角形按鈕來微幅調整影像偏移，或是按住{mouse_left_icon}滑鼠左鍵並在灰色方框範圍移動來對準。"
       },
       "streetlevel": {
         "title": "街景照片",
+        "intro": "街景照片能夠幫助繪製交通號誌、店家、或其他無法從衛星或空照圖看到的事物。Rapid 編輯器支援[Bing Streetside](https://www.microsoft.com/en-us/maps/streetside)、[Mapillary](https://www.mapillary.com) 與  [KartaView](https://www.kartaview.org) 的街景照片。",
         "using_h": "使用街景照片",
         "using": "要使用街景影像來畫地圖，開啟地圖旁 {data_icon} **{map_data}** 面板，來啟用或關閉可用的照片覆蓋層。",
         "photos": "當啟用時，照片覆蓋層會顯示有一連串有圖片沿著一條線，在更高的縮放程度，圓圈標示代表圖片的位置，而在更高的縮放下面，方向標示會顯示照片拍攝時的鏡頭方向。",
@@ -1542,7 +1861,9 @@
         "title": "品質保証",
         "intro": "*品質保証* (Q/A, Quality Assurance) 工具能找出開放街圖上，不適當地標籤，為連結的道路或是其他問題，圖客能藉此修復。要檢視現有的 Q/A 問題，開啟 {data_icon} **{map_data}** 面板開啓特定 Q/A 層。",
         "tools_h": "架生",
-        "issues_h": "處理問題"
+        "tools": "目前支持以下工具：[KeepRight](https://www.keepright.at/) 和 [Osmose](https://osmose.openstreetmap.fr/)。",
+        "issues_h": "處理問題",
+        "issues": "處理 Q/A 問題類似處理註記。選取標記以在側邊欄的圖徵檢測器檢視問題。每個工具都有其功能，但是一般來說你可以回應和/或關閉問題。"
       },
       "field": {
         "restrictions": {
@@ -1644,6 +1965,31 @@
           "reference": "交叉的道路應該共享交叉連接點。 "
         }
       },
+      "ambiguous_crossing": {
+        "title": "不明的穿越標籤",
+        "tip": "尋找穿越標籤不一致或是過時的情境",
+        "not_a_crossing": "(並非穿越道)",
+        "no_changes": "（无变化）",
+        "message": {
+          "candidate": "该点看起来可能是一个十字路口",
+          "conflict": "穿越道與節點標籤有衝突",
+          "update": "可更新十字路口标记"
+        },
+        "reference": {
+          "line1": "`穿越`標籤應該在線段與點都一致。",
+          "line2": "要讓點與線段標籤吻合，請依據指示來更新。"
+        },
+        "annotation": {
+          "candidate": "讓節變成穿越",
+          "changed": "改變穿越標籤"
+        },
+        "fix": {
+          "candidate": "讓節變成穿越",
+          "choose_type": "標籤這穿越路口變成`{type}`",
+          "remove_all": "移除所有穿越標籤",
+          "update_type": "更新'{type}'穿越標籤"
+        }
+      },
       "area_as_point": {
         "message": "{feature} 應該是區域而不是點"
       },
@@ -1657,22 +2003,51 @@
           "reference": "單獨的點不應共享同一個位置。"
         }
       },
+      "duplicate_way_segments": {
+        "title": "重疊的路徑片段",
+        "tip": "尋找重疊的路徑片段 (有相同節點端點)",
+        "message": "有兩個或更多路徑片段共享相同的節點",
+        "reference": "多餘的路徑片段應該合併或是移動。"
+      },
       "curb_nodes": {
+        "title": "路緣節點",
+        "message": "{feature}可能有遺失的路緣節點。",
+        "footway-highway": "人行道穿越道路應該有分開繪製的路緣節點。",
         "reference": {
           "text": "交叉的路徑應該有獨立路緣節點 (適合的情境)。套疊圖片來判斷路緣類型。",
           "link_alt_text": "路緣標籤指南",
           "link_text": "更多資訊"
         },
         "fix": {
-          "add_curb_nodes": "新增{type}路緣節點"
+          "add_curb_nodes": "新增{type}路緣節點",
+          "annotation": "新增路緣節點"
         },
-        "annotation": {
-          "added_curb_nodes": "已新增{type}路緣節點"
+        "type": {
+          "yes": "未指定",
+          "flush": "齊平路緣",
+          "lowered": "降低路緣",
+          "raised": "升高路緣"
         }
       },
       "crossing_ways": {
+        "title": "穿越路徑",
         "message": "{feature} 跨過 {feature2}",
         "tip": "尋找沒有正確跨越另一圖徵的圖徵",
+        "aeroway-aeroway": {
+          "reference": "穿越的滑行道應該連結。"
+        },
+        "aeroway-building": {
+          "reference": "滑行道穿越建築應該標示橋樑或其他圖層高度。"
+        },
+        "aeroway-highway": {
+          "reference": "滑行道穿越鐵路應該連結。"
+        },
+        "aeroway-railway": {
+          "reference": "滑行道穿越道路應該連結。"
+        },
+        "aeroway-waterway": {
+          "reference": "滑行道穿越水路應該標示隧道。"
+        },
         "building-building": {
           "reference": "除非是不同層，不然建築不該交叉 "
         },
@@ -1726,12 +2101,19 @@
         "title": "未連線的路徑",
         "tip": "尋找無法導航的道路、路徑和水運路線",
         "routable": {
-          "message": "只有 {count} 可導航的圖徵連結到彼此"
+          "message": "只有 {count} 可導航的圖徵連結到彼此",
+          "reference": "所有道路、路徑與渡輪路線應該連結到單一的導航網路。"
         }
       },
       "fixme_tag": {
         "message": "{feature} 有 \"Fix Me\" 要求",
         "reference": "\"fixme\" 標籤表示圖客標示圖徵時要求協助。"
+      },
+      "short_road": {
+        "title": "短途道路",
+        "message": "{highway}比 20 公尺短。",
+        "tip": "您可能想删除或延长道路。",
+        "reference": "短途道路可能需要延长或删除。"
       },
       "generic_name": {
         "message": "{feature} 有可疑名稱 \"{name}\"",
@@ -1753,6 +2135,10 @@
           "baidu": "百度的產品性質是專有的，所以不應被用作參考資料。 ",
           "google": "Google 的產品性質是專有的，所以不應被用作參考資料。 "
         }
+      },
+      "incorrect_name": {
+        "message": "{feature}有錯誤的名稱\"{name}\"",
+        "message_language": "{feature}在{language}有錯誤的名稱\"{name}\""
       },
       "invalid_format": {
         "title": "無效格式",
@@ -1844,6 +2230,19 @@
         "message": "{feature} 沒有分類",
         "reference": "道路沒有特別的類型，可能不會顯示在地圖上，或是能夠導航。"
       },
+      "dupe_node_on_road": {
+        "title": "道路上非常接近的节点",
+        "message": "道路上非常接近的节点",
+        "tip": "節點之間彼此距離比 2 公尺還短。",
+        "tip_merge": "節點之間彼此距離比 2 公尺還短，你也許想合併。",
+        "tip_move_away": "節點之間彼此距離比 2 公尺還短但無法合併，你也許想移動開來。"
+      },
+      "y_shaped_connection": {
+        "title": "連接處可能是多餘的節點",
+        "message": "連接處可能是多餘的節點",
+        "tip": "您可能需要删除或移动节点以简化连接。",
+        "reference": "连接周围的节点可能需要移动或删除。"
+      },
       "impossible_oneway": {
         "title": "不可能的單行道",
         "tip": "尋找路線有單行道圖徵的問題",
@@ -1882,6 +2281,7 @@
         }
       },
       "vertex_as_point": {
+        "message": "基於其標籤，{feature}應當是線段還是區域的一部分",
         "reference": "某些圖徽不應該是單獨的點。"
       },
       "fix": {
@@ -1895,6 +2295,16 @@
         },
         "address_the_concern": {
           "title": "解決問題"
+        },
+        "set_both_as_marked": {
+          "title": "将线和点设置为已标记",
+          "title_use_marking": "使用`{marking}`標線",
+          "title_use_crossing": "使用`{crossing}`",
+          "annotation": "設定路徑與節點的穿越標記。"
+        },
+        "set_both_as_unmarked": {
+          "title": "将线和点设置为未标记",
+          "annotation": "設定路徑與節點並沒有穿越標記。"
         },
         "connect_almost_junction": {
           "annotation": "接連相當靠近的圖徽"
@@ -1940,11 +2350,20 @@
         "merge_close_vertices": {
           "annotation": "合併非常親近節點到路徑。"
         },
+        "merge_duplicate_way_segments": {
+          "annotation": "以某种方式合并重复段。"
+        },
         "merge_points": {
           "title": "合併這些節點"
         },
         "move_points_apart": {
           "title": "移動分離這些節點"
+        },
+        "move_way_segments_apart": {
+          "title": "将这些路段分开"
+        },
+        "remove_way_segments": {
+          "title": "删除其中一个路段"
         },
         "move_tags": {
           "title": "移動這標籤",
@@ -2026,6 +2445,12 @@
         },
         "use_different_levels": {
           "title": "使用不同樓層"
+        },
+        "delete_node_around_conn": {
+          "title": "删除此节点以简化连接"
+        },
+        "move_node_around_conn": {
+          "title": "移动此节点可调整连接形状"
         }
       }
     },
@@ -2145,6 +2570,7 @@
           "three-rivers-post-office": "北門郵局",
           "three-rivers-public-library": "王貫英紀念圖書館",
           "three-rivers": "臺北市",
+          "tulip-lane": "郁金香巷",
           "unique-jewelry": "傳奇珠寶",
           "walnut-street": "克強路",
           "washington-street": "山西路",
@@ -2167,9 +2593,34 @@
       "navigation": {
         "title": "导航",
         "map_info": "主地圖區域會在背景圖之上顯示開放街圖資料。",
+        "map_info2": "该地图的导航方式与您以前使用过的其他计算机地图类似。",
+        "pan": "平移地图有多种方法：",
+        "pan_mouse": "- 在地圖空白處按住左{mouse_left_icon}或右{mouse_right_icon}滑鼠鍵，接著拖動。",
+        "pan_touch": "- 在地圖空白處觸控{onefinger_tap_and_drag_icon}，接著拖動。",
+        "pan_touchpad": "- 在觸控板用兩根手指滑動{twofinger_tap_and_drag_icon}。",
+        "pan_keyboard": "- 使用鍵盤上的方向鍵{keyboard_arrows_all}。",
+        "pan_the_map": "**试着平移地图！**",
+        "zoom": "缩放地图有多种方法：",
+        "zoom_mouse_scroll": "- 滾動{mouse_wheel_icon}滑鼠滾輪。",
+        "zoom_mouse_doubleclick": "- 在地圖空白處{mouse_left_icon}點兩下左鍵來放大，`{shift}`+{mouse_left_icon}點兩下左鍵來縮小。",
+        "zoom_touch_doubletap": "- {onefinger_tap_icon}點兩下來放大，`{shift}`+{onefinger_tap_icon}點兩下來縮小。",
+        "zoom_touch_pinch": "- 在地圖上{twofinger_zoom_icon}兩隻手指往外滑與內滑。",
+        "zoom_touchpad": "-在觸控板{twofinger_zoom_icon}兩隻手指往外滑與內滑。",
+        "zoom_keyboard": "- 按下键盘上的 `+` 或 `-` 键。",
+        "zoom_buttons": "-點地圖一側的{plus}或是{minus}按鈕。",
+        "zoom_the_map": "**试试缩放地图！**",
+        "user_settings": "如果触摸板或鼠标滚轮不能按预期缩放，可以在 “用户首选项 ”窗格中调整该行为。",
+        "rotate": "旋转地图有多种方法：",
+        "rotate_mouse": "- 當按住`{option}`或是`{control}`時，按住滑鼠左鍵{mouse_left_icon}或是右鍵{mouse_right_icon}，接著拖動。",
+        "rotate_touch": "-用兩根手指{twofinger_rotate_icon}旋轉地圖。",
+        "rotate_keyboard": "-當按住`{shift}`時，使用{keyboard_arrows_left_right}左/右方向鍵。",
+        "rotate_the_map": "**试试旋转地图！**",
+        "reset_bearing": "這個羅盤按鈕顯示你目前地圖旋轉角度，或是朝向的「方向」。**點羅盤按鈕來重設為歸北。**",
         "features": "*地貌*指圖上見到之物。現實世界何物，均可化成公家街圖中之地貌。",
         "points_lines_areas": "圖中地貌，都以*處、綫或範圍*代表。",
         "nodes_ways": "公家街圖中，處亦叫*節點*，綫及範圍亦叫*道*。",
+        "click_townhall": "所有地圖上圖徵都能透過{mouse_left_icon}點滑鼠左鍵來選擇。**點一下來選擇該點。**",
+        "tap_townhall": "所有地圖上的圖徵都能透過{onefinger_tap_icon}點一下來選擇。**點一下來選擇該點。**",
         "selected_townhall": "做得好！處就揀咗喇。揀咗地貌佢會發光，時弱時強。",
         "editor_townhall": "地貌㨂咗，*改地貌*亦會圖邊出現。",
         "preset_townhall": "頂上有地貌分類。此處為 {preset}。",
@@ -2186,6 +2637,8 @@
         "title": "点。",
         "points_info": "*點*可以用來表示像是商店、餐廳和紀念碑的圖徵。",
         "add_point": "他們佔據特定的地點，描述在那裡的東西。**點擊 {point_icon} {point} 點按鈕以新增一點**",
+        "place_point": "要放置新點到地圖上，請對準你滑鼠指標到點的位置，接著{mouse_left_icon}按左鍵或是按`{space}`。**移動滑鼠指標到這棟建築，接著按左鍵或是按`{space}`。**",
+        "place_point_touch": "要放置新點到地圖上，{onefinger_tap_icon}點一下位置，然後**點建築的中心。**",
         "search_cafe": "有很多不同圖徵可以用節點表示。你剛加的節點是一家咖啡館，**搜尋 '{preset}'",
         "choose_cafe": "**從清單選擇  {preset}。**",
         "feature_editor": "現在這個節點標示為咖啡店。使用圖徵編輯器，我們可以為咖啡店增加更多資訊。",
@@ -2195,6 +2648,8 @@
         "reselect": "有時候節點早就存在了，但資料填錯或是不完整，我們可以編輯既有的節點。**選擇剛剛新增的咖啡店。**",
         "update": "我們來填入更多咖啡店的細節資訊吧，你可以改名成，加上料理種類，或是加上地址。**改變咖啡店詳情。**",
         "update_close": "**當你更新咖啡店完成後，按 {button} 鈕或是按 `{esc}` 鍵關閉圖徵編輯器。**",
+        "rightclick": "你可以對著任何圖徵{mouse_right_icon}點滑鼠右鍵，來開啟*編輯選單*，顯示一系列能夠進行的編輯操作。{br}按右鍵與按住 control 鍵按或是兩隻手指按是一樣結果。**按右鍵來選擇新增點以及顯示編輯選單。**",
+        "edit_menu_touch": "你可以對著任任圖徵{onefinger_tap_and_hold_icon}長按來檢視*編輯選單*，能夠顯示一系列能夠進行的編輯操作。**按住你新增的點來顯示編輯選單。**",
         "delete": "如果現實中圖徵不存在，你當然可以刪除。{br}刪除開放街圖上的圖徵，會讓每位使用地圖的人受影響，所以請確定該圖徵的確不存在了才刪除。**按一下 {delete_icon} {delete}  按鈕來刪除節點。**",
         "undo": "在儲存你編輯到開放街圖前，你總是可以復原任何做出的改變。**按 {undo_icon} {undo} 按鈕來復原刪除，恢復原先的節點。**",
         "play": "現在你知道怎麼創建和編輯節點了，嘗試練習新增更多節點吧！**當你準備好進入下一章時，請點 '{next}'。**"
@@ -2204,7 +2659,10 @@
         "add_playground": "*區域*可以用來顯示圖徵邊界，常用在表示湖泊、建築和住宅區。 {br}。另外區域也可以用在畫更詳盡有更多圖徵的地圖上面，取代先前只用節點表示的圖徵。**點 {area_icon} {area} 按鈕來新增區域。**",
         "start_playground": "讓我們用畫區域的方式來新增遊樂場吧。區域是由增加圖徵邊界的*節點*來繪製。",
         "starting_node_click": "**點或是按 `{space}` 在遊樂場邊角標上初始節點。**",
+        "starting_node_tap": "**{onefinger_tap_icon}點在某處開始畫節點在遊樂場其中的角落。**",
+        "continue_playground": "繼續沿著遊樂場的邊緣放置更多節點，而連到既有的步道是可以的。{br}技巧：你可以按住`{option}`或是`{control}`鍵來防止節點連到其他圖徵。**繼續繪製遊樂場的區域。**",
         "finish_area_click": "要完成繪製區域，按 `{return}` 或再次點第一個點或最後一個點。",
+        "finish_area_tap": "{onefinger_tap_icon}再按一次第一個或最後一個點來完成區域的繪製，或是按鍵盤的`{return}`。",
         "finish_playground": "**完成繪製遊樂場的區域。**",
         "search_playground": "**搜尋 '{preset}'。**",
         "choose_playground": "**從清單選擇  {preset}。**",
@@ -2220,10 +2678,12 @@
         "missing_road": "這裡缺少一條路，我們來新增吧！",
         "line_draw_info": "在開放街圖上，線要對準道路中線開始繪製。你可以在繪圖有需要時，拖拉和縮放地圖。",
         "start_line": "**點缺失道路的最頂端開始畫新的線。**",
+        "start_line_tap": "**在最上面遺漏道路的一端點{onefinger_tap_icon}來開始繪製新路徑。**",
         "intersect": "點或按空白鍵為線新增更多節點。 {br}道路與路徑和渡輪路線，必須彼此間適當的連接，以便導航軟體能夠運作。**點 {name} 連接兩條線的交叉處。**",
         "retry_intersect": "{name}道路必須交叉，讓我們試試接起來吧！",
         "continue_line": "繼續繪製新路的線段。記得如果需要可以拖拉和縮放地圖。",
         "finish_line_click": "當你完成時，再點最後一個節點或是按  `{return}`。",
+        "finish_line_tap": "當你完成時，再次{onefinger_tap_icon}點最後節點，或是按鍵盤的`{return}`。",
         "finish_road": "**完成繪製道路。**",
         "choose_category_road": "**從清單選擇 {category}**",
         "choose_preset_residential": "有許多不同型態的道路，但這條路屬於住宅區道路。**請選擇 {preset} 類型。**",
@@ -2232,6 +2692,9 @@
         "did_name_road": "看起來很好！接下來我們要學習怎麼更新線段的形狀。",
         "update_line": "有時候你需要調整既有的線段形狀。這邊有條道路看起來不太對勁。",
         "add_node": "我們可以在這條線上新增一些節點，改善線的形狀。有一個新增的節點的方法是在想新增節點的地方，對準線上點兩下。**在線上點兩下來新增節點。**",
+        "add_node_touch": "我們可以在這條線上新增一些節點，改善線的形狀。有一個新增的節點的方法是在想新增節點的地方，對準線上點兩下。**在線上點兩下來新增節點。**",
+        "start_drag_endpoint": "當你選擇線時，你可以藉由點以及拖動時按住{mouse_left_icon}滑鼠左鍵，來調整線的點。",
+        "start_drag_endpoint_touch": "當你選擇線時，你可以藉由{onefinger_tap_and_drag_icon}點與拖動來調整線的點。",
         "drag_to_intersection": "**拖拉最末端節點到道路應該交叉處。",
         "spot_looks_good": "這個位置看來不錯。",
         "finish_drag_endpoint": "**放開滑鼠左鍵來結束拖拉。**",
@@ -2240,42 +2703,67 @@
         "continue_drag_midpoint": "現在線看起來好多了！繼續調整線直到彎曲程度符合道路形狀。**當你覺得線段看起來不錯時，點 {ok}。**",
         "delete_lines": "如果道路沒有實際存在，你當然可以刪除線段。 {br}這裡的例子是城市當局規畫了 {street}，但並沒有真的付諸行動建造道路。我們可以刪除既有的線段來增進這一帶的圖資品質。",
         "split_street": "最後一條真實存在的道路是 {street1}，所以我們*分割* {street2} 交叉口，移除上面的東西。",
+        "rightclick_intersection": "**對著交叉點{mouse_right_icon}按右鍵。**",
+        "edit_menu_intersection_touch": "**對著交叉點長按{onefinger_tap_and_hold_icon}. **",
         "split_intersection": "**點 {split_icon} {split} 按鈕來分割 {street}。**",
         "retry_split": "你沒有按 {split_icon} {split} 按鈕。再試一下。",
         "did_split_multi": "太棒了！ {street1} 已經分割為兩段了。可以移除上半部。**選擇 {street2} 的上半部**。",
         "did_split_single": "**選擇 {street2} 的上半部**。",
         "multi_select": "已經選取 {selected}，接著也來選擇 {other1}。",
         "add_to_selection_click": "你可以按住 `{shift}` 時同時選擇多個物件。**Shift 點選  {other2}。**",
+        "add_to_selection_touch": "**{onefinger_tap_and_hold_icon}點與按住{selected}，然後{onefinger_tap_icon}點{other2}以及用其他手指來選擇兩者。**",
         "multi_select_success": "太棒了！要刪除的兩條線都被選取了。",
+        "multi_rightclick": "**{mouse_right_icon}右鍵點其中的線來顯示編輯選單。**",
+        "multi_edit_menu_touch": "**{onefinger_tap_and_hold_icon}長按其中一條線來顯示編輯選單。**",
         "multi_delete": "**點 {delete_icon} {delete} 按鈕來移除多餘的線。**",
         "retry_delete": "你沒有按 {delete_icon} {delete} 按鈕。再試一下。",
         "play": "太好了！你可以利用這一章學到的技術來練習增加更多線。**當你準備好進入下一章，請按 ' {next}'。**"
       },
       "buildings": {
         "title": "屋宇",
+        "add_building": "你可以藉由描繪還沒有存在的建築來幫忙改進開放街圖。**按{area_icon}{area}按鈕來新增區域。**",
         "start_building": "讓我們描繪這棟建築的外框，新增一棟建築。 {br}描繪建築時要依據建築地基，越精確越好。",
         "building_corner_click": "**點或是按 `{space}` 在建築角邊新增節點。**",
+        "building_corner_tap": "**{onefinger_tap_icon}點其中一個角落來開始放置建築的開始點。**",
         "continue_building": "繼續新增更多建築外框的節點。記住你想要增加更多細節時可以放大地圖。",
         "finish_building": "**完成繪製建築。**",
         "retry_building": "看起你好像加建築邊角的節點時遇到困難了。再試一次！",
         "choose_category_building": "**從清單選擇 {category}。**",
         "choose_preset_house": "有不同種類的建築，但這棟應該是洋房。 {br}如果你不確定建築類型，你可以選擇一般建築類型就婕。**選擇 {preset} 類型。**",
+        "rightclick_building": "**{mouse_right_icon}按右鍵來選擇你新增的建築，顯示其編輯選單。**",
+        "edit_menu_building_touch": "**{onefinger_tap_and_hold_icon}長按建築來顯示你新增的建築，顯示其編輯選單。**",
         "square_building": "你剛創建的建築如果變得更方正會更好看。**點 {orthogonalize_icon} {orthogonalize} 按鈕來方角化建築形狀。**",
         "retry_square": "你沒有按 {orthogonalize_icon} {orthogonalize} 按鈕。再試一下。",
         "done_square": "看到建築的角落移到位置了嗎？讓我們來學習另一個實用技巧。",
         "add_tank": "接下來我們要描繪油槽。**點 {area_icon} {area} 按鈕新增區域。**",
         "start_tank": "不用擔心你畫不出來完美的圓形。先沿著油槽邊畫油槽範圍。",
         "tank_edge_click": "**點或按 `{space}` 在油槽邊緣標上起始節點。**",
+        "tank_edge_tap": "** {onefinger_tap_icon}點油槽邊緣來開始放置點。**",
         "continue_tank": "沿著邊緣新增更多節點。圓圈會依你描繪的節點出現形狀。",
         "finish_tank": "**完成描繪油槽。**",
         "search_tank": "**搜尋 '{preset}'。**",
         "choose_tank": "**從清單選擇  {preset}。**",
+        "rightclick_tank": "**{mouse_right_icon}按右鍵來選擇你新增的油槽，以及顯示編輯選單。**",
+        "edit_menu_tank_touch": "**{onefinger_tap_and_hold_icon}長按你新增的油槽來顯示編輯選單。**",
         "circle_tank": "**點 {circularize_icon} {circularize} 按鈕來讓油槽更圓。**",
         "retry_circle": "你沒有按 {circularize_icon} {circularize} 按鈕。再試一下。",
         "play": "太好了！再試著描幾棟建築，試著用編輯選單的其他操作。**當你準備好進入下一章時，點 ' {next}'。**"
       },
       "rapid": {
-        "add_road": "點一下'使用這個圖徵'按鈕來在工作地圖上新增道路。"
+        "title": "Rapid 圖徵",
+        "start": "{rapid}圖徵建議是為了新增可能在開放街圖遺漏的圖徵。這些圖徵有在開放資料集當中，或是從機器學習訓練的演算法，從影像當中偵測到。這部分的教學模式會教你怎麼使用圖徵建議。",
+        "ai_roads": "Rapid 圖徵會以洋紅色的的套疊呈現，請按`OK`來啟用 Rapid 圖徵圖層。(這些圖徵圖層也可以在上面的{rapid}按鈕來啟用)。",
+        "add_road_h": "新增 Rapid 圖徵",
+        "select_road": "一條 Rapid 建議的道路出現在地圖上。**選擇道路然後按左鍵。**",
+        "add_road": "點一下'使用這個圖徵'按鈕來在工作地圖上新增道路。",
+        "add_road_not_saved_yet": "该道路已作为变更添加到地图中。与其他地图变更一样，在保存之前不会显示给其他人。",
+        "open_issues": "现在，让我们打开问题面板。",
+        "new_lints": "添加道路后，问题面板中出现了一个新问题。Rapid 引入了几项新的验证检查，以检测将这些建议地物合并到 OpenStreetMap 中可能出现的问题。",
+        "undo_road_add": "我們能夠藉由連結道路來修正問題，但是讓我們先復原到原先狀態。**按{button}按鈕來恢復新增道路，然後將地圖恢復到原先狀態。**",
+        "undo_road_add_aftermath": "道路已从本地变化中移除，并恢复到之前的洋红色图层！",
+        "select_road_again": "你也可以忽略不想新增到開放街圖的圖徵。**按左鍵再次選擇 Rapid 道路。**",
+        "ignore_road": "这一次，按下 “忽略此功能 ”按钮，即可从工作地图上隐藏错误的道路。",
+        "done": "你已經完成了！最後的提醒 - Rapid 建議並不會出現在所有地方。要檢視可用圖徵的最新資訊，請點<a href=\"https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries\" target=\"_blank\">可用的國家清單</a>。**點'{next}'來繼續。**"
       },
       "startediting": {
         "title": "开始编辑。",

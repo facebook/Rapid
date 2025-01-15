@@ -564,12 +564,6 @@
               "description": "Nėra dviračių juostos",
               "title": "Nėra"
             },
-            "opposite": {
-              "description": "Abiejų krypčių dviračių juosta vienpusėje gatvėje"
-            },
-            "opposite_lane": {
-              "description": "Dviračių juosta, kuria eismas vyksta priešinga kryptimi."
-            },
             "share_busway": {
               "description": "Dviračių juosta yra kartu su autobusų juosta"
             },

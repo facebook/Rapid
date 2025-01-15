@@ -1146,12 +1146,12 @@
               "title": "Keiner"
             },
             "opposite": {
-              "description": "Ein Zweirichtungs-Fahrradstreifen in einer Einbahnstraße",
-              "title": "Fahrradstreifen gegen die Einbahnrichtung"
+              "description": "Bitte aktualisiere mit oneway=yes, oneway:bicycle=no und cycleway:both=no usw.",
+              "title": "(Veraltet) Fahrradweg im Gegenverkehr"
             },
             "opposite_lane": {
-              "description": "Fahrradstreifen gegen die Verkehrsrichtung",
-              "title": "Fahrradstreifen gegen die Verkehrsrichtung"
+              "description": "Bitte aktualisiere mit oneway, oneway:bicycle und cycleway:left/right=lane usw.",
+              "title": "(Veraltet) Fahrradweg in Gegenrichtung"
             },
             "separate": {
               "description": "Gibt an, dass der Radweg als separate Geometrie kartiert wurde",
@@ -6626,6 +6626,10 @@
           "name": "Haupteingang",
           "terms": "Eingangstür, Tür, Eingang, Hauptzugang, Zugang"
         },
+        "entrance/shop": {
+          "name": "Ladeneingang",
+          "terms": "Eingangsbereich,Eingangstür,Zugang"
+        },
         "entrance/staircase": {
           "name": "Treppenhauseingang",
           "terms": "Treppe, Treppenhaus, Stiege, Stiegenhaus, Treppenaufgang, Tür, Eingang, Zugang, Aufgang"
@@ -6859,6 +6863,14 @@
         "highway/cycleway/moped_link-NL": {
           "name": "Mopedstraße",
           "terms": "Mopedstraße"
+        },
+        "highway/cycleway/traffic_island": {
+          "name": "Radfahrerschutzinsel",
+          "terms": "Radfahrerschutzinsel,Schutzinsel für Radfahrer,Radverkehrsinsel,Fahrradwartemöglichkeit,Radfahrerüberquerungshilfe,Radweginsel,Verkehrsinsel"
+        },
+        "highway/cycleway/traffic_island_shared": {
+          "name": "Rad- und Fußgängerschutzinsel",
+          "terms": "Multifunktionsschutzinsel,Gemeinsame Schutzinsel,Überquerungshilfe für Radfahrer und Fußgänger,Verkehrsinsel für Radfahrer und Fußgänger,Fahrrad- und Fußgängerinsel,Rad- und Fußverkehrsinsel,Schutzinsel für Radfahrer und Fußgänger,Rad- und Fußgängerschutzinsel"
         },
         "highway/cyclist_waiting_aid": {
           "name": "Wartehilfe für Radfahrer",
@@ -8404,6 +8416,10 @@
         },
         "natural": {
           "name": "Natürliches..."
+        },
+        "natural/arch": {
+          "name": "Natursteinbogen",
+          "terms": "Natürlicher Bogen, Felsbogen, Natursteinbogen, Naturbrücke, Felstor, Steinbogen, Felsdurchbruch, Steinbrücke"
         },
         "natural/bare_rock": {
           "name": "Felsgestein",

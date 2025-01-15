@@ -451,7 +451,7 @@
         "other": "{count} elfenn kuzhet"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "local_storage_full": "Kemmet ho peus ar gartenn betek re ha n'halloc'h ket o dizober holl. Enrollit ho kemmoù kerkent ha ma c'hallit."
       }

@@ -221,12 +221,6 @@
               "description": "Pa korsi biçikletash",
               "title": "Asnjë"
             },
-            "opposite": {
-              "description": "Korsi biçikletash dydrejtimshe në një rrugë njëdrejtimshe"
-            },
-            "opposite_lane": {
-              "description": "Korsi biçikletash ne drejtim të kundërt me trafikun"
-            },
             "share_busway": {
               "description": "Korsi e përbashkët për biçikleta dhe autobuzë"
             },

@@ -1087,6 +1087,12 @@
         "highway/cycleway/crossing/bicycle_foot": {
           "name": "Rad- und Gehwegquerung"
         },
+        "highway/cycleway/traffic_island": {
+          "name": "Fahrradinsel"
+        },
+        "highway/cycleway/traffic_island_shared": {
+          "name": "Fahrrad- und Fußgängerinsel"
+        },
         "highway/footway/crossing": {
           "name": "Fußgänger­kreuzung"
         },

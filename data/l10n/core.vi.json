@@ -398,7 +398,7 @@
     "feature_info": {
       "hidden_warning": "{count} đối tượng ẩn"
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "Không thể kết nối với API OpenStreetMap. Các sửa đổi của bạn vẫn được lưu tạm trên máy bạn. Hãy kiểm tra kết nối mạng.",
         "offline": "API OpenStreetMap đang tạm thời ngừng hoạt động. Các sửa đổi của bạn vẫn được lưu tạm trên máy bạn. Hãy chốc nữa trở lại.",

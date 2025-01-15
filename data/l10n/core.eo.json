@@ -497,7 +497,7 @@
         "other": "{count} kaŝitaj objektoj"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "Ne eblas konekti kun la API OpenStreetMap. Viaj redaktoj estas sekure konservitaj loke. Kontrolu vian interretan konekton.",
         "offline": "La API OpenStreetMap estas eksterrete. Viaj redaktoj estas sekure konservitaj loke. Bonvolu reprovi poste.",

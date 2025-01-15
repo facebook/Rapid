@@ -618,9 +618,6 @@
               "description": "Níl aon lána rothar",
               "title": "Ceann ar bith"
             },
-            "opposite": {
-              "title": "Lána Rothar in aghaidh an tsrutha"
-            },
             "share_busway": {
               "description": "Lána rothar roinnte le lána bus",
               "title": "Lána rothar roinnte le bus"

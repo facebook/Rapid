@@ -1151,14 +1151,6 @@
               "description": "Ingen cykelfil",
               "title": "Ingen"
             },
-            "opposite": {
-              "description": "Cykelfil som går i båda riktningarna på en enkelriktad gata",
-              "title": "Dubbelriktad cykelfil"
-            },
-            "opposite_lane": {
-              "description": "Cykelfil som går i motsatt riktning mot övrig trafik",
-              "title": "Motriktad cykelfil"
-            },
             "separate": {
               "description": "Indikerar att cykelväg var kartlagd som en separat geometri",
               "title": "Cykelväg kartlagd separat"

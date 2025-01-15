@@ -1090,14 +1090,6 @@
               "description": "Pas de voie cyclable",
               "title": "Aucune"
             },
-            "opposite": {
-              "description": "Une bande cyclable qui permet de se déplacer dans les deux sens dans une rue à sens unique",
-              "title": "Circulation cyclable à contre-sens sans voie dédiée"
-            },
-            "opposite_lane": {
-              "description": "Une bande cyclable qui permet de se déplacer dans la direction opposée du trafic",
-              "title": "Bande cyclable à contre-sens"
-            },
             "separate": {
               "description": "Indique que la piste cyclable à été cartographiée comme une géométrie séparée",
               "title": "Voie cyclable cartographiée séparément"
@@ -2513,42 +2505,54 @@
         "parking": {
           "options": {
             "carports": {
+              "description": "Structure offrant une protection limitée aux véhicules, généralement sans murs",
               "title": "Auvent"
             },
             "garage_boxes": {
+              "description": "Garage privé avec de multiples box individuels pour une voiture chacun",
               "title": "Box"
             },
             "half_on_kerb": {
+              "description": "Parking partiellement sur le trottoir",
               "title": "Chevauchement du trottoir"
             },
             "lane": {
+              "description": "Stationnement sur la rue (qui pourrait facilement être convertit en voie de circulation)",
               "title": "Stationnement de rue"
             },
             "layby": {
+              "description": "Parking sur une aire de repos, le long d'une route",
               "title": "Bas-côté"
             },
             "multi-storey": {
+              "description": "Deux niveau de parking ou plus dans une structure",
               "title": "Sur plusieurs niveaux"
             },
             "on_kerb": {
+              "description": "Parking sur le trottoir",
               "title": "Sur le trottoir"
             },
             "rooftop": {
+              "description": "Un niveau de parking en haut d'un bâtiment",
               "title": "Toiture"
             },
             "sheds": {
+              "description": "Hangars privés pour véhicules",
               "title": "Abri privé"
             },
             "shoulder": {
               "title": "Accotement"
             },
             "street_side": {
+              "description": "Parking directement adjacent à la rue (mais pas dessus)",
               "title": "Bordure de voie"
             },
             "surface": {
+              "description": "Un niveau de parking au sol",
               "title": "En surface"
             },
             "underground": {
+              "description": "Parking souterrain",
               "title": "Souterrain"
             }
           }
@@ -6342,6 +6346,9 @@
           "name": "Entrée principale",
           "terms": "entrée, porte, accès, principal, principale"
         },
+        "entrance/shop": {
+          "name": "Entrée de commerce"
+        },
         "entrance/staircase": {
           "name": "Entrée d'escalier",
           "terms": "escaliers, escalier, cage d'escalier, vestibule, entrée d'escalier, accès d'escalier"
@@ -7082,6 +7089,9 @@
         },
         "landuse/meadow_orchard/meadow": {
           "name": "Prairie avec arbres fruitiers"
+        },
+        "landuse/meadow_orchard/orchard": {
+          "name": "Verger planté dans une prairie"
         },
         "landuse/military": {
           "name": "Zone militaire",
@@ -8117,6 +8127,9 @@
         "natural": {
           "name": "Élément naturel"
         },
+        "natural/arch": {
+          "name": "Arche Naturelle"
+        },
         "natural/bare_rock": {
           "name": "Zone Rocheuse",
           "terms": "Zone Rocheuse, Rochers"
@@ -8618,6 +8631,9 @@
         "piste/nordic": {
           "name": "Piste de ski de fond",
           "terms": "ski de fond,ski nordique"
+        },
+        "piste/piste": {
+          "name": "piste de sports d'hiver (type non spécifié)"
         },
         "piste/ski_jump": {
           "name": "Piste de saut à ski"
@@ -9609,6 +9625,9 @@
           "name": "Boutique de cadeaux",
           "terms": "Boutique de souvenirs"
         },
+        "shop/gold_buyer": {
+          "name": "Acheteur d'or"
+        },
         "shop/greengrocer": {
           "name": "Primeur",
           "terms": "Fruiterie, Marchand de fruits et légumes, Maraicher, Maraîcher, Primeur"
@@ -9749,8 +9768,8 @@
           "terms": "Magasin d'instruments de musique"
         },
         "shop/newsagent": {
-          "name": "Kiosque à journaux",
-          "terms": "kiosque, magasin, échoppe, journaux, magazines, presse"
+          "name": "Marchand de journaux",
+          "terms": "kiosque,marchand,maison de la presse,journaux,magazines,presse"
         },
         "shop/nutrition_supplements": {
           "name": "Boutique de compléments alimentaires",

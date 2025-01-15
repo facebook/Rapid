@@ -1087,14 +1087,6 @@
               "description": "Nessuna corsia ciclabile",
               "title": "Nessuno"
             },
-            "opposite": {
-              "description": "Una corsia ciclabile per entrambe le direzioni in una via a senso unico",
-              "title": "Pista ciclabile contromano"
-            },
-            "opposite_lane": {
-              "description": "Una corsia ciclabile che corre in senso opposto a quello del traffico",
-              "title": "Di fronte alla pista ciclabile"
-            },
             "separate": {
               "description": "Indica che la pista ciclabile è mappata separatamente",
               "title": "Pista ciclabile mappata separatamente"
@@ -2090,6 +2082,9 @@
           "label": "Illuminazione",
           "terms": "illuminazione, lampada, luminarie"
         },
+        "loc_name": {
+          "label": "Nome Locale"
+        },
         "location": {
           "label": "Posizione",
           "terms": "posizione, luogo, posto, località, ubicazione"
@@ -2324,6 +2319,9 @@
           "label": "Nome",
           "placeholder": "Nome proprio (se presente)"
         },
+        "nat_name": {
+          "label": "Nome Nazionale"
+        },
         "natural": {
           "label": "Naturale"
         },
@@ -2434,6 +2432,9 @@
             "union": "Ufficio sindacale",
             "water_utility": "Ufficio azienda di fornitura dell'acqua"
           }
+        },
+        "official_name": {
+          "label": "Nome Ufficiale"
         },
         "oneway": {
           "label": "Senso unico",
@@ -2919,6 +2920,9 @@
           "label": "Codice pista di rullaggio",
           "placeholder": "Esempio A5"
         },
+        "reg_name": {
+          "label": "Nome Regionale"
+        },
         "relation": {
           "label": "Tipo"
         },
@@ -3214,6 +3218,9 @@
         },
         "shop": {
           "label": "Tipo"
+        },
+        "short_name": {
+          "label": "Nome Corto"
         },
         "shower": {
           "label": "Docce"

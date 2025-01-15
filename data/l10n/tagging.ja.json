@@ -1170,12 +1170,12 @@
               "title": "なし"
             },
             "opposite": {
-              "description": "一方通行の道路で両方向に通行可能な自転車通行帯",
-              "title": "自転車通行帯(両方向)"
+              "description": "oneway=yes, oneway:bicycle=no, cycleway:both=no などに更新してください",
+              "title": "(非推奨) 自転車通行帯(両方向)"
             },
             "opposite_lane": {
-              "description": "交通の方向とは逆に通行する自転車通行帯",
-              "title": "自転車通行帯(逆方向)"
+              "description": "oneway, oneway:bicycle, cycleway:left/right=lane などに更新してください ",
+              "title": "(非推奨) 自転車通行帯(逆方向)"
             },
             "separate": {
               "description": "自転車道が別個のジオメトリとしてマップされているかどうか",
@@ -6990,6 +6990,14 @@
         "highway/cycleway/moped_link-NL": {
           "name": "モペッド・リンク",
           "terms": "原付専用道"
+        },
+        "highway/cycleway/traffic_island": {
+          "name": "安全島（自転車用）",
+          "terms": "交通島, 安全島, 待避島, 交通安全, 道路設備, 二段階横断, 自転車横断道"
+        },
+        "highway/cycleway/traffic_island_shared": {
+          "name": "安全島（自転車歩行者兼用）",
+          "terms": "交通島, 安全島, 待避島, 交通安全, 道路設備, 二段階横断, 横断歩道, 自転車横断道"
         },
         "highway/cyclist_waiting_aid": {
           "name": "サイクリスト用停車補助",

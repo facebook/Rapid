@@ -532,12 +532,6 @@
               "description": "Sin carril bici",
               "title": "Dengún"
             },
-            "opposite": {
-              "description": "Carril bici de dos direcciones n'una cai de dirección única"
-            },
-            "opposite_lane": {
-              "description": "Un carril bici que va en dirección opuesta al tráficu"
-            },
             "share_busway": {
               "description": "Carril bici compartíu con carril bus"
             },

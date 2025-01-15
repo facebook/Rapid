@@ -199,6 +199,10 @@
         "name": "{community} на Aparat",
         "description": "Підпишіться на наш канал Aparat"
       },
+      "bluesky": {
+        "name": "{community} у Bluesky",
+        "description": "Слідкуйте за нами у Bluesky"
+      },
       "discord": {
         "description": "Спілкуйтеся з іншими маперами у Discord"
       },

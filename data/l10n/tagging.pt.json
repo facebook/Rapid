@@ -1161,14 +1161,6 @@
               "description": "Sem via para ciclistas",
               "title": "Nenhuma"
             },
-            "opposite": {
-              "description": "Uma via para bicicletas com dois sentidos numa rua de sentido único para trânsito automóvel",
-              "title": "Em contramão"
-            },
-            "opposite_lane": {
-              "description": "Uma via para bicicletas onde o sentido é o oposto do trânsito automóvel",
-              "title": "De dois sentidos"
-            },
             "separate": {
               "description": "Indica que a ciclovia foi mapeada como geometria separada",
               "title": "Mapeada separadamente"
@@ -2696,42 +2688,55 @@
           "label": "Tipo",
           "options": {
             "carports": {
+              "description": "Estrutura usada para dar proteção limitada a veículos, tipicamente sem paredes.",
               "title": "Telheiros"
             },
             "garage_boxes": {
+              "description": "Garagem privada onde cada carro tem um espaço próprio.",
               "title": "Garagens"
             },
             "half_on_kerb": {
+              "description": "Estacionamento parcialmente sobre passeio.",
               "title": "Metade sobre o passeio"
             },
             "lane": {
+              "description": "Estacionamento na estrada (que poderia ser convertido numa via da faixa de rodagem).",
               "title": "Via na estrada"
             },
             "layby": {
+              "description": "Espaço próprio à beira da estrada para estacionar.",
               "title": "Área de descanso"
             },
             "multi-storey": {
+              "description": "Dois ou mais andares de estacionamento num edifício.",
               "title": "Multiandares"
             },
             "on_kerb": {
+              "description": "Estacionamento sobre o passeio.",
               "title": "Sobre o passeio"
             },
             "rooftop": {
+              "description": "Um piso de estacionamento no cimo de um edifício.",
               "title": "Topo de edifício"
             },
             "sheds": {
+              "description": "Abrigo privado para veículos, normalmente sem paredes.",
               "title": "Barracões"
             },
             "shoulder": {
+              "description": "Estacionamento na berma da estrada.",
               "title": "Berma"
             },
             "street_side": {
+              "description": "Área de estacionamento adjacente à estrada, mas não sobre ela.",
               "title": "Ao lado da rua"
             },
             "surface": {
+              "description": "Um piso de estacionamento ao nível do solo.",
               "title": "Superfície"
             },
             "underground": {
+              "description": "Estacionamento subterrâneo.",
               "title": "Subterrâneo"
             }
           }
@@ -6653,6 +6658,9 @@
           "name": "Entrada principal",
           "terms": "porta,portão"
         },
+        "entrance/shop": {
+          "name": "Entrada de loja"
+        },
         "entrance/staircase": {
           "name": "Entrada de escada rolante",
           "terms": "passadeira,rolar,rolante,escadaria,stairway"
@@ -6881,6 +6889,14 @@
         "highway/cycleway/moped_link-NL": {
           "name": "Via para ciclomotores",
           "terms": "moped,motorizada,ciclomotora"
+        },
+        "highway/cycleway/traffic_island": {
+          "name": "Travessia de refúgio p/ciclistas",
+          "terms": "island,ilha,rodoviária,travessia,bicicletas,bicla,ciclistas,island,crossing,parada,bina,bicycle"
+        },
+        "highway/cycleway/traffic_island_shared": {
+          "name": "Travessia de refúgio p/ciclistas e peões",
+          "terms": "island,ilha,rodoviária,travessia,bicicletas,bicla,ciclistas,island,crossing,parada,bina,bicycle,peões,caminho,passeio,ciclovia"
         },
         "highway/cyclist_waiting_aid": {
           "name": "Apoio para ciclistas",
@@ -9921,6 +9937,10 @@
         "shop/gift": {
           "name": "Loja de lembranças",
           "terms": "gift,souvenir,recordações,souvenirs, lembranças, recordações, bugigangas, suvenir, souvenir, suvenirs, souvenirs, suvenires, souvenires, memorabilia, lembrancinha"
+        },
+        "shop/gold_buyer": {
+          "name": "Loja de compra de ouro",
+          "terms": "gold,venda,prata,metal precioso,comprar"
         },
         "shop/greengrocer": {
           "name": "Loja de frutas e verduras",

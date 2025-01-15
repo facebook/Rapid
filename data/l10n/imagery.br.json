@@ -180,7 +180,8 @@
       "Geoportal2-PL-Streets_WMS": {
         "attribution": {
           "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
-        }
+        },
+        "name": "Geoportal 2 anvioù straedoù"
       },
       "Geoportal2-PL-addres_points_WMS": {
         "attribution": {

@@ -757,12 +757,6 @@
               "description": "Engin hjólabraut",
               "title": "Ekkert"
             },
-            "opposite": {
-              "description": "Hjólabraut sem stefnir í báðar áttir á einstefnugötu"
-            },
-            "opposite_lane": {
-              "description": "Hjólabraut sem stefnir í gagnstæða átt við umferð"
-            },
             "share_busway": {
               "description": "Hjólabraut sem deilt er með strætisvagnaleið"
             },

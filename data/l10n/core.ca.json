@@ -494,7 +494,7 @@
         "other": "{count} objectes ocults"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "No es pot arribar a l'API d'OpenStreetMap. Les vostres edicions estan segures localment. Comproveu la connexió de xarxa.",
         "offline": "L'API d'OpenStreetMap no està fora de línia. Les vostres edicions estan segures localment. Torneu més tard.",

@@ -493,7 +493,7 @@
         "other": "{count} dolda objekt"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "Det går inte att nå OpenStreetMap API. Dina redigeringar är säkra lokalt. Kontrollera din nätverksanslutning.",
         "offline": "OpenStreetMap API är offline. Dina redigeringar är säkra lokalt. Kom tillbaka senare.",

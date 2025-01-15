@@ -562,7 +562,7 @@
         "other": "{count} skrytých prvků"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "Nelze se spojit s OpenStreetMap API. Vaše úpravy jsou uloženy místně. Zkontrolujte připojení k síti.",
         "offline": "OpenStreetMap API je offline. Vaše úpravy jsou uloženy místně. Zkuste to prosím později.",

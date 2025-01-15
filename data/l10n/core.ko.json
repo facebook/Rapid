@@ -401,7 +401,7 @@
     "feature_info": {
       "hidden_warning": "숨겨진 지물 {count}개"
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "오픈스트리트맵 API에 접근할 수 없습니다. 편집은 기기에 저장됩니다. 인터넷 연결 상태를 확인하세요.",
         "offline": "오픈스트리트맵 API가 오프라인입니다. 편집은 기기에 저장됩니다. 나중에 다시 시도하세요.",

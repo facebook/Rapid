@@ -1177,12 +1177,10 @@
               "title": "Žádné"
             },
             "opposite": {
-              "description": "Cyklopruh, kterým cyklisté mohou jet v jednosměrce oběma směry",
-              "title": "Obousměrný cyklopruh"
+              "description": "Aktualizujte prosím pomocí oneway=yes, oneway:bicycle=no a cycleway:both=no atd."
             },
             "opposite_lane": {
-              "description": "Cykloobousměrka - cyklopruh v opačném směru než ostatní provoz",
-              "title": "Protisměrný cyklopruh"
+              "description": "Aktualizujte prosím pomocí oneway, oneway:bicycle, a cycleway:left/right=lane atd."
             },
             "separate": {
               "description": "Označuje, která cyklostezka byla zmapována jako samostatná geometrie",

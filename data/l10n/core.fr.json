@@ -2,6 +2,7 @@
   "fr": {
     "icons": {
       "download": "télécharger",
+      "information": "Info",
       "remove": "supprimer",
       "undo": "annuler",
       "zoom_to": "zoomer dessus",
@@ -36,7 +37,8 @@
         "title": "Surface"
       },
       "add_line": {
-        "title": "Ligne"
+        "title": "Ligne",
+        "description": "Ajouter des routes, chemins piétons, rivières ou autres lignes sur la carte."
       },
       "add_note": {
         "description": "Vous avez repéré une erreur ? Faites-le savoir aux autres cartographes."
@@ -519,6 +521,7 @@
     "loading_auth": "Connexion à OpenStreetMap…",
     "report_a_bug": "Rapporter un bug",
     "help_translate": "Aider à traduire",
+    "example": "Exemple : ",
     "feature_info": {
       "hidden_warning": {
         "one": "{count} élément caché",
@@ -526,7 +529,7 @@
         "other": "{count} éléments cachés"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "Impossible d'atteindre l'API OpenStreetMap. Vos éditions sont stockées localement. Vérifiez votre connexion réseau.",
         "offline": "L'API OpenStreetMap est hors ligne. Vos éditions sont stockées localement. Veuillez revenir ici ultérieurement.",
@@ -572,6 +575,8 @@
       },
       "background": {
         "title": "Fond",
+        "source": "Source ",
+        "description": "Description ",
         "resolution": "Résolution",
         "accuracy": "Précision",
         "show_tiles": "Afficher la couche",
@@ -601,6 +606,7 @@
         "center": "Centre",
         "perimeter": "Périmètre",
         "length": "Longueur",
+        "distance": "Distance ",
         "area": "Superficie",
         "centroid": "Centroïde",
         "location": "Emplacement",
@@ -612,7 +618,8 @@
     "geometry": {
       "vertex": "sommet",
       "line": "ligne",
-      "area": "polygone"
+      "area": "polygone",
+      "relation": "relation "
     },
     "geocoder": {
       "search": "Rechercher dans le monde entier…",
@@ -662,6 +669,7 @@
       "unknown": "Inconnu",
       "incomplete": "<non téléchargé>",
       "feature_list": "Rechercher des objets",
+      "multiselect": "Sélection Multiple ",
       "check": {
         "yes": "Oui",
         "no": "Non",
@@ -677,6 +685,7 @@
       "none": "Aucun",
       "node": "Nœud",
       "way": "Chemin",
+      "relation": "Relation ",
       "location": "Endroit",
       "add_fields": "Ajouter un attribut :",
       "lock": {
@@ -707,9 +716,15 @@
       "reset": "réinitialiser",
       "reset_all": "Tout réinitialiser",
       "display_options": "Options d'affichage",
+      "wayback": {
+        "date": "date"
+      },
       "brightness": "Luminosité",
       "contrast": "Contraste",
       "sharpness": "Finesse",
+      "3dmap": {
+        "description": "Visualiser sur une carte 3D"
+      },
       "minimap": {
         "description": "Afficher la petite carte",
         "tooltip": "Montre une carte de vue d'ensemble pour aider à localiser la zone actuellement affichée."
@@ -738,9 +753,19 @@
           "tooltip": "Données des notes d'OpenStreetMap",
           "title": "Notes OpenStreetMap"
         },
+        "rapid": {
+          "license": "Carte Facebook avec Licence AI"
+        },
         "maproulette": {
           "detail_title": "Détails",
-          "cancel": "Annuler"
+          "instruction_title": "Instructions ",
+          "fixed": "J'ai corrigé !",
+          "alreadyFixed": "Déjà corrigé ",
+          "notAnIssue": "N'est pas un problème ",
+          "login": "Vous devez vous identifier dans un challenge MapRoulette.",
+          "comment": "Merci de confirmer ",
+          "cancel": "Annuler",
+          "submit": "Soumettre "
         },
         "keepRight": {
           "tooltip": "Anomalies détectées par keepright.at",
@@ -802,6 +827,7 @@
       }
     },
     "filters": {
+      "title": "Filtres",
       "points": {
         "tooltip": "Points d'intérêt"
       },
@@ -932,6 +958,16 @@
           "tooltip": "Décochez cette case pour éviter de charger des icônes à partir de sites tiers tels que Wikimedia Commons, Facebook, ou Twitter."
         }
       },
+      "map_interaction": {
+        "mouse_wheel": {
+          "zoom": {
+            "title": "Zoom sur carte"
+          },
+          "pan": {
+            "title": "Déplacer la carte"
+          }
+        }
+      },
       "color_selection": {
         "default": "Par défaut"
       }
@@ -966,6 +1002,10 @@
         "help": "Un autre utilisateur a modifié certains éléments de la carte que vous aviez changés.\nCliquez sur chaque élément ci-dessous pour obtenir plus de détails sur le conflit et choisissez si vous souhaitez conserver vos modifications ou celles de l'autre utilisateur."
       }
     },
+    "download_osc": {
+      "title": "Téléchargement ",
+      "no_changes": "Pas de changement à télécharger."
+    },
     "merge_remote_changes": {
       "conflict": {
         "deleted": "Cet élément a été supprimé par {user}.",
@@ -995,21 +1035,36 @@
       "cancel": "Annuler"
     },
     "splash": {
+      "welcome": "Bienvenue à  {rapidicon} {version}!",
       "start": "Modifier maintenant"
     },
     "source_switch": {
       "lose_changes": "Vos dernières modifications n'ont pas été sauvées. Si vous changez de serveur de carte, celles-ci seront perdues. Êtes-vous sûr de vouloir changer de serveur de carte ?"
     },
+    "rapid_first_edit": {
+      "exploring": "Je souhaite uniquement explorer ",
+      "login_with_osm": "Connexion avec OSM"
+    },
     "rapid_inspector": {
       "tags": "Attributs"
     },
     "rapid_menu": {
+      "center_map": "Centrer la carte ici",
       "remove": "Supprimer",
+      "more_info": "Plus d'informations",
+      "clear_filters": "Annuler les filtres",
       "category": {
+        "preview": "Pré-visualisation",
         "roads": "routes"
       }
     },
+    "rapid_poweruser": {
+      "tagSources": {
+        "description": "Ajouter le tag 'source=maxar' à tous les highways"
+      }
+    },
     "tag_reference": {
+      "description": "Description ",
       "on_wiki": "{tag} sur wiki.osm.org",
       "used_with": "Utilisé avec {type}"
     },
@@ -1020,6 +1075,9 @@
         "in": "Impossible de zoomer plus.",
         "out": "Impossible de dézommer plus."
       }
+    },
+    "bearing": {
+      "rotate_the_map": "Pivoter la carte :"
     },
     "full_screen": "Afficher/cacher le plein écran",
     "self_intersection": {
@@ -1037,6 +1095,8 @@
         "trap_title": "Erreurs fréquentes"
       },
       "keepRight": {
+        "title": "KeepRight signalement",
+        "detail_description": "Description ",
         "comment": "Commentaire",
         "comment_placeholder": "Saisissez un commentaire à partager avec d'autres utilisateurs.",
         "close": "Fermer (signalement corrigé)",
@@ -1353,10 +1413,12 @@
       "tooltip": "Photos Streetside de Microsoft"
     },
     "mapillary": {
-      "tooltip": "Photos de rue depuis Mapillary"
+      "tooltip": "Photos de rue depuis Mapillary",
+      "view_on_mapillary": "Visualiser dans Mapillary"
     },
     "mapillary_signs": {
-      "title": "Signalisation routière"
+      "title": "Signalisation routière",
+      "traffic_sign": "Panneaux de signalisation "
     },
     "kartaview": {
       "tooltip": "Photos horizontales de KartaView"
@@ -2146,6 +2208,8 @@
       },
       "navigation": {
         "map_info": "La partie principale de la carte montre les données OpenStreetMap superposées à un arrière-plan.",
+        "zoom_keyboard": "- Presser les touches `+` ou `-` sur le clavier.",
+        "rotate_touch": "- Pivoter la carte avec deux doigts {twofinger_rotate_icon}.",
         "features": "Le mot *élément* est utilisé pour décrire ce qui apparaît sur la carte. Un objet dans le monde réel peut être cartographié comme un élément sur OpenStreetMap.",
         "points_lines_areas": "Les éléments cartographiques sont représentés par des *points*, des *lignes* et des *polygones*.",
         "nodes_ways": "Dans OpenStreetMap, les points sont parfois appelés des *nœuds* (en anglais *nodes*), et les lignes et polygones des *chemins* (en anglais *ways*).",
@@ -2292,9 +2356,16 @@
       "commands": "Commandes",
       "help": "Aide",
       "display_options": "Afficher les options",
+      "layers": "Calques",
       "command": {
         "pan": {
           "label": "Déplacer la vue"
+        },
+        "zoom": {
+          "label": "Zoom + / -"
+        },
+        "rotate_map": {
+          "label": "Pivoter la carte"
         },
         "select_one": {
           "label": "Sélectionner un seul élément"
@@ -2425,6 +2496,12 @@
         "keyboard_shortcuts": {
           "label": "Afficher les raccourcis clavier"
         },
+        "toggle_minimap": {
+          "label": "Toggle minicarte"
+        },
+        "toggle_3dmap": {
+          "label": "Toggle carte 3D"
+        },
         "toggle_osm_data": {
           "label": "Basculer la couche des données OpenStreetMap"
         },
@@ -2456,7 +2533,8 @@
     },
     "wikidata": {
       "identifier": "Identifiant",
-      "label": "Étiquette"
+      "label": "Étiquette",
+      "description": "Description "
     },
     "languageNames": {
       "aa": "afar",

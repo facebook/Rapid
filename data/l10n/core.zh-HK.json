@@ -515,6 +515,9 @@
       "live": "實況模式",
       "lose_changes": "你有尚未儲存的變更。切換地圖伺服器將放棄它們。你確定要切換伺服器嗎？"
     },
+    "rapid_first_edit": {
+      "exploring": "我只是在探索"
+    },
     "rapid_menu": {
       "remove": "移除",
       "category": {

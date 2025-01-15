@@ -497,7 +497,7 @@
         "other": "{count} adet gizli nesne"
       }
     },
-    "osm_api_status": {
+    "status": {
       "message": {
         "error": "OpenStreetMap API erişim sağlanamadı. Düzenlemeleriniz yerel olarak güvenli. İnternet bağlantınızı kontrol edin.",
         "offline": "OpenStreetMap API çevrimdışı. Düzenlemeleriniz yerel olarak güvenli. Lütfen daha sonra deneyin.",

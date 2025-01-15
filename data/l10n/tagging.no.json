@@ -970,14 +970,6 @@
               "description": "Ingen sykkelfelt",
               "title": "Ingen"
             },
-            "opposite": {
-              "description": "Sykkelfelt som går i begge retninger i en enveiskjørt gate",
-              "title": "Motstrøms sykkelfelt"
-            },
-            "opposite_lane": {
-              "description": "Et sykkelfelt som går i motsatte retning av trafikken.",
-              "title": "Motsatt sykkelfelt"
-            },
             "separate": {
               "description": "Indikerer at sykkelveien var kartlagt som en egen geometri",
               "title": "Sykkelfelt kartlagt separat"

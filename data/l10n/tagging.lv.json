@@ -644,9 +644,6 @@
               "description": "Nav velosipēdu celiņa",
               "title": "Nav"
             },
-            "opposite": {
-              "description": "Riteņbraucēju celiņš kas iet abos vienvirziena ceļa virzienos"
-            },
             "share_busway": {
               "description": "Velosipēdu celiņš kopā ar ar autobusu ceļu"
             },

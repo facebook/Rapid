@@ -137,6 +137,7 @@
       "openstreetmapwesternsahara": "OpenStreetMap Sahara occidental",
       "openstreetmapzambia": "OpenStreetMap Zambie",
       "openstreetmapzimbabwe": "OpenStreetMap Zimbabwé",
+      "osmcolombia": "OSM Colombie",
       "osmmainz": "OSM Mayence",
       "swissopenstreetmap": "OpenStreetMap Suisse",
       "youthmappersasu": "YouthMappers Université de l’État d'Arizona"
@@ -145,6 +146,9 @@
       "aparat": {
         "name": "{community} sur Aparat",
         "description": "Abonnez-vous à notre chaîne Aparat"
+      },
+      "bluesky": {
+        "name": "{community} sur Bluesky"
       },
       "discord": {
         "name": "{community} sur Discord",
@@ -947,6 +951,9 @@
     },
     "osm-michigan-wiki": {
       "description": "Page wiki de {community}"
+    },
+    "osm-nelson": {
+      "description": "Un groupe OpenStreetMap à Nelson, Nouvelle-Zélande"
     },
     "osm-ni": {
       "description": "Fournit des services OSM et des informations pour la communauté locale au Nicaragua"

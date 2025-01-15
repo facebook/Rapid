@@ -1151,12 +1151,12 @@
               "title": "Ninguno"
             },
             "opposite": {
-              "description": "Un carril para bicicletas que viaja en ambas direcciones en una calle de un sólo sentido",
-              "title": "Carril de contraflujo para bicicletas"
+              "description": "Por favor, actualiza con oneway=yes, oneway:bicycle=no, y cycleway:both=no, etc.",
+              "title": "(Obsoleto) Ciclovía en contraflujo"
             },
             "opposite_lane": {
-              "description": "Un carril para bicicletas que viaja en la dirección opuesta al tránsito",
-              "title": "Carril opuesto para bicicletas"
+              "description": "Por favor, actualiza con oneway, oneway:bicycle, y cycleway:left/right=lane, etc.",
+              "title": "(Obsoleto) Ciclovía en sentido contrario"
             },
             "separate": {
               "description": "Indica que la ciclovía se mapeó como una geometría separada",
@@ -6918,6 +6918,14 @@
         "highway/cycleway/moped_link-NL": {
           "name": "Enlace de ciclomotor",
           "terms": "enlace, ciclomotor, motocicleta, moto, motoneta"
+        },
+        "highway/cycleway/traffic_island": {
+          "name": "Isla de refugio para ciclistas",
+          "terms": "Isla de refugio para ciclistas, área de descanso para bicicletas, refugio para bicicletas"
+        },
+        "highway/cycleway/traffic_island_shared": {
+          "name": "Isla de refugio para ciclistas y peatones",
+          "terms": "Isla de refugio para ciclistas y peatones, área de descanso para bicicletas y peatones, refugio para bicis y caminantes"
         },
         "highway/cyclist_waiting_aid": {
           "name": "Ayuda de espera para ciclistas",

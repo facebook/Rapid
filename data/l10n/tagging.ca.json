@@ -1088,14 +1088,6 @@
               "description": "Sense carril per a bicis",
               "title": "Cap"
             },
-            "opposite": {
-              "description": "Un carril bici que discorre en ambdós sentits en un carrer d'un sol sentit",
-              "title": "Carril bici en sentit contrari"
-            },
-            "opposite_lane": {
-              "description": "Un carril bici que discorre contrari al sentit de circulació",
-              "title": "Carril bici contrari"
-            },
             "separate": {
               "description": "Indica que una via per a bicicletes ha estat mapejada com una geometria separada",
               "title": "Carrilbici mapejat separadament"
