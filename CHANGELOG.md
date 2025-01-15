@@ -40,6 +40,38 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [2.5.1](https://github.com/facebook/Rapid/releases/tag/rapid-v2.5.1)
+#### 2025-Jan-15
+
+#### :sparkles: Usability & Accessibility
+* [#1650] Improve quality and sharpness of textures by removing the half-pixel correction distortion
+* [#1664] Remove rendering artifacts from edges of BitmapText labels
+
+#### :bug: Bugfixes
+* [#1489] Fix: Crash when restoring a backup with a temporary way that was added and later deleted - "Entity not found"
+* [#1654], [#1671] Fix: Crash when adding curbs if there is no connected sidewalk - "`this.tags` is null"
+* [#1655], [#1670] Fix: Save osmChange file not working - raises `msSaveBlob` error
+* [#1657] Fix: Don't suggest curb nodes when they are already mapped with `kerb=no`
+* [#1658] Fix: Allow Rapid to recover from a lost WebGL context
+* [#1659] Fix: Issue preventing copying text from the Location Panel
+* [#1660] Fix: Hard to snap a way to another way or area
+* [#1666] Fix: Missing "Show Tiles" debug tile grid
+* [#1672] Fix: Unspecified curb should be `kerb=yes`, not `kerb=unspecified`
+
+[#1489]: https://github.com/facebook/Rapid/issues/1489
+[#1650]: https://github.com/facebook/Rapid/issues/1650
+[#1654]: https://github.com/facebook/Rapid/issues/1654
+[#1655]: https://github.com/facebook/Rapid/issues/1655
+[#1657]: https://github.com/facebook/Rapid/issues/1657
+[#1658]: https://github.com/facebook/Rapid/issues/1658
+[#1659]: https://github.com/facebook/Rapid/issues/1659
+[#1660]: https://github.com/facebook/Rapid/issues/1660
+[#1664]: https://github.com/facebook/Rapid/issues/1664
+[#1666]: https://github.com/facebook/Rapid/issues/1666
+[#1670]: https://github.com/facebook/Rapid/issues/1670
+[#1671]: https://github.com/facebook/Rapid/issues/1671
+[#1672]: https://github.com/facebook/Rapid/issues/1672
+
 
 # [2.5.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.5.0)
 #### 2024-Dec-23
