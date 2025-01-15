@@ -4,6 +4,7 @@
       "freelibreopensourcesoftwarekosovaflossk": "Free Libre Open Source Software Kosova (FLOSSK)",
       "geolibres": "GeoLibres",
       "kiribatiwomeninmapping": "Kiribati Women in Mapping",
+      "mapeadoresivides": "Mapeadores IVIDES",
       "mappingbotswana": "Mapping Botswana",
       "maptimebogota": "MaptimeBogota",
       "maptimehrva": "MaptimeHRVA",
@@ -208,7 +209,8 @@
       "osmnelson": "OSM Nelson",
       "swissopenstreetmap": "Swiss OpenStreetMap",
       "tadeomappers": "TadeoMappers",
-      "youthmappersasu": "YouthMappersASU"
+      "youthmappersasu": "YouthMappersASU",
+      "youthmappersufrj": "YouthMappers UFRJ"
     },
     "_defaults": {
       "aparat": {
@@ -327,7 +329,7 @@
         "description": "Follow us on 𝕏",
         "url": "https://twitter.com/{account}"
       },
-      "website": {
+      "url": {
         "name": "{community}"
       },
       "wiki": {
@@ -589,6 +591,9 @@
     "de-mainz-mailinglist": {
       "description": "OpenStreetMap in Mainz und Umgebung"
     },
+    "de-mainz-signal": {
+      "description": "OpenStreetMap in Mainz, Wiesbaden und Umgebung"
+    },
     "de-mainz-telegram": {
       "description": "OpenStreetMap in Mainz und Umgebung"
     },
@@ -758,6 +763,9 @@
     },
     "it-discourse": {
       "description": "Il forum dove poter discutere di OpenStreetMap"
+    },
+    "ivides_website": {
+      "description": "We are focused on sustainable development, mapping, and support of the OpenStreetMap community."
     },
     "ko-facebook": {
       "description": "Mappers and OpenStreetMap users in Korea"
@@ -1280,6 +1288,9 @@
     },
     "rs-wiki": {
       "description": "Wikiproject page for Serbia"
+    },
+    "scandinavia-discord": {
+      "name": "Scandinavian channel on OpenStreetMap World Discord"
     },
     "sg-wiki": {
       "description": "{community} Wiki page"
