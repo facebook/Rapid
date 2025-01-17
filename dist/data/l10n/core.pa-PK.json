@@ -1,0 +1,54 @@
+{
+  "_meta": {
+    "version": "2.5.1",
+    "generated": "2025-01-17T20:06:38.607Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.pa-PK.json",
+    "hash": "bf5190d68d20d3b0e0612c6c8b3cb89c"
+  },
+  "pa-PK": {
+    "icons": {
+      "download": "ڈاؤنلوڈ",
+      "information": "جاݨکاری",
+      "remove": "مٹاؤ",
+      "undo": "موڑو",
+      "zoom_to": "اِتھے وڈا کرو",
+      "copy": "کاپی کرو",
+      "view_on": "{domain} اُتے دیکھو",
+      "favorite": "منپسند",
+      "list": "فہرست",
+      "text": "لکھت",
+      "deselect": "چݨ ہٹاؤ"
+    },
+    "modes": {
+      "add_area": {
+        "title": "کھیتر"
+      },
+      "add_note": {
+        "title": "نوٹ"
+      }
+    },
+    "info_panels": {
+      "measurement": {
+        "area": "کھیتر"
+      }
+    },
+    "inspector": {
+      "feature_type": "چیز دی قِسم"
+    },
+    "QA": {
+      "keepRight": {
+        "comment": "ٹپݨی",
+        "comment_placeholder": "ٹپݨی کریو۔",
+        "close_comment": "تپݨی کرو، بند کرو"
+      }
+    },
+    "note": {
+      "note": "نوٹ"
+    },
+    "help": {
+      "lines": {
+        "title": "لائین"
+      }
+    }
+  }
+}

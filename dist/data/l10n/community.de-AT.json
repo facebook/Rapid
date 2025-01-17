@@ -1,0 +1,53 @@
+{
+  "_meta": {
+    "version": "2.5.1",
+    "generated": "2025-01-17T20:06:38.667Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.de-AT.json",
+    "hash": "eeb7f1ca7590d913e0ed050aef586d9a"
+  },
+  "de-AT": {
+    "Bahia-telegram": {
+      "extendedDescription": "Tritt der Community bei, um mehr über OpenStreetMap zu erfahren, Fragen zu stellen oder an unseren Treffen teilzunehmen. Jeder ist willkommen!"
+    },
+    "co-wiki": {
+      "name": "Wiki-Seite mit Dokumentation über das Kolumbien-Kartierungsprojekt."
+    },
+    "DF-telegram": {
+      "extendedDescription": "Tritt der Community bei, um mehr über OpenStreetMap zu erfahren, Fragen zu stellen oder an unseren Treffen teilzunehmen. Jeder ist willkommen!"
+    },
+    "id-facebook": {
+      "extendedDescription": "Mappen in Indonesien? Hast du Frage, willst du dich mit der Gemeinschaft vernetzen? Beteilige dich bei {url}. Alle sind willkommen!"
+    },
+    "maptime-bogota-meetup": {
+      "description": "Wir sind eine Gruppe interessierter Menschen, die Bogotá und seine Umgebung in OpenStreetMap kartieren wollen.",
+      "extendedDescription": "Lerne Daten vor Ort zu erheben und auf OpenStreetMap zu digitalisieren. Du brauchst kein Vorwissen, du musst nur am Mitwirken, Lernen und Spaß haben interessiert sein."
+    },
+    "maptime-bogota-twitter": {
+      "description": "Wir sind eine Gruppe interessierter Menschen, die Bogotá und seine Umgebung in OpenStreetMap kartieren wollen.",
+      "extendedDescription": "Lerne Daten vor Ort zu erheben und auf OpenStreetMap zu digitalisieren. Du brauchst kein Vorwissen, du musst nur am Mitwirken, Lernen und Spaß haben interessiert sein."
+    },
+    "maptime-bogota-website": {
+      "description": "Wir sind eine Gruppe interessierter Menschen, die Bogotá und seine Umgebung in OpenStreetMap kartieren wollen.",
+      "extendedDescription": "Lerne Daten vor Ort zu erheben und auf OpenStreetMap zu digitalisieren. Du brauchst kein Vorwissen, du musst nur am Mitwirken, Lernen und Spaß haben interessiert sein."
+    },
+    "osm-africa-slack": {
+      "description": "Alle sind willkommen! Anmeldung unter {signupUrl}"
+    },
+    "osm-kenya": {
+      "description": "OSM Kenia ist die Gemeinschaft der OSM Mitwirkenden und Benutzer",
+      "extendedDescription": "OSM ist eine lokale Gemeinschaft für alle an OpenStreetMap Interessierten inklusive Organisatoren, Entwickler und YouthMapper im Land."
+    },
+    "OSM-US-Slack": {
+      "description": "Alle sind willkommen! Anmeldung unter {signupUrl}"
+    },
+    "RS-telegram": {
+      "extendedDescription": "Tritt der Community bei, um mehr über OpenStreetMap zu erfahren, Fragen zu stellen oder an unseren Treffen teilzunehmen. Jeder ist willkommen!"
+    },
+    "tw-slack": {
+      "description": "Alle sind willkommen! Anmeldung unter {signupUrl}"
+    },
+    "ym-Universidad-Jorge-Tadeo-Lozano-github": {
+      "extendedDescription": "Die TadeoMappers bieten in Zusammenarbeit mit dem GNUTADEO-Kollektiv für freie Software Repositories für ihre Arbeit an. Beide Gruppen sind der Universidad Jorge Tadeo Lozano angegliedert und setzen sich für die Nutzung von Kartierungswerkzeugen und -software zur Unterstützung von gemeinschaftsorientierten Projekten ein."
+    }
+  }
+}
