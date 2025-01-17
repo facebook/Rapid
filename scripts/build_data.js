@@ -124,7 +124,7 @@ function buildDataAsync() {
 
       // copy `data/` files to `dist/data/` and stamp with metadata
       for (const sourceFile of globSync('data/**/*.json')) {
-        const destinationFile = sourceFile.replace('data/', 'dist/data/');
+        const destinationFile = sourceFile.replace(/\\/g, '/').replace('data/', 'dist/data/');
         copyToDistSync(sourceFile, destinationFile);
       }
 
