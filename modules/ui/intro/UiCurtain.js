@@ -1,4 +1,4 @@
-import { Extent, numClamp, vecAdd } from '@rapid-sdk/math';
+import { Extent, numClamp, vecAdd, vecLength } from '@rapid-sdk/math';
 import { easeLinear } from 'd3-ease';
 import { selection, select } from 'd3-selection';
 import * as Polyclip from 'polyclip-ts';
@@ -232,7 +232,30 @@ export class UiCurtain {
 
         const clipped = Polyclip.intersection([extentPolygon], [mapPolygon]);
         if (clipped?.length) {
-          this._revealPolygon = clipped[0][0];  // Polyclip returns a multipolygon
+          // Polyclip returns a MultiPolygon with outer ring wound "counterclockwise".
+          // However it assumes that the input is GeoJSON, which has a coordinate system
+          // where +y goes up.  So when we work in screen coordinates where +y goes down,
+          // we actually get a "clockwise" result and need to reverse it.
+          const ring = clipped[0][0].reverse();
+
+          // Pick the point closest to the top-left corner to start the ring - Rapid#1674
+          const len = ring.length - 1; // ring is closed, can skip last one
+          let minDist = Infinity;
+          let minIndex = 0;
+
+          for (let i = 0; i < len; i++) {
+            const dist = vecLength(ring[i], [0, 0]);
+            if (dist < minDist) {
+              minDist = dist;
+              minIndex = i;
+            }
+          }
+          this._revealPolygon = [];
+          for (let i = 0; i < len; i++) {
+            const fromIndex = (i + minIndex) % len;
+            this._revealPolygon[i] = ring[fromIndex];
+          }
+          this._revealPolygon.push(this._revealPolygon[0]);  // close ring
         }
 
       // A D3-selector selector or a DOMElement (in screen coordinates)
