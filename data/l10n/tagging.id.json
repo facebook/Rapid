@@ -104,12 +104,24 @@
         "access_simple": {
           "label": "Akses diperbolehkan",
           "options": {
+            "customers": "Khusus Pelanggan",
             "no": "Tidak ada",
             "permissive": "Dibolehkan dengan izin",
+            "permit": "Seizin Pemilik",
             "private": "Pribadi",
-            "unknown": "Tidak diketahui"
+            "unknown": "Tidak diketahui",
+            "yes": "Umum"
           },
           "terms": "Boleh masuk,Boleh akses,bisa masuk,bisa akses, akses diperbolehkan"
+        },
+        "activity": {
+          "label": "Aktivitas",
+          "options": {
+            "bicycle": "Bersepeda",
+            "hiking": "Mendaki",
+            "horse": "Berkuda",
+            "mtb": "Bersepeda Gunung"
+          }
         },
         "addr/interpolation": {
           "label": "Tipe",
@@ -134,6 +146,7 @@
             "county!jp": "Distrik/Kabupaten",
             "district": "Kabupaten",
             "district!cn": "Distrik//",
+            "district!vn": "Arondisemen/Kota Kecil/Distrik",
             "floor": "Lantai",
             "hamlet": "Dusun",
             "housename": "Nama rumah",
@@ -197,6 +210,12 @@
         "agrarian": {
           "label": "Produk"
         },
+        "air_conditioning": {
+          "label": "Pendingin Udara"
+        },
+        "alt_name": {
+          "label": "Nama Alternatif"
+        },
         "amenity": {
           "label": "Tipe"
         },
@@ -210,7 +229,14 @@
           "label": "Untuk hewan"
         },
         "archaeological_site": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "city": "Kota Tua/Lama",
+            "fortification": "Benteng",
+            "roman_circus": "Sirkus Romawi",
+            "roman_villa": "Vila Romawi",
+            "settlement": "Permukiman Bersejarah"
+          }
         },
         "architect": {
           "label": "Arsitek",
@@ -220,18 +246,42 @@
           "label": "Tipe"
         },
         "armrest": {
+          "label": "Sandaran tangan",
           "options": {
-            "undefined": "Tidak diketahui"
+            "no": "Tanpa sandaran tangan",
+            "undefined": "Tidak diketahui",
+            "yes": "Satu sandaran tangan atau lebih"
           }
         },
         "artist": {
           "label": "Seniman"
         },
         "artwork_type": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "bust": "Patung Kepala",
+            "graffiti": "Grafiti",
+            "installation": "Instalasi Seni",
+            "mosaic": "Mosaik",
+            "painting": "Lukisan",
+            "sculpture": "Pahatan",
+            "statue": "Patung"
+          }
         },
         "attraction": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "animal": "Kandang Hewan",
+            "big_wheel": "Bianglala",
+            "maze": "Labirin",
+            "pirate_ship": "Kapal Bajak Laut",
+            "river_rafting": "Arung Jeram",
+            "train": "Kereta Wisata",
+            "water_slide": "Seluncur Air"
+          }
+        },
+        "automated": {
+          "label": "Otomatis"
         },
         "baby_feeding": {
           "label": "Tempat merawat bayi",
@@ -272,7 +322,13 @@
           }
         },
         "basin": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "detention": "Pembendungan",
+            "evaporation": "Penguapan",
+            "infiltration": "Penyerapan",
+            "retention": "Penampungan"
+          }
         },
         "bath/open_air": {
           "label": "Tempat Terbuka"
@@ -287,7 +343,14 @@
           }
         },
         "beauty": {
-          "label": "Layanan"
+          "label": "Layanan",
+          "options": {
+            "cosmetics": "Kosmetik",
+            "nails": "Perawatan Kuku",
+            "skin_care": "Perawatan Kulit",
+            "tanning": "Jemur Badan",
+            "waxing": "Perawatan Lilin"
+          }
         },
         "bench": {
           "label": "Bangku",
@@ -322,10 +385,23 @@
           }
         },
         "board_type": {
-          "label": "tipe"
+          "label": "tipe",
+          "options": {
+            "art": "Seni",
+            "astronomy": "Astronomi",
+            "geology": "Geologi",
+            "history": "Sejarah",
+            "nature": "Alam",
+            "notice": "Papan Informasi",
+            "plants": "Tumbuhan",
+            "welcome_sign": "Papan Selamat Datang"
+          }
         },
         "bollard": {
           "label": "tipe"
+        },
+        "books": {
+          "label": "Jenis Buku"
         },
         "bottle": {
           "label": "Pengisian Botol"
@@ -357,25 +433,44 @@
             "barn": "Lumbung",
             "bunker": "Tempat berlindung",
             "cabin": "Kabin",
+            "carport": "Garasi Mobil",
+            "cathedral": "Bangunan Katedral",
+            "chapel": "Bangunan Kapel",
+            "church": "Bangunan Gereja",
             "college": "Bangunan Kampus",
             "commercial": "Bangunan Komersial",
             "construction": "Bangunan sedang dalam konstruksi",
+            "cowshed": "Kandang Sapi",
             "dormitory": "Asrama",
+            "farm_auxiliary": "Bangunan Pertanian",
             "garage": "Garasi tunggal",
             "garages": "Garasi jamak",
+            "grandstand": "Tribun",
             "greenhouse": "Rumah Kaca",
+            "hangar": "Bangunan Hangar",
             "hospital": "Bangunan Rumah Sakit",
             "hotel": "Bangunan Hotel",
             "house": "Rumah",
+            "houseboat": "Garasi Kapal",
             "hut": "Gubuk",
             "industrial": "Bangunan Industri",
+            "kindergarten": "Bangunan Taman Kanak-Kanak",
+            "manufacture": "Bangunan Pabrik",
             "mosque": "Bangunan Masjid\nBangunan Mesjid",
+            "office": "Bangunan Perkantoran",
+            "pavilion": "Bangunan Paviliun",
             "public": "Bangunan Umum",
             "residential": "Bangunan Perumahan",
             "retail": "Bangunan Pertokoan",
             "roof": "Atap",
             "school": "Bangunan Sekolah",
             "stable": "Kandang Kuda",
+            "stadium": "Bangunan Stadion",
+            "sty": "Kandang Babi",
+            "synagogue": "Bangunan Sinagoga",
+            "temple": "Bangunan Tempat Suci",
+            "train_station": "Bangunan Stasiun Kereta",
+            "transportation": "Bangunan Transportasi",
             "university": "Bangunan Universitas",
             "warehouse": "Gudang"
           }
@@ -385,6 +480,12 @@
         },
         "building/levels/underground": {
           "label": "Jumlah lantai bawah tanah"
+        },
+        "building/material": {
+          "label": "Bahan bangunan"
+        },
+        "building/part": {
+          "label": "Bagian Bangunan"
         },
         "bunker_type": {
           "label": "Tipe"
@@ -413,11 +514,31 @@
           "label": "Kapasitas",
           "terms": "Kapasitas"
         },
+        "capacity/disabled_parking": {
+          "label": "Khusus Disabilitas"
+        },
+        "capacity/persons": {
+          "label": "Kapasitas (Orang)"
+        },
+        "capacity/tents": {
+          "label": "Kapasitas (Tenda)"
+        },
+        "capacity_parking": {
+          "label": "Kapasitas Total"
+        },
         "capacity_volume": {
           "label": "Capacity (Meter Kubik)"
         },
         "castle_type": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "castrum": "Benteng Romawi",
+            "defensive": "Benteng Pertahanan",
+            "fortress": "Benteng",
+            "hillfort": "Benteng Bukit",
+            "manor": "Puri",
+            "palace": "Istana"
+          }
         },
         "changing_table": {
           "label": "Meja ganti popok"
@@ -428,19 +549,47 @@
           "terms": "Jumlah biaya,harga,ongkos,karcis,bayar,bayaran,upah,bea,cukai,uang pembayaran"
         },
         "charge_toll": {
+          "label": "Biaya Tol",
           "placeholder": "2000 IDR (Rupiah), 5 USD, 10 JPY…"
         },
         "check_date": {
           "label": "Tanggal terakhir dicek"
         },
         "clothes": {
-          "label": "Baju"
+          "label": "Baju",
+          "options": {
+            "babies": "Pakaian Bayi",
+            "children": "Pakaian Anak-Anak",
+            "denim": "Pakaian Denim",
+            "fur": "Pakaian Bulu",
+            "hats": "Topi",
+            "maternity": "Pakaian Ibu Hamil",
+            "men": "Pakaian Pria",
+            "motorcycle": "Pakaian Pesepeda Motor",
+            "oversize": "Pakaian Ukuran Besar",
+            "socks": "Kaus Kaki",
+            "sports": "Pakaian Olahraga",
+            "suits": "Setelan",
+            "swimwear": "Pakaian Renang",
+            "traditional": "Pakaian Tradisional",
+            "underwear": "Pakaian Dalam",
+            "wedding": "Pakaian Pernikahan",
+            "women": "Pakaian Wanita",
+            "workwear": "Pakaian Kerja"
+          }
         },
         "club": {
           "label": "Tipe"
         },
         "collection_times": {
           "label": "Waktu Pengumpulan"
+        },
+        "collector": {
+          "options": {
+            "coins": "Koin",
+            "comics": "Komik",
+            "stamps": "Prangko"
+          }
         },
         "colour": {
           "label": "Warna",
@@ -454,7 +603,15 @@
           "label": "Tipe komunikasi"
         },
         "community_centre": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "community_hall": "Balai Warga",
+            "cultural_centre": "Pusat Kebudayaan",
+            "family_centre": "Pusat Keluarga",
+            "parish_hall": "Balai Dusun",
+            "village_hall": "Balai Desa",
+            "youth_centre": "Pusat Pemuda"
+          }
         },
         "connectivity": {
           "label": "Konektivitas"
@@ -463,10 +620,22 @@
           "label": "Tipe"
         },
         "consulate": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "consular_agency": "Agen Urusan Konsuler",
+            "consular_office": "Kantor Urusan Konsuler",
+            "consulate_general": "Konsulat Jenderal",
+            "honorary_consul": "Konsul Kehormatan",
+            "residence": "Kediaman Resmi Konsul",
+            "yes": "Konsulat"
+          }
         },
         "consulting": {
           "label": "Keahlian"
+        },
+        "contact/facebook": {
+          "label": "Nama Pengguna atau URL Facebook",
+          "placeholder": "https://www.facebook.com/NamaTempat"
         },
         "contact/webcam": {
           "label": "URL Webcam",
@@ -505,15 +674,21 @@
         "craft": {
           "label": "Tipe",
           "options": {
+            "agricultural_engines": "Mekanik Mesin Tani",
             "basket_maker": "Pembuat Keranjang",
             "beekeeper": "Pemelihara Lebah",
             "blacksmith": "Pandai Besi",
             "boatbuilder": "Pembuat Kapal",
             "bookbinder": "Tukang Jilid",
             "brewery": "Perusahaan Bir",
+            "builder": "Kuli Bangunan",
             "carpenter": "Tukang Kayu",
+            "carpet_layer": "Pemasang Karpet",
             "caterer": "Jasa Boga",
+            "chimney_sweeper": "Pembersih Cerobong Asap",
+            "cleaning": "Janitor",
             "clockmaker": "Pembuat Jam",
+            "confectionery": "Pembuat Permen",
             "dressmaker": "Penjahit Pakaian Wanita",
             "electrician": "Tukang Listrik",
             "gardener": "Tukang Kebun",
@@ -528,6 +703,7 @@
             "plumber": "Tukang Ledeng",
             "roofer": "Tukang Atap",
             "scaffolder": "Perancah",
+            "sculptor": "Pemahat",
             "shoemaker": "Pembuat Sepatu",
             "tailor": "Penjahit Pakaian Pria",
             "tinsmith": "Pandai Timah",
@@ -544,7 +720,29 @@
         },
         "crop": {
           "options": {
-            "grass": "Rumput"
+            "barley": "Barli",
+            "beet": "Bit",
+            "cassava": "Singkong",
+            "coffee": "Kopi",
+            "cotton": "Katun",
+            "cranberries": "Kranberi",
+            "flowers": "Bunga",
+            "grape": "Anggur",
+            "grass": "Rumput",
+            "hop": "Hop",
+            "maize": "Jagung",
+            "potato": "Kentang",
+            "rape": "Rapa/Kanola",
+            "rice": "Padi",
+            "soy": "Kedelai",
+            "strawberry": "Stroberi",
+            "sugar_beet": "Bit Gula",
+            "sugarcane": "Tebu",
+            "sunflower": "Bunga Matahari",
+            "tea": "Teh",
+            "tobacco": "Tembakau",
+            "vegetable": "Sayuran",
+            "wheat": "Gandum"
           }
         },
         "crossing": {
@@ -565,25 +763,75 @@
         "cuisine": {
           "label": "Masakan",
           "options": {
+            "african": "Afrika",
             "american": "Amerika",
+            "argentinian": "Argentina",
             "asian": "Asia",
+            "barbecue": "Barbekiu",
+            "bavarian": "Bayern",
+            "brazilian": "Brasil",
+            "breakfast": "Sarapan",
+            "brunch": "Sarapan Siang",
+            "bubble_tea": "Teh Susu Mutiara",
+            "cake": "Kue",
+            "caribbean": "Karibia",
             "chicken": "Ayam",
             "chinese": "Cina",
             "coffee_shop": "Kedai Kopi",
+            "crepe": "Krepe",
+            "curry": "Kari",
+            "dessert": "Pencuci Mulut",
+            "donut": "Donat",
+            "european": "Eropa",
+            "filipino": "Filipina",
+            "fine_dining": "Makan Mewah",
+            "fish": "Ikan",
+            "fish_and_chips": "Ikan dan Kentang",
             "french": "Prancis",
+            "fries": "Kentang Goreng",
+            "friture": "Gorengan",
+            "frozen_yogurt": "Yogurt Beku",
+            "georgian": "Georgia",
             "german": "Jerman",
             "greek": "Yunani",
+            "hawaiian": "Hawaii",
             "ice_cream": "Es Krim",
             "indian": "India",
+            "indonesian": "Indonesia",
             "italian": "Italia",
             "japanese": "Jepang",
+            "juice": "Jus",
+            "korean": "Korea",
+            "lebanese": "Lebanon",
+            "malaysian": "Malaysia",
+            "mediterranean": "Mediterania",
             "mexican": "Meksiko",
+            "middle_eastern": "Timur Tengah",
+            "moroccan": "Maroko",
+            "noodle": "Mi",
+            "pancake": "Panekuk",
+            "pastry": "Roti",
+            "persian": "Persia",
+            "peruvian": "Peru",
+            "polish": "Polandia",
+            "portuguese": "Portugal",
             "regional": "Daerah\nRegional",
+            "russian": "Rusia",
             "sandwich": "Roti Lapis\nSandwich",
+            "sausage": "Sosis",
+            "seafood": "Hidangan Laut",
+            "soup": "Sup",
+            "spanish": "Spanyo",
+            "steak_house": "Restoran Bistik",
             "sushi": "Susyi",
+            "taiwanese": "Taiwan",
+            "tea": "Teh",
             "thai": "Thailand",
             "turkish": "Turki",
-            "vietnamese": "Vietnam"
+            "ukrainian": "Ukraina",
+            "vietnamese": "Vietnam",
+            "western": "Barat",
+            "wings": "Sayap Ayam"
           },
           "terms": "Masakan,Makanan,Hidangan,Santapan,Sajian,Gorengan,Minuman"
         },
@@ -602,7 +850,8 @@
           "label": "Jalur Sepeda",
           "options": {
             "lane": {
-              "description": "Jalur sepeda dipisahkan dari lalu lintas oleh garis"
+              "description": "Jalur sepeda dipisahkan dari lalu lintas oleh garis",
+              "title": "Jalur Sepeda Biasa"
             },
             "no": {
               "description": "Tidak ada jalur sepeda",
@@ -691,7 +940,9 @@
         "diplomatic": {
           "label": "Tipe",
           "options": {
-            "embassy": "Kedutaan besar"
+            "consulate": "Konsulat",
+            "embassy": "Kedutaan besar",
+            "liaison": "Penghubung"
           }
         },
         "diplomatic/services": {
@@ -701,7 +952,13 @@
           "label": "Arah (Derajat Searah Jarum Jam)"
         },
         "direction_cardinal-US-CA-NZ": {
-          "label": "Arah"
+          "label": "Arah",
+          "options": {
+            "east": "Arah Timur",
+            "north": "Arah Utara",
+            "south": "Arah Selatan",
+            "west": "Arah Barat"
+          }
         },
         "direction_clock": {
           "label": "Arah",
@@ -791,6 +1048,12 @@
         "embassy": {
           "label": "Tipe",
           "options": {
+            "branch_embassy": "Cabang Kedutaan Besar",
+            "delegation": "Utusan",
+            "high_commission": "Komisi Tinggi",
+            "mission": "Utusan Diplomatik",
+            "nunciature": "Utusan Diplomatik Takhta Suci",
+            "residence": "Kediaman Resmi Duta Besar",
             "yes": "Kedutaan besar"
           }
         },
@@ -809,7 +1072,15 @@
         "entrance": {
           "label": "Tipe",
           "options": {
-            "emergency": "Pintu Keluar Darurat"
+            "emergency": "Pintu Keluar Darurat",
+            "entrance": "Khusus Masuk",
+            "exit": "Khusus Keluar",
+            "garage": "Pintu Garasi",
+            "home": "Rumah atau Apartemen Pribadi",
+            "main": "Utama",
+            "secondary": "Sekunder",
+            "staircase": "Tangga",
+            "yes": "Tidak jelas"
           }
         },
         "except": {
@@ -882,12 +1153,35 @@
         "fixme": {
           "label": "Perbaiki Saya"
         },
+        "flag/name": {
+          "label": "Nama Bendera"
+        },
         "flag/type": {
           "label": "Tipe bendera"
         },
+        "flag/wikidata": {
+          "label": "Wikidata Bendera"
+        },
         "flashing_lights": {
+          "label": "Lampu Kedap-Kedip",
           "options": {
+            "always": {
+              "description": "Lampu selalu berkedip",
+              "title": "Selalu berkedip"
+            },
+            "button": {
+              "description": "Lampu dinyalakan dengan menekan tombol",
+              "title": "Diaktifkan tombol"
+            },
+            "button;sensor": {
+              "description": "Lampu dinyalakan oleh sensor atau menekan tombol",
+              "title": "Diaktifkan tombol dan sensor"
+            },
             "no": "Tidak",
+            "sensor": {
+              "description": "Lampu dinyalakan oleh sensor",
+              "title": "Diaktifkan sensor"
+            },
             "yes": "Ya"
           }
         },
@@ -897,9 +1191,15 @@
         "flood_prone": {
           "label": "Rawan Banjir"
         },
+        "footrest": {
+          "label": "Sandaran Kaki"
+        },
         "ford": {
           "label": "Tipe",
           "placeholder": "Baku"
+        },
+        "fortification_type": {
+          "label": "Jenis Benteng"
         },
         "fountain": {
           "label": "Tipe"
@@ -911,7 +1211,27 @@
           "label": "Bahan bakar"
         },
         "fuel/fuel_multi": {
-          "label": "Tipe Bahan Bakar"
+          "label": "Tipe Bahan Bakar",
+          "options": {
+            "adblue:canister": "AdBlue / AUS 32 (dijual per tabung)",
+            "cng": "Gas Alam Terkompresi (CNG)",
+            "lng": "Gas Alam Cair (LNG)",
+            "lpg": "Gas Minyak Cair (LPG)",
+            "octane_100": "Bensin (Oktan 100)",
+            "octane_80": "Bensin (Oktan 80)",
+            "octane_85": "Bensin (Oktan 85)",
+            "octane_87": "Bensin (Oktan 87)",
+            "octane_88": "Bensin (Oktan 88)",
+            "octane_89": "Bensin (Oktan 89)",
+            "octane_90": "Bensin (Oktan 90)",
+            "octane_91": "Bensin (Oktan 91)",
+            "octane_92": "Bensin (Oktan 92)",
+            "octane_93": "Bensin (Oktan 93)",
+            "octane_95": "Bensin (Oktan 95)",
+            "octane_97": "Bensin (Oktan 97)",
+            "octane_98": "Bensin (Oktan 98)",
+            "propane": "Propana"
+          }
         },
         "gambling": {
           "label": "Permainan Judi"
@@ -934,14 +1254,42 @@
         "generator/method": {
           "label": "Metode",
           "options": {
-            "water-storage": "Waduk"
+            "anaerobic_digestion": "Penguraian Anaerob",
+            "barrage": "Bendungan Air Pasang",
+            "combustion": "Pembakaran",
+            "fission": "Fisi",
+            "fusion": "Fusi",
+            "gasification": "Gasifikasi",
+            "photovoltaic": "Fotovoltaik",
+            "run-of-the-river": "Aliran Sungai",
+            "stream": "Arus Pasang",
+            "water-pumped-storage": "Waduk Pompa",
+            "water-storage": "Waduk",
+            "wind_turbine": "Turbin Angin"
           }
         },
         "generator/output/electricity": {
           "label": "Ukuran Daya Keluaran"
         },
         "generator/source": {
-          "label": "Sumber"
+          "label": "Sumber",
+          "options": {
+            "battery": "Baterai",
+            "biofuel": "Bahan Bakar Nabati",
+            "biomass": "Bahan Nabati",
+            "coal": "Batu Bara",
+            "gas": "Gas Alam",
+            "gasoline": "Bensin",
+            "geothermal": "Tenaga Panas Bumi",
+            "hydro": "Tenaga Air",
+            "nuclear": "Tenaga Nuklir",
+            "oil": "Minyak",
+            "solar": "Radiasi Surya",
+            "tidal": "Tenaga Pasang Surut",
+            "waste": "Sampah",
+            "wave": "Tenaga Gelombang",
+            "wind": "Angin"
+          }
         },
         "generator/type": {
           "label": "Tipe"
@@ -972,18 +1320,139 @@
           "label": "Pegangan tangan",
           "terms": "Pegangan tangan,rel tangan, pagar tangga,pagar"
         },
+        "handrest": {
+          "label": "Sandaran Tangan"
+        },
+        "hashtags": {
+          "label": "Tagar",
+          "placeholder": "#contoh"
+        },
+        "hazard_boundary": {
+          "options": {
+            "avalanche": "Longsor Salju",
+            "contamination": "Pencemaran Kimia",
+            "electricity": "Setrum Listrik",
+            "hole": "Lubang",
+            "minefield": "Ranjau",
+            "nuclear": "Nuklir / Radioaktif",
+            "quicksand": "Pasir Hisap",
+            "shooting_range": "Tembakan"
+          }
+        },
         "healthcare": {
           "label": "Tipe",
           "options": {
+            "alternative": "Pengobatan Alternatif",
+            "audiologist": "Spesialis Pendengaran",
+            "blood_bank": "Bank Darah",
+            "blood_donation": "Pusat Donor Darah",
             "clinic": "Klinik",
+            "community_health_worker": "Pekerja Kesehatan Masyarakat",
+            "counselling": "Pusat Konseling",
             "dentist": "Dokter Gigi",
-            "doctor": "Dokter"
+            "dialysis": "Pusat Cuci Darah",
+            "doctor": "Dokter",
+            "hospice": "Perawatan Lanjut Usia",
+            "hospital": "Rumah Sakit",
+            "laboratory": "Laboratorium Medis",
+            "midwife": "Bidan",
+            "nurse": "Perawat",
+            "occupational_therapist": "Terapis Kerja",
+            "optometrist": "Spesialis Mata",
+            "pharmacy": "Apotek",
+            "physiotherapist": "Terapis Fisik",
+            "podiatrist": "Spesialis Kaki",
+            "psychotherapist": "Terapis Psikologi",
+            "rehabilitation": "Tempat Rehabilitasi",
+            "sample_collection": "Tempat Pengumpulan Sampel",
+            "speech_therapist": "Terapis Wicara",
+            "vaccination_centre": "Pusat Vaksinasi"
           }
         },
         "healthcare/speciality": {
           "label": "Keahlian",
           "options": {
-            "emergency": "Obat-obatan Darurat"
+            "abortion": "Aborsi",
+            "acupuncture": "Akupunktur",
+            "allergology": "Alergi & Asma",
+            "anaesthetics": "Anestesiologi",
+            "angiology": "Angiologi",
+            "anthroposophical": "Kedokteran Antroposofi",
+            "applied_kinesiology": "Kinesiologi Terapan",
+            "aromatherapy": "Aromaterapi",
+            "behavior": "Terapi Perilaku",
+            "biochemistry": "Biokimia",
+            "biology": "Biologi",
+            "blood_check": "Tes Darah",
+            "body": "Terapi Badan",
+            "cardiology": "Kardiologi",
+            "cardiothoracic_surgery": "Bedah Kardiotoraks",
+            "child_psychiatry": "Psikiatri Anak & Balita",
+            "chiropractic": "Kiropraktik",
+            "clinical_pathology": "Patologi Klinis",
+            "community": "Kesehatan Masyarakat",
+            "dental_oral_maxillo_facial_surgery": "Bedah Gigi, Mulut & Maksilofasial",
+            "depth": "Psikologi Kedalaman",
+            "dermatology": "Dermatologi",
+            "dermatovenereology": "Dermatovenereologi",
+            "diabetology": "Diabetologi",
+            "diagnostic_radiology": "Radiologi Diagnostik",
+            "emergency": "Obat-obatan Darurat",
+            "endocrinology": "Endokrinologi",
+            "fertility": "Kesuburan",
+            "gastroenterology": "Gastroenterologi",
+            "general": "Praktik Umum",
+            "geriatrics": "Kedokteran Lanjut Usia",
+            "gynaecology": "Obstetri & Ginekolog",
+            "haematology": "Hematologi",
+            "hepatology": "Hepatologi",
+            "herbalism": "Herbalisme",
+            "homeopathy": "Homeopati",
+            "humanistic": "Psikologi Humanis",
+            "hydrotherapy": "Hidroterapi",
+            "hypnosis": "Hipnosis",
+            "infectious_diseases": "Penyakit Menular",
+            "intensive": "Perawatan Intensif",
+            "internal": "Kedokteran Internal",
+            "naturopathy": "Naturopati",
+            "neonatology": "Neonatologi",
+            "nephrology": "Nefrologi",
+            "neurology": "Neurologi",
+            "neuropsychiatry": "Psikiatri Saraf",
+            "neurosurgery": "Bedah Saraf",
+            "nuclear": "Kedokteran Nuklir",
+            "occupational": "Kedokteran Okupasi",
+            "oncology": "Onkologi",
+            "ophthalmology": "Optalmologi",
+            "orthodontics": "Ortodonti",
+            "orthopaedics": "Bedah Ortopedi",
+            "osteopathy": "Osteopati",
+            "otolaryngology": "Telinga, Hidung & Tenggorokan",
+            "paediatric_surgery": "Bedah Anak",
+            "paediatrics": "Pediatri",
+            "palliative": "Perawatan Paliatif",
+            "pathology": "Patologi",
+            "physiatry": "Kedokteran & Rehabilitasi Fisik",
+            "plastic_surgery": "Bedah Plastik",
+            "podiatry": "Podiatri",
+            "proctology": "Bedah Kolorektum",
+            "psychiatry": "Psikiatri",
+            "pulmonology": "Pulmonologi",
+            "radiology": "Radiologi",
+            "radiotherapy": "Radioterapi",
+            "reflexology": "Refleksologi",
+            "rheumatology": "Reumatologi",
+            "stomatology": "Stomatologi",
+            "surgery": "Bedah Umum",
+            "systemic": "Terapi Sistemik",
+            "traditional_chinese_medicine": "Pengobatan Tradisional Cina",
+            "transplant": "Bedah Transplantasi",
+            "trauma": "Bedah Trauma",
+            "tropical": "Kedokteran Tropis",
+            "unani": "Kedokteran Unani",
+            "urology": "Urologi",
+            "vaccination": "Vaksinasi",
+            "vascular_surgery": "Bedah Vaskular"
           }
         },
         "height": {
@@ -1007,14 +1476,28 @@
           "label": "Tipe",
           "options": {
             "archaeological_site": "Situs Arkeologi",
+            "bomb_crater": "Kawah Bom",
             "boundary_stone": "Patok Perbatasan",
+            "building": "Bangunan Bersejarah",
             "castle": "Istana",
+            "charcoal_pile": "Tumpukan Arang",
+            "church": "Gereja",
+            "city_gate": "Gerbang Kota",
+            "citywalls": "Tembok Kota",
+            "fort": "Benteng Bersejarah",
+            "manor": "Puri",
             "memorial": "Tugu Peringatan",
+            "milestone": "Patok Jarak",
+            "millstone": "Batu Kilangan",
+            "mine": "Tambang",
+            "mine_shaft": "Terowongan Tambang",
             "monument": "Monumen",
             "railway": "Jalur Rel",
             "ruins": "Reruntuhan",
+            "tomb": "Makam",
             "wayside_cross": "Salib Pinggir Jalan",
-            "wayside_shrine": "Kuil Pinggir Jalan"
+            "wayside_shrine": "Kuil Pinggir Jalan",
+            "wreck": "Bangkai Kapal"
           }
         },
         "historic/civilization": {
@@ -1032,6 +1515,8 @@
         "holding_position/type": {
           "label": "Tipe",
           "options": {
+            "ILS": "Sistem Pendaratan Instrumen",
+            "intermediate": "Simpang Jalur Taksi Pesawat",
             "runway": "Landas pacu"
           }
         },
@@ -1084,10 +1569,16 @@
           }
         },
         "internet_access/fee": {
-          "label": "Biaya akses internet"
+          "label": "Biaya akses internet",
+          "options": {
+            "customers": "Khusus Pelanggan"
+          }
         },
         "internet_access/ssid": {
           "label": "Nama jaringan Wi-Fi"
+        },
+        "junction/ref_oneway": {
+          "label": "Nomor Persimpangan"
         },
         "junction_line": {
           "label": "Persimpangan",
@@ -1164,6 +1655,9 @@
         "lit": {
           "label": "Disinari"
         },
+        "loc_name": {
+          "label": "Nama Setempat"
+        },
         "location": {
           "label": "Lokasi"
         },
@@ -1194,13 +1688,49 @@
           "terms": "Pembuat,Produsen,Pabrik"
         },
         "map_type": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "scheme": "Peta Skematik",
+            "street": "Peta Jalan",
+            "topo": "Peta Topografi",
+            "toposcope": "Toposkop"
+          }
+        },
+        "mapillary": {
+          "label": "ID Gambar Mapillary"
         },
         "marker": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "stone": {
+              "title": "Batu"
+            }
+          }
         },
         "material": {
+          "label": "Bahan bangunan",
           "options": {
+            "adobe": "Tanah Lempung",
+            "aluminium": "Aluminium",
+            "brass": "Kuningan",
+            "brick": "Bata",
+            "bronze": "Perunggu",
+            "concrete": "Beton",
+            "dry_stone": "Batu Kering",
+            "glass": "Kaca",
+            "granite": "Granit",
+            "iron": "Besi",
+            "limestone": "Batu Kapur",
+            "marble": "Marmer",
+            "metal": "Logam",
+            "plastic": "Plastik",
+            "reinforced_concrete": "Beton Bertulang",
+            "rock": "Batu",
+            "sand": "Pasir",
+            "sandstone": "Batu Pasir",
+            "soil": "Tanah",
+            "steel": "Baja",
+            "stone": "Batu",
             "wood": "Hutan"
           }
         },
@@ -1214,7 +1744,37 @@
           "label": "Batas Kecepatan yang disarankan"
         },
         "memorial": {
-          "label": "Tipe"
+          "label": "Tipe",
+          "options": {
+            "blue_plaque": "Plakat Biru",
+            "bust": "Patung Kepala",
+            "cross": "Salib Bersejarah",
+            "ghost_bike": "Sepeda Hantu",
+            "plaque": "Plakat Peringatan",
+            "sculpture": "Pahatan",
+            "statue": "Patung",
+            "stone": "Batu",
+            "war_memorial": "Tugu Peringatan Perang"
+          }
+        },
+        "memorial/addr": {
+          "label": "Alamat Terdekat"
+        },
+        "message": {
+          "label": "Pesan"
+        },
+        "microbrewery": {
+          "label": "Pabrik Bir Rumahan"
+        },
+        "military_service": {
+          "label": "Matra",
+          "options": {
+            "air_force": "Angkatan Udara",
+            "army": "Angkatan Darat",
+            "coast_guard": "Penjaga Pantai",
+            "marines": "Marinir",
+            "navy": "Angkatan Laut"
+          }
         },
         "min_age": {
           "label": "Umur minimal"
@@ -1363,6 +1923,11 @@
         "parking_space": {
           "label": "Tipe"
         },
+        "payment_multi": {
+          "options": {
+            "coins": "Koin"
+          }
+        },
         "phone": {
           "label": "Telepon"
         },
@@ -1458,7 +2023,8 @@
         },
         "recycling_accepts": {
           "options": {
-            "clothes": "Baju"
+            "clothes": "Baju",
+            "plastic": "Plastik"
           }
         },
         "recycling_type": {
@@ -1470,8 +2036,32 @@
         "ref": {
           "label": "Kode referensi"
         },
+        "ref_aeroway_gate": {
+          "label": "Nomor Gerbang"
+        },
+        "ref_disc_golf_hole": {
+          "label": "Nomor Lubang"
+        },
+        "ref_golf_hole": {
+          "label": "Nomor Lubang"
+        },
+        "ref_highway_junction": {
+          "label": "Nomor Persimpangan"
+        },
+        "ref_platform": {
+          "label": "Nomor Peron"
+        },
+        "ref_road_number": {
+          "label": "Nomor Jalan"
+        },
         "ref_room_number": {
           "label": "Nomor Ruangan"
+        },
+        "ref_route": {
+          "label": "Nomor Rute"
+        },
+        "ref_runway": {
+          "label": "Nomor Landasan Pacu"
         },
         "relation": {
           "label": "Tipe"
@@ -1480,10 +2070,27 @@
           "label": "Agama",
           "options": {
             "buddhist": "Budha",
+            "caodaism": "Caodais",
+            "chinese_folk": "Kepercayaan Tradisional Cina",
             "christian": "Kristen",
+            "confucian": "Konghucu",
             "jewish": "Yahudi",
+            "multifaith": "Multiagama",
             "muslim": "Islam",
-            "taoist": "Tao"
+            "none": "Tanpa Agama",
+            "spiritualist": "Spiritualis",
+            "taoist": "Tao",
+            "unitarian_universalist": "Unitarian Universalis",
+            "vietnamese_folk": "Kepercayaan Tradisional Vietnam"
+          }
+        },
+        "reservation": {
+          "label": "Pesan Tempat",
+          "options": {
+            "no": "Tidak Boleh",
+            "recommended": "Disarankan",
+            "required": "Wajib",
+            "yes": "Boleh"
           }
         },
         "residential": {
@@ -1491,6 +2098,19 @@
         },
         "resort": {
           "label": "Tipe"
+        },
+        "resource": {
+          "options": {
+            "aggregate": "Agregat",
+            "clay": "Tanah Liat",
+            "coal": "Batu Bara",
+            "gold": "Emas",
+            "gravel": "Kerikil",
+            "iron_ore": "Bijih Besi",
+            "limestone": "Batu Kapur",
+            "peat": "Gambut",
+            "sand": "Pasir"
+          }
         },
         "restriction": {
           "label": "Tipe"
@@ -1527,24 +2147,46 @@
         "seamark/beacon_isolated_danger/shape": {
           "label": "Bentuk"
         },
+        "seamark/beacon_lateral/category": {
+          "label": "Kategori"
+        },
         "seamark/beacon_lateral/colour": {
-          "label": "Warna"
+          "label": "Warna",
+          "options": {
+            "green": "Hijau",
+            "red": "Merah"
+          }
         },
         "seamark/beacon_lateral/shape": {
           "label": "Bentuk"
         },
         "seamark/beacon_lateral/system": {
+          "label": "Sistem",
           "options": {
             "other": "Lainnya"
           }
         },
+        "seamark/buoy_lateral/category": {
+          "label": "Kategori"
+        },
         "seamark/buoy_lateral/colour": {
-          "label": "Warna"
+          "label": "Warna",
+          "options": {
+            "green": "Hijau",
+            "green;red;green": "Hijau-Merah-Hijau",
+            "green;white;green;white": "Hijau-Putih-Hijau-Putih",
+            "red": "Merah",
+            "red;green;red": "Merah-Hijau-Merah",
+            "red;white;red;white": "Merah-Putih-Merah-Putih",
+            "white": "Putih",
+            "yellow": "Kuning"
+          }
         },
         "seamark/buoy_lateral/shape": {
           "label": "Bentuk"
         },
         "seamark/buoy_lateral/system": {
+          "label": "Sistem",
           "options": {
             "other": "Lainnya"
           }
@@ -1554,6 +2196,12 @@
             "marina": "Ya",
             "marina_no_facilities": "Tidak"
           }
+        },
+        "seamark/mooring/category": {
+          "label": "Kategori"
+        },
+        "seamark/wreck/category": {
+          "label": "Kategori"
         },
         "seasonal": {
           "label": "Musiman"
@@ -1628,7 +2276,10 @@
           "label": "Sumber"
         },
         "sport": {
-          "label": "Olahraga"
+          "label": "Olahraga",
+          "options": {
+            "cycling": "Bersepeda"
+          }
         },
         "sport/sport_ice": {
           "label": "Olahraga"
@@ -1681,6 +2332,7 @@
         "substance": {
           "options": {
             "fuel": "Bahan bakar",
+            "gas": "Gas Alam",
             "hot_water": "Air panas",
             "water": "Air Minum"
           }
@@ -1703,7 +2355,12 @@
         "surface": {
           "label": "Permukaan",
           "options": {
+            "clay": "Tanah Liat",
+            "concrete": "Beton",
             "grass": "Rumput",
+            "gravel": "Kerikil",
+            "metal": "Logam",
+            "sand": "Pasir",
             "wood": "Hutan"
           }
         },
@@ -1852,12 +2509,14 @@
         "usage_rail": {
           "options": {
             "industrial": "Industri",
+            "main": "Utama",
             "military": "Militer",
             "tourism": "Pariwisata"
           }
         },
         "utility": {
           "options": {
+            "oil": "Minyak",
             "power": "Listrik",
             "water": "Air"
           }
@@ -1873,6 +2532,7 @@
         },
         "vending": {
           "options": {
+            "coffee": "Kopi",
             "drinks": "Minuman",
             "fuel": "Bahan bakar",
             "ice_cream": "Es Krim",
@@ -1881,6 +2541,9 @@
         },
         "wall": {
           "label": "Tipe"
+        },
+        "waste": {
+          "label": "Sampah"
         },
         "water": {
           "label": "Tipe"
@@ -1921,6 +2584,9 @@
         "address": {
           "name": "Alamat",
           "terms": "Alamat"
+        },
+        "advertising/board": {
+          "name": "Papan Informasi"
         },
         "aerialway/cable_car": {
           "name": "Kereta Gantung"
@@ -2014,6 +2680,9 @@
         "amenity/clinic": {
           "name": "Klinik"
         },
+        "amenity/clinic/dialysis": {
+          "name": "Pusat Cuci Darah"
+        },
         "amenity/clock": {
           "name": "Jam"
         },
@@ -2022,6 +2691,24 @@
         },
         "amenity/college": {
           "name": "Lapangan Kampus"
+        },
+        "amenity/community_centre/community_hall": {
+          "name": "Balai Warga"
+        },
+        "amenity/community_centre/cultural_centre": {
+          "name": "Pusat Kebudayaan"
+        },
+        "amenity/community_centre/family_centre": {
+          "name": "Pusat Keluarga"
+        },
+        "amenity/community_centre/parish_hall": {
+          "name": "Balai Dusun"
+        },
+        "amenity/community_centre/village_hall": {
+          "name": "Balai Desa"
+        },
+        "amenity/community_centre/youth_centre": {
+          "name": "Pusat Pemuda"
         },
         "amenity/compressed_air": {
           "name": "Pompa Ban",
@@ -2036,6 +2723,9 @@
         },
         "amenity/doctors": {
           "name": "Dokter"
+        },
+        "amenity/doctors/podiatry": {
+          "name": "Spesialis Kaki"
         },
         "amenity/dojo": {
           "name": "Sasana Bela Diri"
@@ -2184,6 +2874,27 @@
         "area": {
           "terms": "Daerah, Kawasan, Wilayah"
         },
+        "attraction/animal": {
+          "name": "Kandang Hewan"
+        },
+        "attraction/big_wheel": {
+          "name": "Bianglala"
+        },
+        "attraction/maze": {
+          "name": "Labirin"
+        },
+        "attraction/pirate_ship": {
+          "name": "Kapal Bajak Laut"
+        },
+        "attraction/river_rafting": {
+          "name": "Arung Jeram"
+        },
+        "attraction/train": {
+          "name": "Kereta Wisata"
+        },
+        "attraction/water_slide": {
+          "name": "Seluncur Air"
+        },
         "barrier": {
           "name": "Penghalang"
         },
@@ -2254,6 +2965,18 @@
         "building/cabin": {
           "name": "Kabin"
         },
+        "building/carport": {
+          "name": "Garasi Mobil"
+        },
+        "building/cathedral": {
+          "name": "Bangunan Katedral"
+        },
+        "building/chapel": {
+          "name": "Bangunan Kapel"
+        },
+        "building/church": {
+          "name": "Bangunan Gereja"
+        },
         "building/college": {
           "name": "Bangunan Kampus"
         },
@@ -2263,11 +2986,17 @@
         "building/construction": {
           "name": "Bangunan sedang dalam konstruksi"
         },
+        "building/cowshed": {
+          "name": "Kandang Sapi"
+        },
         "building/dormitory": {
           "name": "Asrama"
         },
         "building/entrance": {
           "name": "Pintu Masuk/Keluar"
+        },
+        "building/farm_auxiliary": {
+          "name": "Bangunan Pertanian"
         },
         "building/garage": {
           "name": "Garasi tunggal",
@@ -2276,8 +3005,14 @@
         "building/garages": {
           "name": "Garasi jamak"
         },
+        "building/grandstand": {
+          "name": "Tribun"
+        },
         "building/greenhouse": {
           "name": "Rumah Kaca"
+        },
+        "building/hangar": {
+          "name": "Bangunan Hangar"
         },
         "building/hospital": {
           "name": "Bangunan Rumah Sakit"
@@ -2289,15 +3024,30 @@
           "name": "Rumah",
           "terms": "rumah,keluarga,perumahan"
         },
+        "building/houseboat": {
+          "name": "Garasi Kapal"
+        },
         "building/hut": {
           "name": "Gubuk"
         },
         "building/industrial": {
           "name": "Bangunan Industri"
         },
+        "building/kindergarten": {
+          "name": "Bangunan Taman Kanak-Kanak"
+        },
+        "building/manufacture": {
+          "name": "Bangunan Pabrik"
+        },
         "building/mosque": {
           "name": "Bangunan Masjid\nBangunan Mesjid",
           "terms": "islam,muslim,masjid,mesjid,mushola,musholla,musala,langgar,tempat ibadah,rumah allah,sunni,syiah"
+        },
+        "building/office": {
+          "name": "Bangunan Perkantoran"
+        },
+        "building/pavilion": {
+          "name": "Bangunan Paviliun"
         },
         "building/public": {
           "name": "Bangunan Umum"
@@ -2318,6 +3068,24 @@
         "building/stable": {
           "name": "Kandang Kuda"
         },
+        "building/stadium": {
+          "name": "Bangunan Stadion"
+        },
+        "building/sty": {
+          "name": "Kandang Babi"
+        },
+        "building/synagogue": {
+          "name": "Bangunan Sinagoga"
+        },
+        "building/temple": {
+          "name": "Bangunan Tempat Suci"
+        },
+        "building/train_station": {
+          "name": "Bangunan Stasiun Kereta"
+        },
+        "building/transportation": {
+          "name": "Bangunan Transportasi"
+        },
         "building/university": {
           "name": "Bangunan Universitas",
           "terms": "Universitas, Kampus"
@@ -2325,11 +3093,17 @@
         "building/warehouse": {
           "name": "Gudang"
         },
+        "building_part": {
+          "name": "Bagian Bangunan"
+        },
         "building_point": {
           "name": "Bangunan"
         },
         "craft": {
           "name": "Pengrajin"
+        },
+        "craft/agricultural_engines": {
+          "name": "Mekanik Mesin Tani"
         },
         "craft/basket_maker": {
           "name": "Pembuat Keranjang"
@@ -2350,12 +3124,24 @@
         "craft/carpenter": {
           "name": "Tukang Kayu"
         },
+        "craft/carpet_layer": {
+          "name": "Pemasang Karpet"
+        },
         "craft/caterer": {
           "name": "Jasa Boga",
           "terms": "Katering, Pejasaboga"
         },
+        "craft/chimney_sweeper": {
+          "name": "Pembersih Cerobong Asap"
+        },
+        "craft/cleaning": {
+          "name": "Janitor"
+        },
         "craft/clockmaker": {
           "name": "Pembuat Jam"
+        },
+        "craft/confectionery": {
+          "name": "Pembuat Permen"
         },
         "craft/dressmaker": {
           "name": "Penjahit Pakaian Wanita"
@@ -2397,6 +3183,9 @@
         },
         "craft/scaffolder": {
           "name": "Perancah"
+        },
+        "craft/sculptor": {
+          "name": "Pemahat"
         },
         "craft/shoemaker": {
           "name": "Pembuat Sepatu"
@@ -2492,6 +3281,48 @@
         },
         "golf/hole": {
           "name": "Lubang Golf"
+        },
+        "healthcare/alternative": {
+          "name": "Pengobatan Alternatif"
+        },
+        "healthcare/audiologist": {
+          "name": "Spesialis Pendengaran"
+        },
+        "healthcare/counselling": {
+          "name": "Pusat Konseling"
+        },
+        "healthcare/hospice": {
+          "name": "Perawatan Lanjut Usia"
+        },
+        "healthcare/laboratory": {
+          "name": "Laboratorium Medis"
+        },
+        "healthcare/midwife": {
+          "name": "Bidan"
+        },
+        "healthcare/occupational_therapist": {
+          "name": "Terapis Kerja"
+        },
+        "healthcare/optometrist": {
+          "name": "Spesialis Mata"
+        },
+        "healthcare/physiotherapist": {
+          "name": "Terapis Fisik"
+        },
+        "healthcare/podiatrist": {
+          "name": "Spesialis Kaki"
+        },
+        "healthcare/psychotherapist": {
+          "name": "Terapis Psikologi"
+        },
+        "healthcare/rehabilitation": {
+          "name": "Tempat Rehabilitasi"
+        },
+        "healthcare/sample_collection": {
+          "name": "Tempat Pengumpulan Sampel"
+        },
+        "healthcare/speech_therapist": {
+          "name": "Terapis Wicara"
         },
         "highway": {
           "name": "Fitur Jalan Raya"
@@ -2668,13 +3499,31 @@
           "name": "Patok Perbatasan",
           "terms": "Patok Perbatasan"
         },
+        "historic/building": {
+          "name": "Bangunan Bersejarah"
+        },
         "historic/castle": {
           "name": "Istana",
           "terms": "Kastil, Benteng, Kastel"
         },
+        "historic/castle/palace": {
+          "name": "Istana"
+        },
+        "historic/city_gate": {
+          "name": "Gerbang Kota"
+        },
+        "historic/fort": {
+          "name": "Benteng Bersejarah"
+        },
+        "historic/manor": {
+          "name": "Puri"
+        },
         "historic/memorial": {
           "name": "Tugu Peringatan",
           "terms": "Tugu Peringatan"
+        },
+        "historic/memorial/plaque": {
+          "name": "Plakat Peringatan"
         },
         "historic/monument": {
           "name": "Monumen",
@@ -2684,6 +3533,9 @@
           "name": "Reruntuhan",
           "terms": "Reruntuhan"
         },
+        "historic/tomb": {
+          "name": "Makam"
+        },
         "historic/wayside_cross": {
           "name": "Salib Pinggir Jalan",
           "terms": "Salib Pinggir Jalan"
@@ -2691,6 +3543,9 @@
         "historic/wayside_shrine": {
           "name": "Kuil Pinggir Jalan",
           "terms": "Kuil Pinggir Jalan"
+        },
+        "historic/wreck": {
+          "name": "Bangkai Kapal"
         },
         "indoor": {
           "name": "Fitur dalam Ruangan"
@@ -3022,6 +3877,9 @@
           "name": "Puncak",
           "terms": "Gunung"
         },
+        "natural/sand": {
+          "name": "Pasir"
+        },
         "natural/scrub": {
           "name": "Belukar"
         },
@@ -3067,9 +3925,15 @@
         "office/administrative": {
           "name": "Kantor Administrasi"
         },
+        "office/diplomatic/consulate": {
+          "name": "Konsulat"
+        },
         "office/diplomatic/embassy": {
           "name": "Kedutaan besar",
           "terms": "Kedutaan"
+        },
+        "office/diplomatic/liaison": {
+          "name": "Penghubung"
         },
         "office/educational_institution": {
           "name": "Institusi Pendidikan"
@@ -3147,6 +4011,9 @@
         },
         "power/generator": {
           "name": "Generator Listrik"
+        },
+        "power/generator/source/wind": {
+          "name": "Turbin Angin"
         },
         "power/line": {
           "name": "Kabel Listrik"
@@ -3547,6 +4414,21 @@
         "tourism/artwork": {
           "name": "Karya Seni"
         },
+        "tourism/artwork/bust": {
+          "name": "Patung Kepala"
+        },
+        "tourism/artwork/graffiti": {
+          "name": "Grafiti"
+        },
+        "tourism/artwork/installation": {
+          "name": "Instalasi Seni"
+        },
+        "tourism/artwork/sculpture": {
+          "name": "Pahatan"
+        },
+        "tourism/artwork/statue": {
+          "name": "Patung"
+        },
         "tourism/attraction": {
           "name": "Objek Wisata",
           "terms": "Atraksi Wisata"
@@ -3569,6 +4451,9 @@
         },
         "tourism/information": {
           "name": "Informasi"
+        },
+        "tourism/information/board/welcome_sign": {
+          "name": "Papan Selamat Datang"
         },
         "tourism/museum": {
           "terms": "Gedung Bersejarah, Sejarah, Prasejarah, Kuno"

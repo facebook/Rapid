@@ -205,7 +205,8 @@
       "osmmainz": "開放街圖美因茨",
       "osmnelson": "OSM 尼爾森",
       "swissopenstreetmap": "瑞士 OpenStreetMap",
-      "youthmappersasu": "青年绘制者ASU"
+      "youthmappersasu": "青年绘制者ASU",
+      "youthmappersufrj": "年輕圖客 UFRJ"
     },
     "_defaults": {
       "aparat": {
@@ -541,6 +542,9 @@
     "de-mainz-mailinglist": {
       "description": "美因茨一帶的開放街圖"
     },
+    "de-mainz-signal": {
+      "description": "美茵茲、威斯巴登及周邊地區的 OpenStreetMap"
+    },
     "de-mainz-telegram": {
       "description": "美因茨一帶的開放街圖"
     },
@@ -706,6 +710,9 @@
     },
     "it-discourse": {
       "description": "您可以討論 OpenStreetMap 事務的論壇"
+    },
+    "ivides_website": {
+      "description": "我們專注於永續發展、繪圖及支援 OpenStreetMap 社群。"
     },
     "ko-facebook": {
       "description": "南韓的圖客與開放街圖使用者"
@@ -1211,6 +1218,9 @@
     },
     "rs-wiki": {
       "description": "開放街圖維基專題的塞爾維亞頁面"
+    },
+    "scandinavia-discord": {
+      "name": "開放街圖世界 Discord 的 Scandinavian 頻道"
     },
     "sg-wiki": {
       "description": "{community} Wiki 頁面"

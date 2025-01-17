@@ -602,6 +602,9 @@
     "RS-telegram": {
       "extendedDescription": "加入社群以得知更多關於開放街圖的資訊，也可以問問題或是參與我們的會面。每個人都很歡迎加入！"
     },
+    "scandinavia-discord": {
+      "name": "開放街圖世界 Discord 的斯堪的納維亞語頻道"
+    },
     "sg-wiki": {
       "description": "{community} 的維基頁面"
     },

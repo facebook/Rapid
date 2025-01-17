@@ -3530,7 +3530,8 @@
           "terms": "Lufthavn, Flyveplads"
         },
         "aeroway/apron": {
-          "name": "Lufthavnsforplads"
+          "name": "Lufthavnsforplads",
+          "terms": "Lufthavnsforplads,forplads,apron"
         },
         "aeroway/gate": {
           "name": "Lufthavnsgate",
@@ -5918,7 +5919,7 @@
         },
         "landuse/farmyard": {
           "name": "Gårdsplads",
-          "terms": "Gård, Bondegård"
+          "terms": "Gårdsplads,Gård, Bondegård"
         },
         "landuse/flowerbed": {
           "name": "Blomsterbed"
@@ -5937,6 +5938,9 @@
         },
         "landuse/greenfield": {
           "terms": "byggegrund,udstykning,byggefelt"
+        },
+        "landuse/greenhouse_horticulture": {
+          "name": "Drivhusområde"
         },
         "landuse/harbour": {
           "name": "Havn",
@@ -6018,12 +6022,12 @@
           "terms": " rekreativt område,rekreativt areal"
         },
         "landuse/religious": {
-          "name": "Helligt område",
+          "name": "Religiøst område",
           "terms": "religion,hellig,religiøst,"
         },
         "landuse/residential": {
-          "name": "Beboet område",
-          "terms": "Beboet område"
+          "name": "Boligområde",
+          "terms": "Boligområde,Beboet område"
         },
         "landuse/residential/apartments": {
           "name": "Lejlighedskompleks"
@@ -7542,7 +7546,8 @@
           "name": "Togstation (Trinbræt / På anmodning)"
         },
         "railway/level_crossing": {
-          "name": "Jernbaneoverkørsel"
+          "name": "Jernbaneoverskæring",
+          "terms": "Jernbaneoverskæring,Jernbaneoverkørsel,bom"
         },
         "railway/light_rail": {
           "name": "Letbane",

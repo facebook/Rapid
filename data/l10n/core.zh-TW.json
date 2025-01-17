@@ -491,6 +491,7 @@
       "tell_us": "告訴我們！"
     },
     "confirm": {
+      "okay": "瞭解",
       "cancel": "唔做"
     },
     "splash": {
@@ -767,6 +768,7 @@
     },
     "intro": {
       "done": "完成",
+      "ok": "瞭解",
       "graph": {
         "state": "臺灣",
         "countrycode": "tw",

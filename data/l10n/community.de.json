@@ -3,6 +3,7 @@
     "_communities": {
       "freelibreopensourcesoftwarekosovaflossk": "Free Libre Open Source Software Kosovo (FLOSSK)",
       "kiribatiwomeninmapping": "Kiribati Frauen beim Mappen",
+      "mapeadoresivides": "IVIDES-Mapper",
       "mappingbotswana": "Mappen in Botswana",
       "openstreetmapafrica": "OpenStreetMap Afrika",
       "openstreetmapalbania": "OpenStreetMap Albanien",
@@ -560,6 +561,9 @@
     "it-discourse": {
       "description": "Das italienische Forum, in dem Sie über OpenStreetMap diskutieren können"
     },
+    "ivides_website": {
+      "description": "Wir konzentrieren uns auf nachhaltige Entwicklung, Kartierung und Unterstützung der OpenStreetMap-Community."
+    },
     "ko-facebook": {
       "description": "Mapper und OpenStreetMap Nutzende in Korea"
     },
@@ -1037,6 +1041,9 @@
     },
     "rs-wiki": {
       "description": "Wikiproject Seite für Serbien"
+    },
+    "scandinavia-discord": {
+      "name": "Skandinavischer Kanal auf OpenStreetMap World Discord"
     },
     "sg-wiki": {
       "description": "{community} Wiki Seite"
