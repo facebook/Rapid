@@ -40,6 +40,19 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [2.5.2](https://github.com/facebook/Rapid/releases/tag/rapid-v2.5.2)
+#### 2025-Jan-17
+
+#### :bug: Bugfixes
+* [#1577] Fix: Issues with build script when run on Windows
+* [#1674] Fix: Avoid flipping the hole in the walkthrough curtain
+* [#1675] Fix: Broken triangle shape of walkthrough curtain on Firefox
+
+[#1577]: https://github.com/facebook/Rapid/issues/1577
+[#1674]: https://github.com/facebook/Rapid/issues/1674
+[#1675]: https://github.com/facebook/Rapid/issues/1675
+
+
 # [2.5.1](https://github.com/facebook/Rapid/releases/tag/rapid-v2.5.1)
 #### 2025-Jan-15
 
