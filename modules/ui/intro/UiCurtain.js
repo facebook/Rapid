@@ -264,7 +264,7 @@ export class UiCurtain {
     // calculate path
     // cover container in darkness
     const cr = containerRect;
-    let path = `M${cr.left},${cr.top} L${cr.left},${cr.bottom} L${cr.right},${cr.bottom}, L${cr.right},${cr.top} Z`;
+    let path = `M${cr.left},${cr.top} L${cr.left},${cr.bottom} L${cr.right},${cr.bottom} L${cr.right},${cr.top} Z`;
 
     if (this._revealPolygon.length) {   // cut out the hole
       const polygon = this._revealPolygon;
