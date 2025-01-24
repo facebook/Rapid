@@ -82,7 +82,7 @@ export class EditSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'editor';   // was: 'history'
-    this.dependencies = new Set(['gfx', 'imagery', 'map', 'photos', 'storage']);
+    this.dependencies = new Set(['gfx', 'imagery', 'map', 'photos', 'database']);
 
     this._mutex = utilSessionMutex('lock');
     this._canRestoreBackup = false;
@@ -118,6 +118,10 @@ export class EditSystem extends AbstractSystem {
   initAsync() {
     if (this._initPromise) return this._initPromise;
 
+    if (!this._mutex.locked()) {
+      this._mutex.lock();
+    }
+
     for (const id of this.dependencies) {
       if (!this.context.systems[id]) {
         return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
@@ -127,11 +131,27 @@ export class EditSystem extends AbstractSystem {
     this._reset();
 
     const storage = this.context.systems.storage;
-    const prerequisites = storage.initAsync();
+    const database = this.context.systems.database;
+
+    // Ensure both storage and database are initialized
+    const prerequisites = Promise.all([
+      storage.initAsync(),
+      database.initAsync()
+    ]);
 
     return this._initPromise = prerequisites
-      .then(() => {
+      .then(async () => {
         if (window.mocha) return;
+
+        // Check if a backup exists in IndexedDB
+        try {
+          const backup = await database.get('backups', this._backupKey());
+          this._canRestoreBackup = !!backup;
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error('Failed to check for backup:', error);
+          this._canRestoreBackup = false;
+        }
 
         // Setup event handlers..
         window.addEventListener('beforeunload', e => {
@@ -143,9 +163,6 @@ export class EditSystem extends AbstractSystem {
         });
 
         window.addEventListener('unload', () => this._mutex.unlock());
-
-        // changes are restorable if Rapid is not open in another window/tab and a backup exists in localStorage
-        this._canRestoreBackup = this._mutex.lock() && storage.hasItem(this._backupKey());
       });
   }
 
@@ -1178,15 +1195,16 @@ export class EditSystem extends AbstractSystem {
     if (this._inTransaction) return;           // Don't backup edits mid-transaction
     if (!this._mutex.locked()) return;         // Another browser tab owns the history
 
-    const storage = context.systems.storage;
     const json = this.toJSON();
     if (json) {
-      // status will be `true` if the backup succeeded
-      const status = storage.setItem(this._backupKey(), json);
-      if (status !== this._backupStatus) {
-        this._backupStatus = status;
-        this.emit('backupstatuschange', this._backupStatus);
-      }
+      this.context.systems.database.put('backups', { id: this._backupKey(), data: json })
+        .then(() => {
+          // Backup saved successfully
+        })
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.error('Failed to save backup:', error);
+        });
     }
   }
 
@@ -1210,18 +1228,28 @@ export class EditSystem extends AbstractSystem {
    * - The user chooses to "Restore my changes" from the restore screen
    */
   restoreBackup() {
-    this._canRestoreBackup = false;
+    this.context.systems.database.get('backups', this._backupKey())
+      .then((backup) => {
+        if (backup) {
+          return this.fromJSONAsync(backup.data)
+            .then(() => {
+              // Reset flags and emit events
+              this._canRestoreBackup = false;
+              this._inTransition = false;
+              this._inTransaction = false;
 
-    if (!this._mutex.locked()) return;  // another browser tab owns the history
-
-    const context = this.context;
-    const storage = context.systems.storage;
-    const json = storage.getItem(this._backupKey());
-    if (json) {
-      context.resetAsync()
-        .then(() => this.fromJSONAsync(json));
-    }
+              // Emit events to ensure the system is aware of the restored state
+              this.emit('stagingchange', this._fullDifference);
+              this.emit('stablechange', this._fullDifference);
+            });
+        }
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.error('Failed to restore backup:', error);
+      });
   }
+
 
 
   /**
@@ -1233,18 +1261,14 @@ export class EditSystem extends AbstractSystem {
    * - A changeset is inflight, we remove it to prevent the user from restoring duplicate edits
    */
   clearBackup() {
-    this._canRestoreBackup = false;
-    this.deferredBackup.cancel();
-
-    if (!this._mutex.locked()) return;  // another browser tab owns the history
-
-    const storage = this.context.systems.storage;
-    storage.removeItem(this._backupKey());
-
-    // clear the changeset metadata associated with the saved history
-    storage.removeItem('comment');
-    storage.removeItem('hashtags');
-    storage.removeItem('source');
+    this.context.systems.database.delete('backups', this._backupKey())
+      .then(() => {
+        // Backup cleared successfully
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.error('Failed to clear backup:', error);
+      });
   }
 
 

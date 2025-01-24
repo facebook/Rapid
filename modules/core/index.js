@@ -14,6 +14,7 @@ import { PhotoSystem } from './PhotoSystem.js';
 import { PresetSystem } from './PresetSystem.js';
 import { RapidSystem } from './RapidSystem.js';
 import { StorageSystem } from './StorageSystem.js';
+import { DatabaseSystem } from './DatabaseSystem.js';
 import { StyleSystem } from './StyleSystem.js';
 import { UiSystem } from './UiSystem.js';
 import { UploaderSystem } from './UploaderSystem.js';
@@ -35,6 +36,7 @@ export {
   PresetSystem,
   RapidSystem,
   StorageSystem,
+  DatabaseSystem,
   StyleSystem,
   UiSystem,
   UploaderSystem,
@@ -60,6 +62,7 @@ systems.available.set('photos', PhotoSystem);
 systems.available.set('presets', PresetSystem);
 systems.available.set('rapid', RapidSystem);
 systems.available.set('storage', StorageSystem);
+systems.available.set('database', DatabaseSystem);
 systems.available.set('styles', StyleSystem);
 systems.available.set('ui', UiSystem);
 systems.available.set('uploader', UploaderSystem);

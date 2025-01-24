@@ -2,8 +2,7 @@ import { AbstractSystem } from './AbstractSystem.js';
 
 /**
  * `StorageSystem` is a wrapper around `window.localStorage`
- * It is used to store user preferences (good)
- * and the user's edit history (not good)
+ * It is used to store user preferences
  *
  * n.b.:  `localStorage` is a _synchronous_ API.
  * We should add another system for wrapping `indexedDB`,
