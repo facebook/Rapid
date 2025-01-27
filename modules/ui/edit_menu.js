@@ -29,7 +29,7 @@ export function uiEditMenu(context) {
   let _operations = [];
   let _tooltips = new Map;   // Map(id -> tooltip)
   let _anchorLoc = [0, 0];   // Array [lon,lat] wgs84 coordinate where the menu should be anchored
-  let _initialScale = 0;
+  let _oldz = 0;
   let _triggerType = '';     // 'touch', 'pen', or 'rightclick'
   let _menuTop = false;
   let _menuHeight;
@@ -65,7 +65,7 @@ export function uiEditMenu(context) {
     }
 
     _menuHeight = VERTICAL_PADDING * 2 + ops.length * buttonHeight;
-    _initialScale = viewport.transform.scale;
+    _oldz = viewport.transform.zoom;
 
     const wrap = selection.selectAll('.edit-menu')
       .data([0]);
@@ -207,9 +207,9 @@ export function uiEditMenu(context) {
   function _updatePosition() {
     if (!_menu || _menu.empty()) return;
 
-    // close the menu if the scale (zoom) has changed
+    // close the menu if the zoom has changed
     // (this is because the menu will scale with the supersurface and look wrong)
-    if (_initialScale !== viewport.transform.scale) {
+    if (_oldz !== viewport.transform.zoom) {
       editMenu.close();
       return;
     }

@@ -80,6 +80,10 @@ export class UiMinimap {
       return;   // no parent - called too early?
     }
 
+// worldcoordinates
+// not yet
+return;
+
     // add .map-in-map
     let $wrap = $parent.selectAll('.map-in-map')
       .data([0]);

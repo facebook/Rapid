@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import { interpolateNumber } from 'd3-interpolate';
 import { AdjustmentFilter, ConvolutionFilter } from 'pixi-filters';
-import { Tiler, geoScaleToZoom, vecScale } from '@rapid-sdk/math';
+import { Tiler, vecScale } from '@rapid-sdk/math';
 
 import { AbstractLayer } from './AbstractLayer.js';
 
@@ -150,8 +150,11 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       debugContainer.visible = showDebug;
     }
 
+// worldcoordinates
     const tileSize = source.tileSize || 256;
-    const z = geoScaleToZoom(t.k, tileSize);  // Use actual zoom for this, not effective zoom
+//    const z = geoScaleToZoom(t.k, tileSize);  // Use actual zoom for this, not effective zoom
+    const log2ts = Math.log2(tileSize);
+    const z = t.z - (log2ts - 8);   // adjust zoom for tile sizes not 256px (log2(256) = 8)
 
     // Apply imagery offset (in pixels) to the source container
     const offset = vecScale(source.offset, Math.pow(2, z));
@@ -204,7 +207,10 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       const tileName = `${sourceID}-${tileID}`;
       const sprite = new PIXI.Sprite();
       sprite.label = tileName;
-      sprite.anchor.set(0, 1);    // left, bottom
+
+// worldcoordinates
+//      sprite.anchor.set(0, 1);    // left, bottom
+sprite.anchor.set(0, 0);  // left, top
       sprite.zIndex = tile.xyz[2];   // draw zoomed tiles above unzoomed tiles
       sprite.alpha = source.alpha;
       sourceContainer.addChild(sprite);
@@ -256,7 +262,10 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       }
 
       if (keepTile) {   // Tile may be visible - update position and scale
-        const [x, y] = viewport.project(tile.wgs84Extent.min);   // left, bottom
+// worldcoordinates
+        // const [x, y] = viewport.project(tile.wgs84Extent.min);   // left, bottom
+const [x, y] = viewport.worldToScreen(tile.tileExtent.min);  // left top
+
         tile.sprite.position.set(x, y);
         const size = tileSize * Math.pow(2, z - tile.xyz[2]);
         tile.sprite.width = size;

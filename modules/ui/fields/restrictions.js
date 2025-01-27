@@ -1,6 +1,6 @@
 //import { dispatch as d3_dispatch } from 'd3-dispatch';
 //import { select as d3_select } from 'd3-selection';
-//import { Extent, Viewport, geoZoomToScale, vecScale, vecSubtract } from '@rapid-sdk/math';
+//import { Extent, Viewport, vecScale, vecSubtract } from '@rapid-sdk/math';
 //import { utilEntitySelector } from '@rapid-sdk/util';
 //
 //import { actionRestrictTurn } from '../../actions/restrict_turn.js';

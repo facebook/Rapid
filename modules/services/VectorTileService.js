@@ -1,4 +1,4 @@
-import { Extent, Tiler, geoScaleToZoom, vecEqual } from '@rapid-sdk/math';
+import { Extent, Tiler, vecEqual } from '@rapid-sdk/math';
 import { utilHashcode } from '@rapid-sdk/util';
 import { VectorTile } from '@mapbox/vector-tile';
 import geojsonRewind from '@mapbox/geojson-rewind';
@@ -122,8 +122,10 @@ export class VectorTileService extends AbstractSystem {
 
     // Note that because vector tiles are 512px, they are offset by -1 zoom level
     // from the main map zoom, which follows 256px and OSM convention.
-    const scale = viewport.transform.scale;
-     const zoom = Math.round(geoScaleToZoom(scale, 512));
+//worldcoordinates
+//    const scale = viewport.transform.scale;
+//    const zoom = Math.round(geoScaleToZoom(scale, 512));
+    const zoom = Math.min(viewport.transform.zoom - 1, 0);
 
     // Because vector tiled data can be different at different zooms,
     // the caches and indexes need to be setup "per-zoom".

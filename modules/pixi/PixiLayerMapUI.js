@@ -29,7 +29,7 @@ export class PixiLayerMapUI extends AbstractLayer {
     super(scene, layerID);
     this.enabled = true;   // this layer should always be enabled
 
-    this._oldk = 0;
+    this._oldz = 0;
 
     this._geolocationData = null;
     this._geolocationDirty = false;
@@ -52,7 +52,7 @@ export class PixiLayerMapUI extends AbstractLayer {
   reset() {
     super.reset();
 
-    this._oldk = 0;
+    this._oldz = 0;
 
     const groupContainer = this.scene.groups.get('ui');
 
@@ -160,11 +160,11 @@ export class PixiLayerMapUI extends AbstractLayer {
    */
   render(frame, viewport) {
     // redraw if zoom changes
-    const k = viewport.transform.scale;
-    if (k !== this._oldk) {
+    const z = viewport.transform.zoom;
+    if (z !== this._oldz) {
       this._geolocationDirty = true;
       this._lassoDirty = true;
-      this._oldk = k;
+      this._oldz = z;
     }
 
     if (this._geolocationDirty) {

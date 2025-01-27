@@ -1,5 +1,6 @@
 import { easeLinear as d3_easeLinear } from 'd3-ease';
 import { select as d3_select } from 'd3-selection';
+import { geoScaleToZoom } from '@rapid-sdk/math';
 import { utilArrayGroupBy, utilObjectOmit, utilSessionMutex } from '@rapid-sdk/util';
 import debounce from 'lodash-es/debounce.js';
 
@@ -1136,6 +1137,12 @@ export class EditSystem extends AbstractSystem {
         if (Array.isArray(item.imageryUsed))  sources.imagery = item.imageryUsed;
         if (Array.isArray(item.photosUsed))   sources.photos = item.photosUsed;
         if (Array.isArray(item.dataUsed))     sources.data = item.dataUsed;
+
+        // Handle legacy transform scale parameter, if found
+        if (item.transform.k) {
+          item.transform.z = geoScaleToZoom(item.transform.k);
+          delete item.transform.k;
+        }
 
         this._history.push(new Edit({
           annotation:  item.annotation,

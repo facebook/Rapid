@@ -1,4 +1,4 @@
-import { Extent, Tiler, Viewport, geoZoomToScale, vecAdd } from '@rapid-sdk/math';
+import { Extent, Tiler, Viewport, vecAdd } from '@rapid-sdk/math';
 import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilObjectOmit, utilQsString } from '@rapid-sdk/util';
 import _throttle from 'lodash-es/throttle.js';
 import { osmAuth } from 'osm-auth';
@@ -990,9 +990,14 @@ export class OsmService extends AbstractSystem {
     // let users safely edit geometries which extend to unloaded tiles.  We can drop some.)
     if (cache.toLoad.size > 50) return;
 
-    const k = geoZoomToScale(this._tileZoom + 1);
-    const offset = new Viewport({ k: k }).project(loc);
-    const viewport = new Viewport({ k: k, x: -offset[0], y: -offset[1] });
+//worldcoordinates
+    // const k = geoZoomToScale(this._tileZoom + 1);
+    // const offset = new Viewport({ k: k }).project(loc);
+    // const viewport = new Viewport({ k: k, x: -offset[0], y: -offset[1] });
+    // const tiles = this._tiler.zoomRange(this._tileZoom).getTiles(viewport).tiles;
+    const z2 = this._tileZoom + 1;
+    const offset = new Viewport({ z: z2 }).project(loc);
+    const viewport = new Viewport({ x: -offset[0], y: -offset[1], z: z2 });
     const tiles = this._tiler.zoomRange(this._tileZoom).getTiles(viewport).tiles;
 
     for (const tile of tiles) {

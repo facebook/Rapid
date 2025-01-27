@@ -79,7 +79,9 @@ export class PixiLayerLabels extends AbstractLayer {
     this._textureIDs = new Map();  // Map<string, textureID>
 
     // We reset the labeling when scale or rotation change
-    this._tPrev = { x: 0, y: 0, k: 256 / Math.PI, r: 0 };
+//worldcoordinates
+//    this._tPrev = { x: 0, y: 0, k: 256 / Math.PI, r: 0 };
+    this._tPrev = { x: 0, y: 0, z: 1, r: 0 };
     // Tracks the difference between the top left corner of the screen and the parent "origin" container
     this._labelOffset = new PIXI.Point();
 
@@ -231,7 +233,9 @@ export class PixiLayerLabels extends AbstractLayer {
       // Reset labels
       const tPrev = this._tPrev;
       const tCurr = viewport.transform.props;
-      if (tCurr.k !== tPrev.k || tCurr.r !== tPrev.r) {  // zoom or rotation changed
+//worldcoordinates
+      // if (tCurr.k !== tPrev.k || tCurr.r !== tPrev.r) {  // zoom or rotation changed
+      if (tCurr.z !== tPrev.z || tCurr.r !== tPrev.r) {  // zoom or rotation changed
         this.reset();                                    // reset all labels
       } else {
         for (const [featureID, feature] of this.scene.features) {

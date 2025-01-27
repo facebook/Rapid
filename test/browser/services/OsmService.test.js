@@ -14,7 +14,7 @@ describe('OsmService', () => {
         locations: new Rapid.LocationSystem(this)
       };
       this.viewport = new Rapid.sdk.Viewport();
-      this.viewport.transform = { x: -116508, y: 0, k: Rapid.sdk.geoZoomToScale(14) };  // [10°, 0°]
+      this.viewport.transform = { x: -116508, y: 0, z: 14 };  // [10°, 0°]
       this.viewport.dimensions = [64, 64];
     }
   }

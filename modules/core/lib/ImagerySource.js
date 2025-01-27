@@ -1,6 +1,6 @@
 import { geoArea as d3_geoArea, geoMercatorRaw as d3_geoMercatorRaw } from 'd3-geo';
 import { utilAesDecrypt, utilQsString, utilStringQs } from '@rapid-sdk/util';
-import { geoSphericalDistance, geoZoomToScale, Tiler, Viewport } from '@rapid-sdk/math';
+import { geoSphericalDistance, Tiler, Viewport } from '@rapid-sdk/math';
 import * as Wayback from '@rapideditor/wayback-core';
 import RBush from 'rbush';
 
@@ -700,10 +700,14 @@ export class ImagerySourceEsriWayback extends ImagerySourceEsri {
 
     // Get a single tile at this location
     const TILEZOOM = 14;
-    const k = geoZoomToScale(TILEZOOM);
-    const [x, y] = new Viewport({ k: k }).project([lon, lat]);
-    const viewport = new Viewport({ k: k, x: -x, y: -y });
-    const tile = this._tiler.zoomRange(TILEZOOM).getTiles(viewport).tiles[0];
+//worldcoordinates
+    // const k = geoZoomToScale(TILEZOOM);
+    // const [x, y] = new Viewport({ k: k }).project([lon, lat]);
+    // const viewport = new Viewport({ k: k, x: -x, y: -y });
+    // const tile = this._tiler.zoomRange(TILEZOOM).getTiles(viewport).tiles[0];
+     const [x, y] = new Viewport({ z: TILEZOOM }).project([lon, lat]);
+     const viewport = new Viewport({ x: -x, y: -y, z: TILEZOOM  });
+     const tile = this._tiler.zoomRange(TILEZOOM).getTiles(viewport).tiles[0];
 
     return this._refreshPromise = new Promise(resolve => {
       Wayback.getWaybackItemsWithLocalChanges({ latitude: lat, longitude: lon }, TILEZOOM)

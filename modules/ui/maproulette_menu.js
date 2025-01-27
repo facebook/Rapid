@@ -29,7 +29,7 @@ export function uiMapRouletteMenu(context) {
   // Internal state variables
   let _menu = d3_select(null);
   let _anchorLoc = [0, 0];
-  let _initialScale = 0;
+  let _oldz = 0;
   let _triggerType = '';
   let _menuTop = false;
   let _menuHeight;
@@ -61,7 +61,7 @@ export function uiMapRouletteMenu(context) {
     const buttonHeight = showLabels ? 32 : 34;
     _menuWidth = showLabels ? 52 + Math.min(120, 6 * Math.max.apply(Math, actionTitles.map(title => title.length))) : 44;
     _menuHeight = VERTICAL_PADDING * 2 + 4 * buttonHeight; // 4 actions
-    _initialScale = viewport.transform.scale;
+    _oldz = viewport.transform.zoom;
 
     const wrap = selection.selectAll('.maproulette-menu').data([0]);
     const wrapEnter = wrap.enter()
@@ -140,7 +140,7 @@ export function uiMapRouletteMenu(context) {
   function _updatePosition() {
     if (!_menu || _menu.empty()) return;
 
-    if (_initialScale !== viewport.transform.scale) {
+    if (_oldz !== viewport.transform.zoom) {
       mapRouletteMenu.close();
       return;
     }

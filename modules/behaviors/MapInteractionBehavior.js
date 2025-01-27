@@ -1,4 +1,4 @@
-import { DEG2RAD, MIN_K, MAX_K, numClamp, vecLength, vecSubtract } from '@rapid-sdk/math';
+import { DEG2RAD, numClamp, vecLength, vecSubtract } from '@rapid-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior.js';
 import { osmNode } from '../osm/node.js';
@@ -32,11 +32,12 @@ export class MapInteractionBehavior extends AbstractBehavior {
     this.gesture = null;
     this.doubleClickEnabled = true;
 
+    this.activeTouches = {};
     this._lastPoint = null;
     this._lastAngle = null;
-    this.activeTouches = {};
     this._initialPinchDistance = null;
-    this._initialScale = null;
+    this._initialAngle = null;
+//    this._initialScale = null;
     this.previousMode = this.context.mode?.id;
 
     // Make sure the event handlers have `this` bound correctly
@@ -135,7 +136,8 @@ export class MapInteractionBehavior extends AbstractBehavior {
 
       if (delta) {
         e.preventDefault();
-        map.transformEase({ x: t.x, y: t.y, k: t.k, r: t.r + delta }, EASE);
+        // map.transformEase({ x: t.x, y: t.y, k: t.k, r: t.r + delta }, EASE);
+        map.transformEase({ x: t.x, y: t.y, z: t.z, r: t.r + delta }, EASE);
       }
 
     // pan
@@ -182,16 +184,30 @@ export class MapInteractionBehavior extends AbstractBehavior {
     const [x, y] = click.coord.map;
     const isShiftDown = e.getModifierState('Shift');
 
-    // local mouse coord to transform origin (was: d3 `transform.invert`)
-    const p1 = [ (x - t.x) / t.k, (y - t.y) / t.k ];
-    let k2 = t.k * (isShiftDown ? 0.5 : 2);  // zoom out / zoom in
-    k2 = numClamp(k2, MIN_K, MAX_K);
+    const z1 = t.z;
+    const z2 = numClamp(z1 + (isShiftDown ? 1 : -1), MIN_Z, MAX_Z);
+    const k1 = Math.pow(2, z1);
+    const k2 = Math.pow(2, z2);
 
-    // transform origin back to local coord
-    const x2 = x - p1[0] * k2;
-    const y2 = y - p1[1] * k2;
+    // convert mouse coord to transform origin (was: d3 `transform.invert`)
+    const x1 = (x - t.x) / k1;
+    const y1 = (y - t.y) / k1;
 
-    map.transformEase({ x: x2, y: y2, k: k2, r: t.r });
+    // convert that coordinate back to screen coordinate at z2
+    const x2 = x - x1 * k2;
+    const y2 = y - y1 * k2;
+
+//    // local mouse coord to transform origin (was: d3 `transform.invert`)
+//    const p1 = [ (x - t.x) / t.k, (y - t.y) / t.k ];
+//    let k2 = t.k * (isShiftDown ? 0.5 : 2);  // zoom out / zoom in
+//    k2 = numClamp(k2, MIN_K, MAX_K);
+//
+//    // transform origin back to local coord
+//    const x2 = x - p1[0] * k2;
+//    const y2 = y - p1[1] * k2;
+//
+//    map.transformEase({ x: x2, y: y2, k: k2, r: t.r });
+     map.transformEase({ x: x2, y: y2, z: z2, r: t.r });
   }
 
 
@@ -210,6 +226,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
       this._resetTouchStates();
       this.previousMode = currentMode;
     }
+
     this.activeTouches[e.pointerId] = { x: e.global.x, y: e.global.y, clientX: e.clientX, clientY: e.clientY };
     if (Object.keys(this.activeTouches).length === 2) {
       if (!this._initialPinchDistance) {
@@ -280,7 +297,8 @@ export class MapInteractionBehavior extends AbstractBehavior {
       this._initialAngle = currentAngle;
       if (Math.abs(angleDelta) > ROTATION_THRESHOLD) {
         const t = viewport.transform.props;
-        map.transform({ x: t.x, y: t.y, k: t.k, r: t.r + angleDelta });
+        // map.transform({ x: t.x, y: t.y, k: t.k, r: t.r + angleDelta });
+        map.transform({ x: t.x, y: t.y, z: t.z, r: t.r + angleDelta });
       }
     }
 
@@ -326,7 +344,8 @@ export class MapInteractionBehavior extends AbstractBehavior {
         const angle = this._lastAngle + (degrees * DEG2RAD * SPEED);
         this._lastAngle = angle;
 
-        map.transform({ x: t.x, y: t.y, k: t.k, r: angle });
+        // map.transform({ x: t.x, y: t.y, k: t.k, r: angle });
+        map.transform({ x: t.x, y: t.y, z: t.z, r: angle });
       }
     }
   }
@@ -382,41 +401,46 @@ export class MapInteractionBehavior extends AbstractBehavior {
   }
 
 
-  /**
-   * _pinchStart
-   * Handler for the start of a pinch gesture. Initializes the pinch distance and scale.
-   * @param {Event} e - The event object containing touch points.
-   */
-  _pinchStart(e) {
-    const dist = this._getDistanceBetweenTouches(e);
-    this._initialPinchDistance = dist;
-    this._initialScale = this.context.viewport.transform.scale; // Capture the scale at the start of the pinch
-  }
-
-
-  /**
-   * _pinchMove
-   * Handler for the movement during a pinch gesture. Calculates and applies the new scale based on the change in distance between touches.
-   * @param {Event} e - The event object containing touch points.
-   */
-  _pinchMove(e) {
-    if (this._initialPinchDistance) {
-        const currentZoom = this.context.viewport.transform.zoom;
-        const clampedZoom = Math.max(MIN_Z, Math.min(currentZoom, MAX_Z));
-        this.context.systems.map.zoom(clampedZoom);
-    }
-  }
-
-
-  /**
-   * _pinchEnd
-   * Handler for the end of a pinch gesture. Logs the final scale and resets initial values.
-   * @param {Event} e - The event object that signifies the end of the touch.
-   */
-  _pinchEnd(e) {
-    this._initialPinchDistance = null;
-    this._initialScale = null;
-  }
+// not used??
+//  /**
+//   * _pinchStart
+//   * Handler for the start of a pinch gesture. Initializes the pinch distance and scale.
+//   * @param {Event} e - The event object containing touch points.
+//   */
+//  _pinchStart(e) {
+//    const dist = this._getDistanceBetweenTouches(e);
+//    this._initialPinchDistance = dist;
+//    //this._initialScale = this.context.viewport.transform.scale; // Capture the scale at the start of the pinch
+//  }
+//
+//
+//  /**
+//   * _pinchMove
+//   * Handler for the movement during a pinch gesture. Calculates and applies the new scale based on the change in distance between touches.
+//   * @param {Event} e - The event object containing touch points.
+//   */
+//  _pinchMove(e) {
+//    const context = this.context;
+//    const map = context.systems.map;
+//    const viewport = context.viewport;
+//
+//    if (this._initialPinchDistance) {
+//      const currentZoom = viewport.transform.zoom;
+//      const clampedZoom = Math.max(MIN_Z, Math.min(currentZoom, MAX_Z));
+//      map.zoom(clampedZoom);
+//    }
+//  }
+//
+//
+//  /**
+//   * _pinchEnd
+//   * Handler for the end of a pinch gesture. Logs the final scale and resets initial values.
+//   * @param {Event} e - The event object that signifies the end of the touch.
+//   */
+//  _pinchEnd(e) {
+//    this._initialPinchDistance = null;
+//    //this._initialScale = null;
+//  }
 
 
   /**
@@ -456,19 +480,34 @@ export class MapInteractionBehavior extends AbstractBehavior {
       const t = viewport.transform.props;
       const [x, y] = e._coord.map;
 
-      // convert mouse coord to transform origin (was: d3 `transform.invert`)
-      const x1 = (x - t.x) / t.k;
-      const y1 = (y - t.y) / t.k;
+//worldcoordinates
+    const z1 = t.z;
+    const z2 = numClamp(z1 - (dy / 500), MIN_Z, MAX_Z);
+    const k1 = Math.pow(2, z1);
+    const k2 = Math.pow(2, z2);
 
-      // rescale
-      let k2 = t.k * Math.pow(2, -dy / 500);
-      k2 = numClamp(k2, MIN_K, MAX_K);
+    // convert mouse coord to transform origin (was: d3 `transform.invert`)
+    const x1 = (x - t.x) / k1;
+    const y1 = (y - t.y) / k1;
 
-      // transform origin back to local coord
-      const x2 = x - x1 * k2;
-      const y2 = y - y1 * k2;
+    // convert that coordinate back to screen coordinate at z2
+    const x2 = x - x1 * k2;
+    const y2 = y - y1 * k2;
 
-      map.transform({ x: x2, y: y2, k: k2, r: t.r });
+//      // convert mouse coord to transform origin (was: d3 `transform.invert`)
+//      const x1 = (x - t.x) / t.k;
+//      const y1 = (y - t.y) / t.k;
+//
+//      // rescale
+//      let k2 = t.k * Math.pow(2, -dy / 500);
+//      k2 = numClamp(k2, MIN_K, MAX_K);
+//
+//      // transform origin back to local coord
+//      const x2 = x - x1 * k2;
+//      const y2 = y - y1 * k2;
+//
+//      map.transform({ x: x2, y: y2, k: k2, r: t.r });
+      map.transform({ x: x2, y: y2, z: z2, r: t.r });
 
     } else {  // pan
       map.pan([-dx, -dy]);

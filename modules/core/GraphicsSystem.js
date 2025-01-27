@@ -61,7 +61,8 @@ export class GraphicsSystem extends AbstractSystem {
 
     // Properties used to manage the scene transform
     this._pixiViewport = null;
-    this._prevTransform = { x: 0, y: 0, k: 256 / Math.PI, r: 0 };    // transform at time of last draw
+//    this._prevTransform = { x: 0, y: 0, k: 256 / Math.PI, r: 0 };    // transform at time of last draw
+    this._prevTransform = { x: 0, y: 0, z: 1, r: 0 };    // transform at time of last draw
     this._isTempTransformed = false;     // is the supersurface transformed?
     this._transformEase = null;
 
@@ -165,14 +166,11 @@ export class GraphicsSystem extends AbstractSystem {
     if (this._startPromise) return this._startPromise;
 
     const context = this.context;
-    const map = context.systems.map;
-    const ui = context.systems.ui;
+    const urlhash = context.systems.urlhash;
 
-    // Wait for UI and Map to be ready, then start the ticker
-    const prerequisites = Promise.all([
-      map.startAsync(),
-      ui.startAsync()
-    ]);
+    // Wait for everything to be ready - urlhash will emit hash change that
+    // sets the map location, among other things.  Then start the ticker.
+    const prerequisites = urlhash.startAsync();
 
     return this._startPromise = prerequisites
       .then(() => {
@@ -373,8 +371,10 @@ export class GraphicsSystem extends AbstractSystem {
       const now = window.performance.now();
 
       const { time0, time1, xform0, xform1, resolve } = this._transformEase;
-      const [x0, y0, k0] = [xform0.x, xform0.y, xform0.k];
-      const [x1, y1, k1] = [xform1.x, xform1.y, xform1.k];
+//      const [x0, y0, k0] = [xform0.x, xform0.y, xform0.k];
+//      const [x1, y1, k1] = [xform1.x, xform1.y, xform1.k];
+      const [x0, y0, z0] = [xform0.x, xform0.y, xform0.z];
+      const [x1, y1, z1] = [xform1.x, xform1.y, xform1.z];
 
       // For rotation, pick whichever direction is shorter
       const r0 = numWrap(xform0.r, 0, TAU);
@@ -387,9 +387,11 @@ export class GraphicsSystem extends AbstractSystem {
       const tween = Math.max(0, Math.min(1, (now - time0) / (time1 - time0)));
       const xNow = x0 + ((x1 - x0) * tween);
       const yNow = y0 + ((y1 - y0) * tween);
-      const kNow = k0 + ((k1 - k0) * tween);
+//       const kNow = k0 + ((k1 - k0) * tween);
+      const zNow = z0 + ((z1 - z0) * tween);
       const rNow = r0 + ((r1 - r0) * tween);
-      const tNow = { x: xNow, y: yNow, k: kNow, r: rNow };
+      // const tNow = { x: xNow, y: yNow, k: kNow, r: rNow };
+      const tNow = { x: xNow, y: yNow, z: zNow, r: rNow };
       mapViewport.transform = tNow;  // set
 
       if (tween === 1) {  // we're done
@@ -416,7 +418,8 @@ export class GraphicsSystem extends AbstractSystem {
         if (!firstTime) {
           const [dw, dh] = vecScale(vecSubtract(mapDims, pixiDims), 0.5);
           const t = mapViewport.transform;
-          mapViewport.transform = { x: t.x + dw, y: t.y + dh, k: t.k, r: t.r };
+//          mapViewport.transform = { x: t.x + dw, y: t.y + dh, k: t.k, r: t.r };
+          mapViewport.transform = { x: t.x + dw, y: t.y + dh, z: t.z, r: t.r };
         }
 
         this._appPending = true;
@@ -436,7 +439,8 @@ export class GraphicsSystem extends AbstractSystem {
     const tPrev = this._prevTransform;
 
     const hasChanges = this._isTempTransformed || (
-      tPrev.x !== tCurr.x || tPrev.y !== tCurr.y || tPrev.k !== tCurr.k || tPrev.r !== tCurr.r
+//      tPrev.x !== tCurr.x || tPrev.y !== tCurr.y || tPrev.k !== tCurr.k || tPrev.r !== tCurr.r
+      tPrev.x !== tCurr.x || tPrev.y !== tCurr.y || tPrev.z !== tCurr.z || tPrev.r !== tCurr.r
     );
 
     if (hasChanges) {
@@ -445,7 +449,10 @@ export class GraphicsSystem extends AbstractSystem {
       const center = mapViewport.center();
       const currxy = vecSubtract([tCurr.x, tCurr.y], center);
       const prevxy = vecSubtract([tPrev.x, tPrev.y], center);
-      const scale = tCurr.k / tPrev.k;
+//      const scale = tCurr.k / tPrev.k;
+
+// todo fix: this does not work correctly with the worldcoordinate changes
+      const scale = Math.pow(2, tCurr.z) / Math.pow(2, tPrev.z);
       let dx = (currxy[0] / scale - prevxy[0]) * scale;
       let dy = (currxy[1] / scale - prevxy[1]) * scale;
       const dr = tCurr.r - tPrev.r;
@@ -492,7 +499,9 @@ export class GraphicsSystem extends AbstractSystem {
     const dist = vecLength(pixiXY, mapXY);
     let offset;
 
-    if (pixiTransform.k !== mapTransform.k || dist > 100000) {
+// worldcoordinates
+//    if (pixiTransform.k !== mapTransform.k || dist > 100000) {
+    if (pixiTransform.z !== mapTransform.z || dist > 100000) {
       offset = [0,0];
       pixiViewport.transform = mapTransform;   // reset (sync pixi = map)
       this.scene.dirtyScene();                 // all geometry must be reprojected
