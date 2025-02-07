@@ -142,7 +142,6 @@ export function uiMapRouletteDetails(context) {
           .append('h4')
           .text(l10n.t('map_data.layers.maproulette.detail_title'));
         selection
-          .append('div')
           .html(description)  // parsed markdown
           .selectAll('a')
           .attr('rel', 'noopener')
@@ -154,7 +153,6 @@ export function uiMapRouletteDetails(context) {
           .append('h4')
           .text(l10n.t('map_data.layers.maproulette.instruction_title'));
         selection
-          .append('div')
           .html(instruction)  // parsed markdown
           .selectAll('a')
           .attr('rel', 'noopener')
