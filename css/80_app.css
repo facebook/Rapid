@@ -2821,6 +2821,22 @@ img.tag-reference-wiki-image {
   display: flex;
   flex-direction: column;
 }
+.qa-details-container h1,
+.qa-details-container h2,
+.qa-details-container h3,
+.qa-details-container h3 {
+  font-size: 18px;
+}
+.qa-details-container ul,
+.qa-details-container ol {
+  margin-left: 20px;
+}
+.qa-details-container li {
+  list-style: auto;
+}
+.qa-details-container ul li {
+  list-style: disc;
+}
 .qa-details-description-text::first-letter {
   text-transform: capitalize;
 }
