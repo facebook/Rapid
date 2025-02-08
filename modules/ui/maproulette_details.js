@@ -116,13 +116,18 @@ export function uiMapRouletteDetails(context) {
     let details = selection.selectAll('.sidebar-details')
       .data(_qaItem ? [_qaItem] : [], d => d.key);
     details.exit().remove();
-    const detailsEnter = details.enter()
-      .append('div')
-      .attr('class', 'sidebar-details qa-details-container');
 
-    detailsEnter.append('div')
-      .attr('class', 'qa-details-subsection')
-      .text(l10n.t('map_data.layers.maproulette.loading_task_details'));
+    const detailsEnter = details.enter()
+      .append('section')
+      .attr('class', 'sidebar-details');
+    const qaDetails = detailsEnter
+      .append('div')
+      .attr('class', 'qa-details-subsection');
+
+    const loading = qaDetails
+      .append('div')
+      .attr('class', 'qa-details-container');
+    loading.text(l10n.t('map_data.layers.maproulette.loading_task_details'));
 
     details = details.merge(detailsEnter);
 
@@ -130,13 +135,17 @@ export function uiMapRouletteDetails(context) {
       if (!task) return;
       if (_qaItem.id !== task.id) return;
       const selection = details.selectAll('.qa-details-subsection');
-      selection.html('');   // replace contents
+      selection.html(''); // replace contents
+
       // Display Challenge ID and Task ID
       if (task.id) {
-        selection
+        const titleSection = selection
+          .append('header')
+          .attr('class', 'qa-details-header');
+        titleSection
           .append('h4')
           .text(l10n.t('map_data.layers.maproulette.id_title'));
-        selection
+        titleSection
           .append('p')
           .text(`${task.parentId} / ${task.id}`)
           .selectAll('a')
@@ -151,24 +160,38 @@ export function uiMapRouletteDetails(context) {
       // But we hide it if a specific (assumed to be know) challenge is selected.
       const explicitChallengeIdGiven = Boolean(maproulette.challengeIDs);
       if (!explicitChallengeIdGiven && task.description) {
-        selection
+        const descSection = selection
+          .append('article');
+        const descHeader = descSection
+          .append('header')
+          .attr('class', 'qa-details-header');
+        descHeader
           .append('h4')
           .text(l10n.t('map_data.layers.maproulette.detail_title'));
-        selection
-          .append('p')
-          .html(descriptionHtml)  // parsed markdown
+        const descContent = descSection
+          .append('section')
+          .attr('class', 'qa-details-container');
+        descContent
+          .html(descriptionHtml)
           .selectAll('a')
           .attr('rel', 'noopener')
           .attr('target', '_blank');
       }
 
       if (task.instruction && task.instruction !== task.description) {
-        selection
+        const instructionSection = selection
+          .append('article');
+        const descHeader = instructionSection
+          .append('header')
+          .attr('class', 'qa-details-header');
+        descHeader
           .append('h4')
           .text(l10n.t('map_data.layers.maproulette.instruction_title'));
-        selection
-          .append('p')
-          .html(instructionHtml)  // parsed markdown
+        const instructionContent = instructionSection
+          .append('article')
+          .attr('class', 'qa-details-container');
+        instructionContent
+          .html(instructionHtml)
           .selectAll('a')
           .attr('rel', 'noopener')
           .attr('target', '_blank');
@@ -207,7 +230,12 @@ export function uiMapRouletteDetails(context) {
           highlightFeature(osmId);
         });
     }).catch(e => {
-        details.selectAll('.qa-details-subsection').text(l10n.t('map_data.layers.maproulette.error_loading_task_details'));
+      const selection = details.selectAll('.qa-details-subsection');
+      selection.html(''); // replace contents
+      const error = selection
+        .append('div')
+        .attr('class', 'qa-details-container');
+      error.text(l10n.t('map_data.layers.maproulette.error_loading_task_details'));
     });
   }
 

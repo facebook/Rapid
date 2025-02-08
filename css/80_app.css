@@ -2812,6 +2812,17 @@ img.tag-reference-wiki-image {
   padding-top: 20px;
 }
 
+.qa-details-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding: 0 10px;
+}
+/* Specify margin when one is followed by the other */
+.qa-details-header+.qa-details-container {
+  margin-top: 8px;
+}
 .qa-details-container {
   background: #ececec;
   padding: 10px;
