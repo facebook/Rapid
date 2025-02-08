@@ -46,7 +46,7 @@ This section suggests a toolset and method to start contributing to Rapid. Howev
 7. Then run `npm run all` to set up Rapid.
 8. Finally, run `npm run start` to start the server on port 8080.
 
-Congrats! 🎉 You should now be able to use rapid by navigating to [http://127.0.0.1:8080/](http://localhost:8080/) on Chrome.
+Congrats! 🎉 You should now be able to use rapid by navigating to [http://127.0.0.1:8080/](http://127.0.0.1:8080/) on Chrome.
 
 ### Setting up the VSCode debugger
 VSCode provides a debugging mode using Chrome. To use it, follow these steps:
