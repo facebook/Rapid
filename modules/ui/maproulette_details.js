@@ -104,12 +104,12 @@ export function uiMapRouletteDetails(context) {
    * @param {d3.selection} selection The D3 selection where the challenge details should be rendered.
    */
   function render(selection) {
-    let details = selection.selectAll('.error-details')
+    let details = selection.selectAll('.sidebar-details')
       .data(_qaItem ? [_qaItem] : [], d => d.key);
     details.exit().remove();
     const detailsEnter = details.enter()
       .append('div')
-      .attr('class', 'error-details qa-details-container');
+      .attr('class', 'sidebar-details qa-details-container');
 
     detailsEnter.append('div')
       .attr('class', 'qa-details-subsection')
