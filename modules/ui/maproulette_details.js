@@ -1,6 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 
 import { utilHighlightEntities } from '../util/index.js';
+import { marked } from 'marked';
 
 export function uiMapRouletteDetails(context) {
   const l10n = context.systems.l10n;
@@ -50,7 +51,7 @@ export function uiMapRouletteDetails(context) {
 
 
   /**
-   * This function searches for mustache tags defined by double curly braces (e.g., {{propertyName}}) and replaces them
+   * This function searches for mustache tags defined by double curly braces (e.g., `{{propertyName}}`) and replaces them
    * with actual values from the task's properties or generates clickable links if the property is an OSM identifier.
    * https://learn.maproulette.org/en-us/documentation/mustache-tag-replacement/#content
    * @param {string} text The text containing mustache tags to be replaced.
@@ -68,11 +69,19 @@ export function uiMapRouletteDetails(context) {
         return `<a href="#" class="highlight-link" data-osm-id="${osmId}">${osmId}</a>`;
       }
       // For other properties, return their values from the task if they exist
-      if (task.properties && task.properties.hasOwnProperty(propertyName)) {
-        return task.properties[propertyName];
+      // Tasks have a featureCollection. Usually there is only one feature, but we still have to handle multiple.
+      // In case properties are duplicated between features, we take the last value. I don't expect this to happen or be an issue.
+      const allProperties = new Map();
+      task.taskFeatures.map(f => f.properties).forEach(properties => {
+        Object.keys(properties).forEach(key => {
+          allProperties.set(key, properties[key]);
+        });
+      });
+      if (allProperties.has(propertyName)) {
+        return allProperties.get(propertyName);
       }
-      // Return an empty string if the property does not exist in the task
-      return '';
+      // Return an non-replaced Mustache tag if the property does not exist in the task to signal that there is something that we could not replace
+      return `{{${propertyName}}}`;
     });
   }
 
@@ -104,16 +113,21 @@ export function uiMapRouletteDetails(context) {
    * @param {d3.selection} selection The D3 selection where the challenge details should be rendered.
    */
   function render(selection) {
-    let details = selection.selectAll('.error-details')
+    let details = selection.selectAll('.sidebar-details')
       .data(_qaItem ? [_qaItem] : [], d => d.key);
     details.exit().remove();
-    const detailsEnter = details.enter()
-      .append('div')
-      .attr('class', 'error-details qa-details-container');
 
-    detailsEnter.append('div')
-      .attr('class', 'qa-details-subsection')
-      .text(l10n.t('map_data.layers.maproulette.loading_task_details'));
+    const detailsEnter = details.enter()
+      .append('section')
+      .attr('class', 'sidebar-details');
+    const qaDetails = detailsEnter
+      .append('div')
+      .attr('class', 'qa-details-subsection');
+
+    const loading = qaDetails
+      .append('div')
+      .attr('class', 'qa-details-container');
+    loading.text(l10n.t('map_data.layers.maproulette.loading_task_details'));
 
     details = details.merge(detailsEnter);
 
@@ -121,13 +135,17 @@ export function uiMapRouletteDetails(context) {
       if (!task) return;
       if (_qaItem.id !== task.id) return;
       const selection = details.selectAll('.qa-details-subsection');
-      selection.html('');   // replace contents
+      selection.html(''); // replace contents
+
       // Display Challenge ID and Task ID
       if (task.id) {
-        selection
+        const titleSection = selection
+          .append('header')
+          .attr('class', 'qa-details-header');
+        titleSection
           .append('h4')
           .text(l10n.t('map_data.layers.maproulette.id_title'));
-        selection
+        titleSection
           .append('p')
           .text(`${task.parentId} / ${task.id}`)
           .selectAll('a')
@@ -135,50 +153,90 @@ export function uiMapRouletteDetails(context) {
           .attr('target', '_blank');
       }
 
-      const description = generateDynamicContent(replaceMustacheTags(task.description, task));
-      const instruction = generateDynamicContent(replaceMustacheTags(task.instruction, task));
-      if (task.description) {
-        selection
+      const descriptionHtml = generateDynamicContent(marked.parse(replaceMustacheTags(task.description, task), { async: false }));
+      const instructionHtml = generateDynamicContent(marked.parse(replaceMustacheTags(task.instruction, task), { async: false }));
+
+      // We show the challenge description when user select an unkown challenge.
+      // But we hide it if a specific (assumed to be know) challenge is selected.
+      const explicitChallengeIdGiven = Boolean(maproulette.challengeIDs);
+      if (!explicitChallengeIdGiven && task.description) {
+        const descSection = selection
+          .append('article');
+        const descHeader = descSection
+          .append('header')
+          .attr('class', 'qa-details-header');
+        descHeader
           .append('h4')
           .text(l10n.t('map_data.layers.maproulette.detail_title'));
-        selection
-          .append('p')
-          .html(description)  // parsed markdown
+        const descContent = descSection
+          .append('section')
+          .attr('class', 'qa-details-container');
+        descContent
+          .html(descriptionHtml)
           .selectAll('a')
           .attr('rel', 'noopener')
           .attr('target', '_blank');
       }
 
       if (task.instruction && task.instruction !== task.description) {
-        selection
+        const instructionSection = selection
+          .append('article');
+        const descHeader = instructionSection
+          .append('header')
+          .attr('class', 'qa-details-header');
+        descHeader
           .append('h4')
           .text(l10n.t('map_data.layers.maproulette.instruction_title'));
-        selection
-          .append('p')
-          .html(instruction)  // parsed markdown
+        const instructionContent = instructionSection
+          .append('article')
+          .attr('class', 'qa-details-container');
+        instructionContent
+          .html(instructionHtml)
           .selectAll('a')
           .attr('rel', 'noopener')
           .attr('target', '_blank');
       }
 
+      /**
+       * Transform the `${type}/${number}` pattern to the `${w|n|r}${number}` pattern
+       * Correct format: `w${number}`, `n${number}`, `r${number}`
+       * Format that this helper transforms: `way/${number}`, `node/${number}`, `relation/${number}`
+       */
+      const transformId = (id) => {
+        return id.replace(/^(way|node|relation)\//, (match) => {
+          switch (match) {
+            case 'way/': return 'w';
+            case 'node/': return 'n';
+            case 'relation/': return 'r';
+            default: return match;
+          }
+        });
+      };
+
       // Attach hover and click event listeners
       selection.selectAll('.highlight-link')
-        .on('mouseover', function() {
-          const osmId = d3_select(this).attr('data-osm-id');
+        .on('mouseover', function () {
+          const osmId = transformId(d3_select(this).attr('data-osm-id'));
           utilHighlightEntities([osmId], true, context);
         })
         .on('mouseout', function() {
-          const osmId = d3_select(this).attr('data-osm-id');
+          const osmId = transformId(d3_select(this).attr('data-osm-id'));
           utilHighlightEntities([osmId], false, context);
         })
         .on('click', function(d3_event) {
           d3_event.preventDefault();
-          const osmId = d3_select(this).attr('data-osm-id');
+          const osmId = transformId(d3_select(this).attr('data-osm-id'));
           utilHighlightEntities([osmId], false, context);
           highlightFeature(osmId);
         });
     }).catch(e => {
-        details.selectAll('.qa-details-subsection').text(l10n.t('map_data.layers.maproulette.error_loading_task_details'));
+      console.error('error_loading_task_details:', e);
+      const selection = details.selectAll('.qa-details-subsection');
+      selection.html(''); // replace contents
+      const error = selection
+        .append('div')
+        .attr('class', 'qa-details-container');
+      error.text(l10n.t('map_data.layers.maproulette.error_loading_task_details'));
     });
   }
 

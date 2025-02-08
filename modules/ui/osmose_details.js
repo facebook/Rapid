@@ -26,7 +26,7 @@ export function uiOsmoseDetails(context) {
 
 
   function render(selection) {
-    const details = selection.selectAll('.error-details')
+    const details = selection.selectAll('.sidebar-details')
       .data(_qaItem ? [_qaItem] : [], d => d.key);
 
     details.exit()
@@ -34,7 +34,7 @@ export function uiOsmoseDetails(context) {
 
     const detailsEnter = details.enter()
       .append('div')
-      .attr('class', 'error-details qa-details-container');
+      .attr('class', 'sidebar-details qa-details-container');
 
 
     // Description

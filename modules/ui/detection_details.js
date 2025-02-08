@@ -16,7 +16,7 @@ export function uiDetectionDetails(context) {
 
 
   function render(selection) {
-    const $details = selection.selectAll('.error-details')
+    const $details = selection.selectAll('.sidebar-details')
       .data(_detection ? [_detection] : [], d => d.key);
 
     $details.exit()
@@ -24,7 +24,7 @@ export function uiDetectionDetails(context) {
 
     const $$details = $details.enter()
       .append('div')
-      .attr('class', 'error-details qa-details-container');
+      .attr('class', 'sidebar-details qa-details-container');
 
     // description
     const $$description = $$details
