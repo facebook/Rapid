@@ -2737,6 +2737,7 @@ img.tag-reference-wiki-image {
   font-size: 14px;
   font-weight: bold;
   border-radius: 0 5px 5px 0;
+  line-height: 19px;
 }
 .ideditor[dir='rtl'] .data-header-label,
 .ideditor[dir='rtl'] .note-header-label,
