@@ -79,8 +79,8 @@ export function uiMapRouletteDetails(context) {
       if (allProperties.has(propertyName)) {
         return allProperties.get(propertyName);
       }
-      // Return an empty string if the property does not exist in the task
-      return '';
+      // Return an non-replaced Mustache tag if the property does not exist in the task to signal that there is something that we could not replace
+      return `{{${propertyName}}}`;
     });
   }
 
