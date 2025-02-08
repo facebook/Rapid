@@ -315,6 +315,8 @@ export class MapRouletteService extends AbstractSystem {
 
   /**
    * loadTaskDetailAsync
+   * This loads the challenge data (not the task) and add the task GeoJSON features to it
+   * https://maproulette.org/docs/swagger-ui/index.html#/Challenge/read
    * @param   task
    * @return  Promise
    */
@@ -325,6 +327,30 @@ export class MapRouletteService extends AbstractSystem {
     const handleResponse = (data) => {
       task.instruction = marked.parse(data.instruction) || '';
       task.description = marked.parse(data.description) || '';
+      return task;
+    };
+
+    return fetch(url)
+      .then(utilFetchResponse)
+      .then(handleResponse)
+      .then(this.loadTaskTaskDetailAsync);
+  }
+
+
+  /**
+   * loadTaskDetailAsync
+   * This loads the task data and adds the geojson properties that are embedded into the task as `taskFeatures`.
+   * Those properties are used to replace the Mustache tags in the challenge.instruction/.description.
+   * https://maproulette.org/docs/swagger-ui/index.html#/Task/read
+   * @param   task
+   * @return  Promise
+   */
+  loadTaskTaskDetailAsync(task) {
+    if (task.taskInstructions !== undefined) return Promise.resolve(task);  // already done
+
+    const url = `${MAPROULETTE_API}/task/${task.id}`;
+    const handleResponse = (data) => {
+      task.taskFeatures = data.geometries.features;
       return task;
     };
 

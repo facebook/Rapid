@@ -50,7 +50,7 @@ export function uiMapRouletteDetails(context) {
 
 
   /**
-   * This function searches for mustache tags defined by double curly braces (e.g., {{propertyName}}) and replaces them
+   * This function searches for mustache tags defined by double curly braces (e.g., `{{propertyName}}`) and replaces them
    * with actual values from the task's properties or generates clickable links if the property is an OSM identifier.
    * https://learn.maproulette.org/en-us/documentation/mustache-tag-replacement/#content
    * @param {string} text The text containing mustache tags to be replaced.
@@ -68,8 +68,16 @@ export function uiMapRouletteDetails(context) {
         return `<a href="#" class="highlight-link" data-osm-id="${osmId}">${osmId}</a>`;
       }
       // For other properties, return their values from the task if they exist
-      if (task.properties && task.properties.hasOwnProperty(propertyName)) {
-        return task.properties[propertyName];
+      // Tasks have a featureCollection. Usually there is only one feature, but we still have to handle multiple.
+      // In case properties are duplicated between features, we take the last value. I don't expect this to happen or be an issue.
+      const allProperties = new Map();
+      task.taskFeatures.map(f => f.properties).forEach(properties => {
+        Object.keys(properties).forEach(key => {
+          allProperties.set(key, properties[key]);
+        });
+      });
+      if (allProperties.has(propertyName)) {
+        return allProperties.get(propertyName);
       }
       // Return an empty string if the property does not exist in the task
       return '';
