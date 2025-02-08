@@ -1,6 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 
 import { utilHighlightEntities } from '../util/index.js';
+import { marked } from 'marked';
 
 export function uiMapRouletteDetails(context) {
   const l10n = context.systems.l10n;
@@ -143,15 +144,16 @@ export function uiMapRouletteDetails(context) {
           .attr('target', '_blank');
       }
 
-      const description = generateDynamicContent(replaceMustacheTags(task.description, task));
-      const instruction = generateDynamicContent(replaceMustacheTags(task.instruction, task));
+      const descriptionHtml = generateDynamicContent(marked.parse(replaceMustacheTags(task.description, task), { async: false }));
+      const instructionHtml = generateDynamicContent(marked.parse(replaceMustacheTags(task.instruction, task), { async: false }));
+
       if (task.description) {
         selection
           .append('h4')
           .text(l10n.t('map_data.layers.maproulette.detail_title'));
         selection
           .append('p')
-          .html(description)  // parsed markdown
+          .html(descriptionHtml)  // parsed markdown
           .selectAll('a')
           .attr('rel', 'noopener')
           .attr('target', '_blank');
@@ -163,7 +165,7 @@ export function uiMapRouletteDetails(context) {
           .text(l10n.t('map_data.layers.maproulette.instruction_title'));
         selection
           .append('p')
-          .html(instruction)  // parsed markdown
+          .html(instructionHtml)  // parsed markdown
           .selectAll('a')
           .attr('rel', 'noopener')
           .attr('target', '_blank');
