@@ -147,7 +147,10 @@ export function uiMapRouletteDetails(context) {
       const descriptionHtml = generateDynamicContent(marked.parse(replaceMustacheTags(task.description, task), { async: false }));
       const instructionHtml = generateDynamicContent(marked.parse(replaceMustacheTags(task.instruction, task), { async: false }));
 
-      if (task.description) {
+      // We show the challenge description when user select an unkown challenge.
+      // But we hide it if a specific (assumed to be know) challenge is selected.
+      const explicitChallengeIdGiven = Boolean(maproulette.challengeIDs);
+      if (!explicitChallengeIdGiven && task.description) {
         selection
           .append('h4')
           .text(l10n.t('map_data.layers.maproulette.detail_title'));
