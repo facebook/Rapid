@@ -171,19 +171,35 @@ export function uiMapRouletteDetails(context) {
           .attr('target', '_blank');
       }
 
+      /**
+       * Transform the `${type}/${number}` pattern to the `${w|n|r}${number}` pattern
+       * Correct format: `w${number}`, `n${number}`, `r${number}`
+       * Format that this helper transforms: `way/${number}`, `node/${number}`, `relation/${number}`
+       */
+      const transformId = (id) => {
+        return id.replace(/^(way|node|relation)\//, (match) => {
+          switch (match) {
+            case 'way/': return 'w';
+            case 'node/': return 'n';
+            case 'relation/': return 'r';
+            default: return match;
+          }
+        });
+      };
+
       // Attach hover and click event listeners
       selection.selectAll('.highlight-link')
-        .on('mouseover', function() {
-          const osmId = d3_select(this).attr('data-osm-id');
+        .on('mouseover', function () {
+          const osmId = transformId(d3_select(this).attr('data-osm-id'));
           utilHighlightEntities([osmId], true, context);
         })
         .on('mouseout', function() {
-          const osmId = d3_select(this).attr('data-osm-id');
+          const osmId = transformId(d3_select(this).attr('data-osm-id'));
           utilHighlightEntities([osmId], false, context);
         })
         .on('click', function(d3_event) {
           d3_event.preventDefault();
-          const osmId = d3_select(this).attr('data-osm-id');
+          const osmId = transformId(d3_select(this).attr('data-osm-id'));
           utilHighlightEntities([osmId], false, context);
           highlightFeature(osmId);
         });
