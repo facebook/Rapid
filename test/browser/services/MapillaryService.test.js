@@ -24,7 +24,7 @@ describe('MapillaryService', () => {
     fetchMock.removeRoutes().clearHistory();
     _mapillary = new Rapid.MapillaryService(new MockContext());
 
-    // Mock function for retieving tile data.. The original expects a protobuffer vector tile.
+    // Mock function for retrieving tile data.. The original expects a protobuffer vector tile.
     _mapillary._loadTileDataToCache = () => { };
 
     return _mapillary.initAsync();
