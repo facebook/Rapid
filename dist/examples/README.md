@@ -33,7 +33,7 @@ in parent `iframe.onload`:  `window.rapidContext = iframe.contentWindow.rapidCon
 This example demonstrates:
 * accessing Rapid context in a child iframe
 * accessing Rapid subsystems, to read properties and call functions
-* listenting to events emitted from Rapid systems
+* listening to events emitted from Rapid systems
 * parent and child url hashes being kept in sync
 
 Live link: http://rapideditor.org/canary/examples/iframe/parent.html <br/>
