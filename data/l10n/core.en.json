@@ -1012,6 +1012,7 @@
             "other": "MapRoulette Tasks"
           },
           "loading_task_details": "Loading Task Details...",
+          "error_loading_task_details": "Error while loading the task details. Try waiting and selecting it again.",
           "detail_title": "Details",
           "id_title": "Challenge Id / Task Id",
           "id_placeholder": "Challenge IDs",

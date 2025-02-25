@@ -2737,6 +2737,7 @@ img.tag-reference-wiki-image {
   font-size: 14px;
   font-weight: bold;
   border-radius: 0 5px 5px 0;
+  line-height: 19px;
 }
 .ideditor[dir='rtl'] .data-header-label,
 .ideditor[dir='rtl'] .note-header-label,
@@ -2811,6 +2812,17 @@ img.tag-reference-wiki-image {
   padding-top: 20px;
 }
 
+.qa-details-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding: 0 10px;
+}
+/* Specify margin when one is followed by the other */
+.qa-details-header+.qa-details-container {
+  margin-top: 8px;
+}
 .qa-details-container {
   background: #ececec;
   padding: 10px;
@@ -2819,6 +2831,22 @@ img.tag-reference-wiki-image {
   border: 1px solid #ccc;
   display: flex;
   flex-direction: column;
+}
+.qa-details-container h1,
+.qa-details-container h2,
+.qa-details-container h3,
+.qa-details-container h3 {
+  font-size: 18px;
+}
+.qa-details-container ul,
+.qa-details-container ol {
+  margin-left: 20px;
+}
+.qa-details-container li {
+  list-style: auto;
+}
+.qa-details-container ul li {
+  list-style: disc;
 }
 .qa-details-description-text::first-letter {
   text-transform: capitalize;
