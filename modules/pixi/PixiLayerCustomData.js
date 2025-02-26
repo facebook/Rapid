@@ -610,10 +610,6 @@ export class PixiLayerCustomData extends AbstractLayer {
   _updateHash() {
     const urlhash = this.context.systems.urlhash;
 
-    // reset
-    urlhash.setParam('gpx', null);
-    urlhash.setParam('data', null);
-
     if (!this.enabled) return;
 
     if (typeof this._wkt === 'string') {
