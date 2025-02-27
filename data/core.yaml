@@ -1164,6 +1164,9 @@ en:
     omdFootways:
       label: Open Data Footways
       description: Open footways data collected from various local government entities.
+    metaSyntheticFootways:
+      label: Synthetic Footways from Meta
+      description: Synthetic footways data collected from various local government entities.
 
   rapid_poweruser:
     beta: Beta Feature

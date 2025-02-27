@@ -130,6 +130,20 @@ export class MapWithAIService extends AbstractSystem {
       descriptionStringID: 'rapid_menu.omdFootways.description'
     });
 
+
+    const metaSyntheticFootways = new RapidDataset(context, {
+      id: 'metaSyntheticFootways',
+      conflated: true,
+      service: 'mapwithai',
+      categories: new Set(['meta', 'footways', 'featured', 'preview']),
+      tags: new Set(['opendata']),
+      dataUsed: ['mapwithai', 'Meta Synthetic Footways'],
+      itemUrl: 'https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Footways-FAQ',
+      licenseUrl: 'https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Footways-FAQ#attribution-and-license',
+      labelStringID: 'rapid_menu.metaSyntheticFootways.label',
+      descriptionStringID: 'rapid_menu.metaSyntheticFootways.description'
+    });
+
     const introGraph = new RapidDataset(context, {
       id: 'rapid_intro_graph',
       hidden: true,
@@ -141,7 +155,7 @@ export class MapWithAIService extends AbstractSystem {
       label: 'Rapid Walkthrough'
     });
 
-    return [fbRoads, msBuildings, omdFootways, introGraph];
+    return [fbRoads, msBuildings, omdFootways, metaSyntheticFootways, introGraph];
   }
 
 
@@ -319,8 +333,10 @@ export class MapWithAIService extends AbstractSystem {
 
     if (datasetID === 'fbRoads') {
       qs.result_type = 'road_vector_xml';
-
-    } else if (datasetID === 'omdFootways') {
+    } else if (datasetID === 'metaSyntheticFootways' ) {
+      qs.result_type = 'extended_osc';
+      qs.sources = 'META_SYNTHETIC_FOOTWAYS';
+    } else if (datasetID === 'omdFootways' ) {
       qs.result_type = 'extended_osc';
       qs.sources = 'ML2OSM_META_FOOTWAYS';
     } else if (datasetID === 'msBuildings') {
