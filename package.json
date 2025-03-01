@@ -60,7 +60,7 @@
     "@mapbox/polylabel": "1.0.2",
     "@mapbox/sexagesimal": "1.2.0",
     "@mapbox/vector-tile": "^2.0.3",
-    "@openstreetmap/id-tagging-schema": "~6.6.0",
+    "@openstreetmap/id-tagging-schema": "~6.9.1",
     "@rapid-sdk/math": "~1.0.0-pre.3",
     "@rapid-sdk/util": "~1.0.0-pre.3",
     "@rapideditor/country-coder": "~5.3.1",
