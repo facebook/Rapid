@@ -338,7 +338,7 @@ export class MapWithAIService extends AbstractSystem {
       qs.sources = 'META_SYNTHETIC_FOOTWAYS';
     } else if (datasetID === 'omdFootways' ) {
       qs.result_type = 'extended_osc';
-      qs.sources = 'ML2OSM_META_FOOTWAYS';
+      qs.sources = 'OPEN_MAP_DATA_FOOTWAYS';
     } else if (datasetID === 'msBuildings') {
       qs.result_type = 'road_building_vector_xml';
       qs.building_source = 'microsoft';
