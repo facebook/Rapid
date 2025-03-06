@@ -40,6 +40,18 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [2.5.3](https://github.com/facebook/Rapid/releases/tag/rapid-v2.5.3)
+#### 2025-Mar-07
+#### :tada: New Features
+* [#1689] Fixes and Improvements to maproulette (thanks [@Tordans]!) 
+
+#### :bug: Bugfixes
+* [#1679] Fix: successfully display custom data on startup
+
+[#1689]: https://github.com/facebook/Rapid/issues/1689
+[#1679]: https://github.com/facebook/Rapid/issues/1679
+[@Tordans]: https://github.com/Tordans
+
 # [2.5.2](https://github.com/facebook/Rapid/releases/tag/rapid-v2.5.2)
 #### 2025-Jan-17
 
