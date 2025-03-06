@@ -173,8 +173,8 @@ export class UrlHashSystem extends AbstractSystem {
     this._paused = false;
     this._currHash = null;
 
-    this._updateHash();   // make sure hash matches the _currParams
     this._hashchange();   // emit 'hashchange' so other code knows what the hash contains
+    this._updateHash();   // make sure hash matches the _currParams
     this._updateTitle();
   }
 
@@ -231,7 +231,7 @@ export class UrlHashSystem extends AbstractSystem {
     if (!this._started || this._paused) return;
 
     // Remove some of the initial-only params that only clutter up the hash
-    const toOmit = ['comment', 'source', 'hashtags', 'walkthrough'];
+    const toOmit = ['comment', 'source', 'hashtags', 'walkthrough', 'data', 'gpx'];
     let params = utilObjectOmit(Object.fromEntries(this._currParams), toOmit);
 
     const newHash = '#' + utilQsString(params, true);
