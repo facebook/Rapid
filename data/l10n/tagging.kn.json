@@ -113,7 +113,8 @@
             "state": "ರಾಜ್ಯ",
             "street": "ಬೀದಿ",
             "subdistrict": "ಉಪಜಿಲ್ಲೆ",
-            "suburb": "ಉಪನಗರ"
+            "suburb": "ಉಪನಗರ",
+            "town": "ಪಟ್ಟಣ"
           }
         },
         "admin_level": {
@@ -391,6 +392,9 @@
           "label": "‍ವಿಧ",
           "placeholder": " ಪೂರ್ವನಿಯೋಜಿತ"
         },
+        "cycle_barrier": {
+          "label": "‍ವಿಧ"
+        },
         "cycle_network": {
           "label": "ಜಾಲಬಂಧ"
         },
@@ -648,6 +652,12 @@
         },
         "internet_access/fee": {
           "label": "‍‍ಅಂತರ್ಜಾಲ‍ ಬಳಕೆ ಶುಲ್ಕ‍"
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "ಹೌದು",
+            "undefined": "ಇಲ್ಲ"
+          }
         },
         "kerb": {
           "options": {

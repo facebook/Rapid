@@ -5,6 +5,9 @@
         "name": "Będzin: letecké snímky 2013"
       },
       "Bedzin-PL-buildings": {
+        "attribution": {
+          "text": "Okresní úřad v Będzinu"
+        },
         "name": "Będzin: Budovy"
       },
       "Bing": {
@@ -161,6 +164,18 @@
           "text": "Znalostní centrum Lechner"
         },
         "description": "Vládní ortofotomapy s listovým pokrytím s rozlišením 40 cm/pixel pro celou zemi. Tato vrstva by měla být použita jako vyrovnávací základna v případě, že chybí přesnější reference. Obrázky ve formátu WEBP, JOSM pro ně potřebuje zásuvný modul WebP."
+      },
+      "FOMI_2015": {
+        "attribution": {
+          "text": "Znalostní centrum Lechner"
+        },
+        "description": "Vládní ortofotomapy s listovým pokrytím s rozlišením 40 cm/pixel pro celou zemi. Tato vrstva by měla být použita jako vyrovnávací základna v případě, že chybí přesnější reference. Obrázky ve formátu WEBP, JOSM pro ně potřebuje zásuvný modul WebP."
+      },
+      "FOMI_2015_leafoff_20cm": {
+        "attribution": {
+          "text": "Znalostní centrum Lechner"
+        },
+        "description": "Ortofotomapy s rozlišením 20 cm/pixel pro 6 okresů založené na vládních datech. Tato vrstva by měla být použita jako podklad pro vyrovnání při nedostatku přesnější reference. Snímky ve formátu WEBP, JOSM pro ně potřebuje plugin webp."
       },
       "Frankfurt-am-Main-2019": {
         "attribution": {
@@ -474,11 +489,35 @@
         "description": "Ohijské ministerstvo dopravy (ODOT) - inventář silnic Dopravního informačního mapového systému (TIMS) vydaný v červnu 2024.",
         "name": "Inventář silnic ODOT"
       },
+      "ORTOS_DGRF_2004_06": {
+        "attribution": {
+          "text": "Zeměpisné informace poskytnuté Generálním ředitelstvím pro území"
+        },
+        "name": "Letecké snímky pevninské části Portugalska - 50 cm - 2004-2006 (DGT)"
+      },
+      "ORTOS_DGT_2014_15": {
+        "attribution": {
+          "text": "Zeměpisné informace poskytnuté Generálním ředitelstvím pro území"
+        },
+        "name": "Letecké snímky pobřežních oblastí pevninské části Portugalska - 10 cm - 2014-2015 (DGT)"
+      },
+      "ORTOS_DGT_2018_WMS": {
+        "attribution": {
+          "text": "Zeměpisné informace poskytnuté Generálním ředitelstvím pro území"
+        },
+        "name": "Letecké snímky pevninské části Portugalska - 25 cm - 2018 (DGT)"
+      },
+      "ORTOS_DGT_2021_RGB": {
+        "attribution": {
+          "text": "Zeměpisné informace poskytnuté Generálním ředitelstvím pro území"
+        },
+        "name": "Letecké snímky severní pevninské části Portugalska - 25 cm - 2021 (DGT)"
+      },
       "OSIP": {
         "attribution": {
           "text": "Celostátní snímkovací program v Ohiu"
         },
-        "description": "Ohio celostátní snímky III nejprodávanější ortoimagery každého kraje při řešení od 1 stopy do 3 palců od roku 2017 do roku 2020.",
+        "description": "Celostátní snímkovací program III v Ohiu - nejaktuálnější ortosnímky každého kraje při rozlišeních od 1 stopy do 3 palců od roku 2017 do roku 2020.",
         "name": "Celostátní snímkovací program v Ohiu"
       },
       "OSIP_1ft": {

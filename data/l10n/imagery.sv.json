@@ -195,6 +195,20 @@
         "description": "Statliga ortofoton med lövbeklädnad och en upplösning på 40 cm/pixel för hela landet. Detta lager bör användas som justeringsunderlag om en mer exakt referens saknas. Bilder i WEBP-format; JOSM behöver ett WEBP-plugin för att hantera dem.",
         "name": "FÖMI-ortofoto 2011–2014 (WEBP)"
       },
+      "FOMI_2015": {
+        "attribution": {
+          "text": "Lechner Kunskapscenter"
+        },
+        "description": "Statliga ortofoton med lövbeklädnad och en upplösning på 40 cm/pixel för hela landet. Detta lager bör användas som justeringsunderlag om en mer exakt referens saknas. Bilder i WEBP-format; JOSM behöver ett WEBP-plugin för att hantera dem.",
+        "name": "FÖMI-ortofoto 2015 (WEBP)"
+      },
+      "FOMI_2015_leafoff_20cm": {
+        "attribution": {
+          "text": "Lechner Kunskapscenter"
+        },
+        "description": "Statliga lövfria ortofoton med en upplösning på 20 cm/pixel för 6 distrikt. Detta lager bör användas som justeringsunderlag om en mer exakt referens saknas. Bilder i WEBP-format; JOSM behöver ett WEBP-plugin för att hantera dem.",
+        "name": "FÖMI ortofoto 2015 bladfritt 20 cm (webp)"
+      },
       "Frankfurt-am-Main-2019": {
         "attribution": {
           "text": "Stadsmäterikontoret Frankfurt am Main"
@@ -433,14 +447,24 @@
         },
         "name": "Gliwice: Byggnader"
       },
+      "LSA-ALKIS-CP": {
+        "description": "Vektoriserad registrering av fastighetsindelningar från det officiella fastighetsregistret.",
+        "name": "© GeoBasis-DE/LVermGeo LSA, ALKIS fastighetsindelningar"
+      },
       "LSA-ALKIS_BU": {
-        "description": "Form av byggnader i Sachsen-Anhalt"
+        "description": "Form av byggnader i Sachsen-Anhalt",
+        "name": "© GeoBasis-DE/LVermGeo LSA, ALKIS byggnadskonturer"
+      },
+      "LSA-ATKIS-HYN": {
+        "description": "Registrering av vattennätverk (kan avvika i noggrannhet från verkligheten, bör alltid betraktas i samband med ortofoto).",
+        "name": "© GeoBasis-DE/LVermGeo LSA, ATKIS vattendragssystem"
       },
       "LSA-DOP20": {
         "description": "flygfoton över delstaten Sachsen-Anhalt, 20 cm upplösning"
       },
       "LSA-DVG": {
-        "description": "Vektordata över administrativa gränser. Gränserna för förbundsstaten, distriktet, kommunen och delar av kommunen ges."
+        "description": "Vektordata över administrativa gränser. Gränserna för förbundsstaten, distriktet, kommunen och delar av kommunen ges.",
+        "name": "© GeoBasis-DE/LVermGeo LSA, Digitala administrativa gränser"
       },
       "LocalAuthorities_RightsOfWay": {
         "attribution": {
@@ -507,6 +531,30 @@
         },
         "description": "Ohios transportdepartement (ODOT) – Transportinformationskartläggningssystem (TIMS) vägdatabas publicerad i juni 2024.",
         "name": "ODOT:s väginventering"
+      },
+      "ORTOS_DGRF_2004_06": {
+        "attribution": {
+          "text": "Geografisk information tillhandahållen av Direção-Geral do Território"
+        },
+        "name": "Ortofotografier av fastlandet Portugal - 50 cm - 2004-2006 (DGT)"
+      },
+      "ORTOS_DGT_2014_15": {
+        "attribution": {
+          "text": "Geografisk information tillhandahållen av Direção-Geral do Território"
+        },
+        "name": "Ortofotografier av kustområdena på fastlandet Portugal - 10 cm - 2014-2015 (DGT)"
+      },
+      "ORTOS_DGT_2018_WMS": {
+        "attribution": {
+          "text": "Geografisk information tillhandahållen av Direção-Geral do Território"
+        },
+        "name": "Ortofotografier av fastlandet Portugal - 25 cm - 2018 (DGT)"
+      },
+      "ORTOS_DGT_2021_RGB": {
+        "attribution": {
+          "text": "Geografisk information tillhandahållen av Direção-Geral do Território"
+        },
+        "name": "Ortofotografier av den norra delen av fastlandet Portugal - 25 cm - 2021 (DGT)"
       },
       "OSIP": {
         "description": "Ohio Statewide Imagery Program III mest aktuella ortobilder i varje county med upplösningar från 1 fot till 3 tum från 2017 till 2020."

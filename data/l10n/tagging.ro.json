@@ -158,7 +158,8 @@
             "quarter": "Cartier",
             "state": "Stat",
             "street": "Stradă",
-            "suburb": "Suburbie"
+            "suburb": "Suburbie",
+            "town": "Oraș"
           }
         },
         "admin_level": {
@@ -674,6 +675,14 @@
           "label": "Tip",
           "placeholder": "Implicit"
         },
+        "cycle_barrier": {
+          "label": "Tip"
+        },
+        "cycle_barrier/installation": {
+          "options": {
+            "fixed": "Fixat"
+          }
+        },
         "cycle_network": {
           "label": "Rețea"
         },
@@ -962,6 +971,12 @@
           "label": "Acces Internet Gratuit",
           "options": {
             "customers": "Doar clienți"
+          }
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Da",
+            "undefined": "Nu"
           }
         },
         "junction/ref_oneway": {

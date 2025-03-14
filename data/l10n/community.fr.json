@@ -148,7 +148,8 @@
         "description": "Abonnez-vous à notre chaîne Aparat"
       },
       "bluesky": {
-        "name": "{community} sur Bluesky"
+        "name": "{community} sur Bluesky",
+        "description": "Suivez-nous sur Bluesky"
       },
       "discord": {
         "name": "{community} sur Discord",
@@ -802,6 +803,7 @@
       "description": "Tout ce que vous devez savoir sur la cartographie en Argentine."
     },
     "osm-asia-facebook": {
+      "description": "Groupe Facebook OpenStreetMap Asia",
       "extendedDescription": "Un groupe pour le support cartographique intégré pour l'Asie. Nous souhaitons particulièrement être un lieu permettant aux cartographes sans communauté locale de partager des informations et de collaborer pour résoudre des problèmes dans leurs régions qu'ils ne seraient pas en mesure de résoudre autrement en raison du manque de communauté locale."
     },
     "osm-at": {

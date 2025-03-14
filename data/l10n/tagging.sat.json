@@ -197,6 +197,9 @@
           "label": "ᱯᱨᱟᱹᱠᱟᱨ",
           "placeholder": "ᱢᱩᱞ ᱯᱷᱮᱲᱟᱛ"
         },
+        "cycle_barrier": {
+          "label": "ᱯᱨᱟᱹᱠᱟᱨ"
+        },
         "departures_board": {
           "options": {
             "yes": "ᱦᱮᱸ"
@@ -322,6 +325,12 @@
           "options": {
             "no": "ᱵᱟᱝ",
             "yes": "ᱦᱮᱸ"
+          }
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "ᱦᱮᱸ",
+            "undefined": "ᱵᱟᱝ"
           }
         },
         "kerb": {

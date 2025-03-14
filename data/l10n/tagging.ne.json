@@ -211,6 +211,9 @@
         "cutting": {
           "label": "प्रकार"
         },
+        "cycle_barrier": {
+          "label": "प्रकार"
+        },
         "departures_board": {
           "options": {
             "yes": "हो"
@@ -334,6 +337,12 @@
           "options": {
             "no": "होइन",
             "yes": "हो"
+          }
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "हो",
+            "undefined": "होइन"
           }
         },
         "kerb": {

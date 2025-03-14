@@ -173,6 +173,7 @@
             "subdistrict!vn": "Περιοχή/Κοινότητα/Κωμόπολη",
             "suburb": "Προάστιο",
             "suburb!jp": "Εκλογικό διαμέρισμα (政令市)",
+            "town": "Κωμόπολη",
             "unit": "Μονάδα Χώρου"
           },
           "terms": "Διεύθυνση, Οδός"
@@ -1137,6 +1138,24 @@
           "label": "Είδος",
           "placeholder": "Προεπιλεγμένο"
         },
+        "cycle_barrier": {
+          "label": "Είδος",
+          "options": {
+            "diagonal": "Διαγώνιο",
+            "double": "Διπλό",
+            "single": "Μονό",
+            "tilted": "Κλινόμενο",
+            "triple": "Τριπλό"
+          }
+        },
+        "cycle_barrier/installation": {
+          "label": "Εγκατάσταση",
+          "options": {
+            "fixed": "Σταθερή",
+            "openable": "Ανοιγόμενη",
+            "removable": "Αφαιρέσιμη"
+          }
+        },
         "cycle_network": {
           "label": "Δίκτυο"
         },
@@ -1194,6 +1213,9 @@
         },
         "defibrillator/location": {
           "label": "Περιγραφή Τοποθεσίας"
+        },
+        "deflection": {
+          "label": "Γωνία"
         },
         "delivery": {
           "label": "Παράδοση κατ' οίκον",
@@ -1445,6 +1467,7 @@
             "main": "Κύρια",
             "secondary": "Δευτερεύουσα",
             "service": "Υπηρεσία",
+            "shop": "Είσοδος καταστήματος",
             "staircase": "Σκάλας",
             "yes": "Απροσδιόριστη"
           }
@@ -2052,6 +2075,14 @@
           "label": "Διάλειμμα",
           "terms": "Περίοδος"
         },
+        "irrigation_pivot": {
+          "label": "Κεντρικό σύστημα άρδευσης",
+          "options": {
+            "pivot": "Ναι",
+            "undefined": "Όχι"
+          },
+          "terms": "άρδευση, πότισμα, σύστημα ποτίσματος"
+        },
         "junction/ref_oneway": {
           "label": "Αριθμός Κόμβου",
           "terms": "Αριθμός Διασταύρωσης"
@@ -2329,6 +2360,9 @@
         "maxwidth": {
           "label": "Όριο Πλάτους"
         },
+        "maxwidth/physical": {
+          "label": "Όριο Πλάτους"
+        },
         "memorial": {
           "label": "Είδος",
           "options": {
@@ -2589,6 +2623,9 @@
         "openfire": {
           "label": "Επιτρέπονται οι ανοικτές εστίες φωτιάς"
         },
+        "opening": {
+          "label": "Πλάτος Ανοίγματος (Μέτρα)"
+        },
         "opening_date": {
           "label": "Αναμενόμενη Ημερομηνία Λειτουργίας ",
           "placeholder": "ΕΕΕΕ-ΜΜ-ΗΗ"
@@ -2624,6 +2661,12 @@
         "outdoor_seating": {
           "label": "Εξωτερικά Καθίσματα",
           "terms": "Εξωτερικά Καθίσματα"
+        },
+        "overlap": {
+          "label": "Πλάτος Επικάλυψης (Μέτρα)"
+        },
+        "panoramax": {
+          "label": "ID εικόνας Panoramax"
         },
         "par": {
           "label": "Άρτιο"
@@ -3496,6 +3539,9 @@
         "source/population": {
           "label": "Πηγή Πληθυσμού"
         },
+        "spacing": {
+          "label": "Απόσταση Μεταξύ Εμποδίων (Μέτρα)"
+        },
         "species": {
           "label": "Είδος",
           "terms": "Είδος"
@@ -4322,7 +4368,7 @@
           "name": "Πυλώνας Τελεφερίκ"
         },
         "aeroway": {
-          "name": "Στοιχείο Αεροδιάδρομος"
+          "name": "Χαρακτηριστικό Αεροδιάδρομου\nΑεροδιάδρομος"
         },
         "aeroway/aerodrome": {
           "name": "Αεροδρόμιο",

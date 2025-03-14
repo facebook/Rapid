@@ -26,6 +26,7 @@
           "label": "Cash Machine"
         },
         "backcountry": {
+          "label": "Remote",
           "terms": "Boonies"
         },
         "barrier": {
@@ -60,6 +61,13 @@
         },
         "button_operated": {
           "label": "Button Operated"
+        },
+        "camp_site": {
+          "options": {
+            "serviced": {
+              "description": "Toilets, water, showers, and electricity are provided"
+            }
+          }
         },
         "capacity_volume": {
           "label": "Capacity (Cubic Metres)"
@@ -182,6 +190,7 @@
           "options": {
             "anaesthetics": "Anaesthesiology",
             "behavior": "Behaviour Therapy",
+            "gynaecology": "Obstetrics & Gynaecology",
             "haematology": "Haematology",
             "orthopaedics": "Orthopaedic Surgery"
           }
@@ -219,6 +228,26 @@
         },
         "kerb": {
           "label": "Kerb",
+          "options": {
+            "flush": {
+              "description": "A dropped kerb which is level with the surrounding area."
+            },
+            "lowered": {
+              "description": "A dropped kerb which can be used by wheelchair users, not higher than a few centimetres."
+            },
+            "no": {
+              "description": "There is no kerb present at this location."
+            },
+            "raised": {
+              "description": "A raised kerb which can't easily be used by wheelchair users, higher than a few centimetres."
+            },
+            "rolled": {
+              "description": "A raised kerb with a rounded edge which makes it easier to use for cars or bicycles, but not for wheelchairs."
+            },
+            "yes": {
+              "description": "Some sort of kerb is present at this location, unknown whether it is raised, lowered, flush, etc."
+            }
+          },
           "terms": "Curb"
         },
         "length": {
@@ -351,9 +380,6 @@
         "advertising/poster_box": {
           "terms": "lollylop, snowshoe, city light"
         },
-        "aeroway/jet_bridge": {
-          "name": "Aerobridge"
-        },
         "allotments/plot": {
           "name": "Individual Allotment Plot"
         },
@@ -373,7 +399,8 @@
           "terms": "boba,bubble milk tea,pearl milk tea,taiwanese tea drink,tapioca,pearl tea,boba drink,cafe"
         },
         "amenity/cafe/coffee_shop": {
-          "name": "Coffee shop"
+          "name": "Coffee shop",
+          "terms": "americano,cold brew,brew,cafe,café,caffe,caffè,cappuccino,cocoa,coffee shop,drip,espresso,flat white,hot drinks,latte,macchiato,tea"
         },
         "amenity/clinic/dialysis": {
           "name": "Dialysis Centre"
@@ -395,6 +422,9 @@
         },
         "amenity/doctors/general": {
           "name": "General Practitioner"
+        },
+        "amenity/doctors/haematology": {
+          "name": "Haematologist"
         },
         "amenity/exhibition_centre": {
           "name": "Exposition Centre"
@@ -534,6 +564,9 @@
           "name": "Block of Flats",
           "terms": "flat building,flats"
         },
+        "building/detached": {
+          "terms": "freestanding house,home,residence,dwelling"
+        },
         "building/house/terraced": {
           "name": "Terraced house"
         },
@@ -591,6 +624,9 @@
         "highway/cycleway/crossing/bicycle_foot": {
           "terms": "Cycle & Foot Crossing,bicycle and foot crosswalk,bike and pedestrian crossing,cycleway,cycling,cyclist"
         },
+        "highway/cycleway/traffic_island_shared": {
+          "name": "Shared Path Refuge Island"
+        },
         "highway/elevator": {
           "name": "Lift",
           "terms": "elevator"
@@ -618,6 +654,9 @@
         },
         "highway/milestone": {
           "name": "Road Milestone"
+        },
+        "highway/path/crossing/traffic_signals": {
+          "name": "Path Crossing With Pedestrian Signals"
         },
         "highway/street_lamp": {
           "name": "Street Light",
@@ -1042,6 +1081,9 @@
         },
         "tourism/camp_site": {
           "name": "Camp Site"
+        },
+        "tourism/camp_site/backcountry": {
+          "name": "Remote Camping Area"
         },
         "tourism/caravan_site": {
           "name": "Caravan Park"

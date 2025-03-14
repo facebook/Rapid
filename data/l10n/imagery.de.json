@@ -128,7 +128,16 @@
         "name": "Esri Weltbilder (Klarheit) Beta"
       },
       "FOMI_2011_2014": {
-        "description": "Staatliche Orthofotos mit einer Auflösung von 40 cm/Pixel für das gesamte Land. Diese Ebene sollte in Ermangelung einer genaueren Referenz als Ausrichtungsbasis verwendet werden. Bilder im WEBP-Format, JOSM benötigt ein Webp-Plugin für sie."
+        "description": "Staatliche Orthofotos mit einer Auflösung von 40 cm/Pixel für das gesamte Land. Diese Ebene sollte in Ermangelung einer genaueren Referenz als Ausrichtungsbasis verwendet werden. Bilder im WEBP-Format, JOSM benötigt ein Webp-Plugin für sie.",
+        "name": "FÖMI Orthofoto 2011-2014 (WEBP)"
+      },
+      "FOMI_2015": {
+        "description": "Staatliche Orthofotos mit einer Auflösung von 40 cm/Pixel für das gesamte Land. Diese Ebene sollte in Ermangelung einer genaueren Referenz als Ausrichtungsbasis verwendet werden. Bilder im WEBP-Format, JOSM benötigt ein Webp-Plugin für sie.",
+        "name": "FÖMI Orthofoto 2015 (WEBP)"
+      },
+      "FOMI_2015_leafoff_20cm": {
+        "description": "Staatliche Orthofotos mit einer Auflösung von 20 cm/Pixel für 6 Distrikte. Diese Ebene sollte in Ermangelung einer genaueren Referenz als Ausrichtungsbasis verwendet werden. Bilder im WEBP-Format, JOSM benötigt ein Webp-Plugin für sie.",
+        "name": "FÖMI orthophoto 2015 blattlos 20cm (WEBP)"
       },
       "Frankfurt-am-Main-2019": {
         "description": "Luftbild von Frankfurt am Main, aufgenommen am 16. April 2019"
@@ -315,6 +324,30 @@
         },
         "description": "Ohio Verkehrsministerium (ODOT) - Transportinformationskartensystem (TIMS) Straßeninventar veröffentlicht im Juni 2024.",
         "name": "ODOT Straßeninventar"
+      },
+      "ORTOS_DGRF_2004_06": {
+        "attribution": {
+          "text": "Geografische Informationen der Generaldirektion für Territorium"
+        },
+        "name": "Orthofotos des portugiesischen Festlands – 50 cm – 2004–2006 (DGT)"
+      },
+      "ORTOS_DGT_2014_15": {
+        "attribution": {
+          "text": "Geografische Informationen der Generaldirektion für Territorium"
+        },
+        "name": "Orthofotos der Küstengebiete des portugiesischen Festlands – 10 cm – 2014–2015 (DGT)"
+      },
+      "ORTOS_DGT_2018_WMS": {
+        "attribution": {
+          "text": "Geografische Informationen der Generaldirektion für Territorium"
+        },
+        "name": "Orthofotos des portugiesischen Festlands – 25 cm – 2018 (DGT)"
+      },
+      "ORTOS_DGT_2021_RGB": {
+        "attribution": {
+          "text": "Geografische Informationen der Generaldirektion für Territorium"
+        },
+        "name": "Orthofotos des nördlichen Teils des portugiesischen Festlands – 25 cm – 2021 (DGT)"
       },
       "OSIP": {
         "description": "Ohio Statewide Imagery Program III aktuellste Orthobilder für jedes County mit einer Auflösung von 1 Fuß bis 3 Zoll von 2017 bis 2020."

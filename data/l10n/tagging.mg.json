@@ -164,6 +164,9 @@
           "label": "Karazany",
           "placeholder": "Tsy miova"
         },
+        "cycle_barrier": {
+          "label": "Karazany"
+        },
         "cycleway": {
           "options": {
             "no": {
@@ -300,6 +303,12 @@
           "options": {
             "no": "Tsia",
             "yes": "Eny"
+          }
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Eny",
+            "undefined": "Tsia"
           }
         },
         "kerb": {

@@ -247,6 +247,9 @@
           "label": "Тып",
           "placeholder": "Па змаўчанні"
         },
+        "cycle_barrier": {
+          "label": "Тып"
+        },
         "cycleway": {
           "options": {
             "no": {
@@ -380,6 +383,12 @@
           "options": {
             "no": "Не",
             "yes": "Так"
+          }
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Так",
+            "undefined": "Не"
           }
         },
         "kerb": {

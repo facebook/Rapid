@@ -1,13 +1,17 @@
 {
   "br": {
     "_communities": {
+      "freelibreopensourcesoftwarekosovaflossk": "Poellad frank hag Open Source eus Kosovo (FLOSSK)",
       "kiribatiwomeninmapping": "Kartennourezed Kiribati",
+      "mapeadoresivides": "Kartennourien an IVIDES",
       "mappingbotswana": "Kartennaouiñ Botswana",
       "maptimebogota": "MaptimeBogotá",
+      "openstreetmapaachen": "OpenStreetMap Aac'hen",
       "openstreetmapafrica": "OpenStreetMap Afrika",
       "openstreetmapargentina": "OpenStreetMap Arc'hantina",
       "openstreetmapasia": "OpenStreetMap Azia",
       "openstreetmapaustria": "OpenStreetMap Aostria",
+      "openstreetmapbahia": "OpenStreetMap Bahía",
       "openstreetmapbelgium": "OpenStreetMap Belgia",
       "openstreetmapbivccvl": "OpenStreetMap Biella, Vercelli, Canavese ha Traoñiennoù Lanzo",
       "openstreetmapbosniaandherzegovina": "OpenStreetMap Bosnia-ha-Herzegovina",
@@ -27,6 +31,7 @@
       "openstreetmapcyprus": "OpenStreetMap Kiprenez",
       "openstreetmapcz": "OpenStreetMap Republik Tchek",
       "openstreetmapde": "OpenStreetMap Alamagn",
+      "openstreetmapdeepsouth": "OpenStreetMap Stadoù-Unanet ar Su",
       "openstreetmapdenmark": "OpenStreetMap Danmark",
       "openstreetmapdominicanrepublic": "OpenStreetMap ar Republik Dominikan",
       "openstreetmapegypt": "OpenStreetMap Ejipt",
@@ -93,6 +98,7 @@
       "openstreetmapuganda": "OpenStreetMap Ouganda",
       "openstreetmapuk": "OpenStreetMap Rouantelezh-Unanet",
       "openstreetmapukraine": "OpenStreetMap Ukraina",
+      "openstreetmapus": "OpenStreetMap Stadoù-Unanet",
       "openstreetmapuzbekistan": "OpenStreetMap Ouzbekistan",
       "openstreetmapvietnam": "OpenStreetMap Viêt Nam",
       "openstreetmapwestbengal": "OpenStreetMap Kornôg Bengal",
@@ -103,6 +109,10 @@
       "aparat": {
         "name": "{community} war Aparat",
         "description": "Koumanantit d'hor chadenn Aparat"
+      },
+      "bluesky": {
+        "name": "{community} war Bluesky",
+        "description": "Heuilhit ac'hanomp war Bluesky"
       },
       "discord": {
         "name": "Discord {community}",
@@ -200,6 +210,9 @@
         "name": "Zulip {community}",
         "description": "Heuilhit hor gumuniezh war Zulip"
       }
+    },
+    "aberdeen-discord": {
+      "name": "OSM ABZ war Discord"
     },
     "af-matrix": {
       "description": "Strollad Matrix kumuniezh Afghanistan"
@@ -497,6 +510,7 @@
       "description": "Ni a sikour diorren ha gwellaat OpenStreetMap e Korea."
     },
     "kosovo-flossk": {
+      "name": "Poellad frank hag Open Source eus Kosovo (FLOSSK)",
       "description": "O vrudañ FLOSS abaoe 2009"
     },
     "kp-wiki": {

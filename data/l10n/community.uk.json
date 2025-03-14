@@ -511,6 +511,9 @@
     "de-mainz-mailinglist": {
       "description": "OpenStreetMap в Майнці та околицях"
     },
+    "de-mainz-signal": {
+      "description": "OpenStreetMap в Майнці, Вісбадені та Умгебунзі"
+    },
     "de-mainz-telegram": {
       "description": "OpenStreetMap в Майнці та околицях"
     },
@@ -670,6 +673,9 @@
     },
     "it-discourse": {
       "description": "Місце де ви можете обговорити питання пов'язані з OpenStreetMap"
+    },
+    "ivides_website": {
+      "description": "Ми зосереджені на сталому розвитку, картографії та підтримці спільноти OpenStreetMap."
     },
     "ko-facebook": {
       "description": "Мапери та користувачі OpenStreetMap в Кореї"
@@ -1152,6 +1158,9 @@
     },
     "rs-wiki": {
       "description": "Сторінка Wikiproject Сербії"
+    },
+    "scandinavia-discord": {
+      "name": "Скандинавський канал на OpenStreetMap World Discord"
     },
     "sg-wiki": {
       "description": "{community} - сторінка у Вікі"

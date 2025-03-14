@@ -170,6 +170,7 @@
             "street": "Carrer",
             "subdistrict": "Subdistricte",
             "suburb": "Sector",
+            "town": "Ciutat",
             "unit": "Unitat"
           },
           "terms": "ubicació,localització,direcció"
@@ -264,8 +265,11 @@
           "label": "Tipus"
         },
         "armrest": {
+          "label": "Reposabraços",
           "options": {
-            "undefined": "Desconegut"
+            "no": "Sense reposabraços",
+            "undefined": "Desconegut",
+            "yes": "Un o més reposabraços"
           }
         },
         "artist": {
@@ -540,6 +544,9 @@
           "label": "Tipus",
           "options": {
             "aqueduct": "Aqüeducte",
+            "cantilever": "Pont en mènsula",
+            "covered": "Pont cobert",
+            "movable": "Pont mòbil",
             "viaduct": "Viaducte"
           }
         },
@@ -665,7 +672,15 @@
           }
         },
         "camp_site": {
-          "label": "Tipus"
+          "label": "Tipus",
+          "options": {
+            "serviced": {
+              "description": "Disposa de lavabos, aigua, dutxes i electricitat"
+            },
+            "standard": {
+              "description": "Disposa de lavabos i aigua dins o prop"
+            }
+          }
         },
         "capacity": {
           "label": "Capacitat",
@@ -783,6 +798,10 @@
         "community_centre": {
           "label": "Tipus",
           "options": {
+            "cultural_centre": "Centre cultural",
+            "family_centre": "Centre familiar",
+            "parish_hall": "Ajuntament pedani",
+            "village_hall": "Ajuntament",
             "youth_centre": "Centre Juvenil"
           }
         },
@@ -880,7 +899,7 @@
             "key_cutter": "Fabricant de claus",
             "locksmith": "Copisteria de claus",
             "metal_construction": "Treballador del metall",
-            "oil_mill": "Pou petrolífer",
+            "oil_mill": "Almàssera",
             "painter": "Pintor",
             "parquet_layer": "Instal·lador de parquet",
             "photographer": "Fotògraf",
@@ -1009,11 +1028,14 @@
             "arab": "Àrab",
             "argentinian": "Argentina",
             "asian": "Asiàtica",
+            "balkan": "Balcànica",
             "barbecue": "Barbacoa",
+            "bavarian": "Bavaresa",
             "brazilian": "Brasilera",
             "bubble_tea": "Te de bombolles",
             "burger": "Hamburgueseria",
             "cake": "Pastís",
+            "caribbean": "Caribenca",
             "chicken": "Pollastre",
             "chinese": "Xinesa",
             "coffee_shop": "Cafeteria",
@@ -1041,7 +1063,9 @@
             "malaysian": "Malàisia",
             "mediterranean": "Mediterrània",
             "mexican": "Mexicana",
+            "middle_eastern": "Orient mitjà",
             "moroccan": "Marroquí",
+            "noodle": "Fideus",
             "pancake": "Crep americana",
             "pastry": "Rebosteria",
             "persian": "Persa",
@@ -1062,6 +1086,7 @@
             "turkish": "Turca",
             "ukrainian": "Ucraïnès",
             "vietnamese": "Vietnamita",
+            "western": "Occidental",
             "wings": "Aletes de pollastre"
           },
           "terms": "cuina,tipus de menjar,gastronomia"
@@ -1073,6 +1098,17 @@
         "cutting": {
           "label": "Tipus",
           "placeholder": "Predeterminat"
+        },
+        "cycle_barrier": {
+          "label": "Tipus",
+          "options": {
+            "double": "Doble"
+          }
+        },
+        "cycle_barrier/installation": {
+          "options": {
+            "fixed": "Fixa"
+          }
         },
         "cycle_network": {
           "label": "Xarxa"
@@ -1419,8 +1455,7 @@
             "lane": "A la calçada",
             "parking_lot": "Lloc d'aparcament",
             "sidewalk": "Vorera"
-          },
-          "terms": "posició,ubicació,localització"
+          }
         },
         "fire_hydrant/pressure": {
           "label": "Pressió (bar)",
@@ -1976,6 +2011,11 @@
         "interval": {
           "terms": "intermedi, entremig, lapse, periode"
         },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Sí"
+          }
+        },
         "junction/ref_oneway": {
           "label": "Número de cruïlla",
           "terms": "número de sortida, número d’ixida, nombre de sortida, nombre d’ixida, número d’eixida, nombre d’eixida"
@@ -2130,6 +2170,9 @@
           "label": "Il·luminat",
           "terms": "llum,fanal,farola,il·luminació"
         },
+        "loc_name": {
+          "label": "Nom local"
+        },
         "location": {
           "label": "Ubicació",
           "terms": "ubicació, localització"
@@ -2165,7 +2208,11 @@
           "label": "Cobertura"
         },
         "map_type": {
-          "label": "Tipus"
+          "label": "Tipus",
+          "options": {
+            "street": "Mapa de carreteres",
+            "topo": "Mapa topogràfic"
+          }
         },
         "mapillary": {
           "label": "ID de la imatge de Mapillary",
@@ -2180,7 +2227,11 @@
             "ground": {
               "title": "Terra"
             },
+            "plate": {
+              "title": "Placa"
+            },
             "stone": {
+              "description": "Marques pintades o gravades sobre una pedra",
               "title": "Pedra"
             }
           }
@@ -2454,6 +2505,9 @@
             "water_utility": "Oficina de la companyia d'aigua"
           }
         },
+        "official_name": {
+          "label": "Nom oficial"
+        },
         "oneway": {
           "label": "Sentit únic",
           "options": {
@@ -2562,6 +2616,7 @@
               "title": "Superfície"
             },
             "underground": {
+              "description": "Aparcament subterrani",
               "title": "Subterrani"
             }
           }
@@ -4246,8 +4301,20 @@
         "amenity/community_centre": {
           "name": "Centre Comunitari"
         },
+        "amenity/community_centre/cultural_centre": {
+          "name": "Centre cultural"
+        },
+        "amenity/community_centre/family_centre": {
+          "name": "Centre familiar"
+        },
         "amenity/community_centre/lgbtq": {
           "name": "Centre comunitari LGBTQ+"
+        },
+        "amenity/community_centre/parish_hall": {
+          "name": "Ajuntament pedani"
+        },
+        "amenity/community_centre/village_hall": {
+          "name": "Ajuntament"
         },
         "amenity/community_centre/youth_centre": {
           "name": "Centre Juvenil"

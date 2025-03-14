@@ -729,8 +729,10 @@
         "offline": "Das OpenStreetMap API ist offline. Deine Bearbeitungen sind lokal gesichert. Bitte probiere es später noch einmal.",
         "readonly": "Das OpenStreetMap API erlaubt aktuell kein Speichern. Du kannst deine Bearbeitungen fortsetzen, aber du kannst deine Änderungen erst später speichern.",
         "ratelimit": "Zu viele Daten von OpenStreetMap heruntergeladen. Bitte in {seconds} Sekunden erneut versuchen oder das Konto wechseln.",
-        "local_storage_full": "Du hast zu viele Änderungen vorgenommen, um eine Sicherungskopie zu erstellen. Du solltest deine Änderungen jetzt speichern."
+        "local_storage_full": "Du hast zu viele Änderungen vorgenommen, um eine Sicherungskopie zu erstellen. Du solltest deine Änderungen jetzt speichern.",
+        "contextlost": "Das Grafiksystem ist auf ein Problem gestoßen. Rapid wird versuchen, mit reduzierter Qualität fortzufahren."
       },
+      "dismiss": "Abbrechen",
       "retry": "Wiederholung"
     },
     "commit": {
@@ -828,6 +830,7 @@
       "location_unavailable": "Dein Standort ist nicht verfügbar."
     },
     "inspector": {
+      "tooltip": "Objekt-Inspektor umschalten",
       "zoom_to": {
         "title": "Zoome zur Auswahl",
         "no_selection": "Nichts zum dorthin zoomen."
@@ -911,6 +914,10 @@
       "switch": "Zu diesem Bildmaterial zurückschalten",
       "custom": "Benutzerdefiniert",
       "overlays": "Überlagerungen",
+      "grid": {
+        "grids": "Raster",
+        "no_grid": "Kein Raster"
+      },
       "imagery_source_faq": "Luftbildinformationen / Problem melden",
       "imagery_problem_faq": "Melde ein Problem mit dem Bildmaterial",
       "reset": "Zurücksetzen",
@@ -957,6 +964,8 @@
           "title": "OpenStreetMap Hinweise"
         },
         "rapid": {
+          "tooltip": "Vorgeschlagene Merkmale aus maschinellem Lernen und offenen Daten, die zur Verbesserung von OpenStreetMap genutzt werden können",
+          "title": "Rapid Funktionen",
           "license": "Facebook's Map With AI Lizenz"
         },
         "maproulette": {
@@ -970,13 +979,18 @@
           "id_placeholder": "Auftrag-IDs",
           "instruction_title": "Anweisungen",
           "fixed": "Ich habe es behoben!",
+          "cantComplete": "Kann nicht abgeschlossen werden",
           "alreadyFixed": "Bereits Behoben",
+          "notAnIssue": "Kein Problem",
           "login": "Sie müssen Sich anmelden, um den MapRoulette-Auftrag ändern zu können.",
           "loginMaproulette": "Sie müssen Sich bei MapRoulette anmelden, um den Auftrag bearbeiten zu können.",
           "inputPlaceholder": "Änderungsnotiz (optional)",
           "comment": "Bitte bestätigen",
           "cancel": "Abbrechen",
-          "submit": "Einreichen"
+          "submit": "Einreichen",
+          "nearbyTask": {
+            "title": "Zur nächsten Aufgabe springen"
+          }
         },
         "keepRight": {
           "tooltip": "Datenprobleme gefunden von keepright.at",
@@ -985,6 +999,10 @@
         "osmose": {
           "tooltip": "Datenprobleme gefunden von osmose.openstreetmap.fr",
           "title": "Osmose Probleme"
+        },
+        "geoScribble": {
+          "tooltip": "Freihand-Anmerkungen von EveryDoor-Nutzern",
+          "title": "GeoScribble-Anmerkungen"
         },
         "custom": {
           "tooltip": "Zieh eine Datei per Drag & Drop auf die Webseite oder drück auf \"...\" zum Einrichten",
@@ -1155,11 +1173,15 @@
       "custom_data": {
         "tooltip": "Bearbeite benutzerdefinierte Kartendaten",
         "header": "Benutzerdefinierte Kartendaten einstellen",
+        "instructions": "Benutzerdefinierte Kartendaten können der Karte auf zwei Arten als Referenzebene hinzugefügt werden:",
         "file": {
+          "instructions": "Wähle eine lokale Datendatei. Unterstützte Dateitypen sind:",
+          "tip": "Tipp: Du kannst alle diese Dateitypen auch per Drag &amp; Drop auf die Hauptkarte ziehen.",
           "label": "Durchsuche Dateien"
         },
         "or": "Oder",
         "url": {
+          "instructions": "Gib eine URL zu einem der oben genannten Dateitypen, einem MVT-ähnlichen Vektorkacheldienst oder einem .pmtiles-Archiv ein.",
           "xyz": "`{zoom}` oder `{z}`, `{x}`, `{y}` für Z/X/Y Kachelschema",
           "placeholder": "Gib eine URL ein"
         }
@@ -1182,6 +1204,10 @@
           "title": "Mausradverhalten",
           "auto": {
             "title": "Automatisch"
+          },
+          "zoom": {
+            "title": "Die Karte vergrößern",
+            "tooltip": "Wenn du mit dem Rad scrollst, wird die Karte immer gezoomt."
           }
         }
       },
@@ -1248,6 +1274,7 @@
       "just_edited": "Du hast gerade OpenStreetMap bearbeitet!",
       "thank_you": "Danke für die Verbesserung der Karte.",
       "thank_you_location": "Danke für die Verbesserung der Karte bei {where}.",
+      "your_changes": "Deine Änderungen sollten innerhalb von ein paar Minuten auf OpenStreetMap erscheinen. Bei anderen Karten kann es länger dauern, bis sie aktualisiert werden.",
       "help_link_url": "https://wiki.openstreetmap.org/wiki/DE:FAQ#Wann_werden_meine_.C3.84nderungen_auf_den_Karten_gezeigt.3F",
       "view_on_osm": "Änderungen auf OSM anzeigen",
       "your_changeset_id": "Deine Änderungssatz #:",
@@ -1263,15 +1290,25 @@
     },
     "splash": {
       "welcome": "Willkommen zu {rapidicon} {version}!",
+      "text": "Rapid ist ein benutzerfreundlicher, aber leistungsstarker Editor für OpenStreetMap, eine freie Weltkarte. Wenn du das erste Mal hier bist, klicke auf den Button unten, um das Tutorial zu starten. Jeder kann ein Mapper sein!\n\nWeitere Informationen findest du in unserem [changelog](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new) und [issue tracker](https://github.com/facebook/Rapid/issues) auf GitHub. Viel Spaß beim Mappen! 👍",
       "privacy_update": "*Unsere Datenschutzrichtlinie wurde kürzlich aktualisiert.*",
+      "privacy": "Durch die Nutzung dieser Software erklärst du dich damit einverstanden, dies in Übereinstimmung mit der [Rapid-Datenschutzrichtlinie](https://github.com/facebook/Rapid/blob/main/PRIVACY.md) zu tun.",
       "walkthrough": "Das Tutorial starten",
       "start": "Jetzt bearbeiten"
     },
     "whats_new": {
+      "text_v24": "Diese Version verbessert die Textlokalisierung von Rapid und macht es einfacher, mit Straßendaten wie Mapillary zu arbeiten. Jetzt kannst du erkannte Objekte wie Verkehrsschilder, Fußgängerüberwege, Fahrradständer und vieles mehr untersuchen!\n\nAlle Details findest du in unserem [changelog](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new) und [issue tracker](https://github.com/facebook/Rapid/issues) auf GitHub. Viel Spaß beim Mappen! 👍",
+      "text_v25": "Diese Version enthält eine neue Validierung, um die Zuordnung von Bordsteinen zu erleichtern, neue Datensätze im Datenkatalog und Verbesserungen des Renderers für eine bessere Leistung.",
       "dontshowagain": "Diesen Bildschirm bis zur nächsten Version verstecken"
     },
     "source_switch": {
       "lose_changes": "Es gibt ungesicherte Änderungen. Durch Wechsel des Kartenservers gehen diese verloren. Bist du sicher, dass du den Server wechseln willst?"
+    },
+    "rapid_splash": {
+      "welcome": "Einführung der KI-unterstützten Kartierung!",
+      "walkthrough": "Beginne den gesamten Rundgang",
+      "skip_to_rapid": "Erfahre mehr über Rapid!",
+      "start": "Nein danke, fang einfach an zu mappen"
     },
     "rapid_first_edit": {
       "exploring": "Ich erkunde nur",
@@ -1280,6 +1317,7 @@
     "rapid_inspector": {
       "tags": "Eigenschaften",
       "option_accept": {
+        "description": "Sieht dies wie ein genaues Merkmal aus? Wähle es aus, um es zu bearbeiten, damit du es mit OpenStreetMap verbinden, markieren und speichern kannst. 👍",
         "annotation": "Rapid-Objekt hinzugefügt.",
         "tooltip": "Füge dieses Objekt der Karte hinzu, um mit dem Bearbeiten anzufangen."
       },
@@ -1290,6 +1328,8 @@
       }
     },
     "rapid_menu": {
+      "license": "Lizenz",
+      "toggle_all": "Alle {rapidicon} Daten umschalten",
       "add_manage_datasets": "Datensätze hinzufügen/verwalten",
       "center_map": "Karte hier zentrieren",
       "worldwide": "Weltweit",
@@ -1310,7 +1350,8 @@
         "trees": "Bäume"
       },
       "fbRoads": {
-        "label": "Facebook Straßen"
+        "label": "Facebook Straßen",
+        "description": "Die KI hat Straßen aus Maxar Premium-Bildern erkannt und ist in über 80 Ländern verfügbar."
       }
     },
     "rapid_poweruser": {
@@ -2659,6 +2700,16 @@
         "retry_circle": "Du hast nicht auf {circularize_icon} {circularize} gedrückt. Versuch es nochmals.",
         "play": "Gut gemacht! Zeichne zur Übung weitere Gebäude und probiere einige der anderen Werkzeuge im Bearbeitungsmenü aus. **Wenn du bereit für das nächste Kapitel bist, drück auf '{next}'.**"
       },
+      "rapid": {
+        "title": "Rapid Funktionen",
+        "add_road_h": "Rapid-Funktionen hinzufügen",
+        "add_road_not_saved_yet": "Die Straße wurde als Änderung zur Karte hinzugefügt. Wie jede andere Kartenänderung wird sie erst dann für andere sichtbar, wenn du sie speicherst.",
+        "open_issues": "Öffnen wir nun das Problem-Panel.",
+        "new_lints": "Die Hinzufügung der Straße hat ein neues Problem in der Problemliste verursacht. Rapid hat mehrere neue Validierungsprüfungen eingeführt, um Probleme zu erkennen, die beim Zusammenführen dieser vorgeschlagenen Features in OpenStreetMap auftreten können.",
+        "undo_road_add_aftermath": "Die Straße wurde aus den lokalen Änderungen entfernt und ist nun wieder auf der magentafarbenen Ebene zu sehen!",
+        "select_road_again": "Du kannst auch Features ignorieren, die du nicht zu OpenStreetMap hinzufügen möchtest. **Wähle die Rapid Road erneut mit einem Linksklick aus.",
+        "ignore_road": "Diesmal drückst du auf die Schaltfläche „Dieses Merkmal ignorieren“, um die falsche Straße aus der Arbeitskarte auszublenden."
+      },
       "startediting": {
         "title": "Bearbeiten beginnen",
         "help": "Du kannst jetzt OpenStreetMap bearbeiten!{br}Du kannst mit Drücken auf {help_icon} {help} oder der Taste `{help_key}` diesen Rundgang wieder aufrufen oder weitere Dokumentation anzeigen.",
@@ -2672,6 +2723,7 @@
       "tooltip": "Tastenkürzel-Bildschirm anzeigen.",
       "key": {
         "backspace": "← Rück",
+        "cmd": "Strg",
         "ctrl": "Strg",
         "delete": "Entf",
         "del": "Entf",
@@ -2831,14 +2883,32 @@
         "toggle_preferences": {
           "label": "Benutzereinstellungs-Feld ein-/ausblenden"
         },
+        "toggle_fullscreen": {
+          "label": "Vollbildmodus umschalten"
+        },
         "highlight_edits": {
           "label": "Ungesicherte Bearbeitungen hervorheben"
         },
         "keyboard_shortcuts": {
           "label": "Tastenkürzel ein-/ausblenden"
         },
+        "toggle_3dmap": {
+          "label": "3d-Karte umschalten"
+        },
         "toggle_osm_data": {
           "label": "OpenStreetMap Daten ein-/ausblenden"
+        },
+        "toggle_osm_notes": {
+          "label": "OpenStreetMap Notizen umschalten"
+        },
+        "toggle_rapid_data": {
+          "label": "Rapid-Funktionen umschalten"
+        },
+        "toggle_mapillary": {
+          "label": "Mapillary umschalten"
+        },
+        "toggle_kartaview": {
+          "label": "Kartaview umschalten"
         },
         "toggle_all_cards": {
           "label": "Alle Informations-Felder ein-/ausblenden"

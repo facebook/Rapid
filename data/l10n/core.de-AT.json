@@ -39,6 +39,15 @@
         }
       }
     },
+    "preferences": {
+      "map_interaction": {
+        "mouse_wheel": {
+          "zoom": {
+            "tooltip": "Wenn du mit dem Rad scrollst, wird die Karte immer gezoomt und nicht gezoomt."
+          }
+        }
+      }
+    },
     "restore": {
       "heading": "Ungesicherte Änderungen vorhanden"
     },

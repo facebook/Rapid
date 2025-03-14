@@ -154,7 +154,7 @@
       "openstreetmappoland": "OpenStreetMap Польша",
       "openstreetmapportugal": "OpenStreetMap Португалия",
       "openstreetmapromania": "OpenStreetMap Румыния",
-      "openstreetmaprussia": "Cообщество OpenStreetMap России",
+      "openstreetmaprussia": "OpenStreetMap в России",
       "openstreetmaprwanda": "OpenStreetMap Руанда",
       "openstreetmapsaudiarabia": "OpenStreetMap Саудовская Аравия",
       "openstreetmapsenegal": "OpenStreetMap Сенегал",
@@ -192,13 +192,16 @@
       "osmmainz": "OpenStreetMap Майнц"
     },
     "_defaults": {
+      "bluesky": {
+        "description": "Подпишитесь на нас в Bluesky"
+      },
       "discord": {
         "name": "{community} в Discord",
         "description": "Свяжитесь с другими картографами через Discord"
       },
       "discourse": {
-        "name": "Форум Сообщества {community}",
-        "description": "Официальный форум сообщества OpenStreetMap России"
+        "name": "Форум сообщества {community}",
+        "description": "Официальный форум {community}"
       },
       "facebook": {
         "name": "{community} в Facebook",

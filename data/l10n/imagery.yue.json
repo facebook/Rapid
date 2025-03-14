@@ -8,8 +8,8 @@
         "name": "Będzin: 建築"
       },
       "Bing": {
-        "description": "衞星同般空相。",
-        "name": "必应航空影像"
+        "description": "衞星同航空相。",
+        "name": "必應地圖航空相"
       },
       "Bytom-2012": {
         "attribution": {
@@ -72,79 +72,93 @@
         "name": "Digital Vlanderen DHV II，多向地貌晕渲 0.25 米"
       },
       "DV_DHMV_II_SVF_25cm": {
-        "name": "Digitaal Vlaanderen DHV II，天空视角 0.25 米"
+        "name": "Digitaal Vlaanderen DHV II，天空視角 0.25 米"
       },
       "DV_OrthoPhoto": {
-        "name": "Digitaal Vlaanderen 最新航空图像"
+        "name": "Digitaal Vlaanderen 最新航空相"
       },
       "DV_OrthoPhoto_20132015_10cm": {
         "name": "Digitaal Vlaanderen 2013-2015 航空图像 10 厘米"
       },
       "DV_OrthoPhoto_Preliminary": {
-        "name": "Digitaal Vlaanderen 初步航空图像"
+        "name": "Digitaal Vlaanderen 初步航空相"
       },
       "Dourados_Ortofotos": {
         "attribution": {
           "text": "多拉杜斯市政府 - GeoDourados"
         },
-        "description": "多拉杜斯（2018）和几个行政区（2020）的高分辨率航空图像。",
+        "description": "多拉杜斯（2018）月石幾個行政區（2020）高分辨率航空相。",
         "name": "多拉杜斯正射影像"
       },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
-          "text": "Sentinel-2 无云 - https://s2maps.eu by EOX IT Services GmbH (包含已修改的 Copernicus Sentinel data 2017 & 2018)"
+          "text": "Sentinel-2 無雲 - https://s2maps.eu by EOX IT Services GmbH (包含已修改 Copernicus Sentinel data 2017 & 2018)"
         },
-        "description": "经过后期处理的 Sentinel 卫星图像。",
-        "name": "eox.at 2018 无云"
+        "description": "經過後期處理 Sentinel 衞星相。",
+        "name": "eox.at 2018 無雲"
       },
       "EOXAT2019CLOUDLESS": {
         "attribution": {
-          "text": "Sentinel-2 无云 - https://s2maps.eu by EOX IT Services GmbH （包含修改后的 Copernicus Sentinel 数据 2019）"
+          "text": "Sentinel-2 無雲 - https://s2maps.eu by EOX IT Services GmbH （包含修改後 Copernicus Sentinel 數據 2019）"
         },
-        "description": "经过后期处理的 Sentinel 卫星图像。",
-        "name": "eox.at 2019 无云"
+        "description": "經過後期處理 Sentinel 衞星相。",
+        "name": "eox.at 2019 無雲"
       },
       "EOXAT2020CLOUDLESS": {
         "attribution": {
-          "text": "Sentinel-2 无云图像 - https://s2maps.eu 由 EOX IT Services GmbH 提供（包含经修改的 2020 年 Copernicus Sentinel 数据）"
+          "text": "Sentinel-2 無雲相 - https://s2maps.eu 由 EOX IT Services GmbH 提供（包含經修改 2020 年 Copernicus Sentinel 數據）"
         },
-        "description": "经过后期处理的 Sentinel 卫星图像。",
-        "name": "eox.at 2020 无云影像"
+        "description": "經過後期處理 Sentinel 衞星相。",
+        "name": "eox.at 2020 無雲相"
       },
       "EOXAT2021CLOUDLESS": {
         "attribution": {
-          "text": "Sentinel-2 无云图像 - https://s2maps.eu 由 EOX IT Services GmbH 提供（包含经修改的 2021 年 Copernicus Sentinel 数据）"
+          "text": "Sentinel-2 無雲相 - https://s2maps.eu 由 EOX IT Services GmbH 提供（包含經修改 2021 年 Copernicus Sentinel 數據）"
         },
-        "description": "经过后期处理的 Sentinel 卫星图像。",
-        "name": "eox.at 2021 无云影像"
+        "description": "經過後期處 Sentinel 衞星相。",
+        "name": "eox.at 2021 無雲相"
       },
       "EOXAT2022CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 无云图像 - https://s2maps.eu 由 EOX IT Services GmbH 提供（包含经修改的 2022 年 Copernicus Sentinel 数据）"
         },
-        "description": "经过后期处理的 Sentinel 卫星图像。",
+        "description": "經過後期處理 Sentinel 衞星相。",
         "name": "eox.at 2022 无云"
       },
       "EsriWorldImagery": {
         "attribution": {
           "text": "條款同回應"
         },
-        "description": "Esri 世界影像",
-        "name": "Esri 世界影像"
+        "description": "Esri 世界相",
+        "name": "Esri 世界相"
       },
       "EsriWorldImageryClarity": {
         "attribution": {
           "text": "條款同回應"
         },
-        "description": "Ersi 的資料影像可能比預設的圖層更清晰且更精確。",
-        "name": "Esri 世界衛星圖 (清晰版)Beta"
+        "description": "Ersi 資料相可能清過準過預設圖層。",
+        "name": "Esri 世界相（清晰版）Beta"
       },
       "FOMI_2011_2014": {
         "attribution": {
-          "text": "莱希纳知识中心"
+          "text": "萊希納知識中心"
         },
         "description": "基于政府的叶片覆盖正射影像图，全国分辨率为 40 厘米/像素。在缺乏更准确的参考资料时，应将该图层用作对齐基准。WEBP 格式的图像，JOSM 需要一个 WEBP 插件。",
-        "name": "FÖMI 正射影像 2011-2014 (WEBP)"
+        "name": "FÖMI 正射影像 2011–2014 (WEBP)"
+      },
+      "FOMI_2015": {
+        "attribution": {
+          "text": "萊希納知識中心"
+        },
+        "description": "基于政府的叶片覆盖正射影像图，全国分辨率为 40 厘米/像素。在缺乏更准确的参考资料时，应将该图层用作对齐基准。WEBP 格式的图像，JOSM 需要一个 WEBP 插件。",
+        "name": "FÖMI 正射影像 2015 (WEBP)"
+      },
+      "FOMI_2015_leafoff_20cm": {
+        "attribution": {
+          "text": "萊希納知識中心"
+        },
+        "description": "基於政府的正射影像，解析度為 20 公分/畫素，涵蓋 6 個區。由於缺乏更準確的參照，該圖層應用作對齊基礎。WEBP 格式的影像，JOSM 需要 webp 外掛程式。",
+        "name": "FÖMI 2015年正射影像 20 公分 (webp)"
       },
       "Frankfurt-am-Main-2019": {
         "attribution": {
@@ -178,130 +192,133 @@
       },
       "Geoportal2-PL-City-boundaries_WMS": {
         "attribution": {
-          "text": "波兰大地测量和制图总局"
+          "text": "波蘭大地測量製圖總局"
         },
         "description": "发布波兰地区划分单位，包括行政单位的 WMS 服务",
         "name": "Geoportal 2：城市边界 WMS"
       },
       "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
         "attribution": {
-          "text": "波兰大地测量和制图总局"
+          "text": "波蘭大地測量製圖總局"
         },
         "description": "分辨率为10厘米或更高的正射影像地图。数据按分辨率和更新日期排序，例如，分辨率为8厘米的2012年地图将覆盖分辨率为10厘米的2019年地图。",
         "name": "Geoportal 2：高解析度正射影像 (資料影像) (WMS)"
       },
       "Geoportal2-PL-HighResolution-aerial_image_WMS": {
         "attribution": {
-          "text": "波兰大地测量和制图总局"
+          "text": "波蘭大地測量製圖總局"
         },
         "description": "分辨率为10厘米或更高的正射影像地图。数据按分辨率和更新日期排序，例如，分辨率为8厘米的2012年地图将覆盖分辨率为10厘米的2019年地图。",
         "name": "Geoportal 2：高解析度正射影像 (航照圖) (WMS)"
       },
       "Geoportal2-PL-Streets_WMS": {
         "attribution": {
-          "text": "波兰大地测量和制图总局"
+          "text": "波蘭大地測量製圖總局"
         },
         "description": "\"Krajowa Integracja Numeracji Adresowej\" 的 WMS 浏览服务，允许基于国家边界注册处的街道和地址记录空间数据创建地图图像。",
         "name": "Geoportal 2 街道名稱"
       },
       "Geoportal2-PL-addres_points_WMS": {
         "attribution": {
-          "text": "波兰大地测量和制图总局"
+          "text": "波蘭大地測量製圖總局"
         },
         "description": "\"Krajowa Integracja Numeracji Adresowej\" 的 WMS 浏览服务，允许基于国家边界注册处的街道和地址记录空间数据创建地图图像。",
         "name": "Geoportal 2：地址點"
       },
       "Geoportal2-PL-aerial_archival_image_WMS": {
         "attribution": {
-          "text": "波兰大地测量和制图总局"
+          "text": "波蘭大地測量製圖總局"
         },
         "description": "提供浏览波兰地区档案正射影像地图的Web地图服务（WMS）。通过该服务提供的数据是基于航空摄影的正射影像地图。该服务支持WMS 1.3.0接口。",
         "name": "Geoportal 2：正射影像 (資料影像) (WMS)"
       },
       "Geoportal2-PL-aerial_image_WMS": {
         "attribution": {
-          "text": "波兰大地测量和制图总局"
+          "text": "波蘭大地測量製圖總局"
         },
         "description": "WMS 讓您可以檢視波蘭的正射影像。透過此服務提供的資料是由航照圖組成的正射影像。此服務提供對 WMS 1.3.0 介面的支援。",
         "name": "Geoportal 2：正射影像 (最新航照圖) (WMS)"
       },
       "Geoportal2-PL-aerial_image_WMTS": {
         "attribution": {
-          "text": "波兰大地测量和制图总局"
+          "text": "波蘭大地測量製圖總局"
         },
         "description": "WMTS 讓您可以檢視波蘭的正射影像。透過此服務提供的資料是由航照圖組成的正射影像。",
         "name": "Geoportal 2：正射影像 (最新航照圖) (WMTS)"
       },
       "Geoportal2-PL-boundaries-of-communes_WMS": {
         "attribution": {
-          "text": "波兰大地测量和制图总局"
+          "text": "波蘭大地測量製圖總局"
         },
         "description": "发布波兰地区划分单位，包括行政单位的 WMS 服务",
         "name": "Geoportal 2：市镇边界 WMS"
       },
       "Geoportal2-PL-boundaries-of-counties_WMS": {
         "attribution": {
-          "text": "波兰大地测量和制图总局"
+          "text": "波蘭大地測量製圖總局"
         },
         "description": "发布波兰地区划分单位，包括行政单位的 WMS 服务",
         "name": "Geoportal 2：县边界 WMS"
       },
       "Geoportal2-PL-boundaries-of-provinces_WMS": {
         "attribution": {
-          "text": "波兰大地测量和制图总局"
+          "text": "波蘭大地測量製圖總局"
         },
         "description": "发布波兰地区划分单位，包括行政单位的 WMS 服务",
         "name": "Geoportal 2：省边界 WMS"
       },
       "Geoportal2-PL-buildings_WMS": {
         "attribution": {
-          "text": "波兰大地测量和制图总局"
+          "text": "波蘭大地測量製圖總局"
         },
         "name": "Geoportal 2：WMS 建築物紀錄"
       },
       "Geoportal2-PL-gas-pipe_WMS": {
         "attribution": {
-          "text": "波兰大地测量和制图总局"
+          "text": "波蘭大地測量製圖總局"
         },
         "description": "“Krajowa Integracja Uzbrojenia Terenu” 是一个汇集性的服务，用于展示来自县一级单位的地形数据。该服务仅包含那些符合相应参数要求并决定将其WMS服务整合到 “KrajowaIntegracjaUzbrojeniaTerenu” 汇集服务中的单位的数据。",
         "name": "Geoportal 2：天然气管道 WMS"
       },
       "Geoportal2-PL-heat-pipe_WMS": {
         "attribution": {
-          "text": "波兰大地测量和制图总局"
+          "text": "波蘭大地測量製圖總局"
         },
         "description": "“Krajowa Integracja Uzbrojenia Terenu” 是一个汇集性的服务，用于展示来自县一级单位的地形数据。该服务仅包含那些符合相应参数要求并决定将其WMS服务整合到 “KrajowaIntegracjaUzbrojeniaTerenu” 汇集服务中的单位的数据。",
         "name": "Geoportal 2：热力管道 WMS"
       },
       "Geoportal2-PL-plot_boundaries_WMS": {
         "attribution": {
-          "text": "波兰大地测量和制图总局"
+          "text": "波蘭大地測量製圖總局"
         }
       },
       "Geoportal2-PL-power-cord_WMS": {
         "attribution": {
-          "text": "波兰大地测量和制图总局"
+          "text": "波蘭大地測量製圖總局"
         },
         "description": "“Krajowa Integracja Uzbrojenia Terenu” 是一个汇集性的服务，用于展示来自县一级单位的地形数据。该服务仅包含那些符合相应参数要求并决定将其WMS服务整合到 “KrajowaIntegracjaUzbrojeniaTerenu” 汇集服务中的单位的数据。",
         "name": "Geoportal 2：电力线路 WMS"
       },
+      "Geoportal2-PL-prng": {
+        "name": "地門三: PRNG (地名)"
+      },
       "Geoportal2-PL-sewer-pipe_WMS": {
         "attribution": {
-          "text": "波兰大地测量和制图总局"
+          "text": "波蘭大地測量製圖總局"
         },
         "description": "“Krajowa Integracja Uzbrojenia Terenu” 是一个汇集性的服务，用于展示来自县一级单位的地形数据。该服务仅包含那些符合相应参数要求并决定将其WMS服务整合到 “KrajowaIntegracjaUzbrojeniaTerenu” 汇集服务中的单位的数据。",
         "name": "Geoportal 2：污水管道 WMS"
       },
       "Geoportal2-PL-shaded_relief_WMS": {
         "attribution": {
-          "text": "波兰大地测量和制图总局"
+          "text": "波蘭大地測量製圖總局"
         },
         "description": "瀏覽服務 (網路地圖服務，WMS)，在 1 公尺 x 1 公尺 的網格中檢視 NMT 陰影。該服務支援 WMS 1.3.0 介面。",
         "name": "Geoportal 2：地形阴影（WMS）"
       },
       "Geoportal2-PL-squares-and-housing-estates_WMS": {
         "attribution": {
-          "text": "波兰大地测量和制图总局"
+          "text": "波蘭大地測量製圖總局"
         },
         "description": "\"Krajowa Integracja Numeracji Adresowej\" 的 WMS 浏览服务，允许基于国家边界注册处的街道和地址记录空间数据创建地图图像。",
         "name": "Geoportal 2：广场和住宅区"
@@ -388,14 +405,14 @@
         "description": "萨克森-安哈尔特州的航空影像，分辨率为20cm"
       },
       "LSA-DVG": {
-        "description": "行政邊界的向量紀錄。包含了邦、郡、市鎮或郡的一部分。"
+        "description": "行政邊界的向量紀錄。包含了聯邦、區、城或一部分城。"
       },
       "LocalAuthorities_RightsOfWay": {
         "attribution": {
           "text": "包含了以 Open Government Licence v3.0 授权的公共部门信息。"
         },
         "description": "地方当局发布的公共通行权数据，在 rowmaps.com 上进行了整理",
-        "name": "公共通行权"
+        "name": "公共通行權"
       },
       "Lodz-2015": {
         "name": "Łódź: Orthophotomap 2015 (空照圖)"
@@ -408,7 +425,7 @@
       },
       "MAPNIK": {
         "attribution": {
-          "text": "© OpenStreetMap 贡献者，ODbL 1.0"
+          "text": "© 公家街圖投稿人，ODbL 1.0"
         },
         "description": "預設公家街圖層",
         "name": "公家街圖（一般）"
@@ -476,49 +493,50 @@
       },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {
-          "text": "包含了以 Open Government Licence v3.0 授权的公共部门信息。"
+          "text": "含公共部資料授權，基於公開政府授權版本三點〇。"
         },
-        "description": "在英國完全對齊的地籍 (土地註冊) 的地圖"
+        "description": "英國完全對齊地籍 (土地註冊) 界綫",
+        "name": "英國公家街圖地籍分界"
       },
       "OSM_Inspector-Addresses": {
         "attribution": {
-          "text": "© Geofabrik 有限公司, OpenStreetMap 贡献者, CC-BY-SA"
+          "text": "© Geofabrik 有限公司, 公家街圖投稿人, CC-BY-SA"
         },
         "name": "OSM 查看器：地址"
       },
       "OSM_Inspector-Geometry": {
         "attribution": {
-          "text": "© Geofabrik 有限公司, OpenStreetMap 贡献者, CC-BY-SA"
+          "text": "© Geofabrik 有限公司, 公家街圖投稿人, CC-BY-SA"
         },
         "name": "OSM 查看器：几何"
       },
       "OSM_Inspector-Highways": {
         "attribution": {
-          "text": "© Geofabrik 有限公司, OpenStreetMap 贡献者, CC-BY-SA"
+          "text": "© Geofabrik 有限公司, 公家街圖投稿人, CC-BY-SA"
         },
         "name": "OSM 查看器：道路"
       },
       "OSM_Inspector-Multipolygon": {
         "attribution": {
-          "text": "© Geofabrik 有限公司, OpenStreetMap 贡献者, CC-BY-SA"
+          "text": "© Geofabrik 有限公司, 公家街圖投稿人, CC-BY-SA"
         },
         "name": "OSM 查看器：区域"
       },
       "OSM_Inspector-Places": {
         "attribution": {
-          "text": "© Geofabrik 有限公司, OpenStreetMap 贡献者, CC-BY-SA"
+          "text": "© Geofabrik 有限公司, 公家街圖投稿人, CC-BY-SA"
         },
         "name": "OSM 查看器：地名"
       },
       "OSM_Inspector-Routing": {
         "attribution": {
-          "text": "© Geofabrik 有限公司, OpenStreetMap 贡献者, CC-BY-SA"
+          "text": "© Geofabrik 有限公司, 公家街圖投稿人, CC-BY-SA"
         },
         "name": "OSM 查看器：路线"
       },
       "OSM_Inspector-Tagging": {
         "attribution": {
-          "text": "© Geofabrik 有限公司, OpenStreetMap 贡献者, CC-BY-SA"
+          "text": "© Geofabrik 有限公司, 公家街圖投稿人, CC-BY-SA"
         },
         "name": "OSM 查看器：标签"
       },
@@ -608,13 +626,13 @@
       },
       "USDA-NAIP": {
         "attribution": {
-          "text": "美国农业部"
+          "text": "美國農業部"
         },
         "description": "最近一年国家农业影像计划（NAIP）对美国本土各州的 30/60 厘米 4 波段数字正射影像（DOQQ）。",
         "name": "国家农业影像计划"
       },
       "US_Forest_Service_roads_overlay": {
-        "description": "公路：绿色线框 = 未分级。棕色线框 = 未铺设路面。表面：沙砾 = 浅棕色填充，沥青 = 黑色，已铺设 = 灰色，土地 = 白色，混凝土 = 蓝色，草地 = 绿色。季节性 = 白色条状",
+        "description": "道路：綠外框 = 未明道。棕外框 = 泥路。路面：碎石 = 淺棕實心，蠟青 = 黑，有舖 = 灰，地面 = 白，水泥 = 藍，草地 = 綠。季節性 = 白斑",
         "name": "美國森林道路圖層"
       },
       "UrbISOrtho": {
@@ -665,31 +683,31 @@
       },
       "Waymarked_Trails-Cycling": {
         "attribution": {
-          "text": "© waymarkedtrails.org, OpenStreetMap 貢獻者，CC by-SA 3.0"
+          "text": "© waymarkedtrails.org, 公家街圖投稿人，CC by-SA 3.0"
         },
         "name": "Waymarked Trails: 單車"
       },
       "Waymarked_Trails-Hiking": {
         "attribution": {
-          "text": "© waymarkedtrails.org, OpenStreetMap 貢獻者，CC by-SA 3.0"
+          "text": "© waymarkedtrails.org, 公家街圖投稿人，CC by-SA 3.0"
         },
         "name": "Waymarked Trails: 遠足"
       },
       "Waymarked_Trails-MTB": {
         "attribution": {
-          "text": "© waymarkedtrails.org, OpenStreetMap 貢獻者，CC by-SA 3.0"
+          "text": "© waymarkedtrails.org, 公家街圖投稿人，CC by-SA 3.0"
         },
         "name": "Waymarked Trails: 越野單車"
       },
       "Waymarked_Trails-Skating": {
         "attribution": {
-          "text": "© waymarkedtrails.org, OpenStreetMap 貢獻者，CC by-SA 3.0"
+          "text": "© waymarkedtrails.org,公家街圖投稿人，CC by-SA 3.0"
         },
         "name": "Waymarked Trails: 溜冰"
       },
       "Waymarked_Trails-Winter_Sports": {
         "attribution": {
-          "text": "© waymarkedtrails.org, OpenStreetMap 貢獻者，CC by-SA 3.0"
+          "text": "© waymarkedtrails.org, 公家街圖投稿人，CC by-SA 3.0"
         },
         "name": "Waymarked Trails: 冬季運動"
       },
@@ -709,7 +727,7 @@
       },
       "cyclosm": {
         "attribution": {
-          "text": "彩現：CyclOSM (由 OpenStreetMap 法國管理主機) © 地圖資料 OpenStreetMap 貢獻者"
+          "text": "彩現：CyclOSM (由 OpenStreetMap 法國管理主機) © 地圖資料 公家街圖投稿人"
         },
         "description": "CyclOSM 是一種專為騎乘自行車設計的地圖樣式。其利用 OpenStreetMap 資料來建立美觀實用的自行車地圖！"
       },
@@ -725,16 +743,16 @@
       },
       "geoscribble-latest": {
         "attribution": {
-          "text": "GeoScribble 贡献者"
+          "text": "GeoScribble 投稿人"
         },
         "description": "Every Door 编辑的几何调查笔记，最近三周",
-        "name": "GeoScribble 最新笔记"
+        "name": "GeoScribble 至新筆記"
       },
       "gothenburg-citymap": {
         "attribution": {
           "text": "© 哥德堡市镇, CC0"
         },
-        "description": "此城市地图是描绘哥德堡的概览地图。它包含有关土地、通讯、水文、建筑物、地址号码和街道名称，行政区划和其他方向性文字的一般信息。",
+        "description": "城圖為概覽地圖，講哥特堡。有一般資料，講土地、通訊、水文、建築、地址號碼同街名、行政分界同其他方向文字等等。",
         "name": "哥德堡市城市地图"
       },
       "gothenburg-dtm-2017": {
@@ -798,7 +816,7 @@
           "text": "GSI 日本"
         },
         "description": "日本国土地理院标准地图。覆盖范围广。",
-        "name": "日本国土地理院标准地图"
+        "name": "日本國土地理院標準地圖"
       },
       "kalmar-orto-2014": {
         "attribution": {
@@ -846,14 +864,14 @@
         "attribution": {
           "text": "© 瑞典国家测绘局, CC0"
         },
-        "description": "1955-1965年瑞典正射镶嵌影像。新旧照片都可能会出现。",
+        "description": "一九五五到六五年間，瑞典正射舖嵌相。新相舊相可能一齊見到。",
         "name": "瑞典国家测绘局历史正射影像（1960）"
       },
       "lantmateriet-orto1975": {
         "attribution": {
           "text": "© 瑞典国家测绘局, CC0"
         },
-        "description": "1970-1980年瑞典正射镶嵌影像。正在建设中。",
+        "description": "一九七〇到八〇年間，瑞典正射舖嵌相。整理當中。",
         "name": "瑞典国家测绘局历史正射影像（1975）"
       },
       "lantmateriet-topowebb": {
@@ -895,7 +913,7 @@
         "attribution": {
           "text": "條款同回應"
         },
-        "description": "叠加显示主要要素，以辅助定位",
+        "description": "顯示主要地貌，助君定位。",
         "name": "定位器覆蓋層"
       },
       "openpt_map": {
@@ -908,26 +926,29 @@
         "attribution": {
           "text": "渲染：OpenRailwayMap，© 地图数据 OpenStreetMap 贡献者"
         },
-        "description": "基于 OpenStreetMap 数据、显示铁路设施的叠加影像"
+        "description": "基于 OpenStreetMap 数据、显示铁路设施的叠加影像",
+        "name": "公家鐵路圖"
       },
       "openrailwaymap-maxspeeds": {
         "attribution": {
           "text": "渲染：OpenRailwayMap，© 地图数据 OpenStreetMap 贡献者"
         },
-        "description": "基于 OpenStreetMap 数据、显示铁路速度限制的叠加影像"
+        "description": "基于 OpenStreetMap 数据、显示铁路速度限制的叠加影像",
+        "name": "公家鐵路圖極速"
       },
       "openrailwaymap-signalling": {
         "attribution": {
           "text": "渲染：OpenRailwayMap，© 地图数据 OpenStreetMap 贡献者"
         },
-        "description": "基于 OpenStreetMap 数据、显示铁路信号的叠加影像"
+        "description": "基于 OpenStreetMap 数据、显示铁路信号的叠加影像",
+        "name": "公家鐵路圖燈號"
       },
       "osm-gps": {
         "attribution": {
           "text": "© OpenStreetMap 贡献者"
         },
-        "description": "上傳至OpenStreetMap的公開 GPS 軌跡。",
-        "name": "OpenStreetMap GPS轨迹"
+        "description": "公開衞星定位軌跡，軌跡取自上傳到公家街圖。",
+        "name": "公家街圖衞星定位軌跡"
       },
       "osm-mapnik-german_style": {
         "attribution": {

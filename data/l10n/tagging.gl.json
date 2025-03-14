@@ -111,7 +111,7 @@
           "label": "Permítese o acceso",
           "options": {
             "customers": "Só clientes",
-            "no": "Sen bomba",
+            "no": "Ningún",
             "permissive": "Permisivo",
             "private": "Privado",
             "unknown": "Descoñecido",
@@ -169,6 +169,7 @@
             "subdistrict": "Subdistrito",
             "subdistrict!vn": "Barrio/Comuna/Aldea pequena",
             "suburb": "Barrio ou suburbio",
+            "town": "Cidade pequena",
             "unit": "Unidade"
           },
           "terms": "enderezo, dirección, ubicación, localización, posición, situación"
@@ -222,6 +223,9 @@
         "air_conditioning": {
           "label": "Aire acondicionado"
         },
+        "alt_name": {
+          "label": "Nome alternativo"
+        },
         "amenity": {
           "label": "Tipo"
         },
@@ -237,7 +241,9 @@
         "archaeological_site": {
           "label": "Tipo",
           "options": {
-            "fortification": "Fortificación"
+            "fortification": "Fortificación",
+            "megalith": "Megálito",
+            "necropolis": "Necrópole"
           }
         },
         "architect": {
@@ -259,6 +265,9 @@
           "options": {
             "bust": "Busto",
             "installation": "Instalación de arte",
+            "mosaic": "Mosaico",
+            "painting": "Pintura",
+            "relief": "Relevo",
             "sculpture": "Escultura",
             "statue": "Estatua"
           }
@@ -405,10 +414,14 @@
           "label": "Tipo",
           "options": {
             "art": "Arte",
+            "astronomy": "Astronomía",
+            "geology": "Xeoloxía",
             "history": "Historial",
             "nature": "Natural",
             "notice": "Taboleiro de anuncios",
-            "welcome_sign": "Cartel de benvida"
+            "plants": "Flora",
+            "welcome_sign": "Cartel de benvida",
+            "wildlife": "Fauna"
           }
         },
         "bollard": {
@@ -717,10 +730,23 @@
         "crop": {
           "label": "Cultivos",
           "options": {
+            "beet": "Remolacha",
             "coffee": "Café",
+            "cotton": "Algodón",
             "grass": "Céspede",
+            "hop": "Lúpulo",
+            "lavender": "Lavanda",
+            "maize": "Millo",
+            "potato": "Patacas",
+            "rape": "Colza",
+            "rice": "Arroz",
+            "soy": "Soia",
+            "strawberry": "Amorodos",
+            "sugarcane": "Cana de azucre",
+            "sunflower": "Xirasol",
             "tea": "Te",
-            "tobacco": "Tabaco"
+            "tobacco": "Tabaco",
+            "wheat": "Trigo"
           }
         },
         "crossing": {
@@ -734,6 +760,11 @@
         },
         "crossing/island": {
           "label": "Refuxio para peóns"
+        },
+        "crossing/markings": {
+          "options": {
+            "no": "Sen marcar"
+          }
         },
         "crossing_raised": {
           "options": {
@@ -768,6 +799,15 @@
           "label": "Tipo",
           "placeholder": "Por defecto"
         },
+        "cycle_barrier": {
+          "label": "Tipo"
+        },
+        "cycle_barrier/installation": {
+          "options": {
+            "fixed": "Fixa",
+            "removable": "Desmontable"
+          }
+        },
         "cycle_network": {
           "label": "Rede"
         },
@@ -779,7 +819,7 @@
             },
             "no": {
               "description": "Sen carril bici",
-              "title": "Sen bomba"
+              "title": "Ningunha"
             },
             "share_busway": {
               "description": "Un carril de bicicletas compartido coas liñas de autobús"
@@ -940,6 +980,9 @@
         "duration": {
           "label": "Dura"
         },
+        "ele": {
+          "label": "Elevación (metros)"
+        },
         "electrified": {
           "label": "Electrificación",
           "options": {
@@ -979,6 +1022,7 @@
         "entrance": {
           "label": "Tipo",
           "options": {
+            "emergency": "Saída de emerxencia",
             "main": "Principal",
             "service": "Servizo"
           }
@@ -1127,6 +1171,9 @@
         "generator/type": {
           "label": "Tipo"
         },
+        "genus": {
+          "label": "Xénero"
+        },
         "geyser/height": {
           "label": "Altura de erupción"
         },
@@ -1164,12 +1211,15 @@
             "alternative": "Medicina alternativa",
             "audiologist": "Fonoaudiólogo",
             "birthing_centre": "Centro de parto",
+            "blood_bank": "Banco de sangue",
+            "blood_donation": "Doazón de sangue",
             "clinic": "Clínica ou centro de saúde",
             "dentist": "Dentista",
             "doctor": "Doutor",
             "hospice": "Hospicio",
             "laboratory": "Laboratorio médico",
             "midwife": "Parteira",
+            "nurse": "Enfermaría",
             "occupational_therapist": "Terapeuta ocupacional",
             "optometrist": "Optometrista",
             "pharmacy": "Farmacia",
@@ -1177,11 +1227,37 @@
             "podiatrist": "Podólogo",
             "psychotherapist": "Psicoterapeuta",
             "rehabilitation": "Centro de rehabilitación",
-            "speech_therapist": "Logopeda"
+            "speech_therapist": "Logopeda",
+            "vaccination_centre": "Centro de vacinación"
           }
         },
         "healthcare/speciality": {
-          "label": "Especialidade"
+          "label": "Especialidade",
+          "options": {
+            "abortion": "Aborto",
+            "biochemistry": "Bioquímica",
+            "biology": "Bioloxía",
+            "blood_check": "Análise de sangue",
+            "cardiology": "Cardioloxía",
+            "dermatology": "Dermatoloxía",
+            "endocrinology": "Endocrinoloxía",
+            "neurology": "Neuroloxía",
+            "oncology": "Oncoloxía",
+            "ophthalmology": "Oftalmoloxía",
+            "orthodontics": "Ortodoncia",
+            "orthopaedics": "Ortopedia",
+            "osteopathy": "Osteopatía",
+            "otolaryngology": "Otorrinolaringoloxía",
+            "paediatric_surgery": "Cirurxía pediátrica",
+            "paediatrics": "Pediatría",
+            "plastic_surgery": "Cirurxía plástica",
+            "podiatry": "Podoloxía",
+            "psychiatry": "Psiquiatría",
+            "radiology": "Radioloxía",
+            "radiotherapy": "Radioterapia",
+            "urology": "Uroloxía",
+            "vaccination": "Vacinación"
+          }
         },
         "heating": {
           "label": "Calefacción"
@@ -1326,6 +1402,12 @@
         "interval": {
           "label": "Intervalo"
         },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Si",
+            "undefined": "Non"
+          }
+        },
         "junction/ref_oneway": {
           "label": "Número de cruzamento"
         },
@@ -1444,6 +1526,9 @@
         "lit": {
           "label": "Iluminado"
         },
+        "loc_name": {
+          "label": "Nome local"
+        },
         "location": {
           "label": "Localización",
           "terms": "ubicación, localización, posición, situación"
@@ -1495,9 +1580,19 @@
         },
         "material": {
           "options": {
+            "aluminium": "Aluminio",
+            "brass": "Latón",
+            "brick": "Ladrillo",
+            "bronze": "Bronce",
             "concrete": "Formigón",
+            "glass": "Vidro",
+            "granite": "Granito",
+            "iron": "Ferro",
+            "marble": "Mármore",
             "plastic": "Plástico",
             "sand": "Area",
+            "sandstone": "Arenito",
+            "soil": "Solo, terra",
             "steel": "Aceiro",
             "stone": "Pedra",
             "wood": "Madeira"
@@ -1505,6 +1600,9 @@
         },
         "max_age": {
           "label": "Idade máxima"
+        },
+        "maxlength": {
+          "label": "Lonxitude máxima"
         },
         "maxspeed": {
           "label": "Límite da velocidade"
@@ -1584,6 +1682,9 @@
         "name": {
           "label": "Nome",
           "placeholder": "Nome común (se existe)"
+        },
+        "nat_name": {
+          "label": "Nome nacional"
         },
         "network": {
           "label": "Rede"
@@ -1678,6 +1779,9 @@
             "travel_agent": "Axencia de viaxes",
             "water_utility": "Oficina de servizos públicos de auga"
           }
+        },
+        "official_name": {
+          "label": "Nome oficial"
         },
         "oneway": {
           "label": "Sentido único",
@@ -2077,6 +2181,9 @@
           "label": "Nome da pista de rodaxe",
           "placeholder": "p. ex. A5"
         },
+        "reg_name": {
+          "label": "Nome rexional"
+        },
         "relation": {
           "label": "Tipo"
         },
@@ -2407,6 +2514,7 @@
             "baseball": "Béisbol",
             "basketball": "Balóncesto",
             "beachvolleyball": "Volei praia",
+            "chess": "Xadrez",
             "climbing": "Escalada",
             "cycling": "Ciclismo",
             "dog_racing": "Carreira de cans",
@@ -2515,12 +2623,16 @@
           "label": "Superficie",
           "options": {
             "asphalt": "Asfalto",
+            "compacted": "Compactado",
             "concrete": "Formigón",
             "grass": "Céspede",
             "gravel": "Grava",
             "ground": "Terra",
+            "paved": "Pavimentado",
+            "paving_stones": "Lastras",
             "salt": "Salgado",
             "sand": "Area",
+            "unpaved": "Sen pavimentar",
             "wood": "Madeira"
           }
         },
@@ -2809,10 +2921,12 @@
         "vending": {
           "label": "Tipos de bens",
           "options": {
+            "bread": "Pan",
             "cigarettes": "Pitillos",
             "coffee": "Café",
             "condoms": "Condóns",
             "drinks": "Bebidas",
+            "eggs": "Ovos",
             "electronics": "Electrónicas",
             "excrement_bags": "Bolsas pra excrementos",
             "fuel": "Combustíbel",
@@ -3639,6 +3753,9 @@
         },
         "amenity/restaurant/japanese": {
           "name": "Restaurante xaponés"
+        },
+        "amenity/restaurant/korean": {
+          "name": "Restaurante coreano"
         },
         "amenity/restaurant/mexican": {
           "name": "Restaurante mexicano"
@@ -4520,6 +4637,9 @@
         "entrance": {
           "name": "Entrada / Saída",
           "terms": "entrada, saída, porta, saida, acceso"
+        },
+        "entrance/emergency": {
+          "name": "Saída de emerxencia"
         },
         "ford": {
           "name": "Vao",

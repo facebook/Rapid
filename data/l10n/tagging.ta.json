@@ -129,6 +129,7 @@
             "subdistrict": "துணைமாவட்டம்/வட்டம்",
             "subdistrict!vn": "உள்ளூராட்சி",
             "suburb": "புறநகர்",
+            "town": "நகரம்",
             "unit": "பிரிவு"
           }
         },
@@ -486,6 +487,9 @@
           "label": "வகை",
           "placeholder": "இயல்பிருப்பு"
         },
+        "cycle_barrier": {
+          "label": "வகை"
+        },
         "cycle_network": {
           "label": "பிணையம்"
         },
@@ -787,6 +791,12 @@
         },
         "interval": {
           "label": "இடைவேளை"
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "ஆம்",
+            "undefined": "இல்லை"
+          }
         },
         "junction_line": {
           "label": "சந்திப்பு",

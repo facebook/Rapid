@@ -156,7 +156,7 @@
             "district": "Dystrykt",
             "district!cn": "Dzielnica/Powiat/Chorągiew",
             "district!vn": "Okręg/Miejscowość/Dystrykt",
-            "floor": "Nr piętra",
+            "floor": "Piętro",
             "hamlet": "Przysiółek/Kolonia/Osada",
             "housename": "Nazwa domu",
             "housenumber!jp": "Nr budynku/działki",
@@ -173,6 +173,7 @@
             "subdistrict!vn": "Osiedle/Wspólnota/Miasteczko",
             "suburb": "Dzielnica",
             "suburb!jp": "Dzielnica (w mieście wyznaczonym rozporządzeniem)",
+            "town": "Miejscowość",
             "unit": "Blok/Oddział"
           },
           "terms": "adres"
@@ -288,7 +289,9 @@
             "painting": "Malowidło",
             "relief": "Płaskorzeźba",
             "sculpture": "Rzeźba",
-            "statue": "Posąg"
+            "statue": "Posąg",
+            "stone": "Kamień",
+            "tilework": "Kafle"
           }
         },
         "ascent": {
@@ -381,7 +384,7 @@
             "cattle_grid": "Przeszkoda dla bydła",
             "chain": "Łańcuch",
             "city_wall": "Mur miejski",
-            "cycle_barrier": "Bariera rowerowa",
+            "cycle_barrier": "Przeszkoda antyrowerowa",
             "ditch": "Rów",
             "entrance": "Przejście\nPrzerwa",
             "fence": "Ogrodzenie",
@@ -734,7 +737,7 @@
           "label": "Całkowita liczba miejsc"
         },
         "capacity_volume": {
-          "label": "Objętość (m³)"
+          "label": "Objętość (metry sześcienne)"
         },
         "caravans": {
           "label": "Przyczepy / Kampery",
@@ -1152,6 +1155,25 @@
           "label": "Rodzaj",
           "placeholder": "Domyślny"
         },
+        "cycle_barrier": {
+          "label": "Rodzaj",
+          "options": {
+            "diagonal": "Ukośna",
+            "double": "Podwójna",
+            "single": "Pojedyncza",
+            "tilted": "Nachylona",
+            "triple": "Potrójna"
+          }
+        },
+        "cycle_barrier/installation": {
+          "label": "Mocowanie",
+          "options": {
+            "fixed": "Stała",
+            "openable": "Otwierana",
+            "removable": "Zdejmowalna"
+          },
+          "terms": "mocowanie, instalacja"
+        },
         "cycle_network": {
           "label": "Sieć"
         },
@@ -1209,6 +1231,9 @@
         },
         "defibrillator/location": {
           "label": "Opis położenia"
+        },
+        "deflection": {
+          "label": "Kąt"
         },
         "delivery": {
           "label": "Dostawa",
@@ -1472,6 +1497,7 @@
             "main": "Główne",
             "secondary": "Boczne",
             "service": "Techniczne",
+            "shop": "Wejście do sklepu",
             "staircase": "Klatka schodowa",
             "yes": "Nieokreślone"
           },
@@ -1520,8 +1546,7 @@
             "lane": "Pas jezdni",
             "parking_lot": "Miejsce parkingowe",
             "sidewalk": "Chodnik"
-          },
-          "terms": "położenie, lokalizacja"
+          }
         },
         "fire_hydrant/pressure": {
           "label": "Ciśnienie (bar)",
@@ -2093,6 +2118,14 @@
           "label": "Częstotliwość",
           "terms": "częstotliwość, czas między odjazdami"
         },
+        "irrigation_pivot": {
+          "label": "Deszczownia centryczna",
+          "options": {
+            "pivot": "Tak",
+            "undefined": "Nie"
+          },
+          "terms": "deszczownia centryczna, deszczownia obrotowa, deszczownia pivot, nawadnianie, irygacja"
+        },
         "junction/ref_oneway": {
           "label": "Numer węzła",
           "terms": "numer węzła"
@@ -2304,8 +2337,8 @@
           }
         },
         "mapillary": {
-          "label": "ID zdjęcia Mapillary",
-          "terms": "mapillary"
+          "label": "Identyfikator zdjęcia Mapillary",
+          "terms": "identyfikator zdjęcia mapillary"
         },
         "marker": {
           "label": "Rodzaj",
@@ -2406,6 +2439,9 @@
         "maxwidth": {
           "label": "Maksymalna szerokość pojazdu",
           "terms": "maksymalna szerokość pojazdu"
+        },
+        "maxwidth/physical": {
+          "label": "Szerokość przejścia/przejazdu"
         },
         "memorial": {
           "label": "Rodzaj",
@@ -2673,6 +2709,9 @@
           "label": "Rozpalanie ognia dozwolone",
           "terms": "rozpalanie ognia, ognisko, grill"
         },
+        "opening": {
+          "label": "Szerokość otwarcia (metry)"
+        },
         "opening_date": {
           "label": "Oczekiwana data otwarcia"
         },
@@ -2708,6 +2747,13 @@
         "outdoor_seating": {
           "label": "Ogródek restauracyjny",
           "terms": "ogródek restauracyjny, stoliki na zewnątrz"
+        },
+        "overlap": {
+          "label": "Szerokość zachodzenia barierek (metry)"
+        },
+        "panoramax": {
+          "label": "Identyfikator zdjęcia Panoramax",
+          "terms": "identyfikator zdjęcia panoramax"
         },
         "parcel_dropoff": {
           "label": "Nadawanie przesyłek"
@@ -3642,6 +3688,9 @@
         },
         "source/population": {
           "label": "Źródło liczby ludności"
+        },
+        "spacing": {
+          "label": "Odległość między barierkami (metry)"
         },
         "species": {
           "label": "Gatunek",
@@ -5781,6 +5830,10 @@
         "amenity/veterinary": {
           "name": "Weterynarz",
           "terms": "weterynarz, zakład weterynaryjny, gabinet weterynaryjny, przychodnia weterynaryjna, klinika weterynaryjna, lecznica dla zwierząt, leczenie, zwierzęta"
+        },
+        "amenity/veterinary_pharmacy": {
+          "name": "Apteka weterynaryjna",
+          "terms": "apteka weterynaryjna, sklep weterynaryjny, apteka dla zwierząt"
         },
         "amenity/waste/dog_excrement": {
           "name": "Kosz na psie odchody",
@@ -8366,7 +8419,7 @@
           "terms": "zbiornik na wodę, cysterna na wodę, zbiornik wody, woda"
         },
         "man_made/street_cabinet": {
-          "name": "Skrzynka elektryczna",
+          "name": "Skrzynka uliczna",
           "terms": "skrzynka elektryczna, szafka elektryczna, szafka uliczna, rozdzielnica elektryczna, szafka instalacyjna, bzbwi"
         },
         "man_made/street_cabinet/postal_service": {
@@ -8455,8 +8508,8 @@
           "terms": "pagoda, wieża"
         },
         "man_made/tunnel": {
-          "name": "Tunel",
-          "terms": "tunel, podziemna, podziemny, podziemne"
+          "name": "Obszar tunelu\nTunel",
+          "terms": "obszar tunelu, tunel, podziemna, podziemny, podziemne"
         },
         "man_made/utility_pole": {
           "name": "Słup",
@@ -8658,7 +8711,7 @@
         },
         "natural/stone": {
           "name": "Kamień",
-          "terms": "kamień, głaz"
+          "terms": "kamień, głaz, głaz narzutowy"
         },
         "natural/strait": {
           "name": "Cieśnina\nPrzesmyk",
@@ -9774,6 +9827,10 @@
           "name": "Sklep z wyposażeniem łazienek",
           "terms": "sklep z wyposażeniem łazienek, łazienki, wyposażenie łazienek, meble łazienkowe, akcesoria łazienkowe, armatura sanitarna, wanny, prysznice, baterie, brodziki, zlewy, zlewozmywaki, umywalki"
         },
+        "shop/bbq": {
+          "name": "Sklep z grillami",
+          "terms": "sklep z grillami, sklep z akcesoriami do grillowania"
+        },
         "shop/beauty": {
           "name": "Salon urody\nSalon piękności",
           "terms": "salon urody, salon piękności, salon kosmetyczny, gabinet kosmetyczny, zakład kosmetyczny, kosmetyka, kosmetyczka, makijażystka, wizażystka, depilacja, medycyna estetyczna, laseroterapia, spa"
@@ -10062,6 +10119,10 @@
         "shop/greengrocer": {
           "name": "Warzywniak",
           "terms": "warzywniak, zieleniak, sklep warzywny, sklep z warzywami, sklep z owocami, stoisko z warzywami, stragan z warzywami, owoce, warzywa"
+        },
+        "shop/groundskeeping": {
+          "name": "Sklep ze sprzętem do utrzymywania terenów zieleni",
+          "terms": "sklep ze sprzętem do utrzymywania terenów zieleni"
         },
         "shop/hairdresser": {
           "name": "Fryzjer",

@@ -125,6 +125,18 @@
             "tea": "Te"
           }
         },
+        "cycle_barrier": {
+          "options": {
+            "double": "Dobbel",
+            "single": "Singel",
+            "triple": "Trippel"
+          }
+        },
+        "cycle_barrier/installation": {
+          "options": {
+            "fixed": "Festet"
+          }
+        },
         "cycle_network": {
           "label": "Nettwerk"
         },
@@ -205,6 +217,12 @@
           "options": {
             "no": "Nei",
             "yes": "Ja"
+          }
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Ja",
+            "undefined": "Nei"
           }
         },
         "kerb": {

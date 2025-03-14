@@ -53,7 +53,7 @@
       },
       "fields": {
         "access": {
-          "label": "Yn Caniatau Mynediad",
+          "label": "Caniateir Mynediad",
           "options": {
             "customers": {
               "description": "Ar gyfer cwsmeriaid y lleoliad yn unig",
@@ -142,9 +142,9 @@
         "address": {
           "label": "Cyfeiriad",
           "placeholders": {
-            "block_number": "Rhif y Bloc",
+            "block_number": "Rhif Bloc",
             "block_number!jp": "Rhif y Bloc",
-            "city": "Dinas",
+            "city": "Dinas/Tref",
             "city!cn": "Dinas/Rhaglawiaeth/Cynghrair",
             "city!jp": "Dinas/Tref/Pentref/Ward Arbennig Tokyo",
             "city!vn": "Dinas/Tref",
@@ -171,9 +171,10 @@
             "subdistrict": "Isardal",
             "subdistrict!vn": "Ward / Cymuned / Treflan",
             "suburb": "Maestref",
+            "town": "Tref",
             "unit": "Uned"
           },
-          "terms": "lleoliad"
+          "terms": "lleoliad,gyfeiriad,chyfeiriad,lle,man,byw,milltir,sgwâr,sgwar,pentref,tref"
         },
         "admin_level": {
           "label": "Lefel Gweinyddol"
@@ -281,8 +282,14 @@
             "painting": "Paentiad",
             "relief": "Cerfwedd",
             "sculpture": "Cerfddelw",
-            "statue": "Cerflun"
+            "statue": "Cerflun",
+            "stone": "Gwaith Celf Carreg",
+            "tilework": "Gwaith Teils"
           }
+        },
+        "ascent": {
+          "label": "Uchder Cyfanswm",
+          "terms": "uchder,dringo,dringfa,lefel"
         },
         "athletics_pitch": {
           "label": "Digwyddiad",
@@ -359,7 +366,7 @@
           "label": "Cynhalydd Cefn"
         },
         "bar": {
-          "terms": "tafarn"
+          "terms": "tafarn,pyb"
         },
         "barrier": {
           "label": "Math",
@@ -377,6 +384,7 @@
             "guard_rail": "Bar Gwarchod",
             "hedge": "Perth",
             "height_restrictor": "Cyfyngiad Uchder",
+            "jersey_barrier": "Rhwystr Jersey",
             "kerb": "Cwrb",
             "kissing_gate": "Gât Mochyn",
             "lift_gate": "Gât Braich",
@@ -451,20 +459,20 @@
         },
         "bike_ride": {
           "label": "Beicio a Theithio",
-          "terms": "beicio a teithio"
+          "terms": "beicio,teithio,deithio,theithio,seiclo,beic"
         },
         "bin": {
           "label": "Bin Sbwriel",
           "terms": "rybish,gwastraff,litar"
         },
         "blind": {
-          "label": "Mynediad Pobl Ddall",
+          "label": "Hygyrchedd Pobl Ddall",
           "options": {
             "limited": "Cyfyng",
             "no": "Na",
             "yes": "Ie"
           },
-          "terms": "dall,dallt,golwg,nam,olwg"
+          "terms": "dall,dallt,golwg,nam,olwg,amhariad"
         },
         "blood_components": {
           "label": "Cydrannau Gwaed",
@@ -500,7 +508,7 @@
         },
         "books": {
           "label": "Math o Lyfrau",
-          "terms": "Llyfrau"
+          "terms": "llyfr,tudalen,dalen,lyfr,llyfrau,llyfre"
         },
         "booth": {
           "label": "Bwth",
@@ -532,7 +540,7 @@
           "placeholder": "Diofyn"
         },
         "bridge/ref": {
-          "label": "Rhif y Pont",
+          "label": "Rhif Pont",
           "terms": "pont,bont,phont"
         },
         "bridge/support": {
@@ -596,6 +604,7 @@
             "public": "Adeilad Cyhoeddus",
             "residential": "Adeilad Preswyl",
             "retail": "Adeilad Manwerthu",
+            "riding_hall": "Arena Marchogaeth",
             "roof": "To",
             "ruins": "Adfeilion Adeilad",
             "school": "Adeilad Ysgol",
@@ -628,10 +637,12 @@
           "terms": "llawr"
         },
         "building/levels/underground": {
-          "label": "Lefelau Dan Ddaear"
+          "label": "Lefelau Dan Ddaear",
+          "terms": "dan ddaear,islawr,is-lawr,llawr,lawr,lloriau,loriau,tanddaearol,danddaear,dandaear,tandaear"
         },
         "building/material": {
-          "label": "Deunydd"
+          "label": "Deunydd",
+          "terms": "deunydd,ddeunydd,eitem"
         },
         "building/part": {
           "label": "Rhan o Adeilad"
@@ -696,7 +707,8 @@
           }
         },
         "capacity": {
-          "label": "Capasiti"
+          "label": "Capasiti",
+          "terms": "galluedd,cynnal,dal,cadw"
         },
         "capacity/disabled_parking": {
           "label": "Safleoedd Hygyrch"
@@ -711,7 +723,7 @@
           "label": "Safle Gyfanswm"
         },
         "cash_in": {
-          "label": "Blaendaliadau"
+          "label": "Talu i mewn"
         },
         "castle_type": {
           "label": "Math",
@@ -726,11 +738,12 @@
           }
         },
         "changing_table": {
-          "label": "Lle Newid Babi",
-          "terms": "newid cewyn,cewynnau,babi,bwrdd,bord"
+          "label": "Bwrdd Newid Cewyn",
+          "terms": "newid cewyn,cewynnau,babi,bwrdd,bord,lle,changing place,change"
         },
         "charge_fee": {
-          "label": "Swm y Tâl"
+          "label": "Swm y Tâl",
+          "terms": "talu,ffi,dirwy,codi,arian,parod"
         },
         "charge_toll": {
           "label": "Pris Toll"
@@ -759,7 +772,8 @@
             "wedding": "Dillad Priodas",
             "women": "Dillad Menywod",
             "workwear": "Dillad Gwaith"
-          }
+          },
+          "terms": "crys,trowsus,sanau,sgert,ffrog,ddillad,gwisgo"
         },
         "club": {
           "label": "Math"
@@ -776,14 +790,16 @@
           }
         },
         "colour": {
-          "label": "Lliw"
+          "label": "Lliw",
+          "terms": "liw,glas,coch,du,gwyn,gwyrdd,wen,melyn,melen,werdd"
         },
         "comment": {
-          "label": "Sylw Grŵp Newidiadau",
-          "placeholder": "Disgrifiad byr o’ch cyfraniadau (gofynnol)"
+          "label": "Sylw Grŵp Newid",
+          "placeholder": "Disgrifiwch eich cyfraniadau yn gryno (gofynnol)"
         },
         "communication_multi": {
-          "label": "Mathau o Gyfathrebu"
+          "label": "Mathau o Gyfathrebu",
+          "terms": "cyfathrebu,chyfathrebu,fathau,siarad,dweud,gweud,dwed,deud"
         },
         "community_centre": {
           "label": "Math",
@@ -815,7 +831,7 @@
         "contact/facebook": {
           "label": "Enw Defnyddiwr neu URL Facebook",
           "placeholder": "https://www.facebook.com/BusnesLleol",
-          "terms": "Gweplyfr"
+          "terms": "Gweplyfr,ffesbwc,ffêsbwc,meta"
         },
         "contact/webcam": {
           "label": "URL Cyfarfod Fideo",
@@ -854,7 +870,7 @@
         "covered_no": {
           "options": {
             "no": "Na",
-            "undefined": "Efallai ‘Na’",
+            "undefined": "Amhenodol (Na)",
             "yes": "Ie"
           }
         },
@@ -983,7 +999,19 @@
         "crossing/markings": {
           "label": "Marciau Croesfan",
           "options": {
-            "no": "Dim Marciau"
+            "dashes": "Llinellau Traws Toredig",
+            "dots": "Llinellau Traws Dotiog",
+            "ladder": "Ysgol â Sebra",
+            "lines": "Llinellau Traws",
+            "lines:paired": "Llinellau Traws Dwbl",
+            "no": "Dim Marciau",
+            "pictograms": "Pictogramau Wedi'u Paentio",
+            "surface": "Triniaeth Arwyneb Yn Unig",
+            "yes": "Marciau Anhysbys",
+            "zebra": "Sebra",
+            "zebra:bicolour": "Sebra Dau Liw",
+            "zebra:double": "Triphlyg-Pedwar",
+            "zebra:paired": "Sebra Pâr"
           },
           "terms": "llinell,lein,groesfan,chroesfan,croes,groes,trosi"
         },
@@ -1010,7 +1038,7 @@
             "brunch": "Brynsh",
             "bubble_tea": "Te Bwbls",
             "burger": "Byrger",
-            "cake": "Cacennau",
+            "cake": "Cacen",
             "caribbean": "Caribïaidd",
             "chicken": "Cyw Iâr",
             "chinese": "Tsieineaidd",
@@ -1066,18 +1094,36 @@
             "tex-mex": "Tecs-Mecs",
             "turkish": "Twrci",
             "ukrainian": "Wcreinaidd",
-            "vietnamese": "Fietnam",
+            "vietnamese": "Fietnamaidd",
             "western": "Gorllewinol",
             "wings": "Adain Cyw Iâr"
           },
           "terms": "bwyd,bwydydd,ceginiaeth,coginio,cwco"
         },
         "currency_multi": {
-          "label": "Mathau o Arian"
+          "label": "Mathau o Arian",
+          "terms": "nodiadau,nodau,arian,ceiniog,pris"
         },
         "cutting": {
           "label": "Math",
           "placeholder": "Diofyn"
+        },
+        "cycle_barrier": {
+          "label": "Math",
+          "options": {
+            "diagonal": "Croeslinol",
+            "double": "Dwbl",
+            "single": "Sengl",
+            "tilted": "Gogwydd",
+            "triple": "Trebl"
+          }
+        },
+        "cycle_barrier/installation": {
+          "label": "Gosodiad",
+          "options": {
+            "fixed": "Segur"
+          },
+          "terms": "gosod,defnydd"
         },
         "cycle_network": {
           "label": "Rhwydwaith"
@@ -1091,6 +1137,13 @@
             "no": {
               "description": "Dim lôn feiciau",
               "title": "Dim"
+            },
+            "opposite": {
+              "description": "Diweddarwch gydag oneway=yes, oneway:bicycle=no, and cycleway:both=no ac ati.",
+              "title": "(Hen) Lôn Feiciau Gwrthlif"
+            },
+            "opposite_lane": {
+              "description": "Diweddarwch gydag oneway, oneway:bicycle, a cycleway:left/right=lane ac ati."
             },
             "track": {
               "title": "Trac Seiclo"
@@ -1114,12 +1167,16 @@
         "defibrillator/location": {
           "label": "Disgrifiad y Lleoliad"
         },
+        "deflection": {
+          "label": "Ongl"
+        },
         "delivery": {
-          "label": "Cludiad",
-          "terms": "cyflawni,cyflenwi,arlwyo,rhoi,anfon,danfon"
+          "label": "Darpariaeth",
+          "terms": "cyflawni,cyflenwi,arlwyo,rhoi,anfon,danfon,darparu,darpariaeth"
         },
         "denomination": {
-          "label": "Enwad"
+          "label": "Enwad",
+          "terms": "math,teip,ffydd,cred,credo"
         },
         "denotation": {
           "label": "Dynodiant"
@@ -1134,7 +1191,7 @@
           }
         },
         "deposit/trolley": {
-          "label": "Blaendal"
+          "label": "Talu"
         },
         "depot": {
           "label": "Math"
@@ -1142,8 +1199,12 @@
         "depth": {
           "label": "Dyfnder (metr)"
         },
+        "descent": {
+          "label": "Dyfnder Uchafswm"
+        },
         "description": {
-          "label": "Disgrifiad"
+          "label": "Disgrifiad",
+          "terms": "crynodeb,esboniad"
         },
         "design": {
           "label": "Arddull"
@@ -1158,7 +1219,8 @@
           "label": "Dyfeisiau"
         },
         "diameter": {
-          "label": "Diamedr"
+          "label": "Diamedr",
+          "terms": "diametr"
         },
         "diet_multi": {
           "label": "Anghenion Dietegol",
@@ -1169,7 +1231,8 @@
             "pescetarian": "Pysgfwytäwr",
             "vegan": "Fegan",
             "vegetarian": "Llysieuol"
-          }
+          },
+          "terms": "deiet,deietegol,pysgod,fegan,lactos,cig,kosher,halal"
         },
         "diplomatic": {
           "label": "Math",
@@ -1183,7 +1246,8 @@
           "label": "Gwasanaethau"
         },
         "direction": {
-          "label": "Cyfeiriad (Gradd Clocwedd)"
+          "label": "Cyfeiriad (Gradd Clocwedd)",
+          "terms": "troi,cylch,ongl"
         },
         "direction_cardinal-US-CA-NZ": {
           "label": "Cyfeiriad",
@@ -1192,7 +1256,8 @@
             "north": "I'r Gogledd",
             "south": "I'r De",
             "west": "I'r Gorllewin"
-          }
+          },
+          "terms": "wynebu,gwynebu,golwg"
         },
         "direction_clock": {
           "label": "Cyfeiriad",
@@ -1202,6 +1267,7 @@
           }
         },
         "direction_vertex": {
+          "label": "Cyfeiriad",
           "options": {
             "backward": "Yn ôl",
             "both": "Y ddwy / Popeth",
@@ -1217,7 +1283,8 @@
           }
         },
         "distance": {
-          "label": "Pellter"
+          "label": "Pellter",
+          "terms": "hyd,bellter,milltir,medr,metr,troedfedd,eang,phellter"
         },
         "disused/amenity": {
           "label": "Math"
@@ -1239,7 +1306,8 @@
           "terms": "taldra"
         },
         "dock/width": {
-          "label": "Lled y Doc (Metr)"
+          "label": "Lled y Doc (Metr)",
+          "terms": "harbwr"
         },
         "dog": {
           "label": "Cŵn",
@@ -1248,7 +1316,8 @@
             "no": "Ni chaniateir",
             "unleashed": "Dim Angen Tennyn",
             "yes": "Caniateir"
-          }
+          },
+          "terms": "cwn,ci,anifeiliaid"
         },
         "door": {
           "label": "Drws"
@@ -1258,7 +1327,8 @@
           "terms": "taldra"
         },
         "door/width": {
-          "label": "Lled y Drws (Metr)"
+          "label": "Lled y Drws (Metr)",
+          "terms": "pellter"
         },
         "door_type": {
           "label": "Math"
@@ -1267,10 +1337,12 @@
           "label": "Diodydd"
         },
         "drinking_water": {
-          "label": "Yfedadwy"
+          "label": "Yfadwy",
+          "terms": "gellir,gallu,yfed,yfedadwy"
         },
         "drinking_water_available": {
-          "label": "Dwr Yfed Ar Gael"
+          "label": "Dŵr Yfed Ar Gael",
+          "terms": "gellir,gallu,yfed,yfedadwy,yfadwy"
         },
         "drive_through": {
           "label": "Gyrru Trwodd"
@@ -1279,7 +1351,7 @@
           "label": "Hyd"
         },
         "ele": {
-          "label": "Uchder (metr)"
+          "label": "Uchder (Metr)"
         },
         "electrified": {
           "label": "Trydanu",
@@ -1301,6 +1373,7 @@
         "embassy": {
           "label": "Math",
           "options": {
+            "branch_embassy": "Cangen Llysgenhadaeth",
             "delegation": "Llysgennad",
             "high_commission": "Uchel Gomisiwn",
             "mission": "Cenhadaeth Ddiplomyddol",
@@ -1331,6 +1404,7 @@
             "main": "Prif",
             "secondary": "Eilaidd",
             "service": "Gwasanaeth",
+            "shop": "Mynedfa Siop",
             "staircase": "Grisiau",
             "yes": "Amhenodol"
           },
@@ -1343,7 +1417,7 @@
           "label": "Ffordd Gyflym"
         },
         "faces": {
-          "label": "Gwynebau"
+          "label": "Wynebau"
         },
         "fax": {
           "label": "Ffacs",
@@ -1358,7 +1432,7 @@
           "label": "Math"
         },
         "fhrs/id-GB": {
-          "label": "Cyf FHRS",
+          "label": "Cyfeirnod Safonau Bwyd",
           "terms": "FHRS,food hygiene rating scheme,food hygiene rating system,food standards agency,safonau bwyd,cynllun,graddau,sgor,sgôr,hylendid bwyd"
         },
         "fire_hydrant/position": {
@@ -1410,7 +1484,7 @@
         },
         "fixme": {
           "label": "Trwsiwch Fi",
-          "terms": "help,helpa,cymorth,trwsho,trwso,trwsio"
+          "terms": "help,helpa,cymorth,trwsho,trwso,trwsio,datrys,unioni,unionwch,datryswch,datrus"
         },
         "flag/name": {
           "label": "Enw Baner"
@@ -1457,9 +1531,12 @@
         "fuel/fuel_multi": {
           "label": "Mathau o Danwydd",
           "options": {
-            "e10": "E10 Petrol",
-            "e5": "E5 Petrol",
-            "e85": "E85 Petrol",
+            "GTL_diesel": "Diesel GTL",
+            "HGV_diesel": "Petrol Cerbydau Trwm",
+            "LH2": "Hydrogen Hylif",
+            "e10": "Petrol E10",
+            "e5": "Petrol E5",
+            "e85": "Petrol E85",
             "lng": "Nwy Naturiol Hylifedig (LNG)",
             "lpg": "Nwy Petrolewm Hylifedig (LPG)",
             "octane_100": "Petrol (100 Octan)",
@@ -1538,10 +1615,12 @@
           "label": "Math"
         },
         "genus": {
-          "label": "Genws"
+          "label": "Genws",
+          "terms": "genws"
         },
         "gnis/feature_id-US": {
-          "label": "ID Nodwedd GNIS"
+          "label": "Cyfeirnod Nodwedd GNIS",
+          "terms": "federal geographic names information service,united states board on geographic names,usa,uda,gnis"
         },
         "government": {
           "label": "Math"
@@ -1553,7 +1632,8 @@
           "label": "Math"
         },
         "handrail": {
-          "label": "Gwarchodfa Llaw"
+          "label": "Gwarchodfa Llaw",
+          "terms": "llaw,gafael,dwylo,cynhaliwr,cynhalydd,sefydlu,sefyll"
         },
         "handrest": {
           "label": "Cynhaliwr Dwylo"
@@ -1636,7 +1716,7 @@
             "dermatovenereology": "Dermatofenereoleg",
             "diabetology": "Diabetoleg",
             "diagnostic_radiology": "Radioleg Diagnostig",
-            "emergency": "Meddygaeth Frys",
+            "emergency": "Meddyginiaeth Frys",
             "endocrinology": "Endocrinoleg",
             "fertility": "Ffrwythlondeb",
             "gastroenterology": "Gastroenteroleg",
@@ -1709,10 +1789,12 @@
           "terms": "taldra"
         },
         "highchair": {
-          "label": "Cadair Uchel"
+          "label": "Cadair Uchel",
+          "terms": "babi,plant,plantos,bwydo,bwster,bwstar"
         },
         "highspeed": {
-          "label": "Cyflymder Uchel"
+          "label": "Cyflymder Uchel",
+          "terms": "cyflymdra,fast and furious"
         },
         "highway": {
           "label": "Math"
@@ -1745,7 +1827,10 @@
             "railway": "Rheilffordd",
             "ruins": "Adfeilion",
             "shieling": "Lluest",
-            "tomb": "Beddrod"
+            "tomb": "Beddrod",
+            "wayside_cross": "Croes Min Ffordd",
+            "wayside_shrine": "Cysegr Min Ffordd",
+            "wreck": "Llongddrylliad"
           }
         },
         "historic/wreck/date_sunk": {
@@ -1762,13 +1847,16 @@
           "label": "Dolenni"
         },
         "horse_riding": {
+          "label": "Canolfan Farchogaeth",
           "options": {
             "horse_riding": "Ie",
             "undefined": "Na"
           }
         },
         "horse_scale": {
+          "label": "Anhawster Marchogaeth",
           "options": {
+            "common": "Hawdd: Dim problemau neu anawsterau (diofyn)",
             "impossible": "Amhosibl: Ffordd neu bont na ellir ei basio am geffylau. Rhy gul, cefnogaeth annigonol, rhwystrau fel ysgolion. Perygl bywyd."
           },
           "placeholder": "Anodd, Peryglus..."
@@ -1799,7 +1887,8 @@
           }
         },
         "indoor": {
-          "label": "Dan-do"
+          "label": "Dan do",
+          "terms": "mewnol"
         },
         "indoor_type": {
           "label": "Math"
@@ -1818,7 +1907,8 @@
           "label": "Arysgrif"
         },
         "intermittent": {
-          "label": "Ysbeidiol"
+          "label": "Ysbeidiol",
+          "terms": "dros dro"
         },
         "internet_access": {
           "label": "Cysylltiad Rhyngrwyd",
@@ -1828,7 +1918,8 @@
             "wired": "Wifr",
             "wlan": "Di-wifr",
             "yes": "Ie"
-          }
+          },
+          "terms": "wifi,wlan,cysylltiad,gwe"
         },
         "internet_access/fee": {
           "label": "Tâl Mynediad Rhyngrwyd",
@@ -1845,6 +1936,12 @@
         "interval": {
           "label": "Amserlen"
         },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Ie",
+            "undefined": "Dim"
+          }
+        },
         "junction/ref_oneway": {
           "label": "Rhif Cyffordd"
         },
@@ -1854,7 +1951,8 @@
             "circular": "Cylch Traffig",
             "jughandle": "Handlen Jyg",
             "roundabout": "Cylchfan"
-          }
+          },
+          "terms": "gyffordd,chyffordd,fforc,forch"
         },
         "kerb": {
           "label": "Cwrb",
@@ -1893,7 +1991,8 @@
           "label": "Math"
         },
         "kitchen": {
-          "label": "Cegin"
+          "label": "Cegin",
+          "terms": "coginio,bwyta,bwyd"
         },
         "lamp_type": {
           "label": "Math"
@@ -1914,7 +2013,7 @@
         },
         "layer": {
           "label": "Haen",
-          "terms": "haen,haenen"
+          "terms": "haenen,haenau"
         },
         "leaf_cycle": {
           "label": "Cylchred Dail",
@@ -1980,7 +2079,8 @@
           }
         },
         "lit": {
-          "label": "Goleuadau"
+          "label": "Goleuadau",
+          "terms": "lamp,golau,goleuo"
         },
         "loc_name": {
           "label": "Enw Lleol",
@@ -2016,11 +2116,19 @@
           "label": "Gwneuthurwr",
           "terms": "manwerthwyr,gwerthu,gwneuthurwr"
         },
+        "map_size": {
+          "label": "Maint"
+        },
         "map_type": {
-          "label": "Math"
+          "label": "Math",
+          "options": {
+            "street": "Map Ffyrdd",
+            "toposcope": "Toposgop"
+          }
         },
         "mapillary": {
-          "label": "ID Delwedd Mapillary"
+          "label": "Cyfeirnod Llun Mapillary",
+          "terms": "delwedd,delweddaeth,adnabod,rhif,hunaniaeth,id,cyf"
         },
         "marker": {
           "label": "Math",
@@ -2064,10 +2172,16 @@
             "steel": "Dur",
             "stone": "Carreg",
             "wood": "Pren"
-          }
+          },
+          "terms": "deunydd,ddeunydd,eitem"
+        },
+        "mattress": {
+          "label": "Matresi",
+          "terms": "fatresi"
         },
         "max_age": {
-          "label": "Oedran Uchafswm"
+          "label": "Oedran Uchafswm",
+          "terms": "uchafswm,oedran,terfyn"
         },
         "maxheight": {
           "label": "Terfyn Uchder",
@@ -2092,12 +2206,15 @@
         "maxwidth": {
           "label": "Terfyn Lled"
         },
+        "maxwidth/physical": {
+          "label": "Terfyn Lled"
+        },
         "memorial": {
           "label": "Math",
           "options": {
             "blue_plaque": "Plac Glas",
             "bust": "Penddelw",
-            "cross": "Croes",
+            "cross": "Croes Goffa",
             "ghost_bike": "Ysbrydseicl",
             "obelisk": "Obelisg",
             "plaque": "Plac Coffa",
@@ -2111,10 +2228,12 @@
           "label": "Cyfeiriad yr Adeilad Agosaf"
         },
         "message": {
-          "label": "Neges"
+          "label": "Neges",
+          "terms": "neges,testun,destun,thestun"
         },
         "microbrewery": {
-          "label": "Bragdy Meicro"
+          "label": "Bragdy Meicro",
+          "terms": "cwrw,gwrw,chwrw,peint,fragdy,tafarn"
         },
         "military_service": {
           "label": "Gwasanaeth Milwrol",
@@ -2142,7 +2261,13 @@
         "mobile": {
           "label": "Rhif Ffôn Symudol",
           "placeholder": "+44 42 123 4567",
-          "terms": "Ffon,mobeil,mobile,ffon,rhif"
+          "terms": "Ffon,mobeil,mobile,rhif"
+        },
+        "model": {
+          "terms": "fodel"
+        },
+        "monitoring_multi": {
+          "label": "Monitro"
         },
         "mooring": {
           "options": {
@@ -2154,7 +2279,10 @@
           }
         },
         "mtb/scale": {
-          "label": "Anhawster Beicio Mynydd"
+          "label": "Anhawster Beicio Mynydd",
+          "options": {
+            "0": "0: Graean solet/pridd cywasgedig, dim rhwystrau, troeon eang"
+          }
         },
         "mtb/scale/imba": {
           "options": {
@@ -2182,7 +2310,8 @@
           "label": "Naturiol"
         },
         "network": {
-          "label": "Rhwydwaith"
+          "label": "Rhwydwaith",
+          "terms": "rwydwaith"
         },
         "network/type": {
           "label": "Math o Rwydwaith"
@@ -2221,10 +2350,12 @@
           "label": "Rhwydwaith"
         },
         "not/name": {
-          "label": "Enwau Anghywir"
+          "label": "Enwau Anghywir",
+          "terms": "ffug,anwir,camgymeriad,cam"
         },
         "note": {
-          "label": "Nodyn"
+          "label": "Nodyn",
+          "terms": "nodiadau,sylw"
         },
         "nudism": {
           "label": "Noethlymuniaeth",
@@ -2235,7 +2366,8 @@
             "obligatory": "Gofynnol",
             "permissive": "Caniataol",
             "yes": "Caniateir"
-          }
+          },
+          "terms": "noeth,naturydd,dadwisgo"
         },
         "office": {
           "label": "Math",
@@ -2269,7 +2401,7 @@
             "logistics": "Asiantaeth Anfon",
             "moving_company": "Swyddfa Gwmni Symud",
             "newspaper": "Swyddfa Bapur Newydd",
-            "ngo": "Swyddfa NGO",
+            "ngo": "Swyddfa Gorff Aflywodraethol",
             "notary": "Swyddfa Notari",
             "physician": "Meddyg",
             "political_party": "Swyddfa Blaid Gwleidyddol",
@@ -2295,20 +2427,24 @@
           "options": {
             "no": "Na",
             "reversible": "Gwrthdroadwy",
-            "undefined": "Tueddol ‘Na’",
+            "undefined": "Amhenodol (Na)",
             "yes": "Ie"
           }
         },
         "oneway/bicycle": {
-          "label": "Unffordd (Beiciau)"
+          "label": "Unffordd (Beiciau)",
+          "terms": "un ffordd,seiclo"
         },
         "oneway_yes": {
           "options": {
             "no": "Na",
             "reversible": "Gwrthdroadwy",
-            "undefined": "Efallai ‘Ie’",
+            "undefined": "Amhenodol (Ie)",
             "yes": "Ie"
           }
+        },
+        "openfire": {
+          "label": "Caniateir Tân Agored"
         },
         "opening_date": {
           "label": "Dyddiad Agor Disgwyliedig"
@@ -2324,7 +2460,8 @@
           "terms": "agor,oriau,busnes,gwaith"
         },
         "operator": {
-          "label": "Gweithredwr"
+          "label": "Gweithredwr",
+          "terms": "gweithredu,weithredwr"
         },
         "operator/type": {
           "label": "Math o Weithredwr"
@@ -2344,21 +2481,33 @@
           "label": "Seddi Awyr Agored",
           "terms": "allanol"
         },
+        "panoramax": {
+          "label": "Cyfeirnod Llun Panoramax",
+          "terms": "delwedd,delweddaeth,adnabod,rhif,hunaniaeth,id,cyf"
+        },
+        "parcel_dropoff": {
+          "label": "Gollwng Parseli"
+        },
         "parcel_pickup": {
+          "label": "Casglu Parseli",
           "options": {
             "no": "Na",
-            "undefined": "Efallai ‘Ie’",
+            "undefined": "Amhenodol (Ie)",
             "yes": "Ie"
           }
         },
         "park_ride": {
-          "label": "Parcio a Theithio"
+          "label": "Parcio a Theithio",
+          "terms": "p&r,teithio a reidio,reidio a theithio,t&r,r&t"
         },
         "parking": {
           "label": "Math",
           "options": {
             "carports": {
               "title": "Cysgod Car"
+            },
+            "garage_boxes": {
+              "title": "Blychau Garej"
             },
             "half_on_kerb": {
               "title": "Hanner Ar Gwrb"
@@ -2367,12 +2516,14 @@
               "title": "Lôn Ochr Ffordd"
             },
             "layby": {
+              "description": "Parcio mewn ardal seibio, ar ochr ffordd.",
               "title": "Cilfan"
             },
             "multi-storey": {
               "title": "Aml-lawr"
             },
             "on_kerb": {
+              "description": "Parcio ar balmant.",
               "title": "Ar Gwrb"
             },
             "rooftop": {
@@ -2382,6 +2533,7 @@
               "title": "Sieds"
             },
             "shoulder": {
+              "description": "Parcio ar y llain.",
               "title": "Llain Galed"
             },
             "street_side": {
@@ -2391,11 +2543,13 @@
               "title": "Arwyneb"
             },
             "underground": {
+              "description": "Parcio dan-ddaear.",
               "title": "Dan Ddaear"
             }
           }
         },
         "parking/side/orientation": {
+          "label": "Cyfeiriad Parcio",
           "types": {
             "parking:left:orientation": "Ochr chwith",
             "parking:right:orientation": "Ochr dde"
@@ -2413,6 +2567,7 @@
             "street_side": "Ochr Stryd",
             "yes": "Ie (amhenodol)"
           },
+          "terms": "barcio,pharcio,stopio,car.ceir,cerbyd",
           "types": {
             "parking:left": "Ochr chwith",
             "parking:right": "Ochr dde"
@@ -2440,14 +2595,16 @@
             "notes": "Arianodau",
             "prepaid_ticket": "Tocyn Rhag-dalu",
             "telephone_cards": "Cerdyn Ffôn"
-          }
+          },
+          "terms": "talu,rhoi,prynu"
         },
         "phases": {
           "label": "Cymalau"
         },
         "phone": {
-          "label": "Rhif ffôn",
-          "placeholder": "+44 42 123 4567"
+          "label": "Rhif Ffôn",
+          "placeholder": "+44 42 123 4567",
+          "terms": "ffon,rhif,ffonio,cysylltu,galw,deial"
         },
         "picnic_table": {
           "label": "Bwrdd Picnic"
@@ -2548,7 +2705,8 @@
           "label": "Dyddiad Poblogaeth"
         },
         "portable": {
-          "label": "Symudol"
+          "label": "Symudol",
+          "terms": "gludadwy,symudol,chludadwy"
         },
         "post": {
           "label": "Cyfeiriad Danfoniadau"
@@ -2590,6 +2748,7 @@
           "label": "Lleoliad Carreg Filltir"
         },
         "railway/signal/direction": {
+          "label": "Cyfeiriad",
           "options": {
             "backward": "Yn ôl",
             "both": "Y ddwy / Popeth",
@@ -2647,7 +2806,8 @@
           "terms": "cod cyfeiriadol"
         },
         "ref/FR/siret-FR": {
-          "label": "Rhif SIRET"
+          "label": "Rhif SIRET",
+          "terms": "ffrainc,ffrangeg,ffrengig,siret,cyf,cyfeiriad,cod,nod,cyfeirnod,gyfeirnod,côd,god,chod"
         },
         "ref/edubase-GB": {
           "label": "Cyfeirnod Yr Adran Addysg",
@@ -2658,20 +2818,20 @@
           "terms": "cod ISIL,côd,god,chod"
         },
         "ref/linz/place_id-NZ": {
-          "label": "ID Lleoliad NZGB"
+          "label": "Cyfeirnod Lleoliad NZGB"
         },
         "ref/vatin": {
-          "label": "Rhif ID TAW",
+          "label": "Rhif Cyfeirnod TAW",
           "terms": "VAT"
         },
         "ref_aeroway_gate": {
-          "label": "Rhif y Gât"
+          "label": "Rhif Gât"
         },
         "ref_disc_golf_hole": {
-          "label": "Rhif y Twll"
+          "label": "Rhif Twll"
         },
         "ref_golf_hole": {
-          "label": "Rhif y Twll"
+          "label": "Rhif Twll"
         },
         "ref_highway_junction": {
           "label": "Rhif Cyffordd"
@@ -2684,7 +2844,8 @@
           "terms": "rhif llinell,linell,lein,trac,drac,thrac"
         },
         "ref_road_number": {
-          "label": "Rhif Heol"
+          "label": "Rhif Heol",
+          "terms": "ffordd,lwybr,llwybr,rowt,riwt,trywydd,trywedd,lon,lôn"
         },
         "ref_room_number": {
           "label": "Rhif Ystafell"
@@ -2845,6 +3006,10 @@
         "sample_collection": {
           "label": "Samplau"
         },
+        "sanitary_dump_station": {
+          "label": "Gwaredu Toiled",
+          "terms": "tŷ bach, tai bach, ty bach, lle chwech, lle 6, llefydd chwech"
+        },
         "screen": {
           "label": "Sgriniau"
         },
@@ -2916,10 +3081,12 @@
           }
         },
         "seamark/harbour/category_marina": {
+          "label": "Cyfleusterau Domestig",
           "options": {
             "marina": "Ie",
             "marina_no_facilities": "Na"
-          }
+          },
+          "terms": "tŷ bach, tai bach, ty bach, lle chwech, lle 6, llefydd chwech"
         },
         "seamark/mooring/category": {
           "label": "Categori"
@@ -3029,7 +3196,7 @@
             "dedicated": "Ar gyfer ysmygwyr (ee. clwb ysmygwyr)",
             "isolated": "Mewn ardaloedd ysmygu, ar wahân",
             "no": "Dim ysmygu unrhywle",
-            "outside": "Y tu allan yn unig",
+            "outside": "Caniateir y tu allan",
             "separated": "Mewn ardaloedd ysmygu, sydd ddim ar wahân",
             "yes": "Caniateir ym mhobman"
           },
@@ -3037,7 +3204,7 @@
           "terms": "mwg,smygu,sigarét,vape,fêp,e-sigarét,sigar"
         },
         "sms": {
-          "terms": "tecst,nodyn bodyn"
+          "terms": "tecst,nodyn bodyn,neges destun"
         },
         "social_facility": {
           "label": "Math",
@@ -3057,23 +3224,23 @@
           "options": {
             "abused": "Dioddefwyr camdriniaeth",
             "child": "Plant",
-            "dementia": "Pobl sy'n dioddef o ddementia",
-            "disabled": "Pobl ag anableddau",
+            "dementia": "Pobl sydd â dementia",
+            "disabled": "Pobl sydd ag anableddau",
             "diseased": "Pobl sy'n dioddef o glefyd",
             "displaced": "Pobl wedi'u dadleoli gan drychineb neu wrthdaro",
             "drug_addicted": "Pobl sy'n gaeth i gyffuriau",
-            "homeless": "Pobl di-gartref",
+            "homeless": "Pobl ddigartref",
             "juvenile": "Pobl ifanc",
-            "mental_health": "Pobl â phroblemau iechyd meddwl",
+            "mental_health": "Pobl sydd â phroblemau iechyd meddwl",
             "migrant": "Mudwyr",
             "orphan": "Plant Amddifaid",
             "refugee": "Ffoaduriaid",
             "senior": "Henoed",
-            "terminally_ill": "Pobl â salwch angheuol",
+            "terminally_ill": "Pobl sydd â salwch angheuol",
             "underprivileged": "Pobl ddifreintiedig",
-            "unemployed": "Pobl ddi-swydd",
+            "unemployed": "Pobl ddi-waith",
             "veteran": "Cyn-filwyr",
-            "victim": "Dioddefwyr Trosedd",
+            "victim": "Dioddefwyr troseddau",
             "woman": "Menywod"
           }
         },
@@ -3081,21 +3248,23 @@
           "label": "Ffynonellau",
           "options": {
             "aerial imagery": "Delweddau o'r awyr",
-            "local knowledge": "Gwybodaeth Leol",
+            "local knowledge": "Gwybodaeth leol",
             "osm notes": "Nodiadau OpenStreetMap",
             "streetlevel imagery": "Lluniau Lefel Stryd",
             "survey": "Arsylwi"
           },
-          "terms": "cyfeiriadau,llyfryddiaeth"
+          "terms": "cyfeiriadau,llyfryddiaeth,ffynhonnell"
         },
         "source/population": {
           "label": "Ffynhonnell Poblogaeth"
         },
         "species": {
-          "label": "Rhywogaeth"
+          "label": "Rhywogaeth",
+          "terms": "rywogaeth"
         },
         "species/wikidata": {
-          "label": "Wicidata Rhywogaeth"
+          "label": "Wicidata Rhywogaeth",
+          "terms": "rywogaeth,wikidata"
         },
         "sport": {
           "label": "Chwaraeon",
@@ -3173,7 +3342,8 @@
           "label": "Tai Symudol"
         },
         "step_count": {
-          "label": "Nifer y Grisiau"
+          "label": "Nifer y Grisiau",
+          "terms": "grisiau,stepiau,nifer,rhif,sawl"
         },
         "stile": {
           "label": "Math"
@@ -3209,7 +3379,11 @@
           "terms": "system,sustem,strwythur,adeiladwaith"
         },
         "structure_power": {
-          "label": "Adeiladwaith"
+          "label": "Adeiladwaith",
+          "options": {
+            "lattice": "Dellt",
+            "solid": "Solet"
+          }
         },
         "structure_waterway": {
           "label": "Adeiladwaith",
@@ -3222,17 +3396,21 @@
           "label": "Math"
         },
         "subject": {
-          "label": "Goddrych"
+          "label": "Goddrych",
+          "terms": "person,pwnc,wikidata"
         },
         "subject/wikidata": {
-          "label": "Wicidata Gwrthrych"
+          "label": "Wicidata Goddrych",
+          "terms": "person,pwnc,wikidata"
         },
         "substance": {
+          "label": "Sylwedd",
           "options": {
             "fuel": "Tanwydd",
             "gas": "Nwy Naturiol",
             "hot_water": "Dŵr Poeth",
             "rainwater": "Dŵr Glaw",
+            "sewage": "Carthion",
             "water": "Dŵr Yfed"
           }
         },
@@ -3254,6 +3432,14 @@
           "label": "Croesfan Copa",
           "terms": "croesfan,groesfan,chroesfan"
         },
+        "supervised": {
+          "label": "Goruchwylir",
+          "terms": "staffio,manio,person,rheoli,rheoliadol"
+        },
+        "support": {
+          "label": "Cymorth",
+          "terms": "cefnogaeth"
+        },
         "surface": {
           "label": "Arwyneb",
           "options": {
@@ -3271,13 +3457,16 @@
             "gravel": "Graean",
             "ground": "Tir",
             "metal": "Metel",
+            "mud": "Mwd Cyson",
             "paved": "Palmant",
+            "paving_stones": "Pafins",
             "pebblestone": "Cerrig Mân",
             "salt": "Halen",
             "sand": "Tywod",
             "sett": "Set",
             "tartan": "Carthen",
             "unhewn_cobblestone": "Crynion",
+            "unpaved": "Dim Pafins",
             "wood": "Pren",
             "woodchips": "Sglodion Coed"
           },
@@ -3290,7 +3479,11 @@
           }
         },
         "survey/date": {
-          "label": "Gwiriwyd Ddiwethaf"
+          "label": "Gwiriwyd Ddiwethaf",
+          "terms": "arolwg,gweld,sbio,llygad,llygaid,taith,ymweliad,ymweld"
+        },
+        "survey_point/datum_aligned": {
+          "terms": "alinio,aliniwyd"
         },
         "survey_point/purpose": {
           "label": "Pwrpas",
@@ -3314,7 +3507,7 @@
           "options": {
             "kids": "Pwll Nofio Plant",
             "lazy_river": "Afon Araf",
-            "personal": "Personol / Gardd",
+            "personal": "Personol / Gardd Gefn",
             "plunge": "Plymio",
             "swimming": "Pwll Lapio",
             "wading": "Pwll Cerdded / Hamdden",
@@ -3350,7 +3543,8 @@
             "motorcycle": {
               "title": "Beic modur"
             }
-          }
+          },
+          "terms": "cerbyd,car,coets,bws,trên,tacsi,llong,beic"
         },
         "taxon": {
           "label": "Tacson"
@@ -3386,6 +3580,7 @@
           "terms": "tŷ bach, tai bach, ty bach, lle chwech, lle 6, llefydd chwech"
         },
         "toilets/disposal": {
+          "label": "Gwaredu",
           "options": {
             "bucket": "Bwced",
             "chemical": "Cemegol",
@@ -3405,6 +3600,10 @@
           },
           "terms": "mislif,pad,fislif,period,gwaed,tamponau,tampon"
         },
+        "toilets/position": {
+          "label": "Lleoliadau",
+          "terms": "lleoliadau,safleoedd,lleoedd,llefydd"
+        },
         "toilets/wheelchair": {
           "label": "Toiled Cadair Olwyn",
           "options": {
@@ -3421,16 +3620,22 @@
           "label": "Math",
           "options": {
             "columbarium": "Colwmbariwm",
+            "hypogeum": "Hypogewm",
+            "mausoleum": "Beddgor",
+            "rock-cut": "Beddrod Naddedig Mewn Craig",
+            "sarcophagus": "Sarcoffagws",
             "table": "Tabl",
             "tumulus": "Twmwlws",
-            "vault": "Cell"
+            "vault": "Cell",
+            "war_grave": "Bedd Rhyfel Sengl"
           }
         },
         "tourism": {
           "label": "Math"
         },
         "tower/construction": {
-          "label": "Adeiladwaith"
+          "label": "Adeiladwaith",
+          "placeholder": "Guy, Dellt, Cudd, ..."
         },
         "tower/platforms": {
           "label": "Platfformau"
@@ -3444,8 +3649,13 @@
         "tracktype": {
           "label": "Math o Drac",
           "options": {
+            "grade1": "Solet: pafins",
+            "grade2": "Solet Yn Bennaf: graean/carreg gyda rhywfaint o ddeunydd meddal wedi'i gymysgu",
+            "grade3": "Cymysgedd cytbwys o ddeunydd caled a meddal",
+            "grade4": "Meddal Yn Bennaf: pridd/tywod/gwair gyda rhywfaint o ddeunydd caled wedi'i gymysgu",
             "grade5": "Meddal: pridd / tywod / gwair"
-          }
+          },
+          "placeholder": "Solet, Solet Yn Bennaf, Meddal..."
         },
         "trade": {
           "label": "Math"
@@ -3475,6 +3685,7 @@
           "label": "Arwydd Draffig"
         },
         "traffic_sign/direction": {
+          "label": "Cyfeiriad",
           "options": {
             "backward": "Yn ôl",
             "both": "Y ddwy / Popeth",
@@ -3485,6 +3696,7 @@
           "label": "Math"
         },
         "traffic_signals/direction": {
+          "label": "Cyfeiriad",
           "options": {
             "backward": "Yn ôl",
             "both": "Y ddwy / Popeth",
@@ -3503,6 +3715,9 @@
         },
         "traffic_signals/vibration": {
           "label": "Cryndod"
+        },
+        "trail_visibility": {
+          "placeholder": "Rhagorol, Da, Gwael..."
         },
         "transformer": {
           "label": "Math",
@@ -3551,7 +3766,10 @@
           "terms": "defnydd"
         },
         "usage_waterway": {
-          "label": "Math o Ddefnydd"
+          "label": "Math o Ddefnydd",
+          "options": {
+            "transportation": "Cludiant"
+          }
         },
         "utility": {
           "label": "Iwtiliti",
@@ -3583,7 +3801,9 @@
           }
         },
         "vending": {
+          "label": "Math o Gynnyrch",
           "options": {
+            "bicycle_tube": "Tiwbiau Beic",
             "bread": "Bara",
             "cigarettes": "Sigaréts",
             "coffee": "Coffi",
@@ -3609,14 +3829,16 @@
           }
         },
         "vhf": {
-          "label": "Sianel VHF"
+          "label": "Sianel VHF",
+          "terms": "sianal"
         },
         "via": {
           "label": "Drwy",
-          "terms": "via,trwodd"
+          "terms": "via,trwodd,trwy"
         },
         "video_calls": {
-          "label": "Galwadau Fideo"
+          "label": "Galwadau Fideo",
+          "terms": "zoom,teams,discord,team speak,skype,face time"
         },
         "visibility": {
           "label": "Gwelededd",
@@ -3624,7 +3846,8 @@
             "area": "Dros 20m (65ft)",
             "house": "Hyd at 5m (16ft)",
             "street": "5 i 20m (16 to 65ft)"
-          }
+          },
+          "terms": "gweld,llygaid,llygad,sbio,edrych"
         },
         "volcano/status": {
           "label": "Statws Folcano",
@@ -3649,6 +3872,7 @@
           "options": {
             "cigarettes": "Sigaréts",
             "dog_excrement": "Baw Ci",
+            "organic": "Gwastraff Organig",
             "trash": "Sbwriel"
           }
         },
@@ -3691,18 +3915,20 @@
           }
         },
         "wheelchair": {
-          "label": "Mynediad Cadair Olwyn",
+          "label": "Hygyrchedd Cadair Olwyn",
           "options": {
-            "limited": "Cyfyng",
+            "limited": "Cyfyngedig",
             "no": "Na",
             "yes": "Ie"
-          }
+          },
+          "terms": "cadeiriau,olwynion,mynediad"
         },
         "width": {
           "label": "Lled (metr)"
         },
         "wikidata": {
-          "label": "Wicidata"
+          "label": "Wicidata",
+          "terms": "wicidata,wikidata,wiki,wici"
         },
         "wikimedia_commons": {
           "label": "Tudalen Gomin Wicipedia",
@@ -3713,11 +3939,13 @@
           "terms": "Wikipedia"
         },
         "windings/auto": {
+          "label": "Awtodrawsnewidydd",
           "options": {
             "no": "Na",
-            "undefined": "Cymryd bod Na",
+            "undefined": "Amhenodol (Na)",
             "yes": "Ie"
-          }
+          },
+          "terms": "trawsnewidydd"
         },
         "windings/configuration": {
           "options": {
@@ -3736,23 +3964,28 @@
           "terms": "stryd,rhif,dinas,tref"
         },
         "advertising": {
-          "name": "Dyfais Hysbysebu"
+          "name": "Dyfais Hysbysebu",
+          "terms": "poster,baner,arwydd,sgrin,sgrîn,ad"
         },
         "advertising/billboard": {
-          "name": "Bwrdd Hysbysebu"
+          "name": "Bwrdd Hysbysebu",
+          "terms": "poster,baner,arwydd,sgrin,sgrîn,sbam,ad"
         },
         "advertising/board": {
-          "name": "Hysbysfwrdd"
+          "name": "Hysbysfwrdd",
+          "terms": "poster,baner,arwydd,sgrin,sgrîn,sbam,ad,taflen,taflenni,cyhoeddiad,cyhoeddiadau"
         },
         "advertising/column": {
           "name": "Colofn Hysbysebu",
           "terms": "post,sbam,posteri,hysbyseb,ad,ads"
         },
         "advertising/poster_box": {
-          "name": "Blwch Posteri"
+          "name": "Blwch Posteri",
+          "terms": "blwch,bocs,focs,flwch,mlwch,poster,boster,spam,sbam,sothach,hysbyseb"
         },
         "advertising/totem": {
-          "name": "Colofn Hysbysebu"
+          "name": "Colofn Hysbysebu",
+          "terms": "poster,baner,arwydd,sgrin,sgrîn,sbam,ad,taflen,taflenni,cyhoeddiad,cyhoeddiadau"
         },
         "aerialway": {
           "name": "Nodwedd Ffordd Awyr"
@@ -3789,6 +4022,9 @@
           "name": "Lifft Plater",
           "terms": "hudolus,sgio,sgïo,sglefrfyrddio,codi"
         },
+        "aerialway/pylon": {
+          "terms": "awyren,hofren,hofrennydd,teithio,aer,awyr,plên"
+        },
         "aerialway/rope_tow": {
           "name": "Lifft Rhaff",
           "terms": "hudolus,sgio,sgïo,sglefrfyrddio,codi"
@@ -3797,34 +4033,63 @@
           "name": "Lifft T-Bar",
           "terms": "hudolus,sgio,sgïo,sglefrfyrddio,codi"
         },
+        "aeroway": {
+          "name": "Nodwedd Ffordd Awyr"
+        },
         "aeroway/aerodrome": {
-          "name": "Maes Awyr"
+          "name": "Maes Awyr",
+          "terms": "awyren,hofren,hofrennydd,teithio,aer,awyr,plên"
+        },
+        "aeroway/apron": {
+          "terms": "awyren,hofren,hofrennydd,teithio,aer,awyr,plên"
         },
         "aeroway/gate": {
-          "name": "Gât Maes Awyr"
+          "name": "Gât Maes Awyr",
+          "terms": "gat,giat,giât,clwyd,glwyd,llidiart,llidiard"
+        },
+        "aeroway/hangar": {
+          "terms": "awyren,hofren,hofrennydd,teithio,aer,awyr,plên"
         },
         "aeroway/helipad": {
           "terms": "hofrennydd,hofran,hedfan"
         },
+        "aeroway/holding_position": {
+          "terms": "awyren,hofren,hofrennydd,teithio,aer,awyr,plên"
+        },
+        "aeroway/jet_bridge": {
+          "terms": "awyren,hofren,hofrennydd,teithio,aer,awyr,plên"
+        },
+        "aeroway/parking_position": {
+          "terms": "awyren,hofren,hofrennydd,teithio,aer,awyr,plên"
+        },
         "aeroway/runway": {
-          "name": "Rhedfa"
+          "name": "Rhedfa",
+          "terms": "awyren,hofren,hofrennydd,teithio,aer,awyr,plên"
+        },
+        "aeroway/spaceport": {
+          "terms": "rocket,gofod,ofod,roced,lleuad,lansio,lansiad,porth"
         },
         "aeroway/taxiway": {
           "name": "Tacsiffordd",
           "terms": "atredfa,taxiway"
         },
         "aeroway/terminal": {
-          "name": "Terfynfa Maes Awyr"
+          "name": "Terfynfa Maes Awyr",
+          "terms": "awyren,hofren,hofrennydd,teithio,aer,awyr,plên"
         },
         "aeroway/windsock": {
           "name": "Hosan Gwynt",
           "terms": "hosan,sanau,gwynt,wynt"
         },
         "allotments/plot": {
-          "name": "Plot Gardd Gymunedol"
+          "name": "Plot Gardd Gymunedol",
+          "terms": "tyfu,gardd,llysiau,ffrwythau,garddio,ardd,safle,lleoliad"
         },
         "amenity": {
           "name": "Amwynder"
+        },
+        "amenity/animal_breeding": {
+          "name": "Cyfleuster Bridio Anifeiliaid"
         },
         "amenity/animal_shelter": {
           "name": "Cysgod Anifeiliaid"
@@ -3899,10 +4164,12 @@
           "terms": "caffi,caffe,te,coffi,bistro,cwtch,cwtsh"
         },
         "amenity/cafe/bubble_tea": {
-          "name": "Caffi Te Bwbls"
+          "name": "Caffi Te Bwbls",
+          "terms": "boba,llaeth,perl,bwbl"
         },
         "amenity/cafe/coffee_shop": {
-          "name": "Tŷ Coffi"
+          "name": "Tŷ Coffi",
+          "terms": "americano,brew,cafe,café,caffe,caffè,cappuccino,cocoa,siop goffi,drip,espresso,diodydd poeth,latte,macchiato,te,paned,panad,disgled,cwpan,cwpaned"
         },
         "amenity/car_rental": {
           "name": "Ceir Hur",
@@ -3911,14 +4178,20 @@
         "amenity/car_wash": {
           "name": "Golchi Car"
         },
+        "amenity/casino": {
+          "terms": "gamblo,roulette,slots,craps,pocer,poker,pocar,blackjack,blacjac,cardiau,deis,gamblan"
+        },
         "amenity/charging_station": {
-          "name": "Gorsaf Wefru"
+          "name": "Gorsaf Wefru",
+          "terms": "ev,cerbyd trydan,swperchargiwr,chargo,chargio,tsiargio,gwefru,trydan,drydan"
         },
         "amenity/childcare": {
-          "name": "Meithrinfa"
+          "name": "Meithrinfa",
+          "terms": "gofal plant,gofal dydd,grŵp chwarae,cylch,feithrin,lleoliad,gwasanaeth,tŷ,ty"
         },
         "amenity/cinema": {
-          "name": "Sinema"
+          "name": "Sinema",
+          "terms": "cinema,theatr,theatre,theater,sgrin,sgrîn,ffilm,sioe,pictures,lluniau,mwfi"
         },
         "amenity/clinic": {
           "name": "Clinig"
@@ -3939,7 +4212,8 @@
           "name": "Deial Haul"
         },
         "amenity/college": {
-          "name": "Tiroedd Coleg"
+          "name": "Tiroedd Coleg",
+          "terms": "goleg,choleg,col,gol,chol"
         },
         "amenity/community_centre": {
           "name": "Canolfan Gymunedol"
@@ -3961,7 +4235,8 @@
           "terms": "teulu,canolfan,ganolfan,chanolfan"
         },
         "amenity/community_centre/lgbtq": {
-          "name": "Canolfan Gymunedol LHDTC+"
+          "name": "Canolfan Gymunedol LHDTC+",
+          "terms": "hoyw,traws,deurhywiol,lesbiaidd,lesbian,trawsryweddol,rhywedd"
         },
         "amenity/community_centre/parish_hall": {
           "name": "Neuadd Blwyf",
@@ -3972,13 +4247,15 @@
           "terms": "bentref,phentref,pentref,pentrefan"
         },
         "amenity/community_centre/youth_centre": {
-          "name": "Canolfan Ieuenctid"
+          "name": "Canolfan Ieuenctid",
+          "terms": "clwb,canolfan,ieuenctid,ifanc,ifainc,pobl ifanc,bobl ifanc, phobl ifanc,plant,blant,phlant"
         },
         "amenity/conference_centre": {
           "name": "Canolfan Gynadleddau"
         },
         "amenity/courthouse": {
-          "name": "Llys"
+          "name": "Llys",
+          "terms": "llys,cyfiawnder,trosedd,erlyn,euog,di-euog,barn"
         },
         "amenity/coworking_space": {
           "name": "Ardal Gydweithio"
@@ -3988,7 +4265,8 @@
           "terms": "angladd,marwolaeth,farwolaeth,mynwent,fynwent"
         },
         "amenity/dentist": {
-          "name": "Deintydd"
+          "name": "Deintydd",
+          "terms": "dant,dannedd"
         },
         "amenity/dive_centre": {
           "name": "Canolfan Blymio",
@@ -4016,8 +4294,20 @@
         "amenity/doctors/gastroenterology": {
           "name": "Gastroenterolegydd"
         },
+        "amenity/doctors/general": {
+          "name": "Ymarferydd Cyffredinol",
+          "terms": "meddyg teulu,gp,ymarferydd teulu"
+        },
         "amenity/doctors/gynaecology": {
-          "name": "Obstetrydd / Gynaecolegydd"
+          "name": "Obstetrydd / Gynaecolegydd",
+          "terms": "wŷ,ŵy,wy,gynaecologist,ob/gyn,menywod,benyw,fenyw,genedigaeth,babi"
+        },
+        "amenity/doctors/haematology": {
+          "name": "Haematolegydd",
+          "terms": "anaemia,anemia,gwaed,bone,lymphoma,hematolegydd,haematolegwyr"
+        },
+        "amenity/doctors/internal": {
+          "name": "Internydd"
         },
         "amenity/doctors/podiatry": {
           "name": "Podiatrydd"
@@ -4030,7 +4320,8 @@
           "name": "Dojo"
         },
         "amenity/dressing_room": {
-          "name": "Ystafell Newid"
+          "name": "Ystafell Newid",
+          "terms": "newid,gwisgo,locar,locer,ffitio,ffitrwydd"
         },
         "amenity/drinking_water": {
           "name": "Dŵr Yfed"
@@ -4140,10 +4431,12 @@
           "terms": "bocs,rhodd,blwch,blychau,bocsys,am ddim,rhad ac am ddim,rhoi,rhannu,gwirfoddol"
         },
         "amenity/grave_yard": {
-          "name": "Mynwent"
+          "name": "Mynwent",
+          "terms": "fynwent,semetery,cloddi,cloddio,tomb,tomen,bedd,eglwys"
         },
         "amenity/grit_bin": {
-          "name": "Bin Graeanu"
+          "name": "Bin Graeanu",
+          "terms": "halen,tywod"
         },
         "amenity/hookah_lounge": {
           "name": "Lolfa Hwcah",
@@ -4153,14 +4446,16 @@
           "name": "Tiroedd Ysbyty"
         },
         "amenity/ice_cream": {
-          "name": "Siop Hufen Iâ"
+          "name": "Siop Hufen Iâ",
+          "terms": "gelato,gelado,sorbet,sherbet,frozen,yogurt,froyo,froio,hufen,ia,joe's,sidoli,mario"
         },
         "amenity/ice_cream/frozen_yogurt": {
           "name": "Siop Iogwrt Iâ",
           "terms": "iogwrt,ia,iowrt,yogwrt,froyo,froio,rhew"
         },
         "amenity/internet_cafe": {
-          "name": "Caffi Rhyngrwyd"
+          "name": "Caffi Rhyngrwyd",
+          "terms": "internet,caffi seiber,seibercaffi,coffi,lan,net,lanhouse"
         },
         "amenity/karaoke_box": {
           "name": "Bocs Carioci",
@@ -4169,17 +4464,24 @@
         "amenity/kindergarten": {
           "name": "Tiroedd Meithrinfa"
         },
+        "amenity/kneipp_water_cure": {
+          "name": "Cyfleuster Kneipp"
+        },
         "amenity/language_school": {
-          "name": "Ysgol Iaith"
+          "name": "Ysgol Iaith",
+          "terms": "esl,dysgu cymraeg,iaith,siarad,tefl,dysgu,dysgwr,dysgwyr"
         },
         "amenity/lavoir": {
-          "name": "Golchdy"
+          "name": "Golchdy â Llaw",
+          "terms": "dillad,golchi,ymolchi,gyda llaw"
         },
         "amenity/letter_box": {
-          "name": "Blwch Llythyrau"
+          "name": "Blwch Llythyrau",
+          "terms": "bocs,parsel,parseli,anfon,post,bost,postio,twll"
         },
         "amenity/library": {
-          "name": "Llyfrgell"
+          "name": "Llyfrgell",
+          "terms": "llyfr,archif"
         },
         "amenity/library_dropoff": {
           "name": "Bocs Dychwelyd Llyfrau",
@@ -4206,19 +4508,23 @@
           "terms": "rhannu,doc,hwb,rentu,llogi,benthyg,benthyca,hurio,man llogi"
         },
         "amenity/music_school": {
-          "name": "Ysgol Gerddoriaeth"
+          "name": "Ysgol Gerddoriaeth",
+          "terms": "cerddoriaeth,miwsig,canu,offeryn,offer,cerddorol,cherddorol,cherddoriaeth"
         },
         "amenity/nightclub": {
-          "name": "Clwb Nos"
+          "name": "Clwb Nos",
+          "terms": "clwb,dawnsio,disco,discotheque,discotec"
         },
         "amenity/nightclub/lgbtq": {
-          "name": "Clwb Nos LHDTC+"
+          "name": "Clwb Nos LHDTC+",
+          "terms": "hoyw,traws,deurhywiol,lesbiaidd,lesbian,trawsryweddol,rhywedd,clwb,dawnsio,disco,discotheque,discotec"
         },
         "amenity/nursing_home": {
           "name": "Cartref Nyrsio"
         },
         "amenity/parking": {
-          "name": "Maes Parcio"
+          "name": "Maes Parcio",
+          "terms": "faes,barcio,pharcio,parco,car,ceir,cerbyd,tryc,lot,man,fan"
         },
         "amenity/parking/multi-storey": {
           "name": "Maes Parcio Aml-lawr"
@@ -4234,18 +4540,31 @@
           "terms": "safle parcio, man parcio, safle parco, man parco,"
         },
         "amenity/parking_space/disabled": {
-          "name": "Lle Parcio Hygyrch"
+          "name": "Lle Parcio Hygyrch",
+          "terms": "anabl,anableddau,anhawster,anawsterau,cadair olwyn,cadeiriau olwyn"
+        },
+        "amenity/payment_centre": {
+          "name": "Canolfan Dalu",
+          "terms": "talu,thalu,treth,arian,ariannol,cyllid,arian parod,siec,card,cerdyn,carden,cardiau,debyd,credyd"
+        },
+        "amenity/payment_terminal": {
+          "name": "Terfynfa Talu",
+          "terms": "talu,thalu,treth,arian,ariannol,cyllid,arian parod,siec,card,cerdyn,carden,cardiau,debyd,credyd"
+        },
+        "amenity/pharmacy": {
+          "name": "Cownter Fferyllfa"
         },
         "amenity/place_of_worship": {
           "name": "Man Addoli",
           "terms": "addoldy,abatai,abaty,abatŷ,eglwys,bethel,eglwys cadeiriol,gadeiriol,chadeiriol,mosg,capel,duw,allah,synagog,sinagog,synagogue,tabernacl,tabernacle,llan,llys,pregethu,gweddio,gweddïo,sacellum,yahweh,yhwh,jehovah,g-d"
         },
         "amenity/place_of_worship/buddhist": {
-          "name": "Teml Bwdhaidd"
+          "name": "Teml Bwdhaidd",
+          "terms": "stupa,vihara,mynachdy,teml,pagoda,zendo,dojo,zazen,theravada,buddha,mahayana"
         },
         "amenity/place_of_worship/christian": {
           "name": "Eglwys Gristnogol",
-          "terms": "cristnogol,christnogol,iesu,crist,grist,duw"
+          "terms": "cristnogol,christnogol,iesu,crist,grist,duw,jiw"
         },
         "amenity/place_of_worship/christian/jehovahs_witness": {
           "name": "Neuadd Teyrnas Tyst Jehofa",
@@ -4289,10 +4608,12 @@
           "name": "Gorsaf Bleidleisio Parhaus"
         },
         "amenity/post_depot": {
-          "name": "Swyddfa Didoli Post"
+          "name": "Swyddfa Ddidoli Post",
+          "terms": "llythyr,post,anfon,sortio,trefnu,dosbarthu"
         },
         "amenity/post_office": {
-          "name": "Swyddfa Post"
+          "name": "Swyddfa Bost",
+          "terms": "llythyr,post,anfon"
         },
         "amenity/prep_school": {
           "name": "Ysgol Baratoi",
@@ -4433,6 +4754,9 @@
           "name": "Bwyty Fietnamaidd",
           "terms": "bar,brecwast,caffi,bwyty,bwytai,ty,tŷ,grill,cinio,dinner,tabl,bwrdd,bord,bwyta,diod,yfed,ffreutur"
         },
+        "amenity/sanitary_dump_station": {
+          "name": "Lle Gwaredu Toiled Carafan"
+        },
         "amenity/school": {
           "name": "Tiroedd Ysgol",
           "terms": "academi,ysgol gynradd,ysgol gyfun,ysgol uwchradd"
@@ -4442,25 +4766,35 @@
           "terms": "gazebo,gasebo,picnic,cysgod,gysgod,chysgod"
         },
         "amenity/shelter/gazebo": {
-          "name": "Gasebo"
+          "name": "Gasebo",
+          "terms": "gazebo,pergola"
         },
         "amenity/shelter/lean_to": {
           "name": "Pentis"
         },
         "amenity/shower": {
-          "name": "Cawod"
+          "name": "Cawod",
+          "terms": "shower,siowar,ymolchi,golchi"
         },
         "amenity/smoking_area": {
-          "name": "Ardal Ysmygu"
+          "name": "Ardal Ysmygu",
+          "terms": "smygu,sigarét,sigaret"
         },
         "amenity/social_centre": {
-          "name": "Canolfan Cymdeithasol"
+          "name": "Canolfan Gymdeithasol",
+          "terms": "digwyddiad,neuadd,sefydliad,proffesiynol,cymdeithas,gymdeithas,cymdeithasu"
+        },
+        "amenity/social_facility": {
+          "name": "Cyfleuster Cymdeithasol",
+          "terms": "cymuned,nid-er-elw,gwasanaeth,cymdeithasu"
         },
         "amenity/social_facility/food_bank": {
-          "name": "Banc Bwyd"
+          "name": "Banc Bwyd",
+          "terms": "cegin gawl,cegin sŵp,cegin swp"
         },
         "amenity/social_facility/homeless_shelter": {
-          "name": "Cysgod Pobl Di-Gartref"
+          "name": "Cysgod Pobl Ddigartref",
+          "terms": "digartrefedd,di-gartref,ddi-gartref"
         },
         "amenity/social_facility/nursing_home": {
           "name": "Cartref Nyrsio",
@@ -4471,13 +4805,16 @@
           "terms": "stripo,stripio,dadwisgo"
         },
         "amenity/studio": {
-          "name": "Stiwdio"
+          "name": "Stiwdio",
+          "terms": "recordio,recordiadau,radio,teledu,tv"
         },
         "amenity/studio/audio": {
-          "name": "Stiwdio Recordio"
+          "name": "Stiwdio Recordio",
+          "terms": "recordio,recordiadau,radio,teledu,tv,sain"
         },
         "amenity/studio/radio": {
-          "name": "Gorsaf Radio"
+          "name": "Gorsaf Radio",
+          "terms": "recordio,recordiadau,radio,sain,darlledu,am,fm"
         },
         "amenity/studio/television": {
           "name": "Gorsaf Deledu"
@@ -4498,16 +4835,20 @@
           "terms": "cab,safle,lle,dacsi,thacsi,taxi,habal-habal,pillion"
         },
         "amenity/telephone": {
-          "name": "Ffôn"
+          "name": "Ffôn",
+          "terms": "ffon,ffonio,bwth,talu"
         },
         "amenity/theatre": {
-          "name": "Theatr"
+          "name": "Theatr",
+          "terms": "theater,theatre,sinema,sioe,sioe gerdd,perfformiad,drama"
         },
         "amenity/toilets": {
-          "name": "Toiledau"
+          "name": "Toiledau",
+          "terms": "tŷ bach, tai bach, ty bach, lle chwech, lle 6, llefydd chwech"
         },
         "amenity/toilets/disposal/flush": {
-          "name": "Toiledau Fflysh"
+          "name": "Toiledau Fflysh",
+          "terms": "tŷ bach, tai bach, ty bach, lle chwech, lle 6, llefydd chwech"
         },
         "amenity/toilets/portable": {
           "name": "Toiled Symudol"
@@ -4520,16 +4861,21 @@
           "terms": "barrio"
         },
         "amenity/townhall/city": {
-          "name": "Neuadd y Dinas"
+          "name": "Neuadd y Ddinas"
         },
         "amenity/toy_library": {
           "name": "Llyfrgell Tegannau"
         },
         "amenity/trolley_bay": {
-          "name": "Bae Trolïau"
+          "name": "Bae Trolïau",
+          "terms": "troli,siopa,droli,cart,cartiau,dychwelyd"
         },
         "amenity/university": {
           "name": "Tiroedd Prifysgol"
+        },
+        "amenity/vehicle_inspection": {
+          "name": "Man Arolygu Cerbydau",
+          "terms": "arolwg,arolygiad,car,coets,bws"
         },
         "amenity/vending_machine": {
           "name": "Peiriant Gwerthu"
@@ -4555,6 +4901,13 @@
         "amenity/vending_machine/electronics": {
           "name": "Peiriant Gwerthu Electroneg"
         },
+        "amenity/vending_machine/elongated_coin": {
+          "name": "Peiriant Gwerthu Ceiniog Fflat"
+        },
+        "amenity/vending_machine/excrement_bags": {
+          "name": "Peiriant Gwerthu Bagiau Baw",
+          "terms": "cachu,shit,chachu,baw,ci,anifail,anwes,poo,pŵ,baw ci,cŵn,codi,piso,wiwi,pi-pi,tŷ bach,ty bach,lle chwech"
+        },
         "amenity/vending_machine/feminine_hygiene": {
           "name": "Peiriant Gwerthu Cynnyrch Mislif"
         },
@@ -4570,10 +4923,12 @@
           "terms": "petrol,nwy,tanwydd,olew,diesel,lng,cng"
         },
         "amenity/vending_machine/ice_cream": {
-          "name": "Peiriant Gwerthu Hufen Iâ"
+          "name": "Peiriant Gwerthu Hufen Iâ",
+          "terms": "gelato,gelado,sorbet,sherbet,frozen,yogurt,froyo,froio,hufen,ia,joe's,sidoli,mario"
         },
         "amenity/vending_machine/ice_cubes": {
-          "name": "Peiriant Gwerthu Iâ"
+          "name": "Peiriant Gwerthu Iâ",
+          "terms": "gelato,gelado,sorbet,sherbet,frozen,yogurt,froyo,froio,hufen,ia,joe's,sidoli,mario,ciwbiau"
         },
         "amenity/vending_machine/newspapers": {
           "name": "Peiriant Gwerthu Papur Newydd"
@@ -4595,17 +4950,27 @@
           "terms": "losin,fferins,dadas,petha da,da-das,candi,swits"
         },
         "amenity/veterinary": {
-          "name": "Milfeddyg"
+          "name": "Milfeddyg",
+          "terms": "anifail,anifeiliaid,doctor,ysbyty,vet,fets,vet,cath,ci"
+        },
+        "amenity/veterinary_pharmacy": {
+          "name": "Fferyllfa Filfeddygol",
+          "terms": "anifail,anifeiliaid,doctor,ysbyty,vet,fets,vet,cath,ci,milfeddyg,milfeddygol,meddyginiaeth,clinig,meddyg"
         },
         "amenity/waste/dog_excrement": {
-          "name": "Bin Baw Ci"
+          "name": "Bin Baw Ci",
+          "terms": "cachu,shit,chachu,baw,ci,anifail,anwes,poo,pŵ,baw ci,cŵn,codi,piso,wiwi,pi-pi,tŷ bach,ty bach,lle chwech"
         },
         "amenity/waste_basket": {
           "name": "Bin Sbwriel",
           "terms": "bin,trash,rwtsh"
         },
+        "amenity/water_point": {
+          "name": "Dŵr Yfed Carafan"
+        },
         "area": {
-          "name": "Ardal"
+          "name": "Ardal",
+          "terms": "poligon,polygon,bolygon,pholygon,siap,siâp"
         },
         "area/footway": {
           "name": "Ardal Droedffordd",
@@ -4638,7 +5003,8 @@
           "name": "Naid Bwnji"
         },
         "attraction/carousel": {
-          "name": "Carwsél"
+          "name": "Carwsél",
+          "terms": "carwsel,rowndabowt,meri-go-rownd,ceffylau,parc thema,parc antur"
         },
         "attraction/dark_ride": {
           "name": "Reid Tywyll"
@@ -4689,11 +5055,20 @@
         "barrier/bollard_line": {
           "name": "Rhes o Folardiau"
         },
+        "barrier/border_control": {
+          "name": "Rheoli'r Ffin",
+          "terms": "rheoli ffin,tollau,gwirio,archwilio,pasbort,pasport,visa,siecio"
+        },
+        "barrier/bump_gate": {
+          "name": "Gât Bwmp",
+          "terms": "gat,giat,giât,clwyd,glwyd,llidiart,llidiard"
+        },
         "barrier/bus_trap": {
           "name": "Magl Bws"
         },
         "barrier/cattle_grid": {
-          "name": "Grât Gwartheg"
+          "name": "Grât Gwartheg",
+          "terms": "grat,wartheg,stop,da byw,moch,buwch,defaid,geifr,dafad,gafr,mochyn"
         },
         "barrier/chain": {
           "name": "Cadwyn"
@@ -4718,34 +5093,51 @@
           "terms": "taldra"
         },
         "barrier/gate": {
-          "name": "Gât"
+          "name": "Gât",
+          "terms": "gat,giat,giât,clwyd,glwyd,llidiart,llidiard"
         },
         "barrier/guard_rail": {
           "name": "Bar Gwarchod"
+        },
+        "barrier/hampshire_gate": {
+          "name": "Gât Gwifren",
+          "terms": "gat,giat,giât,clwyd,glwyd,llidiart,llidiard"
         },
         "barrier/handrail": {
           "name": "Gwarchodfa Llaw"
         },
         "barrier/hedge": {
-          "name": "Perth"
+          "name": "Perth",
+          "terms": "clawdd,berth,pherth,llwyn,prysglwyn,dryslwyn,draenllwyn,ddraenlwyn,ddryslwyn,lwyn,brysglwyn,bren,phren,perthen,draenen"
         },
         "barrier/height_restrictor": {
-          "name": "Cyfyngiad Uchder"
+          "name": "Cyfyngiad Uchder",
+          "terms": "terdyn,taldra,maxheight,uchafswm"
+        },
+        "barrier/jersey_barrier": {
+          "name": "Rhwystr Jersey"
         },
         "barrier/kerb": {
           "name": "Cwrb"
         },
         "barrier/kissing_gate": {
-          "name": "Gât Mochyn"
+          "name": "Gât Mochyn",
+          "terms": "gat,giat,giât,clwyd,glwyd,llidiart,llidiard"
         },
         "barrier/retaining_wall": {
           "name": "Wal Gynnal"
         },
+        "barrier/spikes": {
+          "name": "Stribyn Pigog",
+          "terms": "stingar,heddlu,traffig,arafu,teiars,byrstio,fflat,unffordd,dyfais,bigog,striben,ystribyn,ystriben,sbeic,miniog,sbaic,main,sbic"
+        },
         "barrier/stile": {
-          "name": "Camfa"
+          "name": "Camfa",
+          "terms": "stepio,stepan,stepen,grisiau,grisie,neidio,cerdded"
         },
         "barrier/swing_gate": {
-          "name": "Gât Siglo"
+          "name": "Gât Siglo",
+          "terms": "gat,giat,giât,clwyd,glwyd,llidiart,llidiard"
         },
         "barrier/toll_booth": {
           "name": "Bwth Toll"
@@ -4759,6 +5151,10 @@
         },
         "barrier/wall/noise_barrier": {
           "name": "Rhwystr Sŵn"
+        },
+        "barrier/wicket_gate": {
+          "name": "Gât Wiced",
+          "terms": "gat,giat,giât,clwyd,glwyd,llidiart,llidiard"
         },
         "barrier/yes": {
           "name": "Rhwystr (Math Amhenodol)"
@@ -4774,13 +5170,17 @@
           "name": "Ardal Beryglus"
         },
         "building": {
-          "name": "Adeilad"
+          "name": "Adeilad",
+          "terms": "strwythur"
         },
         "building/allotment_house": {
           "name": "Adeilad Rhandiroedd"
         },
         "building/apartments": {
           "name": "Adeilad Fflatiau"
+        },
+        "building/bakehouse": {
+          "name": "Popty"
         },
         "building/barn": {
           "name": "Ysgubor"
@@ -4824,22 +5224,27 @@
           "name": "Adeilad yn cael ei Adeiladu"
         },
         "building/cowshed": {
-          "name": "Beudy"
+          "name": "Beudy",
+          "terms": "buwch,llaeth,ysgubor,amaethyddol,amaeth,ffermio"
         },
         "building/detached": {
-          "name": "Tŷ Sengl"
+          "name": "Tŷ Sengl",
+          "terms": "tai,llety,teulu,preswylfa,preswyl,trigo,byw,fyw,cyfeiriad,cartref,gartref,ty,gyfeiriad,chyfeiriad,chartref,chartref,gitre,gatre"
         },
         "building/dormitory": {
-          "name": "Dorm"
+          "name": "Dorm",
+          "terms": "tai,llety,teulu,preswylfa,preswyl,trigo,byw,fyw,cyfeiriad,cartref,gartref,ty,gyfeiriad,chyfeiriad,chartref,chartref,gitre,gatre"
         },
         "building/entrance": {
           "name": "Mynedfa / Allanfa"
         },
         "building/farm": {
-          "name": "Ffermdy"
+          "name": "Ffermdy",
+          "terms": "ffarm,fferm,ferm,amaeth,tŷ,tai,ty,amaethyddol,clos,iard,buarthau,pond,bitffald,ffald,corlan,lloc,ffarm"
         },
         "building/farm_auxiliary": {
-          "name": "Adeilad Fferm"
+          "name": "Adeilad Fferm",
+          "terms": "ffarm,fferm,ferm,amaeth,beudy,ysgubor,allanol,awyr agored,anifail,anifeiliaid,amaethyddol,clos,iard,buarthau,pond,bitffald,ffald,corlan,lloc,ffarm"
         },
         "building/fire_station": {
           "name": "Adeilad Gorsaf Dân"
@@ -4858,7 +5263,8 @@
           "name": "Prif Stand"
         },
         "building/greenhouse": {
-          "name": "Tŷ Gwydr"
+          "name": "Tŷ Gwydr",
+          "terms": "ty,tai,glass,glas,gwyrdd,werdd,tyfu,planhigyn,planhigion,tomatos,tomato"
         },
         "building/hangar": {
           "name": "Adeilad Hangar"
@@ -4870,20 +5276,24 @@
           "name": "Adeilad Gwesty"
         },
         "building/house": {
-          "name": "Tŷ"
+          "name": "Tŷ",
+          "terms": "tai,llety,teulu,preswylfa,preswyl,trigo,byw,fyw,cyfeiriad,cartref,gartref,ty,gyfeiriad,chyfeiriad,chartref,chartref,gitre,gatre"
         },
         "building/house/terraced": {
-          "name": "Tŷ Teras"
+          "name": "Tŷ Teras",
+          "terms": "tai,llety,teulu,preswylfa,preswyl,trigo,byw,fyw,cyfeiriad,cartref,gartref,ty,gyfeiriad,chyfeiriad,chartref,chartref,gitre,gatre"
         },
         "building/houseboat": {
-          "name": "Cwch Preswyl"
+          "name": "Cwch Preswyl",
+          "terms": "tai,llety,teulu,preswylfa,preswyl,trigo,byw,fyw,cyfeiriad,cartref,gartref,ty,gyfeiriad,chyfeiriad,chartref,chartref,gitre,gatre"
         },
         "building/hut": {
-          "name": "Cwt"
+          "name": "Cwt",
+          "terms": "tai,llety,teulu,preswylfa,preswyl,trigo,byw,fyw,cyfeiriad,cartref,gartref,ty,gyfeiriad,chyfeiriad,chartref,chartref,gitre,gatre"
         },
         "building/industrial": {
           "name": "Adeilad Diwydiannol",
-          "terms": "diwydiant,ffatri,depo"
+          "terms": "diwydiant,ffatri,depo,ddiwydiannol,ddiwydiant"
         },
         "building/kindergarten": {
           "name": "Adeilad Meithrinfa"
@@ -4920,7 +5330,8 @@
           "name": "Adfeilion Adeilad"
         },
         "building/school": {
-          "name": "Adeilad Ysgol"
+          "name": "Adeilad Ysgol",
+          "terms": "dysgu,uwchradd,canol,gynradd,gyfun,cyfun,cynradd,eilaidd,chweched,academi"
         },
         "building/semidetached_house": {
           "name": "Tŷ Pâr",
@@ -5209,7 +5620,8 @@
           "terms": "dan ddaear"
         },
         "emergency/first_aid_kit": {
-          "name": "Bocs Cymorth Cyntaf"
+          "name": "Blwch Cymorth Cyntaf",
+          "terms": "plaster,bocs,pecyn,argyfwng,1af,first aid"
         },
         "emergency/landing_site": {
           "name": "Safle Glanio Brys"
@@ -5227,16 +5639,16 @@
           "terms": "cpr,bad achub,cwch,llong,lifeboat,dwr,dŵr,bywyd,boddi,achub,cadw,achubydd,achubwyr"
         },
         "emergency/no": {
-          "name": "Dim Mynediad Argyfwng"
+          "name": "Dim Mynediad Brys"
         },
         "emergency/official": {
-          "name": "Mynediad Argyfwng Swyddogol"
+          "name": "Mynediad Brys Swyddogol"
         },
         "emergency/phone": {
           "name": "Ffôn Argyfwng"
         },
         "emergency/private": {
-          "name": "Mynediad Argyfwng Preifat"
+          "name": "Mynediad Brys Preifat"
         },
         "emergency/siren": {
           "name": "Larwm"
@@ -5257,6 +5669,10 @@
         },
         "entrance/main": {
           "name": "Prif Fynedfa"
+        },
+        "entrance/shop": {
+          "name": "Mynedfa Siop",
+          "terms": "allanfa,drws"
         },
         "ford": {
           "name": "Rhyd",
@@ -5476,7 +5892,8 @@
           "terms": "ysgolion,dringo"
         },
         "highway/living_street": {
-          "name": "Stryd Fyw"
+          "name": "Stryd Fyw",
+          "terms": "byw,heol,ffordd"
         },
         "highway/milestone": {
           "name": "Carreg Filltir Briffordd",
@@ -5516,7 +5933,8 @@
           "terms": "ardal gerddwyr"
         },
         "highway/pedestrian_line": {
-          "name": "Stryd Gerddwyr"
+          "name": "Stryd Gerddwyr",
+          "terms": "heol,ffordd,sgwâr,plaza,canolfan"
         },
         "highway/primary": {
           "name": "Prif Ffordd"
@@ -5564,7 +5982,8 @@
           "name": "Mynediad Brys"
         },
         "highway/service/parking_aisle": {
-          "name": "Eil Parcio"
+          "name": "Eil Parcio",
+          "terms": "ail"
         },
         "highway/services": {
           "name": "Ardal Wasanaethau",
@@ -5646,7 +6065,8 @@
           "name": "Palas"
         },
         "historic/city_gate": {
-          "name": "Gât Dinas"
+          "name": "Gât Dinas",
+          "terms": "gat,giat,giât,clwyd,glwyd,llidiart,llidiard"
         },
         "historic/fort": {
           "name": "Caer Hanesyddol"
@@ -5669,6 +6089,17 @@
         "historic/tomb": {
           "name": "Beddrod"
         },
+        "historic/wayside_cross": {
+          "name": "Croes Min Ffordd",
+          "terms": "groes,chroes,cristnogaeth,iesu,duw,jiw,cristion,gristion,christion,gristnogaeth,grist,christnogaeth"
+        },
+        "historic/wayside_shrine": {
+          "name": "Cysegr Min Ffordd",
+          "terms": "groes,chroes,cristnogaeth,iesu,duw,jiw,cristion,gristion,christion,gristnogaeth,grist,christnogaeth"
+        },
+        "historic/wreck": {
+          "name": "Llongddrylliad"
+        },
         "indoor": {
           "name": "Nodwedd Dan-do"
         },
@@ -5689,7 +6120,8 @@
           "name": "Shafft Lifft Dan-do"
         },
         "indoor/room": {
-          "name": "Ystafell"
+          "name": "Ystafell",
+          "terms": "stafell,amgylchedd,ardal,lle,gofod,lobi,dan do,siambr,stafall,dosbarth"
         },
         "indoor/stairs": {
           "name": "Grisiau Dan-do"
@@ -5701,7 +6133,8 @@
           "name": "Poethfan Wi-Fi"
         },
         "junction": {
-          "name": "Cyffordd"
+          "name": "Cyffordd",
+          "terms": "gyffordd,chyffordd"
         },
         "landuse": {
           "name": "Nodwedd Defnydd Tir"
@@ -5715,7 +6148,8 @@
           "terms": "pysgod,cragen,molusg,chwilod,mor,cefnfor,dŵr,dwr,fferm"
         },
         "landuse/brownfield": {
-          "name": "Safle Tir Llwyd"
+          "name": "Safle Tir Llwyd",
+          "terms": "tir brown,diwydiant,diwydiannol,browndir,llwydir,lot,datblygu,adeiladu"
         },
         "landuse/cemetery": {
           "name": "Mynwent"
@@ -5733,19 +6167,23 @@
           "name": "Campws Addysgol"
         },
         "landuse/farm": {
-          "name": "Tir Amaeth"
+          "name": "Tir Ffermio"
         },
         "landuse/farmland": {
-          "name": "Tir Amaeth"
+          "name": "Tir Ffermio",
+          "terms": "amaeth,tyfu,planhigion,cnydau,hadau,ffarm,amaethdir,ffermdir"
         },
         "landuse/farmyard": {
-          "name": "Ffermdy"
+          "name": "Buarth ",
+          "terms": "ffermdy,beudy,ysgubor,clos,iard,buarthau,pond,bitffald,ffald,corlan,lloc,ffarm"
         },
         "landuse/flowerbed": {
-          "name": "Blodau"
+          "name": "Gwely Blodau",
+          "terms": "blodau,blodeuo,lliwiau,natur,planhigion,planhigyn"
         },
         "landuse/forest": {
-          "name": "Coedwig Dan Reolaeth"
+          "name": "Coedwig Dan Reolaeth",
+          "terms": "coedlan,rheolaeth,torri,pren,rheoli,rheoliadol,goedwig,choedwig"
         },
         "landuse/garages": {
           "name": "Defnydd Tir Garej"
@@ -5762,7 +6200,7 @@
         },
         "landuse/industrial": {
           "name": "Ardal Ddiwydiannol",
-          "terms": "depo,ffatri,cynhyrchu,ystâd,tir,ystad"
+          "terms": "diwydiannol,diwydiant,gweithgynhyrchu,depo,ffatri,cynhyrchu,ystâd,tir,ystad"
         },
         "landuse/industrial/depot": {
           "name": "Depo",
@@ -5788,7 +6226,8 @@
           "terms": "ffrwyth"
         },
         "landuse/plant_nursery": {
-          "name": "Meithrinfa Blanhigion"
+          "name": "Meithrinfa Blanhigion",
+          "terms": "planhigion,tyfu,vivero,blodau,blodyn,planhigyn"
         },
         "landuse/pond": {
           "name": "Pwll"
@@ -5804,14 +6243,19 @@
           "name": "Ardal Hamdden"
         },
         "landuse/religious": {
-          "name": "Ardal Grefyddol"
+          "name": "Ardal Grefyddol",
+          "terms": "crefydd,grefydd,chrefydd,credo,ffydd,addoli,menorah,hanukiah,chanukkiah,seder,canhwyll,crefyddol,iddew,moslem,islam,cristnogaeth,iesu,allah,yahweh,beibl,torah,talmud,quran"
         },
         "landuse/reservoir": {
           "name": "Cronfa Ddŵr"
         },
         "landuse/residential": {
           "name": "Ardal Breswyl",
-          "terms": "man preswyl,tai,ty,tŷ"
+          "terms": "preswyl,tai,ty,tŷ,man,cartref,gartref,chartref,dai,dŷ,dy,phreswyl"
+        },
+        "landuse/residential/apartments": {
+          "name": "Fflatiau Adeilad Cymhleth",
+          "terms": "complecs,cyfadeilad,gyfadeilad,chyfadeilad,gomplecs,chomplecs"
         },
         "landuse/retail": {
           "name": "Ardal Fanwerthu",
@@ -5835,7 +6279,8 @@
           "terms": "nofio,dipio,ymdrochi,dwr,dŵr,ysgol,twll"
         },
         "leisure/bird_hide": {
-          "name": "Cuddfan Adar"
+          "name": "Cuddfan Adar",
+          "terms": "guddfan,cuddfan,aderyn,deryn,gwylio,gwylfa"
         },
         "leisure/bleachers": {
           "name": "Meinciau",
@@ -5862,10 +6307,12 @@
           "name": "Parc Cŵn"
         },
         "leisure/escape_game": {
-          "name": "Ystafell Ddianc"
+          "name": "Ystafell Ddianc",
+          "terms": "dianc,gadael,pos,cyrch,escape,esgêp"
         },
         "leisure/firepit": {
-          "name": "Pit Tân"
+          "name": "Pit Tân",
+          "terms": "tan,gwersyll"
         },
         "leisure/fishing": {
           "name": "Safle Pysgota",
@@ -5912,6 +6359,12 @@
           "name": "Maes Golff",
           "terms": "cwrs golff"
         },
+        "leisure/hackerspace": {
+          "terms": "creu,crefft,celf,dylunio,labordy,gofod,lle"
+        },
+        "leisure/horse_riding": {
+          "name": "Canolfan Farchogaeth"
+        },
         "leisure/hot_tub": {
           "name": "Twb Poeth",
           "terms": "jacuzzi,jacwsi,spa,sba"
@@ -5927,7 +6380,8 @@
           "terms": "al fresco,gardd cwrw,beer garden,caffi,bwyty,pub,bar,patio,tafarn,allanol"
         },
         "leisure/park": {
-          "name": "Parc"
+          "name": "Parc",
+          "terms": "parc,sgwar,sgwâr,barc,pharc,gwyrdd,gwair,glaswellt,lawnt,hamdden"
         },
         "leisure/picnic_table": {
           "name": "Bwrdd Picnic"
@@ -6026,6 +6480,10 @@
         },
         "leisure/resort": {
           "name": "Cyrchfan"
+        },
+        "leisure/sports_centre": {
+          "name": "Canolfan / Adeilad Cymhleth Chwaraeon",
+          "terms": "complecs,cyfadeilad,gyfadeilad,chyfadeilad,gomplecs,chomplecs,hamdden, canolfan hamdden,athletau"
         },
         "leisure/sports_centre/climbing": {
           "name": "Campfa Dringo"
@@ -6290,7 +6748,7 @@
         },
         "man_made/works/brewery": {
           "name": "Bragdy Diwydiannol",
-          "terms": "alcohol,cwrw,seidr,gwin,bier,wisgi,fodca"
+          "terms": "alcohol,cwrw,seidr,gwin,bier,wisgi,fodca,diwydiant"
         },
         "man_made/yes": {
           "name": "Nodwedd Synthetig (Math Amhenodol)"
@@ -6409,7 +6867,8 @@
           "name": "Cyfyngfor"
         },
         "natural/tree": {
-          "name": "Coeden"
+          "name": "Coeden",
+          "terms": "bôn,boncyff,goeden,choeden"
         },
         "natural/tree/broadleaved": {
           "name": "Coeden Llydanddail"
@@ -6434,10 +6893,12 @@
           "terms": "coeden,goeden,choeden,dal"
         },
         "natural/tree_row": {
-          "name": "Rhes o Goed"
+          "name": "Rhes o Goed",
+          "terms": "coed,lein,llinell,rhesi,res,choed"
         },
         "natural/tree_stump": {
-          "name": "Bôn Coeden"
+          "name": "Bôn Coeden",
+          "terms": "stump,stymp,tor,dor,torri,dileu,tynnu"
         },
         "natural/valley": {
           "name": "Cwm / Dyffryn"
@@ -6814,7 +7275,8 @@
           "name": "Gorsaf Ynni Trydan Dŵr"
         },
         "power/plant/source/method/photovoltaic": {
-          "name": "Ffarm Solar"
+          "name": "Ffarm Solar",
+          "terms": "solar,haul,heulwen,panel,parc solar,paneli solar,ynni"
         },
         "power/plant/source/nuclear": {
           "name": "Gorsaf Ynni Niwclear"
@@ -6829,7 +7291,8 @@
           "name": "Gorsaf Ynni Llosgi Gwastraff"
         },
         "power/plant/source/wind": {
-          "name": "Ffarm Gwynt"
+          "name": "Ffarm Gwynt",
+          "terms": "parc gwynt,tyrbein,twrbin,ynni,ffarm,fferm,melin,felin"
         },
         "power/substation": {
           "name": "Is-orsaf"
@@ -7013,6 +7476,9 @@
         "railway/subway": {
           "name": "Trac Tanddaear"
         },
+        "railway/subway_entrance": {
+          "name": "Mynedfa Tanddaear"
+        },
         "railway/tram_level_crossing": {
           "name": "Croesfan Dramffordd"
         },
@@ -7040,6 +7506,9 @@
         },
         "seamark/beacon_isolated_danger": {
           "name": "Ffagl Rhybudd"
+        },
+        "seamark/beacon_lateral": {
+          "name": "Ffagl Sianel"
         },
         "shop": {
           "name": "Siop",
@@ -7082,6 +7551,10 @@
         "shop/bathroom_furnishing": {
           "name": "Siop Ddodrefn Ystafell Ymolchi",
           "terms": "toiled,cawod,bath"
+        },
+        "shop/bbq": {
+          "name": "Siop Barbeciw",
+          "terms": "farbeciw,bbq,barbecue,grill,gril,coginio"
         },
         "shop/beauty": {
           "name": "Siop Harddwch",
@@ -7313,7 +7786,8 @@
           "name": "Siop Gyffredinol"
         },
         "shop/gift": {
-          "name": "Siop Roddion"
+          "name": "Siop Roddion",
+          "terms": "rhodd,taleb,daleb,thaleb,rodd,cerdyn,cardiau,anrheg,presant,bresant,phresant,twrist,swfenir,swfenîr"
         },
         "shop/gold_buyer": {
           "name": "Prynwr Aur",
@@ -7322,6 +7796,10 @@
         "shop/greengrocer": {
           "name": "Gwerthwr Llysiau",
           "terms": "ffrwyth,cynnyrch,llysiau"
+        },
+        "shop/groundskeeping": {
+          "name": "Siop Gyfarpar Lawnt a Gardd",
+          "terms": "ardd,strimmer,stribyn,torri,gwair,glaswellt,cyfarpar,chyfarpar,hollti,eira,cadw"
         },
         "shop/hairdresser": {
           "name": "Triniwr Gwallt",
@@ -7677,7 +8155,8 @@
           "terms": "tŷ haf,ty haf,ty gwyliau,sialet"
         },
         "tourism/gallery": {
-          "name": "Oriel Celf"
+          "name": "Oriel Celf",
+          "terms": "galeri,oriel,celf,dylunio,dylunydd,paent,ffotograff,cerflun,cerfddelw"
         },
         "tourism/guest_house": {
           "name": "Tŷ Llety",
@@ -7698,7 +8177,8 @@
           "name": "Bwrdd Gwybodaeth"
         },
         "tourism/information/board/welcome_sign": {
-          "name": "Arwydd Groeso"
+          "name": "Arwydd Groeso",
+          "terms": "groeso,chroeso,croesawu,groesawu,chroesawu,helo,dewch,dod,mynd,shwmae,sumae,smae,lleoliad,newydd"
         },
         "tourism/information/office": {
           "name": "Canolfan Ymwelwyr"
@@ -7989,7 +8469,7 @@
         },
         "waterway/lock_gate": {
           "name": "Llifddor",
-          "terms": "canal,loc,clo"
+          "terms": "canal,loc,clo,gat,giat,giât,clwyd,glwyd,llidiart,llidiard"
         },
         "waterway/milestone": {
           "name": "Carreg Filltir Ddŵr",
@@ -7999,14 +8479,20 @@
           "name": "Afon",
           "terms": "afon,ffrwd,llanw,ffynnon,tarddle,aber,llif"
         },
+        "waterway/sanitary_dump_station": {
+          "terms": "ffrwd,dŵr,dwr,ffos,llif,afon,dros dro,pwmp,bwmp"
+        },
         "waterway/stream": {
-          "name": "Nant"
+          "name": "Nant",
+          "terms": "ffrwd,dŵr,dwr,ffos,llif,afon"
         },
         "waterway/stream_intermittent": {
-          "name": "Nant Ysbeidiol"
+          "name": "Nant Ysbeidiol",
+          "terms": "ffrwd,dŵr,dwr,ffos,llif,afon,dros dro"
         },
         "waterway/tidal_channel": {
-          "name": "Sianel Morol"
+          "name": "Sianel Morol",
+          "terms": "ffrwd,dŵr,dwr,ffos,llif,afon,dros dro"
         },
         "waterway/water_point": {
           "name": "Dŵr Yfed Morol",

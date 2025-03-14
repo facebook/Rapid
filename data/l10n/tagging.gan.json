@@ -175,6 +175,7 @@
             "subdistrict!vn": "坊 / 社 / 市鎮",
             "suburb": "城區",
             "suburb!jp": "政令市",
+            "town": "城鎮",
             "unit": "戶號"
           },
           "terms": "Address,地址,地埗,址"
@@ -293,7 +294,9 @@
             "painting": "绘画",
             "relief": "浮雕",
             "sculpture": "雕塑",
-            "statue": "塑像"
+            "statue": "塑像",
+            "stone": "藝術加工石材",
+            "tilework": "瓷磚工作"
           }
         },
         "ascent": {
@@ -1182,6 +1185,25 @@
           "label": "类型",
           "placeholder": "預設"
         },
+        "cycle_barrier": {
+          "label": "类型",
+          "options": {
+            "diagonal": "對角線",
+            "double": "雙倍",
+            "single": "單一",
+            "tilted": "傾斜",
+            "triple": "三角椎"
+          }
+        },
+        "cycle_barrier/installation": {
+          "label": "安裝方式",
+          "options": {
+            "fixed": "固定式",
+            "openable": "可開啟",
+            "removable": "可移除"
+          },
+          "terms": "安裝方式"
+        },
         "cycle_network": {
           "label": "自行車路網"
         },
@@ -1239,6 +1261,9 @@
         },
         "defibrillator/location": {
           "label": "位置說明"
+        },
+        "deflection": {
+          "label": "角度"
         },
         "delivery": {
           "label": "外送",
@@ -1505,6 +1530,7 @@
             "main": "主要入口",
             "secondary": "次要入口",
             "service": "員工專用",
+            "shop": "商店入口",
             "staircase": "樓梯間",
             "yes": "就是個出入口"
           },
@@ -1552,8 +1578,7 @@
             "lane": "车道",
             "parking_lot": "停车位",
             "sidewalk": "人行道"
-          },
-          "terms": "位置,地点"
+          }
         },
         "fire_hydrant/pressure": {
           "label": "壓力 (巴)",
@@ -2135,6 +2160,14 @@
           "label": "間隔時間",
           "terms": "間隔時間,發車間隔"
         },
+        "irrigation_pivot": {
+          "label": "中心樞紐灌溉",
+          "options": {
+            "pivot": "可以",
+            "undefined": "不可以"
+          },
+          "terms": "中心樞紐灌溉"
+        },
         "junction/ref_oneway": {
           "label": "交流道編號",
           "terms": "交流道編號,出口編號,路口編號"
@@ -2452,6 +2485,9 @@
           "label": "限宽",
           "terms": "限宽,限制宽度,最大宽度,最宽宽度,宽度限制"
         },
+        "maxwidth/physical": {
+          "label": "限宽"
+        },
         "memorial": {
           "label": "类型",
           "options": {
@@ -2724,6 +2760,9 @@
           "label": "允許明火",
           "terms": "允許明火,允許生火"
         },
+        "opening": {
+          "label": "開口寬度（公尺）"
+        },
         "opening_date": {
           "label": "預計開放日期",
           "placeholder": "年年年年-月月-日日"
@@ -2760,6 +2799,13 @@
         "outdoor_seating": {
           "label": "室外座位",
           "terms": "室外座位,戶外座位,外面座位"
+        },
+        "overlap": {
+          "label": "重疊寬度（公尺）"
+        },
+        "panoramax": {
+          "label": "Panoramax 影像 ID",
+          "terms": "Panoramax 影像編號"
         },
         "par": {
           "label": "標準桿",
@@ -3716,6 +3762,9 @@
         },
         "source/population": {
           "label": "人口資料來源"
+        },
+        "spacing": {
+          "label": "障礙之間的距離（公尺）"
         },
         "species": {
           "label": "种",
@@ -5884,6 +5933,10 @@
         "amenity/veterinary": {
           "name": "獸醫",
           "terms": "兽医,动物,宠物,医院,家畜,治疗,医疗,急救,手术,猫,狗,犬,门诊"
+        },
+        "amenity/veterinary_pharmacy": {
+          "name": "獸醫藥局",
+          "terms": "動物用藥店,動物藥局,動物藥房,獸醫藥房"
         },
         "amenity/waste/dog_excrement": {
           "name": "寵物排泄物箱",
@@ -9885,6 +9938,10 @@
           "name": "浴室配件店",
           "terms": "衛浴用品店"
         },
+        "shop/bbq": {
+          "name": "燒烤店",
+          "terms": "烤肉店,燒肉店"
+        },
         "shop/beauty": {
           "name": "美容店",
           "terms": "美容店"
@@ -10174,6 +10231,10 @@
         "shop/greengrocer": {
           "name": "蔬果行",
           "terms": "蔬果行"
+        },
+        "shop/groundskeeping": {
+          "name": "除草與花園設備商店",
+          "terms": "除草與花園設備商家,花圃設備店,除草與花園設備店"
         },
         "shop/hairdresser": {
           "name": "美髮店",

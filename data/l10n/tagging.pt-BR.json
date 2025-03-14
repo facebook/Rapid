@@ -115,6 +115,7 @@
             "subdistrict!vn": "Ward/Comuna/Vila",
             "suburb": "Bairro",
             "suburb!jp": "Cidade designada",
+            "town": "Cidade Menor",
             "unit": "Unidade"
           },
           "terms": "[traduza com sinônimos ou termos relacionados para 'Endereço', separados por vírgulas]"
@@ -722,6 +723,14 @@
             "western": "Ocidentais"
           }
         },
+        "cycle_barrier": {
+          "options": {
+            "double": "Duplo"
+          }
+        },
+        "cycle_barrier/installation": {
+          "terms": "instalação"
+        },
         "cycleway": {
           "label": "Ciclofaixas",
           "options": {
@@ -732,6 +741,13 @@
             "no": {
               "description": "Sem ciclofaixa",
               "title": "Nenhum"
+            },
+            "opposite": {
+              "description": "Atualizar com oneway=yes, oneway:bicycle=no, e cycleway:both=no etc.",
+              "title": "(Depreciado) Ciclofaixa no contrafluxo"
+            },
+            "opposite_lane": {
+              "title": "(Depreciado) Via em sentido contrário"
             },
             "separate": {
               "description": "Indica que a ciclovia foi mapeada como uma geometria separada",
@@ -907,6 +923,9 @@
         },
         "fee": {
           "terms": "Custo, preço, tarifa"
+        },
+        "fhrs/id-GB": {
+          "terms": "higiene,anvisa,sanitário,padrão"
         },
         "fire_hydrant/diameter": {
           "label": "Diâmetro (mm, in ou letras)",
@@ -1220,8 +1239,7 @@
               "description": "Um meio-fio rebaixado que está nivelado com o entorno."
             },
             "lowered": {
-              "description": "Um meio-fio rebaixado que pode ser usado por cadeirantes, com uma altura não superior a 3 cm.",
-              "title": "Reduzido"
+              "description": "Um meio-fio rebaixado que pode ser usado por cadeirantes, com uma altura não superior a 3 cm."
             },
             "no": {
               "description": "Não há meio-fio nesse local."
@@ -1350,6 +1368,9 @@
           "label": "Limite de peso"
         },
         "maxwidth": {
+          "label": "Limite de largura"
+        },
+        "maxwidth/physical": {
           "label": "Limite de largura"
         },
         "memorial": {
@@ -1501,6 +1522,9 @@
         },
         "outdoor_seating": {
           "label": "Mesas externas"
+        },
+        "panoramax": {
+          "terms": "panoramax,id,imagem,nível de rua,360"
         },
         "parcel_pickup": {
           "label": "Ponto de retirada",
@@ -4271,7 +4295,7 @@
         },
         "highway/busway": {
           "name": "Via exclusiva de ônibus\nCorredor de ônibus (via segregada)\nBRT",
-          "terms": "metrobus,ônibus de trânsito rápido,autocarro de trânsito rápido,ônibus de alto nível de serviço,autocarro de alto nível de serviço "
+          "terms": "metrobus,ônibus de trânsito rápido,autocarro de trânsito rápido,ônibus de alto nível de serviço,autocarro de alto nível de serviço"
         },
         "highway/construction": {
           "name": "Via em construção"
@@ -7463,7 +7487,7 @@
         },
         "traffic_calming/dip": {
           "name": "Depressão",
-          "terms": "Redutor de velocidade"
+          "terms": "Redutor de velocidade,lombada invertida,lombada"
         },
         "traffic_calming/hump": {
           "name": "Lombada (1,5 a 3m de largura)",

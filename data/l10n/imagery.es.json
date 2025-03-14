@@ -168,7 +168,15 @@
       },
       "FOMI_2011_2014": {
         "description": "Ortofotos gubernamentales con cobertura de hojas y resolución de 40 cm/píxel para todo el país. Esta capa debe utilizarse como base de alineación en ausencia de una referencia más precisa. Imágenes en formato WEBP, JOSM necesita un plugin webp para ellas.",
-        "name": "Ortofoto FÖMI 2011-2014 (WEBP)"
+        "name": "FÖMI ortofoto 2011–2014 (WEBP)"
+      },
+      "FOMI_2015": {
+        "description": "Ortofotos gubernamentales con cobertura de hojas y resolución de 40 cm/píxel para todo el país. Esta capa debe utilizarse como base de alineación en ausencia de una referencia más precisa. Imágenes en formato WEBP, JOSM necesita un plugin webp para ellas.",
+        "name": "Ortofoto FÖMI 2015 (WEBP)"
+      },
+      "FOMI_2015_leafoff_20cm": {
+        "description": "Ortofotos gubernamentales sin follaje con una resolución de 20 cm/píxel para 6 distritos. Esta capa debe utilizarse como base de alineación en ausencia de una referencia más precisa. Imágenes en formato WEBP, JOSM requiere un complemento webp para visualizarlas.",
+        "name": "Ortofoto FÖMI 2015 sin follaje 20 cm (WEBP)"
       },
       "Frankfurt-am-Main-2019": {
         "attribution": {
@@ -474,6 +482,30 @@
         },
         "description": "Departamento de Transporte de Ohio (ODOT): Inventario de carreteras del Sistema de mapeo de información de transporte (TIMS) publicado en junio de 2024.",
         "name": "Inventario de carreteras ODOT"
+      },
+      "ORTOS_DGRF_2004_06": {
+        "attribution": {
+          "text": "Información geográfica proporcionada por la Dirección General del Territorio"
+        },
+        "name": "Ortofotografías de Portugal continental - 50 cm - 2004-2006 (DGT)"
+      },
+      "ORTOS_DGT_2014_15": {
+        "attribution": {
+          "text": "Información geográfica proporcionada por la Dirección General del Territorio"
+        },
+        "name": "Ortofotografías de las zonas costeras de Portugal continental - 10 cm - 2014-2015 (DGT)"
+      },
+      "ORTOS_DGT_2018_WMS": {
+        "attribution": {
+          "text": "Información geográfica proporcionada por la Dirección General del Territorio"
+        },
+        "name": "Ortofotografías de Portugal continental - 25 cm - 2018 (DGT)"
+      },
+      "ORTOS_DGT_2021_RGB": {
+        "attribution": {
+          "text": "Información geográfica proporcionada por la Dirección General del Territorio"
+        },
+        "name": "Ortofotografías de la porción norte de Portugal continental - 25 cm - 2021 (DGT)"
       },
       "OSIP": {
         "attribution": {

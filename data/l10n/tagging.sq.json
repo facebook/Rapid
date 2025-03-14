@@ -211,6 +211,9 @@
         "cutting": {
           "label": "Tipi"
         },
+        "cycle_barrier": {
+          "label": "Tipi"
+        },
         "cycleway": {
           "label": "Korsi Biçikletash",
           "options": {
@@ -385,6 +388,12 @@
           "options": {
             "no": "Jo",
             "yes": "Po"
+          }
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Po",
+            "undefined": "Jo"
           }
         },
         "kerb": {

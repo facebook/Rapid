@@ -168,6 +168,7 @@
             "street": "Rua",
             "subdistrict": "Subdistrito",
             "suburb": "Subúrbio ",
+            "town": "Vila",
             "unit": "Unidade / Bloco"
           },
           "terms": "endereço, morada, endereçamento, código postal, localização, número de porta, nº de porta, n.º de porta, número de polícia, nº de polícia, n.º de polícia, número"
@@ -284,7 +285,9 @@
             "painting": "Pintura",
             "relief": "Relevo",
             "sculpture": "Escultura",
-            "statue": "Estátua"
+            "statue": "Estátua",
+            "stone": "Pedra trabalhada artisticamente",
+            "tilework": "Painel de azulejos"
           }
         },
         "ascent": {
@@ -1147,6 +1150,24 @@
           "label": "Tipo",
           "placeholder": "Padrão"
         },
+        "cycle_barrier": {
+          "label": "Tipo",
+          "options": {
+            "double": "Dupla",
+            "single": "Única",
+            "tilted": "Inclinada",
+            "triple": "Tripla"
+          }
+        },
+        "cycle_barrier/installation": {
+          "label": "Instalação",
+          "options": {
+            "fixed": "Fixa",
+            "openable": "Abrível",
+            "removable": "Removível"
+          },
+          "terms": "instalação,barra,barreira,tipo,estrutura"
+        },
         "cycle_network": {
           "label": "Rede"
         },
@@ -1160,6 +1181,14 @@
             "no": {
               "description": "Sem via para ciclistas",
               "title": "Nenhuma"
+            },
+            "opposite": {
+              "description": "Atualizar com oneway=yes, oneway:bicycle=no e cycleway:both=no etc.",
+              "title": "(Obsoleto) Em contramão"
+            },
+            "opposite_lane": {
+              "description": "Atualizar com oneway, oneway:bicycle e cycleway:left/right=lane etc.",
+              "title": "(Obsoleto) Em sentido contrário"
             },
             "separate": {
               "description": "Indica que a ciclovia foi mapeada como geometria separada",
@@ -1196,6 +1225,9 @@
         },
         "defibrillator/location": {
           "label": "Descrição da localização"
+        },
+        "deflection": {
+          "label": "Ângulo"
         },
         "delivery": {
           "label": "Entrega ao domicílio",
@@ -1455,6 +1487,7 @@
             "main": "Principal",
             "secondary": "Secundária",
             "service": "Serviço",
+            "shop": "Entrada de loja",
             "staircase": "Escadaria",
             "yes": "Não especificada"
           },
@@ -1491,8 +1524,7 @@
             "lane": "Via rodoviária",
             "parking_lot": "Lugar de estacionamento",
             "sidewalk": "Passeio"
-          },
-          "terms": "Posição,Posicionamento,Localização"
+          }
         },
         "fire_hydrant/pressure": {
           "label": "Pressão (bar)",
@@ -2057,6 +2089,14 @@
           "label": "Intervalo",
           "terms": "intervalos"
         },
+        "irrigation_pivot": {
+          "label": "Irrigação com pivô central",
+          "options": {
+            "pivot": "Sim",
+            "undefined": "Não"
+          },
+          "terms": "pivot,centrado,fulcro,fulcral,"
+        },
         "junction/ref_oneway": {
           "label": "Número da saída",
           "terms": "número de saída,referência"
@@ -2370,6 +2410,9 @@
           "label": "Largura máxima",
           "terms": "largura,largo,máx.,max.,máximo,metros,cm,width,limite"
         },
+        "maxwidth/physical": {
+          "label": "Largura máxima"
+        },
         "memorial": {
           "label": "Tipo",
           "options": {
@@ -2632,6 +2675,9 @@
           "label": "Permitido fazer fogueira",
           "terms": "fogo,fogueira,labaredas,churrasco,brasas,chamas,fósforos,acendalhas"
         },
+        "opening": {
+          "label": "Largura de abertura (metros)"
+        },
         "opening_date": {
           "label": "Data de abertura esperada",
           "placeholder": "AAAA-MM-DD"
@@ -2668,6 +2714,13 @@
         "outdoor_seating": {
           "label": "Cadeiras exteriores",
           "terms": "lugares externos,esplanada,bancos,ar livre"
+        },
+        "overlap": {
+          "label": "Largura de sobreposição (metros)"
+        },
+        "panoramax": {
+          "label": "ID da imagem do Panoramax",
+          "terms": "panoramax,id,imagem,nível de rua,360,foto,fotografia"
         },
         "parcel_dropoff": {
           "label": "Ponto de entrega"
@@ -3278,7 +3331,8 @@
             "demanding_mountain_hiking": "T3: Caminhada de montanha exigente",
             "difficult_alpine_hiking": "T6: Caminhada alpina difícil",
             "hiking": "T1: Caminhada normal",
-            "mountain_hiking": "T2: Caminhada de montanha"
+            "mountain_hiking": "T2: Caminhada de montanha",
+            "strolling": "Passeio"
           },
           "placeholder": "Caminhada de montanha, caminhada alpina...",
           "terms": "nível de dificuldade,grau de dificuldade,caminhada,trekking,caminhar"
@@ -3417,7 +3471,8 @@
           "terms": "Segunda mão"
         },
         "segregated": {
-          "label": "Separação ciclistas/pedestres"
+          "label": "Separação ciclistas/pedestres",
+          "terms": "bicla,bicicletas,binas,separado,separação,segregado,segregação,pedestre,peão,pé,caminho"
         },
         "self_service": {
           "label": "Autosserviço"
@@ -3425,7 +3480,7 @@
         "service": {
           "label": "Tipo",
           "options": {
-            "alley": "Viela",
+            "alley": "Acesso a traseiras/arrumos",
             "drive-through": "Serviço ao volante",
             "driveway": "Acesso a residência / garagem",
             "emergency_access": "Acesso de emergência",
@@ -3575,6 +3630,9 @@
         },
         "source/population": {
           "label": "Fonte"
+        },
+        "spacing": {
+          "label": "Distância entre barreiras (metros)"
         },
         "species": {
           "label": "Espécie",
@@ -5572,7 +5630,8 @@
           "terms": "Junta, Câmara, Paços, Centro Administrativo, Capital de Concelho, Capital de Freguesia, Capital de Distrito, Capital de Região"
         },
         "amenity/townhall/barangay-PH": {
-          "name": "Barangay"
+          "name": "Barangay",
+          "terms": "barangay"
         },
         "amenity/townhall/city": {
           "name": "Câmara Municipal",
@@ -5697,6 +5756,10 @@
         "amenity/veterinary": {
           "name": "Veterinário",
           "terms": "Veterinary, Veterinária, Animais, Médico, Médicos, Médica, Médicas,animais de companhia,animais de estimação"
+        },
+        "amenity/veterinary_pharmacy": {
+          "name": "Farmácia veterinária",
+          "terms": "animais,animal,pet,veterinário,medicação,medicamentos,remédios,estimação,animais de estimação,gado"
         },
         "amenity/waste/dog_excrement": {
           "name": "Balde para excrementos de cães",
@@ -6835,6 +6898,10 @@
         "highway/bus_stop": {
           "name": "Paragem de autocarro"
         },
+        "highway/busway": {
+          "name": "Estrada exclusiva p/autocarros",
+          "terms": "busway,transportes públicos,reservada,ônibus,bus"
+        },
         "highway/construction": {
           "name": "Estrada em construção",
           "terms": "rua,estrada,rodovia,fechada,encerrada,obras,reparações,reparação,trabalhos,remodelação,alteração,reformulação,trânsito,interrompido"
@@ -6949,6 +7016,9 @@
         "highway/footway/crossing/unmarked": {
           "name": "Passadeira sem marcações",
           "terms": "passadeira,peões,pedestres,estrada,trânsito,travessia,faixa de segurança"
+        },
+        "highway/footway/informal": {
+          "name": "Caminho pedonal informal"
         },
         "highway/footway/sidewalk": {
           "name": "Passeio",
@@ -7075,8 +7145,8 @@
           "terms": "rodovia,rua,acesso"
         },
         "highway/service/alley": {
-          "name": "Viela",
-          "terms": "Traseiras,beco,quelha,estrada estreita,caminho estreito,"
+          "name": "Acesso a traseiras/arrumos",
+          "terms": "beco,quelha,estrada estreita,caminho estreito,viela,garagens,depósitos"
         },
         "highway/service/drive-through": {
           "name": "Serviço ao volante",
@@ -7093,6 +7163,9 @@
         "highway/service/parking_aisle": {
           "name": "Corredor de estacionamento",
           "terms": "Pista de Estacionamento, Estacionar, Estacionamento, Estrada,parquear,parqueamento"
+        },
+        "highway/service_area": {
+          "name": "Área de serviço para manobras"
         },
         "highway/services": {
           "name": "Área de serviço",
@@ -8445,6 +8518,10 @@
         "natural": {
           "name": "Elemento natural"
         },
+        "natural/arch": {
+          "name": "Arco natural",
+          "terms": "rocha,pedra,arch,archway,arqueado,geológico,geologia"
+        },
         "natural/bare_rock": {
           "name": "Área de rocha exposta",
           "terms": "zona,zonas rochosas, rocha matriz, rocha-mãe, pedras soltas, pedras no solo, pedrinhas,filão"
@@ -9617,7 +9694,7 @@
         },
         "shop": {
           "name": "Loja",
-          "terms": "venda,vendedor,estabelecimento,grossista"
+          "terms": "venda,vendedor,estabelecimento,grossista,store,shop"
         },
         "shop/agrarian": {
           "name": "Loja de produtos agrícolas",
@@ -9658,6 +9735,10 @@
         "shop/bathroom_furnishing": {
           "name": "Loja de assessórios para casas de banho",
           "terms": "Bathroom Furnishing Store, Casa de Banho, Casas de banho, WC, W.C.,banheiro,lavabos"
+        },
+        "shop/bbq": {
+          "name": "Loja de material para churrasco",
+          "terms": "grill,bbq,barbecue,barbeque"
         },
         "shop/beauty": {
           "name": "Centro de estética",
@@ -9945,6 +10026,10 @@
         "shop/greengrocer": {
           "name": "Loja de frutas e verduras",
           "terms": "greengrocer,frutaria,frutas,fruta,verduras,hortícolas,vegetais,frutos"
+        },
+        "shop/groundskeeping": {
+          "name": "Loja de material para pisos",
+          "terms": "manutenção,ferramentas,relvados,gramados,corte,abate,limpeza"
         },
         "shop/hairdresser": {
           "name": "Cabeleireiro(a)",

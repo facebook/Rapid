@@ -206,6 +206,9 @@
         "name": "{community} ב־Aparat",
         "description": "מוזמנים להירשם לערוץ ה־Aparat שלנו"
       },
+      "bluesky": {
+        "description": "ניתן לעקוב אחרינו ב־Bluesky"
+      },
       "discord": {
         "name": "ה־Discord של {community}",
         "description": "יצירת קשר עם ממפים אחרים דרך Discord"
@@ -227,6 +230,10 @@
       },
       "gitlab": {
         "name": "ה־GitLab של {community}"
+      },
+      "instagram": {
+        "name": "{community} באינסטגרם",
+        "description": "ניתן לעקוב אחרינו באינסטגרם"
       },
       "irc": {
         "name": "{community} ב־IRC",
@@ -272,6 +279,10 @@
         "name": "{community} ב־Threads",
         "description": "ניתן לעקוב אחרינו ב־Threads"
       },
+      "tiktok": {
+        "name": "{community} בטיקטוק",
+        "description": "ניתן לעקוב אחרינו בטיקטוק"
+      },
       "twitter": {
         "name": "{community} ב־𝕏",
         "description": "ניתן לעקוב אחרינו ב־𝕏"
@@ -284,7 +295,8 @@
         "description": "ניתן לעקוב אחרינו ב־𝕏"
       },
       "xmpp": {
-        "name": "ה־XMPP של {community} "
+        "name": "ה־XMPP של {community} ",
+        "description": "ניתן להצטרף לקבוצת הצ׳אט הקהילתית שלנו ב־XMPP:‏ {url}"
       },
       "youtube": {
         "name": "{community} ב־YouTube",
@@ -391,6 +403,13 @@
     "cl-telegram": {
       "extendedDescription": "ניתן להצטרף לקהילה וללמוד עוד על OpenStreetMap, לשאול שאלות או להשתתף במפגשים שלנו. כולם מוזמנים!"
     },
+    "co-github": {
+      "name": "מיזמי {community} ב־GitHub",
+      "description": "פרויקטים תוכנתיים שפותחו על ידי הקהילה"
+    },
+    "co-instagram": {
+      "name": "רשומות של {community} באינסטגרם"
+    },
     "czech-community": {
       "description": "פורטל המפה, האתר ופרטי הקשר של חברי OSM בצ׳כיה"
     },
@@ -436,6 +455,18 @@
     "de-luneburg-wiki": {
       "description": "עמוד הוויקי של {community}"
     },
+    "de-mainz-mailinglist": {
+      "description": "OpenStreetMap במיינץ ובסביבתה"
+    },
+    "de-mainz-signal": {
+      "description": "OpenStreetMap במיינץ, ויסבאדן וסביבתן"
+    },
+    "de-mainz-telegram": {
+      "description": "OpenStreetMap במיינץ ובסביבתה"
+    },
+    "de-mainz-wiki": {
+      "description": "OpenStreetMap במיינץ ובסביבתה"
+    },
     "de-munchen-wiki": {
       "description": "עמוד הוויקי של {community}"
     },
@@ -475,6 +506,9 @@
     },
     "DF-telegram": {
       "extendedDescription": "ניתן להצטרף לקהילה וללמוד עוד על OpenStreetMap, לשאול שאלות או להשתתף במפגשים שלנו. כולם מוזמנים!"
+    },
+    "dk-discourse": {
+      "description": "פורום לדיונים על OpenStreetMap בדנמרק"
     },
     "fr-35-wiki": {
       "description": "עמוד הוויקי של {community}"
@@ -553,6 +587,9 @@
     "kosovo-telegram": {
       "description": "קבוצת טלגרם ציבורית חצי רשמית לכלל קוסובו. אנו מזמינים את כל הממפים מכל מקום ובכל שפה."
     },
+    "kp-wiki": {
+      "description": "כללי המיפוי של {community}"
+    },
     "latam-facebook": {
       "description": "ממפים ומשתמשים ב־OpenStreetMap באמריקה הלטינית בפייסבוק"
     },
@@ -564,6 +601,9 @@
     },
     "latam-wiki": {
       "description": "כל מה שצריך לדעת על מיפוי באמריקה הלטינית {url}"
+    },
+    "lu-github": {
+      "description": "ארגון GitHub לקהילת OSM בלוקסמבורג!"
     },
     "madrid-uam-ym": {
       "name": "ממפים צעירים UAM",

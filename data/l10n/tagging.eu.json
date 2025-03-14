@@ -154,6 +154,7 @@
             "county": "Eskualde",
             "county!jp": "Barruti",
             "district": "Barruti",
+            "district!cn": "Barruti/Konderri/Bandera",
             "district!vn": "Arrondizamendu/Herri/Barruti",
             "floor": "Solairu",
             "hamlet": "Herrixka",
@@ -161,8 +162,9 @@
             "housenumber!jp": "Eraikin zenb./Bloke zenb.",
             "neighbourhood": "Auzo",
             "place": "Leku",
-            "postcode": "posta-kode",
+            "postcode": "Posta-kodea",
             "province": "Probintzia",
+            "province!cn": "Probintzia/Udalerria/AR/SAR",
             "province!jp": "Prefektura",
             "quarter": "Barruti",
             "state": "Estatu",
@@ -222,6 +224,9 @@
         "air_conditioning": {
           "label": "Aire girotua"
         },
+        "alt_name": {
+          "label": "Izen alternatiboa"
+        },
         "amenity": {
           "label": "Mota"
         },
@@ -269,14 +274,17 @@
         "artwork_type": {
           "label": "Mota",
           "options": {
+            "bust": "Bustua",
+            "mosaic": "Mosaikoa",
             "mural": "Murala (muralen)",
             "painting": "Pintura",
             "relief": "Erliebea",
-            "sculpture": "Eskultura"
+            "sculpture": "Eskultura",
+            "statue": "Estatua"
           }
         },
         "atm": {
-          "label": "Kutxazain automatikoa"
+          "label": "Kutxazaina"
         },
         "attraction": {
           "label": "Mota",
@@ -322,7 +330,7 @@
         "bath/type": {
           "label": "Espezialitate",
           "options": {
-            "hot_spring": "Iturburu termala"
+            "hot_spring": "Ur iturburu termala"
           }
         },
         "beauty": {
@@ -332,7 +340,8 @@
           }
         },
         "bench": {
-          "label": "Banku"
+          "label": "Bankua",
+          "terms": "banku,aulki,eserleku"
         },
         "bicycle_parking": {
           "label": "Mota",
@@ -408,6 +417,7 @@
         "building": {
           "label": "Eraikina",
           "options": {
+            "allotment_house": "Baratze-eraikina",
             "apartments": "Apartamentu-blokea",
             "cathedral": "Katedral-erainika",
             "chapel": "Kapera-eraikina",
@@ -443,6 +453,10 @@
         },
         "building/levels": {
           "label": "Solairuak"
+        },
+        "building/levels/underground": {
+          "label": "Lurrazpiko mailak",
+          "terms": "lurrazpi,lurpe,sotano,soto"
         },
         "building/material": {
           "label": "Materiala"
@@ -482,12 +496,16 @@
         "changing_table": {
           "label": "Pardelak aldatzeko mahaia"
         },
+        "charge_fee": {
+          "label": "Zenbateko ordainketa"
+        },
         "check_date": {
           "label": "Azken berrikuste data",
           "terms": "Berrikuste data,azken berrikuste data,"
         },
         "clothes": {
-          "label": "Arropa"
+          "label": "Arropa-mota",
+          "terms": "arropa,jantzi,estilo,moda"
         },
         "club": {
           "label": "Mota"
@@ -512,7 +530,11 @@
           "label": "Mota"
         },
         "consulate": {
-          "label": "Mota"
+          "label": "Mota",
+          "options": {
+            "consular_agency": "Kontsulatu zerbitzuen agentzia",
+            "consular_office": "Kontsulatu zerbitzuen bulegoa"
+          }
         },
         "contact/webcam": {
           "label": "Web kameraren URL-a"
@@ -547,14 +569,14 @@
             "confectionery": "Gozoki-fabrika",
             "distillery": "Destilategi",
             "gardener": "Lorezain",
-            "locksmith": "Sarrailagilea",
+            "locksmith": "Sarrailagintza",
             "painter": "Margolari",
             "photographer": "Argazkilaria",
             "photographic_laboratory": "Argazki laborategi",
             "plumber": "Iturgina",
             "rigger": "Aparejadore",
             "shoemaker": "Zapataria",
-            "window_construction": "Leiho-eraikitzailea"
+            "window_construction": "Leiho-denda"
           }
         },
         "crane/type": {
@@ -597,6 +619,7 @@
           "options": {
             "burger": "Hanburgesa",
             "chicken": "Oilaskoa",
+            "coffee_shop": "Kafetegia",
             "fish": "Arraina",
             "french": "Frantsesa",
             "german": "Alemana",
@@ -607,9 +630,11 @@
             "italian": "Italiarra",
             "japanese": "Japoniarra",
             "korean": "Korearra",
+            "pastry": "Gozogintza",
             "regional": "Bertakoa",
             "russian": "Errusiarra",
             "salad": "Entsaladak",
+            "seafood": "Arraina, itsaskiak",
             "spanish": "Espainiarra"
           },
           "terms": "sukaldaritza-mota,sukaldaritza,estiloa"
@@ -620,6 +645,14 @@
         "cutting": {
           "label": "Mota",
           "placeholder": "Lehenetsia "
+        },
+        "cycle_barrier": {
+          "label": "Mota"
+        },
+        "cycle_barrier/installation": {
+          "options": {
+            "fixed": "Konponduta"
+          }
         },
         "cycle_network": {
           "label": "Sarea"
@@ -723,7 +756,7 @@
           }
         },
         "dispensing": {
-          "label": "Errezetak administratzen ditu"
+          "label": "Errezeta behar duten botikak"
         },
         "display": {
           "label": "Pantaila",
@@ -812,7 +845,9 @@
         "entrance": {
           "label": "Mota ",
           "options": {
-            "main": "Nagusi"
+            "entrance": "Sarrera bakarrik",
+            "main": "Nagusia",
+            "shop": "Dendarako sarrera"
           }
         },
         "except": {
@@ -941,10 +976,10 @@
         "healthcare": {
           "label": "Mota",
           "options": {
-            "clinic": "Erietxe",
+            "clinic": "Erietxea",
             "dentist": "Dentista",
             "doctor": "Mediku",
-            "pharmacy": "Farmazia",
+            "pharmacy": "Botika",
             "physiotherapist": "Fisioterapeuta"
           }
         },
@@ -1003,6 +1038,9 @@
           },
           "placeholder": "Zaila, Arriskutsua..."
         },
+        "house": {
+          "label": "Etxe mota"
+        },
         "image": {
           "label": "Irudia",
           "terms": "irudia,ikonoa,argazkia,marrazkia"
@@ -1053,6 +1091,12 @@
         "internet_access/ssid": {
           "label": "Wifi sarearen izena"
         },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Bai",
+            "undefined": "Ez"
+          }
+        },
         "kerb": {
           "label": "Frenatu",
           "options": {
@@ -1066,6 +1110,10 @@
         },
         "kerb/kerb_barrier": {
           "label": "Mota"
+        },
+        "kitchen": {
+          "label": "Sukaldea",
+          "terms": "sukalde"
         },
         "label": {
           "label": "Marka"
@@ -1160,7 +1208,12 @@
           "terms": "Mapillary-ko irudi ID-a"
         },
         "marker": {
-          "label": "Mota"
+          "label": "Mota",
+          "options": {
+            "post": {
+              "title": "Zutoina"
+            }
+          }
         },
         "material": {
           "label": "Materiala"
@@ -1177,7 +1230,9 @@
         "memorial": {
           "label": "Mota",
           "options": {
+            "bust": "Bustua",
             "sculpture": "Eskultura",
+            "statue": "Estatua",
             "stele": "Hilarria"
           }
         },
@@ -1260,7 +1315,12 @@
           "options": {
             "architect": "Arkitektura bulegoa",
             "coworking": "Coworking espazioa",
+            "estate_agent": "Inmobiliaria bulegoa",
+            "government": "Gobernuaren bulegoa",
+            "ngo": "GKE bulegoa",
+            "notary": "Notario bulegoa",
             "political_party": "Alderdi politikoaren bulegoa",
+            "property_management": "Etxaldeen administrazio bulegoa",
             "telecommunication": "Telekomunikazio bulegoa",
             "travel_agent": "Bidai-agentzia"
           }
@@ -1289,7 +1349,10 @@
           "placeholder": "Ezezaguna"
         },
         "operator": {
-          "label": "Operadore"
+          "label": "Operadorea"
+        },
+        "operator/type": {
+          "label": "Operadore mota"
         },
         "organic": {
           "options": {
@@ -1321,6 +1384,9 @@
             },
             "sheds": {
               "title": "Estalgune"
+            },
+            "surface": {
+              "title": "Lurrazaleko aparkalekua"
             },
             "underground": {
               "title": "Lur azpiko"
@@ -1411,7 +1477,7 @@
           "options": {
             "connection": "Konexio",
             "ice_skate": "Izotz gaineko patinajea",
-            "playground": "Jolastoki",
+            "playground": "Jolastokia",
             "snow_park": "Snow Park-a"
           }
         },
@@ -1618,8 +1684,13 @@
           "label": "Mota",
           "options": {
             "drive-through": "Auto-zerbitzua",
-            "driveway": "Sarrera-bidea"
+            "driveway": "Sarrera-bidea",
+            "parking_aisle": "Aparkaleku barruko bidea"
           }
+        },
+        "service/bicycle": {
+          "label": "Bizikletentzat zerbitzuak",
+          "terms": "bizikleta,txirrindu,gurpil"
         },
         "service/vehicle": {
           "label": "Zerbitzuak"
@@ -1628,7 +1699,7 @@
           "label": "Zerbitzu mota"
         },
         "shelter": {
-          "label": "Aterpetxe"
+          "label": "Aterpetxea"
         },
         "shelter_type": {
           "label": "Mota"
@@ -1670,7 +1741,7 @@
           "options": {
             "food_bank": "Elikagai-bankua",
             "nursing_home": "Zahar-egoitza",
-            "shelter": "Aterpetxe"
+            "shelter": "Aterpetxea"
           }
         },
         "source": {
@@ -1750,7 +1821,7 @@
           "label": "Substantzia",
           "options": {
             "fuel": "Erregai",
-            "water": "Ur edangarria"
+            "water": "Edateko ura"
           }
         },
         "substation": {
@@ -1764,6 +1835,9 @@
         },
         "support": {
           "label": "Laguntza"
+        },
+        "surface": {
+          "label": "Lurrazala"
         },
         "surveillance/type": {
           "options": {
@@ -1912,7 +1986,7 @@
           "label": "Erabilera mota",
           "options": {
             "branch": "Adar",
-            "main": "Nagusi",
+            "main": "Nagusia",
             "military": "Militar",
             "test": "Analisi",
             "tourism": "Turismo"
@@ -1929,6 +2003,9 @@
         "valve": {
           "label": "Mota"
         },
+        "vehicles": {
+          "label": "Ibilgailu-motak"
+        },
         "vending": {
           "label": "Salgai motak",
           "options": {
@@ -1936,7 +2013,7 @@
             "drinks": "Edariak",
             "fuel": "Erregai",
             "ice_cream": "Izozkiak",
-            "water": "Ur edangarria"
+            "water": "Edateko ura"
           }
         },
         "visibility": {
@@ -1979,7 +2056,8 @@
           "label": "Mota"
         },
         "website": {
-          "label": "Webgune"
+          "label": "Webgunea",
+          "terms": "webgune,weborri,web-orria,internet,url,uri"
         },
         "wetland": {
           "label": "Mota"
@@ -2032,6 +2110,10 @@
         "amenity/arts_centre": {
           "name": "Arte Zentro"
         },
+        "amenity/atm": {
+          "name": "Kutxazain automatikoa",
+          "terms": "kutxazaina,automatikoa,kajeroa"
+        },
         "amenity/bank": {
           "name": "Bankua"
         },
@@ -2042,13 +2124,14 @@
           "name": "Barbakoa/Parrila"
         },
         "amenity/bench": {
-          "name": "Banku"
+          "name": "Bankua",
+          "terms": "banku,aulki,eserleku"
         },
         "amenity/bicycle_parking": {
-          "name": "Bizikletentzako Aparkalekua"
+          "name": "Bizikletentzako aparkalekua"
         },
         "amenity/bicycle_rental": {
-          "name": "Bizikleten Alokairua "
+          "name": "Bizikleten alokairua "
         },
         "amenity/bicycle_repair_station": {
           "name": "Bizikleta konpontzeko tresneriaren postua"
@@ -2084,7 +2167,7 @@
           "name": "Zinema"
         },
         "amenity/clinic": {
-          "name": "Erietxe"
+          "name": "Erietxea"
         },
         "amenity/clinic/abortion": {
           "name": "Abortu klinika"
@@ -2099,13 +2182,13 @@
           "name": "Unibertsitate Eremu"
         },
         "amenity/community_centre": {
-          "name": "Gizarte Etxe"
+          "name": "Gizarte-etxea"
         },
         "amenity/compressed_air": {
           "name": "Aire konpromitua"
         },
         "amenity/courthouse": {
-          "name": "Epaitegi"
+          "name": "Epaitegia"
         },
         "amenity/coworking_space": {
           "name": "Coworking espazioa"
@@ -2124,7 +2207,8 @@
           "terms": "aldagela,bestuario"
         },
         "amenity/drinking_water": {
-          "name": "Ur edangarria"
+          "name": "Edateko ur iturria",
+          "terms": "iturria,ura,txorrota,edangarria"
         },
         "amenity/driving_school": {
           "name": "Auto-eskola"
@@ -2136,13 +2220,14 @@
           "name": "Janari azkarra"
         },
         "amenity/fire_station": {
-          "name": "Suhiltzaile-etxe"
+          "name": "Suhiltzaile-etxea"
         },
         "amenity/food_court": {
           "name": "Bazkaltzeko eremua"
         },
         "amenity/fountain": {
-          "name": "Iturri"
+          "name": "Ur iturri monumentala",
+          "terms": "ura,iturria,fontana,monumentua"
         },
         "amenity/fuel": {
           "name": "Gasolindegi"
@@ -2166,7 +2251,8 @@
           "name": "Internet kafetegi"
         },
         "amenity/language_school": {
-          "name": "Hizkuntz eskola"
+          "name": "Hizkuntza-eskola",
+          "terms": "hizkuntza-eskola,akademia,hizkuntz"
         },
         "amenity/library": {
           "name": "Liburutegi"
@@ -2190,17 +2276,20 @@
           "name": "Zahar-egoitza"
         },
         "amenity/parking": {
-          "name": "Aparkalekuan"
+          "name": "Aparkalekua"
         },
         "amenity/parking/multi-storey": {
           "name": "Maila anitzeko aparkaleku"
+        },
+        "amenity/parking/underground": {
+          "name": "Lurpeko aparkalekua"
         },
         "amenity/parking_space": {
           "name": "Aparkatzeko lekua"
         },
         "amenity/pharmacy": {
           "name": "Botika",
-          "terms": "Botika,farmazia"
+          "terms": "botika,farmazia"
         },
         "amenity/place_of_worship": {
           "name": "Gurtza gune"
@@ -2227,10 +2316,11 @@
           "name": "Polizia"
         },
         "amenity/post_office": {
-          "name": "Postetxe"
+          "name": "Postetxea",
+          "terms": "posta,posta bulegoa,postetxea,correos,poste,la poste,laposte"
         },
         "amenity/prison": {
-          "name": "Espetxe"
+          "name": "Espetxea"
         },
         "amenity/public_bath": {
           "name": "Komun publikoak"
@@ -2248,13 +2338,21 @@
           "name": "Birziklatze zentrua"
         },
         "amenity/restaurant": {
-          "name": "Jatetxe"
+          "name": "Jatetxea",
+          "terms": "jatetxe,jantoki,restaurante,bazkari,afari,erretegi,kantina,taberna"
+        },
+        "amenity/restaurant/american": {
+          "name": "Jatetxe amerikarra"
+        },
+        "amenity/restaurant/seafood": {
+          "name": "Arraina eta itsaski jatetxea",
+          "terms": "arraina,itsaskiak,itxaskiak,mariskoa,"
         },
         "amenity/school": {
           "name": "Eskola eremu"
         },
         "amenity/shelter": {
-          "name": "Aterpetxe"
+          "name": "Aterpetxea"
         },
         "amenity/shelter/gazebo": {
           "name": "Begiratoki"
@@ -2281,10 +2379,10 @@
           "name": "Elikagai-banku"
         },
         "amenity/social_facility/group_home": {
-          "name": "Zahar-etxe"
+          "name": "Zahar-etxea"
         },
         "amenity/social_facility/homeless_shelter": {
-          "name": "Etxegabeentzako aterpetxe"
+          "name": "Etxegabeentzako aterpetxea"
         },
         "amenity/social_facility/nursing_home": {
           "name": "Zahar-egoitza"
@@ -2304,10 +2402,15 @@
           "terms": "telefonoa, urrutizkina"
         },
         "amenity/theatre": {
-          "name": "Antzoki"
+          "name": "Antzokia",
+          "terms": "antzokia,zinema,antzerki,areto,teatroa"
+        },
+        "amenity/theatre/type/amphi": {
+          "name": "Anfiteatroa",
+          "terms": "anfiteatroa,antzoki,teatroa"
         },
         "amenity/townhall": {
-          "name": "Udaletxe"
+          "name": "Udaletxea"
         },
         "amenity/university": {
           "name": "Unibertsitatearen eremua"
@@ -2332,6 +2435,9 @@
         },
         "amenity/vending_machine/elongated_coin": {
           "name": "Txanpon-makina"
+        },
+        "amenity/vending_machine/excrement_bags": {
+          "name": "Txakur-kaka poltsak"
         },
         "amenity/vending_machine/feminine_hygiene": {
           "name": "Emakumezkoentzako higiene produktuen makina saltzaile"
@@ -2378,6 +2484,9 @@
         },
         "building": {
           "name": "Eraikina"
+        },
+        "building/allotment_house": {
+          "name": "Baratze-eraikina"
         },
         "building/apartments": {
           "name": "Apartamentu-blokea"
@@ -2441,7 +2550,7 @@
           "name": "Hotel-eraikina"
         },
         "building/house": {
-          "name": "Etxe"
+          "name": "Etxea"
         },
         "building/industrial": {
           "name": "Industria-eraikina"
@@ -2493,7 +2602,7 @@
           "name": "Lorezain"
         },
         "craft/locksmith": {
-          "name": "Sarrailagilea"
+          "name": "Sarrailagintza"
         },
         "craft/painter": {
           "name": "Margolari"
@@ -2506,7 +2615,8 @@
           "name": "Argazki laborategi"
         },
         "craft/plumber": {
-          "name": "Iturgin"
+          "name": "Iturgina",
+          "terms": "iturgina,ojalateroa,hojalateroa,fontaneroa"
         },
         "craft/rigger": {
           "name": "Aparejadore"
@@ -2517,15 +2627,34 @@
         "craft/window_construction": {
           "name": "Leiho-eraikitzailea"
         },
+        "entrance": {
+          "name": "Sarrera/Irteera"
+        },
+        "entrance/main": {
+          "name": "Sarrera nagusia"
+        },
+        "entrance/shop": {
+          "name": "Dendarako sarrera"
+        },
         "healthcare/physiotherapist": {
           "name": "Fisioterapeuta",
           "terms": "fisioterapeuta,masajea,masaia,fisioterapia"
+        },
+        "highway/bus_stop": {
+          "name": "Autobus geltokia"
+        },
+        "highway/busway": {
+          "name": "Autobusen bidea"
         },
         "highway/cycleway/bicycle_foot": {
           "name": "Bizikleta eta oinezko-bidea"
         },
         "highway/cycleway/crossing/bicycle_foot": {
           "name": "Bizikleta eta oinezkoen pasabidea"
+        },
+        "highway/elevator": {
+          "name": "Igogailua",
+          "terms": "igogailua,aszensorea,eskailera"
         },
         "highway/footway": {
           "name": "Oinezkoen bidea"
@@ -2548,6 +2677,9 @@
         "highway/service/driveway": {
           "name": "Sarrera-bidea"
         },
+        "highway/service/parking_aisle": {
+          "name": "Aparkaleku barruko bidea"
+        },
         "highway/steps": {
           "name": "Eskailerak"
         },
@@ -2569,6 +2701,10 @@
         "landuse/residential/apartments": {
           "name": "Apartamentu-konplexua"
         },
+        "leisure/garden/kitchen": {
+          "name": "Baratzea",
+          "terms": "ortua,baratze"
+        },
         "leisure/pitch/table_tennis": {
           "name": "ping-pong mahai"
         },
@@ -2579,7 +2715,8 @@
           "name": "boleibol-zelaia"
         },
         "leisure/playground": {
-          "name": "Jolastoki"
+          "name": "Jolastokia",
+          "terms": "parkea,jolastokia,jolaslekua,kolunpioak,columpio,plaza"
         },
         "leisure/resort": {
           "name": "opor-leku"
@@ -2627,7 +2764,8 @@
           "name": "Iturburu termala"
         },
         "natural/spring": {
-          "name": "Iturburua"
+          "name": "Ur iturburu naturala",
+          "terms": "ura,iturburua,iturria"
         },
         "natural/water/pond": {
           "name": "Urmael"
@@ -2642,12 +2780,34 @@
         "office/diplomatic/embassy": {
           "name": "Enbaxada"
         },
+        "office/estate_agent": {
+          "name": "Inmobiliaria bulegoa",
+          "terms": "inmobiliaria,etxe agentzia,higiezinen,etxeak,alokairuak,etxe-salmenta"
+        },
+        "office/government": {
+          "name": "Gobernuaren bulegoa",
+          "terms": "Gobernuaren bulegoa,ofiziala,erakunde,udal,gobernu"
+        },
         "office/government/register_office": {
           "name": "Erregistro bulegoa"
+        },
+        "office/lawyer/notary": {
+          "name": "Notario bulegoa"
+        },
+        "office/ngo": {
+          "name": "GKE bulegoa",
+          "terms": "gke bulegoa,gobernuz kanpoko erakundea,elkartea"
+        },
+        "office/notary": {
+          "name": "Notario bulegoa"
         },
         "office/political_party": {
           "name": "Alderdi politikoaren bulegoa",
           "terms": "Alderdi politikoa, alderdia, hauteskunde"
+        },
+        "office/property_management": {
+          "name": "Etxaldeen administrazioa / Etxe-alokairu bulegoa",
+          "terms": "administrazioa,finkak,etxaldeen administrazioa,aholkularitza,kudeaketa"
         },
         "office/telecommunication": {
           "name": "Telekomunikazio bulegoa"
@@ -2671,7 +2831,8 @@
           "name": "Aurkintza"
         },
         "place/square": {
-          "name": "Laukia"
+          "name": "Plaza",
+          "terms": "plaza,enparantza"
         },
         "playground": {
           "name": "Jolastokiko ekipamendua"
@@ -2679,8 +2840,17 @@
         "point": {
           "name": "Puntua"
         },
+        "public_transport/platform/bus_point": {
+          "name": "Autobus geltokia"
+        },
+        "public_transport/platform/bus_tram_point": {
+          "name": "Tranbia eta autobus geltokia"
+        },
         "public_transport/station_bus": {
           "name": "Autobus geltoki / Terminal"
+        },
+        "public_transport/stop_position_bus": {
+          "name": "Autobusa gelditzen den puntua"
         },
         "relation": {
           "name": "Erlazioa",
@@ -2694,23 +2864,75 @@
           "name": "Okindegia",
           "terms": "Okindegia,ogia,okina"
         },
+        "shop/bathroom_furnishing": {
+          "name": "Bainugela diseinu-denda",
+          "terms": "komun,dutxa,bainera,bainugela"
+        },
+        "shop/beauty": {
+          "name": "Estetika zentroa",
+          "terms": "estetika,estetizien,depilazio,spa,beltzarantze,brontzeatu"
+        },
+        "shop/clothes/wedding": {
+          "name": "Eztei-jantzien denda",
+          "terms": "ezkontza,botique,nobio,nobia,ezkongai,soineko"
+        },
+        "shop/coffee": {
+          "name": "Kafe-denda"
+        },
         "shop/confectionery": {
           "name": "Gozodenda",
           "terms": "gozodenda,goxokiak,azukrea,txutxeak"
+        },
+        "shop/convenience": {
+          "name": "Komenentziako denda",
+          "terms": "supermerkatu,denda-txikia,ultramarino"
+        },
+        "shop/fashion": {
+          "name": "Arropa-denda"
+        },
+        "shop/fashion_accessories": {
+          "name": "Arropa-lagungarrien denda",
+          "terms": "poltsa,gerriko,kolonia,perfume,sonbreru,kapela,bitxi,betaurreko,aterki,konplementu,moda"
+        },
+        "shop/fuel": {
+          "name": "Gasolindegia",
+          "terms": "gasolindegia,gasolina,diesel,gasolinera,surtidorea,erregaia"
+        },
+        "shop/furniture": {
+          "name": "Altzari-denda",
+          "terms": "altzari,aulki,mahai,armairu,sukalde,aulki,sofa,silloi,barne-diseinu"
         },
         "shop/greengrocer": {
           "name": "Fruta eta barazki-saltzailea",
           "terms": "Frutadenda,barazkiak,frutak,fruituak,entsalada"
         },
         "shop/hairdresser": {
-          "name": "Ile-apaintzailea"
+          "name": "Ile-apaintzailea",
+          "terms": "pelukeria,ile-apaintzaile,barberia,"
         },
         "shop/hairdresser_supply": {
-          "name": "Ile-apaindegiko hornidura-denda"
+          "name": "Ile-apaindegiko hornidura-denda",
+          "terms": "txanpu,bizar,laka,depilazio"
+        },
+        "shop/herbalist": {
+          "name": "Belar-denda",
+          "terms": "belarrak,dietetika,fitomedizina,infusioak"
+        },
+        "shop/interior_decoration": {
+          "name": "Barne-dekorazio denda",
+          "terms": "dekorazioa,etxe-diseinua,dekoradorea,diseinatzailea"
+        },
+        "shop/kitchen": {
+          "name": "Sukalde diseinu denda",
+          "terms": "sukaldeak,sukalde armairu,sukalde dekorazio"
         },
         "shop/locksmith": {
-          "name": "Sarrailagilea",
-          "terms": "sarrailagilea,sarrailak"
+          "name": "Sarrailagintza",
+          "terms": "sarrailagilea,sarrailak,giltzak"
+        },
+        "shop/mall": {
+          "name": "Merkatal-zentrua",
+          "terms": "merkataritza-zentrua, merkatal-zentrua,zentru komertziala,dendak"
         },
         "shop/medical_supply": {
           "name": "Ortopedia eta medikuntzako-hornidura denda"
@@ -2718,8 +2940,16 @@
         "shop/optician": {
           "name": "Optikari"
         },
+        "shop/pastry": {
+          "name": "Gozo-denda",
+          "terms": "gozotegia,gozoak,pastelak,tartak,gozogintza,opilak,opilgintza,txokolate,azukre"
+        },
         "shop/photo": {
           "name": "Argazkilaritza denda"
+        },
+        "shop/seafood": {
+          "name": "Arrandegia",
+          "terms": "arrandegi,arraindegi,mariskoa,itsaskiak,itxaskiak"
         },
         "shop/shoe_repair": {
           "name": "Oinetako-konponketak",
@@ -2732,17 +2962,31 @@
         "shop/stationery": {
           "name": "Paperdenda\nbulegoko materiala\nbulegoa"
         },
+        "shop/tobacco": {
+          "name": "Tabako-denda",
+          "terms": "tabakoa,estankoa,tabako-denda,estankua"
+        },
         "shop/travel_agency": {
           "name": "Bidai-agentzia"
         },
         "shop/vacant": {
           "name": "Denda-lokal hutsa"
         },
+        "shop/window_blind": {
+          "name": "Kurtina-denda",
+          "terms": "kurtina,estore,pertsiana"
+        },
+        "tourism/artwork/bust": {
+          "name": "Bustua"
+        },
         "tourism/artwork/mural": {
           "name": "Murala (muralen)"
         },
         "tourism/artwork/sculpture": {
           "name": "Eskultura"
+        },
+        "tourism/artwork/statue": {
+          "name": "Estatua"
         },
         "tourism/information": {
           "name": "Informazioa"

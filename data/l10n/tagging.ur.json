@@ -78,7 +78,8 @@
             "state": "ریاست",
             "street": "گلی",
             "subdistrict": "ذیلی ضلع",
-            "suburb": "مضافات"
+            "suburb": "مضافات",
+            "town": "قصبہ"
           }
         },
         "advertising": {
@@ -130,6 +131,7 @@
         "artwork_type": {
           "label": "قسم",
           "options": {
+            "sculpture": "مجسمہ",
             "statue": "مجسمہ"
           }
         },
@@ -142,6 +144,7 @@
         "barrier": {
           "label": "قسم",
           "options": {
+            "ditch": "نالا",
             "toll_booth": "ٹول پلازہ",
             "wall": "دیوار"
           }
@@ -213,6 +216,7 @@
             "industrial": "صنعتی عمارت",
             "mosque": "مسجد عمارت",
             "office": "دفاتر عمارت",
+            "retail": "کاروبار",
             "roof": "چھت",
             "school": "اسکول عمارت",
             "stable": "اسطبل",
@@ -374,6 +378,9 @@
           }
         },
         "cutting": {
+          "label": "قسم"
+        },
+        "cycle_barrier": {
           "label": "قسم"
         },
         "date": {
@@ -607,6 +614,12 @@
             "yes": "جی ہاں"
           }
         },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "جی ہاں",
+            "undefined": "نہیں"
+          }
+        },
         "junction/ref_oneway": {
           "label": "جنکشن نمبر"
         },
@@ -690,6 +703,7 @@
         "memorial": {
           "label": "قسم",
           "options": {
+            "sculpture": "مجسمہ",
             "statue": "مجسمہ"
           }
         },
@@ -738,8 +752,10 @@
             "financial": "مالی دفتر",
             "government": "سرکاری دفتر",
             "insurance": "بیمہ دفتر",
+            "lawyer": "قانونی دفتر",
             "political_party": "سیاسی جماعت کا دفتر",
-            "religion": "دینی دفتر"
+            "religion": "دینی دفتر",
+            "travel_agent": "ٹریول ایجنسی"
           }
         },
         "oneway": {
@@ -1325,6 +1341,10 @@
         "amenity/library": {
           "name": "کتاب گھر\nکتب خانہ\nدارالکتب\nدار الکتب\nلائبریری"
         },
+        "amenity/marketplace": {
+          "name": "بازار",
+          "terms": "سوق"
+        },
         "amenity/place_of_worship": {
           "name": "عبادت گاہ",
           "terms": "عبادت خانہ"
@@ -1342,7 +1362,8 @@
           "terms": "یہودی عبادت گاہ"
         },
         "amenity/place_of_worship/muslim": {
-          "name": "مسجد"
+          "name": "مسجد",
+          "terms": "امام بارگاہ,امام باڑہ"
         },
         "amenity/place_of_worship/sikh": {
           "name": "گرودوارہ\nگوردوارہ\nگرودوارہ\nسکھ عبادت گاہ",
@@ -1363,6 +1384,10 @@
         },
         "area": {
           "name": "خانہ"
+        },
+        "barrier/ditch": {
+          "name": "کھائی",
+          "terms": "خندق"
         },
         "barrier/toll_booth": {
           "name": "ٹول پلازہ"
@@ -1412,6 +1437,9 @@
         "building/office": {
           "name": "دفاتر عمارت",
           "terms": "دفتر, دفاتر"
+        },
+        "building/retail": {
+          "name": "کاروبار"
         },
         "building/roof": {
           "name": "چھت"
@@ -1470,6 +1498,10 @@
         "highway/speed_camera": {
           "name": "کیمرہ برائے رفتار"
         },
+        "highway/steps": {
+          "name": "سیڑھیاں",
+          "terms": "سیڑھی"
+        },
         "highway/traffic_signals": {
           "name": "ٹریفک اشارے\nاشارے\nاشارہ\nٹریفک اشارہ"
         },
@@ -1511,8 +1543,15 @@
           "name": "ریل راہداری",
           "terms": "ریلوے راہداری"
         },
+        "landuse/religious": {
+          "name": "عبادت خانہ",
+          "terms": "مقدس زمین"
+        },
         "landuse/residential": {
           "name": "رہائشی علاقہ"
+        },
+        "landuse/retail": {
+          "terms": "کاروباری علاقہ"
         },
         "leisure/garden": {
           "name": "باغ\nگارڈن"
@@ -1585,12 +1624,18 @@
         "office/insurance": {
           "name": "بیمہ دفتر"
         },
+        "office/lawyer": {
+          "name": "قانونی دفتر"
+        },
         "office/political_party": {
           "name": "سیاسی جماعت کا دفتر",
           "terms": "دفتر برائے سیاسی جماعت"
         },
         "office/religion": {
           "name": "دینی دفتر"
+        },
+        "office/travel_agent": {
+          "name": "ٹریول ایجنسی"
         },
         "office/yes": {
           "name": "دفتر (نامعلوم)"
@@ -1621,10 +1666,12 @@
           "name": "مضافت"
         },
         "place/town": {
-          "name": "قصبہ"
+          "name": "قصبہ",
+          "terms": "بستی"
         },
         "place/village": {
-          "name": "گاؤں"
+          "name": "گاؤں",
+          "terms": "دیہات,دہ,گرام,بستی"
         },
         "playground/swing": {
           "name": "جھولا"
@@ -1679,27 +1726,54 @@
           "name": " قصائی",
           "terms": " قسائی"
         },
+        "shop/florist": {
+          "name": "گل فروش کی دکان",
+          "terms": "گل فروش,گل فروش کی دوکان"
+        },
         "shop/mall": {
           "name": "مال"
         },
+        "shop/religion": {
+          "name": "مذہبی دکان",
+          "terms": "مذہبی دوکان"
+        },
         "shop/tailor": {
           "name": "درزی"
+        },
+        "shop/travel_agency": {
+          "name": "ٹریول ایجنسی"
         },
         "shop/weapons": {
           "name": "بندوقوں والی دکان",
           "terms": "بندوقوں کی دکان,بندوق کی دوکان,بندوق کی دکان,بندوقوں والی دکان,بندوق والی دکان"
         },
+        "tourism/artwork/sculpture": {
+          "name": "مجسمہ"
+        },
         "tourism/artwork/statue": {
           "name": "مجسمہ"
+        },
+        "tourism/attraction": {
+          "name": "سیاحتی مقام"
         },
         "tourism/hotel": {
           "name": "ہوٹل"
         },
+        "tourism/information/map": {
+          "name": "نقشہ"
+        },
         "tourism/museum": {
           "name": "عجائب گھر"
         },
+        "tourism/zoo": {
+          "name": "چڑیا گھر"
+        },
         "traffic_sign": {
           "name": "اشارہ"
+        },
+        "traffic_sign/maxspeed": {
+          "name": "حدِ رفتار اشارہ",
+          "terms": "حد رفتار اشارہ"
         },
         "type/boundary": {
           "name": "حدود"
@@ -1711,8 +1785,37 @@
         "type/route": {
           "name": "راہ"
         },
+        "type/route/bicycle": {
+          "name": "سائکل راہ",
+          "terms": "سائکل کا راستہ,سائکل کا راہ"
+        },
+        "type/route/bus": {
+          "name": "بس کا راستہ"
+        },
+        "type/route/railway": {
+          "name": "ریل راستہ",
+          "terms": "ریلوے راہ,ریل گاڑی کا راہ,ریل گاڑی کا راستہ"
+        },
+        "type/route/road": {
+          "name": "سڑک راستہ"
+        },
+        "type/site": {
+          "name": "مقام",
+          "terms": "جگہ,حصہ"
+        },
+        "type/waterway": {
+          "name": "آبی راستہ",
+          "terms": "آبِ راہ,آب راہ"
+        },
+        "waterway/canal": {
+          "name": "نہر"
+        },
         "waterway/dam": {
           "name": "ڈیم"
+        },
+        "waterway/ditch": {
+          "name": "نالا",
+          "terms": "نالہ,نالی"
         },
         "waterway/river": {
           "name": "دریا",

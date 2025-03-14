@@ -168,6 +168,7 @@
             "subdistrict!vn": "Quartier/Commune/Village",
             "suburb": "Grand quartier, banlieue",
             "suburb!jp": "Quartier, district électoral",
+            "town": "Petite ville ou ville moyenne",
             "unit": "Unité"
           },
           "terms": "adresse"
@@ -355,7 +356,7 @@
             "ditch": "Fossé",
             "entrance": "Entrée",
             "fence": "Clôture",
-            "gate": "Porte",
+            "gate": "Portail",
             "guard_rail": "Barrière de sécurité",
             "hedge": "Haie",
             "height_restrictor": "Limite de hauteur",
@@ -942,7 +943,7 @@
         "crossing": {
           "options": {
             "traffic_signals": "Passage avec feux de signalisation",
-            "uncontrolled": "Traversée non marquée",
+            "uncontrolled": "Traversée non protégée",
             "unmarked": "Pas de marquage routiers ni de feux de signalisation"
           }
         },
@@ -1076,6 +1077,12 @@
         "cutting": {
           "placeholder": "Défaut"
         },
+        "cycle_barrier/installation": {
+          "options": {
+            "fixed": "Fixée",
+            "removable": "Détachable"
+          }
+        },
         "cycle_network": {
           "label": "Réseau"
         },
@@ -1089,6 +1096,12 @@
             "no": {
               "description": "Pas de voie cyclable",
               "title": "Aucune"
+            },
+            "opposite": {
+              "description": "Veuillez mettre à jour avec oneway=yes, oneway:bicycle=no, et cycleway:both=no etc."
+            },
+            "opposite_lane": {
+              "description": "Veuillez mettre à jour avec oneway, oneway:bicycle, et cycleway:left/right=lane etc."
             },
             "separate": {
               "description": "Indique que la piste cyclable à été cartographiée comme une géométrie séparée",
@@ -1344,6 +1357,7 @@
             "home": "Maison privée ou appartement",
             "main": "Principale",
             "secondary": "Secondaire",
+            "shop": "Entrée de commerce",
             "staircase": "Cage d'escalier",
             "yes": "Non précisé"
           },
@@ -1381,8 +1395,7 @@
             "lane": "Chaussée",
             "parking_lot": "Parking",
             "sidewalk": "Trottoir"
-          },
-          "terms": "Position, localisation, installation"
+          }
         },
         "fire_hydrant/pressure": {
           "label": "Pression (bar)",
@@ -1910,6 +1923,12 @@
           "label": "Intervalle",
           "terms": "interval"
         },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Oui",
+            "undefined": "Non"
+          }
+        },
         "junction/ref_oneway": {
           "label": "Identifiant de l'embranchement",
           "terms": "numéro de jonction,carrefour,jonction,intersection,référence"
@@ -2200,6 +2219,9 @@
           "label": "Largeur maximale",
           "terms": "largeur maximale,maximum,limite de largeur"
         },
+        "maxwidth/physical": {
+          "label": "Largeur maximale"
+        },
         "memorial": {
           "options": {
             "blue_plaque": "Plaque bleue",
@@ -2487,6 +2509,9 @@
           "label": "Places en terrasse",
           "terms": "places en terrase,terrasse,beer garden,biergarten,restaurant,bar"
         },
+        "panoramax": {
+          "label": "ID d'image Panoramax"
+        },
         "parcel_dropoff": {
           "label": "Dépôt de colis"
         },
@@ -2541,6 +2566,7 @@
               "title": "Abri privé"
             },
             "shoulder": {
+              "description": "Parking sur le trottoir.",
               "title": "Accotement"
             },
             "street_side": {
@@ -2549,7 +2575,7 @@
             },
             "surface": {
               "description": "Un niveau de parking au sol",
-              "title": "En surface"
+              "title": "Revêtement"
             },
             "underground": {
               "description": "Parking souterrain",
@@ -3052,7 +3078,8 @@
             "demanding_mountain_hiking": "T3 : randonnée de montagne exigeante",
             "difficult_alpine_hiking": "T6 : randonnée alpine difficile",
             "hiking": "T1 : randonnée",
-            "mountain_hiking": "T2 : randonnée de montagne"
+            "mountain_hiking": "T2 : randonnée de montagne",
+            "strolling": "Balade"
           },
           "placeholder": "Randonnée de montagne, randonnée alpine…",
           "terms": "difficulté,randonnée"
@@ -3292,7 +3319,7 @@
             "day_care": "Soins de jour",
             "food_bank": "Banque alimentaire",
             "group_home": "Résidence collective",
-            "nursing_home": "Maison de repos",
+            "nursing_home": "Maison de soin",
             "outreach": "Service de conseil",
             "shelter": "Abri",
             "workshop": "Entreprise de travail adapté"
@@ -3856,7 +3883,7 @@
           "options": {
             "avalanche_protector": "Dispositif anti-avalanche",
             "building_passage": "Passerelle",
-            "culvert": "Caniveau",
+            "culvert": "Canalisation",
             "flooded": "Tunnel inondé"
           }
         },
@@ -4729,8 +4756,8 @@
           "terms": "Bar à chicha"
         },
         "amenity/hospital": {
-          "name": "Terrains hospitaliers",
-          "terms": "Terrains hospitaliers"
+          "name": "Centre hospitalier",
+          "terms": "hôpital"
         },
         "amenity/hunting_stand": {
           "name": "Mirador de chasse",
@@ -4830,7 +4857,7 @@
           "terms": "Boîte de nuit, Discothèque, lgbtq, gay, lesbien"
         },
         "amenity/nursing_home": {
-          "name": "Maison de repos"
+          "name": "Maison de soin, handicapé,longue durée"
         },
         "amenity/parcel_locker": {
           "name": "Casier à colis",
@@ -5180,8 +5207,8 @@
           "terms": "Foyer pour sans-abri"
         },
         "amenity/social_facility/nursing_home": {
-          "name": "Maison de repos",
-          "terms": "Maison de repos, Maison de convalescence, Maison de retraite médicalisée, EHPAD"
+          "name": "EHPAD",
+          "terms": "maison de retraite médicalisée,personnes âgées, médicalisé"
         },
         "amenity/stripclub": {
           "name": "Club de strip-tease",
@@ -6259,7 +6286,7 @@
           "terms": "tuyau d'incendie,lance à incendie,canon à eau"
         },
         "emergency/fire_hydrant": {
-          "name": "Point d'eau incendie\nBorne incendie",
+          "name": "Borne d'incendie\nBouche d'incendie\nPoint d'eau incendie",
           "terms": "Borne incendie, borne-fontaine, borne fontaine, bouche d'incendie, poteau incendie, hydrant, fire hydrant, point d'eau incendie"
         },
         "emergency/fire_hydrant/pillar": {
@@ -6536,7 +6563,7 @@
           "terms": "Corridor intérieur"
         },
         "highway/crossing": {
-          "name": "Passage\nTraversée",
+          "name": "Passage piéton",
           "terms": "Passage piéton"
         },
         "highway/crossing/traffic_signals": {
@@ -6571,7 +6598,7 @@
           "terms": "passage, traversée, cycliste, protégé, signalisation, lumineuse, feux"
         },
         "highway/cycleway/crossing/uncontrolled": {
-          "name": "Passage cycliste marqué",
+          "name": "Passage cycliste non protégé",
           "terms": "passage cycliste,passage piéton,passage clouté"
         },
         "highway/cycleway/crossing/unmarked": {
@@ -6581,6 +6608,12 @@
         "highway/cycleway/moped_link-NL": {
           "name": "Route pour mobylettes",
           "terms": "route, chemin, liaison, piste, mobilette, cyclomoteur, vélomoteur"
+        },
+        "highway/cycleway/traffic_island": {
+          "name": "Îlot central"
+        },
+        "highway/cycleway/traffic_island_shared": {
+          "name": "Îlot central"
         },
         "highway/cyclist_waiting_aid": {
           "name": "Sas vélo",
@@ -6849,7 +6882,7 @@
         },
         "highway/turning_circle": {
           "name": "Zone de manœuvre",
-          "terms": "Point de retournement"
+          "terms": "Point de retournement;Zone de manœuvre"
         },
         "highway/turning_loop": {
           "name": "Boucle de retournement (îlot central)",
@@ -7737,7 +7770,7 @@
           "terms": "Cheminée"
         },
         "man_made/clarifier": {
-          "name": "Décanteur d'eaux usées",
+          "name": "Clarificateur d'eaux usées",
           "terms": "Clarificateur d'eaux usées,clarificateur,décanteur"
         },
         "man_made/clearcut": {
@@ -8855,7 +8888,7 @@
           "terms": "Câble électrique souterrain"
         },
         "power/catenary_mast": {
-          "name": "Caténaire",
+          "name": "Mât de caténaire",
           "terms": "caténaire, câble, éléctrique, alimentation, train, tramway, trolley"
         },
         "power/generator": {
@@ -9760,8 +9793,8 @@
           "terms": "Réparateur de motos"
         },
         "shop/music": {
-          "name": "Magasin de musique",
-          "terms": "Magasin de musique"
+          "name": "Disquaire",
+          "terms": "disques, cd, cassettes, disque vinyle"
         },
         "shop/musical_instrument": {
           "name": "Magasin d'instruments de musique",

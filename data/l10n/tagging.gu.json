@@ -147,6 +147,9 @@
           "label": "પ્રકાર",
           "placeholder": "મૂળભૂત"
         },
+        "cycle_barrier": {
+          "label": "પ્રકાર"
+        },
         "departures_board": {
           "options": {
             "yes": "હા"
@@ -266,6 +269,12 @@
           "options": {
             "no": "ા",
             "yes": "હા"
+          }
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "હા",
+            "undefined": "ા"
           }
         },
         "kerb": {

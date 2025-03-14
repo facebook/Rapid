@@ -40,13 +40,13 @@
       },
       "MAPNIK": {
         "description": "Noklusējuma OpenStreetMap slānis.",
-        "name": "OpenStreetMap (Standarta)"
+        "name": "OpenStreetMap (standarta)"
       },
       "Mapbox": {
         "attribution": {
           "text": "Noteikumi un atsauksmes"
         },
-        "name": "MapBox Satelīts"
+        "name": "MapBox satelīts"
       },
       "OSM_Inspector-Addresses": {
         "attribution": {
@@ -89,6 +89,9 @@
           "text": "© Geofabrik GmbH, OpenStreetMap ieguldītāji, CC-BY-SA"
         },
         "name": "OSM Inspector: Tagošana"
+      },
+      "OpenAerialMapMosaic": {
+        "name": "OpenAerialMap mozaīka, veidojis Kontur.io"
       },
       "Riksantikvariambetet-heritage": {
         "description": "Vēsturiskā mantojuma ēkas un dievnami",
@@ -215,6 +218,12 @@
         "description": "1940. gada ģeotagota fotogrāfēšana no Balatonas Limnoloģiskā Institūta",
         "name": "EUFAR Balaton ortofotogrāfijas"
       },
+      "geoscribble-latest": {
+        "attribution": {
+          "text": "GeoScribble dalībnieki"
+        },
+        "name": "GeoScribble jaunākās piezīmes"
+      },
       "gothenburg-citymap": {
         "attribution": {
           "text": "© Gēterborgas pašvaldība, CC0"
@@ -224,7 +233,8 @@
       "gothenburg-dtm-2017": {
         "attribution": {
           "text": "© Gēterborgas pašvaldība, CC0"
-        }
+        },
+        "description": "Tīmekļa karšu serviss, kas attēlo reljefa ēnojumu un nogāzes, balstoties uz Gēteborgas pilsētas 2017. gada augstuma modeli. Izšķirtspēja 0,5 metri uz pikseli."
       },
       "gothenburg-ortho": {
         "attribution": {

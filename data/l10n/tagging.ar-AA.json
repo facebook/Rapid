@@ -141,6 +141,11 @@
             "wall": "جدار"
           }
         },
+        "fuel/fuel_multi": {
+          "options": {
+            "octane_91": "البنزين (91 أوكتان)"
+          }
+        },
         "gender": {
           "placeholder": "غير معروفة"
         },

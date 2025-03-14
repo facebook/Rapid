@@ -2,7 +2,7 @@
   "id": {
     "imagery": {
       "Bing": {
-        "description": "Citra satelit dan udara"
+        "description": "Citra satelit dan udara Bing"
       },
       "EsriWorldImagery": {
         "attribution": {

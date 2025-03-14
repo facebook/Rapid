@@ -167,6 +167,7 @@
             "subdistrict": "Kvarter",
             "subdistrict!vn": "Afdeling/Kommune/Townlet",
             "suburb": "Forstad",
+            "town": "By",
             "unit": "Enhed"
           },
           "terms": "adresse,adgang,nummer,husnummer"
@@ -246,7 +247,7 @@
           "label": "Armlæn",
           "options": {
             "no": "Ingen armlæn",
-            "undefined": "Uvist",
+            "undefined": "Ukendt",
             "yes": "Et eller flere armlæn"
           }
         },
@@ -260,7 +261,8 @@
             "mosaic": "Mosaik",
             "mural": "Vægmaleri",
             "painting": "Maleri",
-            "sculpture": "Skulptur"
+            "sculpture": "Skulptur",
+            "stone": "Kunstnerisk bearbejdet sten"
           }
         },
         "ascent": {
@@ -558,7 +560,7 @@
             "shed": "Skur",
             "stable": "Hestestald",
             "stadium": "Stadion-bygning",
-            "static_caravan": "Faststående campingvogn",
+            "static_caravan": "Mobilehome (semi-faststående)",
             "sty": "Grisestald",
             "synagogue": "Synagoge-bygning",
             "temple": "Tempelbygning",
@@ -649,7 +651,7 @@
           "terms": "Kapacitet,Rumlighed"
         },
         "capacity/caravans": {
-          "label": "Kapacitet (Campervan / Campingvogn)"
+          "label": "Kapacitet (Autocamper / Campingvogn)"
         },
         "capacity/disabled_parking": {
           "label": "Handikappladser"
@@ -667,8 +669,8 @@
           "label": "Kapacitet (kubikmeter)"
         },
         "caravans": {
-          "label": "Campervan / Campingvogn",
-          "terms": "Campervan / Campingvogn,camplet,camp-let,teltvogn,campingtrailer,camping trailer"
+          "label": "Autocamper / Campingvogn",
+          "terms": "Autocamper,Campingvogn,camplet,camp-let,teltvogn,campingtrailer,camping trailer,campervan,husvogn"
         },
         "cash_in": {
           "label": "Indsættelser"
@@ -1029,6 +1031,21 @@
         "cutting": {
           "placeholder": "Standard"
         },
+        "cycle_barrier": {
+          "options": {
+            "double": "Dobbelt",
+            "single": "Enkelt",
+            "tilted": "Hældende",
+            "triple": "Tredobbelt"
+          }
+        },
+        "cycle_barrier/installation": {
+          "options": {
+            "fixed": "Fast fikspunkt",
+            "openable": "Kan åbnes",
+            "removable": "Kan fjernes"
+          }
+        },
         "cycle_network": {
           "label": "Cykelnetværk"
         },
@@ -1077,6 +1094,9 @@
         },
         "defibrillator/location": {
           "label": "Lokationsbeskrivelse"
+        },
+        "deflection": {
+          "label": "Vinkel"
         },
         "delivery": {
           "label": "Levering"
@@ -1258,6 +1278,7 @@
             "exit": "Kun udgang",
             "garage": "Garagedør",
             "home": "Privat hus eller lejlighed",
+            "shop": "Butiksindgang",
             "staircase": "Trappe",
             "yes": "Uspecificeret"
           }
@@ -1739,6 +1760,12 @@
         "internet_access/ssid": {
           "label": "Wi-Fi netværksnavn"
         },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Ja",
+            "undefined": "Nej"
+          }
+        },
         "junction/ref_oneway": {
           "label": "Vejkrydsnummer"
         },
@@ -1879,6 +1906,14 @@
         "map_size": {
           "label": "Dækning"
         },
+        "map_type": {
+          "options": {
+            "scheme": "Skematisk kort",
+            "street": "Vejkort",
+            "topo": "Topgrafisk kort",
+            "toposcope": "Toposkop"
+          }
+        },
         "mapillary": {
           "label": "Mapillary-billede-ID",
           "terms": "gadefoto,gade,street,street view"
@@ -1899,6 +1934,7 @@
         "material": {
           "label": "Materiale",
           "options": {
+            "aluminium": "Aluminium",
             "brass": "Messing",
             "brick": "Mursten",
             "concrete": "Beton",
@@ -1952,6 +1988,9 @@
         "maxwidth": {
           "label": "Breddebegrænsning",
           "terms": "Breddebegrænsning,Breddegrænse"
+        },
+        "maxwidth/physical": {
+          "label": "Breddebegrænsning"
         },
         "memorial": {
           "options": {
@@ -2192,6 +2231,9 @@
         "openfire": {
           "label": "Åben ild tilladt"
         },
+        "opening": {
+          "label": "Åbningsbredde (meter)"
+        },
         "opening_date": {
           "label": "Forventet åbningsdato",
           "placeholder": "ÅÅÅÅ-MM-DD"
@@ -2220,6 +2262,12 @@
         "outdoor_seating": {
           "label": "Udendørssiddepladser"
         },
+        "overlap": {
+          "label": "Overlapningsbredde (meter)"
+        },
+        "panoramax": {
+          "label": "Panoramax billed-ID"
+        },
         "parcel_dropoff": {
           "label": "Aflevering af pakker"
         },
@@ -2243,6 +2291,7 @@
               "title": "Garagebokse"
             },
             "half_on_kerb": {
+              "description": "Parkering delvist på fortovet.",
               "title": "Halvt på fortovet"
             },
             "lane": {
@@ -2781,7 +2830,7 @@
           "label": "Betjeningstider"
         },
         "shelter": {
-          "label": "Læskur"
+          "label": "Ly"
         },
         "shoes": {
           "label": "Sko"
@@ -2874,6 +2923,9 @@
             "survey": "Undersøgelse"
           }
         },
+        "spacing": {
+          "label": "Afstand mellem barrierer (meter)"
+        },
         "species": {
           "label": "Art"
         },
@@ -2934,7 +2986,7 @@
           "placeholder": "ÅÅÅÅ-MM-DD"
         },
         "static_caravans": {
-          "label": "Autocampere"
+          "label": "Mobilehomes (semi-faststående)"
         },
         "step_count": {
           "label": "Antal trappetrin"
@@ -3693,7 +3745,7 @@
         },
         "amenity/charging_station": {
           "name": "Ladestation",
-          "terms": "ladestation,opladerstation,elbilopladerstation,opladning"
+          "terms": "ladestation,opladerstation,elbilopladerstation,opladning,opladningsstation"
         },
         "amenity/childcare": {
           "name": "Dagpleje/Vuggestue",
@@ -3775,7 +3827,7 @@
           "terms": "Kongrescenter,messecenter"
         },
         "amenity/courthouse": {
-          "name": "Domstolsbygning",
+          "name": "Retsbygning",
           "terms": "Domstolsbygning, Domstol, Retsbygning"
         },
         "amenity/coworking_space": {
@@ -3949,6 +4001,10 @@
           "name": "Tankstation",
           "terms": "Tankstation, Benzinstation"
         },
+        "amenity/funeral_hall": {
+          "name": "Kapel",
+          "terms": "Kapel,ligkapel"
+        },
         "amenity/gambling": {
           "name": "Spillehal"
         },
@@ -4100,6 +4156,9 @@
         "amenity/parking_space/disabled": {
           "name": "Handikapparkering",
           "terms": "handicap,rullestol,tilgængelig"
+        },
+        "amenity/payment_centre": {
+          "name": "Betalingscenter"
         },
         "amenity/payment_terminal": {
           "name": "Betalingsterminal"
@@ -4507,6 +4566,9 @@
         "amenity/veterinary": {
           "name": "Dyrlæge",
           "terms": "Dyrlæge, Veterinærdyrlæge"
+        },
+        "amenity/veterinary_pharmacy": {
+          "name": "Veterinært apotek"
         },
         "amenity/waste/dog_excrement": {
           "name": "Affaldsspand til hundeekskrementer",
@@ -4931,6 +4993,10 @@
           "name": "Butiksbygning",
           "terms": "Butiksbygning, Forretningsbygning"
         },
+        "building/riding_hall": {
+          "name": "Ridehal",
+          "terms": "Ridehal,Indendørs ridebane"
+        },
         "building/roof": {
           "name": "Tag",
           "terms": "Tag"
@@ -4964,8 +5030,8 @@
           "terms": "stadion,sport,hal"
         },
         "building/static_caravan": {
-          "name": "Beboelsestrailer",
-          "terms": "trailer,tiny house,campingvogn"
+          "name": "Mobilehome (semi-faststående)",
+          "terms": "Mobilehome,trailer,tiny house,campingvogn,feriehytte,mobile home"
         },
         "building/sty": {
           "name": "Grisestald",
@@ -5290,6 +5356,12 @@
           "name": "Brandhane",
           "terms": "Brandhane"
         },
+        "emergency/fire_hydrant/pillar": {
+          "name": "Søjlebrandhane"
+        },
+        "emergency/fire_hydrant/underground": {
+          "name": "Underjordisk brandhane"
+        },
         "emergency/fire_service_inlet": {
           "name": "Stigrør"
         },
@@ -5304,6 +5376,9 @@
         "emergency/life_ring": {
           "name": "Redningskrans",
           "terms": "redningsbælte"
+        },
+        "emergency/lifeboat_station": {
+          "name": "Redningsbådsstation"
         },
         "emergency/lifeguard": {
           "name": "Livredder",
@@ -5347,6 +5422,9 @@
         "entrance/main": {
           "name": "Hovedindgang",
           "terms": "hovedindgang,indgang,døråbning "
+        },
+        "entrance/shop": {
+          "name": "Butiksindgang"
         },
         "ford": {
           "name": "Vadested",
@@ -5625,6 +5703,15 @@
         "highway/path/crossing": {
           "name": "Cykel & fodgængerfelt"
         },
+        "highway/path/crossing/traffic_signals": {
+          "name": "Cykel- og fodgængerovergang med fodgængersignaler"
+        },
+        "highway/path/crossing/uncontrolled": {
+          "name": "Markeret cykel- og fodgængerovergang"
+        },
+        "highway/path/crossing/unmarked": {
+          "name": "Umarkeret cykel- og fodgængerovergang"
+        },
         "highway/path/informal": {
           "name": "Trampesti",
           "terms": "trampesti,sti,spor,gangsti,vandresti,marksti,fåresti"
@@ -5662,6 +5749,9 @@
         "highway/road": {
           "name": "Ukendt vejtype",
           "terms": "Ukendt vejtype"
+        },
+        "highway/road/bridge": {
+          "name": "Ukendt vejbro"
         },
         "highway/secondary": {
           "name": "Sekundærvej",
@@ -5918,8 +6008,8 @@
           "terms": "landbrugsjord,mark,agerjord,markjord,dyrkningsjord,stubmark,pløjemark,grønjord,græsgang,vedvarende græsareal,bygmark,sennepsmark,kornmark,kornareal,rapsmark,rismark,roemark,rugmark,græsmark,vinmark"
         },
         "landuse/farmyard": {
-          "name": "Gårdsplads",
-          "terms": "Gårdsplads,Gård, Bondegård"
+          "name": "Gårdanlæg",
+          "terms": "Gårdanlæg,Gårdsplads,Bondegård,Bondegårdsanlæg"
         },
         "landuse/flowerbed": {
           "name": "Blomsterbed"
@@ -5964,6 +6054,12 @@
         "landuse/meadow": {
           "name": "Eng",
           "terms": "Eng"
+        },
+        "landuse/meadow_orchard/meadow": {
+          "name": "Eng med frugttræer"
+        },
+        "landuse/meadow_orchard/orchard": {
+          "name": "Frugtplantage plantet i en eng"
         },
         "landuse/military": {
           "name": "Militært område",
@@ -6031,6 +6127,10 @@
         },
         "landuse/residential/apartments": {
           "name": "Lejlighedskompleks"
+        },
+        "landuse/residential/trailer_park": {
+          "name": "Trailerpark",
+          "terms": "Trailerpark,Mobilehome-park,husvogn,campingvogn"
         },
         "landuse/retail": {
           "name": "Handelsområde",
@@ -6146,6 +6246,10 @@
         "leisure/garden/community": {
           "name": "Fælleshave",
           "terms": "have,fødevare,coop,kollektiv,kollektivhave,kooperativ,lokal,byhave"
+        },
+        "leisure/garden/kitchen": {
+          "name": "Køkkenhave",
+          "terms": "Køkkenhave,urtehave"
         },
         "leisure/garden/residential": {
           "name": " Privathave",
@@ -6351,8 +6455,8 @@
           "terms": "bådrampe,skibsrampe,slæbested"
         },
         "leisure/sports_centre": {
-          "name": "Sportcenter / Kompleks",
-          "terms": "Sportcenter / Kompleks"
+          "name": "Sportcenter / Sportsplads",
+          "terms": "Sportcenter,sportsplads,sportplads,sportkompleks"
         },
         "leisure/sports_centre/climbing": {
           "name": "Klatrecenter",
@@ -6366,8 +6470,8 @@
           "terms": "Skydebaneanlæg,skydebane"
         },
         "leisure/sports_centre/swimming": {
-          "name": "Swimmingpool",
-          "terms": "Swimmingpool, Svømmepool"
+          "name": "Svømmehal",
+          "terms": "Svømmehal,Swimmingpool,Svømmepøl"
         },
         "leisure/sports_hall": {
           "name": "Idrætshal",
@@ -6383,7 +6487,7 @@
         },
         "leisure/swimming_pool": {
           "name": "Svømmebassin",
-          "terms": "Svømmebassin, Swimming Pool, Pool"
+          "terms": "Svømmebassin,Swimming Pool,Pool,Swimmingpool,bassin"
         },
         "leisure/track": {
           "name": "Løbsbane (Ej motorsport)",
@@ -6412,7 +6516,7 @@
         },
         "leisure/water_park": {
           "name": "Vandland",
-          "terms": "Vandland, Badeland"
+          "terms": "Vandland,Badeland"
         },
         "line": {
           "name": "Linje",
@@ -7353,12 +7457,16 @@
           "terms": "Kraftværk"
         },
         "power/generator/method/photovoltaic": {
-          "name": "Solcelleanlæg",
-          "terms": "solcelle,solpanel,panel,strøm,elektricitet,el,solkraft,sol,fotovoltaik,anlæg"
+          "name": "Solcellepanel",
+          "terms": "solcellepanel,solpanel,solcelle,panel,strøm,elektricitet,el,solkraft,sol,fotovoltaik,anlæg,solenergi,vedvarende"
+        },
+        "power/generator/method/photovoltaic/building/roof": {
+          "name": "Solcellepaneltag",
+          "terms": "Solcellepaneltag,Solcelletag"
         },
         "power/generator/method/photovoltaic/location/roof": {
-          "name": "Solpanel på tag",
-          "terms": "solpanel på tag,solvarmeanlæg,solfanger"
+          "name": "Solcellepanel på tag",
+          "terms": "solcellepanel på tag,solvarmeanlæg,solfanger"
         },
         "power/generator/source/hydro": {
           "name": "Vandturbine",
@@ -7394,11 +7502,14 @@
         },
         "power/plant/source/method/photovoltaic": {
           "name": "Solcellepark",
-          "terms": "solcelle,solpanel,panel,kraftværk,strøm,elektricitet,el,solkraft,sol,fotovoltaik"
+          "terms": "solcellepark,solpanel,panel,kraftværk,strøm,elektricitet,el,solkraft,sol,fotovoltaik,solcelleanlæg"
         },
         "power/plant/source/nuclear": {
           "name": "Atomkraftværk",
           "terms": "nuklear,atom,fission,"
+        },
+        "power/plant/source/solar": {
+          "name": "Solenergianlæg"
         },
         "power/plant/source/waste": {
           "name": "Affaldskraft­varmeværk",
@@ -7899,6 +8010,10 @@
         "shop/gas": {
           "name": "Gasflaskebutik",
           "terms": "Gasflaskebutik"
+        },
+        "shop/general": {
+          "name": "Landhandel",
+          "terms": "Landhandel,butik,supermarked,købmand"
         },
         "shop/gift": {
           "name": "Gavebutik",

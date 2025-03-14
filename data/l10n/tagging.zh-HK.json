@@ -133,6 +133,7 @@
             "street": "街",
             "subdistrict!vn": "坊／社／市鎮",
             "suburb": "市郊",
+            "town": "鎮",
             "unit": "單位"
           }
         },
@@ -579,6 +580,9 @@
           "label": "外幣種類"
         },
         "cutting": {
+          "label": "種類"
+        },
+        "cycle_barrier": {
           "label": "種類"
         },
         "cycle_network": {
@@ -4311,6 +4315,10 @@
         },
         "office/physician": {
           "name": "醫生"
+        },
+        "office/property_management": {
+          "name": "物业管理",
+          "terms": "物業管理辦公室,物業租賃辦公室"
         },
         "office/research": {
           "name": "研究所",

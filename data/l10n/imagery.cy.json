@@ -8,8 +8,7 @@
         "name": "Będzin: Adeiladau"
       },
       "Bing": {
-        "description": "Lloeren ac delweddau o'r awyr.",
-        "name": "Delweddaeth Bing Maps"
+        "description": "Lloeren ac delweddau o'r awyr."
       },
       "Bytom-2012": {
         "name": "Bytom: Orthophotomap 2012 (delwedd o'r awyr)"
@@ -264,6 +263,11 @@
       },
       "US-TIGER-Roads-2023": {
         "name": "Ffyrdd TIGER 2023"
+      },
+      "USDA-NAIP": {
+        "attribution": {
+          "text": "Adran Amaeth yr Unol Daleithiau"
+        }
       },
       "UrbisAdmFRNL": {
         "name": "UrbisAdm FR / NL"

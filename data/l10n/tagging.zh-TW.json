@@ -86,6 +86,7 @@
         "address": {
           "placeholders": {
             "country": "國家",
+            "county": "郡",
             "county!jp": "郡",
             "district": "區",
             "floor": "樓層",
@@ -95,7 +96,8 @@
             "place": "地方",
             "postcode": "郵遞區號",
             "quarter": "地方",
-            "state": "州"
+            "state": "州",
+            "town": "城鎮"
           },
           "terms": "地址,住址"
         },
@@ -636,6 +638,14 @@
         "cutting": {
           "label": "類型"
         },
+        "cycle_barrier": {
+          "label": "類型"
+        },
+        "cycle_barrier/installation": {
+          "options": {
+            "openable": "可打開"
+          }
+        },
         "cycle_network": {
           "label": "自行車路網"
         },
@@ -820,8 +830,7 @@
           "options": {
             "lane": "車道",
             "parking_lot": "停車場"
-          },
-          "terms": "位置,地點"
+          }
         },
         "fire_hydrant/type": {
           "label": "形狀",
@@ -1135,6 +1144,12 @@
           },
           "terms": "網路連線費用"
         },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "可以",
+            "undefined": "不可以"
+          }
+        },
         "junction_line": {
           "options": {
             "roundabout": "圓環"
@@ -1307,6 +1322,9 @@
         "maxwidth": {
           "label": "寬度限制",
           "terms": "寬度限制"
+        },
+        "maxwidth/physical": {
+          "label": "寬度限制"
         },
         "memorial": {
           "label": "類型",
@@ -2448,6 +2466,9 @@
         "amenity/cinema": {
           "name": "電影院"
         },
+        "amenity/clinic": {
+          "name": "診所"
+        },
         "amenity/clock": {
           "name": "時鐘"
         },
@@ -2504,6 +2525,16 @@
         "amenity/doctors": {
           "name": "診所",
           "terms": "診所,診療所,醫務所,醫療所"
+        },
+        "amenity/doctors/otolaryngology": {
+          "name": "耳鼻喉科診所",
+          "terms": "耳鼻喉科, 診所, 耳鼻喉診所"
+        },
+        "amenity/doctors/paediatrics": {
+          "name": "小兒科診所"
+        },
+        "amenity/doctors/plastic_surgery": {
+          "terms": "醫學美容"
         },
         "amenity/driving_school": {
           "name": "駕訓班"
@@ -2998,6 +3029,10 @@
         },
         "building/greenhouse": {
           "name": "溫室"
+        },
+        "building/houseboat": {
+          "name": "船屋",
+          "terms": "船上房屋"
         },
         "building/hut": {
           "name": "棚屋"
@@ -4338,7 +4373,8 @@
           "name": "政黨辦公室"
         },
         "office/property_management": {
-          "name": "物業管理/租賃辦公室"
+          "name": "物業管理/租賃辦公室",
+          "terms": "物業管理辦公室,物業租賃辦公室"
         },
         "office/research": {
           "name": "研究機構"
@@ -4407,7 +4443,12 @@
           "name": "屋頂太陽能板"
         },
         "power/line": {
-          "name": "特高壓架空電線"
+          "name": "高壓電線",
+          "terms": "架空電線,特高壓架空電線"
+        },
+        "power/minor_line": {
+          "name": "電線",
+          "terms": "電線"
         },
         "power/plant/source/coal": {
           "name": "燃煤發電廠"

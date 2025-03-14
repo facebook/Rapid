@@ -1,11 +1,21 @@
 {
   "ja": {
     "_communities": {
+      "openstreetmapafghanistan": "OpenStreetMap アフガニスタン",
       "openstreetmapafrica": "OpenStreetMap アフリカ",
+      "openstreetmapalba": "OpenStreetMap アルバ",
+      "openstreetmapalbania": "OpenStreetMap アルバニア",
+      "openstreetmapargentina": "OpenStreetMap アルゼンチン",
+      "openstreetmaparmenia": "OpenStreetMap アルメニア",
       "openstreetmapasia": "OpenStreetMap アジア",
-      "openstreetmapjapan": "OpenStreetMap 日本"
+      "openstreetmapaustria": "OpenStreetMap オーストリア",
+      "openstreetmapjapan": "OpenStreetMap 日本",
+      "openstreetmapmontenegro": "OpenStreetMap モンテネグロ"
     },
     "_defaults": {
+      "bluesky": {
+        "description": "Bluesky でフォロー"
+      },
       "wiki": {
         "name": "{community} ウィキプロジェクト"
       }

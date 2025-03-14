@@ -510,6 +510,12 @@
         "interval": {
           "label": "Intervall"
         },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Ja",
+            "undefined": "Nei"
+          }
+        },
         "kerb": {
           "options": {
             "no": {

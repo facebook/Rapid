@@ -42,7 +42,8 @@
             "city": "Magaalo",
             "city!vn": "Magaalo",
             "place": "Goob",
-            "street": "Wadada"
+            "street": "Wadada",
+            "town": "Magaalo"
           }
         },
         "advertising": {
@@ -205,6 +206,9 @@
         "cutting": {
           "label": "Nooca"
         },
+        "cycle_barrier": {
+          "label": "Nooca"
+        },
         "cycleway": {
           "label": "Dhabbaha Baaskiilada"
         },
@@ -343,6 +347,12 @@
           "options": {
             "no": "Maya",
             "yes": "Haa"
+          }
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Haa",
+            "undefined": "Maya"
           }
         },
         "kerb": {

@@ -1,10 +1,33 @@
 {
   "id": {
+    "_defaults": {
+      "telegram": {
+        "description": "Gabung dengan komunitas kami di Telegram. Lebih ramai di sini!"
+      }
+    },
     "id-facebook": {
-      "extendedDescription": "Memetakan di Indonesia? Ada pertanyaan, atau ingin terhubung dengan komunitas disini? Bergabunglah dengan kami di {url}. Semua dipersilakan!"
+      "extendedDescription": "Memetakan di Indonesia? Ada pertanyaan, atau ingin terhubung dengan komunitas di sini? Bergabunglah dengan kami di {url}. Semua orang dapat bergabung!"
     },
     "id-facebook-group": {
-      "extendedDescription": "Memetakan di Indonesia? Ada pertanyaan, atau ingin terhubung dengan komunitas disini? Bergabunglah dengan kami di {url}. Semua dipersilakan!"
+      "extendedDescription": "Memetakan di Indonesia? Ada pertanyaan, atau ingin terhubung dengan komunitas di sini? Bergabunglah dengan kami di {url}. Semua orang dapat bergabung!"
+    },
+    "me-telegram": {
+      "description": "Semua orang dapat bergabung! Daftar di {signupUrl}"
+    },
+    "osm-africa-slack": {
+      "description": "Semua orang dapat bergabung! Daftar di {signupUrl}"
+    },
+    "osm-id": {
+      "description": "Menyediakan layanan dan informasi tentang OSM untuk komunitas lokal di Indonesia"
+    },
+    "OSM-US-Slack": {
+      "description": "Semua orang dapat bergabung! Daftar di {signupUrl}"
+    },
+    "tw-slack": {
+      "description": "Semua orang dapat bergabung! Daftar di {signupUrl}"
+    },
+    "tw-wiki": {
+      "description": "Hal yang perlu kamu ketahui bila memetakan di Taiwan: {url}"
     }
   }
 }

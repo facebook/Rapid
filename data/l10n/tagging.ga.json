@@ -105,7 +105,8 @@
             "state": "Stát",
             "street": "Sráid",
             "subdistrict": "Fócheantar",
-            "suburb": "Bruachbhaile"
+            "suburb": "Bruachbhaile",
+            "town": "Baile"
           }
         },
         "advertising": {
@@ -608,6 +609,9 @@
           "label": "Cineál",
           "placeholder": "Réamhshocruithe"
         },
+        "cycle_barrier": {
+          "label": "Cineál"
+        },
         "cycle_network": {
           "label": "Líonra"
         },
@@ -1026,6 +1030,12 @@
             "customers": "Custaiméirí Amháin",
             "no": "Saor",
             "yes": "Le Táille"
+          }
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Tá",
+            "undefined": "Níl"
           }
         },
         "junction_line": {

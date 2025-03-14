@@ -1,184 +1,184 @@
 {
   "pa": {
     "_communities": {
-      "geolibres": "جیولیبر",
-      "kiribatiwomeninmapping": "کیریباس ‘تے نقشہ کرن دیاں عورتاں",
-      "mappingbotswana": "بوٹسوانا ‘تے نقشہ کرن",
-      "maptimebogota": "بوگوٹا ‘تے نقشہ کرن دا ٹائم",
-      "maptimehrva": "ایچ آر وی اے ‘تے نقشہ کرن",
-      "openstreetmap": "اوپن سٹریٹ میپ",
-      "openstreetmapafghanistan": "افغانستان ‘تے اوپن سٹریٹ میپ ",
-      "openstreetmapafrica": "افریقہ ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapalba": "البا ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapalbania": "البینیا ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapargentina": "ارجنٹینا ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapasia": "ایشیا ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapasti": "آسٹی ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapaustria": "اسٹریا ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapbahia": "باہیا ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapbangladesh": "بنگلہ دیش ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapbelarus": "بیلاروس ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapbelgium": "بیلجم ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapbenin": "بینن ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapberlin": "برلین ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapbivccvl": "بیلس، ورچیلس اتے کناوس ای ولی ڈی لنزو ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapbochum": "بوچم ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapbolivia": "بولیویا ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapbonn": "بون ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapbosniaandherzegovina": "بوسنیا اتے ہرزگوینا ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapbrasil": "برازیل ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapbrasilia": "برازیلیا ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapbremen": "بریمن ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapbulgaria": "بلجیریا ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapburkinafaso": "برکینا فسو ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapburundi": "برونڈی ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapbzh": "برٹنی ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapcambodia": "کمبوڈیا ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapcameroon": "کمرون ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapcanada": "کینیڈا ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapcastillayleon": "کسٹیا اتے لیون ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapcatalancountries": "کاٹالان دے دیش ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapchad": "چیڈ ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapchile": "چیلے ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapchina": "چینی ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapcologne": "کولون ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapcomunitatvalenciana": "کمونیٹٹ ولینسیانا ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapcostarica": "کوسٹا ریکا ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapcotedivoire": "کوٹ ڈیوار ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapcroatia": "کروائیشا ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapcuba": "کوبا ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapcuneo": "کونیو ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapcz": "چیکیا ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapde": "جرمانی ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapdeepsouth": "امریکی دا ڈونگھا دکھݨ ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapdenmark": "ڈینمرک ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapdjibouti": "جبوٹی ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapdominicanrepublic": "ڈومینیکائی گݨراج ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapdresden": "ڈریسڈن ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapdusseldorf": "ڈوسلڈورف ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapecuador": "ایکواڈور ‘تے اوپن سٹریٹ میپ",
-      "openstreetmaperitrea": "ایریٹریا ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapespana": "سپانی ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapestonia": "ایسٹونیا ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapethiopia": "ایتھیوپیا ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapfiji": "فیجی ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapfinland": "فینلنڈ ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapfrance": "فرینس ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapindia": "بھارت ‘تے اوپن سٹریٹ میپ",
-      "openstreetmappakistan": "پاکستان ‘تے اوپن سٹریٹ میپ",
-      "openstreetmaprdc": "آر دی سی ‘تے اوپن سٹریٹ میپ",
-      "openstreetmapuk": "یو کے ‘تے اوپن سٹریٹ میپ"
+      "geolibres": "ਜਿਓਲਿਬਰੇਸ",
+      "kiribatiwomeninmapping": "ਮੈਪਿੰਗ ਵਿੱਚ ਕਿਰੀਬਤੀ ਔਰਤਾਂ",
+      "mappingbotswana": "ਮੈਪਿੰਗ ਬੋਤਸਵਾਨਾ",
+      "maptimebogota": "ਮੈਪਟਾਈਮਬੋਗੋਟਾ",
+      "maptimehrva": "ਮੈਪਟਾਈਮਐੱਚਆਰਵੀਏ",
+      "openstreetmap": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ",
+      "openstreetmapafghanistan": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਅਫ਼ਗ਼ਾਨਿਸਤਾਨ",
+      "openstreetmapafrica": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਅਫ਼ਰੀਕਾ",
+      "openstreetmapalba": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਅਲਬਾ",
+      "openstreetmapalbania": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਅਲਬਾਨੀਆ",
+      "openstreetmapargentina": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਅਰਜਨਟੀਨਾ",
+      "openstreetmapasia": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਏਸ਼ੀਆ",
+      "openstreetmapasti": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਆਸਤੀ",
+      "openstreetmapaustria": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਆਸਟਰੀਆ",
+      "openstreetmapbahia": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਬਾਹੀਆ",
+      "openstreetmapbangladesh": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਬੰਗਲਾਦੇਸ਼",
+      "openstreetmapbelarus": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਬੇਲਾਰੂਸ",
+      "openstreetmapbelgium": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਬੈਲਜੀਅਮ",
+      "openstreetmapbenin": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਬੇਨਿਨ",
+      "openstreetmapberlin": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਬਰਲਿਨ",
+      "openstreetmapbivccvl": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਬੀਆਈ-ਵੀਸੀ-ਸੀਵੀਐੱਲ",
+      "openstreetmapbochum": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਬੋਕਮ",
+      "openstreetmapbolivia": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਬੋਲਿਵੀਆ",
+      "openstreetmapbonn": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਬੋਨ",
+      "openstreetmapbosniaandherzegovina": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਬੋਸਨੀਆ ਅਤੇ ਹਰਜ਼ੇਗੋਵੀਨਾ",
+      "openstreetmapbrasil": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਬ੍ਰਾਜ਼ਿਲ",
+      "openstreetmapbrasilia": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਬ੍ਰਾਜ਼ਿਲੀਆ",
+      "openstreetmapbremen": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਬਰੇਮੇਨ",
+      "openstreetmapbulgaria": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਬਲਗੈਰੀਆ",
+      "openstreetmapburkinafaso": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਬੁਰਕੀਨਾ ਫਾਸੋ",
+      "openstreetmapburundi": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਬੁਰੂੰਡੀ",
+      "openstreetmapbzh": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਬੀਜ਼ੈੱਡਐੱਚ",
+      "openstreetmapcambodia": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਕੰਬੋਡੀਆ",
+      "openstreetmapcameroon": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਕੈਮਰੂਨ",
+      "openstreetmapcanada": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਕੈਨੇਡਾ",
+      "openstreetmapcastillayleon": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਕਾਸਟਿੱਲਾ ਵਾਈ ਲਿਓਨ",
+      "openstreetmapcatalancountries": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਕਾਟਲਾਨ ਦੇਸ਼",
+      "openstreetmapchad": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਚੈਡ",
+      "openstreetmapchile": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਚਿਲੀ",
+      "openstreetmapchina": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਚੀਨ",
+      "openstreetmapcologne": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਕੋਲੋਗਨ",
+      "openstreetmapcomunitatvalenciana": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਕਮਿਊਨੀਟੈਟ ਵੇਲਨਸੀਆਨਾ",
+      "openstreetmapcostarica": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਰਿਕਾ",
+      "openstreetmapcotedivoire": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਕੋਟ ਡੀਲਵੋਇਰ",
+      "openstreetmapcroatia": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਕ੍ਰੋਏਸ਼ੀਆ",
+      "openstreetmapcuba": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਕਿਊਬਾ",
+      "openstreetmapcuneo": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਕੂਨਿਓ",
+      "openstreetmapcz": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਸੀਜ਼ੈੱਡ",
+      "openstreetmapde": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਡੀਈ",
+      "openstreetmapdeepsouth": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਡੀਪ ਸਾਊਥ",
+      "openstreetmapdenmark": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਡੈੱਨਮਾਰਕ",
+      "openstreetmapdjibouti": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਜਿਊਤੀ",
+      "openstreetmapdominicanrepublic": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਡੋਮੀਨੀਕਨ ਗਣਰਾਜ",
+      "openstreetmapdresden": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਡਰੈਸਡੈਮ",
+      "openstreetmapdusseldorf": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਡੂਸੈਲਡੋਰਫ",
+      "openstreetmapecuador": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਇਕੂਆਡੋਰ",
+      "openstreetmaperitrea": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਏਰੀਟੇਰੀਆ",
+      "openstreetmapespana": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਐਸਪਾਨਾ",
+      "openstreetmapestonia": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਇਸਟੋਨੀਆ",
+      "openstreetmapethiopia": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਇਥੀਓਪੀਆ",
+      "openstreetmapfiji": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਫ਼ਿਜੀ",
+      "openstreetmapfinland": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਫਿਨਲੈਂਡ",
+      "openstreetmapfrance": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਫ਼ਰਾਂਸ",
+      "openstreetmapindia": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਭਾਰਤ",
+      "openstreetmappakistan": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਪਾਕਿਸਤਾਨ",
+      "openstreetmaprdc": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਆਰਡੀਸੀ",
+      "openstreetmapuk": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਯੂਕੇ"
     },
     "_defaults": {
       "youtube": {
-        "description": "ਸਾਡੇ YouTube ਚੈਨਲ ਨੂੰ ਸਬਸਕ੍ਰਾਈਬ ਕਰੋ"
+        "description": "ਸਾਡੇ ਯੂਟਿਊਬ ਚੈਨਲ ਨੂੰ ਸਬਸਕ੍ਰਾਈਬ ਕਰੋ"
       }
     },
     "af-matrix": {
-      "description": "افغانی لوک لئی میٹرِکس ‘تے گروپ"
+      "description": "ਅਫ਼ਗ਼ਾਨਿਸਤਾਨ ਵਿੱਚ ਭਾਈਚਾਰੇ ਲਈ ਮੈਟਰਿਕਸ ਸਮੂਹ"
     },
     "am-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "at-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "bo-facebook-group": {
-      "name": "فیس‌بوک تے {community} دا صفحہ"
+      "name": "{community} ਫੇਸਬੁੱਕ ਗਰੁੱਪ"
     },
     "cd-chapter": {
-      "name": "آر دی سی ‘تے اوپن سٹریٹ میپ"
+      "name": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਆਰਡੀਸੀ"
     },
     "de-aachen-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "de-berlin-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "de-bochum-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "de-bonn-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "de-bremen-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "de-cologne-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "de-dresden-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "de-dusseldorf-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "de-luneburg-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "de-munchen-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "fr-35-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "fr-38-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "fr-montrouge-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "hu-facebook-group": {
-      "name": "فیس‌بوک تے {community} دا صفحہ"
+      "name": "{community} ਫੇਸਬੁੱਕ ਗਰੁੱਪ"
     },
     "hu-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "id-facebook-group": {
-      "name": "فیس‌بوک تے {community} دا صفحہ"
+      "name": "{community} ਫੇਸਬੁੱਕ ਗਰੁੱਪ"
     },
     "osm-africa-facebook-group": {
-      "name": "فیس‌بوک تے {community} دا صفحہ"
+      "name": "{community} ਫੇਸਬੁੱਕ ਗਰੁੱਪ"
     },
     "OSM-AR-geolibres": {
-      "name": "جیولیبر"
+      "name": "ਜਿਓਲਿਬਰੇਸ"
     },
     "osm-deep-south-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "OSM-India-facebook": {
-      "description": "بھارت ‘تے نقشہ ٹھیک کریو"
+      "description": "ਭਾਰਤ ਵਿੱਚ ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਸੁਧਾਰੋ"
     },
     "osm-michigan-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "osm-ohio-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "ph-facebook-group": {
-      "name": "فیس‌بوک تے {community} دا صفحہ"
+      "name": "{community} ਫੇਸਬੁੱਕ ਗਰੁੱਪ"
     },
     "sg-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "si-ljubljana-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "si-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "tn-facebook-group": {
-      "name": "فیس‌بوک تے {community} دا صفحہ"
+      "name": "{community} ਫੇਸਬੁੱਕ ਗਰੁੱਪ"
     },
     "uk-london-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": "{community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "uy-irc": {
-      "description": "irc.freenode.org (پورٹ 6667) ‘تے #{account} جوڑو",
-      "extendedDescription": "irc.freenode.org ‘تے #{account} جوڑو"
+      "description": "irc.freenode.org (6667 ਪੋਰਟ) ਉੱਤੇ #{account} ਨਾਲ਼ ਜੁੜੋ",
+      "extendedDescription": "irc.freenode.org ਉੱਤੇ #{account} ਨਾਲ਼ ਜੁੜੋ"
     },
     "vn-wiki": {
-      "description": "وِکی تے {community} دا صفحہ"
+      "description": " {community} ਵਿਕੀ ਸਫ਼ਾ"
     },
     "ym-AASTU": {
       "extendedDescription": "ਜਿਓਮੈਟਿਕਸ ਇੰਜਨੀਅਰਿੰਗ ਸਟੂਡੈਂਟਸ ਦੀ ਐਸੋਸੀਏਸ਼ਨ (AGES), ਦਾ ਉਦੇਸ਼ GIS ਉਤਪਾਦਾਂ ਅਤੇ ਸੇਵਾਵਾਂ ਨੂੰ ਉਤਸ਼ਾਹਿਤ ਕਰਨ ਦੇ ਨਾਲ-ਨਾਲ ਵਿਦਿਆਰਥੀਆਂ ਨੂੰ ਉਹਨਾਂ ਦੀ ਵਰਤੋਂ ਬਾਰੇ ਸਿਖਲਾਈ ਦੇਣਾ ਹੈ। ਇਹ ਨਾ ਸਿਰਫ਼ ਵਿਦਿਆਰਥੀਆਂ ਅਤੇ ਅਭਿਆਸ ਕਰਨ ਵਾਲੇ ਪੇਸ਼ੇਵਰਾਂ ਵਿਚਕਾਰ ਸਮਾਜਿਕਤਾ ਨੂੰ ਉਤਸ਼ਾਹਿਤ ਕਰਦਾ ਹੈ, ਸਗੋਂ ਯੂਨੀਵਰਸਿਟੀ ਵਿੱਚ ਨਵੇਂ ਜੀਆਈਐਸ ਰੱਖਣ ਅਤੇ ਸਰਵੇਖਣ ਸਮਾਗਮਾਂ ਅਤੇ ਸਿਖਲਾਈ ਲਈ ਨਵੇਂ ਵਿਚਾਰਾਂ ਦਾ ਆਦਾਨ-ਪ੍ਰਦਾਨ ਕਰਨ ਲਈ ਇੱਕ ਪਲੇਟਫਾਰਮ ਵੀ ਪ੍ਰਦਾਨ ਕਰਦਾ ਹੈ।"

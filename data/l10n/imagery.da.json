@@ -1,8 +1,14 @@
 {
   "da": {
     "imagery": {
+      "Bedzin-PL-buildings": {
+        "name": "Będzin: Bygninger"
+      },
       "Bing": {
         "description": "Satellit og luftfoto."
+      },
+      "Bytom-2012": {
+        "name": "Bytom: Orthophotomap 2012 (luftfoto)"
       },
       "EOXAT2018CLOUDLESS": {
         "description": "Efterbehandlet Sentinel Satellite billeder",

@@ -172,6 +172,7 @@
             "subdistrict!vn": "Barrio / Comuna / Pueblito - Japón",
             "suburb": "Suburbio",
             "suburb!jp": "Pabellón (政令市)",
+            "town": "Pueblo / Ciudad pequeña",
             "unit": "Unidad"
           },
           "terms": "dirección, ubicación, localización, posición"
@@ -287,7 +288,9 @@
             "painting": "Pintura",
             "relief": "Relieve",
             "sculpture": "Escultura",
-            "statue": "Estatua"
+            "statue": "Estatua",
+            "stone": "Piedra trabajada artísticamente",
+            "tilework": "Trabajo en azulejos"
           }
         },
         "ascent": {
@@ -1136,6 +1139,23 @@
           "label": "Tipo",
           "placeholder": "Predeterminado"
         },
+        "cycle_barrier": {
+          "label": "Tipo",
+          "options": {
+            "double": "Doble",
+            "single": "Simple",
+            "tilted": "Inclinado"
+          }
+        },
+        "cycle_barrier/installation": {
+          "label": "Instalación",
+          "options": {
+            "fixed": "Fija",
+            "openable": "Abatible",
+            "removable": "Extraíble/Desmontable"
+          },
+          "terms": "Instalación, montaje, colocación, implementación, ensamblaje"
+        },
         "cycle_network": {
           "label": "Red"
         },
@@ -1193,6 +1213,9 @@
         },
         "defibrillator/location": {
           "label": "Descripción de la ubicación"
+        },
+        "deflection": {
+          "label": "Ángulo"
         },
         "delivery": {
           "label": "Entrega",
@@ -1452,6 +1475,7 @@
             "main": "Principal",
             "secondary": "Secundaria",
             "service": "Servicio",
+            "shop": "Entrada de tienda",
             "staircase": "Escalera",
             "yes": "Sin especificar"
           },
@@ -1498,8 +1522,7 @@
             "lane": "Carril de la calzada",
             "parking_lot": "Estacionamiento / Aparcamiento",
             "sidewalk": "Acera"
-          },
-          "terms": "posición, ubicación, localización"
+          }
         },
         "fire_hydrant/pressure": {
           "label": "Presión (bar)",
@@ -2064,6 +2087,13 @@
           "label": "Intervalo",
           "terms": "intervalo, lapso"
         },
+        "irrigation_pivot": {
+          "label": "Riego por pivote central",
+          "options": {
+            "pivot": "Sí"
+          },
+          "terms": "Riego pivotante, sistema de riego por aspersión con pivote, riego por pivote"
+        },
         "junction/ref_oneway": {
           "label": "Número de cruce",
           "terms": "Número de cruce, cruce, intersección"
@@ -2375,6 +2405,9 @@
           "label": "Límite de ancho",
           "terms": "Límite de ancho, ancho máximo"
         },
+        "maxwidth/physical": {
+          "label": "Límite de ancho"
+        },
         "memorial": {
           "label": "Tipo",
           "options": {
@@ -2630,6 +2663,9 @@
           "label": "Fuego al aire libre permitido",
           "terms": "fuego, fogata, asado, barbacoa, parrilla, fogón"
         },
+        "opening": {
+          "label": "Ancho de apertura (metros)"
+        },
         "opening_date": {
           "label": "Fecha de apertura prevista",
           "placeholder": "AAAA-MM-DD"
@@ -2666,6 +2702,13 @@
         "outdoor_seating": {
           "label": "Asientos al aire libre",
           "terms": "Asientos al aire libre, silla, terraza, jardín, mesas"
+        },
+        "overlap": {
+          "label": "Ancho de solapamiento (metros)"
+        },
+        "panoramax": {
+          "label": "ID de imagen de Panoramax",
+          "terms": "ID de imagen de Panoramax, identificador de imagen de Panoramax, código de imagen de Panoramax, Panoramax"
         },
         "parcel_dropoff": {
           "label": "Casillero para envío de paquetería"
@@ -3586,6 +3629,9 @@
         },
         "source/population": {
           "label": "Fuente de la población"
+        },
+        "spacing": {
+          "label": "Distancia entre barreras (metros)"
         },
         "species": {
           "label": "Especie",
@@ -5721,6 +5767,10 @@
         "amenity/veterinary": {
           "name": "Veterinario",
           "terms": "veterinario, veterinaria, albéitar, albeitar. mascotas, animales, perros, gatos"
+        },
+        "amenity/veterinary_pharmacy": {
+          "name": "Farmacia veterinaria",
+          "terms": "Farmacia para animales, botica veterinaria, tienda de medicamentos veterinarios"
         },
         "amenity/waste/dog_excrement": {
           "name": "Recipiente para excremento de perro",
@@ -9441,7 +9491,7 @@
           "terms": "transporte público, transporte publico, ferrocarril, vía, tren, tránsito, transporte"
         },
         "public_transport/station_train_halt": {
-          "name": "Estación de tren (Alto / A pedido)",
+          "name": "Apeadero",
           "terms": "alto, a pedido, transporte público, transporte publico, ferrocarril, estación, vía, tren, tránsito, transporte, parada a silbato, silbato"
         },
         "public_transport/station_tram": {
@@ -9713,6 +9763,10 @@
         "shop/bathroom_furnishing": {
           "name": "Tienda de muebles de baño",
           "terms": "baño, lavabo, equipamiento, muebles"
+        },
+        "shop/bbq": {
+          "name": "Tienda de parrillas",
+          "terms": "Tienda de barbacoas, tienda de asadores, tienda de parrillas"
         },
         "shop/beauty": {
           "name": "Salón de belleza",
@@ -9999,6 +10053,10 @@
         "shop/greengrocer": {
           "name": "Tienda de frutas y verduras",
           "terms": "hortaliza, verdura, fruta, verdulería, frutería, legumbre, vegetal, verdulero, frutero"
+        },
+        "shop/groundskeeping": {
+          "name": "Tienda de equipos para jardín y césped",
+          "terms": "Tienda de herramientas de jardinería, tienda de equipos para exteriores, tienda de insumos para jardinería"
         },
         "shop/hairdresser": {
           "name": "Peluquería",

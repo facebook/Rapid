@@ -18,7 +18,8 @@
         },
         "address": {
           "placeholders": {
-            "city!vn": "Tāone"
+            "city!vn": "Tāone",
+            "town": "Tāone"
           }
         },
         "aerialway/access": {

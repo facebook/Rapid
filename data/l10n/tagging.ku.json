@@ -169,6 +169,9 @@
         "cutting": {
           "label": "Cûre"
         },
+        "cycle_barrier": {
+          "label": "Cûre"
+        },
         "departures_board": {
           "options": {
             "yes": "Erê"
@@ -302,6 +305,12 @@
           "options": {
             "no": "Na",
             "yes": "Erê"
+          }
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Erê",
+            "undefined": "Na"
           }
         },
         "kerb": {

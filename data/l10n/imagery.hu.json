@@ -47,6 +47,9 @@
         "description": "Az Esri archív felvételek élesebbek és pontosabbak lehetnek, mint az alapértelmezett réteg.",
         "name": "Esri World felvételek (Clarity) béta"
       },
+      "FOMI_2011_2014": {
+        "name": "FÖMI ortofotó 2011–2014 (WEBP)"
+      },
       "Frankfurt-am-Main-2019": {
         "name": "Frankfurt am Main légifotó 2019"
       },

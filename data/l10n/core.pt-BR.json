@@ -453,6 +453,7 @@
     "redo": {
       "nothing": "Nada para refazer."
     },
+    "tooltip_keyhint": "Tecla:",
     "translate": {
       "translate": "Adicionar nome multilíngue",
       "localized_translation_label": "Nome multilíngue",
@@ -712,7 +713,6 @@
         "tooltip": "Proposto, construção, abandonado, demolido etc."
       },
       "others": {
-        "description": "Outras características",
         "tooltip": "Outras coisas"
       }
     },
@@ -775,6 +775,13 @@
         "third_party_icons": {
           "tooltip": "Desmarque esta caixa para evitar o carregamento de ícones de sites de terceiros, como Wikimedia Commons, Facebook ou Twitter."
         }
+      },
+      "map_interaction": {
+        "mouse_wheel": {
+          "auto": {
+            "tooltip": "Melhor para usuários de trackpad. Com 2 dedos, gestos de deslizar irão mover o mapa, e gestos de pinça aumentarão ou diminuirão o zoom do mapa. Manter Shift pressionado aumentará ou diminuirá o zoom do mapa."
+          }
+        }
       }
     },
     "restore": {
@@ -821,6 +828,11 @@
     },
     "source_switch": {
       "lose_changes": "Você tem alterações não salvas. Trocar o servidor de mapas irá descartar essas alterações. Tem certeza que deseja trocar de servidor?"
+    },
+    "rapid_inspector": {
+      "option_ignore": {
+        "annotation": "Ignorou um elemento do Rapid."
+      }
     },
     "zoom": {
       "in": "Aumentar o zoom",
@@ -1814,6 +1826,7 @@
       },
       "navigation": {
         "map_info": "A área principal do mapa mostra os dados do OpenStreetMap sobre um plano de fundo.",
+        "reset_bearing": "Este botão de bússola mostra a rotação atual, ou *rumo*, do mapa. **Clique no botão de bússola para redefinir a orientação do mapa, com o norte para cima.**",
         "features": "Usamos o termo *elementos* para descrever as coisas que aparecem no mapa. Qualquer coisa no mundo real pode ser mapeada como um elemento no OpenStreetMap.",
         "points_lines_areas": "Elementos do mapa são representados com *pontos, linhas ou áreas.*",
         "nodes_ways": "No OpenStreetMap, pontos são às vezes chamados de *nós*, e linhas e áreas são às vezes chamadas de *caminhos*.",

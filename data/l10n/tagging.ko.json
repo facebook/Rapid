@@ -175,6 +175,7 @@
             "subdistrict!vn": "방/사/시진",
             "suburb": "근교",
             "suburb!jp": "정령지정도시",
+            "town": "읍·면",
             "unit": "호실"
           },
           "terms": "주소,번지"
@@ -1168,6 +1169,14 @@
           "label": "유형",
           "placeholder": "기본값"
         },
+        "cycle_barrier": {
+          "label": "유형"
+        },
+        "cycle_barrier/installation": {
+          "options": {
+            "fixed": "고정"
+          }
+        },
         "cycle_network": {
           "label": "네트워크"
         },
@@ -1480,6 +1489,7 @@
             "main": "주 출입구",
             "secondary": "보조 출입구",
             "service": "전용 출입구",
+            "shop": "가게 출입구",
             "staircase": "계단 출입구",
             "yes": "명시되지 않음"
           },
@@ -1527,8 +1537,7 @@
             "lane": "차로변",
             "parking_lot": "주차장",
             "sidewalk": "인도"
-          },
-          "terms": "위치"
+          }
         },
         "fire_hydrant/pressure": {
           "label": "압력 (바)",
@@ -2107,6 +2116,12 @@
           "label": "배차 간격",
           "terms": "배차간격"
         },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "예",
+            "undefined": "아니오"
+          }
+        },
         "junction/ref_oneway": {
           "label": "교차로 번호",
           "terms": "분기점 숫자"
@@ -2416,6 +2431,9 @@
         "maxwidth": {
           "label": "폭 제한",
           "terms": "폭 제한"
+        },
+        "maxwidth/physical": {
+          "label": "폭 제한"
         },
         "memorial": {
           "label": "유형",

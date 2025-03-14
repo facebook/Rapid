@@ -491,8 +491,7 @@
       "tell_us": "告訴我們！"
     },
     "confirm": {
-      "okay": "瞭解",
-      "cancel": "唔做"
+      "okay": "瞭解"
     },
     "splash": {
       "privacy_update": "*我們最近更新了隱私政策。*",
@@ -561,6 +560,9 @@
           "cinema": "電影院"
         }
       }
+    },
+    "streetside": {
+      "title": "Bing 街景"
     },
     "mapillary": {
       "tooltip": "從 Mapillary 來的街道級照片",
@@ -655,7 +657,7 @@
       "help": {
         "title": "說明文件",
         "before_start_h": "在開始之前",
-        "open_source_help": "你可以透過[回報臭蟲] (https://github.com/facebook/Rapid/issues)來幫助 Rapid。"
+        "open_source_help": "你可以透過[回報臭蟲](https://github.com/facebook/Rapid/issues)來幫助 Rapid。"
       },
       "overview": {
         "navigation_h": "瀏覽",
@@ -704,6 +706,9 @@
       },
       "imagery": {
         "sources_h": "空拍圖來源"
+      },
+      "streetlevel": {
+        "intro": "街景照片能夠幫助繪製交通號誌、店家、或其他無法從衛星或空照圖看到的事物。Rapid 編輯器支援 [Bing 街景](https://www.microsoft.com/en-us/maps/streetside)、[Mapillary](https://www.mapillary.com) 與 [KartaView](https://www.kartaview.org) 的街景照片。"
       },
       "gps": {
         "upload": "您也可以透過[上傳你的 GPS 資訊至 OpenStreetMap 開放街圖](https://www.openstreetmap.org/trace/create)以供其他使用者利用。"
@@ -859,9 +864,6 @@
         },
         "keyboard_shortcuts": {
           "label": "顯示鍵盤快速鍵"
-        },
-        "toggle_mapillary": {
-          "key": "MM"
         }
       }
     },

@@ -162,6 +162,9 @@
         "cutting": {
           "label": "වර්ගය"
         },
+        "cycle_barrier": {
+          "label": "වර්ගය"
+        },
         "cycleway": {
           "options": {
             "no": {
@@ -290,6 +293,12 @@
           "options": {
             "no": "නැත",
             "yes": "ඔව්"
+          }
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "ඔව්",
+            "undefined": "නැත"
           }
         },
         "kerb": {

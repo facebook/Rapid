@@ -170,6 +170,7 @@
             "street": "所属する街路名",
             "suburb": "区",
             "suburb!jp": "行政区（政令市）",
+            "town": "町制地方自治体",
             "unit": "単位"
           },
           "terms": "住所, アドレス"
@@ -284,7 +285,8 @@
             "painting": "絵画",
             "relief": "レリーフ",
             "sculpture": "彫刻",
-            "statue": "彫像"
+            "statue": "彫像",
+            "stone": "巨石"
           }
         },
         "ascent": {
@@ -985,7 +987,7 @@
             "maize": "とうもろこし",
             "potato": "じゃがいも",
             "rape": "菜種",
-            "rice": "米",
+            "rice": "稲",
             "soy": "大豆",
             "strawberry": "いちご",
             "sugar_beet": "テンサイ",
@@ -1154,6 +1156,22 @@
         "cutting": {
           "label": "種類",
           "placeholder": "デフォルト"
+        },
+        "cycle_barrier": {
+          "label": "キャンプ場の種別",
+          "options": {
+            "diagonal": "斜め",
+            "double": "二つが平行",
+            "single": "二つが同一直線上",
+            "triple": "三つが平行"
+          }
+        },
+        "cycle_barrier/installation": {
+          "options": {
+            "fixed": "固定式",
+            "openable": "開閉可能",
+            "removable": "取り外し可能"
+          }
         },
         "cycle_network": {
           "label": "ネットワーク"
@@ -1474,6 +1492,7 @@
             "main": "正面",
             "secondary": "副出入口 (裏口ではない)",
             "service": "通用口",
+            "shop": "出入口（店舗）",
             "staircase": "階段",
             "yes": "全般"
           },
@@ -1521,8 +1540,7 @@
             "lane": "車道",
             "parking_lot": "駐車場",
             "sidewalk": "歩道"
-          },
-          "terms": "位置, ポジション"
+          }
         },
         "fire_hydrant/pressure": {
           "label": "水圧 (bar)",
@@ -2097,6 +2115,14 @@
           "label": "間隔",
           "terms": "運行間隔, 間隔, インターバル"
         },
+        "irrigation_pivot": {
+          "label": "回転式スプリンクラー灌漑",
+          "options": {
+            "pivot": "あり",
+            "undefined": "なし"
+          },
+          "terms": "センターピボット, スプリンクラー, 灌漑"
+        },
         "junction/ref_oneway": {
           "label": "ジャンクション番号",
           "terms": "交差点番号, ジャンクション番号"
@@ -2413,6 +2439,9 @@
           "label": "最大幅",
           "terms": "幅制限, 幅"
         },
+        "maxwidth/physical": {
+          "label": "最大幅"
+        },
         "memorial": {
           "label": "種類",
           "options": {
@@ -2720,6 +2749,10 @@
         "outdoor_seating": {
           "label": "屋外の席",
           "terms": "屋外席, 屋外の座席, 座席, シート, 屋外"
+        },
+        "panoramax": {
+          "label": "Panoramax画像ID",
+          "terms": "Panoramax"
         },
         "par": {
           "label": "パー"
@@ -3179,7 +3212,7 @@
         },
         "ref_road_number": {
           "label": "道路番号",
-          "terms": "道路番号"
+          "terms": "道路番号, 路線番号"
         },
         "ref_room_number": {
           "label": "部屋番号"
@@ -3234,7 +3267,7 @@
             "vietnamese_folk": "ベトナムの民俗宗教",
             "voodoo": "ブードゥー教"
           },
-          "terms": "リレーション, 関連"
+          "terms": "宗教, 信教"
         },
         "reservation": {
           "label": "予約",
@@ -3357,7 +3390,8 @@
             "demanding_mountain_hiking": "T3: 中難度の山岳ハイキング",
             "difficult_alpine_hiking": "T6: 高難度の高地登山",
             "hiking": "T1: ハイキング",
-            "mountain_hiking": "T2: 山岳ハイキング"
+            "mountain_hiking": "T2: 山岳ハイキング",
+            "strolling": "散策"
           },
           "placeholder": "山岳ハイキング, 高地登山…",
           "terms": "ハイキングの難易度, ハキング, 難易度"
@@ -3634,10 +3668,13 @@
             "streetlevel imagery": "街路写真",
             "survey": "現地調査"
           },
-          "terms": "ソース, 出典"
+          "terms": "ソース, 出典, 根拠"
         },
         "source/population": {
           "label": "人口の出典"
+        },
+        "spacing": {
+          "label": "障壁間の距離（メートル）"
         },
         "species": {
           "label": "種",
@@ -5789,6 +5826,10 @@
         "amenity/veterinary": {
           "name": "獣医",
           "terms": "獣医, ペット医, 病院, 医療, 動物病院, 犬猫病院, 動物, ペット, 鳥獣, アニマル, 医者"
+        },
+        "amenity/veterinary_pharmacy": {
+          "name": "動物専門薬局",
+          "terms": "動物薬, ペット用薬局, 動物薬剤師"
         },
         "amenity/waste/dog_excrement": {
           "name": "犬の便入れ",

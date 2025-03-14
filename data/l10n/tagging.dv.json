@@ -45,7 +45,8 @@
             "city!jp": "ސިިޓީ/އަވަށް/Village/Tokyo Special Ward",
             "city!vn": "ސިިޓީ/އަވަށް",
             "district!vn": "Arrondissement/އަވަށް/District",
-            "place": "ތަނުގެ ނަން"
+            "place": "ތަނުގެ ނަން",
+            "town": "އަވަށް"
           }
         },
         "advertising": {
@@ -162,6 +163,9 @@
           "label": "ރެސްްޓޯރަންޓްގެ ޚާއްސަ ރަހަތައް"
         },
         "cutting": {
+          "label": "އެކިިބާވަތްތަކުގެ ތަންތަން"
+        },
+        "cycle_barrier": {
           "label": "އެކިިބާވަތްތަކުގެ ތަންތަން"
         },
         "cycleway": {

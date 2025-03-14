@@ -170,6 +170,7 @@
             "subdistrict": "Aliseutu",
             "subdistrict!vn": "Osasto/yhteisö/kylä",
             "suburb": "Lähiö",
+            "town": "Pieni kaupunki / taajama",
             "unit": "Rappu"
           },
           "terms": "Osoite"
@@ -254,7 +255,7 @@
             "roman_circus": "Roomalainen sirkus",
             "roman_villa": "Roomalainen huvila",
             "settlement": "Historiallinen asutusalue",
-            "tumulus": "Tumulus\nKumpuhauta"
+            "tumulus": "Kumpuhauta"
           }
         },
         "architect": {
@@ -286,7 +287,9 @@
             "painting": "maalaus",
             "relief": "Kohokuva",
             "sculpture": "Veistos",
-            "statue": "Patsas"
+            "statue": "Patsas",
+            "stone": "Taiteellisesti työstetty kivi",
+            "tilework": "Laattateos"
           }
         },
         "ascent": {
@@ -377,11 +380,11 @@
             "block": "Järkäle",
             "bollard": "Sulkutolppa",
             "cattle_grid": "Karjaeste",
-            "chain": "Ketju",
+            "chain": "Ketjueste",
             "city_wall": "Kaupunginmuuri",
             "cycle_barrier": "Pyöräilyeste",
             "ditch": "Kaivanto",
-            "entrance": "Kulkuaukko\nSisäänkäyntiaukko\nAidan aukko\nAukko aidassa\nMuurin aukko",
+            "entrance": "Kulkuaukko",
             "fence": "Aita",
             "gate": "Portti",
             "guard_rail": "Tiekaide",
@@ -396,7 +399,7 @@
             "swing_gate": "Kääntyvä puomi",
             "toll_booth": "Tietullipiste",
             "turnstile": "Kääntöportti",
-            "wall": "Muuri\nSeinämuuri"
+            "wall": "Muuri"
           }
         },
         "barrier_planter": {
@@ -565,7 +568,7 @@
             "low_water_crossing": "Tulvasilta",
             "movable": "Liikuteltava silta",
             "trestle": "Pukkisilta",
-            "viaduct": "Maasilta\nViadukti"
+            "viaduct": "Maasilta"
           }
         },
         "building": {
@@ -577,7 +580,7 @@
             "boathouse": "Venevaja",
             "bunker": "Bunkkeri",
             "cabin": "Mökki",
-            "carport": "autokatos",
+            "carport": "Autokatos",
             "cathedral": "tuomiokirkko",
             "chapel": "kappeli",
             "church": "kirkko",
@@ -878,7 +881,7 @@
           "label": "Liukuportaat"
         },
         "count": {
-          "label": "Lukumäärä"
+          "label": "Kohteiden lukumäärä"
         },
         "country": {
           "label": "Maa"
@@ -928,7 +931,7 @@
             "grinding_mill": "Jauhomylly",
             "handicraft": "Käsityöt",
             "hvac": "Lämmitys-, ilmanvaihto- ja ilmastointi",
-            "insulation": "Eristäjä\nLämpöeristäjä",
+            "insulation": "Eristäjä",
             "jeweller": "Kultaseppä",
             "joiner": "Puuseppä",
             "key_cutter": "Avainsuutari",
@@ -967,7 +970,7 @@
             "floor-mounted_crane": "Puominosturi",
             "gantry_crane": "pukkinosturi",
             "portal_crane": "Konttinosturi",
-            "tower_crane": "Torninosturi\nNostokurki",
+            "tower_crane": "Torninosturi",
             "travel_lift": "Matkahissi"
           }
         },
@@ -1068,19 +1071,17 @@
             "balkan": "Balkanilainen",
             "barbecue": "Grilliruoka",
             "bavarian": "Bavarialainen",
-            "beef_bowl": "Naudanlihakulho",
             "brazilian": "Brasilialainen",
             "breakfast": "Aamupala",
             "brunch": "Brunssi",
-            "bubble_tea": "Pallerotee\nKuplatee",
+            "bubble_tea": "Kuplatee",
             "burger": "hampurilaiset",
             "cake": "Kakku",
             "caribbean": "Karibialainen",
             "chicken": "kana",
             "chinese": "kiinalainen",
             "coffee_shop": "kahvila",
-            "crepe": "Ohukainen\nLettu\nLätty\nRäiskäle",
-            "curry": "Curry\nKarri",
+            "crepe": "Ohukainen",
             "dessert": "Jälkiruoka",
             "donut": "Donitsi",
             "european": "Eurooppalainen",
@@ -1151,6 +1152,25 @@
           "label": "Tyyppi",
           "placeholder": "Oletus"
         },
+        "cycle_barrier": {
+          "label": "Tyyppi",
+          "options": {
+            "diagonal": "Viistoeste",
+            "double": "Kaksinkertainen",
+            "single": "Yksittäinen",
+            "tilted": "Ahdaseste",
+            "triple": "Kolminkertainen"
+          }
+        },
+        "cycle_barrier/installation": {
+          "label": "Asennustapa",
+          "options": {
+            "fixed": "Kiinteä",
+            "openable": "Avattavissa",
+            "removable": "Poistettavissa"
+          },
+          "terms": "Asennustapa, Asennus"
+        },
         "cycle_network": {
           "label": "Verkko"
         },
@@ -1200,6 +1220,9 @@
         },
         "defibrillator/location": {
           "label": "Sijainnin selostus"
+        },
+        "deflection": {
+          "label": "Kulma"
         },
         "delivery": {
           "label": "Kotiinkuljetus",
@@ -1451,6 +1474,7 @@
             "main": "Pääovi",
             "secondary": "Sivuovi",
             "service": "Huolto-ovi",
+            "shop": "Myymälän sisäänkäynti",
             "staircase": "Porraskäytävä",
             "yes": "Määrittelemätön"
           }
@@ -1645,7 +1669,7 @@
           "options": {
             "anaerobic_digestion": "Mädätys",
             "barrage": "Vuorovesivoimala",
-            "combustion": "Polttaminen\nPalaminen\nPoltto",
+            "combustion": "Poltto",
             "fission": "Fissio",
             "fusion": "Fuusio",
             "gasification": "Kaasuuntuminen",
@@ -1811,7 +1835,7 @@
             "intensive": "Tehohoito",
             "internal": "Sisätaudit",
             "naturopathy": "Luontaislääkintä",
-            "neonatology": "Vauvat ja vastasyntyneet\nNeonatalogia",
+            "neonatology": "Vauvat ja vastasyntyneet",
             "nephrology": "Nefrologia",
             "neurology": "Neurologia",
             "neuropsychiatry": "Neuropsykiatria",
@@ -1837,7 +1861,7 @@
             "radiology": "Radiologia",
             "radiotherapy": "Sädehoito",
             "reflexology": "Vyöhyketerapia",
-            "rheumatology": "Reumatologia\nReumatautioppi",
+            "rheumatology": "Reumatologia",
             "stomatology": "Suulääketiede",
             "surgery": "Yleiskirurgia",
             "systemic": "Systeeminen terapia",
@@ -1924,7 +1948,7 @@
           "label": "Tyyppi",
           "options": {
             "intermediate": "rullausteiden risteys",
-            "runway": "kiitotie"
+            "runway": "Kiitotie"
           }
         },
         "hoops": {
@@ -2021,6 +2045,14 @@
         "interval": {
           "label": "Aikaväli"
         },
+        "irrigation_pivot": {
+          "label": "Center-pivot-kastelu",
+          "options": {
+            "pivot": "On",
+            "undefined": "Ei"
+          },
+          "terms": "Ympyräkastelu"
+        },
         "junction/ref_oneway": {
           "label": "Liittymän numero "
         },
@@ -2049,11 +2081,11 @@
             },
             "raised": {
               "description": "Korkea reunakivi, jota ei voi helposti ylittää pyörätuolilla, yli muutaman senttimetrin korkuinen",
-              "title": "Korotettu"
+              "title": "Korkea reunakivi"
             },
             "rolled": {
-              "description": "Korkea, loivaksi pyöristetty reunakivi, joka on tavallista reunakiveä helpompi ylittää autolla tai polkupyörällä, muttei pyörätuolilla. (Ei käytössä Suomessa)",
-              "title": "Aallonmuotoiseksi pyöristetty reunakivi"
+              "description": "Korkea, loivaksi pyöristetty reunakivi, joka on tavallista reunakiveä helpompi ylittää autolla tai polkupyörällä, muttei pyörätuolilla.",
+              "title": "Pyöristetty korkea reunakivi"
             },
             "yes": {
               "description": "Jonkinlainen reunakivi tässä kohtaa, ei ole tiedossa, onko se korkea, madallettu, tasoon upotettu jne.",
@@ -2106,8 +2138,8 @@
         "leaf_cycle": {
           "label": "Lehtien pudotuskierto",
           "options": {
-            "deciduous": "Kesävihanta\nKausivihanta",
-            "evergreen": "Ikivihreä\nAinavihanta",
+            "deciduous": "Kausivihanta",
+            "evergreen": "Ainavihanta",
             "mixed": "Sekoitus",
             "semi_deciduous": "Puolilehtipuu",
             "semi_evergreen": "Puoli-ikivihreä"
@@ -2147,7 +2179,7 @@
         "lifeguard": {
           "label": "Tyyppi",
           "options": {
-            "base": "Uinninvalvojien tukikohta\nHengenpelastajien tukikohta\nUimavalvojien tukikohta",
+            "base": "Uimavalvojien tukikohta",
             "tower": "Uimavalvontatorni"
           }
         },
@@ -2171,7 +2203,7 @@
           "label": "Valaistus"
         },
         "loc_name": {
-          "label": "Paikallinen nimi"
+          "label": "Paikallinen lempinimi"
         },
         "location": {
           "label": "Sijainti"
@@ -2209,7 +2241,7 @@
           "options": {
             "scheme": "Pelkistetty kartta\nViitteellinen kartta\nLuonnoskartta\nYksinkertainen kartta\nTopologinen kartta",
             "street": "Tiekartta",
-            "topo": "Korkeuskartta\nTopografinen kartta",
+            "topo": "Topografinen kartta",
             "toposcope": "Näköalapaikan suuntakartta"
           }
         },
@@ -2254,7 +2286,7 @@
             "brick": "tiiliskivi",
             "bronze": "pronssi",
             "concrete": "betoni",
-            "dry_stone": "Kuivamuuri\nKylmämuuri",
+            "dry_stone": "Kuivamuuri",
             "glass": "lasi",
             "granite": "graniitti",
             "iron": "rauta",
@@ -2306,6 +2338,9 @@
         },
         "maxwidth": {
           "label": "Leveysraja"
+        },
+        "maxwidth/physical": {
+          "label": "Leveysrajoitus"
         },
         "memorial": {
           "label": "Tyyppi",
@@ -2552,6 +2587,9 @@
           "label": "Avotuli sallittu",
           "terms": "Avotulenteko sallittu"
         },
+        "opening": {
+          "label": "Aukon leveys (metreissä)"
+        },
         "opening_date": {
           "label": "Uudelleenavaamispäivä"
         },
@@ -2584,6 +2622,9 @@
         "outdoor_seating": {
           "label": "Ulkoterassi"
         },
+        "overlap": {
+          "label": "Limittäisen osan leveys (metreissä)"
+        },
         "par": {
           "label": "Lyöntimääräsuositus"
         },
@@ -2611,7 +2652,7 @@
             },
             "garage_boxes": {
               "description": "Yksityinen pysäköintihalli, jossa on useita yksittäisiä pysäköintiruutuja, joihin mahtuu yksi auto.",
-              "title": "Riviautotalli\nAutotallirivistö"
+              "title": "Riviautotalli"
             },
             "half_on_kerb": {
               "description": "Pysäköinti osittain jalkakäytävälle.",
@@ -3439,6 +3480,9 @@
         "source/population": {
           "label": "Väkiluvun tietolähde"
         },
+        "spacing": {
+          "label": "Etäisyys esteiden välissä (metreissä)"
+        },
         "species": {
           "label": "Laji"
         },
@@ -3629,7 +3673,7 @@
             "fine_gravel": "Hieno sora",
             "grass": "ruoho",
             "grass_paver": "Nurmikivi",
-            "gravel": "sora",
+            "gravel": "Suurirakeinen sora",
             "ground": "maa",
             "metal": "metalli",
             "mud": "pysyvästi mutainen",
@@ -3717,7 +3761,7 @@
           "label": "Ajoneuvotyyppi",
           "options": {
             "auto_rickshaw": {
-              "title": "Autoriksa\nTuk-tuk"
+              "title": "Autoriksa"
             },
             "cycle_rickshaw": {
               "title": "Pyöräriksa"
@@ -3803,7 +3847,7 @@
             "pyramid": "Pyramidi",
             "rock-cut": "Kallioon hakattu hauta",
             "sarcophagus": "Sarkofagi",
-            "tumulus": "Tumulus\nKumpuhauta",
+            "tumulus": "Kumpuhauta",
             "vault": "Hautakammio",
             "war_grave": "Yksittäinen sankarihauta"
           }
@@ -3939,7 +3983,7 @@
           "label": "Tyyppi",
           "options": {
             "building_passage": "kulkee rakennuksen läpi",
-            "culvert": "siltarumpu",
+            "culvert": "Siltarumpu",
             "flooded": "Vesitunneli"
           }
         },
@@ -3991,7 +4035,7 @@
             "ferry": "lautta",
             "light_rail": "pikaraitiotie",
             "monorail": "kohorata",
-            "subway": "metro",
+            "subway": "Metrojuna",
             "train": "juna",
             "tram": "Raitiovaunu",
             "trolleybus": "johdinauto"
@@ -4088,7 +4132,7 @@
           "label": "Tyyppi"
         },
         "water_point": {
-          "label": "Vesisäiliön täyttöpiste\nVeden täyttöpiste"
+          "label": "Vesisäiliön täyttöpiste"
         },
         "water_source": {
           "label": "Veden lähde",
@@ -4118,9 +4162,9 @@
           "label": "Tyyppi",
           "options": {
             "bog": "Suo",
-            "fen": "Neva\nAvosuo",
+            "fen": "Letto",
             "marsh": "Marskimaa",
-            "reedbed": "Ruovikko\nRuoikko",
+            "reedbed": "Ruovikko",
             "saltmarsh": "Suolamarski",
             "string_bog": "Aapasuo",
             "swamp": "Luhta",
@@ -4602,7 +4646,7 @@
           "name": "Suurlähetystö"
         },
         "amenity/events_venue": {
-          "name": "Tapahtumahalli"
+          "name": "Tapahtumatila\nJuhlatila"
         },
         "amenity/exhibition_centre": {
           "name": "Messukeskus"
@@ -5336,7 +5380,7 @@
           "name": "Karjaeste"
         },
         "barrier/chain": {
-          "name": "Ketjuaita"
+          "name": "Ketjueste"
         },
         "barrier/city_wall": {
           "name": "Kaupunginmuuri"
@@ -5349,7 +5393,7 @@
           "terms": "oja, juoksuhauta, syvä, vajoama, kanjoni"
         },
         "barrier/entrance": {
-          "name": "Sisäänkäynti"
+          "name": "Kulkuaukko\nSisäänkäyntiaukko\nAidan aukko\nAukko aidassa\nMuurin aukko"
         },
         "barrier/fence": {
           "name": "Aita"
@@ -5688,7 +5732,7 @@
           "terms": "urheiluyhdistys,urheilukerho,liikuntayhdistys"
         },
         "craft": {
-          "name": "Ammatti"
+          "name": "Käsityöammattilainen\nAmmattilainen\nAmmatinharjoittaja"
         },
         "craft/agricultural_engines": {
           "name": "Maatalousmekaanikko"
@@ -6184,10 +6228,10 @@
           "name": "Moporamppi"
         },
         "highway/cycleway/traffic_island": {
-          "name": "Keskisaareke (pyöräilijän)"
+          "name": "Pyöräilijän keskisaareke"
         },
         "highway/cycleway/traffic_island_shared": {
-          "name": "Keskisaareke (pyöräilijän ja jalankulkijan)"
+          "name": "Pyöräilijän ja jalankulkijan keskisaareke"
         },
         "highway/cyclist_waiting_aid": {
           "name": "Pyöräilijän odotusnoja"
@@ -6862,8 +6906,11 @@
         "leisure/pitch/athletics": {
           "name": "Yleisurheilukenttä"
         },
+        "leisure/pitch/athletics/discus_throw": {
+          "name": "Kiekonheittokehä / sektori"
+        },
         "leisure/pitch/athletics/hammer_throw": {
-          "name": "Moukarinheittokehä / sektorialue\nMoukarikehä / sektorialue"
+          "name": "Moukarikehä / sektori"
         },
         "leisure/pitch/athletics/high_jump": {
           "name": "Korkeushyppypatja"
@@ -7370,7 +7417,7 @@
           "terms": "kallio, jyrkänne, kallioseinämä, seinämä, pystyseinämä, jyrkkä rinne, rinne, pudotus, mäki, penger, törmä, töyräs"
         },
         "natural/coastline": {
-          "name": "Rannikko",
+          "name": "Merenrantaviiva",
           "terms": "Rantaviiva"
         },
         "natural/fell": {
@@ -7392,7 +7439,8 @@
           "name": "Kuuma lähde"
         },
         "natural/mud": {
-          "name": "Muta"
+          "name": "Muta",
+          "terms": "muta, lieju, savi"
         },
         "natural/peak": {
           "name": "Vuorenhuippu",
@@ -7520,7 +7568,7 @@
           "name": "Suo"
         },
         "natural/wetland/fen": {
-          "name": "Neva\nAvosuo"
+          "name": "Letto"
         },
         "natural/wetland/marsh": {
           "name": "Marskimaa"
@@ -7838,7 +7886,7 @@
           "terms": "kiikku, linnunpesäkiikku, hämähäkki, hämähäkkikeinu hämähäkkikiikku, verkkokeinu"
         },
         "playground/bridge": {
-          "name": "Silta",
+          "name": "Leikkisilta",
           "terms": "silta"
         },
         "playground/climbingframe": {
@@ -7889,9 +7937,6 @@
         "playground/swing": {
           "name": "Keinu"
         },
-        "playground/teenshelter": {
-          "name": "Katos"
-        },
         "playground/tetherball": {
           "name": "Salkopallo"
         },
@@ -7902,7 +7947,7 @@
           "name": "Tunneli"
         },
         "playground/zipwire": {
-          "name": "Vaijeriliuku"
+          "name": "Leikkipuiston vaijeriliuku"
         },
         "point": {
           "name": "Paikkapiste"
@@ -8333,6 +8378,9 @@
           "name": "Kylpyhuoneliike",
           "terms": "kylpyhuone, kylpy, suihku, amme, sisustus, sisustaminen, pesuhuone, sauna"
         },
+        "shop/bbq": {
+          "name": "Grillikauppa"
+        },
         "shop/beauty": {
           "name": "Kauneushoitola"
         },
@@ -8345,7 +8393,7 @@
           "terms": "solarium, rusketus, ruskettuminen, keinorusketus, tekorusketus"
         },
         "shop/bed": {
-          "name": "Vuodetarvikeliike\nPatjakauppa",
+          "name": "Vuodetarvikeliike\nPatjakauppa\nSänkykauppa",
           "terms": "uni, peti, sänky, sängyn, sängyt, pedin, petivaatteet, lakana, peitto, tyyny, patja, nukkuminen, täkki, vuode, vuoteen, myymälä, kauppa, liike, puoti"
         },
         "shop/beverages": {
@@ -9245,7 +9293,7 @@
           "terms": "laiva, laivanrakennus, laivateollisuus, teollisuus, rakentaminen, kuivatelakka, laivatelakka"
         },
         "waterway/drain": {
-          "name": "Viemäri"
+          "name": "Avoviemäri"
         },
         "waterway/fish_pass": {
           "name": "Kalaporras"
@@ -9271,10 +9319,10 @@
           "name": "Puro"
         },
         "waterway/stream_intermittent": {
-          "name": "Ajoittainen virta"
+          "name": "Ajoittain kuiva puro\nNoro"
         },
         "waterway/tidal_channel": {
-          "name": "Tulvakanava"
+          "name": "Vuorovesikanava"
         },
         "waterway/water_point": {
           "name": "Veneen juomavesipiste",

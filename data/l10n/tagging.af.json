@@ -107,7 +107,8 @@
             "state": "Staat",
             "street": "Straat",
             "subdistrict": "Subdistrikt",
-            "suburb": "Voorstad"
+            "suburb": "Voorstad",
+            "town": "Dorp"
           }
         },
         "admin_level": {
@@ -394,6 +395,9 @@
         "cutting": {
           "label": "Tipe"
         },
+        "cycle_barrier": {
+          "label": "Tipe"
+        },
         "cycle_network": {
           "label": "Netwerk"
         },
@@ -637,6 +641,12 @@
             "terminal": "Terminaal",
             "wired": "Bedraad",
             "yes": "Ja"
+          }
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Ja",
+            "undefined": "Nee"
           }
         },
         "junction/ref_oneway": {

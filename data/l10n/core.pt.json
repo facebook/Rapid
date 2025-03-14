@@ -140,10 +140,52 @@
             "many": "{n} elementos circularizados.",
             "other": "{n} elementos circularizados."
           }
+        },
+        "multiple_blockers": {
+          "one": "Isto não pode ser tornado circular por várias razões.",
+          "many": "Estes não podem ser tornados circulares por várias razões.",
+          "other": "Estes não podem ser tornados circulares por várias razões."
+        },
+        "not_closed": {
+          "one": "Isto não pode ser feito de forma circular porque não é um ciclo.",
+          "many": "Estes não podem ser circulares porque não são anéis.",
+          "other": "Estes não podem ser circulares porque não são anéis."
+        },
+        "too_large": {
+          "one": "Isto não pode ser tornado circular porque não está neste momento suficientemente visível.",
+          "many": "Estes não podem ser tornados circulares porque não estão neste momento suficientemente visíveis.",
+          "other": "Estes não podem ser tornados circulares porque não estão neste momento suficientemente visíveis."
+        },
+        "connected_to_hidden": {
+          "one": "Isto não pode ser feito circular porque está ligado a um elemento oculto.",
+          "many": "Estes não podem ser circulares porque alguns estão ligados a elementos ocultos.",
+          "other": "Estes não podem ser circulares porque alguns estão ligados a elementos ocultos."
+        },
+        "not_downloaded": {
+          "one": "Isto não pode ser circular porque algumas partes ainda não foram descarregadas.",
+          "many": "Estes não podem ser circulares porque algumas partes ainda não foram descarregadas.",
+          "other": "Estes não podem ser circulares porque algumas partes ainda não foram descarregadas."
+        },
+        "already_circular": {
+          "one": "Isto não pode ser mais circular do que já é.",
+          "many": "Estes não podem ser mais circulares do que já são.",
+          "other": "Estes não podem ser mais circulares do que já são."
         }
       },
       "orthogonalize": {
         "title": "Esquadrar",
+        "description": {
+          "corner": {
+            "one": "Colocar este canto em esquadria.",
+            "many": "Colocar estes cantos em esquadria.",
+            "other": "Colocar estes cantos em esquadria."
+          },
+          "feature": {
+            "one": "Colocar os cantos deste elemento em esquadria.",
+            "many": "Colocar os cantos destes elementos em esquadria.",
+            "other": "Colocar os cantos destes elementos em esquadria."
+          }
+        },
         "annotation": {
           "corner": {
             "one": "{n} canto esquadrado.",
@@ -800,7 +842,8 @@
           "title": "Notas OpenstreetMap"
         },
         "rapid": {
-          "tooltip": "Sugestões de elementos detetados a partir da aprendizagem automática e de dados abertos que podem ser utilizados para melhorar o OpenStreetMap"
+          "tooltip": "Sugestões de elementos detetados a partir da aprendizagem automática e de dados abertos que podem ser utilizados para melhorar o OpenStreetMap",
+          "license": "Licença do Map With AI do Facebook"
         },
         "maproulette": {
           "title": {
@@ -820,6 +863,10 @@
         "osmose": {
           "tooltip": "Problemas nos dados detetados por osmose.openstreetmap.fr",
           "title": "Problemas do Osmose"
+        },
+        "geoScribble": {
+          "tooltip": "Anotações/rabiscos feitos pelos usuários do EveryDoor.",
+          "title": "Anotações do GeoScribble"
         },
         "custom": {
           "tooltip": "Arrasta e larga um ficheiro de dados na página ou clica no botão para configurar",
@@ -990,6 +1037,7 @@
         },
         "or": "Ou",
         "url": {
+          "example_pmtiles": "https://exemplo.com.br/edificacoes.pmtiles",
           "placeholder": "Introduzir URL"
         }
       }
@@ -1002,6 +1050,24 @@
         "third_party_icons": {
           "description": "Mostrar ícones de terceiros",
           "tooltip": "Desmarca esta caixa para evitar o carregamento de ícones pré-definidos de websites de terceiros como a Wikimedia Commons, o Facebook ou o Twitter."
+        }
+      },
+      "map_interaction": {
+        "title": "Interação do mapa",
+        "mouse_wheel": {
+          "title": "Comportamento da roda do mouse",
+          "auto": {
+            "title": "Automático",
+            "tooltip": "Melhor para usuários de trackpad. Com 2 dedos, gestos de deslizar farão panorâmica do mapa, e gestos de pinça aumentarão ou diminuirão o zoom do mapa. Manter Shift pressionado aumentará ou diminuirá o zoom do mapa."
+          },
+          "zoom": {
+            "title": "Ampliar o mapa",
+            "tooltip": "Rolar com a roda sempre ampliará e reduzirá o zoom do mapa."
+          },
+          "pan": {
+            "title": "Mover o mapa",
+            "tooltip": "Rolar com a roda irá mover o mapa. Segurar Shift fará o mapa ampliar e reduzir."
+          }
         }
       },
       "color_selection": {
@@ -1077,14 +1143,68 @@
       "live": "ao vivo",
       "lose_changes": "Tens alterações por guardar. Se trocares de servidor de mapas, irás perdê-las. Tens a certeza de que queres trocar de servidores?"
     },
+    "rapid_first_edit": {
+      "nice": "Você acabou de adicionar seu primeiro elemento assistido por IA do {rapidicon}, legal."
+    },
     "rapid_inspector": {
-      "tags": "Etiquetas"
+      "prompt": "Como você gostaria de prosseguir com este elemento selecionado?",
+      "tags": "Etiquetas",
+      "option_accept": {
+        "label": "Adicionar este elemento",
+        "description": "Isso parece um elemento correto? Selecione isso para começar a editá-lo para que você possa conectar, marcar e salvá-lo no OpenStreetMap. 👍",
+        "annotation": "Adicionou um elemento do Rapid.",
+        "tooltip": "Adicione esse elemento ao mapa para começar a edição.",
+        "disabled": "Para ajudar a melhorar a qualidade dos dados do OSM, permitimos que apenas {n} recursos de IA sejam adicionados em cada sessão de mapeamento. Por favor, tente consertar os problemas em suas edições até agora. Você poderá adicionar mais recursos de IA após salvar.",
+        "disabled_flash": "Para ajudar a melhorar a qualidade dos dados do OSM, permitimos que apenas {n} recursos de IA sejam adicionados em cada sessão de mapeamento."
+      },
+      "option_ignore": {
+        "label": "Ignorar este elemento",
+        "description": "Ignorar esse elemento nos ajuda a melhorar nosso aprendizado de máquina. Se você não tiver certeza se esse é um recurso preciso, sinta-se à vontade para deixá-lo como está, nada será salvo ou perdido. 👍",
+        "annotation": "Ignorou um recurso do Rapid.",
+        "tooltip": "Ignorar este elemento."
+      }
     },
     "rapid_menu": {
+      "license": "Licença",
+      "toggle_all": "Ativar todos os dados do {rapidicon}",
+      "add_manage_datasets": "Adicionar/gerenciar conjuntos de dados",
+      "worldwide": "Mundo todo",
+      "no_datasets": "Nenhum conjunto de dados disponível.",
       "remove": "Remover",
+      "add_dataset": "Adicionar conjunto de dados",
+      "dataset_added": "Conjunto de dados adicionado",
+      "about_the_catalog": "Esses conjuntos de dados foram fornecidos como dados abertos por várias organizações e pela comunidade de usuários da Esri com o objetivo de melhorar o OpenStreetMap.<br/>Você pode aprender mais clicando nos links abaixo ou visitando [o Guia do Rapid](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Esri-ArcGIS-FAQ) ou [a página do conjunto de dados Esri/ArcGIS no OSM Wiki](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets).",
+      "clear_filters": "Limpar filtros",
+      "filter_datasets": "filtrar conjuntos de dados",
+      "any_type": "qualquer tipo",
+      "datasets_found": {
+        "one": "{n}  conjunto de dados encontrado",
+        "many": "{gt}{n}  conjuntos de dados encontrados",
+        "other": "{gt}{n} conjuntos de dados encontrados"
+      },
       "category": {
+        "addresses": "endereços",
+        "buildings": "edificações",
+        "featured": "destacado",
+        "footways": "calçadas",
+        "places": "lugares",
         "roads": "estradas",
         "trees": "árvores"
+      },
+      "fbRoads": {
+        "label": "Facebook - Vias"
+      },
+      "msBuildings": {
+        "label": "Microsoft - Edificações"
+      },
+      "overture": {
+        "places": {
+          "label": "Overture - Lugares"
+        }
+      },
+      "omdFootways": {
+        "label": "Calçadas em dados abertos",
+        "description": "Dados abertos de calçadas coletados por várias entidades governamentais locais."
       }
     },
     "tag_reference": {
@@ -1099,6 +1219,10 @@
         "in": "Não é possível aproximar mais.",
         "out": "Não é possível afastar mais."
       }
+    },
+    "bearing": {
+      "reset_bearing": "Redefinir orientação",
+      "rotate_the_map": "Girar o mapa:"
     },
     "full_screen": "Ativar ecrã inteiro.",
     "self_intersection": {
@@ -1440,6 +1564,10 @@
     "mapillary_signs": {
       "title": "Sinais de trânsito"
     },
+    "mapillary_detections": {
+      "title": "Objetos detectados",
+      "tooltip": "Objetos detectados nas fotos do Mapillary"
+    },
     "kartaview": {
       "tooltip": "Fotos ao nível de rua da KartaView"
     },
@@ -1479,11 +1607,15 @@
         "open_data": "As edições que fizeres neste mapa ficarão visíveis a todos os que utilizam o OpenStreetMap. As tuas edições podem basear-se no teu conhecimento, em pesquisas no terreno, em imagens aéreas ou fotos ao nível de rua. A cópia de material de fontes comerciais, como o Google Maps, [é expressamente proibida](https://www.openstreetmap.org/copyright).",
         "before_start_h": "Antes de começares",
         "before_start": "Você deve estar familiarizado com o OpenStreetMap e este editor antes de começar a editar. O Rapid contém um passo a passo para lhe ensinar os conceitos básicos de edição do OpenStreetMap. Pressione o botão \"{start_the_walkthrough}\" nesta tela para iniciar o tutorial — leva apenas cerca de 15 minutos.",
-        "open_source_h": "Código aberto"
+        "open_source_h": "Código aberto",
+        "open_source": "O editor Rapid é um projeto colaborativo de código aberto, e você está usando a versão {version} agora. O código-fonte está disponível [no GitHub](https://github.com/facebook/Rapid).",
+        "open_source_help": "Você pode ajudar o Rapid [relatando erros](https://github.com/facebook/Rapid/issues)."
       },
       "overview": {
         "title": "Ideia geral",
         "navigation_h": "Navegação",
+        "navigation_zoom": "Você pode aumentar ou diminuir o zoom rolando com uma roda do mouse {mouse_wheel_icon} ou trackpad, ou com {twofinger_zoom_icon} dando zoom com dois dedos em uma tela sensível ao toque. Você também pode pressionar os botões {plus} / {minus} ao longo da lateral do mapa ou as teclas `+`, `-` em um teclado.",
+        "navigation_rotate": "Você pode girar o mapa mantendo pressionado `{option}` e {mouse_left_icon} e arrastando o mapa, ou mantendo pressionado `{shift}` e usando as teclas de seta para a esquerda/direita {keyboard_arrows_left_right}.",
         "features_h": "Elementos do mapa",
         "features": "Utilizamos a palavra *elementos* para descrever as coisas que aparecem no mapa, como estradas, edifícios ou pontos de interesse. Qualquer coisa do mundo real pode ser mapeada como um elemento no OpenStreetMap. Os elementos do mapa são representados no mapa utilizando *pontos*, *linhas* ou *áreas*.",
         "nodes_ways": "Por vezes, os pontos são chamado *nós* e as linhas e as áreas são chamadas *vias*."
@@ -2246,6 +2378,11 @@
       "navigation": {
         "title": "Navegação",
         "map_info": "A área principal do mapa mostra os dados OpenStreetMap sobre uma camada de fundo.",
+        "zoom_mouse_scroll": "- Role com a roda do mouse {mouse_wheel_icon}.",
+        "user_settings": "Se o touchpad ou a roda do mouse não aplicarem zoom conforme o esperado, você pode ajustar esse comportamento no painel de Preferências do usuário.",
+        "rotate": "Existem várias maneiras de girar o mapa:",
+        "rotate_touch": "- Gire o mapa com dois dedos {twofinger_rotate_icon}.",
+        "reset_bearing": "Este botão de bússola mostra a rotação atual, ou *rumo*, do mapa. **Clique no botão de bússola para redefinir o mapa para o Norte para cima.**",
         "features": "Usamos a palavra *elementos* para descrever as coisas que aparecem no mapa. Qualquer coisa no mundo real pode ser mapeada como um elemento no OpenStreetMap.",
         "points_lines_areas": "Os elementos do mapa são representados usando *pontos, linhas* ou *áreas.*",
         "nodes_ways": "No OpenStreetMap, os pontos podem ser considerados *nós* e as linhas e as áreas consideradas *vias*.",
@@ -2519,6 +2656,9 @@
         },
         "toggle_osm_data": {
           "label": "Ativar dados do OpenStreetMap"
+        },
+        "toggle_rapid_data": {
+          "label": "Ativar recursos do Rapid"
         },
         "toggle_all_cards": {
           "label": "Ativar todos os painéis de informação"

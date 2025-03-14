@@ -54,6 +54,7 @@
             "street": "Strasse",
             "subdistrict": "Untergeordneter Bezirk",
             "suburb": "Vorort/Stadtteil",
+            "town": "Stadt",
             "unit": "Stiege/Untereinheit"
           }
         },
@@ -83,6 +84,9 @@
         },
         "area/highway": {
           "label": "Art"
+        },
+        "artist": {
+          "label": "Künstler"
         },
         "artwork_type": {
           "label": "Art"
@@ -430,6 +434,10 @@
             "wired": "Kabelgebunden"
           }
         },
+        "irrigation_pivot": {
+          "label": "Kreisberegnungssystem",
+          "terms": "Kreisberegnungssystem, Pivotberegnungssystem"
+        },
         "junction_line": {
           "label": "Straßenkreuzung",
           "options": {
@@ -579,9 +587,6 @@
           "options": {
             "shoulder": {
               "title": "Standstreifen"
-            },
-            "underground": {
-              "title": "Tiefgarage"
             }
           }
         },
@@ -982,6 +987,9 @@
         "amenity/parking_space": {
           "name": "Stellplatz/Stellplatzbereich auf Parkplatz"
         },
+        "amenity/recycling_container": {
+          "name": "Recyclingcontainer\nWertstoffcontainer\nRecyclingtonne\nWertstofftonne"
+        },
         "amenity/shelter": {
           "name": "Obdachlosenunterkunft"
         },
@@ -1050,6 +1058,10 @@
         },
         "craft/window_construction": {
           "name": "Fensterbauer"
+        },
+        "emergency/fire_service_inlet": {
+          "name": "Feuerwehrkupplung",
+          "terms": "Feuerwehranschluss, Schlauchkupplung, Storz-Kupplung, Druckkupplung, Saugkupplung, Festkupplung, Blindkupplung, Übergangsstück, Einspeisung, Löschwasser"
         },
         "emergency/phone": {
           "name": "Notfalltelefon"
@@ -1189,9 +1201,6 @@
         "leisure/marina": {
           "name": "Jachthafen"
         },
-        "leisure/playground": {
-          "name": "Ski-Kinderland"
-        },
         "leisure/slipway": {
           "name": "Slipanlage"
         },
@@ -1254,6 +1263,9 @@
         },
         "pipeline/substation": {
           "name": "Pipeline Unterstation"
+        },
+        "pipeline/valve": {
+          "name": "Durchlussregelung"
         },
         "place/city": {
           "name": "Grossstadt"

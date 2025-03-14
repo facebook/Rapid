@@ -213,7 +213,9 @@
         },
         "artwork_type": {
           "options": {
-            "statue": "雕像"
+            "statue": "雕像",
+            "stone": "艺术加工石材",
+            "tilework": "瓦片作品"
           }
         },
         "ascent": {
@@ -280,7 +282,7 @@
             "block": "大型路障",
             "cattle_grid": "拦畜沟栅",
             "chain": "链条护栏",
-            "cycle_barrier": "自行车路障",
+            "cycle_barrier": "非机动车限行栏杆",
             "guard_rail": "半高护栏",
             "hedge": "树篱",
             "height_restrictor": "限高杆",
@@ -793,6 +795,22 @@
         "cutting": {
           "placeholder": "默认"
         },
+        "cycle_barrier": {
+          "options": {
+            "diagonal": "对角线",
+            "double": "双重",
+            "single": "单个",
+            "tilted": "倾斜",
+            "triple": "三重"
+          }
+        },
+        "cycle_barrier/installation": {
+          "label": "安装方式",
+          "options": {
+            "openable": "可打开"
+          },
+          "terms": "安装,设置,固定,方式"
+        },
         "cycle_network": {
           "label": "自行车网络"
         },
@@ -853,7 +871,7 @@
           }
         },
         "depth": {
-          "label": "深度 (m)"
+          "label": "深度（米）"
         },
         "descent": {
           "label": "总下降高度",
@@ -1397,6 +1415,10 @@
           "label": "间隔",
           "terms": "间隔,间隙"
         },
+        "irrigation_pivot": {
+          "label": "时针式喷灌",
+          "terms": "时针,指针,中心,枢纽,枢轴,支轴,轴心,圆盘,圆形,喷灌,喷淋,灌溉"
+        },
         "junction/ref_oneway": {
           "label": "出口编号",
           "terms": "路口,出口,匝道,岔路,编号"
@@ -1829,6 +1851,9 @@
           "label": "允许明火",
           "terms": "允许明火"
         },
+        "opening": {
+          "label": "开口宽度（米）"
+        },
         "opening_date": {
           "label": "预计开放日期"
         },
@@ -1858,6 +1883,12 @@
         },
         "outdoor_seating": {
           "terms": "户外公共座椅,公共座椅,长椅"
+        },
+        "overlap": {
+          "label": "重叠宽度（米）"
+        },
+        "panoramax": {
+          "terms": "Panoramax,全景,影像,编号,ID,号码"
         },
         "par": {
           "label": "标准杆"
@@ -2538,6 +2569,9 @@
         },
         "source/population": {
           "label": "人口数据来源"
+        },
+        "spacing": {
+          "label": "障碍物之间的距离（米）"
         },
         "species/wikidata": {
           "label": "物种维基数据",
@@ -4050,7 +4084,7 @@
           "terms": "吸烟区域,抽烟区"
         },
         "amenity/social_centre": {
-          "name": "社区活动中心",
+          "name": "社交中心",
           "terms": "社区交流中心,社区中心"
         },
         "amenity/social_facility": {
@@ -4379,8 +4413,8 @@
           "terms": "城墙"
         },
         "barrier/cycle_barrier": {
-          "name": "自行车路障",
-          "terms": "自行车,单车,路障"
+          "name": "非机动车限行栏杆",
+          "terms": "非机动车,电动车,障碍,自行车,单车,路障,栏杆,限行,阻车器"
         },
         "barrier/ditch": {
           "name": "堑壕",
@@ -5446,9 +5480,6 @@
           "name": "水产养殖",
           "terms": "水产养殖,水产业"
         },
-        "landuse/brownfield": {
-          "name": "平整场地"
-        },
         "landuse/cemetery": {
           "name": "墓园区",
           "terms": "墓地,墓园,陵园"
@@ -6151,7 +6182,7 @@
           "name": "淤泥"
         },
         "natural/peak": {
-          "terms": "山峰"
+          "terms": "山,山峰,山地,山顶,顶峰"
         },
         "natural/reef": {
           "terms": "礁,珊瑚,岩礁,暗礁,沙洲,沙滩,海滩,沙,滩,海洋,浅水"
@@ -6166,7 +6197,7 @@
         },
         "natural/saddle": {
           "name": "垭口",
-          "terms": "垭口,山口,山鞍,鞍部"
+          "terms": "垭口,山口,山鞍,鞍部,山坳,山,山垭"
         },
         "natural/sand": {
           "name": "沙地",
@@ -6420,7 +6451,7 @@
           "terms": "侦探,私家,私家侦探,私人,侦查,侦察,民商,调查,推理,行踪,诈骗,取证,警察,警官"
         },
         "office/property_management": {
-          "terms": "物业管理办公室"
+          "terms": "物业,物管,物业管理,物业租赁,不动产,不动产管理,不动产租赁,租赁管理,物业办公室,物业服务中心,物业服务"
         },
         "office/quango": {
           "name": "准非政府组织",
@@ -7409,9 +7440,12 @@
           "name": "皮具店",
           "terms": "皮具店"
         },
+        "shop/lighting": {
+          "terms": "灯具,灯饰,灯泡,照明,灯"
+        },
         "shop/locksmith": {
           "name": "锁匠铺",
-          "terms": "锁匠铺,开锁匠,锁匠,开锁,锁,门锁,钥匙"
+          "terms": "锁匠铺,开锁匠,锁匠,开锁,锁,门锁,钥匙,锁业,配匙,配钥匙"
         },
         "shop/lottery": {
           "name": "彩票店",
@@ -7423,6 +7457,9 @@
         },
         "shop/medical_supply": {
           "terms": "医疗,医护,药房,药品,用品,商店,医院,治疗"
+        },
+        "shop/military_surplus": {
+          "terms": "军用品,军品,军事,军事用品,武器"
         },
         "shop/mobile_phone": {
           "terms": "手机店"
@@ -7446,23 +7483,32 @@
           "name": "乐器店",
           "terms": "乐器店,音乐用品店"
         },
+        "shop/newsagent": {
+          "name": "报刊店",
+          "terms": "报纸,报刊,书刊,书店,杂志,新闻,刊物,报刊亭,书报亭,书报"
+        },
         "shop/nuts": {
-          "name": "坚果店"
+          "name": "干杂店",
+          "terms": "坚果,干杂,种子,瓜子,毛嗑,干果,零食,干杂,茶叶,香料"
+        },
+        "shop/outpost": {
+          "name": "网购自提点"
         },
         "shop/paint": {
-          "terms": "油漆店,颜料店"
+          "name": "涂料店",
+          "terms": "油漆,涂料,彩漆,喷漆,刷漆,清漆,漆业,装饰,颜料,水粉,油画,水彩"
         },
         "shop/party": {
-          "name": "派对节日用品",
-          "terms": "聚会,气球,服饰,装饰,邀请函"
+          "name": "节庆用品店",
+          "terms": "派对,聚会,节日,节庆,庆祝,庆典,婚礼,酒席,宴会,气球,服饰,装饰,邀请函"
         },
         "shop/pasta": {
           "name": "生面食店",
           "terms": "面食,面点"
         },
         "shop/pastry": {
-          "name": "糕饼店",
-          "terms": "油酥点心店,糕点店,糕饼店,面包点心店"
+          "name": "甜品店",
+          "terms": "蛋糕,饼干,糕饼,油酥,酥皮卷,酥卷,酥皮,馅饼,派,肉饼,点心,糕点,糕饼店,点心店"
         },
         "shop/pawnbroker": {
           "terms": "典当行"
@@ -7686,7 +7732,8 @@
           "terms": "信息板"
         },
         "tourism/information/board/welcome_sign": {
-          "name": "欢迎标志"
+          "name": "欢迎标志",
+          "terms": "欢迎,界牌,标志,标识"
         },
         "tourism/information/guidepost": {
           "name": "路标",
@@ -7696,7 +7743,8 @@
           "terms": "地图"
         },
         "tourism/information/office": {
-          "name": "游客中心"
+          "name": "游客中心",
+          "terms": "游客中心,旅游中心,景点中心,景区中心,集散中心,问询点,集散点,集散,游客,旅游,游玩,导游,景点"
         },
         "tourism/information/route_marker": {
           "name": "步道标记",

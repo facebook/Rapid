@@ -725,6 +725,7 @@
           "tooltip": "從 maproulette.org 來的任務，你也可以用逗號分隔清單來篩選出挑戰編號。",
           "title": "MapRoulette 任務",
           "loading_task_details": "載入任務詳情…",
+          "error_loading_task_details": "載入任務發生錯誤，請稍等並再選擇一次。",
           "detail_title": "明細",
           "id_title": "挑戰編號/任務編號",
           "id_placeholder": "挑戰編號",
@@ -1153,6 +1154,10 @@
       "omdFootways": {
         "label": "開啟人行通道",
         "description": "開啟從不同地方政府收集的人行通道資料。"
+      },
+      "metaSyntheticFootways": {
+        "label": "從 Meta 生成的步道",
+        "description": "從不同地方政府收集的生成步道資料。"
       }
     },
     "rapid_poweruser": {

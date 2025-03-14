@@ -1,6 +1,9 @@
 {
   "fil": {
     "_communities": {
+      "freelibreopensourcesoftwarekosovaflossk": "Libre at Malayang Open Source na Software Kosova (FLOSSK)",
+      "geolibres": "Mga GeoLibre",
+      "kiribatiwomeninmapping": "Kababaihan ng Kiribati sa Pagmamapa",
       "mappingbotswana": "Pagmamapa sa Botswana",
       "openstreetmapafghanistan": "OpenStreetMap Apganistan",
       "openstreetmapafrica": "OpenStreetMap Aprika",
@@ -20,6 +23,12 @@
       "openstreetmapchina": "OpenStreetMap Tsina",
       "openstreetmapcologne": "OpenStreetMap Kolon",
       "openstreetmapcostarica": "OpenStreetMap Kosta Rika"
+    },
+    "kosovo-flossk": {
+      "name": "Libre at Malayang Open Source na Software Kosova (FLOSSK)"
+    },
+    "OSM-AR-geolibres": {
+      "name": "Mga GeoLibre"
     }
   }
 }

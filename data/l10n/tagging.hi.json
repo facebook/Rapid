@@ -298,6 +298,9 @@
         "cutting": {
           "label": "प्रकार"
         },
+        "cycle_barrier": {
+          "label": "प्रकार"
+        },
         "cycleway": {
           "options": {
             "no": {
@@ -459,6 +462,12 @@
           "options": {
             "no": "नहीं",
             "yes": "हॉं"
+          }
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "हॉं",
+            "undefined": "नहीं"
           }
         },
         "kerb": {

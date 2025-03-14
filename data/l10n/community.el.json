@@ -402,6 +402,9 @@
     "de-luneburg-wiki": {
       "description": "{community} Wiki σελίδα"
     },
+    "de-mainz-signal": {
+      "description": "OpenStreetMap σε Μάιντς, Βίζμπαντεν και περίχωρα"
+    },
     "de-munchen-wiki": {
       "description": "{community} Wiki σελίδα"
     },
@@ -447,6 +450,9 @@
     },
     "is-chapter": {
       "description": "Βοηθάμε την ανάπτυξη και τη βελτίωση του OpenStreetMap στην Ισλανδία"
+    },
+    "ivides_website": {
+      "description": "Εστιάζουμε στην βιώσιμη ανάπτυξη, χαρτογράφηση, και υποστήριξη της κοινότητας του OpenStreetMap."
     },
     "kp-wiki": {
       "description": "{community} Οδηγός Χαρτογράφησης"
@@ -652,6 +658,9 @@
     },
     "rs-wiki": {
       "description": "Σελίδα Wikiproject για Σερβία"
+    },
+    "scandinavia-discord": {
+      "name": "Σκανδιναβικό κανάλι στο OpenStreetMap World Discord"
     },
     "sg-wiki": {
       "description": "{community} Wiki σελίδα"

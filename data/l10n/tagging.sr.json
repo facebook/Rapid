@@ -175,6 +175,7 @@
             "subdistrict!vn": "Вард/Комуна/Градић",
             "suburb": "Предграђе",
             "suburb!jp": "Одређен град (政令市)",
+            "town": "Варош",
             "unit": "Јединица"
           },
           "terms": "adresa,локација,место,lokacija,mesto"
@@ -292,7 +293,9 @@
             "painting": "Слика",
             "relief": "Рељеф",
             "sculpture": "Скулптура",
-            "statue": "Статуа"
+            "statue": "Статуа",
+            "stone": "Уметнички обрађени камен",
+            "tilework": "Керамичко дело"
           }
         },
         "ascent": {
@@ -1143,6 +1146,9 @@
           "label": "Врста",
           "placeholder": "Подразумевано"
         },
+        "cycle_barrier": {
+          "label": "Врста"
+        },
         "cycle_network": {
           "label": "Мрежа"
         },
@@ -1156,6 +1162,12 @@
             "no": {
               "description": "Без бициклистичке траке",
               "title": "Нема"
+            },
+            "opposite": {
+              "title": "(застарео) бициклистичка трака у супротном смеру"
+            },
+            "opposite_lane": {
+              "title": "(застарео) наспрамна бициклистичка трака"
             },
             "separate": {
               "description": "Индикује да је бициклистичка стаза била мапирана одвојено",
@@ -1433,6 +1445,7 @@
             "main": "Главни",
             "secondary": "Споредни",
             "service": "Службени",
+            "shop": "Улаз у продавницу",
             "staircase": "Степенице",
             "yes": "Неодређен"
           }
@@ -2021,6 +2034,12 @@
         "interval": {
           "label": "Интервал"
         },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "да",
+            "undefined": "не"
+          }
+        },
         "junction/ref_oneway": {
           "label": "Број раскрснице"
         },
@@ -2200,7 +2219,12 @@
           "label": "Покривеност"
         },
         "map_type": {
-          "label": "Врста"
+          "label": "Врста",
+          "options": {
+            "scheme": "Шематска мапа",
+            "street": "Мапа улица",
+            "topo": "Топографска мапа"
+          }
         },
         "mapillary": {
           "label": "Мапилари слика"
@@ -2278,6 +2302,9 @@
           "label": "Ограничење тежине"
         },
         "maxwidth": {
+          "label": "Ограничење ширине"
+        },
+        "maxwidth/physical": {
           "label": "Ограничење ширине"
         },
         "memorial": {
@@ -2586,6 +2613,7 @@
               "title": "Подлога"
             },
             "underground": {
+              "description": "Подземни паркинг",
               "title": "Подземна"
             }
           }
@@ -4881,6 +4909,9 @@
         "amenity/townhall/city": {
           "name": "Градска кућа"
         },
+        "amenity/toy_library": {
+          "name": "Библиотека играчака"
+        },
         "amenity/trolley_bay": {
           "name": "Место за колица"
         },
@@ -5221,6 +5252,9 @@
         },
         "building/apartments": {
           "name": "Стамбена зграда"
+        },
+        "building/bakehouse": {
+          "name": "Пекарска радионица (зграда)"
         },
         "building/barn": {
           "name": "Амбар"
@@ -5653,6 +5687,9 @@
         "emergency/lifeguard": {
           "name": "Спасилац"
         },
+        "emergency/mountain_rescue": {
+          "name": "Горска служба спасавања"
+        },
         "emergency/phone": {
           "name": "Телефон за хитне случајеве"
         },
@@ -5679,6 +5716,9 @@
         },
         "entrance/main": {
           "name": "Главни улаз"
+        },
+        "entrance/shop": {
+          "name": "Улаз у продавницу"
         },
         "entrance/staircase": {
           "name": "Улаз на степенице"

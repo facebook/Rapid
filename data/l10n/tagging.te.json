@@ -38,7 +38,8 @@
           "placeholders": {
             "city": "నగరం",
             "country": "దేశం",
-            "street": "వీధి"
+            "street": "వీధి",
+            "town": "పట్టణం"
           }
         },
         "advertising": {
@@ -201,6 +202,9 @@
         "cutting": {
           "label": "రకం"
         },
+        "cycle_barrier": {
+          "label": "రకం"
+        },
         "cycleway": {
           "options": {
             "no": {
@@ -354,6 +358,12 @@
           "options": {
             "no": "కాదు",
             "yes": "అవును"
+          }
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "అవును",
+            "undefined": "కాదు"
           }
         },
         "kerb": {

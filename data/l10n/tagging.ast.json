@@ -118,6 +118,7 @@
             "street": "Cai",
             "subdistrict": "Subdistritu",
             "suburb": "Barriu",
+            "town": "Villa",
             "unit": "Unidá"
           }
         },
@@ -519,6 +520,14 @@
           "label": "Tipu",
           "placeholder": "Predeterminao"
         },
+        "cycle_barrier": {
+          "label": "Tipu"
+        },
+        "cycle_barrier/installation": {
+          "options": {
+            "fixed": "Fixa"
+          }
+        },
         "cycle_network": {
           "label": "Rede"
         },
@@ -877,6 +886,12 @@
         },
         "internet_access/fee": {
           "label": "Accesu a Internet de pagu"
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Si",
+            "undefined": "Non"
+          }
         },
         "junction/ref_oneway": {
           "label": "Númberu de salida"

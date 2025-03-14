@@ -172,6 +172,7 @@
             "subdistrict": "مديرية فرعية",
             "subdistrict!vn": "جناح/جمعية/بلدة صغيرة",
             "suburb": "ضاحية",
+            "town": "مدينة",
             "unit": "وحدة"
           },
           "terms": "العنوان, عنوان"
@@ -228,6 +229,9 @@
           "label": "تكييف هواء",
           "terms": "تكييف الهواء, التكييف, التبريد"
         },
+        "alt_name": {
+          "label": "الاسم البديل"
+        },
         "amenity": {
           "label": "النوع"
         },
@@ -247,8 +251,13 @@
             "city": "مدينة تاريخية",
             "enclosure": "سياج",
             "fortification": "جدران دفاعية للتحصين",
+            "hut_circle": " دائرة الأكواخ",
             "megalith": "ميغاليث/جندل/مغليطيا (آثار صخرية)",
             "necropolis": "مقبرة كبيرة قديمة",
+            "petroglyph": "نحت صخري",
+            "roman_circus": "سيرك روماني",
+            "roman_villa": "فيلا رومانية",
+            "settlement": "مستوطنة تاريخية",
             "tumulus": "جثوة"
           }
         },
@@ -260,8 +269,11 @@
           "label": "النوع"
         },
         "armrest": {
+          "label": " مساند الأذرع",
           "options": {
-            "undefined": "غير معروفة"
+            "no": "بدون مساند للذراعين",
+            "undefined": "غير معروفة",
+            "yes": "مسند ذراع واحد أو أكثر"
           }
         },
         "artist": {
@@ -275,8 +287,11 @@
             "mosaic": "فسيفساء",
             "mural": "جدار",
             "painting": "لوحة",
+            "relief": "نقش بارز، عمل نحت بارز",
             "sculpture": "منحوتة",
-            "statue": "تمثال"
+            "statue": "تمثال",
+            "stone": "حجر معالج فنياً، حجر مزخرف",
+            "tilework": "أعمال البلاط، تزيين بالبلاط"
           }
         },
         "ascent": {
@@ -286,13 +301,26 @@
         "athletics_pitch": {
           "label": "حدث",
           "options": {
-            "discus_throw": "نقاش"
+            "discus_throw": "نقاش",
+            "hammer_throw": "رمي المطرقة",
+            "high_jump": "الوثب العالي",
+            "javelin_throw": " رمي الرمح",
+            "long_jump": "الوثب الطويل",
+            "pole_vault": "القفز بالزانة",
+            "shot_put": "دفع الجلة",
+            "triple_jump": "الوثب الثلاثي"
           }
         },
         "athletics_track": {
           "label": "حدث",
           "options": {
-            "running": "جري"
+            "javelin_throw": " رمي الرمح",
+            "long_jump": "الوثب الطويل",
+            "pole_vault": "القفز بالزانة",
+            "running": "جري",
+            "sprint": "العدو السريع",
+            "steeplechase": "سباق الموانع",
+            "triple_jump": "الوثب الثلاثي"
           }
         },
         "atm": {
@@ -301,7 +329,9 @@
         "attraction": {
           "label": "النوع",
           "options": {
+            "alpine_coaster": "مزلقة جبلية",
             "animal": "حظيرة حيوانات",
+            "big_wheel": "عجلة فيريس",
             "carousel": "دوامة خيل",
             "maze": "متاهة",
             "roller_coaster": "السفينة الدوارة",
@@ -336,6 +366,7 @@
         "barrier": {
           "label": "النوع",
           "options": {
+            "block": " كتلة كبيرة",
             "bollard": "عمود حاجز",
             "cattle_grid": "شبكة أرضية حاجزة للماشية",
             "chain": "سلسلة",
@@ -351,6 +382,7 @@
             "jersey_barrier": "‫حاجز خرساني - نيوجيرسي",
             "kerb": "منحدر الرصيف المؤدي للشارع",
             "kissing_gate": "بوابة لا تسمح بعبور الماشية",
+            "lift_gate": "بوابة حاجز",
             "retaining_wall": "جدار تثبيت للتربة",
             "stile": "درج يسمح للبشر بالمرور فوق السياج",
             "swing_gate": "بوابة عامودية جانبية",
@@ -370,6 +402,7 @@
           "label": "النوع",
           "options": {
             "detention": "احتجاز",
+            "evaporation": "تبخر",
             "infiltration": "تسلل",
             "retention": "حوض احتجاز مياه الأمطار الصناعي "
           }
@@ -383,8 +416,11 @@
         "bath/type": {
           "label": "مخصوص",
           "options": {
+            "hammam": "حمام",
             "hot_spring": "العين الحمئة / الينبوع الساخن",
-            "lake": "بحيرة"
+            "lake": "بحيرة",
+            "onsen": "ينابيع ساخنة (يابانية)",
+            "thermal": "حمام حراري"
           }
         },
         "beauty": {
@@ -415,6 +451,7 @@
           }
         },
         "bicycle_road": {
+          "label": "شارع الدراجات",
           "options": {
             "undefined": "لا",
             "yes": "نعم"
@@ -461,7 +498,14 @@
           }
         },
         "bollard": {
-          "label": "النوع"
+          "label": "النوع",
+          "options": {
+            "fixed": "حاجز ثابت",
+            "flexible": "حاجز مرن",
+            "foldable": "حاجز قابل للطي",
+            "removable": "حاجز قابل للإزالة",
+            "rising": "حاجز قابل للارتفاع"
+          }
         },
         "booth": {
           "label": "كشك/دكان",
@@ -1004,6 +1048,22 @@
           "label": "النوع",
           "placeholder": "الافتراضي"
         },
+        "cycle_barrier": {
+          "label": "النوع",
+          "options": {
+            "diagonal": "قطري",
+            "double": "مزدوج",
+            "single": "فردي",
+            "triple": "ثلاثية"
+          }
+        },
+        "cycle_barrier/installation": {
+          "label": "التنصيب",
+          "options": {
+            "fixed": "ثابتة",
+            "removable": "قابل للإزالة"
+          }
+        },
         "cycle_network": {
           "label": "الشبكة"
         },
@@ -1329,8 +1389,7 @@
             "lane": "مسار الطريق",
             "parking_lot": "مكان المواقف",
             "sidewalk": "الرصيف"
-          },
-          "terms": "موضع,مكان"
+          }
         },
         "fire_hydrant/pressure": {
           "label": "الضغط (بار)",
@@ -1438,7 +1497,14 @@
             "adblue:canister": "AdBlue / AUS 32 (في عبوات)",
             "biodiesel": "ديزل حيوي",
             "cng": "الغاز الطبيعي المضغوط (CNG)",
-            "diesel": "ديزل"
+            "diesel": "ديزل",
+            "octane_90": "بنزين (90 أوكتان)",
+            "octane_91": "بنزين (91 أوكتان)",
+            "octane_92": "بنزين (92 أوكتان)",
+            "octane_93": "بنزين (93 أوكتان)",
+            "octane_95": "بنزين (95 أوكتان)",
+            "octane_97": "بنزين (97 أوكتان)",
+            "octane_98": "بنزين (98 أوكتان)"
           }
         },
         "gambling": {
@@ -1764,6 +1830,12 @@
           "label": "الفترة الزمنية",
           "terms": "الفترة الزمنية"
         },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "نعم",
+            "undefined": "لا"
+          }
+        },
         "junction/ref_oneway": {
           "label": "رقم التقاطع",
           "terms": "رقم التقاطع, الرقم المرجعي للتقاطع"
@@ -1903,6 +1975,10 @@
           "label": "مضاء",
           "terms": "مضاء,منور،له نور"
         },
+        "loc_name": {
+          "label": "الاسم المحلي",
+          "terms": "الاسم الشعبي"
+        },
         "location": {
           "label": "المكان",
           "terms": "المكان, المكان بالضبط"
@@ -2009,6 +2085,10 @@
             "stone": "حجر"
           }
         },
+        "message": {
+          "label": "رسالة",
+          "terms": "رسالة"
+        },
         "military_service": {
           "label": "خدمة عسكرية",
           "options": {
@@ -2095,6 +2175,10 @@
           "label": "الاسم",
           "placeholder": "الاسم الشائع (إن وجد)",
           "terms": "الاسم, المسمى"
+        },
+        "nat_name": {
+          "label": "الاسم الوطني",
+          "terms": "الاسم الوطني"
         },
         "natural": {
           "label": "طبيعي"
@@ -2200,6 +2284,10 @@
             "travel_agent": "وكالة السفر",
             "water_utility": "مكتب شركة مياه"
           }
+        },
+        "official_name": {
+          "label": "الاسم الرسمي",
+          "terms": "الاسم الحكومي"
         },
         "oneway": {
           "label": "هذا الطريق يسير باتجاه واحد",
@@ -2664,6 +2752,10 @@
           "label": "اسم طريق المناورة",
           "placeholder": "مثل A5"
         },
+        "reg_name": {
+          "label": "الاسم الإقليمي",
+          "terms": "الاسم الإقليمي,الاسم المناطقي"
+        },
         "relation": {
           "label": "النوع"
         },
@@ -2939,6 +3031,10 @@
         },
         "shop": {
           "label": "النوع"
+        },
+        "short_name": {
+          "label": "الاسم المختصر",
+          "terms": "الاسم المختصر"
         },
         "shower": {
           "label": "استحمام",
@@ -4751,6 +4847,9 @@
         "attraction/animal": {
           "name": "حظيرة حيوانات",
           "terms": "حظيرة حيوانات،محجر حيوانات،حوش حيوانات،حوز حيوانات،ضميمة حيوانات"
+        },
+        "attraction/big_wheel": {
+          "name": "عجلة فيريس"
         },
         "attraction/carousel": {
           "name": "دوامة خيل",

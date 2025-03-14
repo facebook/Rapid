@@ -140,7 +140,8 @@
       "Geoportal2-PL-telecommunications-cable_WMS": {
         "attribution": {
           "text": "Gabinete central de geodesia e cartografia"
-        }
+        },
+        "description": "O serviço Integração nacional do reforço do terreno é um serviço coletivo para a apresentação de dados relativos ao reforço do terreno provenientes diretamente de unidades a nível distrital. O serviço contém apenas dados das unidades que dispõem de um serviço SGA com parâmetros adequados e que decidiram incluir o seu serviço SGA no serviço agregado Integração Nacional de Equipamento Terrestre."
       },
       "Geoportal2-PL-water-pipe_WMS": {
         "attribution": {

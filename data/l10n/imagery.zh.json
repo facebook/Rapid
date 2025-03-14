@@ -144,7 +144,21 @@
           "text": "莱希纳知识中心"
         },
         "description": "基于政府的叶片覆盖正射影像图，全国分辨率为 40 厘米/像素。在缺乏更准确的参考资料时，应将该图层用作对齐基准。WEBP 格式的图像，JOSM 需要一个 WEBP 插件。",
-        "name": "FÖMI 正射影像 2011-2014 (WEBP)"
+        "name": "FÖMI 正射影像 2011–2014 (WEBP)"
+      },
+      "FOMI_2015": {
+        "attribution": {
+          "text": "莱希纳知识中心"
+        },
+        "description": "基于政府的叶片覆盖正射影像图，全国分辨率为 40 厘米/像素。在缺乏更准确的参考资料时，应将该图层用作对齐基准。WEBP 格式的图像，JOSM 需要一个 WEBP 插件。",
+        "name": "FÖMI 正射影像 2015 (WEBP)"
+      },
+      "FOMI_2015_leafoff_20cm": {
+        "attribution": {
+          "text": "莱希纳知识中心"
+        },
+        "description": "基於政府的正射影像，解析度為 20 公分/畫素，涵蓋 6 個區。由於缺乏更準確的參照，該圖層應用作對齊基礎。WEBP 格式的影像，JOSM 需要 webp 外掛程式。",
+        "name": "FÖMI 2015年正射影像 20 公分 (webp)"
       },
       "Frankfurt-am-Main-2019": {
         "attribution": {

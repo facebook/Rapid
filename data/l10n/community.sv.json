@@ -97,6 +97,10 @@
         "name": "{community} på Aparat",
         "description": "Prenumerera på vår Aparat-kanal"
       },
+      "bluesky": {
+        "name": "{community} på Bluesky",
+        "description": "Följ oss på Bluesky"
+      },
       "discord": {
         "name": "Discord för {community}",
         "description": "Kom i kontakt med andra kartläggare på Discord"
@@ -258,6 +262,9 @@
     "br-telegram": {
       "extendedDescription": "Anslut till gemenskapen för att lära dig mer om OpenStreetMap, ställa frågor eller delta på våra möten. Alla är välkomna!"
     },
+    "br-wiki": {
+      "description": "WikiProjekt med information och riktlinjer för samordning av kartläggning i Brasilien."
+    },
     "cape-coast-youthmappers": {
       "description": "Följ oss på Twitter: {url}",
       "extendedDescription": "Detta är den officiella hållpunkten för Youth Mappers chapter på University of Cape Coast, Ghana. Vi älskar kartor, öppen data och att hjälpa de fattiga."
@@ -283,6 +290,7 @@
       "extendedDescription": "Vi brinner för OSM-projektet och delar med oss av vår tid för att göra projektet känt för andra. Vi är fortfarande för få, gå med oss!"
     },
     "Central-Pennsylvania-OSM": {
+      "name": "Centrala Pennsylvania OSM",
       "description": "Online-kartläggningsgemenskap baserat på State College, PA"
     },
     "ch-mailinglist": {
@@ -294,6 +302,62 @@
     },
     "cl-telegram": {
       "extendedDescription": "Anslut till gemenskapen för att lära dig mer om OpenStreetMap, ställa frågor eller delta på våra möten. Alla är välkomna!"
+    },
+    "co-discourse": {
+      "name": "Diskussionsämnen om Colombia för OSM-gemenskaper",
+      "description": "Dessa är ämnen relaterade till kartändringar i Colombia"
+    },
+    "co-facebook": {
+      "name": "Grupp för {community} på Facebook",
+      "description": "Diskussionsgrupp om OSM-frågor i Colombia"
+    },
+    "co-github": {
+      "name": "Projekt på GitHub av {community}",
+      "description": "Kodprojekt utvecklade av gemenskapen"
+    },
+    "co-instagram": {
+      "name": "Inlägg av {community} på Instagram",
+      "description": "Publikationer om gemenskapsaktiviteter eller information"
+    },
+    "co-linkedin": {
+      "name": "Inlägg av {community} på LinkedIn",
+      "description": "Publikationer om gemenskapsaktiviteter eller information"
+    },
+    "co-mastodon": {
+      "name": "Inlägg av {community} på Mastodon",
+      "description": "Publikationer om gemenskapsaktiviteter eller information"
+    },
+    "co-talk": {
+      "name": "E-postlista för {community}",
+      "description": "E-postmeddelanden som kräver kommunikation av information till gemenskapen"
+    },
+    "co-telegram": {
+      "name": "Diskussionsgrupp om {community} på Telegram",
+      "description": "Öppna diskussioner om ämnen av intresse för hela gemenskapen. Det är den mest aktiva kanalen."
+    },
+    "co-thread": {
+      "name": "Inlägg av {community} på Threads",
+      "description": "Publikationer om gemenskapsaktiviteter eller information"
+    },
+    "co-tiktok": {
+      "name": "Korta videor av {community} på Tiktok",
+      "description": "Publikationer om gemenskapsaktiviteter"
+    },
+    "co-twitter": {
+      "name": "Gemenskap {community} på x-Twitter",
+      "description": "Publikationer om gemenskapsaktiviteter eller information"
+    },
+    "co-whatsapp": {
+      "name": "Nyheter från gemenskapen {community} på WhatsApp",
+      "description": "Publikationer om gemenskapsaktiviteter eller information"
+    },
+    "co-wiki": {
+      "name": "Wikisida med dokumentation om kartläggningsprojektet i Colombia.",
+      "description": "Dokumentation om allt relaterat till OpenStreetMap i Colombia"
+    },
+    "co-youtube": {
+      "name": "Videos av {community} på YouTube",
+      "description": "Videor om gemenskapsaktiviteter eller förklaringar av OSM-aktiviteter"
     },
     "comunitat-valenciana-wiki": {
       "description": "Gemenskap för allt du behöver veta om kartläggning i Valencia: {url}"
@@ -360,6 +424,9 @@
     },
     "de-mainz-mailinglist": {
       "description": "OpenStreetMap i Mainz med omgivning"
+    },
+    "de-mainz-signal": {
+      "description": "OpenStreetMap i Mainz, Wiesbaden och omgivning"
     },
     "de-mainz-telegram": {
       "description": "OpenStreetMap i Mainz med omgivning"
@@ -456,6 +523,9 @@
     "gb-mailinglist": {
       "description": "Talk-gb är den officiella kommunikationslistan för storbritanniska (inklusive nordirländska) OSM-gemenskapen"
     },
+    "ge-matrix": {
+      "description": "Allmän chatt om OpenStreetMap i Georgien, kopplad via en brygga till Telegram-chatten"
+    },
     "geogeeks_perth_meetup": {
       "name": "GeoGeeks Perth",
       "description": "Perth-baserad mötesgrupp för personer som är intresserade av kartläggning, geospatial data och öppen källkod. Vi kör regelbundna OSM-kartläggningsfester, samtal och sociala sammankomster. Nybörjare är varmt välkomna!"
@@ -466,6 +536,10 @@
     },
     "hr-github": {
       "description": "GitHub för {community}"
+    },
+    "hr-tm": {
+      "name": "Tasking Manager för {community} ",
+      "description": "Utforska aktiva kartläggningsuppgifter i Kroatien"
     },
     "hr-wiki": {
       "description": "Wikiproject-sida för Kroatien"
@@ -484,6 +558,7 @@
       "description": "Kommande evenemang för OpenStreetMap Ungern-gemenskapen"
     },
     "hu-tm": {
+      "name": "Tasking Manager för {community} ",
       "description": "Utforska aktiva karteringsuppgifter i Ungern"
     },
     "hu-website": {
@@ -521,6 +596,9 @@
     },
     "it-discourse": {
       "description": "Forumet där du kan diskutera OpenStreetMap"
+    },
+    "ivides_website": {
+      "description": "Vi fokuserar på hållbar utveckling, kartläggning och stöd för OpenStreetMap-gemenskapen."
     },
     "ko-facebook": {
       "description": "Kartläggare och OpenStreetMap-användare i Korea"
@@ -595,6 +673,9 @@
     "MapColabora-twitter": {
       "description": "Twitter-konto för Mapeado Colaborativo / Geoinquietos Zaragoza"
     },
+    "MapLYH": {
+      "description": "MapLYH-grupp"
+    },
     "mappa-mercia-group": {
       "name": "Lokalgrupp Mappa Mercia",
       "description": "Ett hem för OpenStreetMap-entusiaster i Midlands",
@@ -602,6 +683,9 @@
     },
     "MappingWR": {
       "description": "Det är lätt att hitta vägar med låg koldioxidutsläpp runt Waterloo-regionen."
+    },
+    "MapRVA": {
+      "description": "Meetup för MapRV"
     },
     "maptime-bogota-facebook": {
       "description": "Vi är en grupp människor som är intresserade av att kartlägga Bogotá och dess omgivningar i OpenStreetMap.",
@@ -672,6 +756,9 @@
     "no-irc": {
       "description": "Chattrum för kartläggare och OpenStreetMap-användare, utvecklare och entusiaster i Norge"
     },
+    "no-matrix": {
+      "description": "Brygga av IRC-chattrum"
+    },
     "Nottingham-OSM-pub-meetup": {
       "name": "Pub-möte en gång i månaden i East Midlands (Nottingham)",
       "description": "Social sammankomst för kartläggare och användare i East Midlands",
@@ -682,6 +769,10 @@
     },
     "Open-Source-San-Jose-Discord": {
       "description": "Kom i kontakt med andra kartläggare på Discord! Efter du registrerat dig, anslut till kanalen #🗺openstreetmap."
+    },
+    "Open-Source-San-Jose-Mastodon": {
+      "description": "Följ Open Source San José på Mastodon.",
+      "extendedDescription": "Open Source San José är en lokal ideell organisation som kopplar samman volontära kodare och designers med samhällens behov genom civikteknologi. OSSJ sponsrar den lokala volontärkartläggargemenskapens varannan veckas South Bay Map Nights."
     },
     "Open-Source-San-Jose-Slack": {
       "description": "Alla är välkomna! Registrera dig på {signupUrl} och anslut sedan till kanalen #proj-osm"
@@ -720,8 +811,18 @@
     "OSM-AR-wiki": {
       "description": "Allt du behöver veta om kartläggning i Argentina."
     },
+    "osm-asia-facebook": {
+      "description": "OpenStreetMap Asiens Facebook-grupp",
+      "extendedDescription": "En grupp för integrerat kartläggningsstöd för Asien. Vi vill särskilt vara en plats för kartläggare utan en lokal gemenskap att dela information och samarbeta för att lösa problem i sina områden som de annars inte skulle kunna hantera på grund av bristen på en lokal gemenskap."
+    },
     "osm-at": {
       "description": "Plattformen för information om OpenStreetMap i Österrike"
+    },
+    "osm-bengaluru-matrix": {
+      "extendedDescription": "Grupp för OpenStreetMap-bidragare, användare och nybörjare i Bengaluru. Länkad till Telegram."
+    },
+    "osm-bengaluru-telegram": {
+      "extendedDescription": "Grupp för OpenStreetMap-bidragare, användare och nybörjare i Bengaluru. Länkad till Matrix."
     },
     "osm-bengaluru-wiki": {
       "description": "OpenStreetMap i Bengaluru"
@@ -730,6 +831,7 @@
       "description": "Förbättra OpenStreetMap i Benin"
     },
     "OSM-Central-Salish-Sea": {
+      "name": "OpenStreetMap Centrala Salishhavet",
       "description": "Kartläggare och OpenStreetMap-användare runt Mount Vernon, Washington",
       "extendedDescription": "OpenStreetMap är en världskarta skapad av människor precis som du. Det är en karta du bygger och ger bort gratis, precis som Wikipedia. Ta en titt på osm.org för mer information. Vi träffas hela tiden för att prata om kartor, skapar kartor och har kul!"
     },
@@ -749,6 +851,12 @@
     "osm-deep-south-wiki": {
       "description": "Wiki-sida för {community}",
       "extendedDescription": "OpenStreetMap Deep South är en lokal kartgemenskap i sydöstra USA."
+    },
+    "osm-delhi-xmpp": {
+      "extendedDescription": "XMPP-rum för OSM Delhi; inte kopplat till några proprietära nätverk."
+    },
+    "OSM-Discord": {
+      "description": "Icke-officiell, gemenskapsdriven Discord-server för den globala OpenStreetMap-gemenskapen. Regionala kanaler finns tillgängliga."
     },
     "OSM-Discourse": {
       "name": "Gemenskapsforum för OpenStreetMap",
@@ -776,6 +884,9 @@
     "osm-india-github": {
       "description": "Koda med oss: {url}"
     },
+    "osm-india-mastodon": {
+      "description": "Hem för OpenStreetMap Indien-gemenskapen på Fediverse."
+    },
     "osm-india-matrix": {
       "extendedDescription": "Inofficiellt chattrum för OSM Indien, också överbryggat till telegramgruppen osmindia"
     },
@@ -798,6 +909,10 @@
     "osm-india-wiki": {
       "description": "Allt du behöver veta om kartläggning i Indien: {url}"
     },
+    "osm-india-xmpp": {
+      "name": "OpenStreetMap Indien XMPP",
+      "extendedDescription": "XMPP-rum för OpenStreetMap Indien-gemenskapen; inte kopplat till några proprietära nätverk. Finns även tillgängligt från Matrix via #osm-in:poddery.com."
+    },
     "osm-iran-aparat": {
       "extendedDescription": "En god resurs med videos om allt rörande OpenStreetMap. Mestadels i Persiska."
     },
@@ -806,6 +921,9 @@
     },
     "osm-iran-telegram": {
       "extendedDescription": "Du är välkommen att gå med i vår Telegram-kanal på {url}. Vi har också en supergrupp med många OSM:are intresserade av Iran. Hitta dess länk i beskrivningen av kanalen."
+    },
+    "OSM-japan-discord": {
+      "description": "En Discord-arbetsyta för OpenStreetMap Japan-gemenskapen: {url}"
     },
     "OSM-japan-facebook": {
       "description": "Kartläggare och OpenStreetMap-användare i Japan"
@@ -847,6 +965,9 @@
     "osm-michigan-wiki": {
       "description": "Wiki-sida för {community}"
     },
+    "osm-nelson": {
+      "description": "En OpenStreetMap-grupp i Nelson, Nya Zeeland."
+    },
     "osm-ni": {
       "description": "Tillhandahåller OSM-tjänster och information för den gemenskapen i Nicaragua"
     },
@@ -877,6 +998,7 @@
       "extendedDescription": "FSHM organiserar evenemang relaterade till fri mjukvara/hårdvara, teknologi, aktivism och OpenStreetMap."
     },
     "OSM-Rome-meetup": {
+      "name": "Möte för romerska kartläggare",
       "description": "Förbättra OpenStreetMap kring Rom",
       "extendedDescription": "Vi siktar på att vara en resurs för människor att diskutera och dela kunskaper om hur man använder fri geografiska datasamlingar, speciellt OpenStreetMap, och öppen geo-mjukvara som hanterar, redigerar och visar geografiska data och förespråkar för dess användning i Lazio."
     },
@@ -921,6 +1043,10 @@
     "OSM-US-Slack": {
       "description": "Alla är välkomna! Registrera dig på {signupUrl}"
     },
+    "OSM-Utah": {
+      "description": "Din OpenStreetMap-kartläggargemenskap för Salt Lake City-området",
+      "extendedDescription": "Vi träffas månadsvis i Salt Lake City, vanligtvis den andra onsdagen varje månad. Alla är välkomna!"
+    },
     "OSM-Wyoming": {
       "description": "Kartläggare och OpenStreetMap-användare i staten Wyoming",
       "extendedDescription": "OpenStreetMap (OSM) Wyoming är en lokal gemenskap med personer som är intresserade av att bidra till att skapa gratiskartor. Vi uppmuntrar alla våra kartläggare att organisera eller föreslå kartläggningsevenemang i hela staten. Meetup-aktiviteter kan vara enkla sociala träffar, enkla eller avancerade utbildningar kring OSM eller gemensamma kartläggningsatsningar."
@@ -962,6 +1088,9 @@
     "rs-wiki": {
       "description": "Wikiproject-sida för Serbien"
     },
+    "scandinavia-discord": {
+      "name": "Skandinavisk kanal på OpenStreetMap World Discord"
+    },
     "sg-wiki": {
       "description": "Wiki-sida för {community}"
     },
@@ -976,6 +1105,10 @@
     },
     "sk-freemap": {
       "description": "OpenStreetMaps kartwebbplats med verktyg i Slovakien och omgivande regioner"
+    },
+    "sosm": {
+      "name": "Schweiziska OpenStreetMap-föreningen",
+      "description": "SOSM skapades för att främja målen för OpenStreetMap-rörelsen, stärka kontakterna med myndigheter och industrin, underlätta aktiviteter för OSM-gemenskapens medlemmar i Schweiz och representera den schweiziska OSM-gemenskapen i andra organisationer."
     },
     "talk-au": {
       "description": "Plats där australienska användare kan chatta"
@@ -1017,6 +1150,10 @@
     "uk-localchapter": {
       "description": "Den officiella lokala filialen för Storbritannien (inklusive Nordirland).",
       "extendedDescription": "Vi stöder OpenStreetMap genom att hålla evenemang, tillhandahålla gemenskapsresurser, bygga partnerskap och genom att sprida ordet. Gå med i OpenStreetMap UK här: {signupUrl}"
+    },
+    "uk-london-mastodon": {
+      "name": "OpenStreetMap London på Mastodon",
+      "description": "OpenStreetMap London på Mastodon: {url}"
     },
     "uk-london-twitter": {
       "name": "OpenStreetMap London på Twitter",
@@ -1139,6 +1276,7 @@
       "extendedDescription": "YouthMappers vid Eastern University, Bangladesh har bildats för att hjälpa människor under humanitär kris. Studenterna, liksom andra kartläggare i världen, lovas att hjälpa människor att använda kartan för utbildning, navigering och andra humanitära ändamål."
     },
     "ym-Far-Eastern-University-Institute-of-Technology": {
+      "name": "Junior Filipinska Datorgemenskap",
       "description": "YouthMappers-filial vid Far Eastern University -Institute of Technology",
       "extendedDescription": "FEU har erkänts som ett av de ledande universiteten på Filippinerna. Dess uppdrag är att producera akademiker som har bidragit till landets framgång. Universitetet utmanar sig ständigt för att höja gränsen för spetskompetens för att uppnå en högsta status inte bara i Filippinerna utan också i den sydostasiatiska regionen"
     },
@@ -1146,6 +1284,7 @@
       "description": "YouthMappers-filial vid Federal School of Surveys"
     },
     "ym-Fourah-Bay-College": {
+      "name": "Studenternas Geografiska Förening",
       "description": "YouthMappers-filial vid Fourah Bay College",
       "extendedDescription": "Student's Geographical Association- YouthMappers är en sammanslutning av Fourah Bay College-studenter med de gemensamma målen att kartlägga utsatta platser i Sierra Leone och världen i stort för lättnad och andra fördelaktiga ändamål, genomföra forskning och andra utbildningsinsatser. Kapitlet består av ungdomar med fantastiska idéer, utvecklingsorienterade med förmåga att relatera till varandra, förstå och genomföra hållbara utvecklingsprojekt som ett team."
     },
@@ -1175,6 +1314,7 @@
       "extendedDescription": "Vi är en YouthMappers-filial från Ignatius Ajuru University of Education som är engagerade i samhällskartläggning av vår miljö och fjärrkartläggning av motståndskraftiga samhällen. Vi är en grupp av frivilliga som använder openstreetmap och annan öppen geospatial källa för kartläggning."
     },
     "ym-Indiana-University-of-Pennsylvania": {
+      "name": "Geospatialt Vetenskapsklubb",
       "description": "YouthMappers-filial vid Indiana University of Pennsylvania"
     },
     "ym-Insititue-d-Enseignement-Superieur-de-Ruhengeri": {
@@ -1183,6 +1323,7 @@
       "extendedDescription": "Vi är studenter från avdelningar för landadministrtion och -förvaltning och avdelningar för markundersökning från INES-Ruhengeri. Vi är engagerade i kartläggningsaktiviteter som skapar förändringarna mot hållbar utveckling i vårt samhälle."
     },
     "ym-Institut-Suprieur-de-Management-Kolda": {
+      "name": "De kvinnliga ledarna för ISM/Kolda",
       "description": "YouthMappers-filial vid Institut Supérieur de Management Kolda",
       "extendedDescription": "Les Femmes Leaders de ISM/Kolda är en helt kvinnlig kartläggningsgrupp i södra Senegal som vill sätta Kolda och omgivande byar på kartan och bättre förstå hur man använder OSM."
     },
@@ -1208,6 +1349,7 @@
       "extendedDescription": "YouthMappers ITU är en tvärvetenskaplig och samarbetsvillig studentgemenskap för att främja humanitär kartläggning av utsatta bosättningar och syftar till att utveckla och dela strategisk och innovativ rumslig information för framtida städer genom att använda geografiska informationssystem och öppna data."
     },
     "ym-Jacksonville-State-University": {
+      "name": "JSU:s katastrofkartläggningsteam",
       "description": "YouthMappers-filial vid Jacksonville State University",
       "extendedDescription": "JSU Disaster Mapping Team är ett program vid Jacksonville State University tillägnad katastrofinsatser i nödsituationer. Detta inkluderar tornados, kraftiga åskväder, översvämningar etc. Teamet är tänkt att vara en värdefull tillgång för omgivande län och en kanal för studenterna på JSU Geoscience Department för att tillämpa det de har lärt sig i en akademisk miljö för att stödja räddningstjänster. Vårt mål är att effektivisera katastrofinsatser och återhämtningsoperationer samtidigt som du använder studentens skicklighetsuppsättningar"
     },

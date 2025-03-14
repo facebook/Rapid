@@ -155,6 +155,7 @@
             "subdistrict": "Undirsvæði",
             "subdistrict!vn": "Hverfishluti/Hreppur/Byggðakjarni",
             "suburb": "Úthverfi",
+            "town": "Bær",
             "unit": "Eining"
           }
         },
@@ -744,6 +745,21 @@
           "label": "Tegund",
           "placeholder": "Sjálfgefið"
         },
+        "cycle_barrier": {
+          "label": "Tegund",
+          "options": {
+            "diagonal": "Á ská",
+            "double": "Tvöfalt",
+            "single": "Einfalt"
+          }
+        },
+        "cycle_barrier/installation": {
+          "label": "Innsetning",
+          "options": {
+            "fixed": "Föst",
+            "removable": "Færanlegur"
+          }
+        },
         "cycle_network": {
           "label": "Leiðakerfi"
         },
@@ -1238,6 +1254,12 @@
           "label": "Gjald fyrir internetaðgang",
           "options": {
             "no": "Laust"
+          }
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Já",
+            "undefined": "Nei"
           }
         },
         "junction/ref_oneway": {

@@ -173,6 +173,7 @@
             "subdistrict": "Muhit",
             "subdistrict!vn": "Muhit",
             "suburb": "Yöre",
+            "town": "Kasaba",
             "unit": "Birim"
           },
           "terms": "['Adresler' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
@@ -920,6 +921,11 @@
         "cutting": {
           "label": "Tür",
           "placeholder": "Varsayılan"
+        },
+        "cycle_barrier/installation": {
+          "options": {
+            "fixed": "Sabit"
+          }
         },
         "cycle_network": {
           "label": "Bağlantı"

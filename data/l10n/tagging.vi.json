@@ -170,6 +170,7 @@
             "subdistrict": "Phường/xã/thị trấn",
             "subdistrict!vn": "Phường/Xã/Thị trấn",
             "suburb": "Khu phố",
+            "town": "Thị xã",
             "unit": "Số Phòng"
           },
           "terms": "địa chỉ, số địa chỉ, số nhà, số tòa nhà, số toà nhà, dia chi, so dia chi, so nha, so toa nha"
@@ -1037,6 +1038,14 @@
           "label": "Kiểu",
           "placeholder": "Bình thường"
         },
+        "cycle_barrier": {
+          "label": "Loại"
+        },
+        "cycle_barrier/installation": {
+          "options": {
+            "fixed": "Cố định"
+          }
+        },
         "cycle_network": {
           "label": "Hệ thống"
         },
@@ -1377,8 +1386,7 @@
             "lane": "Làn đường",
             "parking_lot": "Bãi đậu xe",
             "sidewalk": "Vỉa hè"
-          },
-          "terms": "vị trí, địa điểm, nơi, chỗ, vi tri, dia diem, noi, cho"
+          }
         },
         "fire_hydrant/pressure": {
           "label": "Áp suất (ba)",
@@ -1902,6 +1910,12 @@
           "label": "Thời gian Giãn cách",
           "terms": "thời gian giãn cách, khoảng cách thời gian, thời gian chờ đợi, khoảng thời gian, thời khoảng, giây, phút, giờ, tiếng, tiếng đồng hồ, tiếng hồ, ngày, tuần, tháng, năm, thoi gian gian cach, khoang cach thoi gian, thoi gian cho doi, khoang thoi gian, thoi khoang, giay, phut, gio, tieng, tieng dong ho, tieng ho, ngay, tuan, thang, nam"
         },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Có",
+            "undefined": "Không có"
+          }
+        },
         "junction/ref_oneway": {
           "label": "Số Giao lộ",
           "terms": "số giao lộ, số lối ra, so giao lo, so loi ra"
@@ -2161,6 +2175,9 @@
         "maxwidth": {
           "label": "Giới hạn Chiều rộng",
           "terms": "giới hạn bề rộng, giới hạn chiều ngang, giới hạn bề ngang, chiều rộng tối đa, bề rộng tối đa, chiều ngang tối đa, bề ngang tối đa, gioi han be rong, gioi han chieu ngang, gioi han be ngang, chieu rong toi da, be rong toi da, chieu ngang toi da, be ngang toi da"
+        },
+        "maxwidth/physical": {
+          "label": "Giới hạn Chiều rộng"
         },
         "memorial": {
           "label": "Kiểu",

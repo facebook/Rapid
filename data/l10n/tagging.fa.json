@@ -177,6 +177,7 @@
             "subdistrict!vn": "بخش / کومون / Townlet",
             "suburb": "حومه شهر",
             "suburb!jp": "تحت مراقبت (Cities designated by government ordinance of Japan)",
+            "town": "شهر",
             "unit": "واحد"
           },
           "terms": "آدرس، نشانی"
@@ -234,6 +235,9 @@
           "label": "تهویه هوا",
           "terms": "تهویه هوا، کولر، خنک‌کننده"
         },
+        "alt_name": {
+          "label": "نام جایگزین"
+        },
         "amenity": {
           "label": "نوع"
         },
@@ -260,6 +264,7 @@
             "petroglyph": "سنگ تراشی/حکاکی روی سنگ",
             "roman_circus": "سیرک رومی",
             "roman_villa": "ویلای رومی",
+            "settlement": "مکان تاریخی",
             "tumulus": "گورپشته"
           }
         },
@@ -270,6 +275,7 @@
           "label": "نوع"
         },
         "armrest": {
+          "label": "دسته صندلی",
           "options": {
             "undefined": "نامشخص"
           }
@@ -414,6 +420,7 @@
           "options": {
             "cosmetics": "لوازم آرایشی",
             "hair_removal": "مو زدایی",
+            "skin_care": "مراقبت پوستی",
             "tanning": "برنزه کردن",
             "waxing": "واکس مو"
           }
@@ -422,9 +429,13 @@
           "label": "نیمکت"
         },
         "bicycle_parking": {
-          "label": "نوع"
+          "label": "نوع",
+          "options": {
+            "building": "درون ساختمان"
+          }
         },
         "bicycle_road": {
+          "label": "مسیر دوچرخه",
           "options": {
             "undefined": "خیر",
             "yes": "بله"
@@ -927,6 +938,20 @@
         "cutting": {
           "label": "نوع",
           "placeholder": "پیش فرض"
+        },
+        "cycle_barrier": {
+          "label": "نوع",
+          "options": {
+            "diagonal": "موَرَب",
+            "double": "دو برابر",
+            "single": "منفرد / تک"
+          }
+        },
+        "cycle_barrier/installation": {
+          "options": {
+            "fixed": "درست شد",
+            "removable": "قابل جدا شدن / حذف شدنی"
+          }
         },
         "cycle_network": {
           "label": "شبکه"
@@ -1574,6 +1599,12 @@
           "label": "بازه",
           "terms": "دوره، فاصله، بازه"
         },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "بله",
+            "undefined": "خیر"
+          }
+        },
         "junction/ref_oneway": {
           "label": "شمارهٔ تقاطع",
           "terms": "شماره تقاطع"
@@ -1645,6 +1676,9 @@
           "label": "لايه",
           "placeholder": "۰",
           "terms": "لایه"
+        },
+        "layer_1": {
+          "placeholder": "۰"
         },
         "leaf_cycle": {
           "label": "چرخه برگ",
@@ -2717,6 +2751,9 @@
         "shop": {
           "label": "نوع"
         },
+        "short_name": {
+          "label": "نام کوتاه"
+        },
         "shower": {
           "label": "دوش"
         },
@@ -2957,7 +2994,9 @@
             "asphalt": "آسفالت",
             "compacted": "فشرده",
             "concrete": "بتن",
+            "concrete:plates": "صفحات بتنی",
             "dirt": "خاک",
+            "fine_gravel": "شن نرم",
             "grass": "چمن",
             "gravel": "شنی (درشت)",
             "ground": "زمین",
@@ -2967,8 +3006,10 @@
             "pebblestone": "سنگ ریزه",
             "salt": "نمک",
             "sand": "شنی (ریز)",
+            "sett": "سنگ‌فرش‌ (sett)",
             "unpaved": "روسازی‌نشده",
-            "wood": "چوب"
+            "wood": "چوب",
+            "woodchips": "خرده‌چوب"
           },
           "terms": "جنس، روسازی، روکش"
         },
@@ -5640,6 +5681,9 @@
         "highway/toll_gantry": {
           "name": "عوارض جاده آزاد (به صورت دروازه دوربین بدون استفاده از غرفه‌های عوارض)",
           "terms": "عوارض دوربین پلاک ، عوارض بدون پول ، عوارض الکترونیکی ، عوارض جریان آزاد ، دروازه عوارض ، عوارض ترانسپوندر، پرداخت الکترونیکی عوارض، جاده، آزاد راه، دوربین دروازه ای، دروازه دوربین، عوارضی، بزرگراه، غرفه عوارضی، عوارضی بدون توقف"
+        },
+        "highway/track": {
+          "name": "جاده خاکی / جاده دسترسی به اراضی"
         },
         "highway/traffic_mirror": {
           "name": "آینه ترافیکی",

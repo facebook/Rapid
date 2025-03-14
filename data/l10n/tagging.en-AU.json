@@ -51,6 +51,13 @@
         "button_operated": {
           "label": "Button Operated"
         },
+        "camp_site": {
+          "options": {
+            "serviced": {
+              "description": "Toilets, water, showers, and electricity are provided"
+            }
+          }
+        },
         "capacity_volume": {
           "label": "Capacity (Cubic Metres)"
         },
@@ -81,6 +88,8 @@
         },
         "cuisine": {
           "options": {
+            "barbecue": "Barbeque",
+            "coffee_shop": "Coffee",
             "donut": "Doughnut"
           },
           "terms": "fare,food types"
@@ -197,6 +206,7 @@
           "options": {
             "anaesthetics": "Anaesthesiology",
             "behavior": "Behaviour Therapy",
+            "gynaecology": "Obstetrics & Gynaecology",
             "haematology": "Haematology",
             "orthopaedics": "Orthopaedic Surgery"
           }
@@ -237,6 +247,26 @@
         },
         "kerb": {
           "label": "Kerb",
+          "options": {
+            "flush": {
+              "description": "A dropped kerb which is level with the surrounding area."
+            },
+            "lowered": {
+              "description": "A dropped kerb which can be used by wheelchair users, not higher than a few centimetres."
+            },
+            "no": {
+              "description": "There is no kerb present at this location."
+            },
+            "raised": {
+              "description": "A raised kerb which can't easily be used by wheelchair users, higher than a few centimetres."
+            },
+            "rolled": {
+              "description": "A raised kerb with a rounded edge which makes it easier to use for cars or bicycles, but not for wheelchairs."
+            },
+            "yes": {
+              "description": "Some sort of kerb is present at this location, unknown whether it is raised, lowered, flush, etc."
+            }
+          },
           "terms": "Curb"
         },
         "length": {
@@ -253,15 +283,8 @@
             "aluminium": "Aluminium"
           }
         },
-        "maxspeed": {
-          "placeholder": "40 mph, 50 mph, 60 mph..."
-        },
-        "maxspeed/advisory": {
-          "placeholder": "40 mph, 50 mph, 60 mph..."
-        },
         "maxspeed/hgv": {
-          "label": "Heavy Vehicle Speed Limit",
-          "placeholder": "40 mph, 50 mph, 60 mph..."
+          "label": "Heavy Vehicle Speed Limit"
         },
         "min_height": {
           "label": "Height of Bottom (Metres)"
@@ -396,7 +419,7 @@
         },
         "amenity/bbq": {
           "name": "Barbeque\nBBQ",
-          "terms": "bbq,grill,barbecue"
+          "terms": "bbq,grill,barbecue,barbeque"
         },
         "amenity/bicycle_parking/building": {
           "name": "Bicycle Parking Building"
@@ -410,7 +433,8 @@
           "terms": "boba,bubble milk tea,pearl milk tea,taiwanese tea drink,tapioca,pearl tea,boba drink,cafe"
         },
         "amenity/cafe/coffee_shop": {
-          "name": "Coffee shop"
+          "name": "Cafe",
+          "terms": "americano,cold brew,brew,cafe,café,caffe,caffè,cappuccino,cocoa,coffee shop,drip,espresso,flat white,hot drinks,latte,macchiato,tea"
         },
         "amenity/childcare": {
           "name": "Childcare\nDaycare"
@@ -435,6 +459,9 @@
         },
         "amenity/doctors/general": {
           "name": "General Practitioner"
+        },
+        "amenity/doctors/haematology": {
+          "name": "Haematologist"
         },
         "amenity/exhibition_centre": {
           "name": "Exposition Centre"
@@ -490,7 +517,8 @@
           "name": "Recycling Centre"
         },
         "amenity/restaurant/barbecue": {
-          "terms": "barbecue restaurant,bar,bbq,canteen,dine,dining,dinner,drive-in,eat,grill,lunch,table"
+          "name": "Barbeque Restaurant",
+          "terms": "barbecue restaurant,barbeque restaurant,bar,bbq,canteen,dine,dining,dinner,drive-in,eat,grill,lunch,table"
         },
         "amenity/sanitary_dump_station": {
           "name": "Caravan Toilet Disposal"
@@ -587,6 +615,9 @@
         "building/apartments": {
           "terms": "flat building,flats"
         },
+        "building/detached": {
+          "terms": "Freestanding House"
+        },
         "building/house/terraced": {
           "name": "Terraced house"
         },
@@ -640,6 +671,9 @@
           "name": "Shared Path Crossing",
           "terms": "Cycle & Foot Crossing,bicycle and foot crosswalk,bike and pedestrian crossing,cycleway,cycling,cyclist"
         },
+        "highway/cycleway/traffic_island_shared": {
+          "name": "Shared Path Refuge Island"
+        },
         "highway/elevator": {
           "name": "Lift",
           "terms": "elevator"
@@ -676,7 +710,10 @@
           "name": "Road Milestone"
         },
         "highway/path/crossing": {
-          "name": "Shared Path Crossing"
+          "name": "Path Crossing"
+        },
+        "highway/path/crossing/traffic_signals": {
+          "name": "Path Crossing With Pedestrian Signals"
         },
         "highway/street_lamp": {
           "name": "Street Light",
@@ -838,7 +875,7 @@
           "name": "Metro Train Entrance"
         },
         "shop/alcohol": {
-          "name": "Off licence (Alcohol shop)",
+          "name": "Bottle Shop (Alcohol Shop)",
           "terms": "alcohol,beer,booze,wine,off licence,off license"
         },
         "shop/appliance": {

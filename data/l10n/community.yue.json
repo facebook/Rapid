@@ -14,7 +14,7 @@
       "openstreetmapalba": "蘇格蘭公家街圖組",
       "openstreetmapalbania": "山國公家街圖組",
       "openstreetmapargentina": "銀國公家街圖組",
-      "openstreetmaparmenia": "OpenStreetMap 亚美尼亚",
+      "openstreetmaparmenia": "亞美尼亞公家街圖組",
       "openstreetmapasia": "亞洲公家街圖組",
       "openstreetmapasti": "山城公家街圖組",
       "openstreetmapaustria": "東國公家街圖組",
@@ -54,7 +54,7 @@
       "openstreetmapcroatia": "OpenStreetMap 克罗地亚",
       "openstreetmapcuba": "古巴公家街圖組",
       "openstreetmapcuneo": "OpenStreetMap 库内奥",
-      "openstreetmapcyprus": "开放街道地图 塞浦路斯",
+      "openstreetmapcyprus": "塞浦路斯公家街圖組",
       "openstreetmapcz": "OpenStreetMap 捷克",
       "openstreetmapde": "OpenStreetMap 德國",
       "openstreetmapdeepsouth": "OpenStreetMap 美国南部诸州",
@@ -205,7 +205,7 @@
       "osmcolombia": "OSM 哥倫比亞",
       "osmmainz": "開放街圖美因茨",
       "osmnelson": "OSM 尼爾森",
-      "swissopenstreetmap": "瑞士 OpenStreetMap",
+      "swissopenstreetmap": "瑞士公家街圖組",
       "youthmappersasu": "青年绘制者ASU",
       "youthmappersufrj": "年輕圖客 UFRJ"
     },
@@ -219,20 +219,20 @@
         "description": "在 Bluesky 追蹤我們"
       },
       "discord": {
-        "name": "{community} 的 Discord",
-        "description": "在 Discord 上于其他 Mapper 保持联系"
+        "name": "{community} 個不協",
+        "description": "喺不協同其他製圖者取得聯繫"
       },
       "discourse": {
-        "name": "{community} 社区论坛",
-        "description": "{community} 的官方論壇"
+        "name": "{community}社羣論壇",
+        "description": "{community} 官方論壇"
       },
       "facebook": {
-        "name": "Facebook 上的 {community}",
-        "description": "加入我們在  Facebook 上的專頁"
+        "name": "面簿上 {community}",
+        "description": "面簿上加入我哋"
       },
       "forum": {
         "name": "{community} 論壇",
-        "description": "{community} 的官方論壇"
+        "description": "{community} 官方論壇"
       },
       "gitlab": {
         "name": "{community} 的 GitLab"
@@ -242,7 +242,7 @@
         "description": "在 Instagram 追蹤我們"
       },
       "irc": {
-        "name": "IRC 上的 {community}",
+        "name": "互聯網中繼談上 {community}",
         "description": "在 irc.oftc.net 上加入 #{account}（連接埠 6667，安全連線是 6697）"
       },
       "linkedin": {
@@ -250,12 +250,12 @@
         "description": "在LinkedIn上加入我们的社区"
       },
       "mailinglist": {
-        "name": "{account} 邮件列表",
-        "description": "{community} 的官方邮件列表"
+        "name": "{account} 信件單討論",
+        "description": "{community} 官方信件單"
       },
       "mastodon": {
-        "name": "Mastodon 上的 {community} ",
-        "description": "{community} 的 Mastodon 官方帳號"
+        "name": "乳齒象上 {community} ",
+        "description": "{community}   乳齒象官方帳號"
       },
       "matrix": {
         "name": "{community} Matrix 聊天室",
@@ -275,8 +275,8 @@
         "name": "{community} 的 Slack"
       },
       "telegram": {
-        "name": "{community} 的 Telegram",
-        "description": "加入我們的 Telegram 聊天室"
+        "name": "{community}電報",
+        "description": "加入我哋電報聊天室"
       },
       "threads": {
         "name": "Threads 上的 {community}",
@@ -287,15 +287,15 @@
         "description": "在 TikTok 追蹤我們"
       },
       "twitter": {
-        "name": "𝕏 上的 {community}",
-        "description": "在 X 追蹤我們"
+        "name": "𝕏 上 {community}",
+        "description": "喺 𝕏跟我哋"
       },
       "wiki": {
         "name": "{community} 的維基專題"
       },
       "x": {
-        "name": "𝕏 上的 {community}",
-        "description": "在 X 追蹤我們"
+        "name": "𝕏 上 {community}",
+        "description": "喺 𝕏跟我哋"
       },
       "xmpp": {
         "name": "{community} 的 XMPP",
@@ -343,7 +343,7 @@
       "extendedDescription": "如果你想帮助改善和发展比利时的制图社区，让更多的人痴狂于绘制地图，比利时OpenStreetMap就是你的理想选择！"
     },
     "be-discourse": {
-      "description": "讨论在比利时 OpenStreetMap 的论坛"
+      "description": "個論壇討論比利時公家街圖"
     },
     "be-irc": {
       "extendedDescription": "在 irc.oftc.net (端口 6667)上加入 #{account} ，它已与 Matrix聊天室 频道互通"
@@ -367,7 +367,7 @@
       "extendedDescription": "從 2018 年 2月開始聚會，通常辦在比耶拉、伊夫雷亞。"
     },
     "bo-facebook-group": {
-      "name": "{community} Facebook 社團"
+      "name": "{community} 面簿社團"
     },
     "bo-matrix": {
       "description": "凡製圖者皆觀迎！"
@@ -423,12 +423,12 @@
       "description": "討論與哥倫比亞相關的地圖變動"
     },
     "co-facebook": {
-      "name": "在 Facebook 的{community}社團",
+      "name": "面簿上{community}社團",
       "description": "討論哥倫比亞 OSM 議題的群組"
     },
     "co-github": {
       "name": "GitHub 上的{community}專案",
-      "description": "由社群開發的程式專案"
+      "description": "社羣所開發程式專案"
     },
     "co-instagram": {
       "name": "Instagram 上的 {community}貼文",
@@ -439,7 +439,7 @@
       "description": "社群活動或是資訊的內容"
     },
     "co-mastodon": {
-      "name": "Mastodon 上的 {community}貼文",
+      "name": " 乳齒象上 {community}貼文",
       "description": "社群活動或是資訊的內容"
     },
     "co-talk": {
@@ -447,7 +447,7 @@
       "description": "採用 email 方式來與社群溝通資訊"
     },
     "co-telegram": {
-      "name": "討論{community} 議題的 Telegram 群組",
+      "name": "討論{community} 議題電報組",
       "description": "整個社群討論各種話題的地方，是最活躍的地方"
     },
     "co-thread": {
@@ -471,7 +471,7 @@
       "description": "任何跟在哥倫比亞的開放街圖相關的文件"
     },
     "co-youtube": {
-      "name": "{community}在 YouTube 的影片",
+      "name": "放喺汝管{community}片",
       "description": "社群活動或是 OSM 活動的講解影片"
     },
     "comunitat-valenciana-wiki": {
@@ -571,7 +571,7 @@
       "description": "在斯徒加特的圖客與開放街圖使用者"
     },
     "de-telegram": {
-      "name": "OpenStreetMap 德语区（德国-奥地利-瑞士） Telegram",
+      "name": "公家街圖德國話地（德國、奥地利、瑞士） 電報組",
       "description": "加入 OpenStreetMap 德语区（德国-奥地利-瑞士） Telegram大群：{url}"
     },
     "de-ulm_neuulm-meetup": {
@@ -639,7 +639,7 @@
       "extendedDescription": "在 irc.oftc.net (端口 6667)上加入 #{account} ，若您想要提问需耐心等待几分钟"
     },
     "gb-mailinglist": {
-      "description": "Talk-gb 是大英國協 (包括北愛爾蘭) 社群的主要溝通郵件論壇 "
+      "description": "Talk-gb ，英國 (含北愛爾蘭) 社羣，主要溝通論壇 "
     },
     "ge-matrix": {
       "description": "開放街圖在喬治亞的一般討論群組，有與 Telegram 群組連結"
@@ -660,7 +660,7 @@
       "description": "開放街圖維基主題的克羅埃西亞頁面"
     },
     "hu-facebook-group": {
-      "name": "{community} Facebook 社團"
+      "name": "{community} 面簿社團"
     },
     "hu-matrix": {
       "extendedDescription": "有關地圖主題的開放街圖聊天群組，為 OSM 社群支援論壇其中之一"
@@ -690,7 +690,7 @@
       "extendedDescription": "在印尼畫地圖嗎？有問題，想要與社群互動？來 {url} 加入我們，歡迎所有人。"
     },
     "id-facebook-group": {
-      "name": "{community} Facebook 社團",
+      "name": "{community} 面簿社團",
       "extendedDescription": "在印尼畫地圖嗎？有問題，想要與社群互動？來 {url} 加入我們，歡迎所有人。"
     },
     "ireland-chapter": {
@@ -737,7 +737,7 @@
       "description": "{community} 畫地圖指南"
     },
     "latam-facebook": {
-      "description": "拉丁美洲圖客和開放街圖 Facebook"
+      "description": "拉丁美洲繪者同公家街圖面簿"
     },
     "latam-matrix": {
       "description": "在開放街圖拉丁美洲社群的成員聊天，與 Telegram 聊天室連通。"
@@ -772,11 +772,11 @@
       "extendedDescription": "蒙克洛亞校區在 2017 年 11 月組成的地理志工團體，差不多有從三所大學 (Complutense、CEU 與 UPM) 來的 20 位成員。大學部學生、碩士、博士學生從 Geoinquietos 獲得訓練一起合作組織 (MSF、Acción contra el Hambre…) 活動。由 UPM 正式認可為教育創新專案 (Code IE1718.0411) "
     },
     "madrid-wiki": {
-      "description": "您必須知道的在馬德里製圖的所有事情：{url}"
+      "description": "馬德里製圖，一切君必先知：{url}"
     },
     "mailinglist-sk-googlegroups": {
       "name": "在 Google 群組的斯洛伐克郵件論壇",
-      "description": "斯洛伐克的官方郵件論壇"
+      "description": "斯洛伐克官方郵件論壇"
     },
     "map-kibera": {
       "description": "Map Kibera 是在肯亞活動的註冊組織",
@@ -811,46 +811,47 @@
       "extendedDescription": "了解如何在现场收集数据并将其数字化到 OpenStreetMap 上。 没不需要有基础知识！ 您只需乐于参与、渴望学习和并收获快乐。"
     },
     "maptime-bogota-linkedin": {
-      "name": "地圖時間波哥大",
+      "name": "製圖之時波哥大",
       "description": "我們是一群有興趣畫開放街圖波哥大與週遭地區的人。",
       "extendedDescription": "了解如何在现场收集数据并将其数字化到 OpenStreetMap 上。 没不需要有基础知识！ 您只需乐于参与、渴望学习和并收获快乐。"
     },
     "maptime-bogota-mastodon": {
-      "name": "地圖時間波哥大",
+      "name": "製圖之時波哥大",
       "description": "我們是一群有興趣畫開放街圖波哥大與週遭地區的人。",
       "extendedDescription": "了解如何在现场收集数据并将其数字化到 OpenStreetMap 上。 没不需要有基础知识！ 您只需乐于参与、渴望学习和并收获快乐。"
     },
     "maptime-bogota-meetup": {
-      "name": "地圖時間波哥大",
+      "name": "製圖之時波哥大",
       "description": "我們是一群有興趣畫開放街圖波哥大與週遭地區的人。",
       "extendedDescription": "了解如何在现场收集数据并将其数字化到 OpenStreetMap 上。 没不需要有基础知识！ 您只需乐于参与、渴望学习和并收获快乐。"
     },
     "maptime-bogota-telegram": {
-      "name": "地圖時間波哥大",
+      "name": "製圖之時波哥大",
       "description": "我們是一群有興趣畫開放街圖波哥大與週遭地區的人。",
       "extendedDescription": "了解如何在现场收集数据并将其数字化到 OpenStreetMap 上。 没不需要有基础知识！ 您只需乐于参与、渴望学习和并收获快乐。"
     },
     "maptime-bogota-twitter": {
-      "name": "地圖時間波哥大",
+      "name": "製圖之時波哥大",
       "description": "我們是一群有興趣畫開放街圖波哥大與週遭地區的人。",
       "extendedDescription": "了解如何在现场收集数据并将其数字化到 OpenStreetMap 上。 没不需要有基础知识！ 您只需乐于参与、渴望学习和并收获快乐。"
     },
     "maptime-bogota-website": {
-      "name": "地圖時間波哥大",
+      "name": "製圖之時波哥大",
       "description": "我們是一群有興趣畫開放街圖波哥大與週遭地區的人。",
       "extendedDescription": "了解如何在现场收集数据并将其数字化到 OpenStreetMap 上。 没不需要有基础知识！ 您只需乐于参与、渴望学习和并收获快乐。"
     },
     "maptime-bogota-youtube": {
-      "name": "地圖時間波哥大",
+      "name": "製圖之時波哥大",
       "description": "我們是一群有興趣畫開放街圖波哥大與週遭地區的人。",
       "extendedDescription": "了解如何在现场收集数据并将其数字化到 OpenStreetMap 上。 没不需要有基础知识！ 您只需乐于参与、渴望学习和并收获快乐。"
     },
     "Maptime-ME-meetup": {
+      "name": "製圖之時緬因",
       "description": "緬因州波特蘭區域的圖客與開放街圖使用者",
       "extendedDescription": "实际上，Maptime 是指在地图制作花费的时间。 我们的使命是通过使用制图工具和技术创建协作学习，探索和地图创建的时间和空间，为感兴趣的任何人打开制图的可能性。"
     },
     "Maptime-Oceania-Slack": {
-      "name": "Maptime 大洋洲 Slack",
+      "name": "製圖之時大洋洲 Slack",
       "description": "在 {signupUrl} 註冊"
     },
     "md-googlegroup": {
@@ -861,10 +862,10 @@
       "description": "歡迎所有人加入！在 {signupUrl} 註冊"
     },
     "mm-facebook": {
-      "extendedDescription": "在緬甸畫地圖嗎？有問題，想要與社群互動？來  {url} 加入我們，歡迎所有人。"
+      "extendedDescription": "畫緬圖嗎？有問題，想要與社群互動？來  {url} 加入我們，歡迎所有人。"
     },
     "mn-facebook": {
-      "extendedDescription": "在蒙古畫地圖嗎？有問題，想要與社群互動？來 {url} 加入我們，歡迎所有人。"
+      "extendedDescription": "畫蒙古圖嗎？有問題，想要與社群互動？來 {url} 加入我們，歡迎所有人。"
     },
     "mt-irc": {
       "extendedDescription": "在 irc.oftc.net (端口 6667)上加入 #{account} ，若您想要提问需耐心等待几分钟"
@@ -887,7 +888,7 @@
       "extendedDescription": "一開始 2011 年 3 月時有一群人在諾丁罕開始聚會，後來則大多在德比，以及不時在東密德蘭的其他地方。大多是社交性質的聚會，但也是相當好詢問有關地方 OSM 或是一般性質問題。在夏季時我們通常會趁有日光時在聚會場地附近出外畫地圖，這群人有個特別興趣，就是繪製公共空間，不時會為了畫地圖而聚會。"
     },
     "np-facebook": {
-      "extendedDescription": "在尼泊爾畫地圖嗎？有問題，想要與社群互動？來 {url} 加入我們，歡迎所有人。"
+      "extendedDescription": "尼泊爾圖嗎？有問題，想要與社群互動？來 {url} 加入我們，歡迎所有人。"
     },
     "Open-Source-San-Jose-Discord": {
       "name": "開源聖荷西的 Discord",
@@ -915,7 +916,7 @@
       "description": "{community} EventBrite 頁面"
     },
     "osm-africa-facebook-group": {
-      "name": "{community} Facebook 社團"
+      "name": "{community} 面簿社團"
     },
     "osm-africa-matrix": {
       "description": "凡製圖者皆觀迎！"
@@ -937,7 +938,7 @@
       "description": "您必須知道在阿根庭製圖的所有事情"
     },
     "osm-asia-facebook": {
-      "description": "開放街圖亞洲 Facebook 社團",
+      "description": "公家街圖亞洲面簿社團",
       "extendedDescription": "為亞洲提供綜合繪圖支援的社團。我們特別希望成為沒有在地社群的圖客可以分享資訊並協作解決其所在地區問題的地方，否則他們將無法解決由於缺乏當地社群而無法解決的問題。"
     },
     "osm-at": {
@@ -956,9 +957,9 @@
       "description": "改善貝南的開放街圖"
     },
     "OSM-Central-Salish-Sea": {
-      "name": "OpenStreetMap 中央盐海",
+      "name": "公家街圖中央鹽海",
       "description": "華盛頓州弗農山區域的圖客與開放街圖使用者",
-      "extendedDescription": "開放街圖是一幅由像你這樣的人所製作的世界地圖。它是由你所建構，並如同維基百科那樣自由提供給所有人的地圖。看看 osm.org 以取得更多資訊，然後在聚會上加入我們來說說地圖的故事、對 OSM 貢獻然後玩得開心！"
+      "extendedDescription": "公家街圖，亦即世界圖，好似君咁嘅人所製。圖由君所製，就好似維基百科咁送出去。查閱 osm.org 就有多啲資料。我哋成日講圖製圖，開心得意。"
     },
     "osm-ch": {
       "description": "開放街圖在瑞士交流資訊的平台"
@@ -984,15 +985,15 @@
       "extendedDescription": "開放街圖德里的 XMPP 群組聊天室；不會連接到任何專屬網路。"
     },
     "OSM-Discord": {
-      "name": "OpenStreetMap 全球 Discord",
-      "description": "全球 OpenStreetMap 社群的非官方、社群運作的 Discord 伺服器。提供區域頻道。"
+      "name": "公家街圖全球不協",
+      "description": "全球公家街圖社羣非官方、社羣運作 Discord 伺服器。提供區域頻道。"
     },
     "OSM-Discourse": {
       "name": "開放街圖社群論壇",
       "description": "討論開放街圖的共享空間"
     },
     "OSM-Facebook": {
-      "description": "在 Facebook 為我們按讚，追蹤開放街圖相關的新聞和動態。"
+      "description": "喺面簿為我地㩒讚，追蹤公家街圖相關新聞同動態。"
     },
     "osm-gh-facebook": {
       "extendedDescription": "迦納社群中的圖客，推廣迦納開放街圖和人道救援開放街圖計畫。加入我們吧！"
@@ -1008,20 +1009,20 @@
     },
     "OSM-India-facebook": {
       "description": "印度之內，改善公家街圖",
-      "extendedDescription": "在印度绘图？有任何疑问，想要与当地的社区交流？在 {Url} 加入我们。欢迎所有人！"
+      "extendedDescription": "畫印度圖？有問題，想同社團交流？請{url}處加入 ，人人都歡迎。"
     },
     "osm-india-github": {
-      "description": "和我們一起編寫程式：{url}"
+      "description": "同我哋一齊編寫程式：{url}"
     },
     "osm-india-mastodon": {
       "description": "在聯邦宇宙上的開放街圖印度的家"
     },
     "osm-india-matrix": {
-      "extendedDescription": "OSM 印度非官方的聊天室，也與 osmindia Telegram 群組同步"
+      "extendedDescription": "公家街圖印度非官方聊天室，亦同 osmindia Telegram 羣組同步"
     },
     "OSM-India-Puducherry-Facebook": {
-      "name": "自由軟硬體運動 - Facebook",
-      "description": "FSHM Facebook 專頁使你知道社群活動",
+      "name": "自由軟硬體運動 - 面簿",
+      "description": "FSHM 面簿專頁使你知道社群活動",
       "extendedDescription": "FSHM 组织与免费软硬件、技术、行动主义和 OpenStreetMap 有关的活动。 其 FaceBook 页面是与这个活动保持联系的最佳方式。"
     },
     "OSM-India-Puducherry-Matrix": {
@@ -1030,13 +1031,13 @@
       "extendedDescription": "FSHM 社群成員經由 Riot.im 群組分享他們的開放街圖畫地圖狀況 / 經驗，社群也會討論與自由軟體 / 硬體、科技和行動主義。"
     },
     "OSM-india-twitter": {
-      "description": "我们之间仅差一条推文：{url}"
+      "description": "我哋之間爭條推文：{url}"
     },
     "osm-india-website": {
       "description": "位于印度的绘图者和 OpenStreetMap 用户"
     },
     "osm-india-wiki": {
-      "description": "在印度绘图所需要知道的所有事情: {url}"
+      "description": "印度製圖，一切君先知: {url}"
     },
     "osm-india-xmpp": {
       "name": "開放街圖印度 XMPP",
@@ -1055,10 +1056,10 @@
       "description": "OSM 日本社群的 Discord 工作空間：{url}"
     },
     "OSM-japan-facebook": {
-      "description": "位于日本的绘图者和 OpenStreetMap 用户"
+      "description": "喺日本製圖者同公家街圖用戶"
     },
     "OSM-japan-website": {
-      "description": "位于日本的绘图者和 OpenStreetMap 用户"
+      "description": "喺日本製圖者同公家街圖用戶"
     },
     "osm-kenya": {
       "description": "OSM 肯亞是 OSM 貢獻者與使用者的社群",
@@ -1073,7 +1074,7 @@
       "extendedDescription": "在喀拉拉畫地圖嗎？有問題，想要與社群互動？來 {url} 加入我們，歡迎所有人。"
     },
     "osm-kerala-github": {
-      "description": "和我們一起編寫程式：{url}"
+      "description": "同我哋一齊編寫程式：{url}"
     },
     "osm-kerala-matrix": {
       "description": "我們一起畫喀拉拉邦，加入我們的 Matrix 群組",
@@ -1089,7 +1090,7 @@
       "description": "想要更瞭解在喀拉拉邦畫地圖的事情？{url}"
     },
     "osm-mg-facebook": {
-      "description": "馬達加斯加 Facebook 社群給對 OpenStreetMap 有興趣的人。"
+      "description": "馬達加斯加面簿社群，畀對公家街圖有興趣嘅人。"
     },
     "osm-michigan-wiki": {
       "description": "{community} Wiki 頁面"
@@ -1131,11 +1132,11 @@
       "extendedDescription": "我們是一群熱情討論和分享自由地理資料集知識的人，特別是開放街圖的資料，以及管理、編輯和顯示地理資料的開放地理空間軟體，以及在拉吉歐推廣的團體。"
     },
     "OSM-Seattle": {
-      "name": "OpenStreetMap 西雅圖",
-      "description": "在西雅圖的圖客與開放街圖使用者"
+      "name": "公家街圖西雅圖",
+      "description": "喺西雅圖地方圖者同公家街圖用者"
     },
     "OSM-SoCal": {
-      "name": "OpenStreetMap 南加州",
+      "name": "公家街圖南加州",
       "description": "讓我們玩樂吧，並且貢獻畫洛杉磯一帶，以及學習有關畫地圖的一切！",
       "extendedDescription": "開放街圖南加州擁抱任何對共同畫開放街圖有興趣的人。開放街圖是維基百科式運作的地圖，是全世界尺度自由開源的地圖，由全球超過 1,000,000 人的志工製作。我們歡迎所有人，如果你不大知道開放街圖，我們會教你，如果你有關於畫地圖計畫，甚至野外實察，也是很棒的事情！"
     },
@@ -1188,19 +1189,19 @@
       "description": "追蹤捷克開放街圖 Twitter -  包括翻譯 WeeklyOSM！"
     },
     "OSMF": {
-      "name": "OpenStreetMap 基金會",
+      "name": "公家街圖基金會",
       "description": "OSMF 是总部位于英国的非营利组织，用于支持 OpenStreetMap 项目。",
       "extendedDescription": "開放街圖基金會藉由募款，維持開放街圖背後的伺服器，舉行年度 State of the Map 大會，以及協調志工維持開放街圖運作，支援開放街圖計畫。你可以在這裡藉由加入開放街圖基金會成為會員：{signupUrl}"
     },
     "ph-facebook-group": {
-      "name": "{community} Facebook 社團"
+      "name": "{community} 面簿社團"
     },
     "PHXGeo-meetup": {
       "description": "位于亚利桑那州凤凰城地区的绘图者和 OpenStreetMap 用户",
       "extendedDescription": "這是一個給住在鳳凰城，喜歡地圖、GIS、開放街圖、製圖與其他東西的群組。"
     },
     "PHXGeo-twitter": {
-      "description": "在 Twitter 追蹤我們：{url}"
+      "description": "在X追蹤我哋：{url}"
     },
     "pt-wiki": {
       "description": "提供葡萄牙製圖資訊與協調指南的維基主題。"
@@ -1256,7 +1257,7 @@
       "extendedDescription": "我們這個郵件論壇能夠支援所有太平洋的子民，不論他們的多元背景與動機，能夠分享想法、問題、專案與其他這片海域有關的開放街圖事務。"
     },
     "tn-facebook-group": {
-      "name": "{community} Facebook 社團"
+      "name": "{community} 面簿社團"
     },
     "tw-slack": {
       "description": "歡迎所有人加入！在 {signupUrl} 註冊"
@@ -1277,12 +1278,12 @@
       "description": "加入開放街圖烏克蘭社群的 Slack。{signupUrl} 註冊"
     },
     "uk-localchapter": {
-      "description": "大英國協 (包括北愛爾蘭) 的正式地區分會。",
-      "extendedDescription": "我們透過舉辦活動、提供社群資源、建立合作關係以及推廣來支援開放街圖。在此加入開放街圖美國：{signupUrl}"
+      "description": "英國 (含北愛爾蘭) 正式地區分會。",
+      "extendedDescription": "我哋支援開放街圖，籍搞活動、籍供料社羣、籍立伙伴，籍推廣。在此加入開放街圖英國：{signupUrl}"
     },
     "uk-london-mastodon": {
-      "name": "開放街圖倫敦在 Mastodn",
-      "description": "開放街圖倫敦在 Mastodn：{url}"
+      "name": "乳齒象上公家街圖倫敦",
+      "description": "乳齒象上公家街圖倫敦：{url}"
     },
     "uk-london-twitter": {
       "name": "OpenStreetMap 倫敦 Twitter",
@@ -1292,7 +1293,7 @@
       "description": "{community} Wiki 頁面"
     },
     "uk-loomio": {
-      "name": "開放街圖英國的 Loomio"
+      "name": "Loomio上英國公家街圖"
     },
     "us-discourse": {
       "description": "討論開放街圖在美國事物的 Discourse 論壇"
@@ -1384,7 +1385,7 @@
       "extendedDescription": "整個地圖所有的學生是由群在課堂整合的 GIS，提供學生與單位硬體、軟體與專案的地理空間分析中心進行支援工作。整個校園所有用到 GIS 學科學生，包括環境科學與政策、地理、歷史、商業、社會、生物、人類學、公共政策與海洋科學。"
     },
     "ym-Cornell-University": {
-      "name": "畫地圖社團",
+      "name": "輿社",
       "description": "年輕圖客分會在康乃爾大學",
       "extendedDescription": "康乃爾學生與教職員使用開放資料與開源軟體來找出地區、國家與全球尺度遇到的問題。要達成目標，我們精進我們的學術與發展 GIS 與空間知識的個人目標。"
     },
@@ -1553,7 +1554,7 @@
       "extendedDescription": "麦吉尔大学开放制图小组：麦吉尔大学本科地理学会（OMG McGill）的成员，旨在将学生与开放地理空间数据和技术联系起来，通过在校园、蒙特利尔、加拿大和国外进行制图，增强复原力、社区建设和学习能力。"
     },
     "ym-Miami-University": {
-      "name": "地理与城市规划协会",
+      "name": "地理及規劃協會",
       "description": "邁阿密大學的年輕圖客分會",
       "extendedDescription": "邁阿密的 GPS 社團目標是透過趣味、學習與更多關於領域的職涯與高等教育機會，與專業人才網路一同工作，創造都市規畫師與地理專家緊密結合的社群。"
     },
@@ -1863,7 +1864,7 @@
     "ym-University-of-Northern-Colorado": {
       "name": "北科羅拉多大學地理與 GIS 社團",
       "description": "北科羅拉多大學的年輕圖客分會",
-      "extendedDescription": "在北科羅拉多大學的官方地理與 GIS 社團分會，目標為學習、分享與連結週邊。#MakingSenseofTheWorld"
+      "extendedDescription": "北科羅拉多大學官方地理及地理資系統社分會，目標為學習、分享與連繫週圍。#MakingSenseofTheWorld"
     },
     "ym-University-of-Port-Harcourt": {
       "name": "獨特圖客小組 (UMT) 哈科特港",
@@ -1934,7 +1935,7 @@
     },
     "ym-Vassar-College": {
       "name": "哈德森谷圖客",
-      "description": "瓦薩學院的年輕圖客分會",
+      "description": "華薩學院後生圖者分會",
       "extendedDescription": "我们的使命是为同行、教育工作者和社区组织提供一个多学科平台，让他们参与当地的测绘项目，重点是加强当地的生态系统、建筑环境和社区健康。我们还致力于为全球人道主义援助和发展工作提供地理空间支持。"
     },
     "ym-Villanova-University": {
@@ -1952,7 +1953,7 @@
       "description": "西密西根大學的年輕圖客分會"
     },
     "ym-Yarmouk-University": {
-      "name": "YU 的年輕圖客分會",
+      "name": "YU 年青繪者分會",
       "description": "耶爾穆克大學的年輕圖客分會",
       "extendedDescription": "年轻绘图者 的 YouthMappers 分会是中东和北非地区的第一个测绘小组，该地区的难民、干旱和贫困等危机日益严重，迫切需要开展人道主义测绘活动，以减轻这些危机的后果。我们鼓励青年测绘者利用开放数据应对中东和北非地区的挑战，为该地区的目标区域带来救济和发展。"
     }

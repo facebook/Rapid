@@ -168,6 +168,7 @@
             "subdistrict": "Underdistrikt",
             "subdistrict!vn": "Avdeling/Bokollektiv/Landsby",
             "suburb": "Forstad",
+            "town": "Tettsted",
             "unit": "Enhet"
           },
           "terms": "[oversett med synonymer eller relaterte termer for 'Adresse', atskilt med kommaer]"
@@ -956,6 +957,11 @@
         "cutting": {
           "placeholder": "Standard"
         },
+        "cycle_barrier/installation": {
+          "options": {
+            "fixed": "Fast"
+          }
+        },
         "cycle_network": {
           "label": "Nettverk"
         },
@@ -1611,6 +1617,12 @@
         "interval": {
           "label": "Intervall",
           "terms": "[oversett med synonymer eller relaterte termer for 'Interval', atskilt med komma] "
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Ja",
+            "undefined": "Nei"
+          }
         },
         "junction/ref_oneway": {
           "label": "Kryssnummer",

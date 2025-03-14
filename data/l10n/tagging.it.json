@@ -173,6 +173,7 @@
             "subdistrict!vn": "Rione/Comune/Cittadina",
             "suburb": "Circoscrizione",
             "suburb!jp": "Rione (政令市)",
+            "town": "Cittadina",
             "unit": "Unità"
           },
           "terms": "Posizione, Luogo, Ubicazione, Indirizzo"
@@ -227,6 +228,9 @@
           "label": "Aria condizionata",
           "terms": "Aria condizionata, Aria climatizzata"
         },
+        "alt_name": {
+          "label": "Nome alternativo"
+        },
         "amenity": {
           "label": "Tipo"
         },
@@ -265,8 +269,11 @@
           "label": "Tipo"
         },
         "armrest": {
+          "label": "Braccioli",
           "options": {
-            "undefined": "Sconosciuto"
+            "no": "Nessun bracciolo",
+            "undefined": "Sconosciuto",
+            "yes": "Uno o più braccioli"
           }
         },
         "artist": {
@@ -524,6 +531,9 @@
         },
         "brand": {
           "terms": "Marca, marchio"
+        },
+        "brewery": {
+          "label": "Marche di birra vendute"
         },
         "bridge": {
           "label": "Tipo"
@@ -835,6 +845,9 @@
         "conveying_escalator": {
           "label": "Scale mobili"
         },
+        "count": {
+          "label": "Numero di elementi"
+        },
         "country": {
           "label": "Stato"
         },
@@ -1048,6 +1061,7 @@
             "mexican": "Messicana",
             "moroccan": "Marocchina",
             "pastry": "Pasticceria",
+            "persian": "Persiana",
             "peruvian": "Peruviana",
             "polish": "Polacca",
             "portuguese": "Portoghese",
@@ -1056,12 +1070,14 @@
             "salad": "Insalata",
             "sausage": "Salsiccia",
             "seafood": "Pesce",
+            "soup": "Zuppa",
             "spanish": "Spagnola",
             "steak_house": "Bisteccheria",
             "tea": "Tè",
             "turkish": "Turca",
             "ukrainian": "Ucraino",
-            "vietnamese": "Vietnamita"
+            "vietnamese": "Vietnamita",
+            "wings": "Alette di pollo"
           },
           "terms": "cucina,culinaria,gastronomia"
         },
@@ -1072,6 +1088,24 @@
         "cutting": {
           "label": "Tipo",
           "placeholder": "Predefinito"
+        },
+        "cycle_barrier": {
+          "label": "Tipologia",
+          "options": {
+            "diagonal": "Diagonale",
+            "double": "Doppia",
+            "single": "Singola",
+            "tilted": "Inclinata",
+            "triple": "Tripla"
+          }
+        },
+        "cycle_barrier/installation": {
+          "label": "Installazione",
+          "options": {
+            "fixed": "Fissa",
+            "openable": "Apribile",
+            "removable": "Rimovibile"
+          }
         },
         "cycle_network": {
           "label": "Rete"
@@ -1122,6 +1156,9 @@
         },
         "defibrillator/location": {
           "label": "Descrizione della posizione"
+        },
+        "deflection": {
+          "label": "Angolo"
         },
         "delivery": {
           "label": "Consegna",
@@ -1274,12 +1311,19 @@
           "options": {
             "leashed": "Solo al guinzaglio",
             "no": "Non consentito",
+            "unleashed": "Guinzaglio non richiesto",
             "yes": "Consentito"
           },
           "terms": "animali,animali domestici"
         },
         "door": {
           "label": "Porta"
+        },
+        "door/height": {
+          "label": "Altezza porta (metri)"
+        },
+        "door/width": {
+          "label": "Larghezza porta (metri)"
         },
         "door_type": {
           "label": "Tipo"
@@ -1360,6 +1404,7 @@
             "main": "Ingresso/Uscita principale",
             "secondary": "Secondaria",
             "service": "Entrata di servizio",
+            "shop": "Ingresso negozio",
             "staircase": "Accesso alla scala",
             "yes": "Non specificato"
           },
@@ -1403,8 +1448,7 @@
             "lane": "Bordo strada",
             "parking_lot": "Parcheggio",
             "sidewalk": "Marciapiede"
-          },
-          "terms": "luogo,punto,coordinate"
+          }
         },
         "fire_hydrant/pressure": {
           "label": "Pressione (bar)",
@@ -1519,8 +1563,11 @@
             "LH2": "Idrogeno liquido",
             "cng": "Metano (CNG)",
             "e10": "Benzina E10",
+            "e5": "Benzina E5",
             "e85": "Benzina E85",
             "h70": "Idrogeno gassoso (700 bar)",
+            "lng": "Gas naturale liquefatto (LNG o GNL)",
+            "lpg": "Gas di petrolio liquefatto (LPG o GPL)",
             "octane_100": "Benzina (100 ottani)",
             "octane_80": "Benzina (80 ottani)",
             "octane_85": "Benzina (85 ottani)",
@@ -1815,6 +1862,7 @@
             "manor": "Maniero",
             "memorial": "Memoriale",
             "milestone": "Pietra miliare",
+            "millstone": "Macina",
             "mine": "Miniera",
             "mine_shaft": "Tunnel verticale",
             "monument": "Monumento",
@@ -1944,6 +1992,11 @@
         },
         "interval": {
           "label": "Intervallo"
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Sì"
+          }
         },
         "junction/ref_oneway": {
           "label": "Numero svincolo"
@@ -2217,6 +2270,9 @@
         "maxwidth": {
           "label": "Limite di larghezza"
         },
+        "maxwidth/physical": {
+          "label": "Limite di larghezza"
+        },
         "memorial": {
           "label": "Tipo",
           "options": {
@@ -2469,6 +2525,10 @@
           "label": "Orari",
           "placeholder": "Sconosciuto"
         },
+        "opening_hours/drive_through": {
+          "label": "Orari del drive-through",
+          "placeholder": "Gli stessi orari dell’attività regolare"
+        },
         "operator": {
           "label": "Operatore"
         },
@@ -2490,6 +2550,9 @@
         "outdoor_seating": {
           "label": "Seduta all'aperto"
         },
+        "panoramax": {
+          "label": "ID immagine Panoramax"
+        },
         "parcel_dropoff": {
           "label": "Consegna pacchi"
         },
@@ -2507,42 +2570,54 @@
           "label": "Tipo",
           "options": {
             "carports": {
+              "description": "Struttura usata per offrire una protezione limitata ai veicoli, tipicamente senza mura.",
               "title": "Tettoia"
             },
             "garage_boxes": {
+              "description": "Garage privato con più box separati ciascuno per un’auto.",
               "title": "Box garage"
             },
             "half_on_kerb": {
+              "description": "Parcheggio parzialmente sul marciapiedi.",
               "title": "Mezzo sul marciapiede"
             },
             "lane": {
+              "description": "Parcheggio su strada (che potrebbe essere facilmente convertita in una corsia di transito).",
               "title": "Vicolo a bordo strada"
             },
             "layby": {
+              "description": "Parcheggio su un’area di di riposo, lungo una strada.",
               "title": "Affluenza alle urne / piazzola di sosta"
             },
             "multi-storey": {
+              "description": "Due o più piani di parcheggio in un edificio.",
               "title": "Multi-piano"
             },
             "on_kerb": {
+              "description": "Parcheggio sul marciapiedi",
               "title": "Sul marciapiede"
             },
             "rooftop": {
+              "description": "Un piano di parcheggio sul tetto di un edificio.",
               "title": "Tetto"
             },
             "sheds": {
+              "description": "Hangar privati per veicoli.",
               "title": "Capanno"
             },
             "shoulder": {
               "title": "Banchina"
             },
             "street_side": {
+              "description": "Parcheggio immediatamente adiacente alla strada (ma non su di essa).",
               "title": "Lato strada"
             },
             "surface": {
+              "description": "Un piano di parcheggio sul terreno.",
               "title": "Superficie"
             },
             "underground": {
+              "description": "Parcheggio sotterraneo.",
               "title": "Sotterraneo"
             }
           }
@@ -3274,7 +3349,7 @@
             "food_bank": "Banca del cibo",
             "group_home": "Casa di gruppo",
             "nursing_home": "Casa di riposo",
-            "outreach": "Sensibilizzazione",
+            "outreach": "Servizi sociali",
             "shelter": "Riparo",
             "workshop": "Officina"
           }
@@ -3316,6 +3391,9 @@
         },
         "source/population": {
           "label": "Data della popolazione"
+        },
+        "spacing": {
+          "label": "Distanza tra le barriere (metri)"
         },
         "species": {
           "label": "Specie",
@@ -4306,6 +4384,9 @@
           "name": "Stazione di riparazione biciclette",
           "terms": "riparazione,biciclette,meccanico,bici,cicli"
         },
+        "amenity/bicycle_wash": {
+          "name": "Lavaggio biciclette"
+        },
         "amenity/biergarten": {
           "terms": "birreria,distesa,birra,alcol,bevuta"
         },
@@ -4686,7 +4767,7 @@
           "name": "Scatola generica"
         },
         "amenity/grave_yard": {
-          "name": "Cimitero",
+          "name": "Camposanto",
           "terms": "cimitero,tombe"
         },
         "amenity/grit_bin": {
@@ -4737,6 +4818,9 @@
           "name": "Biblioteca",
           "terms": "biblioteca,libri,prestito,comunale"
         },
+        "amenity/library_dropoff": {
+          "name": "Box per la restituzione dei libri"
+        },
         "amenity/loading_dock": {
           "name": "Zona di carico"
         },
@@ -4745,6 +4829,9 @@
         },
         "amenity/love_hotel": {
           "terms": "hotel per coppie,motel per coppie,hotel a ore,sexy motel"
+        },
+        "amenity/luggage_locker": {
+          "name": "Stipetto per le valigie"
         },
         "amenity/marketplace": {
           "name": "Mercato",
@@ -5146,6 +5233,9 @@
         "amenity/theatre": {
           "name": "Teatro",
           "terms": "teatro,spettacoli,giochi,musical"
+        },
+        "amenity/theatre/type/amphi": {
+          "name": "Anfiteatro"
         },
         "amenity/ticket_validator": {
           "name": "Validatore di biglietti"
@@ -6079,6 +6169,12 @@
           "name": "Idrante",
           "terms": " Pompa antincendio "
         },
+        "emergency/fire_hydrant/pillar": {
+          "name": "Idrante a colonnina"
+        },
+        "emergency/fire_hydrant/underground": {
+          "name": "Idrante sottosuolo"
+        },
         "emergency/fire_service_inlet": {
           "name": "Collegamento vigili del fuoco"
         },
@@ -6148,6 +6244,9 @@
         "entrance/main": {
           "name": "Ingresso principale",
           "terms": "ingresso,entrata,porta,entrata principale"
+        },
+        "entrance/shop": {
+          "name": "Ingresso negozio"
         },
         "entrance/staircase": {
           "name": "Entrata a una scalinata"

@@ -200,12 +200,17 @@
       "osmcolombia": "OSM โคลอมเบีย",
       "osmmainz": "OSM ไมนทซ์",
       "osmnelson": "OSM เนลสัน",
-      "swissopenstreetmap": "OpenStreetMap สวิส"
+      "swissopenstreetmap": "OpenStreetMap สวิส",
+      "youthmappersufrj": "YouthMappers แห่ง UFRJ"
     },
     "_defaults": {
       "aparat": {
         "name": "{community} บน Aparat",
         "description": "ติดตามช่องทาง Aparat ของเรา"
+      },
+      "bluesky": {
+        "name": "{community} บน Bluesky",
+        "description": "ติดตามเราบน Bluesky"
       },
       "discord": {
         "name": "ดิสคอร์ด {community}",
@@ -399,11 +404,61 @@
     "cl-telegram": {
       "extendedDescription": "เข้าร่วมชุมชนเพื่อเรียนรู้เพิ่มเติมเกี่ยวกับ OpenStreetMap ถามคำถามหรือเข้าร่วมการประชุมของเรา เราต้อนรับทุกคน!"
     },
+    "co-discourse": {
+      "name": "หัวข้อการสนทนาของชุมชน OSM เกี่ยวกับโคลอมเบีย",
+      "description": "นี่เป็นหัวข้อที่เกี่ยวข้องกับการเปลี่ยนแปลงแผนที่ในโคลอมเบีย"
+    },
     "co-facebook": {
-      "name": "กลุม่ของ{community}บน Facebook"
+      "name": "กลุม่ของ{community}บน Facebook",
+      "description": "กลุ่มสนทนาเรื่องปัญหา OSM ในโคลอมเบีย"
     },
     "co-github": {
-      "name": "โปรเจค{community}บน GitHub"
+      "name": "โปรเจค{community}บน GitHub",
+      "description": "โครงการโค้ดที่พัฒนาโดยชุมชน"
+    },
+    "co-instagram": {
+      "name": "โพสต์โดย {community} บน Instagram",
+      "description": "สิ่งพิมพ์เกี่ยวกับกิจกรรมหรือข้อมูลชุมชน"
+    },
+    "co-linkedin": {
+      "name": "โพสต์โดย {community} บน LinkedIn",
+      "description": "สิ่งพิมพ์เกี่ยวกับกิจกรรมหรือข้อมูลชุมชน"
+    },
+    "co-mastodon": {
+      "name": "โพสต์โดย {community} บน Mastodon",
+      "description": "สิ่งพิมพ์เกี่ยวกับกิจกรรมหรือข้อมูลชุมชน"
+    },
+    "co-talk": {
+      "name": "รายชื่อผู้รับจดหมาย {community}",
+      "description": "อีเมล์ที่ต้องการสื่อสารข้อมูลกับชุมชน"
+    },
+    "co-telegram": {
+      "name": "กลุ่มสนทนาของ {community} บน Telegram",
+      "description": "เปิดการสนทนาในหัวข้อที่น่าสนใจสำหรับชุมชนทั้งหมด เป็นช่องทางที่ชุกชุมมากที่สุด"
+    },
+    "co-thread": {
+      "name": "โพสต์โดย{community} บน Threads",
+      "description": "สิ่งพิมพ์เกี่ยวกับกิจกรรมหรือข้อมูลชุมชน"
+    },
+    "co-tiktok": {
+      "name": "วิดิโอสั้นของ {community} บน Tiktok",
+      "description": "สิ่งพิมพ์เกี่ยวกับกิจกรรมชุมชน"
+    },
+    "co-twitter": {
+      "name": "ชุมชน {community} บน x-Twitter",
+      "description": "สิ่งพิมพ์เกี่ยวกับกิจกรรมหรือข้อมูลชุมชน"
+    },
+    "co-whatsapp": {
+      "name": "ข่าวสารจากชุมชน {community} บน WhatsApp",
+      "description": "สิ่งพิมพ์เกี่ยวกับกิจกรรมหรือข้อมูลชุมชน"
+    },
+    "co-wiki": {
+      "name": "หน้าวิกิพร้อมเอกสารประกอบเกี่ยวกับโครงการแผนที่โคลอมเบีย",
+      "description": "เอกสารเกี่ยวกับทุกสิ่งที่เกี่ยวข้องกับ OpenStreetMap ในโคลอมเบีย"
+    },
+    "co-youtube": {
+      "name": "วิดิโอของ {community} บน YouTube",
+      "description": "วิดีโอกิจกรรมชุมชนหรือการอธิบายกิจกรรมของ OSM"
     },
     "comunitat-valenciana-wiki": {
       "description": "ทุกสิ่งที่คุณต้องรู้เกี่ยวกับการทำแผนที่ในชุมชนบาเลนเซีย: {url}"
@@ -467,6 +522,9 @@
     },
     "de-mainz-mailinglist": {
       "description": "OpenStreetMap ในไมนซ์ และพื้นที่รอบเคียง"
+    },
+    "de-mainz-signal": {
+      "description": "OpenStreetMap ใน ไมนทซ์  วีสบาเดิน และอุมเกบุง"
     },
     "de-mainz-telegram": {
       "description": "OpenStreetMap ในไมนซ์ และพื้นที่รอบเคียง"
@@ -556,6 +614,9 @@
     "gb-mailinglist": {
       "description": "Talk-gb นั้นเป็นฟอรัมสนทนาหลักสำหรับชุมชน OSM สหราชอาณาจักร (และไอร์แลนด์เหนือ) "
     },
+    "ge-matrix": {
+      "description": "การสนทนาทั่วไปเกี่ยวกับ OpenStreetMap ในจอร์เจีย เชื่อมต่อผ่าน bridge ไปยังแชท Telegram"
+    },
     "geogeeks_perth_meetup": {
       "description": "กลุ่มพบปะในเมืองเพิร์ธสำหรับผู้ที่สนใจการทำแผนที่ ข้อมูลเชิงพื้นที่ และช้อมูลเปิด เราจัดงานปาร์ตี้ การพูดคุย และการพบปะทางสังคมของ OSM เป็นประจำ เรายินดีต้อนรับผู้เริ่มต้น!"
     },
@@ -567,7 +628,8 @@
       "description": "หน้า GitHub {community}"
     },
     "hr-tm": {
-      "name": "แผนงานสำหรับ {community}"
+      "name": "แผนงานสำหรับ {community}",
+      "description": "สำรวจงานการทำแผนที่ในโครเอเชีย"
     },
     "hr-wiki": {
       "description": "หน้า Wikiproject สำหรับโครเอเชีย"
@@ -620,6 +682,9 @@
     },
     "it-chapter": {
       "description": "เราช่วยกันพัฒนาและปรับปรุง OpenStreetMap ในอิตาลี"
+    },
+    "ivides_website": {
+      "description": "เรามุ่งเน้นไปที่การพัฒนาอย่างยั่งยืน การทำแผนที่ และการสนับสนุนชุมชน OpenStreetMap"
     },
     "ko-facebook": {
       "description": "นักเขียนทำแผนที่ และผู้ใช้ OpenStreetMap ในเกาหลี"
@@ -986,6 +1051,9 @@
     "osm-michigan-wiki": {
       "description": "หน้า wiki สำหรับ {community}"
     },
+    "osm-nelson": {
+      "description": "กลุ่ม OpenStreetMap ในเนลสัน นิวซีแลนด์"
+    },
     "osm-ni": {
       "description": "ให้บริการ OSM และข้อมูลสำหรับชุมชนท้องถิ่นในนิการากัว"
     },
@@ -1112,6 +1180,9 @@
     "rs-wiki": {
       "description": "หน้า Wikiproject สำหรับเซอร์เบีย"
     },
+    "scandinavia-discord": {
+      "name": "ช่องสแกนดิเนเวียบน OpenStreetMap World Discord"
+    },
     "sg-wiki": {
       "description": "หน้า wiki สำหรับ {community}"
     },
@@ -1224,24 +1295,522 @@
       "extendedDescription": "พวกเราเป็นกลุ่มผู้จัดทำแผนที่ด้านมนุษยธรรมที่ขับเคลื่อนด้วยข้อมูล ซึ่งทุ่มเทเพื่อให้บริการด้านมนุษยธรรมในการตอบสนองต่อภัยพิบัติและการบรรเทาทุกข์ เรายินดีที่จะนำความเชี่ยวชาญและความรู้ของเรามาแบ่งปันผ่านการทำแผนที่ และช่วยเผยแพร่ #OpenEvangelism ผ่านการฝึกอบรมและการทำงานร่วมกัน"
     },
     "ym-Ardhi-University": {
-      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยอาร์ดิห์"
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยอาร์ดิห์",
+      "extendedDescription": "ในฐานะที่ปรึกษาข้อมูลภูมิสารสนเทศรุ่นใหม่ เรามุ่งมั่นที่จะให้ความรู้และให้คำแนะนำแก่สังคมเกี่ยวกับวิธีการใช้ข้อมูลเชิงพื้นที่ไม่เพียงแค่เป็นรูปแบบของการระบุตำแหน่ง แต่ยังเป็นเครื่องมือในการตัดสินใจและคาดการณ์การเปลี่ยนแปลงที่เป็นอันตรายและทางภูมิอากาศต่างๆ ที่อาจส่งผลเสียต่อสังคมหรือคนรุ่นใหม่"
+    },
+    "ym-Arizona-State-University-facebook": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยแห่งรัฐแอริโซนา"
+    },
+    "ym-Arizona-State-University-twitter": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยแห่งรัฐแอริโซนา"
+    },
+    "ym-Asian-University-for-Women": {
+      "name": "YouthMappers ที่ AUW",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยเอเชียสำหรับสตรี",
+      "extendedDescription": "มหาวิทยาลัยเอเชียสำหรับสตรีมุ่งมั่นที่จะผลิตบัณฑิตที่เป็นผู้หญิงที่มีทักษะและเป็นมืออาชีพที่สร้างสรรค์ เป็นผู้นำที่มุ่งมั่นในการให้บริการในธุรกิจและชุมชนที่พวกเธอจะทำงานและใช้ชีวิต และเป็นผู้ส่งเสริมความเข้าใจระหว่างวัฒนธรรม และการพัฒนาทรัพยากรมนุษย์และเศรษฐกิจที่ยั่งยืนในเอเชียและทั่วโลก"
+    },
+    "ym-Ball-State-University": {
+      "name": "แกมมาธีตา อัปซิลอน - สาขาไอโอตาโอเมก้า",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยรัฐบอล",
+      "extendedDescription": "สาขาของเราเป็นบทที่มีบทบาทมาก เราเน้นกิจกรรมชุมชน การระดมทุน และทัศนศึกษาเป็นหลัก ปัจจุบันเรากำลังมองหาวิธีพัฒนากิจกรรมที่เกี่ยวข้องกับการทำแผนที่เพิ่มเติมเพื่อดึงดูดนักศึกษาคนอื่นๆ จากมหาวิทยาลัยที่อาจสนใจมีส่วนสนับสนุน"
+    },
+    "ym-Busitema-University": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยบูซิเตมา",
+      "extendedDescription": "Good mappers คือกลุ่มนักศึกษาจากมหาวิทยาลัยบูซิเตมา ซึ่งมีเป้าหมายหลักคือสร้างชุมชนนักทำแผนที่ที่มีประสบการณ์ซึ่งสามารถมีส่วนสนับสนุนการทำแผนที่โลกได้"
     },
     "ym-California-University-of-Pennsylvania": {
-      "name": "สโมสร CalU PA GIS"
+      "name": "สโมสร CalU PA GIS",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยแคลิฟอร์เนียแห่งเพนซิลเวเนีย",
+      "extendedDescription": "นักศึกษา GIS ที่ Cal U เรียนรู้การนำทฤษฎีเชิงพื้นที่มาประยุกต์ใช้กับโลกแห่งความเป็นจริง หลักสูตรระดับมหาวิทยาลัยเน้นที่ภูมิศาสตร์ รวมถึงการใช้ GIS ในการจัดการเหตุฉุกเฉิน"
     },
     "ym-Central-Washington-University": {
-      "name": "สโมสรภูมิศาสตร์"
+      "name": "สโมสรภูมิศาสตร์",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยเซนทรัลวอชิงตัน",
+      "extendedDescription": "เป้าหมายของเราในการร่วมมือกับ Youthmappers คือการให้ความช่วยเหลือแก่พื้นที่ที่จำเป็นต้องจัดทำแผนที่เพื่อมนุษยธรรม โดยการทำเช่นนี้ เราจะให้บริการพี่น้องทั่วโลก รวมถึงพัฒนาทักษะการทำแผนที่ของเราเองด้วย"
+    },
+    "ym-Clemson-University": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยเคลมสัน",
+      "extendedDescription": "นักศึกษาในเคลมสันได้รับการสนับสนุนจากศูนย์เทคโนโลยีภูมิสารสนเทศ ซึ่งเป็นชุมชนของผู้ปฏิบัติงานด้านภูมิสารสนเทศหลายสาขาวิชาที่สนับสนุนการวิจัย การสอน และกิจกรรมเผยแพร่ข้อมูลโดยใช้เทคโนโลยีที่ช่วยให้สามารถรวบรวม วิเคราะห์ และนำข้อมูลภูมิสารสนเทศไปใช้ นักศึกษาจะบูรณาการเทคโนโลยีภูมิสารสนเทศเข้ากับกิจกรรมทางวิชาการในทุกสาขาวิชา และสร้างการเชื่อมโยงทั่วโลก"
+    },
+    "ym-College-of-William-and-Mary": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยวิลเลียมแอนด์แมรี่",
+      "extendedDescription": "นักศึกษาที่เรียนอยู่ทั่วทุกพื้นที่ได้รับการสนับสนุนจากศูนย์วิเคราะห์ภูมิสารสนเทศ ซึ่งเป็นกลุ่มที่บูรณาการ GIS เข้ากับหลักสูตร และมอบฮาร์ดแวร์ ซอฟต์แวร์ และความเชี่ยวชาญให้กับนักศึกษาและคณาจารย์ นักศึกษาจากทุกภูมิหลังใช้ GIS ทั่วทั้งมหาวิทยาลัย รวมถึงวิทยาศาสตร์สิ่งแวดล้อมและนโยบาย ธรณีวิทยา ประวัติศาสตร์ ธุรกิจ สังคมวิทยา ชีววิทยา มานุษยวิทยา นโยบายสาธารณะ และวิทยาศาสตร์ทางทะเล"
+    },
+    "ym-Cornell-University": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยคอร์เนล",
+      "extendedDescription": "นักศึกษาและคณาจารย์ของมหาวิทยาลัยคอร์เนลล์ใช้ซอฟต์แวร์ open data และโอเพ่นซอร์สเพื่อรับมือกับความท้าทายในระดับท้องถิ่น ระดับประเทศ และระดับโลก โดยการทำเช่นนี้ เราจะก้าวไปสู่เป้าหมายทางวิชาการและส่วนตัวในการพัฒนาทักษะของเราเองเกี่ยวกับ GIS และความรู้ด้านพื้นที่"
+    },
+    "ym-CURAT": {
+      "description": "สาขา YouthMappers แห่งศูนย์วิจัยและการประยุกต์ใช้การสำรวจระยะไกล (CURAT) แห่งมหาวิทยาลัยเฟลิกซ์ อูฟูแว็ต-บัวญี",
+      "extendedDescription": "เป้าหมายของสาขาเราคือการส่งเสริมการใช้การทำแผนที่แบบร่วมมือและการใช้ข้อมูล OpenStreetMap ในด้านการวิจัยและการประยุกต์ใช้งานในการใช้เครื่องมือสำหรับการตัดสินใจ ช่วยให้นักศึกษาสร้างข้อมูลของตนเองจากการวิจัย"
+    },
+    "ym-Cuttington-University": {
+      "name": "ทีมงานเยาวชนมหาวิทยาลัยคัทติงตัน",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยคัทติงตัน",
+      "extendedDescription": "YouthMappers ที่มหาวิทยาลัยคัทติงตัน, ซัวโคโก และเทศมณฑลบอง ประกอบด้วยนักศึกษาจากสามแผนกที่แตกต่างกัน ได้แก่ กรมการจัดการทรัพยากรธรรมชาติ “DONRM” กรมวิทยาศาสตร์สิ่งแวดล้อม และกรมวิทยาศาสตร์ธรรมชาติ นับตั้งแต่ก่อตั้งสาขาในเดือนกุมภาพันธ์ 2017 สมาชิกทั้งหมดมีนักศึกษา 20 คน โดยแต่ละแผนกมีนักศึกษา 5 คน"
+    },
+    "ym-Dedan-Kimathi-University-of-Technology": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยเทคโนโลยีเดดาน คิมาธี",
+      "extendedDescription": "GDEV เป็นกลุ่มของผู้ชื่นชอบ GIS ที่ DeKUT ซึ่งมีเป้าหมายที่จะช่วยให้นักศึกษาแบ่งปัน มีส่วนร่วม และเรียนรู้จากกันและกันในเรื่องภูมิสารสนเทศ"
+    },
+    "ym-Dhaka-College": {
+      "name": "YouthMappers วิทยาลัยดากา",
+      "description": "สาขา YouthMappers แห่งวิทยาลัยดากา",
+      "extendedDescription": "YouthMappers วิทยาลัยดากาเป็นแนวทางของนักศึกษาในการช่วยทำแผนที่พื้นที่เสี่ยงภัยของโลกซึ่งเป็นส่วนหนึ่งของการดำเนินการด้านมนุษยธรรม YouthMappers เปิดโอกาสให้นักเรียนได้ช่วยเหลือผู้คนและใช้แผนที่เพื่อวัตถุประสงค์ด้านมนุษยธรรม ข้อมูลภูมิศาสตร์เปิดเหล่านี้สามารถใช้เพื่อการศึกษา การนำทาง และวัตถุประสงค์ด้านมนุษยธรรมอื่นๆ การทำแผนที่อย่างมีความสุข"
+    },
+    "ym-Dhaka-University": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยธากา",
+      "extendedDescription": "ถือว่าเป็นสิทธิพิเศษสำหรับนักศึกษาจากมหาวิทยาลัยแห่งธากาที่ได้ทำแผนที่เพื่อวัตถุประสงค์ด้านมนุษยธรรม บทของเราให้โอกาสแก่นักเรียนในการช่วยเหลือผู้คนและใช้แผนที่เพื่อวัตถุประสงค์ด้านมนุษยธรรม"
+    },
+    "ym-Eastern-University": {
+      "name": "YouthMappers แห่งมหาวิทยาลัยอีสเทิร์น",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยอีสเทิร์น",
+      "extendedDescription": "YouthMappers แห่งมหาวิทยาลัยอีสเทิร์น ประเทศบังกลาเทศ ได้รับการฝึกอบรมเพื่อช่วยเหลือผู้คนในช่วงวิกฤตด้านมนุษยธรรม นักศึกษา รวมถึงนักทำแผนที่คนอื่นๆ ทั่วโลก ได้รับสัญญาว่าจะช่วยเหลือผู้คนในการใช้แผนที่เพื่อการศึกษา การนำทาง และวัตถุประสงค์ด้านมนุษยธรรมอื่นๆ"
+    },
+    "ym-Far-Eastern-University-Institute-of-Technology": {
+      "name": "สมาคมคอมพิวเตอร์จูเนียร์ฟิลิปปินส์",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยฟาร์อีสเทิร์น - สถาบันเทคโนโลยี",
+      "extendedDescription": "FEU ได้รับการยอมรับว่าเป็นหนึ่งในมหาวิทยาลัยชั้นนำของประเทศฟิลิปปินส์ พันธกิจของเรามุ่งเน้นที่จะผลิตบัณฑิตที่เป็นผู้สร้างความก้าวหน้าให้แก่ประเทศ มหาวิทยาลัยท้าทายตัวเองอย่างต่อเนื่องเพื่อยกระดับมาตรฐานความเป็นเลิศเพื่อให้บรรลุสถานะชั้นนำไม่เพียงแต่ในฟิลิปปินส์เท่านั้น แต่ยังรวมถึงภูมิภาคเอเชียตะวันออกเฉียงใต้ด้วย"
+    },
+    "ym-Federal-School-of-Surveys": {
+      "name": "OyoMappersTeam (OMT) โอโย",
+      "description": "สาขา YouthMappers แห่งโรงเรียนสำรวจของรัฐบาลโอโย"
+    },
+    "ym-Fourah-Bay-College": {
+      "name": "สมาคมภูมิศาสตร์ของนักศึกษา",
+      "description": "สาขา YouthMappers แห่งวิทยาลัยฟูราห์เบย์",
+      "extendedDescription": "สมาคมภูมิศาสตร์ของนักศึกษา - YouthMappers เป็นสมาคมของนักศึกษาวิทยาลัยฟูราห์เบย์ ที่มีเป้าหมายร่วมกันในการทำแผนที่สถานที่ที่เสี่ยงภัยในเซียร์ราลีโอนและทั่วโลกเพื่อการบรรเทาทุกข์และวัตถุประสงค์ที่เป็นประโยชน์อื่น ๆ ดำเนินการวิจัยและความพยายามทางการศึกษาอื่น ๆ บทนี้ประกอบด้วยคนหนุ่มสาวที่มีความคิดดีๆ มุ่งเน้นการพัฒนาและมีความสามารถในการเชื่อมโยงกัน เข้าใจและดำเนินโครงการพัฒนาที่ยั่งยืนเป็นทีม"
+    },
+    "ym-George-Mason-University": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยจอร์จเมสัน",
+      "extendedDescription": "Mason Mappers Student Society เป็นองค์กรนักศึกษาที่ทำแผนที่เพื่อมนุษยธรรมในแผนก GGS ของมหาวิทยาลัยจอร์จเมสัน และมีเป้าหมายเพื่อส่งเสริมการศึกษาและความรู้ด้านเทคโนโลยีภูมิสารสนเทศ วิทยาศาสตร์ภูมิสารสนเทศ เพื่อส่งเสริมการบริหารจัดการระดับโลกที่ดี และมีส่วนร่วมในการพัฒนาวิชาชีพในขณะที่สร้าง ชุมชนภูมิศาสตร์เชิงโต้ตอบที่เป็นบวก ตลอดจนการหล่อหลอมนักเรียนให้กลายเป็นผู้นำแห่งอนาคต"
+    },
+    "ym-Grand-Gedeh-County-Community-College": {
+      "name": "สาขา YouthMappers แห่งวิทยาลัยชุมชนเทศมณฑลแกรนด์เกเดห์",
+      "description": "สาขา YouthMappers แห่งวิทยาลัยชุมชนเทศมณฑลแกรนด์เกเดห์",
+      "extendedDescription": "จุดประสงค์เดียวของคณะผู้ทำแผนที่เยาวชนของ GGCCC คือการระบุสถานที่ในและรอบๆ ไลบีเรียที่ไม่อยู่บนแผนที่ เรารวบรวมเยาวชนจากวิทยาลัยภายในวิทยาลัยชุมชนเทศมณฑลแกรนด์เกเดห์ เพื่อทำหน้าที่ของพวกเขาในการรวมตัวและนำสถานที่เหล่านี้สู่จุดสนใจทางภูมิศาสตร์"
+    },
+    "ym-Gujarat-University": {
+      "name": "CCIM แห่งอะห์มดาบาด",
+      "description": "บท YouthMappers แห่งมหาวิทยาลัยคุชราต"
+    },
+    "ym-Gulu-University": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยกูลู",
+      "extendedDescription": "CSGU Mappers คือสมาคมคอมพิวเตอร์แห่งมหาวิทยาลัยกูลู สาขานี้เป็นสาขาที่มีความคิดสร้างสรรค์ มีความกระตือรือร้น มีนวัตกรรม และพร้อมที่จะทำแผนที่ยูกันดาและโลกกว้างเหนือจินตนาการของคนอื่นๆ"
+    },
+    "ym-Heidelberg-University": {
+      "name": "disastermappers ไฮเดิลแบร์ค",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยไฮเดิลแบร์ค",
+      "extendedDescription": "Disastermappers ไฮเดิลแบร์ค ก่อตั้งขึ้นในปี 2014 โดยเป็นโครงการริเริ่มของนักศึกษาเพื่อสร้างแพลตฟอร์มสำหรับการแลกเปลี่ยนระหว่างนักศึกษา นักวิจัย และผู้ที่มีส่วนเกี่ยวข้องด้านมนุษยธรรม Disastermappers เป็นสมาชิกของ Missing Maps และกำลังจัดงานมาราธอนแผนที่ เวิร์กช็อป และการสัมมนาผ่านเว็บในเมืองไฮเดลเบิร์กและพื้นที่อื่นๆ รวมถึงสนับสนุน HOT และ Missing Maps ผ่านการวิจัยและการใช้งาน"
+    },
+    "ym-Ignatius-Ajuru-University-of-Education": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยการศึกษาอิกเนเชียส อาจุรุ",
+      "extendedDescription": "พวกเราเป็นกลุ่ม YouthMappers ของมหาวิทยาลัยการศึกษาอิกเนเชียส อาจุรุ ที่เกี่ยวข้องกับการทำแผนที่สภาพแวดล้อมแบบ crowdsource และการทำแผนที่ชุมชนที่มีความยืดหยุ่นแบบระยะไกล พวกเราเป็นทีมอาสาสมัครที่ใช้ openstreetmap และแหล่งข้อมูลภูมิสารสนเทศเปิดอื่นๆ ในการทำแผนที่"
+    },
+    "ym-Indiana-University-of-Pennsylvania": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยอินเดียนาแห่งเพนซิลเวเนีย"
+    },
+    "ym-Insititue-d-Enseignement-Superieur-de-Ruhengeri": {
+      "name": "YouthMappers ที่ INES รูเฮงเกรี",
+      "description": "สาขา YouthMappers แห่งสสถาบันการศึกษาระดับสูงรูเฮงเกรี",
+      "extendedDescription": "พวกเราเป็นนักศึกษาจากแผนกบริหารและจัดการที่ดินและสำรวจที่ดินจาก INES-Ruhengeri เรามีส่วนร่วมในกิจกรรมการจัดทำแผนที่ที่สร้างการเปลี่ยนแปลงสู่การพัฒนาที่ยั่งยืนในชุมชนของเรา"
+    },
+    "ym-Institut-Suprieur-de-Management-Kolda": {
+      "name": "ผู้นำ Les Femmes ของ ISM/Kolda",
+      "description": "สาขา YouthMappers แห่ง Institut Supérieur de Management Kolda",
+      "extendedDescription": "Les Femmes Leaders de ISM/Kolda เป็นกลุ่มนักทำแผนที่ที่ล้วนเป็นผู้หญิงในเซเนกัลตอนใต้ ซึ่งมีเป้าหมายเพื่อนำ Kolda และหมู่บ้านโดยรอบลงบนแผนที่ และเพื่อทำความเข้าใจถึงวิธีใช้ OSM ให้ดียิ่งขึ้น"
+    },
+    "ym-Institute-of-Crisis-Management-Studies": {
+      "name": "สถาบันศึกษาการจัดการวิกฤตการณ์ YouthMappers",
+      "description": "สาขา YouthMappers แห่งสถาบันศึกษาการจัดการวิกฤตการณ์",
+      "extendedDescription": "เพื่อพัฒนา Crisis Mappers เพื่อช่วยเหลือในระหว่างสถานการณ์ภัยพิบัติ"
+    },
+    "ym-Institute-of-Rural-Development-Planning": {
+      "name": "สาขา YouthMappers Mipango",
+      "description": "สาขา YouthMappers แห่งสถาบันการวางแผนพัฒนาชนบท",
+      "extendedDescription": "Dr.Domitilla Bashemera ได้เปิดตัวสาขา YouthMappers Mipango ที่ IRDP เมื่อวันที่ 3 กรกฎาคม 2017 สมาชิกผู้ก่อตั้งคือ นักศึกษาระดับปริญญาตรี 300 คน (ชาย 190 คนและหญิง 110 คน) ที่ลงทะเบียนเป็นสมาชิกของ Chapter Gerald Zacharia เป็นประธานของ Chapter และ Juster Lugira เป็นรองประธาน"
+    },
+    "ym-Institute-of-Rural-Development-Planning-Mwanza": {
+      "name": "สมาคม YouthMappers แห่งสถาบันการวางแผนพัฒนาชนบท - Lake Zone Centre",
+      "description": "สาขา YouthMappers แห่งสถาบันการวางแผนพัฒนาชนบท Mwanza"
+    },
+    "ym-Institute-of-Science-and-Veterinary-Medicine": {
+      "name": "YouthMappers ISSMV ดาลาบา",
+      "description": "สาขา YouthMappers ที่สถาบันวิทยาศาสตร์และสัตวแพทยศาสตร์",
+      "extendedDescription": "YouthMappers ISSMV Dabala เป็นองค์กรไม่แสวงหากำไรที่ทำงานเพื่อส่งเสริมการทำแผนที่ด้านมนุษยธรรมและการใช้แหล่งข้อมูลเปิดและข้อมูลเปิดเพื่อสร้างเครื่องมือในการตัดสินใจในกินี"
+    },
+    "ym-Istanbul-Technical-University": {
+      "description": "สาขา YouthMappers ที่มหาวิทยาลัยเทคนิคอิสตันบูล",
+      "extendedDescription": "YouthMappers ITU เป็นชุมชนนักศึกษาสหวิทยาการและร่วมมือกันส่งเสริมการทำแผนที่ด้านมนุษยธรรมสำหรับการตั้งถิ่นฐานที่เปราะบาง และมีเป้าหมายเพื่อพัฒนาและแบ่งปันข้อมูลเชิงพื้นที่เชิงกลยุทธ์และนวัตกรรมสำหรับเมืองในอนาคตโดยใช้ระบบสารสนเทศทางภูมิศาสตร์และข้อมูลเปิด"
+    },
+    "ym-Jacksonville-State-University": {
+      "name": "ทีมทำแผนที่ภัยพิบัติของ JSU",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยรัฐแจ็กสันวิลล์",
+      "extendedDescription": "ทีมทำแผนที่ภัยพิบัติของมหาวิทยาลัยรัฐแจ็กสันวิลล์ เป็นโปรแกรมที่อุทิศตนเพื่อช่วยเหลือในการตอบสนองต่อภัยพิบัติในยามฉุกเฉิน ซึ่งรวมถึงพายุทอร์นาโด พายุฝนฟ้าคะนองรุนแรง น้ำท่วม เป็นต้น ทีมนี้มีวัตถุประสงค์เพื่อเป็นทรัพยากรที่มีค่าสำหรับเขตพื้นที่โดยรอบและเป็นช่องทางให้นักศึกษาภาควิชาธรณีวิทยาของมหาวิทยาลัย Jacksonville State นำสิ่งที่เรียนรู้ไปใช้ในเชิงวิชาการเพื่อสนับสนุนบริการฉุกเฉิน เป้าหมายของเราคือการปรับกระบวนการตอบสนองและการฟื้นฟูจากภัยพิบัติให้มีประสิทธิภาพยิ่งขึ้น พร้อมทั้งใช้ทักษะของนักศึกษา"
+    },
+    "ym-Jahangirnagar-University": {
+      "name": "YouthMappers ที่ IRS, มหาวิทยาลัย Jahangirnagar",
+      "description": "สาขา YouthMappers ที่มหาวิทยาลัย Jahangirnagar"
     },
     "ym-Jomo-Kenyatta-University-of-Agriculture-and-Technology": {
+      "name": "สมาคมนิสิตวิศวกรรมภูมิสารสนเทศ",
+      "description": "สาขา YouthMappers ที่มหาวิทยาลัยเกษตรและเทคโนโลยี Jomo Kenyatta",
       "extendedDescription": "สมาคมนักศึกษาสาขาวิศวกรรมภูมิสารสนเทศ (AGES) มีเป้าหมายเพื่อส่งเสริมผลิตภัณฑ์และบริการด้านภูมิสารสนเทศ ตลอดจนฝึกอบรมนักศึกษาเกี่ยวกับการใช้งาน โดยไม่เพียงแต่ส่งเสริมการเข้าสังคมระหว่างนักศึกษาและผู้เชี่ยวชาญเท่านั้น แต่ยังเป็นเวทีสำหรับแลกเปลี่ยนแนวคิดใหม่ๆ สำหรับการจัดงานและการฝึกอบรมด้านภูมิสารสนเทศและการสำรวจใหม่ๆ ในมหาวิทยาลัย"
     },
+    "ym-Kansas-State-University": {
+      "name": "แกมมาธีตา อัปซิลอน: สาขาเบตาไซ",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยแห่งรัฐแคนซัส",
+      "extendedDescription": "พวกเราคือสมาคม Gamma Theta Upsilon แห่งมหาวิทยาลัยแห่งรัฐแคนซัส ซึ่งเป็นสมาคมภูมิศาสตร์ระดับนานาชาติที่สังกัดกลุ่ม YouthMappers พวกเราได้ดำเนินการด้านการทำแผนที่สำหรับ OSM และได้จัดโครงการ Mapathon ที่เรียกว่า \"Map for Nepal\" ซึ่งพวกเราใช้ OpenStreetMap ในการแปลงพื้นที่ที่ยังไม่มีการทำแผนที่ในเนปาลให้เป็นดิจิทัลหลังจากเกิดแผ่นดินไหวในปี 2015"
+    },
+    "ym-Karatina-University": {
+      "name": "เนเจอร์คลับ มหาวิทยาลัยคาราตินา",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัย Karatina",
+      "extendedDescription": "บทนี้มุ่งหวังที่จะรวบรวมผู้ที่ชื่นชอบ GIS ทุกคนเข้าด้วยกัน ซึ่งได้แก่ ผู้เชี่ยวชาญด้านสิ่งแวดล้อม ผู้เชี่ยวชาญด้านสัตว์ป่า เจ้าหน้าที่ด้านน้ำและการท่องเที่ยว เป็นต้น จุดมุ่งหมายหลักคือการสร้างแพลตฟอร์มที่นักศึกษาสามารถเรียนรู้จากกันและกัน และในกระบวนการนี้ นักศึกษาจะได้เรียนรู้วิธีการบูรณาการทักษะ GIS ในเส้นทางอาชีพต่างๆ ของตนเอง ตลอดจนเสนอแนวทางแก้ไขสำหรับความท้าทายต่างๆ ที่เกี่ยวข้องกับสิ่งแวดล้อม"
+    },
+    "ym-Kenyatta-University": {
+      "name": "ชมรม GIS มหาวิทยาลัยเคนยัตตา",
+      "description": "สาขา YouthMappers ที่มหาวิทยาลัย Kenyatta",
+      "extendedDescription": "Kenyatta University GIS Club (KUGISC) ก่อตั้งขึ้นเมื่อวันที่ 28 ตุลาคม 2016 โดยมีนักศึกษาและเจ้าหน้าที่มากกว่า 200 คนจากคณาจารย์ทั้งหมดในมหาวิทยาลัยเป็นสมาชิก เรามุ่งมั่นที่จะส่งเสริมความรู้ ทักษะ และความเชี่ยวชาญด้านพื้นที่ที่จำเป็นในการทำความเข้าใจโลกให้กับสมาชิก เราช่วยเหลือในการทำแผนที่ทรัพยากรภายในมหาวิทยาลัยโดยนำข้อมูลภูมิสารสนเทศมาใช้ในโครงการต่างๆ รวมถึงการรวบรวมข้อมูลภาคสนาม"
+    },
+    "ym-Khulna-University": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยขุลนา",
+      "extendedDescription": "นักศึกษาและคณาจารย์ KU จากหลายสาขาวิชามีประสบการณ์ในการสร้างข้อมูลเปิดสำหรับ OSM เพื่อจัดการกับความท้าทายในการพัฒนาในท้องถิ่น รวมถึงความมั่นคงด้านอาหารและหัวข้ออื่นๆ"
+    },
+    "ym-Kumi-University": {
+      "description": "สาขา YouthMappers แห่ง Kumi University",
+      "extendedDescription": "กลุ่มนักศึกษากลุ่มนี้ที่กระตือรือร้นจัดอยู่ในคณะวิทยาศาสตร์และเทคโนโลยีสารสนเทศ"
+    },
+    "ym-Kwame-Nkrumah-University-of-Science-and-Technology": {
+      "name": "เยาวชนจากมหาวิทยาลัยวิทยาศาสตร์และเทคโนโลยี Kwame Nkrumah",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยวิทยาศาสตร์และเทคโนโลยี Kwame Nkrumah"
+    },
+    "ym-Makerere-University": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัย Makerere",
+      "extendedDescription": "Geo YouthMappers เป็นสาขาการทำแผนที่ที่ตั้งอยู่ในมหาวิทยาลัย Makerere ซึ่งได้รับการยกย่องว่านำแนวคิดเชิงพื้นที่มาใช้กับโลกแห่งความเป็นจริง เราได้ร่วมมือกับ OSM ในงานกิจกรรมการทำแผนที่ต่างๆ เป้าหมายหลักของเราคือความปรารถนาที่จะทำให้ข้อมูลเรียบง่ายขึ้นและทำให้ข้อมูลพร้อมใช้งานได้ โดยเฉพาะอย่างยิ่งเพื่อเตรียมพร้อมรับภัยพิบัติ \"เราทำแผนที่โลกและเปลี่ยนแปลงชีวิต\""
+    },
+    "ym-Mbarara-University-of-Science-and-Technology": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยวิทยาศาสตร์และเทคโนโลยี Mbarara",
+      "extendedDescription": "MUST Street Mappers เป็นสาขาของ  Youth Mappers แห่งมหาวิทยาลัยวิทยาศาสตร์และเทคโนโลยี Mbarara ซึ่งมีพื้นฐานมาจากการทำให้ประเทศและโลกโดยรวมเป็นสถานที่ที่ดีขึ้นผ่านการทำแผนที่ เราใช้ข้อมูลที่รวบรวมมาเพื่อสังเกตรูปแบบและค้นหาข้อมูลเพื่อนำเสนอข้อมูลที่เกี่ยวข้องและเป็นประโยชน์ต่อสังคม"
+    },
+    "ym-McGill-University": {
+      "name": "Open Mapping Group McGill: สมาชิกของ McGill Undergraduate Geography Society",
+      "description": "สาขา YouthMappers แห่ง McGill University",
+      "extendedDescription": "Open Mapping Group McGill: สมาชิกของ McGill Undergraduate Geography Society (OMG McGill) มีเป้าหมายเพื่อเชื่อมโยงนักศึกษาด้วยข้อมูลและเทคโนโลยีภูมิสารสนเทศเปิดเพื่อเพิ่มความสามารถในการฟื้นตัว การสร้างชุมชน และการเรียนรู้ผ่านการทำแผนที่ทั้งในมหาวิทยาลัย ในมอนทรีออล ในแคนาดา และต่างประเทศ"
+    },
+    "ym-Miami-University": {
+      "name": "สมาคมภูมิศาสตร์และการวางแผน",
+      "description": "สาขา YouthMappers แห่ง Miami University",
+      "extendedDescription": "GPS แห่งมหาวิทยาลัยไมอามีมีเป้าหมายที่จะสร้างชุมชนนักวางแผนและนักภูมิศาสตร์ที่มีความผูกพันแน่นแฟ้น ซึ่งต้องการสนุกสนาน เรียนรู้เพิ่มเติมเกี่ยวกับอาชีพและการศึกษาระดับสูงในสาขาของตนเอง เครือข่าย และทำงานร่วมกับผู้เชี่ยวชาญเพื่อประสบการณ์จริง"
+    },
+    "ym-Moi-University": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยโมอิ",
+      "extendedDescription": "สมาคมนักศึกษาภูมิศาสตร์แห่งมหาวิทยาลัยโมอิ (GEOSAMU) สำรวจ ค้นพบ และมุ่งหวังที่จะพัฒนาโลกทั้งใบผ่านนักวิเคราะห์ภูมิสารสนเทศรุ่นเยาว์ GEOSAMU เป็นส่วนหนึ่งของภาควิชาภูมิศาสตร์"
+    },
+    "ym-Monroe-Community-College": {
+      "description": "สาขา YouthMappers แห่ง Monroe Community College"
+    },
+    "ym-Namibia-University-of-Science-and-Technology": {
+      "description": "สาขา YouthMappers แห่ง Namibia University of Science and Technology"
+    },
+    "ym-Nimba-County-Community-College": {
+      "description": "สาขา YouthMappers แห่ง Nimba County Community College"
+    },
+    "ym-Njala-University-Freetown-Campus": {
+      "description": "สาขา YouthMappers แห่ง Njala University, Freetown Campus",
+      "extendedDescription": "พวกเราเป็นนักศึกษาของมหาวิทยาลัย Njala วิทยาเขตฟรีทาวน์ ศึกษาสาขาเทคโนโลยีสารสนเทศ ภายใต้ภาควิชาฟิสิกส์และวิทยาการคอมพิวเตอร์ และพวกเราตั้งอยู่ที่ถนน Henry Street ฟรีทาวน์ ประเทศเซียร์ราลีโอน"
+    },
+    "ym-Njala-University-Njala-Campus": {
+      "description": "สาขา YouthMappers chapter แห่ง Njala University, Njala Campus"
+    },
+    "ym-Ohio-Wesleyan-University": {
+      "name": "ชมรมสิ่งแวดล้อมและสัตว์ป่า",
+      "description": "สาขา YouthMappers chapter แห่ง Ohio Wesleyan University",
+      "extendedDescription": "ชมรมสิ่งแวดล้อมและสัตว์ป่าจะเน้นที่ปัญหาสิ่งแวดล้อมในมหาวิทยาลัย รัฐเดลาแวร์ และแม้แต่ในระดับประเทศ เราจัดทำโครงการต่างๆ ในมหาวิทยาลัยและชุมชน สำรวจและเพลิดเพลินกับกิจกรรมกลางแจ้ง ทำงานอาสาสมัคร และพยายามส่งเสริมสิ่งแวดล้อมในทุกแง่มุมของชีวิต"
+    },
     "ym-Oklahoma-State-University": {
-      "name": "สโมสรภูมิศาสตร์"
+      "name": "สโมสรภูมิศาสตร์",
+      "description": "สาขา YouthMappers แห่ง Oklahoma State University"
+    },
+    "ym-Open-University-of-Tanzania": {
+      "name": "สาขา Youth Mappers แห่ง Open University of Tanzania",
+      "description": "สาขา YouthMappers แห่ง Open University of Tanzania",
+      "extendedDescription": "นักทำแผนที่เยาวชนแห่งมหาวิทยาลัยโอเพ่นแห่งแทนซาเนีย\n\nก่อตั้งโดยสมาชิกและนักศึกษาของมหาวิทยาลัยโอเพ่นแห่งแทนซาเนียในแผนกภูมิศาสตร์ ซึ่งส่วนใหญ่ต้องการพัฒนาอาชีพและช่วยเหลือชุมชนเยาวชนผ่านโครงการร่วมและโครงการหุ้นส่วนกับกลุ่มชุมชนในท้องถิ่น เช่น Mikoko Scout Group (www.msg.or.tz) และเริ่มความร่วมมือกับวิทยาลัยและมหาวิทยาลัยนานาชาติสำหรับโครงการแลกเปลี่ยนที่เกี่ยวข้องกับการศึกษาด้านภูมิศาสตร์ โดยบางโครงการจัดทำโดย Mikoko Scout Group ซึ่งจะเชื่อมโยงมหาวิทยาลัยในท้องถิ่นและมหาวิทยาลัยอื่นๆ ที่มีความสนใจเดียวกันผ่านค่ายเยาวชนธรรมชาติและสิ่งแวดล้อมนานาชาติ 2019 (www.campsite.msg.or.tz/nature.html )\n\nในไม่ช้านี้ สาขาของเราจะได้รับการยอมรับในฐานะโครงการเครือข่ายเยาวชน ซึ่งจะเปิดโอกาสให้นักศึกษาได้ศึกษาและดำเนินการศึกษาวิจัยในระดับท้องถิ่น"
+    },
+    "ym-Oregon-State-University": {
+      "name": "สาขา YouthMappers แห่ง Oregon State University",
+      "description": "สาขา YouthMappers แห่ง Oregon State University"
+    },
+    "ym-Politecnico-di-Milano": {
+      "description": "สาขา YouthMappers แห่ง Politecnico di Milano",
+      "extendedDescription": "PoliMappers เป็นสมาคมนักศึกษาอาสาสมัครที่ Politecnico di Milano ภารกิจของกลุ่มคือฝึกอบรมและสร้างแรงบันดาลใจให้กับนักทำแผนที่อาสาสมัครรุ่นต่อไป และทำแผนที่โดยใช้ซอฟต์แวร์โอเพ่นซอร์สฟรีภายในมหาวิทยาลัย รวมถึงโรงเรียนประถมและมัธยมศึกษา"
+    },
+    "ym-Queen-Mary-University-of-London": {
+      "description": "สาขา YouthMappers แห่ง Queen Mary University of London",
+      "extendedDescription": "สาขานี้จะเป็นส่วนหนึ่งของกิจกรรมของ Queen Mary Geography Society"
+    },
+    "ym-Rajshahi-University-of-Engineering-Technology": {
+      "name": "YouthMappers แห่ง RUET",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยวิศวกรรมศาสตร์และเทคโนโลยี Rajshahi",
+      "extendedDescription": "\"YouthMappers at RUET\" เป็นกลุ่มนักศึกษาที่ทำแผนที่ด้านมนุษยธรรมจากมหาวิทยาลัยวิศวกรรมศาสตร์และเทคโนโลยีราชชาฮี (RUET) เพื่อแบ่งปัน พัฒนา และฝึกฝนความรู้ด้าน GIS กลุ่มนี้สนับสนุนการใช้ข้อมูลภูมิสารสนเทศแบบโอเพนซอร์สและแพลตฟอร์มเพื่อสร้างโซลูชันเพื่อเข้าถึงกลุ่มที่เปราะบางที่สุดในโลก"
+    },
+    "ym-Sherubtse-College": {
+      "description": "สาขา YouthMappers chapter แห่ง Sherubtse College",
+      "extendedDescription": "Geographical Society ในแผนกภูมิศาสตร์และการวางแผน วิทยาลัย Sherubtse มหาวิทยาลัยราชภัฏภูฏาน ร่วมกับศูนย์ข้อมูลการเปลี่ยนแปลงสภาพภูมิอากาศและเชิงพื้นที่ ได้พยายามหลายครั้งเพื่อสร้างความตระหนักรู้และแก้ไขปัญหาสำคัญในระดับท้องถิ่นและระดับชาติ ปัจจุบัน เราจับมือกับเครือข่าย YouthMappers ที่เน้นนักเรียนนานาชาติในหัวข้อ \"การทำแผนที่เพื่อความยืดหยุ่น\" และมีส่วนสนับสนุนให้เกิด \"ความสุข\" ทั่วโลก!"
+    },
+    "ym-Sokoine-University-of-Agriculture": {
+      "description": "สาจา YouthMappers แห่ง Sokoine University of Agriculture",
+      "extendedDescription": "สาขานี้ประกอบด้วยนักศึกษาสาขาวิทยาศาสตร์สิ่งแวดล้อมและการจัดการ และการศึกษาภูมิศาสตร์ภายใต้ภาควิชาภูมิศาสตร์ โดยเราจะใช้เทคนิคการทำแผนที่โดยอิงตามแนวคิดและทฤษฎีระบบ ซึ่งสามารถใช้เพื่ออำนวยความสะดวก สำรวจ และบันทึกความเข้าใจที่แตกต่างกันเกี่ยวกับความสัมพันธ์ มุมมอง และขอบเขตที่เกี่ยวข้องกับความยั่งยืนของสิ่งแวดล้อม เพื่อให้เข้าใจแนวคิดได้สมบูรณ์ยิ่งขึ้น และพัฒนาแผนปฏิบัติการ"
+    },
+    "ym-St<TX_DOT>-Augustine-International-University": {
+      "name": "YouthMappers แห่ง St Augustine International University",
+      "description": "สาขาYouthMappers แห่ง St. Augustine International University"
+    },
+    "ym-St<TX_DOT>-Mawaggali-Trades-Training-Institute": {
+      "description": "สาขา YouthMappers แห่ง St. Mawaggali Trades Training Institute",
+      "extendedDescription": "พวกเราเป็นกลุ่ม YouthMappers ที่ St. Mawaggali Trades ใน Choma ที่ต้องการมีส่วนสนับสนุนภารกิจด้านมนุษยธรรมต่างๆ เพื่อให้สามารถช่วยเหลือผู้คนได้ผ่านการทำแผนที่"
+    },
+    "ym-State-University-of-New-York-Geneseo": {
+      "name": "สมาคม SUNY Geneseo GIS",
+      "description": "สาขา YouthMappers แห่ง State University of New York Geneseo",
+      "extendedDescription": "เราเผยแพร่การรับรู้ การสนับสนุน การศึกษา การทำงานอาสาสมัคร และโอกาสก้าวหน้าในอาชีพในระบบสารสนเทศภูมิศาสตร์ ข้ามสาขาวิชาและแผนกต่างๆ ในบริบทของ SUNY Geneseo ชุมชนท้องถิ่น และชุมชนทั่วโลก"
+    },
+    "ym-Stella-Maris-Polytechnic": {
+      "description": "สาขา YouthMappers แห่ง Stella Maris Polytechnic"
+    },
+    "ym-SUNY-at-Fredonia": {
+      "description": "สาขา YouthMappers แห่ง SUNY at Fredonia",
+      "extendedDescription": "GeoVenturers เป็นกลุ่มนักศึกษาที่รวมตัวกันจากสาขาวิชาต่างๆ ในมหาวิทยาลัยของเรา โดยมองว่าเทคโนโลยีภูมิสารสนเทศเป็นเครื่องมือในการให้บริการผู้อื่นและเชื่อมโยงผู้คนเข้าด้วยกัน การให้คำปรึกษาแก่กลุ่มนี้ทำให้มีการศึกษาด้านวิทยาศาสตร์จากแผนกหลักสูตรและการเรียนการสอน เราหวังว่าเราจะสามารถนำทักษะที่เรามีมาใช้เพื่อช่วยให้ชีวิตของผู้คนดีขึ้นได้"
+    },
+    "ym-Technical-University-of-Kenya": {
+      "name": "สมาคมนักศึกษาวิทยาศาสตร์ภูมิสารสนเทศ",
+      "description": "สาขา YouthMappers แห่ง Technical University of Kenya",
+      "extendedDescription": "เป็นกลุ่มที่เน้นข้อมูลทางภูมิศาสตร์ โดยมีนักศึกษาที่หลงใหลในสาขาวิชาที่เกี่ยวข้อง เราจัดการฝึกอบรมให้กับสมาชิกเกี่ยวกับแนวโน้มใหม่ ๆ ในตลาด และติดตามความก้าวหน้าทางเทคโนโลยี"
+    },
+    "ym-Texas-Tech-University": {
+      "name": "YouthMappers แห่ง TTU",
+      "description": "สาขา YouthMappers แห่ง Texas Tech University",
+      "extendedDescription": "ในฐานะหนึ่งในผู้ร่วมก่อตั้งเครือข่าย TTU YouthMappers กระตือรือร้นที่จะทำหน้าที่เป็นผู้นำสหวิทยาการเพื่อช่วยสร้างข้อมูลทางภูมิศาสตร์แบบเปิดและการวิเคราะห์ที่แก้ไขปัญหาการพัฒนาทั่วโลกที่กำหนดโดยท้องถิ่น บทนี้มุ่งมั่นที่จะแลกเปลี่ยนและทำงานร่วมกันกับบทอื่นๆ ทั่วโลก ในขณะเดียวกันก็เสนอตัวเองเป็นทรัพยากรและบริการในท้องถิ่นให้กับองค์กรนักศึกษา Texas Tech ในรูปแบบที่เพิ่มมูลค่าให้กับกิจกรรมในมหาวิทยาลัยของพวกเขาผ่านการทำแผนที่"
+    },
+    "ym-The-Citadel": {
+      "name": "YouthMappers แห่ง The Citadel",
+      "description": "สาขา YouthMappers แห่ง The Citadel",
+      "extendedDescription": "สาขานี้เป็นสโมสรโรตาแรคต์ ซึ่งเป็นองค์กรในเครือของโรตารีสากล สมาชิกหลายคนรวมถึงผู้นำได้แสดงความสนใจใน YouthMappers และเราต้องการให้สโมสรโรตาแรคต์ซิทาเดลของเราเข้าร่วมกับ YouthMappers"
+    },
+    "ym-The-Gambia-YMCA-University-of-the-Gambia": {
+      "description": "สาขา YouthMappers แห่ง The Gambia YMCA / University of the Gambia",
+      "extendedDescription": "Connected YouthMappers ประกอบด้วยชาวแกมเบียรุ่นเยาว์ที่มุ่งมั่นซึ่งปรารถนาที่จะเปลี่ยนแปลงและช่วยเหลือการพัฒนาประเทศ"
+    },
+    "ym-The-George-Washington-University": {
+      "name": "สมาคมการทำแผนที่เพื่อมนุษยธรรม",
+      "description": "YouthMappers แห่ง The George Washington University",
+      "extendedDescription": "HMS เป็นแบบจำลองของความเป็นผู้นำและการมีส่วนร่วม โดยมุ่งหวังที่จะให้ความช่วยเหลือและทำให้โลกดีขึ้นผ่านโครงการระบบสารสนเทศภูมิศาสตร์ (GIS) ด้านมนุษยธรรม องค์กรร่วมก่อตั้งแห่งนี้ในวิทยาเขต GWU มีประสบการณ์มากมายที่จะแบ่งปัน และมักจะร่วมมือโดยตรงกับ USAID สภากาชาดอเมริกัน และกระทรวงการต่างประเทศสหรัฐฯ ในพื้นที่ DC เพื่อขยายความพยายามที่นำโดยนักศึกษาและให้บริการชุมชนโลก"
+    },
+    "ym-The-Johns-Hopkins-University-SAIS": {
+      "description": "สาขา YouthMappers แห่ง The Johns Hopkins University, SAIS",
+      "extendedDescription": "ภารกิจของ SAIS Youth Mappers คือการมอบโอกาสให้นักศึกษาของมหาวิทยาลัย Johns Hopkins SAIS ได้เป็นนักทำแผนที่ด้านมนุษยธรรมที่มีทักษะสูง ในฐานะกลุ่มหนึ่งใน South Asia Club กลุ่มนี้มุ่งเน้นหลักในการสนับสนุนโครงการทำแผนที่ด้านมนุษยธรรมในภูมิภาคอินโด-แปซิฟิก"
+    },
+    "ym-The-Pennsylvania-State-University": {
+      "name": "กลุ่มพันธมิตร GIS ของ Penn State",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยแห่งรัฐเพนซิลวาเนีย",
+      "extendedDescription": "Penn State Geospatial Information Science (GIS) Coalition เป็นองค์กรที่เปิดโอกาสให้กับนักศึกษาที่กำลังเรียนเอก โท หรือสนใจร่วมหลักสูตร GIS เพื่อพัฒนาทักษะและความรู้เสริมที่จำเป็นในการประสบความสำเร็จในอุตสาหกรรม GIS ระดับมืออาชีพ"
+    },
+    "ym-The-University-of-Zambia": {
+      "description": "สาขา YouthMappers แห่ง University of Zambia"
+    },
+    "ym-Uganda-Christian-University-Mbale-Campus": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยคริสเตียนแห่งยูกันดา วิทยาเขตมบาเล",
+      "extendedDescription": "พวกเราคือ Team Mappers for life! โปรดมาร่วมทำแผนที่ไปกับเรา!\" กลุ่มนี้ทำงานจากภาควิชาเทคโนโลยีสารสนเทศของมหาวิทยาลัย UCU"
+    },
+    "ym-Uganda-Pentecostal-University": {
+      "description": "สาขา YouthMappers แห่ง Uganda Pentecostal University",
+      "extendedDescription": "สาขา Youthmappers ใหม่ในยูกันดาตะวันตก พร้อมทำแผนที่และให้ข้อมูลเปิดด้วย OpenStreetMap เพื่อวัตถุประสงค์ในการพัฒนา"
+    },
+    "ym-Universidad-de-Antioquia": {
+      "description": "สาขา YouthMappers แห่ง Universidad de Antioquia",
+      "extendedDescription": "พวกเราคือกลุ่มที่สนใจในข้อมูลภูมิสารสนเทศ การทำแผนที่แบบสมัครใจ และการมีส่วนร่วมในการทำแผนที่ร่วมกับคนอื่นๆ ในประเทศของเราและภายในเครือข่าย YouthMappers"
+    },
+    "ym-Universidad-de-Costa-Rica": {
+      "name": "YouthMappers แห่ง University of Costa Rica",
+      "description": "สาขา YouthMappers แห่ง University of Costa Rica",
+      "extendedDescription": "YouthMappers แห่งมหาวิทยาลัยคอสตาริกาถือกำเนิดขึ้นจากกิจกรรมทางสังคมของสมาชิกจากชุมชนที่หลากหลายตามธีมของการมีส่วนร่วม ปฏิสัมพันธ์ และการเป็นตัวแทน OpenStreetMap ช่วยให้เราสามารถรวบรวม ตรวจสอบ และแบ่งปันข้อมูลทางภูมิศาสตร์ภายในชุมชนของเราเพื่อประโยชน์ของทุกคน"
+    },
+    "ym-Universidad-de-La-Guajira": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัย La Guajira",
+      "extendedDescription": "Grupo Mesh เป็นองค์กรนักศึกษาในมหาวิทยาลัย Universidad de la Guajira ในประเทศโคลอมเบีย ซึ่งรวมถึงนักศึกษาจากหลักสูตรวิศวกรรมสิ่งแวดล้อมที่เรียนรู้เกี่ยวกับการทำแผนที่และการทำแผนที่แบบเปิด"
+    },
+    "ym-Universidad-de-Los-Andes": {
+      "description": "สาขา YouthMappers แห่ง Universidad de Los Andes",
+      "extendedDescription": "เราเป็นกลุ่มของการมีส่วนร่วมของนักศึกษาที่แสวงหาการใช้การทำแผนที่และการใช้เหตุผลเชิงพื้นที่เพื่อเป็นเครื่องมือสร้างพันธะแห่งความร่วมมือและการบูรณาการระหว่างมหาวิทยาลัยและสังคม โดยการจัดการกับพลวัตเชิงพื้นที่ สังคม การเมือง เศรษฐกิจ และวัฒนธรรมที่แตกต่างกัน"
+    },
+    "ym-Universidad-de-Puerto-Rico-Rio-Piedras": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยเปอร์โตริโก - ริโอ เปียดราส"
+    },
+    "ym-Universidad-de-San-Buenaventura": {
+      "description": "สาขา YouthMappers แห่ง Universidad de San Buenaventura",
+      "extendedDescription": "เรายินดีที่ได้เข้าร่วมกับ YouthMappers ในการทำแผนที่เพื่อโลกและชุมชนที่ดีขึ้น"
+    },
+    "ym-Universidad-Distrital-Francisco-Jose-de-Caldas": {
+      "name": "YouthMappers แห่ง Bogota",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัย Francisco Jose de Caldas District",
+      "extendedDescription": "Universidad Distrital Francisco José de Caldas เป็นมหาวิทยาลัยวิจัยของรัฐแบบสหศึกษาตั้งอยู่ในโบโกตา ประเทศโคลอมเบีย"
+    },
+    "ym-Universidad-Jorge-Tadeo-Lozano": {
+      "name": "TadeoMappers แห่งมหาวิทยาลัย Jorge Tadeo Lozano",
+      "description": "สาขา YouthMappers แห่ง Universidad Jorge Tadeo Lozano",
+      "extendedDescription": "นักศึกษาจากโบโกต้ามีความหลงใหลในกิจกรรมการทำแผนที่ที่สนับสนุนความหลากหลายทางชีวภาพ พวกเขาเน้นที่การทำแผนที่ต้นไม้และนำกิจกรรมเหล่านี้ไปใช้ในโรงเรียน โดยมุ่งหวังให้ชุมชนทั้งหมดมีส่วนร่วมในความพยายามด้านสิ่งแวดล้อม"
+    },
+    "ym-Universidad-Jorge-Tadeo-Lozano-github": {
+      "description": "GitHub ของสาขา YouthMappers TadeoMappers",
+      "extendedDescription": "TadeoMappers ร่วมมือกับกลุ่ม GNUTADEO Free Software จัดทำคลังข้อมูลสำหรับผลงานของตน ทั้งสองกลุ่มมีความเกี่ยวข้องกับ Universidad Jorge Tadeo Lozano โดยส่งเสริมการใช้เครื่องมือและซอฟต์แวร์ทำแผนที่เพื่อสนับสนุนโครงการที่ขับเคลื่อนโดยชุมชน"
+    },
+    "ym-Universidad-Jorge-Tadeo-Lozano-instagram": {
+      "description": "Instagram ของสาขา YouthMappers TadeoMappers",
+      "extendedDescription": "TadeoMappers เป็นส่วนหนึ่งของกลุ่มซอฟต์แวร์ฟรี GNUTADEO ซึ่งเป็นกลุ่มจากมหาวิทยาลัย Jorge Tadeo Lozano"
+    },
+    "ym-Universidad-Nacional-Autnoma-de-Honduras": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยแห่งชาติฮอนดูรัส"
+    },
+    "ym-Universidad-Nacional-de-Colombia": {
+      "description": "สาขา YouthMappers แห่ง Universidad Nacional de Colombia",
+      "extendedDescription": "นักศึกษาได้รวมตัวกันเพื่อสร้างแผนที่และเครือข่ายกับนักศึกษาในมหาวิทยาลัยทั่วประเทศโคลอมเบียและทั่วโลก ความเชี่ยวชาญทางภูมิศาสตร์ได้แก่ การมีส่วนเกี่ยวข้องกับสาขาวิชาจุลชีววิทยาและสุขภาพ"
+    },
+    "ym-Universidad-Nacional-de-Ingenieria": {
+      "description": "สาขา YouthMappers แห่ง Universidad Nacional de Ingenieria",
+      "extendedDescription": "YEKA STREET เป็นทีมงานที่ประกอบด้วยนักศึกษาจาก Universidad Nacional de Ingenieria ที่เมืองมานากัว ประเทศนิการากัว โดยมีจุดประสงค์หลักเพื่อนำความรู้และทักษะของเราไปใช้ โดยใช้เครื่องมือและแอปต่างๆ เพื่อทำแผนที่พื้นที่ต่างๆ ในเมืองของเรา และมีส่วนร่วมในโครงการพัฒนาชุมชนและแผนบรรเทาทุกข์จากภัยพิบัติ เราต้องการเป็นผู้นำในการเพิ่มนักศึกษาจากทุกสาขาอาชีพและมหาวิทยาลัยในประเทศของเราให้เข้าร่วมกับเราในกิจกรรมนี้ ซึ่งจะช่วยเพิ่มระดับคุณภาพชีวิตและลดความเสี่ยงของประชากร"
+    },
+    "ym-Universidade-Eduardo-Mondlane": {
+      "name": "ชุมชน YouthMappers โมซัมบิก",
+      "description": "สาขา YouthMappers แห่ง Universidade Eduardo Mondlane",
+      "extendedDescription": "พวกเราคือกลุ่มนักศึกษาที่ตั้งใจจะเข้าร่วมกับสังคมโมซัมบิกเพื่อสร้างชุมชนที่มีความยืดหยุ่นในการทำแผนที่ด้านมนุษยธรรม ชุมชนตั้งใจที่จะทำแผนที่อาชีพทางกายภาพของประเทศของเราและสร้างข้อมูลทางภูมิศาสตร์ที่เปิดกว้างให้สาธารณชนเข้าถึงได้และสามารถใช้ได้ในหลายพื้นที่โดยไม่มีค่าใช้จ่ายที่เกี่ยวข้อง"
+    },
+    "ym-Universit-de-NZrkor": {
+      "name": "YouthMappers อึนเซเรกอเร",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยอึนเซเรกอเร",
+      "extendedDescription": "YouthMappers กระตุ้นให้นักเรียนสร้างแผนที่ในกรณีเกิดภัยพิบัติหรือโรคระบาด นอกจากนี้ยังช่วยให้สามารถผลิตและใช้ข้อมูลแผนที่ได้โดยไม่มีค่าใช้จ่าย"
+    },
+    "ym-Universit-des-Sciences-Sociale-et-de-Gestion-de-Bamako": {
+      "name": "YouthMappers บามาโก",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยสังคมศาสตร์และการจัดการบามาโก"
+    },
+    "ym-Universit-Gaston-Berger": {
+      "name": "YouthMappers แห่ง UGB",
+      "description": "สาขา YouthMappers แห่ง Université Gaston Berger",
+      "extendedDescription": "YouthMappers UGB ประกอบด้วยนักศึกษาและนักวิจัยรุ่นใหม่ที่หลงใหลในการทำแผนที่ เป้าหมายของเราคือการพัฒนาทักษะของนักศึกษาในสาขาการทำแผนที่ และมีส่วนร่วมในการสร้างข้อมูลภูมิศาสตร์แบบเปิดที่ตอบสนองต่อความท้าทายด้านการพัฒนาต่างๆ ทั่วโลก โดยเฉพาะอย่างยิ่งในแอฟริกา"
+    },
+    "ym-Universit-Mohammed-V-Rabat": {
+      "name": "Brahmapoutre ที่ Rabat",
+      "description": "สาขา YouthMappers แห่ง Université Mohammed V Rabat",
+      "extendedDescription": "สาขานี้ถือว่าการมีส่วนร่วมในโครงการ YouthMappers เป็นโอกาสในการแบ่งปันความรู้ สร้างความสัมพันธ์การทำงานใหม่ๆ กับบทอื่นๆ ในประเทศต่างๆ"
+    },
+    "ym-Universitas-Negeri-Makassar": {
+      "description": "สาขา YouthMappers chapter แห่ง Universitas Negeri Makassar"
+    },
+    "ym-University-Muhammadiyah-Surakarta": {
+      "description": "สาขา YouthMappers แห่ง University Muhammadiyah Surakarta",
+      "extendedDescription": "SpaceTime คือแผนที่ชุมชนในคณะภูมิศาสตร์ มหาวิทยาลัย Muhammadiyah แห่งสุราการ์ตา SpaceTime ก่อตั้งโดย Bruce Maldy Pratama, Mukhlis Akbar และ Irfandi Fauzi พวกเขาเป็นนักศึกษาที่กระตือรือร้นในคณะภูมิศาสตร์ มหาวิทยาลัย Muhammadiyah แห่งสุราการ์ตา"
+    },
+    "ym-University-of-California-Davis": {
+      "name": "คลับการทำแผนที่",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยแคลิฟอร์เนีย เดวิส"
+    },
+    "ym-University-of-Cape-Coast": {
+      "description": "สาขา YouthMappers แห่ง University of Cape Coast",
+      "extendedDescription": "เราเป็นสังคมที่รวมนักศึกษาที่อ่านหนังสือภูมิศาสตร์ในภาควิชาภูมิศาสตร์และการวางแผนภูมิภาคของมหาวิทยาลัยเคปโคสต์ไว้ด้วยกัน เป้าหมายหลักของเราคือการส่งเสริมความสนใจในสาขาวิชานี้ทั้งภายในและภายนอกห้องเรียน คติประจำใจของเราคือ \"เราเข้าใจโลกและผู้อยู่อาศัย\""
+    },
+    "ym-University-of-Central-Florida": {
+      "name": "สมาคมสารสนเทศภูมิสารสนเทศ",
+      "description": "สาขา YouthMappers แห่ง University of Central Florida",
+      "extendedDescription": "พันธกิจของเราคือการส่งเสริมสภาพแวดล้อมทางสังคมและการศึกษาสำหรับสาขาวิชาต่างๆ ที่สนใจในการอภิปรายและการประยุกต์ใช้ GIS กิจกรรมกลุ่มและชุมชนตลอดทั้งปีการศึกษาจะจัดให้นักศึกษาอาสาสมัครช่วยเหลือชุมชนในท้องถิ่นและในภูมิภาคโดยใช้โครงการ GIS ที่ใช้ชุมชนเป็นฐานและให้ความรู้แก่นักเรียนมัธยมต้นและมัธยมปลายในท้องถิ่นเกี่ยวกับการใช้และการประยุกต์ใช้ GIS"
+    },
+    "ym-University-of-Chicago": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยชิคาโก"
+    },
+    "ym-University-of-Dar-es-Salaam": {
+      "name": "YouthMappers แห่ง University of Dar es Salaam",
+      "description": "สาขา YouthMappers แห่ง University of Dar es Salaam",
+      "extendedDescription": "จุดประสงค์ของ YouthMappers แห่งมหาวิทยาลัยดาร์เอสซาลามคือการใช้และส่งเสริมข้อมูลโอเพ่นซอร์สและเทคโนโลยี GIS ในการทำแผนที่พื้นที่ภัยพิบัติที่อาจเกิดขึ้น จัดเตรียมทรัพยากรสำหรับการจัดการเหตุฉุกเฉิน เชื่อมโยงสมาชิกกับองค์กรโอเพ่นซอร์สและ GIS ในเมืองดาร์เอสซาลาม และตอบสนองความต้องการที่กำลังจะเกิดขึ้นของพันธมิตรโครงการของเรา"
+    },
+    "ym-University-of-Energy-and-Natural-Resources": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยพลังงานและทรัพยากรธรรมชาติ",
+      "extendedDescription": "เพื่อให้ประชาชนทุกคนได้รับความรู้ที่ถูกต้องเกี่ยวกับสิ่งแวดล้อมที่เสื่อมโทรม และใช้ประโยชน์สูงสุดในการฟื้นฟูสิ่งแวดล้อมเพื่อการดำรงอยู่ของมนุษย์"
+    },
+    "ym-University-of-Exeter": {
+      "name": "University แห่ง Exeter British Red Cross Missing Maps",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัย Exeter",
+      "extendedDescription": "พวกเราเป็นทีมนักภูมิศาสตร์ที่กระตือรือร้นและมีความรู้เกี่ยวกับ GIS อย่างครอบคลุม พวกเรามีความมุ่งมั่นในการสนับสนุนสภากาชาดอังกฤษด้วยความพยายามด้านความช่วยเหลือด้านมนุษยธรรมต่างๆ นอกจากนี้ พวกเรายังเป็นครูผู้สอนที่สำคัญเกี่ยวกับความสำคัญของการทำแผนที่ข้อมูลจากการรับรู้ระยะไกลและวิธีที่สิ่งนี้ช่วยได้ในพื้นที่จริง กิจกรรมการทำแผนที่ของเราเน้นในเชิงวิชาการตามธีมซึ่งเน้นที่การวิจัย GIS ที่แตกต่างกันในแผนกภูมิศาสตร์ของเรา ขณะเดียวกันก็ทำหน้าที่เป็นกิจกรรมสร้างความตระหนักรู้ด้านการจ้างงาน ซึ่งเราใช้เชิญวิทยากรมาพูดคุยเกี่ยวกับอาชีพของพวกเขาใน GIS/สภากาชาดอังกฤษ"
+    },
+    "ym-University-of-Ghana": {
+      "name": "YouthMappers แห่ง University of Ghana",
+      "description": "สาขา YouthMappers แห่ง University of Ghana",
+      "extendedDescription": "UG YouthMappers ประกอบด้วยนักศึกษาระดับปริญญาตรีและบัณฑิตที่มีความรู้และทักษะด้าน GIS และการสำรวจระยะไกล คลับนี้ประกอบด้วยทีมงานที่มีพลังซึ่งพร้อมที่จะแก้ไขปัญหาสังคมและบรรเทาปัญหาสิ่งแวดล้อมผ่านการทำแผนที่ หลักการพื้นฐานของเราคือการสร้างศักยภาพ การเสริมอำนาจ และการทำงานเป็นทีม"
+    },
+    "ym-University-of-Liberia-YouthMappers": {
+      "name": "YouthMappers แห่ง University of Liberia",
+      "description": "สมาคม YouthMappers แห่งมหาวิทยาลัยไลบีเรีย",
+      "extendedDescription": "University of Liberia YouthMappers เป็นองค์กรในเครือของ Global YouthMappers เราเป็นองค์กรไม่แสวงหากำไรด้านการทำแผนที่สำหรับนักศึกษา โดยมุ่งเน้นที่การทำแผนที่เพื่อการพัฒนาของไลบีเรียและโลกโดยรวม วัตถุประสงค์ขององค์กรนี้คือการใช้เทคโนโลยีและความรู้ด้านภูมิสารสนเทศในการสร้างและพัฒนาแผนที่ รวบรวมและวิเคราะห์ข้อมูลที่จะแก้ไขปัญหาในท้องถิ่นและทั่วโลก เป้าหมายของเราคือการสนับสนุนและสร้างโอกาสให้นักศึกษาพัฒนาความสนใจและทักษะในสาขาการทำแผนที่ เรามุ่งหวังที่จะเป็นชุมชนนักศึกษาที่เป็นหนึ่งเดียว ร่วมมือกัน มีส่วนร่วม และเต็มใจที่จะทำงานร่วมกับ University of Liberia YouthMappers เพื่อปรับปรุงชีวิตของผู้อื่นให้ดีขึ้น"
+    },
+    "ym-University-of-Malawi": {
+      "description": "สาขา YouthMappers แห่ง University of Malawi",
+      "extendedDescription": "Chanco Malawi YouthMappers เป็นองค์กรจัดทำแผนที่สำหรับนักศึกษาของ Chancellor College ของมหาวิทยาลัยมาลาวี นักศึกษาในบทนี้เน้นที่การทำแผนที่เพื่อการพัฒนาและความต้องการด้านวิทยาศาสตร์ของมาลาวี"
     },
     "ym-University-of-Maryland-College-Park": {
-      "name": "สโมสรภูมิศาสตร์"
+      "name": "สโมสรภูมิศาสตร์",
+      "description": "สาขา YouthMappers แห่ง University of Maryland - College Park",
+      "extendedDescription": "ภารกิจของชมรมภูมิศาสตร์ที่มหาวิทยาลัยแมริแลนด์คอลเลจพาร์คคือการดึงดูดและสนับสนุนให้นักศึกษาสำรวจความสนใจทางภูมิศาสตร์ภายในวิทยาเขตและชุมชน"
+    },
+    "ym-University-of-Mines-and-Technology": {
+      "name": "YouthMappers แห่ง UMaT",
+      "description": "สาขา YouthMappers แห่ง University of Mines and Technology",
+      "extendedDescription": "UMaT YouthMappers เป็นกลุ่มนักศึกษาอาสาสมัครที่ต้องการมอบโอกาสให้นักศึกษาได้พัฒนาทักษะในด้านการทำแผนที่และการสร้างข้อมูลทางภูมิศาสตร์เปิดและการวิเคราะห์เพื่อแก้ไขความท้าทายด้านการพัฒนาที่กำหนดโดยท้องถิ่นทั่วโลก"
+    },
+    "ym-University-of-Nairobi": {
+      "name": "สมาคมนิสิตคณะวิศวกรรมศาสตร์ภูมิสารสนเทศ",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยไนโรบี",
+      "extendedDescription": "นักศึกษา UN กำลังทำงานร่วมกับชุมชน OSM ในพื้นที่ Map Kibera และ GrouthTruth เพื่อเรียนรู้เกี่ยวกับการทำแผนที่แบบเปิดและนำเสนอข้อมูลเพื่อตอบสนองความต้องการในชุมชนในเมืองของพวกเขา"
+    },
+    "ym-University-of-Nigeria-Enugu-Campus": {
+      "description": "สาขา YouthMappers แห่ง University of Nigeria, Enugu Campus",
+      "extendedDescription": "ทีม LionMappers (LMT) Enugu Campus เป็นส่วนหนึ่งของ YouthMappers Network โดยมีเป้าหมายเพียงอย่างเดียวคือเพื่อให้สมาชิกมีโอกาสเรียนรู้และพัฒนาทักษะในด้านภูมิสารสนเทศ และสร้างข้อมูลและการวิเคราะห์ภูมิศาสตร์แบบเปิดที่แก้ไขปัญหาเฉพาะพื้นที่ทั่วโลก ทีมนี้เป็นทีมอาสาสมัครสำหรับการทำแผนที่แบบ Crowdsourced และการจัดหาข้อมูลภูมิศาสตร์โดยใช้ Openstreetmap, Citizen Science และเทคโนโลยีภูมิสารสนเทศอื่นๆ เพื่อการวิจัย การฝึกอบรม และการตอบสนองต่อความท้าทายของชุมชนที่ยืดหยุ่น เราเกี่ยวข้องกับการทำแผนที่บนเว็บ GIS และแอปพลิเคชันการสำรวจระยะไกล เราหลงใหลในข้อมูลภูมิศาสตร์แบบอาสาสมัคร GIS แบบควบคุม และ Citizen Science กิจกรรมหลักของเราได้แก่ การทำแผนที่แบบ Crowdsourced ออนไลน์ การทำแผนที่ภาคสนาม การฝึกอบรมเวิร์กช็อป และการเข้าถึงโรงเรียนมัธยมศึกษา รวมถึงการทำแผนที่เพื่อตอบสนองต่อมนุษยธรรม/ภัยพิบัติ"
+    },
+    "ym-University-of-Nigeria-Nsukka": {
+      "name": "ทีม LionMappers (LMT) นซุกก้า",
+      "description": "สาขา YouthMappers แห่ง University of Nigeria, Nsukka",
+      "extendedDescription": "LionMappersTeam เป็นส่วนหนึ่งของ YouthMappers Network โดยมีเป้าหมายเพียงอย่างเดียวคือเพื่อให้สมาชิกมีโอกาสเรียนรู้และพัฒนาทักษะของตนในสาขาวิทยาศาสตร์การทำแผนที่ และสร้างข้อมูลและการวิเคราะห์ทางภูมิศาสตร์แบบเปิดที่แก้ไขปัญหาเฉพาะพื้นที่ทั่วโลก โดยเป็นทีมอาสาสมัครที่ทำแผนที่แบบระดมสมองและจัดเตรียมข้อมูลทางภูมิศาสตร์โดยใช้ Openstreetmap วิทยาศาสตร์พลเมือง และเทคโนโลยีภูมิสารสนเทศอื่นๆ เพื่อการวิจัย ฝึกอบรม และตอบสนองต่อความท้าทายที่ชุมชนสามารถฟื้นตัวได้ เราเกี่ยวข้องกับ GIS และการประยุกต์ใช้การสำรวจระยะไกล GIS เชิงกระบวนการและวิทยาศาสตร์พลเมือง การทำแผนที่ภาคสนาม การฝึกอบรมเชิงปฏิบัติการ และการเข้าถึงโรงเรียนมัธยมศึกษา"
+    },
+    "ym-University-of-North-Texas": {
+      "description": "สาขา YouthMappers แห่ง University of North Texas",
+      "extendedDescription": "ชมรมภูมิศาสตร์เป็นองค์กรนักศึกษาของมหาวิทยาลัยนอร์ทเท็กซัสที่ยินดีต้อนรับนักศึกษาที่สนใจภูมิศาสตร์ทุกคน วัตถุประสงค์ของชมรมภูมิศาสตร์คือเพื่อส่งเสริมความสนใจในภูมิศาสตร์ สาขาวิชา และภาควิชาภูมิศาสตร์ ควบคู่ไปกับมิตรภาพระหว่างนักศึกษาและคณาจารย์ ชมรมยังมุ่งมั่นที่จะเป็นตัวแทนความต้องการและความปรารถนาของนักศึกษาเกี่ยวกับการศึกษาภูมิศาสตร์ และเพื่อเป็นเวทีสำหรับการนำเสนอแนวคิดใหม่ๆ เพื่อประโยชน์ของชุมชนมหาวิทยาลัย"
+    },
+    "ym-University-of-Northern-Colorado": {
+      "name": "UNCO Geography และ GIS Club",
+      "description": "สาขา YouthMappers แห่ง University of Northern Colorado",
+      "extendedDescription": "ชมรมภูมิศาสตร์และ GIS อย่างเป็นทางการที่สังกัดมหาวิทยาลัยนอร์เทิร์นโคโลราโด โดยมีเป้าหมายเพื่อเรียนรู้ แบ่งปัน และเชื่อมต่อกับผู้คนรอบตัวเรา #MakingSenseOfTheWorld"
+    },
+    "ym-University-of-Port-Harcourt": {
+      "name": "UniqueMappersTeam (UMT) พอร์ตฮาร์คอร์ต",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยพอร์ตฮาร์คอร์ต",
+      "extendedDescription": "UniqueMappersTeam(UMT)Port Harcourt เป็นกลุ่มปฏิบัติการและทีมอาสาสมัครสำหรับการทำแผนที่ออนไลน์แบบร่วมมือกันซึ่งมุ่งเป้าไปที่การฝึกอบรมและเสริมพลังสมาชิกด้วยทักษะการทำแผนที่ที่เป็นกระแสเพื่อสร้างข้อมูลภูมิสารสนเทศแบบเปิดและการวิเคราะห์ที่แก้ไขปัญหาที่กำหนดไว้ในระดับท้องถิ่นสำหรับภูมิสารสนเทศและเพื่อให้บริการการทำแผนที่ด้านมนุษยธรรมแก่ชุมชนที่มีความยืดหยุ่นในสามเหลี่ยมปากแม่น้ำไนเจอร์ ไนจีเรียและที่อื่นๆ เราส่งเสริมการทำแผนที่แบบ Crowdsoucred และการอาสาสมัครทำแผนที่ข้อมูลภูมิศาสตร์โดยใช้แพลตฟอร์ม OpenStreetMap(OSM) และแพลตฟอร์มอื่นๆ ที่เข้าถึงได้สำหรับการทำแผนที่ตอบสนองอย่างรวดเร็ว การทำแผนที่ภัยพิบัติ การทำแผนที่ภูมิศาสตร์อัจฉริยะ การอัพเดตแผนที่ และการฝึกอบรม เป็นสาขาในเครือ Campus ของทีม Humanitarian OpenStreetMap (HOT) เป็นทีมงานโครงการเฉพาะกิจของ YouthMappers ที่เปิดโอกาสให้สมาชิกได้เรียนรู้และปรับปรุงทักษะของตนในภูมิสารสนเทศเพื่อสำรวจโอกาสระดับโลกในสาขาการทำแผนที่และภูมิสารสนเทศ"
+    },
+    "ym-University-of-Pretoria": {
+      "name": "ศูนย์วิทยาศาสตร์ภูมิสารสนเทศ",
+      "description": "สาขา YouthMappers แห่ง University of Pretoria",
+      "extendedDescription": "นักศึกษาที่ทำแผนที่เมืองพริทอเรียได้รับการสนับสนุนจากศูนย์วิทยาศาสตร์ภูมิสารสนเทศแห่งมหาวิทยาลัยพริทอเรีย ซึ่งเป็นแพลตฟอร์มที่ส่งเสริมและเสริมสร้างความเป็นเลิศของบุคลากรและทีมงานชาว UP ที่เกี่ยวข้องกับการวิจัย การศึกษาและการฝึกอบรม การพัฒนาทางวิชาชีพ และการมีส่วนร่วมของชุมชนในด้านวิทยาศาสตร์ภูมิสารสนเทศ (GISc) ผ่านความร่วมมือ การศึกษาและการฝึกอบรม และการสร้างพันธมิตรภายในประเทศแอฟริกาใต้และต่างประเทศ"
+    },
+    "ym-University-of-Redlands": {
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัย Redlands",
+      "extendedDescription": "เพื่อสร้างทักษะและความรู้ด้าน GIS ของสมาชิกเกี่ยวกับเครื่องมือและวิธีการผ่านการมีส่วนร่วมทางสังคมที่ประยุกต์ใช้ ตลอดจนเพื่อให้ความรู้แก่ชุมชนในมหาวิทยาลัยเกี่ยวกับพลังของการทำแผนที่และการวิเคราะห์เชิงพื้นที่ผ่านกิจกรรมบริการชุมชน"
+    },
+    "ym-University-of-Rwanda-Huye-Campus": {
+      "name": "YouthMappers  รวันดา",
+      "description": "สาขา YouthMappers แห่งมหาวิทยาลัยรวันดา - วิทยาเขตฮูเย",
+      "extendedDescription": "จากความมุ่งมั่นของเราในการส่งเสริมการทำแผนที่และข้อมูลเชิงลึกที่ได้รับจากการบรรยายสาธารณะของ YouthMappers พวกเราในฐานะนักศึกษาที่ทุ่มเทในแผนกภูมิศาสตร์ ได้จัดตั้งสาขาขึ้นภายในมหาวิทยาลัยของเรา เราได้รับการสนับสนุนจากวิทยากรของเรา ดร. แกสปาร์ด รวันยิซิรี ผู้อำนวยการ CGIS-รวันดา และอาจารย์ผู้ทรงเกียรติจำนวนมากที่ให้คำปรึกษาเราในความพยายามนี้"
+    },
+    "ym-University-of-South-Carolina": {
+      "description": "YouthMappers สาขาที่มหาวิทยาลัยเซาท์แคโรไลนา",
+      "extendedDescription": "GGSA เป็นองค์กรที่ดำเนินการโดยนักศึกษา ออกแบบมาเพื่อทำหน้าที่เป็นผู้สนับสนุนและทรัพยากรสำหรับนักศึกษาระดับปริญญาตรีสาขาภูมิศาสตร์ทุกคน โดยทำหน้าที่เป็นคนกลางระหว่างแผนกและนักศึกษา เป้าหมายของเราคือการส่งเสริมการพัฒนาทางวิชาชีพ วิชาการ และส่วนบุคคลของนักศึกษาระดับปริญญาตรีที่สนใจในสาขาวิชาภูมิศาสตร์และสาขาวิชาย่อย"
     },
     "ym-University-of-Southern-California": {
+      "description": "YouthMappers สาขาที่มหาวิทยาลัยเซาเทิร์นแคลิฟอร์เนีย",
       "extendedDescription": "เรามองโลกในมุมมองที่แตกต่างออกไป: เรามองโลกผ่านมุมมองเชิงพื้นที่ ด้วยพลังของการคิดเชิงพื้นที่ เราเชื่อมโยงสถานที่และพื้นที่เพื่อช่วยรับมือกับความท้าทายระดับโลก ร่วมมือกับเรา!"
     },
     "ym-University-of-the-Philippines-Resilience-Institute": {

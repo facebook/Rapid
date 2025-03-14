@@ -172,6 +172,7 @@
             "subdistrict": "תת־מחוז",
             "subdistrict!vn": "כפר/מושב/יישוב",
             "suburb": "פרוור",
+            "town": "עירייה",
             "unit": "יחידה"
           },
           "terms": "כתובת,מען,מיקום"
@@ -1080,6 +1081,14 @@
           "label": "סוג",
           "placeholder": "בררת מחדל"
         },
+        "cycle_barrier": {
+          "label": "סוג"
+        },
+        "cycle_barrier/installation": {
+          "options": {
+            "fixed": "קבוע"
+          }
+        },
         "cycle_network": {
           "label": "רשת"
         },
@@ -1933,6 +1942,12 @@
         "interval": {
           "label": "הפרש"
         },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "כן",
+            "undefined": "אין"
+          }
+        },
         "junction/ref_oneway": {
           "label": "מספר צומת"
         },
@@ -2191,6 +2206,9 @@
           "label": "מגבלת משקל"
         },
         "maxwidth": {
+          "label": "מגבלת רוחב"
+        },
+        "maxwidth/physical": {
           "label": "מגבלת רוחב"
         },
         "memorial": {
@@ -2507,33 +2525,44 @@
               "title": "מוסך קופסה"
             },
             "half_on_kerb": {
+              "description": "חניה חלקית על המדרכה",
               "title": "חצי על המדרכה"
             },
             "lane": {
               "title": "לצד הכביש"
             },
+            "layby": {
+              "description": "חניה באזור מנוחה, לצידי הכביש"
+            },
             "multi-storey": {
+              "description": "שתי מפלסי חניה או יותר בתוך מבנה",
               "title": "רב קומתי"
             },
             "on_kerb": {
+              "description": "חניה על המדרכה",
               "title": "על המדרכה"
             },
             "rooftop": {
+              "description": "מפלס חניה יחיד על גג הבניין",
               "title": "גג"
             },
             "sheds": {
+              "description": "סככות פרטיות לרכבים",
               "title": "מסוכך"
             },
             "shoulder": {
+              "description": "חניה בשוליים",
               "title": "בשוליים"
             },
             "street_side": {
+              "description": "חניה צמודה לרחוב (אך לא ברחוב עצמו).",
               "title": "לצידי-הכביש"
             },
             "surface": {
               "title": "משטח"
             },
             "underground": {
+              "description": "חניה תת קרקעית.",
               "title": "תת־קרקעי"
             }
           }

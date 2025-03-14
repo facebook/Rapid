@@ -49,10 +49,16 @@
       "openstreetmapgermany": "OpenStreetMap Vācija",
       "openstreetmapindonesia": "OpenStreetMap Indonēzija",
       "openstreetmapjapan": "OpenStreetMap Japāna",
+      "openstreetmaplatvia": "OpenStreetMap Latvija",
       "openstreetmapmongolia": "OpenStreetMap Mongolija",
       "openstreetmapmyanmar": "OpenStreetMap Mjanma",
       "openstreetmapnepal": "OpenStreetMap Nepāla",
       "openstreetmapsrilanka": "OpenStreetMap Šrilanka"
+    },
+    "_defaults": {
+      "discord": {
+        "description": "Sazinies ar citiem kartētājiem Discord platformā"
+      }
     },
     "al-maptime-tirana": {
       "name": "Maptime Tirāna",
@@ -117,6 +123,9 @@
     },
     "hu-meetup": {
       "description": "Platforma saietu organizēšanai Ungārijā"
+    },
+    "lv-wiki": {
+      "description": "WikiProject Latvija"
     },
     "mappa-mercia-group": {
       "name": "Mappa Mercia vietējā grupa",

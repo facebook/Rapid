@@ -172,6 +172,7 @@
             "subdistrict": "Stadtbezirk",
             "subdistrict!vn": "Bezirk/Gemeinde/Städtchen",
             "suburb": "Stadtteil",
+            "town": "Kleinstadt\nStadt",
             "unit": "Stiege/Bauteil"
           },
           "terms": "Adresse"
@@ -276,7 +277,7 @@
           }
         },
         "artist": {
-          "label": "Künstler"
+          "label": "Künstler:in"
         },
         "artwork_type": {
           "label": "Typ",
@@ -286,7 +287,9 @@
             "mosaic": "Mosaik",
             "mural": "Wandmalerei",
             "painting": "Gemälde",
-            "sculpture": "Skulptur"
+            "sculpture": "Skulptur",
+            "stone": "Kunstvoll bearbeiteter Stein",
+            "tilework": "Fliesenarbeiten"
           }
         },
         "ascent": {
@@ -1131,6 +1134,23 @@
           "label": "Typ",
           "placeholder": "Standard"
         },
+        "cycle_barrier": {
+          "label": "Art",
+          "options": {
+            "double": "Doppelt",
+            "single": "Einflüglig",
+            "tilted": "Gekippt",
+            "triple": "Dreifach"
+          }
+        },
+        "cycle_barrier/installation": {
+          "options": {
+            "fixed": "Fest ausgerichtet",
+            "openable": "zu Öffnen",
+            "removable": "Entfernbar"
+          },
+          "terms": "Einrichtung,Installation"
+        },
         "cycle_network": {
           "label": "Netzwerk"
         },
@@ -1188,6 +1208,9 @@
         },
         "defibrillator/location": {
           "label": "Standortbeschreibung"
+        },
+        "deflection": {
+          "label": "Winkel"
         },
         "delivery": {
           "label": "Zustellung",
@@ -1440,6 +1463,7 @@
             "main": "Haupteingang",
             "secondary": "Nebeneingang",
             "service": "Diensteingang",
+            "shop": "Ladeneingang",
             "staircase": "Treppenhaus",
             "yes": "Allgemeiner Eingang"
           },
@@ -1484,8 +1508,7 @@
             "lane": "Straßenfläche",
             "parking_lot": "Stellplatzfläche",
             "sidewalk": "Bürgersteig"
-          },
-          "terms": "Standort, Lage"
+          }
         },
         "fire_hydrant/pressure": {
           "label": "Druck (bar)",
@@ -1514,7 +1537,7 @@
           "options": {
             "pillar": "Überflurhydrant",
             "pipe": "Standrohr",
-            "underground": "Unterflurhydrant",
+            "underground": "Unterirdisch",
             "wall": "Wand"
           },
           "terms": "Form"
@@ -2052,6 +2075,14 @@
         "interval": {
           "terms": "Intervall, Takt"
         },
+        "irrigation_pivot": {
+          "label": "Kreisberegnung-Bewässerungssystem",
+          "options": {
+            "pivot": "Ja",
+            "undefined": "Nein"
+          },
+          "terms": "Kreisberegnungssystem, Pivotberegnungssystem, Kreisbewässerungssystem, Sprühberegnungssystem"
+        },
         "junction/ref_oneway": {
           "label": "Nummer der Ausfahrt",
           "terms": "Kreuzungsnummer"
@@ -2363,6 +2394,9 @@
           "label": "Breitenbeschränkung",
           "terms": "Maximalbreite, Breite, maximal zulässige Breite"
         },
+        "maxwidth/physical": {
+          "label": "Breitenbeschränkung"
+        },
         "memorial": {
           "label": "Typ",
           "options": {
@@ -2623,6 +2657,9 @@
           "label": "offenes Feuer erlaubt",
           "terms": "offenes Feuer erlaubt"
         },
+        "opening": {
+          "label": "Offene Breite (Meter)"
+        },
         "opening_date": {
           "label": "Erwartetes Öffnungsdatum",
           "placeholder": "JJJJ-MM-TT"
@@ -2659,6 +2696,13 @@
         "outdoor_seating": {
           "label": "Außenbestuhlung",
           "terms": "Gastgarten, Schanigarten"
+        },
+        "overlap": {
+          "label": "Überlappende Breite (Meter)"
+        },
+        "panoramax": {
+          "label": "Panoramax Bild-ID",
+          "terms": "Panoramax Bild ID, Panoramax Foto ID"
         },
         "par": {
           "placeholder": "3, 4, 5, 6"
@@ -2730,7 +2774,7 @@
             },
             "underground": {
               "description": "Tiefgarage.",
-              "title": "Unterflurhydrant"
+              "title": "Tiefgarage"
             }
           }
         },
@@ -3577,6 +3621,9 @@
         },
         "source/population": {
           "label": "Quelle der Bevölkerungszahl"
+        },
+        "spacing": {
+          "label": "Abstand zwischen Barrieren (Meter)"
         },
         "species": {
           "terms": "Species, Spezies, Art, Artname, Pflanzenart, Tierart"
@@ -5289,7 +5336,7 @@
           "terms": "Recycling Zentrum, Abfallwirtschaftszentrum, Abfallsammelstelle, Abfallwirtschaftshof, Recyclinghof"
         },
         "amenity/recycling_container": {
-          "name": "Recyclingcontainer\nWertstoffcontainer\nRecyclingtonne\nWertstofftonne",
+          "name": "Recyclingcontainer",
           "terms": "Recycling, Wertstoff, Gelbe Tonne, Gelber Sack"
         },
         "amenity/refugee_site": {
@@ -5671,6 +5718,10 @@
         "amenity/veterinary": {
           "name": "Tierarztpraxis",
           "terms": "Tierarzt, Tierärztin, Veterinär, Tierklinik, Tierarztpraxis"
+        },
+        "amenity/veterinary_pharmacy": {
+          "name": "Tierapotheke",
+          "terms": "Veterinärapotheke,Veterinär-Apotheke,Tierärztliche Apotheke,Apotheke für Tierarzneimittel"
         },
         "amenity/waste/dog_excrement": {
           "name": "Hundekotabfalleimer",
@@ -6551,8 +6602,8 @@
           "terms": "Unterflurhydrant, Hydrant, Feuerwehrhydrant, Löschwasser"
         },
         "emergency/fire_service_inlet": {
-          "name": "Feuerwehrkupplung",
-          "terms": "Feuerwehranschluss, Schlauchkupplung, Storz-Kupplung, Druckkupplung, Saugkupplung, Festkupplung, Blindkupplung, Übergangsstück, Einspeisung, Löschwasser"
+          "name": "Löschwassereinspeisung",
+          "terms": "Feuerwehrkupplung,Feuerwehranschluss, Schlauchkupplung, Storz-Kupplung, Druckkupplung, Saugkupplung, Festkupplung, Blindkupplung, Übergangsstück, Einspeisung, Löschwasser"
         },
         "emergency/first_aid_kit": {
           "name": "Verbandskasten",
@@ -8901,11 +8952,11 @@
           "name": "Pipeline Objekt"
         },
         "pipeline/substation": {
-          "name": "Unterstation",
+          "name": "Pipeline-Unterstation",
           "terms": "Unterstation"
         },
         "pipeline/valve": {
-          "name": "Durchlussregelung",
+          "name": "Durchflussregelung\nSchieber",
           "terms": "Durchflussregelung"
         },
         "piste/downhill": {
@@ -9645,6 +9696,10 @@
           "name": "Badeinrichtungsgeschäft",
           "terms": "Badezimmereinrichtungsgeschäft,Badeinrichtungsgeschäft"
         },
+        "shop/bbq": {
+          "name": "Grillgeschäft",
+          "terms": "Grill-Shop, Barbecue Shop, Grillladen, BBQ-Shop"
+        },
         "shop/beauty": {
           "name": "Schönheitssalon",
           "terms": "Schönheits-Salon, Nagelstudio"
@@ -9931,6 +9986,10 @@
         "shop/greengrocer": {
           "name": "Obst- und Gemüseladen",
           "terms": "Obsthandlung, Gemüsehändler, Gemüsehandlung, Obst- und Gemüsehandlung"
+        },
+        "shop/groundskeeping": {
+          "name": "Geschäft für Gartengeräte",
+          "terms": "Geschäft für Rasen- und Gartengeräte, Geschäft für Rasen- und Gartenbedarf, Rasen- und Gartengeräte-Geschäft, Gartenfachgeschäft, Baumarkt für Gartengeräte"
         },
         "shop/hairdresser": {
           "name": "Friseur",

@@ -460,6 +460,9 @@
     "de-mainz-mailinglist": {
       "description": "OpenStreetMap en Maguncia y alrededores"
     },
+    "de-mainz-signal": {
+      "description": "OpenStreetMap en Mainz, Wiesbaden y alrededores"
+    },
     "de-mainz-telegram": {
       "description": "OpenStreetMap en Maguncia y alrededores"
     },
@@ -627,6 +630,9 @@
     },
     "it-discourse": {
       "description": "El foro para debatir sobre OpenStreetMap"
+    },
+    "ivides_website": {
+      "description": "Nos enfocamos en el desarrollo sostenible, la cartografía y el apoyo a la comunidad de OpenStreetMap."
     },
     "ko-facebook": {
       "description": "Mapeadores y usuarios de OpenStreetMap en Corea"
@@ -1130,6 +1136,9 @@
     },
     "rs-wiki": {
       "description": "Página del wikiproyecto para Serbia"
+    },
+    "scandinavia-discord": {
+      "name": "Canal escandinavo en el Discord mundial de OpenStreetMap."
     },
     "sg-wiki": {
       "description": "Página wiki de {community}"

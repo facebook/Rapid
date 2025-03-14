@@ -54,7 +54,8 @@
         "name": "Najnowsze zdjęcia lotnicze Digitaal Vlaanderen"
       },
       "Dourados_Ortofotos": {
-        "description": "Dourados (2018) i kilka dystryktów (2020) zdjęcia lotnicze wysokiej rozdzielczości."
+        "description": "Dourados (2018) i kilka dystryktów (2020) zdjęcia lotnicze wysokiej rozdzielczości.",
+        "name": "Ortofotomapa Dourados"
       },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
@@ -94,11 +95,17 @@
         "name": "Esri Beta (satelitarne i lotnicze)"
       },
       "Frankfurt-am-Main-2019": {
+        "attribution": {
+          "text": "Miejskie Biuro Geodezyjne w Frankfurtcie nad Menem"
+        },
         "description": "Zdjęcia lotnicze Frankfurtu nad Menem, sfotografowane 16 kwietnia 2019",
         "name": "Frankfurt nad Menem - Zdjęcie lotnicze 2019"
       },
       "Geodatastyrelsen_Denmark": {
         "name": "Zdjęcia lotnicze SDFI"
+      },
+      "Geodatastyrelsen_Skaermkort": {
+        "name": " Mapa ekranu SDFI"
       },
       "Geoportal2-PL-City-boundaries_WMS": {
         "name": "Geoportal 2: Granice miast WMS"

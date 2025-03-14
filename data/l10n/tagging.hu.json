@@ -172,6 +172,7 @@
             "subdistrict": "Városrész",
             "subdistrict!vn": "Körzet/közösség/városrész",
             "suburb": "Városrész",
+            "town": "Kisváros",
             "unit": "Egység"
           },
           "terms": "cím, lakcím, házszám, utca, lakhely, lakóhely, postacím"
@@ -1150,6 +1151,22 @@
           "label": "Típus",
           "placeholder": "Alapértelmezett"
         },
+        "cycle_barrier": {
+          "label": "Típus",
+          "options": {
+            "diagonal": "Harántirányban",
+            "double": "Dupla sorompó",
+            "single": "Egy sorompó",
+            "triple": "Tripla"
+          }
+        },
+        "cycle_barrier/installation": {
+          "label": "Installáció",
+          "options": {
+            "fixed": "Rögzített",
+            "removable": "Eltávolítható"
+          }
+        },
         "cycle_network": {
           "label": "Hálózat"
         },
@@ -1498,8 +1515,7 @@
             "lane": "Úttest",
             "parking_lot": "Parkoló",
             "sidewalk": "Járda"
-          },
-          "terms": "pozíció, helyzet, elhelyezkedés"
+          }
         },
         "fire_hydrant/pressure": {
           "label": "Nyomás (bar)",
@@ -2060,6 +2076,12 @@
           "label": "Intervallum",
           "terms": "Időköz, időszak"
         },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Igen",
+            "undefined": "Nem"
+          }
+        },
         "junction/ref_oneway": {
           "label": "Csomópont száma",
           "terms": "kereszteződés száma"
@@ -2365,6 +2387,9 @@
           "label": "Súlykorlátozás"
         },
         "maxwidth": {
+          "label": "Szélességi korlátozás"
+        },
+        "maxwidth/physical": {
           "label": "Szélességi korlátozás"
         },
         "memorial": {

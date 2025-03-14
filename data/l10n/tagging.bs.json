@@ -55,7 +55,8 @@
             "hamlet": "Zaselak",
             "housename": "Naziv",
             "place": "Mjesto",
-            "street": "Ulica"
+            "street": "Ulica",
+            "town": "Gradić"
           }
         },
         "admin_level": {
@@ -264,6 +265,9 @@
           "label": "Vrsta"
         },
         "cutting": {
+          "label": "Vrsta"
+        },
+        "cycle_barrier": {
           "label": "Vrsta"
         },
         "cycle_network": {

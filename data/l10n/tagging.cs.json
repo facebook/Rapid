@@ -3,16 +3,16 @@
     "presets": {
       "categories": {
         "category-barrier": {
-          "name": "Překážky"
+          "name": "Prvky překážek"
         },
         "category-building": {
-          "name": "Budovy"
+          "name": "Prvky budov"
         },
         "category-golf": {
           "name": "Golfové prvky"
         },
         "category-landuse": {
-          "name": "Využití krajiny"
+          "name": "Prvky využití krajiny"
         },
         "category-natural": {
           "name": "Přírodní prvky"
@@ -27,7 +27,7 @@
           "name": "Železnice"
         },
         "category-restriction": {
-          "name": "Omezení dopravy"
+          "name": "Prvky omezení dopravy"
         },
         "category-road_major": {
           "name": "Větší komunikace"
@@ -39,7 +39,7 @@
           "name": "Obslužné komunikace"
         },
         "category-route": {
-          "name": "Relace tras"
+          "name": "Prvky tras"
         },
         "category-utility": {
           "name": "Služby"
@@ -92,7 +92,7 @@
               "title": "Není známo"
             },
             "yes": {
-              "description": "Přístup povolen právem; právo na cestu",
+              "description": "Přístup povolen ze zákona; právo na cestu",
               "title": "Povolen"
             }
           },
@@ -120,7 +120,7 @@
             "unknown": "Neznámý",
             "yes": "Veřejné"
           },
-          "terms": "povolený,soukromý,veřejný"
+          "terms": "povolený,veřejný,přístupný,dostupný,neomezený,povolen vstup,povolen přístup, povolen vjezd"
         },
         "activity": {
           "label": "Aktivita",
@@ -172,9 +172,10 @@
             "subdistrict": "Subdistrikt",
             "subdistrict!vn": "Okrsek/komuna/městys",
             "suburb": "Městská část (obvod)",
+            "town": "Město",
             "unit": "Jednotka"
           },
-          "terms": "umístění"
+          "terms": "adresa,lokace,místo,ulice,město,umístění,poloha,sídlo,číslo domu,bydliště"
         },
         "admin_level": {
           "label": "Administrativní úroveň"
@@ -194,7 +195,7 @@
           }
         },
         "aerialway/bubble": {
-          "label": "Stříška"
+          "label": "krycí bublina"
         },
         "aerialway/capacity": {
           "label": "Odbaví lidí (za hodinu)"
@@ -224,7 +225,7 @@
         },
         "air_conditioning": {
           "label": "Klimatizace",
-          "terms": "chladící systém,chlazení"
+          "terms": "klimatizace,chlazení,chladicí systém,ochlazování"
         },
         "alt_name": {
           "label": "Alternativní název",
@@ -245,12 +246,12 @@
         "archaeological_site": {
           "label": "Druh",
           "options": {
-            "baths": "Vany",
+            "baths": "Lázně",
             "city": "Historické město",
             "crannog": "Crannóg",
             "enclosure": "Ohrada",
             "fortification": "Opevnění",
-            "hut_circle": "Kruh chaty",
+            "hut_circle": "Kruhová stavba",
             "megalith": "Megalit",
             "necropolis": "Pohřebiště",
             "petroglyph": "Skalní řezba",
@@ -288,12 +289,14 @@
             "painting": "Malba",
             "relief": "Reliéf",
             "sculpture": "Socha",
-            "statue": "Socha (osoba nebo zvíře)"
+            "statue": "Socha (osoba nebo zvíře)",
+            "stone": "Umělecky zpracovaný kámen",
+            "tilework": "Umělecké obklady"
           }
         },
         "ascent": {
           "label": "Celkové stoupání",
-          "terms": "výstup,stoupání,kumulativní převýšení"
+          "terms": "celkový výstup,celkové stoupání,kumulativní převýšení"
         },
         "athletics_pitch": {
           "label": "Událost",
@@ -301,7 +304,7 @@
             "discus_throw": "Disk",
             "hammer_throw": "Hod kladivem",
             "high_jump": "Skok do výšky",
-            "javelin_throw": "hod Oštěpem",
+            "javelin_throw": "Hod oštěpem",
             "long_jump": "Skok do dálky",
             "pole_vault": "Skok o tyči",
             "shot_put": "Vrh koulí",
@@ -327,7 +330,7 @@
           "options": {
             "alpine_coaster": "Alpská dráha",
             "amusement_ride": "Atrakce",
-            "animal": "Ohrazení zvířat",
+            "animal": "Ohrada pro zvířata",
             "big_wheel": "Ruské kolo",
             "bumper_car": "Autodrom",
             "bungee_jumping": "Bungee jumping",
@@ -356,20 +359,20 @@
             "room": "Místnost pro kojení",
             "yes": "Označené místo"
           },
-          "terms": "kojení,kojit,matky,přebalování,přebalit,děti,miminka,batole,batolata,dítě,mimino"
+          "terms": "kojení,místo pro kojení,pro matky,kojení dětí,krmení dětí"
         },
         "baby_seat": {
           "label": "Dětská sedačka"
         },
         "backcountry": {
-          "label": "Nocoviště",
-          "terms": "místo pro táboření v divočině,divoké tábořiště,stan,místo pro přespání,noční,noc,spaní,stanování,divočina,tábořiště,přenocování"
+          "label": "místo pro táboření v divočině",
+          "terms": "místo pro táboření v divočině,divoké tábořiště,místo pro přespání,spaní,stanování,divočina,tábořiště,nocoviště,přenocování"
         },
         "backrest": {
           "label": "Opěradlo"
         },
         "bar": {
-          "terms": "pivo,drink,klub,hospoda,alkohol,noční,noc"
+          "terms": "pivnice,klub,hospoda,night club,bar,club,nálevna"
         },
         "barrier": {
           "label": "Druh",
@@ -678,7 +681,7 @@
           "options": {
             "E": "E: Pro turisty",
             "EAI": "EAI: Pěší turistika ve sněhových podmínkách",
-            "EE": "E: Pro zkušené turisty",
+            "EE": "EE: Pro zkušené turisty",
             "EEA": "EEA: Pro zkušené turisty s vybavením",
             "T": "T: Turistická"
           },
@@ -1086,7 +1089,7 @@
             "breakfast": "Snídaně",
             "brunch": "Pozdní snídaně",
             "bubble_tea": "Perlivý čaj",
-            "cake": "Koláče",
+            "cake": "Zákusek",
             "caribbean": "Karibská",
             "chicken": "Kuřecí",
             "chinese": "Čínská",
@@ -1152,15 +1155,34 @@
             "western": "Západní",
             "wings": "Kuřecí křídla"
           },
-          "terms": "strava,druhy jídel"
+          "terms": "kuchyně,strava,druhy jídel,typ kuchyně"
         },
         "currency_multi": {
           "label": "Druhy měn",
-          "terms": "bankovky,hotovost,mince,peníze"
+          "terms": "bankovky,hotovost,mince,peníze,měny,druh měny"
         },
         "cutting": {
           "label": "Druh",
           "placeholder": "Výchozí"
+        },
+        "cycle_barrier": {
+          "label": "Druh",
+          "options": {
+            "diagonal": "Úhlopříčně",
+            "double": "Dvojitá",
+            "single": "Samostatná",
+            "tilted": "Nakloněný",
+            "triple": "Trojitá"
+          }
+        },
+        "cycle_barrier/installation": {
+          "label": "Instalace",
+          "options": {
+            "fixed": "Pevná",
+            "openable": "Otevírací",
+            "removable": "Odstranitelné"
+          },
+          "terms": "instalace,typ instalace,zabudování,typ upevnění"
         },
         "cycle_network": {
           "label": "Síť"
@@ -1169,7 +1191,7 @@
           "label": "Cyklopruhy",
           "options": {
             "lane": {
-              "description": "Jízdní pruh pro cyklisty, oddělený podélnou čarou",
+              "description": "Jízdní pruh pro cyklisty oddělený podélnou čarou",
               "title": "Normální cyklopruh"
             },
             "no": {
@@ -1177,10 +1199,12 @@
               "title": "Žádné"
             },
             "opposite": {
-              "description": "Aktualizujte prosím pomocí oneway=yes, oneway:bicycle=no a cycleway:both=no atd."
+              "description": "Aktualizujte prosím pomocí oneway=yes, oneway:bicycle=no a cycleway:both=no atd.",
+              "title": "(Zrušeno) Protisměrný cyklistický pruh"
             },
             "opposite_lane": {
-              "description": "Aktualizujte prosím pomocí oneway, oneway:bicycle, a cycleway:left/right=lane atd."
+              "description": "Aktualizujte prosím pomocí oneway, oneway:bicycle, a cycleway:left/right=lane atd.",
+              "title": "(Zrušeno) Protější cyklistický pruh"
             },
             "separate": {
               "description": "Označuje, která cyklostezka byla zmapována jako samostatná geometrie",
@@ -1217,6 +1241,9 @@
         },
         "defibrillator/location": {
           "label": "Popis umístění"
+        },
+        "deflection": {
+          "label": "Úhel"
         },
         "delivery": {
           "label": "Rozvoz",
@@ -1477,6 +1504,7 @@
             "main": "Hlavní",
             "secondary": "Sekundární",
             "service": "Účelový",
+            "shop": "Vchod do obchodu",
             "staircase": "Schodiště",
             "yes": "Nespecifikováno"
           },
@@ -1523,8 +1551,7 @@
             "lane": "Pruh silnice",
             "parking_lot": "Parkoviště",
             "sidewalk": "Chodník podél vozovky"
-          },
-          "terms": "pozice,místo"
+          }
         },
         "fire_hydrant/pressure": {
           "label": "Tlak (bary)",
@@ -2096,6 +2123,14 @@
         "interval": {
           "terms": "frekvence,čas,odjezdy,jízdní řád,příjezdy,jak často,pravidelnost"
         },
+        "irrigation_pivot": {
+          "label": "Zavlažování s centrálním výkyvem",
+          "options": {
+            "pivot": "Ano",
+            "undefined": "Ne"
+          },
+          "terms": "zavlažovací stroj se středovým otočným postřikovačem,zavlažovací kruh,kruhové zavlažování"
+        },
         "junction/ref_oneway": {
           "label": "Číslo křižovatky",
           "terms": "číslo křížení,označení,identifikace,číslo sjezdu,sjezd,nájezd,název"
@@ -2414,6 +2449,9 @@
           "label": "Limit šířky",
           "terms": "maximální šířka,limit,šířka"
         },
+        "maxwidth/physical": {
+          "label": "Limit šířky"
+        },
         "memorial": {
           "label": "Druh",
           "options": {
@@ -2683,6 +2721,9 @@
           "label": "Otevřený oheň je povolený",
           "terms": "ohně povoleny,povolení otevřených ohňů,otevřený oheň povolen,táborák,ohniště,opékání,večeře"
         },
+        "opening": {
+          "label": "Šířka otvoru (metry)"
+        },
         "opening_date": {
           "label": "Očekávané datum otevření",
           "placeholder": "RRRR-MM-DD"
@@ -2720,6 +2761,12 @@
           "label": "Venkovní sezení",
           "terms": "lavičky,zahrádka,posezení,stolky,stolečky,stoly,venku,letní,slunečník,terasa"
         },
+        "overlap": {
+          "label": "Šířka překrytí (metry)"
+        },
+        "panoramax": {
+          "terms": "Panoramax Image ID,ID snímku Panoramax"
+        },
         "parcel_dropoff": {
           "label": "Odevzdání balíku"
         },
@@ -2756,7 +2803,7 @@
             },
             "layby": {
               "description": "Parkování na odpočívadle u silnice.",
-              "title": "Volební účast / Odstávka"
+              "title": "Malé odpočívadlo při cestě"
             },
             "multi-storey": {
               "description": "Dvě nebo více úrovní parkovacích ploch v konstrukci budovy.",
@@ -3093,7 +3140,7 @@
             "separate": "Mapována odděleně",
             "yes": "Ano"
           },
-          "terms": "cyklistické schodiště,schodišťová rampa,nakloněná,rampa pro kola"
+          "terms": "cyklistické schodiště,schodišťová rampa,nakloněná,rampa pro kola,zabudovaná rampa,vestavěná rampa"
         },
         "rating": {
           "label": "Jmenovitý výkon"
@@ -3121,7 +3168,7 @@
             "plastic": "Plast",
             "plastic_bottles": "Plastové lahve",
             "plastic_packaging": "Plastové obaly",
-            "scrap_metal": "Šrot",
+            "scrap_metal": "Kovový šrot",
             "shoes": "Boty"
           }
         },
@@ -3254,7 +3301,7 @@
           "label": "Zdroje",
           "options": {
             "aggregate": "Kamenivo",
-            "clay": "Jíl",
+            "clay": "Jíl/Antuka",
             "coal": "Uhlí",
             "gold": "Zlato",
             "gravel": "Štěrk",
@@ -3348,7 +3395,7 @@
           "label": "Číslo trasy"
         },
         "sac_scale": {
-          "label": "Klasifikace pro pěší",
+          "label": "Klasifikace turistické obtížnosti",
           "options": {
             "alpine_hiking": "T4: Vysokohorská turistika",
             "demanding_alpine_hiking": "T5: Náročná vysokohorská turistika",
@@ -3658,6 +3705,9 @@
         "source/population": {
           "label": "Zdroj populace"
         },
+        "spacing": {
+          "label": "Vzdálenost mezi bariérami (v metrech)"
+        },
         "species": {
           "label": "Druh",
           "terms": "odrůda"
@@ -3862,7 +3912,7 @@
           "options": {
             "artificial_turf": "Umělý trávník",
             "asphalt": "Asfalt",
-            "clay": "Jíl",
+            "clay": "Jíl/Antuka",
             "compacted": "Zhutněný",
             "concrete": "Beton",
             "concrete:lanes": "Betonové jízdní pruhy",
@@ -3951,7 +4001,7 @@
         "switch": {
           "label": "Druh",
           "options": {
-            "circuit_breaker": "Zkratovač",
+            "circuit_breaker": "Jistič",
             "disconnector": "Odpojovač",
             "earthing": "Zemnění",
             "mechanical": "Mechanický"
@@ -4868,23 +4918,23 @@
         },
         "amenity/crematorium": {
           "name": "Krematorium",
-          "terms": "hřbitov,pohřeb"
+          "terms": "krematorium,hřbitov,pohřeb"
         },
         "amenity/dentist": {
           "name": "Zubař",
-          "terms": "zub,zubní"
+          "terms": "dentista,zubař,zubní ordinace"
         },
         "amenity/dive_centre": {
           "name": "Centrum potápění",
-          "terms": "potápění,potápěcí"
+          "terms": "potápěčské centrum,škola potápění,potápění,centrum pro potápěče"
         },
         "amenity/doctors": {
           "name": "Lékař",
-          "terms": "zdravotník*,doktor"
+          "terms": "lékař,doktor,zdravotník"
         },
         "amenity/doctors/allergology": {
           "name": "Alergolog",
-          "terms": "alergie,astma"
+          "terms": "alergolog,specialista na alergie,léčení alergií,léčení astma"
         },
         "amenity/doctors/cardiology": {
           "name": "Kardiolog",
@@ -5443,7 +5493,7 @@
         },
         "amenity/restaurant/barbecue": {
           "name": "Barbecue restaurace",
-          "terms": "barbecue,grilování,gril,bbq"
+          "terms": "barbecue,grilování,gril,bbq,restaurace s grilem,barbecue restaurace"
         },
         "amenity/restaurant/chinese": {
           "name": "Čínská restaurace",
@@ -5803,6 +5853,10 @@
           "name": "Veterina",
           "terms": "klinika pro domácí mazlíčky,veterinář,nemocnice pro zvířata,lékař pro domácí mazlíčky"
         },
+        "amenity/veterinary_pharmacy": {
+          "name": "Lékárna pro zvířata",
+          "terms": "lékárna pro zvířata,klinika pro zvířata,zvířecí lékárna,léky pro zvířata,zvěrolékař,veterinář,veterinární lékárna"
+        },
         "amenity/waste/dog_excrement": {
           "name": "Koš na psí výkaly",
           "terms": "popelnice,odpadky,odpad,smetí,odpadní,hovínko,pes"
@@ -6034,7 +6088,7 @@
         },
         "barrier/kerb/rolled": {
           "name": "Zakulacený obrubník",
-          "terms": "okap"
+          "terms": "zakulacený obrubník,oblý obrubník,žlab,strouha"
         },
         "barrier/kissing_gate": {
           "name": "Turniketová branka",
@@ -6767,7 +6821,7 @@
         },
         "entrance/shop": {
           "name": "Vchod do obchodu",
-          "terms": "dveře"
+          "terms": "vstup do obchodu,vchod,dveře,příchod"
         },
         "entrance/staircase": {
           "name": "Vstup na schodiště",
@@ -6847,13 +6901,16 @@
           "terms": "bolest,záda,páteř"
         },
         "healthcare/alternative/homeopathy": {
-          "name": "Homeopat"
+          "name": "Homeopat",
+          "terms": "homeopat"
         },
         "healthcare/alternative/naturopathy": {
-          "name": "Naturopat"
+          "name": "Naturopat",
+          "terms": "naturopat"
         },
         "healthcare/alternative/osteopathy": {
-          "name": "Osteopat"
+          "name": "Osteopat",
+          "terms": "osteopat"
         },
         "healthcare/alternative/traditional_chinese_medicine": {
           "name": "Praktik tradiční čínské medicíny",
@@ -6996,7 +7053,16 @@
           "terms": "přejezd pro cyklisty,neoznačený přejezd pro cyklisty,cyklo přejezd,cyklopřejezd,cyklistický přejezd,přejíždění cyklistů,cyklistický,cyklotrasa,cyklostezka,stezka pro cyklisty"
         },
         "highway/cycleway/moped_link-NL": {
-          "name": "Stezka pro mopedy"
+          "name": "Stezka pro mopedy",
+          "terms": "nájezd/sjezd pro moped,odbočka pro moped,nájezd pro moped,sjezd pro moped,cesta pro moped"
+        },
+        "highway/cycleway/traffic_island": {
+          "name": "Cyklistický záchranný ostrůvek",
+          "terms": "ostrůvek přejezdu pro cyklisty,dopravní ostrůvek pro cyklisty"
+        },
+        "highway/cycleway/traffic_island_shared": {
+          "name": "Dopravní ostrůvek pro pěší a cyklisty",
+          "terms": "dopravní ostrůvek pro pěší a cyklisty,dopravní ostrůvek,ostrůvek pro pěší a cyklisty"
         },
         "highway/cyclist_waiting_aid": {
           "name": "Stupačky pro cyklisty",
@@ -7066,7 +7132,8 @@
           "terms": "dej přednost v jízdě,dej přednost,značka přednosti v jízdě,vedlejší silnice,vedlejší ulice"
         },
         "highway/ladder": {
-          "name": "Žebřík"
+          "name": "Žebřík",
+          "terms": "žebřík,schůdky,stupně"
         },
         "highway/living_street": {
           "name": "Obytná zóna",
@@ -7288,7 +7355,8 @@
           "terms": "hraniční kámen,hranice,značka"
         },
         "historic/building": {
-          "name": "Historická budova"
+          "name": "Historická budova",
+          "terms": "historická budova,stará budova,historická stavba,památkově chráněná budova"
         },
         "historic/cannon": {
           "name": "Dělo",
@@ -7331,7 +7399,8 @@
           "terms": "dedikační,epitaf,historická značka,pamatovat,vzpomínka,paměť"
         },
         "historic/memorial/stolperstein-EU": {
-          "name": "Kameny zmizelých"
+          "name": "Kameny zmizelých",
+          "terms": "kámen zmizelých,pomník zmizelých"
         },
         "historic/monument": {
           "terms": "pamětihodnost,památník,pomník,hrdina"
@@ -7349,8 +7418,8 @@
           "terms": "hrobka,místo posledního odpočinku"
         },
         "historic/wayside_cross": {
-          "name": "Kříž",
-          "terms": "boží muka,křesťanský,kříž při cestě,krucifix"
+          "name": "Přícestní kříž",
+          "terms": "boží muka,bozi muika,kříž při cestě,kriz pri ceste,krucifix,pricestni kriz,historický kříž,historicky kriz"
         },
         "historic/wayside_shrine": {
           "name": "Boží muka",
@@ -7828,23 +7897,28 @@
           "terms": "hod kladivem,vrhačský sektor"
         },
         "leisure/pitch/athletics/high_jump": {
-          "name": "Doskočiště pro skok vysoký"
+          "name": "Doskočiště pro skok vysoký",
+          "terms": "doskočiště pro skok vysoký,žíněnka pro skok vysoký"
         },
         "leisure/pitch/athletics/javelin_throw": {
-          "name": "Hřiště pro hod oštěpem"
+          "name": "Hřiště pro hod oštěpem",
+          "terms": "oštěpařský sektor,výseč pro hod oštěpem"
         },
         "leisure/pitch/athletics/long_jump": {
-          "name": "Doskočiště pro skok do dálky"
+          "name": "Doskočiště pro skok do dálky",
+          "terms": "doskočiště pro skok daleký,žíněnka pro skok daleký"
         },
         "leisure/pitch/athletics/pole_vault": {
-          "name": "Doskočiště pro skok o tyči"
+          "name": "Doskočiště pro skok o tyči",
+          "terms": "doskočiště pro skok o tyči,žíněnka pro skok o tyči"
         },
         "leisure/pitch/athletics/shot_put": {
           "name": "Kruh pro vrh koulí",
           "terms": "sektor pro vrh koulí,vrhačský sektor"
         },
         "leisure/pitch/athletics/triple_jump": {
-          "name": "Doskočiště pro trojskok"
+          "name": "Doskočiště pro trojskok",
+          "terms": "doskočiště pro trojskok,žíněnka pro trojskok"
         },
         "leisure/pitch/australian_football": {
           "name": "Hřiště pro australský fotbal",
@@ -7895,7 +7969,8 @@
           "terms": "4 čtverce"
         },
         "leisure/pitch/funnel_ball": {
-          "name": "Hřiště na funnel ball"
+          "name": "Hřiště na funnel ball",
+          "terms": "hřiště pro Funnel Ball,funnelballové hřiště"
         },
         "leisure/pitch/futsal": {
           "name": "Hřiště pro futsal",
@@ -7922,7 +7997,8 @@
           "terms": "tenis,pálka"
         },
         "leisure/pitch/paintball": {
-          "name": "Paintballové hřiště"
+          "name": "Paintballové hřiště",
+          "terms": "paintballové hřiště,hřiště na paintball"
         },
         "leisure/pitch/pickleball": {
           "name": "Picketballové hřiště",
@@ -8113,7 +8189,8 @@
           "terms": "vysílání,telefon,buňka,komunikace,mobilní telefon,rádio,televize,přenos,tv"
         },
         "man_made/beacon": {
-          "name": "Signalizační zařízení"
+          "name": "Signalizační zařízení",
+          "terms": "maják"
         },
         "man_made/beehive": {
           "name": "Včelín",
@@ -8163,7 +8240,8 @@
           "name": "Nádvoří"
         },
         "man_made/crane": {
-          "name": "Jeřáb"
+          "name": "Jeřáb",
+          "terms": "jeřáb,stacionární jeřáb"
         },
         "man_made/crane/gantry_crane": {
           "name": "Portálový jeřáb",
@@ -8175,7 +8253,7 @@
         },
         "man_made/cross": {
           "name": "Kříž",
-          "terms": "vrcholový kříž,kříž,velký kříž,těžký kříž,vrchol"
+          "terms": "vrcholový kříž,vrcholovy kriz,velký kříž,těžký kříž"
         },
         "man_made/cutline": {
           "name": "Průsek",
@@ -8297,6 +8375,9 @@
           "name": "Monitorovací stanice",
           "terms": "počasí,zemětřesení,seismologie,vzduch,gps"
         },
+        "man_made/obelisk": {
+          "terms": "obelisk"
+        },
         "man_made/observatory": {
           "name": "Observatoř",
           "terms": "astronomické,meteorologické"
@@ -8397,7 +8478,8 @@
           "terms": "těžba,separace,kejda"
         },
         "man_made/telescope": {
-          "name": "Teleskop"
+          "name": "Teleskop",
+          "terms": "teleskop"
         },
         "man_made/telescope/optical": {
           "name": "Optický teleskop",
@@ -8706,14 +8788,16 @@
           "terms": "zdrž,nádrž,voda,jezero,rybník"
         },
         "natural/water/canal": {
-          "name": "Plocha vodního kanálu"
+          "name": "Plocha vodního kanálu",
+          "terms": "oblast kanálu,plocha kanálu"
         },
         "natural/water/lake": {
           "name": "Jezero",
           "terms": "jezero,jezírko,pleso,oko,tůň"
         },
         "natural/water/moat": {
-          "name": "Vodní příkop"
+          "name": "Vodní příkop",
+          "terms": "vodní příkop,hradní vodní příkop"
         },
         "natural/water/oxbow": {
           "name": "Mrtvé rameno",
@@ -8744,17 +8828,20 @@
           "terms": "mokřad,mokřina,rašeliniště,slatiniště,slatina,bažina,slanisko,slať,slatě,mangrovy"
         },
         "natural/wetland/bog": {
-          "name": "Vrchoviště"
+          "name": "Vrchoviště",
+          "terms": "vrchoviště"
         },
         "natural/wetland/fen": {
           "name": "Slatiniště",
           "terms": "podzemní voda"
         },
         "natural/wetland/mangrove": {
-          "name": "Mangovník"
+          "name": "Mangovník",
+          "terms": "mangrovy,mangrovové močály"
         },
         "natural/wetland/marsh": {
-          "name": "Marše"
+          "name": "Marše",
+          "terms": "marše"
         },
         "natural/wetland/reedbed": {
           "name": "Rákosina",
@@ -8777,7 +8864,8 @@
           "terms": "přílivový"
         },
         "natural/wetland/wet_meadow": {
-          "name": "Mokrá louka"
+          "name": "Mokrá louka",
+          "terms": "mokrá louka"
         },
         "natural/wood": {
           "name": "Přírodní les",
@@ -9130,10 +9218,12 @@
           "name": "Vybavení dětského hřiště"
         },
         "playground/activitypanel": {
-          "name": "Panel herních aktivit"
+          "name": "Panel herních aktivit",
+          "terms": "panel na hraní,panel na aktivity,tabule na aktivity,interaktivní tabule,nástěnná hra,nástěnná deska,aktivity panel"
         },
         "playground/aerialrotator": {
-          "name": "Závěsný kolotoč"
+          "name": "Závěsný kolotoč",
+          "terms": "otočný věšák,točení ve vzduchu,cyklóna,zavěšené kolo"
         },
         "playground/balancebeam": {
           "name": "Kladina",
@@ -9148,30 +9238,36 @@
           "terms": "košík,houpačka,koš,košíková houpačka,houpačka s košem,houpací koš"
         },
         "playground/bridge": {
-          "name": "Most na hraní"
+          "name": "Most na hraní",
+          "terms": "mostek,most,spojovací most,most na hraní"
         },
         "playground/climbingframe": {
           "name": "Prolézačka",
           "terms": "prolézačka,prolejzačka,žebřík,síť,šplhání,pavučina,opičí dráha,prolízačka,lanová hrací zařízení,lanový herní prvek,lanové parkury,pyramida z lanové sítě,šplhací,šplhání,děti,dětské hřiště,zařízení dětského hřiště,lanové sestavy,lanové prvky"
         },
         "playground/climbingwall": {
-          "name": "Hrací lezecká stěna"
+          "name": "Hrací lezecká stěna",
+          "terms": "lezecká stěna,horolezecká stěna,lezecká zeď,stěna na lezení"
         },
         "playground/cushion": {
-          "name": "skákací polštář"
+          "name": "skákací polštář",
+          "terms": "skákací polštář,skákací hora,skákací kopec,nafukovací hora"
         },
         "playground/funnel_ball": {
-          "name": "Trychtýř na funnel ball"
+          "name": "Trychtýř na funnel ball",
+          "terms": "trychtýř pro Funnel Ball,trychtýř na Funnel Ball,koš na Funnel Ball"
         },
         "playground/hopscotch": {
-          "name": "Skákací panák"
+          "name": "Skákací panák",
+          "terms": "skákací panák,místo na skákání panáka,místo na skákacího panáka"
         },
         "playground/horizontal_bar": {
           "name": "Hrazda",
           "terms": "závěsná hrazda,vysoká hrazda,visutá hrazda"
         },
         "playground/map": {
-          "name": "Malovaná mapa hřiště"
+          "name": "Malovaná mapa hřiště",
+          "terms": "kreslená mapa na dětské hřiště,malovaná mapa na dětské hřiště"
         },
         "playground/playhouse": {
           "name": "Domeček",
@@ -9186,10 +9282,12 @@
           "terms": "pískoviště,písek,děti,hřiště,bábovičky,hřiště"
         },
         "playground/seesaw": {
-          "name": "Houpačka"
+          "name": "Houpačka",
+          "terms": "páková houpačka,houpačka"
         },
         "playground/sledding": {
-          "name": "Kopec na sáňkování"
+          "name": "Kopec na sáňkování",
+          "terms": "sáňkovací kopec,kopec na sáňkování,kopeček na sáňkování,stráň na sáňkování"
         },
         "playground/slide": {
           "name": "Skluzavka",
@@ -9208,23 +9306,28 @@
           "terms": "prolézačky"
         },
         "playground/swing": {
-          "name": "Houpačka"
+          "name": "Houpačka",
+          "terms": "houpačka,visutá houpačka,řetízková houpačka"
         },
         "playground/teenshelter": {
-          "name": "Přístřešek pro dospívající"
+          "name": "Přístřešek pro dospívající",
+          "terms": "přístřešek,altánek,přístřešek na hřiště"
         },
         "playground/tetherball": {
-          "name": "Tyč na tetherball"
+          "name": "Tyč na tetherball",
+          "terms": "tyč na tetherball,sloup na tetherball,sloupek na tetherball,sloup na indiánský tenis"
         },
         "playground/trampoline": {
           "name": "Trampolína",
-          "terms": "trampolina"
+          "terms": "trampolina,trampolína,skákací plocha"
         },
         "playground/tunnel_tube": {
-          "name": "Hrací tunel"
+          "name": "Hrací tunel",
+          "terms": "tunel,tunel na prolézání,prolézací tunel"
         },
         "playground/water": {
-          "name": "Hrací vodní pumpa/šroub"
+          "name": "Hrací vodní pumpa/šroub",
+          "terms": "vodní pumpa,dětská vodní pumpa,dětské čerpadlo"
         },
         "playground/zipwire": {
           "name": "Dětská lanovka",
@@ -9249,7 +9352,8 @@
           "name": "elektrický kabel"
         },
         "power/cable/underground": {
-          "name": "Elektrický kabel pod zemí"
+          "name": "Elektrický kabel pod zemí",
+          "terms": "podzemní kabel,podzemní kabel elektrického vedení,podzemní silový kabel"
         },
         "power/catenary_mast": {
           "name": "Sloup trolejového vedení",
@@ -9348,7 +9452,8 @@
           "terms": "spínač,vypínač"
         },
         "power/switchgear": {
-          "name": "Spínače"
+          "name": "Spínače",
+          "terms": "rozvodna,rozváděč"
         },
         "power/tower": {
           "name": "Elektrický stožár",
@@ -9536,7 +9641,8 @@
           "terms": "stop,stát,zaražení"
         },
         "railway/construction": {
-          "name": "Železnice ve výstavbě"
+          "name": "Železnice ve výstavbě",
+          "terms": "železnice ve výstavbě,železnice v rekonstrukci"
         },
         "railway/crossing": {
           "name": "Přechod přes železnici",
@@ -9659,7 +9765,8 @@
           "terms": "zábavní park,atrakce"
         },
         "roller_coaster/support": {
-          "name": "Pilíř horské dráhy"
+          "name": "Pilíř horské dráhy",
+          "terms": "podpěra horské dráhy,podpůrná konstrukce horské dráhy"
         },
         "roller_coaster/track": {
           "name": "Dráha horské dráhy",
@@ -9701,7 +9808,7 @@
           "terms": "obchod,prodej,nákup,stánek,market,obchodní,nákupní"
         },
         "shop/agrarian": {
-          "name": "Farmářská prodejna",
+          "name": "Prodejna farmářských potřeb",
           "terms": "zemědělské vstupy,zemědělské stroje,semena,pesticidy,hnojiva,zemědělské nástroje"
         },
         "shop/alcohol": {
@@ -9739,6 +9846,10 @@
         "shop/bathroom_furnishing": {
           "name": "Vybavení koupelen",
           "terms": "koupelna,koupelny,vybavení koupelen"
+        },
+        "shop/bbq": {
+          "name": "Potřeby na grilování",
+          "terms": "prodejna s grilovacími potřebami,potřeby na grilování,potřeby na barbecue,obchod s potřebami na grilování,barbecue obchod,obchod s grily,prodej grilů,prodejna grilů,grilovací potřeby"
         },
         "shop/beauty": {
           "name": "Kosmetický salón",
@@ -9824,7 +9935,8 @@
           "terms": "koberce,koberec,podlahové,podlahový,krytina,krytiny"
         },
         "shop/catalogue": {
-          "name": "Katalogový obchod"
+          "name": "Katalogový obchod",
+          "terms": "prodejní katalog,katalogový obchod,zásilkový prodej"
         },
         "shop/charity": {
           "name": "Charitativní obchod",
@@ -9895,7 +10007,8 @@
           "terms": "kosmetika,kosmetický,makeup,parfém,parfumerie"
         },
         "shop/country_store": {
-          "name": "Venkovské potřeby"
+          "name": "Venkovské potřeby",
+          "terms": "zemědělské potřeby,zemědělské a chovatelské potřeby,hospodářské potřeby,potřeby pro dům a zahradu,domácí potřeby,pěstitelské potřeby"
         },
         "shop/craft": {
           "name": "Obchod s uměleckými a řemeslnými potřebami",
@@ -9922,7 +10035,8 @@
           "terms": "obchod pro kutily,stavební materiál,stavebniny,staviva,potřeby pro kutily,zahradní potřeby,železářství,kutil,hobby"
         },
         "shop/doors": {
-          "name": "Prodejna dveří"
+          "name": "Prodejna dveří",
+          "terms": "prodej dveří,prodej dveří a zárubní,dveře,dveře a zárubně"
         },
         "shop/dry_cleaning": {
           "name": "Čistírna",
@@ -9973,7 +10087,7 @@
         },
         "shop/flooring": {
           "name": "Podlahové krytiny",
-          "terms": "dlaždice"
+          "terms": "podlahářské potřeby,podlahy,koberce,lina,PVC,nářadí pro podlaháře,dlaždice,dlažba"
         },
         "shop/florist": {
           "name": "Květinářství",
@@ -9988,7 +10102,8 @@
           "terms": "obchod s mraženými potravinami,mražené potraviny,mražené jídlo,mrazák,zmražené,zmrazit,potraviny,obchod"
         },
         "shop/fuel": {
-          "name": "Obchod s palivem"
+          "name": "Obchod s palivem",
+          "terms": "prodej paliv,obchod s palivy"
         },
         "shop/funeral_directors": {
           "name": "Pohřební služba",
@@ -10019,11 +10134,16 @@
           "terms": "obchod s dárky,suvenýry"
         },
         "shop/gold_buyer": {
-          "name": "Zlatokupec"
+          "name": "Zlatokupec",
+          "terms": "výkup zlata,starožitnictví,zlatnictví,zastavárna"
         },
         "shop/greengrocer": {
           "name": "Ovoce a zelenina",
           "terms": "zelinář,zelinářství,prodejna zeleniny,zelenina,ovoce,ovoce a zelenina"
+        },
+        "shop/groundskeeping": {
+          "name": "Prodejna potřeb pro zahradníky",
+          "terms": "zahradnictví,potřeby pro zahradníky,potřeby pro zahrádkáře,potřeby pro trávníkáře,hnojiva,osiva,zahradnické potřeby,zemědělské potřeby"
         },
         "shop/hairdresser": {
           "name": "Kadeřnictví",
@@ -10061,7 +10181,8 @@
           "name": "Obchod s potřebami pro volný čas"
         },
         "shop/honey": {
-          "name": "Obchod s medem"
+          "name": "Obchod s medem",
+          "terms": "prodej medu,prodej včelích produktů"
         },
         "shop/household_linen": {
           "name": "Bytový textil",
@@ -10096,7 +10217,8 @@
           "terms": "prádelna,čistírna,prádlo"
         },
         "shop/laundry/self_service": {
-          "name": "Samoobslužná prádelna"
+          "name": "Samoobslužná prádelna",
+          "terms": "samoobslužná prádelna,automatická prádelna"
         },
         "shop/leather": {
           "name": "Kožené zboží",
@@ -10199,7 +10321,8 @@
           "terms": "cukrářství,dorty"
         },
         "shop/pawnbroker": {
-          "name": "Zastavárna"
+          "name": "Zastavárna",
+          "terms": "zastavárna,bazar,vetešnictví,vetešník"
         },
         "shop/perfumery": {
           "name": "Parfumerie",
@@ -10242,7 +10365,8 @@
           "terms": "náboženství,náboženský,duchovní,křesťanský,katolický"
         },
         "shop/rental": {
-          "name": "půjčovna"
+          "name": "půjčovna",
+          "terms": "půjčovna,půjčování,výpůjčky,zápůjčky"
         },
         "shop/repair": {
           "name": "Opravna",
@@ -10332,14 +10456,16 @@
           "terms": "kuřácké potřeby,potřeby pro kuřáky,kuřák,kuřáci,kouření,tabák,doutník,dýmky,dýmka,cigarety,cigareta"
         },
         "shop/tool_hire": {
-          "name": "půjčovna nářadí"
+          "name": "půjčovna nářadí",
+          "terms": "půjčovna nářadí,půjčovna vybavení,půjčovna nástrojů"
         },
         "shop/toys": {
           "name": "Hračkářství",
           "terms": "hračky,hry"
         },
         "shop/trade": {
-          "name": "Stavebniny"
+          "name": "Stavebniny",
+          "terms": "obchod s materiálem,velkoobchod s materiálem,stavebniny,obchod - stavebniny či řezivo či hutní materiál či jiný typ materiálu"
         },
         "shop/travel_agency": {
           "name": "Cestovní kancelář",
@@ -10378,7 +10504,8 @@
           "terms": "hodiny,hodinky,čas"
         },
         "shop/water": {
-          "name": "Obchod s pitnou vodou"
+          "name": "Obchod s pitnou vodou",
+          "terms": "prodej pitné vody,prodej vody,prodej balené vody,obchod s pitnou vodou,obchod s balenou vodou"
         },
         "shop/water_sports": {
           "name": "Plavecké potřeby",
@@ -10519,7 +10646,8 @@
           "terms": "rozcestí"
         },
         "tourism/information/map": {
-          "name": "Mapa"
+          "name": "Mapa",
+          "terms": "mapa,tabule s mapou,plán,turistická mapa,cykloturistická mapa"
         },
         "tourism/information/office": {
           "name": "Návštěvnické centrum",
@@ -10530,7 +10658,8 @@
           "terms": "mohyla,malovaný požár,vlajka na trase,značka na cestě,kamenná hromada,požár stezky,traťový sloupek,značka cesty"
         },
         "tourism/information/terminal": {
-          "name": "Informační panel/terminál"
+          "name": "Informační panel/terminál",
+          "terms": "informační terminál,informační obrazovka,informační monitor,informační interaktivní panel,informační terminál s přístupem na internet"
         },
         "tourism/motel": {
           "terms": "motel,hotel,penzion,ubytování"
@@ -10651,14 +10780,16 @@
           "terms": "administrativní hranice,správní hranice,hranice správní oblasti,hranice kraje,hranice oblasti,hranice regionu"
         },
         "type/connectivity": {
-          "name": "Propojení jízdních pruhů"
+          "name": "Propojení jízdních pruhů",
+          "terms": "napojení silničních pruhů,silniční pruhy,spojení silničních pruhů,spojení pruhů,propojení pruhů"
         },
         "type/destination_sign": {
           "name": "Směrová tabule",
           "terms": "směrová tabule,směrová značka,značka směru,značka cíle,cedule se směrem,směrová cedule,směr výjezdu,označení exitu,směr,šipka"
         },
         "type/enforcement": {
-          "name": "Zařízení pro dokumentaci dopravních přestupků"
+          "name": "Zařízení pro dokumentaci dopravních přestupků",
+          "terms": "dodržování předpisů,dodržování zákonů,prosazování zákona,vynucování,měření rychlosti,radary,přestupky,kamery,semafory,váhy"
         },
         "type/enforcement/maxspeed": {
           "name": "Rychlostní radar",
@@ -10668,7 +10799,8 @@
           "terms": "multipolygon,polygon,mnohoúhelník"
         },
         "type/public_transport/stop_area_group": {
-          "name": "Skupina zastávek veřejné dopravy"
+          "name": "Skupina zastávek veřejné dopravy",
+          "terms": "skupina oblasti zastávky,skupina zastávek,skupina stanovišť,oblast zastávek veřejné dopravy,zastávková oblast,oblast stanice,oblast skupiny zastávek,skupina zastávkových stanic"
         },
         "type/restriction": {
           "name": "Omezení",
@@ -10703,7 +10835,8 @@
           "terms": "přikázaný směr jízdy rovně,přikázaný směr jízdy přímo,příkaz jet rovně,jen přímo,jen rovně,pouze přímo,pouze rovně"
         },
         "type/restriction/only_u_turn": {
-          "name": "Pouze otáčení"
+          "name": "Pouze otáčení",
+          "terms": "pouze otáčení,jen otáčení,pouze otočit,jen otočení,povoleno pouze otočení,pouze otočit,pouze otočení o 180°"
         },
         "type/route": {
           "name": "Trasa",
@@ -10742,10 +10875,12 @@
           "terms": "koňská jezdecká trasa,koňská stezka,jezdecká stezka,jízda na stezce"
         },
         "type/route/light_rail": {
-          "name": "Trasa lehké dráhy"
+          "name": "Trasa lehké dráhy",
+          "terms": "trasa rychlodráhy,trasa lehké dráhy,rychlodrážní trasa,lehká dráha,rychlodráha,trasa pro lehkou železnici"
         },
         "type/route/monorail": {
-          "name": "Dráha jednokolejky"
+          "name": "Dráha jednokolejky",
+          "terms": "trasa jednokolejné dráhy,trasa monorailu,trasa jednokolejky,dráha jednokolejky,trať monorailu"
         },
         "type/route/mtb": {
           "name": "Trasa pro horská kola",
@@ -10756,21 +10891,24 @@
           "terms": "potrubí,potrubní trasa,roura,roury,transport,vodovod,ropovod,produktovod,plynovod,kanál,rozvod"
         },
         "type/route/piste": {
-          "name": "Trasa sjezdovky"
+          "name": "Trasa sjezdovky",
+          "terms": "trasa sjezdovky,zimní trasa,trasa pro zimní sporty,lyžařská stopa,lyžařská trasa,běžkařská trasa,skialpová trasa,sáňkařská trasa"
         },
         "type/route/power": {
           "name": "Elektrická trasa",
           "terms": "trasa elektrického vedení,elektrické vedení,elektrika,napětí,vysoké napětí,drát,dráty,kabel,kabely"
         },
         "type/route/railway": {
-          "name": "Železniční trasa"
+          "name": "Železniční trasa",
+          "terms": "trasa železnice,dráha,železniční trať,koleje,trasa pro vlaky"
         },
         "type/route/road": {
           "name": "Silniční trasa",
           "terms": "silnice,silniční trasa,trasa silnice,trasa dálnice,dálnice"
         },
         "type/route/subway": {
-          "name": "Trasa metra"
+          "name": "Trasa metra",
+          "terms": "trasa metra,trasa pro metro,metro,trasa podzemky,trasa U-Bahn,podzemní trasa"
         },
         "type/route/train": {
           "name": "Železniční trasa",
@@ -10785,8 +10923,8 @@
           "terms": "trolejbus,trolejbusový,trolejbusová,trolejbusu,spojení,linka,spoj,trolej,trolley,bus,mhd,městská doprava,městská hromadná doprava"
         },
         "type/route_master": {
-          "name": "Řídící relace trasy",
-          "terms": "řídící relace trasy,route master,hlavní relace,nadrelace,master"
+          "name": "Řídicí relace trasy",
+          "terms": "řídicí relace trasy,route master,hlavní relace,nadrelace,master"
         },
         "type/site": {
           "name": "Uskupení",

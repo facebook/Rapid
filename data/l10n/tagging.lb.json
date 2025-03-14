@@ -186,6 +186,9 @@
         "cutting": {
           "label": "Typ"
         },
+        "cycle_barrier": {
+          "label": "Typ"
+        },
         "cycleway": {
           "options": {
             "no": {

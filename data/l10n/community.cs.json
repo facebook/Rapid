@@ -2,6 +2,7 @@
   "cs": {
     "_communities": {
       "kiribatiwomeninmapping": "Kiribatské ženy v mapování",
+      "mapeadoresivides": "Mapovači IVIDES",
       "mappingbotswana": "Mapování Botswany",
       "openstreetmapaachen": "OpenStreetMap Cáchy",
       "openstreetmapafghanistan": "OpenStreetMap Afghánistán",
@@ -23,14 +24,17 @@
       "openstreetmapcambodia": "OpenStreetMap Kambodža",
       "openstreetmapcameroon": "OpenStreetMap Kamerun",
       "openstreetmapcanada": "OpenStreetMap Kanada",
+      "openstreetmapcastillayleon": "OpenStreetMap Kastilie a León",
       "openstreetmapcatalancountries": "OpenStreetMap Katalánské země",
       "openstreetmapchad": "OpenStreetMap Čad",
       "openstreetmapchina": "OpenStreetMap Čína",
       "openstreetmapcologne": "OpenStreetMap Kolín nad Rýnem",
+      "openstreetmapcomunitatvalenciana": "OpenStreetMap Valencijské společenství",
       "openstreetmapcostarica": "OpenStreetMap Kostarika",
       "openstreetmapcotedivoire": "OpenStreetMap Pobřeží Slonoviny",
       "openstreetmapcroatia": "OpenStreetMap Chorvatsko",
       "openstreetmapcuba": "OpenStreetMap Kuba",
+      "openstreetmapcyprus": "OpenStreetMap Kypr",
       "openstreetmapdelhi": "OpenStreetMap Dillí",
       "openstreetmapdenmark": "OpenStreetMap Dánsko",
       "openstreetmapdjibouti": "OpenStreetMap Džibutsko",
@@ -85,8 +89,9 @@
       "openstreetmapmauritania": "OpenStreetMap Mauritánie",
       "openstreetmapmecklenburgvorpommern": "OpenStreetMap Meklenburako-Přední Pomořansko",
       "openstreetmapmexico": "OpenStreetMap Mexiko",
-      "openstreetmapmoldova": "OpenStreetMap Molavsko",
+      "openstreetmapmoldova": "OpenStreetMap Moldavsko",
       "openstreetmapmongolia": "OpenStreetMap Mongolsko",
+      "openstreetmapmontenegro": "OpenStreetMap Černá Hora",
       "openstreetmapmorocco": "OpenStreetMap Maroko",
       "openstreetmapmunchen": "OpenStreetMap Mnichov",
       "openstreetmapnepal": "OpenStreetMap Nepál",
@@ -128,12 +133,17 @@
       "openstreetmapwestbengal": "OpenStreetMap Západní Bengálsko",
       "openstreetmapwesternsahara": "OpenStreetMap Západní Sahara",
       "openstreetmapzambia": "OpenStreetMap Zambie",
+      "osmcolombia": "OSM Kolumbie",
       "osmmainz": "OSM Mohuč"
     },
     "_defaults": {
       "aparat": {
         "name": "{community} na Aparatu",
         "description": "Odebírejte náš kanál na Aparatu"
+      },
+      "bluesky": {
+        "name": "{community} na Bluesky",
+        "description": "Sledujte nás na Bluesky"
       },
       "discord": {
         "description": "Zůstaňte ve spojení s ostatními mapovači na Discordu"
@@ -320,6 +330,62 @@
     "cl-telegram": {
       "extendedDescription": "Připojte se ke komunitě a dozvíte se více o OpenStreetMap, můžete klást otázky nebo se účastnit našich setkání. Každý je vítán!"
     },
+    "co-discourse": {
+      "name": "Diskusní témata komunit OSM o Kolumbii",
+      "description": "Toto jsou témata související se změnami map v Kolumbii"
+    },
+    "co-facebook": {
+      "name": "Skupina {community} na Facebooku",
+      "description": "Diskuzní skupina o problematice OSM v Kolumbii"
+    },
+    "co-github": {
+      "name": "{community} projekty na GitHubu",
+      "description": "Kódovací projekty vyvinuté komunitou"
+    },
+    "co-instagram": {
+      "name": "Posty od {community} na Instagramu",
+      "description": "Publikace o komunitních aktivitách nebo informacích"
+    },
+    "co-linkedin": {
+      "name": "Posty od {community} na LinkedIn",
+      "description": "Publikace o komunitních aktivitách nebo informacích"
+    },
+    "co-mastodon": {
+      "name": "Posty od {community} na Mastodonu",
+      "description": "Publikace o komunitních aktivitách nebo informacích"
+    },
+    "co-talk": {
+      "name": "{community} mailová konference",
+      "description": "Emaily, které vyžadují předávání informací komunitě"
+    },
+    "co-telegram": {
+      "name": "Diskuzní skupina {community} na Telegramu",
+      "description": "Otevřené diskuse o tématech, která zajímají celou komunitu. Jedná se o nejaktivnější kanál"
+    },
+    "co-thread": {
+      "name": "Posty od {community} na Threads",
+      "description": "Publikace o komunitních aktivitách nebo informacích"
+    },
+    "co-tiktok": {
+      "name": "Krátká videa {community} na TikToku",
+      "description": "Publikace o komunitních aktivitách"
+    },
+    "co-twitter": {
+      "name": "Komunita {community} na x-Twitteru",
+      "description": "Publikace o komunitních aktivitách nebo informacích"
+    },
+    "co-whatsapp": {
+      "name": "Zprávy z komunity {community} na WhatsAppu",
+      "description": "Publikace o komunitních aktivitách nebo informacích"
+    },
+    "co-wiki": {
+      "name": "Wiki stránka s dokumentací k mapování Kolumbie.",
+      "description": "Dokumentace ke všemu souvisejícímu s OpenStreetMap v Kolumbii"
+    },
+    "co-youtube": {
+      "name": "Videa {community} na YouTube",
+      "description": "Videa aktivit komunity nebo vysvětlení OSM aktivit"
+    },
     "comunitat-valenciana-wiki": {
       "description": "Vše, co potřebujete vědět o mapování ve Valencijské komunitě: {url}"
     },
@@ -388,6 +454,9 @@
     },
     "de-mainz-mailinglist": {
       "description": "OpenStreetMap v Mohuči a okolí"
+    },
+    "de-mainz-signal": {
+      "description": "OpenStreetMap v Mohuči, Wiesbadenu a okolí"
     },
     "de-mainz-telegram": {
       "description": "OpenStreetMap v Mohuči a okolí"
@@ -474,6 +543,9 @@
     "gb-mailinglist": {
       "description": "Talk-gb je hlavní komunikační fórum OSM komunity ve Velké Británii (včetně Severního Irska) "
     },
+    "ge-matrix": {
+      "description": "Obecný chat o OpenStreetMap v Gruzii propojený přemostěním na Telegram chat"
+    },
     "geogeeks_perth_meetup": {
       "description": "Setkání založená v Perthu pro lidi se zájmem o mapování, geoprostorová data a otevřené zdroje. Pořádáme pravidelné OSM mapovací večírky, besedy a společenská setkání. Začátečníci jsou srdečně vítáni!"
     },
@@ -482,7 +554,8 @@
       "extendedDescription": "GeoPhilly spojuje vývojáře, geografy, geology dat, nadšence s otevřeným zdrojovým kódem, občanské hackery a mapové šílence do naší společné lásky k mapám a k příběhům, které vyprávějí. Pokud používáte mapy jako součást své práce, nebo se chcete dozvědět více, toto je setkání právě pro vás! Cílem našich akcí je být otevřený, přátelský, vzdělávající se a společenský v rozsahu od šťastných hodin přes bleskové rozhovory nebo dokonce workshopy. Pojďte s námi vytvořit rozmanitou a inspirující geoprostorovou komunitu ve Filadelfii!"
     },
     "hr-tm": {
-      "name": "{community} Správce úloh"
+      "name": "{community} Správce úloh",
+      "description": "Prozkoumejte aktivní mapovací úlohy v Chorvatsku"
     },
     "hr-wiki": {
       "description": "Stránka wikiprojektu pro Chorvatsko"
@@ -539,6 +612,9 @@
     },
     "it-discourse": {
       "description": "Fórum, ve kterém můžete diskutovat o OpenStreetMap"
+    },
+    "ivides_website": {
+      "description": "Zaměřujeme se na udržitelný rozvoj, mapování a podporu komunity OpenStreetMap."
     },
     "ko-facebook": {
       "description": "Mapovači a uživatelé OpenStreetMap v Koreji"
@@ -895,6 +971,9 @@
     "osm-michigan-wiki": {
       "description": "{community} Wiki stránka"
     },
+    "osm-nelson": {
+      "description": "Skupina OpenStreetMap v Nelsonu na Novém Zélandu"
+    },
     "osm-ni": {
       "description": "Poskytování služeb a informací OSM pro místní komunitu v Nikaragui"
     },
@@ -1013,6 +1092,9 @@
     },
     "rs-wiki": {
       "description": "Stránka wikiprojektu pro Srbsko"
+    },
+    "scandinavia-discord": {
+      "name": "Skandinávský kanál na Světovém Discordu OpenStreetMap"
     },
     "sg-wiki": {
       "description": "{community} Wiki stránka"
@@ -1487,6 +1569,19 @@
       "name": "YouthMappers v Bogotě",
       "description": "Zastoupení YouthMappers na Universidad de Distrital Francisco Jose de Caldas",
       "extendedDescription": "Universidad Distrital Francisco José de Caldas je veřejná, koedukovaná, výzkumná univerzita se sídlem v Bogotě v Kolumbii s populací 26 140 studentů."
+    },
+    "ym-Universidad-Jorge-Tadeo-Lozano": {
+      "name": "TadeoMappers na Univerzitě Jorge Tadeo Lozano",
+      "description": "Zastoupení YouthMappers na Univerzitě Jorge Tadeo Lozano",
+      "extendedDescription": "Studenti z Bogoty nadšení pro mapování aktivit podporujících biodiverzitu. Zaměřují se na mapování stromů a přenášejí tyto aktivity do škol s cílem zapojit celou komunitu do úsilí o ochranu životního prostředí."
+    },
+    "ym-Universidad-Jorge-Tadeo-Lozano-github": {
+      "description": "GitHub TadeoMappers zastupujících YouthMappers",
+      "extendedDescription": "TadeoMappers, ve spolupráci s kolektivem Svobodného Softwaru GNUTADEO, nabízejí repozitáře pro svou práci. Obě skupiny jsou spojeny s Univerzitou Jorge Tadeo Lozano a prosazují používání mapovacích nástrojů a softwaru na podporu projektů řízených komunitou."
+    },
+    "ym-Universidad-Jorge-Tadeo-Lozano-instagram": {
+      "description": "Instagram TadeoMappers zastupujících YouthMappers",
+      "extendedDescription": "TadeoMappers je součástí skupiny Svobodného Softwaru GNUTADEO, kolektivu z Univerzity Jorge Tadeo Lozano"
     },
     "ym-Universidad-Nacional-Autnoma-de-Honduras": {
       "description": "Zastoupení YouthMappers na Universidad Nacional Autónoma de Honduras"

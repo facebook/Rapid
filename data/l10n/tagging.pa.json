@@ -3,1609 +3,1616 @@
     "presets": {
       "categories": {
         "category-building": {
-          "name": "عمارت دے نقش"
+          "name": "ਇਮਾਰਤ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ"
         },
         "category-golf": {
-          "name": "گولف دے نقش"
+          "name": "ਗੌਲਫ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ"
         },
         "category-natural": {
-          "name": "قدرتی نقش"
+          "name": "ਕੁਦਰਤੀ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ"
         },
         "category-path": {
-          "name": "پاتھ"
+          "name": "ਰਸਤੇ"
         },
         "category-playground": {
-          "name": "کھیڈ دے میدان لئی رچھ کان"
+          "name": "ਖੇਡ ਦੇ ਮੈਦਾਨ ਦਾ ਉਪਕਰਨ"
         },
         "category-rail": {
-          "name": "ریلویاں"
+          "name": "ਰੇਲਾਂ"
         },
         "category-road_major": {
-          "name": "مکھ سڑکاں"
+          "name": "ਵੱਡੀਆਂ ਸੜਕਾਂ"
         },
         "category-road_minor": {
-          "name": "چھوٹی سڑکاں"
+          "name": "ਛੋਟੀਆਂ ਸੜਕਾਂ"
         },
         "category-road_service": {
-          "name": "سیوا سڑکاں"
+          "name": "ਸੇਵਾ ਸੜਕਾਂ"
         },
         "category-route": {
-          "name": "روٹ دے نشان"
+          "name": "ਰੂਟ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ"
         }
       },
       "fields": {
         "access": {
-          "label": "اِجازت",
+          "label": "ਪਹੁੰਚ ਦੀ ਇਜਾਜ਼ਤ ਹੈ",
           "options": {
             "customers": {
-              "description": "صرف گاہکاں دی ورتوں",
-              "title": "گاہک"
+              "description": "ਮੰਜ਼ਿਲ 'ਤੇ ਗਾਹਕਾਂ ਤੱਕ ਸੀਮਤ",
+              "title": "ਗਾਹਕ"
             },
             "destination": {
-              "description": "اِکّ صرف منزل لئی اِجازت",
-              "title": "منزل"
+              "description": "ਸਿਰਫ਼ ਮੰਜ਼ਿਲ 'ਤੇ ਪਹੁੰਚਣ ਲਈ ਹੀ ਪਹੁੰਚ ਦੀ ਇਜਾਜ਼ਤ ਹੈ।",
+              "title": "ਮੰਜ਼ਿਲ"
             },
             "no": {
-              "title": "منع"
+              "title": "ਵਰਜਿਤ"
             },
             "permissive": {
-              "title": "اِجازت دیݨی"
+              "title": "ਇਜਾਜ਼ਤ ਦੇਣ ਵਾਲਾ"
             },
             "permit": {
-              "title": "پرمٹ دا"
+              "title": "ਪਰਮਿਟ"
             },
             "private": {
-              "title": "نِجی"
+              "title": "ਨਿੱਜੀ"
             },
             "unknown": {
-              "title": "نامعلوم"
+              "title": "ਅਗਿਆਤ"
             },
             "yes": {
-              "title": "پرویش کرن دا"
+              "title": "ਇਜਾਜ਼ਤ ਹੈ"
             }
           },
-          "placeholder": "نمعلوم",
+          "placeholder": "ਨਿਰਧਾਰਤ ਨਹੀਂ ਹੈ",
           "types": {
-            "access": "سارا کجھ",
-            "bicycle": "سائیکلاں",
-            "foot": "پیر",
-            "horse": "گھوڑے",
-            "motor_vehicle": "موٹرکار"
+            "access": "ਸਭ",
+            "bicycle": "ਸਾਈਕਲ",
+            "foot": "ਪੈਦਲ",
+            "horse": "ਘੋੜੇ",
+            "motor_vehicle": "ਮੋਟਰ ਵਾਹਨ"
           }
         },
         "access_aisle": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "access_simple": {
-          "label": "اِجازت",
+          "label": "ਪਹੁੰਚ ਦੀ ਇਜਾਜ਼ਤ ਹੈ",
           "options": {
-            "no": "کوئی نہیں",
-            "permissive": "اِجازت دیݨی",
-            "private": "نِجی",
-            "unknown": "نامعلوم",
-            "yes": "عاوم"
+            "no": "ਕੋਈ ਨਹੀਂ",
+            "permissive": "ਇਜਾਜ਼ਤ ਦੇਣ ਵਾਲਾ",
+            "private": "ਨਿੱਜੀ",
+            "unknown": "ਅਗਿਆਤ",
+            "yes": "ਜਨਤਕ"
           }
         },
         "activity": {
           "options": {
-            "bicycle": "سائکل کرن"
+            "bicycle": "ਸਾਈਕਲਿੰਗ"
           }
         },
         "addr/interpolation": {
-          "label": "قسم",
+          "label": "ਕਿਸਮ",
           "options": {
-            "all": "سارا کجھ"
+            "all": "ਸਭ"
           }
         },
         "address": {
-          "label": "پتہ",
+          "label": "ਪਤਾ",
           "placeholders": {
-            "block_number": "بلاک نمبر",
-            "block_number!jp": "بلاک نمبر",
+            "block_number": "ਬਲਾਕ ਨੰਬਰ",
+            "block_number!jp": "ਬਲਾਕ ਨੰ.",
             "city": "ਸ਼ਹਿਰ",
-            "city!vn": "شہر یا نگر",
-            "conscriptionnumber": "مثلاً 123، ۱۲۳",
-            "country": "دیش",
-            "county": "کاؤنٹی",
-            "county!jp": "ڈسٹرکٹ",
-            "district": "ڈسٹرکٹ",
-            "housename": "گھر دا ناں",
-            "housenumber": "مثلاً 123، ۱۲۳",
-            "place": "تھاں دا ناں",
-            "street": "سڑک"
+            "city!vn": "ਸ਼ਹਿਰ/ਕਸਬਾ",
+            "country": "ਦੇਸ਼",
+            "county": "ਕਾਊਂਟੀ",
+            "county!jp": "ਜ਼ਿਲ੍ਹਾ",
+            "district": "ਜ਼ਿਲ੍ਹਾ",
+            "housename": "ਘਰ ਨਾਮ",
+            "place": "ਸਥਾਨ",
+            "street": "ਗਲੀ",
+            "town": "ਕਸਬਾ"
           }
         },
         "advertising": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "aerialway": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "aerialway/access": {
           "options": {
-            "both": "دوویں"
+            "both": "ਦੋਵੇਂ"
           }
         },
         "aerialway/summer/access": {
           "options": {
-            "both": "دوویں"
+            "both": "ਦੋਵੇਂ"
           }
         },
         "aeroway": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "amenity": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "archaeological_site": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "area/highway": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "armrest": {
           "options": {
-            "undefined": "نامعلوم"
+            "undefined": "ਅਗਿਆਤ"
           }
         },
         "artwork_type": {
-          "label": "قسم",
+          "label": "ਕਿਸਮ",
           "options": {
-            "graffiti": "گرفیٹی"
+            "graffiti": "ਗਰਾਫਿੱਟੀ"
           }
         },
         "atm": {
-          "label": "نقدی آلہ (اے ٹی ایم)"
+          "label": "ਏਟੀਐੱਮ"
         },
         "attraction": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "baby_feeding": {
           "options": {
-            "no": "کوئی نہیں"
+            "no": "ਕੋਈ ਨਹੀਂ"
           }
         },
         "bar": {
-          "label": "پب (بار، شراب والی)\nبار\nشراب والی"
+          "label": "ਬਾਰ"
         },
         "barrier": {
-          "label": "قسم",
+          "label": "ਕਿਸਮ",
           "options": {
-            "kerb": "کرب"
+            "kerb": "ਕਰਬ"
           }
         },
         "barrier_planter": {
           "options": {
-            "planter": "ہاں",
-            "undefined": "نہیں"
+            "planter": "ਹਾਂ",
+            "undefined": "ਨਹੀਂ"
           }
         },
         "basin": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "beauty": {
           "options": {
-            "hair_removal": "وال ہٹاؤݨ والا"
+            "hair_removal": "ਵਾਲ ਹਟਾਉਣ ਵਾਲਾ"
           }
         },
         "bench": {
-          "label": "بنچ"
+          "label": "ਬੈਂਚ"
         },
         "bicycle_parking": {
-          "label": "قسم",
+          "label": "ਕਿਸਮ",
           "options": {
-            "building": "عمارت وچ"
+            "building": "ਇਮਾਰਤ ਵਿੱਚ"
           }
         },
         "bicycle_road": {
           "options": {
-            "undefined": "نہیں",
-            "yes": "ہاں"
+            "undefined": "ਨਹੀਂ",
+            "yes": "ਹਾਂ"
           }
         },
         "blind": {
           "options": {
-            "limited": "محدود",
-            "no": "نہیں",
-            "yes": "ہاں"
+            "limited": "ਸੀਮਤ",
+            "no": "ਨਹੀਂ",
+            "yes": "ਹਾਂ"
           }
         },
         "board_type": {
-          "label": "قسم",
+          "label": "ਕਿਸਮ",
           "options": {
-            "history": "اتیت"
+            "history": "ਅਤੀਤ"
           }
         },
         "bollard": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "boules": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "boundary": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "branch_brand": {
-          "label": "برانچ"
+          "label": "ਸ਼ਾਖ਼ਾ"
         },
         "bridge": {
-          "label": "قسم",
-          "placeholder": "مول"
+          "label": "ਕਿਸਮ",
+          "placeholder": "ਮੂਲ"
         },
         "bridge/support": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "bridge_combo": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "building": {
-          "label": "مکان",
+          "label": "ਇਮਾਰਤ",
           "options": {
-            "civic": "سرکاری عمارت",
-            "college": "کالج",
-            "garage": "گارج",
-            "garages": "گارج دا سموہ",
-            "house": "گھر"
+            "civic": "ਸਿਵਿਕ ਇਮਾਰਤ",
+            "college": "ਕਾਲਜ ਇਮਾਰਤ",
+            "garage": "ਗੈਰਾਜ",
+            "garages": "ਗੈਰਾਜ",
+            "house": "ਘਰ"
           }
         },
         "building/part": {
-          "label": "عمارت دا بھاگ"
+          "label": "ਇਮਾਰਤ ਦਾ ਹਿੱਸਾ"
         },
         "bunker_type": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "camp_site": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "castle_type": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "clothes": {
-          "label": "کپڑے"
+          "label": "ਕੱਪੜੇ"
         },
         "club": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "collector": {
-          "label": "آئیٹم"
+          "label": "ਆਈਟਮਾਂ"
         },
         "colour": {
-          "label": "رنگ"
+          "label": "ਰੰਗ"
         },
         "community_centre": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "construction": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "consulate": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "contact/webcam": {
-          "label": "ویب‌کیم دی کڑی"
+          "label": "ਵੈੱਬਕੈਮ ਯੂਆਰਐੱਲ"
         },
         "conveying": {
           "options": {
-            "forward": "اگلا"
+            "forward": "ਅੱਗੇ"
           }
         },
         "country": {
-          "label": "دیش"
+          "label": "ਦੇਸ਼"
         },
         "country_flag": {
-          "label": "دیش"
+          "label": "ਦੇਸ਼ ਝੰਡਾ"
         },
         "covered": {
-          "label": "دا کج کرن"
+          "label": "ਢੱਕਿਆ ਹੋਇਆ"
         },
         "covered_no": {
           "options": {
-            "no": "نہیں",
-            "yes": "ہاں"
+            "no": "ਨਹੀਂ",
+            "yes": "ਹਾਂ"
           }
         },
         "craft": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "crop": {
           "options": {
-            "coffee": "کافی",
-            "grass": "گھاہ",
-            "rice": "چَول",
-            "tea": "چاہ"
+            "coffee": "ਕੌਫ਼ੀ",
+            "grass": "ਘਾਹ",
+            "rice": "ਚੌਲ",
+            "tea": "ਚਾਹ"
           }
         },
         "crossing": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "crossing/barrier": {
           "options": {
-            "no": "نہیں",
-            "yes": "ہاں"
+            "no": "ਨਹੀਂ",
+            "yes": "ਹਾਂ"
           }
         },
         "crossing_raised": {
           "options": {
-            "table": "ہاں",
-            "undefined": "نہیں"
+            "table": "ਹਾਂ",
+            "undefined": "ਨਹੀਂ"
           }
         },
         "cuisine": {
           "options": {
-            "french": "فرانسیسی",
-            "german": "جرمن",
+            "french": "ਫ਼ਰਾਂਸੀਸੀ",
+            "german": "ਜਰਮਨ",
             "indian": "ਭਾਰਤੀ",
-            "italian": "اِطالی",
-            "japanese": "جاپانی",
-            "regional": "علاقائی\nکھیتری",
-            "tea": "چاہ",
-            "vietnamese": "ویتنامی"
+            "italian": "ਇਟਾਲੀਅਨ",
+            "japanese": "ਜਪਾਨੀ",
+            "regional": "ਖੇਤਰੀ\nਸਥਾਨਕ",
+            "tea": "ਚਾਹ",
+            "vietnamese": "ਵੀਅਤਨਾਮੀ"
           }
         },
         "cutting": {
-          "label": "قسم",
-          "placeholder": "مول"
+          "label": "ਕਿਸਮ",
+          "placeholder": "ਮੂਲ"
+        },
+        "cycle_barrier": {
+          "label": "ਕਿਸਮ"
         },
         "cycle_network": {
-          "label": "نیٹورک"
+          "label": "ਨੈੱਟਵਰਕ"
         },
         "cycleway": {
           "options": {
             "no": {
-              "title": "کوئی نہیں"
+              "title": "ਕੋਈ ਨਹੀਂ"
             }
           }
         },
         "date": {
-          "label": "تریخ"
+          "label": "ਮਿਤੀ"
         },
         "departures_board": {
           "options": {
-            "no": "کوئی نہیں",
-            "yes": "ہاں"
+            "no": "ਕੋਈ ਨਹੀਂ",
+            "yes": "ਹਾਂ"
           }
         },
         "depot": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "description": {
-          "label": "تفصیل"
+          "label": "ਵਰਣਨ"
         },
         "destination": {
-          "label": "منزلاں"
+          "label": "ਮੰਜ਼ਿਲਾਂ"
         },
         "destination/ref": {
-          "label": "منزلاں دے نمبر"
+          "label": "ਮੰਜ਼ਿਲ ਸੜਕ ਨੰਬਰ"
         },
         "destination_waterway": {
-          "label": "منزل"
+          "label": "ਮੰਜ਼ਿਲ"
         },
         "diet_multi": {
           "options": {
-            "halal": "حلال"
+            "halal": "ਹਲਾਲ"
           }
         },
         "diplomatic": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "direction_vertex": {
           "options": {
-            "forward": "اگلا"
+            "forward": "ਅੱਗੇ"
           }
         },
         "disused/amenity": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "disused/railway": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "disused/shop": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "dock": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "dog": {
           "options": {
-            "yes": "پرویش کرن دا"
+            "yes": "ਇਜਾਜ਼ਤ ਹੈ"
           }
         },
         "door": {
-          "label": "دروازہ"
+          "label": "ਦਰਵਾਜ਼ਾ"
         },
         "door_type": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "electrified": {
           "options": {
-            "no": "نہیں",
-            "yes": "ہاں (قسم نمعلم)"
+            "no": "ਨਹੀਂ",
+            "yes": "ਹਾਂ (ਨਿਰਧਾਰਤ ਨਹੀਂ)"
           }
         },
         "email": {
-          "label": "ای‌میل"
+          "label": "ਈਮੇਲ"
         },
         "embankment": {
-          "label": "قسم",
-          "placeholder": "مول"
+          "label": "ਕਿਸਮ",
+          "placeholder": "ਮੂਲ"
         },
         "embassy": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "emergency_combo": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "emergency_ward_entrance": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "enforcement": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "entrance": {
-          "label": "قسم",
+          "label": "ਕਿਸਮ",
           "options": {
-            "main": "مکھ"
+            "main": "ਮੁੱਖ"
           }
         },
         "fax": {
-          "label": "فیکس نمبر"
+          "label": "ਫੈਕਸ"
         },
         "fee": {
-          "label": "فیس"
+          "label": "ਫੀਸ"
         },
         "fence_type": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "fire_hydrant/position": {
-          "label": "ستھتی",
+          "label": "ਸਥਿਤੀ",
           "options": {
-            "green": "گاہ",
-            "lane": "سڑک تے لین",
-            "parking_lot": "پارکنگ والی تھاں",
-            "sidewalk": "فُٹ‌پاتھ\nفُٹ پاتھ\nفٹ پاتھ\nفُٹپاتھ\nفٹپاتھ"
+            "green": "ਹਰਾ/ਘਾਹ",
+            "lane": "ਸੜਕ ਲੇਨ",
+            "parking_lot": "ਪਾਰਕਿੰਗ ਲੌਟ",
+            "sidewalk": "ਸਾਈਡਵਾਕ"
           }
         },
         "fire_hydrant/type": {
-          "label": "روپ"
+          "label": "ਸ਼ਕਲ"
         },
         "fire_mains": {
           "options": {
-            "no": "نہیں"
+            "no": "ਨਹੀਂ"
           }
         },
         "fire_service_inlet": {
-          "label": "روپ"
+          "label": "ਸ਼ਕਲ"
         },
         "fire_sprinkler": {
           "options": {
-            "no": "نہیں"
+            "no": "ਨਹੀਂ"
           }
         },
         "flashing_lights": {
           "options": {
-            "no": "نہیں",
-            "yes": "ہاں"
+            "no": "ਨਹੀਂ",
+            "yes": "ਹਾਂ"
           }
         },
         "ford": {
-          "label": "قسم",
-          "placeholder": "مول"
+          "label": "ਕਿਸਮ",
+          "placeholder": "ਮੂਲ"
         },
         "fountain": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "from": {
-          "label": "ایہہ توں"
+          "label": "ਤੋਂ"
         },
         "gender": {
-          "placeholder": "نامعلوم"
+          "placeholder": "ਅਗਿਆਤ"
         },
         "generator/source": {
-          "label": "سروت"
+          "label": "ਸਰੋਤ"
         },
         "generator/type": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "gnis/feature_id-US": {
-          "label": "گی‌آئی‌این‌ایس نشان آئی‌ڈی"
+          "label": "ਜੀਐੱਮਆਈਐੱਸ ਵਿਸ਼ੇਸ਼ਤਾ ਆਈਡੀ"
         },
         "government": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "guest_house": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "healthcare": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "highway": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "highway_cartpath": {
           "options": {
-            "service": "سیوا سڑک\nسروس سڑک\nسروس وے\nسروسوے"
+            "service": "ਸੇਵਾ ਸੜਕ"
           }
         },
         "historic": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "holding_position/type": {
-          "label": "قسم",
+          "label": "ਕਿਸਮ",
           "options": {
-            "runway": "ہوائی اڈے دی رن‌وے\nرنوے\nرن وے\nہوائی رنوے\nہوائی رن وے"
+            "runway": "ਰਨਵੇਅ"
           }
         },
         "horse_riding": {
           "options": {
-            "horse_riding": "ہاں",
-            "undefined": "نہیں"
+            "horse_riding": "ਹਾਂ",
+            "undefined": "ਨਹੀਂ"
           }
         },
         "image": {
-          "label": "تصویر"
+          "label": "ਤਸਵੀਰ"
         },
         "indoor_type": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "industrial": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "information": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "internet_access": {
           "options": {
-            "no": "نہیں",
-            "wlan": "وائی‌فائی",
-            "yes": "ہاں"
+            "no": "ਨਹੀਂ",
+            "wlan": "ਵਾਈਫਾਈ",
+            "yes": "ਹਾਂ"
           }
         },
         "internet_access/ssid": {
-          "label": "وائی‌فائی نیٹورک دا ناں"
+          "label": "ਵਾਈਫਾਈ ਨੈੱਟਵਰਕ ਨਾਮ"
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "ਹਾਂ",
+            "undefined": "ਨਹੀਂ"
+          }
         },
         "kerb": {
-          "label": "کرب",
+          "label": "ਕਰਬ",
           "options": {
             "no": {
-              "title": "نہیں"
+              "title": "ਨਹੀਂ"
             },
             "yes": {
-              "title": "ہاں"
+              "title": "ਹਾਂ"
             }
           }
         },
         "kerb/kerb_barrier": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "label": {
-          "label": "چیپی"
+          "label": "ਲੇਬਲ"
         },
         "lamp_type": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "landuse": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "lanes": {
-          "label": "لیناں"
+          "label": "ਲੇਨਾਂ"
         },
         "language_multi": {
-          "label": "بولیاں"
+          "label": "ਭਾਸ਼ਾਵਾਂ"
         },
         "layer": {
-          "label": "کج"
+          "label": "ਲੇਅਰ"
         },
         "leaf_type": {
-          "label": "پتّر دی قسم",
+          "label": "ਪੱਤੇ ਦੀ ਕਿਸਮ",
           "options": {
-            "needleleaved": "سوائیاں"
+            "needleleaved": "ਸੂਈਦਾਰ ਪੱਤੇ"
           }
         },
         "leaf_type_singular": {
-          "label": "پتّر دی قسم"
+          "label": "ਪੱਤੇ ਦੀ ਕਿਸਮ"
         },
         "leisure": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "liaison": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "lifeguard": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "lift_gate/type": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "location": {
-          "label": "ستھتی"
+          "label": "ਟਿਕਾਣਾ"
         },
         "man_made": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "manhole": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "map_type": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "mapillary": {
-          "label": "میپیلیری دی کنجی"
+          "label": "ਮੈਪੀਲਰੀ ਤਸਵੀਰ ਆਈਡੀ"
         },
         "marker": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "material": {
           "options": {
-            "sand": "ریت",
-            "wood": "لکڑ"
+            "sand": "ਰੇਤ",
+            "wood": "ਲੱਕੜ"
           }
         },
         "maxspeed": {
-          "label": "حد رفتار"
+          "label": "ਗਤੀ ਸੀਮਾ"
         },
         "memorial": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "mooring": {
           "options": {
-            "no": "نہیں",
-            "private": "نِجی",
-            "yes": "ہاں"
+            "no": "ਨਹੀਂ",
+            "private": "ਨਿੱਜੀ",
+            "yes": "ਹਾਂ"
           }
         },
         "museum": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "name": {
           "label": "ਨਾਮ",
-          "placeholder": "عام ناں"
+          "placeholder": "ਆਮ ਨਾਮ (ਜੋਕਰ ਕੋਈ ਹੈ)"
         },
         "network": {
-          "label": "نیٹورک"
+          "label": "ਨੈੱਟਵਰਕ"
         },
         "network_bicycle": {
-          "label": "نیٹورک دی قسم",
+          "label": "ਨੈੱਟਵਰਕ ਕਲਾਸ",
           "options": {
-            "icn": "قومانتری\nاَنتر راشٹری",
-            "lcn": "مقامی\nستھانک\nستھانی",
-            "ncn": "قومی\nدیشی",
-            "rcn": "علاقائی\nکھیتری"
+            "icn": "ਅੰਤਰਰਾਸ਼ਟਰੀ\nਕੌਮਾਂਤਰੀ",
+            "lcn": "ਸਥਾਨਕ",
+            "ncn": "ਰਾਸ਼ਟਰੀ\nਕੌਮੀ",
+            "rcn": "ਖੇਤਰੀ\nਸਥਾਨਕ"
           },
-          "placeholder": "مقامی، علاقائی، قومی، قومانتری"
+          "placeholder": "ਸਥਾਨਕ, ਖੇਤਰੀ, ਰਾਸ਼ਟਰੀ, ਅੰਤਰਰਾਸ਼ਟਰੀ"
         },
         "network_foot": {
-          "label": "نیٹورک دی قسم",
+          "label": "ਨੈੱਟਵਰਕ ਕਲਾਸ",
           "options": {
-            "iwn": "قومانتری\nاَنتر راشٹری",
-            "lwn": "مقامی\nستھانک\nستھانی",
-            "nwn": "قومی\nدیشی",
-            "rwn": "علاقائی\nکھیتری"
+            "iwn": "ਅੰਤਰਰਾਸ਼ਟਰੀ\nਕੌਮਾਂਤਰੀ",
+            "lwn": "ਸਥਾਨਕ",
+            "nwn": "ਰਾਸ਼ਟਰੀ\nਕੌਮੀ",
+            "rwn": "ਖੇਤਰੀ\nਸਥਾਨਕ"
           },
-          "placeholder": "مقامی، علاقائی، قومی، قومانتری"
+          "placeholder": "ਸਥਾਨਕ, ਖੇਤਰੀ, ਰਾਸ਼ਟਰੀ, ਅੰਤਰਰਾਸ਼ਟਰੀ"
         },
         "network_horse": {
-          "label": "نیٹورک دی قسم",
+          "label": "ਨੈੱਟਵਰਕ ਕਲਾਸ",
           "options": {
-            "ihn": "قومانتری\nاَنتر راشٹری",
-            "lhn": "مقامی\nستھانک\nستھانی",
-            "nhn": "قومی\nدیشی",
-            "rhn": "علاقائی\nکھیتری"
+            "ihn": "ਅੰਤਰਰਾਸ਼ਟਰੀ\nਕੌਮਾਂਤਰੀ",
+            "lhn": "ਸਥਾਨਕ",
+            "nhn": "ਰਾਸ਼ਟਰੀ\nਕੌਮੀ",
+            "rhn": "ਖੇਤਰੀ\nਸਥਾਨਕ"
           },
-          "placeholder": "مقامی، علاقائی، قومی، قومانتری"
+          "placeholder": "ਸਥਾਨਕ, ਖੇਤਰੀ, ਰਾਸ਼ਟਰੀ, ਅੰਤਰਰਾਸ਼ਟਰੀ"
         },
         "network_road": {
-          "label": "نیٹورک"
+          "label": "ਨੈੱਟਵਰਕ"
         },
         "note": {
           "label": "ਨੋਟ"
         },
         "nudism": {
           "options": {
-            "no": "منع",
-            "permissive": "اِجازت دیݨی",
-            "yes": "پرویش کرن دا"
+            "no": "ਵਰਜਿਤ",
+            "permissive": "ਇਜਾਜ਼ਤ ਦੇਣ ਵਾਲਾ",
+            "yes": "ਇਜਾਜ਼ਤ ਹੈ"
           }
         },
         "office": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "oneway": {
-          "label": "اِکّ طرفہ",
+          "label": "ਇੱਕ ਪਾਸੇ ਦਾ ਰਸਤਾ",
           "options": {
-            "no": "نہیں",
-            "yes": "ہاں"
+            "no": "ਨਹੀਂ",
+            "yes": "ਹਾਂ"
           }
         },
         "oneway_yes": {
           "options": {
-            "no": "نہیں",
-            "yes": "ہاں"
+            "no": "ਨਹੀਂ",
+            "yes": "ਹਾਂ"
           }
         },
         "opening_hours": {
-          "label": "کھُلھے گھنٹے",
-          "placeholder": "نامعلوم"
+          "label": "ਘੰਟੇ",
+          "placeholder": "ਅਗਿਆਤ"
         },
         "organic": {
           "options": {
-            "no": "کوئی نہیں",
-            "only": "صرف",
-            "yes": "کجھ"
+            "no": "ਕੋਈ ਨਹੀਂ",
+            "only": "ਸਿਰਫ਼\nਕੇਵਲ",
+            "yes": "ਕੁੱਝ"
           }
         },
         "parcel_pickup": {
           "options": {
-            "no": "نہیں",
-            "yes": "ہاں"
+            "no": "ਨਹੀਂ",
+            "yes": "ਹਾਂ"
           }
         },
         "parking": {
-          "label": "قسم",
+          "label": "ਕਿਸਮ",
           "options": {
             "surface": {
-              "title": "بھومی"
+              "title": "ਸਤ੍ਹਾ"
             }
           }
         },
         "parking/side/parking": {
           "options": {
-            "no": "نہیں",
-            "yes": "ہاں (قسم نمعلم)"
+            "no": "ਨਹੀਂ",
+            "yes": "ਹਾਂ (ਨਿਰਧਾਰਤ ਨਹੀਂ)"
           }
         },
         "parking_entrance": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "parking_space": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "payment_multi": {
           "options": {
-            "google_pay": "گوگل پے",
-            "jcb": "جےسی‌بی",
-            "paypal": "پےپال",
-            "telephone_cards": "ٹیلیفون کارڈ",
-            "unionpay": "یونیون‌پے",
-            "uta": "یو‌ٹی‌اے",
-            "v_pay": "وی‌پے",
-            "visa": "ویسا کارڈ",
-            "visa_debit": "ویسا ڈیبٹ کارڈ"
+            "google_pay": "ਗੂਗਲ ਪੇ",
+            "jcb": "ਜੇਸੀਬੀ",
+            "paypal": "ਪੇ ਪਲ",
+            "telephone_cards": "ਟੈਲੀਫੋਨ ਕਾਰਡ",
+            "unionpay": "ਯੂਨੀਅਨ ਪੇ",
+            "uta": "ਯੂਟੀਏ",
+            "v_pay": "ਵੀ ਪੇ",
+            "visa": "ਵੀਜ਼ਾ",
+            "visa_debit": "ਵੀਜ਼ਾ ਡੈਬਿਟ"
           }
         },
         "phone": {
-          "label": "فون\nتیلیفون"
+          "label": "ਟੈਲੀਫ਼ੋਨ"
         },
         "pipeline": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "piste/type": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "place": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "playground": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "post_box/type": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "power": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "public_bookcase/type": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "pump": {
           "options": {
-            "no": "کوئی نہیں",
-            "yes": "ہاں"
+            "no": "ਕੋਈ ਨਹੀਂ",
+            "yes": "ਹਾਂ"
           }
         },
         "railway": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "railway/signal/direction": {
           "options": {
-            "forward": "اگلا"
+            "forward": "ਅੱਗੇ"
           }
         },
         "ramp": {
           "options": {
-            "no": "نہیں",
-            "yes": "ہاں"
+            "no": "ਨਹੀਂ",
+            "yes": "ਹਾਂ"
           }
         },
         "recycling_accepts": {
           "options": {
-            "clothes": "کپڑے"
+            "clothes": "ਕੱਪੜੇ"
           }
         },
         "recycling_type": {
-          "label": "قسم",
+          "label": "ਕਿਸਮ",
           "options": {
-            "centre": "کیندر"
+            "centre": "ਕੇਂਦਰ"
           }
         },
         "ref_road_number": {
-          "label": "سڑک دا نمبر"
+          "label": "ਸੜਕ ਨੰਬਰ"
         },
         "ref_room_number": {
-          "label": "کمرے دا نمبر"
+          "label": "ਕਮਰਾ ਨੰਬਰ"
         },
         "ref_route": {
-          "label": "روٹ دا نمبر"
+          "label": "ਰੂਟ ਨੰਬਰ"
         },
         "ref_taxiway": {
-          "label": "ٹیکسی‌وے دا ناں"
+          "label": "ਟੈਕਸੀਵੇ ਨੰਬਰ"
         },
         "relation": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "religion": {
           "options": {
-            "buddhist": "بودھی",
-            "hindu": "ہندو",
-            "muslim": "موسلمان",
-            "sikh": "سکھ"
+            "buddhist": "ਬੁੱਧ",
+            "hindu": "ਹਿੰਦੂ",
+            "muslim": "ਮੁਸਲਿਮ",
+            "sikh": "ਸਿੱਖ"
           }
         },
         "residential": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "resort": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "resource": {
           "options": {
-            "sand": "ریت"
+            "sand": "ਰੇਤ"
           }
         },
         "restriction": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "roller_coaster/track": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "room": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "route": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "route_master": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "royal_cypher-GB": {
           "options": {
-            "no": "نہیں"
+            "no": "ਨਹੀਂ"
           }
         },
         "ruins": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "seamark/beacon_isolated_danger/shape": {
-          "label": "روپ"
+          "label": "ਸ਼ਕਲ"
         },
         "seamark/beacon_lateral/category": {
-          "label": "گٹھ"
+          "label": "ਸ਼੍ਰੇਣੀ"
         },
         "seamark/beacon_lateral/colour": {
-          "label": "رنگ",
+          "label": "ਰੰਗ",
           "options": {
-            "green": "ہرا",
-            "red": "لال"
+            "green": "ਹਰਾ",
+            "red": "ਲਾਲ"
           }
         },
         "seamark/beacon_lateral/shape": {
-          "label": "روپ"
+          "label": "ਸ਼ਕਲ"
         },
         "seamark/beacon_lateral/system": {
-          "label": "سِسٹم",
+          "label": "ਪ੍ਰਣਾਲੀ",
           "options": {
-            "other": "ہور"
+            "other": "ਹੋਰ"
           }
         },
         "seamark/buoy_lateral/category": {
-          "label": "گٹھ"
+          "label": "ਸ਼੍ਰੇਣੀ"
         },
         "seamark/buoy_lateral/colour": {
-          "label": "رنگ",
+          "label": "ਰੰਗ",
           "options": {
-            "green": "ہرا",
-            "red": "لال"
+            "green": "ਹਰਾ",
+            "red": "ਲਾਲ"
           }
         },
         "seamark/buoy_lateral/shape": {
-          "label": "روپ"
+          "label": "ਸ਼ਕਲ"
         },
         "seamark/buoy_lateral/system": {
-          "label": "سِسٹم",
+          "label": "ਪ੍ਰਣਾਲੀ",
           "options": {
-            "other": "ہور"
+            "other": "ਹੋਰ"
           }
         },
         "seamark/harbour/category_marina": {
           "options": {
-            "marina": "ہاں",
-            "marina_no_facilities": "نہیں"
+            "marina": "ਹਾਂ",
+            "marina_no_facilities": "ਨਹੀਂ"
           }
         },
         "seamark/mooring/category": {
-          "label": "گٹھ"
+          "label": "ਸ਼੍ਰੇਣੀ"
         },
         "seamark/rescue_station/category": {
           "options": {
-            "radio": "ریڈیو سٹیشن"
+            "radio": "ਰੇਡੀਓ ਸਟੇਸ਼ਨ"
           }
         },
         "seamark/wreck/category": {
-          "label": "گٹھ"
+          "label": "ਸ਼੍ਰੇਣੀ"
         },
         "second_hand": {
           "options": {
-            "no": "نہیں",
-            "only": "صرف",
-            "yes": "ہاں"
+            "no": "ਨਹੀਂ",
+            "only": "ਸਿਰਫ਼\nਕੇਵਲ",
+            "yes": "ਹਾਂ"
           }
         },
         "service": {
-          "label": "قسم",
+          "label": "ਕਿਸਮ",
           "options": {
-            "alley": "گلی",
-            "driveway": "درائیو وے",
-            "parking_aisle": "پارکنگ‌وے"
+            "alley": "ਅਲੇ",
+            "driveway": "ਡਰਾਈਵਵੇ",
+            "parking_aisle": "ਪਾਰਕਿੰਗ ਏਸਲ"
           }
         },
         "shelter": {
-          "label": "پناہ گاہ\nآسرا\n آڑ"
+          "label": "ਆਸਰਾ\nਸ਼ੈਲਟਰ"
         },
         "shelter_type": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "shop": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "shower": {
-          "label": "شاور"
+          "label": "ਸ਼ਾਵਰ"
         },
         "siren/type": {
-          "label": "قسم",
+          "label": "ਕਿਸਮ",
           "options": {
-            "other": "ہور"
+            "other": "ਹੋਰ"
           }
         },
         "site": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "social_facility": {
-          "label": "قسم",
+          "label": "ਕਿਸਮ",
           "options": {
-            "shelter": "پناہ گاہ\nآسرا\n آڑ"
+            "shelter": "ਆਸਰਾ\nਸ਼ੈਲਟਰ"
           }
         },
         "source": {
-          "label": "سروت",
+          "label": "ਸਰੋਤ",
           "options": {
-            "gps": "گی‌پی‌ایس",
-            "osm notes": "اوپن‌سٹریٹ‌میپ تے نوٹ",
-            "streetlevel imagery": "سڑک تے تصویر",
-            "survey": "سروے کرن"
+            "gps": "ਜੀਪੀਐੱਸ",
+            "osm notes": "ਓਪਨਸਟ੍ਰੀਟਮੈਪ ਨੋਟਸ",
+            "streetlevel imagery": "ਸਟ੍ਰੀਟ-ਲੈਵਲ ਤਸਵੀਰਾਂ",
+            "survey": "ਸਰਵੇ"
           }
         },
         "sport": {
-          "label": "کھیداں",
+          "label": "ਖੇਡਾਂ",
           "options": {
-            "cycling": "سائکل کرن"
+            "cycling": "ਸਾਈਕਲਿੰਗ"
           }
         },
         "sport/sport_ice": {
-          "label": "کھیداں"
+          "label": "ਖੇਡਾਂ"
         },
         "sport/sport_pub": {
-          "label": "کھیداں"
+          "label": "ਖੇਡਾਂ"
         },
         "sport/sport_racing_motor": {
-          "label": "کھیداں"
+          "label": "ਖੇਡਾਂ"
         },
         "sport/sport_racing_nonmotor": {
-          "label": "کھیداں"
+          "label": "ਖੇਡਾਂ"
         },
         "stile": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "stop": {
           "options": {
-            "all": "سارے راہ"
+            "all": "ਸਾਰੇ ਰਸਤੇ"
           }
         },
         "street_cabinet": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "stroller": {
           "options": {
-            "limited": "محدود",
-            "no": "نہیں",
-            "yes": "ہاں"
+            "limited": "ਸੀਮਤ",
+            "no": "ਨਹੀਂ",
+            "yes": "ਹਾਂ"
           }
         },
         "structure": {
           "options": {
-            "ford": "گاہݨ"
+            "ford": "ਫੋਰਡ"
           },
-          "placeholder": "نامعلوم"
+          "placeholder": "ਅਗਿਆਤ"
         },
         "structure_waterway": {
-          "placeholder": "نامعلوم"
+          "placeholder": "ਅਗਿਆਤ"
         },
         "studio": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "substation": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "substation_pipeline": {
-          "label": "قسم",
+          "label": "ਕਿਸਮ",
           "options": {
-            "measurement": "ماپدے"
+            "measurement": "ਮਾਪ"
           }
         },
         "surface": {
-          "label": "بھومی",
+          "label": "ਸਤ੍ਹਾ",
           "options": {
-            "grass": "گھاہ",
-            "sand": "ریت",
-            "wood": "لکڑ"
+            "grass": "ਘਾਹ",
+            "sand": "ਰੇਤ",
+            "wood": "ਲੱਕੜ"
           }
         },
         "survey_point/purpose": {
           "options": {
-            "both": "دوویں"
+            "both": "ਦੋਵੇਂ"
           }
         },
         "swimming_pool": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "switch": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "takeaway": {
           "options": {
-            "no": "نہیں",
-            "yes": "ہاں"
+            "no": "ਨਹੀਂ",
+            "yes": "ਹਾਂ"
           }
         },
         "taxon": {
-          "label": "ٹیکسون"
+          "label": "ਟੈਕਸੌਨ"
         },
         "telecom": {
-          "label": "قسم",
+          "label": "ਕਿਸਮ",
           "options": {
-            "data_center": "ڈیٹے دا کیندر\nڈیٹا کیندر\nڈیٹا دا کیندر"
+            "data_center": "ਡਾਟਾ ਕੇਂਦਰ\nਡਾਟਾ ਸੈਂਟਰ"
           }
         },
         "telescope/type": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "to": {
-          "label": "ایہہ نوں"
+          "label": "ਤੱਕ"
         },
         "toilets": {
-          "label": "ٹوئیلٹ"
+          "label": "ਗੁਸਲਖ਼ਾਨਾ\nਪਖ਼ਾਨਾ\nਟੱਟੀ\nਟੱਟੀਖ਼ਾਨਾ"
         },
         "toilets/menstrual_products": {
           "options": {
-            "no": "نہیں"
+            "no": "ਨਹੀਂ"
           }
         },
         "toilets/wheelchair": {
           "options": {
-            "limited": "محدود",
-            "no": "نہیں",
-            "yes": "ہاں"
+            "limited": "ਸੀਮਤ",
+            "no": "ਨਹੀਂ",
+            "yes": "ਹਾਂ"
           }
         },
         "tomb": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "tourism": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "tower/type": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "townhall/type": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "trade": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "traffic_calming": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "traffic_sign": {
-          "label": "ٹریفک سائین"
+          "label": "ਟ੍ਰੈਫਿਕ ਚਿੰਨ੍ਹ"
         },
         "traffic_sign/direction": {
           "options": {
-            "forward": "اگلا"
+            "forward": "ਅੱਗੇ"
           }
         },
         "traffic_signals": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "traffic_signals/direction": {
           "options": {
-            "forward": "اگلا"
+            "forward": "ਅੱਗੇ"
           }
         },
         "traffic_signals/sound": {
           "options": {
-            "no": "نہیں",
-            "yes": "ہاں"
+            "no": "ਨਹੀਂ",
+            "yes": "ਹਾਂ"
           }
         },
         "transformer": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "trench": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "tunnel": {
-          "label": "قسم",
-          "placeholder": "مول"
+          "label": "ਕਿਸਮ",
+          "placeholder": "ਮੂਲ"
         },
         "tunnel_combo": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "turning_circle": {
-          "label": "روپ"
+          "label": "ਸ਼ਕਲ"
         },
         "two_sided": {
           "options": {
-            "undefined": "نہیں",
-            "yes": "ہاں"
+            "undefined": "ਨਹੀਂ",
+            "yes": "ਹਾਂ"
           }
         },
         "usage_rail": {
-          "label": "ورتݨ دی قسم",
+          "label": "ਵਰਤੋਂ ਦੀ ਕਿਸਮ",
           "options": {
-            "branch": "برانچ",
-            "main": "مکھ"
+            "branch": "ਸ਼ਾਖ਼ਾ",
+            "main": "ਮੁੱਖ"
           }
         },
         "usage_waterway": {
-          "label": "ورتݨ دی قسم",
+          "label": "ਵਰਤੋਂ ਦੀ ਕਿਸਮ",
           "options": {
-            "transportation": "ٹرینسپورٹ"
+            "transportation": "ਆਵਾਜਾਈ"
           }
         },
         "valve": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "vehicles": {
           "options": {
-            "bus": "بس",
-            "ferry": "فیری",
-            "light_rail": "ہلکی ریل",
-            "monorail": "مونوریل",
-            "subway": "سب‌وے",
-            "train": "ٹرین",
-            "tram": "ٹریم",
-            "trolleybus": "ٹرولی‌بس"
+            "bus": "ਬੱਸ",
+            "ferry": "ਬੇੜੀ\nਕਿਸ਼ਤੀ\nਫੈਰੀ",
+            "light_rail": "ਲਾਈਟ ਰੇਲ",
+            "monorail": "ਮੋਨੋਰੇਲ",
+            "subway": "ਸਬਵੇ",
+            "train": "ਟ੍ਰੇਨ",
+            "tram": "ਟ੍ਰੈਮ",
+            "trolleybus": "ਟ੍ਰੌਲੀਬੱਸ"
           }
         },
         "vending": {
           "options": {
-            "coffee": "کافی"
+            "coffee": "ਕੌਫ਼ੀ"
           }
         },
         "via": {
-          "label": "دوارا"
+          "label": "ਵਾਇਆ"
         },
         "wall": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "water": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "waterway": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "website": {
-          "label": "ویب‌سائیٹ"
+          "label": "ਵੈੱਬਸਾਈਟ"
         },
         "wetland": {
-          "label": "قسم"
+          "label": "ਕਿਸਮ"
         },
         "wheelchair": {
           "options": {
-            "limited": "محدود",
-            "no": "نہیں",
-            "yes": "ہاں"
+            "limited": "ਸੀਮਤ",
+            "no": "ਨਹੀਂ",
+            "yes": "ਹਾਂ"
           }
         },
         "wikimedia_commons": {
-          "label": "وِکیمیڈیا کامنز تے صفحہ",
-          "placeholder": "File:مثال.jpg"
+          "label": "ਵਿਕੀਮੀਡੀਆ ਕਾਮਨਜ਼ ਸਫ਼ਾ"
         },
         "wikipedia": {
-          "label": "وِکیپیڈیا"
+          "label": "ਵਿਕੀਪੀਡੀਆ"
         },
         "windings/auto": {
           "options": {
-            "no": "نہیں",
-            "yes": "ہاں"
+            "no": "ਨਹੀਂ",
+            "yes": "ਹਾਂ"
           }
         }
       },
       "presets": {
         "address": {
-          "name": "پتہ"
+          "name": "ਪਤਾ"
         },
         "aeroway/runway": {
-          "name": "ہوائی اڈے دی رن‌وے\nرنوے\nرن وے\nہوائی رنوے\nہوائی رن وے"
+          "name": "ਰਨਵੇਅ\nਹਵਾਈ ਅੱਡੇ ਦਾ ਰਨਵੇਅ\nਏਅਰਵੇਅ"
         },
         "aeroway/taxiway": {
-          "name": "ٹیکسی‌وے\nٹیکسیوے\nٹیکسی وے\nٹیکسی دا راہ\nٹیکسی دس سڑک"
+          "name": "ਟੈਕਸੀਵੇਅ"
         },
         "aeroway/terminal": {
-          "name": "ہوائی ٹرمینل\nہوائی ٹرمنل\nہوئی اڈے ٹرمینل\nہوائی اڈے دا ٹرمینل\nٹرمینل"
+          "name": "ਹਵਾਈ ਅੱਡੇ ਦਾ ਟਰਮੀਨਲ\nਏਅਰਪੋਰਟ ਟਰਮੀਨਲ"
         },
         "amenity/atm": {
-          "name": "نقدی آلہ (اے ٹی ایم)"
+          "name": "ਏਟੀਐੱਮ"
         },
         "amenity/bank": {
-          "name": "بینک"
+          "name": "ਬੈਂਕ"
         },
         "amenity/bar": {
-          "name": "پب (بار، شراب والی)\nبار\nشراب والی"
+          "name": "ਬਾਰ"
         },
         "amenity/bench": {
-          "name": "بنچ"
+          "name": "ਬੈਂਚ"
         },
         "amenity/bicycle_parking": {
-          "name": "سائیکل پارکنگ"
+          "name": "ਸਾਈਕਲ ਪਾਰਕਿੰਗ"
         },
         "amenity/bus_station": {
-          "name": "بس سٹیشن\nبس سٹینڈ\nبس ٹرمینل"
+          "name": "ਬੱਸ ਅੱਡਾ\nਬੱਸ ਸਟੈਂਡ\nਬੱਸ ਸਟੇਸ਼ਨ / ਟਰਮੀਨਲ"
         },
         "amenity/cafe": {
-          "name": "کافی ہٹی\nکافے"
+          "name": "ਕੈਫੇ"
         },
         "amenity/fast_food": {
-          "name": "کھاݨیاں والے\nفیسٹ فوڈ"
+          "name": "ਫਾਸਟ ਫੂਡ"
         },
         "amenity/fast_food/donut": {
-          "name": "ڈونٹ والا"
+          "name": "ਡੋਨੱਟ ਫਾਸਟ ਫੂਡ"
         },
         "amenity/ferry_terminal": {
-          "name": "فیری روٹ"
+          "name": "ਬੇੜੀ ਟਰਮੀਨਲ\nਫੈਰੀ ਟਰਮੀਨਲ"
         },
         "amenity/language_school": {
-          "name": "بولی دا سکول"
+          "name": "ਭਾਸ਼ਾ ਸਕੂਲ"
         },
         "amenity/library": {
-          "name": "لائیبریری\nلائبریری\nلیبریری\nلائیبرری\nلائیبری"
+          "name": "ਲਾਇਬ੍ਰੇਰੀ"
         },
         "amenity/parking": {
-          "name": "پارکنگ والی تھاں"
+          "name": "ਪਾਰਕਿੰਗ ਲੌਟ"
         },
         "amenity/place_of_worship/buddhist": {
-          "name": "بودھی مندر"
+          "name": "ਬੁੱਧ ਮੰਦਰ"
         },
         "amenity/place_of_worship/muslim": {
-          "name": "ਮਸਜਿਦ\nਮਸੀਤ"
+          "name": "ਮੁਸਲਿਮ ਮਸਜਿਦ\nਮਸੀਤ"
         },
         "amenity/shelter": {
-          "name": "پناہ گاہ\nآسرا\n آڑ"
+          "name": "ਆਸਰਾ\nਸ਼ੈਲਟਰ"
         },
         "amenity/studio/radio": {
-          "name": "ریڈیو سٹیشن"
+          "name": "ਰੇਡੀਓ ਸਟੇਸ਼ਨ"
         },
         "amenity/taxi": {
-          "name": "ٹیکسی سٹینڈ\nٹیکسی اڈے"
+          "name": "ਟੈਕਸੀ ਸਟੈਂਡ"
         },
         "amenity/telephone": {
-          "name": "فون\nتیلیفون"
+          "name": "ਟੈਲੀਫ਼ੋਨ"
         },
         "area": {
-          "name": "ਖੇਤਰਫਲ\nਖੇਤਰ ਫਲ "
+          "name": "ਖੇਤਰ"
         },
         "barrier/kerb": {
-          "name": "کرب"
+          "name": "ਕਰਬ"
         },
         "barrier/yes": {
-          "name": "ہاں"
+          "name": "ਰੋਕ (ਅਣ-ਨਿਰਧਾਰਤ ਕਿਸਮ)\nਆੜ (ਅਣ-ਨਿਰਧਾਰਤ ਕਿਸਮ)\nਬੈਰੀਅਰ (ਅਣ-ਨਿਰਧਾਰਤ ਕਿਸਮ)"
         },
         "boundary": {
-          "name": "حد"
+          "name": "ਹੱਦ"
         },
         "building": {
-          "name": "مکان"
+          "name": "ਇਮਾਰਤ"
         },
         "building/civic": {
-          "name": "سرکاری عمارت"
+          "name": "ਸਿਵਿਕ ਇਮਾਰਤ"
         },
         "building/college": {
-          "name": "کالج"
+          "name": "ਕਾਲਜ ਇਮਾਰਤ"
         },
         "building/garage": {
-          "name": "گارج"
+          "name": "ਗੈਰਾਜ"
         },
         "building/garages": {
-          "name": "گارج دا سموہ"
+          "name": "ਗੈਰਾਜ"
         },
         "building/house": {
-          "name": "گھر"
+          "name": "ਘਰ"
         },
         "building_part": {
-          "name": "عمارت دا بھاگ"
+          "name": "ਇਮਾਰਤ ਦਾ ਹਿੱਸਾ"
         },
         "building_point": {
-          "name": "مکان"
+          "name": "ਇਮਾਰਤ"
         },
         "emergency/destination": {
-          "name": "ایمیرجنسی منزل"
+          "name": "ਐਮਰਜੈਂਸੀ ਪਹੁੰਚ ਮੰਜ਼ਿਲ"
         },
         "ford": {
-          "name": "گاہݨ"
+          "name": "ਫੋਰਡ"
         },
         "ford_line": {
-          "name": "گاہݨ"
+          "name": "ਫੋਰਡ"
         },
         "highway/bus_stop": {
-          "name": "بس سٹاپ"
+          "name": "ਬੱਸ ਸਟਾਪ"
         },
         "highway/cycleway": {
-          "name": "سائیکل‌وے\nسائیکل وے\nسائیکلوے\nسائکل وے\nسائکلوے\nسائکل دا راہ\nسائیکل دا راہ\nسائیکل پاتھ\nسائیکل دا پاتھ\nسائکل پاتھ\nسائکل دا پاتھ"
+          "name": "ਸਾਈਕਲ ਰਸਤਾ"
         },
         "highway/footway/sidewalk": {
-          "name": "فُٹ‌پاتھ\nفُٹ پاتھ\nفٹ پاتھ\nفُٹپاتھ\nفٹپاتھ"
+          "name": "ਸਾਈਡਵਾਕ"
         },
         "highway/motorway": {
-          "name": "موٹروے\nموٹر وے"
+          "name": "ਮੋਟਰ ਰਸਤਾ"
         },
         "highway/motorway_link": {
-          "name": "موٹروے دی لنک روڈ\nموٹروے لنک\nموٹر وے دی لنک روڈ\nموٹر وے لنک"
+          "name": "ਮੋਟਰਵੇਅ ਲਿੰਕ"
         },
         "highway/primary_link": {
-          "name": "مکھ سڑک دی لنک روڈ\nمکھ سڑک لنک\nمکھ لنک"
+          "name": "ਪ੍ਰਾਇਮਰੀ ਲਿੰਕ"
         },
         "highway/service": {
-          "name": "سیوا سڑک\nسروس سڑک\nسروس وے\nسروسوے"
+          "name": "ਸੇਵਾ ਸੜਕ"
         },
         "highway/service/alley": {
-          "name": "گلی"
+          "name": "ਅਲੇ"
         },
         "highway/service/driveway": {
-          "name": "درائیو وے"
+          "name": "ਡਰਾਈਵਵੇ"
         },
         "highway/service/parking_aisle": {
-          "name": "پارکنگ‌وے"
+          "name": "ਪਾਰਕਿੰਗ ਏਸਲ"
         },
         "highway/trunk_link": {
-          "name": "ٹرنک دی لنک روڈ\nٹرنک لنک\nٹرنک روڈ دی لنک\nٹرنک دی لنک"
+          "name": "ਟ੍ਰੰਕ ਲਿੰਕ"
         },
         "landuse/grass": {
-          "name": "گھاہ"
+          "name": "ਘਾਹ"
         },
         "line": {
-          "name": "لائین"
+          "name": "ਲਾਈਨ"
         },
         "natural/sand": {
-          "name": "ریت"
+          "name": "ਰੇਤ"
         },
         "place": {
-          "name": "تھاں دا ناں"
+          "name": "ਸਥਾਨ"
         },
         "place/city": {
           "name": "ਸ਼ਹਿਰ"
         },
         "place/island": {
-          "name": "ٹاپو"
+          "name": "ਟਾਪੂ"
         },
         "place/square": {
-          "name": "چوک"
+          "name": "ਵਰਗ"
         },
         "place/town": {
-          "name": "نگر"
+          "name": "ਕਸਬਾ"
         },
         "place/village": {
-          "name": "پنڈ\nکوٹ"
+          "name": "ਪਿੰਡ"
         },
         "playground": {
-          "name": "کھیڈ دے میدان لئی رچھ کان"
+          "name": "ਖੇਡ ਦੇ ਮੈਦਾਨ ਦਾ ਉਪਕਰਨ"
         },
         "point": {
-          "name": "پوئینٹ"
+          "name": "ਬਿੰਦੂ"
         },
         "public_transport/platform/bus_point": {
-          "name": "بس سٹاپ"
+          "name": "ਬੱਸ ਸਟਾਪ"
         },
         "public_transport/platform/train": {
-          "name": "ریل پلیٹ‌فارم\nریل پلیٹ فارم\nپلیٹ فارم\nریلوے پلیٹ فارم\n ریل پلیٹفارم\n ریلوے پلیٹفارم\nریل وے پلیٹ فارم\nریل وے پلیٹفارم\nپلیٹفارم\nٹرین پلیٹفارم\nٹرین پلیٹ فارم"
+          "name": "ਟ੍ਰੇਨ ਪਲੇਟਫਾਰਮ\nਰੇਲ ਪਲੇਟਫਾਰਮ"
         },
         "public_transport/station_bus": {
-          "name": "بس سٹیشن\nبس سٹینڈ\nبس ٹرمینل"
+          "name": "ਬੱਸ ਅੱਡਾ\nਬੱਸ ਸਟੈਂਡ\nਬੱਸ ਸਟੇਸ਼ਨ / ਟਰਮੀਨਲ"
         },
         "public_transport/station_ferry": {
-          "name": "فیری روٹ"
+          "name": "ਬੇੜੀ ਟਰਮੀਨਲ\nਫੈਰੀ ਟਰਮੀਨਲ"
         },
         "public_transport/station_train": {
-          "name": "ریلوے سٹیشن"
+          "name": "ਰੇਲ ਅੱਡਾ\nਟ੍ਰੇਨ ਸਟੇਸ਼ਨ\nਰੇਲਵੇ ਸਟੇਸ਼ਨ"
         },
         "public_transport/stop_position": {
-          "name": "سٹاپ دی ستھتی"
+          "name": "ਆਵਾਜਾਈ ਰੋਕਣ ਦਾ ਸਥਾਨ"
         },
         "railway": {
-          "name": "ریلوے دا نشان\nریلوے نشان\nریل دا نشان\nریل نشان\nریل وے نشان\nریل وے دا نشان"
+          "name": "ਰੇਲਵੇ ਵਿਸ਼ੇਸ਼ਤਾ"
         },
         "railway/crossing": {
-          "name": "ریلوے کراسنگ"
+          "name": "ਰੇਲਵੇ-ਪਾਥ ਕਰਾਸਿੰਗ"
         },
         "railway/level_crossing": {
-          "name": "ریلوے کراسنگ (سڑک تے)\nریل کراسنگ\nریل وے کراسنگ\nٹرین کراسنگ\nریلوے تے سڑک کراسنگ"
+          "name": "ਰੇਲਵੇ-ਸੜਕ ਕਰਾਸਿੰਗ"
         },
         "railway/platform": {
-          "name": "ریل پلیٹ‌فارم\nریل پلیٹ فارم\nپلیٹ فارم\nریلوے پلیٹ فارم\n ریل پلیٹفارم\n ریلوے پلیٹفارم\nریل وے پلیٹ فارم\nریل وے پلیٹفارم\nپلیٹفارم\nٹرین پلیٹفارم\nٹرین پلیٹ فارم"
+          "name": "ਟ੍ਰੇਨ ਪਲੇਟਫਾਰਮ\nਰੇਲ ਪਲੇਟਫਾਰਮ"
         },
         "railway/rail": {
-          "name": "ریلوے ٹریک\nریل وے ٹریک\nریل ٹریک\nٹرین ٹریک"
+          "name": "ਟ੍ਰੇਨ ਟ੍ਰੈਕ"
         },
         "railway/station": {
-          "name": "ریلوے سٹیشن"
+          "name": "ਰੇਲ ਅੱਡਾ\nਟ੍ਰੇਨ ਸਟੇਸ਼ਨ\nਰੇਲਵੇ ਸਟੇਸ਼ਨ"
         },
         "railway/subway": {
-          "name": "سب‌وے ٹریک\nسبوے ٹریک\nسب وے ٹریک"
+          "name": "ਸਬਵੇ ਟ੍ਰੈਕ"
         },
         "relation": {
-          "name": "سمبندھ"
+          "name": "ਰਿਸ਼ਤਾ"
         },
         "route/ferry": {
-          "name": "فیری روٹ\nفیری دا روٹ"
+          "name": "ਬੇੜੀ ਰਸਤਾ\nਫੈਰੀ ਰੂਟ"
         },
         "shop": {
-          "name": "دکان\nدُکان\nہٹی"
+          "name": "ਦੁਕਾਨ\nਹੱਟੀ"
         },
         "shop/books": {
-          "name": "کتابگار\nکتاب گار\nکتاب والا\nکتابوالا\nکتابوالی\nکتاب والی\nکتاب دی دکان\nکتاب دکان"
+          "name": "ਬੁੱਕਸਟੋਰ\nਕਿਤਾਬਾਂ ਦੀ ਦੁਕਾਨ\nਕਿਤਾਬਾਂ ਵੇਚਣ ਵਾਲਾ"
         },
         "shop/clothes": {
-          "name": "کپڑے دی دکان\nکپڑا\nکپڑے دی ہٹی"
+          "name": "ਕੱਪੜਿਆਂ ਦੀ ਦੁਕਾਨ"
         },
         "shop/computer": {
-          "name": "کمپوٹر دی دکان\nکمپوٹراں دی دکان\nکمپوٹر دی ہٹی\nکمپوٹراں دی ہٹی"
+          "name": "ਕੰਪਿਊਟਰ ਸਟੋਰ"
         },
         "shop/confectionery": {
-          "name": "مٹائی والی\nمٹائی والا\nمٹائی دی دکان\nہلوائی\nمٹائی دی ہٹی"
+          "name": "ਕੈਂਡੀ ਸਟੋਰ\nਕੈਂਡੀ ਸ਼ੌਪ"
         },
         "shop/houseware": {
-          "name": "گھریلو دکان"
+          "name": "ਘਰੇਲੂ ਸਮਾਨ ਦੀ ਦੁਕਾਨ"
         },
         "shop/newsagent": {
-          "name": "خبردار\nخبروالا\nخبروالی\nخبر والا\nخبر والی\nخبر دی دکان\nخبر دی ہٹی\nخبراں دی دکان\nخبراں دی ہٹی"
+          "name": "ਨਿਊਜ਼ਸਟੈਂਡ\nਅਖ਼ਬਾਰ/ਰਸਾਲਿਆਂ ਦੀ ਦੁਕਾਨ"
         },
         "shop/party": {
-          "name": "پارٹی دی دکان"
+          "name": "ਪਾਰਟੀ ਸਪਲਾਈ ਸਟੋਰ"
         },
         "shop/photo": {
-          "name": "تصویراں دی دکان"
+          "name": "ਫੋਟੋਗਰਾਫ਼ੀ ਸਟੋਰ"
         },
         "shop/religion": {
-          "name": "دھرمک دکان"
+          "name": "ਧਾਰਮਿਕ ਸਟੋਰ"
         },
         "shop/spices": {
-          "name": "مرچی دی دکان"
+          "name": "ਮਸਾਲਿਆਂ ਦੀ ਦੁਕਾਨ"
         },
         "shop/sports": {
-          "name": "کھیڈاں"
+          "name": "ਖੇਡਾਂ ਦੇ ਸਮਾਨ ਦੀ ਦੁਕਾਨ"
         },
         "shop/tea": {
-          "name": "چاہ والا"
+          "name": "ਚਾਹ ਦੀ ਦੁਕਾਨ"
         },
         "shop/ticket": {
-          "name": "ٹِکِٹ والا"
+          "name": "ਟਿਕਟ ਵੇਚਣ ਵਾਲਾ\nਟਿਕਟ ਬੂਥ"
         },
         "shop/tyres": {
-          "name": "ٹائیر دی دکان\nٹائر دی دکان\nٹائیر دی ہٹی\nٹائیر دی ہٹی"
+          "name": "ਟਾਇਰ ਸਟੋਰ"
         },
         "shop/watches": {
-          "name": "گھڑیاں"
+          "name": "ਘੜੀਆਂ ਦੀ ਦੁਕਾਨ"
         },
         "shop/water": {
-          "name": "پاݨی دی دکان"
+          "name": "ਪੀਣ ਵਾਲੇ ਪਾਣੀ ਦੀ ਦੁਕਾਨ"
         },
         "telecom": {
-          "name": "ٹیلیکام"
+          "name": "ਟੈਲੀਕਾਮ ਵਿਸ਼ੇਸ਼ਤਾ"
         },
         "telecom/data_center": {
-          "name": "ڈیٹے دا کیندر\nڈیٹا کیندر\nڈیٹا دا کیندر"
+          "name": "ਡਾਟਾ ਕੇਂਦਰ\nਡਾਟਾ ਸੈਂਟਰ"
         },
         "tourism/artwork/graffiti": {
-          "name": "گرفیٹی"
+          "name": "ਗਰਾਫਿੱਟੀ"
         },
         "tourism/gallery": {
-          "name": "گیلری"
+          "name": "ਆਰਟ ਗੈਲਰੀ\nਕਲਾ ਗੈਲਰੀ"
         },
         "tourism/hostel": {
-          "name": "ہوسٹل"
+          "name": "ਹੋਸਟਲ"
         },
         "tourism/hotel": {
-          "name": "ہوٹل"
+          "name": "ਹੋਟਲ"
         },
         "tourism/information": {
-          "name": "جاݨکاری"
+          "name": "ਜਾਣਕਾਰੀ"
         },
         "tourism/information/board": {
-          "name": "جاݨکاری دا بورڈ"
+          "name": "ਜਾਣਕਾਰੀ ਬੋਰਡ"
         },
         "tourism/information/map": {
-          "name": "نقشہ"
+          "name": "ਨਕਸ਼ਾ"
         },
         "tourism/picnic_site": {
-          "name": "پکنک دا تھاں"
+          "name": "ਪਿਕਨਿਕ ਥਾਂ"
         },
         "traffic_calming/yes": {
-          "name": "ہاں"
+          "name": "ਟ੍ਰੈਫਿਕ ਸ਼ਾਂਤ ਕਰਨਾ (ਅਣ-ਨਿਰਧਾਰਤ ਕਿਸਮ)"
         },
         "traffic_sign": {
-          "name": "ٹریفک سائین"
+          "name": "ਟ੍ਰੈਫਿਕ ਚਿੰਨ੍ਹ"
         },
         "traffic_sign/city_limit": {
-          "name": "شہر دی حد"
+          "name": "ਸ਼ਹਿਰ ਸੀਮਾ ਚਿੰਨ੍ਹ"
         },
         "traffic_sign/maxspeed": {
-          "name": "حد رفتار"
+          "name": "ਗਤੀ ਸੀਮਾ ਚਿੰਨ੍ਹ"
         },
         "type/boundary": {
-          "name": "حد"
+          "name": "ਹੱਦ"
         },
         "type/enforcement/maxspeed": {
-          "name": "حد رفتار"
+          "name": "ਗਤੀ ਸੀਮਾ ਲਾਗੂ ਕਰਨਾ"
         },
         "type/route": {
-          "name": "روٹ"
+          "name": "ਰੂਟ"
         },
         "type/route/bicycle": {
-          "name": "سائیکل روٹ\nسائکل روٹ\nسائیکل دا روٹ\nسائکل دا روٹ"
+          "name": "ਸਾਈਕਲ ਰੂਟ"
         },
         "type/route/bus": {
-          "name": "بس روٹ\nبس دا روٹ"
+          "name": "ਬੱਸ ਰੂਟ"
         },
         "type/route/ferry": {
-          "name": "فیری روٹ\nفیری دا روٹ"
+          "name": "ਬੇੜੀ ਰਸਤਾ\nਫੈਰੀ ਰੂਟ"
         },
         "type/route/foot": {
-          "name": "پیریں روٹ"
+          "name": "ਪੈਦਲ ਰੂਟ"
         },
         "type/route/light_rail": {
-          "name": "ہلکی ریلوے روٹ"
+          "name": "ਲਾਈਟ ਰੇਲ ਰੂਟ"
         },
         "type/route/pipeline": {
-          "name": "پائیپ‌لائین روٹ\nپائیپلائین روٹ\nپائیپ لائین روٹ\nپائپلائن روٹ\nپائپ لائن روٹ\nپائیپلائن دا روٹ\nپائیپ لائین دا روٹ\nپائپلائن دا روٹ\nپائپ لائن دا روٹ"
+          "name": "ਪਾਈਪਲਾਈਨ ਰੂਟ"
         },
         "type/route/railway": {
-          "name": "ریلوے روٹ"
+          "name": "ਰੇਲਵੇ ਰੂਟ"
         },
         "type/route/road": {
-          "name": "روڈ روٹ\nسڑک دا روٹ\nروڈ دا روٹ"
+          "name": "ਸੜਕ ਰੂਟ"
         },
         "type/route/subway": {
-          "name": "سب‌وے روٹ\nسبوے روٹ"
+          "name": "ਸਬਵੇ ਰੂਟ"
         },
         "type/route/train": {
-          "name": "ریلوے روٹ\nریل دا روٹ\nریل روٹ\nریل وے روٹ\nریلوے دا روٹ\nریل وے دا روٹ"
+          "name": "ਟ੍ਰੇਨ ਰੂਟ"
         },
         "type/route/tram": {
-          "name": "ٹریم روٹ"
+          "name": "ਟ੍ਰੈਮ ਰੂਟ"
         },
         "type/route_master": {
-          "name": "روٹ گروپ\nروٹ میسٹر\nروٹ ماسٹر"
+          "name": "ਰੂਟ ਮਾਸਟਰ"
         },
         "waterway/canal": {
-          "name": "نہر",
-          "terms": "برانچ,برانچ"
+          "name": "ਨਹਿਰ",
+          "terms": "<'ਨਹਿਰ' ਲਈ ਸਮਾਨਾਰਥੀ ਜਾਂ ਸੰਬੰਧਿਤ ਸ਼ਬਦਾਂ ਦੇ ਨਾਲ ਤਰਜਮਾ ਕਰੋ, ਕਾਮਿਆਂ ਨਾਲ ਵੱਖ ਕਰਕੇ>"
         }
       }
     }

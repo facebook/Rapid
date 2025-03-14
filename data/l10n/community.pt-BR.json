@@ -122,6 +122,15 @@
     "cl-telegram": {
       "extendedDescription": "Junte-se à comunidade para aprender mais sobre o OpenStreetMap, fazer perguntas ou participar de nossas reuniões. Todos são bem-vindos!"
     },
+    "co-facebook": {
+      "description": "Grupo de conversa sobre problemas do OSM na Colômbia"
+    },
+    "co-instagram": {
+      "description": "Publicações sobre atividades ou informações da comunidade"
+    },
+    "co-mastodon": {
+      "name": "Postagens por {community} no Mastodon"
+    },
     "de-aachen-wiki": {
       "description": "Página wiki {community}"
     },

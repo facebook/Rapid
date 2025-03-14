@@ -299,6 +299,9 @@
         "cutting": {
           "label": "Տեսակ"
         },
+        "cycle_barrier": {
+          "label": "Տեսակ"
+        },
         "cycleway": {
           "label": "Հեծանուային կածաններ ",
           "options": {
@@ -472,6 +475,12 @@
           "options": {
             "no": "Ոչ",
             "yes": "Այո"
+          }
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Այո",
+            "undefined": "Ոչ"
           }
         },
         "kerb": {

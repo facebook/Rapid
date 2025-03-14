@@ -18,9 +18,6 @@
         "description": "Esri arhiivimaterjal, mis võib olla tavakihi piltidest selgem ja täpsem.",
         "name": "Esri Worldi pildimaterjal (selgem, beeta)"
       },
-      "FOMI_2011_2014": {
-        "name": "FÖMI ortofoto 2011-2014 (WEBP)"
-      },
       "MAPNIK": {
         "description": "OpenStreetMapi vaikekiht.",
         "name": "OpenStreetMap (standard)"
