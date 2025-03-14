@@ -1200,6 +1200,22 @@
       "metadataLayerItemID": "9baf15d824ef4bff844acf60eb39dbff",
       "layerIdentifier": "WB_2020_R07"
     },
+    "34007": {
+      "itemID": "e055a00965c8476ab7acd907f88aa1a8",
+      "itemTitle": "World Imagery (Wayback 2025-02-27)",
+      "itemURL": "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/34007/{level}/{row}/{col}",
+      "metadataLayerUrl": "https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata_2025_r02/MapServer",
+      "metadataLayerItemID": "7f38c1ef121d4d908f1300d3b11ecce5",
+      "layerIdentifier": "WB_2025_R02"
+    },
+    "36557": {
+      "itemID": "a13ae0015412426bb6d1c24e7654727d",
+      "itemTitle": "World Imagery (Wayback 2025-01-30)",
+      "itemURL": "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/36557/{level}/{row}/{col}",
+      "metadataLayerUrl": "https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata_2025_r01/MapServer",
+      "metadataLayerItemID": "b5f6acb05b394980a45d2c6eaaf38beb",
+      "layerIdentifier": "WB_2025_R01"
+    },
     "37890": {
       "itemID": "3c0618b4862d4028bcb3b48a8dce6949",
       "itemTitle": "World Imagery (Wayback 2023-04-05)",
