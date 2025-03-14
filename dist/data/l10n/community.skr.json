@@ -1,0 +1,19 @@
+{
+  "_meta": {
+    "version": "2.5.2",
+    "generated": "2025-03-14T13:50:14.115Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.skr.json",
+    "hash": "14d460c84b46a218e45fc119feee1b14"
+  },
+  "skr": {
+    "_communities": {
+      "geolibres": "جیولیبرا",
+      "openstreetmap": "اوپن سٹریٹ میپ",
+      "openstreetmapafrica": "اوپن سٹریٹ میپ افریقہ",
+      "openstreetmapnorway": "اوپن سٹریٹ میپ ناروے"
+    },
+    "OSM-AR-geolibres": {
+      "name": "جیولیبرا"
+    }
+  }
+}

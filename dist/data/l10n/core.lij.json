@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "version": "2.5.2",
+    "generated": "2025-03-14T13:50:13.968Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.lij.json",
+    "hash": "f4677cc2d4f3ea821bd8712d4fdbccf1"
+  },
+  "lij": {
+    "help": {
+      "lines": {
+        "title": "Righe"
+      }
+    },
+    "intro": {
+      "graph": {
+        "state": "<value for addr:state>",
+        "countrycode": "it"
+      },
+      "lines": {
+        "title": "Righe"
+      },
+      "startediting": {
+        "title": "Tàca a Mudificà",
+        "save": "Nu te scurdà de sarvà regularmènte e tou mudifiche!",
+        "start": "Cumènsa a disegnà a tou màpa!"
+      }
+    },
+    "languageNames": {
+      "en": "ingleise",
+      "lij": "ligure"
+    },
+    "scriptNames": {
+      "Latn": "latin"
+    }
+  }
+}

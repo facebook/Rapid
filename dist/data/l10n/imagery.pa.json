@@ -1,0 +1,19 @@
+{
+  "_meta": {
+    "version": "2.5.2",
+    "generated": "2025-03-14T13:50:13.830Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/imagery.pa.json",
+    "hash": "8606709174f48e9f66897a03b2980bc9"
+  },
+  "pa": {
+    "imagery": {
+      "Bing": {
+        "name": "ਬਿੰਗ ਮੈਪਸ ਏਰੀਅਲ"
+      },
+      "EsriWorldImagery": {
+        "description": "ਏਸਰੀ ਵਰਲਡ ਇਮੇਜੀਨਰੀ",
+        "name": "ਏਸਰੀ ਵਰਲਡ ਇਮੇਜੀਨਰੀ"
+      }
+    }
+  }
+}

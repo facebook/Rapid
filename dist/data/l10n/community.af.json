@@ -1,0 +1,13 @@
+{
+  "_meta": {
+    "version": "2.5.2",
+    "generated": "2025-03-14T13:50:14.190Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.af.json",
+    "hash": "3b277e1ff5efa1ae549e49724eaf2129"
+  },
+  "af": {
+    "_communities": {
+      "openstreetmapafrica": "OpenStreetMap Afrika"
+    }
+  }
+}
