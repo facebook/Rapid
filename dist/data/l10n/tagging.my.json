@@ -1,0 +1,28 @@
+{
+  "_meta": {
+    "version": "2.5.3",
+    "generated": "2025-03-17T13:34:36.251Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/tagging.my.json",
+    "hash": "e298292ab53d78fcd27081ee527638ac"
+  },
+  "my": {
+    "presets": {
+      "fields": {
+        "note": {
+          "label": "မှတ်စု"
+        }
+      },
+      "presets": {
+        "area": {
+          "name": "ဧရိယာ"
+        },
+        "line": {
+          "name": "မျဉ်း"
+        },
+        "point": {
+          "name": "နေရာ"
+        }
+      }
+    }
+  }
+}
