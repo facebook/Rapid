@@ -54,7 +54,7 @@ export function uiSectionPrivacy(context) {
       .append('a')
       .attr('target', '_blank')
       .call(uiIcon('#rapid-icon-out-link', 'inline'))
-      .attr('href', 'https://rapideditor.org/doc/license/MapWithAIPrivacyPolicy.pdf')
+      .attr('href', 'https://www.facebook.com/data/sites/rapideditor/privacy_policy/')
       .append('span')
       .text(l10n.t('preferences.privacy.privacy_link'));
 
