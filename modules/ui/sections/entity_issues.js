@@ -159,7 +159,7 @@ export function uiSectionEntityIssues(context) {
       .classed('active', d => d.id === _activeIssueID);
 
     containers.selectAll('.issue-message')
-      .html(d => d.message(context));
+      .text(d => d.message(context));
 
     // fixes
     let fixLists = containers.selectAll('.issue-fix-list');
