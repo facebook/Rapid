@@ -171,12 +171,11 @@
             "state": "Eyalet",
             "street": "Cadde/Sokak",
             "subdistrict": "Muhit",
-            "subdistrict!vn": "Muhit",
             "suburb": "Yöre",
             "town": "Kasaba",
             "unit": "Birim"
           },
-          "terms": "['Adresler' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
+          "terms": "Konum, Yer, İkametgah, Lokasyon"
         },
         "admin_level": {
           "label": "Yönetim Düzeyi"
@@ -228,7 +227,18 @@
         },
         "air_conditioning": {
           "label": "Havalandırma",
-          "terms": "['Havalandırma' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
+          "terms": "Vantilasyon, Hava sirkülasyonu, Hava dolaşımı"
+        },
+        "aircraft/type": {
+          "label": "Tür",
+          "options": {
+            "cargo": "Kargo",
+            "military": "Askeri"
+          }
+        },
+        "alt_name": {
+          "label": "Alternatif Ad",
+          "terms": "Alternatif İsim, Diğer Ad, Başka İsim İkinci İsim"
         },
         "amenity": {
           "label": "Tür"
@@ -243,10 +253,11 @@
           "label": "Hayvanlar için"
         },
         "archaeological_site": {
-          "label": "Tip",
+          "label": "Tür",
           "options": {
             "baths": "Hamamlar",
             "city": "Tarihi Şehir",
+            "crannog": "Su üzerindeki yapay ada",
             "enclosure": "Çitli",
             "fortification": "Tahkimat",
             "hut_circle": "Kulübe Çemberi",
@@ -261,14 +272,17 @@
         },
         "architect": {
           "label": "Mimar",
-          "terms": "['Mimar' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
+          "terms": "Yapı tasarımcısı, İnşaat tasarımcısı, Bina tasarımcısı"
         },
         "area/highway": {
           "label": "Tür"
         },
         "armrest": {
+          "label": "Kol dayama yeri",
           "options": {
-            "undefined": "Bilinmiyor"
+            "no": "Kol dayama yeri yok",
+            "undefined": "Bilinmiyor",
+            "yes": "Bir veya daha fazla kol dayama yeri"
           }
         },
         "artist": {
@@ -285,12 +299,39 @@
             "painting": "Boyama",
             "relief": "Kabartma",
             "sculpture": "Heykel",
-            "statue": "Yontu"
+            "statue": "Yontu",
+            "stone": "Sanatsal İşçilikle Yapılmış Taş",
+            "tilework": "Fayans İşleri"
           }
         },
         "ascent": {
           "label": "Toplam Yükselme",
-          "terms": "['Tüm Yokuşlar' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
+          "terms": "Toplam Yükseklik Artışı, Toplam Tırmanış"
+        },
+        "athletics_pitch": {
+          "label": "Etkinlik",
+          "options": {
+            "discus_throw": "Disk Atma",
+            "hammer_throw": "Çekiç fırlatma",
+            "high_jump": "Yüksek Atlama",
+            "javelin_throw": "Cirit atma",
+            "long_jump": "Uzun Atlama",
+            "pole_vault": "Sırıkla atlama",
+            "shot_put": "Gülle Atma",
+            "triple_jump": "Üç Adım Atlama"
+          }
+        },
+        "athletics_track": {
+          "label": "Etkinlik",
+          "options": {
+            "javelin_throw": "Cirit Atma",
+            "long_jump": "Uzun Atlama",
+            "pole_vault": "Sırıkla Atlama",
+            "running": "Koşu",
+            "sprint": "Hızlı Koşu",
+            "steeplechase": "Engelli Koşu",
+            "triple_jump": "Üç Adımlı Atlama"
+          }
         },
         "attraction": {
           "label": "Tür",
@@ -301,6 +342,7 @@
             "big_wheel": "Dönme Dolap",
             "bumper_car": "Çarpışan Arabalar",
             "carousel": "Atlıkarınca",
+            "dark_ride": "Karanlık Yolculuk",
             "drop_tower": "Adalet Kulesi",
             "kiddie_ride": "Çocuk Eğlence Makinesi",
             "log_flume": "Kütük Kanalı",
@@ -331,13 +373,13 @@
         },
         "backcountry": {
           "label": "Taşra",
-          "terms": "[\"Taşra\" için virgülle ayırarak eş anlamlılar veya ilgili terimlerle çevirin]"
+          "terms": "Vahşi Doğa, Uzak Kırsal, Dağlık Bölge"
         },
         "backrest": {
           "label": "Arkalık"
         },
         "bar": {
-          "terms": "['Bar' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
+          "terms": "Meyhane, Pub, Birahane, İçki salonu"
         },
         "barrier": {
           "label": "Tür",
@@ -361,7 +403,7 @@
             "lift_gate": "Kollu Bariyer",
             "retaining_wall": "İstinat Duvarı",
             "stile": "Çit Merdiveni",
-            "swing_gate": "Salıncak Kapısı",
+            "swing_gate": "Kanatlı Kapı",
             "toll_booth": "Geçiş Kabini",
             "turnstile": "Turnike",
             "wall": "Duvar"
@@ -425,12 +467,21 @@
             "wall_loops": "Bisiklet Tutacağı (sadece tekerlekler için)"
           }
         },
+        "bicycle_road": {
+          "label": "Bisiklet Caddesi",
+          "options": {
+            "undefined": "Hayır",
+            "yes": "Evet"
+          },
+          "terms": "Bisiklet Yolu Caddesi, Bisiklet Öncelikli Cadde"
+        },
         "bike_ride": {
-          "label": "Bisiklet ve Sürüş"
+          "label": "Bisiklet ve Sürüş",
+          "terms": "Velosipet, Pedallı araç, Bisikletli ulaşım, İki tekerlekli araç, Sürmek, Biniş"
         },
         "bin": {
           "label": "Çöp Kutusu",
-          "terms": "['Çöp Kutusu' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
+          "terms": "Çöp Tenekesi, Çöp Atma Alanı, Atık Kutusu, Çöp Kovası, Atık Kabı, Çöp Panosu, Samp, Ambalaj Kutusu"
         },
         "blind": {
           "label": "Görme Engelli Erişimi",
@@ -439,7 +490,7 @@
             "no": "Hayır",
             "yes": "Evet"
           },
-          "terms": "['Görme Engelli Erişim' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
+          "terms": "Görme Engelliler İçin Erişim, Görme Engelliye Uygun Erişim, Körler İçin Erişim, Görme Engelliye Yönelik Erişim, Görme Engelli Dostu Erişim, Görme Engelliler İçin Ulaşılabilirlik"
         },
         "blood_components": {
           "label": "Kan Bileşenleri",
@@ -474,12 +525,17 @@
             "rising": "Yükselen Baba"
           }
         },
+        "books": {
+          "label": "Kitap Türleri",
+          "terms": "Kitap Kategorileri, Yazısal Türler, Edebî Türler, Kitap Çeşitleri"
+        },
         "booth": {
           "label": "Stand",
           "terms": "Çardak, Kulübe"
         },
         "bottle": {
-          "label": "Şişe Dolumu"
+          "label": "Şişe Dolumu",
+          "terms": "Şişe Doldurma, Şişe Yükleme, Şişe Doldurulması, Şişeleme, Şişeleme Süreci, Şişe Doldurma İşlemi"
         },
         "boules": {
           "label": "Tür"
@@ -493,11 +549,19 @@
         },
         "brand": {
           "label": "Marka",
-          "terms": "['Marka' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
+          "terms": "Ticari Ad, İsim, Etiket, Ticaret Markası, Ticari Ünvan"
+        },
+        "brewery": {
+          "label": "Satılan Bira Markaları",
+          "terms": "Satıştaki Bira Markaları, Satılan Biralar, Piyasada Bulunan Bira Markaları, Satışı Yapılan Bira Markaları"
         },
         "bridge": {
           "label": "Tür",
           "placeholder": "Varsayılan"
+        },
+        "bridge/ref": {
+          "label": "Köprü Numarası",
+          "terms": "Köprü Kimlik Numarası, Köprü ID'si, Köprü Referans Numarası"
         },
         "bridge/support": {
           "label": "Tür"
@@ -505,7 +569,14 @@
         "bridge_combo": {
           "label": "Tür",
           "options": {
-            "boardwalk": "Kaldırım"
+            "aqueduct": "Su Kemeri",
+            "boardwalk": "Kaldırım",
+            "cantilever": "Konsol Köprüsü",
+            "covered": "Üstü Kapalı Köprü",
+            "low_water_crossing": "Alçak Su Geçişi",
+            "movable": "Hareketli Köprü",
+            "trestle": "Sehpa Köprüsü",
+            "viaduct": "Karayolu Köprüsü"
           }
         },
         "building": {
@@ -553,6 +624,7 @@
             "public": "Kamu Yapısı",
             "residential": "Konut",
             "retail": "Perakende Yapı",
+            "riding_hall": "At Binme Arenası",
             "roof": "Çatı",
             "ruins": "Bina yıkıntıları",
             "school": "Okul Yapısı",
@@ -566,27 +638,31 @@
             "synagogue": "Sinagog",
             "temple": "Tapınak",
             "terrace": "Sıra Evler",
-            "train_station": "Tren istasyonu binası",
-            "transportation": "Ulaştırma hizmetleri binası",
-            "university": "Üniversite binası",
+            "train_station": "Tren İstasyonu Binası",
+            "transportation": "Ulaştırma Hizmetleri Binası",
+            "university": "Üniversite Binası",
             "warehouse": "Ambar"
           },
-          "terms": "['Bina' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
+          "terms": "Yapı, Yapı Birimi"
+        },
+        "building/colour": {
+          "label": "Dış Cephe Rengi",
+          "terms": "Cephe Rengi, Dış Yüzey Rengi, Binanın Ön Yüzü Rengi"
         },
         "building/flats": {
           "label": "Birimler"
         },
         "building/levels": {
-          "label": "Seviyeler",
-          "terms": "['Seviyeler' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
+          "label": "Katlar",
+          "terms": "Seviyeler, Katmanlar, Daireler"
         },
         "building/levels/underground": {
-          "label": "Yeraltı Katlar",
-          "terms": "['Yeraltı Seviyeleri' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
+          "label": "Yeraltı Katları",
+          "terms": "Yeraltı Seviyeleri, Alt Katlar, Bodrum Katları, Zemin Altı Katları, Yer Altı Düzeyleri"
         },
         "building/material": {
           "label": "Materyal",
-          "terms": "['Malzeme' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
+          "terms": "Malzeme, İçerik, Bileşen"
         },
         "building/part": {
           "label": "Yapı Parçası"
@@ -605,7 +681,7 @@
           "label": "Kablo"
         },
         "cai_scale-IT": {
-          "label": "Yürüyüş güzergahı zorluğu (İtalyan Alp Kulübü)",
+          "label": "Yürüyüş Güzergahı Zorluğu (İtalyan Alp Kulübü)",
           "options": {
             "E": "E: Yürüyüşçüler için",
             "EAI": "EAI: Kar yağışında yürüyüş",
@@ -613,10 +689,10 @@
             "EEA": "EEA: Usta yürüyüşçüler için, ekipman gerektirir",
             "T": "T: Turistik yürüyüşlere uygun"
           },
-          "terms": "Turistik, usta yürüyüşçülere uygun, ekiman ister ..."
+          "terms": "Yürüyüş yolu zorluğu (İtalyan Alp Kulübü), Yürüyüş Rotası Zorluğu (İtalyan Alp Kulübü)"
         },
         "camera/direction": {
-          "label": "Yön (saat yönünde derece cinsinden)"
+          "label": "Yön (Saat Yönünde Derece Cinsinden)"
         },
         "camera/mount": {
           "label": "Kamera Kurulum"
@@ -627,6 +703,14 @@
             "dome": "Tepeden",
             "fixed": "Sabit",
             "panning": "Panaromik"
+          }
+        },
+        "camp_site": {
+          "options": {
+            "basic": {
+              "description": "Sadece bir çadır kurmak veya bir aracı park etmek için bir yer",
+              "title": "Temel (sadece çadır/araba park yerleri)"
+            }
           }
         },
         "capacity": {
@@ -683,6 +767,9 @@
         "check_date": {
           "label": "Son Kontrol Tarihi",
           "placeholder": "GG-AA-YYYY"
+        },
+        "climbing/length": {
+          "label": "Uzunluk (metre)"
         },
         "clothes": {
           "label": "Çamaşırlar",
@@ -770,6 +857,13 @@
         "covered": {
           "label": "Üstü Kapalı",
           "terms": "['Örtülü' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
+        },
+        "covered_no": {
+          "options": {
+            "no": "Hayır",
+            "undefined": "Tahminen Hayır",
+            "yes": "Evet"
+          }
         },
         "craft": {
           "label": "Tür",
@@ -875,18 +969,35 @@
             "zebra:bicolour": "Değişken renklerde uzunlamasına çizgiler"
           }
         },
+        "crossing_raised": {
+          "options": {
+            "undefined": "Hayır"
+          }
+        },
         "cuisine": {
           "label": "Yemek Çeşitleri",
           "options": {
+            "african": "Afrikalı",
             "american": "Amerikan",
+            "arab": "Arap",
+            "argentinian": "Arjantinli",
             "asian": "Asyalı",
+            "bagel": "Simit",
+            "barbecue": "Barbekü",
+            "bavarian": "Bavyeralı",
+            "brazilian": "Brezilyalı",
+            "breakfast": "Kahvaltı",
+            "caribbean": "Karayipler",
             "chicken": "Tavuk",
             "chinese": "Çinli",
             "coffee_shop": "Kahve Dükkanı",
+            "european": "Avrupalı",
             "fish": "Balık",
             "french": "Fransız",
+            "frozen_yogurt": "Donmuş Yoğurt",
             "german": "Alman",
             "greek": "Yunan",
+            "hawaiian": "Hawaiili",
             "ice_cream": "Dondurma",
             "indian": "Hintli",
             "indonesian": "Endonezyalı",
@@ -897,14 +1008,20 @@
             "korean": "Koreli",
             "lebanese": "Lübnanlı",
             "malaysian": "Malezyalı",
+            "mediterranean": "Akdeniz",
             "mexican": "Meksikalı",
+            "middle_eastern": "Orta Doğulu",
+            "moroccan": "Faslı",
+            "persian": "Persli",
             "polish": "Polonyalı",
             "portuguese": "Portekizli",
             "regional": "Bölgesel",
             "russian": "Rus",
             "salad": "Salata",
             "sandwich": "Sandviç",
+            "sausage": "Sosis",
             "seafood": "Su Ürünleri",
+            "soup": "Sabun",
             "spanish": "İspanyol",
             "sushi": "Suşi",
             "taiwanese": "Tayvanlı",
@@ -1204,6 +1321,18 @@
             "wall": "Duvar"
           }
         },
+        "fire_mains": {
+          "options": {
+            "no": "Hayır",
+            "yes": "Bilinmeyen Tür"
+          }
+        },
+        "fire_sprinkler": {
+          "options": {
+            "no": "Hayır",
+            "yes": "Bilinmeyen Tür"
+          }
+        },
         "fireplace": {
           "label": "Şömine"
         },
@@ -1220,6 +1349,12 @@
         },
         "flag/type": {
           "label": "Bayrak Türü"
+        },
+        "flashing_lights": {
+          "options": {
+            "no": "Hayır",
+            "yes": "Evet"
+          }
         },
         "floating": {
           "label": "Yüzen"
@@ -1325,10 +1460,13 @@
             "dentist": "Dişçi",
             "doctor": "Doktor",
             "hospice": "Darülaceze",
+            "hospital": "Hastane",
             "laboratory": "Tıbbi Laboratuvar",
             "midwife": "Ebe",
+            "nurse": "Hemşire",
             "occupational_therapist": "Tedavi Uzmanı",
             "optometrist": "Göz Doktoru",
+            "pharmacy": "Eczane",
             "physiotherapist": "Fizik Tedavi Uzmanı",
             "psychotherapist": "Ruh Sağlıkları Uzmanı",
             "rehabilitation": "Rehabilitasyon Merkezi, İyileştirme Merkezi",
@@ -1474,6 +1612,12 @@
           "label": "Aralık",
           "terms": "['Aralık' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
         },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Evet",
+            "undefined": "Hayır"
+          }
+        },
         "junction/ref_oneway": {
           "label": "Kavşak Numarası",
           "terms": "['Kavşak Numarası' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
@@ -1492,6 +1636,12 @@
           "options": {
             "flush": {
               "title": "Sifon"
+            },
+            "no": {
+              "title": "Hayır"
+            },
+            "yes": {
+              "title": "Evet"
             }
           }
         },
@@ -1606,7 +1756,10 @@
           "label": "Kapsam"
         },
         "map_type": {
-          "label": "Tür"
+          "label": "Tür",
+          "options": {
+            "street": "Yol Haritası"
+          }
         },
         "mapillary": {
           "label": "Mapillary Görüntü Kimliği",
@@ -1617,6 +1770,9 @@
           "options": {
             "ground": {
               "title": "Zemin"
+            },
+            "plate": {
+              "title": "Tabak"
             }
           }
         },
@@ -1644,6 +1800,11 @@
           "label": "Küçük bira fabrikası",
           "terms": "['Mikro Bira Fabrikası' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
         },
+        "military_service": {
+          "options": {
+            "army": "Ordu"
+          }
+        },
         "mimics": {
           "label": "Taklitler",
           "terms": "['Taklit' için virgülle ayırarak eş anlamlılar veya ilgili terimlerle çevirin]"
@@ -1658,6 +1819,12 @@
         },
         "monitoring_multi": {
           "label": "İzleme"
+        },
+        "mooring": {
+          "options": {
+            "no": "Hayır",
+            "yes": "Evet"
+          }
         },
         "mtb/scale": {
           "label": "Dağ Bisikleti Zorluk Derecesi",
@@ -1696,6 +1863,9 @@
           "label": "İsim",
           "placeholder": "Adı (eğer varsa)",
           "terms": "['İsim' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
+        },
+        "nat_name": {
+          "label": "Geleneksel ad"
         },
         "natural": {
           "label": "Doğal"
@@ -1751,13 +1921,16 @@
         "office": {
           "label": "Tür"
         },
+        "official_name": {
+          "label": "Resmi ad"
+        },
         "oneway": {
           "label": "Tek Yön",
           "options": {
             "alternating": "Alternatif",
             "no": "Hayır",
             "reversible": "Geri döndürülebilir",
-            "undefined": "Hayır farz edilmiş",
+            "undefined": "Tahminen Hayır",
             "yes": "Evet"
           },
           "terms": "['Tek Yön' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
@@ -1811,6 +1984,13 @@
         "par": {
           "label": "İtibar"
         },
+        "parcel_pickup": {
+          "options": {
+            "no": "Hayır",
+            "undefined": "Tahminen Evet",
+            "yes": "Evet"
+          }
+        },
         "park_ride": {
           "label": "Park ve Devam Et",
           "terms": "['Park et ve Sür' için virgülle ayırarak eş anlamlılar veya ilgili terimlerle çevirin]"
@@ -1836,6 +2016,12 @@
             "surface": {
               "title": "Yüzey"
             }
+          }
+        },
+        "parking/side/parking": {
+          "options": {
+            "no": "Hayır",
+            "yes": "Evet (belirtilmemiş)"
           }
         },
         "parking_entrance": {
@@ -2035,6 +2221,10 @@
         },
         "ramp": {
           "label": "Gömülü Rampa",
+          "options": {
+            "no": "Hayır",
+            "yes": "Evet"
+          },
           "terms": "['Gömülü Rampa' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
         },
         "rating": {
@@ -2142,6 +2332,11 @@
           "label": "Çatı Rengi",
           "terms": "['Çatı Rengi' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
         },
+        "roof/shape": {
+          "options": {
+            "dome": "Tepeden"
+          }
+        },
         "room": {
           "label": "Tür"
         },
@@ -2157,6 +2352,11 @@
         },
         "route_master": {
           "label": "Tür"
+        },
+        "royal_cypher-GB": {
+          "options": {
+            "no": "Hayır"
+          }
         },
         "ruins": {
           "label": "Tür"
@@ -2257,6 +2457,12 @@
           "label": "Sistem",
           "options": {
             "other": "Diğer"
+          }
+        },
+        "seamark/harbour/category_marina": {
+          "options": {
+            "marina": "Evet",
+            "marina_no_facilities": "Hayır"
           }
         },
         "seamark/mooring/category": {
@@ -2388,8 +2594,7 @@
             "local knowledge": "Yerel Bilgi",
             "streetlevel imagery": "Sokak Seviyesi Fotoğraflar",
             "survey": "Anket"
-          },
-          "terms": "['Kaynaklar' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
+          }
         },
         "species/wikidata": {
           "label": "Ortak özellikleri olan vikiveri grubu",
@@ -2444,6 +2649,13 @@
           },
           "placeholder": "Bilinmiyor",
           "terms": "['Yapı' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
+        },
+        "structure_canal": {
+          "options": {
+            "bridge": "Köprü",
+            "tunnel": "Tünel"
+          },
+          "placeholder": "Bilinmiyor"
         },
         "structure_waterway": {
           "label": "Yapı",
@@ -2577,9 +2789,21 @@
           "label": "El yıkama",
           "terms": "['El Yıkama' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
         },
+        "toilets/menstrual_products": {
+          "options": {
+            "no": "Hayır",
+            "yes": "Evet, tüm tezgahlarda"
+          }
+        },
         "toilets/position": {
           "label": "Konumlar",
           "terms": "['Pozisyonlar' için eş anlamlı veya benzer terimler ile çeviri yapın, virgülle ayırın]"
+        },
+        "toilets/wheelchair": {
+          "options": {
+            "no": "Hayır",
+            "yes": "Evet"
+          }
         },
         "toll": {
           "label": "Ücret",
@@ -2655,6 +2879,12 @@
             "forward": "İleri"
           }
         },
+        "traffic_signals/sound": {
+          "options": {
+            "no": "Hayır",
+            "yes": "Evet"
+          }
+        },
         "trail_visibility": {
           "label": "Görüş Durumu",
           "options": {
@@ -2687,6 +2917,12 @@
         },
         "tunnel_combo": {
           "label": "Tip"
+        },
+        "two_sided": {
+          "options": {
+            "undefined": "Hayır",
+            "yes": "Evet"
+          }
         },
         "usage_rail": {
           "label": "Kullanım Tipi",
@@ -4668,6 +4904,9 @@
         },
         "highway/footway/crossing/uncontrolled": {
           "name": "İşaretli Yaya Geçidi"
+        },
+        "highway/footway/crossing/unmarked": {
+          "name": "İşaretsiz Yaya Geçidi"
         },
         "highway/footway/sidewalk": {
           "name": "Kaldırım"

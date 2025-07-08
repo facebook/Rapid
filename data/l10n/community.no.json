@@ -342,9 +342,6 @@
     "talk-bo": {
       "extendedDescription": "Kartlegger du i Bolivia? Har du spørsmål, og har lyst til å sosialisere med fellesskapet her? Bli med på {url}. Alle er velkomne!"
     },
-    "talk-nz": {
-      "description": "New Zealands OSM-samfunnsprat"
-    },
     "tw-slack": {
       "description": "Alle er velkomne! Registrer deg på {signupUrl}"
     },
@@ -363,9 +360,6 @@
     },
     "uk-london-wiki": {
       "description": "{community} Wiki-side"
-    },
-    "uk-loomio": {
-      "name": "OpenStreetMap UK på Loomio"
     },
     "vn-wiki": {
       "description": "{community} Wiki-side"

@@ -90,6 +90,9 @@
         "aeroway": {
           "label": "Тып"
         },
+        "aircraft/type": {
+          "label": "Тып"
+        },
         "amenity": {
           "label": "Тып"
         },

@@ -132,7 +132,6 @@
             "province!jp": "都道府县",
             "quarter": "地方",
             "state": "州",
-            "street": "路",
             "subdistrict": "街道",
             "subdistrict!vn": "坊/社/市镇",
             "suburb": "城市片区",
@@ -177,6 +176,12 @@
         "air_conditioning": {
           "label": "空调",
           "terms": "空调,制冷,制热,冷藏"
+        },
+        "aircraft/type": {
+          "options": {
+            "helicopter": "直升机",
+            "military": "军用"
+          }
         },
         "alt_name": {
           "label": "其他名称",
@@ -283,6 +288,7 @@
             "cattle_grid": "拦畜沟栅",
             "chain": "链条护栏",
             "cycle_barrier": "非机动车限行栏杆",
+            "ditch": "沟壕·",
             "guard_rail": "半高护栏",
             "hedge": "树篱",
             "height_restrictor": "限高杆",
@@ -545,6 +551,9 @@
           "label": "周长（齐胸高处）",
           "terms": "周长（胸部高度）,胸围"
         },
+        "climbing/length": {
+          "terms": "长度（米）"
+        },
         "clothes": {
           "label": "服饰",
           "options": {
@@ -572,7 +581,7 @@
         },
         "comment": {
           "label": "变更集注释",
-          "placeholder": "请简要说明您的贡献 (必填)"
+          "placeholder": "请简要说明你的贡献 (必填)"
         },
         "communication_multi": {
           "label": "通讯类型",
@@ -660,7 +669,7 @@
             "metal_construction": "金属加工",
             "painter": "油漆工程",
             "parquet_layer": "木地板工",
-            "photographer": "照相馆",
+            "photographer": "摄影师",
             "photographic_laboratory": "冲印店",
             "pottery": "陶艺工坊",
             "rigger": "吊运工程",
@@ -750,6 +759,7 @@
             "burger": "汉堡",
             "chicken": "鸡",
             "chinese": "中餐",
+            "coffee_shop": "咖啡馆",
             "dessert": "甜品",
             "diner": "车型餐馆",
             "donut": "甜甜圈",
@@ -2054,6 +2064,11 @@
             "classic": "经典的"
           }
         },
+        "piste/grooming_nordic": {
+          "options": {
+            "scooter": "雪地滑板车/雪地摩托"
+          }
+        },
         "piste/type": {
           "options": {
             "connection": "连接点",
@@ -2283,6 +2298,11 @@
         },
         "roof/colour": {
           "label": "屋顶颜色"
+        },
+        "roof/shape": {
+          "options": {
+            "dome": "半球式"
+          }
         },
         "room": {
           "label": "房间类型"
@@ -2564,8 +2584,7 @@
             "local knowledge": "本地知识",
             "osm notes": "OpenStreetMap 注记",
             "survey": "踏勘"
-          },
-          "terms": "来源,源头"
+          }
         },
         "source/population": {
           "label": "人口数据来源"
@@ -2628,6 +2647,12 @@
             "ford": "过水路面"
           },
           "terms": "结构,架构,构造"
+        },
+        "structure_canal": {
+          "options": {
+            "bridge": "桥梁"
+          },
+          "placeholder": "未知"
         },
         "structure_power": {
           "options": {
@@ -3405,7 +3430,7 @@
           "name": "公交车站 / 枢纽站"
         },
         "amenity/cafe": {
-          "name": "咖啡馆",
+          "name": "咖啡餐馆",
           "terms": "咖啡,茶,咖啡厅,咖啡馆,茶座,摩卡,拿铁,馥芮白,玛奇朵,卡布奇诺,红茶,黄茶,清茶,青茶,绿茶,花茶,黑茶,白茶,乌龙,咖啡豆,餐馆,餐厅,奶茶,奶茶店"
         },
         "amenity/cafe/bubble_tea": {
@@ -3413,8 +3438,8 @@
           "terms": "奶茶,波霸奶茶,珍珠奶茶"
         },
         "amenity/cafe/coffee_shop": {
-          "name": "咖啡屋",
-          "terms": "咖啡屋"
+          "name": "咖啡馆",
+          "terms": "咖啡屋,咖啡,摩卡,拿铁,馥芮白,玛奇朵,卡布奇诺,美式,意式,浓缩,饮品,饮料"
         },
         "amenity/car_rental": {
           "name": "汽车租赁",
@@ -3697,7 +3722,7 @@
           "terms": "消防站,消防局,消防队,消防,火灾,火,灾害,救火,灭火"
         },
         "amenity/food_court": {
-          "terms": "美食广场,美食,食物,吃,餐厅,广场,熟食中心,美食街,食阁,食肆,小贩"
+          "terms": "美食广场,食堂,美食,食物,吃,餐厅,广场,熟食中心,美食街,食阁,食肆,小贩"
         },
         "amenity/fountain": {
           "terms": "喷泉,喷水池,水景"
@@ -4277,6 +4302,10 @@
         "amenity/veterinary": {
           "name": "动物医院"
         },
+        "amenity/veterinary_pharmacy": {
+          "name": "兽药店",
+          "terms": "兽药,动物,宠物,动物用药,兽用药,兽医,兽医药"
+        },
         "amenity/waste/dog_excrement": {
           "name": "狗粪便箱",
           "terms": "狗,动物,宠物,犬,粪便,大便,屎,排泄,尿,垃圾,箱,盒,垃圾桶,厕所"
@@ -4844,7 +4873,7 @@
           "terms": "铺木地板,木地板,铺地板,地板工,铺地工"
         },
         "craft/photographer": {
-          "name": "照相馆",
+          "name": "摄影师",
           "terms": "摄影师,摄影棚,快相店"
         },
         "craft/photographic_laboratory": {
@@ -5433,9 +5462,15 @@
         "historic/castle/palace": {
           "terms": "宫,殿,故宫,城,皇室居所,皇家"
         },
+        "historic/fort": {
+          "terms": "古代,古,旧,老,历史,营盘,堡垒,营区,军营,据点,军事"
+        },
         "historic/memorial": {
           "name": "纪念物",
           "terms": "纪念,纪念碑,纪念物,碑,墓碑,墓志铭,墓石,绊脚石,绊脚坎,奠基石,奠基,牌匾,蓝色牌匾,雕像,石刻,纪念堂,战争纪念,回忆"
+        },
+        "historic/memorial/blue_plaque-GB-IE": {
+          "name": "蓝色牌匾"
         },
         "historic/memorial/plaque": {
           "name": "纪念牌匾",
@@ -5591,7 +5626,7 @@
         },
         "landuse/religious": {
           "name": "宗教场所",
-          "terms": "寺,庙,祠,观,宗教,国教,信仰,崇拜,基督教,天主教,东正教,佛教,伊斯兰教,印度教,儒教,道教,神道教,本教,锡克教,场所"
+          "terms": "寺,庙,祠,观,寺庙,道观,祠堂,文庙,教堂,宗教,国教,信仰,崇拜,基督教,天主教,东正教,佛教,伊斯兰教,印度教,儒教,道教,神道教,本教,锡克教,场所"
         },
         "landuse/residential": {
           "name": "居民区",
@@ -7165,6 +7200,10 @@
           "name": "浴室家具店",
           "terms": "水暖店"
         },
+        "shop/bbq": {
+          "name": "烧烤用品店",
+          "terms": "烤肉,烧烤,烧肉,烤架,烧烤架,烧烤调料,烧烤串,烤串,烧烤炉,烧烤碳"
+        },
         "shop/beauty": {
           "terms": "美容院"
         },
@@ -7264,7 +7303,7 @@
           "terms": "工作服装店"
         },
         "shop/coffee": {
-          "name": "咖啡豆/粉店",
+          "name": "咖啡商店",
           "terms": "咖啡,咖啡豆,咖啡粉,商店,摩卡,拿铁,馥芮白,玛奇朵,卡布奇诺"
         },
         "shop/collector": {
@@ -7305,8 +7344,8 @@
           "terms": "乳品,牛奶,奶酪,酸奶,羊奶,水牛奶,早餐奶,鲜奶,巴氏奶,常温奶,牛奶店,奶店"
         },
         "shop/deli": {
-          "name": "高级食材店",
-          "terms": "高级食材店"
+          "name": "熟食店",
+          "terms": "熟食,高级,食品,火腿,烧味,烧腊,腊味,奶酪,鱼子酱"
         },
         "shop/department_store": {
           "name": "百货商场",
@@ -7390,9 +7429,17 @@
         "shop/greengrocer": {
           "terms": "果蔬店"
         },
+        "shop/groundskeeping": {
+          "name": "园艺设备商店",
+          "terms": "园艺,园林,草皮,除草,除草设备,花园设备,花园,除草商店,花园商店"
+        },
         "shop/hairdresser": {
           "name": "理发店",
-          "terms": "理发店"
+          "terms": "发廊,理发,美发,剪发,快剪,洗剪吹,美发沙龙,发艺"
+        },
+        "shop/hairdresser/barber": {
+          "name": "男士理发店",
+          "terms": "发廊,理发,美发,剪发,快剪,洗剪吹,美发沙龙,发艺,男士,男人,剃须,胡须"
         },
         "shop/hairdresser_supply": {
           "name": "美发美容用品店"
@@ -7492,7 +7539,7 @@
           "terms": "坚果,干杂,种子,瓜子,毛嗑,干果,零食,干杂,茶叶,香料"
         },
         "shop/outpost": {
-          "name": "网购自提点"
+          "name": "线上订货自提点"
         },
         "shop/paint": {
           "name": "涂料店",
@@ -7522,7 +7569,7 @@
         },
         "shop/photo": {
           "name": "照相馆",
-          "terms": "照相馆,照片"
+          "terms": "照相,照片,摄影,照片,摄像,拍照,快照,图文,广告,冲洗"
         },
         "shop/pottery": {
           "name": "陶瓷店"
@@ -7570,12 +7617,15 @@
           "name": "文具店"
         },
         "shop/storage_rental": {
-          "name": "租赁处",
-          "terms": "租赁处"
+          "name": "仓储租赁",
+          "terms": "仓储,仓库,库房,租赁,出租"
         },
         "shop/supermarket": {
           "name": "超市",
-          "terms": "超级市场"
+          "terms": "商超,市场,超级市场"
+        },
+        "shop/supermarket/organic": {
+          "terms": "有机,超市,有机产品"
         },
         "shop/swimming_pool": {
           "name": "泳池设备店"
@@ -7713,7 +7763,7 @@
         },
         "tourism/guest_house": {
           "name": "客栈",
-          "terms": "招待所,旅馆,宾馆"
+          "terms": "民宿,招待所,旅馆,宾馆"
         },
         "tourism/hostel": {
           "name": "旅舍",
@@ -7992,6 +8042,9 @@
         "type/site": {
           "name": "场址",
           "terms": "场址,地点,场地"
+        },
+        "type/site/climbing/crag": {
+          "name": "攀岩区域"
         },
         "type/waterway": {
           "name": "水路"

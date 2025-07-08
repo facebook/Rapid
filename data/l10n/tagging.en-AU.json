@@ -70,6 +70,9 @@
         "charge_toll": {
           "placeholder": "1 EUR, 5 USD, 10 CAD…"
         },
+        "climbing/length": {
+          "label": "Length (Metres)"
+        },
         "colour": {
           "label": "Colour"
         },
@@ -294,7 +297,7 @@
         },
         "office": {
           "options": {
-            "estate_agent": "Estate Agent",
+            "estate_agent": "Real Estate Agent",
             "union": "Union Office"
           }
         },
@@ -549,7 +552,7 @@
           "name": "Trolley Bay"
         },
         "amenity/vacuum_cleaner": {
-          "name": "Car Hoover Service"
+          "name": "Vehicle Vacuum Cleaning Station"
         },
         "amenity/vehicle_inspection": {
           "terms": "car inspection, mot test, mot centre"
@@ -571,7 +574,8 @@
           "name": "Public Transport Ticket Vending Machine"
         },
         "amenity/vending_machine/sweets": {
-          "name": "Sweets Vending Machine"
+          "name": "Sweets Vending Machine",
+          "terms": "sweets,candy,lollies"
         },
         "amenity/waste_basket": {
           "name": "Rubbish Bin"
@@ -638,6 +642,9 @@
         },
         "club/sport": {
           "terms": "athletics club,sporting club,sports association,sports society,sport club"
+        },
+        "craft/confectionery": {
+          "terms": "sweets,candy,lollies"
         },
         "emergency/fire_hose": {
           "terms": "fire hose reel,fhr,riser,dry riser,standpipe,stand pipe"
@@ -775,9 +782,6 @@
         "leisure/pitch/rugby_union": {
           "name": "Rugby Union Pitch"
         },
-        "leisure/pitch/soccer": {
-          "name": "Football Pitch"
-        },
         "leisure/pitch/table_soccer": {
           "name": "Table Football Table"
         },
@@ -814,7 +818,7 @@
           "terms": "job,career,careers,vocational,vocation,occupation"
         },
         "office/estate_agent": {
-          "name": "Estate Agent"
+          "name": "Real Estate Agent"
         },
         "office/it": {
           "terms": "computer,information,software,technology,tech,it,ict,information technology"
@@ -963,10 +967,10 @@
           "name": "Computer Shop"
         },
         "shop/confectionery": {
-          "name": "Sweet Shop"
+          "name": "Sweet Shop",
+          "terms": "sweets,candy,lollies"
         },
         "shop/convenience": {
-          "name": "Convenience Store / Dairy",
           "terms": "dairy,superette,convenience store,convenience shop,corner store,corner shop"
         },
         "shop/copyshop": {
@@ -1163,7 +1167,7 @@
           "name": "Tyre Shop"
         },
         "shop/vacuum_cleaner": {
-          "name": "Hoover Shop"
+          "name": "Vacuum Cleaner Shop"
         },
         "shop/variety_store": {
           "name": "Discount shop"

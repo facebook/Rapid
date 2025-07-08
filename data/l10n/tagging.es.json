@@ -8,6 +8,9 @@
         "category-building": {
           "name": "Elementos de edificio"
         },
+        "category-climbing": {
+          "name": "Elementos de escalada"
+        },
         "category-golf": {
           "name": "Elementos de golf"
         },
@@ -226,6 +229,17 @@
         "air_conditioning": {
           "label": "Aire Acondicionado",
           "terms": "aire, acondicionado, climatización, acondicionamiento, sistema, enfriamiento, refrigeración, ventilación, ventilador, refrigerante, evaporación, extractor"
+        },
+        "aircraft/type": {
+          "label": "Tipo",
+          "options": {
+            "airliner": "Avión comercial",
+            "cargo": "Carguero",
+            "fixed_wing": "Ala fija",
+            "glider": "Planeador",
+            "helicopter": "Helicóptero",
+            "military": "Militar"
+          }
         },
         "alt_name": {
           "label": "Nombre alternativo",
@@ -772,6 +786,35 @@
         "circumference": {
           "label": "Circunferencia (a la altura del pecho)",
           "terms": "circunferencia, diámetro a la altura del pecho"
+        },
+        "climbing/bolts": {
+          "label": "Número de pernos"
+        },
+        "climbing/grade/french": {
+          "label": "Grado (Francés)",
+          "terms": "Grado (Francés), escala francesa, dificultad francesa"
+        },
+        "climbing/grade/saxon": {
+          "label": "Grado (Sajón)",
+          "terms": "Grado (Sajón), escala sajona, dificultad sajona"
+        },
+        "climbing/grade/uiaa": {
+          "label": "Grado (UIAA)",
+          "terms": "Grado (UIAA), escala UIAA, dificultad UIAA"
+        },
+        "climbing/grade/yds_class": {
+          "label": "Grado (YDS)",
+          "terms": "Grado (YDS), escala YDS, dificultad YDS, sistema decimal estadounidense"
+        },
+        "climbing/length": {
+          "label": "Longitud (metros)",
+          "terms": "longitud, largo, extensión"
+        },
+        "climbing/sport": {
+          "label": "Escalada deportiva (con pernos)"
+        },
+        "climbing/trad": {
+          "label": "Escalada tradicional"
         },
         "clothes": {
           "label": "Ropa",
@@ -1382,6 +1425,10 @@
             "yes": "Permitido"
           },
           "terms": "animales, mascotas, perros, pastor alemán, dálmata, gato, perrera, protectora"
+        },
+        "dog_check": {
+          "label": "Apto para perros",
+          "terms": "apto para perros, permitido para perros, se aceptan perros"
         },
         "door": {
           "label": "Puerta"
@@ -2292,6 +2339,10 @@
           "label": "Fabricante",
           "terms": "fabricante, manufacturero, industrial"
         },
+        "manufacturer/wikidata": {
+          "label": "Fabricante en Wikidata",
+          "terms": "Entrada en Wikidata del fabricante, artículo de Wikidata sobre el fabricante"
+        },
         "map_size": {
           "label": "Cobertura"
         },
@@ -2467,6 +2518,10 @@
         "model": {
           "label": "Modelo",
           "terms": "Modelo"
+        },
+        "model/wikidata": {
+          "label": "Modelo en Wikidata",
+          "terms": "Modelo en Wikidata, entrada de Wikidata del modelo, identificador del modelo en Wikidata"
         },
         "monitoring_multi": {
           "label": "Supervisando"
@@ -3286,6 +3341,28 @@
           "label": "Color del techo",
           "terms": "Color del techo, techo"
         },
+        "roof/height": {
+          "label": "Altura del techo (metros)",
+          "terms": "altura del techo, altura de la cubierta, altura estructural del techo"
+        },
+        "roof/shape": {
+          "label": "Forma del techo",
+          "options": {
+            "cone": "Cónico",
+            "dome": "Domo",
+            "flat": "Plano",
+            "gabled": "A dos aguas",
+            "gambrel": "A la mansarda holandesa (gambrel)",
+            "half-hipped": "Semi a cuatro aguas",
+            "hipped": "A cuatro aguas",
+            "mansard": "Mansarda",
+            "onion": "Bulboso (en forma de cebolla)",
+            "pyramidal": "Piramidal",
+            "round": "Redondo",
+            "skillion": "A un agua"
+          },
+          "terms": "forma del techo, tipo de cubierta, diseño del techo"
+        },
         "room": {
           "label": "Tipo"
         },
@@ -3624,8 +3701,7 @@
             "osm notes": "Notas de OpenStreetMap",
             "streetlevel imagery": "Fotos a nivel calle",
             "survey": "Reconocimiento"
-          },
-          "terms": "fuentes, referencias, orígenes, origen"
+          }
         },
         "source/population": {
           "label": "Fuente de la población"
@@ -3758,6 +3834,14 @@
           },
           "placeholder": "Desconocido",
           "terms": "estructura, construcción"
+        },
+        "structure_canal": {
+          "label": "Estructura",
+          "options": {
+            "bridge": "Puente",
+            "tunnel": "Túnel"
+          },
+          "placeholder": "Desconocida"
         },
         "structure_power": {
           "label": "Estructura",
@@ -4720,6 +4804,10 @@
         "amenity/cafe/coffee_shop": {
           "name": "Cafetería",
           "terms": "americano, cerveza, café, capuchino, cacao, cafetería, goteo, espresso, bebidas calientes, café con leche, macchiato, té, latte"
+        },
+        "amenity/cafe/teahouse": {
+          "name": "Casa de té",
+          "terms": "Salón de té, tetería, establecimiento de té"
         },
         "amenity/car_pooling": {
           "name": "Estación de vehículo compartido (Carpooling)",
@@ -6355,6 +6443,18 @@
           "name": "Sección del cementerio",
           "terms": "cementerio, cementerio de la iglesia, columbario, mausoleo, tumba"
         },
+        "climbing/crag": {
+          "name": "Zona de escalada",
+          "terms": "Zona de escalada, sector de escalada"
+        },
+        "climbing/route": {
+          "name": "Ruta de escalada",
+          "terms": "Ruta de escalada, vía de escalada, recorrido de escalada"
+        },
+        "climbing/route_bottom": {
+          "name": "Inicio de la ruta de escalada",
+          "terms": "Inicio de la ruta de escalada, punto de inicio, comienzo de la vía"
+        },
         "club": {
           "name": "Clubs",
           "terms": "asociación, logia, social, voluntariado, servicio, religioso, político, intercambio, cultural, deportivo, caridad, radio, arte, astronomía, juegos, ajedrez, bicicleta, cine, cocina, gastronomía, fan, anime, música, pesca, linux, caza, motocicletas, nudismo, veteranos"
@@ -6926,6 +7026,9 @@
           "name": "Cruce",
           "terms": "cruce, paso, peatón, peatonal, cebra, paso peatonal, cruce peatonal, paso de peatones, paso de cebra"
         },
+        "highway/crossing/informal": {
+          "name": "Cruce informal"
+        },
         "highway/crossing/traffic_signals": {
           "name": "Cruce semaforizado para peatones",
           "terms": "semáforo para peatones, señal para peatones, cruce de peatones, paso de peatones, paso de bicicletas"
@@ -7259,6 +7362,10 @@
           "name": "Lugar histórico",
           "terms": "Lugar histórico, Sitio Histórico"
         },
+        "historic/aircraft": {
+          "name": "Aeronave histórica",
+          "terms": "Avión antiguo, aeronave de época, avión histórico"
+        },
         "historic/archaeological_site": {
           "name": "Yacimiento arqueológico",
           "terms": "sitio arqueológico, yacimiento arqueológico"
@@ -7305,6 +7412,10 @@
         "historic/memorial": {
           "name": "Monumento conmemorativo",
           "terms": "monumento conmemorativo, memorial, estatua, busto"
+        },
+        "historic/memorial/blue_plaque-GB-IE": {
+          "name": "Placa azul",
+          "terms": "Placa conmemorativa azul, placa histórica, señal azul histórica"
         },
         "historic/memorial/plaque": {
           "name": "Placa conmemorativa",
@@ -10770,6 +10881,10 @@
           "name": "Ruta de bus",
           "terms": "ruta de autobús, ruta de bus, línea de autobús, recorrido, trayecto, itinerario, autobus, autobús, bus, buses, colectivo, micro, guagua, recorrido de bus"
         },
+        "type/route/climbing": {
+          "name": "Ruta de escalada",
+          "terms": "Ruta de escalada, vía de escalada, recorrido de escalada"
+        },
         "type/route/detour": {
           "name": "Ruta de desvío",
           "terms": "ruta de desvío, dirección alternativa, alternativa, ruta, itinerario alternativo,"
@@ -10845,6 +10960,14 @@
         "type/site": {
           "name": "Sitio",
           "terms": "sitio, lugar, zona, emplazamiento, terreno, instalación, espacio, área"
+        },
+        "type/site/climbing/area": {
+          "name": "Área de escalada",
+          "terms": "Área de escalada, zona de escalada, sector de escalada"
+        },
+        "type/site/climbing/crag": {
+          "name": "Zona de escalada",
+          "terms": "Zona de escalada, sector de escalada"
         },
         "type/waterway": {
           "name": "Vía fluvial",

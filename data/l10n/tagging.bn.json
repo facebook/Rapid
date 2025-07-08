@@ -103,6 +103,9 @@
         "aeroway": {
           "label": "ধরন"
         },
+        "aircraft/type": {
+          "label": "ধরন"
+        },
         "amenity": {
           "label": "ধরন"
         },
@@ -245,6 +248,9 @@
         },
         "castle_type": {
           "label": "ধরন"
+        },
+        "climbing/length": {
+          "label": "দৈর্ঘ্য (মিটার)"
         },
         "club": {
           "label": "ধরন"
@@ -878,6 +884,14 @@
           }
         },
         "structure": {
+          "label": "কাঠামো",
+          "options": {
+            "bridge": "সেতু",
+            "tunnel": "সুড়ঙ্গ"
+          },
+          "placeholder": "অজানা"
+        },
+        "structure_canal": {
           "label": "কাঠামো",
           "options": {
             "bridge": "সেতু",

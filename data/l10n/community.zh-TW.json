@@ -33,7 +33,6 @@
       "openstreetmapbrasilia": "開放街圖巴西利亞",
       "openstreetmapbremen": "開放街圖不萊梅",
       "openstreetmapbulgaria": "開放街圖保加利亞",
-      "openstreetmapburkinafaso": "開放街圖布吉納法索",
       "openstreetmapburundi": "開放街圖蒲隆地",
       "openstreetmapbzh": "開放街圖布列塔尼",
       "openstreetmapcambodia": "開放街圖柬埔寨",
@@ -166,7 +165,6 @@
       "openstreetmapsaudiarabia": "開放街圖沙烏地阿拉伯",
       "openstreetmapsenegal": "開放街圖塞內加爾",
       "openstreetmapserbia": "開放街圖塞爾維亞",
-      "openstreetmapseychelles": "開放街圖塞席爾",
       "openstreetmapsierraleone": "開放街圖獅子山",
       "openstreetmapsingapore": "開放街圖新加坡",
       "openstreetmapslovenia": "開放街圖斯洛維尼亞",
@@ -177,7 +175,6 @@
       "openstreetmapsudan": "開放街圖蘇丹",
       "openstreetmapsweden": "開放街圖瑞典",
       "openstreetmapswitzerland": "開放街圖瑞士",
-      "openstreetmapsyria": "開放街圖敘利亞",
       "openstreetmaptaiwan": "開放街圖台灣",
       "openstreetmaptanzania": "開放街圖坦尚尼亞",
       "openstreetmapthailand": "開放街圖泰國",
@@ -221,12 +218,6 @@
       },
       "newsletter": {
         "name": "{community} 電子報"
-      },
-      "twitter": {
-        "name": "X 上的 {community}"
-      },
-      "x": {
-        "name": "X 上的 {community}"
       }
     },
     "af-matrix": {
@@ -403,12 +394,6 @@
     },
     "hr-tm": {
       "description": "探索克羅埃西亞的啟動畫地圖任務"
-    },
-    "hu-meetup": {
-      "description": "匈牙利舉行聚會的平台"
-    },
-    "hu-website": {
-      "description": "我們協助匈牙利的開放街圖成長茁壯並改善它。"
     },
     "hu-wiki": {
       "description": "{community} 的維基頁面"

@@ -5,6 +5,9 @@
         "description": "Спадарожнікавыя і аэрафотаздымкі.",
         "name": "Aэрафотаздымкі Bing"
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "Апрацаваныя здымкі Sentinel Satellite."
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 яснае надвор'е - https://s2maps.eu ад EOX IT Services GmbH (Утрымлівае змененыя даныя Copernicus Sentinel 2017 і 2018)"
@@ -22,6 +25,12 @@
         "description": "Апрацаваныя здымкі Sentinel Satellite."
       },
       "EOXAT2022CLOUDLESS": {
+        "description": "Апрацаваныя здымкі Sentinel Satellite."
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Апрацаваныя здымкі Sentinel Satellite."
+      },
+      "EOXAT2024CLOUDLESS": {
         "description": "Апрацаваныя здымкі Sentinel Satellite."
       },
       "EsriWorldImagery": {

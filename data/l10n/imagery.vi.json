@@ -99,6 +99,9 @@
         "description": "Không hình độ phân giải cao Dourados (2018) và vài khu phố (2020).",
         "name": "Dourados Hình trực giao"
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "Hình ảnh vệ tinh Sentinel được xử lý sau"
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 không có mây – https://s2maps.eu bởi EOX IT Services GmbH (Chứa dữ liệu Copernicus Sentinel đã sửa đổi 2017 & 2018)"
@@ -116,6 +119,12 @@
         "description": "Hình ảnh vệ tinh Sentinel được xử lý sau"
       },
       "EOXAT2022CLOUDLESS": {
+        "description": "Hình ảnh vệ tinh Sentinel được xử lý sau"
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Hình ảnh vệ tinh Sentinel được xử lý sau"
+      },
+      "EOXAT2024CLOUDLESS": {
         "description": "Hình ảnh vệ tinh Sentinel được xử lý sau"
       },
       "EsriWorldImagery": {
@@ -374,27 +383,14 @@
       },
       "ODOT_TIMS_Road_Inventory": {
         "attribution": {
-          "text": "Sở Giao thông Ohio"
+          "text": "Bộ Giao thông Ohio"
         }
       },
       "OSIP": {
         "attribution": {
-          "text": "Chương trình Không ảnh toàn bang Ohio"
+          "text": "Chương trình Không ảnh Toàn tiểu bang Ohio"
         },
-        "name": "Chương trình Không ảnh toàn bang Ohio"
-      },
-      "OSIP_1ft": {
-        "attribution": {
-          "text": "Chương trình Hình ảnh Toàn tiểu bang Ohio"
-        },
-        "description": "Hình ảnh trực giao tất cả 88 quận do Chương trình Hình ảnh Toàn tiểu bang Ohio II (OSIP II) chụp với độ phân giải 1 bộ từ 2011 đến 2014."
-      },
-      "OSIP_6in": {
-        "attribution": {
-          "text": "Chương trình Hình ảnh Toàn tiểu bang Ohio"
-        },
-        "description": "Hình ảnh trực giao 40 quận do Chương trình Hình ảnh Toàn tiểu bang Ohio III (OSIP III) chụp với độ phân giải 6 inch từ 2017 đến 2018, cộng thêm hình ảnh 16 quận từ OSIP I và OSIP II từ 2010 đến 2014.",
-        "name": "Chương trình Hình ảnh Toàn tiểu bang Ohio 6 Inch"
+        "name": "Chương trình Không ảnh Toàn tiểu bang Ohio"
       },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {

@@ -31,7 +31,6 @@
       "openstreetmapbrasilia": "اوپن‌استریت‌مپ برازیلیا",
       "openstreetmapbremen": "اوپن‌استریت‌مپ برمن",
       "openstreetmapbulgaria": "اوپن‌استریت‌مپ بلغارستان",
-      "openstreetmapburkinafaso": "اوپن‌استریت‌مپ بورکینافاسو",
       "openstreetmapburundi": "اوپن‌استریت‌مپ بوروندی",
       "openstreetmapcambodia": "اوپن‌استریت‌مپ کامبوج",
       "openstreetmapcameroon": "اوپن‌استریت‌مپ کامرون",
@@ -154,7 +153,6 @@
       "openstreetmapsaudiarabia": "اوپن‌استریت‌مپ عربستان سعودی",
       "openstreetmapsenegal": "اوپن‌استریت‌مپ سنگال",
       "openstreetmapserbia": "اوپن‌استریت‌مپ صربستان",
-      "openstreetmapseychelles": "اوپن‌استریت‌مپ سیشل",
       "openstreetmapsierraleone": "اوپن‌استریت‌مپ سیرالئون",
       "openstreetmapslovenia": "اوپن‌استریت‌مپ اسلوونی",
       "openstreetmapsomalia": "اوپن‌استریت‌مپ سومالی",
@@ -164,7 +162,6 @@
       "openstreetmapsudan": "اوپن‌استریت‌مپ سودان",
       "openstreetmapsweden": "اوپن‌استریت‌مپ سوئد",
       "openstreetmapswitzerland": "اوپن‌استریت‌مپ سوئیس",
-      "openstreetmapsyria": "اوپن‌استریت‌مپ سوریه",
       "openstreetmaptaiwan": "اوپن‌استریت‌مپ تایوان",
       "openstreetmaptanzania": "اوپن‌استریت‌مپ تانزانیا",
       "openstreetmapthailand": "اوپن‌استریت‌مپ تایلند",
@@ -415,9 +412,6 @@
     },
     "hu-matrix": {
       "extendedDescription": "چت اوپن‌استریت‌مپ برای موضوعات نقشه. یکی از انجمن های پشتیبانی انجمن OSM."
-    },
-    "hu-meetup": {
-      "description": "پلتفرم سازماندهی نشست ها در مجارستان"
     },
     "hu-mobilizon": {
       "name": "{community} در Mobilizon",
@@ -779,9 +773,6 @@
     "talk-mg": {
       "description": "مکانی برای مشارکت کنندگان اوپن‌استریت‌مپ، اجتماعات و کاربران مشارکت کنندگان اوپن‌استریت‌مپ در ماداگاسکار برای اشتراک گذاری و بحث."
     },
-    "talk-nz": {
-      "description": "بحث انجمن OSM نیوزلند"
-    },
     "talk-pacific": {
       "extendedDescription": "ما می‌خواهیم این لیست پستی از همه مردم اقیانوس آرام، برای همه تنوع‌ها و آرزوهایمان، برای به اشتراک گذاشتن افکار، سؤالات، پروژه‌ها و هر چیزی که به اوپن‌استریت‌مپ در دریای جزایر ما مربوط می‌شود، پشتیبانی کند."
     },
@@ -812,9 +803,6 @@
     "uy-irc": {
       "description": "به #{account} در irc.freenode.org (پورت 6667) بپیوندید",
       "extendedDescription": "به #{account} در irc.freenode.org بپیوندید"
-    },
-    "vn-mailinglist": {
-      "description": "لیست پستی درباره اوپن‌استریت‌مپ در ویتنام یا ویتنامی"
     },
     "ym-Ardhi-University": {
       "description": "بخش نقشه برداران جوان در دانشگاه اردی",

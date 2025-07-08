@@ -28,7 +28,6 @@
       "openstreetmapbrasilia": "OpenStreetMap Μπραζίλια",
       "openstreetmapbremen": "OpenStreetMap Βρέμη",
       "openstreetmapbulgaria": "OpenStreetMap Βουλγαρία",
-      "openstreetmapburkinafaso": "OpenStreetMap Μπουρκίνα Φάσο",
       "openstreetmapburundi": "OpenStreetMap Μπουρούντι",
       "openstreetmapbzh": "OpenStreetMap BZH (Βρετάνη)",
       "openstreetmapcambodia": "OpenStreetMap Καμπότζη",
@@ -162,7 +161,6 @@
       "openstreetmapsaudiarabia": "OpenStreetMap Σαουδική Αραβία",
       "openstreetmapsenegal": "OpenStreetMap Σενεγάλη",
       "openstreetmapserbia": "OpenStreetMap Σερβία",
-      "openstreetmapseychelles": "OpenStreetMap Σεϋχέλλες",
       "openstreetmapsierraleone": "OpenStreetMap Σιέρρα Λεόνε",
       "openstreetmapsingapore": "OpenStreetMap Σιγκαπούρη",
       "openstreetmapslovenia": "OpenStreetMap Σλοβενία",
@@ -173,7 +171,6 @@
       "openstreetmapsudan": "OpenStreetMap Σουδάν",
       "openstreetmapsweden": "OpenStreetMap Σουηδία",
       "openstreetmapswitzerland": "OpenStreetMap Ελβετία",
-      "openstreetmapsyria": "OpenStreetMap Συρία",
       "openstreetmaptaiwan": "OpenStreetMap Ταϊβάν",
       "openstreetmaptanzania": "OpenStreetMap Τανζανία",
       "openstreetmapthailand": "OpenStreetMap Ταϊλάνδη",
@@ -223,6 +220,9 @@
         "name": "{community} Φόρουμ",
         "description": "Το επίσημο forum του {community}"
       },
+      "github": {
+        "name": "{community} στο GitHub"
+      },
       "instagram": {
         "name": "{community} στο Instagram",
         "description": "Ακολουθήστε μας στο Instagram"
@@ -265,15 +265,15 @@
         "description": "Ακολουθήστε μας στο TikTok"
       },
       "twitter": {
-        "name": "{community} στο 𝕏",
-        "description": "Ακολουθήστε μας στο 𝕏"
+        "name": "{community} στο X",
+        "description": "Ακολουθήστε μας στο X"
       },
       "wiki": {
         "name": "{community} ΒικιΈργο"
       },
       "x": {
-        "name": "{community} στο 𝕏",
-        "description": "Ακολουθήστε μας στο 𝕏"
+        "name": "{community} στο X",
+        "description": "Ακολουθήστε μας στο X"
       },
       "xmpp": {
         "description": "Γίνετε μέλος της κοινότητάς μας στο XMPP: {url}"
@@ -430,17 +430,20 @@
       "name": "Xeoinquedos στο Twitter",
       "description": "Ακολουθήστε μας στο Twitter στο {url}"
     },
+    "hr-github": {
+      "description": "{community} στο GitHub"
+    },
     "hr-wiki": {
       "description": "Σελίδα Wikiproject για Κροατία"
     },
     "hu-facebook-group": {
       "name": "{community} Ομάδα Facebook"
     },
-    "hu-meetup": {
-      "description": "Η πλατφόρμα για τη διοργάνωση συναντήσεων στην Ουγγαρία"
-    },
     "hu-mobilizon": {
       "name": "{community} στο Mobilizon"
+    },
+    "hu-website": {
+      "description": "Ο ιστότοπος της Ουγγρικής κοινότητας του OpenStreetMap"
     },
     "hu-wiki": {
       "description": "{community} Wiki σελίδα"
@@ -453,6 +456,9 @@
     },
     "ivides_website": {
       "description": "Εστιάζουμε στην βιώσιμη ανάπτυξη, χαρτογράφηση, και υποστήριξη της κοινότητας του OpenStreetMap."
+    },
+    "ko-github": {
+      "description": "{community} στο GitHub"
     },
     "kp-wiki": {
       "description": "{community} Οδηγός Χαρτογράφησης"
@@ -665,6 +671,9 @@
     "sg-wiki": {
       "description": "{community} Wiki σελίδα"
     },
+    "si-github": {
+      "description": "{community} στο GitHub"
+    },
     "si-ljubljana-wiki": {
       "description": "{community} Wiki σελίδα"
     },
@@ -702,6 +711,9 @@
     },
     "vn-wiki": {
       "description": "{community} Wiki σελίδα"
+    },
+    "ym-College-of-William-and-Mary": {
+      "name": "Σε όλο τον χάρτη!"
     }
   }
 }

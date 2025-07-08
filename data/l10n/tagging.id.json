@@ -159,13 +159,12 @@
             "hamlet": "Kampung",
             "housename": "Nama bangunan",
             "housenumber!jp": "Bangunan No.",
-            "neighbourhood": "RT/RW",
+            "neighbourhood": "RW",
             "place": "Tempat",
             "postcode": "Kode pos",
             "province": "Provinsi",
             "province!cn": "Provinsi",
             "province!jp": "Prefektur",
-            "quarter": "Seperempat",
             "state": "Negara Bagian",
             "street": "Jalan",
             "subdistrict": "Kelurahan/Desa/Dusun",
@@ -222,6 +221,12 @@
         },
         "air_conditioning": {
           "label": "Pendingin Udara"
+        },
+        "aircraft/type": {
+          "label": "Tipe",
+          "options": {
+            "military": "Militer"
+          }
         },
         "alt_name": {
           "label": "Nama Alternatif"
@@ -319,6 +324,7 @@
             "gate": "Gerbang",
             "guard_rail": "Pagar pengaman jalan",
             "hedge": "Pagar Tanaman",
+            "height_restrictor": "Pembatas Ketinggian",
             "kerb": "Kerb Jalan",
             "kissing_gate": "Gerbang pertemuan",
             "retaining_wall": "Dinding Penahan / Turap",
@@ -432,7 +438,7 @@
           "label": "Tipe"
         },
         "branch_brand": {
-          "label": "Nama Cabang/KCP"
+          "label": "Cabang"
         },
         "brand": {
           "label": "Merek",
@@ -604,7 +610,11 @@
           "placeholder": "2000 IDR (Rupiah), 5 USD, 10 JPY…"
         },
         "check_date": {
-          "label": "Tanggal Terakhir dicek oleh Pemeta OSM"
+          "label": "Tanggal Terakhir dicek oleh Pemeta OSM",
+          "terms": "terakhir dicek, last check, date"
+        },
+        "climbing/length": {
+          "label": "Panjang (Meter)"
         },
         "clothes": {
           "label": "Pakaian",
@@ -647,7 +657,7 @@
           "terms": "Warna"
         },
         "comment": {
-          "label": "Komentar perubahan",
+          "label": "Komentar set perubahan",
           "placeholder": "Deskripsi singkat tentang kontribusi (diperlukan)"
         },
         "communication_multi": {
@@ -921,6 +931,7 @@
               "title": "Tidak ada"
             },
             "separate": {
+              "description": "Menunjukkan bahwa jalur sepeda ini dipetakan sebagai jalur terpisah dari jalan",
               "title": "Jalur Sepeda Terpisah"
             },
             "share_busway": {
@@ -1724,6 +1735,9 @@
             "no": {
               "title": "Tidak"
             },
+            "raised": {
+              "description": "Sebuah trotoar tinggi untuk mencegah pemotor yang tidak dapat dengan mudah digunakan oleh pengguna kursi roda."
+            },
             "yes": {
               "title": "Ya"
             }
@@ -1760,6 +1774,7 @@
           "label": "Lapisan"
         },
         "leaf_cycle": {
+          "label": "Siklus Daun",
           "options": {
             "mixed": "Campuran"
           }
@@ -1941,6 +1956,7 @@
           "placeholder": "+62 123 4567 8910"
         },
         "mooring": {
+          "label": "Izin Kapal Bersandar",
           "options": {
             "commercial": "Niaga",
             "no": "Tidak",
@@ -2052,6 +2068,10 @@
             "undefined": "Dianggap Tidak",
             "yes": "Ya"
           }
+        },
+        "oneway/bicycle": {
+          "label": "Satu arah (sepeda)",
+          "terms": "One Way (Bicycles)"
         },
         "oneway_yes": {
           "options": {
@@ -2189,6 +2209,9 @@
         "plant": {
           "label": "Tanaman"
         },
+        "plant/method": {
+          "label": "Metode"
+        },
         "plant/output": {
           "options": {
             "cold_air": "Udara Dingin",
@@ -2197,6 +2220,9 @@
             "hot_air": "Udara Panas",
             "hot_water": "Air Panas"
           }
+        },
+        "plant/source": {
+          "label": "Sumber Energi"
         },
         "playground": {
           "label": "Tipe"
@@ -2360,6 +2386,11 @@
         "roof/colour": {
           "label": "Warna Atap"
         },
+        "roof/shape": {
+          "options": {
+            "dome": "Kubah"
+          }
+        },
         "room": {
           "label": "Tipe"
         },
@@ -2476,8 +2507,9 @@
         "service_rail": {
           "label": "Jenis pelayanan",
           "options": {
-            "crossover": "Tumpang tindih",
-            "yard": "Halaman"
+            "crossover": "Persilangan",
+            "siding": "Sepur Simpang/Cabang",
+            "yard": "Dipo / Emplasemen"
           }
         },
         "service_times": {
@@ -2491,6 +2523,10 @@
         },
         "shop": {
           "label": "Tipe"
+        },
+        "shower": {
+          "label": "Kamar Mandi",
+          "terms": "wc,toilet"
         },
         "siren/type": {
           "label": "Tipe",
@@ -2527,7 +2563,11 @@
         "source": {
           "label": "Sumber",
           "options": {
-            "osm notes": "Catatan OpenStreetMap "
+            "aerial imagery": "Foto Udara",
+            "local knowledge": "Pengetahuan Lokal",
+            "osm notes": "Catatan OpenStreetMap ",
+            "streetlevel imagery": "Foto 360 Jalan",
+            "survey": "Survei"
           }
         },
         "sport": {
@@ -2578,6 +2618,14 @@
           },
           "placeholder": "Tak Diketahui"
         },
+        "structure_canal": {
+          "label": "Struktur",
+          "options": {
+            "bridge": "Jembatan",
+            "tunnel": "Terowongan"
+          },
+          "placeholder": "Tidak diketahui"
+        },
         "structure_power": {
           "label": "Struktur"
         },
@@ -2604,16 +2652,18 @@
         "substation": {
           "label": "Tipe",
           "options": {
-            "distribution": "Daerah Distribusi",
-            "industrial": "Industri"
+            "distribution": "Distribusi",
+            "industrial": "Industri",
+            "minor_distribution": "Distribusi Lokal (minor)"
           }
         },
         "substation_pipeline": {
           "label": "Tipe",
           "options": {
-            "distribution": "Daerah Distribusi",
+            "distribution": "Distribusi",
             "industrial": "Industri",
-            "measurement": "Penghitungan"
+            "measurement": "Penghitungan",
+            "minor_distribution": "Distribusi Lokal (minor)"
           }
         },
         "supervised": {
@@ -2745,6 +2795,9 @@
             "rumble_strip": "Pita Kejut"
           }
         },
+        "traffic_sign": {
+          "label": "Rambu Lalu Lintas"
+        },
         "traffic_sign/direction": {
           "label": "Arah yang Dipengaruhi",
           "options": {
@@ -2807,7 +2860,7 @@
         },
         "usage_rail": {
           "options": {
-            "branch": "Nama Cabang/KCP",
+            "branch": "Cabang",
             "industrial": "Industri",
             "main": "Utama",
             "military": "Militer",
@@ -2830,12 +2883,13 @@
           "options": {
             "bus": "Bis",
             "monorail": "Monorel",
-            "subway": "Jalur Bawah Tanah",
+            "subway": "Kereta Metro",
             "trolleybus": "Bis Troli"
           }
         },
         "vending": {
           "options": {
+            "bicycle_tube": "Tambal Ban Sepeda",
             "coffee": "Kopi",
             "drinks": "Minuman",
             "food": "Makanan",
@@ -2847,6 +2901,13 @@
         },
         "via": {
           "label": "Melalui"
+        },
+        "visibility": {
+          "options": {
+            "area": "Di atas 20m (65ft)",
+            "house": "Hingga 5m (16ft)",
+            "street": "5 sampai 20m (16 sampai 65ft)"
+          }
         },
         "volcano/status": {
           "options": {
@@ -2967,7 +3028,7 @@
           "name": "Terminal Bandar Udara,Terminal Bandara"
         },
         "amenity": {
-          "name": "Keramahan"
+          "name": "Fasilitas"
         },
         "amenity/animal_shelter": {
           "name": "Penampungan Hewan",
@@ -2992,14 +3053,20 @@
           "terms": "Parkir Sepeda"
         },
         "amenity/bicycle_parking/building": {
-          "name": "Garasi Parkir Sepeda"
+          "name": "Garasi Parkir Sepeda",
+          "terms": "garasi sepeda, gedung parkir, parkir sepeda"
         },
         "amenity/bicycle_parking/lockers": {
-          "name": "Loker Sepeda"
+          "name": "Loker Sepeda",
+          "terms": "parkir sepeda"
+        },
+        "amenity/bicycle_parking/shed": {
+          "name": "Parkir Sepeda Teduh",
+          "terms": "Parkir Sepeda,"
         },
         "amenity/bicycle_rental": {
           "name": "Penyewaan Sepeda",
-          "terms": "Penyewaan Sepeda"
+          "terms": "Sewa Sepeda"
         },
         "amenity/bicycle_wash": {
           "name": "Tempat Cuci Sepeda"
@@ -3017,6 +3084,13 @@
         "amenity/cafe": {
           "name": "Kafe",
           "terms": "Warung Kopi,bistro,teh,thai,kopi,kafe,cafe,warkop,jamu"
+        },
+        "amenity/cafe/bubble_tea": {
+          "name": "Teh Boba",
+          "terms": "boba,bubble milk tea,pearl milk tea,taiwanese tea drink,tapioca,pearl tea,boba drink"
+        },
+        "amenity/cafe/coffee_shop": {
+          "name": "Kedai Kopi"
         },
         "amenity/car_rental": {
           "name": "Penyewaan Mobil",
@@ -3147,7 +3221,8 @@
           "terms": "Kantor Pemadam Kebakaran, damkar"
         },
         "amenity/food_court": {
-          "name": "Restoran Lesehan"
+          "name": "Taman Jajan",
+          "terms": "food court, taman jajan, lesehan, pujasera, pusat jajanan serbaada, food court"
         },
         "amenity/fountain": {
           "name": "Air Mancur"
@@ -3185,6 +3260,10 @@
         "amenity/motorcycle_parking": {
           "name": "Parkir Motor"
         },
+        "amenity/motorcycle_rental": {
+          "name": "Sewa Sepeda Bermotor",
+          "terms": "rental motor, rental moped,"
+        },
         "amenity/music_school": {
           "name": "Sekolah Musik"
         },
@@ -3218,7 +3297,8 @@
           "terms": "gereja,kristen,basilika,bethel,katedral,mimbar,biara,rumah tuhan,rumah doa,rumah pujian,paroki"
         },
         "amenity/place_of_worship/hindu": {
-          "name": "Pura"
+          "name": "Pura",
+          "terms": "candi"
         },
         "amenity/place_of_worship/jewish": {
           "name": "Sinagoge",
@@ -3247,6 +3327,10 @@
         "amenity/prep_school": {
           "name": "Tempat Bimbel",
           "terms": "bimbel, bimbingan belajar, tutor, les, tempat les"
+        },
+        "amenity/prison": {
+          "name": "Rutan",
+          "terms": "rumah tahanan, lapas, lembaga pemasyarakatan, penjara"
         },
         "amenity/pub": {
           "terms": "holy wing"
@@ -3336,6 +3420,10 @@
         "amenity/shelter/public_transport": {
           "name": "Hotel Transit"
         },
+        "amenity/shower": {
+          "name": "Kamar Mandi",
+          "terms": "wc,toilet"
+        },
         "amenity/smoking_area": {
           "name": "Ruang khusus merokok"
         },
@@ -3356,7 +3444,7 @@
           "terms": "Telepon"
         },
         "amenity/theatre": {
-          "name": "Teater",
+          "name": "Teater / Taman Budaya",
           "terms": "Teater"
         },
         "amenity/toilets": {
@@ -3397,6 +3485,9 @@
         },
         "area": {
           "terms": "Daerah, Kawasan, Wilayah, Poligon, Polygon, Kurva"
+        },
+        "area/footway": {
+          "name": "Area Gang"
         },
         "area/highway/traffic_island": {
           "name": "Pulau Jalan"
@@ -3460,6 +3551,10 @@
         },
         "barrier/hedge": {
           "name": "Pagar Tanaman"
+        },
+        "barrier/height_restrictor": {
+          "name": "Pembatas Ketinggian",
+          "terms": "height barrier,height restriction barrier,maxheight,max height,maximum height measurer,tinggi max"
         },
         "barrier/kerb": {
           "name": "Kerb Jalan"
@@ -3852,6 +3947,9 @@
         "ford_line": {
           "name": "Arung sebidang dengan air"
         },
+        "golf/cartpath": {
+          "name": "Jalur Mobil Golf"
+        },
         "golf/fairway": {
           "name": "Jalur Golf"
         },
@@ -3860,6 +3958,9 @@
         },
         "golf/hole": {
           "name": "Lubang Golf"
+        },
+        "golf/path": {
+          "name": "Jalur Pejalan Kaki Golf"
         },
         "healthcare": {
           "name": "Fasilitas Kesehatan",
@@ -3918,7 +4019,7 @@
           "terms": "bridleway,kuda,jejak,jalan kuda"
         },
         "highway/bus_stop": {
-          "name": "Perhentian Bus"
+          "name": "Halte Bus"
         },
         "highway/construction": {
           "name": "Jalan dalam Pembangunan"
@@ -3930,13 +4031,24 @@
         "highway/crossing": {
           "name": "Penyebrangan"
         },
+        "highway/crossing/traffic_signals": {
+          "name": "Tempat Penyebrangan dengan Lalin",
+          "terms": "zebra cross, pelican cross"
+        },
         "highway/crossing/uncontrolled": {
           "name": "Tempat Penyebrangan / Zebra Kros"
         },
         "highway/cycleway": {
-          "name": "Jalur Sepeda"
+          "name": "Jalur Sepeda",
+          "terms": "jalur sepeda"
         },
         "highway/cycleway/crossing": {
+          "name": "Jalur Penyebrangan Sepeda"
+        },
+        "highway/cycleway/crossing/bicycle_foot": {
+          "name": "Jalur Penyebrangan Sepeda & Pejalan Kaki"
+        },
+        "highway/cycleway/crossing/unmarked": {
           "name": "Jalur Penyebrangan Sepeda"
         },
         "highway/emergency_access_point": {
@@ -3953,10 +4065,15 @@
         },
         "highway/footway": {
           "name": "Jalur Pejalan Kaki Terpisah",
-          "terms": "Pejalan Kaki, jogging track, joging trek,"
+          "terms": "Pejalan Kaki, jogging track, joging trek, gang, gang sempit"
         },
         "highway/footway/crossing": {
-          "name": "Tempat Penyebrangan"
+          "name": "Tempat Penyebrangan",
+          "terms": "zebra cross, pelican cross"
+        },
+        "highway/footway/crossing/traffic_signals": {
+          "name": "Tempat Penyebrangan dengan Lalin",
+          "terms": "zebra cross, pelican cross"
         },
         "highway/footway/crossing/uncontrolled": {
           "name": "Tempat Penyebrangan / Zebra Kros"
@@ -3983,14 +4100,28 @@
           "terms": "Simpang susun / Jalan keluar"
         },
         "highway/motorway_link": {
-          "name": "Jalan Tol",
+          "name": "Jalan Penghubung Tol",
           "terms": "Jalan penghubung bebas hambatan"
         },
         "highway/path": {
-          "name": "Jalur"
+          "name": "Jalur (umum)"
+        },
+        "highway/path/crossing": {
+          "name": "Jalur Penyebrangan Sepeda & Pejalan Kaki"
+        },
+        "highway/path/crossing/traffic_signals": {
+          "name": "Jalur Penyebrangan Sepeda & Pejalan Kaki dengan Lalin"
+        },
+        "highway/path/crossing/uncontrolled": {
+          "name": "Jalur Penyebrangan Sepeda & Pejalan Kaki Bermarka"
+        },
+        "highway/pedestrian_area": {
+          "name": "Area Pejalan Kaki",
+          "terms": "square, alun-alun, pedestrian"
         },
         "highway/pedestrian_line": {
-          "name": "Jalan Hanya Khusus Pejalan Kaki"
+          "name": "Jalan Hanya Khusus Pejalan Kaki",
+          "terms": "jalan pedestrian, jalan alun-alun, jalan square,"
         },
         "highway/primary": {
           "name": "Jalan Provinsi",
@@ -4143,8 +4274,14 @@
           "name": "Tugu Peringatan",
           "terms": "Tugu Peringatan"
         },
+        "historic/memorial/blue_plaque-GB-IE": {
+          "name": "Plakat Biru"
+        },
         "historic/memorial/plaque": {
           "name": "Plakat Peringatan"
+        },
+        "historic/memorial/stolperstein-EU": {
+          "name": "Batu Sandungan"
         },
         "historic/monument": {
           "name": "Monumen",
@@ -4211,6 +4348,10 @@
         "landuse/allotments": {
           "name": "Bidang Tanah Kebun Komunitas"
         },
+        "landuse/aquaculture": {
+          "name": "Budidaya Air",
+          "terms": "tambak, kolam, tiram, bandeng, udang, lobster, kepiting, ikan laut, peternakan laut, krustasea, alga, aquafarming, mussel, marikultur, algaculture"
+        },
         "landuse/basin": {
           "name": "Cekungan"
         },
@@ -4228,6 +4369,10 @@
         "landuse/construction": {
           "name": "Area Konstruksi",
           "terms": "pembangunan, bangun, konstruksi"
+        },
+        "landuse/education": {
+          "name": "Kawasan Pendidikan",
+          "terms": "fasilitas pendidikan, kampus, sekolah"
         },
         "landuse/farm": {
           "name": "Pertanian"
@@ -4428,6 +4573,9 @@
           "name": "Lapangan Basket",
           "terms": "Lapangan Basket"
         },
+        "leisure/pitch/equestrian": {
+          "name": "Lapangan Pacuan Kuda"
+        },
         "leisure/pitch/skateboard": {
           "name": "Arena Papan Seluncur",
           "terms": "Skating, Skateboarding"
@@ -4457,6 +4605,13 @@
         },
         "leisure/sports_centre": {
           "name": "Gedung Pusat Olahraga"
+        },
+        "leisure/sports_centre/climbing": {
+          "name": "Panjat Tebing",
+          "terms": "Climbing Gym, panjat tebing, panjat"
+        },
+        "leisure/sports_centre/horse_racing": {
+          "name": "Lapangan Balapan Kuda"
         },
         "leisure/stadium": {
           "name": "Stadion",
@@ -4504,6 +4659,10 @@
         },
         "man_made/chimney": {
           "name": "Cerobong"
+        },
+        "man_made/clarifier": {
+          "name": "Tangki Clarifier",
+          "terms": "air limbah"
         },
         "man_made/crane/portal_crane": {
           "name": "Derek portal"
@@ -4615,7 +4774,8 @@
           "terms": "Perigi"
         },
         "man_made/water_works": {
-          "name": "Instalasi Penyedia Air Minum"
+          "name": "Instalasi Penyedia Air Minum",
+          "terms": "SPAM, PAM, PDAM, air minum"
         },
         "man_made/watermill": {
           "name": "Kincir Air Penggilingan"
@@ -4757,8 +4917,8 @@
           "terms": "meander"
         },
         "natural/water/pond": {
-          "name": "Empang",
-          "terms": "Air"
+          "name": "Kolam",
+          "terms": "Air, kolam, empang"
         },
         "natural/water/reservoir": {
           "name": "Waduk",
@@ -4771,6 +4931,10 @@
         "natural/water/stream": {
           "name": "Badan Air",
           "terms": "tubuh air"
+        },
+        "natural/water/wastewater": {
+          "name": "Kolam Air Limbah",
+          "terms": "air limbah"
         },
         "natural/wetland": {
           "name": "Lahan Basah"
@@ -4957,7 +5121,7 @@
         },
         "office/water_utility": {
           "name": "Kantor PAM",
-          "terms": "Kantor PDAM, kantor air minum"
+          "terms": "kantor SPAM, kantor PAM, kantor PDAM, kantor air minum"
         },
         "pipeline": {
           "name": "Fitur Jalur Perpipaan"
@@ -4996,14 +5160,13 @@
           "name": "Persegi"
         },
         "place/suburb": {
-          "name": "Desa / Kelurahan",
           "terms": "nagari, dukuh, dusun, jorong"
         },
         "place/town": {
           "name": "Kota"
         },
         "place/village": {
-          "name": "Desa"
+          "name": "Kelurahan/Desa/Dusun"
         },
         "playground": {
           "name": "Wahana Taman Bermain"
@@ -5027,7 +5190,7 @@
           "name": "Fitur Daya\nFitur Kelistrikan\nEnergi\nListrik\nTenaga\nPLN"
         },
         "power/generator": {
-          "name": "Generator Listrik"
+          "name": "Pembangkit Listrik"
         },
         "power/generator/method/photovoltaic/location/roof": {
           "name": "Sel Surya Atap Bangunan"
@@ -5053,6 +5216,9 @@
           "name": "PLTG",
           "terms": "pembangkit listrik"
         },
+        "power/plant/source/hydro": {
+          "name": "PLTA"
+        },
         "power/plant/source/method/photovoltaic": {
           "name": "PLTS",
           "terms": "pembangkit listrik, surya"
@@ -5066,7 +5232,8 @@
           "terms": "pembangkit listrik"
         },
         "power/plant/source/solar": {
-          "name": "PLTS"
+          "name": "PLTS",
+          "terms": "panel surya, sel surya"
         },
         "power/plant/source/waste": {
           "name": "PLTSa",
@@ -5080,7 +5247,8 @@
           "name": "Tiang Listrik"
         },
         "power/substation": {
-          "name": "Terminal"
+          "name": "Jaringan Distribusi Listrik",
+          "terms": "listrik, terminal, substation, gardu, trafo, transformer"
         },
         "power/tower": {
           "name": "Menara Tegangan Tinggi"
@@ -5089,13 +5257,23 @@
           "name": "Trafo"
         },
         "public_transport/platform/bus_point": {
-          "name": "Perhentian Bis"
+          "name": "Halte Bis"
         },
         "public_transport/platform/bus_tram_point": {
           "name": "Halte Bis dan Tram"
         },
+        "public_transport/platform/subway": {
+          "name": "Peron Kereta Metro",
+          "terms": "MRT,subway"
+        },
+        "public_transport/platform/subway_point": {
+          "name": "Stasiun / Peron Kereta Metro"
+        },
         "public_transport/platform/train": {
-          "name": "Platform Kereta"
+          "name": "Peron Kereta"
+        },
+        "public_transport/platform/tram": {
+          "name": "Peron Tram"
         },
         "public_transport/platform/trolleybus": {
           "name": "Peron Bis Troli"
@@ -5109,6 +5287,10 @@
         "public_transport/station_ferry": {
           "name": "Pelabuhan Feri"
         },
+        "public_transport/station_subway": {
+          "name": "Stasiun Kereta Metro",
+          "terms": "MRT,subway"
+        },
         "public_transport/station_train": {
           "name": "Stasiun Kereta"
         },
@@ -5118,6 +5300,9 @@
         "railway/abandoned": {
           "name": "Rel Terhapus"
         },
+        "railway/buffer_stop": {
+          "name": "Sepur Badug / Rel Buntu"
+        },
         "railway/construction": {
           "name": "Rel KA dalam Pembangunan",
           "terms": "Railway Under Construction, bangun, konstruksi"
@@ -5126,7 +5311,7 @@
           "name": "Rel Tidak Terpakai"
         },
         "railway/level_crossing": {
-          "name": "Penyeberangan Jalan-Rel",
+          "name": "Perlintasan Rel Sebidang",
           "terms": "penyeberangan,penyebrangan,zebra cross,crossing"
         },
         "railway/light_rail": {
@@ -5143,7 +5328,7 @@
           "terms": "Narrow Gauge Track"
         },
         "railway/platform": {
-          "name": "Platform Kereta"
+          "name": "Peron Kereta"
         },
         "railway/preserved": {
           "name": "Rel Bersejarah"
@@ -5158,11 +5343,14 @@
           "name": "Stasiun Kereta"
         },
         "railway/subway": {
-          "name": "Rel Kereta Bawah Tanah\nRel Subway\nTrek Subway",
-          "terms": "MRT"
+          "name": "Rel Kereta Metro",
+          "terms": "MRT,subway"
         },
         "railway/subway_entrance": {
-          "name": "Pintu Terowongan"
+          "name": "Pintu Terowongan Kereta Metro"
+        },
+        "railway/switch": {
+          "name": "Wesel"
         },
         "railway/tram": {
           "name": "Rel Trem\nRel Tram\nTrek Trem\nTrek Tram",
@@ -5177,6 +5365,10 @@
         "route/ferry": {
           "name": "Rute Feri",
           "terms": "Kapal, Laut"
+        },
+        "seamark/mooring": {
+          "name": "Bersandar",
+          "terms": "berlabuh, buoy"
         },
         "shop": {
           "name": "Toko"
@@ -5288,6 +5480,9 @@
           "name": "Jasa Cuci Kering",
           "terms": "Dry Clean"
         },
+        "shop/electrical": {
+          "terms": "Kabel, listrik, kipas, LED, lampu, daya, kawat"
+        },
         "shop/electronics": {
           "name": "Toko Elektronik"
         },
@@ -5350,6 +5545,10 @@
         },
         "shop/hifi": {
           "name": "Toko Hifi"
+        },
+        "shop/houseware": {
+          "name": "Toko Parabot Rumah",
+          "terms": "perabotan"
         },
         "shop/interior_decoration": {
           "name": "Toko Dekorasi Interior",
@@ -5428,6 +5627,10 @@
         "shop/photo": {
           "name": "Toko Fotografi"
         },
+        "shop/psychic": {
+          "name": "Dukun",
+          "terms": "cenayang, indigo"
+        },
         "shop/pyrotechnics": {
           "name": "Toko Kembang Api",
           "terms": "<translate with synonyms or related terms for 'Toko Bunga Api', separated by commas>"
@@ -5472,6 +5675,9 @@
         "shop/tea": {
           "name": "Toko Teh",
           "terms": "<translate with synonyms or related terms for 'Kedai teh', separated by commas>"
+        },
+        "shop/telecommunication": {
+          "name": "Toko telekomunikasi"
         },
         "shop/ticket": {
           "name": "Penjual Tiket"
@@ -5556,13 +5762,15 @@
           "terms": "Atraksi Wisata, tempat wisata, objek wisata, rekreasi, healing"
         },
         "tourism/camp_site": {
-          "name": "Perkemahan\nTempat Berkemah"
+          "name": "Perkemahan",
+          "terms": "kemah, berkemah, kemping"
         },
         "tourism/caravan_site": {
           "name": "Taman RV"
         },
         "tourism/chalet": {
-          "name": "Vila Liburan\nPondok Liburan"
+          "name": "Vila Liburan\nPondok Liburan",
+          "terms": "vila, Kabin Liburan, Rumah Liburan, Pondok, Penginapan, Akomodasi Semalam, Kabin Liburan, Rumah Liburan"
         },
         "tourism/gallery": {
           "name": "Museum Kesenian"
@@ -5620,6 +5828,16 @@
           "name": "Pita Kejut",
           "terms": "Marka Kejut, Pita Penggaduh, Garis Kejut, Rumble Strip"
         },
+        "traffic_sign": {
+          "name": "Rambu Lalu Lintas",
+          "terms": "rambu lalin, marka"
+        },
+        "traffic_sign/city_limit": {
+          "name": "Rambu Batas Wilayah"
+        },
+        "traffic_sign/maxspeed": {
+          "name": "Rambu Batas Kecepatan"
+        },
         "type/boundary": {
           "name": "Batas"
         },
@@ -5666,6 +5884,10 @@
         "type/route/road": {
           "name": "Rute Jalan"
         },
+        "type/route/subway": {
+          "name": "Rute Kereta Metro",
+          "terms": "MRT,subway"
+        },
         "type/route/train": {
           "name": "Rute Kereta"
         },
@@ -5692,6 +5914,9 @@
         },
         "waterway/drain": {
           "name": "Saluran / Irigasi"
+        },
+        "waterway/lock_gate": {
+          "name": "Pintu Air"
         },
         "waterway/river": {
           "name": "Sungai",

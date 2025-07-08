@@ -5,7 +5,6 @@
       "kiribatiwomeninmapping": "参与绘图的基里巴斯妇女",
       "mappingbotswana": "博茨瓦纳地图绘制",
       "maptimebogota": "波哥大地图时间",
-      "maptimehrva": "地圖時間HRVA",
       "opensourcesanjose": "开源圣何塞",
       "openstreetmapaachen": "開放街圖亞琛",
       "openstreetmapafghanistan": "OpenStreetMap 阿富汗",
@@ -32,9 +31,9 @@
       "openstreetmapbosniaandherzegovina": "OpenStreetMap 波斯尼亞和黑塞哥維那",
       "openstreetmapbrasil": "OpenStreetMap 巴西",
       "openstreetmapbrasilia": "OpenStreetMap 巴西利亞",
+      "openstreetmapbrasilminasgerais": "開放街圖巴西米納斯吉拉斯州",
       "openstreetmapbremen": "OpenStreetMap 不來梅",
       "openstreetmapbulgaria": "OpenStreetMap 保加利亞",
-      "openstreetmapburkinafaso": "OpenStreetMap 布基納法索",
       "openstreetmapburundi": "OpenStreetMap 布隆迪",
       "openstreetmapbzh": "OpenStreetMap 布列塔尼",
       "openstreetmapcambodia": "OpenStreetMap 柬埔寨",
@@ -158,6 +157,7 @@
       "openstreetmappiemonte": "開放街圖皮埃蒙特",
       "openstreetmappoland": "OpenStreetMap 波蘭",
       "openstreetmapportugal": "OpenStreetMap 葡萄牙",
+      "openstreetmappunjab": "開放街圖旁遮普",
       "openstreetmaprdc": "OpenStreetMap 剛果民主共和國",
       "openstreetmaprennes": "OpenStreetMap 雷恩",
       "openstreetmapreunion": "OpenStreetMap 留尼旺",
@@ -168,7 +168,6 @@
       "openstreetmapsaudiarabia": "OpenStreetMap 沙地阿拉伯",
       "openstreetmapsenegal": "OpenStreetMap 塞內加爾",
       "openstreetmapserbia": "OpenStreetMap 塞爾維亞",
-      "openstreetmapseychelles": "OpenStreetMap 塞舌爾",
       "openstreetmapsierraleone": "OpenStreetMap 塞拉利昂",
       "openstreetmapsingapore": "OpenStreetMap 新加坡",
       "openstreetmapslovenia": "OpenStreetMap 斯洛文尼亞",
@@ -179,7 +178,6 @@
       "openstreetmapsudan": "OpenStreetMap 蘇丹",
       "openstreetmapsweden": "OpenStreetMap 瑞典",
       "openstreetmapswitzerland": "OpenStreetMap 瑞士",
-      "openstreetmapsyria": "OpenStreetMap 敘利亞",
       "openstreetmaptaiwan": "OpenStreetMap 臺灣",
       "openstreetmaptanzania": "OpenStreetMap 坦桑尼亞",
       "openstreetmapthailand": "OpenStreetMap 泰國",
@@ -286,15 +284,15 @@
         "description": "在 TikTok 追蹤我們"
       },
       "twitter": {
-        "name": "𝕏 上的 {community}",
-        "description": "在 X 追蹤我們"
+        "name": "X 上的 {community}",
+        "description": "在 X 上追蹤我們"
       },
       "wiki": {
         "name": "{community} 的維基專題"
       },
       "x": {
-        "name": "𝕏 上的 {community}",
-        "description": "在 X 追蹤我們"
+        "name": "X 上的 {community}",
+        "description": "在 X 上追蹤我們"
       },
       "xmpp": {
         "name": "{community} 的 XMPP",
@@ -545,9 +543,6 @@
     "de-mainz-signal": {
       "description": "美茵茲、威斯巴登及周邊地區的 OpenStreetMap"
     },
-    "de-mainz-telegram": {
-      "description": "美因茨一帶的開放街圖"
-    },
     "de-mainz-wiki": {
       "description": "美因茨一帶的開放街圖"
     },
@@ -664,9 +659,6 @@
     "hu-matrix": {
       "extendedDescription": "有關地圖主題的開放街圖聊天群組，為 OSM 社群支援論壇其中之一"
     },
-    "hu-meetup": {
-      "description": "在匈牙利组织聚会的平台"
-    },
     "hu-mobilizon": {
       "name": "Mobilizon 上的 {community}",
       "description": "開放街圖匈牙利社群的未來活動"
@@ -676,10 +668,13 @@
       "description": "探索匈牙利的啟動畫地圖任務"
     },
     "hu-website": {
-      "description": "我们帮助在匈牙利发展和改善OpenStreetMap。"
+      "description": "匈牙利開放街圖社群的網站"
     },
     "hu-wiki": {
       "description": "{community} Wiki 頁面"
+    },
+    "hu-youtube": {
+      "description": "開放街圖匈牙利聚會直播串流與錄影"
     },
     "humanitarian-osm-tr-slack": {
       "name": "人道救援開放街圖土耳其 Slack",
@@ -797,7 +792,7 @@
       "description": "讓滑鐵盧地區的低碳路徑更容易探索。"
     },
     "MapRVA": {
-      "description": "MapRVA 聚會"
+      "description": "MapRVA 是維吉尼亞州里奇蒙市的一群地圖愛好者，他們使用 OpenStreetMap 建立並分享本市的地理空間資料。"
     },
     "maptime-bogota-facebook": {
       "name": "地圖時間波哥大",
@@ -858,6 +853,9 @@
     },
     "me-telegram": {
       "description": "歡迎所有人加入！在 {signupUrl} 註冊"
+    },
+    "minas_gerais-discord": {
+      "extendedDescription": "歡迎加入開放街圖巴西米納斯吉拉斯州的 Discord！我們是一個由熱衷於為巴西米納斯吉拉斯州建立詳細、開放原始碼地圖的圖客所組成的社群。加入我們來協作、分享技巧，並幫助 MG 的地圖成為開放街圖上最好的地圖。無論您是新手或專家，讓我們一起製圖！"
     },
     "mm-facebook": {
       "extendedDescription": "在緬甸畫地圖嗎？有問題，想要與社群互動？來  {url} 加入我們，歡迎所有人。"
@@ -1125,6 +1123,13 @@
       "description": "FSHM Puducherry 郵件清單用來討論在 Puducherry 的製圖與其他事情。",
       "extendedDescription": "FSHM 會組織關於自由軟體／硬體、科技、行動與開放街圖的活動。"
     },
+    "osm-punjab-matrix": {
+      "description": "我們一起繪製旁遮普。加入我們的 Matrix 群組",
+      "extendedDescription": "OSM 旁遮普非官方的聊天室，也與 OSMPunjab Telegram 群組同步"
+    },
+    "osm-punjab-telegram": {
+      "description": "我們一起繪製旁遮普。加入我們的 Telegram 群組。{url}"
+    },
     "OSM-Rome-meetup": {
       "description": "改善羅馬區域的 OpenStreetMap",
       "extendedDescription": "我們是一群熱情討論和分享自由地理資料集知識的人，特別是開放街圖的資料，以及管理、編輯和顯示地理資料的開放地理空間軟體，以及在拉吉歐推廣的團體。"
@@ -1247,9 +1252,6 @@
     "talk-mg": {
       "description": "位于马达加斯加的 OpenStreetMap 贡献者、社区和用户分享和讨论的地方。"
     },
-    "talk-nz": {
-      "description": "紐西蘭 OSM 社群聊天群"
-    },
     "talk-pacific": {
       "description": "莫阿納/大洋洲/太平洋一帶人民的 OSM 地區郵件論壇",
       "extendedDescription": "我們這個郵件論壇能夠支援所有太平洋的子民，不論他們的多元背景與動機，能夠分享想法、問題、專案與其他這片海域有關的開放街圖事務。"
@@ -1290,9 +1292,6 @@
     "uk-london-wiki": {
       "description": "{community} Wiki 頁面"
     },
-    "uk-loomio": {
-      "name": "開放街圖英國的 Loomio"
-    },
     "us-discourse": {
       "description": "討論開放街圖在美國事物的 Discourse 論壇"
     },
@@ -1307,9 +1306,6 @@
     "uy-irc": {
       "description": "在 irc.freenode.org (端口 6667)上加入 #{account} ",
       "extendedDescription": "在 irc.freenode.org 上加入 #{account} "
-    },
-    "vn-mailinglist": {
-      "description": "開放街圖越南或越南語的郵件論壇"
     },
     "vn-wiki": {
       "description": "{community} Wiki 頁面"

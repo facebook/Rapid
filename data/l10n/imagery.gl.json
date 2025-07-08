@@ -4,6 +4,9 @@
       "Bing": {
         "description": "Imaxes satelitais e aéreas."
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "Imaxes satelitais post-procesadas do Sentinel"
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 sen nubes - https://s2maps.eu polo EOX IT Services GmbH (Contén os datos do Copernicus Sentinel modificados no 2017 e 2018)"
@@ -21,6 +24,12 @@
         "description": "Imaxes satelitais post-procesadas do Sentinel"
       },
       "EOXAT2022CLOUDLESS": {
+        "description": "Imaxes satelitais post-procesadas do Sentinel"
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Imaxes satelitais post-procesadas do Sentinel"
+      },
+      "EOXAT2024CLOUDLESS": {
         "description": "Imaxes satelitais post-procesadas do Sentinel"
       },
       "EsriWorldImagery": {

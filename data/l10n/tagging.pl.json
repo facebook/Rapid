@@ -8,6 +8,9 @@
         "category-building": {
           "name": "Budynki"
         },
+        "category-climbing": {
+          "name": "Wspinaczka"
+        },
         "category-golf": {
           "name": "Golf"
         },
@@ -33,10 +36,10 @@
           "name": "Drogi główne"
         },
         "category-road_minor": {
-          "name": "Pozostałe drogi"
+          "name": "Drogi lokalne"
         },
         "category-road_service": {
-          "name": "Drogi serwisowe"
+          "name": "Drogi dojazdowe"
         },
         "category-route": {
           "name": "Trasy i szlaki"
@@ -227,6 +230,18 @@
         "air_conditioning": {
           "label": "Klimatyzacja",
           "terms": "klimatyzacja, chłodzenie"
+        },
+        "aircraft/type": {
+          "label": "Rodzaj",
+          "options": {
+            "airliner": "Pasażerski",
+            "cargo": "Towarowy",
+            "fixed_wing": "Stałopłat",
+            "glider": "Szybowiec",
+            "helicopter": "Śmigłowiec",
+            "jet": "Odrzutowy",
+            "military": "Wojskowy"
+          }
         },
         "alt_name": {
           "label": "Nazwa alternatywna",
@@ -779,6 +794,35 @@
         "circumference": {
           "label": "Obwód (pierśnica)",
           "terms": "obwód, pierśnica"
+        },
+        "climbing/bolts": {
+          "label": "Liczba punktów asekuracyjnych"
+        },
+        "climbing/grade/french": {
+          "label": "Trudność (skala francuska)",
+          "terms": "trudność, skala francuska"
+        },
+        "climbing/grade/saxon": {
+          "label": "Trudność (skala saksońska)",
+          "terms": "trudność, skala saksońska"
+        },
+        "climbing/grade/uiaa": {
+          "label": "Trudność (skala UIAA)",
+          "terms": "trudność, skala uiaa, skala tatrzańska"
+        },
+        "climbing/grade/yds_class": {
+          "label": "Trudność (skala amerykańska)",
+          "terms": "trudność, skala amerykańska, skala yds"
+        },
+        "climbing/length": {
+          "label": "Długość (metry)",
+          "terms": "długość"
+        },
+        "climbing/sport": {
+          "label": "Wspinaczka sportowa"
+        },
+        "climbing/trad": {
+          "label": "Wspinaczka tradycyjna"
         },
         "clothes": {
           "label": "Ubrania",
@@ -1403,6 +1447,10 @@
             "yes": "Dozwolone"
           },
           "terms": "psy"
+        },
+        "dog_check": {
+          "label": "Psy dozwolone",
+          "terms": "psy dozwolone"
         },
         "door": {
           "label": "Drzwi"
@@ -2324,6 +2372,10 @@
           "label": "Producent",
           "terms": "producent"
         },
+        "manufacturer/wikidata": {
+          "label": "Wikidata producenta",
+          "terms": "wikidata producenta"
+        },
         "map_size": {
           "label": "Zasięg mapy"
         },
@@ -2502,6 +2554,10 @@
         },
         "model": {
           "terms": "model, typ"
+        },
+        "model/wikidata": {
+          "label": "Wikidata modelu",
+          "terms": "wikidata modelu, wikidane modelu"
         },
         "mooring": {
           "label": "Cumowanie",
@@ -3341,6 +3397,28 @@
           "label": "Kolor dachu",
           "terms": "kolor dachu"
         },
+        "roof/height": {
+          "label": "Wysokość dachu (metry)",
+          "terms": "wysokość dachu"
+        },
+        "roof/shape": {
+          "label": "Kształt dachu",
+          "options": {
+            "cone": "Stożkowy",
+            "dome": "Kopulasty",
+            "flat": "Płaski",
+            "gabled": "Dwuspadowy",
+            "gambrel": "Mansardowy czterospadowy",
+            "half-hipped": "Naczółkowy",
+            "hipped": "Czterospadowy",
+            "mansard": "Mansardowy dwuspadowy",
+            "onion": "Hełmowy",
+            "pyramidal": "Namiotowy",
+            "round": "Półkolisty",
+            "skillion": "Jednospadowy"
+          },
+          "terms": "kształt dachu"
+        },
         "room": {
           "label": "Rodzaj"
         },
@@ -3683,8 +3761,7 @@
             "osm notes": "Uwagi OpenStreetMap",
             "streetlevel imagery": "Zdjęcia z poziomu ulicy",
             "survey": "Wizyta w terenie"
-          },
-          "terms": "źródła"
+          }
         },
         "source/population": {
           "label": "Źródło liczby ludności"
@@ -3812,6 +3889,14 @@
           },
           "placeholder": "Nieokreślona",
           "terms": "struktura, konstrukcja"
+        },
+        "structure_canal": {
+          "label": "Konstrukcja",
+          "options": {
+            "bridge": "Most",
+            "tunnel": "Tunel"
+          },
+          "placeholder": "Nieokreślone"
         },
         "structure_power": {
           "label": "Konstrukcja",
@@ -4497,7 +4582,7 @@
           "terms": "szerokość"
         },
         "wikidata": {
-          "terms": "wikidata"
+          "terms": "wikidata, wikidane"
         },
         "wikimedia_commons": {
           "label": "Plik na Wikimedia Commons",
@@ -4783,6 +4868,10 @@
         "amenity/cafe/coffee_shop": {
           "name": "Kawiarnia (coffeehouse)",
           "terms": "kawiarnia, bar kawowy"
+        },
+        "amenity/cafe/teahouse": {
+          "name": "Herbaciarnia",
+          "terms": "herbaciarnia"
         },
         "amenity/car_pooling": {
           "name": "Punkt carpoolingowy",
@@ -6418,6 +6507,18 @@
           "name": "Kwatera cmentarza",
           "terms": "kwatera cmentarza, kwatera cmentarna"
         },
+        "climbing/crag": {
+          "name": "Sektor wspinaczkowy",
+          "terms": "sektor wspinaczkowy, skała, ściana, skałka"
+        },
+        "climbing/route": {
+          "name": "Droga wspinaczkowa",
+          "terms": "droga wspinaczkowa, trasa wspinaczkowa"
+        },
+        "climbing/route_bottom": {
+          "name": "Początek drogi wspinaczkowej",
+          "terms": "początek drogi wspinaczkowej, droga wspinaczkowa, trasa wspinaczkowa"
+        },
         "club": {
           "name": "Klub",
           "terms": "klub"
@@ -6991,6 +7092,9 @@
           "name": "Przejście dla pieszych",
           "terms": "przejście dla pieszych, przejście, zebra, pasy"
         },
+        "highway/crossing/informal": {
+          "name": "Nieformalne przejście przez jezdnię"
+        },
         "highway/crossing/traffic_signals": {
           "name": "Przejście dla pieszych z sygnalizacją świetlną",
           "terms": "przejście dla pieszych z sygnalizacją świetlną, zebra z sygnalizacją świetlną, pasy z sygnalizacją świetlną, przejście dla pieszych ze światłami,  zebra ze światłami, pasy ze światłami"
@@ -7001,7 +7105,7 @@
         },
         "highway/crossing/unmarked": {
           "name": "Nieoznakowane przejście dla pieszych",
-          "terms": "nieoznakowane przejście dla pieszych"
+          "terms": "nieoznakowane przejście dla pieszych, sugerowane przejście dla pieszych, przejście sugerowane"
         },
         "highway/cycleway": {
           "name": "Droga rowerowa",
@@ -7106,7 +7210,7 @@
           "terms": "chodnik na wyspie azylu, wyspa azylu"
         },
         "highway/give_way": {
-          "name": "Znak \"ustąp pierwszeństwa\"",
+          "name": "Znak „ustąp pierwszeństwa”",
           "terms": "znak ustąp pierwszeństwa przejazdu, A-7, A7"
         },
         "highway/ladder": {
@@ -7127,14 +7231,14 @@
         },
         "highway/motorway": {
           "name": "Droga autostradowa",
-          "terms": "droga autostradowa"
+          "terms": "droga autostradowa,dwujezdniowa droga ekspresowa"
         },
         "highway/motorway_junction": {
           "name": "Węzeł dróg autostradowych",
-          "terms": "węzeł dróg autostradowych, wjazd na drogę autostradową, zjazd z drogi autostradowej, droga autostrada"
+          "terms": "węzeł dróg autostradowych, wjazd na drogę autostradową, wyjazd z drogi autostradowej, zjazd z drogi autostradowej, droga autostradowa"
         },
         "highway/motorway_link": {
-          "name": "Droga autostradowa – wjazd/zjazd",
+          "name": "Droga autostradowa – wjazd/wyjazd",
           "terms": "wjazd, wyjazd, zjazd, łącznik, rampa"
         },
         "highway/passing_place": {
@@ -7194,8 +7298,8 @@
           "terms": "tor motocrossowy, tor żużlowy, żużel, motocykle, tor wyścigowy, wyścigi"
         },
         "highway/residential": {
-          "name": "Droga lokalna",
-          "terms": "droga lokalna, droga osiedlowa"
+          "name": "Droga mieszkaniowa",
+          "terms": "droga mieszkaniowa, droga osiedlowa, droga lokalna"
         },
         "highway/rest_area": {
           "name": "Miejsce odpoczynku dla kierowców",
@@ -7219,7 +7323,7 @@
         },
         "highway/service": {
           "name": "Droga wewnętrzna",
-          "terms": "droga wewnętrzna, droga serwisowa, droga dojazdowa"
+          "terms": "droga wewnętrzna, droga serwisowa, droga dojazdowa, droga obsługowa"
         },
         "highway/service/alley": {
           "name": "Alley (alejka)",
@@ -7301,11 +7405,11 @@
           "terms": "początek szlaku, koniec szlaku, szlak, góry, trekking"
         },
         "highway/trunk": {
-          "name": "Droga główna",
-          "terms": "droga główna, droga szybkiego ruchu, droga ekspresowa"
+          "name": "Droga magistralna",
+          "terms": "droga magistralna, droga główna, droga szybkiego ruchu, droga ekspresowa"
         },
         "highway/trunk_link": {
-          "name": "Droga główna – zjazd/wjazd",
+          "name": "Droga magistralna – wjazd/wyjazd",
           "terms": "wjazd, wyjazd, zjazd, łącznik, rampa"
         },
         "highway/turning_circle": {
@@ -7317,12 +7421,16 @@
           "terms": "pętla do zawracania, zawracanie"
         },
         "highway/unclassified": {
-          "name": "Droga czwartorzędna",
-          "terms": "Droga czwartorzędna"
+          "name": "Droga lokalna",
+          "terms": "droga lokalna, droga niesklasyfikowana, droga czwartorzędna"
         },
         "historic": {
           "name": "Obiekt historyczny",
           "terms": "obiekt historyczny,miejsce historyczne,historia,zwiedzanie"
+        },
+        "historic/aircraft": {
+          "name": "Statek powietrzny",
+          "terms": "statek powietrzny, samolot, śmigłowiec, helikopter"
         },
         "historic/archaeological_site": {
           "name": "Stanowisko archeologiczne",
@@ -7371,6 +7479,10 @@
         "historic/memorial": {
           "name": "Pomnik / Miejsce pamięci",
           "terms": "pomnik, miejsce pamięci, upamiętnienie, rzeźba"
+        },
+        "historic/memorial/blue_plaque-GB-IE": {
+          "name": "Niebieska tablica",
+          "terms": "niebieska tablica, niebieska tabliczka"
         },
         "historic/memorial/plaque": {
           "name": "Tablica pamiątkowa",
@@ -7448,7 +7560,7 @@
         },
         "junction": {
           "name": "Skrzyżowanie",
-          "terms": "krzyżówka"
+          "terms": "węzeł, krzyżówka"
         },
         "landuse": {
           "name": "Zagospodarowanie terenu"
@@ -7625,8 +7737,8 @@
           "name": "Zbiornik retencyjny"
         },
         "landuse/residential": {
-          "name": "Zabudowa mieszkaniowa",
-          "terms": "zabudowa mieszkaniowa, teren zamieszkały"
+          "name": "Obszar mieszkalny",
+          "terms": "obszar mieszkalny, zabudowa mieszkaniowa, teren zamieszkały"
         },
         "landuse/residential/apartments": {
           "name": "Osiedle mieszkaniowe",
@@ -10830,6 +10942,10 @@
           "name": "Linia autobusowa ",
           "terms": "linia autobusowa, trasa autobusowa, autobusy"
         },
+        "type/route/climbing": {
+          "name": "Droga wspinaczkowa",
+          "terms": "droga wspinaczkowa, trasa wspinaczkowa"
+        },
         "type/route/detour": {
           "name": "Objazd",
           "terms": "objazd"
@@ -10905,6 +11021,14 @@
         "type/site": {
           "name": "Relacja grupująca",
           "terms": "relacja grupująca, grupowanie, wiązanie"
+        },
+        "type/site/climbing/area": {
+          "name": "Rejon wspinaczkowy",
+          "terms": "rejon wspinaczkowy"
+        },
+        "type/site/climbing/crag": {
+          "name": "Sektor wspinaczkowy",
+          "terms": "sektor wspinaczkowy, skała, ściana, skałka"
         },
         "type/waterway": {
           "name": "Ciek",

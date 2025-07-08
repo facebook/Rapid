@@ -52,6 +52,9 @@
         "aeroway": {
           "label": "തരം"
         },
+        "aircraft/type": {
+          "label": "തരം"
+        },
         "amenity": {
           "label": "തരം"
         },

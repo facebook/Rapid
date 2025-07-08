@@ -58,7 +58,7 @@
             },
             "designated": {
               "description": "Toegang toegestaan volgens bebording of specifieke, plaatselijke verordeningen",
-              "title": "Zoals aangegeven"
+              "title": "Voor ontworpen en gemaakt"
             },
             "destination": {
               "description": "Toegang enkel toegestaan met een aanwijsbare bestemming",
@@ -211,6 +211,11 @@
           "label": "Airconditioning",
           "terms": "koelsysteem,koeling"
         },
+        "aircraft/type": {
+          "options": {
+            "military": "Militair"
+          }
+        },
         "alt_name": {
           "label": "Alternatieve naam",
           "terms": "andere benaming"
@@ -262,7 +267,8 @@
             "painting": "Schilderij",
             "relief": "Reliëf",
             "sculpture": "Sculptuur",
-            "statue": "Standbeeld"
+            "statue": "Standbeeld",
+            "tilework": "Tegelwerk"
           }
         },
         "ascent": {
@@ -723,6 +729,13 @@
         "circumference": {
           "label": "Omtrek (op borsthoogte)",
           "terms": "omtrek,borsthoogte"
+        },
+        "climbing/length": {
+          "label": "Lengte (meter)",
+          "terms": "lengte,meter"
+        },
+        "climbing/trad": {
+          "label": "Traditioneel klimmen"
         },
         "clothes": {
           "label": "Kleding",
@@ -1857,6 +1870,7 @@
             "millstone": "Kilometerpaal",
             "mine": "Mijn",
             "mine_shaft": "Mijnschacht",
+            "monument": "Monumentaal groot gedenkteken",
             "pillory": "Historische schandpaal",
             "railway": "Spoorweg",
             "ruins": "Ruïne",
@@ -2176,7 +2190,7 @@
           }
         },
         "mapillary": {
-          "label": "Mapillary-afbeeldingsID",
+          "label": "Mapillary-afbeeldings-ID",
           "terms": "mapillary foto id,mapillary nummer,mapillary foto nummer,mapillary afbeelding id,mapillary afbeelding nummer"
         },
         "marker": {
@@ -2592,7 +2606,7 @@
           "label": "Overlappingsbreedte"
         },
         "panoramax": {
-          "label": "Panoramax-afbeeldingsID",
+          "label": "Panoramax-afbeeldings-ID",
           "terms": "identificatie,nummer"
         },
         "par": {
@@ -3138,6 +3152,11 @@
           "label": "Kleur dak",
           "terms": "dak,kleur,leien,dakpannen,pannen,plat dak"
         },
+        "roof/shape": {
+          "options": {
+            "dome": "Koepel"
+          }
+        },
         "rooms": {
           "label": "Aantal kamers"
         },
@@ -3450,8 +3469,7 @@
             "osm notes": "Kaartopmerkingen van OpenStreetMap",
             "streetlevel imagery": "Foto's op straatniveau",
             "survey": "Ter plaatse bekeken"
-          },
-          "terms": "bronnen,referentie,opzoeking"
+          }
         },
         "source/population": {
           "label": "Bron van bevolkingsaantal"
@@ -3572,6 +3590,13 @@
           },
           "placeholder": "Onbekend",
           "terms": "structuur,vorm"
+        },
+        "structure_canal": {
+          "label": "Constructie",
+          "options": {
+            "bridge": "Brug"
+          },
+          "placeholder": "Onbekend"
         },
         "structure_power": {
           "label": "Constructie",
@@ -4065,7 +4090,7 @@
             "eggs": "Eieren",
             "electronics": "Elektronica",
             "elongated_coin": "Sourvenirmunten",
-            "excrement_bags": "Strontzakjes",
+            "excrement_bags": "Poepzakjes",
             "feminine_hygiene": "Menstruatieproducten",
             "food": "Voedsel",
             "fuel": "Brandstof",
@@ -5235,7 +5260,7 @@
           "terms": "kampeerauto,beerput,camper,kampeerwagen,mobilhome,zwerfwagen,motorhome,uitwerpselen,urine,toilet"
         },
         "amenity/school": {
-          "name": "Schoolgebied",
+          "name": "School",
           "terms": "school,onderwijs,secundair onderwijs,lager onderwijs,basisschool,middelbaar,voortgezet onderwijs"
         },
         "amenity/shelter": {
@@ -5449,7 +5474,7 @@
           "terms": "muntautomaat,iconische munt,muntvervormer"
         },
         "amenity/vending_machine/excrement_bags": {
-          "name": "Strontzakjesautomaat",
+          "name": "Poepzakjesautomaat",
           "terms": "hondenstrontzakjesautomaat"
         },
         "amenity/vending_machine/feminine_hygiene": {
@@ -5503,6 +5528,9 @@
         "amenity/veterinary": {
           "name": "Dierenarts",
           "terms": "veearts,dierendokter"
+        },
+        "amenity/veterinary_pharmacy": {
+          "name": "Dierenapotheek"
         },
         "amenity/waste/dog_excrement": {
           "name": "Afvalbak voor hondenpoep",
@@ -5607,7 +5635,8 @@
           "terms": "roetsjbaan,rollercoaster"
         },
         "attraction/summer_toboggan": {
-          "name": "Zomerrodelbaan"
+          "name": "Zomerrodelbaan",
+          "terms": "rodelbaan"
         },
         "attraction/swing_carousel": {
           "name": "Zweefmolen",
@@ -6966,18 +6995,23 @@
           "terms": "herenhuis,deftig,royaal,statig,woonhuis,villa,woning,havezate"
         },
         "historic/memorial": {
-          "name": "Herdenkingsmonument",
-          "terms": "gedenkteken"
+          "name": "Gedenkteken",
+          "terms": "gedenkteken, herdenkingsmonument, gedenkplaats"
+        },
+        "historic/memorial/blue_plaque-GB-IE": {
+          "name": "Blue plaque"
         },
         "historic/memorial/plaque": {
           "name": "Gedenkplaat",
           "terms": "herinnering,herdenking,plakkaat,bord,nagedachtenis"
         },
         "historic/memorial/stolperstein-EU": {
-          "name": "Stolpersteine"
+          "name": "Stolpersteine",
+          "terms": "struikelsteen"
         },
         "historic/monument": {
-          "terms": "gedenkplaats"
+          "name": "Monumentaal groot gedenkteken",
+          "terms": "gedenkteken, herdenkingsmonument, gedenkplaats"
         },
         "historic/pillory": {
           "name": "Historische schandpaal",
@@ -9183,6 +9217,9 @@
         "shop/bathroom_furnishing": {
           "name": "Badkamermeubelwinkel",
           "terms": "sanitairwinkel"
+        },
+        "shop/bbq": {
+          "name": "BBQ Winkel"
         },
         "shop/beauty": {
           "name": "Schoonheidssalon",

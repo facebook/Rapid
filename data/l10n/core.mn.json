@@ -1,5 +1,8 @@
 {
   "mn": {
+    "icons": {
+      "download": "татах"
+    },
     "intro": {
       "graph": {
         "state": "<value for addr:state>",

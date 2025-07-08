@@ -120,6 +120,13 @@
         "description": "Дорадус (2018) та інші райони (2020), аерофото у високій роздільній здатності.",
         "name": "Дорадус, ортофото"
       },
+      "EOXAT2017CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 безхмарні знімки - https://s2maps.eu від EOX IT Services GmbH (Містить модифіковані дані Copernicus Sentinel 2017)"
+        },
+        "description": "Оброблені супутникові знімки Sentinel.",
+        "name": "eox.at 2017 без хмар"
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 безхмарні знімки - https://s2maps.eu від EOX IT Services GmbH (Містить модифіковані дані Copernicus Sentinel 2017 та 2018)"
@@ -154,6 +161,20 @@
         },
         "description": "Оброблені супутникові знімки Sentinel.",
         "name": "eox.at 2022 без хмар"
+      },
+      "EOXAT2023CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 безхмарні знімки - https://s2maps.eu від EOX IT Services GmbH (Містить модифіковані дані Copernicus Sentinel 2023)"
+        },
+        "description": "Оброблені супутникові знімки Sentinel.",
+        "name": "eox.at 2023 без хмар"
+      },
+      "EOXAT2024CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 безхмарні знімки - https://s2maps.eu від EOX IT Services GmbH (Містить модифіковані дані Copernicus Sentinel 2024)"
+        },
+        "description": "Оброблені супутникові знімки Sentinel.",
+        "name": "eox.at 2024 без хмар"
       },
       "EsriWorldImagery": {
         "attribution": {
@@ -541,20 +562,6 @@
         },
         "description": "Програма створення зображень штату Огайо III із роздільною здатністю від 1 фута до 3 дюймів впродовж 2017-2020 років.",
         "name": "Програма знімання штату Огайо"
-      },
-      "OSIP_1ft": {
-        "attribution": {
-          "text": "Програма знімання штату Огайо"
-        },
-        "description": "Ортофото 88 округів Огайо були зроблені в рамках Програми створення зображень штату Огайо II із роздільною здатністю 1 фут впродовж 2011-2014 років.",
-        "name": "Програма знімання штату Огайо, 1 фут"
-      },
-      "OSIP_6in": {
-        "attribution": {
-          "text": "Програма знімання штату Огайо"
-        },
-        "description": "Ортофото 40 округів Огайо були зроблені в рамках Програми створення зображень штату Огайо III із роздільною здатністю 6 дюймів у 2017-2018 роках, а також знімки OSIP I та OSIP II ще 16 округів зроблені впродовж 2010-2014 років.",
-        "name": "Програма знімання штату Огайо, 6 дюймів"
       },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {

@@ -229,6 +229,12 @@
           "label": "מיזוג אוויר",
           "terms": "מיזוג,מזגן,קור,חום,לחות"
         },
+        "aircraft/type": {
+          "label": "סוג",
+          "options": {
+            "military": "צבאי"
+          }
+        },
         "alt_name": {
           "label": "שם חלופי",
           "terms": "שם חלופי,כינוי חלופי"
@@ -755,6 +761,9 @@
         "circumference": {
           "placeholder": "1 מטר, 20 ס״מ, 30\"…"
         },
+        "climbing/length": {
+          "label": "אורך (מטרים)"
+        },
         "clothes": {
           "label": "ביגוד",
           "options": {
@@ -807,6 +816,7 @@
         "community_centre": {
           "label": "סוג",
           "options": {
+            "cultural_centre": "מרכז תרבותי",
             "youth_centre": "מרכז צעירים"
           }
         },
@@ -2990,6 +3000,11 @@
           "label": "צבע הגג",
           "terms": "צבע גג,רעף,רעפים,גג"
         },
+        "roof/shape": {
+          "options": {
+            "dome": "כיפה"
+          }
+        },
         "room": {
           "label": "סוג"
         },
@@ -3299,8 +3314,7 @@
             "osm notes": "הערות OpenStreetMap",
             "streetlevel imagery": "תמונות בגובה הרחוב",
             "survey": "סקר"
-          },
-          "terms": "מקורות,מקור,הזנה,כניסה,הובלה"
+          }
         },
         "source/population": {
           "label": "מקור אוכלוסייה"
@@ -3428,6 +3442,14 @@
           },
           "placeholder": "לא ידוע",
           "terms": "בניין,מבנה"
+        },
+        "structure_canal": {
+          "label": "מבנה",
+          "options": {
+            "bridge": "גשר",
+            "tunnel": "מנהרה"
+          },
+          "placeholder": "לא ידוע"
         },
         "structure_power": {
           "label": "מבנה",
@@ -3782,6 +3804,9 @@
         "traffic_signals/sound": {
           "label": "אותות קול",
           "options": {
+            "locate": {
+              "title": "מאתר כפתור התקשרות"
+            },
             "no": "אין",
             "walk": {
               "description": "יש אות רק כאשר מותר ללכת",
@@ -3809,7 +3834,8 @@
           "label": "סוג",
           "options": {
             "generator": "גנרטור: מגביר מתח בתחנות כוח",
-            "phase_angle_regulator": "שנאי משולש"
+            "phase_angle_regulator": "שנאי משולש",
+            "yes": "תפקיד לא ידוע"
           }
         },
         "trees": {
@@ -3904,6 +3930,7 @@
             "coffee": "קפה",
             "condoms": "קונדומים",
             "drinks": "משקאות",
+            "e-cigarettes": "סיגריות אלקטרוניות",
             "eggs": "ביצים",
             "electronics": "אלקטרוניקה",
             "elongated_coin": "מטבעות מזכרת",
@@ -4385,6 +4412,10 @@
           "name": "מרכז קהילתי",
           "terms": "מרכז קהילתי"
         },
+        "amenity/community_centre/cultural_centre": {
+          "name": "היכל תרבות",
+          "terms": "מתנ״ס,היכל תרבות,מרכז תרבות,מרכז תרבותי"
+        },
         "amenity/community_centre/lgbtq": {
           "name": "מרכז קהילתי ללהטבפא״ק+",
           "terms": "מרכז לקהילה גאה,אירוע לקהילה הגאה,מקום מפגש לקהילה הגאה"
@@ -4597,6 +4628,10 @@
           "name": "תחנת דלק",
           "terms": "תחנת דלק"
         },
+        "amenity/funeral_hall": {
+          "name": "אולם הספדים",
+          "terms": "היכל התכנסות,היכל הספדים"
+        },
         "amenity/gambling": {
           "name": "היכל הימורים",
           "terms": "קזינו,הימורים,סלוט מאשין,קולטה,פוקר,סלוטס,מכונות הימורים,בלק ג׳ק,בינגו,התערבות"
@@ -4664,6 +4699,10 @@
         "amenity/library": {
           "name": "ספריה",
           "terms": "ספרייה,ספרים,ספרות"
+        },
+        "amenity/library_dropoff": {
+          "name": "תיבת החזרת ספרים",
+          "terms": "קופסה להחזרת ספרים,קופסת ספרים,החזרת ספרים"
         },
         "amenity/loading_dock": {
           "name": "מתחם העמסה",

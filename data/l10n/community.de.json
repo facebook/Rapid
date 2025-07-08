@@ -16,6 +16,7 @@
       "openstreetmapbolivia": "OpenStreetMap Bolivien",
       "openstreetmapbosniaandherzegovina": "OpenStreetMap Bosnien und Herzegowina",
       "openstreetmapbrasil": "OpenStreetMap Brasilien",
+      "openstreetmapbrasilminasgerais": "OpenStreetMap Brasilien Minas Gerais",
       "openstreetmapbulgaria": "OpenStreetMap Bulgarien",
       "openstreetmapcambodia": "OpenStreetMap Kambodscha",
       "openstreetmapcameroon": "OpenStreetMap Kamerun",
@@ -84,14 +85,12 @@
       "openstreetmaprwanda": "OpenStreetMap Ruanda",
       "openstreetmapsaudiarabia": "OpenStreetMap Saudi Arabien",
       "openstreetmapserbia": "OpenStreetMap Serbien",
-      "openstreetmapseychelles": "OpenStreetMap Seychellen",
       "openstreetmapsingapore": "OpenStreetMap Singapur",
       "openstreetmapslovenia": "OpenStreetMap Slowenien",
       "openstreetmapsouthafrica": "OpenStreetMap Südafrika",
       "openstreetmapsouthsudan": "OpenStreetMap Südsudan",
       "openstreetmapsweden": "OpenStreetMap Schweden",
       "openstreetmapswitzerland": "OpenStreetMap Schweiz",
-      "openstreetmapsyria": "OpenStreetMap Syrien",
       "openstreetmaptunisia": "OpenStreetMap Tunesien",
       "openstreetmapturkey": "OpenStreetMap Türkei",
       "openstreetmapus": "OpenStreetMap USA",
@@ -169,15 +168,15 @@
         "description": "Folge uns auf TikTok"
       },
       "twitter": {
-        "name": "{community} auf 𝕏",
-        "description": "Folge uns auf 𝕏"
+        "name": "{community} auf X",
+        "description": "Folge uns auf X"
       },
       "x": {
-        "name": "{community} auf 𝕏",
-        "description": "Folge uns auf 𝕏"
+        "name": "{community} auf X",
+        "description": "Folge uns auf x"
       },
       "xmpp": {
-        "description": "{url}Nimm an unserem XMPP-Community-Chat teil:"
+        "description": "Nimm an unserem XMPP-Community-Chat teil: {url}"
       },
       "youtube": {
         "name": "{community} auf YouTube",
@@ -515,9 +514,6 @@
     "hu-matrix": {
       "extendedDescription": "OpenStreetMap chat über Kartenthemen. Eines der Foren zur Unterstützung der OSM Gemeinschaft."
     },
-    "hu-meetup": {
-      "description": "Die Plattform um Treffen in Ungarn zu organisieren"
-    },
     "hu-mobilizon": {
       "name": "{community} auf Mobilizon",
       "description": "Kommende Veranstaltungen für die OpenStreetMap Gemeinschaft in Ungarn"
@@ -526,10 +522,13 @@
       "description": "Erkunde aktive Kartierungsaufgaben in Ungarn"
     },
     "hu-website": {
-      "description": "Wir helfen OpenStreetMap in Ungarn beim Wachsen und Verbessern."
+      "description": "Die Webseite der ungarischen OpenStreetMap-Gemeinschaft"
     },
     "hu-wiki": {
       "description": "{community} Wiki Seite"
+    },
+    "hu-youtube": {
+      "description": "OpenStreetMap Ungarn meetup Live Streams und Aufzeichnungen"
     },
     "humanitarian-osm-tr-slack": {
       "name": "Humanitarian OpenStreetMap Türkei Slack",
@@ -644,7 +643,7 @@
       "description": "Hilf dabei niedrigenergierouten in der Waterloo Region leicht auffindbar zu machen."
     },
     "MapRVA": {
-      "description": "MapRVA Treffen"
+      "description": "MapRVA ist eine Gruppe von Mapping-Enthusiasten in Richmond, Virginia, die daran arbeiten, mit OpenStreetMap Geodaten unserer Stadt zu erstellen und zu teilen."
     },
     "maptime-bogota-facebook": {
       "description": "Wir sind eine Gruppe interessierter Menschen, die Bogotá und seine Umgebung in OpenStreetMap kartieren wollen.",
@@ -696,6 +695,9 @@
     },
     "me-telegram": {
       "description": "Alle sind willkommen! Anmeldung unter {signupUrl}"
+    },
+    "minas_gerais-discord": {
+      "extendedDescription": "Willkommen im OSM Minas Gerais Discord! Wir sind eine Gemeinschaft von Mappern, die leidenschaftlich gerne detaillierte Open-Source-Karten für Minas Gerais, Brasilien, erstellen. Tritt uns bei, um zusammenzuarbeiten, Tipps auszutauschen und zu helfen, die Karten von MG zu den besten auf OpenStreetMap zu machen. Egal ob du ein Neuling oder ein Profi bist, lass uns gemeinsam kartieren!"
     },
     "mm-facebook": {
       "extendedDescription": "Mappen in Maynmar? Hast du Fragen, willst du dich mit der Community hier verbinden? Tritt bei {url} bei. Alle sind willkommen!"
@@ -951,6 +953,13 @@
       "description": "FSHM Puducherry Mailing Liste um Mappen in Puducherry und anderes zu diskutieren.",
       "extendedDescription": "FSHM organisiert Treffen über Freie Software/Hardware, Technologie und Aktivismus für OpenStreetMap."
     },
+    "osm-punjab-matrix": {
+      "description": "Wir kartieren Punjab gemeinsam. Treten Sie unserer Matrix-Gruppe bei",
+      "extendedDescription": "Inoffizieller Chat-Raum für OSM Punjab, auch mit der OSMPunjab Telegram-Gruppe verbunden"
+    },
+    "osm-punjab-telegram": {
+      "description": "Wir kartieren Punjab gemeinsam. Treten Sie unserer Telegram-Gruppe bei. {url}"
+    },
     "OSM-Rome-meetup": {
       "name": "Einführung für Mapper in Rom",
       "description": "Verbessere in Rom und Umgebung",
@@ -1069,9 +1078,6 @@
     "talk-mg": {
       "description": "Ort für OpenStreetMap-Mitwirkende, Communitys und Benutzer in Madagaskar um sich auszutauschen und zu diskutieren."
     },
-    "talk-nz": {
-      "description": "Neuseeland OSM Gemeinschafts-atalk"
-    },
     "talk-pacific": {
       "description": "Die regionale OSM-Mailingliste für und von den Menschen in Moana/Ozeanien/Pazifik",
       "extendedDescription": "Wir möchten, dass diese Mailingliste alle Menschen des Pazifiks in all ihrer Vielfalt und ihren Bestrebungen unterstützt, um Gedanken, Fragen, Projekte und alles, was mit OpenStreetMap in unserem Meer von Inseln zu tun hat, auszutauschen."
@@ -1109,9 +1115,6 @@
     "uk-london-wiki": {
       "description": "{community} Wiki Seite"
     },
-    "uk-loomio": {
-      "name": "OpenStreetMap UK auf Loomio"
-    },
     "us-discourse": {
       "description": "Ein Diskussionsforum über OpenStreetMap in den Vereinigten Staaten"
     },
@@ -1126,9 +1129,6 @@
     "uy-irc": {
       "description": "Tritt #{account} auf irc.frreenode.org (port 6667) bei",
       "extendedDescription": "Tritt #{account} auf irc.frreenode.org bei"
-    },
-    "vn-mailinglist": {
-      "description": "Mailing Liste über OpenStreetMap in Vietnam oder in Vietnamesisch"
     },
     "vn-wiki": {
       "description": "{community} Wiki Seite"

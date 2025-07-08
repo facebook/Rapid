@@ -4,6 +4,9 @@
       "Bing": {
         "description": "Flyfoto og satellitt-ortofoto."
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "Etterbehandlet Sentinel Satellite ortofoto."
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 cloudless - https://s2maps.eu av EOX IT Services GmbH (Inneholder modifisert Copernicus Sentinel data 2017 & 2018)"
@@ -21,6 +24,12 @@
         "description": "Etterbehandlet Sentinel Satellite ortofoto."
       },
       "EOXAT2022CLOUDLESS": {
+        "description": "Etterbehandlet Sentinel Satellite ortofoto."
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Etterbehandlet Sentinel Satellite ortofoto."
+      },
+      "EOXAT2024CLOUDLESS": {
         "description": "Etterbehandlet Sentinel Satellite ortofoto."
       },
       "EsriWorldImagery": {

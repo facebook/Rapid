@@ -225,6 +225,12 @@
           "label": "Aire condicionat",
           "terms": "aire condicionat,  climatització, condicionament de l'aire, sistema de refredament, refrigeració"
         },
+        "aircraft/type": {
+          "label": "Tipus",
+          "options": {
+            "military": "Militar"
+          }
+        },
         "alt_name": {
           "label": "Nom Alternatiu"
         },
@@ -374,7 +380,7 @@
             "chain": "Cadena",
             "city_wall": "Muralla",
             "cycle_barrier": "Barrera per a ciclistes",
-            "ditch": "Séquia",
+            "ditch": "Cuneta",
             "entrance": "Entrada",
             "fence": "Tanca",
             "gate": "Porta",
@@ -386,7 +392,7 @@
             "kissing_gate": "Porta giratòria",
             "lift_gate": "Porta barrera",
             "retaining_wall": "Mur de contenció",
-            "stile": "Esgraons",
+            "stile": "Escaló",
             "swing_gate": "Porta batent",
             "toll_booth": "Peatge",
             "turnstile": "Torniquet",
@@ -745,6 +751,10 @@
           "placeholder": "1 m, 20 cm, 30 \"…",
           "terms": "diamatre a l'altura de l'home,DAH"
         },
+        "climbing/length": {
+          "label": "Llargada (metres)",
+          "terms": "longitud, metres, distància, dimensió, grandària, llarg"
+        },
         "clothes": {
           "label": "Roba",
           "options": {
@@ -1032,6 +1042,7 @@
             "barbecue": "Barbacoa",
             "bavarian": "Bavaresa",
             "brazilian": "Brasilera",
+            "brunch": "Esmorzar",
             "bubble_tea": "Te de bombolles",
             "burger": "Hamburgueseria",
             "cake": "Pastís",
@@ -2305,6 +2316,7 @@
           "options": {
             "blue_plaque": "Placa blava",
             "cross": "Creu memorial",
+            "ghost_bike": "Bicicleta Fantasma",
             "obelisk": "Obelisc",
             "plaque": "Placa commemorativa",
             "sculpture": "Esculptura",
@@ -2586,18 +2598,21 @@
               "title": "Boxs"
             },
             "half_on_kerb": {
+              "description": "Aparcament parcialment a la vorera",
               "title": "Parcialment en la vorera"
             },
             "lane": {
               "title": "Adossat a la carretera"
             },
             "layby": {
+              "description": "Aparcament en una àrea de descans, al costat d'una carretera.",
               "title": "Apartadero de descans"
             },
             "multi-storey": {
               "title": "Diversos nivells"
             },
             "on_kerb": {
+              "description": "Aparcament a la vorera",
               "title": "A la vorera"
             },
             "rooftop": {
@@ -2928,7 +2943,8 @@
           "placeholder": "Contenidor, Centre"
         },
         "ref": {
-          "label": "Codi de referència"
+          "label": "Codi de referència",
+          "terms": "nomenclatura, nombre, número, referència"
         },
         "ref/isil": {
           "label": "Codi ISIL"
@@ -2952,7 +2968,8 @@
           "label": "Nombre d'andana"
         },
         "ref_road_number": {
-          "label": "Nombre de carretera"
+          "label": "Codi de la carretera",
+          "terms": "Nomenclatura de la carretera, referència de la carretera, nombre de carretera, nombre de via, nombre de ruta"
         },
         "ref_room_number": {
           "label": "Número d'habitació"
@@ -3060,6 +3077,11 @@
         "roof/colour": {
           "label": "Color de la teulada",
           "terms": "color del teulat, color del sostre, tonalitat del terrat, matís de la coberta"
+        },
+        "roof/shape": {
+          "options": {
+            "dome": "Cúpula"
+          }
         },
         "room": {
           "label": "Tipus"
@@ -3369,8 +3391,7 @@
             "osm notes": "Notes d'OpenStreetMap",
             "streetlevel imagery": "Fotografies a peu de carrer",
             "survey": "Exploració"
-          },
-          "terms": "fonts, font, recurs"
+          }
         },
         "source/population": {
           "label": "Font de la població"
@@ -3490,6 +3511,14 @@
             "bridge": "Pont",
             "cutting": "Trinxera",
             "embankment": "Terraplè ",
+            "tunnel": "Túnel"
+          },
+          "placeholder": "Desconegut"
+        },
+        "structure_canal": {
+          "label": "Estructura",
+          "options": {
+            "bridge": "Pont",
             "tunnel": "Túnel"
           },
           "placeholder": "Desconegut"
@@ -3863,7 +3892,7 @@
           "options": {
             "avalanche_protector": "Protector d'Allaus",
             "building_passage": "Passatge per un edifici",
-            "culvert": "Marc",
+            "culvert": "Canonada de drenatge",
             "flooded": "Inundat"
           }
         },
@@ -5009,6 +5038,9 @@
           "name": "Àrea",
           "terms": "Àrea"
         },
+        "area/highway": {
+          "name": "Àrea de la carretera"
+        },
         "attraction": {
           "name": "Atracció"
         },
@@ -5173,8 +5205,8 @@
           "terms": "Mur de contenció, Paret de contenció"
         },
         "barrier/stile": {
-          "name": "esgraons",
-          "terms": "Escala de tanca"
+          "name": "Tanca amb escalons",
+          "terms": "escala de tanca, tanca amb esgraons, tanca amb esglaons,"
         },
         "barrier/swing_gate": {
           "name": "Porta batent"
@@ -5184,7 +5216,8 @@
           "terms": "Peatge, Autopista de peatge, Cabina de peatge, Estació de peatge, Punt de peatge"
         },
         "barrier/turnstile": {
-          "name": "Torniquet"
+          "name": "Torniquet d'accés",
+          "terms": "molinet"
         },
         "barrier/wall": {
           "name": "Mur",
@@ -6069,6 +6102,9 @@
         "historic/memorial": {
           "terms": "Memorial"
         },
+        "historic/memorial/blue_plaque-GB-IE": {
+          "name": "Placa blava"
+        },
         "historic/memorial/plaque": {
           "name": "Placa commemorativa"
         },
@@ -6622,6 +6658,10 @@
           "name": "Desguàs",
           "terms": "pluja, plutja, forat, aigua, desaigüe, tormenta, drenatge"
         },
+        "man_made/manhole/sewer": {
+          "name": "Tapa de claveguera",
+          "terms": "arqueta de claveguera, claveguera, forat, aigües residuals, aigües brutes"
+        },
         "man_made/monitoring_station": {
           "name": "Estació de seguiment"
         },
@@ -6835,6 +6875,9 @@
         "natural/shrub": {
           "name": "Arbust"
         },
+        "natural/sinkhole": {
+          "name": "Dolina"
+        },
         "natural/spring": {
           "name": "Font natural",
           "terms": "Deu, aiguaneix, brollador"
@@ -6875,6 +6918,9 @@
         },
         "natural/water/moat": {
           "name": "Fossat"
+        },
+        "natural/water/oxbow": {
+          "name": "Braç mort"
         },
         "natural/water/pond": {
           "name": "Estany",
@@ -7111,6 +7157,9 @@
           "name": "Oficina de terapeuta",
           "terms": "teràpia"
         },
+        "office/translator": {
+          "name": "Oficina de traducció"
+        },
         "office/travel_agent": {
           "name": "Agència de viatges"
         },
@@ -7138,6 +7187,9 @@
         },
         "piste/nordic": {
           "name": "Camí per esquí de muntanya"
+        },
+        "piste/sleigh": {
+          "name": "Camí per a trineus"
         },
         "place": {
           "name": "Lloc"
@@ -8480,7 +8532,7 @@
           "terms": "Presa, Pantà, Embassament"
         },
         "waterway/ditch": {
-          "name": "Séquia",
+          "name": "Cuneta",
           "terms": "Séquia, Sèquia, Rara, Canal, Aigua, Via aqüífera, Torrent, Conducció d'aigua, Aqüífer, Rierol"
         },
         "waterway/dock": {

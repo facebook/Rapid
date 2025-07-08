@@ -5,6 +5,9 @@
         "description": "الصور الجوية والقمر الصناعي.",
         "name": "الصور الجوية من Bing"
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "صور القمر الصناعي Sentinel بعد المعالجة."
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 بدون سُحب - https://s2maps.eu by EOX IT Services GmbH (يحتوي على بيانات Copernicus Sentinel المعدلة 2017 & 2018)"
@@ -22,6 +25,12 @@
         "description": "صور القمر الصناعي Sentinel بعد المعالجة."
       },
       "EOXAT2022CLOUDLESS": {
+        "description": "صور القمر الصناعي Sentinel بعد المعالجة."
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "صور القمر الصناعي Sentinel بعد المعالجة."
+      },
+      "EOXAT2024CLOUDLESS": {
         "description": "صور القمر الصناعي Sentinel بعد المعالجة."
       },
       "EsriWorldImagery": {

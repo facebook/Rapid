@@ -14,6 +14,9 @@
       "Dourados_Ortofotos": {
         "description": "Dourados (2018) és néhány kerület  (2020) nagy felbontású légi fényképen."
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "Utófeldolgozott Sentinel műholdas légifelvétel."
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 felhőtlen – https://s2maps.eu készítette: EOX IT Services GmbH (Módosított 2017-es és 2018-as Copernicus Sentinel adatokat tartalmaz)"
@@ -31,6 +34,12 @@
         "description": "Utófeldolgozott Sentinel műholdas légifelvétel."
       },
       "EOXAT2022CLOUDLESS": {
+        "description": "Utófeldolgozott Sentinel műholdas légifelvétel."
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Utófeldolgozott Sentinel műholdas légifelvétel."
+      },
+      "EOXAT2024CLOUDLESS": {
         "description": "Utófeldolgozott Sentinel műholdas légifelvétel."
       },
       "EsriWorldImagery": {
@@ -120,9 +129,6 @@
           "text": "Feltételek és visszajelzés"
         },
         "name": "Mapbox műholdképek"
-      },
-      "OSIP_6in": {
-        "description": "Ohio Statewide Imagery Program III ortoképek 40 megyéről, amelyeket 2017-ben és 2018-ban 6 hüvelykes felbontással rögzítettek, valamint OSIP I és OSIP II képek további 16 megyében 2010 és 2014 között."
       },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {

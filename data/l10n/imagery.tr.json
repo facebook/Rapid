@@ -102,6 +102,13 @@
         "description": "Dourados (2018) ve çeşitli bölgelerin (2020) yüksek çözünürlüklü uydu görüntüleri.",
         "name": "Dourados Ortofotoları"
       },
+      "EOXAT2017CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 bulutsuz - https://s2maps.eu EOX IT Services GmbH tarafından sağlanmıştır (2017–2024 Copernicus Sentinel verisinin değiştirilmiş hâlini içerir)"
+        },
+        "description": "Sonradan işlenmiş Sentinel Uydusu görüntüleri.",
+        "name": "eox.at 2017 bulutsuz"
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 bulutsuz - https://s2maps.eu EOX IT Services GmbH tarafından (Değiştirilmiş Copernicus Sentinel 2017 ve 2018 verilerini içerir)"
@@ -110,16 +117,46 @@
         "name": "eox.at 2018 bulutsuz"
       },
       "EOXAT2019CLOUDLESS": {
-        "description": "Sonradan işlenmiş Sentinel Uydusu görüntüleri."
+        "attribution": {
+          "text": "Sentinel-2 bulutsuz - https://s2maps.eu EOX IT Services GmbH tarafından sağlanmıştır (2019 Copernicus Sentinel verisinin değiştirilmiş hâlini içerir)"
+        },
+        "description": "Sonradan işlenmiş Sentinel Uydusu görüntüleri.",
+        "name": "eox.at 2019 bulutsuz"
       },
       "EOXAT2020CLOUDLESS": {
-        "description": "Sonradan işlenmiş Sentinel Uydusu görüntüleri."
+        "attribution": {
+          "text": "Sentinel-2 bulutsuz - https://s2maps.eu EOX IT Services GmbH tarafından sağlanmıştır (2020 Copernicus Sentinel verisinin değiştirilmiş hâlini içerir)"
+        },
+        "description": "Sonradan işlenmiş Sentinel Uydusu görüntüleri.",
+        "name": "eox.at 2020 bulutsuz"
       },
       "EOXAT2021CLOUDLESS": {
-        "description": "Sonradan işlenmiş Sentinel Uydusu görüntüleri."
+        "attribution": {
+          "text": "Sentinel-2 bulutsuz - https://s2maps.eu EOX IT Services GmbH tarafından sağlanmıştır (2021 Copernicus Sentinel verisinin değiştirilmiş hâlini içerir)"
+        },
+        "description": "Sonradan işlenmiş Sentinel Uydusu görüntüleri.",
+        "name": "eox.at 2021 bulutsuz"
       },
       "EOXAT2022CLOUDLESS": {
-        "description": "Sonradan işlenmiş Sentinel Uydusu görüntüleri."
+        "attribution": {
+          "text": "Sentinel-2 bulutsuz - https://s2maps.eu EOX IT Services GmbH tarafından sağlanmıştır (2022 Copernicus Sentinel verisinin değiştirilmiş hâlini içerir)"
+        },
+        "description": "Sonradan işlenmiş Sentinel Uydusu görüntüleri.",
+        "name": "eox.at 2022 bulutsuz"
+      },
+      "EOXAT2023CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 bulutsuz - https://s2maps.eu EOX IT Services GmbH tarafından sağlanmıştır (2023 Copernicus Sentinel verisinin değiştirilmiş hâlini içerir)"
+        },
+        "description": "Sonradan işlenmiş Sentinel Uydusu görüntüleri.",
+        "name": "eox.at 2023 bulutsuz"
+      },
+      "EOXAT2024CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 bulutsuz - https://s2maps.eu EOX IT Services GmbH tarafından sağlanmıştır (2024 Copernicus Sentinel verisinin değiştirilmiş hâlini içerir)"
+        },
+        "description": "Sonradan işlenmiş Sentinel Uydusu görüntüleri.",
+        "name": "eox.at 2024 bulutsuz"
       },
       "EsriWorldImagery": {
         "attribution": {
@@ -135,12 +172,33 @@
         "description": "Esri, varsayılan katmandan daha net ve daha doğru olabilecek görüntüleri arşivler.",
         "name": "Esri Uydu Görüntüsü (Net) Beta"
       },
+      "FOMI_2011_2014": {
+        "description": "Tüm ülkeyi kapsayan, yapraklı döneme ait ve 40 cm/piksel çözünürlüklü, devlet kaynaklı ortofotolar. Daha doğru bir referans olmadığında hizalama için temel katman olarak kullanılmalıdır. WEBP formatındaki görüntüler için JOSM’e webp eklentisi gerekir.",
+        "name": "FÖMI ortofoto 2011-2014 (WEBP)"
+      },
+      "FOMI_2015": {
+        "description": "Tüm ülkeyi kapsayan, yapraklı döneme ait ve 40 cm/piksel çözünürlüklü, devlet kaynaklı ortofotolar. Daha doğru bir referans olmadığında hizalama için temel katman olarak kullanılmalıdır. WEBP formatındaki görüntüler için JOSM’e webp eklentisi gerekir.",
+        "name": "FÖMI ortofoto 2015 (WEBP)"
+      },
+      "FOMI_2015_leafoff_20cm": {
+        "description": "6 ilçe için yapraksız (leaf-off) ortofotolar, 20 cm/piksel çözünürlükte ve devlet kaynaklıdır. Daha doğru bir referans olmadığında hizalama için bu katman kullanılmalıdır. WEBP formatındaki görüntüler için JOSM'e webp eklentisi gerekir.",
+        "name": "FÖMI ortofoto 2015 yapraksız dönem 20 cm (WEBP)"
+      },
       "Frankfurt-am-Main-2019": {
         "attribution": {
           "text": "Frankfurt am Main Şehir Araştırmacısı Ofisi"
         },
         "description": "Frankfurt am Main'in 16 Nisan 2019 tarihinde çekilen havadan görüntüsü",
         "name": "Frankfurt am Main Havadan Fotoğraf 2019"
+      },
+      "Geodatastyrelsen_Cadastral_Parcels_INSPIRE_View": {
+        "name": "SDFI Kadastro Parselleri INSPIRE Görünümü"
+      },
+      "Geodatastyrelsen_Denmark": {
+        "name": "SDFI Hava Görüntüsü"
+      },
+      "Geodatastyrelsen_Skaermkort": {
+        "name": "SDFI Ekran Haritası"
       },
       "Geoportal2-PL-City-boundaries_WMS": {
         "attribution": {
@@ -233,8 +291,20 @@
       "Gliwice-buildings": {
         "name": "Gliwice: Binalar"
       },
+      "LSA-ALKIS-CP": {
+        "description": "Resmî taşınmaz kadastrosundan parsellerin vektörel kaydı",
+        "name": "© GeoBasis-DE/LVermGeo LSA, ALKIS Kadastro parselleri"
+      },
       "LSA-ALKIS_BU": {
-        "description": "Saksonya-Anhalt'daki binaların biçimleri"
+        "description": "Saksonya-Anhalt'daki binaların biçimleri",
+        "name": "© GeoBasis-DE/LVermGeo LSA, ALKIS Bina sınırları"
+      },
+      "LSA-ATKIS-HYN": {
+        "description": "Su ağlarının kaydı (gerçekle birebir örtüşmeyebilir, ortofoto ile birlikte değerlendirin)",
+        "name": "© GeoBasis-DE/LVermGeo LSA, ATKIS Su ağı"
+      },
+      "LSA-DVG": {
+        "name": "© GeoBasis-DE/LVermGeo LSA, Dijital idari sınırlar"
       },
       "Lodz-buildings": {
         "name": "Łódź: Binalar"
@@ -269,22 +339,43 @@
         "description": "İsveç Çevre Koruma Alansı tarafından kaydedilmiş durumuyla doğal koruma alanları içinde ya da etrafindaki günlük güncellenen patikalar",
         "name": "Çevre Koruma Ajansı - Patikalar"
       },
+      "ODOT_TIMS_Road_Inventory": {
+        "attribution": {
+          "text": "Ohio Ulaştırma Departmanı"
+        },
+        "description": "Ohio Ulaştırma Departmanı (ODOT) - Ulaştırma Bilgi Haritalama Sistemi (TIMS) Yol Envanteri, Haziran 2024'te yayımlandı.",
+        "name": "ODOT Yol Envanteri"
+      },
+      "ORTOS_DGRF_2004_06": {
+        "attribution": {
+          "text": "Coğrafi bilgi Direção-Geral do Território tarafından sağlanmıştır"
+        },
+        "name": "Portekiz ana karasına ait ortofotolar - 50 cm çözünürlük - 2004–2006 (DGT)"
+      },
+      "ORTOS_DGT_2014_15": {
+        "attribution": {
+          "text": "Coğrafi bilgi Direção-Geral do Território tarafından sağlanmıştır"
+        },
+        "name": "Portekiz ana karasının kıyı bölgelerinin ortofotoları - 10 cm çözünürlük - 2014–2015 (DGT)"
+      },
+      "ORTOS_DGT_2018_WMS": {
+        "attribution": {
+          "text": "Coğrafi bilgi Direção-Geral do Território tarafından sağlanmıştır"
+        },
+        "name": "Portekiz ana karasının ortofotoları - 25 cm çözünürlük - 2018 (DGT)"
+      },
+      "ORTOS_DGT_2021_RGB": {
+        "attribution": {
+          "text": "Coğrafi bilgi Direção-Geral do Território tarafından sağlanmıştır"
+        },
+        "name": "Portekiz ana karasının kuzey kısmının ortofotoları - 25 cm çözünürlük - 2021 (DGT)"
+      },
       "OSIP": {
         "attribution": {
           "text": "Ohio Eyalet Geneli Görüntüleme Programı"
         },
+        "description": "Ohio Eyalet Genel Görüntüleme Programı III, 2017-2020 yılları arasında her ilçenin en güncel ortofotoları, çözünürlükleri 1 fit ile 3 inç arasında değişmektedir.",
         "name": "Ohio Eyalet Geneli Görüntüleme Programı"
-      },
-      "OSIP_1ft": {
-        "attribution": {
-          "text": "Ohio Eyalet Görüntüleme Programı"
-        }
-      },
-      "OSIP_6in": {
-        "attribution": {
-          "text": "Ohio Eyalet Görüntüleme Programı"
-        },
-        "name": "Ohio Eyalet Görüntüleme Programı 6-inç"
       },
       "OSMUK-Cadastral-Parcels": {
         "name": "OSMUK Kadastro Parselleri"
@@ -372,6 +463,9 @@
       "US-TIGER-Roads-2019": {
         "description": "Sarı = Genel kullanıma açık US Census harita verileri. Kırmızı = OpenStreetMap'te bulunmayan veriler",
         "name": "TIGER Yolları 2019"
+      },
+      "US-TIGER-Roads-2023": {
+        "name": "TIGER Yolları 2023"
       },
       "USDA-NAIP": {
         "attribution": {
@@ -474,6 +568,13 @@
         },
         "description": "Balaton Limnoloji Enstitüsü'nden 1940 jeo-etiketli fotoğraflama.",
         "name": "EUFAR Balaton ortofotoları"
+      },
+      "geoscribble-latest": {
+        "attribution": {
+          "text": "GeoScribble katkıda bulunanlar"
+        },
+        "description": "Every Door editöründen geometri ölçüm notları, en fazla üç haftalık",
+        "name": "GeoScribble son notları"
       },
       "gothenburg-citymap": {
         "attribution": {
@@ -674,6 +775,13 @@
           "text": "© OpenStreetMap katılımcıları, CC-BY-SA"
         },
         "name": "OpenStreetMap (Alman Stil)"
+      },
+      "osmse-ekonomiska": {
+        "description": "\"Ekonomik haritaların\" taraması, yaklaşık 1950-1978"
+      },
+      "osmse-generalstab": {
+        "description": "\"Generalstabskartan\" taraması, yaklaşık 1859-1979",
+        "name": "Lantmäteriet Generalstabskartan 1859-1979"
       },
       "poznan-ortofotomapa2014": {
         "attribution": {

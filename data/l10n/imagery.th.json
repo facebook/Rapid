@@ -107,6 +107,13 @@
       "Dourados_Ortofotos": {
         "description": "ภาพถ่ายทางอากาศความละเอียดสูงโดราโดส (2018) และอีกหลายเขต (2020)"
       },
+      "EOXAT2017CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu by EOX IT Services GmbH (ประกอบด้วยข้อมูล Copernicus Sentinel ที่ปรับเปลี่ยนแล้ว 2017)"
+        },
+        "description": "ภาพถ่ายทางดาวเทียม Sentinel ที่ประมวลผลแล้ว",
+        "name": "eox.at 2017 ไร้เมฆ"
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 cloudless - https://s2maps.eu โดย EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2017 & 2018)"
@@ -136,6 +143,20 @@
           "text": "Sentinel-2 cloudless - https://s2maps.eu โดย EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2022)"
         },
         "description": "ภาพถ่ายทางดาวเทียม Sentinel ที่ประมวลผลแล้ว"
+      },
+      "EOXAT2023CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 ไร้เมฆ - https://s2maps.eu โดย EOX IT Services GmbH (ประกอบด้วยข้อมูล Copernicus Sentinel ที่ได้รับการปรับเปลี่ยนปี 2023)"
+        },
+        "description": "ภาพถ่ายทางดาวเทียม Sentinel ที่ประมวลผลแล้ว",
+        "name": "eox.at 2023 ไร้เมฆ"
+      },
+      "EOXAT2024CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 ไร้เมฆ - https://s2maps.eu โดย EOX IT Services GmbH (ประกอบด้วยข้อมูล Copernicus Sentinel 2024 ที่ปรับเปลี่ยนแล้ว)"
+        },
+        "description": "ภาพถ่ายทางดาวเทียม Sentinel ที่ประมวลผลแล้ว",
+        "name": "eox.at 2024 ไร้เมฆ"
       },
       "EsriWorldImagery": {
         "attribution": {
@@ -494,20 +515,6 @@
         },
         "description": "โครงการภาพถ่ายทางอากาศทั่วทั้งรัฐโอไฮโอ 3 เป็นภาพถ่ายทางอากาศมุมฉากล่าสุดจากทุกรัฐ โดยมีความละเอียดตั้งแต่ 1 ฟุตถึง 3 นิ้ว ตั้งแต่ปี 2017 ถึงปี 2020",
         "name": "โครงการภาพถ่ายทั่วทั้งรัฐโอไฮโอ"
-      },
-      "OSIP_1ft": {
-        "attribution": {
-          "text": "โครงการภาพถ่ายทั่วทั้งรัฐโอไฮโอ"
-        },
-        "description": "ภาพถ่ายออร์โธของโครงการภาพถ่ายทั่วรัฐโอไฮโอ 2 ของทั้ง 88 มณฑลด้วยความละเอียด 1 ฟุต ตั้งแต่ปี 2011 ถึงปี 2014",
-        "name": "โครงการภาพถ่ายทั่วทั้งรัฐโอไฮโอ 1 ฟุต"
-      },
-      "OSIP_6in": {
-        "attribution": {
-          "text": "โครงการภาพถ่ายทั่วทั้งรัฐโอไฮโอ"
-        },
-        "description": "ภาพถ่ายออร์โธของโครงการภาพถ่ายทั่วรัฐโอไฮโอ 3 ของ 40 มณฑลที่ถ่ายด้วยความละเอียด 6 นิ้วในปี 2017 และ 2018 รวมถึงภาพ OSIP I และ OSIP II ในอีก 16 มณฑลตั้งแต่ปี 2010 ถึงปี 2014",
-        "name": "โครงการภาพถ่ายทั่วทั้งรัฐโอไฮโอ 6 ฟุต"
       },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {

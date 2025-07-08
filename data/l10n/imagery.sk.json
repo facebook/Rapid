@@ -5,6 +5,9 @@
         "description": "Satelitné a letecké zábery",
         "name": "Bing letecké zábery"
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "Dodatočne upravené snímky satelitu Sentinel."
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 bez oblakov – https://s2maps.eu – od spoločnosti EOX IT Services GmbH (obsahuje upravené dáta Copernicus Sentinel 2017 a 2018)"
@@ -22,6 +25,12 @@
         "description": "Dodatočne upravené snímky satelitu Sentinel."
       },
       "EOXAT2022CLOUDLESS": {
+        "description": "Dodatočne upravené snímky satelitu Sentinel."
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Dodatočne upravené snímky satelitu Sentinel."
+      },
+      "EOXAT2024CLOUDLESS": {
         "description": "Dodatočne upravené snímky satelitu Sentinel."
       },
       "EsriWorldImagery": {

@@ -230,6 +230,12 @@
           "label": "Климатизовано",
           "terms": "климатизација,клима уређај,еркондишн,klimatizacija,klima uređaj,klima uredjaj,erkondišn,erkondisn"
         },
+        "aircraft/type": {
+          "label": "Врста",
+          "options": {
+            "military": "Војна"
+          }
+        },
         "alt_name": {
           "label": "Алтернативни назив",
           "terms": "Други назив,друго име"
@@ -606,7 +612,7 @@
             "manufacture": "Производни погон",
             "mosque": "Зграда џамије",
             "office": "Канцеларијска зграда",
-            "outbuilding": "Споредни објекат",
+            "outbuilding": "Помоћни објекат",
             "pavilion": "Павиљон",
             "public": "Јавна зграда",
             "residential": "Резиденцијалана зграда",
@@ -764,7 +770,11 @@
           "placeholder": "ГГГГ-ММ-ДД"
         },
         "circumference": {
-          "label": "Пречник (у висини груди)"
+          "label": "Обим (на прсној висини)",
+          "terms": "Обим (на грудној висини),Обим (у висини груди)"
+        },
+        "climbing/length": {
+          "label": "Дужина (у метрима)"
         },
         "clothes": {
           "label": "Одећа",
@@ -2582,22 +2592,29 @@
             "carports": {
               "title": "Складиште аутомобила"
             },
+            "garage_boxes": {
+              "title": "Гаражни боксови"
+            },
             "half_on_kerb": {
+              "description": "Паркирање делимично на тротоару.",
               "title": "делом на тротоару"
             },
             "lane": {
               "title": "као трака"
             },
             "layby": {
+              "description": "Паркирање на одмаралишту, поред пута.",
               "title": "Одмориште"
             },
             "multi-storey": {
               "title": "Вишеспратно"
             },
             "on_kerb": {
+              "description": "Паркирање на тротоару.",
               "title": "На ивичњаку"
             },
             "rooftop": {
+              "description": "Један ниво паркинг-декa на врху зграде.",
               "title": "Кровни простор"
             },
             "sheds": {
@@ -3082,6 +3099,11 @@
         "roof/colour": {
           "label": "Боја крова"
         },
+        "roof/shape": {
+          "options": {
+            "dome": "купола"
+          }
+        },
         "room": {
           "label": "Врста"
         },
@@ -3362,6 +3384,9 @@
         "source/population": {
           "label": "Извор броја становника"
         },
+        "spacing": {
+          "label": "Удаљеност између баријера (метри)"
+        },
         "species": {
           "label": "Врсте"
         },
@@ -3486,8 +3511,19 @@
           },
           "placeholder": "Непознато"
         },
+        "structure_canal": {
+          "label": "Структура",
+          "options": {
+            "bridge": "Мост",
+            "tunnel": "Тунел"
+          },
+          "placeholder": "Непознато"
+        },
         "structure_power": {
-          "label": "Структура"
+          "label": "Структура",
+          "options": {
+            "lattice": "Решетка"
+          }
         },
         "structure_waterway": {
           "label": "Структура",
@@ -3551,6 +3587,7 @@
             "dirt": "земља",
             "fine_gravel": "фини шљунак",
             "grass": "трава",
+            "grass_paver": "Травни оплочник",
             "gravel": "шљунак",
             "ground": "тло",
             "metal": "метал",
@@ -4903,6 +4940,9 @@
         "amenity/toilets/disposal/pitlatrine": {
           "name": "Пољски тоалет"
         },
+        "amenity/toilets/portable": {
+          "name": "Мобилни тоалет"
+        },
         "amenity/townhall": {
           "name": "Градска кућа"
         },
@@ -5675,6 +5715,9 @@
         "emergency/fire_hydrant": {
           "name": "Хидрант"
         },
+        "emergency/fire_hydrant/underground": {
+          "name": "Подземни хидрант"
+        },
         "emergency/fire_service_inlet": {
           "name": "Ватрогасни прикључак"
         },
@@ -6147,6 +6190,9 @@
           "name": "Меморијал",
           "terms": "Споменик,Спомен-комплекс"
         },
+        "historic/memorial/blue_plaque-GB-IE": {
+          "name": "Плава плоча"
+        },
         "historic/memorial/plaque": {
           "name": "Спомен-плоча"
         },
@@ -6289,6 +6335,12 @@
         },
         "landuse/meadow": {
           "name": "Ливада"
+        },
+        "landuse/meadow_orchard/meadow": {
+          "name": "Ливада са воћкама"
+        },
+        "landuse/meadow_orchard/orchard": {
+          "name": "Воћњак засађен на ливади"
         },
         "landuse/military": {
           "name": "Војна област"
@@ -6808,6 +6860,9 @@
         "man_made/gasometer": {
           "name": "Гасно складиште",
           "terms": "гасно складиште,гасометар,гасни силос,силос"
+        },
+        "man_made/goods_conveyor": {
+          "name": "Транспортна трака"
         },
         "man_made/insect_hotel": {
           "name": "Хотел за инсекте"
@@ -7995,6 +8050,9 @@
         "shop/carpet": {
           "name": "Продавница тепиха"
         },
+        "shop/catalogue": {
+          "name": "Каталошка продавница"
+        },
         "shop/charity": {
           "name": "Хуманитарна продавница"
         },
@@ -8048,6 +8106,12 @@
         },
         "shop/cosmetics": {
           "name": "Продавница козметике"
+        },
+        "shop/country_store": {
+          "name": "Продавница сеоске опреме"
+        },
+        "shop/craft": {
+          "name": "Радња за уметничке и занатске материјале"
         },
         "shop/curtain": {
           "name": "Продавница завеса"
@@ -8143,6 +8207,9 @@
         },
         "shop/greengrocer": {
           "name": "Пиљар"
+        },
+        "shop/groundskeeping": {
+          "name": "Продавница опреме за травњаке и баште"
         },
         "shop/hairdresser": {
           "name": "Фризер"

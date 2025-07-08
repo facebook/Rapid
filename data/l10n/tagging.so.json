@@ -55,6 +55,9 @@
         "aeroway": {
           "label": "Nooca"
         },
+        "aircraft/type": {
+          "label": "Nooca"
+        },
         "amenity": {
           "label": "Nooca"
         },
@@ -643,6 +646,13 @@
           "options": {
             "bridge": "Buundo",
             "ford": "Tog",
+            "tunnel": "Jid Dalool"
+          }
+        },
+        "structure_canal": {
+          "label": "Dhismo",
+          "options": {
+            "bridge": "Buundo",
             "tunnel": "Jid Dalool"
           }
         },

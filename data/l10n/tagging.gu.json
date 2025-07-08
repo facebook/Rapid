@@ -29,6 +29,9 @@
         "aeroway": {
           "label": "પ્રકાર"
         },
+        "aircraft/type": {
+          "label": "પ્રકાર"
+        },
         "amenity": {
           "label": "પ્રકાર"
         },
@@ -495,6 +498,9 @@
           }
         },
         "structure": {
+          "placeholder": "અજાણ્યું"
+        },
+        "structure_canal": {
           "placeholder": "અજાણ્યું"
         },
         "structure_waterway": {

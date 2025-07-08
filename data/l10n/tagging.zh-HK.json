@@ -177,6 +177,12 @@
         "agrarian": {
           "label": "產品"
         },
+        "aircraft/type": {
+          "label": "種類",
+          "options": {
+            "military": "軍事"
+          }
+        },
         "amenity": {
           "label": "種類"
         },
@@ -428,6 +434,9 @@
         },
         "charge_toll": {
           "placeholder": "1 歐元, 5 美元, 10 日圓..."
+        },
+        "climbing/length": {
+          "label": "長度 (米)"
         },
         "club": {
           "label": "種類"
@@ -1563,6 +1572,11 @@
         "roller_coaster/track": {
           "label": "種類"
         },
+        "roof/shape": {
+          "options": {
+            "dome": "半球形"
+          }
+        },
         "room": {
           "label": "種類"
         },
@@ -1801,6 +1815,13 @@
             "cutting": "開山",
             "embankment": "基堤",
             "ford": "淺灘"
+          },
+          "placeholder": "未知"
+        },
+        "structure_canal": {
+          "label": "構造",
+          "options": {
+            "bridge": "橋樑"
           },
           "placeholder": "未知"
         },

@@ -4,6 +4,10 @@
       "openstreetmapdenmark": "OpenStreetMap Danmark"
     },
     "_defaults": {
+      "bluesky": {
+        "name": "{community} på Bluesky",
+        "description": "Følg os på Bluesky"
+      },
       "discord": {
         "description": "Kom i kontakt med andre kortlæggere på Discord"
       },
@@ -19,12 +23,6 @@
       },
       "threads": {
         "description": "Følg os på Threads"
-      },
-      "twitter": {
-        "description": "Følg os på 𝕏"
-      },
-      "x": {
-        "description": "Følg os på 𝕏"
       }
     },
     "Bay-Area-OpenStreetMappers": {
@@ -41,6 +39,9 @@
     },
     "cape-coast-youthmappers": {
       "description": "Følg os på Twitter på {url}"
+    },
+    "co-talk": {
+      "name": "{community} mailing-liste"
     },
     "de-berlin-mailinglist": {
       "name": "Berlin maillingliste"

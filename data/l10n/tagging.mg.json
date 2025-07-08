@@ -38,6 +38,9 @@
         "aeroway": {
           "label": "Karazany"
         },
+        "aircraft/type": {
+          "label": "Karazany"
+        },
         "amenity": {
           "label": "Karazany"
         },
@@ -538,6 +541,9 @@
           }
         },
         "structure": {
+          "placeholder": "Tsy fantatra"
+        },
+        "structure_canal": {
           "placeholder": "Tsy fantatra"
         },
         "structure_waterway": {

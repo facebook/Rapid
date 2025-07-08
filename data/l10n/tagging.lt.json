@@ -180,6 +180,12 @@
         "agrarian": {
           "label": "Produktai"
         },
+        "aircraft/type": {
+          "label": "Tipas",
+          "options": {
+            "military": "Karinis"
+          }
+        },
         "amenity": {
           "label": "Tipas"
         },
@@ -421,6 +427,9 @@
         },
         "castle_type": {
           "label": "Tipas"
+        },
+        "climbing/length": {
+          "label": "Ilgis (metrais)"
         },
         "clothes": {
           "label": "Drabužiai"
@@ -1522,6 +1531,11 @@
         "roller_coaster/track": {
           "label": "Tipas"
         },
+        "roof/shape": {
+          "options": {
+            "dome": "Kupolas"
+          }
+        },
         "room": {
           "label": "Tipas"
         },
@@ -1771,6 +1785,14 @@
             "bridge": "Tiltas",
             "embankment": "Pylimas",
             "ford": "Brasta",
+            "tunnel": "Tunelis"
+          },
+          "placeholder": "Nežinoma"
+        },
+        "structure_canal": {
+          "label": "Struktūra",
+          "options": {
+            "bridge": "Tiltas",
             "tunnel": "Tunelis"
           },
           "placeholder": "Nežinoma"

@@ -68,6 +68,13 @@
       "Dourados_Ortofotos": {
         "description": "Imagens aéreas de alta resolução de Dourados (2018) e diversos distritos (2020)."
       },
+      "EOXAT2017CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 sem nuvens- https://s2maps.eu pelos Serviços EOX IT GmbH (Contém dados Copernicus Sentinel modificados de 2017)"
+        },
+        "description": "Imagens Processadas do Satélite Sentinel.",
+        "name": "eox.at 2017 sem nuvens"
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 sem nuvens - https://s2maps.eu por EOX IT Services GmbH (contém dados alterados do Copernicus Sentinel de 2017 e 2018)"
@@ -103,6 +110,20 @@
         "description": "Imagens Processadas do Satélite Sentinel.",
         "name": "eox.at 2022 sem nuvens"
       },
+      "EOXAT2023CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 sem nuvens- https://s2maps.eu pelos Serviços EOX IT GmbH (Contém dados Copernicus Sentinel modificados de 2023)"
+        },
+        "description": "Imagens Processadas do Satélite Sentinel.",
+        "name": "eox.at 2023 sem nuvens"
+      },
+      "EOXAT2024CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 sem nuvens- https://s2maps.eu pelos Serviços EOX IT GmbH (Contém dados Copernicus Sentinel modificados de 2024)"
+        },
+        "description": "Imagens Processadas do Satélite Sentinel.",
+        "name": "eox.at 2024 sem nuvens"
+      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "Termos e Opinião"
@@ -123,6 +144,10 @@
       },
       "FOMI_2015": {
         "description": "Ortofotos do governo com folhagem e resolução de 40 cm/pixel para todo o país. Esta camada deve ser usada como uma base de alinhamento na falta de uma referência mais precisa. Imagens no formato WEBP, o JOSM precisa de um plugin webp para elas."
+      },
+      "FOMI_2015_leafoff_20cm": {
+        "description": "Ortofotos do governo sem folhagem e resolução de 20 cm/pixel para 6 distritos. Esta camada deve ser usada como uma base de alinhamento na falta de uma referência mais precisa. Imagens no formato WEBP, o JOSM precisa de um plugin webp para elas.",
+        "name": "Ortofotos FÖMI 2015 20cm sem folhagem (webp)"
       },
       "Frankfurt-am-Main-2019": {
         "attribution": {
@@ -432,14 +457,6 @@
       },
       "OSIP": {
         "description": "Programa de Imagens do Estado do Ohio III ortoimagens mais atuais de todos os condados, com resoluções de 1 pé a 3 polegadas, de 2017 a 2020."
-      },
-      "OSIP_1ft": {
-        "description": "Programa de Imagens do Estado do Ohio II ortoimagens de todos os 88 condados com uma resolução de 1 pé de 2011 a 2014.",
-        "name": "Ohio Statewide Imagery Program 1 pé"
-      },
-      "OSIP_6in": {
-        "description": "Programa de Imagens do Estado do Ohio III ortoimagens de 40 concelhos capturadas com uma resolução de 6 polegadas em 2017 e 2018, mais imagens OSIP I e OSIP II em mais 16 concelhos de 2010 a 2014.",
-        "name": "Ohio Statewide Imagery Program 6 pés"
       },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {

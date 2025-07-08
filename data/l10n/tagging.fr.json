@@ -214,6 +214,16 @@
           "label": "Climatisation",
           "terms": "Climatisation, climatiseur"
         },
+        "aircraft/type": {
+          "options": {
+            "airliner": "Avion de ligne",
+            "fixed_wing": "Voilure fixe",
+            "glider": "Planeur",
+            "helicopter": "Hélicoptère",
+            "jet": "Avion à réaction",
+            "military": "Militaire"
+          }
+        },
         "alt_name": {
           "label": "Nom alternatif",
           "terms": "Autres noms, autre nom, noms alternatifs"
@@ -261,8 +271,10 @@
             "bust": "Buste",
             "installation": "Installation artistique",
             "mosaic": "Mosaïque",
-            "mural": "Murale",
-            "painting": "Peinture"
+            "mural": "Peinture ou fresque murale",
+            "painting": "Peinture",
+            "stone": "Pierre travaillée par un artiste",
+            "tilework": "Carrelage"
           }
         },
         "ascent": {
@@ -552,7 +564,7 @@
             "hangar": "Hangar",
             "hospital": "Bâtiment d'hôpital",
             "hotel": "Bâtiment d'hôtel",
-            "house": "Maison mitoyenne",
+            "house": "Maison",
             "houseboat": "Bateau habitable",
             "hut": "Hutte",
             "industrial": "Bâtiment industriel",
@@ -570,7 +582,7 @@
             "ruins": "Bâtiment en ruine",
             "school": "Bâtiment scolaire - élémentaire ou secondaire",
             "semidetached_house": "Maison mitoyenne\nMaison jumelée",
-            "service": "Bâtiment de service (technique)",
+            "service": "Bâtiment de service",
             "shed": "Cabanon",
             "stable": "Écurie",
             "stadium": "Bâtiment du stade",
@@ -727,6 +739,30 @@
         "circumference": {
           "label": "Circonférence (à hauteur de poitrine)",
           "terms": "circonférence,contour,longueur,rayon,diamètre,diamètre à hauteur de poitrine,diamètre à hauteur d'homme"
+        },
+        "climbing/bolts": {
+          "label": "Nombre de points d'ancrage"
+        },
+        "climbing/grade/french": {
+          "label": "Cotation française en escalade"
+        },
+        "climbing/grade/saxon": {
+          "label": "Cotation allemande en escalade",
+          "terms": "Cotation Saxe en escalade"
+        },
+        "climbing/grade/uiaa": {
+          "label": "Cotation UIAA en escalade"
+        },
+        "climbing/grade/yds_class": {
+          "label": "Cotation YDS en escalade",
+          "terms": "Cotation Yosemite Decimal System en escalade, Cotation Sierra en escalade"
+        },
+        "climbing/length": {
+          "label": "Longueur (mètres)",
+          "terms": "longueur,mètre,taille"
+        },
+        "climbing/trad": {
+          "label": "Escalade traditionnelle"
         },
         "clothes": {
           "label": "Vêtements",
@@ -988,7 +1024,7 @@
           "terms": "marquage, peinture, sol, traversée, voie, voirie"
         },
         "crossing_raised": {
-          "label": "Relevé",
+          "label": "Surélevé",
           "options": {
             "table": "Oui",
             "undefined": "Non"
@@ -1077,9 +1113,17 @@
         "cutting": {
           "placeholder": "Défaut"
         },
+        "cycle_barrier": {
+          "options": {
+            "diagonal": "En diagonal",
+            "single": "Simple",
+            "tilted": "Inclinée"
+          }
+        },
         "cycle_barrier/installation": {
           "options": {
             "fixed": "Fixée",
+            "openable": "Ouvrable",
             "removable": "Détachable"
           }
         },
@@ -1098,10 +1142,12 @@
               "title": "Aucune"
             },
             "opposite": {
-              "description": "Veuillez mettre à jour avec oneway=yes, oneway:bicycle=no, et cycleway:both=no etc."
+              "description": "Veuillez mettre à jour avec oneway=yes, oneway:bicycle=no, et cycleway:both=no etc.",
+              "title": "(Déprecié) Circulation cyclable à contre-sens sans voie dédiée"
             },
             "opposite_lane": {
-              "description": "Veuillez mettre à jour avec oneway, oneway:bicycle, et cycleway:left/right=lane etc."
+              "description": "Veuillez mettre à jour avec oneway, oneway:bicycle, et cycleway:left/right=lane etc.",
+              "title": "(Déprecié) Bande cyclable à contre-sens"
             },
             "separate": {
               "description": "Indique que la piste cyclable à été cartographiée comme une géométrie séparée",
@@ -1279,6 +1325,10 @@
             "yes": "Autorisés"
           },
           "terms": "chiens,animaux,canin"
+        },
+        "dog_check": {
+          "label": "Convient pour les chiens",
+          "terms": "approprié aux chiens, dédié aux chiens, autorisé aux chiens"
         },
         "door": {
           "label": "Porte"
@@ -1924,10 +1974,12 @@
           "terms": "interval"
         },
         "irrigation_pivot": {
+          "label": "Irrigation à pivot central",
           "options": {
             "pivot": "Oui",
             "undefined": "Non"
-          }
+          },
+          "terms": "Pivot, Irrigation sous pivots, Arroseur à pivot,Asperseur"
         },
         "junction/ref_oneway": {
           "label": "Identifiant de l'embranchement",
@@ -1959,11 +2011,11 @@
             },
             "raised": {
               "description": "Un trottoir surélevé qui ne peut pas être utilisé par des utilisateurs en fauteuil roulant, élevé de plus que quelques centimètres.",
-              "title": "Relevé"
+              "title": "Surélevé"
             },
             "rolled": {
-              "description": "Un trottoir relevé avec un bord arrondi, ce qui le rend plus facile à franchir par les véhicules, mais pas par les fauteuils roulants.",
-              "title": "Arrondi et relevé"
+              "description": "Un trottoir surélevé avec un bord arrondi, ce qui le rend plus facile à franchir par les véhicules, mais pas par les fauteuils roulants.",
+              "title": "Arrondi et surélevé"
             },
             "yes": {
               "description": "Une sorte de bordure est présente à cet endroit, on ne sait pas si elle est surélevée, abaissée, à fleur, etc.",
@@ -2104,6 +2156,9 @@
         "manufacturer": {
           "label": "Fabricant",
           "terms": "manufacture,artisan,artisanat"
+        },
+        "manufacturer/wikidata": {
+          "label": "Wikidata du constructeur"
         },
         "map_size": {
           "label": "Emprise, Couverture"
@@ -2280,6 +2335,9 @@
         "model": {
           "label": "Modèle",
           "terms": "modèle"
+        },
+        "model/wikidata": {
+          "label": "Wikidata du modèle"
         },
         "monitoring_multi": {
           "label": "Surveillance"
@@ -2475,6 +2533,9 @@
           "label": "Feux ouverts autorisés",
           "terms": "feu de camp"
         },
+        "opening": {
+          "label": "Largeur d'ouverture (mètres)"
+        },
         "opening_date": {
           "label": "Date d'ouverture prévue",
           "placeholder": "AAAA-MM-JJ"
@@ -2509,8 +2570,12 @@
           "label": "Places en terrasse",
           "terms": "places en terrase,terrasse,beer garden,biergarten,restaurant,bar"
         },
+        "overlap": {
+          "label": "Largeur de recouvrement (mètres)"
+        },
         "panoramax": {
-          "label": "ID d'image Panoramax"
+          "label": "ID d'image Panoramax",
+          "terms": "Panoramax,Image panoramax,Identifiant de l'image Panoramax"
         },
         "parcel_dropoff": {
           "label": "Dépôt de colis"
@@ -2575,7 +2640,7 @@
             },
             "surface": {
               "description": "Un niveau de parking au sol",
-              "title": "Revêtement"
+              "title": "En surface"
             },
             "underground": {
               "description": "Parking souterrain",
@@ -3047,6 +3112,26 @@
           "label": "Couleur du toit",
           "terms": "couleur du toit"
         },
+        "roof/height": {
+          "label": "Hauteur du toit (mètres)"
+        },
+        "roof/shape": {
+          "label": "Forme de toiture",
+          "options": {
+            "cone": "Conique (tourelle)",
+            "dome": "Dôme (coupole)",
+            "flat": "Terrasse (plat)",
+            "gabled": "2 versants",
+            "gambrel": "Mansart (2 versants)",
+            "half-hipped": "Demi-croupe",
+            "hipped": "Croupe",
+            "mansard": "Mansart (4 versants)",
+            "onion": "Bulbe",
+            "pyramidal": "Pavillon (pyramidale à 4 versants)",
+            "round": "Bombée (cintrée)",
+            "skillion": "Monopente (en appentis)"
+          }
+        },
         "rooms": {
           "label": "Chambres"
         },
@@ -3356,11 +3441,13 @@
             "osm notes": "Notes OpenStreetMap",
             "streetlevel imagery": "Photos de la rue",
             "survey": "Vérifié sur le terrain"
-          },
-          "terms": "sources,références"
+          }
         },
         "source/population": {
           "label": "Population: source"
+        },
+        "spacing": {
+          "label": "Distance entre les barrières (mètres)"
         },
         "species": {
           "label": "Espèces",
@@ -3462,6 +3549,12 @@
           },
           "placeholder": "Inconnu",
           "terms": "structure"
+        },
+        "structure_canal": {
+          "options": {
+            "bridge": "Pont"
+          },
+          "placeholder": "Inconnu"
         },
         "structure_power": {
           "options": {
@@ -4375,6 +4468,9 @@
         "amenity/cafe/coffee_shop": {
           "name": "Café",
           "terms": "café, américano, café moulu, cappuccino, expresso, thé, boisson chaude"
+        },
+        "amenity/cafe/teahouse": {
+          "name": "Salon de thé"
         },
         "amenity/car_pooling": {
           "name": "Aire de covoiturage",
@@ -5417,6 +5513,9 @@
           "name": "Vétérinaire",
           "terms": "Vétérinaire"
         },
+        "amenity/veterinary_pharmacy": {
+          "name": "Pharmacie véterinaire"
+        },
         "amenity/waste/dog_excrement": {
           "name": "Bac à excrément de chien",
           "terms": "bac à excrément de chien,poubelle,déchets,crottes,chien"
@@ -5616,7 +5715,7 @@
           "terms": "barrière, portail, accès, fil, fer, barré, barbelé"
         },
         "barrier/handrail": {
-          "name": "Rampe"
+          "name": "Rampe, Main courante"
         },
         "barrier/hedge": {
           "name": "Haie",
@@ -5643,8 +5742,8 @@
           "terms": "abaissement de trottoir,bateau,bordure abaissée,rampe d'accès,plan incliné,charretière"
         },
         "barrier/kerb/raised": {
-          "name": "Bordure de trottoir relevée",
-          "terms": "trottoir,bord,relèvement de trottoir,trottoir relevé"
+          "name": "Bordure de trottoir surélevée",
+          "terms": "trottoir,bord,relèvement de trottoir,trottoir surélevé"
         },
         "barrier/kerb/rolled": {
           "name": "Bordure de trottoir creusée",
@@ -5932,7 +6031,7 @@
           "terms": "maison jumelée, maison jumelle, maison mitoyenne, maison avec mur mitoyen, pavillon mitoyen, maisons jumelées, maisons jumelles, maisons mitoyennes, maisons avec mur mitoyen, pavillons mitoyens, building semidetached house, semidetached house, semi detached house"
         },
         "building/service": {
-          "name": "Bâtiment de service (technique)",
+          "name": "Bâtiment de service",
           "terms": "bâtiment de services,batiment de services,services"
         },
         "building/shed": {
@@ -5995,6 +6094,12 @@
         "cemetery/sector": {
           "name": "Section de cimetière",
           "terms": "tombe,enterrement,cimetière,mausolée"
+        },
+        "climbing/route": {
+          "name": "Voie d'escalade"
+        },
+        "climbing/route_bottom": {
+          "name": "Départ d'une voie d'escalade"
         },
         "club": {
           "terms": "Club,association,mouvement de jeunesse,scout,guide"
@@ -6566,6 +6671,9 @@
           "name": "Passage piéton",
           "terms": "Passage piéton"
         },
+        "highway/crossing/informal": {
+          "name": "Passage piéton informel"
+        },
         "highway/crossing/traffic_signals": {
           "name": "Passage piéton avec feux de signalisation",
           "terms": "passage, traversée, piéton, signalisation, feux, protégé"
@@ -6616,7 +6724,7 @@
           "name": "Îlot central"
         },
         "highway/cyclist_waiting_aid": {
-          "name": "Sas vélo",
+          "name": "Support d'attente cycliste",
           "terms": "Sas à vélo, Sas cycliste, Sas pour vélo"
         },
         "highway/elevator": {
@@ -6865,8 +6973,8 @@
           "terms": "Miroir de sécurité"
         },
         "highway/traffic_signals": {
-          "name": "Feux tricolores",
-          "terms": "Feux de circulation, Feux tricolores, Feux rouges"
+          "name": "Feux de signalisation routière",
+          "terms": "Feux de circulation, Feux tricolores, Feux rouges, Feux de signalisation"
         },
         "highway/trailhead": {
           "name": "Début du sentier",
@@ -6895,6 +7003,9 @@
         "historic": {
           "name": "Site historique",
           "terms": "Site historique"
+        },
+        "historic/aircraft": {
+          "name": "Avion historique"
         },
         "historic/archaeological_site": {
           "name": "Site archéologique",
@@ -6942,6 +7053,9 @@
         "historic/memorial": {
           "name": "Mémorial",
           "terms": "Mémorial, Monument aux morts, statue, buste, stèle, plaque"
+        },
+        "historic/memorial/blue_plaque-GB-IE": {
+          "name": "Plaque bleue"
         },
         "historic/memorial/plaque": {
           "name": "Plaque commémorative",
@@ -8202,8 +8316,8 @@
           "terms": "Glacier"
         },
         "natural/grassland": {
-          "name": "Zone naturelle à dominance herbacée",
-          "terms": "Prairie"
+          "name": "Prairie naturelle",
+          "terms": "Prairie, Zone naturelle à dominance herbacée"
         },
         "natural/heath": {
           "name": "Lande",
@@ -9243,8 +9357,8 @@
           "terms": "croisement rail-rail, croisement à niveau de voies ferrées"
         },
         "railway/signal": {
-          "name": "Feux tricolores ferroviaires",
-          "terms": "feux tricolores ferroviaires,signalisation ferroviaire"
+          "name": "Feux de signalisation ferroviaire",
+          "terms": "feux de signalisation ferroviaire,feux ferroviaires"
         },
         "railway/station": {
           "name": "Gare ferroviaire"
@@ -9376,6 +9490,9 @@
         "shop/bathroom_furnishing": {
           "name": "Fournitures pour salles de bain",
           "terms": "Fournitures pour salles de bain"
+        },
+        "shop/bbq": {
+          "name": "Magasin pour barbecues"
         },
         "shop/beauty": {
           "name": "Salon de beauté",
@@ -9664,6 +9781,9 @@
         "shop/greengrocer": {
           "name": "Primeur",
           "terms": "Fruiterie, Marchand de fruits et légumes, Maraicher, Maraîcher, Primeur"
+        },
+        "shop/groundskeeping": {
+          "name": "Magasin d'entretien du jardin"
         },
         "shop/hairdresser": {
           "name": "Salon de coiffure",
@@ -10166,7 +10286,7 @@
           "terms": "Poteau indicateur"
         },
         "tourism/information/map": {
-          "name": "Carte",
+          "name": "Carte\nPlan\nTable d'orientation",
           "terms": "Plan"
         },
         "tourism/information/office": {
@@ -10373,6 +10493,9 @@
         "type/route/bus": {
           "name": "Itinéraire de bus",
           "terms": "Trajet d'autobus"
+        },
+        "type/route/climbing": {
+          "name": "Voie d'escalade"
         },
         "type/route/detour": {
           "name": "Itinéraire de délestage",

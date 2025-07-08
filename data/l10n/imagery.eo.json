@@ -92,6 +92,9 @@
         },
         "name": "Częstochowa: konstruaĵoj"
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "Pritraktita fotaro de la satelito Sentinel‑2."
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel‑2 sennuba fotaro de EOX IT Services GmbH (enhavas modifitajn datumojn (2017‑2018) de Copernicus)"
@@ -109,6 +112,12 @@
         "description": "Pritraktita fotaro de la satelito Sentinel‑2."
       },
       "EOXAT2022CLOUDLESS": {
+        "description": "Pritraktita fotaro de la satelito Sentinel‑2."
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Pritraktita fotaro de la satelito Sentinel‑2."
+      },
+      "EOXAT2024CLOUDLESS": {
         "description": "Pritraktita fotaro de la satelito Sentinel‑2."
       },
       "EsriWorldImagery": {
@@ -360,19 +369,6 @@
           "text": "Fotara programo de subŝtato Ohio (OSIP)"
         },
         "name": "Fotara programo de subŝtato Ohio (OSIP)"
-      },
-      "OSIP_1ft": {
-        "attribution": {
-          "text": "Fotara programo de subŝtato Ohio (OSIP)"
-        },
-        "description": "Fotara programo de la subŝtato Ohio (OSIP), 2-a versio: aera fotaro de ĉiuj 88 kantonoj je distingivo 1 futo (30 cm) farita dum la jaroj 2011-2014."
-      },
-      "OSIP_6in": {
-        "attribution": {
-          "text": "Fotara programo de subŝtato Ohio (OSIP)"
-        },
-        "description": "Fotara programo de la subŝtato Ohio (OSIP), 3-a versio: aera fotaro de 40 kantonoj je distingivo 6 coloj (15 cm) farita dum la jaroj 2017/2018; kaj ankaŭ fotaro de OSIP v1 k OSIP v2 de 16 pliaj kantonoj farita dum la jaroj 2010-2014.",
-        "name": "Fotara programo de subŝtato Ohio (15 cm)"
       },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {

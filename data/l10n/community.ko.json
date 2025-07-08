@@ -6,7 +6,6 @@
       "kiribatiwomeninmapping": "매핑하는 키리바시 여성",
       "mappingbotswana": "보츠와나 매핑",
       "maptimebogota": "맵타임보고타",
-      "maptimehrva": "맵타임HRVA",
       "openstreetmap": "오픈스트리트맵",
       "openstreetmapaachen": "오픈스트리트맵 아헨",
       "openstreetmapafghanistan": "오픈스트리트맵 아프가니스탄",
@@ -35,7 +34,6 @@
       "openstreetmapbrasilia": "오픈스트리트맵 브라질리아",
       "openstreetmapbremen": "오픈스트리트맵 브레멘",
       "openstreetmapbulgaria": "오픈스트리트맵 불가리아",
-      "openstreetmapburkinafaso": "오픈스트리트맵 부르키나파소",
       "openstreetmapburundi": "오픈스트리트맵 부룬디",
       "openstreetmapbzh": "오픈스트리트맵 브르타뉴",
       "openstreetmapcambodia": "오픈스트리트맵 캄보디아",
@@ -168,7 +166,6 @@
       "openstreetmapsaudiarabia": "오픈스트리트맵 사우디아라비아",
       "openstreetmapsenegal": "오픈스트리트맵 세네갈",
       "openstreetmapserbia": "오픈스트리트맵 세르비아",
-      "openstreetmapseychelles": "오픈스트리트맵 세이셸",
       "openstreetmapsierraleone": "오픈스트리트맵 시에라리온",
       "openstreetmapsingapore": "오픈스트리트맵 싱가포르",
       "openstreetmapslovenia": "오픈스트리트맵 슬로베니아",
@@ -179,7 +176,6 @@
       "openstreetmapsudan": "오픈스트리트맵 수단",
       "openstreetmapsweden": "오픈스트리트맵 스웨덴",
       "openstreetmapswitzerland": "오픈스트리트맵 스위스",
-      "openstreetmapsyria": "오픈스트리트맵 시리아",
       "openstreetmaptaiwan": "오픈스트리트맵 대만",
       "openstreetmaptanzania": "오픈스트리트맵 탄자니아",
       "openstreetmapthailand": "오픈스트리트맵 태국",
@@ -282,16 +278,8 @@
         "name": "{community}의 틱톡",
         "description": "저희 틱톡을 팔로우 하세요"
       },
-      "twitter": {
-        "name": "{community}의 𝕏 채널",
-        "description": "저희 𝕏 채널을 팔로우하세요"
-      },
       "wiki": {
         "name": "{community} 위키프로젝트"
-      },
-      "x": {
-        "name": "{community}의 𝕏 채널",
-        "description": "저희 𝕏 채널을 팔로우하세요"
       },
       "youtube": {
         "name": "{community}의 유투브",
@@ -331,7 +319,7 @@
       "extendedDescription": "이 그룹은 이곳 Bay Area에서 OpenStreetMap 커뮤니티를 성장시키는 것에 관한 것입니다. 오픈 소스 애호가, 사이클리스트, GIS 전문가, Geocacher 등 모든 사람을 대상으로한 행사가 열립니다. 지도, 지도 제작 및 무료 지도 데이터에 관심이 있는 모든 사람은 행사에 참석할 뿐만 아니라 우리 그룹에 참여할 수 있습니다."
     },
     "bd-facebook": {
-      "extendedDescription": "방글라데시에서 맵핑중이신가요? 질문이 있고, 여기 커뮤니티와 연결하고 싶으신가요? {url}에서 참여하세요! 모두 환영합니다!"
+      "extendedDescription": "방글라데시에서 맵핑 중이신가요? 질문이 있고, 여기 커뮤니티와 연결하고 싶으신가요? {url}에서 참여하세요! 모두 환영합니다!"
     },
     "be-chapter": {
       "description": "우리는 벨기에 내의 오픈스트리트맵을 성장시키고 개선하도록 돕습니다.",
@@ -482,9 +470,6 @@
     "de-mainz-mailinglist": {
       "description": "마인츠 및 주변 지역 OpenStreetMap"
     },
-    "de-mainz-telegram": {
-      "description": "마인츠 및 주변 지역 OpenStreetMap"
-    },
     "de-mainz-wiki": {
       "description": "마인츠 및 주변 지역 OpenStreetMap"
     },
@@ -599,9 +584,6 @@
     "hu-matrix": {
       "extendedDescription": "지도 주제에 대한 오픈스트리트맵 채팅 OSM 커뮤니티 지원 포럼 중 하나입니다."
     },
-    "hu-meetup": {
-      "description": "헝가리에서 모임을 조직하는 플랫폼"
-    },
     "hu-mobilizon": {
       "name": "{community}의 모빌리존",
       "description": "오픈스트리트맵 헝가리 커뮤니티를 위한 예정 이벤트들"
@@ -609,9 +591,6 @@
     "hu-tm": {
       "name": "{community} 작업 매니저",
       "description": "헝가리의 활성 맵핑 작업 탐색"
-    },
-    "hu-website": {
-      "description": "우리는 헝가리 내의 오픈스트리트맵을 성장시키고 개선하도록 돕습니다."
     },
     "hu-wiki": {
       "description": "{community} 위키 페이지"
@@ -621,11 +600,11 @@
       "description": "HOTOSM의 Slack 서버에서 인도주의 오픈스트리트맵 튀르키예 채널에 참여하십시오 {url}"
     },
     "id-facebook": {
-      "extendedDescription": "인도네시아에서 맵핑중이신가요? 질문이 있고, 여기 커뮤니티와 연결하고 싶으신가요? {url}에서 참여하세요! 모두 환영합니다!"
+      "extendedDescription": "인도네시아에서 맵핑 중이신가요? 질문이 있고, 여기 커뮤니티와 연결하고 싶으신가요? {url}에서 참여하세요! 모두 환영합니다!"
     },
     "id-facebook-group": {
       "name": "{community} Facebook 그룹",
-      "extendedDescription": "인도네시아에서 맵핑중이신가요? 질문이 있고, 여기 커뮤니티와 연결하고 싶으신가요? {url}에서 참여하세요! 모두 환영합니다!"
+      "extendedDescription": "인도네시아에서 맵핑 중이신가요? 질문이 있고, 여기 커뮤니티와 연결하고 싶으신가요? {url}에서 참여하세요! 모두 환영합니다!"
     },
     "ireland-chapter": {
       "description": "우리는 아일랜드 내의 오픈스트리트맵을 성장시키고 개선하도록 돕습니다.",
@@ -683,7 +662,7 @@
       "description": "라틴 아메리카 지도제작에 대해 알아야 할 모든 것: {url}"
     },
     "lk-facebook": {
-      "extendedDescription": "스리랑카에서 맵핑중이신가요? 질문이 있고, 여기 커뮤니티와 연결하고 싶으신가요? {url}에서 참여하세요! 모두 환영합니다!"
+      "extendedDescription": "스리랑카에서 맵핑 중이신가요? 질문이 있고, 여기 커뮤니티와 연결하고 싶으신가요? {url}에서 참여하세요! 모두 환영합니다!"
     },
     "local-polynesie-mailinglist": {
       "extendedDescription": "OSM 커뮤니티의 행동을 알리고 배우려면 질문과 조정 및 OSM 커뮤니티의 모든 것에 대한 답을 찾으십시오. 모두 환영합니다!"
@@ -728,9 +707,6 @@
     },
     "MappingWR": {
       "description": "워털루 지역 주변의 저탄소 경로를 쉽게 찾을 수 있습니다."
-    },
-    "MapRVA": {
-      "description": "MapRVA 정모"
     },
     "maptime-bogota-facebook": {
       "name": "Maptime 보고타",
@@ -794,10 +770,10 @@
       "description": "모두 환영합니다! {signupUrl}에서 가입하세요!"
     },
     "mm-facebook": {
-      "extendedDescription": "미얀마에서 맵핑중이신가요? 질문이 있고, 여기 커뮤니티와 연결하고 싶으신가요? {url}에서 참여하세요! 모두 환영합니다!"
+      "extendedDescription": "미얀마에서 맵핑 중이신가요? 질문이 있고, 여기 커뮤니티와 연결하고 싶으신가요? {url}에서 참여하세요! 모두 환영합니다!"
     },
     "mn-facebook": {
-      "extendedDescription": "몽골에서 맵핑중이신가요? 질문이 있고, 여기 커뮤니티와 연결하고 싶으신가요? {url}에서 참여하세요! 모두 환영합니다!"
+      "extendedDescription": "몽골에서 맵핑 중이신가요? 질문이 있고, 여기 커뮤니티와 연결하고 싶으신가요? {url}에서 참여하세요! 모두 환영합니다!"
     },
     "mt-irc": {
       "extendedDescription": "irc.oftc.net (포트 6667)에서 #{account}에 가입하십시오. 질문이 있으시면 잠시 기다려 주십시오"
@@ -820,7 +796,7 @@
       "extendedDescription": "한 그룹의 사람들이 2011년 3월부터 모임을 갖고 있는데, 처음에는 노팅엄에서, 그리고 최근에는 더비에서, 그리고 가끔은 이스트 미들랜즈의 다른 곳에서 모임을 갖고 있습니다. 이 모임들은 사교 모임이지만, 그 지역이나 일반적으로 OSM에 대해 구체적인 질문을 할 수 있는 훌륭한 장소입니다. 여름에 우리는 모임 장소 근처에서 보통 한 시간 동안 가벼운 지도 제작을 합니다. 모임 전체적으로 공공의 권리를 지도 제작하는 데 특별한 관심을 가지고 있고, 가끔 이런 목적으로 지도 제작 모임을 갖고 있습니다."
     },
     "np-facebook": {
-      "extendedDescription": "네팔에서 맵핑중이신가요? 질문이 있고, 여기 커뮤니티와 연결하고 싶으신가요? {url}에서 참여하세요! 모두 환영합니다!"
+      "extendedDescription": "네팔에서 맵핑 중이신가요? 질문이 있고, 여기 커뮤니티와 연결하고 싶으신가요? {url}에서 참여하세요! 모두 환영합니다!"
     },
     "Open-Source-San-Jose-Discord": {
       "name": "오픈소스 San José Discord",
@@ -941,7 +917,7 @@
     },
     "OSM-India-facebook": {
       "description": "인도 내 오픈스트리트맵 개선하기",
-      "extendedDescription": "인도에서 맵핑중이신가요? 질문이 있고, 여기 커뮤니티와 연결하고 싶으신가요? {url}에서 참여하세요! 모두 환영합니다!"
+      "extendedDescription": "인도에서 맵핑 중이신가요? 질문이 있고, 여기 커뮤니티와 연결하고 싶으신가요? {url}에서 참여하세요! 모두 환영합니다!"
     },
     "osm-india-github": {
       "description": "같이 코딩해요: {url}"
@@ -1000,7 +976,7 @@
     },
     "OSM-Kerala-facebook": {
       "description": "케랄라주 오픈스트리트맵 개선하기",
-      "extendedDescription": "케랄라주에서 맵핑중이신가요? 질문이 있고, 여기 커뮤니티와 연결하고 싶으신가요? {url}에서 참여하세요! 모두 환영합니다!"
+      "extendedDescription": "케랄라주에서 맵핑 중이신가요? 질문이 있고, 여기 커뮤니티와 연결하고 싶으신가요? {url}에서 참여하세요! 모두 환영합니다!"
     },
     "osm-kerala-github": {
       "description": "같이 코딩해요: {url}"
@@ -1174,13 +1150,10 @@
       "description": "호주 맵퍼들이 채팅할 수 있는 장소"
     },
     "talk-bo": {
-      "extendedDescription": "볼리비아에서 맵핑중이신가요? 질문이 있고, 여기 커뮤니티와 연결하고 싶으신가요? {url}에서 참여하세요! 모두 환영합니다!"
+      "extendedDescription": "볼리비아에서 맵핑 중이신가요? 질문이 있고, 여기 커뮤니티와 연결하고 싶으신가요? {url}에서 참여하세요! 모두 환영합니다!"
     },
     "talk-mg": {
       "description": "마다가스카르 내 오픈스트리트맵 기여자와 공동체, 사용자가 공유하고 논의하기 위한 장소."
-    },
-    "talk-nz": {
-      "description": "뉴질랜드 OSM 커뮤니티 대화"
     },
     "talk-pacific": {
       "description": "모아나/오세아니아/태평양 지역 OSM 메일링 목록",
@@ -1222,9 +1195,6 @@
     "uk-london-wiki": {
       "description": "{community} 위키 페이지"
     },
-    "uk-loomio": {
-      "name": "오픈스트리트맵 영국 루미오"
-    },
     "us-discourse": {
       "description": "미국 오픈스트리트맵에 관한 토론회"
     },
@@ -1239,9 +1209,6 @@
     "uy-irc": {
       "description": "irc.freenode.org 에서 #{account} 가입(포트 6667)",
       "extendedDescription": "irc.freenode.org 에서 #{account} 가입"
-    },
-    "vn-mailinglist": {
-      "description": "오픈스트리트맵 베트남 또는 베트남인에 대한 메일링리스트"
     },
     "vn-wiki": {
       "description": "{community} 위키 페이지"

@@ -10,6 +10,9 @@
       "Bytom-2012": {
         "name": "Bytom: Orthophotomap 2012 (luftfoto)"
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "Efterbehandlet Sentinel Satellite billeder"
+      },
       "EOXAT2018CLOUDLESS": {
         "description": "Efterbehandlet Sentinel Satellite billeder",
         "name": "eox.at 2018 skyfri"
@@ -24,6 +27,12 @@
         "description": "Efterbehandlet Sentinel Satellite billeder"
       },
       "EOXAT2022CLOUDLESS": {
+        "description": "Efterbehandlet Sentinel Satellite billeder"
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Efterbehandlet Sentinel Satellite billeder"
+      },
+      "EOXAT2024CLOUDLESS": {
         "description": "Efterbehandlet Sentinel Satellite billeder"
       },
       "EsriWorldImagery": {

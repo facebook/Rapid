@@ -88,7 +88,6 @@
       "openstreetmaprussia": "OpenStreetMap Rusland",
       "openstreetmapsaudiarabia": "OpenStreetMap Saudi-Arabië",
       "openstreetmapserbia": "OpenStreetMap Servië",
-      "openstreetmapseychelles": "OpenStreetMap Seychellen",
       "openstreetmapslovenia": "OpenStreetMap Slovenië",
       "openstreetmapsomalia": "OpenStreetMap Somalië",
       "openstreetmapsouthafrica": "OpenStreetMap Zuid-Afrika",
@@ -96,7 +95,6 @@
       "openstreetmapsudan": "OpenStreetMap Soedan",
       "openstreetmapsweden": "OpenStreetMap Zweden",
       "openstreetmapswitzerland": "OpenStreetMap Zwitserland",
-      "openstreetmapsyria": "OpenStreetMap Syrië",
       "openstreetmaptunisia": "OpenStreetMap Tunesië",
       "openstreetmapturin": "OpenStreetMap Turijn",
       "openstreetmapturkey": "OpenStreetMap Turkije",
@@ -149,12 +147,6 @@
       },
       "telegram": {
         "description": "Kom erbij op de Telegram chat van onze community"
-      },
-      "twitter": {
-        "name": "{community} op 𝕏"
-      },
-      "x": {
-        "name": "{community} op 𝕏"
       },
       "youtube": {
         "name": "{community} op YouTube",
@@ -372,14 +364,8 @@
     "hu-matrix": {
       "extendedDescription": "OpenStreetMap chat over kaart onderwerpen. Een van de hulpfora van de OSM gemeenschap."
     },
-    "hu-meetup": {
-      "description": "Het platform om meetups te organiseren in Hongarije"
-    },
     "hu-mobilizon": {
       "name": "{community} op Mobilizon"
-    },
-    "hu-website": {
-      "description": "Wij helpen OpenStreetMap groeien en verbeteren in Hongarije."
     },
     "hu-wiki": {
       "description": "{community} Wikipagina"
@@ -748,9 +734,6 @@
     "uy-irc": {
       "description": "Kom erbij op #{account} op irc.freenode.org (poort 6667)",
       "extendedDescription": "Kom erbij op #{account} op irc.freenode.org"
-    },
-    "vn-mailinglist": {
-      "description": "Mailinglijst aangaande OpenStreetMap in Vietnam of het Vietnamees"
     },
     "vn-wiki": {
       "description": "{community} Wikipagina"

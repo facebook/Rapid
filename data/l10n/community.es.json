@@ -102,7 +102,6 @@
       "openstreetmapsudan": "OpenStreetMap Sudán",
       "openstreetmapsweden": "OpenStreetMap Suecia",
       "openstreetmapswitzerland": "OpenStreetMap Suiza",
-      "openstreetmapsyria": "OpenStreetMap Siria",
       "openstreetmaptaiwan": "OpenStreetMap Taiwán",
       "openstreetmapthailand": "OpenStreetMap Tailandia",
       "openstreetmaptunisia": "OpenStreetMap Túnez",
@@ -463,9 +462,6 @@
     "de-mainz-signal": {
       "description": "OpenStreetMap en Mainz, Wiesbaden y alrededores"
     },
-    "de-mainz-telegram": {
-      "description": "OpenStreetMap en Maguncia y alrededores"
-    },
     "de-mainz-wiki": {
       "description": "OpenStreetMap en Maguncia y alrededores"
     },
@@ -584,9 +580,6 @@
     "hu-matrix": {
       "extendedDescription": "Chat de OpenStreetMap sobre temas del mapa. Uno de los foros de soporte de la comunidad OSM."
     },
-    "hu-meetup": {
-      "description": "La plataforma para organizar encuentros en Hungría"
-    },
     "hu-mobilizon": {
       "name": "{community} en Mobilizon",
       "description": "Próximos eventos de la comunidad de OpenStreetMap Hungría"
@@ -596,10 +589,13 @@
       "description": "Explora las tareas de mapeo activas en Hungría"
     },
     "hu-website": {
-      "description": "Ayudamos a crecer y mejorar OpenStreetMap en Hungría."
+      "description": "El sitio web de la comunidad húngara de OpenStreetMap"
     },
     "hu-wiki": {
       "description": "Página wiki de {community}"
+    },
+    "hu-youtube": {
+      "description": "Transmisiones en vivo y grabaciones de encuentros de OpenStreetMap Hungría"
     },
     "humanitarian-osm-tr-slack": {
       "name": "Slack de OpenStreetMap Humanitario Turquía",
@@ -719,7 +715,7 @@
       "description": "Haciendo que las rutas bajas en carbono en la región de Waterloo sean fáciles de encontrar."
     },
     "MapRVA": {
-      "description": "Meetup de MapRVA"
+      "description": "MapRVA es un grupo de entusiastas de la cartografía en Richmond, Virginia, que trabajan para crear y compartir datos geoespaciales de nuestra ciudad usando OpenStreetMap."
     },
     "maptime-bogota-facebook": {
       "name": "Maptime Bogotá",
@@ -780,6 +776,9 @@
     },
     "me-telegram": {
       "description": "¡Todos son bienvenidos! Regístrate en {signupUrl}"
+    },
+    "minas_gerais-discord": {
+      "extendedDescription": "¡Bienvenido al Discord de OSM Minas Gerais! Somos una comunidad de mapeadores apasionados por crear mapas detallados y de código abierto para Minas Gerais, Brasil. Únete para colaborar, compartir consejos y ayudar a que los mapas de MG sean los mejores en OpenStreetMap. Ya seas principiante o experto, ¡mapemos juntos!"
     },
     "mm-facebook": {
       "extendedDescription": "¿Mapeas en Myanmar? ¿Tienes preguntas o quieres conectar con la comunidad? Únete en {url}. ¡Todos son bienvenidos!"
@@ -1044,6 +1043,13 @@
       "description": "Lista de correo de FSHM Puducherry para debatir sobre mapeo en Puducherry y otros temas.",
       "extendedDescription": "FSHM organiza eventos relacionados con software/hardware libre, tecnología, activismo y OpenStreetMap."
     },
+    "osm-punjab-matrix": {
+      "description": "Mapeamos Punjab en conjunto. Únete a nuestro grupo de Matrix",
+      "extendedDescription": "Sala de chat no oficial de OSM Punjab, también conectada al grupo de Telegram de OSMPunjab"
+    },
+    "osm-punjab-telegram": {
+      "description": "Mapeamos Punjab en conjunto. Únete a nuestro grupo de Telegram. {url}"
+    },
     "OSM-Rome-meetup": {
       "name": "Encuentro de mapeadores de Roma",
       "description": "Mejora OpenStreetMap en el área de Roma",
@@ -1168,9 +1174,6 @@
     "talk-mg": {
       "description": "Lugar para que los contribuyentes, comunidades y usuarios de OpenStreetMap en Madagascar compartan y debatan."
     },
-    "talk-nz": {
-      "description": "Charla comunitaria de OSM de Nueva Zelanda"
-    },
     "talk-pacific": {
       "description": "La lista de correo regional de OSM para y por los pueblos de Moana/Oceanía/Pacífico",
       "extendedDescription": "Nos gustaría que esta lista de correo apoyara a todos los pueblos del Pacífico, en toda nuestra diversidad y aspiraciones, para compartir pensamientos, preguntas, proyectos y todo lo relacionado con OpenStreetMap en nuestro mar de islas."
@@ -1211,9 +1214,6 @@
     "uk-london-wiki": {
       "description": "Página wiki de {community}"
     },
-    "uk-loomio": {
-      "name": "OpenStreetMap Reino Unido en Loomio"
-    },
     "us-discourse": {
       "description": "Un foro de debate sobre OpenStreetMap en Estados Unidos"
     },
@@ -1228,9 +1228,6 @@
     "uy-irc": {
       "description": "Únete a #{account} en irc.freenode.org (puerto 6667)",
       "extendedDescription": "Únete a #{account} en irc.freenode.org"
-    },
-    "vn-mailinglist": {
-      "description": "Lista de correo sobre OpenStreetMap en Vietnam o en vietnamita"
     },
     "vn-wiki": {
       "description": "Página wiki de {community}"

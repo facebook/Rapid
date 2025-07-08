@@ -158,6 +158,12 @@
         "agrarian": {
           "label": "بەرهەم"
         },
+        "aircraft/type": {
+          "label": "جۆر",
+          "options": {
+            "military": "سەربازیی"
+          }
+        },
         "amenity": {
           "label": "جۆر"
         },
@@ -413,6 +419,9 @@
         },
         "circumference": {
           "placeholder": "١ م، ٢٠ سم، ٣٠\"..."
+        },
+        "climbing/length": {
+          "label": "درێژی (مەتر)"
         },
         "clothes": {
           "label": "جلوبەرگ",
@@ -1475,6 +1484,11 @@
         "roller_coaster/track": {
           "label": "جۆر"
         },
+        "roof/shape": {
+          "options": {
+            "dome": "قوبە"
+          }
+        },
         "room": {
           "label": "جۆر"
         },
@@ -1645,6 +1659,13 @@
           "options": {
             "bridge": "پرد",
             "embankment": "لاگیرە",
+            "tunnel": "تونێل"
+          },
+          "placeholder": "نەزانراو"
+        },
+        "structure_canal": {
+          "options": {
+            "bridge": "پرد",
             "tunnel": "تونێل"
           },
           "placeholder": "نەزانراو"

@@ -19,6 +19,7 @@
       "openstreetmapbolivia": "OpenStreetMap Bolívie",
       "openstreetmapbosniaandherzegovina": "OpenStreetMap Bosna a Hercegovina",
       "openstreetmapbrasil": "OpenStreetMap Brazílie",
+      "openstreetmapbrasilminasgerais": "OpenStreetMap Minas Gerais v Brazílii",
       "openstreetmapbremen": "OpenStreetMap Brémy",
       "openstreetmapbulgaria": "OpenStreetMap Bulharsko",
       "openstreetmapcambodia": "OpenStreetMap Kambodža",
@@ -106,11 +107,11 @@
       "openstreetmappiemonte": "OpenStreetMap Piemont",
       "openstreetmappoland": "OpenStreetMap Polsko",
       "openstreetmapportugal": "OpenStreetMap Portugalsko",
+      "openstreetmappunjab": "OpenStreetMap Paňdžáb",
       "openstreetmapromania": "OpenStreetMap Rumunsko",
       "openstreetmaprussia": "OpenStreetMap Rusko",
       "openstreetmapsaudiarabia": "OpenStreetMap Saúdská Arábie",
       "openstreetmapserbia": "OpenStreetMap Srbsko",
-      "openstreetmapseychelles": "OpenStreetMap Seychely",
       "openstreetmapsingapore": "OpenStreetMap Singapur",
       "openstreetmapslovenia": "OpenStreetMap Slovinsko",
       "openstreetmapsomalia": "OpenStreetMap Somálsko",
@@ -120,7 +121,6 @@
       "openstreetmapsudan": "OpenStreetMap Súdán",
       "openstreetmapsweden": "OpenStreetMap Švédsko",
       "openstreetmapswitzerland": "OpenStreetMap Švýcarsko",
-      "openstreetmapsyria": "OpenStreetMap Sýrie",
       "openstreetmaptaiwan": "OpenStreetMap Tchaj-wan",
       "openstreetmaptanzania": "OpenStreetMap Tanzanie",
       "openstreetmapthailand": "OpenStreetMap Thajsko",
@@ -204,15 +204,15 @@
         "description": "Sledujte nás na TikToku"
       },
       "twitter": {
-        "name": "{community} na 𝕏",
-        "description": "Sledujte nás na 𝕏"
+        "name": "{community} na X",
+        "description": "Sledujte nás na X"
       },
       "wiki": {
         "name": "{community} wikiprojekt"
       },
       "x": {
-        "name": "{community} na 𝕏",
-        "description": "Sledujte nás na 𝕏"
+        "name": "{community} na X",
+        "description": "Sledujte nás na X"
       },
       "xmpp": {
         "description": "Připojte se k našemu komunitnímu chatu XMPP: {url}"
@@ -458,9 +458,6 @@
     "de-mainz-signal": {
       "description": "OpenStreetMap v Mohuči, Wiesbadenu a okolí"
     },
-    "de-mainz-telegram": {
-      "description": "OpenStreetMap v Mohuči a okolí"
-    },
     "de-mainz-wiki": {
       "description": "OpenStreetMap v Mohuči a okolí"
     },
@@ -492,7 +489,7 @@
       "description": "Mapovači a uživatelé OpenStreetMap na území Ulmer Alb"
     },
     "de-viersen-meetup": {
-      "description": "Komunita OSM a uživatelé setkání Kreis Virsen a Mönchengladbachu"
+      "description": "Komunita OSM a uživatelé setkání Kreis Viersen a Mönchengladbachu"
     },
     "DF-telegram": {
       "extendedDescription": "Připojte se ke komunitě a dozvíte se více o OpenStreetMap, můžete klást otázky nebo se účastnit našich setkání. Každý je vítán!"
@@ -566,9 +563,6 @@
     "hu-matrix": {
       "extendedDescription": "Chat OpenStreetMap na mapová témata. Jedna z fór podpory komunity OSM."
     },
-    "hu-meetup": {
-      "description": "Platforma pro organizování setkání v Maďarsku"
-    },
     "hu-mobilizon": {
       "name": "{community} na Mobilizonu",
       "description": "Nadcházející události pro maďarskou komunitu OpenStreetMap"
@@ -578,10 +572,13 @@
       "description": "Prozkoumejte aktivní mapovací úlohy v Maďarsku"
     },
     "hu-website": {
-      "description": "Pomáháme OpenStreetMap v Maďarsku růst a zlepšovat se."
+      "description": "Webové stránky Maďarské komunity OpenStreetMap"
     },
     "hu-wiki": {
       "description": "{community} Wiki stránka"
+    },
+    "hu-youtube": {
+      "description": "Živé přenosy a záznamy ze setkání OpenStreetMap Maďarsko"
     },
     "humanitarian-osm-tr-slack": {
       "name": "Humanitární OpenStreetMap Turecko Slack",
@@ -694,7 +691,7 @@
       "description": "Usnadnění nalezení nízkouhlíkových tras v regionu Waterloo."
     },
     "MapRVA": {
-      "description": "Setkání MapRVA"
+      "description": "MapRVA je skupina nadšenců mapování v Richmondu ve Virginii, kteří vytváří a sdílí geoprostorová data našeho města s využitím OpenStreetMap."
     },
     "maptime-bogota-facebook": {
       "description": "Jsme skupina lidí, kteří mají zájem zmapovat Bogotu a její okolí do OpenStreetMap.",
@@ -745,6 +742,9 @@
     },
     "me-telegram": {
       "description": "Všichni jsou vítáni! Zaregistrujte se na {signupUrl}"
+    },
+    "minas_gerais-discord": {
+      "extendedDescription": "Vítejte na Discordu OSM Minas Gerais! Jsme komunita mapovačů nadšených do budování datailních open-source map pro stát Minas Gerais v Brazílii. Připojte se k nám, spolupracujte, sdílejte tipy a pomáhejte vytvářet nejlepší mapy Minas Gerais (MG) na OpenStreetMap. Ať už jsi nováček, nebo profesionál, pojďme mapovat společně!"
     },
     "mm-facebook": {
       "extendedDescription": "Mapujete v Myanmaru? Máte otázky, chcete se zde spojit s komunitou? Připojte se k nám na adrese {url}. Všichni jsou vítáni!"
@@ -1003,6 +1003,13 @@
       "description": "Mailová konference FSHM Puducherry k diskuzi o mapování v Puducherry a dalších věcech.",
       "extendedDescription": "FSHM pořádá akce týkající se svobodného softwaru/hardwaru, technologie, aktivismu a OpenStreetMap."
     },
+    "osm-punjab-matrix": {
+      "description": "Společně mapujeme Paňdžáb. Připojte se k naší skupině na Matrixu",
+      "extendedDescription": "Neoficiální chatovací místnost pro OSM Paňdžáb, také přemostěna do skupiny OSMPunjab na Telegramu"
+    },
+    "osm-punjab-telegram": {
+      "description": "Společně mapujeme Paňdžáb. Připojte se k naší skupině na Telegramu {url}"
+    },
     "OSM-Rome-meetup": {
       "description": "Vylepšete OpenStreetMap na území Říma",
       "extendedDescription": "Naším cílem je být zdrojem pro lidi, kteří mohou diskutovat a sdílet znalosti o využívání bezplatných sad geografických dat, zejména OpenStreetMap a otevřeného geoprostorového softwaru, který spravuje, upravuje a zobrazuje geografická data a obhajuje jejich použití v Laziu."
@@ -1121,9 +1128,6 @@
     "talk-mg": {
       "description": "Místo pro přispěvatele OpenStreetMap, komunity a uživatele na Madagaskaru, kde mohou sdílet a diskutovat."
     },
-    "talk-nz": {
-      "description": "Diskuse komunity OSM na Novém Zélandu"
-    },
     "talk-pacific": {
       "description": "Regionální mailová konference OSM pro národy Moany/Oceánie/Pacifiku",
       "extendedDescription": "Rádi bychom, aby tato mailová konference podporovala všechny národy Pacifiku, ve vší naší rozmanitosti a aspiracích, aby sdílely myšlenky, otázky, projekty a vše, co souvisí s OpenStreetMap v našem moři ostrovů."
@@ -1164,9 +1168,6 @@
     "uk-london-wiki": {
       "description": "{community} Wiki stránka"
     },
-    "uk-loomio": {
-      "name": "OpenStreetMap UK na Loomiu"
-    },
     "us-discourse": {
       "description": "Diskuzní fórum ohledně OpenStreetMap v Spojených státech"
     },
@@ -1181,9 +1182,6 @@
     "uy-irc": {
       "description": "Připojte se k #{account} na irc.freenode.org (port 6667)",
       "extendedDescription": "Připojte se k #{account} na irc.freenode.org"
-    },
-    "vn-mailinglist": {
-      "description": "Mailová konference OpenStreetMap ve Vietnamu nebo ve vietnamštině"
     },
     "YerCizenler-TR": {
       "description": "Sdružení Yer Çizenler Mapování pro každého",

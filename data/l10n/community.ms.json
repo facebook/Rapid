@@ -36,16 +36,8 @@
         "name": "{community} di Threads",
         "description": "Ikuti kami di Threads"
       },
-      "twitter": {
-        "name": "{community} di 𝕏",
-        "description": "Ikuti kami di 𝕏"
-      },
       "wiki": {
         "name": "WikiProject {community}"
-      },
-      "x": {
-        "name": "{community} di 𝕏",
-        "description": "Ikuti kami di 𝕏"
       },
       "xmpp": {
         "name": "XMPP {community}"

@@ -51,6 +51,9 @@
         "aeroway": {
           "label": "قسم"
         },
+        "aircraft/type": {
+          "label": "قسم"
+        },
         "amenity": {
           "label": "قسم"
         },
@@ -386,6 +389,9 @@
           "label": "قسم"
         },
         "structure": {
+          "placeholder": "نامعلوم"
+        },
+        "structure_canal": {
           "placeholder": "نامعلوم"
         },
         "structure_waterway": {

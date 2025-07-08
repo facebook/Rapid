@@ -4,6 +4,9 @@
       "Bing": {
         "description": "Сателитни и аерофото изображения."
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "Последващо обработени сателитни изображения на Sentinel."
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 безоблачен - https://s2maps.eu от EOX IT Services GmbH (Съдържа модифицирани данни за Copernicus Sentinel 2017 и 2018)"
@@ -21,6 +24,12 @@
         "description": "Последващо обработени сателитни изображения на Sentinel."
       },
       "EOXAT2022CLOUDLESS": {
+        "description": "Последващо обработени сателитни изображения на Sentinel."
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Последващо обработени сателитни изображения на Sentinel."
+      },
+      "EOXAT2024CLOUDLESS": {
         "description": "Последващо обработени сателитни изображения на Sentinel."
       },
       "EsriWorldImagery": {

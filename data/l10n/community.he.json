@@ -32,7 +32,6 @@
       "openstreetmapbrasilia": "OpenStreetMap ברזיליה",
       "openstreetmapbremen": "OpenStreetMap ברמן",
       "openstreetmapbulgaria": "OpenStreetMap בולגריה",
-      "openstreetmapburkinafaso": "OpenStreetMap בורקיה פאסו",
       "openstreetmapburundi": "OpenStreetMap בורונדי",
       "openstreetmapbzh": "OpenStreetMap לאזורים הברטוניים",
       "openstreetmapcambodia": "OpenStreetMap קמבודיה",
@@ -166,7 +165,6 @@
       "openstreetmapsaudiarabia": "OpenStreetMap ערב הסעודית",
       "openstreetmapsenegal": "OpenStreetMap סנגל",
       "openstreetmapserbia": "OpenStreetMap סרביה",
-      "openstreetmapseychelles": "OpenStreetMap איי סיישל",
       "openstreetmapsierraleone": "OpenStreetMap סיירה לאון",
       "openstreetmapsingapore": "OpenStreetMap סינגפור",
       "openstreetmapslovenia": "OpenStreetMap סלובניה",
@@ -177,7 +175,6 @@
       "openstreetmapsudan": "OpenStreetMap סודאן",
       "openstreetmapsweden": "OpenStreetMap שוודיה",
       "openstreetmapswitzerland": "OpenStreetMap שווייץ",
-      "openstreetmapsyria": "OpenStreetMap סוריה",
       "openstreetmaptaiwan": "OpenStreetMap טאיוואן",
       "openstreetmaptanzania": "OpenStreetMap טנזניה",
       "openstreetmapthailand": "OpenStreetMap תאילנד",
@@ -283,16 +280,8 @@
         "name": "{community} בטיקטוק",
         "description": "ניתן לעקוב אחרינו בטיקטוק"
       },
-      "twitter": {
-        "name": "{community} ב־𝕏",
-        "description": "ניתן לעקוב אחרינו ב־𝕏"
-      },
       "wiki": {
         "name": "ויקי־מיזם של {community}"
-      },
-      "x": {
-        "name": "{community} ב־𝕏",
-        "description": "ניתן לעקוב אחרינו ב־𝕏"
       },
       "xmpp": {
         "name": "ה־XMPP של {community} ",
@@ -461,9 +450,6 @@
     "de-mainz-signal": {
       "description": "OpenStreetMap במיינץ, ויסבאדן וסביבתן"
     },
-    "de-mainz-telegram": {
-      "description": "OpenStreetMap במיינץ ובסביבתה"
-    },
     "de-mainz-wiki": {
       "description": "OpenStreetMap במיינץ ובסביבתה"
     },
@@ -555,9 +541,6 @@
     },
     "hu-matrix": {
       "extendedDescription": "שיחה בנושאי מפות סביב OpenStreetMap. אחד מפורומי התמיכה של קהילת OSM."
-    },
-    "hu-meetup": {
-      "description": "הפלטפורמה לכינוס מפגשים בהונגריה"
     },
     "hu-wiki": {
       "description": "עמוד הוויקי של {community}"
@@ -942,9 +925,6 @@
     },
     "talk-mg": {
       "description": "מקום לתורמים, קהילות ומשתמשי OpenStreetMap במדגסקר לשתף ולדון זה עם זה."
-    },
-    "talk-nz": {
-      "description": "השיח הקהילתי של OSM ניו־זילנד"
     },
     "tn-facebook-group": {
       "name": "קבוצת הפייסבוק של {community}"

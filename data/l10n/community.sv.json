@@ -78,13 +78,11 @@
       "openstreetmaprussia": "OpenStreetMap Ryssland",
       "openstreetmapsaudiarabia": "OpenStreetMap Saudiarabien",
       "openstreetmapserbia": "OpenStreetMap Serbien",
-      "openstreetmapseychelles": "OpenStreetMap Seychellerna",
       "openstreetmapslovenia": "OpenStreetMap Slovenien",
       "openstreetmapsouthafrica": "OpenStreetMap Sydafrika",
       "openstreetmapsouthsudan": "OpenStreetMap Sydsudan",
       "openstreetmapsweden": "OpenStreetMap Sverige",
       "openstreetmapswitzerland": "OpenStreetMap Schweiz",
-      "openstreetmapsyria": "OpenStreetMap Syrien",
       "openstreetmaptunisia": "OpenStreetMap Tunisien",
       "openstreetmapturkey": "OpenStreetMap Turkiet",
       "openstreetmapuk": "OpenStreetMap Storbritannien",
@@ -175,16 +173,8 @@
         "name": "{community} på TikTok",
         "description": "Följ oss på TikTok"
       },
-      "twitter": {
-        "name": "{community} på 𝕏",
-        "description": "Följ oss på 𝕏"
-      },
       "wiki": {
         "name": "WikiProject för {community}"
-      },
-      "x": {
-        "name": "{community} på 𝕏",
-        "description": "Följ oss på 𝕏"
       },
       "xmpp": {
         "name": "XMPP för {community",
@@ -428,9 +418,6 @@
     "de-mainz-signal": {
       "description": "OpenStreetMap i Mainz, Wiesbaden och omgivning"
     },
-    "de-mainz-telegram": {
-      "description": "OpenStreetMap i Mainz med omgivning"
-    },
     "de-mainz-wiki": {
       "description": "OpenStreetMap i Mainz med omgivning"
     },
@@ -550,9 +537,6 @@
     "hu-matrix": {
       "extendedDescription": "OpenStreetMap-chat om kartor. En av OSM-gemenskapens support-forum."
     },
-    "hu-meetup": {
-      "description": "Plattformen för att organisera träffar i Ungen"
-    },
     "hu-mobilizon": {
       "name": "{community} på Mobilizon",
       "description": "Kommande evenemang för OpenStreetMap Ungern-gemenskapen"
@@ -560,9 +544,6 @@
     "hu-tm": {
       "name": "Tasking Manager för {community} ",
       "description": "Utforska aktiva karteringsuppgifter i Ungern"
-    },
-    "hu-website": {
-      "description": "Vi hjälper till att utöka och förbättra OpenStreetMap i Ungern."
     },
     "hu-wiki": {
       "description": "Wiki-sida för {community}"
@@ -683,9 +664,6 @@
     },
     "MappingWR": {
       "description": "Det är lätt att hitta vägar med låg koldioxidutsläpp runt Waterloo-regionen."
-    },
-    "MapRVA": {
-      "description": "Meetup för MapRV"
     },
     "maptime-bogota-facebook": {
       "description": "Vi är en grupp människor som är intresserade av att kartlägga Bogotá och dess omgivningar i OpenStreetMap.",
@@ -1119,9 +1097,6 @@
     "talk-mg": {
       "description": "Plats för bidragsgivare till OpenStreetMap, sammanslutningar och användare i Madagaskar för att dela och diskutera."
     },
-    "talk-nz": {
-      "description": "Femenskapsdiskussion för Nya Zeelands OSM"
-    },
     "talk-pacific": {
       "description": "Den regionala OSM-epostlistan för och av folken i Moana/Oceanien/Stillahavsområdet",
       "extendedDescription": "Vi vill att den här e-postlistan ska stödja allt folk i Stilla havet, i all vår mångfald och ambitioner, för att dela tankar, frågor, projekt och allt relaterat till OpenStreetMap i vårt hav av öar."
@@ -1162,9 +1137,6 @@
     "uk-london-wiki": {
       "description": "Wiki-sida för {community}"
     },
-    "uk-loomio": {
-      "name": "OpenStreetMap UK på Loomio"
-    },
     "us-discourse": {
       "description": "Ett diskussionsforum om OpenStreetMap i USA"
     },
@@ -1179,9 +1151,6 @@
     "uy-irc": {
       "description": "Anslut #{account} på irc.freenode.org (port 6667)",
       "extendedDescription": "Anslut #{account} på irc.freenode.org"
-    },
-    "vn-mailinglist": {
-      "description": "E-postlista om OpenStreetMap i Vietnam eller på vietnamesiska"
     },
     "vn-wiki": {
       "description": "Wiki-sida för {community}"

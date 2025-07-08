@@ -224,6 +224,12 @@
         "air_conditioning": {
           "label": "Aire girotua"
         },
+        "aircraft/type": {
+          "label": "Mota",
+          "options": {
+            "military": "Militar"
+          }
+        },
         "alt_name": {
           "label": "Izen alternatiboa"
         },
@@ -502,6 +508,9 @@
         "check_date": {
           "label": "Azken berrikuste data",
           "terms": "Berrikuste data,azken berrikuste data,"
+        },
+        "climbing/length": {
+          "label": "Luzeera (metrotan)"
         },
         "clothes": {
           "label": "Arropa-mota",
@@ -831,7 +840,7 @@
           }
         },
         "emergency": {
-          "label": "Larrialdi"
+          "label": "Larrialdietarako osagaia"
         },
         "emergency_combo": {
           "label": "Mota"
@@ -845,6 +854,7 @@
         "entrance": {
           "label": "Mota ",
           "options": {
+            "emergency": "Larrialdi-irteera",
             "entrance": "Sarrera bakarrik",
             "main": "Nagusia",
             "shop": "Dendarako sarrera"
@@ -1580,6 +1590,11 @@
         "roller_coaster/track": {
           "label": "Mota"
         },
+        "roof/shape": {
+          "options": {
+            "dome": "Domo"
+          }
+        },
         "room": {
           "label": "Mota"
         },
@@ -1803,6 +1818,14 @@
             "tunnel": "Tunel"
           },
           "placeholder": "Ezezagun"
+        },
+        "structure_canal": {
+          "label": "Egitura",
+          "options": {
+            "bridge": "Zubi",
+            "tunnel": "Tunel"
+          },
+          "placeholder": "Ezezaguna"
         },
         "structure_power": {
           "label": "Egitura"
@@ -2630,6 +2653,9 @@
         "entrance": {
           "name": "Sarrera/Irteera"
         },
+        "entrance/emergency": {
+          "name": "Larrialdi-irteera"
+        },
         "entrance/main": {
           "name": "Sarrera nagusia"
         },
@@ -2659,6 +2685,9 @@
         "highway/footway": {
           "name": "Oinezkoen bidea"
         },
+        "highway/footway/crossing": {
+          "name": "Oinezkoen pasabidea"
+        },
         "highway/footway/informal": {
           "name": "Oinezkoen bide informala"
         },
@@ -2667,6 +2696,13 @@
         },
         "highway/path/crossing": {
           "name": "Bizikleta eta oinezkoen pasabidea"
+        },
+        "highway/pedestrian_area": {
+          "name": "Oinezkoen eremua"
+        },
+        "highway/pedestrian_line": {
+          "name": "Oinezkoen kalea",
+          "terms": "oinezko,peatonal"
         },
         "highway/residential": {
           "name": "Bizitegi-kalea"

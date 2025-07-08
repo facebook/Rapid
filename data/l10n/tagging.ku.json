@@ -49,6 +49,9 @@
         "aeroway": {
           "label": "Cûre"
         },
+        "aircraft/type": {
+          "label": "Cûre"
+        },
         "amenity": {
           "label": "Cûre"
         },

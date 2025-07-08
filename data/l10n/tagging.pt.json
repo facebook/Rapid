@@ -8,6 +8,9 @@
         "category-building": {
           "name": "Elementos de edifícios"
         },
+        "category-climbing": {
+          "name": "Elementos de escalada"
+        },
         "category-golf": {
           "name": "Elementos de golfe"
         },
@@ -223,6 +226,18 @@
         "air_conditioning": {
           "label": "Ar condicionado",
           "terms": "ar condicionado, ar fresco, ar quente, AC, ventilação, frescura,"
+        },
+        "aircraft/type": {
+          "label": "Tipo",
+          "options": {
+            "airliner": "De passageiros",
+            "cargo": "Carga",
+            "fixed_wing": "Asa fixa",
+            "glider": "Planador",
+            "helicopter": "Helicóptero",
+            "jet": "Jato",
+            "military": "Militar"
+          }
         },
         "alt_name": {
           "label": "Nome alternativo",
@@ -614,7 +629,7 @@
             "riding_hall": "Arena de equitação",
             "roof": "Telhado / cobertura",
             "school": "Escolar",
-            "semidetached_house": "Casa semi-isolada",
+            "semidetached_house": "Casa geminada",
             "service": "Serviço",
             "shed": "Barracão",
             "stable": "Estábulo",
@@ -623,7 +638,7 @@
             "sty": "Pocilga",
             "synagogue": "Sinagoga",
             "temple": "Templo",
-            "terrace": "Casas geminadas",
+            "terrace": "Casa em banda",
             "train_station": "Estação ferroviária",
             "transportation": "Transportes públicos",
             "university": "Universidade",
@@ -776,6 +791,35 @@
         "circumference": {
           "label": "Circunferência (a 1,3 m de altura)",
           "terms": "dbh,diâmetro,altura,peito"
+        },
+        "climbing/bolts": {
+          "label": "Número de pitons"
+        },
+        "climbing/grade/french": {
+          "label": "Graduação (francesa)",
+          "terms": "grade,nível,grau,níveis,classificação,nível,dificuldade,french,frança,francês"
+        },
+        "climbing/grade/saxon": {
+          "label": "Graduação (saxónica)",
+          "terms": "grade,nível,grau,níveis,classificação,nível,dificuldade,saxon"
+        },
+        "climbing/grade/uiaa": {
+          "label": "Graduação (UIAA)",
+          "terms": "grade,nível,grau,níveis,classificação,nível,dificuldade,UIAA"
+        },
+        "climbing/grade/yds_class": {
+          "label": "Graduação (YDS)",
+          "terms": "grade,nível,grau,níveis,classificação,nível,dificuldade,YDS"
+        },
+        "climbing/length": {
+          "label": "Comprimento (metros)",
+          "terms": "comprimento,metros,extensão,length"
+        },
+        "climbing/sport": {
+          "label": "Modalidade de escalada (com pitons)"
+        },
+        "climbing/trad": {
+          "label": "Escalada tradicional"
         },
         "clothes": {
           "label": "Roupas",
@@ -1395,6 +1439,10 @@
             "yes": "Permitido"
           },
           "terms": "Cachorros,canídeos"
+        },
+        "dog_check": {
+          "label": "Permite cães",
+          "terms": "cão,dog,cachorro,caninos,cadela,cachorra,cães"
         },
         "door": {
           "label": "Porta"
@@ -2296,6 +2344,10 @@
           "label": "Fabricante",
           "terms": "produtor,construtor,criador"
         },
+        "manufacturer/wikidata": {
+          "label": "Wikidata",
+          "terms": "wikidata"
+        },
         "map_size": {
           "label": "Cobertura"
         },
@@ -2474,6 +2526,10 @@
         "model": {
           "label": "Modelo",
           "terms": "model"
+        },
+        "model/wikidata": {
+          "label": "Wikidata do modelo",
+          "terms": "wikidata,model"
         },
         "monitoring_multi": {
           "label": "Monitorização"
@@ -3292,6 +3348,28 @@
           "label": "Cor do telhado",
           "terms": "cor,telhado"
         },
+        "roof/height": {
+          "label": "Altura do telhado (metros)",
+          "terms": "telhado,roof,cobertura,height"
+        },
+        "roof/shape": {
+          "label": "Formato do telhado",
+          "options": {
+            "cone": "Cónico",
+            "dome": "Domo",
+            "flat": "Plano",
+            "gabled": "Triangular",
+            "gambrel": "Tacaniça cortada",
+            "half-hipped": "Semiquatro-águas",
+            "hipped": "Quatro-águas",
+            "mansard": "Mansarda",
+            "onion": "Cebola",
+            "pyramidal": "Piramidal",
+            "round": "Arredondado",
+            "skillion": "Meia-água"
+          },
+          "terms": "forma,shape,modelo,aspecto,aspeto,configuração"
+        },
         "room": {
           "label": "Tipo"
         },
@@ -3625,8 +3703,7 @@
             "osm notes": "Notas OpenStreetMap",
             "streetlevel imagery": "Fotos ao nível de rua",
             "survey": "Pesquisa no terreno"
-          },
-          "terms": "referências"
+          }
         },
         "source/population": {
           "label": "Fonte"
@@ -3760,6 +3837,14 @@
           },
           "placeholder": "Desconhecido",
           "terms": "estrutura"
+        },
+        "structure_canal": {
+          "label": "Estrutura",
+          "options": {
+            "bridge": "Ponte",
+            "tunnel": "Túnel"
+          },
+          "placeholder": "Desconhecida"
         },
         "structure_power": {
           "label": "Estrutura",
@@ -3990,7 +4075,8 @@
           "options": {
             "connection_point": "Ponto de ligação",
             "data_center": "Centro de dados",
-            "distribution_point": "Ponto de distribuição"
+            "distribution_point": "Ponto de distribuição",
+            "service_device": "Equipamento de serviço"
           }
         },
         "telecom/medium": {
@@ -4732,6 +4818,10 @@
           "name": "Cafetaria",
           "terms": "cafe,café,caffe,caffè,cappuccino,coffee,drip,espresso,latte,macchiato,expresso,starbucks'"
         },
+        "amenity/cafe/teahouse": {
+          "name": "Salão de chá",
+          "terms": "tea,estabelecimento,loja,té,ervas,chás"
+        },
         "amenity/car_pooling": {
           "name": "Posto de boleia partilhada",
           "terms": "boleia,carona,viagem partilhada,carpool,car pool,carpooling"
@@ -5325,7 +5415,7 @@
         },
         "amenity/prep_school": {
           "name": "Centro de explicações",
-          "terms": "exames, tutoring,escola, escola de preparação,matemática,tpc,trabalhos de casa,leitura,explicações,testes,ensino"
+          "terms": "exames, tutoring,escola, escola de preparação,matemática,tpc,trabalhos de casa,leitura,explicações,testes,ensino,estudos,estudo,estudar"
         },
         "amenity/prison": {
           "name": "Prisão",
@@ -6209,7 +6299,7 @@
           "terms": "Casa,Domicílio,Moradia,Mansão,Solar,Vivenda,residência,lar,edifício"
         },
         "building/house/terraced": {
-          "name": "Casa geminada",
+          "name": "Casa em banda",
           "terms": "edifício,habitação,residência,terrace,townhome,townhouse,geminada"
         },
         "building/houseboat": {
@@ -6274,8 +6364,8 @@
           "terms": "School Building, Pavilhão Escolar, Escola,educacional,serviços escolares,"
         },
         "building/semidetached_house": {
-          "name": "Casa semi-isolada",
-          "terms": "Semi-Detached House,edifício,casa,destacada,habitação,residência"
+          "name": "Casa geminada",
+          "terms": "Semi-Detached House,edifício,casa,habitação,residência"
         },
         "building/service": {
           "name": "Edifício de serviço",
@@ -6310,7 +6400,7 @@
           "terms": "edifício, templo,religioso,oração,religião"
         },
         "building/terrace": {
-          "name": "Fileira de casas geminadas",
+          "name": "Fileira de casas em banda",
           "terms": "geminado,geminada,germinada,linha de casas,habitação,house,casa,residência,residence,dwelling,brownstone"
         },
         "building/train_station": {
@@ -6342,6 +6432,18 @@
         "cemetery/sector": {
           "name": "Setor de cemitério",
           "terms": "burial ground,cemetary,cemetery,churchyard,columbarium,grave yard,graveyard,mausoleum,tomb,sector,túmulo,mausoléu,sepultura,gavetas,jazigo"
+        },
+        "climbing/crag": {
+          "name": "Escalada de rochedo escarpado",
+          "terms": "crag,rocha,rochedo,escalar,subida,cordas,rapel,rappel,climb,climbing,"
+        },
+        "climbing/route": {
+          "name": "Rota de escalada",
+          "terms": "route,percurso,climbing,escalar,rappel,rapel"
+        },
+        "climbing/route_bottom": {
+          "name": "Início da rota de escalada",
+          "terms": "climbing,route,trajeto,percurso,começo,princípio"
         },
         "club": {
           "name": "Clube/Associação",
@@ -6722,7 +6824,8 @@
           "terms": "porta,portão"
         },
         "entrance/shop": {
-          "name": "Entrada de loja"
+          "name": "Entrada de loja",
+          "terms": "entrance,entrada,porta,principal,shop,loja,estabelecimento"
         },
         "entrance/staircase": {
           "name": "Entrada de escada rolante",
@@ -6913,6 +7016,9 @@
         "highway/crossing": {
           "name": "Passadeira",
           "terms": "zebra,faixa de segurança,passagem,passagem de peões,riscas,pedestres,travessia,crossing,segurança,peão"
+        },
+        "highway/crossing/informal": {
+          "name": "Travessia informal"
         },
         "highway/crossing/traffic_signals": {
           "name": "Passadeira com semáforos",
@@ -7247,6 +7353,10 @@
           "name": "Local histórico",
           "terms": "Histórico,história"
         },
+        "historic/aircraft": {
+          "name": "Avião histórico",
+          "terms": "plane,aircraft,aviões,avião,antigo,memorial,aparelho voador,voar,voo"
+        },
         "historic/archaeological_site": {
           "name": "Sítio arqueológico",
           "terms": "Local Arqueológico, Arqueológico, Arqueologia,escavações,escavação,museu"
@@ -7293,6 +7403,9 @@
         },
         "historic/memorial": {
           "terms": "Memorial, Homenagem,dedicatória,memória,guerra"
+        },
+        "historic/memorial/blue_plaque-GB-IE": {
+          "name": "Placa azul (UK)"
         },
         "historic/memorial/plaque": {
           "name": "Placa comemorativa",
@@ -10742,6 +10855,10 @@
           "name": "Rota de autocarro",
           "terms": "Bus Route, Rota de Autocarros, Linha de Autocarro, autocarro, carreira, camionete, camioneta, ônibus, machimbombo, toca-toca, otocarro, microlete"
         },
+        "type/route/climbing": {
+          "name": "Rota de escalada",
+          "terms": "route,percurso,climbing,escalar,rappel,rapel"
+        },
         "type/route/detour": {
           "name": "Rota de desvio",
           "terms": "Detour,desvio,desviar,desviado,atalho,trânsito,congestionamento,estrada"
@@ -10817,6 +10934,14 @@
         "type/site": {
           "name": "Relação de área comum",
           "terms": "relação de local,campus,área partilhada"
+        },
+        "type/site/climbing/area": {
+          "name": "Área de escalada",
+          "terms": "zona,espaço,area,escalar,climb,climbing,rapel,rappel"
+        },
+        "type/site/climbing/crag": {
+          "name": "Escalada de rochedo escarpado",
+          "terms": "crag,rocha,rochedo,escalar,subida,cordas,rapel,rappel,climb,climbing,"
         },
         "type/waterway": {
           "name": "Curso de água",

@@ -30,7 +30,6 @@
       "openstreetmapbrasilia": "OpenStreetMap Бразілія",
       "openstreetmapbremen": "OpenStreetMap Брэмен",
       "openstreetmapbulgaria": "OpenStreetMap Балгарыя",
-      "openstreetmapburkinafaso": "OpenStreetMap Буркіна Фасо",
       "openstreetmapburundi": "OpenStreetMap Бурундзі",
       "openstreetmapbzh": "OpenStreetMap Брэтань",
       "openstreetmapcambodia": "OpenStreetMap Камбоджа",
@@ -161,7 +160,6 @@
       "openstreetmapsaudiarabia": "OpenStreetMap Саудаўская Аравія",
       "openstreetmapsenegal": "OpenStreetMap Сенегал",
       "openstreetmapserbia": "OpenStreetMap Сербія",
-      "openstreetmapseychelles": "OpenStreetMap Сейшэлы",
       "openstreetmapsierraleone": "OpenStreetMap Сьера Леонэ",
       "openstreetmapslovenia": "OpenStreetMap Славенія",
       "openstreetmapsomalia": "OpenStreetMap Самалі",
@@ -171,7 +169,6 @@
       "openstreetmapsudan": "OpenStreetMap Судан",
       "openstreetmapsweden": "OpenStreetMap Швецыя",
       "openstreetmapswitzerland": "OpenStreetMap Швейцарыя",
-      "openstreetmapsyria": "OpenStreetMap Сірыя",
       "openstreetmaptaiwan": "OpenStreetMap Тайван",
       "openstreetmaptanzania": "OpenStreetMap Танзанія",
       "openstreetmapthailand": "OpenStreetMap Тайланд",
@@ -195,50 +192,30 @@
     },
     "_defaults": {
       "aparat": {
-        "name": "{супольнасць} у Апарат",
-        "description": "Падпішыцеся да нашага Апарат-каналу",
-        "url": "https://aparat.com/{акаўнт}"
+        "name": "{community} у Апарат",
+        "description": "Падпішыцеся да нашага Апарат-каналу"
       },
       "discord": {
-        "name": "{супольнасць} Discord",
-        "description": "Узаемадзейнічайце з іншымі картографамі ў Discord",
-        "url": "https://discord.gg/{акаўнт}"
+        "description": "Узаемадзейнічайце з іншымі картографамі ў Discord"
       },
       "discourse": {
-        "name": "{супольнасць} Форум Супольнасці",
-        "description": "Афіцыйны форум {супольнасць}",
-        "url": "https://community.openstreetmap.org/c/communities/{акаўнт}"
+        "name": "{community} Форум Супольнасці",
+        "description": "Афіцыйны форум {community}"
       },
       "facebook": {
-        "name": "{супольнасць} у Facebook",
-        "description": "Далучайцеся да нашай суполкі ў Facebook",
-        "url": "https://www.facebook.com/{акаўнт}"
-      },
-      "fediverse": {
-        "name": "{супольнасць}"
+        "name": "{community} у Facebook",
+        "description": "Далучайцеся да нашай суполкі ў Facebook"
       },
       "forum": {
-        "name": "{супольнасць} Форум",
-        "description": "Афіцыйны форум для {супольнасць}"
-      },
-      "github": {
-        "name": "{супольнасць} GitHub",
-        "url": "https://github.com/{акаўнт}"
-      },
-      "gitlab": {
-        "name": "{супольнасць} GitLab",
-        "url": "https://gitlab.com/{акаўнт}"
-      },
-      "group": {
-        "name": "{супольнасць}"
+        "name": "{community} Форум",
+        "description": "Афіцыйны форум для {community}"
       },
       "irc": {
-        "name": "{супольнасць} у IRC",
-        "description": "Далучайцеся, #{акаўнт}, праз  irc.oftc.net (порт6667 для non-SSL або 6697 для SSL)",
-        "url": "https://webchat.oftc.net/?channels={акаўнт}"
+        "name": "{community} у IRC",
+        "description": "Далучайцеся, #{account}, праз  irc.oftc.net (порт6667 для non-SSL або 6697 для SSL)"
       },
       "linkedin": {
-        "name": "{супольнасць} у LinkedIn",
+        "name": "{community} у LinkedIn",
         "description": "Далучайцеся да суполкі ў LinkedIn"
       },
       "mailinglist": {
@@ -256,12 +233,6 @@
       "newsletter": {
         "name": "{community} Інфармацыйны веснік"
       },
-      "osm": {
-        "name": "{супольнасць}"
-      },
-      "osm-lc": {
-        "name": "{супольнасць}"
-      },
       "reddit": {
         "name": "{community} у Reddit"
       },
@@ -275,19 +246,8 @@
         "name": "{community} у Threads",
         "description": "Падпішыцеся на нас у Threads"
       },
-      "twitter": {
-        "name": "{community} у 𝕏",
-        "description": "Падпішыцеся на нас у 𝕏"
-      },
-      "url": {
-        "name": "{супольнасць}"
-      },
       "wiki": {
         "name": "{community} ВікіПраект"
-      },
-      "x": {
-        "name": "{community} у 𝕏",
-        "description": "Падпішыцеся на нас у 𝕏"
       },
       "youtube": {
         "name": "community} у YouTube",
@@ -376,23 +336,14 @@
     "fr-montrouge-wiki": {
       "description": "{community} старонка Вікіпедыі"
     },
-    "hr-github": {
-      "description": "{супольнасць} GitHub"
-    },
     "hu-wiki": {
       "description": "{community} старонка Вікіпедыі"
-    },
-    "ko-github": {
-      "description": "{супольнасць} GitHub"
     },
     "kosovo-flossk": {
       "name": "Бясплатнае праграмнае забеспячэнне Лібрэ ад Kosova"
     },
     "OSM-AR-geolibres": {
       "name": "ГеаЛібрэс"
-    },
-    "osm-ch": {
-      "name": "{супольнасць}"
     },
     "osm-deep-south-wiki": {
       "description": "{community} старонка Вікіпедыі"
@@ -408,9 +359,6 @@
     },
     "sg-wiki": {
       "description": "{community} старонка Вікіпедыі"
-    },
-    "si-github": {
-      "description": "{супольнасць} GitHub"
     },
     "si-ljubljana-wiki": {
       "description": "{community} старонка Вікіпедыі"

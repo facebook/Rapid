@@ -1,7 +1,6 @@
 {
   "zh-CN": {
     "_communities": {
-      "maptimehrva": "Maptime HRVA",
       "openstreetmapaachen": "OpenStreetMap 亚琛",
       "openstreetmapalba": "OpenStreetMap 苏格兰",
       "openstreetmapalbania": "OpenStreetMap 阿尔巴尼亚",
@@ -16,7 +15,6 @@
       "openstreetmapbrasilia": "OpenStreetMap 巴西利亚",
       "openstreetmapbremen": "OpenStreetMap 不来梅",
       "openstreetmapbulgaria": "OpenStreetMap 保加利亚",
-      "openstreetmapburkinafaso": "OpenStreetMap 布基纳法索",
       "openstreetmapcameroon": "OpenStreetMap 喀麦隆",
       "openstreetmapcatalancountries": "OpenStreetMap 加泰罗尼亚",
       "openstreetmapchina": "OpenStreetMap 中国",
@@ -85,13 +83,11 @@
       "openstreetmapsaudiarabia": "OpenStreetMap 沙特阿拉伯",
       "openstreetmapsenegal": "OpenStreetMap 塞内加尔",
       "openstreetmapserbia": "OpenStreetMap 塞尔维亚",
-      "openstreetmapseychelles": "OpenStreetMap 塞舌尔",
       "openstreetmapslovenia": "OpenStreetMap 斯洛文尼亚",
       "openstreetmapsomalia": "OpenStreetMap 索马里",
       "openstreetmapsouthsudan": "OpenStreetMap 南苏丹",
       "openstreetmapsrilanka": "OpenStreetMap 斯里兰卡",
       "openstreetmapsudan": "OpenStreetMap 苏丹",
-      "openstreetmapsyria": "OpenStreetMap 叙利亚",
       "openstreetmaptaiwan": "OpenStreetMap 台湾",
       "openstreetmaptanzania": "OpenStreetMap 坦桑尼亚",
       "openstreetmapthailand": "OpenStreetMap 泰国",
@@ -145,12 +141,6 @@
       "tiktok": {
         "description": "在 TikTok 上关注我们"
       },
-      "twitter": {
-        "description": "在 𝕏 上关注我们"
-      },
-      "x": {
-        "description": "在 𝕏 上关注我们"
-      },
       "youtube": {
         "description": "订阅我们的 YouTube 频道"
       },
@@ -171,6 +161,9 @@
       "name": "旧金山湾区 OpenStreetMap 贡献者",
       "description": "改进位于旧金山湾区的 OpenStreetMap"
     },
+    "be-matrix": {
+      "extendedDescription": "比利时 OSM 社区的主要聊天室。如果你是新手，请不要犹豫害羞，随意提问！"
+    },
     "bi-vc-cvl-meetup": {
       "description": "位于Biellese, Vercellese和Canavese e Valli di Lanzo的本地小组",
       "extendedDescription": "从2018二月开始集会，通常在Biella或Ivrea。"
@@ -190,6 +183,9 @@
     },
     "ch-mailinglist": {
       "description": "瑞士的邮件列表"
+    },
+    "comunitat-valenciana-wiki": {
+      "description": "你需要了解的所有关于瓦伦西亚社区地图绘制的信息：{url}"
     },
     "de-aachen-wiki": {
       "description": "{community} Wiki 页面"
@@ -252,8 +248,14 @@
       "name": "推特上的Xeoinquedos",
       "description": "在 Twitter 上关注我们：{url}"
     },
+    "gb-irc": {
+      "extendedDescription": "在 irc.oftc.net (端口 6667)上加入 #{account} ，若你想要提问需耐心等待几分钟"
+    },
     "gb-mailinglist": {
       "description": "Talk-gb 是英国(包括北爱尔兰) OSM 社区的主要交流论坛"
+    },
+    "GeoPhilly": {
+      "extendedDescription": "GeoPhilly 将开发人员、地理学家、数据极客、开源代码爱好者、民间黑客和地图迷们团结在一起，共同分享我们对地图及其故事的热爱。 如果你在工作中使用地图，或者只是想了解更多信息，这就是为你提供的聚会！ 我们的活动旨在开放、友好、具有教育性和社交性。活动范围从欢乐时光到闪电演讲，甚至是研讨会。 与我们一起在费城创建一个多样化、启发性的地理空间社区！"
     },
     "hu-facebook-group": {
       "name": "{community} Facebook 群组"
@@ -263,6 +265,9 @@
     },
     "id-facebook-group": {
       "name": "{community} Facebook 群组"
+    },
+    "kosovo-flossk": {
+      "extendedDescription": "科索沃自由与开源软件 (FLOSSK) 2009年成立，是在普里斯提纳活动的非政府组织，宗旨是支持、推广和开发自由与开源软件。除此之外，我们也有通过开发课程与开放标准、开放文化和开放社会，来贡献开放与参与式知识，信息技术在教育的应用。"
     },
     "map-kibera": {
       "description": "Map Kibera 是位于肯尼亚的注册组织",
@@ -375,23 +380,51 @@
     "OSM-Ottawa-meetup": {
       "description": "位于渥太华地区的绘图者和 OpenStreetMap 用户"
     },
+    "OSM-PL-chapter": {
+      "description": "OpenStreetMap 波兰社区主页"
+    },
+    "OSM-PL-discord": {
+      "description": "OpenStreetMap 波兰社区主要的语音聊天场所，有相当活跃的文本频道"
+    },
     "OSM-PL-github": {
       "description": "波兰 OpenStreetMap 社区的 GitHub 组织"
     },
+    "OSM-Puducherry-Mailing-List": {
+      "description": "FSHM Puducherry 邮件清单用来讨论在 Puducherry 的制图与其他事情。",
+      "extendedDescription": "FSHM 会组织关于自由软件／硬件、科技、行动与开放街图的活动。"
+    },
+    "osm-punjab-matrix": {
+      "description": "我们一起绘制旁遮普。加入我们的 Matrix 群组",
+      "extendedDescription": "OSM 旁遮普非官方的聊天室，也与 OSMPunjab Telegram 群组同步"
+    },
+    "osm-punjab-telegram": {
+      "description": "我们一起绘制旁遮普。加入我们的 Telegram 群组。{url}"
+    },
     "OSM-Rome-meetup": {
-      "description": "在罗马地区改进 OpenStreetMap"
+      "description": "在罗马地区改进 OpenStreetMap",
+      "extendedDescription": "我们是一群热情讨论和分享自由地理数据集知识的人，特别是 OpenStreetMap 的数据，以及管理、编辑和显示地理数据的开放地理空间软件，以及在拉齐奥推广的团体。"
     },
     "OSM-Seattle": {
-      "name": "OpenStreetMap 西雅图"
+      "name": "OpenStreetMap 西雅图",
+      "description": "在西雅图的图客与 OpenStreetMap 用户"
+    },
+    "OSM-SoCal": {
+      "description": "让我们玩乐吧，并且贡献画洛杉矶一带，以及学习有关画地图的一切！",
+      "extendedDescription": "OpenStreetMap 开放街图南加州拥抱任何对共同画开放街图有兴趣的人。OpenStreetMap 是维基百科式运作的地图，是全世界尺度自由开源的地图，由全球超过 1,000,000 人的志工制作。我们欢迎所有人，如果你不大知道 OpenStreetMap，我们会教你，如果你有关于画地图计划，甚至野外实察，也是很棒的事情！"
     },
     "OSM-Tampa-Bay": {
-      "name": "OpenStreetMap 坦帕湾"
+      "name": "OpenStreetMap 坦帕湾",
+      "extendedDescription": "OSM 坦帕湾群组让当地居民聚在一起，用开放街图创建坦帕湾的准确地图。如果您使用地图、数据、开放原代码、GPS、徒步旅行或是骑自行车等等，您将会很喜欢与 OpenStreetMap 合作，所以请加入吧！我们会聚在一起，制图并讨论每月的新主题。"
+    },
+    "osm-td-facebook": {
+      "description": "改善乍得的 OpenStreetMap"
     },
     "OSM-Telegram": {
       "description": "加入 OpenStreetMap Telegram 全球大群：{url}"
     },
     "OSM-TH-CNX-meetup": {
-      "name": "OpenStreetMap 清迈聚会"
+      "name": "OpenStreetMap 清迈聚会",
+      "description": "清迈 OpenStreetMap 社区的不定期会议"
     },
     "OSM-US-Slack": {
       "description": "欢迎所有人加入！在 {signupUrl} 上注册。"
@@ -432,9 +465,6 @@
     "talk-bo": {
       "extendedDescription": "在玻利维亚绘图？有任何疑问，想要与当地的社区交流？在 {Url} 加入我们。欢迎所有人！"
     },
-    "talk-nz": {
-      "description": "新西兰 OSM 社区讨论"
-    },
     "tn-facebook-group": {
       "name": "{community} Facebook 群组"
     },
@@ -456,9 +486,6 @@
     },
     "us-massachusetts-mailinglist": {
       "name": "Talk-us-massachusetts 邮件列表"
-    },
-    "vn-mailinglist": {
-      "description": "OpenStreetMap 越南或越南语邮件列表"
     },
     "vn-wiki": {
       "description": "{community} Wiki 页面"

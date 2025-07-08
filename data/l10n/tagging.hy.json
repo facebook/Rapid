@@ -144,6 +144,9 @@
         "aeroway": {
           "label": "Տեսակ"
         },
+        "aircraft/type": {
+          "label": "Տեսակ"
+        },
         "amenity": {
           "label": "Տեսակ"
         },
@@ -744,6 +747,9 @@
           }
         },
         "structure": {
+          "placeholder": "Անյայտ"
+        },
+        "structure_canal": {
           "placeholder": "Անյայտ"
         },
         "structure_waterway": {

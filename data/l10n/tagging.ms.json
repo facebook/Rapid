@@ -156,6 +156,9 @@
         "agrarian": {
           "label": "Produk, Keluaran"
         },
+        "aircraft/type": {
+          "label": "Jenis"
+        },
         "amenity": {
           "label": "Jenis"
         },
@@ -354,6 +357,9 @@
         },
         "check_date": {
           "placeholder": "TTTT-BB-HH"
+        },
+        "climbing/length": {
+          "label": "Panjang (Meter)"
         },
         "clothes": {
           "label": "Pakaian",
@@ -1368,6 +1374,11 @@
         "roller_coaster/track": {
           "label": "Jenis"
         },
+        "roof/shape": {
+          "options": {
+            "dome": "Kubah"
+          }
+        },
         "room": {
           "label": "Jenis"
         },
@@ -1585,6 +1596,14 @@
             "tunnel": "Terowong"
           },
           "placeholder": "Tidak Diketahui"
+        },
+        "structure_canal": {
+          "label": "Struktur",
+          "options": {
+            "bridge": "Jambatan",
+            "tunnel": "Terowong"
+          },
+          "placeholder": "Tidak diketahui"
         },
         "structure_power": {
           "label": "Struktur"

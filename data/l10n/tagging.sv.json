@@ -8,6 +8,9 @@
         "category-building": {
           "name": "Byggnad"
         },
+        "category-climbing": {
+          "name": "Klätterobjekt"
+        },
         "category-golf": {
           "name": "Golfobjekt"
         },
@@ -226,6 +229,18 @@
           "label": "Luftkonditionering",
           "terms": "AC, kylning, Air condition, A/C"
         },
+        "aircraft/type": {
+          "label": "Typ",
+          "options": {
+            "airliner": "Passagerarflygplan",
+            "cargo": "Gods",
+            "fixed_wing": "Fast vinge",
+            "glider": "Segelflygplan",
+            "helicopter": "Helikopter",
+            "jet": "Jetflygplan",
+            "military": "Militärväsendet"
+          }
+        },
         "alt_name": {
           "label": "Alternativt Namn",
           "terms": "Alternativt Namn, Alternativ benämning, Alternativ beteckning, Andra namn, alias, övrigt namn, sekundärt namn, även känd som, även kallad, även kallat"
@@ -286,7 +301,9 @@
             "mural": "Väggmålning",
             "painting": "Tavla",
             "sculpture": "Skulptur",
-            "statue": "Staty"
+            "statue": "Staty",
+            "stone": "Konstnärligt bearbetad sten",
+            "tilework": "Kakelarbete"
           }
         },
         "ascent": {
@@ -772,6 +789,35 @@
         "circumference": {
           "label": "Omkrets (vid brösthöjd)",
           "terms": "Omkrets vid brösthöjd, diameter i brösthöjd, omkrets i brösthöjd, omkrets, diameter"
+        },
+        "climbing/bolts": {
+          "label": "Antal bultar"
+        },
+        "climbing/grade/french": {
+          "label": "Svårighetsgrad (fransk)",
+          "terms": "svårighetsgrad, fransk grad, klättergrad, fransk skala, sportklättringsgrad, ledklassificering, fransk klassificering, klätterskala, fransk svårighetsklass"
+        },
+        "climbing/grade/saxon": {
+          "label": "Svårighetsgrad (sachsisk)",
+          "terms": "svårighetsgrad, sachsisk grad, sachsisk skala, klättergrad, ledklassificering, sachsisk klassificering, klätterskala, traditionell grad, östtysk grad"
+        },
+        "climbing/grade/uiaa": {
+          "label": "Svårighetsgrad (UIAA)",
+          "terms": "svårighetsgrad, UIAA-grad, UIAA-skala, klättergrad, ledklassificering, UIAA-klassificering, klätterskala, alpin grad, europeisk grad"
+        },
+        "climbing/grade/yds_class": {
+          "label": "Svårighetsgrad (YDS)",
+          "terms": "svårighetsgrad, YDS-grad, Yosemite-skala, Yosemite Decimal System, klättergrad, amerikansk grad, ledklassificering, teknisk svårighet, klätterskala"
+        },
+        "climbing/length": {
+          "label": "Längd (meter)",
+          "terms": "Längd, meter, höjd, avstånd, bredd"
+        },
+        "climbing/sport": {
+          "label": "Sportklättring (bultad klättring)"
+        },
+        "climbing/trad": {
+          "label": "Traditionell klättring"
         },
         "clothes": {
           "label": "Kläder",
@@ -1371,6 +1417,10 @@
             "yes": "Tillåten"
           },
           "terms": "hund, hundar, djur, husdjur"
+        },
+        "dog_check": {
+          "label": "Lämpligt för hundar",
+          "terms": "hundvänligt, tillåtet med hund, hundar tillåtna, passar för hund, hundtillåtet, hundvänlig plats, hundar välkomna, bra för hundar, tillgängligt för hund, hundvänlig led"
         },
         "door": {
           "label": "Dörr"
@@ -2282,6 +2332,10 @@
           "label": "Tillverkare",
           "terms": "Tillverkare, leverantör"
         },
+        "manufacturer/wikidata": {
+          "label": "Wikidata för tillverkare",
+          "terms": "tillverkare wikidata, wikidata-länk, tillverkarinformation, producent wikidata, företag wikidata, wikidata för företag, tillverkare-data, tillverkare-id, wikidata-post, wikidata-uppslag"
+        },
         "map_size": {
           "label": "Omfattning"
         },
@@ -2462,6 +2516,10 @@
         "model": {
           "label": "Modell",
           "terms": "Model, typ, variant"
+        },
+        "model/wikidata": {
+          "label": "Wikidata för modell",
+          "terms": "modell wikidata, wikidata-länk, modellinformation, produktmodell, wikidata för produkt, modell-id, wikidata-post, teknisk modell, modelluppslag, modellreferens"
         },
         "monitoring_multi": {
           "label": "Mäter"
@@ -3290,6 +3348,28 @@
           "label": "Takfärg",
           "terms": "takfärg, färg på tak, färg, tak"
         },
+        "roof/height": {
+          "label": "Takhöjd (meter)",
+          "terms": "takhöjd, höjd på tak, byggnadstakets höjd, höjd till tak, takets höjd, höjd över mark, taknivå, höjd på byggnadens topp, höjd till taknock, takmått"
+        },
+        "roof/shape": {
+          "label": "Takform",
+          "options": {
+            "cone": "Kon",
+            "dome": "Kupol",
+            "flat": "Platt",
+            "gabled": "Sadeltak",
+            "gambrel": "Gambrel-tak",
+            "half-hipped": "Valmat sadeltak",
+            "hipped": "Valmat tak",
+            "mansard": "Mansardtak",
+            "onion": "Löktak",
+            "pyramidal": "Pyramidtak",
+            "round": "Runt tak",
+            "skillion": "Enkupigt tak"
+          },
+          "terms": "Takform, taktyp, takkonstruktion, takprofil, takstil, takdesign, takstruktur, takgeometri"
+        },
         "room": {
           "label": "Typ"
         },
@@ -3627,8 +3707,7 @@
             "osm notes": "OpenStreetMap-anteckningar",
             "streetlevel imagery": "Gatubilder",
             "survey": "Kartläggning"
-          },
-          "terms": "Källa, referens, ursprung"
+          }
         },
         "source/population": {
           "label": "Populationskälla"
@@ -3751,6 +3830,13 @@
           },
           "placeholder": "Okänd",
           "terms": "Struktur, bro, tunnel,  vägbank, vägsnitt, vadställe"
+        },
+        "structure_canal": {
+          "label": "Struktur",
+          "options": {
+            "bridge": "Brygga"
+          },
+          "placeholder": "Okänt"
         },
         "structure_power": {
           "label": "Struktur",
@@ -4706,6 +4792,10 @@
         "amenity/cafe/coffee_shop": {
           "name": "Kaffehus",
           "terms": "Kaffehus, café, americano, bryggkaffe, cappuccino, kakao, kaffe, espresso, varma drycker, latte, macchiato, te, kaffeaffär, kaffeshop"
+        },
+        "amenity/cafe/teahouse": {
+          "name": "Tehus ",
+          "terms": "Tesalong, tearum, tehus, tebod, tebar, tecafé, te, svart te, grönt te, gult te, vitt te, oolong-te, varma drycker, the, thehus, thesalong, thebar"
         },
         "amenity/car_pooling": {
           "name": "Bilpoolstation",
@@ -5751,6 +5841,10 @@
           "name": "Veterinär ",
           "terms": "Veterinär, djurläkare, djurdoktor, djurklinik, djursjukhus"
         },
+        "amenity/veterinary_pharmacy": {
+          "name": "Veterinärapotek",
+          "terms": "veterinärapotek, djurapotek, veterinärapotek, apotek för djur, husdjurspotek, husdjurmedicin, veterinärmedicin, veterinärklinik, husdjurspreparat, husdjurspreparat, veterinärmediciner, djurmedicin, veterinärprodukter, apotek för husdjur, apotek"
+        },
         "amenity/waste/dog_excrement": {
           "name": "Sopkärl för hundbajspåsar",
           "terms": "Sopkärl för hundbajspåsar, hundbajs, hundbajspåsar, hundbajspåse, hund, bajs, bajspåsar, soptunna, sopkärl, hundskit, skitpåse"
@@ -6328,6 +6422,18 @@
           "name": "Kyrkogårdssektionen",
           "terms": "Kyrkogårdssektionen,begravningsplats, kyrkogård, gravgård, kyrkogård, mausoleum, grav, kvarte, sektion, område, gravområde, gravsektion"
         },
+        "climbing/crag": {
+          "name": "Klätterklippa",
+          "terms": "Klätterklippa, klippa, klättring, klättervägg, klätterberg, klippvägg, klipphäll, klippformation, klätterområde, sportklättring, tradklättring, bouldering, klätterställe, klättervägg"
+        },
+        "climbing/route": {
+          "name": "Klätterled",
+          "terms": "Klättring, klippklättring, klätterled, sportklättring, klättertur, klätterlinje, klätterväg, klätterproblem, led, klätterproblem"
+        },
+        "climbing/route_bottom": {
+          "name": "Startpunkt för klätterled",
+          "terms": "Klätterled, sportklättring, ledstart, startpunkt, start för klättring, klätterområde, klätterklippa"
+        },
         "club": {
           "name": "Klubb",
           "terms": "klubb, socialt, förening, klubblokal, föreningslokal, sällskap, sammanslutning"
@@ -6898,6 +7004,9 @@
           "name": "Övergångsställe",
           "terms": "Korsning, övergångsställe, övergång, passage, vad, gångpassage, fotgängarövergång, zebraövergång, övergång"
         },
+        "highway/crossing/informal": {
+          "name": "Informell korsning"
+        },
         "highway/crossing/traffic_signals": {
           "name": "Korsning med trafikljus för fotgängare",
           "terms": "trafikljus för fotgängare, trafiksignaler för fotgängare, övergångsställe (Trafiksignal), cykelöverfart (Trafiksignal), övergångsställe (Trafiksignal)"
@@ -7231,6 +7340,10 @@
           "name": "Historisk plats",
           "terms": "Historisk plats, historia, arv, historik"
         },
+        "historic/aircraft": {
+          "name": "Historiskt flygplan",
+          "terms": "Historiskt flygplan, veteranflygplan, museiflygplan, flyghistoriskt objekt, gate guardian, utställt flygplan, flygplansmonument"
+        },
         "historic/archaeological_site": {
           "name": "Arkeologisk plats",
           "terms": "Arkeologisk plats, arkeologi, utgrävning, historisk plats, historia, ruin"
@@ -7277,6 +7390,10 @@
         "historic/memorial": {
           "name": "Minnesmärke",
           "terms": "Minnesmärke, minnessten, minnestavla, monument"
+        },
+        "historic/memorial/blue_plaque-GB-IE": {
+          "name": "Blå minnestavla",
+          "terms": "Blå minnesskylt, minnesskylt, historisk skylt, kulturminnesskylt, plakett, informationsskylt, historisk markör, blå plakett"
         },
         "historic/memorial/plaque": {
           "name": "Minnestavla",
@@ -9723,6 +9840,10 @@
           "name": "Badrumsinredning",
           "terms": "Badrumsinredning, badrum"
         },
+        "shop/bbq": {
+          "name": "Grillaffär",
+          "terms": "grillaffär, grillbutik, BBQ-butik, barbecuebutik, barbequebutik, BBQ-affär, barbecueaffär, grillshop, BBQ-shop, grillning"
+        },
         "shop/beauty": {
           "name": "Skönhetssalong",
           "terms": "Skönhetssalong, skönhet, skönhetsbehandlingar, nagelsalong, solarium, shiatsu, massage, spa, hälsoanläggning, kuranstalt, kurort, kosmetik, smink, naglar, salong"
@@ -10011,6 +10132,10 @@
         "shop/greengrocer": {
           "name": "Grönsakshandlare",
           "terms": "Grönsakshandlare, grönsaker, frukt, frukthandlare, frukthandel, vegetabiliskt"
+        },
+        "shop/groundskeeping": {
+          "name": "Affär för gräsmatte- och trädgårdsutrustning",
+          "terms": "butik för gräsmatte- och trädgårdsutrustning, trädgårdsutrustningsbutik, gräsmattebutik, trädgårdsmaskiner, trädgårdsverktyg, trädgårdsredskap, maskinbutik för trädgård, gräsklipparebutik, trimmerbutik, motorsågbutik, snöblåsarebutik, jordfräsbutik, trädgårdsverktygsaffär"
         },
         "shop/hairdresser": {
           "name": "Hårfrisör",
@@ -10720,6 +10845,10 @@
           "name": "Busslinje",
           "terms": "Bussrutt, bussväg, bussled, busslinje"
         },
+        "type/route/climbing": {
+          "name": "Klätterled",
+          "terms": "Klättring, klippklättring, klätterled, sportklättring, klättertur, klätterlinje, klätterväg, klätterproblem, led, klätterproblem"
+        },
         "type/route/detour": {
           "name": "Alternativ rutt",
           "terms": "Alternativ rutt, alternativ väg, omväg"
@@ -10795,6 +10924,14 @@
         "type/site": {
           "name": "Plats",
           "terms": "Plats, ställe, läge, anläggning"
+        },
+        "type/site/climbing/area": {
+          "name": "Klätterområde",
+          "terms": "Klätterområde, klättersektor, klätterregion, klippområde, klättringsområde, klätterzon, klätterställe, klätterklippa, klätterplats"
+        },
+        "type/site/climbing/crag": {
+          "name": "Klätterklippa",
+          "terms": "Klätterklippa, klippa, klättring, klättervägg, klätterberg, klippvägg, klipphäll, klippformation, klätterområde, sportklättring, tradklättring, bouldering, klätterställe, klättervägg"
         },
         "type/waterway": {
           "name": "Vattenväg",

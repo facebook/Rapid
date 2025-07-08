@@ -228,6 +228,12 @@
           "label": "Máy lạnh",
           "terms": "máy lạnh, máy điều hòa, máy điều hoà, máy điều hòa không khí, máy điều hoà không khí, may lanh, may dieu hoa, may dieu hoa khong khi"
         },
+        "aircraft/type": {
+          "label": "Loại",
+          "options": {
+            "military": "Quân sự"
+          }
+        },
         "amenity": {
           "label": "Loại"
         },
@@ -243,10 +249,10 @@
         "archaeological_site": {
           "label": "Kiểu",
           "options": {
-            "city": "Thành phố lịch sử",
-            "fortification": "Pháo đài",
-            "petroglyph": "Tranh khắc trên đá",
-            "settlement": "Nơi định cư lịch sử"
+            "city": "Thành phố Lịch sử",
+            "fortification": "Công sự",
+            "petroglyph": "Tranh Khắc trên Đá",
+            "settlement": "Nơi Định cư Lịch sử"
           }
         },
         "architect": {
@@ -318,8 +324,8 @@
             "pirate_ship": "Thuyền Cướp biển",
             "roller_coaster": "Tàu lượn Siêu tốc",
             "swing_carousel": "Đu quay Dây văng",
-            "train": "Tàu du lịch",
-            "water_slide": "Cầu trượt nước"
+            "train": "Tàu Du lịch",
+            "water_slide": "Cầu Trượt Nước"
           }
         },
         "automated": {
@@ -367,8 +373,8 @@
             "kissing_gate": "Cửa Hàng rào Chắn Trâu bò",
             "retaining_wall": "Tường Chắn Đất",
             "stile": "Bậc trèo",
-            "toll_booth": "Nhà thu phí",
-            "turnstile": "Cổng xoay",
+            "toll_booth": "Nhà Thu phí",
+            "turnstile": "Cổng Xoay",
             "wall": "Tường"
           }
         },
@@ -392,7 +398,8 @@
           "label": "Nét Đặc biệt",
           "options": {
             "hot_spring": "Suối nước nóng",
-            "lake": "Hồ"
+            "lake": "Hồ",
+            "onsen": "Ôn tuyền"
           }
         },
         "beauty": {
@@ -414,11 +421,11 @@
         "bicycle_parking": {
           "label": "Kiểu",
           "options": {
-            "building": "Bên trong tòa nhà"
+            "building": "Bên trong Tòa nhà"
           }
         },
         "bicycle_road": {
-          "label": "Phố đạp xe",
+          "label": "Phố Xe đạp",
           "options": {
             "undefined": "Không",
             "yes": "Có"
@@ -453,10 +460,10 @@
             "geology": "Địa chất học",
             "history": "Lịch sử",
             "nature": "Thiên nhiên",
-            "notice": "Bảng thông báo",
-            "plants": "Cây cối",
+            "notice": "Bảng tin",
+            "plants": "Thực vật",
             "welcome_sign": "Bảng Chào mừng",
-            "wildlife": "Động vật hoang dã"
+            "wildlife": "Động vật Hoang dã"
           }
         },
         "bollard": {
@@ -498,7 +505,7 @@
           "placeholder": "Bình thường"
         },
         "bridge/ref": {
-          "label": "Số cầu"
+          "label": "Số Cầu"
         },
         "bridge/support": {
           "label": "Kiểu"
@@ -575,7 +582,7 @@
           "terms": "tòa nhà, toà nhà, nhà, toa nha, nha"
         },
         "building/colour": {
-          "label": "Màu mặt ngoài",
+          "label": "Màu Mặt Ngoài",
           "terms": "màu mặt ngoài, màu mặt tiền, mau mat ngoai, mau mat tien"
         },
         "building/flats": {
@@ -701,6 +708,10 @@
         "circumference": {
           "label": "Chu vi (Ngang Ngục)",
           "placeholder": "1 m, 20 cm, 30\", …"
+        },
+        "climbing/length": {
+          "label": "Chiều dài (Mét)",
+          "terms": "chiều dài, độ dài, tầm xa, chieu dai, do dai, tam xa"
         },
         "clothes": {
           "label": "Quần áo",
@@ -2982,6 +2993,11 @@
           "label": "Màu Mái",
           "terms": "màu mái, màu nóc, mau mai, mau noc"
         },
+        "roof/shape": {
+          "options": {
+            "dome": "Vòm"
+          }
+        },
         "room": {
           "label": "Kiểu"
         },
@@ -3289,8 +3305,7 @@
             "osm notes": "Ghi chú OpenStreetMap",
             "streetlevel imagery": "Hình ảnh Cấp phố",
             "survey": "Khảo sát"
-          },
-          "terms": "nguồn gốc, nguồn, tham khảo, tham chiếu, nguon goc, nguon, tham khao, tham chieu"
+          }
         },
         "source/population": {
           "label": "Nguồn dân số"
@@ -3410,6 +3425,14 @@
             "cutting": "Đường xẻ",
             "embankment": "Đường đắp cao",
             "ford": "Nơi Lội qua Sông",
+            "tunnel": "Hầm"
+          },
+          "placeholder": "Không rõ"
+        },
+        "structure_canal": {
+          "label": "Cấu trúc",
+          "options": {
+            "bridge": "Cầu",
             "tunnel": "Hầm"
           },
           "placeholder": "Không rõ"

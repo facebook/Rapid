@@ -228,6 +228,16 @@
           "label": "Aria condizionata",
           "terms": "Aria condizionata, Aria climatizzata"
         },
+        "aircraft/type": {
+          "label": "Tipologia",
+          "options": {
+            "airliner": "Aereo di linea",
+            "fixed_wing": "Ala fissa",
+            "glider": "Aliante",
+            "helicopter": "Elicottero",
+            "military": "Militare"
+          }
+        },
         "alt_name": {
           "label": "Nome alternativo"
         },
@@ -289,7 +299,8 @@
             "painting": "Dipinto",
             "relief": "Bassorilievo",
             "sculpture": "Scultura",
-            "statue": "Statua"
+            "statue": "Statua",
+            "stone": "Pietra lavorata artisticamente"
           }
         },
         "ascent": {
@@ -462,7 +473,7 @@
           "terms": "viale ciclabile,strada ciclabile,strada ciclabile,pista ciclabile di quartiere,strada secondaria di quartiere,strada verde di quartiere,strada di quartiere"
         },
         "bike_ride": {
-          "label": "Bici e corsa",
+          "label": "Parcheggio d'interscambio",
           "terms": "sport"
         },
         "bin": {
@@ -510,7 +521,8 @@
           }
         },
         "books": {
-          "label": "Tipologia di Libri"
+          "label": "Tipologia di Libri",
+          "terms": "manga,romanzi,saggi"
         },
         "booth": {
           "label": "Cabina",
@@ -550,6 +562,7 @@
           "options": {
             "aqueduct": "Acquedotto",
             "boardwalk": "Passerella di legno",
+            "covered": "Ponte coperto",
             "movable": "Ponte levatoio",
             "viaduct": "Viadotto"
           }
@@ -596,6 +609,7 @@
             "public": "Edificio pubblico",
             "residential": "Edificio residenziale",
             "retail": "Edificio per negozi",
+            "riding_hall": "Arena per equitazione",
             "roof": "Tettoia",
             "ruins": "Rovine di un edificio",
             "school": "Scuola",
@@ -678,7 +692,25 @@
           }
         },
         "camp_site": {
-          "label": "Tipologia"
+          "label": "Tipologia",
+          "options": {
+            "basic": {
+              "description": "Uno spiazzo dove mettere una tenda o parcheggiare un veicolo",
+              "title": "Basico (solo spazio per tenda/veicolo)"
+            },
+            "deluxe": {
+              "description": "Dotato di attrezzature e servizi come lavanderia, piscina o simili",
+              "title": "Deluxe (offre lavanderia o piscina, etc.)"
+            },
+            "serviced": {
+              "description": "Sono disponibili bagni, acqua, docce ed elettricità",
+              "title": "Con servizi (offre docce ed elettricità)"
+            },
+            "standard": {
+              "description": "Bagni e acqua sono disponibili poco lontano",
+              "title": "Standard (offre bagni e acqua)"
+            }
+          }
         },
         "capacity": {
           "label": "Capienza",
@@ -724,7 +756,8 @@
           }
         },
         "changing_table": {
-          "label": "Fasciatoio"
+          "label": "Fasciatoio",
+          "terms": "fasciatoio,cambio pannolino,pannolino,pannolini"
         },
         "charge_fee": {
           "label": "Tariffa",
@@ -742,6 +775,9 @@
         "circumference": {
           "label": "Circonferenza (ad altezza torace)",
           "terms": "misura,seno,donna"
+        },
+        "climbing/length": {
+          "label": "Lunghezza (Metri)"
         },
         "clothes": {
           "label": "Abbigliamento",
@@ -1033,6 +1069,7 @@
             "balkan": "Balcanica",
             "bavarian": "Bavarese",
             "brazilian": "Brasiliana",
+            "breakfast": "Colazione",
             "cake": "Torte",
             "caribbean": "Caraibica",
             "chicken": "Pollo",
@@ -1041,12 +1078,14 @@
             "crepe": "Crepes",
             "dessert": "Dolci",
             "donut": "Ciambelle",
+            "european": "Europea",
             "filipino": "Filippino",
             "fish": "Pesce",
             "french": "Francese",
             "georgian": "Georgiano",
             "german": "Tedesca",
             "greek": "Greca",
+            "hawaiian": "Hawaiana",
             "hot_dog": "Hot dog",
             "ice_cream": "Gelato",
             "indian": "Indiana",
@@ -1060,6 +1099,7 @@
             "mediterranean": "Mediterranea",
             "mexican": "Messicana",
             "moroccan": "Marocchina",
+            "oriental": "Orientale",
             "pastry": "Pasticceria",
             "persian": "Persiana",
             "peruvian": "Peruviana",
@@ -2583,11 +2623,11 @@
             },
             "lane": {
               "description": "Parcheggio su strada (che potrebbe essere facilmente convertita in una corsia di transito).",
-              "title": "Vicolo a bordo strada"
+              "title": "Corsia dedicata"
             },
             "layby": {
               "description": "Parcheggio su un’area di di riposo, lungo una strada.",
-              "title": "Affluenza alle urne / piazzola di sosta"
+              "title": "Slargo / piazzola di sosta"
             },
             "multi-storey": {
               "description": "Due o più piani di parcheggio in un edificio.",
@@ -2639,7 +2679,7 @@
           "label": "Parcheggio",
           "options": {
             "half_on_kerb": "Mezzo sul marciapiede",
-            "lane": "Vicolo a bordo strada",
+            "lane": "Corsia dedicata",
             "on_kerb": "Sul marciapiede",
             "separate": "Parcheggio mappato separatamente",
             "shoulder": "Banchina",
@@ -3069,6 +3109,11 @@
         },
         "roof/colour": {
           "label": "Colore del tetto"
+        },
+        "roof/shape": {
+          "options": {
+            "dome": "Cupola"
+          }
         },
         "room": {
           "label": "Tipo"
@@ -3501,6 +3546,13 @@
             "cutting": "Infossato",
             "embankment": "Terrapieno",
             "ford": "Guado"
+          },
+          "placeholder": "Sconosciuto"
+        },
+        "structure_canal": {
+          "label": "Struttura",
+          "options": {
+            "bridge": "Ponte"
           },
           "placeholder": "Sconosciuto"
         },
@@ -6751,6 +6803,9 @@
           "name": "Memoriale",
           "terms": "Memoriale"
         },
+        "historic/memorial/blue_plaque-GB-IE": {
+          "name": "Targa Blu"
+        },
         "historic/memorial/plaque": {
           "name": "Targa commemorativa",
           "terms": "dedica,epitaffio,segno storico,impronta,ricordo,testimonianza,commemorazione,rievocazione,rimembranza,memoria,placca,targa"
@@ -7353,6 +7408,9 @@
           "name": "Pista (sport non motoristici)",
           "terms": "circuito,pista,ippodromo"
         },
+        "leisure/track/athletics": {
+          "name": "Pista di atletica"
+        },
         "leisure/track/athletics/javelin_throw": {
           "name": "Pista del giavellotto"
         },
@@ -7365,6 +7423,15 @@
         },
         "leisure/track/athletics/running": {
           "name": "Pista da corsa"
+        },
+        "leisure/track/athletics/sprint": {
+          "name": "Pista corsa di velocità"
+        },
+        "leisure/track/athletics/steeplechase": {
+          "name": "Pista steeplechase"
+        },
+        "leisure/track/athletics/triple_jump": {
+          "name": "Pista del salto triplo"
         },
         "leisure/track/cycling": {
           "name": "Pista per ciclismo",
@@ -8213,7 +8280,7 @@
           "terms": "blocco,caseggiato,manzana,gruppo,edifici,palazzi"
         },
         "place/farm": {
-          "name": "Fattoria o cascina"
+          "name": "Fattoria\nCascina"
         },
         "place/hamlet": {
           "name": "Piccolo borgo",
@@ -8772,7 +8839,7 @@
         },
         "shop/bed": {
           "name": "Negozio di letti/materassi",
-          "terms": "Negozio di materassi"
+          "terms": "Negozio di materassi,letti,letto,materasso,materassi,cuscini,cuscino,guanciali,guanciale"
         },
         "shop/beverages": {
           "name": "Negozio di bevande",
@@ -8899,7 +8966,7 @@
         },
         "shop/cosmetics": {
           "name": "Negozio di cosmetici",
-          "terms": "Cosmetica,Negozio di cosmetica,Profumeria"
+          "terms": "Cosmetica,Negozio di cosmetica,Negozio di trucchi"
         },
         "shop/craft": {
           "name": "Negozio di arti e mestieri"

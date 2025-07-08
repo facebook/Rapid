@@ -143,6 +143,11 @@
         "air_conditioning": {
           "terms": "[traduza com sinônimos ou termos relacionados para 'Ar Condicionado', separados por vírgulas]"
         },
+        "aircraft/type": {
+          "options": {
+            "airliner": "Grande avião de passageiros"
+          }
+        },
         "animal_boarding": {
           "label": "Para animais"
         },
@@ -399,7 +404,6 @@
             "roof": "Telhado ou cobertura",
             "ruins": "Ruinas decorativas/cênicas",
             "school": "Edifício escolar",
-            "semidetached_house": "Casa geminada",
             "service": "Edifício de máquinas",
             "stadium": "Edificação de estádio",
             "static_caravan": "Casa móvel",
@@ -491,6 +495,13 @@
         "circumference": {
           "label": "Circunferência (na altura do peito)"
         },
+        "climbing/grade/french": {
+          "terms": "grade,nível,grau,níveis,classificação,nível,dificuldade"
+        },
+        "climbing/length": {
+          "label": "Comprimento (em metros)",
+          "terms": "comprimento,metros,extensão,"
+        },
         "clothes": {
           "options": {
             "babies": "Roupas para bebês",
@@ -539,7 +550,7 @@
         },
         "consulate": {
           "options": {
-            "consular_office": "Escritório Consular",
+            "consular_office": "Escritório consular",
             "residence": "Residência oficial de um embaixador"
           }
         },
@@ -1911,7 +1922,7 @@
           }
         },
         "service_times": {
-          "label": "Horários de Serviço"
+          "label": "Horários de missa/culto"
         },
         "shelter": {
           "label": "Abrigo contra intempéries"
@@ -2044,6 +2055,9 @@
             "cutting": "Escavação",
             "embankment": "Aterro elevado"
           }
+        },
+        "structure_canal": {
+          "placeholder": "Desconhecido"
         },
         "subject/wikidata": {
           "label": "Wikidata do assunto"
@@ -3748,6 +3762,9 @@
         "building/house": {
           "terms": "Casa, Residência"
         },
+        "building/house/terraced": {
+          "name": "Casa geminada"
+        },
         "building/houseboat": {
           "terms": "Casa flutuante"
         },
@@ -3799,7 +3816,6 @@
           "terms": "Edifício Escolar, escola, prédio escolar, colégio"
         },
         "building/semidetached_house": {
-          "name": "Casa geminada",
           "terms": "Casa irmanada"
         },
         "building/service": {
@@ -3828,6 +3844,9 @@
         },
         "building/temple": {
           "terms": "Templo, igreja, lugar de adoração, capela, local sagrado"
+        },
+        "building/terrace": {
+          "name": "Fileira de casas geminadas"
         },
         "building/train_station": {
           "name": "Edifício de estação de trem"
@@ -4527,10 +4546,10 @@
           "terms": "estacionamento, via de estacionamento, corredor de estacionamento"
         },
         "highway/service_area": {
-          "name": "Área de Serviço Pavimentada"
+          "name": "Área de serviço pavimentada"
         },
         "highway/services": {
-          "name": "Posto de Serviços",
+          "name": "Posto de serviços",
           "terms": "Área de Serviço, Posto de combustíveis, posto de gasolina, combustíveis, borracharia, lava jato, serviços, loja de conveniências"
         },
         "highway/speed_camera": {
@@ -5669,8 +5688,7 @@
           "terms": "Moita, Arbusto, Matagal, vegetação"
         },
         "natural/shingle": {
-          "name": "Telha",
-          "terms": "Telha"
+          "name": "Seixos"
         },
         "natural/shrub": {
           "terms": "Arbusto"
@@ -7381,8 +7399,8 @@
           "terms": "Arte, Galeria, Exposição, Artes Plásticas, Cultura, museu"
         },
         "tourism/guest_house": {
-          "name": "Guesthouse",
-          "terms": "Guesthouse"
+          "name": "Pousada",
+          "terms": "Pousada,bed and breakfast,cama,café da manhã,pensão"
         },
         "tourism/hostel": {
           "terms": "Albergue"

@@ -117,6 +117,13 @@
         "description": "Imágenes aéreas de alta resolución de Dourados (2018) y varios distritos (2020).",
         "name": "Ortofotos Dourados"
       },
+      "EOXAT2017CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 sin nubes - https://s2maps.eu por EOX IT Services GmbH (Contiene datos modificados de Copernicus Sentinel 2017)"
+        },
+        "description": "Imágenes post-procesadas del satélite Sentinel.",
+        "name": "eox.at 2017 sin nubes"
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 sin nubes - https://s2maps.eu por EOX IT Services GmbH (Contiene los datos de Copernicus Sentinel modificados 2017 y 2018)"
@@ -151,6 +158,20 @@
         },
         "description": "Imágenes post-procesadas del satélite Sentinel.",
         "name": "eox.at 2022 sin nubes"
+      },
+      "EOXAT2023CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 sin nubes - https://s2maps.eu por EOX IT Services GmbH (Contiene datos modificados de Copernicus Sentinel 2023)"
+        },
+        "description": "Imágenes post-procesadas del satélite Sentinel.",
+        "name": "eox.at 2023 sin nubes"
+      },
+      "EOXAT2024CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 sin nubes - https://s2maps.eu por EOX IT Services GmbH (Contiene datos modificados de Copernicus Sentinel 2024)"
+        },
+        "description": "Imágenes post-procesadas del satélite Sentinel.",
+        "name": "eox.at 2024 sin nubes"
       },
       "EsriWorldImagery": {
         "attribution": {
@@ -513,20 +534,6 @@
         },
         "description": "Programa de Imágenes Estatales de Ohio III ortoimágenes más actuales de cada condado con resoluciones desde 1 pie hasta 3 pulgadas desde 2017 hasta 2020.",
         "name": "Programa estatal de imágenes de Ohio"
-      },
-      "OSIP_1ft": {
-        "attribution": {
-          "text": "Programa de imágenes de todo el estado de Ohio"
-        },
-        "description": "Ortofotos del Programa II de imágenes de todo el estado de Ohio de los 88 condados con una resolución de 1 pie desde 2011 hasta 2014.",
-        "name": "Programa de Imágenes Estatales de Ohio 1-Pie"
-      },
-      "OSIP_6in": {
-        "attribution": {
-          "text": "Programa de imágenes de todo el estado de Ohio"
-        },
-        "description": "Ortofotos del Programa de imágenes III del estado de Ohio de 40 condados capturadas con una resolución de 6 pulgadas en 2017 y 2018, además de imágenes OSIP I y OSIP II en 16 condados más desde 2010 hasta 2014.",
-        "name": "Programa de imágenes de todo el estado de Ohio de 6 pulgadas"
       },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {

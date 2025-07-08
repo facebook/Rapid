@@ -4,6 +4,9 @@
       "Bing": {
         "description": "衛星・航空写真。撮影日付はCtrl+Shift+Bで現れる右下のパネルで確認可能。比較的新しい箇所が多いが位置ズレやゆがみ（特に高低差のある場所）に注意。日本では位置精度は概して国土地理院のものが高い。"
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "処理済みSentinel衛星画像."
+      },
       "EOXAT2018CLOUDLESS": {
         "description": "後処理済みのSentinel 衛星画像(日本では低解像度)"
       },
@@ -11,6 +14,12 @@
         "attribution": {
           "text": "Sentinel-2衛星 雲なし画像 - (https://s2maps.eu EOX IT Services GmbHによる / Modified Copernicus Sentinel data 2022 を含む)"
         },
+        "description": "処理済みSentinel衛星画像."
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "処理済みSentinel衛星画像."
+      },
+      "EOXAT2024CLOUDLESS": {
         "description": "処理済みSentinel衛星画像."
       },
       "EsriWorldImagery": {

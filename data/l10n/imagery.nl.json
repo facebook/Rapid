@@ -92,6 +92,9 @@
         },
         "name": "Częstochowa: Gebouwen"
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "Postprocessed Sentinel Satellite-fotografie."
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 onbewolkt - https://s2maps.eu door EOX IT Services GmbH (Bevat aangepaste gegevens van Copernicus Sentinel 2017 & 2018)"
@@ -109,6 +112,12 @@
         "description": "Postprocessed Sentinel Satellite-fotografie."
       },
       "EOXAT2022CLOUDLESS": {
+        "description": "Postprocessed Sentinel Satellite-fotografie."
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Postprocessed Sentinel Satellite-fotografie."
+      },
+      "EOXAT2024CLOUDLESS": {
         "description": "Postprocessed Sentinel Satellite-fotografie."
       },
       "EsriWorldImagery": {
@@ -356,9 +365,6 @@
       },
       "OSIP": {
         "description": "Ohio Statewide Imagery Program III meest recente orthoafbeeldingen van elke county met resoluties van 1 voet tot 3 inch van 2017 tot 2020."
-      },
-      "OSIP_1ft": {
-        "description": "Ohio Statewide Imagery Program II orthobeelden van alle 88 counties met een resolutie van 1 voet van 2011 tot 2014."
       },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {

@@ -2,7 +2,8 @@
   "fi": {
     "imagery": {
       "Bing": {
-        "description": "Satelliitti- ja ilmakuvat"
+        "description": "Satelliitti- ja ilmakuvat",
+        "name": "Bing-ilmakuvat"
       },
       "EsriWorldImagery": {
         "attribution": {

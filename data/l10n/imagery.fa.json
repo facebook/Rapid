@@ -10,6 +10,9 @@
       "Bing": {
         "description": "تصاویر هوایی و ماهواره‌ای."
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "تصاویر ماهواره‌ای Sentinel پس از پردازش."
+      },
       "EOXAT2018CLOUDLESS": {
         "description": "تصاویر ماهواره‌ای Sentinel پس از پردازش."
       },
@@ -23,6 +26,12 @@
         "description": "تصاویر ماهواره‌ای Sentinel پس از پردازش."
       },
       "EOXAT2022CLOUDLESS": {
+        "description": "تصاویر ماهواره‌ای Sentinel پس از پردازش."
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "تصاویر ماهواره‌ای Sentinel پس از پردازش."
+      },
+      "EOXAT2024CLOUDLESS": {
         "description": "تصاویر ماهواره‌ای Sentinel پس از پردازش."
       },
       "EsriWorldImagery": {
@@ -65,9 +74,6 @@
           "text": "قوانین و بازخورد"
         },
         "name": "ماهواره Mapbox"
-      },
-      "OSIP_6in": {
-        "name": "برنامه تصویربرداری 6 اینچی ایالت اوهایو"
       },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {

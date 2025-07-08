@@ -53,6 +53,9 @@
         },
         "description": "多拉杜斯 (2018) 與許多行政區 (2020) 的高解析度航照圖。"
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "後處理過的 Sentinel 衛星影像。"
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 無雲 - https://s2maps.eu by EOX IT Services GmbH (含有變動過的 Copernicus Sentinel 資料 2017 & 2018)"
@@ -87,6 +90,13 @@
         },
         "description": "後處理過的 Sentinel 衛星影像。",
         "name": "eox.at 2022 無雲"
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "後處理過的 Sentinel 衛星影像。"
+      },
+      "EOXAT2024CLOUDLESS": {
+        "description": "後處理過的 Sentinel 衛星影像。",
+        "name": "eox.at 2024 無雲"
       },
       "EsriWorldImagery": {
         "attribution": {
@@ -337,20 +347,6 @@
         },
         "description": "俄亥俄州全州影像計劃 III 2017年至2020年每個郡的最新正射影像，解析度為 1 英呎到 3 英吋。",
         "name": "俄亥俄州全州影像計劃"
-      },
-      "OSIP_1ft": {
-        "attribution": {
-          "text": "俄亥俄州全州影像計劃"
-        },
-        "description": "2011年至2014年間以 1 英呎解析度拍攝的全部 88 個縣的俄亥俄州全州影像計劃 II 正射影像。",
-        "name": "俄亥俄州全州影像計劃 1 英呎"
-      },
-      "OSIP_6in": {
-        "attribution": {
-          "text": "俄亥俄州全州影像計劃"
-        },
-        "description": "2017年與2018年以 6 英吋解析度拍攝的 40 個縣的俄亥俄州全州影像計劃 III 正射影像，以及2010年至2014年在另外 16 個縣拍攝的 OSIP I 和 OSIP II 影像。",
-        "name": "俄亥俄州全州影像計劃 6 英吋"
       },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {

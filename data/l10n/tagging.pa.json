@@ -133,6 +133,9 @@
         "aeroway": {
           "label": "ਕਿਸਮ"
         },
+        "aircraft/type": {
+          "label": "ਕਿਸਮ"
+        },
         "amenity": {
           "label": "ਕਿਸਮ"
         },
@@ -627,6 +630,9 @@
         "location": {
           "label": "ਟਿਕਾਣਾ"
         },
+        "locked": {
+          "label": "بند"
+        },
         "man_made": {
           "label": "ਕਿਸਮ"
         },
@@ -1041,6 +1047,9 @@
           "options": {
             "ford": "ਫੋਰਡ"
           },
+          "placeholder": "ਅਗਿਆਤ"
+        },
+        "structure_canal": {
           "placeholder": "ਅਗਿਆਤ"
         },
         "structure_waterway": {

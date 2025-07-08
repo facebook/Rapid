@@ -78,6 +78,13 @@
         "description": "Hochauflösende Luftbilder von Dourados (2018) und mehreren Bezirken (2020).",
         "name": "Dourados Orthofotos"
       },
+      "EOXAT2017CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 wolkenlos - https://s2maps.eu von EOX IT Services GmbH (Enthält bearbeitete Copernicus Sentinel Daten 2017)"
+        },
+        "description": "Nachbearbeitete Sentinel Satellitenbilder.",
+        "name": "eox.at 2017 wolkenlos"
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 wolkenfrei - https://s2maps.eu by EOX IT Services GmbH (enthält modofizierte Copernicus Sentinel Daten 2017 & 2018)"
@@ -112,6 +119,20 @@
         },
         "description": "Nachbearbeitete Sentinel Satellitenbilder.",
         "name": "eox.at 2022 wolkenlos"
+      },
+      "EOXAT2023CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 wolkenlos - https://s2maps.eu von EOX IT Services GmbH (Enthält bearbeitete Copernicus Sentinel Daten 2023)"
+        },
+        "description": "Nachbearbeitete Sentinel Satellitenbilder.",
+        "name": "eox.at 2023 wolkenlos"
+      },
+      "EOXAT2024CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 wolkenlos - https://s2maps.eu von EOX IT Services GmbH (Enthält bearbeitete Copernicus Sentinel Daten 2024)"
+        },
+        "description": "Nachbearbeitete Sentinel Satellitenbilder.",
+        "name": "eox.at 2024 wolkenlos"
       },
       "EsriWorldImagery": {
         "attribution": {
@@ -351,9 +372,6 @@
       },
       "OSIP": {
         "description": "Ohio Statewide Imagery Program III aktuellste Orthobilder für jedes County mit einer Auflösung von 1 Fuß bis 3 Zoll von 2017 bis 2020."
-      },
-      "OSIP_1ft": {
-        "name": "Ohio Statewide Imagery Program 1-Fuß"
       },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {

@@ -5,7 +5,6 @@
       "kiribatiwomeninmapping": "参与绘图的基里巴斯妇女",
       "mappingbotswana": "博次彎拿國製圖組",
       "maptimebogota": "波哥大地图时间",
-      "maptimehrva": "維珍尼亞咸頓道製圖組",
       "opensourcesanjose": "开源圣何塞",
       "openstreetmap": "公家街圖",
       "openstreetmapaachen": "開放街圖亞琛",
@@ -33,9 +32,9 @@
       "openstreetmapbosniaandherzegovina": "OpenStreetMap 波斯尼亞和黑塞哥維那",
       "openstreetmapbrasil": "OpenStreetMap 巴西",
       "openstreetmapbrasilia": "OpenStreetMap 巴西利亞",
+      "openstreetmapbrasilminasgerais": "開放街圖巴西米納斯吉拉斯州",
       "openstreetmapbremen": "OpenStreetMap 不來梅",
       "openstreetmapbulgaria": "OpenStreetMap 保加利亞",
-      "openstreetmapburkinafaso": "OpenStreetMap 布基納法索",
       "openstreetmapburundi": "OpenStreetMap 布隆迪",
       "openstreetmapbzh": "OpenStreetMap 布列塔尼",
       "openstreetmapcambodia": "OpenStreetMap 柬埔寨",
@@ -123,7 +122,7 @@
       "openstreetmaplombardia": "OpenStreetMap 倫巴底",
       "openstreetmaplondon": "OpenStreetMap 伦敦",
       "openstreetmapluneburg": "OpenStreetMap 吕纳堡",
-      "openstreetmapluxembourg": "OpenStreetMap 盧森堡",
+      "openstreetmapluxembourg": "公家街圖盧森堡",
       "openstreetmapmadagascar": "OpenStreetMap 馬達加斯加",
       "openstreetmapmadrid": "OpenStreetMap 马德里",
       "openstreetmapmalawi": "OpenStreetMap 馬拉維",
@@ -132,7 +131,7 @@
       "openstreetmapmalta": "OpenStreetMap 馬耳他",
       "openstreetmapmauritania": "OpenStreetMap 毛里塔尼亞",
       "openstreetmapmecklenburgvorpommern": "OpenStreetMap 梅克倫堡-西波美恩",
-      "openstreetmapmexico": "OpenStreetMap 墨西哥",
+      "openstreetmapmexico": "公家街圖墨西哥",
       "openstreetmapmichigan": "OpenStreetMap 密芝根州",
       "openstreetmapmoldova": "OpenStreetMap 摩爾多瓦",
       "openstreetmapmongolia": "蒙古公家街圖組",
@@ -159,6 +158,7 @@
       "openstreetmappiemonte": "開放街圖皮埃蒙特",
       "openstreetmappoland": "OpenStreetMap 波蘭",
       "openstreetmapportugal": "OpenStreetMap 葡萄牙",
+      "openstreetmappunjab": "開放街圖旁遮普",
       "openstreetmaprdc": "OpenStreetMap 剛果民主共和國",
       "openstreetmaprennes": "OpenStreetMap 雷恩",
       "openstreetmapreunion": "OpenStreetMap 留尼旺",
@@ -169,7 +169,6 @@
       "openstreetmapsaudiarabia": "OpenStreetMap 沙地阿拉伯",
       "openstreetmapsenegal": "OpenStreetMap 塞內加爾",
       "openstreetmapserbia": "OpenStreetMap 塞爾維亞",
-      "openstreetmapseychelles": "OpenStreetMap 塞舌爾",
       "openstreetmapsierraleone": "OpenStreetMap 塞拉利昂",
       "openstreetmapsingapore": "OpenStreetMap 新加坡",
       "openstreetmapslovenia": "OpenStreetMap 斯洛文尼亞",
@@ -180,7 +179,6 @@
       "openstreetmapsudan": "OpenStreetMap 蘇丹",
       "openstreetmapsweden": "OpenStreetMap 瑞典",
       "openstreetmapswitzerland": "OpenStreetMap 瑞士",
-      "openstreetmapsyria": "OpenStreetMap 敘利亞",
       "openstreetmaptaiwan": "臺灣公家街圖組",
       "openstreetmaptanzania": "OpenStreetMap 坦桑尼亞",
       "openstreetmapthailand": "泰國公家街圖組",
@@ -211,11 +209,11 @@
     },
     "_defaults": {
       "aparat": {
-        "name": "Aparat 上的 {community}",
+        "name": "Aparat 上 {community}",
         "description": "訂閱我們的 Aparat 頻道"
       },
       "bluesky": {
-        "name": "Bluesky 上的 {community}",
+        "name": "Bluesky 上 {community}",
         "description": "在 Bluesky 追蹤我們"
       },
       "discord": {
@@ -227,7 +225,7 @@
         "description": "{community} 官方論壇"
       },
       "facebook": {
-        "name": "面簿上 {community}",
+        "name": "面簿 {community}",
         "description": "面簿上加入我哋"
       },
       "forum": {
@@ -235,10 +233,10 @@
         "description": "{community} 官方論壇"
       },
       "gitlab": {
-        "name": "{community} 的 GitLab"
+        "name": "{community}  GitLab"
       },
       "instagram": {
-        "name": "Instagram 上的 {community}",
+        "name": "Instagram 上 {community}",
         "description": "在 Instagram 追蹤我們"
       },
       "irc": {
@@ -246,7 +244,7 @@
         "description": "在 irc.oftc.net 上加入 #{account}（連接埠 6667，安全連線是 6697）"
       },
       "linkedin": {
-        "name": "LinkedIn 上的 {community}",
+        "name": "LinkedIn 上 {community}",
         "description": "在LinkedIn上加入我们的社区"
       },
       "mailinglist": {
@@ -259,47 +257,47 @@
       },
       "matrix": {
         "name": "{community} Matrix 聊天室",
-        "description": "加入我們的 Matrix 聊天室"
+        "description": "加入我哋 Matrix 聊天室"
       },
       "newsletter": {
-        "name": "{community} 电子报"
+        "name": "{community} 電子報"
       },
       "reddit": {
-        "name": "Reddit 上的 {community}"
+        "name": "Reddit 上 {community}"
       },
       "signal": {
-        "name": "{community} 的 Signal",
-        "description": "加入我們的 Signal 聊天室"
+        "name": "{community}  Signal",
+        "description": "加入我哋 Signal 聊天室"
       },
       "slack": {
-        "name": "{community} 的 Slack"
+        "name": "{community}  Slack"
       },
       "telegram": {
         "name": "{community}電報",
         "description": "加入我哋電報聊天室"
       },
       "threads": {
-        "name": "Threads 上的 {community}",
+        "name": "Threads 上 {community}",
         "description": "在 Threads 追蹤我們"
       },
       "tiktok": {
-        "name": "TikTok 上的 {community}",
+        "name": "TikTok 上 {community}",
         "description": "在 TikTok 追蹤我們"
       },
       "twitter": {
-        "name": "𝕏 上 {community}",
-        "description": "喺 𝕏跟我哋"
+        "name": "X 上 {community}",
+        "description": "喺𝕏跟我哋"
       },
       "wiki": {
         "name": "{community} 的維基專題"
       },
       "x": {
         "name": "𝕏 上 {community}",
-        "description": "喺 𝕏跟我哋"
+        "description": "喺𝕏跟我哋"
       },
       "xmpp": {
-        "name": "{community} 的 XMPP",
-        "description": "加入我們的 XMPP 社群聊天：{url}"
+        "name": "{community}  XMPP",
+        "description": "加入我哋 XMPP 社群聊天：{url}"
       },
       "youtube": {
         "name": "YouTube 上的 {community}",
@@ -410,7 +408,7 @@
     },
     "ch-mailinglist": {
       "name": "開放街圖瑞士郵件論壇",
-      "description": "瑞士的郵件論壇"
+      "description": "瑞士信件單論壇"
     },
     "cl-facebook": {
       "extendedDescription": "加入社区以进一步了解OpenStreetMap，可以提出问题或参加我们的会面。欢迎每个人的到来！"
@@ -443,8 +441,8 @@
       "description": "社群活動或是資訊的內容"
     },
     "co-talk": {
-      "name": "{community} 郵件論壇",
-      "description": "採用 email 方式來與社群溝通資訊"
+      "name": "{community} 信件單論壇",
+      "description": "用電郵方式同社羣交換資訊"
     },
     "co-telegram": {
       "name": "討論{community} 議題電報組",
@@ -545,9 +543,6 @@
     },
     "de-mainz-signal": {
       "description": "美茵茲、威斯巴登及周邊地區的 OpenStreetMap"
-    },
-    "de-mainz-telegram": {
-      "description": "美因茨一帶的開放街圖"
     },
     "de-mainz-wiki": {
       "description": "美因茨一帶的開放街圖"
@@ -665,9 +660,6 @@
     "hu-matrix": {
       "extendedDescription": "有關地圖主題的開放街圖聊天群組，為 OSM 社群支援論壇其中之一"
     },
-    "hu-meetup": {
-      "description": "在匈牙利组织聚会的平台"
-    },
     "hu-mobilizon": {
       "name": "Mobilizon 上的 {community}",
       "description": "開放街圖匈牙利社群的未來活動"
@@ -677,10 +669,13 @@
       "description": "探索匈牙利的啟動畫地圖任務"
     },
     "hu-website": {
-      "description": "我们帮助在匈牙利发展和改善OpenStreetMap。"
+      "description": "匈牙利開放街圖社群的網站"
     },
     "hu-wiki": {
       "description": "{community} Wiki 頁面"
+    },
+    "hu-youtube": {
+      "description": "開放街圖匈牙利聚會直播串流與錄影"
     },
     "humanitarian-osm-tr-slack": {
       "name": "人道救援開放街圖土耳其 Slack",
@@ -798,7 +793,7 @@
       "description": "讓滑鐵盧地區的低碳路徑更容易探索。"
     },
     "MapRVA": {
-      "description": "MapRVA 聚會"
+      "description": "MapRVA 是維吉尼亞州里奇蒙市的一群地圖愛好者，他們使用 OpenStreetMap 建立並分享本市的地理空間資料。"
     },
     "maptime-bogota-facebook": {
       "name": "地圖時間波哥大",
@@ -860,6 +855,9 @@
     },
     "me-telegram": {
       "description": "歡迎所有人加入！在 {signupUrl} 註冊"
+    },
+    "minas_gerais-discord": {
+      "extendedDescription": "歡迎加入開放街圖巴西米納斯吉拉斯州的 Discord！我們是一個由熱衷於為巴西米納斯吉拉斯州建立詳細、開放原始碼地圖的圖客所組成的社群。加入我們來協作、分享技巧，並幫助 MG 的地圖成為開放街圖上最好的地圖。無論您是新手或專家，讓我們一起製圖！"
     },
     "mm-facebook": {
       "extendedDescription": "畫緬圖嗎？有問題，想要與社群互動？來  {url} 加入我們，歡迎所有人。"
@@ -1127,6 +1125,13 @@
       "description": "FSHM Puducherry 郵件清單用來討論在 Puducherry 的製圖與其他事情。",
       "extendedDescription": "FSHM 會組織關於自由軟體／硬體、科技、行動與開放街圖的活動。"
     },
+    "osm-punjab-matrix": {
+      "description": "我們一起繪製旁遮普。加入我們的 Matrix 群組",
+      "extendedDescription": "OSM 旁遮普非官方的聊天室，也與 OSMPunjab Telegram 群組同步"
+    },
+    "osm-punjab-telegram": {
+      "description": "我們一起繪製旁遮普。加入我們的 Telegram 群組。{url}"
+    },
     "OSM-Rome-meetup": {
       "description": "改善羅馬區域的 OpenStreetMap",
       "extendedDescription": "我們是一群熱情討論和分享自由地理資料集知識的人，特別是開放街圖的資料，以及管理、編輯和顯示地理資料的開放地理空間軟體，以及在拉吉歐推廣的團體。"
@@ -1249,11 +1254,8 @@
     "talk-mg": {
       "description": "位于马达加斯加的 OpenStreetMap 贡献者、社区和用户分享和讨论的地方。"
     },
-    "talk-nz": {
-      "description": "紐西蘭 OSM 社群聊天群"
-    },
     "talk-pacific": {
-      "description": "莫阿納/大洋洲/太平洋一帶人民的 OSM 地區郵件論壇",
+      "description": "莫亞納／大洋洲／太平洋一帶啲人公家街圖地區信件單論壇",
       "extendedDescription": "我們這個郵件論壇能夠支援所有太平洋的子民，不論他們的多元背景與動機，能夠分享想法、問題、專案與其他這片海域有關的開放街圖事務。"
     },
     "tn-facebook-group": {
@@ -1292,9 +1294,6 @@
     "uk-london-wiki": {
       "description": "{community} Wiki 頁面"
     },
-    "uk-loomio": {
-      "name": "Loomio上英國公家街圖"
-    },
     "us-discourse": {
       "description": "討論開放街圖在美國事物的 Discourse 論壇"
     },
@@ -1309,9 +1308,6 @@
     "uy-irc": {
       "description": "在 irc.freenode.org (端口 6667)上加入 #{account} ",
       "extendedDescription": "在 irc.freenode.org 上加入 #{account} "
-    },
-    "vn-mailinglist": {
-      "description": "開放街圖越南或越南語的郵件論壇"
     },
     "vn-wiki": {
       "description": "{community} Wiki 頁面"

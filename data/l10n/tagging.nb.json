@@ -34,6 +34,11 @@
         "aerialway/access": {
           "label": "Tilgang"
         },
+        "aircraft/type": {
+          "options": {
+            "military": "Militær"
+          }
+        },
         "automated": {
           "label": "Automatisert"
         },
@@ -383,6 +388,11 @@
             "aggregate": "Aggregat"
           }
         },
+        "roof/shape": {
+          "options": {
+            "dome": "kuppel"
+          }
+        },
         "royal_cypher-GB": {
           "options": {
             "no": "Nei"
@@ -441,6 +451,11 @@
           }
         },
         "structure": {
+          "options": {
+            "bridge": "Bro"
+          }
+        },
+        "structure_canal": {
           "options": {
             "bridge": "Bro"
           }

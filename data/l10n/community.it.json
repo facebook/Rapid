@@ -1,8 +1,9 @@
 {
   "it": {
     "_communities": {
-      "kiribatiwomeninmapping": "Kiribati Donne nella mappatura",
+      "kiribatiwomeninmapping": "Donne del Kiribati nella mappatura",
       "mappingbotswana": "Mappando Botswana",
+      "opensourcesanjose": "San José Open Source",
       "openstreetmapaachen": "OpenStreetMap Aquisgrana",
       "openstreetmapaustria": "OpenStreetMap dell’Austria",
       "openstreetmapbangladesh": "OpenStreetMap del Bangladesh",
@@ -17,12 +18,14 @@
       "openstreetmapcameroon": "OpenStreetMap Camerun",
       "openstreetmapcastillayleon": "OpenStreetMap Castiglia e León",
       "openstreetmapcatalancountries": "OpenStreetMap Paesi Catalani",
+      "openstreetmapchad": "OpenStreetMap Ciad",
       "openstreetmapchile": "OpenStreetMap Cile",
       "openstreetmapchina": "OpenStreetMap Cina",
       "openstreetmapcologne": "OpenStreetMap Colonia",
       "openstreetmapcomunitatvalenciana": "OpenStreetMap Comunità Valenciana",
       "openstreetmapcotedivoire": "OpenStreetMap Costa d'Avorio",
       "openstreetmapcroatia": "OpenStreetMap Croazia",
+      "openstreetmapcyprus": "OpenStreetMap Cipro",
       "openstreetmapdeepsouth": "OpenStreetMap Profondo Sud",
       "openstreetmapdenmark": "OpenStreetMap Danimarca",
       "openstreetmapdjibouti": "OpenStreetMap Gibuti",
@@ -56,6 +59,7 @@
       "openstreetmapitalysouthtyrol": "OpenStreetMap Italy-Sud Tirolo",
       "openstreetmapitalytrentino": "OpenStreetMap Italia-Trentino",
       "openstreetmapjapan": "OpenStreetMap Giappone",
+      "openstreetmapkazakhstan": "OpenStreetMap Kazakistan",
       "openstreetmapkorea": "OpenStreetMap Corea",
       "openstreetmaplatinamerica": "OpenStreetMap America Latina",
       "openstreetmaplatvia": "OpenStreetMap Lettonia",
@@ -87,12 +91,11 @@
       "openstreetmapsrilanka": "OpenStreetMap dello Sri Lanka",
       "openstreetmapsweden": "OpenStreetMap Svezia",
       "openstreetmapswitzerland": "OpenStreetMap Svizzera",
-      "openstreetmapsyria": "OpenStreetMap Siria",
       "openstreetmapthailand": "OpenStreetMap Thailandia",
       "openstreetmapturin": "OpenStreetMap Torino",
       "openstreetmapturkey": "OpenStreetMap Turchia",
       "openstreetmapukraine": "OpenStreetMap Ucraina",
-      "openstreetmapus": "OpenStreetMap degli Stati Uniti",
+      "openstreetmapus": "OpenStreetMap Stati Uniti",
       "openstreetmapwarszawa": "OpenStreetMap Varsavia",
       "openstreetmapwesternsahara": "OpenStreetMap Sahara occidentale"
     },
@@ -100,6 +103,9 @@
       "aparat": {
         "name": "{community} su Aparat",
         "description": "Iscriviti al nostro canale Aparat"
+      },
+      "bluesky": {
+        "description": "Seguici su Bluesky"
       },
       "discord": {
         "name": "{community} Discordia",
@@ -116,8 +122,16 @@
       "forum": {
         "description": "Il forum ufficiale per {community}"
       },
+      "github": {
+        "name": "{community}GitHub"
+      },
+      "instagram": {
+        "name": "{community} su Instagram",
+        "description": "Seguici su Instagram"
+      },
       "irc": {
-        "name": "{community} su IRC"
+        "name": "{community} su IRC",
+        "description": "Unisciti a #{account} su irc.oftc.net (port 6667 senza SSL o 6697 con SSL)"
       },
       "linkedin": {
         "name": "{community} su LinkedIn",
@@ -127,6 +141,7 @@
         "description": "La mailing list ufficiale di {community}"
       },
       "mastodon": {
+        "name": "{community} su Mastodon",
         "description": "L'account Mastodon ufficiale per {community}"
       },
       "matrix": {
@@ -144,6 +159,21 @@
       },
       "threads": {
         "description": "Seguici su Threads"
+      },
+      "tiktok": {
+        "name": "{community} su TikTok",
+        "description": "Seguici su TikTok"
+      },
+      "twitter": {
+        "name": "{community} su X",
+        "description": "Seguici su X"
+      },
+      "x": {
+        "name": "{community}su X",
+        "description": "Seguici su X"
+      },
+      "xmpp": {
+        "description": "Entra nella nostra chat XMPP della community: {url}"
       },
       "youtube": {
         "name": "{community} su YouTube",
@@ -398,6 +428,9 @@
       "description": "Meetup per appassionati di mappe nella zona di Philadelphia",
       "extendedDescription": "Geophilly unisce sviluppatori, geografi, data geek, appassionati open source, civic hacker e drogati di mappe nella comune passione passione per le mappe e delle storie che possono raccontare. Se usate delle mappe nel vostro lavoro o se voltete soltanto saperne di più, questo è il meetup adatto per voi! I nostri eventi mirano a essere aperti, amichevoli, educativi e sociali, e spaziano dalle piacevoli chiacchierate agli incontri lampo e perfino agli workshop. Venite a creare una community geospaziale variegata e ispirativa con noi a Philadelphia!"
     },
+    "hr-github": {
+      "description": "{community}GitHub"
+    },
     "hr-wiki": {
       "description": "Pagina Wikiproject per la Croazia"
     },
@@ -407,18 +440,12 @@
     "hu-matrix": {
       "extendedDescription": "Chat di OpenStreetMap sugli argomenti della mappa. Uno dei forum di supporto della comunità OSM."
     },
-    "hu-meetup": {
-      "description": "La piattaforma per organizzare incontri in Ungheria"
-    },
     "hu-mobilizon": {
       "name": "{community} su Mobilizon",
       "description": "Prossimi eventi per la comunità di OpenStreetMap Ungheria"
     },
     "hu-tm": {
       "description": "Esplora le attività di mappatura attive in Ungheria"
-    },
-    "hu-website": {
-      "description": "Aiutiamo a far crescere e migliorare OpenStreetMap in Ungheria."
     },
     "hu-wiki": {
       "description": "{community} Pagina wiki"
@@ -452,6 +479,9 @@
     },
     "ko-facebook": {
       "description": "Mapper e utenti di OpenStreetMap in Corea"
+    },
+    "ko-github": {
+      "description": "{community}GitHub"
     },
     "ko-osm": {
       "description": "Aiutiamo a far crescere e migliorare OpenStreetMap in Corea.",
@@ -529,9 +559,6 @@
     },
     "MappingWR": {
       "description": "Rendere facili da trovare percorsi a basse emissioni di carbonio nella regione di Waterloo."
-    },
-    "MapRVA": {
-      "description": "Incontrarsi su MapRVA"
     },
     "maptime-bogota-facebook": {
       "description": "Siamo un gruppo di persone interessate a mappare Bogotà e dintorni in OpenStreetMap.",
@@ -899,6 +926,9 @@
     "sg-wiki": {
       "description": "{community} Pagina wiki"
     },
+    "si-github": {
+      "description": "{community}GitHub"
+    },
     "si-ljubljana-wiki": {
       "description": "{community} Pagina wiki"
     },
@@ -920,9 +950,6 @@
     },
     "talk-mg": {
       "description": "Un posto dove i collaboratori, le comunità e gli utenti di OpenStreetMap del Madagascar possono condividere e discutere."
-    },
-    "talk-nz": {
-      "description": "Il discorso della comunità OSM della Nuova Zelanda"
     },
     "talk-pacific": {
       "description": "La mailing list OSM regionale per e dai popoli di Moana/Oceania/Pacifico",
@@ -960,9 +987,6 @@
     "uk-london-wiki": {
       "description": "{community} Pagina wiki"
     },
-    "uk-loomio": {
-      "name": "OpenStreetMap Regno Unito su Loomio"
-    },
     "us-discourse": {
       "description": "Un forum di discussione su OpenStreetMap negli Stati Uniti"
     },
@@ -977,9 +1001,6 @@
     "uy-irc": {
       "description": "Iscriviti a #{account} su irc.freenode.org (porta 6667)",
       "extendedDescription": "Iscriviti a #{account} su irc.freenode.org"
-    },
-    "vn-mailinglist": {
-      "description": "Mailing list su OpenStreetMap in Vietnam o in vietnamita"
     },
     "vn-wiki": {
       "description": "{community} Pagina wiki"

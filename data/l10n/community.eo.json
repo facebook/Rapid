@@ -115,7 +115,6 @@
       "openstreetmapsaudiarabia": "OpenStreetMap Saŭdiarabio",
       "openstreetmapsenegal": "OpenStreetMap Senegalo",
       "openstreetmapserbia": "OpenStreetMap Serbio",
-      "openstreetmapseychelles": "OpenStreetMap Sejŝeloj",
       "openstreetmapsierraleone": "OpenStreetMap Sieraleono",
       "openstreetmapsingapore": "OpenStreetMap Singapuro",
       "openstreetmapslovenia": "OpenStreetMap Slovenio",
@@ -126,7 +125,6 @@
       "openstreetmapsudan": "OpenStreetMap Sudano",
       "openstreetmapsweden": "OpenStreetMap Svedio",
       "openstreetmapswitzerland": "OpenStreetMap Svislando",
-      "openstreetmapsyria": "OpenStreetMap Sirio",
       "openstreetmaptaiwan": "OpenStreetMap Tajvano",
       "openstreetmaptanzania": "OpenStreetMap Tanzanio",
       "openstreetmapthailand": "OpenStreetMap Tajlando",
@@ -212,14 +210,8 @@
       "tiktok": {
         "description": "Sekvu nin ĉe TikTok"
       },
-      "twitter": {
-        "description": "Sekvu nin ĉe 𝕏"
-      },
       "wiki": {
         "name": "VikiProjekto {community}"
-      },
-      "x": {
-        "description": "Sekvu nin ĉe 𝕏"
       },
       "xmpp": {
         "name": "{community} ĉe XMPP"
@@ -298,9 +290,6 @@
     },
     "hr-github": {
       "description": "{community} ĉe GitHub"
-    },
-    "hu-meetup": {
-      "description": "Platformo por organizi kunvenojn en Hungarujo"
     },
     "ko-github": {
       "description": "{community} ĉe GitHub"

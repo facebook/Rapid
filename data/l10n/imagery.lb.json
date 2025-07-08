@@ -47,6 +47,9 @@
         },
         "description": "Dourados (2018) an verschidden Distrikter (2020) héich-opléisend Loftbiller."
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "Nobeaarbeschten Sentinel Satellitenbiller."
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 Wollekenfräi- https://s2maps.eu by EOX IT Services GmbH (Enthält modifizéierten Copernicus Sentinel Daten 2017 & 2018)"
@@ -64,6 +67,12 @@
         "description": "Nobeaarbeschten Sentinel Satellitenbiller."
       },
       "EOXAT2022CLOUDLESS": {
+        "description": "Nobeaarbeschten Sentinel Satellitenbiller."
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Nobeaarbeschten Sentinel Satellitenbiller."
+      },
+      "EOXAT2024CLOUDLESS": {
         "description": "Nobeaarbeschten Sentinel Satellitenbiller."
       },
       "EsriWorldImagery": {
@@ -238,16 +247,6 @@
           "text": "Ohio Saatswäiten Billerprogramm"
         },
         "name": "Ohio Saatswäiten Billerprogramm"
-      },
-      "OSIP_1ft": {
-        "attribution": {
-          "text": "Ohio Saatswäiten Billerprogramm"
-        }
-      },
-      "OSIP_6in": {
-        "attribution": {
-          "text": "Ohio Saatswäiten Billerprogramm"
-        }
       },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {

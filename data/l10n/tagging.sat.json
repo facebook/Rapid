@@ -76,6 +76,9 @@
         "aeroway": {
           "label": "ᱯᱨᱟᱹᱠᱟᱨ"
         },
+        "aircraft/type": {
+          "label": "ᱯᱨᱟᱹᱠᱟᱨ"
+        },
         "amenity": {
           "label": "ᱯᱨᱟᱹᱠᱟᱨ"
         },
@@ -559,6 +562,9 @@
           }
         },
         "structure": {
+          "placeholder": "ᱵᱟᱝ ᱵᱟᱲᱟᱭ"
+        },
+        "structure_canal": {
           "placeholder": "ᱵᱟᱝ ᱵᱟᱲᱟᱭ"
         },
         "structure_waterway": {

@@ -8,6 +8,9 @@
       "Czestochowa-buildings": {
         "name": "Čenstohova: ēkas"
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "Apstrādāti Sentinel Satalītattēli."
+      },
       "EOXAT2018CLOUDLESS": {
         "description": "Apstrādāti Sentinel Satalītattēli.",
         "name": "eox.at 2018 bez-mākoņu"
@@ -22,6 +25,12 @@
         "description": "Apstrādāti Sentinel Satalītattēli."
       },
       "EOXAT2022CLOUDLESS": {
+        "description": "Apstrādāti Sentinel Satalītattēli."
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Apstrādāti Sentinel Satalītattēli."
+      },
+      "EOXAT2024CLOUDLESS": {
         "description": "Apstrādāti Sentinel Satalītattēli."
       },
       "EsriWorldImagery": {

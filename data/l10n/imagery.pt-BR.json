@@ -1,6 +1,9 @@
 {
   "pt-BR": {
     "imagery": {
+      "EOXAT2017CLOUDLESS": {
+        "description": "Imagens de satélite Sentinel pós-processadas."
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 cloudless - https://s2maps.eu by EOX IT Services GmbH (Contém dados Copernicus Sentinel modificados 2017 e 2018)"
@@ -17,6 +20,12 @@
         "description": "Imagens de satélite Sentinel pós-processadas."
       },
       "EOXAT2022CLOUDLESS": {
+        "description": "Imagens de satélite Sentinel pós-processadas."
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Imagens de satélite Sentinel pós-processadas."
+      },
+      "EOXAT2024CLOUDLESS": {
         "description": "Imagens de satélite Sentinel pós-processadas."
       },
       "EsriWorldImagery": {

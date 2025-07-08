@@ -176,6 +176,9 @@
         "agrarian": {
           "label": "Продукция"
         },
+        "aircraft/type": {
+          "label": "Тип"
+        },
         "amenity": {
           "label": "Вид"
         },
@@ -379,6 +382,9 @@
             "stable": "Конюшня"
           }
         },
+        "building/flats": {
+          "label": "Брой на апартаментите"
+        },
         "building/levels": {
           "label": "Нива"
         },
@@ -432,14 +438,44 @@
         "check_date": {
           "placeholder": "ГГГГ-ММ-ДД"
         },
+        "climbing/length": {
+          "label": "Дължина (Метри)"
+        },
         "clothes": {
-          "label": "Дрехи"
+          "label": "Дрехи",
+          "options": {
+            "babies": "Бебешко облекло",
+            "children": "Детско облекло",
+            "denim": "Дънкови облекла",
+            "fur": "Облекло от козина",
+            "hats": "Шапки",
+            "maternity": "Облекло за майчинство",
+            "men": "Мъжко обекло",
+            "oversize": "Облекло с голям размер",
+            "socks": "Чорапи",
+            "sports": "Спортно облекло",
+            "suits": "Костюми",
+            "swimwear": "Бански",
+            "traditional": "Традиционни облекла / народни носии",
+            "underwear": "Бельо",
+            "wedding": "Сватбени дрехи",
+            "women": "Дамски дрехи",
+            "workwear": "Работни дрехи"
+          }
         },
         "club": {
           "label": "Вид"
         },
         "collection_times": {
           "label": "График на събиране"
+        },
+        "collector": {
+          "label": "Предмети",
+          "options": {
+            "coins": "Монети",
+            "comics": "Комикси",
+            "stamps": "Марки"
+          }
         },
         "colour": {
           "label": "Цвят"
@@ -460,6 +496,11 @@
         "consulate": {
           "label": "Тип",
           "options": {
+            "consular_agency": "Агенция за консулски услуги",
+            "consular_office": "Служба за консулски услуги",
+            "consulate_general": "Генерално консулство",
+            "honorary_consul": "Почетно консулство",
+            "residence": "Официална резиденция на консул",
             "yes": "Консулство"
           }
         },
@@ -470,6 +511,7 @@
           "label": "Съдържание"
         },
         "conveying": {
+          "label": "Посока на движение",
           "options": {
             "backward": "Назад",
             "forward": "Напред",
@@ -505,6 +547,7 @@
             "clockmaker": "Часовникар",
             "electrician": "Електротехник",
             "gardener": "Градинар",
+            "key_cutter": "Изработка на ключове",
             "locksmith": "Ключар",
             "painter": "Бояджия",
             "photographer": "Фотограф",
@@ -530,13 +573,43 @@
         "crop": {
           "label": "Посев",
           "options": {
-            "grass": "Трева"
+            "asparagus": "Аспержи",
+            "barley": "Ечемик",
+            "beet": "Цвекло",
+            "cassava": "Касава (маниока)",
+            "coffee": "Кафе",
+            "cotton": "Памук",
+            "cranberries": "Червени боровинки",
+            "flowers": "Цветя",
+            "grape": "Грозде",
+            "grass": "Трева",
+            "hop": "Хмел",
+            "lavender": "Лавандула",
+            "maize": "Царевица",
+            "potato": "Картофи",
+            "rape": "Рапица",
+            "rice": "Ориз",
+            "soy": "Соя",
+            "strawberry": "Ягоди",
+            "sugar_beet": "Захарно цвекло",
+            "sugarcane": "Захарна тръстика",
+            "sunflower": "Слънчоглед",
+            "tea": "Чай",
+            "tobacco": "Тютюн",
+            "vegetable": "Зеленчуци",
+            "wheat": "Пшеница"
           }
         },
         "crossing": {
-          "label": "Вид"
+          "label": "Вид",
+          "options": {
+            "traffic_signals": "Пешеходен светофар",
+            "uncontrolled": "Само маркировка",
+            "unmarked": "Няма маркировка или светофар"
+          }
         },
         "crossing/barrier": {
+          "label": "Бариерно рамо",
           "options": {
             "no": "Не",
             "yes": "Да"
@@ -545,7 +618,18 @@
         "crossing/island": {
           "label": "Пешеходен остров"
         },
+        "crossing/markings": {
+          "label": "Маркировка",
+          "options": {
+            "dashes": "Прекъснати напречни линии (за пешеходци)",
+            "dots": "Прекъснати напречни линии (за велосипедисти)",
+            "no": "Немаркирана",
+            "zebra": "Зебра",
+            "zebra:bicolour": "Зебра с редуващи се цветове"
+          }
+        },
         "crossing_raised": {
+          "label": "Повдигнат",
           "options": {
             "table": "Да",
             "undefined": "Не"
@@ -587,6 +671,7 @@
             "spanish": "Испанска",
             "sushi": "Суши",
             "taiwanese": "Тайванска",
+            "tea": "Чай",
             "thai": "Тайландска",
             "turkish": "Турска",
             "vietnamese": "Виетнамска"
@@ -703,7 +788,7 @@
           "label": "Дисплей"
         },
         "distance": {
-          "label": "разстояние"
+          "label": "Разстояние"
         },
         "disused/amenity": {
           "label": "Тип"
@@ -997,7 +1082,7 @@
           "label": "Отопление"
         },
         "height": {
-          "label": "Височина (Метри)"
+          "label": "Височина (метри)"
         },
         "highway": {
           "label": "Вид"
@@ -1093,10 +1178,28 @@
         "kerb": {
           "label": "Бордюр",
           "options": {
+            "flush": {
+              "description": "Скосен бордюр, който е на едно ниво с околната площ.",
+              "title": "Равен"
+            },
+            "lowered": {
+              "description": "Скосен бордюр, който може да се използва от хора в инвалидни колички, не по-висок от няколко сантиметра.",
+              "title": "Скосен"
+            },
             "no": {
+              "description": "На това място няма бордюр.",
               "title": "Не"
             },
+            "raised": {
+              "description": "Повдигнат бордюр, който не може лесно да се използва от хора в инвалидни колички, по-висок от няколко сантиметра.",
+              "title": "Повдигнат"
+            },
+            "rolled": {
+              "description": "Повдигнат бордюр със заоблен ръб, който улеснява преминаването на автомобили или велосипеди, но не и на инвалидни колички.",
+              "title": "Заоблен"
+            },
             "yes": {
+              "description": "На това място има някакъв бордюр, но не е известно дали е повдигнат, скосен, равен и т.н.",
               "title": "Да"
             }
           }
@@ -1428,7 +1531,10 @@
           "label": "Тип"
         },
         "payment_multi": {
-          "label": "Начини за плащане"
+          "label": "Начини за плащане",
+          "options": {
+            "coins": "Монети"
+          }
         },
         "phases": {
           "label": "Фази"
@@ -1640,6 +1746,11 @@
         "roller_coaster/track": {
           "label": "Тип"
         },
+        "roof/shape": {
+          "options": {
+            "dome": "Куполна"
+          }
+        },
         "room": {
           "label": "Тип"
         },
@@ -1811,6 +1922,14 @@
           },
           "placeholder": "Неизвестен"
         },
+        "structure_canal": {
+          "label": "Структура",
+          "options": {
+            "bridge": "Мост",
+            "tunnel": "Тунел"
+          },
+          "placeholder": "Неизвестно"
+        },
         "structure_power": {
           "label": "Структура"
         },
@@ -1882,6 +2001,9 @@
         "switch": {
           "label": "Тип"
         },
+        "tactile_paving": {
+          "label": "Тактилна настилка"
+        },
         "takeaway": {
           "options": {
             "no": "Не",
@@ -1902,6 +2024,11 @@
         },
         "toilets": {
           "label": "Тоалетна"
+        },
+        "toilets/disposal": {
+          "options": {
+            "flush": "Равен"
+          }
         },
         "toilets/menstrual_products": {
           "options": {
@@ -2022,6 +2149,7 @@
         },
         "vending": {
           "options": {
+            "coffee": "Кафе",
             "fuel": "Гориво",
             "ice_cream": "Сладолед",
             "pizza": "Пица",
@@ -2104,7 +2232,7 @@
           "name": "Летателна писта"
         },
         "aeroway/taxiway": {
-          "name": "Рольожка"
+          "name": "Рульожка"
         },
         "amenity": {
           "name": "Услуги"
@@ -2564,6 +2692,9 @@
         "craft/gardener": {
           "name": "Градинар"
         },
+        "craft/key_cutter": {
+          "name": "Изработка на ключове"
+        },
         "craft/locksmith": {
           "name": "Ключар"
         },
@@ -2682,6 +2813,9 @@
         "highway/crossing": {
           "name": "Пешеходна пътека"
         },
+        "highway/crossing/traffic_signals": {
+          "name": "Пешеходно пресичане със светофар"
+        },
         "highway/crossing/uncontrolled": {
           "name": "Маркирана пешеходна пътека"
         },
@@ -2711,6 +2845,9 @@
         "highway/footway/crossing": {
           "name": "Пешеходна пътека"
         },
+        "highway/footway/crossing/traffic_signals": {
+          "name": "Пешеходно пресичане със светофар"
+        },
         "highway/footway/crossing/uncontrolled": {
           "name": "Маркирана пешеходна пътека"
         },
@@ -2738,6 +2875,10 @@
         },
         "highway/path": {
           "name": "Пътека"
+        },
+        "highway/path/informal": {
+          "name": "Неформална пътека",
+          "terms": "неофициална пътека,кална пътека,пътечка"
         },
         "highway/pedestrian_line": {
           "name": "Пешеходна улица"
@@ -3252,7 +3393,7 @@
           "name": "Квартал"
         },
         "place/square": {
-          "name": "Квадрат"
+          "name": "Площад"
         },
         "place/town": {
           "name": "Град под 100 000"
@@ -3402,6 +3543,9 @@
         "railway/disused": {
           "name": "Закрита железопътна линия"
         },
+        "railway/funicular": {
+          "name": "Релсов път на фуникуляр"
+        },
         "railway/halt": {
           "name": "Железопътна спирка (по желание)"
         },
@@ -3409,11 +3553,26 @@
           "name": "ЖП прелез",
           "terms": "Железопътен прелез"
         },
+        "railway/monorail": {
+          "name": "Монорелсов път"
+        },
+        "railway/monorail/hanging": {
+          "name": "Окачен монорелсов път"
+        },
+        "railway/narrow_gauge": {
+          "name": "Теснолиниеен железопътен път"
+        },
         "railway/platform": {
           "name": "Перон"
         },
+        "railway/preserved": {
+          "name": "Историческа железопътна линия"
+        },
         "railway/rail": {
-          "name": "ЖП линия"
+          "name": "Железопътна линия"
+        },
+        "railway/rail/highspeed": {
+          "name": "Релсов път за високоскоростни влакове"
         },
         "railway/signal": {
           "name": "Светофор",
@@ -3422,6 +3581,9 @@
         "railway/station": {
           "name": "Гара"
         },
+        "railway/subway": {
+          "name": "Релсов път на метрото"
+        },
         "railway/subway_entrance": {
           "name": "Вход на метростанция"
         },
@@ -3429,7 +3591,8 @@
           "name": "Железопътна стрелка"
         },
         "railway/tram": {
-          "name": "Трамвайни релси"
+          "name": "Трамваен релсов път",
+          "terms": "трамвайно трасе,трамвайни релси"
         },
         "relation": {
           "name": "Релация"

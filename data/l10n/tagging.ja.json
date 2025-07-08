@@ -222,6 +222,18 @@
           "label": "空調有無",
           "terms": "空調, エアコン, 冷暖房"
         },
+        "aircraft/type": {
+          "label": "キャンプ場の種別",
+          "options": {
+            "airliner": "旅客機",
+            "cargo": "貨物機",
+            "fixed_wing": "固定翼機",
+            "glider": "滑空機",
+            "helicopter": "回転翼機（ヘリコプター）",
+            "jet": "ジェット機",
+            "military": "軍用機"
+          }
+        },
         "alt_name": {
           "label": "別名",
           "terms": "別名, 代替名, 別称, 異称"
@@ -286,7 +298,8 @@
             "relief": "レリーフ",
             "sculpture": "彫刻",
             "statue": "彫像",
-            "stone": "巨石"
+            "stone": "巨石",
+            "tilework": "タイル貼り"
           }
         },
         "ascent": {
@@ -766,9 +779,16 @@
           "terms": "調査日, 最終調査日"
         },
         "circumference": {
-          "label": "幹回り（胸高直径）",
+          "label": "幹回り（胸高で測定）",
           "placeholder": "1 m, 20 cm,…",
           "terms": "円周, 外周, 周囲, 幹周, 幹囲"
+        },
+        "climbing/bolts": {
+          "label": "ボルトの数"
+        },
+        "climbing/length": {
+          "label": "長さ (m)",
+          "terms": "長さ(メートル), 長さ"
         },
         "clothes": {
           "label": "服",
@@ -1167,6 +1187,7 @@
           }
         },
         "cycle_barrier/installation": {
+          "label": "据付方法",
           "options": {
             "fixed": "固定式",
             "openable": "開閉可能",
@@ -1229,6 +1250,9 @@
         },
         "defibrillator/location": {
           "label": "位置の説明"
+        },
+        "deflection": {
+          "label": "偏行角度"
         },
         "delivery": {
           "label": "配達",
@@ -1399,6 +1423,10 @@
             "yes": "犬は同行可"
           },
           "terms": "犬, ペット, 動物"
+        },
+        "dog_check": {
+          "label": "犬の受入れ",
+          "terms": "犬"
         },
         "door": {
           "label": "ドア"
@@ -1605,7 +1633,7 @@
           "label": "掲揚ポールの種類"
         },
         "flag/wikidata": {
-          "label": "旗"
+          "label": "旗(Wikidata)"
         },
         "flashing_lights": {
           "label": "点滅灯",
@@ -2322,6 +2350,10 @@
           "label": "メーカー",
           "terms": "メーカー, 製造者, 製作者"
         },
+        "manufacturer/wikidata": {
+          "label": "メーカー(Wikidata)",
+          "terms": "メーカー"
+        },
         "map_size": {
           "label": "地図の範囲"
         },
@@ -2503,6 +2535,10 @@
         },
         "model": {
           "label": "モデル",
+          "terms": "モデル"
+        },
+        "model/wikidata": {
+          "label": "モデル(Wikidata)",
           "terms": "モデル"
         },
         "monitoring_multi": {
@@ -2714,6 +2750,9 @@
           "label": "焚き火可否",
           "terms": "焚き火可否, 焚き火, キャンプファイア, キャンプ"
         },
+        "opening": {
+          "label": "開口部の幅 (メートル)"
+        },
         "opening_date": {
           "label": "完成予定日"
         },
@@ -2749,6 +2788,9 @@
         "outdoor_seating": {
           "label": "屋外の席",
           "terms": "屋外席, 屋外の座席, 座席, シート, 屋外"
+        },
+        "overlap": {
+          "label": "重複部の幅 (メートル)"
         },
         "panoramax": {
           "label": "Panoramax画像ID",
@@ -2819,7 +2861,7 @@
             },
             "surface": {
               "description": "地面にある駐車場。 ",
-              "title": "表面の材質"
+              "title": "平面"
             },
             "underground": {
               "description": "地下駐車場。",
@@ -3342,6 +3384,26 @@
           "label": "屋根の色",
           "terms": "屋根の色, 屋根のカラー, 色, カラー"
         },
+        "roof/height": {
+          "label": "屋根の高さ (メートル)"
+        },
+        "roof/shape": {
+          "label": "屋根の形状",
+          "options": {
+            "cone": "コーン型",
+            "dome": "ドーム型",
+            "flat": "平屋根",
+            "gabled": "切妻屋根",
+            "gambrel": "ギャンブレル屋根",
+            "half-hipped": "半切妻屋根（はかま腰）",
+            "hipped": "寄棟屋根",
+            "mansard": "マンサード屋根",
+            "onion": "たまねぎ型",
+            "pyramidal": "方形屋根（ピラミッド型）",
+            "round": "かまぼこ型",
+            "skillion": "片流れ"
+          }
+        },
         "room": {
           "label": "部屋の種類"
         },
@@ -3475,7 +3537,7 @@
         "seamark/rescue_station/category": {
           "label": "救命具",
           "options": {
-            "aircraft": "飛行機",
+            "aircraft": "航空機",
             "first_aid": "救命",
             "hovercraft": "ホバークラフト",
             "lifeboat": "救命ボート(陸上)",
@@ -3667,8 +3729,7 @@
             "osm notes": "OpenStreetMapのメモ",
             "streetlevel imagery": "街路写真",
             "survey": "現地調査"
-          },
-          "terms": "ソース, 出典, 根拠"
+          }
         },
         "source/population": {
           "label": "人口の出典"
@@ -3681,8 +3742,8 @@
           "terms": "種, 生物種, 学名"
         },
         "species/wikidata": {
-          "label": "Wikidataの種",
-          "terms": "ウィキデータの種, ウィキデータ"
+          "label": "種(Wikidata)",
+          "terms": "種,生物種,学名"
         },
         "sport": {
           "label": "スポーツ",
@@ -3806,6 +3867,14 @@
           },
           "placeholder": "不明",
           "terms": "構造"
+        },
+        "structure_canal": {
+          "label": "構造",
+          "options": {
+            "bridge": "橋",
+            "tunnel": "トンネル"
+          },
+          "placeholder": "不明"
         },
         "structure_power": {
           "label": "構造",
@@ -4486,7 +4555,6 @@
           "terms": "幅, 広さ"
         },
         "wikidata": {
-          "label": "ウィキデータ",
           "terms": "ウィキデータ"
         },
         "wikimedia_commons": {
@@ -4776,6 +4844,10 @@
         "amenity/cafe/coffee_shop": {
           "name": "コーヒー専門店",
           "terms": "コーヒー専門店, 珈琲専門店, 喫茶店, カフェ, 珈琲, コーヒー"
+        },
+        "amenity/cafe/teahouse": {
+          "name": "ティールーム",
+          "terms": "ティーハウス,茶屋"
         },
         "amenity/car_pooling": {
           "name": "カープール",
@@ -6989,6 +7061,9 @@
           "name": "横断歩道",
           "terms": "横断歩道, 歩道"
         },
+        "highway/crossing/informal": {
+          "name": "横断多し"
+        },
         "highway/crossing/traffic_signals": {
           "name": "横断歩道(信号あり)",
           "terms": "横断歩道(信号あり), 横断歩道, 信号機, 信号, 歩行者信号機, 歩行者用信号機"
@@ -7322,6 +7397,10 @@
           "name": "史跡",
           "terms": "史跡, 歴史的建造物, 歴史"
         },
+        "historic/aircraft": {
+          "name": "歴史的飛行機",
+          "terms": "歴史的航空機,歴史的飛行機"
+        },
         "historic/archaeological_site": {
           "name": "遺跡",
           "terms": "遺跡, 貝塚, 古墳, 史跡, 歴史"
@@ -7369,6 +7448,9 @@
         "historic/memorial": {
           "name": "記念碑",
           "terms": "記念碑, 石碑, 石仏, 像, 歴史, 銅像, 彫刻, 公園"
+        },
+        "historic/memorial/blue_plaque-GB-IE": {
+          "name": "ブルー・プラーク "
         },
         "historic/memorial/plaque": {
           "name": "銘板",
@@ -9829,6 +9911,10 @@
           "name": "浴室用品店",
           "terms": "浴室用品店, バス用品"
         },
+        "shop/bbq": {
+          "name": "バーベキュー用品店",
+          "terms": "バーベキュー, グリル"
+        },
         "shop/beauty": {
           "name": "美容サービス",
           "terms": "美容サービス, エステサロン, ネイルサロン, サービス, 店舗, お店"
@@ -10118,6 +10204,10 @@
         "shop/greengrocer": {
           "name": "青果店",
           "terms": "青果店, 八百屋, 果物屋, 食料品, 食品, 食べ物, 野菜, ベジタブル, 果物, くだもの, フルーツ, 小売, 店舗, お店"
+        },
+        "shop/groundskeeping": {
+          "name": "芝生整備用品店",
+          "terms": "グラウンド整備用品店"
         },
         "shop/hairdresser": {
           "name": "理美容店",

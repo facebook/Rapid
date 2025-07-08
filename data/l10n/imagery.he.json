@@ -5,6 +5,9 @@
         "description": "צילומי אוויר ולוויין.",
         "name": "Bing מפות אוויר"
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "תמונות לוויין שעברו עיבוד מבית Sentinel."
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 נטול עננים - https://s2maps.eu מבית שירותי EOX IT GmbH (מכיל נתונים ערוכים מתוך Copernicus Sentinel 2017 & 2018)"
@@ -22,6 +25,12 @@
         "description": "תמונות לוויין שעברו עיבוד מבית Sentinel."
       },
       "EOXAT2022CLOUDLESS": {
+        "description": "תמונות לוויין שעברו עיבוד מבית Sentinel."
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "תמונות לוויין שעברו עיבוד מבית Sentinel."
+      },
+      "EOXAT2024CLOUDLESS": {
         "description": "תמונות לוויין שעברו עיבוד מבית Sentinel."
       },
       "EsriWorldImagery": {

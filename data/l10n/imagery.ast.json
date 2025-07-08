@@ -4,6 +4,9 @@
       "Bing": {
         "description": "Imáxenes aerees y de satélite."
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "Imáxenes de satélite Sentinel post-procesaes."
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 ensin nubes - https://s2maps.eu por EOX IT Services GmbH (Contien datos tresformaos de Copernicus Sentinel 2017 & 2018)"
@@ -21,6 +24,12 @@
         "description": "Imáxenes de satélite Sentinel post-procesaes."
       },
       "EOXAT2022CLOUDLESS": {
+        "description": "Imáxenes de satélite Sentinel post-procesaes."
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Imáxenes de satélite Sentinel post-procesaes."
+      },
+      "EOXAT2024CLOUDLESS": {
         "description": "Imáxenes de satélite Sentinel post-procesaes."
       },
       "EsriWorldImagery": {

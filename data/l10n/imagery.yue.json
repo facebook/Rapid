@@ -78,7 +78,7 @@
         "name": "Digitaal Vlaanderen 最新航空相"
       },
       "DV_OrthoPhoto_20132015_10cm": {
-        "name": "Digitaal Vlaanderen 2013-2015 航空图像 10 厘米"
+        "name": "Digitaal Vlaanderen 2013-2015 航空圖像十厘米"
       },
       "DV_OrthoPhoto_Preliminary": {
         "name": "Digitaal Vlaanderen 初步航空相"
@@ -89,6 +89,13 @@
         },
         "description": "多拉杜斯（2018）月石幾個行政區（2020）高分辨率航空相。",
         "name": "多拉杜斯正射影像"
+      },
+      "EOXAT2017CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 無雲 - https://s2maps.eu by EOX IT Services GmbH（含有變動過的 Copernicus Sentinel 資料 2019）"
+        },
+        "description": "經過後期處理 Sentinel 衞星相。",
+        "name": "eox.at 2019 無雲"
       },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
@@ -123,7 +130,21 @@
           "text": "Sentinel-2 无云图像 - https://s2maps.eu 由 EOX IT Services GmbH 提供（包含经修改的 2022 年 Copernicus Sentinel 数据）"
         },
         "description": "經過後期處理 Sentinel 衞星相。",
-        "name": "eox.at 2022 无云"
+        "name": "eox.at 2022 無雲"
+      },
+      "EOXAT2023CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 無雲 - https://s2maps.eu by EOX IT Services GmbH（含有變動過的 Copernicus Sentinel 資料 2023）"
+        },
+        "description": "經過後期處理 Sentinel 衞星相。",
+        "name": "eox.at 2023 無雲"
+      },
+      "EOXAT2024CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 無雲 - https://s2maps.eu by EOX IT Services GmbH（含有變動過的 Copernicus Sentinel 資料 2024）"
+        },
+        "description": "經過後期處理 Sentinel 衞星相。",
+        "name": "eox.at 2024 無雲"
       },
       "EsriWorldImagery": {
         "attribution": {
@@ -278,14 +299,14 @@
           "text": "波蘭大地測量製圖總局"
         },
         "description": "“Krajowa Integracja Uzbrojenia Terenu” 是一个汇集性的服务，用于展示来自县一级单位的地形数据。该服务仅包含那些符合相应参数要求并决定将其WMS服务整合到 “KrajowaIntegracjaUzbrojeniaTerenu” 汇集服务中的单位的数据。",
-        "name": "Geoportal 2：天然气管道 WMS"
+        "name": "Geoportal 2：天然氣管道 WMS"
       },
       "Geoportal2-PL-heat-pipe_WMS": {
         "attribution": {
           "text": "波蘭大地測量製圖總局"
         },
         "description": "“Krajowa Integracja Uzbrojenia Terenu” 是一个汇集性的服务，用于展示来自县一级单位的地形数据。该服务仅包含那些符合相应参数要求并决定将其WMS服务整合到 “KrajowaIntegracjaUzbrojeniaTerenu” 汇集服务中的单位的数据。",
-        "name": "Geoportal 2：热力管道 WMS"
+        "name": "Geoportal 2：熱力管道 WMS"
       },
       "Geoportal2-PL-plot_boundaries_WMS": {
         "attribution": {
@@ -335,7 +356,7 @@
           "text": "波兰大地测量和制图总局"
         },
         "description": "“Krajowa Integracja Uzbrojenia Terenu” 是一个汇集性的服务，用于展示来自县一级单位的地形数据。该服务仅包含那些符合相应参数要求并决定将其WMS服务整合到 “KrajowaIntegracjaUzbrojeniaTerenu” 汇集服务中的单位的数据。",
-        "name": "Geoportal 2：电信电缆 WMS"
+        "name": "Geoportal 2：電信電纜 WMS"
       },
       "Geoportal2-PL-water-pipe_WMS": {
         "attribution": {
@@ -477,20 +498,6 @@
         "description": "俄亥俄州全州影像计划III：从2017年至2020年，提供每个县的最新正射影像，分辨率从1英尺到3英寸。",
         "name": "俄亥俄州全州影像计划"
       },
-      "OSIP_1ft": {
-        "attribution": {
-          "text": "俄亥俄州全州影像计划"
-        },
-        "description": "2011年至2014年以1英尺分辨率拍摄的全88个县的俄亥俄州全州影像计划二期正射影像。",
-        "name": "俄亥俄州全州影像计划 1 英尺分辨率"
-      },
-      "OSIP_6in": {
-        "attribution": {
-          "text": "俄亥俄州全州影像计划"
-        },
-        "description": "2017年及2018年以6英寸分辨率拍摄的40个县的俄亥俄州全州影像计划三期正射影像，以及2010年至2014年在另外16个县的俄亥俄州全州影像计划一期及二期影像。",
-        "name": "6英寸俄亥俄州全州影像计划"
-      },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {
           "text": "含公共部資料授權，基於公開政府授權版本三點〇。"
@@ -548,14 +555,14 @@
         "attribution": {
           "text": "© 瑞典国家遗产委员会, CC0"
         },
-        "description": "古代和历史遗迹及纪念碑",
+        "description": "遠古同歷史啲遺跡同紀念碑",
         "name": "瑞典国家遗产委员会 - 考古遗址和纪念碑"
       },
       "Riksantikvariambetet-heritage": {
         "attribution": {
           "text": "© 瑞典国家遗产委员会, CC0"
         },
-        "description": "文化遗产建筑和教堂",
+        "description": "承傳屋宇同教堂",
         "name": "瑞典国家遗产委员会 - 文物建筑"
       },
       "Riksantikvariambetet-protected": {
@@ -1015,7 +1022,7 @@
         "attribution": {
           "text": "© 瑞典統計局，CC0"
         },
-        "description": "居民人数在 50-199 人之间、房屋间距不超过 150 米的连续建筑区",
+        "description": "相連屋宇地方。居民五十到一百九十九人，屋同屋之間，唔過一百十五公尺",
         "name": "瑞典统计局 - 小型聚落"
       },
       "scb-urban": {
@@ -1029,7 +1036,7 @@
         "attribution": {
           "text": "© 瑞典統計局，CC0"
         },
-        "description": "主要由度假屋组成的毗连区；至少 50 个度假屋的集合，它们之间的距离不超过 150 米",
+        "description": "相連地方，主要渡假屋，至少五十間，屋同屋之間唔過一百五十公尺。",
         "name": "瑞典统计局 - 度假屋区"
       },
       "skobbler": {
@@ -1124,7 +1131,7 @@
         "attribution": {
           "text": "© 瑞典交通管理局, CC0"
         },
-        "description": "瑞典国家道路数据库(NVDB)新增细节：道路编号、交通稳静化、休息区、公交车站、桥梁、隧道和测速照相机",
+        "description": "瑞典國家道路資料庫(NVDB)額外細節：道路編號、交通冷靜、休息區、巴士站、橋、地窿、測速相機",
         "name": "瑞典交通管理局道路网络追加项"
       },
       "trafikverket-vagnat-option": {

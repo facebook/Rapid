@@ -179,6 +179,12 @@
         "agrarian": {
           "label": "பொருட்கள்"
         },
+        "aircraft/type": {
+          "label": "வகை",
+          "options": {
+            "military": "இராணுவம்"
+          }
+        },
         "amenity": {
           "label": "வகை"
         },
@@ -374,6 +380,9 @@
         },
         "circumference": {
           "placeholder": "1 மீ, 20 செமீ, 30\"…"
+        },
+        "climbing/length": {
+          "label": "நீளம் (மீட்டர்)"
         },
         "clothes": {
           "label": "உடைகள்"
@@ -1418,6 +1427,14 @@
             "embankment": "கரை",
             "ford": "ஆற்றின் ஆழப்பகுதி",
             "tunnel": "சுரங்கம்"
+          },
+          "placeholder": "அறியப்படவில்லை"
+        },
+        "structure_canal": {
+          "label": "அமைப்பு",
+          "options": {
+            "bridge": "பாலம்",
+            "tunnel": "மலையூடு வழி"
           },
           "placeholder": "அறியப்படவில்லை"
         },

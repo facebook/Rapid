@@ -168,6 +168,9 @@
         "agrarian": {
           "label": "Productos"
         },
+        "aircraft/type": {
+          "label": "Tipu"
+        },
         "amenity": {
           "label": "Tipu"
         },
@@ -382,6 +385,9 @@
         },
         "castle_type": {
           "label": "Tipu"
+        },
+        "climbing/length": {
+          "label": "Llonxitú (Metros)"
         },
         "clothes": {
           "label": "Ropa"
@@ -1441,6 +1447,11 @@
         "roller_coaster/track": {
           "label": "Tipu"
         },
+        "roof/shape": {
+          "options": {
+            "dome": "Cúpula"
+          }
+        },
         "room": {
           "label": "Tipu"
         },
@@ -1648,6 +1659,14 @@
             "cutting": "Trinchera",
             "embankment": "Rellenu",
             "ford": "Vau",
+            "tunnel": "Túnel"
+          },
+          "placeholder": "Desconocíu"
+        },
+        "structure_canal": {
+          "label": "Estructura",
+          "options": {
+            "bridge": "Ponte",
             "tunnel": "Túnel"
           },
           "placeholder": "Desconocíu"

@@ -24,6 +24,9 @@
       "aparat": {
         "description": "Inscreva-se no nosso canal Aparat"
       },
+      "bluesky": {
+        "description": "Siga-nos no Bluesky"
+      },
       "discord": {
         "description": "Entre em contato com outros mapeadores no Discord"
       },
@@ -35,6 +38,9 @@
       },
       "forum": {
         "description": "O fórum oficial para {community}"
+      },
+      "instagram": {
+        "description": "Siga-nos no Instagram"
       },
       "linkedin": {
         "description": "Entre para a nossa community no LinkedIn"
@@ -56,11 +62,17 @@
       "telegram": {
         "description": "Junte-se à nossa comunidade de bate-papo do Telegram"
       },
+      "threads": {
+        "description": "Siga-nos no Threads"
+      },
+      "tiktok": {
+        "description": "Siga-nos no TikTok"
+      },
       "twitter": {
-        "description": "Siga-nos no 𝕏"
+        "name": "{community} no  𝕏"
       },
       "x": {
-        "description": "Siga-nos no 𝕏"
+        "name": "{community} no 𝕏"
       },
       "youtube": {
         "description": "Inscreva-se no nosso canal do YouTube"

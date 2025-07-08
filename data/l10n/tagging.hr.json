@@ -233,6 +233,9 @@
           "label": "Klimatizirano",
           "terms": "klimatizacija, klima, klima uređaj"
         },
+        "aircraft/type": {
+          "label": "Vrsta"
+        },
         "alt_name": {
           "label": "Alternativni naziv"
         },
@@ -703,6 +706,9 @@
         },
         "check_date": {
           "label": "Datum zadnje provjere"
+        },
+        "climbing/length": {
+          "label": "Duljina (u metrima)"
         },
         "clothes": {
           "label": "Odjeća",
@@ -2375,6 +2381,11 @@
           "label": "Boja krova",
           "terms": "Boja krova"
         },
+        "roof/shape": {
+          "options": {
+            "dome": "Kupola"
+          }
+        },
         "room": {
           "label": "Vrsta"
         },
@@ -2597,8 +2608,7 @@
             "aerial imagery": "Zračne snimke",
             "osm notes": "OpenStreetMap bilješke",
             "streetlevel imagery": "Ulične fotografije"
-          },
-          "terms": "Izvori,reference"
+          }
         },
         "species": {
           "label": "Vrste"
@@ -2681,6 +2691,14 @@
           },
           "placeholder": "Nepoznato",
           "terms": "Struktura"
+        },
+        "structure_canal": {
+          "label": "Konstrukcija",
+          "options": {
+            "bridge": "Most",
+            "tunnel": "Tunel"
+          },
+          "placeholder": "Nepoznato"
         },
         "structure_power": {
           "label": "Konstrukcija"

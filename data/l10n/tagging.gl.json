@@ -223,6 +223,12 @@
         "air_conditioning": {
           "label": "Aire acondicionado"
         },
+        "aircraft/type": {
+          "label": "Tipo",
+          "options": {
+            "military": "Militar"
+          }
+        },
         "alt_name": {
           "label": "Nome alternativo"
         },
@@ -581,6 +587,9 @@
         "check_date": {
           "label": "Data da última revisión",
           "placeholder": "AAAA-MM-DD"
+        },
+        "climbing/length": {
+          "label": "Lonxitude (metros)"
         },
         "clothes": {
           "label": "Roupa",
@@ -2233,6 +2242,11 @@
         "roof/colour": {
           "label": "Cor do tellado"
         },
+        "roof/shape": {
+          "options": {
+            "dome": "Cúpula"
+          }
+        },
         "room": {
           "label": "Tipo"
         },
@@ -2579,6 +2593,14 @@
             "cutting": "Desmonte",
             "embankment": "Terraplén",
             "ford": "Vao",
+            "tunnel": "Túnel"
+          },
+          "placeholder": "Descoñecido"
+        },
+        "structure_canal": {
+          "label": "Estrutura",
+          "options": {
+            "bridge": "Ponte",
             "tunnel": "Túnel"
           },
           "placeholder": "Descoñecido"

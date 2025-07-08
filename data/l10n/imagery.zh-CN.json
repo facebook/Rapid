@@ -71,6 +71,9 @@
         "description": "比默认图层或许更为清晰准确的 Esri 归档影像。",
         "name": "Esri 清晰世界影像 (测试版)"
       },
+      "FOMI_2015_leafoff_20cm": {
+        "description": "基于政府的正射影像，分辨率为 20 厘米/像素，涵盖 6 个区。由于缺乏更准确的参照，该图层应用作对齐基础。WEBP 格式的影像，JOSM 需要 WEBP 插件程序。"
+      },
       "Geoportal2-PL-City-boundaries_WMS": {
         "attribution": {
           "text": "波兰大地测量与制图总局"
@@ -113,14 +116,14 @@
         "attribution": {
           "text": "波兰大地测量与制图总局"
         },
-        "description": "基于WMS的地图浏览服务允许您查看波兰地区的正射影像。 通过该服务提供的数据是由航空照片组成的正射影像图。 该服务提供对WMS Interface 1.3.0的支持。",
+        "description": "基于 WMS 的地图浏览服务允许你查看波兰地区的正射影像。 通过该服务提供的数据是由航空照片组成的正射影像图。 该服务提供对 WMS Interface 1.3.0 的支持。",
         "name": "Geoportal 2: 最新正射航空影像 （WMS）"
       },
       "Geoportal2-PL-aerial_image_WMTS": {
         "attribution": {
           "text": "波兰大地测量与制图总局"
         },
-        "description": "基于WMTS的地图浏览服务允许您查看波兰地区的正射影像。 通过该服务提供的数据是由航空照片组成的正射影像图。",
+        "description": "基于 WMTS 的地图浏览服务允许你查看波兰地区的正射影像。 通过该服务提供的数据是由航空照片组成的正射影像图。",
         "name": "Geoportal 2: 最新正射航空影像 （WMTS）"
       },
       "Geoportal2-PL-boundaries-of-communes_WMS": {

@@ -57,6 +57,9 @@
         "description": "Dourados (2018) i kilka dystryktów (2020) zdjęcia lotnicze wysokiej rozdzielczości.",
         "name": "Ortofotomapa Dourados"
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "Przetworzone zdjęcia satelitarne Sentinel."
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 bezchmurne – https://s2maps.eu, EOX IT Services GmbH (zawiera zmodyfikowane dane Copernicus Sentinel 2017 i 2018)"
@@ -79,6 +82,12 @@
       "EOXAT2022CLOUDLESS": {
         "description": "Przetworzone zdjęcia satelitarne Sentinel.",
         "name": "eox.at 2022 - Bezchmurny"
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Przetworzone zdjęcia satelitarne Sentinel."
+      },
+      "EOXAT2024CLOUDLESS": {
+        "description": "Przetworzone zdjęcia satelitarne Sentinel."
       },
       "EsriWorldImagery": {
         "attribution": {
@@ -245,16 +254,6 @@
           "text": " \nProgram obrazowania całego stanu Ohio"
         },
         "name": " \nProgram obrazowania całego stanu Ohio"
-      },
-      "OSIP_1ft": {
-        "attribution": {
-          "text": " \nProgram obrazowania całego stanu Ohio"
-        }
-      },
-      "OSIP_6in": {
-        "attribution": {
-          "text": " \nProgram obrazowania całego stanu Ohio"
-        }
       },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {

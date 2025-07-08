@@ -208,6 +208,13 @@
         "air_conditioning": {
           "label": "Loftkæling"
         },
+        "aircraft/type": {
+          "label": "Tegund",
+          "options": {
+            "helicopter": "Þyrlur",
+            "military": "Hernaður"
+          }
+        },
         "amenity": {
           "label": "Tegund"
         },
@@ -512,6 +519,12 @@
             "fortress": "Virki",
             "kremlin": "Rússneskur (kreml)"
           }
+        },
+        "climbing/length": {
+          "label": "Lengd (metrar)"
+        },
+        "climbing/trad": {
+          "label": "Hefðbundið klifur"
         },
         "clothes": {
           "label": "Föt",
@@ -2022,6 +2035,11 @@
         "roof/colour": {
           "label": "Litur á þaki"
         },
+        "roof/shape": {
+          "options": {
+            "dome": "Hálfkúla"
+          }
+        },
         "room": {
           "label": "Tegund"
         },
@@ -2342,6 +2360,14 @@
             "cutting": "Rás",
             "embankment": "Stallur",
             "ford": "Vað",
+            "tunnel": "Göng"
+          },
+          "placeholder": "Óþekkt"
+        },
+        "structure_canal": {
+          "label": "Mannvirki",
+          "options": {
+            "bridge": "Brú",
             "tunnel": "Göng"
           },
           "placeholder": "Óþekkt"

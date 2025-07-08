@@ -92,7 +92,6 @@
       "openstreetmapsouthsudan": "OpenStreetMap Sudan del Sud",
       "openstreetmapsweden": "OpenStreetMap Suècia",
       "openstreetmapswitzerland": "OpenStreetMap Suïssa",
-      "openstreetmapsyria": "OpenStreetMap Síria",
       "openstreetmaptanzania": "OpenStreetMap Tanzània",
       "openstreetmapthailand": "OpenStreetMap Tailàndia",
       "openstreetmaptunisia": "OpenStreetMap Tunísia",
@@ -180,16 +179,8 @@
         "name": "{community} a Threads",
         "description": "Segueix-nos a Threads"
       },
-      "twitter": {
-        "name": "{community} a 𝕏",
-        "description": "Segueix-nos a 𝕏"
-      },
       "wiki": {
         "name": "WikiProject d'{community}"
-      },
-      "x": {
-        "name": "{community} a 𝕏",
-        "description": "Segueix-nos a 𝕏"
       },
       "xmpp": {
         "name": "XMPP d'{community}"

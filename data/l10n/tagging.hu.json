@@ -230,6 +230,13 @@
           "label": "Légkondicionálás",
           "terms": "légkondicionálás, légkondi, hűtés, klíma, klímás"
         },
+        "aircraft/type": {
+          "label": "Típus",
+          "options": {
+            "helicopter": "Helikopter",
+            "military": "Katonai"
+          }
+        },
         "alt_name": {
           "label": "Alternatív név",
           "terms": "más név,egyéb név,további név"
@@ -771,6 +778,12 @@
         "circumference": {
           "label": "Kerület mellmagasságban",
           "placeholder": "1 m, 20 cm, …"
+        },
+        "climbing/length": {
+          "label": "Hosszúság (méter)"
+        },
+        "climbing/trad": {
+          "label": "Hagyományos mászás"
         },
         "clothes": {
           "label": "Ruha",
@@ -3236,6 +3249,11 @@
           "label": "Tető színe",
           "terms": "cserép, pala, háztető"
         },
+        "roof/shape": {
+          "options": {
+            "dome": "Kupola"
+          }
+        },
         "room": {
           "label": "Típus"
         },
@@ -3579,12 +3597,11 @@
           "label": "Források",
           "options": {
             "aerial imagery": "Légi felvétel",
-            "local knowledge": "Helyismeret",
+            "local knowledge": "Helyi ismeret",
             "osm notes": "OpenStreetMap megjegyzések",
             "streetlevel imagery": "Utcaszintű fényképek",
             "survey": "Felmérés"
-          },
-          "terms": "forrás, térképezés forrása, ismeretek forrása"
+          }
         },
         "source/population": {
           "label": "Népességadat forrása"
@@ -3710,6 +3727,14 @@
           },
           "placeholder": "Ismeretlen",
           "terms": "struktúra, felépítés"
+        },
+        "structure_canal": {
+          "label": "Szerkezet",
+          "options": {
+            "bridge": "Híd",
+            "tunnel": "Alagút"
+          },
+          "placeholder": "Ismeretlen"
         },
         "structure_power": {
           "label": "Szerkezet",
@@ -6910,6 +6935,9 @@
           "name": "Emlékmű",
           "terms": "Emlékhely"
         },
+        "historic/memorial/blue_plaque-GB-IE": {
+          "name": "Kék tábla"
+        },
         "historic/memorial/plaque": {
           "name": "Emléktábla"
         },
@@ -7305,7 +7333,7 @@
         },
         "leisure/marina": {
           "name": "Kishajókikötő",
-          "terms": "Kikötő, jachtkikötő, vitorláskikötő, vitorlázás"
+          "terms": "kikötő, jachtkikötő, vitorláskikötő, vitorlázás, csónak, dokk, jacht"
         },
         "leisure/miniature_golf": {
           "name": "Minigolf",
@@ -9535,10 +9563,11 @@
         },
         "shop/tobacco": {
           "name": "Dohánybolt",
-          "terms": "Nemzeti dohánybolt, dohány, cigaretta, szivar"
+          "terms": "nemzeti dohánybolt, dohány, cigaretta, szivar, trafik"
         },
         "shop/tool_hire": {
-          "name": "Gépkölcsönző"
+          "name": "Gépkölcsönző",
+          "terms": "szerszám, szerszámgép, kölcsönzés"
         },
         "shop/toys": {
           "name": "Játékbolt",

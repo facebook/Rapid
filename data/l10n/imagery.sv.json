@@ -144,6 +144,12 @@
         "description": "Dourados (2018) och flera distrikt (2020) högupplösta flygbilder.",
         "name": "Dourados ortofoton"
       },
+      "EOXAT2017CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu av EOX IT Services GmbH (Innehåller modifierad data från Copernicus Sentinel 2017)"
+        },
+        "description": "Efterbearbetade Sentinel-satellitbilder."
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 cloudless - https://s2maps.eu av EOX IT Services GmbH (Innehåller modifierad data från Copernicus Sentinel 2017 & 2018)"
@@ -171,6 +177,18 @@
       "EOXAT2022CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 cloudless - https://s2maps.eu av EOX IT Services GmbH (Innehåller modifierad data från Copernicus Sentinel 2022)"
+        },
+        "description": "Efterbearbetade Sentinel-satellitbilder."
+      },
+      "EOXAT2023CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu av EOX IT Services GmbH (Innehåller modifierad data från Copernicus Sentinel 2023)"
+        },
+        "description": "Efterbearbetade Sentinel-satellitbilder."
+      },
+      "EOXAT2024CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu av EOX IT Services GmbH (Innehåller modifierad data från Copernicus Sentinel 2024)"
         },
         "description": "Efterbearbetade Sentinel-satellitbilder."
       },
@@ -558,14 +576,6 @@
       },
       "OSIP": {
         "description": "Ohio Statewide Imagery Program III mest aktuella ortobilder i varje county med upplösningar från 1 fot till 3 tum från 2017 till 2020."
-      },
-      "OSIP_1ft": {
-        "description": "Ohio Statewide Imagery Program II ortobilder av alla 88 counties med 1-tums upplösning från 2011 till 2014.",
-        "name": "Ohio Statewide Imagery Program 1-fot"
-      },
-      "OSIP_6in": {
-        "description": "Ohio Statewide Imagery Program III ortobilder av 40 counties  tagna med 6-tums upplösning 2017 och 2018, plus OSIP I- och OSIP II-bilder i ytterligare 16 counties från 2010 till 2014.",
-        "name": "Ohio Statewide Imagery Program 6 tum"
       },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {

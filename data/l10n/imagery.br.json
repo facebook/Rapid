@@ -104,6 +104,10 @@
       "Dourados_Ortofotos": {
         "description": "Dourados (2018) hag ur re zistrigoù (2020) skeudennoù-aer a uhel diarunusted."
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "Skeudennerezh-loarell Sentinel adaozet.",
+        "name": "eox.at 2017 digoumoul"
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 digoumoul - https://s2maps.eu gant servijoù EOX IT GmbH (ennañ roadennoù kemmet Copernicus Sentinel 2017 & 2018)"
@@ -139,6 +143,14 @@
         "description": "Skeudennerezh-loarell Sentinel adaozet.",
         "name": "eox.at 2022 digoumoul"
       },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Skeudennerezh-loarell Sentinel adaozet.",
+        "name": "eox.at 2023 digoumoul"
+      },
+      "EOXAT2024CLOUDLESS": {
+        "description": "Skeudennerezh-loarell Sentinel adaozet.",
+        "name": "eox.at 2024 digoumoul"
+      },
       "EsriWorldImagery": {
         "attribution": {
           "text": "Termenoù & Evezhiadennoù"
@@ -151,6 +163,9 @@
           "text": "Termenoù & Evezhiadennoù"
         },
         "name": "Skeudennoù-loarell Esri (sklaeraet) beta"
+      },
+      "FOMI_2015_leafoff_20cm": {
+        "name": "FÖMI orthophoto 2015 dizelienn 20cm (webp)"
       },
       "Frankfurt-am-Main-2019": {
         "description": "Skeudennoù-aer Frankfurt am Main d'ar 16 Ebrel 2019",
@@ -186,7 +201,8 @@
       "Geoportal2-PL-addres_points_WMS": {
         "attribution": {
           "text": "Pennvurev geodeziezh ha kartennouriezh Polonia"
-        }
+        },
+        "name": "Geoportal 2: Poentoù chomlec'h"
       },
       "Geoportal2-PL-aerial_archival_image_WMS": {
         "attribution": {
@@ -391,20 +407,6 @@
         },
         "description": "Programm skeudennerezh Ohio III, ortoskeudennerezh nevezañ pep kontelezh, eus 1 troadad da 3 meutad a ziarunusted eus 2017 da 2020.",
         "name": "Programm skeudennerezh Ohio"
-      },
-      "OSIP_1ft": {
-        "attribution": {
-          "text": "Programm skeudennerezh Ohio"
-        },
-        "description": "Programm skeudennerezh Ohio II, ortoskeudennerezh an holl 88 kontelezh gant 1 troadad a ziarunusted eus 2011 da 2014.",
-        "name": "Orthophotos programm skeudennerezh Ohio, 1 troadad (war-dro 30 cm) a ziarunusted"
-      },
-      "OSIP_6in": {
-        "attribution": {
-          "text": "Programm skeudennerezh Ohio"
-        },
-        "description": "Programm skeudennerezh Ohio III, ortoskeudennerezh 40 kontelezh gant 6 meutad a ziarunusted eus 2017 ha 2018 ha skeudennerezh OSIP I ha OSIP II e 16 kontelezh all eus 2010 da 2014.",
-        "name": "Orthophotos 2010-2018 programmoù skeudennerezh Ohio I, II ha III, 6 meutad a ziarunusted"
       },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {

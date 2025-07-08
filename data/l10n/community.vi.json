@@ -151,17 +151,9 @@
         "name": "{community} trên Threads",
         "description": "Theo dõi chúng tôi trên Threads"
       },
-      "twitter": {
-        "name": "{community} trên 𝕏",
-        "description": "Theo dõi chúng tôi trên 𝕏"
-      },
       "wiki": {
         "name": "Dự án Wiki {community}",
         "url": "https://wiki.openstreetmap.org/wiki/{account}?uselang=vi"
-      },
-      "x": {
-        "name": "{community} trên 𝕏",
-        "description": "Theo dõi chúng tôi trên 𝕏"
       },
       "xmpp": {
         "name": "{community} trên XMPP"
@@ -437,14 +429,8 @@
     "hu-facebook-group": {
       "name": "Nhóm Facebook {community}"
     },
-    "hu-meetup": {
-      "description": "Trang tổ chức cuộc họp mặt tại Hungary"
-    },
     "hu-mobilizon": {
       "name": "{community} tại Mobilizon"
-    },
-    "hu-website": {
-      "description": "Chúng ta giúp phát triển và cải thiện OpenStreetMap tại Hungary."
     },
     "hu-wiki": {
       "description": "Trang Wiki {community}"
@@ -900,9 +886,6 @@
     "talk-mg": {
       "description": "Nơi để những người đóng góp, cộng đồng, và người dùng OpenStreetMap chia sẻ và thảo luận."
     },
-    "talk-nz": {
-      "description": "Thảo luận cộng đồng OSM tại New Zealand"
-    },
     "tn-facebook-group": {
       "name": "Nhóm Facebook {community}"
     },
@@ -935,9 +918,6 @@
     "uk-london-wiki": {
       "description": "Trang Wiki {community}"
     },
-    "uk-loomio": {
-      "name": "OpenStreetMap Vương quốc Anh tại Loomio"
-    },
     "us-massachusetts-mailinglist": {
       "name": "Danh sách thư talk-us-massachusetts",
       "description": "Danh sách thư của cộng đồng OSM tại Massachusetts"
@@ -949,9 +929,6 @@
     "uy-irc": {
       "description": "Hãy tham gia #{account} tại irc.oftc.net (cổng 6667)",
       "extendedDescription": "Hãy tham gia #{account} tại irc.oftc.net"
-    },
-    "vn-mailinglist": {
-      "description": "Danh sách thư về OpenStreetMap tại Việt Nam hoặc trong tiếng Việt"
     },
     "vn-wiki": {
       "description": "Trang Wiki {community}"

@@ -123,6 +123,9 @@
         "description": "도우라두스 (2018) 및 여러 지역 (2020) 고해상도 항공 이미지.",
         "name": "두라도스 정사이미지"
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "후처리된 Sentinel 위성 사진."
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 맑음 - EOX IT Services GmbH의 https://s2maps.eu (수정된 Copernicus Sentinel 데이터 2017 및 2018 포함)"
@@ -157,6 +160,12 @@
         },
         "description": "후처리된 Sentinel 위성 사진.",
         "name": "eox.at 2022 맑음"
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "후처리된 Sentinel 위성 사진."
+      },
+      "EOXAT2024CLOUDLESS": {
+        "description": "후처리된 Sentinel 위성 사진."
       },
       "EsriWorldImagery": {
         "attribution": {
@@ -497,20 +506,6 @@
         "description": "오하이오 주 전역 이미지 프로그램 III 는 2017년부터 2020년까지 1피트에서 3인치의 해상도로 모든 카운티의 가장 최신 정사이미지입니다.",
         "name": "미국 오하이오 주 항공 지도"
       },
-      "OSIP_1ft": {
-        "attribution": {
-          "text": "미국 오하이오 주 항공 지도"
-        },
-        "description": "오하이오 주 전역 이미지 프로그램 II 는 2011년부터 2014년까지 88개 지역 전체를 1피트 해상도로 정사한 이미지입니다.",
-        "name": "오하이오 주 전역 이미지 프로그램 1피트"
-      },
-      "OSIP_6in": {
-        "attribution": {
-          "text": "오하이오 주 전역 이미지 프로그램"
-        },
-        "description": "2017년과 2018년에 6인치 해상도로 촬영된 40개 지역의 오하이오 주 전역 이미지 프로그램 III 정사 이미지와 2010년부터 2014년까지 16개 카운티에서 OSIP I 및 OSIP II 이미지.",
-        "name": "오하이오 주 전역 이미지 프로그램 6인치"
-      },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {
           "text": "Open Government License v3.0에 따라 라이센스가 부여된 공공 부문 정보를 포함합니다."
@@ -840,7 +835,7 @@
         "name": "란트메테리엣 역사적 정사이미지 1960"
       },
       "lantmateriet-orto1975": {
-        "description": "1970-1980년 스웨덴 정사이미지 모자이크. 구성중입니다.",
+        "description": "1970-1980년 스웨덴 정사이미지 모자이크. 구성 중입니다.",
         "name": "란트메테리엣 역사적 정사이미지 1975"
       },
       "lantmateriet-topowebb": {

@@ -51,6 +51,9 @@
         "aeroway": {
           "label": "రకం"
         },
+        "aircraft/type": {
+          "label": "రకం"
+        },
         "amenity": {
           "label": "రకం"
         },
@@ -631,6 +634,13 @@
           }
         },
         "structure": {
+          "options": {
+            "bridge": "వంతెన",
+            "tunnel": "సొరంగం"
+          },
+          "placeholder": "గుర్తు తెలియని"
+        },
+        "structure_canal": {
           "options": {
             "bridge": "వంతెన",
             "tunnel": "సొరంగం"

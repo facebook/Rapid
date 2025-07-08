@@ -70,6 +70,9 @@
         },
         "description": "Dourados (2018) e diversi distretti (2020) immagini aeree ad alta risoluzione."
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "Immagini satellitari Sentinel post-elaborate."
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 cloudless - https://s2maps.eu di EOX IT Services GmbH (contiene dati modificati di Copernicus Sentinel del 2017-2018)"
@@ -95,6 +98,12 @@
         "description": "Immagini satellitari Sentinel post-elaborate."
       },
       "EOXAT2022CLOUDLESS": {
+        "description": "Immagini satellitari Sentinel post-elaborate."
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Immagini satellitari Sentinel post-elaborate."
+      },
+      "EOXAT2024CLOUDLESS": {
         "description": "Immagini satellitari Sentinel post-elaborate."
       },
       "EsriWorldImagery": {
@@ -415,20 +424,6 @@
         },
         "description": "Ohio Statewide Imagery Program III ortoimmagini più recenti di ogni contea con risoluzioni da 1 piede a 3 pollici dal 2017 al 2020.",
         "name": "Programma di immagini in tutto lo stato dell'Ohio"
-      },
-      "OSIP_1ft": {
-        "attribution": {
-          "text": "Programma di immagini in tutto lo stato dell'Ohio"
-        },
-        "description": "Ohio Statewide Imagery Program II ortoimmagini di tutte le 88 contee con una risoluzione di 1 piede dal 2011 al 2014.",
-        "name": "Programma di immagini in tutto lo stato dell'Ohio 1 piede"
-      },
-      "OSIP_6in": {
-        "attribution": {
-          "text": "Programma di immagini in tutto lo stato dell'Ohio"
-        },
-        "description": "Ohio Statewide Imagery Program III ortoimmagini di 40 contee acquisite con una risoluzione di 6 pollici nel 2017 e 2018, oltre a immagini OSIP I e OSIP II in altre 16 contee dal 2010 al 2014.",
-        "name": "Programma di immagini in tutto lo stato dell'Ohio da 6 pollici"
       },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {

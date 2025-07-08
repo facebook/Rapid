@@ -109,7 +109,6 @@
       "openstreetmaprussia": "OpenStreetMap Rosja",
       "openstreetmaprwanda": "OpenStreetMap Ruanda",
       "openstreetmapsaudiarabia": "OpenStreetMap Arabia Saudyjska",
-      "openstreetmapseychelles": "OpenStreetMap Seszele",
       "openstreetmapsingapore": "OpenStreetMap Singapur",
       "openstreetmapslovenia": "OpenStreetMap Słowenia",
       "openstreetmapsouthafrica": "OpenStreetMap RPA",
@@ -215,14 +214,6 @@
       "tiktok": {
         "name": "{community} na TikToku",
         "description": "Obserwuj nas na TikToku"
-      },
-      "twitter": {
-        "name": "{community} na 𝕏",
-        "description": "Obserwuj nas na 𝕏"
-      },
-      "x": {
-        "name": "{community} na 𝕏",
-        "description": "Obserwuj nas na 𝕏"
       },
       "xmpp": {
         "name": "XMPP {community}",
@@ -491,9 +482,6 @@
     "hu-matrix": {
       "extendedDescription": "Czat OpenStreetMap na tematy mapowania. Jedno z forów wsparcia społeczności OSM."
     },
-    "hu-meetup": {
-      "description": "Platforma do organizowania spotkań na Węgrzech"
-    },
     "hu-mobilizon": {
       "name": "{community} na Mobilizon",
       "description": "Nadchodzące wydarzenia dla społeczności Węgierskiej OpenStreetMap "
@@ -501,9 +489,6 @@
     "hu-tm": {
       "name": "Menedżer zadań {community}",
       "description": "Przeglądaj aktywne zadania mapowe na Węgrzech"
-    },
-    "hu-website": {
-      "description": "Pomagamy rozwijać i ulepszać OpenStreetMap na Węgrzech."
     },
     "hu-wiki": {
       "description": "Strona Wiki {community}"
@@ -973,9 +958,6 @@
     },
     "talk-mg": {
       "description": "Miejsce rozmów twórców, społeczności i użytkowników OpenStreetMap na Madagaskarze."
-    },
-    "talk-nz": {
-      "description": "Lista dyskusyjna nowozelandzkiej społeczności OSM"
     },
     "talk-pacific": {
       "extendedDescription": "Chcielibyśmy, aby ta lista mailingowa wspierała wszystkie narody Pacyfiku, w całej naszej różnorodności i aspiracjach, aby dzielić się przemyśleniami, pytaniami, projektami i wszystkim, co dotyczy OpenStreetMap na naszym morzu wysp."

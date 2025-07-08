@@ -64,12 +64,17 @@
       "DV_OrthoPhoto_Preliminary": {
         "name": "Digitaal Vlaanderen delweddau rhagarweiniol o'r awyr "
       },
+      "EOXAT2017CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu gan EOX IT Services GmbH (Yn cynnwys data Copernicus Sentinel 2017 wedi'u haddasu)"
+        },
+        "description": "Delweddau lloeren Sentinel wedi'u hôl-brosesu."
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 cloudless - https://s2maps.eu gan EOX IT Services GmbH (Yn cynnwys data addas Copernicus Sentinel 2017 & 2018)"
         },
-        "description": "Delweddau lloeren Sentinel wedi'u hôl-brosesu.",
-        "name": "eox.at 2018 heb gymylau"
+        "description": "Delweddau lloeren Sentinel wedi'u hôl-brosesu."
       },
       "EOXAT2019CLOUDLESS": {
         "description": "Delweddau lloeren Sentinel wedi'u hôl-brosesu",
@@ -86,6 +91,12 @@
       "EOXAT2022CLOUDLESS": {
         "description": "Delweddau lloeren Sentinel wedi'u hôl-brosesu",
         "name": "eox.at 2022 heb gymylau"
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Delweddau lloeren Sentinel wedi'u hôl-brosesu."
+      },
+      "EOXAT2024CLOUDLESS": {
+        "description": "Delweddau lloeren Sentinel wedi'u hôl-brosesu."
       },
       "EsriWorldImagery": {
         "attribution": {
@@ -310,7 +321,7 @@
         "attribution": {
           "text": "Cyfranwyr GeoScribble"
         },
-        "name": "Nodiadau diweddaraf GeoScribble"
+        "name": "GeoScribble - Nodiadau diweddaraf"
       },
       "gothenburg-citymap": {
         "attribution": {
@@ -401,14 +412,29 @@
         },
         "name": "OpenPT Map (troshaen)"
       },
+      "openrailwaymap": {
+        "attribution": {
+          "text": "Rendro: OpenRailwayMap, © Data map gan gyfranwyr OpenStreetMap"
+        }
+      },
+      "openrailwaymap-maxspeeds": {
+        "attribution": {
+          "text": "Rendro: OpenRailwayMap, © Data map gan gyfranwyr OpenStreetMap"
+        },
+        "name": "OpenRailwayMap - Terfynau Cyflymder"
+      },
       "openrailwaymap-signalling": {
-        "name": "OpenRailwayMap Signalau"
+        "attribution": {
+          "text": "Rendro: OpenRailwayMap, © Data map gan gyfranwyr OpenStreetMap"
+        },
+        "name": "OpenRailwayMap - Signalau"
       },
       "osm-gps": {
         "attribution": {
           "text": "© Cyfranwyr OpenStreetMap"
         },
-        "name": "Arllwybrau GPS OpenStreetMap"
+        "description": "Olion GPS cyhoeddus wedi'u huwchlwytho i OpenStreetMap.",
+        "name": "OpenStreetMap - Olion GPS"
       },
       "osm-mapnik-german_style": {
         "attribution": {
@@ -474,6 +500,11 @@
       },
       "stalowowolski-buildings": {
         "name": "Powiat stalowowolski: Adeiladau"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "Teiliau map gan Stamen Design, dan CC BY 3.0. Data gan OpenStreetMap, dan ODbL"
+        }
       },
       "stockholm-orto": {
         "attribution": {

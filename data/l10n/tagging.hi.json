@@ -147,6 +147,9 @@
         "aeroway": {
           "label": "प्रकार"
         },
+        "aircraft/type": {
+          "label": "प्रकार"
+        },
         "amenity": {
           "label": "प्रकार"
         },
@@ -720,6 +723,11 @@
           }
         },
         "structure": {
+          "options": {
+            "bridge": "पुल"
+          }
+        },
+        "structure_canal": {
           "options": {
             "bridge": "पुल"
           }

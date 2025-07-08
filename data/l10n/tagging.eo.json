@@ -231,6 +231,12 @@
           "label": "Klimatizo",
           "terms": "aerkondiĉigilo,klimatizilo,malvarmigilo"
         },
+        "aircraft/type": {
+          "label": "Speco",
+          "options": {
+            "military": "armea"
+          }
+        },
         "alt_name": {
           "label": "Alternativa nomo",
           "terms": "neoficiala nomo,alia nomo,plia nomo"
@@ -671,6 +677,9 @@
         "circumference": {
           "label": "Perimetro je brusta alteco (1,3 m) [metroj]",
           "placeholder": "1, 0.2, 0.75…"
+        },
+        "climbing/length": {
+          "label": "Longo (metroj)"
         },
         "clothes": {
           "label": "Vestaĵoj",
@@ -2539,6 +2548,11 @@
           "label": "Koloro de tegmento",
           "terms": "tegmenta koloro"
         },
+        "roof/shape": {
+          "options": {
+            "dome": "Kupola"
+          }
+        },
         "room": {
           "label": "Speco"
         },
@@ -2824,8 +2838,7 @@
             "osm notes": "OpenStreetMap-rimarkoj",
             "streetlevel imagery": "strat-nivela fotaro",
             "survey": "senpera observado"
-          },
-          "terms": "referenco"
+          }
         },
         "species/wikidata": {
           "label": "Specio (identigilo de Vikidatumoj)",
@@ -2907,6 +2920,14 @@
           },
           "placeholder": "Nekonata",
           "terms": "ponto,tunelo"
+        },
+        "structure_canal": {
+          "label": "Strukturo",
+          "options": {
+            "bridge": "Ponto",
+            "tunnel": "Tunelo"
+          },
+          "placeholder": "nekonata"
         },
         "structure_power": {
           "label": "Strukturo"

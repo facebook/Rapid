@@ -41,6 +41,9 @@
         "aeroway": {
           "label": "වර්ගය"
         },
+        "aircraft/type": {
+          "label": "වර්ගය"
+        },
         "amenity": {
           "label": "වර්ගය"
         },
@@ -525,6 +528,9 @@
           }
         },
         "structure": {
+          "placeholder": "නොදනී"
+        },
+        "structure_canal": {
           "placeholder": "නොදනී"
         },
         "structure_waterway": {

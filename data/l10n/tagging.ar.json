@@ -229,6 +229,13 @@
           "label": "تكييف هواء",
           "terms": "تكييف الهواء, التكييف, التبريد"
         },
+        "aircraft/type": {
+          "label": "النوع",
+          "options": {
+            "helicopter": "هليكوبتر",
+            "military": "عسكري"
+          }
+        },
         "alt_name": {
           "label": "الاسم البديل"
         },
@@ -723,6 +730,13 @@
           "label": "محيط (على ارتفاع الصدر)",
           "placeholder": "1 متر, 20 سم, 30\"…",
           "terms": "محيط الدائرة (على ارتفاع الصدر)"
+        },
+        "climbing/length": {
+          "label": "الطول (بالأمتار)",
+          "terms": "العرض (بالمتر)"
+        },
+        "climbing/trad": {
+          "label": "التسلق التقليدي"
         },
         "clothes": {
           "label": "ملابس",
@@ -2812,6 +2826,11 @@
           "label": "لون السقف",
           "terms": "لون السقف, لون الغما"
         },
+        "roof/shape": {
+          "options": {
+            "dome": "قبة"
+          }
+        },
         "room": {
           "label": "النوع"
         },
@@ -3119,8 +3138,7 @@
             "osm notes": "ملاحظات خارطة الشارع المفتوحة",
             "streetlevel imagery": "صور على مستوى الشارع",
             "survey": "استقصاء/استبيان/مسح ميداني"
-          },
-          "terms": "مصادر,مراجع,موارد"
+          }
         },
         "species": {
           "label": "الصنف",
@@ -3226,6 +3244,14 @@
           },
           "placeholder": "غير معروف",
           "terms": "هيكلة,بنية,منظومة"
+        },
+        "structure_canal": {
+          "label": "بنية",
+          "options": {
+            "bridge": "جسر",
+            "tunnel": "نفق"
+          },
+          "placeholder": "غير معروفة"
         },
         "structure_power": {
           "label": "بنية",

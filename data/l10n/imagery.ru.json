@@ -51,6 +51,9 @@
           "text": "Городская Администрация Бытомия"
         }
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "Обработанные спутниковые снимки Sentinel."
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 без облаков - https://s2maps.eu от EOX IT Services GmbH (Сожержит модифицированныеданные Copernicus Sentinel  2017 и 2018 годов)"
@@ -67,6 +70,15 @@
         "description": "Обработанные спутниковые снимки Sentinel."
       },
       "EOXAT2022CLOUDLESS": {
+        "description": "Обработанные спутниковые снимки Sentinel."
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Обработанные спутниковые снимки Sentinel."
+      },
+      "EOXAT2024CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 cloudless - https://s2maps.eu от EOX IT Services GmbH (Содержит измененные данные Copernicus Sentinel от 2024)"
+        },
         "description": "Обработанные спутниковые снимки Sentinel."
       },
       "EsriWorldImagery": {

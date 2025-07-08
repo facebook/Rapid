@@ -208,6 +208,9 @@
         "air_conditioning": {
           "label": "Aer condiționat"
         },
+        "aircraft/type": {
+          "label": "Tip"
+        },
         "amenity": {
           "label": "Tip"
         },
@@ -558,6 +561,9 @@
         },
         "check_date": {
           "label": "Data ultimei verificări"
+        },
+        "climbing/length": {
+          "label": "Lungime (Metri)"
         },
         "clothes": {
           "label": "Haine",
@@ -1359,6 +1365,11 @@
         "roller_coaster/track": {
           "label": "Tip"
         },
+        "roof/shape": {
+          "options": {
+            "dome": "Dom"
+          }
+        },
         "room": {
           "label": "Tip"
         },
@@ -1520,6 +1531,14 @@
             "bridge": "Pod",
             "embankment": "Îmbarcare",
             "ford": "Vad",
+            "tunnel": "Tunel"
+          },
+          "placeholder": "Necunoscut"
+        },
+        "structure_canal": {
+          "label": "Structură",
+          "options": {
+            "bridge": "Pod",
             "tunnel": "Tunel"
           },
           "placeholder": "Necunoscut"
@@ -1747,7 +1766,7 @@
           "options": {
             "pond": "Iaz",
             "river": "Râu",
-            "stream": "Fluviu"
+            "stream": "Pârâu"
           }
         },
         "waterway": {
@@ -3179,7 +3198,7 @@
           "name": "Râu"
         },
         "waterway/stream": {
-          "name": "Fluviu",
+          "name": "Pârâu",
           "terms": "<translate with synonyms or related terms for 'Stream', separated by commas>q"
         },
         "waterway/waterfall": {

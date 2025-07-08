@@ -111,6 +111,10 @@
         "description": "Images satellite haute résolution de Douranos (2018 + certains secteurs 2020)",
         "name": "Orthophotos de Dourados"
       },
+      "EOXAT2017CLOUDLESS": {
+        "description": "Imagerie satellite Sentinel retravaillée.",
+        "name": "eox.at 2017 sans nuages"
+      },
       "EOXAT2018CLOUDLESS": {
         "attribution": {
           "text": "Sentinel-2 sans nuages — https://s2maps.eu par EOX IT Services GmbH (contient des données Copernicus Sentinel modifiées de 2017 et de 2018)"
@@ -145,6 +149,14 @@
         },
         "description": "Imagerie satellite Sentinel retravaillée.",
         "name": "eox.at 2022 sans nuages"
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Imagerie satellite Sentinel retravaillée.",
+        "name": "eox.at 2023 sans nuages"
+      },
+      "EOXAT2024CLOUDLESS": {
+        "description": "Imagerie satellite Sentinel retravaillée.",
+        "name": "eox.at 2024 sans nuages"
       },
       "EsriWorldImagery": {
         "attribution": {
@@ -218,6 +230,9 @@
         "name": "Geoportal 2 - module des adresses WMS"
       },
       "Geoportal2-PL-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Bureau Principal de Géodésie et de Cartographie de Pologne"
+        },
         "name": "Geoportal 2: Orthophotomap (photos d'archive) WMS"
       },
       "Geoportal2-PL-aerial_image_WMS": {
@@ -430,20 +445,6 @@
         },
         "description": "Orthophotos les plus récentes du programme III d'imagerie de tous les comtés de l'Ohio capturées à une résolution de 30 cm à 8 cm de 2017 à 2020.",
         "name": "Programme d'imagerie de l'Ohio"
-      },
-      "OSIP_1ft": {
-        "attribution": {
-          "text": "Programme d'imagerie de l'Ohio"
-        },
-        "description": "Orthophotos du programme II d'imagerie de 88 comtés de l'Ohio capturées à une résolution de 30 cm de 2011 à 2014.",
-        "name": "Orthophotos du programme d'imagerie de l'Ohio, résolution 30 cm"
-      },
-      "OSIP_6in": {
-        "attribution": {
-          "text": "Programme d'imagerie de l'Ohio"
-        },
-        "description": "Orthophotos du programme III d'imagerie de 40 comtés de l'Ohio capturées à une résolution de 6 pouces en 2017 et 2018 et orthophotos des programmes I et II d'imagerie de 16 autres comtés capturées entre 2010 et 2014.",
-        "name": "Orthophotos 2010-2018 des programmes I, II et III d'imagerie de l'Ohio, résolution 6 pouces"
       },
       "OSMUK-Cadastral-Parcels": {
         "attribution": {
