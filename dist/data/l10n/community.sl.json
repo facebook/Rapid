@@ -1,0 +1,16 @@
+{
+  "_meta": {
+    "version": "2.5.4",
+    "generated": "2025-07-08T16:27:59.230Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.sl.json",
+    "hash": "e3e684e3db2ad23debffb7fbe6549a89"
+  },
+  "sl": {
+    "cape-coast-youthmappers": {
+      "description": "Sledi nam na Twitterju: {url}"
+    },
+    "OSMF": {
+      "name": "Fundacija OpenStreetMap"
+    }
+  }
+}

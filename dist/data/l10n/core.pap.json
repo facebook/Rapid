@@ -1,0 +1,56 @@
+{
+  "_meta": {
+    "version": "2.5.4",
+    "generated": "2025-07-08T16:27:59.077Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.pap.json",
+    "hash": "59c7ad313934c44b85d3d61703d8ee32"
+  },
+  "pap": {
+    "icons": {
+      "copy": "kopia",
+      "favorite": "favorí"
+    },
+    "toolbar": {
+      "inspect": "inspektá",
+      "recent": "Fresku",
+      "add_feature": "Agregá feature"
+    },
+    "modes": {
+      "add_area": {
+        "title": "Área"
+      },
+      "add_point": {
+        "title": "Punto"
+      }
+    },
+    "info_panels": {
+      "measurement": {
+        "area": "Área"
+      }
+    },
+    "geometry": {
+      "point": "punto"
+    },
+    "filters": {
+      "points": {
+        "description": "Puntia",
+        "tooltip": "Puntia di interes"
+      }
+    },
+    "help": {
+      "points": {
+        "title": "Puntia",
+        "add_point_h": "Añadí puntia",
+        "move_point_h": "Muf puntia"
+      }
+    },
+    "intro": {
+      "points": {
+        "title": "Puntia"
+      }
+    },
+    "languageNames": {
+      "pap": "Papiamentu"
+    }
+  }
+}
