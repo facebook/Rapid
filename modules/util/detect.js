@@ -87,13 +87,22 @@ export function utilDetect(refresh) {
   _cached.locales = navigator.languages.slice();  // shallow copy
 
   /* Host */
-  const loc = window.top.location;
-  let origin = loc.origin;
+  let loc, origin, pathname;
+  try {
+    loc = window.top.location;
+    origin = loc.origin;
+    pathname = loc.pathname;
+  } catch {
+    loc = window.location;
+    origin = loc.origin;
+    pathname = loc.pathname;
+  }
+
   if (!origin) {  // for unpatched IE11
     origin = loc.protocol + '//' + loc.hostname + (loc.port ? ':' + loc.port: '');
   }
 
-  _cached.host = origin + loc.pathname;
+  _cached.host = origin + pathname;
 
   _cached.prefersColorScheme = window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   _cached.prefersContrast = window.matchMedia?.('(prefers-contrast: more)').matches ? 'more'
