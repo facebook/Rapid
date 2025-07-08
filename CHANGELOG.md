@@ -39,6 +39,13 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [id-tagging-schema#xxxx]: https://github.com/openstreetmap/id-tagging-schema/issues/xxxx
 [@xxxx]: https://github.com/xxxx
 -->
+# [2.5.4](https://github.com/facebook/Rapid/releases/tag/rapid-v2.5.4)
+#### 2025-Jul-07
+
+#### :bug: Bugfixes
+* [#1719] Fix: Issue with html rendering that should have been simple text
+
+[#1719]: https://github.com/facebook/Rapid/issues/1719
 
 # [2.5.3](https://github.com/facebook/Rapid/releases/tag/rapid-v2.5.3)
 #### 2025-Mar-07
