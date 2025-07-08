@@ -129,7 +129,7 @@ export function uiSectionValidationIssues(context, severity) {
       .order();
 
     items.selectAll('.issue-message')
-      .html(d => d.message(context));
+      .text(d => d.message(context));
 
     items.selectAll('.issue-autofix')
       .classed('hide', d => !(showAutoFix && d.autoArgs));

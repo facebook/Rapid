@@ -82,7 +82,7 @@ export function uiCommitWarnings(context) {
         .merge(items);
 
       items.selectAll('.issue-message')
-        .html(d => d.message(context));
+        .text(d => d.message(context));
     }
   }
 
