@@ -28,7 +28,7 @@ export class Context extends EventEmitter {
   constructor() {
     super();
 
-    this.version = '2.5.4';             // see https://semver.org/ for examples
+    this.version = '2.5.5';             // see https://semver.org/ for examples
     // this.version = '2.5.3-pre.0';    // see https://semver.org/ for examples
 
     // If user has not seen this version of our software, we will show them a modal at startup.
