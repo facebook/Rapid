@@ -1,0 +1,35 @@
+{
+  "_meta": {
+    "version": "2.5.5",
+    "generated": "2025-12-10T16:55:57.625Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/imagery.nn.json",
+    "hash": "61c81d76aec6fc75b3cc381ad387f9e4"
+  },
+  "nn": {
+    "imagery": {
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Vilkår og tilbakemelding"
+        }
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Vilkår og tilbakemelding"
+        }
+      },
+      "MAPNIK": {
+        "name": "OpenStreetMap (standard)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Vilkår og tilbakemelding"
+        }
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Vilkår og tilbakemelding"
+        }
+      }
+    }
+  }
+}

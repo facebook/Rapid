@@ -1,0 +1,46 @@
+{
+  "_meta": {
+    "version": "2.5.5",
+    "generated": "2025-12-10T16:55:58.220Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.ar-AA.json",
+    "hash": "260180bc2ee56ad60893c563c11b3fc6"
+  },
+  "ar-AA": {
+    "_communities": {
+      "openstreetmappoland": "OpenStreetMap بولندا"
+    },
+    "be-matrix": {
+      "description": "نرحب بجميع مصممي الخرائط!"
+    },
+    "br-telegram": {
+      "extendedDescription": "انضم إلى المجتمع لمعرفة المزيد حول خريطة الشارع المفتوحة أو طرح الأسئلة أو شارك في اجتماعاتنا. الجميع مرحب به!"
+    },
+    "cl-facebook": {
+      "extendedDescription": "انضم إلى المجتمع لمعرفة المزيد حول خريطة الشارع المفتوحة أو طرح الأسئلة أو شارك في اجتماعاتنا. الجميع مرحب به!"
+    },
+    "cl-telegram": {
+      "extendedDescription": "انضم إلى المجتمع لمعرفة المزيد حول خريطة الشارع المفتوحة أو طرح الأسئلة أو شارك في اجتماعاتنا. الجميع مرحب به!"
+    },
+    "DF-telegram": {
+      "extendedDescription": "انضم إلى المجتمع لمعرفة المزيد حول خريطة الشارع المفتوحة أو طرح الأسئلة أو شارك في اجتماعاتنا. الجميع مرحب به!"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "description": "تابعنا على تويتر على {url}"
+    },
+    "osm-india-github": {
+      "description": "برمج معنا: {url}"
+    },
+    "OSM-japan-facebook": {
+      "description": "مصممي الخرائط ومستخدمي خريطة الشارع المفتوحة في اليابان"
+    },
+    "osm-kenya": {
+      "description": "OSM Kenya هو مجتمع من المساهمين والمستخدمين في OSM"
+    },
+    "OSM-US-Slack": {
+      "description": "الكل مرحب به! اشترك في {signupUrl}"
+    },
+    "RS-telegram": {
+      "extendedDescription": "انضم إلى المجتمع لمعرفة المزيد حول خريطة الشارع المفتوحة أو طرح الأسئلة أو شارك في اجتماعاتنا. الجميع مرحب به!"
+    }
+  }
+}
