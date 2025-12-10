@@ -4,7 +4,7 @@ import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem.js';
 import { QAItem } from '../osm/qa_item.js';
-import { utilFetchResponse } from '../util/index.js';
+import { utilFetchResponse, utilSanitizeHTML } from '../util/index.js';
 
 
 const KEEPRIGHT_API = 'https://www.keepright.at';
@@ -470,8 +470,8 @@ export class KeepRightService extends AbstractSystem {
       idType = 'IDs' in issueTemplate ? issueTemplate.IDs[i-1] : '';
       if (idType && capture) {   // link IDs if present in the capture
         capture = this._parseError(capture, idType);
-      } else if (htmlRegex.test(capture)) {   // escape any html in non-IDs
-        capture = '\\' +  capture + '\\';
+      } else if (htmlRegex.test(capture)) {   // sanitize any html in non-IDs
+        capture = utilSanitizeHTML(capture);
       } else {
         const compare = capture.toLowerCase();
         if (this._krData.localizeStrings[compare]) {   // some replacement strings can be localized

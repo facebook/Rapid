@@ -1,6 +1,8 @@
 import { selection, select } from 'd3-selection';
 import throttle from 'lodash-es/throttle.js';
 
+import { utilSanitizeHTML } from '../util/index.js';
+
 
 /**
  * UiAttribution
@@ -113,9 +115,9 @@ export class UiAttribution {
       .each((d, i, nodes) => {
         const $$link = select(nodes[i]);
 
-        // add html directly (maybe we shouldn't?)
+        // Sanitize HTML from imagery provider metadata
         if (d.terms_html) {
-          $$link.html(d.terms_html);
+          $$link.html(utilSanitizeHTML(d.terms_html));
           return;
         }
 

@@ -6,7 +6,7 @@ import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem.js';
 import { QAItem } from '../osm/qa_item.js';
-import { utilFetchResponse } from '../util/index.js';
+import { utilFetchResponse, utilSanitizeHTML } from '../util/index.js';
 
 
 const TILEZOOM = 14;
@@ -198,7 +198,7 @@ export class OsmoseService extends AbstractSystem {
       // Assign directly for immediate use in the callback
       issue.elems = data.elems.map(e => e.type.substring(0,1) + e.id);
       // Some issues have instance specific detail in a subtitle
-      issue.detail = data.subtitle ? marked.parse(data.subtitle.auto) : '';
+      issue.detail = data.subtitle ? utilSanitizeHTML(marked.parse(data.subtitle.auto)) : '';
       this.replaceItem(issue);
     };
 
@@ -433,9 +433,9 @@ export class OsmoseService extends AbstractSystem {
         let issueStrings = {};
         // Force title to begin with an uppercase letter
         if (title)  issueStrings.title = title.auto.charAt(0).toUpperCase() + title.auto.slice(1);
-        if (detail) issueStrings.detail = marked.parse(detail.auto);
-        if (trap)   issueStrings.trap = marked.parse(trap.auto);
-        if (fix)    issueStrings.fix = marked.parse(fix.auto);
+        if (detail) issueStrings.detail = utilSanitizeHTML(marked.parse(detail.auto));
+        if (trap)   issueStrings.trap = utilSanitizeHTML(marked.parse(trap.auto));
+        if (fix)    issueStrings.fix = utilSanitizeHTML(marked.parse(fix.auto));
 
         stringData[itemType] = issueStrings;
       };

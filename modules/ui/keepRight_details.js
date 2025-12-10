@@ -1,6 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 
-import { utilHighlightEntities } from '../util/index.js';
+import { utilHighlightEntities, utilSanitizeHTML } from '../util/index.js';
 
 
 export function uiKeepRightDetails(context) {
@@ -52,7 +52,7 @@ export function uiKeepRightDetails(context) {
     descriptionEnter
       .append('div')
       .attr('class', 'qa-details-description-text')
-      .html(issueDetailHTML);
+      .html(d => utilSanitizeHTML(issueDetailHTML(d)));
 
     // If there are entity links in the error message..
     let relatedEntities = [];
