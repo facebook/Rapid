@@ -4,7 +4,7 @@ import { marked } from 'marked';
 
 import { uiIcon } from './icon.js';
 import { uiCombobox} from './combobox.js';
-import { utilKeybinding, utilNoAuto } from '../util/index.js';
+import { utilKeybinding, utilNoAuto, utilSanitizeHTML } from '../util/index.js';
 
 const MAXRESULTS = 100;
 
@@ -563,9 +563,12 @@ export class UiRapidCatalog extends EventEmitter {
 
   /**
    * highlight
+   * Highlights matches of `needle` in `haystack` with <mark> tags.
+   * Sanitizes the haystack first to prevent XSS.
    */
   highlight(needle, haystack) {
-    let html = haystack;
+    // Sanitize the haystack to prevent XSS from dataset labels
+    let html = utilSanitizeHTML(haystack);
     if (needle) {
       const re = new RegExp('\(' + _escapeRegex(needle) + '\)', 'gi');
       html = html.replace(re, '<mark>$1</mark>');

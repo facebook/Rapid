@@ -9,6 +9,7 @@ export { utilHighlightEntities } from './util.js';
 export { utilKeybinding } from './keybinding.js';
 export { utilNoAuto } from './util.js';
 export { utilRebind } from './rebind.js';
+export { utilSanitizeHTML } from './sanitize.js';
 export { utilSetDimensions } from './dimensions.js';
 export { utilSetTransform } from './util.js';
 export { utilTotalExtent } from './util.js';

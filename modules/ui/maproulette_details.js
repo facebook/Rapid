@@ -1,6 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 
-import { utilHighlightEntities } from '../util/index.js';
+import { utilHighlightEntities, utilSanitizeHTML } from '../util/index.js';
 import { marked } from 'marked';
 
 export function uiMapRouletteDetails(context) {
@@ -153,8 +153,8 @@ export function uiMapRouletteDetails(context) {
           .attr('target', '_blank');
       }
 
-      const descriptionHtml = generateDynamicContent(marked.parse(replaceMustacheTags(task.description, task), { async: false }));
-      const instructionHtml = generateDynamicContent(marked.parse(replaceMustacheTags(task.instruction, task), { async: false }));
+      const descriptionHtml = utilSanitizeHTML(generateDynamicContent(marked.parse(replaceMustacheTags(task.description, task), { async: false })));
+      const instructionHtml = utilSanitizeHTML(generateDynamicContent(marked.parse(replaceMustacheTags(task.instruction, task), { async: false })));
 
       // We show the challenge description when user select an unkown challenge.
       // But we hide it if a specific (assumed to be know) challenge is selected.
