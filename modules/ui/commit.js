@@ -417,7 +417,7 @@ export function uiCommit(context) {
       userLink
         .append('a')
         .attr('class', 'user-info')
-        .html(user.display_name)
+        .text(user.display_name)
         .attr('href', osm.userURL(user.display_name))
         .attr('target', '_blank');
 
