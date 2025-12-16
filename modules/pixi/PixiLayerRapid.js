@@ -296,11 +296,26 @@ export class PixiLayerRapid extends AbstractLayer {
       }
       const entities = service.getData(datasetID);
 
-      // Just support points (for now)
+      // Support both points (places) and polygons (buildings)
       for (const entity of entities) {
-        entity.overture = true;
-        entity.__datasetid__ = datasetID;
-        data.points.push(entity);
+        if (isAcceptedOrIgnored(entity)) continue;
+
+        if (datasetID.includes('places')) {
+          // Points for places (GeoJSON features from VectorTileService)
+          entity.overture = true;
+          entity.__datasetid__ = datasetID;
+          data.points.push(entity);
+        } else if (datasetID.includes('buildings')) {
+          // Polygons for buildings (OSM entities from OvertureService)
+          if (entity.type === 'way') {
+            data.polygons.push(entity);
+          }
+        }
+      }
+
+      // For buildings, we need the graph to resolve node coordinates
+      if (datasetID.includes('buildings')) {
+        dsGraph = service.graph(datasetID);
       }
     }
 
