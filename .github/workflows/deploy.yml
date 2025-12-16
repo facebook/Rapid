@@ -28,10 +28,10 @@ jobs:
         echo "::remove-matcher owner=eslint-stylish::"
 
     - name: 📥  Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: ⚙️  Use Node.js 18
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v6
       with:
         node-version: 18
 
