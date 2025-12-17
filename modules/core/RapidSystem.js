@@ -141,8 +141,8 @@ export class RapidSystem extends AbstractSystem {
 
         // Set some defaults
         if (!urlhash.initialHashParams.has('datasets')) {
-          this._addedDatasetIDs = new Set(['fbRoads', 'msBuildings', 'overture-places', 'overture-buildings', 'omdFootways']);  // on menu
-          this._enabledDatasetIDs = new Set(['fbRoads', 'msBuildings']);  // checked
+          this._addedDatasetIDs = new Set(['fbRoads', 'overture-esri-buildings', 'overture-ml-buildings', 'omdFootways']);  // on menu
+          this._enabledDatasetIDs = new Set(['overture-ml-buildings']);  // checked
           this._datasetsChanged();
         }
 
@@ -240,7 +240,9 @@ export class RapidSystem extends AbstractSystem {
     const results = new Map();
     for (const datasetID of this._addedDatasetIDs) {
       const dataset = this.catalog.get(datasetID);
-      results.set(datasetID, dataset);
+      if (dataset) {  // Only include datasets that exist in the catalog
+        results.set(datasetID, dataset);
+      }
     }
     return results;
   }

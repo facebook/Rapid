@@ -12,6 +12,35 @@ const PMTILES_CATALOG_PATH = 'pmtiles_catalog.json';
 const OVERTURE_BUILDINGS_DATE = '2025-11-19';
 const OVERTURE_BUILDINGS_URL = `https://d3c1b7bog2u1nn.cloudfront.net/${OVERTURE_BUILDINGS_DATE}/buildings.pmtiles`;
 
+// Geometry source filters for different datasets
+// These match the @geometry_source attribute in Overture PMTiles
+// TODO: Verify these source strings match actual PMTiles data values
+const ESRI_SOURCES = new Set([
+  'esri',
+  'Esri Community Maps',
+  'esri_buildings',
+]);
+
+const ML_SOURCES = new Set([
+  'Microsoft ML Buildings',
+  'Google Open Buildings',
+]);
+
+// Always filter out OpenStreetMap-sourced buildings
+const OSM_SOURCES = new Set([
+  'OpenStreetMap',
+  'osm',
+  'OSM',
+]);
+
+// DEBUG: Track unique @geometry_source values seen in PMTiles data
+const DEBUG_SOURCES = true;
+const seenSources = new Set();
+
+
+// Minimum zoom level for loading building data (prevents slowdown at low zooms)
+const MIN_BUILDING_ZOOM = 17;
+
 
 /**
  * `OvertureService`
@@ -36,12 +65,14 @@ export class OvertureService extends AbstractSystem {
     this.latestRelease = '';
     this._initPromise = null;
 
-    // For buildings conflation
-    this._buildingsGraph = null;
-    this._buildingsTree = null;
-    this._buildingsCache = {
-      seen: new Set(),           // Set(featureID) - features we've processed
-    };
+    // For buildings conflation - separate state for each dataset
+    this._esriBuildingsGraph = null;
+    this._esriBuildingsTree = null;
+    this._esriBuildingsCache = { seen: new Set() };
+
+    this._mlBuildingsGraph = null;
+    this._mlBuildingsTree = null;
+    this._mlBuildingsCache = { seen: new Set() };
   }
 
 
@@ -100,12 +131,15 @@ export class OvertureService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed resetting
    */
   resetAsync() {
-    // Reset buildings conflation state
-    this._buildingsGraph = null;
-    this._buildingsTree = null;
-    this._buildingsCache = {
-      seen: new Set(),
-    };
+    // Reset buildings conflation state for both datasets
+    this._esriBuildingsGraph = null;
+    this._esriBuildingsTree = null;
+    this._esriBuildingsCache = { seen: new Set() };
+
+    this._mlBuildingsGraph = null;
+    this._mlBuildingsTree = null;
+    this._mlBuildingsCache = { seen: new Set() };
+
     return Promise.resolve();
   }
 
@@ -121,28 +155,41 @@ export class OvertureService extends AbstractSystem {
       conflated: false,
       service: 'overture',
       categories: new Set(['overture', 'places', 'featured']),
-      color: '#00ffff',
+      color: '#ff00ff',
       dataUsed: ['overture', 'Overture Places'],
       itemUrl: 'https://docs.overturemaps.org/guides/places/',
-      licenseUrl: 'https://docs.overturemaps.org/attribution/#places',
+      licenseUrl: 'https://docs.overturemaps.org/attribution/',
       labelStringID: 'rapid_menu.overture.places.label',
       descriptionStringID: 'rapid_menu.overture.places.description'
     });
 
-    const buildings = new RapidDataset(this.context, {
-      id: 'overture-buildings',
+    const esriBuildings = new RapidDataset(this.context, {
+      id: 'overture-esri-buildings',
       conflated: false,  // We do client-side conflation, not server-side
       service: 'overture',
-      categories: new Set(['overture', 'buildings', 'featured']),
-      color: '#00ffff',
-      dataUsed: ['overture', 'Overture Buildings'],
+      categories: new Set(['overture', 'esri', 'buildings', 'featured']),
+      color: '#00bfff',  // Deep sky blue for Esri
+      dataUsed: ['overture', 'Esri Community Maps'],
       itemUrl: 'https://docs.overturemaps.org/guides/buildings/',
       licenseUrl: 'https://docs.overturemaps.org/attribution/',
-      labelStringID: 'rapid_menu.overture.buildings.label',
-      descriptionStringID: 'rapid_menu.overture.buildings.description'
+      labelStringID: 'rapid_menu.overture.esri_buildings.label',
+      descriptionStringID: 'rapid_menu.overture.esri_buildings.description'
     });
 
-    return [places, buildings];
+    const mlBuildings = new RapidDataset(this.context, {
+      id: 'overture-ml-buildings',
+      conflated: false,  // We do client-side conflation, not server-side
+      service: 'overture',
+      categories: new Set(['overture', 'microsoft', 'buildings', 'featured']),
+      color: '#ff6600',  // Orange for ML buildings
+      dataUsed: ['overture', 'Microsoft ML Buildings', 'Google Open Buildings'],
+      itemUrl: 'https://docs.overturemaps.org/guides/buildings/',
+      licenseUrl: 'https://docs.overturemaps.org/attribution/',
+      labelStringID: 'rapid_menu.overture.ml_buildings.label',
+      descriptionStringID: 'rapid_menu.overture.ml_buildings.description'
+    });
+
+    return [places, esriBuildings, mlBuildings];
   }
 
 
@@ -154,11 +201,16 @@ export class OvertureService extends AbstractSystem {
   loadTiles(datasetID) {
     const vtService = this.context.services.vectortile;
 
-    if (datasetID.includes('places')) {
+    if (datasetID === 'overture-places') {
       const file = this.latestRelease.files.find(file => file.theme === 'places');
       const url = PMTILES_ROOT_URL + file.href;
       vtService.loadTiles(url);
     } else if (datasetID.includes('buildings')) {
+      // Only load building tiles at zoom 16+
+      const zoom = this.context.viewport.transform.zoom;
+      if (zoom < MIN_BUILDING_ZOOM) return;
+
+      // Both building datasets use the same PMTiles source
       vtService.loadTiles(OVERTURE_BUILDINGS_URL);
     }
   }
@@ -173,13 +225,24 @@ export class OvertureService extends AbstractSystem {
   getData(datasetID) {
     const vtService = this.context.services.vectortile;
 
-    if (datasetID.includes('places')) {
+    if (datasetID === 'overture-places') {
       const file = this.latestRelease.files.find(file => file.theme === 'places');
       const url = PMTILES_ROOT_URL + file.href;
       return vtService.getData(url);
-    } else if (datasetID.includes('buildings')) {
+    } else if (datasetID === 'overture-esri-buildings') {
+      // Only process building data at zoom 16+
+      const zoom = this.context.viewport.transform.zoom;
+      if (zoom < MIN_BUILDING_ZOOM) return [];
+
       const geojsonFeatures = vtService.getData(OVERTURE_BUILDINGS_URL);
-      return this._conflateBuildings(geojsonFeatures);
+      return this._conflateBuildings(geojsonFeatures, datasetID, ESRI_SOURCES);
+    } else if (datasetID === 'overture-ml-buildings') {
+      // Only process building data at zoom 16+
+      const zoom = this.context.viewport.transform.zoom;
+      if (zoom < MIN_BUILDING_ZOOM) return [];
+
+      const geojsonFeatures = vtService.getData(OVERTURE_BUILDINGS_URL);
+      return this._conflateBuildings(geojsonFeatures, datasetID, ML_SOURCES);
     } else {
       return [];
     }
@@ -193,27 +256,48 @@ export class OvertureService extends AbstractSystem {
    * @return  {Graph}   The graph for this dataset, or null if not applicable
    */
   graph(datasetID) {
-    if (datasetID.includes('buildings')) {
-      return this._buildingsGraph;
+    if (datasetID === 'overture-esri-buildings') {
+      return this._esriBuildingsGraph;
+    } else if (datasetID === 'overture-ml-buildings') {
+      return this._mlBuildingsGraph;
     }
-    return null;  // places don't have a graph currently
+    return null;
   }
 
 
   /**
    * _conflateBuildings
    * Filter out Overture buildings that overlap with existing OSM buildings,
-   * then convert remaining buildings to OSM entities
-   * @param   {Array}  geojsonFeatures - GeoJSON features from VectorTileService
-   * @return  {Array}  OSM entities (osmNode, osmWay) that don't overlap with OSM
+   * filter by geometry source, and convert remaining buildings to OSM entities
+   * @param   {Array}   geojsonFeatures - GeoJSON features from VectorTileService
+   * @param   {string}  datasetID - Which dataset we're processing
+   * @param   {Set}     allowedSources - Set of @geometry_source values to include
+   * @return  {Array}   OSM entities (osmNode, osmWay) that pass all filters
    */
-  _conflateBuildings(geojsonFeatures) {
+  _conflateBuildings(geojsonFeatures, datasetID, allowedSources) {
     if (!geojsonFeatures || !geojsonFeatures.length) return [];
 
-    // Initialize graph/tree if needed
-    if (!this._buildingsGraph) {
-      this._buildingsGraph = new Graph();
-      this._buildingsTree = new Tree(this._buildingsGraph);
+    // Get the appropriate graph/tree/cache for this dataset
+    let buildingsGraph, buildingsTree, buildingsCache;
+
+    if (datasetID === 'overture-esri-buildings') {
+      if (!this._esriBuildingsGraph) {
+        this._esriBuildingsGraph = new Graph();
+        this._esriBuildingsTree = new Tree(this._esriBuildingsGraph);
+      }
+      buildingsGraph = this._esriBuildingsGraph;
+      buildingsTree = this._esriBuildingsTree;
+      buildingsCache = this._esriBuildingsCache;
+    } else if (datasetID === 'overture-ml-buildings') {
+      if (!this._mlBuildingsGraph) {
+        this._mlBuildingsGraph = new Graph();
+        this._mlBuildingsTree = new Tree(this._mlBuildingsGraph);
+      }
+      buildingsGraph = this._mlBuildingsGraph;
+      buildingsTree = this._mlBuildingsTree;
+      buildingsCache = this._mlBuildingsCache;
+    } else {
+      return [];
     }
 
     const context = this.context;
@@ -230,8 +314,9 @@ export class OvertureService extends AbstractSystem {
       entity.tags.building !== 'no'
     );
 
-    // Convert OSM buildings to polygon coordinates for intersection testing
-    const osmBuildingPolygons = [];
+    // Convert OSM buildings to bounding boxes + polygon coords for fast filtering
+    // Only compute full polygon coords if we'll need them for intersection
+    const osmBuildingData = [];
     for (const way of osmBuildings) {
       try {
         if (!way.isClosed()) continue;  // Skip non-closed ways
@@ -240,7 +325,19 @@ export class OvertureService extends AbstractSystem {
           return node.loc;
         });
         if (coords.length >= 4) {  // Valid polygon needs at least 4 points (3 + closing)
-          osmBuildingPolygons.push({ entity: way, coords: [coords] });  // Polyclip expects [[ring]]
+          // Compute bounding box for fast pre-filtering
+          let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+          for (const coord of coords) {
+            if (coord[0] < minX) minX = coord[0];
+            if (coord[0] > maxX) maxX = coord[0];
+            if (coord[1] < minY) minY = coord[1];
+            if (coord[1] > maxY) maxY = coord[1];
+          }
+          osmBuildingData.push({
+            entity: way,
+            coords: [coords],  // Polyclip expects [[ring]]
+            bbox: { minX, minY, maxX, maxY }
+          });
         }
       } catch (e) {
         // Skip if we can't resolve the nodes
@@ -250,22 +347,63 @@ export class OvertureService extends AbstractSystem {
 
     const newEntities = [];
 
+    // Limit processing to avoid blocking the main thread
+    const MAX_FEATURES_PER_FRAME = 500;
+    let processedCount = 0;
+
     for (const feature of geojsonFeatures) {
+      // Limit how many features we process per call
+      if (processedCount >= MAX_FEATURES_PER_FRAME) break;
+
       // Only process Polygon features
       const geojson = feature.geojson;
       if (!geojson?.geometry || geojson.geometry.type !== 'Polygon') continue;
 
       const featureID = feature.id || geojson.id;
 
-      // Skip if we've already processed this feature
-      if (this._buildingsCache.seen.has(featureID)) continue;
-      this._buildingsCache.seen.add(featureID);
+      // Skip if we've already processed this feature for this dataset
+      if (buildingsCache.seen.has(featureID)) continue;
+      buildingsCache.seen.add(featureID);
+      processedCount++;
+
+      // Filter by @geometry_source
+      const geometrySource = geojson.properties?.['@geometry_source'];
+
+      // DEBUG: Log unique @geometry_source values
+      if (DEBUG_SOURCES && geometrySource && !seenSources.has(geometrySource)) {
+        seenSources.add(geometrySource);
+        console.log('[OvertureService] New @geometry_source value found:', geometrySource);  // eslint-disable-line no-console
+        console.log('[OvertureService] All sources seen so far:', [...seenSources]);  // eslint-disable-line no-console
+      }
+
+      // Always filter out OpenStreetMap-sourced buildings
+      if (geometrySource && OSM_SOURCES.has(geometrySource)) continue;
+
+      // Only include buildings from allowed sources
+      if (!geometrySource || !allowedSources.has(geometrySource)) continue;
 
       const overtureCoords = geojson.geometry.coordinates;
 
+      // Compute bounding box for the Overture building for fast pre-filtering
+      const outerRing = overtureCoords[0];
+      let oMinX = Infinity, oMinY = Infinity, oMaxX = -Infinity, oMaxY = -Infinity;
+      for (const coord of outerRing) {
+        if (coord[0] < oMinX) oMinX = coord[0];
+        if (coord[0] > oMaxX) oMaxX = coord[0];
+        if (coord[1] < oMinY) oMinY = coord[1];
+        if (coord[1] > oMaxY) oMaxY = coord[1];
+      }
+
       // Check if this Overture building overlaps with ANY OSM building
       let hasOverlap = false;
-      for (const osmBuilding of osmBuildingPolygons) {
+      for (const osmBuilding of osmBuildingData) {
+        // Fast bounding box check first
+        const ob = osmBuilding.bbox;
+        if (oMaxX < ob.minX || oMinX > ob.maxX || oMaxY < ob.minY || oMinY > ob.maxY) {
+          continue;  // Bounding boxes don't overlap, skip expensive intersection
+        }
+
+        // Bounding boxes overlap, do full polygon intersection test
         try {
           const intersection = Polyclip.intersection(overtureCoords, osmBuilding.coords);
           if (intersection && intersection.length > 0) {
@@ -281,7 +419,7 @@ export class OvertureService extends AbstractSystem {
       if (hasOverlap) continue;  // Filter out overlapping building
 
       // Convert GeoJSON to OSM entities
-      const entities = this._geojsonToOSM(geojson, featureID);
+      const entities = this._geojsonToOSM(geojson, featureID, datasetID, geometrySource);
       if (entities) {
         newEntities.push(...entities);
       }
@@ -289,12 +427,12 @@ export class OvertureService extends AbstractSystem {
 
     // Update the internal graph with new entities
     if (newEntities.length) {
-      this._buildingsGraph.rebase(newEntities, [this._buildingsGraph], true);
-      this._buildingsTree.rebase(newEntities, true);
+      buildingsGraph.rebase(newEntities, [buildingsGraph], true);
+      buildingsTree.rebase(newEntities, true);
     }
 
     // Return entities from the tree that intersect the visible extent
-    return this._buildingsTree.intersects(extent, this._buildingsGraph)
+    return buildingsTree.intersects(extent, buildingsGraph)
       .filter(entity => entity.type === 'way');  // Only return ways, not nodes
   }
 
@@ -304,9 +442,11 @@ export class OvertureService extends AbstractSystem {
    * Convert a GeoJSON Polygon feature to osmNode/osmWay entities
    * @param   {Object}  geojson - GeoJSON Feature with Polygon geometry
    * @param   {string}  featureID - Unique identifier for this feature
+   * @param   {string}  datasetID - The dataset this feature belongs to
+   * @param   {string}  geometrySource - The @geometry_source value from the feature
    * @return  {Array}   Array of [osmNodes..., osmWay], or null if invalid
    */
-  _geojsonToOSM(geojson, featureID) {
+  _geojsonToOSM(geojson, featureID, datasetID, geometrySource) {
     if (!geojson?.geometry?.coordinates) return null;
 
     const coords = geojson.geometry.coordinates[0];  // outer ring only
@@ -327,9 +467,9 @@ export class OvertureService extends AbstractSystem {
       });
 
       // Add metadata for the Rapid system
-      node.__fbid__ = `overture-${featureID}-n${i}`;
+      node.__fbid__ = `${datasetID}-${featureID}-n${i}`;
       node.__service__ = 'overture';
-      node.__datasetid__ = 'overture-buildings';
+      node.__datasetid__ = datasetID;
 
       entities.push(node);
       nodeIDs.push(nodeID);
@@ -338,18 +478,42 @@ export class OvertureService extends AbstractSystem {
     // Close the way by referencing the first node
     nodeIDs.push(nodeIDs[0]);
 
-    // Create the way with building=yes tag
+    // Build tags for the way
+    const tags = { building: 'yes' };
+
+    // Add source tag based on geometry source
+    if (geometrySource === 'Microsoft ML Buildings') {
+      tags.source = 'microsoft/BuildingFootprints';
+    } else if (geometrySource === 'Google Open Buildings') {
+      tags.source = 'google/OpenBuildings';
+    } else if (geometrySource === 'Esri Community Maps') {
+      tags.source = 'esri/communityMaps';
+    }
+
+    // Add height attributes if present in Overture data
+    const props = geojson.properties || {};
+    if (props.height !== undefined && props.height !== null) {
+      // Round to nearest 0.5
+      const roundedHeight = Math.round(props.height * 2) / 2;
+      tags.height = String(roundedHeight);
+    }
+    if (props.num_floors !== undefined && props.num_floors !== null) {
+      tags['building:levels'] = String(props.num_floors);
+    }
+
+    // Create the way with appropriate tags
     const wayID = osmEntity.id('way');
     const way = new osmWay({
       id: wayID,
       nodes: nodeIDs,
-      tags: { building: 'yes' }
+      tags: tags
     });
 
     // Add metadata
-    way.__fbid__ = `overture-${featureID}`;
+    way.__fbid__ = `${datasetID}-${featureID}`;
     way.__service__ = 'overture';
-    way.__datasetid__ = 'overture-buildings';
+    way.__datasetid__ = datasetID;
+    way.__gersid__ = props.id || null;  // Store the GERS ID from Overture properties
 
     entities.push(way);
 

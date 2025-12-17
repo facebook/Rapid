@@ -1154,13 +1154,19 @@ en:
     fbRoads:
       label: Facebook Roads
       description: AI predicted roads detected from Maxar Premium imagery and available in over 80 countries.
-    msBuildings:
-      label: Microsoft Buildings
-      description: Open building footprints from around the world. Detected from Bing Maps imagery between 2014 and 2024 including Maxar, Airbus, and IGN France imagery.
+    # msBuildings:
+    #   label: Microsoft Buildings
+    #   description: Open building footprints from around the world. Detected from Bing Maps imagery between 2014 and 2024 including Maxar, Airbus, and IGN France imagery.
     overture:
       places:
         label: Overture Places
-        description: "Contains over 53 million point representations of real-world entities: schools, businesses, hospitals, religious organizations, landmarks, mountain peaks, and much more."
+        description: "Points of interest from Overture Maps, sourced from various commercial and community contributors."
+      esri_buildings:
+        label: Esri Community Maps (Overture)
+        description: "Building footprints contributed by Esri's Community Maps program, available through Overture Maps."
+      ml_buildings:
+        label: Microsoft ML + Google Open Buildings (Overture)
+        description: "ML-derived building footprints from Microsoft and Google Open Buildings, available through Overture Maps."
     omdFootways:
       label: Open Data Footways
       description: Open footways data collected from various local government entities.
