@@ -39,4 +39,4 @@ jobs:
     if: (github.actor != 'dependabot[bot]')
     steps:
       - uses: actions/checkout@v4
-      - run: semgrep scan --config auto --config .semgrep/
+      - run: semgrep scan --error --config .semgrep/
