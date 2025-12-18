@@ -50,7 +50,7 @@ export function uiOsmoseDetails(context) {
       div
         .append('p')
         .attr('class', 'qa-details-description-text')
-        .html(d => issueString(d, 'detail'))
+        .html(d => issueString(d, 'detail'))  // nosemgrep: d3-unsanitized-html - sanitized in OsmoseService
         .selectAll('a')
         .attr('rel', 'noopener')
         .attr('target', '_blank');
@@ -77,7 +77,7 @@ export function uiOsmoseDetails(context) {
 
       div
         .append('p')
-        .html(d => issueString(d, 'fix'))
+        .html(d => issueString(d, 'fix'))  // nosemgrep: d3-unsanitized-html - sanitized in OsmoseService
         .selectAll('a')
         .attr('rel', 'noopener')
         .attr('target', '_blank');
@@ -95,7 +95,7 @@ export function uiOsmoseDetails(context) {
 
       div
         .append('p')
-        .html(d => issueString(d, 'trap'))
+        .html(d => issueString(d, 'trap'))  // nosemgrep: d3-unsanitized-html - sanitized in OsmoseService
         .selectAll('a')
         .attr('rel', 'noopener')
         .attr('target', '_blank');

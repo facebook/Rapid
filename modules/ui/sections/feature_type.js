@@ -106,7 +106,7 @@ export function uiSectionFeatureType(context) {
       .enter()
       .append('div')
       .attr('class', 'namepart')
-      .html(d => d);
+      .html(d => d);  // nosemgrep: d3-unsanitized-html - preset names from internal system
   }
 
   section.entityIDs = function(val) {

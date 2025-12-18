@@ -61,7 +61,7 @@ ${file_tip}
     textSection
       .append('div')
       .attr('class', 'instructions-template')
-      .html(fileHtml);
+      .html(fileHtml);  // nosemgrep: d3-unsanitized-html - fileHtml built from l10n strings
 
     textSection
       .append('input')
@@ -109,7 +109,7 @@ ${url_tokens}
     textSection
       .append('div')
       .attr('class', 'instructions-template')
-      .html(urlHtml);
+      .html(urlHtml);  // nosemgrep: d3-unsanitized-html - urlHtml built from l10n strings
 
     textSection
       .append('textarea')

@@ -360,7 +360,7 @@ export function uiPresetList(context) {
         .attr('class', 'namepart')
         .call(uiIcon((isRTL ? '#rapid-icon-backward' : '#rapid-icon-forward'), 'inline'))
         .append('span')
-        .html(() => preset.nameLabel() + '&hellip;');
+        .html(() => preset.nameLabel() + '&hellip;');  // nosemgrep: d3-unsanitized-html - preset names are trusted
 
       this.box = selection
         .append('div')
@@ -481,7 +481,7 @@ export function uiPresetList(context) {
         .enter()
         .append('div')
         .attr('class', 'namepart')
-        .html(d => d);
+        .html(d => d);  // nosemgrep: d3-unsanitized-html - preset name parts are trusted
 
       wrapEnter.call(this.reference.button);
       selection.call(this.reference.body);

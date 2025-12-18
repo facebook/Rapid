@@ -69,7 +69,7 @@ ${info}
     textSection
       .append('div')
       .attr('class', 'instructions-template')
-      .html(instructions);
+      .html(instructions);  // nosemgrep: d3-unsanitized-html - instructions built from l10n strings
 
     textSection
       .append('textarea')

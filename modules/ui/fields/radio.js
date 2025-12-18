@@ -299,7 +299,7 @@ export function uiFieldRadio(context, uifield) {
         if (selection.empty()) {
             placeholder.html(l10n.tHtml('inspector.none'));
         } else {
-            placeholder.html(selection.attr('value'));
+            placeholder.html(selection.attr('value'));  // nosemgrep: d3-unsanitized-html - value from radio button set by l10n
             _oldType[selection.datum()] = tags[selection.datum()];
         }
 

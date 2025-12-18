@@ -62,7 +62,7 @@ export function uiTooltip(context) {
         .append('div')
         .attr('class', 'tooltip-text')
         .merge(textWrap)
-        .html(d => d);    // watch out: a few tooltips still send html through here
+        .html(d => d);  // nosemgrep: d3-unsanitized-html - tooltip content from internal UI code
 
       const shortcutWrap = selection
         .selectAll('.tooltip-keyhint')

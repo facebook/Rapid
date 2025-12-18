@@ -70,7 +70,7 @@ export function uiTagReference(context, what) {
     _body
       .append('p')
       .attr('class', 'tag-reference-description')
-      .html(docsHtml)
+      .html(docsHtml)  // nosemgrep: d3-unsanitized-html - docsHtml from l10n.htmlForLocalizedText or l10n.tHtml
       .append('a')
       .attr('class', 'tag-reference-edit')
       .attr('target', '_blank')

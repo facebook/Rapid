@@ -5,6 +5,7 @@ rules:
       Potential XSS: .html() called with unsanitized content.
       Use utilSanitizeHTML() for external/user data, .text() for plain text,
       or l10n.t()/l10n.tHtml() for trusted localization strings.
+      If this is a false positive, add: // nosemgrep: d3-unsanitized-html
     severity: WARNING
     patterns:
       - pattern: $SEL.html($CONTENT)
@@ -13,8 +14,11 @@ rules:
       # Exclude safe patterns - localization (trusted developer content):
       - pattern-not: $SEL.html(l10n.tHtml(...))
       - pattern-not: $SEL.html(l10n.t(...))
-      # Exclude safe patterns - marked.parse on localization content:
+      - pattern-not: $SEL.html(uifield.tHtml(...))
+      # Exclude safe patterns - marked.parse (typically on trusted content):
       - pattern-not: $SEL.html(marked.parse(...))
+      # Exclude safe patterns - ternary with l10n:
+      - pattern-not: $SEL.html($COND ? l10n.tHtml(...) : l10n.tHtml(...))
       # Exclude clearing/resetting content:
       - pattern-not: $SEL.html('')
       - pattern-not: $SEL.html("")

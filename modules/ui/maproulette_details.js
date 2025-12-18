@@ -172,7 +172,7 @@ export function uiMapRouletteDetails(context) {
           .append('section')
           .attr('class', 'qa-details-container');
         descContent
-          .html(descriptionHtml)
+          .html(descriptionHtml)  // nosemgrep: d3-unsanitized-html - already sanitized above
           .selectAll('a')
           .attr('rel', 'noopener')
           .attr('target', '_blank');
@@ -191,7 +191,7 @@ export function uiMapRouletteDetails(context) {
           .append('article')
           .attr('class', 'qa-details-container');
         instructionContent
-          .html(instructionHtml)
+          .html(instructionHtml)  // nosemgrep: d3-unsanitized-html - already sanitized above
           .selectAll('a')
           .attr('rel', 'noopener')
           .attr('target', '_blank');

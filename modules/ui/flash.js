@@ -64,7 +64,7 @@ export function uiFlash(context) {
         content
             .selectAll('.flash-text')
             .attr('class', 'flash-text')
-            .html(_label);
+            .html(_label);  // nosemgrep: d3-unsanitized-html - flash labels from internal UI code
 
 
         _flashTimer = d3_timeout(function() {

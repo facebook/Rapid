@@ -391,7 +391,7 @@ export function uiPaneHelp(context) {
     helpPane.selectAll('.pane-heading > h2').text(d.title);
 
     const content = _selection.selectAll('.help-content');
-    content.html(d.contentHtml);
+    content.html(d.contentHtml);  // nosemgrep: d3-unsanitized-html - help content from internal docs
     content.selectAll('a').attr('target', '_blank');  // outbound links should open in new tab
 
     _selection.selectAll('.toc > li')

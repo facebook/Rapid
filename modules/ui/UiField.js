@@ -232,7 +232,7 @@ export class UiField {
       textEnter
         .append('span')
         .attr('class', 'label-textvalue')
-        .html(this.label);
+        .html(this.label);  // nosemgrep: d3-unsanitized-html - preset field labels are trusted
 
       textEnter
         .append('span')

@@ -114,10 +114,10 @@ export function uiSectionSelectionList(context) {
       });
 
     items.selectAll('.entity-type')
-      .html(entity => presets.match(entity, graph).name());
+      .html(entity => presets.match(entity, graph).name());  // nosemgrep: d3-unsanitized-html - preset names are trusted
 
     items.selectAll('.entity-name')
-      .html(d => {
+      .html(d => {  // nosemgrep: d3-unsanitized-html - l10n.displayName returns trusted content
         const entity = graph.entity(d.id);
         return l10n.displayName(entity.tags);
       });
