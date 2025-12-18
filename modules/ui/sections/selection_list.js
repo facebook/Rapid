@@ -113,11 +113,13 @@ export function uiSectionSelectionList(context) {
         return '#rapid-icon-' + entity.geometry(graph);
       });
 
+    // nosemgrep: d3-unsanitized-html - preset names are trusted
     items.selectAll('.entity-type')
-      .html(entity => presets.match(entity, graph).name());  // nosemgrep: d3-unsanitized-html - preset names are trusted
+      .html(entity => presets.match(entity, graph).name());
 
+    // nosemgrep: d3-unsanitized-html - l10n.displayName returns trusted content
     items.selectAll('.entity-name')
-      .html(d => {  // nosemgrep: d3-unsanitized-html - l10n.displayName returns trusted content
+      .html(d => {
         const entity = graph.entity(d.id);
         return l10n.displayName(entity.tags);
       });

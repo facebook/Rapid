@@ -102,11 +102,12 @@ export function uiSectionFeatureType(context) {
     nameparts.exit()
       .remove();
 
+    // nosemgrep: d3-unsanitized-html - preset names from internal system
     nameparts
       .enter()
       .append('div')
       .attr('class', 'namepart')
-      .html(d => d);  // nosemgrep: d3-unsanitized-html - preset names from internal system
+      .html(d => d);
   }
 
   section.entityIDs = function(val) {

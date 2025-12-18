@@ -471,8 +471,9 @@ export class UiRapidCatalog extends EventEmitter {
       .classed('added', d => d.added)
       .classed('hide', d => d.filtered);
 
+    // nosemgrep: d3-unsanitized-html - highlight() sanitizes internally
     $datasets.selectAll('.rapid-catalog-dataset-name')
-      .html(d => this.highlight(this._filterText, d.getLabel()));  // nosemgrep: d3-unsanitized-html - highlight() sanitizes internally
+      .html(d => this.highlight(this._filterText, d.getLabel()));
 
     $datasets.selectAll('.rapid-catalog-dataset-link-text')
       .text(l10n.t('rapid_menu.more_info'));
@@ -488,8 +489,9 @@ export class UiRapidCatalog extends EventEmitter {
     $datasets.selectAll('.dataset-category-preview')
       .attr('title', l10n.t('rapid_poweruser.beta'));  // alt text
 
+    // nosemgrep: d3-unsanitized-html - highlight() sanitizes internally
     $datasets.selectAll('.rapid-catalog-dataset-snippet')
-      .html(d => this.highlight(this._filterText, d.getDescription()));  // nosemgrep: d3-unsanitized-html - highlight() sanitizes internally
+      .html(d => this.highlight(this._filterText, d.getDescription()));
 
     $datasets.selectAll('.dataset-added-text')
       .text(d => d.added ? '\u2705 ' + l10n.t('rapid_menu.dataset_added') : '');  // 2705 = emoji check

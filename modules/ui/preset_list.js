@@ -355,12 +355,13 @@ export function uiPresetList(context) {
         .append('div')
         .attr('class', 'label-inner');
 
+      // nosemgrep: d3-unsanitized-html - preset names are trusted
       labelEnter
         .append('div')
         .attr('class', 'namepart')
         .call(uiIcon((isRTL ? '#rapid-icon-backward' : '#rapid-icon-forward'), 'inline'))
         .append('span')
-        .html(() => preset.nameLabel() + '&hellip;');  // nosemgrep: d3-unsanitized-html - preset names are trusted
+        .html(() => preset.nameLabel() + '&hellip;');
 
       this.box = selection
         .append('div')
@@ -476,12 +477,13 @@ export function uiPresetList(context) {
         preset.subtitleLabel()
       ].filter(Boolean);
 
+      // nosemgrep: d3-unsanitized-html - preset name parts are trusted
       labelEnter.selectAll('.namepart')
         .data(nameparts)
         .enter()
         .append('div')
         .attr('class', 'namepart')
-        .html(d => d);  // nosemgrep: d3-unsanitized-html - preset name parts are trusted
+        .html(d => d);
 
       wrapEnter.call(this.reference.button);
       selection.call(this.reference.body);

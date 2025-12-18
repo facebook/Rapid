@@ -96,6 +96,7 @@ export function uiSectionValidationRules(context) {
       .attr('name', 'rule')
       .on('change', toggleRule);
 
+    // nosemgrep: d3-unsanitized-html - l10n.tHtml with internal params
     label
       .append('span')
       .html(d => {

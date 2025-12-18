@@ -362,10 +362,11 @@ export function uiSectionRawMembershipEditor(context) {
             .attr('href', '#')
             .on('click', selectRelation);
 
+        // nosemgrep: d3-unsanitized-html - preset names are trusted
         labelLink
             .append('span')
             .attr('class', 'member-entity-type')
-            .html(function(d) {  // nosemgrep: d3-unsanitized-html - preset names are trusted
+            .html(function(d) {
                 const matched = presets.match(d.relation, editor.staging.graph);
                 return (matched && matched.name()) || l10n.t('inspector.relation');
             });

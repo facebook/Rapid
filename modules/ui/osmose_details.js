@@ -47,10 +47,11 @@ export function uiOsmoseDetails(context) {
         .append('h4')
         .text(l10n.t('QA.keepRight.detail_description'));
 
+      // nosemgrep: d3-unsanitized-html - sanitized in OsmoseService
       div
         .append('p')
         .attr('class', 'qa-details-description-text')
-        .html(d => issueString(d, 'detail'))  // nosemgrep: d3-unsanitized-html - sanitized in OsmoseService
+        .html(d => issueString(d, 'detail'))
         .selectAll('a')
         .attr('rel', 'noopener')
         .attr('target', '_blank');
@@ -75,9 +76,10 @@ export function uiOsmoseDetails(context) {
         .append('h4')
         .text(l10n.t('QA.osmose.fix_title'));
 
+      // nosemgrep: d3-unsanitized-html - sanitized in OsmoseService
       div
         .append('p')
-        .html(d => issueString(d, 'fix'))  // nosemgrep: d3-unsanitized-html - sanitized in OsmoseService
+        .html(d => issueString(d, 'fix'))
         .selectAll('a')
         .attr('rel', 'noopener')
         .attr('target', '_blank');
@@ -93,9 +95,10 @@ export function uiOsmoseDetails(context) {
         .append('h4')
         .text(l10n.t('QA.osmose.trap_title'));
 
+      // nosemgrep: d3-unsanitized-html - sanitized in OsmoseService
       div
         .append('p')
-        .html(d => issueString(d, 'trap'))  // nosemgrep: d3-unsanitized-html - sanitized in OsmoseService
+        .html(d => issueString(d, 'trap'))
         .selectAll('a')
         .attr('rel', 'noopener')
         .attr('target', '_blank');
@@ -117,6 +120,7 @@ export function uiOsmoseDetails(context) {
             .append('h4')
             .text(l10n.t('QA.osmose.detail_title'));
 
+          // nosemgrep: d3-unsanitized-html - d.detail already sanitized in OsmoseService
           detailsDiv
             .append('p')
             .html(d => d.detail)
@@ -130,6 +134,7 @@ export function uiOsmoseDetails(context) {
           .append('h4')
           .text(l10n.t('QA.osmose.elems_title'));
 
+        // nosemgrep: d3-unsanitized-html - element IDs from OSM data
         elemsDiv
           .append('ul').selectAll('li')
           .data(d.elems)

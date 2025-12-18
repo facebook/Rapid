@@ -61,10 +61,11 @@ export function uiFlash(context) {
             .selectAll('.flash-icon use')
             .attr('xlink:href', _iconName);
 
+        // nosemgrep: d3-unsanitized-html - flash labels from internal UI code
         content
             .selectAll('.flash-text')
             .attr('class', 'flash-text')
-            .html(_label);  // nosemgrep: d3-unsanitized-html - flash labels from internal UI code
+            .html(_label);
 
 
         _flashTimer = d3_timeout(function() {

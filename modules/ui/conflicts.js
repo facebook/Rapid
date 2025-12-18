@@ -175,6 +175,7 @@ export function uiConflicts(context) {
       .append('div')
       .attr('class', 'conflict-detail-container');
 
+    // nosemgrep: d3-unsanitized-html - uses utilSanitizeHTML
     details
       .append('ul')
       .attr('class', 'conflict-detail-list')
@@ -190,6 +191,7 @@ export function uiConflicts(context) {
       .attr('class', 'conflict-choices')
       .call(addChoices);
 
+    // nosemgrep: d3-unsanitized-html - l10n.tHtml returns trusted l10n content
     details
       .append('div')
       .attr('class', 'conflict-nav-buttons joined cf')

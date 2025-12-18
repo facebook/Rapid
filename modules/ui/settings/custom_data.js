@@ -58,10 +58,11 @@ ${file_instructions}
 ${file_tip}
 `);
 
+    // nosemgrep: d3-unsanitized-html - fileHtml built from l10n strings
     textSection
       .append('div')
       .attr('class', 'instructions-template')
-      .html(fileHtml);  // nosemgrep: d3-unsanitized-html - fileHtml built from l10n strings
+      .html(fileHtml);
 
     textSection
       .append('input')
@@ -106,10 +107,11 @@ ${url_tokens}
 * \`${url_example_pmtiles}\`
 `);
 
+    // nosemgrep: d3-unsanitized-html - urlHtml built from l10n strings
     textSection
       .append('div')
       .attr('class', 'instructions-template')
-      .html(urlHtml);  // nosemgrep: d3-unsanitized-html - urlHtml built from l10n strings
+      .html(urlHtml);
 
     textSection
       .append('textarea')
