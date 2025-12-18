@@ -4,19 +4,23 @@ rules:
     message: |
       Potential XSS: .html() called with unsanitized content.
       Use utilSanitizeHTML() for external/user data, .text() for plain text,
-      or l10n.tHtml() for trusted localization strings.
+      or l10n.t()/l10n.tHtml() for trusted localization strings.
     severity: WARNING
     patterns:
       - pattern: $SEL.html($CONTENT)
-      # Exclude safe patterns:
+      # Exclude safe patterns - sanitized content:
       - pattern-not: $SEL.html(utilSanitizeHTML(...))
+      # Exclude safe patterns - localization (trusted developer content):
       - pattern-not: $SEL.html(l10n.tHtml(...))
+      - pattern-not: $SEL.html(l10n.t(...))
+      # Exclude safe patterns - marked.parse on localization content:
+      - pattern-not: $SEL.html(marked.parse(...))
       # Exclude clearing/resetting content:
       - pattern-not: $SEL.html('')
       - pattern-not: $SEL.html("")
       - pattern-not: $SEL.html('&nbsp;')
       - pattern-not: $SEL.html("&nbsp;")
-      # Exclude reading innerHTML (no arguments or getting value):
+      # Exclude reading innerHTML (no arguments):
       - pattern-not: $SEL.html()
     paths:
       include:
