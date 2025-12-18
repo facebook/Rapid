@@ -17,8 +17,6 @@ rules:
       - pattern-not: $SEL.html(uifield.tHtml(...))
       # Exclude safe patterns - marked.parse (typically on trusted content):
       - pattern-not: $SEL.html(marked.parse(...))
-      # Exclude safe patterns - ternary with l10n:
-      - pattern-not: $SEL.html($COND ? l10n.tHtml(...) : l10n.tHtml(...))
       # Exclude clearing/resetting content:
       - pattern-not: $SEL.html('')
       - pattern-not: $SEL.html("")
