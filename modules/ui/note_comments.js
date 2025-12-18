@@ -65,11 +65,11 @@ export function uiNoteComments(context) {
       .attr('class', 'comment-date')
       .html(d => l10n.t(`note.status.${d.action}`, { when: localeDateString(d.date) }));
 
-    // NOTE: This is the XSS test case - do NOT add nosemgrep here
+    // NOTE: d.html comes from OSM API and must be sanitized
     mainEnter
       .append('div')
       .attr('class', 'comment-text')
-      .html(d => d.html)
+      .html(d => utilSanitizeHTML(d.html))
       .selectAll('a')
         .attr('rel', 'noopener nofollow')
         .attr('target', '_blank');
