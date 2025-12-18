@@ -67,7 +67,7 @@ export function uiNoteComments(context) {
     mainEnter
       .append('div')
       .attr('class', 'comment-text')
-      .html(d => utilSanitizeHTML(d.html))
+      .html(d => d.html)
       .selectAll('a')
         .attr('rel', 'noopener nofollow')
         .attr('target', '_blank');
