@@ -11,6 +11,8 @@ rules:
       - pattern: $SEL.html($CONTENT)
       # Exclude safe patterns - sanitized content:
       - pattern-not: $SEL.html(utilSanitizeHTML(...))
+      - pattern-not: $SEL.html($X => utilSanitizeHTML(...))
+      - pattern-not: $SEL.html(function($X) { return utilSanitizeHTML(...); })
       # Exclude safe patterns - localization (trusted developer content):
       - pattern-not: $SEL.html(l10n.tHtml(...))
       - pattern-not: $SEL.html(l10n.t(...))
