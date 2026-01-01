@@ -118,7 +118,7 @@
     "cldr-localenames-full": "46.1.0",
     "cloc": "^2.2.0-cloc",
     "concat-files": "^0.1.1",
-    "esbuild": "^0.24.2",
+    "esbuild": "^0.25.0",
     "esbuild-visualizer": "^0.7.0",
     "eslint": "^9.19.0",
     "fetch-mock": "^12.2.1",
