@@ -355,6 +355,7 @@ export function uiPresetList(context) {
         .append('div')
         .attr('class', 'label-inner');
 
+      // nosemgrep: d3-unsanitized-html - preset names are trusted
       labelEnter
         .append('div')
         .attr('class', 'namepart')
@@ -476,6 +477,7 @@ export function uiPresetList(context) {
         preset.subtitleLabel()
       ].filter(Boolean);
 
+      // nosemgrep: d3-unsanitized-html - preset name parts are trusted
       labelEnter.selectAll('.namepart')
         .data(nameparts)
         .enter()

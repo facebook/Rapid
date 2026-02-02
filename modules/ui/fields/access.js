@@ -37,6 +37,7 @@ export function uiFieldAccess(context, uifield) {
       .append('li')
       .attr('class', d => `labeled-input preset-access-${d}`);
 
+    // nosemgrep: d3-unsanitized-html - uifield.tHtml returns trusted l10n content
     enter
       .append('div')
       .attr('class', 'label preset-label-access')

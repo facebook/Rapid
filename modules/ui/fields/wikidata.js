@@ -105,6 +105,7 @@ export function uiFieldWikidata(context, uifield) {
             .append('li')
             .attr('class', function(d) { return 'labeled-input preset-wikidata-' + d; });
 
+        // nosemgrep: d3-unsanitized-html - l10n.tHtml returns trusted l10n content
         enter
             .append('div')
             .attr('class', 'label')

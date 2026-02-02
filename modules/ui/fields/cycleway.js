@@ -46,6 +46,7 @@ export function uiFieldCycleway(context, uifield) {
             .append('li')
             .attr('class', function(d) { return 'labeled-input preset-cycleway-' + stripcolon(d); });
 
+        // nosemgrep: d3-unsanitized-html - uifield.tHtml returns trusted l10n content
         enter
             .append('div')
             .attr('class', 'label preset-label-cycleway')

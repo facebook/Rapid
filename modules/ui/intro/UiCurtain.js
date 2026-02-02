@@ -395,6 +395,7 @@ export class UiCurtain {
           html += `<div class="button-section"><button href="#" class="button action">${opts.buttonText}</button></div>`;
         }
 
+        // nosemgrep: d3-unsanitized-html - intro tutorial content from internal code
         this.$tooltip
           .attr('class', klass)
           .selectAll('.popover-inner')

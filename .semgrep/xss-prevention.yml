@@ -1,0 +1,31 @@
+rules:
+  - id: d3-unsanitized-html
+    languages: [javascript, typescript]
+    message: |
+      Potential XSS: .html() called with unsanitized content.
+      Use utilSanitizeHTML() for external/user data, .text() for plain text,
+      or l10n.t()/l10n.tHtml() for trusted localization strings.
+      If this is a false positive, add: // nosemgrep: d3-unsanitized-html
+    severity: WARNING
+    patterns:
+      - pattern: $SEL.html($CONTENT)
+      # Exclude safe patterns - sanitized content:
+      - pattern-not: $SEL.html(utilSanitizeHTML(...))
+      - pattern-not: $SEL.html($X => utilSanitizeHTML(...))
+      - pattern-not: $SEL.html(function($X) { return utilSanitizeHTML(...); })
+      # Exclude safe patterns - localization (trusted developer content):
+      - pattern-not: $SEL.html(l10n.tHtml(...))
+      - pattern-not: $SEL.html(l10n.t(...))
+      - pattern-not: $SEL.html(uifield.tHtml(...))
+      # Exclude safe patterns - marked.parse (typically on trusted content):
+      - pattern-not: $SEL.html(marked.parse(...))
+      # Exclude clearing/resetting content:
+      - pattern-not: $SEL.html('')
+      - pattern-not: $SEL.html("")
+      - pattern-not: $SEL.html('&nbsp;')
+      - pattern-not: $SEL.html("&nbsp;")
+      # Exclude reading innerHTML (no arguments):
+      - pattern-not: $SEL.html()
+    paths:
+      include:
+        - modules/

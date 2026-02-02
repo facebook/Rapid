@@ -49,6 +49,7 @@ export function uiKeepRightDetails(context) {
       .append('h4')
       .text(l10n.t('QA.keepRight.detail_description'));
 
+    // nosemgrep: d3-unsanitized-html - uses utilSanitizeHTML
     descriptionEnter
       .append('div')
       .attr('class', 'qa-details-description-text')

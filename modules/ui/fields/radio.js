@@ -62,6 +62,7 @@ export function uiFieldRadio(context, uifield) {
             .attr('value', function(d) { return uifield.t(`options.${d}`, { 'default': d }); })
             .attr('checked', false);
 
+        // nosemgrep: d3-unsanitized-html - uifield.tHtml returns trusted l10n content
         enter
             .append('span')
             .html(function(d) { return uifield.tHtml(`options.${d}`, { 'default': d }); });
@@ -299,6 +300,7 @@ export function uiFieldRadio(context, uifield) {
         if (selection.empty()) {
             placeholder.html(l10n.tHtml('inspector.none'));
         } else {
+            // nosemgrep: d3-unsanitized-html - value from radio button set by l10n
             placeholder.html(selection.attr('value'));
             _oldType[selection.datum()] = tags[selection.datum()];
         }

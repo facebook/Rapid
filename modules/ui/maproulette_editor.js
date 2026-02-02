@@ -156,6 +156,7 @@ export function uiMapRouletteEditor(context) {
     // update
     commentSave = commentSaveEnter.merge(commentSave);
 
+    // nosemgrep: d3-unsanitized-html - l10n + internal action string
     commentSave.select('.note-save-header')  // Corrected class name
       .html(l10n.t('map_data.layers.maproulette.comment') +
         ' <span style="color: ' + getActionColor(_actionTaken) + ';">' + _actionTaken + '</span>'

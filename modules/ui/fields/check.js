@@ -106,6 +106,7 @@ export function uiFieldCheck(context, uifield) {
       .attr('type', 'checkbox')
       .attr('id', uifield.uid);
 
+    // nosemgrep: d3-unsanitized-html - texts from internal field options
     enter
       .append('span')
       .html(texts[0])
@@ -212,6 +213,7 @@ export function uiFieldCheck(context, uifield) {
       .property('indeterminate', isMixed || (uifield.type !== 'defaultCheck' && !_value))
       .property('checked', isChecked(_value));
 
+    // nosemgrep: d3-unsanitized-html - textFor returns l10n content
     text
       .html(isMixed ? l10n.tHtml('inspector.multiple_values') : textFor(_value))
       .classed('mixed', isMixed);

@@ -471,6 +471,7 @@ export class UiRapidCatalog extends EventEmitter {
       .classed('added', d => d.added)
       .classed('hide', d => d.filtered);
 
+    // nosemgrep: d3-unsanitized-html - highlight() sanitizes internally
     $datasets.selectAll('.rapid-catalog-dataset-name')
       .html(d => this.highlight(this._filterText, d.getLabel()));
 
@@ -488,6 +489,7 @@ export class UiRapidCatalog extends EventEmitter {
     $datasets.selectAll('.dataset-category-preview')
       .attr('title', l10n.t('rapid_poweruser.beta'));  // alt text
 
+    // nosemgrep: d3-unsanitized-html - highlight() sanitizes internally
     $datasets.selectAll('.rapid-catalog-dataset-snippet')
       .html(d => this.highlight(this._filterText, d.getDescription()));
 

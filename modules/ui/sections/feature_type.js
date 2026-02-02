@@ -102,6 +102,7 @@ export function uiSectionFeatureType(context) {
     nameparts.exit()
       .remove();
 
+    // nosemgrep: d3-unsanitized-html - preset names from internal system
     nameparts
       .enter()
       .append('div')

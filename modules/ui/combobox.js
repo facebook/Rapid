@@ -390,6 +390,7 @@ export function uiCombobox(context, klass) {
                     if (typeof d.display === 'function') {  // display function
                         selection.call(d.display);
                     } else if (d.display) {                 // display html value
+                        // nosemgrep: d3-unsanitized-html - display values from internal presets
                         selection.html(d.display);
                     } else {                                // text value
                         selection.text(d.value);

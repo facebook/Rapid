@@ -30,6 +30,7 @@ export function uiCommitWarnings(context) {
         .append('div')
         .attr('class', 'modal-section ' + section + ' fillL2');
 
+      // nosemgrep: d3-unsanitized-html - ternary with l10n.tHtml
       containerEnter
         .append('h3')
         .html(severity === 'warning' ? l10n.tHtml('commit.warnings') : l10n.tHtml('commit.errors'));

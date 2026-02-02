@@ -59,11 +59,13 @@ export function uiNoteComments(context) {
         }
       });
 
+    // nosemgrep: d3-unsanitized-html - l10n.t with trusted date formatting
     metadataEnter
       .append('div')
       .attr('class', 'comment-date')
       .html(d => l10n.t(`note.status.${d.action}`, { when: localeDateString(d.date) }));
 
+    // NOTE: d.html comes from OSM API and must be sanitized
     mainEnter
       .append('div')
       .attr('class', 'comment-text')

@@ -66,6 +66,7 @@ ${info}
 
     let textSection = modal.select('.modal-section.message-text');
 
+    // nosemgrep: d3-unsanitized-html - instructions built from l10n strings
     textSection
       .append('div')
       .attr('class', 'instructions-template')

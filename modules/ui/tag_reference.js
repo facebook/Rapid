@@ -67,6 +67,7 @@ export function uiTagReference(context, what) {
       docsHtml = l10n.tHtml('inspector.no_documentation_key');
     }
 
+    // nosemgrep: d3-unsanitized-html - docsHtml from l10n.htmlForLocalizedText or l10n.tHtml
     _body
       .append('p')
       .attr('class', 'tag-reference-description')

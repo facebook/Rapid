@@ -30,3 +30,13 @@ jobs:
         echo "::remove-matcher owner=eslint-stylish::"
     - run: npm run all
     - run: npm run test
+
+  semgrep:
+    name: semgrep-oss/scan
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep
+    if: (github.actor != 'dependabot[bot]')
+    steps:
+      - uses: actions/checkout@v4
+      - run: semgrep scan --error --config .semgrep/

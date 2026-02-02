@@ -184,6 +184,7 @@ export function uiSectionRawMemberEditor(context) {
             .attr('href', '#')
             .on('click', selectMember);
 
+          // nosemgrep: d3-unsanitized-html - preset names are trusted
           labelLink
             .append('span')
             .attr('class', 'member-entity-type')
