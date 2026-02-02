@@ -35,6 +35,7 @@
       "openstreetmapbosniaandherzegovina": "OpenStreetMap Bosnia and Herzegovina",
       "openstreetmapbrasil": "OpenStreetMap Brasil",
       "openstreetmapbrasilia": "OpenStreetMap Brasília",
+      "openstreetmapbrasilminasgerais": "OpenStreetMap Brasil Minas Gerais",
       "openstreetmapbremen": "OpenStreetMap Bremen",
       "openstreetmapbulgaria": "OpenStreetMap Bulgaria",
       "openstreetmapburkinafaso": "OpenStreetMap Burkina Faso",
@@ -161,6 +162,7 @@
       "openstreetmappiemonte": "OpenStreetMap Piemonte",
       "openstreetmappoland": "OpenStreetMap Poland",
       "openstreetmapportugal": "OpenStreetMap Portugal",
+      "openstreetmappunjab": "OpenStreetMap Punjab",
       "openstreetmaprdc": "OpenStreetMap RDC",
       "openstreetmaprennes": "OpenStreetMap Rennes",
       "openstreetmapreunion": "OpenStreetMap Réunion",
@@ -325,8 +327,8 @@
         "url": "https://tiktok.com/@{account}"
       },
       "twitter": {
-        "name": "{community} on 𝕏",
-        "description": "Follow us on 𝕏",
+        "name": "{community} on X",
+        "description": "Follow us on X",
         "url": "https://twitter.com/{account}"
       },
       "url": {
@@ -337,8 +339,8 @@
         "url": "https://wiki.openstreetmap.org/wiki/{account}"
       },
       "x": {
-        "name": "{community} on 𝕏",
-        "description": "Follow us on 𝕏",
+        "name": "{community} on X",
+        "description": "Follow us on X",
         "url": "https://twitter.com/{account}"
       },
       "xmpp": {
@@ -594,9 +596,6 @@
     "de-mainz-signal": {
       "description": "OpenStreetMap in Mainz, Wiesbaden und Umgebung"
     },
-    "de-mainz-telegram": {
-      "description": "OpenStreetMap in Mainz und Umgebung"
-    },
     "de-mainz-wiki": {
       "description": "OpenStreetMap in Mainz und Umgebung"
     },
@@ -717,9 +716,6 @@
     "hu-matrix": {
       "extendedDescription": "OpenStreetMap chat on map topics. One of the OSM community support forums."
     },
-    "hu-meetup": {
-      "description": "The platform for organizing meetups in Hungary"
-    },
     "hu-mobilizon": {
       "name": "{community} on Mobilizon",
       "description": "Upcoming events for the OpenStreetMap Hungary community"
@@ -729,10 +725,13 @@
       "description": "Explore active mapping tasks in Hungary"
     },
     "hu-website": {
-      "description": "We help grow and improve OpenStreetMap in Hungary."
+      "description": "The website of the Hungarian OpenStreetMap community"
     },
     "hu-wiki": {
       "description": "{community} Wiki page"
+    },
+    "hu-youtube": {
+      "description": "OpenStreetMap Hungary meetup live streams and recordings"
     },
     "humanitarian-osm-tr-slack": {
       "name": "Humanitarian OpenStreetMap Turkey Slack",
@@ -858,7 +857,7 @@
     },
     "MapRVA": {
       "name": "MapRVA",
-      "description": "MapRVA Meetup"
+      "description": "MapRVA is a group of mapping enthusiasts in Richmond, Virginia who work to create and share geospatial data of our city using OpenStreetMap."
     },
     "maptime-bogota-facebook": {
       "name": "MaptimeBogotá",
@@ -920,6 +919,9 @@
     },
     "me-telegram": {
       "description": "All are welcome! Sign up at {signupUrl}"
+    },
+    "minas_gerais-discord": {
+      "extendedDescription": "Welcome to the OSM Minas Gerais Discord! We’re a community of mappers passionate about building detailed, open-source maps for Minas Gerais, Brazil. Join us to collaborate, share tips, and help make MG’s maps the best on OpenStreetMap. Whether you’re a newbie or a pro, let’s map together!"
     },
     "mm-facebook": {
       "extendedDescription": "Mapping in Myanmar? Have questions, want to connect with the community here? Join us at {url}. All are welcome!"
@@ -1191,6 +1193,13 @@
       "description": "FSHM Puducherry mailing list to discuss mapping in Puducherry and other things.",
       "extendedDescription": "FSHM organizes events relating to free software/hardware, technology, activism and OpenStreetMap."
     },
+    "osm-punjab-matrix": {
+      "description": "We map Punjab together. Join our Matrix group",
+      "extendedDescription": "Unofficial chat room for OSM Punjab, also bridged to OSMPunjab Telegram group"
+    },
+    "osm-punjab-telegram": {
+      "description": "We map Punjab together. Join our telegram group. {url}"
+    },
     "OSM-Rome-meetup": {
       "name": "Incontro Mappatori Romani",
       "description": "Improve OpenStreetMap in the Rome area",
@@ -1362,9 +1371,6 @@
     },
     "uk-london-wiki": {
       "description": "{community} Wiki page"
-    },
-    "uk-loomio": {
-      "name": "OpenStreetMap UK on Loomio"
     },
     "us-discourse": {
       "description": "A discussion forum about OpenStreetMap in the United States"
