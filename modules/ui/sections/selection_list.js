@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 import { osmEntity } from '../../osm/entity.js';
 import { uiIcon } from '../icon.js';
 import { uiSection } from '../section.js';
-import { utilHighlightEntities } from '../../util/index.js';
+import { utilHighlightEntities, utilSanitizeHTML } from '../../util/index.js';
 
 
 export function uiSectionSelectionList(context) {
@@ -114,12 +114,12 @@ export function uiSectionSelectionList(context) {
       });
 
     items.selectAll('.entity-type')
-      .text(entity => presets.match(entity, graph).name());
+      .html(entity => utilSanitizeHTML(presets.match(entity, graph).name()));
 
     items.selectAll('.entity-name')
-      .text(d => {
+      .html(d => {
         const entity = graph.entity(d.id);
-        return l10n.displayName(entity.tags);
+        return utilSanitizeHTML(l10n.displayName(entity.tags));
       });
   }
 
