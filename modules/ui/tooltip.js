@@ -1,7 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 
 import { uiPopover } from './popover.js';
-import { utilCmd, utilFunctor } from '../util/index.js';
+import { utilCmd, utilFunctor, utilSanitizeHTML } from '../util/index.js';
 
 
 export function uiTooltip(context) {
@@ -62,7 +62,7 @@ export function uiTooltip(context) {
         .append('div')
         .attr('class', 'tooltip-text')
         .merge(textWrap)
-        .html(d => d);    // watch out: a few tooltips still send html through here
+        .html(d => utilSanitizeHTML(d));    // sanitize HTML to prevent XSS attacks
 
       const shortcutWrap = selection
         .selectAll('.tooltip-keyhint')

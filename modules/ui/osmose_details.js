@@ -1,6 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 
-import { utilHighlightEntities } from '../util/index.js';
+import { utilHighlightEntities, utilSanitizeHTML } from '../util/index.js';
 
 
 export function uiOsmoseDetails(context) {
@@ -50,7 +50,7 @@ export function uiOsmoseDetails(context) {
       div
         .append('p')
         .attr('class', 'qa-details-description-text')
-        .html(d => issueString(d, 'detail'))
+        .html(d => utilSanitizeHTML(issueString(d, 'detail')))
         .selectAll('a')
         .attr('rel', 'noopener')
         .attr('target', '_blank');
@@ -77,7 +77,7 @@ export function uiOsmoseDetails(context) {
 
       div
         .append('p')
-        .html(d => issueString(d, 'fix'))
+        .html(d => utilSanitizeHTML(issueString(d, 'fix')))
         .selectAll('a')
         .attr('rel', 'noopener')
         .attr('target', '_blank');
@@ -95,7 +95,7 @@ export function uiOsmoseDetails(context) {
 
       div
         .append('p')
-        .html(d => issueString(d, 'trap'))
+        .html(d => utilSanitizeHTML(issueString(d, 'trap')))
         .selectAll('a')
         .attr('rel', 'noopener')
         .attr('target', '_blank');
@@ -119,7 +119,7 @@ export function uiOsmoseDetails(context) {
 
           detailsDiv
             .append('p')
-            .html(d => d.detail)
+            .html(d => utilSanitizeHTML(d.detail))
             .selectAll('a')
             .attr('rel', 'noopener')
             .attr('target', '_blank');
@@ -138,7 +138,7 @@ export function uiOsmoseDetails(context) {
           .append('a')
           .attr('href', '#')
           .attr('class', 'error_entity_link')
-          .html(d => d)
+          .html(d => utilSanitizeHTML(d))
           .each((d, i, nodes) => {
             const node = nodes[i];
             const link = d3_select(node);

@@ -114,10 +114,10 @@ export function uiSectionSelectionList(context) {
       });
 
     items.selectAll('.entity-type')
-      .html(entity => presets.match(entity, graph).name());
+      .text(entity => presets.match(entity, graph).name());
 
     items.selectAll('.entity-name')
-      .html(d => {
+      .text(d => {
         const entity = graph.entity(d.id);
         return l10n.displayName(entity.tags);
       });
