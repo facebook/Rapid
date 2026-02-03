@@ -1,0 +1,31 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.299Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.nb.json",
+    "hash": "10cee289cdfaba4570aa44d735bd90f6"
+  },
+  "nb": {
+    "_communities": {
+      "mappingbotswana": "Kartlegging av Botswana",
+      "openstreetmapafrica": "OpenStreetMap Afrika",
+      "openstreetmapaustria": "OpenStreetMap Østerrike",
+      "openstreetmapbelgium": "OpenStreetMap Belgia",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap Bosnia og Herzegovina",
+      "openstreetmapchina": "OpenStreetMap Kina",
+      "openstreetmapcroatia": "OpenStreetMap Kroatia"
+    },
+    "ym-University-of-Ghana": {
+      "name": "Universitetet for Ghana YouthMappers"
+    },
+    "ym-University-of-Victoria": {
+      "name": "Samfunn av geografi studenter"
+    },
+    "ym-University-of-Warwick": {
+      "extendedDescription": "Vi er en gruppe med entusiastiske kartleggere fra Warwick University. Vårt mål er å få folk engasjert i humanitær kartlegging og hjelpe dem med å forstå påvirkningen dette har i denne bransjen. Vi er i nær relasjon med Missing Maps og Doctors Without Borders UK og vårt fokus ligger på viktige oppgaver innenfor våre kartleggings aktiviteter og verksteder. Våre mapathons ligger ute på Missing Maps siden når de er planlagt."
+    },
+    "ym-Yarmouk-University": {
+      "name": "YouthMappers fra YU"
+    }
+  }
+}

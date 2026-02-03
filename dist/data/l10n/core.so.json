@@ -1,0 +1,593 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.199Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.so.json",
+    "hash": "ed6b63d32da755f471e92f2ce3c8b634"
+  },
+  "so": {
+    "modes": {
+      "add_area": {
+        "title": "Aagga"
+      },
+      "add_line": {
+        "title": "Khad"
+      },
+      "add_point": {
+        "title": "Bar"
+      }
+    },
+    "operations": {
+      "add": {
+        "annotation": {
+          "point": "Ku daray bar."
+        }
+      },
+      "start": {
+        "annotation": {
+          "line": "Bilaabay xariiq.",
+          "area": "Bilaabay goob."
+        }
+      },
+      "continue": {
+        "title": "Sii wad",
+        "description": "Sii wad khadkanan.",
+        "not_eligible": "Wax khad ah laguma wadi karo halkan.",
+        "annotation": {
+          "line": "Sii waday khadka.",
+          "area": "Sii waday aag."
+        }
+      },
+      "change_tags": {
+        "annotation": "Taxanbaha la beddelay."
+      },
+      "circularize": {
+        "title": "Goobo geli"
+      },
+      "delete": {
+        "title": "Tirtir"
+      },
+      "disconnect": {
+        "title": "Jar Xiriirka",
+        "not_connected": "Ma jiraan khadad/goobo ku filan halkan ku yaalo si loo joojiyo"
+      },
+      "move": {
+        "title": "Dhaqaaji"
+      },
+      "rotate": {
+        "title": "Rog"
+      },
+      "reverse": {
+        "title": "Dib u noqosho"
+      },
+      "split": {
+        "title": "Kala qaybi",
+        "not_eligible": "Khadadka looma kala qaybin karo bilow ama dhammaad."
+      }
+    },
+    "undo": {
+      "tooltip": "Ka-noqosho: {action}",
+      "nothing": "Ma jiraan wax laga noqdo."
+    },
+    "redo": {
+      "tooltip": "Ku-noqosho: {action}",
+      "nothing": "Ma jiraan wax lagu noqdo."
+    },
+    "translate": {
+      "localized_translation_language": "Dooro luuqada",
+      "localized_translation_name": "Magaca"
+    },
+    "zoom_in_edit": "Soo dhawee si aad u tifaftirto khariidada",
+    "help_translate": "Turjum",
+    "commit": {
+      "created": "Lagu suurtogeliyay"
+    },
+    "info_panels": {
+      "background": {
+        "title": "Hagaajinta",
+        "zoom": "Soo dhawee",
+        "description": "Sharaxaad"
+      },
+      "history": {
+        "title": "Taariikh",
+        "last_edit": "Ugu dambeeyn la beddelay"
+      },
+      "measurement": {
+        "area": "Aagga"
+      }
+    },
+    "geometry": {
+      "point": "bar",
+      "line": "khad"
+    },
+    "geocoder": {
+      "search": "Ka raadi dunida oo dhan…",
+      "no_results_worldwide": "Wax tilmaamo ah lama helin"
+    },
+    "geolocate": {
+      "title": "Muuji Goobtayda"
+    },
+    "inspector": {
+      "view_on_osm": "Ka eeg openstreetmap.org",
+      "choose": "Dooro nooca tilmaamaha",
+      "type": "Nooca",
+      "search": "Raadi",
+      "feature_list": "Tilmaamaha Waydiimaha",
+      "radio": {
+        "structure": {
+          "layer": "Lakabka"
+        }
+      },
+      "add": "Ku Dar",
+      "add_fields": "Ku dar goob:"
+    },
+    "background": {
+      "title": "Hagaajinta"
+    },
+    "map_data": {
+      "title": "Xogta Khariidada",
+      "description": "Xogta Khariidada",
+      "data_layers": "Lakabyada"
+    },
+    "filters": {
+      "service_roads": {
+        "description": "Jidka Shaqaalaha"
+      }
+    },
+    "save": {
+      "title": "Keydi",
+      "help": "Dib-u-fiiri isbeddelkaaga oo u soo dir si furan OpenStreetMap, oo ka dhigaysa inay muuqdaan dadka kale.",
+      "no_changes": "Wax isbeddel ah lama kaydin.",
+      "conflict": {
+        "previous": "< Hore",
+        "next": "Xiga >"
+      }
+    },
+    "tag_reference": {
+      "description": "Sharaxaad"
+    },
+    "QA": {
+      "keepRight": {
+        "detail_description": "Sharaxaad"
+      }
+    },
+    "help": {
+      "title": "Caawin",
+      "help": {
+        "title": "Caawin",
+        "open_data": "Tifaftiraada aad ku sameyso Khariidadan waxay u muuqan doonaan qof walba oo isticmaala OpenStreetMap. Copying from commercial sources, like Google Maps, [is strictly forbidden](https://www.openstreetmap.org/copyright)."
+      },
+      "editing": {
+        "undo_redo_h": "Ka-noqosho & Ku-noqosho",
+        "save_h": "Keydi",
+        "keyboard_h": "Af-goys"
+      },
+      "lines": {
+        "title": "Khadadka"
+      },
+      "gps": {
+        "title": "Raadadka GPS"
+      },
+      "field": {
+        "restrictions": {
+          "about": {
+            "title": "Ku-saabsan"
+          }
+        }
+      }
+    },
+    "intro": {
+      "welcome": {
+        "title": "Ku soo dhowow"
+      },
+      "lines": {
+        "title": "Khadadka"
+      },
+      "startediting": {
+        "start": "Bilow Jihaynta!"
+      }
+    },
+    "shortcuts": {
+      "title": "Af-goys",
+      "key": {
+        "delete": "Tirtir"
+      },
+      "help": "Caawin",
+      "command": {
+        "undo": {
+          "label": "Ka-noqosho"
+        },
+        "redo": {
+          "label": "Ku-noqosho"
+        },
+        "save": {
+          "label": "Keydso is-beddelada"
+        }
+      }
+    },
+    "units": {
+      "miles": "{quantity} mayl"
+    },
+    "wikidata": {
+      "description": "Sharaxaad"
+    },
+    "languageNames": {
+      "ab": "U dhashay Abkhazia",
+      "ace": "Shiinays",
+      "ady": "U dhashay Ady",
+      "af": "Afrikaanka",
+      "agq": "Ageem",
+      "ain": "U dhashay Ain",
+      "ale": "U dhashay Ale",
+      "am": "Axmaar",
+      "an": "U dhashay Aragon",
+      "anp": "U dhashay Anp",
+      "ar": "Carabi",
+      "ar-001": "Carabiga rasmiga ah",
+      "arp": "U dhashay Arap",
+      "ars": "Najdi Arabic",
+      "as": "Asaamiis",
+      "ast": "Astuuriyaan",
+      "av": "U dhashay Avar",
+      "awa": "Awa",
+      "ay": "U dhashay Aymar",
+      "az": "Asarbayjan",
+      "ban": "U dhashay Baline",
+      "be": "Beleruusiyaan",
+      "bg": "Bulgeeriyaan",
+      "bi": "U dhashay Bislam",
+      "bin": "U dhashay Bin",
+      "bm": "Bambaara",
+      "bn": "Bangladesh",
+      "bo": "Tibeetaan",
+      "br": "Biriton",
+      "bs": "Bosniyaan",
+      "bug": "U dhashay Bugin",
+      "byn": "U dhashay Byn",
+      "ca": "Katalaan",
+      "ccp": "Jakma",
+      "ce": "Jejen",
+      "ceb": "Sebuano",
+      "cgg": "Jiga",
+      "chr": "Jerookee",
+      "ckb": "Bartamaha Kurdish",
+      "co": "Korsikan",
+      "cs": "Jeeg",
+      "cu": "Kaniisadda Islaafik",
+      "da": "Dhaanish",
+      "dav": "Taiita",
+      "de": "Jarmal",
+      "de-AT": "Jarmal Awsteeriya",
+      "de-CH": "Iswiiska Sare ee Jarmal",
+      "dje": "Sarma",
+      "dsb": "Soorbiyaanka Hoose",
+      "dua": "Duaala",
+      "dyo": "Joola-Foonyi",
+      "dz": "D’zongqa",
+      "ee": "Eewe",
+      "el": "Giriik",
+      "en": "Ingiriisi",
+      "en-AU": "Ingiriis Austaraaliyaan",
+      "en-CA": "Ingiriis Kanadiyaan",
+      "en-GB": "Ingiriis Biritish",
+      "en-US": "Ingiriis Maraykan",
+      "eo": "Isberaanto",
+      "es": "Isbaanish",
+      "es-419": "Isbaanishka Laatiin Ameerika",
+      "es-ES": "Isbaanish Yurub",
+      "es-MX": "Isbaanishka Mexico",
+      "et": "Istooniyaan",
+      "eu": "Basquu",
+      "ewo": "Eewondho",
+      "fa": "Faarisi",
+      "fa-AF": "Faarsi",
+      "ff": "Fuulah",
+      "fi": "Finishka",
+      "fil": "Filibiino",
+      "fo": "Farowsi",
+      "fr": "Faransiis",
+      "fr-CA": "Faransiiska Kanada",
+      "fr-CH": "Faransiis (Iswiiserlaand)",
+      "frc": "Faransiiska Cajun",
+      "fur": "Firiyuuliyaan",
+      "fy": "Firiisiyan Galbeed",
+      "ga": "Ayrish",
+      "gd": "Iskot Giilik",
+      "gl": "Galiisiyaan",
+      "gsw": "Jarmal Iswiis",
+      "gu": "Gujaraati",
+      "guz": "Guusii",
+      "gv": "Mankis",
+      "ha": "Hawsa",
+      "haw": "Hawaay",
+      "he": "Cibraani",
+      "hmn": "Hamong",
+      "hr": "Koro’eeshiyaan",
+      "hsb": "Sorobiyaanka Sare",
+      "ht": "Heeytiyaan Karawle",
+      "hu": "Hangariyaan",
+      "hy": "Armeeniyaan",
+      "ia": "Interlinguwa",
+      "id": "Indunusiyaan",
+      "ii": "Sijuwan Yi",
+      "is": "Ayslandays",
+      "it": "Talyaani",
+      "ja": "Jabaaniis",
+      "jgo": "Ingoomba",
+      "jmc": "Chaga",
+      "jv": "Jafaaniis",
+      "ka": "Joorijiyaan",
+      "kab": "Kabayle",
+      "kam": "Kaamba",
+      "kbd": "U dhashay Kabardia",
+      "kde": "Kimakonde",
+      "kea": "Kabuferdiyanu",
+      "khq": "Koyra Jiini",
+      "ki": "Kikuuyu",
+      "kk": "Kasaaq",
+      "kkj": "Kaako",
+      "kl": "Kalaallisuut",
+      "km": "Kamboodhian",
+      "kn": "Kannadays",
+      "ko": "Kuuriyaan",
+      "ks": "Kaashmiir",
+      "ksb": "Shambaala",
+      "ksh": "Kologniyaan",
+      "ku": "Kurdishka",
+      "kw": "Kornish",
+      "kxv": "Kufi",
+      "ky": "Kirgiis",
+      "la": "Laatiin",
+      "lag": "Laangi",
+      "lb": "Luksaamboorgish",
+      "lg": "Gandha",
+      "lij": "Liguuriyaan",
+      "lkt": "Laakoota",
+      "lrc": "Luri Waqooyi",
+      "lt": "Lituwaanays",
+      "lu": "Luuba-kataanga",
+      "luo": "Luwada",
+      "lv": "Laatfiyaan",
+      "mas": "Masaay",
+      "mer": "Meeru",
+      "mfe": "Moorisayn",
+      "mg": "Malagaasi",
+      "mgh": "Luuqadda Makhuwa-Meetto",
+      "mgo": "Meetaa",
+      "mi": "Maaoori",
+      "mic": "Mi'kmaq",
+      "mk": "Masadooniyaan",
+      "mn": "Mangooli",
+      "mni": "Maniburi",
+      "mr": "Maarati",
+      "ms": "Malaay",
+      "mt": "Maltiis",
+      "mua": "Miyundhaang",
+      "mzn": "Masanderaani",
+      "nb": "Nawrijii Bokmål",
+      "nd": "Indhebeele Waqooyi",
+      "nds": "Jarmal Hooseeya",
+      "ne": "Nebaali",
+      "nl": "Holandays",
+      "nl-BE": "Af faleemi",
+      "nmg": "Kuwaasiyo",
+      "nn": "Nawriijiga Nynorsk",
+      "nnh": "Ingiyembuun",
+      "no": "Nawriiji",
+      "nus": "Nuweer",
+      "ny": "Inyaanja",
+      "nyn": "Inyankoole",
+      "or": "Oodhiya",
+      "os": "Oseetic",
+      "pa": "Bunjaabi",
+      "pcm": "Bidjinka Nayjeeriya",
+      "pl": "Boolish",
+      "prg": "Brashiyaan",
+      "ps": "Bashtuu",
+      "pt": "Boortaqiis",
+      "pt-BR": "Boortaqiiska Baraasiil",
+      "pt-PT": "Boortaqiiska Yurub",
+      "rm": "Romaanis",
+      "rn": "Rundhi",
+      "ro": "Romanka",
+      "ru": "Ruush",
+      "rup": "U dhashay Aromania",
+      "rw": "Ruwaandha",
+      "rwk": "Raawa",
+      "saq": "Sambuuru",
+      "sd": "Siindhi",
+      "se": "Sami Waqooyi",
+      "seh": "Seena",
+      "ses": "Koyraboro Seenni",
+      "shi": "Shilha",
+      "sk": "Isloofaak",
+      "sl": "Islofeeniyaan",
+      "sm": "Samowan",
+      "smn": "Inaari Saami",
+      "sms": "Skolt Sami",
+      "sn": "Shoona",
+      "so": "Soomaali",
+      "sq": "Albeeniyaan",
+      "sr": "Seerbiyaan",
+      "st": "Sesooto",
+      "su": "Suudaaniis",
+      "sv": "Iswiidhish",
+      "sw": "Sawaaxili",
+      "syr": "Af-Siriyak",
+      "szl": "Sileshiyaan",
+      "ta": "Tamiil",
+      "te": "Teluugu",
+      "teo": "Teeso",
+      "tg": "Taajik",
+      "th": "Taaylandays",
+      "tk": "Turkumaanish",
+      "to": "Toongan",
+      "tt": "Taatar",
+      "twq": "Tasaawaq",
+      "tyv": "Tuvinia",
+      "tzm": "Bartamaha Atlaas Tamasayt",
+      "ug": "Uighur",
+      "uk": "Yukreeniyaan",
+      "ur": "Urduu",
+      "uz": "Usbakis",
+      "vai": "Faayi",
+      "vec": "Dadka Fenaays",
+      "vi": "Fiitnaamays",
+      "vmw": "Af-Makhuwa",
+      "vo": "Folabuuk",
+      "vun": "Fuunjo",
+      "wae": "Walseer",
+      "wo": "Woolof",
+      "xog": "Sooga",
+      "yav": "Yaangbeen",
+      "yi": "Yadhish",
+      "yo": "Yoruuba",
+      "yue": "Shiinays, Cantonese",
+      "zgh": "Morokaanka Tamasayt Rasmiga",
+      "zh": "Af-Shiineeska Mandarin",
+      "zh-Hans": "Shiineeska Mandarin ee Rasmiga ah",
+      "zh-Hant": "Af-Shiineeska Mandarin ee Qadiimiga ah",
+      "zu": "Zuulu"
+    },
+    "scriptNames": {
+      "Aghb": "Qoraalka Luuqada Caucasian Albanian",
+      "Ahom": "Dadka Ahom",
+      "Arab": "Carabi",
+      "Aran": "Farta Luuqada Faarsiga",
+      "Armi": "Luuqada Imperial Aramaic",
+      "Armn": "Armeeniyaan",
+      "Avst": "Luuqada Avestan",
+      "Bali": "Baliniis",
+      "Bass": "Qoraalka Vah",
+      "Beng": "Baangla",
+      "Bhks": "Qoraalka Bhaiksuki",
+      "Bopo": "Bobomofo",
+      "Brah": "Dhirta Brahmi",
+      "Brai": "Qoraalka Indhoolaha",
+      "Bugi": "Luuqada Buginiiska",
+      "Buhd": "Luuqada Buhid",
+      "Cakm": "Jakma",
+      "Cans": "Qoraalka Luuqada Aborajiinka ee Kanada",
+      "Cari": "Luuqada kaariyaanka",
+      "Cham": "Jam",
+      "Cher": "Jerokee",
+      "Chrs": "Luuqada Korasmiyaanka",
+      "Copt": "Dadka Kotiga",
+      "Cprt": "sibraas dhalad ah",
+      "Cyrl": "Siriylik",
+      "Deva": "Dhefangaari",
+      "Diak": "Luuqadaha Dives Akuru",
+      "Dogr": "Dadka Dogra",
+      "Dsrt": "Gobalka Deseret",
+      "Dupl": "Qoraalka Duployan shorthand",
+      "Egyp": "Fartii hore ee Masaarida",
+      "Elba": "Magaalada Elbasan",
+      "Elym": "Qoraalka Elymaic",
+      "Ethi": "Itoobiya",
+      "Geor": "Joorjiya",
+      "Glag": "Qoraalka Glagolitic",
+      "Gong": "Gumjala Gondi",
+      "Gonm": "Qoraalka Masaram Gondi",
+      "Goth": "Dadka Gothic",
+      "Gran": "Qoraalka Grantha",
+      "Grek": "Giriik",
+      "Gujr": "Gujaraati",
+      "Guru": "Luuqada gujarati",
+      "Hanb": "Han iyo Bobomofo",
+      "Hang": "Hanguul",
+      "Hano": "Qoraalka Hanunoo",
+      "Hans": "Haan La fududeeyay",
+      "Hant": "Haanti hore",
+      "Hatr": "Qoraalka Hatran",
+      "Hebr": "Cibraani",
+      "Hluw": "Qoraalka Anatolian Hieroglyphs",
+      "Hmng": "Hmonga pahawh",
+      "Hmnp": "Hmonga Nyiakeng Puachue",
+      "Hrkt": "Qoraalka Xuruufta Jabaaniiska",
+      "Hung": "Hangariyaankii Hore",
+      "Ital": "Itaaliggii Hore",
+      "Jamo": "Jaamo",
+      "Java": "Jafaniis",
+      "Jpan": "Jabaaniis",
+      "Kali": "Kayah LI",
+      "Kana": "Katakaana",
+      "Khar": "Koraalka kharooshi",
+      "Khmr": "Khamer",
+      "Khoj": "Qoraalka Khojki",
+      "Kits": "Qoraalka yar ee Khitan",
+      "Knda": "Kanada",
+      "Kore": "Kuuriyaan",
+      "Kthi": "kaithi",
+      "Laoo": "Dalka Lao",
+      "Latn": "Laatiin",
+      "Lepc": "Lebja",
+      "Lina": "Nidaamka qoraalka Linear A",
+      "Linb": "Nidaamka qoraalka Linear B",
+      "Lisu": "Wabiga Fraser",
+      "Lyci": "Lyciantii Hore",
+      "Mand": "Luuqada Mandaean",
+      "Medf": "Madefaidrin",
+      "Merc": "Meroitic Curve",
+      "Mlym": "Maalayalam",
+      "Modi": "Moodi",
+      "Mong": "Mongooliyaan",
+      "Mtei": "Qoraalka Luuqada Meitei",
+      "Mymr": "Mayanmaar",
+      "Narb": "Carabiyadii Hore ee Wuqooye",
+      "Olck": "Ol Jiki",
+      "Orya": "Oodhiya",
+      "Pauc": "Baaw Sin Haaw",
+      "Perm": "Permic gii hore",
+      "Phag": "Qoraalka Phags-pa",
+      "Phli": "Qoraaladii hore ee Pahlavi",
+      "Phlp": "Qoraalka midig laga bilaabo ee faarsiyiintii",
+      "Phnx": "Luuqada Phoenicianka",
+      "Plrd": "Shibanaha",
+      "Prti": "Qoraalka Parthian",
+      "Qaag": "Qoraalka Sawgiga",
+      "Rjng": "Dadka Rejan",
+      "Rohg": "Hanifi",
+      "Runr": "Dadka Rejang",
+      "Samr": "Dadka Samaritan",
+      "Sarb": "Crabiyaankii Hore ee Wuqooyi",
+      "Saur": "Sawrashtra",
+      "Sgnw": "Qaabka dhagoolka loola hadlo",
+      "Shaw": "calaamad qoris",
+      "Sind": "khudwadi",
+      "Sinh": "Sinhaala",
+      "Sogd": "Sogdiyaan",
+      "Sogo": "Sogdiyaankii Hore",
+      "Sora": "Qoraalka Sora Sompeng",
+      "Sund": "Dadka Sundaniiska",
+      "Sylo": "Qoraalka Luuqada Sylheti",
+      "Syrc": "Lahjada Syriac",
+      "Talu": "Tai Lue cusub",
+      "Taml": "Taamiil",
+      "Tang": "Luuqada Tangut",
+      "Tavt": "Farta lagu Qoro Luuqadaha Tai",
+      "Telu": "Teeluguu",
+      "Tfng": "Farta Tifinagh",
+      "Tglg": "Luuqada Tagalog",
+      "Thaa": "Daana",
+      "Thai": "Taay",
+      "Tibt": "Tibetaan",
+      "Tirh": "Qoraalka Luuqada Maithili",
+      "Ugar": "Luuqada Ugaritic",
+      "Vaii": "Dadka Vai",
+      "Wara": "Nidaamka Qoraalka Luuqada Ho",
+      "Wcho": "Dadka wanjo",
+      "Xpeo": "Faarsigii Hore",
+      "Xsux": "Qoraalkii Hore ee dadka Sumaariyiinta ee dhulka mesobataamiya",
+      "Yezi": "Dadka Yesiidiga",
+      "Yiii": "Tiknoolajiyada Yi",
+      "Zanb": "Xarafka laba jibaaran ee kujira Xarfaha Zanabazar",
+      "Zinh": "Dhaxlay",
+      "Zmth": "Aqoonsiga Xisaabta",
+      "Zsye": "Calaamad Dareen Muujin",
+      "Zsym": "Calaamado",
+      "Zxxx": "Aan la qorin",
+      "Zyyy": "Caadi ahaan",
+      "Zzzz": "Far aan la aqoon amase aan saxnayn"
+    }
+  }
+}

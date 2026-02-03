@@ -1,0 +1,814 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.224Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.lb.json",
+    "hash": "3662d3a2ac4a81d408336fb50a8c1838"
+  },
+  "lb": {
+    "icons": {
+      "remove": "läschen",
+      "undo": "Réckgängeg maachen",
+      "zoom_to": "zoomen bei",
+      "copy": "kopéieren",
+      "view_on": "ugucken op {domain}",
+      "visit_website": "Websäit besichen",
+      "favorite": "favorit",
+      "list": "Lescht",
+      "deselect": "ofwielen"
+    },
+    "toolbar": {
+      "inspect": "inspektéieren",
+      "undo_redo": "Réckgängeg maachen / Widderhuelen",
+      "recent": "Rezent",
+      "favorites": "Favoritten",
+      "add_feature": "Feature bäifügen"
+    },
+    "title": {
+      "labeled_and_more": {
+        "one": "{labeled} an {count} méi",
+        "other": "{labeled} an {count} méi"
+      }
+    },
+    "modes": {
+      "add_area": {
+        "title": "Beräich"
+      },
+      "add_line": {
+        "title": "Linn"
+      },
+      "add_point": {
+        "title": "Punkt"
+      },
+      "add_note": {
+        "title": "Notiz",
+        "description": "Feeler fonnt? Looss aner Benotzer et wëssen."
+      },
+      "add_preset": {
+        "title": "{feature} bäifügen"
+      },
+      "browse": {
+        "title": "Duerchsichen",
+        "description": "Kaart beweegen an zoomen."
+      },
+      "drag_node": {
+        "connected_to_hidden": "Dëst kann net beaarbecht ginn well et mat engem verstoppten Feature verbonnen ass."
+      }
+    },
+    "operations": {
+      "add": {
+        "annotation": {
+          "point": "Punkt bäigefügt.",
+          "vertex": "Knuet um Wee bäigefügt.",
+          "relation": "Relatioun bäigefügt.",
+          "note": "Notiz bäigefügt."
+        }
+      },
+      "start": {
+        "annotation": {
+          "line": "Linn ugefangen.",
+          "area": "Beräich ugefangen."
+        }
+      },
+      "continue": {
+        "title": "Weidermaachen",
+        "description": "Dëss Linn weiderféieren.",
+        "not_eligible": "Hei kann keng Linn weidergeféiert ginn.",
+        "multiple": "E puer Linnen kënnen hei weidergefouert ginn. Füg eng der Selektioun bäi fir weider ze maachen.",
+        "annotation": {
+          "line": "All Linnen weider gemach.",
+          "area": "Beräich weidergemaach."
+        }
+      },
+      "cancel_draw": {
+        "annotation": "Molen ofgebrach."
+      },
+      "change_role": {
+        "annotation": {
+          "one": "Den Rôle vun engem Relatiounsmember geännert.",
+          "other": "Den Rôle vun {n} Relatiounsmemberen geännert."
+        }
+      },
+      "change_tags": {
+        "annotation": "Stëchwierder geännert."
+      },
+      "copy": {
+        "title": "Kopéieren",
+        "description": {
+          "one": "Dëssen Feature fir d'Afügen virbereeden.",
+          "other": "Dëss Features fir d'Afügen virbereeden."
+        },
+        "annotation": {
+          "one": "Een Feature kopéiert",
+          "other": "{n} Features kopéiert."
+        },
+        "too_large": {
+          "one": "Dësst kann net kopéiert ginn well net genuch dovunner Siichtbar ass.",
+          "other": "Dëss kënnen net kopéiert ginn well net genuch vun hinnen Siichtbar ass."
+        }
+      },
+      "paste": {
+        "title": "Afügen",
+        "description": {
+          "one": "Füg een duplizéierten Feature hei bäi.",
+          "other": "Füg {n} duplizéierten Features hei bäi."
+        },
+        "annotation": {
+          "one": "Een Feature agefügt.",
+          "other": "{n} Features Agefügt."
+        },
+        "nothing_copied": "Et goufen keng Features kopéiert."
+      },
+      "circularize": {
+        "title": "Kreesfërmeg maachen",
+        "annotation": {
+          "feature": {
+            "one": "Een Feature kreesfërmeg gemaach.",
+            "other": "{n} Features kreesfërmeg gemaach."
+          }
+        }
+      },
+      "orthogonalize": {
+        "title": "Rechtwénkeleg maachen",
+        "annotation": {
+          "corner": {
+            "one": "Een Eck rechtwénkeleg gemaach.",
+            "other": "{n} Ecken rechtwénkeleg gemaach."
+          },
+          "feature": {
+            "one": "D'Ecken vun engem Feature rechtwénkeleg gemaach.",
+            "other": "D'Ecken vun {n} Features rechtwénkeleg gemaach."
+          }
+        }
+      },
+      "straighten": {
+        "title": "Riicht maachen",
+        "description": {
+          "points": "Dëss Punkten riicht maachen.",
+          "line": "Dëss Linn riicht maachen.",
+          "lines": "Dëss Linnen riicht maachen."
+        },
+        "annotation": {
+          "point": {
+            "one": "Een Punkt riicht gemaach.",
+            "other": "{n} Punkten riicht gemaach."
+          },
+          "line": {
+            "one": "Eng Linn riicht gemaach.",
+            "other": "{n} Linnen riicht gemaach."
+          }
+        }
+      },
+      "delete": {
+        "title": "Läschen",
+        "annotation": {
+          "point": "Een Punkt geläscht.",
+          "vertex": "Een Knuet vun engem Wee geläscht.",
+          "line": "Eng Linn geläscht.",
+          "area": "Een Beräich geläscht.",
+          "relation": "Eng Relatioun geläscht."
+        }
+      },
+      "disconnect": {
+        "title": "Trennen"
+      },
+      "merge": {
+        "title": "Zesummenféieren",
+        "description": "Dëss Features zesummenféieren.",
+        "annotation": {
+          "one": "Een Feature zesummengefouert.",
+          "other": "{n} Features zesummengefouert."
+        }
+      },
+      "move": {
+        "title": "Verréckelen",
+        "annotation": {
+          "point": "Een Punkt verréckelt.",
+          "vertex": "Een Knuet vum Wee verréckelt.",
+          "line": "Eng Linn verréckelt.",
+          "area": "Een Beräich verréckelt."
+        }
+      },
+      "rotate": {
+        "title": "Dréinen",
+        "annotation": {
+          "line": "Eng Linn gedréint.",
+          "area": "Een Beräich gedréint."
+        }
+      },
+      "reverse": {
+        "title": "Inverséieren"
+      },
+      "split": {
+        "title": "Deelen"
+      }
+    },
+    "zoom_in_edit": "Eranzoomen fir ze beaarbeschten",
+    "logout": "Ausloggen",
+    "report_a_bug": "Een Fehler mellen",
+    "commit": {
+      "title": "Op OpenStreetMap eroplueden",
+      "upload_explanation": "D'Ännerungen déi Dir eroplued wäerten op all Kaarten déi OpenStreetMap Daten benotzen Siichtbar ginn.",
+      "cancel": "Ofbriechen",
+      "warnings": "Warnungen",
+      "modified": "Modifiéiert",
+      "deleted": "Geläscht",
+      "created": "Erstallt"
+    },
+    "contributors": {
+      "list": "Beaarbeschtungen vun {users}",
+      "truncated_list": {
+        "one": "Beaarbeschtungen vun {users} an {count} aneren",
+        "other": "Beaarbeschtungen vun {users} an {count} aneren"
+      }
+    },
+    "info_panels": {
+      "background": {
+        "title": "Hannergrond",
+        "description": "Beschreiwung"
+      },
+      "measurement": {
+        "area": "Beräich"
+      }
+    },
+    "geolocate": {
+      "title": "Mäin Standort uweisen"
+    },
+    "inspector": {
+      "view_on_osm": "Op openstreetmap.org ugucken",
+      "choose": "Den Typ vun Feature auswielen",
+      "results": {
+        "one": "{n} Resultat fir {search}",
+        "other": "{n} Resultater fir {search}"
+      },
+      "no_documentation_key": "Et ass keng Dokumentatioun verfügbar."
+    },
+    "background": {
+      "title": "Hannergrond",
+      "description": "Hannergrond Astellungen",
+      "reset": "Zerécksetzen"
+    },
+    "map_data": {
+      "layers": {
+        "maproulette": {
+          "cancel": "Ofbriechen"
+        }
+      }
+    },
+    "restore": {
+      "heading": "Dir hudd net gespäichert Ännerungen"
+    },
+    "save": {
+      "title": "Späicheren",
+      "no_changes": "Keng Ännerungen fir ze späicheren.",
+      "error": "Fehler sinn während dem Versuch ze späicheren opgetrueden",
+      "uploading": "Ännerungen ginn op OpenStreetMap eropgelueden...",
+      "unsaved_changes": "Dir hudd net gespäichert Ännerungen"
+    },
+    "confirm": {
+      "cancel": "Ofbriechen"
+    },
+    "tag_reference": {
+      "description": "Beschreiwung"
+    },
+    "QA": {
+      "keepRight": {
+        "detail_description": "Beschreiwung"
+      }
+    },
+    "note": {
+      "note": "Notiz"
+    },
+    "help": {
+      "editing": {
+        "save_h": "Späicheren"
+      }
+    },
+    "issues": {
+      "warnings": "Warnungen"
+    },
+    "shortcuts": {
+      "key": {
+        "delete": "Läschen"
+      },
+      "command": {
+        "save": {
+          "label": "Ännerungen späicheren"
+        }
+      }
+    },
+    "wikidata": {
+      "description": "Beschreiwung"
+    },
+    "languageNames": {
+      "ab": "Abchasesch",
+      "ace": "Aceh-Sprooch",
+      "ach": "Acholi-Sprooch",
+      "ady": "Adygéiesch",
+      "ae": "Avestesch",
+      "aeb": "Tunesescht Arabesch",
+      "ain": "Ainu-Sprooch",
+      "akk": "Akkadesch",
+      "ale": "Aleutesch",
+      "aln": "Gegesch",
+      "alt": "Süd-Alaesch",
+      "am": "Amharesch",
+      "an": "Aragonesesch",
+      "ang": "Alenglesch",
+      "ar": "Arabesch",
+      "ar-001": "Modernt Héicharabesch",
+      "arc": "Aramäesch",
+      "arn": "Mapudungun",
+      "arp": "Arapaho-Sprooch",
+      "arq": "Algerescht Arabesch",
+      "arw": "Arawak-Sprooch",
+      "ary": "Marokkanescht Arabesch",
+      "arz": "Egyptescht Arabesch",
+      "as": "Assamesesch",
+      "asa": "Asu (Tanzania)",
+      "ast": "Asturianesch",
+      "av": "Awaresch",
+      "az": "Aserbaidschanesch",
+      "ba": "Baschkiresch",
+      "bal": "Belutschesch",
+      "ban": "Balinesesch",
+      "bar": "Bairesch",
+      "bas": "Basaa-Sprooch",
+      "bbj": "Ghomálá’",
+      "be": "Wäissrussesch",
+      "bej": "Bedauye",
+      "bem": "Bemba-Sprooch",
+      "bg": "Bulgaresch",
+      "bho": "Bhodschpuri",
+      "bik": "Bikol-Sprooch",
+      "bin": "Bini-Sprooch",
+      "bjn": "Banjaresesch",
+      "bla": "Blackfoot-Sprooch",
+      "bm": "Bambara-Sprooch",
+      "bn": "Bengalesch",
+      "bo": "Tibetesch",
+      "bqi": "Bachtiaresch",
+      "br": "Bretonesch",
+      "bra": "Braj-Bhakha",
+      "bs": "Bosnesch",
+      "bua": "Burjatesch",
+      "bug": "Buginesesch",
+      "ca": "Katalanesch",
+      "car": "Karibesch",
+      "ce": "Tschetschenesch",
+      "cgg": "Kiga",
+      "ch": "Chamorro-Sprooch",
+      "chb": "Chibcha-Sprooch",
+      "chg": "Tschagataesch",
+      "chk": "Trukesesch",
+      "chn": "Chinook",
+      "ckb": "Sorani",
+      "co": "Korsesch",
+      "cop": "Koptesch",
+      "crh": "Krimtataresch",
+      "cs": "Tschechesch",
+      "csb": "Kaschubesch",
+      "cu": "Kiercheslawesch",
+      "cv": "Tschuwaschesch",
+      "cy": "Walisesch",
+      "da": "Dänesch",
+      "dak": "Dakota-Sprooch",
+      "dar": "Darginesch",
+      "de": "Däitsch",
+      "de-AT": "Éisträichescht Däitsch",
+      "de-CH": "Schwäizer Héichdäitsch",
+      "del": "Delaware-Sprooch",
+      "din": "Dinka-Sprooch",
+      "dsb": "Niddersorbesch",
+      "dtp": "Zentral-Dusun",
+      "dum": "Mëttelhollännesch",
+      "dv": "Maldivesch",
+      "dyu": "Dyula-Sprooch",
+      "dz": "Bhutanesch",
+      "ebu": "Kiembu",
+      "ee": "Ewe-Sprooch",
+      "egl": "Emilianesch",
+      "egy": "Egyptesch",
+      "el": "Griichesch",
+      "elx": "Elamesch",
+      "en": "Englesch",
+      "en-AU": "Australescht Englesch",
+      "en-CA": "Kanadescht Englesch",
+      "en-GB": "Britescht Englesch",
+      "en-US": "Amerikanescht Englesch",
+      "enm": "Mëttelenglesch",
+      "es": "Spuenesch",
+      "es-419": "Latäinamerikanescht Spuenesch",
+      "es-ES": "Europäescht Spuenesch",
+      "es-MX": "Mexikanescht Spuenesch",
+      "esu": "Yup’ik",
+      "et": "Estnesch",
+      "eu": "Baskesch",
+      "ext": "Extremaduresch",
+      "fa": "Persesch",
+      "fan": "Pangwe-Sprooch",
+      "fat": "Fanti-Sprooch",
+      "ff": "Ful",
+      "fi": "Finnesch",
+      "fit": "Meänkieli",
+      "fj": "Fidschianesch",
+      "fo": "Färöesch",
+      "fon": "Fon-Sprooch",
+      "fr": "Franséisch",
+      "fr-CA": "Kanadescht Franséisch",
+      "fr-CH": "Schwäizer Franséisch",
+      "frc": "Cajun",
+      "frm": "Mëttelfranséisch",
+      "fro": "Alfranséisch",
+      "frp": "Frankoprovenzalesch",
+      "frr": "Nordfriesesch",
+      "frs": "Ostfriesesch",
+      "fur": "Friulesch",
+      "fy": "Westfriesesch",
+      "ga": "Iresch",
+      "gaa": "Ga-Sprooch",
+      "gag": "Gagausesch",
+      "gan": "Gan-Chinesesch",
+      "gba": "Gbaya-Sprooch",
+      "gbz": "Zoroastrianescht Dari",
+      "gd": "Schottescht Gällesch",
+      "gil": "Gilbertesesch",
+      "gl": "Galizesch",
+      "gmh": "Mëttelhéichdäitsch",
+      "goh": "Alhéichdäitsch",
+      "gon": "Gondi-Sprooch",
+      "gor": "Mongondou",
+      "got": "Gotesch",
+      "grb": "Grebo-Sprooch",
+      "grc": "Algriichesch",
+      "gsw": "Schwäizerdäitsch",
+      "gur": "Farefare",
+      "guz": "Gusii-Sprooch",
+      "gwi": "Kutchin-Sprooch",
+      "hai": "Haida-Sprooch",
+      "hak": "Hakka-Chinesesch",
+      "haw": "Hawaiesch",
+      "he": "Hebräesch",
+      "hif": "Fidschi-Hindi",
+      "hil": "Hiligaynon-Sprooch",
+      "hit": "Hethitesch",
+      "hmn": "Miao-Sprooch",
+      "ho": "Hiri-Motu",
+      "hr": "Kroatesch",
+      "hsb": "Uewersorbesch",
+      "hsn": "Xiang-Chinesesch",
+      "ht": "Haitianesch",
+      "hu": "Ungaresch",
+      "hy": "Armenesch",
+      "hz": "Herero-Sprooch",
+      "id": "Indonesesch",
+      "ig": "Igbo-Sprooch",
+      "ik": "Inupiak",
+      "ilo": "Ilokano-Sprooch",
+      "inh": "Inguschesch",
+      "io": "Ido-Sprooch",
+      "is": "Islännesch",
+      "it": "Italienesch",
+      "iu": "Inukitut",
+      "izh": "Ischoresch",
+      "ja": "Japanesch",
+      "jam": "Jamaikanesch-Kreolesch",
+      "jpr": "Jiddesch-Persesch",
+      "jrb": "Jiddesch-Arabesch",
+      "jut": "Jütesch",
+      "jv": "Javanesch",
+      "ka": "Georgesch",
+      "kaa": "Karakalpakesch",
+      "kab": "Kabylesch",
+      "kac": "Kachin-Sprooch",
+      "kbd": "Kabardinesch",
+      "kg": "Kongolesesch",
+      "kha": "Khasi-Sprooch",
+      "kho": "Sakesch",
+      "ki": "Kikuyu-Sprooch",
+      "kj": "Kwanyama",
+      "kk": "Kasachesch",
+      "kl": "Grönlännesch",
+      "km": "Kambodschanesch",
+      "kmb": "Kimbundu-Sprooch",
+      "ko": "Koreanesch",
+      "koi": "Komi-Permiak",
+      "kos": "Kosraeanesch",
+      "kpe": "Kpelle-Sprooch",
+      "kr": "Kanuri-Sprooch",
+      "krc": "Karatschaiesch-Balkaresch",
+      "krl": "Karelesch",
+      "kru": "Oraon-Sprooch",
+      "ks": "Kaschmiresch",
+      "ksh": "Kölsch",
+      "ku": "Kurdesch",
+      "kum": "Kumükesch",
+      "kut": "Kutenai-Sprooch",
+      "kv": "Komi-Sprooch",
+      "kw": "Kornesch",
+      "ky": "Kirgisesch",
+      "la": "Latäin",
+      "lah": "Lahnda",
+      "lam": "Lamba-Sprooch",
+      "lb": "Lëtzebuergesch",
+      "lez": "Lesgesch",
+      "lg": "Ganda-Sprooch",
+      "li": "Limburgesch",
+      "lij": "Liguresch",
+      "liv": "Livesch",
+      "lkt": "Lakota-Sprooch",
+      "lmo": "Lombardesch",
+      "lo": "Laotesch",
+      "loz": "Rotse-Sprooch",
+      "lt": "Litauesch",
+      "ltg": "Lettgallesch",
+      "lui": "Luiseno-Sprooch",
+      "lun": "Lunda-Sprooch",
+      "luo": "Luo-Sprooch",
+      "lus": "Lushai-Sprooch",
+      "luy": "Olulujia",
+      "lv": "Lettesch",
+      "lzh": "Klassescht Chinesesch",
+      "lzz": "Lasesch Sprooch",
+      "mad": "Maduresesch",
+      "mag": "Khotta",
+      "mak": "Makassaresch",
+      "man": "Manding-Sprooch",
+      "mas": "Massai-Sprooch",
+      "mdr": "Mandaresesch",
+      "men": "Mende-Sprooch",
+      "mer": "Meru-Sprooch",
+      "mg": "Malagassi-Sprooch",
+      "mga": "Mëtteliresch",
+      "mgo": "Meta’",
+      "mh": "Marschallesesch",
+      "mi": "Maori",
+      "mic": "Micmac-Sprooch",
+      "min": "Minangkabau-Sprooch",
+      "mk": "Mazedonesch",
+      "mn": "Mongolesch",
+      "mnc": "Mandschuresch",
+      "mni": "Meithei-Sprooch",
+      "moh": "Mohawk-Sprooch",
+      "mos": "Mossi-Sprooch",
+      "mrj": "West-Mari",
+      "ms": "Malaiesch",
+      "mt": "Maltesesch",
+      "mus": "Muskogee-Sprooch",
+      "mwl": "Mirandesesch",
+      "my": "Birmanesch",
+      "myv": "Ersja-Mordwinesch",
+      "mzn": "Mazandarani",
+      "na": "Nauruesch",
+      "nan": "Min-Nan-Chinesesch",
+      "nap": "Neapolitanesch",
+      "nb": "Norwegesch Bokmål",
+      "nd": "Nord-Ndebele-Sprooch",
+      "nds": "Nidderdäitsch",
+      "ne": "Nepalesesch",
+      "nia": "Nias-Sprooch",
+      "niu": "Niue-Sprooch",
+      "nl": "Hollännesch",
+      "nl-BE": "Flämesch",
+      "nn": "Norwegesch Nynorsk",
+      "no": "Norwegesch",
+      "non": "Alnordesch",
+      "nr": "Süd-Ndebele-Sprooch",
+      "nso": "Nord-Sotho-Sprooch",
+      "nwc": "Al-Newari",
+      "ny": "Nyanja-Sprooch",
+      "nym": "Nyamwezi-Sprooch",
+      "oc": "Okzitanesch",
+      "oj": "Ojibwa-Sprooch",
+      "or": "Orija",
+      "os": "Ossetesch",
+      "osa": "Osage-Sprooch",
+      "ota": "Osmanesch",
+      "pa": "Pandschabesch",
+      "pag": "Pangasinan-Sprooch",
+      "pal": "Mëttelpersesch",
+      "pam": "Pampanggan-Sprooch",
+      "pau": "Palau",
+      "pcd": "Picardesch",
+      "pdc": "Pennsylvaniadäitsch",
+      "pdt": "Plattdäitsch",
+      "peo": "Alpersesch",
+      "pfl": "Pfälzesch Däitsch",
+      "phn": "Phönikesch",
+      "pl": "Polnesch",
+      "pms": "Piemontesesch",
+      "pnt": "Pontesch",
+      "pon": "Ponapeanesch",
+      "prg": "Preisesch",
+      "pro": "Alprovenzalesch",
+      "ps": "Paschtu",
+      "pt": "Portugisesch",
+      "pt-BR": "Brasilianescht Portugisesch",
+      "pt-PT": "Europäescht Portugisesch",
+      "quc": "Quiché-Sprooch",
+      "qug": "Kichwa (Chimborazo-Gebidder)",
+      "rap": "Ouschterinsel-Sprooch",
+      "rar": "Rarotonganesch",
+      "rif": "Tarifit",
+      "rm": "Rätoromanesch",
+      "rn": "Rundi-Sprooch",
+      "ro": "Rumänesch",
+      "ro-MD": "Moldawesch",
+      "rom": "Romani",
+      "rtm": "Rotumanesch",
+      "ru": "Russesch",
+      "rue": "Russinesch",
+      "rup": "Aromunesch",
+      "rw": "Ruandesch",
+      "sad": "Sandawe-Sprooch",
+      "sah": "Jakutesch",
+      "sam": "Samaritanesch",
+      "sc": "Sardesch",
+      "scn": "Sizilianesch",
+      "sco": "Schottesch",
+      "sdc": "Sassaresesch",
+      "se": "Nordsamesch",
+      "sel": "Selkupesch",
+      "ses": "Koyra Senni",
+      "sga": "Aliresch",
+      "sgs": "Samogitesch",
+      "sh": "Serbo-Kroatesch",
+      "shi": "Taschelhit",
+      "shn": "Schan-Sprooch",
+      "shu": "Tschadesch-Arabesch",
+      "si": "Singhalesesch",
+      "sk": "Slowakesch",
+      "sl": "Slowenesch",
+      "sli": "Nidderschlesesch",
+      "sm": "Samoanesch",
+      "sma": "Südsamesch",
+      "smj": "Lule-Lappesch",
+      "smn": "Inari-Lappesch",
+      "sms": "Skolt-Lappesch",
+      "snk": "Soninke-Sprooch",
+      "sog": "Sogdesch",
+      "sq": "Albanesch",
+      "sr": "Serbesch",
+      "srn": "Srananesch",
+      "srr": "Serer-Sprooch",
+      "ss": "Swazi",
+      "st": "Süd-Sotho-Sprooch",
+      "stq": "Saterfriesesch",
+      "su": "Sundanesesch",
+      "suk": "Sukuma-Sprooch",
+      "sux": "Sumeresch",
+      "sv": "Schwedesch",
+      "sw": "Suaheli",
+      "sw-CD": "Kongo-Swahili",
+      "swb": "Komoresch",
+      "syc": "Alsyresch",
+      "syr": "Syresch",
+      "szl": "Schlesesch",
+      "ta": "Tamilesch",
+      "tem": "Temne",
+      "ter": "Tereno-Sprooch",
+      "tet": "Tetum-Sprooch",
+      "tg": "Tadschikesch",
+      "th": "Thailännesch",
+      "ti": "Tigrinja",
+      "tiv": "Tiv-Sprooch",
+      "tk": "Turkmenesch",
+      "tkl": "Tokelauanesch",
+      "tkr": "Tsachuresch",
+      "tl": "Dagalog",
+      "tlh": "Klingonesch",
+      "tli": "Tlingit-Sprooch",
+      "tly": "Talesch",
+      "tmh": "Tamaseq",
+      "tn": "Tswana-Sprooch",
+      "to": "Tongaesch",
+      "tog": "Tsonga-Sprooch",
+      "tpi": "Neimelanesesch",
+      "tr": "Tierkesch",
+      "trv": "Seediq",
+      "tsd": "Tsakonesch",
+      "tsi": "Tsimshian-Sprooch",
+      "tt": "Tataresch",
+      "ttt": "Tatesch",
+      "tum": "Tumbuka-Sprooch",
+      "tvl": "Elliceanesch",
+      "ty": "Tahitesch",
+      "tyv": "Tuwinesch",
+      "tzm": "Mëttlert-Atlas-Tamazight",
+      "udm": "Udmurtesch",
+      "ug": "Uiguresch",
+      "uga": "Ugaritesch",
+      "uk": "Ukrainesch",
+      "umb": "Mbundu-Sprooch",
+      "uz": "Usbekesch",
+      "vai": "Vai-Sprooch",
+      "ve": "Venda-Sprooch",
+      "vec": "Venezesch",
+      "vep": "Wepsesch",
+      "vi": "Vietnamesesch",
+      "vls": "Westflämesch",
+      "vmf": "Mainfränkesch",
+      "vot": "Wotesch",
+      "vro": "Voro",
+      "wa": "Wallounesch",
+      "wae": "Walliserdäitsch",
+      "wal": "Walamo-Sprooch",
+      "was": "Washo-Sprooch",
+      "wuu": "Wu-Chinesesch",
+      "xal": "Kalmückesch",
+      "xmf": "Mingrelesch Sprooch",
+      "yao": "Yao-Sprooch",
+      "yap": "Yapesesch",
+      "yi": "Jiddesch",
+      "yue": "Kantonesesch",
+      "zap": "Zapotekesch",
+      "zbl": "Bliss-Symboler",
+      "zea": "Seelännesch",
+      "zgh": "Marokkanescht Standard-Tamazight",
+      "zh": "Chinesesch",
+      "zh-Hans": "Chinesesch (vereinfacht)",
+      "zh-Hant": "Chinesesch (traditionell)",
+      "zun": "Zuni-Sprooch"
+    },
+    "scriptNames": {
+      "Arab": "Arabesch",
+      "Armn": "Armenesch",
+      "Avst": "Avestesch",
+      "Bali": "Balinesesch",
+      "Batk": "Battakesch",
+      "Beng": "Bengalesch",
+      "Blis": "Bliss-Symboler",
+      "Brai": "Blanneschrëft",
+      "Bugi": "Buginesesch",
+      "Cans": "UCAS",
+      "Cari": "Karesch",
+      "Copt": "Koptesch",
+      "Cprt": "Zypriotesch",
+      "Cyrl": "Kyrillesch",
+      "Cyrs": "Alkiercheslawesch",
+      "Egyd": "Egyptesch-Demotesch",
+      "Egyh": "Egyptesch-Hieratesch",
+      "Egyp": "Egyptesch Hieroglyphen",
+      "Ethi": "Ethiopesch",
+      "Geok": "Khutsuri",
+      "Geor": "Georgesch",
+      "Glag": "Glagolitesch",
+      "Goth": "Gotesch",
+      "Grek": "Griichesch",
+      "Hani": "Chinesesch",
+      "Hans": "Vereinfacht Chinesesch",
+      "Hant": "Traditionellt Chinesesch",
+      "Hebr": "Hebräesch",
+      "Hrkt": "Katakana oder Hiragana",
+      "Hung": "Alungaresch",
+      "Inds": "Indus-Schrëft",
+      "Ital": "Alitalesch",
+      "Java": "Javanesesch",
+      "Jpan": "Japanesch",
+      "Kore": "Koreanesch",
+      "Laoo": "Laotesch",
+      "Latf": "Laténgesch-Fraktur-Variant",
+      "Latg": "Laténgesch-Gällesch Variant",
+      "Latn": "Laténgesch",
+      "Lyci": "Lykesch",
+      "Lydi": "Lydesch",
+      "Mand": "Mandäesch",
+      "Mani": "Manichäesch",
+      "Maya": "Maya-Hieroglyphen",
+      "Mero": "Meroitesch",
+      "Mlym": "Malaysesch",
+      "Mong": "Mongolesch",
+      "Mymr": "Birmanesch",
+      "Orkh": "Orchon-Runen",
+      "Orya": "Oriya",
+      "Osma": "Osmanesch",
+      "Perm": "Alpermesch",
+      "Phlv": "Pahlavi",
+      "Phnx": "Phönizesch",
+      "Plrd": "Pollard Phonetesch",
+      "Runr": "Runeschrëft",
+      "Samr": "Samaritanesch",
+      "Sgnw": "Zeechesprooch",
+      "Shaw": "Shaw-Alphabet",
+      "Sinh": "Singhalesesch",
+      "Sund": "Sundanesesch",
+      "Syrc": "Syresch",
+      "Syre": "Syresch-Estrangelo-Variant",
+      "Syrj": "Westsyresch",
+      "Syrn": "Ostsyresch",
+      "Talu": "Tai Lue",
+      "Taml": "Tamilesch",
+      "Tglg": "Dagalog",
+      "Tibt": "Tibetesch",
+      "Ugar": "Ugaritesch",
+      "Visp": "Siichtbar Sprooch",
+      "Xpeo": "Alpersesch",
+      "Xsux": "Sumeresch-akkadesch Keilschrëft",
+      "Zinh": "Geierfte Schrëftwäert",
+      "Zsym": "Symboler",
+      "Zxxx": "Ouni Schrëft",
+      "Zyyy": "Onbestëmmt",
+      "Zzzz": "Oncodéiert Schrëft"
+    }
+  }
+}

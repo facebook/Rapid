@@ -1,0 +1,27 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.298Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.nn.json",
+    "hash": "cdd640926e2281c69c9f9b979277cc47"
+  },
+  "nn": {
+    "_communities": {
+      "openstreetmapnorway": "OpenStreetMap Noreg",
+      "openstreetmappoland": "OpenStreetMap Polen",
+      "openstreetmapsweden": "OpenStreetMap Sverige"
+    },
+    "cape-coast-youthmappers": {
+      "description": "Følg oss på Twitter: {url}"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "description": "Følg oss på Twitter på {url}"
+    },
+    "Maptime-Oceania-Slack": {
+      "description": "Registrer deg på {signupUrl}"
+    },
+    "PHXGeo-twitter": {
+      "description": "Følg oss på Twitter på {url}"
+    }
+  }
+}

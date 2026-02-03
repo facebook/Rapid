@@ -1,0 +1,128 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.261Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.de-AT.json",
+    "hash": "98164913bdcea124a65f68e450c0c791"
+  },
+  "de-AT": {
+    "operations": {
+      "orthogonalize": {
+        "end_vertex": {
+          "one": "Diese Ecke kann nicht rechtwinklig gemacht werden, weil es ein Endpunkt ist.",
+          "other": "Diese Ecken können nicht rechtwinklig gemacht werden, weil es Endpunkte sind."
+        }
+      },
+      "delete": {
+        "title": "Entf",
+        "has_wikidata_tag": {
+          "one": "Dieses Objekt kann nicht gelöscht werden, weil es eine Wikidata-Eigenschaft hat.",
+          "other": "Diese Objekte können nicht gelöscht werden, weil einige eine Wikidata-Eigenschaft haben."
+        }
+      },
+      "extract": {
+        "connected_to_hidden": {
+          "one": "Dieser Punkt kann nicht entnommen werden, weil er mit einem versteckten Objekt verbunden ist.",
+          "other": "Die Punkte können nicht entnommen werden, weil manche mit versteckten Objekt verbunden sind."
+        }
+      }
+    },
+    "restriction": {
+      "controls": {
+        "distance": "Distanz"
+      }
+    },
+    "inspector": {
+      "none": "Leer"
+    },
+    "background": {
+      "imagery_source_faq": "Luftbilderinformationen / Problem melden"
+    },
+    "map_data": {
+      "layers": {
+        "maproulette": {
+          "login": "Sie müssen Sich anmelden, damit Sie den MapRoulette-Auftrag ändern können."
+        }
+      }
+    },
+    "preferences": {
+      "map_interaction": {
+        "mouse_wheel": {
+          "zoom": {
+            "tooltip": "Wenn du mit dem Rad scrollst, wird die Karte immer gezoomt und nicht gezoomt."
+          }
+        }
+      }
+    },
+    "restore": {
+      "heading": "Ungesicherte Änderungen vorhanden"
+    },
+    "rapid_inspector": {
+      "option_accept": {
+        "tooltip": "Füge dieses Objekt der Karte hinzu, um mit dem kartieren anzufangen."
+      }
+    },
+    "QA": {
+      "keepRight": {
+        "close_comment": "Kommentieren und schließen"
+      }
+    },
+    "mapillary_detections": {
+      "marking": {
+        "discrete": {
+          "arrow": {
+            "right": "Spurmarkierung - Pfeil (Rechts)",
+            "straight": "Fahrbahnmarkierung - Pfeil (Rechts)"
+          },
+          "other-marking": "Spurmarkierung - Sonstiges",
+          "symbol": {
+            "bicycle": "Spurmarkierung - Symbol (Fahrrad)"
+          },
+          "text": "Spurmarkierung - Text"
+        }
+      }
+    },
+    "help": {
+      "help": {
+        "welcome": "Willkommen zu dem {rapidicon} Editor für [OpenStreetMap](https://www.openstreetmap.org/). Mit diesem Editor kannst du OpenStreetMap von deinem Webbrowser aus aktualisieren."
+      },
+      "overview": {
+        "nodes_ways": "In OpenStreetMap werden Punkte manchmal *Knoten* genannt, Linien und Flächen werden manchmal *Wege* genannt."
+      }
+    },
+    "issues": {
+      "title": "Probleme",
+      "fix": {
+        "set_both_as_marked": {
+          "title_use_marking": "Nutze Markierung '{marking}'"
+        }
+      }
+    },
+    "intro": {
+      "graph": {
+        "city": "Drei-Flüsse-Stadt",
+        "countrycode": "at"
+      },
+      "points": {
+        "choose_cafe": "**Wähle {preset} von der Liste.**"
+      },
+      "areas": {
+        "choose_playground": "**Wähle {preset} von der Liste.**"
+      }
+    },
+    "languageNames": {
+      "ar-001": "modernes Hocharabisch",
+      "car": "karibische Sprache",
+      "chb": "Chibcha-Sprache",
+      "del": "Delawarisch",
+      "fur": "Friulanisch",
+      "haw": "Hawaiianisch",
+      "hmn": "Miao-Sprache",
+      "mus": "Muskogee-Sprache",
+      "niu": "Niueanisch",
+      "pag": "Pangasinensisch",
+      "sh": "Serbokroatisch",
+      "szl": "Schlesisch"
+    }
+  }
+}

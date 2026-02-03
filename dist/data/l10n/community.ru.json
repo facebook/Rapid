@@ -1,0 +1,759 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.292Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.ru.json",
+    "hash": "c537a62020d21f8b7a931eed3871956d"
+  },
+  "ru": {
+    "_communities": {
+      "freelibreopensourcesoftwarekosovaflossk": "Бесплатное программное обеспечение с открытым исходным кодом Kosova (FLOSSK)",
+      "mappingbotswana": "Картографировать Ботсвану",
+      "openstreetmapaachen": "OpenStreetMap Ахен",
+      "openstreetmapafghanistan": "OpenStreetMap Афганистан",
+      "openstreetmapafrica": "OpenStreetMap Африка",
+      "openstreetmapalba": "OpenStreetMap Альба",
+      "openstreetmapalbania": "OpenStreetMap Албания",
+      "openstreetmapargentina": "OpenStreetMap Аргентина",
+      "openstreetmaparmenia": "OpenStreetMap Армения",
+      "openstreetmapasia": "OpenStreetMap Азия",
+      "openstreetmapasti": "OpenStreetMap Асти",
+      "openstreetmapaustria": "OpenStreetMap Австрия",
+      "openstreetmapbahia": "OpenStreetMap Баия",
+      "openstreetmapbangladesh": "OpenStreetMap Бангладеш",
+      "openstreetmapbelarus": "OpenStreetMap Беларусь",
+      "openstreetmapbelgium": "OpenStreetMap Бельгия",
+      "openstreetmapbelize": "OpenStreetMap Белиз",
+      "openstreetmapbengaluru": "OpenStreetMap Бангалор",
+      "openstreetmapbenin": "OpenStreetMap Бенин",
+      "openstreetmapberlin": "OpenStreetMap Берлин",
+      "openstreetmapbochum": "OpenStreetMap Бохум",
+      "openstreetmapbolivia": "OpenStreetMap Боливия",
+      "openstreetmapbonn": "OpenStreetMap Бонн",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap Босния и Герцеговина",
+      "openstreetmapbrasil": "OpenStreetMap Бразилия",
+      "openstreetmapbrasilia": "OpenStreetMap Бразилиа",
+      "openstreetmapbremen": "OpenStreetMap Бремен",
+      "openstreetmapbulgaria": "OpenStreetMap Болгария",
+      "openstreetmapburundi": "OpenStreetMap Бурунди",
+      "openstreetmapbzh": "OpenStreetMap БЖ",
+      "openstreetmapcambodia": "OpenStreetMap Камбоджа",
+      "openstreetmapcameroon": "OpenStreetMap Камерун",
+      "openstreetmapcanada": "OpenStreetMap Канада",
+      "openstreetmapcastillayleon": "OpenStreetMap Кастилия и Леон",
+      "openstreetmapcatalancountries": "OpenStreetMap Каталонские Страны",
+      "openstreetmapceara": "OpenStreetMap Сеара",
+      "openstreetmapchad": "OpenStreetMap Чад",
+      "openstreetmapchile": "OpenStreetMap Чили",
+      "openstreetmapchina": "OpenStreetMap Китай",
+      "openstreetmapcologne": "OpenStreetMap Кёльн",
+      "openstreetmapcomunitatvalenciana": "OpenStreetMap Валенсийское сообщество",
+      "openstreetmapcostarica": "OpenStreetMap Коста-Рика",
+      "openstreetmapcotedivoire": "OpenStreetMap Кот-д’Ивуар",
+      "openstreetmapcroatia": "OpenStreetMap Хорватия",
+      "openstreetmapcuba": "OpenStreetMap Куба",
+      "openstreetmapcuneo": "OpenStreetMap Кунео",
+      "openstreetmapcyprus": "OpenStreetMap Кипр",
+      "openstreetmapcz": "OpenStreetMap Чехия",
+      "openstreetmapde": "OpenStreetMap Германия",
+      "openstreetmapdeepsouth": "OpenStreetMap Глубокий Юг",
+      "openstreetmapdelhi": "OpenStreetMap Дели",
+      "openstreetmapdenmark": "OpenStreetMap Дания",
+      "openstreetmapdjibouti": "OpenStreetMap Джибути",
+      "openstreetmapdominicanrepublic": "OpenStreetMap Доминиканская Республика",
+      "openstreetmapdresden": "OpenStreetMap Дрезден",
+      "openstreetmapdusseldorf": "OpenStreetMap Дюссельдорф",
+      "openstreetmapecuador": "OpenStreetMap Эквадор",
+      "openstreetmapegypt": "OpenStreetMap Египет",
+      "openstreetmaperitrea": "OpenStreetMap Эритрея",
+      "openstreetmapespana": "OpenStreetMap Испания",
+      "openstreetmapestonia": "OpenStreetMap Эстония",
+      "openstreetmapethiopia": "OpenStreetMap Эфиопия",
+      "openstreetmapfiji": "OpenStreetMap Фиджи",
+      "openstreetmapfinland": "OpenStreetMap Финляндия",
+      "openstreetmapfrance": "OpenStreetMap Франция",
+      "openstreetmapfreemapslovakia": "OpenStreetMap Freemap Словакия",
+      "openstreetmapfrenchguiana": "OpenStreetMap Гвиана",
+      "openstreetmapfrenchpolynesia": "OpenStreetMap Французская Полинезия",
+      "openstreetmapgabon": "OpenStreetMap Габон",
+      "openstreetmapgalicia": "OpenStreetMap Галисия",
+      "openstreetmapgeorgia": "OpenStreetMap Грузия",
+      "openstreetmapgermany": "OpenStreetMap Германия",
+      "openstreetmapghana": "OpenStreetMap Гана",
+      "openstreetmapgorakalwaria": "OpenStreetMap Гура-Кальвария",
+      "openstreetmapgreece": "OpenStreetMap Греция",
+      "openstreetmapgrenoble": "OpenStreetMap Гренобль",
+      "openstreetmapguatemala": "OpenStreetMap Гватемала",
+      "openstreetmapguinea": "OpenStreetMap Гвинея",
+      "openstreetmaphaiti": "OpenStreetMap Гаити",
+      "openstreetmaphamburg": "OpenStreetMap Гамбург",
+      "openstreetmaphonduras": "OpenStreetMap Гондурас",
+      "openstreetmaphongkong": "OpenStreetMap Гонконг",
+      "openstreetmaphungary": "OpenStreetMap Венгрия",
+      "openstreetmapiceland": "OpenStreetMap Исландия",
+      "openstreetmapindia": "OpenStreetMap Индия",
+      "openstreetmapindonesia": "OpenStreetMap Индонезия",
+      "openstreetmapiran": "OpenStreetMap Иран",
+      "openstreetmapiraq": "OpenStreetMap Ирак",
+      "openstreetmapireland": "OpenStreetMap Ирландия",
+      "openstreetmapisrael": "OpenStreetMap Израиль",
+      "openstreetmapitaly": "OpenStreetMap Италия",
+      "openstreetmapitalylazio": "OpenStreetMap Италия-Лацио",
+      "openstreetmapitalylombardia": "OpenStreetMap Италия-Ломбардия",
+      "openstreetmapitalypiemonte": "OpenStreetMap Италия-Пьемонт",
+      "openstreetmapitalysouthtyrol": "OpenStreetMap Италия-Южный Тироль",
+      "openstreetmapitalytrentino": "OpenStreetMap Италия-Трентино",
+      "openstreetmapjapan": "OpenStreetMap Япония",
+      "openstreetmapkarlsruhe": "OpenStreetMap Карлсруэ",
+      "openstreetmapkazakhstan": "OpenStreetMap Казахстан",
+      "openstreetmapkenya": "OpenStreetMap Кения",
+      "openstreetmapkerala": "OpenStreetMap Керала",
+      "openstreetmapkorea": "OpenStreetMap Корея",
+      "openstreetmapkosovo": "OpenStreetMap Косово",
+      "openstreetmapkyrgyzstan": "OpenStreetMap Кыргызстан",
+      "openstreetmaplatinamerica": "OpenStreetMap Латинская Америка",
+      "openstreetmaplatvia": "OpenStreetMap Латвия",
+      "openstreetmaplebanon": "OpenStreetMap Ливан",
+      "openstreetmaplesotho": "OpenStreetMap Лесото",
+      "openstreetmapliberia": "OpenStreetMap Либерия",
+      "openstreetmaplibya": "OpenStreetMap Ливия",
+      "openstreetmaplithuania": "OpenStreetMap Литва",
+      "openstreetmapljubljana": "OpenStreetMap Любляна",
+      "openstreetmaplombardia": "OpenStreetMap Ломбардия",
+      "openstreetmaplondon": "OpenStreetMap Лондон",
+      "openstreetmapluneburg": "OpenStreetMap Люнебург",
+      "openstreetmapluxembourg": "OpenStreetMap Люксембург",
+      "openstreetmapmadagascar": "OpenStreetMap Мадагаскар",
+      "openstreetmapmadrid": "OpenStreetMap Мадрид",
+      "openstreetmapmalawi": "OpenStreetMap Малави",
+      "openstreetmapmalaysia": "OpenStreetMap Малайзия",
+      "openstreetmapmali": "OpenStreetMap Мали",
+      "openstreetmapmalta": "OpenStreetMap Мальта",
+      "openstreetmapmauritania": "OpenStreetMap Мавритания",
+      "openstreetmapmecklenburgvorpommern": "OpenStreetMap Мекленбург-Передняя Померания",
+      "openstreetmapmexico": "OpenStreetMap Мексика",
+      "openstreetmapmichigan": "OpenStreetMap Мичиган",
+      "openstreetmapmoldova": "OpenStreetMap Молдова",
+      "openstreetmapmongolia": "OpenStreetMap Монголия",
+      "openstreetmapmontenegro": "OpenStreetMap Черногория",
+      "openstreetmapmontrouge": "OpenStreetMap Монружа",
+      "openstreetmapmorocco": "OpenStreetMap Марокко ",
+      "openstreetmapmunchen": "OpenStreetMap Мюнхен",
+      "openstreetmapmyanmar": "OpenStreetMap Мьянма",
+      "openstreetmapnepal": "OpenStreetMap Непал",
+      "openstreetmapnetherlands": "OpenStreetMap Нидерланды",
+      "openstreetmapnicaragua": "OpenStreetMap Никарагуа",
+      "openstreetmapniger": "OpenStreetMap Нигер",
+      "openstreetmapnigeria": "OpenStreetMap Нигерия",
+      "openstreetmapnorthkorea": "OpenStreetMap Северная Корея",
+      "openstreetmapnorway": "OpenStreetMap Норвегия",
+      "openstreetmapoceania": "OpenStreetMap Океания",
+      "openstreetmapohio": "OpenStreetMap Огайо",
+      "openstreetmapottawa": "OpenStreetMap Оттава",
+      "openstreetmappakistan": "OpenStreetMap Пакистан",
+      "openstreetmappanama": "OpenStreetMap Панама",
+      "openstreetmapparaguay": "OpenStreetMap Парагвай",
+      "openstreetmapperu": "OpenStreetMap Перу",
+      "openstreetmapphilippines": "OpenStreetMap Филиппины",
+      "openstreetmappiemonte": "OpenStreetMap Пьемонт",
+      "openstreetmappoland": "OpenStreetMap Польша",
+      "openstreetmapportugal": "OpenStreetMap Португалия",
+      "openstreetmapromania": "OpenStreetMap Румыния",
+      "openstreetmaprussia": "OpenStreetMap в России",
+      "openstreetmaprwanda": "OpenStreetMap Руанда",
+      "openstreetmapsaudiarabia": "OpenStreetMap Саудовская Аравия",
+      "openstreetmapsenegal": "OpenStreetMap Сенегал",
+      "openstreetmapserbia": "OpenStreetMap Сербия",
+      "openstreetmapsierraleone": "OpenStreetMap Сьерра-Леоне",
+      "openstreetmapsingapore": "OpenStreetMap Сингапур",
+      "openstreetmapslovenia": "OpenStreetMap Словения",
+      "openstreetmapsomalia": "OpenStreetMap Сомали",
+      "openstreetmapsouthafrica": "OpenStreetMap ЮАР",
+      "openstreetmapsouthsudan": "OpenStreetMap Южный Судан",
+      "openstreetmapsrilanka": "OpenStreetMap Шри-Ланка",
+      "openstreetmapsudan": "OpenStreetMap Судан",
+      "openstreetmapsweden": "OpenStreetMap Швеция ",
+      "openstreetmapswitzerland": "OpenStreetMap Швейцария",
+      "openstreetmaptaiwan": "OpenStreetMap Тайвань",
+      "openstreetmaptanzania": "OpenStreetMap Танзания",
+      "openstreetmapthailand": "OpenStreetMap Тайланд",
+      "openstreetmaptoronto": "OpenStreetMap Торонто",
+      "openstreetmaptunisia": "OpenStreetMap Тунис",
+      "openstreetmapturkey": "OpenStreetMap Турция",
+      "openstreetmapuganda": "OpenStreetMap Уганда",
+      "openstreetmapuk": "OpenStreetMap Англия",
+      "openstreetmapukraine": "OpenStreetMap Украина",
+      "openstreetmapuruguay": "OpenStreetMap Уругвай",
+      "openstreetmapus": "OpenStreetMap США",
+      "openstreetmapuzbekistan": "OpenStreetMap Узбекистан",
+      "openstreetmapvenezuela": "OpenStreetMap Венесуэла",
+      "openstreetmapvietnam": "OpenStreetMap Вьетнам",
+      "openstreetmapwarszawa": "OpenStreetMap Варшава",
+      "openstreetmapwesternsahara": "OpenStreetMap Западная Сахара",
+      "openstreetmapzambia": "OpenStreetMap Замбия",
+      "openstreetmapzimbabwe": "OpenStreetMap Зимбабве",
+      "osmmainz": "OpenStreetMap Майнц"
+    },
+    "_defaults": {
+      "bluesky": {
+        "description": "Подпишитесь на нас в Bluesky"
+      },
+      "discord": {
+        "name": "{community} в Discord",
+        "description": "Свяжитесь с другими картографами через Discord"
+      },
+      "discourse": {
+        "name": "Форум сообщества {community}",
+        "description": "Официальный форум {community}"
+      },
+      "facebook": {
+        "name": "{community} в Facebook",
+        "description": "Присоединяйтесь к нашему сообществу на Facebook"
+      },
+      "forum": {
+        "name": "Форум OpenStreetMap России",
+        "description": "Официальный форум сообщества OpenStreetMap России"
+      },
+      "github": {
+        "name": "{community} в GitHub"
+      },
+      "gitlab": {
+        "name": "{community} в GitLab"
+      },
+      "instagram": {
+        "name": "{community} в Instagram",
+        "description": "Подписывайтесь на нас в Instagram"
+      },
+      "irc": {
+        "name": "{community} в IRC",
+        "description": "Подключайтесь к  #{account} на irc.oftc.net (порт 6667 или 6697 для SSL)"
+      },
+      "linkedin": {
+        "name": "{community} на LinkedIn",
+        "description": "Присоединяйтесь к нашему сообществу на LinkedIn"
+      },
+      "mailinglist": {
+        "name": "Список рассылки {account}",
+        "description": "Официальный список рассылки"
+      },
+      "mastodon": {
+        "name": "{community} в Mastodon",
+        "description": "Официальный аккаунт {community} в Mastodon"
+      },
+      "matrix": {
+        "name": "{community} в Matrix Chat",
+        "description": "Присоединяйтесь к нашему Matrix chat"
+      },
+      "reddit": {
+        "name": "{community} в Reddit"
+      },
+      "signal": {
+        "description": "Присоединиться к часту в Signal"
+      },
+      "slack": {
+        "name": "{community} в Slack"
+      },
+      "telegram": {
+        "name": "{community} в Telegram",
+        "description": "Присоединяйтесь к нашему Telegram чату"
+      },
+      "threads": {
+        "name": "{community} в Threads",
+        "description": "Подписывайся на нас в Threads"
+      },
+      "tiktok": {
+        "name": "{community} в TikTok",
+        "description": "Подписывайся на нас в TikTok"
+      },
+      "twitter": {
+        "name": "{community} в X",
+        "description": "Присоединяйтесь к нам в X"
+      },
+      "x": {
+        "name": "{community} в X",
+        "description": "Присоединяйтесь к нам в X"
+      },
+      "youtube": {
+        "name": "{community} в YouTube"
+      }
+    },
+    "al-maptime-tirana": {
+      "description": "Общественные мероприятия, организованные вокруг темы картографирования — новички приветствуются!",
+      "extendedDescription": "Maptime - это открытая обучающая среда для всех уровней и степеней знаний, предлагающая целенаправленную образовательную поддержку новичку. Maptime одновременно гибок и структурирован, создавая пространство для учебных пособий по составлению карт, семинаров, текущих проектов с общей целью и независимой / совместной работы."
+    },
+    "am-wiki": {
+      "description": "Вики-страница"
+    },
+    "at-wiki": {
+      "description": "Вики-страница"
+    },
+    "Bahia-telegram": {
+      "extendedDescription": "Присоединиться к сообществу, чтобы узнать больше об OSM, задавать вопросы или участвовать в наших встречах. Всем добро пожаловать!"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "description": "Улучшить перевод OpenStreetMap в Bay Area",
+      "extendedDescription": "Эта группа занимается развитием сообщества OpenStreetMap здесь, в районе залива. Наши мероприятия открыты для всех: от энтузиастов с открытым исходным кодом до велосипедистов, специалистов по ГИС, геокэшеров и не только. Все, кто интересуется картами, картографированием и бесплатными картографическими данными, могут присоединиться к нашей группе, а также посещать наши мероприятия."
+    },
+    "bd-facebook": {
+      "extendedDescription": "Картографируете в Бангладеше? Есть вопросы, хотите пообщаться с сообществом? Присоединяйтесь к нам по ссылке {Url}. Рады всем!"
+    },
+    "be-chapter": {
+      "description": "Мы помогаем OpenStreetMap расти и развиваться в Бельгии"
+    },
+    "be-matrix": {
+      "description": "Все картографы приветствуются!"
+    },
+    "bo-facebook-group": {
+      "name": "Группа {community} в Facebook"
+    },
+    "bo-matrix": {
+      "description": "Все картографы приветствуются!"
+    },
+    "br-telegram": {
+      "extendedDescription": "Присоединиться к сообществу, чтобы узнать больше об OpenStreetMap, задавать вопросы или участвовать в наших встречах. Всем добро пожаловать!"
+    },
+    "cape-coast-youthmappers": {
+      "description": "Подписывайтесь на нас в Twitter {url}"
+    },
+    "cl-facebook": {
+      "extendedDescription": "Присоединиться к сообществу, чтобы узнать больше об OpenStreetMap, задавать вопросы или участвовать в наших встречах. Всем добро пожаловать!"
+    },
+    "cl-telegram": {
+      "extendedDescription": "Присоединиться к сообществу, чтобы узнать больше об OpenStreetMap, задавать вопросы или участвовать в наших встречах. Всем добро пожаловать!"
+    },
+    "de-aachen-wiki": {
+      "description": "Вики-страница"
+    },
+    "de-berlin-wiki": {
+      "description": "Вики-страница"
+    },
+    "de-bochum-wiki": {
+      "description": "Вики-страница"
+    },
+    "de-bonn-wiki": {
+      "description": "Вики-страница"
+    },
+    "de-bremen-wiki": {
+      "description": "Вики-страница"
+    },
+    "de-cologne-wiki": {
+      "description": "Вики-страница"
+    },
+    "de-dresden-wiki": {
+      "description": "Вики-страница"
+    },
+    "de-dusseldorf-wiki": {
+      "description": "Вики-страница"
+    },
+    "de-luneburg-wiki": {
+      "description": "Вики-страница"
+    },
+    "de-munchen-wiki": {
+      "description": "Вики-страница"
+    },
+    "DF-telegram": {
+      "extendedDescription": "Присоединиться к сообществу, чтобы узнать больше об OpenStreetMap, задавать вопросы или участвовать в наших встречах. Всем добро пожаловать!"
+    },
+    "fr-35-wiki": {
+      "description": "Вики-страница"
+    },
+    "fr-38-wiki": {
+      "description": "Вики-страница"
+    },
+    "fr-montrouge-wiki": {
+      "description": "Вики-страница"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "description": "Подписывайтесь на нас в Twitter {url}"
+    },
+    "gb-irc": {
+      "extendedDescription": "Подключайтесь к #{account} на irc.oftc.net (порт 6667), будьте терпеливы, ответов на вопрос обычно нужно ждать"
+    },
+    "ge-matrix": {
+      "description": "Общий чат OpenStreetMap в Грузии, соединенный мостом с чатом в Telegram"
+    },
+    "GeoPhilly": {
+      "extendedDescription": "GeoPhilly объединяет разработчиков, географов, любителей обработки данных, энтузиастов открытого исходного кода, гражданских хакеров и любителей карт в нашей общей любви к картам и историям, которые они рассказывают. Если вы используете карты как часть своей работы или просто хотите узнать больше, эта встреча для вас! Наши мероприятия нацелены на то, чтобы быть открытыми, дружелюбными, образовательными и социальными и варьироваться от \"счастливых часов\" до молниеносных бесед или даже мастер-классов. Приходите и создавайте разнообразное, вдохновляющее геопространственное сообщество в Филадельфии вместе с нами!"
+    },
+    "hr-github": {
+      "description": "{community} в GitHub"
+    },
+    "hu-facebook-group": {
+      "name": "Группа {community} в Facebook"
+    },
+    "hu-wiki": {
+      "description": "Вики-страница"
+    },
+    "id-facebook-group": {
+      "name": "Группа {community} в Facebook"
+    },
+    "ireland-irc": {
+      "extendedDescription": "Подключайтесь к #{account} на irc.oftc.net (порт 6667), будьте терпеливы, ответов на вопрос обычно нужно ждать"
+    },
+    "ko-github": {
+      "description": "{community} в GitHub"
+    },
+    "kosovo-flossk": {
+      "name": "Бесплатное программное обеспечение с открытым исходным кодом Kosova (FLOSSK)",
+      "extendedDescription": "Бесплатное программное обеспечение Libre с открытым исходным кодом Kosova (FLOSSK) - неправительственная организация, базирующаяся в Приштине, основанная в 2009 году с целью поддержки, продвижения и разработки свободного программного обеспечения с открытым исходным кодом. Кроме того, мы также вносим свой вклад в развитие открытых знаний, основанных на широком участии, образование в области информационных технологий с помощью открытого программного обеспечения и открытых стандартов, культуры и открытого общества с помощью свободного общения."
+    },
+    "latam-facebook": {
+      "description": "Мапперы и сообщество OpenStreetMap Латинской америки в Facebook"
+    },
+    "latam-matrix": {
+      "description": "Общайтесь с другими участниками латиноамериканского сообщества OSM, оно связано с чатом Telegram."
+    },
+    "latam-telegram": {
+      "description": "Общайтесь с другими членами латиноамериканского сообщества OSM, оно связано с чатом Matrix."
+    },
+    "madrid-upm-ym": {
+      "extendedDescription": "Группа геоволонтеров сформирована в кампусе Монклоа в ноябре 2017 года. Около 20 участников из трех университетов (Комплутенсе, CEU и UPM). Студенты бакалавриата, магистратуры и докторантуры сотрудничают с организациями (MSF, Acción contra el Hambre, ...) при поддержке тренеров из Geoinquietos. Официальное признание UPM в качестве Образовательного инновационного проекта (Код IE1718.0411)"
+    },
+    "Maptime-Oceania-Slack": {
+      "description": "Войдите на {signupUrl}"
+    },
+    "me-telegram": {
+      "description": "Приглашаются все! Регистрация на {signupUrl}"
+    },
+    "mt-irc": {
+      "extendedDescription": "Подключайтесь к #{account} на irc.oftc.net (порт 6667), будьте терпеливы, ответов на вопрос обычно нужно ждать"
+    },
+    "nl-matrix": {
+      "description": "Все картографы приветствуются!"
+    },
+    "Nottingham-OSM-pub-meetup": {
+      "extendedDescription": "Группа встречалась с марта 2011 года, сначала в Ноттингеме, а в последнее время в Дерби и время от времени в других местах Ист-Мидлендс. Это общественные мероприятия, но они являются отличным местом для того, чтобы прийти и задать конкретные вопросы об OSM как в данном районе, так и в целом. В летние месяцы мы обычно в течение часа проводим световое картографирование поблизости от места нашей встречи. Группа в целом проявляет особый интерес к картографированию общественных полос движения и время от времени проводит картографические встречи с этой целью."
+    },
+    "OpenCleveland-meetup": {
+      "description": "Картографы и пользователи OpenStreetMap в районе Кливлэнда",
+      "extendedDescription": " Open Geo Cleveland стремится стать ресурсом для обсуждения и обмена знаниями об использовании бесплатных наборов географических данных, особенно OpenStreetMap, и открытого геопространственного программного обеспечения, которое управляет, редактирует и отображает географические данные и выступает за их использование в Северо-Восточном Огайо. Мы также являемся подразделением maptime =)"
+    },
+    "osm-africa-facebook-group": {
+      "name": "Группа {community} в Facebook"
+    },
+    "osm-africa-matrix": {
+      "description": "Все картографы приветствуются!"
+    },
+    "osm-africa-slack": {
+      "description": "Приглашаются все! Регистрация на {signupUrl}"
+    },
+    "OSM-Central-Salish-Sea": {
+      "extendedDescription": "OpenStreetMap - это карта мира, созданная такими людьми, как вы. Это карта, которую создаете вы, и которую раздают бесплатно, как в Википедии. Ознакомьтесь с osm.org, чтобы узнать больше. Мы постоянно встречаемся, чтобы обсудить карты, составить их и повеселиться!"
+    },
+    "OSM-Chattanooga": {
+      "description": "Группа пользователей OpenStreetMap в Chattanooga"
+    },
+    "OSM-Colorado": {
+      "name": "OpenStreetMap Колорадо",
+      "extendedDescription": " OpenStreetMap (OSM) Colorado - это местное сотрудничество людей, заинтересованных в том, чтобы внести свой вклад в создание бесплатных карт. Мы призываем всех наших картографов организовывать или предлагать картографические мероприятия по всему штату. Мероприятия Meetup могут быть простыми социальными мероприятиями, обучением от базового до продвинутого уровня OSM или вечеринками по составлению карт сообщества."
+    },
+    "osm-deep-south-wiki": {
+      "description": "Вики-страница"
+    },
+    "OSM-Discord": {
+      "name": "OpenStreetMap в Discord",
+      "description": "Неофициальный, поддерживаемый сообществом сервер Discord. Доступны каналы отдельных регионов"
+    },
+    "OSM-Discourse": {
+      "name": "Форум сообщества OpenStreetMap",
+      "description": "Место, где любой может обсудить OpenStreetMap с другими участниками"
+    },
+    "OSM-Facebook": {
+      "description": "Нажмите Like на нашей странице в Facebook, чтобы подписаться на новости и обновления в OpenStreetMap."
+    },
+    "OSM-India-facebook": {
+      "description": "Улучшить OpenStreetMap в Индии"
+    },
+    "osm-india-github": {
+      "description": "Кодируй вместе с нами: {url}"
+    },
+    "OSM-japan-facebook": {
+      "description": "Картографы и пользователи OpenStreetMap в Японии"
+    },
+    "OSM-japan-website": {
+      "description": "Картографы и пользователи OpenStreetMap в Японии"
+    },
+    "osm-kerala-github": {
+      "description": "Кодируй вместе с нами: {url}"
+    },
+    "osm-michigan-wiki": {
+      "description": "Вики-страница"
+    },
+    "osm-ohio-wiki": {
+      "description": "Вики-страница"
+    },
+    "OSM-Rome-meetup": {
+      "extendedDescription": "Мы стремимся стать ресурсом для обсуждения и обмена знаниями об использовании бесплатных наборов географических данных, особенно OpenStreetMap, и открытого геопространственного программного обеспечения, которое управляет, редактирует и отображает географические данные, и выступает за их использование в Лацио."
+    },
+    "OSM-Seattle": {
+      "name": "OpenStreetMap Сиэтл",
+      "description": "Картографы и пользователи OpenStreetMap в районе Сиэтла"
+    },
+    "OSM-SoCal": {
+      "extendedDescription": " OpenStreetMap (OSM) Южная Калифорния предназначена для всех, кто интересуется картографией, чтобы собраться вместе и поработать с OpenStreetMap. OpenStreetMap, раздел карт в Википедии, представляет собой бесплатную карту мира с открытым исходным кодом, созданную более чем 1 000 000 волонтеров по всему миру. Приглашаются все желающие. Если вы не знаете OpenStreetMap, мы научим вас. Если у вас есть идея для картографического проекта или даже экскурсии, которую может провести группа, отлично!"
+    },
+    "OSM-Tampa-Bay": {
+      "description": "Картографы и пользователи OpenStreetMap в районе залива Тампа",
+      "extendedDescription": "OSM Tampa Bay group приглашает местных жителей собраться вместе и составить полную карту Тампа-Бэй с помощью OpenStreetMap, бесплатной и редактируемой карты мира. Если вы интересуетесь картами, данными, открытым исходным кодом, GPS, пешими прогулками, велоспортом и так далее, вам понравится работать с OpenStreetMap - так что присоединяйтесь! Мы будем собираться вместе, составлять карту и обсуждать новые темы примерно раз в месяц."
+    },
+    "OSM-Telegram": {
+      "description": "Присоединяйтесь к глобальной супергруппе OpenStreetMap в Telegram по адресу {url}"
+    },
+    "OSM-US": {
+      "description": "Мы помогаем OpenStreetMap в США расти и развиваться",
+      "events": {
+        "mappingusa2022": {
+          "description": "Присоединяйтесь к нам на бесплатной виртуальной конференции в честь сообществ Wiki и OpenStreetMap по всей Северной Америке!"
+        }
+      }
+    },
+    "OSM-US-Slack": {
+      "description": "Приглашаются все! Регистрация на {signupUrl}"
+    },
+    "OSM-Utah": {
+      "name": "OpenStreetMap Юта"
+    },
+    "OSM-Wyoming": {
+      "name": "OpenStreetMap Вайоминг",
+      "extendedDescription": " \nOpenStreetMap (OSM) Вайоминг - это местное сотрудничество людей, заинтересованных в том, чтобы внести свой вклад в создание бесплатных карт. Мы призываем всех наших картографов организовывать или предлагать картографические мероприятия по всему штату. Мероприятия Meetup могут быть простыми социальными мероприятиями, обучением от базового до продвинутого уровня OSM или вечеринками по составлению карт сообщества."
+    },
+    "OSMF": {
+      "name": "Фонд OpenStreetMap",
+      "description": "OSMF — это зарегистрированная в Великобритании некоммерческая (бесприбыльная) организация, поддерживающая проект OpenStreetMap.",
+      "extendedDescription": "OSMF поддерживает проект OpenStreetMap, привлекая деньги, поддерживая работоспособность серверов, на которых работает OSM, организуя ежегодную конференцию State of the Map, координируя волонтёров, что помогают OSM функционировать и развиваться. Вы можете выразить свою поддержку проекту и принять участие в судьбе OpenStreetMap как участник OSMF, заполнив форму на странице {signupUrl}"
+    },
+    "ph-facebook-group": {
+      "name": "Группа {community} в Facebook"
+    },
+    "PHXGeo-twitter": {
+      "description": "Подписывайтесь на нас в Twitter {url}"
+    },
+    "RS-telegram": {
+      "extendedDescription": "Присоединиться к сообществу, чтобы узнать больше об OpenStreetMap, задавать вопросы или участвовать в наших встречах. Всем добро пожаловать!"
+    },
+    "sg-wiki": {
+      "description": "Вики-страница"
+    },
+    "si-github": {
+      "description": "{community} в GitHub"
+    },
+    "si-ljubljana-wiki": {
+      "description": "Вики-страница"
+    },
+    "si-wiki": {
+      "description": "Вики-страница"
+    },
+    "talk-au": {
+      "description": "Место для общения австралийских картографов"
+    },
+    "tn-facebook-group": {
+      "name": "Группа {community} в Facebook"
+    },
+    "tw-slack": {
+      "description": "Приглашаются все! Регистрация на {signupUrl}"
+    },
+    "uk-london-wiki": {
+      "description": "Вики-страница"
+    },
+    "us-massachusetts-mailinglist": {
+      "name": "Список рассылки Talk-us-massachusetts",
+      "description": "Список рассылки сообщества OSM штата Массачусетс"
+    },
+    "uy-irc": {
+      "description": "Подключайтесь к #{account} на irc.freenode.org (порт 6667)",
+      "extendedDescription": "Подключайтесь к #{account} на irc.freenode.org"
+    },
+    "vn-wiki": {
+      "description": "Вики-страница {community}"
+    },
+    "ym-AASTU": {
+      "extendedDescription": "Ассоциация студентов-инженеров-геоматиков (AGES) стремится продвигать продукты и услуги ГИС, а также обучать студентов их использованию. Это не только способствует социализации студентов и практикующих специалистов, но и предоставляет платформу для обмена новыми идеями по проведению новых мероприятий по ГИС и геодезии и обучению в университете."
+    },
+    "ym-Abia-State-University": {
+      "extendedDescription": "AbsuMappersTeam - это добровольная команда картографических энтузиастов, использующая openstreetmap, ГИС и другие геопространственные технологии с открытым исходным кодом для решения проблем.Он предназначен для реагирования на стихийные бедствия с использованием OpenStreetMap.Это профессиональная платформа для наставничества и расширения возможностей для тех, кто увлечен ГИС и картографированием.Это сообщество добровольцев для создания геопространственных данных, сбора полевых данных и картографирования.Команда была соучредителями Виктора Н.Санди (наставника команды) и профессора Дж.У.Огбонны, координатора команды и преподавательского советника. AbsuMapperTeam является филиалом UniiqueMappersTeam-Порт-Харкорт.Команда выступает за устойчивое развитие с использованием геопространственных технологий"
+    },
+    "ym-Ahmadu-Bello-University": {
+      "extendedDescription": "Мы - группа гуманитарных картографов, работающих на основе данных, которые занимаются оказанием гуманитарных услуг в ответ на стихийные бедствия и смягчением их последствий. Мы рады поделиться нашим опытом и познаниями посредством составления карт и помощи в распространении #OpenEvangelism посредством обучения и сотрудничества."
+    },
+    "ym-Ardhi-University": {
+      "extendedDescription": "Как будущие консультанты по геопространственным данным, мы стремимся обучать общество тому, как оно может использовать пространственные данные не только как форму определения местоположения, но и как инструмент принятия решений и прогнозировать различные опасные и климатические изменения, которые могут нанести вред им самим или будущим поколениям."
+    },
+    "ym-Asian-University-for-Women": {
+      "extendedDescription": "Азиатский университет для женщин стремится выпускать женщин, которые станут квалифицированными и инновационными профессионалами, ориентированными на обслуживание лидерами в компаниях и сообществах, в которых они будут работать и жить, а также сторонниками межкультурного взаимопонимания и устойчивого человеческого и экономического развития в Азии и во всем мире."
+    },
+    "ym-Central-Washington-University": {
+      "extendedDescription": "Наша цель в сотрудничестве с Youthmappers - доставить помощь в районы, которые нуждаются в гуманитарном картографировании. Поступая таким образом, мы служим нашим собратьям по всему миру, а также развиваем наши собственные навыки картографии."
+    },
+    "ym-Clemson-University": {
+      "extendedDescription": "Студентам в Клемсоне оказывает поддержку Центр геопространственных технологий, сообщество междисциплинарных практиков геопространственных наук, поддерживающих исследования, преподавание и информационно-пропагандистскую деятельность с использованием технологий, позволяющих собирать, анализировать и применять геопространственные данные. Студенты интегрируют геопространственные технологии в свою научную деятельность по всем дисциплинам и налаживают связи по всему миру."
+    },
+    "ym-College-of-William-and-Mary": {
+      "extendedDescription": "Студентам, которые изучают всю карту, оказывает поддержку Центр геопространственного анализа, группа, интегрирующая ГИС в учебную программу и предоставляющая студентам и преподавателям оборудование, программное обеспечение и экспертные знания. Студенты всех специальностей используют ГИС по всему кампусу, включая науку об окружающей среде и политику, геологию, историю, бизнес, социологию, биологию, антропологию, государственную политику и морские науки."
+    },
+    "ym-Cornell-University": {
+      "extendedDescription": "Студенты и преподаватели Корнелла используют открытые данные и программное обеспечение с открытым исходным кодом для решения задач на местном, национальном и глобальном уровнях. Таким образом, мы продвигаем наши академические и личные цели по развитию наших собственных навыков в области ГИС и пространственной грамотности."
+    },
+    "ym-CURAT": {
+      "extendedDescription": "Цель нашего раздела - способствовать использованию бесплатного картографирования для совместной работы и использованию данных openstreetmap в области исследований и их применению при внедрении инструментов для принятия решений. Помогите студентам подготовить собственные данные для своего исследования."
+    },
+    "ym-Cuttington-University": {
+      "extendedDescription": "Молодежные организаторы в Каттингтонском университете, Суакоко и округе Бонг состояли из студентов трех разных факультетов, а именно: факультета управления природными ресурсами “DONRM”, факультета наук об окружающей среде и факультета естественных наук. С момента основания Отделения в феврале 2017 года общий состав составляет 20 студентов, при этом на каждом факультете обучается по 5 студентов."
+    },
+    "ym-Dhaka-College": {
+      "extendedDescription": "YouthMappers DhakaCollege - это подход студентов к составлению карт уязвимых районов мира в рамках гуманитарной деятельности. YouthMappers предоставляет студентам возможность помогать людям и использовать картографирование в гуманитарных целях. Эти открытые географические данные могут быть использованы в образовательных, навигационных и других гуманитарных целях. Счастливое картографирование."
+    },
+    "ym-Eastern-University": {
+      "extendedDescription": "YouthMappers в Восточном университете, Бангладеш, была создана с целью оказания помощи людям во время гуманитарного кризиса. Студентам, как и другим картографам мира, обещано помогать людям использовать карту в образовательных, навигационных и других гуманитарных целях."
+    },
+    "ym-Far-Eastern-University-Institute-of-Technology": {
+      "extendedDescription": "FEU был признан одним из ведущих университетов Филиппин. Его миссия сосредоточена на подготовке выпускников, которые внесли свой вклад в развитие страны. Университет постоянно ставит перед собой задачу повышать планку мастерства для достижения статуса высшего уровня не только на Филиппинах, но и в регионе Юго-Восточной Азии"
+    },
+    "ym-Fourah-Bay-College": {
+      "extendedDescription": "Студенческая географическая ассоциация- YouthMappers - это ассоциация студентов колледжа Фура-Бэй с общими целями нанесения на карту уязвимых мест в Сьерра-Леоне и мире в целом для оказания помощи и других полезных целей, проведения исследований и других образовательных мероприятий. Отделение состоит из молодых людей с замечательными идеями, ориентированных на развитие, способных взаимодействовать друг с другом, понимать и реализовывать проекты устойчивого развития в команде."
+    },
+    "ym-George-Mason-University": {
+      "extendedDescription": "Студенческое общество Mason Mappers Student Society - студенческая организация по гуманитарному картографированию на факультете GGS Университета Джорджа Мейсона, и ее целью является продвижение образования и знаний в области геотехнологий, геоинформатики, содействие хорошему глобальному управлению и профессиональному развитию при создании позитивного, интерактивного геосообщества, а также формирование из студентов лидеров завтрашнего дня."
+    },
+    "ym-Grand-Gedeh-County-Community-College": {
+      "extendedDescription": "Единственная цель молодых картографов GGCCC - нанести на карту места в Либерии и вокруг нее, которых нет на карте. Мы собираем молодежь из колледжа в рамках общественного колледжа Гранд-Гедех, чтобы возложить на них обязанность объединяться и географически освещать эти места."
+    },
+    "ym-Heidelberg-University": {
+      "extendedDescription": "Компания Disastermappers Heidelberg была основана в 2014 году как студенческая инициатива по созданию платформы для обмена мнениями между студентами, исследователями и гуманитарными деятелями. Disastermappers являются членами организации Missing Maps и организуют мапатоны, семинары и вебинары в Гейдельберге и за его пределами, а также поддерживают АКТУАЛЬНЫЕ и отсутствующие карты посредством исследований и приложений."
+    },
+    "ym-Institute-of-Rural-Development-Planning": {
+      "extendedDescription": "Отделение Mipango YouthMappers было представлено на IRDP 3 июля 2017 года доктором Домициллой Башемерой. Членами-основателями были 300 человек (190 мужчин и 110 женщин). Студенты бакалавриата, которые были зарегистрированы в качестве членов Отделения. Джеральд Захария - президент отделения, а Джастер Лугира - вице-президент."
+    },
+    "ym-Istanbul-Technical-University": {
+      "extendedDescription": "YouthMappers ITU - это междисциплинарное студенческое сообщество, основанное на сотрудничестве, занимающееся продвижением гуманитарного картографирования уязвимых населенных пунктов и нацеленное на разработку стратегической и инновационной пространственной информации для городов будущего и обмен ею с использованием географических информационных систем и открытых данных."
+    },
+    "ym-Jacksonville-State-University": {
+      "extendedDescription": "Команда по составлению карт стихийных бедствий JSU - это программа Государственного университета Джексонвилля, предназначенная для оказания помощи в ликвидации последствий стихийных бедствий во время чрезвычайных ситуаций. Сюда входят торнадо, сильные грозы, наводнения и т.д. Команда призвана стать ценным активом для окружающих округов и средством, с помощью которого студенты факультета геонаук JSU смогут применить то, чему они научились в академической среде, для поддержки аварийно-спасательных служб. Наша цель - оптимизировать операции по реагированию на стихийные бедствия и восстановлению, используя при этом навыки студентов"
+    },
+    "ym-Jomo-Kenyatta-University-of-Agriculture-and-Technology": {
+      "extendedDescription": "Ассоциация студентов-инженеров-геоматиков (AGES) стремится продвигать продукты и услуги ГИС, а также обучать студентов их использованию. Это не только способствует социализации студентов и практикующих специалистов, но и предоставляет платформу для обмена новыми идеями по проведению новых мероприятий по ГИС и геодезии и обучению в университете."
+    },
+    "ym-Kansas-State-University": {
+      "extendedDescription": "Мы являемся отделением Gamma Theta Upsilon от Университета штата Канзас, международного общества почетных географов, связанного с YouthMappers. Мы активно работали с mapping for OSM и провели mapathon под названием \"Карта Непала\", в ходе которого мы использовали OpenStreetMap для оцифровки не нанесенных на карту районов Непала после землетрясения в 2015."
+    },
+    "ym-Karatina-University": {
+      "extendedDescription": "Цель этой главы - объединить всех энтузиастов ГИС.В их число входят эксперты по окружающей среде, дикой природе, водным видам спорта и туризму, и это лишь некоторые из них. Его основная цель - предоставить платформу, на которой студенты могут учиться друг у друга и в процессе понять, как интегрировать навыки ГИС в свои различные карьерные пути, а также предлагать решения различных проблем, связанных с окружающей средой."
+    },
+    "ym-Kenyatta-University": {
+      "extendedDescription": " ГИС-клуб университета Кеньятта (KUGISC) был основан 28 октября 2016 года, членами которого являются более 200 студентов и сотрудников со всех факультетов кампуса. Мы стремимся наделять студентов пространственными знаниями, навыками и экспертизой, необходимыми для понимания Земли. Мы помогаем в составлении карт ресурсов в университете, включая геопространственные данные в их проекты, а также осуществляя сбор данных на местах."
+    },
+    "ym-Makerere-University": {
+      "extendedDescription": "Geo YouthMappers - картографическое отделение Университета Макерере, специализирующееся на применении пространственной концепции к реальному миру.Мы сотрудничали с OSM в различных мероприятиях по картографированию. Нашей главной целью является стремление упростить данные и сделать их легкодоступными в основном для обеспечения готовности к стихийным бедствиям. \"Мы составляем карту мира и меняем жизни."
+    },
+    "ym-Mbarara-University-of-Science-and-Technology": {
+      "extendedDescription": "MUST Street Mappers - это молодежное отделение картографов в Университете науки и технологий Мбарара, цель которого - сделать нашу страну и мир в целом лучше с помощью картографирования. Мы основываемся на собранной информации, чтобы замечать закономерности и добывать данные для представления обществу актуальной и полезной информации."
+    },
+    "ym-McGill-University": {
+      "extendedDescription": "Открытая картографическая группа McGill: Член Географического общества студентов McGill (OMG McGill) стремится познакомить студентов с открытыми геопространственными данными и технологиями для повышения устойчивости, укрепления сообщества и обучения с помощью картографирования – в кампусе, в Монреале, в Канаде и за рубежом."
+    },
+    "ym-Open-University-of-Tanzania": {
+      "extendedDescription": "Молодые картографы в Открытом университете Танзании Был основан членами и студентами географического факультета Открытого университета Танзании, которым в основном необходимо улучшить свою карьеру и помочь молодому сообществу посредством совместных и партнерских проектов с местными общественными группами, такими как Mikoko Scout Group (www.msg.or.tz ) и начать сотрудничество с международными колледжами и университетами в рамках программ обмена в области изучения географии, таких как некоторые программы, подготовленные Mikoko Scout Group, которые свяжут местный университет и другие университеты, представляющие тот же интерес, в рамках Международного молодежного лагеря по природе и охране окружающей среды 2019 (www.campsite.msg.or.tz/nature.html )\n\nНаше отделение скоро будет признано молодежной сетевой программой, которая откроет студентам возможность учиться и проводить исследовательские работы на местном уровне."
+    },
+    "ym-Politecnico-di-Milano": {
+      "extendedDescription": "PoliMappers - ассоциация студентов-волонтеров, базирующаяся в Миланском политехническом институте. Миссия группы - обучать и мотивировать следующее поколение картографов-волонтеров и проводить картографирование с использованием бесплатного программного обеспечения с открытым исходным кодом в университете, а также в начальных и средних школах."
+    },
+    "ym-Rajshahi-University-of-Engineering-Technology": {
+      "extendedDescription": " \"YouthMappers at RUET\" - гуманитарная картографическая группа студентов Инженерно-технологического университета Раджшахи (RUET), занимающаяся обменом, развитием и практикой знаний о ГИС. Эта группа поощряет использование геопространственных данных и платформы с открытым исходным кодом для разработки решений, позволяющих охватить наиболее уязвимую группу населения мира."
+    },
+    "ym-Sherubtse-College": {
+      "extendedDescription": " Географическое общество при факультете географии и планирования Колледжа Шерубце Королевского университета Бутана при поддержке Центра изменения климата и пространственной информации предприняло ряд усилий по повышению осведомленности и решению важных проблем на местном и национальном уровнях. Теперь мы объединяем усилия с международной студенческой сетью YouthMappers в \"Составлении карт жизнестойкости\" и вносим свой вклад в глобальное \"Счастье'!"
+    },
+    "ym-Sokoine-University-of-Agriculture": {
+      "extendedDescription": "Глава, состоящая из студентов, изучающих науки об окружающей среде и менеджмент, и географию на факультете географии, и мы будем использовать методы картографирования, основанные на системных концепциях и теориях, может быть использована для облегчения, изучения и фиксации различных представлений о взаимосвязях, перспективах и границах, связанных с экологической устойчивостью, для получения более полного понимания концепции и разработки планов действий."
+    },
+    "ym-SUNY-at-Fredonia": {
+      "extendedDescription": "GeoVenturers - это группа студентов, обучающихся по ряду специальностей в нашем кампусе, которые рассматривают геопространственные технологии как инструмент служения другим и объединения людей. Наставничество для группы включает в себя научное образование от департамента учебных программ и преподавания. Мы надеемся, что сможем применить наши навыки, помогая улучшить жизнь людей."
+    },
+    "ym-Texas-Tech-University": {
+      "extendedDescription": "Являясь одним из отделений-соучредителей сети, TTU YouthMappers с энтузиазмом выступают в качестве междисциплинарных лидеров, помогая создавать открытые географические данные и аналитические материалы, которые решают локальные задачи развития по всему миру. Отделение стремится обмениваться информацией и сотрудничать с другими отделениями по всему миру, а также предлагать себя в качестве местного ресурса и услуги студенческим организациям Техасского технического университета таким образом, чтобы повысить ценность их деятельности в кампусе за счет картографирования."
+    },
+    "ym-The-George-Washington-University": {
+      "extendedDescription": "Модели лидерства и вовлеченности, HMS стремится оказывать помощь и улучшать мир с помощью проектов гуманитарных географических информационных систем (ГИС). Это дочернее отделение, являющееся одним из основателей в кампусе GWU, может поделиться богатым опытом и часто напрямую сотрудничает с USAID, Американским Красным Крестом и Государственным департаментом США в их округе Колумбия, чтобы расширять усилия студентов и служить мировому сообществу."
+    },
+    "ym-The-Johns-Hopkins-University-SAIS": {
+      "extendedDescription": "Миссия SAIS Youth Mappers - предоставить студентам SAIS Университета Джона Хопкинса возможность стать высококвалифицированными гуманитарными картографами. Как группа в рамках Южно-Азиатского клуба, ее основное внимание уделяется поддержке гуманитарных картографических проектов в Индо-Тихоокеанском регионе."
+    },
+    "ym-Universidad-de-Costa-Rica": {
+      "extendedDescription": " YouthMappers из Университета Коста-Рики родился на основе социальных действий членов различных сообществ в соответствии с темами вовлеченности, взаимодействия и репрезентации. OpenStreetMap позволяет нам собирать, проверять и распространять географическую информацию в наших сообществах на благо всех."
+    },
+    "ym-Universidad-de-Los-Andes": {
+      "extendedDescription": "Мы - это студенческий кружок, который стремится использовать картографирование и пространственное мышление как средство создания уз сотрудничества и интеграции между университетом и обществом путем решения различных пространственных, социальных, политических, экономических и культурных проблем."
+    },
+    "ym-Universidad-Nacional-de-Ingenieria": {
+      "extendedDescription": "YEKA STREET - это рабочая команда, состоящая из студентов Национального инженерного университета в Манагуа, Никарагуа. Основная цель - применить наши знания и навыки, используя множество инструментов и приложений, для составления карт районов в наших городах и внести свой вклад в проекты сообщества разработчиков и планы ликвидации последствий стихийных бедствий. Мы хотим стать лидерами, привлекая больше студентов из всех профессий и университетов нашей страны, чтобы они присоединились к нам в этом деле, повышая таким образом уровень жизни и снижая уязвимость населения."
+    },
+    "ym-Universidade-Eduardo-Mondlane": {
+      "extendedDescription": "Мы студенческая группа, которая намерена присоединиться к мозамбикскому обществу, чтобы создать жизнеспособное сообщество гуманитарного картографирования. Сообщество намерено нанести на карту физическую оккупацию нашей Страны и создать открытые географические данные, доступные для общественности и способные использоваться в нескольких областях без связанных с этим затрат."
+    },
+    "ym-Universit-Gaston-Berger": {
+      "extendedDescription": "YouthMappers UGB состоит из молодых студентов и исследователей, которые увлечены картографированием. Наша цель - улучшить навыки студентов в области картографии и принять участие в создании открытых географических данных, которые отвечают вызовам развития по всему миру и особенно в Африке."
+    },
+    "ym-University-of-Cape-Coast": {
+      "extendedDescription": "Мы - общество, объединяющее всех студентов, которые читают и изучают географию на факультете географии и регионального планирования Университета Кейп-Кост. Наша главная цель - поощрять интерес к дисциплине внутри класса и за его пределами. Наш девиз - “Мы постигаем Землю и ее обитателей.”"
+    },
+    "ym-University-of-Central-Florida": {
+      "extendedDescription": "Наша миссия заключается в создании социальной и образовательной среды для всех специалистов, заинтересованных в обсуждении и применении ГИС. Групповые и общественные мероприятия в течение учебного года позволяют учащимся добровольно помогать местным и региональным сообществам, используя ГИС-проекты на базе сообществ и обучая местных учащихся средних и старшеклассников использованию ГИС."
+    },
+    "ym-University-of-Dar-es-Salaam": {
+      "extendedDescription": "Целью Университета Дар-эс-Салама YouthMappers является использование и продвижение данных из открытых источников и ГИС-технологий для составления карт потенциальных зон бедствия, предоставления ресурсов для управления чрезвычайными ситуациями, связи своих членов с организациями с открытым исходным кодом и ГИС в городе Дар-эс-Салам и удовлетворения любых предстоящих потребностей наших партнеров по проекту ."
+    },
+    "ym-University-of-Exeter": {
+      "extendedDescription": "Мы - команда увлеченных географов, обладающих всесторонними знаниями в области ГИС. Мы увлечены поддержкой Британского Общества Красного Креста различными мероприятиями по оказанию гуманитарной помощи. Мы также являемся важными преподавателями, объясняющими важность картографирования данных дистанционного зондирования и то, как это помогает на местах. Наши мапатоны имеют тематическую академическую направленность, которая освещает различные исследования в области ГИС на нашем географическом факультете, а также служат мероприятиями по повышению осведомленности о возможностях трудоустройства, на которые мы приглашаем докладчиков рассказать об их карьере в сфере ГИС / Британского Красного Креста."
+    },
+    "ym-University-of-Ghana": {
+      "extendedDescription": " UG YouthMappers состоит как из выпускников, так и из студентов бакалавриата, обладающих знаниями и навыками в области ГИС и дистанционного зондирования. Клуб состоит из энергичной команды, которая готова решать социальные вопросы и смягчать экологические проблемы с помощью картографирования. Нашими основополагающими принципами являются наращивание потенциала, расширение прав и возможностей и командная работа."
+    },
+    "ym-University-of-Liberia-YouthMappers": {
+      "extendedDescription": " YouthMappers Университета Либерии является филиалом организации Global YouthMappers. Мы - некоммерческая студенческая картографическая организация, занимающаяся составлением карт для развития Либерии и мира в целом. Целью этой организации должно быть использование технологий и геопространственных знаний в качестве средств создания и разработки карт; сбор и анализ данных, которые позволят решать местные и глобальные проблемы. Наша цель - поддержать и создать возможность для студентов развить интерес и навыки в области картографии. Мы представляем себе сплоченное студенческое сообщество, способное к сотрудничеству, активное и готовое работать с молодежными менеджерами Университета Либерии, чтобы улучшить жизнь других людей."
+    },
+    "ym-University-of-Nigeria-Enugu-Campus": {
+      "extendedDescription": "Кампус LionMappersTeam (LMT) в Enugu Campus является филиалом YouthMappers Network, единственной целью которого является предоставление участникам возможности учиться и совершенствовать свои навыки в области геоинформатики и создавать открытые географические данные и анализ, которые решают локальные задачи на глобальном уровне. Это команда добровольцев для краудсорсингового картографирования и предоставления географической информации с использованием Openstreetmap, Citizen Science и других геопространственных технологий для исследований, обучения и реагирования на устойчивые вызовы сообщества. Мы занимаемся веб-картографией, ГИС и приложениями для дистанционного зондирования, а также исследованиями. Мы увлечены географической информацией, предоставляемой добровольно.Совместная ГИС и гражданская наука.Наша основная деятельность включает краудсорсинговую онлайн-картографию, картографирование полей, учебные семинары и выезды в старшие классы, а также составление карт гуманитарной помощи / реагирования на стихийные бедствия."
+    },
+    "ym-University-of-Nigeria-Nsukka": {
+      "extendedDescription": "LionMappersTeam является филиалом YouthMappers Network с единственной целью предоставить участникам возможность учиться и совершенствовать свои навыки в области картографирования и создавать открытые географические данные и их анализ, которые решают локальные задачи на глобальном уровне. Это команда добровольцев для краудсорсингового картографирования и предоставления географической информации с использованием Openstreetmap, citizen science и других геопространственных технологий для исследований, обучения и реагирования на устойчивые вызовы сообщества. Мы занимаемся приложениями и исследованиями в области ГИС и дистанционного зондирования.Партнерские ГИС и гражданская наука, картографирование полей, учебные семинары и выезды в высшие учебные заведения."
+    },
+    "ym-University-of-North-Texas": {
+      "extendedDescription": "Географический клуб - студенческая организация Университета Северного Техаса, которая приветствует всех студентов, интересующихся географией. Целью Географического клуба является повышение интереса к географии, специальности и географическому факультету наряду с общением среди студентов и преподавателей. Клуб также стремится представлять потребности и чаяния студентов в отношении изучения географии и предоставлять форум для презентации инновационных идей на благо университетского сообщества."
+    },
+    "ym-University-of-Port-Harcourt": {
+      "extendedDescription": "UniqueMappersTeam (UMT) Port Harcourt - это инициативная группа и команда волонтеров по совместному онлайн-картографированию, нацеленная на обучение и расширение возможностей участников с актуальными навыками картографирования для создания открытых геопространственных данных и анализа, которые решают локальные задачи в области геоинформатики, и для предоставления гуманитарных картографических услуг устойчивым сообществам в дельте реки Нигер, Нигерии и в других местах.Мы продвигаем краудсаундинговое картографирование и геоинформационное волонтерство, используя платформу OpenStreetMap (OSM) и другие доступные платформы для картирования быстрого реагирования, картирования стихийных бедствий, геоинформационного картирования, обновления карт и обучения.Это филиал кампуса гуманитарной команды OpenStreetMap (HOT).Это проектно-целевая группа YouthMappers, которая предоставляет возможность своим членам учиться и совершенствовать свои навыки в области геоинформатики, чтобы исследовать глобальные возможности в области картографирования и геоинформатики."
+    },
+    "ym-University-of-Pretoria": {
+      "extendedDescription": "Студентам, которые составляют карту Претории, оказывает поддержку Центр геоинформационных наук Университета Претории, платформа, с помощью которой совершенство отдельных лиц и команд UP, занимающихся исследованиями в области географической информатики (GISc), образованием и профессиональной подготовкой, профессиональным развитием и вовлечением сообщества, поощряется и укрепляется посредством сотрудничества, образования и стажировки и альянсов в Южной Африке и за рубежом."
+    },
+    "ym-University-of-Rwanda-Huye-Campus": {
+      "extendedDescription": " Основываясь на обязательстве и цели продвижения картографии, а также на информации из публичных выступлений YouthMappers, мы организовали группу студентов географического факультета, увлеченных картографированием, для основания отделения в нашем кампусе. Нас поддержали наш фасилитатор доктор Гаспар Рваниизири (директор CGIS в Руанде) и различные преподаватели-наставники."
+    },
+    "ym-University-of-South-Carolina": {
+      "extendedDescription": "GGSA - это полностью студенческая организация, призванная служить защитником и ресурсом для всех аспирантов-географов, выполняя роль связующего звена между кафедрой и студентами. Наша цель - дальнейшее профессиональное, академическое и личностное развитие аспирантов, интересующихся географией и ее подразделами."
+    },
+    "ym-University-of-the-Philippines-Resilience-Institute": {
+      "extendedDescription": " \nИнститут UP Resilience Institute был основан в 2016 году с заявлением о миссии по расширению возможностей местных сообществ посредством междисциплинарных исследований и действий по повышению устойчивости. Благодаря Центру UP NOAH и помощи различных организаций мы предоставили карты застройки для 17 провинций из 82 и загрузили более 4 миллионов следов на OpenStreetMap."
+    },
+    "ym-University-of-the-West-Indies-Mona-Campus": {
+      "extendedDescription": "Библиотека кампуса UWI в Моне участвует в публичных, информационно-просветительских и специальных проектах. Это позволит нашей библиотеке стать катализатором пространственной грамотности и выступать за обмен пространственными данными и доступ к интересам Ямайки и Карибского бассейна. У нас есть потребности в оказании помощи при стихийных бедствиях и коммуникации, а также обширные потребности в области наук о Земле и геоопасности, чтобы лучше обслуживать наш кампус и сообщество. В частности, у нас есть научная библиотека, чтобы продемонстрировать это всем преподавателям и студентам."
+    },
+    "ym-University-of-Victoria": {
+      "extendedDescription": "SOGS стремится продвигать и представлять социальные и академические интересы на географическом факультете. Это выражается в четырех ключевых целях: обеспечить форум для обсуждения вопросов, касающихся качества и доступности образования в области географии; предоставить средства выражения общего мнения студентов факультетскому составу посредством представительства на региональных собраниях и в региональных комитетах; принимать решения о таких мероприятиях, которые идут на пользу студентам и, как считается, входят в сферу интересов студентов в области географии; выступать в качестве связующего звена через UVSS и Профсоюзный совет курсов с другими студенческими группами в кампусе."
+    },
+    "ym-University-of-Warwick": {
+      "extendedDescription": "Мы - группа увлеченных картографов из Уорикского университета. Наша цель - заинтересовать людей гуманитарным картографированием и помочь им понять, какое влияние эта деятельность оказывает на отрасль. Мы тесно сотрудничаем с Missing Maps и организацией \"Врачи без границ\" в Великобритании и фокусируемся на АКТУАЛЬНЫХ задачах в наших картографических мероприятиях и семинарах. Наши марафоны отображаются на странице Missing Maps всякий раз, когда они запланированы."
+    },
+    "ym-Vassar-College": {
+      "extendedDescription": "Наша миссия - предоставить междисциплинарную платформу для коллег, преподавателей и общественных организаций для участия в местных картографических проектах с упором на укрепление наших местных экосистем, нашей искусственной среды и здоровья нашего сообщества. Мы также стремимся внести свой вклад в геопространственную поддержку глобальной гуманитарной помощи и усилий в области развития."
+    },
+    "ym-Villanova-University": {
+      "extendedDescription": " Globeplotters от Villanova построен на августинском принципе бескорыстного служения мировому сообществу. В сочетании с непринужденным социальным взаимодействием мы стремимся обеспечить геопространственный охват тех, кто в нем нуждается, независимо от расы участвующих студентов, академической специальности, ассоциации студенческих групп или уровня карьеры в колледже."
+    },
+    "ym-West-Virginia-University": {
+      "extendedDescription": "Работая в качестве совместной команды, эта глава о соучредителях направлена на обеспечение открытой среды обучения для тех, кто заинтересован в работе над проектами, которые пересекаются с международным развитием, реагированием на чрезвычайные ситуации и географической информатикой. Они объединяют новичков и экспертов, предоставляя техническую подготовку и опыт в создании значимых и полезных данных о географической инфраструктуре, одновременно устанавливая связь с городами-побратимами по всему миру."
+    },
+    "ym-Yarmouk-University": {
+      "extendedDescription": "Отделение YouthMappers в YU - первая картографическая группа в регионе Ближнего Востока и Северной Африки, где беженцы, засуха и бедность становятся все более острыми кризисами и остро нуждаются в гуманитарной картографической деятельности для смягчения последствий таких кризисов. Картографам YU рекомендуется использовать открытые данные для решения проблем в регионе MENA, чтобы оказывать помощь и развивать целевые районы в регионе."
+    }
+  }
+}

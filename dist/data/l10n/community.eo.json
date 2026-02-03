@@ -1,0 +1,426 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.316Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.eo.json",
+    "hash": "89bcb82adf009367e5a45e665ccbeb1f"
+  },
+  "eo": {
+    "_communities": {
+      "openstreetmapafghanistan": "OpenStreetMap Afganujo",
+      "openstreetmapafrica": "OpenStreetMap Afriko",
+      "openstreetmapalbania": "OpenStreetMap Albanio",
+      "openstreetmapargentina": "OpenStreetMap Argentino",
+      "openstreetmapasia": "OpenStreetMap Azio",
+      "openstreetmapaustria": "OpenStreetMap Aŭstrio",
+      "openstreetmapbangladesh": "OpenStreetMap Bangladeŝo",
+      "openstreetmapbelarus": "OpenStreetMap Belorusujo",
+      "openstreetmapbelgium": "OpenStreetMap Belgio",
+      "openstreetmapbenin": "OpenStreetMap Benino",
+      "openstreetmapberlin": "OpenStreetMap Berlino",
+      "openstreetmapbolivia": "OpenStreetMap Bolivio",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap Bosnio kaj Hercegovino",
+      "openstreetmapbrasil": "OpenStreetMap Brazilo",
+      "openstreetmapbremen": "OpenStreetMap Bremeno",
+      "openstreetmapbulgaria": "OpenStreetMap Bulgario",
+      "openstreetmapburundi": "OpenStreetMap Burundo",
+      "openstreetmapbzh": "OpenStreetMap Bretonio",
+      "openstreetmapcambodia": "OpenStreetMap Kamboĝo",
+      "openstreetmapcameroon": "OpenStreetMap Kamerunio",
+      "openstreetmapcanada": "OpenStreetMap Kanado",
+      "openstreetmapcatalancountries": "OpenStreetMap Katalunaj Landoj",
+      "openstreetmapchad": "OpenStreetMap Ĉadio",
+      "openstreetmapchile": "OpenStreetMap Ĉilio",
+      "openstreetmapchina": "OpenStreetMap Ĉinio",
+      "openstreetmapcologne": "OpenStreetMap Kolonjo",
+      "openstreetmapcostarica": "OpenStreetMap Kostariko",
+      "openstreetmapcotedivoire": "OpenStreetMap Ebur-Bordo",
+      "openstreetmapcroatia": "OpenStreetMap Kroatio",
+      "openstreetmapcuba": "OpenStreetMap Kubo",
+      "openstreetmapdenmark": "OpenStreetMap Danio",
+      "openstreetmapdominicanrepublic": "OpenStreetMap Dominika Respubliko",
+      "openstreetmapecuador": "OpenStreetMap Ekvadoro",
+      "openstreetmapegypt": "OpenStreetMap Egiptujo",
+      "openstreetmaperitrea": "OpenStreetMap Eritreo",
+      "openstreetmapespana": "OpenStreetMap Hispanio",
+      "openstreetmapestonia": "OpenStreetMap Estonio",
+      "openstreetmapethiopia": "OpenStreetMap Etiopio",
+      "openstreetmapfinland": "OpenStreetMap Finnlando",
+      "openstreetmapfrance": "OpenStreetMap Francio",
+      "openstreetmapgabon": "OpenStreetMap Gabono",
+      "openstreetmapgalicia": "OpenStreetMap Galicio",
+      "openstreetmapgermany": "OpenStreetMap Germanio",
+      "openstreetmapghana": "OpenStreetMap Ganao",
+      "openstreetmapgreece": "OpenStreetMap Grekio",
+      "openstreetmapguatemala": "OpenStreetMap Gvatemalo",
+      "openstreetmapguinea": "OpenStreetMap Gvineo",
+      "openstreetmaphaiti": "OpenStreetMap Haitio",
+      "openstreetmaphamburg": "OpenStreetMap Hamburgo",
+      "openstreetmaphonduras": "OpenStreetMap Honduro",
+      "openstreetmaphongkong": "OpenStreetMap Honkongo",
+      "openstreetmaphungary": "OpenStreetMap Hungario",
+      "openstreetmapiceland": "OpenStreetMap Islando",
+      "openstreetmapindia": "OpenStreetMap Barato",
+      "openstreetmapindonesia": "OpenStreetMap Indonezio",
+      "openstreetmapiran": "OpenStreetMap Irano",
+      "openstreetmapiraq": "OpenStreetMap Irako",
+      "openstreetmapireland": "OpenStreetMap Irlando",
+      "openstreetmapisrael": "OpenStreetMap Israelo",
+      "openstreetmapitaly": "OpenStreetMap Italujo",
+      "openstreetmapitalylazio": "OpenStreetMap Italio-Lazio",
+      "openstreetmapitalylombardia": "OpenStreetMap Italio-Lombardio",
+      "openstreetmapitalysouthtyrol": "OpenStreetMap Italio-Suda Tirolo",
+      "openstreetmapitalytrentino": "OpenStreetMap Italio-Trentino",
+      "openstreetmapjapan": "OpenStreetMap Japanio",
+      "openstreetmapkazakhstan": "OpenStreetMap Kazastanio",
+      "openstreetmapkenya": "OpenStreetMap Kenjo",
+      "openstreetmapkorea": "OpenStreetMap Koreio",
+      "openstreetmapkyrgyzstan": "OpenStreetMap Kirgizio",
+      "openstreetmaplatinamerica": "OpenStreetMap Latin-Ameriko",
+      "openstreetmaplatvia": "OpenStreetMap Latvio",
+      "openstreetmaplebanon": "OpenStreetMap Libano",
+      "openstreetmaplesotho": "OpenStreetMap Lesoto",
+      "openstreetmapliberia": "OpenStreetMap Liberio",
+      "openstreetmaplibya": "OpenStreetMap Libio",
+      "openstreetmapluxembourg": "OpenStreetMap Luksemburgio",
+      "openstreetmapmadagascar": "OpenStreetMap Madagaskaro",
+      "openstreetmapmadrid": "OpenStreetMap Madrido",
+      "openstreetmapmalawi": "OpenStreetMap Malavio",
+      "openstreetmapmalaysia": "OpenStreetMap Malajzio",
+      "openstreetmapmali": "OpenStreetMap Malio",
+      "openstreetmapmalta": "OpenStreetMap Malto",
+      "openstreetmapmauritania": "OpenStreetMap Maŭritanio",
+      "openstreetmapmexico": "OpenStreetMap Meksiko",
+      "openstreetmapmichigan": "OpenStreetMap Miĉigano",
+      "openstreetmapmoldova": "OpenStreetMap Moldavio",
+      "openstreetmapmongolia": "OpenStreetMap Mongolio",
+      "openstreetmapmorocco": "OpenStreetMap Maroko",
+      "openstreetmapmunchen": "OpenStreetMap Munkeno",
+      "openstreetmapmyanmar": "OpenStreetMap Mjanmao",
+      "openstreetmapnepal": "OpenStreetMap Nepalo",
+      "openstreetmapnetherlands": "OpenStreetMap Nederlando",
+      "openstreetmapnicaragua": "OpenStreetMap Nikaragvo",
+      "openstreetmapniger": "OpenStreetMap Niĝero",
+      "openstreetmapnigeria": "OpenStreetMap Niĝerio",
+      "openstreetmapnorthkorea": "OpenStreetMap Nord-Koreio",
+      "openstreetmapnorway": "OpenStreetMap Norvegio",
+      "openstreetmapottawa": "OpenStreetMap Otavo",
+      "openstreetmappakistan": "OpenStreetMap Pakistano",
+      "openstreetmappanama": "OpenStreetMap Panamo",
+      "openstreetmapparaguay": "OpenStreetMap Paragvajo",
+      "openstreetmapperu": "OpenStreetMap Peruo",
+      "openstreetmapphilippines": "OpenStreetMap Filipinoj",
+      "openstreetmappoland": "OpenStreetMap Polujo",
+      "openstreetmapportugal": "OpenStreetMap Portugalujo",
+      "openstreetmaprdc": "OpenStreetMap DRK",
+      "openstreetmaprennes": "OpenStreetMap Renno",
+      "openstreetmapreunion": "OpenStreetMap Reunio",
+      "openstreetmapromania": "OpenStreetMap Rumanio",
+      "openstreetmaprussia": "OpenStreetMap Rusio",
+      "openstreetmaprwanda": "OpenStreetMap Ruando",
+      "openstreetmapsaudiarabia": "OpenStreetMap Saŭdiarabio",
+      "openstreetmapsenegal": "OpenStreetMap Senegalo",
+      "openstreetmapserbia": "OpenStreetMap Serbio",
+      "openstreetmapsierraleone": "OpenStreetMap Sieraleono",
+      "openstreetmapsingapore": "OpenStreetMap Singapuro",
+      "openstreetmapslovenia": "OpenStreetMap Slovenio",
+      "openstreetmapsomalia": "OpenStreetMap Somalio",
+      "openstreetmapsouthafrica": "OpenStreetMap Sudafriko",
+      "openstreetmapsouthsudan": "OpenStreetMap Sud-Sudano",
+      "openstreetmapsrilanka": "OpenStreetMap Srilanko",
+      "openstreetmapsudan": "OpenStreetMap Sudano",
+      "openstreetmapsweden": "OpenStreetMap Svedio",
+      "openstreetmapswitzerland": "OpenStreetMap Svislando",
+      "openstreetmaptaiwan": "OpenStreetMap Tajvano",
+      "openstreetmaptanzania": "OpenStreetMap Tanzanio",
+      "openstreetmapthailand": "OpenStreetMap Tajlando",
+      "openstreetmaptogo": "OpenStreetMap Togolando",
+      "openstreetmaptunisia": "OpenStreetMap Tunizio",
+      "openstreetmapturin": "OpenStreetMap Torino",
+      "openstreetmapturkey": "OpenStreetMap Turkujo",
+      "openstreetmapuganda": "OpenStreetMap Ugando",
+      "openstreetmapukraine": "OpenStreetMap Ukrainio",
+      "openstreetmapuruguay": "OpenStreetMap Urugvajo",
+      "openstreetmapus": "OpenStreetMap Usono",
+      "openstreetmapuzbekistan": "OpenStreetMap Uzbekio",
+      "openstreetmapvenezuela": "OpenStreetMap Venezuelo",
+      "openstreetmapvietnam": "OpenStreetMap Vjetnamujo",
+      "openstreetmapwarszawa": "OpenStreetMap Varsovio",
+      "openstreetmapwesternsahara": "OpenStreetMap Okcidenta Saharo",
+      "openstreetmapzambia": "OpenStreetMap Zambio",
+      "openstreetmapzimbabwe": "OpenStreetMap Zimbabvo"
+    },
+    "_defaults": {
+      "aparat": {
+        "name": "{community} ĉe Aparat",
+        "description": "Abonu nian kanalon ĉe Aparat"
+      },
+      "discord": {
+        "name": "{community} ĉe Discord",
+        "description": "Kontaktu kun aliaj mapigistoj per Discord"
+      },
+      "discourse": {
+        "description": "Oficiala forumo {community}"
+      },
+      "facebook": {
+        "name": "{community} ĉe Facebook",
+        "description": "Aliĝu al nia komunumo ĉe Facebook"
+      },
+      "forum": {
+        "name": "Forumo {community}",
+        "description": "Oficiala forumo {community}"
+      },
+      "github": {
+        "name": "{community} ĉe GitHub"
+      },
+      "gitlab": {
+        "name": "{community} ĉe GitLab"
+      },
+      "instagram": {
+        "description": "Sekvu nin ĉe Instagram"
+      },
+      "irc": {
+        "name": "{community} ĉe IRC"
+      },
+      "linkedin": {
+        "name": "{community} ĉe LinkedIn",
+        "description": "Aliĝu al nia komunumo ĉe LinkedIn"
+      },
+      "mailinglist": {
+        "name": "Dissendolisto {account}",
+        "description": "Oficiala dissendolisto de la komunumo {community}"
+      },
+      "matrix": {
+        "name": "Kanalo {community} ĉe Matrix",
+        "description": "Aliĝu al nia komunumo ĉe Matrix"
+      },
+      "meetup": {
+        "name": "{community} ĉe Meetup"
+      },
+      "reddit": {
+        "name": "{community} ĉe Reddit"
+      },
+      "signal": {
+        "description": "Aliĝu al nia komunuma babilejo sur Signal"
+      },
+      "slack": {
+        "name": "{community} ĉe Slack"
+      },
+      "telegram": {
+        "name": "{community} ĉe Telegram",
+        "description": "Aliĝu al nia komunumo ĉe Telegram"
+      },
+      "threads": {
+        "description": "Sekvu nin ĉe Threads"
+      },
+      "tiktok": {
+        "description": "Sekvu nin ĉe TikTok"
+      },
+      "wiki": {
+        "name": "VikiProjekto {community}"
+      },
+      "xmpp": {
+        "name": "{community} ĉe XMPP"
+      },
+      "youtube": {
+        "name": "{community} ĉe YouTube",
+        "description": "Abonu nian kanalon ĉe YouTube"
+      }
+    },
+    "al-maptime-tirana": {
+      "description": "Sociaj okazaĵoj organizitaj por mapigi – komencantoj estas akceptindaj!",
+      "extendedDescription": "Maptime estas malferma lernada medio por ĉiuj niveloj de scio, kiu estas precipe preparita por komencantoj. Maptime estas kaj fleksebla kaj strukturebla, liverante lokon por mapigaj gvidiloj, instruadoj, nunaj projektoj kun difinita komuna celo, per aŭ individua aŭ kolektiva laboro."
+    },
+    "Bahia-telegram": {
+      "extendedDescription": "Aliĝu al la komunumo por lerni pli pri OpenStreetMap, fari demandojn aŭ partopreni niajn kunvenojn. Ĉiuj estas bonvenaj!"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "description": "Plibonigi OpenStreetMap en la regiono apud Golfo de San-Francisko",
+      "extendedDescription": "Celo de tiu ĉi grupo estas kunigi OpenStreetMap-komunumon en la regiono apud Golfo de San-Francisko. Niaj eventoj estas malfermitaj al ĉiuj: ŝatantoj de malfermkoda programaro, biciklistoj, GIS-profesiuloj, geokaŝ-ludantoj kaj aliuloj. Ĉiu, kiu interesiĝas pri mapoj, mapigado kaj liberaj map-datumoj povas aligi la grupon kaj alveni niajn eventojn."
+    },
+    "bd-facebook": {
+      "extendedDescription": "Ĉu vi mapigas en Bangladeŝo? Ĉu vi havas demandojn aŭ volas kuniĝi al tiu ĉi komunumo? Aliĝu al ni ĉe {url}. Bonvenon ĉiuj!"
+    },
+    "be-chapter": {
+      "description": "Ni helpas kreskigi kaj plibonigi OpenStreetMap en Belgio."
+    },
+    "be-matrix": {
+      "description": "Ĉiuj mapigistoj estas akceptindaj!"
+    },
+    "be-meetup": {
+      "description": "Renkontiĝoj en la reala mondo por ĉiu, kiu interesiĝas pri OpenStreetMap",
+      "extendedDescription": "Renkontiĝoj en la reala mondo estas bonaj ŝancoj por renkonti aliajn mapigistojn, demandi ilin kaj multe lerni. Precipe bonvenon novaj kontribuantoj!"
+    },
+    "bo-matrix": {
+      "description": "Ĉiuj kartografoj estas bonvenaj!"
+    },
+    "br-telegram": {
+      "extendedDescription": "Aliĝu al la komunumo por lerni pli pri OpenStreetMap, fari demandojn aŭ partopreni niajn kunvenojn. Ĉiuj estas bonvenaj!"
+    },
+    "cape-coast-youthmappers": {
+      "name": "UCC YouthMappers",
+      "description": "Sekvu nin ĉe Twitter: {url}",
+      "extendedDescription": "Oficiala Twitter-paĝo pri sekcio de Junaj Mapigistoj de Universitato de Cape Coast, Ganao. Ni ŝatas mapojn, malfermajn datumojn kaj helpi al senfortuloj."
+    },
+    "cd-chapter": {
+      "name": "OpenStreetMap DRK"
+    },
+    "Central-Pennsylvania-OSM": {
+      "description": "Interreta mapiga komunumo en State College, Pensilvanio"
+    },
+    "cl-facebook": {
+      "extendedDescription": "Aliĝu al la komunumo por lerni pli pri OpenStreetMap, fari demandojn aŭ partopreni niajn kunvenojn. Ĉiuj estas bonvenaj!"
+    },
+    "cl-telegram": {
+      "extendedDescription": "Aliĝu al la komunumo por lerni pli pri OpenStreetMap, fari demandojn aŭ partopreni niajn kunvenojn. Ĉiuj estas bonvenaj!"
+    },
+    "czech-community": {
+      "description": "Mapo, retejo kaj kontakto al OSM-mapigistoj en Ĉeĥujo"
+    },
+    "de-berlin-mailinglist": {
+      "name": "Dissendolisto Berlin"
+    },
+    "de-ostwestfalen-lippe-mailinglist": {
+      "name": "Dissendolisto OWL",
+      "description": "Dissendolisto por la OSM-komunumo Ostwestfalen-Lippe"
+    },
+    "DF-telegram": {
+      "extendedDescription": "Aliĝu al la komunumo por lerni pli pri OpenStreetMap, fari demandojn aŭ partopreni niajn kunvenojn. Ĉiuj estas bonvenaj!"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "description": "Sekvu nin ĉe Twitter ĉe {url}"
+    },
+    "GeoPhilly": {
+      "description": "Renkontiĝo por map-ŝatantoj proksime de Filadelfio",
+      "extendedDescription": "GeoPhilly kunigas programistojn, geografiistoj, fanatikuloj de datumoj kaj malfermkoda programaro, lertuloj kaj map-ŝatantoj en la komuna amo al mapoj kaj historioj pri ili. Se vi uzas mapojn en laboro aŭ simple volas sciiĝi pli, tiu ĉi renkontiĝo estas por vi! Niaj renkontiĝoj estas malfermitaj, amikecaj, instruantaj kaj sociaj kaj temas pri klaĉado, teĥnika babilado kaj eĉ laboro. Alvenu por krei diversan kaj inspiran mapigan komunumon en Filadelfio kun ni!"
+    },
+    "hr-github": {
+      "description": "{community} ĉe GitHub"
+    },
+    "ko-github": {
+      "description": "{community} ĉe GitHub"
+    },
+    "mappa-mercia-group": {
+      "name": "Loka grupo Mappa Mercia",
+      "description": "Hejmo de OpenStreetMap-ŝatantoj en Midlands",
+      "extendedDescription": "Mappa Mercia estas projekto por disvastigi OpenStreetMap en West Midlands, Britujo. Ni organizas komunumajn eventojn, instruas kaj subtenas lokajn organizaĵojn, kiuj volas malfermi siajn datumojn."
+    },
+    "Maptime-ME-meetup": {
+      "description": "Mapigistoj kaj uzantoj de OpenStreetMap proksime de Portlando (Majno)",
+      "extendedDescription": "«Maptime» estas tempo por mapigado. Nia celo estas ebligi al ĉiu lerni pri kartografio per liveri spacon por kunlabora lernado, esplorado kaj map-farado uzante mapigajn ilojn kaj teĥnologiojn."
+    },
+    "me-telegram": {
+      "description": "Bonvenon ĉiuj! Aliĝu al ni ĉe {signupUrl}"
+    },
+    "nl-matrix": {
+      "description": "Ĉiuj kartografoj estas bonvenaj!"
+    },
+    "no-irc": {
+      "description": "Babila kanalo por uzantoj, mapigistoj, programistoj kaj ŝatantoj de OpenStreetMap en Norvegujo"
+    },
+    "Nottingham-OSM-pub-meetup": {
+      "name": "Ĉiumonata taverna renkontiĝo en East Midlands (Nottingham)",
+      "description": "Sociaj renkontiĝoj por uzantoj kaj mapigistoj en East Midlands",
+      "extendedDescription": "La grupo renkontiĝas de post marto 2011, komence en Nottingham kaj lastatempe en Derby kaj iam ie en East Midlands. Tiuj ĉi renkontiĝoj estas sociaj, sed ili estas bonegaj okazoj por demandi pri OpenStreetMap aŭ loke aŭ ĝenerale. Somere ni kutime iomete mapigas proksime de renkontejo. La grupo specife interesiĝas pri mapigi publikajn alirajn vojojn kaj renkontiĝoj de tempo al tempo temas pri tio."
+    },
+    "OpenCleveland-meetup": {
+      "description": "Plibonigi OpenStreetMap proksime de Klevlando",
+      "extendedDescription": "Open Geo Cleveland celas esti rimedo por homoj por diskuti kaj kunhavigi scion pri uzi liberajn geografiajn datumojn (precipe OpenStreetMap) kaj liberan programaron por administri, redakti kaj vidigi geografiajn datumojn, kaj promoti ĝian uzon en nordorienta Ohio. Ni ankaŭ estas klubo de mapigistoj =)"
+    },
+    "osm-africa-matrix": {
+      "description": "Ĉiuj kartografoj estas bonvenaj!"
+    },
+    "osm-africa-slack": {
+      "description": "Bonvenon ĉiuj! Aliĝu al ni ĉe {signupUrl}"
+    },
+    "osm-at": {
+      "description": "Platformo de informoj pri OpenStreetMap en Aŭstrujo"
+    },
+    "OSM-Central-Salish-Sea": {
+      "description": "Mapigistoj kaj uzantoj de OpenStreetMap proksime de Mount Vernon (Vaŝingtonio)",
+      "extendedDescription": "OpenStreetMap estas mapo de la mondo farata de homoj kiel vi. Ĝi estas mapo, kiun vi kreas kaj kiu estas donata senpage kiel Vikipedio. Rigardu osm.org por pli da informo. Ni renkontas por pridiskuti mapojn, fari mapojn kaj ĝui!"
+    },
+    "OSM-Chattanooga": {
+      "description": "Grupo de uzantoj de OpenStreetMap en Chattanooga"
+    },
+    "OSM-Colorado": {
+      "description": "Mapigistoj kaj uzantoj de OpenStreetMap en la subŝtato Koloradio",
+      "extendedDescription": "OpenStreetMap (OSM) Colorado estas loka kunlaboro de homoj, kiuj interesiĝas pri kontribui al krei liberajn mapojn. Ni instigas ĉiujn niajn mapigistojn al organizi aŭ sugesti mapigajn eventojn en Koloradio. Tiuj eventoj povas esti simplaj renkontiĝoj, komencanta aŭ sperta instruado pri OSM, aŭ komuna mapigado."
+    },
+    "osm-de": {
+      "description": "Platformo de informoj pri OpenStreetMap en Germanujo"
+    },
+    "OSM-Facebook": {
+      "description": "Ŝatu nin ĉe Facebook por akiri novaĵojn pri OpenStreetMap."
+    },
+    "osm-gh-facebook": {
+      "extendedDescription": "Mapigistoj de Ganao, promociantaj OpenStreetMap kaj HOT-projektojn (Humanitarian OpenStreetMap Team) en Ganao. Aliĝu nin."
+    },
+    "OSM-India-facebook": {
+      "description": "Plibonigi OpenStreetMap en Barato",
+      "extendedDescription": "Ĉu vi mapigas en Barato? Ĉu vi havas demandojn aŭ volas kuniĝi al tiu ĉi komunumo? Aliĝu al ni ĉe {url}. Bonvenon ĉiuj!"
+    },
+    "OSM-India-Puducherry-Facebook": {
+      "description": "Facebook-paĝo de FSHM por informoj pri komunumaj okazaĵoj kaj agado",
+      "extendedDescription": "FSHM organizas okazaĵojn rilatajn al libera programaro/aparataro, teĥnologio, aktivismo kaj OpenStreetMap. Ĝia FB-paĝo estas la plej bona loko por esti ĝisdata pri ĝiaj okazaĵoj."
+    },
+    "OSM-India-Puducherry-Matrix": {
+      "description": "Riot-grupo de FSHM por diskuti, kunhavigi kaj samtempigi mapigan agadon kaj okazaĵojn proksime de Pondiĉero",
+      "extendedDescription": "Anoj de FSHM-komunumo diskonigas siajn agadojn kaj spertojn de OSM-mapado per la grupo de Riot.im, tiu ĉi grupo estas ankaŭ uzata por diskuti aferojn rilatajn al libera programaro/aparataro, teĥnologio kaj aktivismo."
+    },
+    "OSM-india-twitter": {
+      "description": "Apenaŭ unu pepaĵo de vi: {url}"
+    },
+    "OSM-japan-facebook": {
+      "description": "Mapigistoj kaj uzantoj de OpenStreetMap en Japanujo"
+    },
+    "OSM-japan-website": {
+      "description": "Mapigistoj kaj uzantoj de OpenStreetMap en Japanujo"
+    },
+    "osm-mg-facebook": {
+      "description": "Facebook-grupo por homoj interesantaj pri OpenStreetMap en Madagaskaro"
+    },
+    "OSM-Rome-meetup": {
+      "description": "Plibonigi OpenStreetMap proksime de Romo",
+      "extendedDescription": "Ni celas esti rimedon por homoj por diskuti kaj kunhavigi scion pri uzi liberajn geografiajn datumojn (precipe OpenStreetMap) kaj liberan programaron por administri, redakti kaj vidigi geografiajn datumojn, kaj promoti ĝian uzon en Latio."
+    },
+    "OSM-Telegram": {
+      "description": "Aniĝu al la tutmonda Telegram-grupo pri OpenStreetMap ĉe {url}"
+    },
+    "OSM-TH-CNX-meetup": {
+      "name": "OSM-renkonto en Ĉiang Mai",
+      "description": "Neregulaj renkontoj de OpenStreetMap-komunumo en Ĉiang Mai",
+      "extendedDescription": "Anoj de la OpenStreetMap-komunumo renkontiĝas je kelkaj monatoj en Ĉiang Mai. Sekvu nin ĉe {url} por scii pri la sekva renkontiĝo"
+    },
+    "OSM-US": {
+      "description": "Ni helpas disvastigi kaj plibonigi OpenStreetMap en Usono.",
+      "extendedDescription": "Ni subtenas OpenStreetMap per organizi ĉiujaran konferencon, liverante rimedojn por la komunumo, gajnante akompanantojn kaj diskonigante la ideon. Aliĝu al OpenStreetMap US tie ĉi: {signupUrl}"
+    },
+    "OSM-US-Slack": {
+      "description": "Bonvenon ĉiuj! Aliĝu al ni ĉe {signupUrl}"
+    },
+    "OSMF": {
+      "name": "Fondaĵo OpenStreetMap",
+      "description": "OSMF estas ne-profit-cela organizaĵo en Britujo, kiu subtenas la projekton OpenStreetMap"
+    },
+    "PHXGeo-twitter": {
+      "description": "Sekvu nin ĉe Twitter ĉe {url}"
+    },
+    "RS-telegram": {
+      "extendedDescription": "Aliĝu al la komunumo por lerni pli pri OpenStreetMap, fari demandojn aŭ partopreni niajn kunvenojn. Ĉiuj estas bonvenaj!"
+    },
+    "si-github": {
+      "description": "{community} ĉe GitHub"
+    },
+    "talk-mg": {
+      "description": "Loko por mapigistoj, komunumoj kaj uzantoj de OpenStreetMap en Madagaskaro por kunhavigi kaj diskuti."
+    },
+    "tw-slack": {
+      "description": "Bonvenon ĉiuj! Aliĝu al ni ĉe {signupUrl}"
+    },
+    "us-massachusetts-mailinglist": {
+      "name": "Dissendolisto talk-us-massachusetts",
+      "description": "Dissendolisto por la OSM-komunumo en Masaĉuseco"
+    }
+  }
+}

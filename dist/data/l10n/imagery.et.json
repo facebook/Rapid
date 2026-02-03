@@ -1,0 +1,592 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.167Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/imagery.et.json",
+    "hash": "e212d0f40c3b1d7661d7c0b212941308"
+  },
+  "et": {
+    "imagery": {
+      "Bedzin-PL-aerial_image": {
+        "name": "Będzin: Orthophotomap 2013 (ortofotod)"
+      },
+      "Bedzin-PL-buildings": {
+        "name": "Będzin: hooned"
+      },
+      "Bing": {
+        "description": "Satelliidi- ja aerofotod.",
+        "name": "Bing Mapsi õhuvaated"
+      },
+      "Bytom-2012": {
+        "attribution": {
+          "text": "Bytomi linnavalitsus"
+        },
+        "name": "Bytom: Orthophotomap 2012 (ortofotod)"
+      },
+      "Bytom-2014": {
+        "attribution": {
+          "text": "Bytomi linnavalitsus"
+        },
+        "name": "Bytom: Fotoplan 2014 (aerofotod)"
+      },
+      "Bytom-2016": {
+        "attribution": {
+          "text": "Bytomi linnavalitsus"
+        },
+        "name": "Bytom: Orthophotomap 2016 (ortofotod)"
+      },
+      "Bytom-2018": {
+        "attribution": {
+          "text": "Bytomi linnavalitsus"
+        },
+        "name": "Bytom: Orthophotomap 2018 (ortofotod)"
+      },
+      "Bytom-2021": {
+        "attribution": {
+          "text": "Bytomi linnavalitsus"
+        },
+        "name": "Bytom: Orthophotomap 2021 (ortofotod)"
+      },
+      "Bytom-buildings": {
+        "attribution": {
+          "text": "Bytomi linnavalitsus"
+        },
+        "name": "Bytom: hooned"
+      },
+      "Czestochowa-2011": {
+        "attribution": {
+          "text": "Częstochowa linnavalitsus"
+        },
+        "name": "Częstochowa: Orthophotomap 2011 (ortofotod)"
+      },
+      "Czestochowa-2013": {
+        "attribution": {
+          "text": "Częstochowa linnavalitsus"
+        },
+        "name": "Częstochowa: Orthophotomap 2013 (ortofotod)"
+      },
+      "Czestochowa-2014": {
+        "attribution": {
+          "text": "Częstochowa linnavalitsus"
+        },
+        "name": "Częstochowa: Orthophotomap 2014 (ortofotod)"
+      },
+      "Czestochowa-2015": {
+        "attribution": {
+          "text": "Częstochowa linnavalitsus"
+        },
+        "name": "Częstochowa: Orthophotomap 2015 (ortofotod)"
+      },
+      "Czestochowa-2016": {
+        "attribution": {
+          "text": "Częstochowa linnavalitsus"
+        },
+        "name": "Częstochowa: Orthophotomap 2016 (ortofotod)"
+      },
+      "Czestochowa-2017": {
+        "attribution": {
+          "text": "Częstochowa linnavalitsus"
+        },
+        "name": "Częstochowa: Orthophotomap 2017 (ortofotod)"
+      },
+      "Czestochowa-buildings": {
+        "attribution": {
+          "text": "Częstochowa linnavalitsus"
+        },
+        "name": "Częstochowa: hooned"
+      },
+      "EOXAT2017CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 pilvitu vaade - https://s2maps.eu autoriks EOX IT Services GmbH (sisaldab muudetud Copernicus Sentineli andmeid 2017. aastast)"
+        },
+        "description": "Järeltöödeldud Sentineli satelliidipildid",
+        "name": "eox.at 2017 pilvitu"
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 pilvitu vaade - https://s2maps.eu autoriks EOX IT Services GmbH (sisaldab muudetud Copernicus Sentineli andmeid 2017-2018 aastatest)"
+        },
+        "description": "Järeltöödeldud Sentineli satelliidipildid"
+      },
+      "EOXAT2019CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 pilvitu vaade - https://s2maps.eu autoriks EOX IT Services GmbH (sisaldab muudetud Copernicus Sentineli andmeid 2019. aastast)"
+        },
+        "description": "Järeltöödeldud Sentineli satelliidipildid"
+      },
+      "EOXAT2020CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 pilvitu vaade - https://s2maps.eu autoriks EOX IT Services GmbH (sisaldab muudetud Copernicus Sentineli andmeid 2020. aastast)"
+        },
+        "description": "Järeltöödeldud Sentineli satelliidipildid"
+      },
+      "EOXAT2021CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 pilvitu vaade - https://s2maps.eu autoriks EOX IT Services GmbH (sisaldab muudetud Copernicus Sentineli andmeid 2021. aastast)"
+        },
+        "description": "Järeltöödeldud Sentineli satelliidipildid"
+      },
+      "EOXAT2022CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 pilvitu vaade - https://s2maps.eu autoriks EOX IT Services GmbH (sisaldab muudetud Copernicus Sentineli andmeid 2022. aastast)"
+        },
+        "description": "Järeltöödeldud Sentineli satelliidipildid"
+      },
+      "EOXAT2023CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 pilvitu vaade - https://s2maps.eu autoriks EOX IT Services GmbH (sisaldab muudetud Copernicus Sentineli andmeid 2023. aastast)"
+        },
+        "description": "Järeltöödeldud Sentineli satelliidipildid",
+        "name": "eox.at 2023 pilvitu"
+      },
+      "EOXAT2024CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 pilvitu vaade - https://s2maps.eu autoriks EOX IT Services GmbH (sisaldab muudetud Copernicus Sentineli andmeid 2024. aastast)"
+        },
+        "description": "Järeltöödeldud Sentineli satelliidipildid",
+        "name": "eox.at 2024 pilvitu"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Kasutustingimused ja tagasiside"
+        },
+        "description": "Esri Worldi pildimaterjal",
+        "name": "Esri Worldi pildimaterjal"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Kasutustingimused ja tagasiside"
+        },
+        "description": "Esri arhiivimaterjal, mis võib olla tavakihi piltidest selgem ja täpsem.",
+        "name": "Esri Worldi pildimaterjal (selgem, beeta)"
+      },
+      "FOMI_2011_2014": {
+        "attribution": {
+          "text": "Lechneri Teadmuskeskus (Lechner Tudásközpont)"
+        },
+        "description": "Valitsuse andmetel põhinevad 40 cm/piksli kohta eraldusvõimega ortofotod kogu riigi kohta ajast, mil puud on lehes. See andmekiht sobib kasutamiseks täpsema võrdlusmaterjali puudumisel alusbaasina. Pildid on WEBP-vormingus, JOSM vajab nende jaoks webp-lisamoodulit.",
+        "name": "FÖMI 2011–2014 aastate ortofotod (WEBP)"
+      },
+      "FOMI_2015": {
+        "attribution": {
+          "text": "Lechneri Teadmuskeskus (Lechner Tudásközpont)"
+        },
+        "description": "Valitsuse andmetel põhinevad 40 cm/piksli kohta eraldusvõimega ortofotod kogu riigi kohta ajast, mil puud on lehes. See andmekiht sobib kasutamiseks täpsema võrdlusmaterjali puudumisel alusbaasina. Pildid on WEBP-vormingus, JOSM vajab nende jaoks webp-lisamoodulit.",
+        "name": "FÖMI 2015. aasta ortofotod (WEBP)"
+      },
+      "FOMI_2015_leafoff_20cm": {
+        "attribution": {
+          "text": "Lechneri Teadmuskeskus (Lechner Tudásközpont)"
+        },
+        "description": "Valitsuse andmetel põhinevad 20 cm/piksli kohta eraldusvõimega ortofotod kogu riigi kohta ajast, mil puud ei ole lehes. See andmekiht sobib kasutamiseks täpsema võrdlusmaterjali puudumisel alusbaasina. Pildid on WEBP-vormingus, JOSM vajab nende jaoks webp-lisamoodulit.",
+        "name": "FÖMI 2015. aasta ortofotod ajast, mil puud pole veel lehes 20cm (webp)"
+      },
+      "Geoportal2-PL-City-boundaries_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        }
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        },
+        "name": "Geoportal 2: High Resolution Orthophotomap (kõrgresolutsiooniga arhiveeritud ortofotod) (WMS)"
+      },
+      "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        },
+        "name": "Geoportal 2: High Resolution Orthophotomap (kõrgresolutsiooniga arhiveeritud ortofotod) (WMS)"
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        }
+      },
+      "Geoportal2-PL-addres_points_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        }
+      },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        },
+        "name": "Geoportal 2: Orthophotomap (arhiveeritud ortofotod) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        },
+        "name": "Geoportal 2: Orthophotomap (viimased ortofotod) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        },
+        "name": "Geoportal 2: Orthophotomap (viimased ortofotod) (WMTS)"
+      },
+      "Geoportal2-PL-boundaries-of-communes_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-counties_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-provinces_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        }
+      },
+      "Geoportal2-PL-buildings_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        }
+      },
+      "Geoportal2-PL-gas-pipe_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        }
+      },
+      "Geoportal2-PL-heat-pipe_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        }
+      },
+      "Geoportal2-PL-plot_boundaries_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        }
+      },
+      "Geoportal2-PL-power-cord_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        }
+      },
+      "Geoportal2-PL-sewer-pipe_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        }
+      },
+      "Geoportal2-PL-shaded_relief_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        }
+      },
+      "Geoportal2-PL-squares-and-housing-estates_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        }
+      },
+      "Geoportal2-PL-state-borders_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        }
+      },
+      "Geoportal2-PL-telecommunications-cable_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        }
+      },
+      "Geoportal2-PL-water-pipe_WMS": {
+        "attribution": {
+          "text": "Poola Geodeesia ja Kartograafia Peavalitsus"
+        }
+      },
+      "Gliwice-2003": {
+        "attribution": {
+          "text": "Gliwice'i linnavalitsus"
+        },
+        "name": "Gliwice: Orthophotomap 2003 (ortofotod)"
+      },
+      "Gliwice-2009": {
+        "attribution": {
+          "text": "Gliwice'i linnavalitsus"
+        },
+        "name": "Gliwice: Orthophotomap 2009 (ortofotod)"
+      },
+      "Gliwice-2013": {
+        "attribution": {
+          "text": "Gliwice'i linnavalitsus"
+        },
+        "name": "Gliwice: Orthophotomap 2013 (ortofotod)"
+      },
+      "Gliwice-2017": {
+        "attribution": {
+          "text": "Gliwice'i linnavalitsus"
+        },
+        "name": "Gliwice: Orthophotomap 2017 (ortofotod)"
+      },
+      "Gliwice-2018": {
+        "attribution": {
+          "text": "Gliwice'i linnavalitsus"
+        },
+        "name": "Gliwice: Orthophotomap 2018 (ortofotod)"
+      },
+      "Gliwice-2020": {
+        "attribution": {
+          "text": "Gliwice'i linnavalitsus"
+        },
+        "name": "Gliwice: Orthophotomap 2020 (ortofotod)"
+      },
+      "Gliwice-2021": {
+        "attribution": {
+          "text": "Gliwice'i linnavalitsus"
+        },
+        "name": "Gliwice: Orthophotomap 2021 (ortofotod)"
+      },
+      "Gliwice-buildings": {
+        "attribution": {
+          "text": "Gliwice'i linnavalitsus"
+        },
+        "name": "Gliwice: hooned"
+      },
+      "Lodz-2015": {
+        "attribution": {
+          "text": "Łodzi linnavalitsus"
+        },
+        "name": "Łódź: Orthophotomap 2015 (ortofotod)"
+      },
+      "Lodz-2017": {
+        "attribution": {
+          "text": "Łodzi linnavalitsus"
+        },
+        "name": "Łódź: Orthophotomap 2017 (ortofotod)"
+      },
+      "Lodz-buildings": {
+        "attribution": {
+          "text": "Łodzi linnavalitsus"
+        },
+        "name": "Łódź: hooned"
+      },
+      "MAPNIK": {
+        "attribution": {
+          "text": "© OpenStreetMapi kaasautorid, ODbL 1.0"
+        },
+        "description": "OpenStreetMapi vaikekiht.",
+        "name": "OpenStreetMap (standard)"
+      },
+      "Maaamet-Estonia_Cadastre": {
+        "name": "Maa-ameti katastrikaart"
+      },
+      "Maaamet-Estonia_Ortho": {
+        "name": "Maa-ameti ortofoto (WMS)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Kasutustingimused ja tagasiside"
+        },
+        "name": "Mapboxi satelliidifotod"
+      },
+      "ORTOS_DGRF_2004_06": {
+        "attribution": {
+          "text": "Territooriumide peadirektoraadi koostaud geograafiline teave (Informação geográfica cedida pela Direção-Geral do Território)"
+        },
+        "name": "Portugali mandriosa ortofotod - 50 cm - 2004-2006 (DGT)"
+      },
+      "ORTOS_DGT_2014_15": {
+        "attribution": {
+          "text": "Territooriumide peadirektoraadi koostaud geograafiline teave (Informação geográfica cedida pela Direção-Geral do Território)"
+        },
+        "name": "Portugali mandriosa ranikupiirkondade ortofotod - 10 cm - 2014-2015 (DGT)"
+      },
+      "ORTOS_DGT_2018_WMS": {
+        "attribution": {
+          "text": "Territooriumide peadirektoraadi koostaud geograafiline teave (Informação geográfica cedida pela Direção-Geral do Território)"
+        },
+        "name": "Portugali mandriosa ortofotod - 25 cm - 2018 (DGT)"
+      },
+      "ORTOS_DGT_2021_RGB": {
+        "attribution": {
+          "text": "Territooriumide peadirektoraadi koostaud geograafiline teave (Informação geográfica cedida pela Direção-Geral do Território)"
+        },
+        "name": "Portugali mandriosa põhjapoolsete alade ortofotod - 10 cm - 2014-2015 (DGT)"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMapi kaasautorid, CC-BY-SA"
+        }
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMapi kaasautorid, CC-BY-SA"
+        }
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMapi kaasautorid, CC-BY-SA"
+        }
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMapi kaasautorid, CC-BY-SA"
+        }
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMapi kaasautorid, CC-BY-SA"
+        }
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMapi kaasautorid, CC-BY-SA"
+        }
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMapi kaasautorid, CC-BY-SA"
+        }
+      },
+      "Siemianowice_Slaskie-aerial_image": {
+        "attribution": {
+          "text": "Siemianowice Śląskie linnavalitsus"
+        },
+        "name": "Siemianowice Śląskie: Orthophotomap (ortofotod)"
+      },
+      "Siemianowice_Slaskie-buildings": {
+        "attribution": {
+          "text": "Siemianowice Śląskie linnavalitsus"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMapi kaasautorid, CC by-SA 3.0"
+        }
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMapi kaasautorid, CC by-SA 3.0"
+        }
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMapi kaasautorid, CC by-SA 3.0"
+        }
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMapi kaasautorid, CC by-SA 3.0"
+        }
+      },
+      "Zabrze-2011": {
+        "attribution": {
+          "text": "Zabrze'i linnavalitsus"
+        },
+        "name": "Zabrze: Orthophotomap 2011 (ortofotod)"
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "name": "basemap.at ortofoto"
+      },
+      "debicki-buildings": {
+        "name": "Powiat dębicki: hooned"
+      },
+      "geoscribble-latest": {
+        "attribution": {
+          "text": "GeoScribble'i kaasautorid"
+        },
+        "description": "Kuni kolm nädalat vanad märkused kohtvaatluse rakendusest Every Door",
+        "name": "GeoScribble'i viimased märkused"
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© Göteborgi linnavalitsus, CC0"
+        },
+        "name": "Göteborgi linna kaart"
+      },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© Göteborgi linnavalitsus, CC0"
+        },
+        "name": "Göteborgi maastikukaart"
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© Göteborgi linnavalitsus, CC0"
+        },
+        "description": "Göteborgi linnavalitsuse ortofotod",
+        "name": "Göteborgi 2015. aasta ortofotod"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© Göteborgi linnavalitsus, CC0"
+        },
+        "description": "Göteborgi linnavalitsuse ortofotod",
+        "name": "Göteborgi 2017. aasta ortofotod"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© Göteborgi linnavalitsus, CC0"
+        },
+        "description": "Göteborgi linnavalitsuse ortofotod",
+        "name": "Göteborgi 2019. aasta ortofotod"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© Göteborgi linnavalitsus, CC0"
+        },
+        "description": "Göteborgi linnavalitsuse ortofotod",
+        "name": "Göteborgi 2021. aasta ortofotod"
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© Göteborgi linnavalitsus, CC0"
+        },
+        "description": "Göteborgi linnavalitsuse ortofotod",
+        "name": "Göteborgi viimased ortofotod"
+      },
+      "maaamet<TX_DOT>ee-cir_ngr": {
+        "name": "Maa-ameti metsanduslik ortofoto"
+      },
+      "maaamet<TX_DOT>ee-orto": {
+        "name": "Maa-ameti ortofoto (TMS)"
+      },
+      "maaamet<TX_DOT>ee-pohi_vr2": {
+        "name": "Maa-ameti põhikaart"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Kasutustingimused ja tagasiside"
+        },
+        "description": "Näita tähtsamaid objekte, et aidata orienteeruda.",
+        "name": "Asukoha ülekate"
+      },
+      "osm-gps": {
+        "description": "Avalikud GPS-rajad, mis on OpenStreetMapi üles laaditud.",
+        "name": "OpenStreetMapi GPS-rajad"
+      },
+      "poznan-ortofotomapa2014": {
+        "name": "Poznań: Orthophotomap 2014 (ortofotod)"
+      },
+      "poznan-ortofotomapa2016": {
+        "name": "Poznań: Orthophotomap 2016 (ortofotod)"
+      },
+      "poznan-ortofotomapaBiezaca": {
+        "name": "Poznań: Orthophotomap Bieżąca (ortofotod)"
+      },
+      "rzeszowski-aerial": {
+        "name": "Powiat rzeszowski: Orthophotomap (ortofotod)"
+      },
+      "stamen-terrain-background": {
+        "name": "Stameni reljeefikaart"
+      },
+      "tf-landscape": {
+        "name": "Thunderforesti maastikukaart"
+      },
+      "wroclaw-orto2015": {
+        "attribution": {
+          "text": "Wrocławi linnavalitsus"
+        },
+        "name": "Wrocław: Orthophotomap 2015 (ortofotod)"
+      },
+      "wroclaw-orto2018": {
+        "attribution": {
+          "text": "Wrocławi linnavalitsus"
+        },
+        "name": "Wrocław: Orthophotomap 2018 (ortofotod)"
+      }
+    }
+  }
+}

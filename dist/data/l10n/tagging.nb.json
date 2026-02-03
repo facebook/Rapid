@@ -1,0 +1,737 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.025Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/tagging.nb.json",
+    "hash": "e9bea8b0ec748e733b76b61ce0ec792c"
+  },
+  "nb": {
+    "presets": {
+      "fields": {
+        "access": {
+          "options": {
+            "private": {
+              "title": "Privat"
+            }
+          },
+          "types": {
+            "access": "Alt"
+          }
+        },
+        "access_simple": {
+          "options": {
+            "private": "Privat",
+            "yes": "Offentlig"
+          }
+        },
+        "addr/interpolation": {
+          "options": {
+            "all": "Alt"
+          }
+        },
+        "address": {
+          "label": "Adresse",
+          "placeholders": {
+            "city": "By",
+            "country": "Land",
+            "street": "Gate"
+          }
+        },
+        "aerialway/access": {
+          "label": "Tilgang"
+        },
+        "aircraft/type": {
+          "options": {
+            "military": "Militær"
+          }
+        },
+        "automated": {
+          "label": "Automatisert"
+        },
+        "backcountry": {
+          "label": "Turski"
+        },
+        "barrier": {
+          "options": {
+            "ditch": "Grøft",
+            "entrance": "Inngang",
+            "wall": "Vegg"
+          }
+        },
+        "barrier_planter": {
+          "options": {
+            "planter": "Ja",
+            "undefined": "Nei"
+          }
+        },
+        "bath/type": {
+          "options": {
+            "lake": "Innsjø"
+          }
+        },
+        "bicycle_road": {
+          "options": {
+            "undefined": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "blind": {
+          "options": {
+            "limited": "Begrenset",
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "board_type": {
+          "options": {
+            "history": "Historikk"
+          }
+        },
+        "camera/type": {
+          "options": {
+            "dome": "kuppel",
+            "fixed": "Festet"
+          }
+        },
+        "country": {
+          "label": "Land"
+        },
+        "covered_no": {
+          "options": {
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "craft": {
+          "options": {
+            "brewery": "Bryggeri",
+            "sawmill": "Sagbruk"
+          }
+        },
+        "crop": {
+          "options": {
+            "grass": "Gress",
+            "rice": "Ris",
+            "tea": "Te"
+          }
+        },
+        "crossing/barrier": {
+          "options": {
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "crossing_raised": {
+          "options": {
+            "table": "Ja",
+            "undefined": "Nei"
+          }
+        },
+        "cuisine": {
+          "options": {
+            "american": "Amerikansk",
+            "chinese": "Kinesisk",
+            "french": "Fransk",
+            "japanese": "Japansk",
+            "tea": "Te"
+          }
+        },
+        "cycle_barrier": {
+          "options": {
+            "double": "Dobbel",
+            "single": "Singel",
+            "triple": "Trippel"
+          }
+        },
+        "cycle_barrier/installation": {
+          "options": {
+            "fixed": "Festet"
+          }
+        },
+        "cycle_network": {
+          "label": "Nettwerk"
+        },
+        "departures_board": {
+          "options": {
+            "yes": "Ja"
+          }
+        },
+        "description": {
+          "label": "Beskrivelse"
+        },
+        "distance": {
+          "label": "Distanse"
+        },
+        "drink_multi": {
+          "label": "Drinker"
+        },
+        "electrified": {
+          "options": {
+            "no": "Nei"
+          }
+        },
+        "fee": {
+          "label": "Avgift"
+        },
+        "fire_hydrant/type": {
+          "options": {
+            "underground": "Underjordisk ",
+            "wall": "Vegg"
+          }
+        },
+        "fire_mains": {
+          "options": {
+            "no": "Nei"
+          }
+        },
+        "fire_service_inlet": {
+          "options": {
+            "underground": "Underjordisk ",
+            "wall": "Vegg"
+          }
+        },
+        "fire_sprinkler": {
+          "options": {
+            "no": "Nei"
+          }
+        },
+        "flashing_lights": {
+          "options": {
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "fuel": {
+          "label": "Drivstoff"
+        },
+        "generator/source": {
+          "options": {
+            "oil": "Olje",
+            "wind": "VInd"
+          }
+        },
+        "historic": {
+          "options": {
+            "ruins": "Ruiner"
+          }
+        },
+        "horse_riding": {
+          "options": {
+            "horse_riding": "Ja",
+            "undefined": "Nei"
+          }
+        },
+        "indoor": {
+          "label": "Innendørs"
+        },
+        "internet_access": {
+          "options": {
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Ja",
+            "undefined": "Nei"
+          }
+        },
+        "kerb": {
+          "options": {
+            "no": {
+              "title": "Nei"
+            },
+            "yes": {
+              "title": "Ja"
+            }
+          }
+        },
+        "kitchen": {
+          "label": "Kjøkken"
+        },
+        "lit": {
+          "label": "Belyst"
+        },
+        "location_pool": {
+          "options": {
+            "indoor": "Innendørs",
+            "outdoor": "Utendørs"
+          }
+        },
+        "marker": {
+          "options": {
+            "stone": {
+              "title": "Stein"
+            }
+          }
+        },
+        "material": {
+          "options": {
+            "stone": "Stein",
+            "wood": "Treverk"
+          }
+        },
+        "memorial": {
+          "options": {
+            "stone": "Stein"
+          }
+        },
+        "mooring": {
+          "options": {
+            "commercial": "Reklame",
+            "no": "Nei",
+            "private": "Privat",
+            "yes": "Ja"
+          }
+        },
+        "mtb/scale": {
+          "options": {
+            "0": "0: Fast grus/pakket jord, ingen hindringer, brede kurver",
+            "1": "1: Noe løst underlag, små hindringer, brede kurver",
+            "2": "2: Mye løst underlag, store hindringer, lett hårnålersvinger",
+            "3": "3: Glatt underlag, store hindringer, stramme hårnålsvinger",
+            "5": "5: Maksimal vanskelighetsgrad, blokkmarker, skred"
+          }
+        },
+        "name": {
+          "label": "Navn"
+        },
+        "network": {
+          "label": "Nettwerk"
+        },
+        "network_bicycle": {
+          "options": {
+            "icn": "Internasjonal",
+            "ncn": "Nasjonal"
+          }
+        },
+        "network_foot": {
+          "options": {
+            "iwn": "Internasjonal",
+            "nwn": "Nasjonal"
+          }
+        },
+        "network_horse": {
+          "options": {
+            "ihn": "Internasjonal",
+            "nhn": "Nasjonal"
+          }
+        },
+        "network_road": {
+          "label": "Nettwerk"
+        },
+        "note": {
+          "label": "Notat"
+        },
+        "office": {
+          "options": {
+            "travel_agent": "Reisebyrå"
+          }
+        },
+        "oneway": {
+          "options": {
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "oneway_yes": {
+          "options": {
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "operator": {
+          "label": "Operatør"
+        },
+        "parcel_pickup": {
+          "options": {
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "parking": {
+          "options": {
+            "underground": {
+              "title": "Underjordisk "
+            }
+          }
+        },
+        "parking/side/parking": {
+          "label": "Parkering",
+          "options": {
+            "no": "Nei"
+          }
+        },
+        "piste/grooming": {
+          "options": {
+            "backcountry": "Turski"
+          }
+        },
+        "piste/type": {
+          "options": {
+            "nordic": "Nordisk",
+            "playground": "Lekeplass"
+          }
+        },
+        "pump": {
+          "options": {
+            "yes": "Ja"
+          }
+        },
+        "ramp": {
+          "options": {
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "recycling_accepts": {
+          "options": {
+            "shoes": "Sko"
+          }
+        },
+        "resource": {
+          "options": {
+            "aggregate": "Aggregat"
+          }
+        },
+        "roof/shape": {
+          "options": {
+            "dome": "kuppel"
+          }
+        },
+        "royal_cypher-GB": {
+          "options": {
+            "no": "Nei"
+          }
+        },
+        "seamark/beacon_lateral/system": {
+          "options": {
+            "other": "Andre"
+          }
+        },
+        "seamark/buoy_lateral/system": {
+          "options": {
+            "other": "Andre"
+          }
+        },
+        "seamark/harbour/category_marina": {
+          "options": {
+            "marina": "Ja",
+            "marina_no_facilities": "Nei"
+          }
+        },
+        "seamark/rescue_station/category": {
+          "options": {
+            "aircraft": "Luftfartøy"
+          }
+        },
+        "second_hand": {
+          "options": {
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "shoes": {
+          "label": "Sko"
+        },
+        "siren/type": {
+          "options": {
+            "other": "Andre"
+          }
+        },
+        "social_facility_for": {
+          "options": {
+            "child": "Barn"
+          }
+        },
+        "sport": {
+          "options": {
+            "american_football": "Amerikansk Fotball"
+          }
+        },
+        "stroller": {
+          "options": {
+            "limited": "Begrenset",
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "structure": {
+          "options": {
+            "bridge": "Bro"
+          }
+        },
+        "structure_canal": {
+          "options": {
+            "bridge": "Bro"
+          }
+        },
+        "substance": {
+          "options": {
+            "fuel": "Drivstoff"
+          }
+        },
+        "supervised": {
+          "label": "Overvåket"
+        },
+        "surface": {
+          "options": {
+            "grass": "Gress",
+            "wood": "Treverk"
+          }
+        },
+        "survey_point/structure": {
+          "options": {
+            "cut": "Klipp ut",
+            "pole": "Stolpe"
+          }
+        },
+        "switch": {
+          "options": {
+            "mechanical": "Mekanisk"
+          }
+        },
+        "takeaway": {
+          "options": {
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "toilets/menstrual_products": {
+          "options": {
+            "no": "Nei"
+          }
+        },
+        "toilets/wheelchair": {
+          "options": {
+            "limited": "Begrenset",
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "traffic_calming_road": {
+          "label": "Fartsdemping"
+        },
+        "traffic_signals/sound": {
+          "options": {
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "trees": {
+          "label": "Trær"
+        },
+        "two_sided": {
+          "options": {
+            "undefined": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "usage_rail": {
+          "options": {
+            "military": "Militær"
+          }
+        },
+        "usage_waterway": {
+          "options": {
+            "transportation": "Transportering"
+          }
+        },
+        "utility": {
+          "options": {
+            "gas": "Gass",
+            "oil": "Olje",
+            "power": "Strøm",
+            "water": "Vann"
+          }
+        },
+        "vehicles": {
+          "options": {
+            "bus": "Buss",
+            "train": "Tog",
+            "tram": "Trikk",
+            "trolleybus": "Trolleybuss"
+          }
+        },
+        "vending": {
+          "options": {
+            "drinks": "Drinker",
+            "eggs": "Egg",
+            "fuel": "Drivstoff"
+          }
+        },
+        "visibility": {
+          "label": "Synlighet"
+        },
+        "water_source": {
+          "options": {
+            "pond": "Dam",
+            "stream": "Strøm"
+          }
+        },
+        "website": {
+          "label": "Nettside"
+        },
+        "wheelchair": {
+          "options": {
+            "limited": "Begrenset",
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        },
+        "windings/auto": {
+          "options": {
+            "no": "Nei",
+            "yes": "Ja"
+          }
+        }
+      },
+      "presets": {
+        "addr/interpolation": {
+          "name": "Adresseinterpolasjon"
+        },
+        "address": {
+          "name": "Adresse"
+        },
+        "advertising/column": {
+          "name": "Annonsekolonne"
+        },
+        "aeroway/aerodrome": {
+          "name": "Flyplass"
+        },
+        "amenity/cafe": {
+          "name": "Kafe"
+        },
+        "amenity/driving_school": {
+          "name": "Kjøreskole"
+        },
+        "amenity/fast_food": {
+          "name": "Hurtigmat"
+        },
+        "area": {
+          "name": "Område"
+        },
+        "barrier/border_control": {
+          "name": "Grensekontroll"
+        },
+        "barrier/ditch": {
+          "name": "Skyttergrav"
+        },
+        "barrier/entrance": {
+          "name": "Inngang"
+        },
+        "barrier/wall": {
+          "name": "Vegg"
+        },
+        "craft/sawmill": {
+          "name": "Sagbruk"
+        },
+        "emergency/ambulance_station": {
+          "name": "Ambulansestasjon"
+        },
+        "highway/bus_stop": {
+          "name": "Buss Stopp"
+        },
+        "highway/crossing": {
+          "name": "Kryss"
+        },
+        "highway/elevator": {
+          "name": "Heis"
+        },
+        "highway/steps": {
+          "name": "Trinn"
+        },
+        "highway/traffic_mirror": {
+          "name": "Trafikkspeil"
+        },
+        "highway/trailhead": {
+          "name": "Stihode"
+        },
+        "historic/ruins": {
+          "name": "Ruiner"
+        },
+        "landuse/grass": {
+          "name": "Gress"
+        },
+        "landuse/military/barracks": {
+          "name": "Brakker"
+        },
+        "landuse/pond": {
+          "name": "Dam"
+        },
+        "leisure/playground": {
+          "name": "Lekeplass"
+        },
+        "line": {
+          "name": "Linje"
+        },
+        "man_made/antenna": {
+          "name": "Antenne"
+        },
+        "man_made/pipeline": {
+          "name": "Rørlinje"
+        },
+        "natural/tree": {
+          "name": "Tre"
+        },
+        "natural/tree_row": {
+          "name": "Trerekke"
+        },
+        "natural/water": {
+          "name": "Vann"
+        },
+        "natural/water/lake": {
+          "name": "Innsjø"
+        },
+        "natural/water/pond": {
+          "name": "Dam"
+        },
+        "office": {
+          "name": "Kontor"
+        },
+        "office/travel_agent": {
+          "name": "Reisebyrå"
+        },
+        "place/city": {
+          "name": "By"
+        },
+        "place/farm": {
+          "name": "Gård"
+        },
+        "place/island": {
+          "name": "Øy"
+        },
+        "point": {
+          "name": "Punkt"
+        },
+        "public_transport/platform/bus_point": {
+          "name": "Buss Stopp"
+        },
+        "relation": {
+          "name": "Relasjon"
+        },
+        "shop/bakery": {
+          "name": "Bakeri"
+        },
+        "shop/travel_agency": {
+          "name": "Reisebyrå"
+        },
+        "tourism/information/map": {
+          "name": "Kart"
+        },
+        "traffic_calming": {
+          "name": "Fartsdemping"
+        },
+        "waterway/ditch": {
+          "name": "Grøft"
+        },
+        "waterway/drain": {
+          "name": "Avløp"
+        },
+        "waterway/stream": {
+          "name": "Strøm"
+        }
+      }
+    }
+  }
+}

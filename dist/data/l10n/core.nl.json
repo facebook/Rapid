@@ -1,0 +1,2852 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.216Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.nl.json",
+    "hash": "0131708d4b0d07194d9055ee9ff78fea"
+  },
+  "nl": {
+    "icons": {
+      "information": "informatie",
+      "remove": "verwijder",
+      "undo": "maak ongedaan",
+      "zoom_to": "zoom naar",
+      "copy": "kopieer",
+      "view_on": "bekijk op {domain} ",
+      "visit_website": "bezoek de website",
+      "favorite": "favoriet",
+      "list": "lijst",
+      "text": "tekst",
+      "deselect": "deselecteer"
+    },
+    "toolbar": {
+      "inspect": "Beoordeel",
+      "undo_redo": "Ongedaan/Opnieuw",
+      "favorites": "Favorieten",
+      "add_feature": "Voeg object toe"
+    },
+    "title": {
+      "labeled_and_more": {
+        "one": "{labeled} en {count} andere",
+        "other": "{labeled} en {count} andere"
+      }
+    },
+    "modes": {
+      "add_area": {
+        "title": "Vlak"
+      },
+      "add_line": {
+        "title": "Lijn"
+      },
+      "add_point": {
+        "title": "Punt"
+      },
+      "add_note": {
+        "title": "Opmerking",
+        "description": "Zie je iets wat niet klopt? Laat het andere mappers weten."
+      },
+      "add_preset": {
+        "title": "Voeg {feature} toe"
+      },
+      "browse": {
+        "title": "Blader",
+        "description": "Verschuif de kaart en zoom in of uit."
+      },
+      "drag_node": {
+        "connected_to_hidden": "Dit kan niet bewerkt worden, omdat het verbonden is met een verborgen object."
+      }
+    },
+    "operations": {
+      "add": {
+        "annotation": {
+          "point": "Punt toegevoegd.",
+          "vertex": "Knoop aan een weg toegevoegd.",
+          "relation": "Relatie toegevoegd.",
+          "note": "Opmerking bij kaart gemaakt."
+        }
+      },
+      "start": {
+        "annotation": {
+          "line": "Lijn begonnen.",
+          "area": "Vlak begonnen."
+        }
+      },
+      "continue": {
+        "title": "Ga door",
+        "description": "Ga door met deze lijn.",
+        "not_eligible": "Je kunt niet verder met deze lijn.",
+        "multiple": "Je kunt doorgaan met verschillende lijnen. Voeg er een toe aan de selectie om verder te gaan.",
+        "annotation": {
+          "line": "Lijn voortgezet.",
+          "area": "Vlak voortgezet."
+        }
+      },
+      "cancel_draw": {
+        "annotation": "Tekenen afgebroken."
+      },
+      "change_role": {
+        "annotation": {
+          "one": "De rol van een lid van de relatie is gewijzigd.",
+          "other": "De rol van {n} leden van de relatie is gewijzigd."
+        }
+      },
+      "change_tags": {
+        "annotation": "Tags aangepast."
+      },
+      "copy": {
+        "title": "Kopieer",
+        "description": {
+          "one": "Stel dit object in om te plakken.",
+          "other": "Stel deze objecten in om te plakken."
+        },
+        "annotation": {
+          "one": "Eén object gekopieerd.",
+          "other": "{n} objecten gekopieerd."
+        },
+        "too_large": {
+          "one": "Dit kan niet gekopieerd worden omdat slechts een deel ervan momenteel zichtbaar is.",
+          "other": "Deze kunnen niet gekopieerd worden, omdat slechts een deel ervan momenteel zichtbaar is."
+        }
+      },
+      "paste": {
+        "title": "Plak",
+        "description": {
+          "one": "Voeg hier een dubbele {feature} toe.",
+          "other": "Voeg hier {n} dubbele objecten toe."
+        },
+        "annotation": {
+          "one": "Er is één object geplakt.",
+          "other": "Er zijn {n} objecten geplakt."
+        },
+        "nothing_copied": "Er zijn geen objecten gekopieerd. "
+      },
+      "circularize": {
+        "title": "Maak rond",
+        "annotation": {
+          "feature": {
+            "one": "Eén object rond gemaakt.",
+            "other": "{n} objecten rond gemaakt."
+          }
+        }
+      },
+      "orthogonalize": {
+        "title": "Maak hoeken recht",
+        "annotation": {
+          "corner": {
+            "one": "Eén hoek haaks gemaakt.",
+            "other": "{n} hoeken haaks gemaakt."
+          },
+          "feature": {
+            "one": "De hoeken van één object zijn haaks gemaakt.",
+            "other": "De hoeken van {n} objecten zijn haaks gemaakt."
+          }
+        }
+      },
+      "straighten": {
+        "title": "Maak recht",
+        "description": {
+          "points": "Trek deze punten recht.",
+          "line": "Trek deze lijn recht.",
+          "lines": "Trek deze lijnen recht."
+        },
+        "annotation": {
+          "point": {
+            "one": "Eén punt rechtgetrokken.",
+            "other": "{n} punten zijn rechtgetrokken."
+          },
+          "line": {
+            "one": "Eén lijn rechtgemaakt.",
+            "other": "{n} lijnen zijn rechtgetrokken."
+          }
+        }
+      },
+      "delete": {
+        "title": "Verwijder",
+        "annotation": {
+          "point": "Punt verwijderd.",
+          "vertex": "Knoop weggehaald uit weg.",
+          "line": "Lijn verwijderd.",
+          "area": "Vlak verwijderd.",
+          "relation": "Relatie verwijderd.",
+          "feature": {
+            "one": "Eén object verwijderd.",
+            "other": "{n} objecten verwijderd."
+          }
+        }
+      },
+      "downgrade": {
+        "description": {
+          "building_address": "Verwijder alle niet-adresgerelateerde en niet-gebouwgerelateerde tags.",
+          "building": "Verwijder alle niet-gebouwgerelateerde tags.",
+          "address": "Verwijder alle niet-adresgerelateerde tags.",
+          "generic": "Verwijder tags."
+        },
+        "annotation": {
+          "building": {
+            "one": "Eén object gedowngraded naar een basisgebouw.",
+            "other": "{n} objecten gedowngraded naar basisgebouwen."
+          },
+          "address": {
+            "one": "Eén object gedowngraded naar een adres.",
+            "other": "{n} objecten gedowngraded naar adressen."
+          },
+          "generic": {
+            "one": "Eén object gedowngraded.",
+            "other": "{n} objecten gedowngraded."
+          }
+        }
+      },
+      "add_member": {
+        "annotation": {
+          "one": "Er is een lid aan een relatie toegevoegd.",
+          "other": "Er zijn {n} leden aan een relatie toegevoegd."
+        }
+      },
+      "delete_member": {
+        "annotation": {
+          "one": "Er is een lid uit een relatie verwijderd.",
+          "other": "Er zijn {n} leden uit een relatie verwijderd."
+        }
+      },
+      "reorder_members": {
+        "annotation": "Relatie-lid opnieuw geordend"
+      },
+      "connect": {
+        "annotation": {
+          "from_vertex": {
+            "to_point": "Weg aan een punt verbonden.",
+            "to_vertex": "Weg aan een andere weg verbonden.",
+            "to_line": "Weg aan een lijn verbonden.",
+            "to_area": "Weg aan een vlak verbonden.",
+            "to_adjacent_vertex": "Aangrenzende punten in een weg samengevoegd.",
+            "to_sibling_vertex": "Weg aan zichzelf verbonden."
+          },
+          "from_point": {
+            "to_point": "Punt met een ander punt samengevoegd.",
+            "to_vertex": "Punt met een punt in een weg samengevoegd.",
+            "to_line": "Punt verplaatst naar een lijn.",
+            "to_area": "Punt verplaatst naar een vlak."
+          }
+        },
+        "relation": "Deze objecten kunnen niet worden verbonden, omdat ze andere rollen in een relatie hebben.",
+        "restriction": "Deze objecten kunnen niet worden verbonden, omdat dat een \"{relation}\"-relatie zou beschadigen."
+      },
+      "disconnect": {
+        "title": "Maak los",
+        "description": {
+          "no_points": {
+            "single_way": {
+              "line": "Maak deze lijn los van andere objecten.",
+              "area": "Maak dit vlak los van andere objecten."
+            },
+            "multiple_ways": {
+              "conjoined": "Maak deze objecten van elkaar los.",
+              "separate": "Maak deze objecten los van alles."
+            }
+          },
+          "single_point": {
+            "no_ways": "Maak deze objecten los op dit punt.",
+            "single_way": {
+              "line": "Maak de geselecteerde lijn los op dit punt.",
+              "area": "Maak het geselecteerde vlak los op dit punt."
+            },
+            "multiple_ways": "Maak de geselecteerde objecten los op dit punt."
+          },
+          "multiple_points": {
+            "no_ways": "Maak de objecten los op deze punten.",
+            "single_way": {
+              "line": "Maak de geselecteerde lijn los op deze punten.",
+              "area": "Maak het geselecteerde vlak los op deze punten"
+            },
+            "multiple_ways": "Maak het geselecteerde object los op deze punten."
+          }
+        },
+        "annotation": {
+          "features": "Objecten losgemaakt.",
+          "from_each_other": "Objecten van elkaar losgemaakt."
+        },
+        "too_large": {
+          "single": "Dit kan niet losgemaakt worden, omdat slechts een deel ervan momenteel zichtbaar is.",
+          "multiple": "Deze kunnen niet losgemaakt worden, omdat slechts een deel ervan momenteel zichtbaar is. "
+        },
+        "not_connected": "Er zijn hier niet genoeg lijnen/vlakken om los te maken.",
+        "not_downloaded": "Dit kan niet worden losgemaakt, omdat het niet volledig gedownload is.",
+        "connected_to_hidden": "Dit kan niet worden losgemaakt, omdat het verbonden is met een verborgen object.",
+        "relation": "Dit kan niet worden losgemaakt, omdat het leden van een relatie verbindt."
+      },
+      "merge": {
+        "title": "Voeg samen",
+        "description": "Voeg deze objecten samen.",
+        "annotation": {
+          "one": "Eén object samengevoegd.",
+          "other": "{n} objecten samengevoegd."
+        },
+        "not_eligible": "Deze objecten kunnen niet samengevoegd worden.",
+        "not_adjacent": "Deze objecten kunnen niet worden samengevoegd, omdat hun uiteinden niet verbonden zijn.",
+        "damage_relation": "Deze objecten kunnen niet worden samengevoegd, omdat het een \"{relation}\"-relatie zou beschadigen.",
+        "relation": "Deze objecten kunnen niet verbonden worden omdat ze andere rollen in een relatie hebben.",
+        "incomplete_relation": "Deze objecten kunnen niet samengevoegd worden omdat minstens één ervan niet volledig gedownload is.",
+        "conflicting_tags": "Deze objecten kunnen niet samengevoegd worden omdat sommige van hun tags conflicteren.",
+        "conflicting_relations": "Deze objecten kunnen niet worden samengevoegd, omdat ze tot conflicterende relaties behoren.",
+        "paths_intersect": "Deze objecten kunnen niet worden samengevoegd, omdat het resultaat zichzelf zou doorsnijden.",
+        "too_many_vertices": "Deze objecten kunnen niet worden samengevoegd, omdat het resultaat te veel punten zou hebben."
+      },
+      "move": {
+        "title": "Verschuif",
+        "annotation": {
+          "point": "Punt verschoven.",
+          "vertex": "Knooppunt van een weg verschoven.",
+          "line": "Lijn verschoven.",
+          "area": "Vlak verschoven.",
+          "relation": "Relatie verschoven.",
+          "feature": {
+            "one": "Eén object verplaatst.",
+            "other": "{n} objecten verplaatst."
+          }
+        }
+      },
+      "reflect": {
+        "title": {
+          "long": "Spiegel lange as",
+          "short": "Spiegel korte as"
+        },
+        "annotation": {
+          "long": {
+            "feature": {
+              "one": "Eén object gespiegeld om zijn lange as.",
+              "other": "{n} objecten gespiegeld om hun lange as."
+            }
+          },
+          "short": {
+            "feature": {
+              "one": "Een object is gespiegeld om zijn korte as.",
+              "other": "{n} objecten gespiegeld om hun korte as."
+            }
+          }
+        }
+      },
+      "rotate": {
+        "title": "Draai",
+        "annotation": {
+          "line": "Lijn gedraaid.",
+          "area": "Vlak gedraaid.",
+          "relation": "Relatie geroteerd.",
+          "feature": {
+            "one": "Een object is gedraaid.",
+            "other": "{n} objecten gedraaid."
+          }
+        }
+      },
+      "reverse": {
+        "title": "Keer om",
+        "description": {
+          "point": "Draai de richting van dit point om",
+          "points": "Draai de richting van deze punten om.",
+          "line": "Laat deze lijn in tegenovergestelde richting lopen.",
+          "lines": "Laat deze lijnen in tegenovergestelde richting lopen.",
+          "features": "Draai de richting van deze objecten om."
+        },
+        "annotation": {
+          "point": {
+            "one": "Een punt is omgedraaid.",
+            "other": "{n} punten zijn omgedraaid."
+          },
+          "line": {
+            "one": "Een lijn is omgekeerd.",
+            "other": "{n} lijnen omgekeerd."
+          },
+          "feature": {
+            "one": "Een object is omgekeerd.",
+            "other": "{n} objecten omgekeerd."
+          }
+        }
+      },
+      "scale": {
+        "annotation": {
+          "down": {
+            "feature": {
+              "one": "Een object is verkleind.",
+              "other": "{n} objecten verkleind."
+            }
+          },
+          "up": {
+            "feature": {
+              "one": "Een object is vergroot.",
+              "other": "{n} objecten vergroot."
+            }
+          }
+        }
+      },
+      "split": {
+        "title": "Splits",
+        "description": {
+          "line": {
+            "single": {
+              "single_node": "Deel deze lijn in twee op dit punt.",
+              "multiple_node": "Deel de lijn op op deze punten."
+            }
+          },
+          "area": {
+            "single": {
+              "single_node": "Deel de rand van dit vlak op in twee op dit punt.",
+              "multiple_node": "Deel de rand van dit vlak op, op deze punten."
+            },
+            "multiple": {
+              "single_node": "Deel de randen van deze vlakken op, op dit punt.",
+              "multiple_node": "Deel de randen van deze vlakken op, op deze punten."
+            }
+          },
+          "feature": {
+            "multiple": {
+              "single_node": "Deel deze objecten op, op dit punt.",
+              "multiple_node": "Deel deze objecten op, op deze punten."
+            }
+          }
+        },
+        "annotation": {
+          "line": {
+            "one": "Splits een lijn.",
+            "other": "Splits {n} lijnen."
+          },
+          "area": {
+            "one": "Splits de rand van een vlak.",
+            "other": "Splits {n} vlakken."
+          },
+          "feature": {
+            "one": "Splits een object.",
+            "other": "Splits {n} objecten."
+          }
+        },
+        "not_eligible": "Lijnen kunnen niet op hun begin- of eindknoop gesplitst worden.",
+        "connected_to_hidden": "Dit kan niet gesplitst worden omdat het verbonden is met een verborgen object."
+      },
+      "restriction": {
+        "annotation": {
+          "create": "Afslagbeperking toegevoegd",
+          "delete": "Afslagbeperking weggehaald"
+        }
+      },
+      "extract": {
+        "title": "Extraheer",
+        "description": {
+          "feature": {
+            "other": "Extraheer punten van deze objecten."
+          }
+        },
+        "annotation": {
+          "one": "Een punt is geëxtraheerd.",
+          "other": "{n} punten zijn geëxtraheerd."
+        }
+      }
+    },
+    "restriction": {
+      "controls": {
+        "distance": "Afstand",
+        "distance_up_to": "Tot en met {distance}",
+        "via_node_only": "Alleen knopen",
+        "via_up_to_one": "Tot en met 1 weg",
+        "via_up_to_two": "Tot en met 2 wegen"
+      },
+      "help": {
+        "turn": {
+          "no_left_turn": "NIET links afslaan {indirect}",
+          "no_right_turn": "NIET rechts afslaan {indirect}",
+          "no_u_turn": "NIET omkeren {indirect}",
+          "no_straight_on": "NIET rechtdoor gaan {indirect}",
+          "only_left_turn": "ALLEEN links afslaan {indirect}",
+          "only_right_turn": "ALLEEN rechts afslaan {indirect}",
+          "only_u_turn": "ALLEEN omkeren {indirect}",
+          "only_straight_on": "ALLEEN rechtdoor gaan {indirect}",
+          "allowed_left_turn": "Links afslaan toegestaan {indirect}",
+          "allowed_right_turn": "Rechts afslaan toegestaan {indirect}",
+          "allowed_u_turn": "Omkeren toegestaan {indirect}",
+          "allowed_straight_on": "Rechtdoor gaan toegestaan {indirect}"
+        },
+        "from": "VAN",
+        "to": "NAAR",
+        "select_from": "Klik om een {from}-segment te selecteren",
+        "select_from_name": "Klik om {from} {fromName} te selecteren",
+        "toggle": "Klik voor \"{turn}\""
+      }
+    },
+    "undo": {
+      "title": "Maak ongedaan",
+      "tooltip": "Ongedaan maken: {action}",
+      "nothing": "Niets om ongedaan te maken."
+    },
+    "redo": {
+      "title": "Voer opnieuw uit",
+      "tooltip": "Opnieuw doen: {action}",
+      "nothing": "Niets om opnieuw te doen."
+    },
+    "translate": {
+      "translate": "Voeg meertalige naam toe",
+      "localized_translation_label": "Meertalige naam",
+      "localized_translation_language": "Selecteer taal",
+      "localized_translation_name": "Naam"
+    },
+    "zoom_in_edit": "Zoom in om te bewerken",
+    "login": "Log in",
+    "logout": "Log uit",
+    "loading_auth": "Aan het verbinden met OpenStreetMap…",
+    "report_a_bug": "Meld een bug",
+    "help_translate": "Help met vertalen",
+    "feature_info": {
+      "hidden_warning": {
+        "one": "{count} verborgen object",
+        "other": "{count} verborgen objecten"
+      }
+    },
+    "status": {
+      "message": {
+        "error": "Er kan geen verbinding worden gemaakt met de OpenStreetMap-api. Je aanpassingen zijn lokaal opgeslagen. Controleer je internetverbinding.",
+        "offline": "De OpenStreetMap-api is offline. Je aanpassingen zijn lokaal opgeslagen. Probeer het later opnieuw.",
+        "readonly": "De OpenStreetMap-api is momenteel 'alleen-lezen'. Je kunt aanpassingen blijven doen, maar ze nog niet opslaan.",
+        "local_storage_full": "Je hebt te veel wijzigingen aangebracht om bij te houden. Overweeg om je wijzigingen nu op te slaan."
+      },
+      "retry": "Probeer opnieuw"
+    },
+    "commit": {
+      "title": "Upload naar OpenStreetMap",
+      "upload_explanation": "De aanpassingen die je uploadt, worden zichtbaar op alle kaarten die de gegevens van OpenStreetMap gebruiken.",
+      "upload_explanation_with_user": "De aanpassingen die je uploadt als {user} worden zichtbaar op alle kaarten die de gegevens van OpenStreetMap gebruiken.",
+      "request_review": "Ik zou graag hebben dat iemand mijn bewerkingen nakijkt.",
+      "request_review_info": "Twijfel je ergens over? Nodig een ervaren mapper uit om je werk achteraf na te kijken.",
+      "save": "Uploaden",
+      "cancel": "Annuleer",
+      "changes": "Wijzigingen",
+      "download_changes": "Download osmChange-bestand",
+      "errors": "Foutmeldingen",
+      "warnings": "Waarschuwingen",
+      "modified": "Aangepast:",
+      "deleted": "Verwijderd:",
+      "created": "Aangemaakt:",
+      "outstanding_errors_message": "Los eerst alle fouten op. Openstaande meldingen: {count}.",
+      "comment_needed_message": "Voorzie de wijzigingenset van een opmerking.",
+      "about_changeset_comments": "Over opmerking bij wijzigingen",
+      "about_changeset_comments_link": "//wiki.openstreetmap.org/wiki/NL:Good_changeset_comments",
+      "google_warning": "Je vermeldt Google in deze beschrijving. Onthoud dat kopiëren van Google Maps illegaal en ten strengste verboden is."
+    },
+    "contributors": {
+      "list": "Aangepast door {users}",
+      "truncated_list": {
+        "one": "Aangepast door {users} en {count} andere",
+        "other": "Aangepast door {users} en {count} anderen"
+      }
+    },
+    "info_panels": {
+      "selected": {
+        "one": "{n} geselecteerd",
+        "other": "{n} geselecteerd"
+      },
+      "background": {
+        "title": "Achtergrond",
+        "zoom": "Zoom in/uit",
+        "vintage": "Opnamedatum",
+        "source": "Bron",
+        "description": "Omschrijving",
+        "resolution": "Resolutie",
+        "accuracy": "Nauwkeurigheid",
+        "show_tiles": "Toon tegels",
+        "hide_tiles": "Verberg tegels"
+      },
+      "history": {
+        "title": "Geschiedenis",
+        "no_history": "Geen geschiedenis (nieuw object)",
+        "version": "Versie",
+        "last_edit": "Recentste aanpassing",
+        "edited_by": "Aangepast door",
+        "changeset": "Wijzigingenset",
+        "note_no_history": "Geen geschiedenis (nieuwe kaartnotitie)",
+        "note_comments": "Commentaar",
+        "note_created_date": "Aanmaakdatum",
+        "note_created_user": "Aangemaakt door",
+        "note_link_text": "Kaartnotitie op openstreetmap.org"
+      },
+      "location": {
+        "title": "Locatie",
+        "unknown_location": "Onbekende locatie"
+      },
+      "measurement": {
+        "title": "Meting",
+        "geometry": "Geometrie",
+        "closed_line": "gesloten lijn",
+        "closed_area": "gesloten gebied",
+        "center": "Midden",
+        "perimeter": "Omtrek",
+        "length": "Lengte",
+        "distance": "Afstand",
+        "area": "Oppervlakte",
+        "centroid": "Zwaartepunt",
+        "location": "Locatie",
+        "metric": "Metrisch",
+        "imperial": "Brits",
+        "node_count": "Aantal knopen"
+      }
+    },
+    "geometry": {
+      "point": "punt",
+      "line": "lijn",
+      "area": "vlak",
+      "relation": "relatie",
+      "note": "opmerking bij kaart"
+    },
+    "geocoder": {
+      "search": "Zoek wereldwijd…",
+      "no_results_worldwide": "Er zijn geen resultaten gevonden"
+    },
+    "geolocate": {
+      "title": "Toon mijn locatie",
+      "locating": "Bezig met lokaliseren…",
+      "location_unavailable": "Je locatie is niet beschikbaar."
+    },
+    "inspector": {
+      "zoom_to": {
+        "title": "Zoom op de selectie",
+        "no_selection": "Niets om naar te zoomen."
+      },
+      "show_more": "Toon meer",
+      "view_on_osm": "Bekijk op openstreetmap.org",
+      "view_on_osmose": "Bekijk op osmose.openstreetmap.fr",
+      "view_on_keepRight": "Bekijk op keepright.at",
+      "feature_type": "Objecttype",
+      "fields": "Velden",
+      "members": "Leden",
+      "relations": "Relaties",
+      "features": "Objecten",
+      "add_to_relation": "Voeg toe aan relatie",
+      "new_relation": "Nieuwe relatie…",
+      "choose_relation": "Kies een ouderrelatie",
+      "role": "Rol",
+      "multiple_roles": "Meerdere rollen",
+      "choose": "Kies een objecttype",
+      "results": {
+        "one": "{n} resultaat voor {search}",
+        "other": "{n} resultaten voor {search}"
+      },
+      "no_documentation_key": "Er is geen documentatie beschikbaar.",
+      "wiki_reference": "Bekijk documentatie",
+      "wiki_en_reference": "Bekijk de documentatie (Engels)",
+      "multiple_values": "Meerdere waarden",
+      "multiple_types": "Meerdere types",
+      "unshared_value_tooltip": "niet gedeeld door alle objecten",
+      "back_tooltip": "Wijzig objecttype",
+      "details": "Meer informatie (Engels)",
+      "remove": "Verwijder",
+      "search": "Zoek",
+      "unknown": "Onbekend",
+      "incomplete": "<niet gedownload>",
+      "feature_list": "Zoek objecttype",
+      "check": {
+        "yes": "Ja",
+        "no": "Nee",
+        "reverser": "Andere richting"
+      },
+      "radio": {
+        "structure": {
+          "default": "Standaard",
+          "layer": "Laag"
+        }
+      },
+      "add": "Voeg toe",
+      "none": "Geen",
+      "node": "Knooppunt",
+      "way": "Weg",
+      "relation": "Relatie",
+      "location": "Locatie",
+      "add_fields": "Voeg eigenschap toe:",
+      "lock": {
+        "suggestion": "Het ‘{label}’-veld is vergrendeld omdat er een Wikidata-tag is toegekend. Je kunt de tag verwijderen of aanpassen in de ‘Tags’-sectie."
+      },
+      "display_name": {
+        "from_to": "van {from} naar {to}",
+        "from_to_via": "van {from} naar {to} via {via}",
+        "network_from_to": "{network} van {from} naar {to}",
+        "network_from_to_via": "{network} van {from} naar {to} via {via}",
+        "ref_from_to": "{ref} van {from} naar {to}",
+        "ref_from_to_via": "{ref} van {from} naar {to} via {via}",
+        "network_ref_from_to": "{network} {ref} van {from} naar {to}",
+        "network_ref_from_to_via": "{network} {ref} van {from} naar {to} via {via}"
+      }
+    },
+    "background": {
+      "title": "Achtergrond",
+      "description": "Achtergrondinstellingen",
+      "backgrounds": "Achtergronden",
+      "none": "Geen",
+      "best_imagery": "Beste bekende afbeeldingsbron van deze locatie",
+      "switch": "Terug naar deze achtergrond",
+      "custom": "Aangepast",
+      "overlays": "Lagen",
+      "imagery_problem_faq": "Meld een luchtfografieprobleem",
+      "reset": "herstel standaardwaarden",
+      "reset_all": "Herstel alle standaardwaarden",
+      "display_options": "Weergave-opties",
+      "brightness": "Helderheid",
+      "saturation": "Verzadiging",
+      "sharpness": "Scherpte",
+      "minimap": {
+        "description": "Toon minikaart",
+        "tooltip": "Toon een kleine, uitgezoomde kaart om je te helpen oriënteren."
+      },
+      "panel": {
+        "description": "Toon achtergrondpaneel",
+        "tooltip": "Toon uitgebreide achtergrondinformatie"
+      },
+      "location_panel": {
+        "description": "Toon locatiepaneel",
+        "tooltip": "Toon coördinaten en regionale details"
+      },
+      "fix_misalignment": "Verplaatsing van luchtfoto",
+      "offset": "Sleep ergens in de grijze zone hieronder om de verplaatsing van de luchtfoto aan te passen, of voer de waarden in in meter."
+    },
+    "map_data": {
+      "title": "Kaartgegevens",
+      "description": "Kaartgegevens",
+      "data_layers": "Gegevenslagen",
+      "layers": {
+        "osm": {
+          "tooltip": "OpenStreetMap-kaartgegevens",
+          "title": "OpenStreetMap-gegevens"
+        },
+        "notes": {
+          "tooltip": "OpenStreetMap-kaartopmerking",
+          "title": "OpenStreetMap-kaartopmerkingen"
+        },
+        "maproulette": {
+          "detail_title": "Meer informatie (Engels)",
+          "cancel": "Annuleer"
+        },
+        "keepRight": {
+          "tooltip": "Gegevensproblemen gedetecteerd door keepright.at",
+          "title": "KeepRight-problemen"
+        },
+        "osmose": {
+          "tooltip": "Gegevensproblemen gedetecteerd door osmose.openstreetmap.fr",
+          "title": "Osmose-issues"
+        },
+        "custom": {
+          "tooltip": "Sleep een databestand naar de pagina of klik op de knop om te starten",
+          "title": "Aangepaste kaartgegevens",
+          "zoom": "Zoom in op data"
+        }
+      },
+      "history_panel": {
+        "title": "Toon geschiedenispaneel",
+        "tooltip": "Toon versiedetails van de selectie."
+      },
+      "measurement_panel": {
+        "title": "Toon meetpaneel",
+        "tooltip": "Toon geometrische waarden van de selectie."
+      },
+      "style_options": "Stijlopties",
+      "autohidden": "Deze objecten zijn automatisch verborgen, omdat er anders te veel op het scherm zouden staan. Je kan inzoomen om ze te bewerken.",
+      "osmhidden": "Deze objecten zijn automatisch verborgen, omdat de OpenStreetMap-laag verborgen is."
+    },
+    "visual_diff": {
+      "highlight_edits": {
+        "description": "Markeer wijzigingen",
+        "tooltip": "Omlijn gewijzigde objecten"
+      }
+    },
+    "photo_overlays": {
+      "title": "Fotolagen",
+      "photo_type": {
+        "flat": {
+          "title": "Platte foto's",
+          "tooltip": "Traditionele foto's"
+        },
+        "panoramic": {
+          "title": "Panoramafoto's",
+          "tooltip": "360° foto's"
+        }
+      },
+      "date_filter": {
+        "fromDate": {
+          "title": "Van",
+          "tooltip": "Toon foto's genomen na deze datum"
+        },
+        "toDate": {
+          "title": "Naar",
+          "tooltip": "Toon foto's genomen voor deze datum"
+        }
+      },
+      "username_filter": {
+        "title": "Gebruikersnaam",
+        "tooltip": "Toon foto's genomen door deze gebruiker"
+      }
+    },
+    "filters": {
+      "points": {
+        "description": "Punten",
+        "tooltip": "Interessante punten"
+      },
+      "traffic_roads": {
+        "description": "Wegennetwerk",
+        "tooltip": "Snelwegen, straten, etc."
+      },
+      "service_roads": {
+        "description": "Toegangswegen",
+        "tooltip": "Toegangswegen, rijbanen op parkeerplaatsen, veldwegen, etc."
+      },
+      "paths": {
+        "description": "Paden",
+        "tooltip": "Trottoirs, paden voor voetgangers of fietsers …"
+      },
+      "buildings": {
+        "description": "Gebouwen",
+        "tooltip": "Gebouwen, afdaken, garages …"
+      },
+      "building_parts": {
+        "description": "Gebouwdelen",
+        "tooltip": "3D gebouw- en dakonderdelen"
+      },
+      "indoor": {
+        "description": "Objecten in een gebouw",
+        "tooltip": "Ruimtes, gangen, portieken, etc."
+      },
+      "landuse": {
+        "description": "Landindeling",
+        "tooltip": "Bossen, landbouwgronden, parken, woongebieden, winkelzones …"
+      },
+      "boundaries": {
+        "description": "Grenzen",
+        "tooltip": "Administratieve grenzen"
+      },
+      "water": {
+        "description": "Water",
+        "tooltip": "Rivieren, meren, vijvers, reservoirs …"
+      },
+      "rail": {
+        "description": "Sporen",
+        "tooltip": "Spoorwegen"
+      },
+      "pistes": {
+        "tooltip": "Skipistes, Rrdelbanen, schaatsbanen, etc."
+      },
+      "aerialways": {
+        "description": "Luchtvaartobjecten",
+        "tooltip": "Stoeltjesliften, gondels, tokkelbanen, etc."
+      },
+      "power": {
+        "description": "Energie",
+        "tooltip": "Elektriciteitskabels, energiecentrales, transformatorstations …"
+      },
+      "past_future": {
+        "description": "Historische/Toekomstige objecten",
+        "tooltip": "Voorgesteld, onder constructie, verwaarloosd, afgebroken …"
+      },
+      "others": {
+        "description": "Andere objecten",
+        "tooltip": "Al de rest"
+      }
+    },
+    "area_fill": {
+      "wireframe": {
+        "description": "Niet inkleuren (wireframe)",
+        "tooltip": "De wireframe-modus maakt het gemakkelijk de achtergrondbeelden te zien."
+      },
+      "partial": {
+        "description": "Gedeeltelijk inkleuren",
+        "tooltip": "Vlakken worden enkel ingekleurd langs hun binnenranden. (Aanbevolen voor beginnende mappers)"
+      },
+      "full": {
+        "description": "Volledig inkleuren",
+        "tooltip": "Vlakken worden steeds volledig ingekleurd."
+      }
+    },
+    "settings": {
+      "custom_background": {
+        "tooltip": "Bewerk aangepaste achtergrond",
+        "header": "Aangepaste Achtergrondinstellingen",
+        "instructions": {
+          "info": "Voer een tegel URL-sjabloon hieronder in.",
+          "wms": {
+            "tokens_label": "Ondersteunde WMS tokens:",
+            "tokens": {
+              "proj": "`{proj}`: opgevraagde projectie (alleen `EPSG:3857`)",
+              "wkid": "`{wkid}`: hetzelfde als proj, maar zonder de EPSG (alleen `3857`)",
+              "dimensions": "`{width}`, `{height}`: opgevraagde afbeeldingsgrootte (alleen `256`)",
+              "bbox": "`{bbox}`: opgevraagd bereik (bijv. `minX,minY,maxX,maxY`)"
+            }
+          },
+          "tms": {
+            "tokens_label": "Ondersteunde TMS tokens:",
+            "tokens": {
+              "xyz": "`{zoom}` of `{z}`, `{x}`, `{y}`: Z/X/Y tegelcoördinaten",
+              "flipped_y": "`{-y}` of `{ty}`: gespiegelde TMS-stijl Y coördinaten",
+              "switch": "`{switch:a,b,c}`: DNS server multiplexen",
+              "quadtile": "`{u}`: quad-tegel (Bing) schema",
+              "scale_factor": "`{@2x}` of `{r}`: resolutie schaalfactor"
+            }
+          }
+        },
+        "template": {
+          "placeholder": "Voer een url-sjabloon in"
+        }
+      },
+      "custom_data": {
+        "tooltip": "Bewerk aangepaste datalaag",
+        "header": "Instellingen omtrent aangepaste kaartgegevens",
+        "file": {
+          "label": "Blader door bestanden"
+        },
+        "or": "Of",
+        "url": {
+          "placeholder": "Voer een url in"
+        }
+      }
+    },
+    "preferences": {
+      "title": "Instellingen",
+      "description": "Instellingen",
+      "privacy": {
+        "third_party_icons": {
+          "description": "Toon pictogrammen van externe partijen",
+          "tooltip": "Vink dit vakje uit om te voorkomen dat pictogrammen van externe partijen, zoals Wikimedia Commons, Facebook of Twitter, worden geladen."
+        }
+      },
+      "color_selection": {
+        "default": "Standaard"
+      }
+    },
+    "restore": {
+      "heading": "Er zijn niet-opgeslagen aanpassingen",
+      "description": "Er zijn niet-opgeslagen aanpassingen uit een vorige sessie. Wil je die herstellen?",
+      "restore": "Herstel mijn aanpassingen",
+      "reset": "Verwerp mijn aanpassingen"
+    },
+    "save": {
+      "title": "Opslaan",
+      "help": "Controleer je aanpassingen en upload ze naar OpenStreetMap zodat ze zichtbaar worden voor andere gebruikers.",
+      "no_changes": "Geen aanpassingen om op te slaan.",
+      "error": "Er zijn fouten opgetreden bij het opslaan",
+      "status_code": "De server meldt de volgende statuscode: {code}",
+      "unknown_error_details": "Controleer of je bent verbonden met het internet.",
+      "uploading": "Bezig met uploaden naar OpenStreetMap…",
+      "conflict_progress": "Bezig met controleren op conflicten: {num} van {total}",
+      "unsaved_changes": "Er zijn niet-opgeslagen aanpassingen",
+      "conflict": {
+        "header": "Los bewerkingsconflicten op",
+        "count": "Conflict {num} van {total}",
+        "previous": "< Vorige",
+        "next": "Volgende >",
+        "keep_local": "Behoud mijn versie",
+        "keep_remote": "Gebruik hun versie",
+        "restore": "Herstel",
+        "delete": "Laat verwijderd",
+        "download_changes": "Of download osmChange-bestand",
+        "done": "Alle conflicten opgelost!",
+        "help": "Een andere gebruiker paste sommige van de objecten aan die jij ook aanpaste. Klik hieronder op elk object voor meer details over het conflict, en beslis welk van de versies je wil behouden. "
+      }
+    },
+    "merge_remote_changes": {
+      "conflict": {
+        "deleted": "Dit object is verwijderd door {user}.",
+        "location": "Dit object werd zowel door jou als door {user} verschoven.",
+        "nodelist": "Er werden knopen zowel door jou als door {user} bewerkt.",
+        "memberlist": "Leden van de relatie werden zowel door jou als door {user} bewerkt."
+      }
+    },
+    "success": {
+      "just_edited": "Je hebt zojuist OpenStreetMap bewerkt!",
+      "thank_you": "Bedankt voor het verbeteren van de kaart.",
+      "thank_you_location": "Bedankt voor het verbeteren van de kaart in de omgeving van {where}.",
+      "help_link_text": "Meer informatie (Engels)",
+      "view_on_osm": "Bekijk wijzigingen op OSM",
+      "like_osm": "Gebruik je OpenStreetMap graag? Treed dan in contact met andere cartografen:",
+      "more": "Meer",
+      "events": "Evenementen",
+      "languages": "Talen: {languages}",
+      "missing": "Ontbreekt er iets op deze lijst?",
+      "tell_us": "Vertel het ons!"
+    },
+    "confirm": {
+      "okay": "Oké",
+      "cancel": "Annuleren"
+    },
+    "splash": {
+      "start": "Ga aan de slag"
+    },
+    "source_switch": {
+      "lose_changes": "Je hebt niet-opgeslagen aanpassingen. Door te wisselen van kaartserver gaan deze verloren. Weet je zeker dat je van kaartserver wilt wisselen?"
+    },
+    "rapid_menu": {
+      "remove": "Verwijder",
+      "category": {
+        "roads": "wegen"
+      }
+    },
+    "tag_reference": {
+      "description": "Omschrijving",
+      "on_wiki": "{tag} op wiki.osm.org",
+      "used_with": "gebruikt met {type}"
+    },
+    "zoom": {
+      "in": "Zoom in",
+      "out": "Zoom uit",
+      "disabled": {
+        "in": "Kan niet verder inzoomen.",
+        "out": "Kan niet verder uitzoomen."
+      }
+    },
+    "full_screen": "Volledig scherm aan/uit",
+    "self_intersection": {
+      "error": {
+        "lines": "Lijken kunnen zichzelf niet kruisen.",
+        "areas": "Vlakken kunnen zichzelf niet kruisen. "
+      }
+    },
+    "QA": {
+      "osmose": {
+        "title": "OSmose-issue",
+        "detail_title": "Meer informatie (Engels)",
+        "elems_title": "Objecten",
+        "fix_title": "Reparatierichtlijnen",
+        "trap_title": "Vaak voorkomende vergissingen"
+      },
+      "keepRight": {
+        "detail_description": "Beschrijving",
+        "comment": "Commentaar",
+        "comment_placeholder": "Voer commentaar in om te delen met andere gebruikers.",
+        "close": "Sluit (probleem opgelost)",
+        "ignore": "Verwijder (foutpositief)",
+        "save_comment": "Sla commentaar op",
+        "close_comment": "Sluit en voeg commentaar toe",
+        "ignore_comment": "Verwijder en reageer",
+        "error_parts": {
+          "this_node": "deze knoop",
+          "this_way": "deze weg",
+          "this_relation": "deze relatie",
+          "this_oneway": "deze eenrichtingsweg",
+          "this_highway": "deze snelweg",
+          "this_railway": "deze spoorbaan",
+          "this_waterway": "deze waterweg",
+          "this_cycleway": "dit fietspad",
+          "this_cycleway_footpath": "dit fiets- of voetpad",
+          "this_riverbank": "deze rivierbedding",
+          "this_crossing": "deze kruising",
+          "this_railway_crossing": "deze spoorwegovergang",
+          "this_bridge": "deze brug",
+          "this_tunnel": "deze tunnel",
+          "this_boundary": "deze grens",
+          "this_turn_restriction": "deze afslagbeperking",
+          "this_roundabout": "deze rotonde",
+          "this_mini_roundabout": "deze minirotonde",
+          "this_track": "dit pad",
+          "this_feature": "dit object",
+          "highway": "snelweg",
+          "railway": "spoorbaan",
+          "waterway": "waterweg",
+          "cycleway": "fietspad",
+          "cycleway_footpath": "fiets- of voetpad",
+          "riverbank": "riverbedding",
+          "place_of_worship": "gebedshuis",
+          "pub": "kroeg",
+          "university": "universiteit",
+          "hospital": "ziekenhuis",
+          "library": "bibliotheek",
+          "theatre": "theater",
+          "courthouse": "rechtbank",
+          "cinema": "bioscoop",
+          "pharmacy": "apotheek",
+          "cafe": "café",
+          "fast_food": "fastfood",
+          "fuel": "brandstof",
+          "from": "van",
+          "to": "naar",
+          "left_hand": "linkerhand",
+          "right_hand": "rechterhand"
+        },
+        "errorTypes": {
+          "<20>": {
+            "title": "Meerdere knopen op dezelfde plek",
+            "description": "Er zijn meer dan één knopen op deze plek. Knoop ID's: {var1}."
+          },
+          "<30>": {
+            "title": "Niet afgesloten gebied",
+            "description": "{var1} is getagt met \"{var2}\" en moet een gesloten loop zijn."
+          },
+          "<40>": {
+            "title": "Onmogelijke eenrichtingsweg",
+            "description": "De eerste knoop {var1} van {var2} is niet verbonden met een andere weg."
+          },
+          "<41>": {
+            "description": "De laatste knoop {var1} van {var2} is niet verbonden met een andere weg."
+          },
+          "<42>": {
+            "description": "Je kunt {var1} niet bereiken, omdat alle wegen vanaf daar eenrichtingswegen zijn."
+          },
+          "<43>": {
+            "description": "Je kunt niet vertrekken vanaf {var1}, omdat alle wegen er naartoe eenrichtingswegen zijn."
+          },
+          "<50>": {
+            "title": "Bijna kruising",
+            "description": "{var1} is erg dichtbij, maar niet verbonden met weg {var2}."
+          },
+          "<60>": {
+            "title": "Verouderde tag",
+            "description": "{var1} gebruikt de verouderde tag ‘{var2}’. Gebruik in plaats daarvan ‘{var3}’."
+          },
+          "<70>": {
+            "title": "Ontbrekende tag",
+            "description": "{var1} heeft een blanco tag: ‘{var2}’."
+          },
+          "<71>": {
+            "description": "{var1} heeft geen tags."
+          },
+          "<72>": {
+            "description": "{var1} is geen onderdeel van een weg en heeft geen tags."
+          },
+          "<73>": {
+            "description": "{var1} heeft een ‘{var2}’-tag, maar geen ‘highway’-tag."
+          },
+          "<74>": {
+            "description": "{var1} heeft een blanco tag: ‘{var2}’."
+          },
+          "<75>": {
+            "description": "{var1} heeft een naam, ‘{var2}’, maar geen andere tags."
+          },
+          "<90>": {
+            "title": "Snelweg zonder ref-tag",
+            "description": "{var1} is getagd als snelweg en dient daarom te worden voorzien van een ‘ref’-, ‘nat_ref’-, of ‘int_ref’-tag."
+          },
+          "<100>": {
+            "title": "Gebedshuis zonder religie",
+            "description": "{var1} is getagd als gebedshuis en dient daarom te worden voorzien van een religietag."
+          },
+          "<110>": {
+            "title": "Interessant punt zonder naam",
+            "description": "{var1} is getagd als een ‘{var2}’ en dient daarom te worden voorzien van een naamtag."
+          },
+          "<120>": {
+            "title": "Weg zonder knopen",
+            "description": "{var1} heeft slechts een enkele knoop."
+          },
+          "<130>": {
+            "title": "Niet-aangesloten weg",
+            "description": "{var1} is niet aangesloten op de rest van de kaart."
+          },
+          "<150>": {
+            "title": "Spoorwegovergang zonder tag",
+            "description": "{var1} van een snelweg en spoorweg moeten getagd zijn als ‘railway=crossing’ of ‘railway=level_crossing’."
+          },
+          "<160>": {
+            "title": "Spoorweg laag conflict",
+            "description": "Er zijn wegen in verschillende lagen (bijv. tunnel of brug) die samenkomen bij {var1}."
+          },
+          "<170>": {
+            "title": "Item getagd met FIXME",
+            "description": "{var1} heeft een FIXME tag: {var2}"
+          },
+          "<180>": {
+            "title": "Relatie zonder type",
+            "description": "Bij {var1} ontbreekt een ‘type’-tag."
+          },
+          "<190>": {
+            "title": "Intersectie zonder kruispunt",
+            "description": "{var1} kruist de {var2} {var3}, maar er is geen kruispuntknoop, brug of tunnel."
+          },
+          "<200>": {
+            "title": "Overlappende wegen",
+            "description": "{var1} overlapt met de {var2} {var3}."
+          },
+          "<210>": {
+            "title": "Zichzelf snijdende weg",
+            "description": "Er is een ongespecificeerd probleem met zichzelf snijdende wegen."
+          },
+          "<211>": {
+            "description": "{var1} bevat meerdere keren meer dan één knoop. Knopen zijn {var2}. Dit is mogelijk een fout."
+          },
+          "<212>": {
+            "description": "{var1} heeft slechts twee verschillende knopen en bevat een of meerdere dubbel."
+          },
+          "<220>": {
+            "title": "Foutief gespelde tag",
+            "description": "{var1} is getagd als \"{var2}\" waar \"{var3}\" op \"{var4}\" lijkt."
+          },
+          "<221>": {
+            "description": "{var1} heeft een verdachte tag \"{var2}\"."
+          },
+          "<230>": {
+            "title": "Laagconflict",
+            "description": "{var1} is een kruising van wegen met verschillende lagen."
+          },
+          "<231>": {
+            "description": "{var1} is een kruising van wegen met verschillende lagen: {var2}.",
+            "layer": "(laag: {layer})"
+          },
+          "<232>": {
+            "description": "{var1} is getagd met \"layer={var2}\". Dit hoeft niet fout te zijn, maar lijkt onjuist."
+          },
+          "<270>": {
+            "title": "Ongebruikelijke snelwegverbinding",
+            "description": "{var1} is een kruising van een snelweg en een weg anders dan \"motorway\", \"motorway_link\", \"trunk\", \"rest_area\", of \"construction\". Verbinding met \"service\" of \"unclassified\" is alleen geldig als het een \"access=no/private\" tag heeft of als het leidt naar een snelweg verzorgingsplaats of als het een \"service=parking_aisle\" tag heeft."
+          },
+          "<280>": {
+            "title": "Grensprobleem",
+            "description": "Er is een ongespecificeerd probleem met deze grens."
+          },
+          "<281>": {
+            "title": "Grens mist naam",
+            "description": "{var1} heeft geen naam."
+          },
+          "<282>": {
+            "title": "Grens mist administratief niveau",
+            "description": "De grens van {var1} heeft geen geldig numeriek admin_level. Gelieve administratieve niveaus niet te mixen (bijv. \"6;7\"). Tag altijd het laagste admin_level van alle grenzen."
+          },
+          "<283>": {
+            "title": "Grens is geen gesloten lus",
+            "description": "De grens van {var1} is geen gesloten lus."
+          },
+          "<284>": {
+            "title": "Grens is opgesplitst",
+            "description": "De grens van {var1} splitst hier."
+          },
+          "<285>": {
+            "title": "Administratief niveau van deze grens is te hoog",
+            "description": "{var1} heeft \"admin_level={var2}\", maar hoort bij een relatie met een lager \"admin_level\" (bijv. hogere prioriteit). Het moet de laagste \"admin_level\" van alle relaties hebben."
+          },
+          "<290>": {
+            "title": "Beperkingsprobleem",
+            "description": "Er is een ongespecificeerd probleem met deze beperking."
+          },
+          "<291>": {
+            "title": "Missend beperkingstype",
+            "description": "{var1} heeft een niet herkend beperkingstype"
+          },
+          "<292>": {
+            "title": "Beperking mist \"van\"-weg",
+            "description": "{var1} heeft {var2} \"van\"-onderdelen, maar het behoort er 1 te hebben."
+          },
+          "<293>": {
+            "title": "Beperking mist \"naar\"-weg",
+            "description": "{var1} heeft {var2} \"naar\"-onderdelen, maar het behoort 1 te hebben."
+          },
+          "<294>": {
+            "title": "Beperking \"van\" of \"naar\" is geen weg",
+            "description": "{var1} heeft \"van\" of \"naar\" onderdelen die wegen zouden moeten zijn. {var2}."
+          },
+          "<295>": {
+            "title": "Beperking \"via\" is geen bestemming",
+            "description": "{var1} heeft een \"via\" (knoop {var2}) die niet het eerste of laatste onderdeel is van \"{var3}\" (way{var4})."
+          },
+          "<296>": {
+            "title": "Ongewone beperkingshoek",
+            "description": "{var1} heeft beperkingstype \"{var2}\", maar de hoek is {var3} graden. Wellicht is het beperkingstype niet geschikt?"
+          },
+          "<297>": {
+            "title": "Verkeerde richting van weg \"naar\"",
+            "description": "{var1} komt niet overeen met de richting van de \"naar\" weg {var2}."
+          },
+          "<298>": {
+            "title": "Overbodige beperking - eenrichtingsverkeer",
+            "description": "{var1} kan overbodig zijn. Toegang is reeds verboden door het eenrichtingsverkeer op {var2}."
+          },
+          "<300>": {
+            "title": "Missende maximumsnelheid",
+            "description": "{var1} heeft geen informatie over maximumsnelheid en is getagd als motorway, trunk, primary, or secondary."
+          },
+          "<310>": {
+            "title": "Rotondeprobleem",
+            "description": "Er is een ongespecificeerd probleem met deze rotonde."
+          },
+          "<311>": {
+            "title": "Rotonde is geen gesloten lus",
+            "description": "{var1} is onderdeel van een rotonde, maar is geen gesloten lus. (Gescheiden rijbanen die een rotonde naderen mogen niet getagd worden als rotonde). "
+          },
+          "<312>": {
+            "title": "Rotonde met verkeerde richting",
+            "description": "Als {var1} in een land met {var2} verkeer ligt, dan is de oriëntatie omgedraaid."
+          },
+          "<313>": {
+            "title": "Rotonde zwak verbonden",
+            "description": "{var1} is met slechts {var2} weg(en) verbonden. Rotondes hebben over het algemeen 3 of meer."
+          },
+          "<320>": {
+            "title": "Ongeldige link-verbinding",
+            "description": "{var1} is getagd als \"{var2}\", maar heeft geen verbinding met andere \"{var3}\" of \"{var4}\"."
+          },
+          "<350>": {
+            "title": "Ongeldige brug-tag",
+            "description": "{var1} heeft geen tag gemeen met omliggende wegen die aangesloten zijn op deze brug. Een van deze tags zou aanwezig moeten zijn: {var2}."
+          },
+          "<360>": {
+            "title": "Ontbrekende lokalenaam-tag",
+            "description": "Het zou mooi zijn als {var1} een lokale naam tag zou hebben  \"name:XX={var2}\" waar XX de taal van de gebruikelijke naam toont \"{var2}\"."
+          },
+          "<370>": {
+            "title": "Dubbele plaatsen",
+            "description": "{var1} heeft overeenkomende tags met de omliggende weg {var2} {var3} en lijkt overbodig.",
+            "including_the_name": "(waaronder de naam {name})"
+          },
+          "<380>": {
+            "title": "Niet fysiek gebruik van de sport tag",
+            "description": "{var1} is getagd als \"{var2}\", maar heeft geen fysieke tag (bijv. \"leisure\", \"building\", \"amenity\", or \"highway\")."
+          },
+          "<390>": {
+            "title": "Missende tracktype",
+            "description": "{var1} mist een \"tracktype\" tag."
+          },
+          "<400>": {
+            "title": "Geometrieprobleem",
+            "description": "Er is een ongespecificeerd probleem met deze geometrie."
+          },
+          "<401>": {
+            "title": "Ontbrekende afslagbeperking",
+            "description": "Wegen {var1} en {var2} komen samen in een erg scherpe hoek en er is geen eenrichtingsverkeer of afslagbeperking die afslaan voorkomt."
+          },
+          "<402>": {
+            "title": "Onmogelijke hoek",
+            "description": "{var1} buigt in een erg scherpe hoek hier."
+          },
+          "<410>": {
+            "title": "Probleem met website",
+            "description": "Er is een ongespecificeerd probleem met een website of URL."
+          },
+          "<411>": {
+            "description": "{var1} heeft mogelijk een verouderde URL: {var2} geeft HTTP-statuscode {var3} terug."
+          },
+          "<412>": {
+            "description": "{var1} heeft mogelijk een verouderde URL: {var2} bevat verdachte text \"{var3}\"."
+          },
+          "<413>": {
+            "description": "{var1} heeft mogelijk een verouderde URL: {var2} bevat niet de steekwoorden \"{var3}\"."
+          }
+        }
+      }
+    },
+    "photos": {
+      "hires": "Hoge resolutie"
+    },
+    "streetside": {
+      "tooltip": "Foto's op straatniveau van Mircrosoft"
+    },
+    "mapillary": {
+      "tooltip": "Foto's op straatniveau van Mapillary"
+    },
+    "mapillary_signs": {
+      "title": "Verkeersborden"
+    },
+    "kartaview": {
+      "tooltip": "Foto's op straatniveau van KartaView"
+    },
+    "note": {
+      "note": "Kaartopmerking",
+      "title": "Kaartopmerking bewerken",
+      "anonymous": "anoniem",
+      "closed": "(Gesloten)",
+      "commentTitle": "Commentaren",
+      "status": {
+        "opened": "geopened {when}",
+        "reopened": "heropend {when}",
+        "commented": "Gereageerd op {when}",
+        "closed": "gesloten {when}"
+      },
+      "newComment": "Nieuwe commentaar",
+      "inputPlaceholder": "Voeg commentaar toe om te delen met anderen.",
+      "close": "Kaartopmerking afsluiten",
+      "open": "Kaartopmerking heropenen",
+      "comment": "Voeg commentaar toe",
+      "close_comment": "Sluit met commentaar",
+      "open_comment": "Heropen met commentaar",
+      "report": "Meld",
+      "new": "Nieuwe kaartopmerking",
+      "newDescription": "Omschrijf het probleem.",
+      "save": "Sla kaartopmerking op",
+      "login": "Je kunt deze kaartopmerking alleen aanpassen of erop reageren als je ingelogd bent.",
+      "upload_explanation": "Je opmerkingen zijn zichtbaar voor alle OpenStreetMap-gebruikers.",
+      "upload_explanation_with_user": "Je opmerkingen als {user} zijn zichtbaar voor alle OpenStreetMap-gebruikers."
+    },
+    "help": {
+      "title": "Hulp",
+      "help": {
+        "title": "Hulp",
+        "open_data_h": "Open data",
+        "open_data": "Bewerkingen die je op deze kaart maakt, zullen zichtbaar zijn voor iedereen die OpenStreetMap gebruikt. Je bewerkingen kunnen gebaseerd zijn op persoonlijke kennis, waarnemingen ter plaatse, luchtbeelden of foto's op straatniveau. Het kopiëren van informatie van commerciële bronnen, zoals Google Maps, [is ten strengste verboden](https://www.openstreetmap.org/copyright).",
+        "before_start_h": "Voor je begint",
+        "open_source_h": "Open source"
+      },
+      "overview": {
+        "title": "Overzicht",
+        "navigation_h": "Navigatie",
+        "features_h": "Kaartobjecten",
+        "features": "We gebruiken het woord *objecten* als we het hebben over dingen op de kaart, zoals wegen, gebouwen en bezienswaardigheden. Alles wat je in de echte wereld ziet, kan in kaart worden gebracht als object op OpenStreetMap. Objecten op de kaart zijn onderverdeeld in *punten*, *lijnen* en *vlakken*.",
+        "nodes_ways": "In OpenStreetMap worden punten ook wel *nodes* genoemd en worden lijnen en vlakken ook wel *ways* genoemd."
+      },
+      "editing": {
+        "title": "Bewerken en opslaan",
+        "select_h": "Selecteren",
+        "select_space": "De `{space}` toets kan worden gebruikt in plaats van de linkermuisknop bij het selecteren en tekenen.",
+        "multiselect_h": "Meerdere objecten selecteren",
+        "multiselect": "Door meerdere objecten te selecteren kan je ze snel samen bewerken.",
+        "undo_redo_h": "Ongedaan maken en opnieuw uitvoeren",
+        "undo_redo": "Je aanpassingen worden lokaal opgeslagen in je browser totdat je besluit ze op te slaan op de OpenStreetMap-server. Je kunt ze ongedaan maken door te klikken op de knop {undo_icon} **{undo}** of opnieuw uitvoeren met de knop  {redo_icon} **{redo}**.",
+        "save_h": "Opslaan",
+        "save": "Klik op de knop {save_icon} **{save}** om je werk af te ronden en naar de OpenStreetMap-server te versturen. Vergeet niet je werk af en toe op te slaan!",
+        "upload_h": "Uploaden",
+        "upload": "Voordat je je aanpassingen kunt uploaden, dien je deze te voorzien van een opmerking, een zogeheten *[changeset-comment](https://wiki.openstreetmap.org/wiki/NL:Good_changeset_comments)*. Klik daarna op **{upload}** om je aanpassingen te versturen naar OpenStreetMap. Deze worden toegevoegd aan de kaart en zichtbaar gemaakt voor iedereen.",
+        "backups_h": "Automatisch lokaal bijhouden",
+        "keyboard_h": "Sneltoetsen",
+        "keyboard": "Je kan een lijst van toetsenbordsneltoetsen zien door op de `{shortcuts_key}` te drukken."
+      },
+      "feature_editor": {
+        "title": "Objectbewerker",
+        "intro": "De *objectbewerker* verschijnt naast de kaart en laat je alle informatie over het geselecteerde object zien en bewerken.",
+        "definitions": "Het bovenste gedeelte laat het type van het object zien. Het midden toont *velden* die de eigenschappen van het object tonen, zoals zijn naam en adres.",
+        "type_h": "Objecttype",
+        "type": "Je kunt op het objecttype klikken om het object te wijzigen in een ander type. Alles dat bestaat in de echte wereld, kan aan OpenStreetMap toegevoegd worden. Er zijn dus duizenden objecttypes om uit te kiezen.",
+        "type_picker": "De typezoeker toont de meest voorkomende objecttypes, zoals parken, ziekenhuizen, restaurants, wegen en gebouwen. Je kan naar van alles zoeken door in de zoekbalk te typen. Klik op het {inspect} **Info**-icoontje naast het objecttype om meer uitleg te krijgen over het objecttype.",
+        "fields_h": "Velden",
+        "fields_all_fields": "Het gedeelte \"{fields}\" bevat alle details over het object dat je zou kunnen bewerken. Alle velden zijn optioneel in OpenStreetMap, dus je mag een veld leeglaten als je twijfelt of als het niet van toepassing lijkt.",
+        "fields_example": "Elk objecttype zal andere velden tonen. Een weg zal bijvoorbeeld velden laten zien over het type wegdek en de snelheidslimiet, maar een restaurant zal velden laten zien over de openingstijden en het type eten dat er geserveerd wordt.",
+        "fields_add_field": "Je kunt ook in het \"Voeg eigenschap toe\"-veld klikken om meer velden toe te voegen, zoals een beschrijving, Wikipedia-link, rolstoeltoegankelijkheidsinfo, en meer.",
+        "tags_all_tags": "Onder het veldengedeelte kun je het \"{tags}\"-gedeelte uitklappen om de OpenStreetMap-*{tags}* van het geselecteerde object te bewerken. Elke tag bestaat uit een *sleutel* (Engels: *key*) en een *waarde* (Engels: *value*), die de echte waarden definiëren van alle objecten die opgeslagen in OpenStreetMap.",
+        "tags_resources": "Voor het bewerken van de tags van een object heb je wat meer kennis nodig van OpenStreetMap. Je moet de [OpenStreetMap Wiki](https://wiki.openstreetmap.org/wiki/Main_Page) raadplegen om te leren over tagging in OpenStreetMap. Op [Taginfo](https://taginfo.openstreetmap.org/) kan je statistieken zien over hoeveel keer elke tag momenteel in OpenStreetMap gebruikt wordt."
+      },
+      "points": {
+        "title": "Punten",
+        "intro": "Punten kunnen gebruikt worden om objecten zoals winkels, restaurants en monumenten weer te geven. Ze geven een specifieke locatie aan en beschrijven wat daar is.",
+        "add_point_h": "Punten toevoegen",
+        "move_point_h": "Punten verplaatsen",
+        "delete_point_h": "Punten verwijderen",
+        "delete_point": "Objecten die niet in het echt bestaan, kan je verwijderen. Een object in OpenStreetMap verwijderen haalt het van de kaart voor iedereen ter wereld. Let dus goed op dat een object echt weg is voor je het verwijdert."
+      },
+      "lines": {
+        "title": "Lijnen",
+        "intro": "*Lijnen* worden gebruikt om objecten zoals wegen, spoorwegen en rivieren voor te stellen. Lijnen worden getekend in het midden van het object dat ze representeren.",
+        "add_line_h": "Lijnen toevoegen",
+        "add_line_finish": "Om een lijn te beëindigen, klik of druk op de laatste knoop of druk op `{return}`.",
+        "modify_line_h": "Lijnen aanpassen",
+        "modify_line_dragnode": "Je zal vaak lijnen zien die niet juist gevormd zijn, bijvoorbeeld een weg die niet overeenkomt met de achtergrondbeelden. Om de vorm van een lijn aan te passen moet je hem eerst selecteren. Alle knopen van de lijn zullen getekend worden als kleine cirkels. Je kan de knopen dan verslepen naar betere locaties.",
+        "connect_line_h": "Lijnen verbinden",
+        "connect_line": "Correcte verbindingen tussen wegen is belangrijk voor de kaart en essentieel voor routebeschrijvingen.",
+        "connect_line_display": "De verbindingen tussen wegen zijn getekend als grijze cirkels. De eindpunten van een lijn zijn getekend als grotere, witte cirkels als ze nergens mee verbonden zijn.",
+        "connect_line_tag": "Verkeerslichten of oversteekplaatsen markeer je bij voorkeur als een knoop op hun echte plaats in de weg, door eerst een knoop toe te voegen, het te selecteren en vervolgens in de objectbewerker het juiste type te kiezen. Als je de echte positie niet kan bepalen, kan je in plaats daarvan het toevoegen op de knoop die de twee lijnen verbindt.",
+        "disconnect_line_h": "Lijnen losmaken",
+        "move_line_h": "Lijnen verplaatsen",
+        "delete_line_h": "Lijnen verwijderen",
+        "delete_line": "Als een lijn volledig incorrect is, bijvoorbeeld een weg die niet bestaat in de echte wereld, dan kan je haar verwijderen. Wees voorzichtig wanneer je objecten verwijdert: de luchtbeelden die je gebruikt zijn enkele maanden of jaren oud en een weg die onjuist lijkt, kan later aangelegd zijn."
+      },
+      "areas": {
+        "title": "Vlakken",
+        "intro": "*Vlakken* worden gebruikt om de grenzen van objecten als meren, gebouwen en woonwijken aan te duiden. Vlakken worden getekend langs de rand van het object dat ze representeren, bijvoorbeeld rond de basis van een gebouw.",
+        "point_or_area_h": "Punten of vlakken?",
+        "point_or_area": "Veel objecten kunnen worden gerepresenteerd worden als punt of vlak. Je voegt gebouwen en gebieden toe als vlakken wanneer dit mogelijk is.\n\nEr is geen internationale consensus over hoe bedrijven, voorzieningen en andere objecten binnen een gebouw gerepresenteerd moeten worden: op het vlak dat het gebouw voorsteld of als apart punt. Als je zoiets nieuw toevoegt, teken het dan als een punt binnen het gebouw. Als het object al in OpenStreetMap op het gebouw stond, verander het dan niet zomaar naar een apart punt.",
+        "add_area_h": "Vlakken toevoegen",
+        "add_area_finish": "Om een vlak te beëindigen, klik of druk op de laatste knoop of druk op `{return}`.",
+        "square_area_h": "Hoeken haaks maken",
+        "modify_area_h": "Vlakken aanpassen",
+        "modify_area_dragnode": "Je zult vaak vlakken zien die niet correct gevormd zijn, bijvoorbeeld een gebouw dat niet overeenkomt met de achtergrondafbeeldingen. Om de vorm van het vlak aan te passen moet je het eerst selecteren. Alle knopen van het vlak zullen getekend worden als kleine cirkels. Je kan de knopen dan verslepen naar betere locaties.",
+        "delete_area_h": "Vlakken verwijderen",
+        "delete_area": "Als een vlak volledig incorrect is, bijvoorbeeld een gebouw dat niet bestaat in de echte wereld, dan is het OK om het vlak te verwijderen. Wees voorzichtig wanneer je objecten verwijdert: de luchtbeelden die je gebruikt zijn enkele maanden of jaren oud, en een gebouw dat onjuist lijkt, kan later gebouwd zijn."
+      },
+      "relations": {
+        "title": "Relaties",
+        "intro": "Een *relatie* is een speciaal soort object in OpenStreetMap dat andere objecten groepeert. De objecten die tot een relatie behoren worden haar *leden* genoemd (Engels: *members*) en elk lid kan een *rol* hebben in de relatie.",
+        "edit_relation_h": "Relaties bewerken",
+        "edit_relation": "Onderaan de objectbewerker kan je het \"{relations}\"-gedeelte uitklappen om te zien of het geselecteerde object lid is van een relatie. Je kunt vervolgens op de relatie klikken om de relatie te selecteren en te bewerken.",
+        "edit_relation_add": "Om een object aan een relatie toe te voegen, selecteer je het object en klik je op de {plus}-knop in het \"{relations}\"-gedeelte van de objectbewerker. Je kan nu kiezen uit een lijst van relaties in de buurt of een nieuwe maken met de optie \"{new_relation}\".",
+        "edit_relation_delete": "Je kan ook drukken op de {delete_icon} **{delete}-knop om het geselecteerde object uit een relatie te verwijderen. Wanneer je alle leden van een relatie verwijdert, zal de relatie automatisch ook verwijderd worden.",
+        "maintain_relation_h": "Relaties onderhouden",
+        "relation_types_h": "Relatietypes",
+        "multipolygon_h": "Multipolygonen",
+        "multipolygon": "Een *multipolygoon*-relatie is een groep van een of meer buitenrandvlakken (rol *outer*) en nul of meer binnenrandvlakken (rol *inner*). De buitenranden definiëren de buitenste contouren van de multipolygoon. De binnenranden definiëren gaten binnen de multipolygoon.",
+        "turn_restriction_h": "Afslagbeperkingen",
+        "turn_restriction": "Een *afslagbeperkings*relatie is een groep van verschillende wegsegmenten op een kruispunt. Aflsagbeperkingen bestaan uit een *van*-weg, *via*-knopen of -wegen en een *naar*-weg.",
+        "turn_restriction_field": "Om afslagbeperkingen te bewerken, selecteer je een knoop waar twee of meer wegen bij elkaar komen. De objectbewerker zal een speciaal \"{turn_restrictions}\" -veld tonen met een model van de kruising.",
+        "route": "Een *route*-relatie is een groep van een of meerdere lijnen die samen een routenetwerk vormen, zoals een bus- of treintraject of een snelweg.",
+        "route_add": "Om een object aan een routerelatie toe te voegen, selecteer je het object en scroll naar beneden tot aan de \"{relations}\" -sectie van de objectbewerker, daarna klik je op de {plus}-knop om dit object aan een relatie in de buurt of een nieuwe relatie toe te voegen.",
+        "boundary_h": "Grenzen",
+        "boundary": "Een of *grens*-relatie (Engels: *boundary*) is een groep van een of meerdere lijnen die samen een administratieve grens vormen.",
+        "boundary_add": "Om een object aan een grensrelatie toe te voegen, selecteer je het object en scroll naar beneden tot aan de \"{relations}\" -sectie van de objectbewerker, daarna klik je op de {plus}-knop om dit object aan een relatie in de buurt of een nieuwe relatie toe te voegen."
+      },
+      "operations": {
+        "title": "Operaties",
+        "intro_2": "Elke operatie heeft z'n eigen toetsenbordsneltoets. De meeste operaties kunnen aan meerdere objecten tegelijkertijd worden uitgevoerd.",
+        "straighten": "{straighten_icon} **{straighten}** verwijdert bochten van lijnen. Het kan ook groepen punten in nette rijen ordenen.",
+        "orthogonalize": "{orthogonalize_icon} **{orthogonalize}** maakt de hoeken van vlakken en lijnen 90°. Je kan individuele hoeken of hele objecten vierkant maken.",
+        "circularize": "{circularize_icon} **{circularize}** maakt vlakken en gesloten objecten naar cirkels.",
+        "move": "{move_icon} **{move}** laat je objecten over de kaart slepen.",
+        "rotate": "{rotate_icon} **{rotate}** laat je objecten draaien om hun middelpunt.",
+        "reflect": "{reflect_short_icon} **{reflect_short}** en {reflect_long_icon} **{reflect_long}** spiegelt objecten over hun korte en lange assen.",
+        "continue": "{continue_icon} **{continue}** laat je objecten verlengen vanuit hun eindpunten.",
+        "reverse": "{reverse_icon} **{reverse}** verandert de richting van objecten. De richting maakt uit voor dingen zoals eenrichtingswegen, verkeersborden, waterwegen en kliffen.",
+        "disconnect": "{disconnect_icon} **{disconnect}** maakt verbonden lijnen en vlakken los van elkaar. Je kan hele objecten losmaken of alleen geselecteerde punten.",
+        "merge": "{merge_icon} **{merge}** combineert meerdere objecten in een. Je kan meerdere vlakken samenvoegen om multi-polygonen te maken, lijnen samenvoegen om langere lijnen te maken, en punten samenvoegen naar een object om hun tags over te nemen.",
+        "split": "{split_icon} **{split}** splitst lijnen op de geselecteerde punten. Als specifieke lijnen ook zijn geselecteerd, worden alleen die gesplitst.",
+        "extract": "{extract_icon} **{extract}** maakt punten los van lijnen. Het trekt ook punten uit gebouwen en andere vlakken.",
+        "delete": "{delete_icon} **{delete}** verwijdert objecten van de kaart. Alles dat niet in de echte wereld bestaat moet worden verwijderd.",
+        "downgrade": "{downgrade_icon} **{downgrade}** verwijdert de meeste tags behalve gebouw- en adresinformatie. Dit is nuttig wanneer bedrijven sluiten maar hun faciliteiten blijven bestaan.",
+        "copy_paste": "{copy_icon} **{copy}** en {paste_icon} **{paste}** laat je objecten dupliceren."
+      },
+      "notes": {
+        "title": "Kaartopmerkingen",
+        "add_note_h": "Kaartopmerkingen toevoegen",
+        "add_note": "Om een kaartnotitie toe te voegen, klik de {note_icon} **{note}**-knop op de werkbalk boven de kaart, of gebruik je de sneltoets `{add_note_key}`.",
+        "update_note_h": "Sluiten, Heropenen en Becommentariëren",
+        "update_note": "Een bestaande kaartopmerking kan bijgewerkt worden door ze te sluiten, te heropenen of een commentaar toe te voegen. De kaartopmerking sluiten geeft aan dat het probleem is opgelost. Heropenen betekent dat het originele probleem niet is opgelost.",
+        "save_note_h": "Kaartopmerkingen opslaan",
+        "save_note": "Je moet bewerkingen van kaartopmerkingen individueel opslaan door op de knoppen onder de commentaren bij de kaartopmerking te klikken. Bewerking van kaartopmerkingen worden **niet** mee opgeslagen met wijzigingen aan de kaart zel die je oplaadt naar OpenStreetMap."
+      },
+      "imagery": {
+        "title": "Achtergrondbeelden",
+        "intro": "Het achtergrondbeeld dat onder de kaartdata verschijnt, is een belangrijke bron voor het karteren. Deze beelden kunnen luchtfoto's zijn van satellieten, vliegtuigen en drones, het kunnen ingescande historische kaarten zijn of andere vrij beschikbare brondata.",
+        "sources_h": "Achtergrondbronnen",
+        "choosing": "Om te zien welke bronnen beschikbaar zijn voor het bewerken, open het {layers_icon} **{background_settings}**-paneel naast de kaart.",
+        "sources": "De [Bing Maps](https://www.bing.com/maps/)-satellietfotolaag of de beste beschikbare lokale luchtfotografie wordt gekozen als de standaard achtergrond. Afhankelijk van de locatie op de kaart kunnen meerdere luchtfotografiebronnen beschikbaar zijn. Het is vaak nuttig te kijken welke achtergrond de beste is voor het gebied dat je bewerkt: sommige bronnen kunnen recenter of van hogere resolutie zijn.",
+        "offsets_h": "Verplaatsing van luchtfoto aanpassen",
+        "offset": "Achtergrondbeelden kunnen soms vrij zwaar in positie afwijken van de correcte locatie. Als je veel gebouwen of wegen ziet die verschoven liggen ten opzichte van de achtergrond, kan het zijn dat de achtergrond incorrect is, en niet de kaart. Verplaats dus niet alle objecten om ze te overeen te laten komen met de achtergrond. Verplaats in plaats daarvan de achtergrond, zodat deze overeenkomt met de kaartgegevens. Dit doe je door het gedeelte \"{imagery_offset}\" onderin het achtergrondinstellingenpaneel uit te klappen."
+      },
+      "streetlevel": {
+        "title": "Foto's op straatniveau",
+        "using_h": "Foto's op straatniveau gebruiken",
+        "using": "Om foto's op straatniveau te gebruiken, klik je op {data_icon} **{map_data}** naast de kaart om het betreffende paneel te openen. Daar kan je beschikbare foto lagen aan of uit te zetten.",
+        "photos": "Als je de fotolaag aanzet, worden lijnen langs fotoreeksen getoond. Wanneer je meer inzoomt, wordt op elke fotolocatie een cirkel getoond. Na nog meer inzoomen wordt een kegel zichtbaar die de richting van de camera aangeeft op het moment dat de foto gemaakt werd.",
+        "viewer": "Als je op een fotolocatie klikt, verschijnt er een fotopaneel in de benedenhoek van de kaart. Dit paneel bevat bedieningselementen om door de fotoreeks te bladeren. Het toont ook de gebruikersnaam van de maker van de foto, de datum van vastlegging en een link naar de oorspronkelijke foto op de website."
+      },
+      "gps": {
+        "title": "GPS-sporen",
+        "intro": "Verzamelde gps-sporen zijn een waardevolle bron voor OpenStreetMap. In iD kan je *.gpx*-, *.geojson*-, and *.kml*-bestanden openen die lokaal op je apparaat staan. Je kunt gps-sporen verzamelen met een smartphone, sporthorloge of een ander gps-apparaat.",
+        "survey": "Lees voor informatie over het uitvoeren van een gps-meting dit Engelstalige artikel: [Mapping with a smartphone, GPS, or paper](http://learnosm.org/en/mobile-mapping/).",
+        "using_h": "GPS-sporen gebruiken",
+        "using": "Als je een gps-spoor wilt bewerken, sleep je een bestand naar dit kaartbewerkingsprogramma. Als het herkend wordt, zal het ingetekend worden als een heldere paarse lijn. Open het \"{data_icon} **{map_data}**\"-paneel naast de kaart om je gps-data aan of uit te zetten of er op in te zoomen.",
+        "tracing": "Het gps-spoor wordt niet automatisch verzonden naar OpenStreetMap. De beste manier om het te gebruiken is als referentie voor nieuwe objecten die je toevoegt.",
+        "upload": "Je kunt ook [je gps-data uploaden naar OpenStreetMap](https://www.openstreetmap.org/trace/create) zodat andere gebruikers deze ook kunnen gebruiken."
+      },
+      "qa": {
+        "title": "Kwaliteitscontrole",
+        "intro": "Hulpmiddelen voor *kwaliteitscontrole* (afgekort \"Q/A\", van het Engelse *quality assurance*) kunnen helpen bij het vinden van onjuiste tags, niet verbonden wegen en andere problemen met OpenStreetMap die dan door mappers verholpen kunnen worden. Om bestaande Q/A-problemen te bekijken, klik op het {data_icon} **{map_data}**-paneel om een specifieke Q/A-laag aan te zetten.",
+        "tools_h": "Gereedschappen",
+        "issues_h": "Problemen behandelen"
+      },
+      "field": {
+        "restrictions": {
+          "title": "Hulp bij afslagbeperkingen",
+          "about": {
+            "title": "Over",
+            "about": "Dit veld laat je toe afslagbeperkingen te zien en bwerken. Het toont een schema van het geselecteerde kruispunt met aangesloten wegen dichtbij.",
+            "from_via_to": "Een afslagbeperking bestaat steeds uit één **VAN-weg**, één **NAAR-weg**, en ofwel één **VIA-knoop** of een of meer **VIA-wegen**.",
+            "maxdist": "De \"{distField}\"-schuifbalk bepaalt hoe ver er naar meer aangesloten wegen gezocht moet worden.",
+            "maxvia": "De \"{viaField}\"-schuifbalk bepaald hoeveel wegen er maximaal als VIA-weg voorgesteld worden. (Tip: zo weinig mogelijk VIA-wegen gebruiken is goed)"
+          },
+          "inspecting": {
+            "title": "Bekijken",
+            "about": "Ga met je muis over een **VAN**-segment om eventuele afslagbeperkingen te zien. Elke mogelijke **NAAR**-bestemming wordt getoond met een gekleurde schaduw die aangeeft of er een beperking is.",
+            "from_shadow": "{fromShadow} **VAN-segment**",
+            "allow_shadow": "{allowShadow} **NAAR toegestaan**",
+            "restrict_shadow": "{restrictShadow} **NAAR verboden**",
+            "only_shadow": "{onlyShadow} **alleen NAAR hier**",
+            "restricted": "\"Verboden\" betekent dat er een afslagbeperking is, zoals \"niet links afslaan\".",
+            "only": "\"Alleen naar hier\" betekent dat een voertuig langs dat pad alleen die keuze mag maken, zoals \"alleen rechtdoor gaan\"."
+          },
+          "modifying": {
+            "title": "Bewerken",
+            "about": "Om afslagbeperkingen te bewerken, klik je eerst op een **VAN**-segment om het te selecteren. De schaduw rond het geselecteerde segment beweegt, en alle mogelijke **NAAR**-bestemmingen verschijnen als afslagsymbooltjes.",
+            "indicators": "Klik herhaaldelijk op zo'n symbooltje om te wisselen tussen \"toegestaan\", \"verboden\" en \"alleen naar hier\".",
+            "allow_turn": "{allowTurn} **NAAR toegestaan**",
+            "restrict_turn": "{restrictTurn} **NAAR verboden**",
+            "only_turn": "{onlyTurn} **alleen NAAR hier**"
+          },
+          "tips": {
+            "simple": "**Verkies simpele afslagbeperkingen boven complexe.**",
+            "simple_example": "Vermijd bijvoorbeeld via-wegen te gebruiken als een beperking met enkel een knooppunt volstaat.",
+            "indirect": "**Sommige beperkingen tonen de tekst \"(indirect)\" en zijn lichter van kleur.**",
+            "indirect_example": "Deze beperkingen zijn er door een andere, nabijgelegen afslagbeperking. Bijvoorbeeld: een \"alleen rechtdoor gaan\"-beperking zal indirect een \"niet afslaan\"-beperking tot gevolg hebben voor alle andere mogelijke paden op het kruispunt.",
+            "indirect_noedit": "Je kan indirecte afslagbeperkingen niet bewerken. In de plaats daarvan moet je de expliciete afslagbeperking aanpassen."
+          }
+        }
+      }
+    },
+    "issues": {
+      "title": "Problemen",
+      "errors": "Foutmeldingen",
+      "warnings": "Waarschuwingen",
+      "rules": "Regels",
+      "resolved_tooltip": "Problemen die zijn opgelost door jouw aanpassingen",
+      "no_issues": {
+        "message": {
+          "everything": "Alles ziet er goed uit",
+          "everything_in_view": "Binnen de huidige weergave ziet alles er goed uit",
+          "edits": "Je aanpassingen zien er goed uit",
+          "edits_in_view": "Je aanpassingen binnen de huidige weergave zien er goed uit",
+          "no_edits": "Je hebt nog niks aangepast"
+        },
+        "hidden_issues": {
+          "none": "Gedetecteerde problemen worden hier getoond",
+          "elsewhere": "Problemen op andere plekken: {count}",
+          "everything_else": "Problemen met alle andere dingen: {count}",
+          "everything_else_elsewhere": "Problemen op andere plekken met alle andere dingen: {count}",
+          "disabled_rules": "Problemen met uitgeschakelde regels: {count}",
+          "disabled_rules_elsewhere": "Prolemen op andere plekken met uitgeschakelde regels: {count}",
+          "ignored_issues": "Genegeerde problemen: {count}",
+          "ignored_issues_elsewhere": "Genegeerde problemen op andere plekken: {count}"
+        }
+      },
+      "options": {
+        "what": {
+          "title": "Controleer:",
+          "edited": "Mijn bewerkingen",
+          "all": "Alles"
+        },
+        "where": {
+          "title": "Waar:",
+          "visible": "Binnen weergave",
+          "all": "Overal"
+        }
+      },
+      "suggested": "Voorgestelde updates:",
+      "enable_all": "Schakel alles in",
+      "disable_all": "Schakel alles uit",
+      "reset_ignored": "Herstel negeerlijst",
+      "fix_one": {
+        "title": "los op"
+      },
+      "fix_all": {
+        "title": "Los alles op",
+        "annotation": "Er zijn meerdere validatieproblemen gerepareerd."
+      },
+      "almost_junction": {
+        "title": "Bijna-kruisingen",
+        "tip": "Vind objecten die mogelijk verbonden kunnen zijn met andere dichtbijzijnde objecten.",
+        "message": "{feature} is erg dichtbij, maar niet verbonden met {feature2}.",
+        "self": {
+          "message": "{feature} eindigt erg dichtbij zichzelf maar is niet verbonden"
+        },
+        "highway-highway": {
+          "reference": "Kruisende wegen zouden een gedeelde kruising vertex moeten hebben."
+        }
+      },
+      "area_as_point": {
+        "message": "{feature} zou een vlak moeten zijn, niet een punt."
+      },
+      "close_nodes": {
+        "title": "Erg dichtbijgelegen punten",
+        "tip": "Vind overbodige punten en punten met hoge dichtheid",
+        "message": "Twee punten in {way} liggen erg dicht bij elkaar",
+        "reference": "Overbodige punten in een weg moeten worden samengevoegd of uit elkaar worden geschoven.",
+        "detached": {
+          "message": "{feature} is te dichtbij {feature2}",
+          "reference": "Losse punten mogen niet een locatie delen."
+        }
+      },
+      "crossing_ways": {
+        "message": "{feature} kruist {feature2}",
+        "tip": "Vind objecten die elkaar incorrect kruisen.",
+        "building-building": {
+          "reference": "Gebouwen mogen niet kruisen, behalve in verschillende lagen."
+        },
+        "building-highway": {
+          "reference": "Wegen die gebouwen kruisen, moeten bruggen, tunnels of verschillende lagen gebruiken."
+        },
+        "building-railway": {
+          "reference": "Spoorwegen die gebouwen kruisen, moeten bruggen, tunnels of verschillende lagen gebruiken."
+        },
+        "building-waterway": {
+          "reference": "Waterwegen die gebouwen kruisen, moeten tunnels of verschillende lagen gebruiken."
+        },
+        "highway-highway": {
+          "reference": "Kruisende wegen moeten bruggen, tunnels of kruispunten gebruiken."
+        },
+        "highway-railway": {
+          "reference": "Wegen die spoorwegen kruisen, moeten bruggen, tunnels of spoorwegovergangen gebruiken."
+        },
+        "highway-waterway": {
+          "reference": "Wegen die waterwegen kruisen moeten bruggen, tunnels of voordes gebruiken."
+        },
+        "railway-railway": {
+          "reference": "Kruisende spoorwegen moeten aangesloten zijn of bruggen of tunnels gebruiken."
+        },
+        "railway-waterway": {
+          "reference": "Spoorwegen die waterwegen kruisen, moeten bruggen of tunnels gebruiken."
+        },
+        "waterway-waterway": {
+          "reference": "Kruisende waterwegen moeten aangesloten zijn of tunnels gebruiken."
+        },
+        "tunnel-tunnel": {
+          "reference": "Kruisende tunnels moeten verschillende lagen gebruiken."
+        },
+        "tunnel-tunnel_connectable": {
+          "reference": "Kruisende tunnels moeten verbonden zijn of verschillende lagen gebruiken."
+        },
+        "bridge-bridge": {
+          "reference": "Kruisende bruggen moeten verschillende lagen gebruiken."
+        },
+        "bridge-bridge_connectable": {
+          "reference": "Kruisende bruggen moeten verbonden zijn of verschillende lagen gebruiken."
+        },
+        "indoor-indoor": {
+          "reference": "Kruisende indoor objecten moeten verschillende lagen gebruiken."
+        },
+        "indoor-indoor_connectable": {
+          "reference": "Kruisende indoor objecten moeten verbonden zijn of verschillende lagen gebruiken."
+        }
+      },
+      "disconnected_way": {
+        "title": "Niet-aangesloten wegen",
+        "tip": "Vind onrouteerbare wegen, paden en veerpontroutes",
+        "routable": {
+          "message": {
+            "one": "{highway} is niet verbonden met andere wegen en paden",
+            "other": "{count} routeerbare objecten zijn alleen met elkaar verbonden"
+          }
+        }
+      },
+      "fixme_tag": {
+        "message": "{feature} heeft een ‘Repareer mij’-verzoek",
+        "reference": "Een ‘fixme’-tag geeft aan dat een mapper om hulp heeft gevraagd bij een object."
+      },
+      "generic_name": {
+        "message": "{feature} heeft de verdachte naam ’{name}’",
+        "message_language": "{feature} heeft de verdachte naam ‘{name}’ in het {language}",
+        "reference": "Namen moeten de werkelijke, fysieke namen zijn van objecten."
+      },
+      "help_request": {
+        "title": "Hulpvragen",
+        "tip": "Vind objecten waarbij andere om hulp hebben gevraagd"
+      },
+      "incompatible_source": {
+        "title": "Verdachte bronnen",
+        "tip": "Vind objecten met verdachte brontags",
+        "feature": {
+          "message": "{feature} vermeldt \"{value}\" als een gegevensbron"
+        },
+        "reference": {
+          "amap": "Amap-producten zijn beschermd eigendom en mogen niet als referentie gebruikt worden.",
+          "baidu": "Baidu-producten zijn beschermd eigendom en mogen niet als referentie gebruikt worden.",
+          "google": "Google-producten zijn beschermd eigendom en mogen niet als referentie gebruikt worden."
+        }
+      },
+      "invalid_format": {
+        "title": "Ongeldige formattering",
+        "tip": "Vind tags met onverwachte formatteringen",
+        "email": {
+          "reference": "E-mailadressen moeten eruit zien als \"gebruiker@voorbeeld.com\""
+        }
+      },
+      "line_as_area": {
+        "message": "{feature} zou een lijn moeten zijn, niet een vlak"
+      },
+      "line_as_point": {
+        "message": "{feature} zou een lijn moeten zijn, niet een punt"
+      },
+      "mismatched_geometry": {
+        "title": "Ongeldige geometrie",
+        "tip": "Vind objecten met conflicterende tags en geometrie",
+        "reference": "De meeste objecten zijn beperkt tot bepaalde geometrische types."
+      },
+      "missing_role": {
+        "title": "Ontbrekende rollen",
+        "message": "{member} heeft geen rol binnen {relation}",
+        "tip": "Vind relaties met missende of incorrecte rollen voor leden",
+        "multipolygon": {
+          "reference": "Multipolygoon leden moeten een inner of outer rol hebben."
+        }
+      },
+      "missing_tag": {
+        "title": "Ontbrekende tags",
+        "tip": "Vind objecten met ontbrekende beschrijvende tags",
+        "reference": "Objecten dienen voorzien te zijn van beschrijvende tags.",
+        "any": {
+          "message": "{feature} is niet voorzien van tags."
+        },
+        "descriptive": {
+          "message": "{feature} is niet voorzien van beschrijvende tags."
+        },
+        "relation_type": {
+          "message": "{feature} is een relatie zonder type"
+        }
+      },
+      "old_multipolygon": {
+        "message": "{multipolygon} is voorzien van onjuiste tags",
+        "reference": "Multipolygonen moeten getagd worden op hun relatie, niet op de buitenste lijn."
+      },
+      "outdated_tags": {
+        "title": "Verouderde tags",
+        "message": "{feature} is voorzien van verouderde tags.",
+        "tip": "Vind objecten met verouderde tags die bijgewerkt kunnen worden",
+        "reference": "Sommige tags veranderen door de jaren heen en dienen te worden bijgewerkt.",
+        "incomplete": {
+          "message": "{feature} is voorzien van onvolledige tags",
+          "reference": "Sommige objecten dienen voorzien te worden van aanvullende tags."
+        },
+        "noncanonical_brand": {
+          "message": "{feature} lijkt op een standaardobject met afwijkende tags",
+          "message_incomplete": "{feature} lijkt op een standaardobject met onvolledige tags",
+          "reference": "Sommige objecten, bijvoorbeeld winkelketens of postkantoren, zouden bepaalde overeenkomstige tags moeten hebben"
+        }
+      },
+      "point_as_area": {
+        "message": "{feature} zou een punt moeten zijn in plaats van een vlak"
+      },
+      "point_as_line": {
+        "message": "{feature} zou een punt moeten zijn in plaats van een lijn"
+      },
+      "point_as_vertex": {
+        "message": "{feature} moet een alleenstaand punt zijn op basis van zijn tags",
+        "reference": "Sommige objecten mogen geen deel zijn van lijnen of vlakken."
+      },
+      "private_data": {
+        "title": "Privé-informatie",
+        "tip": "Vind objecten die privé-informatie zouden kunnen bevatten",
+        "reference": "Gevoelige gegevens, zoals persoonlijke telefoonnummers, mogen niet worden getagd.",
+        "contact": {
+          "message": "{feature} zou getagd kunnen zijn met privé-contactinformatie"
+        }
+      },
+      "suspicious_name": {
+        "title": "Verdachte namen",
+        "tip": "Vind objecten met generieke of verdachte namen"
+      },
+      "tag_suggests_area": {
+        "message": "{feature} moet een gesloten vlak zijn gebaseerd op de tag \"{tag}\"",
+        "reference": "Vlakken moeten verbonden eindpunten hebben"
+      },
+      "unknown_road": {
+        "message": "{feature} heeft geen classificatie.",
+        "reference": "Wegen zonder specifiek type worden mogelijk niet getoond in kaarten of navigatie."
+      },
+      "impossible_oneway": {
+        "title": "Onmogelijke eenrichtingswegen",
+        "tip": "Vind routeproblemen met eenrichtingswegobjecten",
+        "waterway": {
+          "connected": {
+            "start": {
+              "message": "{feature} stroomt weg van een verbonden waterweg"
+            },
+            "end": {
+              "message": "{feature} stroomt tegen een verbonden waterweg in"
+            },
+            "reference": "Waterwegsegmenten dienen allemaal in dezelfde richting te stromen"
+          }
+        },
+        "highway": {
+          "start": {
+            "message": "{feature} is onbereikbaar",
+            "reference": "Eenrichtingswegen dienen bereikbaar te zijn via andere wegen."
+          },
+          "end": {
+            "message": "{feature} heeft geen afvoer",
+            "reference": "Eenrichtingswegen dienen naar andere wegen te leiden."
+          }
+        }
+      },
+      "unclosed_multipolygon_part": {
+        "message": "{feature} heeft een ongesloten onderdeel",
+        "reference": "Alle binnen- en buitendelen van multipolygonen moeten verbonden eindpunten hebben."
+      },
+      "unsquare_way": {
+        "title": "Niet-rechte hoeken (tot {val}°)",
+        "message": "{feature} heeft niet-rechte hoeken",
+        "tip": "Vind objecten met niet-rechte hoeken die beter getekend kunnen worden",
+        "buildings": {
+          "reference": "Gebouwen met niet-rechte hoeken kunnen vaak preciezer getekend worden."
+        }
+      },
+      "vertex_as_point": {
+        "reference": "Sommige objecten mogen geen alleenstaande punten zijn."
+      },
+      "fix": {
+        "add_a_bridge": {
+          "title": "Voeg een brug toe",
+          "annotation": "Brug toegevoegd."
+        },
+        "add_a_tunnel": {
+          "title": "Voeg een tunnel toe",
+          "annotation": "Tunnel toegevoegd."
+        },
+        "address_the_concern": {
+          "title": "Los het probleem op"
+        },
+        "connect_almost_junction": {
+          "annotation": "Dichtstbijzijnde objecten verbonden"
+        },
+        "connect_crossing_features": {
+          "annotation": "Kruisende objecten verbonden"
+        },
+        "connect_endpoints": {
+          "title": "Verbind de einden",
+          "annotation": "Eindpunten van een weg verbonden"
+        },
+        "connect_feature": {
+          "title": "Verbind dit object"
+        },
+        "connect_features": {
+          "title": "Verbind de objecten"
+        },
+        "connect_using_crossing": {
+          "title": "Verbind met een kruising"
+        },
+        "connect_using_ford": {
+          "title": "Verbind met een voorde"
+        },
+        "continue_from_start": {
+          "title": "Zet tekenen voort vanaf start"
+        },
+        "continue_from_end": {
+          "title": "Zet tekenen voort vanaf einde"
+        },
+        "convert_to_line": {
+          "title": "Converteer dit naar een lijn.",
+          "annotation": "Converteer een vlak naar een lijn."
+        },
+        "delete_feature": {
+          "title": "Verwijder dit object"
+        },
+        "extract_point": {
+          "title": "Extraheer dit punt"
+        },
+        "ignore_issue": {
+          "title": "Negeer dit probleem"
+        },
+        "merge_close_vertices": {
+          "annotation": "Voeg samenliggende punten samen in een weg"
+        },
+        "merge_points": {
+          "title": "Voeg deze punten samen"
+        },
+        "move_points_apart": {
+          "title": "Beweeg de punten uit elkaar"
+        },
+        "move_tags": {
+          "title": "Verplaats de tags",
+          "annotation": "De tags zijn verplaatst."
+        },
+        "remove_from_relation": {
+          "title": "Verwijderd van relatie"
+        },
+        "remove_generic_name": {
+          "annotation": "Generieke naam verwijderd"
+        },
+        "remove_mistaken_name": {
+          "annotation": "Verkeerde naam verwijderd."
+        },
+        "remove_private_info": {
+          "annotation": "Privégegevens verwijderd."
+        },
+        "remove_proprietary_data": {
+          "title": "Vewijder alle gegevens met eigendomsrecht"
+        },
+        "remove_tag": {
+          "title": "Verwijder de tag",
+          "annotation": "Verwijderde tag."
+        },
+        "remove_tags": {
+          "title": "Verwijder de tags"
+        },
+        "remove_the_name": {
+          "title": "Verwijder de naam"
+        },
+        "reposition_features": {
+          "title": "Verplaats de objecten"
+        },
+        "reverse_feature": {
+          "title": "Keer dit object om"
+        },
+        "select_preset": {
+          "title": "Kies een objecttype"
+        },
+        "select_road_type": {
+          "title": "Kies een wegsoort"
+        },
+        "set_as_inner": {
+          "title": "Zet als inner"
+        },
+        "set_as_outer": {
+          "title": "Zet als outer"
+        },
+        "square_feature": {
+          "title": "Maak dit object vierkant"
+        },
+        "tag_as_disconnected": {
+          "title": "Tag als niet-aangesloten",
+          "annotation": "Dichtstbijzijnde objecten getagd als niet-verbonden"
+        },
+        "tag_as_not": {
+          "title": "Tag als niet dezelfde ‘{name}’",
+          "annotation": "Niet toegevoegd: tag"
+        },
+        "tag_as_unsquare": {
+          "title": "Tag als fysiek niet-rechte hoek",
+          "annotation": "Getagd als een weg met niet-rechte hoeken."
+        },
+        "tag_this_as_higher": {
+          "title": "Tag dit als hoger"
+        },
+        "tag_this_as_lower": {
+          "title": "Tag dit als lager"
+        },
+        "upgrade_tags": {
+          "title": "Werk de tags bij",
+          "annotation": "Oude tags geüpgraded"
+        },
+        "use_different_layers": {
+          "title": "Gebruik verschillende lagen"
+        },
+        "use_different_layers_or_levels": {
+          "title": "Gebruik verschillende lagen of niveaus"
+        },
+        "use_different_levels": {
+          "title": "Gebruik verschillende niveaus"
+        }
+      }
+    },
+    "intro": {
+      "done": "Klaar",
+      "ok": "Oké",
+      "graph": {
+        "city": "Verweggistan",
+        "state": "<value for addr:state>",
+        "countrycode": "nl",
+        "name": {
+          "1st-avenue": "Rododendronlaan",
+          "2nd-avenue": "Tentoonstellingslaan",
+          "4th-avenue": "Vergrotingslaan",
+          "5th-avenue": "Fysicalaan",
+          "6th-avenue": "Informaticalaan",
+          "6th-street": "Informaticastraat",
+          "7th-avenue": "Onderzoekslaan",
+          "8th-avenue": "Verbroederingslaan",
+          "9th-avenue": "Mathildelaan",
+          "10th-avenue": "Fuutlaan",
+          "11th-avenue": "Danklaan",
+          "12th-avenue": "Cartografielaan",
+          "access-point-employment": "Werkwinkel",
+          "adams-street": "Schuilingenweg",
+          "andrews-elementary-school": "Vrije Basisschool Sint-Andreas",
+          "andrews-street": "Bernoullistraat",
+          "armitage-street": "Hendrik Hamerstraat",
+          "barrows-school": "Gomaruscollege",
+          "battle-street": "Vredestraat",
+          "bennett-street": "Groesbeekseweg",
+          "bowman-park": "Kronenburgerpark",
+          "collins-drive": "Visarenddreef",
+          "conrail-railroad": "NS-spoorlijn",
+          "conservation-park": "Verdraagzaamheidspark",
+          "constantine-street": "Brusselstraat",
+          "cushman-street": "Kortrijkstraat",
+          "dollar-tree": "Euroboom",
+          "douglas-avenue": "Amersfoortstraat",
+          "east-street": "Oosterstraat",
+          "elm-street": "Elmstraat",
+          "flower-street": "Bloemstraat",
+          "foster-street": "Overervingsstraat",
+          "french-street": "Frankrijkstraat",
+          "garden-street": "Tuinwijkstraat",
+          "gem-pawnbroker": "Wij Zijn Geen Afzetters",
+          "golden-finch-framing": "Gouden Vink",
+          "grant-avenue": "Hoofdlaan",
+          "hoffman-pond": "Marie Curievijver",
+          "hoffman-street": "Bachstraat",
+          "hook-avenue": "Aweg",
+          "jefferson-street": "Kastanjestraat",
+          "kelsey-street": "Langeweg",
+          "lafayette-park": "Te Boelaarpark",
+          "las-coffee-cafe": "Heilige Boontjes",
+          "lincoln-avenue": "Leopoldstraat",
+          "lowrys-books": "De Kleine Tovenaar",
+          "lynns-garage": "Linda's Garage",
+          "main-street-barbell": "Extreem",
+          "main-street-cafe": "In de Kerkstraat",
+          "main-street-fitness": "Olympia",
+          "main-street": "Kerkstraat",
+          "maple-street": "Esdoornstraat",
+          "marina-park": "Jachthavenpark",
+          "market-street": "Marktstraat",
+          "memory-isle-park": "Achtmeipark",
+          "memory-isle": "Achtmei-land",
+          "michigan-avenue": "Muntstraat",
+          "middle-street": "Arenbergstraat",
+          "millard-street": "Begijnenstraat",
+          "moore-street": "Koninginnestraat",
+          "morris-avenue": "Einsteinstraat",
+          "mural-mall": "Urbiscomplex",
+          "paisanos-bar-and-grill": "Paul's",
+          "paisley-emporium": "Kringwinkel",
+          "paparazzi-tattoo": "Paco's Ink",
+          "pealer-street": "Nassaulaan",
+          "pine-street": "Dennenstraat",
+          "portage-avenue": "Muinklaan",
+          "portage-river": "Muinkschelde",
+          "preferred-insurance-services": "Adviesbureau Ghoste",
+          "railroad-drive": "Spoorwegstraat",
+          "river-city-appliance": "Verweggistaanse Meubelcentrale",
+          "river-drive": "Rivierpad",
+          "river-road": "Rivierweg",
+          "river-street": "Rivierstraat",
+          "riverside-cemetery": "Oeverbegraafplaats",
+          "riverwalk-trail": "Rivierbloesempad",
+          "riviera-theatre": "Sjeikspeer",
+          "rocky-river": "Rotsrivier",
+          "saint-joseph-river": "Grote Dommel",
+          "scidmore-park-petting-zoo": "Maximapark",
+          "scidmore-park": "Maximapark",
+          "scouter-park": "Kouterpark",
+          "sherwin-williams": "Alle kleurtjes",
+          "south-street": "Zuiderstraat",
+          "southern-michigan-bank": "Zuiderlei",
+          "spring-street": "Lentestraat",
+          "sturgeon-river-road": "Steurweg",
+          "three-rivers-city-hall": "Stadhuis van Verweggistan",
+          "three-rivers-elementary-school": "Gemeenteschool 't Verweggistandje",
+          "three-rivers-fire-department": "Brandweer van Verweggistan",
+          "three-rivers-high-school": "Don Boscocollege",
+          "three-rivers-middle-school": "Maria Magdalenacollege",
+          "three-rivers-municipal-airport": "Verweggistan Regional Airport",
+          "three-rivers-post-office": "Postkantoor Verweggistan",
+          "three-rivers-public-library": "Gemeentelijke Bibliotheek",
+          "three-rivers": "Verweggistan",
+          "unique-jewelry": "Unicum",
+          "walnut-street": "Walnootstraat",
+          "washington-street": "Amsterdamstraat",
+          "water-street": "Waterstraat",
+          "west-street": "Westerstraat",
+          "wheeler-street": "Wielerstraat",
+          "william-towing": "Deghoede",
+          "willow-drive": "Wilgenweg",
+          "wood-street": "Bosstraat",
+          "world-fare": "Wereldse Geschenken"
+        }
+      },
+      "welcome": {
+        "title": "Welkom",
+        "welcome": "Welkom! Deze rondleiding leert je de basis omtrent het aanpassen van OpenStreetMap.",
+        "practice": "Alle gegevens in de rondleiding zijn slechts om te oefenen. Alles wat je hier aanpast, wordt niet opgeslagen.",
+        "words": "Deze rondleiding introduceert een paar nieuwe begrippen. Als we een nieuw woord gebruiken, zullen we dat *schuin* zetten.",
+        "chapters": "Je kan de knoppen hieronder gebruiken om hoofdstukken over te slaan of een hoofdstuk opnieuw te starten als je vastzit. Laten we beginnen! **Klik op '{next}' om door te gaan.**"
+      },
+      "navigation": {
+        "title": "Navigatie",
+        "map_info": "De hoofdkaart toont OpenStreetMap gegevens bovenop een achtergrond.",
+        "features": "We gebruiken het woord *objecten* als we het over dingen op de kaart hebben. Alles wat je in de echte wereld ziet, kan gemapt gemapt worden als object in OpenStreetMap.",
+        "points_lines_areas": "Kaartobjecten worden voorgesteld door *punten*, *lijnen* of *vlakken*.",
+        "nodes_ways": "In OpenStreetMap worden punten ook wel *nodes* genoemd en worden lijnen en vlakken ook wel *ways* genoemd.",
+        "selected_townhall": "Fantastisch! Het punt is nu geselecteerd. Rond geselecteerde objecten komt een pulserende gloed.",
+        "editor_townhall": "Als een object geselecteerd is, wordt de *objectbewerker* getoond naast de kaart.",
+        "preset_townhall": "Het bovenste deel van de objectbewerker toont het type van het object. Dit punt is een {preset}.",
+        "fields_townhall": "Het midden van de objectbewerker toont *velden* die de eigenschappen van het object tonen, zoals zijn naam en adres.",
+        "close_townhall": "**Sluit de objectbewerker door op op de {button}-knop bovenaan te klikken of op `{esc}` te drukken.**",
+        "search_street": "Je kan ook zoeken naar objecten op het scherm, of wereldwijd. **Zoek naar '{name}'.**",
+        "choose_street": "**Kies {name} uit de lijst om dat te selecteren.**",
+        "selected_street": "Goed! {name} is nu geselecteerd.",
+        "street_different_fields": "De getoonde velden voor een straat zijn anders dan de getoonde velden voor het stadhuis.",
+        "editor_street": "Voor deze geselecteerde straat toont de objectbewerker velden als '{field1}' en '{field2}'. **Sluit de objectbewerker door op de knop {button} te klikken of op `{esc}` te drukken.**",
+        "play": "Probeer de kaart te verkennen en een aantal objecten te selecteren om te zien wat voor soort dingen aan OpenStreetMap kunnen worden toegevoegd. **Als je klaar bent om verder te gaan naar het volgende hoofdstuk, klik dan op '{next}'.**"
+      },
+      "points": {
+        "title": "Punten",
+        "points_info": "*Punten* kunnen worden gebruikt om objecten zoals winkels, restaurants en monumenten weer te geven.",
+        "add_point": "Ze geven een specifieke locatie aan en beschrijven wat daar is. **Klik op de {point_icon} {point}-knop om een nieuw punt toe te voegen.**",
+        "search_cafe": "Er zijn veel soorten objecten die voorgesteld kunnen worden door punten. Het punt dat je net toegevoegd hebt, is een cafetaria. **Zoek naar '{preset}'.**",
+        "choose_cafe": "**Kies {preset} uit de lijst.**",
+        "feature_editor": "Het punt wordt nu aangeduid als een cafetaria. Gebruik de objectbewerker om meer informatie toe te voegen over de cafetaria.",
+        "fields_info": "In OpenStreetMap zijn alle velden optioneel, en het is oké om een veld leeg te laten als je twijfelt.",
+        "add_name": "Laten we aannemen dat je lokale kennis hebt van dit cafetaria, en je de naam weet. **Voeg een naam toe voor de cafetaria.**",
+        "add_close": "De objectbewerker onthoudt al je aanpassingen vanzelf. **Als je klaar bent met de naam toevoegen, sluit de objectbewerker dan door op op de {button}-knop te klikken, of `{esc}` te drukken.**",
+        "reselect": "Vaak zullen er al wel punten staan, maar bevatten ze fouten of zijn ze onvolledig. We kunnen bestaande punten aanpassen. **Selecteer de cafetaria die je gemaakt hebt.**",
+        "update": "Laten we wat meer details invullen over deze cafetaria. Je kan de naam veranderen, een soort keuken toevoegen, of een adres invullen. **Verander wat aan de attributen van de cafetaria.**",
+        "update_close": "**Als je klaar bent met de cafetaria, sluit de objectbewerker dan met de {button}-knop of `{esc}`.**",
+        "delete": "Objecten die niet in het echt bestaan, kan je verwijderen. Een object in OpenStreetMap verwijderen haalt het van de kaart voor iedereen ter wereld. Let dus goed op dat een object echt weg is voordat je het verwijdert. **Klik op de {delete_icon} {delete}-knop om het punt te verwijderen.**",
+        "undo": "Je kan al je bewerkingen ongedaan maken tot je ze opslaat in OpenStreetMap. **Klik op de {undo_icon} {undo}-knop om het verwijderen ongedaan te maken en het punt terug te zetten.**",
+        "play": "Nu je weet hoe je punten kan maken en bewerken, probeer er eens wat toe te voegen als oefening! **Als je klaar bent om door te gaan met het volgende hoofdstuk, klik dan op '{next}'.**"
+      },
+      "areas": {
+        "title": "Vlakken",
+        "add_playground": "*Vlakken* worden gebruikt om de grenzen van objecten als meren, gebouwen en woonwijken te tonen.{br}Ze kunnen ook gebruikt worden voor het meer gedetailleerd in kaart brengen van veel objecten die je anders als punten zou toevoegen. **Klik op de knop {area_icon} {area}-knop om een nieuw vlak toe te voegen.**",
+        "start_playground": "Laten we deze speeltuin intekenen als een vlak. Vlakken worden gemaakt door *knopen* aan hun omtrek te zetten.",
+        "starting_node_click": "**Klik of druk `{space}` om een beginpunt te plaatsen op een van de hoeken van de speeltuin.**",
+        "finish_area_click": "Voltooi het vlak door op `{return}` te drukken, of nogmaals op de eerste of laatste knoop te klikken.",
+        "finish_playground": "**Voltooi het tekenen van het vlak voor de speeltuin.**",
+        "search_playground": "**Zoek naar '{preset}'.**",
+        "choose_playground": "**Kies {preset} uit de lijst.**",
+        "add_field": "Deze speeltuin heeft geen officiële naam, dus laten we het {name}-veld leeg.{br}Laten we in de plaats daarvan een {description} toevoegen. **Open de \"Veld toevoegen\"-lijst.**",
+        "choose_field": "**Kies {field} uit de lijst.**",
+        "retry_add_field": "Je hebt niet het {field}-veld geselecteerd. Laten we opnieuw proberen.",
+        "describe_playground": "**Voeg een beschrijving toe en druk dan op de {button}-knop om de objectbewerker te sluiten.**",
+        "play": "Goed zo! Probeer nog wat meer vlakken te tekenen, en kijk welke andere vlakobjecten je kan toevoegen aan OpenStreetMap. **Als je klaar bent om door te gaan met het volgende hoofdstuk, klik dan op '{next}'.**"
+      },
+      "lines": {
+        "title": "Lijnen",
+        "add_line": "*Lijnen* worden gebruikt om objecten zoals wegen, spoorwegen en rivieren voor te stellen. **Klik op de {line_icon} {line}-knop om een nieuwe lijn toe te voegen.**",
+        "missing_road": "Hier ontbreekt een straat. Laten we die toevoegen!",
+        "line_draw_info": "In OpenStreetMap worden lijnen getekend in het midden van de straat. Je kan de kaart verslepen en zoomen tijdens het tekenen, als dat nodig is.",
+        "start_line": "**Begin de lijn door te klikken op het bovenste uiteinde van de onbrekende straat.**",
+        "intersect": "Ga door met het tekenen van de lijn door meer knooppunten langs de weg te plaatsen.{br}Wegen, net als paden en veerpontroutes, moeten met elkaar verbonden zijn om navigatie-apps te laten werken. **Plaats een knooppunt op {name} om te twee lijnen te verbinden.**",
+        "retry_intersect": "De weg moet een punt gemeenschappelijk hebben met {name}. Laten we opnieuw proberen!",
+        "continue_line": "Teken de lijn voor deze nieuwe straat verder in. Onthoud dat je de kaart kan verslepen en zoomen als dat nodig is.",
+        "finish_line_click": "Als je klaar bent, klik dan nogmaals op de laatste knoop of druk op `{return}`.",
+        "finish_road": "**Voltooi het tekenen van de straat.**",
+        "choose_category_road": "**Selecteer {category} in de lijst.**",
+        "choose_preset_residential": "Er zijn veel soorten wegen, maar dit is een straat. **Kies {preset}.**",
+        "retry_preset_residential": "Je hebt niet het {preset}-type geselecteerd. **Klik op deze knop om opnieuw te kiezen.**",
+        "name_road": "**Geef deze straat een naam, en klik dan op de {button}-knop of `{esc}` om de objectbewerker te sluiten.**",
+        "did_name_road": "Ziet er goed uit! Nu zullen we de vorm van een lijn leren veranderen.",
+        "update_line": "Soms moet je de vorm van een bestaande lijn veranderen. Hier heb je een straat die niet helemaal goed ingetekend is.",
+        "add_node": "We kunnen wat knopen toevoegen om de vorm te verbeteren. Een manier om dat te doen is door te dubbelklikken op de lijn op de plaats waar je een knoop wil toevoegen. **Dubbelklik op de lijn om een nieuwe knoop toe te voegen.**",
+        "drag_to_intersection": "**Versleep het eindpunt van de lijn naar de plek waar de straten elkaar moeten kruisen.**",
+        "spot_looks_good": "Deze plek ziet er goed uit.",
+        "finish_drag_endpoint": "**Laat de linkermuisknop los om te stoppen met verslepen.**",
+        "finish_drag_endpoint_touch": "**Laat de knoop los om te stoppen met verslepen.**",
+        "start_drag_midpoint": "Als een weg geselecteerd is, zie je midden tussen de knopen driehoekjes. Je kan die verslepen om nieuwe knopen aan te maken zonder te dubbelklikken. **Versleep een driehoekje om een nieuwe knoop te maken dat de ronding van de weg volgt.**",
+        "continue_drag_midpoint": "De lijn ziet er nu veel beter uit! Pas haar nog wat verder aan totdat de lijn de vorm van de weg volgt. **Wanneer je tevreden bent met de vorm van de lijn, klik dan op {ok}.**",
+        "delete_lines": "Lijnen voor dingen die niet in het echt bestaan, verbeter je beter van de kaart.{br}Hier heb je een {street} die de gemeente gepland had, maar nooit aangelegd heeft. We kunnen dit deel van de kaart verbeteren door de extra lijnen te verwijderen.",
+        "split_street": "De laatste echte straat is {street1}, dus we *splitsen* {street2} op dit kruispunt en verwijderen het stuk ten noorden ervan.",
+        "split_intersection": "**Klik op de {split_icon} {split}-knop om {street} te splitsen.**",
+        "retry_split": "Je klikte niet op de {split_icon} {split}-knop. Probeer opnieuw.",
+        "did_split_multi": "Goed zo! {street1} is nu in tweeën gesplitst. Het bovenste deel kun je verwijderen. **Klik op het bovenste deel van {street2}.**",
+        "did_split_single": "**Klik op het bovenste deel van {street2}.**",
+        "multi_select": "{selected} is geselecteerd. Laten we ook {other1} selecteren.",
+        "add_to_selection_click": "Je kan klikken terwijl je `{shift}` indrukt om meerdere dingen te selecteren. **Shift-klik op {other2}.**",
+        "multi_select_success": "Goed zo! Beide lijnen om te verwijderen zijn geselecteerd.",
+        "multi_delete": "**Klik op de {delete_icon} {delete}-knop om de extra lijnen te verwijderen.**",
+        "retry_delete": "Je klikte niet op de {delete_icon} {delete}-knop. Probeer opnieuw.",
+        "play": "Fantastisch! Oefen nu nog wat meer met het tekenen en bewerken van lijnen. **Als je klaar bent om door te gaan met het volgende hoofdstuk, klik dan op '{next}'.**"
+      },
+      "buildings": {
+        "title": "Gebouwen",
+        "start_building": "Laten we dit huis intekenen door zijn omtrek te volgen.{br}Gebouwen teken je zo nauwkeurig mogelijk in langs hun grondplan.",
+        "building_corner_click": "**Klik of druk op `{space}` om de eerste knoop op een van de hoeken van het gebouw te plaatsen.**",
+        "continue_building": "Teken de omtrek van het gebouw verder in. Onthoud dat je kan inzoomen om gedetailleerder te werken.",
+        "finish_building": "**Werk het gebouw af.**",
+        "retry_building": "Je had wat moeite met de knopen in de hoeken van het gebouw te zetten. Probeer opnieuw!",
+        "choose_category_building": "**Kies {category} uit de lijst.**",
+        "choose_preset_house": "Er zijn veel verschillende soorten gebouwen, maar dit is duidelijk een huis.{br}Als je niet zeker bent van het type, is het oké om het algemene Gebouw-type te kiezen. **Kies {preset}.**",
+        "square_building": "Het huis dat je toegevoegd hebt zal er nog beter uitzien met perfect rechte hoeken. **Klik op de {orthogonalize_icon} {orthogonalize}-knop om de gebouwomtrek recht te trekken.**",
+        "retry_square": "Je klikte niet op de {orthogonalize_icon} {orthogonalize}-knop. Probeer opnieuw.",
+        "done_square": "Zie je hoe de hoeken van het gebouw mooi recht geworden zijn? Laten we nog een nuttig trucje leren.",
+        "add_tank": "Nu zullen we deze cirkelvormige opslagtank intekenen. **Klik op de {area_icon} {area}-knop om te beginnen een nieuw vlak te tekenen.**",
+        "start_tank": "Maak je geen zorgen, je hoeft geen perfecte cirkel te tekenen. Teken gewoon een vlak binnen de tank dat raakt aan de omtrek.",
+        "tank_edge_click": "**Klik of druk op `{space}` om een knoop op de omtrek van de tank te zetten.**",
+        "continue_tank": "Voeg nog wat meer knopen toe op de omtrek. De cirkel zal aan de buitenkant van je vlak gemaakt worden.",
+        "finish_tank": "**Werk de tank af.**",
+        "search_tank": "**Zoek naar '{preset}'.**",
+        "choose_tank": "**Kies {preset} uit de lijst.**",
+        "circle_tank": "**Klik op de {circularize_icon} {circularize}-knop om de tank rond te maken.**",
+        "retry_circle": "Je klikte niet op de {circularize_icon} {circularize}-knop. Probeer opnieuw.",
+        "play": "Goed zo! Oefen nog wat op gebouwen tekenen, en probeer wat andere opties uit het bewerkmenu uit. **Als je klaar bent om door te gaan met het volgende hoofdstuk, klik dan op '{next}'.**"
+      },
+      "startediting": {
+        "title": "Begin met aanpassen",
+        "help": "Je bent nu klaar om OpenStreetMap te bewerken!{br}Je kan deze rondleiding steeds opnieuw volgen en meer documentatie bekijken door op de {help_icon} {help}-knop te klikken of op `{help_key}` te drukken.",
+        "shortcuts": "Je kan een lijst met opdrachten samen met hun toetsenbordkoppelingen bekijken door op `{shortcuts_key}` te drukken.",
+        "save": "Sla je aanpassingen regelmatig op, bijvoorbeeld als je klaar bent in een bepaald gebied!",
+        "start": "Karteer de wereld!"
+      }
+    },
+    "shortcuts": {
+      "title": "Sneltoetsen",
+      "tooltip": "Toon het sneltoetsoverzicht.",
+      "key": {
+        "delete": "Verwijder",
+        "space": "Spatiebalk"
+      },
+      "gesture": {
+        "drag": "sleep"
+      },
+      "or": "-of-",
+      "browsing": "Rondbewegen",
+      "editing": "Bewerken",
+      "navigation": "Navigatie",
+      "selecting_features": "Objecten selecteren",
+      "with_features_selected": "Met objecten geselecteerd",
+      "with_node_selected": "Met knoop geselecteerd",
+      "with_way_selected": "Met geselecteerde weg",
+      "drawing": "Tekenen",
+      "commands": "Opdrachten",
+      "help": "Hulp",
+      "display_options": "Weergave-opties",
+      "info": "Informatie",
+      "command": {
+        "pan": {
+          "label": "Verschuif kaart"
+        },
+        "select_one": {
+          "label": "Eén object selecteren"
+        },
+        "select_multi": {
+          "label": "Meerdere objecten selecteren"
+        },
+        "lasso": {
+          "label": "Objecten selecteren met lasso"
+        },
+        "edit_menu": {
+          "label": "Bewerkmenu open/dicht"
+        },
+        "first_node": {
+          "label": "Naar eerste knoop springen"
+        },
+        "last_node": {
+          "label": "Naar laatste knoop springen"
+        },
+        "change_parent": {
+          "label": "Van lijn wisselen"
+        },
+        "select_parent": {
+          "label": "Selecteer parent weg"
+        },
+        "select_children": {
+          "label": "Selecteer subknopen"
+        },
+        "add_point": {
+          "label": "‘Punt toevoegen’-modus"
+        },
+        "add_line": {
+          "label": "‘Lijn toevoegen’-modus"
+        },
+        "add_area": {
+          "label": "‘Vlak toevoegen’-modus"
+        },
+        "add_note": {
+          "label": "‘Kaartopmerking toevoegen’-modus"
+        },
+        "place_point": {
+          "label": "Plaats punt of kaartopmerking"
+        },
+        "disable_snap": {
+          "label": "Houd ingedrukt om punt-magnetisme uit te schakelen"
+        },
+        "stop_line": {
+          "label": "Beëindig tekenen van lijn of vlak"
+        },
+        "copy": {
+          "label": "Geselecteerde objecten kopiëren"
+        },
+        "paste": {
+          "label": "Geselecteerde objecten plakken"
+        },
+        "undo": {
+          "label": "Laatste actie ongedaan maken"
+        },
+        "redo": {
+          "label": "Ongedaan gemaakte actie opnieuw uitvoeren"
+        },
+        "save": {
+          "label": "Sla aanpassingen op"
+        },
+        "find": {
+          "label": "Objecten zoeken"
+        },
+        "continue_line": {
+          "label": "Vervolg een lijn op het geselecteerde eindpunt"
+        },
+        "merge": {
+          "label": "Geselecteerde objecten samenvoegen"
+        },
+        "disconnect": {
+          "label": "Maak geselecteerde objecten los"
+        },
+        "extract": {
+          "label": "Extraheer een punt uit een object",
+          "key": "O"
+        },
+        "split": {
+          "label": "Splits objecten bij de geselecteerde punten"
+        },
+        "reverse": {
+          "label": "Keer geselecteerde objecten om"
+        },
+        "move": {
+          "label": "Geselecteerde objecten verplaatsen"
+        },
+        "rotate": {
+          "label": "Geselecteerde objecten draaien"
+        },
+        "orthogonalize": {
+          "label": "Hoeken van lijn of vlak haaks maken"
+        },
+        "straighten": {
+          "label": "Trek een lijn of punten recht",
+          "key": "Z"
+        },
+        "circularize": {
+          "label": "Vlak of gesloten lijn rond maken"
+        },
+        "reflect_long": {
+          "label": "Spiegel objecten langs de lange as"
+        },
+        "reflect_short": {
+          "label": "Spiegel objecten langs de korte as"
+        },
+        "delete": {
+          "label": "Geselecteerde objecten verwijderen"
+        },
+        "toggle_background": {
+          "label": "Achtergrondafbeeldingenpaneel open/dicht"
+        },
+        "toggle_map_data": {
+          "label": "Kaartgegevenspaneel open/dicht"
+        },
+        "toggle_issues": {
+          "label": "Toon'Verberg validatiepaneel"
+        },
+        "toggle_preferences": {
+          "label": "Gebruikersinstellingenpaneel open/dicht"
+        },
+        "highlight_edits": {
+          "label": "Markeer onopgeslagen wijzigingen"
+        },
+        "keyboard_shortcuts": {
+          "label": "Toon sneltoetsen"
+        },
+        "toggle_osm_data": {
+          "label": "OpenStreetMap-gegevens aan/uit"
+        },
+        "toggle_streetside": {
+          "key": "Z"
+        },
+        "toggle_all_cards": {
+          "label": "Alle informatiepanelen open/dicht"
+        },
+        "toggle_background_card": {
+          "label": "Achtergrondpaneel open/dicht"
+        },
+        "toggle_history_card": {
+          "label": "Geschiedenispaneel open/dicht"
+        },
+        "toggle_location_card": {
+          "label": "Locatiepaneel open/dicht"
+        },
+        "toggle_measurement_card": {
+          "label": "Meetpaneel open/dicht"
+        }
+      }
+    },
+    "units": {
+      "south": "Z",
+      "east": "O",
+      "year_month_day": "JJJJ-MM-DD"
+    },
+    "wikidata": {
+      "identifier": "Identificatie",
+      "description": "Beschrijving"
+    },
+    "languageNames": {
+      "ab": "Abchazisch",
+      "ace": "Atjehs",
+      "ach": "Akoli",
+      "ady": "Adygees",
+      "ae": "Avestisch",
+      "aeb": "Tunesisch Arabisch",
+      "ain": "Aino",
+      "ajp": "Zuid-Levantijns-Arabisch",
+      "akk": "Akkadisch",
+      "ale": "Aleoetisch",
+      "aln": "Gegisch",
+      "alt": "Zuid-Altaïsch",
+      "am": "Amhaars",
+      "an": "Aragonees",
+      "ang": "Oudengels",
+      "apc": "Levantijns-Arabisch",
+      "ar": "Arabisch",
+      "ar-001": "modern standaard Arabisch",
+      "arc": "Aramees",
+      "arn": "Mapudungun",
+      "arq": "Algerijns Arabisch",
+      "ars": "Arabisch, Nadjdi",
+      "ary": "Marokkaans Arabisch",
+      "arz": "Egyptisch Arabisch",
+      "as": "Assamees",
+      "ast": "Asturisch",
+      "av": "Avarisch",
+      "az": "Azerbeidzjaans",
+      "ba": "Basjkiers",
+      "bal": "Beloetsji",
+      "ban": "Balinees",
+      "bar": "Beiers",
+      "bas": "Basa",
+      "bax": "Bamoun",
+      "bbj": "Ghomala’",
+      "be": "Belarussisch",
+      "bew": "Bataviaans",
+      "bg": "Bulgaars",
+      "bgn": "Westers Beloetsji",
+      "bla": "Siksika",
+      "bn": "Bengaals",
+      "bo": "Tibetaans",
+      "br": "Bretons",
+      "bs": "Bosnisch",
+      "bua": "Boerjatisch",
+      "bug": "Buginees",
+      "ca": "Catalaans",
+      "car": "Caribisch",
+      "ce": "Tsjetsjeens",
+      "chk": "Chuukees",
+      "ckb": "Koerdisch, Soranî",
+      "co": "Corsicaans",
+      "cop": "Koptisch",
+      "crh": "Krim-Tataars",
+      "crj": "Zuidoost-Cree",
+      "crl": "Noordoost-Cree",
+      "crr": "Carolina Algonkisch",
+      "crs": "Seychellencreools",
+      "cs": "Tsjechisch",
+      "csb": "Kasjoebisch",
+      "cu": "Kerkslavisch",
+      "cv": "Tsjoevasjisch",
+      "da": "Deens",
+      "de": "Duits",
+      "den": "Slavey",
+      "dsb": "Nedersorbisch",
+      "dtp": "Dusun",
+      "dum": "Middelnederlands",
+      "egl": "Emiliano",
+      "egy": "Oudegyptisch",
+      "el": "Grieks",
+      "elx": "Elamitisch",
+      "en": "Engels",
+      "enm": "Middelengels",
+      "es": "Spaans",
+      "esu": "Yupik",
+      "et": "Estisch",
+      "eu": "Baskisch",
+      "ext": "Extremeens",
+      "fa": "Perzisch",
+      "ff": "Fulah",
+      "fi": "Fins",
+      "fil": "Filipijns",
+      "fit": "Tornedal-Fins",
+      "fj": "Fijisch",
+      "fo": "Faeröers",
+      "fr": "Frans",
+      "frc": "Cajun-Frans",
+      "frm": "Middelfrans",
+      "fro": "Oudfrans",
+      "frp": "Arpitaans",
+      "frr": "Noord-Fries",
+      "frs": "Oost-Fries",
+      "fur": "Friulisch",
+      "fy": "Fries",
+      "ga": "Iers",
+      "gag": "Gagaoezisch",
+      "gan": "Ganyu",
+      "gbz": "Zoroastrisch Dari",
+      "gd": "Schots-Gaelisch",
+      "gez": "Ge’ez",
+      "gil": "Gilbertees",
+      "gl": "Galicisch",
+      "gmh": "Middelhoogduits",
+      "gn": "Guaraní",
+      "goh": "Oudhoogduits",
+      "got": "Gothisch",
+      "grc": "Oudgrieks",
+      "gsw": "Zwitserduits",
+      "gur": "Gurune",
+      "hak": "Hakka",
+      "haw": "Hawaïaans",
+      "hax": "Zuid-Haida",
+      "he": "Hebreeuws",
+      "hif": "Fijisch Hindi",
+      "hit": "Hettitisch",
+      "hr": "Kroatisch",
+      "hsb": "Oppersorbisch",
+      "hsn": "Xiangyu",
+      "ht": "Haïtiaans Creools",
+      "hu": "Hongaars",
+      "hy": "Armeens",
+      "id": "Indonesisch",
+      "ii": "Yi",
+      "ikt": "Westelijk Canadees Inuktitut",
+      "inh": "Ingoesjetisch",
+      "is": "IJslands",
+      "it": "Italiaans",
+      "izh": "Ingrisch",
+      "ja": "Japans",
+      "jam": "Jamaicaans Creools",
+      "jpr": "Judeo-Perzisch",
+      "jrb": "Judeo-Arabisch",
+      "jut": "Jutlands",
+      "jv": "Javaans",
+      "ka": "Georgisch",
+      "kaa": "Karakalpaks",
+      "kab": "Kabylisch",
+      "kbd": "Kabardisch",
+      "kea": "Kaapverdisch Creools",
+      "kho": "Khotanees",
+      "ki": "Gikuyu",
+      "kiu": "Kirmanckî",
+      "kk": "Kazachs",
+      "kl": "Groenlands",
+      "ko": "Koreaans",
+      "koi": "Komi-Permjaaks",
+      "kos": "Kosraeaans",
+      "krc": "Karatsjaj-Balkarisch",
+      "krl": "Karelisch",
+      "ks": "Kasjmiri",
+      "ksh": "Kölsch",
+      "ku": "Koerdisch",
+      "kum": "Koemuks",
+      "ky": "Kirgizisch",
+      "la": "Latijn",
+      "lah": "Lahnda",
+      "lb": "Luxemburgs",
+      "lez": "Lezgisch",
+      "lg": "Luganda",
+      "li": "Limburgs",
+      "lij": "Ligurisch",
+      "liv": "Lijfs",
+      "lmo": "Lombardisch",
+      "lo": "Laotiaans",
+      "lou": "Louisiana-Creools",
+      "lrc": "Noordelijk Luri",
+      "lt": "Litouws",
+      "ltg": "Letgaals",
+      "lv": "Lets",
+      "lzh": "Klassiek Chinees",
+      "lzz": "Lazisch",
+      "mad": "Madoerees",
+      "mak": "Makassaars",
+      "mas": "Maa",
+      "mdf": "Moksja",
+      "mg": "Malagassisch",
+      "mga": "Middeliers",
+      "mgo": "Meta’",
+      "mh": "Marshallees",
+      "mi": "Maori",
+      "mic": "Mi’kmaq",
+      "mk": "Macedonisch",
+      "mn": "Mongools",
+      "mnc": "Mantsjoe",
+      "mni": "Meitei",
+      "mrj": "West-Mari",
+      "ms": "Maleis",
+      "mt": "Maltees",
+      "mus": "Creek",
+      "mwl": "Mirandees",
+      "my": "Birmaans",
+      "myv": "Erzja",
+      "na": "Nauruaans",
+      "nan": "Minnanyu",
+      "nap": "Napolitaans",
+      "nb": "Noors - Bokmål",
+      "nd": "Noord-Ndebele",
+      "nds": "Nedersaksisch",
+      "nds-NL": "Nederduits",
+      "ne": "Nepalees",
+      "niu": "Niueaans",
+      "nl": "Nederlands",
+      "nl-BE": "Vlaams",
+      "nmg": "Ngumba",
+      "nn": "Noors - Nynorsk",
+      "no": "Noors",
+      "non": "Oudnoors",
+      "nr": "Zuid-Ndbele",
+      "nso": "Noord-Sotho",
+      "nwc": "Klassiek Nepalbhasa",
+      "oc": "Occitaans",
+      "ojb": "Noordwest-Ojibwe",
+      "ojc": "Centraal Ojibwa",
+      "ojw": "West-Ojibwe",
+      "om": "Afaan Oromo",
+      "os": "Ossetisch",
+      "ota": "Ottomaans-Turks",
+      "pap": "Papiaments",
+      "pau": "Palaus",
+      "pcd": "Picardisch",
+      "pcm": "Nigeriaans Pidgin",
+      "pdc": "Pennsylvania-Duits",
+      "peo": "Oudperzisch",
+      "pfl": "Paltsisch",
+      "phn": "Foenicisch",
+      "pl": "Pools",
+      "pms": "Piëmontees",
+      "pnt": "Pontisch",
+      "pon": "Pohnpeiaans",
+      "prg": "Oudpruisisch",
+      "pro": "Oudprovençaals",
+      "ps": "Pasjtoe",
+      "pt": "Portugees",
+      "quc": "K’iche’",
+      "qug": "Kichwa",
+      "rif": "Riffijns",
+      "rm": "Reto-Romaans",
+      "rn": "Kirundi",
+      "ro": "Roemeens",
+      "rom": "Romani",
+      "rtm": "Rotumaans",
+      "ru": "Russisch",
+      "rue": "Roetheens",
+      "rup": "Aroemeens",
+      "sa": "Sanskriet",
+      "sah": "Jakoets",
+      "sam": "Samaritaans-Aramees",
+      "sc": "Sardijns",
+      "scn": "Siciliaans",
+      "sco": "Schots",
+      "sdc": "Sassarees",
+      "sdh": "Pahlavani",
+      "se": "Noord-Samisch",
+      "sel": "Selkoeps",
+      "sga": "Oudiers",
+      "sgs": "Samogitisch",
+      "sh": "Servo-Kroatisch",
+      "shi": "Tashelhiyt",
+      "shu": "Tsjadisch Arabisch",
+      "si": "Singalees",
+      "sk": "Slowaaks",
+      "sl": "Sloveens",
+      "slh": "Zuid-Lushootseed",
+      "sli": "Silezisch Duits",
+      "sm": "Samoaans",
+      "sma": "Zuid-Samisch",
+      "smj": "Lule-Samisch",
+      "smn": "Inari-Samisch",
+      "sms": "Skolt-Samisch",
+      "so": "Somalisch",
+      "sog": "Sogdisch",
+      "sq": "Albanees",
+      "sr": "Servisch",
+      "srn": "Sranantongo",
+      "ss": "Swazi",
+      "st": "Zuid-Sotho",
+      "stq": "Saterfries",
+      "su": "Soendanees",
+      "sus": "Soesoe",
+      "sux": "Soemerisch",
+      "sv": "Zweeds",
+      "swb": "Shimaore",
+      "syc": "Klassiek Syrisch",
+      "syr": "Syrisch",
+      "szl": "Silezisch",
+      "tce": "Zuid-Tutchone",
+      "tet": "Tetun",
+      "tg": "Tadzjieks",
+      "tk": "Turkmeens",
+      "tkl": "Tokelaus",
+      "to": "Tongaans",
+      "tr": "Turks",
+      "tsd": "Tsakonisch",
+      "tt": "Tataars",
+      "ttm": "Noord-Tutchone",
+      "ttt": "Moslim Tat",
+      "tum": "Toemboeka",
+      "tvl": "Tuvaluaans",
+      "ty": "Tahitiaans",
+      "tyv": "Toevaans",
+      "tzm": "Tamazight (Centraal-Marokko)",
+      "udm": "Oedmoerts",
+      "ug": "Oeigoers",
+      "uga": "Oegaritisch",
+      "uk": "Oekraïens",
+      "uz": "Oezbeeks",
+      "vec": "Venetiaans",
+      "vep": "Wepsisch",
+      "vi": "Vietnamees",
+      "vls": "West-Vlaams",
+      "vmf": "Opperfrankisch",
+      "vot": "Votisch",
+      "wa": "Waals",
+      "wuu": "Wuyu",
+      "xal": "Kalmuks",
+      "xmf": "Mingreels",
+      "yap": "Yapees",
+      "yi": "Jiddisch",
+      "yue": "Kantonees",
+      "zbl": "Blissymbolen",
+      "zea": "Zeeuws",
+      "zgh": "Standaard Marokkaanse Tamazight",
+      "zh": "Mandarijn",
+      "zh-Hans": "Mandarijn (vereenvoudigd)",
+      "zh-Hant": "Mandarijn (traditioneel)",
+      "zu": "Zoeloe"
+    },
+    "scriptNames": {
+      "Afak": "Defaka",
+      "Aghb": "Kaukasisch Albanees",
+      "Arab": "Arabisch",
+      "Armi": "Keizerlijk Aramees",
+      "Armn": "Armeens",
+      "Avst": "Avestaans",
+      "Bali": "Balinees",
+      "Bamu": "Bamoun",
+      "Beng": "Bengaals",
+      "Blis": "Blissymbolen",
+      "Brai": "braille",
+      "Bugi": "Buginees",
+      "Cans": "Verenigde Canadese Aboriginal-symbolen",
+      "Cari": "Carisch",
+      "Chrs": "Chorasmisch",
+      "Copt": "Koptisch",
+      "Cpmn": "Cypro-Minoïsch",
+      "Cprt": "Cyprisch",
+      "Cyrl": "Cyrillisch",
+      "Cyrs": "Oudkerkslavisch Cyrillisch",
+      "Dupl": "Duployan snelschrift",
+      "Egyd": "Egyptisch demotisch",
+      "Egyh": "Egyptisch hiëratisch",
+      "Egyp": "Egyptische hiërogliefen",
+      "Elym": "Elymaisch",
+      "Ethi": "Ethiopisch",
+      "Geok": "Georgisch Khutsuri",
+      "Geor": "Georgisch",
+      "Glag": "Glagolitisch",
+      "Goth": "Gothisch",
+      "Grek": "Grieks",
+      "Hanb": "Han met Bopomofo",
+      "Hans": "vereenvoudigd Chinees",
+      "Hant": "traditioneel Chinees",
+      "Hebr": "Hebreeuws",
+      "Hluw": "Anatolische hiërogliefen",
+      "Hrkt": "Katakana of Hiragana",
+      "Hung": "Oudhongaars",
+      "Ital": "Oud-italisch",
+      "Java": "Javaans",
+      "Jpan": "Japans",
+      "Kawi": "Kawi-taal",
+      "Kits": "Kitaans kleinschrift",
+      "Kore": "Koreaans",
+      "Laoo": "Laotiaans",
+      "Latf": "Gotisch Latijns",
+      "Latg": "Gaelisch Latijns",
+      "Latn": "Latijns",
+      "Lina": "Lineair A",
+      "Linb": "Lineair B",
+      "Lyci": "Lycisch",
+      "Lydi": "Lydisch",
+      "Mand": "Mandaeans",
+      "Mani": "Manicheaans",
+      "Maya": "Mayahiërogliefen",
+      "Merc": "Meroitisch cursief",
+      "Mero": "Meroïtisch",
+      "Mong": "Mongools",
+      "Mtei": "Meitei",
+      "Mymr": "Birmaans",
+      "Narb": "Oud Noord-Arabisch",
+      "Nbat": "Nabateaans",
+      "Newa": "Newari",
+      "Ougr": "Oud Oeigoers",
+      "Palm": "Palmyreens",
+      "Perm": "Oudpermisch",
+      "Phli": "Inscriptioneel Pahlavi",
+      "Phlp": "Psalmen Pahlavi",
+      "Phlv": "Boek Pahlavi",
+      "Phnx": "Foenicisch",
+      "Plrd": "Pollard-fonetisch",
+      "Prti": "Inscriptioneel Parthisch",
+      "Samr": "Samaritaans",
+      "Sarb": "Oud Zuid-Arabisch",
+      "Sind": "Sindhi",
+      "Sinh": "Singalees",
+      "Sogd": "Sogdisch",
+      "Sogo": "Oud Sogdisch",
+      "Sund": "Soendanees",
+      "Syre": "Estrangelo Aramees",
+      "Syrj": "West-Aramees",
+      "Syrn": "Oost-Aramees",
+      "Talu": "Nieuw Tai Lue",
+      "Tibt": "Tibetaans",
+      "Toto": "Totoschrift",
+      "Ugar": "Ugaritisch",
+      "Visp": "Zichtbare spraak",
+      "Xpeo": "Oudperzisch",
+      "Yezi": "Jezidi",
+      "Zanb": "vierkant Zanabazar",
+      "Zinh": "Overgeërfd",
+      "Zmth": "wiskundige notatie",
+      "Zsye": "emoji",
+      "Zsym": "symbolen",
+      "Zxxx": "ongeschreven",
+      "Zyyy": "algemeen",
+      "Zzzz": "onbekend schriftsysteem"
+    }
+  }
+}

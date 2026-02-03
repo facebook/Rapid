@@ -1,0 +1,31 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.015Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/tagging.pap.json",
+    "hash": "ba09bb61bfbd20b95f920aa850238ac2"
+  },
+  "pap": {
+    "presets": {
+      "fields": {
+        "address": {
+          "label": "Adrès"
+        },
+        "website": {
+          "label": "Wèpsait"
+        }
+      },
+      "presets": {
+        "address": {
+          "name": "Adrès"
+        },
+        "area": {
+          "name": "Área"
+        },
+        "point": {
+          "name": "Punto"
+        }
+      }
+    }
+  }
+}

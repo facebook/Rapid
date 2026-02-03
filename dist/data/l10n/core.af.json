@@ -1,0 +1,803 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.275Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.af.json",
+    "hash": "6078af2293c0c8b7b0fe58131314be9a"
+  },
+  "af": {
+    "icons": {
+      "download": "laai af",
+      "information": "inligting",
+      "remove": "verwyder",
+      "undo": "maak ongedaan",
+      "zoom_to": "zoem na",
+      "copy": "kopieer",
+      "view_on": "beskou op {domain}",
+      "visit_website": "na webblad gaan",
+      "favorite": "gunsteling",
+      "list": "lys",
+      "text": "teks"
+    },
+    "toolbar": {
+      "inspect": "Inspekteer",
+      "undo_redo": "Maak ongedaan / Herstel",
+      "recent": "Onlangse",
+      "favorites": "Gunstelinge",
+      "add_feature": "Voeg baken by"
+    },
+    "title": {
+      "labeled_and_more": {
+        "one": "{labeled} en {count} meer",
+        "other": "{labeled} en {count} meer"
+      }
+    },
+    "modes": {
+      "add_area": {
+        "title": "Gebied"
+      },
+      "add_line": {
+        "title": "Lyn"
+      },
+      "add_point": {
+        "title": "Punt"
+      },
+      "add_note": {
+        "title": "Nota",
+        "description": "Probleem gesien? Laat ander weet."
+      },
+      "add_preset": {
+        "title": "Voeg {feature} by"
+      },
+      "browse": {
+        "title": "Blaai rond",
+        "description": "Kyk rond en zoom die kaart."
+      },
+      "drag_node": {
+        "connected_to_hidden": "Dit kan nie veranderword nie, want dit is gekoppel aan 'n verskuilde item"
+      }
+    },
+    "operations": {
+      "add": {
+        "annotation": {
+          "point": "'N punt bygevoeg.",
+          "vertex": "'N punt is bygevoeg by 'n weg.",
+          "relation": "'N verband bygevoeg.",
+          "note": "'N nota bygevoeg."
+        }
+      },
+      "start": {
+        "annotation": {
+          "line": "Begin 'n lyn.",
+          "area": "Begin 'n area."
+        }
+      },
+      "continue": {
+        "title": "Gaan voort",
+        "description": "Gaan voort met hierdie lyn.",
+        "not_eligible": "Geen lyn kan hier aangaan nie.",
+        "annotation": {
+          "line": "Gaan voort met 'n lyn.",
+          "area": "Gaan voort met 'n area."
+        }
+      },
+      "cancel_draw": {
+        "annotation": "Kanseleer teken."
+      },
+      "change_role": {
+        "annotation": {
+          "one": "Verander die rolle van {n} verwante elemente.",
+          "other": "Verander die rol van {n} verwante mense"
+        }
+      },
+      "change_tags": {
+        "annotation": "Veranderde kenmerke."
+      },
+      "copy": {
+        "title": "Kopieer",
+        "annotation": {
+          "one": "'N baken gekopieer.",
+          "other": "(N) bakens gekopieer."
+        }
+      },
+      "paste": {
+        "title": "Plak",
+        "annotation": {
+          "one": "'N baken geplak.",
+          "other": "(N) bakens geplak."
+        },
+        "nothing_copied": "Geen bakens gekopieer nie."
+      },
+      "circularize": {
+        "title": "Maak rond",
+        "annotation": {
+          "feature": {
+            "one": "Maak 'n baken rond.",
+            "other": "Maak (n) bakens rond."
+          }
+        }
+      },
+      "orthogonalize": {
+        "title": "Maak vierkant"
+      },
+      "delete": {
+        "title": "Verwyder",
+        "annotation": {
+          "point": "'N punt verwyder.",
+          "vertex": "'N punt uit 'n weg verwyder.",
+          "line": "'N lyn verwyder.",
+          "area": "'N gebied verwyder.",
+          "relation": "'N verband verwyder.",
+          "feature": {
+            "one": "'n baken verwyder.",
+            "other": "(N) bakens verwyder."
+          }
+        }
+      },
+      "downgrade": {
+        "description": {
+          "generic": "Verwyder merkers."
+        }
+      },
+      "add_member": {
+        "annotation": {
+          "one": "'N lid by 'n verband bygevoeg.",
+          "other": "{N} lede by 'n verband bygevoeg."
+        }
+      },
+      "delete_member": {
+        "annotation": {
+          "one": "'N lid uit 'n verband verwyder.",
+          "other": "(N) lede uit 'n verband verwyder."
+        }
+      },
+      "connect": {
+        "annotation": {
+          "from_vertex": {
+            "to_point": "'N weg aan 'n punt gekoppel.",
+            "to_vertex": "'N weg aan 'n ander gekoppel.",
+            "to_line": "'N weg aan 'n lyn gekoppel.",
+            "to_area": "'N weg aan 'n gebied gekoppel."
+          }
+        }
+      },
+      "disconnect": {
+        "title": "Ontkoppel",
+        "description": {
+          "no_points": {
+            "single_way": {
+              "line": "Ontkoppel diehier lyne van ander bakens.",
+              "area": "Ontkoppel diehier gebied van ander bakens."
+            }
+          },
+          "single_point": {
+            "no_ways": "Ontkoppel die bakens op diehier punt.",
+            "single_way": {
+              "line": "Ontkoppel die geslekteerde lyn op diehier punt.",
+              "area": "Ontkoppel die geslekteerde gebied op diehier punt."
+            },
+            "multiple_ways": "Ontkoppel die geslekteerde bakens op diehier punt."
+          },
+          "multiple_points": {
+            "no_ways": "Ontkoppel die geslekteerde bakens op diehier punte.",
+            "single_way": {
+              "line": "Ontkoppel die geslekteerde lyn op diehier punte.",
+              "area": "Ontkoppel die geslekteerde gebied op diehier punte."
+            },
+            "multiple_ways": "Ontkoppel die geslekteerde bakens op diehier punte."
+          }
+        },
+        "not_connected": "Daar is nie genoeg lyne/areas hier om te ontkoppel nie."
+      },
+      "merge": {
+        "title": "Smelt saam",
+        "not_eligible": "Hierdie items kan nie saamgesmelt word nie."
+      },
+      "move": {
+        "title": "Skuif",
+        "annotation": {
+          "point": "'n Punt is geskuif.",
+          "vertex": "'n Punt in weg is geskuif.",
+          "line": "'n Lyn is geskuif.",
+          "area": "'n Area is geskuif."
+        }
+      },
+      "rotate": {
+        "title": "Draai",
+        "annotation": {
+          "line": "'n Lyn is gedraai.",
+          "area": "'n Area is gedraai."
+        }
+      },
+      "reverse": {
+        "title": "Draai om"
+      },
+      "split": {
+        "not_eligible": "Lyne kan nie gesplit word by hulle begin of eind punte nie."
+      }
+    },
+    "restriction": {
+      "controls": {
+        "distance": "Afstand"
+      }
+    },
+    "undo": {
+      "title": "Maak ongedaan",
+      "tooltip": "Maak ongedaan: {action}",
+      "nothing": "Niks om ongedaan te maak."
+    },
+    "redo": {
+      "title": "Herstel",
+      "tooltip": "Herstel: {action}",
+      "nothing": "Niks om weer te doen nie."
+    },
+    "translate": {
+      "translate": "Voeg veeltalige name by",
+      "localized_translation_label": "veeltalige name",
+      "localized_translation_language": "Kies 'n taal",
+      "localized_translation_name": "Naam"
+    },
+    "zoom_in_edit": "Zoem in om te wysig",
+    "logout": "Teken Uit",
+    "loading_auth": "Maak kontak met OpenStreetMap...",
+    "commit": {
+      "title": "Laai op na OpenStreetMap",
+      "save": "Laai op",
+      "cancel": "Kanselleer",
+      "changes": "Wysigings",
+      "download_changes": "Laai osmChange-lêer af",
+      "warnings": "Waarskuwings",
+      "modified": "Verander",
+      "deleted": "Verwyder",
+      "created": "Gemaak",
+      "about_changeset_comments": "Aangaande kommentaar"
+    },
+    "contributors": {
+      "list": "Wysigings deur {users}",
+      "truncated_list": {
+        "one": "Veranderinge deur {users} en {count} meer.",
+        "other": "Veranderinge deur {users} en {count} meer."
+      }
+    },
+    "info_panels": {
+      "selected": {
+        "one": "{n} geselekteerd",
+        "other": "{n} geselekteerd"
+      },
+      "background": {
+        "title": "Agtergrond",
+        "description": "Beskrywing"
+      },
+      "history": {
+        "version": "Weergawe",
+        "last_edit": "Meest onlangse wysiging",
+        "edited_by": "Gewysig deur",
+        "changeset": "Wysigingstel",
+        "note_comments": "Kommentaar",
+        "note_link_text": "Nota op openstreetmap.org"
+      },
+      "measurement": {
+        "center": "Middel",
+        "distance": "Afstand",
+        "area": "Oppervlakte"
+      }
+    },
+    "geolocate": {
+      "title": "Wys waar ek is"
+    },
+    "inspector": {
+      "show_more": "Wys meer",
+      "view_on_osm": "Kyk daarna op openstreetmap.org",
+      "feature_type": "Baken tipe",
+      "relations": "Verbande",
+      "features": "Bakens",
+      "add_to_relation": "Voeg by in 'n verband",
+      "role": "rol",
+      "choose": "Kies funksie tipe",
+      "type": "Tipe",
+      "remove": "Verwyder",
+      "search": "Soek",
+      "unknown": "Onbekend",
+      "feature_list": "Soek bakens",
+      "check": {
+        "yes": "Ja",
+        "no": "Nee"
+      },
+      "add": "Voeg by"
+    },
+    "background": {
+      "title": "Agtergrond",
+      "description": "Agtergrond-instellings",
+      "backgrounds": "Agtergronde",
+      "reset": "begin van voor"
+    },
+    "map_data": {
+      "layers": {
+        "notes": {
+          "title": "OpenStreetMap notas"
+        },
+        "maproulette": {
+          "cancel": "Kanselleer"
+        },
+        "keepRight": {
+          "title": "KeepRight-probleme"
+        },
+        "osmose": {
+          "title": "Osmose-probleme"
+        }
+      }
+    },
+    "photo_overlays": {
+      "username_filter": {
+        "title": "Gebruikernaam"
+      }
+    },
+    "filters": {
+      "points": {
+        "description": "punte"
+      },
+      "paths": {
+        "description": "Pade"
+      },
+      "building_parts": {
+        "description": "Geboudele"
+      },
+      "indoor": {
+        "description": "Binnebakens"
+      },
+      "landuse": {
+        "description": "Landgebruikbakens"
+      },
+      "boundaries": {
+        "description": "Grense"
+      },
+      "water": {
+        "description": "Waterbakens"
+      },
+      "rail": {
+        "description": "Spoorwegbakens"
+      },
+      "power": {
+        "description": "Kragbakens"
+      },
+      "others": {
+        "description": "Ander bakens"
+      }
+    },
+    "restore": {
+      "heading": "Jy het ongestoorde veranderinge"
+    },
+    "save": {
+      "title": "Stoor",
+      "no_changes": "Geen verandering om te stoor.",
+      "unsaved_changes": "Jy het ongestoorde veranderinge",
+      "conflict": {
+        "download_changes": "Of laai osmChange-lêer af"
+      }
+    },
+    "confirm": {
+      "cancel": "Kanselleer"
+    },
+    "splash": {
+      "start": "Wysig nu"
+    },
+    "source_switch": {
+      "live": "lewendig",
+      "lose_changes": "Jy het ongebêrede verandering, as jy die van kaart server verander gaan jy die veranderings weggooi. Is jy seker jy wil van kaart server verander?"
+    },
+    "rapid_menu": {
+      "remove": "Verwyder"
+    },
+    "tag_reference": {
+      "description": "Beskrywing",
+      "on_wiki": "{tag} op wiki.osm.org",
+      "used_with": "gebruik met {type}"
+    },
+    "QA": {
+      "osmose": {
+        "elems_title": "Bakens"
+      },
+      "keepRight": {
+        "detail_description": "Beskrywing",
+        "comment": "Kommentaar",
+        "save_comment": "Stoor kommentaar",
+        "ignore_comment": "Verwyder en lewer kommentaar"
+      }
+    },
+    "note": {
+      "note": "Nota",
+      "title": "Wysig nota",
+      "commentTitle": "Kommentaar",
+      "newComment": "Nuwe kommentaar",
+      "comment": "Kommentaar",
+      "report": "Rapporteer",
+      "new": "Nuwe nota",
+      "save": "Stoor notas"
+    },
+    "help": {
+      "overview": {
+        "features_h": "Kaartbakens"
+      },
+      "editing": {
+        "title": "Wysig & stoor",
+        "undo_redo_h": "Maak ongedaan & Herstel",
+        "save_h": "Stoor",
+        "upload_h": "Laai op"
+      },
+      "feature_editor": {
+        "type_h": "Baken tipe"
+      },
+      "points": {
+        "title": "punte"
+      },
+      "lines": {
+        "title": "Lyne"
+      },
+      "areas": {
+        "title": "areas"
+      },
+      "relations": {
+        "title": "Verbande",
+        "relation_types_h": "Verband tipes",
+        "boundary_h": "Grense"
+      },
+      "notes": {
+        "title": "Notas"
+      },
+      "qa": {
+        "tools_h": "Gereedskappe"
+      },
+      "field": {
+        "restrictions": {
+          "about": {
+            "title": "Aangaande"
+          }
+        }
+      }
+    },
+    "issues": {
+      "title": "Probleme",
+      "warnings": "Waarskuwings",
+      "options": {
+        "what": {
+          "edited": "My Wysigings"
+        }
+      },
+      "help_request": {
+        "title": "Helpversoeke"
+      },
+      "fix": {
+        "add_a_bridge": {
+          "title": "Voeg 'n brug by",
+          "annotation": "'N brug bygevoeg."
+        },
+        "add_a_tunnel": {
+          "title": "Voeg 'n tonnel by",
+          "annotation": "'N tonnel bygevoeg."
+        },
+        "remove_from_relation": {
+          "title": "Verwyder uit verband"
+        },
+        "remove_tag": {
+          "title": "Verwyder die merker",
+          "annotation": "Merker verwyder."
+        },
+        "remove_tags": {
+          "title": "Verwyder die merkers"
+        },
+        "remove_the_name": {
+          "title": "Verwyder die naam"
+        },
+        "select_preset": {
+          "title": "Kies 'n baken tipe"
+        }
+      }
+    },
+    "intro": {
+      "graph": {
+        "state": "<value for addr:state>",
+        "countrycode": "za"
+      },
+      "points": {
+        "title": "punte"
+      },
+      "areas": {
+        "title": "areas"
+      },
+      "lines": {
+        "title": "Lyne"
+      },
+      "startediting": {
+        "title": "Begin verander",
+        "save": "Moenie vergeet om gereeld verandering te bêre nie!",
+        "start": "Begin die kaart teken!"
+      }
+    },
+    "shortcuts": {
+      "key": {
+        "delete": "Verwyder"
+      },
+      "info": "Inligting",
+      "command": {
+        "undo": {
+          "label": "Maak meest onlangse aktie ongedaan"
+        },
+        "redo": {
+          "label": "Herstel meest onlangse wysiging"
+        },
+        "save": {
+          "label": "Stoor wysigings"
+        }
+      }
+    },
+    "wikidata": {
+      "description": "Beskrywing"
+    },
+    "languageNames": {
+      "ab": "Abkasies",
+      "ace": "Atsjenees",
+      "ach": "Akoli",
+      "alt": "Suid-Altai",
+      "am": "Amharies",
+      "an": "Aragonees",
+      "ar": "Arabies",
+      "ar-001": "Moderne Standaardarabies",
+      "arc": "Aramees",
+      "ars": "Najdi-Arabies",
+      "as": "Assamees",
+      "ast": "Asturies",
+      "av": "Avaries",
+      "az": "Azerbeidjans",
+      "ba": "Baskir",
+      "ban": "Balinees",
+      "be": "Belarussies",
+      "bg": "Bulgaars",
+      "bgn": "Wes-Balochi",
+      "bla": "Siksika",
+      "bn": "Bengaals",
+      "bo": "Tibettaans",
+      "br": "Bretons",
+      "bs": "Bosnies",
+      "bug": "Buginees",
+      "ca": "Katalaans",
+      "ccp": "Tsjaakma",
+      "ce": "Tsjetsjeens",
+      "cgg": "Kiga",
+      "chk": "Chuukees",
+      "chr": "Cherokees",
+      "chy": "Cheyennees",
+      "ckb": "Sorani",
+      "clc": "Tzilkotin",
+      "co": "Korsikaans",
+      "cop": "Kopties",
+      "crj": "Suidoos-Cree",
+      "crk": "Laagvlakte-Cree",
+      "crl": "Noordoos-Cree",
+      "crr": "Carolina-Algonkin",
+      "crs": "Seselwa Franskreools",
+      "cs": "Tsjeggies",
+      "cu": "Kerkslawies",
+      "cy": "Wallies",
+      "da": "Deens",
+      "dak": "Dakotaans",
+      "dar": "Dakota",
+      "de": "Duits",
+      "dsb": "Nedersorbies",
+      "egy": "Antieke Egipties",
+      "el": "Grieks",
+      "en": "Engels",
+      "en-GB": "Engels (VK)",
+      "en-US": "Engels (VSA)",
+      "es": "Spaans",
+      "et": "Estnies",
+      "eu": "Baskies",
+      "fa": "Persies",
+      "ff": "Fulah",
+      "fi": "Fins",
+      "fil": "Filippyns",
+      "fj": "Fidjiaans",
+      "fo": "Faroëes",
+      "fr": "Frans",
+      "frc": "Cajun",
+      "frr": "Noord-Fries",
+      "fur": "Friuliaans",
+      "fy": "Fries",
+      "ga": "Iers",
+      "gaa": "Gaa",
+      "gan": "Gan-Sjinees",
+      "gd": "Skotse Gallies",
+      "gil": "Gilbertees",
+      "gl": "Galisies",
+      "got": "Goties",
+      "grc": "Antieke Grieks",
+      "gsw": "Switserse Duits",
+      "gu": "Goedjarati",
+      "hak": "Hakka-Sjinees",
+      "haw": "Hawais",
+      "hax": "Suid-Haida",
+      "he": "Hebreeus",
+      "hit": "Hetities",
+      "hr": "Kroaties",
+      "hsb": "Oppersorbies",
+      "hsn": "Xiang-Sjinees",
+      "ht": "Haïtiaans",
+      "hu": "Hongaars",
+      "hy": "Armeens",
+      "iba": "Ibanees",
+      "id": "Indonesies",
+      "ikt": "Wes-Kanadese Inoektitoet",
+      "is": "Yslands",
+      "it": "Italiaans",
+      "iu": "Inoektitoet",
+      "ja": "Japannees",
+      "jv": "Javaans",
+      "ka": "Georgies",
+      "kbd": "Kabardiaans",
+      "kg": "Kongolees",
+      "kk": "Kazaks",
+      "ko": "Koreaans",
+      "koi": "Komi-Permyaks",
+      "kpe": "Kpellees",
+      "krl": "Karelies",
+      "ks": "Kasjmiri",
+      "ksh": "Keuls",
+      "ku": "Koerdies",
+      "kw": "Kornies",
+      "kwk": "Kwak’wala",
+      "ky": "Kirgisies",
+      "la": "Latyn",
+      "lb": "Luxemburgs",
+      "lez": "Lezghies",
+      "li": "Limburgs",
+      "lij": "Liguries",
+      "lmo": "Lombardies",
+      "ln": "Lingaals",
+      "lou": "Louisiana Kreool",
+      "lrc": "Noord-Luri",
+      "lt": "Litaus",
+      "lv": "Letties",
+      "mad": "Madurees",
+      "mfe": "Morisjen",
+      "mg": "Malgassies",
+      "mgo": "Meta’",
+      "mh": "Marshallees",
+      "mi": "Maori",
+      "mic": "Micmac",
+      "min": "Minangkabaus",
+      "mk": "Masedonies",
+      "ml": "Malabaars",
+      "mn": "Mongools",
+      "ms": "Maleis",
+      "mt": "Maltees",
+      "mus": "Kreek",
+      "mwl": "Mirandees",
+      "my": "Birmaans",
+      "mzn": "Masanderani",
+      "nan": "Min Nan-Sjinees",
+      "nap": "Neapolitaans",
+      "nb": "Boeknoors",
+      "nd": "Noord-Ndebele",
+      "nds": "Nederduits",
+      "nds-NL": "Nedersaksies",
+      "ne": "Nepalees",
+      "niu": "Niueaans",
+      "nl": "Nederlands",
+      "nl-BE": "Vlaams",
+      "nn": "Nuwe Noors",
+      "no": "Noors",
+      "nr": "Suid-Ndebele",
+      "nso": "Noord-Sotho",
+      "oc": "Oksitaans",
+      "ojb": "Noordwes-Ojibwa",
+      "ojc": "Sentraal-Ojibwa",
+      "ojw": "Wes-Ojibwa",
+      "or": "Oriya",
+      "os": "Osseties",
+      "pa": "Pandjabi",
+      "pau": "Palauaans",
+      "pcm": "Nigeriese Pidgin",
+      "phn": "Fenisies",
+      "pl": "Pools",
+      "prg": "Pruisies",
+      "ps": "Pasjtoe",
+      "pt": "Portugees",
+      "quc": "K’iche’",
+      "rar": "Rarotongaans",
+      "rm": "Reto-Romaans",
+      "ro": "Roemeens",
+      "ru": "Russies",
+      "rup": "Aromanies",
+      "rw": "Rwandees",
+      "sad": "Sandawees",
+      "sah": "Jakoeties",
+      "sat": "Santalies",
+      "sc": "Sardinies",
+      "scn": "Sisiliaans",
+      "sco": "Skots",
+      "sdh": "Suid-Koerdies",
+      "se": "Noord-Sami",
+      "sh": "Serwo-Kroaties",
+      "sk": "Slowaaks",
+      "sl": "Sloweens",
+      "slh": "Suid-Lushootseed",
+      "sm": "Samoaans",
+      "sma": "Suid-Sami",
+      "smj": "Lule Sami",
+      "smn": "Inari Sami",
+      "sms": "Skolt Sami",
+      "so": "Somalies",
+      "sq": "Albanees",
+      "sr": "Serwies",
+      "ss": "Swazi",
+      "st": "Suid-Sotho",
+      "su": "Sundanees",
+      "sv": "Sweeds",
+      "swb": "Comoraans",
+      "syr": "Siries",
+      "szl": "Silesies",
+      "tce": "Suid-Tutchone",
+      "te": "Teloegoe",
+      "tet": "Tetoem",
+      "tg": "Tadjiks",
+      "ti": "Tigrinja",
+      "tk": "Turkmeens",
+      "to": "Tongaans",
+      "tr": "Turks",
+      "tt": "Tataars",
+      "ttm": "Noord-Tutchone",
+      "tum": "Toemboeka",
+      "ty": "Tahities",
+      "tyv": "Tuvinees",
+      "tzm": "Sentraal-Atlas-Tamazight",
+      "ug": "Uighur",
+      "uk": "Oekraïens",
+      "ur": "Oerdoe",
+      "uz": "Oesbekies",
+      "vec": "Venesiaans",
+      "vi": "Viëtnamees",
+      "wuu": "Wu-Sjinees",
+      "yi": "Jiddisj",
+      "yo": "Joroeba",
+      "yue": "Kantonese Chinees",
+      "zgh": "Standaard Marokkaanse Tamazight",
+      "zh": "Mandarynse Chinees",
+      "zh-Hans": "Mandarynse Chinees (Vereenvoudig)",
+      "zh-Hant": "Mandarynse Chinees (Tradisioneel)",
+      "zu": "Zoeloe"
+    },
+    "scriptNames": {
+      "Arab": "Arabies",
+      "Armn": "Armeens",
+      "Beng": "Bengaals",
+      "Cans": "Verenigde Kanadese Inheemse Lettergreepskrif",
+      "Cyrl": "Cyrillies",
+      "Ethi": "Etiopies",
+      "Geor": "Georgies",
+      "Grek": "Grieks",
+      "Gujr": "Goedjarati",
+      "Hanb": "Han met Bopomofo",
+      "Hans": "Vereenvoudigde Han",
+      "Hant": "Tradisionele Han",
+      "Hebr": "Hebreeus",
+      "Hrkt": "Japannese lettergreepskrif",
+      "Jpan": "Japannees",
+      "Kore": "Koreaans",
+      "Latn": "Latyn",
+      "Mlym": "Malabaars",
+      "Mong": "Mongools",
+      "Mtei": "Meitei-Majek",
+      "Mymr": "Mianmar",
+      "Orya": "Oriya",
+      "Rohg": "Hanifi",
+      "Sund": "Soendanees",
+      "Syrc": "Siries",
+      "Telu": "Teloegoe",
+      "Tibt": "Tibettaans",
+      "Zmth": "Wiskundige notasie",
+      "Zsym": "Simbole",
+      "Zxxx": "Ongeskrewe",
+      "Zyyy": "Algemeen",
+      "Zzzz": "Onbekende skryfstelsel"
+    }
+  }
+}

@@ -1,0 +1,652 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.133Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/tagging.ar-AA.json",
+    "hash": "f0d1e70c5afd698e72cbbd601ecdeacc"
+  },
+  "ar-AA": {
+    "presets": {
+      "categories": {
+        "category-playground": {
+          "name": "أجهزة وتركيبات الملعب"
+        },
+        "category-road_service": {
+          "name": "طرق الخدمة (المؤدية لخدمات)"
+        }
+      },
+      "fields": {
+        "access": {
+          "label": "الوصول المسموح به",
+          "options": {
+            "permissive": {
+              "title": "مسموح من المالك"
+            }
+          }
+        },
+        "access_simple": {
+          "options": {
+            "customers": "للعملاء/الزبائن فقط"
+          }
+        },
+        "address": {
+          "placeholders": {
+            "county": "المقاطعة/الإقليم/المركز",
+            "county!jp": "المحافظة/المديرية",
+            "district": "المحافظة/المديرية",
+            "hamlet": "قرية صغيرة / هجرة",
+            "place": "مكان / موضع",
+            "quarter": "ربع (مجموع مربعات سكنية)",
+            "state": "الحالة"
+          }
+        },
+        "aerialway/access": {
+          "options": {
+            "both": "كليهما"
+          }
+        },
+        "aerialway/duration": {
+          "placeholder": "1 ، 2 ، 3 ..."
+        },
+        "aerialway/summer/access": {
+          "options": {
+            "both": "كليهما"
+          }
+        },
+        "archaeological_site": {
+          "label": "النوع"
+        },
+        "automated": {
+          "label": "آلية"
+        },
+        "backcountry": {
+          "label": "غير معتنى به"
+        },
+        "bar": {
+          "label": "حانة"
+        },
+        "blind": {
+          "options": {
+            "limited": "محدودة"
+          }
+        },
+        "building": {
+          "label": "مبنى",
+          "terms": "المبنى, البناية, العمارة"
+        },
+        "building/levels": {
+          "label": "المسويات",
+          "terms": "المستويات,الطوابق,الأدوار"
+        },
+        "building/material": {
+          "terms": "المادة, المواد"
+        },
+        "cables": {
+          "placeholder": "1 ، 2 ، 3 ..."
+        },
+        "camera/direction": {
+          "label": "الاتجاهات (بالدرجات في اتجاه عقارب الساعة)"
+        },
+        "capacity": {
+          "placeholder": "50، 100، 200..."
+        },
+        "capacity/disabled_parking": {
+          "placeholder": "1 ، 2 ، 3 ..."
+        },
+        "capacity_volume": {
+          "placeholder": "50، 100، 200..."
+        },
+        "conveying": {
+          "options": {
+            "reversible": "قابل لتغيير الاتجاه حسب الزحام وبشكل منتظم"
+          }
+        },
+        "couplings": {
+          "placeholder": "1 ، 2 ، 3 ..."
+        },
+        "crossing/barrier": {
+          "options": {
+            "no": "لا"
+          }
+        },
+        "cuisine": {
+          "options": {
+            "regional": "إقليمي / محلي",
+            "sandwich": "خبز / ساندويتش"
+          }
+        },
+        "departures_board": {
+          "options": {
+            "no": "لا شيء"
+          }
+        },
+        "devices": {
+          "placeholder": "1 ، 2 ، 3 ..."
+        },
+        "diplomatic/services": {
+          "label": "خدمات"
+        },
+        "direction": {
+          "label": "الاتجاهات (بالدرجات في اتجاه عقارب الساعة)"
+        },
+        "direction_vertex": {
+          "label": "اتجاه علامة الطريق",
+          "options": {
+            "both": "للاتجاهين"
+          }
+        },
+        "display": {
+          "label": "عرض"
+        },
+        "fax": {
+          "placeholder": "+966 42 123 4567"
+        },
+        "fire_hydrant/type": {
+          "label": "شكل",
+          "options": {
+            "wall": "جدار"
+          }
+        },
+        "fuel/fuel_multi": {
+          "options": {
+            "octane_91": "البنزين (91 أوكتان)"
+          }
+        },
+        "gender": {
+          "placeholder": "غير معروفة"
+        },
+        "holding_position/type": {
+          "options": {
+            "runway": "مدرج المطار"
+          }
+        },
+        "hot_water": {
+          "label": "ماء ساخن"
+        },
+        "incline_steps": {
+          "options": {
+            "up": "فوق"
+          }
+        },
+        "indoor": {
+          "label": "الوضع الداخلي"
+        },
+        "intermittent": {
+          "label": "مجرى متقطع ولا يجري بشكل دائم"
+        },
+        "internet_access": {
+          "options": {
+            "terminal": "محطة / صالة"
+          }
+        },
+        "junction_line": {
+          "label": "تقاطع"
+        },
+        "label": {
+          "label": "العلامة/المسمى"
+        },
+        "lanes": {
+          "label": "مسارات الطريق",
+          "placeholder": "1 ، 2 ، 3 ..."
+        },
+        "layer": {
+          "label": "الطبقة/المستوى"
+        },
+        "leaf_type": {
+          "options": {
+            "leafless": "بلا أوراق"
+          }
+        },
+        "location_pool": {
+          "options": {
+            "indoor": "الوضع الداخلي",
+            "outdoor": "معدات الرحلات - التسلق - التخييم - الملاحة"
+          }
+        },
+        "material": {
+          "label": "مادة البناء"
+        },
+        "network_bicycle": {
+          "options": {
+            "icn": "دولي / عالمي",
+            "lcn": "محلي",
+            "rcn": "إقليمي / محلي"
+          },
+          "placeholder": "محلية، إقليمية، وطنية، دولية"
+        },
+        "network_foot": {
+          "options": {
+            "iwn": "دولي / عالمي",
+            "lwn": "محلي",
+            "rwn": "إقليمي / محلي"
+          }
+        },
+        "network_horse": {
+          "options": {
+            "ihn": "دولي / عالمي",
+            "lhn": "محلي",
+            "rhn": "إقليمي / محلي"
+          }
+        },
+        "oneway": {
+          "options": {
+            "alternating": "بالتناوب:يتغير اتجاهه بشكل متغير في اليوم الواحد"
+          }
+        },
+        "opening_hours": {
+          "placeholder": "غير معروفة"
+        },
+        "park_ride": {
+          "label": "اصطف واركب"
+        },
+        "payment_multi": {
+          "label": "أنواع الدفع",
+          "terms": "أنواع الدفع,أنواع الحساب"
+        },
+        "phases": {
+          "placeholder": "1 ، 2 ، 3 ..."
+        },
+        "pipeline": {
+          "label": "النوع"
+        },
+        "railway/signal/direction": {
+          "label": "اتجاه علامة الطريق",
+          "options": {
+            "both": "للاتجاهين"
+          }
+        },
+        "ref_golf_hole": {
+          "label": "رقم الثقب"
+        },
+        "salt": {
+          "label": "ملح"
+        },
+        "scuba_diving": {
+          "label": "خدمات"
+        },
+        "seamark/beacon_isolated_danger/shape": {
+          "label": "شكل"
+        },
+        "seamark/beacon_lateral/shape": {
+          "label": "شكل"
+        },
+        "seamark/beacon_lateral/system": {
+          "options": {
+            "other": "آخر"
+          }
+        },
+        "seamark/buoy_lateral/shape": {
+          "label": "شكل"
+        },
+        "seamark/buoy_lateral/system": {
+          "options": {
+            "other": "آخر"
+          }
+        },
+        "service": {
+          "options": {
+            "alley": "زقاق / ممر",
+            "driveway": "طريق مؤدي لمسكن",
+            "emergency_access": "ممر/طريق طوارئ",
+            "parking_aisle": "طريق داخل مواقف السيارات"
+          }
+        },
+        "service/vehicle": {
+          "label": "خدمات"
+        },
+        "service_rail": {
+          "options": {
+            "yard": "فناء"
+          }
+        },
+        "shelter": {
+          "label": "مأوى/عشة"
+        },
+        "siren/purpose": {
+          "label": "الغرض من نقطة الاستطلاع"
+        },
+        "siren/type": {
+          "options": {
+            "other": "آخر"
+          }
+        },
+        "smoothness": {
+          "options": {
+            "intermediate": "دراجة المدينة ، الكرسي المتحرك للمعاقين ، السكوتر"
+          }
+        },
+        "stroller": {
+          "options": {
+            "limited": "محدودة"
+          }
+        },
+        "structure": {
+          "label": "بنية",
+          "options": {
+            "ford": "مخاضة -طريق يشق مجرى مائي",
+            "tunnel": "نفق"
+          },
+          "placeholder": "غير معروفة"
+        },
+        "structure_waterway": {
+          "label": "بنية",
+          "placeholder": "غير معروفة"
+        },
+        "substation_pipeline": {
+          "label": "النوع"
+        },
+        "supervised": {
+          "label": "مُشرف عليه"
+        },
+        "surface": {
+          "options": {
+            "sand": "رمال/نفود"
+          }
+        },
+        "surveillance/type": {
+          "options": {
+            "camera": "آلة تصوير"
+          }
+        },
+        "survey_point/structure": {
+          "label": "بنية"
+        },
+        "toilets/disposal": {
+          "options": {
+            "pitlatrine": "مرحاض ذو حفرة"
+          }
+        },
+        "tower/construction": {
+          "label": "تحت الإنشاء"
+        },
+        "traffic_sign": {
+          "label": "إشارات المرور"
+        },
+        "traffic_signals/direction": {
+          "options": {
+            "backward": "للخلف",
+            "both": "للاتجاهين",
+            "forward": "للأمام"
+          }
+        },
+        "transformer": {
+          "label": "النوع"
+        },
+        "usage_rail": {
+          "options": {
+            "branch": "اسم الفرع"
+          }
+        },
+        "vehicles": {
+          "options": {
+            "trolleybus": "حافلات كهربائية (ترولي)"
+          }
+        },
+        "wheelchair": {
+          "options": {
+            "no": "لا",
+            "yes": "نعم"
+          }
+        },
+        "windings": {
+          "placeholder": "1 ، 2 ، 3 ..."
+        }
+      },
+      "presets": {
+        "amenity/atm": {
+          "name": "ماكينة صرافة آلية"
+        },
+        "amenity/bus_station": {
+          "name": "محطة الحافلات / صالة"
+        },
+        "amenity/clinic": {
+          "name": "عيادة طبية"
+        },
+        "amenity/compressed_air": {
+          "name": "هواء مضغوط"
+        },
+        "amenity/ferry_terminal": {
+          "name": "محطة / صالة العبارات"
+        },
+        "amenity/grave_yard": {
+          "name": "مقبرة داخل الكنيسة"
+        },
+        "amenity/parking": {
+          "name": "مكان المواقف"
+        },
+        "amenity/parking_space": {
+          "name": "مساحة موقوف السيارات"
+        },
+        "amenity/shower": {
+          "name": "دش وأدوات استحمام"
+        },
+        "amenity/studio/radio": {
+          "name": "محطة إذاعية"
+        },
+        "amenity/vehicle_inspection": {
+          "name": "فحص مركبات/الفحص الدوري"
+        },
+        "amenity/vending_machine": {
+          "name": "آلة بيع آلية"
+        },
+        "area": {
+          "name": "مساحة"
+        },
+        "barrier/block": {
+          "name": "صبة خرسانية"
+        },
+        "barrier/kerb": {
+          "name": "منحدر الرصيف المؤدي للشارع"
+        },
+        "barrier/toll_booth": {
+          "name": "كشك تحصيل رسوم"
+        },
+        "boundary/administrative": {
+          "terms": "حدود إدارية, تقسيمات إدارية"
+        },
+        "building/roof": {
+          "name": "سقف/سطح"
+        },
+        "craft/caterer": {
+          "name": "تموين أو متعهد إعاشة"
+        },
+        "craft/clockmaker": {
+          "name": "ساعاتي"
+        },
+        "craft/floorer": {
+          "name": "مبلط/تبليط/أرضيات"
+        },
+        "craft/locksmith": {
+          "name": "محل بيع أقفال ونسخ مفاتيح"
+        },
+        "craft/shoemaker": {
+          "name": "إسكافي/ صانع الأحذية"
+        },
+        "embankment": {
+          "name": "سطح مرفوع يسير عليه الطريق (قد تكون مردومة)"
+        },
+        "emergency/lifeguard": {
+          "name": "حارس الشاطئ"
+        },
+        "ford": {
+          "name": "مخاضة -طريق يشق مجرى مائي"
+        },
+        "ford_line": {
+          "name": "مخاضة -طريق يشق مجرى مائي"
+        },
+        "healthcare/alternative": {
+          "name": "الطب البديل"
+        },
+        "healthcare/laboratory": {
+          "name": "معمل طبي"
+        },
+        "healthcare/occupational_therapist": {
+          "name": "أخصائي علاج وظيفي"
+        },
+        "healthcare/optometrist": {
+          "name": "أخصائي بصريات"
+        },
+        "highway/bus_stop": {
+          "name": "محطة توقف حافلات"
+        },
+        "highway/corridor": {
+          "name": "ممر داخل المبنى",
+          "terms": "ممر داخل المبنى"
+        },
+        "highway/crossing/unmarked": {
+          "terms": "معبر مشاة بدون علامات أو إشارة مرورية"
+        },
+        "highway/footway/sidewalk": {
+          "name": "الرصيف"
+        },
+        "highway/passing_place": {
+          "name": "مساحة للتجاوز للطرق"
+        },
+        "highway/path": {
+          "name": "درب/ممر"
+        },
+        "highway/primary_link": {
+          "name": "وصلة طريق أولي"
+        },
+        "highway/service": {
+          "name": "طريق خدمة"
+        },
+        "highway/steps/conveying": {
+          "name": "سلم كهربائى"
+        },
+        "highway/turning_circle": {
+          "name": "دائرة للرجوع للخلف"
+        },
+        "historic/ruins": {
+          "name": "أطلال/أنقاض/خرائب"
+        },
+        "junction": {
+          "name": "تقاطع"
+        },
+        "landuse/basin": {
+          "name": "أرض حوضية طبيعية تحتوي الماء"
+        },
+        "landuse/brownfield": {
+          "name": "أرض صناعية سابقة"
+        },
+        "landuse/greenfield": {
+          "name": "حقول خضراء ستتحول لمباني"
+        },
+        "landuse/quarry": {
+          "name": "كسّارة، مقلع حجارة"
+        },
+        "landuse/reservoir": {
+          "name": "خزان"
+        },
+        "leisure/common": {
+          "name": "أرض مشتركة"
+        },
+        "leisure/playground": {
+          "name": "ساحة لعب"
+        },
+        "leisure/sauna": {
+          "name": "ساونا"
+        },
+        "leisure/swimming_pool": {
+          "name": "بركة سباحة"
+        },
+        "man_made/beacon": {
+          "name": "كبير مثبت بشكل رباعي"
+        },
+        "man_made/cairn": {
+          "name": "رِجم"
+        },
+        "man_made/embankment": {
+          "name": "سطح مرفوع يسير عليه الطريق (قد تكون مردومة)"
+        },
+        "man_made/monitoring_station": {
+          "name": "محطة رصد"
+        },
+        "man_made/silo": {
+          "name": "صومعة/صوامع الغلال"
+        },
+        "man_made/storage_tank/water": {
+          "name": "خزان ماء"
+        },
+        "man_made/surveillance": {
+          "name": "مراقبة ورصد"
+        },
+        "man_made/survey_point": {
+          "name": "نقطة استكشاف"
+        },
+        "natural/cave_entrance": {
+          "name": "مدخل كهف / غار"
+        },
+        "natural/sand": {
+          "name": "رمال/نفود"
+        },
+        "natural/water/pond": {
+          "name": "بركة ماء"
+        },
+        "natural/water/reservoir": {
+          "name": "خزان"
+        },
+        "place/city": {
+          "name": "المدينة"
+        },
+        "place/square": {
+          "name": "مربع"
+        },
+        "power/cable": {
+          "name": "كابل كهرباء"
+        },
+        "power/generator": {
+          "name": "مولد كهرباء"
+        },
+        "public_transport/station_train_halt": {
+          "name": "محطة قطار صغيرة (يتوقف عندها القطار عند الطلب)"
+        },
+        "railway/platform": {
+          "name": "منصة انتظار وركوب القطار"
+        },
+        "railway/station": {
+          "name": "محطة قطار"
+        },
+        "route/ferry": {
+          "terms": "مسار سفن, مسار عبارات"
+        },
+        "shop/florist": {
+          "name": "ورد وزهور"
+        },
+        "shop/optician": {
+          "name": "محل نظارات/بصريات"
+        },
+        "shop/travel_agency": {
+          "name": "وكالة السفر"
+        },
+        "tourism/artwork/bust": {
+          "name": "صدر"
+        },
+        "tourism/artwork/graffiti": {
+          "name": "جدارية"
+        },
+        "tourism/artwork/mural": {
+          "name": "جدار"
+        },
+        "tourism/artwork/sculpture": {
+          "name": "منحوتة"
+        },
+        "tourism/artwork/statue": {
+          "name": "تمثال"
+        },
+        "traffic_calming": {
+          "name": "تخفيف السرعة"
+        },
+        "type/route/ferry": {
+          "name": "مسار عبّارة"
+        },
+        "type/site": {
+          "name": "موضع"
+        },
+        "waterway/boatyard": {
+          "name": "حوض بناء السفن"
+        }
+      }
+    }
+  }
+}

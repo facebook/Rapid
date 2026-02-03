@@ -1,0 +1,26 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.291Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.sat.json",
+    "hash": "bf6cca1040294fc19ae8d23d1bb4b009"
+  },
+  "sat": {
+    "_communities": {
+      "openstreetmapalba": "OpenStreetMap ᱟᱞᱵᱟ",
+      "openstreetmapalbania": "OpenStreetMap ᱟᱞᱵᱮᱱᱤᱭᱟ",
+      "openstreetmapargentina": "OpenStreetMap ᱟᱨᱡᱮᱱᱴᱤᱱᱟ",
+      "openstreetmapasia": "OpenStreetMap ᱮᱥᱤᱭᱟ"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "name": "ᱵᱮᱞ ᱡᱟᱭᱜᱟ OpenStreetMappers",
+      "description": "ᱵᱮᱭ ᱡᱟᱭᱜᱟ ᱨᱮ OpenStreetMap ᱵᱮᱥ ᱛᱮᱭᱟᱨ ᱯᱮ"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "description": "ᱟᱞᱮ Twitter {url} ᱨᱮ ᱯᱟᱸᱡᱚ ᱞᱮᱢ"
+    },
+    "PHXGeo-twitter": {
+      "description": "ᱟᱞᱮ Twitter {url} ᱨᱮ ᱯᱟᱸᱡᱚ ᱞᱮᱢ"
+    }
+  }
+}

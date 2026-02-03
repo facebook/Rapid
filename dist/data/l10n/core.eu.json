@@ -1,0 +1,1171 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.250Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.eu.json",
+    "hash": "8d1d7b9d3571c08e87364f302b877d66"
+  },
+  "eu": {
+    "icons": {
+      "download": "deskargatu",
+      "remove": "kendu",
+      "undo": "ezeztatu",
+      "zoom_to": "zoom hona:",
+      "copy": "kopiatu",
+      "view_on": "ikusi hemen {domeinua}",
+      "visit_website": "webgunea bisitatu",
+      "favorite": "gogokoa",
+      "list": "zerrenda",
+      "text": "testua",
+      "deselect": "desmarkatu"
+    },
+    "toolbar": {
+      "inspect": "Arakatu",
+      "undo_redo": "Desegin / Berregin",
+      "recent": "Azkenekoak",
+      "favorites": "Gogokoak",
+      "add_feature": "Ezaugarria gehitu"
+    },
+    "title": {
+      "labeled_and_more": {
+        "one": "{labeled} eta {count} gehiago",
+        "other": "{labeled} eta {count} gehiago"
+      }
+    },
+    "modes": {
+      "add_area": {
+        "title": "Lekua"
+      },
+      "add_line": {
+        "title": "Lerroa"
+      },
+      "add_point": {
+        "title": "Puntua"
+      },
+      "add_note": {
+        "title": "Oharra",
+        "description": "Arazo bat ikusi duzu? Jakinarazi beste kartografo batzuk."
+      },
+      "add_preset": {
+        "title": "Gehitu {ezaugarria}"
+      },
+      "browse": {
+        "title": "Esploratu",
+        "description": "Mapan mugitu."
+      },
+      "drag_node": {
+        "connected_to_hidden": "Hau ezin da editatu ezkutuko ezaugarri lotuta dagoelako."
+      }
+    },
+    "operations": {
+      "add": {
+        "annotation": {
+          "point": "Puntua gehitu da.",
+          "vertex": "Nodoa gehitu zaio bideari.",
+          "relation": "Erlazioa gehitu da.",
+          "note": "Ohar bat gehitu da."
+        }
+      },
+      "start": {
+        "annotation": {
+          "line": "Lerroa hasi da.",
+          "area": "Lekua hasi da."
+        }
+      },
+      "continue": {
+        "title": "Jarraitu",
+        "description": "Lerro hau jarraitu.",
+        "not_eligible": "Ezin da lerrorik jarraitu hemen.",
+        "multiple": "Hainbat lerro jarrai daitezke hemen. Gehitu lerroetako bat hautapenera jarraitzeko.",
+        "annotation": {
+          "line": "Lerroa jarraitu da.",
+          "area": "Lekua jarraitu da."
+        }
+      },
+      "cancel_draw": {
+        "annotation": "Marrazketa bertan behera utzi da."
+      },
+      "change_role": {
+        "annotation": {
+          "one": "Erlazioko osagai baten rola aldatuta.",
+          "other": "Erlazioko {n} osagairen rola aldatuta."
+        }
+      },
+      "change_tags": {
+        "annotation": "Etiketak aldatu dira."
+      },
+      "copy": {
+        "title": "Kopiatu",
+        "annotation": {
+          "one": "Elementu bat kopiatuta",
+          "other": "{n} elementu kopiatuta."
+        }
+      },
+      "paste": {
+        "title": "Itsatsi",
+        "description": {
+          "one": "Gehitu bikoiztutako [feature] bat hemen.",
+          "other": "Gehitu bikoiztutako [n] ezaugarri hemen."
+        },
+        "annotation": {
+          "one": "Ezaugarri bat itsatsita.",
+          "other": "[n] ezaugarri itsatsita."
+        },
+        "nothing_copied": "Ez da elementurik kopiatu."
+      },
+      "circularize": {
+        "title": "Biribildu",
+        "annotation": {
+          "feature": {
+            "one": "Ezaugarri bat biribildu da.",
+            "other": "{n} ezaugarri biribildu dira."
+          }
+        }
+      },
+      "orthogonalize": {
+        "title": "Laukia",
+        "annotation": {
+          "corner": {
+            "one": "Ertz bat karratu bihurtu da.",
+            "other": "{n} ertz karratu bihurtu dira."
+          }
+        }
+      },
+      "straighten": {
+        "title": "Zuzendu",
+        "description": {
+          "points": "Puntu hauek zuzendu.",
+          "line": "Lerro hau zuzendu.",
+          "lines": "Lerro hauek zuzendu."
+        },
+        "annotation": {
+          "point": {
+            "one": "Puntu bat zuzenean jarri dugu.",
+            "other": "[n] puntu zuzenean jarri ditugu."
+          },
+          "line": {
+            "one": "Lerro bat zuzendu dugu.",
+            "other": "[n] lerro zuzendu ditugu."
+          }
+        }
+      },
+      "delete": {
+        "title": "Ezabatu",
+        "annotation": {
+          "point": "Puntu bat ezabatu da.",
+          "line": "Lerro bat ezabatu da.",
+          "area": "Eremu bat ezabatu da.",
+          "relation": "Erlazio bat ezabatu da."
+        }
+      },
+      "downgrade": {
+        "description": {
+          "generic": "Etiketak ezabatu"
+        }
+      },
+      "disconnect": {
+        "title": "Deskonektatu",
+        "not_connected": "Hemen ez dago lerro/area nahikorik deskonektatzeko. ",
+        "connected_to_hidden": "Hau ezin da deskonektatu ezkutuko funtzio bati lotuta dagoelako. ",
+        "relation": "Hau ezin da deskonektatu erlazio bereko kideak lotzen dituelako. "
+      },
+      "merge": {
+        "title": "Bat egin",
+        "description": "Funtzio hauek bat egin.",
+        "not_eligible": "Funtzio hauek ezin dira bat egin. ",
+        "not_adjacent": "Funtzio hauek ezin dira bat egin haien amaiera-puntuak ez daudelako konektatuta. ",
+        "relation": "Funtzio hauek ezin dira bat egin haien arteko erlazio-rol gatazkatsuak dituztelako. ",
+        "incomplete_relation": "Funtzio hauek ezin dira bat egin haietariko bat gutxienez ez delako guztiz deskargatu. "
+      },
+      "move": {
+        "title": "Mugitu",
+        "annotation": {
+          "point": "Puntu bat mugitu da.",
+          "line": "Lerro bat mugitu da.",
+          "area": "Area bat mugitu da."
+        }
+      },
+      "rotate": {
+        "title": "Biratu"
+      },
+      "split": {
+        "title": "Zatitu",
+        "description": {
+          "line": {
+            "single": {
+              "single_node": "Zatitu lerro hau bitan puntu honetan.",
+              "multiple_node": "Zatitu lerro hau puntu hauetan."
+            }
+          }
+        }
+      }
+    },
+    "restriction": {
+      "controls": {
+        "distance": "Distantzia"
+      }
+    },
+    "undo": {
+      "title": "Desegin"
+    },
+    "redo": {
+      "title": "Berregin"
+    },
+    "translate": {
+      "localized_translation_language": "Hizkuntza aukeratu",
+      "localized_translation_name": "Izena"
+    },
+    "login": "Sartu",
+    "logout": "Atera",
+    "loading_auth": "OpenStreetMap-era konektatzen",
+    "help_translate": "Itzultzen lagundu",
+    "commit": {
+      "save": "Igo",
+      "cancel": "Ezeztatu",
+      "changes": "Aldaketak",
+      "modified": "Editatuta",
+      "deleted": "Ezabatua",
+      "created": "Sortua"
+    },
+    "info_panels": {
+      "background": {
+        "description": "Deskripzioa"
+      },
+      "history": {
+        "version": "Bertsioa",
+        "note_comments": "Iruzkinak"
+      },
+      "measurement": {
+        "geometry": "Geometria",
+        "distance": "Distantzia",
+        "area": "Lekua"
+      }
+    },
+    "geometry": {
+      "relation": "erlazioa",
+      "note": "oharra"
+    },
+    "geocoder": {
+      "search": "Mundu osoan bilatu..."
+    },
+    "inspector": {
+      "view_on_osm": "Ikusi openstreetmap.org-en",
+      "feature_type": "Elementu mota",
+      "fields": "Eremuak",
+      "tags": "Etiketak",
+      "relations": "Erlazioak",
+      "role": "Rol-a",
+      "choose": "Aukeratu elementu mota",
+      "results": {
+        "one": "Emaitza {n}, {search} bilatuta",
+        "other": "{n} emaitza {search} bilatuta"
+      },
+      "multiple_types": "Hainbat mota",
+      "back_tooltip": "Aldatu elementu mota",
+      "type": "Mota",
+      "remove": "Ezabatu",
+      "search": "Bilatu",
+      "unknown": "Ezezaguna",
+      "feature_list": "Bilatu elementuak",
+      "check": {
+        "yes": "Bai",
+        "no": "Ez"
+      },
+      "add": "Gehitu",
+      "relation": "Erlazioa",
+      "add_fields": "Gehitu eremua:"
+    },
+    "map_data": {
+      "layers": {
+        "maproulette": {
+          "cancel": "Ezeztatu"
+        }
+      }
+    },
+    "photo_overlays": {
+      "photo_type": {
+        "flat": {
+          "tooltip": "Argazki tradizionalak"
+        },
+        "panoramic": {
+          "title": "Argazki panoramikoak",
+          "tooltip": "360° argazkiak"
+        }
+      }
+    },
+    "filters": {
+      "points": {
+        "description": "Puntuak",
+        "tooltip": "Puntu interesgarriak"
+      },
+      "buildings": {
+        "description": "Eraikuntzak"
+      }
+    },
+    "save": {
+      "title": "Gorde",
+      "conflict": {
+        "keep_local": "Nerea mantendu"
+      }
+    },
+    "success": {
+      "just_edited": "OpenStreetMap editatu berri duzu!",
+      "thank_you": "Eskerrik asko mapa hobetzeagatik.",
+      "like_osm": "OpenStreetMap gustoko duzu? Kontaktatu besteekin:",
+      "more": "Gehiago",
+      "tell_us": "Kontaiguzu!"
+    },
+    "confirm": {
+      "okay": "ADOS",
+      "cancel": "Ezeztatu"
+    },
+    "splash": {
+      "start": "Editatu orain"
+    },
+    "rapid_inspector": {
+      "tags": "Etiketak"
+    },
+    "rapid_menu": {
+      "remove": "Ezabatu",
+      "category": {
+        "roads": "errepideak"
+      }
+    },
+    "tag_reference": {
+      "description": "Deskripzioa"
+    },
+    "QA": {
+      "osmose": {
+        "title": "Osmose arazoa"
+      },
+      "keepRight": {
+        "detail_description": "Deskripzioa",
+        "comment": "Iruzkina",
+        "save_comment": "Iruzkina gorde",
+        "error_parts": {
+          "this_way": "bide hau",
+          "this_crossing": "bidegurutze hau",
+          "this_bridge": "zubi hau",
+          "this_tunnel": "tunel hau",
+          "railway": "trenbide",
+          "waterway": "ubide",
+          "restaurant": "jatetxea",
+          "school": "eskola",
+          "university": "unibertsitatea",
+          "library": "liburutegia",
+          "cinema": "zinema",
+          "cafe": "kafetegia"
+        },
+        "errorTypes": {
+          "<30>": {
+            "title": "Itxi gabeko area"
+          },
+          "<60>": {
+            "title": "Etiketa zaharkitua"
+          },
+          "<310>": {
+            "title": "Biribilgune arazoa"
+          },
+          "<312>": {
+            "title": "Biribilgune norantza okerra"
+          },
+          "<400>": {
+            "title": "Geometria arazoa"
+          },
+          "<402>": {
+            "title": "Ezinezko angelua"
+          }
+        }
+      }
+    },
+    "note": {
+      "note": "Oharra",
+      "title": "Oharra editatu",
+      "anonymous": "anonimoa",
+      "commentTitle": "Iruzkinak",
+      "close": "Oharra itxi",
+      "comment": "Iruzkina"
+    },
+    "help": {
+      "title": "Laguntza",
+      "help": {
+        "title": "Laguntza",
+        "before_start_h": "Hasi aurretik"
+      },
+      "overview": {
+        "features_h": "Mapako elementuak"
+      },
+      "editing": {
+        "select_h": "Aukeratu",
+        "save_h": "Gorde",
+        "upload_h": "Igo"
+      },
+      "feature_editor": {
+        "type_h": "Elementu mota",
+        "fields_h": "Eremuak",
+        "tags_h": "Etiketak"
+      },
+      "points": {
+        "title": "Puntuak"
+      },
+      "lines": {
+        "title": "Eremuak"
+      },
+      "areas": {
+        "title": "Eremuak"
+      },
+      "relations": {
+        "title": "Erlazioak"
+      },
+      "notes": {
+        "title": "Oharrak",
+        "add_note_h": "Oharrak gehitu",
+        "save_note_h": "Oharrak gorde"
+      },
+      "qa": {
+        "tools_h": "Tresnak"
+      },
+      "field": {
+        "restrictions": {
+          "inspecting": {
+            "title": "Arakatzen"
+          },
+          "modifying": {
+            "title": "Aldatu"
+          }
+        }
+      }
+    },
+    "issues": {
+      "title": "Arazoak",
+      "rules": "Arauak",
+      "resolved_tooltip": "Zure edizioekin konpondutako arazoak",
+      "options": {
+        "what": {
+          "all": "Dena"
+        },
+        "where": {
+          "title": "Non:"
+        }
+      },
+      "fix_all": {
+        "title": "Dena konpondu"
+      },
+      "help_request": {
+        "title": "Laguntza eskaerak"
+      },
+      "outdated_tags": {
+        "title": "Etiketa zaharkituak"
+      },
+      "private_data": {
+        "title": "Informazio pribatua"
+      },
+      "fix": {
+        "add_a_bridge": {
+          "title": "Zubi bat gehitu"
+        },
+        "add_a_tunnel": {
+          "title": "Tunel bat gehitu",
+          "annotation": "Tunel bat gehitu."
+        }
+      }
+    },
+    "intro": {
+      "done": "eginda",
+      "ok": "ADOS",
+      "welcome": {
+        "title": "Ongi etorri"
+      },
+      "points": {
+        "title": "Puntuak",
+        "choose_cafe": "**Aukeratu {preset}-a zerrendatik.**"
+      },
+      "areas": {
+        "title": "Eremuak",
+        "choose_playground": "**Aukeratu {preset}-a zerrendatik.**"
+      },
+      "lines": {
+        "title": "Lerroak"
+      },
+      "buildings": {
+        "title": "Eraikuntzak",
+        "choose_tank": "**Aukeratu {preset}-a zerrendatik.**"
+      },
+      "startediting": {
+        "title": "Editatzen hasi",
+        "save": "Ez ahaztu aldizka zure aldaketak gordetzeaz!",
+        "start": "Mapeatzen hasi!"
+      }
+    },
+    "shortcuts": {
+      "key": {
+        "delete": "Ezabatu"
+      },
+      "editing": "Editatu",
+      "drawing": "Marraztu",
+      "commands": "Aginduak",
+      "help": "Laguntza",
+      "display_options": "Bistaratzeko aukerak",
+      "info": "Informazioa",
+      "command": {
+        "copy": {
+          "label": "Aukeratutako ezaugarriak kopiatu"
+        },
+        "save": {
+          "label": "Aldaketak gorde"
+        },
+        "move": {
+          "label": "Aukeratutako ezaugarriak mugitu"
+        },
+        "straighten": {
+          "label": "Puntu lerro bat zuzendu"
+        },
+        "circularize": {
+          "label": "Lerro itxia ala area biribildu"
+        },
+        "delete": {
+          "label": "Aukeratutako ezaugarriak ezabatu"
+        }
+      }
+    },
+    "wikidata": {
+      "identifier": "Identifikatzailea",
+      "label": "Etiketa",
+      "description": "Deskripzioa"
+    },
+    "languageNames": {
+      "aa": "afarera",
+      "ab": "abkhaziera",
+      "ace": "acehnera",
+      "ach": "acholiera",
+      "ada": "adangmera",
+      "ady": "adigera",
+      "af": "afrikaansa",
+      "agq": "aghemera",
+      "ain": "ainuera",
+      "ak": "akanera",
+      "ale": "aleutera",
+      "alt": "hegoaldeko altaiera",
+      "am": "amharera",
+      "an": "aragoiera",
+      "ann": "oboloera",
+      "anp": "angikera",
+      "ar": "arabiera",
+      "ar-001": "arabiera moderno estandarra",
+      "arn": "mapudunguna",
+      "arp": "arapahoera",
+      "ars": "Najdeko arabiera",
+      "as": "assamera",
+      "asa": "asua",
+      "ast": "asturiera",
+      "atj": "atikamekwera",
+      "av": "avarera",
+      "awa": "awadhiera",
+      "ay": "aimara",
+      "az": "azerbaijanera",
+      "ba": "baxkirera",
+      "ban": "baliera",
+      "bas": "basaa",
+      "be": "bielorrusiera",
+      "bem": "bembera",
+      "bez": "benera",
+      "bg": "bulgariera",
+      "bgc": "haryanera",
+      "bho": "bhojpurera",
+      "bi": "bislama",
+      "bin": "edoera",
+      "bla": "siksikera",
+      "blo": "aniiera",
+      "bm": "bambarera",
+      "bn": "bengalera",
+      "bo": "tibetera",
+      "br": "bretoiera",
+      "brx": "bodoera",
+      "bs": "bosniera",
+      "bug": "buginera",
+      "byn": "bilenera",
+      "ca": "katalana",
+      "cay": "cayugera",
+      "ccp": "chakmera",
+      "ce": "txetxenera",
+      "ceb": "cebuanoera",
+      "cgg": "chiga",
+      "ch": "txamorroera",
+      "chk": "chuukera",
+      "chm": "mariera",
+      "cho": "txoktawera",
+      "chp": "chipewyera",
+      "chr": "txerokiera",
+      "chy": "txeieneera",
+      "ckb": "erdialdeko kurduera",
+      "clc": "chilcotinera",
+      "co": "korsikera",
+      "crg": "metisera",
+      "crj": "hego-ekialdeko creera",
+      "crk": "lautadetako creera",
+      "crl": "ipar-ekialdeko creera",
+      "crm": "Mooseko creera",
+      "crr": "Carolinako algonkinera",
+      "crs": "Seychelleetako kreolera",
+      "cs": "txekiera",
+      "csw": "zingiretako creera",
+      "cu": "elizako eslaviera",
+      "cv": "txuvaxera",
+      "cy": "galesa",
+      "da": "daniera",
+      "dak": "dakotera",
+      "dar": "darginera",
+      "dav": "taitera",
+      "de": "alemana",
+      "de-AT": "Austriako alemana",
+      "de-CH": "Suitzako aleman garaia",
+      "dgr": "dogribera",
+      "dje": "zarma",
+      "doi": "dogria",
+      "dsb": "behe-sorabiera",
+      "dua": "dualera",
+      "dv": "dhivehia",
+      "dyo": "fonyi jolera",
+      "dz": "dzongkha",
+      "dzg": "dazaera",
+      "ebu": "embuera",
+      "ee": "eweera",
+      "efi": "efikera",
+      "eka": "ekajuka",
+      "el": "greziera",
+      "en": "ingelesa",
+      "en-AU": "Australiako ingelesa",
+      "en-CA": "Kanadako ingelesa",
+      "en-GB": "Britainia Handiko ingelesa",
+      "en-US": "ingeles amerikarra",
+      "eo": "esperantoa",
+      "es": "gaztelania",
+      "es-419": "Latinoamerikako gaztelania",
+      "es-ES": "Europako gaztelania",
+      "es-MX": "Mexikoko gaztelania",
+      "et": "estoniera",
+      "eu": "euskara",
+      "ewo": "ewondoa",
+      "fa": "persiera",
+      "fa-AF": "daria",
+      "ff": "fula",
+      "fi": "finlandiera",
+      "fil": "filipinera",
+      "fj": "fijiera",
+      "fo": "faroera",
+      "fon": "fonera",
+      "fr": "frantsesa",
+      "fr-CA": "Kanadako frantsesa",
+      "fr-CH": "Suitzako frantsesa",
+      "frc": "cajun frantsesa",
+      "frr": "iparraldeko frisiera",
+      "fur": "friulera",
+      "fy": "mendebaldeko frisiera",
+      "ga": "irlandera",
+      "gaa": "gaera",
+      "gag": "gagauzera",
+      "gd": "Eskoziako gaelikoa",
+      "gez": "ge’eza",
+      "gil": "kiribatiera",
+      "gl": "galiziera",
+      "gn": "guaraniera",
+      "gor": "gorontaloera",
+      "gsw": "Suitzako alemana",
+      "gu": "gujaratera",
+      "guz": "gusiiera",
+      "gv": "manxera",
+      "gwi": "gwich’inera",
+      "ha": "hausa",
+      "hai": "haidera",
+      "haw": "hawaiiera",
+      "hax": "hegoaldeko haidera",
+      "he": "hebreera",
+      "hi": "hindia",
+      "hi-Latn": "hindia (latindarra)",
+      "hil": "hiligaynonera",
+      "hmn": "hmonga",
+      "hr": "kroaziera",
+      "hsb": "goi-sorabiera",
+      "ht": "Haitiko kreolera",
+      "hu": "hungariera",
+      "hup": "hupera",
+      "hur": "halkomelema",
+      "hy": "armeniera",
+      "hz": "hereroera",
+      "ia": "interlingua",
+      "iba": "ibanera",
+      "ibb": "ibibioera",
+      "id": "indonesiera",
+      "ie": "interlinguea",
+      "ig": "igboera",
+      "ii": "Sichuango yiera",
+      "ikt": "Kanada mendebaldeko inuitera",
+      "ilo": "ilocanoera",
+      "inh": "ingushera",
+      "io": "idoa",
+      "is": "islandiera",
+      "it": "italiera",
+      "iu": "inuitera",
+      "ja": "japoniera",
+      "jbo": "lojbana",
+      "jgo": "ngomba",
+      "jmc": "machamea",
+      "jv": "javera",
+      "ka": "georgiera",
+      "kab": "kabiliera",
+      "kac": "jingphoera",
+      "kaj": "jjua",
+      "kam": "kambera",
+      "kbd": "kabardiera",
+      "kcg": "tyapa",
+      "kde": "makondeera",
+      "kea": "Cabo Verdeko kreolera",
+      "kfo": "koroa",
+      "kg": "kikongoa",
+      "kgp": "kaingangera",
+      "kha": "khasiera",
+      "khq": "koyra chiinia",
+      "ki": "kikuyuera",
+      "kj": "kuanyama",
+      "kk": "kazakhera",
+      "kkj": "kakoa",
+      "kl": "groenlandiera",
+      "kln": "kalenjinera",
+      "km": "khemerera",
+      "kmb": "kimbundua",
+      "kn": "kannada",
+      "ko": "koreera",
+      "koi": "komi-permyakera",
+      "kok": "konkanera",
+      "kpe": "kpelleera",
+      "kr": "kanuriera",
+      "krc": "karachayera-balkarera",
+      "krl": "kareliera",
+      "kru": "kurukhera",
+      "ks": "kaxmirera",
+      "ksb": "shambalera",
+      "ksf": "bafiera",
+      "ksh": "koloniera",
+      "ku": "kurduera",
+      "kum": "kumykera",
+      "kv": "komiera",
+      "kw": "kornubiera",
+      "kwk": "kwakwala",
+      "kxv": "kuvia",
+      "ky": "kirgizera",
+      "la": "latina",
+      "lad": "ladinoa",
+      "lag": "langiera",
+      "lb": "luxenburgera",
+      "lez": "lezginera",
+      "lg": "luganda",
+      "li": "limburgera",
+      "lij": "liguriera",
+      "lil": "lillooetera",
+      "lkt": "lakotera",
+      "lmo": "lombardiera",
+      "ln": "lingala",
+      "lo": "laosera",
+      "lou": "Louisianako kreolera",
+      "loz": "loziera",
+      "lrc": "iparraldeko lurera",
+      "lsm": "saamia",
+      "lt": "lituaniera",
+      "lu": "Katangako lubera",
+      "lua": "Kasai mendebaldeko lubera",
+      "lun": "lundera",
+      "luo": "luoera",
+      "lus": "mizoera",
+      "luy": "luhyera",
+      "lv": "letoniera",
+      "mad": "madurera",
+      "mag": "magadhera",
+      "mai": "maithilia",
+      "mak": "makassarera",
+      "mas": "masaiera",
+      "mdf": "mokxera",
+      "men": "mendeera",
+      "mer": "meruera",
+      "mfe": "Mauritaniako kreolera",
+      "mg": "malgaxea",
+      "mgh": "makhuwa-meettoera",
+      "mgo": "metaʼera",
+      "mh": "marshallera",
+      "mi": "maoriera",
+      "mic": "mikmakera",
+      "min": "minangkabauera",
+      "mk": "mazedoniera",
+      "ml": "malabarera",
+      "mn": "mongoliera",
+      "mni": "manipurera",
+      "moe": "innuera",
+      "moh": "mohawkera",
+      "mos": "mossiera",
+      "mr": "marathera",
+      "ms": "malaysiera",
+      "mt": "maltera",
+      "mua": "mudangera",
+      "mus": "muscogeera",
+      "mwl": "mirandesa",
+      "my": "birmaniera",
+      "myv": "erziera",
+      "mzn": "mazandarandera",
+      "na": "nauruera",
+      "nap": "napoliera",
+      "naq": "namera",
+      "nb": "bokmål (norvegiera)",
+      "nd": "iparraldeko ndebeleera",
+      "nds": "behe-alemana",
+      "nds-NL": "behe-saxoiera",
+      "ne": "nepalera",
+      "new": "newarera",
+      "ng": "ndonga",
+      "nia": "niasera",
+      "niu": "niueera",
+      "nl": "nederlandera",
+      "nl-BE": "flandriera",
+      "nmg": "kwasiera",
+      "nn": "nynorsk (norvegiera)",
+      "nnh": "ngiemboonera",
+      "no": "norvegiera",
+      "nog": "nogaiera",
+      "nqo": "n’koera",
+      "nr": "hegoaldeko ndebeleera",
+      "nso": "pediera",
+      "nus": "nuerera",
+      "nv": "navajoera",
+      "ny": "chewera",
+      "nyn": "nkoreera",
+      "oc": "okzitaniera",
+      "ojb": "ipar-mendebaldeko ojibwa",
+      "ojc": "erdialdeko ojibwa",
+      "ojs": "oji-creera",
+      "ojw": "mendebaldeko ojibwa",
+      "oka": "okanaganera",
+      "om": "oromoera",
+      "or": "oriya",
+      "os": "osetiera",
+      "pa": "punjabera",
+      "pag": "pangasinanera",
+      "pam": "pampangera",
+      "pap": "papiamentoa",
+      "pau": "palauera",
+      "pcm": "Nigeriako pidgina",
+      "pis": "pijina",
+      "pl": "poloniera",
+      "pqm": "maliseet-passamaquoddyera",
+      "prg": "prusiera",
+      "ps": "paxtunera",
+      "pt": "portugesa",
+      "pt-BR": "Brasilgo portugesa",
+      "pt-PT": "Europako portugesa",
+      "qu": "kitxua",
+      "quc": "quicheera",
+      "raj": "rajastanera",
+      "rap": "rapanuia",
+      "rar": "rarotongera",
+      "rhg": "rohingyera",
+      "rm": "erretorromaniera",
+      "rn": "rundiera",
+      "ro": "errumaniera",
+      "ro-MD": "moldaviera",
+      "rof": "romboa",
+      "ru": "errusiera",
+      "rup": "aromaniera",
+      "rw": "kinyaruanda",
+      "rwk": "rwera",
+      "sa": "sanskritoa",
+      "sad": "sandaweera",
+      "sah": "sakhera",
+      "saq": "samburuera",
+      "sat": "santalera",
+      "sba": "ngambayera",
+      "sbp": "sanguera",
+      "sc": "sardiniera",
+      "scn": "siziliera",
+      "sco": "eskoziera",
+      "sd": "sindhia",
+      "se": "iparraldeko samiera",
+      "seh": "senera",
+      "ses": "koyraboro sennia",
+      "sg": "sangoa",
+      "sh": "serbokroaziera",
+      "shi": "tachelhita",
+      "shn": "shanera",
+      "si": "sinhala",
+      "sk": "eslovakiera",
+      "sl": "esloveniera",
+      "slh": "lushootseeda",
+      "sm": "samoera",
+      "sma": "hegoaldeko samiera",
+      "smj": "Luleko samiera",
+      "smn": "Inariko samiera",
+      "sms": "skolten samiera",
+      "sn": "shonera",
+      "snk": "soninkeera",
+      "so": "somaliera",
+      "sq": "albaniera",
+      "sr": "serbiera",
+      "srn": "sranan tongoa",
+      "ss": "swatiera",
+      "ssy": "sahoa",
+      "st": "hegoaldeko sothoera",
+      "str": "itsasarteetako salishera",
+      "su": "sundanera",
+      "suk": "sukumera",
+      "sv": "suediera",
+      "sw": "swahilia",
+      "sw-CD": "Kongoko swahilia",
+      "swb": "komoreera",
+      "syr": "asiriera",
+      "szl": "silesiera",
+      "ta": "tamilera",
+      "tce": "hegoaldeko tutchoneera",
+      "te": "telugua",
+      "tem": "temneera",
+      "teo": "tesoera",
+      "tet": "tetuma",
+      "tg": "tajikera",
+      "tgx": "tagishera",
+      "th": "thailandiera",
+      "tht": "tahltanera",
+      "ti": "tigrinyera",
+      "tig": "tigreera",
+      "tk": "turkmenera",
+      "tl": "tagaloa",
+      "tlh": "klingonera",
+      "tli": "tlingitera",
+      "tn": "tswanera",
+      "to": "tongera",
+      "tok": "toki pona",
+      "tpi": "tok pisin",
+      "tr": "turkiera",
+      "trv": "tarokoera",
+      "ts": "tsongera",
+      "tt": "tatarera",
+      "ttm": "iparraldeko tutchoneera",
+      "tum": "tumbukera",
+      "tvl": "tuvaluera",
+      "tw": "twia",
+      "twq": "tasawaqa",
+      "ty": "tahitiera",
+      "tyv": "tuvera",
+      "tzm": "Erdialdeko Atlaseko amazigera",
+      "udm": "udmurtera",
+      "ug": "uigurrera",
+      "uk": "ukrainera",
+      "umb": "umbundua",
+      "ur": "urdua",
+      "uz": "uzbekera",
+      "vai": "vaiera",
+      "ve": "vendera",
+      "vec": "veneziera",
+      "vi": "vietnamera",
+      "vmw": "makhuwera",
+      "vo": "volapük",
+      "vun": "vunjoa",
+      "wa": "valoniera",
+      "wae": "walserera",
+      "wal": "wolayttera",
+      "war": "warayera",
+      "wo": "wolofera",
+      "wuu": "wu txinera",
+      "xal": "kalmykera",
+      "xh": "xhosera",
+      "xnr": "kangrera",
+      "xog": "sogera",
+      "yav": "yangbenera",
+      "ybb": "yemba",
+      "yi": "yiddisha",
+      "yo": "jorubera",
+      "yrl": "nheengatua",
+      "yue": "Kantongo txinera",
+      "za": "zhuangera",
+      "zgh": "amazigera estandarra",
+      "zh": "mandarina",
+      "zh-Hans": "mandarin sinplifikatua",
+      "zh-Hant": "mandarin tradizionala",
+      "zu": "zuluera",
+      "zun": "zuñiera",
+      "zza": "zazera"
+    },
+    "scriptNames": {
+      "Adlm": "adlama",
+      "Aghb": "Kaukasoko albaniera",
+      "Ahom": "ahomera",
+      "Arab": "arabiarra",
+      "Aran": "nastaliqa",
+      "Armi": "aramiera inperiarra",
+      "Armn": "armeniarra",
+      "Avst": "avestera",
+      "Bali": "baliera",
+      "Bamu": "bamum",
+      "Bass": "bassa vah",
+      "Batk": "batak",
+      "Beng": "bengalarra",
+      "Bhks": "bhaiksuki",
+      "Bopo": "bopomofoa",
+      "Brah": "brahmiera",
+      "Brai": "braillea",
+      "Bugi": "buginera",
+      "Buhd": "buhid",
+      "Cakm": "txakma",
+      "Cans": "Kanadako aborigenen silabario bateratua",
+      "Cari": "kariera",
+      "Cham": "txamera",
+      "Cher": "txerokiarra",
+      "Chrs": "korasmiera",
+      "Copt": "koptikera",
+      "Cpmn": "zipro-minoera",
+      "Cprt": "ziprera",
+      "Cyrl": "zirilikoa",
+      "Deva": "devanagaria",
+      "Diak": "dives akuru",
+      "Dogr": "dogrera",
+      "Dsrt": "deseret",
+      "Dupl": "duployiar takigrafia",
+      "Egyp": "egiptoar hieroglifikoak",
+      "Elba": "elbasanera",
+      "Elym": "elimaikera",
+      "Ethi": "etiopiarra",
+      "Geor": "georgiarra",
+      "Glag": "glagolitikera",
+      "Gong": "gunjala gondi",
+      "Gonm": "masaram gondiera",
+      "Goth": "gotikoa",
+      "Gran": "grantha",
+      "Grek": "grekoa",
+      "Gujr": "gujaratarra",
+      "Guru": "gurmukhia",
+      "Hanb": "idazkera txinatarra bopomofoarekin",
+      "Hang": "hangula",
+      "Hani": "idazkera txinatarra",
+      "Hano": "hanunuera",
+      "Hans": "idazkera txinatar sinplifikatua",
+      "Hant": "idazkera txinatar tradizionala",
+      "Hatr": "hatreoera",
+      "Hebr": "hebrearra",
+      "Hira": "hiragana",
+      "Hluw": "hieroglifiko anatoliarrak",
+      "Hmng": "pahawh hmongera",
+      "Hmnp": "nyiakeng puachue hmong",
+      "Hrkt": "silabario japoniarrak",
+      "Hung": "hungariera zaharra",
+      "Ital": "italiera zaharra",
+      "Jamo": "jamoa",
+      "Java": "javaniera",
+      "Jpan": "japoniarra",
+      "Kali": "kayah li",
+      "Kana": "katakana",
+      "Kawi": "kawi",
+      "Khar": "kharoshthi",
+      "Khmr": "khmertarra",
+      "Khoj": "khojkiera",
+      "Kits": "khitanerako script txikiak",
+      "Knda": "kanadarra",
+      "Kore": "korearra",
+      "Kthi": "kaithiera",
+      "Lana": "lannera",
+      "Laoo": "laostarra",
+      "Latn": "latinoa",
+      "Lepc": "leptxa",
+      "Limb": "linbuera",
+      "Lina": "A linearra",
+      "Linb": "B linearra",
+      "Lisu": "fraserera",
+      "Lyci": "liziera",
+      "Lydi": "lidiera",
+      "Mahj": "mahajaniera",
+      "Maka": "makasarrera",
+      "Mand": "mandaera",
+      "Mani": "manikeoa",
+      "Marc": "martxenera",
+      "Medf": "medefaidrinera",
+      "Mend": "mende",
+      "Merc": "meroitiar etzana",
+      "Mero": "meroitirra",
+      "Mlym": "malabartarra",
+      "Modi": "modiera",
+      "Mong": "mongoliarra",
+      "Mroo": "mroera",
+      "Mtei": "meiteiarra",
+      "Mult": "multaniera",
+      "Mymr": "birmaniarra",
+      "Nagm": "nag mundariera",
+      "Nand": "nandinagariera",
+      "Narb": "iparraldeko arabiera zaharra",
+      "Nbat": "nabatera",
+      "Newa": "newaera",
+      "Nkoo": "n’koa",
+      "Nshu": "nushuera",
+      "Ogam": "oghamera",
+      "Olck": "ol chikia",
+      "Orkh": "orkhonera",
+      "Orya": "oriyarra",
+      "Osge": "osagera",
+      "Osma": "osmaiera",
+      "Ougr": "uigurrera zaharra",
+      "Palm": "palmiera",
+      "Pauc": "pau cin hau",
+      "Perm": "permiera zaharra",
+      "Phag": "phags-pa",
+      "Phli": "pahlavi inskripzioak",
+      "Phlp": "Pahlavi salmo-liburua",
+      "Phnx": "feniziera",
+      "Plrd": "polardera fonetikoa",
+      "Prti": "Partiera inskripzioak",
+      "Qaag": "zauagiera",
+      "Rohg": "hanifia",
+      "Runr": "errunikoa",
+      "Samr": "samariera",
+      "Sarb": "hegoaldeko arabiera zaharra",
+      "Saur": "saurashtra",
+      "Sgnw": "zeinu-idazketa",
+      "Shaw": "shaviera",
+      "Shrd": "sharada",
+      "Sidd": "siddham",
+      "Sind": "khudawadi",
+      "Sinh": "sinhala",
+      "Sogd": "sogdiera",
+      "Sogo": "sogdiera zaharra",
+      "Sora": "sora sompeng",
+      "Soyo": "soyomboera",
+      "Sund": "sudandarra",
+      "Sylo": "syloti nagriera",
+      "Syrc": "asiriarra",
+      "Tagb": "tagbanwa",
+      "Takr": "takriera",
+      "Tale": "tai le",
+      "Talu": "tai lue berria",
+      "Taml": "tamildarra",
+      "Tang": "tangutera",
+      "Tavt": "tai viet",
+      "Telu": "teluguarra",
+      "Tfng": "tifinagha",
+      "Tglg": "tagaloa",
+      "Thaa": "thaana",
+      "Thai": "thailandiarra",
+      "Tibt": "tibetarra",
+      "Tirh": "tirhuta",
+      "Tnsa": "tangsa",
+      "Toto": "totoera",
+      "Ugar": "ugaritiera",
+      "Vaii": "vaiarra",
+      "Vith": "vithkuqi",
+      "Wara": "varang kshiti",
+      "Wcho": "wanchoera",
+      "Xpeo": "pertsiera zaharra",
+      "Xsux": "sumero-akadiera kuneiformea",
+      "Yezi": "yezidiera",
+      "Yiii": "yiarra",
+      "Zanb": "zanabazar koadroa",
+      "Zinh": "heredatua",
+      "Zmth": "matematikako notazioa",
+      "Zsye": "emojiak",
+      "Zsym": "ikurrak",
+      "Zxxx": "idatzi gabea",
+      "Zyyy": "ohikoa",
+      "Zzzz": "idazkera ezezaguna"
+    }
+  }
+}

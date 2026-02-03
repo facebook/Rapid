@@ -1,0 +1,157 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.275Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.ar-AA.json",
+    "hash": "38b74f1b90a04181ebf07dce8d00c2eb"
+  },
+  "ar-AA": {
+    "modes": {
+      "browse": {
+        "description": ".تحرك عموديا و أفقيا أو كبر الخريطة"
+      }
+    },
+    "operations": {
+      "add": {
+        "annotation": {
+          "point": ".أضاف نقطة",
+          "vertex": ".أظاف عقدة إلى الطريق"
+        }
+      },
+      "start": {
+        "annotation": {
+          "line": ".بدأ خط",
+          "area": ".بدأ المساحة"
+        }
+      },
+      "continue": {
+        "annotation": {
+          "line": ".مواصلة خط",
+          "area": ".مواصلة مساحة"
+        }
+      },
+      "cancel_draw": {
+        "annotation": ".إلغاء الرسم"
+      },
+      "change_tags": {
+        "annotation": ".العلامات المتغيرة"
+      },
+      "orthogonalize": {
+        "title": "مربع"
+      },
+      "delete": {
+        "annotation": {
+          "point": ".حذف نقطة",
+          "vertex": ".حذف عقدة من الطريق",
+          "line": ".حذف خط",
+          "area": ".حذف مساحة",
+          "relation": ".حذف علاقة"
+        }
+      },
+      "disconnect": {
+        "title": ".غير متصل"
+      },
+      "move": {
+        "title": "نقل",
+        "annotation": {
+          "point": ".نقل نقطة",
+          "vertex": ".نقل عقدة في طريق",
+          "line": ".نقل خط",
+          "area": ".نقل مساحة"
+        }
+      },
+      "rotate": {
+        "annotation": {
+          "line": ".استدارة خط",
+          "area": ".استدارة مساحة"
+        }
+      },
+      "reverse": {
+        "title": "عكس"
+      },
+      "split": {
+        "title": "تقسيم"
+      }
+    },
+    "commit": {
+      "upload_explanation": "التغييرات التي قمتم بتحميلها ستكون مرئية على جميع الخرائط التي تستخدم بيانات خريطة الشارع المفتوح.",
+      "save": "الرفع",
+      "modified": "تم التغيير",
+      "deleted": "تم الحذف",
+      "created": "تم الإنشاء"
+    },
+    "contributors": {
+      "list": "{users} تعديلات من قبل"
+    },
+    "info_panels": {
+      "location": {
+        "title": "مكان"
+      },
+      "measurement": {
+        "area": "مساحة",
+        "location": "مكان"
+      }
+    },
+    "geolocate": {
+      "title": "أظهر مكاني"
+    },
+    "inspector": {
+      "view_on_osm": "openstreetmap.org شاهد على",
+      "feature_type": "نوع العنصر/الميزة",
+      "fields": "الحقول",
+      "features": "الميزات",
+      "choose": "حدد نوع الميزة"
+    },
+    "background": {
+      "reset": "أعد للوضع السابق"
+    },
+    "map_data": {
+      "layers": {
+        "maproulette": {
+          "detail_title": "التفاصيل"
+        }
+      }
+    },
+    "preferences": {
+      "title": "التفضيلات"
+    },
+    "save": {
+      "no_changes": ".لا تغييرات للحفظ"
+    },
+    "success": {
+      "help_link_text": "التفاصيل"
+    },
+    "QA": {
+      "keepRight": {
+        "errorTypes": {
+          "<70>": {
+            "description": "{var1} فيه وسم فارغ: \"{var2}\"."
+          }
+        }
+      }
+    },
+    "help": {
+      "overview": {
+        "navigation_h": "التنقل",
+        "nodes_ways": "في خرائط الشارع المفتوحة، قد يُطلق على النقطة في بعض الأحيان مصطلح *عُقدة*، كما قد يطلق على الخطوط والمساحات مصطلح *طُرق*."
+      },
+      "editing": {
+        "save_h": "حفظ"
+      },
+      "qa": {
+        "tools_h": "أدوات"
+      }
+    },
+    "issues": {
+      "title": "مشاكل"
+    },
+    "intro": {
+      "graph": {
+        "city": "ثلاثة الأنهار",
+        "name": {
+          "three-rivers": "ثلاثة الأنهار"
+        }
+      }
+    }
+  }
+}

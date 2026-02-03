@@ -1,0 +1,1710 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.181Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.zh-HK.json",
+    "hash": "fdbfeba94726f99bb8740fa39172663c"
+  },
+  "zh-HK": {
+    "icons": {
+      "download": "下載",
+      "information": "資訊",
+      "undo": "復原",
+      "zoom_to": "縮放至",
+      "view_on": "在 {domain} 上查看",
+      "favorite": "喜愛",
+      "text": "文本",
+      "deselect": "取消選擇"
+    },
+    "toolbar": {
+      "inspect": "檢查",
+      "undo_redo": "撤消/重做",
+      "recent": "最近",
+      "favorites": "收藏夾",
+      "add_feature": "添加特徵"
+    },
+    "title": {
+      "format": {
+        "changes_context": "（{changes}）{base} – {context}"
+      }
+    },
+    "modes": {
+      "add_area": {
+        "title": "範圍"
+      },
+      "add_line": {
+        "title": "綫"
+      },
+      "add_point": {
+        "title": "點"
+      },
+      "add_note": {
+        "description": "發現了問題？讓其他製圖者知道。"
+      },
+      "add_preset": {
+        "title": "添加 {feature}"
+      },
+      "browse": {
+        "title": "瀏覽",
+        "description": "平移和縮放地圖。"
+      },
+      "drag_node": {
+        "connected_to_hidden": "未能編輯這個因為它連接著一個隱藏的特徵。"
+      }
+    },
+    "operations": {
+      "add": {
+        "annotation": {
+          "point": "已新增一點。",
+          "vertex": "已新增節至路上。",
+          "relation": "已新增關係。",
+          "note": "已新增備註。"
+        }
+      },
+      "start": {
+        "annotation": {
+          "line": "開始了畫綫。",
+          "area": "開始了繪畫範圍。"
+        }
+      },
+      "continue": {
+        "title": "伸延",
+        "description": "伸延這條綫。",
+        "not_eligible": "綫不可從這裡伸延。",
+        "annotation": {
+          "line": "綫已伸延。",
+          "area": "範圍已伸延。"
+        }
+      },
+      "cancel_draw": {
+        "annotation": "已取消繪畫。"
+      },
+      "change_tags": {
+        "annotation": "已更改標籤。"
+      },
+      "copy": {
+        "title": "複製",
+        "description": "設定這些特徵以供貼上。",
+        "annotation": "已複製 {n} 個特徵。"
+      },
+      "paste": {
+        "title": "貼上",
+        "description": "在此添加 {n} 個重複特徵。",
+        "annotation": "貼上 {n} 個特徵。"
+      },
+      "circularize": {
+        "title": "圓形化",
+        "annotation": {
+          "feature": "將 {n} 個特徵變為圓形。"
+        }
+      },
+      "orthogonalize": {
+        "title": "方形化",
+        "annotation": {
+          "feature": "將 {n} 個特徵的角落變為方形。"
+        }
+      },
+      "straighten": {
+        "annotation": {
+          "line": "拉直 {n} 條綫。"
+        }
+      },
+      "delete": {
+        "title": "刪除",
+        "annotation": {
+          "point": "已刪除一點。",
+          "vertex": "已刪除路徑上的一個節。",
+          "line": "已刪除一條綫。",
+          "area": "已刪除一個範圍。",
+          "relation": "已刪除一個關係。",
+          "feature": "已刪除 {n} 個特徵。"
+        }
+      },
+      "downgrade": {
+        "description": {
+          "generic": "移除標籤。"
+        },
+        "annotation": {
+          "generic": "已降級 {n} 個特徵。"
+        }
+      },
+      "connect": {
+        "annotation": {
+          "from_vertex": {
+            "to_line": "已連接路徑到一條綫。",
+            "to_area": "已連接路徑到一個範圍。",
+            "to_adjacent_vertex": "已合併鄰近的點成為路徑。",
+            "to_sibling_vertex": "已將路徑連接到它自己。"
+          },
+          "from_point": {
+            "to_point": "已合併一點到另一點。",
+            "to_vertex": "已合併一個點到一條綫上的一點。",
+            "to_line": "已移動一個點到綫。",
+            "to_area": "已移動一個點到範圍。"
+          }
+        },
+        "relation": "這些特徵不能連接因為當中一些角色關係有衝突。",
+        "restriction": "這些特徵不能連接因為它會損害一個\"{relation}\" 關係的構件。"
+      },
+      "disconnect": {
+        "title": "斷開",
+        "annotation": {
+          "features": "已斷開特徵。"
+        },
+        "not_connected": "這裡未有足夠的綫／範圍可斷開。",
+        "connected_to_hidden": "未能將這個斷開因為它連接著一個隱藏的特徵。",
+        "relation": "未能將這個斷開因為它連接著一個關係的構件。"
+      },
+      "merge": {
+        "title": "合併",
+        "description": "合併這些特徵。",
+        "annotation": "合併 {n} 個特徵。",
+        "not_eligible": "不能合併這些特徵。",
+        "not_adjacent": "這些特徵不能合併因為它們的端點不是連接在一起。",
+        "relation": "這些特徵不能合併因為當中一些角色關係有衝突。",
+        "incomplete_relation": "這些特徵不能合併因為最少一個尚未完全下載。",
+        "conflicting_tags": "這些特徵不能合併因為當中一些標籤的數值有衝突。"
+      },
+      "move": {
+        "title": "移動",
+        "annotation": {
+          "point": "已移動一個點。",
+          "vertex": "已移動路徑上的一個節。",
+          "line": "已移動一條綫。",
+          "area": "已移動一個範圍。",
+          "feature": "已移動 {n} 個特徵。"
+        }
+      },
+      "rotate": {
+        "title": "旋轉",
+        "annotation": {
+          "line": "已旋轉一條綫。",
+          "area": "已旋轉一個範圍。"
+        }
+      },
+      "reverse": {
+        "title": "反轉",
+        "annotation": {
+          "line": "已反轉 {n} 條綫。",
+          "feature": "已反轉 {n} 個特徵。"
+        }
+      },
+      "scale": {
+        "annotation": {
+          "down": {
+            "feature": "已縮小 {n} 個特徵。"
+          },
+          "up": {
+            "feature": "已放大 {n} 個特徵。"
+          }
+        }
+      },
+      "split": {
+        "title": "斬開",
+        "annotation": {
+          "line": "分割 {n} 條綫。"
+        },
+        "not_eligible": "綫不能於頭或尾分割。",
+        "connected_to_hidden": "未能分割這個因為它連接著一個隱藏的特徵。"
+      },
+      "restriction": {
+        "annotation": {
+          "create": "已新增轉彎限制",
+          "delete": "已刪除轉彎限制"
+        }
+      }
+    },
+    "restriction": {
+      "controls": {
+        "via": "經",
+        "via_node_only": "只有節"
+      },
+      "help": {
+        "turn": {
+          "no_left_turn": "不准左轉 {indirect}",
+          "no_right_turn": "不准右轉 {indirect}",
+          "no_u_turn": "不准掉頭 {indirect}",
+          "no_straight_on": "不准直行 {indirect}",
+          "only_left_turn": "只准左轉 {indirect}",
+          "only_right_turn": "只准右轉 {indirect}",
+          "only_u_turn": "只准掉頭 {indirect}",
+          "only_straight_on": "只准直行 {indirect}",
+          "allowed_u_turn": "允許掉頭 {indirect}"
+        },
+        "from": "由",
+        "via": "經"
+      }
+    },
+    "undo": {
+      "nothing": "沒有可還原的動作。"
+    },
+    "redo": {
+      "title": "取消復原",
+      "nothing": "沒有可重做的動作。"
+    },
+    "translate": {
+      "translate": "新增多語言名稱",
+      "localized_translation_label": "多語言名稱",
+      "localized_translation_language": "選擇語言",
+      "localized_translation_name": "名稱"
+    },
+    "zoom_in_edit": "放大以編輯",
+    "login": "登入",
+    "logout": "登出",
+    "loading_auth": "正在連接 OpenStreetMap...",
+    "report_a_bug": "報告錯誤",
+    "help_translate": "協助翻譯",
+    "commit": {
+      "title": "上傳到 OpenStreetMap",
+      "upload_explanation": "你上載的變更會出現在其他使用 OpenStreetMap 資料的地圖。",
+      "upload_explanation_with_user": "你以{user}的名字上載的變更會出現在其他使用 OpenStreetMap 資料的地圖。",
+      "request_review": "我希望有其他人覆核我的編輯。",
+      "save": "上載",
+      "cancel": "唔做",
+      "download_changes": "下載 osmChange 檔案",
+      "modified": "已修改",
+      "deleted": "已刪除",
+      "created": "已建立",
+      "outstanding_errors_message": "請先解決所有錯誤。餘下 {count} 個。",
+      "about_changeset_comments": "有關變動留言",
+      "google_warning": "你在這個留言內提及過Google：緊記絕對不可複製Google地圖的資料。"
+    },
+    "contributors": {
+      "list": "由{users}編輯"
+    },
+    "info_panels": {
+      "selected": "已選 {n} 項",
+      "background": {
+        "zoom": "縮放",
+        "vintage": "古舊",
+        "resolution": "解像度",
+        "show_tiles": "顯示方塊",
+        "hide_tiles": "隱藏方塊"
+      },
+      "history": {
+        "title": "歷程",
+        "last_edit": "最後編輯",
+        "edited_by": "編輯者",
+        "changeset": "變動",
+        "note_created_date": "建立日期",
+        "note_created_user": "建立者",
+        "note_link_text": "openstreetmap.org 上的備註"
+      },
+      "location": {
+        "title": "位置"
+      },
+      "measurement": {
+        "geometry": "幾何",
+        "center": "中心點",
+        "perimeter": "周界",
+        "area": "面積",
+        "centroid": "形心",
+        "location": "位置",
+        "node_count": "節數目"
+      }
+    },
+    "geometry": {
+      "relation": "關係"
+    },
+    "geocoder": {
+      "search": "搜尋全世界...",
+      "no_results_worldwide": "找不到搜尋結果"
+    },
+    "geolocate": {
+      "title": "顯示我的位置",
+      "locating": "定位中，請稍候..."
+    },
+    "inspector": {
+      "show_more": "顯示更多",
+      "view_on_osm": "在 openstreetmap.org 中檢視",
+      "view_on_keepRight": "在 keepright.at 上查看",
+      "feature_type": "特徵種類",
+      "fields": "欄位",
+      "relations": "關係",
+      "features": "特徵",
+      "new_relation": "建立新關係⋯⋯",
+      "role": "作用",
+      "choose": "選擇特徵種類",
+      "no_documentation_key": "沒有相關文件",
+      "wiki_reference": "查看文件",
+      "wiki_en_reference": "查看英文版文件",
+      "multiple_types": "多重種類",
+      "type": "種類",
+      "details": "詳細資料",
+      "remove": "移除",
+      "search": "搜尋",
+      "incomplete": "<未下載>",
+      "feature_list": "搜尋特徵",
+      "check": {
+        "yes": "是",
+        "no": "否",
+        "reverser": "更改方向"
+      },
+      "add": "新增",
+      "way": "路徑",
+      "relation": "關係",
+      "location": "位置",
+      "add_fields": "新增欄位：",
+      "display_name": {
+        "from_to": "由 {from} 至 {to}",
+        "from_to_via": "由 {from} 至 {to} 經 {via}",
+        "network_from_to": "{network} 由 {from} 至 {to}",
+        "network_from_to_via": "{network} 由 {from} 至 {to} 經 {via}",
+        "ref_from_to": "{ref} 由 {from} 至 {to}",
+        "ref_from_to_via": "{ref} 由 {from} 至 {to} 經 {via}",
+        "network_ref_from_to": "{network} {ref} 由 {from} 至 {to}",
+        "network_ref_from_to_via": "{network} {ref} 由 {from} 至 {to} 經 {via}"
+      }
+    },
+    "background": {
+      "best_imagery": "這地點最為人所知的背景影像",
+      "switch": "切換回這個背景",
+      "overlays": "覆蓋層",
+      "reset": "重設",
+      "reset_all": "重設所有",
+      "display_options": "顯示選項",
+      "minimap": {
+        "tooltip": "顯示縮小地圖以確定現在被顯示範圍的位置"
+      },
+      "offset": "於以下灰色範圍內平移或者輸入以米量度的誤差值就可校正對位誤差。"
+    },
+    "map_data": {
+      "data_layers": "資料圖層",
+      "layers": {
+        "osm": {
+          "tooltip": "來自 OpenStreetMap 的地圖數據"
+        },
+        "maproulette": {
+          "detail_title": "詳細資料",
+          "cancel": "唔做"
+        }
+      },
+      "autohidden": "由於太多東西出現在螢幕上，這些特徵已被自動隱藏。你可以放大來編輯它們。"
+    },
+    "photo_overlays": {
+      "photo_type": {
+        "panoramic": {
+          "tooltip": "360° 相片"
+        }
+      },
+      "date_filter": {
+        "fromDate": {
+          "title": "由"
+        },
+        "toDate": {
+          "title": "至"
+        }
+      }
+    },
+    "filters": {
+      "points": {
+        "description": "點",
+        "tooltip": "興趣點"
+      },
+      "traffic_roads": {
+        "description": "交通道路",
+        "tooltip": "公路、街道等等"
+      },
+      "service_roads": {
+        "description": "輔助道路",
+        "tooltip": "輔助道路、停車場通道、小徑等等"
+      },
+      "paths": {
+        "tooltip": "行人路、步行徑、單車徑等等"
+      },
+      "buildings": {
+        "description": "建築物",
+        "tooltip": "建築物、涼亭、車房等等"
+      },
+      "indoor": {
+        "description": "室內特徵"
+      },
+      "landuse": {
+        "description": "用地特徵",
+        "tooltip": "森林、農地、公園、住宅區、商業區等等"
+      },
+      "boundaries": {
+        "description": "邊界",
+        "tooltip": "行政邊界"
+      },
+      "water": {
+        "description": "水特徵",
+        "tooltip": "河流、湖泊、池塘、流域等等"
+      },
+      "rail": {
+        "description": "鐵路特徵"
+      },
+      "aerialways": {
+        "description": "空中特徵"
+      },
+      "power": {
+        "description": "電力特徵",
+        "tooltip": "電線、發電廠、變電站等等"
+      },
+      "past_future": {
+        "description": "過去／將來特徵",
+        "tooltip": "已建議、建築中、已廢棄、已拆毀等等"
+      },
+      "others": {
+        "description": "其他特徵",
+        "tooltip": "其他東西"
+      }
+    },
+    "area_fill": {
+      "wireframe": {
+        "description": "不填滿 (以線條顯示)",
+        "tooltip": "啟用框線模式，很容易就看到背景影像。"
+      },
+      "partial": {
+        "description": "部分填滿",
+        "tooltip": "只有範圍邊界內側會被填滿。(適合地圖繪畫新手)"
+      },
+      "full": {
+        "description": "全部填滿",
+        "tooltip": "整個範圍會被填滿。"
+      }
+    },
+    "settings": {
+      "custom_background": {
+        "tooltip": "編輯自訂背景",
+        "header": "自訂背景設定"
+      }
+    },
+    "restore": {
+      "heading": "你有未儲存的變更",
+      "restore": "恢復我的變更",
+      "reset": "放棄我的變更"
+    },
+    "save": {
+      "title": "儲存",
+      "help": "檢閱您的變更並將它們上載至 OpenStreetMap，讓其他用戶都看得到。",
+      "no_changes": "沒有變更需要儲存。",
+      "error": "儲存時發生錯誤",
+      "status_code": "伺服器提供的狀態碼{code}",
+      "unknown_error_details": "請確保你已連接至互聯網。",
+      "uploading": "正在上傳變更到 OpenStreetMap...",
+      "unsaved_changes": "你有未儲存的變更",
+      "conflict": {
+        "header": "解決有衝突的編輯項目",
+        "count": " {total}個衝突中的第{num}個",
+        "previous": "< 上一個",
+        "next": "下一個 >",
+        "keep_local": "保留我的",
+        "keep_remote": "使用其他人的",
+        "restore": "復原",
+        "delete": "放棄資料",
+        "download_changes": "或下載 osmChange 檔案",
+        "done": "所有衝突已解決！"
+      }
+    },
+    "merge_remote_changes": {
+      "conflict": {
+        "deleted": "這特徵已被{user}刪除。",
+        "location": "這特徵被你和{user}移動過。",
+        "nodelist": "這些節被你和{user}變更過。",
+        "memberlist": "關係構件已被你和{user}改變了。"
+      }
+    },
+    "success": {
+      "just_edited": "你剛剛編輯了OpenStreetMap！",
+      "thank_you": "謝謝協助改善地圖。",
+      "help_link_text": "詳細資料",
+      "view_on_osm": "於OSM上顯示改變",
+      "tell_us": "告訴我們！"
+    },
+    "confirm": {
+      "okay": "確定",
+      "cancel": "唔做"
+    },
+    "source_switch": {
+      "dev": "開發模式",
+      "live": "實況模式",
+      "lose_changes": "你有尚未儲存的變更。切換地圖伺服器將放棄它們。你確定要切換伺服器嗎？"
+    },
+    "rapid_first_edit": {
+      "exploring": "我只是在探索"
+    },
+    "rapid_menu": {
+      "remove": "移除",
+      "category": {
+        "roads": "道路"
+      }
+    },
+    "tag_reference": {
+      "on_wiki": "在wiki.osm.org上的 {tag}",
+      "used_with": "與{type}一起用"
+    },
+    "zoom": {
+      "out": "縮小"
+    },
+    "full_screen": "切換全螢幕",
+    "QA": {
+      "osmose": {
+        "detail_title": "詳細資料",
+        "elems_title": "特徵"
+      },
+      "keepRight": {
+        "save_comment": "儲存留言",
+        "error_parts": {
+          "this_feature": "此特徵",
+          "courthouse": "法庭",
+          "cafe": "茶座",
+          "from": "由",
+          "left_hand": "左邊",
+          "right_hand": "右邊"
+        }
+      }
+    },
+    "mapillary_signs": {
+      "title": "交通標誌"
+    },
+    "note": {
+      "status": {
+        "commented": "已留言 {when}"
+      },
+      "newComment": "新留言",
+      "open_comment": "再開啟並留言"
+    },
+    "help": {
+      "title": "說明",
+      "help": {
+        "title": "說明",
+        "open_data_h": "開放數據",
+        "before_start_h": "在你開始之前",
+        "open_source_h": "開放來源"
+      },
+      "overview": {
+        "title": "概覽",
+        "navigation_h": "導覽",
+        "features_h": "地圖特徵",
+        "nodes_ways": "在 OpenStreetMap，點有時會叫做*節*，而綫或是範圍有時會被叫做*路徑*。"
+      },
+      "editing": {
+        "title": "編輯及儲存",
+        "select_h": "選擇",
+        "save_h": "儲存",
+        "upload_h": "上載",
+        "keyboard_h": "鍵盤快速鍵"
+      },
+      "feature_editor": {
+        "title": "特徵編輯器",
+        "type_h": "特徵種類",
+        "fields_h": "欄位"
+      },
+      "points": {
+        "title": "點",
+        "intro": "*點*是用來表示如商店、餐廳和紀念碑這些特徵，它們用來標示一個特定位置和描述那裏有甚麼。"
+      },
+      "lines": {
+        "title": "綫",
+        "add_line_h": "新增綫",
+        "modify_line_h": "修改綫"
+      },
+      "areas": {
+        "title": "範圍"
+      },
+      "relations": {
+        "title": "關係",
+        "edit_relation_h": "編輯關係",
+        "maintain_relation_h": "維護關係",
+        "boundary_h": "邊界"
+      },
+      "notes": {
+        "update_note_h": "關閉、再開和留言"
+      },
+      "qa": {
+        "tools_h": "工具"
+      },
+      "field": {
+        "restrictions": {
+          "tips": {
+            "title": "提示"
+          }
+        }
+      }
+    },
+    "issues": {
+      "title": "問題",
+      "options": {
+        "what": {
+          "edited": "我的編輯"
+        }
+      },
+      "close_nodes": {
+        "detached": {
+          "message": "{feature} 太接近 {feature2} "
+        }
+      },
+      "outdated_tags": {
+        "title": "已過時的標籤",
+        "incomplete": {
+          "reference": "一些特徵應當有額外的標籤。"
+        }
+      },
+      "fix": {
+        "move_tags": {
+          "title": "移動此標籤",
+          "annotation": "移動標籤。"
+        }
+      }
+    },
+    "intro": {
+      "done": "完成",
+      "ok": "確定",
+      "graph": {
+        "city": "三江",
+        "postcode": "999077",
+        "countrycode": "hk",
+        "name": {
+          "1st-avenue": "第一大街",
+          "2nd-avenue": "第二大街",
+          "4th-avenue": "第四大街",
+          "5th-avenue": "第五大街",
+          "6th-avenue": "第六大街",
+          "6th-street": "第六街",
+          "7th-avenue": "第七大街",
+          "8th-avenue": "第八大街",
+          "9th-avenue": "第九大街",
+          "10th-avenue": "第十大街",
+          "11th-avenue": "第十一大街",
+          "12th-avenue": "第十二大街",
+          "access-point-employment": "就業中心",
+          "adams-street": "亞當街",
+          "andrews-elementary-school": "愛德華小學",
+          "andrews-street": "愛德華街",
+          "armitage-street": "亞美蒂街",
+          "barrows-school": "巴洛士學校",
+          "battle-street": "戰爭街",
+          "bennett-street": "班力街",
+          "bowman-park": "寶文公園",
+          "collins-drive": "哥連士巷",
+          "conrail-railroad": "模擬鐵道",
+          "conservation-park": "保育公園",
+          "constantine-street": "康斯坦丁街",
+          "cushman-street": "吉士民街",
+          "dollar-tree": "搖錢樹",
+          "douglas-avenue": "道格拉斯巷",
+          "east-street": "東街",
+          "elm-street": "榆樹街",
+          "flower-street": "花街",
+          "foster-street": "科士打街",
+          "french-street": "法蘭西街",
+          "garden-street": "花園街",
+          "gem-pawnbroker": "珠寶大押",
+          "golden-finch-framing": "金雀表框",
+          "grant-avenue": "關氏大街",
+          "hoffman-pond": "荷夫曼湖",
+          "hoffman-street": "荷夫曼街",
+          "hook-avenue": "學夫大街",
+          "jefferson-street": "謝佛遜街",
+          "kelsey-street": "教西街",
+          "lafayette-park": "老佛爺公園",
+          "las-coffee-cafe": "香港咖啡廳",
+          "lowrys-books": "羅莉書局",
+          "lynns-garage": "蓮氏車房",
+          "main-street-barbell": "大街啞鈴",
+          "main-street-cafe": "大街咖啡廳",
+          "main-street-fitness": "大街健身",
+          "maple-street": "楓樹街",
+          "market-street": "市場街",
+          "memory-isle-park": "記憶島公園",
+          "memory-isle": "記憶島",
+          "michigan-avenue": "密歇根大街",
+          "middle-street": "中間街",
+          "millard-street": "美拉街",
+          "moore-street": "摩爾街",
+          "morris-avenue": "摩利斯大道",
+          "mural-mall": "梅路購物中心",
+          "paisanos-bar-and-grill": "柏三露燒烤酒吧",
+          "paisley-emporium": "皮士禮廣場",
+          "paparazzi-tattoo": "狗仔隊紋身",
+          "pealer-street": "標拿街",
+          "pine-street": "松樹街",
+          "portage-avenue": "運輸街",
+          "portage-river": "運輸河",
+          "preferred-insurance-services": "第一保險",
+          "railroad-drive": "鐵道徑",
+          "river-city-appliance": "河城電器",
+          "river-drive": "河旁徑",
+          "river-road": "河旁路",
+          "river-street": "河旁街",
+          "riverside-cemetery": "河旁墳場",
+          "riverwalk-trail": "河邊步行徑",
+          "riviera-theatre": "海濱劇場",
+          "rocky-river": "洛奇河",
+          "saint-joseph-river": "聖約瑟河",
+          "scidmore-park-petting-zoo": "是得摩公園動物園",
+          "scidmore-park": "是得摩公園",
+          "scouter-park": "偵察公園",
+          "sherwin-williams": "是溫-威廉斯",
+          "south-street": "南街",
+          "southern-michigan-bank": "南密歇根銀行",
+          "spring-street": "春天街",
+          "sturgeon-river-road": "鱘河路",
+          "three-rivers-city-hall": "三河市政廳",
+          "three-rivers-elementary-school": "三河小學",
+          "three-rivers-fire-department": "三河消防局",
+          "three-rivers-high-school": "三河高中",
+          "three-rivers-middle-school": "三河中學",
+          "three-rivers-municipal-airport": "三河機場",
+          "three-rivers-post-office": "三河郵政局",
+          "three-rivers-public-library": "三河圖書館",
+          "three-rivers": "三河",
+          "unique-jewelry": "獨特珠寶",
+          "walnut-street": "合桃街",
+          "washington-street": "華盛頓街",
+          "water-street": "水街",
+          "west-street": "西街",
+          "wheeler-street": "車夫街",
+          "william-towing": "威廉拖車",
+          "willow-drive": "柳樹徑",
+          "wood-street": "木街",
+          "world-fare": "國際廣場"
+        }
+      },
+      "welcome": {
+        "welcome": "歡迎！這個教學將會教你 OpenStreetMap 基本的編輯方法。",
+        "practice": "教學裡的資料都只為練習之用，你的所有編輯都不會儲存下來。",
+        "words": "這篇教學會介紹新的辭彙和概念，當介紹新辭彙時，我們會用*斜體*標示。"
+      },
+      "navigation": {
+        "title": "導航",
+        "features": "我們用*特徵*這個詞來描述出現在地圖上的事物。任何在現實世界中出現的物件都可在 OpenStreetMap 當作特徵來製圖。",
+        "points_lines_areas": "地圖特徵用*點、綫或範圍*來表示。",
+        "nodes_ways": "在 OpenStreetMap，點有時會叫做*節*，而綫或是範圍有時會被叫做*路徑*。",
+        "selected_townhall": "太好了！這個點已經被選擇。被選擇的特徵會以持續閃爍。",
+        "editor_townhall": "當特徵被選取時，*特徵編輯器*會在地圖旁顯示。",
+        "preset_townhall": "特徵編輯器的上半部會顯示不同特徵類型，這個點是{preset}。",
+        "fields_townhall": "特徵編輯器中間部包含*欄位*用作顯示特徵的屬性，例如是名稱和地址。",
+        "search_street": "你也可以搜尋目前檢視下或是全球的特徵，**搜尋'{name}'。**",
+        "choose_street": "**由列表中選擇{name}。**",
+        "selected_street": "太好了 ! {name} 現在已被選擇。"
+      },
+      "points": {
+        "title": "點",
+        "search_cafe": "很多不同特徵可以用點來表示。你剛增加的點是一家咖啡廳。**搜尋 '{preset}'。**",
+        "choose_cafe": "**從列表中選擇{preset}。**",
+        "feature_editor": "現在這個點標示為咖啡廳。利用特徵編輯器，我們可以為咖啡廳增加更多資料。",
+        "update": "讓我們來填入更多咖啡廳的詳細資訊。你可以變更名稱、加上菜式或是加上地址。**改變咖啡廳詳情。**"
+      },
+      "areas": {
+        "title": "範圍",
+        "search_playground": "**搜尋'{preset}'。**",
+        "choose_playground": "**從列表中選擇{preset}。**",
+        "choose_field": "**從列表中選擇{field}。**",
+        "retry_add_field": "你沒有選到 {field} 欄位，請再試一次。"
+      },
+      "lines": {
+        "title": "綫",
+        "retry_intersect": "道路必須與{name} 相交，再試一次!",
+        "choose_category_road": "**從列表中選擇{category}。**",
+        "choose_preset_residential": "有許多不同類型的道路，但這條路是住宅區道路。**選擇 {preset} 類型。**",
+        "did_name_road": "看起來很好！接下來我們會學習如何更新綫的形狀。",
+        "update_line": "有時候你需要變更現有的綫的形狀。這邊有條道路看起來不太對勁。",
+        "add_node": "我們可以在這條綫上增加一些點來改善它的形狀。其中一個增加點的方法是在想增加的地方雙擊。**在線上雙擊來新增一點。**",
+        "start_drag_midpoint": "小的三角形會出現在點和點的*中間*。另一個增加點的方式是拖曳中間點到新的位置。**拖曳中間點的三角形來沿道路曲線建立一個新點。**",
+        "delete_lines": "如果現實中道路不存在，你可以刪除。 {br}這裡的例子是城市計畫興建 {street}，但從未建築過。我們可以刪除額外的綫來改善這部分的地圖。"
+      },
+      "buildings": {
+        "title": "建築物",
+        "retry_building": "看來你在建築物的角位放點時遇上困難。再試一次！",
+        "choose_category_building": "**從列表中選擇{category}。**",
+        "choose_preset_house": "有不同種類的建築物可供選擇，但這個很明顯是洋房。 {br}如果你不確定類型，你可以選擇一般建築特類型。**選擇 {preset} 類型。**",
+        "done_square": "看到建築的角落如何移至適當位置了嗎？讓我們來學習另一個實用技巧。",
+        "search_tank": "**搜尋'{preset}'。**",
+        "choose_tank": "**從列表中選擇{preset}。**"
+      },
+      "startediting": {
+        "title": "開始編輯",
+        "save": "不要忘記定時儲存你的變更！",
+        "start": "開始製圖!"
+      }
+    },
+    "shortcuts": {
+      "title": "鍵盤快速鍵",
+      "tooltip": "顯示鍵盤快速鍵畫面。",
+      "key": {
+        "delete": "刪除"
+      },
+      "gesture": {
+        "drag": "拖曳"
+      },
+      "navigation": "導航",
+      "selecting_features": "選擇特徵",
+      "with_node_selected": "選取了點",
+      "commands": "命令",
+      "help": "說明",
+      "display_options": "顯示選項",
+      "command": {
+        "select_one": {
+          "label": "選擇一個特徵"
+        },
+        "select_multi": {
+          "label": "選擇多個特徵"
+        },
+        "lasso": {
+          "label": "在特徵周圍畫一個選擇套索"
+        },
+        "first_node": {
+          "label": "跳至第一個節點"
+        },
+        "last_node": {
+          "label": "跳至最後一個節點"
+        },
+        "change_parent": {
+          "label": "切換到源路徑"
+        },
+        "add_point": {
+          "label": "'增加節'模式"
+        },
+        "add_line": {
+          "label": "'增加線'模式"
+        },
+        "add_area": {
+          "label": "'增加範圍'模式"
+        },
+        "disable_snap": {
+          "label": "長按可停用點捕捉"
+        },
+        "stop_line": {
+          "label": "完成繪製線或範圍"
+        },
+        "copy": {
+          "label": "複製已選擇特徵"
+        },
+        "paste": {
+          "label": "貼上已複製特徵"
+        },
+        "redo": {
+          "label": "重做上一個動作"
+        },
+        "save": {
+          "label": "儲存變更"
+        },
+        "merge": {
+          "label": "結合(合併)已選擇特徵"
+        },
+        "move": {
+          "label": "移動已選擇特徵"
+        },
+        "rotate": {
+          "label": "旋轉已選擇特徵"
+        },
+        "circularize": {
+          "label": "將已封閉的線或範圍圓形化"
+        },
+        "delete": {
+          "label": "刪除已選擇特徵"
+        },
+        "keyboard_shortcuts": {
+          "label": "顯示鍵盤快速鍵"
+        },
+        "toggle_history_card": {
+          "label": "切換歷程面板"
+        }
+      }
+    },
+    "languageNames": {
+      "aa": "阿法爾文",
+      "ab": "阿布哈茲文",
+      "ace": "亞齊文",
+      "ach": "阿僑利文",
+      "ada": "阿當莫文",
+      "ady": "阿迪各文",
+      "ae": "阿維斯塔文",
+      "aeb": "突尼斯阿拉伯文",
+      "af": "南非荷蘭文",
+      "afh": "阿弗里希利文",
+      "agq": "亞罕文",
+      "ain": "阿伊努文",
+      "ak": "阿坎文",
+      "akk": "阿卡德文",
+      "akz": "阿拉巴馬文",
+      "ale": "阿留申文",
+      "aln": "蓋格阿爾巴尼亞文",
+      "alt": "南阿爾泰文",
+      "am": "岩哈拉語",
+      "an": "阿拉貢文",
+      "ang": "古英文",
+      "ann": "奧博洛語",
+      "anp": "昂加文",
+      "ar": "阿拉伯文",
+      "ar-001": "現代標準阿拉伯文",
+      "arc": "阿拉米文",
+      "arn": "馬普切文",
+      "aro": "阿拉奧納文",
+      "arp": "阿拉帕霍文",
+      "arq": "阿爾及利亞阿拉伯文",
+      "ars": "阿拉伯文（納吉迪）",
+      "arw": "阿拉瓦克文",
+      "ary": "摩洛哥阿拉伯文",
+      "arz": "埃及阿拉伯文",
+      "as": "阿薩姆文",
+      "asa": "阿蘇文",
+      "ast": "阿斯圖里亞文",
+      "atj": "阿提卡梅克語",
+      "av": "阿瓦爾文",
+      "avk": "科塔瓦文",
+      "awa": "阿瓦文",
+      "ay": "艾馬拉文",
+      "az": "阿塞拜疆文",
+      "az-Arab": "南阿塞拜疆文",
+      "ba": "巴什基爾文",
+      "bal": "俾路支文",
+      "ban": "峇里文",
+      "bar": "巴伐利亞文",
+      "bas": "巴薩文",
+      "bax": "巴姆穆文",
+      "bbc": "巴塔克托巴文",
+      "bbj": "戈馬拉文",
+      "be": "白俄羅斯文",
+      "bej": "貝扎文",
+      "bem": "別姆巴文",
+      "bew": "貝塔維文",
+      "bez": "貝納文",
+      "bfd": "富特文",
+      "bfq": "巴達加文",
+      "bg": "保加利亞文",
+      "bgc": "哈里亞納文",
+      "bgn": "西俾路支文",
+      "bho": "博傑普爾文",
+      "bi": "比斯拉馬文",
+      "bik": "比科爾文",
+      "bin": "比尼文",
+      "bjn": "班亞爾文",
+      "bkm": "康姆文",
+      "bla": "錫克錫卡文",
+      "blo": "阿尼文",
+      "bm": "班巴拉文",
+      "bn": "孟加拉文",
+      "bo": "藏文",
+      "bpy": "比什奴普萊利亞文",
+      "bqi": "巴赫蒂亞里文",
+      "br": "布里多尼文",
+      "bra": "布拉杰文",
+      "brh": "布拉維文",
+      "brx": "博多文",
+      "bs": "波斯尼亞文",
+      "bss": "阿庫色文",
+      "bua": "布里阿特文",
+      "bug": "布吉斯文",
+      "bum": "布魯文",
+      "byn": "比林文",
+      "byv": "梅敦巴文",
+      "ca": "加泰隆尼亞文",
+      "cad": "卡多文",
+      "car": "加勒比文",
+      "cay": "卡尤加文",
+      "cch": "阿燦文",
+      "ccp": "查克馬文",
+      "ce": "車臣文",
+      "ceb": "宿霧文",
+      "cgg": "奇加文",
+      "ch": "查莫洛文",
+      "chb": "奇布查文",
+      "chg": "查加文",
+      "chk": "處奇斯文",
+      "chm": "馬里文",
+      "chn": "契奴克文",
+      "cho": "喬克托文",
+      "chp": "奇佩瓦揚文",
+      "chr": "柴羅基文",
+      "chy": "沙伊安文",
+      "cic": "契卡索文",
+      "ckb": "中庫德文",
+      "clc": "齊爾柯廷語",
+      "co": "科西嘉文",
+      "cop": "科普特文",
+      "cps": "卡皮茲文",
+      "cr": "克里文",
+      "crg": "米奇夫語",
+      "crh": "克里米亞韃靼文",
+      "crj": "東南克里語",
+      "crk": "平原克里語",
+      "crl": "北部東克里語",
+      "crm": "穆斯克里文",
+      "crr": "卡羅萊納阿爾岡昆語",
+      "crs": "塞舌爾克里奧爾法文",
+      "cs": "捷克文",
+      "csb": "卡舒布文",
+      "csw": "沼澤克里文",
+      "cu": "宗教斯拉夫文",
+      "cv": "楚瓦什文",
+      "cy": "威爾斯文",
+      "da": "丹麥文",
+      "dak": "達科他文",
+      "dar": "達爾格瓦文",
+      "dav": "台塔文",
+      "de": "德文",
+      "de-AT": "奧地利德文",
+      "de-CH": "瑞士德語",
+      "del": "德拉瓦文",
+      "den": "斯拉夫文",
+      "dgr": "多格里布文",
+      "din": "丁卡文",
+      "dje": "扎爾馬文",
+      "doi": "多格來文",
+      "dsb": "下索布文",
+      "dtp": "中部杜順文",
+      "dua": "杜亞拉文",
+      "dum": "中古荷蘭文",
+      "dv": "迪維西文",
+      "dyo": "朱拉文",
+      "dyu": "迪尤拉文",
+      "dz": "宗卡文",
+      "dzg": "達薩文",
+      "ebu": "恩布文",
+      "ee": "埃維文",
+      "efi": "埃菲克文",
+      "egl": "埃米利安文",
+      "egy": "古埃及文",
+      "eka": "艾卡朱克文",
+      "el": "希臘文",
+      "elx": "埃蘭文",
+      "en": "英文",
+      "en-AU": "澳洲英文",
+      "en-CA": "加拿大英文",
+      "en-GB": "英國英文",
+      "en-US": "美國英文",
+      "enm": "中古英文",
+      "eo": "世界語",
+      "es": "西班牙文",
+      "es-419": "拉丁美洲西班牙文",
+      "es-ES": "歐洲西班牙文",
+      "es-MX": "墨西哥西班牙文",
+      "esu": "中尤皮克文",
+      "et": "愛沙尼亞文",
+      "eu": "巴斯克文",
+      "ewo": "依汪都文",
+      "ext": "埃斯特雷馬杜拉文",
+      "fa": "波斯文",
+      "fa-AF": "達利文",
+      "fan": "芳族文",
+      "fat": "芳蒂文",
+      "ff": "富拉文",
+      "fi": "芬蘭文",
+      "fil": "菲律賓文",
+      "fit": "托爾訥芬蘭文",
+      "fj": "斐濟文",
+      "fo": "法羅文",
+      "fon": "豐文",
+      "fr": "法文",
+      "fr-CA": "加拿大法文",
+      "fr-CH": "瑞士法文",
+      "frc": "卡真法文",
+      "frm": "中古法文",
+      "fro": "古法文",
+      "frp": "法蘭克-普羅旺斯文",
+      "frr": "北弗里西亞文",
+      "frs": "東弗里西亞文",
+      "fur": "弗留利文",
+      "fy": "西弗里西亞文",
+      "ga": "愛爾蘭文",
+      "gaa": "加族文",
+      "gag": "加告茲文",
+      "gan": "贛語",
+      "gay": "加約文",
+      "gba": "葛巴亞文",
+      "gbz": "索羅亞斯德教達里文",
+      "gd": "蘇格蘭蓋爾文",
+      "gez": "吉茲文",
+      "gil": "吉爾伯特文",
+      "gl": "加里西亞文",
+      "glk": "吉拉基文",
+      "gmh": "中古高地德文",
+      "gn": "瓜拉尼文",
+      "goh": "古高地德文",
+      "gon": "岡德文",
+      "gor": "科隆達羅文",
+      "got": "哥德文",
+      "grb": "格列博文",
+      "grc": "古希臘文",
+      "gsw": "瑞士德文",
+      "gu": "古吉拉特文",
+      "guc": "瓦尤文",
+      "gur": "弗拉弗拉文",
+      "guz": "古西文",
+      "gv": "曼島文",
+      "gwi": "圭契文",
+      "ha": "豪薩文",
+      "hai": "海達文",
+      "hak": "客家話",
+      "haw": "夏威夷文",
+      "hax": "南海達語",
+      "he": "希伯來文",
+      "hi": "印地文",
+      "hi-Latn": "印地語（拉丁文）",
+      "hif": "斐濟印地文",
+      "hil": "希利蓋農文",
+      "hit": "赫梯文",
+      "hmn": "苗語",
+      "ho": "西里莫圖土文",
+      "hr": "克羅地亞文",
+      "hsb": "上索布文",
+      "hsn": "湘語",
+      "ht": "海地文",
+      "hu": "匈牙利文",
+      "hup": "胡帕文",
+      "hur": "哈爾魁梅林語",
+      "hy": "亞美尼亞文",
+      "hz": "赫雷羅文",
+      "ia": "國際文",
+      "iba": "伊班文",
+      "ibb": "伊比比奧文",
+      "id": "印尼文",
+      "ie": "國際文（E）",
+      "ig": "伊博文",
+      "ii": "四川彝文",
+      "ik": "依奴皮維克文",
+      "ikt": "西加拿大因紐特語",
+      "ilo": "伊洛闊文",
+      "inh": "印古什文",
+      "io": "伊多文",
+      "is": "冰島文",
+      "it": "意大利文",
+      "iu": "因紐特文",
+      "izh": "英格里亞文",
+      "ja": "日文",
+      "jam": "牙買加克里奧爾英文",
+      "jbo": "邏輯文",
+      "jgo": "恩格姆巴文",
+      "jmc": "馬恰美文",
+      "jpr": "猶太波斯文",
+      "jrb": "猶太阿拉伯文",
+      "jut": "日德蘭文",
+      "jv": "爪哇文",
+      "ka": "格魯吉亞文",
+      "kaa": "卡拉卡爾帕克文",
+      "kab": "卡比爾文",
+      "kac": "卡琴文",
+      "kaj": "卡捷文",
+      "kam": "卡姆巴文",
+      "kaw": "卡威文",
+      "kbd": "卡巴爾達文",
+      "kbl": "卡念布文",
+      "kcg": "卡塔布文",
+      "kde": "馬孔德文",
+      "kea": "卡布威爾第文",
+      "ken": "肯揚文",
+      "kfo": "科羅文",
+      "kg": "剛果文",
+      "kgp": "坎剛文",
+      "kha": "卡西文",
+      "kho": "和闐文",
+      "khq": "西桑海文",
+      "khw": "科瓦文",
+      "ki": "吉庫尤文",
+      "kiu": "扎扎其文",
+      "kj": "廣亞馬文",
+      "kk": "哈薩克文",
+      "kkj": "卡庫文",
+      "kl": "格陵蘭文",
+      "kln": "卡倫金文",
+      "km": "高棉文",
+      "kmb": "金邦杜文",
+      "kn": "坎納達文",
+      "ko": "韓文",
+      "koi": "科米-彼爾米亞克文",
+      "kok": "貢根文",
+      "kos": "科斯雷恩文",
+      "kpe": "克佩列文",
+      "kr": "卡努里文",
+      "krc": "卡拉柴-包爾卡爾文",
+      "kri": "克裡奧爾文",
+      "krj": "基那來阿文",
+      "krl": "卡累利阿文",
+      "kru": "庫魯科文",
+      "ks": "喀什米爾文",
+      "ksb": "尚巴拉文",
+      "ksf": "巴菲亞文",
+      "ksh": "科隆文",
+      "ku": "庫德文",
+      "kum": "庫密克文",
+      "kut": "庫特奈文",
+      "kv": "科米文",
+      "kw": "康瓦耳文",
+      "kwk": "誇誇嘉誇語",
+      "kxv": "庫維文",
+      "ky": "吉爾吉斯文",
+      "la": "拉丁文",
+      "lad": "拉迪諾文",
+      "lag": "朗吉文",
+      "lah": "拉亨達文",
+      "lam": "蘭巴文",
+      "lb": "盧森堡文",
+      "lez": "列茲干文",
+      "lfn": "新共同語言",
+      "lg": "干達文",
+      "li": "林堡文",
+      "lij": "利古里亞文",
+      "lil": "利洛威特文",
+      "liv": "利伏尼亞文",
+      "lkt": "拉科塔文",
+      "lmo": "倫巴底文",
+      "ln": "林加拉文",
+      "lo": "老撾文",
+      "lol": "芒戈文",
+      "lou": "路易斯安那克里奧爾文",
+      "loz": "洛齊文",
+      "lrc": "北盧爾文",
+      "lsm": "薩米亞文",
+      "lt": "立陶宛文",
+      "ltg": "拉特加萊文",
+      "lu": "魯巴加丹加文",
+      "lua": "魯巴魯魯亞文",
+      "lui": "路易塞諾文",
+      "lun": "盧恩達文",
+      "luo": "盧歐文",
+      "lus": "米佐文",
+      "luy": "盧雅文",
+      "lv": "拉脫維亞文",
+      "lzh": "文言文",
+      "lzz": "拉茲文",
+      "mad": "馬都拉文",
+      "maf": "馬法文",
+      "mag": "摩揭陀文",
+      "mai": "邁蒂利文",
+      "mak": "望加錫文",
+      "man": "曼丁哥文",
+      "mas": "馬賽文",
+      "mde": "馬巴文",
+      "mdf": "莫克沙文",
+      "mdr": "曼達文",
+      "men": "門德文",
+      "mer": "梅魯文",
+      "mfe": "毛里裘斯克里奧爾文",
+      "mg": "馬拉加斯文",
+      "mga": "中古愛爾蘭文",
+      "mgh": "馬夸文",
+      "mgo": "美塔文",
+      "mh": "馬紹爾文",
+      "mi": "毛利文",
+      "mic": "米克馬克文",
+      "min": "米南卡堡文",
+      "mk": "馬其頓文",
+      "ml": "馬拉雅拉姆文",
+      "mn": "蒙古文",
+      "mnc": "滿族文",
+      "mni": "曼尼普爾文",
+      "moe": "因紐艾蒙語",
+      "moh": "莫霍克文",
+      "mos": "莫西文",
+      "mr": "馬拉地文",
+      "mrj": "西馬里文",
+      "ms": "馬來文",
+      "mt": "馬耳他文",
+      "mua": "蒙當文",
+      "mus": "克里克文",
+      "mwl": "米蘭德斯文",
+      "mwr": "馬瓦里文",
+      "mwv": "明打威文",
+      "my": "緬甸文",
+      "mye": "姆耶內文",
+      "myv": "厄爾茲亞文",
+      "mzn": "馬贊德蘭文",
+      "na": "諾魯文",
+      "nan": "閩南語",
+      "nap": "拿波里文",
+      "naq": "納馬文",
+      "nb": "書面挪威文",
+      "nd": "北地畢列文",
+      "nds": "低地德文",
+      "nds-NL": "低地薩克遜文",
+      "ne": "尼泊爾文",
+      "new": "尼瓦爾文",
+      "ng": "恩東加文",
+      "nia": "尼亞斯文",
+      "niu": "紐埃文",
+      "njo": "阿沃那加文",
+      "nl": "荷蘭文",
+      "nl-BE": "比利時荷蘭文",
+      "nmg": "夸西奧文",
+      "nn": "新挪威文",
+      "nnh": "恩甘澎文",
+      "no": "挪威文",
+      "nog": "諾蓋文",
+      "non": "古諾爾斯文",
+      "nov": "諾維亞文",
+      "nqo": "西非書面語言（N’ko）",
+      "nr": "南地畢列文",
+      "nso": "北索托文",
+      "nus": "努埃爾文",
+      "nv": "納瓦荷文",
+      "nwc": "古尼瓦爾文",
+      "ny": "尼揚賈文",
+      "nym": "尼揚韋齊文",
+      "nyn": "尼揚科萊文",
+      "nyo": "尼奧囉文",
+      "nzi": "尼茲馬文",
+      "oc": "奧克西坦文",
+      "oj": "奧杰布瓦文",
+      "ojb": "西北奧吉布瓦語",
+      "ojc": "中央奧吉布瓦語",
+      "ojs": "奧吉克里語",
+      "ojw": "西奧吉布瓦語",
+      "oka": "奧卡諾根語",
+      "om": "奧羅莫文",
+      "or": "奧里雅文",
+      "os": "奧塞提文",
+      "osa": "歐塞奇文",
+      "ota": "鄂圖曼土耳其文",
+      "pa": "旁遮普文",
+      "pag": "潘加辛文",
+      "pal": "巴列維文",
+      "pam": "潘帕嘉文",
+      "pap": "帕皮阿門托文",
+      "pau": "帛琉文",
+      "pcd": "庇卡底文",
+      "pcm": "尼日利亞皮欽文",
+      "pdc": "賓夕法尼亞德文",
+      "pdt": "門諾低地德文",
+      "peo": "古波斯文",
+      "pfl": "普法爾茨德文",
+      "phn": "腓尼基文",
+      "pi": "巴利文",
+      "pis": "皮金語",
+      "pl": "波蘭文",
+      "pms": "皮埃蒙特文",
+      "pnt": "旁狄希臘文",
+      "pon": "波那貝文",
+      "pqm": "馬里希特帕薩瑪奎迪文",
+      "prg": "普魯士文",
+      "pro": "古普羅旺斯文",
+      "ps": "普什圖文",
+      "pt": "葡萄牙文",
+      "pt-BR": "巴西葡萄牙文",
+      "pt-PT": "歐洲葡萄牙文",
+      "qu": "蓋楚瓦文",
+      "quc": "基切文",
+      "qug": "欽博拉索海蘭蓋丘亞文",
+      "raj": "拉賈斯坦諸文",
+      "rap": "復活島文",
+      "rar": "拉羅通加文",
+      "rgn": "羅馬格諾里文",
+      "rhg": "羅興亞文",
+      "rif": "里菲亞諾文",
+      "rm": "羅曼斯文",
+      "rn": "隆迪文",
+      "ro": "羅馬尼亞文",
+      "ro-MD": "摩爾多瓦羅馬尼亞文",
+      "rof": "蘭博文",
+      "rom": "吉普賽文",
+      "rtm": "羅圖馬島文",
+      "ru": "俄文",
+      "rue": "盧森尼亞文",
+      "rug": "羅維阿納文",
+      "rup": "阿羅馬尼亞語",
+      "rw": "盧旺達文",
+      "rwk": "羅瓦文",
+      "sa": "梵文",
+      "sad": "桑達韋文",
+      "sah": "雅庫特文",
+      "sam": "薩瑪利亞阿拉姆文",
+      "saq": "薩布魯文",
+      "sas": "撒撒克文",
+      "sat": "桑塔利文",
+      "saz": "索拉什特拉文",
+      "sba": "甘拜文",
+      "sbp": "桑古文",
+      "sc": "撒丁文",
+      "scn": "西西里文",
+      "sco": "蘇格蘭文",
+      "sd": "信德文",
+      "sdc": "薩丁尼亞-薩薩里文",
+      "sdh": "南庫德文",
+      "se": "北薩米文",
+      "see": "塞訥卡文",
+      "seh": "賽納文",
+      "sei": "瑟里文",
+      "sel": "塞爾庫普文",
+      "ses": "東桑海文",
+      "sg": "桑戈文",
+      "sga": "古愛爾蘭文",
+      "sgs": "薩莫吉希亞文",
+      "sh": "塞爾維亞克羅埃西亞文",
+      "shi": "希爾哈文",
+      "shn": "撣文",
+      "shu": "阿拉伯文（查德）",
+      "si": "僧伽羅文",
+      "sid": "希達摩文",
+      "sk": "斯洛伐克文",
+      "sl": "斯洛文尼亞文",
+      "slh": "南盧紹錫德語",
+      "sli": "下西利西亞文",
+      "sly": "塞拉亞文",
+      "sm": "薩摩亞文",
+      "sma": "南薩米文",
+      "smj": "魯勒薩米文",
+      "smn": "伊納里薩米文",
+      "sms": "斯科特薩米文",
+      "sn": "修納文",
+      "snk": "索尼基文",
+      "so": "索馬里文",
+      "sog": "粟特文",
+      "sq": "阿爾巴尼亞文",
+      "sr": "塞爾維亞文",
+      "srn": "蘇拉南東墎文",
+      "srr": "塞雷爾文",
+      "ss": "斯瓦特文",
+      "ssy": "薩霍文",
+      "st": "塞索托文",
+      "stq": "沙特菲士蘭文",
+      "str": "海峽薩利希語",
+      "su": "巽他文",
+      "suk": "蘇庫馬文",
+      "sus": "蘇蘇文",
+      "sux": "蘇美文",
+      "sv": "瑞典文",
+      "sw": "史瓦希里文",
+      "sw-CD": "剛果史瓦希里文",
+      "swb": "葛摩文",
+      "syc": "古敘利亞文",
+      "syr": "敍利亞文",
+      "szl": "西利西亞文",
+      "ta": "泰米爾文",
+      "tce": "南塔穹語",
+      "tcy": "圖盧文",
+      "te": "泰盧固文",
+      "tem": "提姆文",
+      "teo": "特索文",
+      "ter": "泰雷諾文",
+      "tet": "泰頓文",
+      "tg": "塔吉克文",
+      "tgx": "塔吉什語",
+      "th": "泰文",
+      "tht": "塔爾坦語",
+      "ti": "提格利尼亞文",
+      "tig": "蒂格雷文",
+      "tiv": "提夫文",
+      "tk": "土庫曼文",
+      "tkl": "托克勞文",
+      "tkr": "查庫爾文",
+      "tl": "塔加路族文",
+      "tlh": "克林貢文",
+      "tli": "特林基特文",
+      "tly": "塔里什文",
+      "tmh": "塔馬奇克文",
+      "tn": "突尼西亞文",
+      "to": "湯加文",
+      "tog": "東加文（尼亞薩）",
+      "tok": "道本語",
+      "tpi": "托比辛文",
+      "tr": "土耳其文",
+      "tru": "圖羅尤文",
+      "trv": "太魯閣文",
+      "ts": "特松加文",
+      "tsd": "特薩克尼恩文",
+      "tsi": "欽西安文",
+      "tt": "韃靼文",
+      "ttm": "北塔穹語",
+      "ttt": "穆斯林塔特文",
+      "tum": "圖姆布卡文",
+      "tvl": "吐瓦魯文",
+      "tw": "特威文",
+      "twq": "北桑海文",
+      "ty": "大溪地文",
+      "tyv": "圖瓦文",
+      "tzm": "中阿特拉斯塔馬塞特文",
+      "udm": "烏德穆爾特文",
+      "ug": "維吾爾文",
+      "uga": "烏加列文",
+      "uk": "烏克蘭文",
+      "umb": "姆本杜文",
+      "ur": "烏爾都文",
+      "uz": "烏茲別克文",
+      "vai": "瓦伊文",
+      "ve": "溫達文",
+      "vec": "威尼斯文",
+      "vep": "維普森文",
+      "vi": "越南文",
+      "vls": "西佛蘭德文",
+      "vmf": "美茵-法蘭克尼亞文",
+      "vmw": "馬庫瓦文",
+      "vo": "沃拉普克文",
+      "vot": "沃提克文",
+      "vro": "佛羅文",
+      "vun": "溫舊文",
+      "wa": "瓦隆文",
+      "wae": "瓦爾瑟文",
+      "wal": "瓦拉莫文",
+      "war": "瓦瑞文",
+      "was": "瓦紹文",
+      "wbp": "瓦爾皮里文",
+      "wo": "沃洛夫文",
+      "wuu": "吳語",
+      "xal": "卡爾梅克文",
+      "xh": "科薩文",
+      "xmf": "明格列爾文",
+      "xnr": "康格里",
+      "xog": "索加文",
+      "yao": "瑤文",
+      "yap": "雅浦文",
+      "yav": "洋卞文",
+      "ybb": "耶姆巴文",
+      "yi": "意第緒文",
+      "yo": "約魯巴文",
+      "yrl": "奈恩加圖文",
+      "yue": "廣東話",
+      "za": "壯文",
+      "zap": "薩波特克文",
+      "zbl": "布列斯符號",
+      "zea": "西蘭文",
+      "zen": "澤納加文",
+      "zgh": "摩洛哥標準塔馬齊格特文",
+      "zh": "中文",
+      "zh-Hans": "簡體中文",
+      "zh-Hant": "繁體中文",
+      "zu": "祖魯文",
+      "zun": "祖尼文",
+      "zza": "扎扎文"
+    },
+    "scriptNames": {
+      "Adlm": "富拉文",
+      "Afak": "阿法卡文字",
+      "Aghb": "高加索阿爾巴尼亞文",
+      "Ahom": "阿洪姆文",
+      "Arab": "阿拉伯字母",
+      "Aran": "波斯體",
+      "Armi": "皇室亞美尼亞文",
+      "Armn": "亞美尼亞文",
+      "Avst": "阿維斯陀文",
+      "Bali": "峇里文",
+      "Bass": "巴薩文",
+      "Bhks": "梵文",
+      "Blis": "布列斯文",
+      "Bopo": "注音符號",
+      "Brah": "婆羅米文",
+      "Brai": "盲人用點字",
+      "Bugi": "布吉斯文",
+      "Cakm": "查克馬文",
+      "Cans": "加拿大原住民通用字符",
+      "Cari": "卡里亞文",
+      "Cher": "柴羅基文",
+      "Copt": "科普特文",
+      "Cyrl": "西里爾文字",
+      "Cyrs": "西里爾文（古教會斯拉夫文變體）",
+      "Dsrt": "德瑟雷特文",
+      "Dupl": "杜普洛伊速記",
+      "Egyd": "古埃及世俗體",
+      "Egyh": "古埃及僧侶體",
+      "Egyp": "古埃及聖書體",
+      "Elba": "愛爾巴桑文",
+      "Ethi": "埃塞俄比亞文",
+      "Geok": "喬治亞語系（阿索他路里和努斯克胡里文）",
+      "Geor": "格魯吉亞文",
+      "Gonm": "岡德文",
+      "Goth": "歌德文",
+      "Gran": "格蘭他文字",
+      "Grek": "希臘字母",
+      "Guru": "古木基文",
+      "Hanb": "標上注音符號的漢字",
+      "Hang": "諺文",
+      "Hani": "漢字",
+      "Hano": "哈努諾文",
+      "Hans": "簡體中文",
+      "Hant": "繁體中文",
+      "Hatr": "哈特拉文",
+      "Hebr": "希伯來文",
+      "Hluw": "安那托利亞象形文字",
+      "Hmng": "楊松錄苗文",
+      "Hrkt": "片假名或平假名",
+      "Inds": "印度河流域（哈拉帕文）",
+      "Jamo": "韓文字母",
+      "Jurc": "女真文字",
+      "Kali": "克耶李文",
+      "Khar": "卡羅須提文",
+      "Knda": "坎納達文",
+      "Kore": "韓文",
+      "Kpel": "克培列文",
+      "Kthi": "凱提文",
+      "Lana": "藍拿文",
+      "Laoo": "老撾文",
+      "Latf": "拉丁文（尖角體活字變體）",
+      "Latg": "拉丁文（蓋爾語變體）",
+      "Latn": "拉丁字母",
+      "Limb": "林佈文",
+      "Lina": "線性文字（A）",
+      "Linb": "線性文字（B）",
+      "Lisu": "栗僳文",
+      "Loma": "洛馬文",
+      "Lyci": "呂西亞語",
+      "Lydi": "里底亞語",
+      "Mahj": "印地文",
+      "Mand": "曼底安文",
+      "Marc": "瑪欽文",
+      "Maya": "瑪雅象形文字",
+      "Mend": "門德文",
+      "Merc": "麥羅埃文（曲線字體）",
+      "Mero": "麥羅埃文",
+      "Mlym": "馬拉雅拉姆文",
+      "Modi": "馬拉地文",
+      "Moon": "蒙氏點字",
+      "Mroo": "謬文",
+      "Mtei": "曼尼普爾文",
+      "Mult": "木爾坦文",
+      "Mymr": "緬甸文",
+      "Narb": "古北阿拉伯文",
+      "Nbat": "納巴泰文字",
+      "Newa": "尼瓦爾文",
+      "Nkgb": "納西格巴文",
+      "Nkoo": "西非書面語言 (N’Ko)",
+      "Nshu": "女書",
+      "Ogam": "歐甘文",
+      "Orkh": "鄂爾渾文",
+      "Orya": "奧里雅文",
+      "Osge": "歐塞奇文",
+      "Osma": "歐斯曼亞文",
+      "Palm": "帕米瑞拉文字",
+      "Pauc": "鮑欽豪文",
+      "Perm": "古彼爾姆諸文",
+      "Phli": "巴列維文（碑銘體）",
+      "Phlp": "巴列維文（聖詩體）",
+      "Phlv": "巴列維文（書體）",
+      "Plrd": "柏格理拼音符",
+      "Prti": "帕提亞文（碑銘體）",
+      "Qaag": "佐基文",
+      "Rjng": "拉讓文",
+      "Rohg": "哈乃斐羅興亞文",
+      "Roro": "朗格朗格象形文",
+      "Runr": "古北歐文字",
+      "Samr": "撒馬利亞文",
+      "Sgnw": "手語書寫符號",
+      "Shaw": "簫柏納字符",
+      "Shrd": "夏拉達文",
+      "Sidd": "悉曇文字",
+      "Sinh": "僧伽羅文",
+      "Sora": "索朗桑朋文字",
+      "Soyo": "索永布文字",
+      "Sylo": "希洛弟納格里文",
+      "Syrc": "敘利亞文",
+      "Syre": "敘利亞文（福音體文字變體）",
+      "Syrj": "敘利亞文（西方文字變體）",
+      "Syrn": "敘利亞文（東方文字變體）",
+      "Tagb": "南島文",
+      "Takr": "塔卡里文字",
+      "Tale": "傣哪文",
+      "Talu": "西雙版納新傣文",
+      "Taml": "泰米爾文",
+      "Tang": "西夏文",
+      "Tavt": "傣擔文",
+      "Telu": "泰盧固文",
+      "Teng": "談格瓦文",
+      "Tfng": "提非納文",
+      "Tglg": "塔加拉文",
+      "Thaa": "它拿字母",
+      "Tirh": "邁蒂利文",
+      "Ugar": "烏加列文",
+      "Visp": "視覺語音文字",
+      "Wole": "沃雷艾文",
+      "Xsux": "蘇米魯亞甲文楔形文字",
+      "Yiii": "彞文",
+      "Zanb": "札那巴札爾文字",
+      "Zinh": "繼承文字（Unicode）",
+      "Zmth": "數學符號",
+      "Zsye": "表情符號",
+      "Zsym": "符號",
+      "Zxxx": "非書寫語言",
+      "Zyyy": "一般文字"
+    }
+  }
+}

@@ -1,0 +1,952 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:41.996Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/tagging.sq.json",
+    "hash": "1477932af7e179ad4c9f16c9dbf608c8"
+  },
+  "sq": {
+    "presets": {
+      "categories": {
+        "category-path": {
+          "name": "Shtigje"
+        }
+      },
+      "fields": {
+        "access": {
+          "options": {
+            "no": {
+              "title": "I Ndaluar"
+            },
+            "private": {
+              "title": "Privat"
+            },
+            "unknown": {
+              "title": "I panjohur"
+            },
+            "yes": {
+              "title": "I Lejuar"
+            }
+          },
+          "types": {
+            "bicycle": "Biçikleta",
+            "foot": "Këmbë",
+            "horse": "Kuaj"
+          }
+        },
+        "access_aisle": {
+          "label": "Tipi"
+        },
+        "access_simple": {
+          "options": {
+            "no": "Asnjë",
+            "private": "Privat",
+            "unknown": "I panjohur"
+          }
+        },
+        "addr/interpolation": {
+          "label": "Tipi"
+        },
+        "address": {
+          "label": "Adresa",
+          "placeholders": {
+            "city": "Qyteti",
+            "country": "Vendi",
+            "postcode": "Kodi Postar",
+            "province": "Provinca",
+            "state": "Shteti",
+            "street": "rrugë"
+          }
+        },
+        "advertising": {
+          "label": "Tipi"
+        },
+        "aerialway": {
+          "label": "Tipi"
+        },
+        "aeroway": {
+          "label": "Tipi"
+        },
+        "aircraft/type": {
+          "label": "Tipi"
+        },
+        "amenity": {
+          "label": "Tipi"
+        },
+        "archaeological_site": {
+          "label": "Tipi"
+        },
+        "area/highway": {
+          "label": "Tipi"
+        },
+        "armrest": {
+          "options": {
+            "undefined": "I panjohur"
+          }
+        },
+        "artwork_type": {
+          "label": "Tipi"
+        },
+        "atm": {
+          "label": "Bankomat"
+        },
+        "attraction": {
+          "label": "Tipi"
+        },
+        "baby_feeding": {
+          "options": {
+            "no": "Asnjë"
+          }
+        },
+        "barrier": {
+          "label": "Tipi"
+        },
+        "barrier_planter": {
+          "options": {
+            "planter": "Po",
+            "undefined": "Jo"
+          }
+        },
+        "basin": {
+          "label": "Tipi"
+        },
+        "beauty": {
+          "label": "Shërbimet"
+        },
+        "bench": {
+          "label": "Stol"
+        },
+        "bicycle_parking": {
+          "label": "Tipi"
+        },
+        "bicycle_road": {
+          "options": {
+            "undefined": "Jo",
+            "yes": "Po"
+          }
+        },
+        "blind": {
+          "options": {
+            "no": "Jo",
+            "yes": "Po"
+          }
+        },
+        "board_type": {
+          "label": "Tipi",
+          "options": {
+            "history": "Historia"
+          }
+        },
+        "bollard": {
+          "label": "Tipi"
+        },
+        "boules": {
+          "label": "Tipi"
+        },
+        "boundary": {
+          "label": "Tipi"
+        },
+        "bridge": {
+          "label": "Tipi"
+        },
+        "bridge/support": {
+          "label": "Tipi"
+        },
+        "bridge_combo": {
+          "label": "Tipi"
+        },
+        "building": {
+          "label": "Ndërtesa",
+          "options": {
+            "college": "Ndërtesa e Kollegjit"
+          }
+        },
+        "bunker_type": {
+          "label": "Tipi"
+        },
+        "camp_site": {
+          "label": "Tipi"
+        },
+        "capacity": {
+          "label": "Kapaciteti"
+        },
+        "castle_type": {
+          "label": "Tipi"
+        },
+        "club": {
+          "label": "Tipi"
+        },
+        "community_centre": {
+          "label": "Tipi"
+        },
+        "construction": {
+          "label": "Tipi"
+        },
+        "consulate": {
+          "label": "Tipi"
+        },
+        "country": {
+          "label": "Vendi"
+        },
+        "covered_no": {
+          "options": {
+            "no": "Jo",
+            "yes": "Po"
+          }
+        },
+        "craft": {
+          "label": "Tipi"
+        },
+        "crossing": {
+          "label": "Tipi"
+        },
+        "crossing/barrier": {
+          "options": {
+            "no": "Jo",
+            "yes": "Po"
+          }
+        },
+        "crossing_raised": {
+          "options": {
+            "table": "Po",
+            "undefined": "Jo"
+          }
+        },
+        "cuisine": {
+          "options": {
+            "regional": "Rajonal"
+          }
+        },
+        "cutting": {
+          "label": "Tipi"
+        },
+        "cycle_barrier": {
+          "label": "Tipi"
+        },
+        "cycleway": {
+          "label": "Korsi Biçikletash",
+          "options": {
+            "lane": {
+              "description": "Korsi biçikletash ndarë nga trafiku makinave me një vijë"
+            },
+            "no": {
+              "description": "Pa korsi biçikletash",
+              "title": "Asnjë"
+            },
+            "share_busway": {
+              "description": "Korsi e përbashkët për biçikleta dhe autobuzë"
+            },
+            "shared_lane": {
+              "description": "Korsi biçikletash e pandarë nga trafiku makinave"
+            },
+            "track": {
+              "description": "Korsi biçikletash ndarë nga trafiku me një pengesë fizike"
+            }
+          }
+        },
+        "departures_board": {
+          "options": {
+            "no": "Asnjë",
+            "yes": "Po"
+          }
+        },
+        "depot": {
+          "label": "Tipi"
+        },
+        "description": {
+          "label": "Përshkrim"
+        },
+        "diplomatic": {
+          "label": "Tipi"
+        },
+        "diplomatic/services": {
+          "label": "Shërbimet"
+        },
+        "direction_cardinal-US-CA-NZ": {
+          "label": "Drejtimi"
+        },
+        "direction_clock": {
+          "label": "Drejtimi",
+          "options": {
+            "anticlockwise": "Rotullimi antiorar",
+            "clockwise": "Rotullimi orar"
+          }
+        },
+        "distance": {
+          "label": "Distancë"
+        },
+        "disused/amenity": {
+          "label": "Tipi"
+        },
+        "disused/railway": {
+          "label": "Tipi"
+        },
+        "disused/shop": {
+          "label": "Tipi"
+        },
+        "dock": {
+          "label": "Tipi"
+        },
+        "dog": {
+          "options": {
+            "yes": "I Lejuar"
+          }
+        },
+        "door_type": {
+          "label": "Tipi"
+        },
+        "electrified": {
+          "options": {
+            "no": "Jo"
+          }
+        },
+        "embankment": {
+          "label": "Tipi"
+        },
+        "embassy": {
+          "label": "Tipi"
+        },
+        "emergency_combo": {
+          "label": "Tipi"
+        },
+        "emergency_ward_entrance": {
+          "label": "Tipi"
+        },
+        "enforcement": {
+          "label": "Tipi"
+        },
+        "entrance": {
+          "label": "Tipi"
+        },
+        "fence_type": {
+          "label": "Tipi"
+        },
+        "fire_mains": {
+          "options": {
+            "no": "Jo"
+          }
+        },
+        "fire_sprinkler": {
+          "options": {
+            "no": "Jo"
+          }
+        },
+        "flashing_lights": {
+          "options": {
+            "no": "Jo",
+            "yes": "Po"
+          }
+        },
+        "ford": {
+          "label": "Tipi"
+        },
+        "fountain": {
+          "label": "Tipi"
+        },
+        "gender": {
+          "label": "Gjinja",
+          "options": {
+            "female": "Femër",
+            "male": "Mashkull"
+          },
+          "placeholder": "I panjohur"
+        },
+        "generator/source": {
+          "label": "Burim"
+        },
+        "generator/type": {
+          "label": "Tipi"
+        },
+        "government": {
+          "label": "Tipi"
+        },
+        "guest_house": {
+          "label": "Tipi"
+        },
+        "healthcare": {
+          "label": "Tipi"
+        },
+        "highway": {
+          "label": "Tipi"
+        },
+        "historic": {
+          "label": "Tipi",
+          "options": {
+            "railway": "Hekurudhë"
+          }
+        },
+        "holding_position/type": {
+          "label": "Tipi"
+        },
+        "horse_riding": {
+          "options": {
+            "horse_riding": "Po",
+            "undefined": "Jo"
+          }
+        },
+        "indoor_type": {
+          "label": "Tipi"
+        },
+        "industrial": {
+          "label": "Tipi"
+        },
+        "information": {
+          "label": "Tipi"
+        },
+        "internet_access": {
+          "options": {
+            "no": "Jo",
+            "yes": "Po"
+          }
+        },
+        "irrigation_pivot": {
+          "options": {
+            "pivot": "Po",
+            "undefined": "Jo"
+          }
+        },
+        "kerb": {
+          "options": {
+            "no": {
+              "title": "Jo"
+            },
+            "yes": {
+              "title": "Po"
+            }
+          }
+        },
+        "kerb/kerb_barrier": {
+          "label": "Tipi"
+        },
+        "lamp_type": {
+          "label": "Tipi"
+        },
+        "landuse": {
+          "label": "Tipi"
+        },
+        "layer": {
+          "label": "Shtresë"
+        },
+        "leisure": {
+          "label": "Tipi"
+        },
+        "liaison": {
+          "label": "Tipi"
+        },
+        "lifeguard": {
+          "label": "Tipi"
+        },
+        "lift_gate/type": {
+          "label": "Tipi"
+        },
+        "location": {
+          "label": "Vendndodhja"
+        },
+        "man_made": {
+          "label": "Tipi"
+        },
+        "manhole": {
+          "label": "Tipi"
+        },
+        "map_type": {
+          "label": "Tipi"
+        },
+        "marker": {
+          "label": "Tipi"
+        },
+        "memorial": {
+          "label": "Tipi"
+        },
+        "mooring": {
+          "options": {
+            "no": "Jo",
+            "private": "Privat",
+            "yes": "Po"
+          }
+        },
+        "museum": {
+          "label": "Tipi"
+        },
+        "name": {
+          "label": "Emri"
+        },
+        "network_bicycle": {
+          "options": {
+            "icn": "Ndërkombëtar",
+            "lcn": "Lokal",
+            "ncn": "Kombëtar",
+            "rcn": "Rajonal"
+          }
+        },
+        "network_foot": {
+          "options": {
+            "iwn": "Ndërkombëtar",
+            "lwn": "Lokal",
+            "nwn": "Kombëtar",
+            "rwn": "Rajonal"
+          }
+        },
+        "network_horse": {
+          "options": {
+            "ihn": "Ndërkombëtar",
+            "lhn": "Lokal",
+            "nhn": "Kombëtar",
+            "rhn": "Rajonal"
+          }
+        },
+        "note": {
+          "label": "Shënim"
+        },
+        "nudism": {
+          "options": {
+            "no": "I Ndaluar",
+            "yes": "I Lejuar"
+          }
+        },
+        "office": {
+          "label": "Tipi"
+        },
+        "oneway": {
+          "options": {
+            "no": "Jo",
+            "yes": "Po"
+          }
+        },
+        "oneway_yes": {
+          "options": {
+            "no": "Jo",
+            "yes": "Po"
+          }
+        },
+        "opening_hours": {
+          "placeholder": "I panjohur"
+        },
+        "organic": {
+          "options": {
+            "no": "Asnjë"
+          }
+        },
+        "parcel_pickup": {
+          "options": {
+            "no": "Jo",
+            "yes": "Po"
+          }
+        },
+        "parking": {
+          "label": "Tipi"
+        },
+        "parking/side/orientation": {
+          "types": {
+            "parking:left:orientation": "Anën e majtë",
+            "parking:right:orientation": "Anën e djathtë"
+          }
+        },
+        "parking/side/parking": {
+          "options": {
+            "no": "Jo"
+          },
+          "types": {
+            "parking:left": "Anën e majtë",
+            "parking:right": "Anën e djathtë"
+          }
+        },
+        "parking_entrance": {
+          "label": "Tipi"
+        },
+        "parking_space": {
+          "label": "Tipi"
+        },
+        "pipeline": {
+          "label": "Tipi"
+        },
+        "piste/difficulty": {
+          "label": "Vështersia"
+        },
+        "piste/type": {
+          "label": "Tipi"
+        },
+        "place": {
+          "label": "Tipi"
+        },
+        "playground": {
+          "label": "Tipi"
+        },
+        "post_box/type": {
+          "label": "Tipi"
+        },
+        "power": {
+          "label": "Tipi"
+        },
+        "public_bookcase/type": {
+          "label": "Tipi"
+        },
+        "pump": {
+          "options": {
+            "no": "Asnjë",
+            "yes": "Po"
+          }
+        },
+        "railway": {
+          "label": "Tipi"
+        },
+        "ramp": {
+          "options": {
+            "no": "Jo",
+            "yes": "Po"
+          }
+        },
+        "recycling_type": {
+          "label": "Tipi",
+          "options": {
+            "centre": "Qendra"
+          }
+        },
+        "relation": {
+          "label": "Tipi"
+        },
+        "residential": {
+          "label": "Tipi"
+        },
+        "resort": {
+          "label": "Tipi"
+        },
+        "restriction": {
+          "label": "Tipi"
+        },
+        "roller_coaster/track": {
+          "label": "Tipi"
+        },
+        "room": {
+          "label": "Tipi"
+        },
+        "route": {
+          "label": "Tipi"
+        },
+        "route_master": {
+          "label": "Tipi"
+        },
+        "royal_cypher-GB": {
+          "options": {
+            "no": "Jo"
+          }
+        },
+        "ruins": {
+          "label": "Tipi"
+        },
+        "scuba_diving": {
+          "label": "Shërbimet"
+        },
+        "seamark/harbour/category_marina": {
+          "options": {
+            "marina": "Po",
+            "marina_no_facilities": "Jo"
+          }
+        },
+        "second_hand": {
+          "options": {
+            "no": "Jo",
+            "yes": "Po"
+          }
+        },
+        "service": {
+          "label": "Tipi"
+        },
+        "service/vehicle": {
+          "label": "Shërbimet"
+        },
+        "shelter_type": {
+          "label": "Tipi"
+        },
+        "shop": {
+          "label": "Tipi"
+        },
+        "siren/purpose": {
+          "label": "Qëllim"
+        },
+        "siren/type": {
+          "label": "Tipi"
+        },
+        "site": {
+          "label": "Tipi"
+        },
+        "smoking": {
+          "options": {
+            "no": "Nuk lejohet duhani askund",
+            "outside": "Lejuar përjashta",
+            "separated": "Në zonat ku pihet duhan, të paizoluara fizikisht",
+            "yes": "Lejuar kudo"
+          },
+          "placeholder": "Jo, Ndarë, Po..."
+        },
+        "social_facility": {
+          "label": "Tipi"
+        },
+        "stile": {
+          "label": "Tipi"
+        },
+        "street_cabinet": {
+          "label": "Tipi"
+        },
+        "stroller": {
+          "options": {
+            "no": "Jo",
+            "yes": "Po"
+          }
+        },
+        "structure": {
+          "placeholder": "I panjohur"
+        },
+        "structure_canal": {
+          "placeholder": "I panjohur"
+        },
+        "structure_waterway": {
+          "placeholder": "I panjohur"
+        },
+        "studio": {
+          "label": "Tipi"
+        },
+        "substation": {
+          "label": "Tipi"
+        },
+        "substation_pipeline": {
+          "label": "Tipi",
+          "options": {
+            "measurement": "Matje"
+          }
+        },
+        "survey_point/purpose": {
+          "label": "Qëllim"
+        },
+        "swimming_pool": {
+          "label": "Tipi"
+        },
+        "switch": {
+          "label": "Tipi"
+        },
+        "takeaway": {
+          "options": {
+            "no": "Jo",
+            "yes": "Po"
+          }
+        },
+        "telecom": {
+          "label": "Tipi"
+        },
+        "telescope/type": {
+          "label": "Tipi"
+        },
+        "toilets/menstrual_products": {
+          "options": {
+            "no": "Jo"
+          }
+        },
+        "toilets/wheelchair": {
+          "options": {
+            "no": "Jo",
+            "yes": "Po"
+          }
+        },
+        "tomb": {
+          "label": "Tipi"
+        },
+        "tourism": {
+          "label": "Tipi"
+        },
+        "tower/type": {
+          "label": "Tipi"
+        },
+        "townhall/type": {
+          "label": "Tipi"
+        },
+        "trade": {
+          "label": "Tipi"
+        },
+        "traffic_calming": {
+          "label": "Tipi"
+        },
+        "traffic_signals": {
+          "label": "Tipi"
+        },
+        "traffic_signals/sound": {
+          "options": {
+            "no": "Jo",
+            "yes": "Po"
+          }
+        },
+        "transformer": {
+          "label": "Tipi"
+        },
+        "trench": {
+          "label": "Tipi"
+        },
+        "tunnel": {
+          "label": "Tipi"
+        },
+        "tunnel_combo": {
+          "label": "Tipi"
+        },
+        "two_sided": {
+          "options": {
+            "undefined": "Jo",
+            "yes": "Po"
+          }
+        },
+        "usage_rail": {
+          "options": {
+            "tourism": "Turizëm"
+          }
+        },
+        "utility": {
+          "options": {
+            "water": "Ujë"
+          }
+        },
+        "valve": {
+          "label": "Tipi"
+        },
+        "wall": {
+          "label": "Tipi"
+        },
+        "water": {
+          "label": "Tipi"
+        },
+        "water_source": {
+          "options": {
+            "river": "Lumë"
+          }
+        },
+        "waterway": {
+          "label": "Tipi"
+        },
+        "wetland": {
+          "label": "Tipi"
+        },
+        "wheelchair": {
+          "options": {
+            "no": "Jo",
+            "yes": "Po"
+          }
+        },
+        "windings/auto": {
+          "options": {
+            "no": "Jo",
+            "yes": "Po"
+          }
+        }
+      },
+      "presets": {
+        "address": {
+          "name": "Adresa"
+        },
+        "amenity/atm": {
+          "name": "Bankomat"
+        },
+        "amenity/bench": {
+          "name": "Stol"
+        },
+        "amenity/bus_station": {
+          "name": "Stacioni i Autobusave"
+        },
+        "area": {
+          "name": "Sipërfaqja"
+        },
+        "boundary/administrative": {
+          "name": "Kufi Administrativ"
+        },
+        "building": {
+          "name": "Ndërtesa"
+        },
+        "building/college": {
+          "name": "Ndërtesa e Kollegjit"
+        },
+        "building_point": {
+          "name": "Ndërtesa"
+        },
+        "highway/cycleway": {
+          "name": "Rrugë biçikletash"
+        },
+        "highway/elevator": {
+          "name": "Ashensor"
+        },
+        "highway/footway": {
+          "name": "Rrugë këmbësorësh"
+        },
+        "highway/secondary": {
+          "name": "Rrugë Dytësore"
+        },
+        "line": {
+          "name": "Vijë"
+        },
+        "natural/water": {
+          "name": "Ujë"
+        },
+        "place/city": {
+          "name": "Qytet"
+        },
+        "place/square": {
+          "name": "Katror"
+        },
+        "point": {
+          "name": "Pikë"
+        },
+        "power/transformer": {
+          "name": "Transformator"
+        },
+        "public_transport/station_bus": {
+          "name": "Stacioni i Autobusave"
+        },
+        "railway/abandoned": {
+          "name": "Hekurudhë E Braktisur"
+        },
+        "relation": {
+          "name": "Lidhje"
+        },
+        "shop": {
+          "name": "Dyqan"
+        },
+        "shop/bakery": {
+          "name": "Furrë buke"
+        },
+        "shop/clothes": {
+          "name": "Dyqan Veshjesh"
+        },
+        "shop/copyshop": {
+          "name": "Fotokopje"
+        },
+        "shop/dry_cleaning": {
+          "name": "Pastrim Kimik"
+        },
+        "shop/kiosk": {
+          "name": "Kioskë"
+        },
+        "shop/kitchen": {
+          "name": "Dyqan për Aredim të Kuzhinës"
+        },
+        "shop/laundry": {
+          "name": "Lavanderi"
+        },
+        "shop/optician": {
+          "name": "Okulist"
+        },
+        "tourism/information": {
+          "name": "Informacion"
+        },
+        "tourism/information/map": {
+          "name": "Hartë"
+        },
+        "type/boundary/administrative": {
+          "name": "Kufi Administrativ"
+        },
+        "waterway/canal": {
+          "name": "Kanal"
+        },
+        "waterway/river": {
+          "name": "Lumë"
+        },
+        "waterway/waterfall": {
+          "name": "Ujëvarë"
+        }
+      }
+    }
+  }
+}

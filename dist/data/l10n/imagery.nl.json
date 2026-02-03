@@ -1,0 +1,891 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.155Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/imagery.nl.json",
+    "hash": "c0c7434ab59edd55baa01b34ea058cab"
+  },
+  "nl": {
+    "imagery": {
+      "Bedzin-PL-aerial_image": {
+        "attribution": {
+          "text": "Provinciekantoor in Będzin"
+        },
+        "name": "Będzin: Orthofotokaart 2013 (luchtfoto)"
+      },
+      "Bedzin-PL-buildings": {
+        "attribution": {
+          "text": "Provinciekantoor in Będzin"
+        },
+        "name": "Będzin: Gebouwen"
+      },
+      "Bing": {
+        "description": "Satelliet- en luchtfotografie.",
+        "name": "Bing Maps-luchtfoto"
+      },
+      "Bytom-2012": {
+        "attribution": {
+          "text": "Stadhuis van Bytom"
+        },
+        "name": "Bytom: Orthofotokaart 2012 (luchtfoto)"
+      },
+      "Bytom-2014": {
+        "attribution": {
+          "text": "Stadhuis van Bytom"
+        },
+        "name": "Bytom: Fotokaart 2014 (luchtfoto)"
+      },
+      "Bytom-2016": {
+        "attribution": {
+          "text": "Stadhuis van Bytom"
+        }
+      },
+      "Bytom-2018": {
+        "attribution": {
+          "text": "Stadhuis van Bytom"
+        }
+      },
+      "Bytom-2021": {
+        "attribution": {
+          "text": "Stadhuis van Bytom"
+        }
+      },
+      "Bytom-buildings": {
+        "attribution": {
+          "text": "Stadhuis van Bytom"
+        },
+        "name": "Bytom: Gebouwen"
+      },
+      "Czestochowa-2011": {
+        "attribution": {
+          "text": "Stadhuis van Częstochowa"
+        },
+        "name": "Częstochowa: Orthofotokaart 2011 (luchtfoto)"
+      },
+      "Czestochowa-2013": {
+        "attribution": {
+          "text": "Stadhuis van Częstochowa"
+        },
+        "name": "Częstochowa: Orthofotokaart 2013 (luchtfoto)"
+      },
+      "Czestochowa-2014": {
+        "attribution": {
+          "text": "Stadhuis van Częstochowa"
+        },
+        "name": "Częstochowa: Orthofotokaart 2014 (luchtfoto)"
+      },
+      "Czestochowa-2015": {
+        "attribution": {
+          "text": "Stadhuis van Częstochowa"
+        },
+        "name": "Częstochowa: Orthofotokaart 2015 (luchtfoto)"
+      },
+      "Czestochowa-2016": {
+        "attribution": {
+          "text": "Stadhuis van Częstochowa"
+        },
+        "name": "Częstochowa: Orthofotokaart 2016 (luchtfoto)"
+      },
+      "Czestochowa-2017": {
+        "attribution": {
+          "text": "Stadhuis van Częstochowa"
+        },
+        "name": "Częstochowa: Orthofotokaart 2017 (luchtfoto)"
+      },
+      "Czestochowa-buildings": {
+        "attribution": {
+          "text": "Stadhuis van Częstochowa"
+        },
+        "name": "Częstochowa: Gebouwen"
+      },
+      "EOXAT2017CLOUDLESS": {
+        "description": "Postprocessed Sentinel Satellite-fotografie."
+      },
+      "EOXAT2018CLOUDLESS": {
+        "attribution": {
+          "text": "Sentinel-2 onbewolkt - https://s2maps.eu door EOX IT Services GmbH (Bevat aangepaste gegevens van Copernicus Sentinel 2017 & 2018)"
+        },
+        "description": "Postprocessed Sentinel Satellite-fotografie.",
+        "name": "eox.at 2018 onbewolkt"
+      },
+      "EOXAT2019CLOUDLESS": {
+        "description": "Postprocessed Sentinel Satellite-fotografie."
+      },
+      "EOXAT2020CLOUDLESS": {
+        "description": "Postprocessed Sentinel Satellite-fotografie."
+      },
+      "EOXAT2021CLOUDLESS": {
+        "description": "Postprocessed Sentinel Satellite-fotografie."
+      },
+      "EOXAT2022CLOUDLESS": {
+        "description": "Postprocessed Sentinel Satellite-fotografie."
+      },
+      "EOXAT2023CLOUDLESS": {
+        "description": "Postprocessed Sentinel Satellite-fotografie."
+      },
+      "EOXAT2024CLOUDLESS": {
+        "description": "Postprocessed Sentinel Satellite-fotografie."
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Voorwaarden & Terugkoppeling"
+        },
+        "description": "Esri World-fotografie",
+        "name": "Esri World-fotografie"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Gebruiksvoorwaarden & feedback"
+        },
+        "description": "Esri-archiefbeelden kunnen duidelijker en accurater zijn dan de standaard achtergrondbeelden.",
+        "name": "Esri World-fotografie (helder) Beta"
+      },
+      "Frankfurt-am-Main-2019": {
+        "attribution": {
+          "text": "Stadsonderzoekscommissie Frankfurt am Main"
+        },
+        "description": "Luchtfoto's van Frankfurt am Main, genomen op 16 april 2019",
+        "name": "Frankfurt am Main-luchtfoto 2019"
+      },
+      "Geoportal2-PL-City-boundaries_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        }
+      },
+      "Geoportal2-PL-HighResolution-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        },
+        "description": "Orthofotokaart met een resolutie van 10 cm of meer. De gegevens worden gesorteerd op resolutie en vervolgens op datum, bijvoorbeeld een kaart uit 2012 met een resolutie van 8 cm wordt boven een kaart van 2019 met een resolutie van 10 cm getoond."
+      },
+      "Geoportal2-PL-HighResolution-aerial_image_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        },
+        "description": "Orthofotokaart met een resolutie van 10 cm of meer. De gegevens worden gesorteerd op resolutie en vervolgens op datum, bijvoorbeeld een kaart uit 2012 met een resolutie van 8 cm wordt boven een kaart van 2019 met een resolutie van 10 cm getoond."
+      },
+      "Geoportal2-PL-Streets_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        },
+        "description": "WMS-browserservice \"Nationale Adres Nummering Integratie\" (Krajowa Integracja Numeracji Adresowej) maakt het mogelijk om kaartafbeeldingen te downloaden die zijn gemaakt op basis van ruimtelijke gegevens uit het Rijksregister van Grenzen op het vlak van straat- en adresgegevens.",
+        "name": "Geoportaal 2 Straatnamen"
+      },
+      "Geoportal2-PL-addres_points_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        },
+        "description": "WMS-browserservice \"Nationale Adres Nummering Integratie\" (Krajowa Integracja Numeracji Adresowej) maakt het mogelijk om kaartafbeeldingen te downloaden die zijn gemaakt op basis van ruimtelijke gegevens uit het Rijksregister van Grenzen op het vlak van straat- en adresgegevens.",
+        "name": "Geoportaal 2: Adrespunten"
+      },
+      "Geoportal2-PL-aerial_archival_image_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        }
+      },
+      "Geoportal2-PL-aerial_image_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        },
+        "description": "WMS-browseservice waarmee u orthofoto's voor de regio Polen kunt bekijken. De gegevens die via deze dienst worden verstrekt, is een orthofotokaart gemaakt van luchtfoto's. De service biedt ondersteuning voor de WMS 1.3.0-interface.",
+        "name": "Geoportal 2: Orthofotokaart (laatste luchtfotografie) (WMS)"
+      },
+      "Geoportal2-PL-aerial_image_WMTS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        },
+        "description": "WMS-browseservice waarmee u orthofoto's voor de regio Polen kunt bekijken. De gegevens die via deze dienst worden verstrekt, is een orthofotokaart gemaakt van luchtfoto's. ",
+        "name": "Geoportal 2: Orthofotokaart (laatste luchtfotografie) (WMTS)"
+      },
+      "Geoportal2-PL-boundaries-of-communes_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-counties_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        }
+      },
+      "Geoportal2-PL-boundaries-of-provinces_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        }
+      },
+      "Geoportal2-PL-buildings_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        },
+        "description": "De dienst Landelijke Integratie van Landregistraties is een collectieve dienst voor de presentatie van registratiegegevens die rechtstreeks afkomstig zijn van de eenheden op districtniveau. De service bevat alleen de gegevens van de eenheden die de WMS-service met de juiste parameters hebben en hebben besloten hun WMS-service op te nemen in de collectieve service \"KrajowaIntegracjaEwidycjiGruntow\".",
+        "name": "Geoportal 2: WMS gebouwgegevens"
+      },
+      "Geoportal2-PL-gas-pipe_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        }
+      },
+      "Geoportal2-PL-heat-pipe_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        }
+      },
+      "Geoportal2-PL-plot_boundaries_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        },
+        "description": "De dienst Landelijke Integratie van Landregistraties is een collectieve dienst voor de presentatie van registratiegegevens die rechtstreeks afkomstig zijn van de eenheden op districtniveau. De service bevat alleen de gegevens van de eenheden die de WMS-service met de juiste parameters hebben en hebben besloten hun WMS-service op te nemen in de collectieve service \"KrajowaIntegracjaEwidycjiGruntow\".",
+        "name": "Geoportal 2: Perceelgrenzen"
+      },
+      "Geoportal2-PL-power-cord_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        }
+      },
+      "Geoportal2-PL-prng": {
+        "attribution": {
+          "text": "Centraal Geodetisch en Cartografisch Documentatiecentrum"
+        }
+      },
+      "Geoportal2-PL-sewer-pipe_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        }
+      },
+      "Geoportal2-PL-shaded_relief_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        }
+      },
+      "Geoportal2-PL-squares-and-housing-estates_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        },
+        "description": "WMS-browserservice \"Nationale Adres Nummering Integratie\" (Krajowa Integracja Numeracji Adresowej) maakt het mogelijk om kaartafbeeldingen te downloaden die zijn gemaakt op basis van ruimtelijke gegevens uit het Rijksregister van Grenzen op het vlak van straat- en adresgegevens."
+      },
+      "Geoportal2-PL-state-borders_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        }
+      },
+      "Geoportal2-PL-telecommunications-cable_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        }
+      },
+      "Geoportal2-PL-water-pipe_WMS": {
+        "attribution": {
+          "text": "Hoofdkantoor Geodesie en Cartografie"
+        }
+      },
+      "Gliwice-2003": {
+        "attribution": {
+          "text": "Stadhuis van Gliwice"
+        }
+      },
+      "Gliwice-2009": {
+        "attribution": {
+          "text": "Stadhuis van Gliwice"
+        }
+      },
+      "Gliwice-2013": {
+        "attribution": {
+          "text": "Stadhuis van Gliwice"
+        },
+        "name": "Gliwice: Orthofotokaart 2013 (luchtfoto)"
+      },
+      "Gliwice-2017": {
+        "attribution": {
+          "text": "Stadhuis van Gliwice"
+        },
+        "name": "Gliwice: Orthofotokaart 2017 (luchtfoto)"
+      },
+      "Gliwice-2018": {
+        "attribution": {
+          "text": "Stadhuis van Gliwice"
+        },
+        "name": "Gliwice: Orthofotokaart 2018 (luchtfoto)"
+      },
+      "Gliwice-2020": {
+        "attribution": {
+          "text": "Stadhuis van Gliwice"
+        },
+        "name": "Gliwice: Orthofotokaart 2020 (luchtfoto)"
+      },
+      "Gliwice-2021": {
+        "attribution": {
+          "text": "Stadhuis van Gliwice"
+        }
+      },
+      "Gliwice-buildings": {
+        "attribution": {
+          "text": "Stadhuis van Gliwice"
+        },
+        "name": "Gliwice: gebouwen"
+      },
+      "LSA-ALKIS_BU": {
+        "description": "Vorm van gebouwen in Saksen-Anhalt"
+      },
+      "LSA-DOP20": {
+        "description": "Luchtfoto van de deelstaat Saksen-Anhalt, resolutie van 20cm"
+      },
+      "LSA-DVG": {
+        "description": "Vector opname van de administratieve grenzen. De grenzen van de deelstaat, arrondissementen, gemeenten en delen van de gemeenten worden weergegeven."
+      },
+      "LocalAuthorities_RightsOfWay": {
+        "attribution": {
+          "text": "Bevat publieke informatie gelicentieerd onder de Open Government License v3.0."
+        },
+        "description": "Openbare recht van doorgang gegevens vrijgegeven door lokale autoriteiten, zoals verzameld op rowmaps.com",
+        "name": "Recht van overpad"
+      },
+      "Lodz-2015": {
+        "attribution": {
+          "text": "Stadhuis van Łódź"
+        },
+        "name": "Łódź: Orthofotokaart 2015 (luchtfoto)"
+      },
+      "Lodz-2017": {
+        "attribution": {
+          "text": "Stadhuis van Łódź"
+        },
+        "name": "Łódź: Orthofotokaart 2017 (luchtfoto)"
+      },
+      "Lodz-buildings": {
+        "attribution": {
+          "text": "Stadhuis van Łódź"
+        },
+        "name": "Łódź: Gebouwen"
+      },
+      "MAPNIK": {
+        "attribution": {
+          "text": "© OpenStreetMap-bijdragers, ODbL 1.0"
+        },
+        "description": "De standaard OpenStreetMap-laag",
+        "name": "OpenStreetMap (Standaard)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Gebruiksvoorwaarden & feedback"
+        },
+        "name": "Mapbox-satellietbeelden"
+      },
+      "OSIP": {
+        "description": "Ohio Statewide Imagery Program III meest recente orthoafbeeldingen van elke county met resoluties van 1 voet tot 3 inch van 2017 tot 2020."
+      },
+      "OSMUK-Cadastral-Parcels": {
+        "attribution": {
+          "text": "Bevat publieke informatie gelicentieerd onder de Open Government License v3.0."
+        },
+        "description": "Perfect uitgelijnde kadastrale percelen in Groot-Brittannië",
+        "name": "OSMUK Kadastrale Percelen"
+      },
+      "OSM_Inspector-Addresses": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap-bijdragers, CC-BY-SA"
+        },
+        "name": "OSM Inspecteur: Adressen"
+      },
+      "OSM_Inspector-Geometry": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap-bijdragers, CC-BY-SA"
+        },
+        "name": "OSM Inspecteur: Geometrie"
+      },
+      "OSM_Inspector-Highways": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap-bijdragers, CC-BY-SA"
+        },
+        "name": "OSM Inspecteur: Snelwegen"
+      },
+      "OSM_Inspector-Multipolygon": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap-bijdragers, CC-BY-SA"
+        },
+        "name": "OSM Inspecteur: Gebied"
+      },
+      "OSM_Inspector-Places": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap-bijdragers, CC-BY-SA"
+        },
+        "name": "OSM Inspecteur: Plaatsen"
+      },
+      "OSM_Inspector-Routing": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap-bijdragers, CC-BY-SA"
+        },
+        "name": "OSM Inspecteur: Routering"
+      },
+      "OSM_Inspector-Tagging": {
+        "attribution": {
+          "text": "© Geofabrik GmbH, OpenStreetMap-bijdragers, CC-BY-SA"
+        },
+        "name": "OSM Inspecteur: Tagging"
+      },
+      "SPW_ORTHO_LAST": {
+        "name": "SPW(allonie) meest recente luchtfotografie"
+      },
+      "SPW_PICC": {
+        "name": "SPW(allonie) PICC numerieke beelden"
+      },
+      "Siemianowice_Slaskie-aerial_image": {
+        "attribution": {
+          "text": "Stadhuis van Siemianowice Śląskie"
+        },
+        "name": "Siemianowice Śląskie: Orthofotokaart (luchtfoto)"
+      },
+      "Siemianowice_Slaskie-buildings": {
+        "attribution": {
+          "text": "Stadhuis van Siemianowice Śląskie"
+        },
+        "name": "Siemianowice Śląskie: Gebouwen"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Geel = Publiek domein kaartgegevens van de US Census. Rood = data niet gevonden in OpenStreetMap"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "Geel = Openbare kaartgegevens van de US Census. Rood = Gegevens niet gevonden in OpenStreetMap"
+      },
+      "US-TIGER-Roads-2020": {
+        "description": "Geel = Openbare kaartgegevens van de US Census. Rood = Gegevens niet gevonden in OpenStreetMap",
+        "name": "TIGER Wegen 2020"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Geel = Openbare kaartgegevens van de US Census. Rood = Gegevens niet gevonden in OpenStreetMap"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Geel = Openbare kaartgegevens van de US Census. Rood = Gegevens niet gevonden in OpenStreetMap"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Geel = Openbare kaartgegevens van de US Census. Rood = Gegevens niet gevonden in OpenStreetMap"
+      },
+      "USDA-NAIP": {
+        "name": "National Agriculture-fotografie"
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Wegen: Groene omlijning = ongeclassificeerd. Bruine omlijning = veldweg. Oppervlak: grind = lichtbruin gevuld, asfalt = zwart, bestraat = grijs, grond = wit, beton = blauw, gras = groen. Seizoensgebonden = witte balken",
+        "name": "U.S. Forest Roads-laag"
+      },
+      "UrbISOrtho": {
+        "attribution": {
+          "text": "Verwezenlijkt door middel van Brussels UrbIS®© - Verdeling & Copyright CIBG"
+        },
+        "name": "CIRB/CIBG meest recente luchtfotografie"
+      },
+      "UrbISOrtho2016": {
+        "attribution": {
+          "text": "Verwezenlijkt door middel van Brussels UrbIS®© - Verdeling & Copyright CIBG"
+        }
+      },
+      "UrbISOrtho2017": {
+        "attribution": {
+          "text": "Verwezenlijkt door middel van Brussels UrbIS®© - Verdeling & Copyright CIBG"
+        }
+      },
+      "UrbISOrtho2018": {
+        "attribution": {
+          "text": "Verwezenlijkt door middel van Brussels UrbIS®© - Verdeling & Copyright CIBG"
+        }
+      },
+      "UrbISOrtho2019": {
+        "attribution": {
+          "text": "Verwezenlijkt door middel van Brussels UrbIS®© - Verdeling & Copyright CIBG"
+        }
+      },
+      "UrbISOrtho2020": {
+        "attribution": {
+          "text": "Verwezenlijkt door middel van Brussels UrbIS®© - Verdeling & Copyright CIBG"
+        }
+      },
+      "UrbisAdmFR": {
+        "attribution": {
+          "text": "Verwezenlijkt door middel van Brussels UrbIS®© - Verdeling & Copyright CIBG"
+        }
+      },
+      "UrbisAdmFRNL": {
+        "attribution": {
+          "text": "Verwezenlijkt door middel van Brussels UrbIS®© - Verdeling & Copyright CIBG"
+        }
+      },
+      "UrbisAdmNL": {
+        "attribution": {
+          "text": "Verwezenlijkt door middel van Brussels UrbIS®© - Verdeling & Copyright CIBG"
+        }
+      },
+      "Waymarked_Trails-Cycling": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap-bijdragers, CC BY-SA 3.0"
+        },
+        "name": "Waymarked Trails: Fietsen"
+      },
+      "Waymarked_Trails-Hiking": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap-bijdragers, CC BY-SA 3.0"
+        },
+        "name": "Waymarked Trails: Wandelen"
+      },
+      "Waymarked_Trails-MTB": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap-bijdragers, CC BY-SA 3.0"
+        },
+        "name": "Waymarked Trails: Mountainbiken"
+      },
+      "Waymarked_Trails-Skating": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap-bijdragers, CC BY-SA 3.0"
+        },
+        "name": "Waymarked Trails: Inline skaten"
+      },
+      "Waymarked_Trails-Winter_Sports": {
+        "attribution": {
+          "text": "© waymarkedtrails.org, OpenStreetMap-bijdragers, CC BY-SA 3.0"
+        },
+        "name": "Waymarked Trails: Wintersportpistes"
+      },
+      "Zabrze-2011": {
+        "attribution": {
+          "text": "Stadhuis van Zabrze"
+        },
+        "name": "Zabrze: Orthofotokaart 2011 (luchtfoto)"
+      },
+      "basemap<TX_DOT>at": {
+        "description": "Basiskaart van Oostenrijk, gebaseerd op overheidsgegevens."
+      },
+      "basemap<TX_DOT>at-orthofoto": {
+        "description": "Orthofoto-laag voorzien door basemap.at. 'Opvolger' van geoimage.at."
+      },
+      "basemap<TX_DOT>at-overlay": {
+        "description": "Annotatie-overlay is geleverd door basemap.at."
+      },
+      "cyclosm": {
+        "attribution": {
+          "text": "Weergave: CyclOSM (gehost door OpenStreetMap Frankrijk), © Kaartgegevens OpenStreetMap-bijdragers"
+        },
+        "description": "CyclOSM is een kaartstijl die speciaal voor fietsen is ontworpen. Het vertaalt de data van OpenStreetMap om in een prachtige en praktische fietskaart!"
+      },
+      "debicki-buildings": {
+        "attribution": {
+          "text": "District Dębica"
+        },
+        "name": "Powiat dębicki: Gebouwen"
+      },
+      "eufar-balaton": {
+        "attribution": {
+          "text": "EUFAR Balaton orthofoto's 2010"
+        },
+        "description": "1940 gegeorefereede fotografie van Balaton Limnological Institute.",
+        "name": "EUFAR Balaton orthofoto's"
+      },
+      "gothenburg-citymap": {
+        "attribution": {
+          "text": "© Gemeente Gotenburg, CC0"
+        },
+        "description": "Deze stadskaart is een overzichtskaart die Gotenburg beschrijft. Het bevat algemene informatie over landgebruik, communicatie, hydrografie, gebouwen, huisnummers en straatnamen, administratieve indeling en andere oriënterende teksten.",
+        "name": "Stadskaart Gotenburg"
+      },
+      "gothenburg-dtm-2017": {
+        "attribution": {
+          "text": "© Gemeente Gotenburg, CC0"
+        },
+        "description": "Web map service die hillshade en helling weergeeft op basis van het elevatiemodel van de stad Gothenburg uit 2017. Resolutie 0,5 meter per pixel."
+      },
+      "gothenburg-ortho": {
+        "attribution": {
+          "text": "© Gemeente Gotenburg, CC0"
+        },
+        "description": "Orthofoto voor gemeente Gothenburg",
+        "name": "Gothenburg Orthofoto 2015"
+      },
+      "gothenburg-ortho_2017": {
+        "attribution": {
+          "text": "© Gemeente Gotenburg, CC0"
+        },
+        "description": "Orthofoto voor gemeente Gothenburg",
+        "name": "Gothenburg Orthofoto 2017"
+      },
+      "gothenburg-ortho_2019": {
+        "attribution": {
+          "text": "© Gemeente Gotenburg, CC0"
+        },
+        "description": "Orthofoto voor gemeente Gothenburg",
+        "name": "Gothenburg Orthofoto 2019"
+      },
+      "gothenburg-ortho_2021": {
+        "attribution": {
+          "text": "© Gemeente Gotenburg, CC0"
+        },
+        "description": "Orthofoto voor gemeente Gothenburg"
+      },
+      "gothenburg-ortho_latest": {
+        "attribution": {
+          "text": "© Gemeente Gotenburg, CC0"
+        },
+        "description": "Orthofoto voor gemeente Gothenburg"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "description": "Japan GSI luchtfotografie. Niet volledig orthogerectificeerd, maar voor een deel nieuwer en/of ander bereik dan GSI orthofotografie.",
+        "name": "Japan GSI luchtfotografie"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_seamlessphoto": {
+        "attribution": {
+          "text": "GSI Japan naadloze foto"
+        },
+        "description": "Japan GSI naadloze fotografie. De verzameling van de laatste beelden van GSI ortho, luchtfoto, post disaster en andere.",
+        "name": "Japan GSI naadloze fotografie"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "description": "Japan GSI Standaard Kaart. Grootschalige dekking.",
+        "name": "Japan GSI Standaard Kaart"
+      },
+      "kalmar-orto-2014": {
+        "attribution": {
+          "text": "© Gemeente Kalmar"
+        },
+        "description": "Orthofoto's van de noordkust van de gemeente Kalmar 2014",
+        "name": "Kalmar-noord Orthofoto 2014"
+      },
+      "kalmar-orto-2016": {
+        "attribution": {
+          "text": "© Gemeente Kalmar"
+        },
+        "description": "Orthofoto's van de zuidkust van de gemeente Kalmar 2016",
+        "name": "Kalmar-zuid Orthofoto 2016"
+      },
+      "kalmar-orto-2018": {
+        "attribution": {
+          "text": "© Gemeente Kalmar"
+        },
+        "description": "Orthofoto's van de stedelijke gebieden van de gemeente Kalmar 2018",
+        "name": "Kalmar Stedelijke Orthofoto 2018"
+      },
+      "kalmar-orto-2020": {
+        "attribution": {
+          "text": "© Gemeente Kalmar"
+        },
+        "description": "Orthofoto's van de stedelijke gebieden van de gemeente Kalmar 2020",
+        "name": "Kalmar Stedelijke Orthofoto 2020"
+      },
+      "kartverket-bygninger": {
+        "description": "INSPIRE gebouwen voor Noorwegen.",
+        "name": "Kartverket Gebouwenlaag"
+      },
+      "kelkkareitit": {
+        "description": "Kelkkareitit.fi sneeuwscooter routes van OSM (Nordic coverage)"
+      },
+      "lancucki-buildings": {
+        "attribution": {
+          "text": "District Łańcut"
+        },
+        "name": "Powiat łańcucki: Gebouwen"
+      },
+      "lantmateriet-orto1960": {
+        "description": "Mosaic van Zweedse orthofoto's van de periode 1955–1965. Oudere en nieuwere orthofoto's kunnen voorkomen.",
+        "name": "Lantmäteriet Historische orthofoto 1960"
+      },
+      "lantmateriet-orto1975": {
+        "description": "Mosaic van Zweedse orthofoto's van de periode 1970-1980. Wordt uitgebreid.",
+        "name": "Lantmäteriet Historische orthofoto 1975"
+      },
+      "lantmateriet-topowebb": {
+        "description": "Topografische kaart van Zweden 1:50 000",
+        "name": "Lantmäteriet Topografische Kaart"
+      },
+      "linkoping-orto": {
+        "attribution": {
+          "text": "© Gemeente Linköping"
+        },
+        "description": "Orthofoto's van de gemeente Linköping 2010, open data",
+        "name": "Linköping Orthofoto"
+      },
+      "lubaczowski-buildings": {
+        "attribution": {
+          "text": "District Lubaczów"
+        },
+        "name": "District Lubaczów: Gebouwen"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Gebruiksvoorwaarden & feedback"
+        },
+        "description": "Toont grote objecten om je te helpen oriënteren.",
+        "name": "Oriëntatiehulp"
+      },
+      "openpt_map": {
+        "attribution": {
+          "text": "© OpenStreetMap-bijdragers, CC-BY-SA"
+        },
+        "name": "OpenPT Map (transparant)"
+      },
+      "openrailwaymap": {
+        "attribution": {
+          "text": "Weergave: OpenRailwayMap, © Kaartgegevens OpenStreetMap-bijdragers"
+        },
+        "description": "Beelden-overlay met treininfrastructuur gebaseerd op OpenStreetMap gegevens"
+      },
+      "openrailwaymap-maxspeeds": {
+        "attribution": {
+          "text": "Weergave: OpenRailwayMap, © Kaartgegevens OpenStreetMap-bijdragers"
+        },
+        "description": "Beelden-overlay met maximale treinsnelheden gebaseerd op OpenStreetMap gegevens",
+        "name": "OpenRailwayMap Maximale snelheden"
+      },
+      "openrailwaymap-signalling": {
+        "attribution": {
+          "text": "Weergave: OpenRailwayMap, © Kaartgegevens OpenStreetMap-bijdragers"
+        },
+        "description": "Beelden-overlay met treinseinen gebaseerd op OpenStreetMap gegevens",
+        "name": "OpenRailwayMap Seinen"
+      },
+      "osm-gps": {
+        "attribution": {
+          "text": "© OpenStreetMap-bijdragers"
+        },
+        "description": "Publieke GPS-traces die door gebruikers naar OpenStreetMap geüpload zijn.",
+        "name": "GPS-traces van OpenStreetMap"
+      },
+      "osm-mapnik-german_style": {
+        "attribution": {
+          "text": "© OpenStreetMap-bijdragers, CC-BY-SA"
+        },
+        "name": "OpenStreetMap (Duitse stijl)"
+      },
+      "poznan-ortofotomapa2014": {
+        "attribution": {
+          "text": "Raad van Geodesie en Stadskadaster GEOPOZ"
+        },
+        "name": "Poznań: Orthofotokaart 2014 (luchtfoto)"
+      },
+      "poznan-ortofotomapa2016": {
+        "attribution": {
+          "text": "Raad van Geodesie en Stadskadaster GEOPOZ"
+        },
+        "name": "Poznań: Orthofotokaart 2016 (luchtfoto)"
+      },
+      "poznan-ortofotomapaBiezaca": {
+        "attribution": {
+          "text": "Raad van Geodesie en Stadskadaster GEOPOZ"
+        },
+        "name": "Poznań: Meest recente orthofotokaart (luchtfoto)"
+      },
+      "przemysl-aerial": {
+        "attribution": {
+          "text": "Stad Przemyśl"
+        },
+        "name": "Przemyśl: Orthofotokaart (luchtfoto)"
+      },
+      "przemysl-buildings": {
+        "attribution": {
+          "text": "Stad Przemyśl"
+        },
+        "name": "Przemyśl: Gebouwen"
+      },
+      "qa_no_address": {
+        "attribution": {
+          "text": "Simon Poole, gegevens ©OpenStreetMap-bijdragers"
+        },
+        "name": "QA Geen Adres"
+      },
+      "rzeszowski-aerial": {
+        "attribution": {
+          "text": "District Rzeszów"
+        },
+        "name": "Powiat rzeszowski: Orthofotokaart (luchtfoto)"
+      },
+      "rzeszowski-buildings": {
+        "attribution": {
+          "text": "District Rzeszów"
+        },
+        "name": "Powiat rzeszowski: Gebouwen"
+      },
+      "skobbler": {
+        "attribution": {
+          "text": "© Tegels: skobbler Kaartgegevens: OpenStreetMap-bijdragers"
+        }
+      },
+      "skoterleder": {
+        "description": "Sneeuwscooter routes",
+        "name": "Sneeuwscooter kaart Zweden"
+      },
+      "sropczyce-buildings": {
+        "attribution": {
+          "text": "District Ropczyce-Sędziszów"
+        },
+        "name": "Powiat ropczycko-sędziszowski: Gebouwen"
+      },
+      "stalowowolski-buildings": {
+        "attribution": {
+          "text": "District Stalowa Wola"
+        },
+        "name": "Powiat stalowowolski: Gebouwen"
+      },
+      "stamen-terrain-background": {
+        "attribution": {
+          "text": "Kaarttegels van Stamen Design, onder CC BY 3.0. Gegevens van OpenStreetMap, onder ODbL"
+        },
+        "name": "Stamen Terrein"
+      },
+      "stockholm-orto": {
+        "attribution": {
+          "text": "© Gemeente Stockholm, CC0"
+        },
+        "description": "Orthofoto's van de gemeente Stockholm 2018, CC0 licentie",
+        "name": "Stockholm Orthofoto"
+      },
+      "susono_shizuoka_jp_orthophoto": {
+        "attribution": {
+          "text": "Susono city orthofoto"
+        },
+        "description": "De luchtfoto's gepubliceerd door Susono City als open data.",
+        "name": "Susono city orthofoto"
+      },
+      "tf-cycle": {
+        "attribution": {
+          "text": "Kaarten © Thunderforest, gegevens © OpenStreetMap-bijdragers"
+        },
+        "name": "Thunderforest OpenCycleMap (fietskaart)"
+      },
+      "tf-landscape": {
+        "attribution": {
+          "text": "Kaarten © Thunderforest, gegevens © OpenStreetMap-bijdragers"
+        },
+        "name": "Thunderforest Landschap"
+      },
+      "tf-outdoors": {
+        "attribution": {
+          "text": "Kaarten © Thunderforest, gegevens © OpenStreetMap-bijdragers"
+        }
+      },
+      "trafikverket-baninfo": {
+        "description": "Zweeds spoorwegnet, zijsporen inbegrepen",
+        "name": "Trafikverket Spoornetwerk"
+      },
+      "trafikverket-baninfo-option": {
+        "description": "Zweeds spoornetwerk met verschillende opties voor kaartlagen",
+        "name": "Trafikverket Spoornetwerk opties"
+      },
+      "trafikverket-vagnat": {
+        "description": "Zweeds NVDB wegennetwerk",
+        "name": "Trafikverket Wegennetwerk"
+      },
+      "trafikverket-vagnat-extra": {
+        "description": "Zweedse NVDB extra details: Snelweg referenties, autoluw, parkeerplaatsen, bushaltes, tunnels, flitspalen",
+        "name": "Trafikverket Wegennetwerk Extra"
+      },
+      "trafikverket-vagnat-option": {
+        "description": "Zweeds NVDB wegennetwerk met verschillende opties voor kaartlagen",
+        "name": "Trafikverket Wegennetwerk opties"
+      },
+      "wroclaw-orto2015": {
+        "attribution": {
+          "text": "Stadhuis van Wroclaw"
+        },
+        "name": "Wrocław: Orthofotokaart 2015 (luchtfoto)"
+      },
+      "wroclaw-orto2018": {
+        "attribution": {
+          "text": "Stadhuis van Wroclaw"
+        },
+        "name": "Wrocław: Orthofotokaart 2018 (luchtfoto)"
+      }
+    }
+  }
+}

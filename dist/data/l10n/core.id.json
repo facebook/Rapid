@@ -1,0 +1,906 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.234Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.id.json",
+    "hash": "bb33e7edf612366c343af1cf21d67309"
+  },
+  "id": {
+    "icons": {
+      "download": "unduh",
+      "remove": "hapus",
+      "undo": "batal",
+      "zoom_to": "perbesar ke",
+      "copy": "salin",
+      "view_on": "lihat di {domain}",
+      "favorite": "favorit",
+      "list": "daftar",
+      "text": "teks",
+      "deselect": "batalkan pilihan"
+    },
+    "toolbar": {
+      "inspect": "Periksa\nInspeksi",
+      "undo_redo": "Batalkan / Ulangi",
+      "recent": "Baru saja",
+      "favorites": "Favorit",
+      "add_feature": "Tambah Fitur"
+    },
+    "title": {
+      "labeled_and_more": "{labeled} dan {count} lagi"
+    },
+    "modes": {
+      "add_area": {
+        "title": "Wilayah"
+      },
+      "add_line": {
+        "title": "Garis"
+      },
+      "add_point": {
+        "title": "Titik"
+      },
+      "add_note": {
+        "title": "Catatan",
+        "description": "Menemukan masalah? Beritahu pemeta lain."
+      },
+      "add_preset": {
+        "title": "Tambah {feature}"
+      },
+      "browse": {
+        "title": "Arahkan",
+        "description": "Geser dan perbesar tampilan peta."
+      },
+      "drag_node": {
+        "connected_to_hidden": "Tidak bisa dihapus karena terhubung dengan fitur tersembunyi."
+      }
+    },
+    "operations": {
+      "add": {
+        "annotation": {
+          "point": "Telah ditambahkan sebuah titik.",
+          "vertex": "Ditambahkan simpul pada jalan.",
+          "relation": "Tambahkan relasi",
+          "note": "Catatan ditambahkan."
+        }
+      },
+      "start": {
+        "annotation": {
+          "line": "Dimulai sebuah garis.",
+          "area": "Dimulai sebuah area."
+        }
+      },
+      "continue": {
+        "title": "Lanjutkan",
+        "description": "Lanjutkan garis ini.",
+        "not_eligible": "Tidak ada garis yang dapat dilanjutkan disini.",
+        "multiple": "Beberapa garis bisa dilanjutkan dari sini. Tambahkan ke seleksi untuk melanjutkan.",
+        "annotation": {
+          "line": "Dilanjutkan sebuah garis.",
+          "area": "Dilanjutkan sebuah area."
+        }
+      },
+      "cancel_draw": {
+        "annotation": "Batal menggambar."
+      },
+      "change_role": {
+        "annotation": "Mengubah peran dari {n} anggota relasi"
+      },
+      "change_tags": {
+        "annotation": "Tag-tag terubah."
+      },
+      "copy": {
+        "title": "Salin",
+        "description": "Mengambil fitur terpilih untuk ditempel.",
+        "annotation": "Menyalin {n} fitur",
+        "too_large": "Objek tidak dapat disalin karena baru sedikit yang tampak di layar."
+      },
+      "paste": {
+        "title": "Tempel",
+        "description": "Tambahkan {n} fitur disalin ke sini.",
+        "annotation": "Menempel {n} fitur.",
+        "nothing_copied": "Tidak ada fitur yang disalin."
+      },
+      "circularize": {
+        "title": "Melingkar",
+        "annotation": {
+          "feature": "Membuat {n} fitur melingkar."
+        }
+      },
+      "orthogonalize": {
+        "title": "Persegi",
+        "annotation": {
+          "corner": "Mengkotakkan {n} sudut",
+          "feature": "Mengkotakkan sudut dari {n} fitur."
+        }
+      },
+      "straighten": {
+        "title": "Luruskan"
+      },
+      "delete": {
+        "title": "Hapus",
+        "annotation": {
+          "point": "Menghapus sebuah titik.",
+          "vertex": "Menghapus sebuah simpul dari jalan.",
+          "line": "Mengapus sebuah jalan.",
+          "area": "Menghapus sebuah area.",
+          "relation": "Menghapus sebuah relasi.",
+          "feature": "Menghapus {n} fitur."
+        }
+      },
+      "disconnect": {
+        "title": "Memutuskan",
+        "not_connected": "Kurang garis/area di sini untuk diputuskan.",
+        "connected_to_hidden": "Tidak bisa diputus karena terhubung dengan fitur tersembunyi."
+      },
+      "merge": {
+        "title": "Gabung",
+        "description": "Satukan fitur-fitur ini.",
+        "annotation": "Menggabungkan {n} objek.",
+        "not_eligible": "Fitur-fitur ini tidak bisa digabung.",
+        "not_adjacent": "Fitur-fitur ini tidak dapat di gabung karena titik akhir fitur-fitur ini tidak menyambung.",
+        "incomplete_relation": "Fitur ini tidak bisa digabungkan karena belum sepenuhnya terunduh.",
+        "conflicting_tags": "Fitur-fitur ini tidak bisa disatukan karena beberapa nilai dari tagnya ada yang bertolak belakang."
+      },
+      "move": {
+        "title": "Geser",
+        "annotation": {
+          "point": "Menggeser sebuah titik.",
+          "vertex": "Menggeser simpul dari sebuah jalan.",
+          "line": "Menggeser sebuah garis.",
+          "area": "Menggeser sebuah area."
+        }
+      },
+      "rotate": {
+        "title": "Putar",
+        "annotation": {
+          "line": "Memutar sebuah garis.",
+          "area": "Memutar sebuah area."
+        }
+      },
+      "reverse": {
+        "title": "Balik"
+      },
+      "split": {
+        "title": "Pisah",
+        "annotation": {
+          "line": "Putus [n] garis.",
+          "area": "Putus [n] wilayah."
+        },
+        "not_eligible": "Garis tidak bisa dipisahkan di awal atau akhir bagian mereka.",
+        "connected_to_hidden": "Tidak bisa dipotong karena terhubung dengan fitur tersembunyi."
+      },
+      "restriction": {
+        "annotation": {
+          "create": "Menambahkan larangan belok",
+          "delete": "Menghapus larangan belok"
+        }
+      }
+    },
+    "restriction": {
+      "controls": {
+        "distance": "Jarak"
+      }
+    },
+    "undo": {
+      "tooltip": "Batalkan: {action}",
+      "nothing": "Tak ada yang bisa dibatalkan."
+    },
+    "redo": {
+      "tooltip": "Balikkan: {action}",
+      "nothing": "Tak ada yang bisa dibalikkan."
+    },
+    "translate": {
+      "translate": "Tambah nama multibahasa",
+      "localized_translation_label": "Nama Multibahasa",
+      "localized_translation_language": "Pilih Bahasa",
+      "localized_translation_name": "Nama"
+    },
+    "zoom_in_edit": "Perbesar untuk mengedit",
+    "logout": "Keluar",
+    "loading_auth": "Menghubungkan dengan OpenStreetMap...",
+    "report_a_bug": "Laporkan galat/masalah",
+    "help_translate": "Bantu menerjemahkan",
+    "commit": {
+      "title": "Unggah ke OpenStreetMap",
+      "upload_explanation": "Perubahan yang Anda unggah akan tampil di seluruh peta yang menggunakan data OpenStreetMap.",
+      "upload_explanation_with_user": "Perubahan yang anda unggah sebagai {user} akan tampil di seluruh peta yang menggunakan data OpenStreetMap.",
+      "save": "Unggah",
+      "cancel": "Batal",
+      "warnings": "Peringatan",
+      "modified": "Diubah",
+      "deleted": "Terhapus",
+      "created": "Dibuat",
+      "about_changeset_comments": "Tentang komentar set perubahan",
+      "google_warning": "Anda menyebutkan Google dalam komentar ini: ingatlah bahwa menyalin dari Google Maps dilarang keras."
+    },
+    "contributors": {
+      "list": "Disunting oleh {users}",
+      "truncated_list": "Diedit oleh {users} dan {count} lainnya"
+    },
+    "info_panels": {
+      "background": {
+        "title": "Latar",
+        "description": "Deskripsi"
+      },
+      "location": {
+        "title": "Lokasi"
+      },
+      "measurement": {
+        "distance": "Jarak",
+        "area": "Wilayah",
+        "location": "Lokasi"
+      }
+    },
+    "geometry": {
+      "point": "titik",
+      "vertex": "titik",
+      "line": "garis",
+      "area": "bidang",
+      "relation": "relasi"
+    },
+    "geocoder": {
+      "search": "Cari di seluruh dunia...",
+      "no_results_worldwide": "Hasil pencarian tidak ditemukan"
+    },
+    "geolocate": {
+      "title": "Tunjukan Lokasi Saya",
+      "locating": "Sedang mencari, mohon tunggu..."
+    },
+    "inspector": {
+      "show_more": "Tampilkan Lainnya",
+      "view_on_osm": "Lihat di openstreetmap.org",
+      "new_relation": "Buat relasi baru",
+      "role": "Aturan",
+      "choose": "Pilih Tipe Fitur",
+      "results": "{n} hasil untuk {search}",
+      "no_documentation_key": "Tidak ada dokumentasi yang tersedia",
+      "back_tooltip": "Ubah tipe objek",
+      "details": "detail",
+      "remove": "Buang",
+      "search": "Cari",
+      "unknown": "Tidak diketahui",
+      "incomplete": "<tak terunduh>",
+      "feature_list": "Cari fitur",
+      "check": {
+        "yes": "Ya",
+        "no": "Tidak"
+      },
+      "add": "Tambahkan",
+      "none": "Tidak ada",
+      "node": "Titik",
+      "way": "Garis",
+      "relation": "Relasi",
+      "location": "Lokasi",
+      "add_fields": "Tambah atribut:"
+    },
+    "background": {
+      "title": "Latar",
+      "description": "Pengaturan Latar Belakang",
+      "none": "Tidak ada",
+      "best_imagery": "Sumber citra terbaik yang diketahui untuk lokasi ini",
+      "switch": "Beralih ke latar belakang ini",
+      "custom": "Kustom",
+      "overlays": "Lapisan-Lapisan Atas",
+      "imagery_problem_faq": "Laporan Masalah Citra Satelit",
+      "reset": "ulang",
+      "brightness": "Kecerahan",
+      "contrast": "Kontras",
+      "saturation": "Saturasi",
+      "sharpness": "Ketajaman",
+      "minimap": {
+        "description": "Tampilkan Peta Kecil",
+        "tooltip": "Menampilkan peta diperkecil untuk membantu penentuan letak area yang sedang dilihat."
+      },
+      "panel": {
+        "description": "Tampilkan Panel Latar Belakang",
+        "tooltip": "Tampilkan informasi latar belakang lebih lanjut."
+      },
+      "location_panel": {
+        "description": "Tampilkan Panel Lokasi"
+      },
+      "fix_misalignment": "Pergeseran Citra Satelit",
+      "offset": "Seret di mana pun dalam area abu-abu untuk menyetel offset citra, atau masukkan nilai offset dalam meter."
+    },
+    "map_data": {
+      "title": "Data Peta",
+      "description": "Data Peta",
+      "data_layers": "Lapisan Data",
+      "layers": {
+        "maproulette": {
+          "detail_title": "detail",
+          "cancel": "Batal"
+        }
+      },
+      "autohidden": "Fitur-fitur berikut telah disembunyikan secara otomatis karena akan terlalu banyak yang tampil pada layar. Anda dapat perbesar untuk menyuntingnya."
+    },
+    "photo_overlays": {
+      "title": "Lapisan-Lapisan Atas Foto"
+    },
+    "filters": {
+      "points": {
+        "description": "Titik",
+        "tooltip": "Lokasi Pusat Perhatian"
+      },
+      "traffic_roads": {
+        "description": "Jalan lalu lintas",
+        "tooltip": "Jalan raya, Jalan, dll."
+      },
+      "paths": {
+        "description": "Jalan Kecil",
+        "tooltip": "Trotoar, Jalur Pejalan Kaki, Jalur Sepeda, dsb."
+      },
+      "buildings": {
+        "description": "Bangunan",
+        "tooltip": "Bangunan, Naungan, Garasi, dsb."
+      },
+      "indoor": {
+        "description": "Fitur-Fitur dalam Ruangan",
+        "tooltip": "Ruangan, Koridor, Tangga, dll."
+      },
+      "landuse": {
+        "description": "Fitur Lahan",
+        "tooltip": "Hutan, Pertanian, Taman, Perumahan, Niaga, dsb."
+      },
+      "boundaries": {
+        "description": "Batas",
+        "tooltip": "Batas Administrasi"
+      },
+      "water": {
+        "description": "Fitur Air",
+        "tooltip": "Sungai, Danau, Kolam, Lembangan, dsb."
+      },
+      "rail": {
+        "description": "Fitur Rel",
+        "tooltip": "Jalur Rel"
+      },
+      "power": {
+        "description": "Fitur Daya",
+        "tooltip": "Jalur Listrik, Pembangkit Listrik, Gardu, dsb."
+      },
+      "past_future": {
+        "tooltip": "Diajukan, Dibangun, Ditinggalkan, Diruntuhkan, dsb."
+      },
+      "others": {
+        "tooltip": "Selain yang disebutkan"
+      }
+    },
+    "area_fill": {
+      "wireframe": {
+        "description": "Tidak ada Isi (Wireframe)",
+        "tooltip": "Menggunakan modus wireframe membuat mudah untuk melihat gambar latar belakang."
+      },
+      "partial": {
+        "description": "Isi Sebagian",
+        "tooltip": "Area digambar dengan isi hanya pada sekitar dalam garisnya. (Dianjurkan untuk pemeta pemula)"
+      },
+      "full": {
+        "description": "Isi Penuh",
+        "tooltip": "Area digambar terisi penuh."
+      }
+    },
+    "restore": {
+      "heading": "Kamu memiliki perubahan yang belum disimpan",
+      "description": "Apakah kamu ingin mengembalikan perubahan yang belum disimpan ke sesi mengedit sebelumnya?",
+      "restore": "Kembalikan perubahan saya",
+      "reset": "Buang perubahan saya"
+    },
+    "save": {
+      "title": "Simpan",
+      "help": "Periksa lalu unggah perubahan ke OpenStreetMap agar terlihat oleh pengguna lain.",
+      "no_changes": "Tak ada perubahan yang bisa disimpan.",
+      "error": "Kesalahan terjadi saat mencoba menyimpan",
+      "status_code": "Server mengembalikan kode status {code}",
+      "unknown_error_details": "Mohon pastikan Anda terhubung dengan internet.",
+      "uploading": "Mengunggah perubahan ke OpenStreetMap.",
+      "conflict_progress": "Memeriksa konflik: {num} dari {total}",
+      "unsaved_changes": "Anda mememiliki perubahan yang belum tersimpan",
+      "conflict": {
+        "header": "Menyelesaikan suntingan bertentangan",
+        "count": "{num} dari {total} Konflik",
+        "previous": "< Sebelumnya",
+        "next": "Berikutnya >",
+        "keep_local": "Simpan milik saya",
+        "keep_remote": "Gunakan milik mereka",
+        "restore": "Kembalikan",
+        "delete": "Biarkan Terhapus",
+        "done": "Semua konflik terselesaikan!"
+      }
+    },
+    "merge_remote_changes": {
+      "conflict": {
+        "nodelist": "Titik-titik diubah oleh Anda dan {user}.",
+        "memberlist": "Anggota relasi diubah Anda dan {user}."
+      }
+    },
+    "success": {
+      "help_link_text": "detail",
+      "languages": "Bahasa: {languages}",
+      "missing": "Apakah ada yang kurang dari daftar ini?"
+    },
+    "confirm": {
+      "cancel": "Batal"
+    },
+    "source_switch": {
+      "live": "terhubung",
+      "lose_changes": "Perubahan Anda belum disimpan. Mengganti server peta akan membatalkan perubahan. Anda yakin akan mengganti server?"
+    },
+    "rapid_menu": {
+      "remove": "Buang"
+    },
+    "tag_reference": {
+      "description": "Deskripsi",
+      "on_wiki": "{tag} di wiki.osm.org",
+      "used_with": "digunakan dengan {type}"
+    },
+    "zoom": {
+      "in": "Perbesar",
+      "out": "Perkecil"
+    },
+    "bearing": {
+      "n": "U"
+    },
+    "full_screen": "Tombol Layar Penuh",
+    "QA": {
+      "osmose": {
+        "detail_title": "detail"
+      },
+      "keepRight": {
+        "detail_description": "Deskripsi"
+      }
+    },
+    "note": {
+      "note": "Catatan"
+    },
+    "help": {
+      "title": "Bantuan",
+      "help": {
+        "title": "Bantuan",
+        "open_source_h": "Sumber Terbuka"
+      },
+      "overview": {
+        "navigation_h": "Navigasi",
+        "features_h": "Fitur Peta"
+      },
+      "editing": {
+        "save_h": "Simpan",
+        "upload_h": "Unggah"
+      },
+      "points": {
+        "title": "Titik"
+      },
+      "lines": {
+        "title": "Garis"
+      },
+      "areas": {
+        "title": "Area"
+      },
+      "relations": {
+        "boundary_h": "Batas"
+      },
+      "streetlevel": {
+        "using": "Untuk menggunakan foto jalanan untuk pemetaan, buka panel [data_icon] **[map_data]** pada sisi peta untuk mengaktifkan atau menon-aktifkan lapisan-lapisan atas foto yang tersedia."
+      },
+      "qa": {
+        "tools_h": "Alat"
+      }
+    },
+    "issues": {
+      "warnings": "Peringatan",
+      "crossing_ways": {
+        "indoor-indoor": {
+          "reference": "Melintasi fitur-fitur dalam ruangan harus menggunakan tingkatan yang berbeda"
+        },
+        "indoor-indoor_connectable": {
+          "reference": "Melintasi fitur-fitur dalam ruangan harus tergabung atau menggunakan tingkatan yang berbeda"
+        }
+      }
+    },
+    "intro": {
+      "done": "selesai",
+      "graph": {
+        "state": "<value for addr:state>",
+        "countrycode": "id"
+      },
+      "navigation": {
+        "title": "Navigasi",
+        "map_info": "Wilayah peta utama meperlihatkan data OpenStreetMap di atas sebuah latar belakang."
+      },
+      "points": {
+        "title": "Titik",
+        "reselect": "Terkadang titik sudah ada, tapi ada kesalahan atau belum selesai. Kita bisa mengedit titik tersebut. **Pilih kafe yang baru kamu buat.**",
+        "delete": "Tidak apa-apa kalau menghapus fitur yang tidak ada di dunia nyata.{br}Menghapus fitur di OpenStreetMap menghapusnya dari peta yang semua orang pakai, jadi kamu harus pastikan fitur tersebut benar-benar tidak ada sebelum menghapusnya. **Tekan tombol {delete_icon} {delete} untuk menghapus titiknya.**"
+      },
+      "areas": {
+        "title": "Area"
+      },
+      "lines": {
+        "title": "Garis",
+        "intersect": "Lanjutkan menggambar garis dengan menaruh banyak titik (node) bersama jalannya[br]Jalanan, bersama jalur-jalur dan rute feri harus menyambung dengan satu sama lain dengan baik agar aplikasi-aplikasi navigasi dapat bekerja. **Tambahkan sebuah titik (node) persimpangan pada [name] untuk menyambungkan dua garis tersebut.**"
+      },
+      "buildings": {
+        "title": "Bangunan"
+      },
+      "startediting": {
+        "title": "Mulai Menyunting",
+        "help": "Kamu sekarang sudah siap untuk menyunting OpenStreetMap![br]Kamu bisa mengulang panduan ini kapan saja atau melihat lebih lanjut dokumentasi dengan cara menekan tombol [help_icon] [help] atau tombol [help_key] pada papan tombol Anda.",
+        "save": "Jangan lupa menyimpan perubahan secara berkala!",
+        "start": "Mulai memetakan!"
+      }
+    },
+    "shortcuts": {
+      "key": {
+        "delete": "Hapus"
+      },
+      "navigation": "Navigasi",
+      "help": "Bantuan",
+      "info": "Informasi",
+      "command": {
+        "add_note": {
+          "key": "U"
+        },
+        "save": {
+          "label": "Simpan perubahan"
+        },
+        "extract": {
+          "key": "T"
+        },
+        "wireframe": {
+          "key": "B"
+        },
+        "toggle_osm_notes": {
+          "key": "U"
+        },
+        "toggle_location_card": {
+          "label": "Nyalakan panel lokasi"
+        }
+      }
+    },
+    "units": {
+      "north": "U",
+      "east": "T",
+      "west": "B",
+      "coordinate_pair": "lintang {latitude}, bujur {longitude}"
+    },
+    "wikidata": {
+      "identifier": "Penanda",
+      "description": "Deskripsi"
+    },
+    "languageNames": {
+      "ab": "Abkhaz",
+      "ace": "Aceh",
+      "ady": "Adygei",
+      "ae": "Avesta",
+      "aeb": "Arab Tunisia",
+      "akk": "Akkadia",
+      "alt": "Altai Selatan",
+      "am": "Amharik",
+      "an": "Aragon",
+      "ang": "Inggris Kuno",
+      "ar": "Arab",
+      "ar-001": "Arab Standar Modern",
+      "arc": "Aram",
+      "arq": "Arab Aljazair",
+      "ars": "Arab Najdi",
+      "ary": "Arab Maroko",
+      "arz": "Arab Mesir",
+      "as": "Assam",
+      "ast": "Asturia",
+      "av": "Avar",
+      "ban": "Bali",
+      "bar": "Bavaria",
+      "bas": "Basa",
+      "be": "Belarusia",
+      "bg": "Bulgaria",
+      "bgn": "Balochi Barat",
+      "bla": "Siksika",
+      "bn": "Bengali",
+      "bo": "Tibet",
+      "bs": "Bosnia",
+      "bug": "Bugis",
+      "ca": "Katalan",
+      "cad": "Kado",
+      "car": "Karibia",
+      "cgg": "Kiga",
+      "chk": "Chuuke",
+      "chn": "Jargon Chinook",
+      "cho": "Koktaw",
+      "ckb": "Kurdi Sorani",
+      "co": "Korsika",
+      "cop": "Koptik",
+      "cr": "Kree",
+      "crh": "Tatar Krimea",
+      "crj": "East Cree Selatan",
+      "crk": "Cree Dataran",
+      "crl": "East Cree Utara",
+      "crs": "Seselwa Kreol Prancis",
+      "cs": "Ceko",
+      "csb": "Kashubia",
+      "csw": "Cree Rawa",
+      "cu": "Bahasa Gereja Slavonia",
+      "da": "Dansk",
+      "de": "Jerman",
+      "de-CH": "Jerman Tinggi (Swiss)",
+      "dsb": "Sorbia Hilir",
+      "dum": "Belanda Abad Pertengahan",
+      "egy": "Mesir Kuno",
+      "el": "Yunani",
+      "elx": "Elam",
+      "en": "Inggris",
+      "en-GB": "Inggris (Britania)",
+      "enm": "Inggris Abad Pertengahan",
+      "es": "Spanyol",
+      "es-ES": "Spanyol (Eropa)",
+      "et": "Estonia",
+      "fa": "Persia",
+      "fa-AF": "Persia Dari",
+      "fi": "Suomi",
+      "fj": "Fiji",
+      "fo": "Faroe",
+      "fr": "Prancis",
+      "frc": "Prancis Cajun",
+      "frm": "Prancis Abad Pertengahan",
+      "fro": "Prancis Kuno",
+      "frr": "Frisia Utara",
+      "frs": "Frisia Timur",
+      "fur": "Friuli",
+      "fy": "Frisia Barat",
+      "ga": "Irlandia",
+      "gd": "Gaelik Skotlandia",
+      "gil": "Gilbert",
+      "gl": "Galisia",
+      "gmh": "Jerman Abad Pertengahan",
+      "goh": "Jerman Kuno",
+      "got": "Gotik",
+      "grc": "Yunani Kuno",
+      "gsw": "Jerman (Swiss)",
+      "gu": "Gujarat",
+      "gwi": "Gwich’in",
+      "haw": "Hawaii",
+      "hax": "Haida Selatan",
+      "he": "Ibrani",
+      "hif": "Hindi Fiji",
+      "hit": "Hitit",
+      "hr": "Kroasia",
+      "hsb": "Sorbia Hulu",
+      "ht": "Kreol Haiti",
+      "hu": "Hungaria",
+      "hy": "Armenia",
+      "id": "Indonesia",
+      "ik": "Inupiak",
+      "ikt": "Inuktitut Kanada Barat",
+      "inh": "Ingushetia",
+      "is": "Islandia",
+      "it": "Italia",
+      "ja": "Jepang",
+      "jpr": "Ibrani-Persia",
+      "jrb": "Ibrani-Arab",
+      "jv": "Jawa",
+      "ka": "Georgia",
+      "kbd": "Kabardi",
+      "kho": "Khotan",
+      "ko": "Korea",
+      "kos": "Kosre",
+      "krc": "Karachai Balkar",
+      "krl": "Karelia",
+      "kru": "Kuruk",
+      "ks": "Kashmir",
+      "ksh": "Dialek Kolsch",
+      "ku": "Kurdi",
+      "kw": "Kornish",
+      "ky": "Kirgiz",
+      "lah": "Lahnda",
+      "lb": "Luksemburg",
+      "lez": "Lezghia",
+      "li": "Limburgia",
+      "lij": "Liguria",
+      "lou": "Kreol Louisiana",
+      "lrc": "Luri Utara",
+      "lt": "Lituania",
+      "lv": "Latvia",
+      "mad": "Madura",
+      "mfe": "Morisien",
+      "mg": "Malagasi",
+      "mga": "Irlandia Abad Pertengahan",
+      "mgo": "Meta’",
+      "mh": "Marshall",
+      "mi": "Maori",
+      "mic": "Mikmak",
+      "mk": "Makedonia",
+      "mn": "Mongolia",
+      "mnc": "Manchuria",
+      "ms": "Melayu",
+      "mt": "Malta",
+      "mus": "Bahasa Muskogee",
+      "mwl": "Miranda",
+      "my": "Burma",
+      "myv": "Eryza",
+      "nb": "Bokmål Norwegia",
+      "nd": "Ndebele Utara",
+      "nds": "Jerman Rendah",
+      "niu": "Niuea",
+      "nl": "Belanda",
+      "nn": "Nynorsk Norwegia",
+      "no": "Norwegia",
+      "non": "Norse Kuno",
+      "nr": "Ndebele Selatan",
+      "nso": "Sotho Utara",
+      "nwc": "Newari Klasik",
+      "oc": "Ositania",
+      "ojb": "Ojibwe Barat Laut",
+      "ojc": "Ojibwe Tengah",
+      "ojw": "Ojibwe Barat",
+      "or": "Oriya",
+      "os": "Ossetia",
+      "ota": "Turki Osmani",
+      "pag": "Pangasina",
+      "pal": "Pahlevi",
+      "pau": "Palau",
+      "pcm": "Pidgin Nigeria",
+      "pdc": "Jerman Pennsylvania",
+      "peo": "Persia Kuno",
+      "phn": "Funisia",
+      "pl": "Polski",
+      "pon": "Pohnpeia",
+      "prg": "Prusia",
+      "pro": "Provencal Lama",
+      "pt": "Portugis",
+      "pt-PT": "Portugis (Eropa)",
+      "rar": "Rarotonga",
+      "rm": "Reto-Roman",
+      "ro": "Rumania",
+      "ro-MD": "Moldavia",
+      "rom": "Romani",
+      "rtm": "Rotuma",
+      "ru": "Rusia",
+      "rup": "Aromania",
+      "sa": "Sanskerta",
+      "sah": "Sakha",
+      "sam": "Aram Samaria",
+      "sba": "Ngambai",
+      "sc": "Sardinia",
+      "scn": "Sisilia",
+      "sco": "Skotlandia",
+      "sdh": "Kurdi Selatan",
+      "se": "Sami Utara",
+      "sga": "Irlandia Kuno",
+      "sh": "Serbo-Kroasia",
+      "shu": "Arab Suwa",
+      "sl": "Slovenia",
+      "slh": "Lushootseed Selatan",
+      "sli": "Silesia Rendah",
+      "sm": "Samoa",
+      "sma": "Sami Selatan",
+      "smj": "Lule Sami",
+      "smn": "Inari Sami",
+      "sms": "Skolt Sami",
+      "so": "Somalia",
+      "sq": "Albania",
+      "sr": "Serbia",
+      "st": "Sotho Selatan",
+      "str": "Salish Selat",
+      "su": "Sunda",
+      "sux": "Sumeria",
+      "sv": "Swedia",
+      "sw-CD": "Swahili (Kongo)",
+      "swb": "Komoria",
+      "syc": "Suriah Klasik",
+      "syr": "Suriah",
+      "szl": "Silesia",
+      "tce": "Tutchone Selatan",
+      "tet": "Tetun",
+      "to": "Tonga",
+      "tr": "Turki",
+      "tsi": "Tsimshia",
+      "ttm": "Tutchone Utara",
+      "ttt": "Tat Muslim",
+      "ty": "Tahiti",
+      "tyv": "Tuvinia",
+      "tzm": "Tamazight Maroko Tengah",
+      "uga": "Ugarit",
+      "uk": "Ukraina",
+      "vec": "Venesia",
+      "vi": "Vietnam",
+      "vo": "Volapuk",
+      "vot": "Votia",
+      "wal": "Walamo",
+      "war": "Warai",
+      "wuu": "Wu Tionghoa",
+      "xal": "Kalmuk",
+      "yap": "Yapois",
+      "yue": "Tionghoa, Kanton",
+      "zap": "Zapotek",
+      "zbl": "Blissymbol",
+      "zgh": "Tamazight Maroko Standar",
+      "zh": "Tionghoa, Mandarin",
+      "zh-Hans": "Tionghoa Mandarin (Sederhana)",
+      "zh-Hant": "Tionghoa Mandarin (Tradisional)"
+    },
+    "scriptNames": {
+      "Aghb": "Albania Kaukasia",
+      "Armi": "Aram Imperial",
+      "Armn": "Armenia",
+      "Avst": "Avesta",
+      "Beng": "Bengali",
+      "Blis": "Blissymbol",
+      "Bugi": "Bugis",
+      "Cans": "Simbol Aborigin Kanada Kesatuan",
+      "Cari": "Karia",
+      "Copt": "Koptik",
+      "Cprt": "Siprus",
+      "Cyrl": "Sirilik",
+      "Cyrs": "Gereja Slavonia Sirilik Lama",
+      "Deva": "Dewanagari",
+      "Dupl": "Stenografi Duployan",
+      "Egyd": "Demotik Mesir",
+      "Egyh": "Hieratik Mesir",
+      "Egyp": "Hieroglip Mesir",
+      "Ethi": "Etiopia",
+      "Geor": "Georgia",
+      "Grek": "Yunani",
+      "Gujr": "Gujarat",
+      "Hanb": "Han dengan Bopomofo",
+      "Hans": "Han Sederhana",
+      "Hant": "Han Tradisional",
+      "Hebr": "Ibrani",
+      "Hluw": "Hieroglif Anatolia",
+      "Hrkt": "Katakana atau Hiragana",
+      "Hung": "Hungaria Kuno",
+      "Ital": "Italia Lama",
+      "Java": "Jawa",
+      "Jpan": "Jepang",
+      "Kits": "Skrip kecil Khitan",
+      "Kore": "Korea",
+      "Laoo": "Laos",
+      "Latf": "Latin Fraktur",
+      "Latg": "Latin Gaelik",
+      "Lyci": "Lycia",
+      "Lydi": "Lydia",
+      "Maka": "Makassar",
+      "Mand": "Mandae",
+      "Mani": "Manikhei",
+      "Maya": "Hieroglip Maya",
+      "Merc": "Kursif Meroitik",
+      "Mero": "Meroitik",
+      "Mong": "Mongolia",
+      "Narb": "Arab Utara Kuno",
+      "Nbat": "Nabataea",
+      "Nshu": "Nushu",
+      "Olck": "Chiki Lama",
+      "Orya": "Oriya",
+      "Ougr": "Uyghur Lama",
+      "Palm": "Palmira",
+      "Perm": "Permik Kuno",
+      "Phli": "Pahlevi",
+      "Phlp": "Mazmur Pahlevi",
+      "Phlv": "Kitab Pahlevi",
+      "Phnx": "Phoenix",
+      "Plrd": "Fonetik Pollard",
+      "Prti": "Prasasti Parthia",
+      "Rohg": "Hanifi",
+      "Runr": "Runik",
+      "Samr": "Samaria",
+      "Sarb": "Arab Selatan Kuno",
+      "Sgnw": "Tulisan Isyarat",
+      "Shaw": "Shavia",
+      "Sogo": "Sogdian Lama",
+      "Sund": "Sunda",
+      "Syrc": "Suriah",
+      "Syre": "Suriah Estrangelo",
+      "Syrj": "Suriah Barat",
+      "Syrn": "Suriah Timur",
+      "Talu": "Tai Lue Baru",
+      "Teng": "Tenghwar",
+      "Tibt": "Tibet",
+      "Toto": "Toto (txo)",
+      "Ugar": "Ugaritik",
+      "Visp": "Ucapan Terlihat",
+      "Xpeo": "Persia Kuno",
+      "Xsux": "Cuneiform Sumero-Akkadia",
+      "Zinh": "Warisan",
+      "Zmth": "Notasi Matematika",
+      "Zsym": "Simbol",
+      "Zxxx": "Tidak Tertulis",
+      "Zyyy": "Umum",
+      "Zzzz": "Skrip Tidak Dikenal"
+    }
+  }
+}

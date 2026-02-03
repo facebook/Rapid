@@ -1,0 +1,908 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.321Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/community.cy.json",
+    "hash": "8a46e53c5726d44ef610ac9c7559da9b"
+  },
+  "cy": {
+    "_communities": {
+      "openstreetmapafghanistan": "OpenStreetMap Affganistan",
+      "openstreetmapafrica": "OpenStreetMap Affrica",
+      "openstreetmapalba": "OpenStreetMap Yr Alban",
+      "openstreetmapaustria": "OpenStreetMap Awstria",
+      "openstreetmapbelarus": "OpenStreetMap Belarws",
+      "openstreetmapbelgium": "OpenStreetMap Gwlad Belg",
+      "openstreetmapbelize": "OpenStreetMap Belise",
+      "openstreetmapbengaluru": "OpenStreetMap Bengalwrw",
+      "openstreetmapbolivia": "OpenStreetMap Bolifia",
+      "openstreetmapbosniaandherzegovina": "OpenStreetMap Bosnia a Herzegovina",
+      "openstreetmapbulgaria": "OpenStreetMap Bwlgaria",
+      "openstreetmapbzh": "OpenStreetMap Llydaw",
+      "openstreetmapcatalancountries": "OpenStreetMap Gwledydd Catalaneg",
+      "openstreetmapchina": "OpenStreetMap Tsieina",
+      "openstreetmapcotedivoire": "OpenStreetMap Y Traeth Ifori",
+      "openstreetmapcuba": "OpenStreetMap Ciwba",
+      "openstreetmapcz": "OpenStreetMap Gweriniaeth Tsiec",
+      "openstreetmapde": "OpenStreetMap Yr Almaen",
+      "openstreetmapdeepsouth": "OpenStreetMap De UDA",
+      "openstreetmapdenmark": "OpenStreetMap Denmarc",
+      "openstreetmapdominicanrepublic": "OpenStreetMap Gweriniaeth Dominica",
+      "openstreetmapegypt": "OpenStreetMap Yr Aifft",
+      "openstreetmapespana": "OpenStreetMap Sbaen",
+      "openstreetmapfiji": "OpenStreetMap Ffiji",
+      "openstreetmapfinland": "OpenStreetMap Ffindir",
+      "openstreetmapfrance": "OpenStreetMap Ffrainc",
+      "openstreetmapfreemapslovakia": "OpenStreetMap Freemap Slofacia",
+      "openstreetmapgermany": "OpenStreetMap Yr Almaen",
+      "openstreetmapgorakalwaria": "OpenStreetMap Góra Calwaria",
+      "openstreetmapgreece": "OpenStreetMap Gwlad Groeg",
+      "openstreetmaphongkong": "OpenStreetMap Hong Cong",
+      "openstreetmaphungary": "OpenStreetMap Hwngari",
+      "openstreetmapiceland": "OpenStreetMap Gwlad yr Iâ",
+      "openstreetmapiraq": "OpenStreetMap Irac",
+      "openstreetmapireland": "OpenStreetMap Iwerddon",
+      "openstreetmapitaly": "OpenStreetMap Yr Eidal",
+      "openstreetmapitalylazio": "OpenStreetMap Yr Eidal-Lazio",
+      "openstreetmapitalylombardia": "OpenStreetMap Yr Eidal-Lombardia",
+      "openstreetmapitalypiemonte": "OpenStreetMap Yr Eidal-Piemonte",
+      "openstreetmapitalysouthtyrol": "OpenStreetMap Yr Eidal-De Tyrol",
+      "openstreetmapitalytrentino": "OpenStreetMap Yr Eidal-Trentino",
+      "openstreetmaplatinamerica": "OpenStreetMap Lladin America",
+      "openstreetmaplatvia": "OpenStreetMap Latfia",
+      "openstreetmaplithuania": "OpenStreetMap Lithwania",
+      "openstreetmaplondon": "OpenStreetMap Llundain",
+      "openstreetmapluxembourg": "OpenStreetMap Lwcsembwrg",
+      "openstreetmapmexico": "OpenStreetMap Mecsico",
+      "openstreetmapmoldova": "OpenStreetMap Moldofa",
+      "openstreetmapnetherlands": "OpenStreetMap Yr Iseldiroedd",
+      "openstreetmapnorthkorea": "OpenStreetMap Gogledd Korea",
+      "openstreetmapnorway": "OpenStreetMap Norwy",
+      "openstreetmappakistan": "OpenStreetMap Pacistan",
+      "openstreetmapperu": "OpenStreetMap Periw",
+      "openstreetmapphilippines": "OpenStreetMap Yr Ynysoedd Philippines",
+      "openstreetmappoland": "OpenStreetMap Gwlad Pwyl",
+      "openstreetmapportugal": "OpenStreetMap Portiwgal",
+      "openstreetmapromania": "OpenStreetMap Rwmania",
+      "openstreetmaprussia": "OpenStreetMap Rwsia",
+      "openstreetmapslovenia": "OpenStreetMap Slofenia",
+      "openstreetmapsouthafrica": "OpenStreetMap De Affrica",
+      "openstreetmapsouthsudan": "OpenStreetMap De Sudan",
+      "openstreetmapswitzerland": "OpenStreetMap Swistir",
+      "openstreetmapturkey": "OpenStreetMap Twrci",
+      "openstreetmapuk": "OpenStreetMap Y DU",
+      "openstreetmapukraine": "OpenStreetMap Wcráin",
+      "openstreetmapus": "OpenStreetMap Yr UDA",
+      "openstreetmapwarszawa": "OpenStreetMap Warsaw",
+      "openstreetmapwestbengal": "OpenStreetMap Gorllewin Bengal",
+      "openstreetmapwesternsahara": "OpenStreetMap Gorllewin Sahara",
+      "swissopenstreetmap": "OpenStreetMap Y Swistir"
+    },
+    "_defaults": {
+      "aparat": {
+        "name": "{community} ar Aparat",
+        "description": "Tanysgrifiwch i'n sianel Aparat"
+      },
+      "bluesky": {
+        "name": "{community} ar Bluesky",
+        "description": "Dilynwch ni ar Bluesky"
+      },
+      "discord": {
+        "name": "Discord {community}",
+        "description": "Cysylltwch â mapwyr eraill ar Discord"
+      },
+      "discourse": {
+        "name": "Fforwm y Gymuned {community}",
+        "description": "Y fforwm swyddogol ar gyfer {community}"
+      },
+      "facebook": {
+        "name": "{community} ar Facebook",
+        "description": "Ymunwch â'n cymuned ar Facebook"
+      },
+      "forum": {
+        "name": "Fforwm {community}",
+        "description": "Y fforwm swyddogol ar gyfer {community}"
+      },
+      "github": {
+        "name": "GitHub {community}"
+      },
+      "gitlab": {
+        "name": "GitLab {community}"
+      },
+      "instagram": {
+        "name": "{community} ar Instagram",
+        "description": "Dilynwch ni ar Instagram"
+      },
+      "irc": {
+        "name": "{community} ar IRC",
+        "description": "Ymunwch â #{account} ar irc.oftc.net (porth 6667 ar gyfer di-SSL neu 6697 ar gyfer SSL)"
+      },
+      "linkedin": {
+        "name": "{community} ar LinkedIn",
+        "description": "Ymunwch â'n cymuned ar LinkedIn"
+      },
+      "mailinglist": {
+        "name": "Rhestr Bost {account}",
+        "description": "Y restr bost swyddogol ar gyfer {community}"
+      },
+      "mastodon": {
+        "name": "{community} ar Mastodon",
+        "description": "Y cyfrif Mastodon swyddogol ar gyfer {community}"
+      },
+      "matrix": {
+        "name": "Sgwrs Matrix {community}",
+        "description": "Ymunwch â'n sgwrs gymunedol ar Matrix"
+      },
+      "meetup": {
+        "name": "Meetup {community}"
+      },
+      "newsletter": {
+        "name": "Cylchlythyr {community}"
+      },
+      "reddit": {
+        "name": "{community} ar Reddit"
+      },
+      "signal": {
+        "name": "Signal {community}",
+        "description": "Ymunwch â'n sgwrs gymunedol ar Signal"
+      },
+      "slack": {
+        "name": "Slack {community}"
+      },
+      "telegram": {
+        "name": "Telegram {community}",
+        "description": "Ymunwch â'n sgwrs gymunedol ar Telegram"
+      },
+      "threads": {
+        "name": "{community} ar Threads",
+        "description": "Dilynwch ni ar Threads"
+      },
+      "tiktok": {
+        "name": "{community} ar TikTok",
+        "description": "Dilynwch ni ar TikTok"
+      },
+      "twitter": {
+        "name": "{community} ar X",
+        "description": "Dilynwch ni ar X"
+      },
+      "wiki": {
+        "name": "WiciBrosiect {community}"
+      },
+      "x": {
+        "name": "{community} ar X",
+        "description": "Dilynwch ni ar X"
+      },
+      "xmpp": {
+        "name": "XMPP {community}",
+        "description": "Ymunwch â'n sgwrs gymunedol ar XMPP: {url}"
+      },
+      "youtube": {
+        "name": "{community} ar YouTube",
+        "description": "Tanysgrifiwch i'n sianel YouTube"
+      },
+      "zulip": {
+        "name": "Zulip {community}",
+        "description": "Ymunwch â'n sgwrs gymunedol ar Zulip"
+      }
+    },
+    "aberdeen-discord": {
+      "name": "Discord OSM ABZ"
+    },
+    "af-matrix": {
+      "description": "Grŵp Matrix ar gyfer y gymuned yn Afghanistan."
+    },
+    "al-maptime-tirana": {
+      "description": "Digwyddiadau cymdeithasol wedi'u trefnu o amgylch mapio - croeso i ddechreuwyr ymuno!",
+      "extendedDescription": "Mae Maptime yn amgylchedd dysgu agored ar gyfer pob lefel o wybodaeth, gan gynnig cefnogaeth addysgol i ddechreuwyr. Mae Maptime yn hyblyg a hefyd yn strwythuredig, gan greu lle ar gyfer tiwtorialau mapio, gweithdai, prosiectau parhaus gyda nod cyffredin, a chyfleuoedd gweithio annibynnol / cydweithredol."
+    },
+    "am-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "at-matrix": {
+      "description": "Sianel Matrix Almaeneg answyddogol ar gyfer Awstria"
+    },
+    "at-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "Bahia-telegram": {
+      "extendedDescription": "Ymunwch â'r gymuned i ddysgu mwy am OpenStreetMap, gofyn cwestiynau neu gymryd rhan yn ein cyfarfodydd. Croeso i bawb ymuno!"
+    },
+    "Bay-Area-OpenStreetMappers": {
+      "name": "OpenStreetMapwyr Ardal y Bae",
+      "description": "Gwella OpenStreetMap yn y Bay Area"
+    },
+    "be-chapter": {
+      "description": "Rydym yn tyfu a gwella OpenStreetMap yng Ngwlad Belg."
+    },
+    "be-discourse": {
+      "description": "Fforwm i drafod OpenStreetMap yng Ngwlad Belg"
+    },
+    "be-matrix": {
+      "description": "Croeso i bob mapiwr!"
+    },
+    "be-meetup": {
+      "description": "Cyfarfodydd wyneb-yn-wyneb i bawb sydd â diddordeb mewn OpenStreetMap"
+    },
+    "be-newsletter": {
+      "description": "Cylchlythyr chwarterol y gymuned Felgaidd"
+    },
+    "bg-wiki": {
+      "description": "Tudalen WiciBrosiect am Fwlgaria"
+    },
+    "bo-facebook-group": {
+      "name": "Grŵp Facebook {community}"
+    },
+    "bo-matrix": {
+      "description": "Croeso i bob mapiwr!"
+    },
+    "br-telegram": {
+      "extendedDescription": "Ymunwch â'r gymuned i ddysgu mwy am OpenStreetMap, gofyn cwestiynau neu gymryd rhan yn ein cyfarfodydd. Croeso i bawb ymuno!"
+    },
+    "cape-coast-youthmappers": {
+      "name": "YouthMappers University of Cape Coast",
+      "description": "Dilynwch ni ar Twitter: {url}"
+    },
+    "cat-twitch": {
+      "name": "Sianel Twitch {community}",
+      "description": "Golygu OSM, HOTosm, OpenData a GIS yn fyw"
+    },
+    "cd-chapter": {
+      "description": "O un stryd i'r llall, gadewch i ni fapio ein gwlad..."
+    },
+    "ch-mailinglist": {
+      "name": "Rhestr Bost OpenStreetMap Y Swistir",
+      "description": "Rhestr Bost ar gyfer y Swistir"
+    },
+    "cl-facebook": {
+      "extendedDescription": "Ymunwch â'r gymuned i ddysgu mwy am OpenStreetMap, gofyn cwestiynau neu gymryd rhan yn ein cyfarfodydd. Croeso i bawb ymuno!"
+    },
+    "cl-telegram": {
+      "extendedDescription": "Ymunwch â'r gymuned i ddysgu mwy am OpenStreetMap, gofyn cwestiynau neu gymryd rhan yn ein cyfarfodydd. Croeso i bawb ymuno!"
+    },
+    "co-facebook": {
+      "name": "Grŵp o {community} ar Facebook"
+    },
+    "co-github": {
+      "name": "Prosiectau {community} ar GitHub"
+    },
+    "co-instagram": {
+      "name": "Postiadau gan {community} ar Instagram",
+      "description": "Cyhoeddiadau ar weithgareddau'r gymuned neu wybodaeth"
+    },
+    "co-linkedin": {
+      "name": "Postiadau gan {community} ar LinkedIn",
+      "description": "Cyhoeddiadau ar weithgareddau'r gymuned neu wybodaeth"
+    },
+    "co-mastodon": {
+      "name": "Postiadau gan {community} ar Mastodon",
+      "description": "Cyhoeddiadau ar weithgareddau'r gymuned neu wybodaeth"
+    },
+    "co-talk": {
+      "name": "Rhestr Bostio {community}"
+    },
+    "co-thread": {
+      "name": "Postiadau gan {community} ar Threads",
+      "description": "Cyhoeddiadau ar weithgareddau'r gymuned neu wybodaeth"
+    },
+    "co-tiktok": {
+      "name": "Fideos byr o {community} ar TikTok",
+      "description": "Cyhoeddiadau ar weithgareddau'r gymuned"
+    },
+    "co-twitter": {
+      "name": "Y gymuned {community} ar Twitter",
+      "description": "Cyhoeddiadau ar weithgareddau'r gymuned neu wybodaeth"
+    },
+    "co-whatsapp": {
+      "description": "Cyhoeddiadau ar weithgareddau'r gymuned neu wybodaeth"
+    },
+    "co-youtube": {
+      "name": "Fideos o {community} ar YouTube"
+    },
+    "de-aachen-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "de-berlin-mailinglist": {
+      "name": "Rhestr Bost Berlin"
+    },
+    "de-berlin-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "de-berlin-xmpp": {
+      "name": "XMPP OpenStreetMap Berlin-Brandenburg"
+    },
+    "de-bochum-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "de-bonn-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "de-bremen-mailinglist": {
+      "name": "Rhestr Bost Bremen"
+    },
+    "de-bremen-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "de-cologne-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "de-dresden-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "de-dusseldorf-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "de-hamburg-xmpp": {
+      "name": "XMPP OpenStreetMap Hamburg"
+    },
+    "de-karlsruhe-mailinglist": {
+      "name": "Rhestr Bost Karlsruhe"
+    },
+    "de-luneburg-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "de-mainz-mailinglist": {
+      "description": "OpenStreetMap ym Mainz und Umgebung"
+    },
+    "de-mainz-wiki": {
+      "description": "OpenStreetMap ym Mainz und Umgebung"
+    },
+    "de-munchen-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "de-mv-mailinglist": {
+      "name": "Rhestr Bost Mecklenburg-Vorpommern"
+    },
+    "de-ostwestfalen-lippe-mailinglist": {
+      "name": "Rhestr Bost OWL",
+      "description": "Dyma restr bost ar gyfer y gymuned OSM yn Ostwestfalen-Lippe"
+    },
+    "de-stuttgart-mailinglist": {
+      "name": "Rhestr Bostio Stuttgart a Baden-Wuerttemberg",
+      "description": "Dyma rhestr bost ar gyfer y gymuned OSM yn Stuttgart a Baden-Wuerttemberg cyfan"
+    },
+    "de-stuttgart-meetup": {
+      "name": "Meetup OpenStreetMap Stuttgart"
+    },
+    "de-telegram": {
+      "name": "Telegram OpenStreetMap D-A-CH"
+    },
+    "de-ulm_neuulm-meetup": {
+      "name": "Meetup OpenStreetMap Ulm Neu-Ulm"
+    },
+    "de-ulmeralb-meetup": {
+      "name": "Meetup OpenStreetMap Ulmer Alb"
+    },
+    "de-viersen-meetup": {
+      "name": "Meetup OpenStreetMap Viersen"
+    },
+    "de-xmpp": {
+      "name": "XMPP OpenStreetMap DE"
+    },
+    "DF-telegram": {
+      "extendedDescription": "Ymunwch â'r gymuned i ddysgu mwy am OpenStreetMap, gofyn cwestiynau neu gymryd rhan yn ein cyfarfodydd. Croeso i bawb ymuno!"
+    },
+    "fr-35-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "fr-38-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "fr-bzh-website": {
+      "description": "Y map sy'n siarad Llydaweg"
+    },
+    "fr-chapter": {
+      "description": "Rydym yn helpu i dyfu a gwella OpenStreetMap yn Ffrainc."
+    },
+    "fr-montrouge-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "fr-telegram": {
+      "description": "Grŵp Telegram ar gyfer y gymuned OSM Ffrainc: {url}"
+    },
+    "fr-xmpp": {
+      "description": "Ymunwch ag osm-fr@chat.jabberfr.org"
+    },
+    "Galicia-Xeoinquedos-Twitter": {
+      "name": "Xeoinquedos ar Twitter",
+      "description": "Dilynwch ni ar Twitter: {url}"
+    },
+    "gb-mailinglist": {
+      "description": "Talk-gb yw'r prif restr fforwm cyfathrebu ar gyfer cymuned OSM y DU (gan gynnwys Gogledd Iwerddon)"
+    },
+    "hr-github": {
+      "description": "GitHub {community}"
+    },
+    "hr-tm": {
+      "name": "Rheolwr Tasgau {community}"
+    },
+    "hr-wiki": {
+      "description": "Tudalen WiciBrosiect am Groatia"
+    },
+    "hu-facebook-group": {
+      "name": "Grŵp Facebook {community}"
+    },
+    "hu-mobilizon": {
+      "name": "{community} ar Mobilizon"
+    },
+    "hu-tm": {
+      "name": "Rheolwr Tasgau {community}"
+    },
+    "hu-website": {
+      "description": "Gwefan y gymuned OpenStreetMap Hwngari"
+    },
+    "hu-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "id-facebook-group": {
+      "name": "Grŵp Facebook {community}"
+    },
+    "ireland-chapter": {
+      "description": "Rydym yn tyfu a gwella OpenStreetMap yn Iwerddon."
+    },
+    "is-chapter": {
+      "description": "Rydym yn tyfu a gwella OpenStreetMap yng Ngwlad yr Iâ."
+    },
+    "it-chapter": {
+      "description": "Rydym yn tyfu a gwella OpenStreetMap yn yr Eidal."
+    },
+    "it-discourse": {
+      "description": "Fforwm i drafod OpenStreetMap yn yr Eidal"
+    },
+    "ko-facebook": {
+      "description": "Mapwyr a defnyddwyr OpenStreetMap yng Nghorea"
+    },
+    "ko-github": {
+      "description": "GitHub {community}"
+    },
+    "ko-osm": {
+      "description": "Rydym yn tyfu ac yn gwella OpenStreetMap yng Nghorea."
+    },
+    "kosovo-flossk": {
+      "description": "Yn hyrwyddo FLOSS ers 2009"
+    },
+    "kp-wiki": {
+      "description": "Canllaw Mapio {community}"
+    },
+    "lv-wiki": {
+      "description": "WiciBrosiect Latfia"
+    },
+    "madrid-uam-ym": {
+      "name": "YouthMappers yn UAM",
+      "description": "Siapter YouthMappers yn Universidad Autonoma de Madrid"
+    },
+    "madrid-upm-ym": {
+      "description": "Siapter YouthMappers yn Universidad Politécnica de Madrid"
+    },
+    "mailinglist-sk-googlegroups": {
+      "name": "Rhestr Bost Slofacia ar Google Groups",
+      "description": "Y restr bost swyddogol ar gyfer y gymuned yn Slofacia"
+    },
+    "MapColabora-twitter": {
+      "description": "Cyfrif Twitter Mapeado Colaborativo / Geoinquietos Zaragoza"
+    },
+    "MapLYH": {
+      "description": "Grŵp MapLYH"
+    },
+    "mappa-mercia-group": {
+      "name": "Grŵp lleol Mappa Mercia",
+      "description": "Cartref i ddefnyddwyr OpenStreetMap yng Nghanolbarth Lloegr"
+    },
+    "maptime-bogota-facebook": {
+      "description": "Rydym yn grŵp o bobl sydd â diddordeb i fapio Bogotá a'r ardal o'i gwmpas ar OpenStreetMap.",
+      "extendedDescription": "Dysgwch sut i gasglu data ar y maes a'i rhoi ar OpenStreetMap yn ddigidol. Nid oes angen unrhyw wybodaeth flaenorol! Dim ond yr awydd i gymryd rhan, dysgu, a cael hwyl sydd eu hangen arnoch."
+    },
+    "maptime-bogota-github": {
+      "description": "Rydym yn grŵp o bobl sydd â diddordeb i fapio Bogotá a'r ardal o'i gwmpas ar OpenStreetMap.",
+      "extendedDescription": "Dysgwch sut i gasglu data ar y maes a'i rhoi ar OpenStreetMap yn ddigidol. Nid oes angen unrhyw wybodaeth flaenorol! Dim ond yr awydd i gymryd rhan, dysgu, a cael hwyl sydd eu hangen arnoch."
+    },
+    "maptime-bogota-linkedin": {
+      "description": "Rydym yn grŵp o bobl sydd â diddordeb i fapio Bogotá a'r ardal o'i gwmpas ar OpenStreetMap.",
+      "extendedDescription": "Dysgwch sut i gasglu data ar y maes a'i rhoi ar OpenStreetMap yn ddigidol. Nid oes angen unrhyw wybodaeth flaenorol! Dim ond yr awydd i gymryd rhan, dysgu, a cael hwyl sydd eu hangen arnoch."
+    },
+    "maptime-bogota-mastodon": {
+      "description": "Rydym yn grŵp o bobl sydd â diddordeb i fapio Bogotá a'r ardal o'i gwmpas ar OpenStreetMap.",
+      "extendedDescription": "Dysgwch sut i gasglu data ar y maes a'i rhoi ar OpenStreetMap yn ddigidol. Nid oes angen unrhyw wybodaeth flaenorol! Dim ond yr awydd i gymryd rhan, dysgu, a cael hwyl sydd eu hangen arnoch."
+    },
+    "maptime-bogota-meetup": {
+      "description": "Rydym yn grŵp o bobl sydd â diddordeb i fapio Bogotá a'r ardal o'i gwmpas ar OpenStreetMap.",
+      "extendedDescription": "Dysgwch sut i gasglu data ar y maes a'i rhoi ar OpenStreetMap yn ddigidol. Nid oes angen unrhyw wybodaeth flaenorol! Dim ond yr awydd i gymryd rhan, dysgu, a cael hwyl sydd eu hangen arnoch."
+    },
+    "maptime-bogota-telegram": {
+      "description": "Rydym yn grŵp o bobl sydd â diddordeb i fapio Bogotá a'r ardal o'i gwmpas ar OpenStreetMap.",
+      "extendedDescription": "Dysgwch sut i gasglu data ar y maes a'i rhoi ar OpenStreetMap yn ddigidol. Nid oes angen unrhyw wybodaeth flaenorol! Dim ond yr awydd i gymryd rhan, dysgu, a cael hwyl sydd eu hangen arnoch."
+    },
+    "maptime-bogota-twitter": {
+      "description": "Rydym yn grŵp o bobl sydd â diddordeb i fapio Bogotá a'r ardal o'i gwmpas ar OpenStreetMap.",
+      "extendedDescription": "Dysgwch sut i gasglu data ar y maes a'i rhoi ar OpenStreetMap yn ddigidol. Nid oes angen unrhyw wybodaeth flaenorol! Dim ond yr awydd i gymryd rhan, dysgu, a cael hwyl sydd eu hangen arnoch."
+    },
+    "maptime-bogota-website": {
+      "description": "Rydym yn grŵp o bobl sydd â diddordeb i fapio Bogotá a'r ardal o'i gwmpas ar OpenStreetMap.",
+      "extendedDescription": "Dysgwch sut i gasglu data ar y maes a'i rhoi ar OpenStreetMap yn ddigidol. Nid oes angen unrhyw wybodaeth flaenorol! Dim ond yr awydd i gymryd rhan, dysgu, a cael hwyl sydd eu hangen arnoch."
+    },
+    "maptime-bogota-youtube": {
+      "description": "Rydym yn grŵp o bobl sydd â diddordeb i fapio Bogotá a'r ardal o'i gwmpas ar OpenStreetMap.",
+      "extendedDescription": "Dysgwch sut i gasglu data ar y maes a'i rhoi ar OpenStreetMap yn ddigidol. Nid oes angen unrhyw wybodaeth flaenorol! Dim ond yr awydd i gymryd rhan, dysgu, a cael hwyl sydd eu hangen arnoch."
+    },
+    "Maptime-ME-meetup": {
+      "description": "Mapwyr a defnyddwyr OpenStreetMap o gwmpas Portland, ME"
+    },
+    "Maptime-Oceania-Slack": {
+      "name": "Slack Maptime Oceania",
+      "description": "Cofrestrwch ar {signupUrl}"
+    },
+    "md-googlegroup": {
+      "name": "Grŵp Google {community}",
+      "description": "Ymunwch â'r Grŵp Google {community}"
+    },
+    "me-telegram": {
+      "description": "Croeso i bawb! Cofrestrwch nawr {signupUrl}"
+    },
+    "nl-discourse": {
+      "description": "Fforwm i drafod OpenStreetMap yn yr Iseldiroedd"
+    },
+    "nl-matrix": {
+      "description": "Croeso i bob mapiwr!"
+    },
+    "no-matrix": {
+      "description": "Pont o ystafell sgwrs IRC"
+    },
+    "Open-Source-San-Jose-Discord": {
+      "name": "Discord Open Source San José",
+      "description": "Cysylltwch â mapwyr eraill ar Discord! Ar ôl cofrestru, ymunwch â'r sianel #🗺openstreetmap."
+    },
+    "Open-Source-San-Jose-Mastodon": {
+      "description": "Dilynwch Open Source San José ar Mastodon."
+    },
+    "Open-Source-San-Jose-Slack": {
+      "name": "Slack Open Source San José"
+    },
+    "OpenCleveland-meetup": {
+      "description": "Gwella OpenStreetMap yn yr ardal Cleveland"
+    },
+    "osm-africa-eventbrite": {
+      "name": "EventBrite {community}",
+      "description": "Tudalen Eventbrite {community}"
+    },
+    "osm-africa-facebook-group": {
+      "name": "Grŵp Facebook {community}"
+    },
+    "osm-africa-matrix": {
+      "description": "Croeso i bob mapiwr!"
+    },
+    "osm-africa-slack": {
+      "description": "Croeso i bawb! Cofrestrwch nawr {signupUrl}"
+    },
+    "OSM-AR-twitter": {
+      "extendedDescription": "Newyddion o'r gymuned leol ac OpenStreetMap yn gyffredinol."
+    },
+    "osm-asia-facebook": {
+      "description": "Grŵp Facebook OpenStreetMap Asia"
+    },
+    "osm-bengaluru-wiki": {
+      "description": "OpenStreetMap ym Mengaluru"
+    },
+    "osm-benin-facebook": {
+      "description": "Gwella OpenStreetMap ym Menin"
+    },
+    "osm-deep-south-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "osm-delhi-xmpp": {
+      "name": "XMPP OpenStreetMap Delhi"
+    },
+    "OSM-Discord": {
+      "name": "Discord OpenStreetMap World"
+    },
+    "OSM-Discourse": {
+      "name": "Fforwm y Gymuned OpenStreetMap"
+    },
+    "OSM-Facebook": {
+      "description": "Hoffwch ni ar Facebook am newyddion a diweddariadau am OpenStreetMap."
+    },
+    "OSM-India-facebook": {
+      "description": "Gwella OpenStreetMap yn India"
+    },
+    "osm-india-github": {
+      "description": "Codio â ni: {url}"
+    },
+    "OSM-india-twitter": {
+      "description": "Dim ond trydariad i ffwrdd: {url}"
+    },
+    "osm-india-website": {
+      "description": "Mapwyr a defnyddwyr OpenStreetMap yn India"
+    },
+    "osm-india-xmpp": {
+      "name": "XMPP OpenStreetMap India"
+    },
+    "osm-iran-discord": {
+      "extendedDescription": "Gweinydd Discord ar gyfer OpenStreetMap Iran. Dewch yn llu!"
+    },
+    "OSM-japan-facebook": {
+      "description": "Mapwyr a defnyddwyr OpenStreetMap yn Japan"
+    },
+    "OSM-japan-website": {
+      "description": "Mapwyr a defnyddwyr OpenStreetMap yn Japan"
+    },
+    "OSM-Kerala-facebook": {
+      "description": "Gwella OpenStreetMap yn Kerala"
+    },
+    "osm-kerala-github": {
+      "description": "Codio â ni: {url}"
+    },
+    "osm-kerala-website": {
+      "description": "Rydym yn helpu i dyfu a gwella OpenStreetMap yn Kerala."
+    },
+    "osm-kerala-wiki": {
+      "description": "Eisiau dysgu rhagor am Kerala Mapping? {url}"
+    },
+    "osm-michigan-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "osm-ohio-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "OSM-PL-chapter": {
+      "description": "Cartref y gymuned OpenStreetMap Gwlad Pwyl"
+    },
+    "OSM-Puducherry-Mailing-List": {
+      "name": "Free Software Hardware Movement - Rhestr Bost"
+    },
+    "OSM-Rome-meetup": {
+      "description": "Gwella OpenStreetMap yn ardal Rhufain"
+    },
+    "OSM-Seattle": {
+      "description": "Mapwyr a defnyddwyr OpenStreetMap yn ardal Seattle"
+    },
+    "OSM-SoCal": {
+      "name": "OpenStreetMap De Califfornia"
+    },
+    "OSM-Tampa-Bay": {
+      "name": "OpenStreetMap Bae Tampa"
+    },
+    "osm-td-facebook": {
+      "description": "Gwella OpenStreetMap yn Chad"
+    },
+    "osm-tw": {
+      "description": "Rydym yn helpu i dyfu a gwella OpenStreetMap yn Taiwan."
+    },
+    "OSM-US": {
+      "description": "Rydym yn helpu i dyfu a gwella OpenStreetMap yn yr Unol Daleithiau.",
+      "events": {
+        "mappingusa2022": {
+          "name": "Mapio'r UDA 2022",
+          "where": "digidol"
+        }
+      }
+    },
+    "OSM-US-Slack": {
+      "description": "Croeso i bawb! Cofrestrwch nawr {signupUrl}"
+    },
+    "OSMF": {
+      "name": "Sefydliad OpenStreetMap",
+      "description": "Mae OSMF yn sefydliad di-elw yn y DU sy'n cefnogi Prosiect OpenStreetMap"
+    },
+    "ph-facebook-group": {
+      "name": "Grŵp Facebook {community}"
+    },
+    "PHXGeo-meetup": {
+      "name": "Meetup PHXGeo"
+    },
+    "PHXGeo-twitter": {
+      "name": "Twitter PHXGeo",
+      "description": "Dilynwch ni ar Twitter: {url}"
+    },
+    "rs-discourse": {
+      "description": "Fforwm i drafod OpenStreetMap yn Serbia"
+    },
+    "RS-telegram": {
+      "extendedDescription": "Ymunwch â'r gymuned i ddysgu mwy am OpenStreetMap, gofyn cwestiynau neu gymryd rhan yn ein cyfarfodydd. Croeso i bawb ymuno!"
+    },
+    "rs-wiki": {
+      "description": "Tudalen WiciBrosiect am Serbia"
+    },
+    "sg-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "si-github": {
+      "description": "GitHub {community}"
+    },
+    "si-ljubljana-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "si-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "talk-au": {
+      "description": "Lle i fapwyr o Awstralia sgwrsio"
+    },
+    "tn-facebook-group": {
+      "name": "Grŵp Facebook {community}"
+    },
+    "tw-slack": {
+      "description": "Croeso i bawb! Cofrestrwch nawr {signupUrl}"
+    },
+    "ua-github": {
+      "description": "OpenStreetMap Wcráin ar GitHub"
+    },
+    "ua-osm": {
+      "description": "Gwefan OpenStreetMap yn Wcráin"
+    },
+    "uk-localchapter": {
+      "description": "Y Siapter Lleol swyddogol ar gyfer y DU (gan gynnwys Gogledd Iwerddon).",
+      "extendedDescription": "Rydym yn cefnogi OpenStreetMap drwy gynnal digwyddiadau, darparu adnoddau cymunedol, adeiladu partneriaethau, ac yn lledaenu'r neges. Ymunwch ag OpenStreetMap UK yma: {signupUrl}"
+    },
+    "uk-london-mastodon": {
+      "name": "OpenStreetMap Llundain ar Mastodon",
+      "description": "OpenStreetMap Llundain ar Mastodon: {url}"
+    },
+    "uk-london-twitter": {
+      "name": "OpenStreetMap Llundain ar Twitter",
+      "description": "OpenStreetMap Llundain ar Twitter: {url}"
+    },
+    "uk-london-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "us-discourse": {
+      "description": "Fforwm trafodaeth am OpenStreetMap yn Unol Daleithiau America"
+    },
+    "us-massachusetts-mailinglist": {
+      "name": "Rhestr Bost Talk-us-massachusetts",
+      "description": "Dyma rhestr bost ar gyfer y gymuned OSM yn Massachusetts"
+    },
+    "us-newyork-mailinglist": {
+      "name": "Rhestr Bost Talk-us-newyork",
+      "description": "Dyma rhestr bost ar gyfer y gymuned OSM yn Efrog Newydd"
+    },
+    "uy-irc": {
+      "description": "Ymunwch â #{account} ar irc.freenode.org (porth 6667)",
+      "extendedDescription": "Ymunwch â #{account} ar irc.freenode.org"
+    },
+    "vn-wiki": {
+      "description": "Tudalen Wici {community}"
+    },
+    "ym-AASTU": {
+      "description": "Siapter YouthMappers yn Addis Ababa Science and Technology University"
+    },
+    "ym-Abia-State-University": {
+      "description": "Siapter YouthMappers yn Abia State University"
+    },
+    "ym-African-Methodist-Episcopal-University": {
+      "description": "Siapter YouthMappers yn African Methodist Episcopal University"
+    },
+    "ym-Ahmadu-Bello-University": {
+      "description": "Siapter YouthMappers yn Ahmadu Bello University"
+    },
+    "ym-Ardhi-University": {
+      "description": "Siapter YouthMappers yn Ardhi University"
+    },
+    "ym-Arizona-State-University-facebook": {
+      "description": "Siapter YouthMappers yn Arizona State University"
+    },
+    "ym-Arizona-State-University-twitter": {
+      "description": "Siapter YouthMappers yn Arizona State University"
+    },
+    "ym-Asian-University-for-Women": {
+      "name": "YouthMappers yn AUW",
+      "description": "Siapter YouthMappers yn Asian University for Women"
+    },
+    "ym-Ball-State-University": {
+      "description": "Siapter YouthMappers yn Ball State University"
+    },
+    "ym-Busitema-University": {
+      "description": "Siapter YouthMappers yn Busitema University"
+    },
+    "ym-California-University-of-Pennsylvania": {
+      "description": "Siapter YouthMappers yn California University of Pennsylvania"
+    },
+    "ym-Central-Washington-University": {
+      "description": "Siapter YouthMappers yn Central Washington University"
+    },
+    "ym-Clemson-University": {
+      "description": "Siapter YouthMappers yn Clemson University"
+    },
+    "ym-College-of-William-and-Mary": {
+      "name": "Ledled y map!",
+      "description": "Siapter YouthMappers yn College of William and Mary"
+    },
+    "ym-Cornell-University": {
+      "description": "Siapter YouthMappers yn Cornell University"
+    },
+    "ym-CURAT": {
+      "name": "CURAT YouthMappers",
+      "description": "Siapter YouthMappers yn Centre Universitaire de Recherche et d'Application en Télédétection (CURAT) de l'Université Felix Houphouet Boigny"
+    },
+    "ym-Cuttington-University": {
+      "name": "YouthMappers Cuttington University",
+      "description": "Siapter YouthMappers yn Cuttington University"
+    },
+    "ym-Dedan-Kimathi-University-of-Technology": {
+      "description": "Siapter YouthMappers yn Dedan Kimathi University of Technology"
+    },
+    "ym-Dhaka-College": {
+      "description": "Siapter YouthMappers yn Dhaka College"
+    },
+    "ym-Dhaka-University": {
+      "description": "Siapter YouthMappers yn Dhaka University"
+    },
+    "ym-Eastern-University": {
+      "name": "YouthMappers yn Eastern University",
+      "description": "Siapter YouthMappers yn Eastern University"
+    },
+    "ym-Far-Eastern-University-Institute-of-Technology": {
+      "description": "Siapter YouthMappers yn Far Eastern University -Institute of Technology"
+    },
+    "ym-Federal-School-of-Surveys": {
+      "description": "Siapter YouthMappers yn Federal School of Surveys"
+    },
+    "ym-Fourah-Bay-College": {
+      "description": "Siapter YouthMappers yn Fourah Bay College"
+    },
+    "ym-George-Mason-University": {
+      "description": "Siapter YouthMappers yn George Mason University"
+    },
+    "ym-Grand-Gedeh-County-Community-College": {
+      "name": "YouthMappers yn Grand Gedeh County Community College",
+      "description": "Siapter YouthMappers yn Grand Gedeh County Community College"
+    },
+    "ym-Gujarat-University": {
+      "description": "Siapter YouthMappers yn Gujarat University"
+    },
+    "ym-Gulu-University": {
+      "description": "Siapter YouthMappers yn Gulu University"
+    },
+    "ym-Heidelberg-University": {
+      "description": "Siapter YouthMappers yn Heidelberg University"
+    },
+    "ym-Ignatius-Ajuru-University-of-Education": {
+      "description": "Siapter YouthMappers yn Ignatius Ajuru University of Education"
+    },
+    "ym-Indiana-University-of-Pennsylvania": {
+      "description": "Siapter YouthMappers yn Indiana University of Pennsylvania"
+    },
+    "ym-Insititue-d-Enseignement-Superieur-de-Ruhengeri": {
+      "name": "YouthMappers yn Indiana INES Ruhengeri",
+      "description": "Siapter YouthMappers yn Insititue d' Enseignement Superieur de Ruhengeri"
+    },
+    "ym-Institut-Suprieur-de-Management-Kolda": {
+      "description": "Siapter YouthMappers yn Institut Supérieur de Management Kolda"
+    },
+    "ym-Institute-of-Crisis-Management-Studies": {
+      "name": "YouthMappers Institute of Crisis Management Studies"
+    },
+    "ym-Miami-University": {
+      "description": "Siapter YouthMappers ym Mhrifysgol Miami"
+    },
+    "ym-The-Citadel": {
+      "name": "YouthMappers yn The Citadel",
+      "description": "Siapter YouthMappers yn The Citadel"
+    },
+    "ym-Universidad-Distrital-Francisco-Jose-de-Caldas": {
+      "name": "YouthMappers Bogota"
+    },
+    "ym-Universidade-Eduardo-Mondlane": {
+      "description": "Siapter YouthMappers yn Universidade Eduardo Mondlane"
+    },
+    "ym-Universit-de-NZrkor": {
+      "description": "Siapter YouthMappers ym Mhrifysgol N'Zérékoré"
+    },
+    "ym-Universit-Mohammed-V-Rabat": {
+      "description": "Siapter YouthMappers yn Université Mohammed V Rabat"
+    },
+    "ym-Universitas-Negeri-Makassar": {
+      "description": "Siapter YouthMappers yn Universitas Negeri Makassar"
+    },
+    "ym-University-Muhammadiyah-Surakarta": {
+      "description": "Siapter YouthMappers yn University Muhammadiyah Surakarta"
+    },
+    "ym-University-of-Chicago": {
+      "name": "Cymdeithas Tobler",
+      "description": "Siapter YouthMappers ym Mhrifysgol Chicago"
+    },
+    "ym-University-of-Dar-es-Salaam": {
+      "name": "YouthMappers ym Mhrifysgol Dar es Salaam"
+    },
+    "ym-University-of-Maryland-College-Park": {
+      "extendedDescription": "Nod Clwb Daearyddiaeth Prifysgol Maryland College Park yw ymgysylltu ac annog myfyrwyr i archwilio diddordebau daearyddol yn y campws a'r gymuned."
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:41.915Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/intro_rapid_graph.json",
+    "hash": "d48de74dc5a7a30c8c0d92a559211244"
+  },
+  "introRapidGraph": {
+    "n-2852": {
+      "__fbid__": "-2852",
+      "__service__": "mapwithai",
+      "__datasetid__": "rapid_intro_graph",
+      "id": "n-2852",
+      "loc": [-85.6297512, 41.9561476]
+    },
+    "n-2805": {
+      "__fbid__": "-2805",
+      "__service__": "mapwithai",
+      "__datasetid__": "rapid_intro_graph",
+      "id": "n-2805",
+      "loc": [-85.6282000, 41.9561500]
+    },
+    "n-5150": {
+      "__fbid__": "-5150",
+      "__service__": "mapwithai",
+      "__datasetid__": "rapid_intro_graph",
+      "id": "n-5150",
+      "loc": [-85.6281089, 41.9561288]
+    },
+    "n-5151": {
+      "__fbid__": "-5151",
+      "__service__": "mapwithai",
+      "__datasetid__": "rapid_intro_graph",
+      "id": "n-5151",
+      "loc": [-85.6278017, 41.9560522]
+    },
+    "n-5152": {
+      "__fbid__": "-5152",
+      "__service__": "mapwithai",
+      "__datasetid__": "rapid_intro_graph",
+      "id": "n-5152",
+      "loc": [-85.6272470, 41.9558580]
+    },
+    "w-516": {
+      "__fbid__": "-516",
+      "__service__": "mapwithai",
+      "__datasetid__": "rapid_intro_graph",
+      "id": "w-516",
+      "nodes": ["n-2852", "n-2805", "n-5150", "n-5151", "n-5152"],
+      "tags": {
+        "highway": "residential",
+        "name": "Tulip Lane"
+      }
+    }
+  }
+}

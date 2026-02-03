@@ -1,0 +1,77 @@
+{
+  "_meta": {
+    "version": "2.5.6",
+    "generated": "2026-02-03T23:15:42.162Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/imagery.id.json",
+    "hash": "18d2577aaa994e3eef85c6a96517b8ab"
+  },
+  "id": {
+    "imagery": {
+      "Bing": {
+        "description": "Citra satelit dan udara Bing"
+      },
+      "EsriWorldImagery": {
+        "attribution": {
+          "text": "Ketentuan & Saran"
+        },
+        "description": "Citra satelit Esri World",
+        "name": "Citra satelit Esri World"
+      },
+      "EsriWorldImageryClarity": {
+        "attribution": {
+          "text": "Ketentuan & Saran"
+        },
+        "description": "Arsip citra Esri mungkin lebih bersih dan lebih akurat daripada layer default."
+      },
+      "MAPNIK": {
+        "name": "OpenStreetMap (Standar)"
+      },
+      "Mapbox": {
+        "attribution": {
+          "text": "Ketentuan & Saran"
+        },
+        "name": "Satelit Mapbox"
+      },
+      "US-TIGER-Roads-2018": {
+        "description": "Kuning = Data peta publik dari sensus Amerika. Merah = Data tidak ditemukan di OpenStreetMap"
+      },
+      "US-TIGER-Roads-2019": {
+        "description": "Kuning = Data peta publik dari sensus Amerika. Merah = Data tidak ditemukan di OpenStreetMap"
+      },
+      "US-TIGER-Roads-2020": {
+        "description": "Kuning = Data peta publik dari sensus Amerika. Merah = Data tidak ditemukan di OpenStreetMap"
+      },
+      "US-TIGER-Roads-2021": {
+        "description": "Kuning = Data peta publik dari sensus Amerika. Merah = Data tidak ditemukan di OpenStreetMap"
+      },
+      "US-TIGER-Roads-2022": {
+        "description": "Kuning = Data peta publik dari sensus Amerika. Merah = Data tidak ditemukan di OpenStreetMap"
+      },
+      "US-TIGER-Roads-2023": {
+        "description": "Kuning = Data peta publik dari sensus Amerika. Merah = Data tidak ditemukan di OpenStreetMap"
+      },
+      "USDA-NAIP": {
+        "name": "Program Nasional Pemetaan Pertanian "
+      },
+      "US_Forest_Service_roads_overlay": {
+        "description": "Jalan tol: Berwarna hijau = tidak bisa diklasifikasikan. Berwarna coklat = jalur. Permukaan: jalan makadam = coklat muda, Aspal = hitam, trotoar=putih, beton = biru, semak = hijau. Musiman = salur putih"
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_airphoto": {
+        "attribution": {
+          "text": "GSI Jepang"
+        }
+      },
+      "gsi<TX_DOT>go<TX_DOT>jp_std_map": {
+        "attribution": {
+          "text": "GSI Jepang"
+        },
+        "name": "Peta standar GSI Jepang"
+      },
+      "mapbox_locator_overlay": {
+        "attribution": {
+          "text": "Ketentuan & Saran"
+        }
+      }
+    }
+  }
+}
