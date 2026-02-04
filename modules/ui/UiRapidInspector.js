@@ -264,6 +264,10 @@ export class UiRapidInspector {
     const editor = context.systems.editor;
     const l10n = context.systems.l10n;
 
+    // Log the GERS ID (Overture's unique ID) when ignoring
+    const gersID = datum.__gersid__ || 'unknown';
+    console.log('[RapidInspector] Ignoring feature, GERS ID:', gersID);  // eslint-disable-line no-console
+
     const annotation = {
       type: 'rapid_ignore_feature',
       description: l10n.t('rapid_inspector.option_ignore.annotation'),
