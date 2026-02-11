@@ -1174,6 +1174,16 @@ en:
     metaSyntheticFootways:
       label: Synthetic Footways from Meta
       description: Synthetic footways data collected from various local government entities.
+    ignored_ids:
+      link: "{count} ignored Overture IDs"
+      link_one: "{count} ignored Overture ID"
+      title: "{count} Ignored Overture IDs"
+      title_one: "{count} Ignored Overture ID"
+      instructions: "These are the Overture GERS IDs of ML-derived building footprints you rejected / ignored this session. You can report them as false positives by opening an issue at <a href=\"https://github.com/OvertureMaps/data/issues/new\" target=\"_blank\" rel=\"noopener noreferrer\">github.com/OvertureMaps/data</a>."
+      copy: Copy to Clipboard
+      copied: Copied!
+      download: Download as File
+      more: "… and {count} more"
 
   rapid_poweruser:
     beta: Beta Feature

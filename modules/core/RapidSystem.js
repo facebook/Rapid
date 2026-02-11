@@ -53,6 +53,7 @@ export class RapidSystem extends AbstractSystem {
     // These features will be filtered out when drawing
     this.acceptIDs = new Set();    // Set<dataID>
     this.ignoreIDs = new Set();    // Set<dataID>
+    this.ignoredGersIDs = new Set();  // Set<string> - GERS IDs of ignored Overture features
 
     this._nextColorIndex = 2;  // see note in _datasetsChanged()
     this._taskExtent = null;
@@ -404,7 +405,7 @@ export class RapidSystem extends AbstractSystem {
       const wasAdded = dataset.added;
       const nowAdded = this._addedDatasetIDs.has(datasetID);
       if (!wasAdded && nowAdded && dataset.color === RAPID_MAGENTA) {  // being added right now with the default color
-        if (dataset.categories.has('meta')) {
+        if (dataset.categories.has('meta') || dataset.categories.has('microsoft') || dataset.categories.has('google')) {
           dataset.color = RAPID_MAGENTA;
         } else if (dataset.categories.has('overture')) {
           dataset.color = OVERTURE_CYAN;

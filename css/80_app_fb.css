@@ -278,7 +278,48 @@ button.overture-inspector-close:hover {
   overflow-x: auto;
 }
 .overture-inspector .property-info {
-  padding: 0px 5px 15px 5px;
+  padding: 12px 10px 15px 10px;
+}
+
+.overture-inspector .property-bag {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.overture-inspector .property-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  padding: 2px 0 4px 0;
+}
+
+.overture-inspector .property-category {
+  font-size: 13px;
+  color: #bbb;
+  text-transform: capitalize;
+  font-style: italic;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #555;
+  margin-bottom: 4px;
+}
+
+.overture-inspector .property-categories {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 5px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #555;
+  margin-bottom: 4px;
+}
+
+.overture-inspector .property-category-tag {
+  display: inline-block;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #555;
+  color: #eee;
+  text-transform: capitalize;
 }
 .rapid-inspector .tag-bag {
   display: flex;
@@ -326,6 +367,35 @@ button.overture-inspector-close:hover {
   border: 1px solid #aaa;
   border-radius: 5px;
   padding: 0 3px;
+}
+
+.overture-inspector .property-link {
+  display: block;
+  color: #6cf;
+  text-decoration: none;
+  padding: 2px 0;
+  font-size: 13px;
+  word-break: break-all;
+}
+.overture-inspector .property-link:hover {
+  text-decoration: underline;
+  color: #9df;
+}
+
+.overture-inspector .property-address-text {
+  border: none;
+  font-size: 13px;
+  padding: 2px 0;
+}
+
+.overture-inspector .property-divider {
+  border-top: 1px solid #555;
+  margin: 10px 0 4px 0;
+}
+
+.overture-inspector .property-heading-minor {
+  font-size: 13px;
+  color: #aaa;
 }
 
 .rapid-inspector .tag-key,
@@ -588,6 +658,63 @@ button.overture-inspector-close:hover {
 .rapid-stack .rapid-checkbox.rapid-manage-datasets:hover {
   color: #ddd;
   background: #8885;
+}
+
+.rapid-ignored-ids {
+  padding: 8px 10px;
+  border-top: 1px solid #555;
+  text-align: center;
+}
+.rapid-ignored-ids-link {
+  color: #6cf;
+  font-size: 13px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.rapid-ignored-ids-link:hover {
+  text-decoration: underline;
+  color: #9df;
+}
+
+.rapid-ignored-dialog .content {
+  padding: 20px;
+}
+.rapid-ignored-dialog h3 {
+  margin-bottom: 10px;
+}
+.rapid-ignored-dialog .rapid-ignored-instructions {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+.rapid-ignored-dialog .rapid-ignored-instructions a {
+  color: #6cf;
+}
+.rapid-ignored-dialog .rapid-ignored-instructions a:hover {
+  text-decoration: underline;
+  color: #9df;
+}
+.rapid-ignored-dialog .rapid-ignored-preview {
+  background: #222;
+  color: #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 15px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.rapid-ignored-dialog .rapid-ignored-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+.rapid-ignored-dialog .rapid-ignored-buttons button {
+  font-size: 14px;
+  height: 2.4rem;
+  padding: 0 16px;
 }
 
 .modal.rapid-modal .rapid-stack .rapid-feature {

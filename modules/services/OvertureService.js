@@ -504,19 +504,19 @@ export class OvertureService extends AbstractSystem {
     } else if (geometrySource === 'Google Open Buildings') {
       tags.source = 'google/OpenBuildings';
     } else if (geometrySource === 'Esri Community Maps') {
-      tags.source = 'esri/communityMaps';
+      tags.source = 'esri/CommunityMaps';
     }
 
-    // Add height attributes if present in Overture data
-    const props = geojson.properties || {};
-    if (props.height !== undefined && props.height !== null) {
-      // Round to nearest 0.5
-      const roundedHeight = Math.round(props.height * 2) / 2;
-      tags.height = String(roundedHeight);
-    }
-    if (props.num_floors !== undefined && props.num_floors !== null) {
-      tags['building:levels'] = String(props.num_floors);
-    }
+    // // Add height attributes if present in Overture data
+    // const props = geojson.properties || {};
+    // if (props.height !== undefined && props.height !== null) {
+    //   // Round to nearest 0.5
+    //   const roundedHeight = Math.round(props.height * 2) / 2;
+    //   tags.height = String(roundedHeight);
+    // }
+    // if (props.num_floors !== undefined && props.num_floors !== null) {
+    //   tags['building:levels'] = String(props.num_floors);
+    // }
 
     // Create the way with appropriate tags
     const wayID = osmEntity.id('way');
@@ -530,7 +530,7 @@ export class OvertureService extends AbstractSystem {
     way.__fbid__ = `${datasetID}-${featureID}`;
     way.__service__ = 'overture';
     way.__datasetid__ = datasetID;
-    way.__gersid__ = props.id || null;  // Store the GERS ID from Overture properties
+    way.__gersid__ = (geojson.properties || {}).id || null;  // Store the GERS ID from Overture properties
 
     entities.push(way);
 

@@ -1464,6 +1464,17 @@
       "metaSyntheticFootways": {
         "label": "Synthetic Footways from Meta",
         "description": "Synthetic footways data collected from various local government entities."
+      },
+      "ignored_ids": {
+        "link": "{count} ignored Overture IDs",
+        "link_one": "{count} ignored Overture ID",
+        "title": "{count} Ignored Overture IDs",
+        "title_one": "{count} Ignored Overture ID",
+        "instructions": "These are the GERS IDs of Overture features you chose to ignore. Please share them by opening an issue at <a href=\"https://github.com/OvertureMaps/data/issues/new\" target=\"_blank\" rel=\"noopener noreferrer\">github.com/OvertureMaps/data</a> so the Overture community can investigate and improve the data.",
+        "copy": "Copy to Clipboard",
+        "copied": "Copied!",
+        "download": "Download as File",
+        "more": "… and {count} more"
       }
     },
     "rapid_poweruser": {

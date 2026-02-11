@@ -171,7 +171,9 @@ export class UiOvertureInspector {
 
   /**
    * renderPropertyInfo
-   * Renders the 'property-info' section
+   * Renders the 'property-info' section with a clean, human-readable layout.
+   * For Places: shows name, category, address, websites, socials prominently.
+   * Hides internal fields like id, version, sources, confidence, @-prefixed props.
    * @param {d3-selection} $selection - A d3-selection to a HTMLElement that this content should render itself into
    */
   renderPropertyInfo($selection) {
@@ -190,53 +192,278 @@ export class UiOvertureInspector {
       .append('div')
       .attr('class', 'property-bag');
 
-
-    // Overture properties can come to us as strings, JSON arrays, or JSON objects. Handle all three!
+    // Parse all properties up front
+    const parsed = {};
     for (const [k, v] of Object.entries(properties)) {
-      const $$propHeading = $$propBag
-        .append('div')
-        .attr('class', 'property-heading');
+      parsed[k] = this._getJsonStructure(v) ?? v;
+    }
 
-      let key = k;
+    // Track which keys we handle in the "nice" section
+    const handledKeys = new Set();
 
-      // Some params come to us via pmtiles with a prepended '@' sign.
-      if (key.startsWith('@')) {
-        key = key.slice(1);
+    // --- Name (big & prominent) ---
+    const name = this._extractName(parsed);
+    if (name) {
+      $$propBag.append('div')
+        .attr('class', 'property-name')
+        .text(name);
+    }
+    handledKeys.add('name');
+    handledKeys.add('names');
+
+    // --- Categories ---
+    const categories = this._extractCategories(parsed);
+    if (categories.length) {
+      const $$catWrap = $$propBag.append('div').attr('class', 'property-categories');
+      for (const cat of categories) {
+        $$catWrap.append('span').attr('class', 'property-category-tag').text(cat);
       }
-      key = key.charAt(0).toUpperCase() + key.slice(1);
-      $$propHeading.text(key);
+    }
+    handledKeys.add('categories');
 
-      const $$tagEntry = $$propBag.append('div').attr('class', 'property-entry');
-      const parsedJson = this._getJsonStructure(v);
-      if (parsedJson === null) continue;
+    // --- GERS ID (use raw property value, not parsed) ---
+    const gersId = properties.id ?? properties['@id'];
+    if (gersId) {
+      this._addSection($$propBag, 'GERS ID', $entry => {
+        $entry.append('div').attr('class', 'property-value').text(gersId);
+      });
+    }
+    handledKeys.add('id');
+    handledKeys.add('@id');
 
-      if (Object.keys(parsedJson).length !== 0) {
-        // Object processing
-        if (!Array.isArray(parsedJson)) {
-          for (const [k1, v1] of Object.entries(parsedJson)) {
+    // --- Address ---
+    const address = this._extractAddress(parsed);
+    if (address) {
+      this._addSection($$propBag, 'Address', $entry => {
+        $entry.append('div').attr('class', 'property-value property-address-text').text(address);
+      });
+    }
+    handledKeys.add('addresses');
+
+    // --- Websites ---
+    const websites = this._extractArray(parsed.websites);
+    if (websites.length) {
+      this._addSection($$propBag, 'Websites', $entry => {
+        for (const url of websites) {
+          $entry.append('a')
+            .attr('class', 'property-link')
+            .attr('href', url)
+            .attr('target', '_blank')
+            .attr('rel', 'noopener noreferrer')
+            .text(url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''));
+        }
+      });
+    }
+    handledKeys.add('websites');
+
+    // --- Socials ---
+    const socials = this._extractArray(parsed.socials);
+    if (socials.length) {
+      this._addSection($$propBag, 'Socials', $entry => {
+        for (const url of socials) {
+          $entry.append('a')
+            .attr('class', 'property-link')
+            .attr('href', url)
+            .attr('target', '_blank')
+            .attr('rel', 'noopener noreferrer')
+            .text(url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''));
+        }
+      });
+    }
+    handledKeys.add('socials');
+
+    // --- Phones ---
+    const phones = this._extractArray(parsed.phones);
+    if (phones.length) {
+      this._addSection($$propBag, 'Phone', $entry => {
+        for (const phone of phones) {
+          $entry.append('div').attr('class', 'property-value').text(phone);
+        }
+      });
+    }
+    handledKeys.add('phones');
+
+    // --- Confidence ---
+    const confidence = parsed.confidence ?? parsed['@confidence'];
+    if (confidence !== undefined && confidence !== null) {
+      const rounded = Number(confidence).toFixed(2);
+      if (!isNaN(rounded)) {
+        this._addSection($$propBag, 'Confidence', $entry => {
+          $entry.append('div').attr('class', 'property-value').text(rounded);
+        });
+      }
+    }
+    handledKeys.add('confidence');
+    handledKeys.add('@confidence');
+
+    // --- Remaining properties (raw dump) ---
+    const remainingKeys = Object.keys(properties).filter(k => !handledKeys.has(k));
+    if (remainingKeys.length) {
+      $$propBag.append('div').attr('class', 'property-divider');
+
+      for (const k of remainingKeys) {
+        let key = k;
+        if (key.startsWith('@')) key = key.slice(1);
+        key = key.charAt(0).toUpperCase() + key.slice(1);
+
+        $$propBag.append('div').attr('class', 'property-heading property-heading-minor').text(key);
+
+        const $$tagEntry = $$propBag.append('div').attr('class', 'property-entry');
+        const val = parsed[k];
+
+        if (val && typeof val === 'object' && !Array.isArray(val)) {
+          for (const [k1, v1] of Object.entries(val)) {
             $$tagEntry.append('div').attr('class', 'property-value').text(k1 + ':' + v1);
           }
-
-        // Array processing
-        } else {
-          for (const entry of parsedJson) {
-            if (entry instanceof Object ) {
-              for (const [k1,v1] of Object.entries(entry)){
+        } else if (Array.isArray(val)) {
+          for (const entry of val) {
+            if (entry && typeof entry === 'object') {
+              for (const [k1, v1] of Object.entries(entry)) {
                 $$tagEntry.append('div').attr('class', 'property-value').text(k1 + ':' + v1);
               }
             } else {
               $$tagEntry.append('div').attr('class', 'property-value').text(entry);
             }
           }
+        } else {
+          $$tagEntry.append('div').attr('class', 'property-value').text(properties[k]);
         }
-      } else {
-        // String handling- just make a key/value pair.
-        $$tagEntry.append('div').attr('class', 'property-value').text(v);
       }
     }
 
     // update
     $propInfo = $propInfo.merge($$propInfo);
+  }
+
+
+  /**
+   * _addSection
+   * Helper to append a heading + entry block to the property bag.
+   * @param {d3-selection} $bag - parent container
+   * @param {string} heading - section label
+   * @param {Function} renderFn - called with the entry selection to populate it
+   */
+  _addSection($bag, heading, renderFn) {
+    $bag.append('div').attr('class', 'property-heading').text(heading);
+    const $entry = $bag.append('div').attr('class', 'property-entry');
+    renderFn($entry);
+  }
+
+
+  /**
+   * _extractName
+   * Pull the best display name from Overture properties.
+   * Tries: names.primary → name → properties.name
+   */
+  _extractName(parsed) {
+    // Try names.primary first (Overture schema)
+    const names = parsed.names;
+    if (names) {
+      if (typeof names === 'object' && !Array.isArray(names) && names.primary) {
+        return names.primary;
+      }
+      if (Array.isArray(names)) {
+        const primary = names.find(n => n.primary);
+        if (primary) return primary.primary;
+      }
+    }
+    // Fallback to flat name
+    if (typeof parsed.name === 'string') return parsed.name;
+    return null;
+  }
+
+
+  /**
+   * _extractCategories
+   * Pull all non-null categories, cleaned up for display.
+   * Returns an array like ['library', 'public_building'] with underscores replaced by spaces.
+   */
+  _extractCategories(parsed) {
+    const cats = parsed.categories;
+    if (!cats) return [];
+
+    const results = [];
+
+    if (typeof cats === 'string') {
+      results.push(cats.replace(/_/g, ' '));
+    } else if (Array.isArray(cats)) {
+      for (const entry of cats) {
+        if (typeof entry === 'string') {
+          results.push(entry.replace(/_/g, ' '));
+        } else if (entry && typeof entry === 'object') {
+          for (const val of Object.values(entry)) {
+            if (val && val !== 'null') results.push(String(val).replace(/_/g, ' '));
+          }
+        }
+      }
+    } else if (typeof cats === 'object') {
+      for (const val of Object.values(cats)) {
+        if (val && val !== 'null') results.push(String(val).replace(/_/g, ' '));
+      }
+    }
+
+    return results;
+  }
+
+
+  /**
+   * _extractCategory
+   * Pull the primary category, cleaned up for display.
+   */
+  _extractCategory(parsed) {
+    const cats = parsed.categories;
+    if (!cats) return null;
+    // Object with primary key
+    if (typeof cats === 'object' && !Array.isArray(cats) && cats.primary) {
+      return cats.primary.replace(/_/g, ' ');
+    }
+    // Array of objects
+    if (Array.isArray(cats)) {
+      const primary = cats.find(c => c.primary);
+      if (primary) return primary.primary.replace(/_/g, ' ');
+    }
+    if (typeof cats === 'string') return cats.replace(/_/g, ' ');
+    return null;
+  }
+
+
+  /**
+   * _extractAddress
+   * Build a single-line formatted address from Overture's addresses array.
+   */
+  _extractAddress(parsed) {
+    const addrs = parsed.addresses;
+    if (!addrs) return null;
+
+    let addr = addrs;
+    if (Array.isArray(addrs) && addrs.length > 0) {
+      addr = addrs[0];
+    }
+    if (typeof addr !== 'object' || Array.isArray(addr)) return null;
+
+    const parts = [];
+    if (addr.freeform) parts.push(addr.freeform);
+    const cityState = [addr.locality, addr.region].filter(Boolean).join(', ');
+    if (cityState) parts.push(cityState);
+    if (addr.postcode) parts.push(addr.postcode);
+    if (addr.country && !parts.length) parts.push(addr.country);
+
+    return parts.join('  ·  ') || null;
+  }
+
+
+  /**
+   * _extractArray
+   * Safely extract an array of strings from a parsed property value.
+   * Handles: string, array of strings, array of objects, null/undefined.
+   */
+  _extractArray(val) {
+    if (!val) return [];
+    if (typeof val === 'string') return [val];
+    if (Array.isArray(val)) {
+      return val.map(v => (typeof v === 'string') ? v : (v?.url || v?.value || String(v))).filter(Boolean);
+    }
+    return [];
   }
 
 

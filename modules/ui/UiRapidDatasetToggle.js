@@ -6,6 +6,7 @@ import { uiModal } from './modal.js';
 import { uiRapidColorpicker } from './rapid_colorpicker.js';
 import { UiRapidCatalog } from './UiRapidCatalog.js';
 import { utilCmd } from '../util/cmd.js';
+import { utilKeybinding } from '../util/keybinding.js';
 
 
 /**
@@ -172,6 +173,38 @@ export class UiRapidDatasetToggle {
 
     $datasets
       .call(this.renderDatasets);
+
+
+    /* Ignored Overture IDs */
+    const rapid = context.systems.rapid;
+    const ignoredCount = rapid.ignoredGersIDs.size;
+
+    let $ignoredLink = $content.selectAll('.rapid-ignored-ids')
+      .data(ignoredCount > 0 ? [0] : []);
+
+    $ignoredLink.exit()
+      .remove();
+
+    const $$ignoredLink = $ignoredLink.enter()
+      .append('div')
+      .attr('class', 'rapid-ignored-ids');
+
+    $$ignoredLink
+      .append('a')
+      .attr('class', 'rapid-ignored-ids-link')
+      .attr('href', '#')
+      .on('click', (e) => {
+        e.preventDefault();
+        this._showIgnoredIdsDialog();
+      });
+
+    $ignoredLink = $ignoredLink.merge($$ignoredLink);
+
+    $ignoredLink.selectAll('.rapid-ignored-ids-link')
+      .text(l10n.t(
+        ignoredCount === 1 ? 'rapid_menu.ignored_ids.link_one' : 'rapid_menu.ignored_ids.link',
+        { count: ignoredCount }
+      ));
 
 
     /* View/Manage Datasets */
@@ -417,6 +450,122 @@ export class UiRapidDatasetToggle {
 
     context.enter('browse');   // return to browse mode (in case something was selected)
     rapid.toggleDatasets(d.id);
+  }
+
+
+  /**
+   * _showIgnoredIdsDialog
+   * Shows a dialog with the ignored GERS IDs and options to copy or download them.
+   */
+  _showIgnoredIdsDialog() {
+    const context = this.context;
+    const l10n = context.systems.l10n;
+    const rapid = context.systems.rapid;
+    const ids = [...rapid.ignoredGersIDs];
+    const idsText = ids.join('\n') + '\n';
+
+    const $container = context.container();
+    const $shaded = $container.selectAll('.shaded');
+    if ($shaded.empty()) return;
+    if ($shaded.selectAll('.rapid-ignored-dialog').size()) return;  // already open
+
+    // Save and override parent modal close so it can't be dismissed while this is open
+    const origClose = this.$modal.close;
+    this.$modal.close = () => { /* ignore */ };
+
+    const closeDialog = () => {
+      $wrap
+        .transition()
+        .duration(200)
+        .style('opacity', 0)
+        .on('end', () => $wrap.remove());
+
+      this.$modal.close = origClose;  // restore parent close
+
+      let keybinding = utilKeybinding('modal');
+      keybinding.on(['⌫', '⎋'], origClose);
+      select(document).call(keybinding);
+    };
+
+    // Intercept Escape key to close this dialog instead of the parent
+    let keybinding = utilKeybinding('modal');
+    keybinding.on(['⌫', '⎋'], closeDialog);
+    select(document).call(keybinding);
+
+    // Create wrapper and modal inside existing .shaded overlay (same pattern as UiRapidCatalog)
+    let $wrap = $shaded.append('div')
+      .attr('class', 'catalog-wrap')
+      .style('opacity', 0);
+
+    const $modal = $wrap.append('div')
+      .attr('class', 'modal rapid-modal rapid-ignored-dialog');
+
+    $modal.append('button')
+      .attr('class', 'close')
+      .on('click', closeDialog)
+      .call(uiIcon('#rapid-icon-close'));
+
+    const $content = $modal.append('div')
+      .attr('class', 'content')
+      .style('padding', '20px');
+
+    $content
+      .append('h3')
+      .text(l10n.t(
+        ids.length === 1 ? 'rapid_menu.ignored_ids.title_one' : 'rapid_menu.ignored_ids.title',
+        { count: ids.length }
+      ));
+
+    $content
+      .append('p')
+      .attr('class', 'rapid-ignored-instructions')
+      .html(l10n.t('rapid_menu.ignored_ids.instructions'));
+
+    const previewText = ids.length <= 20
+      ? idsText
+      : ids.slice(0, 20).join('\n') + '\n' + l10n.t('rapid_menu.ignored_ids.more', { count: ids.length - 20 });
+
+    $content
+      .append('pre')
+      .attr('class', 'rapid-ignored-preview')
+      .text(previewText);
+
+    const $buttons = $content
+      .append('div')
+      .attr('class', 'rapid-ignored-buttons');
+
+    const copyLabel = l10n.t('rapid_menu.ignored_ids.copy');
+    const copiedLabel = l10n.t('rapid_menu.ignored_ids.copied');
+
+    const $copyBtn = $buttons
+      .append('button')
+      .attr('class', 'button action')
+      .text(copyLabel)
+      .on('click', () => {
+        navigator.clipboard.writeText(idsText).then(() => {
+          $copyBtn.text(copiedLabel);
+          setTimeout(() => $copyBtn.text(copyLabel), 2000);
+        });
+      });
+
+    $buttons
+      .append('button')
+      .attr('class', 'button secondary')
+      .text(l10n.t('rapid_menu.ignored_ids.download'))
+      .on('click', () => {
+        const blob = new Blob([idsText], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'ignored-overture-ids.txt';
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+
+    // Fade in
+    $wrap
+      .transition()
+      .style('opacity', 1);
   }
 
 
