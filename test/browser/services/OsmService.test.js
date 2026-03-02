@@ -404,6 +404,17 @@ describe('OsmService', () => {
           });
         });
     });
+
+
+    it('calls back with error on network error', done => {
+      fetchMock.route(/map\.json/, { throws: new TypeError('Failed to fetch') });
+
+      _osm.loadFromAPI(path, (err) => {
+        expect(err).to.be.ok;
+        expect(err).to.be.instanceof(TypeError);
+        done();
+      });
+    });
   });
 
 
@@ -811,6 +822,17 @@ describe('OsmService', () => {
       it('gets API status', done => {
         _osm.status((err, result) => {
           expect(result).to.eql('online');
+          done();
+        });
+      });
+
+      it('returns error status on network error', done => {
+        fetchMock.removeRoutes();
+        fetchMock.route(/api\/capabilities\.json/, { throws: new TypeError('Failed to fetch') });
+
+        _osm.status((err, result) => {
+          expect(err).to.be.ok;
+          expect(result).to.eql('error');
           done();
         });
       });

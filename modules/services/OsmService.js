@@ -371,10 +371,7 @@ export class OsmService extends AbstractSystem {
       .then(result => gotResult(null, result))
       .catch(err => {
         if (err.name === 'AbortError') return;  // ok
-        if (err.name === 'FetchError') {
-          gotResult(err);
-          return;
-        }
+        gotResult(err);   // FetchError or network error (e.g. TypeError from connection timeout)
       });
 
     return controller;
@@ -491,10 +488,7 @@ export class OsmService extends AbstractSystem {
       .catch(err => {
         this._changeset.inflight = null;
         if (err.name === 'AbortError') return;  // ok
-        if (err.name === 'FetchError') {
-          errback(err);
-          return;
-        }
+        errback(err);   // FetchError or network error (e.g. TypeError from connection timeout)
       });
 
     this._changeset.inflight = controller;
@@ -541,10 +535,7 @@ export class OsmService extends AbstractSystem {
       .catch(err => {
         this._changeset.inflight = null;
         if (err.name === 'AbortError') return;  // ok
-        if (err.name === 'FetchError') {
-          errback(err);
-          return;
-        }
+        errback(err);   // FetchError or network error (e.g. TypeError from connection timeout)
       });
 
     this._changeset.inflight = controller;
@@ -585,10 +576,7 @@ export class OsmService extends AbstractSystem {
       .catch(err => {
         this._changeset.inflight = null;
         if (err.name === 'AbortError') return;  // ok
-        if (err.name === 'FetchError') {
-          errback(err);
-          return;
-        }
+        errback(err);   // FetchError or network error (e.g. TypeError from connection timeout)
       });
 
     this._changeset.inflight = controller;
@@ -814,7 +802,7 @@ export class OsmService extends AbstractSystem {
     const url = this._apiroot + '/api/capabilities.json';
     const errback = this._wrapcb(gotResult);
 
-    fetch(url)
+    fetch(url, { signal: AbortSignal.timeout(10000) })
       .then(utilFetchResponse)
       .then(result => errback(null, result))
       .catch(err => errback(err));
@@ -1125,10 +1113,7 @@ export class OsmService extends AbstractSystem {
       .catch(err => {
         this._changeset.inflight = null;
         if (err.name === 'AbortError') return;  // ok
-        if (err.name === 'FetchError') {
-          errback(err);
-          return;
-        }
+        errback(err);   // FetchError or network error (e.g. TypeError from connection timeout)
       });
 
     this._noteCache.inflightPost[note.id] = controller;
@@ -1198,10 +1183,7 @@ export class OsmService extends AbstractSystem {
       .catch(err => {
         this._changeset.inflight = null;
         if (err.name === 'AbortError') return;  // ok
-        if (err.name === 'FetchError') {
-          errback(err);
-          return;
-        }
+        errback(err);   // FetchError or network error (e.g. TypeError from connection timeout)
       });
 
     this._noteCache.inflightPost[note.id] = controller;
