@@ -179,7 +179,7 @@ export function uiEditMenu(context) {
             .duration(4000)
             .iconName(`#rapid-operation-${operation.id}`)
             .iconClass('operation disabled')
-            .label(operation.tooltip)();
+            .label(operation.tooltip())();
         }
       } else {
         if (_lastPointerUpType === 'touch' || _lastPointerUpType === 'pen') {
