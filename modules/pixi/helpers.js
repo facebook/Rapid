@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { buildLine, Point, Polygon, Sprite, Texture } from 'pixi.js';
 import { vecAdd, vecAngle, vecEqual, vecLength } from '@rapid-sdk/math';
 
 
@@ -43,7 +43,7 @@ export function lineToPolygon(width, points) {
   // close the shape
   output.push(output[0], output[1]);
 
-  return new PIXI.Polygon(output);
+  return new Polygon(output);
 }
 
 
@@ -60,7 +60,7 @@ export function lineToPoly(flatPoints, lineStyle = {}) {
   const first = [flatPoints[0], flatPoints[1]];
   const last = [flatPoints[flatPoints.length - 2], flatPoints[flatPoints.length - 1]];
   const isClosed = vecEqual(first, last, EPSILON);
-  const sourceShape = new PIXI.Polygon(flatPoints);
+  const sourceShape = new Polygon(flatPoints);
 
   lineStyle.native = false;  // we want the non-native line builder
   sourceShape.closeStroke = false;  // don't make an extra segment from end to start
@@ -74,7 +74,7 @@ export function lineToPoly(flatPoints, lineStyle = {}) {
 // v7
 //  PIXI.buildLine(graphicsData, graphicsGeometry);
 // v8
-  PIXI.buildLine(
+  buildLine(
     flatPoints,
     lineStyle,
     false,  // flipAlignment
@@ -345,14 +345,14 @@ if (isLimited && (span >= spacing * 100)) {
 export function flatCoordsToPoints(coords) {
   const points = new Array(coords.length / 2);
   for (let i = 0; i < coords.length; i += 2) {
-    points[i / 2] = new PIXI.Point(coords[i], coords[i + 1]);
+    points[i / 2] = new Point(coords[i], coords[i + 1]);
   }
   return points;
 }
 
 
 export function getDebugBBox(x, y, width, height, color, alpha, name) {
-  const sprite = new PIXI.Sprite({ texture: PIXI.Texture.WHITE });
+  const sprite = new Sprite({ texture: Texture.WHITE });
   sprite.eventMode = 'none';
   sprite.anchor.set(0, 0);  // top, left
   sprite.position.set(x, y);

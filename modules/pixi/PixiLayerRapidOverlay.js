@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { Color, Container, Graphics } from 'pixi.js';
 
 import { AbstractLayer } from './AbstractLayer.js';
 
@@ -43,7 +43,7 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
     }
 
     // Add containers
-    const overlays = new PIXI.Container();
+    const overlays = new Container();
     overlays.label = `${this.layerID}`;  // 'rapidoverlay'
     overlays.sortableChildren = false;
     overlays.interactiveChildren = true;
@@ -73,7 +73,7 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
 
     for (const dataset of datasets.values()) {
       if (dataset.overlay && dataset.enabled) {
-        const customColor = new PIXI.Color(dataset.color);
+        const customColor = new Color(dataset.color);
         const overlay = dataset.overlay;
         if (vtService) {
           if ((zoom >= overlay.minZoom ) && (zoom <= overlay.maxZoom)) {  // avoid firing off too many API requests
@@ -106,7 +106,7 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
         const loc = parts[i];
 
         const point = viewport.project(loc);
-        const feature = new PIXI.Graphics()
+        const feature = new Graphics()
           .circle(0, 0, 40)
           .fill({color, alpha:0.05});
 

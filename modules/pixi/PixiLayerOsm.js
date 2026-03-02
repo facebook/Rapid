@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { Container } from 'pixi.js';
 import geojsonRewind from '@mapbox/geojson-rewind';
 import { vecAngle, vecLength, vecInterp } from '@rapid-sdk/math';
 
@@ -118,12 +118,12 @@ export class PixiLayerOsm extends AbstractLayer {
     }
 
     // Add containers
-    const areas = new PIXI.Container();
+    const areas = new Container();
     areas.label = `${this.layerID}-areas`;   // e.g. osm-areas
     areas.sortableChildren = true;
     this.areaContainer = areas;
 
-    const lines = new PIXI.Container();
+    const lines = new Container();
     lines.label = `${this.layerID}-lines`;   // e.g. osm-lines
     lines.sortableChildren = true;
     this.lineContainer = lines;
@@ -533,7 +533,7 @@ export class PixiLayerOsm extends AbstractLayer {
     function _getLevelContainer(level) {
       let levelContainer = lineContainer.getChildByLabel(level);
       if (!levelContainer) {
-        levelContainer = new PIXI.Container();
+        levelContainer = new Container();
         levelContainer.label= level.toString();
         levelContainer.sortableChildren = true;
         levelContainer.zIndex = level;

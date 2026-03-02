@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { ColorMatrixFilter } from 'pixi.js';
 
 import { uiTooltip } from '../tooltip.js';
 import { uiCombobox } from '../combobox.js';
@@ -15,9 +15,9 @@ export function uiSectionColorblindModeOptions(context) {
   let comboData = [{ title: 'default', value: l10n.t('preferences.colorblind_options.default') }];
 
   // colorblind filters
-  const protanopiaFilter = new PIXI.ColorMatrixFilter();
-  const deuteranopiaFilter = new PIXI.ColorMatrixFilter();
-  const tritanopiaFilter = new PIXI.ColorMatrixFilter();
+  const protanopiaFilter = new ColorMatrixFilter();
+  const deuteranopiaFilter = new ColorMatrixFilter();
+  const tritanopiaFilter = new ColorMatrixFilter();
   const filtersObject = { 'Protanopia': protanopiaFilter, 'Deuteranopia': deuteranopiaFilter, 'Tritanopia': tritanopiaFilter };
 
   // color matrices

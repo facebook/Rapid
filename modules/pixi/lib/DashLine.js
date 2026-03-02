@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { Matrix, nextPow2, Point, Texture } from 'pixi.js';
 import { vecLength } from '@rapid-sdk/math';
 
 
@@ -54,7 +54,7 @@ export class DashLine {
     this.options = options;
 
     this.lineLength = null;           // current length of the line
-    this.cursor = new PIXI.Point();   // cursor location
+    this.cursor = new Point();   // cursor location
     this.start = null;
 
     this.graphics = graphics;
@@ -69,7 +69,7 @@ export class DashLine {
         alignment: options.alignment,
         alpha: options.alpha,
         color: options.color,
-        matrix: new PIXI.Matrix(),
+        matrix: new Matrix(),
         texture: this.activeTexture,
         width: options.width * options.scale
       };
@@ -95,7 +95,7 @@ export class DashLine {
   moveTo(x, y) {
     this.lineLength = 0;
     this.cursor.set(x, y);
-    this.start = new PIXI.Point(x, y);
+    this.start = new Point(x, y);
     this.graphics.moveTo(this.cursor.x, this.cursor.y);
     return this;
   }
@@ -228,7 +228,7 @@ export class DashLine {
   circle(x, y, radius, points = 80, matrix = null) {
     const interval = (Math.PI * 2) / points;
     let angle = 0;
-    let first = new PIXI.Point(x + Math.cos(angle) * radius, y + Math.sin(angle) * radius);
+    let first = new Point(x + Math.cos(angle) * radius, y + Math.sin(angle) * radius);
     if (matrix) {
       matrix.apply(first, first);
       this.moveTo(first[0], first[1]);
@@ -260,7 +260,7 @@ export class DashLine {
     const interval = (Math.PI * 2) / points;
     let first;
 
-    const point = new PIXI.Point();
+    const point = new Point();
     for (let i = 0; i < Math.PI * 2; i += interval) {
       let x0 = x - radiusX * Math.sin(i);
       let y0 = y - radiusY * Math.cos(i);
@@ -291,7 +291,7 @@ export class DashLine {
    *  @return {DashLine}  this
    */
   poly(points, matrix = null) {
-    const p = new PIXI.Point();
+    const p = new Point();
 
     if (typeof points[0] === 'number') {   // flat array of numbers
       if (matrix) {
@@ -347,7 +347,7 @@ export class DashLine {
    */
   rect(x, y, width, height, matrix = null) {
     if (matrix) {
-      const p = new PIXI.Point();
+      const p = new Point();
 
       // moveTo(x, y)
       p.set(x, y);
@@ -408,8 +408,8 @@ export class DashLine {
     const canvas = document.createElement('canvas');
     const drawWidth = dashSize;
     const drawHeight = Math.ceil(options.width);
-    canvas.width = PIXI.nextPow2(drawWidth);
-    canvas.height = PIXI.nextPow2(drawHeight);
+    canvas.width = nextPow2(drawWidth);
+    canvas.height = nextPow2(drawHeight);
     const ctx = canvas.getContext('2d');
     if (!ctx) {
       console.error('Did not get context from canvas');   // eslint-disable-line no-console
@@ -439,7 +439,7 @@ export class DashLine {
     }
     ctx.stroke();
 
-    const texture = (dashTextureCache[key] = PIXI.Texture.from(canvas));
+    const texture = (dashTextureCache[key] = Texture.from(canvas));
     texture.source.scaleMode = 'nearest';
 
     return texture;

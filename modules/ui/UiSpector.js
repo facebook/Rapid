@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { RendererType } from 'pixi.js';
 import { selection } from 'd3-selection';
 
 
@@ -123,7 +123,7 @@ export class UiSpector {
     }
 
     // Spector will only work with the WebGL renderer
-    if (renderer.type !== PIXI.RendererType.WEBGL) return;  // webgpu?
+    if (renderer.type !== RendererType.WEBGL) return;  // webgpu?
 
     // The default behavior of the CaptureMenu is to search the document for canvases to spy.
     // This doesn't work in our situation because Pixi is setup with `multiView: true`

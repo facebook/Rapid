@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { Color, Container } from 'pixi.js';
 
 import { AbstractLayer } from './AbstractLayer.js';
 import { PixiFeatureLine } from './PixiFeatureLine.js';
@@ -80,7 +80,7 @@ export class PixiLayerGeoScribble extends AbstractLayer {
       }
     }
 
-    const geoscribbles = new PIXI.Container();
+    const geoscribbles = new Container();
     geoscribbles.label = `${this.layerID}-geoscribbles`;
     geoscribbles.sortableChildren = false;
     geoscribbles.interactiveChildren = true;
@@ -132,7 +132,7 @@ export class PixiLayerGeoScribble extends AbstractLayer {
       labelTint: CUSTOM_COLOR
     };
 
-    const color = line.properties.color ? new PIXI.Color(line.properties.color) : CUSTOM_COLOR;
+    const color = line.properties.color ? new Color(line.properties.color) : CUSTOM_COLOR;
     const thin = line.properties.thin;
     const dashed = line.properties.dashed;
 

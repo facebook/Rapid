@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { BitmapFont, BitmapText, Container, MeshRope, ParticleContainer, Point, Sprite, TextStyle } from 'pixi.js';
 import RBush from 'rbush';
 import { HALF_PI, TAU, numWrap, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@rapid-sdk/math';
 
@@ -81,15 +81,15 @@ export class PixiLayerLabels extends AbstractLayer {
     // We reset the labeling when scale or rotation change
     this._tPrev = { x: 0, y: 0, k: 256 / Math.PI, r: 0 };
     // Tracks the difference between the top left corner of the screen and the parent "origin" container
-    this._labelOffset = new PIXI.Point();
+    this._labelOffset = new Point();
 
     // For ASCII-only labels, we can use PIXI.BitmapText to avoid generating label textures
-    PIXI.BitmapFont.install({ name: 'label-normal', style: TEXTSTYLE_NORMAL });
+    BitmapFont.install({ name: 'label-normal', style: TEXTSTYLE_NORMAL });
     // PIXI.BitmapFont.install({ name: 'label-italic', style: TEXTSTYLE_ITALIC });  // not currently used
 
     // For all other labels, generate it on the fly in a PIXI.Text or PIXI.Sprite
-    this._textStyleNormal = new PIXI.TextStyle(TEXTSTYLE_NORMAL);
-    this._textStyleItalic = new PIXI.TextStyle(TEXTSTYLE_ITALIC);
+    this._textStyleNormal = new TextStyle(TEXTSTYLE_NORMAL);
+    this._textStyleItalic = new TextStyle(TEXTSTYLE_ITALIC);
   }
 
 
@@ -123,19 +123,19 @@ export class PixiLayerLabels extends AbstractLayer {
     }
 
     // Add containers
-    const labelOriginContainer = new PIXI.Container();
+    const labelOriginContainer = new Container();
     labelOriginContainer.label= 'labelorigin';
     labelOriginContainer.eventMode = 'none';
     this.labelOriginContainer = labelOriginContainer;
 
-    const debugContainer = new PIXI.Container();  //PIXI.ParticleContainer(50000);
+    const debugContainer = new Container();  //PIXI.ParticleContainer(50000);
     debugContainer.label= 'debug';
     debugContainer.eventMode = 'none';
     debugContainer.roundPixels = false;
     debugContainer.sortableChildren = false;
     this.debugContainer = debugContainer;
 
-    const labelContainer = new PIXI.Container();
+    const labelContainer = new Container();
     labelContainer.label= 'labels';
     labelContainer.eventMode = 'none';
     labelContainer.sortableChildren = true;
@@ -318,7 +318,7 @@ export class PixiLayerLabels extends AbstractLayer {
       let textStyle;
       if (pad) {   // make a new style
         const opts = Object.assign({}, (style === 'normal' ? TEXTSTYLE_NORMAL : TEXTSTYLE_ITALIC), { padding: pad });
-        textStyle = new PIXI.TextStyle(opts);
+        textStyle = new TextStyle(opts);
       } else {     // use a cached style
         textStyle = (style === 'normal' ? this._textStyleNormal : this._textStyleItalic);
       }
@@ -327,7 +327,7 @@ export class PixiLayerLabels extends AbstractLayer {
       this._textureIDs.set(str, textureID);
     }
 
-    const sprite = new PIXI.Sprite({ texture: texture });
+    const sprite = new Sprite({ texture: texture });
     sprite.label = str;
     sprite.anchor.set(0.5, 0.5);   // middle, middle
     return sprite;
@@ -438,7 +438,7 @@ export class PixiLayerLabels extends AbstractLayer {
 
       let labelObj;
       if (/^[\x20-\x7E]*$/.test(feature.label)) {   // is it in the printable ASCII range?
-        labelObj = new PIXI.BitmapText({
+        labelObj = new BitmapText({
           text: feature.label,
           style: {
             fontFamily: 'label-normal',
@@ -714,7 +714,7 @@ this.placeRopeLabel(feature, labelObj, coords);
     // Convert from original projected coords to global coords..
     const origin = this.gfx.origin;
     const labelOffset = this._labelOffset;
-    const temp = new PIXI.Point();
+    const temp = new Point();
     const coords = origCoords.map(([x, y]) => {
       origin.toGlobal({x: x, y: y}, temp);
       return [temp.x - labelOffset.x, temp.y - labelOffset.y];
@@ -901,8 +901,8 @@ this.placeRopeLabel(feature, labelObj, coords);
 
       } else if (label.type === 'rope') {
         const labelObj = options.labelObj;  // a PIXI.Sprite, or PIXI.Text
-        const points = options.coords.map(([x,y]) => new PIXI.Point(x, y));
-        const rope = new PIXI.MeshRope({ texture: labelObj.texture, points: points });
+        const points = options.coords.map(([x,y]) => new Point(x, y));
+        const rope = new MeshRope({ texture: labelObj.texture, points: points });
         rope.label = labelID;
         rope.autoUpdate = false;
         rope.sortableChildren = false;

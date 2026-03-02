@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { Container, Graphics, Sprite } from 'pixi.js';
 import { geoMetersToLon, vecEqual } from '@rapid-sdk/math';
 
 import { AbstractLayer } from './AbstractLayer.js';
@@ -66,7 +66,7 @@ export class PixiLayerMapUI extends AbstractLayer {
     // These only go visible if they have something to show
 
     // GEOLOCATION
-    const geolocation = new PIXI.Container();
+    const geolocation = new Container();
     geolocation.label = 'geolocation';
     geolocation.eventMode = 'none';
     geolocation.sortableChildren = false;
@@ -74,7 +74,7 @@ export class PixiLayerMapUI extends AbstractLayer {
     this.geolocation = geolocation;
 
     // TILE DEBUGGING
-    const tileDebug = new PIXI.Container();
+    const tileDebug = new Container();
     tileDebug.label = 'tile-debug';
     tileDebug.eventMode = 'none';
     tileDebug.sortableChildren = false;
@@ -82,14 +82,14 @@ export class PixiLayerMapUI extends AbstractLayer {
     this.tileDebug = tileDebug;
 
     // SELECTED
-    const selected = new PIXI.Container();
+    const selected = new Container();
     selected.label = 'selected';
     selected.sortableChildren = true;
     selected.visible = true;
     this.selected = selected;
 
     // HALO
-    const halo = new PIXI.Container();
+    const halo = new Container();
     halo.label = 'halo';
     halo.sortableChildren = true;
     halo.visible = true;
@@ -99,11 +99,11 @@ export class PixiLayerMapUI extends AbstractLayer {
     if (this._lassoLine)  this._lassoLine.destroy();
     if (this._lassoFill)  this._lassoFill.destroy();
 
-    this._lassoLine = new PIXI.Graphics();
-    this._lassoFill = new PIXI.Graphics();
+    this._lassoLine = new Graphics();
+    this._lassoFill = new Graphics();
     this._lassoData = null;
 
-    const lasso = new PIXI.Container();
+    const lasso = new Container();
     lasso.label = 'lasso';
     lasso.eventMode = 'none';
     lasso.sortableChildren = false;
@@ -254,7 +254,7 @@ export class PixiLayerMapUI extends AbstractLayer {
       const r = Math.max(Math.abs(x2 - x), 15);
       const BLUE = 0xe60ff;
 
-      const aura = new PIXI.Graphics()
+      const aura = new Graphics()
         .circle(x, y, r)
         .fill({ color: BLUE, alpha: 0.4 });
       aura.label = 'aura';
@@ -263,7 +263,7 @@ export class PixiLayerMapUI extends AbstractLayer {
       // Show a viewfield for the heading if we have it
       if (d.heading !== null && !isNaN(d.heading)) {
         const textures = this.gfx.textures;
-        const heading = new PIXI.Sprite(textures.get('viewfieldDark'));
+        const heading = new Sprite(textures.get('viewfieldDark'));
         heading.anchor.set(0.5, 1);  // middle, top
         heading.angle = d.heading;
         heading.label = 'heading';
@@ -271,7 +271,7 @@ export class PixiLayerMapUI extends AbstractLayer {
         container.addChild(heading);
       }
 
-      const position = new PIXI.Graphics()
+      const position = new Graphics()
         .circle(x, y, 6.5)
         .stroke(1.5, 0xffffff, 1.0)
         .fill({ color: BLUE, alpha: 1.0 });

@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { Application, BitmapFont, BitmapFontManager, Container, Graphics, HelloSystem, Rectangle, RenderableGCSystem, RendererType, Sprite, TextureSource, Ticker } from 'pixi.js';
 import { TAU, Viewport, numWrap, vecEqual, vecLength, vecRotate, vecScale, vecSubtract } from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
@@ -85,28 +85,28 @@ export class GraphicsSystem extends AbstractSystem {
 
     // Anything involving PIXI globals can be set up here, to ensure it only happens one time.
     // We'll use the Pixi shared ticker, but we don't want it started yet.
-    const ticker = PIXI.Ticker.shared;
+    const ticker = Ticker.shared;
     ticker.autoStart = false;
     ticker.stop();
     ticker.add(this._tick, this);
     this.ticker = ticker;
 
-    Object.assign(PIXI.BitmapFontManager.defaultOptions, {
-      chars: PIXI.BitmapFontManager.ASCII,
+    Object.assign(BitmapFontManager.defaultOptions, {
+      chars: BitmapFontManager.ASCII,
       resolution: 2,
       padding: 6,
       skipKerning: false
     });
 
-    Object.assign(PIXI.HelloSystem.defaultOptions, {
+    Object.assign(HelloSystem.defaultOptions, {
       hello: true  // Log renderer and Pixi version to the console
     });
 
-    Object.assign(PIXI.RenderableGCSystem.defaultOptions, {
+    Object.assign(RenderableGCSystem.defaultOptions, {
       renderableGCActive: false
     });
 
-    Object.assign(PIXI.TextureSource.defaultOptions, {
+    Object.assign(TextureSource.defaultOptions, {
       autoGarbageCollect: false,
       autoGenerateMipmaps: false,
       resolution: 1
@@ -114,7 +114,7 @@ export class GraphicsSystem extends AbstractSystem {
 
 
     // Prepare a basic bitmap font that we can use for things like debug messages
-    PIXI.BitmapFont.install({
+    BitmapFont.install({
       name: 'rapid-debug',
       style: {
         fill: { color: 0xffffff },
@@ -619,7 +619,7 @@ export class GraphicsSystem extends AbstractSystem {
     // debugging the contents of the texture atlas
     let screen = stage.getChildByLabel('screen');
     if (!screen) {
-      screen = new PIXI.Graphics()
+      screen = new Graphics()
         .rect(-5, -5, 522, 522)
         .fill({ color: 0x000000, alpha: 1 });
       screen.label = 'screen';
@@ -631,7 +631,7 @@ export class GraphicsSystem extends AbstractSystem {
 
     let debug = stage.getChildByLabel('debug');
     if (!debug) {
-      debug = new PIXI.Sprite();
+      debug = new Sprite();
       debug.label = 'debug';
       debug.eventMode = 'none';
       debug.sortableChildren = false;
@@ -697,7 +697,7 @@ export class GraphicsSystem extends AbstractSystem {
       useBackBuffer: false
     };
 
-    this.pixi = new PIXI.Application();
+    this.pixi = new Application();
     return this.pixi.init(options);  // return Pixi's init Promise
   }
 
@@ -712,7 +712,7 @@ export class GraphicsSystem extends AbstractSystem {
 
     // Watch for WebGL context loss on context canvas - Rapid#1658
     const renderer = this.pixi.renderer;
-    if (renderer.type === PIXI.RendererType.WEBGL) {
+    if (renderer.type === RendererType.WEBGL) {
       // Note that with multiview rendering the context canvas is not the view canvas (aka surface)
       const canvas = renderer.context.canvas;
       canvas.addEventListener('webglcontextlost', this._handleGLContextLost);
@@ -726,7 +726,6 @@ export class GraphicsSystem extends AbstractSystem {
       globalThis.__PIXI_APP__ = this.pixi;
 
       window.__PIXI_DEVTOOLS__ = {
-        pixi: PIXI,
         app: this.pixi
       };
     }
@@ -743,13 +742,13 @@ export class GraphicsSystem extends AbstractSystem {
     stage.sortableChildren = true;
     stage.eventMode = 'static';
     // Add a big hit area to `stage` so that clicks on nothing will generate events
-    stage.hitArea = new PIXI.Rectangle(-10000000, -10000000, 20000000, 20000000);
+    stage.hitArea = new Rectangle(-10000000, -10000000, 20000000, 20000000);
     this.stage = stage;
 
     // The `origin` returns `[0,0]` back to the `[top,left]` coordinate of the viewport,
     // so `project/unproject` continues to work.
     // This also includes the `offset` which includes any panning that the user has done.
-    const origin = new PIXI.Container();
+    const origin = new Container();
     origin.label = 'origin';
     origin.sortableChildren = true;
     origin.eventMode = 'passive';
@@ -873,7 +872,7 @@ export class GraphicsSystem extends AbstractSystem {
     if (!this.pixi) return;   // already destroyed
 
     const renderer = this.pixi.renderer;
-    if (renderer.type === PIXI.RendererType.WEBGL) {
+    if (renderer.type === RendererType.WEBGL) {
       // note that with multiview rendering the context canvas is not the view canvas (aka surface)
       const canvas = renderer.context.canvas;
       canvas.removeEventListener('webglcontextlost', this._handleGLContextLost);
@@ -906,7 +905,7 @@ export class GraphicsSystem extends AbstractSystem {
     if (!this.pixi) return;
 
     const renderer = this.pixi.renderer;
-    if (renderer.type !== PIXI.RendererType.WEBGL) return;
+    if (renderer.type !== RendererType.WEBGL) return;
 
     const ext = renderer.context.extensions.loseContext; // WEBGL_lose_context extension
     if (!ext) return;  // I think all browsers we target should have this

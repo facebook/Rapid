@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { buildContextBatches, Container, GpuGraphicsContext, Graphics, Matrix, Mesh, MeshGeometry, Polygon, Sprite, Texture } from 'pixi.js';
 import { GlowFilter } from 'pixi-filters';
 import { vecEqual, vecLength } from '@rapid-sdk/math';
 
@@ -38,7 +38,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
     this._bufferdata = null;
     this._vertexCount = 0;  // we will watch these for Rapid#1636
 
-    const lowRes = new PIXI.Sprite();
+    const lowRes = new Sprite();
     lowRes.label = 'lowRes';
     lowRes.anchor.set(0.5, 0.5);  // middle, middle
     lowRes.interactive = false;
@@ -46,7 +46,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
     lowRes.visible = false;
     this.lowRes = lowRes;
 
-    const fill = new PIXI.Graphics();
+    const fill = new Graphics();
     fill.label = 'fill';
     fill.eventMode = 'static';
     fill.sortableChildren = false;
@@ -59,14 +59,14 @@ export class PixiFeaturePolygon extends AbstractFeature {
     // (note: in pixi v8 they now do, but they don't yet respect the `alignment` property)
     // So we'll create the mask graphic and then copy its attributes into a mesh
     // which _does_ hit test properly.
-    const mask = new PIXI.Mesh({ geometry: new PIXI.MeshGeometry() });
+    const mask = new Mesh({ geometry: new MeshGeometry() });
     mask.label = 'mask';
     mask.eventMode = 'static';
     mask.visible = false;
     this.mask = mask;
-    this.maskSource = new PIXI.Graphics();  // not added to scene
+    this.maskSource = new Graphics();  // not added to scene
 
-    const strokes = new PIXI.Container();
+    const strokes = new Container();
     strokes.label = 'strokes';
     strokes.eventMode = 'static';
     strokes.sortableChildren = false;
@@ -217,8 +217,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
     const maskSource = this.maskSource;
     const strokes = this.strokes;
 
-    let texture = pattern && textureManager.getPatternTexture(pattern) || PIXI.Texture.WHITE;    // WHITE turns off the texture
-    const textureMatrix = new PIXI.Matrix().rotate(-bearing);  // keep patterns face up
+    let texture = pattern && textureManager.getPatternTexture(pattern) || Texture.WHITE;    // WHITE turns off the texture
+    const textureMatrix = new Matrix().rotate(-bearing);  // keep patterns face up
 // bhousel update 5/27/22:
 // I've noticed that we can't use textures from a spritesheet for patterns,
 // and it would be nice to figure out why
@@ -238,7 +238,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
 // so that the scene is sorted by style, and we'll try to just keep similarly
 // textured things together to improve batching performance.
     if (w < PARTIALFILLWIDTH || h < PARTIALFILLWIDTH) {
-      texture = PIXI.Texture.WHITE;
+      texture = Texture.WHITE;
     }
 
     // Cull really tiny shapes
@@ -269,7 +269,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
       const w = vecLength(axis1[0], axis1[1]);
       const h = vecLength(axis2[0], axis2[1]);
 
-      lowRes.texture = textureManager.get(textureName) || PIXI.Texture.WHITE;
+      lowRes.texture = textureManager.get(textureName) || Texture.WHITE;
       lowRes.position.set(x, y);
       lowRes.scale.set(w / 10, h / 10);   // our sprite is 10x10
       lowRes.rotation = rotation;
@@ -315,7 +315,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
 
       for (let i = 0; i < rings.length; i++) {
         const ring = rings[i];
-        const stroke = new PIXI.Graphics();
+        const stroke = new Graphics();
 
         if (dash) {
           strokeStyle.dash = dash;
@@ -334,7 +334,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
           this._bufferdata = buffer;  // save outer buffer for later, for the hover halo..
         }
 
-        stroke.hitArea = new PIXI.Polygon(buffer.perimeter);
+        stroke.hitArea = new Polygon(buffer.perimeter);
         stroke.label = `stroke${i}`;
         stroke.sortableChildren = false;
         strokes.addChild(stroke);
@@ -392,11 +392,11 @@ export class PixiFeaturePolygon extends AbstractFeature {
         // Compute the mask's geometry, then copy its attributes into the mesh's geometry
         // This lets us use the Mesh as the mask and properly hit test against it.
         const graphicsContext = maskSource.context;
-        const gpuContext = new PIXI.GpuGraphicsContext();
+        const gpuContext = new GpuGraphicsContext();
         gpuContext.context = graphicsContext;   // _initContext
         gpuContext.isBatchable = false;
 
-        PIXI.buildContextBatches(graphicsContext, gpuContext);
+        buildContextBatches(graphicsContext, gpuContext);
 
         // Rapid#1636 - A very weird bug!!
         // There is a crash in the Pixi MeshPipe code that occurs when we create a mesh and then
@@ -416,7 +416,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
           mask.destroy();
 
           // console.log('REPLACING THE MASK');
-          mask = new PIXI.Mesh({ geometry: new PIXI.MeshGeometry() });
+          mask = new Mesh({ geometry: new MeshGeometry() });
           mask.label = 'mask';
           mask.eventMode = 'static';
           this.container.addChild(mask);
@@ -424,7 +424,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
         }
         this._vertexCount = curr;
 
-        mask.geometry = new PIXI.MeshGeometry({
+        mask.geometry = new MeshGeometry({
           indices:  new Uint32Array(gpuContext.geometryData.indices),
           positions: new Float32Array(gpuContext.geometryData.vertices),
           uvs: new Float32Array(gpuContext.geometryData.uvs)
@@ -488,7 +488,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
     // Select
     if (showSelect) {
       if (!this.halo) {
-        this.halo = new PIXI.Graphics();
+        this.halo = new Graphics();
         this.halo.label = `${this.id}-halo`;
         const haloContainer = this.scene.layers.get('map-ui').halo;
         haloContainer.addChild(this.halo);

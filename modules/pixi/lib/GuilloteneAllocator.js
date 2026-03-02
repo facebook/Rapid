@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { Rectangle } from 'pixi.js';
 
 const AreaOrientation = {
   HORIZONTAL: 0,
@@ -83,7 +83,7 @@ class Area {
 export class GuilloteneAllocator {
 
   constructor(width, height) {
-    this._tempRect = new PIXI.Rectangle();
+    this._tempRect = new Rectangle();
     this._width = width;
     this._height = height;
 
@@ -108,11 +108,11 @@ export class GuilloteneAllocator {
     const area = this.findArea(width, height);
     if (!area) return null;
 
-    const rect = new PIXI.Rectangle();
+    const rect = new Rectangle();
 
     this.getFrame(area, rect);
 
-    const hole = new PIXI.Rectangle(rect.x, rect.y, width, height);
+    const hole = new Rectangle(rect.x, rect.y, width, height);
     const node = this.split(area, rect, hole);
 
     rect.copyFrom(hole);
@@ -167,7 +167,7 @@ export class GuilloteneAllocator {
    */
   getFrame(node, rect) {
     if (!rect) {
-      rect = new PIXI.Rectangle();
+      rect = new Rectangle();
     }
 
     const nodeArea = this.getAreaField(node);

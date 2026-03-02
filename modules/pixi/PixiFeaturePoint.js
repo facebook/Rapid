@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { Circle, Container, Graphics, Rectangle, Sprite, Texture } from 'pixi.js';
 import { GlowFilter } from 'pixi-filters';
 
 import { AbstractFeature } from './AbstractFeature.js';
@@ -34,14 +34,14 @@ export class PixiFeaturePoint extends AbstractFeature {
 
     this._isCircular = false;   // set true to use a circular halo and hit area
 
-    const marker = new PIXI.Sprite();
+    const marker = new Sprite();
     marker.label = 'marker';
     marker.eventMode = 'none';
     marker.sortableChildren = false;
     marker.visible = true;
     this.marker = marker;
 
-    const icon = new PIXI.Sprite();
+    const icon = new Sprite();
     icon.label = 'icon';
     icon.eventMode = 'none';
     icon.sortableChildren = false;
@@ -171,16 +171,16 @@ export class PixiFeaturePoint extends AbstractFeature {
 
     // Update viewfields, if any..
     const vfAngles = style.viewfieldAngles || [];
-    let vfTexture = PIXI.Texture.EMPTY;
+    let vfTexture = Texture.EMPTY;
     if (vfAngles.length > 0) {  // Should have viewfields
-      vfTexture = style.viewfieldTexture || textureManager.get(style.viewfieldName) || PIXI.Texture.WHITE;
+      vfTexture = style.viewfieldTexture || textureManager.get(style.viewfieldName) || Texture.WHITE;
 
       // Sort markers with viewfields above markers without viewfields
       this.container.zIndex = -latitude + 1000;
 
       // Ensure viewfield container exists
       if (!this.viewfields) {
-        this.viewfields = new PIXI.Container();
+        this.viewfields = new Container();
         this.viewfields.label = 'viewfields';
         this.viewfields.eventMode = 'none';
         this.viewfields.sortableChildren = false;
@@ -192,7 +192,7 @@ export class PixiFeaturePoint extends AbstractFeature {
       if (this._viewfieldCount !== vfAngles.length || this._viewfieldName !== style.viewfieldName) {
         this.viewfields.removeChildren();
         for (let i = 0; i < vfAngles.length; i++) {
-          const vfSprite = new PIXI.Sprite(vfTexture);
+          const vfSprite = new Sprite(vfTexture);
           vfSprite.eventMode = 'none';
           vfSprite.anchor.set(0.5, 0.5);  // middle, middle
 
@@ -274,9 +274,9 @@ export class PixiFeaturePoint extends AbstractFeature {
     }
 
     // If we are waiting on a texure to load, stay dirty.
-    const missingMarker = marker.visible && marker.texture === PIXI.Texture.EMPTY;
-    const missingIcon = icon.visible && icon.texture === PIXI.Texture.EMPTY;
-    const missingViewfields = this.viewfields && vfTexture === PIXI.Texture.EMPTY;
+    const missingMarker = marker.visible && marker.texture === Texture.EMPTY;
+    const missingIcon = icon.visible && icon.texture === Texture.EMPTY;
+    const missingViewfields = this.viewfields && vfTexture === Texture.EMPTY;
     this._styleDirty = (missingMarker || missingIcon || missingViewfields);
   }
 
@@ -303,7 +303,7 @@ export class PixiFeaturePoint extends AbstractFeature {
       }
       radius = radius + 2;  // then pad a bit more
 
-      const circle = new PIXI.Circle(0, 0, radius);
+      const circle = new Circle(0, 0, radius);
       this.container.hitArea = circle;
 
     } else {
@@ -351,7 +351,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     // Select
     if (showSelect) {
       if (!this.halo) {
-        this.halo = new PIXI.Graphics();
+        this.halo = new Graphics();
         this.halo.label = `${this.id}-halo`;
         const haloContainer = this.scene.layers.get('map-ui').halo;
         haloContainer.addChild(this.halo);
@@ -368,9 +368,9 @@ export class PixiFeaturePoint extends AbstractFeature {
 
       const shape = this.container.hitArea;
       const dl = new DashLine(this.gfx, this.halo, HALO_STYLE);
-      if (shape instanceof PIXI.Circle) {
+      if (shape instanceof Circle) {
         dl.circle(shape.x, shape.y, shape.radius, 20);
-      } else if (shape instanceof PIXI.Rectangle) {
+      } else if (shape instanceof Rectangle) {
         dl.rect(shape.x, shape.y, shape.width, shape.height);
       }
 

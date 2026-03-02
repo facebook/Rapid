@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { Container, Graphics, Polygon, Sprite, Texture } from 'pixi.js';
 import { GlowFilter } from 'pixi-filters';
 
 import { AbstractFeature } from './AbstractFeature.js';
@@ -35,13 +35,13 @@ export class PixiFeatureLine extends AbstractFeature {
     this.type = 'line';
     this._bufferdata = null;
 
-    const casing = new PIXI.Graphics();
+    const casing = new Graphics();
     casing.label = 'casing';
     casing.eventMode = 'none';
     casing.sortableChildren = false;
     this.casing = casing;
 
-    const stroke = new PIXI.Graphics();
+    const stroke = new Graphics();
     stroke.label = 'stroke';
     stroke.eventMode = 'none';
     stroke.sortableChildren = false;
@@ -143,7 +143,7 @@ export class PixiFeatureLine extends AbstractFeature {
       if (showMarkers && ((style.lineMarkerTexture || style.lineMarkerName) || (style.sidedMarkerTexture || style.sidedMarkerName))) {
         // Create line marker container, if necessary
         if (!lineMarkers) {
-          lineMarkers = new PIXI.Container();
+          lineMarkers = new Container();
           lineMarkers.label = 'lineMarkers';
           lineMarkers.eventMode = 'none';
           lineMarkers.sortableChildren = false;
@@ -151,8 +151,8 @@ export class PixiFeatureLine extends AbstractFeature {
           container.addChild(lineMarkers);
         }
 
-        const lineMarkerTexture = style.lineMarkerTexture || textureManager.get(style.lineMarkerName) || PIXI.Texture.WHITE;
-        const sidedMarkerTexture = style.sidedMarkerTexture || textureManager.get(style.sidedMarkerName) || PIXI.Texture.WHITE;
+        const lineMarkerTexture = style.lineMarkerTexture || textureManager.get(style.lineMarkerName) || Texture.WHITE;
+        const sidedMarkerTexture = style.sidedMarkerTexture || textureManager.get(style.sidedMarkerName) || Texture.WHITE;
         const sided = style.sidedMarkerName === 'sided';
         const oneway = style.lineMarkerName === 'oneway';
         lineMarkers.removeChildren();
@@ -162,7 +162,7 @@ export class PixiFeatureLine extends AbstractFeature {
 
           segments.forEach(segment => {
             segment.coords.forEach(([x, y]) => {
-              const arrow = new PIXI.Sprite(lineMarkerTexture);
+              const arrow = new Sprite(lineMarkerTexture);
               arrow.eventMode = 'none';
               arrow.sortableChildren = false;
               arrow.anchor.set(0.5, 0.5); // middle, middle
@@ -181,7 +181,7 @@ export class PixiFeatureLine extends AbstractFeature {
 
           segments.forEach(segment => {
             segment.coords.forEach(([x, y]) => {
-              const arrow = new PIXI.Sprite(sidedMarkerTexture);
+              const arrow = new Sprite(sidedMarkerTexture);
               arrow.eventMode = 'none';
               arrow.sortableChildren = false;
               arrow.anchor.set(0.5, 0.5); // middle, middle
@@ -227,7 +227,7 @@ export class PixiFeatureLine extends AbstractFeature {
           join: 'bevel'
         };
         this._bufferdata = lineToPoly(this.geometry.flatCoords, bufferStyle);
-        this.container.hitArea = new PIXI.Polygon(this._bufferdata.perimeter);
+        this.container.hitArea = new Polygon(this._bufferdata.perimeter);
       } else {
         this._bufferdata = null;
         this.container.hitArea = null;
@@ -332,7 +332,7 @@ export class PixiFeatureLine extends AbstractFeature {
     // Select
     if (showSelect) {
       if (!this.halo) {
-        this.halo = new PIXI.Graphics();
+        this.halo = new Graphics();
         this.halo.label = `${this.id}-halo`;
         const haloContainer = this.scene.layers.get('map-ui').halo;
         haloContainer.addChild(this.halo);

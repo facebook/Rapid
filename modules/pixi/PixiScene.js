@@ -1,5 +1,4 @@
-import * as PIXI from 'pixi.js';
-import { EventEmitter } from 'pixi.js';
+import { Container, EventEmitter } from 'pixi.js';
 
 import { PixiLayerBackgroundTiles } from './PixiLayerBackgroundTiles.js';
 import { PixiLayerCustomData } from './PixiLayerCustomData.js';
@@ -125,7 +124,7 @@ export class PixiScene extends EventEmitter {
       'blocks',       // Blocked out regions
       'ui'            // Misc UI draw above everything (select lasso, geocoding circle, debug shapes)
     ].forEach((groupID, i) => {
-      const container = new PIXI.Container();
+      const container = new Container();
       container.label = groupID;
       container.sortableChildren = true;
       container.zIndex = i;

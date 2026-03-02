@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { BitmapText, BlurFilter, Container, Graphics, Sprite } from 'pixi.js';
 import { interpolateNumber } from 'd3-interpolate';
 import { AdjustmentFilter, ConvolutionFilter } from 'pixi-filters';
 import { Tiler, geoScaleToZoom, vecScale } from '@rapid-sdk/math';
@@ -202,7 +202,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       if (tileMap.has(tileID)) continue;   // we made it already
 
       const tileName = `${sourceID}-${tileID}`;
-      const sprite = new PIXI.Sprite();
+      const sprite = new Sprite();
       sprite.label = tileName;
       sprite.anchor.set(0, 1);    // left, bottom
       sprite.zIndex = tile.xyz[2];   // draw zoomed tiles above unzoomed tiles
@@ -265,14 +265,14 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
         if (showDebug && debugContainer && !source.overlay) {
           // Display debug tile info
           if (!tile.debug) {
-            tile.debug = new PIXI.Graphics();
+            tile.debug = new Graphics();
             tile.debug.label = `debug-${tileID}`;
             tile.debug.eventMode = 'none';
             debugContainer.addChild(tile.debug);
           }
 
           if (!tile.text) {
-            tile.text = new PIXI.BitmapText({
+            tile.text = new BitmapText({
               text: tileID,
               style: {
                 fontFamily: 'rapid-debug',
@@ -383,7 +383,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     const groupContainer = this.scene.groups.get('background');
     let sourceContainer = groupContainer.getChildByLabel(sourceID);
     if (!sourceContainer) {
-      sourceContainer = new PIXI.Container();
+      sourceContainer = new Container();
       sourceContainer.label = sourceID;
       sourceContainer.eventMode = 'none';
       sourceContainer.sortableChildren = true;
@@ -426,7 +426,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
     } else if (this.filters.sharpness < 1) {
       const blurFactor = interpolateNumber(1, 8)(1 - this.filters.sharpness);
-      this.blurFilter = new PIXI.BlurFilter({
+      this.blurFilter = new BlurFilter({
         strength: blurFactor,
         quality: 4
       });

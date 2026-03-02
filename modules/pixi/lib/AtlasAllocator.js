@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { RendererType, Texture, TextureSource } from 'pixi.js';
 import { numClamp } from '@rapid-sdk/math';
 import { GuilloteneAllocator } from './GuilloteneAllocator.js';
 
@@ -142,7 +142,7 @@ export class AtlasAllocator {
     const bin = slab._binPacker.allocate(width + (2 * padding), height + (2 * padding));
     if (!bin) return null;
 
-    const texture = new PIXI.Texture({
+    const texture = new Texture({
       source: slab,
       frame: bin.clone().pad(-padding)   // The actual frame shouldn't include the padding
     });
@@ -160,7 +160,7 @@ export class AtlasAllocator {
  * An {@code AtlasSource} is used by {@link AtlasAllocator} to manage texture sources.
  * @public
  */
-export class AtlasSource extends PIXI.TextureSource {
+export class AtlasSource extends TextureSource {
   /**
    * Creates a TextureSource for the textures in the atlas (aka a "slab")
    * @param {string}  label - optional label, can be used for debugging
@@ -295,7 +295,7 @@ const gpuUploadAtlasResource = {
  * @public
  */
 export function registerAtlasUploader(renderer) {
-  if (renderer.type === PIXI.RendererType.WEBGL) {
+  if (renderer.type === RendererType.WEBGL) {
     renderer.texture['_uploads'].atlas = glUploadAtlasResource;   // eslint-disable-line dot-notation
   } else {
     renderer.texture['_uploads'].atlas = gpuUploadAtlasResource;  // eslint-disable-line dot-notation

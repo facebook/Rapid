@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { Container, Rectangle } from 'pixi.js';
 import { PixiGeometry } from './PixiGeometry.js';
 
 
@@ -39,7 +39,7 @@ export class AbstractFeature {
     this.context = layer.context;
     this.featureID = featureID;
 
-    const container = new PIXI.Container();
+    const container = new Container();
     this.container = container;
 
     container.__feature__ = this;   // Link the container back to `this`
@@ -69,7 +69,7 @@ export class AbstractFeature {
 
     // We will manage our own bounds for now because we can probably do this
     // faster than Pixi's built in bounds calculations.
-    this.sceneBounds = new PIXI.Rectangle();   // where 0,0 is the origin of the scene
+    this.sceneBounds = new Rectangle();   // where 0,0 is the origin of the scene
 
     this.layer.addFeature(this);
     this.scene.addFeature(this);

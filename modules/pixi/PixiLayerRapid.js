@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { Color, Container } from 'pixi.js';
 import geojsonRewind from '@mapbox/geojson-rewind';
 import { utilStringQs } from '@rapid-sdk/util';
 
@@ -342,7 +342,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
     let areasContainer = basemapContainer.getChildByLabel(areasID);
     if (!areasContainer) {
-      areasContainer = new PIXI.Container();
+      areasContainer = new Container();
       areasContainer.label= areasID;
       areasContainer.sortableChildren = true;
       basemapContainer.addChild(areasContainer);
@@ -350,7 +350,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
     let linesContainer = basemapContainer.getChildByLabel(linesID);
     if (!linesContainer) {
-      linesContainer = new PIXI.Container();
+      linesContainer = new Container();
       linesContainer.label= linesID;
       linesContainer.sortableChildren = true;
       basemapContainer.addChild(linesContainer);
@@ -366,7 +366,7 @@ export class PixiLayerRapid extends AbstractLayer {
    * renderPolygons
    */
   renderPolygons(parentContainer, dataset, graph, frame, viewport, zoom, data) {
-    const color = new PIXI.Color(dataset.color);
+    const color = new Color(dataset.color);
     const l10n = this.context.systems.l10n;
 
     for (const entity of data.polygons) {
@@ -428,7 +428,7 @@ export class PixiLayerRapid extends AbstractLayer {
    * renderLines
    */
   renderLines(parentContainer, dataset, graph, frame, viewport, zoom, data) {
-    const color = new PIXI.Color(dataset.color);
+    const color = new Color(dataset.color);
     const l10n = this.context.systems.l10n;
 
     for (const entity of data.lines) {
@@ -472,7 +472,7 @@ export class PixiLayerRapid extends AbstractLayer {
    * renderPoints
    */
   renderPoints(parentContainer, dataset, graph, frame, viewport, zoom, data) {
-    const color = new PIXI.Color(dataset.color);
+    const color = new Color(dataset.color);
     const l10n = this.context.systems.l10n;
 
     const pointStyle = {

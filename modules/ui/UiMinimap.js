@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { Container, Graphics, RendererType, Sprite } from 'pixi.js';
 import { selection } from 'd3-selection';
 import { zoom, zoomIdentity } from 'd3-zoom';
 import { HALF_PI, Viewport, geoZoomToScale, numClamp, vecAdd, vecInterp, vecSubtract } from '@rapid-sdk/math';
@@ -298,7 +298,7 @@ export class UiMinimap {
 
     let bbox = stage.getChildByLabel('bbox');
     if (!bbox) {
-      bbox = new PIXI.Graphics();
+      bbox = new Graphics();
       bbox.label = 'bbox';
       bbox.eventMode = 'none';
       stage.addChild(bbox);
@@ -306,13 +306,13 @@ export class UiMinimap {
 
     let arrow = stage.getChildByLabel('arrow');
     if (!arrow) {
-      arrow = new PIXI.Container();
+      arrow = new Container();
       arrow.label = 'arrow';
       arrow.eventMode = 'none';
       stage.addChild(arrow);
 
       // We're repurposing the 'sided' arrow, so we need to turn it -90°
-      const sprite = new PIXI.Sprite();
+      const sprite = new Sprite();
       sprite.texture = gfx.textures.get('sided');
       sprite.tint = 0xffff00;
       sprite.anchor.set(0, 0.5); // left, middle
@@ -407,7 +407,7 @@ export class UiMinimap {
 
 // workaround for https://github.com/pixijs/pixijs/issues/11168
 let mainCanvas;
-if (renderer.type === PIXI.RendererType.WEBGL && renderer.context.multiView) {
+if (renderer.type === RendererType.WEBGL && renderer.context.multiView) {
 mainCanvas = renderer.view.canvas;
 renderer.view.canvas = targetCanvas;  // switch to target canvas
 }
@@ -450,7 +450,7 @@ renderer.view.canvas = mainCanvas;  // restore main canvas
     gfx.on('statuschange', this._onGfxStatusChange);
 
     // Mock Stage
-    const stage = new PIXI.Container();
+    const stage = new Container();
     stage.label = 'mini-stage';
     stage.sortableChildren = false;
     stage.eventMode = 'none';
@@ -481,7 +481,7 @@ renderer.view.canvas = mainCanvas;  // restore main canvas
     miniGfx.scene = miniScene;
 
     // Mock Group Container
-    const groupContainer = new PIXI.Container();
+    const groupContainer = new Container();
     groupContainer.label = 'background';
     stage.addChild(groupContainer);
     miniScene.groups.set('background', groupContainer);
