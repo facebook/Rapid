@@ -1,4 +1,4 @@
-import { BitmapFont, BitmapText, Container, MeshRope, ParticleContainer, Point, Sprite, TextStyle } from 'pixi.js';
+import { BitmapFont, BitmapText, Container, MeshRope, Point, Sprite, TextStyle } from 'pixi.js';
 import RBush from 'rbush';
 import { HALF_PI, TAU, numWrap, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@rapid-sdk/math';
 
