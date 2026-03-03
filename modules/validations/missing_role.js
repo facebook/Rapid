@@ -64,7 +64,7 @@ export function validationMissingRole(context) {
           new ValidationFix({
             icon: 'rapid-operation-delete',
             title: l10n.t('issues.fix.remove_from_relation.title'),
-            onClick: () => {
+            onClick: function() {
               const parentID = this.issue.entityIds[0];
               editor.perform(actionDeleteMember(parentID, this.issue.data.member.index));
               editor.commit({
@@ -92,7 +92,7 @@ export function validationMissingRole(context) {
   function makeAddRoleFix(role) {
     return new ValidationFix({
       title: l10n.t(`issues.fix.set_as_${role}.title`),
-      onClick: () => {
+      onClick: function() {
         const oldMember = this.issue.data.member;
         const member = { id: this.issue.entityIds[1], type: oldMember.type, role: role };
         editor.perform(actionChangeMember(this.issue.entityIds[0], member, oldMember.index));
