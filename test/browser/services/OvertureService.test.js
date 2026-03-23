@@ -1,5 +1,6 @@
 describe('OvertureService', () => {
   let overture;
+  let pmtiles;
 
   class MockContext {
     constructor() {
@@ -10,15 +11,19 @@ describe('OvertureService', () => {
           startAsync: () => Promise.resolve()
         }
       };
+      // PMTilesService must be available at runtime
+      this.services.pmtiles = new Rapid.PMTilesService(this);
     }
   }
 
   beforeEach(() => {
-    overture = new Rapid.OvertureService(new MockContext());
+    const ctx = new MockContext();
+    overture = new Rapid.OvertureService(ctx);
+    pmtiles = ctx.services.pmtiles;
   });
 
 
-  describe('#_geojsonToOSM', () => {
+  describe('PMTilesService#geojsonToOSMPolygon', () => {
     const triangle = {
       geometry: {
         type: 'Polygon',
@@ -27,66 +32,47 @@ describe('OvertureService', () => {
       properties: { id: '08f2649b-0733-b91f' }
     };
 
-    it('sets source tag for Microsoft ML Buildings', () => {
-      const entities = overture._geojsonToOSM(triangle, 'feat1', 'ml-buildings-overture', 'Microsoft ML Buildings');
-      const way = entities[entities.length - 1];
-      expect(way.tags.source).to.eql('microsoft/BuildingFootprints');
-    });
-
-    it('sets source tag for Google Open Buildings', () => {
-      const entities = overture._geojsonToOSM(triangle, 'feat1', 'ml-buildings-overture', 'Google Open Buildings');
-      const way = entities[entities.length - 1];
-      expect(way.tags.source).to.eql('google/OpenBuildings');
-    });
-
-    it('sets source tag for Esri Community Maps', () => {
-      const entities = overture._geojsonToOSM(triangle, 'feat1', 'esri-buildings', 'Esri Community Maps');
-      const way = entities[entities.length - 1];
-      expect(way.tags.source).to.eql('esri/CommunityMaps');
-    });
-
-    it('omits source tag for unknown geometry source', () => {
-      const entities = overture._geojsonToOSM(triangle, 'feat1', 'esri-buildings', 'SomeOtherSource');
-      const way = entities[entities.length - 1];
-      expect(way.tags.source).to.be.undefined;
-    });
-
-    it('always tags building=yes', () => {
-      const entities = overture._geojsonToOSM(triangle, 'feat1', 'esri-buildings', 'Esri Community Maps');
-      const way = entities[entities.length - 1];
-      expect(way.tags.building).to.eql('yes');
-    });
-
-    it('stores GERS ID from properties', () => {
-      const entities = overture._geojsonToOSM(triangle, 'feat1', 'esri-buildings', 'Esri Community Maps');
-      const way = entities[entities.length - 1];
-      expect(way.__gersid__).to.eql('08f2649b-0733-b91f');
-    });
-
     it('creates a closed way with correct node count', () => {
-      const entities = overture._geojsonToOSM(triangle, 'feat1', 'esri-buildings', 'Esri Community Maps');
+      const tags = { building: 'yes', source: 'microsoft/BuildingFootprints' };
+      const entities = pmtiles.geojsonToOSMPolygon(triangle, tags, 'feat1', 'ml-buildings-overture', 'overture');
       const way = entities[entities.length - 1];
       // 3 unique coords → 3 nodes, way refs = [n0, n1, n2, n0]
       expect(way.nodes.length).to.eql(4);
       expect(way.nodes[0]).to.eql(way.nodes[3]);
     });
 
+    it('applies provided tags', () => {
+      const tags = { building: 'yes', source: 'microsoft/BuildingFootprints' };
+      const entities = pmtiles.geojsonToOSMPolygon(triangle, tags, 'feat1', 'ml-buildings-overture', 'overture');
+      const way = entities[entities.length - 1];
+      expect(way.tags.building).to.eql('yes');
+      expect(way.tags.source).to.eql('microsoft/BuildingFootprints');
+    });
+
+    it('sets __service__ metadata from serviceName parameter', () => {
+      const tags = { building: 'yes' };
+      const entities = pmtiles.geojsonToOSMPolygon(triangle, tags, 'feat1', 'esri-buildings', 'overture');
+      const way = entities[entities.length - 1];
+      expect(way.__service__).to.eql('overture');
+      expect(way.__datasetid__).to.eql('esri-buildings');
+    });
+
     it('returns null for missing geometry', () => {
-      expect(overture._geojsonToOSM({}, 'feat1', 'esri-buildings', 'Esri Community Maps')).to.be.null;
+      expect(pmtiles.geojsonToOSMPolygon({}, { building: 'yes' }, 'feat1', 'esri-buildings', 'overture')).to.be.null;
     });
 
     it('returns null for too few coordinates', () => {
       const bad = { geometry: { type: 'Polygon', coordinates: [[[0, 0], [1, 0], [0, 0]]] } };
-      expect(overture._geojsonToOSM(bad, 'feat1', 'esri-buildings', 'Esri Community Maps')).to.be.null;
+      expect(pmtiles.geojsonToOSMPolygon(bad, { building: 'yes' }, 'feat1', 'esri-buildings', 'overture')).to.be.null;
     });
   });
 
 
-  describe('#_geojsonToOSMLine', () => {
+  describe('PMTilesService#geojsonToOSMLine', () => {
     it('creates an open way from LineString coordinates', () => {
       const coords = [[0, 0], [1, 0], [1, 1]];
-      const props = { class: 'residential', id: 'gers-123' };
-      const entities = overture._geojsonToOSMLine(coords, props, 'feat1', 'tomtom-roads', 'TomTom');
+      const tags = { highway: 'residential', source: 'TomTom' };
+      const entities = pmtiles.geojsonToOSMLine(coords, tags, 'feat1', 'tomtom-roads', 'overture');
       const way = entities[entities.length - 1];
 
       // 3 coords → 3 nodes, way should NOT be closed
@@ -96,36 +82,35 @@ describe('OvertureService', () => {
 
     it('sets metadata on nodes and way', () => {
       const coords = [[0, 0], [1, 0]];
-      const props = { class: 'residential', id: 'gers-456' };
-      const entities = overture._geojsonToOSMLine(coords, props, 'feat1', 'tomtom-roads', 'TomTom');
+      const tags = { highway: 'residential', source: 'TomTom' };
+      const entities = pmtiles.geojsonToOSMLine(coords, tags, 'feat1', 'tomtom-roads', 'overture');
       const way = entities[entities.length - 1];
       const node = entities[0];
 
       expect(way.__fbid__).to.eql('tomtom-roads-feat1');
       expect(way.__service__).to.eql('overture');
       expect(way.__datasetid__).to.eql('tomtom-roads');
-      expect(way.__gersid__).to.eql('gers-456');
 
       expect(node.__fbid__).to.eql('tomtom-roads-feat1-n0');
       expect(node.__service__).to.eql('overture');
       expect(node.__datasetid__).to.eql('tomtom-roads');
     });
 
-    it('applies tag mapping from properties', () => {
+    it('applies provided tags', () => {
       const coords = [[0, 0], [1, 0]];
-      const props = { class: 'primary' };
-      const entities = overture._geojsonToOSMLine(coords, props, 'feat1', 'tomtom-roads', 'TomTom');
+      const tags = { highway: 'primary', source: 'TomTom' };
+      const entities = pmtiles.geojsonToOSMLine(coords, tags, 'feat1', 'tomtom-roads', 'overture');
       const way = entities[entities.length - 1];
       expect(way.tags.highway).to.eql('primary');
       expect(way.tags.source).to.eql('TomTom');
     });
 
     it('returns null for too few coordinates', () => {
-      expect(overture._geojsonToOSMLine([[0, 0]], {}, 'feat1', 'tomtom-roads', 'TomTom')).to.be.null;
+      expect(pmtiles.geojsonToOSMLine([[0, 0]], {}, 'feat1', 'tomtom-roads', 'overture')).to.be.null;
     });
 
     it('returns null for null coords', () => {
-      expect(overture._geojsonToOSMLine(null, {}, 'feat1', 'tomtom-roads', 'TomTom')).to.be.null;
+      expect(pmtiles.geojsonToOSMLine(null, {}, 'feat1', 'tomtom-roads', 'overture')).to.be.null;
     });
   });
 
@@ -243,15 +228,15 @@ describe('OvertureService', () => {
   });
 
 
-  describe('#_sampleLinePoints', () => {
+  describe('PMTilesService#sampleLinePoints', () => {
     it('returns empty for less than 2 coords', () => {
-      expect(overture._sampleLinePoints([[0, 0]], 20, 5)).to.eql([]);
-      expect(overture._sampleLinePoints([], 20, 5)).to.eql([]);
-      expect(overture._sampleLinePoints(null, 20, 5)).to.eql([]);
+      expect(pmtiles.sampleLinePoints([[0, 0]], 20, 5)).to.eql([]);
+      expect(pmtiles.sampleLinePoints([], 20, 5)).to.eql([]);
+      expect(pmtiles.sampleLinePoints(null, 20, 5)).to.eql([]);
     });
 
     it('returns first point for zero-length line', () => {
-      const result = overture._sampleLinePoints([[5, 5], [5, 5]], 20, 5);
+      const result = pmtiles.sampleLinePoints([[5, 5], [5, 5]], 20, 5);
       expect(result.length).to.eql(1);
       expect(result[0]).to.eql([5, 5]);
     });
@@ -259,7 +244,7 @@ describe('OvertureService', () => {
     it('samples points along a line', () => {
       // A line about 111km long (1 degree of latitude)
       const coords = [[0, 0], [0, 1]];
-      const result = overture._sampleLinePoints(coords, 20, 5);
+      const result = pmtiles.sampleLinePoints(coords, 20, 5);
       expect(result.length).to.be.greaterThan(1);
       expect(result.length).to.be.at.most(20);
       // First point should be the start
@@ -268,21 +253,21 @@ describe('OvertureService', () => {
 
     it('respects maxSamples limit', () => {
       const coords = [[0, 0], [0, 1]];
-      const result = overture._sampleLinePoints(coords, 5, 1);
+      const result = pmtiles.sampleLinePoints(coords, 5, 1);
       expect(result.length).to.be.at.most(5);
     });
   });
 
 
-  describe('#_isConflatedWithOSM', () => {
+  describe('PMTilesService#isConflatedWithOSM', () => {
     it('returns false for null/short coords', () => {
-      expect(overture._isConflatedWithOSM(null, [])).to.be.false;
-      expect(overture._isConflatedWithOSM([[0, 0]], [])).to.be.false;
+      expect(pmtiles.isConflatedWithOSM(null, [])).to.be.false;
+      expect(pmtiles.isConflatedWithOSM([[0, 0]], [])).to.be.false;
     });
 
     it('returns false when no highways to compare against', () => {
       const coords = [[10, 10], [10.001, 10]];
-      expect(overture._isConflatedWithOSM(coords, [])).to.be.false;
+      expect(pmtiles.isConflatedWithOSM(coords, [])).to.be.false;
     });
 
     it('returns true when line overlaps an OSM highway', () => {
@@ -291,7 +276,7 @@ describe('OvertureService', () => {
         coords: [[10, 10], [10.001, 10]],
         bbox: { minX: 9.999, minY: 9.999, maxX: 10.002, maxY: 10.001 }
       };
-      expect(overture._isConflatedWithOSM(lineCoords, [highway])).to.be.true;
+      expect(pmtiles.isConflatedWithOSM(lineCoords, [highway])).to.be.true;
     });
 
     it('returns false when line is far from OSM highways', () => {
@@ -300,7 +285,7 @@ describe('OvertureService', () => {
         coords: [[10, 10], [10.001, 10]],
         bbox: { minX: 9.999, minY: 9.999, maxX: 10.002, maxY: 10.001 }
       };
-      expect(overture._isConflatedWithOSM(lineCoords, [highway])).to.be.false;
+      expect(pmtiles.isConflatedWithOSM(lineCoords, [highway])).to.be.false;
     });
 
     it('returns false when line diverges from OSM highway at an angle', () => {
@@ -311,7 +296,7 @@ describe('OvertureService', () => {
         coords: [[10, 10], [10.0003, 10], [10.0006, 10]],
         bbox: { minX: 9.999, minY: 9.999, maxX: 10.001, maxY: 10.001 }
       };
-      expect(overture._isConflatedWithOSM(lineCoords, [highway])).to.be.false;
+      expect(pmtiles.isConflatedWithOSM(lineCoords, [highway])).to.be.false;
     });
   });
 
@@ -348,7 +333,7 @@ describe('OvertureService', () => {
         entity: (id) => nodeEntities[id] || wayEntities[id]
       };
 
-      return {
+      const ctx = {
         systems: {
           editor: {
             staging: { graph },
@@ -372,6 +357,11 @@ describe('OvertureService', () => {
           })
         }
       };
+
+      // Add PMTilesService to the mock context
+      ctx.services.pmtiles = new Rapid.PMTilesService(ctx);
+
+      return ctx;
     }
 
     it('rejects OSM-sourced features', () => {

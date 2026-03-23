@@ -333,6 +333,34 @@ export class PixiLayerRapid extends AbstractLayer {
       if (datasetID.includes('buildings') || datasetID.includes('roads')) {
         dsGraph = service.graph(dataset.id);
       }
+
+    /* Meta ML Roads */
+    } else if (dataset.service === 'meta') {
+      if (zoom >= 14) {
+        service.loadTiles(datasetID);
+      }
+      const entities = service.getData(datasetID);
+
+      for (const entity of entities) {
+        if (isAcceptedOrIgnored(entity)) continue;
+
+        if (entity.type === 'way') {
+          data.lines.push(entity);
+          const graph = service.graph(dataset.id);
+          if (graph) {
+            try {
+              const first = graph.entity(entity.first());
+              const last = graph.entity(entity.last());
+              data.vertices.add(first);
+              data.vertices.add(last);
+            } catch (e) {
+              // Skip if we can't resolve endpoint nodes
+            }
+          }
+        }
+      }
+
+      dsGraph = service.graph(dataset.id);
     }
 
     const pointsContainer = this.scene.groups.get('points');

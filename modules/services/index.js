@@ -16,6 +16,8 @@ import { VectorTileService } from './VectorTileService.js';
 import { WikidataService } from './WikidataService.js';
 import { WikipediaService } from './WikipediaService.js';
 import { GeoScribbleService } from './GeoScribbleService.js';
+import { MetaService } from './MetaService.js';
+import { PMTilesService } from './PMTilesService.js';
 
 export {
   EsriService,
@@ -33,6 +35,8 @@ export {
   StreetsideService,
   TaginfoService,
   VectorTileService,
+  MetaService,
+  PMTilesService,
   WikidataService,
   WikipediaService
 };
@@ -49,12 +53,14 @@ services.available.set('keepRight', KeepRightService);
 services.available.set('mapillary', MapillaryService);
 services.available.set('maproulette', MapRouletteService);
 services.available.set('mapwithai', MapWithAIService);
+services.available.set('meta', MetaService);
 services.available.set('nominatim', NominatimService);
 services.available.set('nsi', NsiService);
 services.available.set('osm', OsmService);
 services.available.set('osmose', OsmoseService);
 services.available.set('osmwikibase', OsmWikibaseService);
 services.available.set('overture', OvertureService);
+services.available.set('pmtiles', PMTilesService);
 services.available.set('streetside', StreetsideService);
 services.available.set('taginfo', TaginfoService);
 services.available.set('vectortile', VectorTileService);
