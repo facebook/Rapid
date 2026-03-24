@@ -127,12 +127,6 @@ export class EsriService extends AbstractSystem {
         dataset.extent = new Extent(d.extent[0], d.extent[1]);
       }
 
-      // Test running building layers through MapWithAI conflation service
-      if (categories.has('buildings')) {
-        dataset.conflated = true;
-        dataset.service = 'mapwithai';
-      }
-
       return dataset;
     });
   }

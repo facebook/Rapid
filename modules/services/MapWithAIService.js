@@ -1,19 +1,30 @@
-import { Tiler } from '@rapid-sdk/math';
-import { utilStringQs } from '@rapid-sdk/util';
-
 import { AbstractSystem } from '../core/AbstractSystem.js';
 import { Graph, Tree, RapidDataset } from '../core/lib/index.js';
-import { osmEntity, osmNode, osmWay } from '../osm/index.js';
-import { utilFetchResponse } from '../util/index.js';
 
 
-const APIROOT = 'https://mapwith.ai/maps/ml_roads';
-const TILEZOOM = 16;
+// PMTiles archive URL for Meta ML road geometries
+const ML_ROADS_PMTILES_URL = 'https://rapideditor.org/country_exports/global_ml_roads.pmtiles';
+
+// Minimum zoom level for loading road data (matches the archive's single zoom level)
+const MIN_ROAD_ZOOM = 14;
+
+// Maximum features to process per render frame (prevents main thread blocking)
+const MAX_FEATURES_PER_FRAME = 500;
+
+// Overture/ML class values that map to non-motorized highways
+const NON_MOTORIZED_CLASSES = new Set([
+  'footway', 'cycleway', 'path', 'pedestrian', 'bridleway', 'steps', 'corridor'
+]);
 
 
 /**
  * `MapWithAIService`
- * This service connects to the MapWithAI API to fetch data about Meta-hosted datasets.
+ * This service provides Meta ML road datasets from PMTiles archives,
+ * using client-side conflation via `PMTilesService`.
+ *
+ * Provides two datasets:
+ *   - `fbRoads` — ML-detected road geometries from a global PMTiles archive
+ *   - `rapid_intro_graph` — Tutorial roads for the Rapid walkthrough (hidden)
  *
  * Events available:
  *   `loadedData`
@@ -27,14 +38,14 @@ export class MapWithAIService extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'mapwithai';
+    this._initPromise = null;
 
-    this._tiler = new Tiler().zoomRange(TILEZOOM);
-    this._datasets = {};
-    this._deferred = new Set();
+    this._mlRoadsGraph = null;
+    this._mlRoadsTree = null;
+    this._mlRoadsCache = { seen: new Set() };
 
-    // Ensure methods used as callbacks always have `this` bound correctly.
-    this._parseNode = this._parseNode.bind(this);
-    this._parseWay = this._parseWay.bind(this);
+    // rapid_intro_graph resources (allocated in initAsync)
+    this._introDataset = null;
   }
 
 
@@ -44,27 +55,24 @@ export class MapWithAIService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed initialization
    */
   initAsync() {
-    return this.resetAsync()
+    if (this._initPromise) return this._initPromise;
+
+    const pmtilesService = this.context.services.pmtiles;
+
+    return this._initPromise = pmtilesService.initAsync()
       .then(() => {
-        // allocate a special dataset for the rapid intro graph.
+        // Allocate a special dataset for the rapid intro graph (tutorial)
         const datasetID = 'rapid_intro_graph';
         const graph = new Graph();
         const tree = new Tree(graph);
-        const cache = {
-          inflight: {},
-          loaded: new Set(),           // Set(tileID)
-          seen: new Set(),             // Set(entityID)
-          seenFirstNodeID: new Set(),  // Set(entityID)
-          splitWays: new Map()         // Map(originalID -> Set(Entity))
-        };
-        const ds = {
+        const cache = { seen: new Set() };
+        this._introDataset = {
           id: datasetID,
           graph: graph,
           tree: tree,
           cache: cache,
           lastv: null
         };
-        this._datasets[datasetID] = ds;
       });
   }
 
@@ -76,6 +84,50 @@ export class MapWithAIService extends AbstractSystem {
    */
   startAsync() {
     this._started = true;
+
+    // When new OSM data is merged into the editor (e.g. after a changeset upload
+    // and fresh tile fetch), invalidate the conflation caches so that newly added
+    // OSM roads will be detected on the next render pass.
+    const editor = this.context.systems.editor;
+    editor.on('merge', () => this._invalidateConflationCaches());
+
+    const pmtilesService = this.context.services.pmtiles;
+    return pmtilesService.startAsync();
+  }
+
+
+  /**
+   * _invalidateConflationCaches
+   * Clear the "seen" set and internal graph/tree so that all ML road features
+   * get re-conflated against the latest OSM graph on the next render pass.
+   */
+  _invalidateConflationCaches() {
+    if (this._mlRoadsCache) {
+      this._mlRoadsCache.seen.clear();
+    }
+    this._mlRoadsGraph = null;
+    this._mlRoadsTree = null;
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this component has completed resetting
+   */
+  resetAsync() {
+    this._mlRoadsGraph = null;
+    this._mlRoadsTree = null;
+    this._mlRoadsCache = { seen: new Set() };
+
+    // Reset intro graph if it exists
+    if (this._introDataset) {
+      this._introDataset.graph = new Graph();
+      this._introDataset.tree = new Tree(this._introDataset.graph);
+      this._introDataset.cache = { seen: new Set() };
+      this._introDataset.lastv = null;
+    }
+
     return Promise.resolve();
   }
 
@@ -90,47 +142,15 @@ export class MapWithAIService extends AbstractSystem {
 
     const fbRoads = new RapidDataset(context, {
       id: 'fbRoads',
-      conflated: true,
+      conflated: false,
       service: 'mapwithai',
       categories: new Set(['meta', 'roads', 'featured']),
+      color: '#da26d3',
       dataUsed: ['mapwithai', 'Facebook Roads'],
       itemUrl: 'https://github.com/facebookmicrosites/Open-Mapping-At-Facebook',
       licenseUrl: 'https://rapideditor.org/doc/license/MapWithAILicense.pdf',
       labelStringID: 'rapid_menu.fbRoads.label',
       descriptionStringID: 'rapid_menu.fbRoads.description'
-    });
-
-
-    const omdFootways = new RapidDataset(context, {
-      id: 'omdFootways',
-      conflated: true,
-      service: 'mapwithai',
-      categories: new Set(['meta', 'footways', 'featured']),
-      tags: new Set(['opendata']),
-      overlay: {
-        url: 'https://external.xx.fbcdn.net/maps/vtp/rapid_overlay_footways/2/{z}/{x}/{y}/',
-        minZoom: 1,
-        maxZoom: 15,
-      },
-      dataUsed: ['mapwithai', 'Open Footways'],
-      itemUrl: 'https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Footways-FAQ',
-      licenseUrl: 'https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Footways-FAQ#attribution-and-license',
-      labelStringID: 'rapid_menu.omdFootways.label',
-      descriptionStringID: 'rapid_menu.omdFootways.description'
-    });
-
-
-    const metaSyntheticFootways = new RapidDataset(context, {
-      id: 'metaSyntheticFootways',
-      conflated: true,
-      service: 'mapwithai',
-      categories: new Set(['meta', 'footways', 'featured', 'preview']),
-      tags: new Set(['opendata']),
-      dataUsed: ['mapwithai', 'Meta Synthetic Footways'],
-      itemUrl: 'https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Footways-FAQ',
-      licenseUrl: 'https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Footways-FAQ#attribution-and-license',
-      labelStringID: 'rapid_menu.metaSyntheticFootways.label',
-      descriptionStringID: 'rapid_menu.metaSyntheticFootways.description'
     });
 
     const introGraph = new RapidDataset(context, {
@@ -144,497 +164,235 @@ export class MapWithAIService extends AbstractSystem {
       label: 'Rapid Walkthrough'
     });
 
-    return [fbRoads, omdFootways, metaSyntheticFootways, introGraph];
+    return [fbRoads, introGraph];
   }
 
 
   /**
-   * resetAsync
-   * Called after completing an edit session to reset any internal state
-   * @return {Promise} Promise resolved when this component has completed resetting
+   * loadTiles
+   * Use the PMTiles service to schedule any data requests needed to cover the current map view
+   * @param   {string}  datasetID - dataset to load tiles for
    */
-  resetAsync() {
-    for (const handle of this._deferred) {
-      window.cancelIdleCallback(handle);
-      this._deferred.delete(handle);
-    }
+  loadTiles(datasetID) {
+    if (datasetID !== 'fbRoads') return;
 
-    for (const ds of Object.values(this._datasets)) {
-      if (ds.cache.inflight) {
-        Object.values(ds.cache.inflight).forEach(controller => this._abortRequest(controller));
-      }
-      ds.lastv = null;
-      ds.graph = new Graph();
-      ds.tree = new Tree(ds.graph);
-      ds.cache = {
-        inflight: {},
-        loaded: new Set(),           // Set(tileID)
-        seen: new Set(),             // Set(entityID)
-        seenFirstNodeID: new Set(),  // Set(entityID)
-        splitWays: new Map()         // Map(originalID -> Set(Entity))
-      };
-    }
-    return Promise.resolve();
+    const zoom = this.context.viewport.transform.zoom;
+    if (zoom < MIN_ROAD_ZOOM) return;
+
+    const pmtilesService = this.context.services.pmtiles;
+    pmtilesService.loadTiles(ML_ROADS_PMTILES_URL);
   }
 
 
   /**
    * getData
    * Get already loaded data that appears in the current map view
-   * @param   {string}  datasetID - datasetID to get data for
-   * @return  {Array}   Array of data (OSM Entities)
+   * @param   {string}  datasetID - dataset to get data for
+   * @return  {Array}   Array of OSM way entities that pass conflation filters
    */
   getData(datasetID) {
-    const ds = this._datasets[datasetID];
-    if (!ds || !ds.tree || !ds.graph) return [];
+    // Intro graph: return entities from the pre-allocated tree
+    if (datasetID === 'rapid_intro_graph') {
+      const ds = this._introDataset;
+      if (!ds || !ds.tree || !ds.graph) return [];
+      const extent = this.context.viewport.visibleExtent();
+      return ds.tree.intersects(extent, ds.graph);
+    }
 
-    const extent = this.context.viewport.visibleExtent();
-    return ds.tree.intersects(extent, ds.graph);
+    if (datasetID !== 'fbRoads') return [];
+
+    const zoom = this.context.viewport.transform.zoom;
+    if (zoom < MIN_ROAD_ZOOM) return [];
+
+    const pmtilesService = this.context.services.pmtiles;
+    const geojsonFeatures = pmtilesService.getData(ML_ROADS_PMTILES_URL);
+    return this._conflateRoads(geojsonFeatures, datasetID);
   }
 
 
   /**
-   * loadTiles
-   * Schedule any data requests needed to cover the current map view
-   * @param   {string}  datasetID - datasetID to load tiles for
+   * graph
+   * Return the graph for a given dataset (needed for accept feature)
+   * @param   {string}  datasetID
+   * @return  {Graph}   The graph for this dataset, or null if not applicable
    */
-  loadTiles(datasetID) {
-    if (this._paused) return;
-
-    let ds = this._datasets[datasetID];
-    let graph, tree, cache;
-
-    if (ds) {
-      graph = ds.graph;
-      tree = ds.tree;
-      cache = ds.cache;
-
-    } else {
-      // as tile requests arrive, setup the resources needed to hold the results
-      graph = new Graph();
-      tree = new Tree(graph);
-      cache = {
-        inflight: {},
-        loaded: new Set(),           // Set(tileID)
-        seen: new Set(),             // Set(entityID)
-        seenFirstNodeID: new Set(),  // Set(entityID)
-        splitWays: new Map()         // Map(originalID -> Set(Entity))
-      };
-      ds = {
-        id: datasetID,
-        graph: graph,
-        tree: tree,
-        cache: cache,
-        lastv: null
-      };
-      this._datasets[datasetID] = ds;
-    }
-
-    const locations = this.context.systems.locations;
-
-    const viewport = this.context.viewport;
-    if (ds.lastv === viewport.v) return;  // exit early if the view is unchanged
-    ds.lastv = viewport.v;
-
-    // Determine the tiles needed to cover the view..
-    const tiles = this._tiler.getTiles(viewport).tiles;
-
-    // Abort inflight requests that are no longer needed..
-    for (const k of Object.keys(cache.inflight)) {
-      const wanted = tiles.find(tile => tile.id === k);
-      if (!wanted) {
-        this._abortRequest(cache.inflight[k]);
-        delete cache.inflight[k];
-      }
-    }
-
-    for (const tile of tiles) {
-      if (cache.loaded.has(tile.id) || cache.inflight[tile.id]) continue;
-
-      // Exit if this tile covers a blocked region (all corners are blocked)
-      const corners = tile.wgs84Extent.polygon().slice(0, 4);
-      const tileBlocked = corners.every(loc => locations.blocksAt(loc).length);
-      if (tileBlocked) {
-        cache.loaded.add(tile.id);  // don't try again
-        continue;
-      }
-
-      const resource = this._tileURL(ds, tile.wgs84Extent);
-      const controller = new AbortController();
-      fetch(resource, { signal: controller.signal })
-        .then(utilFetchResponse)
-        .then(xml => {
-          delete cache.inflight[tile.id];
-          if (!xml) return;
-          this._parseXML(ds, xml, tile, (err, result) => {
-            if (err) return;
-            graph.rebase(result, [graph], true);   // true = force replace entities
-            tree.rebase(result, true);
-            cache.loaded.add(tile.id);
-
-            const gfx = this.context.systems.gfx;
-            gfx.deferredRedraw();
-            this.emit('loadedData');
-          });
-        })
-        .catch(e => {
-          if (e.name === 'AbortError') return;
-          console.error(e);  // eslint-disable-line
-        });
-
-      cache.inflight[tile.id] = controller;
-    }
-  }
-
-
   graph(datasetID) {
-    const ds = this._datasets[datasetID];
-    return ds?.graph;
-  }
-
-
-  /* this is called to merge in the rapid_intro_graph */
-  merge(datasetID, entities) {
-    const ds = this._datasets[datasetID];
-    if (!ds || !ds.tree || !ds.graph) return;
-    ds.graph.rebase(entities, [ds.graph], false);
-    ds.tree.rebase(entities, false);
-  }
-
-
-  _abortRequest(controller) {
-    controller.abort();
-  }
-
-
-  _tileURL(dataset, extent) {
-    // Conflated datasets have a different ID, so they get stored in their own graph/tree
-    const isConflated = /-conflated$/.test(dataset.id);
-    const datasetID = dataset.id.replace('-conflated', '');
-
-    const qs = {
-      conflate_with_osm: isConflated,
-      theme: 'ml_road_vector',
-      collaborator: 'fbid',
-      token: 'ASZUVdYpCkd3M6ZrzjXdQzHulqRMnxdlkeBJWEKOeTUoY_Gwm9fuEd2YObLrClgDB_xfavizBsh0oDfTWTF7Zb4C',
-      hash: 'ASYM8LPNy8k1XoJiI7A'
-    };
-
+    if (datasetID === 'rapid_intro_graph') {
+      return this._introDataset?.graph ?? null;
+    }
     if (datasetID === 'fbRoads') {
-      qs.result_type = 'road_vector_xml';
-    } else if (datasetID === 'metaSyntheticFootways' ) {
-      qs.result_type = 'extended_osc';
-      qs.sources = 'META_SYNTHETIC_FOOTWAYS';
-    } else if (datasetID === 'omdFootways' ) {
-      qs.result_type = 'extended_osc';
-      qs.sources = 'OPEN_MAP_DATA_FOOTWAYS';
-    } else if (datasetID === 'msBuildings') {
-      qs.result_type = 'road_building_vector_xml';
-      qs.building_source = 'microsoft';
-    } else {
-      qs.result_type = 'osm_xml';
-      qs.sources = `esri_building.${datasetID}`;
+      return this._mlRoadsGraph;
     }
+    return null;
+  }
 
-    qs.bbox = extent.toParam();
 
-    const taskExtent = this.context.systems.rapid.taskExtent;
-    if (taskExtent) {
-      qs.crop_bbox = taskExtent.toParam();
+  /**
+   * merge
+   * Merge entities into a dataset graph (used for rapid_intro_graph tutorial injection)
+   * @param   {string}  datasetID - Which dataset to merge into
+   * @param   {Array}   entities  - OSM entities to merge
+   */
+  merge(datasetID, entities) {
+    if (datasetID === 'rapid_intro_graph') {
+      const ds = this._introDataset;
+      if (!ds || !ds.tree || !ds.graph) return;
+      ds.graph.rebase(entities, [ds.graph], false);
+      ds.tree.rebase(entities, false);
     }
-
-    const customUrlRoot = utilStringQs(window.location.hash).fb_ml_road_url;
-
-    const urlRoot = customUrlRoot || APIROOT;
-    const url = urlRoot + '?' + mapwithaiQsString(qs, true);  // true = noencode
-    return url;
+  }
 
 
-    // This utilQsString does not sort the keys, because the MapWithAI service needs them to be ordered a certain way.
-    function mapwithaiQsString(obj, noencode) {
-      // encode everything except special characters used in certain hash parameters:
-      // "/" in map states, ":", ",", {" and "}" in background
-      function softEncode(s) {
-        return encodeURIComponent(s).replace(/(%2F|%3A|%2C|%7B|%7D)/g, decodeURIComponent);
+  /**
+   * _conflateRoads
+   * Filter out ML road features that overlap with existing OSM highways,
+   * and convert remaining features to OSM entities.
+   * Uses mode-aware point-sampling via PMTilesService helpers.
+   *
+   * @param   {Array}   geojsonFeatures - GeoJSON features from PMTilesService/VectorTileService
+   * @param   {string}  datasetID - Which dataset we're processing
+   * @return  {Array}   OSM way entities that pass all filters
+   */
+  _conflateRoads(geojsonFeatures, datasetID) {
+    if (!geojsonFeatures || !geojsonFeatures.length) return [];
+
+    // Ensure graph/tree/cache exist
+    if (!this._mlRoadsGraph) {
+      this._mlRoadsGraph = new Graph();
+      this._mlRoadsTree = new Tree(this._mlRoadsGraph);
+    }
+    const roadsGraph = this._mlRoadsGraph;
+    const roadsTree = this._mlRoadsTree;
+    const roadsCache = this._mlRoadsCache;
+
+    const pmtilesService = this.context.services.pmtiles;
+    const viewport = this.context.viewport;
+    const extent = viewport.visibleExtent();
+
+    const { motorized, nonMotorized } = pmtilesService.getOSMHighwaysByMode(extent);
+
+    // Also get already-processed ML roads from the internal tree (from previous render passes)
+    // to deduplicate overlapping features from the same dataset (self-conflation)
+    const existingMLRoads = pmtilesService.getInternalRoadsByMode(extent, roadsGraph, roadsTree);
+    const combinedMotorized = motorized.concat(existingMLRoads.motorized);
+    const combinedNonMotorized = nonMotorized.concat(existingMLRoads.nonMotorized);
+
+    const newEntities = [];
+    let processedCount = 0;
+
+    for (const feature of geojsonFeatures) {
+      if (processedCount >= MAX_FEATURES_PER_FRAME) break;
+
+      const geojson = feature.geojson;
+      if (!geojson?.geometry) continue;
+
+      const geomType = geojson.geometry.type;
+      if (geomType !== 'LineString' && geomType !== 'MultiLineString') continue;
+
+      const featureID = feature.id || geojson.id;
+      if (roadsCache.seen.has(featureID)) continue;
+      roadsCache.seen.add(featureID);
+      processedCount++;
+
+      // Get line coordinates (handle both LineString and MultiLineString)
+      const lineStrings = geomType === 'LineString'
+        ? [geojson.geometry.coordinates]
+        : geojson.geometry.coordinates;
+
+      // Determine travel mode from properties (future-proofed)
+      // Currently all ML roads are assumed motorized since properties are empty
+      const featureClass = geojson.properties?.class || '';
+      const isNonMotorized = NON_MOTORIZED_CLASSES.has(featureClass);
+      const sameModHighways = isNonMotorized ? combinedNonMotorized : combinedMotorized;
+
+      // Check if any linestring in this feature is conflated with existing OSM or ML roads
+      let rejected = false;
+      for (const coords of lineStrings) {
+        if (rejected) break;
+        if (pmtilesService.isConflatedWithOSM(coords, sameModHighways)) {
+          rejected = true;
+        }
       }
 
-      return Object.keys(obj).map(key => {  // NO SORT
-        return encodeURIComponent(key) + '=' + (
-          noencode ? softEncode(obj[key]) : encodeURIComponent(obj[key]));
-      }).join('&');
+      if (rejected) continue;
+
+      // Build OSM tags for surviving features
+      const tags = this._mapMLRoadTags(geojson.properties || {});
+
+      // Convert surviving features to OSM entities
+      for (let j = 0; j < lineStrings.length; j++) {
+        const partID = lineStrings.length > 1 ? `${featureID}-p${j}` : featureID;
+        const entities = pmtilesService.geojsonToOSMLine(lineStrings[j], tags, partID, datasetID, 'mapwithai');
+        if (entities) {
+          newEntities.push(...entities);
+
+          // Within-batch self-conflation: add accepted road to the combined list
+          // so subsequent features in this batch can see it
+          const coords = lineStrings[j];
+          let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+          for (const c of coords) {
+            if (c[0] < minX) minX = c[0];
+            if (c[0] > maxX) maxX = c[0];
+            if (c[1] < minY) minY = c[1];
+            if (c[1] > maxY) maxY = c[1];
+          }
+          const roadData = {
+            coords,
+            bbox: { minX: minX - 0.0003, minY: minY - 0.0003, maxX: maxX + 0.0003, maxY: maxY + 0.0003 }
+          };
+          if (isNonMotorized) {
+            combinedNonMotorized.push(roadData);
+          } else {
+            combinedMotorized.push(roadData);
+          }
+        }
+      }
     }
+
+    // Update the internal graph with new entities
+    if (newEntities.length) {
+      roadsGraph.rebase(newEntities, [roadsGraph], true);
+      roadsTree.rebase(newEntities, true);
+    }
+
+    // Return ways from the tree that intersect the visible extent
+    return roadsTree.intersects(extent, roadsGraph)
+      .filter(entity => entity.type === 'way');
   }
 
 
-  _getLoc(attrs) {
-    const lon = attrs.lon?.value;
-    const lat = attrs.lat?.value;
-    return [ parseFloat(lon), parseFloat(lat) ];
-  }
-
-
-  _getNodes(xml) {
-    const elems = Array.from(xml.getElementsByTagName('nd'));
-    return elems.map(elem => 'n' + elem.attributes.ref.value);
-  }
-
-
-  _getTags(xml) {
-    const elems = Array.from(xml.getElementsByTagName('tag'));
+  /**
+   * _mapMLRoadTags
+   * Map ML road feature properties to OSM tags.
+   * Currently the PMTiles archive has empty properties, so this defaults to
+   * `highway=road`. The method is structured to handle future attributes
+   * (highway, class, surface) when they become available.
+   *
+   * @param   {Object}  props - Feature properties from PMTiles
+   * @return  {Object}  OSM tags
+   */
+  _mapMLRoadTags(props) {
     const tags = {};
-    for (const elem of elems) {
-      const attrs = elem.attributes;
-      const k = (attrs.k.value ?? '').trim();
-      const v = (attrs.v.value ?? '').trim();
-      if (k && v) {
-        tags[k] = v;
-      }
+
+    // highway= from properties (future-proofed for when attributes are added)
+    if (props.highway) {
+      tags.highway = props.highway;
+    } else if (props.class) {
+      tags.highway = props.class === 'unknown' ? 'road' : props.class;
+    } else {
+      tags.highway = 'road';
     }
+
+    // surface= from properties
+    if (props.surface) {
+      tags.surface = props.surface;
+    } else if (props.road_surface) {
+      tags.surface = props.road_surface;
+    }
+
+    tags.source = 'meta/ml_roads';
+
     return tags;
   }
-
-
-  _getVisible(attrs) {
-    return (!attrs.visible || attrs.visible.value !== 'false');
-  }
-
-
-  _parseNode(obj, uid) {
-    const attrs = obj.attributes;
-    return new osmNode({
-      id: uid,
-      visible: this._getVisible(attrs),
-      loc: this._getLoc(attrs),
-      tags: this._getTags(obj)
-    });
-  }
-
-  _parseWay(obj, uid) {
-    const attrs = obj.attributes;
-    return new osmWay({
-      id: uid,
-      visible: this._getVisible(attrs),
-      tags: this._getTags(obj),
-      nodes: this._getNodes(obj),
-    });
-  }
-
-
-  _parseXML(dataset, xml, tile, callback) {
-    if (!xml || !xml.childNodes) {
-      return callback({ message: 'No XML', status: -1 });
-    }
-
-    const root = xml.childNodes[0];
-    const children = root.childNodes;
-    const handle = window.requestIdleCallback(() => {
-      this._deferred.delete(handle);
-      let results = [];
-      for (const child of children) {
-        const result = this._parseEntity(dataset, tile, child);
-        if (result) results.push(result);
-      }
-
-      results = results.concat(this._connectSplitWays(dataset));
-      callback(null, results);
-    });
-
-    this._deferred.add(handle);
-  }
-
-
-  _parseEntity(dataset, tile, element) {
-    const cache = dataset.cache;
-
-    const type = element.nodeName;
-    if (!['node', 'way'].includes(type)) return null;
-
-    let entityID, entity;
-    entityID = osmEntity.id.fromOSM(type, element.attributes.id.value);
-
-    if (type === 'node') {
-      if (cache.seen.has(entityID)) {   // ignore nodes we've seen already
-        return null;
-      } else {
-        entity = this._parseNode(element, entityID);
-        cache.seen.add(entityID);
-      }
-
-    } else if (type === 'way') {
-
-      //   The MapWithAI service uses a non-deterministic method for splitting ways into segments.
-      //   This means that each request we issue may split the way differently, see Rapid#1288
-      //   This is extra challenging because the user may accept some roads, store their edits to
-      //   localStorage, refresh Rapid and restore their edits, and we'd expect their restored
-      //   edits should still work with whatever ways we receive from the server.
-      //   We work around this issue in `_connectSplitWays`
-
-      // If `orig_id` is present, it means that the way was split
-      // by the server, and we will need to reassemble the pieces.
-      if (element.attributes.orig_id) {
-        const origEntityID = osmEntity.id.fromOSM(type, element.attributes.orig_id.value);
-        entity = this._parseWay(element, entityID);
-        let ways = cache.splitWays.get(origEntityID);
-        if (!ways) {
-          ways = new Set();
-          cache.splitWays.set(origEntityID, ways);
-        }
-        ways.add(entity);
-        return null;   // bail out, `_connectSplitWays` will handle this instead
-
-      } else {  // a normal unsplit way
-        if (cache.seen.has(entityID)) {   // ignore ways we've seen already
-          return null;
-        } else {
-          entity = this._parseWay(element, entityID);
-          cache.seen.add(entityID);
-
-          // Ignore duplicate buildings in the MS Buildings dataset.
-          // They will appear with unique entity id, but with the same nodelist, see Rapid#873
-          if (/^msBuildings/.test(dataset.id)) {
-            const firstNodeID = entity.nodes[0];
-            if (cache.seenFirstNodeID.has(firstNodeID)) {
-              return null;
-            }
-            cache.seenFirstNodeID.add(firstNodeID);
-          }
-
-        }
-      }
-
-    } else {
-      return null;
-    }
-
-    const metadata = {
-      __fbid__: entityID,
-      __service__: 'mapwithai',
-      __datasetid__: dataset.id
-    };
-
-    return Object.assign(entity, metadata);
-  }
-
-
-  /**
-   * _connectSplitWays
-   * Call this sometimes to reassemble ways that were split by the server.
-   */
-  _connectSplitWays(dataset) {
-    const graph = dataset.graph;
-    const cache = dataset.cache;
-    const results = [];
-
-    for (const [origEntityID, ways] of cache.splitWays) {
-      let survivor = graph.hasEntity(origEntityID);   // if we've done this before, the graph will have it
-
-      // Check each way that shares this `origEntityID`.
-      // Pick one to be the "survivor" (it doesn't matter which one).
-      // Merge the nodes into the survivor (this will bump internal version `v`, so it gets redrawn)
-      //
-      // some implementation notes:
-      // 1. `actionJoin` is similar to this, but does more than we need and uses `osmJoinWays`,
-      // 2. `osmJoinWays` could almost do this, but it only can join head-tail, it can't
-      //  deal with situations where ways partially overlap or reverse, which we get from this server.
-      //  see examples below
-
-      for (const candidate of ways) {
-        if (!survivor || !survivor.nodes.length) {   // first time, just pick first way we see.
-          survivor = candidate.update({ id: origEntityID });  // but use the original (stable) id
-          ways.delete(candidate);
-          continue;
-        }
-
-        // We will attempt to merge the `candidate.nodes` into the `survivor.nodes` somewhere.
-        // Here are some situations we account for (candidate can be forward or reverse):
-        // survivor.nodes = [C, D, E, F, G, H, J, K]
-        // candidate.nodes = [G, F, E, D], indexes = [4, 3, 2, 1]      (candidate aleady contained)
-        // candidate.nodes = [A, B, C, D], indexes = [-1, -1, 0, 1]    (prepend at beginning)
-        // candidate.nodes = [J, I, H, G], indexes = [6, -1, 5, 4]     (splice into middle)
-        // candidate.nodes = [M, L, K, J], indexes = [-1, -1, 7, 6]    (append at end)
-        // candidate.nodes = [N, O, P, Q], indexes = [-1, -1, -1, -1]  (discontinuity)
-        const indexes = [];
-        for (const nodeID of candidate.nodes) {
-         indexes.push(survivor.nodes.indexOf(nodeID));
-        }
-
-        if (indexes.every(ix => ix !== -1)) {  // candidate already contained in survivor
-          ways.delete(candidate);              // remove candidate
-          continue;
-
-        } else if (indexes.every(ix => ix === -1)) {  // discontinuity, keep candidate around
-          continue;                                   // in case we load more map and can connect it
-        }
-
-        // We consider the survivor to be going in the forward direction.
-        // We want to make sure the candidate also matches this direction.
-        // To determine direction - do the matched (not `-1`) indexes go up or down?
-        let isReverse = false;
-        let onlyOneIndex = false;  // if only one matched index, we expect it at start or end
-        let prev;
-        for (const curr of indexes) {
-          if (curr === -1) continue;   // ignore these
-
-          if (prev === undefined) {  // found one
-            onlyOneIndex = true;
-            prev = curr;
-          } else {    // found two, compare them
-            onlyOneIndex = false;
-            isReverse = curr < prev;
-            break;
-          }
-        }
-
-        if (onlyOneIndex) {   // new nodes (-1's) should go before the beginning or after the end
-          if (indexes.at(0) === 0)  isReverse = true;   // indexes look like [ 0, -1, -1, -1 ]   move -1's to beginning
-          if (indexes.at(-1) !== 0) isReverse = true;   // indexes look like [ -1, -1, -1, N ]   move -1's to end
-        }
-
-        if (isReverse) {
-          candidate.nodes.reverse();  // ok to reverse it, candidate isn't an actual way in the graph
-          indexes.reverse();
-        }
-
-        // Take nodes from either survivor or candidate
-        const nodeIDs = [];
-        let s = 0;  // s = survivor index
-
-        for (let c = 0; c < indexes.length; c++) {   // c = candidate index
-          const i = indexes[c];
-          if (i === -1) {
-            nodeIDs.push(candidate.nodes[c]);  // take next candidate
-          } else {
-            while (s <= i) {
-              nodeIDs.push(survivor.nodes[s]);   // take survivors up to i
-              s++;
-            }
-          }
-        }
-        while (s < survivor.nodes.length) {   // take any remaining survivors
-          nodeIDs.push(survivor.nodes[s]);
-          s++;
-        }
-
-        ways.delete(candidate);    // remove candidate
-        survivor = survivor.update({ nodes: nodeIDs });   // note, update bumps 'v' version automatically
-      }
-
-
-      // Include the survivor entity in the result.
-      // (calling code will merge it into the graph).
-      if (survivor) {
-        const metadata = {
-          __fbid__: survivor.id,
-          __service__: 'mapwithai',
-          __datasetid__: dataset.id
-        };
-        results.push(Object.assign(survivor, metadata));
-      }
-
-    }
-
-    return results;
-  }
-
 
 }

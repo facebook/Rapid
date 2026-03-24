@@ -79,13 +79,13 @@ export class UiAttribution {
       data[1].sources.push(overlay);
     }
 
-    // Append a "source" for MapWithAI data attribution to the overlays section..
+    // Append a "source" for Rapid data attribution to the overlays section..
     if (isRapidEnabled) {
       data[1].sources.push({
-        id: '__mapwithai',
+        id: '__rapid_data',
         overlay: true,
         terms_text: l10n.t('map_data.layers.rapid.license'),
-        terms_url: 'https://mapwith.ai/doc/license/MapWithAILicense.pdf'
+        terms_url: 'https://rapideditor.org/doc/license/MapWithAILicense.pdf'
       });
     }
 

@@ -12,7 +12,7 @@ export class RapidDataset {
     this.context = context;
 
     this.id = props.id;
-    this.service = props.service;                      // 'esri', 'mapwithai', 'overture'
+    this.service = props.service;                      // 'esri', 'mapwithai', 'overture', 'meta'
     this.categories = props.categories ?? new Set();   // e.g. 'buildings' 'addresses'
     this.tags = props.tags ?? new Set();               // e.g. 'opendata' - (flags like categories but not visible)
     this.color = props.color ?? RAPID_MAGENTA;

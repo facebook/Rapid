@@ -116,7 +116,6 @@ export class RapidSystem extends AbstractSystem {
 
     const esri = context.services.esri;
     const mapwithai = context.services.mapwithai;
-    const meta = context.services.meta;
     const overture = context.services.overture;
 
     // This code is written in a way that we can work with whatever
@@ -124,7 +123,6 @@ export class RapidSystem extends AbstractSystem {
     const services = [];
     if (esri)      services.push(esri);
     if (mapwithai) services.push(mapwithai);
-    if (meta)      services.push(meta);
     if (overture)  services.push(overture);
 
     const prerequisites = Promise.all(services.map(service => service.startAsync()));
@@ -144,7 +142,7 @@ export class RapidSystem extends AbstractSystem {
 
         // Set some defaults
         if (!urlhash.initialHashParams.has('datasets')) {
-          this._addedDatasetIDs = new Set(['fbRoads', 'esri-buildings', 'ml-buildings-overture', 'ml-roads', 'omdFootways', 'tomtom-roads']);  // on menu
+          this._addedDatasetIDs = new Set(['fbRoads', 'esri-buildings', 'ml-buildings-overture', 'tomtom-roads']);  // on menu
           this._enabledDatasetIDs = new Set(['ml-buildings-overture']);  // checked
           this._datasetsChanged();
         }

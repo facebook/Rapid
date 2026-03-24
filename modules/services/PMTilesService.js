@@ -39,7 +39,7 @@ const CONFLATION_MIN_SPACING_METERS = 5;  // minimum spacing between sample poin
  * and provides shared utilities for road conflation and GeoJSON→OSM conversion.
  *
  * This service acts as a shared layer between domain-specific services
- * (OvertureService, MetaService) and the VectorTileService. It is stateless —
+ * (OvertureService, MapWithAIService) and the VectorTileService. It is stateless —
  * consuming services own their own Graph/Tree/Cache state.
  *
  * - Protomaps .pmtiles single-file archive containing MVT
@@ -354,7 +354,7 @@ export class PMTilesService extends AbstractSystem {
    * @param   {Object}  tags - Pre-built OSM tags for the way
    * @param   {string}  featureID - Unique identifier for this feature
    * @param   {string}  datasetID - The dataset this feature belongs to
-   * @param   {string}  serviceName - The service name for __service__ metadata (e.g. 'overture', 'meta')
+   * @param   {string}  serviceName - The service name for __service__ metadata (e.g. 'overture', 'mapwithai')
    * @return  {Array}   Array of [osmNodes..., osmWay], or null if invalid
    */
   geojsonToOSMLine(coords, tags, featureID, datasetID, serviceName) {
@@ -406,7 +406,7 @@ export class PMTilesService extends AbstractSystem {
    * @param   {Object}  tags - Pre-built OSM tags for the way
    * @param   {string}  featureID - Unique identifier for this feature
    * @param   {string}  datasetID - The dataset this feature belongs to
-   * @param   {string}  serviceName - The service name for __service__ metadata (e.g. 'overture', 'meta')
+   * @param   {string}  serviceName - The service name for __service__ metadata (e.g. 'overture', 'mapwithai')
    * @return  {Array}   Array of [osmNodes..., osmWay], or null if invalid
    */
   geojsonToOSMPolygon(geojson, tags, featureID, datasetID, serviceName) {

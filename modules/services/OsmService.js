@@ -90,7 +90,7 @@ export class OsmService extends AbstractSystem {
     let redirect_uri;
     const origin = window.location.origin;
 
-    // Anything served from `https://mapwith.ai` or `https://rapideditor.org`,
+    // Anything served from `https://mapwith.ai` (deprecated) or `https://rapideditor.org`,
     // redirect to the common `/rapid/land.html` on that same origin
     if (/^https:\/\/(mapwith\.ai|rapideditor\.org)/i.test(origin)) {
       redirect_uri = `${origin}/rapid/land.html`;

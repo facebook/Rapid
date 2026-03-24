@@ -34,16 +34,6 @@ export class UiField {
       info: true
     }, options);
 
-//    // Don't show the remove and revert buttons if any of the entity IDs are FB features
-//    // with source=digitalglobe or source=maxar
-//    const someFbRoadsSelected = entityIDs ? entityIDs.some(function(entity) {
-//      return entity.__fbid__ && (entity.tags.source === 'maxar' || entity.tags.source === 'digitalglobe');
-//    }) : false;
-//    if (someFbRoadsSelected) {
-//      this.options.remove = false;
-//      this.options.revert = false;
-//    }
-
     // copy some commonly used stuff from the presetField
     this.id = presetField.id;
     this.type = presetField.type;
