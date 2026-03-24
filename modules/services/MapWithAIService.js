@@ -299,10 +299,9 @@ export class MapWithAIService extends AbstractSystem {
         ? [geojson.geometry.coordinates]
         : geojson.geometry.coordinates;
 
-      // Determine travel mode from properties (future-proofed)
-      // Currently all ML roads are assumed motorized since properties are empty
-      const featureClass = geojson.properties?.class || '';
-      const isNonMotorized = NON_MOTORIZED_CLASSES.has(featureClass);
+      // Determine travel mode from properties
+      const hw = geojson.properties?.highway || geojson.properties?.class || '';
+      const isNonMotorized = NON_MOTORIZED_CLASSES.has(hw);
       const sameModHighways = isNonMotorized ? combinedNonMotorized : combinedMotorized;
 
       // Check if any linestring in this feature is conflated with existing OSM or ML roads
@@ -364,9 +363,8 @@ export class MapWithAIService extends AbstractSystem {
   /**
    * _mapMLRoadTags
    * Map ML road feature properties to OSM tags.
-   * Currently the PMTiles archive has empty properties, so this defaults to
-   * `highway=road`. The method is structured to handle future attributes
-   * (highway, class, surface) when they become available.
+   * Uses `highway` and `source` directly from the PMTiles data when available,
+   * falling back to sensible defaults for features without attributes.
    *
    * @param   {Object}  props - Feature properties from PMTiles
    * @return  {Object}  OSM tags
@@ -374,7 +372,6 @@ export class MapWithAIService extends AbstractSystem {
   _mapMLRoadTags(props) {
     const tags = {};
 
-    // highway= from properties (future-proofed for when attributes are added)
     if (props.highway) {
       tags.highway = props.highway;
     } else if (props.class) {
@@ -383,14 +380,17 @@ export class MapWithAIService extends AbstractSystem {
       tags.highway = 'road';
     }
 
-    // surface= from properties
     if (props.surface) {
       tags.surface = props.surface;
     } else if (props.road_surface) {
       tags.surface = props.road_surface;
     }
 
-    tags.source = 'meta/ml_roads';
+    if (props.source) {
+      tags.source = props.source;
+    } else {
+      tags.source = 'meta/ml_roads';
+    }
 
     return tags;
   }
