@@ -385,13 +385,34 @@ export class VectorTileService extends AbstractSystem {
 // geojson.properties['__tileID'] = tile.id;
 // geojson.properties['__prophash'] = prophash;
 
-          // For Polygons only, determine if this feature clips to a tile edge.
+          // For Polygons, determine if this feature clips to a tile edge.
           // If so, we'll try to merge it with similar features on the neighboring tile
           if (geojson.geometry.type === 'Polygon') {
             if (extent.min[0] < tileExtent.min[0]) { this._queueMerge(cache, featureID, prophash, leftEdge); }
             if (extent.max[0] > tileExtent.max[0]) { this._queueMerge(cache, featureID, prophash, rightEdge); }
             if (extent.min[1] < tileExtent.min[1]) { this._queueMerge(cache, featureID, prophash, bottomEdge); }
             if (extent.max[1] > tileExtent.max[1]) { this._queueMerge(cache, featureID, prophash, topEdge); }
+          }
+
+          // For LineStrings, check if either endpoint is near a tile edge.
+          // MVT clipping places endpoints AT the tile boundary, so we use a
+          // tolerance rather than strict extent-crossing.
+          if (geojson.geometry.type === 'LineString') {
+            const coords = geojson.geometry.coordinates;
+            if (coords.length >= 2) {
+              const first = coords[0];
+              const last = coords[coords.length - 1];
+              const EDGE_TOL = 5e-5;  // ~5.5m at equator
+              const nearLeft   = (pt) => pt[0] < tileExtent.min[0] + EDGE_TOL;
+              const nearRight  = (pt) => pt[0] > tileExtent.max[0] - EDGE_TOL;
+              const nearBottom = (pt) => pt[1] < tileExtent.min[1] + EDGE_TOL;
+              const nearTop    = (pt) => pt[1] > tileExtent.max[1] - EDGE_TOL;
+
+              if (nearLeft(first) || nearLeft(last))     { this._queueMerge(cache, featureID, prophash, leftEdge); }
+              if (nearRight(first) || nearRight(last))   { this._queueMerge(cache, featureID, prophash, rightEdge); }
+              if (nearBottom(first) || nearBottom(last)) { this._queueMerge(cache, featureID, prophash, bottomEdge); }
+              if (nearTop(first) || nearTop(last))       { this._queueMerge(cache, featureID, prophash, topEdge); }
+            }
           }
 
           newFeatures.push({
@@ -408,6 +429,7 @@ export class VectorTileService extends AbstractSystem {
 
     if (newFeatures.length) {
       this._cacheFeatures(cache, newFeatures);
+      this._insertLineIntersections(cache, newFeatures);
       const gfx = this.context.systems.gfx;
       gfx.deferredRedraw();
       this.emit('loadedData');
@@ -438,7 +460,7 @@ export class VectorTileService extends AbstractSystem {
 
   /**
    * _processMergeQueue
-   * Call this sometimes to merge polygons across tile edges
+   * Call this sometimes to merge features across tile edges
    */
   _processMergeQueue(source) {
     for (const cache of source.zoomCache.values()) {
@@ -454,7 +476,16 @@ export class VectorTileService extends AbstractSystem {
 
         // All the features that share this prophash along this edge can be merged
         for (const [prophash, featureIDs] of mergemap) {
-          this._mergePolygons(cache, prophash, featureIDs, lowTile, highTile);
+          // Determine geometry type from the first available feature
+          const firstFeature = Array.from(featureIDs)
+            .map(id => cache.features.get(id))
+            .find(Boolean);
+
+          if (firstFeature?.geojson?.geometry?.type === 'LineString') {
+            this._mergeLineStrings(cache, prophash, featureIDs, lowTile, highTile);
+          } else {
+            this._mergePolygons(cache, prophash, featureIDs, lowTile, highTile);
+          }
           mergemap.delete(prophash);  // done this prophash
         }
         cache.toMerge.delete(edgeID);
@@ -607,6 +638,370 @@ export class VectorTileService extends AbstractSystem {
       const gfx = this.context.systems.gfx;
       gfx.deferredRedraw();
     }
+  }
+
+
+  /**
+   * _mergeLineStrings
+   * Merge LineString features that share a prophash and have near-coincident
+   * endpoints along a tile edge.  This is the LineString equivalent of
+   * `_mergePolygons` — it stitches road segments split by MVT tile clipping.
+   *
+   * @param  {Object}  cache
+   * @param  {string}  prophash
+   * @param  {Set}     featureIDs   Set(featureIDs) to consider
+   * @param  {Tile}    lowTile
+   * @param  {Tile}    highTile
+   */
+  _mergeLineStrings(cache, prophash, featureIDs, lowTile, highTile) {
+    const features = Array.from(featureIDs)
+      .map(id => cache.features.get(id))
+      .filter(f => f && f.geojson?.geometry?.type === 'LineString');
+
+    if (features.length < 2) return;
+
+    const SNAP_TOL = 5e-5;   // ~5.5 m at equator
+
+    // Build a working list of coordinate arrays (+ a reference to source properties)
+    let lines = features.map(f => ({
+      coords: f.geojson.geometry.coordinates.slice(),   // shallow copy of array
+      properties: f.geojson.properties
+    }));
+
+    // Iteratively merge pairs of lines whose endpoints are close together
+    // AND whose approach directions are compatible (prevents merging perpendicular roads)
+    const MAX_MERGE_ANGLE = 30;  // degrees — roads must approach within 30° of each other
+    let didMerge = true;
+    while (didMerge) {
+      didMerge = false;
+      for (let i = 0; i < lines.length && !didMerge; i++) {
+        for (let j = i + 1; j < lines.length && !didMerge; j++) {
+          const a = lines[i].coords;
+          const b = lines[j].coords;
+          const aFirst = a[0];
+          const aLast  = a[a.length - 1];
+          const bFirst = b[0];
+          const bLast  = b[b.length - 1];
+
+          let merged = null;
+
+          if (this._pointsClose(aLast, bFirst, SNAP_TOL) && this._directionsCompatible(a, b, MAX_MERGE_ANGLE)) {
+            merged = this._joinLineCoords(a, b, SNAP_TOL);              // A ──→ B
+          } else if (this._pointsClose(aFirst, bLast, SNAP_TOL) && this._directionsCompatible(b, a, MAX_MERGE_ANGLE)) {
+            merged = this._joinLineCoords(b, a, SNAP_TOL);              // B ──→ A
+          } else if (this._pointsClose(aLast, bLast, SNAP_TOL)) {
+            const bRev = b.slice().reverse();
+            if (this._directionsCompatible(a, bRev, MAX_MERGE_ANGLE)) {
+              merged = this._joinLineCoords(a, bRev, SNAP_TOL);         // A ──→ rev(B)
+            }
+          } else if (this._pointsClose(aFirst, bFirst, SNAP_TOL)) {
+            const aRev = a.slice().reverse();
+            if (this._directionsCompatible(aRev, b, MAX_MERGE_ANGLE)) {
+              merged = this._joinLineCoords(aRev, b, SNAP_TOL);         // rev(A) ──→ B
+            }
+          }
+
+          if (merged) {
+            lines[i] = { coords: merged, properties: lines[i].properties };
+            lines.splice(j, 1);
+            didMerge = true;
+          }
+        }
+      }
+    }
+
+    // ── Re-cache results ───────────────────────────────────────────────────
+
+    // Re-use the same edge-naming helpers from _mergePolygons
+    const [lx, ly, lz] = lowTile.xyz;
+    const [hx, hy, hz] = highTile.xyz;
+    const lowTileID  = lowTile.id;
+    const highTileID = highTile.id;
+    const lowTileExtent  = lowTile.wgs84Extent;
+    const highTileExtent = highTile.wgs84Extent;
+    const isVertical   = (hy === ly + 1);
+    const isHorizontal = (hx === lx + 1);
+    const lowLeftEdge    = `${lx-1},${ly},${lz}-${lowTileID}`;
+    const lowRightEdge   = `${lowTileID}-${lx+1},${ly},${lz}`;
+    const lowTopEdge     = `${lx},${ly-1},${lz}-${lowTileID}`;
+    const lowBottomEdge  = `${lowTileID}-${lx},${ly+1},${lz}`;
+    const highLeftEdge   = `${hx-1},${hy},${hz}-${highTileID}`;
+    const highRightEdge  = `${highTileID}-${hx+1},${hy},${hz}`;
+    const highTopEdge    = `${hx},${hy-1},${hz}-${highTileID}`;
+    const highBottomEdge = `${highTileID}-${hx},${hy+1},${hz}`;
+
+    const source = features[0];
+
+    this._uncacheFeatureIDs(cache, featureIDs);
+
+    const newFeatures = [];
+    for (const line of lines) {
+      if (line.coords.length < 2) continue;
+
+      const geojson = {
+        type: 'Feature',
+        geometry: { type: 'LineString', coordinates: line.coords },
+        properties: Object.assign({}, line.properties)
+      };
+
+      const extent = this._calcExtent(geojson);
+      if (!isFinite(extent.min[0])) continue;
+
+      const featureID = this.getNextID();
+      geojson.id = featureID;
+      geojson.__featurehash__ = featureID;
+
+      // Cascade: the merged line may still reach other tile edges
+      const first = line.coords[0];
+      const last  = line.coords[line.coords.length - 1];
+      const EDGE_TOL = 5e-5;
+      const nearLeft   = (pt) => pt[0] < lowTileExtent.min[0] + EDGE_TOL;
+      const nearRight  = (pt) => pt[0] > highTileExtent.max[0] - EDGE_TOL;
+      const nearTop    = (pt) => pt[1] > lowTileExtent.max[1] - EDGE_TOL;
+      const nearBottom = (pt) => pt[1] < highTileExtent.min[1] + EDGE_TOL;
+
+      if (nearLeft(first) || nearLeft(last)) {
+        if (isVertical)                                         { this._queueMerge(cache, featureID, prophash, lowLeftEdge); }
+        if (isHorizontal && extent.min[0] < lowTileExtent.min[0])  { this._queueMerge(cache, featureID, prophash, lowLeftEdge); }
+      }
+      if (nearRight(first) || nearRight(last)) {
+        if (isVertical)                                          { this._queueMerge(cache, featureID, prophash, highRightEdge); }
+        if (isHorizontal && extent.max[0] > highTileExtent.max[0]) { this._queueMerge(cache, featureID, prophash, lowRightEdge); }
+      }
+      if (nearTop(first) || nearTop(last)) {
+        if (isHorizontal)                                        { this._queueMerge(cache, featureID, prophash, lowTopEdge); }
+        if (isVertical && extent.max[1] > lowTileExtent.max[1]) { this._queueMerge(cache, featureID, prophash, lowTopEdge); }
+      }
+      if (nearBottom(first) || nearBottom(last)) {
+        if (isHorizontal)                                        { this._queueMerge(cache, featureID, prophash, highBottomEdge); }
+        if (isVertical && extent.min[1] < highTileExtent.min[1]) { this._queueMerge(cache, featureID, prophash, lowBottomEdge); }
+      }
+
+      newFeatures.push({
+        id: featureID,
+        extent: extent,
+        layerID: source.layerID,
+        prophash: prophash,
+        geojson: geojson,
+        v: 0
+      });
+    }
+
+    if (newFeatures.length) {
+      this._cacheFeatures(cache, newFeatures);
+      const gfx = this.context.systems.gfx;
+      gfx.deferredRedraw();
+    }
+  }
+
+
+  /**
+   * _pointsClose
+   * @param   {Array}   a - [lon, lat]
+   * @param   {Array}   b - [lon, lat]
+   * @param   {number}  tolerance
+   * @return  {boolean}
+   */
+  _pointsClose(a, b, tolerance) {
+    return Math.abs(a[0] - b[0]) < tolerance && Math.abs(a[1] - b[1]) < tolerance;
+  }
+
+
+  /**
+   * _directionsCompatible
+   * Check whether two lines approach a shared junction from compatible directions.
+   * lineA flows *toward* the junction (its last segment), lineB flows *away from*
+   * the junction (its first segment).  Returns true if the angle between the two
+   * approach vectors is less than `maxAngleDeg`.
+   *
+   * @param   {Array}   lineA - coords flowing toward the junction
+   * @param   {Array}   lineB - coords flowing away from the junction
+   * @param   {number}  maxAngleDeg - maximum allowed angle in degrees
+   * @return  {boolean}
+   */
+  _directionsCompatible(lineA, lineB, maxAngleDeg) {
+    if (lineA.length < 2 || lineB.length < 2) return true;  // can't determine direction
+
+    // Direction of lineA's last segment (approaching junction)
+    const a0 = lineA[lineA.length - 2];
+    const a1 = lineA[lineA.length - 1];
+    const dax = a1[0] - a0[0];
+    const day = a1[1] - a0[1];
+
+    // Direction of lineB's first segment (leaving junction)
+    const b0 = lineB[0];
+    const b1 = lineB[1];
+    const dbx = b1[0] - b0[0];
+    const dby = b1[1] - b0[1];
+
+    const magA = Math.sqrt(dax * dax + day * day);
+    const magB = Math.sqrt(dbx * dbx + dby * dby);
+    if (magA === 0 || magB === 0) return true;  // degenerate segment
+
+    const cosAngle = (dax * dbx + day * dby) / (magA * magB);
+    const maxCos = Math.cos(maxAngleDeg * Math.PI / 180);
+
+    return cosAngle >= maxCos;
+  }
+
+
+  /**
+   * _joinLineCoords
+   * Concatenate two coordinate arrays, removing any overlapping points at the
+   * junction.  MVT tile clipping typically introduces 1-3 shared points in the
+   * buffer zone where tiles overlap.
+   *
+   * The algorithm searches for the closest pair of points between lineA's tail
+   * and lineB's head (within a small search window).  Everything from lineA up
+   * to & including the match point is kept, and lineB starts from the point
+   * *after* its match.
+   *
+   * @param   {Array}  lineA  - coordinates flowing *toward* the junction
+   * @param   {Array}  lineB  - coordinates flowing *away from* the junction
+   * @param   {number} tolerance
+   * @return  {Array}  merged coordinate array
+   */
+  _joinLineCoords(lineA, lineB, tolerance) {
+    const SEARCH_DEPTH = 10;
+    const tolSq = tolerance * tolerance;
+
+    let bestI = lineA.length - 1;
+    let bestJ = 0;
+    let bestDistSq = Infinity;
+
+    // Search the tail of lineA against the head of lineB
+    const aStart = Math.max(0, lineA.length - SEARCH_DEPTH);
+    const bEnd   = Math.min(SEARCH_DEPTH, lineB.length);
+
+    for (let i = aStart; i < lineA.length; i++) {
+      for (let j = 0; j < bEnd; j++) {
+        const dx = lineA[i][0] - lineB[j][0];
+        const dy = lineA[i][1] - lineB[j][1];
+        const distSq = dx * dx + dy * dy;
+        if (distSq < bestDistSq) {
+          bestDistSq = distSq;
+          bestI = i;
+          bestJ = j;
+        }
+      }
+    }
+
+    if (bestDistSq <= tolSq) {
+      // Splice: keep lineA up to the match, skip overlap on lineB
+      return lineA.slice(0, bestI + 1).concat(lineB.slice(bestJ + 1));
+    }
+
+    // Fallback: no close points found — plain concatenation
+    return lineA.concat(lineB);
+  }
+
+
+  /**
+   * _insertLineIntersections
+   * For each new LineString feature, detect where it geometrically crosses
+   * existing cached LineString features.  At each crossing, insert a shared
+   * coordinate into both features so that downstream OSM entity creation
+   * will produce a node at the intersection.
+   *
+   * @param  {Object}  cache        - the zoom cache
+   * @param  {Array}   newFeatures  - features just added to the cache
+   */
+  _insertLineIntersections(cache, newFeatures) {
+    const lineFeatures = newFeatures.filter(f => f.geojson?.geometry?.type === 'LineString');
+    if (!lineFeatures.length) return;
+
+    // For each new LineString, query the RBush for overlapping features
+    for (const newFeat of lineFeatures) {
+      const bbox = newFeat.extent.bbox();
+      const candidates = cache.rbush.search(bbox)
+        .map(d => d.data)
+        .filter(f => f.id !== newFeat.id && f.geojson?.geometry?.type === 'LineString');
+
+      for (const existing of candidates) {
+        this._findAndInsertCrossings(newFeat, existing);
+      }
+    }
+  }
+
+
+  /**
+   * _findAndInsertCrossings
+   * Check all segment pairs between two LineString features for crossings.
+   * When a crossing is found, insert the intersection coordinate into both
+   * features' coordinate arrays (in-place).
+   *
+   * @param  {Object}  featA - first feature
+   * @param  {Object}  featB - second feature
+   */
+  _findAndInsertCrossings(featA, featB) {
+    const EPSILON = 1e-10;
+    const coordsA = featA.geojson.geometry.coordinates;
+    const coordsB = featB.geojson.geometry.coordinates;
+
+    // Walk segments of A, checking against segments of B.
+    // Process from end to start so index insertions don't shift upcoming indices.
+    for (let i = coordsA.length - 2; i >= 0; i--) {
+      const a1 = coordsA[i];
+      const a2 = coordsA[i + 1];
+
+      for (let j = coordsB.length - 2; j >= 0; j--) {
+        const b1 = coordsB[j];
+        const b2 = coordsB[j + 1];
+
+        const cross = this._segmentIntersection(a1, a2, b1, b2, EPSILON);
+        if (!cross) continue;
+
+        // Insert the crossing point into both coordinate arrays
+        // (only if it's not already there — i.e. not coincident with an existing vertex)
+        const SNAP = 1e-8;
+        if (!this._pointsClose(cross, a1, SNAP) && !this._pointsClose(cross, a2, SNAP)) {
+          coordsA.splice(i + 1, 0, cross);
+        }
+        if (!this._pointsClose(cross, b1, SNAP) && !this._pointsClose(cross, b2, SNAP)) {
+          coordsB.splice(j + 1, 0, cross);
+        }
+      }
+    }
+  }
+
+
+  /**
+   * _segmentIntersection
+   * Compute the intersection point of two line segments (a1→a2) and (b1→b2).
+   * Returns the [lon, lat] intersection if the segments properly cross
+   * (both t and u strictly between 0 and 1), or null otherwise.
+   *
+   * @param   {Array}   a1 - [lon, lat]
+   * @param   {Array}   a2 - [lon, lat]
+   * @param   {Array}   b1 - [lon, lat]
+   * @param   {Array}   b2 - [lon, lat]
+   * @param   {number}  epsilon - tolerance for parallel detection
+   * @return  {Array|null} [lon, lat] or null
+   */
+  _segmentIntersection(a1, a2, b1, b2, epsilon) {
+    const dax = a2[0] - a1[0];
+    const day = a2[1] - a1[1];
+    const dbx = b2[0] - b1[0];
+    const dby = b2[1] - b1[1];
+
+    const denom = dax * dby - day * dbx;
+    if (Math.abs(denom) < epsilon) return null;  // parallel or coincident
+
+    const dx = b1[0] - a1[0];
+    const dy = b1[1] - a1[1];
+
+    const t = (dx * dby - dy * dbx) / denom;
+    const u = (dx * day - dy * dax) / denom;
+
+    // Strictly interior crossing (exclude endpoints to avoid false positives
+    // at T-junctions and shared endpoints)
+    const MARGIN = 0.001;  // exclude first/last 0.1% of each segment
+    if (t <= MARGIN || t >= (1 - MARGIN) || u <= MARGIN || u >= (1 - MARGIN)) return null;
+
+    return [
+      a1[0] + t * dax,
+      a1[1] + t * day
+    ];
   }
 
 
