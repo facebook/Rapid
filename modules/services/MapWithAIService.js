@@ -1,3 +1,5 @@
+import { Extent } from '@rapid-sdk/math';
+
 import { AbstractSystem } from '../core/AbstractSystem.js';
 import { Graph, Tree, RapidDataset } from '../core/lib/index.js';
 
@@ -300,7 +302,12 @@ export class MapWithAIService extends AbstractSystem {
         : geojson.geometry.coordinates;
 
       // Determine travel mode from properties
-      const hw = geojson.properties?.highway || geojson.properties?.class || '';
+      // Tags may be nested inside a `way_tags` JSON string
+      let wayTags = {};
+      if (geojson.properties?.way_tags) {
+        try { wayTags = JSON.parse(geojson.properties.way_tags); } catch (e) { /* ignore */ }
+      }
+      const hw = wayTags.highway || geojson.properties?.highway || geojson.properties?.class || '';
       const isNonMotorized = NON_MOTORIZED_CLASSES.has(hw);
       const sameModHighways = isNonMotorized ? combinedNonMotorized : combinedMotorized;
 
@@ -317,6 +324,11 @@ export class MapWithAIService extends AbstractSystem {
 
       // Build OSM tags for surviving features
       const tags = this._mapMLRoadTags(geojson.properties || {});
+
+      // Adjust highway tag based on connected OSM ways at endpoints
+      for (const coords of lineStrings) {
+        this._adjustHighwayFromOSM(tags, coords);
+      }
 
       // Convert surviving features to OSM entities
       for (let j = 0; j < lineStrings.length; j++) {
@@ -350,6 +362,11 @@ export class MapWithAIService extends AbstractSystem {
 
     // Update the internal graph with new entities
     if (newEntities.length) {
+      // Snap new way endpoints to existing graph nodes (cross-batch)
+      // and deduplicate endpoints within this batch.
+      // This ensures roads from different tiles connect at shared nodes.
+      this._snapEndpointsToGraph(newEntities, roadsGraph, roadsTree);
+
       roadsGraph.rebase(newEntities, [roadsGraph], true);
       roadsTree.rebase(newEntities, true);
     }
@@ -363,36 +380,204 @@ export class MapWithAIService extends AbstractSystem {
   /**
    * _mapMLRoadTags
    * Map ML road feature properties to OSM tags.
-   * Uses `highway` and `source` directly from the PMTiles data when available,
-   * falling back to sensible defaults for features without attributes.
+   * The PMTiles archive stores OSM tags inside a `way_tags` JSON string property.
    *
    * @param   {Object}  props - Feature properties from PMTiles
    * @return  {Object}  OSM tags
    */
   _mapMLRoadTags(props) {
+    // Parse the nested way_tags JSON if present
+    let wayTags = {};
+    if (props.way_tags) {
+      try {
+        wayTags = JSON.parse(props.way_tags);
+      } catch (e) {
+        // ignore malformed JSON
+      }
+    }
+
     const tags = {};
 
-    if (props.highway) {
-      tags.highway = props.highway;
-    } else if (props.class) {
-      tags.highway = props.class === 'unknown' ? 'road' : props.class;
-    } else {
-      tags.highway = 'road';
+    tags.highway = wayTags.highway || 'road';
+
+    if (wayTags.surface) {
+      tags.surface = wayTags.surface;
     }
 
-    if (props.surface) {
-      tags.surface = props.surface;
-    } else if (props.road_surface) {
-      tags.surface = props.road_surface;
-    }
-
-    if (props.source) {
-      tags.source = props.source;
-    } else {
-      tags.source = 'meta/ml_roads';
+    if (wayTags.source) {
+      tags.source = (wayTags.source === 'digitalglobe') ? 'maxar' : wayTags.source;
     }
 
     return tags;
+  }
+
+
+  /**
+   * _adjustHighwayFromOSM
+   * If an ML road's endpoint connects to an existing OSM way, compare highway tags
+   * and adjust the ML tag to match the connected OSM way when appropriate.
+   * For example: ML `residential` connecting to OSM `service` → downgrade to `service`.
+   *
+   * @param  {Object}  tags   - mutable OSM tags (modified in-place)
+   * @param  {Array}   coords - [[lon,lat], ...] coordinates of the ML road
+   */
+  _adjustHighwayFromOSM(tags, coords) {
+    if (!coords || coords.length < 2) return;
+
+    const editor = this.context.systems.editor;
+    if (!editor) return;
+    const osmGraph = editor.staging.graph;
+
+    const SNAP_TOL = 5e-5;  // ~5.5m
+    const endpoints = [coords[0], coords[coords.length - 1]];
+
+    for (const pt of endpoints) {
+      const nearby = editor.intersects(new Extent(
+        [pt[0] - SNAP_TOL, pt[1] - SNAP_TOL],
+        [pt[0] + SNAP_TOL, pt[1] + SNAP_TOL]
+      ));
+
+      for (const entity of nearby) {
+        if (entity.type !== 'way' || !entity.tags?.highway) continue;
+        const osmHw = entity.tags.highway;
+
+        // Check if any node on this OSM way is close to our endpoint
+        try {
+          const nodes = entity.nodes.map(nid => osmGraph.entity(nid));
+          const connected = nodes.some(n =>
+            Math.abs(n.loc[0] - pt[0]) < SNAP_TOL && Math.abs(n.loc[1] - pt[1]) < SNAP_TOL
+          );
+          if (!connected) continue;
+        } catch (e) {
+          continue;
+        }
+
+        // Apply highway tag adjustments based on connected OSM way
+        if (tags.highway === 'residential' && osmHw === 'service') {
+          tags.highway = 'service';
+        }
+
+        return;  // adjusted from first connected way — done
+      }
+    }
+  }
+
+
+  /**
+   * _snapEndpointsToGraph
+   * Before rebasing new entities into the graph, check each new way's endpoint
+   * nodes against existing nodes already in the graph (from previous tile loads)
+   * and against other new ways in the same batch.  If a matching node is found
+   * at the same location, swap the way's reference to use the existing node ID
+   * and drop the duplicate.
+   *
+   * This ensures roads from adjacent tiles connect at exactly 1 shared node,
+   * regardless of whether they have the same or different tags.
+   *
+   * Only modifies the `newEntities` array — never touches the existing graph.
+   *
+   * @param  {Array}   newEntities  - Array of osmNode/osmWay entities (modified in-place)
+   * @param  {Object}  graph        - The existing internal Graph
+   * @param  {Object}  tree         - The existing internal Tree (RBush)
+   */
+  _snapEndpointsToGraph(newEntities, graph, tree) {
+    const SNAP_TOL = 5e-5;  // ~5.5m
+
+    // Separate new nodes and ways
+    const newNodes = new Map();   // Map(nodeID → node)
+    const newWays = [];
+    for (const e of newEntities) {
+      if (e.type === 'node') newNodes.set(e.id, e);
+      else if (e.type === 'way') newWays.push(e);
+    }
+
+    if (!newWays.length) return;
+
+    // Build a spatial lookup of existing graph node endpoint locations.
+    const existingEndpointLocs = [];  // Array of [lon, lat]
+    try {
+      const extent = this.context.viewport.visibleExtent();
+      const existingEntities = tree.intersects(extent, graph);
+      for (const entity of existingEntities) {
+        if (entity.type !== 'way' || !entity.nodes || entity.nodes.length < 2) continue;
+        const firstID = entity.nodes[0];
+        const lastID = entity.nodes[entity.nodes.length - 1];
+        try {
+          existingEndpointLocs.push(graph.entity(firstID).loc);
+          existingEndpointLocs.push(graph.entity(lastID).loc);
+        } catch (e) { /* skip */ }
+      }
+    } catch (e) { /* tree may be empty */ }
+
+    // Phase 1: Snap new endpoint node COORDINATES to match existing graph nodes.
+    // Don't share node IDs across graphs — just place them at the exact same spot.
+    for (const way of newWays) {
+      const nodeIDs = way.nodes;
+      if (!nodeIDs || nodeIDs.length < 2) continue;
+
+      const endpointIDs = [nodeIDs[0], nodeIDs[nodeIDs.length - 1]];
+      for (const nodeID of endpointIDs) {
+        const node = newNodes.get(nodeID);
+        if (!node) continue;
+
+        for (const existLoc of existingEndpointLocs) {
+          if (Math.abs(node.loc[0] - existLoc[0]) < SNAP_TOL &&
+              Math.abs(node.loc[1] - existLoc[1]) < SNAP_TOL) {
+            node.loc = existLoc.slice();  // snap to exact same coordinates
+            break;
+          }
+        }
+      }
+    }
+
+    // Phase 2: Within-batch dedup — if two NEW ways share an endpoint location,
+    // make them reference the same new node ID (safe because both are new).
+    const batchEndpoints = new Map();  // Map(locKey → nodeID) for within-batch dedup
+    const remapNode = new Map();
+    const removeNodeIDs = new Set();
+
+    for (const way of newWays) {
+      const nodeIDs = way.nodes;
+      if (!nodeIDs || nodeIDs.length < 2) continue;
+
+      const endpointIDs = [nodeIDs[0], nodeIDs[nodeIDs.length - 1]];
+      for (const nodeID of endpointIDs) {
+        if (remapNode.has(nodeID)) continue;
+        const node = newNodes.get(nodeID);
+        if (!node) continue;
+
+        // Quantize location to snap tolerance for lookup key
+        const key = `${Math.round(node.loc[0] / SNAP_TOL)},${Math.round(node.loc[1] / SNAP_TOL)}`;
+        const existing = batchEndpoints.get(key);
+
+        if (existing && existing !== nodeID) {
+          remapNode.set(nodeID, existing);
+          removeNodeIDs.add(nodeID);
+        } else {
+          batchEndpoints.set(key, nodeID);
+        }
+      }
+    }
+
+    if (!remapNode.size) return;
+
+    // Rewrite way node references for within-batch dedup
+    for (const way of newWays) {
+      let changed = false;
+      const updatedNodes = way.nodes.map(nid => {
+        const replacement = remapNode.get(nid);
+        if (replacement) { changed = true; return replacement; }
+        return nid;
+      });
+      if (changed) way.nodes = updatedNodes;
+    }
+
+    // Remove duplicate nodes from the entities array
+    for (let i = newEntities.length - 1; i >= 0; i--) {
+      if (removeNodeIDs.has(newEntities[i].id)) {
+        newEntities.splice(i, 1);
+      }
+    }
   }
 
 }

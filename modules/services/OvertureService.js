@@ -292,7 +292,7 @@ export class OvertureService extends AbstractSystem {
       descriptionStringID: 'rapid_menu.overture.tomtom_roads.description'
     });
 
-    return [places, esriBuildings, mlBuildings, tomtomRoads];
+    return [mlBuildings, esriBuildings, tomtomRoads, places];
   }
 
 
