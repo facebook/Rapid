@@ -7,7 +7,7 @@ import { osmEntity, osmNode, osmWay } from '../osm/index.js';
 import { utilFetchResponse } from '../util/index.js';
 
 
-const APIROOT = 'https://mapwith.ai/maps/ml_roads';
+const APIROOT = 'https://rapideditor.org/maps/ml_roads';
 const TILEZOOM = 16;
 
 
@@ -101,24 +101,6 @@ export class MapWithAIService extends AbstractSystem {
     });
 
 
-    const omdFootways = new RapidDataset(context, {
-      id: 'omdFootways',
-      conflated: true,
-      service: 'mapwithai',
-      categories: new Set(['meta', 'footways', 'featured']),
-      tags: new Set(['opendata']),
-      overlay: {
-        url: 'https://external.xx.fbcdn.net/maps/vtp/rapid_overlay_footways/2/{z}/{x}/{y}/',
-        minZoom: 1,
-        maxZoom: 15,
-      },
-      dataUsed: ['mapwithai', 'Open Footways'],
-      itemUrl: 'https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Footways-FAQ',
-      licenseUrl: 'https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Footways-FAQ#attribution-and-license',
-      labelStringID: 'rapid_menu.omdFootways.label',
-      descriptionStringID: 'rapid_menu.omdFootways.description'
-    });
-
 
     const metaSyntheticFootways = new RapidDataset(context, {
       id: 'metaSyntheticFootways',
@@ -144,7 +126,8 @@ export class MapWithAIService extends AbstractSystem {
       label: 'Rapid Walkthrough'
     });
 
-    return [fbRoads, omdFootways, metaSyntheticFootways, introGraph];
+
+    return [fbRoads, metaSyntheticFootways, introGraph];
   }
 
 
@@ -325,9 +308,6 @@ export class MapWithAIService extends AbstractSystem {
     } else if (datasetID === 'metaSyntheticFootways' ) {
       qs.result_type = 'extended_osc';
       qs.sources = 'META_SYNTHETIC_FOOTWAYS';
-    } else if (datasetID === 'omdFootways' ) {
-      qs.result_type = 'extended_osc';
-      qs.sources = 'OPEN_MAP_DATA_FOOTWAYS';
     } else if (datasetID === 'msBuildings') {
       qs.result_type = 'road_building_vector_xml';
       qs.building_source = 'microsoft';

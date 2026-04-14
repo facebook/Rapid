@@ -254,7 +254,6 @@ export class PixiLayerRapid extends AbstractLayer {
       // fb_ai service gives us roads and buildings together,
       // so filter further according to which dataset we're drawing
       if (dataset.id === 'fbRoads'
-          || dataset.id === 'omdFootways'
           || dataset.id === 'metaSyntheticFootways'
           || dataset.id === 'rapid_intro_graph') {
         data.lines = entities.filter(d => d.geometry(dsGraph) === 'line' && !!d.tags.highway);

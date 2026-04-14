@@ -85,7 +85,7 @@ export class UiAttribution {
         id: '__mapwithai',
         overlay: true,
         terms_text: l10n.t('map_data.layers.rapid.license'),
-        terms_url: 'https://mapwith.ai/doc/license/MapWithAILicense.pdf'
+        terms_url: 'https://rapideditor.org/doc/license/MapWithAILicense.pdf'
       });
     }
 
