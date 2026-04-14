@@ -1,6 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 
 import { uiIcon } from './icon.js';
+import { utilSanitizeHTML } from '../util/index.js';
 
 
 // Pass `what` object of the form:
@@ -62,7 +63,7 @@ export function uiTagReference(context, what) {
 
     let docsHtml;
     if (docs.description) {
-      docsHtml = l10n.htmlForLocalizedText(docs.description, docs.descriptionLocaleCode);
+      docsHtml = utilSanitizeHTML(l10n.htmlForLocalizedText(docs.description, docs.descriptionLocaleCode));
     } else {
       docsHtml = l10n.tHtml('inspector.no_documentation_key');
     }

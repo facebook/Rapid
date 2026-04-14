@@ -360,7 +360,7 @@ export function uiPresetList(context) {
         .attr('class', 'namepart')
         .call(uiIcon((isRTL ? '#rapid-icon-backward' : '#rapid-icon-forward'), 'inline'))
         .append('span')
-        .html(() => preset.nameLabel() + '&hellip;');
+        .text(() => preset.name() + '\u2026');
 
       this.box = selection
         .append('div')
@@ -472,8 +472,8 @@ export function uiPresetList(context) {
         .attr('class', 'label-inner');
 
       const nameparts = [
-        preset.nameLabel(),
-        preset.subtitleLabel()
+        preset.name(),
+        preset.subtitle()
       ].filter(Boolean);
 
       labelEnter.selectAll('.namepart')
@@ -481,7 +481,7 @@ export function uiPresetList(context) {
         .enter()
         .append('div')
         .attr('class', 'namepart')
-        .html(d => d);
+        .text(d => d);
 
       wrapEnter.call(this.reference.button);
       selection.call(this.reference.body);

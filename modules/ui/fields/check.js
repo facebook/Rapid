@@ -34,14 +34,14 @@ export function uiFieldCheck(context, uifield) {
   if (Array.isArray(options)) {
     for (const v of options) {
       values.push(v === 'undefined' ? undefined : v);
-      texts.push(uifield.tHtml(`options.${v}`, { 'default': v }));
+      texts.push(uifield.t(`options.${v}`, { 'default': v }));
     }
   } else {
     values = [undefined, 'yes'];
-    texts = [l10n.tHtml('inspector.unknown'), l10n.tHtml('inspector.check.yes')];
+    texts = [l10n.t('inspector.unknown'), l10n.t('inspector.check.yes')];
     if (uifield.type !== 'defaultCheck') {
       values.push('no');
-      texts.push(l10n.tHtml('inspector.check.no'));
+      texts.push(l10n.t('inspector.check.no'));
     }
   }
 
@@ -58,7 +58,7 @@ export function uiFieldCheck(context, uifield) {
       for (let key in entity.tags) {
         if (key in osmOneWayTags && (entity.tags[key] in osmOneWayTags[key])) {
           _impliedYes = true;
-          texts[0] = l10n.tHtml('_tagging.presets.fields.oneway_yes.options.undefined');
+          texts[0] = l10n.t('_tagging.presets.fields.oneway_yes.options.undefined');
           break;
         }
       }
@@ -83,7 +83,7 @@ export function uiFieldCheck(context, uifield) {
     const icon = pseudoDirection ? '#rapid-icon-forward' : '#rapid-icon-backward';
 
     selection.selectAll('.reverser-span')
-      .html(l10n.tHtml('inspector.check.reverser'))
+      .text(l10n.t('inspector.check.reverser'))
       .call(uiIcon(icon, 'inline'));
 
     return selection;
@@ -108,7 +108,7 @@ export function uiFieldCheck(context, uifield) {
 
     enter
       .append('span')
-      .html(texts[0])
+      .text(texts[0])
       .attr('class', 'value');
 
     if (uifield.type === 'onewayCheck') {
@@ -213,7 +213,7 @@ export function uiFieldCheck(context, uifield) {
       .property('checked', isChecked(_value));
 
     text
-      .html(isMixed ? l10n.tHtml('inspector.multiple_values') : textFor(_value))
+      .text(isMixed ? l10n.t('inspector.multiple_values') : textFor(_value))
       .classed('mixed', isMixed);
 
     label

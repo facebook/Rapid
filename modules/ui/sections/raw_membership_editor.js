@@ -365,7 +365,7 @@ export function uiSectionRawMembershipEditor(context) {
         labelLink
             .append('span')
             .attr('class', 'member-entity-type')
-            .html(function(d) {
+            .text(function(d) {
                 const matched = presets.match(d.relation, editor.staging.graph);
                 return (matched && matched.name()) || l10n.t('inspector.relation');
             });

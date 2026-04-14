@@ -187,7 +187,7 @@ export function uiSectionRawMemberEditor(context) {
           labelLink
             .append('span')
             .attr('class', 'member-entity-type')
-            .html(d => {
+            .text(d => {
               const matched = presets.match(d.member, editor.staging.graph);
               return (matched && matched.name()) || l10n.displayType(d.member.id);
             });

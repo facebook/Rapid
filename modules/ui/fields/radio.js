@@ -64,7 +64,7 @@ export function uiFieldRadio(context, uifield) {
 
         enter
             .append('span')
-            .html(function(d) { return uifield.tHtml(`options.${d}`, { 'default': d }); });
+            .text(function(d) { return uifield.t(`options.${d}`, { 'default': d }); });
 
         labels = labels
             .merge(enter);
@@ -297,9 +297,9 @@ export function uiFieldRadio(context, uifield) {
         var selection = radios.filter(function() { return this.checked; });
 
         if (selection.empty()) {
-            placeholder.html(l10n.tHtml('inspector.none'));
+            placeholder.text(l10n.t('inspector.none'));
         } else {
-            placeholder.html(selection.attr('value'));
+            placeholder.text(selection.attr('value'));
             _oldType[selection.datum()] = tags[selection.datum()];
         }
 

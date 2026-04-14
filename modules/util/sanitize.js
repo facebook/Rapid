@@ -19,7 +19,7 @@ export function utilSanitizeHTML(dirty) {
       'thead', 'tr', 'u', 'ul'
     ],
     ALLOWED_ATTR: [
-      'class', 'href', 'id', 'name', 'rel', 'src', 'target', 'title', 'alt',
+      'class', 'href', 'id', 'lang', 'name', 'rel', 'src', 'target', 'title', 'alt',
       'value', 'data-osm-id', 'data-osm-type'
     ],
     ALLOW_DATA_ATTR: false,

@@ -91,8 +91,8 @@ export function uiSectionFeatureType(context) {
       );
 
     let names = _presets.length === 1 ? [
-      _presets[0].nameLabel(),
-      _presets[0].subtitleLabel()
+      _presets[0].name(),
+      _presets[0].subtitle()
     ].filter(Boolean) : [l10n.t('inspector.multiple_types')];
 
     let label = selection.select('.label-inner');
@@ -106,7 +106,7 @@ export function uiSectionFeatureType(context) {
       .enter()
       .append('div')
       .attr('class', 'namepart')
-      .html(d => d);
+      .text(d => d);
   }
 
   section.entityIDs = function(val) {
